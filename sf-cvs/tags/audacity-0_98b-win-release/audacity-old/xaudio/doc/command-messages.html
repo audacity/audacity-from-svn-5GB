@@ -1,0 +1,1275 @@
+<HTML>
+<HEAD>
+<TITLE>Xaudio Command Messages</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+<CENTER><IMG SRC="xaudio.gif"><H1>Xaudio Command Messages</H1></CENTER>
+<HR>
+<H2>Message Index</H2>
+<UL>
+<LI><A HREF="#XA_MSG_COMMAND_EXIT">XA_MSG_COMMAND_EXIT</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_PING">XA_MSG_COMMAND_PING</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_PLAY">XA_MSG_COMMAND_PLAY</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_PAUSE">XA_MSG_COMMAND_PAUSE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_STOP">XA_MSG_COMMAND_STOP</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_SEEK">XA_MSG_COMMAND_SEEK</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_OPEN">XA_MSG_COMMAND_INPUT_OPEN</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_CLOSE">XA_MSG_COMMAND_INPUT_CLOSE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_SEND_MESSAGE">XA_MSG_COMMAND_INPUT_SEND_MESSAGE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_ADD_FILTER">XA_MSG_COMMAND_INPUT_ADD_FILTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_REMOVE_FILTER">XA_MSG_COMMAND_INPUT_REMOVE_FILTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_FILTERS_LIST">XA_MSG_COMMAND_INPUT_FILTERS_LIST</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_MODULE_REGISTER">XA_MSG_COMMAND_INPUT_MODULE_REGISTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_MODULE_QUERY">XA_MSG_COMMAND_INPUT_MODULE_QUERY</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_INPUT_MODULES_LIST">XA_MSG_COMMAND_INPUT_MODULES_LIST</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_OPEN">XA_MSG_COMMAND_OUTPUT_OPEN</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_CLOSE">XA_MSG_COMMAND_OUTPUT_CLOSE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE">XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_MUTE">XA_MSG_COMMAND_OUTPUT_MUTE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_UNMUTE">XA_MSG_COMMAND_OUTPUT_UNMUTE</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_RESET">XA_MSG_COMMAND_OUTPUT_RESET</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_DRAIN">XA_MSG_COMMAND_OUTPUT_DRAIN</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_ADD_FILTER">XA_MSG_COMMAND_OUTPUT_ADD_FILTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER">XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_FILTERS_LIST">XA_MSG_COMMAND_OUTPUT_FILTERS_LIST</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER">XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_QUERY">XA_MSG_COMMAND_OUTPUT_MODULE_QUERY</A></LI>
+<LI><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULES_LIST">XA_MSG_COMMAND_OUTPUT_MODULES_LIST</A></LI>
+<LI><A HREF="#XA_MSG_SET_PLAYER_MODE">XA_MSG_SET_PLAYER_MODE</A></LI>
+<LI><A HREF="#XA_MSG_GET_PLAYER_MODE">XA_MSG_GET_PLAYER_MODE</A></LI>
+<LI><A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER</A></LI>
+<LI><A HREF="#XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER</A></LI>
+<LI><A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_STRING">XA_MSG_SET_PLAYER_ENVIRONMENT_STRING</A></LI>
+<LI><A HREF="#XA_MSG_GET_PLAYER_ENVIRONMENT_STRING">XA_MSG_GET_PLAYER_ENVIRONMENT_STRING</A></LI>
+<LI><A HREF="#XA_MSG_UNSET_PLAYER_ENVIRONMENT">XA_MSG_UNSET_PLAYER_ENVIRONMENT</A></LI>
+<LI><A HREF="#XA_MSG_SET_INPUT_MODULE">XA_MSG_SET_INPUT_MODULE</A></LI>
+<LI><A HREF="#XA_MSG_GET_INPUT_MODULE">XA_MSG_GET_INPUT_MODULE</A></LI>
+<LI><A HREF="#XA_MSG_SET_INPUT_POSITION_RANGE">XA_MSG_SET_INPUT_POSITION_RANGE</A></LI>
+<LI><A HREF="#XA_MSG_GET_INPUT_POSITION_RANGE">XA_MSG_GET_INPUT_POSITION_RANGE</A></LI>
+<LI><A HREF="#XA_MSG_SET_INPUT_TIMECODE_GRANULARITY">XA_MSG_SET_INPUT_TIMECODE_GRANULARITY</A></LI>
+<LI><A HREF="#XA_MSG_GET_INPUT_TIMECODE_GRANULARITY">XA_MSG_GET_INPUT_TIMECODE_GRANULARITY</A></LI>
+<LI><A HREF="#XA_MSG_SET_OUTPUT_MODULE">XA_MSG_SET_OUTPUT_MODULE</A></LI>
+<LI><A HREF="#XA_MSG_GET_OUTPUT_MODULE">XA_MSG_GET_OUTPUT_MODULE</A></LI>
+<LI><A HREF="#XA_MSG_SET_OUTPUT_NAME">XA_MSG_SET_OUTPUT_NAME</A></LI>
+<LI><A HREF="#XA_MSG_GET_OUTPUT_NAME">XA_MSG_GET_OUTPUT_NAME</A></LI>
+<LI><A HREF="#XA_MSG_SET_OUTPUT_VOLUME">XA_MSG_SET_OUTPUT_VOLUME</A></LI>
+<LI><A HREF="#XA_MSG_GET_OUTPUT_VOLUME">XA_MSG_GET_OUTPUT_VOLUME</A></LI>
+<LI><A HREF="#XA_MSG_SET_OUTPUT_CHANNELS">XA_MSG_SET_OUTPUT_CHANNELS</A></LI>
+<LI><A HREF="#XA_MSG_GET_OUTPUT_CHANNELS">XA_MSG_GET_OUTPUT_CHANNELS</A></LI>
+<LI><A HREF="#XA_MSG_SET_OUTPUT_PORTS">XA_MSG_SET_OUTPUT_PORTS</A></LI>
+<LI><A HREF="#XA_MSG_GET_OUTPUT_PORTS">XA_MSG_GET_OUTPUT_PORTS</A></LI>
+<LI><A HREF="#XA_MSG_SET_CODEC_EQUALIZER">XA_MSG_SET_CODEC_EQUALIZER</A></LI>
+<LI><A HREF="#XA_MSG_GET_CODEC_EQUALIZER">XA_MSG_GET_CODEC_EQUALIZER</A></LI>
+<LI><A HREF="#XA_MSG_SET_NOTIFICATION_MASK">XA_MSG_SET_NOTIFICATION_MASK</A></LI>
+<LI><A HREF="#XA_MSG_GET_NOTIFICATION_MASK">XA_MSG_GET_NOTIFICATION_MASK</A></LI>
+</UL>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_EXIT">XA_MSG_COMMAND_EXIT</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to exit.<BR>The player will close and release all instantiated input and output devices before exiting.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_EXIT)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Exit();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_PING">XA_MSG_COMMAND_PING</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a 'ping tag' to the player, which will trigger a 'pong tag' reply.<BR>This is used to synchronize with the asynchronous player: it is guaranteed that all messages sent to the player before a 'ping tag' will have been processed before the player sends back a 'pong tag' notification with the tag that was passed with the message.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_PING,  tag)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Ping(unsigned long tag);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>tag</I></B></TD><TD>unsigned long</TD><TD> user-defined tag that will be passed back with the 'pong' notification.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_PLAY">XA_MSG_COMMAND_PLAY</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to start playing. Upon receipt of this message, the player will open its input if not already open, open its output if not already open, and start playing. While the decoder is playing it reads from its input module (possible passing through the input filter chain), decodes the data, and sends it to the output module (possibly passing through the output filter chain). Between each of the small chunks of data that are being processed, the player will check its message queue to be able to respond to other messages that might be sent during playback (stop, pause, seek, etc...).<BR>When it starts playing, the player will notify its new state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_STATE">XA_MSG_NOTIFY_PLAYER_STATE</A> message with a state field of <TT>XA_PLAYER_STATE_PLAYING</TT>.<BR>When it has decoded the entire input stream, the player will stop and notify its new state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_STATE">XA_MSG_NOTIFY_PLAYER_STATE</A> message with a state field of <TT>XA_PLAYER_STATE_EOF</TT>.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_PLAY)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Play();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_STOP">XA_MSG_COMMAND_STOP</A>, <A HREF="#XA_MSG_COMMAND_PAUSE">XA_MSG_COMMAND_PAUSE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_PAUSE">XA_MSG_COMMAND_PAUSE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to pause playing. The player will paused, and remember the current playback position, so that if it receives a subsequent XA_MSG_COMMAND_PLAY message, playback will resume from where it was paused.<BR>When it is paused, the player will notify its new state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_STATE">XA_MSG_NOTIFY_PLAYER_STATE</A> message with a state field of <TT>XA_PLAYER_STATE_PAUSED</TT>.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_PAUSE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Pause();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_PLAY">XA_MSG_COMMAND_PLAY</A>, <A HREF="#XA_MSG_COMMAND_STOP">XA_MSG_COMMAND_STOP</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_STOP">XA_MSG_COMMAND_STOP</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to stop playing. The playback position will return to the start of the stream.<BR>When it is paused, the player will notify its new state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_STATE">XA_MSG_NOTIFY_PLAYER_STATE</A> message with a state field of <TT>XA_PLAYER_STATE_STOPPED</TT>.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_STOP)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Stop();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_PLAY">XA_MSG_COMMAND_PLAY</A>, <A HREF="#XA_MSG_COMMAND_STOP">XA_MSG_COMMAND_STOP</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_SEEK">XA_MSG_COMMAND_SEEK</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to seek to a position within the input stream.<BR>The position is identified by an offset and a range. The range gives the total number of 'steps' in the stream, and the offset gives the step to which to seek. This is typically related to a 'scroll bar' or similar slider control, where range would be the MAX value for the slider, and offset the current value.<BR>For example, to seek to position 78 with a slider that goes from 0 to 100, the 'range' would be 100, and the 'offset' would be 78.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_SEEK,  offset,  range)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::Seek(unsigned short offset, unsigned short range);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>offset</I></B></TD><TD>unsigned short</TD><TD> offset within the range.</TD>
+</TR>
+<TR>
+<TD><B><I>range</I></B></TD><TD>unsigned short</TD><TD> range of positions.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_OPEN">XA_MSG_COMMAND_INPUT_OPEN</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to open the input stream. The parameter to this message is the name (text string) of the input to open. Unless the input module has been set to a specific value, (see <A HREF="#XA_MSG_SET_INPUT_MODULE">XA_MSG_SET_INPUT_MODULE</A>), the player will 'autoselect' the correct input module based on the input name.<BR>Typically, the input name is the name of the file on the disk that contains the stream, or a URL for network streaming.<BR>If the player can successfully open the input, it will notify of the new input state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_STATE">XA_MSG_NOTIFY_INPUT_STATE</A> message with a state field of <TT>XA_PLAYER_INPUT_STATE_OPEN</TT>.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_OPEN,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputOpen(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the input to open.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_CLOSE">XA_MSG_COMMAND_INPUT_CLOSE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_CLOSE">XA_MSG_COMMAND_INPUT_CLOSE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to close the input stream.<BR>The player will notify of the new input state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_STATE">XA_MSG_NOTIFY_INPUT_STATE</A> message with a state field of <TT>XA_PLAYER_INPUT_STATE_CLOSED</TT>.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_CLOSE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputClose();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_OPEN">XA_MSG_COMMAND_INPUT_OPEN</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_SEND_MESSAGE">XA_MSG_COMMAND_INPUT_SEND_MESSAGE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a private message to the input module. This is used to implement custom behavior for dynamically attached plugin input modules (most users will never need to use that message). A custom message sent to a module has a type (short integer) and a payload (a user-defined data buffer) identified by a pointer to a memory location and a size in bytes.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_SEND_MESSAGE,  type,  data,  size)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputSendMessage(unsigned short type, void *data, unsigned int size);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>type</I></B></TD><TD>unsigned short</TD><TD> message type identifier (user-defined).</TD>
+</TR>
+<TR>
+<TD><B><I>data</I></B></TD><TD>void *</TD><TD> pointer to the message data.</TD>
+</TR>
+<TR>
+<TD><B><I>size</I></B></TD><TD>unsigned int</TD><TD> number of bytes of data.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_SEND_MESSAGE">XA_MSG_COMMAND_INPUT_SEND_MESSAGE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_ADD_FILTER">XA_MSG_COMMAND_INPUT_ADD_FILTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Adds an input filter to the input filters chain.<BR>The filter is identified by name, which could reference a statically linked filter, a dynamically linked filter or a built-in filter. For more details on the naming convention for modules, filters and other functional object, see the section on <A HREF="misc.html#symbols">Symbols Naming</A>.<BR>The 'where' parameter identifies where the filter should be inserted. See the documentation of the related SYNC function <A HREF="syncapi.html#decoder_input_add_filter">decoder_input_add_filter</A> for possible values of that parameter.<BR>Once the filter is added to the filter chain, the player notifies of the filter's ID by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_FILTER_INFO">XA_MSG_NOTIFY_INPUT_FILTER_INFO</A> message.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_ADD_FILTER,  name,  where)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputAddFilter(const char *name, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the filter to insert in the chain.</TD>
+</TR>
+<TR>
+<TD><B><I>where</I></B></TD><TD>int</TD><TD> identifier of the insert point for the filter.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_REMOVE_FILTER">XA_MSG_COMMAND_INPUT_REMOVE_FILTER</A>, <A HREF="#XA_MSG_COMMAND_INPUT_FILTERS_LIST">XA_MSG_COMMAND_INPUT_FILTERS_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_REMOVE_FILTER">XA_MSG_COMMAND_INPUT_REMOVE_FILTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Removes an input filter from the input filters chain.<BR>The filter is identified by name, or by ID.<BR>See the documentation of the related SYNC function <A HREF="syncapi.html#decoder_input_remove_filter">decoder_input_remove_filter</A> for possible values of the 'name' and 'id' parameters.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_REMOVE_FILTER,  name,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputRemoveFilter(const char *name, int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the filter to remove from the chain or @@CODE(NULL).</TD>
+</TR>
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> identifier of the filter to remove.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_ADD_FILTER">XA_MSG_COMMAND_INPUT_ADD_FILTER</A>, <A HREF="#XA_MSG_COMMAND_INPUT_FILTERS_LIST">XA_MSG_COMMAND_INPUT_FILTERS_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_FILTERS_LIST">XA_MSG_COMMAND_INPUT_FILTERS_LIST</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to list the input filters currently in the chain.<BR>For each of the filters in the chain, the decoder will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_FILTER_INFO">XA_MSG_NOTIFY_INPUT_FILTER_INFO</A> message describing the filter and it's ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_FILTERS_LIST)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputFiltersList();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_ADD_FILTER">XA_MSG_COMMAND_INPUT_ADD_FILTER</A>, <A HREF="#XA_MSG_COMMAND_INPUT_REMOVE_FILTER">XA_MSG_COMMAND_INPUT_REMOVE_FILTER</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_MODULE_REGISTER">XA_MSG_COMMAND_INPUT_MODULE_REGISTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Registers an input module.<BR>The module is identified by name, which could reference a statically linked module, a dynamically linked module or a built-in module. For more details on the naming convention for modules, filters and other functional object, see the section on <A HREF="misc.html#symbols">Symbols Naming</A>.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_MODULE_REGISTER,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputModuleRegister(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the input module to register.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_MODULE_QUERY">XA_MSG_COMMAND_INPUT_MODULE_QUERY</A>, <A HREF="#XA_MSG_COMMAND_INPUT_MODULES_LIST">XA_MSG_COMMAND_INPUT_MODULES_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_MODULE_QUERY">XA_MSG_COMMAND_INPUT_MODULE_QUERY</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves information about a registered input module.<BR>The module to query is identified by ID. If a module with the requested ID is found in the list of registered modules, the player will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_MODULE_INFO">XA_MSG_NOTIFY_INPUT_MODULE_INFO</A> message describing the module.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_MODULE_QUERY,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputModuleQuery(int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> ID of the module to query.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_MODULE_REGISTER">XA_MSG_COMMAND_INPUT_MODULE_REGISTER</A>, <A HREF="#XA_MSG_COMMAND_INPUT_MODULES_LIST">XA_MSG_COMMAND_INPUT_MODULES_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_INPUT_MODULES_LIST">XA_MSG_COMMAND_INPUT_MODULES_LIST</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves a list of currently registered input modules.<BR>For each of the registered input module, the player will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_MODULE_INFO">XA_MSG_NOTIFY_INPUT_MODULE_INFO</A> message describing the module.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_INPUT_MODULES_LIST)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::InputModulesList();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_INPUT_MODULE_REGISTER">XA_MSG_COMMAND_INPUT_MODULE_REGISTER</A>, <A HREF="#XA_MSG_COMMAND_INPUT_MODULE_QUERY">XA_MSG_COMMAND_INPUT_MODULE_QUERY</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_OPEN">XA_MSG_COMMAND_OUTPUT_OPEN</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to open the output. The parameter to this message is the name (text string) of the output to open. Unless the output module has been set to a specific value, (see <A HREF="#XA_MSG_SET_OUTPUT_MODULE">XA_MSG_SET_OUTPUT_MODULE</A>), the player will 'autoselect' the correct output module based on the output name.<BR>Typically, the output name used is NULL or "" to specify the default output module.<BR>Also, since the player will automatically open the default output when playing, there is no need to use that message unless specific control over the output is required.If the player can successfully open the output, it will notify of the new output state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_STATE">XA_MSG_NOTIFY_OUTPUT_STATE</A> message with a state field of <TT>XA_PLAYER_OUTPUT_STATE_OPEN</TT>, and will send an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_BALANCE">XA_MSG_NOTIFY_OUTPUT_BALANCE</A> message, an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_PCM_LEVEL">XA_MSG_NOTIFY_OUTPUT_PCM_LEVEL</A> message and an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_MASTER_LEVEL">XA_MSG_NOTIFY_OUTPUT_MASTER_LEVEL</A> message to notify of the current output volume settings.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_OPEN,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputOpen(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the output to open.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_CLOSE">XA_MSG_COMMAND_OUTPUT_CLOSE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_CLOSE">XA_MSG_COMMAND_OUTPUT_CLOSE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to close the output.<BR>The player will notify of the new output state by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_STATE">XA_MSG_NOTIFY_OUTPUT_STATE</A> message with a state field of <TT>XA_PLAYER_OUTPUT_STATE_CLOSED</TT>.<BR>Since the player can be instructed to automatically close the output when stopped and/or when paused (see <A HREF="#XA_MSG_SET_PLAYER_MODE">XA_MSG_SET_PLAYER_MODE</A>), it is usually not necessary to send this message directly.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_CLOSE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputClose();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_OPEN">XA_MSG_COMMAND_OUTPUT_OPEN</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE">XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sends a private message to the output module. This is used to implement custom behavior for dynamically attached plugin output modules (most users will never need to use that message). A custom message sent to a module has a type (short integer) and a payload (a user-defined data buffer) identified by a pointer to a memory location and a size in bytes.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE,  type,  data,  size)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputSendMessage(unsigned short type, void *data, unsigned int size);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>type</I></B></TD><TD>unsigned short</TD><TD> message type identifier (user-defined).</TD>
+</TR>
+<TR>
+<TD><B><I>data</I></B></TD><TD>void *</TD><TD> pointer to the message data.</TD>
+</TR>
+<TR>
+<TD><B><I>size</I></B></TD><TD>unsigned int</TD><TD> number of bytes of data.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE">XA_MSG_COMMAND_OUTPUT_SEND_MESSAGE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_MUTE">XA_MSG_COMMAND_OUTPUT_MUTE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Mutes the output. This does not stop the player from decoding the stream. Normal decoding still occurs, but no sound is heard from the output.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_MUTE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputMute();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_UNMUTE">XA_MSG_COMMAND_OUTPUT_UNMUTE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_UNMUTE">XA_MSG_COMMAND_OUTPUT_UNMUTE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Unmutes the output. If the player's output was made mute by an <A HREF="#XA_MSG_COMMAND_OUTPUT_MUTE">XA_MSG_COMMAND_OUTPUT_MUTE</A> message, this restores the output to the normal mode, else it does nothing.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_UNMUTE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputUnmute();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_MUTE">XA_MSG_COMMAND_OUTPUT_MUTE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_RESET">XA_MSG_COMMAND_OUTPUT_RESET</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Resets the output. This will flush any sound that might be buffered by the output module.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_RESET)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputReset();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_DRAIN">XA_MSG_COMMAND_OUTPUT_DRAIN</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_DRAIN">XA_MSG_COMMAND_OUTPUT_DRAIN</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to wait until the buffered samples in the output module have finished playing.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_DRAIN)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputDrain();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_RESET">XA_MSG_COMMAND_OUTPUT_RESET</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_ADD_FILTER">XA_MSG_COMMAND_OUTPUT_ADD_FILTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Adds an output filter to the output filters chain.<BR>The filter is identified by name, which could reference a statically linked filter, a dynamically linked filter or a built-in filter. For more details on the naming convention for modules, filters and other functional object, see the section on <A HREF="misc.html#symbols">Symbols Naming</A>.<BR>The 'where' parameter identifies where the filter should be inserted. See the documentation of the related SYNC function <A HREF="syncapi.html#decoder_output_add_filter">decoder_output_add_filter</A> for possible values of that parameter.<BR>Once the filter is added to the filter chain, the player notifies of the filter's ID by sending back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_FILTER_INFO">XA_MSG_NOTIFY_OUTPUT_FILTER_INFO</A> message.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_ADD_FILTER,  name,  where)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputAddFilter(const char *name, int where);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the filter to insert in the chain.</TD>
+</TR>
+<TR>
+<TD><B><I>where</I></B></TD><TD>int</TD><TD> identifier of the insert point for the filter.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER">XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_FILTERS_LIST">XA_MSG_COMMAND_OUTPUT_FILTERS_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER">XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Removes an output filter from the output filters chain.<BR>The filter is identified by name, or by ID.<BR>See the documentation of the related SYNC function <A HREF="syncapi.html#decoder_output_remove_filter">decoder_output_remove_filter</A> for possible values of the 'name' and 'id' parameters.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER,  name,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputRemoveFilter(const char *name, int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the filter to remove from the chain or @@CODE(NULL).</TD>
+</TR>
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> identifier of the filter to remove.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_ADD_FILTER">XA_MSG_COMMAND_OUTPUT_ADD_FILTER</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_FILTERS_LIST">XA_MSG_COMMAND_OUTPUT_FILTERS_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_FILTERS_LIST">XA_MSG_COMMAND_OUTPUT_FILTERS_LIST</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Tells the player to list the output filters currently in the chain.<BR>For each of the filters in the chain, the decoder will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_FILTER_INFO">XA_MSG_NOTIFY_OUTPUT_FILTER_INFO</A> message describing the filter and it's ID.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_FILTERS_LIST)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputFiltersList();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_ADD_FILTER">XA_MSG_COMMAND_OUTPUT_ADD_FILTER</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER">XA_MSG_COMMAND_OUTPUT_REMOVE_FILTER</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER">XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Registers an output module.<BR>The module is identified by name, which could reference a statically linked module, a dynamically linked module or a built-in module. For more details on the naming convention for modules, filters and other functional objects, see the section on <A HREF="misc.html#symbols">Symbols Naming</A>.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputModuleRegister(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the output module to register.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_QUERY">XA_MSG_COMMAND_OUTPUT_MODULE_QUERY</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_MODULES_LIST">XA_MSG_COMMAND_OUTPUT_MODULES_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_MODULE_QUERY">XA_MSG_COMMAND_OUTPUT_MODULE_QUERY</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves information about a registered output module.<BR>The module to query is identified by ID. If a module with the requested ID is found in the list of registered modules, the player will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_MODULE_INFO">XA_MSG_NOTIFY_OUTPUT_MODULE_INFO</A> message describing the module.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_MODULE_QUERY,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputModuleQuery(int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> ID of the module to query.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER">XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_MODULES_LIST">XA_MSG_COMMAND_OUTPUT_MODULES_LIST</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_COMMAND_OUTPUT_MODULES_LIST">XA_MSG_COMMAND_OUTPUT_MODULES_LIST</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves a list of currently registered output modules.<BR>For each of the registered output module, the player will send back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_MODULE_INFO">XA_MSG_NOTIFY_OUTPUT_MODULE_INFO</A> message describing the module.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_COMMAND_OUTPUT_MODULES_LIST)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::OutputModulesList();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER">XA_MSG_COMMAND_OUTPUT_MODULE_REGISTER</A>, <A HREF="#XA_MSG_COMMAND_OUTPUT_MODULE_QUERY">XA_MSG_COMMAND_OUTPUT_MODULE_QUERY</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_PLAYER_MODE">XA_MSG_SET_PLAYER_MODE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets flags that modify the player's behavior.<BR>A mode is a combination of behavior flags that can individually be on or off.<BR>Currently supported flags are:<BR><TT>XA_PLAYER_MODE_OUTPUT_AUTO_CLOSE_ON_STOP</TT>: if this flag is set, the player will close the output whenever it is stopped. This is convenient, since it will automatically release the audio driver on systems where the audio driver cannot be shared by several processes.<BR><TT>XA_PLAYER_MODE_OUTPUT_AUTO_CLOSE_ON_PAUSE</TT>: if this flag is set, the player will close the output when paused.<BR><TT>XA_PLAYER_MODE_OUTPUT_AUTO_CLOSE_ON_EOF</TT>: if this flag is set, the player will close the output when it reaches the end of the input stream.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_PLAYER_MODE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetPlayerMode(unsigned long mode);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>mode</I></B></TD><TD>unsigned long</TD><TD> OR'ed combination of operating mode flags.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_PLAYER_MODE">XA_MSG_GET_PLAYER_MODE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_PLAYER_MODE">XA_MSG_GET_PLAYER_MODE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current player mode. Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_MODE">XA_MSG_NOTIFY_PLAYER_MODE</A> message with the player's current mode.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_PLAYER_MODE,  mode)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetPlayerMode();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_PLAYER_MODE">XA_MSG_SET_PLAYER_MODE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the value of a player's integer environment variable.<BR>The environment variable is specified by name.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER,  name,  value)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetPlayerEnvironmentInteger(const char *name, unsigned long value);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the environment variable to set.</TD>
+</TR>
+<TR>
+<TD><B><I>value</I></B></TD><TD>unsigned long</TD><TD> integer value to assign to the environment variable.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the value of a player's integer environment variable.<BR>The environment variable is specified by name.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_NOTIFY_PLAYER_ENVIRONMENT_INTEGER</A> message with the variable's value.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetPlayerEnvironmentInteger(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the environment variable to get.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_PLAYER_ENVIRONMENT_STRING">XA_MSG_SET_PLAYER_ENVIRONMENT_STRING</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the value of a player's string environment variable.<BR>The environment variable is specified by name.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_PLAYER_ENVIRONMENT_STRING,  name,  value)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetPlayerEnvironmentString(const char *name, const char *value);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the environment variable to set.</TD>
+</TR>
+<TR>
+<TD><B><I>value</I></B></TD><TD>const char *</TD><TD> string value to assign to the environment variable.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_PLAYER_ENVIRONMENT_STRING">XA_MSG_GET_PLAYER_ENVIRONMENT_STRING</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_PLAYER_ENVIRONMENT_STRING">XA_MSG_GET_PLAYER_ENVIRONMENT_STRING</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the value of a player's string environment variable.<BR>The environment variable is specified by name.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_PLAYER_ENVIRONMENT_STRING">XA_MSG_NOTIFY_PLAYER_ENVIRONMENT_STRING</A> message with the variable's value.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_PLAYER_ENVIRONMENT_INTEGER,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetPlayerEnvironmentString(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the environment variable to get.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_STRING">XA_MSG_SET_PLAYER_ENVIRONMENT_STRING</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_UNSET_PLAYER_ENVIRONMENT">XA_MSG_UNSET_PLAYER_ENVIRONMENT</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Deletes on of the player's environment variables.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_UNSET_PLAYER_ENVIRONMENT,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::UnsetPlayerEnvironment(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the environment variable to delete.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER">XA_MSG_SET_PLAYER_ENVIRONMENT_INTEGER</A>, <A HREF="#XA_MSG_SET_PLAYER_ENVIRONMENT_STRING">XA_MSG_SET_PLAYER_ENVIRONMENT_STRING</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_INPUT_MODULE">XA_MSG_SET_INPUT_MODULE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's input module.<BR>By default, the player automatically selects the input module based on the input name by probing all the registered input modules. However, if the client needs to constrain the player to always use a specific input module, it should do so by setting the input module to the ID of the registered input module that it wishes to use.<BR>The special value <TT>XA_DECODER_INPUT_AUTOSELECT</TT> returns the player the mode of automatically selecting the input module base on the input name.<BR>This will only take effect the next time the player needs to open the input stream. If the player has a currently open input stream, it will remain until it is explicitly closed, or a new input stream is opened.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_INPUT_MODULE,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetInputModule(int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> ID of the registered input module to use, or the special value <TT>XA_DECODER_INPUT_AUTOSELECT</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_INPUT_MODULE">XA_MSG_GET_INPUT_MODULE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_INPUT_MODULE">XA_MSG_GET_INPUT_MODULE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the ID of the current input module.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_MODULE">XA_MSG_NOTIFY_INPUT_MODULE</A> message with the current input module's ID, or the special value <TT>XA_DECODER_INPUT_AUTOSELECT</TT>.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_INPUT_MODULE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetInputModule();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_INPUT_MODULE">XA_MSG_SET_INPUT_MODULE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_INPUT_POSITION_RANGE">XA_MSG_SET_INPUT_POSITION_RANGE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's position range. This is used by the player to know how frequently to send back <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_POSITION">XA_MSG_NOTIFY_INPUT_POSITION</A> message to notify of the current stream's position. The default is 400, which means that the input stream has 400 discrete positions that can be notified.<BR>Example: if the client wishes to display the current position in a display that is 200 pixels wide, it should set the position range to 200, so that it will not receive unnecessary notifications.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_INPUT_POSITION_RANGE,  unsigned int range)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetInputPositionRange(unsigned int range);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>range</I></B></TD><TD>unsigned int</TD><TD> number of discrete positions for which the player can send <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_POSITION">XA_MSG_NOTIFY_INPUT_POSITION</A> notification messages.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_INPUT_POSTITION_RANGE">XA_MSG_GET_INPUT_POSTITION_RANGE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_INPUT_POSITION_RANGE">XA_MSG_GET_INPUT_POSITION_RANGE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current value of the input position range.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_POSITION_RANGE">XA_MSG_NOTIFY_INPUT_POSITION_RANGE</A> message with the current range value.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_INPUT_POSITION_RANGE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetInputPositionRange();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_INPUT_POSTITION_RANGE">XA_MSG_SET_INPUT_POSTITION_RANGE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_INPUT_TIMECODE_GRANULARITY">XA_MSG_SET_INPUT_TIMECODE_GRANULARITY</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's timecode granularity. This is used by the player to know how frequently to send back <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_TIMECODE">XA_MSG_NOTIFY_INPUT_TIMECODE</A> message to notify of the current stream's timecode. The default is 100, which means that the player will send a <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_TIMECODE">XA_MSG_NOTIFY_INPUT_TIMECODE</A> message every 100 'ticks' (there are 100 'ticks' per second, so this will trigger a message every second).<BR>The client should increase or decrease this value depending on how often it wishes to receive timecode notifications.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_INPUT_TIMECODE_GRANULARITY,  unsigned int granularity)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetInputTimecodeGranularity(unsigned int granularity);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>range</I></B></TD><TD>unsigned int</TD><TD> number of 'ticks' (100 ticks per second) between each <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_POSITION">XA_MSG_NOTIFY_INPUT_POSITION</A> notification message.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_INPUT_TIMECODE_GRANULARITY">XA_MSG_GET_INPUT_TIMECODE_GRANULARITY</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_INPUT_TIMECODE_GRANULARITY">XA_MSG_GET_INPUT_TIMECODE_GRANULARITY</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current value of the input timecode granularity.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_INPUT_TIMECODE_GRANULARITY">XA_MSG_NOTIFY_INPUT_TIMECODE_GRANULARITY</A> message with the current granularity value.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_INPUT_TIMECODE_GRANULARITY)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetInputTimecodeGranularity();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_INPUT_TIMECODE_GRANULARITY">XA_MSG_GET_INPUT_TIMECODE_GRANULARITY</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_OUTPUT_MODULE">XA_MSG_SET_OUTPUT_MODULE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's output module.<BR>By default, the player automatically selects the output module based on the output name by probing all the registered output modules. However, if the client needs to constrain the player to always use a specific output module, it should do so by setting the output module to the ID of the registered output module that it wishes to use.<BR>The special value <TT>XA_DECODER_OUTPUT_AUTOSELECT</TT> returns the player the mode of automatically selecting the output module base on the output name.<BR>This will only take effect the next time the player needs to open the output device. If the player has a currently open output device, it will remain until it is explicitly closed, or a new output device is opened.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_OUTPUT_MODULE,  id)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetOutputModule(int id);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>id</I></B></TD><TD>int</TD><TD> ID of the registered output module to use, or the special value <TT>XA_DECODER_OUTPUT_AUTOSELECT</TT>.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_OUTPUT_MODULE">XA_MSG_GET_OUTPUT_MODULE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_OUTPUT_MODULE">XA_MSG_GET_OUTPUT_MODULE</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the ID of the current output module.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_MODULE">XA_MSG_NOTIFY_OUTPUT_MODULE</A> message with the current output module's ID, or the special value <TT>XA_DECODER_OUTPUT_AUTOSELECT</TT>.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_OUTPUT_MODULE)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetOutputModule();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_MODULE">XA_MSG_SET_OUTPUT_MODULE</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_OUTPUT_NAME">XA_MSG_SET_OUTPUT_NAME</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's default output name.<BR>When the client sends an <A HREF="#XA_MSG_COMMAND_OUTPUT_OPEN">XA_MSG_COMMAND_OUTPUT_OPEN</A> message with a name parameter that is <TT>NULL</TT> or an empty string (""), or when the player receives an <A HREF="#XA_MSG_COMMAND_PLAY">XA_MSG_COMMAND_PLAY</A> message and needs to automatically open the output device, the player will use the default output device. Normally, the default output has <TT>NULL</TT> name value, which will open the default audio driver. If the client wishes to have a different default output device, it should set its name by sending this message.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_OUTPUT_NAME,  name)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetOutputName(const char *name);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the default output device.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_NAME">XA_MSG_SET_OUTPUT_NAME</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_OUTPUT_NAME">XA_MSG_GET_OUTPUT_NAME</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the name of the current output device.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_NAME">XA_MSG_NOTIFY_OUTPUT_NAME</A> message with the current output name.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_OUTPUT_NAME)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetOutputName();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_NAME">XA_MSG_SET_OUTPUT_NAME</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_OUTPUT_VOLUME">XA_MSG_SET_OUTPUT_VOLUME</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's output volume parameters.<BR>The output volume is specified as a set or 3 values (master level, pcm level, and balance).<BR>The master level refers to the general sound volume of the soundcard (affects all of the soundcards inputs, like CD, Microphone, WAV, MIDI, etc...). The master level value is an integer between 0 (silent) and 100 (maximum loudness).The PCM level refers to the sound volume of the PCM (also called WAVE on some mixers) input to the mixer (does not affect other soundcard inputs). The PCM level value is an integer between 0 (silent) and 100 (maximum loudness).<BR>The balance is used to give a higher sound level to the left or right speaker. The balance setting is a value between 0 (sound totally on the left side) and 100 (sound totally on the right side), so a sound evenly distributed between left and right sides would be a balance setting of 50.<BR>When the player is created it uses the current setting of the soundcard.<BR>For each of these 3 values, the special value <TT>XA_OUTPUT_VOLUME_IGNORE_FIELD</TT> can be used to tell the player NOT TO CHANGE the corresponding setting (example: to set the master level to 80%, the PCM level to 70% and not change the balance, the client would call <TT>control_message_send(player</TT>.<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_OUTPUT_VOLUME,  balance,  pcm_level,  master_level)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetOutputVolume(int balance, int pcm_level, int master_level);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>name</I></B></TD><TD>const char *</TD><TD> name of the default output device.</TD>
+</TR>
+<TR>
+<TD><B><I>balance</I></B></TD><TD>int</TD><TD>balance value (between 0 and 100).</TD>
+</TR>
+<TR>
+<TD><B><I>pcm_level</I></B></TD><TD>int</TD><TD> value of the PCM sound level (between 0 and 100).</TD>
+</TR>
+<TR>
+<TD><B><I>master_level</I></B></TD><TD>int</TD><TD> value of the master sound level (between 0 and 100).</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_OUTPUT_VOLUME">XA_MSG_GET_OUTPUT_VOLUME</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_OUTPUT_VOLUME">XA_MSG_GET_OUTPUT_VOLUME</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current output volume settings.<BR>Upon receipt of this message, the player sends back 3 messages. An <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_BALANCE">XA_MSG_NOTIFY_OUTPUT_BALANCE</A> for the current balance setting, an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_PCM_LEVEL">XA_MSG_NOTIFY_OUTPUT_PCM_LEVEL</A> message with the current PCM level setting, and an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_MASTER_LEVEL">XA_MSG_NOTIFY_OUTPUT_MASTER_LEVEL</A> message with the current master setting.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_OUTPUT_VOLUME)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetOutputVolume();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_VOLUME">XA_MSG_SET_OUTPUT_VOLUME</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_OUTPUT_CHANNELS">XA_MSG_SET_OUTPUT_CHANNELS</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's output channels settings.<BR>There are 4 different channels settings possible:<BR><TT>XA_OUTPUT_STEREO</TT>: decode and output both channels if the stream is stereo.<BR><TT>XA_OUTPUT_MONO_LEFT</TT>: decode and output the left channel only channels if the stream is stereo.<BR><TT>XA_OUTPUT_MONO_RIGHT</TT>: decode and output the right channel only if the stream is stereo.<BR><TT>XA_OUTPUT_MONO_MIX</TT>: decode both channels and output one channel that is a mix of both decoded channels (this uses less CPU than XA_OUTPUT_STEREO).<BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_OUTPUT_CHANNELS,  channels)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetOutputChannels(int channels);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>channels</I></B></TD><TD>int</TD><TD> one of 4 channel configurations.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_OUTPUT_CHANNELS">XA_MSG_GET_OUTPUT_CHANNELS</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_OUTPUT_CHANNELS">XA_MSG_GET_OUTPUT_CHANNELS</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current output channels configuration.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_CHANNELS">XA_MSG_NOTIFY_OUTPUT_CHANNELS</A> message with the current channel configuration.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_OUTPUT_CHANNELS)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetOutputChannels();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_CHANNELS">XA_MSG_SET_OUTPUT_CHANNELS</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_OUTPUT_PORTS">XA_MSG_SET_OUTPUT_PORTS</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's output ports settings.<BR>An output ports configuration is a combination of flags that indicate which of the different ports of the soundcard is enabled.<BR>There are 3 flags defined:<BR><TT>XA_DECODER_CONTROL_OUTPUT_LINE</TT>: the 'line out' output of the soundcard.<BR><TT>XA_DECODER_CONTROL_OUTPUT_SPEAKER</TT>: the 'speaker out' output of the soundcard.<BR><TT>XA_DECODER_CONTROL_OUTPUT_HEADPHONE</TT>: the 'headphone out' output of the soundcard.<BR>Note that not all soundcards support multiple output ports.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_OUTPUT_PORTS,  ports)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetOutputPorts(unsigned char ports);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>ports</I></B></TD><TD>unsigned char</TD><TD> OR'ed combination of the output port flags.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_OUTPUT_PORTS">XA_MSG_GET_OUTPUT_PORTS</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_OUTPUT_PORTS">XA_MSG_GET_OUTPUT_PORTS</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current output ports configuration.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_OUTPUT_PORTS">XA_MSG_NOTIFY_OUTPUT_PORTS</A> message with the current ports configuration.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_OUTPUT_PORTS)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetOutputPorts();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_OUTPUT_PORTS">XA_MSG_SET_OUTPUT_PORTS</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_CODEC_EQUALIZER">XA_MSG_SET_CODEC_EQUALIZER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the codec's frequency band equalizer's values.<BR>The euqalizer values consist of 2 sets of 32 values (one set for the left channel, one set for the right channel), each value being a signed integer between -128 and +127. See section on <A HREF="misc.html#equalizer">Codec Equalizer</A> for more details on equalizer values.<BR>Note that this routine will make copies of the values within the equalizer structure passed, so the client can discard that structure when this call returns, or it can pass a structure that was allocated on the stack.<BR>If the equalizer pointer passed as an argument is <BR><BR>CODE(NULL), this will have the effect of disabling the equalizer (disabling the equalizer reduces the CPU usage of the player).</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_CODEC_EQUALIZER,  equalizer)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetCodecEqualizer(<TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>equalizer</I></B></TD><TD><TT><A HREF="data-structures.html#XA_EqualizerInfo">XA_EqualizerInfo</A></TT> *equalizer</TD><TD> pointer to a structure that contains equalizer values for the left and right channels.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_OUTPUT_PORTS">XA_MSG_GET_OUTPUT_PORTS</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_CODEC_EQUALIZER">XA_MSG_GET_CODEC_EQUALIZER</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current equalizer settings.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_CODEC_EQUALIZER">XA_MSG_NOTIFY_CODEC_EQUALIZER</A> message with the current equalizer settings.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_CODEC_EQUALZIER)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetCodecEqualizer();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_CODEC_EQUALIZER">XA_MSG_SET_CODEC_EQUALIZER</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_SET_NOTIFICATION_MASK">XA_MSG_SET_NOTIFICATION_MASK</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Sets the player's notification mask. This mask is used to block or unblock certain types of notification messages. If the client wished not to receive certain notification messages, it can set the notification mask with those messages' flag turned off.<BR>The default for the notification mask is to send back all notification messages.<BR>Valid notification mask flags are:<BR> <TT>XA_NOTIFY_MASK_ERROR</TT> <BR> <TT>XA_NOTIFY_MASK_DEBUG</TT> <BR> <TT>XA_NOTIFY_MASK_PROGRESS</TT> <BR> <TT>XA_NOTIFY_MASK_ACK</TT> <BR> <TT>XA_NOTIFY_MASK_NACK</TT> <BR> <TT>XA_NOTIFY_MASK_PLAYER_STATE</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_STATE</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_CAPS</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_NAME</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_DURATION</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_POSITION_RANGE</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_POSITION</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_TIMECODE_GRANULARITY</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_TIMECODE</TT> <BR> <TT>XA_NOTIFY_MASK_INPUT_STREAM_INFO</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_STATE</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_NAME</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_VOLUME</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_BALANCE</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_PCM_LEVEL</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_MASTER_LEVEL</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_PORTS</TT> <BR> <TT>XA_NOTIFY_MASK_OUTPUT_CAPS</TT> <BR> <TT>XA_NOTIFY_MASK_CODEC_EQUALIZER</TT> <BR> <TT>XA_NOTIFY_MASK_FEEDBACK_EVENT</TT> <BR></BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_SET_NOTIFICATION_MASK,  mask)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::SetNotificationMask(unsigned long mask);</TT></BLOCKQUOTE>
+<UL><LI><B>Parameters</B></LI></UL>
+<BLOCKQUOTE>
+<TABLE border="1" cellpadding="4" cellspacing="4">
+<TR>
+<TD><B><I>mask</I></B></TD><TD>unsigned long</TD><TD> OR'ed combination of message class flags.</TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_GET_NOTIFICATION_MASK">XA_MSG_GET_NOTIFICATION_MASK</A></TT></BLOCKQUOTE>
+<HR>
+<H2><A NAME="XA_MSG_GET_NOTIFICATION_MASK">XA_MSG_GET_NOTIFICATION_MASK</A></H2>
+<UL><LI><B>Description</B></LI></UL>
+<BLOCKQUOTE>
+Retrieves the current value of the notification mask.<BR>Upon receipt of this message, the player sends back an <A HREF="notification-messages.html#XA_MSG_NOTIFY_NOTIFICATION_MASK">XA_MSG_NOTIFY_NOTIFICATION_MASK</A> message with the current mask value.</BLOCKQUOTE>
+<UL><LI><B>C Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT><TT>control_message_send(player, XA_MSG_GET_NOTIFICTION_MASK)</TT>;</TT></BLOCKQUOTE>
+<UL><LI><B>C++ Syntax</B></LI></UL>
+<BLOCKQUOTE>
+<TT>XA_Player::GetNotificationMask();</TT></BLOCKQUOTE>
+<UL><LI><B>Include File</B></LI></UL>
+<BLOCKQUOTE>
+<TT>player.h</TT></BLOCKQUOTE>
+<UL><LI><B>See Also</B></LI></UL>
+<BLOCKQUOTE>
+<TT><A HREF="#XA_MSG_SET_NOTIFICATION_MASK">XA_MSG_SET_NOTIFICATION_MASK</A></TT></BLOCKQUOTE>
+</BODY>
+</HTML>

@@ -1,0 +1,9 @@
+In this directory is nearly verbatim source code from the libmpeg3 project.
+It can be downloaded in full from
+http://heroines.sourceforge.net/libmpeg3.php3.
+
+The only change that has been made is the removal of the deCSS code, which
+would otherwise reside in mpeg3css.c. However, it has been replaced with a
+stub file. Therefore as distributed this directory contains NO deCSS code!
+
+--Joshua Haberman <joshua@haberman.com>
