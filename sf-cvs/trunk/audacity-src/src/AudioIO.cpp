@@ -790,24 +790,27 @@ void AudioIO::FillBuffers()
       //
       double deltat = commonlyAvail / mRate;
 
-      if( mT + deltat > mT1 )
+      if (deltat >= 2.0 || (mT+deltat >= mT1))
       {
-         deltat = mT1 - mT;
-         if( deltat < 0.0 )
-            deltat = 0.0;
-         commonlyAvail = (int)(deltat * mRate + 0.5);
-      }
-      mT += deltat;
-
-      if( commonlyAvail > 0 )
-      {
-         for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
+         if( mT + deltat > mT1 )
          {
-            // The mixer here isn't actually mixing: it's just doing whatever
-            // warping is needed for the time track
-            int processed = mPlaybackMixers[i]->Process(commonlyAvail);
-            samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
-            mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+            deltat = mT1 - mT;
+            if( deltat < 0.0 )
+               deltat = 0.0;
+            commonlyAvail = (int)(deltat * mRate + 0.5);
+         }
+         mT += deltat;
+         
+         if( commonlyAvail > 0 )
+         {
+            for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
+            {
+               // The mixer here isn't actually mixing: it's just doing whatever
+               // warping is needed for the time track
+               int processed = mPlaybackMixers[i]->Process(commonlyAvail);
+               samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
+               mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+            }
          }
       }
    }
