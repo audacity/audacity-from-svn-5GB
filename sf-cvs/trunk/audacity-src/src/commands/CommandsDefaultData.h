@@ -104,17 +104,22 @@ static const char *CommandsDefaultXML[] = {
 "\t\t\t<itemseparator/>",
 "\t\t\t<!-- Align Submenu -->",
 "\t\t\t<submenu translation=\"Align\">",
-"\t\t\t\t<item translation=\"Align Tracks Together\" functions=\"OnAlign\"/>",
 "\t\t\t\t<item translation=\"Align with Zero\" functions=\"OnAlignZero\"/>",
+"\t\t\t\t<item translation=\"Align Group with Zero\" functions=\"OnAlignGroupZero\"/>",
+"\t\t\t\t<item translation=\"Align Tracks Together\" functions=\"OnAlign\"/>",
+"\t\t\t\t<itemseparator/>",
 "\t\t\t\t<item translation=\"Align with Cursor\" functions=\"OnAlignCursor\"/>",
 "\t\t\t\t<item translation=\"Align with Selection Start\" functions=\"OnAlignSelStart\"/>",
 "\t\t\t\t<item translation=\"Align with Selection End\" functions=\"OnAlignSelEnd\"/>",
+"\t\t\t\t<itemseparator/>",
 "\t\t\t\t<item translation=\"Align End with Cursor\" functions=\"OnAlignEndCursor\"/>",
 "\t\t\t\t<item translation=\"Align End with Selection Start\" functions=\"OnAlignEndSelStart\"/>",
 "\t\t\t\t<item translation=\"Align End with Selection End\" functions=\"OnAlignEndSelEnd\"/>",
+"\t\t\t\t<itemseparator/>",
 "\t\t\t\t<item translation=\"Align Group with Cursor\" functions=\"OnAlignGroupCursor\"/>",
 "\t\t\t\t<item translation=\"Align Group with Selection Start\" functions=\"OnAlignGroupSelStart\"/>",
 "\t\t\t\t<item translation=\"Align Group with Selection End\" functions=\"OnAlignGroupSelEnd\"/>",
+"\t\t\t\t<itemseparator/>",
 "\t\t\t\t<item translation=\"Align Group End with Cursor\" functions=\"OnAlignGroupEndCursor\"/>",
 "\t\t\t\t<item translation=\"Align Group End with Selection Start\" functions=\"OnAlignGroupEndSelStart\"/>",
 "\t\t\t\t<item translation=\"Align Group End with Selection End\" functions=\"OnAlignGroupEndSelEnd\"/>",
@@ -253,6 +258,7 @@ static const char *CommandsDefaultXML[] = {
 
    COMMANDS_ADDTRANSLATIONSTRING(_("Align Tracks &Together"), "Align Tracks Together");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align with &Zero"), "Align with Zero");
+   COMMANDS_ADDTRANSLATIONSTRING(_("Align Group with Zero"), "Align Group with Zero");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align with &Cursor"), "Align with Cursor");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align with Selection &Start"), "Align with Selection Start");
    COMMANDS_ADDTRANSLATIONSTRING(_("Align with Selection &End"), "Align with Selection End");

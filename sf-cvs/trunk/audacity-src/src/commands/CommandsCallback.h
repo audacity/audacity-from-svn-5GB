@@ -23,7 +23,7 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 73
+#define NUM_CALLBACK_FUNCTIONS 74
 
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
@@ -39,7 +39,7 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 &AudacityProject::OnImportMIDI,&AudacityProject::OnImportRaw,&AudacityProject::OnEditID3,&AudacityProject::OnQuickMix,
 &AudacityProject::OnSelectionSave,&AudacityProject::OnSelectionRestore,&AudacityProject::OnCursorTrackStart,
 &AudacityProject::OnCursorTrackEnd,&AudacityProject::OnCursorSelStart,&AudacityProject::OnCursorSelEnd,
-&AudacityProject::OnAlignZero,&AudacityProject::OnAlign,&AudacityProject::OnAlignCursor,
+&AudacityProject::OnAlignZero,&AudacityProject::OnAlignGroupZero,&AudacityProject::OnAlign,&AudacityProject::OnAlignCursor,
 &AudacityProject::OnAlignSelStart,&AudacityProject::OnAlignSelEnd,&AudacityProject::OnAlignEndCursor,
 &AudacityProject::OnAlignEndSelStart,&AudacityProject::OnAlignEndSelEnd,&AudacityProject::OnAlignGroupCursor,
 &AudacityProject::OnAlignGroupSelStart,&AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndCursor,
@@ -54,7 +54,7 @@ const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","
 "OnSelectStartCursor","OnZoomIn","OnZoomOut","OnZoomNormal","OnZoomFit","OnZoomSel","OnPlotSpectrum",
 "OnFloatControlToolBar","OnLoadEditToolBar","OnFloatEditToolBar","OnImport","OnImportLabels","OnImportMIDI","OnImportRaw",
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
-"OnCursorSelEnd","OnAlignZero","OnAlign","OnAlignCursor","OnAlignSelStart","OnAlignSelEnd","OnAlignEndCursor",
+"OnCursorSelEnd","OnAlignZero","OnAlignGroupZero","OnAlign","OnAlignCursor","OnAlignSelStart","OnAlignSelEnd","OnAlignEndCursor",
 "OnAlignEndSelStart","OnAlignEndSelEnd", "OnAlignGroupCursor","OnAlignGroupSelStart","OnAlignGroupSelEnd",
 "OnAlignGroupEndCursor","OnAlignGroupEndSelStart","OnAlignGroupEndSelEnd","OnNewWaveTrack",
 "OnNewLabelTrack","OnRemoveTracks","OnAbout","OnHelp","OnHelpIndex","OnHelpSearch","OnBenchmark","OnSeparator","OnAddLabel"};
@@ -141,6 +141,7 @@ void OnCursorSelStart();
 void OnCursorSelEnd();
 
 void OnAlignZero();
+void OnAlignGroupZero();
 void OnAlign();
 void OnAlignCursor();
 void OnAlignSelStart();
