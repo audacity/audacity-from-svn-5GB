@@ -39,6 +39,7 @@ class GUIPrefs : public PrefsPanel {
     wxCheckBox *mMixerToolBar;
     wxCheckBox *mQuitOnClose;
     wxCheckBox *mAdjustSelectionEdges;
+    wxCheckBox *mErgonomicTransportButtons;
     wxRadioButton *mdBArray[5];
 
     wxChoice *mLocale;
