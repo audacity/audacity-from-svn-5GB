@@ -8,6 +8,4 @@ Caso opte pela versão de testes, envie-nos suas sugestões, experiências e proble
 É possível ter a versão 1.0 junto com a mais nova no mesmo computador.
 </p>
 <p>
-Nota:
-Esta versão não pode abrir ou salvar projetos feitos no Audacity 1.0 ou anterior. Isto se deve ao novo formato de arquivo, baseado em XML.
-</p>
+Nota: A versão 1.1.3 não pode abrir ou salvar projetos feitos no Audacity 1.1.2 ou anterior. </p>
