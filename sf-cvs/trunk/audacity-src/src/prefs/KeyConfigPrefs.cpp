@@ -157,11 +157,6 @@ bool KeyConfigPrefs::Apply()
    return true;
 }
 
-wxListCtrl *KeyConfigPrefs::GetKeysList()
-{
-   return mKeysList;
-}
-
 KeyConfigPrefs::~KeyConfigPrefs()
 {
 }
