@@ -202,6 +202,11 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
  PCM output volume
 */
 
+int Px_SupportsPCMOutputVolume( PxMixer* mixer ) 
+{
+	return 1 ; 
+}
+
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;

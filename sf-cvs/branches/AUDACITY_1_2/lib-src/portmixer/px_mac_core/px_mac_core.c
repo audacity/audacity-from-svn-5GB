@@ -205,6 +205,11 @@ static void Px_SetVolume(AudioDeviceID device, Boolean isInput,
    }
 }
 
+int Px_SupportsPCMOutputVolume( PxMixer* mixer ) 
+{
+	return 1 ;
+}
+
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
@@ -256,14 +261,14 @@ int Px_GetNumInputSources( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return 0;
+   return 1 ;
 }
 
 const char *Px_GetInputSourceName( PxMixer *mixer, int i)
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return NULL;
+   return "Default Input Source" ;
 }
 
 int Px_GetCurrentInputSource( PxMixer *mixer )
