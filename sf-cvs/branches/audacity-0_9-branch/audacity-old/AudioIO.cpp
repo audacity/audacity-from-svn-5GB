@@ -270,7 +270,7 @@ void AudioIO::OnTimer()
       int block = snd_poll(&mRecordNode);
 
 #ifdef __WXMAC__
-      if (block > 22050) {
+      if (block > (int)(mRecordNode.format.srate / 2.0)) {
 #else
       if (block > 0) {
 #endif
