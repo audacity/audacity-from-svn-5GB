@@ -10,6 +10,7 @@
 
 LIBFLAGS = -Lxaudio/linux/lib -lxaudio @LIBS@
 CFLAGS = @CFLAGS@ @CPPFLAGS@ \
+    -Iallegro \
 	-D__WXDEBUG__
 CCC = @CXX@
 CC = @CC@
@@ -51,6 +52,12 @@ OBJS = \
 	$(OBJDIR)/TrackPanel.cpp.o \
 	$(OBJDIR)/UndoManager.cpp.o \
 	$(OBJDIR)/WaveTrack.cpp.o \
+	$(OBJDIR)/allegro/allegro.cpp.o \
+	$(OBJDIR)/allegro/allegrowr.cpp.o \
+	$(OBJDIR)/allegro/mfallegro.cpp.o \
+	$(OBJDIR)/allegro/mfmidi.cpp.o \
+	$(OBJDIR)/allegro/strparse.cpp.o \
+	$(OBJDIR)/allegro/stimelinux.c.o \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \
@@ -104,10 +111,13 @@ clean:
 # We stick object files in separate directories for convenience
 #
 
-dirs: obj obj/snd obj/effects obj/prefs
+dirs: obj obj/snd obj/effects obj/prefs obj/allegro
 
 obj:
 	mkdir obj
+
+obj/allegro:
+	mkdir obj/allegro
 
 obj/snd:
 	mkdir obj/snd

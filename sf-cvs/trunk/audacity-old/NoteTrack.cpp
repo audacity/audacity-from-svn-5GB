@@ -152,7 +152,7 @@ bool NoteTrack::LabelClick(wxRect &r, int mx, int my, bool right)
   int ht = 16;
 
   if (r.height < ht*4)
-    return;
+    return false;
   
   int x = r.x + r.width / 2 - wid*2;
   int y = r.y + 4;
