@@ -878,6 +878,9 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    dc.SetBrush(blankBrush);
    dc.DrawRectangle(r);
 
+
+
+
    for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
       DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
                        drawSliders, dB, muted);
@@ -900,6 +903,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
          }
       }
    }
+
 }
 
 void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
@@ -1057,6 +1061,10 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    imageBuffer = image->GetData();
    #endif
 
+
+
+
+
    // Get the values of the envelope corresponding to each pixel
    // in the display, and use these to compute the height of the
    // track at each pixel
@@ -1071,6 +1079,20 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
 
    DrawWaveformBackground(dc, drawRect, imageBuffer, where, ssel0, ssel1,
                           envValues, zoomMin, zoomMax, dB, drawEnvelope);
+
+   float trackmin, trackmax;
+   track->GetDisplayBounds(&trackmin, &trackmax);
+
+   //OK, the display bounds are between min and max, which
+   //is spread across r.height.  Draw the line at the proper place.
+
+   if(trackmin < 0 && trackmax > 0)
+      {
+         float height = (trackmax/(trackmax-trackmin))*mid.height;
+         dc.SetPen(*wxBLACK_PEN);
+         dc.DrawLine(mid.x, mid.y+height, mid.x+mid.width, mid.y+height);
+      }
+
 
    if (!showIndividualSamples)
       DrawMinMaxRMS(dc, drawRect, imageBuffer, zoomMin, zoomMax,
@@ -1119,6 +1141,8 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
          DrawEnvLine(dc, mid, x, envBottom, false);
       }
    }
+
+
    // Draw arrows on the left side if the track extends to the left of the
    // beginning of time.  :)
    if (h == 0.0 && tOffset < 0.0) {
