@@ -1,11 +1,6 @@
 #!/usr/bin/perl
 
-print "maketarball v0.94 -- make Audacity distribution tarball\n";
-
-if(@ARGV == 0) {
-	display_usage();
-	exit;
-}
+print "maketarball 1.1.1 -- make Audacity distribution tarball\n";
 
 unless(-f "src/Audacity.h") {
 	print "Must be run from Audacity directory\n";
@@ -21,91 +16,40 @@ $version = $1;
 print "version set to $version...\n";
 close(HEADER);
 
-if($ARGV[0] eq "debian") {
-	print "target set to debian...\n";
+print "making copy of source directory...\n";
+`cp -r . ../audacity-src-$version`;
+chdir "../audacity-src-$version";
 
-	print "making copy of source directory...\n";
-	`cp -r . ../audacity-$version`;
-	chdir "../audacity-$version";
+print "removing CVS directories...\n";
+`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
 
-	print "removing xaudio...\n";
-	`rm -rf xaudio`;
+print "removing emacs temp files...\n";
+`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
 
-	print "removing windows and mac project files...\n";
-	`rm -f audacity-carbon.rsrc audacity.Rsrc audacity.dsp audacity.dsw`;
-	`rm -f audacity.mcp`;
+print "removing executable and other intermediate files...\n";
+`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
 
-	printf "removing CVS directories...\n";
-	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+print "removing bugs and todo lists\n";
+`rm -f bugs.txt todo.txt`;
 
-	printf "removing executable and other intermediate files...\n";
-	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+print "removing scripts...\n";
+`rm -rf scripts`;
 
-	printf "removing emacs temp files...\n";
-	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+print "removing libraries that should be installed locally...\n";
+`rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
+`rm -rf lib-src/wave++`;
 
-	printf "removing the copy of this script...\n";
-	`rm -f maketarball`;
+print "removing other things that only belong in CVS\n";
+`rm -rf help qa`;
 
-	print "making tarball audacity-debian-$version.tar.gz...\n";
-	chdir "..";
-	`tar zcf audacity-debian-$version.tar.gz audacity-$version`;
-	
-	print "deleting temporary copy...\n";
-	`rm -rf audacity-$version`;
-	
-	print "done.\n";
-}
-elsif($ARGV[0] eq "src") {
-	print "target set to src...\n";
+print "removing Doxygen (since we're not making use of it yet\n";
+`rm -f audacity.dox`;
 
-	print "making copy of source directory...\n";
-	`cp -r . ../audacity-src-$version`;
-	chdir "../audacity-src-$version";
+print "removing wxstd locale files (since they should come with wxWindows\n";
+`rm -rf locale/wxstd`;
 
-	print "removing CVS directories...\n";
-	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+#print "making tarball audacity-src-$version.tgz...\n";
+chdir "..";
+#`tar zcf audacity-src-$version.tgz audacity-src-$version`;
 
-	print "removing emacs temp files...\n";
-	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
-
-	print "removing executable and other intermediate files...\n";
-	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
-
-	print "removing scripts...\n";
-	`rm -rf scripts`;
-
-   print "removing libraries that should be installed locally...\n";
-   `rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
-   `rm -rf lib-src/wave++`;
-
-   print "removing other things that only belong in CVS\n";
-   `rm -rf help qa`;
-
-   print "removing files that only pertain to windows or mac...\n";
-   `rm -rf win mac`;
-
-	print "making tarball audacity-src-$version.tgz...\n";
-	chdir "..";
-	`tar zcf audacity-src-$version.tgz audacity-src-$version`;
-	
-	print "deleting temporary copy...\n";
-	`rm -rf audacity-src-$version`;
-	
-	print "done.\n";
-} else {
-	print "target $ARGV[0] not recognized.\n";
-	display_usage();
-	exit;
-}
-
-
-sub display_usage() {
-	print "Usage: maketarball <target>\n";
-	print "\n";
-	print "Available Targets:\n";
-	print "  debian - Debian GNU/Linux source tarball:\n";
-	print "           removes xaudio and non-Linux files\n";
-	print "  src    - The full compilable source distribution\n";
-	print "\n";
-}
+print "done.\n";
