@@ -1529,8 +1529,15 @@ int AudacityProject::GetGrabberFromEvent(wxMouseEvent & event)
    {
       wxRect r = mToolBarArray[i]->GetRect();
       if(( r.y < event.m_y )  && ( event.m_y < (r.y+r.height) ) &&
-         ( (r.x- grabberWidth) < event.m_x) && (event.m_x < r.x ))
-         return i;
+         ( (r.x- grabberWidth) < event.m_x) && (event.m_x < r.x )) {
+
+         // Can't drag the Meter toolbar while Audio I/O is busy at all,
+         // so don't return it in this case...
+         if (gAudioIO->IsStreamActive())
+            return -1;
+         else
+            return i;
+      }
    }
    return -1;
 }
