@@ -42,7 +42,7 @@ public:
     Allegro_midifile_reader() { file = NULL; pending = NULL; }
     // delete destroys the seq member as well, so set it to NULL if you
     // copied the pointer elsewhere
-    ~Allegro_midifile_reader();
+    virtual ~Allegro_midifile_reader();
     // the following is used to load the Seq from the file:
     void initialize(FILE *file);
 
