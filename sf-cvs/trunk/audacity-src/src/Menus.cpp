@@ -324,7 +324,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelStart",    _("Selection to Start\tShift+Home"), FN(OnSelToStart));
    c->AddCommand("SelEnd",      _("Selection to End\tShift+End"),    FN(OnSelToEnd));
 
-   c->AddCommand("DeleteKey",      _("DeleteKey\tDelete"),           FN(OnDelete));
+   c->AddCommand("DeleteKey",      _("DeleteKey\tBackspace"),           FN(OnDelete));
 
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
