@@ -30,6 +30,7 @@ class MeterToolBar:public ToolBar {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
    virtual void EnableDisableButtons();
+   virtual void PlaceButton(int i, wxWindow *pWind);
 
    void GetMeters(Meter **playMeter, Meter **recordMeter) {
       *playMeter = mPlayMeter;

@@ -99,6 +99,7 @@ void MixerToolBar::InitializeMixerToolBar()
 {
    mIdealSize = wxSize(500, 27);
    mTitle = _("Audacity Mixer Toolbar");
+   SetLabel(_("Mixer"));
    mType = MixerToolBarID;
    int offset;
 
@@ -137,6 +138,9 @@ void MixerToolBar::InitializeMixerToolBar()
 
    mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
                               wxPoint(210, offset), wxSize(130, 25));
+
+   mOutputSlider->SetLabel( "Slider-Output" );
+   mInputSlider->SetLabel( "Slider-Input" );
 
    mInputSourceChoice = NULL;
 
@@ -239,6 +243,20 @@ void MixerToolBar::OnKeyEvent(wxKeyEvent & event)
 
 void MixerToolBar::EnableDisableButtons()
 {
+}
+
+void MixerToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+   wxSize Size;
+   if( i==0 )
+   {
+      mxButtonPos = 0;
+   }
+   Size = pWind->GetSize();
+   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
+   mxButtonPos+=Size.GetX()+1;
+   mIdealSize = wxSize(mxButtonPos+3, 27);
+   SetSize(mIdealSize );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

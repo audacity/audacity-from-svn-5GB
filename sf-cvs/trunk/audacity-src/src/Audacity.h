@@ -29,11 +29,15 @@ class wxWindow;
 class ToolBarStub;
 
 extern wxWindow *gParentWindow;
+
+#define nToolBars 5
 extern ToolBarStub *gControlToolBarStub;
 extern ToolBarStub *gMixerToolBarStub;
 extern ToolBarStub *gEditToolBarStub;
 extern ToolBarStub *gMeterToolBarStub;
 extern ToolBarStub *gTranscriptionToolBarStub;
+//This array will hold pointers to the toolbar stub pointers..
+extern ToolBarStub **gToolBarStubArray[ nToolBars ];
 
 void QuitAudacity(bool bForce);
 void QuitAudacity();

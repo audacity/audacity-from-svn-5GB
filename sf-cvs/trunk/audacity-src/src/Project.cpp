@@ -349,6 +349,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAudioIOToken(-1),
      mIsDeleting(false)
 {
+   // These consts are used to make the function call more readable.
+   const bool ONLY_IF_STUB_EXISTS=false;
+   const bool CREATE_STUB_IF_REQUIRED=true;
+//   int i;
+
    mDrag = NULL;
 
    // MM: DirManager is created dynamically, freed on demand via ref-counting
@@ -403,6 +408,13 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // The control toolbar should be automatically loaded--other toolbars
    // are optional.
 
+   LoadToolBar( ControlToolBarID,       CREATE_STUB_IF_REQUIRED );
+   LoadToolBar( MeterToolBarID,         ONLY_IF_STUB_EXISTS );
+   LoadToolBar( MixerToolBarID,         ONLY_IF_STUB_EXISTS );
+   LoadToolBar( TranscriptionToolBarID, ONLY_IF_STUB_EXISTS );
+   LoadToolBar( EditToolBarID,          ONLY_IF_STUB_EXISTS );
+
+#if 0
    if (!gControlToolBarStub->GetWindowedStatus()) {
       int h = gControlToolBarStub->GetHeight();
 
@@ -471,7 +483,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //         mTotalToolBarHeight += h;
       }
    }
-
+#endif
 
    LayoutToolBars();
    height -= mTotalToolBarHeight;
@@ -686,8 +698,10 @@ AudacityProject::~AudacityProject()
 void AudacityProject::UpdatePrefs()
 {
    mTrackPanel->UpdatePrefs();
+#if 0
    ControlToolBar *controltoolbar = (ControlToolBar *)mToolBarArray[0];
    controltoolbar->UpdatePrefs();
+#endif
    mStatus->UpdateRates();
 }
 
@@ -1022,6 +1036,16 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
 
    if( bToolBarIconizationChange )
    {
+//JKC: Commented out code will replace existing code.
+#if 0
+      ToolBarStub * pStub;
+      for(i=0;i<nToolBars;i++)
+      {
+         pStub = *gToolBarStubArray[i];
+         if( pStub )
+            pStub->Iconize( mIconized );
+      }
+#endif
       if (gControlToolBarStub) {
          gControlToolBarStub->Iconize( mIconized );
       }
@@ -1034,6 +1058,10 @@ void AudacityProject::OnIconize(wxIconizeEvent &event)
       if (gMeterToolBarStub) {
          gMeterToolBarStub->Iconize( mIconized );
       }
+      if ( gTranscriptionToolBarStub) {
+         gTranscriptionToolBarStub->Iconize( mIconized );
+      }
+
    }
 
    event.Skip();
@@ -1109,7 +1137,9 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    // By returning "false", that says that we want someone else
    // to have a crack at it.
 
-   if (!event.ControlDown()) {
+// Label Track can now accept Ctrl-Char combinations, e.g. Ctrl-C
+//   if (!event.ControlDown()) {
+   {
       TrackListIterator iter(mTracks);
       Track *t = iter.First();
       while (t) {
@@ -1427,27 +1457,103 @@ void AudacityProject::LayoutToolBars()
       BoxLayout( width );
 }
 
+void AudacityProject::LayoutProject()
+{
+   int height,width;
+   GetClientSize(&width, &height);
+   LayoutToolBars();
+   height -= mTotalToolBarHeight;
+   height -= GetStatusHeight();
+   mMainPanel->SetSize( 0, mTotalToolBarHeight, width, height);
+   mMainPanel->Layout();
+}
+
+ToolBarStub ** AudacityProject::ppToolBarStubOfToolBarType( enum ToolBarType t )
+{
+   ToolBarStub ** ppStub=NULL;
+   // Get the stub from the ID.
+   switch (t) {
+   case ControlToolBarID:
+      ppStub = &gControlToolBarStub;
+      break;
+
+   case EditToolBarID:
+      ppStub = &gEditToolBarStub;
+      break;
+
+   case MixerToolBarID:
+     ppStub = &gMixerToolBarStub;
+     break;
+     
+   case MeterToolBarID:
+     ppStub = &gMeterToolBarStub;
+     break;
+
+   case TranscriptionToolBarID:
+     ppStub = &gTranscriptionToolBarStub;
+     break;
+     
+   case NoneID:
+   default:
+     break;
+   }
+   return ppStub;
+}
+
 ///LoadToolBar creates a toolbar of type t in the ToolBars array
-void AudacityProject::LoadToolBar(enum ToolBarType t)
+void AudacityProject::LoadToolBar(enum ToolBarType t, bool bCreateStubIfRqd)
 {
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
+#if 0
+   //Code not needed, as positioning is determined by calling 
+   //a Layout function.
    size_t len = mToolBarArray.GetCount();
    for (size_t i = 0; i < len; i++)
       tbheight += mToolBarArray[i]->GetHeight();
+#endif
 
    //Get the size of the current project window
    int width, height;
-   GetSize(&width, &height);
+   //GetSize(&width, &height);
+   GetClientSize(&width, &height);
+
+   ToolBarStub ** ppStub=NULL;
+   int h;
+
+   ppStub = ppToolBarStubOfToolBarType( t );
+
+   // Must be an invalid ID, so return.
+   if( !ppStub )
+      return;
 
    //Create a toolbar of the proper type
    ToolBar *toolbar;
-   int h;
+
+   if( *ppStub )
+   {
+      // Stub exists..
+   }
+   else if( bCreateStubIfRqd ) 
+   {
+      *ppStub = new ToolBarStub(gParentWindow, t);
+   }
+   else
+   {
+      // No stub, so don't create toolbar either.
+      return;
+   }
+
+
+   h = (*ppStub)->GetHeight();
+   toolbar = ToolBar::MakeToolBar( this, t );
+   if( toolbar )
+      mToolBarArray.Add(toolbar);
+
+#if 0
    switch (t) {
    case ControlToolBarID:
-      h = gControlToolBarStub->GetHeight();
-
       toolbar =
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
@@ -1456,79 +1562,42 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
       break;
 
    case EditToolBarID:
-
-      if (!gEditToolBarStub) {
-         gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
-      }
-
-      h = gEditToolBarStub->GetHeight();
       toolbar =
           new EditToolBar(this, -1, wxPoint(10, tbheight),
                           wxSize(width - 10, h));
-
-
       mToolBarArray.Add(toolbar);
       break;
 
    case MixerToolBarID:
-
-     if (!gMixerToolBarStub) {
-       gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
-     }
-     
-     h = gMixerToolBarStub->GetHeight();
      toolbar =
        new MixerToolBar(this, -1, wxPoint(10, tbheight),
 			wxSize(width - 10, h));
-     
-     
      mToolBarArray.Add(toolbar);
      break;
-      
      
    case MeterToolBarID:
-
-     if (!gMeterToolBarStub) {
-       gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
-     }
-     
-     h = gMeterToolBarStub->GetHeight();
      toolbar =
        new MeterToolBar(this, -1, wxPoint(10, tbheight),
 			wxSize(width - 10, h));
-     
-     
-     mToolBarArray.Insert(toolbar, 1);
+     mToolBarArray.Insert(toolbar, 
+        (mToolBarArray.GetCount() > 0 )?1:0);
      break;
 
    case TranscriptionToolBarID:
-
-     if (!gTranscriptionToolBarStub) {
-       gTranscriptionToolBarStub = new ToolBarStub(gParentWindow, TranscriptionToolBarID);
-     }
-     
-     h = gTranscriptionToolBarStub->GetHeight();
      toolbar =
        new TranscriptionToolBar(this, -1, wxPoint(10, tbheight),
 			wxSize(width - 10, h));
-     
-     
      mToolBarArray.Add(toolbar);
      break;
-     
      
    case NoneID:
    default:
      toolbar = NULL;
      break;
    }
-   
-   //Add the new toolbar to the ToolBarArray and redraw screen
-   mTotalToolBarHeight += toolbar->GetHeight() +1;
-   HandleResize();
-
-   Refresh();
+#endif
 }
+
 
 void AudacityProject::UnloadToolBar(enum ToolBarType t)
 {

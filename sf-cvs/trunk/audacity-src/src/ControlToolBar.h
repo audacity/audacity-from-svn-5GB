@@ -114,6 +114,7 @@ class ControlToolBar:public ToolBar {
    void OnShiftUp(wxKeyEvent & event);
 
    void SetVUMeters(AudacityProject *p);
+   virtual void PlaceButton(int i, wxWindow *pWind);
 
  private:
 
@@ -129,8 +130,6 @@ class ControlToolBar:public ToolBar {
    void MakeLoopImage();
 
    void MakeButtons();
-   int mButtonPos;
-
    AButton *mTool[numTools];
 
    AButton *mRewind;
@@ -159,6 +158,7 @@ class ControlToolBar:public ToolBar {
    
    // Activate ergonomic order for transport buttons
    bool mErgonomicTransportButtons;
+   int mnBigButtons;
 
    DECLARE_EVENT_TABLE()
 };

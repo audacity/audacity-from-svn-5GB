@@ -81,6 +81,16 @@ ToolBarStub *gEditToolBarStub = NULL;
 ToolBarStub *gMeterToolBarStub = NULL;
 ToolBarStub *gTranscriptionToolBarStub = NULL;
 
+//This array holds pointers to the toolbar stub pointers..
+ToolBarStub **gToolBarStubArray[ nToolBars ]=
+{
+   &gControlToolBarStub,
+   &gMixerToolBarStub,
+   &gEditToolBarStub,
+   &gMeterToolBarStub,
+   &gTranscriptionToolBarStub
+};
+
 bool gIsQuitting = false;
 
 void SaveWindowSize()
@@ -145,6 +155,17 @@ void QuitAudacity(bool bForce)
    gFreqWindow = NULL;
    gParentFrame = NULL;
 
+   // Delete all the toolbars...
+   for(int i=0;i<nToolBars;i++)
+   {
+      if( *gToolBarStubArray[i] )
+      {
+         delete *gToolBarStubArray[i];
+         *gToolBarStubArray[i]=NULL;
+      }
+   }
+
+#if 0
    if (gControlToolBarStub) {
       delete gControlToolBarStub;
       gControlToolBarStub = NULL;
@@ -169,6 +190,7 @@ void QuitAudacity(bool bForce)
       delete gTranscriptionToolBarStub;
       gTranscriptionToolBarStub = NULL;
    }
+#endif
 
    //Delete the clipboard
    AudacityProject::DeleteClipboard();
@@ -241,6 +263,20 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
    EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
 END_EVENT_TABLE()
+
+ToolBarStub * AudacityApp::LoadToolBar( const wxString Name, bool bDefault, 
+   wxWindow * pParent, enum ToolBarType tbt )
+{
+   bool bLoadToolBar=bDefault;
+   if( !Name.IsEmpty() )
+   {
+      gPrefs->Read(Name, &bLoadToolBar, bDefault);
+   }
+   if(bLoadToolBar)
+      return  new ToolBarStub(pParent, tbt);
+   
+   return NULL;
+}
 
 // Backend for OnMRUFile and OnMRUProject
 bool AudacityApp::MRUOpen(wxString fileName) {
@@ -540,6 +576,23 @@ bool AudacityApp::OnInit()
    //the toolbars that should be loaded at startup.
 
 
+   gControlToolBarStub = 
+      LoadToolBar( "",true,
+      gParentWindow,ControlToolBarID);
+   gMixerToolBarStub = 
+      LoadToolBar( "/GUI/EnableMixerToolBar",true,
+      gParentWindow,MixerToolBarID);
+   gMeterToolBarStub = 
+      LoadToolBar( "/GUI/EnableMeterToolBar",true,
+      gParentWindow,MeterToolBarID);
+   gEditToolBarStub = 
+      LoadToolBar( "/GUI/EnableEditToolBar",true,
+      gParentWindow,EditToolBarID);
+   gTranscriptionToolBarStub = 
+      LoadToolBar( "/GUI/EnableTranscriptionToolBar",false,
+      gParentWindow,TranscriptionToolBarID);
+
+#if 0
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
 
@@ -576,6 +629,7 @@ bool AudacityApp::OnInit()
    else
       gTranscriptionToolBarStub = NULL;
 
+#endif
 
    /// ToolBar Initiation Complete.
    ////////////////////////////////////////////////////////////////

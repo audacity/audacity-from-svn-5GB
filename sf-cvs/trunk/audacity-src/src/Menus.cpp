@@ -108,6 +108,7 @@ enum {
    LabelTracksExistFlag   = 0x00000010,
    WaveTracksSelectedFlag = 0x00000020,
    ClipboardFlag          = 0x00000040,
+   TextClipFlag           = 0x00000040, // Same as Clipboard flag for now.
    UnsavedChangesFlag     = 0x00000080,
    HasLastEffectFlag      = 0x00000100,
    UndoAvailableFlag      = 0x00000200,
@@ -313,7 +314,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    //
-   // Edit Menu
+   // View Menu
    //
 
    c->BeginMenu(_("&View"));
@@ -619,12 +620,10 @@ void AudacityProject::RebuildMenuBar()
    DetachMenuBar();
    delete menuBar;
    mCommandManager.PurgeData();
-
    delete mRecentFiles;
    mRecentFiles = NULL;
    delete mRecentProjects;
    mRecentProjects = NULL;
-
    CreateMenusAndCommands();
 }
 
@@ -653,11 +652,13 @@ wxUint32 AudacityProject::GetUpdateFlags()
          flags |= TracksSelectedFlag;
          if (t->GetKind() == Track::Wave && t->GetLinked() == false)
             flags |= WaveTracksSelectedFlag;
+         if (t->GetKind() == Track::Label && ((LabelTrack *)t)->IsTextClipSupported())
+             flags |= TextClipFlag;
       }
       t = iter.Next();
    }
 
-   if (msClipLen > 0.0)
+   if(msClipLen > 0.0)
       flags |= ClipboardFlag;
 
    if (mUndoManager.UnsavedChanges())
@@ -685,8 +686,25 @@ int AudacityProject::GetToolBarChecksum()
 {
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
+   ToolBarStub * pStub;
+   for(int i=0;i<nToolBars;i++)
+   {
+      pStub=*gToolBarStubArray[i];
+      if( pStub ){
+         if ( 
+            (pStub == gControlToolBarStub) || //JKC Drop this special-case test?
+            pStub->GetLoadedStatus()) 
+         {
+            if(pStub->GetWindowedStatus())
+               toolBarCheckSum += 1<<i;
+         }
+      }
+   }
+
+#if 0
    if (gControlToolBarStub->GetWindowedStatus())
       toolBarCheckSum += 1;
+
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()) {
          if(gEditToolBarStub->GetWindowedStatus())
@@ -711,13 +729,74 @@ int AudacityProject::GetToolBarChecksum()
             toolBarCheckSum += 16;
       }
    }
-
+#endif
 
    return toolBarCheckSum;
 }
 
+
+const struct
+{
+   const char * Name;
+   const char * DockText;
+   const char * FloatText;
+   ToolBarStub ** ppStub;
+} 
+ModifyMenuData[] =
+{{ 
+   "FloatControlTB",
+   _("Dock Control Toolbar"),
+   _("Float Control Toolbar"),
+   &gControlToolBarStub},
+{ 
+   "FloatEditTB",
+   _("Dock Edit Toolbar"),
+   _("Float Edit Toolbar"),
+   &gEditToolBarStub},
+{
+   "FloatMixerTB",
+   _("Dock Mixer Toolbar"),
+   _("Float Mixer Toolbar"),
+   &gMixerToolBarStub},
+{
+   "FloatMeterTB",
+   _("Dock Meter Toolbar"),
+   _("Float Meter Toolbar"),
+   &gMeterToolBarStub},
+{
+   "FloatTranscriptionTB",
+   _("Dock Transcription Toolbar"),
+   _("Float Transcription Toolbar"),
+   &gTranscriptionToolBarStub}
+};
+
 void AudacityProject::ModifyToolbarMenus()
 {
+   const int nItems = sizeof(ModifyMenuData)/sizeof(ModifyMenuData[0]);
+   ToolBarStub * pStub;
+   const char * pName;
+   for(int i=0;i<nItems;i++)
+   {
+      pStub = *ModifyMenuData[i].ppStub;
+      pName = ModifyMenuData[i].Name;
+      if( pStub )
+      {
+        // Loaded or unloaded?
+        mCommandManager.Enable(pName, pStub->GetLoadedStatus());
+
+        // Floating or docked?
+        if (pStub->GetWindowedStatus())
+           mCommandManager.Modify(pName, ModifyMenuData[i].DockText);
+        else
+           mCommandManager.Modify(pName, ModifyMenuData[i].FloatText);
+      }
+      else {
+         mCommandManager.Enable(pName, false);
+      }   
+   }
+
+#if 0
+
    if (gEditToolBarStub) {
 
      // Loaded or unloaded?
@@ -776,7 +855,8 @@ void AudacityProject::ModifyToolbarMenus()
    }
    else {
       mCommandManager.Enable("FloatTranscriptionTB", false);
-   }   
+   } 
+#endif   
 }
 
 void AudacityProject::UpdateMenus()
@@ -798,12 +878,29 @@ void AudacityProject::UpdateMenus()
 
    mLastFlags = flags;
    mCommandManager.EnableUsingFlags(flags, 0xFFFFFFFF);
-   
-   //Now, go through each toolbar, and and call EnableDisableButtons()
+
    unsigned int i;
+
+   ToolBarStub * pStub;
+   ToolBar * pToolBar;
+   //Now, go through each toolbar, and and call EnableDisableButtons()
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
       mToolBarArray[i]->EnableDisableButtons();
    }
+
+   //Now, do the same thing for the (possibly invisible) floating toolbars
+   for(i=0;i<nToolBars;i++)
+   {
+      pStub=*gToolBarStubArray[i];
+      if( pStub )
+      {
+         pToolBar = pStub->GetToolBar();
+         if( pToolBar )
+            pToolBar->EnableDisableButtons();
+      }
+   }
+
+#if 0
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
    ToolBar *tb1 = gControlToolBarStub->GetToolBar();
@@ -814,6 +911,7 @@ void AudacityProject::UpdateMenus()
       if (tb1)
          tb1->EnableDisableButtons();
    }
+#endif
 }
 
 //
@@ -1517,13 +1615,25 @@ void AudacityProject::OnHistory()
 
 void AudacityProject::OnCut()
 {
-   ClearClipboard();
-
    TrackListIterator iter(mTracks);
-
    Track *n = iter.First();
    Track *dest;
 
+   while (n) {
+      if (n->GetSelected()) {
+         if (n->GetKind() == Track::Label) {
+            if (((LabelTrack *)n)->CutSelectedText()) {
+               mTrackPanel->Refresh(false);
+               return;
+            }
+         }
+      }
+      n = iter.Next();
+   }
+   
+
+   ClearClipboard();
+   n = iter.First();
    while (n) {
       if (n->GetSelected()) {
          dest = NULL;
@@ -1556,13 +1666,26 @@ void AudacityProject::OnCut()
 
 void AudacityProject::OnCopy()
 {
-   ClearClipboard();
-
+  
    TrackListIterator iter(mTracks);
 
    Track *n = iter.First();
    Track *dest;
 
+   while (n) {
+      if (n->GetSelected()) {
+         if (n->GetKind() == Track::Label) {
+            if (((LabelTrack *)n)->CopySelectedText()) {
+               //mTrackPanel->Refresh(false);
+               return;
+            }
+         }
+      }
+      n = iter.Next();
+   }
+
+   ClearClipboard();
+   n = iter.First();
    while (n) {
       if (n->GetSelected()) {
          dest = NULL;
@@ -1594,7 +1717,22 @@ void AudacityProject::OnPaste()
    
    TrackListIterator iter2(mTracks);
    Track *countTrack = iter2.First();
+
+   while (countTrack) {
+      if (countTrack->GetSelected()) {
+         if (countTrack->GetKind() == Track::Label) {
+            if (((LabelTrack *)countTrack)->PasteSelectedText()) {
+               mTrackPanel->Refresh(false);
+               return;
+            }
+         }
+      }
+      countTrack = iter2.Next();
+   }
+
    int numSelected =0;
+
+   countTrack = iter2.First();
    while (countTrack) {
       if (countTrack->GetSelected())
          numSelected++;
@@ -1706,8 +1844,8 @@ void AudacityProject::OnPasteOver()
    if(msClipLen>0.0)
    {
       mViewInfo.sel1=mViewInfo.sel0+msClipLen;
-      OnPaste();
    }
+   OnPaste();
 
    return;
 }
@@ -2242,8 +2380,61 @@ void AudacityProject::OnPlotSpectrum()
 }
 
 
+void AudacityProject::FloatToolBar(ToolBarStub * pStub )
+{
+   if (pStub->GetWindowedStatus()) {
+      pStub->HideWindowedToolBar();
+      pStub->LoadAll();
+   } else {
+      pStub->ShowWindowedToolBar();
+      pStub->UnloadAll();
+   }
+}
+
+void AudacityProject::LoadToolBar(ToolBarStub ** ppStub, enum ToolBarType t)
+{
+   if (*ppStub) {
+      ToolBarStub *pStub = *ppStub;
+      if (pStub->GetLoadedStatus()) {
+
+         // Logic to prevent the control tool bar being unloaded.
+         // TODO: Move into caller(s) of this function so
+         // that this function can remain generic.
+         if( pStub = gControlToolBarStub )
+            return;
+         //the toolbar is "loaded", meaning its visible either in the window
+         //or floating
+         pStub->SetLoadedStatus(false);
+         pStub->HideWindowedToolBar();
+         pStub->UnloadAll();
+
+      } else {
+
+         //the toolbar is not "loaded", meaning that although the stub exists, 
+         //the toolbar is not visible either in a window or floating around
+         pStub->SetLoadedStatus(true);
+
+         if (pStub->GetWindowedStatus()) {
+            //Make the floating toolbar appear
+            pStub->ShowWindowedToolBar();
+            pStub->LoadAll();
+         } else {
+            //Make it appear in all the windows
+            pStub->LoadAll();
+         }
+
+      }
+   } else {
+      *ppStub = new ToolBarStub(gParentWindow, t);
+      (*ppStub)->LoadAll();
+   }
+}
+
+
 void AudacityProject::OnFloatControlToolBar()
 {
+   FloatToolBar( gControlToolBarStub );
+#if 0
    if (gControlToolBarStub->GetWindowedStatus()) {
 
       gControlToolBarStub->HideWindowedToolBar();
@@ -2252,11 +2443,14 @@ void AudacityProject::OnFloatControlToolBar()
       gControlToolBarStub->ShowWindowedToolBar();
       gControlToolBarStub->UnloadAll();
    }
+#endif
 }
 
 
 void AudacityProject::OnLoadEditToolBar()
 {
+   LoadToolBar(&gEditToolBarStub, EditToolBarID);
+#if 0
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()) {
 
@@ -2287,11 +2481,14 @@ void AudacityProject::OnLoadEditToolBar()
       gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
       gEditToolBarStub->LoadAll();
    }
+#endif
 }
 
 
 void AudacityProject::OnFloatEditToolBar()
 {
+   FloatToolBar( gEditToolBarStub );
+#if 0
    if (gEditToolBarStub) {
 
       if (gEditToolBarStub->GetWindowedStatus()) {
@@ -2305,11 +2502,14 @@ void AudacityProject::OnFloatEditToolBar()
          gEditToolBarStub->UnloadAll();
       }
    }
+#endif
 }
 
 
 void AudacityProject::OnLoadMixerToolBar()
 {
+   LoadToolBar(&gMixerToolBarStub, MixerToolBarID);
+#if 0
    if (gMixerToolBarStub) {
       if (gMixerToolBarStub->GetLoadedStatus()) {
 
@@ -2340,11 +2540,14 @@ void AudacityProject::OnLoadMixerToolBar()
       gMixerToolBarStub = new ToolBarStub(gParentWindow, MixerToolBarID);
       gMixerToolBarStub->LoadAll();
    }
+#endif
 }
 
 
 void AudacityProject::OnFloatMixerToolBar()
 {
+   FloatToolBar( gMixerToolBarStub );
+#if 0
    if (gMixerToolBarStub) {
 
       if (gMixerToolBarStub->GetWindowedStatus()) {
@@ -2358,10 +2561,13 @@ void AudacityProject::OnFloatMixerToolBar()
          gMixerToolBarStub->UnloadAll();
       }
    }
+#endif
 }
 
 void AudacityProject::OnLoadMeterToolBar()
 {
+   LoadToolBar(&gMeterToolBarStub, MeterToolBarID);
+#if 0
    if (gMeterToolBarStub) {
       if (gMeterToolBarStub->GetLoadedStatus()) {
 
@@ -2392,6 +2598,7 @@ void AudacityProject::OnLoadMeterToolBar()
       gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
       gMeterToolBarStub->LoadAll();
    }
+#endif
 }
 
 
@@ -2400,7 +2607,9 @@ void AudacityProject::OnFloatMeterToolBar()
    // Can't drag the Meter toolbar while Audio I/O is busy at all
    if (gAudioIO->IsStreamActive())
       return;
+   FloatToolBar( gMeterToolBarStub );
 
+#if 0
    if (gMeterToolBarStub) {
 
       if (gMeterToolBarStub->GetWindowedStatus()) {
@@ -2414,10 +2623,13 @@ void AudacityProject::OnFloatMeterToolBar()
          gMeterToolBarStub->UnloadAll();
       }
    }
+#endif
 }
 
 void AudacityProject::OnFloatTranscriptionToolBar()
 {
+   FloatToolBar( gTranscriptionToolBarStub );
+#if 0
    if (gTranscriptionToolBarStub) {
 
       if (gTranscriptionToolBarStub->GetWindowedStatus()) {
@@ -2431,6 +2643,7 @@ void AudacityProject::OnFloatTranscriptionToolBar()
          gTranscriptionToolBarStub->UnloadAll();
       }
    }
+#endif
 }
 
 
@@ -2865,6 +3078,7 @@ void AudacityProject::OnNewLabelTrack()
 
    mTracks->Add(t);
    t->SetSelected(true);
+   t->SetKeyOn(true);
 
    PushState(_("Created new label track"), _("New Track"));
 

@@ -61,35 +61,31 @@ class TranscriptionToolBar:public ToolBar {
    virtual void OnSensitivitySlider(wxCommandEvent& evt);
 
    virtual void EnableDisableButtons();
+   virtual void PlaceButton(int i, wxWindow *pWind);
 
  private:
    void InitializeTranscriptionToolBar();
    void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const char *tooltip);
+                  int id, const char *tooltip, const char *label);
    void MakeButtons();
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
    void SetButton(bool newstate, AButton* button); 
    
    AButton * mButtons[TTBNumButtons];
-   int mButtonPos;
+   int mxButtonPos;
    wxImage *upImage;
    wxImage *downImage;
    wxImage *hiliteImage;
    
-   int mDividers[100];
-   int mNumDividers;
-
    ASlider * mSensitivitySlider;
    double mSensitivity;
    VoiceKey *vk;
    
-
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
    int mBackgroundHeight;
-
 
 DECLARE_EVENT_TABLE()
 };
@@ -107,5 +103,5 @@ DECLARE_EVENT_TABLE()
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag:
+// arch-tag: ToDo
 

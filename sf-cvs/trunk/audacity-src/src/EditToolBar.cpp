@@ -78,8 +78,8 @@ void EditToolBar::InitializeEditToolBar()
 {
    mIdealSize = wxSize(377, 27);
    mTitle = _("Audacity Edit Toolbar");
+   SetLabel(_("Edit"));
    mType = EditToolBarID;
-   mNumDividers = 0;
 
    MakeButtons();
 }
@@ -89,7 +89,7 @@ void EditToolBar::InitializeEditToolBar()
 // MakeButtons() with fewer arguments
 
 void EditToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
-                            int id, const char *tooltip)
+                            int id, const char *tooltip, const char *label)
 {
 
    // Windows (TM) has a little extra room for some reason, so the top of the
@@ -102,21 +102,20 @@ void EditToolBar::AddButton(const char **fg, const char **disabled, const char *
    mButtons[id] = ToolBar::MakeButton(
                      upImage, downImage, hiliteImage, fg,
                      disabled, alpha,
-                     wxWindowID(id), wxPoint(mButtonPos, buttonTop),
+                     wxWindowID(id), wxPoint(mxButtonPos, buttonTop),
                      false /*No edit buttons should process down events.*/,
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
    #if wxUSE_TOOLTIPS // Not available in wxX11
    mButtons[id]->SetToolTip(tooltip);
    #endif
+   mButtons[id]->SetLabel( label );
 
-   mButtonPos += BUTTON_WIDTH;
-   mDividers[mNumDividers++] = mButtonPos++;
+   mxButtonPos += BUTTON_WIDTH+1;
 }
 
 void EditToolBar::AddSeparator()
 {
-   mButtonPos += SEPARATOR_WIDTH;
-   mDividers[mNumDividers++] = mButtonPos++;
+   mxButtonPos += SEPARATOR_WIDTH+1;
 }
 
 void EditToolBar::MakeButtons()
@@ -141,38 +140,38 @@ void EditToolBar::MakeButtons()
 
    /* Buttons */
 
-   mButtonPos = 0;
+   mxButtonPos = 0;
 
    AddButton(Cut, CutDisabled, CutAlpha, ETBCutID,
-             _("Cut"));
+             _("Cut"),_("Cut"));
    AddButton(Copy, CopyDisabled, CopyAlpha, ETBCopyID,
-             _("Copy"));
+             _("Copy"),_("Copy"));
    AddButton(Paste, PasteDisabled, PasteAlpha, ETBPasteID,
-             _("Paste"));
+             _("Paste"),_("Paste"));
    AddButton(Trim, TrimDisabled, TrimAlpha, ETBTrimID,
-             _("Trim outside selection"));
+             _("Trim outside selection"),_("Trim"));
    AddButton(Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
-             _("Silence selection"));
+             _("Silence selection"),_("Silence"));
 
    AddSeparator();
-   AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID, _("Undo"));
-   AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID, _("Redo"));
+   AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID, _("Undo"), _("Undo"));
+   AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID, _("Redo"), _("Redo"));
    AddSeparator();
 
    AddButton(ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID,
-             _("Zoom In"));
+             _("Zoom In"),_("Zoom In"));
    AddButton(ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
-             _("Zoom Out"));
+             _("Zoom Out"),_("Zoom Out"));
 
    #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
    AddButton(ZoomToggle, ZoomToggleDisabled, ZoomToggleAlpha, ETBZoomToggleID,
-             _("Zoom Toggle"));
+             _("Zoom Toggle"),_("Zoom Toggle"));
    #endif
 
    AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
-             _("Fit selection in window"));
+             _("Fit selection in window"),_("Fit Selection"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
-             _("Fit project in window"));
+             _("Fit project in window"),_("Fit Project"));
 
    mButtons[ETBZoomInID]->SetEnabled(false);
    mButtons[ETBZoomOutID]->SetEnabled(false);
@@ -184,6 +183,9 @@ void EditToolBar::MakeButtons()
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
+
+   mIdealSize = wxSize(mxButtonPos+3, 27);
+   SetSize(mIdealSize );
 
    delete upImage;
    delete downImage;
@@ -268,8 +270,6 @@ void EditToolBar::OnPaint(wxPaintEvent & evt)
    DrawBackground(dc, width, height);
 
    dc.SetPen(*wxBLACK_PEN);
-//   for(int i=0; i<mNumDividers; i++)
-//      dc.DrawLine(mDividers[i], 0, mDividers[i], mIdealSize.GetHeight());
 }
 
 void EditToolBar::EnableDisableButtons()
@@ -309,6 +309,26 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
 }
+
+void EditToolBar::PlaceButton(int i, wxWindow *pWind)
+{
+   wxSize Size;
+   if( i==0 )
+   {
+      mxButtonPos = 0;
+   }
+   if( (i==4) || (i==6))
+   {
+      mxButtonPos +=10;
+   }
+   Size = pWind->GetSize();
+   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
+   mxButtonPos+=Size.GetX()+1;
+
+   mIdealSize = wxSize(mxButtonPos+3, 27);
+   SetSize(mIdealSize );
+}
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

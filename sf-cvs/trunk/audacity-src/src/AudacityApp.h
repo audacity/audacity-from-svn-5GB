@@ -19,6 +19,7 @@
 
 class wxLocale;
 class wxSingleInstanceChecker;
+class ToolBarStub;
 
 void SaveWindowSize();
 
@@ -47,6 +48,8 @@ class AudacityApp:public wxApp {
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
    
+   ToolBarStub * LoadToolBar( const wxString Name, bool bDefault, 
+      wxWindow * pParent, enum ToolBarType tbt );
    // Most Recently Used File support (for all platforms).
    void OnMRUFile(wxCommandEvent &event);
    void OnMRUProject(wxCommandEvent &event);

@@ -47,6 +47,7 @@ class wxBoxSizer;
 class wxScrollEvent;
 class wxScrollBar;
 class wxProgressDialog;
+class wxPanel;
 
 class Toolbar;
 class TrackList;
@@ -129,6 +130,9 @@ class AudacityProject:public wxFrame,
    bool SaveAs();
    void Clear();
 
+   ToolBarStub ** ppToolBarStubOfToolBarType( enum ToolBarType t );
+   void LoadToolBar(ToolBarStub ** ppStub, enum ToolBarType t);
+   void FloatToolBar(ToolBarStub * pStub );
    wxString GetFileName() { return mFileName; }
    bool GetDirty() { return mDirty; }
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
@@ -207,18 +211,19 @@ class AudacityProject:public wxFrame,
 
    // ToolBar
 
-   void LoadToolBar(enum ToolBarType);
+   void LoadToolBar(enum ToolBarType, bool bCreateStubIfRqd);
    void UnloadToolBar(enum ToolBarType);
    ControlToolBar *GetControlToolBar();
    MixerToolBar *GetMixerToolBar();
    MeterToolBar *GetMeterToolBar();
    bool IsToolBarLoaded(enum ToolBarType);
+   void LayoutToolBars();
+   void LayoutProject();
 
  private:
    void DecorateToolBar( wxPaintDC & dc, int iToolBar );
    int FlowLayout( int i, int x, int y, int width, int height );
    void BoxLayout( int width );
-   void LayoutToolBars();
    int GetGrabberFromEvent(wxMouseEvent & event);
  public:
 
@@ -311,6 +316,7 @@ class AudacityProject:public wxFrame,
    TrackPanel *mTrackPanel;
    TrackFactory *mTrackFactory;
    Importer *mImporter;
+   wxPanel * mMainPanel;
    wxScrollBar *mHsbar;
    wxScrollBar *mVsbar;
    bool mAutoScrolling;
@@ -319,7 +325,9 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
 
+ public:
    ToolBarArray mToolBarArray;
+ private:
    int mTotalToolBarHeight;
    enum ToolBarType mDraggingToolBar;
    int  mAudioIOToken;
