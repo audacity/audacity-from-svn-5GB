@@ -152,6 +152,7 @@ class ToolBarStub {
 
  protected:
    ToolBarFrame * mToolBarFrame;
+   wxWindow *mFrameParent;
    enum ToolBarType mType;
    wxString mTitle;
    wxSize mSize;                //Intended size of toolbar

@@ -48,21 +48,17 @@
 
 
 /// ToolBarStub Constructer. Requires a ToolBarType.
-/// Whenever a ToolBarStub is around, there will be a floating
-/// ToolBarFrame.  It may be hidden or unhidden.
 ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
 {
-   //Create a frame with a toolbar of type tbt inside it
-   mToolBarFrame = new ToolBarFrame(Parent, tbt);
-
-   //Get the newly-created toolbar to get some info from it.
-   ToolBar * tempTB = mToolBarFrame->GetToolBar();
+   // Don't create the frame until the first time we need it
+   mToolBarFrame = NULL;
+   mFrameParent = Parent;
 
    mType = tbt;
-   mTitle = tempTB->GetTitle();
-   mSize = tempTB->GetSize();
    mWindowedStatus = false;
    mLoadedStatus = true;
+
+   mTitle = "";
 } 
 
 
@@ -111,6 +107,17 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 {
    if (!mWindowedStatus) {
       
+      if (!mToolBarFrame) {
+         //Create a frame with a toolbar of type tbt inside it
+         mToolBarFrame = new ToolBarFrame(mFrameParent, mType);
+         
+         //Get the newly-created toolbar to get some info from it.
+         ToolBar * tempTB = mToolBarFrame->GetToolBar();
+         
+         mTitle = tempTB->GetTitle();
+         mSize = tempTB->GetSize();
+      }
+
       //Move the frame to the mouse position
       if (where)
          {
@@ -129,7 +136,8 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 void ToolBarStub::HideWindowedToolBar() 
 {
    if (mWindowedStatus) {
-      mToolBarFrame->Hide();
+      if (mToolBarFrame)
+         mToolBarFrame->Hide();
       mWindowedStatus = false;
    }
 }
@@ -138,7 +146,7 @@ void ToolBarStub::HideWindowedToolBar()
 // To de-Iconize a windowed toolbar we just show it. 
 void ToolBarStub::Iconize(bool bIconize) 
 {
-   if (mWindowedStatus) {
+   if (mWindowedStatus && mToolBarFrame) {
       if( bIconize )
          mToolBarFrame->Hide();
       else

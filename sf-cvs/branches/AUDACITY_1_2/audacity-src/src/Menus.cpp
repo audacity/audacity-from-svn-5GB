@@ -689,9 +689,14 @@ void AudacityProject::UpdateMenus()
    }
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
-   gControlToolBarStub->GetToolBar()->EnableDisableButtons();
-   if(gEditToolBarStub)
-      gEditToolBarStub->GetToolBar()->EnableDisableButtons();
+   ToolBar *tb1 = gControlToolBarStub->GetToolBar();
+   if (tb1)
+      tb1->EnableDisableButtons();
+   if(gEditToolBarStub) {
+      tb1 = gEditToolBarStub->GetToolBar();
+      if (tb1)
+         tb1->EnableDisableButtons();
+   }
 }
 
 //
@@ -2058,6 +2063,7 @@ void AudacityProject::OnPlotSpectrum()
       wxMessageBox(msg);
    }
 
+   InitFreqWindow(gParentWindow);
    gFreqWindow->Plot(len, buffer, rate);
    gFreqWindow->Show(true);
    gFreqWindow->Raise();
