@@ -333,11 +333,6 @@ void AudioIO::HandleDeviceChange()
    mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
-   mEmulateMixerInputVol = true;
-   mEmulateMixerOutputVol = true;
-   mMixerInputVol = 1.0;
-   mMixerOutputVol = 1.0;
-
    PortAudioStream *stream;
    int error;
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
@@ -627,6 +622,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
    return (mLastPaError == paNoError);
 }
+
+void AudioIO::StartMonitoring(double sampleRate)
+{
 #if USE_PORTAUDIO_V19
    if ( mPortStreamV19 || mStreamToken )
       return;
@@ -635,9 +633,6 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       return;
 #endif
 
-
-void AudioIO::StartMonitoring(double sampleRate)
-{
    bool success;
    long captureChannels;
    sampleFormat captureFormat = (sampleFormat)
