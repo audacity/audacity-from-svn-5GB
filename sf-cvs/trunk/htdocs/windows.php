@@ -49,7 +49,7 @@
 <td></td>
 <td>
 <br>
-<a href="http://spaghetticode.org/lame/">
+<a href="http://mitiok.free.fr/">
 <?php print "$lameStr</a> $lameStr2"; ?>
 </td>
 </tr>
