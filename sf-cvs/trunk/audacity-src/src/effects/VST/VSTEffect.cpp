@@ -358,6 +358,24 @@ VSTEffectDialog::~VSTEffectDialog()
    delete[]labels;
 }
 
+void VSTEffectDialog::OnSlider(wxScrollEvent & WXUNUSED(event))
+{
+   for (int p = 0; p < numParams; p++) {
+      float val;
+
+      val = sliders[p]->GetValue() / 1000.;
+      vst->callSetParameter(aEffect, p, val);
+
+      char label[256];
+      vst->callDispatcher(aEffect, effGetParamDisplay, p, 0,
+                          (void *) label, 0.0);
+      char units[256];
+      vst->callDispatcher(aEffect, effGetParamLabel, p, 0, (void *) units,
+                          0.0);
+      labels[p]->SetLabel(wxString::Format("%s %s", label, units));
+   }
+}
+
 void VSTEffectDialog::OnSlider(wxCommandEvent & WXUNUSED(event))
 {
    for (int p = 0; p < numParams; p++) {

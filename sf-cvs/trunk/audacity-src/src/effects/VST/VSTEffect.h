@@ -100,6 +100,7 @@ class VSTEffectDialog:public wxDialog {
 
    ~VSTEffectDialog();
 
+   void OnSlider(wxScrollEvent & event);
    void OnSlider(wxCommandEvent & event);
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);

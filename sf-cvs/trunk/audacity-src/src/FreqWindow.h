@@ -59,6 +59,7 @@ class FreqWindow:public wxFrame {
    void OnPaint(wxPaintEvent & event);
 
    void OnCloseWindow(wxCloseEvent & event);
+   void OnCloseWindow(wxCommandEvent & event);
    void OnSize(wxSizeEvent & event);
    void OnAlgChoice(wxCommandEvent & event);
    void OnSizeChoice(wxCommandEvent & event);
