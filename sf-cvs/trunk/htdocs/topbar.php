@@ -13,7 +13,7 @@
 <tr><td><table border="0" cellspacing="1" cellpadding="4">
 <tr><td bgcolor="#ffffff">
 <table cellpadding="0" cellspacing="1"><tr><td>
-<?php AddFlags('</td><tr><tr><td>'); ?></td></tr>
+<?php AddFlags('</td><td>', '</td><tr><tr><td>'); ?></td></tr>
 </table></td></tr>
 
 </table></td></tr></table>
