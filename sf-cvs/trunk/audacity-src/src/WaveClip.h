@@ -27,9 +27,9 @@ public:
    void TimeToSamplesClip(double t0, longSampleCount *s0) const;
    int GetRate() const { return mRate; }
    void SetRate(int rate) { mRate = rate; MarkChanged(); }
-   void SetOffset(double offset) { mOffset = offset; }
+   void SetOffset(double offset);
    double GetOffset() const { return mOffset; }
-   void Offset(double delta) { mOffset += delta; }
+   void Offset(double delta) { SetOffset(GetOffset() + delta); }
    double GetStartTime() const;
    double GetEndTime() const;
    longSampleCount GetStartSample() const;
