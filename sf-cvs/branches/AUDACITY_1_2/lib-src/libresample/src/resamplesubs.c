@@ -118,6 +118,6 @@ int lrsSrcUD(float X[],
         CurrentTime += dt;      /* Move to next sample by time increment */
     }
 
-
+    *TimePtr = CurrentTime;
     return (Y - Ystart);        /* Return the number of output samples */
 }
