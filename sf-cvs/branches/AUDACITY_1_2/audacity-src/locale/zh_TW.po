@@ -1,16 +1,12 @@
-# translation of new_ru.po to 
-# translation of new_ru.po to Russian
-# translation of ru.po to Russian
-# Russian translation of Audacity 1.1.
+# translation of audacity.po to zh_TW.po 
+# translation of audacity.po to Chinese(Tranditonal)
+# Chinese(Tranditonal) translation of Audacity 1.2.
 # Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
-# Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419.
-# Alexandre Prokoudine <avp@altlinux.ru>, 2003, 2004.
-# Alexandre Prokoudine <techwriter@land.ru>, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW 0.1\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2004-11-24 15:14+0800\n"
+"PO-Revision-Date: 2004-12-03 11:40+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <chido@ms11.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -238,7 +234,7 @@ msgstr "-145 dB(PCM 24bit 取樣範圍)"
 
 #: ../src/prefs/GUIPrefs.cpp:150
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-36 dB  (小範圍，適用大振幅編輯)\""
+msgstr "-36 dB  (小範圍，適用大振幅編輯)"
 
 #: ../src/prefs/GUIPrefs.cpp:157
 msgid "-48 dB (PCM range of 8 bit samples)"
@@ -494,7 +490,7 @@ msgstr "已套用效果： %s %.2f 半音程"
 #: ../src/effects/Phaser.cpp:47
 #, c-format
 msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
-msgstr "已套用效果： %s %d 階段， %.0f%% 濕[wet]，頻率 = %.1f Hz，起啟相位 = %.0f度，深度 = %d，回饋 = %.0f%%"
+msgstr "已套用效果： %s %d 階段， %.0f%% 濕[wet]，頻率 = %.1f Hz，起始相位 = %.0f度，深度 = %d，回饋 = %.0f%%"
 
 #: ../src/effects/Echo.cpp:33
 #, c-format
@@ -509,7 +505,7 @@ msgstr "已套用效果： %s 頻率 = %.0f Hz，提昇 = %.0f dB"
 #: ../src/effects/Wahwah.cpp:41
 #, c-format
 msgid "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"
-msgstr "已套用效果： %s 頻率 = %.1f Hz，起啟相位 = %.0f度，深度 = %.0f%%，共振 = %.1f，頻率偏移 = %.0f%%"
+msgstr "已套用效果： %s 頻率 = %.1f Hz，起始相位 = %.0f度，深度 = %.0f%%，共振 = %.1f，頻率偏移 = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:33
 #, c-format
@@ -550,11 +546,11 @@ msgstr "您確認要將該檔案另存新檔為 \""
 
 #: ../src/Tags.cpp:445
 msgid "Artist"
-msgstr "歌手"
+msgstr "演出者"
 
 #: ../src/Tags.cpp:631
 msgid "Artist:"
-msgstr "歌手："
+msgstr "演出者："
 
 #: ../src/effects/Compressor.cpp:442
 msgid "Attack Time: "
@@ -769,7 +765,7 @@ msgstr "自動音量控制..."
 
 #: ../src/prefs/GUIPrefs.cpp:66
 msgid "Autoscroll while playing"
-msgstr "在播放中自動翻捲"
+msgstr "在播放中自動捲動"
 
 #: ../src/effects/BassBoost.cpp:69
 msgid "BassBoost"
@@ -781,7 +777,7 @@ msgstr "低音增強(Nasca Octavian Paul提供)"
 
 #: ../src/effects/BassBoost.h:44
 msgid "BassBoost..."
-msgstr "低音增強..."
+msgstr "低音增強[BassBoost]..."
 
 #: ../src/effects/ChangeTempo.cpp:212
 msgid "Beats per Minute (BPM):   from"
@@ -899,7 +895,7 @@ msgstr "變更音高維持節拍不變"
 
 #: ../src/effects/ChangePitch.h:43
 msgid "Change Pitch..."
-msgstr "變更音高..."
+msgstr "變更音高[Change Pitch]..."
 
 #: ../src/prefs/MousePrefs.cpp:100
 msgid "Change Sample"
@@ -919,7 +915,7 @@ msgstr "變更速度(同時影響節拍和音高)"
 
 #: ../src/effects/ChangeSpeed.h:37
 msgid "Change Speed..."
-msgstr "變更速度..."
+msgstr "變更速度[Change Speed]..."
 
 #: ../src/effects/ChangeTempo.cpp:62
 msgid "Change Tempo"
@@ -931,7 +927,7 @@ msgstr "變更節拍維持音高不變"
 
 #: ../src/effects/ChangeTempo.h:40
 msgid "Change Tempo..."
-msgstr "變更節拍..."
+msgstr "變更節拍[Change Tempo]..."
 
 #: ../src/TrackPanel.cpp:4323
 msgid "Change lower speed limit (%) to:"
@@ -999,7 +995,7 @@ msgstr "選擇Audacity使用的語言："
 
 #: ../src/TrackPanel.cpp:4425
 msgid "Choose a font for Label Tracks"
-msgstr "選擇標籤音軌的字體"
+msgstr "選擇標籤軌的字體"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:135
 msgid "Choose a location to place the temporary directory"
@@ -1114,7 +1110,7 @@ msgstr "註解："
 
 #: ../src/effects/Compressor.h:36
 msgid "Compressor..."
-msgstr "壓縮..."
+msgstr "壓縮[Compressor]..."
 
 #: ../src/Legacy.cpp:337
 #, c-format
@@ -1196,7 +1192,7 @@ msgstr "新建雜音特徵"
 
 #: ../src/AboutDialog.cpp:154
 msgid "Credits"
-msgstr "謝啟"
+msgstr "開發小組"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Ctrl-Left-Drag"
@@ -1431,19 +1427,19 @@ msgstr "捨棄復原資料"
 
 #: ../src/Project.cpp:1493
 msgid "Dock Control Toolbar"
-msgstr "停靠控制工作列"
+msgstr "停駐控制工作列"
 
 #: ../src/Menus.cpp:695
 msgid "Dock Edit Toolbar"
-msgstr "停靠編輯工作列"
+msgstr "停駐編輯工作列"
 
 #: ../src/Menus.cpp:725
 msgid "Dock Meter Toolbar"
-msgstr "停靠儀表工作列"
+msgstr "停駐儀表工作列"
 
 #: ../src/Menus.cpp:710
 msgid "Dock Mixer Toolbar"
-msgstr "停靠混音器工作列"
+msgstr "停駐混音器工作列"
 
 #: ../src/AboutDialog.cpp:188
 msgid "Documentation Writer"
@@ -1509,7 +1505,7 @@ msgstr "迴音[Echo]"
 
 #: ../src/effects/Echo.h:36
 msgid "Echo..."
-msgstr "迴音..."
+msgstr "迴音[Echo]..."
 
 #: ../src/Menus.cpp:2701
 msgid "Edit ID3 Tags"
@@ -1557,7 +1553,7 @@ msgstr "允許拖動選取範圍左右兩端。"
 
 #: ../src/prefs/GUIPrefs.cpp:113
 msgid "Enable ergonomic order of Audio I/O buttons"
-msgstr "啟用Audio I/O按鈕的人體工程學順序[ergonomic order]"
+msgstr "啟用Audio I/O按鈕的人體工學順序[ergonomic order]"
 
 #: ../src/effects/AvcCompressor.cpp:652
 msgid "Enabled"
@@ -1606,7 +1602,7 @@ msgstr "等化器(Mitch Golden和Vaughan Johnson提供)"
 
 #: ../src/effects/Equalization.h:38
 msgid "Equalization..."
-msgstr "等化..."
+msgstr "等化[Equalization]..."
 
 #: ../src/ControlToolBar.cpp:722
 #: ../src/ControlToolBar.cpp:883
@@ -1851,7 +1847,7 @@ msgstr "前置檔案名稱:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:190
 msgid "Find Library"
-msgstr "檢索程式庫"
+msgstr "尋找程式庫位址"
 
 #: ../src/Menus.cpp:267
 msgid "Find Zero Crossings\tZ"
@@ -2136,7 +2132,7 @@ msgstr "LOF 檔案視窗偏移無效。"
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "反相"
+msgstr "反相[Invert]"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
@@ -2882,7 +2878,7 @@ msgstr "重複執行"
 
 #: ../src/effects/Phaser.cpp:59
 msgid "Phaser"
-msgstr "相量"
+msgstr "移相器"
 
 #: ../src/effects/Phaser.cpp:448
 msgid "Phaser by Nasca Octavian Paul"
@@ -2890,7 +2886,7 @@ msgstr "移相器(Nasca Octavian Paul提供)"
 
 #: ../src/effects/Phaser.h:41
 msgid "Phaser..."
-msgstr "移相器..."
+msgstr "移相器[Phaser]..."
 
 #: ../src/TrackPanel.cpp:838
 msgid "Pitch (EAC)"
@@ -3168,7 +3164,7 @@ msgstr "重複(Dominic Mazzoni && Vaughan Johnson提供)"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
-msgstr "重複..."
+msgstr "重複[Repeat]..."
 
 #: ../src/effects/Repeat.cpp:31
 #, c-format
@@ -3190,11 +3186,11 @@ msgstr "回到預設值"
 
 #: ../src/effects/Reverse.h:30
 msgid "Reverse"
-msgstr "倒轉"
+msgstr "時間前後反轉[Reverse]"
 
 #: ../src/effects/Reverse.h:34
 msgid "Reversing"
-msgstr "倒轉中"
+msgstr "時間前後反轉中"
 
 #: ../src/widgets/ASlider.cpp:491
 msgid "Right"
@@ -3579,7 +3575,7 @@ msgstr "開啟貼齊功能"
 
 #: ../src/Menus.cpp:288
 msgid "Snap-To..."
-msgstr "貼齊到..."
+msgstr "貼齊到整秒數點..."
 
 #: ../src/prefs/AudioIOPrefs.cpp:244
 msgid "Software Playthrough (Play new track while recording it)"
@@ -3764,7 +3760,10 @@ msgid "This is a stable, completed release of Audacity.  However, if you find a 
 msgstr ""
 "此Audacity是一個穩定的完整版。如果您發現錯誤或有什麼建\n"
 "議，請與我們聯繫。我們需要來自用戶的回饋，以改進Audacity\n"
-"軟體。詳情請瀏覽我們的網站。"
+"軟體。詳情請瀏覽我們的網站。\n"
+"\n"
+"對於正體中文有問題的話，請回報給\n"
+"http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210"
 
 #: ../src/import/Import.cpp:159
 #, c-format
@@ -4169,13 +4168,13 @@ msgstr "[貼齊功能打開]"
 
 #: ../src/effects/Echo.cpp:182
 msgid "by Dominic Mazzoni && Vaughan Johnson"
-msgstr "by Dominic Mazzoni && Vaughan Johnson"
+msgstr "Dominic Mazzoni && Vaughan Johnson提供"
 
 #: ../src/effects/ChangePitch.cpp:245
 #: ../src/effects/ChangeSpeed.cpp:288
 #: ../src/effects/ChangeTempo.cpp:165
 msgid "by Vaughan Johnson && Dominic Mazzoni"
-msgstr "by Vaughan Johnson && Dominic Mazzoni"
+msgstr "Vaughan Johnson && Dominic Mazzoni提供"
 
 #: ../src/import/ImportRaw.cpp:354
 msgid "bytes"
@@ -4299,7 +4298,7 @@ msgstr "至音軌啟始"
 #: ../src/AboutDialog.cpp:127
 #: ../src/AboutDialog.cpp:129
 msgid "translator_credits"
-msgstr "Chinese translation by Chido, Milo"
+msgstr "Chinese(Traditional) translation by Chido, Milo"
 
 #: ../src/effects/ChangePitch.cpp:275
 #: ../src/TrackPanel.cpp:4359
