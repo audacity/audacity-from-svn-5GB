@@ -10,7 +10,7 @@
 <center>
 <table width="100%" border=0 cellspacing=0 cellpadding=0>
   <tr>
-    <td width="25%" align=left valign=top><a class=ss href="contents.html">Back to the main page</a></td>
+    <td width="25%" align=left valign=middle><a class=ss href="contents.html">Back to the main page</a></td>
     <td width="50%" align=center><a class="ss" href="screen.html">Back to the Stuff On Screen page</a></td>
     <td width="25%" align=right>&nbsp;</td>
   </tr>
@@ -19,18 +19,54 @@
 <H1 align=center>Main Toolbar</H1>
 </center>
 
-<table border=0 cellpadding=0 cellspacing=0>
- <tr>
-  <td valign=top><img border=0 src="images/select.png" align=middle></td>
-  <td valign=top>
- </tr>
+
+<!--
+<table width="100%"><tr>
+<td align=center>
+ <table border=0 cellpadding=0 cellspacing=0>
+  <tr>
+
+   <td valign=middle><img border=0 width="28" height="28" src="images/tool_select.png" align=middle></td>
+   <td valign=middle><img border=0 width="28" height="28" src="images/tool_envelope.png" align=middle></td>
+   <td valign=middle><img border=0 width="28" height="28" src="images/tool_timeshift.png" align=middle></td>
+   <td valign=middle><img border=0 width="28" height="28" src="images/tool_zoom.png" align=middle></td>
+   <td valign=middle><img border=0 width="28" height="28" src="images/tool_draw.png" align=middle></td>
+ </table>
+</td>
+<td align=center>
+ <table border=0 cellpadding=0 cellspacing=0>
+  <tr>
+   <td valign=middle><img border=0 src="images/transport_rewind.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_play.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_record.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_pause.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_stop.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_ff.png" width="50" height="51" align=middle></td>
+
+  </tr>
+ </table>
+</td>
+</tr></table>
+-->
 
 <table width="100%" cellpadding=6><tr>
 <td width="50%" valign=top>
 <!-- Left half of the screen -->
+ <table border=0 cellpadding=0 cellspacing=0>
+  <tr>
+   <td><img border=0 width="28" height="28" src="images/tool_select.png" align=middle></td>
+   <td><img border=0 width="28" height="28" src="images/tool_envelope.png" align=middle></td>
+   <td><img border=0 width="28" height="28" src="images/tool_draw.png" align=middle></td>
+  </tr>
+  <tr>
+   <td><img border=0 width="28" height="28" src="images/tool_zoom.png" align=middle></td>
+   <td><img border=0 width="28" height="28" src="images/tool_timeshift.png" align=middle></td>
+   <td><img border=0 width="28" height="28" src="images/tool_multi.png" align=middle></td>
+  </tr>
+ </table>
 
 <a name="selection"></a>
-<p class=a><img border=0 src="images/select.png" align=middle>&nbsp;<b>Selection Tool</b></P>
+<p class=a><img border=0 width="28" height="28" src="images/tool_select.png" align=middle>&nbsp;<b>Selection Tool</b></P>
 
 <p class=a>This is the main tool you use to select audio.  Click in a track to
 position the cursor, or click and drag to select a range of audio.  If
@@ -41,7 +77,7 @@ Extend a selection by shift-clicking a new point in the track.</P>
 If a range of audio is selected, only the selected range will play.</P>
 
 <a name="envelope"></a>
-<p class=a><img border=0 src="images/amp.png" align=middle>&nbsp;<b>Envelope Tool</b></P>
+<p class=a><img border=0 width="28" height="28" src="images/tool_envelope.png" align=middle>&nbsp;<b>Envelope Tool</b></P>
 
 <p class=a>The envelope tool gives you detailed control over how tracks fade
 in and out, right in the main track window.  When the envelope tool
@@ -53,7 +89,7 @@ is not already a control point.  To remove a point, click on it and
 drag it outside of the track until it disappears, then release.</P>
 
 <a name="timeshift"></a>
-<p class=a><img border=0 src="images/move.png" align=middle>&nbsp;<b>Time Shift Tool</b></P>
+<p class=a><img border=0 width="28" height="28" src="images/tool_timeshift.png" align=middle>&nbsp;<b>Time Shift Tool</b></P>
 
 
 <p class=a>This tool allows you to change the relative positioning of tracks
@@ -64,7 +100,7 @@ or reset their time shift back to zero, use the
 <a href="menu_project.html#alignzero">Align with Zero</a> commands.</P>
 
 <a name="zoom"></a>
-<p class=a><img border=0 src="images/zoom.png" align=middle>&nbsp;<b>Zoom Tool</b></P>
+<p class=a><img border=0 width="28" height="28" src="images/tool_zoom.png" align=middle>&nbsp;<b>Zoom Tool</b></P>
 
 <p class=a>This tool allows you to zoom in or out of a specific part of the audio.
 To zoom in, click anywhere in the audio.  To zoom out, right-click or
@@ -76,7 +112,7 @@ to highlight the region you want to see, then releasing the mouse button.</P>
 
 
 <a name="draw"></a>
-<p class=a><img border=0 src="images/draw.png" align=middle>&nbsp;<b>Draw Tool</b></P>
+<p class=a><img border=0 width="28" height="28" src="images/tool_draw.png" align=middle>&nbsp;<b>Draw Tool</b></P>
 <P class=a>
 Enables the user to draw in to the actual waveforms. This is especially useful to eliminate small
 pops and clicks from material.
@@ -95,15 +131,29 @@ In v1.1.1 from Nov11th 2002, the smoothing tool (CTRL+click) crashes if used too
 <td width="50%" valign=top>
 <!-- right half of the screen -->
 
+<p class=a>
+ <table border=0 cellpadding=0 cellspacing=0>
+  <tr>
+   <td valign=middle><img border=0 src="images/transport_rewind.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_play.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_record.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_pause.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_stop.png" width="50" height="51" align=middle></td>
+   <td valign=middle><img border=0 src="images/transport_ff.png" width="50" height="51" align=middle></td>
+  </tr>
+ </table>
+</p>
+
+
 
 <a name="rewind"></a>
-<p class=a><img border=0 src="images/tool_main_rew.jpg" width="49" height="50" align=middle>&nbsp;<b>Cursor to Start</b></p>
+<p class=a><img border=0 src="images/transport_rewind.png" width="50" height="51" align=middle>&nbsp;<b>Cursor to Start</b></p>
 <p class=a>Places the cursor at the start of the project.<BR>
 <span class=keybshc_s>SHIFT + click</span> expands the selection to the <B>start</B> of the project.</p>
 
 
 <a name="play"></a>
-<p class=a><img border=0 src="images/play.png" align=middle>&nbsp;<b>Play Button</b></P>
+<p class=a><img border=0 src="images/transport_play.png" width="50" height="51" align=middle>&nbsp;<b>Play Button</b></P>
 
 
 <p class=a>Press the play button to listen to the audio in your project.  You can
@@ -117,7 +167,7 @@ project, they will be mixed automatically for playback.</P>
 
 
 <a name="record"></a>
-<p class=a><img border=0 src="images/record.png" align=middle>&nbsp;<b>Record Button</b></P>
+<p class=a><img border=0 src="images/transport_record.png" width="50" height="51" align=middle>&nbsp;<b>Record Button</b></P>
 
 <p class=a>Press the record button to record a new track from your computer's sound input device.
 Use the <a href="prefs.html">Preferences</a> to configure the recording options.
@@ -128,24 +178,26 @@ on all systems.</P>
 
 
 <a name="pause"></a>
-<p class=a><img border=0 src="images/pause.png" align=middle>&nbsp;<b>Pause Button</b></P>
+<p class=a><img border=0 src="images/transport_pause.png" width="50" height="51" align=middle>&nbsp;<b>Pause Button</b></P>
 
 <p class=a>Will pause during playback, or during recording. Press again to unpause.</p>
 
 
 <a name="stop"></a>
-<p class=a><img border=0 src="images/stop.png" align=middle>&nbsp;<b>Stop Button</b></P>
+<p class=a><img border=0 src="images/transport_stop.png" width="50" height="51" align=middle>&nbsp;<b>Stop Button</b></P>
 
 <p class=a>Press the stop button or hit the spacebar to stop playback immediately.</P>
 
 
 <a name="ff"></a>
-<p class=a><img border=0 src="images/tool_main_ff.jpg" width="50" height="49" align=middle>&nbsp;<b>Cursor to End</b></p>
+<p class=a><img border=0 src="images/transport_ff.png" width="50" height="51" align=middle>&nbsp;<b>Cursor to End</b></p>
 <p class=a>Places the cursor at the end of the project.<BR>
 <span class=keybshc_s>SHIFT + click</span> expands the selection to the <B>end</B> of the project.</p>
 
 
 
+<!--
+*** This feature is no longer present in Audacity 1.1.3+ ***
 <a name="gain"></a>
 <p class=a><img border=0 src="images/volume.png" align=middle>&nbsp;<b>Master Gain Control</b></p>
 
@@ -155,6 +207,8 @@ way to the left will mute Audacity, and pushing it to the right will
 increase the volume of everything beyond its normal level and may cause
 clipping.</p>
 
+*** This feature is no longer present in Audacity 1.1.3+ ***
+-->
 
 </td></tr>
 </table>
@@ -164,7 +218,7 @@ clipping.</p>
 <center>
 <table width="100%" border=0 cellspacing=0 cellpadding=0>
   <tr>
-    <td width="25%" align=left valign=top><a class=ss href="contents.html">Back to the main page</a></td>
+    <td width="25%" align=left valign=middle><a class=ss href="contents.html">Back to the main page</a></td>
     <td width="50%" align=center><a class="ss" href="screen.html">Back to the Stuff On Screen page</a></td>
     <td width="25%" align=right>&nbsp;</td>
   </tr>
