@@ -234,7 +234,8 @@ class TrackPanel:public wxWindow {
    bool mIsClosing;
    bool mIsSelecting;
    bool mIsResizing;
-   bool mIsResizingLinkedTracks;
+   bool mIsResizingBelowLinkedTracks;
+   bool mIsResizingBetweenLinkedTracks;
    bool mIsRearranging;
    bool mIsSliding;
    bool mIsEnveloping;
