@@ -1,5 +1,23 @@
 /* configtemplate.h.  Generated automatically from configure.in by autoheader.  */
 
+/* Define if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
 /* Define if at least one supported library for mp3 functions is present */
 #undef MP3SUPPORT
 

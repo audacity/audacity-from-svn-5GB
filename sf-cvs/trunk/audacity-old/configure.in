@@ -5,15 +5,14 @@ dnl Joshua Haberman
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(AudacityApp.h)
+AC_INIT
+AC_CONFIG_SRCDIR([AudacityApp.h])
 
 
 dnl Checks for programs.
 AC_PROG_CC
-AC_PROG_CC_STDC
 AC_PROG_GCC_TRADITIONAL
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 AC_PROG_CXX
 
 dnl extra variables
@@ -22,7 +21,7 @@ AC_SUBST(EXTRAOBJS)
 dnl options
 AC_ARG_WITH(libmpeg3,
 	[AC_HELP_STRING([--with-libmpeg3],
-		[use libmpeg3 for mp3 support [default=no]])],
+      [use libmpeg3 for mp3 support [default=no]])],
 	use_libmpeg3=$withval,
 	use_libmpeg3="no")
 AC_ARG_WITH(xaudio,
@@ -35,6 +34,7 @@ AC_ARG_WITH(vorbis,
 		[enable ogg vorbis support (libraries must be installed) [default=no]])],
 	use_vorbis=$withval,
 	use_vorbis="no")
+
 
 dnl check to make sure that all the user's options are valid
 AC_CANONICAL_HOST
@@ -52,9 +52,9 @@ if [[ "$use_libmpeg3" = "yes" ]] ; then
 
 	AC_DEFINE(USE_LIBMPEG3, 1,
 		[Define if mp3 support is implemented with the libmpeg3 library])
-	AC_DEFINE(MP3SUPPORT, 1,
-		[Define if at least one supported library for mp3 functions is present])
+
 	EXTRAOBJS="$EXTRAOBJS mpeg3/libmpeg3.a"
+   mp3support="true"
 	use_xaudio="no"
 fi
 
@@ -75,9 +75,15 @@ if [[ "$use_xaudio" = "yes" ] || [ "$use_xaudio" = "default" ]] ; then
 			
 	AC_DEFINE(USE_XAUDIO, 1,
 		[Define if mp3 support is implemented with the xaudio library])
-	AC_DEFINE(MP3SUPPORT)
+   mp3support="true"
 fi
 
+if [[ "$mp3support" = "true" ]] ; then
+
+	AC_DEFINE(MP3SUPPORT, 1,
+      [Define if at least one supported library for mp3 functions is present])
+
+fi
 dnl this complicated-looking thing is simple a nested function that checks for
 dnl the library, checking for the header as well on success
 if [[ $use_vorbis = "yes" ]] ; then
@@ -107,5 +113,7 @@ AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 
-AC_CONFIG_HEADERS(configunix.h:configtemplate.h)
-AC_OUTPUT(Makefile)
+AC_CONFIG_HEADER(configunix.h:configtemplate.h)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+
