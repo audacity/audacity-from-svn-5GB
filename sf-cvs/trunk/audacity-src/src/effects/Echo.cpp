@@ -9,6 +9,12 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
+#include <wx/defs.h>
+#include <wx/validate.h>
+#include <wx/valtext.h>
+
 #include <wx/generic/textdlgg.h>
 #include <wx/intl.h>
 #include <math.h>
