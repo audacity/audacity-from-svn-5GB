@@ -121,25 +121,14 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
 /// existing block file.  This file must exist and be a valid block file.
 ///
 /// @param existingFile The disk file this SimpleBlockFile should use.
-SimpleBlockFile::SimpleBlockFile(wxFileName existingFile,
+SimpleBlockFile::SimpleBlockFile(wxFileName existingFile, sampleCount len,
                                  float min, float max, float rms):
-   BlockFile(existingFile, 0)
+   BlockFile(existingFile, len)
 {
-   // Since we gave BlockFile a bogus parameter for sampleLen, we need
-   // to update mSummaryInfo with real values.  We do this by opening
-   // the file with libsndfile and retrieving its length.
 
    if( !existingFile.FileExists() )
       // throw an exception?
       ;
-
-   SF_INFO info;
-   SNDFILE *sf = sf_open(existingFile.GetFullPath(), SFM_READ, &info);
-
-   SummaryInfo realInfo(info.frames);
-   mSummaryInfo = realInfo;
-
-   sf_close(sf);
 
    mMin = min;
    mMax = max;
@@ -236,6 +225,7 @@ void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
       xmlFile.Write("\t");
    xmlFile.Write("<simpleblockfile ");
    xmlFile.Write(wxString::Format("filename='%s' ", mFileName.GetFullName().c_str()));
+   xmlFile.Write(wxString::Format("len='%d' ", mLen));
    xmlFile.Write(wxString::Format("min='%f' ", mMin));
    xmlFile.Write(wxString::Format("max='%f' ", mMax));
    xmlFile.Write(wxString::Format("rms='%f'", mRMS));
@@ -247,6 +237,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 {
    wxFileName fileName;
    float min=0, max=0, rms=0;
+   sampleCount len = 0;
 
    while(*attrs)
    {
@@ -255,15 +246,17 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 
        if( !strcmp(attr, "filename") )
           fileName.Assign(projDir, value);
+       if( !strcmp(attr, "len") )
+          len = atoi(value);
        if( !strcmp(attr, "min") )
-          min = atoi(value);
+          min = atof(value);
        if( !strcmp(attr, "max") )
-          max = atoi(value);
+          max = atof(value);
        if( !strcmp(attr, "rms") )
-          rms = atoi(value);
+          rms = atof(value);
    }
 
-   return new SimpleBlockFile(fileName, min, max, rms);
+   return new SimpleBlockFile(fileName, len, min, max, rms);
 }
 
 /// Create a copy of this BlockFile, but using a different disk file.
@@ -271,7 +264,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
 /// @param newFileName The name of the new file to use.
 BlockFile *SimpleBlockFile::Copy(wxFileName newFileName)
 {
-   BlockFile *newBlockFile = new SimpleBlockFile(newFileName,
+   BlockFile *newBlockFile = new SimpleBlockFile(newFileName, mLen,
                                                  mMin, mMax, mRMS);
 
    return newBlockFile;
