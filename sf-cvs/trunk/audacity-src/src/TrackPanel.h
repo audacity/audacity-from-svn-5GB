@@ -228,18 +228,19 @@ class TrackPanel:public wxWindow {
                       int trackLeftEdge) const;
 
    int mInitialTrackHeight;
-
+   int mInitialUpperTrackHeight;
    bool mAutoScrolling;
 
    bool mIsClosing;
    bool mIsSelecting;
    bool mIsResizing;
+   bool mIsResizingLinkedTracks;
    bool mIsRearranging;
    bool mIsSliding;
    bool mIsEnveloping;
    bool mIsMuting;
    bool mIsSoloing;
-
+   
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?
