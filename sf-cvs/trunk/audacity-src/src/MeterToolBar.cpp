@@ -74,22 +74,22 @@ void MeterToolBar::OnSize(wxSizeEvent & evt)
 
    if (width > height && height > 120) {
       // Two stacked horizontal meters
-      mPlayMeter->SetSize(0, 0, width, height/2 - 1);
-      mRecordMeter->SetSize(0, height/2, width, height/2 - 1);
+      mPlayMeter->SetSize(0, 0, width-2, height/2 - 1);
+      mRecordMeter->SetSize(0, height/2, width-2, height/2 - 1);
       mPlayMeter->SetStyle(Meter::HorizontalStereo);
       mRecordMeter->SetStyle(Meter::HorizontalStereo);
    }
    else if (width > height) {
       // Two horizontal, side-by-side
-      mPlayMeter->SetSize(0, 0, width/2 - 1, height);
-      mRecordMeter->SetSize(width/2, 0, width/2 - 1, height);
+      mPlayMeter->SetSize(0, 0, width/2 - 3, height);
+      mRecordMeter->SetSize(width/2-2, 0, width/2 - 3, height);
       mPlayMeter->SetStyle(Meter::HorizontalStereo);
       mRecordMeter->SetStyle(Meter::HorizontalStereo);
    }
    else {
       // Two vertical, side-by-side
-      mPlayMeter->SetSize(0, 0, width/2 - 1, height);
-      mRecordMeter->SetSize(width/2, 0, width/2 - 1, height);
+      mPlayMeter->SetSize(0, 0, width/2 - 2, height);
+      mRecordMeter->SetSize(width/2 - 1, 0, width/2 - 2, height);
       mPlayMeter->SetStyle(Meter::VerticalStereo);
       mRecordMeter->SetStyle(Meter::VerticalStereo);
    }
