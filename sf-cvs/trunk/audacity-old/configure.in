@@ -14,6 +14,7 @@ AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_LANG([C++])
 AC_PROG_CXX
+AC_PROG_CXXCPP
 
 dnl extra variables
 AC_SUBST(EXTRAOBJS)
@@ -26,7 +27,7 @@ AC_ARG_WITH(libmpeg3,
 	use_libmpeg3="no")
 AC_ARG_WITH(xaudio,
 	[AC_HELP_STRING([--with-xaudio],
-		[use xaudio for mp3 support [default=yes]])],
+		[use xaudio for mp3 support [default=auto]])],
 	use_xaudio=$withval,
 	use_xaudio="default") dnl to differentiate between explicit and default
 AC_ARG_WITH(vorbis,
@@ -41,9 +42,18 @@ AC_CANONICAL_HOST
 host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
 host_os=`echo "$host_os" | sed "s/-.*//"`
 
+dnl if user has explicitly enabled both, warn that they are incompatible
 if [[ "$use_libmpeg3" = "yes" ] && [ "$use_xaudio" = "yes" ]] ; then
 	AC_MSG_ERROR([*** --use-libmpeg3 and --use-xaudio are mutually exclusive])
 fi
+
+dnl make use_xaudio's default behave as advertised above (default=yes on i386/linux, no elsewhere)
+if [[ "$host_os" = "linux" ] && [ "$host_cpu" = "i386" ] && [ "$use_xaudio" = "default" ]] ; then
+   use_xaudio="yes"
+elif [[ "$use_xaudio" = "default" ]]; then
+   use_xaudio="no"
+fi
+   
 
 if [[ "$use_libmpeg3" = "yes" ]] ; then
 
@@ -58,7 +68,7 @@ if [[ "$use_libmpeg3" = "yes" ]] ; then
 	use_xaudio="no"
 fi
 
-if [[ "$use_xaudio" = "yes" ] || [ "$use_xaudio" = "default" ]] ; then
+if [[ "$use_xaudio" = "yes" ]] ; then
 
 	if [[ "$host_cpu" != "i386" ]] ; then
 		AC_MSG_ERROR([*** xaudio is not supported on architectures other than i386])
@@ -84,27 +94,42 @@ if [[ "$mp3support" = "true" ]] ; then
       [Define if at least one supported library for mp3 functions is present])
 
 fi
-dnl this complicated-looking thing is simple a nested function that checks for
-dnl the library, checking for the header as well on success
+
+
 if [[ $use_vorbis = "yes" ]] ; then
 
-AC_CHECK_LIB(vorbisfile, ov_open,
-	[ AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
-		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))],
-	AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
-	-lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+   dnl check for both headers and libraries
+   
+   AC_CHECK_LIB(vorbisfile, ov_open, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+	   -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+
+   AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
+		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))
 
 	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
 	AC_DEFINE(USE_LIBVORBIS, 1,
 		[Define if the ogg vorbis decoding library is present])
 fi
 
+dnl --- check for required libraries ---
+
+dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
 AC_PATH_PROG(WX_CONFIG, wx-config, no)
 if [[ "$WX_CONFIG" = "no" ]] ; then
-	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed?")
+	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
+
+dnl libid3 -- check both headers and libraries
+
+AC_CHECK_LIB(id3, ID3Tag_New, true, dnl here true is just a nop
+   AC_MSG_ERROR([*** libid3 not found. This library is required to build Audacity.]))
+
+AC_CHECK_HEADER(id3.h, ,
+   AC_MSG_ERROR([*** libid3 headers not found. This library is required to build Audacity.]))
+LIBS="$LIBS -lid3"
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

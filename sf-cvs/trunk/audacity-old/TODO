@@ -14,6 +14,7 @@ UI::
 - add "trip" (= opposite of delete -- delete all but selection)
 - invert selection
 - legend for pitch and spectrum
+- loop over a small segment
 
 NEW FEATURES::
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope

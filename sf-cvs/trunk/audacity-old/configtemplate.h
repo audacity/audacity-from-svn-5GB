@@ -1,43 +1,26 @@
-/* configtemplate.h.  Generated automatically from configure.in by autoheader.  */
+/* configtemplate.h.  Generated automatically from configure.in by autoheader 2.13.  */
 
-/* Define if you have the <inttypes.h> header file. */
-#undef HAVE_INTTYPES_H
+/* Define to empty if the keyword does not work.  */
+#undef const
 
-/* Define if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
+/* Define to `long' if <sys/types.h> doesn't define.  */
+#undef off_t
 
-/* Define if you have the <stdlib.h> header file. */
-#undef HAVE_STDLIB_H
+/* Define to `unsigned' if <sys/types.h> doesn't define.  */
+#undef size_t
 
-/* Define if you have the <strings.h> header file. */
-#undef HAVE_STRINGS_H
-
-/* Define if you have the <string.h> header file. */
-#undef HAVE_STRING_H
-
-/* Define if you have the <unistd.h> header file. */
-#undef HAVE_UNISTD_H
-
-/* Define if at least one supported library for mp3 functions is present */
-#undef MP3SUPPORT
-
-/* Define if you have the ANSI C header files. */
+/* Define if you have the ANSI C header files.  */
 #undef STDC_HEADERS
 
 /* Define if mp3 support is implemented with the libmpeg3 library */
 #undef USE_LIBMPEG3
 
-/* Define if the ogg vorbis decoding library is present */
-#undef USE_LIBVORBIS
-
 /* Define if mp3 support is implemented with the xaudio library */
 #undef USE_XAUDIO
 
-/* Define to empty if `const' does not conform to ANSI C. */
-#undef const
+/* Define if at least one supported library for mp3 functions is present */
+#undef MP3SUPPORT
 
-/* Define to `long' if <sys/types.h> does not define. */
-#undef off_t
+/* Define if the ogg vorbis decoding library is present */
+#undef USE_LIBVORBIS
 
-/* Define to `unsigned' if <sys/types.h> does not define. */
-#undef size_t
