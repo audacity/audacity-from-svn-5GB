@@ -70,7 +70,7 @@ AC_DEFUN(AC_SYS_EXTRA_LARGEFILE,
      AC_SYS_EXTRA_LARGEFILE_FLAGS(CFLAGS)
      AC_SYS_EXTRA_LARGEFILE_FLAGS(LDFLAGS)
      AC_SYS_EXTRA_LARGEFILE_FLAGS(LIBS)
-	
+
      for ac_flag in $ac_cv_sys_largefile_CFLAGS no; do
        case "$ac_flag" in
        no) ;;
@@ -87,7 +87,7 @@ AC_DEFUN(AC_SYS_EXTRA_LARGEFILE,
      AC_SYS_EXTRA_LARGEFILE_SPACE_APPEND(LIBS, "$ac_cv_sys_largefile_LIBS")
      AC_SYS_EXTRA_LARGEFILE_MACRO_VALUE(_FILE_OFFSET_BITS,
        ac_cv_sys_file_offset_bits,
-       [[Number of bits in a file offset, on hosts where this is settable.]])
+       [Number of bits in a file offset, on hosts where this is settable.])
        [case "$host_os" in
 	# HP-UX 10.20 and later
 	hpux10.[2-9][0-9]* | hpux1[1-9]* | hpux[2-9][0-9]*)
@@ -111,6 +111,12 @@ AC_DEFUN(AC_SYS_EXTRA_LARGEFILE,
 	esac])
    fi
   ])
+
+
+
+
+
+
 dnl @synopsis AC_C_FIND_ENDIAN
 dnl
 dnl Determine endian-ness of target processor.
@@ -134,7 +140,7 @@ dnl    3) If 1) and 2) fails and not cross compiling run a test program.
 dnl    4) If 1) and 2) fails and cross compiling then guess based on target.
 
 AC_DEFUN([AC_C_FIND_ENDIAN],
-[AC_CACHE_CHECK(determining processor byte ordering, 
+[AC_CACHE_CHECK(processor byte ordering, 
 	ac_cv_c_byte_order,
 
 # Initialize to unknown
@@ -269,6 +275,46 @@ else
 
 )# AC_C_FIND_ENDIAN
 
+
+
+
+
+dnl @synopsis AC_C99_FLEXIBLE_ARRAY
+dnl
+dnl Dose the compiler support the 1999 ISO C Standard "stuct hack".
+dnl @version 1.1	Mar 15 2004
+dnl @author Erik de Castro Lopo <erikd AT mega-nerd DOT com>
+dnl
+dnl Permission to use, copy, modify, distribute, and sell this file for any 
+dnl purpose is hereby granted without fee, provided that the above copyright 
+dnl and this permission notice appear in all copies.  No representations are
+dnl made about the suitability of this software for any purpose.  It is 
+dnl provided "as is" without express or implied warranty.
+
+AC_DEFUN([AC_C99_FLEXIBLE_ARRAY],
+[AC_CACHE_CHECK(C99 struct flexible array support, 
+	ac_cv_c99_flexible_array,
+
+# Initialize to unknown
+ac_cv_c99_flexible_array=no
+
+AC_TRY_LINK([[
+	#include <stdlib.h>
+	typedef struct {
+	int k;
+	char buffer [] ;
+	} MY_STRUCT ;
+	]], 
+	[  MY_STRUCT *p = calloc (1, sizeof (MY_STRUCT) + 42); ],
+	ac_cv_c99_flexible_array=yes,
+	ac_cv_c99_flexible_array=no
+	))]
+) # AC_C99_FLEXIBLE_ARRAY
+
+
+     
+
+
 dnl @synopsis AC_C99_FUNC_LRINT
 dnl
 dnl Check whether C99's lrint function is available.
@@ -341,3 +387,177 @@ if test "$ac_cv_c99_lrintf" = yes; then
             [Define if you have C99's lrintf function.])
 fi
 ])# AC_C99_FUNC_LRINTF
+
+
+
+
+dnl @synopsis AC_C99_FUNC_LLRINT
+dnl
+dnl Check whether C99's llrint function is available.
+dnl @version 1.1	Sep 30 2002
+dnl @author Erik de Castro Lopo <erikd AT mega-nerd DOT com>
+dnl
+dnl Permission to use, copy, modify, distribute, and sell this file for any 
+dnl purpose is hereby granted without fee, provided that the above copyright 
+dnl and this permission notice appear in all copies.  No representations are
+dnl made about the suitability of this software for any purpose.  It is 
+dnl provided "as is" without express or implied warranty.
+dnl
+AC_DEFUN([AC_C99_FUNC_LLRINT],
+[AC_CACHE_CHECK(for llrint,
+  ac_cv_c99_llrint,
+[
+llrint_save_CFLAGS=$CFLAGS
+CFLAGS="-O2 -lm"
+AC_TRY_LINK([
+#define		_ISOC9X_SOURCE	1
+#define 	_ISOC99_SOURCE	1
+#define		__USE_ISOC99	1
+#define 	__USE_ISOC9X	1
+
+#include <math.h>
+#include <stdint.h>
+], int64_t	x ; x = llrint(3.14159) ;, ac_cv_c99_llrint=yes, ac_cv_c99_llrint=no)
+
+CFLAGS=$llrint_save_CFLAGS
+
+])
+
+if test "$ac_cv_c99_llrint" = yes; then
+  AC_DEFINE(HAVE_LLRINT, 1,
+            [Define if you have C99's llrint function.])
+fi
+])# AC_C99_FUNC_LLRINT
+
+
+
+dnl @synopsis AC_C_CLIP_MODE
+dnl
+dnl Determine the clipping mode when converting float to int.
+dnl @version 1.0	May 17 2003
+dnl @author Erik de Castro Lopo <erikd AT mega-nerd DOT com>
+dnl
+dnl Permission to use, copy, modify, distribute, and sell this file for any 
+dnl purpose is hereby granted without fee, provided that the above copyright 
+dnl and this permission notice appear in all copies.  No representations are
+dnl made about the suitability of this software for any purpose.  It is 
+dnl provided "as is" without express or implied warranty.
+
+
+
+dnl Find the clipping mode in the following way:
+dnl    1) If we are not cross compiling test it.
+dnl    2) IF we are cross compiling, assume that clipping isn't done correctly.
+
+AC_DEFUN([AC_C_CLIP_MODE],
+[AC_CACHE_CHECK(processor clipping capabilities, 
+	ac_cv_c_clip_type,
+
+# Initialize to unknown
+ac_cv_c_clip_positive=unknown
+ac_cv_c_clip_negative=unknown
+
+if test $ac_cv_c_clip_positive = unknown ; then
+	AC_TRY_RUN(
+	[[
+	#define	_ISOC9X_SOURCE	1
+	#define _ISOC99_SOURCE	1
+	#define	__USE_ISOC99	1
+	#define __USE_ISOC9X	1
+	#include <math.h>
+	int main (void)
+	{	double	fval ;
+		int k, ival ;
+
+		fval = 1.0 * 0x7FFFFFFF ;
+		for (k = 0 ; k < 100 ; k++)
+		{	ival = (lrint (fval)) >> 24 ;
+			if (ival != 127)
+				return 1 ;
+		
+			fval *= 1.2499999 ;
+			} ;
+		
+			return 0 ;
+		}
+		]],
+		ac_cv_c_clip_positive=yes,
+		ac_cv_c_clip_positive=no,
+		ac_cv_c_clip_positive=unknown
+		)
+
+	AC_TRY_RUN(
+	[[
+	#define	_ISOC9X_SOURCE	1
+	#define _ISOC99_SOURCE	1
+	#define	__USE_ISOC99	1
+	#define __USE_ISOC9X	1
+	#include <math.h>
+	int main (void)
+	{	double	fval ;
+		int k, ival ;
+
+		fval = -8.0 * 0x10000000 ;
+		for (k = 0 ; k < 100 ; k++)
+		{	ival = (lrint (fval)) >> 24 ;
+			if (ival != -128)
+				return 1 ;
+		
+			fval *= 1.2499999 ;
+			} ;
+		
+			return 0 ;
+		}
+		]],
+		ac_cv_c_clip_negative=yes,
+		ac_cv_c_clip_negative=no,
+		ac_cv_c_clip_negative=unknown
+		)
+	fi
+
+if test $ac_cv_c_clip_positive = yes ; then
+	ac_cv_c_clip_positive=1
+else
+	ac_cv_c_clip_positive=0
+	fi
+
+if test $ac_cv_c_clip_negative = yes ; then
+	ac_cv_c_clip_negative=1
+else
+	ac_cv_c_clip_negative=0
+	fi
+
+[[
+case "$ac_cv_c_clip_positive$ac_cv_c_clip_negative" in
+	"00")
+		ac_cv_c_clip_type="none"
+		;;
+	"10")
+		ac_cv_c_clip_type="positive"
+		;;
+	"01")
+		ac_cv_c_clip_type="negative"
+		;;
+	"11")
+		ac_cv_c_clip_type="both"
+		;;
+	esac
+	]]
+
+)
+]
+
+)# AC_C_CLIP_MODE
+
+
+
+
+ifelse(dnl	
+
+ Do not edit or modify anything in this comment block.
+ The arch-tag line is a file identity tag for the GNU Arch 
+ revision control system.
+
+ arch-tag: bc38294d-bb5c-42ad-90b9-779def5eaab7
+
+)dnl

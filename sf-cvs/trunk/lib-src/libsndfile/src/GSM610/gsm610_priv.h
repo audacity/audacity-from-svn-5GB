@@ -8,7 +8,6 @@
 #define	PRIVATE_H
 
 /* Added by Erik de Castro Lopo */
-#define	SASR  
 #define	USE_FLOAT_MUL
 #define	FAST
 #define	WAV49  
@@ -23,19 +22,19 @@ typedef unsigned short		uword;		/* unsigned word	*/
 typedef unsigned int		ulongword;	/* unsigned longword	*/
 
 struct gsm_state 
-{	word			dp0[ 280 ];
+{	word			dp0[ 280 ] ;
 
 	word			z1;			/* preprocessing.c, Offset_com. */
 	longword		L_z2;		/*                  Offset_com. */
 	int				mp;			/*                  Preemphasis	*/
 
-	word			u[8];			/* short_term_aly_filter.c	*/
-	word			LARpp[2][8]; 	/*                              */
+	word			u[8] ;			/* short_term_aly_filter.c	*/
+	word			LARpp[2][8] ; 	/*                              */
 	word			j;				/*                              */
 
 	word	        ltp_cut;        /* long_term.c, LTP crosscorr.  */
 	word			nrp; 			/* 40 */	/* long_term.c, synthesis	*/
-	word			v[9];			/* short_term.c, synthesis	*/
+	word			v[9] ;			/* short_term.c, synthesis	*/
 	word			msr;			/* decoder.c,	Postprocessing	*/
 
 	char			verbose;		/* only used if !NDEBUG		*/
@@ -46,7 +45,7 @@ struct gsm_state
 	unsigned char	frame_chain;	/*   half-byte to carry forward	*/
 
 	/* Moved here from code.c where it was defined as static */
-	word e[50];
+	word e[50] ;
 } ;
 
 typedef struct gsm_state GSM_STATE ;
@@ -57,93 +56,116 @@ typedef struct gsm_state GSM_STATE ;
 #define	MIN_LONGWORD	(-2147483647 - 1)
 #define	MAX_LONGWORD	  2147483647
 
-#ifdef	SASR		/* flag: >> is a signed arithmetic shift right */
-#undef	SASR
-#define	SASR(x, by)	((x) >> (by))
-#else
-#define	SASR(x, by)	((x) >= 0 ? (x) >> (by) : (~(-((x) + 1) >> (by))))
-#endif	/* SASR */
+/* Signed arithmetic shift right. */
+static inline word
+SASR_W (word x, word by)
+{	return (x >> by) ;
+} /* SASR */
+
+static inline longword
+SASR_L (longword x, word by)
+{	return (x >> by) ;
+} /* SASR */
 
 /*
  *	Prototypes from add.c
  */
-word	gsm_mult 		(word a, word b);
-longword gsm_L_mult 	(word a, word b);
-word	gsm_mult_r		(word a, word b);
+word	gsm_mult 		(word a, word b) ;
+longword gsm_L_mult 	(word a, word b) ;
+word	gsm_mult_r		(word a, word b) ;
 
-word	gsm_div  		(word num, word denum);
+word	gsm_div  		(word num, word denum) ;
 
-word	gsm_add 		(word a, word b );
-longword gsm_L_add 	(longword a, longword b );
+word	gsm_add 		(word a, word b ) ;
+longword gsm_L_add 	(longword a, longword b ) ;
 
-word	gsm_sub 		(word a, word b);
-longword gsm_L_sub 	(longword a, longword b);
+word	gsm_sub 		(word a, word b) ;
+longword gsm_L_sub 	(longword a, longword b) ;
 
-word	gsm_abs 		(word a);
+word	gsm_abs 		(word a) ;
 
-word	gsm_norm 		(longword a );
+word	gsm_norm 		(longword a ) ;
 
-longword gsm_L_asl  	(longword a, int n);
-word	gsm_asl 		(word a, int n);
+longword gsm_L_asl  	(longword a, int n) ;
+word	gsm_asl 		(word a, int n) ;
 
-longword gsm_L_asr  	(longword a, int n);
-word	gsm_asr  		(word a, int n);
+longword gsm_L_asr  	(longword a, int n) ;
+word	gsm_asr  		(word a, int n) ;
 
 /*
  *  Inlined functions from add.h 
  */
 
-/* 
- * #define GSM_MULT_R(a, b) (* word a, word b, !(a == b == MIN_WORD) *)	\
- *	(0x0FFFF & SASR(((longword)(a) * (longword)(b) + 16384), 15))
- */
-#define GSM_MULT_R(a, b) /* word a, word b, !(a == b == MIN_WORD) */	\
-	(SASR( ((longword)(a) * (longword)(b) + 16384), 15 ))
+static inline longword
+GSM_MULT_R (word a, word b)
+{	return (((longword) (a)) * ((longword) (b)) + 16384) >> 15 ;
+} /* GSM_MULT_R */
 
-# define GSM_MULT(a,b)	 /* word a, word b, !(a == b == MIN_WORD) */	\
-	(SASR( ((longword)(a) * (longword)(b)), 15 ))
+static inline longword
+GSM_MULT (word a, word b)
+{	return (((longword) (a)) * ((longword) (b))) >> 15 ;
+} /* GSM_MULT */
 
-# define GSM_L_MULT(a, b) /* word a, word b */	\
-	(((longword)(a) * (longword)(b)) << 1)
+static inline longword
+GSM_L_MULT (word a, word b)
+{	return ((longword) (a)) * ((longword) (b)) << 1 ;
+} /* GSM_L_MULT */
 
-# define GSM_L_ADD(a, b)	\
-	( (a) <  0 ? ( (b) >= 0 ? (a) + (b)	\
-		 : (utmp = (ulongword)-((a) + 1) + (ulongword)-((b) + 1)) \
-		   >= MAX_LONGWORD ? MIN_LONGWORD : -(longword)utmp-2 )   \
-	: ((b) <= 0 ? (a) + (b)   \
-	          : (utmp = (ulongword)(a) + (ulongword)(b)) >= MAX_LONGWORD \
-		    ? MAX_LONGWORD : utmp))
+static inline longword
+GSM_L_ADD (longword a, longword b)
+{	ulongword utmp ;
+	
+	if (a < 0 && b < 0)
+	{	utmp = (ulongword)-((a) + 1) + (ulongword)-((b) + 1) ;
+		return (utmp >= (ulongword) MAX_LONGWORD) ? MIN_LONGWORD : -(longword)utmp-2 ;
+		} ;
+	
+	if (a > 0 && b > 0)
+	{	utmp = (ulongword) a + (ulongword) b ;
+		return (utmp >= (ulongword) MAX_LONGWORD) ? MAX_LONGWORD : utmp ;
+		} ;
+	
+	return a + b ;
+} /* GSM_L_ADD */
 
-/*
- * # define GSM_ADD(a, b)	\
- * 	((ltmp = (longword)(a) + (longword)(b)) >= MAX_WORD \
- * 	? MAX_WORD : ltmp <= MIN_WORD ? MIN_WORD : ltmp)
- */
-/* Nonportable, but faster: */
+static inline longword
+GSM_ADD (word a, word b)
+{	longword ltmp ;
 
-#define	GSM_ADD(a, b)	\
-	((ulongword)((ltmp = (longword)(a) + (longword)(b)) - MIN_WORD) > \
-		MAX_WORD - MIN_WORD ? (ltmp > 0 ? MAX_WORD : MIN_WORD) : ltmp)
+	ltmp = ((longword) a) + ((longword) b) ;
 
-# define GSM_SUB(a, b)	\
-	((ltmp = (longword)(a) - (longword)(b)) >= MAX_WORD \
-	? MAX_WORD : ltmp <= MIN_WORD ? MIN_WORD : ltmp)
+	if (ltmp >= MAX_WORD)
+		return MAX_WORD ;
+	if (ltmp <= MIN_WORD)
+		return MIN_WORD ;
 
-# define GSM_ABS(a)	((a) < 0 ? ((a) == MIN_WORD ? MAX_WORD : -(a)) : (a))
+	return ltmp ;
+} /* GSM_ADD */
 
-/* Use these if necessary:
+static inline longword
+GSM_SUB (word a, word b)
+{	longword ltmp ;
 
-# define GSM_MULT_R(a, b)	gsm_mult_r(a, b)
-# define GSM_MULT(a, b)		gsm_mult(a, b)
-# define GSM_L_MULT(a, b)	gsm_L_mult(a, b)
+	ltmp = ((longword) a) - ((longword) b) ;
+	
+	if (ltmp >= MAX_WORD)
+		ltmp = MAX_WORD ;
+	else if (ltmp <= MIN_WORD)
+		ltmp = MIN_WORD ;
+	
+	return ltmp ;
+} /* GSM_SUB */
 
-# define GSM_L_ADD(a, b)	gsm_L_add(a, b)
-# define GSM_ADD(a, b)		gsm_add(a, b)
-# define GSM_SUB(a, b)		gsm_sub(a, b)
+static inline word
+GSM_ABS (word a)
+{
+	if (a > 0)
+		return a ;
+	if (a == MIN_WORD)
+		return MAX_WORD ;
+	return -a ;
+} /* GSM_ADD */
 
-# define GSM_ABS(a)		gsm_abs(a)
-
-*/
 
 /*
  *  More prototypes from implementations..
@@ -156,7 +178,7 @@ void Gsm_Coder (
 		word	* bc,	/* [0..3] coded LTP gain	OUT 	*/
 		word	* Mc,	/* [0..3] RPE grid selection	OUT     */
 		word	* xmaxc,/* [0..3] Coded maximum amplitude OUT	*/
-		word	* xMc	/* [13*4] normalized RPE samples OUT	*/);
+		word	* xMc) ;/* [13*4] normalized RPE samples OUT	*/
 
 void Gsm_Long_Term_Predictor (		/* 4x for 160 samples */
 		struct gsm_state * S,
@@ -165,16 +187,16 @@ void Gsm_Long_Term_Predictor (		/* 4x for 160 samples */
 		word	* e,	/* [0..40] 			OUT	*/
 		word	* dpp,	/* [0..40] 			OUT	*/
 		word	* Nc,	/* correlation lag		OUT	*/
-		word	* bc	/* gain factor			OUT	*/);
+		word	* bc) ;	/* gain factor			OUT	*/
 
 void Gsm_LPC_Analysis (
 		struct gsm_state * S,
-		word * s,	 /* 0..159 signals	IN/OUT	*/
-	        word * LARc);   /* 0..7   LARc's	OUT	*/
+		word * s,		/* 0..159 signals	IN/OUT	*/
+		word * LARc) ;   /* 0..7   LARc's	OUT	*/
 
 void Gsm_Preprocess (
 		struct gsm_state * S,
-		word * s, word * so);
+		word * s, word * so) ;
 
 void Gsm_Encoding (
 		struct gsm_state * S,
@@ -182,12 +204,12 @@ void Gsm_Encoding (
 		word	* ep,	
 		word	* xmaxc,
 		word	* Mc,	
-		word	* xMc);
+		word	* xMc) ;
 
 void Gsm_Short_Term_Analysis_Filter (
 		struct gsm_state * S,
 		word	* LARc,	/* coded log area ratio [0..7]  IN	*/
-		word	* d	/* st res. signal [0..159]	IN/OUT	*/);
+		word	* d) ;	/* st res. signal [0..159]	IN/OUT	*/
 
 void Gsm_Decoder (
 		struct gsm_state * S,
@@ -197,58 +219,58 @@ void Gsm_Decoder (
 		word	* Mcr,		/* [0..3] 		IN 	*/
 		word	* xmaxcr,	/* [0..3]		IN 	*/
 		word	* xMcr,		/* [0..13*4]		IN	*/
-		word	* s);		/* [0..159]		OUT 	*/
+		word	* s) ;		/* [0..159]		OUT 	*/
 
 void Gsm_Decoding (
 		struct gsm_state * S,
 		word 	xmaxcr,
 		word	Mcr,
 		word	* xMcr,  	/* [0..12]		IN	*/
-		word	* erp); 	/* [0..39]		OUT 	*/
+		word	* erp) ; 	/* [0..39]		OUT 	*/
 
 void Gsm_Long_Term_Synthesis_Filtering (
 		struct gsm_state* S,
 		word	Ncr,
 		word	bcr,
 		word	* erp,		/* [0..39]		  IN 	*/
-		word	* drp); 	/* [-120..-1] IN, [0..40] OUT 	*/
+		word	* drp) ; 	/* [-120..-1] IN, [0..40] OUT 	*/
 
 void Gsm_RPE_Decoding (
 	/*-struct gsm_state *S,-*/
 		word xmaxcr,
 		word Mcr,
 		word * xMcr,  /* [0..12], 3 bits             IN      */
-		word * erp); /* [0..39]                     OUT     */
+		word * erp) ; /* [0..39]                     OUT     */
 
 void Gsm_RPE_Encoding (
 		/*-struct gsm_state * S,-*/
 		word    * e,            /* -5..-1][0..39][40..44     IN/OUT  */
 		word    * xmaxc,        /*                              OUT */
 		word    * Mc,           /*                              OUT */
-		word    * xMc);        /* [0..12]                      OUT */
+		word    * xMc) ;        /* [0..12]                      OUT */
 
 void Gsm_Short_Term_Synthesis_Filter (
 		struct gsm_state * S,
 		word	* LARcr, 	/* log area ratios [0..7]  IN	*/
 		word	* drp,		/* received d [0...39]	   IN	*/
-		word	* s);		/* signal   s [0..159]	  OUT	*/
+		word	* s) ;		/* signal   s [0..159]	  OUT	*/
 
 void Gsm_Update_of_reconstructed_short_time_residual_signal (
 		word	* dpp,		/* [0...39]	IN	*/
 		word	* ep,		/* [0...39]	IN	*/
-		word	* dp);		/* [-120...-1]  IN/OUT 	*/
+		word	* dp) ;		/* [-120...-1]  IN/OUT 	*/
 
 /*
  *  Tables from table.c
  */
 #ifndef	GSM_TABLE_C
 
-extern word gsm_A[8], gsm_B[8], gsm_MIC[8], gsm_MAC[8];
-extern word gsm_INVA[8];
-extern word gsm_DLB[4], gsm_QLB[4];
-extern word gsm_H[11];
-extern word gsm_NRFAC[8];
-extern word gsm_FAC[8];
+extern word gsm_A [8], gsm_B [8], gsm_MIC [8], gsm_MAC [8] ;
+extern word gsm_INVA [8] ;
+extern word gsm_DLB [4], gsm_QLB [4] ;
+extern word gsm_H [11] ;
+extern word gsm_NRFAC [8] ;
+extern word gsm_FAC [8] ;
 
 #endif	/* GSM_TABLE_C */
 
@@ -264,11 +286,19 @@ extern word gsm_FAC[8];
 
 #else	/* !NDEBUG => DEBUG */
 
-	void  gsm_debug_words     (char * name, int, int, word *);
-	void  gsm_debug_longwords (char * name, int, int, longword *);
-	void  gsm_debug_longword  (char * name, longword);
-	void  gsm_debug_word      (char * name, word);
+	void  gsm_debug_words     (char * name, int, int, word *) ;
+	void  gsm_debug_longwords (char * name, int, int, longword *) ;
+	void  gsm_debug_longword  (char * name, longword) ;
+	void  gsm_debug_word      (char * name, word) ;
 
 #endif /* !NDEBUG */
 
 #endif	/* PRIVATE_H */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 8bc5fdf2-e8c8-4686-9bd7-a30b512bef0c
+*/
+

@@ -20,7 +20,7 @@
 ## the sample rate to @var{fs}.
 ## @end deftypefn
 
-## Author: Erik de Castro Lopo <erikd@zip.com.au>
+## Author: Erik de Castro Lopo <erikd@mega-nerd.com>
 ## Description: Save data as a sound file
 
 function sndfile_save (filename, data, fs)
@@ -46,8 +46,15 @@ if (nr > nc),
 samplerate = fs ;
 wavedata = data ;
 
-str = sprintf ("save %s samplerate wavedata", filename) ;
+str = sprintf ("save -mat-binary %s samplerate wavedata", filename) ;
 
 eval (str) ;
 
 endfunction
+
+# Do not edit or modify anything in this comment block.
+# The arch-tag line is a file identity tag for the GNU Arch 
+# revision control system.
+#
+# arch-tag: 5e44602b-940b-4927-af7c-47639769a40b
+

@@ -1,25 +1,23 @@
 /*
-** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
-**  
+** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
 ** the Free Software Foundation; either version 2.1 of the License, or
 ** (at your option) any later version.
-** 
+**
 ** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU Lesser General Public License for more details.
-** 
+**
 ** You should have received a copy of the GNU Lesser General Public License
-** along with this program; if not, write to the Free Software 
+** along with this program; if not, write to the Free Software
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
 #include	<stdio.h>
 #include	<string.h>
-#include	<unistd.h>
-#include    <string.h>
 #include	<math.h>
 
 #include	"sndfile.h"
@@ -29,11 +27,11 @@
 static SF_FORMAT_INFO const simple_formats [] =
 {
 	{	SF_FORMAT_AIFF | SF_FORMAT_PCM_16,
-		"AIFF (Apple/SGI 16 bit PCM)", "aiff" 
+		"AIFF (Apple/SGI 16 bit PCM)", "aiff"
 		},
-	
+
 	{	SF_FORMAT_AIFF | SF_FORMAT_FLOAT,
-		"AIFF (Apple/SGI 32 bit float)", "aifc" 
+		"AIFF (Apple/SGI 32 bit float)", "aifc"
 		},
 
 	{	SF_FORMAT_AIFF | SF_FORMAT_PCM_S8,
@@ -43,13 +41,13 @@ static SF_FORMAT_INFO const simple_formats [] =
 	{	SF_FORMAT_AU | SF_FORMAT_PCM_16,
 		"AU (Sun/Next 16 bit PCM)", "au"
 		},
-		
+
 	{	SF_FORMAT_AU | SF_FORMAT_ULAW,
 		"AU (Sun/Next 8-bit u-law)", "au"
 		},
-		
+
 	{	SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM,
-		"OKI Dialogic VOX ADPCM)", "vox"
+		"OKI Dialogic VOX ADPCM", "vox"
 		},
 
 	{	SF_FORMAT_WAV | SF_FORMAT_PCM_16,
@@ -63,24 +61,24 @@ static SF_FORMAT_INFO const simple_formats [] =
 	{	SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM,
 		"WAV (Microsoft 4 bit IMA ADPCM)", "wav"
 		},
-		
+
 	{	SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM,
 		"WAV (Microsoft 4 bit MS ADPCM)", "wav"
 		},
-	
+
 	{	SF_FORMAT_WAV | SF_FORMAT_PCM_U8,
 		"WAV (Microsoft 8 bit PCM)", "wav"
 		},
 
 } ; /* simple_formats */
 
-int		
+int
 psf_get_format_simple_count	(void)
 {	return (sizeof (simple_formats) / sizeof (SF_FORMAT_INFO)) ;
 } /* psf_get_format_simple_count */
 
 int
-psf_get_format_simple (SF_FORMAT_INFO *data) 
+psf_get_format_simple (SF_FORMAT_INFO *data)
 {	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (simple_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
@@ -88,7 +86,7 @@ psf_get_format_simple (SF_FORMAT_INFO *data)
 
 	indx = data->format ;
 	memcpy (data, &(simple_formats [indx]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
-	
+
 	return 0 ;
 } /* psf_get_format_simple */
 
@@ -100,11 +98,15 @@ static SF_FORMAT_INFO const major_formats [] =
 {
 	{	SF_FORMAT_AIFF,		"AIFF (Apple/SGI)",						"aiff" 	},
 	{	SF_FORMAT_AU,		"AU (Sun/NeXT)", 						"au"	},
-	{	SF_FORMAT_SVX,		"IFF (Amiga IFF/SVX8/SV16)",	 		"iff"	},
+	{	SF_FORMAT_AVR,		"AVR (Audio Visual Research)",	 		"avr"	},
+	{	SF_FORMAT_HTK,		"HTK (HMM Tool Kit)",					"htk"	},
+	{	SF_FORMAT_SVX,		"IFF (Amiga IFF/SVX8/SV16)",			"iff"	},
 	{	SF_FORMAT_MAT4,		"MAT4 (GNU Octave 2.0 / Matlab 4.2)",	"mat"	},
 	{	SF_FORMAT_MAT5,		"MAT5 (GNU Octave 2.1 / Matlab 5.0)",	"mat"	},
 	{	SF_FORMAT_PAF,		"PAF (Ensoniq PARIS)", 					"paf"	},
-	{	SF_FORMAT_RAW,		"RAW header-less",				 		"raw"	},
+	{	SF_FORMAT_PVF,		"PVF (Portable Voice Format)",			"pvf"	},
+	{	SF_FORMAT_RAW,		"RAW (header-less)",				 	"raw"	},
+	{	SF_FORMAT_SDS,		"SDS (Midi Sample Dump Standard)", 		"sds"	},
 	/* Not ready for mainstream use yet.
 	{	SF_FORMAT_SD2,		"SD2 (Sound Designer II)", 			"sd2"	},
 	*/
@@ -113,16 +115,18 @@ static SF_FORMAT_INFO const major_formats [] =
 	{	SF_FORMAT_W64,		"W64 (SoundFoundry WAVE 64)",			"w64"	},
 	{	SF_FORMAT_WAV,		"WAV (Microsoft)",						"wav"	},
 	{	SF_FORMAT_NIST,		"WAV (NIST Sphere)",	 				"wav"	},
+	{	SF_FORMAT_WAVEX,	"WAVEX (Microsoft)",					"wav"	},
+	{	SF_FORMAT_XI,		"XI (FastTracker 2)",					"xi"	},
 
 } ; /* major_formats */
 
-int		
+int
 psf_get_format_major_count	(void)
 {	return (sizeof (major_formats) / sizeof (SF_FORMAT_INFO)) ;
 } /* psf_get_format_major_count */
 
 int
-psf_get_format_major (SF_FORMAT_INFO *data) 
+psf_get_format_major (SF_FORMAT_INFO *data)
 {	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (major_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
@@ -130,7 +134,7 @@ psf_get_format_major (SF_FORMAT_INFO *data)
 
 	indx = data->format ;
 	memcpy (data, &(major_formats [indx]), SIGNED_SIZEOF (SF_FORMAT_INFO)) ;
-	
+
 	return 0 ;
 } /* psf_get_format_major */
 
@@ -146,10 +150,10 @@ static SF_FORMAT_INFO subtype_formats [] =
 	{	SF_FORMAT_PCM_32,		"Signed 32 bit PCM",	NULL 	},
 
 	{	SF_FORMAT_PCM_U8,		"Unsigned 8 bit PCM",	NULL 	},
-	
+
 	{	SF_FORMAT_FLOAT,		"32 bit float",			NULL 	},
 	{	SF_FORMAT_DOUBLE,		"64 bit float",			NULL 	},
-	
+
 	{	SF_FORMAT_ULAW,			"U-Law",				NULL 	},
 	{	SF_FORMAT_ALAW,			"A-Law",				NULL 	},
 	{	SF_FORMAT_IMA_ADPCM,	"IMA ADPCM",			NULL 	},
@@ -165,15 +169,17 @@ static SF_FORMAT_INFO subtype_formats [] =
 	{	SF_FORMAT_DWVW_24,		"24 bit DWVW",			NULL 	},
 	{	SF_FORMAT_VOX_ADPCM,	"VOX ADPCM",			"vox" 	},
 
+	{	SF_FORMAT_DPCM_16,		"16 bit DPCM",			NULL 	},
+	{	SF_FORMAT_DPCM_8,		"8 bit DPCM",			NULL 	},
 } ; /* subtype_formats */
 
-int		
+int
 psf_get_format_subtype_count	(void)
 {	return (sizeof (subtype_formats) / sizeof (SF_FORMAT_INFO)) ;
 } /* psf_get_format_subtype_count */
 
 int
-psf_get_format_subtype (SF_FORMAT_INFO *data) 
+psf_get_format_subtype (SF_FORMAT_INFO *data)
 {	int indx ;
 
 	if (data->format < 0 || data->format >= (SIGNED_SIZEOF (subtype_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)))
@@ -181,7 +187,7 @@ psf_get_format_subtype (SF_FORMAT_INFO *data)
 
 	indx = data->format ;
 	memcpy (data, &(subtype_formats [indx]), sizeof (SF_FORMAT_INFO)) ;
-	
+
 	return 0 ;
 } /* psf_get_format_subtype */
 
@@ -189,12 +195,12 @@ psf_get_format_subtype (SF_FORMAT_INFO *data)
 */
 
 int
-psf_get_format_info (SF_FORMAT_INFO *data) 
+psf_get_format_info (SF_FORMAT_INFO *data)
 {	int k, format ;
 
 	if (data->format & SF_FORMAT_TYPEMASK)
 	{	format = data->format & SF_FORMAT_TYPEMASK ;
-	
+
 		for (k = 0 ; k < (SIGNED_SIZEOF (major_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)) ; k++)
 		{	if (format == major_formats [k].format)
 			{	memcpy (data, &(major_formats [k]), sizeof (SF_FORMAT_INFO)) ;
@@ -204,7 +210,7 @@ psf_get_format_info (SF_FORMAT_INFO *data)
 		}
 	else if (data->format & SF_FORMAT_SUBMASK)
 	{	format = data->format & SF_FORMAT_SUBMASK ;
-	
+
 		for (k = 0 ; k < (SIGNED_SIZEOF (subtype_formats) / SIGNED_SIZEOF (SF_FORMAT_INFO)) ; k++)
 		{	if (format == subtype_formats [k].format)
 			{	memcpy (data, &(subtype_formats [k]), sizeof (SF_FORMAT_INFO)) ;
@@ -212,7 +218,7 @@ psf_get_format_info (SF_FORMAT_INFO *data)
 				} ;
 			} ;
 		} ;
-		
+
 	memset (data, 0, sizeof (SF_FORMAT_INFO)) ;
 
 	return SFE_BAD_CONTROL_CMD ;
@@ -232,35 +238,35 @@ psf_calc_signal_max (SF_PRIVATE *psf, int normalize)
 	{	psf->error = SFE_NOT_SEEKABLE ;
 		return	0.0 ;
 		} ;
-		
+
 	if (! psf->read_double)
 	{	psf->error = SFE_UNIMPLEMENTED ;
 		return	0.0 ;
 		} ;
-		
+
 	save_state = sf_command ((SNDFILE*) psf, SFC_GET_NORM_DOUBLE, NULL, 0) ;
-	
+
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, normalize) ;
-	
+
 	/* Brute force. Read the whole file and find the biggest sample. */
 	position = sf_seek ((SNDFILE*) psf, 0, SEEK_CUR) ; /* Get current position in file */
 	sf_seek ((SNDFILE*) psf, 0, SEEK_SET) ;			/* Go to start of file. */
-	
+
 	len = sizeof (psf->buffer) / sizeof (double) ;
-	
+
 	data = (double*) psf->buffer ;
-	
+
 	readcount = len ;
 	while (readcount > 0)
 	{	readcount = sf_read_double ((SNDFILE*) psf, data, len) ;
 		for (k = 0 ; k < readcount ; k++)
 		{	temp = fabs (data [k]) ;
-			max_val  = temp > max_val ? temp : max_val ;
+			max_val = temp > max_val ? temp : max_val ;
 			} ;
 		} ;
-	
+
 	sf_seek ((SNDFILE*) psf, position, SEEK_SET) ;		/* Return to original position. */
-	
+
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, save_state) ;
 
 	return	max_val ;
@@ -276,24 +282,24 @@ psf_calc_max_all_channels (SF_PRIVATE *psf, double *peaks, int normalize)
 	/* If the file is not seekable, there is nothing we can do. */
 	if (! psf->sf.seekable)
 		return (psf->error = SFE_NOT_SEEKABLE) ;
-		
+
 	if (! psf->read_double)
 		return (psf->error = SFE_UNIMPLEMENTED) ;
-		
+
 	save_state = sf_command ((SNDFILE*) psf, SFC_GET_NORM_DOUBLE, NULL, 0) ;
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, normalize) ;
-	
+
 	memset (peaks, 0, sizeof (double) * psf->sf.channels) ;
 
 	/* Brute force. Read the whole file and find the biggest sample for each channel. */
 	position = sf_seek ((SNDFILE*) psf, 0, SEEK_CUR) ; /* Get current position in file */
 	sf_seek ((SNDFILE*) psf, 0, SEEK_SET) ;			/* Go to start of file. */
-	
+
 	len = sizeof (psf->buffer) / sizeof (double) ;
-	
+
 	data = (double*) psf->buffer ;
-	
-	chan = 0;
+
+	chan = 0 ;
 	readcount = len ;
 	while (readcount > 0)
 	{	readcount = sf_read_double ((SNDFILE*) psf, data, len) ;
@@ -303,11 +309,18 @@ psf_calc_max_all_channels (SF_PRIVATE *psf, double *peaks, int normalize)
 			chan = (chan + 1) % psf->sf.channels ;
 			} ;
 		} ;
-	
+
 	sf_seek ((SNDFILE*) psf, position, SEEK_SET) ;		/* Return to original position. */
-	
+
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, save_state) ;
 
 	return	0 ;
 } /* psf_calc_signal_max */
 
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 0aae0d9d-ab2b-4d70-ade3-47a534666f8e
+*/
