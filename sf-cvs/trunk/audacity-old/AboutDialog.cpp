@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include "wx/dialog.h"
+#include "wx/html/htmlwin.h"
 
 #include "AboutDialog.h"
 #include "Audacity.h"
@@ -20,6 +21,72 @@
 #else
 #define DLOG_HEIGHT 400
 #endif
+
+const char *creditText =
+  "<html>"
+  "<body bgcolor=\"#cccccc\">"
+  "<font size=1>"
+  "<center>"
+  "<b>Audacity " AUDACITY_VERSION_STRING "</b><br>"
+  "A New Digital Audio Editor"
+  "</center>"
+  "<p>"
+  "Audacity is a free program being written by a team of developers using "
+  "Sourceforge, an online service for open-source projects.  "
+  "It is based on the wxWindows toolkit and is available for "
+  "Windows, MacOS, and Linux."
+  "<p>"
+  "This program is still in beta!  Many people find it very useful "
+  "and stable enough for everyday use, but it is not finished and "
+  "comes with no guarantee!  We depend on your feedback, so "
+  "please visit our website and give us your bug reports and "
+  "feature requests."
+  "<p>"
+  "http://www.cs.cmu.edu/~music/audacity/"
+  "<p>"
+  "<center><b>Credits</b></center>"
+  "<p>"
+  "<table border=0>"
+  "<tr>"
+  "<td>Dominic Mazzoni</td>"
+  "<td>Project leader and primary programmer</td>"
+  "</tr>"
+  "<tr>"
+  "<td>Joshua Haberman</td>"
+  "<td>Preferences dialog, MP3 importing and exporting, and general development</td>"
+  "</tr>"
+  "<tr>"
+  "<td>Roger Dannenberg</td>"
+  "<td>Audio and MIDI I/O Libraries</td>"
+  "</tr>"
+  "<tr>"
+  "<td>Nasca Octavian Paul</td>"
+  "<td>Effects programming</td>"
+  "</tr>"
+  "<tr>"
+  "<td>Harvey Lubin</td>"
+  "<td>Main Logo</td>"
+  "</tr>"
+  "<tr>"
+  "<td>Tom Woodhams</td>"
+  "<td>Aqua Graphics (MacOS)</td>"
+  "</tr>"
+  "</table>"
+  "<p>"
+  "<center>"
+  "<b>Other contributors:</b><p>"
+  "Dave Beydler<br>"
+  "Jason Cohen<br>"
+  "Robert Leidle<br>"
+  "Logan Lewis<br>" 
+  "Jason Pepas<br>"
+  "Mark Tomlinson<br>"
+  "David Topper<br>"
+  "Rudy Trubitt<br>"
+  "</center>"
+  "</font>"
+  "</body>"
+  "</html>";
 
 class Eraser:public wxWindow {
  public:
@@ -67,21 +134,11 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
                               wxSize(400, 400));
    panel->SetBackgroundColour(wxColour(255, 255, 255));
 
-   wxString topMessage("Audacity version " AUDACITY_VERSION_STRING);
-
-   wxString botMessage("A New Digital Audio Editor\n"
-                       "by Dominic Mazzoni, Roger Dannenberg, "
-                       "Jason Cohen, \n"
-                       "Robert Leidle, "
-                       "Mark Tomlinson, and Joshua Haberman.\n"
-                       "Logo by Harvey Lubin\n\n"
-                       "http://www.cs.cmu.edu/~music/audacity/");
-
-   new wxStaticText(panel, -1, topMessage, wxPoint(10, 10),
-                    wxSize(380, 20), wxALIGN_CENTER);
-
-   new wxStaticText(panel, -1, botMessage, wxPoint(10, 230),
-                    wxSize(380, 130), wxALIGN_CENTER);
+   wxString creditStr = creditText;
+   wxHtmlWindow *html = new wxHtmlWindow(panel, -1,
+                                         wxPoint(10, 210),
+                                         wxSize(380, 150));
+   html->SetPage(creditStr);
 
    wxButton *ok = new wxButton(panel, wxID_OK,
                                "Audacious!",
@@ -95,7 +152,7 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
    logo = new wxBitmap((const char **) AudacityLogo_xpm);
 
    icon =
-       new wxStaticBitmap(panel, -1, *logo, wxPoint(93, 30),
+       new wxStaticBitmap(panel, -1, *logo, wxPoint(93, 10),
                           wxSize(215, 190));
 }
 
