@@ -1,39 +1,46 @@
+/*----------------------------------------------------------------------*/
+/*	Stylesheet for Audacity Manual Pages				*/
+/*	All font sizes are expressed in pixels and thus are displayed	*/
+/*	in an almost identical fashion across standard browsers,	*/
+/*	namely Gecko based browsers, Opera and IE.			*/
+/*----------------------------------------------------------------------*/
+
 A,A:Visited,
-A:Active,A:Hover       {        font-family : Verdana,Arial,Helvetica,Sanserif;        }
-A:Hover                {        color : Red;        text-decoration : none;
-                        background-color : #EEEE80;}
-A:link,A:visited{        color : #EE0000;}
+A:Active,A:Hover {	font-family : Verdana,Arial,Helvetica,Sanserif;        }
+A:Hover		 {	color: Red;
+			text-decoration : none;
+	                background-color : #EEEE80;}
+A:link,A:visited {	color : #EE0000;}
 
-H1,H2,H3,H4        {        font-family : Verdana,Arial,Helvetica,Sanserif; }
+H1,H2,H3,H4        {    font-family : Verdana,Arial,Helvetica,Sanserif; }
 
-H1                {        font-size : 24pt; font-weight : normal; }
-H2                {        font-size : 18pt; font-weight : normal; }
-H3                {        font-size : 12pt; }
-H4                {        font-size : 10pt; }
+H1                {     font-size : 32px; font-weight : normal; }		/*24pt;*/
+H2                {     font-size : 24px; font-weight : normal; }	/*18pt;*/
+H3                {     font-size : 16px; }				/*12pt;*/
+H4                {     font-size : 13px; }				/*10pt;*/
 
 
-BODY,P            {     font-family : Verdana,Arial,Helvetica,Sanserif;
+BODY,P            {	font-family : Verdana,Arial,Helvetica,Sanserif;
                         font-style : normal;
                         font-weight : normal;
                         color : Black;			}
 
-BODY,.linknobg   {        background-color : White;	}
+BODY,.linknobg   {      background-color : White;	}
 
-.linknobg        {        text-decoration : none;	}
-
+.linknobg        {      text-decoration : none;	}
 
 P, .sf, UL, LI, OL, TD, .linknobg
-                 {        font-size : 10pt; /*95%;*/ 	}
+                 {      font-size : 13px; /*10pt;95%;*/ 	}
 
 
-A.sf             {        font-weight : bold;		}
+A.sf             {      font-weight : bold;		}
 
 
-.negative        {        color : Red;			}
+.negative        {      color : Red;			}
 
 
 .menuref,.menuref_current,.menuref_item
-                {       font-size : 12pt; /*110%;*/
+                {       font-size : 16px; /*12pt;110%;*/
                         font-weight : bold;
                         padding : 2px;
                         padding-left : 8px;
@@ -45,16 +52,16 @@ A.sf             {        font-weight : bold;		}
 
 
 .q,.qr,.qg,.qb,.qy,.qo
-                {       font-size : 16pt;
+                {       font-size : 22px; /*16pt;*/
                         font-weight : normal;
                         padding : 4px;
                         width : 96%;			}
 
-.q              {        background-color : #FFECEC;	}
+.q              {       background-color : #FFECEC;	}
 
 
 .agreen,.ayellow,.ablue
-                {        font-size : 10pt;
+                {        font-size : 13px; /*10pt;*/
                          line-height : 16px;
                          margin-left : 16px;		}
 
@@ -68,7 +75,7 @@ A.sf             {        font-weight : bold;		}
                          margin-left : 16px;		}
 
 .ss,.top_y,.top_r,.top_b,.top_g,.top_o
-		{	font-size : 8pt; /*70%;*/ /*xx-small;*/
+		{	font-size : 10px; /*8pt;70%;xx-small;*/
 			font-weight : bold;		}
 
 .title_r,.top_r,.bg_r,
@@ -92,7 +99,7 @@ A.sf             {        font-weight : bold;		}
 
 .ar,.ag,.ab,.ay,.ao
 		{	font-weight:Bold;
-			font-size: 10pt;
+			font-size: 13px; /*10pt;*/
 			color: #000000 ;
 			font-family: Verdana, Arial, Helvetica, sans-serif;
 			border-width: 2px;
@@ -100,13 +107,13 @@ A.sf             {        font-weight : bold;		}
 			padding: 4pt; /*4px*/;			}
 
 .ar,.ag,.ab,.ay,.ao,.a
-		{	font-size : 10pt; /*x-small;*/
+		{	font-size : 13px; /*10pt;x-small;*/
         		font-weight : normal;		}
 
 .pushin		{	margin-left : 16px;		}
 
 .sysmenu        {	font-family : Arial,Helvetica,Sanserif;
-                        font-size : 10pt; /*90%;*/ /*x-small*/
+                        font-size : 13px; /*10pt;90%;x-small*/
                         background-color : #D4D0C8;
                         padding : 2px;			}
 
@@ -114,9 +121,9 @@ A.sf             {        font-weight : bold;		}
 
 .keybshc,.keybshc_menu
 		{       font-family : Verdana, Arial, Helvetica, sans-serif;
-                        font-size : 133%; /*14pt*/
+                        font-size : 18px; /*14pt*/
                         font-style: normal; font-weight: normal;
-                        line-height: 228%; /*26pt*/
+                        line-height: 34px; /*26pt*/
                         background-color : #EEDCD5;
                         padding : 3px;
                         padding-left : 6px;
@@ -126,9 +133,9 @@ A.sf             {        font-weight : bold;		}
                         				}
 
 .keybshc_s	{       font-family : Verdana, Arial, Helvetica, sans-serif;
-                        font-size : 95%;  /*10pt*/
+                        font-size : 13px;  /*10pt*/
                         font-style: normal; font-weight: bold;
-                        line-height: 150%; /*16pt*/;
+                        line-height: 21px; /*16pt*/;
                         background-color : #EEDCD5;
                         padding : 2px;
                         padding-left : 3px;
