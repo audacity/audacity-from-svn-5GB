@@ -23,7 +23,7 @@
 #include <wx/image.h>
 #include <wx/dcmemory.h>
 #include <wx/statbox.h>
-#include <libw.h>
+#include "libw.h"
 
 #include "WaveletDenoise.h"
 #include "../Envelope.h"

@@ -19,6 +19,7 @@
 #include "NoiseRemoval.h"
 #include "Phaser.h"
 #include "Wahwah.h"
+#include "WaveletDenoise.h"
 
 #ifdef __WXMAC__
 #include "VST/LoadVSTMac.h"
@@ -44,6 +45,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectNoiseRemoval());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectWahwah());
+   Effect::RegisterEffect(new EffectWaveletDenoise());
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
    LoadVSTPlugins();

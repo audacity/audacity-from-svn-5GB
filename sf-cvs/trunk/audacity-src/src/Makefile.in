@@ -72,6 +72,7 @@ OBJS = \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Wahwah.o \
+	$(OBJDIR)/effects/WaveletDenoise.o \
 	$(OBJDIR)/effects/ladspa/LoadLadspa.o \
 	$(OBJDIR)/effects/ladspa/LadspaEffect.o \
 	$(OBJDIR)/export/Export.o \

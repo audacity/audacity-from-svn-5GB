@@ -23,6 +23,9 @@ libsndfile/src/.libs/libsndfile.a:
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)
 
+wave++/source/libw.a:
+	cd wave++/source && $(MAKE)
+
 clean:
 	cd allegro && $(MAKE) clean
 	cd libmad && $(MAKE) clean
@@ -30,3 +33,4 @@ clean:
 	cd libsndfile && $(MAKE) clean
 	cd libvorbis && $(MAKE) clean
 	cd portaudio/pa_unix_oss && $(MAKE) clean
+	cd wave++ && $(MAKE) clean
