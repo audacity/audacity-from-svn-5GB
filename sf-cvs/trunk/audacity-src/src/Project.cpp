@@ -787,7 +787,8 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
          return true;
       }
 
-      if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
+      if (f->DoEffect(this, mTracks, mTrackFactory,
+                      &mViewInfo.sel0, &mViewInfo.sel1)) {
          PushState(_("Applied an effect."));    // maybe more specific?
          FixScrollbars();
 

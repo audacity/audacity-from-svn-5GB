@@ -87,6 +87,8 @@ class LabelTrack:public Track {
    int GetNumLabels() const;
    const LabelStruct *GetLabel(int index) const;
 
+   void Add(double t, wxString title);
+
  private:
 
    int mSelIndex;

@@ -31,6 +31,10 @@
 #include "WaveletDenoise.h"
 #endif
 
+#ifdef USE_NYQUIST
+#include "nyquist/LoadNyquist.h"
+#endif
+
 #ifdef __WXMAC__
 #include "VST/LoadVSTMac.h"
 #endif
@@ -63,6 +67,10 @@ void LoadEffects()
 
 #ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise());
+#endif
+
+#ifdef USE_NYQUIST
+   LoadNyquistPlugins();
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
