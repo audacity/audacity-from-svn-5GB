@@ -655,7 +655,12 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
          if (dest) {
             dest->SetName(n->GetName());
             dest->SetLinked(n->GetLinked());
-            dest->SetOffset(mViewInfo.sel0);
+
+            double newOffset = n->GetOffset();
+            if (mViewInfo.sel0 > newOffset)
+                newOffset = mViewInfo.sel0;
+            dest->SetOffset(newOffset);
+
             newTracks.Add(dest);
          }
       }
@@ -766,7 +771,7 @@ void AudacityProject::OnSelectAll(wxCommandEvent & event)
       t->SetSelected(true);
       t = iter.Next();
    }
-   mViewInfo.sel0 = 0.0;
+   mViewInfo.sel0 = mTracks->GetMinOffset();
    mViewInfo.sel1 = mTracks->GetMaxLen();
 
    mTrackPanel->Refresh(false);

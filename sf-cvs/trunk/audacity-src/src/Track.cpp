@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <float.h>
 #include <wx/file.h>
 #include <wx/textfile.h>
 
@@ -268,13 +269,28 @@ TrackList::~TrackList()
 
 double TrackList::GetMaxLen() const
 {
-   double len = 0.0;
+   double len = DBL_MIN;
 
    ConstTrackListIterator iter(this);
 
    for (VTrack *t = iter.First(); t; t = iter.Next()) {
       double l = t->GetMaxLen();
       if (l > len)
+         len = l;
+   }
+
+   return len;
+}
+
+double TrackList::GetMinOffset() const
+{
+   double len = DBL_MAX;
+
+   ConstTrackListIterator iter(this);
+
+   for (VTrack *t = iter.First(); t; t = iter.Next()) {
+      double l = t->GetOffset();
+      if (l < len)
          len = l;
    }
 
@@ -357,6 +373,7 @@ void TrackList::Select(VTrack * t, bool selected /* = true */ )
       p = p->next;
    }
 }
+
 
 VTrack *TrackList::GetLink(VTrack * t) const
 {

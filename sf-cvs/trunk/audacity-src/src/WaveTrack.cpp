@@ -265,7 +265,7 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest) const
    sampleCount s0 = (sampleCount) ((t0 - GetOffset()) * rate + 0.5);
    sampleCount s1 = (sampleCount) ((t1 - GetOffset()) * rate + 0.5);
 
-   if (s0 < 0)
+   if (t0 < GetOffset())
       s0 = 0;
    if (s1 >= numSamples)
       s1 = numSamples;

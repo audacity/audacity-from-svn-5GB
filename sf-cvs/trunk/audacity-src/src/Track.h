@@ -188,6 +188,7 @@ class TrackList {
   bool IsEmpty() const;
   
   double GetMaxLen() const;
+  double GetMinOffset() const;
   int GetHeight() const;
   
   // File I/O
