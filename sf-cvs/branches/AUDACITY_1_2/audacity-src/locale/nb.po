@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AUDACITY 1.2.0-pre4\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-02-29 06:00+0100\n"
+"PO-Revision-Date: 2004-02-29 23:02+0100\n"
 "Last-Translator: Kevin Brubeck Unhammer <kiwibird@online.no>\n"
 "Language-Team: Translators-Norway <kiwibird@online.no>\n"
 "MIME-Version: 1.0\n"
@@ -97,7 +97,7 @@ msgstr "&Rediger"
 
 #: ../src/Menus.cpp:315
 msgid "&Edit ID3 Tags..."
-msgstr "&Rediger ID3 Tags..."
+msgstr "&Rediger ID3-Tags..."
 
 #: ../src/Menus.cpp:517
 #, c-format
@@ -131,7 +131,7 @@ msgstr "&Historie..."
 
 #: ../src/Menus.cpp:310
 msgid "&Import Audio...\tCtrl+I"
-msgstr "&Importer Lyd...\tCtrl+I"
+msgstr "&Importer lyd...\tCtrl+I"
 
 #: ../src/Menus.cpp:130
 msgid "&New\tCtrl+N"
@@ -1182,9 +1182,8 @@ msgid "Credits"
 msgstr "Takk til"
 
 #: ../src/prefs/MousePrefs.cpp:103
-#, fuzzy
 msgid "Ctrl-Left-Drag"
-msgstr "Ctrl-venstre-dra"
+msgstr "Ctrl-venstredra"
 
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Ctrl-Wheel-Rotate"
@@ -1490,7 +1489,7 @@ msgstr "Ekko"
 
 #: ../src/effects/Echo.h:36
 msgid "Echo..."
-msgstr "Echo..."
+msgstr "Ekko..."
 
 #: ../src/Menus.cpp:2404
 msgid "Edit ID3 Tags (for MP3 exporting)"
@@ -1812,7 +1811,7 @@ msgstr "Finn nullpunkt\tZ"
 
 #: ../src/Menus.cpp:284
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Tilpass &Loddrett\tCtrl+Skift+F"
+msgstr "Tilpass &loddrett\tCtrl+Skift+F"
 
 #: ../src/EditToolBar.cpp:176
 msgid "Fit project in window"
@@ -3964,7 +3963,7 @@ msgstr "Zoom &normalt\tCtrl+2"
 
 #: ../src/Menus.cpp:282
 msgid "Zoom &Out\tCtrl+3"
-msgstr "Zoom &Ut\tCtrl+3"
+msgstr "Zoom &ut\tCtrl+3"
 
 #: ../src/EditToolBar.cpp:164
 msgid "Zoom In"
