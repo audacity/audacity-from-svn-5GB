@@ -214,7 +214,7 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
                                       (long)SRC_SINC_FASTEST);
       else
          converterType = gPrefs->Read("/Quality/SampleRateConverter",
-                                      (long)SRC_LINEAR);
+                                      (long)SRC_SINC_FASTEST);
    }
 
    mQueueMaxLen = 65536;

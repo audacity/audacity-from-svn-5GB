@@ -128,7 +128,7 @@ PrefsPanel(parent)
    int converterHQ = 
       gPrefs->Read("/Quality/HQSampleRateConverter", (long)SRC_SINC_FASTEST);
    int converter = 
-      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_LINEAR);
+      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_SINC_FASTEST);
 
    wxString *converterStrings;
    int numConverters = 0;

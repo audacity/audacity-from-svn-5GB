@@ -44,7 +44,7 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mRuler->SetFormat(Ruler::TimeFormat);
 
    mConverterList = NULL;
-   mConverter = gPrefs->Read("/Quality/SampleRateConverter", (long)4); // SRC_LINEAR
+   mConverter = gPrefs->Read("/Quality/SampleRateConverter", (long)2); // SRC_SINC_FASTEST
 
    blankBrush.SetColour(214, 214, 214);
    blankPen.SetColour(214, 214, 214);
