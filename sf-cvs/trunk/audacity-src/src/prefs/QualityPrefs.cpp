@@ -90,12 +90,9 @@ PrefsPanel(parent)
 
       topSizer->Add( mSampleRates, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
 
-      char regTxtRate[10];
-      itoa(rate, regTxtRate, 10);
-
       mOtherSampleRate = NULL;
       mOtherSampleRate = new wxTextCtrl(
-         this, -1, regTxtRate,
+         this, -1, wxString::Format("%i", rate),
          wxDefaultPosition, wxSize(50, -1), 0 );
 
       if(pos == NUM_RATES)
@@ -142,7 +139,7 @@ bool QualityPrefs::Apply()
    int fmtsel = mSampleFormats->GetSelection();
 
    if(sel < NUM_RATES) rate = rates[sel];
-   else rate = atoi(mOtherSampleRate->GetValue());
+   else (mOtherSampleRate->GetValue()).ToLong(&rate);
 
    gPrefs->Write("/SamplingRate/DefaultProjectSampleRate", rate);
 
