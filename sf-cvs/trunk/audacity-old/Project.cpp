@@ -130,6 +130,13 @@ void RedrawAllProjects()
       gAudacityProjects[i]->RedrawProject();
 }
 
+void CloseAllProjects()
+{
+   int len = gAudacityProjects.Count();
+   for (int i = 0; i < len; i++)
+      gAudacityProjects[i]->Destroy();
+}
+
 enum {
    FirstID = 1000,
 

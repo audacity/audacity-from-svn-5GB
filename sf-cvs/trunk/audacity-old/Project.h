@@ -39,6 +39,7 @@ class AudacityProject;
 AudacityProject *CreateNewAudacityProject(wxWindow * parentFrame);
 AudacityProject *GetActiveProject();
 void RedrawAllProjects();
+void CloseAllProjects();
 
 WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 

@@ -38,6 +38,7 @@ OBJS = \
 	$(OBJDIR)/AboutDialog.cpp.o \
 	$(OBJDIR)/AudacityApp.cpp.o \
 	$(OBJDIR)/AudioIO.cpp.o \
+	$(OBJDIR)/Benchmark.cpp.o \
 	$(OBJDIR)/BlockFile.cpp.o \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/DiskFunctions.cpp.o \
@@ -201,10 +202,10 @@ obj/prefs:
 # Rules for compiling C/C++ files
 #
 
-$(OBJDIR)/%.cpp.o: %.cpp
+$(OBJDIR)/%.cpp.o: %.cpp configunix.h
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
-$(OBJDIR)/%.c.o: %.c
+$(OBJDIR)/%.c.o: %.c configunix.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 #

@@ -147,7 +147,15 @@ enum mad_flow output_cb(void *_data,
       }
    }
 
-   if(!data->progress && wxGetElapsedTime() > 500)
+   /*
+   printf("data->progress: %d time: %d progress %d/%d\n",
+          (int)data->progress,
+          wxGetElapsedTime(),
+          data->file->Tell(),
+          data->file->Length());
+   */
+
+   if(!data->progress /*&& wxGetElapsedTime() > 500*/)
       data->progress = new wxProgressDialog("Import",
                                             "Importing MP3 file...",
                                             1000,

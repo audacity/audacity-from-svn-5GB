@@ -26,6 +26,7 @@
 #include "Audacity.h"
 #include "AboutDialog.h"
 #include "APalette.h"
+#include "Benchmark.h"
 #include "Export.h"
 #include "FreqWindow.h"
 #include "Help.h"
@@ -169,6 +170,10 @@ void AudacityProject::CreateMenuBar()
    mHelpMenu->Append(HelpID, "Online Help...");
    mHelpMenu->Append(HelpIndexID, "Online Help Index...");
    mHelpMenu->Append(HelpSearchID, "Search Online Help...");
+
+   mHelpMenu->AppendSeparator();
+
+   mHelpMenu->Append(BenchmarkID, "Run Benchmark...");
 
    mMenuBar->Append(mFileMenu, "&File");
    mMenuBar->Append(mEditMenu, "&Edit");
@@ -1158,4 +1163,9 @@ void AudacityProject::OnHelpIndex(wxCommandEvent & event)
 void AudacityProject::OnHelpSearch(wxCommandEvent & event)
 {
    ::SearchHelp(this);
+}
+
+void AudacityProject::OnBenchmark(wxCommandEvent & event)
+{
+   ::RunBenchmark(this);
 }

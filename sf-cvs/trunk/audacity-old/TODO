@@ -22,6 +22,7 @@ Known bugs to fix:
   Check upon opening project
 - Find VST folder on startup
 - Must warn user if temp directory can't be created
+- Recording/Playback devices backwards on Windows
 
 -----------------------------------------------------------
 Unit tests:
@@ -77,6 +78,7 @@ UI::
 - History window, with ability to throw away undo information to
   save disk space
 - Autoscrolling during playback (and recording?)
+- Vertical bar indicating playback/recording position, too
 - Rewritten Import Raw Data...
 
 Audio I/O::
@@ -108,6 +110,12 @@ Low level issues::
 - support multi-track I/O
 - support an arbitrary number of channels
 - Make projects one big file
+
+-----------------------------------------------------------
+Future:
+-----------------------------------------------------------
+
+- Scrubbing
 
 -----------------------------------------------------------
 Already done:
