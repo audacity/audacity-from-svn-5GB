@@ -103,13 +103,14 @@ wxString ExportCommon(AudacityProject *project,
 
    wxString path = gPrefs->Read("/DefaultExportPath",::wxGetCwd());
 
-   wxString fName = wxFileSelector(wxString::Format(_("Save %s File As:"),
-                                                    (const char *) format),
-                                   path,
-                                   extension,   // default file name
-                                   extension,   // extension
-                                   "*.*",
-                                   wxSAVE | wxOVERWRITE_PROMPT);
+   wxString fName = project->GetName() + extension;
+   fName = wxFileSelector(wxString::Format(_("Save %s File As:"),
+                                           (const char *) format),
+                          path,
+                          fName,       // default file name
+                          extension,   // extension
+                          "*.*",
+                          wxSAVE | wxOVERWRITE_PROMPT);
 
    if (fName.Length() >= 256) {
       wxMessageBox
