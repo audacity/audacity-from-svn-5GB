@@ -17,20 +17,14 @@ General comments and questions about Audacity should be sent to
 <h3>Lead Developers</h3>
 
 <p>
-<b>Dominic Mazzoni</b> is the project leader and 
-Audacity's primary programmer.  He developed almost all of the
-initial code for Audacity, and is currently working on improving
-support for 32-bit samples and dithering, improving resampling,
-and adding a new "Smart Record" feature which gets the most
-accurate and reliable recording possible by minimizing CPU
-and disk usage.
-He began Audacity while a graduate student at 
-Carnegie Mellon University in Pittsburgh, PA.
-He is currently a research programmer at the
-NASA Jet Propulsion Laboratory in Pasadena, CA.
+<b>Matt Brubeck</b> is a primary Audacity developer.
+He is in charge of the internationalization and localization
+efforts for Audacity version 1.1, and has also contributed
+many other features and bug fixes.  He graduated from Harvey Mudd
+College in May, 2002 and is currently living in Vancouver, B.C.,
+Canada.
 <br>
-<tt>email: dominic <b>@</b> minorninth.com</tt><br>
-<a href="http://Dominic-Mazzoni.com">web page</a><br>
+<tt>email: mbrubeck <b>@</b> cs.hmc.edu</tt><br>
 </p>
 
 <p>
@@ -47,26 +41,24 @@ and working for Myricom, Inc in Arcadia, CA for the summer of 2002.
 </p>
 
 <p>
-<b>Matt Brubeck</b> is a primary Audacity developer.
-He is in charge of the internationalization and localization
-efforts for Audacity version 1.1, and has also contributed
-many other features and bug fixes.  He graduated from Harvey Mudd
-College in May, 2002 and is currently living in Vancouver, B.C.,
-Canada.
+<b>Dominic Mazzoni</b> is the project leader and 
+Audacity's primary programmer.  He developed almost all of the
+initial code for Audacity, and is currently working on improving
+support for 32-bit samples and dithering, improving resampling,
+and adding a new "Smart Record" feature which gets the most
+accurate and reliable recording possible by minimizing CPU
+and disk usage.
+He began Audacity while a graduate student at 
+Carnegie Mellon University in Pittsburgh, PA.
+He is currently a research programmer at the
+NASA Jet Propulsion Laboratory in Pasadena, CA.
 <br>
-<tt>email: mbrubeck <b>@</b> cs.hmc.edu</tt><br>
+<tt>email: dominic <b>@</b> minorninth.com</tt><br>
+<a href="http://Dominic-Mazzoni.com">web page</a><br>
 </p>
+
 
 <h3>Active Developers</h3>
-
-<p>
-<b>Shane Mueller</b> wrote the new toolbar code for Audacity 1.1, 
-and contributed to a number of other areas. He holds a Ph.D. in Cognitive
-Psychology from the University of Michigan, and uses Audacity as a tool 
-to study human verbal memory and speech.
-<br>
-
-</p>
 
 <p>
 <b>James Crook</b> is a real-time programmer based 
@@ -78,20 +70,30 @@ and effective.
 </p>
 
 <p>
-<b>Greg Mekkes</b> wrote some of the functional enhancements for Audacity 1.1,
-including selection format, snap-to, and align functions.
-He is an aerospace engineer working at NASA Langley Research Center
-in Hampton, VA.<br>
-<tt>email: mekkes2020 <b>@</b> yahoo.com</tt><br>
+<b>Vaughan Johnson</b> started work on Audacity in late 2002, 
+and has worked mostly on effects: new effects (Change Pitch, 
+Change Speed, and Change Tempo), and added Preview to most. 
+He is a consultant in software development and management, 
+with a background in AI, computer graphics, and GUI.
+<br>
+<tt>email: vjohnson <b>@</b> computer.org</tt><br> 
 </p>
 
 <p>
-<b>Augustus Saunders</b> is working on a project called
-<i>libaudacity</i>, which will separate the core processing
-code from the GUI of Audacity, resulting in a cross-platform
-C++ library that could be easily incorporated into other programs.
-He is currently consulting for Verilogix, Inc. in Torrance, CA.<br>
-<tt>email: augustus.saunders <b>@</b> verilogix.net</tt><br>
+<b>Markus Meyer</b> joined development shortly after the 
+1.1.3 beta release. He has implemented functions like Dithering 
+and Loop Play, but at the moment focuses on improving usability 
+and fixing bugs. He works freelance in Germany.
+<br>
+<tt>email: meyer <b>@</b> mesw.de</tt><br> 
+</p>
+
+<p>
+<b>Shane Mueller</b> wrote the new toolbar code for Audacity 1.1, 
+and contributed to a number of other areas. He holds a Ph.D. in Cognitive
+Psychology from the University of Michigan, and uses Audacity as a tool 
+to study human verbal memory and speech.
+<br>
 </p>
 
 <p>
@@ -103,15 +105,50 @@ He lives and works in Germany.
 <tt>email: airon <b>@</b> epost.de</tt>
 </p>
 
-<h3>Other Notable Contributions</h3>
+
+<h3>Developers</h3>
 
 <p>
-<b>Brian Gunlogson</b> worked on the adding completely
-configurable keyboard shortcuts to Audacity 1.1, brought the Windows branch
-to point where it attracted many new contributors, and contributed a host of other features
+<b>William Bland</b> contributed time track functionality, 
+that lets you change the rate of playback over time.
+<br>
+<tt>email: audacity <b>@</b> abstractnonsense.com</tt>
+</p>
+
+<p>
+<b>Brian Gunlogson</b> worked on adding completely
+configurable keyboard shortcuts to Audacity 1.1, 
+brought the Windows branch to the point where it attracted 
+many new contributors, and contributed a host of other features
 and fixes.
 <br>
 <tt>email: bmg300 <b>@</b> yahoo.com</tt><br>
+</p>
+
+<p>
+<b>Greg Mekkes</b> wrote some of the functional enhancements for Audacity 1.1,
+including selection format, snap-to, and align functions.
+He is an aerospace engineer working at NASA Langley Research Center
+in Hampton, VA.<br>
+<tt>email: mekkes2020 <b>@</b> yahoo.com</tt><br>
+</p>
+
+<p>
+<b>Augustus Saunders</b> worked on a project called
+<i>libaudacity</i>, which will separate the core processing
+code from the GUI of Audacity, resulting in a cross-platform
+C++ library that could be easily incorporated into other programs.
+He is currently consulting for Verilogix, Inc. in Torrance, CA.<br>
+<tt>email: augustus.saunders <b>@</b> verilogix.net</tt><br>
+</p>
+
+
+<h3>Other Notable Contributions</h3>
+
+<p>
+<b>Ross Bencina</b> and <b>Phil Burk</b> are the primary authors of
+<a href="http://www.portaudio.com/">portaudio</a>, the cross-platform
+audio I/O toolkit that Audacity has adopted for version 1.1
 </p>
 
 <p>
@@ -127,15 +164,6 @@ Scientist at Carnegie Mellon University in Pittsburgh, PA.
 </p>
 
 <p>
-<b>Paul Nasca</b> wrote many of the digital effects
-included in Audacity, including BassBoost, Phaser, and Wahwah.
-He studies Mathematics and Computer Science at
-Petru Maior University in Targu-Mures, Romania.
-<br>
-<tt>email: paulnasca <b>@</b> email.ro</tt><br>
-</p>
-
-<p>
 <b>Rob Leslie</b> is the author of
 <a href="http://www.mars.org/home/rob/proj/mpeg/">libmad</a>, the
 MPEG/MP3 audio decoder that Audacity uses.  It also includes libid3tag,
@@ -146,15 +174,18 @@ libid3tag.
 </p>
 
 <p>
-<b>Ross Bencina</b> and <b>Phil Burk</b> are the primary authors of
-<a href="http://www.portaudio.com/">portaudio</a>, the cross-platform
-audio I/O toolkit that Audacity has adopted for version 1.1
-</p>
-
-<p>
 <b>Harvey Lubin</b> of
 <a href="http://www.agrapha.com">Agrapha</a> designed the main Audacity
 logo and icons.
+</p>
+
+<p>
+<b>Paul Nasca</b> wrote many of the digital effects
+included in Audacity, including BassBoost, Phaser, and Wahwah.
+He studies Mathematics and Computer Science at
+Petru Maior University in Targu-Mures, Romania.
+<br>
+<tt>email: paulnasca <b>@</b> email.ro</tt><br>
 </p>
 
 <p>
@@ -165,9 +196,8 @@ logo and icons.
 <b>Abe Milde</b> contributed several icons used in the edit toolbar.
 </p>
 
-<p>
+
 <h3>Translators</h3>
-</p>
 
 <p>
 <ul>
@@ -186,7 +216,7 @@ logo and icons.
 
 </p>
 
-<p>
+
 <h3>Thanks</h3>
 
 There are many other people and organizations we would like to thank.
@@ -237,9 +267,3 @@ simply produced tools which have made this whole thing possible.
 include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
-
