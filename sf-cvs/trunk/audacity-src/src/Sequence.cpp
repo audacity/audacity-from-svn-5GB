@@ -839,7 +839,6 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
       ClearSamples(silence, format, 0, mMaxSamples);
    }
 
-   BlockFile *silenceBlock = NULL;
    int b = FindBlock(start);
 
    while (len) {
@@ -863,16 +862,8 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
          if (start == mBlock->Item(b)->start &&
              blen == mBlock->Item(b)->f->GetLength()) {
 
-            // Use a single shared silence block
-            if (silenceBlock) {
-               mDirManager->Deref(mBlock->Item(b)->f);
-               mBlock->Item(b)->f = silenceBlock;
-               mDirManager->Ref(silenceBlock);
-            }
-            else {
-               CopyWrite(silence, mBlock->Item(b), 0, blen);
-               silenceBlock = mBlock->Item(b)->f;
-            }
+            mDirManager->Deref(mBlock->Item(b)->f);
+            mBlock->Item(b)->f = new SilentBlockFile(blen);
          }
          else {
             // Otherwise write silence just to the portion of the block
@@ -1401,11 +1392,14 @@ bool Sequence::ConsistencyCheck(const char *whereStr)
       error = true;
 
    if (error) {
-#ifdef __WXDEBUG__
       printf("*** Consistency check failed after %s ***\n", whereStr);
-#endif
-      // TODO error message
+      Debug();
+      printf("*** Please report this error to audacity-devel@lists.sourceforge.net ***\n");
 
+      printf("\n");
+      printf("Recommended course of action:\n");
+      printf("Undo the failed operation(s), then export or save your work and quit.\n");
+      
       return false;
    }
 
