@@ -25,7 +25,7 @@ RewriteRule ^nyquistplugins.php(.*) download/nyquistplugins$1 [R=permanent]
 RewriteRule ^plugins.php(.*) download/plugins$1 [R=permanent]
 RewriteRule ^screenshots.*.php(.*) about/screenshots$1 [R=permanent]
 RewriteRule ^translation community/translation$1 [R=permanent]
-RewriteRule ^unix.php(.*) download/source$1 [R=permanent]
+RewriteRule ^unix.php(.*) download/linux$1 [R=permanent]
 RewriteRule ^windows.php(.*) download/windows$1 [R=permanent]
 
 # Redirect really old URLs.
