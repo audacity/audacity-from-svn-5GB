@@ -162,7 +162,7 @@ void TrackPanel::MakeParentRedrawScrollbars()
   // whenever it gets a thumb release message from its main pane.
 
   wxScrollEvent *e =
-	new wxScrollEvent(wxEVT_SCROLL_THUMBRELEASE, GetId());      
+	new wxScrollEvent(wxEVT_SCROLL_THUMBTRACK, GetId());      
   GetParent()->ProcessEvent(*e);      
   delete e;
 }
