@@ -143,8 +143,8 @@ void AudacityProject::CreateMenuBar()
          //If a gEditToolBarStub doesn't exist, make the menu option
          //enable loading
        
-         mViewMenu->Append(LoadEditToolBarID, _("Load Editing Toolbar"));
-         mViewMenu->Append(FloatEditToolBarID, _("Float Editing Toolbar"));
+         mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
+         mViewMenu->Append(FloatEditToolBarID, _("Float Edit Toolbar"));
          mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
 
      
@@ -152,19 +152,19 @@ void AudacityProject::CreateMenuBar()
    else
       {
    
-            
-         if(gEditToolBarStub->GetWindowedStatus()) 
-            mViewMenu->Append(FloatEditToolBarID, _("Unfloat Editing Toolbar"));
-         else
-            mViewMenu->Append(FloatEditToolBarID,    _("Float Editing Toolbar"));
-
-
          if(gEditToolBarStub->GetLoadedStatus()){
-            mViewMenu->Append(LoadEditToolBarID, _("Unload Editing Toolbar"));
+            mViewMenu->Append(LoadEditToolBarID, _("Unload Edit Toolbar"));
          } else {
-            mViewMenu->Append(LoadEditToolBarID, _("Load Editing Toolbar"));
+            mViewMenu->Append(LoadEditToolBarID, _("Load Edit Toolbar"));
             mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);
          }
+         
+            
+         if(gEditToolBarStub->GetWindowedStatus()) 
+            mViewMenu->Append(FloatEditToolBarID, _("Unfloat Edit Toolbar"));
+         else
+            mViewMenu->Append(FloatEditToolBarID,    _("Float Edit Toolbar"));
+         
       }
    
 #endif
@@ -757,42 +757,43 @@ void AudacityProject::Paste(wxCommandEvent & event)
 
 void AudacityProject::Trim(wxCommandEvent & event)
 {
+ 
    if(mViewInfo.sel1 > mViewInfo.sel0) {
-      ClearClipboard();
       TrackListIterator iter(mTracks);
 
       VTrack *n = iter.First();
-      VTrack *dest = 0;
-      
-      double fileEnd = n->GetMaxLen();
-      double selLength = mViewInfo.sel1-mViewInfo.sel0;
-      
+
+      double selLength = mViewInfo.sel1 - mViewInfo.sel0;
+     
+
+      //Delete the section after the right selector
       while (n) {
          if (n->GetSelected()) {
-            n->Cut(mViewInfo.sel1, fileEnd, &dest);
+            
+            n->Clear(mViewInfo.sel1, n->GetMaxLen());
          }
          n = iter.Next();
       }
 
+
+      //Delete the section before the left selector
       n=iter.First();
-      while (n) {
-         if (n->GetSelected()) {
-            n->Cut(0,mViewInfo.sel0, &dest);
+        while (n) {
+         if (n->GetSelected()) { 
+              n->Clear((double)0, mViewInfo.sel0);
          }
          n = iter.Next();
-      }
+        }
       
 
-      
-      //      msClipLen = (mViewInfo.sel0);
-      //      msClipProject = this;
-      
+      //Reset the selectors
       mViewInfo.sel0=0;
       mViewInfo.sel1=selLength;
-      
-      PushState(_("Trim file to selection"));
+         
       FixScrollbars();
       mTrackPanel->Refresh(false);
+      PushState(_("Trim file to selection"));   
+  
    }
 }
    
