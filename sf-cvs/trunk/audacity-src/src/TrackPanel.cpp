@@ -665,6 +665,10 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
+      
+      //Send the new selection state to the undo/redo stack:
+      MakeParentPushState(wxString::Format(_("Changed Selection Region")));
+      
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
       if (!mCapturedTrack)
          return;
@@ -681,6 +685,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 
       mCapturedTrack = NULL;
       mIsSelecting = false;
+      MakeParentPushState(wxString::Format(_("Changed Selection Region")));
    } else
       SelectionHandleDrag(event);
 }
@@ -709,8 +714,9 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          mSelStart = mViewInfo->sel0;
 
       DisplaySelection();
-   } else {
 
+   } else {
+      
       //Make sure you are within the selected track
       if (pTrack && pTrack->GetSelected()) {
 
@@ -1433,6 +1439,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    Refresh(false);  
    DisplaySelection();
+   MakeParentPushState(wxString::Format(_("Changed Selection Region")));
 }
 
 
