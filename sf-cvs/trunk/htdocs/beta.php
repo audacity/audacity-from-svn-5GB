@@ -14,7 +14,7 @@
   BoxTop($betaVersionsStr);
 ?>
 
-<?php include GetTranslation("beta-1.2.0-pre1"); ?>
+<?php include GetTranslation("beta-1.2.0-pre2"); ?>
 
 <p align="center">
 <a href="<?php print "screenshots.php?$langLinkStr"; ?>">
@@ -126,7 +126,7 @@ Source code dependencies:
 
 <center><hr width=50%></center>
 
-<?php include GetTranslation("beta-1.2.0-pre1-problems"); ?>
+<?php include GetTranslation("beta-1.2.0-pre2-problems"); ?>
 <?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
