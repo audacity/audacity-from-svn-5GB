@@ -10,6 +10,7 @@ while(is_file("en/news$n.php"))
 
 for($i=$n-1; $i>=1; $i--) {
 	include GetTranslation("news$i");
+   print "<p>\n";
 }
 
 include 'bottom.inc.php';

@@ -187,7 +187,7 @@ print "<input type=hidden name=passwd value=\"$passwd\">\n";
 print "</form>\n";
 
 
-print "<form action=trfile.php method=post>\n";
+print "<form action=trlist.php method=post>\n";
 print "<input type=hidden name=lang value=$lang>\n";
 print "<input type=hidden name=passwd value=\"$passwd\">\n";
 print "<input type=submit value=\"Refresh\">\n";
