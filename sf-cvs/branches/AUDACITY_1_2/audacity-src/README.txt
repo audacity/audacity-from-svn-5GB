@@ -264,6 +264,8 @@ Known issues/problems:
 
 Changes in 1.2.4:
 
+  * The File menu now includes a list of recent files.
+
   * The "Generate Silence" effect now prompts for a length.
 
   * Audacity is now built with Vorbis 1.1, which features better encoding
