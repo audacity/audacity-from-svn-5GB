@@ -67,7 +67,9 @@ class TrackPanel:public wxWindow {
 
    void ReReadSettings();
    void SetStop(bool bStopped);
-   void Refresh(bool eraseBackground);
+
+   virtual void Refresh(bool eraseBackground = TRUE,
+                        const wxRect *rect = (const wxRect *) NULL);
 
  private:
 
