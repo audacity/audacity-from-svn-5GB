@@ -213,14 +213,13 @@ LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 dnl libsndfile -- we need at least version 1.0
-PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
-                  dnl if found...
-                  LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
+dnl PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
+dnl if found...
+dnl LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
 
-                  dnl if not found...
-                  SUBDIRS="$SUBDIRS lib-src/libsndfile"
-                  BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
-                  EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a")
+SUBDIRS="$SUBDIRS lib-src/libsndfile"
+BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 
 AC_CANONICAL_HOST
 
