@@ -2184,14 +2184,14 @@ ControlToolBar *AudacityProject::GetControlToolBar()
 
 MixerToolBar *AudacityProject::GetMixerToolBar()
 {
-   ToolBar *tb = NULL;
-
    for(int i=0; i<mToolBarArray.GetCount(); i++)
       if ((mToolBarArray[i]->GetType()) == MixerToolBarID)
          return (MixerToolBar *)mToolBarArray[i];
 
    if (gMixerToolBarStub)
       return (MixerToolBar *)gMixerToolBarStub->GetToolBar();
+
+   return NULL;
 }
 
 void AudacityProject::SetStop(bool bStopped)
