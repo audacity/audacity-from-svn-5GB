@@ -879,6 +879,26 @@ SOURCE=..\src\commands\CommandsWriter.cpp
 SOURCE=..\src\commands\CommandsWriter.h
 # End Source File
 # End Group
+# Begin Group "src/blockfile"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\blockfile\PCMAliasBlockFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\PCMAliasBlockFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\SimpleBlockFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\SimpleBlockFile.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\wx\msw\blank.cur
