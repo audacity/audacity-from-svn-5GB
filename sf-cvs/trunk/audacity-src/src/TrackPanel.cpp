@@ -24,42 +24,43 @@
  
   JKC: Incremental refactoring started April/2003
 
-  Aiming for classes something like this:
+  Possibly aiming for Gui classes something like this - it's under
+  discussion:
 
    +----------------------------------------------------+
    |      AdornedRulerPanel                             |
    +----------------------------------------------------+
    +----------------------------------------------------+
    |+------------+ +-----------------------------------+|
-   ||            | | (L)  TrackPanel                   ||
-   || LabelPanel | +-----------------------------------+|
+   ||            | | (L)  GuiWaveTrack                 ||
+   || TrackLabel | +-----------------------------------+|
    ||            | +-----------------------------------+|
-   ||            | | (R)  TrackPanel                   ||
+   ||            | | (R)  GuiWaveTrack                 ||
    |+------------+ +-----------------------------------+|
-   +-------- TrackGroup --------------------------------+
+   +-------- GuiStereoTrack ----------------------------+
    +----------------------------------------------------+
    |+------------+ +-----------------------------------+|
-   ||            | | (L)  TrackPanel                   ||
-   || LabelPanel | +-----------------------------------+|
+   ||            | | (L)  GuiWaveTrack                 ||
+   || TrackLabel | +-----------------------------------+|
    ||            | +-----------------------------------+|
-   ||            | | (R)  TrackPanel                   ||
+   ||            | | (R)  GuiWaveTrack                 ||
    |+------------+ +-----------------------------------+|
-   +-------- TrackGroup --------------------------------+
+   +-------- GuiStereoTrack ----------------------------+
     
-  With the whole lot sitting in a ProjectPanel which forwards 
+  With the whole lot sitting in a TrackPanel which forwards 
   events to the sub objects.
 
-  The TrackGroup class will do the special logic for
+  The GuiStereoTrack class will do the special logic for
   Stereo channel grouping.  
   
   The precise names of the classes are subject to revision.
   Have deliberately not created new files for the new classes 
-  such as AdornedRulerPanel and LabelPanel - yet.
+  such as AdornedRulerPanel and TrackLabel - yet.
 
   TODO:
-    - Move menus from current TrackPanel into LabelPanel.
-    - Convert LabelPanel from 'flyweight' to heavyweight.
-    - Split TrackGroup and ProjectPanel out from TrackPanel.
+    - Move menus from current TrackPanel into TrackLabel.
+    - Convert TrackLabel from 'flyweight' to heavyweight.
+    - Split GuiStereoTrack and GuiWaveTrack out from TrackPanel.
 
 *********************************************************************/
  
@@ -171,7 +172,7 @@ enum {
 double samplerate = 44100.0;
 
 
-// This function is used in both TrackPanel and LabemLabelPanel.
+// This function is used in both TrackPanel and LabemTrackLabel.
 // Probably should move to 'Utils.cpp'.
 void SetLabelFont(wxDC * dc)
 {
@@ -276,7 +277,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        TrackPanelListener * listener)
 :wxWindow(parent, id, pos, size, wxWANTS_CHARS),
 mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
-mAutoScrolling(false), mLabelPanel(this)
+mAutoScrolling(false), mTrackLabel(this)
 {
 
    iformat = SELECTION_FORMAT_RULER_MIN_SEC;
@@ -1916,14 +1917,14 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    wxRect r = mCapturedRect;
 
    wxRect closeRect;
-   mLabelPanel.GetCloseBoxRect(r, closeRect);
+   mTrackLabel.GetCloseBoxRect(r, closeRect);
 
    wxClientDC dc(this);
 
    if (event.Dragging())
-      mLabelPanel.DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
+      mTrackLabel.DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
    else if (event.ButtonUp(1)) {
-      mLabelPanel.DrawCloseBox(&dc, r, false);
+      mTrackLabel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          //BG: We may want to check if we are busy in just this project
          if (!gAudioIO->IsStreamActive())
@@ -1982,12 +1983,12 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
    wxRect r = mCapturedRect;
 
    wxRect buttonRect;
-   mLabelPanel.GetMuteSoloRect(r, buttonRect, solo);
+   mTrackLabel.GetMuteSoloRect(r, buttonRect, solo);
 
    wxClientDC dc(this);
 
    if (event.Dragging())
-      mLabelPanel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
+      mTrackLabel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
                    solo);
    else if (event.ButtonUp(1)) {
 
@@ -1998,10 +1999,10 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
             t->SetMute(!t->GetMute());
       }
 
-      mLabelPanel.DrawMuteSolo(&dc, r, t, false, solo);
+      mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
       if (solo) {
          mIsSoloing = false;
-         mLabelPanel.DrawMuteSolo(&dc, r, t, false, !solo);
+         mTrackLabel.DrawMuteSolo(&dc, r, t, false, !solo);
       } else
          mIsMuting = false;
    }
@@ -2014,9 +2015,9 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    LWSlider *slider;
 
    if (pan)
-      slider = mLabelPanel.mPans[mCapturedNum];
+      slider = mTrackLabel.mPans[mCapturedNum];
    else
-      slider = mLabelPanel.mGains[mCapturedNum];
+      slider = mTrackLabel.mGains[mCapturedNum];
 
    slider->OnMouseEvent(event);
 
@@ -2058,7 +2059,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
    mPopupMenuTarget = t;
    {
       wxClientDC dc(this);
-      mLabelPanel.DrawTitleBar(&dc, r, t, true);
+      mTrackLabel.DrawTitleBar(&dc, r, t, true);
    }
    bool canMakeStereo = false;
    Track *next = mTracks->GetNext(t);
@@ -2127,7 +2128,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
    Track *t2 = FindTrack(event.m_x, event.m_y, true, &r, &num);
    if (t2 == t) {
       wxClientDC dc(this);
-      mLabelPanel.DrawTitleBar(&dc, r, t, false);
+      mTrackLabel.DrawTitleBar(&dc, r, t, false);
    }
 }
 
@@ -2158,7 +2159,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       second = true;
 
    wxRect closeRect;
-   mLabelPanel.GetCloseBoxRect(r, closeRect);
+   mTrackLabel.GetCloseBoxRect(r, closeRect);
 
    // AS: If they clicked on the x (ie, close button) on this
    //  track, then we capture the mouse and display the x
@@ -2166,7 +2167,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    //  we'll see if we're still supposed to close the track.
    if (!second && closeRect.Inside(event.m_x, event.m_y)) {
       wxClientDC dc(this);
-      mLabelPanel.DrawCloseBox(&dc, r, true);
+      mTrackLabel.DrawCloseBox(&dc, r, true);
       mIsClosing = true;
       mCapturedTrack = t;
       mCapturedRect = r;
@@ -2174,7 +2175,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }
 
    wxRect titleRect;
-   mLabelPanel.GetTitleBarRect(r, titleRect);
+   mTrackLabel.GetTitleBarRect(r, titleRect);
 
    // AS: If the clicked on the title area, show the popup menu.
    if (!second && titleRect.Inside(event.m_x, event.m_y)) {
@@ -2202,7 +2203,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    // DM: If it's a NoteTrack, it has special controls
    if (!second && t && t->GetKind() == Track::Note) {
       wxRect midiRect;
-      mLabelPanel.GetTrackControlsRect(r, midiRect);
+      mTrackLabel.GetTrackControlsRect(r, midiRect);
       if (midiRect.Inside(event.m_x, event.m_y)) {
          ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
                                        event.RightDown()
@@ -2289,7 +2290,7 @@ bool TrackPanel::GainFunc(Track * t, wxRect r, wxMouseEvent &event,
                           int index, int x, int y)
 {
    wxRect sliderRect;
-   mLabelPanel.GetGainRect(r, sliderRect);
+   mTrackLabel.GetGainRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
       mIsGainSliding = true;
       mCapturedTrack = t;
@@ -2307,7 +2308,7 @@ bool TrackPanel::PanFunc(Track * t, wxRect r, wxMouseEvent &event,
                          int index, int x, int y)
 {
    wxRect sliderRect;
-   mLabelPanel.GetPanRect(r, sliderRect);
+   mTrackLabel.GetPanRect(r, sliderRect);
    if (sliderRect.Inside(x, y)) {
       mIsPanSliding = true;
       mCapturedTrack = t;
@@ -2328,11 +2329,11 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
                               bool solo)
 {
    wxRect buttonRect;
-   mLabelPanel.GetMuteSoloRect(r, buttonRect, solo);
+   mTrackLabel.GetMuteSoloRect(r, buttonRect, solo);
    if (buttonRect.Inside(x, y)) {
 
       wxClientDC dc(this);
-      mLabelPanel.DrawMuteSolo(&dc, r, t, true, solo);
+      mTrackLabel.DrawMuteSolo(&dc, r, t, true, solo);
 
       if (solo)
          mIsSoloing = true;
@@ -2770,7 +2771,7 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    }
 
    //Use the false argument since in multimode we don't 
-   //want the toomLabelPanel to update.
+   //want the toomTrackLabel to update.
    pCtb->SetCurrentTool( currentTool, false );
    return currentTool;
 }
@@ -3109,19 +3110,19 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r.width -= kLeftInset * 2;
    r.height -= kTopInset;
 
-   mLabelPanel.DrawBackground(dc, r, t->GetSelected(), labelw);
+   mTrackLabel.DrawBackground(dc, r, t->GetSelected(), labelw);
    DrawBordersAroundTrack(t, dc, r, labelw, vrul);
    DrawShadow(t, dc, r);
 
-   r.width = mLabelPanel.GetTitleWidth();
-   mLabelPanel.DrawCloseBox(dc, r, false);
-   mLabelPanel.DrawTitleBar(dc, r, t, false);
+   r.width = mTrackLabel.GetTitleWidth();
+   mTrackLabel.DrawCloseBox(dc, r, false);
+   mTrackLabel.DrawTitleBar(dc, r, t, false);
 
    if (t->GetKind() == Track::Wave) {
-      mLabelPanel.DrawMuteSolo(dc, r, t, false, false);
-      mLabelPanel.DrawMuteSolo(dc, r, t, false, true);
+      mTrackLabel.DrawMuteSolo(dc, r, t, false, false);
+      mTrackLabel.DrawMuteSolo(dc, r, t, false, true);
 
-      mLabelPanel.DrawSliders(dc, (WaveTrack *)t, r, index);
+      mTrackLabel.DrawSliders(dc, (WaveTrack *)t, r, index);
    }
 
    r = trackRect;
@@ -3133,7 +3134,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
                    r.y + 38);
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
-      mLabelPanel.GetTrackControlsRect(trackRect, midiRect);
+      mTrackLabel.GetTrackControlsRect(trackRect, midiRect);
       ((NoteTrack *) t)->DrawLabelControls(*dc, midiRect);
 
    }
@@ -3202,7 +3203,7 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                    h1 + kTopInset);
    }
 
-   dc->DrawLine(r.x, r.y + 16, mLabelPanel.GetTitleWidth(), r.y + 16);      // title bar
+   dc->DrawLine(r.x, r.y + 16, mTrackLabel.GetTitleWidth(), r.y + 16);      // title bar
    dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);     // close box
 }
 
@@ -4624,12 +4625,12 @@ void TrackPanel::DisplaySelection()
 
 /**********************************************************************
 
-  LabelPanel code is destined to move out of this file.
+  TrackLabel code is destined to move out of this file.
   Code should become a lot cleaner when we have sizers.  
 
 **********************************************************************/
 
-LabelPanel::LabelPanel(wxWindow * pParentIn)
+TrackLabel::TrackLabel(wxWindow * pParentIn)
 {
    //To prevent flicker, we create an initial set of 16 sliders
    //which won't ever be shown.
@@ -4640,7 +4641,7 @@ LabelPanel::LabelPanel(wxWindow * pParentIn)
 }
 
 
-LabelPanel::~LabelPanel()
+TrackLabel::~TrackLabel()
 {
    unsigned int i;
    for(i=0; i<mGains.Count(); i++)
@@ -4650,7 +4651,7 @@ LabelPanel::~LabelPanel()
 }
 
 
-void LabelPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
+void TrackLabel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x;
    dest.y = r.y;
@@ -4658,7 +4659,7 @@ void LabelPanel::GetCloseBoxRect(const wxRect r, wxRect & dest) const
    dest.height = 16;
 }
 
-void LabelPanel::GetTitleBarRect(const wxRect r, wxRect & dest) const
+void TrackLabel::GetTitleBarRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x + 16;
    dest.y = r.y;
@@ -4666,7 +4667,7 @@ void LabelPanel::GetTitleBarRect(const wxRect r, wxRect & dest) const
    dest.height = 16;
 }
 
-void LabelPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
+void TrackLabel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
 {
    dest.x = r.x + 8;
    dest.y = r.y + 50;
@@ -4677,7 +4678,7 @@ void LabelPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
       dest.x += 36 + 8;
 }
 
-void LabelPanel::GetGainRect(const wxRect r, wxRect & dest) const
+void TrackLabel::GetGainRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x + 7;
    dest.y = r.y + 70;
@@ -4685,7 +4686,7 @@ void LabelPanel::GetGainRect(const wxRect r, wxRect & dest) const
    dest.height = 25;
 }
 
-void LabelPanel::GetPanRect(const wxRect r, wxRect & dest) const
+void TrackLabel::GetPanRect(const wxRect r, wxRect & dest) const
 {
    dest.x = r.x + 7;
    dest.y = r.y + 100;
@@ -4694,7 +4695,7 @@ void LabelPanel::GetPanRect(const wxRect r, wxRect & dest) const
 }
 
 
-void LabelPanel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
+void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
                              const int labelw)
 {
    // fill in label
@@ -4704,7 +4705,7 @@ void LabelPanel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
    dc->DrawRectangle(fill);
 }
 
-void LabelPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
+void TrackLabel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 {
    dest = r;
    dest.width = GetTitleWidth();
@@ -4715,7 +4716,7 @@ void LabelPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 }
 
 
-void LabelPanel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
+void TrackLabel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
 {
    dc->SetPen(*wxBLACK_PEN);
    dc->DrawLine(r.x + 3, r.y + 3, r.x + 13, r.y + 13);  // close "x"
@@ -4726,7 +4727,7 @@ void LabelPanel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
    AColor::Bevel(*dc, !down, bev);
 }
 
-void LabelPanel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
+void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
                               bool down)
 {
    wxRect bev;
@@ -4762,7 +4763,7 @@ void LabelPanel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
 }
 
 // AS: Draw the Mute or the Solo button, depending on the value of solo.
-void LabelPanel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
+void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
                               bool down, bool solo)
 {
    wxRect bev;
@@ -4781,7 +4782,7 @@ void LabelPanel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    AColor::Bevel(*dc, !down, bev);
 }
 
-void LabelPanel::MakeMoreSliders()
+void TrackLabel::MakeMoreSliders()
 {
    wxRect r(0, 0, 1000, 1000);
    wxRect gainRect;
@@ -4803,7 +4804,7 @@ void LabelPanel::MakeMoreSliders()
    mPans.Add(slider);
 }
 
-void LabelPanel::EnsureSufficientSliders(int index)
+void TrackLabel::EnsureSufficientSliders(int index)
 {
    while (mGains.Count() < (unsigned int)index+1 ||
           mPans.Count() < (unsigned int)index+1)
@@ -4811,7 +4812,7 @@ void LabelPanel::EnsureSufficientSliders(int index)
 }
 
 
-void LabelPanel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
+void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
 {
    wxRect gainRect;
    wxRect panRect;

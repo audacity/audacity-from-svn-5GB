@@ -59,22 +59,22 @@ class TrackPanelListener {
 };
 
 
-/// The LabelPanel is the panel to the side of a track 
+/// The TrackLabel is shown to the side of a track 
 /// It has the menus, pan and gain controls displayed in it.
 ///
-/// In its current implementation it is not derived from
-/// wxPanel.  Following the original coding style, it has 
+/// In its current implementation it is not derived from a
+/// wxWindow.  Following the original coding style, it has 
 /// been coded as a 'flyweight' class, which is passed 
 /// state as needed, except for the array of gains and pans.
 /// 
 /// An alternative way to code this is to have an instance
-/// of this class for each label panel displayed.
+/// of this class for each instance displayed.
 /// 
-class LabelPanel
+class TrackLabel
 {
 public:
-   LabelPanel(wxWindow * pParentIn);
-   ~LabelPanel();
+   TrackLabel(wxWindow * pParentIn);
+   ~TrackLabel();
 
    int GetTitleWidth() const { return 100; }
 private:
@@ -104,8 +104,8 @@ friend class TrackPanel;
 };
 
 
-/// The TrackPanel manages multiple tracks and their LabelPanels.
-/// Note that with stereo tracks there will be one LabelPanel
+/// The TrackPanel manages multiple tracks and their TrackLabels.
+/// Note that with stereo tracks there will be one TrackLabel
 /// being used by two wavetracks.
 class TrackPanel:public wxWindow {
  public:
@@ -243,8 +243,8 @@ class TrackPanel:public wxWindow {
 //   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
    int GetVRulerWidth() const { return 30;}
-   int GetVRulerOffset() const { return GetTitleOffset() + mLabelPanel.GetTitleWidth();}
-   int GetLabelWidth() const { return mLabelPanel.GetTitleWidth() + GetVRulerWidth();}
+   int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
+   int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
    void DrawRuler(wxDC * dc, bool text = true);
    void DrawTrackIndicator(wxDC *dc);
@@ -274,7 +274,7 @@ class TrackPanel:public wxWindow {
    int iSnapTo;
 
 
-   LabelPanel mLabelPanel;
+   TrackLabel mTrackLabel;
    TrackPanelListener *mListener;
 
    TrackList *mTracks;
