@@ -23,9 +23,13 @@ override CPPFLAGS += -Wall -Iinclude @CPPFLAGS@
 # Files that must exist in order to compile a C/C++ files
 CDEPEND = @CDEPEND@
 
+# For precompiled header support
+PRECOMP_CFLAGS = @PRECOMP_CFLAGS@
+
 EXTRAOBJS = @EXTRAOBJS@
 OPTOBJS = @OPTOBJS@
 LIBS = @LIBS@
+EXTRATARGETS = @EXTRATARGETS@
 
 ########################################
 # ALL OBJECT FILES
@@ -163,14 +167,28 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp) \
 
 ########################################
 
-all: $(DIRS) libaudacity.a ../audacity
+all: $(DIRS) libaudacity.a ../audacity $(EXTRATARGETS)
 
 libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
 	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
 
 ../audacity: $(DIRS) $(OBJS) $(EXTRAOBJS) $(OPTOBJS) libaudacity.a Makefile
 	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) libaudacity.a $(LIBS)
-	@AFTERBUILD@
+
+#
+# Mac OS X application
+#
+
+../Audacity.app: ../audacity
+	mkdir -p ../Audacity.app/Contents/MacOS
+	mkdir -p ../Audacity.app/Contents/Resources
+	cp -f ../audacity ../Audacity.app/Contents/MacOS
+	cp -f ../mac/Info.plist ../Audacity.app/Contents
+	test -f "../Audacity.app/Contents/PkgInfo" || \
+	     echo "APPLauDy" > ../Audacity.app/Contents/PkgInfo
+	cp -f ../mac/Resources/*.icns ../Audacity.app/Contents/Resources
+	cp -f ../mac/Resources/audacity.Rsrc \
+		../Audacity.app/Contents/Resources/Audacity.rsrc	
 
 #
 # You can optionally "make dep" to make dependencies.
@@ -191,10 +209,18 @@ clean:
 #
 
 $(OPTOBJS) $(OBJS) $(LIBAUDACITY_OBJS): $(OBJDIR)/%.o: %.cpp $(CONFIGHEADER) $(CDEPEND)
-	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $(PRECOMP_CFLAGS) $< -o $@
 
 $(DIRS): %: 
 	-test -d $@ || mkdir $@
+
+#
+# Precompiled headers:
+#
+
+AudacityHeaders.h.gch:
+	echo "Rebuilding Precompiled Headers"
+	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h -o AudacityHeaders.h.gch
 
 #
 # For Cygwin compilation:
