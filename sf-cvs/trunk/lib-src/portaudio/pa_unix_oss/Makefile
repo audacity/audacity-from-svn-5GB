@@ -13,7 +13,9 @@ portaudio.a: $(PAOBJ)
 #	cp portaudio.a $(DEST)
 
 clean:
-	rm -f portaudio.a *.o
+	rm -f portaudio.a $(PAOBJ)
+
+distclean: clean
 
 %.o: %.c $(PAINC) Makefile
 	$(CC) -c $(CFLAGS) $< -o $@
