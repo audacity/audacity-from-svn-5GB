@@ -33,6 +33,7 @@
 #include "../../images/MixerImages.h"
 #include "../Project.h"
 #include "../MeterToolBar.h"
+#include "Warning.h"
 
 //
 // The Meter passes itself messages via this queue so that it can
@@ -107,7 +108,8 @@ enum {
    OnDBID,
    OnClipID,
    OnMonitorID,
-   OnFloatID
+   OnFloatID,
+   OnDisableID
 };
 
 BEGIN_EVENT_TABLE(Meter, wxPanel)
@@ -125,6 +127,7 @@ BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_MENU(OnClipID, Meter::OnClip)
    EVT_MENU(OnMonitorID, Meter::OnMonitor)
    EVT_MENU(OnFloatID, Meter::OnFloat)
+   EVT_MENU(OnDisableID, Meter::OnDisable)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(Meter, wxPanel)
@@ -296,6 +299,9 @@ void Meter::OnMouse(wxMouseEvent &evt)
       }
       //menu->AppendSeparator();
       //menu->Append(OnFloatID, _("Float Window"));
+
+      menu->AppendSeparator();
+      menu->Append(OnDisableID, _("Disable"));
 
       if (evt.RightDown())
          PopupMenu(menu, evt.m_x, evt.m_y);
@@ -882,3 +888,17 @@ void Meter::OnFloat(wxCommandEvent &evt)
 {
 }
 
+void Meter::OnDisable(wxCommandEvent &evt)
+{
+   ShowWarningDialog(this, "MeterDisableWarning",
+                     _("The VU meters will now be disabled.\n\n"
+                       "To enable them again, open the Preferences dialog and click on the Interface tab."));
+
+   gPrefs->Write("/GUI/EnableMeterToolBar", false);
+   
+   if(gMeterToolBarStub) {
+      gMeterToolBarStub->UnloadAll();    //Unload all docked METER toolbars
+      delete gMeterToolBarStub;
+      gMeterToolBarStub = NULL;
+   }
+}
