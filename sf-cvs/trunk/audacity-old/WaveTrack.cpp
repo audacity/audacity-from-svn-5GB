@@ -1024,7 +1024,8 @@ void WaveTrack::AppendBlock(WaveBlock *b)
 
   envelope.SetTrackLen(numSamples / rate);
 
-  ConsistencyCheck("AppendBlock");
+  // Don't do a consistency check here because this
+  // function gets called in an inner loop
 }
 
 bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
@@ -1790,9 +1791,10 @@ void WaveTrack::ConsistencyCheck(char *whereStr)
 {
   int i;
   int pos=0;
+  int numBlocks = block->Count();
   bool error=false;
   
-  for(i=0; i<block->Count(); i++) {
+  for(i=0; i<numBlocks; i++) {
     if (pos != block->Item(i)->start)
       error = true;
     pos += block->Item(i)->len;

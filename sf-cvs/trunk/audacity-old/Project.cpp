@@ -41,6 +41,7 @@
 #include "WaveTrack.h"
 #include "NoteTrack.h"
 #include "TrackPanel.h"
+#include "FreqWindow.h"
 #include "effects/Effect.h"
 
 TrackList *AudacityProject::msClipboard = new TrackList();
@@ -126,6 +127,8 @@ enum {
   ZoomNormalID,
   ZoomFitID,
 
+  PlotSpectrumID,
+
   // Project Menu
   
   ImportID,
@@ -187,6 +190,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(ZoomOutID, AudacityProject::OnZoomOut)
   EVT_MENU(ZoomNormalID, AudacityProject::OnZoomNormal)
   EVT_MENU(ZoomFitID, AudacityProject::OnZoomFit)
+  EVT_MENU(PlotSpectrumID, AudacityProject::OnPlotSpectrum)
   // Project menu
   EVT_MENU(ImportID, AudacityProject::OnImport)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
@@ -278,6 +282,8 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mViewMenu->Append(ZoomNormalID, "Zoom &Normal\tCtrl+2");
   mViewMenu->Append(ZoomOutID, "Zoom &Out\tCtrl+3");
   mViewMenu->Append(ZoomFitID, "Fit in &Window\tCtrl+F");
+  mViewMenu->AppendSeparator();
+  mViewMenu->Append(PlotSpectrumID, "&Plot Spectrum\tCtrl+U");
 
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
@@ -1205,6 +1211,45 @@ void AudacityProject::OnZoomFit()
   mViewInfo.zoom = w / len;
   FixScrollbars();
   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnPlotSpectrum()
+{
+  int selcount = 0;
+  WaveTrack *selt;
+  VTrack *t = mTracks->First();
+  while(t) {
+	if (t->selected)
+	  selcount++;
+	if (t->GetKind() == VTrack::Wave)
+	  selt = (WaveTrack *)t;
+	t = mTracks->Next();
+  }
+  if (selcount != 1) {
+	wxMessageBox("Please select a single track first.\n");
+	return;
+  }
+
+  sampleCount s0 = (sampleCount)((mViewInfo.sel0 - selt->tOffset)
+								 * selt->rate);
+  sampleCount s1 = (sampleCount)((mViewInfo.sel1 - selt->tOffset)
+								 * selt->rate);
+  sampleCount slen = s1 - s0;
+
+  float *data = new float[slen];
+  sampleType *data_sample = new sampleType[slen];
+
+  selt->Get(data_sample, s0, slen);
+
+  for(int i=0; i<slen; i++)
+	data[i] = data_sample[i] / 32767.;
+
+  gFreqWindow->Plot(slen, data);
+  gFreqWindow->Show(true);
+  gFreqWindow->Raise();
+
+  delete[] data;
+  delete[] data_sample;
 }
 
 //

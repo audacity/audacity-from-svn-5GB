@@ -42,10 +42,7 @@ OBJS = \
 	$(OBJDIR)/Landmark.cpp.o \
 	$(OBJDIR)/Peak.cpp.o \
 	$(OBJDIR)/Spectrum.cpp.o \
-	$(OBJDIR)/AutoCorrelate.cpp.o \
-	$(OBJDIR)/FourierD.cpp.o \
-	$(OBJDIR)/FourierF.cpp.o \
-	$(OBJDIR)/FFTMisc.cpp.o \
+	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/DiskFunctions.cpp.o \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/UndoManager.cpp.o \

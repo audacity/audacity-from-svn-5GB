@@ -89,7 +89,6 @@ bool AudacityApp::OnInit()
 
   InitAPalette(NULL);
   InitFreqWindow(NULL);
-  gFreqWindow->Show(true); //temp
   AudacityProject *project = CreateNewAudacityProject();
   SetTopWindow(gAPalette);
 
@@ -159,7 +158,7 @@ void AudacityApp::RunTest()
   srand(234657);
 
   int len = 1024;
-  int scale = 500 + (rand()%1000);
+  int scale = 19500 + (rand()%1000);
   int trials = 100;
 
   printf("scale: %d\n", scale);
@@ -254,6 +253,7 @@ void AudacityApp::RunTest()
 
   printf("Correctness check: (blocks %d bytes %d)\n", len, scale);
   bad = 0;
+  wxStartTimer();
   for(i=0; i<len; i++) {
 	v = small[i];
 	t->Get(block, i*scale, scale);
@@ -269,6 +269,30 @@ void AudacityApp::RunTest()
 	printf("Passed!\n");
   else
 	printf("Errors in %d/%d blocks\n", bad, len);
+
+  elapsed = wxGetElapsedTime();
+
+  printf("Time to check all data: %ld ms\n", elapsed);
+
+  printf("Second measurement:\n");
+
+  wxStartTimer();
+
+  for(int j=0; j<2 ; j++) {
+	for(i=0; i<len; i++) {
+	  v = small[i];
+	  t->Get(block, i*scale+j, scale-j);
+	  for(b=0; b<scale; b++)
+		if (block[b] != v)
+		  bad++;
+	}
+  }
+
+  elapsed = wxGetElapsedTime();
+
+  printf("Done.\n");
+
+  printf("Second measurement: %ld ms\n", elapsed/2);
   
   delete t;
 

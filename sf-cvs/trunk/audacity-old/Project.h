@@ -87,6 +87,8 @@ public:
   void OnZoomNormal();
   void OnZoomFit();
 
+  void OnPlotSpectrum();
+
   // Project Menu
 
   void OnImport();
