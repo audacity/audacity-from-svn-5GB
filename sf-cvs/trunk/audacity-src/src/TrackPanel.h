@@ -267,6 +267,8 @@ class TrackPanel:public wxWindow {
    wxRect mCapturedRect;
    int mCapturedNum;
 
+   bool mRedrawAfterStop;
+
    bool mIndicatorShowing;
 
    int mMouseClickX;
