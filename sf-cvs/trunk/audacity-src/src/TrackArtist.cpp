@@ -550,10 +550,12 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
       // Get min/max of samples for each pixel we can
       x = 0;
 
-      theMin = temp[x];
-      theMax = temp[x];
-      sumsq = 0.0;
-      jcount = 0;
+      if (b == block0) {
+         theMin = temp[x];
+         theMax = temp[x];
+         sumsq = 0.0;
+         jcount = 0;
+      }
 
       while (x < num) {
 
