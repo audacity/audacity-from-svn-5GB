@@ -32,6 +32,7 @@ struct MeterBar {
    wxRect rClip;
    bool   clipping;
    int    tailPeakCount;
+   float  peakPeakHold;
 };
 
 class MeterUpdateEvent;
@@ -51,7 +52,8 @@ class Meter : public wxPanel
    // These should be kept in the same order as they appear
    // in the menu
    enum Style {
-      HorizontalStereo = 0,
+      Disable = 0,
+      HorizontalStereo,
       VerticalStereo,
       VerticalMulti,
       Equalizer,
@@ -87,6 +89,7 @@ class Meter : public wxPanel
    // Pop-up menu handlers
    //
 
+   void OnDisableMeter(wxCommandEvent &evt);
    void OnHorizontal(wxCommandEvent &evt);
    void OnVertical(wxCommandEvent &evt);
    void OnMulti(wxCommandEvent &evt);
@@ -97,6 +100,7 @@ class Meter : public wxPanel
    void OnClip(wxCommandEvent &evt);
    void OnMonitor(wxCommandEvent &evt);
    void OnFloat(wxCommandEvent &evt);
+   void OnPreferences(wxCommandEvent &evt);
    
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
@@ -110,7 +114,7 @@ class Meter : public wxPanel
 
    bool      mIsInput;
 
-   Style     mStyle;
+   Style     mStyle, mSavedStyle;
    bool      mDB;
    int       mDBRange;
    bool      mDecay;
@@ -120,6 +124,8 @@ class Meter : public wxPanel
    double    mPeakHoldDuration;
    double    mT;
    double    mRate;
+   long      mMeterDisabled; //is used as a bool, needs long for easy gPrefs...
+   long      mMeterRefreshRate;
 
    int       mNumBars;
    MeterBar  mBar[32];
@@ -138,11 +144,19 @@ class Meter : public wxPanel
    wxBitmap *mIcon;
    wxPen     mPen;
    wxPen     mLightPen;
+   wxPen     mSavedLightPen;
    wxPen     mDarkPen;
+   wxPen     mSavedDarkPen;
+   wxPen     mDisabledPen;
+   wxPen     mPeakPeakPen;
    wxBrush   mBrush;
    wxBrush   mRMSBrush;
    wxBrush   mClipBrush;
    wxBrush   mBkgndBrush;
+   wxBrush   mSavedBkgndBrush;
+   wxBrush   mSavedBrush;
+   wxBrush   mSavedRMSBrush;
+   wxBrush   mDisabledBkgndBrush;
    wxRect    mAllBarsRect;
    Ruler     mRuler;
 
