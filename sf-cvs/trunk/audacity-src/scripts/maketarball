@@ -70,6 +70,10 @@ print "removing out-of-date translations: fr hu ja pl sl\n";
 `rm -f locale/pl.po`;
 `rm -f locale/sl.po`;
 
+`mv locale/Makefile.in /tmp/Makefile.in.tmp`;
+`sed 's/bg ca cs da de es fr hu it ja mk nl pl pt ru sl sv/bg ca cs da de es it mk nl pt ru sv/' /tmp/Makefile.in.tmp > locale/Makefile.in`;
+`rm /tmp/Makefile.in.tmp`;
+
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
 #`tar zcf audacity-src-$version.tgz audacity-src-$version`;
