@@ -11,7 +11,7 @@
 #include "wx/dialog.h"
 
 #include "AboutDialog.h"
-
+#include "AudacityApp.h"
 
 // ----------------------------------------------------------------------------
 // icons
@@ -26,45 +26,73 @@ END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
-AboutDialog::AboutDialog( wxWindow *parent,
-						  wxBitmap *bitmap,
-						  const wxString& message,
-						  const wxPoint& pos)
-  : wxDialog( parent, -1, "About", pos, wxDefaultSize, wxDEFAULT_DIALOG_STYLE )
+AboutDialog::AboutDialog()
+  : wxDialog( (wxFrame *)NULL, -1, "About Audacity...")
 {
-    wxBeginBusyCursor();
+  wxString fullMessage("Audacity:\n"
+					   "A New Digital Audio Editor\n"
+					   "by Dominic Mazzoni, Roger Dannenberg, "
+					   "Jason Cohen, Robert Leidle,"
+					   "and Mark Tomlinson.\n"
+					   "Version " AUDACITY_VERSION_STRING "\n"
+					   "http://www.cs.cmu.edu/~music/audacity/");
+  
+  wxString caption("A New Digital Audio Editor\n"
+				   "by Dominic Mazzoni, Roger Dannenberg, "
+				   "Jason Cohen, Robert Leidle, "
+				   "and Mark Tomlinson.\n"
+				   "Version " AUDACITY_VERSION_STRING "\n"
+				   "http://www.cs.cmu.edu/~music/audacity/");
+  
+  topsizer = new wxBoxSizer( wxVERTICAL );
+  
+  logo = new wxBitmap();
+  
+#ifdef __WXMSW__
+  if (logo->LoadFile("AudacityLogo",wxBITMAP_TYPE_BMP_RESOURCE)) {
+#else
+#ifdef __WXMAC__
+  if (logo->LoadFile("AudacityLogo",wxBITMAP_TYPE_PICT_RESOURCE)) {
+#else
+  if (logo->LoadFile("icons/AudacityLogo.XPM",wxBITMAP_TYPE_XPM)) {
+#endif
+#endif
 
-    wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
-
-	wxStaticBitmap *icon =
-	  new wxStaticBitmap(this, -1, *bitmap, wxPoint(0, 0), wxSize(530, 142));
-
+	icon =
+	  new wxStaticBitmap(this, -1, *logo, wxPoint(0, 0), wxSize(530, 142));
+	
 	topsizer->Add( icon, 0, wxCENTER );
-    topsizer->Add( CreateTextSizer(message), 0, wxCENTER, 10 );
-    
-    // 3) button
-    topsizer->Add( CreateButtonSizer( wxOK ),
-				   0, wxCENTRE | wxALL, 10 );
+	topsizer->Add( CreateTextSizer(caption), 0, wxCENTER, 10 );
+  }
+  else {
+	topsizer->Add( CreateTextSizer(fullMessage), 0, wxCENTER, 10 );	
+  }
+  
+  topsizer->Add( CreateButtonSizer( wxOK ),
+				 0, wxCENTRE | wxALL, 10 );
+  
+  SetAutoLayout( TRUE );
+  SetSizer( topsizer );
+  
+  topsizer->SetSizeHints( this );
+  topsizer->Fit( this );
+  wxSize size( GetSize() );
+  if (size.x < size.y*3/2) {
+	size.x = size.y*3/2;
+	SetSize( size );
+  }
+  
+  Centre( wxBOTH | wxCENTER_FRAME);
+  
+}
 
-    SetAutoLayout( TRUE );
-    SetSizer( topsizer );
-    
-    topsizer->SetSizeHints( this );
-    topsizer->Fit( this );
-    wxSize size( GetSize() );
-    if (size.x < size.y*3/2)
-    {
-        size.x = size.y*3/2;
-		SetSize( size );
-    }
-
-    Centre( wxBOTH | wxCENTER_FRAME);
-
-    wxEndBusyCursor();
+AboutDialog::~AboutDialog()
+{
+  // TODO: Is there anything we need to clean up?
 }
 
 void AboutDialog::OnOK(wxCommandEvent& WXUNUSED(event))
 {
-    EndModal( wxID_YES );
+  EndModal( wxID_YES );
 }
 

@@ -20,10 +20,13 @@ CC = @CC@
 OBJDIR = obj
 
 OBJS = \
-	$(OBJDIR)/AudioApp.cpp.o \
-	$(OBJDIR)/AudioFrame.cpp.o \
-	$(OBJDIR)/AudioView.cpp.o \
-	$(OBJDIR)/AudioDoc.cpp.o \
+	$(OBJDIR)/AudacityApp.cpp.o \
+	$(OBJDIR)/AButton.cpp.o \
+	$(OBJDIR)/AColor.cpp.o \
+	$(OBJDIR)/ASlider.cpp.o \
+	$(OBJDIR)/APalette.cpp.o \
+	$(OBJDIR)/Project.cpp.o \
+	$(OBJDIR)/TrackPanel.cpp.o \
 	$(OBJDIR)/NoteTrack.cpp.o \
 	$(OBJDIR)/WaveTrack.cpp.o \
 	$(OBJDIR)/LabelTrack.cpp.o \

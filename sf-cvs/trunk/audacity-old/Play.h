@@ -2,28 +2,69 @@
 
   Audacity: A Digital Audio Editor
 
-  Play.h
+  PlaySnd.h
 
   Dominic Mazzoni
 
-  Note: This one header file, Play.h, is associated with many
-  different sound playing modules, such as PlayLinux.cpp,
-  PlayMac.cpp, PlayWin.cpp, and later much more.
+  Use the SND library to play sound
 
 **********************************************************************/
 
+#ifndef __AUDACITY_PLAY__
+#define __AUDACITY_PLAY__
 
-#ifdef __WXGTK__
-#include "PlayLinux.h"
+#include "snd/snd.h"
+
+#include <wx/string.h>
+#include <wx/timer.h>
+
+#include "WaveTrack.h"
+
+class SoundPlayer;
+class AudacityProject;
+
+extern SoundPlayer *gSoundPlayer;
+
+void InitSoundPlayer();
+
+class SoundTimer: public wxTimer
+{
+public:
+  virtual void Notify();
+};
+
+class SoundPlayer {
+
+public:
+  SoundPlayer();
+  ~SoundPlayer();
+
+  bool Begin(AudacityProject *project,
+			 TrackList *tracks,
+			 double t0, double t1);
+
+  void Stop();
+
+  bool IsBusy();
+
+  void OnTimer();
+
+private:
+
+  void Finish();
+  
+  AudacityProject *mProject;
+  TrackList       *mTracks;
+  double          mT;
+  double          mT0;
+  double          mT1;
+  bool            mStop;
+  snd_node        mAudioOut;
+  SoundTimer      mTimer;
+};
+
 #endif
 
-#ifdef __WXMAC__
-#include "PlayMac.h"
-#endif
 
-#ifdef __WXMSW__
-#include "PlaySnd.h"
-//#include "PlayWin.h"
-#endif
 
 

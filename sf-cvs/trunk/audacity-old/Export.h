@@ -8,8 +8,11 @@
 
 **********************************************************************/
 
-#ifndef _EXPORT_
-#define _EXPORT_
+#ifndef __AUDACITY_EXPORT__
+#define __AUDACITY_EXPORT__
+
+class wxChoice;
+class wxRadioButton;
 
 class WaveTrack;
 class DirManager;

@@ -8,8 +8,8 @@
 
 **********************************************************************/
 
-#ifndef _NOTETRACK_
-#define _NOTETRACK_
+#ifndef __AUDACITY_NOTETRACK__
+#define __AUDACITY_NOTETRACK__
 
 #include <wx/string.h>
 

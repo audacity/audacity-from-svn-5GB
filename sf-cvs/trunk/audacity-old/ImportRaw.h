@@ -11,6 +11,9 @@
 #ifndef __AUDACITY_IMPORT_RAW__
 #define __AUDACITY_IMPORT_RAW__
 
+#include <wx/dialog.h>
+#include <wx/panel.h>
+
 class wxRadioButton;
 class WaveTrack;
 class DirManager;

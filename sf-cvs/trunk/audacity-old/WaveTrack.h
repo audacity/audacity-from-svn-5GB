@@ -23,7 +23,6 @@ typedef signed short sampleType;
 typedef unsigned int sampleCount;
 
 class DirManager;
-class GenericStream;
 class BlockFile;
 
 class WaveBlock
@@ -87,8 +86,8 @@ public:
   virtual void SetDisplay(int d);
   virtual int GetDisplay();
 
-  virtual bool Load(GenericStream *in, DirManager *dirManager);
-  virtual bool Save(GenericStream *out, bool overwrite);
+  virtual bool Load(wxTextFile *in, DirManager *dirManager);
+  virtual bool Save(wxTextFile *out, bool overwrite);
 
   virtual int GetKind() {return Wave;}
 

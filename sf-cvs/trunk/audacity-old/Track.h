@@ -8,13 +8,13 @@
 
 **********************************************************************/
 
-#ifndef __TRACK__
-#define __TRACK__
+#ifndef __AUDACITY_TRACK__
+#define __AUDACITY_TRACK__
 
 class wxString;
 class wxDC;
 class wxRect;
-class GenericStream;
+class wxTextFile;
 class DirManager;
 
 class VTrack
@@ -25,9 +25,17 @@ public:
 
   bool selected;
 
+  int channel;
+
   double tOffset;
 
   DirManager *dirManager;
+
+  enum {
+	LeftChannel,
+	RightChannel,
+	MonoChannel
+  };
 
   enum {
 	None,
@@ -64,8 +72,10 @@ public:
 
   virtual int GetKind() {return None;}
 
-  virtual bool Load(GenericStream *in, DirManager *dirManager);
-  virtual bool Save(GenericStream *out, bool overwrite);
+  virtual int GetChannel() {return MonoChannel;}
+
+  virtual bool Load(wxTextFile *in, DirManager *dirManager);
+  virtual bool Save(wxTextFile *out, bool overwrite);
 
   virtual int GetHeight() {
 	return (collapsed? collapsedHeight: expandedHeight);
@@ -126,8 +136,8 @@ public:
   int GetHeight();
 
   // File I/O
-  bool Save(GenericStream *out, bool overwrite);
-  bool Load(GenericStream *in, DirManager *dirManager);
+  virtual bool Load(wxTextFile *in, DirManager *dirManager);
+  virtual bool Save(wxTextFile *out, bool overwrite);
   
 private:
   TrackListNode *head;

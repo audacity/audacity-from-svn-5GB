@@ -20,11 +20,14 @@ class AboutDialog: public wxDialog
 DECLARE_DYNAMIC_CLASS(AboutDialog)
 
 public:
-    AboutDialog(wxWindow *parent, wxBitmap *bitmap,
-				const wxString& message,
-				const wxPoint& pos = wxDefaultPosition);
+  AboutDialog();
+  virtual ~AboutDialog();
 
-    void OnOK(wxCommandEvent& event);
+  void OnOK(wxCommandEvent& event);
+
+  wxBoxSizer *topsizer;
+  wxStaticBitmap *icon;
+  wxBitmap *logo;
 
 DECLARE_EVENT_TABLE()
 };

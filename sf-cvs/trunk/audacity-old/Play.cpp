@@ -16,23 +16,103 @@
 #endif
 
 #ifndef WX_PRECOMP
-#include "wx/wx.h"
+#include <wx/msgdlg.h>
 #endif
 
-#include "PlaySnd.h"
+#include "APalette.h"
+#include "Play.h"
+#include "Project.h"
+#include "Track.h"
 
-#include "snd/snd.h"
+SoundPlayer *gSoundPlayer;
 
-int SoundPlayer::numSoundsPlaying = 0;
+void InitSoundPlayer()
+{
+  gSoundPlayer = new SoundPlayer();
+}
 
 SoundPlayer::SoundPlayer()
-{ 
+{
+  mProject = NULL;
+  mTracks = NULL;
+  mStop = false;
+  mTimer.Start(50, FALSE);
 }
 
 SoundPlayer::~SoundPlayer()
 {
 }
 
+bool SoundPlayer::Begin(AudacityProject *project,
+						TrackList *tracks,
+						double t0, double t1)
+{
+  if (mProject)
+	return false;
+
+  mProject = project;
+  mTracks = tracks;
+  mT0 = t0;
+  mT1 = t1;
+  mT = mT0;
+
+  mAudioOut.device = SND_DEVICE_AUDIO;
+  mAudioOut.write_flag = SND_WRITE;
+  mAudioOut.format.channels = 2;
+  mAudioOut.format.mode = SND_MODE_PCM;
+  mAudioOut.format.bits = 16;
+  mAudioOut.format.srate = mProject->GetRate();
+  strcpy(mAudioOut.u.audio.devicename,"");
+  strcpy(mAudioOut.u.audio.interfacename,"");
+  mAudioOut.u.audio.descriptor = 0;
+  mAudioOut.u.audio.protocol = SND_COMPUTEAHEAD;
+  mAudioOut.u.audio.latency = 1.0;
+  mAudioOut.u.audio.granularity = 0.0;
+
+  long flags = 0;
+  int err = snd_open(&mAudioOut, &flags);
+
+  if (err) {
+	wxMessageBox(wxString::Format("Error opening audio device: %d",err));
+	return false;
+  }
+
+  
+
+  return true;
+}
+
+void SoundPlayer::Finish()
+{
+  snd_close(&mAudioOut);  
+
+  gAPalette->SetPlay(false);
+  gAPalette->SetStop(false);
+
+  // TODO mProject->SoundDone();
+  mProject = NULL;
+  
+}
+
+void SoundPlayer::OnTimer()
+{
+  if (mStop) {
+  }
+}
+
+void SoundPlayer::Stop()
+{
+  mStop = true;
+}
+
+bool SoundPlayer::IsBusy()
+{
+  return (mProject != NULL);
+}
+
+
+
+/*
 bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
 {
   int s0 = (int)((t0 - track->tOffset) * track->rate);
@@ -89,8 +169,8 @@ bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
 	int rslt;
 	int p=0;
 	while (p < len) {
-		/* this loop is a busy-wait loop! */
-		rslt = snd_poll(&out); /* wait for buffer space */
+	    // this loop is a busy-wait loop!
+		rslt = snd_poll(&out); // wait for buffer space
 		rslt = min(rslt, len - p);
 		if (rslt) {
 			snd_write(&out, &buffer[p], rslt);
@@ -111,6 +191,9 @@ bool SoundPlayer::Begin(WaveTrack *track, double t0, double t1)
   numSoundsPlaying--;
   return true;
 }
+*/
 
-
-
+void SoundTimer::Notify()
+{
+  gSoundPlayer->OnTimer();
+}

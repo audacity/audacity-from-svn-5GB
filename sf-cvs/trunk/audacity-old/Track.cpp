@@ -8,13 +8,13 @@
 
 **********************************************************************/
 
-#include "wx/file.h"
+#include <wx/file.h>
+#include <wx/textfile.h>
 
 #include "Track.h"
 #include "WaveTrack.h"
 #include "NoteTrack.h"
 #include "DirManager.h"
-#include "GenericStream.h"
 
 #if wxUSE_APPLE_IEEE
 extern "C" void ConvertToIeeeExtended(double num, unsigned char *bytes);
@@ -34,25 +34,25 @@ VTrack::VTrack(DirManager *projDirManager)
 
   tOffset = 0.0;
 
+  channel = MonoChannel;
+
   dirManager = projDirManager;
 }
 
-bool VTrack::Load(GenericStream *in, DirManager *dirManager)
+bool VTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   this->dirManager = dirManager;
 
-  unsigned char tOffsetExtended[10];
-  in->Read(tOffsetExtended, 10);
-  tOffset = ConvertFromIeeeExtended((const unsigned char *)tOffsetExtended);
+  if (in->GetNextLine() != "offset") return false;
+  if (!(in->GetNextLine().ToDouble(&tOffset))) return false;
 
   return true;
 }
 
-bool VTrack::Save(GenericStream *out, bool overwrite)
+bool VTrack::Save(wxTextFile *out, bool overwrite)
 {
-  unsigned char tOffsetExtended[10];
-  ConvertToIeeeExtended(tOffset, (unsigned char *)tOffsetExtended);
-  out->Write(tOffsetExtended, 10);
+  out->AddLine("offset");
+  out->AddLine(wxString::Format("%f", tOffset));
 
   return true;
 }
@@ -94,26 +94,24 @@ bool VTrack::IsCollapsed()
   return this->collapsed;
 }
 
-bool TrackList::Save(GenericStream *out, bool overwrite)
+bool TrackList::Save(wxTextFile *out, bool overwrite)
 {
-  out->Write((void *)"tlst",4);
-
   TrackListNode *n = head;
 
   while(n) {
 	VTrack *t = n->t;
 	switch(((VTrack *)t)->GetKind()) {
 	case VTrack::Wave:
-	  out->Write((void *)"wave",4);
+	  out->AddLine("WaveTrack");
 	  break;
 	case VTrack::Note:
-	  out->Write((void *)"note",4);
+	  out->AddLine("NoteTrack");
 	  break;
 	case VTrack::Beat:
-	  out->Write((void *)"beat",4);
+	  out->AddLine("BeatTrack");
 	  break;
 	default:
-	  out->Write((void *)"trak",4);
+	  out->AddLine("Track");
 	  break;
 	}
 	
@@ -122,41 +120,30 @@ bool TrackList::Save(GenericStream *out, bool overwrite)
 	n = n->next;
   }
 
-  out->Write((void *)"----",4);
+  out->AddLine("EndTracks");
 
   return true;
 }
 
-bool TrackList::Load(GenericStream *in, DirManager *dirManager)
+bool TrackList::Load(wxTextFile *in, DirManager *dirManager)
 {
-  char tag[5];
-  int rv;
-
-  rv = in->Read(tag,4);
-  tag[4] = 0;
-  
-  if (strcmp(tag,"tlst"))
-	return true;
-
-  while(1) {
-	rv = in->Read(tag,4);
-	tag[4] = 0;
-	
-	if (!strcmp(tag,"----"))
+  for(;;) {
+	wxString cmd = in->GetNextLine();
+	if (cmd == "EndTracks")
 	  return true;
 
 	VTrack *newt = 0;
 
-	if (!strcmp(tag,"trak")) {
-	  newt = new VTrack(dirManager);
+	if (cmd == "Track") {
+	  newt = new VTrack(dirManager);	  
 	}
 
-	if (!strcmp(tag,"wave")) {
-	  newt = new WaveTrack(dirManager);
+	if (cmd == "WaveTrack") {
+	  newt = new WaveTrack(dirManager);	  
 	}
 
-	if (!strcmp(tag,"note")) {
-	  newt = new NoteTrack(dirManager);
+	if (cmd == "NoteTrack") {
+	  newt = new NoteTrack(dirManager);	  
 	}
 
 	if (newt) {

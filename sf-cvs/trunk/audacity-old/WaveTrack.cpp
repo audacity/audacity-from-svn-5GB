@@ -15,11 +15,11 @@
 #include <wx/file.h>
 #include <wx/image.h>
 #include <wx/msgdlg.h>
+#include <wx/textfile.h>
 
 #include "Spectrum.h"
 #include "WaveTrack.h"
 #include "DirManager.h"
-#include "GenericStream.h"
 
 #if wxUSE_APPLE_IEEE
 extern "C" void ConvertToIeeeExtended(double num, unsigned char *bytes);
@@ -728,7 +728,7 @@ void WaveTrack::AppendBlock(WaveBlock *b)
   ConsistencyCheck("AppendBlock");
 }
 
-bool WaveTrack::Load(GenericStream *in, DirManager *dirManager)
+bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   bool result = VTrack::Load(in, dirManager);
 
@@ -736,97 +736,91 @@ bool WaveTrack::Load(GenericStream *in, DirManager *dirManager)
     wxMessageBox("Could not load Track.\n");
     return false;
   }
-  
-  int i, i2, b, len;
-  
-  in->Read(&i, 4);
-  numSamples = wxUINT32_SWAP_ON_BE(i);
-  
-  unsigned char rateExtended[10];
-  in->Read(rateExtended, 10);
-  rate = ConvertFromIeeeExtended((const unsigned char *)rateExtended);
-  
-  in->Read(&i, 4);
-  int numBlocks = wxUINT32_SWAP_ON_BE(i);
+
+  int b;
+  long longNumSamples;
+  long numBlocks;
+  long longBlockStart;
+  long longBlockLen;
+  WaveBlock *w;
+
+  if (in->GetNextLine() != "numSamples") goto readWaveTrackError;
+  if (!(in->GetNextLine().ToLong(&longNumSamples))) goto readWaveTrackError;
+  numSamples = longNumSamples;
+
+  if (in->GetNextLine() != "rate") goto readWaveTrackError;
+  if (!(in->GetNextLine().ToDouble(&rate))) goto readWaveTrackError;
+
+  if (in->GetNextLine() != "numBlocks") goto readWaveTrackError;
+  if (!(in->GetNextLine().ToLong(&numBlocks))) goto readWaveTrackError;
 
   block->Alloc(numBlocks);
 
   for(b=0; b<numBlocks; b++) {
-    WaveBlock *w = new WaveBlock();
-    
-    in->Read(&i, 4);
-    w->start = wxUINT32_SWAP_ON_BE(i);
-    
-    in->Read(&i, 4);
-    w->len = wxUINT32_SWAP_ON_BE(i);
-    
-    in->Read(&i, 4);
-    len = wxUINT32_SWAP_ON_BE(i);
-    
-    if (len<0 || len>255)
-      return false;
-    
-    char str[256];
-    in->Read(str, len);
-    str[len] = 0;
-    
-    wxString name = str;
+	w = new WaveBlock();
 
-    w->f = dirManager->GetBlockFile(name);
+	if (in->GetNextLine() != "Block start") goto readWaveTrackError;
+	if (!(in->GetNextLine().ToLong(&longBlockStart))) goto readWaveTrackError;
+	w->start = longBlockStart;
+	
+	if (in->GetNextLine() != "Block len") goto readWaveTrackError;
+	if (!(in->GetNextLine().ToLong(&longBlockLen))) goto readWaveTrackError;
+	w->len = longBlockLen;
+	
+	if (in->GetNextLine() != "Block name") goto readWaveTrackError;
+	wxString name = in->GetNextLine();
+	
+	w->f = dirManager->GetBlockFile(name);
+	
+	if (!w->f) {
+	  wxString msg;
+	  msg.Printf("The file named \"%s\" is missing from the project.",
+				 (const char *)name);
+	  wxMessageBox(msg);
+	  
+	  return false;
+	}
 
-    if (!w->f) {
-      wxString msg;
-      msg.Printf("The file named \"%s\" is missing from the project.",
-		 (const char *)name);
-      wxMessageBox(msg);
-      
-      return false;
-    }
-    
-    block->Add(w);
+	block->Add(w);
   }
-
+  
   return true;
+
+readWaveTrackError:
+  wxMessageBox(wxString::Format("Error reading WaveTrack in line %d",
+								in->GetCurrentLine()));
+  return false;
 }
 
-bool WaveTrack::Save(GenericStream *out, bool overwrite)
+bool WaveTrack::Save(wxTextFile *out, bool overwrite)
 {
   VTrack::Save(out, overwrite);
 
   int i, b;
 
-  i = wxUINT32_SWAP_ON_BE(numSamples);
-  out->Write(&i, 4);
+  out->AddLine("numSamples");
+  out->AddLine(wxString::Format("%d", numSamples));
 
-  unsigned char rateExtended[10];
-  ConvertToIeeeExtended(rate, (unsigned char *)rateExtended);
-  out->Write(rateExtended, 10);
+  out->AddLine("rate");
+  out->AddLine(wxString::Format("%g", rate));
 
-  i = wxUINT32_SWAP_ON_BE(block->Count());
-  out->Write(&i, 4);
+  out->AddLine("numBlocks");
+  out->AddLine(wxString::Format("%d", block->Count()));
 
-  sampleType *tempSamples = new sampleType[maxSamples];
   WaveBlock *bb;
 
   for(b=0; b<block->Count(); b++) {
     bb = block->Item(b);
 
     dirManager->MakePartOfProject(bb->f);
-    
-    i = wxUINT32_SWAP_ON_BE(block->Item(b)->start);
-    out->Write(&i, 4);
-    
-    i = wxUINT32_SWAP_ON_BE(block->Item(b)->len);
-    out->Write(&i, 4);
-    
-    i = wxUINT32_SWAP_ON_BE(block->Item(b)->f->name.Length());
-    out->Write(&i, 4);
-    
-    out->Write((void *)(const char *)block->Item(b)->f->name,
-	       block->Item(b)->f->name.Length());
-  }
 
-  delete[] tempSamples;
+	out->AddLine("Block start");
+	out->AddLine(wxString::Format("%d", bb->start));
+	out->AddLine("Block len");
+	out->AddLine(wxString::Format("%d", bb->len));
+	out->AddLine("Block name");
+	out->AddLine(bb->f->name);
+  }
 
   return true;
 }
