@@ -31,6 +31,7 @@ AudioIO *gAudioIO;
 void InitAudioIO()
 {
    gAudioIO = new AudioIO();
+   gAudioIO->mThread->Run();
 }
 
 AudioIO::AudioIO()
@@ -50,6 +51,7 @@ AudioIO::AudioIO()
    mT0 = 0.0;
    mT1 = 0.0;
    mHardStop = false;
+   mStopping = false;
    mPaused = false;
    mAlwaysEnablePause = false;
    mStarted = false;
@@ -77,7 +79,6 @@ AudioIO::AudioIO()
    // Start thread
    mThread = new AudioThread();
    mThread->Create();
-   mThread->Run();
 }
 
 AudioIO::~AudioIO()
@@ -289,7 +290,7 @@ bool AudioIO::Start()
    if (!OpenDevice()) {
       wxMessageBox(_("Error opening audio device.\n"
                      "(Change the device in the Preferences dialog.)"));
-
+      Finish();
       return false;
    }
 
