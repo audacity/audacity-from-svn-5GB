@@ -61,8 +61,6 @@
 	
 #elif (defined (WIN32) || defined (_WIN32))
 
-	#include	<math.h>
-
 	/*	Win32 doesn't seem to have these functions. 
 	**	Therefore implement inline versions of these functions here.
 	*/
@@ -97,10 +95,14 @@
     * it's slower.  Correctness and consistency is more important
     * than speed, especially since lrint/lrintf are certainly not
     * available everywhere.
+    *
+    * MM: Now uses internal math.h rint() function
     */
 
-	#define	lrint(dbl)		((int)(dbl + 0.5))
-	#define	lrintf(flt)		((int)(flt + 0.5))
+   #include	<math.h>
+   
+   #define	lrint(dbl)		((int)rint(flt))
+	#define	lrintf(flt)		((int)rint(flt))
 
 #endif
 
