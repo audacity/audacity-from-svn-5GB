@@ -1164,7 +1164,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsResizing = false;
       MakeParentRedrawScrollbars();
-      MakeParentPushState();
+      MakeParentPushState("TrackPanel::HandleResize() FIXME!!");
    }
 }
 
@@ -1189,7 +1189,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
             ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
                                          event);
             Refresh(false);
-            MakeParentPushState();
+            MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
             return;
          }
 
@@ -2262,7 +2262,7 @@ void TrackPanel::OnUpOctave()
       ((NoteTrack *) t)->mBottomNote += 12;
       if (((NoteTrack *) t)->mBottomNote < 0)
          ((NoteTrack *) t)->mBottomNote = 0;
-      MakeParentPushState();
+      MakeParentPushState("TrackPanel::OnUpOctave() FIXME!!");
       Refresh(false);
    }
 }
@@ -2274,7 +2274,7 @@ void TrackPanel::OnDownOctave()
       ((NoteTrack *) t)->mBottomNote -= 12;
       if (((NoteTrack *) t)->mBottomNote > 96)
          ((NoteTrack *) t)->mBottomNote = 96;
-      MakeParentPushState();
+      MakeParentPushState("TrackPanel::OnDownOctave() FIXME!!");
       Refresh(false);
    }
 }

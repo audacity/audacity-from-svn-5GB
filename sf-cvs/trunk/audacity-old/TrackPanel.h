@@ -82,7 +82,7 @@ class TrackPanel:public wxWindow {
    void HandleSoloing(wxMouseEvent & event);
 
    void MakeParentRedrawScrollbars();
-   void MakeParentPushState(wxString desc = wxString("NOT DONE YET!!"));
+   void MakeParentPushState(wxString desc);
 
    void OnSetName();
 

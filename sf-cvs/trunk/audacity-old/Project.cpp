@@ -1210,6 +1210,9 @@ void AudacityProject::PushState(wxString desc, bool makeDirty /* = true */ )
 
    if (makeDirty)
       mDirty = true;
+
+   if (mHistoryWindow)
+      mHistoryWindow->UpdateDisplay();
 }
 
 void AudacityProject::PopState(TrackList * l)

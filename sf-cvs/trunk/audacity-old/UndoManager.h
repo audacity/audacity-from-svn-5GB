@@ -30,6 +30,8 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
+#include "HistoryWindow.h"
+
 class VTrack;
 class TrackList;
 
@@ -47,15 +49,14 @@ class UndoManager {
    UndoManager();
    ~UndoManager();
 
-   void PushState(TrackList * l, double sel0, double sel1,
-                  wxString desc = "TOO LAZY TO SUPPLY DESCRIPTION! :-)");
-                  // (the incentive to always write descriptions ...)
+   void PushState(TrackList * l, double sel0, double sel1, wxString desc);
    void ClearStates();
    void RemoveStates(int num);  // removes the 'num' oldest states
    void RemoveStateAt(int n);   // removes the n'th state (1 is oldest) 
    unsigned int GetNumStates();
    unsigned int GetCurrentState();
    void GetDescription(unsigned int n, wxString *desc, wxString *size);
+   void SetDescription(unsigned int n, wxString desc);
    TrackList *Undo(double *sel0, double *sel1);
    TrackList *Redo(double *sel0, double *sel1);
 
@@ -67,6 +68,7 @@ class UndoManager {
  private:
    int current;
    UndoStack stack;
+   
 };
 
 #endif

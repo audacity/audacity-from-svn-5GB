@@ -34,6 +34,15 @@ void UndoManager::GetDescription(unsigned int n, wxString *desc, wxString *size)
    *size = "X MB";
 }
 
+void UndoManager::SetDescription(unsigned int n, wxString desc)
+{
+   n -= 1;
+
+   wxASSERT(n < stack.Count());
+
+   stack[n]->description = desc;
+}
+
 void UndoManager::RemoveStateAt(int n)
 {
    TrackListIterator iter(stack[n]->tracks);

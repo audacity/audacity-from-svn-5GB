@@ -19,8 +19,9 @@
 #include <wx/sizer.h>
 #include <wx/spinctrl.h>
 #include <wx/listctrl.h>
+#include <wx/stattext.h>
 
-#include "UndoManager.h"
+class UndoManager;
 
 class HistoryWindow :public wxDialog {
 
@@ -28,13 +29,18 @@ class HistoryWindow :public wxDialog {
    HistoryWindow(wxWindow * parent, UndoManager *manager);
    ~HistoryWindow();
 
-   void OnOK(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
+   void UpdateDisplay();
 
  private:
-   wxStaticBoxSizer *mTopSizer;
+
+   void OnDiscard(wxCommandEvent & event);
+   void OnLabelChanged(wxListEvent & event);
+
+   wxBoxSizer *mTopSizer;
    wxListCtrl *mList;
    wxSpinCtrl *mDiscardNum;
+   wxButton   *mDiscard;
+   wxStaticText *mLevelsAvailable;
    UndoManager *mManager;
 
  public:

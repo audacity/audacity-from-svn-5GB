@@ -11,80 +11,113 @@
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 
+#include "xpm/Arrow.xpm"
 #include "HistoryWindow.h"
+#include "UndoManager.h"
 
 enum {
-   HistoryListID
+   HistoryListID = 1000,
+   DiscardID
 };
 
 BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
-   EVT_BUTTON(wxID_OK, HistoryWindow::OnOK)
-   EVT_BUTTON(wxID_CANCEL, HistoryWindow::OnCancel)
+   EVT_LIST_END_LABEL_EDIT(HistoryListID, HistoryWindow::OnLabelChanged)
+   EVT_BUTTON(DiscardID, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(wxWindow *parent, UndoManager *manager):
 wxDialog(parent, -1, "Undo History", wxDefaultPosition,
          wxDefaultSize, wxDIALOG_MODAL /* for now */ | wxCAPTION | wxTHICK_FRAME)
 {
-   mTopSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, "Undo Management"), wxVERTICAL );
+   mTopSizer = new wxBoxSizer(wxVERTICAL);
 
    mList = new wxListCtrl(this, HistoryListID, wxDefaultPosition, wxSize(350, 180),
                           wxLC_REPORT | wxLC_EDIT_LABELS);
-   mList->SetImageList((wxImageList *)NULL, wxIMAGE_LIST_SMALL);
+   mList->SetSizeHints(350, 180);
+
+   wxImageList *imageList = new wxImageList(24, 24); //TODO: free
+   imageList->Add(empty_24x24_xpm);
+   imageList->Add(wxIcon(arrow_xpm));
+   mList->SetImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, "Action", wxLIST_FORMAT_LEFT, 280);
    mList->InsertColumn(1, "Size", wxLIST_FORMAT_LEFT);
 
-   for(unsigned int i = 0; i < manager->GetNumStates(); i++) {
+
+   mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
+   
+   {
+      wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, "Discard undo data"), wxVERTICAL);
+
+      wxBoxSizer *firstLine = new wxBoxSizer(wxHORIZONTAL);
+
+      purgeSizer->Add(
+         mLevelsAvailable = new wxStaticText(this, -1, "Undo Levels Available (lots and lots)",
+                          wxDefaultPosition, wxDefaultSize, 0),
+         0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2 );
+
+      purgeSizer->Add(firstLine);
+
+      wxBoxSizer *secondLine = new wxBoxSizer(wxHORIZONTAL);
+
+      secondLine->Add(new wxStaticText(this, -1, "Levels to discard: "), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
+
+      secondLine->Add(
+         mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
+                        wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
+         0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+
+      secondLine->Add(
+         mDiscard = new wxButton(this, DiscardID, "Discard"),
+         0, wxALIGN_RIGHT|wxALL, 2 );
+
+      purgeSizer->Add(secondLine, 0, wxGROW);
+
+      mTopSizer->Add(purgeSizer, 0, wxGROW|wxALL, 3);
+   }
+
+   mManager = manager;
+
+   UpdateDisplay();
+
+   SetAutoLayout(true);
+   mTopSizer->Fit(this);
+   mTopSizer->SetSizeHints(this);
+   SetSizer(mTopSizer);
+}
+
+void HistoryWindow::UpdateDisplay()
+{
+   mList->Hide();   // to speed up the update
+   
+   mList->DeleteAllItems();
+   for(unsigned int i = 0; i < mManager->GetNumStates(); i++) {
       wxString desc, size;
-      manager->GetDescription(i + 1, &desc, &size);
-      mList->InsertItem(i, desc, 0);
+      mManager->GetDescription(i + 1, &desc, &size);
+      mList->InsertItem(i, desc, i == mManager->GetCurrentState() - 1 ? 1 : 0);
       mList->SetItem(i, 1, size);
    }
 
-   mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
+   mList->EnsureVisible(mManager->GetCurrentState() - 1);
+   mList->Show();
 
-   mTopSizer->Add(
-      new wxStaticText(this, -1, "Here you can throw away the oldest undo data to free disk space.",
-                       wxDefaultPosition, wxDefaultSize, 0),
-      0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   mLevelsAvailable->SetLabel(wxString::Format("Undo Levels Available: %d",
+                                              mManager->GetCurrentState() - 1));
 
-   mTopSizer->Add(
-      new wxStaticText(this, -1, wxString::Format("Undo Levels Available: %d",
-                                                  manager->GetCurrentState() - 1),
-                       wxDefaultPosition, wxDefaultSize, 0),
-      0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-    
-   mTopSizer->Add(
-      mDiscardNum = new wxSpinCtrl(this, -1, "1", wxDefaultPosition, wxDefaultSize,
-                     wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
-      0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
+   mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);
 
-   mTopSizer->Add(
-      new wxButton(this, wxID_OK, "OK"),
-      0, wxALIGN_CENTER|wxALL, 2 );
+   mDiscard->Enable(mManager->GetCurrentState() > 1 ? true : false);
 
-   mTopSizer->Add(
-      new wxButton(this, wxID_CANCEL, "Cancel"),
-      0, wxALIGN_CENTER|wxALL, 2 );
-
-   mManager = manager;
-   SetAutoLayout(true);
-   SetSizer(mTopSizer);
-
-   mTopSizer->Fit(this);
-   mTopSizer->SetSizeHints(this);
 }
 
-void HistoryWindow::OnOK(wxCommandEvent &event)
+void HistoryWindow::OnLabelChanged(wxListEvent &event)
+{
+   mManager->SetDescription(event.GetIndex() + 1, event.GetItem().m_text);
+}
+
+void HistoryWindow::OnDiscard(wxCommandEvent &event)
 {
    mManager->RemoveStates(mDiscardNum->GetValue());
-   EndModal(0);
-}
-
-void HistoryWindow::OnCancel(wxCommandEvent &event)
-{
-   EndModal(0);
+   UpdateDisplay();
 }
 
 HistoryWindow::~HistoryWindow()

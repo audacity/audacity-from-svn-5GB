@@ -44,6 +44,8 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 extern AProjectArray gAudacityProjects;
 
+class HistoryWindow;
+
 class AudacityProject:public wxFrame,
     public TrackPanelListener, public AStatusListener {
  public:
@@ -131,7 +133,7 @@ class AudacityProject:public wxFrame,
 
    void ClearClipboard();
    void InitialState();
-   void PushState(wxString desc = wxString("oops, not yet"), bool makeDirty = true);
+   void PushState(wxString desc, bool makeDirty = true);
    void PopState(TrackList * l);
 
    // The project's name and file info
@@ -184,6 +186,8 @@ class AudacityProject:public wxFrame,
    wxScrollBar *mVsbar;
 
    bool mAutoScrolling;
+
+   HistoryWindow *mHistoryWindow;
 
  public:
 
