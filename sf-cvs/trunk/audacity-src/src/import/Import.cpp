@@ -28,6 +28,15 @@
 
 #include "../Project.h"
 
+#ifdef __WXMAC__
+# ifdef __UNIX__
+#  include <CoreServices/CoreServices.h>
+# else
+#  include <Files.h>
+# endif
+ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
+
 // General purpose function used by importers
 wxString TrackNameFromFileName(wxString fName)
 {
@@ -43,6 +52,7 @@ int Import(AudacityProject *project,
    int numTracks = 0;
    DirManager *dirManager = project->GetDirManager();
    wxWindow *parent = project;
+   bool isMP3 = false;
 
    if (!fName.Right(3).CmpNoCase("mid") ||
        !fName.Right(4).CmpNoCase("midi") ||
@@ -52,7 +62,27 @@ int Import(AudacityProject *project,
       return 0;
    }
 
-   if (!fName.Right(3).CmpNoCase("mp3")) {
+   isMP3 = false;
+
+   if (!fName.Right(3).CmpNoCase("mp3") ||
+       !fName.Right(3).CmpNoCase("mpg") ||
+       !fName.Right(4).CmpNoCase("mpeg"))
+      isMP3 = true;
+   
+#ifdef __WXMAC__
+   FSSpec spec;
+   FInfo finfo;
+   wxMacFilename2FSSpec(fName, &spec);
+   if (FSpGetFInfo(&spec, &finfo) == noErr) {
+      if (finfo.fdType == 'MP3 ' ||
+          finfo.fdType == 'mp3 ' ||
+          finfo.fdType == 'MPG ' ||
+          finfo.fdType == 'MPEG')
+         isMP3 = true;
+   }
+#endif
+   
+   if (isMP3) {
 #ifdef MP3SUPPORT
       *tracks = new WaveTrack *[2];
       success =::ImportMP3(project, fName,

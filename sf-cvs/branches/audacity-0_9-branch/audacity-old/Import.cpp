@@ -16,6 +16,12 @@
 
 #include <wx/defs.h>
 
+#ifdef __WXMAC__
+#include <Files.h>
+#include <Resources.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
+
 #include "Audacity.h"
 
 #include <wx/msgdlg.h>
@@ -43,6 +49,7 @@ int Import(AudacityProject *project,
    int numTracks = 0;
    DirManager *dirManager = project->GetDirManager();
    wxWindow *parent = project;
+   bool isMP3 = false;
 
    if (!fName.Right(3).CmpNoCase("aup")) {
       wxMessageBox("Audacity does not support importing Audacity Projects.\n"
@@ -57,9 +64,30 @@ int Import(AudacityProject *project,
                    "Import audio file", wxOK | wxCENTRE, parent);
       return 0;
    }
+   
+   isMP3 = false;
 
-   if (!fName.Right(3).CmpNoCase("mp3")) {
-#ifdef MP3SUPPORT
+   if (!fName.Right(3).CmpNoCase("mp3") ||
+       !fName.Right(3).CmpNoCase("mpg") ||
+       !fName.Right(4).CmpNoCase("mpeg"))
+      isMP3 = true;
+   
+#ifdef __WXMAC__
+   FSSpec spec;
+   FInfo finfo;
+   wxMacFilename2FSSpec(fName, &spec);
+   if (FSpGetFInfo(&spec, &finfo) == noErr) {
+      if (finfo.fdType == 'MP3 ' ||
+          finfo.fdType == 'mp3 ' ||
+          finfo.fdType == 'MPG ' ||
+          finfo.fdType == 'MPEG')
+         isMP3 = true;
+   }
+#endif
+
+   if (isMP3) {
+
+     #ifdef MP3SUPPORT
       *tracks = new WaveTrack *[2];
       success =::ImportMP3(project, fName,
                            &(*tracks)[0], &(*tracks)[1]);
@@ -71,26 +99,27 @@ int Import(AudacityProject *project,
          numTracks = 2;
 
       return numTracks;
-#else
+     #else
+   
       wxMessageBox("This version of Audacity was not compiled "
                    "with MP3 support.");
       return 0;
-#endif
+     #endif
    }
 
    if (!fName.Right(3).CmpNoCase("ogg")) {
-#ifdef USE_LIBVORBIS
+     #ifdef USE_LIBVORBIS
       success =::ImportOGG(parent, fName, tracks, &numTracks, dirManager);
       if (!success)
          return 0;
 
       return numTracks;
-#else
+     #else
       wxMessageBox("This version of Audacity was not compiled "
                    "with Ogg Vorbis support.", "Import Ogg Vorbis",
                    wxOK | wxCENTRE, parent);
       return 0;
-#endif
+     #endif
    }
 
    if (::IsPCM(fName)) {
