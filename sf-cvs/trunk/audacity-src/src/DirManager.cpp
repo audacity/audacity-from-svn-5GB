@@ -31,6 +31,7 @@
 #include "AudacityApp.h"
 #include "BlockFile.h"
 #include "blockfile/LegacyBlockFile.h"
+#include "blockfile/LegacyAliasBlockFile.h"
 #include "blockfile/SimpleBlockFile.h"
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
@@ -399,35 +400,27 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
    else if( !wxStricmp(tag, "blockfile") ||
             !wxStricmp(tag, "legacyblockfile") ) {
-      // Support Audacity version 1.1.1 project files?
+      // Support Audacity version 1.1.1 project files
 
-      /*
-      int i, len;
-      const char **attr2;
-      bool alias=false;
-      
-      len = 0;
-      attr2 = attrs;
-      while(*attr2++)
-         len++;
-      
-      attr2 = new const char *[len+1];
-      for(i=0; i<len+1; i++)
-         attr2[i] = attrs[i];
-      
-      for(i=0; i<len/2; i++) {
-         if (!wxStricmp(attrs[2*i], "alias")) {
-            if (atoi(attrs[2*i+1])==1)
+      int i=0;
+      bool alias = false;
+
+      while(attrs[i]) {
+         if (!wxStricmp(attrs[i], "alias")) {
+            if (atoi(attrs[i+1])==1)
                alias = true;
          }
-         if (!wxStricmp(attrs[2*i], "aliaspath"))
-            attrs[2*i] = "aliasfile";
+         i++;
+         if (attrs[i])
+            i++;
       }
-      */
 
-      *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
-                                                      mLoadingBlockLen,
-                                                      mLoadingFormat);
+      if (alias)
+         *mLoadingTarget = LegacyAliasBlockFile::BuildFromXML(projFull, attrs);
+      else      
+         *mLoadingTarget = LegacyBlockFile::BuildFromXML(projFull, attrs,
+                                                         mLoadingBlockLen,
+                                                         mLoadingFormat);
    }
    else
       return false;
@@ -514,8 +507,10 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
    wxFileName newFileName(projFull, f->mFileName.GetFullName());
+
    if ( !(newFileName == f->mFileName) ) {
       bool ok = wxRenameFile(f->mFileName.GetFullPath(), newFileName.GetFullPath());
+
       if (ok)
          f->mFileName = newFileName;
       else {

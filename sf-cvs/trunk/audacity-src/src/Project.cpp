@@ -566,7 +566,19 @@ AudacityProject::~AudacityProject()
    delete mTrackFactory;
    mTrackFactory = NULL;
 
+   // Lock all blocks in all tracks of the last saved version, so that
+   // the blockfiles aren't deleted on disk when we delete the blockfiles
+   // in memory.  After it's locked, delete the data structure so that
+   // there's no memory leak.
    if (mLastSavedTracks) {
+      TrackListIterator iter(mLastSavedTracks);
+      Track *t = iter.First();
+      while (t) {
+         if (t->GetKind() == Track::Wave)
+            ((WaveTrack *) t)->Lock();
+         t = iter.Next();
+      }
+
       mLastSavedTracks->Clear(true);
       delete mLastSavedTracks;
       mLastSavedTracks = NULL;

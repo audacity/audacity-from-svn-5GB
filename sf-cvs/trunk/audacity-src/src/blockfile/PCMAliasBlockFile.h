@@ -28,16 +28,17 @@ class PCMAliasBlockFile : public AliasBlockFile
                      wxFileName aliasedFile, sampleCount aliasStart,
                      sampleCount aliasLen, int aliasChannel,
                      float min, float max, float rms);
-   ~PCMAliasBlockFile();
+   virtual ~PCMAliasBlockFile();
 
    // Reading
 
    /// Reads the specified data from the aliased file using libsndfile
-   int ReadData(samplePtr data, sampleFormat format,
+   virtual int ReadData(samplePtr data, sampleFormat format,
                         sampleCount start, sampleCount len);
-   void SaveXML(int depth, wxFFile &xmlFile);
+   virtual void SaveXML(int depth, wxFFile &xmlFile);
+   virtual BlockFile *Copy(wxFileName fileName);
+
    static BlockFile *BuildFromXML(wxString projDir, const char **attrs);
-   BlockFile *Copy(wxFileName fileName);
 };
 
 #endif
