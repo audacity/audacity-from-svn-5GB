@@ -84,7 +84,21 @@ wxString ExportCommon(AudacityProject *project,
             else if (tr->GetChannel() == Track::RightChannel)
                numRight++;
             else if (tr->GetChannel() == Track::MonoChannel)
-               numMono++;
+            {
+               // It's a mono channel, but it may be panned
+               float pan = ((WaveTrack*)tr)->GetPan();
+               
+               if (pan == -1.0)
+                  numLeft++;
+               else if (pan == 1.0)
+                  numRight++;
+               else if (pan == 0)
+                  numMono++;
+               else {
+                  numLeft++;
+                  numRight++;
+               }
+            }
             
             if(tr->GetOffset() < earliestBegin)
                earliestBegin = tr->GetOffset();
@@ -109,7 +123,7 @@ wxString ExportCommon(AudacityProject *project,
                      "Choose Export... to export all tracks."));
       return "";
    }
-
+   
    /* Detemine if exported file will be stereo or mono,
       and if mixing will occur */
 
@@ -119,7 +133,7 @@ wxString ExportCommon(AudacityProject *project,
 
    numRight += numMono;
    numLeft += numMono;
-
+   
    if (numLeft > 1 || numRight > 1)
       if (stereo) {
          ShowWarningDialog(project, "MixStereo",
