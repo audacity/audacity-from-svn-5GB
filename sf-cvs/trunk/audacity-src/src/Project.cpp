@@ -1083,7 +1083,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       }
 #endif
 
-   GetCommands()->EnableItemsByFunction("appmenu", "OnQuickMix", numWaveTracksSelected > 1);
+   GetCommands()->EnableItemsByFunction("appmenu", "OnQuickMix", numWaveTracksSelected > 0);
    GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionSave", numWaveTracksSelected > 0);
    GetCommands()->EnableItemsByFunction("appmenu", "OnSelectionRestore", numWaveTracksSelected > 0);
    GetCommands()->EnableItemsByFunction("appmenu", "OnCursorTrackStart", numWaveTracksSelected > 0);
