@@ -127,6 +127,14 @@ SOURCE=..\src\AudacityApp.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\AudacityFileHistory.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\AudacityFileHistory.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\AudioIO.cpp
 # End Source File
 # Begin Source File
