@@ -1,7 +1,7 @@
 #ifndef PA_UTIL_H
 #define PA_UTIL_H
 /*
- * Id:
+ * $Id: pa_util.h,v 1.2 2004-04-22 04:19:50 mbrubeck Exp $
  * Portable Audio I/O Library implementation utilities header
  * common implementation utilities and interfaces
  *
@@ -32,6 +32,14 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/** @file
+    @brief Prototypes for utility functions used by PortAudio implementations.
+
+    @todo Document and adhere to the alignment guarantees provided by
+    PaUtil_AllocateMemory().
+*/
+
+
 #include "portaudio.h"
 
 #ifdef __cplusplus
@@ -39,15 +47,8 @@ extern "C"
 {
 #endif /* __cplusplus */
 
+
 struct PaUtilHostApiRepresentation;
-
-/** @file
-    Utility functions used by PortAudio implementations.
-
-    @todo Document and adhere to the alignment guarantees provided by
-    PaUtil_AllocateMemory().
-*/
-
 
 
 /** Retrieve a specific host API representation. This function can be used

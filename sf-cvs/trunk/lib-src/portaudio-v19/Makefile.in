@@ -36,9 +36,42 @@ COMMON_OBJS = \
 	pa_common/pa_trace.o
 
 TESTS = \
-	bin/pa_devs \
-   bin/pa_fuzz \
+	bin/paqa_devs \
+	bin/paqa_errs \
+	bin/patest1 \
+	bin/patest_buffer \
+	bin/patest_callbackstop \
+	bin/patest_clip \
+	bin/patest_dither \
+	bin/patest_hang \
+	bin/patest_in_overflow \
+	bin/patest_latency \
+	bin/patest_leftright \
+	bin/patest_longsine \
+	bin/patest_many \
+	bin/patest_maxsines \
+	bin/patest_multi_sine \
+	bin/patest_out_underflow \
+	bin/patest_pink \
+	bin/patest_prime \
+	bin/patest_read_record \
+	bin/patest_record \
+	bin/patest_ringmix \
+	bin/patest_saw \
+	bin/patest_sine8 \
 	bin/patest_sine \
+	bin/patest_sine_formats \
+	bin/patest_sine_time \
+	bin/patest_start_stop \
+	bin/patest_stop \
+	bin/patest_sync \
+	bin/patest_toomanysines \
+	bin/patest_underflow \
+	bin/patest_wire \
+	bin/patest_write_sine \
+	bin/pa_devs \
+	bin/pa_fuzz \
+	bin/pa_minlat
 
 # Most of these don't compile yet.  Put them in TESTS, above, if
 # you want to try to compile them...
@@ -65,13 +98,16 @@ ALL_TESTS = \
 	bin/patest_clip \
 	bin/patest_dither \
 	bin/patest_hang \
+	bin/patest_in_overflow \
 	bin/patest_latency \
 	bin/patest_leftright \
 	bin/patest_longsine \
 	bin/patest_many \
 	bin/patest_maxsines \
 	bin/patest_multi_sine \
+	bin/patest_out_underflow \
 	bin/patest_pink \
+	bin/patest_read_record \
 	bin/patest_record \
 	bin/patest_ringmix \
 	bin/patest_saw \
@@ -84,7 +120,8 @@ ALL_TESTS = \
 	bin/patest_sync \
 	bin/patest_toomanysines \
 	bin/patest_underflow \
-	bin/patest_wire
+	bin/patest_wire \
+	bin/patest_write_sine
 
 OBJS = $(COMMON_OBJS) $(OTHER_OBJS)
 
@@ -119,7 +156,7 @@ install: lib/$(PALIB) lib/$(PADLLV)
 	@echo ""
 
 clean:
-	rm -f $(OBJS) $(TESTS) lib/$(PALIB)
+	rm -f $(OBJS) $(TESTS) lib/$(PALIB) lib/$(PADLLV)
 
 %.o: %.c Makefile $(PAINC)
 	$(CC) -c $(CFLAGS) $< -o $@

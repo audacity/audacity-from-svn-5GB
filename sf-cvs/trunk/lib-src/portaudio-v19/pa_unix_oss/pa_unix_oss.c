@@ -1,5 +1,5 @@
 /*
- * $Id
+ * $Id: pa_unix_oss.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:
@@ -155,7 +155,8 @@ PaError PaOSS_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex 
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
                                       GetStreamTime, GetStreamCpuLoad,
                                       PaUtil_DummyRead, PaUtil_DummyWrite,
-                                      PaUtil_DummyGetAvailable, PaUtil_DummyGetAvailable );
+                                      PaUtil_DummyGetReadAvailable,
+                                      PaUtil_DummyGetWriteAvailable );
 
     PaUtil_InitializeStreamInterface( &ossHostApi->blockingStreamInterface, CloseStream, StartStream,
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
@@ -734,16 +735,11 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
         inputChannelCount != outputChannelCount)
        return paInvalidChannelCount;
 
-    if (inputChannelCount > 0) {
-        result = PaUtil_DeviceIndexToHostApiDeviceIndex(&device, inputParameters->device, hostApi);
-        if (result != paNoError)
-            return result;
-    }
-    else {
-        result = PaUtil_DeviceIndexToHostApiDeviceIndex(&device, outputParameters->device, hostApi);
-        if (result != paNoError)
-            return result;
-    }
+    /* note that inputParameters and outputParameters device indicies are
+     * already in host format */
+    device = (inputChannelCount > 0 )
+            ? inputParameters->device
+            : outputParameters->device;
 
     deviceInfo = hostApi->deviceInfos[device];
     deviceName = (char *)deviceInfo->name;
@@ -1025,10 +1021,13 @@ static PaError StartStream( PaStream *s )
 
     DBUG(("PaOSS StartStream\n"));
 
-    presult = pthread_create(&stream->thread,
+    /* only use the thread for callback streams */
+    if( stream->bufferProcessor.streamCallback ) {
+            presult = pthread_create(&stream->thread,
                              NULL /*pthread_attr_t * attr*/,
                              (void*)PaOSS_AudioThreadProc, (void *)stream);
-
+    }
+    
     return result;
 }
 
@@ -1039,7 +1038,11 @@ static PaError StopStream( PaStream *s )
     PaOSSStream *stream = (PaOSSStream*)s;
 
     stream->stopSoon = 1;
-    pthread_join( stream->thread, NULL );
+
+    /* only use the thread for callback streams */
+    if( stream->bufferProcessor.streamCallback )
+        pthread_join( stream->thread, NULL );
+
     stream->stopSoon = 0;
     stream->stopNow = 0;
     stream->isActive = 0;
@@ -1056,7 +1059,11 @@ static PaError AbortStream( PaStream *s )
     PaOSSStream *stream = (PaOSSStream*)s;
 
     stream->stopNow = 1;
-    pthread_join( stream->thread, NULL );
+
+    /* only use the thread for callback streams */
+    if( stream->bufferProcessor.streamCallback )
+        pthread_join( stream->thread, NULL );
+
     stream->stopSoon = 0;
     stream->stopNow = 0;
     stream->isActive = 0;

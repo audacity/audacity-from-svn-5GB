@@ -3,7 +3,7 @@
 	@author Ross Bencina <rossb@audiomulch.com>
 */
 /*
- * $Id: patest_callbackstop.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: patest_callbackstop.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com/
@@ -36,8 +36,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "portaudio.h"
-
-#define OUTPUT_DEVICE 16 //Pa_GetDefaultOutputDevice()
 
 #define NUM_SECONDS   (5)
 #define NUM_LOOPS     (4)
@@ -130,10 +128,10 @@ int main(void)
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
 
-    outputParameters.device = OUTPUT_DEVICE;
-    outputParameters.channelCount = 2;       /* stereo output */
-    outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
-    outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
+    outputParameters.device                    = Pa_GetDefaultOutputDevice();
+    outputParameters.channelCount              = 2;               /* stereo output */
+    outputParameters.sampleFormat              = paFloat32;       /* 32 bit floating point output */
+    outputParameters.suggestedLatency          = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
 
     err = Pa_OpenStream(
@@ -177,14 +175,18 @@ int main(void)
          */
      
         j = 0;
-        while( Pa_IsStreamActive( stream ) && j < NUM_SECONDS * 2 )
+        while( (err = Pa_IsStreamActive( stream )) == 1 && j < NUM_SECONDS * 2 )
         {
             printf(".\n" );
             Pa_Sleep( 500 );
             ++j;
         }
 
-        if( Pa_IsStreamActive( stream ) )
+        if( err < 0 )
+        {
+            goto error;
+        }
+        else if( err == 1 )
         {
             printf( "TEST FAILED: Timed out waiting for buffers to finish playing.\n" );
         }

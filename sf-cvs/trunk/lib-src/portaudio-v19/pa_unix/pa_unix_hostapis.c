@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_hostapis.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_unix_hostapis.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
  * Portable Audio I/O Library UNIX initialization table
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -35,6 +35,8 @@
 PaError PaJack_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
 PaError PaAlsa_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
 PaError PaOSS_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
+/* Added for IRIX, Pieter, oct 2, 2003: */
+PaError PaSGI_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
 
 
 PaUtilHostApiInitializer *paHostApiInitializers[] =
@@ -50,8 +52,10 @@ PaUtilHostApiInitializer *paHostApiInitializers[] =
 #ifdef PA_USE_JACK
         PaJack_Initialize,
 #endif
-
-
+                    /* Added for IRIX, Pieter, oct 2, 2003: */
+#ifdef PA_USE_SGI 
+        PaSGI_Initialize,
+#endif
         0   /* NULL terminated array */
     };
 
