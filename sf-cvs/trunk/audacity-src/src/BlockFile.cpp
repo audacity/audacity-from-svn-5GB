@@ -92,7 +92,7 @@ wxString BlockFile::GetName()
 
 wxString BlockFile::GetAliasedFile()
 {
-   wxASSERT(mAlias);
+   wxASSERT(IsAlias());
    
    return mAliasFullPath;
 }
@@ -103,7 +103,7 @@ void BlockFile::ChangeAliasedFile(wxString newFile)
    // a file we depend on out of the way, so that a new file
    // with the same name can be exported.
    
-   wxASSERT(mAlias);
+   wxASSERT(IsAlias());
    
    mAliasFullPath = newFile;
 }

@@ -1,3 +1,4 @@
+/* config.h.  Generated automatically by configure.  */
 /* config.h.in.  Generated automatically from configure.in by autoheader 2.13.  */
 /*
  * libmad - MPEG audio decoder library
@@ -17,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: config.h.in,v 1.5 2002-02-04 00:15:47 mbrubeck Exp $
+ * $Id: config.h,v 1.8 2002-02-04 00:15:46 mbrubeck Exp $
  */
 
 #ifdef _WIN32
@@ -32,92 +33,92 @@
  *****************************************************************************/
 
 /* Define to empty if the keyword does not work.  */
-#undef const
+/* #undef const */
 
 /* Define if you have <sys/wait.h> that is POSIX.1 compatible.  */
-#undef HAVE_SYS_WAIT_H
+#define HAVE_SYS_WAIT_H 1
 
 /* Define as __inline if that's what the C compiler calls it.  */
-#undef inline
+/* #undef inline */
 
 /* Define to `int' if <sys/types.h> doesn't define.  */
-#undef pid_t
+/* #undef pid_t */
 
 /* Define if you have the ANSI C header files.  */
-#undef STDC_HEADERS
+#define STDC_HEADERS 1
 
 /* Define to optimize for speed over accuracy. */
-#undef OPT_SPEED
+/* #undef OPT_SPEED */
 
 /* Define to optimize for accuracy over speed. */
-#undef OPT_ACCURACY
+/* #undef OPT_ACCURACY */
 
 /* Define to enable a fast subband synthesis approximation optimization. */
-#undef OPT_SSO
+/* #undef OPT_SSO */
 
 /* Define to influence a strict interpretation of the ISO/IEC standards,
    even if this is in opposition with best accepted practices. */
-#undef OPT_STRICT
+/* #undef OPT_STRICT */
 
 /* Define if your MIPS CPU supports a 2-operand MADD instruction. */
-#undef HAVE_MADD_ASM
+/* #undef HAVE_MADD_ASM */
 
 /* Define if your MIPS CPU supports a 2-operand MADD16 instruction. */
-#undef HAVE_MADD16_ASM
+/* #undef HAVE_MADD16_ASM */
 
 /* Define to enable diagnostic debugging support. */
-#undef DEBUG
+/* #undef DEBUG */
 
 /* Define to disable debugging assertions. */
-#undef NDEBUG
+/* #undef NDEBUG */
 
 /* Define to enable experimental code. */
-#undef EXPERIMENTAL
+/* #undef EXPERIMENTAL */
 
 /* The number of bytes in a int.  */
-#undef SIZEOF_INT
+#define SIZEOF_INT 4
 
 /* The number of bytes in a long.  */
-#undef SIZEOF_LONG
+#define SIZEOF_LONG 4
 
 /* The number of bytes in a long long.  */
-#undef SIZEOF_LONG_LONG
+#define SIZEOF_LONG_LONG 8
 
 /* Define if you have the fcntl function.  */
-#undef HAVE_FCNTL
+#define HAVE_FCNTL 1
 
 /* Define if you have the fork function.  */
-#undef HAVE_FORK
+#define HAVE_FORK 1
 
 /* Define if you have the pipe function.  */
-#undef HAVE_PIPE
+#define HAVE_PIPE 1
 
 /* Define if you have the waitpid function.  */
-#undef HAVE_WAITPID
+#define HAVE_WAITPID 1
 
 /* Define if you have the <assert.h> header file.  */
-#undef HAVE_ASSERT_H
+#define HAVE_ASSERT_H 1
 
 /* Define if you have the <errno.h> header file.  */
-#undef HAVE_ERRNO_H
+#define HAVE_ERRNO_H 1
 
 /* Define if you have the <fcntl.h> header file.  */
-#undef HAVE_FCNTL_H
+#define HAVE_FCNTL_H 1
 
 /* Define if you have the <limits.h> header file.  */
-#undef HAVE_LIMITS_H
+#define HAVE_LIMITS_H 1
 
 /* Define if you have the <sys/types.h> header file.  */
-#undef HAVE_SYS_TYPES_H
+#define HAVE_SYS_TYPES_H 1
 
 /* Define if you have the <unistd.h> header file.  */
-#undef HAVE_UNISTD_H
+#define HAVE_UNISTD_H 1
 
 /* Name of package */
-#undef PACKAGE
+#define PACKAGE "libmad"
 
 /* Version number of package */
-#undef VERSION
+#define VERSION "0.14.2b"
 
 /*****************************************************************************
  * End of automatically configured definitions                               *
