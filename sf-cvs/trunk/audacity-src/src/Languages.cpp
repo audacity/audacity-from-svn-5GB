@@ -26,6 +26,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    langCodes.Add("es"); langNames.Add("Español");
    langCodes.Add("fr"); langNames.Add("Français");
    langCodes.Add("it"); langNames.Add("Italiano");
+   langCodes.Add("hu"); langNames.Add("Magyar");
    langCodes.Add("nl"); langNames.Add("Nederlands");
    langCodes.Add("ru"); langNames.Add("Russky");
 }
