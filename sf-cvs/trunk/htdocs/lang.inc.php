@@ -175,6 +175,7 @@ function AddFlags($between = "", $betw2 = "", $showCurrent = false)
    else {
      $temp = $between;
    }
+	$count++;
   }
  }
 }
