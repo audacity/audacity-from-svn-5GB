@@ -67,29 +67,27 @@ void AudacityProject::CreateMenuBar()
    mMenusDirtyCheck = gMenusDirty;
    mFirstTimeUpdateMenus = true;
 
-#define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commands.h"           // BG: Generate an array of command names, and their corresponding functions
+#define AUDACITY_MENUS_COMMANDS_
+// BG: Generate an array of command names, and their corresponding
+// functions EVENT_TABLE
+#include "commands.h"           
 #undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 
+   mMenuBar = new wxMenuBar();
+   for (int i=0; i<numMenus; i++) {
+      wxMenu *tempMenu = new wxMenu();
+      mMenuBar->Append(tempMenu,"");
+   }
    BuildMenuBar();
-}
-
-void AudacityProject::RebuildMenuBar()
-{
-#include "commandkeys.h"        // BG: Generate an array of keys combos that cannot be used
-
-   SetMenuBar(NULL);
-
-   delete mMenuBar;
-
-   BuildMenuBar();
+   SetMenuBar(mMenuBar);
 }
 
 void AudacityProject::BuildMenuBar()
 {
-   unsigned int i;
+// BG: Generate an array of keys combos that cannot be used
+#include "commandkeys.h"
 
-   mMenuBar = new wxMenuBar();
+   unsigned int i;
 
    mFileMenu = new wxMenu();
    mEditMenu = new wxMenu();
@@ -145,15 +143,15 @@ void AudacityProject::BuildMenuBar()
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
-   mMenuBar->Append(mFileMenu, _("&File"));
-   mMenuBar->Append(mEditMenu, _("&Edit"));
-   mMenuBar->Append(mViewMenu, _("&View"));
-   mMenuBar->Append(mProjectMenu, _("&Project"));
-   mMenuBar->Append(mEffectMenu, _("Effec&t"));
-   mMenuBar->Append(mPluginMenu, _("Plugin&s"));
-   mMenuBar->Append(mHelpMenu, _("&Help"));
-
-   SetMenuBar(mMenuBar);
+   // wxMenuBar::Replace returns a pointer to the old menu, which we delete.
+   
+   delete mMenuBar->Replace(fileMenu, mFileMenu, _("&File"));
+   delete mMenuBar->Replace(editMenu, mEditMenu, _("&Edit"));
+   delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
+   delete mMenuBar->Replace(projectMenu, mProjectMenu, _("&Project"));
+   delete mMenuBar->Replace(effectMenu, mEffectMenu, _("Effec&t"));
+   delete mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
+   delete mMenuBar->Replace(helpMenu, mHelpMenu, _("&Help"));
 
    mInsertSilenceAmount = 1.0;
 }

@@ -152,8 +152,7 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 
 bool KeyConfigPrefs::Apply()
 {
-   mAudacity->RebuildMenuBar();
-
+   mAudacity->BuildMenuBar();
    return true;
 }
 
@@ -175,7 +174,8 @@ SysKeyTextCtrl::SysKeyTextCtrl(wxWindow *parent, wxWindowID id,
                               const wxSize& size,
                               long style,
                               const wxValidator& validator,
-                              const wxString& name) : wxTextCtrl(parent, id, value, pos, size, style, validator, name)
+                              const wxString& name)
+: wxTextCtrl(parent, id, value, pos, size, style, validator, name)
 {
 }
 
