@@ -83,7 +83,6 @@
       PlotSpectrumID,
 
       FloatControlToolBarID, 
-      LoadEditToolBarID,
       FloatEditToolBarID,
 
       // Project Menu
@@ -193,7 +192,6 @@
 
 #ifndef __WXMAC__
    CMD_ADDMENUSEP(_("Float Control Toolbar"), _("Float Control Toolbar"), OnFloatControlToolBar, viewMenu, enabledMenu);
-   CMD_ADDMENU(_("Unload Edit Toolbar"), _("Load Edit Toolbar"), OnLoadEditToolBar, viewMenu, enabledMenu);
    CMD_ADDMENU(_("Float Edit Toolbar"), _("Float Edit Toolbar"), OnFloatEditToolBar, viewMenu, enabledMenu);
 #endif
 

@@ -271,11 +271,13 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
    toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
-   if (gEditToolBarStub->GetLoadedStatus()) {
-      if(gEditToolBarStub->GetWindowedStatus())
-         toolBarCheckSum += 6;
-      else
-         toolBarCheckSum += 3;
+   if (gEditToolBarStub) {
+      if (gEditToolBarStub->GetLoadedStatus()) {
+         if(gEditToolBarStub->GetWindowedStatus())
+            toolBarCheckSum += 6;
+         else
+            toolBarCheckSum += 3;
+      }
    }
    
    
@@ -343,16 +345,13 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 #ifndef __WXMAC__
    //Modify toolbar-specific Menus
 
+   wxMenuItemBase   *dock = mViewMenu->FindItem(FloatEditToolBarID);
    if (gEditToolBarStub) {
-      wxMenuItemBase *load = mViewMenu->FindItem(LoadEditToolBarID),
-                     *dock = mViewMenu->FindItem(FloatEditToolBarID);
 
       // Loaded or unloaded?
       if (gEditToolBarStub->GetLoadedStatus()) {
-         load->SetName(_("Unload Edit Toolbar"));
          dock->Enable(true);
       } else {
-         load->SetName(_("Load Edit Toolbar"));
          dock->Enable(false);
       }
 
@@ -362,6 +361,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       else
          dock->SetName(_("Float Edit Toolbar"));
    }
+   else
+      {
+         dock->Enable(false);
+      }
 #endif
 
    SetMenuState(mProjectMenu, QuickMixID, numWaveTracksSelected > 1);
@@ -390,7 +393,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
    gControlToolBarStub->GetToolBar()->EnableDisableButtons();
-   gEditToolBarStub->GetToolBar()->EnableDisableButtons();
+
+   //gEditToolBarStub might be null:
+   if(gEditToolBarStub){
+      gEditToolBarStub->GetToolBar()->EnableDisableButtons();
+   }
 }
 
 //
