@@ -71,7 +71,8 @@ bool EffectReverse::ProcessOne(int count, WaveTrack *t,
       len -= 2 * block;
       first += block;
       
-      TrackProgress(count, 2*(first-start)/(double)originalLen);
+      if (TrackProgress(count, 2*(first-start)/(double)originalLen))
+         break;
    }
 
    delete[] buffer1;

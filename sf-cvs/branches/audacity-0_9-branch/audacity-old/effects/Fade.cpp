@@ -57,7 +57,8 @@ bool EffectFadeIn::ProcessOne(int count, WaveTrack * t,
 
       s += block;
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      if (TrackProgress(count, (s-start)/(double)originalLen))
+         break;
    }
 
    delete[]buffer;
@@ -109,7 +110,8 @@ bool EffectFadeOut::ProcessOne(int count, WaveTrack * t,
 
       s += block;
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      if (TrackProgress(count, (s-start)/(double)originalLen))
+         break;
    }
 
    delete[]buffer;

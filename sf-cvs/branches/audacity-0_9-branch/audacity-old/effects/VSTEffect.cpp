@@ -42,7 +42,7 @@ wxString VSTEffect::GetEffectName()
 
 wxString VSTEffect::GetEffectAction()
 {
-   return pluginName + "Performing VST Effect: \""+pluginName+"\"";
+   return "Performing VST Effect: \""+pluginName+"\"";
 }
 
 bool VSTEffect::Init()
@@ -89,9 +89,12 @@ bool VSTEffect::PromptUser()
    char temp[8][256];
    int numParameters = 0;
    do {
+      temp[numParameters][0] = 0;
       aEffect->dispatcher(aEffect, effGetParamName, numParameters, 0,
                           (void *) temp[numParameters], 0.0);
 
+      if (temp[numParameters][0]==0)
+         break;
       if (strstr(temp[numParameters], "ABOUT"))
          break;
       if (numParameters > 0
@@ -213,10 +216,14 @@ bool VSTEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
       ls += block;
       rs += block;
       
-      if (inputs > 1)
-         TrackGroupProgress(count, (ls-lstart)/(double)originalLen);
-      else
-         TrackProgress(count, (ls-lstart)/(double)originalLen);
+      if (inputs > 1) {      
+         if (TrackGroupProgress(count, (ls-lstart)/(double)originalLen))
+            break;
+      }
+      else {
+         if (TrackProgress(count, (ls-lstart)/(double)originalLen))
+            break;
+      }
    }
 
    return true;
