@@ -33,6 +33,7 @@
 #include "../Project.h"
 #include "../Track.h"
 #include "../WaveTrack.h"
+#include "../widgets/Warning.h"
 
 /* Declare Static functions */
 static wxString ExportCommon(AudacityProject *project,
@@ -119,14 +120,16 @@ wxString ExportCommon(AudacityProject *project,
    numLeft += numMono;
 
    if (numLeft > 1 || numRight > 1)
-      if (stereo)
-         wxMessageBox
-             (_("Your tracks will be mixed down to two stereo channels "
-                "in the exported file."));
-      else
-         wxMessageBox
-             (_("Your tracks will be mixed down to a single mono channel "
-                "in the exported file."));
+      if (stereo) {
+         ShowWarningDialog(project, "MixStereo",
+                           _("Your tracks will be mixed down to two "
+                             "stereo channels in the exported file."));
+      }
+      else {
+         ShowWarningDialog(project, "MixMono",
+                           _("Your tracks will be mixed down to a "
+                             "single mono channel in the exported file."));
+      }
 
    /* Prepare and display the filename selection dialog */
 
