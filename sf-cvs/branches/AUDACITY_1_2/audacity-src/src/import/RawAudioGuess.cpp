@@ -858,11 +858,15 @@ int Guess16Bit(int numTests, char **rawData,
 
       /* Extract a new array of the MSBs only: */
 
-      for (i = 0; i < (dataSize/2)-1; i++)
-         rawData2[i] =
-            rawData[test]
-            [(guessStereo? 4: 2) * i + (evenMSB ? 0 : 1)];
-
+      if (guessStereo)
+         for (i = 0; i < (dataSize/4)-1; i++)
+            rawData2[i] =
+               rawData[test][4 * i + (evenMSB ? 0 : 1)];
+      else
+         for (i = 0; i < (dataSize/2)-1; i++)
+            rawData2[i] =
+               rawData[test][2 * i + (evenMSB ? 0 : 1)];
+      
       former = 0.0;
       Extract(1, guessSigned, guessStereo, guessBigEndian, guessOffset,
               rawData[test], dataSize-4, data1, data2, &len1, &len2);
