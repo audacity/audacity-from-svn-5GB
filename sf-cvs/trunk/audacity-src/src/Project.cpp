@@ -1044,10 +1044,12 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 //TODO: This function is still kinda hackish, clean up
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
+ #if 0
    if (::wxGetUTCTime() - mLastUpdateUITime < 3)
       return;
 
    mLastUpdateUITime = ::wxGetUTCTime();
+ #endif
 
    UpdateMenus();
 }
