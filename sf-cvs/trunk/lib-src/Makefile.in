@@ -33,4 +33,4 @@ clean:
 	cd libsndfile && $(MAKE) clean
 	cd libvorbis && $(MAKE) clean
 	cd portaudio/pa_unix_oss && $(MAKE) clean
-	cd wave++ && $(MAKE) clean
+	cd wave++/source && $(MAKE) clean
