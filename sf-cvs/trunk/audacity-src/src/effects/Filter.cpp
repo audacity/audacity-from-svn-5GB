@@ -22,6 +22,7 @@
 #include <wx/brush.h>
 #include <wx/image.h>
 #include <wx/dcmemory.h>
+#include <wx/intl.h>
 
 #include "Filter.h"
 #include "../Envelope.h"
@@ -41,7 +42,7 @@ EffectFilter::EffectFilter()
 
 bool EffectFilter::PromptUser()
 {
-   FilterDialog dlog(mParent, -1, "FFT Filter");
+   FilterDialog dlog(mParent, -1, _("FFT Filter"));
    dlog.SetEnvelope(mEnvelope);
 
    dlog.CentreOnParent();
@@ -379,7 +380,9 @@ wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit, bool set_sizer )
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-   wxStaticText *item1 = new wxStaticText( parent, ID_TEXT, "FFT Filter by Dominic Mazzoni", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+   wxStaticText *item1 = new wxStaticText( parent, ID_TEXT,
+                       _("FFT Filter by Dominic Mazzoni"), wxDefaultPosition,
+                       wxDefaultSize, wxALIGN_CENTRE );
    item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    wxWindow *item2 = new FilterPanel( parent, ID_FILTERPANEL, wxDefaultPosition, wxDefaultSize );
@@ -388,16 +391,16 @@ wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit, bool set_sizer )
 
    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-   wxButton *item4 = new wxButton( parent, ID_CLEAR, "Clear", wxDefaultPosition, wxDefaultSize, 0 );
+   wxButton *item4 = new wxButton( parent, ID_CLEAR, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item4, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    item3->Add( 20, 20, 1, wxALIGN_CENTRE|wxALL, 5 );
 
-   wxButton *item5 = new wxButton( parent, wxID_OK, "OK", wxDefaultPosition, wxDefaultSize, 0 );
+   wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
    item5->SetDefault();
    item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   wxButton *item6 = new wxButton( parent, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0 );
+   wxButton *item6 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item6, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );

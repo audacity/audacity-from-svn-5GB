@@ -22,6 +22,7 @@
 #include <wx/msgdlg.h>
 #include <wx/file.h>
 #include <wx/filedlg.h>
+#include <wx/intl.h>
 #endif
 
 #include <wx/textfile.h>
@@ -55,7 +56,7 @@ void InitFreqWindow(wxWindow * parent)
    where.x = 150;
    where.y = 150;
 
-   gFreqWindow = new FreqWindow(parent, -1, "Frequency Analysis", where);
+   gFreqWindow = new FreqWindow(parent, -1, _("Frequency Analysis"), where);
 }
 
 // FreqWindow
@@ -109,21 +110,21 @@ mData(NULL), mProcessed(NULL), mBitmap(NULL)
    mInfoRect.height = 15;
 
    mExportButton = new wxButton(this, FreqExportButtonID,
-                                "Export...",
+                                _("Export..."),
                                 wxPoint(390, 260), wxSize(70, 20));
 
    mCloseButton = new wxButton(this, FreqCloseButtonID,
-                               "Close", wxPoint(390, 290), wxSize(70, 20));
+                               _("Close"), wxPoint(390, 290), wxSize(70, 20));
 #ifndef TARGET_CARBON
    mCloseButton->SetDefault();
    mCloseButton->SetFocus();
 #endif
 
-   wxString algChoiceStrings[5] = { "Spectrum",
-      "Standard Autocorrelation",
-      "Cuberoot Autocorrelation",
-      "Enhanced Autocorrelation",
-      "Cepstrum"
+   wxString algChoiceStrings[5] = { _("Spectrum"),
+      _("Standard Autocorrelation"),
+      _("Cuberoot Autocorrelation"),
+      _("Enhanced Autocorrelation"),
+      _("Cepstrum")
    };
 
    mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
@@ -152,7 +153,7 @@ mData(NULL), mProcessed(NULL), mBitmap(NULL)
 
    wxString *funcChoiceStrings = new wxString[f];
    for (int i = 0; i < f; i++)
-      funcChoiceStrings[i] = WindowFuncName(i) + wxString(" window");
+      funcChoiceStrings[i] = WindowFuncName(i) + wxString(_(" window"));
 
    mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
                               wxPoint(10, 290),
@@ -161,8 +162,8 @@ mData(NULL), mProcessed(NULL), mBitmap(NULL)
    mFuncChoice->SetSelection(3);
    delete[]funcChoiceStrings;
 
-   wxString axisChoiceStrings[2] = { "Linear frequency",
-      "Log frequency"
+   wxString axisChoiceStrings[2] = { _("Linear frequency"),
+      _("Log frequency")
    };
 
    mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
@@ -513,7 +514,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    if (!mProcessed) {
       if (mData && mDataLen < mWindowSize)
-         memDC.DrawText("Not enough data selected.", r.x + 5, r.y + 5);
+         memDC.DrawText(_("Not enough data selected."), r.x + 5, r.y + 5);
 
       return;
    }
@@ -793,8 +794,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
              PitchName(int (Freq2Pitch(bestpeak) + 0.5), false);
          const char *xp = (const char *) xpitch;
          const char *pp = (const char *) peakpitch;
-         info.Printf("Cursor: %d Hz (%s) = %d dB    "
-                     "Peak: %d Hz (%s)",
+         info.Printf(_("Cursor: %d Hz (%s) = %d dB    "
+                       "Peak: %d Hz (%s)"),
                      int (xPos + 0.5),
                      xp, int (value + 0.5), int (bestpeak + 0.5), pp);
       } else if (xPos > 0.0 && bestpeak > 0.0) {
@@ -804,8 +805,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
              PitchName(int (Freq2Pitch(1.0 / bestpeak) + 0.5), false);
          const char *xp = (const char *) xpitch;
          const char *pp = (const char *) peakpitch;
-         info.Printf("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
-                     "Peak: %.4f sec (%d Hz) (%s)",
+         info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
+                       "Peak: %.4f sec (%d Hz) (%s)"),
                      xPos,
                      int (1.0 / xPos + 0.5),
                      xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp);
@@ -1044,9 +1045,9 @@ void FreqWindow::Recalc()
 
 void FreqWindow::OnExport()
 {
-   wxString fName = "spectrum.txt";
+   wxString fName = _("spectrum.txt");
 
-   fName = wxFileSelector("Export Spectral Data As:",
+   fName = wxFileSelector(_("Export Spectral Data As:"),
                           NULL, fName, "txt", "*.txt", wxSAVE, this);
 
    if (fName == "")
@@ -1062,18 +1063,18 @@ void FreqWindow::OnExport()
 #endif
    f.Open();
    if (!f.IsOpened()) {
-      wxMessageBox("Couldn't write to " + fName);
+      wxMessageBox(_("Couldn't write to file: ") + fName);
       return;
    }
 
    if (mAlgChoice->GetSelection() == 0) {
-      f.AddLine("Frequency (Hz)\tLevel (dB)");
+      f.AddLine(_("Frequency (Hz)\tLevel (dB)"));
       for (int i = 1; i < mProcessedSize; i++)
          f.AddLine(wxString::
                    Format("%f\t%f", i * mRate / mWindowSize,
                           mProcessed[i]));
    } else {
-      f.AddLine("Lag (seconds)\tFrequency (Hz)\tLevel");
+      f.AddLine(_("Lag (seconds)\tFrequency (Hz)\tLevel"));
       for (int i = 1; i < mProcessedSize; i++)
          f.AddLine(wxString::Format("%f\t%f\t%f",
                                     i / mRate, 1.0 / i, mProcessed[i]));

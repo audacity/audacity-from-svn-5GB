@@ -16,6 +16,7 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/intl.h>
 
 class wxString;
 
@@ -31,11 +32,11 @@ public:
    EffectFilter();
    
    virtual wxString GetEffectName() {
-      return wxString("FFT Filter...");
+      return wxString(_("FFT Filter..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Performing FFT Filter");
+      return wxString(_("Performing FFT Filter"));
    }
    
    virtual bool PromptUser();

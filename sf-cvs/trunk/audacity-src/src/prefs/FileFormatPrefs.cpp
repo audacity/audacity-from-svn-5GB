@@ -15,6 +15,7 @@
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
 #include <wx/button.h>
+#include <wx/intl.h>
 
 #include "sndfile.h"
 
@@ -23,11 +24,6 @@
 #include "../Prefs.h"
 #include "../Track.h"
 #include "FileFormatPrefs.h"
-
-wxString gCopyOrEditOptions[] = {
-   "Make a copy of the file to edit",
-   "Edit the original in place"
-};
 
 #define ID_MP3_FIND_BUTTON         7001
 #define ID_EXPORT_OPTIONS_BUTTON   7002
@@ -59,23 +55,24 @@ PrefsPanel(parent)
    /* Begin layout code... */
 
    topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, "File Format Settings"),
+      new wxStaticBox(this, -1, _("File Format Settings")),
       wxVERTICAL );
 
    {
       wxStaticBoxSizer *copyOrEditSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "When importing uncompressed audio files"),
+         new wxStaticBox(this, -1,
+            _("When importing uncompressed audio files")),
          wxVERTICAL );
 
       mCopyOrEdit[0] = new wxRadioButton(
-         this, -1, "Make a copy of the file to edit",
+         this, -1, _("Make a copy of the file to edit"),
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
 
       mCopyOrEdit[1] = new wxRadioButton(
-         this, -1, "Edit the original in place",
+         this, -1, _("Edit the original in place"),
          wxDefaultPosition, wxDefaultSize, 0 );
 
 	  mCopyOrEdit[0]->SetValue(false);
@@ -89,7 +86,7 @@ PrefsPanel(parent)
 
    {
       wxStaticBoxSizer *defFormatSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Uncompressed Export Format"),
+         new wxStaticBox(this, -1, _("Uncompressed Export Format")),
          wxVERTICAL);
 
       int numSimpleFormats = sf_num_simple_formats();
@@ -102,7 +99,7 @@ PrefsPanel(parent)
              mFormatBits == sf_simple_format(i)->pcmbitwidth)
             sel = i;
       }
-      formatStrings[numSimpleFormats] = "Other...";
+      formatStrings[numSimpleFormats] = _("Other...");
 
       #ifdef __WXMAC__
         // This is just to work around a wxChoice auto-sizing bug
@@ -135,7 +132,7 @@ PrefsPanel(parent)
 
    {
       wxStaticBoxSizer *mp3SetupSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "MP3 Export Setup"),
+         new wxStaticBox(this, -1, _("MP3 Export Setup")),
          wxVERTICAL);
 
       {
@@ -143,7 +140,7 @@ PrefsPanel(parent)
          mp3InfoSizer->AddGrowableCol(1);
 
          mp3InfoSizer->Add(
-            new wxStaticText(this, -1, "MP3 Library Version:"), 0, 
+            new wxStaticText(this, -1, _("MP3 Library Version:")), 0, 
             wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
          mMP3Version = new wxStaticText(this, -1, "CAPITAL LETTERS");
@@ -152,14 +149,15 @@ PrefsPanel(parent)
          mp3InfoSizer->Add(mMP3Version, 0,
             wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
          
-         mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON, "Find Library");
+         mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON,
+               _("Find Library"));
          
          mp3InfoSizer->Add(mMP3FindButton, 0,
                            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
          if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
             mp3InfoSizer->Add(
-               new wxStaticText(this, -1, "Bit Rate:"), 0,
+               new wxStaticText(this, -1, _("Bit Rate:")), 0,
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
             wxString bitrates[] = { "56", "96", "128", "192", "256", "320" };
@@ -219,7 +217,7 @@ void FileFormatPrefs::SetMP3VersionText()
    if(doMP3)
       versionString = GetMP3Exporter()->GetLibraryVersion();
    else
-      versionString = "MP3 exporting plugin not found";
+      versionString = _("MP3 exporting plugin not found");
    
    mMP3Version->SetLabel(versionString);
 }
@@ -230,7 +228,7 @@ void FileFormatPrefs::SetFormatText()
 
    formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
 
-   formatString += wxString::Format(", %d-bit data", mFormatBits);   
+   formatString += wxString::Format(_(", %d-bit data"), mFormatBits);   
 
    formatString += ", " + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
 
@@ -343,7 +341,7 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
                                      unsigned int format,
                                      unsigned int formatBits):
    wxDialog(parent, id,
-            "File Format",
+            _("File Format"),
             wxDefaultPosition, wxDefaultSize)
 {
    mFormat = format;
@@ -354,17 +352,17 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    wxControl *item;
 
    item = new wxStaticText(this, -1,
-                           "(Not all combinations of headers, data sizes,\n"
-                           "and encodings are possible.)",
-                           wxDefaultPosition, wxDefaultSize, 0);
-   mainSizer->Add(item, 0,
-                  wxALIGN_LEFT | wxALL, 5);
+                     _("(Not all combinations of headers, data sizes,\n"
+                       "and encodings are possible.)"),
+                     wxDefaultPosition, wxDefaultSize, 0);
+
+   mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
 
    /***/
    
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
-   item = new wxStaticText(this, -1, "Header: ",
+   item = new wxStaticText(this, -1, _("Header: "),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -382,7 +380,7 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
 
    /***/
 
-   item = new wxStaticText(this, -1, "Data Size: ",
+   item = new wxStaticText(this, -1, _("Data Size: "),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -400,7 +398,7 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
 
    /***/
 
-   item = new wxStaticText(this, -1, "Encoding: ",
+   item = new wxStaticText(this, -1, _("Encoding: "),
                            wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item, 0,
                   wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -424,14 +422,14 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
    mOK = 
-       new wxButton(this, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    mOK->SetDefault();
    mOK->SetFocus();
    okSizer->Add(mOK, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
 

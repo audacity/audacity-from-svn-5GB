@@ -29,6 +29,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/intl.h>
 
 #include "Audacity.h"
 
@@ -302,9 +303,11 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
 
    /***/
 
-   wxString formats[2] = {"ID3v1 (more compatible)",
-                          "ID3v2 (more flexible)"};
-   wxRadioBox *format = new wxRadioBox(parent, ID_FORMAT, "Format:",
+   wxString formats[2];
+   formats[0] = _("ID3v1 (more compatible)");
+   formats[1] = _("ID3v2 (more flexible)");
+
+   wxRadioBox *format = new wxRadioBox(parent, ID_FORMAT, _("Format:"),
                                        wxDefaultPosition, wxDefaultSize,
                                        2, formats,
                                        0, wxRA_VERTICAL);
@@ -315,7 +318,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
    wxStaticText *item3 =
-       new wxStaticText(parent, ID_TEXT, "Title:",
+       new wxStaticText(parent, ID_TEXT, _("Title:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item3, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -325,7 +328,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    gridSizer->Add(item4, 1, wxEXPAND | wxALL, 5);
 
    wxStaticText *item5 =
-       new wxStaticText(parent, ID_TEXT, "Artist:",
+       new wxStaticText(parent, ID_TEXT, _("Artist:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item5, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -335,7 +338,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    gridSizer->Add(item6, 1, wxEXPAND | wxALL, 5);
 
    wxStaticText *item7 =
-       new wxStaticText(parent, ID_TEXT, "Album:",
+       new wxStaticText(parent, ID_TEXT, _("Album:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item7, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -351,7 +354,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item9 =
-       new wxStaticText(parent, ID_TEXT, "Track Number:",
+       new wxStaticText(parent, ID_TEXT, _("Track Number:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    hSizer->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -361,7 +364,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    hSizer->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item11 =
-       new wxStaticText(parent, ID_TEXT, "Year:",
+       new wxStaticText(parent, ID_TEXT, _("Year:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    hSizer->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -376,7 +379,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    gridSizer = new wxFlexGridSizer(2, 0, 0);
 
    wxStaticText *item20 =
-       new wxStaticText(parent, ID_TEXT, "Genre:",
+       new wxStaticText(parent, ID_TEXT, _("Genre:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -387,7 +390,7 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    gridSizer->Add(item21, 1, wxEXPAND | wxALL, 5);
    
    wxStaticText *item22 =
-       new wxStaticText(parent, ID_TEXT, "Comments:",
+       new wxStaticText(parent, ID_TEXT, _("Comments:"),
                         wxDefaultPosition, wxDefaultSize, 0);
    gridSizer->Add(item22, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
@@ -403,14 +406,14 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item14 =
-       new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item14->SetDefault();
    item14->SetFocus();
    okSizer->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item15 =
-       new wxButton(parent, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    okSizer->Add(item15, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -427,6 +430,8 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    
    return mainSizer;
 }
+
+// MB: Should these be translated?
 
 const wxString gGenreList[gNumGenres] = {
 /*  0*/ "Blues",

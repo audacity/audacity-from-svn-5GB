@@ -14,6 +14,7 @@
 #include <wx/pen.h>
 #include <wx/string.h>
 #include <wx/textfile.h>
+#include <wx/intl.h>
 
 #include "LabelTrack.h"
 #include "DirManager.h"
@@ -22,7 +23,7 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
 VTrack(projDirManager)
 {
    InitColours();
-   SetName("Label Track");
+   SetName(_("Label Track"));
 
    SetExpandedHeight(30);         // Label tracks are narrow
 

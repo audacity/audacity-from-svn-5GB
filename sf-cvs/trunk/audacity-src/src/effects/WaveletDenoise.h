@@ -17,6 +17,7 @@
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/stattext.h>
+#include <wx/intl.h>
 #include <libw.h>
 
 class wxString;
@@ -33,11 +34,11 @@ public:
     EffectWaveletDenoise();
     
     virtual wxString GetEffectName() {
-        return wxString("Wavelet Denoising...");
+        return wxString(_("Wavelet Denoising..."));
     }
     
     virtual wxString GetEffectAction() {
-        return wxString("Denoising");
+        return wxString(_("Denoising"));
     }
     
 //    virtual bool PromptUser();

@@ -19,6 +19,7 @@
 #include <wx/button.h>
 #include <wx/slider.h>
 #include <wx/msgdlg.h>
+#include <wx/intl.h>
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "VSTEffect.h"          // This class's header file
@@ -42,7 +43,7 @@ wxString VSTEffect::GetEffectName()
 
 wxString VSTEffect::GetEffectAction()
 {
-   return "Performing VST Effect: \""+pluginName+"\"";
+   return _("Performing VST Effect: ") + "\"" + pluginName + "\"";
 }
 
 bool VSTEffect::Init()
@@ -69,8 +70,9 @@ bool VSTEffect::Init()
             GetSamples((WaveTrack *)right, &rstart, &rlen);
             
             if (llen != rlen || ((WaveTrack *)left)->GetRate() != ((WaveTrack *)right)->GetRate()) {
-               wxMessageBox("Sorry, VST Effects cannot be performed on stereo tracks where "
-                            "the individual channels of the track do not match.");
+               wxMessageBox(_("Sorry, VST Effects cannot be performed "
+                              "on stereo tracks where the individual channels "
+                              "of the track do not match."));
                return false;
             }
          }
@@ -265,7 +267,7 @@ IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
 
    int y = 10;
 
-   new wxStaticText(this, 0, "VST Plug-in parameters:", wxPoint(10, y),
+   new wxStaticText(this, 0, _("VST Plug-in parameters:"), wxPoint(10, y),
                     wxSize(300, 15));
    y += 20;
 
@@ -303,9 +305,9 @@ IMPLEMENT_CLASS(VSTEffectDialog, wxDialog)
    }
 
    wxButton *ok =
-       new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
+       new wxButton(this, wxID_OK, _("OK"), wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, "Cancel", wxPoint(210, y),
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(210, y),
                     wxSize(80, 30));
    y += 40;
 

@@ -31,6 +31,7 @@
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
+#include <wx/intl.h>
 
 #include "Audacity.h"
 #include "AColor.h"
@@ -250,8 +251,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                          wxSize(width, sh), mRate, this);
    height -= sh;
 
-   mStatus->SetField("Welcome to Audacity version "
-                     AUDACITY_VERSION_STRING, 0);
+   mStatus->SetField(wxString::Format("Welcome to Audacity version %s",
+                     AUDACITY_VERSION_STRING), 0);
 
    //
    // Create the TrackPanel and the scrollbars
@@ -626,12 +627,12 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       }
 
       if (count == 0 || mViewInfo.sel0 == mViewInfo.sel1) {
-         wxMessageBox("No audio data is selected.");
+         wxMessageBox(_("No audio data is selected."));
          return true;
       }
 
       if (f->DoEffect(this, mTracks, mViewInfo.sel0, mViewInfo.sel1)) {
-         PushState("Applied an effect. (maybe more specific?)");
+         PushState(_("Applied an effect."));   // maybe more specific?
          FixScrollbars();
          mTrackPanel->Refresh(false);
       }
@@ -880,7 +881,7 @@ void AudacityProject::OpenFile(wxString fileName)
    char temp[16];
 
    if (!::wxFileExists(fileName)) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
 
@@ -894,7 +895,7 @@ void AudacityProject::OpenFile(wxString fileName)
    
    wxFile ff(fileName);
    if (!ff.IsOpened()) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
    ff.Read(temp, 15);
@@ -912,7 +913,7 @@ void AudacityProject::OpenFile(wxString fileName)
 
    f.Open(fileName);
    if (!f.IsOpened()) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
 
@@ -936,8 +937,8 @@ void AudacityProject::OpenFile(wxString fileName)
       goto openFileError;
    version = f.GetNextLine();
    if (version != AUDACITY_FILE_FORMAT_VERSION) {
-      wxMessageBox("This project was saved by a different version of "
-                   "Audacity and is no longer supported.");
+      wxMessageBox(_("This project was saved by a different version of "
+                     "Audacity and is no longer supported."));
       return;
    }
 
@@ -1009,7 +1010,7 @@ void AudacityProject::OpenFile(wxString fileName)
 
  openFileError:
    wxMessageBox(wxString::
-                Format("Error reading Audacity Project %s in line %d",
+                Format(_("Error reading Audacity Project %s in line %d"),
                        (const char *) mFileName, f.GetCurrentLine()));
    f.Close();
    return;
@@ -1044,13 +1045,13 @@ void AudacityProject::Import(wxString fileName)
       mRate = newRate;
       mStatus->SetRate(mRate);
    } else if (rateWarning) {
-      wxMessageBox("Warning: your file has multiple sampling rates.  "
-                   "Audacity will ignore any track which is not at "
-                   "the same sampling rate as the project.");
+      wxMessageBox(_("Warning: your file has multiple sampling rates.  "
+                     "Audacity will ignore any track which is not at "
+                     "the same sampling rate as the project."));
    }
 
    PushState(
-      wxString::Format("Imported '%s'", fileName.c_str()));
+      wxString::Format(_("Imported '%s'"), fileName.c_str()));
    ZoomFit();
    mTrackPanel->Refresh(false);
 
@@ -1126,12 +1127,11 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
    }   
 
    if (!success) {
-      wxMessageBox(wxString::
-                   Format
-                   ("Could not save project.  "
-                    "Perhaps %s is not writeable,\n"
-                    "or the disk is full.",
-                    (const char *) project));
+      wxMessageBox(wxString::Format(
+                           _("Could not save project.  "
+                             "Perhaps %s is not writeable,\n"
+                             "or the disk is full."),
+                           (const char *) project));
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
@@ -1143,7 +1143,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
    f.Create();
    f.Open();
    if (!f.IsOpened()) {
-      wxMessageBox("Couldn't write to " + mFileName);
+      wxMessageBox(_("Couldn't write to file: ") + mFileName);
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
@@ -1205,7 +1205,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
       t = iter.Next();
    }
 
-   mStatus->SetField(wxString::Format("Saved %s",
+   mStatus->SetField(wxString::Format(_("Saved %s"),
                                       (const char *) mFileName), 0);
 }
 
@@ -1218,17 +1218,17 @@ void AudacityProject::SaveAs()
    extension = "aup";
    fName = baseName + "." + extension;
 
-   fName = wxFileSelector("Save Project As:",
+   fName = wxFileSelector(_("Save Project As:"),
                           path,
                           fName,
                           "",
-                          "Audacity projects (*.aup)|*.aup", wxSAVE, this);
+                          _("Audacity projects (*.aup)|*.aup"), wxSAVE, this);
 
    if (fName == "")
       return;
 
    if (fName == ".aup") {
-      wxMessageBox("You must name the file!");
+      wxMessageBox(_("You must name the file!"));
       return;
    }
 
@@ -1269,7 +1269,7 @@ void AudacityProject::ZoomFit()
 void AudacityProject::InitialState()
 {
    mUndoManager.ClearStates();
-   PushState("Created new project", false);
+   PushState(_("Created new project"), false);
 }
 
 void AudacityProject::PushState(wxString desc, bool makeDirty /* = true */ )
@@ -1342,7 +1342,7 @@ void AudacityProject::Clear()
    mViewInfo.sel1 = mViewInfo.sel0;
 
    PushState(
-      wxString::Format("Deleted %.2f seconds at t=%.2f",
+      wxString::Format(_("Deleted %.2f seconds at t=%.2f"),
          mViewInfo.sel0 - mViewInfo.sel1, mViewInfo.sel0));
    FixScrollbars();
    mTrackPanel->Refresh(false);

@@ -11,6 +11,7 @@
 #include <wx/window.h>
 #include <wx/statbox.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 #include "../Prefs.h"
 #include "SampleRatePrefs.h"
@@ -49,12 +50,12 @@ PrefsPanel(parent)
       }
 
     topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, "Sample Rate Preferences"), 
+      new wxStaticBox(this, -1, _("Sample Rate Preferences")), 
       wxVERTICAL );
 
    {
       wxStaticBoxSizer *defProjSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Default Project Sample Rate"),
+         new wxStaticBox(this, -1, _("Default Project Sample Rate")),
          wxVERTICAL );
 
       mSampleRates[0] = new wxRadioButton(this, -1, stringRates[0],

@@ -23,6 +23,7 @@
 #include <wx/sizer.h>
 #include <wx/spinbutt.h>
 #include <wx/spinctrl.h>
+#include <wx/intl.h>
 
 class wxString;
 
@@ -36,11 +37,11 @@ class EffectPhaser:public Effect {
    EffectPhaser();
 
    virtual wxString GetEffectName() {
-      return wxString("Phaser...");
+      return wxString(_("Phaser..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Applying Phaser");
+      return wxString(_("Applying Phaser"));
    }
    
    virtual bool PromptUser();

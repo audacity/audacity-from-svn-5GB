@@ -23,6 +23,7 @@
 #include <wx/textdlg.h>
 #include <wx/textctrl.h>
 #include <wx/statusbr.h>
+#include <wx/intl.h>
 
 #include "TrackPanel.h"
 
@@ -151,41 +152,41 @@ mAutoScrolling(false)
    mRateMenu->Append(OnRate22ID, "22050 Hz");
    mRateMenu->Append(OnRate44ID, "44100 Hz");
    mRateMenu->Append(OnRate48ID, "48000 Hz");
-   mRateMenu->Append(OnRateOtherID, "Other...");
+   mRateMenu->Append(OnRateOtherID, _("Other..."));
 
    mWaveTrackMenu = new wxMenu();
-   mWaveTrackMenu->Append(OnSetNameID, "Name...");
+   mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(OnMoveUpID, "Move Track Up");
-   mWaveTrackMenu->Append(OnMoveDownID, "Move Track Down");
+   mWaveTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
+   mWaveTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(OnWaveformID, "Waveform");
-   mWaveTrackMenu->Append(OnWaveformDBID, "Waveform (dB)");
-   mWaveTrackMenu->Append(OnSpectrumID, "Spectrum");
-   mWaveTrackMenu->Append(OnPitchID, "Pitch (EAC)");
+   mWaveTrackMenu->Append(OnWaveformID, _("Waveform"));
+   mWaveTrackMenu->Append(OnWaveformDBID, _("Waveform (dB)"));
+   mWaveTrackMenu->Append(OnSpectrumID, _("Spectrum"));
+   mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(OnChannelMonoID, "Mono");
-   mWaveTrackMenu->Append(OnChannelLeftID, "Left Channel");
-   mWaveTrackMenu->Append(OnChannelRightID, "Right Channel");
-   mWaveTrackMenu->Append(OnMergeStereoID, "Make Stereo Track");
-   mWaveTrackMenu->Append(OnSplitStereoID, "Split Stereo Track");
+   mWaveTrackMenu->Append(OnChannelMonoID, _("Mono"));
+   mWaveTrackMenu->Append(OnChannelLeftID, _("Left Channel"));
+   mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
+   mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
+   mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(0, "Set Rate", mRateMenu);
+   mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
 
    mNoteTrackMenu = new wxMenu();
-   mNoteTrackMenu->Append(OnSetNameID, "Name...");
+   mNoteTrackMenu->Append(OnSetNameID, _("Name..."));
    mNoteTrackMenu->AppendSeparator();
-   mNoteTrackMenu->Append(OnMoveUpID, "Move Track Up");
-   mNoteTrackMenu->Append(OnMoveDownID, "Move Track Down");
+   mNoteTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
+   mNoteTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
    mNoteTrackMenu->AppendSeparator();
-   mNoteTrackMenu->Append(OnUpOctaveID, "Up Octave");
-   mNoteTrackMenu->Append(OnDownOctaveID, "Down Octave");
+   mNoteTrackMenu->Append(OnUpOctaveID, _("Up Octave"));
+   mNoteTrackMenu->Append(OnDownOctaveID, _("Down Octave"));
 
    mLabelTrackMenu = new wxMenu();
-   mLabelTrackMenu->Append(OnSetNameID, "Name...");
+   mLabelTrackMenu->Append(OnSetNameID, _("Name..."));
    mLabelTrackMenu->AppendSeparator();
-   mLabelTrackMenu->Append(OnMoveUpID, "Move Track Up");
-   mLabelTrackMenu->Append(OnMoveDownID, "Move Track Down");
+   mLabelTrackMenu->Append(OnMoveUpID, _("Move Track Up"));
+   mLabelTrackMenu->Append(OnMoveDownID, _("Move Track Down"));
 
    mTrackArtist = new TrackArtist();
    mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
@@ -415,15 +416,15 @@ void TrackPanel::MakeParentRedrawScrollbars()
 
 // AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
 //  move/slide=2, and zoom=3.  And this should go somewhere else...
-const char *pMessages[] = {"Click and drag to select audio", 
-			   "Click and drag to edit the amplitude envelope",
-			   "Click and drag to move a track in time",
+const char *pMessages[] = {_("Click and drag to select audio"), 
+			   _("Click and drag to edit the amplitude envelope"),
+			   _("Click and drag to move a track in time"),
 #if defined( __WXMAC__ )
-			   "Click to Zoom In, Shift-Click to Zoom Out"
+			   _("Click to Zoom In, Shift-Click to Zoom Out")
 #elif defined( __WXMSW__ )
-			   "Left-Click to Zoom In, Right-Click to Zoom Out"
+			   _("Left-Click to Zoom In, Right-Click to Zoom Out")
 #elif defined( __WXGTK__ )
-			   "Left=Zoom In, Right=Zoom Out, Middle=Normal"
+			   _("Left=Zoom In, Right=Zoom Out, Middle=Normal")
 #endif
 };
 
@@ -447,7 +448,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 	// AS: MAGIC NUMBER: What is 5?
 
          mListener->
-             TP_DisplayStatusMessage("Click and drag to resize the track",
+             TP_DisplayStatusMessage(_("Click and drag to resize the track"),
                                      0);
          SetCursor(*mResizeCursor);
       }
@@ -541,7 +542,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
 
     mListener->
       TP_DisplayStatusMessage(wxString::
-			      Format("Selection: %lf - %lf s",
+			      Format(_("Selection: %lf - %lf s"),
 				     mViewInfo->sel0,
 				     mViewInfo->sel1), 1);
   } else {  // AS: Otherwise, start a new selection
@@ -553,7 +554,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
 
     mListener->
       TP_DisplayStatusMessage(wxString::
-			      Format("Cursor: %lf s", mSelStart),
+			      Format(_("Cursor: %lf s"), mSelStart),
 			      1);
     mIsSelecting = true;
     
@@ -604,7 +605,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent &event)
       
       mListener->
 	TP_DisplayStatusMessage(wxString::
-				Format("Selection: %lf - %lf s",
+				Format(_("Selection: %lf - %lf s"),
 				       mViewInfo->sel0,
 				       mViewInfo->sel1), 1);
       
@@ -707,7 +708,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 
    if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
-      MakeParentPushState("Adjusted envelope.");
+      MakeParentPushState(_("Adjusted envelope."));
    }
 }
 
@@ -781,9 +782,9 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
       MakeParentRedrawScrollbars();
       if(totalOffset > 0)
          MakeParentPushState(
-            wxString::Format("Slid track '%s' %s %.02f seconds", 
+            wxString::Format(_("Slid track '%s' %s %.02f seconds"), 
                              name.c_str(),
-                             totalOffset > 0 ? "right" : "left",
+                             totalOffset > 0 ? _("right") : _("left"),
                              totalOffset > 0 ? totalOffset : -totalOffset));
    }
 }
@@ -993,19 +994,19 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
       canMakeStereo = true;
     
     theMenu->Enable(theMenu->FindItem
-		    ("Make Stereo Track"), canMakeStereo);
+		    (_("Make Stereo Track")), canMakeStereo);
     theMenu->Enable(theMenu->FindItem
-		    ("Split Stereo Track"), t->GetLinked());
-    theMenu->Enable(theMenu->FindItem("Mono"), !t->GetLinked());
-    theMenu->Enable(theMenu->FindItem("Left Channel"), !t->GetLinked());
-    theMenu->Enable(theMenu->FindItem("Right Channel"), !t->GetLinked());
+		    (_("Split Stereo Track")), t->GetLinked());
+    theMenu->Enable(theMenu->FindItem(_("Mono")), !t->GetLinked());
+    theMenu->Enable(theMenu->FindItem(_("Left Channel")), !t->GetLinked());
+    theMenu->Enable(theMenu->FindItem(_("Right Channel")), !t->GetLinked());
     
     int display = ((WaveTrack *) t)->GetDisplay();
     
-    theMenu->Enable(theMenu->FindItem("Waveform"), display != 0);
-    theMenu->Enable(theMenu->FindItem("Waveform (dB)"), display != 1);
-    theMenu->Enable(theMenu->FindItem("Spectrum"), display != 2);
-    theMenu->Enable(theMenu->FindItem("Pitch (EAC)"), display != 3);
+    theMenu->Enable(theMenu->FindItem(_("Waveform")), display != 0);
+    theMenu->Enable(theMenu->FindItem(_("Waveform (dB)")), display != 1);
+    theMenu->Enable(theMenu->FindItem(_("Spectrum")), display != 2);
+    theMenu->Enable(theMenu->FindItem(_("Pitch (EAC)")), display != 3);
   }
   
   if (t->GetKind() == VTrack::Note)
@@ -1017,9 +1018,9 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
   if (theMenu) {
     
     theMenu->Enable(theMenu->FindItem
-		    ("Move Track Up"), mTracks->CanMoveUp(t));
+		    (_("Move Track Up")), mTracks->CanMoveUp(t));
     theMenu->Enable(theMenu->FindItem
-		    ("Move Track Down"), mTracks->CanMoveDown(t));
+		    (_("Move Track Down")), mTracks->CanMoveDown(t));
     
 #ifdef __WXMAC__
     ::InsertMenu(mRateMenu->GetHMenu(), -1);
@@ -1614,7 +1615,7 @@ void TrackPanel::DrawMuteSolo(wxDC * dc, const wxRect r, VTrack *t, bool down, b
    dc->DrawRectangle(bev);
 
    long textWidth, textHeight;
-   wxString str = (solo) ? "Solo" : "Mute";
+   wxString str = (solo) ? _("Solo") : _("Mute");
    SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
    dc->DrawText(str, bev.x + (bev.width - textWidth)/2, bev.y + 2);
@@ -1835,14 +1836,14 @@ wxString TrackPanel::TrackSubText(VTrack *t)
 		     (int) (((WaveTrack *) t)->GetRate() +
 			    0.5));
   if (t->GetLinked())
-    s = "Stereo, " + s;
+    s = _("Stereo, ") + s;
   else {
     if (t->GetChannel() == VTrack::MonoChannel)
-      s = "Mono, " + s;
+      s = _("Mono, ") + s;
     else if (t->GetChannel() == VTrack::LeftChannel)
-      s = "Left, " + s;
+      s = _("Left, ") + s;
     else if (t->GetChannel() == VTrack::RightChannel)
-      s = "Right, " + s;
+      s = _("Right, ") + s;
   }
 
   return s;
@@ -1861,7 +1862,7 @@ void TrackPanel::OnChannelChange(wxEvent &event)
   assert (mPopupMenuTarget);
   mPopupMenuTarget->SetChannel(channels[id - OnChannelLeftID]);
   MakeParentPushState(
-      wxString::Format("Changed '%s' to %s",
+      wxString::Format(_("Changed '%s' to %s"),
 		       mPopupMenuTarget->GetName().c_str(),
 		       channelmsgs[id - OnChannelLeftID]));
   mPopupMenuTarget = NULL;
@@ -1874,7 +1875,7 @@ void TrackPanel::OnSplitStereo()
    assert (mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(false);
    MakeParentPushState(
-         wxString::Format("Split stereo track '%s'",
+         wxString::Format(_("Split stereo track '%s'"),
 			  mPopupMenuTarget->GetName().c_str()));
    Refresh(false);
 }
@@ -1889,7 +1890,7 @@ void TrackPanel::OnMergeStereo()
      mPopupMenuTarget->SetChannel(VTrack::LeftChannel);
      partner->SetChannel(VTrack::RightChannel);
      MakeParentPushState(
-	  wxString::Format("Made '%s' a stereo track",
+	  wxString::Format(_("Made '%s' a stereo track"),
 			   mPopupMenuTarget->GetName().c_str()));
    } else
      mPopupMenuTarget->SetLinked(false);
@@ -1917,7 +1918,8 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
 
    delete toRemove;
 
-   MakeParentPushState(wxString::Format("Removed track '%s.'", name.c_str()));
+   MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
+                                        name.c_str()));
    MakeParentRedrawScrollbars();
 
    Refresh(false);
@@ -1936,7 +1938,7 @@ void TrackPanel::OnSetDisplay(wxEvent &event)
   if (partner)
     ((WaveTrack *) partner)->SetDisplay(id - OnWaveformID);
   MakeParentPushState(
-		      wxString::Format("Changed '%s' to %s display",
+		      wxString::Format(_("Changed '%s' to %s display"),
 				       mPopupMenuTarget->GetName().c_str(),
 				       gModes[id - OnWaveformID]));
   mPopupMenuTarget = NULL;
@@ -1952,7 +1954,7 @@ void TrackPanel::SetRate(VTrack *pTrack, double rate)
   if (partner)
     ((WaveTrack *) partner)->SetRate(rate);
   MakeParentPushState(
-		      wxString::Format("Changed '%s' to %d Hz", 
+		      wxString::Format(_("Changed '%s' to %d Hz"), 
 				       pTrack->GetName().c_str(), rate));
 }
 
@@ -1986,12 +1988,12 @@ void TrackPanel::OnRateOther()
   // AS: TODO: REMOVE ARTIFICIAL CONSTANTS!!
   // AS: Make a real dialog box out of this!!
   double theRate;
-  do
-    {
-      wxString rateStr =
-	wxGetTextFromUser("Enter a sample rate in Hz (per second) between 1 and 100000:",
-			  "Set Rate",
-			  defaultStr);
+  do {
+    wxString rateStr =
+	wxGetTextFromUser(_("Enter a sample rate in Hz (per second) "
+                        "between 1 and 100000:"),
+                      _("Set Rate"),
+                      defaultStr);
       
       // AS: Exit if they type in nothing.
       if ("" == rateStr)
@@ -2001,9 +2003,9 @@ void TrackPanel::OnRateOther()
       if (theRate >= 1 && theRate <= 100000)
 	break;
       else
-	wxMessageBox("Invalid rate.");
+	wxMessageBox(_("Invalid rate."));
 
-    } while (1);
+  } while (1);
   
   SetRate(mPopupMenuTarget, theRate);
   
@@ -2019,7 +2021,7 @@ void TrackPanel::OnMoveTrack(wxEvent &event)
   assert(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID );
   if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
     MakeParentPushState(
-	 wxString::Format("Moved '%s' %s", mPopupMenuTarget->GetName().c_str(),
+	 wxString::Format(_("Moved '%s' %s"), mPopupMenuTarget->GetName().c_str(),
 			  gMove[event.GetId() - OnMoveUpID]));
     Refresh(false);
    }
@@ -2046,13 +2048,13 @@ void TrackPanel::OnSetName()
 
    if (t) {
       wxString defaultStr = t->GetName();
-      wxString newName = wxGetTextFromUser("Change track name to:",
-                                           "Track Name",
+      wxString newName = wxGetTextFromUser(_("Change track name to:"),
+                                           _("Track Name"),
                                            defaultStr);
       if (newName != "")
          t->SetName(newName);
       MakeParentPushState(
-          wxString::Format("Renamed '%s' to '%s'",
+          wxString::Format(_("Renamed '%s' to '%s'"),
                            defaultStr.c_str(), newName.c_str()));
       Refresh(false);
    }

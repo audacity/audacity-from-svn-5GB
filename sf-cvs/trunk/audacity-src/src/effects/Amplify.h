@@ -22,6 +22,7 @@
 #include <wx/slider.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 // Declare window functions
 
@@ -43,11 +44,11 @@ class EffectAmplify:public Effect {
    EffectAmplify();
 
    virtual wxString GetEffectName() {
-      return wxString("Amplify...");
+      return wxString(_("Amplify..."));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Amplifying");
+      return wxString(_("Amplifying"));
    }
    
    virtual bool Init();

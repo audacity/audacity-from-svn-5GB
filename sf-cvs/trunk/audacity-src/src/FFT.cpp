@@ -24,6 +24,7 @@
 
 **********************************************************************/
 
+#include <wx/intl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -49,7 +50,7 @@ int NumberOfBitsNeeded(int PowerOfTwo)
    int i;
 
    if (PowerOfTwo < 2) {
-      fprintf(stderr, "Error: FFT called with size %d\n", PowerOfTwo);
+      fprintf(stderr, _("Error: FFT called with size %d\n"), PowerOfTwo);
       exit(1);
    }
 
@@ -110,7 +111,7 @@ void FFT(int NumSamples,
    float tr, ti;                /* temp real, temp imaginary */
 
    if (!IsPowerOfTwo(NumSamples)) {
-      fprintf(stderr, "%d is not a power of two\n", NumSamples);
+      fprintf(stderr, _("%d is not a power of two\n"), NumSamples);
       exit(1);
    }
 
@@ -349,12 +350,12 @@ int NumWindowFuncs()
    return 4;
 }
 
-char *WindowFuncName(int whichFunction)
+const char *WindowFuncName(int whichFunction)
 {
    switch (whichFunction) {
    default:
    case 0:
-      return "Rectangular";
+      return _("Rectangular");
    case 1:
       return "Bartlett";
    case 2:

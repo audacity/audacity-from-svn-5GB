@@ -10,6 +10,7 @@
 
 #include <wx/file.h>
 #include <wx/filefn.h>
+#include <wx/intl.h>
 
 #include "BlockFile.h"
 #include "WaveTrack.h"
@@ -278,7 +279,7 @@ int BlockFile::Read(void *data, int len)
       int rval = (int) mFile->Read(data, (size_t) len);
 
       if (rval != len) {
-         printf("Expected %d bytes, got %d\n", len, rval);
+         printf(_("Expected %d bytes, got %d\n"), len, rval);
          wxASSERT(0);
       }
 

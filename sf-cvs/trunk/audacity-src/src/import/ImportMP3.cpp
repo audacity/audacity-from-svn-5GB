@@ -28,6 +28,7 @@
 #include <wx/progdlg.h>
 #include <wx/string.h>
 #include <wx/timer.h>
+#include <wx/intl.h>
 
 extern "C" {
 #include "mad.h"
@@ -221,7 +222,7 @@ bool ImportMP3(AudacityProject * project,
    wxFile file((char *) fName.c_str());
 
    if (!file.IsOpened()) {
-      wxMessageBox("Could not open " + fName);
+      wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
 

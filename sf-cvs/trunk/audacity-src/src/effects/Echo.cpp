@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/generic/textdlgg.h>
+#include <wx/intl.h>
 
 #include "Echo.h"
 #include "../WaveTrack.h"
@@ -22,8 +23,8 @@ EffectEcho::EffectEcho()
 bool EffectEcho::PromptUser()
 {
    wxString temp;
-   wxString title = "Echo";
-   wxString caption = "Delay time (seconds): ";
+   wxString title = _("Echo");
+   wxString caption = _("Delay time (seconds): ");
    wxString default_value = wxString::Format("%f", delay);
 
    temp = wxGetTextFromUser(caption, title,
@@ -31,21 +32,21 @@ bool EffectEcho::PromptUser()
    if (temp == "")
       return false;
    while (sscanf((const char *) temp, "%f", &delay) < 0) {
-      caption = "Please enter a positive number for the delay time: ";
+      caption = _("Please enter a positive number for the delay time: ");
       temp = wxGetTextFromUser(caption, title,
                                default_value, mParent, -1, -1, TRUE);
       if (temp == "")
          return false;
    }
 
-   caption = "Enter the decay factor: ";
+   caption = _("Enter the decay factor: ");
    default_value = wxString::Format("%f", decay);
    temp = wxGetTextFromUser(caption, title,
                             default_value, mParent, -1, -1, TRUE);
    if (temp == "")
       return false;
    while (sscanf((const char *) temp, "%f", &decay) < 0) {
-      caption = "Please enter a positive number for the decay factor: ";
+      caption = _("Please enter a positive number for the decay factor: ");
       temp = wxGetTextFromUser(caption, title,
                                default_value, mParent, -1, -1, TRUE);
       if (temp == "")

@@ -17,6 +17,7 @@
 #include <wx/progdlg.h>
 #include <wx/timer.h>
 #include <wx/textfile.h>
+#include <wx/intl.h>
 
 #include "DirManager.h"
 #include "DiskFunctions.h"
@@ -95,16 +96,16 @@ DirManager::DirManager()
          gPrefs->Write("/Directories/TempDir", temp);
       }
       else {
-         wxMessageBox("Audacity could not find a place to store temporary files.\n"
-                      "Please enter an appropriate directory in the "
-                      "preferences dialog.");
+         wxMessageBox(_("Audacity could not find a place to store "
+                        "temporary files.\n  Please enter an appropriate "
+                        "directory in the preferences dialog."));
 
          PrefsDialog dialog(NULL);
          dialog.ShowTempDirPage();
          dialog.ShowModal();
 
-         wxMessageBox("Audacity is now going to exit.  Please launch Audacity "
-                      "again to use the new temporary directory.");
+         wxMessageBox(_("Audacity is now going to exit.  Please launch "
+                        "Audacity again to use the new temporary directory."));
          wxExit();
       }
 
@@ -126,8 +127,10 @@ DirManager::DirManager()
    if (freeSpace >= 0) {
       if (freeSpace < 1048576) {
          // TODO: allow user to select different temporary volume.
-         wxMessageBox
-             ("Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences.");
+         wxMessageBox(
+              _("Warning: there is very little free disk space left on this "
+                "volume. Please select another temporary directory in your "
+                "preferences."));
       }
    }
 }
@@ -172,8 +175,8 @@ void DirManager::CleanTempDir()
 
       if (!progress && wxGetElapsedTime(false) > 500)
          progress =
-             new wxProgressDialog("Progress",
-                                  "Cleaning up temporary files...",
+             new wxProgressDialog(_("Progress"),
+                                  _("Cleaning up temporary files..."),
                                   1000,
                                   NULL,
                                   wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);

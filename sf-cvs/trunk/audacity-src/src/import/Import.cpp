@@ -17,6 +17,7 @@
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/string.h>
+#include <wx/intl.h>
 
 #include "../Audacity.h"
 
@@ -46,8 +47,8 @@ int Import(AudacityProject *project,
    if (!fName.Right(3).CmpNoCase("mid") ||
        !fName.Right(4).CmpNoCase("midi") ||
        !fName.Right(3).CmpNoCase("gro")) {
-      wxMessageBox("Please use the Import MIDI command instead.",
-                   "Import audio file", wxOK | wxCENTRE, parent);
+      wxMessageBox(_("Please use the Import MIDI command instead."),
+                   _("Import audio file"), wxOK | wxCENTRE, parent);
       return 0;
    }
 
@@ -65,8 +66,8 @@ int Import(AudacityProject *project,
 
       return numTracks;
 #else
-      wxMessageBox("This version of Audacity was not compiled "
-                   "with MP3 support.");
+      wxMessageBox(_("This version of Audacity was not compiled "
+                     "with MP3 support."));
       return 0;
 #endif
    }
@@ -79,8 +80,8 @@ int Import(AudacityProject *project,
 
       return numTracks;
 #else
-      wxMessageBox("This version of Audacity was not compiled "
-                   "with Ogg Vorbis support.", "Import Ogg Vorbis",
+      wxMessageBox(_("This version of Audacity was not compiled "
+                     "with Ogg Vorbis support."), _("Import Ogg Vorbis"),
                    wxOK | wxCENTRE, parent);
       return 0;
 #endif
@@ -94,11 +95,11 @@ int Import(AudacityProject *project,
       return numTracks;
    }
 
-   int action = wxMessageBox("Audacity did not recognize the type "
-                             "of this file.\n"
-                             "Would you like to try to import it as "
-                             "raw PCM audio data?",
-                             "Unknown file type",
+   int action = wxMessageBox(_("Audacity did not recognize the type "
+                               "of this file.\n"
+                               "Would you like to try to import it as "
+                               "raw PCM audio data?"),
+                             _("Unknown file type"),
                              wxYES_NO | wxICON_EXCLAMATION,
                              parent);
 

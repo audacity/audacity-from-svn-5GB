@@ -19,6 +19,7 @@
 #include <wx/utils.h>
 #include <wx/valgen.h>
 #include <wx/valtext.h>
+#include <wx/intl.h>
 
 #include "Benchmark.h"
 #include "Project.h"
@@ -63,11 +64,11 @@ private:
 void RunBenchmark(wxWindow *parent)
 {
    /*
-   int action = wxMessageBox("This will close all project windows "
-                             "(without saving)\n"
-                             "and open the Audacity Benchmark dialog.\n\n"
-                             "Are you sure you want to do this?",
-                             "Benchmark",
+   int action = wxMessageBox(_("This will close all project windows "
+                               "(without saving)\n"
+                               "and open the Audacity Benchmark dialog.\n\n"
+                               "Are you sure you want to do this?"),
+                             _("Benchmark"),
                              wxYES_NO | wxICON_EXCLAMATION,
                              NULL);
 
@@ -108,7 +109,7 @@ BEGIN_EVENT_TABLE(BenchmarkDialog,wxDialog)
 END_EVENT_TABLE()
 
 BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
-      wxDialog( parent, 0, "Benchmark",
+      wxDialog( parent, 0, _("Benchmark"),
                 wxDefaultPosition, wxDefaultSize,
                 wxDEFAULT_DIALOG_STYLE |
                 wxDIALOG_MODAL |
@@ -141,7 +142,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
 
    wxControl *item;
    
-   item = new wxStaticText(parent, StaticTextID, "Disk Block Size (KB):");
+   item = new wxStaticText(parent, StaticTextID, _("Disk Block Size (KB):"));
    gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    item = new wxTextCtrl(parent, BlockSizeID, "", wxDefaultPosition,
@@ -150,7 +151,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
                                          &mBlockSizeStr));
    gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, "Number of Edits :");
+   item = new wxStaticText(parent, StaticTextID, _("Number of Edits :"));
    gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    item = new wxTextCtrl(parent, NumEditsID, "", wxDefaultPosition,
@@ -159,7 +160,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
                                          &mNumEditsStr));
    gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, "Test Data Size (MB):");
+   item = new wxStaticText(parent, StaticTextID, _("Test Data Size (MB):"));
    gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    item = new wxTextCtrl(parent, DataSizeID, "", wxDefaultPosition,
@@ -168,7 +169,7 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
                                          &mDataSizeStr));
    gridSizer->Add(item, 0, wxALL, 5);
 
-   item = new wxStaticText(parent, StaticTextID, "Random Seed :");
+   item = new wxStaticText(parent, StaticTextID, _("Random Seed :"));
    gridSizer->Add(item, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
    item = new wxTextCtrl(parent, RandSeedID, "", wxDefaultPosition,
@@ -180,13 +181,13 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
    mainSizer->Add(gridSizer, 0, wxALL, 5);
 
    item = new wxCheckBox(parent, 0,
-                         "Show detailed info about each block file",
+                         _("Show detailed info about each block file"),
                          wxDefaultPosition, wxDefaultSize, 0,
                          wxGenericValidator(&mBlockDetail));
    mainSizer->Add(item, 0, wxALL, 5);
 
    item = new wxCheckBox(parent, 0,
-                         "Show detailed info about each editing operation",
+                         _("Show detailed info about each editing operation"),
                          wxDefaultPosition, wxDefaultSize, 0,
                          wxGenericValidator(&mEditDetail));
    mainSizer->Add(item, 0, wxALL, 5);
@@ -200,18 +201,18 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   item = new wxButton( parent, RunID, "Run");
+   item = new wxButton( parent, RunID, _("Run"));
    hSizer->Add(item, 0, wxALL, 5 );
 
-   item = new wxButton( parent, SaveID, "Save");
+   item = new wxButton( parent, SaveID, _("Save"));
    hSizer->Add(item, 0, wxALL, 5 );
 
-   item = new wxButton( parent, ClearID, "Clear");
+   item = new wxButton( parent, ClearID, _("Clear"));
    hSizer->Add(item, 0, wxALL, 5 );
 
    hSizer->Add(5, 5, 1, wxEXPAND);
 
-   item = new wxButton( parent, CloseID, "Close");
+   item = new wxButton( parent, CloseID, _("Close"));
    hSizer->Add(item, 0, wxALL, 5 );
 
    mainSizer->Add(hSizer, 0, wxEXPAND, 5);   
@@ -230,9 +231,9 @@ wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, b
 
 void BenchmarkDialog::OnSave( wxCommandEvent &event )
 {
-   wxString fName = "benchmark.txt";
+   wxString fName = _("benchmark.txt");
 
-   fName = wxFileSelector("Export Benchmark Data As:",
+   fName = wxFileSelector(_("Export Benchmark Data As:"),
                           NULL, fName, "txt", "*.txt", wxSAVE, this);
 
    if (fName == "")
@@ -293,17 +294,17 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    mRandSeedStr.ToLong(&randSeed);
 
    if (blockSize < 1 || blockSize > 1024) {
-      wxMessageBox("Block size should be in the range 1 - 1024 KB.");
+      wxMessageBox(_("Block size should be in the range 1 - 1024 KB."));
       return;
    }
 
    if (numEdits < 1 || numEdits > 10000) {
-      wxMessageBox("Number of Edits should be in the range 1 - 10000.");
+      wxMessageBox(_("Number of edits should be in the range 1 - 10000."));
       return;
    }
 
    if (dataSize < 1 || dataSize > 2000) {
-      wxMessageBox("Number of Edits should be in the range 1 - 2000 MB.");
+      wxMessageBox(_("Test data size should be in the range 1 - 2000 MB."));
       return;
    }
 
@@ -331,8 +332,8 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       len = (dataSize * 1048576) / (scale*sizeof(sampleType));
    }
 
-   Printf("Using %d blocks of %d samples each, for a total of "
-          "%.1f MB.\n",
+   Printf(_("Using %d blocks of %d samples each, for a total of "
+            "%.1f MB.\n"),
           len, scale, len*scale*sizeof(sampleType)/1048576.0);
 
    int trials = numEdits;
@@ -341,7 +342,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    sampleType *small2 = new sampleType[len];
    sampleType *block = new sampleType[scale];
 
-   Printf("Preparing...\n");
+   Printf(_("Preparing...\n"));
 
    wxYield();
    FlushPrint();
@@ -363,13 +364,13 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    }
 
    if (t->GetNumSamples() != (sampleCount)len * scale) {
-      Printf("Expected len %d, track len %d.\n", len * scale,
+      Printf(_("Expected len %d, track len %d.\n"), len * scale,
              t->GetNumSamples());
       goto fail;
    }
    //t->Debug();
 
-   Printf("Performing %d edits...\n", trials);
+   Printf(_("Performing %d edits...\n"), trials);
    wxYield();
    FlushPrint();
 
@@ -378,27 +379,27 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       int x0 = rand() % len;
       int xlen = 1 + (rand() % (len - x0));
       if (mEditDetail)
-         Printf("Cut: %d - %d \n", x0 * scale, (x0 + xlen) * scale);
+         Printf(_("Cut: %d - %d \n"), x0 * scale, (x0 + xlen) * scale);
 
       t->Cut(double (x0 * scale), double ((x0 + xlen) * scale), &tmp);
       if (!tmp) {
-         Printf("Trial %d\n", z);
-         Printf("Cut (%d, %d) failed.\n", (x0 * scale),
+         Printf(_("Trial %d\n"), z);
+         Printf(_("Cut (%d, %d) failed.\n"), (x0 * scale),
                 (x0 + xlen) * scale);
-         Printf("Expected len %d, track len %d.\n", len * scale,
+         Printf(_("Expected len %d, track len %d.\n"), len * scale,
                 t->GetNumSamples());
          goto fail;
       }
 
       int y0 = rand() % (len - xlen);
       if (mEditDetail)
-         Printf("Paste: %d\n", y0 * scale);
+         Printf(_("Paste: %d\n"), y0 * scale);
 
       t->Paste(double (y0 * scale), tmp);
 
       if (t->GetNumSamples() != (sampleCount)len * scale) {
-         Printf("Trial %d\n", z);
-         Printf("Expected len %d, track len %d.\n", len * scale,
+         Printf(_("Trial %d\n"), z);
+         Printf(_("Expected len %d, track len %d.\n"), len * scale,
                 t->GetNumSamples());
          goto fail;
       }
@@ -424,19 +425,19 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       t->DebugPrintf(&tempStr);
       mToPrint += tempStr;
    }
-   Printf("Time to perform %d edits: %ld ms\n", trials, elapsed);
+   Printf(_("Time to perform %d edits: %ld ms\n"), trials, elapsed);
    FlushPrint();
    wxYield();
 
 
 #if 0
-   Printf("Checking file pointer leaks:\n");
-   Printf("Track # blocks: %d\n", t->GetBlockArray()->Count());
-   Printf("Disk # blocks: \n");
+   Printf(_("Checking file pointer leaks:\n"));
+   Printf(_("Track # blocks: %d\n"), t->GetBlockArray()->Count());
+   Printf(_("Disk # blocks: \n"));
    system("ls .audacity_temp/* | wc --lines");
 #endif
 
-   Printf("Doing correctness check...\n");
+   Printf(_("Doing correctness check...\n"));
    FlushPrint();
    wxYield();
 
@@ -449,19 +450,19 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
          if (block[b] != v) {
             bad++;
             if (bad < 10)
-               Printf("Bad: block %d sample %d\n", i, b);
+               Printf(_("Bad: block %d sample %d\n"), i, b);
             b = scale;
          }
    }
    if (bad == 0)
-      Printf("Passed correctness check!\n");
+      Printf(_("Passed correctness check!\n"));
    else
-      Printf("Errors in %d/%d blocks\n", bad, len);
+      Printf(_("Errors in %d/%d blocks\n"), bad, len);
 
    elapsed = timer.Time();
 
-   Printf("Time to check all data: %ld ms\n", elapsed);
-   Printf("Reading data again...\n");
+   Printf(_("Time to check all data: %ld ms\n"), elapsed);
+   Printf(_("Reading data again...\n"));
 
    wxYield();
    FlushPrint();
@@ -478,10 +479,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    elapsed = timer.Time();
 
-   Printf("Time to check all data (2): %ld ms\n", elapsed);
+   Printf(_("Time to check all data (2): %ld ms\n"), elapsed);
 
-   Printf("At 44100 Hz, 16-bits per sample, the estimated number of\n");
-   Printf("simultaneous tracks that could be played at once: %.1f\n",
+   Printf(_("At 44100 Hz, 16-bits per sample, the estimated number of\n"
+            "simultaneous tracks that could be played at once: %.1f\n"),
           (len*scale/44100.0)/(elapsed/1000.0));
 
    delete t;
@@ -498,7 +499,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    return;
 
  fail:
-   Printf("TEST FAILED!!!\n");
+   Printf(_("TEST FAILED!!!\n"));
 
    delete t;
 

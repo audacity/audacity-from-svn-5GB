@@ -14,6 +14,7 @@
 #include <wx/timer.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/intl.h>
 
 #include "Import.h"
 #include "ImportPCM.h"
@@ -68,7 +69,7 @@ bool ImportPCM(wxWindow * parent,
 
    wxString progressStr;
    wxString formatName = sf_header_name(info.format & SF_FORMAT_TYPEMASK);
-   progressStr.Printf("Importing %s file...",
+   progressStr.Printf(_("Importing %s file..."),
                       (const char *)formatName);
 
    *numChannels = info.channels;
@@ -122,7 +123,7 @@ bool ImportPCM(wxWindow * parent,
 
          if (!progress && wxGetElapsedTime(false) > 500) {
             progress =
-                new wxProgressDialog("Import", progressStr,
+                new wxProgressDialog(_("Import"), progressStr,
                                      1000,
                                      parent,
                                      wxPD_CAN_ABORT |
@@ -136,7 +137,7 @@ bool ImportPCM(wxWindow * parent,
          }
       }
 
-      //printf("Time elapsed: %d\n", wxGetElapsedTime());
+      //printf(_("Time elapsed: %d\n"), wxGetElapsedTime());
 
       if (progress)
          delete progress;
@@ -186,7 +187,7 @@ bool ImportPCM(wxWindow * parent,
 
       if (!progress && wxGetElapsedTime(false) > 500) {
          progress =
-            new wxProgressDialog("Import", progressStr,
+            new wxProgressDialog(_("Import"), progressStr,
                                   1000,
                                   parent,
                                   wxPD_CAN_ABORT |

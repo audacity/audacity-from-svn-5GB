@@ -19,6 +19,7 @@
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/intl.h>
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "LadspaEffect.h"       // This class's header file
@@ -96,7 +97,8 @@ wxString LadspaEffect::GetEffectName()
 
 wxString LadspaEffect::GetEffectAction()
 {
-   return "Performing Ladspa Effect: \""+pluginName+"\"";
+   return wxString::Format(_("Performing Ladspa Effect: %s"), 
+                           (const char *) pluginName);
 }
 
 bool LadspaEffect::Init()
@@ -120,9 +122,9 @@ bool LadspaEffect::Init()
          if (llen != rlen ||
              ((WaveTrack *)left)->GetRate() !=
              ((WaveTrack *)right)->GetRate()) {
-            wxMessageBox("Sorry, Ladspa Effects cannot be performed "
-                         "on stereo tracks where the individual "
-                         "channels of the track do not match.");
+            wxMessageBox(_("Sorry, Ladspa Effects cannot be performed "
+                           "on stereo tracks where the individual "
+                           "channels of the track do not match."));
             return false;
          }
       }
@@ -357,12 +359,12 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
    wxControl *item;
 
    item = new wxStaticText(this, 0,
-                           wxString("Author: ")+mData->Maker);
+                           wxString(_("Author: "))+mData->Maker);
    mainSizer->Add(item, 0, wxALL, 5);
    
    if (mData->Copyright &&
        mData->Copyright[0] && 
-       mData->Copyright != wxString("None")) {
+       mData->Copyright != wxString(_("None"))) {
       
       item = new wxStaticText(this, 0,
                               mData->Copyright);
@@ -371,7 +373,7 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
 
    wxSizer *paramSizer =
       new wxStaticBoxSizer(new wxStaticBox(this, -1,
-                                           "Ladspa Effect Settings"),
+                                           _("Ladspa Effect Settings")),
                            wxVERTICAL );
 
    wxFlexGridSizer *gridSizer =
@@ -410,12 +412,12 @@ IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
 
    wxButton *button;
 
-   button = new wxButton(this, wxID_OK, "OK");
+   button = new wxButton(this, wxID_OK, _("OK"));
    button->SetDefault();
    button->SetFocus();
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_CANCEL, "Cancel");
+   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);

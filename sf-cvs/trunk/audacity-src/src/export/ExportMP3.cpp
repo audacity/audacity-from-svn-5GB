@@ -46,6 +46,7 @@
 #include <wx/ffile.h>
 #include <wx/log.h>
 #include <wx/filedlg.h>
+#include <wx/intl.h>
 
 #include "ExportMP3.h"
 #include "../Mix.h"
@@ -68,13 +69,13 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
    if (mLibPath=="" || !::wxFileExists(mLibPath)) {
    
       int action = wxMessageBox(GetLibraryMessage(),
-                                "Export MP3",
+                                _("Export MP3"),
                                 wxYES_NO | wxICON_EXCLAMATION,
                                 parent);
 
       if (action == wxYES) {
          wxString question;
-         question.Printf("Where is %s?", (const char *)GetLibraryName());
+         question.Printf(_("Where is %s?"), (const char *)GetLibraryName());
          mLibPath = wxFileSelector(question, NULL,
                                    GetLibraryName(),        // Name
                                    "",      // Extension
@@ -97,14 +98,14 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          if (baseName != GetLibraryName()) {
          
             wxString question;
-            question.Printf("Audacity was expecting a library named \"%s\".  "
-                            "Are you sure you want to attempt to export MP3 "
-                            "files using \"%s\"?",
+            question.Printf(_("Audacity was expecting a library named \"%s\".  "
+                              "Are you sure you want to attempt to export MP3 "
+                              "files using \"%s\"?"),
                             (const char *)GetLibraryName(),
                             (const char *)baseName);
 
             int action = wxMessageBox(question,
-                                      "Export MP3",
+                                      _("Export MP3"),
                                       wxYES_NO | wxICON_EXCLAMATION,
                                       parent);
             
@@ -209,17 +210,17 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          
          wxString GetLibraryTypeString()
          {
-            return wxString("Shared Object files (*.so)|*.so");
+            return wxString(_("Shared Object files (*.so)|*.so"));
          }
          
          wxString GetLibraryMessage()
          {
-            return "Audacity does not export MP3 files directly, but instead uses the \n"
+            return _("Audacity does not export MP3 files directly, but instead uses the \n"
                    "freely available LAME library to handle MP3 file encoding.  You must \n"
                    "obtain libmp3lame.so separately, either by downloading it or building \n"
                    "it from the sources, and then locate the file for Audacity.  You only \n"
                    "need to do this once.\n\n"
-                   "Would you like to locate libmp3lame.so now?";
+                   "Would you like to locate libmp3lame.so now?");
          }
 
          bool  LoadLibrary() {
@@ -461,16 +462,16 @@ MP3Exporter *GetMP3Exporter()
          
          wxString GetLibraryTypeString()
          {
-            return "Shared Libraries|*";
+            return _("Shared Libraries|*");
          }
          
          wxString GetLibraryMessage()
          {
             // Must be <= 255 characters on Mac
-            return "Audacity does not export MP3 files directly, but instead uses LAME, "
+            return _("Audacity does not export MP3 files directly, but instead uses LAME, "
                    "an MP3 exporting library available separately.  See the documentation "
                    "for more information.\n\n"
-                   "Would you like to locate LameLib now?";
+                   "Would you like to locate LameLib now?");
          }
 
          bool  LoadLibrary() {
@@ -686,16 +687,16 @@ public:
    
    wxString GetLibraryTypeString()
    {
-      return "Dynamically Linked Libraries (*.dll)|*.dll";
+      return _("Dynamically Linked Libraries (*.dll)|*.dll");
    }
    
    wxString GetLibraryMessage()
    {
-      return "Audacity does not export MP3 files directly, but instead uses the\n"
+      return _("Audacity does not export MP3 files directly, but instead uses the\n"
              "freely available LAME library to handle MP3 file encoding.  You must\n"
              "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,"
              "and then locate this file for Audacity.  You only need to do this once.\n\n"
-             "Would you like to locate lame_enc.dll now?";
+             "Would you like to locate lame_enc.dll now?");
    }
 
 
@@ -859,14 +860,14 @@ bool ExportMP3(AudacityProject *project,
 
    success = GetMP3Exporter()->LoadLibrary();
    if (!success) {
-      wxMessageBox("Could not open MP3 encoding library!");
+      wxMessageBox(_("Could not open MP3 encoding library!"));
       gPrefs->Write("/MP3/MP3LibPath", wxString(""));
 
       return false;
    }
 
    if(!GetMP3Exporter()->ValidLibraryLoaded()) {
-      wxMessageBox("Not a valid or supported MP3 encoding library!");      
+      wxMessageBox(_("Not a valid or supported MP3 encoding library!"));      
       gPrefs->Write("/MP3/MP3LibPath", wxString(""));
       
       return false;
@@ -876,14 +877,14 @@ bool ExportMP3(AudacityProject *project,
 
    wxFFile outFile(fName, "wb");
    if (!outFile.IsOpened()) {
-      wxMessageBox("Unable to open target file for writing");
+      wxMessageBox(_("Unable to open target file for writing"));
       return false;
    }
    
    /* Put ID3 tags at beginning of file */
    
    Tags *tags = project->GetTags();
-   if (!tags->ShowEditDialog(project, "Edit the ID3 tags for the MP3 file"))
+   if (!tags->ShowEditDialog(project, _("Edit the ID3 tags for the MP3 file")))
       return false;  // used selected "cancel"
 
    char *id3buffer;
@@ -965,13 +966,13 @@ bool ExportMP3(AudacityProject *project,
 
          if (selectionOnly)
             message =
-                wxString::Format("Exporting the selected audio as an mp3");
+                wxString::Format(_("Exporting the selected audio as an mp3"));
          else
             message =
-                wxString::Format("Exporting the entire project as an mp3");
+                wxString::Format(_("Exporting the entire project as an mp3"));
 
          progress =
-             new wxProgressDialog("Export",
+             new wxProgressDialog(_("Export"),
                                   message,
                                   1000,
                                   parent,

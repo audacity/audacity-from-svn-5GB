@@ -20,6 +20,7 @@
 #include <wx/sizer.h>
 #include <wx/log.h>
 #include <wx/event.h>
+#include <wx/intl.h>
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"
@@ -42,16 +43,16 @@ PrefsPanel(parent)
    mOldTempDir = mTempDir;
 
    topSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, "Directories"), wxVERTICAL );
+      new wxStaticBox(this, -1, _("Directories")), wxVERTICAL );
 
    {
       wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, "Temp. Directory"), wxVERTICAL );
+         new wxStaticBox(this, -1, _("Temp. Directory")), wxVERTICAL );
 
       wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
 
       mTempDirLabel = new wxStaticText(
-         this, -1, "Location:", wxDefaultPosition,
+         this, -1, _("Location:"), wxDefaultPosition,
          wxDefaultSize, wxALIGN_RIGHT );
 
       /* Order is important here: mFreeSpace must be allocated before
@@ -66,11 +67,11 @@ PrefsPanel(parent)
          wxDefaultPosition, wxSize(160, -1), 0 );
 
       mFreeSpaceLabel = new wxStaticText(
-         this, -1, "Free Space:",
+         this, -1, _("Free Space:"),
          wxDefaultPosition, wxDefaultSize, 0 );
 
       wxButton *chooseButton =
-         new wxButton(this, ChooseButtonID, "Choose...");
+         new wxButton(this, ChooseButtonID, _("Choose..."));
         
       tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
       tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
@@ -101,7 +102,7 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    dSize += size.GetLo();
 
    if (size == -1L)
-      sizeStr = "Unable to determine";
+      sizeStr = _("Unable to determine");
    else {
       /* make it look nice, by formatting into k, MB, etc */
       if (size < 1024)
@@ -122,10 +123,8 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 
 void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 {
-   wxDirDialog dlog(this,
-                    "Choose a location to place the "
-                    "temporary directory",
-                    "");
+   wxDirDialog dlog(this, _("Choose a location to place the "
+                            "temporary directory"), "");
    dlog.ShowModal();
    if (dlog.GetPath() != "") {
       mTempDirText->SetValue(dlog.GetPath() +
@@ -162,8 +161,11 @@ bool DirectoriesPrefs::Apply()
    mTempDir = mTempDirText->GetValue();
 
    if(!wxDirExists(mTempDir)) {
-      int ans = wxMessageBox("Directory " + mTempDir + " does not exist. Create it?", "New Temporary Directory",
-         wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
+      int ans = wxMessageBox(
+            wxString::Format(_("Directory %s does not exist. Create it?"),
+                             (const char *) mTempDir),
+            _("New Temporary Directory"),
+            wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
       if(ans == wxYES) {
          if(!wxMkdir(mTempDir, 0600)) {
@@ -180,7 +182,10 @@ bool DirectoriesPrefs::Apply()
       wxLogNull logNo;
       wxString tempDir = mTempDir + wxFILE_SEP_PATH + "canicreate";
       if(!wxMkdir(tempDir)) {
-         wxMessageBox("Directory " + mTempDir + " is not writable", "Error", wxOK|wxICON_ERROR);
+         wxMessageBox(
+               wxString::Format(_("Directory %s is not writable"),
+                                (const char *) mTempDir),
+               _("Error"), wxOK|wxICON_ERROR);
          return false;
       }
       wxRmdir(tempDir);
@@ -189,9 +194,10 @@ bool DirectoriesPrefs::Apply()
    gPrefs->Write("/Directories/TempDir", mTempDir);
 
    if (mTempDir != mOldTempDir)
-      wxMessageBox
-          ("Changes to temporary directory will not take effect until Audacity is restarted",
-              "Temp Directory Update", wxOK|wxCENTRE|wxICON_INFORMATION);
+      wxMessageBox(
+            _("Changes to temporary directory will not take effect "
+              "until Audacity is restarted"),
+            "Temp Directory Update", wxOK|wxCENTRE|wxICON_INFORMATION);
 
    return true;
 }

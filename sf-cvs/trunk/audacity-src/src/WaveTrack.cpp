@@ -12,6 +12,7 @@
 #include <wx/file.h>
 #include <wx/msgdlg.h>
 #include <wx/textfile.h>
+#include <wx/intl.h>
 
 #include "WaveTrack.h"
 #include "DirManager.h"
@@ -79,7 +80,7 @@ VTrack(projDirManager)
    numSamples = 0;
    rate = 44100.0;
 
-   SetName("Audio Track");
+   SetName(_("Audio Track"));
 
    display = WaveDisplay;
 
@@ -715,7 +716,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
    }
 
    if (!result) {
-      wxMessageBox("Error loading a Track.\n");
+      wxMessageBox(_("Error loading a Track.\n"));
       return false;
    }
 #if wxUSE_THREADS
@@ -775,7 +776,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
          blockMutex->Unlock();
 
          wxString msg;
-         msg.Printf("The file named \"%s\" is missing from the project.",
+         msg.Printf(_("The file named \"%s\" is missing from the project."),
                     (const char *) in->GetCurrentLine());
          wxMessageBox(msg);
 
@@ -790,7 +791,7 @@ bool WaveTrack::Load(wxTextFile * in, DirManager * dirManager)
    return true;
 
  readWaveTrackError:
-   wxMessageBox(wxString::Format("Error reading WaveTrack in line %d",
+   wxMessageBox(wxString::Format(_("Error reading WaveTrack in line %d"),
                                  in->GetCurrentLine()));
    return false;
 }
@@ -920,7 +921,7 @@ void WaveTrack::Read(sampleType * buffer, WaveBlock * b,
    int result = f->Read((void *) buffer, (int) (len * sizeof(sampleType)));
 
    if (result != (int) (len * sizeof(sampleType))) {
-      printf("Expected to read %d bytes, got %d bytes.\n",
+      printf(_("Expected to read %d bytes, got %d bytes.\n"),
              len * sizeof(sampleType), result);
    }
 
@@ -1540,7 +1541,7 @@ void WaveTrack::ConsistencyCheck(const char *whereStr)
       Debug();
       wxASSERT(0);
 #else
-      wxMessageBox("Internal error (WaveTrack)");
+      wxMessageBox(_("Internal error (WaveTrack)"));
       exit(0);
 #endif
    }

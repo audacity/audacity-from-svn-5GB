@@ -20,6 +20,7 @@
 #include <wx/slider.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
+#include <wx/intl.h>
 
 #include "Effect.h"
 
@@ -33,11 +34,11 @@ class EffectReverse:public Effect {
    EffectReverse();
 
    virtual wxString GetEffectName() {
-      return wxString("Reverse");
+      return wxString(_("Reverse"));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString("Reversing");
+      return wxString(_("Reversing"));
    }
    
    virtual bool Process();
