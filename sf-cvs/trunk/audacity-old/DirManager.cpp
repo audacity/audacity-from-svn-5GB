@@ -13,6 +13,7 @@
 #include <wx/msgdlg.h>
 
 #include "DirManager.h"
+#include "DiskFunctions.h"
 
 // Static class variables
 
@@ -61,6 +62,16 @@ DirManager::DirManager()
   projName = "";
 
   blockFileHash = new wxHashTable(wxKEY_STRING, defaultHashTableSize);
+  
+  // Make sure there is plenty of space for temp files
+  
+  long freeSpace = GetFreeDiskSpace(temp);
+  if (freeSpace>=0) {
+    if (freeSpace < 1048576) {
+      // TODO: allow user to select different temporary volume.
+      wxMessageBox("Warning: there is very little free disk space left on thie volume.");
+    }
+  }
 }
 
 DirManager::~DirManager()

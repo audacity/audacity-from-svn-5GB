@@ -72,8 +72,10 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   char *leftbuffer = new char[maxblocksize*2];
   char *rightbuffer = new char[maxblocksize*2];
 
-  long filelen = sndfile.u.file.end_offset - sndfile.u.file.byte_offset;
-  long bytescompleted = 0;
+  long filelen =
+    (sndfile.u.file.end_offset - sndfile.u.file.byte_offset)/
+    snd_bytes_per_frame(&sndfile);
+  long framescompleted = 0;
 
   wxProgressDialog *progress = NULL;  
   wxYield();
@@ -98,7 +100,7 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
 	(*dest2)->Append((sampleType *)rightbuffer, (sampleCount)b2);
       }
       
-      bytescompleted += block;
+      framescompleted += block;
       
     }
     
@@ -108,7 +110,7 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
 							 filelen);
 	}	
 	if (progress) {
-	  int progressvalue = (bytescompleted > filelen)? filelen : bytescompleted;
+	  int progressvalue = (framescompleted > filelen)? filelen : framescompleted;
 	  progress->Update(progressvalue);
 	}
   } while (block > 0);
@@ -116,9 +118,10 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   snd_close(&sndfile);
 
   #ifndef __WXMAC__
-  if (bytescompleted != filelen) {
-	printf("Bytes completed: %d   Expected file len: %d\n",
-		   bytescompleted, filelen);
+  if (framescompleted != filelen) {
+	printf("Frames completed: %d   "
+	       "Expected number of frames in file: %d\n",
+		   framescompleted, filelen);
   }
   #endif
 

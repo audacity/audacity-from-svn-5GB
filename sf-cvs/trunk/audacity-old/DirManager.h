@@ -60,6 +60,9 @@ public:
   void Ref(BlockFile *f);
   void Deref(BlockFile *f);
   
+  static wxString GetHomeDir() {return home;}
+  static wxString GetPathChar() {return pathChar;}
+  
 private:
   void CleanTempDir();
 

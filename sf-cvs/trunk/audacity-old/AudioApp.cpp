@@ -39,6 +39,10 @@
 #include "effects/Echo.h"
 #include "effects/Fade.h"
 
+#ifdef __WXMAC__
+#include "effects/LoadVSTMac.h"
+#endif
+
 AudioFrame *frame = (AudioFrame *) NULL;
 
 #if !wxUSE_DOC_VIEW_ARCHITECTURE
@@ -243,6 +247,11 @@ bool AudioApp::OnInit()
   Effect::RegisterEffect(new EffectEcho());
   Effect::RegisterEffect(new EffectFadeIn());
   Effect::RegisterEffect(new EffectFadeOut());
+  
+  #ifdef __WXMAC__
+  LoadVSTPlugins();
+  #endif
+  
   /*
   Effect::RegisterEffect(new EffectEcho());
   Effect::RegisterEffect(new EffectCompressor());*/
@@ -368,6 +377,7 @@ bool AudioApp::OnInit()
 	}
 	((AudioView *)(d->GetFirstView()))->FixScrollbars();
 	((AudioView *)(d->GetFirstView()))->SelectNone();
+	((AudioView *)(d->GetFirstView()))->Refresh();
   }
 
   return TRUE;

@@ -1,4 +1,13 @@
-//headers and prototype, remove these to embed this into another module
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  DiskFunctions.cpp
+
+  Win: Mark Tomlinson
+  Mac: Dominic Mazzoni
+
+**********************************************************************/
 
 #ifdef WIN32
 #include <windows.h>		//the windows stuff
@@ -78,8 +87,53 @@ long GetFreeDiskSpace( TCHAR *path )
 	}
 }
 #else
+#ifdef __WXMAC__
+long GetFreeDiskSpace( char *path )
+{
+	char *str = new char[strlen(path)+1];
+	strcpy(str, wxUnix2MacFilename(path));
+	char *p = str;
+	
+	/* We expect something like ":Macintosh HD:Audacity:"
+	 * and we want to get rid of everything up to the second
+	 * colon: "Macintosh HD"
+	 */
+	if (p[0]==0)
+	    return -1;
+	char *colon2 = &p[1];
+	while(*colon2 && *colon2 != ':')
+	    colon2++;
+	*colon2 = 0;
+	
+	if (*p == ':')
+	  *p++;
+	   
+	/* Mac routines want Pascal strings */
+	c2pstr(p);
+	
+	HVolumeParam pb;
+	
+	pb.ioCompletion = NULL;
+	pb.ioVolIndex = -1;
+	pb.ioNamePtr = (unsigned char *)p;
+	pb.ioVRefNum = 0;
+	
+	OSErr err = PBHGetVInfo((HParamBlockRec *)&pb, 0);
+	
+	if (err)
+	    return -1;
+	
+	long freeBytes = ((long)pb.ioVFrBlk)*((long)pb.ioVAlBlkSiz);
+	
+	delete[] str;
+	
+	return freeBytes;
+}
+#else
+#warning GetFreeDiskSpace has not been implemented on this system...
 long GetFreeDiskSpace( char *path )
 {
 	return -1L;
 }
+#endif
 #endif
