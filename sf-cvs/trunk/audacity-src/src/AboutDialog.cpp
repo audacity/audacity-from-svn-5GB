@@ -8,8 +8,8 @@
 
 **********************************************************************/
 
-#include "wx/dialog.h"
-#include "wx/html/htmlwin.h"
+#include <wx/dialog.h>
+#include <wx/html/htmlwin.h>
 
 #include "AboutDialog.h"
 #include "Audacity.h"

@@ -8,8 +8,8 @@
 
 **********************************************************************/
 
-#include "wx/file.h"
-#include "wx/filefn.h"
+#include <wx/file.h>
+#include <wx/filefn.h>
 
 #include "BlockFile.h"
 #include "WaveTrack.h"
