@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-04-30 10:08+0100\n"
-"Last-Translator: Christian BROCHEC <christian.brochec@ac-rennes.fr>\n"
+"PO-Revision-Date: 2004-08-10 09:11-0600\n"
+"Last-Translator: Lionel Allorge <lionel.allorge@lunerouge.com>\n"
 "Language-Team: FRENCH2 <christian.brochec@ac-rennes.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -486,7 +486,7 @@ msgstr "Effet Appliqué : %s %.2f demi-tons"
 #: ../src/effects/Phaser.cpp:48
 #, c-format
 msgid "Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"
-msgstr ""
+msgstr "Effet appliqué : %s %d phases, %.0f%% max, frequence = %.1f Hz, début phase = %.0f deg, profondeur = %d, retour = %.0f%%"
 
 #: ../src/effects/Echo.cpp:34
 #, c-format
@@ -555,7 +555,7 @@ msgstr "Attaque :"
 #: ../src/effects/Compressor.cpp:516
 #, c-format
 msgid "Attack Time: %.1f secs"
-msgstr "Attaque : %.1i/s"
+msgstr "Attaque : %.1f s"
 
 #: ../src/AboutDialog.cpp:295
 msgid "Audacious!"
@@ -767,8 +767,8 @@ msgstr "Battements Par Minute (BPM ) :   par"
 msgid "Benchmark"
 msgstr "Test de performance"
 
-#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  know the correct technical word.
 #: ../src/import/ImportRaw.cpp:306
 #, fuzzy
 msgid "Big-endian"
@@ -844,12 +844,12 @@ msgstr "Centrer"
 #  i18n-hint: This is a technical term, derived from the word
 #  "spectrum".  Do not translate it unless you are sure you
 #  know the correct technical word in your language.
-#. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
+#  i18n-hint: This is a technical term, derived from the word
+#  "spectrum".  Do not translate it unless you are sure you
+#  know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
-msgstr ""
+msgstr "\"Cepstrum\""
 
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Change Amplification Envelope"
@@ -1278,7 +1278,7 @@ msgstr "Curseur : %i:%09.6f min:sec   %s"
 #: ../src/FormatSelection.cpp:673
 #, c-format
 msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
-msgstr "Curseur: %i:%09.6lf min:sec   %s  (à l'échantillon près)"
+msgstr "Curseur: %i:%09.6lf min:sec  (à l'échantillon près)"
 
 #: ../src/FormatSelection.cpp:185
 #, c-format
@@ -1288,7 +1288,7 @@ msgstr "Curseur : %lf sec   %s"
 #: ../src/FormatSelection.cpp:694
 #, c-format
 msgid "Cursor: %lf sec   [Snap-To Samples]"
-msgstr "Curseur: %lf sec   %s  (à l'échantillon près)"
+msgstr "Curseur: %lf sec  (à l'échantillon près)"
 
 #: ../src/FormatSelection.cpp:649
 #, c-format
@@ -1790,6 +1790,7 @@ msgstr "Ajuster le projet à la fenêtre"
 msgid "Fit selection in window"
 msgstr "Afficher la sélection dans la fenêtre"
 
+
 #: ../src/Menus.cpp:299
 #: ../src/Project.cpp:1385
 msgid "Float Control Toolbar"
@@ -2005,15 +2006,15 @@ msgid "Invalid rate."
 msgstr "Taux invalide."
 
 #  i18n-hint: You do not need to translate "LOF"
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:383
 msgid "Invalid track offset in LOF file."
-msgstr ""
+msgstr "Ecart pour le décalage invalide dans le fichier LOF."
 
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:268
 msgid "Invalid window offset in LOF file."
-msgstr ""
+msgstr "Ecart pour la fonction invalide dans le fichier LOF."
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
@@ -2163,8 +2164,8 @@ msgstr "Fréquence linéaire"
 msgid "List of Files in basic text format"
 msgstr "Liste des fichiers en format texte"
 
-#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  know the correct technical word.
 #: ../src/import/ImportRaw.cpp:303
 #, fuzzy
 msgid "Little-endian"
@@ -2193,7 +2194,7 @@ msgstr "Emplacement :"
 
 #: ../src/FreqWindow.cpp:178
 msgid "Log frequency"
-msgstr ""
+msgstr "Journal des fréquences"
 
 #: ../src/TrackPanel.cpp:4304
 #: ../src/TrackPanel.cpp:4305
@@ -2269,15 +2270,15 @@ msgstr "Erreur de lecture du média"
 
 #: ../src/effects/AvcCompressor.cpp:606
 msgid "Minimum Change %:"
-msgstr ""
+msgstr "Changement minimum % : "
 
 #: ../src/effects/AvcCompressor.cpp:594
 msgid "Minimum Change Window:"
-msgstr ""
+msgstr "Fenêtre pour le chagement minimum : "
 
 #: ../src/prefs/GUIPrefs.cpp:140
 msgid "Minimum of dB mode display range"
-msgstr ""
+msgstr "Plage minimum pour l'affichage du mode dB"
 
 #: ../src/Mix.cpp:87
 #: ../src/Mix.cpp:92
@@ -2385,7 +2386,7 @@ msgid "Mute"
 msgstr "Muet"
 
 #  i18n-hint: hours, minutes, seconds, frames
-#. i18n-hint: hours, minutes, seconds, frames
+#  i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 #, fuzzy
 msgid "NTSC drop-frame h:mm:ss:ff"
@@ -3221,6 +3222,7 @@ msgid "Selection Tool"
 msgstr "Outil de sélection"
 
 #: ../src/Menus.cpp:461
+
 msgid "Selection Tool\tF1"
 msgstr "Outil de sélection\tF1"
 
@@ -3689,11 +3691,11 @@ msgstr "Supprimer en dehors de la sélection"
 
 #: ../src/Menus.cpp:270
 msgid "Turn Grid Snap Off"
-msgstr ""
+msgstr "Passer en mode grille non magnétique"
 
 #: ../src/Menus.cpp:269
 msgid "Turn Grid Snap On"
-msgstr ""
+msgstr "Passer en mode grille magnétique"
 
 #: ../src/Menus.cpp:268
 msgid "Turn Snap-To Off"
@@ -3781,7 +3783,7 @@ msgstr "Erreur de validation"
 #: ../src/effects/AvcCompressor.cpp:361
 #, c-format
 msgid "Value must be from %d to %d."
-msgstr "La valeur doit être comprise entre % et %d."
+msgstr "La valeur doit être comprise entre %d et %d."
 
 #: ../src/effects/AvcCompressor.cpp:423
 #: ../src/effects/AvcCompressor.cpp:430
@@ -4114,7 +4116,9 @@ msgstr "Curseur en début de piste"
 msgid "translator_credits"
 msgstr ""
 "Traduction française par Christian Brochec (CDDP 22)\n"
-"christian.brochec@ac-rennes.fr"
+"christian.brochec@ac-rennes.fr\n"
+"et Lionel Allorge\n"
+"lionel.allorge@lunerouge.org\n"
 
 #: ../src/TrackPanel.cpp:4339
 #: ../src/effects/ChangePitch.cpp:275
