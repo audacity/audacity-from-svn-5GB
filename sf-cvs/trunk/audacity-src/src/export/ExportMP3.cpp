@@ -245,49 +245,43 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          bool  LoadLibrary() {
             wxLogNull logNo;
 
-            wxDllType libHandle = NULL;
+            //BG: I was unable to test the wxDynamicLibrary code on this platform
+            wxDynamicLibrary lame_enc_lib;
 
             if (wxFileExists(mLibPath))
-               libHandle = wxDllLoader::LoadLibrary(mLibPath);
+               if(!lame_enc_lib.Load(mLibPath))
+                  return false;
             else
                return false;
 
             /* get function pointers from the shared library */
 
-            lame_init = (lame_init_t *)wxDllLoader::GetSymbol(libHandle, "lame_init");
-            get_lame_version = (get_lame_version_t *)wxDllLoader::GetSymbol(libHandle,
-                                                                         "get_lame_version");
+            lame_init = (lame_init_t *)lame_enc_lib.GetSymbol("lame_init");
+            get_lame_version = (get_lame_version_t *)lame_enc_lib.GetSymbol("get_lame_version");
             lame_init_params = 
-               (lame_init_params_t *) wxDllLoader::GetSymbol(libHandle, "lame_init_params");
+               (lame_init_params_t *) lame_enc_lib.GetSymbol("lame_init_params");
             lame_encode_buffer_interleaved =
-                (lame_encode_buffer_interleaved_t *) wxDllLoader::GetSymbol(libHandle,
-                                                          "lame_encode_buffer_interleaved");
+                (lame_encode_buffer_interleaved_t *) lame_enc_lib.GetSymbol("lame_encode_buffer_interleaved");
             lame_encode_flush =
-                (lame_encode_flush_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_flush");
+                (lame_encode_flush_t *) lame_enc_lib.GetSymbol("lame_encode_flush");
             lame_close =
-                (lame_close_t *) wxDllLoader::GetSymbol(libHandle, "lame_close");
+                (lame_close_t *) lame_enc_lib.GetSymbol("lame_close");
 
             lame_close =
-                (lame_close_t *) wxDllLoader::GetSymbol(libHandle, "lame_close");
+                (lame_close_t *) lame_enc_lib.GetSymbol("lame_close");
 
             lame_set_in_samplerate =
-                (lame_set_in_samplerate_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_set_in_samplerate");
+                (lame_set_in_samplerate_t *) lame_enc_lib.GetSymbol("lame_set_in_samplerate");
             lame_set_num_channels =
-                (lame_set_num_channels_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_set_num_channels");
+                (lame_set_num_channels_t *) lame_enc_lib.GetSymbol("lame_set_num_channels");
             lame_set_quality =
-                (lame_set_quality_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_set_quality");
+                (lame_set_quality_t *) lame_enc_lib.GetSymbol("lame_set_quality");
             lame_get_quality =
-                (lame_get_quality_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_get_quality");
+                (lame_get_quality_t *) lame_enc_lib.GetSymbol("lame_get_quality");
             lame_set_brate =
-                (lame_set_brate_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_set_brate");
+                (lame_set_brate_t *) lame_enc_lib.GetSymbol("lame_set_brate");
             lame_get_brate =
-                (lame_get_brate_t *) wxDllLoader::GetSymbol(libHandle,
-                                                              "lame_get_brate");
+                (lame_get_brate_t *) lame_enc_lib.GetSymbol("lame_get_brate");
 
             /* we assume that if all the symbols are found, it's a valid library */
 
@@ -803,28 +797,29 @@ MP3Exporter *GetMP3Exporter()
          bool  LoadLibrary() {
             wxLogNull logNo;
 
-            wxDllType libHandle = NULL;
+            //BG: I was unable to test the wxDynamicLibrary code on this platform
+            wxDynamicLibrary lame_enc_lib;
 
             if (wxFileExists(mLibPath))
-               libHandle = wxDllLoader::LoadLibrary(mLibPath);
+               if(!lame_enc_lib.Load(mLibPath))
+                  return false;
             else
                return false;
 
-            lame_init = (lame_init_t *) wxDllLoader::GetSymbol(libHandle, "lame_init");
+            lame_init = (lame_init_t *) lame_enc_lib.GetSymbol("lame_init");
 
-            lame_version = (lame_version_t *) wxDllLoader::GetSymbol(libHandle, "lame_version");
+            lame_version = (lame_version_t *) lame_enc_lib.GetSymbol("lame_version");
             
             get_lame_version =
-               (get_lame_version_t *) wxDllLoader::GetSymbol(libHandle, "get_lame_version");
+               (get_lame_version_t *) lame_enc_lib.GetSymbol("get_lame_version");
 
             lame_init_params = 
-               (lame_init_params_t *) wxDllLoader::GetSymbol(libHandle, "lame_init_params");
+               (lame_init_params_t *) lame_enc_lib.GetSymbol("lame_init_params");
 
             lame_encode_buffer =
-                (lame_encode_buffer_t *) wxDllLoader::GetSymbol(libHandle,
-                                                                "lame_encode_buffer");
+                (lame_encode_buffer_t *) lame_enc_lib.GetSymbol("lame_encode_buffer");
             lame_encode_finish =
-                (lame_encode_finish_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_finish");
+                (lame_encode_finish_t *) lame_enc_lib.GetSymbol("lame_encode_finish");
 
             if (!lame_init ||
                 !lame_init_params ||
@@ -1035,18 +1030,19 @@ public:
    bool  LoadLibrary() {
       wxLogNull logNo;
 
-      wxDllType libHandle = NULL;
+      wxDynamicLibrary lame_enc_lib;
 
       if (wxFileExists(mLibPath))
-         libHandle = wxDllLoader::LoadLibrary(mLibPath);
+         if(!lame_enc_lib.Load(mLibPath))
+            return false;
       else
          return false;
 
-      beInitStream = (BEINITSTREAM)wxDllLoader::GetSymbol(libHandle, "beInitStream");
-      beEncodeChunk = (BEENCODECHUNK)wxDllLoader::GetSymbol(libHandle, "beEncodeChunk");
-      beDeinitStream = (BEDEINITSTREAM)wxDllLoader::GetSymbol(libHandle, "beDeinitStream");
-      beCloseStream = (BECLOSESTREAM)wxDllLoader::GetSymbol(libHandle, "beCloseStream");
-      beVersion = (BEVERSION)wxDllLoader::GetSymbol(libHandle, "beVersion");
+      beInitStream = (BEINITSTREAM)lame_enc_lib.GetSymbol("beInitStream");
+      beEncodeChunk = (BEENCODECHUNK)lame_enc_lib.GetSymbol("beEncodeChunk");
+      beDeinitStream = (BEDEINITSTREAM)lame_enc_lib.GetSymbol("beDeinitStream");
+      beCloseStream = (BECLOSESTREAM)lame_enc_lib.GetSymbol("beCloseStream");
+      beVersion = (BEVERSION)lame_enc_lib.GetSymbol("beVersion");
 
       if(!beInitStream ||
          !beEncodeChunk ||
