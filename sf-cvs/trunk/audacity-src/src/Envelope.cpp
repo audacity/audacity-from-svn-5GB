@@ -19,6 +19,7 @@
 #include <wx/event.h>
 #include <wx/pen.h>
 #include <wx/textfile.h>
+#include <wx/log.h>
 
 #include "AColor.h"
 #include "DirManager.h"
@@ -158,6 +159,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
    }
 
    int len = mEnv.Count();
+   int contour = height/2;
    for (int i = 0; i < len; i++) {
       if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
          if (i == mDragPoint) {
@@ -175,10 +177,20 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
             y = int (v * height);
 
          wxRect circle(r.x + x - 2, ctr - y, 4, 4);
-         dc.DrawEllipse(circle);
+         if( y<=height)
+            dc.DrawEllipse(circle);
          if (mMirror) {
             circle.y = ctr + y - 2;
-            dc.DrawEllipse(circle);
+            if( y<=height)
+               dc.DrawEllipse(circle);
+            // additional code to draw the envelope blobs on the inner contour.
+            y = y-contour+3;
+            if( y > 0 ){
+               circle.y = ctr - y;
+               dc.DrawEllipse(circle);
+               circle.y = ctr + y-2;
+               dc.DrawEllipse(circle);
+            }
          }
 
          if (i == mDragPoint) {
@@ -260,6 +272,14 @@ void Envelope::GetEventParams(int &ctr, int &height, bool &upper,
 #define SQR(X) ((X)*(X))
 #endif
 
+
+int Envelope::PixelPositionOf( double v, int ctr, int height, bool upper, bool dB )
+{
+   int dy = int ((dB) ? (toDB(v) * height) : (v * height));
+   int y  = int ((upper) ? (ctr - dy): (ctr + dy));
+   return y;
+}
+
 bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
                                      double h, double pps, bool dB )
 {
@@ -271,28 +291,33 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    double tleft = h - mOffset;
    double tright = tleft + (r.width / pps);
    int bestNum = -1;
-   int bestDist = 10;
+   int bestDist = 10; // Must be within 10 pixel radius.
+
+   int ContourSpacing = height/2;
+   int yDisplace;
+
+   double v = GetValueAtX( event.m_x,  r, h, pps );
+   int    y = PixelPositionOf( v, ctr, height, upper, dB );
+   int yTolerance=10;// within 10 pixels of inner boundary still counts as inner.
+   if ( abs(event.m_y-y) > (ContourSpacing-yTolerance) )
+   {
+      mContourOffset = upper ? -ContourSpacing : ContourSpacing;
+   }
+   else
+   {
+      mContourOffset = 0;
+   }
+
+//   wxLogDebug("Y:%i Height:%i Offset:%i", y, height, mContourOffset );
 
    int len = mEnv.Count();
    for (int i = 0; i < len; i++) {
       if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
-         double v = mEnv[i]->val;
          int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
-         int dy;
-
-         if (dB)
-            dy = int (toDB(v) * height);
-         else
-            dy = int (v * height);
-
-         int y;
-         if (upper)
-            y = int (ctr - dy);
-         else
-            y = int (ctr + dy);
-
+         int y = PixelPositionOf( mEnv[i]->val, ctr, height, upper, dB );
+         yDisplace = (y-event.m_y-mContourOffset);
          int d =
-            int (sqrt(SQR(x - event.m_x) + SQR(y - event.m_y)) + 0.5);
+            int (sqrt(SQR(x - event.m_x) + SQR(yDisplace)) + 0.5);
          if (d < bestDist) {
             bestNum = i;
             bestDist = d;
@@ -312,9 +337,9 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
 
       int dy;
       if (upper)
-         dy = ctr - event.m_y;
+         dy = ctr - event.m_y-mContourOffset;
       else
-         dy = event.m_y - ctr;
+         dy = event.m_y+mContourOffset - ctr;
 
       double newVal;
 
@@ -325,8 +350,10 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
 
       if (newVal < 0.0)
          newVal = 0.0;
-      if (newVal > 1.0)
-         newVal = 1.0;
+      // If on outer contour can amplify by at most 1, on inner contour by at most 1.4.
+      float MaxAmplify = ( mContourOffset == 0 ) ? 1.0 : 1.4;
+      if (newVal > MaxAmplify)
+         newVal = MaxAmplify;
 
       mDragPoint = Insert(when, newVal);
       mDirty = true;
@@ -338,7 +365,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    mInitialVal = mEnv[mDragPoint]->val;
 
    mInitialX = event.m_x;
-   mInitialY = event.m_y;
+   mInitialY = event.m_y+mContourOffset;
 
    return true;
 }
@@ -357,7 +384,7 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
 
    if (!mIsDeleting &&
        !larger.Inside(event.m_x, event.m_y) &&
-       mEnv.Count()>1) {
+       mEnv.Count()> 1) {
       
       if(mDragPoint > 0){
          mEnv[mDragPoint]->t = mEnv[mDragPoint - 1]->t;
@@ -381,9 +408,9 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
 
    int y;
    if (mUpper)
-      y = ctr - event.m_y;
+      y = ctr - event.m_y-mContourOffset;
    else
-      y = event.m_y - ctr;
+      y = event.m_y+mContourOffset - ctr;
 
    double newVal;
 
@@ -394,8 +421,11 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
 
    if (newVal < 0.0)
       newVal = 0.0;
-   if (newVal > 1.0)
-      newVal = 1.0;
+
+   // If on outer contour can amplify by at most 1, on inner contour by at most 1.4.
+   float MaxAmplify = ( mContourOffset == 0 ) ? 1.0 : 1.4 ;
+   if (newVal > MaxAmplify)
+      newVal = MaxAmplify;
 
    // We no longer tolerate multiple envelope points at the same t.
    // epsilon is less than the time offset of a single sample
