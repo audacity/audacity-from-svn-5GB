@@ -935,7 +935,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
 
 //
 // To make menu items consistent with the state of 
-// audacity, put code here and call this function at appropriate times.
+// audacity, put code here and call this function at appropriate times..
 void AudacityProject::MakeToolBarMenuEntriesCorrect ()
 {
 
@@ -988,19 +988,18 @@ void AudacityProject::MakeToolBarMenuEntriesCorrect ()
 
 void AudacityProject::UnloadToolBar(enum ToolBarType t)
 {
+   //Go through all of the toolbars (from the bottom up)
+   //And delete it if it is type T
 
-   int len = mToolBarArray.GetCount();
-   for (int i = 0; i < len; i++) {
+   for (int i = mToolBarArray.GetCount()-1; i >=0; i--) {
       
-    
       if (mToolBarArray[i]->GetType() == t) {
-         
 
          mTotalToolBarHeight -= mToolBarArray[i]->GetHeight();
          delete mToolBarArray[i];
          mToolBarArray.RemoveAt(i);
-
-
+         
+         
          //Now, do any changes specific to different toolbar types
          switch (t) {
          case ControlToolBarID:
