@@ -1,0 +1,51 @@
+default:
+	@echo "This is a binary distribution of Audacity.  To run, simply type:"
+	@echo "  ./audacity"
+	@echo ""
+	@echo "To install Audacity in /usr/local, you can make install as root:"
+	@echo "  sudo make install"
+	@echo ""
+	@echo "To install to a different directory, edit the PREFIX line near"
+	@echo "the top of the Makefile first."
+	@echo ""
+
+INSTALL=install
+PREFIX=/usr/local
+BINDIR=${PREFIX}/bin
+DATADIR=${PREFIX}/share
+MANDIR=${PREFIX}/man
+
+install:
+	# install the binary
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/audacity
+
+	# install docs
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/doc
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/doc/audacity
+	-test -f audacity-1.2-help.htb && $(INSTALL) -m 644 audacity-1.2-help.htb \
+		$(DESTDIR)$(DATADIR)/doc/audacity/audacity-1.2-help.htb
+	$(INSTALL) -m 644 README.txt $(DESTDIR)$(DATADIR)/doc/audacity/README.txt
+	$(INSTALL) -m 644 LICENSE.txt $(DESTDIR)$(DATADIR)/doc/audacity/LICENSE.txt
+
+	# install manpage
+	$(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
+	-test -f audacity.1.gz && \
+		$(INSTALL) -m 644 audacity.1.gz \
+		$(DESTDIR)$(MANDIR)/man1/audacity.1.gz
+
+	# install nyquist
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/nyquist
+	$(INSTALL) -m 644 nyquist/*.lsp $(DESTDIR)$(DATADIR)/audacity/nyquist
+
+	# install plug-ins
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/audacity/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.ny $(DESTDIR)$(DATADIR)/audacity/plug-ins
+
+	# install locales
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/locale
+	linguas='bg ca cs da de es it mk nl pt ru sv'; for lang in $$linguas ; do \
+	   $(INSTALL) -d $(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES ; \
+	   $(INSTALL) -m 644 locale/$$lang/audacity.mo $(DESTDIR)$(DATADIR)/locale/$$lang/LC_MESSAGES/audacity.mo ; \
+	done
+
