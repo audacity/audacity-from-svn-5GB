@@ -349,7 +349,7 @@ bool AudacityApp::OnInit()
    // * The user's .audacity-files directory in their home directory
    // * The "share" and "share/doc" directories in their install path
    #ifdef __WXGTK__
-   defaultTempDir.Printf("/tmp/audacity1.1-%s", wxGetenv("USER"));
+   defaultTempDir.Printf("/tmp/audacity1.2-%s", wxGetUserId().c_str());
    wxString pathVar = wxGetenv("AUDACITY_PATH");
    if (pathVar != "")
       AddMultiPathsToPathList(pathVar, audacityPathList);
@@ -390,14 +390,16 @@ bool AudacityApp::OnInit()
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+"\\Languages", audacityPathList);
-   defaultTempDir.Printf("%s\\audacity_1_1_temp", (const char *)tmpDirLoc);
+   defaultTempDir.Printf("%s\\audacity_1_2_temp", (const char *)tmpDirLoc);
    #endif
    #ifdef __MACOSX__
    // On Mac OS X, the path to the Audacity program is in argv[0]
    wxString progPath = wxPathOnly(argv[0]);
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+"/Languages", audacityPathList);
-   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)tmpDirLoc);
+   defaultTempDir.Printf("%s/audacity1.2-%s",
+                         (const char *)tmpDirLoc,
+                         (const char *)wxGetUserId());
    #endif
    #ifdef __MACOS9__
    // On Mac OS 9, the initial working directory is the one that
@@ -405,7 +407,7 @@ bool AudacityApp::OnInit()
    wxString progPath = wxGetCwd();
    AddUniquePathToPathList(progPath, audacityPathList);
    AddUniquePathToPathList(progPath+":Languages", audacityPathList);
-   defaultTempDir.Printf("%s/audacity_1_1_temp", (const char *)tmpDirLoc);
+   defaultTempDir.Printf("%s/audacity_1_2_temp", (const char *)tmpDirLoc);
    #endif
 
    // BG: Create a temporary window to set as the top window
