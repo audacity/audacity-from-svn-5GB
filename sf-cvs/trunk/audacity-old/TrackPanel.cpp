@@ -292,8 +292,6 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	wxRect r;
 	int num;
 
-	printf("Dragging: mCapturedTrack = %d\n", mCapturedTrack);
-	
 	if (mCapturedTrack) {
 	  t = mCapturedTrack;
 	  r = mCapturedRect;
