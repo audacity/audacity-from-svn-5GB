@@ -11,6 +11,8 @@
 
 **********************************************************************/
 
+#include "ControlToolBar.h"
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -36,9 +38,9 @@
 #include "widgets/AButton.h"
 #include "widgets/ASlider.h"
 #include "ToolBar.h"
-#include "ControlToolBar.h"
 #include "AudioIO.h"
 #include "Project.h"
+#include "Track.h"
 
 
 #ifdef __WXMAC__
@@ -660,10 +662,9 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 
 void ControlToolBar::EnableDisableButtons(int sumOfFlags)
 {
+   AudacityProject *p = GetActiveProject();
 
-   //Enable/disable based on presence of a wavetrack
-   if (ExtractFlag(sumOfFlags, 1)) {
-
+   if (p && !p->GetTracks()->IsEmpty()) {
       mPlay->Enable();
 
       if (gAudioIO->IsBusy()) {
@@ -681,8 +682,5 @@ void ControlToolBar::EnableDisableButtons(int sumOfFlags)
       mPlay->Disable();
       mStop->Disable();
       mFF->Disable();
-
    }
-
-
 }
