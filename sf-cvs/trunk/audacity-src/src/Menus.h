@@ -146,6 +146,7 @@ void OnLoadMixerToolBar();
 void OnFloatMixerToolBar();
 void OnLoadMeterToolBar();
 void OnFloatMeterToolBar();
+void OnFloatTranscriptionToolBar();
 
 
         // Project Menu
