@@ -9,7 +9,9 @@ System [система за управление на успоредни версии]. Щракнете
 <p>
 <h3>Забележка: версия 1.2 е разклонена:</h3>
 Ако искате стабилния клон на Audacity, версия 1.2.x, трябва да въведете
-<tt>-r AUDACITY_1_2</tt> при обновяване или извличане на файлове от CVS. Иначе ще получите основния клон (HEAD), който може да стане доста нестабилен, когато започнем работа по версия 1.3.0.
+<tt>-r AUDACITY_1_2</tt> при обновяване или извличане на файлове от CVS.
+Иначе ще получите основния клон (HEAD), който може да стане доста нестабилен,
+когато започнем работа по версия 1.3.0.
 
 <p><h3>Бърз курс за работа с Audacity чрез CVS:</h3>
 За достъп до изходния код на Audacity използвайте клиент за CVS, за да изтеглите
@@ -30,7 +32,7 @@ login </tt><br></ul>
 audacity</tt></ul>
 или <b>за стабилното разклонение (1.2.0)</b> (на един ред):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
-или <b>за стария клон 1.0 (1.0.0)</b> (на един ред):<br>
+или <b>за старото разклонение 1.0 (1.0.0)</b> (на един ред):<br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 
@@ -76,28 +78,38 @@ CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><b
 <p>
 <b>За да получите стабилното разклонение (1.2.0): </b><br>
 В диалоговия прозорец "Checkout Settings" въведете като име на модул
-<tt>audacity-old</tt>. После, на страницата "Sticky options", отметнете
+<tt>audacity</tt>. После, на страницата "Sticky options", отметнете
 полето "Retrieve rev./tag/branch (-r)" и въведете <tt>AUDACITY_1_2</tt> в
 текстовото поле до него. Натиснете "OK" и разклонението ще бъде свалено автоматично
 на вашия компютър.
 
 <p>
-<b>За да получите старото разклонение (1.0):</b><br>
-В диалоговия прозорец "Checkout Settings" въведете за име на модул <tt>audacity-old</tt>. После, на страницата "Sticky options", отметнете полето "Retrieve rev./tag/branch (-r)" и въведете <tt>audacity-0_9-branch</tt> в текстовото поле до него. Натиснете "OK" и разклонението ще бъде свалено автоматично
-на вашия компютър.
+<b>За да получите разклонението на старата версия 1.0:</b><br>
+В диалоговия прозорец "Checkout Settings" въведете за име на модул
+<tt>audacity-old</tt>. После, на страницата "Sticky options", отметнете полето
+"Retrieve rev./tag/branch (-r)" и въведете <tt>audacity-0_9-branch</tt>
+в текстовото поле до него. Натиснете "OK" и разклонението ще бъде свалено
+автоматично на вашия компютър.
 
 <hr width="80%">
 Не сте работили с CVS досега? Започнете, прочитайки <a href="">Introduction
 to
-CVS</a> [Въведение в CVS] на Джим Бленди (Jim Blandy), <a target=_top href="http://www.cvshome.org/new_users.html">CVS for new
-users</a> [CVS за нови потребители] на Боб Арнсън (Bob Arnson), или посетете страницата на CVS на адрес <a target=_top href="http://www.cvshome.org/">www.cvshome.org</a>.
-По-подробна информация е достъпна в главите, разпространявани по лиценз GPL, от книгата за CVS на Карл Фогел (Karl
-Fogel) на <a target=_top href="http://cvsbook.red-bean.com/cvsbook.html">cvsbook.red-bean.com</a>, или "официалното" <a target=_top href="http://www.cvshome.org/docs/manual">ръководство</a> на Пер Седерквист (Per Cederqvist).
+CVS</a> [Въведение в CVS] на Джим Бленди (Jim Blandy),
+<a target=_top href="http://www.cvshome.org/new_users.html">CVS for new users</a>
+[CVS за нови потребители] на Боб Арнсън (Bob Arnson), или посетете страницата на CVS на адрес
+<a target=_top href="http://www.cvshome.org/">www.cvshome.org</a>.
+По-подробна информация е достъпна в главите, разпространявани по лиценз GPL,
+от книгата за CVS на Карл Фогел (Karl Fogel) на
+<a target=_top href="http://cvsbook.red-bean.com/cvsbook.html">cvsbook.red-bean.com</a>,
+или "официалното" <a target=_top href="http://www.cvshome.org/docs/manual">ръководство</a>
+на Пер Седерквист (Per Cederqvist).
 
 
-<p>За помощ конкретно по работата със sourceforge.net чрез CVS вижте документацията на Source Forge за
-платформите <a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
-<a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a> и <a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
+<p>За помощ конкретно по работата със sourceforge.net чрез CVS вижте документацията на
+Source Forge за платформите
+<a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=763&group_id=1">Unix</a>,
+<a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">Microsoft Windows</a>
+и <a target=_top href="http://sourceforge.net/docman/display_doc.php?docid=2973&group_id=1">MacOS
 (преди OS X)</a>.
 
 <hr width="80%">
