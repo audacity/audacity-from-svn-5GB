@@ -4,7 +4,8 @@
   $title = $unixStr;
   include 'top.inc.php';
 
-  $src = "$stableDownloadDir/audacity-src.php/audacity-src.tgz";
+  $src = "$stableDownloadDir/audacity-src.php/audacity-src.tar.gz";
+  $linux386 = "$stableDownloadDir/audacity-linux.php/audacity-linux-i386.tar.bz2";
   $rpm = "$stableDownloadDir/audacity-i386-rpm.php/audacity-i386.rpm";
 ?>
 
@@ -31,68 +32,47 @@
 
 </table>
 
-<p>
-Having trouble downloading?  Need a previous version?
-<a href="http://sourceforge.net/project/showfiles.php?group_id=6235">Click here for direct download links</a>
-</p>
-
 <center><hr width=50%></center>
-<?php print "<a href=stablenotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
+<?php print "<a href=stablenotes.php$langQueryStr>$releaseNotesStr2</a>"; ?>
 <br>
-<a href="audacity-manual-1.0.0-A.zip"><?php print $docsStr; ?></a>
+<?php print "<a href=help.php$langQueryStr>$docsStr</a>\n<br>\n"; ?>
+
+<p>
+<?php print "$altDownloadStr"; ?> <a href="http://sourceforge.net/project/showfiles.php?group_id=6235"><?php print "$altDownloadStr2"; ?>
+</a>
+</p>
 
 <?php BoxBottom(); ?>
 
 <p>
 
-<?php BoxTop("RedHat RPM"); ?>
+<?php BoxTop($linuxStr); ?>
 
 <center>
-  <?php print "$latestStableStr $rpmStableVersion"; ?>
+  <?php print "$latestStableStr $linux386StableVersion"; ?>
 </center>
 
 <table border="0">
 
 <tr>
 <td valign=center
-><?php print "<a href=\"$rpm\">";
+><?php print "<a href=\"$linux386\">";
 ?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
 </td>
 <td valign=center
-><?php print "<a href=\"$rpm\">audacity.i386.rpm";
+><?php print "<a href=\"$linux386\">audacity-linux-i386.tar.bz2";
 ?></a>
-<?php print "($rpmStr, $rpmStableSize)"; ?>
+<?php print "($linux386Str, $linux386StableSize)"; ?>
 </td>
 </tr>
 
 </table>
 
-<p>
-
-<b>Requires:</b>
-<ul>
-<li><a href="http://telia.dl.sourceforge.net/sourceforge/wxwindows/wxGTK-2.2.9-0.i386.rpm">wxGTK-2.2.9-0.i386.rpm</a> (2 MB)
-<li><a href="http://www.vorbis.com/files/rc3/unix/libogg-1.0rc3-1.i386.rpm"
->libogg-1.0rc3-1.i386.rpm</a> (14K)<br>
-<li><a href="http://www.vorbis.com/files/rc3/unix/libvorbis-1.0rc3-1.i386.rpm"
->libvorbis-1.0rc3-1.i386.rpm</a> (164K)
-</p>
-</ul>
-</p>
+<?php BoxBottom(); ?>
 
 <p>
-These RPMs have been reported to work well with Caldera OpenLinux, also.
-</p>
-
-<center><hr width=50%></center>
-<?php print "<a href=stablenotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
-<br>
-<a href="audacity-manual-1.0.0-A.zip"><?php print $docsStr; ?></a>
 
 <?php
-
-  BoxBottom();
-
   print "<p>";
 
   include GetTranslation("debian");
@@ -103,12 +83,7 @@ These RPMs have been reported to work well with Caldera OpenLinux, also.
 
   print "<p>";
 
-  include GetTranslation("mandrake");
-
-  print "<p>";
-
   include GetTranslation("gentoo");
-
 ?>
 
 <p>
@@ -136,9 +111,4 @@ Example:
   include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
 

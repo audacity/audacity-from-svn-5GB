@@ -14,7 +14,9 @@
 
   BoxTop($betaVersionsStr);
 ?>
+<?php include GetTranslation("beta-redirect"); ?>
 
+<?php /*
 <?php include GetTranslation("beta-about"); ?>
 
 <p>
@@ -176,6 +178,8 @@ Source code dependencies:
 <?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
+*/
+?>
 
 <?php
 

@@ -3,13 +3,13 @@
 require_once 'main.inc.php';
 $title = $releaseNotesStr;
 include 'top.inc.php';
-include GetTranslation("stablenotes");
-include 'bottom.inc.php';
 
 ?>
+<?php BoxTop("$releaseNotesStr $stableVersion"); ?>
+<?php include GetTranslation("beta-1.2.0-pre3-problems"); ?>
+<?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
+<?php BoxBottom(); ?>
 
-
-
-
-
-
+<?php
+include 'bottom.inc.php';
+?>
