@@ -1,0 +1,214 @@
+dnl
+dnl audacity configure.in script
+dnl
+dnl Joshua Haberman
+dnl Dominic Mazzoni
+dnl
+
+
+dnl TODO:
+dnl
+dnl automatically choose whether or not to make some libs
+dnl based on:
+dnl
+dnl AC_CHECK_LIB(z, compress2, build_libz=false, build_libz=true)
+dnl AM_CONDITIONAL(BUILD_LIBZ, test $build_libz = true)
+dnl
+dnl
+
+dnl Process this file with autoconf to produce a configure script.
+
+dnl Require autoconf >= 2.50 (unfortunately 2.13 is standard)
+AC_PREREQ(2.50)
+
+dnl Init autoconf
+AC_INIT
+
+dnl Check for existence of Audacity.h
+AC_CONFIG_SRCDIR([src/Audacity.h])
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_GCC_TRADITIONAL
+AC_LANG([C++])
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_INSTALL
+
+dnl extra variables
+AC_SUBST(BUILDLIBS)
+AC_SUBST(EXTRAOBJS)
+AC_SUBST(CDEPEND)
+
+dnl Required sublibraries
+SUBDIRS="$SUBDIRS lib-src/libsndfile"
+BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
+
+SUBDIRS="$SUBDIRS lib-src/portaudio/pa_linux_oss"
+BUILDLIBS="$BUILDLIBS portaudio/pa_linux_oss/portaudio.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_linux_oss/portaudio.a"
+
+dnl TODO enable/disable allegro
+BUILDLIBS="$BUILDLIBS allegro/allegro.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"
+CXXFLAGS="$CXXFLAGS -I../lib-src/allegro"
+
+
+dnl options
+AC_ARG_WITH(libmad,
+	[AC_HELP_STRING([--with-libmad],
+      [use libmad for mp3 decoding support [default=yes]])],
+	use_libmad=$withval,
+	use_libmad="yes")
+AC_ARG_WITH(vorbis,
+	[AC_HELP_STRING([--with-vorbis],
+		[enable ogg vorbis support [default=yes]])],
+	use_vorbis=$withval,
+	use_vorbis="yes")
+AC_ARG_WITH(id3,
+	[AC_HELP_STRING([--with-id3],
+		[compile with id3lib [default=no]])],
+	use_id3lib=$withval,
+	use_id3lib="no")
+AC_ARG_WITH(help,
+	[AC_HELP_STRING([--with-help],
+		[Make the help file "audacity-help.htb" [default=yes]])],
+	use_help=$withval,
+	use_help="yes")
+
+dnl check to make sure that all the user's options are valid
+AC_CANONICAL_HOST
+host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
+host_os=`echo "$host_os" | sed "s/-.*//"`
+
+if [[ "$use_libmad" = "yes" ]] ; then
+
+	AC_DEFINE(USE_LIBMAD, 1,
+		[Define if mp3 support is implemented with the libmad library])
+	AC_DEFINE(MP3SUPPORT, 1,
+      [Define if mp3 support is implemented])
+
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libmad/.libs/libmad.a"
+	BUILDLIBS="$BUILDLIBS libmad/.libs/libmad.a"
+	SUBDIRS="$SUBDIRS lib-src/libmad"
+	CXXFLAGS="$CXXFLAGS -I../lib-src/libmad"
+	CDEPEND="$CDEPEND ../lib-src/libmad/mad.h"
+
+   mp3support="true"
+fi
+
+if [[ $use_vorbis = "yes" ]] ; then
+
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libvorbis/lib/.libs/libvorbisfile.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libvorbis/lib/.libs/libvorbis.a"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libogg/src/.libs/libogg.a"
+	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbisfile.a"
+	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbis.a"
+	BUILDLIBS="$BUILDLIBS libogg/src/.libs/libogg.a"
+	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
+
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
+fi
+
+if [[ $use_vorbis = "system" ]] ; then
+
+   dnl check for both headers and libraries
+   
+   AC_CHECK_LIB(vorbisfile, ov_open, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+	   -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+
+   AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
+		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))
+
+	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
+fi
+
+if [[ $use_id3lib = "yes" ]] ; then
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/id3lib/src/.libs/libid3.a"
+	BUILDLIBS="$BUILDLIBS id3lib/src/.libs/libid3.a"
+	CPPFLAGS="$CPPFLAGS -Iid3lib/include"
+		
+	AC_DEFINE(USE_ID3LIB, 1,
+      [Define if id3lib is present])
+fi
+
+dnl if [[ $use_help = "yes" ]] ; then
+dnl   enable help
+dnl fi
+
+dnl --- look for "ZIP"
+
+AC_PATH_PROG(ZIP, zip, no)
+if [[ $ZIP = "no" ]] ; then
+        AC_MSG_ERROR("Could not find zip - needed to create the help file");
+
+	dnl TODO
+
+   dnl make non-fatal - i.e. just don't build help
+fi
+
+dnl --- check for required libraries ---
+
+dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
+AC_PATH_PROG(WX_CONFIG, wx-config, no, $PATH:/usr/local/bin )
+if [[ "$WX_CONFIG" = "no" ]] ; then
+	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
+fi
+LIBS="$LIBS `$WX_CONFIG --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
+
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+
+AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
+AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile])
+
+AC_CONFIG_SUBDIRS([$SUBDIRS])
+AC_OUTPUT
+
+echo ""
+echo "Finished configure:"
+
+if [[ $use_id3lib = "yes" ]] ; then
+	echo "  with    id3lib";
+else
+	echo "  without id3lib";
+fi
+
+if [[ $use_libmad = "yes" ]] ; then
+	echo "  with    libmad";
+else
+	echo "  without libmad";
+fi
+
+if [[ $use_vorbis = "yes" ]] ; then	
+	echo "  with    vorbis";
+else
+	if [[ $use_vorbis = "system" ]] ; then
+		echo "  with    vorbis (system)";
+	else
+		echo "  without libvorbis";	
+	fi
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	echo "  with    help";
+else
+	echo "  without help";
+fi
+
+echo "prefix=$prefix";
+
+echo ""
+echo "Run configure --help for explanation of these options,"
+echo "otherwise type 'make' to build Audacity."
