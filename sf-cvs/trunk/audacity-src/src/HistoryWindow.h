@@ -24,7 +24,7 @@ class wxListEvent;
 class AudacityProject;
 class UndoManager;
 
-class HistoryWindow :public wxDialog {
+class HistoryWindow :public wxFrame {
 
  public:
    HistoryWindow(AudacityProject * parent, UndoManager *manager);
@@ -37,7 +37,7 @@ class HistoryWindow :public wxDialog {
    void OnDiscard(wxCommandEvent & event);
    void OnLabelChanged(wxListEvent & event);
    void OnItemSelected(wxListEvent & event);
-
+   void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
    AudacityProject *mProject;
    
    wxBoxSizer *mTopSizer;
