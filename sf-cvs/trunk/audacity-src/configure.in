@@ -229,7 +229,13 @@ if [[ "$use_soundtouch" = "yes" ]] ; then
 	CXXFLAGS="-I../lib-src/soundtouch/src $CXXFLAGS"
 	BUILDLIBS="$BUILDLIBS soundtouch/soundtouch.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/soundtouch.a"		
-   SUBDIRS="$SUBDIRS lib-src/soundtouch"
+
+   if test ! -f "lib-src/soundtouch/Makefile"; then
+		echo "---";
+		echo "--- Configuring soundtouch:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/soundtouch]])
+   fi
 fi
 
 if [[ "$use_nyquist" = "yes" ]] ; then
@@ -248,10 +254,16 @@ if [[ "$use_libsndfile" = "no" ]] ; then
 fi
 
 if [[ "$use_libsndfile" = "local" ]] ; then
-	SUBDIRS="$SUBDIRS lib-src/libsndfile"
 	BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libsndfile/src"
+
+   if test ! -f "lib-src/libsndfile/Makefile"; then
+		echo "---";
+		echo "--- Configuring libsndfile:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libsndfile]])
+   fi
 fi
 
 if [[ "$use_libsndfile" = "system" ]] ; then
@@ -264,12 +276,18 @@ if [[ "$use_libsndfile" = "system" ]] ; then
 fi
 
 if [[ "$use_libsamplerate" = "local" ]] ; then
-	SUBDIRS="$SUBDIRS lib-src/libsamplerate"
 	BUILDLIBS="$BUILDLIBS libsamplerate/src/.libs/libsamplerate.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsamplerate/src/.libs/libsamplerate.a"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libsamplerate/src"
 	AC_DEFINE(USE_LIBSAMPLERATE, 1,
 		[Define if libsamplerate support should be enabled])
+
+   if test ! -f "lib-src/libsamplerate/Makefile"; then
+		echo "---";
+		echo "--- Configuring libsamplerate:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libsamplerate]])
+   fi
 fi
 
 if [[ "$use_libsamplerate" = "system" ]] ; then
@@ -287,9 +305,15 @@ if [[ "$use_libmad" = "yes" ]] ; then
 
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libmad/.libs/libmad.a"
 	BUILDLIBS="$BUILDLIBS libmad/.libs/libmad.a"
-	SUBDIRS="$SUBDIRS lib-src/libmad"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libmad"
 	CDEPEND="$CDEPEND ../lib-src/libmad/mad.h"
+
+   if test ! -f "lib-src/libmad/Makefile"; then
+		echo "---";
+		echo "--- Configuring libmad:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libmad]])
+   fi
 fi
 
 if [[ "$use_libmad" = "system" ]] ; then
@@ -332,12 +356,26 @@ if [[ $use_vorbis = "yes" ]] ; then
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbisfile.a"
 	BUILDLIBS="$BUILDLIBS libvorbis/lib/.libs/libvorbis.a"
 	BUILDLIBS="$BUILDLIBS libogg/src/.libs/libogg.a"
-	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
+
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libogg/include"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libvorbis/include"
 
 	AC_DEFINE(USE_LIBVORBIS, 1,
 		[Define if the ogg vorbis decoding library is present])
+
+   if test ! -f "lib-src/libogg/Makefile"; then
+		echo "---";
+		echo "--- Configuring libogg:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libogg]])
+   fi
+
+   if test ! -f "lib-src/libvorbis/Makefile"; then
+		echo "---";
+		echo "--- Configuring libvorbis:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libvorbis]])
+   fi
 fi
 
 if [[ $use_vorbis = "system" ]] ; then
@@ -360,10 +398,16 @@ if [[ $use_libid3tag = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libid3tag/.libs/libid3tag.a"
 	BUILDLIBS="$BUILDLIBS libid3tag/.libs/libid3tag.a"
 	CPPFLAGS="$CPPFLAGS -I../lib-src/libid3tag"
-	SUBDIRS="$SUBDIRS lib-src/libid3tag"
 		
 	AC_DEFINE(USE_LIBID3TAG, 1,
       [Define if libid3tag is present])
+
+   if test ! -f "lib-src/libid3tag/Makefile"; then
+		echo "---";
+		echo "--- Configuring libid3tag:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libid3tag]])
+   fi
 fi
 
 if [[ $use_libid3tag = "system" ]] ; then
@@ -386,11 +430,17 @@ if [[ $use_libflac = "yes" ]] ; then
    EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
    BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
    BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
-   SUBDIRS="$SUBDIRS lib-src/libflac"
    CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
 
    AC_DEFINE(USE_LIBFLAC, 1,
       [Define if the FLAC library is present])
+
+   if test ! -f "lib-src/libflac/Makefile"; then
+		echo "---";
+		echo "--- Configuring libflac:";
+		echo "---";
+		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
+   fi
 fi
 
 if [[ $use_libflac = "system" ]] ; then
@@ -436,7 +486,7 @@ CXXFLAGS="-I../lib-src/portaudio/pa_common $CXXFLAGS"
 AC_CANONICAL_HOST
 
 case "${host_os}" in
-  darwin* )
+  darwin* | rhapsody*)
 	dnl Mac OS X configuration
 
 	dnl CoreAudio
@@ -485,6 +535,17 @@ case "${host_os}" in
 
 esac
 
+case "$host_os" in
+	darwin* | rhapsody*)
+		AC_MSG_WARN([[Not using native lrint() and lrintf() because they are missing on 10.1.]])
+		;;
+	*)
+      dnl For all other Unix systems, we want to check for lrint/lrintf
+		AC_C99_FUNC_LRINT
+		AC_C99_FUNC_LRINTF
+		;;
+	esac
+
 if [[ "$use_ladspa" = "yes" ]] ; then
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LoadLadspa.o"
 	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/ladspa/LadspaEffect.o"
@@ -504,7 +565,6 @@ AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
 					  lib-src/allegro/Makefile lib-src/expat/Makefile
                                           locale/Makefile tests/Makefile])
 
-AC_CONFIG_SUBDIRS([$SUBDIRS])
 AC_OUTPUT
 
 echo ""
