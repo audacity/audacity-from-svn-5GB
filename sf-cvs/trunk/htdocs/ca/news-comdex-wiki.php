@@ -1,4 +1,4 @@
-<?php BoxTop('28 d'octubre del 2003: COMDEX, captures de pantalla, Wiki, Samarretes'); ?>
+<?php BoxTop('Octubre 28, 2003: COMDEX, captures de pantalla, Wiki, Samarretes'); ?>
 
 Hem fixat un munt d'errors des de l'últim llençament públic de prova i llançarem l'Audacity 1.2.0-pre3 en els propers pocs die, along with the
 VST Enabler, finally.  Mentrestant ací teniu algunes notícies:
@@ -11,9 +11,7 @@ La votació acaba el 31 d'octubre.
 </p>
 
 <p>
-El <a href="http://audacityteam.org/wiki/">Wiki de l'Audacity</a> és un lloc web que ttohom pot editar llirement per qualsevol cosa relacionada amb l'Audacity.  Actualment inclou consells, documentació, i enllaços més un lloc per a la sol·licitud de característiques.  La millor part és que és fàcil per tothom contribuir-hi - just click on a link at the bottom of any page to edit
-or add your own content.  We hope you'll find this to be a fun and
-valuable resource.
+El <a href="http://audacityteam.org/wiki/">Wiki de l'Audacity</a> és un lloc web que ttohom pot editar llirement per qualsevol cosa relacionada amb l'Audacity.  Actualment inclou consells, documentació, i enllaços més un lloc per a la sol·licitud de característiques.  La millor part és que és fàcil per tothom contribuir-hi - tan sols heu de clicar a l'enllaç de sota de cada pàgina per editar-la o afegir-hi el vostre contingut.  Esperem que ho trobeu un recurs agradable i valuós.
 </p>
 
 <p>
