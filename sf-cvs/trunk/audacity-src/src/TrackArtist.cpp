@@ -1503,11 +1503,11 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
               // extreme zooms caues problems under windows, so we have to do some
               // clipping before calling display routine
               if (x < h) { // clip line on left
-                y = (y + (y1 - y) * (h - x) / (x1 - x)) + 0.5;
+                y = int((y + (y1 - y) * (h - x) / (x1 - x)) + 0.5);
                 x = h;
               }
               if (x1 > h1) { // clip line on right
-                y1 = (y + (y1 - y) * (h1 - x) / (x1 - x)) + 0.5;
+                y1 = int((y + (y1 - y) * (h1 - x) / (x1 - x)) + 0.5);
                 x1 = h1;
               }
               dc.DrawLine(TIME_TO_X(x), y, TIME_TO_X(x1), y1);
