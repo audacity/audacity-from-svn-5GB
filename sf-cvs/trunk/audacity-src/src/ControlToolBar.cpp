@@ -47,6 +47,7 @@ enum {
    ID_ENVELOPE,
    ID_SLIDE,
    ID_ZOOM,
+   ID_DRAW,
    ID_PLAY_BUTTON,
    ID_STOP_BUTTON,
    ID_RECORD_BUTTON,
@@ -54,7 +55,7 @@ enum {
    ID_REW_BUTTON,
 
    ID_FIRST_TOOL = ID_SELECT,
-   ID_LAST_TOOL = ID_ZOOM
+   ID_LAST_TOOL = ID_DRAW
 };
 
 const int BUTTON_WIDTH = 50;
@@ -82,7 +83,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(440, 55))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(468, 55))
 {
    InitializeControlToolBar();
 }
@@ -102,12 +103,12 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 void ControlToolBar::InitializeControlToolBar()
 {
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-   int sliderX = 362;
+   int sliderX = 390;
 #else
-   int sliderX = 322;
+   int sliderX = 350;
 #endif
 
-   mIdealSize = wxSize(440, 55);
+   mIdealSize = wxSize(468, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 
@@ -337,7 +338,7 @@ void ControlToolBar::MakeButtons()
 
    /* Buttons */
 
-   mButtonPos = 64;
+   mButtonPos = 92;
 
    mRewind = MakeButton((char const **) Rewind,
                         (char const **) RewindDisabled,
@@ -385,13 +386,16 @@ void ControlToolBar::MakeButtons()
    mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
    mTool[3]->SetToolTip(_("Zoom Tool"));
 
+   mTool[4] = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
+   mTool[4]->SetToolTip(_("Draw Tool"));
+
    wxToolTip::Enable(true);     // MB: Should make this a pref
    wxToolTip::SetDelay(1000);
 }
 
 ControlToolBar::~ControlToolBar()
 {
-   for (int i = 0; i < 4; i++)
+   for (int i = 0; i < 5; i++)
       delete mTool[i];
 
    delete mRewind;
@@ -574,7 +578,7 @@ void ControlToolBar::OnTool(wxCommandEvent & evt)
    int prev = mCurrentTool;
    mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
 
-   for (int i = 0; i < 4; i++)
+   for (int i = 0; i < 5; i++)
       if (i == mCurrentTool)
          mTool[i]->PushDown();
       else
@@ -613,9 +617,9 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
       for (y = 2; y < height; y += 4)
          memDC.DrawLine(0, y, width, y);
 
-      memDC.DrawBitmap(*mDivBitmap, 212, 4);
-      memDC.DrawBitmap(*mMuteBitmap, 222, 4);
-      memDC.DrawBitmap(*mLoudBitmap, 376, 4);
+      memDC.DrawBitmap(*mDivBitmap, 240, 4);
+      memDC.DrawBitmap(*mMuteBitmap, 250, 4);
+      memDC.DrawBitmap(*mLoudBitmap, 404, 4);
    }
 
    wxMemoryDC memDC;
@@ -633,7 +637,8 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 
    dc.DrawLine(27, 0, 27, height - 1);
    dc.DrawLine(55, 0, 55, height - 1);
-   dc.DrawLine(0, 27, 55, 27);
+   dc.DrawLine(83, 0, 83, height - 1);
+   dc.DrawLine(0, 27, 83, 27);
 #endif
 }
 

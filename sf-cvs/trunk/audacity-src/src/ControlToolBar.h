@@ -88,7 +88,7 @@ class ControlToolBar:public ToolBar {
    void MakeButtons();
    int mButtonPos;
 
-   AButton *mTool[4];
+   AButton *mTool[5];
 
    AButton *mRewind;
    AButton *mPlay;
