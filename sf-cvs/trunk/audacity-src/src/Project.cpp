@@ -1784,6 +1784,12 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
       return newTrack;
    }
 
+   if (!strcmp(tag, "timetrack")) {
+      TimeTrack *newTrack = mTrackFactory->NewTimeTrack();
+      mTracks->Add(newTrack);
+      return newTrack;
+   }
+
    return NULL;
 }
 
