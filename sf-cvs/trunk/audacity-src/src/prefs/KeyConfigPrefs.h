@@ -29,8 +29,11 @@ class KeyConfigPrefs:public PrefsPanel {
    ~KeyConfigPrefs();
    bool Apply();
 
+   wxListCtrl *GetKeysList();
+
  private:
    void OnItemSelected(wxListEvent &event);
+   void AddComboToList(wxCommandEvent& event);
 
    wxListCtrl *mCommandsList;
    wxListCtrl *mKeysList;
