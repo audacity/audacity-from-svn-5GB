@@ -377,7 +377,7 @@ bool AudioApp::OnInit()
 	}
 	((AudioView *)(d->GetFirstView()))->FixScrollbars();
 	((AudioView *)(d->GetFirstView()))->SelectNone();
-	((AudioView *)(d->GetFirstView()))->Refresh();
+	//((AudioView *)(d->GetFirstView()))->Refresh();
   }
 
   return TRUE;

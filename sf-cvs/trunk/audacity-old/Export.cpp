@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/button.h>
 #include <wx/textctrl.h>
 #include <wx/choice.h>
 #include <wx/file.h>
@@ -15,9 +16,9 @@
 #include <wx/radiobut.h>
 #include <wx/sizer.h>
 #include <wx/timer.h>
-#include <wx/generic/filedlgg.h>
+#include <wx/filedlg.h>
 #include <wx/msgdlg.h>
-#include <wx/generic/progdlgg.h>
+#include <wx/progdlg.h>
 
 #include "snd/snd.h"
 

@@ -53,7 +53,7 @@ OBJS = \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \
 	$(OBJDIR)/effects/Fade.cpp.o \
-	$(OBJDIR)/snd/audiolinux.c.o \
+	$(OBJDIR)/snd/audionone.c.o \
 	$(OBJDIR)/snd/ieeecvt.c.o \
 	$(OBJDIR)/snd/snd.c.o \
 	$(OBJDIR)/snd/sndheader.c.o \

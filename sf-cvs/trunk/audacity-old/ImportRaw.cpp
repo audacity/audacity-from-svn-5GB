@@ -10,6 +10,7 @@
 
 #include <math.h>
 
+#include <wx/button.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
 #include <wx/file.h>
@@ -18,7 +19,7 @@
 #include <wx/thread.h>
 #include <wx/timer.h>
 #include <wx/msgdlg.h>
-#include <wx/generic/progdlgg.h>
+#include <wx/progdlg.h>
 
 #include "ImportRaw.h"
 
