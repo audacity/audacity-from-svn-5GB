@@ -14,6 +14,8 @@
 
 #include <math.h>
 
+#include <wx/intl.h>
+
 #include "Wahwah.h"
 #include "../WaveTrack.h"
 #include "../FFT.h"
@@ -35,7 +37,7 @@ EffectWahwah::EffectWahwah()
 
 bool EffectWahwah::PromptUser()
 {
-   WahwahDialog dlog(mParent, -1, "Wahwah");
+   WahwahDialog dlog(mParent, -1, _("Wahwah"));
 
    dlog.freq = freq;
    dlog.freqoff = freqofs * 100;
@@ -458,14 +460,14 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
 
    wxStaticText *item1 =
-       new wxStaticText(parent, ID_TEXT, "Wahwah by Nasca Octavian Paul",
+       new wxStaticText(parent, ID_TEXT, _("Wahwah by Nasca Octavian Paul"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
 
    wxStaticText *item11 =
-       new wxStaticText(parent, ID_TEXT, "LFO Frequency (Hz):",
+       new wxStaticText(parent, ID_TEXT, _("LFO Frequency (Hz):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -481,7 +483,7 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item14 =
-       new wxStaticText(parent, ID_TEXT, "LFO Start Phase (deg.):",
+       new wxStaticText(parent, ID_TEXT, _("LFO Start Phase (deg.):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -497,7 +499,7 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item17 =
-       new wxStaticText(parent, ID_TEXT, "Depth (%):", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Depth (%):"), wxDefaultPosition,
                         wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -513,7 +515,7 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item20 =
-       new wxStaticText(parent, ID_TEXT, "Resonance:", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Resonance:"), wxDefaultPosition,
                         wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -529,7 +531,7 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item30 =
-       new wxStaticText(parent, ID_TEXT, "Wah Frequency Offset (%):",
+       new wxStaticText(parent, ID_TEXT, _("Wah Frequency Offset (%):"),
                         wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item30, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -549,13 +551,13 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item23 = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item24 =
-       new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item24->SetDefault();
    item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item25 =
-       new wxButton(parent, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
 

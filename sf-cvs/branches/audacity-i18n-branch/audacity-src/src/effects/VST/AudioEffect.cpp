@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include <wx/intl.h>
+
 #include "AudioEffect.hpp"
 #include "AEffEditor.hpp"
 
@@ -366,11 +368,11 @@ void AudioEffect::float2string(float value, char *text)
       v = -v;
       c++;
       if (v > 9999999.) {
-         strcpy(string, " Huge!  ");
+         strcpy(string, _(" Huge!  "));
          return;
       }
    } else if (v > 99999999.) {
-      strcpy(string, " Huge!  ");
+      strcpy(string, _(" Huge!  "));
       return;
    }
 
@@ -419,7 +421,7 @@ void AudioEffect::long2string(long value, char *text)
    char string[32];
 
    if (value >= 100000000) {
-      strcpy(text, " Huge!  ");
+      strcpy(text, _(" Huge!  "));
       return;
    }
    sprintf(string, "%7d", value);

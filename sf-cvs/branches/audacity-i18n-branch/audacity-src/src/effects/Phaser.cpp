@@ -15,6 +15,7 @@
 #include <math.h>
 
 //#include <wx/generic/textdlgg.h>
+#include <wx/intl.h>
 
 #include "Phaser.h"
 #include "../WaveTrack.h"
@@ -42,7 +43,7 @@ EffectPhaser::EffectPhaser()
 
 bool EffectPhaser::PromptUser()
 {
-   PhaserDialog dlog(mParent, -1, "Phaser");
+   PhaserDialog dlog(mParent, -1, _("Phaser"));
 
    dlog.freq = freq;
    dlog.startphase = startphase * 180 / M_PI;
@@ -448,14 +449,14 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
 
    wxStaticText *item1 =
-       new wxStaticText(parent, ID_TEXT, "Phaser by Nasca Octavian Paul",
+       new wxStaticText(parent, ID_TEXT, _("Phaser by Nasca Octavian Paul"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item3 =
-       new wxStaticText(parent, ID_TEXT, "Stages:", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Stages:"), wxDefaultPosition,
                         wxDefaultSize, 0);
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -476,14 +477,14 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item7 = new wxBoxSizer(wxHORIZONTAL);
 
    wxStaticText *item8 =
-       new wxStaticText(parent, ID_TEXT, "DRY", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("DRY"), wxDefaultPosition,
                         wxDefaultSize, 0);
    item7->Add(item8, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item7->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxTOP, 5);
 
    wxStaticText *item9 =
-       new wxStaticText(parent, ID_TEXT, "WET", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("WET"), wxDefaultPosition,
                         wxDefaultSize, 0);
    item7->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -497,7 +498,7 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
 
    wxStaticText *item11 =
-       new wxStaticText(parent, ID_TEXT, "LFO Frequency (Hz):",
+       new wxStaticText(parent, ID_TEXT, _("LFO Frequency (Hz):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -513,7 +514,7 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item14 =
-       new wxStaticText(parent, ID_TEXT, "LFO Start Phase (deg.):",
+       new wxStaticText(parent, ID_TEXT, _("LFO Start Phase (deg.):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -529,7 +530,7 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item17 =
-       new wxStaticText(parent, ID_TEXT, "Depth:", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Depth:"), wxDefaultPosition,
                         wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -545,7 +546,7 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item20 =
-       new wxStaticText(parent, ID_TEXT, "Feedback (%):",
+       new wxStaticText(parent, ID_TEXT, _("Feedback (%):"),
                         wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -565,13 +566,13 @@ wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item23 = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item24 =
-       new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item24->SetDefault();
    item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item25 =
-       new wxButton(parent, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
 

@@ -15,6 +15,7 @@
 #include <math.h>
 
 #include <wx/msgdlg.h>
+#include <wx/intl.h>
 
 #include "BassBoost.h"
 #include "../WaveTrack.h"
@@ -31,7 +32,7 @@ EffectBassBoost::EffectBassBoost()
 
 bool EffectBassBoost::PromptUser()
 {
-   BassBoostDialog dlog(mParent, -1, "BassBoost");
+   BassBoostDialog dlog(mParent, -1, _("BassBoost"));
    dlog.freq = frequency;
    dlog.boost = dB_boost;
    dlog.TransferDataToWindow();
@@ -298,14 +299,14 @@ wxSizer *MakeBassBoostDialog(wxPanel * parent, bool call_fit,
 
    wxStaticText *item1 =
        new wxStaticText(parent, ID_TEXT,
-                        "BassBoost by Nasca Octavian Paul",
+                        _("BassBoost by Nasca Octavian Paul"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxFlexGridSizer *item2 = new wxFlexGridSizer(3, 0, 0);
 
    wxStaticText *item3 =
-       new wxStaticText(parent, ID_TEXT, "Frequency (Hz):",
+       new wxStaticText(parent, ID_TEXT, _("Frequency (Hz):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -321,7 +322,7 @@ wxSizer *MakeBassBoostDialog(wxPanel * parent, bool call_fit,
    item2->Add(item5, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item6 =
-       new wxStaticText(parent, ID_TEXT, "Boost (dB):", wxDefaultPosition,
+       new wxStaticText(parent, ID_TEXT, _("Boost (dB):"), wxDefaultPosition,
                         wxDefaultSize, 0);
    item2->Add(item6, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -341,14 +342,14 @@ wxSizer *MakeBassBoostDialog(wxPanel * parent, bool call_fit,
    wxBoxSizer *item9 = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *item10 =
-       new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item10->SetDefault();
    item10->SetFocus();
    item9->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item11 =
-       new wxButton(parent, wxID_CANCEL, "Cancel", wxDefaultPosition,
+       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item9->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
 
