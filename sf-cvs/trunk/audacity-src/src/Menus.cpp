@@ -111,7 +111,9 @@ enum {
    UnsavedChangesFlag     = 0x00000080,
    HasLastEffectFlag      = 0x00000100,
    UndoAvailableFlag      = 0x00000200,
-   RedoAvailableFlag      = 0x00000400
+   RedoAvailableFlag      = 0x00000400,
+   ZoomInAvailableFlag    = 0x00000800,
+   ZoomOutAvailableFlag   = 0x00001000
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -298,8 +300,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginMenu(_("&View"));
    c->SetDefaultFlags(0, 0);
    c->AddItem("ZoomIn",         _("Zoom &In\tCtrl+1"),               FN(OnZoomIn));
+   c->SetCommandFlags("ZoomIn", ZoomInAvailableFlag, ZoomInAvailableFlag);
+
    c->AddItem("ZoomNormal",     _("Zoom &Normal\tCtrl+2"),           FN(OnZoomNormal));
    c->AddItem("ZoomOut",        _("Zoom &Out\tCtrl+3"),              FN(OnZoomOut));
+   c->SetCommandFlags("ZoomOut", ZoomOutAvailableFlag, ZoomOutAvailableFlag);
+
    c->AddItem("FitInWindow",    _("&Fit in Window\tCtrl+F"),         FN(OnZoomFit));
    c->AddItem("FitV",           _("Fit &Vertically\tCtrl+Shift+F"),  FN(OnZoomFitV));
    c->AddItem("ZoomSel",        _("&Zoom to Selection\tCtrl+E"),     FN(OnZoomSel));
@@ -640,6 +646,12 @@ wxUint32 AudacityProject::GetUpdateFlags()
 
    if (mUndoManager.RedoAvailable())
       flags |= RedoAvailableFlag;
+
+   if (GetZoom() < gMaxZoom && (flags & TracksExistFlag))
+      flags |= ZoomInAvailableFlag;
+
+   if (GetZoom() > gMinZoom && (flags & TracksExistFlag))
+      flags |= ZoomOutAvailableFlag;
 
    return flags;
 }
