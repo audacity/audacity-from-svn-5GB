@@ -274,7 +274,7 @@ int audio_open(snd_node *n, long *f)
     if (!data->buffer || !data->nextBuffer)
       return !SND_SUCCESS;
     
-    data->chan->callBack = NewSndCallBackProc(playbackCallback);
+    data->chan->callBack = NewSndCallBackUPP(playbackCallback);
     
     data->header.samplePtr = data->buffer;
     data->header.numChannels = n->format.channels;
