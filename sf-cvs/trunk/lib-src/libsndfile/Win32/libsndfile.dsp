@@ -113,6 +113,10 @@ SOURCE=..\src\double64.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\dwd.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\dwvw.c
 # End Source File
 # Begin Source File
@@ -202,6 +206,10 @@ SOURCE=..\src\wav.c
 # Begin Source File
 
 SOURCE=..\src\wav_w64.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\wve.c
 # End Source File
 # End Group
 # Begin Group "Header Files"
