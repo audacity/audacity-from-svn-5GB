@@ -59,6 +59,7 @@ Search Audacity websites and documentation:
 <p>
 <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
+<?php print "$listPrivacyStr"; ?>
 </p>
 
 <?php BoxBottom(); ?>

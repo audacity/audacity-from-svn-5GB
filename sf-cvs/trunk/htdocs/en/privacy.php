@@ -1,5 +1,10 @@
 <?php BoxTop($privacyPolicyStr); ?>
 
+<p><b>Audacity Announcement List Policy</b></p>
+
+<p>(This is the list that you join by entering your email address in the
+box on the left of this website.)</p>
+
 <p> If you are interested in receiving announcements whenever new
 versions of Audacity are released, you are welcome to enter your email
 address in the box on the left and click "Add".  You will be added to
@@ -29,8 +34,33 @@ If you would like to be removed from our mailing list, please enter
 your email address in the box to the left and press the "Remove" button.
 This should remove you from our list immediately; no confirmation is
 required and there will be no delay.  If for some reason it does not
-work, please send email to dominic <b>at</b> minorninth.com and he will
-try to help.
+work, please send email to <a href="mailto:dominic@audacityteam.org">dominic@audacityteam.org</a>.
+</p>
+
+<p><b>Audacity Mailing List Policy</b></p>
+
+<p>(This applies to the
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-help">audacity-help</a>,
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">audacity-users</a>,
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-devel">audacity-devel</a>, and
+<a href="http://lists.sourceforge.net/lists/listinfo/audacity-translation">audacity-translation</a> mailing lists.
+</p>
+
+<p>
+These lists are <i>discussion lists</i>.  When you post a message to any of these lists,
+including <a href="http://lists.sourceforge.net/lists/listinfo/audacity-help">audacity-help</a>,
+it will be sent to hundreds of people, including both Audacity developers and other members
+of the general public.  Various websites, including Sourceforge, may publish archives of these
+lists online.  Archives will not normally contain your email address.  However, there is nothing
+to stop anyone in the public from subscribing to these mailing lists and publishing their own
+archives, including email addresses.  If you are concerned about privacy you should use a
+throwaway or temporary email address.
+</p>
+
+<p>
+If you have any questions about this policy and are not comfortable posting your concerns
+to the mailing lists, send a private email to the lead Audacity developer at:
+<a href="mailto:dominic@audacityteam.org">dominic@audacityteam.org</a>.
 </p>
 
 <?php BoxBottom(); ?>
