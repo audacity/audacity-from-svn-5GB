@@ -9,13 +9,13 @@ Cette section liste les changements majeurs depuis notre dernière version stable
 <ul>
 <li>
 Audacity peut maintenant enregistrer et éditer des échantillons en 24-bit et 32-bit (virgule-flottante).  Des pistes avec différent taux d'échantillonage et formats peuvent exister dans le même projet, et Audacity les convertira en temps réel quand c'est nécessaire. Un dithering et un rééchantillonage de haute qualité sont utilisés pour toutes les conversions.
-Le rééchantillonage utilise maintenant les algorythmes de la librairie
+Le rééchantillonage utilise maintenant les algorithmes de la librairie
 <a href="http://www.mega-nerd.com/SRC/">SRC</a> par
 Erik de Castro Lopo.
 </li>
 
 <li>
-L'entrée et la sortie son d'Audacity a été améliorée.  Audacity peut maintenant enregistrer plus de deux canaux à la fois. La latence est réduite, pour réduire les risques de saut et de buffer underruns.
+L'entrée et la sortie son d'Audacity a été améliorée.  Audacity peut maintenant enregistrer plus de deux canaux à la fois. La latence est réduite, pour réduire les risques de saut et de mémoire tampon saturée.
 </li>
 </ul>
 
