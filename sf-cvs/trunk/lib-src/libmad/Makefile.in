@@ -114,7 +114,7 @@ version_info = $(version_current):$(version_revision):$(version_age)
 libmad_la_LDFLAGS = -version-info $(version_info)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
-CONFIG_HEADER = config.h
+CONFIG_HEADER = configunix.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES)
 
@@ -133,7 +133,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(include_HEADERS)
 
 DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in acconfig.h \
-acinclude.m4 aclocal.m4 config.guess config.h.in config.sub configure \
+acinclude.m4 aclocal.m4 config.guess configunix.h.in config.sub configure \
 configure.in install-sh ltconfig ltmain.sh missing mkinstalldirs
 
 
@@ -169,17 +169,17 @@ all: all-redirect
 #$(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 #	cd $(srcdir) && $(AUTOCONF)
 
-config.h: stamp-h
+configunix.h: stamp-h
 	@if test ! -f $@; then \
 		rm -f stamp-h; \
 		$(MAKE) stamp-h; \
 	else :; fi
-stamp-h: $(srcdir)/config.h.in $(top_builddir)/config.status
+stamp-h: $(srcdir)/configunix.h.in $(top_builddir)/config.status
 	cd $(top_builddir) \
-	  && CONFIG_FILES= CONFIG_HEADERS=config.h \
+	  && CONFIG_FILES= CONFIG_HEADERS=configunix.h \
 	     $(SHELL) ./config.status
 	@echo timestamp > stamp-h 2> /dev/null
-$(srcdir)/config.h.in: $(srcdir)/stamp-h.in
+$(srcdir)/configunix.h.in: $(srcdir)/stamp-h.in
 	@if test ! -f $@; then \
 		rm -f $(srcdir)/stamp-h.in; \
 		$(MAKE) $(srcdir)/stamp-h.in; \
@@ -193,7 +193,7 @@ mostlyclean-hdr:
 clean-hdr:
 
 distclean-hdr:
-	-rm -f config.h
+	-rm -f configunix.h
 
 maintainer-clean-hdr:
 
@@ -288,15 +288,16 @@ ID: $(HEADERS) $(SOURCES) $(LISP)
 	here=`pwd` && cd $(srcdir) \
 	  && mkid -f$$here/ID $$unique $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) $(LISP)
+TAGS:  $(HEADERS) $(SOURCES) configunix.h.in $(TAGS_DEPENDENCIES) $(LISP)
 	tags=; \
 	here=`pwd`; \
 	list='$(SOURCES) $(HEADERS)'; \
 	unique=`for i in $$list; do echo $$i; done | \
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)config.h.in$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags config.h.in $$unique $(LISP) -o $$here/TAGS)
+	test -z "$(ETAGS_ARGS)configunix.h.in$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags configunix.h.in \
+	     $$unique $(LISP) -o $$here/TAGS)
 
 mostlyclean-tags:
 
@@ -363,7 +364,7 @@ check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-all-recursive-am: config.h
+all-recursive-am: configunix.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 install-exec-am: install-libLTLIBRARIES
@@ -377,7 +378,7 @@ install-am: all-am
 install: install-am
 uninstall-am: uninstall-libLTLIBRARIES uninstall-includeHEADERS
 uninstall: uninstall-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS) config.h
+all-am: Makefile $(LTLIBRARIES) $(HEADERS) configunix.h
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
@@ -442,7 +443,7 @@ mostlyclean-generic distclean-generic clean-generic \
 maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
-mad.h: config.status config.h Makefile.am  \
+mad.h: config.status configunix.h Makefile.am  \
 		$(srcdir)/COPYRIGHT $(srcdir)/mad.h.sed $(exported_headers)
 	(sed -e '1s|.*|/*|' -e '1b' -e '$$s|.*| */|' -e '$$b'  \
 		-e 's/^.*/ *&/' $(srcdir)/COPYRIGHT; echo;  \
@@ -453,11 +454,11 @@ mad.h: config.status config.h Makefile.am  \
 		echo ".$(FPM)" | sed -e 's|^\.-D|# define |'; echo;  \
 	fi;  \
 	sed -ne 's/^# *define  *\(HAVE_.*_ASM\).*/# define \1/p'  \
-		config.h; echo;  \
+		configunix.h; echo;  \
 	sed -ne 's/^# *define  *OPT_\(SPEED\|ACCURACY\).*/# define OPT_\1/p'  \
-		config.h; echo;  \
+		configunix.h; echo;  \
 	sed -ne 's/^# *define  *\(SIZEOF_.*\)/# define \1/p'  \
-		config.h; echo;  \
+		configunix.h; echo;  \
 	for header in $(exported_headers); do  \
 		echo;  \
 		sed -n -f $(srcdir)/mad.h.sed $(srcdir)/$$header; echo;  \
