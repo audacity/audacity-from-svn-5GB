@@ -447,9 +447,18 @@ PrefsPanel(parent)
 
 
 
-   mDuplex = new wxCheckBox(this, -1, "Play While Recording");
+   mDuplex = new wxCheckBox(this, -1,
+                            "Play other tracks while recording new one");
    mDuplex->SetValue(duplex);
    topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
+
+   #ifdef __WXGTK__
+   topSizer->Add(new wxStaticText(this, -1,
+                                  "(Playing while recording does not work "
+                                  "on most Unix systems, sorry...)"),
+                 0, wxALIGN_LEFT|wxALL,
+                 GENERIC_CONTROL_BORDER);   
+   #endif
 
    SetAutoLayout(true);
    topSizer->Fit(this);

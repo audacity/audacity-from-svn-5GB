@@ -87,12 +87,6 @@ Known issues/problems:
 * All platforms: There is no warning asking you if you want
   to save changes when you quit or close a window.
 
-* All platforms: Save As... does not correctly make a copy
-  of a project.  It moves the project, but leaves the old
-  one broken.  As a workaround, just copy the project file
-  and its data directory somewhere else manually when you
-  need to make a copy of a project.
-
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
   just keep the tool palette docked with the project window.
@@ -109,6 +103,9 @@ Known issues/problems:
 Changes in 0.98:
 
 * Bug fixes
+
+  - You're not allowed to open the same project in two different
+    windows anymore (it just would have caused data loss).
 
   - Projects now save the channel of each track, it's no longer
     forgotten
