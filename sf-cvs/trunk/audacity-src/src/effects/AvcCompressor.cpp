@@ -24,6 +24,7 @@
 
 #include <math.h>
 
+#include <wx/defs.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/dcmemory.h>

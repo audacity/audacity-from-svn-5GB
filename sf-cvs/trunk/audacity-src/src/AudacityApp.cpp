@@ -116,8 +116,8 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
-#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
-#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
+#define __MOVIES__      /* Apple's Movies.h not compatible with Audacity */
+/*#define __MACHELP__*/
 
 #include <wx/mac/private.h>
 

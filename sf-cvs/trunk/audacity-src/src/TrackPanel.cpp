@@ -24,6 +24,7 @@
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
+#include <wx/log.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>

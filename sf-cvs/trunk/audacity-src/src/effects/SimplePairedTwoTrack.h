@@ -90,9 +90,10 @@ protected:
 
 #include <math.h>
 
-#include "SimplePairedTwoTrack.h"
-#include "../WaveTrack.h"		/*WAVETRACK*/
+#include <wx/defs.h>
 #include <wx/msgdlg.h>
+
+#include "../WaveTrack.h"		/*WAVETRACK*/
 
 template<class _DataType,sampleFormat _xxxSample>
 bool EffectSimplePairedTwoTrack<_DataType,_xxxSample>::Init()
