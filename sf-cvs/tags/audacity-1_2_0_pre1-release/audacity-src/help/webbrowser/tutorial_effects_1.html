@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+        <title>Effects for Beginners - 1 - Reverbs</title>
+        <link rel=stylesheet type="text/css" href="audacity.css"></head>
+<body>
+
+<!--top table-->
+<DIV align=center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="tutorials.html">Back to the Tutorial Page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+
+<table width="95%" border=0 cellspacing=0 cellpadding=0>
+  <tr><td colspan=2 width="100%" align=center>
+        <a class=top_r href="tutorial_effects_1.html">A Virtual Room with Reverbs</a>
+<!--        <a class=top_y href="tutorial_effects_2.html">Waiting for the right Delay</a>
+        <a class=top_g href="tutorial_effects_3.html">Psychoacoustic Tricks - The Haas Delay</a> -->
+    </td>
+  </tr>
+</table>
+</DIV>
+<center>
+<h2 align=center><span class=ss><B>IV.Effect for Beginners</B></span><br><span class=sf>Part 1&nbsp;-&nbsp;&nbsp;</span>A Virtual Room with Reverbs<span class=sf>&nbsp;&nbsp;-&nbsp;Part 1</span></h2>
+</center>
+
+<P class=qr>An example by the numbers</P>
+
+<P class=a>
+ As an example I'd like to show you how to create a reverb for small club
+ with a band.
+</P>
+<P class=a>
+ Let's see what we have to do with parameters in the reverb fx in sample
+ editors. First we determine some basics about the room we want to simulate.
+</P>
+<P class=a>
+ Our room(the club) is about eight meters on all sides(for simplicity)
+ and three meters high. The band will be playing no more than four meters
+ away from us. The room volume will be about 200 cubic meters.
+</P>
+<P class=a>
+ This means that the DIRECT SOUND will get to you within about
+ 11 ms (milliseconds). This is the amount of time we'll need to take off the other values.
+</P>
+<P class=a>
+ The first EARLY REFLECTIONS (off the left and right walls) travel
+ around nine meters before reaching you, so they'll get to your ears about
+ 15 ms later! (9 meters at 343 meters/sec -> 26 ms minus the 11 ms the DIRECT
+ SOUND takes to travel to your ears).
+</P>
+<P class=a>
+ I'm not taking the floor into account because of the obstacles, such as your
+ own legs and a table, that prevent reflections of sound from the band from
+ reaching you. It is also probable that your sitting close to a wall and
+ EARLY REFLECTION time may drop considerably. Experiment and listen very
+ carefully.
+</P>
+<P class=a>
+ The reason I'm deducting 11 ms from the 26 ms is that in a sample editor
+ we already have the DIRECT SOUND.
+ In Cool Edit an EARLY REFLECTIONS parameter doesn't exist. In Soundforge
+ however there are a few ER times to choose from. We choose whatever is
+ closest to 15 ms. Freeverb unfortunatly does not have an Early Reflections
+ feature.
+</P>
+<P class=a>
+ Please note that the timing of the EARLY REFLECTIONS are defined by the
+ rooms characteristics such as shape and size. The sound colour of the
+ EARLY REFLECTIONS is defined by the surfaces in the room.These are parameters
+ that are available to professional reverbs only(hard- or software), so don't
+ worry about not finding that stuff in great detail in either Soundforge's,
+ CoolEditPro's or plugins of other editors.
+</P>
+<P class=a>
+ The PRE-DELAY and REVERB TIME depend on more than just room size.
+ Wall and floor material, as well as anything else that reflects, disperses
+ and dampens sound will influence the reverb in quite a few ways.
+</P>
+<P class=a>
+ Our club has lots of wood on it's walls and floor and people are sitting
+ at tables and the air's probably filled with a little smoke(except in
+ California :).
+</P>
+<P class=a>
+ The REVERB TIME, a parameter found in almost all plugins, should be set to
+ no more than one second. In small, crowded rooms where little REVERB occurs
+ it is quite important to set the EARLY REFLECTIONS right. Experiment with
+ the reverb time keep it lower than 1.2 seconds and above 0.7 seconds.
+ Freeverb puts all this information in to the SIZE parameter.
+</P>
+<P class=a>
+ The PRE-DELAY can be set to 30 ms or more. Larger rooms will develop REVERB
+ later since the reflecting sound will travel a while before the reflections
+ become hard to identify but it also depends on the reflecting materials.
+ Freeverb once again doesn't know any Predelays, but since you're reading this
+ to learn how things work, it's still worth spelling out.
+</P>
+<P class=a>
+ Both Cool Edit and Soundforge have parameters referring to the DENSITY of the
+ REVERB part of the sound. Materials such as polished marble will reflect the
+ sound very well and disperse the sound very little. Wood disperses the sound
+ a lot and a carpet practically swallows a large chunk of it.
+ For our Club we need to set the density high since our material disperses the
+ sound a lot(humans,wood and obstacles). No parameter like that in Freeverb and
+ yet it sounds great. It's easy to use as well, so I don't realy mind when using it.
+</P>
+<P class=a>
+ Higher frequencies are swallowed a lot faster than low frequencies.
+ Many reverb algorythems refer to this in some form or another. Cool Edit
+ has the 'High Frequency Absorbtion Time' as a parameter for this.
+ Sound Forge gives you a choice, whether to do this at all for both low and
+ high frequencies and even lets you set them but doesn't provide any time
+ parameters. Professional Reverb hardware such as Lexicon PCM 70,80&90 let you
+ you control frequency and time of this, for low and high frequencies.
+ Freeverb has the DAMPEN parameter for this.
+</P>
+<P class=a>
+ This can effectivly add to room's liveliness. A room full of people will
+ absorb high frequencies a lot faster than an empty room, in which only the
+ materials would make the difference, so in Cool Edit we'll set the 'High
+ Frequency Absorbtion Time' very low, since we're in a crowded club.
+ For Soundforge activate the 'Attenuate high frequencies above' box and set
+ the frequency parameter to around 2000-2500 Hz. Experiment a bit. The higher
+ this frequeny and the longer the Absorbtion Time parameter in Cool Edit,
+ the emptier and and colder your room will seem. In small rooms this can
+ cause the room to sound very metallic. Sewer pipes and oil pipelines e.g.
+</P>
+<P class=a>
+ The Reverb EQs are the final processing stage and can change the sound
+ dramatically. These Hishelf and Lowshelf EQs are found in almost ANY
+ Reverb plugin and hardware unit. Freeverb has both in form of Hipass and
+ Lowpass filters. These are not EQs. The parameters change the target
+ frequencies of the filters. Again, listen.
+</P>
+<P class=a>
+ The last thing you have to do is set the balance between the WET signal
+ and your original DRY signal. Here you can do as you please but remember
+ that only very smoothed hard surfaces in big cavernous space create very loud
+ reverbs. A church might do that if there aren't a big number of people and
+ wooden benches in there, but a club doesn't :). Remember that in Audacity
+ it is smarter to DUPLICATE the part you wish to add reverb to, and run the
+ effect over that duplicate. The volume of that reverbed material is easier
+ to control, so set the WET parameter in Freeverb to 0dB(->100%) and the
+ DRY parameter to -endless(->0% left most slider position).
+</P>
+<P class=a>
+ So when you create your next 'soon-to-be-the-hit' song or want to put things
+ in perspective, be sure to check the possibilities of adding dimension and
+ scope to your material through clever use of reverbs.
+ Put your snare to the front, the piano a little to the back, and the sax
+ just a little in front of the drums. Experiment. With these basics you'll
+ be able to get better results in less time.
+</P>
+<P class=a>
+ Btw, Snare always gets reverb. How much and what kind up to you, but it's a
+ generaly good thing. It's also important to decide whether you're trying to
+ simulate a real live band or doing a multitrack sound, which boasts all kinds
+ of nice ideas, like doubling(another take of the same thing on top of the
+ first take), extreme panning and in general NOT reality :).
+</P>
+
+<P class=qr>
+Dry versus Wet
+</P>
+<P class=a>
+Have you heard of those silent rooms, where they test speakers and microphones ?
+They're great if you don't happen to be inside of one. After a few minutes you hear the blood in your ears
+roar like an ocean. You hear only your inner voice when you speak. The room swallows almost everything else.
+Most people can't stand being in a room like this for more than 10-15 minutes. I am told that this is very different
+to wearing ear plugs. Those only attenuate sound from the outside. A silent room kills it completly.
+</P>
+<P class=a>
+This room is horrible to listen to, because it basically features no room reverberation, i.e. it doesn't reflect
+anything at all. It doesn't reveal any information about its size or surface composition.
+</P>
+<P class=a>
+You may be surprised to know that many vocals are actually recorded in similar enviroments.
+Vocal booths are little rooms, in which the walls reflect sound as little as possible.
+During mixing, digital reverbs are used to create a virtual space.
+</P>
+
+<P class=qr>
+Digital Reverbs
+</P>
+<P class=a>
+Audacity for Windows and MacOS8&X includes the VST plugin <B>Freeverb</B>, which is one fine reverb,
+and idealy suited to take your first steps with digital reverbs. It features simple controls that require
+little explanation.
+</P>
+<P class=a>
+For details about Freeverb, check out the <a href="menu_effects.html#freeverb">effects menu</a> page.
+For information on how digital reverbs work and what reverb is, check out <a href="effects_reverb.html">this page</a> of this manual.
+</P>
+
+<P class=qr>
+Keeping effects on seperate tracks
+</P>
+<P class=a>
+You shouldn't use reverbs on original audio tracks. First <a href="menu_edit.html#duplicate">duplicate</a> the audio
+and use the reverb on that duplicate. The reverb should be set to output 100% WET (i.e. 100% effect signal and 0% of the original signal).
+That way, you can control how much reverb should make it in to the final mix, right up until the last minute.
+</P>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="tutorials.html">Back to the Tutorial Page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>
