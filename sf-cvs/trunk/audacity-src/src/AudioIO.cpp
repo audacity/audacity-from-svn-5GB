@@ -247,26 +247,35 @@ void AudioIO::HandleDeviceChange()
    wxString recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
    wxString playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
    int j;
+   
+   // msmeyer: This tries to open the device with the highest samplerate
+   // available on this device, using 44.1kHz as the default, if the info
+   // cannot be fetched.
 
    for(j=0; j<Pa_CountDevices(); j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
+
       if (info->name == playDevice && info->maxOutputChannels > 0)
          playDeviceNum = j;
+
       if (info->name == recDevice && info->maxInputChannels > 0)
          recDeviceNum = j;
    }
+   
+   wxArrayLong supportedSampleRates = GetSupportedSampleRates(playDevice, recDevice);
+   int highestSampleRate = supportedSampleRates[supportedSampleRates.GetCount() - 1];
 
    PortAudioStream *stream;
    int error;
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
                          playDeviceNum, 2, paFloat32, NULL,
-                         44100, 512, 1, paClipOff | paDitherOff,
+                         highestSampleRate, 512, 1, paClipOff | paDitherOff,
                          audacityAudioCallback, NULL);
 
    if( error ) {
       error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
                             paNoDevice, 0, paFloat32, NULL,
-                            44100, 512, 1, paClipOff | paDitherOff,
+                            highestSampleRate, 512, 1, paClipOff | paDitherOff,
                             audacityAudioCallback, NULL);
    }
 
@@ -1189,5 +1198,116 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 #endif
 
    return callbackReturn;
+}
+
+wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDevice)
+{
+   int numDefaultRates = 7;
+   int defaultRates[] = {
+      8000,
+      11025,
+      16000,
+      22050,
+      44100,
+      48000,
+      96000
+   };
+
+   const PaDeviceInfo* playInfo = NULL;
+   const PaDeviceInfo* recInfo = NULL;
+   
+   if (playDevice.IsEmpty())
+      playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+   if (recDevice.IsEmpty())
+      recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
+
+   int i;
+   
+   // msmeyer: Find info structs for playing/recording devices
+   for (i = 0; i < Pa_CountDevices(); i++) {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+      
+      if (info->name == playDevice && info->maxOutputChannels > 0)
+         playInfo = info;
+      if (info->name == recDevice && info->maxInputChannels > 0)
+         recInfo = info;
+   }
+   
+   // msmeyer: Check which sample rates the play device supports
+   wxArrayLong playSampleRates;
+   
+   if (playInfo)
+   {
+      if (playInfo->numSampleRates == -1)
+      {
+         for (i = 0; i < numDefaultRates; i++)
+            if (defaultRates[i] >= playInfo->sampleRates[0] &&
+                defaultRates[i] <= playInfo->sampleRates[1])
+               playSampleRates.Add(defaultRates[i]);
+      } else
+      {
+         for (i = 0; i < playInfo->numSampleRates; i++)
+            playSampleRates.Add((int)playInfo->sampleRates[i]);
+      }
+   }
+
+   if (playSampleRates.IsEmpty())
+   {
+      for (i = 0; i < numDefaultRates; i++)
+         playSampleRates.Add(defaultRates[i]);
+   }
+
+   // msmeyer: Check which sample rates the record device supports
+   wxArrayLong recSampleRates;
+   
+   if (recInfo)
+   {
+      if (recInfo->numSampleRates == -1)
+      {
+         for (i = 0; i < numDefaultRates; i++)
+            if (defaultRates[i] >= recInfo->sampleRates[0] &&
+                defaultRates[i] <= recInfo->sampleRates[1])
+               recSampleRates.Add(defaultRates[i]);
+      } else
+      {
+         for (i = 0; i < recInfo->numSampleRates; i++)
+            recSampleRates.Add((int)recInfo->sampleRates[i]);
+      }
+   }
+ 
+   if (recSampleRates.IsEmpty())
+   {
+      for (i = 0; i < numDefaultRates; i++)
+         recSampleRates.Add(defaultRates[i]);
+   }
+
+   // Return only sample rates which are in both arrays
+   wxArrayLong result;
+   
+   for (i = 0; i < (int)playSampleRates.GetCount(); i++)
+      if (recSampleRates.Index(playSampleRates[i]) != wxNOT_FOUND)
+         result.Add(playSampleRates[i]);
+
+   // If this yields no results, use the default sample rates nevertheless
+   if (result.IsEmpty())
+   {
+      for (i = 0; i < numDefaultRates; i++)
+         result.Add(defaultRates[i]);
+   }
+         
+   return result;
+}
+
+int AudioIO::GetOptimalSupportedSampleRate()
+{
+   wxArrayLong rates = GetSupportedSampleRates();
+
+   if (rates.Index(44100) != wxNOT_FOUND)
+      return 44100;
+
+   if (rates.Index(48000) != wxNOT_FOUND)
+      return 48000;
+
+   return rates[rates.GetCount() - 1];
 }
 

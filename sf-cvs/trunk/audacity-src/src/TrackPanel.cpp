@@ -230,6 +230,7 @@ enum {
    OnRate22ID,
    OnRate44ID,
    OnRate48ID,
+   OnRate96ID,
    OnRateOtherID,
 
    On16BitID,
@@ -261,7 +262,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnChannelLeftID, OnChannelMonoID,
                TrackPanel::OnChannelChange)
     EVT_MENU_RANGE(OnWaveformID, OnPitchID, TrackPanel::OnSetDisplay)
-    EVT_MENU_RANGE(OnRate8ID, OnRate48ID, TrackPanel::OnRateChange)
+    EVT_MENU_RANGE(OnRate8ID, OnRate96ID, TrackPanel::OnRateChange)
     EVT_MENU_RANGE(On16BitID, OnFloatID, TrackPanel::OnFormatChange)
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
@@ -324,6 +325,7 @@ mAutoScrolling(false), mTrackLabel(this)
    mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
    mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
    mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
+   mRateMenu->AppendCheckItem(OnRate96ID, "96000 Hz");
    mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
 
    mFormatMenu = new wxMenu();
@@ -3398,12 +3400,12 @@ void TrackPanel::SetMenuCheck( wxMenu & menu, int newId )
 //  submenu of the track menu, except for "Other" (see OnRateOther).
 //  gRates MUST CORRESPOND DIRECTLY TO THE RATES AS LISTED IN THE MENU!!
 //  IN THE SAME ORDER!!
-const int nRates=6;
-int gRates[nRates] = { 8000, 11025, 16000, 22050, 44100, 48000 };
+const int nRates=7;
+int gRates[nRates] = { 8000, 11025, 16000, 22050, 44100, 48000, 96000 };
 void TrackPanel::OnRateChange(wxEvent & event)
 {
    int id = event.GetId();
-   wxASSERT(id >= OnRate8ID && id <= OnRate48ID);
+   wxASSERT(id >= OnRate8ID && id <= OnRate96ID);
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
 

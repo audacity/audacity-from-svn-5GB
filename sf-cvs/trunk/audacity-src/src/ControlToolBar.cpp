@@ -32,6 +32,7 @@
 
 #include <wx/image.h>
 #include <wx/tooltip.h>
+#include <wx/msgdlg.h>
 
 // For pow() in GetSoundVol()
 #include <math.h>
@@ -600,6 +601,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1)
             success = true;
             p->SetAudioIOToken(token);
             mBusyProject = p;
+         } else
+         {
+            // msmeyer: Show error message if stream could not be opened
+            wxMessageBox(_("Error while opening sound device. Please check the output "
+                           "device settings and the project sample rate."),
+                         _("Error"), wxOK | wxICON_EXCLAMATION, this);
          }
       }
 

@@ -18,6 +18,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 
+#include "AudioIO.h"
 #include "AColor.h"
 
 int GetStatusHeight()
@@ -34,6 +35,7 @@ enum {
    OnRate22ID,
    OnRate44ID,
    OnRate48ID,
+   OnRate96ID,
    OnRateOtherID
 };
 
@@ -47,6 +49,7 @@ BEGIN_EVENT_TABLE(AStatus, wxWindow)
     EVT_MENU(OnRate22ID, AStatus::OnRate22)
     EVT_MENU(OnRate44ID, AStatus::OnRate44)
     EVT_MENU(OnRate48ID, AStatus::OnRate48)
+    EVT_MENU(OnRate96ID, AStatus::OnRate96)
     EVT_MENU(OnRateOtherID, AStatus::OnRateOther)
     END_EVENT_TABLE()
 
@@ -67,7 +70,10 @@ mListener(listener), mBitmap(NULL), mRate(rate)
    mRateMenu->AppendCheckItem(OnRate22ID, "22050 Hz");
    mRateMenu->AppendCheckItem(OnRate44ID, "44100 Hz");
    mRateMenu->AppendCheckItem(OnRate48ID, "48000 Hz");
+   mRateMenu->AppendCheckItem(OnRate96ID, "96000 Hz");
    mRateMenu->AppendCheckItem(OnRateOtherID, _("Other..."));
+
+   UpdateRates();
 
    mRateField.x = 0;
    mRateField.y = 0;
@@ -105,6 +111,19 @@ void AStatus::SetRate(double rate)
 void AStatus::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
+
+   // msmeyer: Update check status of rates
+   mRateMenu->Check(OnRate8ID, mRate == 8000);
+   mRateMenu->Check(OnRate11ID, mRate == 11025);
+   mRateMenu->Check(OnRate16ID, mRate == 16000);
+   mRateMenu->Check(OnRate22ID, mRate == 22050);
+   mRateMenu->Check(OnRate44ID, mRate == 44100);
+   mRateMenu->Check(OnRate48ID, mRate == 48000);
+   mRateMenu->Check(OnRate96ID, mRate == 96000);
+   mRateMenu->Check(OnRateOtherID,
+      mRate != 8000 && mRate != 11025 && mRate != 16000 &&
+      mRate != 22050 && mRate != 44100 && mRate != 48000 &&
+      mRate != 96000);
 
    int width, height;
    GetSize(&width, &height);
@@ -254,6 +273,13 @@ void AStatus::OnRate48(wxCommandEvent & WXUNUSED(event))
    Refresh(false);
 }
 
+void AStatus::OnRate96(wxCommandEvent & WXUNUSED(event))
+{
+   mRate = 96000.0;
+   mListener->AS_SetRate(mRate);
+   Refresh(false);
+}
+
 void AStatus::OnRateOther(wxCommandEvent & WXUNUSED(event))
 {
    wxString defaultStr;
@@ -273,3 +299,17 @@ void AStatus::OnRateOther(wxCommandEvent & WXUNUSED(event))
          wxMessageBox(_("Invalid rate."));
    }
 }
+
+void AStatus::UpdateRates()
+{
+   wxArrayLong rates = AudioIO::GetSupportedSampleRates();
+
+   mRateMenu->Enable(OnRate8ID, rates.Index(8000) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate11ID, rates.Index(11025) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate16ID, rates.Index(16000) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate22ID, rates.Index(22050) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate44ID, rates.Index(44100) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate48ID, rates.Index(48000) != wxNOT_FOUND);
+   mRateMenu->Enable(OnRate96ID, rates.Index(96000) != wxNOT_FOUND);
+}
+

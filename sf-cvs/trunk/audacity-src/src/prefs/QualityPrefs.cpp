@@ -19,29 +19,12 @@
 #include "../Prefs.h"
 #include "../SampleFormat.h"
 #include "../Dither.h"
+#include "../AudioIO.h"
 #include "QualityPrefs.h"
 
 #if USE_LIBSAMPLERATE
 #include <samplerate.h>
 #endif
-
-int rates[] = { 8000,
-   11025,
-   16000,
-   22050,
-   44100,
-   48000,
-   44100
-};
-
-wxString stringRates[] = { "8000 Hz",
-   "11025 Hz",
-   "16000 Hz",
-   "22050 Hz",
-   "44100 Hz",
-   "48000 Hz",
-   "Other"
-};
 
 int formats[] = {
    int16Sample,
@@ -55,7 +38,6 @@ wxString stringFormats[] = {
    "32-bit float"
 };
 
-#define NUM_RATES 6
 #define NUM_FORMATS 3
 
 #define ID_SAMPLE_RATE_CHOICE           7001
@@ -68,14 +50,21 @@ QualityPrefs::QualityPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    int i;
+   
+   // XXX: This should use a previously changed, but not yet saved
+   //      sound card setting from the "I/O" preferences tab.
+   wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();
+   
    int rate =
-       gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100);
+       gPrefs->Read("/SamplingRate/DefaultProjectSampleRate",
+                    AudioIO::GetOptimalSupportedSampleRate());
+
    int format =
       gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
 
-   int pos = NUM_RATES;     // Fall back to other
-   for (i = 0; i < NUM_RATES; i++)
-      if (rate == rates[i]) {
+   int pos = sampleRates.GetCount(); // Fall back to "Other..."
+   for (i = 0; i < (int)sampleRates.GetCount(); i++)
+      if (rate == sampleRates[i]) {
          pos = i;
          break;
       }
@@ -93,9 +82,19 @@ PrefsPanel(parent)
       topSizer->Add(
          new wxStaticText(this, -1, _("Default Sample Rate:")), 0, 
          wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+         
+      wxString *stringRates = new wxString[sampleRates.GetCount() + 1];
+      
+      for (i = 0; i < (int)sampleRates.GetCount(); i++)
+      {
+         int sampleRate = (int)sampleRates[i];
+         stringRates[i] = wxString::Format("%i Hz", sampleRate);
+      }
+      
+      stringRates[sampleRates.GetCount()] = _("Other...");
 
       mSampleRates = new wxChoice(this, ID_SAMPLE_RATE_CHOICE, wxDefaultPosition, wxDefaultSize,
-                                 NUM_RATES+1, stringRates);
+                                 (int)sampleRates.GetCount() + 1, stringRates);
       mSampleRates->SetSelection(pos);
 
       topSizer->Add( mSampleRates, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
@@ -105,7 +104,7 @@ PrefsPanel(parent)
          this, -1, wxString::Format("%i", rate),
          wxDefaultPosition, wxSize(50, -1), 0 );
 
-      mOtherSampleRate->Enable(pos == NUM_RATES);
+      mOtherSampleRate->Enable(pos == (int)sampleRates.GetCount() + 1);
 
       topSizer->Add( mOtherSampleRate, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    }
@@ -227,8 +226,10 @@ bool QualityPrefs::Apply()
    int sel = mSampleRates->GetSelection();
    int fmtsel = mSampleFormats->GetSelection();
    
-   if(sel < NUM_RATES) rate = rates[sel];
-   else (mOtherSampleRate->GetValue()).ToLong(&rate);
+   if (sel < mSampleRates->GetCount()-1)
+      (mSampleRates->GetString(sel)).ToLong(&rate);
+   else
+      (mOtherSampleRate->GetValue()).ToLong(&rate);
 
    gPrefs->Write("/SamplingRate/DefaultProjectSampleRate", rate);
 
@@ -262,7 +263,7 @@ void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)
 {
    int sel = mSampleRates->GetSelection();
 
-   mOtherSampleRate->Enable(sel == NUM_RATES);
+   mOtherSampleRate->Enable(sel == mSampleRates->GetCount() - 1);
 }
 
 
