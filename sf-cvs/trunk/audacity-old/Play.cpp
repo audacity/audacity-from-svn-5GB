@@ -138,11 +138,10 @@ void SoundPlayer::OnTimer()
       return;
     }
 
-    float vol = gAPalette->GetSoundVol();
-
     int i;
 
 	Mixer *mixer = new Mixer(2, maxFrames, true);
+	mixer->UseVolumeSlider(true);
 	mixer->Clear();
 
     VTrack *vt = mTracks->First();
