@@ -80,23 +80,27 @@ bool MP3Exporter::Verify()
 bool MP3Exporter::Export(const wxString & filename)
 {
 
+
+ 
   mFileName = filename;
 
   TrackList *tracks = mProject->GetTracks();
-  bool success = ValidLibraryLoaded();
-   
-  if (!success)
-    return false;
 
-  success = LoadLibrary();
-  if (!success) {
-    wxMessageBox(_("Could not open MP3 encoding library!"));
-    gPrefs->Write("/MP3/MP3LibPath", wxString(""));
+ 
+  // if (!success)
+  //  return false;
+
+  //  success = LoadLibrary();
+  //  if (!success) {
+  //   wxMessageBox(_("Could not open MP3 encoding library!"));
+  //  gPrefs->Write("/MP3/MP3LibPath", wxString(""));
     
-    return false;
-  }
+  //  return false;
+  //  }
 
-  if(!ValidLibraryLoaded()) {
+  
+  bool success = ValidLibraryLoaded();   
+  if(!success) {
     wxMessageBox(_("Not a valid or supported MP3 encoding library!"));      
     gPrefs->Write("/MP3/MP3LibPath", wxString(""));
     
@@ -326,11 +330,14 @@ PlatformMP3Exporter::PlatformMP3Exporter(AudacityProject * project, double t0, d
   mLibraryLoaded(false),
   mEncoding(false)
 {
+
   if(LoadLibrary())
     {
       SetBitRate(bitrate);
-      //      SetQuality(quality);
+      SetQuality(quality);
     }
+
+
 }
 
 PlatformMP3Exporter::~PlatformMP3Exporter()
@@ -439,7 +446,7 @@ int PlatformMP3Exporter::InitializeStream()
   if(!mLibraryLoaded) return -1;
   
   lame_set_num_channels(mGF, mChannels);
-  lame_set_in_samplerate(mGF,mOutRate);
+  lame_set_in_samplerate(mGF,(int)(mInRate+.5));
   
   lame_init_params(mGF);
   
@@ -515,8 +522,13 @@ PlatformMP3Exporter::PlatformMP3Exporter(AudacityProject * project, double t0, d
 }
          
 PlatformMP3Exporter::~PlatformMP3Exporter()
-{
+{ 
+  if(lame_enc_lib.IsLoaded())
+    {
+      lame_enc_lib.Unload();
+    }
 }
+
 wxString PlatformMP3Exporter::GetLibraryPath()
 {
   return "";
@@ -688,7 +700,7 @@ int PlatformMP3Exporter::InitializeStream()
   if(!mLibraryLoaded) return -1;
 
   lame_set_num_channels(mGF, mChannels);
-  lame_set_in_samplerate(mGF,mOutRate);
+  lame_set_in_samplerate(mGF,mInRate);
 
   lame_init_params(mGF);
 
@@ -855,7 +867,7 @@ int  PlatformMP3Exporter::InitializeStream()
   if(!mLibraryLoaded) return -1;
 
   mGF->num_channels = mChannels;
-  mGF->in_samplerate = (double)mOutRate;
+  mGF->in_samplerate = (double)mInRate;
   mGF->out_samplerate =  (double)mOutRate;
   mGF->num_samples = 0;
          
