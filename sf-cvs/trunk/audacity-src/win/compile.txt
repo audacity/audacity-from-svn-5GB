@@ -98,27 +98,27 @@ MSVC++ STEP 4:  Set wxWidgets location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWidgets.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWidgets-2.4.2\include")
-    2.  Resource Directory (e.g., "C:\wxWidgets-2.4.2\include")
-    3.  Library Directory (e.g., "C:\wxWidgets-2.4.2\lib")
+    1.  Include Directory (e.g., "C:\wxWidgets-2.5.3\include")
+    2.  Resource Directory (e.g., "C:\wxWidgets-2.5.3\include")
+    3.  Library Directory (e.g., "C:\wxWidgets-2.5.3\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
 look in the Windows help system. You want to create an 
-environment variable WXWIN, set to the top-level directory 
+environment variable wxWidgetsDir, set to the top-level directory 
 where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWidgets-2.4.2
+   set wxWidgetsDir=C:\wxWidgets-2.5.3
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
 
-   $(WXWIN)\include
+   $(wxWidgetsDir)\include
 
-that get interpreted as, e.g., "C:\wxWidgets-2.4.2\include".
+that get interpreted as, e.g., "C:\wxWidgets-2.5.3\include".
 
-Once you have set the WXWIN environment variable correctly, 
+Once you have set the wxWidgetsDir environment variable correctly, 
 the Audacity project file's declarations will do the rest.
 
 -----------------------
