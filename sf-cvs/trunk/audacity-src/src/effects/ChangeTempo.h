@@ -50,7 +50,8 @@ class EffectChangeTempo:public EffectSoundTouch {
    virtual bool Init();
 
    virtual bool PromptUser();
-   
+   virtual bool Process();
+  
  private:
    double			m_PercentChange;	// percent change to apply to tempo
 												// -100% is meaningless, but sky's the upper limit
