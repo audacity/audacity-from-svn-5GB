@@ -12,6 +12,7 @@
 **********************************************************************/
 
 #include "../Audacity.h" // for USE_SOUNDTOUCH
+#include "../Internat.h"
 
 #if USE_SOUNDTOUCH
 
@@ -348,8 +349,7 @@ bool ChangeTempoDialog::TransferDataFromWindow()
 	// percent change controls
    if (m_pTextCtrl_PercentChange) {
       str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue;
-      str.ToDouble(&newValue);
+      double newValue = Internat::ToDouble(str);
 		m_PercentChange = newValue;
 	}
 
@@ -389,8 +389,7 @@ void ChangeTempoDialog::OnText_PercentChange(wxCommandEvent & event)
 
    if (m_pTextCtrl_PercentChange) {
       wxString str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue;
-      str.ToDouble(&newValue);
+      double newValue = Internat::ToDouble(str);
 		m_PercentChange = newValue;
 
       m_bLoopDetect = true;
@@ -473,8 +472,7 @@ void ChangeTempoDialog::OnText_ToLength(wxCommandEvent & event)
 
    if (m_pTextCtrl_ToLength) {
       wxString str = m_pTextCtrl_ToLength->GetValue();
-      double newValue;
-      str.ToDouble(&newValue);
+      double newValue = Internat::ToDouble(str);
 		m_ToLength = newValue;
 
 		m_PercentChange = ((m_FromLength * 100.0) / m_ToLength) - 100.0;

@@ -66,6 +66,7 @@
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
+#include "Internat.h"
 #include "import/Import.h"
 #include "LabelTrack.h"
 #include "Legacy.h"
@@ -1800,10 +1801,10 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       }
 
       if (!strcmp(attr, "sel0"))
-         wxString(value).ToDouble(&mViewInfo.sel0);
+         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel0);
 
       if (!strcmp(attr, "sel1"))
-         wxString(value).ToDouble(&mViewInfo.sel1);
+         Internat::CompatibleToDouble(wxString(value), &mViewInfo.sel1);
 
       long longVpos;
       if (!strcmp(attr, "vpos"))
@@ -1811,13 +1812,13 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       mViewInfo.vpos = longVpos;
 
       if (!strcmp(attr, "h"))
-         wxString(value).ToDouble(&mViewInfo.h);
+         Internat::CompatibleToDouble(wxString(value), &mViewInfo.h);
 
       if (!strcmp(attr, "zoom"))
-         wxString(value).ToDouble(&mViewInfo.zoom);
+         Internat::CompatibleToDouble(wxString(value), &mViewInfo.zoom);
 
       if (!strcmp(attr, "rate")) {
-         wxString(value).ToDouble(&mRate);
+         Internat::CompatibleToDouble(wxString(value), &mRate);
          mStatus->SetRate(mRate);
       }
    } // while

@@ -52,6 +52,7 @@
 #include "Project.h"
 #include "Sequence.h"
 #include "WaveTrack.h"
+#include "Internat.h"
 #include "prefs/PrefsDialog.h"
 
 class ToolBar;
@@ -263,6 +264,9 @@ END_EVENT_TABLE()
 // main frame
 bool AudacityApp::OnInit()
 {
+   // Initialize internationalisation (numbers etc. aspect)
+   Internat::Init();
+
    // Unused strings that we want to be translated, even though
    // we're not using them yet...
    wxString future1 = _("Master Gain Control");

@@ -23,6 +23,7 @@
 #include <wx/pen.h>
 
 #include "xml/XMLTagHandler.h"
+#include "Internat.h"
 
 class wxRect;
 class wxDC;
@@ -44,9 +45,9 @@ struct EnvPoint : public XMLTagHandler {
             const char *attr = *attrs++;
             const char *value = *attrs++;
             if (!strcmp(attr, "t"))
-               t = atof(value);
+               t = Internat::CompatibleToDouble(value);
             else if (!strcmp(attr, "val"))
-               val = atof(value);
+               val = Internat::CompatibleToDouble(value);
          }
          return true;
       }

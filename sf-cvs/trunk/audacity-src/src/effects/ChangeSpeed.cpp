@@ -22,6 +22,7 @@
 
 #include "../Envelope.h"
 #include "../Prefs.h"
+#include "../Internat.h"
 #include "ChangeSpeed.h"
 
 //
@@ -471,8 +472,7 @@ bool ChangeSpeedDialog::TransferDataFromWindow()
 	// percent change controls
    if (m_pTextCtrl_PercentChange) {
       str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue;
-      str.ToDouble(&newValue);
+      double newValue = Internat::ToDouble(str);
 		m_PercentChange = newValue;
 	}
 
@@ -499,8 +499,7 @@ void ChangeSpeedDialog::OnText_PercentChange(wxCommandEvent & event)
 
    if (m_pTextCtrl_PercentChange) {
       wxString str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue;
-      str.ToDouble(&newValue);
+      double newValue = Internat::ToDouble(str);
 		m_PercentChange = newValue;
 
       m_bLoopDetect = true;

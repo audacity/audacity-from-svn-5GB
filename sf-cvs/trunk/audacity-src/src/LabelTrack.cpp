@@ -18,6 +18,7 @@
 
 #include "LabelTrack.h"
 #include "DirManager.h"
+#include "Internat.h"
 
 LabelTrack *TrackFactory::NewLabelTrack()
 {
@@ -317,7 +318,7 @@ void LabelTrack::Import(wxTextFile & in)
          i++;
 
       s = currentLine.Left(i);
-      if (!s.ToDouble(&t))
+      if (!Internat::CompatibleToDouble(s, &t))
          return;
 
       while (i < len
@@ -352,10 +353,10 @@ bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          if (!strcmp(attr, "t"))
-            wxString(value).ToDouble(&l->t);
+            Internat::CompatibleToDouble(wxString(value), &l->t);
          else if (!strcmp(attr, "t1")) {
             has_t1 = true;
-            wxString(value).ToDouble(&l->t1);
+            Internat::CompatibleToDouble(wxString(value), &l->t1);
          }
          else if (!strcmp(attr, "title"))
             l->title = value;
@@ -443,7 +444,7 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 
    for (i = 0; i < len; i++) {
       LabelStruct *l = new LabelStruct();
-      if (!(in->GetNextLine().ToDouble(&l->t)))
+      if (!Internat::CompatibleToDouble(in->GetNextLine(), &l->t))
          return false;
       // Legacy file format does not include label end-times.
       l->t1 = l->t;

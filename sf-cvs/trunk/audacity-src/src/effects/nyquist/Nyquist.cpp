@@ -20,6 +20,8 @@
 #include "../../Audacity.h"
 #include "../../AudacityApp.h"
 #include "../../LabelTrack.h"
+#include "../../Internat.h"
+
 #include "Nyquist.h"
 
 #include <wx/arrimpl.cpp>
@@ -67,11 +69,8 @@ double EffectNyquist::GetCtrlValue(wxString s)
       TrackListIterator iter(mWaveTracks);
       return ((WaveTrack *)iter.First())->GetRate();
    }
-   else {
-      double d;
-      s.ToDouble(&d);
-      return d;
-   }
+   else
+      return Internat::ToDouble(s);
 }
 
 void EffectNyquist::Parse(wxString line)
@@ -432,18 +431,9 @@ bool EffectNyquist::ProcessOne()
 
    wxString cmd;
    for(unsigned int j=0; j<mControls.GetCount(); j++)
-   {
-      // msmeyer: Some internationalized versions of wxString::Format() use
-      //          a comma for the decimal point. This will confuse Nyquist,
-      //          so fix it.
-      wxString valueString;
-      valueString.Printf("%f", mControls[j].val);
-      valueString.Replace(",", ".");
-      
-      cmd = cmd+wxString::Format("(setf %s %s)\n",
+      cmd = cmd+wxString::Format("(setf %s %f)\n",
                                  (const char *)mControls[j].var,
-                                 (const char *)valueString);
-   }
+                                 mControls[j].val);
    
    cmd += mCmd;
 
@@ -662,11 +652,11 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
       wxString valStr;
       if (ctrl->type == 1) {
          if (ctrl->high - ctrl->low < 1)
-            valStr.Printf("%.3f", ctrl->val);
+	    valStr = Internat::ToString(ctrl->val, 3);
          else if (ctrl->high - ctrl->low < 10)
-            valStr.Printf("%.2f", ctrl->val);
+	    valStr = Internat::ToString(ctrl->val, 2);
          else if (ctrl->high - ctrl->low < 100)
-            valStr.Printf("%.1f", ctrl->val);
+	    valStr = Internat::ToString(ctrl->val, 1);
          else
             valStr.Printf("%d", (int)floor(ctrl->val + 0.5));
       }
@@ -692,7 +682,7 @@ void NyquistDialog::OnText(wxCommandEvent & /* event */)
       wxASSERT(slider && text);
 
       wxString valStr = text->GetValue();
-      valStr.ToDouble(&ctrl->val);
+      Internat::ToDouble(valStr, &ctrl->val);
       int pos = (int)floor((ctrl->val - ctrl->low) /
                            (ctrl->high - ctrl->low) * ctrl->ticks + 0.5);
       if (pos < 0)

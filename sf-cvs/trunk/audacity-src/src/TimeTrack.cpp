@@ -14,6 +14,7 @@
 #include "TimeTrack.h"
 #include "widgets/Ruler.h"
 #include "Prefs.h"
+#include "Internat.h"
 
 #if USE_LIBSAMPLERATE
 #include <samplerate.h>
@@ -116,7 +117,7 @@ bool TimeTrack::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          else if (!strcmp(attr, "offset")) {
-            wxString(value).ToDouble(&mOffset);
+            Internat::CompatibleToDouble(wxString(value), &mOffset);
             mEnvelope->SetOffset(mOffset);
          }else if (!strcmp(attr, "name"))
             mName = value;

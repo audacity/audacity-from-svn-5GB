@@ -15,6 +15,7 @@
 
 #include <wx/dcscreen.h>
 
+#include "../Internat.h"
 #include "Ruler.h"
 
 
@@ -387,17 +388,14 @@ wxString Ruler::LabelString(double d, bool major)
       if (mMinor >= 1.0)
          s.Printf("%d", (int)floor(d+0.5));
       else {
-         s.Printf("%.1f", d);
+         s = Internat::ToString(d, 1);
       }
       break;
    case RealFormat:
       if (mMinor >= 1.0)
          s.Printf("%d", (int)floor(d+0.5));
-      else {
-         wxString format;
-         format.Printf("%%.%dlf", mDigits);
-         s.Printf(format, d);
-      }
+      else
+         s = Internat::ToString(d, mDigits);
       break;
    case TimeFormat:
       if (major) {

@@ -15,6 +15,7 @@
 
 #include "Echo.h"
 #include "../WaveTrack.h"
+#include "../Internat.h"
 
 EffectEcho::EffectEcho()
 {
@@ -276,12 +277,12 @@ bool EchoDialog::TransferDataFromWindow()
 	wxString str;
    if (m_pTextCtrl_Delay) {
       str = m_pTextCtrl_Delay->GetValue();
-      str.ToDouble(&newValue);
+      newValue = Internat::ToDouble(str);
 		delay = (float)(newValue);
 	}
    if (m_pTextCtrl_Decay) {
       str = m_pTextCtrl_Decay->GetValue();
-      str.ToDouble(&newValue);
+      newValue = Internat::ToDouble(str);
 		decay = (float)(newValue);
 	}
    return true;

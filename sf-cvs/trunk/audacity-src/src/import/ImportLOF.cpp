@@ -70,7 +70,7 @@
 #include "../FileFormats.h"
 #include "../Prefs.h"
 #include "../WaveTrack.h"
-
+#include "../Internat.h"
 
 class LOFImportPlugin : public ImportPlugin
 {
@@ -257,7 +257,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             if (tok.HasMoreTokens())
                tokenholder = tok.GetNextToken();
             
-            if (tokenholder.ToDouble(&scrollOffset))
+            if (Internat::CompatibleToDouble(tokenholder, &scrollOffset))
             {
                callScrollOffset = true;
             }
@@ -278,7 +278,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
             if (tok.HasMoreTokens())
                tokenholder = tok.GetNextToken();
             
-            if (tokenholder.ToDouble(&durationFactor))
+            if (Internat::CompatibleToDouble(tokenholder, &durationFactor))
             {
                callDurationFactor = true;
             }
@@ -345,7 +345,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                tokenholder = tok.GetNextToken();
             double offset;
             
-            if (tokenholder.ToDouble(&offset))
+            if (Internat::CompatibleToDouble(tokenholder, &offset))
             {
                Track *t;
                TrackListIterator iter(mProject->GetTracks());

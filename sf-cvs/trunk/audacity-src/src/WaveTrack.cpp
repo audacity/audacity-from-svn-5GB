@@ -20,6 +20,7 @@
 #include "Spectrum.h"
 
 #include "Prefs.h"
+#include "Internat.h"
 
 #include "AudioIO.h"
 
@@ -875,19 +876,19 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          if (!strcmp(attr, "rate"))
-            wxString(value).ToDouble(&mRate);
+            Internat::CompatibleToDouble(wxString(value), &mRate);
          else if (!strcmp(attr, "offset")) {
-            wxString(value).ToDouble(&mOffset);
+            Internat::CompatibleToDouble(wxString(value), &mOffset);
             mEnvelope->SetOffset(mOffset);
          }
          else if (!strcmp(attr, "gain")) {
             double d;
-            wxString(value).ToDouble(&d);
+            Internat::CompatibleToDouble(wxString(value), &d);
             mGain = d;
          }
          else if (!strcmp(attr, "pan")) {
             double d;
-            wxString(value).ToDouble(&d);
+            Internat::CompatibleToDouble(wxString(value), &d);
             if (d >= -1.0 && d <= 1.0)
                mPan = d;
          }
