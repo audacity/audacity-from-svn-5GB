@@ -16,6 +16,7 @@
 
 #include <wx/app.h>
 #include "AudacityFileHistory.h"
+#include "ToolBar.h"
 
 class wxLocale;
 class wxSingleInstanceChecker;
