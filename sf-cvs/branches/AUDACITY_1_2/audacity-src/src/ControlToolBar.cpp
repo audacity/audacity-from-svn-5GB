@@ -381,7 +381,7 @@ void ControlToolBar::MakeButtons()
    int buttonOrder[6];
    mButtonPos = 95;
    
-   gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, true);
+   gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, false);
 
    if (mErgonomicTransportButtons)
    {
