@@ -10,6 +10,19 @@ BoxTop($linksStr);
 
 <p>
 <font size=+1>
+Other Things Named Audacity (unaffiliated with us)
+</font>
+</p>
+
+<ul>
+<li><a href="http://www.audiost.com/advr.htm">Audacity Digital Voice Recorder by Audio Storage Technologies</a>
+<li><a href="http://www.audacity.org">Audacity.org, a research company for construction industry professionals</a>
+<li><a href="http://kotinetti.suomi.net/jakke/audacity/">Audacity, a street-rock band</a>
+<li><a href="http://www.audacity.com">Audacity, Inc. builds custom enterprise and departmental Windows applications based on proven technology from Microsoft.</a>
+</ul>
+
+<p>
+<font size=+1>
 Links to Other Audio Editors
 </font>
 </p>
