@@ -681,16 +681,24 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
 
    while (n) {
       if (n->selected) {
+         double sel0 = mViewInfo.sel0;
+         double sel1 = mViewInfo.sel1;
+         
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->linked = n->linked;
-            dest->tOffset = mViewInfo.sel0;
-            newTracks.Add(dest);
+            dest->tOffset = wxMax(sel0, n->tOffset);
 
-            if (mViewInfo.sel1 >= n->GetMaxLen())
-               n->Clear(mViewInfo.sel0, mViewInfo.sel1);
+            if (sel1 >= n->GetMaxLen())
+               n->Clear(sel0, sel1);
+            else if (sel0 <= n->tOffset) {
+               n->Clear(sel0, sel1);
+               n->tOffset = sel1;
+            }
             else
-               n->Silence(mViewInfo.sel0, mViewInfo.sel1);
+               n->Silence(sel0, sel1);
+
+            newTracks.Add(dest);
          }
       }
       n = iter.Next();
