@@ -1,0 +1,1 @@
+<font size=+1>Audacity byla na SourceForge vyhlášena <a href="http://sourceforge.net/potm/potm-2004-07.php">Projektem mìsíce</a> pro èervenec 2004!</font>
