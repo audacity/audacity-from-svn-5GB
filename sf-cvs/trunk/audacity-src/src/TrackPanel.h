@@ -122,6 +122,7 @@ const int DragThreshold = 3;// Anything over 3 pixels is a drag, else a click.
 class TrackPanel:public wxPanel {
  public:
 
+
    TrackPanel(wxWindow * parent,
               wxWindowID id,
               const wxPoint & pos,
@@ -373,21 +374,28 @@ private:
    int mInitialUpperTrackHeight;
    bool mAutoScrolling;
 
-   bool mIsVZooming;
-   bool mIsClosing;
-   bool mIsSelecting;
-   bool mIsAdjustingLabel;
-   bool mIsResizing;
-   bool mIsResizingBelowLinkedTracks;
-   bool mIsResizingBetweenLinkedTracks;
-   bool mIsRearranging;
-   bool mIsSliding;
-   bool mIsEnveloping;
-   bool mIsMuting;
-   bool mIsSoloing;
-   bool mIsGainSliding;
-   bool mIsPanSliding;
-   bool mIsMinimizing;
+   enum   MouseCaptureEnum
+   {
+      IsUncaptured=0,   // This is the normal state for the mouse
+      IsVZooming,
+      IsClosing,
+      IsSelecting,
+      IsAdjustingLabel,
+      IsResizing,
+      IsResizingBetweenLinkedTracks,
+      IsResizingBelowLinkedTracks,
+      IsRearranging,
+      IsSliding,
+      IsEnveloping,
+      IsMuting,
+      IsSoloing,
+      IsGainSliding,
+      IsPanSliding,
+      IsMinimizing
+   };
+
+   enum MouseCaptureEnum mMouseCapture;
+   void SetCapturedTrack( Track * t, enum TrackPanel::MouseCaptureEnum MouseCapture=IsUncaptured );
    bool mAdjustSelectionEdges;
    bool mSlideUpDownOnly;
 

@@ -27,6 +27,7 @@
 #include <wx/gdicmn.h>
 #include <wx/image.h>
 #include <wx/pen.h>
+#include <wx/log.h>
 
 #include "allegro.h"
 
@@ -658,13 +659,16 @@ void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
    double rate = clip->GetRate();
    sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
+   sampleCount snSamples = clip->GetNumSamples(); 
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    
    slen += 4;
 
-   if (s0 + slen > clip->GetNumSamples())
-      slen = clip->GetNumSamples() - s0;
-   
+   if( s0 > snSamples )
+      return;
+   if (s0 + slen > snSamples)
+      slen = snSamples - s0;
+
    float *buffer = new float[slen];
    clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
 
@@ -1075,10 +1079,9 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
       int x;
-
+      float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
-         float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
          
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
                                  mid.height, dB, true, dBr, false);
@@ -1097,7 +1100,6 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
          DrawEnvLine(dc, mid, x, envBottom, false);
       }
    }
-
    // Draw arrows on the left side if the track extends to the left of the
    // beginning of time.  :)
    if (h == 0.0 && tOffset < 0.0) {
