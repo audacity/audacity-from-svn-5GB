@@ -59,6 +59,7 @@ $creditsStr =          "Credits";
 
 $sourceStr =           "Source Code";
 $linuxStr =            "Linux Binary";
+$linuxStr2 =           "This is a static binary, which should work on any Linux distribution.  Just uncompress and run the 'audacity' binary from any directory, or run 'make install' as root to install the program.";
 
 $macOS9ReqStr =        "Requires Mac OS 8.6 or higher";
 $macOSXReqStr =        "Requires Mac OS X 10.1 or higher";

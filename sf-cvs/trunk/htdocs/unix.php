@@ -65,6 +65,7 @@
 <?php print "($linux386Str, $linux386StableSize)"; ?>
 </td>
 </tr>
+<p><?php print "$linuxStr2"; ?></p>
 
 </table>
 
