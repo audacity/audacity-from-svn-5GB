@@ -596,7 +596,10 @@ bool Sequence::AppendBlock(SeqBlock * b)
    newBlock->min = b->min;
    newBlock->max = b->max;
    newBlock->rms = b->rms;
-   mDirManager->Ref(newBlock->f);
+
+   //Don't need to Ref because it was done by CopyBlockFile, above...
+   //mDirManager->Ref(newBlock->f);
+
    mBlock->Add(newBlock);
    mNumSamples += newBlock->len;
 
