@@ -23,13 +23,14 @@ class DirManager;
 class WaveTrack;
       
 
+#define SAMPLES_PER_RUN 8192
 
 class OggExporter: public Exporter
 {
  public:
   OggExporter(AudacityProject * project, double t0, double t1,
 	      bool exportSelection, int mRate, 
-	      int channels);
+	      int channels, double quality);
   
   ~OggExporter();
   

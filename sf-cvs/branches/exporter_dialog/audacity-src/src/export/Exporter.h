@@ -28,7 +28,7 @@ class Exporter
 {
  public:
   Exporter(AudacityProject * project, double t0, double t1,
-	   bool exportSelection, int rate, int channels);
+	   bool exportSelection, int outrate, int channels);
   virtual ~Exporter();
   virtual bool Verify();
   virtual bool Export(const wxString & filename){mFileName = filename; return false;};       //This method needs to be overridden.

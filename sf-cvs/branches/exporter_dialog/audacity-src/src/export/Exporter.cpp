@@ -22,13 +22,13 @@
 
 
 Exporter::Exporter(AudacityProject * project,  double t0, double t1,
-		   bool exportSelection, int rate, int channels):
+		   bool exportSelection, int outrate, int channels):
   mProject(project),
   mChannels(channels),
   m_t0(t0),
   m_t1(t1),
   mExportSelection(exportSelection),
-  mOutRate(rate),
+  mOutRate(outrate),
   mInRate(project->GetRate())
 {
 }

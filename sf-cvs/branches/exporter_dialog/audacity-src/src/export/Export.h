@@ -18,6 +18,7 @@ class wxChoice;
 class wxCheckBox;
 class wxFrame;
 class wxRadioButton;
+class wxSlider;
 
 bool Export(AudacityProject *project,
             bool selectionOnly, double t0, double t1);
@@ -83,7 +84,7 @@ class  FormatSelectionDialog: public wxDialog
   wxChoice       * mChannelChooser;
   wxChoice       * mSampleRates;  
   wxTextCtrl     * mOtherSampleRate;
-  wxRadioButton  * mLossyBitrate;
+  wxSlider       * mQualitySlider;
   wxButton       * mOK;
   wxButton       * mCancel;
   wxBoxSizer     * mainSizer;
