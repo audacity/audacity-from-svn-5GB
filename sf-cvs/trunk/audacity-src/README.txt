@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0-pre1
+Version 1.2.0-pre2
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -227,38 +227,62 @@ also supported) please email audacity-help@lists.sourceforge.net
 
 Known issues/problems:
 
-  * The user's manual is still under construction.  Updates for
-    Audacity 1.2 are about 75% complete.  There may be some missing
-    or incomplete pages.
-
-  * Audacity may crash if audio is edited while the program is
-    playing or recording.
-
-  * (MacOS X only?) If you select Quit, but then cancel the Quit operation,
-    then the Quit and Preferences commands stop working.
-
-  * The volume sliders in the mixer toolbar may reset the volume whenever
-    the program starts, on some systems.
-
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
-
-  * Audacity crashes when trying to convert to a sample rate more than 12
-    times faster or slower than the original rate.
 
   * Recording in full duplex (play existing tracks while recording) on some
     Linux systems causes the recording to sound slowed-down.
 
-  * MacOS X only:  The Find Zero Crossings command has "Command-Z" listed as
-    the shortcut, but the actual shortcut is "Z".  The shortcuts for "Online
-    Help" and "Open" conflict.
-
-  * MacOS X only: For audio with zero amplitude, Audacity may display nothing
-    (instead of thin straight line).
+  * MacOS X only: Audacity cannot work with files or folders that
+    are contained inside folders with international characters
+    (accent marks, etc.) in their names.  Note that files with
+    accented characters work, and Audacity projects with
+    accented characters work.  Only files inside of folders
+    with accented characters in their names will cause problems.
 
 -------------------------------------------------------------
 
-New features in Audacity 1.2.0:
+Changes in 1.2.0-pre2:
+
+  * Online help completed.  The full manual is nearly complete
+    and will be posted to the website for online browsing shortly.
+
+  * Audacity will no longer let you do unsafe editing operations
+    while playing or recording.  This eliminates many potential
+    crashes.
+
+  * Fixed ability to cancel Quit button.
+
+  * New resampling library, with no restrictions on the maximum or
+    minimum rate of resampling.
+
+  * Audacity now supports LADSPA plug-ins on all platforms, and
+    supports VST plug-ins through an optional LADSPA plug-in
+    called the "VST Enabler", which you can download separately.
+    Because of licensing issues, Audacity cannot be distributed
+    with VST support built-in.
+
+  * Mac OS X keyboard shortcut problems have been fixed.
+
+  * Mac OS X audio muting problems have been fixed.
+
+  * Silence now displays a straight line again, instead of nothing.
+
+  * Added a vertical ruler to the Waveform dB display.
+
+  * Fixed crash in Change Pitch.
+
+  * You can now Paste if nothing is selected.
+
+  * Canceling an Import operation doesn't cause an extra error
+    dialog to appear.
+
+  * Audacity now handles filenames with international characters
+    correctly.
+
+  * Minor improvements to build system on Unix systems.
+
+New features in Audacity 1.2:
   * User Interface
     - Vertical zooming of tracks.
     - Improved look and placement of toolbars.
