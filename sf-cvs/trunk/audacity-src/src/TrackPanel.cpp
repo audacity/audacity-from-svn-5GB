@@ -3006,8 +3006,11 @@ void TrackPanel::DisplaySelection()
    //                   (only applicable for projects with rate = 44100)
    //
    // iformat is a global variable defined near the top of
-   // TrackPanel.cpp to a default value of 1.  When event handler
-   // TrackPanel::OnSelectionChange is called, iformat is changed.
+   // TrackPanel.cpp to a default value of SELECTION_FORMAT_RULER_MIN_SEC.
+   // When event handler TrackPanel::OnSelectionChange is called, iformat is changed.
+   //
+   // iSnapTo is a global variable defined near the top of
+   // TrackPanel.cpp to a default value of 0 (or off).
 
    //
    // CAUTION: time shifting is not set up with snap-to, and this can
@@ -3027,6 +3030,10 @@ void TrackPanel::DisplaySelection()
    // unless it is changed in preferences.  Logic added to OnRateChange
    // and OnRateOther resets this samplerate value.  For each selection format
    // that is based on rate, the current rate is printed in the info line.
+
+   char *SnapTo[12][1];
+   SnapTo[0][0] = "[Snap-To Off]";
+   SnapTo[0][1] = "[Snap-To On]";
 
    // variables used
    int imin1, imin2, imintot;
@@ -3073,18 +3080,18 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %i:%09.6f min:sec"), imin1, fsec1),
+                                        Format(_("Cursor: %i:%09.6f min:sec   %s"), imin1, fsec1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)"),
-                        imin1, fsec1, imin2, fsec2, imintot, fsectot),
+                                       Format(_("Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"),
+                        imin1, fsec1, imin2, fsec2, imintot, fsectot, SnapTo[0][iSnapTo]),
                                        1);
          }
-      break; 
+      break;
 
    case SELECTION_FORMAT_RULER_SEC:
       // use sec.xxxxxx (from ruler)
@@ -3107,15 +3114,15 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %lf sec"), fsec1),
+                                        Format(_("Cursor: %lf sec   %s"), fsec1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %lf - %lf (%lf sec)"),
-                                              fsec1, fsec2, fsectot),
+                                       Format(_("Selection: %lf - %lf (%lf sec)   %s"),
+                                              fsec1, fsec2, fsectot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
@@ -3141,15 +3148,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %.3lf film frames (24 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf film frames (24 fps)   %s"),
+                                                dframes1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %.3lf - %.3lf (%.3lf film frames)"),
-                                              dframes1, dframes2, dframestot),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf film frames)   %s"),
+                                              dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
@@ -3175,15 +3183,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %.3lf PAL frames (25 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf PAL frames (25 fps)   %s"),
+                                              dframes1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %.3lf - %.3lf (%.3lf PAL frames)"),
-                                              dframes1, dframes2, dframestot),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"),
+                                              dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
@@ -3209,15 +3218,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                                        Format(_("Cursor: %.3lf NTSC frames (29.97 fps)"), dframes1),
+                                        Format(_("Cursor: %.3lf NTSC frames (29.97 fps)   %s"),
+                                              dframes1, SnapTo[0][iSnapTo]),
                                         1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                                       Format(_("Selection: %.3lf - %.3lf (%.3lf NTSC frames)"),
-                                              dframes1, dframes2, dframestot),
+                                       Format(_("Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"),
+                                              dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
@@ -3260,16 +3270,16 @@ void TrackPanel::DisplaySelection()
          {
            mListener->
                 TP_DisplayStatusMessage(wxString::
-                              Format(_("Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)"),
-                                                  imin1, isec1, dframes1),
+                              Format(_("Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"),
+                                                  imin1, isec1, dframes1, SnapTo[0][iSnapTo]),
                               1);
          }
       else
          {
             mListener->
                TP_DisplayStatusMessage(wxString::
-                             Format(_("Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)"),
-                                    imin1, isec1, dframes1, imin2, isec2, dframes2, imintot, isectot, dframestot),
+                             Format(_("Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)   %s"),
+                                    imin1, isec1, dframes1, imin2, isec2, dframes2, imintot, isectot, dframestot, SnapTo[0][iSnapTo]),
                              1);
          }
       break;
