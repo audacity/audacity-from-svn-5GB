@@ -14,7 +14,7 @@ Audacity versie 1.0.0 is de meest stabiele versie die we tot nu toe hebben
 vrijgegeven, en veel mensen hebben al ondervonden dat door de unieke mogelijkheden en de intuitieve interface het makkelijker en beter te gebruiken is dan andere audio bewerkingsprogramma's, waaronder commercieele programma's.
 </p>
 
-<p> De ontwikkelaars van Audacity hebben ook versie 1.1.0 vrijgegeven, welke
+<p> De ontwikkelaars van Audacity hebben ook <a href="<?php print "beta.php?$langLinkStr"; ?>">versie 1.2.0-pre1</a> vrijgegeven, welke
 een beta-kwaliteits uitgave is van nieuwe dingen waar we actief aan werken.
 Het bevat vele nieuwe mogelijkheden, maar is nog niet zo afgewerkt en stabiel.
 </p>
