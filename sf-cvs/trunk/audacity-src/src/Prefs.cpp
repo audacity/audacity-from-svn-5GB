@@ -84,6 +84,7 @@ void InitPreferences()
    wxConfigBase::Set(gPrefs);
 
 #ifdef __WXMAC__
+#ifndef __UNIX__
    // This fixes changes in Mac filenames under wxWindows between versions
    // 0.95 and 0.96 of Audacity.
    wxString path;
@@ -104,6 +105,7 @@ void InitPreferences()
       wxMessageBox(_("Some of your preferences were from an earlier version "
                      "of Audacity and have been reset."));
    }
+#endif
 #endif
 
    gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
