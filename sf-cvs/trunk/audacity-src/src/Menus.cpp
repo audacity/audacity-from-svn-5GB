@@ -354,6 +354,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
    SetMenuState(mEditMenu, PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
+#ifndef __WXMAC__
    //Modify toolbar-specific Menus
 
    if (gEditToolBarStub) {
@@ -375,6 +376,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       else
          dock->SetName(_("Float Edit Toolbar"));
    }
+#endif
 
    // Return from this function if nothing's changed since
    // the last time we were here.

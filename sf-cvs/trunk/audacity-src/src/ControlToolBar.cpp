@@ -148,10 +148,12 @@ void ControlToolBar::InitializeControlToolBar()
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
 
+#if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    mDivBitmap = new wxBitmap((const char **) Div);
    mMuteBitmap = new wxBitmap((const char **) Mute);
    mLoudBitmap = new wxBitmap((const char **) Loud);
+#endif
 #endif
 
 }
@@ -416,10 +418,12 @@ ControlToolBar::~ControlToolBar()
    if (mBackgroundBitmap)
       delete mBackgroundBitmap;
 
+#if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
    delete mDivBitmap;
    delete mMuteBitmap;
    delete mLoudBitmap;
+#endif
 #endif
 }
 
@@ -604,7 +608,7 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    GetSize(&width, &height);
 
 
-#if defined(__WXMAC__)          // && defined(TARGET_CARBON)
+#if defined(__WXMAC__0)          // && defined(TARGET_CARBON)
 
    if (mBackgroundWidth < width) {
       if (mBackgroundBitmap)
