@@ -191,7 +191,7 @@ wxImage *CreateAquaBackground(int width, int height, int offset)
 wxImage *CreateSysBackground(int width, int height, int offset,
                              wxColour colour)
 {
-   #ifdef __WXMAC__
+   #ifdef USE_AQUA_THEME
    return CreateAquaBackground(width, height, offset);
    #else
    return CreateBackground(width, height, colour);
