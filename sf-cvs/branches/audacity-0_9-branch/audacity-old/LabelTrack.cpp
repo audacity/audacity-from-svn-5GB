@@ -372,7 +372,7 @@ void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
          len--;
          i--;
       }
-      if (mLabels[i]->t > t1)
+      else if (mLabels[i]->t > t1)
          mLabels[i]->t -= (t1 - t0);
    }
    ((LabelTrack *) (*dest))->mClipLen = (t1 - t0);
@@ -430,7 +430,7 @@ void LabelTrack::Clear(double t0, double t1)
          len--;
          i--;
       }
-      if (mLabels[i]->t > t1)
+      else if (mLabels[i]->t > t1)
          mLabels[i]->t -= (t1 - t0);
    }
 }
