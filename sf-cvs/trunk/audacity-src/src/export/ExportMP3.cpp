@@ -378,7 +378,12 @@ MP3Exporter *GetMP3Exporter()
    return gMP3Exporter;
 }
 
-
+void ReleaseMP3Exporter()
+{
+   if( gMP3Exporter )
+      delete gMP3Exporter;
+   gMP3Exporter = NULL;
+}
 
 
 #elif defined(__MACOSX__)
@@ -678,6 +683,13 @@ MP3Exporter *GetMP3Exporter()
    return gMP3Exporter;
 }
 
+void ReleaseMP3Exporter()
+{
+   if( gMP3Exporter )
+      delete gMP3Exporter;
+   gMP3Exporter = NULL;
+}
+
 
 #elif defined(__WXMAC__)
 
@@ -961,6 +973,14 @@ MP3Exporter *GetMP3Exporter()
    return gMP3Exporter;
 }
 
+void ReleaseMP3Exporter()
+{
+   if( gMP3Exporter )
+      delete gMP3Exporter;
+   gMP3Exporter = NULL;
+}
+
+
 #elif defined(__WXMSW__)
 
 #include "BladeMP3EncDLL.h"
@@ -1192,7 +1212,28 @@ MP3Exporter *GetMP3Exporter()
    return gMP3Exporter;
 }
 
-#endif      
+void ReleaseMP3Exporter()
+{
+   if( gMP3Exporter )
+      delete gMP3Exporter;
+   gMP3Exporter = NULL;
+}
+
+#endif  
+
+class MP3ExporterCleanup
+{
+public:
+   MP3ExporterCleanup(){};
+   ~MP3ExporterCleanup(){ ReleaseMP3Exporter();}
+};
+
+// Create instance of this cleanup class purely to clean up 
+// the exporter.
+// No one will reference this variable, but when the program
+// exits it will clean up any allocated MP3 exporter.
+MP3ExporterCleanup gMP3ExporterCleanup;
+
 
 bool ExportMP3(AudacityProject *project,
                bool stereo, wxString fName,
