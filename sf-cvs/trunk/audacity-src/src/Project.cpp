@@ -2174,11 +2174,9 @@ bool AudacityProject::SaveAs()
                        "Export commands."));
 
    fName = wxFileSelector(_("Save Project As:"),
-                          path,
-                          fName,
-                          "",
-                          _("Audacity projects (*.aup)|*.aup"), wxSAVE,
-                          this);
+                          path, fName, "",
+                          _("Audacity projects (*.aup)|*.aup"),
+                          wxSAVE | wxOVERWRITE_PROMPT, this);
 
    if (fName == "")
       return false;
