@@ -67,6 +67,9 @@ class ControlToolBar:public ToolBar {
    virtual void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
 
+   // msmeyer: These are public, but it's far better to
+   // call the "real" interface functions like PlayCurrentRegion() and
+   // StopPlaying() which are defined below.
    void OnRewind(wxCommandEvent &evt);
    void OnPlay(wxCommandEvent &evt);
    void OnStop(wxCommandEvent &evt);
@@ -80,7 +83,15 @@ class ControlToolBar:public ToolBar {
    void SetRecord(bool down);
    void SetCurrentTool(int tool, bool show);
 
-   void PlayPlayRegion(double t0, double t1);
+   // Play currently selected region, or if nothing selected,
+   // play from current cursor.
+   void PlayCurrentRegion(bool looped = false);
+
+   // Play the region [t0,t1]
+   void PlayPlayRegion(double t0, double t1, bool looped = false);
+
+   // Stop playing
+   void StopPlaying();
 
    //These interrogate the state of the buttons or controls.
    float GetSoundVol();

@@ -5,6 +5,7 @@
   Mix.h
 
   Dominic Mazzoni
+  Markus Meyer
 
 **********************************************************************/
 
@@ -59,8 +60,15 @@ class Mixer {
    // Processing
    //
 
-   /// Returns number of output samples
+   /// Process a maximum of 'maxSamples' samples and put them into
+   /// a buffer which can be retrieved by calling GetBuffer().
+   /// Returns number of output samples, or 0, if there are no
+   /// more samples that must be processed.
    sampleCount Process(sampleCount maxSamples);
+
+   /// Restart processing at beginning of buffer next time
+   /// Process() is called.
+   void Restart();
 
    /// Current time in seconds
    double MixGetCurrentTime();
@@ -68,7 +76,7 @@ class Mixer {
    /// Retrieve the main buffer or the interleaved buffer
    samplePtr GetBuffer();
 
-   // Retrieve one of the non-interleaved buffers
+   /// Retrieve one of the non-interleaved buffers
    samplePtr GetBuffer(int channel);
 
  private:

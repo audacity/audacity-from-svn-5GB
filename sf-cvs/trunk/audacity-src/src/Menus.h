@@ -24,17 +24,20 @@ void ModifyUndoMenus();
 // and OnSelectionRestore
 double mSel0save;
 double mSel1save;
-
+ 
         // Audio I/O Commands
 
-void OnPlayStop();
 void OnStop();
 void OnPause();
 void OnRecord();
 void OnSkipStart();
 void OnSkipEnd();
 
+        // Different posibilities for playing sound
+
+void OnPlayStop();
 void OnPlayOneSecond();
+void OnPlayLooped();
 
         // Selection-Editing Commands
 

@@ -290,6 +290,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
    
    c->AddCommand("PlayOneSec",  _("Play One Second\t1"),          FN(OnPlayOneSecond));
+   c->AddCommand("PlayLooped",  _("Play Looped\tL"),              FN(OnPlayLooped));
 
    c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
    c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
@@ -587,25 +588,53 @@ void AudacityProject::OnPlayOneSecond()
       return;
 
    double pos = mTrackPanel->GetMostRecentXPos();
+   mLastPlayMode = oneSecondPlay;
    toolbar->PlayPlayRegion(pos - 0.5, pos + 0.5);
+}
+
+void AudacityProject::OnPlayLooped()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+
+   // If already playing, stop playing
+   if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
+      toolbar->SetPlay(false);
+      toolbar->SetStop(true);
+      toolbar->StopPlaying();
+
+      ::wxUsleep(100);
+   }
+
+   // If it didn't stop playing quickly, or if some other
+   // project is playing, return
+   if (gAudioIO->IsBusy())
+      return;
+
+   // Now play in a loop
+   toolbar->SetPlay(true);
+   toolbar->SetStop(false);
+
+   // Will automatically set mLastPlayMode
+   toolbar->PlayCurrentRegion(true);
 }
 
 void AudacityProject::OnPlayStop()
 {
    ControlToolBar *toolbar = GetControlToolBar();
-   wxCommandEvent evt;
 
    //If busy, stop playing, make sure everything is unpaused.
    if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
       toolbar->SetPlay(false);        //Pops
       toolbar->SetStop(true);         //Pushes stop down
-      toolbar->OnStop(evt);
+      toolbar->StopPlaying();
    }
    else if (!gAudioIO->IsBusy()) {
       //Otherwise, start playing (assuming audio I/O isn't busy)
       toolbar->SetPlay(true);
       toolbar->SetStop(false);
-      toolbar->OnPlay(evt);
+
+      // Will automatically set mLastPlayMode
+      toolbar->PlayCurrentRegion(false);
    }
 }
 

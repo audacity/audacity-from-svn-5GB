@@ -577,3 +577,19 @@ double Mixer::MixGetCurrentTime()
    return mT;
 }
 
+void Mixer::Restart()
+{
+   int i;
+
+   mT = mT0;
+
+   for(i=0; i<mNumInputTracks; i++)
+      mSamplePos[i] = mInputTrack[i]->TimeToLongSamples(mT0);
+
+#if USE_LIBSAMPLERATE
+   for(i=0; i<mNumInputTracks; i++) {
+      mQueueStart[i] = 0;
+      mQueueLen[i] = 0;
+   }
+#endif
+}
