@@ -791,9 +791,9 @@ void AudioIO::SetMeters(Meter *inputMeter, Meter *outputMeter)
    mOutputMeter = outputMeter;
 
    if (mInputMeter)
-      mInputMeter->Reset(mRate);
+      mInputMeter->Reset(mRate, true);
    if (mOutputMeter)
-      mOutputMeter->Reset(mRate);
+      mOutputMeter->Reset(mRate, true);
 }
 
 void AudioIO::StopStream()
@@ -893,9 +893,9 @@ void AudioIO::StopStream()
    }
 
    if (mInputMeter)
-      mInputMeter->Reset(mRate);
+      mInputMeter->Reset(mRate, false);
    if (mOutputMeter)
-      mOutputMeter->Reset(mRate);
+      mOutputMeter->Reset(mRate, false);
 
    //
    // Only set token to 0 after we're totally finished with everything

@@ -17,9 +17,12 @@
 
 #include <wx/defs.h>
 #include <wx/dcmemory.h>
+#include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/menu.h>
 #include <wx/settings.h>
+
+#include <math.h>
 
 #include "Meter.h"
 
@@ -52,13 +55,21 @@ public:
    virtual wxEvent *Clone() const 
    {
       MeterUpdateEvent *newEvent = new MeterUpdateEvent();
-      memcpy(newEvent->value, value, 32*sizeof(float));
+      memcpy(newEvent->peak, peak, 32*sizeof(float));
+      memcpy(newEvent->rms, rms, 32*sizeof(float));
+      memcpy(newEvent->clipping, clipping, 32*sizeof(bool));
+      memcpy(newEvent->headPeakCount, headPeakCount, 32*sizeof(int));
+      memcpy(newEvent->tailPeakCount, tailPeakCount, 32*sizeof(int));
       newEvent->numFrames = numFrames;
       return (wxEvent *)newEvent;
    }
 
    int numFrames;
-   float value[32];
+   float peak[32];
+   float rms[32];
+   bool clipping[32];
+   int headPeakCount[32];
+   int tailPeakCount[32];
 };
 
 BEGIN_EVENT_TABLE(Meter, wxPanel)
@@ -92,12 +103,17 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mDBRange(60),
    mDecay(true),
    mDecayRate(60),
+   mClip(true),
+   mNumPeakSamplesToClip(3),
+   mPeakHoldDuration(3),
    mT(0),
    mRate(0),
    mLayoutValid(false),
    mBitmap(NULL),
    mIcon(NULL)
 {
+   int i;
+   
    wxColour backgroundColour =
       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
@@ -116,14 +132,20 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    if (mIsInput) {
       image = new wxImage(wxBitmap(Mic).ConvertToImage());
       alpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
-      mBrush = wxBrush(wxColour(255, 102, 102), wxSOLID);
+      mPen = wxPen(wxColour(204, 70, 70), 1, wxSOLID);
+      mBrush = wxBrush(wxColour(204, 70, 70), wxSOLID);
+      mRMSBrush = wxBrush(wxColour(255, 102, 102), wxSOLID);
+      mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
       mLightPen = wxPen(wxColour(255, 153, 153), 1, wxSOLID);
       mDarkPen = wxPen(wxColour(153, 61, 61), 1, wxSOLID);
    }
    else {
       image = new wxImage(wxBitmap(Speaker).ConvertToImage());
       alpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
-      mBrush = wxBrush(wxColour(102, 255, 102), wxSOLID);
+      mPen = wxPen(wxColour(70, 204, 70), 1, wxSOLID);
+      mBrush = wxBrush(wxColour(70, 204, 70), wxSOLID);
+      mRMSBrush = wxBrush(wxColour(102, 255, 102), wxSOLID);
+      mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
       mLightPen = wxPen(wxColour(153, 255, 153), 1, wxSOLID);
       mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
    }
@@ -133,6 +155,10 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mIcon = new wxBitmap(final);
 
    mRuler.SetFonts(GetFont(), GetFont());
+
+   Reset(44100.0, true);
+   for(i=0; i<32; i++)
+      mBar[i].clipping = false;
 
    delete image;
    delete alpha;
@@ -218,14 +244,14 @@ void Meter::SetStyle(Meter::Style newStyle)
    Refresh(true);
 }
 
-void Meter::Reset(double sampleRate)
+void Meter::Reset(double sampleRate, bool resetClipping)
 {
    int j;
 
    mT = 0;
    mRate = sampleRate;
    for(j=0; j<mNumBars; j++)
-      mBar[j].value = 0;
+      ResetBar(&mBar[j], resetClipping);
 
    mLayoutValid = false;
    Refresh(false);
@@ -256,6 +282,16 @@ static float ClipZeroToOne(float z)
       return z;
 }
 
+static float ToDB(float v, float range)
+{
+   double db;
+   if (v > 0)
+      db = 20 * log10(fabs(v));
+   else
+      db = -999;
+   return ClipZeroToOne((db + range) / range);
+}
+
 void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
 {
    int i, j;
@@ -264,24 +300,47 @@ void Meter::UpdateDisplay(int numChannels, int numFrames, float *sampleData)
    MeterUpdateEvent *event = new MeterUpdateEvent();
 
    event->numFrames = numFrames;
-   for(j=0; j<mNumBars; j++)
-      event->value[j] = 0;
+   for(j=0; j<mNumBars; j++) {
+      event->peak[j] = 0;
+      event->rms[j] = 0;
+      event->clipping[j] = false;
+      event->headPeakCount[j] = 0;
+      event->tailPeakCount[j] = 0;
+   }
+
    for(i=0; i<numFrames; i++) {
       for(j=0; j<num; j++) {
-         event->value[j] = floatMax(event->value[j], sptr[j]);
+         event->peak[j] = floatMax(event->peak[j], sptr[j]);
+         event->rms[j] += sptr[j]*sptr[j];
+
+         // In addition to looking for mNumPeakSamplesToClip peaked
+         // samples in a row, also send the number of peaked samples
+         // at the head and tail, in case there's a run of 
+         // Send the number of peaked samples at the head and tail,
+         // in case there's a run of peaked samples that crosses
+         // block boundaries
+         if (fabs(sptr[j])>=1.0) {
+            if (event->headPeakCount[j]==i)
+               event->headPeakCount[j]++;
+            event->tailPeakCount[j]++;
+            if (event->tailPeakCount[j] > mNumPeakSamplesToClip)
+               event->clipping[j] = true;
+         }
+         else
+            event->tailPeakCount[j] = 0;
       }
       sptr += numChannels;
    }
+   for(j=0; j<mNumBars; j++)
+      event->rms[j] = sqrt(event->rms[j]/numFrames);
+
    if (mDB) {
       for(j=0; j<mNumBars; j++) {
-         double db;
-         if (event->value[j] > 0)
-            db = 20 * log10(fabs(event->value[j]));
-         else
-            db = -999;
-         event->value[j] = ClipZeroToOne((db + mDBRange) / mDBRange);
+         event->peak[j] = ToDB(event->peak[j], mDBRange);
+         event->rms[j] = ToDB(event->rms[j], mDBRange);
       }
    }
+
    AddPendingEvent(*event);
    delete event;
 }
@@ -291,22 +350,37 @@ void Meter::OnMeterUpdate(MeterUpdateEvent &evt)
    double deltaT = evt.numFrames / mRate;
    int j;
 
+   mT += deltaT;
    for(j=0; j<mNumBars; j++) {
       if (mDecay) {
          if (mDB) {
             float decayAmount = mDecayRate * deltaT / mDBRange;
-            mBar[j].value = floatMax(evt.value[j],
-                                     mBar[j].value - decayAmount);
+            mBar[j].peak = floatMax(evt.peak[j],
+                                    mBar[j].peak - decayAmount);
          }
          else {
             double decayAmount = mDecayRate * deltaT;
-            double decayFactor = pow(10.0, decayAmount/20);
-            mBar[j].value = floatMax(evt.value[j],
-                                     mBar[j].value * decayFactor);
+            double decayFactor = pow(10.0, -decayAmount/20);
+            mBar[j].peak = floatMax(evt.peak[j],
+                                    mBar[j].peak * decayFactor);
          }
       }
       else
-         mBar[j].value = evt.value[j];
+         mBar[j].peak = evt.peak[j];
+
+      // This smooths out the RMS signal
+      mBar[j].rms = mBar[j].rms * 0.9 + evt.rms[j] * 0.1;
+
+      if (mT - mBar[j].peakHoldTime > mPeakHoldDuration ||
+          mBar[j].peak > mBar[j].peakHold) {
+         mBar[j].peakHold = mBar[j].peak;
+         mBar[j].peakHoldTime = mT;
+      }
+
+      if (evt.clipping[j] ||
+          mBar[j].tailPeakCount+evt.headPeakCount[j] >= mNumPeakSamplesToClip)
+         mBar[j].clipping = true;
+      mBar[j].tailPeakCount = evt.tailPeakCount[j];
    }
    RepaintBarsNow();
 }
@@ -319,6 +393,17 @@ wxFont Meter::GetFont()
 #endif
 
    return wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+}
+
+void Meter::ResetBar(MeterBar *b, bool resetClipping)
+{
+   b->peak = 0.0;
+   b->rms = 0.0;
+   b->peakHold = 0.0;
+   b->peakHoldTime = 0.0;
+   if (resetClipping)
+      b->clipping = false;
+   b->tailPeakCount = 0;
 }
 
 void Meter::HandleLayout()
@@ -358,11 +443,23 @@ void Meter::HandleLayout()
       barh = height - 4;
       mNumBars = 2;
       mBar[0].vert = true;
-      mBar[0].value = 0.0;
+      ResetBar(&mBar[0], false);
       mBar[0].r = wxRect(left + width/2 - barw - 1, 2, barw, barh);
+      if (mClip) {
+         mBar[0].rClip = mBar[0].r;
+         mBar[0].rClip.height = 3;
+         mBar[0].r.y += 4;
+         mBar[0].r.height -= 4;
+      }
       mBar[1].vert = true;
-      mBar[1].value = 0.0;
+      ResetBar(&mBar[1], false);
       mBar[1].r = wxRect(left + width/2 + 1, 2, barw, barh);
+      if (mClip) {
+         mBar[1].rClip = mBar[1].r;
+         mBar[1].rClip.height = 3;
+         mBar[1].r.y += 4;
+         mBar[1].r.height -= 4;
+      }
       mRuler.SetOrientation(wxVERTICAL);
       mRuler.SetBounds(mBar[1].r.x + mBar[1].r.width + 1,
                        mBar[1].r.y,
@@ -398,11 +495,23 @@ void Meter::HandleLayout()
       barh = (height-2)/2;
       mNumBars = 2;
       mBar[0].vert = false;
-      mBar[0].value = 0.0;
+      ResetBar(&mBar[0], false);
       mBar[0].r = wxRect(left+2, height/2 - barh - 1, barw, barh);
+      if (mClip) {
+         mBar[0].rClip = mBar[0].r;
+         mBar[0].rClip.x += mBar[0].rClip.width-3;
+         mBar[0].rClip.width = 3;
+         mBar[0].r.width -= 4;
+      }
       mBar[1].vert = false;
-      mBar[1].value = 0.0;
+      ResetBar(&mBar[1], false);
       mBar[1].r = wxRect(left+2, height/2 + 1, barw, barh);
+      if (mClip) {
+         mBar[1].rClip = mBar[1].r;
+         mBar[1].rClip.x += mBar[1].rClip.width-3;
+         mBar[1].rClip.width = 3;
+         mBar[1].r.width -= 4;
+      }
       mRuler.SetOrientation(wxHORIZONTAL);
       mRuler.SetBounds(mBar[1].r.x,
                        mBar[1].r.y + mBar[1].r.height + 1,
@@ -435,6 +544,11 @@ void Meter::HandleLayout()
          top = intmin(top, mBar[i].r.y);
          right = intmax(right, mBar[i].r.x + mBar[i].r.width);
          bottom = intmax(bottom, mBar[i].r.y + mBar[i].r.height);
+         left = intmin(left, mBar[i].rClip.x);
+         top = intmin(top, mBar[i].rClip.y);
+         right = intmax(right, mBar[i].rClip.x + mBar[i].rClip.width);
+         bottom = intmax(bottom, mBar[i].rClip.y + mBar[i].rClip.height);
+
       }
       mAllBarsRect = wxRect(left, top, right-left+1, bottom-top+1);
    }
@@ -510,6 +624,7 @@ void Meter::RepaintBarsNow()
 void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
 {
    wxRect r = meterBar->r;
+   wxRect rRMS;
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBkgndBrush);
    dc.DrawRectangle(r);
@@ -524,19 +639,41 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
          dc.DrawLine(mTick[i], r.y+r.height/2-1, mTick[i], r.y+r.height/2+1);
    */
 
-   dc.SetPen(*wxTRANSPARENT_PEN);
-   dc.SetBrush(mBrush);
+   dc.SetBrush(*wxTRANSPARENT_BRUSH);
+   dc.SetPen(mPen);
+
    if (meterBar->vert) {
-      int ht = (int)(meterBar->value * r.height + 0.5);
+      int ht = (int)(meterBar->peakHold * r.height + 0.5);
+      dc.DrawLine(r.x+1, r.y + r.height - ht,
+                  r.x+r.width, r.y + r.height - ht);
+      if (ht > 1)
+         dc.DrawLine(r.x+1, r.y + r.height - ht + 1,
+                     r.x+r.width, r.y + r.height - ht + 1);
+      ht = (int)(meterBar->peak * r.height + 0.5);
       r = wxRect(r.x, r.y + r.height - ht,
                  r.width, ht);
+      ht = (int)(meterBar->rms * r.height + 0.5);
+      rRMS = wxRect(r.x, r.y + r.height - ht,
+                    r.width, ht);
    }
    else {
-      int wd = (int)(meterBar->value * r.width + 0.5);
+      int wd = (int)(meterBar->peakHold * r.width + 0.5);
+      dc.DrawLine(r.x + wd, r.y + 1, r.x + wd, r.y + r.height);
+      if (wd > 1)
+         dc.DrawLine(r.x + wd - 1, r.y + 1, r.x + wd - 1, r.y + r.height);
+      wd = (int)(meterBar->peak * r.width + 0.5);
       r = wxRect(r.x, r.y,
                  wd, r.height);
+      wd = (int)(meterBar->rms * r.width + 0.5);
+      rRMS = wxRect(r.x, r.y,
+                    wd, r.height);
    }
+   dc.SetPen(*wxTRANSPARENT_PEN);
+   dc.SetBrush(mBrush);
    dc.DrawRectangle(r);
+   dc.SetBrush(mRMSBrush);
+   dc.DrawRectangle(rRMS);
+
    dc.SetBrush(*wxTRANSPARENT_BRUSH);
    dc.SetPen(mLightPen);
    dc.DrawLine(r.x, r.y, r.x + r.width, r.y);
@@ -544,6 +681,17 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
    dc.SetPen(mDarkPen);
    dc.DrawLine(r.x + r.width, r.y, r.x + r.width, r.y + r.height);
    dc.DrawLine(r.x, r.y + r.height, r.x + r.width + 1, r.y + r.height);
+
+   if (mClip) {
+      if (meterBar->clipping)
+         dc.SetBrush(mClipBrush);
+      else
+         dc.SetBrush(mBkgndBrush);
+      dc.SetPen(*wxTRANSPARENT_PEN);
+      dc.DrawRectangle(meterBar->rClip);
+      dc.SetBrush(*wxTRANSPARENT_BRUSH);
+      AColor::Bevel(dc, false, meterBar->rClip);
+   }
 }
 
 //

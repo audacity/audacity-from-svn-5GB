@@ -23,9 +23,15 @@
 #include "Ruler.h"
 
 struct MeterBar {
-   bool vert;
+   bool   vert;
    wxRect r;
-   float value;
+   float  peak;
+   float  rms;
+   float  peakHold;
+   double peakHoldTime;
+   wxRect rClip;
+   bool   clipping;
+   int    tailPeakCount;
 };
 
 class MeterUpdateEvent;
@@ -56,9 +62,9 @@ class Meter : public wxPanel
    void SetStyle(Style newStyle);
 
    //
-   // These two methods are thread-safe!  Feel free to call from a
+   // These three methods are thread-safe!  Feel free to call from a
    // different thread (like from an audio I/O callback)
-   void Reset(double sampleRate);
+   void Reset(double sampleRate, bool resetClipping);
    void UpdateDisplay(int numChannels,
                       int numFrames, float *sampleData);
    // End thread-safe methods
@@ -94,6 +100,7 @@ class Meter : public wxPanel
    
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
+   void ResetBar(MeterBar *bar, bool resetClipping);
    void RepaintBarsNow();
    wxFont GetFont();
 
@@ -107,6 +114,9 @@ class Meter : public wxPanel
    int       mDBRange;
    bool      mDecay;
    float     mDecayRate; // dB/sec
+   bool      mClip;
+   int       mNumPeakSamplesToClip;
+   double    mPeakHoldDuration;
    double    mT;
    double    mRate;
 
@@ -125,9 +135,12 @@ class Meter : public wxPanel
    wxSize    mLeftSize;
    wxSize    mRightSize;
    wxBitmap *mIcon;
+   wxPen     mPen;
    wxPen     mLightPen;
    wxPen     mDarkPen;
    wxBrush   mBrush;
+   wxBrush   mRMSBrush;
+   wxBrush   mClipBrush;
    wxBrush   mBkgndBrush;
    wxRect    mAllBarsRect;
    Ruler     mRuler;
