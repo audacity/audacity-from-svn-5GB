@@ -52,10 +52,10 @@ bool EffectChangeSpeed::PromptUser()
    dlog.m_PercentChange = m_PercentChange;
    dlog.m_FromVinyl = m_FromVinyl;
    dlog.m_ToVinyl = m_ToVinyl;
-	//v Don't need to call TransferDataToWindow, although other 
-	//		Audacity dialogs (from which I derived this one) do it, because 
-	//		ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
-	//		which calls dlog.TransferDataToWindow();
+	// Don't need to call TransferDataToWindow, although other 
+	//	Audacity dialogs (from which I derived this one) do it, because 
+	//	ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
+	//	which calls dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
@@ -150,11 +150,12 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
    // Initiate processing buffers, most likely shorter than 
 	//	the length of the selection being processed.
-	//vvv DANGER, WILL ROBINSON! If the speed is slowed, 
-	//		the output buffer needs to be bigger than the input buffer, but 
-	//		then, since bufferSize is a max block size for the track, 
-	//		need to make outBuffer be bufferSize, and inBuffer some fraction of that.
-	//		The blockSize stuff may make this safe, but not sure.
+	//vvv If the speed is slowed, the output buffer needs to be bigger 
+	//		than the input buffer, but then, since bufferSize is 
+	//		a max block size for the track, need to make outBuffer 
+	//		be track->GetMaxBlockSize(), and inBuffer some fraction of that.
+	//		SRC won't write past the output_frames, so no overflow, 
+	//		but this is sometimes too small a buffer.
 	sampleCount bufferSize = track->GetMaxBlockSize();
    float * inBuffer = new float[bufferSize];
    float * outBuffer = new float[bufferSize];
@@ -203,7 +204,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 										theSRC_DATA.output_frames_gen);
 
       //Increment samplePos one blockfull of samples
-      samplePos += blockSize; //v or use theSRC_DATA.input_frames_used?
+      samplePos += blockSize; 
 
       //Update the Progress meter
       if (TrackProgress(mCurTrackNum, (samplePos - start) / len)) {
