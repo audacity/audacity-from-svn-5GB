@@ -21,8 +21,24 @@
 
 <center><table>
 <tr><td nowrap><H3>Where ?</H3></td></tr>
-<tr><td><P class=a>In the <a href="prefs.html">preferences dialog</a>,
-go to the <a href="prefs.html#keyboard">keyboard section</a> or edit the keyboard configuration file directly with a text editor. You will find this file in the directory where you installed Audacity. Its filename is <B>keyboard.cfg</B> .</P></td></tr>
+<tr><td>
+ <P class=a>In the <a href="prefs.html">preferences dialog</a>,
+  go to the <a href="prefs.html#keyboard">keyboard section</a> or edit the keyboard configuration file
+  directly with a text editor. You will find this file in the directory where you installed Audacity.
+  Its filename is <B>Audacity-keys.xml</B> .
+ </P>
+ <P class=a>
+  Audacity will NOT load this keymap upon startup, but save them in the registry(Windows). Should you make changes
+  to the Audacity.xml file with a text editor, you'll need to load that shortcut file with the &quot;Load&quot; button
+  to make Audacity use them. Thus you can save your keymaps under any filename with an XML extension and keep different
+  keymaps around for different purposes.
+ </P>
+ <P class=a>
+  Audacity will NOT store the current keymap in the file Audacity.xml. Should you want to make changes to the current keymap
+  with a text editor, you'll have to use the &quot;Save&quot; button to save that keymap to an XML file first. After editing
+  it you'll have to &quot;Load&quot; it again.
+ </P>
+</td></tr>
 </table></center>
 
 <P class=qy>Editing and Creating Shortcuts with the Preferences Dialog</P>
