@@ -160,8 +160,12 @@ void EditToolBar::MakeButtons()
              _("Zoom In"));
    AddButton(ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
              _("Zoom Out"));
+
+   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
    AddButton(ZoomToggle, ZoomToggleDisabled, ZoomToggleAlpha, ETBZoomToggleID,
              _("Zoom Toggle"));
+   #endif
+
    AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
              _("Fit selection in window"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
@@ -169,7 +173,11 @@ void EditToolBar::MakeButtons()
 
    mButtons[ETBZoomInID]->SetEnabled(false);
    mButtons[ETBZoomOutID]->SetEnabled(false);
+
+   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
    mButtons[ETBZoomToggleID]->SetEnabled(false);
+   #endif
+
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
@@ -229,9 +237,13 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBZoomOutID:
          p->OnZoomOut();
          break;
+
+#if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
       case ETBZoomToggleID:
          p->OnZoomToggle();
          break;
+#endif
+
       case ETBZoomSelID:
          p->OnZoomSel();
          break;
@@ -284,7 +296,10 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBZoomInID]->SetEnabled(tracks && (p->GetZoom() < gMaxZoom));
    mButtons[ETBZoomOutID]->SetEnabled(tracks && (p->GetZoom() > gMinZoom) );
+
+   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
    mButtons[ETBZoomToggleID]->SetEnabled(tracks);
+   #endif
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);

@@ -55,7 +55,11 @@ enum {
 
    ETBZoomInID,
    ETBZoomOutID,
+
+   #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
    ETBZoomToggleID,
+   #endif
+
    ETBZoomSelID,
    ETBZoomFitID,
 
