@@ -88,6 +88,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    LangHash localLanguageName;
    LangHash reverseHash;
 
+   localLanguageName["ar"] = "Arabic";
    localLanguageName["bg"] = "Balgarski";
    localLanguageName["ca"] = "Catalan";
    localLanguageName["da"] = "Dansk";
