@@ -21,11 +21,13 @@
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 
-#define CommandsListID     7001
+#define CommandsListID    7001
 #define DescriptionTextID 7002
-#define KeysListID         7003
+#define KeysListID        7003
+#define CurrentComboID    7004
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
+   EVT_CUSTOM(wxEVT_CHAR, CurrentComboID, KeyConfigPrefs::OnKeyEvent)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
 END_EVENT_TABLE()
 
@@ -79,6 +81,14 @@ PrefsPanel(parent), mCommandSelected(-1)
       vKeySizer->Add(mKeysList, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
+      mCurrentComboText = NULL;
+      mCurrentComboText = new SysKeyTextCtrl(
+         this, CurrentComboID, "",
+         wxDefaultPosition, wxSize(160, -1), 0 );
+
+      vKeySizer->Add(mCurrentComboText, 0,
+                          wxALL, GENERIC_CONTROL_BORDER);
+
       vKeyConfigSizer->Add(
          vKeySizer, 0, 
          wxALL, TOP_LEVEL_BORDER );
@@ -120,6 +130,35 @@ bool KeyConfigPrefs::Apply()
    return true;
 }
 
+void KeyConfigPrefs::OnKeyEvent(wxCharEvent & event)
+{
+}
+
 KeyConfigPrefs::~KeyConfigPrefs()
 {
+}
+
+//BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
+
+BEGIN_EVENT_TABLE(SysKeyTextCtrl, wxTextCtrl)
+   EVT_CHAR(SysKeyTextCtrl::OnChar)
+END_EVENT_TABLE()
+
+SysKeyTextCtrl::SysKeyTextCtrl(wxWindow *parent, wxWindowID id,
+                              const wxString& value,
+                              const wxPoint& pos,
+                              const wxSize& size,
+                              long style,
+                              const wxValidator& validator,
+                              const wxString& name) : wxTextCtrl(parent, id, value, pos, size, style, validator, name)
+{
+}
+
+SysKeyTextCtrl::~SysKeyTextCtrl()
+{
+}
+
+void SysKeyTextCtrl::OnChar(wxKeyEvent& event)
+{
+   event.Skip();
 }
