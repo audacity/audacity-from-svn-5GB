@@ -20,6 +20,7 @@
 #include	<string.h>
 #include	<ctype.h>
 #include	<math.h>
+#include	<time.h>
 
 #include	"sndfile.h"
 #include	"sfendian.h"
@@ -230,11 +231,13 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 					d = va_arg (ap, int) ;
 					
 					if (d == 0)
-					{	LOG_PUTCHAR (psf, '0') ;
+					{	while (--width_specifier > 0)
+							LOG_PUTCHAR (psf, lead_char) ;
+						LOG_PUTCHAR (psf, '0') ;
 						break ;
 						} ;
 					shift = 28 ;
-					width = width_specifier ;
+					width = (width_specifier < 8) ? 8 : width_specifier ;
 					while (! ((0xF << shift) & d))
 					{	shift -= 4 ;
 						width -- ;
@@ -275,7 +278,7 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 					break;
 					
 			case 'C': /* int2str */
-					{	sf_count_t lld, tens ;
+					{	sf_count_t lld, Tens ;
 					
 						lld = va_arg (ap, sf_count_t);
 
@@ -287,16 +290,14 @@ psf_log_printf (SF_PRIVATE *psf, char *format, ...)
 						{	LOG_PUTCHAR (psf, '-') ;
 							lld = -lld ;
 							} ;
-						tens = 1 ;
-						while (lld / tens >= 10) 
-							tens *= 10 ;
-						while (tens > 0)
-						{	LOG_PUTCHAR (psf, '0' + lld / tens) ;
-							lld %= tens ;
-							tens /= 10 ;
+						Tens = 1 ;
+						while (lld / Tens >= 10) 
+							Tens *= 10 ;
+						while (Tens > 0)
+						{	LOG_PUTCHAR (psf, '0' + lld / Tens) ;
+							lld %= Tens ;
+							Tens /= 10 ;
 							} ;
-
-
 						} ;
 					break;
 					
@@ -359,17 +360,18 @@ psf_asciiheader_printf (SF_PRIVATE *psf, char *format, ...)
 **		4	- four byte value
 **		8	- eight byte value (sometimes written as 4 bytes)
 **
-**		s   - string preceded by a little endian four byte length
+**		s   - string preceded by a four byte length
+**		S   - string including null terminator
 **		f	- floating point data
 **		d	- double precision floating point data
 **		h	- 16 binary bytes value
 **
 **		b	- binary data (see below)
 **		z   - zero bytes (se below)
-**		h   - zero bytes (se below)
+**		j	- jump forwards or backwards
 **
 **	To write a word followed by an int (both little endian) use:
-**		psf_binheader_writef ("e24", wordval, sf_count_tval) ;
+**		psf_binheader_writef ("e24", wordval, longval) ;
 **
 **	To write binary data use:
 **		psf_binheader_writef ("b", &bindata, sizeof (bindata)) ;
@@ -485,12 +487,12 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 	unsigned long 	longdata ;
 	unsigned int 	data ;
 	float			floatdata ;
+	double			doubledata ;
 	void			*bindata ;
 	size_t			size ;
 	char    		c, *strptr ;
-	int				count = 0, endian, trunc_8to4 ;
+	int				count = 0, trunc_8to4 ;
 	
-	endian = SF_ENDIAN_LITTLE ;
 	trunc_8to4 = SF_FALSE ;
 	
 	va_start(argptr, format);
@@ -498,11 +500,11 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 	while ((c = *format++))
 	{	switch (c)
 		{	case 'e' : /* All conversions are now from LE to host. */
-					endian = SF_ENDIAN_LITTLE ;
+					psf->rwf_endian = SF_ENDIAN_LITTLE ;
 					break ;
 
 			case 'E' : /* All conversions are now from BE to host. */
-					endian = SF_ENDIAN_BIG ;
+					psf->rwf_endian = SF_ENDIAN_BIG ;
 					break ;
 
 			case 't' : /* All 8 byte values now get written as 4 bytes. */
@@ -527,7 +529,7 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 					
 			case '2' :
 					data = va_arg (argptr, unsigned int) ;
-					if (endian == SF_ENDIAN_BIG)
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
 					{	PUT_BE_SHORT (psf, data) ;
 						}
 					else
@@ -538,7 +540,7 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 
 			case '3' : /* tribyte */
 					data = va_arg (argptr, unsigned int) ;
-					if (endian == SF_ENDIAN_BIG)
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
 					{	PUT_BE_3BYTE (psf, data) ;
 						}
 					else
@@ -549,7 +551,7 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 
 			case '4' :
 					data = va_arg (argptr, unsigned int) ;
-					if (endian == SF_ENDIAN_BIG)
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
 					{	PUT_BE_INT (psf, data) ;
 						}
 					else
@@ -560,20 +562,20 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 
 			case '8' :
 					countdata = va_arg (argptr, sf_count_t) ;
-					if (endian == SF_ENDIAN_BIG && trunc_8to4 == SF_FALSE)
+					if (psf->rwf_endian == SF_ENDIAN_BIG && trunc_8to4 == SF_FALSE)
 					{	PUT_BE_8BYTE (psf, countdata) ;
 						count += 8 ;
 						}
-					else if (endian == SF_ENDIAN_LITTLE && trunc_8to4 == SF_FALSE)
+					else if (psf->rwf_endian == SF_ENDIAN_LITTLE && trunc_8to4 == SF_FALSE)
 					{	PUT_LE_8BYTE (psf, countdata) ;
 						count += 8 ;
 						}
-					else if (endian == SF_ENDIAN_BIG && trunc_8to4 == SF_TRUE)
+					else if (psf->rwf_endian == SF_ENDIAN_BIG && trunc_8to4 == SF_TRUE)
 					{	longdata = countdata & 0xFFFFFFFF ;
 						PUT_BE_INT (psf, longdata) ;
 						count += 4 ;
 						}
-					else if (endian == SF_ENDIAN_LITTLE && trunc_8to4 == SF_TRUE)
+					else if (psf->rwf_endian == SF_ENDIAN_LITTLE && trunc_8to4 == SF_TRUE)
 					{	longdata = countdata & 0xFFFFFFFF ;
 						PUT_LE_INT (psf, longdata) ;
 						count += 4 ;
@@ -583,7 +585,7 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 			case 'f' :
 					floatdata = (float) va_arg (argptr, double) ;
 					float32_write (floatdata, (unsigned char *) &data) ;
-					if (endian == SF_ENDIAN_BIG)
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
 					{	PUT_BE_INT (psf, data) ;
 						}
 					else
@@ -593,25 +595,20 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 					break ;
 
 			case 'd' :
-					psf_log_printf (psf, "Must fix double conversion\n") ;
-					/*
 					doubledata = va_arg (argptr, double) ;
-					double64_write (doubledata, (unsigned char *) &data) ;
-					if (endian == SF_ENDIAN_BIG)
-					{	PUT_BE_INT (psf, data) ;
-						}
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						double64_be_write (doubledata, psf->header + psf->headindex) ;
 					else
-					{	PUT_LE_INT (psf, data) ;
-						} ;
-					count += 4 ;
-					*/
+						double64_le_write (doubledata, psf->header + psf->headindex) ;
+					psf->headindex += 8 ;
+					count += 8 ;
 					break ;
 
 			case 's' :
 					strptr = va_arg (argptr, char *) ;
 					size   = strlen (strptr) + 1 ;
 					size  += (size & 1) ;
-					if (endian == SF_ENDIAN_BIG)
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
 					{	PUT_BE_INT (psf, size) ;
 						}
 					else
@@ -620,6 +617,14 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 					memcpy (&(psf->header [psf->headindex]), strptr, size) ;
 					psf->headindex += size ;
 					count += 4 + size ;
+					break ;
+					
+			case 'S' :
+					strptr = va_arg (argptr, char *) ;
+					size   = strlen (strptr) + 1 ;
+					memcpy (&(psf->header [psf->headindex]), strptr, size) ;
+					psf->headindex += size ;
+					count += size ;
 					break ;
 					
 			case 'b' :
@@ -641,12 +646,18 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 					break ;
 					
 			case 'h' :
-					bindata = va_arg (argptr, void *) ; ;
+					bindata = va_arg (argptr, void *) ;
 					memcpy (&(psf->header [psf->headindex]), bindata, 16) ;
 					psf->headindex += 16 ;
 					count += 16 ;
 					break ;
 
+			case 'j' :
+					size = va_arg (argptr, int) ;
+					psf->headindex += size ;
+					count = size ;
+					break ;
+					
 			default : 
 				psf_log_printf (psf, "*** Invalid format specifier `%c'\n", c) ;
 				psf->error = SFE_INTERNAL ; 
@@ -670,173 +681,161 @@ psf_binheader_writef (SF_PRIVATE *psf, char *format, ...)
 **	If format is NULL, psf_binheader_readf returns the current offset.
 */
 
-#define	GET_BYTE(psf)	( (psf)->header [0] )
-
 #if (CPU_IS_BIG_ENDIAN == 1)
-#define	GET_MARKER(psf)	( ((psf)->header [0] << 24) | ((psf)->header [1] << 16) |	\
-						  ((psf)->header [2] <<  8) | ((psf)->header [3]) )
+#define	GET_MARKER(ptr)	( ((ptr) [0] << 24) | ((ptr) [1] << 16) |	\
+						  ((ptr) [2] <<  8) | ((ptr) [3]) )
 
 #elif (CPU_IS_LITTLE_ENDIAN == 1)
-#define	GET_MARKER(psf)	( ((psf)->header [0]      ) | ((psf)->header [1] <<  8) |	\
-						  ((psf)->header [2] << 16) | ((psf)->header [3] << 24) )
+#define	GET_MARKER(ptr)	( ((ptr) [0]      ) | ((ptr) [1] <<  8) |	\
+						  ((ptr) [2] << 16) | ((ptr) [3] << 24) )
 
 #else
 #       error "Cannot determine endian-ness of processor."
 #endif
 
-#define	GET_LE_SHORT(psf)	( ((psf)->header [1] <<  8) | ((psf)->header [0]) )
+#define	GET_LE_SHORT(ptr)	( ((ptr) [1] <<  8) | ((ptr) [0]) )
+#define	GET_BE_SHORT(ptr)	( ((ptr) [0] <<  8) | ((ptr) [1]) )
 
-#define	GET_BE_SHORT(psf)	( ((psf)->header [0] <<  8) | ((psf)->header [1]) )
+#define	GET_LE_3BYTE(ptr)	( 	((ptr) [2] << 16) | ((ptr) [1] << 8) | ((ptr) [0]) )
+#define	GET_BE_3BYTE(ptr)	( 	((ptr) [0] << 16) | ((ptr) [1] << 8) | ((ptr) [2]) )
 
+#define	GET_LE_INT(ptr)		( 	((ptr) [3] << 24) | ((ptr) [2] << 16) |	\
+								((ptr) [1] <<  8) | ((ptr) [0]) )
 
-#define	GET_LE_3BYTE(psf)	( 	((psf)->header [2] << 16) | ((psf)->header [1] << 8) |	\
-								((psf)->header [0]) )
-
-#define	GET_BE_3BYTE(psf)	( 	((psf)->header [0] << 16) | ((psf)->header [1] << 8) |	\
-								((psf)->header [2]) )
-
-#define	GET_LE_INT(psf)		( 	((psf)->header [3] << 24) | ((psf)->header [2] << 16) |	\
-								((psf)->header [1] <<  8) | ((psf)->header [0]) )
-
-#define	GET_BE_INT(psf)		( 	((psf)->header [0] << 24) | ((psf)->header [1] << 16) |	\
-							 	((psf)->header [2] <<  8) | ((psf)->header [3]) )
+#define	GET_BE_INT(ptr)		( 	((ptr) [0] << 24) | ((ptr) [1] << 16) |	\
+							 	((ptr) [2] <<  8) | ((ptr) [3]) )
 
 #if (SIZEOF_LONG == 4)
-#define	GET_LE_8BYTE(psf)	( 	((psf)->header [3] << 24) | ((psf)->header [2] << 16) |	\
-							 	((psf)->header [1] <<  8) | ((psf)->header [0]) )
+#define	GET_LE_8BYTE(ptr)	( 	((ptr) [3] << 24) | ((ptr) [2] << 16) |	\
+							 	((ptr) [1] <<  8) | ((ptr) [0]) )
 
-#define	GET_BE_8BYTE(psf)	( 	((psf)->header [4] << 24) | ((psf)->header [5] << 16) |	\
-								((psf)->header [6] <<  8) | ((psf)->header [7]) )
+#define	GET_BE_8BYTE(ptr)	( 	((ptr) [4] << 24) | ((ptr) [5] << 16) |	\
+								((ptr) [6] <<  8) | ((ptr) [7]) )
 #else
-#define	GET_LE_8BYTE(psf)	( 	((psf)->header [7] << 56L) | ((psf)->header [6] << 48L) |	\
-							 	((psf)->header [5] << 40L) | ((psf)->header [4] << 32L) |	\
-							 	((psf)->header [3] << 24L) | ((psf)->header [2] << 16L) |	\
-							 	((psf)->header [1] <<  8L) | ((psf)->header [0] ))
+#define	GET_LE_8BYTE(ptr)	( 	((ptr) [7] << 56L) | ((ptr) [6] << 48L) |	\
+							 	((ptr) [5] << 40L) | ((ptr) [4] << 32L) |	\
+							 	((ptr) [3] << 24L) | ((ptr) [2] << 16L) |	\
+							 	((ptr) [1] <<  8L) | ((ptr) [0] ))
 
-#define	GET_BE_8BYTE(psf)	( 	((psf)->header [0] << 56L) | ((psf)->header [1] << 48L) |	\
-							 	((psf)->header [2] << 40L) | ((psf)->header [3] << 32L) |	\
-							 	((psf)->header [4] << 24L) | ((psf)->header [5] << 16L) |	\
-							 	((psf)->header [6] <<  8L) | ((psf)->header [7] ))
+#define	GET_BE_8BYTE(ptr)	( 	((ptr) [0] << 56L) | ((ptr) [1] << 48L) |	\
+							 	((ptr) [2] << 40L) | ((ptr) [3] << 32L) |	\
+							 	((ptr) [4] << 24L) | ((ptr) [5] << 16L) |	\
+							 	((ptr) [6] <<  8L) | ((ptr) [7] ))
 
 #endif
+
 
 int
 psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 {	va_list			argptr ;
 	sf_count_t		*countptr, countdata ;
+	unsigned char	*ucptr, sixteen_bytes [16] ;
 	unsigned int 	*intptr, intdata ;
-	unsigned short	*shortptr, shortdata ;
+	unsigned short	*shortptr ;
 	char    		*charptr ;
 	int				position ;
 	float			*floatptr ;
+	double			*doubleptr ;
 	size_t			size ;
 	char			c ;
-	int				count = 0, endian = SF_ENDIAN_LITTLE ;
+	int				count = 0 ;
 	
 	if (! format)
 		return psf_ftell (psf->filedes) ;
 	
-	va_start(argptr, format);
+	va_start (argptr, format) ;
 	
 	while ((c = *format++))
 	{	switch (c)
 		{	case 'e' : /* All conversions are now from LE to host. */
-					endian = SF_ENDIAN_LITTLE ;
+					psf->rwf_endian = SF_ENDIAN_LITTLE ;
 					break ;
 
 			case 'E' : /* All conversions are now from BE to host. */
-					endian = SF_ENDIAN_BIG ;
+					psf->rwf_endian = SF_ENDIAN_BIG ;
 					break ;
 
 			case 'm' : 
 					intptr = va_arg (argptr, unsigned int*) ;
-					count += psf_fread (psf->header, 1, sizeof (int), psf->filedes) ;
-					*intptr = GET_MARKER (psf) ;
+					ucptr = (unsigned char*) intptr ;
+					count += psf_fread (ucptr, 1, sizeof (int), psf->filedes) ;
+					*intptr = GET_MARKER (ucptr) ;
 					break ;
 					
 			case 'h' : 
 					intptr = va_arg (argptr, unsigned int*) ;
-					count += psf_fread (psf->header, 1, 16, psf->filedes) ;
+					ucptr = (unsigned char*) intptr ;
+					count += psf_fread (sixteen_bytes, 1, sizeof (sixteen_bytes), psf->filedes) ;
 					{	int k ;
 						intdata = 0 ;
 						for (k = 0 ; k < 16 ; k++)
-							intdata ^= psf->header [k] << k ;
+							intdata ^= sixteen_bytes [k] << k ;
 						}
 					*intptr = intdata ;
 					break ;
 					
 			case '1' :
 					charptr = va_arg (argptr, char*) ;
-					count += psf_fread (psf->header, 1, sizeof (char), psf->filedes) ;
-					*charptr = GET_BYTE (psf) ;
+					count += psf_fread (charptr, 1, sizeof (char), psf->filedes) ;
 					break ;
 					
 			case '2' :
 					shortptr = va_arg (argptr, unsigned short*) ;
-					*((short*) psf->header) = 0 ;
-					count += psf_fread (psf->header, 1, sizeof (short), psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						shortdata = GET_BE_SHORT (psf) ;
+					ucptr = (unsigned char*) shortptr ;
+					count += psf_fread (ucptr, 1, sizeof (short), psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						*shortptr = GET_BE_SHORT (ucptr) ;
 					else
-						shortdata = GET_LE_SHORT (psf) ;
-					*shortptr = shortdata ;
+						*shortptr = GET_LE_SHORT (ucptr) ;
 					break ;
 
 			case '3' :
 					intptr = va_arg (argptr, unsigned int*) ;
-					*((int*) psf->header) = 0 ;
-					count += psf_fread (psf->header, 1, 3, psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						intdata = GET_BE_3BYTE (psf) ;
+					count += psf_fread (sixteen_bytes, 1, 3, psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						*intptr = GET_BE_3BYTE (sixteen_bytes) ;
 					else
-						intdata = GET_LE_3BYTE (psf) ;
-					*intptr = intdata ;
+						*intptr = GET_LE_3BYTE (sixteen_bytes) ;
 					break ;
 
 			case '4' :
 					intptr = va_arg (argptr, unsigned int*) ;
-					*((int*) psf->header) = 0 ;
-					count += psf_fread (psf->header, 1, sizeof (int), psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						intdata = GET_BE_INT (psf) ;
+					ucptr = (unsigned char*) intptr ;
+					count += psf_fread (ucptr, 1, sizeof (int), psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						*intptr = GET_BE_INT (ucptr) ;
 					else
-						intdata = GET_LE_INT (psf) ;
-					*intptr = intdata ;
+						*intptr = GET_LE_INT (ucptr) ;
 					break ;
 
 			case '8' :
 					countptr = va_arg (argptr, sf_count_t*) ;
-					*((sf_count_t*) psf->header) = 0 ;
-					count += psf_fread (psf->header, 1, 8, psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						countdata = GET_BE_8BYTE (psf) ;
+					count += psf_fread (sixteen_bytes, 1, 8, psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						countdata = GET_BE_8BYTE (sixteen_bytes) ;
 					else
-						countdata = GET_LE_8BYTE (psf) ;
+						countdata = GET_LE_8BYTE (sixteen_bytes) ;
 					*countptr = countdata ;
 					break ;
 
 			case 'f' : /* Float conversion */
 					floatptr = va_arg (argptr, float *) ;
-					*((int*) psf->header) = 0 ;
-					count += psf_fread (psf->header, 1, sizeof (float), psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						intdata = GET_BE_INT (psf) ;
+					*floatptr = 0.0 ;
+					count += psf_fread (floatptr, 1, sizeof (float), psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						*floatptr = float32_be_read ((unsigned char*) floatptr) ;
 					else
-						intdata = GET_LE_INT (psf) ;
-					*floatptr = float32_read ((unsigned char*) &intdata) ;
+						*floatptr = float32_le_read ((unsigned char*) floatptr) ;
 					break ;
 
 			case 'd' : /* double conversion */
-					psf_log_printf (psf, "Must fix double conversion\n") ;
-					/*
 					doubleptr = va_arg (argptr, double *) ;
-					count += psf_fread (psf->header, 1, sizeof (double), psf->filedes) ;
-					if (endian == SF_ENDIAN_BIG)
-						longdata = GET_BE_8BYTE (psf) ;
+					*doubleptr = 0.0 ;
+					count += psf_fread (doubleptr, 1, sizeof (double), psf->filedes) ;
+					if (psf->rwf_endian == SF_ENDIAN_BIG)
+						*doubleptr = double64_be_read ((unsigned char*) doubleptr) ;
 					else
-						longdata = GET_LE_8BYTE (psf) ;
-					*doubleptr = double32_read ((unsigned char*) &longdata) ;
-					*/
+						*doubleptr = double64_le_read ((unsigned char*) doubleptr) ;
 					break ;
 
 			case 's' :
@@ -939,7 +938,6 @@ psf_default_seek (SF_PRIVATE *psf, int mode, sf_count_t samples_from_start)
 } /* psf_default_seek */
 
 /*========================================================================================
-**	Functions used in the write function for updating the peak chunk. 
 */
 
 void*
@@ -961,3 +959,29 @@ psf_memset (void *s, int c, sf_count_t len)
 	return s ;
 } /* psf_memset */
 
+void  psf_get_date_str (char *str, int maxlen)
+{	time_t		current ;
+	struct tm	timedata, *tmptr ;
+
+	time (&current) ;
+
+#if defined (HAVE_GMTIME_R)
+	/* If the re-entrant version is available, use it. */
+	tmptr = gmtime_r (&current, &timedata) ;
+#elif defined (HAVE_GMTIME)
+	/* Otherwise use the standard one and copy the data to local storage. */
+	tmptr = gmtime (&current) ;
+	memcpy (&timedata, tmptr, sizeof (timedata)) ;
+#else
+	tmptr = NULL ;
+#endif
+
+	if (tmptr)
+		LSF_SNPRINTF (str, maxlen, "%4d-%02d-%02d %02d:%02d:%02d UTC", 
+			1900 + timedata.tm_year, timedata.tm_mon, timedata.tm_mday, 
+			timedata.tm_hour, timedata.tm_min, timedata.tm_sec) ;
+	else
+		strncpy (str, "Unknown date", maxlen) ;
+	
+	return ;
+} /* psf_get_date_str */

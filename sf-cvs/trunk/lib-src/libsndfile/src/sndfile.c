@@ -57,6 +57,11 @@ ErrorStruct SndfileErrors [] =
 	{	SFE_NOT_WRITEMODE		, "Write attempted on file currently open for read." },
 	{	SFE_BAD_MODE_RW			, "This file format does not support read/write mode." },
 	{	SFE_BAD_SF_INFO			, "Internal error : SF_INFO struct incomplete." },
+	{	SFE_BAD_RDWR_FORMAT		, "Attempted to open read only format for RDWR." },
+
+	{	SFE_INTERLEAVE_MODE		, "Attempt to write to file with non-interleaved data." },
+	{	SFE_INTERLEAVE_SEEK		, "Bad karma in seek during interleave read operation." },
+	{	SFE_INTERLEAVE_READ		, "Bad karma in read during interleave read operation." },
 
 	{	SFE_SHORT_READ			, "Short read error." },
 	{	SFE_SHORT_WRITE			, "Short write error." },
@@ -157,10 +162,20 @@ ErrorStruct SndfileErrors [] =
 	{	SFE_W64_ADPCM_CHANNELS	, "Error in ADPCM W64 file. Invalid number of channels." },
 	{	SFE_W64_GSM610_FORMAT	, "Error in GSM610 W64 file. Invalid format chunk." },
 
+	{	SFE_MAT4_BAD_NAME		, "Error in MAT4 file. No variable name." },
+	{	SFE_MAT4_NO_SAMPLERATE	, "Error in MAT4 file. No sample rate." },
+	{	SFE_MAT4_ZERO_CHANNELS	, "Error in MAT4 file. Channel count is zero." },
+
+	{	SFE_MAT5_BAD_ENDIAN		, "Error in MAT5 file. Not able to determine endian-ness." },
+	{	SFE_MAT5_NO_BLOCK		, "Error in MAT5 file. Bad block structure." },
+	{	SFE_MAT5_SAMPLE_RATE	, "Error in MAT5 file. Not able to determine sample rate." },
+	{	SFE_MAT5_ZERO_CHANNELS	, "Error in MAT5 file. Channel count is zero." },
+
 	{	SFE_DWVW_BAD_BITWIDTH	, "Error : Bad bit width for DWVW encoding. Must be 12, 16 or 24." },
 	{	SFE_G72X_NOT_MONO		, "Error : G72x encoding does not support more than 1 channel." },
 
-	{	SFE_MAX_ERROR			, "Maximum error number." }
+	{	SFE_MAX_ERROR			, "Maximum error number." },
+	{	SFE_MAX_ERROR + 1		, NULL } 
 } ;
 
 /*------------------------------------------------------------------------------
@@ -222,12 +237,14 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 	sf_errno = error = 0 ;
 	sf_logbuffer [0] = 0 ;
 
-	if (! (psf = malloc (sizeof (SF_PRIVATE))))
+	if ((psf = malloc (sizeof (SF_PRIVATE))) == NULL)
 	{	sf_errno = SFE_MALLOC_FAILED ;
 		return	NULL ;
 		} ;
 
 	memset (psf, 0, sizeof (SF_PRIVATE)) ;
+	memcpy (&(psf->sf), sfinfo, sizeof (SF_INFO)) ;
+	memset (sfinfo, 0, sizeof (SF_INFO)) ;
 
 	psf_log_printf (psf, "File : %s\n", path) ;
 	copy_filename (psf, path) ;
@@ -236,8 +253,8 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 	psf->norm_float 	= SF_TRUE ;
 	psf->norm_double	= SF_TRUE ;
 	psf->mode 			= mode ;
-	psf->filelength		= -1 ;
 	psf->filedes		= -1 ;
+	psf->filelength		= -1 ;
 	psf->dataoffset		= -1 ;
 	psf->datalength		= -1 ;
 	psf->read_current	= -1 ;
@@ -245,9 +262,8 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 	psf->auto_header 	= SF_FALSE ;
 	psf->read_dither 	= SF_FALSE ;
 	psf->write_dither 	= SF_FALSE ;
-
+	psf->rwf_endian		= SF_ENDIAN_LITTLE ;
 	psf->new_seek		= psf_default_seek ;
-	psf->sf.format		= sfinfo->format ;
 
 	if (strcmp (path, "-") == 0)
 	{	/* File is a either stdin or stdout. */
@@ -285,8 +301,6 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 	/* File is open, so get the length. */
 	psf->filelength = psf_get_filelen (psf->filedes) ;
 
-	memcpy (&(psf->sf), sfinfo, sizeof (SF_INFO)) ;
-
 	psf->sf.seekable = SF_TRUE ;
 	psf->sf.sections = 1 ;
 
@@ -294,7 +308,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 	{	/* If the file is being opened for write or RDWR and the file is currently
 		** empty, then the SF_INFO struct must contain valid data.
 		*/
-		if (! sf_format_check (sfinfo))
+		if (sf_format_check (&(psf->sf)) == 0)
 			error = SFE_BAD_OPEN_FORMAT ;
 		}
 	else if ((psf->sf.format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
@@ -302,7 +316,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 
 		/* If type RAW has not been specified then need to figure out file type. */
 		psf->sf.format = guess_file_type (psf, psf->filename) ;
-		}  ;
+		} ;
 
 	if (error)
 	{	if (psf->filedes >= 0)
@@ -313,7 +327,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 		} ;
 
 	/* Set bytewidth if known. */
-	switch (sfinfo->format & SF_FORMAT_SUBMASK)
+	switch (psf->sf.format & SF_FORMAT_SUBMASK)
 	{	case SF_FORMAT_PCM_S8 :
 		case SF_FORMAT_PCM_U8 :
 		case SF_FORMAT_ULAW :
@@ -385,20 +399,8 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 				error = w64_open (psf) ;
 				break ;
 
-		case	SF_FORMAT_SD2 :
-				error = sd2_open (psf) ;
-				break ;
-
-		case	SF_FORMAT_REX2 :
-				error = rx2_open (psf) ;
-				break ;
-
 		case	SF_FORMAT_TXW :
 				error = txw_open (psf) ;
-				break ;
-
-		case	SF_FORMAT_SDS :
-				error = sds_open (psf) ;
 				break ;
 
 		case	SF_FORMAT_WVE :
@@ -409,9 +411,28 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 				error = dwd_open (psf) ;
 				break ;
 
+		case	SF_FORMAT_MAT4 :
+				error = mat4_open (psf) ;
+				break ;
+
+		case	SF_FORMAT_MAT5 :
+				error = mat5_open (psf) ;
+				break ;
+
+		case	SF_FORMAT_SD2 :
+				error = sd2_open (psf) ;
+				break ;
+
+		case	SF_FORMAT_REX2 :
+				error = rx2_open (psf) ;
+				break ;
+
 		default :
 				error = SFE_UNKNOWN_FORMAT ;
 		} ;
+
+	if (mode == SFM_RDWR && sf_format_check (&(psf->sf)) == 0)
+		error = SFE_BAD_RDWR_FORMAT ;
 
 	if (error)
 	{	sf_errno = error ;
@@ -420,7 +441,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 		return NULL ;
 		} ;
 
-	if (! validate_sfinfo (&(psf->sf)))
+	if (validate_sfinfo (&(psf->sf)) == 0)
 	{	psf_log_SF_INFO (psf) ;
 		save_header_info (psf) ;
 		sf_errno = SFE_BAD_SF_INFO ;
@@ -428,7 +449,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 		return NULL ;
 		} ;
 
-	if (! validate_psf (psf))
+	if (validate_psf (psf) == 0)
 	{	save_header_info (psf) ;
 		sf_errno = SFE_INTERNAL ;
 		sf_close (psf) ;
@@ -436,7 +457,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 		} ;
 
 	psf->read_current  = 0 ;
-	psf->write_current=  (psf->mode == SFM_RDWR) ? psf->sf.frames : 0 ;
+	psf->write_current = (psf->mode == SFM_RDWR) ? psf->sf.frames : 0 ;
 
 	memcpy (sfinfo, &(psf->sf), sizeof (SF_INFO)) ;
 
@@ -503,15 +524,19 @@ sf_error_str	(SNDFILE *sndfile, char *str, size_t maxlen)
 	int 		errnum, k ;
 
 	if (! sndfile)
-	{	errnum = sf_errno ;
-		}
+		errnum = sf_errno ;
 	else
 	{	VALIDATE_SNDFILE_AND_ASSIGN_PSF (sndfile, psf, 0) ;
 		errnum = psf->error ;
 		} ;
 
 	errnum = abs (errnum) ;
-	errnum = (errnum >= SFE_MAX_ERROR || errnum < 0) ? 0 : errnum ;
+	
+	if (errnum >= SFE_MAX_ERROR)
+	{	strncpy (str, "No error defined.\n", maxlen) ;
+		str [maxlen - 1] = 0 ;
+		return SFE_NO_ERROR ;
+		} ;
 
 	for (k = 0 ; SndfileErrors[k].str ; k++)
 		if (errnum == SndfileErrors[k].error)
@@ -651,7 +676,9 @@ sf_format_check	(const SF_INFO *info)
 				break ;
 
 		case SF_FORMAT_SVX :
-				/* SVX currently does not support more than one channel. */
+				/* SVX currently does not support more than one channel for write.
+				** Read will allow more than one channel but only allow one here.
+				*/
 				if (info->channels != 1)
 					return 0 ;
 				/* Always big endian. */
@@ -706,13 +733,29 @@ sf_format_check	(const SF_INFO *info)
 					return 1 ;
 				break ;
 
+		case SF_FORMAT_MAT4 :
+				if (subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_32)
+					return 1 ;
+				if (subformat == SF_FORMAT_FLOAT || subformat == SF_FORMAT_DOUBLE)
+					return 1 ;
+				break ;
+
+		case SF_FORMAT_MAT5 :
+				if (subformat == SF_FORMAT_PCM_U8 || subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_32)
+					return 1 ;
+				if (subformat == SF_FORMAT_FLOAT || subformat == SF_FORMAT_DOUBLE)
+					return 1 ;
+				break ;
+
+		/*-
 		case SF_FORMAT_SD2 :
-				/* SD2 is strictly big endian. */
+				/+* SD2 is strictly big endian. *+/
 				if (endian == SF_ENDIAN_LITTLE || endian == SF_ENDIAN_CPU)
 					return 0 ;
 				if (subformat == SF_FORMAT_PCM_16)
 					return 1 ;
 				break ;
+		-*/
 
 		default : break ;
 		} ;
@@ -1799,6 +1842,10 @@ sf_close	(SNDFILE *sndfile)
 
 	if (psf->fdata)
 		free (psf->fdata) ;
+
+	if (psf->interleave)
+		free (psf->interleave) ;
+
 	memset (psf, 0, sizeof (SF_PRIVATE)) ;
 
 	free (psf) ;
@@ -1872,7 +1919,7 @@ guess_file_type (SF_PRIVATE *psf, const char *filename)
 		return 0 ;
 		} ;
 
-	if ((buffer [0] == MAKE_MARKER ('.','s','n','d') || buffer [0] == MAKE_MARKER ('d','n','s','.')))
+	if (buffer [0] == MAKE_MARKER ('.','s','n','d') || buffer [0] == MAKE_MARKER ('d','n','s','.'))
 		return SF_FORMAT_AU ;
 
 	if ((buffer [0] == MAKE_MARKER ('f','a','p',' ') || buffer [0] == MAKE_MARKER (' ','p','a','f')))
@@ -1888,17 +1935,19 @@ guess_file_type (SF_PRIVATE *psf, const char *filename)
 		(buffer [0] & MAKE_MARKER (0xFF, 0xF8, 0xFF, 0xFF)) == MAKE_MARKER (0x00, 0x00, 0xA3, 0x64))
 		return SF_FORMAT_IRCAM ;
 
-	if ((buffer [0] == MAKE_MARKER ('r', 'i', 'f', 'f')))
+	if (buffer [0] == MAKE_MARKER ('r', 'i', 'f', 'f'))
 		return SF_FORMAT_W64 ;
 
-	if ((buffer [0] & MAKE_MARKER (0xFF, 0xFF, 0x80, 0xFF)) == MAKE_MARKER (0xF0, 0x7E, 0, 0x01))
-		return SF_FORMAT_SDS ;
+	if (buffer [0] == MAKE_MARKER (0, 0, 0x03, 0xE8) && buffer [1] == MAKE_MARKER (0, 0, 0, 1) &&
+								buffer [2] == MAKE_MARKER (0, 0, 0, 1))
+		return SF_FORMAT_MAT4 ;
 
-	if (buffer [0] == MAKE_MARKER ('C', 'A', 'T', ' ') && buffer [2] == MAKE_MARKER ('R', 'E', 'X', '2'))
-		return SF_FORMAT_REX2 ;
+	if (buffer [0] == MAKE_MARKER (0, 0, 0, 0) && buffer [1] == MAKE_MARKER (1, 0, 0, 0) &&
+								buffer [2] == MAKE_MARKER (1, 0, 0, 0))
+		return SF_FORMAT_MAT4 ;
 
-	if (buffer [0] == MAKE_MARKER (0x30, 0x26, 0xB2, 0x75) && buffer [1] == MAKE_MARKER (0x8E, 0x66, 0xCF, 0x11))
-		return SF_FORMAT_WMA ;
+	if (buffer [0] == MAKE_MARKER ('M', 'A', 'T', 'L') && buffer [1] == MAKE_MARKER ('A', 'B', ' ', '5'))
+		return SF_FORMAT_MAT5 ;
 
 	if (buffer [0] == MAKE_MARKER ('A', 'L', 'a', 'w') && buffer [1] == MAKE_MARKER ('S', 'o', 'u', 'n')
 			&& buffer [2] == MAKE_MARKER ('d', 'F', 'i', 'l'))
@@ -1911,6 +1960,15 @@ guess_file_type (SF_PRIVATE *psf, const char *filename)
 	if (buffer [0] == MAKE_MARKER ('L', 'M', '8', '9') || buffer [0] == MAKE_MARKER ('5', '3', 0, 0))
 		return SF_FORMAT_TXW ;
 
+	if ((buffer [0] & MAKE_MARKER (0xFF, 0xFF, 0x80, 0xFF)) == MAKE_MARKER (0xF0, 0x7E, 0, 0x01))
+		return SF_FORMAT_SDS ;
+
+	if (buffer [0] == MAKE_MARKER ('C', 'A', 'T', ' ') && buffer [2] == MAKE_MARKER ('R', 'E', 'X', '2'))
+		return SF_FORMAT_REX2 ;
+
+	if (buffer [0] == MAKE_MARKER (0x30, 0x26, 0xB2, 0x75) && buffer [1] == MAKE_MARKER (0x8E, 0x66, 0xCF, 0x11))
+		return 0 /*-SF_FORMAT_WMA-*/ ;
+
 	/* Turtle Beach SMP 16-bit */
 	if (buffer [0] == MAKE_MARKER ('S', 'O', 'U', 'N') && buffer [1] == MAKE_MARKER ('D', ' ', 'S', 'A'))
 		return 0 ;
@@ -1919,7 +1977,7 @@ guess_file_type (SF_PRIVATE *psf, const char *filename)
 		return 0 ;
 
 	if (buffer [0] == MAKE_MARKER ('a', 'j', 'k', 'g'))
-		return SF_FORMAT_SHN ;
+		return 0 /*-SF_FORMAT_SHN-*/ ;
 
 	/*	Detect wacky MacOS header stuff. This might be "Sound Designer II". */
 	memcpy (cptr , buffer, sizeof (buffer)) ;

@@ -205,6 +205,34 @@ main (int argc, char **argv)
 		nTests++ ;
 		} ;
 
+	if (bDoAll || ! strcmp (argv [1], "mat4"))
+	{	pcm_test_short	("short_be.mat4" , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_le.mat4" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_int	("int_be.mat4"   , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_int 	("int_le.mat4"   , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float_be.mat4" , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_float	("float_le.mat4" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double_be.mat4", SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, FALSE) ;
+		pcm_test_double	("double_le.mat4", SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, FALSE) ;
+
+		nTests++ ;
+		} ;
+
+	if (bDoAll || ! strcmp (argv [1], "mat5"))
+	{	pcm_test_char 	("char_be.mat5"  , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_char 	("char_le.mat5"  , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, FALSE) ;
+		pcm_test_short	("short_be.mat5" , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_short	("short_le.mat5" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, FALSE) ;
+		pcm_test_int	("int_be.mat5"   , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_int 	("int_le.mat5"   , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_float	("float_be.mat5" , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_float	("float_le.mat5" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , FALSE) ;
+		pcm_test_double	("double_be.mat5", SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, FALSE) ;
+		pcm_test_double	("double_le.mat5", SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, FALSE) ;
+
+		nTests++ ;
+		} ;
+
 	if (nTests == 0)
 	{	printf ("Mono : ************************************\n") ;
 		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
@@ -368,10 +396,10 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -398,6 +426,11 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
@@ -749,10 +782,10 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -779,6 +812,11 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
@@ -1130,10 +1168,10 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -1160,6 +1198,11 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
@@ -1511,10 +1554,10 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -1541,6 +1584,11 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
@@ -1892,10 +1940,10 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -1922,6 +1970,11 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
@@ -2273,10 +2326,10 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR. 
 	*/
 
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -2303,6 +2356,11 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
+	sfinfo.samplerate = SAMPLE_RATE ;
+	sfinfo.frames     = DATA_LENGTH ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format 	  = filetype ;
+
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
