@@ -436,7 +436,6 @@ void Mixer::MixSameRate(int *channelFlags, WaveTrack * src,
       // This is the mixing inner loop, which we want
       // as optimized as possible
 
-      int i = 0;
       switch(mFormat) {
       case int16Sample: {
          short *dest = (short *)destPtr;
