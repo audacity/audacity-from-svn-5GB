@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.0 (Release Candidate 1)
+Version 1.0.0 (June 5, 2002)
 
 http://audacity.sourceforge.net/
 
@@ -159,6 +159,9 @@ Changes in 1.0:
 
     - Fixed bug which caused audio to playback too quickly
       (esp. on Mandrake systems).
+
+    - Fixed bug which corrupted files when you exported a file
+      overtop of an existing one.
 
   * Other:
 
