@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0
+Version 1.2.1
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -245,8 +245,21 @@ Known issues/problems:
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
 
-  * Recording in full duplex (play existing tracks while recording) on some
-    Linux systems causes the recording to sound slowed-down.
+  * The About window does not display correctly in locales with
+    non-Western character sets.
+
+  * The Change Pitch effect crashes when used with tracks that
+    have 96 KHz sample rates.
+
+  * Windows only: Audacity crashes when using the Time Track
+    "Set Rate" command.
+
+  * Windows only: If you installed one of the 1.1.x beta versions,
+    you must uninstall it before installing Audacity 1.2.
+    (You do not need to uninstall earlier 1.2 or 1.0 releases.)
+
+  * Linux only: Recording in full duplex on some Linux systems causes
+    mono recordings to sound slowed-down.
 
   * Mac OS X only: Audacity cannot work with files or folders that
     are contained inside folders with international characters
@@ -254,16 +267,6 @@ Known issues/problems:
     accented characters work, and Audacity projects with
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
-
-  * Microsoft Windows(R) only:  Note that the Windows installer 
-    will replace 1.0.0 installations, but not the 1.1.x beta 
-    installations.
-
-  * The About window does not display correctly in locales with
-    non-Western character sets.
-
-  * The Change Pitch effect crashes when used with tracks that
-    have 96 KHz sample rates.
 
 -------------------------------------------------------------
 
