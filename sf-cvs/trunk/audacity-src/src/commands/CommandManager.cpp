@@ -236,13 +236,16 @@ void CommandManager::AddItem(wxString name, wxString label,
    // we want, then immediately change the label to the correct string.
    // -DMM
    mHiddenID++;
-   wxString dummy;
+   wxString dummy, newLabel;
    dummy.Printf("%08d", mHiddenID);
-   if (mCommandIDHash[ID]->key)
+   newLabel = label;
+   if (mCommandIDHash[ID]->key) {
       dummy = dummy + "\t" + mCommandIDHash[ID]->key;
+      newLabel = newLabel + "\t" + mCommandIDHash[ID]->key;
+   }
 
    CurrentMenu()->Append(ID, dummy);
-   CurrentMenu()->SetLabel(ID, label);
+   CurrentMenu()->SetLabel(ID, newLabel);
 }
 
 ///
