@@ -190,7 +190,7 @@ AC_ARG_WITH(libsamplerate,
 	[AC_HELP_STRING([--with-libsamplerate],
 		[use libsamplerate (instead of libresample): [local system none]])],
 	use_libsamplerate=$withval,
-	use_libsamplerate=$default_libsamplerate)
+	use_libsamplerate="default")
 
 AC_ARG_WITH(libflac,
 	[AC_HELP_STRING([--with-libflac [local system none]],
@@ -304,6 +304,10 @@ fi
 
 if [[ "$use_libsamplerate" = "system" ]] ; then
 	use_libresample="no"
+fi
+
+if [[ "$use_libsamplerate" = "default" ]] ; then
+	use_libsamplerate=$default_libsamplerate
 fi
 
 if [[ "$use_libresample" = "yes" ]] ; then

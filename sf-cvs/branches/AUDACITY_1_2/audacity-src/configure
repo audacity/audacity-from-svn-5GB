@@ -4209,7 +4209,7 @@ if test "${with_libsamplerate+set}" = set; then
   withval="$with_libsamplerate"
   use_libsamplerate=$withval
 else
-  use_libsamplerate=$default_libsamplerate
+  use_libsamplerate="default"
 fi;
 
 
@@ -4360,6 +4360,10 @@ fi
 
 if [ "$use_libsamplerate" = "system" ] ; then
 	use_libresample="no"
+fi
+
+if [ "$use_libsamplerate" = "default" ] ; then
+	use_libsamplerate=$default_libsamplerate
 fi
 
 if [ "$use_libresample" = "yes" ] ; then
