@@ -37,6 +37,7 @@ $browseSourceStr = "Examinar el codi font";
 $browseDoxygenStr = "Navegar per la documentació Doxygen";
 $creditsStr = "Crèdits";
 $sourceStr = "Codi Font";
+$sourceDepStr = "Dependències del codi font";
 $linuxStr = "Linux binari";
 $linuxStr2 = "Aquest és un binari estàtic que hauria de funcionar en qualsevol distribució de Linux. Només cal descomprimir-lo i executar el binari 'audacity' des de qualsevol directori, o fer 'make install' com a root per a instal·lar el programa.";
 $macOS9ReqStr = "Requereix el Mac OS 8.6 o superior";
