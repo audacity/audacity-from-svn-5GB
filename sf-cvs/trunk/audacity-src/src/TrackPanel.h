@@ -16,6 +16,7 @@
 
 //Stm:  The following included because of the sampleCount struct.
 #include "Sequence.h"  
+#include "WaveClip.h"
   
 class wxMenu;
 class wxRect;
@@ -286,6 +287,8 @@ class TrackPanel:public wxWindow {
 
    wxString TrackSubText(Track *t);
 
+   int MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst);
+
    TrackLabel mTrackLabel;
 
    TrackPanelListener *mListener;
@@ -324,6 +327,7 @@ class TrackPanel:public wxWindow {
    double mSelStart;
 
    Track *mCapturedTrack;
+   int mCapturedClip; // -1 means none (i.e. the whole track)
    wxRect mCapturedRect;
    int mCapturedNum;
 

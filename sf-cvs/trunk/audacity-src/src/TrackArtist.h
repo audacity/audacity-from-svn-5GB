@@ -27,6 +27,7 @@ class wxHashTable;
 
 class Track;
 class WaveTrack;
+class WaveClip;
 class NoteTrack;
 class LabelTrack;
 class TimeTrack;
@@ -82,6 +83,18 @@ class TrackArtist {
                        wxDC & dc, wxRect & r, ViewInfo * viewInfo,
                        bool rightwards);
 
+   void DrawClipWaveform(WaveTrack* track, WaveClip* clip,
+                         wxDC & dc, wxRect & r,
+                         ViewInfo * viewInfo,
+                         bool drawEnvelope,
+                         bool drawSamples,
+                         bool drawSliders,
+                         bool dB, bool muted);
+
+   void DrawClipSpectrum(WaveTrack *track, WaveClip *clip,
+                         wxDC & dc, wxRect & r,
+                         ViewInfo * viewInfo, bool autocorrelation);
+
    void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
 			     wxPen unselectedPen, wxPen selectedPen) {
      this->unselectedBrush = unselectedBrush;
@@ -131,6 +144,14 @@ class TrackArtist {
                               bool dB,
                               bool drawSamples,
                               bool showPoints, bool muted);
+
+   void DrawIndividualClipSamples(wxDC &dc, wxRect r,
+                                        WaveClip *clip,
+                                        double t0, double pps, double h,
+                                        float zoomMin, float zoomMax,
+                                        bool dB,
+                                        bool drawSamples,
+                                        bool showPoints, bool muted);
 
    void DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                       float zoomMin, float zoomMax,

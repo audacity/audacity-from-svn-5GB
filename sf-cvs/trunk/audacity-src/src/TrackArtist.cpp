@@ -134,6 +134,13 @@ void TrackArtist::DrawTracks(TrackList * tracks,
    bool muted = false;
 
    while (t) {
+      if (t->GetKind() == Track::Wave)
+      {
+         WaveTrack* wt = (WaveTrack*)t;
+         for (WaveClipList::Node* it=wt->GetClipIterator(); it; it=it->GetNext())
+            it->GetData()->ClearDisplayRect();
+      }
+
       if (linkFlag) // Use the value from the previous (linked) track.
          linkFlag = false;
       else {
@@ -154,6 +161,8 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
          switch (t->GetKind()) {
          case Track::Wave:
+            ((WaveTrack*)t)->SetDisplayRect(rr);
+            
             switch (((WaveTrack *)t)->GetDisplay()) {
             case WaveTrack::WaveformDisplay:
                DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
@@ -632,19 +641,32 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
                                         bool drawSamples,
                                         bool showPoints, bool muted)
 {
-   Sequence *seq = track->GetSequence();
-   double rate = track->GetRate();
-   sampleCount s0 = (sampleCount) (t0 * rate);
+   for (WaveClipList::Node* it = track->GetClipIterator(); it; it = it->GetNext())
+      DrawIndividualClipSamples(dc, r, it->GetData(), t0, pps, h,
+         zoomMin, zoomMax, dB, drawSamples, showPoints, muted);
+}
+
+void TrackArtist::DrawIndividualClipSamples(wxDC &dc, wxRect r,
+                                        WaveClip *clip,
+                                        double t0, double pps, double h,
+                                        float zoomMin, float zoomMax,
+                                        bool dB,
+                                        bool drawSamples,
+                                        bool showPoints, bool muted)
+{
+   double tOffset = clip->GetOffset();
+   double rate = clip->GetRate();
+   sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
    float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    
    slen += 4;
 
-   if (s0 + slen > seq->GetNumSamples())
-      slen = seq->GetNumSamples() - s0;
+   if (s0 + slen > clip->GetNumSamples())
+      slen = clip->GetNumSamples() - s0;
    
    float *buffer = new float[slen];
-   seq->Get((samplePtr)buffer, floatSample, s0, slen);
+   clip->GetSamples((samplePtr)buffer, floatSample, s0, slen);
 
    int *xpos = new int[slen];
    int *ypos = new int[slen];
@@ -666,7 +688,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
       
       xpos[s] = xx;
 
-      ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValueAtX(xx+r.x, r, h, pps),
+      ypos[s] = GetWaveYPosNew(buffer[s] * clip->GetEnvelope()->GetValueAtX(xx+r.x, r, h, pps),
                                zoomMin, zoomMax, r.height, dB, true, dBr, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
@@ -847,6 +869,24 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                bool drawSliders,
                                bool dB, bool muted)
 {
+   // MM: Draw background. We should optimize that a bit more.
+   dc.SetPen(*wxTRANSPARENT_PEN);
+   dc.SetBrush(blankBrush);
+   dc.DrawRectangle(r);
+
+   for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+      DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
+                       drawSliders, dB, muted);
+}
+
+void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
+                               wxDC & dc, wxRect & r,
+                               ViewInfo * viewInfo,
+                               bool drawEnvelope,
+                               bool drawSamples,
+                               bool drawSliders,
+                               bool dB, bool muted)
+{
 #if PROFILE_WAVEFORM
    struct timeval tv0, tv1;
    gettimeofday(&tv0, NULL);
@@ -856,9 +896,9 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    double pps = viewInfo->zoom;     //points-per-second--the zoom level
    double sel0 = viewInfo->sel0;    //left selection bound
    double sel1 = viewInfo->sel1;    //right selection bound
-   double trackLen = track->GetEndTime() - track->GetStartTime();
-   double tOffset = track->GetOffset();
-   double rate = track->GetRate();
+   double trackLen = clip->GetEndTime() - clip->GetStartTime();
+   double tOffset = clip->GetOffset();
+   double rate = clip->GetRate();
    double sps = 1./rate;            //seconds-per-sample
 
    //If the track isn't selected, make the selection empty
@@ -915,34 +955,23 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    // If the left edge of the track is to the right of the left
    // edge of the display, then there's some blank area to the
-   // left of the track.  Fill it in, and reduce the "mid"
-   // rect by size of the blank area.
+   // left of the track.  Reduce the "mid"
    if (tpre < 0) {
-      // Fill in the area to the left of the track
-      wxRect pre = r;
-      if (t0 < tpost) pre.width = (int) ((t0 - tpre) * pps);
-      dc.SetBrush(blankBrush);
-      dc.DrawRectangle(pre);
-
-      // Offset the rectangle containing the waveform by the width
-      // of the area we just erased.
-      mid.x += pre.width;
-      mid.width -= pre.width;
+      double delta = r.width;
+      if (t0 < tpost)
+         delta = (int) ((t0 - tpre) * pps);
+      mid.x += (int)delta;
+      mid.width -= (int)delta;
    }
 
    // If the right edge of the track is to the left of the the right
    // edge of the display, then there's some blank area to the right
-   // of the track.  Fill it in, and reduce the "mid" rect by the
+   // of the track.  Reduce the "mid" rect by the
    // size of the blank area.
    if (tpost > t1) {
       wxRect post = r;
       if (t1 > tpre) post.x += (int) ((t1 - tpre) * pps);
       post.width = r.width - (post.x - r.x);
-      dc.SetBrush(blankBrush);
-      dc.DrawRectangle(post);
-
-      // Reduce the rectangle containing the waveform by the width
-      // of the area we just erased.
       mid.width -= post.width;
    }
 
@@ -961,6 +990,10 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
      return;
    }
 
+   // If we get to this point, the clip is actually visible on the
+   // screen, so remember the display rectangle.
+   clip->SetDisplayRect(mid);
+
    // The bounds (controlled by vertical zooming; -1.0...1.0
    // by default)
    float zoomMin, zoomMax;
@@ -973,11 +1006,11 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    float *rms = new float[mid.width];
    sampleCount *where = new sampleCount[mid.width+1];
    
-   // The WaveTrack class handles the details of computing the shape
+   // The WaveClip class handles the details of computing the shape
    // of the waveform.  The only way GetWaveDisplay will fail is if
    // there's a serious error, like some of the waveform data can't
    // be loaded.  So if the function returns false, we can just exit.
-   if (!track->GetWaveDisplay(min, max, rms, where,
+   if (!clip->GetWaveDisplay(min, max, rms, where,
                               mid.width, t0, pps)) {
       delete[] min;
       delete[] max;
@@ -1006,7 +1039,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    // track at each pixel
 
    double *envValues = new double[drawRect.width];
-   track->GetEnvelope()->GetValues(envValues, drawRect.width,
+   clip->GetEnvelope()->GetValues(envValues, drawRect.width,
                                    t0 + tOffset, tstep);
 
    // Draw the background of the track, outlining the shape of
@@ -1073,7 +1106,7 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
    if (drawEnvelope) {
       wxRect envRect = r;
-      track->GetEnvelope()->Draw(dc, envRect, h, pps, dB,
+      clip->GetEnvelope()->Draw(dc, envRect, h, pps, dB,
                                  zoomMin, zoomMax);
    }
 
@@ -1172,15 +1205,22 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
       return;
    }
 
+   for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
+      DrawClipSpectrum(track, it->GetData(), dc, r, viewInfo, autocorrelation);
+}
+
+void TrackArtist::DrawClipSpectrum(WaveTrack* track, WaveClip *clip,
+                               wxDC & dc, wxRect & r,
+                               ViewInfo * viewInfo, bool autocorrelation)
+{
    double h = viewInfo->h;
    double pps = viewInfo->zoom;
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
-   Sequence *seq = track->GetSequence();
-   sampleCount numSamples = seq->GetNumSamples();
-   double tOffset = track->GetOffset();
-   double rate = track->GetRate();
+   sampleCount numSamples = clip->GetNumSamples();
+   double tOffset = clip->GetOffset();
+   double rate = clip->GetRate();
    double sps = 1./rate;            
 
    // if nothing is on the screen
@@ -1193,7 +1233,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    double tpre = h - tOffset;
    double tstep = 1.0 / pps;
    double tpost = tpre + (r.width * tstep); 
-   double trackLen = track->GetEndTime() - track->GetStartTime();
+   double trackLen = clip->GetEndTime() - clip->GetStartTime();
 
    bool showIndividualSamples = (pps / rate > 0.5);   //zoomed in a lot
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
@@ -1282,7 +1322,7 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
    float *freq = new float[mid.width * mid.height];
    sampleCount *where = new sampleCount[mid.width+1];
 
-   if (!track->GetSpectrogram(freq, where, mid.width, mid.height,
+   if (!clip->GetSpectrogram(freq, where, mid.width, mid.height,
                               t0, pps, autocorrelation)) {
       delete image;
       delete[] where;
@@ -1316,6 +1356,10 @@ void TrackArtist::DrawSpectrum(WaveTrack *track,
 
       x++;
    }
+
+   // If we get to this point, the clip is actually visible on the
+   // screen, so remember the display rectangle.
+   clip->SetDisplayRect(mid);
 
    wxBitmap converted = wxBitmap(image);
 

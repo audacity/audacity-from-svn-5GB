@@ -365,9 +365,9 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          track->Get((samplePtr)&queue[*queueLen], floatSample,
                     *pos, getLen);
 
-         Envelope *e = track->GetEnvelope();
-         e->GetValues(mEnvValues, getLen, (*pos) / track->GetRate(),
-                      1.0 / track->GetRate());
+         track->GetEnvelopeValues(mEnvValues, getLen, (*pos) / track->GetRate(),
+                                  1.0 / track->GetRate());
+
          for(i=0; i<getLen; i++)
             queue[(*queueLen)+i] *= mEnvValues[i];
          *queueLen += getLen;
@@ -442,8 +442,7 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
       slen = mMaxOut;
 
    track->Get((samplePtr)mFloatBuffer, floatSample, *pos, slen);
-   Envelope *e = track->GetEnvelope();
-   e->GetValues(mEnvValues, slen, t, 1.0 / mRate);
+   track->GetEnvelopeValues(mEnvValues, slen, t, 1.0 / mRate);
    for(int i=0; i<slen; i++)
       mFloatBuffer[i] *= mEnvValues[i]; // Track gain control will go here?
    

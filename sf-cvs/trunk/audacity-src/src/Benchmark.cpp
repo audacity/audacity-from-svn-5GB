@@ -380,9 +380,9 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    // as we're about to do).
    t->GetEndTime();
 
-   if (t->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
+   if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
       Printf("Expected len %d, track len %d.\n", len * scale,
-             t->GetSequence()->GetNumSamples());
+             t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
       goto fail;
    }
    //t->Debug();
@@ -404,7 +404,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
          Printf("Cut (%d, %d) failed.\n", (x0 * scale),
                 (x0 + xlen) * scale);
          Printf("Expected len %d, track len %d.\n", len * scale,
-                t->GetSequence()->GetNumSamples());
+                t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
          goto fail;
       }
 
@@ -414,10 +414,10 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
       t->Paste(double (y0 * scale), tmp);
 
-      if (t->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
+      if (t->GetClipByIndex(0)->GetSequence()->GetNumSamples() != (sampleCount)len * scale) {
          Printf("Trial %d\n", z);
          Printf("Expected len %d, track len %d.\n", len * scale,
-                t->GetSequence()->GetNumSamples());
+                t->GetClipByIndex(0)->GetSequence()->GetNumSamples());
          goto fail;
       }
       // Copy
@@ -439,7 +439,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    elapsed = timer.Time();
 
    if (mBlockDetail) {
-      t->GetSequence()->DebugPrintf(&tempStr);
+      t->GetClipByIndex(0)->GetSequence()->DebugPrintf(&tempStr);
       mToPrint += tempStr;
    }
    Printf("Time to perform %d edits: %ld ms\n", trials, elapsed);

@@ -59,7 +59,7 @@ VoiceKey::~VoiceKey(){
 
 
 //Move forward to find an ON region.
-sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleCount len) {
+sampleCount VoiceKey::OnForward (WaveTrack & t, sampleCount start, sampleCount len) {
 
    if((mWindowSize) >= len+10){
 
@@ -195,7 +195,7 @@ sampleCount VoiceKey::OnForward (const WaveTrack & t, sampleCount start, sampleC
 }
 	
 //Move backward from end to find an ON region.
-sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCount len) {
+sampleCount VoiceKey::OnBackward (WaveTrack & t, sampleCount end, sampleCount len) {
 
 
    if((mWindowSize) >= len+10){
@@ -327,7 +327,7 @@ sampleCount VoiceKey::OnBackward (const WaveTrack & t, sampleCount end, sampleCo
 
 
 //Move froward from the start to find an OFF region.
-sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sampleCount len) {
+sampleCount VoiceKey::OffForward (WaveTrack & t, sampleCount start, sampleCount len) {
 
    if((mWindowSize) >= len+10){
       wxMessageBox(_("Selection is too small to use voice key."));
@@ -458,7 +458,7 @@ sampleCount VoiceKey::OffForward (const WaveTrack & t, sampleCount start, sample
 	
 
 //Move backward from the end to find an OFF region
-sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleCount len) {
+sampleCount VoiceKey::OffBackward (WaveTrack & t, sampleCount end, sampleCount len) {
 
 
    if((mWindowSize) >= len+10){
@@ -588,7 +588,7 @@ sampleCount VoiceKey::OffBackward (const WaveTrack & t, sampleCount end, sampleC
 }
 
 //This tests whether a specified block region is above or below threshold.
-bool VoiceKey::AboveThreshold(const WaveTrack & t, sampleCount start, sampleCount len)
+bool VoiceKey::AboveThreshold(WaveTrack & t, sampleCount start, sampleCount len)
 {
 
    double erg=0;
@@ -642,7 +642,7 @@ void VoiceKey::AdjustThreshold(double t){
 
 
 //This 'calibrates' the voicekey to noise
-void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCount len){
+void VoiceKey::CalibrateNoise(WaveTrack & t, sampleCount start, sampleCount len){
    //To calibrate the noise, we need to scan the sample block just like in the voicekey and 
    //calculate the mean and standard deviation of the test statistics.
    //Then, we set the BaselineThreshold to be one 
@@ -767,7 +767,7 @@ void VoiceKey::CalibrateNoise(const WaveTrack & t, sampleCount start, sampleCoun
 
 
 //This might continue over a number of blocks.
-double VoiceKey::TestEnergy (const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestEnergy (WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
    double sum = 1;
@@ -811,7 +811,7 @@ void VoiceKey::TestEnergyUpdate (double & prevErg, int len, const sampleFormat &
 }
 
 
-double VoiceKey::TestSignChanges(const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestSignChanges(WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
  
@@ -870,7 +870,7 @@ void VoiceKey::TestSignChangesUpdate(double & currentsignchanges, int len,
 }
 
 
-double VoiceKey::TestDirectionChanges(const WaveTrack & t, sampleCount start, sampleCount len)
+double VoiceKey::TestDirectionChanges(WaveTrack & t, sampleCount start, sampleCount len)
 {
 	
 

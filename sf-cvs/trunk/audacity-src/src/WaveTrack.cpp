@@ -24,72 +24,6 @@
 
 #include "AudioIO.h"
 
-class WaveCache {
-public:
-   WaveCache(int cacheLen)
-   {
-      dirty = -1;
-      start = -1.0;
-      pps = 0.0;
-      len = cacheLen;
-      min = new float[len];
-      max = new float[len];
-      rms = new float[len];
-      where = new sampleCount[len+1];
-   }
-
-   ~WaveCache()
-   {
-      delete[] min;
-      delete[] max;
-      delete[] rms;
-      delete[] where;
-   }
-
-   int          dirty;
-   sampleCount  len;
-   double       start;
-   double       pps;
-   sampleCount *where;
-   float       *min;
-   float       *max;
-   float       *rms;
-};
-
-class SpecCache {
-public:
-   SpecCache(int cacheLen, int viewHeight, bool autocorrelation)
-   {
-      windowSizeOld = -1;
-      maxFreqPrefOld = -1;
-      dirty = -1;
-      start = -1.0;
-      pps = 0.0;
-      len = cacheLen;
-      ac = autocorrelation;
-      height = viewHeight;
-      freq = new float[len*height];
-      where = new sampleCount[len+1];
-   }
-
-   ~SpecCache()
-   {
-      delete[] freq;
-      delete[] where;
-   }
-
-   int          maxFreqPrefOld;
-   int          windowSizeOld;
-   int          dirty;
-   int          height;
-   bool         ac;
-   sampleCount  len;
-   double       start;
-   double       pps;
-   sampleCount *where;
-   float       *freq;
-};
-
 WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
 {
    if (format == (sampleFormat)0) 
@@ -122,16 +56,11 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 
    mDisplay = 0; // Move to GUIWaveTrack
 
-   mSequence = new Sequence(projDirManager, format);
-   mEnvelope = new Envelope();
+   mFormat = format;
    mRate = rate;
    mGain = 1.0;
    mPan = 0.0;
-   mAppendBuffer = NULL;
-   mAppendBufferLen = 0;
    SetName(_("Audio Track"));
-   mWaveCache = new WaveCache(1);
-   mSpecCache = new SpecCache(1, 1, false);
    mDisplayMin = -1.0;
    mDisplayMax = 1.0;
 }
@@ -143,21 +72,15 @@ WaveTrack::WaveTrack(WaveTrack &orig):
 
    Init(orig);
 
-   mSequence = new Sequence(*orig.mSequence);
-   mAppendBuffer = NULL;
-   mAppendBufferLen = 0;
-   mEnvelope = new Envelope();
-   mEnvelope->Paste(0.0, orig.mEnvelope);
-   mEnvelope->SetOffset(orig.GetOffset());
-   mEnvelope->SetTrackLen(orig.mSequence->GetNumSamples() / orig.mRate);
-   mWaveCache = new WaveCache(1);
-   mSpecCache = new SpecCache(1, 1, false);
+   for (WaveClipList::Node *node = orig.mClips.GetFirst(); node; node = node->GetNext())
+      mClips.Append(new WaveClip(*node->GetData()));
 }
 
 // Copy the track metadata but not the contents.
 void WaveTrack::Init(const WaveTrack &orig)
 {
    Track::Init(orig);
+   mFormat = orig.mFormat;
    mRate = orig.mRate;
    mGain = orig.mGain;
    mPan = orig.mPan;
@@ -169,12 +92,22 @@ void WaveTrack::Init(const WaveTrack &orig)
 
 WaveTrack::~WaveTrack()
 {
-   if (mAppendBuffer)
-      DeleteSamples(mAppendBuffer);
-   delete mSequence;
-   delete mEnvelope;
-   delete mWaveCache;
-   delete mSpecCache;
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      delete it->GetData();
+   mClips.Clear();
+}
+
+void WaveTrack::SetOffset (double o)
+{
+   double delta = o - mOffset;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+      clip->SetOffset(clip->GetOffset() + delta);
+   }
+
+   mOffset = o;
 }
 
 void WaveTrack::GetDisplayBounds(float *min, float *max)
@@ -202,7 +135,8 @@ double WaveTrack::GetRate() const
 void WaveTrack::SetRate(double newRate)
 {
    mRate = newRate;
-   MarkChanged();
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->SetRate(newRate);
 }
 
 float WaveTrack::GetGain() const
@@ -246,648 +180,398 @@ float WaveTrack::GetChannelGain(int channel)
       return right*mGain;
 }
 
-double WaveTrack::GetOffset() const
-{
-   return mOffset;
-}
-
-void WaveTrack::SetOffset(double t)
-{
-   Track::SetOffset(t);
-   mEnvelope->SetOffset(t);
-   MarkChanged();
-}
-
-double WaveTrack::GetStartTime()
-{
-   // JS: mOffset is the minimum value and it is returned; no clipping to 0
-   return mOffset;
-}
-
-double WaveTrack::GetEndTime()
-{
-   longSampleCount numSamples = mSequence->GetNumSamples() + mAppendBufferLen;
-   
-   double maxLen = mOffset + numSamples/mRate;
-   // JS: calculated value is not the length;
-   // it is a maximum value and can be negative; no clipping to 0
-   
-   return maxLen;
-}
-
 bool WaveTrack::ConvertToSampleFormat(sampleFormat format)
 {
-   MarkChanged();
-   
-   return mSequence->ConvertToSampleFormat(format);
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->ConvertToSampleFormat(format);
+   mFormat = format;
+
+   return true;
 }
 
 bool WaveTrack::Cut(double t0, double t1, Track **dest)
 {
-   bool success;
-   sampleCount s0, s1;
-   WaveTrack *newTrack;
-
    if (t1 < t0)
       return false;
 
-   TimeToSamplesClip(t0, &s0);
-   TimeToSamplesClip(t1, &s1);
-
-   newTrack = new WaveTrack(mDirManager);
-   delete newTrack->mSequence;
-   newTrack->mSequence = NULL;
-   success = mSequence->Copy(s0, s1, &newTrack->mSequence);
-   if (success)
-      success = mSequence->Delete(s0, s1-s0);
-   
-   if (!success) {
-      *dest = NULL;
-      delete newTrack;
+   // Cut is the same as 'Copy', then 'Delete'
+   if (!Copy(t0, t1, dest))
       return false;
-   }
-
-   newTrack->GetEnvelope()->CopyFrom(GetEnvelope(), t0, t1);
-   mEnvelope->CollapseRegion(t0, t1);
-
-   *dest = newTrack;
-   MarkChanged();
-   return true;
+   return Clear(t0, t1);
 }
 
 bool WaveTrack::Copy(double t0, double t1, Track **dest)
 {
-   if (t1 < t0)
+   *dest = NULL;
+
+   if (t1 <= t0)
       return false;
-
-   sampleCount s0, s1;
-
-   TimeToSamplesClip(t0, &s0);
-   TimeToSamplesClip(t1, &s1);
 
    WaveTrack *newTrack = new WaveTrack(mDirManager);
+
    newTrack->Init(*this);
 
-   delete newTrack->mSequence;
-   newTrack->mSequence = NULL;
+   WaveClipList::Node* it;
    
-   if (!mSequence->Copy(s0, s1, &newTrack->mSequence)) {
-      // Error
-      *dest = NULL;
-      delete newTrack;
-      return false;
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      if (t0 <= clip->GetStartTime() && t1 >= clip->GetEndTime())
+      {
+         // Whole clip is in copy region
+         //printf("copy: clip %i is in copy region\n", (int)clip);
+         
+         WaveClip *newClip = new WaveClip(*clip);
+         newClip->Offset(-t0);
+         newTrack->mClips.Append(newClip);
+      } else
+      if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime())
+      {
+         // Clip is affected by command
+         //printf("copy: clip %i is affected by command\n", (int)clip);
+         
+         WaveClip *newClip = new WaveClip(*clip);
+         double clip_t0 = t0;
+         double clip_t1 = t1;
+         if (clip_t0 < clip->GetStartTime())
+            clip_t0 = clip->GetStartTime();
+         if (clip_t1 > clip->GetEndTime())
+            clip_t1 = clip->GetEndTime();
+
+         //printf("copy: clip_t0=%f, clip_t1=%f\n", clip_t0, clip_t1);
+
+         newClip->Offset(-t0);
+         if (newClip->GetOffset() < 0)
+            newClip->SetOffset(0);
+
+         //printf("copy: clip offset is now %f\n", newClip->GetOffset());
+            
+         if (!newClip->CreateFromCopy(clip_t0, clip_t1, clip))
+         {
+            //printf("paste: CreateFromCopy(%f, %f, %i) returns false, quitting\n",
+            //   clip_t0, clip_t1, (int)clip);
+
+            return false;
+         }
+
+         newTrack->mClips.Append(newClip);
+      }
    }
 
-   newTrack->GetEnvelope()->CopyFrom(GetEnvelope(), t0, t1);
-
    *dest = newTrack;
-   MarkChanged();
+
    return true;
 }
 
-bool WaveTrack::Paste(double t0, const Track *src)
+bool WaveTrack::Paste(double t0, Track *src)
 {
-   sampleCount s0;
-
+   //printf("paste: entering WaveTrack::Paste\n");
+   
    if (src->GetKind() != Track::Wave)
       return false;
 
-   TimeToSamplesClip(t0, &s0);
+   //printf("paste: we have a wave track\n");
 
-   if (mSequence->Paste(s0, ((WaveTrack *)src)->mSequence)) {
-      mEnvelope->Paste(t0, ((WaveTrack *)src)->mEnvelope);
-      MarkChanged();
-      return true;
-   }
-   else
+   WaveTrack* other = (WaveTrack*)src;
+
+   //
+   // Pasting is a bit complicated, because with the existence of multiclip mode,
+   // we must guess the behaviour the user wants.
+   //
+   // Currently, two modes are implemented:
+   //
+   // - If a single clip should be pasted, and it should be pasted inside another
+   //   clip, no new clips are generated. The audio is simply inserted.
+   //   This resembles the old (pre-multiclip support) behaviour. However, if
+   //   the clip is pasted outside of any clip, a new clip is generated. This is
+   //   the only behaviour which is different to what was done before, but it
+   //   shouldn't confuse users too much.
+   //
+   // - If multiple clips should be pasted, these are always pasted as single
+   //   clips, and the current clip is splitted, when necessary. This may seem
+   //   strange at first, but it probably is better than trying to auto-merge
+   //   anything. The user can still merge the clips by hand (which should be
+   //   a simple command reachable by a hotkey or single mouse click).
+   //
+
+   if (other->GetNumClips() == 0)
       return false;
+
+   //printf("paste: we have at least one clip\n");
+
+   // Make room for the pasted data
+   WaveClipList::Node* it;
+
+   double insertDuration = other->GetEndTime();
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+
+      //printf("paste: ofsetting already existing clip %i by %f seconds\n", (int)clip, insertDuration);
+
+      if (clip->GetStartTime() > t0)
+         clip->Offset(insertDuration);
+   }
+
+   if (other->GetNumClips() == 1)
+   {
+      // Single clip mode
+      // printf("paste: checking for single clip mode!\n");
+      
+      WaveClip *insideClip = NULL;
+
+      for (it=GetClipIterator(); it; it=it->GetNext())
+      {
+         WaveClip *clip = it->GetData();
+
+         if (t0+src->GetEndTime() >= clip->GetStartTime() && t0 <= clip->GetEndTime())
+         {
+            insideClip = clip;
+            break;
+         }
+      }
+
+      if (insideClip)
+      {
+         // Exhibit traditional behaviour
+         // printf("paste: traditional behaviour\n");
+         
+         longSampleCount s0;
+         insideClip->TimeToSamplesClip(t0, &s0);
+
+         // printf("pasting at time %f (this is sample %i)\n", t0, s0);
+
+         if (insideClip->GetSequence()->Paste(s0, other->GetClipByIndex(0)->GetSequence()))
+         {
+            insideClip->MarkChanged();
+            return true;
+         } else
+            return false;
+      }
+
+      // Just fall through and exhibit new behaviour
+   }
+
+   // Insert new clips
+   // printf("paste: multi clip mode!\n");
+   
+   for (it=other->GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+
+      WaveClip* newClip = new WaveClip(*clip);
+      newClip->Offset(t0);
+      newClip->MarkChanged();
+      mClips.Append(newClip);
+   }
+   return true;
 }
 
 bool WaveTrack::Clear(double t0, double t1)
 {
-   sampleCount s0, s1;
-
    if (t1 < t0)
       return false;
 
-   TimeToSamplesClip(t0, &s0);
-   TimeToSamplesClip(t1, &s1);
- 
-   if (mSequence->Delete(s0, s1-s0)) {
-      mEnvelope->CollapseRegion(t0, t1);
-      MarkChanged();
-      return true;
+   WaveClipList::Node* it;
+   WaveClipList clipsToDelete;
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      if (t0 <= clip->GetStartTime() && t1 >= clip->GetEndTime())
+      {
+         // Whole clip must be deleted - remember this
+         clipsToDelete.Append(clip);
+      } else
+      if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime())
+      {
+         // Clip data is affected by command
+         longSampleCount s0, s1;
+         clip->TimeToSamplesClip(t0, &s0);
+         clip->TimeToSamplesClip(t1, &s1);
+         if (clip->GetSequence()->Delete(s0, s1-s0))
+         {
+            clip->GetEnvelope()->CollapseRegion(t0, t1);
+            clip->MarkChanged();
+         } else
+         {
+            wxASSERT(false);
+            return false;
+         }
+
+         if (t0 < clip->GetStartTime())
+         {
+            clip->Offset(-(clip->GetStartTime() - t0));
+         }
+      } else
+      if (clip->GetStartTime() >= t1)
+      {
+         // Clip is "behind" the region -- offset it
+         clip->Offset(-(t1-t0));
+      }
    }
-   else
-      return false;
+
+   for (it=clipsToDelete.GetFirst(); it; it=it->GetNext())
+   {
+      mClips.DeleteObject(it->GetData());
+      delete it->GetData();
+   }
+
+   return true;
 }
 
 bool WaveTrack::Silence(double t0, double t1)
 {
-   sampleCount s0, s1;
-
    if (t1 < t0)
       return false;
 
-   TimeToSamplesClip(t0, &s0);
-   TimeToSamplesClip(t1, &s1);
+   longSampleCount start = (longSampleCount)floor(t0 * mRate + 0.5);
+   longSampleCount len = (longSampleCount)floor(t1 * mRate + 0.5) - start;
+   bool result = true;
 
-   MarkChanged();
-   return mSequence->SetSilence(s0, s1-s0);
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      longSampleCount clipStart = clip->GetStartSample();
+      longSampleCount clipEnd = clip->GetEndSample();
+
+      if (clipEnd > start && clipStart < start+len)
+      {
+         // Clip sample region and Get/Put sample region overlap
+         sampleCount samplesToCopy = start+len - clipStart;
+         if (samplesToCopy > clip->GetNumSamples())
+            samplesToCopy = clip->GetNumSamples();
+         longSampleCount inclipDelta = 0;
+         longSampleCount startDelta = clipStart - start;
+         if (startDelta < 0)
+         {
+            inclipDelta = -startDelta; // make positive value
+            samplesToCopy -= inclipDelta;
+            startDelta = 0;
+         }
+
+         if (!clip->GetSequence()->SetSilence(inclipDelta, samplesToCopy))
+         {
+            wxASSERT(false); // should always work
+            return false;
+         }
+         clip->MarkChanged();
+      }
+   }
+
+   return result;
 }
 
 bool WaveTrack::InsertSilence(double t, double len)
 {
-   sampleCount s0, slen;
-
-   TimeToSamplesClip(t, &s0);
-   slen = (sampleCount)floor(len * mRate + 0.5);
-
-   if (mSequence->InsertSilence(s0, slen)) {
-      mEnvelope->InsertSpace(t, len);
-      MarkChanged();
-      return true;
-   }
-   else
+   if (len <= 0)
       return false;
-}
 
-//
-// Getting high-level data from the track for screen display and
-// clipping calculations
-//
-
-bool WaveTrack::GetWaveDisplay(float *min, float *max, float *rms,
-                               sampleCount *where,
-                               int numPixels, double t0,
-                               double pixelsPerSecond)
-{
-   if (mWaveCache &&
-       mWaveCache->dirty == mDirty &&
-       mWaveCache->start == t0 &&
-       mWaveCache->len >= numPixels &&
-       mWaveCache->pps == pixelsPerSecond) {
-
-      memcpy(min, mWaveCache->min, numPixels*sizeof(float));
-      memcpy(max, mWaveCache->max, numPixels*sizeof(float));
-      memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
-      memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
-      return true;
-   }
-
-   WaveCache *oldCache = mWaveCache;
-
-   mWaveCache = new WaveCache(numPixels);
-   mWaveCache->pps = pixelsPerSecond;
-   mWaveCache->start = t0;
-   double tstep = 1.0 / pixelsPerSecond;
-
-   sampleCount x;
-
-   for (x = 0; x < mWaveCache->len + 1; x++) {
-      mWaveCache->where[x] =
-         (sampleCount) floor(t0 * mRate +
-                             ((double) x) * mRate * tstep + 0.5);
-   }
-
-   sampleCount s0 = mWaveCache->where[0];
-   sampleCount s1 = mWaveCache->where[mWaveCache->len];
-   int p0 = 0;
-   int p1 = mWaveCache->len;
-
-   // Optimization: if the old cache is good and overlaps
-   // with the current one, re-use as much of the cache as
-   // possible
-   if (oldCache->dirty == mDirty &&
-       oldCache->pps == pixelsPerSecond &&
-       oldCache->where[0] < mWaveCache->where[mWaveCache->len] &&
-       oldCache->where[oldCache->len] > mWaveCache->where[0]) {
-
-      s0 = mWaveCache->where[mWaveCache->len];
-      s1 = mWaveCache->where[0];
-      p0 = mWaveCache->len;
-      p1 = 0;
-
-      for (x = 0; x < mWaveCache->len; x++)
-
-         if (mWaveCache->where[x] >= oldCache->where[0] &&
-             mWaveCache->where[x] <= oldCache->where[oldCache->len - 1]) {
-
-            int ox =
-                int ((double (oldCache->len) *
-                      (mWaveCache->where[x] -
-                       oldCache->where[0])) /(oldCache->where[oldCache->len] -
-                                             oldCache->where[0]) + 0.5);
-
-            mWaveCache->min[x] = oldCache->min[ox];
-            mWaveCache->max[x] = oldCache->max[ox];
-            mWaveCache->rms[x] = oldCache->rms[ox];
-         } else {
-            if (mWaveCache->where[x] < s0) {
-               s0 = mWaveCache->where[x];
-               p0 = x;
-            }
-            if (mWaveCache->where[x + 1] > s1) {
-               s1 = mWaveCache->where[x + 1];
-               p1 = x + 1;
-            }
-         }
-   }
-
-   if (p1 > p0) {
-
-      /* handle values in the append buffer */
-
-      int numSamples = mSequence->GetNumSamples();
-      int a;
-
-      for(a=p0; a<p1; a++)
-         if (mWaveCache->where[a+1] > numSamples)
-            break;
-
-      if (a < p1) {
-         int i;
-
-         sampleFormat seqFormat = mSequence->GetSampleFormat();
-
-         for(i=a; i<p1; i++) {
-            sampleCount left = mWaveCache->where[i] - numSamples;
-            sampleCount right = mWaveCache->where[i+1] - numSamples;
-
-            //wxCriticalSectionLocker locker(mAppendCriticalSection);
-
-            if (left < 0)
-               left = 0;
-            if (right > mAppendBufferLen)
-               right = mAppendBufferLen;
-
-            if (right > left) {
-               float *b;
-               sampleCount len = right-left;
-               sampleCount j;
-
-               if (seqFormat == floatSample)
-                  b = &((float *)mAppendBuffer)[left];
-               else {
-                  b = new float[len];
-                  CopySamples(mAppendBuffer + left*SAMPLE_SIZE(seqFormat),
-                              seqFormat,
-                              (samplePtr)b, floatSample, len);
-               }
-
-               float max = b[0];
-               float min = b[0];
-               float sumsq = b[0] * b[0];
-
-               for(j=1; j<len; j++) {
-                  if (b[j] > max)
-                     max = b[j];
-                  if (b[j] < min)
-                     min = b[j];
-                  sumsq += b[j]*b[j];
-               }
-
-               mWaveCache->min[i] = min;
-               mWaveCache->max[i] = max;
-               mWaveCache->rms[i] = (float)sqrt(sumsq / len);
-
-               if (seqFormat != floatSample)
-                  delete[] b;
-            }
-         }         
-
-         // So that the sequence doesn't try to write any
-         // of these values
-         p1 = a;
+   if (mClips.IsEmpty())
+   {
+      // Special case if there is no clip yet
+      WaveClip* clip = CreateClip();
+      bool result = clip->GetSequence()->InsertSilence(0, (sampleCount)floor(len * mRate + 0.5));
+      if (result)
+      {
+         clip->GetEnvelope()->InsertSpace(0, len);
+         clip->MarkChanged();
       }
+      return result;
+   }
 
-      if (p1 > p0) {
-         if (!mSequence->GetWaveDisplay(&mWaveCache->min[p0],
-                                        &mWaveCache->max[p0],
-                                        &mWaveCache->rms[p0],
-                                        p1-p0,
-                                        &mWaveCache->where[p0],
-                                        mRate / pixelsPerSecond))
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+      if (clip->GetStartTime() > t)
+         clip->Offset(len);
+      else if (clip->GetEndTime() > t)
+      {
+         longSampleCount s0;
+         clip->TimeToSamplesClip(t, &s0);
+         sampleCount slen = (sampleCount)floor(len * mRate + 0.5);
+         
+         if (!clip->GetSequence()->InsertSilence(s0, slen))
+         {
+            wxASSERT(false);
             return false;
+         }
+         clip->GetEnvelope()->InsertSpace(t, len);
+         clip->MarkChanged();
       }
    }
 
-   mWaveCache->dirty = mDirty;
-   delete oldCache;
-
-   memcpy(min, mWaveCache->min, numPixels*sizeof(float));
-   memcpy(max, mWaveCache->max, numPixels*sizeof(float));
-   memcpy(rms, mWaveCache->rms, numPixels*sizeof(float));
-   memcpy(where, mWaveCache->where, (numPixels+1)*sizeof(sampleCount));
-
    return true;
-}
-
-bool WaveTrack::GetSpectrogram(float *freq, sampleCount *where,
-                               int numPixels, int height,
-                               double t0, double pixelsPerSecond,
-                               bool autocorrelation)
-{
-   int maxFreqPref = gPrefs->Read("/Spectrum/MaxFreq", 8000);
-   int windowSize = gPrefs->Read("/Spectrum/FFTSize", 256);
-
-   if (mSpecCache &&
-       mSpecCache->maxFreqPrefOld == maxFreqPref &&
-       mSpecCache->windowSizeOld == windowSize &&
-       mSpecCache->dirty == mDirty &&
-       mSpecCache->start == t0 &&
-       mSpecCache->ac == autocorrelation &&
-       mSpecCache->height == height &&
-       mSpecCache->len >= numPixels &&
-       mSpecCache->pps == pixelsPerSecond) {
-      memcpy(freq, mSpecCache->freq, numPixels*height*sizeof(float));
-      memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
-      return true;
-   }
-
-   SpecCache *oldCache = mSpecCache;
-
-   mSpecCache = new SpecCache(numPixels, height, autocorrelation);
-   mSpecCache->pps = pixelsPerSecond;
-   mSpecCache->start = t0;
-
-   sampleCount x;
-
-   bool *recalc = new bool[mSpecCache->len + 1];
-
-   for (x = 0; x < mSpecCache->len + 1; x++) {
-      recalc[x] = true;
-      // purposely offset the display 1/2 bin to the left (as compared
-      // to waveform display to properly center response of the FFT
-      mSpecCache->where[x] =
-         (sampleCount)floor((t0*mRate) + (x*mRate/pixelsPerSecond) + 1.);
-   }
-
-   // Optimization: if the old cache is good and overlaps
-   // with the current one, re-use as much of the cache as
-   // possible
-   if (oldCache->maxFreqPrefOld == maxFreqPref &&
-       oldCache->windowSizeOld == windowSize &&
-       oldCache->dirty == mDirty &&
-       oldCache->pps == pixelsPerSecond &&
-       oldCache->height == height &&
-       oldCache->ac == autocorrelation &&
-       oldCache->where[0] < mSpecCache->where[mSpecCache->len] &&
-       oldCache->where[oldCache->len] > mSpecCache->where[0]) {
-
-      for (x = 0; x < mSpecCache->len; x++)
-         if (mSpecCache->where[x] >= oldCache->where[0] &&
-             mSpecCache->where[x] < oldCache->where[oldCache->len]) {
-
-            int ox = (int) ((double (oldCache->len) *
-                      (mSpecCache->where[x] - oldCache->where[0]))
-                       / (oldCache->where[oldCache->len] -
-                                             oldCache->where[0]) + 0.5);
-            if (ox >= 0 && ox < oldCache->len &&
-                mSpecCache->where[x] == oldCache->where[ox]) {
-
-               for (sampleCount i = 0; i < (sampleCount)height; i++)
-                  mSpecCache->freq[height * x + i] =
-                     oldCache->freq[height * ox + i];
-
-               recalc[x] = false;
-            }
-         }
-   }
-
-   float *buffer = new float[windowSize];
-   mSpecCache->maxFreqPrefOld = maxFreqPref;
-   mSpecCache->windowSizeOld = windowSize;
-
-   for (x = 0; x < mSpecCache->len; x++)
-      if (recalc[x]) {
-
-         sampleCount start = mSpecCache->where[x];
-         sampleCount len = windowSize;
-         sampleCount i;
-
-         if (start <= 0 || start >= mSequence->GetNumSamples()) {
-
-            for (i = 0; i < (sampleCount)height; i++)
-               mSpecCache->freq[height * x + i] = 0;
-
-         } else {
-
-            float *adj = buffer;
-            start -= windowSize >> 1;
-
-            if (start < 0) {
-               for(i = start; i < 0; i++) *adj++ = 0;
-               len += start;
-               start = 0;
-            }
-
-            if (start + len > mSequence->GetNumSamples()) {
-               len = mSequence->GetNumSamples() - start;
-               for (i = len; i < (sampleCount)windowSize; i++)
-                  adj[i] = 0;
-            }
-
-            if(len>0)
-               mSequence->Get((samplePtr)adj, floatSample,
-                              start, len);
-
-            ComputeSpectrum(buffer, windowSize, height,
-                            maxFreqPref, windowSize,
-                            mRate, &mSpecCache->freq[height * x],
-                            autocorrelation);
-         }
-      }
-
-   delete[]buffer;
-   delete[]recalc;
-   delete oldCache;
-
-   mSpecCache->dirty = mDirty;
-   memcpy(freq, mSpecCache->freq, numPixels*height*sizeof(float));
-   memcpy(where, mSpecCache->where, (numPixels+1)*sizeof(sampleCount));
-
-   return true;
-}
-
-bool WaveTrack::GetMinMax(float *min, float *max,
-                          double t0, double t1)
-{
-   *min = float(0.0);
-   *max = float(0.0);
-
-   if (t0 > t1)
-      return false;
-
-   if (t0 == t1)
-      return true;
-
-   sampleCount s0, s1;
-
-   TimeToSamplesClip(t0, &s0);
-   TimeToSamplesClip(t1, &s1);
-
-   return mSequence->GetMinMax(s0, s1-s0, min, max);
-}
-
-//
-// Getting/setting samples.  The sample counts here are expressed
-// relative to t=0.0 at the track's sample rate.
-//
-
-bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
-                    longSampleCount start, sampleCount len) const
-{
-
-   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
-   longSampleCount endTime = startTime + mSequence->GetNumSamples();
-
-   if (start+len < startTime || start>=endTime) {
-      ClearSamples(buffer, format, 0, len);
-      return true;
-   }
-
-   sampleCount s0 = (sampleCount)(start - startTime);
-   sampleCount soffset = 0;
-   sampleCount getlen = len;
-
-   if (s0 < 0) {
-      soffset = -s0;
-      getlen -= soffset;
-      s0 = 0;
-   }
-
-   if (s0+getlen > mSequence->GetNumSamples())
-      getlen = mSequence->GetNumSamples() - s0;
-
-   if (!mSequence->Get(buffer + soffset*SAMPLE_SIZE(format), format,
-                       s0, getlen))
-      return false;
-
-   ClearSamples(buffer, format, 0, soffset);
-   ClearSamples(buffer, format, soffset+getlen, len-(soffset+getlen));
-
-   return true;
-}
-
-bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
-                    longSampleCount start, sampleCount len)
-{
-
-   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
-   sampleCount s0 = (sampleCount)(start - startTime);
-
-   if (s0 < 0) {
-      len += s0;
-      buffer -= s0*SAMPLE_SIZE(format);
-      s0 = 0;
-   }
-
-   if (s0 + len > mSequence->GetNumSamples())
-      len = mSequence->GetNumSamples() - s0;
-
-   MarkChanged();
-   return mSequence->Set(buffer, format, s0, len);
 }
 
 bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
                        sampleCount len, unsigned int stride /* = 1 */)
 {
-   //wxCriticalSectionLocker locker(mAppendCriticalSection);
-
-   sampleCount maxBlockSize = mSequence->GetMaxBlockSize();
-   sampleCount blockSize = mSequence->GetIdealAppendLen();
-   sampleFormat seqFormat = mSequence->GetSampleFormat();
-
-   if (!mAppendBuffer)
-      mAppendBuffer = NewSamples(maxBlockSize, seqFormat);
-
-   for(;;) {
-      if (mAppendBufferLen >= blockSize) {
-         bool success =
-            mSequence->Append(mAppendBuffer, seqFormat, blockSize);
-         if (!success)
-            return false;
-         memmove(mAppendBuffer,
-                 mAppendBuffer + blockSize * SAMPLE_SIZE(seqFormat),
-                 (mAppendBufferLen - blockSize) * SAMPLE_SIZE(seqFormat));
-         mAppendBufferLen -= blockSize;
-         blockSize = mSequence->GetIdealAppendLen();
-      }
-
-      if (len == 0)
-         break;
-
-      int toCopy = maxBlockSize - mAppendBufferLen;
-      if (toCopy > len)
-         toCopy = len;
-
-      CopySamples(buffer, format,
-                  mAppendBuffer + mAppendBufferLen * SAMPLE_SIZE(seqFormat),
-                  seqFormat,
-                  toCopy,
-                  true, /* high quality */
-                  stride);
-
-      mAppendBufferLen += toCopy;
-      buffer += toCopy * SAMPLE_SIZE(format) * stride;
-      len -= toCopy;
-   }
-
-   mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
-   MarkChanged();
-
-   return true;
+   return GetLastOrCreateClip()->Append(buffer, format, len, stride);
 }
 
 bool WaveTrack::AppendAlias(wxString fName, sampleCount start,
                             sampleCount len, int channel)
 {
-   MarkChanged();
-   bool ret=mSequence->AppendAlias(fName, start, len, channel);
-   if(ret==true)
-      mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
-
-   return ret;
+   return GetLastOrCreateClip()->AppendAlias(fName, start, len, channel);
 }
 
-sampleCount WaveTrack::GetBestBlockSize(longSampleCount s) const
+sampleCount WaveTrack::GetBestBlockSize(longSampleCount s)
 {
-   longSampleCount startTime = (longSampleCount)floor(mOffset*mRate + 0.5);
-   longSampleCount endTime = startTime + mSequence->GetNumSamples();
+   sampleCount bestBlockSize = GetMaxBlockSize();
 
-   if (s < startTime || s >= endTime)
-      return mSequence->GetMaxBlockSize();
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+      longSampleCount startSample = (longSampleCount)floor(clip->GetStartTime()*mRate + 0.5);
+      longSampleCount endSample = startSample + clip->GetNumSamples();
+      if (s >= startSample && s < endSample)
+      {
+         bestBlockSize = clip->GetSequence()->GetMaxBlockSize();
+         break;
+      }
+   }
 
-   return mSequence->GetBestBlockSize((sampleCount)(s - startTime));
+   return bestBlockSize;
 }
 
-sampleCount WaveTrack::GetMaxBlockSize() const
+sampleCount WaveTrack::GetMaxBlockSize()
 {
-   return mSequence->GetMaxBlockSize();
+   int maxblocksize = 0;
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+      if (clip->GetSequence()->GetMaxBlockSize() > maxblocksize)
+         maxblocksize = clip->GetSequence()->GetMaxBlockSize();
+   }
+
+   if (maxblocksize == 0)
+   {
+      // We really need the maximum block size, so create a
+      // temporary sequence to get it.
+      Sequence *tempseq = new Sequence(mDirManager, mFormat);
+      maxblocksize = tempseq->GetMaxBlockSize();
+      delete tempseq;
+   }
+
+   wxASSERT(maxblocksize > 0);
+
+   return maxblocksize;
 }
 
-sampleCount WaveTrack::GetIdealBlockSize() const
+sampleCount WaveTrack::GetIdealBlockSize()
 {
-   return mSequence->GetIdealBlockSize();
+   wxASSERT(GetClipIterator()); // must have sequence
+   return GetClipIterator()->GetData()->GetSequence()->GetIdealBlockSize();
 }
 
 bool WaveTrack::Flush()
 {
-   //wxCriticalSectionLocker locker(mFlushCriticalSection);
-
-   bool success = true;
-   sampleFormat seqFormat = mSequence->GetSampleFormat();
-
-   if (mAppendBufferLen > 0) {
-      success = mSequence->Append(mAppendBuffer, seqFormat, mAppendBufferLen);
-      if (success) {
-         mAppendBufferLen = 0;
-         mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
-      }
-   }
-
-   return success;
+   return GetLastOrCreateClip()->Flush();
 }
 
 bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
@@ -901,10 +585,11 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             break;
          
          if (!strcmp(attr, "rate"))
-            Internat::CompatibleToDouble(wxString(value), &mRate);
+            mRate = atoi(value);
          else if (!strcmp(attr, "offset")) {
-            Internat::CompatibleToDouble(wxString(value), &mOffset);
-            mEnvelope->SetOffset(mOffset);
+            double ofs = 0.0;
+            Internat::CompatibleToDouble(wxString(value), &ofs);
+            GetLastOrCreateClip()->SetOffset(ofs);
          }
          else if (!strcmp(attr, "gain")) {
             double d;
@@ -922,7 +607,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
          else if (!strcmp(attr, "channel"))
             mChannel = atoi(value);
          else if (!strcmp(attr, "linked"))
-            mLinked = atoi(value)?true:false;
+            mLinked = atoi(value) != 0;
          
       } // while
       return true;
@@ -933,17 +618,24 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
 
 void WaveTrack::HandleXMLEndTag(const char *tag)
 {
-   if (!strcmp(tag, "wavetrack")) {
-      mEnvelope->SetTrackLen(mSequence->GetNumSamples() / mRate);
-   }   
+   // nothing to do here
 }
 
 XMLTagHandler *WaveTrack::HandleXMLChild(const char *tag)
 {
+   //
+   // This is legacy code (1.2 and previous) and is not called for new projects!
+   //
    if (!strcmp(tag, "sequence"))
-      return mSequence;
+      return GetLastOrCreateClip()->GetSequence();
    else if (!strcmp(tag, "envelope"))
-      return mEnvelope;
+      return GetLastOrCreateClip()->GetEnvelope();
+   
+   //
+   // This is for the new file format (post-1.2)
+   //
+   if (!strcmp(tag, "waveclip"))
+      return CreateClip();
    else
       return NULL;
 }
@@ -963,10 +655,11 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
    fprintf(fp, "gain=\"%s\" ", Internat::ToString((double)mGain).c_str());
    fprintf(fp, "pan=\"%s\" ", Internat::ToString((double)mPan).c_str());
    fprintf(fp, ">\n");
-
-   mSequence->WriteXML(depth+1, fp);
-
-   mEnvelope->WriteXML(depth+1, fp);
+   
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      it->GetData()->WriteXML(depth+1, fp);
+   }
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
@@ -975,17 +668,27 @@ void WaveTrack::WriteXML(int depth, FILE *fp)
 
 bool WaveTrack::GetErrorOpening()
 {
-   return mSequence->GetErrorOpening();
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (it->GetData()->GetSequence()->GetErrorOpening())
+         return true;
+
+   return false;
 }
 
 bool WaveTrack::Lock()
 {
-   return mSequence->Lock();
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->GetSequence()->Lock();
+
+   return true;
 }
 
 bool WaveTrack::Unlock()
 {
-   return mSequence->Unlock();
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      it->GetData()->GetSequence()->Unlock();
+
+   return true;
 }
 
 longSampleCount WaveTrack::TimeToLongSamples(double t0)
@@ -993,26 +696,339 @@ longSampleCount WaveTrack::TimeToLongSamples(double t0)
    return (longSampleCount)floor(t0 * mRate + 0.5);
 }
 
-bool WaveTrack::TimeToSamples(double t0, sampleCount *s0)
+double WaveTrack::GetStartTime()
 {
-   if ((t0 < mOffset) ||
-       (t0 > mOffset + mSequence->GetNumSamples()/mRate)) {
-      *s0 = -1;
+   bool found = false;
+   double best;
+
+   if (mClips.IsEmpty())
+      return 0;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (!found)
+      {
+         found = true;
+         best = it->GetData()->GetStartTime();
+      } else if (it->GetData()->GetStartTime() < best)
+         best = it->GetData()->GetStartTime();
+
+   return best;
+}
+
+double WaveTrack::GetEndTime()
+{
+   bool found = false;
+   double best;
+
+   if (mClips.IsEmpty())
+      return 0;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (!found)
+      {
+         found = true;
+         best = it->GetData()->GetEndTime();
+      } else if (it->GetData()->GetEndTime() > best)
+         best = it->GetData()->GetEndTime();
+
+   return best;
+}
+
+//
+// Getting/setting samples.  The sample counts here are
+// expressed relative to t=0.0 at the track's sample rate.
+//
+
+bool WaveTrack::GetMinMax(float *min, float *max,
+                          double t0, double t1)
+{
+   *min = float(0.0);
+   *max = float(0.0);
+
+   if (t0 > t1)
       return false;
+
+   if (t0 == t1)
+      return true;
+
+   bool result = true;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* clip = it->GetData();
+
+      if (t1 >= clip->GetStartTime() && t0 <= clip->GetEndTime())
+      {
+         float clipmin, clipmax;
+         if (it->GetData()->GetMinMax(&clipmin, &clipmax, t0, t1-t0))
+         {
+            if (clipmin < *min)
+               *min = clipmin;
+            if (clipmax > *max)
+               *max = clipmax;
+         } else
+         {
+            result = false;
+         }
+      }
    }
 
-   *s0 = (sampleCount)floor(((t0 - mOffset) * mRate) + 0.5);
+   return result;
+}
+
+bool WaveTrack::Get(samplePtr buffer, sampleFormat format,
+                    longSampleCount start, sampleCount len)
+{
+   // Simple optimization: When this buffer is completely contained within one clip,
+   // don't clear anything (because we never won't have to). Otherwise, just clear
+   // everything to be on the safe side.
+   WaveClipList::Node* it;
+   
+   bool doClear = true;
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+      if (start >= clip->GetStartSample() && start+len <= clip->GetEndSample())
+      {
+         doClear = false;
+         break;
+      }
+   }
+   if (doClear)
+      ClearSamples(buffer, format, 0, len);
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      longSampleCount clipStart = clip->GetStartSample();
+      longSampleCount clipEnd = clip->GetEndSample();
+
+      if (clipEnd > start && clipStart < start+len)
+      {
+         // Clip sample region and Get/Put sample region overlap
+         sampleCount samplesToCopy = start+len - clipStart;
+         if (samplesToCopy > clip->GetNumSamples())
+            samplesToCopy = clip->GetNumSamples();
+         longSampleCount inclipDelta = 0;
+         longSampleCount startDelta = clipStart - start;
+         if (startDelta < 0)
+         {
+            inclipDelta = -startDelta; // make positive value
+            samplesToCopy -= inclipDelta;
+            startDelta = 0;
+         }
+
+         if (!clip->GetSamples((samplePtr)(((char*)buffer)+startDelta*SAMPLE_SIZE(format)),
+                               format, inclipDelta, samplesToCopy))
+         {
+            wxASSERT(false); // should always work
+            return false;
+         }
+      }
+   }
+
    return true;
 }
 
-void WaveTrack::TimeToSamplesClip(double t0, sampleCount *s0)
+bool WaveTrack::Set(samplePtr buffer, sampleFormat format,
+                    longSampleCount start, sampleCount len)
 {
-   if (t0 < mOffset)
-      *s0 = 0;
-   else if (t0 > mOffset + mSequence->GetNumSamples()/mRate)
-      *s0 = mSequence->GetNumSamples();
+   bool result = true;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      longSampleCount clipStart = clip->GetStartSample();
+      longSampleCount clipEnd = clip->GetEndSample();
+
+      if (clipEnd > start && clipStart < start+len)
+      {
+         // Clip sample region and Get/Put sample region overlap
+         sampleCount samplesToCopy = start+len - clipStart;
+         if (samplesToCopy > clip->GetNumSamples())
+            samplesToCopy = clip->GetNumSamples();
+         longSampleCount inclipDelta = 0;
+         longSampleCount startDelta = clipStart - start;
+         if (startDelta < 0)
+         {
+            inclipDelta = -startDelta; // make positive value
+            samplesToCopy -= inclipDelta;
+            startDelta = 0;
+         }
+
+         if (!clip->SetSamples((samplePtr)(((char*)buffer)+startDelta*SAMPLE_SIZE(format)),
+                               format, inclipDelta, samplesToCopy))
+         {
+            wxASSERT(false); // should always work
+            return false;
+         }
+         clip->MarkChanged();
+      }
+   }
+
+   return result;
+}
+
+void WaveTrack::GetEnvelopeValues(double *buffer, int bufferLen,
+                         double t0, double tstep)
+{
+   memset(buffer, 0, sizeof(double)*bufferLen);
+
+   double startTime = t0;
+   double endTime = t0+tstep*bufferLen;
+
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+      
+      if (clip->GetStartTime() < endTime && clip->GetEndTime() > startTime)
+      {
+         double* rbuf = buffer;
+         int rlen = bufferLen;
+         double rt0 = t0;
+
+         if (rt0 < clip->GetStartTime())
+         {
+            int dx = floor((clip->GetStartTime() - rt0) / tstep + 0.5);
+            rbuf += dx;
+            rlen -= dx;
+            rt0 = clip->GetStartTime();
+         }
+
+         if (rt0+rlen*tstep > clip->GetEndTime())
+         {
+            rlen = (clip->GetEndTime()-rt0) / tstep;
+         }
+
+         clip->GetEnvelope()->GetValues(rbuf, rlen, rt0, tstep);
+      }
+   }
+}
+
+WaveClip* WaveTrack::GetClipAtX(int xcoord)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      wxRect r;
+      it->GetData()->GetDisplayRect(&r);
+      if (xcoord >= r.x && xcoord < r.x+r.width)
+         return it->GetData();
+   }
+
+   return NULL;
+}
+
+Envelope* WaveTrack::GetEnvelopeAtX(int xcoord)
+{
+   WaveClip* clip = GetClipAtX(xcoord);
+   if (clip)
+      return clip->GetEnvelope();
    else
-      *s0 = (sampleCount)floor(((t0 - mOffset) * mRate) + 0.5);
+      return NULL;
+}
+
+Sequence* WaveTrack::GetSequenceAtX(int xcoord)
+{
+   WaveClip* clip = GetClipAtX(xcoord);
+   if (clip)
+      return clip->GetSequence();
+   else
+      return NULL;
+}
+
+WaveClip* WaveTrack::CreateClip()
+{
+   WaveClip* clip = new WaveClip(mDirManager, mFormat, mRate);
+   mClips.Append(clip);
+   return clip;
+}
+
+WaveClip* WaveTrack::GetLastOrCreateClip()
+{
+   if (mClips.IsEmpty())
+      return CreateClip();
+   else
+      return mClips.GetLast()->GetData();
+}
+
+int WaveTrack::GetClipIndex(WaveClip* clip)
+{
+   return mClips.IndexOf(clip);
+}
+
+WaveClip* WaveTrack::GetClipByIndex(int index)
+{
+   return mClips.Item(index)->GetData();
+}
+
+int WaveTrack::GetNumClips() const
+{
+   return mClips.GetCount();
+}
+
+void WaveTrack::MoveClipToTrack(int clipIndex, WaveTrack* dest)
+{
+   WaveClipList::Node* node = mClips.Item(clipIndex);
+   WaveClip* clip = node->GetData();
+   mClips.DeleteNode(node);
+   dest->mClips.Append(clip);
+}
+
+bool WaveTrack::CanOffsetClip(WaveClip* clip, double amount, double *allowedAmount /* = NULL */)
+{
+   if (allowedAmount)
+      *allowedAmount = amount;
+   
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* c = it->GetData();
+      if (c != clip && c->GetStartTime() < clip->GetEndTime()+amount &&
+                       c->GetEndTime() > clip->GetStartTime()+amount)
+      {
+         if (!allowedAmount)
+            return false; // clips overlap
+
+         if (amount > 0)
+         {
+            if (c->GetStartTime()-clip->GetEndTime() < *allowedAmount)
+               *allowedAmount = c->GetStartTime()-clip->GetEndTime();
+            if (*allowedAmount < 0)
+               *allowedAmount = 0;
+         } else
+         {
+            if (c->GetEndTime()-clip->GetStartTime() > *allowedAmount)
+               *allowedAmount = c->GetEndTime()-clip->GetStartTime();
+            if (*allowedAmount > 0)
+               *allowedAmount = 0;
+         }
+      }
+   }
+
+   if (allowedAmount)
+   {
+      if (*allowedAmount == amount)
+         return true;
+
+      // Check if the new calculated amount would not violate any other constraint
+      if (!CanOffsetClip(clip, *allowedAmount, NULL))
+         *allowedAmount = 0; // play safe and don't allow anything
+      return false;
+   } else
+      return true;
+}
+
+bool WaveTrack::CanInsertClip(WaveClip* clip)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* c = it->GetData();
+      if (c->GetStartTime() < clip->GetEndTime() && c->GetEndTime() > clip->GetStartTime())
+         return false; // clips overlap
+   }
+
+   return true;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

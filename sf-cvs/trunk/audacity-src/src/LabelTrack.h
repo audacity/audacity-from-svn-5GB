@@ -99,7 +99,7 @@ class LabelTrack:public Track {
    // one in Track.
    virtual bool Copy (double t0, double t1, Track ** dest);// const;
    virtual bool Clear(double t0, double t1);
-   virtual bool Paste(double t, const Track * src);
+   virtual bool Paste(double t, Track * src);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
