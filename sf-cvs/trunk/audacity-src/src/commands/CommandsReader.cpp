@@ -6,7 +6,7 @@
 
   Brian Gunlogson
 
-  This class handles the parsing of the commands.cfg file.
+  This class handles the parsing of the commands XML file.
 
 **********************************************************************/
 

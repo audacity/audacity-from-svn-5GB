@@ -31,14 +31,14 @@ Commands::Commands()
    wxString oldCommandsCfgLocation;
    bool bFalse = false;
 
-   //Figure out where to put commands.cfg
+   //Figure out where to put the commands XML file
    gCommandsCfgLocation = gPrefs->Read("/CmdCfgLocation", "");
    if(!gCommandsCfgLocation.Length())
    {
       newCommandsCfgDirectory = wxGetHomeDir();
    }
 
-   //See if we need to change the location of commands.cfg
+   //See if we need to change the location of the commands XML file
    if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
    {
       if(gPrefs->HasEntry("/QDeleteCmdCfgLocation"))
@@ -51,7 +51,7 @@ Commands::Commands()
       if(gPrefs->HasEntry("/CmdCfgLocation"))
          gPrefs->DeleteEntry("/CmdCfgLocation");
 
-      newCommandsCfgDirectory = wxDirSelector(_("Choose the location for commands.cfg"), wxGetHomeDir());
+      newCommandsCfgDirectory = wxDirSelector(_("Choose the location for Audacity-Commands.xml"), wxGetHomeDir());
       if(!newCommandsCfgDirectory.Length())
       {
          newCommandsCfgDirectory = wxGetHomeDir();
@@ -61,7 +61,7 @@ Commands::Commands()
    //Write new location to preferences
    if(newCommandsCfgDirectory.Length())
    {
-      wxFileName CommandsCfgFilename("commands.cfg");
+      wxFileName CommandsCfgFilename("Audacity-Commands.xml");
       CommandsCfgFilename.PrependDir(newCommandsCfgDirectory);
 
       gCommandsCfgLocation = CommandsCfgFilename.GetFullPath();
