@@ -16,9 +16,11 @@
 
 #include "snd/snd.h"
 
+#include "Audacity.h"
 #include "Track.h"
 #include "WaveTrack.h"
 #include "Mix.h"
+#include "LabelTrack.h"
 
 bool ExportPCM(wxString format, bool stereo, double rate, wxString fName, 
         wxWindow *parent, TrackList *tracks, bool selectionOnly, double t0, double t1)
@@ -165,10 +167,11 @@ bool ExportPCM(wxString format, bool stereo, double rate, wxString fName,
   snd_close(&sndfile);
   
 #ifdef __WXMAC__
+
   FSSpec spec ;
 
-  wxUnixFilename2FSSpec( fName , &spec ) ;
-  
+  wxMacFilename2FSSpec( fName , &spec ) ;
+
   if (trackMarkers) {
     // Export the label track as "CD Spin Doctor" files
   
