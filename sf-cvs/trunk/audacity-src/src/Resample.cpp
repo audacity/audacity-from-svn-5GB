@@ -261,7 +261,7 @@ void Resample::SetBestMethod(int)
 {
 }
 
-Resample::Resample(int, double, double)
+Resample::Resample(bool, double, double)
 {
 }
 

@@ -61,7 +61,11 @@ bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)
       tmp_attrs.Add(Internat::UTF8ToLocal(s));
    }
 
-   const char **out_attrs = new (const char *)[tmp_attrs.GetCount()+1];
+// JKC: Previously the next line was:
+// const char **out_attrs = new char (const char *)[tmp_attrs.GetCount()+1];
+// however MSVC doesn't like the constness in this position, so this is now 
+// added by a cast after creating the array of pointers-to-non-const chars.
+   const char **out_attrs = (const char**)new char *[tmp_attrs.GetCount()+1];
    for (size_t i=0; i<tmp_attrs.GetCount(); i++) {
       out_attrs[i] = tmp_attrs[i].c_str();
    }
