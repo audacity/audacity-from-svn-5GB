@@ -16,8 +16,9 @@
 #include "DirManager.h"
 #include "WaveTrack.h"
 
-bool ImportMP3(wxString Filename, WaveTrack **dest1, WaveTrack **dest2, 
-	       DirManager *dirManager);
+bool ImportMP3(wxWindow *parent,
+			   wxString Filename, WaveTrack **dest1, WaveTrack **dest2, 
+			   DirManager *dirManager);
 
 
 #endif

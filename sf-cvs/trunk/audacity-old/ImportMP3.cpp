@@ -11,7 +11,7 @@
 #include <wx/file.h>
 #include <wx/thread.h>
 #include <wx/msgdlg.h>
-#include <wx/generic/progdlgg.h>
+#include <wx/progdlg.h>
 #include <wx/string.h>
 #include <wx/timer.h>
 
@@ -37,7 +37,8 @@
 #include "xaudio/mac/include/file_input.h"
 #endif
 
-bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right, 
+bool ImportMP3(wxWindow *parent,
+			   wxString fName, WaveTrack **left, WaveTrack **right, 
 			   DirManager *dirManager)
 {
   wxBusyCursor wait;
@@ -106,6 +107,8 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
   sampleType *right_buffer = new sampleType[bufferSize];
   bool stereo = true;
 
+  bool cancelled = false;
+
   do {
 	status = decoder_decode(decoder, NULL);
 
@@ -160,21 +163,33 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
 
 	if (!progress && wxGetElapsedTime(false) > 500)
 	  progress =
-		new wxProgressDialog("Import", "Importing MPEG audio...", 1000);
-      
-	if (progress)
-	  progress->Update(int(decoder->status->position*1000.0));        
+		new wxProgressDialog("Import",
+							 "Importing MP3 file...",
+							 1000,
+							 parent,
+							 wxPD_CAN_ABORT |
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE
+                             #ifdef __WXMSW__
+							   | wxPD_SMOOTH
+                             #endif
+							 );
+    
+	if (progress) {
+	  cancelled = !progress->Update(int(decoder->status->position*1000.0));
+	}
         
-  } while(status == XA_SUCCESS ||
-		  status == XA_ERROR_TIMEOUT ||
-		  status == XA_ERROR_INVALID_FRAME);
-
+  } while(cancelled == false &&
+		  (status == XA_SUCCESS ||
+		   status == XA_ERROR_TIMEOUT ||
+		   status == XA_ERROR_INVALID_FRAME));
+  
   if (bufferCount) {
 	(*left)->Append(left_buffer, bufferCount);
 	if (stereo)
 	  (*right)->Append(right_buffer, bufferCount);
   }
-    
+
   delete[] left_buffer;
   delete[] right_buffer;
 
@@ -187,6 +202,19 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
     
   if (progress)
 	delete progress;
+
+  if (cancelled) {
+	if (*left) {
+	  delete *left;
+	  *left = NULL;
+	}
+	if (*right) {
+	  delete *right;
+	  *right = NULL;
+	}
+
+	return false;
+  }
 
   return true;
 }

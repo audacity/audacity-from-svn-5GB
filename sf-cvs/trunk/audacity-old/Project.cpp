@@ -948,7 +948,7 @@ void AudacityProject::ImportFile(wxString fileName)
   WaveTrack *left = 0;
   WaveTrack *right = 0;
   
-  if (ImportWAV(fileName, &left, &right, &mDirManager)) {
+  if (ImportWAV(this, fileName, &left, &right, &mDirManager)) {
 
 	if (left || right) {
 	  // TODO SelectNone();
@@ -1162,7 +1162,7 @@ void AudacityProject::OnImportMP3()
   WaveTrack *left = 0;
   WaveTrack *right = 0;
 
-  if (::ImportMP3(fileName, &left, &right, &mDirManager)) {
+  if (::ImportMP3(this, fileName, &left, &right, &mDirManager)) {
 
     if (left || right) {
       SelectNone();

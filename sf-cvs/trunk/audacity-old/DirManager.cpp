@@ -11,6 +11,8 @@
 #include <wx/filefn.h>
 #include <wx/hash.h>
 #include <wx/msgdlg.h>
+#include <wx/progdlg.h>
+#include <wx/timer.h>
 
 #include "DirManager.h"
 #include "DiskFunctions.h"
@@ -100,10 +102,34 @@ void DirManager::CleanTempDir()
 
   wxChar **array = fnameList.ListToArray();
 
+  wxProgressDialog *progress = NULL;
+  
+  wxYield();
+  wxStartTimer();
+
   for(int i=0; i<count; i++) {
     wxString fileName = array[i];
     wxRemoveFile(fileName);
+
+	if (!progress && wxGetElapsedTime(false) > 500)
+	  progress =
+		new wxProgressDialog("Starting up",
+							 "Cleaning up temporary files...",
+							 1000,
+							 NULL,
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE
+                             #ifdef __WXMSW__
+							   | wxPD_SMOOTH
+                             #endif
+							 );
+    
+	if (progress)
+	  progress->Update(int((i*1000.0)/count));
   }
+
+  if (progress)
+	delete progress;
 }
 
 bool DirManager::SetProject(wxString &projPath, wxString &projName, bool create)

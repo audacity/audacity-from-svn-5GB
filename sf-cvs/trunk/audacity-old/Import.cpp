@@ -20,10 +20,27 @@
 
 #include "snd/snd.h"
 
-bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager *dirManager)
+bool ImportWAV(wxWindow *parent,
+			   wxString fName, WaveTrack **dest1, WaveTrack **dest2,
+			   DirManager *dirManager)
 {
   *dest1 = 0;
   *dest2 = 0;
+
+  // Get actual file len
+
+  int actualFileLen;
+
+  wxFile testFile;
+  testFile.Open(fName);
+  if (!testFile.IsOpened()) {
+	wxMessageBox("Could not open file.");
+	return false;
+  }
+  actualFileLen = testFile.Length();
+  testFile.Close();
+
+  // Initialize snd to actually process it
 
   snd_node sndfile;
   snd_node sndbuffer;
@@ -74,8 +91,8 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   char *leftbuffer = new char[maxblocksize*2];
   char *rightbuffer = new char[maxblocksize*2];
 
-  long filelen =
-    (sndfile.u.file.end_offset - sndfile.u.file.byte_offset)/
+  long fileTotalFrames =
+    (actualFileLen - sndfile.u.file.byte_offset)/
     snd_bytes_per_frame(&sndfile);
   long framescompleted = 0;
 
@@ -83,6 +100,8 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   wxYield();
   wxStartTimer();
   wxBusyCursor busy;
+
+  bool cancelling = false;
 
   long block;
   do {
@@ -108,24 +127,31 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
     
 	if (!progress && wxGetElapsedTime(false) > 500) {
 	  progress =
-		new wxProgressDialog("Import","Importing audio file",
-							 filelen);
-	}	
+		new wxProgressDialog("Import","Importing audio file...",
+							 1000,
+							 parent,
+							 wxPD_CAN_ABORT |
+							 wxPD_REMAINING_TIME |
+							 wxPD_AUTO_HIDE
+                             #ifdef __WXMSW__
+							   | wxPD_SMOOTH
+                             #endif
+							 );
+	}
 	if (progress) {
-	  int progressvalue = (framescompleted > filelen)? filelen : framescompleted;
-	  progress->Update(progressvalue);
+	  int progressvalue = (framescompleted > fileTotalFrames)?
+		                   fileTotalFrames:
+	                       framescompleted;
+
+	  cancelling =
+		!progress->Update((progressvalue*1000.0)/fileTotalFrames);
+
+	  if (cancelling)
+		block = 0;
 	}
   } while (block > 0);
 
   snd_close(&sndfile);
-
-  #ifndef __WXMAC__
-  if (framescompleted != filelen) {
-	printf("Frames completed: %d   "
-	       "Expected number of frames in file: %d\n",
-		   framescompleted, filelen);
-  }
-  #endif
 
   if (progress)
 	delete progress;
@@ -134,6 +160,19 @@ bool ImportWAV(wxString fName, WaveTrack **dest1, WaveTrack **dest2, DirManager 
   delete[] dstbuffer;
   delete[] leftbuffer;
   delete[] rightbuffer;
+
+  if (cancelling) {
+	if (*dest1) {
+	  delete *dest1;
+	  *dest1 = NULL;
+	}
+	if (*dest2) {
+	  delete *dest2;
+	  *dest2 = NULL;
+	}
+
+	return false;
+  }
   
   return true;
 }
