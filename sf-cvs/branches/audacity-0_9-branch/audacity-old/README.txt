@@ -107,6 +107,8 @@ Changes in 0.98:
 
   - You can now safely copy and paste between projects.
 
+  - Fixed bugs loading, saving, and undoing envelopes.
+
   - You're not allowed to open the same project in two different
     windows anymore (it just would have caused data loss).
 
