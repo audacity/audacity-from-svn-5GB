@@ -348,8 +348,12 @@ bool AudacityApp::OnInit()
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(NewID, "&New\tCtrl+N");
    fileMenu->Append(OpenID, "&Open...\tCtrl+O");
+
+#ifdef __MACOS9__
    fileMenu->AppendSeparator();
    fileMenu->Append(PreferencesID, "&Preferences...\tCtrl+P");
+#endif
+
    fileMenu->AppendSeparator();
    fileMenu->Append(ExitID, "Quit\tCtrl+Q");
    wxMenu *helpMenu = new wxMenu();
