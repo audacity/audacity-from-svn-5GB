@@ -146,15 +146,15 @@ void MixerToolBar::InitializeMixerToolBar()
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
-   // Don't display it if there are no choices!
-   if (inputSources.GetCount() == 0)
-      leftPosition = -1000;
-
    mInputSourceChoice = new wxChoice(this, InputSourceID,
                                      wxPoint(leftPosition, 2),
                                      wxSize(-1, 23));
    for(j = 0; j < inputSources.GetCount(); j++)
       mInputSourceChoice->Append(inputSources[j]);
+   if (inputSources.GetCount() == 0)
+      mInputSourceChoice->Enable(false);
+      
+
 
    // Set choice control to default value
    float inputVolume;
