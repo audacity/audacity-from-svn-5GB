@@ -48,6 +48,9 @@
 
 AudioIO *gAudioIO;
 
+// static
+int AudioIO::mNextStreamToken = 0;
+
 #if USE_PORTAUDIO_V19
 int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
@@ -246,6 +249,19 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPausedSeconds = 0;
+
+   //
+   // The RingBuffer sizes, and the max amount of the buffer to
+   // fill at a time, both grow linearly with the number of
+   // tracks.  This allows us to scale up to many tracks without
+   // killing performance.
+   //
+
+   mPlaybackRingBufferSecs = 4.5 + (0.5 * mPlaybackTracks.GetCount());
+   mMaxPlaybackSecsToCopy = 0.75 + (0.25 * mPlaybackTracks.GetCount());
+
+   mCaptureRingBufferSecs = 4.5 + 0.5 * mCaptureTracks.GetCount();   
+   mMinCaptureSecsToCopy = 0.2 + (0.2 * mCaptureTracks.GetCount());
 
    //
    // Attempt to open the device using the given parameters.  If we can't, it's
@@ -476,7 +492,10 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    {
       // Allocate output buffers.  For every output track we allocate
       // a ring buffer of five seconds
-      sampleCount playbackBufferSize = (sampleCount)(mRate * 5);
+      sampleCount playbackBufferSize =
+         (sampleCount)(mRate * mPlaybackRingBufferSecs + 0.5);
+      sampleCount playbackMixBufferSize = 
+         (sampleCount)(mRate * mMaxPlaybackSecsToCopy + 0.5);
       mPlaybackBuffers = new RingBuffer* [mPlaybackTracks.GetCount()];
       mPlaybackMixers  = new Mixer*      [mPlaybackTracks.GetCount()];
 
@@ -486,7 +505,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
          mPlaybackMixers[i]  = new Mixer(1, &mPlaybackTracks[i],
                                          timeTrack, mT0, mT1, 1,
-                                         playbackBufferSize, false,
+                                         playbackMixBufferSize, false,
                                          mRate, floatSample, false);
          mPlaybackMixers[i]->ApplyTrackGains(false);
       }
@@ -496,7 +515,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    {
       // Allocate input buffers.  For every input track we allocate
       // a ring buffer of five seconds
-      sampleCount captureBufferSize = (sampleCount)(mRate * 5);
+      sampleCount captureBufferSize =
+         (sampleCount)(mRate * mCaptureRingBufferSecs + 0.5);
       mCaptureBuffers = new RingBuffer* [mCaptureTracks.GetCount()];
 
       for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
@@ -530,7 +550,13 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    }
 
    mAudioThreadFillBuffersLoopRunning = true;
-   mStreamToken = rand();
+
+   //
+   // Generate an unique value each time, to be returned to
+   // clients accessing the AudioIO API, so they can query if
+   // are the ones who have reserved AudioIO or not.
+   //
+   mStreamToken = (++mNextStreamToken);
 
 #if USE_PORTAUDIO_V19
    // To make GetStreamTime behave correctly before the callback sets
@@ -761,6 +787,37 @@ wxThread::ExitCode AudioThread::Entry()
    return 0;
 }
 
+int AudioIO::GetCommonlyAvailPlayback()
+{
+   int commonlyAvail = mPlaybackBuffers[0]->AvailForPut();
+   unsigned int i;
+   
+   for( i = 1; i < mPlaybackTracks.GetCount(); i++ )
+   {
+      int thisBlockAvail = mPlaybackBuffers[i]->AvailForPut();
+      
+      if( thisBlockAvail < commonlyAvail )
+         commonlyAvail = thisBlockAvail;
+   }
+
+   return commonlyAvail;
+}
+
+int AudioIO::GetCommonlyAvailCapture()
+{
+   int commonlyAvail = mCaptureBuffers[0]->AvailForGet();
+   unsigned int i;
+
+   for( i = 1; i < mCaptureTracks.GetCount(); i++ )
+   {
+      int avail = mCaptureBuffers[i]->AvailForGet();
+      if( avail < commonlyAvail )
+         commonlyAvail = avail;
+   }
+
+   return commonlyAvail;
+}
+
 // This method is the data gateway between the audio thread (which
 // communicates with the disk) and the PortAudio callback thread
 // (which communicates with the audio device.
@@ -775,68 +832,78 @@ void AudioIO::FillBuffers()
       // if we hit this code during the PortAudio callback.  To keep
       // things simple, we only write as much data as is vacant in
       // ALL buffers, and advance the global time by that much.
-      int commonlyAvail = mPlaybackBuffers[0]->AvailForPut();
-
-      for( i = 1; i < mPlaybackTracks.GetCount(); i++ )
-      {
-         int thisBlockAvail = mPlaybackBuffers[i]->AvailForPut();
-
-         if( thisBlockAvail < commonlyAvail )
-            commonlyAvail = thisBlockAvail;
-      }
+      int commonlyAvail = GetCommonlyAvailPlayback();
 
       //
-      // Now determine how much this will globally advance playback time
+      // Determine how much this will globally advance playback time
       //
       double deltat = commonlyAvail / mRate;
 
-      if (deltat >= 2.0 || (mT+deltat >= mT1))
+      //
+      // Never fill more than this amount at a time.  This
+      // significantly improves performance.
+      //
+      if (deltat > mMaxPlaybackSecsToCopy)
+         deltat = mMaxPlaybackSecsToCopy;
+
+      //
+      // Don't fill the buffers at all unless we can do the
+      // full mMaxPlaybackSecsToCopy.  This improves performance
+      // by not always trying to process tiny chunks, eating the
+      // CPU unnecessarily.
+      //
+      // The exception is if we're at the end of the selected
+      // region - then we should just fill the buffer.
+      //
+      if (deltat == mMaxPlaybackSecsToCopy ||
+          (deltat > 0 && mT+deltat >= mT1))
       {
          if( mT + deltat > mT1 )
          {
             deltat = mT1 - mT;
             if( deltat < 0.0 )
                deltat = 0.0;
-            commonlyAvail = (int)(deltat * mRate + 0.5);
          }
          mT += deltat;
          
-         if( commonlyAvail > 0 )
+         for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
          {
-            for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
-            {
-               // The mixer here isn't actually mixing: it's just doing whatever
-               // warping is needed for the time track
-               int processed = mPlaybackMixers[i]->Process(commonlyAvail);
-               samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
-               mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
-            }
+            // The mixer here isn't actually mixing: it's just doing
+            // resampling, format conversion, and possibly time track
+            // warping
+            int processed =
+               mPlaybackMixers[i]->Process((int)(deltat * mRate + 0.5));
+            samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
+            mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
          }
       }
    }
 
    if( mCaptureTracks.GetCount() > 0 )
    {
-      int commonlyAvail = mCaptureBuffers[0]->AvailForGet();
-      for( i = 1; i < mCaptureTracks.GetCount(); i++ )
+      int commonlyAvail = GetCommonlyAvailCapture();
+
+      //
+      // Determine how much this will add to captured tracks
+      //
+      double deltat = commonlyAvail / mRate;
+
+      if (mAudioThreadShouldCallFillBuffersOnce ||
+          deltat >= mMinCaptureSecsToCopy)
       {
-         int avail = mCaptureBuffers[i]->AvailForGet();
-         if( avail < commonlyAvail )
-            commonlyAvail = avail;
-      }
-
-      // For capture buffers, save everything available to disk
-      for( i = 0; i < mCaptureTracks.GetCount(); i++ )
-      {
-         //int avail = mCaptureBuffers[i]->AvailForGet();
-         int avail = commonlyAvail;
-         sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
-         samplePtr temp = NewSamples(avail, trackFormat);
-
-         mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
-         mCaptureTracks[i]-> Append(temp, trackFormat, avail);
-
-         DeleteSamples(temp);
+         // Append captured samples to the end of the WaveTracks.
+         // The WaveTracks have their own buffering for efficiency.
+         for( i = 0; i < mCaptureTracks.GetCount(); i++ )
+         {
+            int avail = commonlyAvail;
+            sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
+            samplePtr temp = NewSamples(avail, trackFormat);
+            
+            mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
+            mCaptureTracks[i]-> Append(temp, trackFormat, avail);
+            
+            DeleteSamples(temp);
+         }
       }
    }
 }

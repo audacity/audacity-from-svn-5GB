@@ -91,6 +91,9 @@ class AudioIO {
 
    void FillBuffers();
 
+   int GetCommonlyAvailPlayback();
+   int GetCommonlyAvailCapture();
+
    AudioThread        *mThread;
    RingBuffer        **mCaptureBuffers;
    WaveTrackArray      mCaptureTracks;
@@ -98,10 +101,15 @@ class AudioIO {
    WaveTrackArray      mPlaybackTracks;
    Mixer             **mPlaybackMixers;
    int                 mStreamToken;
+   static int          mNextStreamToken;
    double              mRate;
    double              mT;
    double              mT0;
    double              mT1;
+   double              mPlaybackRingBufferSecs;
+   double              mCaptureRingBufferSecs;
+   double              mMaxPlaybackSecsToCopy;
+   double              mMinCaptureSecsToCopy;
    bool                mPaused;
    double              mPausePosition;
 #if USE_PORTAUDIO_V19
