@@ -87,6 +87,7 @@ enum {
    HelpID,
    HelpIndexID,
    HelpSearchID,
+   SetHelpFileID,
 
    // Effect Menu
 
@@ -145,6 +146,7 @@ EVT_MENU(NewID, AudacityProject::OnNew)
     EVT_MENU(HelpID, AudacityProject::OnHelp)
     EVT_MENU(HelpIndexID, AudacityProject::OnHelpIndex)
     EVT_MENU(HelpSearchID, AudacityProject::OnHelpSearch)
+    EVT_MENU(SetHelpFileID, AudacityProject::OnSetHelpFile)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 #endif
@@ -238,5 +240,6 @@ void OnAbout(wxCommandEvent & event);
 void OnHelp(wxCommandEvent & event);
 void OnHelpIndex(wxCommandEvent & event);
 void OnHelpSearch(wxCommandEvent & event);
+void OnSetHelpFile(wxCommandEvent & event);
 
 #endif

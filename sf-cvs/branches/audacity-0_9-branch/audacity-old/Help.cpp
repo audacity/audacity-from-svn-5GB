@@ -58,17 +58,72 @@ void QuitHelp()
 
 wxHtmlHelpController *gHelp = NULL;
 
+void SetHelpFile(wxWindow * parent)
+{
+   if (gHelp) {
+      delete gHelp;
+      gHelp = NULL;
+   }
+
+   wxString helpFilePath = gPrefs->Read("/Help/HelpFilePath", "");
+   wxString searchPath;
+   if (::wxFileExists(helpFilePath))
+      searchPath = ::wxPathOnly(helpFilePath);
+
+   helpFilePath = wxFileSelector("Where is audacity-help.htb?",
+                                 searchPath,
+                                 "audacity-help.htb",  // Name
+                                 "",                   // Extension
+                                 "HTML Help Books (*.htb)|*.htb",
+                                 wxOPEN, parent);
+   if (helpFilePath == "")
+      return;
+
+   gHelp = new wxHtmlHelpController();
+   if (!gHelp->AddBook(helpFilePath)) {
+      wxMessageBox("Couldn't open the Audacity Help file.");
+      delete gHelp;
+      gHelp = NULL;
+      return;
+   }
+   
+   gPrefs->Write("/Help/HelpFilePath", helpFilePath);   
+
+   wxMessageBox("Help file loaded successfully.");
+}
+
 void InitHelp(wxWindow * parent)
 {
    if (!gHelp) {
-      wxString defaultLoc = wxGetCwd() + wxFILE_SEP_PATH + "audacity-help.htb";
+      wxArrayString paths;
+      wxString helpFilePath = "";
 
-      wxString helpFilePath =
-          gPrefs->Read("/Help/HelpFilePath", defaultLoc);
+      wxString storedPath =
+         gPrefs->Read("/Help/HelpFilePath", "");
+      if (storedPath != "")
+         paths.Add(storedPath);
 
-      if (!::wxFileExists(helpFilePath)) {
-         helpFilePath = wxFileSelector("Where is audacity-help.htb?", NULL, "audacity-help.htb",        // Name
-                                       "",      // Extension
+      paths.Add(wxGetCwd() + wxFILE_SEP_PATH + "audacity-help.htb");
+
+      #ifdef __WXGTK__
+      paths.Add("/usr/local/share/doc/audacity/audacity-help.htb");
+      paths.Add("/usr/share/doc/audacity/audacity-help.htb");
+      #endif
+
+      #ifdef __WXMSW__
+      paths.Add("C:\Program Files\Audacity\audacity-help.htb");
+      #endif
+
+      for(int i=0; i<paths.GetCount() && helpFilePath==""; i++) {
+         if (::wxFileExists(paths[i]))
+            helpFilePath = paths[i];
+      }
+
+      if (helpFilePath == "") {
+         helpFilePath = wxFileSelector("Where is audacity-help.htb?",
+                                       NULL,
+                                       "audacity-help.htb",  // Name
+                                       "",                   // Extension
                                        "HTML Help Books (*.htb)|*.htb",
                                        wxOPEN, parent);
          if (helpFilePath == "")

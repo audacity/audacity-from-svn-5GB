@@ -21,6 +21,7 @@ AC_PROG_GCC_TRADITIONAL
 AC_LANG([C++])
 AC_PROG_CXX
 AC_PROG_CXXCPP
+AC_PROG_INSTALL
 
 dnl extra variables
 AC_SUBST(EXTRAOBJS)
@@ -194,6 +195,8 @@ if [[ $use_help = "yes" ]] ; then
 else
 	echo "  without help";
 fi
+
+echo "prefix=$prefix";
 
 echo ""
 echo "Run configure --help for explanation of these options,"

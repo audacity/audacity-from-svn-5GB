@@ -16,6 +16,7 @@ void ShowHelp(wxWindow * parent);
 void ShowHelp(wxWindow * parent, wxString topic);
 void SearchHelp(wxWindow * parent);
 void ShowHelpIndex(wxWindow * parent);
+void SetHelpFile(wxWindow * parent);
 
 void QuitHelp();
 

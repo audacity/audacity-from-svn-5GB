@@ -166,6 +166,8 @@ void AudacityProject::CreateMenuBar()
    mHelpMenu->Append(HelpID, "Online Help...");
    mHelpMenu->Append(HelpIndexID, "Online Help Index...");
    mHelpMenu->Append(HelpSearchID, "Search Online Help...");
+   mHelpMenu->AppendSeparator();
+   mHelpMenu->Append(SetHelpFileID, "Locate Help File...");
 
 #endif
 
@@ -1122,3 +1124,10 @@ void AudacityProject::OnHelpSearch(wxCommandEvent & event)
 {
    ::SearchHelp(this);
 }
+
+void AudacityProject::OnSetHelpFile(wxCommandEvent & event)
+{
+   ::SetHelpFile(this);
+}
+
+
