@@ -28,6 +28,8 @@ wxUint32 GetUpdateFlags();
 
 double NearestZeroCrossing(double t0);
 
+void DoAddLabel(double left, double right);
+
 // used in routines OnSelectionSave
 // and OnSelectionRestore
 double mSel0save;
@@ -172,6 +174,7 @@ void OnNewLabelTrack();
 void OnNewTimeTrack();
 void OnRemoveTracks();
 void OnAddLabel();
+void OnAddLabelPlaying();
 
         // Effect Menu
 
