@@ -77,33 +77,33 @@ APalette::APalette(wxFrame* parent, wxWindowID id, const wxString& title,
 {
   mTool[0] =
     new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
-				"icons/IBeamUp.png", "icons/IBeamOver.png",
-				"icons/IBeamDown.png", "icons/IBeamUp.png");
+				"IBeamUp", "IBeamOver",
+				"IBeamDown", "IBeamUp");
   mTool[1] = 
     new AButton(this, ID_SELECT, wxPoint(28, 0), wxSize(27, 27),
-				"icons/SelectUp.png", "icons/SelectOver.png",
-				"icons/SelectDown.png", "icons/SelectUp.png");
+				"SelectUp", "SelectOver",
+				"SelectDown", "SelectUp");
   mTool[2] = 
     new AButton(this, ID_MOVE, wxPoint(0, 28), wxSize(27, 27),
-				"icons/MoveUp.png", "icons/MoveOver.png",
-				"icons/MoveDown.png", "icons/MoveUp.png");
+				"MoveUp", "MoveOver",
+				"MoveDown", "MoveUp");
   mTool[3] = 
     new AButton(this, ID_ZOOM, wxPoint(28, 28), wxSize(27, 27),
-				"icons/ZoomUp.png", "icons/ZoomOver.png",
-				"icons/ZoomDown.png", "icons/ZoomUp.png");
+				"ZoomUp", "ZoomOver",
+				"ZoomDown", "ZoomUp");
 
   mPlay =
 	new AButton(this, 0, wxPoint(64, 4), wxSize(48, 48),
-				"icons/PlayUp.png", "icons/PlayOver.png",
-				"icons/PlayDown.png", "icons/PlayDisabled.png");
+				"PlayUp", "PlayOver",
+				"PlayDown", "PlayDisabled");
   mStop =
 	new AButton(this, 0, wxPoint(114, 4), wxSize(48, 48),
-				"icons/StopUp.png", "icons/StopOver.png",
-				"icons/StopDown.png", "icons/StopDisabled.png");
+				"StopUp", "StopOver",
+				"StopDown", "StopDisabled");
   
   mVolume =
 	new ASlider(this, 0, wxPoint(172, 14), wxSize(100, 28),
-				"icons/Slider.png", "icons/SliderThumb.png", 100);
+				"Slider", "SliderThumb", 100);
 
   mVolume->Set(80);
 

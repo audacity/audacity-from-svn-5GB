@@ -20,7 +20,7 @@
 
 #include <wx/window.h>
 
-class wxImage;
+class wxBitmap;
 
 class AButton: public wxWindow
 {
@@ -62,11 +62,29 @@ private:
   bool            mEnabled;
   AButtonState    mButtonState;
 
-  wxImage         *mImage[4];
+  wxBitmap        *mBitmap[4];
 
 public:
 
   DECLARE_EVENT_TABLE()
 };
+
+#ifdef __WXMSW__
+  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_BMP_RESOURCE
+  #define BITMAP_PRE ""
+  #define BITMAP_SUF ""
+#endif
+
+#ifdef __WXMAC
+  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_PICT_RESOURCE
+  #define BITMAP_PRE ""
+  #define BITMAP_SUF ""
+#endif
+
+#ifdef __WXGTK__
+  #define AUDACITY_BITMAP_TYPE wxBITMAP_TYPE_PNG
+  #define BITMAP_PRE "icons/"
+  #define BITMAP_SUF ".png"
+#endif
 
 #endif

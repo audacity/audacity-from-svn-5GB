@@ -18,6 +18,7 @@
 #include <wx/dcmemory.h>
 #include <wx/image.h>
 
+#include "AButton.h"
 #include "ASlider.h"
 
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
@@ -38,30 +39,33 @@ ASlider::ASlider(wxWindow *parent, wxWindowID id,
 
   mIsDragging = false;
 
-  mImage = new wxImage(sliderImage);
-  mThumbImage = new wxImage(thumbImage);
+  mBitmap = 
+	new wxBitmap(BITMAP_PRE +sliderImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
 
-  mThumbWidth = mThumbImage->GetWidth();
-  mThumbHeight = mThumbImage->GetHeight();
+  mThumbBitmap = 
+	new wxBitmap(BITMAP_PRE +thumbImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+
+  mThumbWidth = mThumbBitmap->GetWidth();
+  mThumbHeight = mThumbBitmap->GetHeight();
 
   GetSize(&mWidth, &mHeight);
 }
 
 ASlider::~ASlider()
 {
-  delete mImage;
-  delete mThumbImage;
+  delete mBitmap;
+  delete mThumbBitmap;
 }
 
 void ASlider::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
   wxMemoryDC memDC;
-  memDC.SelectObject(mImage->ConvertToBitmap());  
+  memDC.SelectObject(*mBitmap);
   dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
   int thumbPos = mValue * (mWidth - mThumbWidth) / mMax;
   int thumbY = (mHeight - mThumbHeight) / 2;
-  memDC.SelectObject(mThumbImage->ConvertToBitmap());  
+  memDC.SelectObject(*mThumbBitmap);
   dc.Blit(thumbPos, thumbY, mThumbWidth, mThumbHeight,
 		  &memDC, 0, 0, wxCOPY, FALSE);
 }

@@ -40,27 +40,31 @@ AButton::AButton(wxWindow *parent, wxWindowID id,
   mIsClicking = false;
   mEnabled = true;
 
-  mImage[0] = new wxImage(upImage);
-  mImage[1] = new wxImage(overImage);
-  mImage[2] = new wxImage(downImage);
-  mImage[3] = new wxImage(disImage);
+  mBitmap[0] =
+	new wxBitmap(BITMAP_PRE +upImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mBitmap[1] =
+	new wxBitmap(BITMAP_PRE +overImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mBitmap[2] =
+	new wxBitmap(BITMAP_PRE +downImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
+  mBitmap[3] =
+	new wxBitmap(BITMAP_PRE +disImage+ BITMAP_SUF, AUDACITY_BITMAP_TYPE);
 
   GetSize(&mWidth, &mHeight);
 }
 
 AButton::~AButton()
 {
-  delete mImage[0];
-  delete mImage[1];
-  delete mImage[2];
-  delete mImage[3];
+  delete mBitmap[0];
+  delete mBitmap[1];
+  delete mBitmap[2];
+  delete mBitmap[3];
 }
 
 void AButton::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
   wxMemoryDC memDC;
-  memDC.SelectObject(mImage[mButtonState]->ConvertToBitmap());  
+  memDC.SelectObject(*mBitmap[mButtonState]);
   dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
 }
 

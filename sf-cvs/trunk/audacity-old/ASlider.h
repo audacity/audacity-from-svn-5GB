@@ -19,7 +19,7 @@
 
 #include <wx/window.h>
 
-class wxImage;
+class wxBitmap;
 
 class ASlider: public wxWindow
 {
@@ -57,8 +57,8 @@ private:
 
   bool            mIsDragging;
 
-  wxImage         *mImage;
-  wxImage         *mThumbImage;
+  wxBitmap        *mBitmap;
+  wxBitmap        *mThumbBitmap;
 
 public:
 
