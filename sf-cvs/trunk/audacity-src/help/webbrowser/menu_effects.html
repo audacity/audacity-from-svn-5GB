@@ -77,6 +77,34 @@ without causing clipping (from being too loud).</p>
 while leaving most of the other frequencies alone.  It is most effective
 if you don't try to boost too much; 12 dB is usually just right.</p>
 
+<p class=menuref_item>Change Pitch</p>
+<p class=a>Changes the pitch/frequency of the selected audio
+without changing the tempo.  When you open the dialog, the starting
+frequency is set to Audacity's best guess as to the frequency of the
+selection.  This works well for recordings of singing or musical
+instruments without background noise.  You can specify the pitch change
+in one of four different ways: musical note, semitones, frequency, or
+percent change.
+<br><p>
+
+<p class=menuref_item>Change Speed</p>
+<p class=a>Changes the speed of the audio by resampling.
+Making the speed higher will also increase the pitch, and vice versa.
+This will change the length of the selection.
+<br><p>
+
+<p class=menuref_item>Change Tempo</p>
+<p class=a>Changes the tempo (speed) of the audio without
+changing the pitch.  This will change the length of the selection.
+<br><p>
+
+<p class=menuref_item>Compressor</p>
+<p class=a>Compresses the dynamic range of the selection so
+that the loud parts are softer while keeping the volume of the soft
+parts the same.  You can optionally apply gain, resulting
+in the entire piece having higher perceived volume.
+<br><p>
+
 <p class=menuref_item>Echo...</p>
 <p class=a>A simple delay line.</p>
 <p class=a>This effect repeats the audio you have selected again and again,
@@ -167,14 +195,30 @@ whatever) is much louder than the noise, this effect works well and
 there's very little audible distortion.  But when the noise is very
 loud, when the noise is variable, or when the signal is not much
 louder than the noise, then the result is often too distorted.</p>
-<p class=a>Future versions of Audacity may include improved versions of this
-effect.</p>
+
+<p class=menuref_item>Normalize...</p>
+<p class=a>Allows you to correct for DC offset (a vertical
+displacement of the track) and/or amplify such that the maximum
+amplitude is a fixed amount, -3 dB.  It's useful to normalize all
+of your tracks before mixing.</p>
+
+<p class=menuref_item>Nyquist Prompt...</p>
+<p class=a>For advanced users only.  Allows you to
+express arbitrary transormations using a powerful functional
+programming language.  See the Nyquist section of the Audacity
+website for more information.
+<br><p>
 
 <p class=menuref_item>Phaser...</p>
 <p class=a>The name "Phaser" comes from "Phase Shifter", because it
 works by combining phase-shifted signals with the original
 signal.  The movement of the phase-shifted signals is
 controlled using a Low Frequency Oscillator (LFO).</p>
+
+<p class=menuref_item>Repeat...</p>
+<p class=a>Repeats the selection a certain number of times.
+This operation is quite fast and space-efficient, so it is practical
+to use it to create nearly-infinite loops.</p>
 
 <p class=menuref_item>Reverse</p>
 <p class=a>This effect reverses the selected audio temporally; after the
