@@ -1263,12 +1263,20 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
             }
          }
 
-         // Refresh only the waveform area, not the labels
-         // (This actually speeds up redrawing!)
+
+         // Refresh the ruler.
+         wxRect RulerRect;
+         mRuler->GetSize(&RulerRect.width, &RulerRect.height);
+         RulerRect.x=0;
+         RulerRect.y=0;
+         Refresh(false, &RulerRect);
+
+         // Refresh the tracks, excluding the TrackLabel as 
+         // this gives a small speed improvement.
          wxRect trackRect;
-         GetSize(&trackRect.width, &trackRect.height);
+         GetSize( &trackRect.width, &trackRect.height);
+         trackRect.y = RulerRect.height;
          trackRect.x = GetLeftOffset(); 
-         trackRect.y = 0;
          trackRect.width -= GetLeftOffset();
          Refresh(false, &trackRect);
 
