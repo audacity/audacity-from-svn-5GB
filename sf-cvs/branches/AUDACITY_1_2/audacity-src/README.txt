@@ -265,15 +265,15 @@ Known issues/problems:
 Changes in 1.2.3:
 
   * Fixed a bug that caused recording to stop or display incorrectly
-    after about 50 minutes on some Windows systems.  (This partly fixed
-    in Audacity 1.2.2, but still didn't work on some systems.)
+    after about 50 minutes on some Windows systems.  (This was partly
+    fixed in Audacity 1.2.2, but still didn't work on some systems.)
 
   * The Change Pitch and Change Tempo effects have been upgraded to
     use a new version of the SoundTouch library by Olli Parviainen,
     with better speed and higher quality.
 
-  * Fixed a bug that caused the program to run slowly while displaying
-    using the evelope tool.
+  * Fixed a bug that caused the program to run slowly when using the
+    Envelope tool.
 
   * Shift-clicking on a mute or solo button now un-mutes (or un-solos)
     all other tracks.
