@@ -47,6 +47,9 @@ bool mLastClipboardState;   // true: clipboard full; false: clipboard empty.
 
 bool mFirstTimeUpdateMenus;
 
+wxMenu * mTempMenu;           //A temporary menu used to construct submenus
+bool   mCreatingSubMenu;    //A bool that is true if you are in the midst of creating a submenu.
+
 #define AUDACITY_MENUS_COMMANDS_METHODS
 #include "commands.h"
 #undef AUDACITY_MENUS_COMMANDS_METHODS
