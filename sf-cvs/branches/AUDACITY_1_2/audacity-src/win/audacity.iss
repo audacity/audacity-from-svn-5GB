@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Audacity
-AppVerName=Audacity 1.2.3
+AppVerName=Audacity 1.2.4
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
