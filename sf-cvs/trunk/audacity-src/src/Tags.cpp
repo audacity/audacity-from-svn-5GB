@@ -66,7 +66,7 @@ Tags::~Tags()
 
 bool Tags::HandleXMLTag(const char *tag, const char **attrs)
 {
-   if (!strcmp(tag, "tags"))
+   if (strcmp(tag, "tags") != 0)
       return false;
 
    // loop through attrs, which is a null-terminated list of
