@@ -39,6 +39,7 @@ OBJS = \
 	$(OBJDIR)/Export.cpp.o \
 	$(OBJDIR)/ExportMP3.cpp.o \
 	$(OBJDIR)/ExportPCM.cpp.o \
+	$(OBJDIR)/FileFormat.cpp.o \
 	$(OBJDIR)/FFT.cpp.o \
 	$(OBJDIR)/FreqWindow.cpp.o \
 	$(OBJDIR)/Help.cpp.o \
@@ -71,9 +72,11 @@ OBJS = \
 	$(OBJDIR)/effects/Effect.cpp.o \
 	$(OBJDIR)/effects/Amplify.cpp.o \
 	$(OBJDIR)/effects/BassBoost.cpp.o \
+	$(OBJDIR)/effects/Compressor.cpp.o \
 	$(OBJDIR)/effects/Echo.cpp.o \
 	$(OBJDIR)/effects/Fade.cpp.o \
 	$(OBJDIR)/effects/Filter.cpp.o \
+	$(OBJDIR)/effects/NoiseRemoval.cpp.o \
 	$(OBJDIR)/effects/Phaser.cpp.o \
 	$(OBJDIR)/effects/Wahwah.cpp.o \
 	$(OBJDIR)/snd/audiooss.c.o \
@@ -107,6 +110,23 @@ audacity: $(OBJS) Makefile
 audacity-help.htb: help/*
 	rm -f audacity-help.htb
 	cd help && zip ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
+
+#
+# build our sublibraries if needed
+lib-src/libogg/.libs/libogg.a:
+	cd lib-src/libogg && $(MAKE)
+
+lib-src/libvorbis/.libs/libvorbis.a:
+	cd lib-src/libvorbis && $(MAKE)
+
+lib-src/libvorbis/.libs/libvorbisfile.a:
+	cd lib-src/libvorbis && $(MAKE)
+
+lib-src/libmad/.libs/libmad.a:
+	cd lib-src/libmad && $(MAKE)
+
+lib-src/libsndfile/src/.libs/libsndfile.a:
+	cd lib-src/libsndfile && $(MAKE)
 
 #
 # You can optionally "make dep" to make dependencies.

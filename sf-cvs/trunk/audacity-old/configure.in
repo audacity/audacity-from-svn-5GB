@@ -2,12 +2,30 @@ dnl
 dnl audacity configure.in script
 dnl
 dnl Joshua Haberman
+dnl Dominic Mazzoni
+dnl
+
+
+dnl TODO:
+dnl
+dnl automatically choose whether or not to make some libs
+dnl based on:
+dnl
+dnl AC_CHECK_LIB(z, compress2, build_libz=false, build_libz=true)
+dnl AM_CONDITIONAL(BUILD_LIBZ, test $build_libz = true)
+dnl
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT
-AC_CONFIG_SRCDIR([AudacityApp.h])
 
+dnl Require autoconf >= 2.50 (unfortunately 2.13 is standard)
+AC_PREREQ(2.50)
+
+dnl Init autoconf
+AC_INIT
+
+dnl Check for existence of AudacityApp.h
+AC_CONFIG_SRCDIR([AudacityApp.h])
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -15,151 +33,153 @@ AC_PROG_GCC_TRADITIONAL
 AC_LANG([C++])
 AC_PROG_CXX
 AC_PROG_CXXCPP
+AC_PROG_INSTALL
 
-AC_PATH_PROG(WXSTATIC, libwx_gtk.a, /usr/lib, /usr/local/lib)
+dnl extra variables
+AC_SUBST(EXTRAOBJS)
+AC_SUBST(MAKEALL)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_TYPE_OFF_T
-AC_TYPE_SIZE_T
-
-CFLAGS=""
-CPPFLAGS=""
-CXXFLAGS=""
+dnl Required sublibraries
+SUBDIRS="lib-src/libsndfile"
+EXTRAOBJS="$EXTRAOBJS lib-src/libsndfile/src/.libs/libsndfile.a"
 
 dnl options
-AC_ARG_ENABLE(debug,
-   [AC_HELP_STRING([--enable-debug],
-      [enable debugging (wxWindows debugging libraries must be installed) [default=no]])],
-   enable_debug=$enableval,
-   enable_debug="no")
-AC_ARG_ENABLE(warnings-as-errors,
-   [AC_HELP_STRING([--enable-warnings-as-errors],
-      [cause compilation to stop with any compiler warnings. Good for conscientious coding. [default=no]])],
-   warnings_as_errors=$enableval,
-   warnings_as_errors="no")
+AC_ARG_WITH(libmad,
+	[AC_HELP_STRING([--with-libmad],
+      [use libmad for mp3 decoding support [default=yes]])],
+	use_libmpeg3=$withval,
+	use_libmpeg3="yes")
 AC_ARG_WITH(vorbis,
-   [AC_HELP_STRING([--with-vorbis],
-      [enable ogg vorbis support (libraries must be installed) [default=no]])],
-   use_vorbis=$withval,
-   use_vorbis="no")
-AC_ARG_WITH(id3lib,
-   [AC_HELP_STRING([--with-id3lib],
-      [enable id3lib support (libraries must be installed) [default=no]])],
-   use_id3lib=$withval,
-   use_id3lib="no")
-
+	[AC_HELP_STRING([--with-vorbis],
+		[enable ogg vorbis support [default=yes]])],
+	use_vorbis=$withval,
+	use_vorbis="yes")
+AC_ARG_WITH(id3,
+	[AC_HELP_STRING([--with-id3],
+		[compile with id3lib [default=no]])],
+	use_id3lib=$withval,
+	use_id3lib="no")
+AC_ARG_WITH(help,
+	[AC_HELP_STRING([--with-help],
+		[Make the help file "audacity-help.htb" [default=yes]])],
+	use_help=$withval,
+	use_help="yes")
 
 dnl check to make sure that all the user's options are valid
 AC_CANONICAL_HOST
 host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
 host_os=`echo "$host_os" | sed "s/-.*//"`
 
-if [[ $warnings_as_errors = "yes" ]] ; then
-   dnl TODO: once all C files will compile without warnings (ie. when we ditch snd),
-   dnl make this set CPPFLAGS instead
-   CXXFLAGS="$CXXFLAGS -Werror"
-fi
+if [[ "$use_libmad" = "yes" ]] ; then
 
-dnl --- check for optional libraries ---
+	AC_DEFINE(USE_LIBMAD, 1,
+		[Define if mp3 support is implemented with the libmad library])
+	AC_DEFINE(MP3SUPPORT, 1,
+      [Define if mp3 support is implemented])
+
+	EXTRAOBJS="$EXTRAOBJS lib-src/libmad/.libs/libmad.a"
+	SUBDIRS="$SUBDIRS lib-src/libmad"
+	
+   mp3support="true"
+fi
 
 if [[ $use_vorbis = "yes" ]] ; then
 
+	EXTRAOBJS="$EXTRAOBJS lib-src/libogg/.libs/libogg.a"
+	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/.libs/libvorbis.a"
+	EXTRAOBJS="$EXTRAOBJS lib-src/libvorbis/.libs/libvorbisfile.a"
+	SUBDIRS="$SUBDIRS lib-src/libogg lib-src/libvorbis"
+
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
+fi
+
+if [[ $use_vorbis = "system" ]] ; then
+
    dnl check for both headers and libraries
    
-   AC_CHECK_LIB(vorbisfile, ov_open, true, [dnl here true is just a nop
-      echo "ERROR: unable to find libvorbisfile.a or libvorbisfile.so library file"
-      echo "Audacity uses libvorbisfile for Ogg Vorbis support. If you specify"
-      echo "--with-vorbis, you must have this library already installed. You can"
-      echo "download it from http://www.vorbis.com. If you think you already have"
-      echo "it installed, make sure it's in a place where your linker can find it" ]
-      AC_MSG_ERROR([*** Ogg Vorbis libraries not found.]),
-      -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
+   AC_CHECK_LIB(vorbisfile, ov_open, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** Ogg Vorbis libraries not found. libvorbis must be installed for Ogg Vorbis support]),
+	   -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
 
-   AC_CHECK_HEADER(vorbis/vorbisfile.h, , [
-      echo "ERROR: unable to find vorbis/vorbisfile.h header file"
-      echo "Audacity uses libvorbisfile for Ogg Vorbis support. If you specify"
-      echo "--with-vorbis, you must have this library and its headers already installed."
-      echo "You can download it from http://www.vorbis.com. If you think you already have"
-      echo "it installed, make sure it's in a place where your compiler can find it." ]
-      AC_MSG_ERROR([*** Ogg Vorbis headers not found.]))
+   AC_CHECK_HEADER(vorbis/vorbisfile.h, ,
+		AC_MSG_ERROR([*** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support]))
 
-   LIBS="$LIBS -lvorbisfile -lvorbis -logg"
-   AC_DEFINE(USE_LIBVORBIS, 1,
-      [Define if the ogg vorbis decoding library is present])
+	LIBS="$LIBS -lvorbisfile -lvorbis -logg"
+	AC_DEFINE(USE_LIBVORBIS, 1,
+		[Define if the ogg vorbis decoding library is present])
 fi
 
 if [[ $use_id3lib = "yes" ]] ; then
-   dnl libid3 -- check both headers and libraries
-
-   AC_CHECK_LIB(id3, ID3Tag_New, true, [ dnl here true is just a nop
-      echo "ERROR: unable to find libid3.a or libid3.so library file"
-      echo "Audacity uses libid3 for ID3 tag support. If you specify"
-      echo "--with-id3lib, you must have this library already installed. You can"
-      echo "download it from http://id3lib.sourceforge.net. If you think you already have"
-      echo "it installed, make sure it's in a place where your linker can find it" ]
-      AC_MSG_ERROR([*** id3lib libraries not found.]))
-
-   AC_CHECK_HEADER(id3.h, , [
-      echo "ERROR: unable to find id3.h header file"
-      echo "Audacity uses libid3 for ID3 tag support. If you specify --with-id3lib,"
-      echo "you must have this library and its headers already installed. You can "
-      echo "download it from http://id3lib.sourceforge.net. If you think you already"
-      echo "have it installed, make sure it's in a place where your compiler can find it." ]
-      AC_MSG_ERROR([*** id3lib headers not found. id3lib must be installed for id3 tag support]))
-
-   LIBS="$LIBS -lid3"
-   AC_DEFINE(USE_ID3LIB, 1,
+	EXTRAOBJS="$EXTRAOBJS id3lib/src/.libs/libid3.a"
+	MAKEALL="$MAKEALL id3lib/src/.libs/libid3.a"
+	CFLAGS="$CFLAGS -Iid3lib/include"
+		
+	AC_DEFINE(USE_ID3LIB, 1,
       [Define if id3lib is present])
 fi
 
-dnl --- debugging tweaking ---
-
-debugstring="non-debugging"
-wxconfig="wxgtk-config"
-if [[ $enable_debug = "yes" ]] ; then
-	CPPFLAGS="$CPPFLAGS -g -O0"
-	wxconfig="wxgtkd-config"
-   debugstring="debugging"
-else
-   CPPFLAGS="$CPPFLAGS -O3"
+if [[ $use_help = "yes" ]] ; then
+	MAKEALL="$MAKEALL audacity-help.htb"
 fi
 
 dnl --- check for required libraries ---
 
 dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
-AC_PATH_PROG(WX_CONFIG, $wxconfig, no)
+AC_PATH_PROG(WX_CONFIG, wx-config, no, $PATH:/usr/local/bin )
 if [[ "$WX_CONFIG" = "no" ]] ; then
-   echo "ERROR: Unable to find $wxconfig. This is a part of the wxWindows distribution."
-   echo "Please verify that:"
-   echo "      1. wxWindows is installed (download from http://www.wxwindows.org)"
-   echo "      2. the $debugstring libraries for wxWindows are installed"
-   echo "      3. $wxconfig is on your path"
-   AC_MSG_ERROR([*** Could not find $wxconfig])
+	AC_MSG_ERROR("Could not find wx-config: is wxWindows installed? is wx-config in your path?")
 fi
-LIBS="$LIBS \`$wxconfig --libs\`"
-CPPFLAGS="$CPPFLAGS \`$wxconfig --cflags\`"
+LIBS="$LIBS `$WX_CONFIG --libs`"
+CFLAGS="$CFLAGS `$WX_CONFIG --cflags`"
+
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
 
 AC_CONFIG_HEADER(configunix.h:configtemplate.h)
 AC_CONFIG_FILES([Makefile])
+
+AC_CONFIG_SUBDIRS([$SUBDIRS])
 AC_OUTPUT
 
-echo "Summary of Configuration Options:"
-if [[ $enable_debug = "yes" ]] ; then
-   echo "  + debugging is enabled"
-else
-   echo "  + debugging is disabled"
-fi
-
-if [[ $use_vorbis = "yes" ]] ; then
-   echo "  + Ogg Vorbis support is enabled"
-else
-   echo "  + Ogg Vorbis support is disabled"
-fi
+echo ""
+echo "Finished configure:"
 
 if [[ $use_id3lib = "yes" ]] ; then
-   echo "  + ID3 tag support is enabled"
+	echo "  with    id3lib";
 else
-   echo "  + ID3 tag support is disabled"
+	echo "  without id3lib";
 fi
 
+if [[ $use_libmad = "yes" ]] ; then
+	echo "  with    libmad";
+else
+	echo "  without libmad";
+fi
+
+if [[ $use_vorbis = "yes" ]] ; then	
+	echo "  with    vorbis";
+else
+	if [[ $use_vorbis = "system" ]] ; then
+		echo "  with    vorbis (system)";
+	else
+		echo "  without libvorbis";	
+	fi
+fi
+
+if [[ $use_help = "yes" ]] ; then
+	echo "  with    help";
+else
+	echo "  without help";
+fi
+
+echo "prefix=$prefix";
+
+echo ""
+echo "Run configure --help for explanation of these options,"
+echo "otherwise type 'make' to build Audacity."
