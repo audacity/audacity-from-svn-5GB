@@ -143,7 +143,7 @@ AC_ARG_WITH(ladspa,
 
 AC_ARG_WITH(nyquist,
 	[AC_HELP_STRING([--with-nyquist],
-		[compile with Nyquist support [default=yes]])],
+		[compile with Nyquist support [default=no]])],
 	use_nyquist=$withval,
 	use_nyquist="no")
 
