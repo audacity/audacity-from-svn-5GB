@@ -22,7 +22,9 @@ void *resample_open(int      highQuality,
                     double   minFactor,
                     double   maxFactor);
 
-int resample_get_filter_width(void *handle);
+void *resample_dup(const void *handle);
+
+int resample_get_filter_width(const void *handle);
 
 int resample_process(void   *handle,
                      double  factor,
