@@ -43,6 +43,8 @@
 #include "ControlButtons/Zoom.xpm"
 #include "ControlButtons/DrawAlpha.xpm"
 #include "ControlButtons/Draw.xpm"
+#include "ControlButtons/MultiAlpha.xpm"
+#include "ControlButtons/Multi.xpm"
 #include "ControlButtons/Pause.xpm"
 #include "ControlButtons/PauseDisabled.xpm"
 #include "ControlButtons/PauseAlpha.xpm"
