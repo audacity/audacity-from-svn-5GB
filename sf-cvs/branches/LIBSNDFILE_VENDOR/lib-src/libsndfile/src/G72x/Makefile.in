@@ -61,8 +61,6 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DLLTOOL = @DLLTOOL@
-DLLWRAP = @DLLWRAP@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -84,6 +82,7 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
@@ -97,7 +96,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PEXPORTS = @PEXPORTS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SF_COUNT_MAX = @SF_COUNT_MAX@
@@ -473,8 +471,8 @@ uninstall-am: uninstall-info-am
 	uninstall-am uninstall-info-am
 
 
-check: g72x_test$(EXEEXT)
-	./g72x_test$(EXEEXT) all
+check: g72x_test
+	./g72x_test all
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

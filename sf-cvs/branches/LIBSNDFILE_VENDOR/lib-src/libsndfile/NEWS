@@ -1,4 +1,11 @@
-Version 1.0.10 (2004-05-15)
+Version 1.0.11 (2004-11-15)
+  * Add support for SD2 files.
+  * Add read support for loop info in WAV and AIFF files.
+  * Add more tests.
+  * Improve type safety.
+  * Minor optimisations and bug fixes.
+
+Version 1.0.10 (2004-06-15)
   * Fix AIFF read/write mode bugs.
   * Add support for compiling Win32 DLLS using MinGW.
   * Fix problems resulting in failed compiles with gcc-2.95.

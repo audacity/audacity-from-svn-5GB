@@ -62,8 +62,6 @@ CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
-DLLTOOL = @DLLTOOL@
-DLLWRAP = @DLLWRAP@
 ECHO = @ECHO@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
@@ -85,6 +83,7 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
@@ -99,7 +98,6 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PEXPORTS = @PEXPORTS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SF_COUNT_MAX = @SF_COUNT_MAX@
@@ -163,16 +161,16 @@ SUBDIRS = GSM610 G72x
 lib_LTLIBRARIES = libsndfile.la
 include_HEADERS = sndfile.h
 
-EXTRA_DIST = sndfile.h.in config.h.in Symbols.linux Symbols.darwin \
-			libsndfile.def create_symbols_file.py
+EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
+			Symbols.linux Symbols.darwin libsndfile.def create_symbols_file.py 
 
 
 noinst_HEADERS = common.h sfendian.h float_cast.h wav_w64.h au.h sf_unistd.h
 
-noinst_PROGRAMS = test_file_io test_log_printf
+noinst_PROGRAMS = test_endswap test_file_io test_log_printf
 
 COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c \
-		double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c sfendian.c vox_adpcm.c \
+		double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c vox_adpcm.c \
 		interleave.c strings.c dither.c
 
 
@@ -181,9 +179,12 @@ FILESPECIFIC = aiff.c au.c au_g72x.c avr.c ircam.c macbinary3.c macos.c mat4.c \
 				rx2.c sd2.c sds.c txw.c wve.c w64.c wav_w64.c wav.c xi.c
 
 
+# MinGW requires -no-undefined if a DLL is to be built.
+libsndfile_la_LDFLAGS = -no-undefined -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS) sndfile.h
-libsndfile_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 libsndfile_la_LIBADD = GSM610/libgsm.la G72x/libg72x.la -lm
+
+test_endswap_SOURCES = test_endswap.c
 
 test_file_io_CFLAGS = $(AM_CFLAGS)
 test_file_io_SOURCES = file_io.c test_file_io.c
@@ -200,8 +201,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libsndfile_la_DEPENDENCIES = GSM610/libgsm.la G72x/libg72x.la
 am__objects_1 = sndfile.lo common.lo file_io.lo command.lo pcm.lo \
 	ulaw.lo alaw.lo float32.lo double64.lo ima_adpcm.lo ms_adpcm.lo \
-	gsm610.lo dwvw.lo sfendian.lo vox_adpcm.lo interleave.lo \
-	strings.lo dither.lo
+	gsm610.lo dwvw.lo vox_adpcm.lo interleave.lo strings.lo \
+	dither.lo
 am__objects_2 = aiff.lo au.lo au_g72x.lo avr.lo ircam.lo macbinary3.lo \
 	macos.lo mat4.lo mat5.lo nist.lo paf.lo pvf.lo raw.lo svx.lo \
 	voc.lo htk.lo dwd.lo ogg.lo rx2.lo sd2.lo sds.lo txw.lo wve.lo \
@@ -210,9 +211,15 @@ am__objects_3 =
 am_libsndfile_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	$(am__objects_3)
 libsndfile_la_OBJECTS = $(am_libsndfile_la_OBJECTS)
-noinst_PROGRAMS = test_file_io$(EXEEXT) test_log_printf$(EXEEXT)
+noinst_PROGRAMS = test_endswap$(EXEEXT) test_file_io$(EXEEXT) \
+	test_log_printf$(EXEEXT)
 PROGRAMS = $(noinst_PROGRAMS)
 
+am_test_endswap_OBJECTS = test_endswap.$(OBJEXT)
+test_endswap_OBJECTS = $(am_test_endswap_OBJECTS)
+test_endswap_LDADD = $(LDADD)
+test_endswap_DEPENDENCIES =
+test_endswap_LDFLAGS =
 am_test_file_io_OBJECTS = test_file_io-file_io.$(OBJEXT) \
 	test_file_io-test_file_io.$(OBJEXT)
 test_file_io_OBJECTS = $(am_test_file_io_OBJECTS)
@@ -244,8 +251,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/pcm.Plo ./$(DEPDIR)/pvf.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/raw.Plo ./$(DEPDIR)/rx2.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/sd2.Plo ./$(DEPDIR)/sds.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/sfendian.Plo ./$(DEPDIR)/sndfile.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/strings.Plo ./$(DEPDIR)/svx.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/sndfile.Plo ./$(DEPDIR)/strings.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/svx.Plo ./$(DEPDIR)/test_endswap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_file_io-file_io.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_file_io-test_file_io.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/test_log_printf-test_log_printf.Po \
@@ -261,8 +268,8 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(libsndfile_la_SOURCES) $(test_file_io_SOURCES) \
-	$(test_log_printf_SOURCES)
+DIST_SOURCES = $(libsndfile_la_SOURCES) $(test_endswap_SOURCES) \
+	$(test_file_io_SOURCES) $(test_log_printf_SOURCES)
 HEADERS = $(include_HEADERS) $(noinst_HEADERS)
 
 
@@ -274,7 +281,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive pdf-recursive \
 DIST_COMMON = $(include_HEADERS) $(noinst_HEADERS) \
 	$(srcdir)/Makefile.in Makefile.am config.h.in sndfile.h.in
 DIST_SUBDIRS = $(SUBDIRS)
-SOURCES = $(libsndfile_la_SOURCES) $(test_file_io_SOURCES) $(test_log_printf_SOURCES)
+SOURCES = $(libsndfile_la_SOURCES) $(test_endswap_SOURCES) $(test_file_io_SOURCES) $(test_log_printf_SOURCES)
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -342,6 +349,9 @@ clean-noinstPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+test_endswap$(EXEEXT): $(test_endswap_OBJECTS) $(test_endswap_DEPENDENCIES) 
+	@rm -f test_endswap$(EXEEXT)
+	$(LINK) $(test_endswap_LDFLAGS) $(test_endswap_OBJECTS) $(test_endswap_LDADD) $(LIBS)
 test_file_io$(EXEEXT): $(test_file_io_OBJECTS) $(test_file_io_DEPENDENCIES) 
 	@rm -f test_file_io$(EXEEXT)
 	$(LINK) $(test_file_io_LDFLAGS) $(test_file_io_OBJECTS) $(test_file_io_LDADD) $(LIBS)
@@ -387,10 +397,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rx2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sd2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sds.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sfendian.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sndfile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strings.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_endswap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_file_io-file_io.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_file_io-test_file_io.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_log_printf-test_log_printf.Po@am__quote@
@@ -836,17 +846,21 @@ uninstall-info: uninstall-info-recursive
 	uninstall-libLTLIBRARIES uninstall-recursive
 
 
+test_endswap.c: test_endswap.def test_endswap.tpl
+	autogen --writable --source-time test_endswap.def
+
 # Two test programs.
 # It is not possible to place these in the tests/ directory because they
 # need access to the internals of the SF_PRIVATE struct.
 
-check: test_file_io$(EXEEXT) test_log_printf$(EXEEXT)
+check: test_file_io test_log_printf
 	@echo
 	@echo
 	@echo
 	@echo "============================================================"
-	./test_file_io$(EXEEXT)
-	./test_log_printf$(EXEEXT)
+	./test_endswap
+	./test_file_io
+	./test_log_printf
 	@echo "============================================================"
 	@echo
 	@echo
@@ -875,8 +889,8 @@ aiff.c au.c au_g72x.c ircam.c mat4.c mat5.c nist.c paf.c pvf.c : sndfile.h commo
 raw.c svx.c voc.c w64.c wav.c wav_w64.c htk.c sd2.c rx2.c txw.c : sndfile.h common.h
 sds.c wve.c dwd.c ogg.c xi.c sndfile.c common.c file_io.c : sndfile.h common.h
 command.c pcm.c ulaw.c alaw.c float32.c double64.c ima_adpcm.c : sndfile.h common.h 
-ms_adpcm.c gsm610.c dwvw.c sfendian.c vox_adpcm.c interleave.c : sndfile.h common.h
-strings.c dither.c : sndfile.h common.h
+ms_adpcm.c gsm610.c dwvw.c vox_adpcm.c interleave.c strings.c : sndfile.h common.h
+dither.c : sndfile.h common.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

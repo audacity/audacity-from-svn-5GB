@@ -42,12 +42,12 @@ static int truncate (const char *filename, int ignored) ;
 
 #define	SILLY_WRITE_COUNT	(234)
 
-static void	pcm_test_char (const char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_short (const char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_24bit (const char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_int (const char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_float (const char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_double (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_char (const char *str, int format, int long_file_okz) ;
+static void	pcm_test_short (const char *str, int format, int long_file_okz) ;
+static void	pcm_test_24bit (const char *str, int format, int long_file_okz) ;
+static void	pcm_test_int (const char *str, int format, int long_file_okz) ;
+static void	pcm_test_float (const char *str, int format, int long_file_okz) ;
+static void	pcm_test_double (const char *str, int format, int long_file_okz) ;
 
 static void empty_file_test (const char *filename, int format) ;
 
@@ -58,6 +58,8 @@ int
 main (int argc, char **argv)
 {	int		do_all = 0 ;
 	int		test_count = 0 ;
+
+	count_open_files () ;
 
 	if (argc != 2)
 	{	printf ("Usage : %s <test>\n", argv [0]) ;
@@ -236,7 +238,9 @@ main (int argc, char **argv)
 		} ;
 
 	if (do_all || ! strcmp (argv [1], "mat5"))
-	{	empty_file_test ("empty_char.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8) ;
+	{	increment_open_file_count () ;
+
+		empty_file_test ("empty_char.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8) ;
 		empty_file_test ("empty_short.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_16) ;
 		empty_file_test ("empty_float.mat5", SF_FORMAT_MAT5 | SF_FORMAT_FLOAT) ;
 
@@ -296,12 +300,22 @@ main (int argc, char **argv)
 		test_count++ ;
 		} ;
 
+	if (do_all || ! strcmp (argv [1], "sd2"))
+	{	pcm_test_char	("char.sd2"		, SF_FORMAT_SD2 | SF_FORMAT_PCM_S8, SF_TRUE) ;
+		pcm_test_short	("short.sd2"	, SF_FORMAT_SD2 | SF_FORMAT_PCM_16, SF_TRUE) ;
+		pcm_test_24bit	("24bit.sd2"	, SF_FORMAT_SD2 | SF_FORMAT_PCM_24, SF_TRUE) ;
+		test_count++ ;
+		} ;
+
 	if (test_count == 0)
 	{	printf ("Mono : ************************************\n") ;
 		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
 		printf ("Mono : ************************************\n") ;
 		return 1 ;
 		} ;
+
+	/* Only open file descriptors should be stdin, stdout and stderr. */
+	check_open_file_count_or_die (__LINE__) ;
 
 	return 0 ;
 } /* main */
@@ -327,21 +341,24 @@ static void	create_short_file (const char *filename) ;
 */
 
 static void
-pcm_test_char (const char *filename, int filetype, int long_file_ok)
+pcm_test_char (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	short		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_char", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
 
 	orig = (short*) orig_data ;
 	test = (short*) test_data ;
@@ -351,7 +368,7 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -364,13 +381,13 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (short)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -408,8 +425,8 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -477,9 +494,9 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -507,9 +524,9 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -539,10 +556,10 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -594,7 +611,7 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -602,7 +619,7 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
 
 	orig = (short*) orig_data ;
 	test = (short*) test_data ;
@@ -613,7 +630,7 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -625,14 +642,14 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (short)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -721,7 +738,9 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -732,21 +751,24 @@ pcm_test_char (const char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_short (const char *filename, int filetype, int long_file_ok)
+pcm_test_short (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	short		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_short", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
 
 	orig = (short*) orig_data ;
 	test = (short*) test_data ;
@@ -756,7 +778,7 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -769,13 +791,13 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (short)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -813,8 +835,8 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -882,9 +904,9 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -912,9 +934,9 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -944,10 +966,10 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -999,7 +1021,7 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -1007,7 +1029,7 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 32000.0) ;
 
 	orig = (short*) orig_data ;
 	test = (short*) test_data ;
@@ -1018,7 +1040,7 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1030,14 +1052,14 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (short)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1126,7 +1148,9 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -1137,21 +1161,24 @@ pcm_test_short (const char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
+pcm_test_24bit (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_24bit", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
 	orig = (int*) orig_data ;
 	test = (int*) test_data ;
@@ -1161,7 +1188,7 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1174,13 +1201,13 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (int)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1218,8 +1245,8 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -1287,9 +1314,9 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -1317,9 +1344,9 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -1349,10 +1376,10 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1404,7 +1431,7 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -1412,7 +1439,7 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
 	orig = (int*) orig_data ;
 	test = (int*) test_data ;
@@ -1423,7 +1450,7 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1435,14 +1462,14 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (int)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1531,7 +1558,9 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -1542,21 +1571,24 @@ pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_int (const char *filename, int filetype, int long_file_ok)
+pcm_test_int (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_int", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
 	orig = (int*) orig_data ;
 	test = (int*) test_data ;
@@ -1566,7 +1598,7 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1579,13 +1611,13 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (int)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1623,8 +1655,8 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -1692,9 +1724,9 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -1722,9 +1754,9 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -1754,10 +1786,10 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1809,7 +1841,7 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -1817,7 +1849,7 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
 	orig = (int*) orig_data ;
 	test = (int*) test_data ;
@@ -1828,7 +1860,7 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1840,14 +1872,14 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (int)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -1936,7 +1968,9 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -1947,21 +1981,24 @@ pcm_test_int (const char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_float (const char *filename, int filetype, int long_file_ok)
+pcm_test_float (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	float		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_float", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
 
 	orig = (float*) orig_data ;
 	test = (float*) test_data ;
@@ -1971,7 +2008,7 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -1984,13 +2021,13 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (float)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2028,8 +2065,8 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -2097,9 +2134,9 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -2127,9 +2164,9 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -2159,10 +2196,10 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2214,7 +2251,7 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -2222,7 +2259,7 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
 
 	orig = (float*) orig_data ;
 	test = (float*) test_data ;
@@ -2233,7 +2270,7 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -2245,14 +2282,14 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (float)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2341,7 +2378,9 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -2352,21 +2391,24 @@ pcm_test_float (const char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_double (const char *filename, int filetype, int long_file_ok)
+pcm_test_double (const char *filename, int format, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	double		*orig, *test ;
 	sf_count_t	count ;
-	int			k, items, frames, pass ;
+	int			k, items, frames, pass, allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("pcm_test_double", filename) ;
 
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
 
 	orig = (double*) orig_data ;
 	test = (double*) test_data ;
@@ -2376,7 +2418,7 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 
 	items = DATA_LENGTH ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -2389,13 +2431,13 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (double)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Mono : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2433,8 +2475,8 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 			exit (1) ;
 			} ;
 
-	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
-			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
+	if ((format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
+			(format & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
 	{	sf_close (file) ;
 		unlink (filename) ;
 		printf ("ok\n") ;
@@ -2502,9 +2544,9 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW || (format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
 		unlink (filename) ;
 	else
 	{	/* Create a short file. */
@@ -2532,9 +2574,9 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= SAMPLE_RATE ;
 	sfinfo.frames		= DATA_LENGTH ;
 	sfinfo.channels		= 1 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
 	/* Do 3 writes followed by reads. After each, check the data and the current
 	** read and write offsets.
@@ -2564,10 +2606,10 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 	sf_close (file) ;
 
 	/* Open the file again to check the data. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
-	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, filetype, sfinfo.format) ;
+	if (sfinfo.format != format)
+	{	printf ("\n\nLine %d : Returned format incorrect (0x%08X => 0x%08X).\n", __LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2619,7 +2661,7 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 	sfinfo.samplerate	= 44100 ;
 	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
 	sfinfo.channels		= 2 ;
-	sfinfo.format		= filetype ;
+	sfinfo.format		= format ;
 
 	if (! sf_format_check (&sfinfo))
 	{	unlink (filename) ;
@@ -2627,7 +2669,7 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 		return ;
 		} ;
 
-	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
+	gen_windowed_sine_double (orig_data, DATA_LENGTH, 1.0) ;
 
 	orig = (double*) orig_data ;
 	test = (double*) test_data ;
@@ -2638,7 +2680,7 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 	items = DATA_LENGTH ;
 	frames = items / sfinfo.channels ;
 
-	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, allow_fd, __LINE__) ;
 
 	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
 
@@ -2650,14 +2692,14 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 
 	memset (test, 0, items * sizeof (double)) ;
 
-	if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_RAW)
 		memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
-	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, allow_fd, __LINE__) ;
 
-	if (sfinfo.format != filetype)
+	if (sfinfo.format != format)
 	{	printf ("\n\nLine %d : Stereo : Returned format incorrect (0x%08X => 0x%08X).\n",
-				__LINE__, filetype, sfinfo.format) ;
+				__LINE__, format, sfinfo.format) ;
 		exit (1) ;
 		} ;
 
@@ -2746,7 +2788,9 @@ pcm_test_double (const char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-	unlink (filename) ;
+	delete_file (format, filename) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	puts ("ok") ;
 	return ;
@@ -2761,6 +2805,10 @@ static void
 empty_file_test (const char *filename, int format)
 {	SNDFILE		*file ;
 	SF_INFO	info ;
+	int allow_fd ;
+
+	/* Sd2 files cannot be opened from an existing file descriptor. */
+	allow_fd = ((format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2) ? SF_FALSE : SF_TRUE ;
 
 	print_test_name ("empty_file_test", filename) ;
 
@@ -2779,11 +2827,11 @@ empty_file_test (const char *filename, int format)
 		} ;
 
 	/* Create an empty file. */
-	file = test_open_file_or_die (filename, SFM_WRITE, &info, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_WRITE, &info, allow_fd, __LINE__) ;
 	sf_close (file) ;
 
 	/* Open for read and check the length. */
-	file = test_open_file_or_die (filename, SFM_READ, &info, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &info, allow_fd, __LINE__) ;
 
 	if (SF_COUNT_TO_LONG (info.frames) != 0)
 	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
@@ -2793,7 +2841,7 @@ empty_file_test (const char *filename, int format)
 	sf_close (file) ;
 
 	/* Open for read/write and check the length. */
-	file = test_open_file_or_die (filename, SFM_RDWR, &info, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_RDWR, &info, allow_fd, __LINE__) ;
 
 	if (SF_COUNT_TO_LONG (info.frames) != 0)
 	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
@@ -2803,7 +2851,7 @@ empty_file_test (const char *filename, int format)
 	sf_close (file) ;
 
 	/* Open for read and check the length. */
-	file = test_open_file_or_die (filename, SFM_READ, &info, __LINE__) ;
+	file = test_open_file_or_die (filename, SFM_READ, &info, allow_fd, __LINE__) ;
 
 	if (SF_COUNT_TO_LONG (info.frames) != 0)
 	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
@@ -2811,6 +2859,8 @@ empty_file_test (const char *filename, int format)
 		} ;
 
 	sf_close (file) ;
+
+	check_open_file_count_or_die (__LINE__) ;
 
 	unlink (filename) ;
 	puts ("ok") ;

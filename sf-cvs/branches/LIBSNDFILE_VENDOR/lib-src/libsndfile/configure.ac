@@ -3,7 +3,7 @@
 dnl Require autoconf version
 AC_PREREQ(2.53)
 
-AC_INIT(libsndfile,1.0.10,erikd@mega-nerd.com)
+AC_INIT(libsndfile,1.0.11,erikd@mega-nerd.com)
 AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
@@ -25,25 +25,20 @@ AM_CONFIG_HEADER(src/config.h)
 #  6. If any interfaces have been removed since the last public release, then set age
 #     to 0.
 
-SHARED_VERSION_INFO="1:10:0"
+SHARED_VERSION_INFO="1:11:0"
+
+AC_PROG_CC
+AM_PROG_LIBTOOL
 
 AC_CHECK_PROG(autogen, autogen, yes, no)
 
-AC_PROG_CC
 AC_PROG_INSTALL
-
 AC_PROG_LN_S
-AC_PROG_LIBTOOL
-
-if test "x-$build_os-$host_os-$target_os" = x-mingw32-mingw32-mingw32 ; then
-	AC_CHECK_PROG(DLLTOOL, dlltool, dlltool)
-	AC_CHECK_PROG(DLLWRAP, dllwrap, dllwrap)
-	AC_CHECK_PROG(PEXPORTS, pexports, pexports)
-	fi
 
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS(endian.h)
+AC_CHECK_HEADERS(byteswap.h)
 AC_HEADER_SYS_WAIT
 
 AC_CHECK_DECLS(S_IRGRP)
@@ -111,6 +106,8 @@ AC_CHECK_SIZEOF(float,4)
 AC_CHECK_SIZEOF(double,4)
 AC_CHECK_SIZEOF(void*,8)
 AC_CHECK_SIZEOF(size_t,4)
+AC_CHECK_SIZEOF(int64_t,8)
+AC_CHECK_SIZEOF(long long,8)
 
 #====================================================================================
 # Find an appropriate type for sf_count_t.
@@ -412,6 +409,10 @@ AC_SUBST(ENABLE_EXPERIMENTAL_CODE)
 AC_SUBST(COMPILER_IS_GCC)
 AC_SUBST(GCC_MAJOR_VERSION)
 
+dnl The following line causes the libtool distributed with the source 
+dnl to be replaced if the build system has a more recent version.
+AC_SUBST(LIBTOOL_DEPS)
+
 AC_CONFIG_FILES([ \
 			src/sndfile.h src/Makefile src/GSM610/Makefile src/G72x/Makefile \
 			man/Makefile examples/Makefile tests/Makefile \
@@ -421,20 +422,6 @@ AC_CONFIG_FILES([ \
 			Makefile libsndfile.spec sndfile.pc \
 			])
 AC_OUTPUT
-
-#====================================================================================
-# Special case for MinGW32.
-
-if test "x-$build_os-$host_os-$target_os" = x-mingw32-mingw32-mingw32 ; then
-	cp -f Win32/Makefile.mingw Makefile
-	echo
-	echo "Now run \"make\" and \"make check\"."
-	echo
-	echo "There is no automatic install script on this platform."
-	echo
-	
-	exit 0
-	fi
 
 #====================================================================================
 
@@ -480,6 +467,8 @@ if test x$prefix != "x/usr" ; then
 	echo -e "the addition of \"$libdir/pkgconfig\" to the"
 	echo -e "PKG_CONFIG_PATH environment variable.\n"
 	fi
+
+#====================================================================================
 
 ifelse(dnl
 
