@@ -72,8 +72,13 @@ int gMenusDirty = 0;
 
 void InitPreferences()
 {
+#ifdef AUDACITY_NAME
+   wxString appName = AUDACITY_NAME;
+   wxString vendorName = AUDACITY_NAME;
+#else
    wxString vendorName = "Audacity";
    wxString appName = "Audacity";
+#endif
 
    wxTheApp->SetVendorName(vendorName);
    wxTheApp->SetAppName(appName);
@@ -116,8 +121,10 @@ void InitPreferences()
    if(prefsversion.CmpNoCase((wxString)AUDACITY_PREFS_VERSION_STRING))
    {
       // BG: Reset the prefs by removing them
-      gPrefs->DeleteGroup("/Keyboard");
-      gPrefs->DeleteGroup("/Locale");
+      if(gPrefs->Exists("/Keyboard"))
+         gPrefs->DeleteGroup("/Keyboard");
+      if(gPrefs->Exists("/Locale"))
+         gPrefs->DeleteGroup("/Locale");
       gPrefs->Write("/PrefsVersion", (wxString)AUDACITY_PREFS_VERSION_STRING);
    }
 }

@@ -1,5 +1,9 @@
 /* src/configtemplate.h.  Generated from configure.in by autoheader.  */
 
+/* define if Audacity is being installed under a name other than "audacity",
+   so it can find the files it needs at runtime */
+#undef AUDACITY_NAME
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -26,6 +30,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* define as prefix where Audacity is installed */
+#undef INSTALL_PREFIX
 
 /* Define if mp3 support is implemented */
 #undef MP3SUPPORT
@@ -60,17 +67,11 @@
 /* Define if the ogg vorbis decoding library is present */
 #undef USE_LIBVORBIS
 
-/* Define if libnyquist is present */
+/* Define if Nyquist support should be enabled */
 #undef USE_NYQUIST
 
-/* Define if portmixer is to be used */
+/* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
-
-/* Define if wave++ is present */
-#undef USE_WAVELET
-
-/* The program's install prefix (i.e. "/usr/local") */
-#undef INSTALL_PREFIX
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const

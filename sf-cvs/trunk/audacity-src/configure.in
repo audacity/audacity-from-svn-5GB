@@ -43,6 +43,33 @@ AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 AC_SUBST(INSTALL_PREFIX)
 
+dnl allow the user to specify options to configure that change the
+dnl name "audacity" anywhere it appears in a pathname.  This allows
+dnl multiple versions of Audacity to be installed concurrently
+dnl without collision
+
+AC_ARG_PROGRAM
+AC_SUBST(AUDACITY_NAME)
+
+dnl autoconf's program_transform_name is set to spit out a sed expression --
+dnl however it's "helpfully" already escaped for make.  Since we want to use
+dnl it in shell and not make, we have to unescape this: this translates into
+dnl turning two dollar signs into one.
+dnl
+dnl I feign at this monstrosity, but no one depends on this particular
+dnl feature but me, as Debian package maintainer, so no one else should
+dnl need to worry about understanding it...
+program_transform_name=`echo $program_transform_name | sed 's/\\$\\$/$/'`
+AUDACITY_NAME=`echo audacity | sed $program_transform_name`
+
+if [[ "$AUDACITY_NAME" = "audacity" ]] ; then
+    AC_DEFINE(AUDACITY_NAME, "audacity",
+        [define if Audacity is being installed under a name other than "audacity",
+         so it can find the files it needs at runtime])
+else
+    AC_DEFINE_UNQUOTED(AUDACITY_NAME, "$AUDACITY_NAME")
+fi
+
 dnl
 dnl Make the install prefix available to the program so that it
 dnl knows where to look for help files, plug-ins, etc.
@@ -50,9 +77,10 @@ dnl
 
 AC_PREFIX_DEFAULT(/usr/local)
 if [[ $prefix = "NONE" ]] ; then
-	AC_DEFINE(INSTALL_PREFIX, "/usr/local")
+	AC_DEFINE(INSTALL_PREFIX, "/usr/local",
+        [define as prefix where Audacity is installed])
 else
-	AC_DEFINE(INSTALL_PREFIX, "$prefix")
+	AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "$prefix")
 fi
 
 dnl
