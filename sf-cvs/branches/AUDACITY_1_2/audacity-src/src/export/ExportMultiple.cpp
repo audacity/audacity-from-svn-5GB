@@ -693,7 +693,7 @@ void ExportMultipleDialog::EnableControls()
    if (mLabel->GetValue() && mFirst->GetValue() &&
        mFirstFileName->GetValue() == "")
       ok = false;
-   if (mByName->GetValue() &&
+   if (mByNumber->GetValue() &&
        mPrefix->GetValue() == "")
       ok = false;
 
