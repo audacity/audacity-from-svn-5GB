@@ -70,8 +70,6 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 Changes in 0.93:
 
-* Recording (Windows, Linux)
-
 * Displays playback/recording position indicator
 
 * Keeps track of some preferences
@@ -85,7 +83,11 @@ Changes in 0.93:
 
 * Fixed bugs in handling multiple open projects
 
-* Fixed bugs in effects
+* Supports recording (Windows, Linux)
+
+* Frequency Window displays note names (i.e. C4, G#5)
+
+* Many bug fixes for effects, including VST plug-in effects
 
 Changes in 0.92:
 
