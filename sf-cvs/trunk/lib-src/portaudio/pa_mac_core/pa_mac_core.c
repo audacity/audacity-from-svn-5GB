@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.7 2003-03-16 08:32:19 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.8 2003-09-18 06:11:55 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -843,6 +843,9 @@ static OSStatus PaOSX_CoreAudioIOCallback (AudioDeviceID  inDevice, const AudioT
     else
     {
         /* use time stamp from CoreAudio if valid */
+
+        /* dmazzoni: this is unreliable!
+
         if( inOutputTime->mFlags & kAudioTimeStampSampleTimeValid) 
         {
             past->past_FrameCount = inOutputTime->mSampleTime;
@@ -851,6 +854,8 @@ static OSStatus PaOSX_CoreAudioIOCallback (AudioDeviceID  inDevice, const AudioT
         {
             past->past_FrameCount = inInputTime->mSampleTime;
         }
+
+        */
         
         /* Measure CPU load. */
         Pa_StartUsageCalculation( past );
@@ -1582,6 +1587,8 @@ PaError PaHost_StartEngine( internalPortAudioStream *past )
     past->past_StopSoon = 0;
     past->past_StopNow = 0;
     past->past_IsActive = 1;
+
+    past->past_FrameCount = 0;
     
 /* If full duplex and using two separate devices then start input device. */
     if( pahsc->mode == PA_MODE_IO_TWO_DEVICES )
@@ -1858,11 +1865,14 @@ PaTimestamp Pa_StreamTime( PortAudioStream *stream )
     internalPortAudioStream   *past = (internalPortAudioStream *) stream;
     if( past == NULL ) return paBadStreamPtr;
     pahsc = (PaHostSoundControl *) past->past_DeviceData;
-  
-    AudioDeviceGetCurrentTime(pahsc->primaryDeviceID, &timeStamp);
-  
+
+    /* dmazzoni: this is unreliable
+    AudioDeviceGetCurrentTime(pahsc->primaryDeviceID, &timeStamp);  
     streamTime = ( timeStamp.mFlags & kAudioTimeStampSampleTimeValid) ?
             timeStamp.mSampleTime : past->past_FrameCount;
+    */
+
+    return past->past_FrameCount;
 
     return streamTime;
 }
