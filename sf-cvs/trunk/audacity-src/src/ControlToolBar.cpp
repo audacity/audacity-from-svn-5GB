@@ -492,10 +492,10 @@ void ControlToolBar::OnPlay()
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
 
-      if (t1 == t0 || t1 > t->GetMaxLen())
-         t1 = t->GetMaxLen();
-      if (t0 > t->GetMaxLen())
-         t0 = t->GetMaxLen();
+      if (t1 == t0 || t1 > t->GetEndTime())
+         t1 = t->GetEndTime();
+      if (t0 > t->GetEndTime())
+         t0 = t->GetEndTime();
 
       bool success = (t1 > t0) && gAudioIO->StartPlay(p, t, t0, t1);
 

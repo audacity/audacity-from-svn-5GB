@@ -51,7 +51,7 @@ bool EffectBassBoost::PromptUser()
 bool EffectBassBoost::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    int count = 0;
    while(t) {
       sampleCount start, len;

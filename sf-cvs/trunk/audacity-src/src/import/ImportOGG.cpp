@@ -89,19 +89,18 @@ bool ImportOGG(wxWindow * parent,
 
    int c;
    for (c = 0; c < *numChannels; c++) {
-      (*channels)[c] = new WaveTrack(dirManager);
+      (*channels)[c] = new WaveTrack(dirManager, int16Sample);
       (*channels)[c]->SetRate(vi->rate);
-      (*channels)[c]->SetSampleFormat(int16Sample);
 
       switch (c) {
          case 0:
-            (*channels)[c]->SetChannel(VTrack::LeftChannel);
+            (*channels)[c]->SetChannel(Track::LeftChannel);
             break;
          case 1:
-            (*channels)[c]->SetChannel(VTrack::RightChannel);
+            (*channels)[c]->SetChannel(Track::RightChannel);
             break;
          default:
-            (*channels)[c]->SetChannel(VTrack::MonoChannel);
+            (*channels)[c]->SetChannel(Track::MonoChannel);
       }
    }
 
@@ -174,8 +173,8 @@ bool ImportOGG(wxWindow * parent,
                                          wxPD_AUTO_HIDE);
 
       if (progress)
-         cancelled = !progress->Update(ov_time_tell(&vf) * 1000 /
-                                       ov_time_total(&vf, bitstream));
+         cancelled = !progress->Update((int)(ov_time_tell(&vf) * 1000 /
+                                             ov_time_total(&vf, bitstream)));
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 

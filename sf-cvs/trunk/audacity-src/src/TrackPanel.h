@@ -19,7 +19,7 @@ class wxRect;
 class wxStatusBar;
 
 class TrackList;
-class VTrack;
+class Track;
 class TrackPanel;
 class TrackArtist;
 class Ruler;
@@ -79,7 +79,7 @@ class TrackPanel:public wxWindow {
    void HandleSelect(wxMouseEvent & event);
    void SelectionHandleDrag(wxMouseEvent &event);
    void SelectionHandleClick(wxMouseEvent &event, 
-			     VTrack* pTrack, wxRect r, int num);
+			     Track* pTrack, wxRect r, int num);
    void StartSelection (int, int);
    void ExtendSelection(int, int);
 
@@ -104,7 +104,7 @@ class TrackPanel:public wxWindow {
    void HandleDraw(wxMouseEvent & event);
 
    void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
-		    VTrack* t, wxRect &r, int num);
+		    Track* t, wxRect &r, int num);
 
 
    void HandleResize(wxMouseEvent & event);
@@ -115,7 +115,7 @@ class TrackPanel:public wxWindow {
    void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
-   bool MuteSoloFunc(VTrack *t, wxRect r, int x, int f, bool solo);
+   bool MuteSoloFunc(Track *t, wxRect r, int x, int f, bool solo);
    void MakeParentRedrawScrollbars();
    
    // AS: Pushing the state preserves state for Undo operations.
@@ -130,7 +130,7 @@ class TrackPanel:public wxWindow {
    void OnChannelChange(wxEvent &event);
    void OnSetDisplay   (wxEvent &event);
 
-   void SetRate(VTrack *pTrack, double rate);
+   void SetRate(Track *pTrack, double rate);
    void OnRateChange(wxEvent &event);
    void OnRateOther();
 
@@ -139,10 +139,10 @@ class TrackPanel:public wxWindow {
    void OnSplitStereo();
    void OnMergeStereo();
 
-   void RemoveTrack(VTrack * toRemove);
+   void RemoveTrack(Track * toRemove);
 
    // Find track info by coordinate
-   VTrack *FindTrack(int mouseX, int mouseY, bool label,
+   Track *FindTrack(int mouseX, int mouseY, bool label,
                      wxRect * trackRect = NULL, int *trackNum = NULL);
 
    int GetTitleWidth() const { return 100; }
@@ -167,23 +167,23 @@ class TrackPanel:public wxWindow {
    void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
 
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
-   void DrawTitleBar(wxDC * dc, const wxRect r, VTrack * t, bool down);
-   void DrawMuteSolo(wxDC * dc, const wxRect r, VTrack * t, bool down, bool solo);
+   void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
+   void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
 
-   void DrawVRuler(wxDC * dc, const wxRect r, VTrack * t);
+   void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
 
    void DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRect clip);
-   void DrawEverythingElse(VTrack *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect);
-   void DrawOutside(VTrack *t, wxDC *dc, const wxRect rec, const int labelw, 
+   void DrawEverythingElse(Track *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect);
+   void DrawOutside(Track *t, wxDC *dc, const wxRect rec, const int labelw, 
 		    const int vrul, const wxRect trackRect);
    void DrawZooming(wxDC* dc, const wxRect clip);
 
-   void DrawShadow            (VTrack *t, wxDC* dc, const wxRect r);
-   void DrawBordersAroundTrack(VTrack *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
-   void FillInLabel           (VTrack *t, wxDC* dc, const wxRect r, const int labelw);
-   void DrawOutsideOfTrack    (VTrack *t, wxDC* dc, const wxRect r);
+   void DrawShadow            (Track *t, wxDC* dc, const wxRect r);
+   void DrawBordersAroundTrack(Track *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
+   void FillInLabel           (Track *t, wxDC* dc, const wxRect r, const int labelw);
+   void DrawOutsideOfTrack    (Track *t, wxDC* dc, const wxRect r);
 
-   wxString TrackSubText(VTrack *t);
+   wxString TrackSubText(Track *t);
 
    TrackPanelListener *mListener;
 
@@ -209,7 +209,7 @@ class TrackPanel:public wxWindow {
 
    double mSelStart;
 
-   VTrack *mCapturedTrack;
+   Track *mCapturedTrack;
    wxRect mCapturedRect;
    int mCapturedNum;
 
@@ -270,7 +270,7 @@ class TrackPanel:public wxWindow {
    wxMenu *mRateMenu;
    wxMenu *mFormatMenu;
 
-   VTrack *mPopupMenuTarget;
+   Track *mPopupMenuTarget;
 
  public:
 

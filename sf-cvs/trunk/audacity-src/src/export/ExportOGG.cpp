@@ -121,15 +121,15 @@ bool ExportOGG(AudacityProject *project,
       mixer->Clear();
 
       TrackListIterator iter(tracks);
-      VTrack *tr = iter.First();
+      Track *tr = iter.First();
       while (tr) {
-         if (tr->GetKind() == VTrack::Wave) {
+         if (tr->GetKind() == Track::Wave) {
             if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == VTrack::MonoChannel)
+               if (tr->GetChannel() == Track::MonoChannel)
                   mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == VTrack::LeftChannel)
+               else if (tr->GetChannel() == Track::LeftChannel)
                   mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               else if (tr->GetChannel() == VTrack::RightChannel)
+               else if (tr->GetChannel() == Track::RightChannel)
                   mixer->MixRight((WaveTrack *) tr, t, t + deltat);
             }
          }

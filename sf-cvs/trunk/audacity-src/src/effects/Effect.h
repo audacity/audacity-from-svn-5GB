@@ -119,12 +119,6 @@ class Effect {
  // progress dialog or perform common calculations
  //
  protected:
-   // The starting and ending points of effects are normally stored in
-   // seconds.  This converts it to samples for a particular track.
-   // Pass a track in t and get back the starting sample and number of
-   // samples to process in s0 and slen, respectively.
-   void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
- 
    // The Progress methods all return true if the user has cancelled;
    // you should exit immediately if this happens (cleaning up memory
    // is okay, but don't try to undo).

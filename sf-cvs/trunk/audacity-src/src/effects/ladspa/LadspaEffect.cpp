@@ -108,7 +108,7 @@ bool LadspaEffect::Init()
    mainRate = 0;
 
    TrackListIterator iter(mWaveTracks);
-   VTrack *left = iter.First();
+   Track *left = iter.First();
    while(left) {
       sampleCount lstart, rstart, llen, rlen;
       GetSamples((WaveTrack *)left, &lstart, &llen);
@@ -117,7 +117,7 @@ bool LadspaEffect::Init()
          mainRate = (int)(((WaveTrack *)left)->GetRate() + 0.5);
       
       if (left->GetLinked()) {
-         VTrack *right = iter.Next();
+         Track *right = iter.Next();
          GetSamples((WaveTrack *)right, &rstart, &rlen);
          
          if (llen != rlen ||
@@ -157,8 +157,8 @@ bool LadspaEffect::Process()
 {
    TrackListIterator iter(mWaveTracks);
    int count = 0;
-   VTrack *left = iter.First();
-   VTrack *right;
+   Track *left = iter.First();
+   Track *right;
    while(left) {
       sampleCount lstart, rstart, len;
       GetSamples((WaveTrack *)left, &lstart, &len);

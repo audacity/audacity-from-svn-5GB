@@ -123,15 +123,15 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
       wxASSERT(buffer);
 
       TrackListIterator iter(tracks);
-      VTrack *tr = iter.First();
+      Track *tr = iter.First();
       while (tr) {
-         if (tr->GetKind() == VTrack::Wave) {
+         if (tr->GetKind() == Track::Wave) {
             if (tr->GetSelected() || !selectionOnly) {
-               if (tr->GetChannel() == VTrack::MonoChannel)
+               if (tr->GetChannel() == Track::MonoChannel)
                   mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == VTrack::LeftChannel)
+               if (tr->GetChannel() == Track::LeftChannel)
                   mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               if (tr->GetChannel() == VTrack::RightChannel)
+               if (tr->GetChannel() == Track::RightChannel)
                   mixer->MixRight((WaveTrack *) tr, t, t + deltat);
             }
          }

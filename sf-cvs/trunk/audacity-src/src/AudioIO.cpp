@@ -321,14 +321,13 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
 
    mInTracks = new WaveTrack*[mNumInChannels];
    for(unsigned int i=0; i<mNumInChannels; i++) {
-      mInTracks[i] = new WaveTrack(project->GetDirManager());
+      mInTracks[i] = new WaveTrack(project->GetDirManager(), mFormat);
       mInTracks[i]->SetSelected(true);
       mInTracks[i]->SetOffset(mT0);
-      mInTracks[i]->SetSampleFormat(mFormat);
       if (stereo)
-         mInTracks[i]->SetChannel(i==0? VTrack::LeftChannel : VTrack::RightChannel);
+         mInTracks[i]->SetChannel(i==0? Track::LeftChannel : Track::RightChannel);
       else
-         mInTracks[i]->SetChannel(VTrack::MonoChannel);
+         mInTracks[i]->SetChannel(Track::MonoChannel);
       if (stereo && i==0)
          mInTracks[i]->SetLinked(true);
       mInTracks[i]->SetRate(mRate);
@@ -368,9 +367,9 @@ void AudioIO::FillBuffers()
 
       TrackListIterator iter2(mTracks);
       int numSolo = 0;
-      VTrack *vt = iter2.First();
+      Track *vt = iter2.First();
       while (vt) {
-         if (vt->GetKind() == VTrack::Wave && vt->GetSolo())
+         if (vt->GetKind() == Track::Wave && vt->GetSolo())
             numSolo++;
          vt = iter2.Next();
       }
@@ -378,14 +377,14 @@ void AudioIO::FillBuffers()
       TrackListIterator iter(mTracks);
       vt = iter.First();
       while (vt) {
-         if (vt->GetKind() == VTrack::Wave) {      
+         if (vt->GetKind() == Track::Wave) {      
 
-            VTrack *mt = vt;
+            Track *mt = vt;
          
             // We want to extract mute and solo information from
             // the top of the two tracks if they're linked
             // (i.e. a stereo pair only has one set of mute/solo buttons)
-            VTrack *partner = mTracks->GetLink(vt);
+            Track *partner = mTracks->GetLink(vt);
             if (partner && !vt->GetLinked())
                mt = partner;
             else
@@ -406,13 +405,13 @@ void AudioIO::FillBuffers()
             WaveTrack *t = (WaveTrack *) vt;
             
             switch (t->GetChannel()) {
-            case VTrack::LeftChannel:
+            case Track::LeftChannel:
                mixer->MixLeft(t, mT, mT + deltat);
                break;
-            case VTrack::RightChannel:
+            case Track::RightChannel:
                mixer->MixRight(t, mT, mT + deltat);
                break;
-            case VTrack::MonoChannel:
+            case Track::MonoChannel:
                mixer->MixMono(t, mT, mT + deltat);
                break;
             }
@@ -598,7 +597,7 @@ bool AudioIO::IsPlaying()
    return (mProject && mNumOutChannels > 0);
 }
 
-bool AudioIO::IsRecording(VTrack *t)
+bool AudioIO::IsRecording(Track *t)
 {
    if (!mProject || !mNumInChannels)
       return false;

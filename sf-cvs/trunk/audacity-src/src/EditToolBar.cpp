@@ -264,7 +264,7 @@ void EditToolBar::EnableDisableButtons()
    // Is anything selected?
    bool selection = false;
    TrackListIterator iter(p->GetTracks());
-   for (VTrack *t = iter.First(); t; t = iter.Next())
+   for (Track *t = iter.First(); t; t = iter.Next())
       if (t->GetSelected()) {
          selection = true;
          break;

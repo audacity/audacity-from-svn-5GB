@@ -87,26 +87,6 @@ bool Effect::DoEffect(wxWindow *parent, TrackList *list, double t0, double t1)
    return returnVal;
 }
 
-void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
-{
-   wxASSERT(s0);
-   wxASSERT(slen);
-
-   sampleCount ss0 = sampleCount( (mT0 - t->GetOffset()) * t->GetRate() );
-   sampleCount ss1 = sampleCount( (mT1 - t->GetOffset()) * t->GetRate() );
-
-   if (mT0 < t->GetOffset())
-      ss0 = 0;
-   if (ss1 >= t->GetNumSamples())
-      ss1 = t->GetNumSamples();
-   
-   if (ss1 < ss0)
-      ss1 = ss0;
-   
-   *s0 = ss0;
-   *slen = ss1 - ss0;
-}
-
 bool Effect::TotalProgress(double frac)
 {
    if (!mProgress && wxGetElapsedTime(false) > 500) {
@@ -146,7 +126,7 @@ void Effect::CountWaveTracks()
    mWaveTracks = new TrackList();
    
    TrackListIterator iter(mTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    
    while(t) {
       if (!t->GetSelected()) {
@@ -154,7 +134,7 @@ void Effect::CountWaveTracks()
          continue;
       }
       
-      if (t->GetKind() == VTrack::Wave) {
+      if (t->GetKind() == Track::Wave) {
          mWaveTracks->Add(t);
          mNumTracks++;
          if (!t->GetLinked())

@@ -13,26 +13,16 @@
 #ifndef __AUDACITY_EFFECT_INVERT__
 #define __AUDACITY_EFFECT_INVERT__
 
-#include <wx/checkbox.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 
-#include "Effect.h"
-
-#define __UNINITIALIZED__ (-1)
+#include "SimpleMono.h"
 
 class WaveTrack;
 
-class EffectInvert:public Effect {
+class EffectInvert:public EffectSimpleMono {
 
  public:
-   EffectInvert();
-
    virtual wxString GetEffectName() {
       return wxString(_("Invert"));
    }
@@ -41,13 +31,8 @@ class EffectInvert:public Effect {
       return wxString(_("Inverting"));
    }
    
-   virtual bool Process();
-
- private:
-   bool ProcessOne(int count, WaveTrack * t,
-                   sampleCount start, sampleCount len);
-
- private:
+ protected:
+   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
 };
 
 #endif

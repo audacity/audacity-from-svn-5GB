@@ -141,18 +141,16 @@ enum mad_flow output_cb(void *_data,
  
    if(!data->leftBuffer) {
       data->leftBuffer = new float[data->bufferSize];
-      *data->leftTrack = new WaveTrack(data->dirManager);
-      (*data->leftTrack)->SetSampleFormat(floatSample);
-      (*data->leftTrack)->SetChannel(VTrack::MonoChannel);
+      *data->leftTrack = new WaveTrack(data->dirManager, floatSample);
+      (*data->leftTrack)->SetChannel(Track::MonoChannel);
       (*data->leftTrack)->SetName(data->name);
       (*data->leftTrack)->SetRate(samplerate);
       
       if(channels == 2) {
          data->rightBuffer = new float[data->bufferSize];
-         *data->rightTrack = new WaveTrack(data->dirManager);
-         (*data->rightTrack)->SetSampleFormat(floatSample);
-         (*data->leftTrack)->SetChannel(VTrack::LeftChannel);
-         (*data->rightTrack)->SetChannel(VTrack::RightChannel);
+         *data->rightTrack = new WaveTrack(data->dirManager, floatSample);
+         (*data->leftTrack)->SetChannel(Track::LeftChannel);
+         (*data->rightTrack)->SetChannel(Track::RightChannel);
          (*data->rightTrack)->SetName(data->name);
          (*data->rightTrack)->SetRate(samplerate);
          (*data->leftTrack)->SetLinked(true);

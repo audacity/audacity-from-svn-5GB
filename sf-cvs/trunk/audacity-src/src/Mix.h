@@ -43,7 +43,6 @@ class Mixer {
    samplePtr GetBuffer(int channel);
 
  private:
-   void GetSamples(WaveTrack *src, int s0, int slen);
    void MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1);
    void MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1);
 

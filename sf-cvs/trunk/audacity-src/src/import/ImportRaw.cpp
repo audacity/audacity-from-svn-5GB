@@ -744,14 +744,14 @@ bool ImportRaw(wxWindow * parent,
 
    *dest1 = new WaveTrack(dirManager);
    (*dest1)->SetName(TrackNameFromFileName(fName));
-   (*dest1)->SetChannel(VTrack::MonoChannel);
+   (*dest1)->SetChannel(Track::MonoChannel);
    wxASSERT(*dest1);
    if (stereo) {
       *dest2 = new WaveTrack(dirManager);
       wxASSERT(*dest2);
       (*dest2)->SetName(TrackNameFromFileName(fName));
-      (*dest1)->SetChannel(VTrack::LeftChannel);
-      (*dest2)->SetChannel(VTrack::RightChannel);
+      (*dest1)->SetChannel(Track::LeftChannel);
+      (*dest2)->SetChannel(Track::RightChannel);
       (*dest1)->SetLinked(true);
    }
 

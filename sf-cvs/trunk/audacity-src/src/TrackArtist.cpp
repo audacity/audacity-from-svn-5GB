@@ -25,19 +25,20 @@
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
 #include <wx/gdicmn.h>
-#include <wx/hash.h>
 #include <wx/image.h>
 #include <wx/pen.h>
 
 #include "allegro.h"
 
 #include "AColor.h"
+#include "BlockFile.h"
 #include "Envelope.h"
 #include "Track.h"
 #include "NoteTrack.h"
 #include "WaveTrack.h"
 #include "LabelTrack.h"
 #include "Prefs.h"
+#include "Sequence.h"
 #include "Spectrum.h"
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
@@ -49,34 +50,9 @@ const int notePos[12] = { 1, 6, 11, 16, 21,
    27, 32, 37, 42, 47, 52, 57
 };
 
-class TrackInfoCache:public wxObject {
- public:
-   VTrack * track;
-
-   int dirty;
-
-   // WaveTrack only:
-   sampleCount len;
-   double start;
-   double pps;
-   sampleCount *where;
-   bool spectrum;
-
-   // WaveTrack minmax only
-   float *min;
-   float *max;
-   float *rms;
-
-   // WaveTrack Spectrum only
-   float *freq;
-   int fheight;
-};
-
 TrackArtist::TrackArtist()
 {
    AColor::Init();
-
-   mTrackHash = NULL;
 
    mInsetLeft   = 0;
    mInsetTop    = 0;
@@ -100,23 +76,6 @@ TrackArtist::TrackArtist()
 
 TrackArtist::~TrackArtist()
 {
-   if (mTrackHash && mTrackHash->GetCount() > 0) {
-      mTrackHash->BeginFind();
-      wxNode *node;
-      while (( node = mTrackHash->Next() )) {
-         TrackInfoCache *cache = (TrackInfoCache *) node->GetData();
-         if (cache->where)
-            delete[] cache->where;
-         if (cache->min)
-            delete[] cache->min;
-         if (cache->max)
-            delete[] cache->max;
-         if (cache->freq)
-            delete[] cache->freq;
-         delete cache;
-      }
-      delete mTrackHash;
-   }
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -132,44 +91,11 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                              wxRect & clip,
                              ViewInfo * viewInfo, bool drawEnvelope)
 {
-   int numTracks = 0;
-
-   TrackListIterator countIter(tracks);
-   VTrack *t = countIter.First();
-   while (t) {
-      numTracks++;
-      t = countIter.Next();
-   }
-
    wxRect trackRect = r;
 
-   wxHashTable *newHash =
-       new wxHashTable(wxKEY_INTEGER, numTracks * 4 + 1);
-
    TrackListIterator iter(tracks);
-   t = iter.First();
+   Track *t = iter.First();
    while (t) {
-      TrackInfoCache *info = NULL;
-      if (mTrackHash) {
-         info = (TrackInfoCache *) mTrackHash->Get((long) t);
-         if (info)
-            mTrackHash->Delete((long) t);
-      }
-      if (!info) {
-         info = new TrackInfoCache();
-         info->track = t;
-         info->dirty = t->GetDirty() - 1;
-         info->len = 0;
-         info->start = 0.0;
-         info->pps = 1.0;
-         info->min = NULL;
-         info->max = NULL;
-         info->rms = NULL;
-         info->where = NULL;
-         info->freq = NULL;
-         info->fheight = 0;
-      }
-
       trackRect.height = t->GetHeight();
 
       if (trackRect.y < (clip.y + clip.height) &&
@@ -182,64 +108,41 @@ void TrackArtist::DrawTracks(TrackList * tracks,
          rr.height -= (mInsetTop + mInsetBottom);
 
          switch (t->GetKind()) {
-         case VTrack::Wave:
-            switch (((WaveTrack *) t)->GetDisplay()) {
+         case Track::Wave:
+            switch (((WaveTrack *)t)->GetDisplay()) {
             case WaveTrack::WaveformDisplay:
-               DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, false);
+               DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
+                            drawEnvelope, false);
                break;
             case WaveTrack::WaveformDBDisplay:
-               DrawWaveform(info, dc, rr, viewInfo, drawEnvelope, true);
+               DrawWaveform((WaveTrack *)t, dc, rr, viewInfo,
+                            drawEnvelope, true);
                break;
             case WaveTrack::SpectrumDisplay:
-               DrawSpectrum(info, dc, rr, viewInfo, false);
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, false);
                break;
             case WaveTrack::PitchDisplay:
-               DrawSpectrum(info, dc, rr, viewInfo, true);
+               DrawSpectrum((WaveTrack *)t, dc, rr, viewInfo, true);
                break;
             }
             break;              // case Wave
-         case VTrack::Note:
-            DrawNoteTrack(info, dc, rr, viewInfo);
+         case Track::Note:
+            DrawNoteTrack((NoteTrack *)t, dc, rr, viewInfo);
             break;
-         case VTrack::Label:
-            DrawLabelTrack(info, dc, rr, viewInfo);
+         case Track::Label:
+            DrawLabelTrack((LabelTrack *)t, dc, rr, viewInfo);
             break;
          }
-
       }
-
-      newHash->Put((long) t, (wxObject *) info);
 
       t = iter.Next();
       trackRect.y += trackRect.height;
    }
-
-   // Empty out the hash table
-   if (mTrackHash && mTrackHash->GetCount() > 0) {
-      mTrackHash->BeginFind();
-      wxNode *node;
-      while (( node = mTrackHash->Next() )) {
-         TrackInfoCache *cache = (TrackInfoCache *) node->GetData();
-         if (cache->where)
-            delete cache->where;
-         if (cache->min)
-            delete cache->min;
-         if (cache->max)
-            delete cache->max;
-         if (cache->freq)
-            delete cache->freq;
-         delete cache;
-      }
-   }
-   if (mTrackHash)
-      delete mTrackHash;
-
-   mTrackHash = newHash;
 }
 
-void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
+void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 {
-   if (t->GetKind() == VTrack::Wave
+   if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == 0) {
       wxRect bev = r;
       bev.Inflate(-1, -1);
@@ -254,7 +157,7 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
       vruler.Draw(*dc);
    }
 
-   if (t->GetKind() == VTrack::Wave
+   if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == 1) {
       // Waveform (db)
       wxRect bev = r;
@@ -262,7 +165,7 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
       AColor::Bevel(*dc, true, bev);
    }
 
-   if (t->GetKind() == VTrack::Wave
+   if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == 2) {
       // Spectrum
       wxRect bev = r;
@@ -303,7 +206,7 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
                    r.y + r.height - 2 - textHeight);
    }
 
-   if (t->GetKind() == VTrack::Wave
+   if (t->GetKind() == Track::Wave
        && ((WaveTrack *) t)->GetDisplay() == 3) {
       // Pitch
       wxRect bev = r;
@@ -311,7 +214,7 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
       AColor::Bevel(*dc, true, bev);
    }
 
-   if (t->GetKind() == VTrack::Note) {
+   if (t->GetKind() == Track::Note) {
 
       dc->SetPen(*wxTRANSPARENT_PEN);
       dc->SetBrush(*wxWHITE_BRUSH);
@@ -390,272 +293,6 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
    }
 }
 
-void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
-                                       double start, double pps,
-                                       int screenWidth)
-{
-   wxASSERT(start >= 0.0);
-   wxASSERT(pps > 0.0);
-   wxASSERT(screenWidth > 0);
-
-   WaveTrack *track = (WaveTrack *) cache->track;
-
-   if (!cache->spectrum &&
-       track->GetDirty() == cache->dirty &&
-       pps == cache->pps &&
-       start == cache->start && screenWidth <= (int)cache->len)
-      return;
-
-   TrackInfoCache oldcache = *cache;
-
-   cache->freq = NULL;
-
-   cache->spectrum = false;
-   cache->pps = pps;
-   cache->start = start;
-   cache->len = screenWidth;
-   cache->min = new float[cache->len];
-   wxASSERT(cache->min);
-   cache->max = new float[cache->len];
-   wxASSERT(cache->max);
-   cache->rms = new float[cache->len];
-   wxASSERT(cache->rms);
-   cache->where = new sampleCount[cache->len + 1];
-   wxASSERT(cache->where);
-
-   double rate = track->GetRate();
-   sampleCount numSamples = track->GetNumSamples();
-
-   sampleCount x;
-
-   for (x = 0; x < cache->len + 1; x++) {
-      cache->where[x] =
-          (sampleCount) (start * rate + ((double) x) * rate / pps + 0.5);
-   }
-
-   sampleCount s0 = cache->where[0];
-   sampleCount s1 = cache->where[cache->len];
-   int p0 = 0;
-   int p1 = cache->len;
-
-   // Optimization: if the old cache is good and overlaps
-   // with the current one, re-use as much of the cache as
-   // possible
-   if (oldcache.dirty == track->GetDirty() &&
-       !oldcache.spectrum &&
-       oldcache.pps == pps &&
-       oldcache.where[0] < cache->where[cache->len] &&
-       oldcache.where[oldcache.len] > cache->where[0]) {
-
-      s0 = cache->where[cache->len];
-      s1 = cache->where[0];
-      p0 = cache->len;
-      p1 = 0;
-
-      for (x = 0; x < cache->len; x++)
-
-         if (cache->where[x] >= oldcache.where[0] &&
-             cache->where[x] <= oldcache.where[oldcache.len - 1]) {
-
-            int ox =
-                int ((double (oldcache.len) *
-                      (cache->where[x] -
-                       oldcache.where[0])) /(oldcache.where[oldcache.len] -
-                                             oldcache.where[0]) + 0.5);
-
-            cache->min[x] = oldcache.min[ox];
-            cache->max[x] = oldcache.max[ox];
-            cache->rms[x] = oldcache.rms[ox];
-
-            // Unfortunately we can't make this check due to
-            // floating-point roundoff errors
-            //
-            // Maybe if this happens we should recalculate all???
-            //
-            //if (!(ox >= 0 && ox <= oldcache.len &&
-            //        cache->where[x] == oldcache.where[ox]))
-            //  wxASSERT(0);
-
-         } else {
-            if (cache->where[x] < s0) {
-               s0 = cache->where[x];
-               p0 = x;
-            }
-            if (cache->where[x + 1] > s1) {
-               s1 = cache->where[x + 1];
-               p1 = x + 1;
-            }
-         }
-
-   }
-
-   int divisor;
-   if (rate / pps >= 65536)     // samp/sec / pixels/sec = samp / pixel
-      divisor = 65536;
-   else if (rate / pps >= 256)
-      divisor = 256;
-   else
-      divisor = 1;
-
-   if (s1 > numSamples)
-      s1 = numSamples;
-
-   sampleCount srcX = s0;
-
-   int block0 = track->FindBlock(s0);
-
-   float *temp = new float[track->mMaxSamples];
-
-   int pixel = p0;
-
-   float theMin = 0;
-   float theMax = 0;
-   float sumsq = 0.0;
-   unsigned int b = block0;
-   int jcount = 0;
-
-   while (srcX < s1) {
-      // Get more samples
-      sampleCount num;
-
-      num = ((track->mBlock->Item(b)->len -
-              (srcX - track->mBlock->Item(b)->start)) + divisor - 1)
-          / divisor;
-
-      if (num > (s1 - srcX + divisor - 1) / divisor) {
-         num = (s1 - srcX + divisor - 1) / divisor;
-      }
-
-      switch (divisor) {
-      case 1:
-         track->Read((samplePtr)temp, floatSample,
-                     track->mBlock->Item(b),
-                     srcX - track->mBlock->Item(b)->start, num);
-         break;
-      case 256:
-         track->Read256(temp, track->mBlock->Item(b),
-                        (srcX - track->mBlock->Item(b)->start) / divisor,
-                        num);
-         break;
-      case 65536:
-         track->Read64K(temp, track->mBlock->Item(b),
-                        (srcX - track->mBlock->Item(b)->start) / divisor,
-                        num);
-         break;
-      default:
-         wxASSERT(0);
-         break;
-      }
-
-      // Get min/max of samples for each pixel we can
-      x = 0;
-
-      if (b == block0) {
-         theMin = temp[x];
-         theMax = temp[x];
-         sumsq = 0.0;
-         jcount = 0;
-      }
-
-      while (x < num) {
-
-         while (pixel < screenWidth &&
-                cache->where[pixel] / divisor == srcX / divisor + x) {
-            if (pixel > p0) {
-               cache->min[pixel - 1] = theMin;
-               cache->max[pixel - 1] = theMax;
-               if (jcount > 0) {
-                  float rms = (float)sqrt(sumsq / jcount);
-                  cache->rms[pixel - 1] = rms;
-               }
-               else
-                  cache->rms[pixel - 1] = 0.0f;
-            }
-            pixel++;
-            if (cache->where[pixel] != cache->where[pixel - 1]) {
-               theMin = FLT_MAX;
-               theMax = -FLT_MAX;
-               sumsq = 0.0;
-               jcount = 0;
-            }
-         }
-
-         sampleCount stop = (cache->where[pixel] - srcX) / divisor;
-         if (stop == x)
-            stop++;
-         if (stop > num)
-            stop = num;
-
-         switch (divisor) {
-         case 1:
-            while (x < stop) {
-               if (temp[x] < theMin)
-                  theMin = temp[x];
-               if (temp[x] > theMax)
-                  theMax = temp[x];
-               sumsq += ((float)temp[x]) * ((float)temp[x]);
-               x++;
-               jcount++;
-            }
-            break;
-         case 256:
-         case 65536:
-            while (x < stop) {
-               if (temp[3 * x] < theMin)
-                  theMin = temp[3 * x];
-               if (temp[3 * x + 1] > theMax)
-                  theMax = temp[3 * x + 1];
-               sumsq += ((float)temp[3*x+2]) * ((float)temp[3*x+2]);
-               x++;
-               jcount++;
-            }
-
-            break;
-         default:
-            wxASSERT(0);
-            break;
-         }
-      }
-
-      b++;
-
-      srcX += num * divisor;
-
-      if (b >= track->mBlock->Count())
-         break;
-
-      srcX = track->mBlock->Item(b)->start;
-
-   }
-
-   while (pixel <= p1) {
-      cache->min[pixel - 1] = theMin;
-      cache->max[pixel - 1] = theMax;
-      if (jcount > 0) {
-         float rms = (float)sqrt(sumsq / jcount);
-         cache->rms[pixel - 1] = rms;
-      }
-      else
-         cache->rms[pixel - 1] = 0.0f;
-      pixel++;
-   }
-
-   cache->dirty = track->GetDirty();
-
-   if (oldcache.min)
-      delete[]oldcache.min;
-   if (oldcache.max)
-      delete[]oldcache.max;
-   if (oldcache.rms)
-      delete[]oldcache.rms;
-   if (oldcache.where)
-      delete[]oldcache.where;
-   if (oldcache.freq)
-      delete[]oldcache.freq;
-
-   delete[]temp;
-}
-
 int TrackArtist::GetWaveYPos(float value, int height, bool dB)
 {
    float sign = (value >= 0 ? 1 : -1);
@@ -681,7 +318,7 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
    }
 }
 
-void TrackArtist::DrawWaveform(TrackInfoCache * cache,
+void TrackArtist::DrawWaveform(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo,
                                bool drawEnvelope, bool dB)
@@ -691,8 +328,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
-   WaveTrack *track = (WaveTrack *) cache->track;
-   sampleCount numSamples = track->GetNumSamples();
+   Sequence *seq = track->GetSequence();
+   sampleCount numSamples = seq->GetNumSamples();
    double tOffset = track->GetOffset();
 
    if (!track->GetSelected())
@@ -759,12 +396,25 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    int *heights = NULL;
    double *envValues = NULL;
 
+   float *min=NULL, *max=NULL, *rms=NULL;
+   sampleCount *where = NULL;
+
    if (mid.width > 0) {
       dc.SetPen(*wxRED_PEN);
       dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
 
-      PrepareCacheWaveform(cache, t0, pps, mid.width);
-
+      min = new float[mid.width];
+      max = new float[mid.width];
+      rms = new float[mid.width];
+      where = new sampleCount[mid.width+1];
+      if (!track->GetWaveDisplay(min, max, rms, where,
+                                 mid.width, t0, pps)) {
+         delete[] min;
+         delete[] max;
+         delete[] rms;
+         delete[] where;
+         return;
+      }
       heights = new int[mid.width];
       envValues = new double[mid.width];
    }
@@ -785,7 +435,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    for (x = 0; x < mid.width; x++) {
 
       bool sel = false;
-      if (ssel0 <= cache->where[x] && cache->where[x + 1] < ssel1)
+      if (ssel0 <= where[x] && where[x + 1] < ssel1)
          sel = true;
 
       if (sel && !usingSelPen)
@@ -812,11 +462,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
             s0--;
          }
          slen += 4;
-         if (s0 + slen > track->GetNumSamples())
-            slen = track->GetNumSamples() - s0;
+         if (s0 + slen > seq->GetNumSamples())
+            slen = seq->GetNumSamples() - s0;
 
          float *buffer = new float[slen];
-         track->Get((samplePtr)buffer, floatSample, s0, slen);
+         seq->Get((samplePtr)buffer, floatSample, s0, slen);
          int *xpos = new int[slen];
          int *ypos = new int[slen];
 
@@ -867,11 +517,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       short *h2 = new short[mid.width];
 
       for (x = 0; x < mid.width; x++) {
-         h1[x] = ctr - GetWaveYPos(cache->min[x] *
+         h1[x] = ctr - GetWaveYPos(min[x] *
                                    track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
-         h2[x] = ctr - GetWaveYPos(cache->max[x] *
+         h2[x] = ctr - GetWaveYPos(max[x] *
                                    track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
@@ -888,11 +538,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       t = t0;
       for (x = 0; x < mid.width; x++) {
 
-         int r1 = ctr - GetWaveYPos(-cache->rms[x] *
+         int r1 = ctr - GetWaveYPos(-rms[x] *
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
-         int r2 = ctr - GetWaveYPos(cache->rms[x] *
+         int r2 = ctr - GetWaveYPos(rms[x] *
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
@@ -948,140 +598,23 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       envRect.height -= 2;
       track->GetEnvelope()->Draw(dc, envRect, h, pps, dB);
    }
+
+   if (mid.width > 0) {
+      delete[] min;
+      delete[] max;
+      delete[] rms;
+      delete[] where;
+   }
 }
 
-void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
-                                       double start, double pps,
-                                       int screenWidth, int screenHeight,
-                                       bool autocorrelation)
-{
-   wxASSERT(start >= 0.0);
-   wxASSERT(pps > 0.0);
-   wxASSERT(screenWidth > 0);
-   wxASSERT(screenHeight > 0);
-
-   WaveTrack *track = (WaveTrack *) cache->track;
-   double rate = track->GetRate();
-
-   if (cache->spectrum &&
-       track->GetDirty() == cache->dirty &&
-       pps == cache->pps &&
-       start == cache->start &&
-       screenWidth <= (int)cache->len && cache->fheight == (int)screenHeight)
-      return;
-
-   TrackInfoCache oldcache = *cache;
-
-   cache->spectrum = true;
-   cache->pps = pps;
-   cache->start = start;
-   cache->len = screenWidth;
-   cache->fheight = screenHeight;
-   cache->freq = new float[cache->len * screenHeight];
-   wxASSERT(cache->freq);
-   cache->where = new sampleCount[cache->len + 1];
-   wxASSERT(cache->where);
-   cache->min = NULL;
-   cache->max = NULL;
-
-   sampleCount x;
-
-   bool *recalc = new bool[cache->len + 1];
-
-   for (x = 0; x < cache->len + 1; x++) {
-      recalc[x] = true;
-      cache->where[x] =
-          (sampleCount) (start * rate + x * rate / pps + 0.5);
-   }
-
-   // Optimization: if the old cache is good and overlaps
-   // with the current one, re-use as much of the cache as
-   // possible
-   if (oldcache.dirty == track->GetDirty() &&
-       oldcache.spectrum &&
-       oldcache.pps == pps &&
-       oldcache.fheight == screenHeight &&
-       oldcache.where[0] < cache->where[cache->len] &&
-       oldcache.where[oldcache.len] > cache->where[0]) {
-
-      for (x = 0; x < cache->len; x++)
-
-         if (cache->where[x] >= oldcache.where[0] &&
-             cache->where[x] <= oldcache.where[oldcache.len - 1]) {
-
-            int ox = (int) ((double (oldcache.len) *
-                      (cache->where[x] - oldcache.where[0]))
-                       / (oldcache.where[oldcache.len] -
-                                             oldcache.where[0]) + 0.5);
-
-            if (ox >= 0 && ox <= oldcache.len &&
-                cache->where[x] == oldcache.where[ox]) {
-
-               for (sampleCount i = 0; i < (sampleCount)screenHeight; i++)
-                  cache->freq[screenHeight * x + i] =
-                      oldcache.freq[screenHeight * ox + i];
-
-               recalc[x] = false;
-            }
-
-         }
-
-   }
-
-   int windowSize = GetSpectrumWindowSize();
-   float *buffer = new float[windowSize];
-
-   for (x = 0; x < cache->len; x++)
-      if (recalc[x]) {
-
-         sampleCount start = cache->where[x];
-         sampleCount len = windowSize;
-
-         sampleCount i;
-
-         if (start >= track->GetNumSamples()) {
-            for (i = 0; i < (sampleCount)screenHeight; i++)
-               cache->freq[screenHeight * x + i] = 0;
-
-         } else {
-
-            if (start + len > track->GetNumSamples()) {
-               len = track->GetNumSamples() - start;
-               for (i = len; i < (sampleCount)windowSize; i++)
-                  buffer[i] = 0;
-            }
-
-            track->Get(buffer, start, len);
-
-            ComputeSpectrum(buffer, windowSize, screenHeight, rate,
-                            &cache->freq[screenHeight * x],
-                            autocorrelation);
-         }
-      }
-
-   delete[]buffer;
-   delete[]recalc;
-
-   cache->dirty = track->GetDirty();
-
-   if (oldcache.min)
-      delete[]oldcache.min;
-   if (oldcache.max)
-      delete[]oldcache.max;
-   if (oldcache.where)
-      delete[]oldcache.where;
-   if (oldcache.freq)
-      delete[]oldcache.freq;
-}
-
-void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
+void TrackArtist::DrawSpectrum(WaveTrack *track,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo, bool autocorrelation)
 {
    if(!viewInfo->bUpdateSpectrogram && viewInfo->bIsPlaying)
    {
       // BG: Draw waveform instead of spectrum
-      DrawWaveform(cache, dc, r, viewInfo, false, false);
+      DrawWaveform(track, dc, r, viewInfo, false, false);
       /*
       // BG: uncomment to draw grey instead of spectrum
       dc.SetBrush(unselectedBrush);
@@ -1096,8 +629,8 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
-   WaveTrack *track = (WaveTrack *) cache->track;
-   sampleCount numSamples = track->GetNumSamples();
+   Sequence *seq = track->GetSequence();
+   sampleCount numSamples = seq->GetNumSamples();
    double tOffset = track->GetOffset();
    double rate = track->GetRate();
 
@@ -1107,9 +640,6 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
-
-   if(sel0 == sel1)
-      wxBusyCursor busy;
 
    int x = 0;
    double tpre = h - tOffset;
@@ -1130,11 +660,20 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    // bitmap.  Note that this could be optimized even
    // more, but for now this is not bad.  -dmazzoni
    wxImage *image = new wxImage((int) r.width, (int) r.height);
-   wxASSERT(image);
+   if (!image)
+      return;
    unsigned char *data = image->GetData();
 
-   PrepareCacheSpectrum(cache, t0, pps, r.width, r.height,
-                        autocorrelation);
+   float *freq = new float[r.width * r.height];
+   sampleCount *where = new sampleCount[r.width+1];
+
+   if (!track->GetSpectrogram(freq, where, r.width, r.height,
+                              t0, pps, autocorrelation)) {
+      delete image;
+      delete[] where;
+      delete[] freq;
+      return;
+   }
 
    bool isGrayscale = false;
    gPrefs->Read("/Spectrum/Grayscale", &isGrayscale, false);
@@ -1153,7 +692,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
          continue;
       }
 
-      float *spec = &cache->freq[r.height * i];
+      float *spec = &freq[r.height * i];
 
       for (int yy = 0; yy < r.height; yy++) {
 
@@ -1187,6 +726,8 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    //dc.DrawBitmap(converted, r.x, r.y);
 
    delete image;
+   delete[] where;
+   delete[] freq;
 }
 
 /*
@@ -1353,9 +894,9 @@ int PITCH_TO_Y(double p, int bottom)
    return bottom - octave * octaveHeight - notePos[n] - 4;
 }
 
-void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
-								wxDC &dc, wxRect &r,
-								ViewInfo *viewInfo)
+void TrackArtist::DrawNoteTrack(NoteTrack *track,
+                                wxDC &dc, wxRect &r,
+                                ViewInfo *viewInfo)
 {
   double h = viewInfo->h;
   double pps = viewInfo->zoom;
@@ -1364,7 +905,6 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
 
   double h1 = X_TO_TIME(r.x + r.width);
 
-  NoteTrack *track = (NoteTrack *)cache->track;
   Seq_ptr seq = track->mSeq;
   int visibleChannels = track->mVisibleChannels;
 
@@ -1676,12 +1216,10 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   dc.DestroyClippingRegion();
 }
 
-void TrackArtist::DrawLabelTrack(TrackInfoCache * cache,
+void TrackArtist::DrawLabelTrack(LabelTrack *track,
                                  wxDC & dc, wxRect & r,
                                  ViewInfo * viewInfo)
 {
-   LabelTrack *track = (LabelTrack *) (cache->track);
-
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 

@@ -11,29 +11,40 @@
 #ifndef __AUDACITY_TRACK__
 #define __AUDACITY_TRACK__
 
+#include <wx/string.h>
+
 #include "xml/XMLTagHandler.h"
 
-class wxString;
 class wxTextFile;
 class DirManager;
 class UndoStack;
 
-class VTrack: public XMLTagHandler {
+class Track: public XMLTagHandler {
+
+ // To be TrackDisplay
  protected:
-   int collapsedHeight;
-   int expandedHeight;
+   int        mHeight;
+   wxString   mName;
 
-   wxString name;
-   bool selected;
-   bool linked;
-   bool mute;
-   bool solo;
-   bool collapsed;
-   int channel;
-   double tOffset;
-   int dirty;
+   bool       mSelected;
 
-   mutable DirManager *dirManager;
+   int        mDirty;
+
+   bool       mLinked;
+
+ public:
+   int GetHeight() const { return mHeight; }
+   void SetHeight( int h ) { mHeight = h; }
+
+ // Keep in Track
+
+ protected:
+   int                 mChannel;
+   double              mOffset;
+   bool                mMute;
+   bool                mSolo;
+
+   mutable DirManager *mDirManager;
 
  public:
 
@@ -50,63 +61,50 @@ class VTrack: public XMLTagHandler {
       Label
    } TrackKindEnum;
 
-   VTrack(DirManager * projDirManager);
-   VTrack(const VTrack &orig);
+   Track(DirManager * projDirManager);
+   Track(const Track &orig);
 
-   virtual ~ VTrack() { }
+   virtual ~ Track() { }
    
-   virtual void Init(const VTrack &orig);
-   virtual VTrack *Duplicate() const = 0;
+   virtual void Init(const Track &orig);
+   virtual Track *Duplicate() = 0;
 
-   int GetCollapsedHeight() const { return collapsedHeight; }
-   int GetExpandedHeight () const { return expandedHeight;  }
+   wxString GetName() const { return mName; }
+   void SetName( wxString n ) { mName = n; }
 
-   void SetCollapsedHeight( int h ) { collapsedHeight = h; }
-   void SetExpandedHeight ( int h ) { expandedHeight  = h; }
+   bool GetSelected() const { return mSelected; }
+   bool GetMute    () const { return mMute;     }
+   bool GetLinked  () const { return mLinked;   }
+   bool GetSolo    () const { return mSolo;     }
 
-   wxString GetName() const { return name; }
-   void SetName( wxString n ) { name = n; }
+   void SetSelected(bool s) { mSelected = s; }
+   void SetMute    (bool m) { mMute     = m; }
+   void SetLinked  (bool l) { mLinked   = l; }
+   void SetSolo    (bool s) { mSolo     = s; }
 
-   bool GetSelected() const { return selected; }
-   bool GetMute    () const { return mute;     }
-   bool GetLinked  () const { return linked;   }
-   bool GetSolo    () const { return solo;     }
+   int    GetChannel() const { return mChannel; }
+   double GetOffset () const { return mOffset; }
+   int    GetDirty  () const { return mDirty;   }
 
-   void SetSelected(bool s) { selected = s; }
-   void SetMute    (bool m) { mute     = m; }
-   void SetLinked  (bool l) { linked   = l; }
-   void SetSolo    (bool s) { solo     = s; }
+   void Offset(double t) { SetOffset(mOffset + t); }
+   virtual void SetOffset (double o) { mOffset = o; }
 
-   int    GetChannel() const { return channel; }
-   double GetOffset () const { return tOffset; }
-   int    GetDirty  () const { return dirty;   }
-
-   void Offset(double t) { SetOffset(tOffset + t); }
-   virtual void SetOffset (double o) { tOffset = o; }
-
-   void SetDirty  (int    d) { dirty   = d; }
-   void SetChannel(int    c) { channel = c; }
+   void MarkChanged()  { mDirty++; }
+   void SetChannel(int    c) { mChannel = c; }
 
    // AS: Note that the dirManager is mutable.  This is
    // mostly to support "Duplicate" of const objects,
    // but in general, mucking with the dir manager is
    // separate from the Track.
-   DirManager* GetDirManager() const { return dirManager; }
+   DirManager* GetDirManager() const { return mDirManager; }
 
-   virtual void Cut  (double t0, double t1, VTrack ** dest) { *dest = 0; }
-   virtual void Copy (double t0, double t1, VTrack ** dest) const { *dest = 0; }
-   virtual void Clear(double t0, double t1) {}
-   virtual void Paste(double t, const VTrack * src) {}
+   virtual bool Cut  (double t0, double t1, Track ** dest) {return false;}
+   virtual bool Copy (double t0, double t1, Track ** dest) {return false;}
+   virtual bool Clear(double t0, double t1) {return false;}
+   virtual bool Paste(double t, const Track * src) {return false;}
 
-   virtual void Silence(double t0, double t1) {}
-   virtual void InsertSilence(double t, double len) {}
-
-   virtual void SetHeight(int h);
-
-   virtual void Collapse();
-   virtual void Expand();
-   virtual void Toggle();
-   virtual bool IsCollapsed() const;
+   virtual bool Silence(double t0, double t1) {return false;}
+   virtual bool InsertSilence(double t, double len) {return false;}
 
    virtual int GetKind() const { return None; }
 
@@ -116,16 +114,8 @@ class VTrack: public XMLTagHandler {
    virtual XMLTagHandler *HandleXMLChild(const char *tag) = 0;
    virtual void WriteXML(int depth, FILE *fp) = 0;
 
-#if LEGACY_PROJECT_FILE_SUPPORT
-   virtual bool Load(wxTextFile * in, DirManager * dirManager);
-   virtual bool Save(wxTextFile * out, bool overwrite);
-#endif
-
-   virtual int GetHeight() const {
-      return (collapsed ? collapsedHeight : expandedHeight);
-   }
-
-   virtual double GetMaxLen() const { return 0.0; }
+   virtual double GetStartTime() { return 0.0; }
+   virtual double GetEndTime() { return 0.0; }
 };
 
 /*
@@ -134,7 +124,7 @@ class VTrack: public XMLTagHandler {
   list of tracks.
 */
 struct TrackListNode {
-   VTrack *t;
+   Track *t;
    TrackListNode *next;
    TrackListNode *prev;
 };
@@ -146,9 +136,9 @@ class TrackListIterator {
   TrackListIterator(TrackList * val);
   
   // Iterate functions
-  VTrack *First();
-  VTrack *Next();
-  VTrack *RemoveCurrent();     // returns next
+  Track *First();
+  Track *Next();
+  Track *RemoveCurrent();     // returns next
   
  private:
   TrackList * l;
@@ -170,39 +160,39 @@ class TrackList {
   friend class ConstTrackListIterator;
   
   // Add a this Track or all children of this TrackGroup
-  void Add(VTrack * t);
+  void Add(Track * t);
   
   // Remove this Track or all children of this TrackGroup
-  void Remove(VTrack * t);
+  void Remove(Track * t);
   
   // Make the list empty
   void Clear(bool deleteTracks = false);
   
   // Select a track, and if it is linked to another track,
   // select it, too.
-  void Select(VTrack * t, bool selected = true);
+  void Select(Track * t, bool selected = true);
   
   // If this track is linked to another track (the track
   // immediately before or after it), return its partner.
   // Otherwise return null.
-  VTrack *GetLink(VTrack * t) const;
+  Track *GetLink(Track * t) const;
   
-  VTrack *GetPrev(VTrack * t) const;
-  VTrack *GetNext(VTrack * t) const;
+  Track *GetPrev(Track * t) const;
+  Track *GetNext(Track * t) const;
   
-  bool CanMoveUp(VTrack * t) const;
-  bool CanMoveDown(VTrack * t) const;
+  bool CanMoveUp(Track * t) const;
+  bool CanMoveDown(Track * t) const;
   
-  bool MoveUp(VTrack * t);
-  bool MoveDown(VTrack * t);
-  bool Move(VTrack * t, bool up) { return up ? MoveUp(t) : MoveDown(t); }
+  bool MoveUp(Track * t);
+  bool MoveDown(Track * t);
+  bool Move(Track * t, bool up) { return up ? MoveUp(t) : MoveDown(t); }
   
   // Test
-  bool Contains(VTrack * t) const;
+  bool Contains(Track * t) const;
   
   bool IsEmpty() const;
   
-  double GetMaxLen() const;
+  double GetEndTime() const;
   double GetMinOffset() const;
   int GetHeight() const;
 
@@ -226,7 +216,7 @@ class ConstTrackListIterator {
     ConstTrackListIterator(const TrackList * val) : l(val), cur(NULL) {}
 
     // Iterate functions
-    VTrack *First() const
+    Track *First() const
     {
        cur = l->head;
 
@@ -234,7 +224,7 @@ class ConstTrackListIterator {
        return NULL;
     }
 
-    VTrack *Next() const
+    Track *Next() const
     {
        if (cur) cur = cur->next;
        if (cur) return cur->t;

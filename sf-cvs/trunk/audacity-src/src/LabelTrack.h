@@ -34,7 +34,7 @@ struct LabelStruct {
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 
-class LabelTrack:public VTrack {
+class LabelTrack:public Track {
    friend class BouncePane;
    friend bool ExportPCM(AudacityProject *project,
                wxString format, bool stereo, wxString fName,
@@ -50,9 +50,11 @@ class LabelTrack:public VTrack {
              double sel0, double sel1);
 
    virtual int GetKind() const { return Label; } 
-   virtual double GetMaxLen() const;
 
-   virtual VTrack *Duplicate() const { return new LabelTrack(*this); }
+   virtual double GetStartTime();
+   virtual double GetEndTime();
+
+   virtual Track *Duplicate() { return new LabelTrack(*this); }
 
    virtual bool HandleXMLTag(const char *tag, const char **attrs);
    virtual XMLTagHandler *HandleXMLChild(const char *tag);
@@ -63,13 +65,13 @@ class LabelTrack:public VTrack {
    virtual bool Save(wxTextFile * out, bool overwrite);
 #endif
 
-   virtual void Cut  (double t0, double t1, VTrack ** dest);
-   virtual void Copy (double t0, double t1, VTrack ** dest) const;
-   virtual void Clear(double t0, double t1);
-   virtual void Paste(double t, const VTrack * src);
+   virtual bool Cut  (double t0, double t1, Track ** dest);
+   virtual bool Copy (double t0, double t1, Track ** dest) const;
+   virtual bool Clear(double t0, double t1);
+   virtual bool Paste(double t, const Track * src);
 
-   virtual void Silence(double t0, double t1);
-   virtual void InsertSilence(double t, double len);
+   virtual bool Silence(double t0, double t1);
+   virtual bool InsertSilence(double t, double len);
 
    void MouseDown(int x, int y, wxRect & r, double h, double pps);
 

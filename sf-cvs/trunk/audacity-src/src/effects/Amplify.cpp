@@ -32,13 +32,11 @@ bool EffectAmplify::Init()
    peak = 0.0;
 
    TrackListIterator iter(mWaveTracks);
-   VTrack *t = iter.First();
+   Track *t = iter.First();
    int count = 0;
    while(t) {
-      sampleCount start, len;
       float min, max;
-      GetSamples((WaveTrack *)t, &start, &len);
-      ((WaveTrack *)t)->GetMinMax(start, len, &min, &max);
+      ((WaveTrack *)t)->GetMinMax(&min, &max, mT0, mT1);
       float newpeak = (fabs(min) > fabs(max) ? fabs(min) : fabs(max));
       
       if (newpeak > peak)
@@ -69,54 +67,11 @@ bool EffectAmplify::PromptUser()
    return true;
 }
 
-bool EffectAmplify::Process()
+bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 {
-   TrackListIterator iter(mWaveTracks);
-   VTrack *t = iter.First();
-   int count = 0;
-   while(t) {
-      sampleCount start, len;
-      GetSamples((WaveTrack *)t, &start, &len);
-      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = iter.Next();
-      count++;
-   }
-   
-   return true;
-}
-
-bool EffectAmplify::ProcessOne(int count, WaveTrack *t,
-                               sampleCount start, sampleCount len)
-{
-   sampleCount s = start;
-   sampleCount originalLen = len;
-   sampleCount blockSize = t->GetMaxBlockSize();
-
-   float *buffer = new float[blockSize];
-   
-   while (len) {
-      sampleCount block = t->GetBestBlockSize(s);
-      if (block > len)
-         block = len;
-
-      t->Get(buffer, s, block);
-      for (int i = 0; i < block; i++) {
-         buffer[i] = (buffer[i] * ratio);
-      }
-      t->Set(buffer, s, block);
-
-      len -= block;
-      s += block;
-      
-      TrackProgress(count, (s-start)/(double)originalLen);
-   }
-
-   delete[] buffer;
-
+   sampleCount i;
+   for (i = 0; i < len; i++)
+      buffer[i] = (buffer[i] * ratio);
    return true;
 }
 

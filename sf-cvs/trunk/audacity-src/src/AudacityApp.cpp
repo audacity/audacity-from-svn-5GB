@@ -42,6 +42,7 @@
 #include "Help.h"
 #include "Prefs.h"
 #include "Project.h"
+#include "Sequence.h"
 #include "WaveTrack.h"
 #include "prefs/PrefsDialog.h"
 
@@ -345,7 +346,7 @@ bool AudacityApp::OnInit()
                if (theBlockSize >= 256 && theBlockSize < 100000000) {
                   fprintf(stderr, _("Using block size of %ld\n"),
                           theBlockSize);
-                  WaveTrack::SetMaxDiskBlockSize(theBlockSize);
+                  Sequence::SetMaxDiskBlockSize(theBlockSize);
                }
             }
             option++;
