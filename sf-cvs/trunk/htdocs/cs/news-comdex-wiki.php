@@ -15,19 +15,12 @@ Jako podìkování tìm, kteøí pøispìli máme nyní <a href="http://audacityteam.org/t
 </p>
 
 <p>
-Both the <a href="http://audacityteam.org/wiki/">Wiki</a> and the
-<a href="http://audacityteam.org/tshirt.php">T-Shirt Offer</a>
-are hosted on a new website,
-<a href="http://audacityteam.org/">AudacityTeam.org</a>,
-which we've set up for extra Audacity content and topics related
-to the Audacity development team, as opposed to Audacity in general.
+Jak <a href="http://audacityteam.org/wiki/">Wiki</a>, tak <a href="http://audacityteam.org/tshirt.php">nabídka trièek</a> jsou hostovány na novıch stránkách <a href="http://audacityteam.org/">AudacityTeam.org</a>, které jsme zaloili zvláš pro obsah a témata tıkající se vıvojového tımu Audacity.
 </p>
 
 <p>
-Check back soon for Audacity 1.2.0-pre3.  If you haven't tried
-a beta or prerelease version of Audacity lately, check out our
-updated <a href="http://audacity.sourceforge.net/screenshots.php"
->Screenshots</a>. 
+Brzy se sem vrate a uvidíte, jestli u bude k dispozici Audacity 1.2.0-pre3. Pokud jste nezkoušeli beta nebo pozdìjší PRE verze, podívejte se na naše zaktualizované <a href="http://audacity.sourceforge.net/screenshots.php"
+>Screenshoty</a>. 
 </p>
 
 <?php BoxBottom(); ?>
