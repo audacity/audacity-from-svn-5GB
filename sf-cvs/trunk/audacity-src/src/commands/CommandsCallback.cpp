@@ -1097,6 +1097,24 @@ void AudacityProject::OnAlign()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::OnAlignCursor()
+{
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected())
+         t->SetOffset(mViewInfo.sel0);
+
+      t = iter.Next();
+   }
+
+   PushState(_("Aligned with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
 void AudacityProject::OnAlignSelStart()
 {
 
@@ -1129,6 +1147,26 @@ void AudacityProject::OnAlignSelEnd()
    }
 
    PushState(_("Aligned with sel1"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignEndCursor()
+{
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+            t->SetOffset(0.0);
+            t->SetOffset(mViewInfo.sel0 - t->GetEndTime() );
+         }
+
+      t = iter.Next();
+   }
+
+   PushState(_("Aligned end with sel0"));
 
    mTrackPanel->Refresh(false);
 }
@@ -1169,6 +1207,44 @@ void AudacityProject::OnAlignEndSelEnd()
    }
 
    PushState(_("Aligned end with sel1"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignGroupCursor()
+{
+   double minOffset = 1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         if (t->GetOffset() < minOffset)
+            minOffset = t->GetOffset();
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - minOffset;
+
+
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   PushState(_("Aligned group with sel0"));
 
    mTrackPanel->Refresh(false);
 }
@@ -1249,7 +1325,7 @@ void AudacityProject::OnAlignGroupSelEnd()
    mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnAlignGroupEndSelStart()
+void AudacityProject::OnAlignGroupEndCursor()
 {
    double maxEndOffset = -1000000.0;
    double delta = 0.0;
@@ -1271,6 +1347,44 @@ void AudacityProject::OnAlignGroupEndSelStart()
 
    delta = mViewInfo.sel0 - maxEndOffset;
 
+   TrackListIterator iter2(mTracks);
+   t = iter2.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisOffset = t->GetOffset();
+         t->SetOffset(thisOffset + delta);
+      }
+
+      t = iter2.Next();
+   }
+
+   PushState(_("Aligned group end with sel0"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnAlignGroupEndSelStart()
+{
+   double maxEndOffset = -1000000.0;
+   double delta = 0.0;
+   double thisOffset = 0.0;
+   double thisEndOffset = 0.0;
+
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+
+   while (t) {
+      if (t->GetSelected()) {
+         thisEndOffset = t->GetEndTime();
+         if (thisEndOffset > maxEndOffset)
+            maxEndOffset = thisEndOffset;
+      }
+
+      t = iter.Next();
+   }
+
+   delta = mViewInfo.sel0 - maxEndOffset;
 
    TrackListIterator iter2(mTracks);
    t = iter2.First();
@@ -1310,7 +1424,6 @@ void AudacityProject::OnAlignGroupEndSelEnd()
    }
 
    delta = mViewInfo.sel1 - maxEndOffset;
-
 
    TrackListIterator iter2(mTracks);
    t = iter2.First();
