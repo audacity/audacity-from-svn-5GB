@@ -25,13 +25,13 @@ int FFTSizes[]            = { 64,
 							  2048,
 							  4096};
 
-wxString stringFFTSizes[] = { "64 - most narrowband",
+wxString stringFFTSizes[] = { "64 - most wideband",
 							  "128",
 							  "256 - default",
 							  "512",
 							  "1024",
 							  "2048",
-							  "4096 - most wideband"};
+							  "4096 - most narrowband"};
 
 SpectrumPrefs::SpectrumPrefs(wxWindow *parent):
 	PrefsPanel(parent)
