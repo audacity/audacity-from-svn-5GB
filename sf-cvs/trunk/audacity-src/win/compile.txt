@@ -35,7 +35,8 @@ installation.  (Ignore "wxvc_dll.dsw".)  Select
 "Project"->"Settings" (Alt+F7), choose "Win32 Release" in
 the "Settings For" combo box and select everything visible
 in the tree window on the left of the dialog box.  Now
-select the "C/C++" tab and change "Use run-time library" to
+select the "C/C++" tab and change "Use run-time library" 
+under the 'Code Generation' combo box to
 "Multithreaded".  Now select "Win32 Debug" from the
 "Settings For" combo and change the run-time library to
 "Debug Multithreaded".  Now you can click "OK" and build
