@@ -673,7 +673,7 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    :wxDialog(parent, id, title)
 {
    mControls = controlArray;
-   mInHandler = false;
+   mInHandler = true; // This prevents a race condition on MSW
 
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxBoxSizer *hSizer;
@@ -739,6 +739,8 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   mInHandler = false;
 
    wxCommandEvent dummy;
    OnSlider(dummy);
