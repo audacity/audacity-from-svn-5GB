@@ -213,6 +213,11 @@ wxString &AudacityProject::GetCommandName(int nIndex)
    return *mCommandNames[nIndex];
 }
 
+wxString &AudacityProject::GetCommandDesc(int nIndex)
+{
+   return *mCommandDesc[nIndex];
+}
+
 int AudacityProject::GetNumCommands()
 {
    return mCommandNames.GetCount();
