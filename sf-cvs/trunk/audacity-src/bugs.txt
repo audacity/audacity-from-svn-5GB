@@ -29,8 +29,9 @@ Known bugs to fix:
   (in Audacity 1.0 only; fix is in place for Audacity 1.1)
 - Sign error in Ruler (see track vertical ruler)
 - Problems with Ruler in Filter dialog
-- Hitting the spacebar causes Audacity to start playing
-  (Mac OS only?)
+- Hitting the spacebar causes Audacity to start playing;
+  hitting 'r' causes Audacity to start recording,
+  even when you're in an Open/Save dialog!  Mac OS only.
 - Double-clicking a track selects all in the ruler, but
   not the track (Windows)
 - Right-click doesn't always zoom out, esp. after
