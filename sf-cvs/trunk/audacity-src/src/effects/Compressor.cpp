@@ -23,6 +23,7 @@
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
+#include "../Acolor.h"
 
 EffectCompressor::EffectCompressor()
 {
@@ -337,8 +338,11 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
                   mEnvRect.x + mEnvRect.width,
                   mEnvRect.y + mEnvRect.height - kneeY);
 
-   // Nice dark red line for the compression diagram
-   memDC.SetPen(wxPen(wxColour(180, 40, 40), 3, wxSOLID));
+   // Was: Nice dark red line for the compression diagram
+//   memDC.SetPen(wxPen(wxColour(180, 40, 40), 3, wxSOLID));
+
+   // Nice blue line for compressor, same color as used in the waveform envelope.
+   memDC.SetPen( AColor::WideEnvelopePen) ;
 
    memDC.DrawLine(mEnvRect.x,
                   mEnvRect.y + mEnvRect.height,

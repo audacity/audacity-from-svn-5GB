@@ -382,7 +382,7 @@ void ControlToolBar::MakeButtons()
                       (char const **) PlayDisabled,
                       (char const **) PlayAlpha, ID_PLAY_BUTTON,
                       false);
-   mPlay->SetToolTip(_("Play (with shift for loop-play)"));
+   mPlay->SetToolTip(_("Play (Shift for loop-play)"));
 
    MakeLoopImage();
 

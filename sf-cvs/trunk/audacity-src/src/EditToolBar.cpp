@@ -58,7 +58,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 EditToolBar::EditToolBar(wxWindow * parent)
-   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(350, 27))
+   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(377, 27))
 {
    InitializeEditToolBar();
 }
@@ -76,7 +76,7 @@ EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void EditToolBar::InitializeEditToolBar()
 {
-   mIdealSize = wxSize(350, 27);
+   mIdealSize = wxSize(377, 27);
    mTitle = _("Audacity Edit Toolbar");
    mType = EditToolBarID;
    mNumDividers = 0;
@@ -147,7 +147,7 @@ void EditToolBar::MakeButtons()
    AddButton(Paste, PasteDisabled, PasteAlpha, ETBPasteID,
              _("Paste"));
    AddButton(Trim, TrimDisabled, TrimAlpha, ETBTrimID,
-             _("Trim everything outside selection"));
+             _("Trim outside selection"));
    AddButton(Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
              _("Silence selection"));
 
@@ -160,10 +160,19 @@ void EditToolBar::MakeButtons()
              _("Zoom In"));
    AddButton(ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
              _("Zoom Out"));
+   AddButton(ZoomToggle, ZoomToggleDisabled, ZoomToggleAlpha, ETBZoomToggleID,
+             _("Zoom Toggle"));
    AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
              _("Fit selection in window"));
    AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
-             _("Fit entire project in window"));
+             _("Fit project in window"));
+
+   mButtons[ETBZoomInID]->SetEnabled(false);
+   mButtons[ETBZoomOutID]->SetEnabled(false);
+   mButtons[ETBZoomToggleID]->SetEnabled(false);
+   mButtons[ETBZoomSelID]->SetEnabled(false);
+   mButtons[ETBZoomFitID]->SetEnabled(false);
+   mButtons[ETBPasteID]->SetEnabled(false);
 
    delete upImage;
    delete downImage;
@@ -220,6 +229,9 @@ void EditToolBar::OnButton(wxCommandEvent &event)
       case ETBZoomOutID:
          p->OnZoomOut();
          break;
+      case ETBZoomToggleID:
+         p->OnZoomToggle();
+         break;
       case ETBZoomSelID:
          p->OnZoomSel();
          break;
@@ -270,8 +282,9 @@ void EditToolBar::EnableDisableButtons()
 
    bool tracks = (!p->GetTracks()->IsEmpty());
 
-   mButtons[ETBZoomInID]->SetEnabled(p->GetZoom() < gMaxZoom);
-   mButtons[ETBZoomOutID]->SetEnabled(p->GetZoom() > gMinZoom);
+   mButtons[ETBZoomInID]->SetEnabled(tracks && (p->GetZoom() < gMaxZoom));
+   mButtons[ETBZoomOutID]->SetEnabled(tracks && (p->GetZoom() > gMinZoom) );
+   mButtons[ETBZoomToggleID]->SetEnabled(tracks);
 
    mButtons[ETBZoomSelID]->SetEnabled(selection);
    mButtons[ETBZoomFitID]->SetEnabled(tracks);

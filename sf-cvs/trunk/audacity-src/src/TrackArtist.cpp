@@ -755,6 +755,7 @@ void TrackArtist::DrawTimeSlider(WaveTrack *track,
    const int taper=6; // how much the box tapers by.
    const int barSpacing = 4; // how far apart the bars are.
    const int barWidth = 3;
+   const int xFlat = 3;
 
    //Enough space to draw in?
    if( r.height <= ((taper+border + barSpacing) * 2 ))
@@ -766,26 +767,37 @@ void TrackArtist::DrawTimeSlider(WaveTrack *track,
    int leftTaper  = rightwards ? 0 : 6;
    int rightTaper = rightwards ? 6 : 0;
 
-   int xLeft = rightwards ? (r.x +border) : (r.x + r.width - (border+width));
+   int xLeft = rightwards ? (r.x +border -2) : (r.x + r.width + 1 - (border+width));
    int yTop  = r.y+border;
    int yBot  = r.y+r.height-border;
 
-   dc.SetPen(*wxWHITE_PEN);
-   dc.DrawLine( xLeft, yBot-leftTaper, xLeft, yTop+leftTaper );
-   dc.DrawLine( xLeft, yTop+leftTaper, xLeft+width, yTop+rightTaper );
-   dc.SetPen(*wxBLACK_PEN);
-   dc.DrawLine( xLeft+width, yTop+rightTaper, xLeft+width, yBot-rightTaper );
-   dc.DrawLine( xLeft+width, yBot-rightTaper, xLeft, yBot-leftTaper);
+   AColor::Light(&dc, false);
+   dc.DrawLine( xLeft,       yBot-leftTaper, xLeft,       yTop+leftTaper );
+   dc.DrawLine( xLeft,       yTop+leftTaper, xLeft+xFlat, yTop );
+   dc.DrawLine( xLeft+xFlat, yTop,           xLeft+width, yTop+rightTaper );
+   AColor::Dark(&dc, false);
+   dc.DrawLine( xLeft+width,       yTop+rightTaper, xLeft+width,       yBot-rightTaper );
+   dc.DrawLine( xLeft+width,       yBot-rightTaper, xLeft+width-xFlat, yBot );
+   dc.DrawLine( xLeft+width-xFlat, yBot,            xLeft,             yBot-leftTaper);
 
    int firstBar = yTop + taper + taper/2;
    int nBars    = (yBot-yTop-taper*3) / barSpacing +1;
    xLeft += (width-barWidth+1)/2;
    int y;
-   for(int i=0;i<nBars;i++)
-   {
+   int i;
+
+   AColor::Light(&dc, false);
+   for(i=0;i<nBars;i++){
       y = firstBar + barSpacing*i;
       dc.DrawLine( xLeft, y, xLeft+barWidth, y);
    }
+   AColor::Dark(&dc, false);
+   for(i=0;i<nBars;i++){
+      y = firstBar + barSpacing*i+1;
+      dc.DrawLine( xLeft, y, xLeft+barWidth, y);
+   }
+
+
 }
 
 

@@ -150,7 +150,7 @@ void TipPanel::OnPaint(wxPaintEvent& event)
    dc.SetFont(labelFont);
    GetClientSize(&width, &height);
    dc.SetPen(*wxBLACK_PEN);
-   dc.SetBrush(*wxWHITE_BRUSH);
+   dc.SetBrush(AColor::tooltipBrush);
    dc.DrawRectangle(0, 0, width, height);
    dc.GetTextExtent(label, &textWidth, &textHeight);
    dc.DrawText(label, (width-textWidth)/2, (height-textHeight)/2);
@@ -295,10 +295,14 @@ void LWSlider::Init(wxWindow * parent,
          dc->DrawRectangle(0, 0, mWidth, mHeight);
       }
 
-      AColor::Light(dc, i==1);
-      dc->DrawLine(mLeftX, mCenterY, mRightX+1, mCenterY);
+      if( i==1) {
+         AColor::Light(dc, i==1);
+      } else {
+         AColor::Dark(dc, i==1);
+      }
+      dc->DrawLine(mLeftX, mCenterY, mRightX+2, mCenterY);
       AColor::Dark(dc, i==1);
-      dc->DrawLine(mLeftX, mCenterY+1, mRightX+1, mCenterY+1);
+      dc->DrawLine(mLeftX, mCenterY+1, mRightX+2, mCenterY+1);
 
       int divs = 10;
       double upp = divs / (double)(mWidthX-1);
@@ -324,6 +328,7 @@ void LWSlider::Init(wxWindow * parent,
          dc->DrawText(_T("R"), mRightX-7, 1);
       } else
       {
+         // draw the '-' and the '+'
          dc->SetPen(*wxBLACK_PEN);
          dc->DrawLine(mLeftX, mCenterY-10, mLeftX+5, mCenterY-10);
          dc->DrawLine(mRightX-7, mCenterY-10, mRightX-2, mCenterY-10);

@@ -55,7 +55,11 @@ class AColor {
    static wxBrush soloBrush;
 
    static wxPen envelopePen;
+   static wxPen WideEnvelopePen;
    static wxBrush envelopeBrush;
+
+   static wxBrush tooltipBrush;
+
 
  private:
    static bool inited;

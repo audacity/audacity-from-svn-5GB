@@ -332,8 +332,8 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
       // Create new point
       double when = h + (event.m_x - r.x) / pps - mOffset;
 
-      if (when <= 0 || when >= mTrackLen)
-         return false;
+//      if (when <= 0 || when >= mTrackLen)
+//         return false;
 
       int dy;
       if (upper)
@@ -647,12 +647,12 @@ int Envelope::Insert(double when, double value)
 
    if (len && when < 0.0)
       return 0;
-   if (len && when > mTrackLen)
+   if ((len > 1) && when > mTrackLen)
       return len - 1;
 
    if (when < 0.0)
       when = 0.0;
-   if (when > mTrackLen)
+   if ((len>1) && when > mTrackLen)
       when = mTrackLen;
 
    int i = 0;

@@ -314,7 +314,7 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
    // JKC: This code draws a grid of lines around the first few
    // buttons on the toolbar.
-   // This should be moved to ControlToolbar.
+   // TODO: This should be moved to ControlToolbar.
    // Having it here means that it is also drawn in EditToolBar,
    // which we probably don't want.  (same for the Mac 
    // version in other half of #ifdef).

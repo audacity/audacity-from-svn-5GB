@@ -55,6 +55,7 @@ enum {
 
    ETBZoomInID,
    ETBZoomOutID,
+   ETBZoomToggleID,
    ETBZoomSelID,
    ETBZoomFitID,
 
