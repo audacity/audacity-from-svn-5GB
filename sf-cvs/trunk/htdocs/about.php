@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = $aboutStr;
 include 'top.inc.php';
-IncludeFile("about");
+include GetTranslation("about");
 include 'bottom.inc.php';
 
 ?>
