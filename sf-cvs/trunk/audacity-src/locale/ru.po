@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-10-21 19:31+0400\n"
-"PO-Revision-Date: 2003-10-23 19:41+0400\n"
+"PO-Revision-Date: 2003-10-25 17:08+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -506,7 +506,7 @@ msgstr "Применён эффект: %s задержка = %f секунд, коэффициент спада = %f"
 #: ../src/effects/BassBoost.cpp:36
 #, c-format
 msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
-msgstr "Применён эффект: %s частота = %.0f Гц, повышение = %.0f ДБ"
+msgstr "Применён эффект: %s частота = %.0f Гц, усиление = %.0f ДБ"
 
 #: ../src/effects/Wahwah.cpp:42
 #, c-format
@@ -806,7 +806,7 @@ msgstr "Усиление басовых частот - Наска Октавиан Пол"
 
 #: ../src/effects/BassBoost.h:44
 msgid "BassBoost..."
-msgstr "Усиление басовых частот..."
+msgstr "Усилить басовые частоты..."
 
 #: ../src/effects/ChangeTempo.cpp:212
 msgid "Beats per Minute (BPM):   from"
@@ -828,7 +828,7 @@ msgstr "Битовая частота:"
 
 #: ../src/effects/BassBoost.cpp:302
 msgid "Boost (dB):"
-msgstr "Повышение (ДБ):"
+msgstr "Усиление (ДБ):"
 
 #: ../src/effects/BassBoost.h:48
 msgid "Boosting Bass Frequencies"
@@ -1451,7 +1451,7 @@ msgstr "Автор документации"
 
 #: ../src/effects/Amplify.cpp:165
 msgid "Don't allow clipping"
-msgstr "Не разрешать кадрирование"
+msgstr "Не разрешать срезание сигнала"
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
@@ -1671,11 +1671,11 @@ msgstr "Экспортировать &заметки..."
 
 #: ../src/Menus.cpp:147
 msgid "Export As MP3..."
-msgstr "Экспортировать как MP3..."
+msgstr "Экспортировать в MP3..."
 
 #: ../src/Menus.cpp:150
 msgid "Export As Ogg Vorbis..."
-msgstr "Экспортировать как Ogg Vorbis..."
+msgstr "Экспортировать в Ogg Vorbis..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:159
 msgid "Export Keyboard Shortcuts As:"
@@ -1691,11 +1691,11 @@ msgstr "Экспортировать в MP3"
 
 #: ../src/Menus.cpp:148
 msgid "Export Selection As MP3..."
-msgstr "Экспортировать выделенное как MP3..."
+msgstr "Экспортировать выделенное в MP3..."
 
 #: ../src/Menus.cpp:151
 msgid "Export Selection As Ogg Vorbis..."
-msgstr "Экспортировать выделенное как Ogg Vorbis..."
+msgstr "Экспортировать выделенное в Ogg Vorbis..."
 
 #: ../src/FreqWindow.cpp:990
 msgid "Export Spectral Data As:"
@@ -3155,7 +3155,7 @@ msgstr "Восстановить выделение"
 
 #: ../src/Menus.cpp:236
 msgid "Selection Save"
-msgstr "Сохранить выделение"
+msgstr "Запомнить выделение"
 
 #: ../src/ControlToolBar.cpp:345
 msgid "Selection Tool"
@@ -3388,12 +3388,12 @@ msgstr "Сглаживать семпл"
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:260
 msgid "Snap Off"
-msgstr "Выключить привязку"
+msgstr "Выключить"
 
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:258
 msgid "Snap On"
-msgstr "Включить привязку"
+msgstr "Включить"
 
 #: ../src/Menus.cpp:255
 msgid "Snap-To..."
