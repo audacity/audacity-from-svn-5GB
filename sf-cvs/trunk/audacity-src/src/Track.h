@@ -86,7 +86,7 @@ class VTrack {
    // AS: Note that the dirManager is mutable.  This is
    // mostly to support "Duplicate" of const objects,
    // but in general, mucking with the dir manager is
-   // seperate from the Track.
+   // separate from the Track.
    DirManager* GetDirManager() const { return dirManager; }
 
    virtual void Cut  (double t0, double t1, VTrack ** dest) { *dest = 0; }
@@ -207,34 +207,27 @@ class TrackList {
 
 class ConstTrackListIterator {
  public:
-  ConstTrackListIterator(const TrackList * val) : l(val), cur(NULL) {}
-  
-  // Iterate functions
-  VTrack *First() const
+    ConstTrackListIterator(const TrackList * val) : l(val), cur(NULL) {}
+
+    // Iterate functions
+    VTrack *First() const
     {
-      cur = l->head;
-      
-      if (cur)
-	return cur->t;
-      else
-	return NULL;
+       cur = l->head;
+
+       if (cur) return cur->t;
+       return NULL;
     }
-  
-  VTrack *Next() const
+
+    VTrack *Next() const
     {
-      if (cur)
-	cur = cur->next;
-      
-      if (cur)
-	return cur->t;
-      else
-	return NULL;
+       if (cur) cur = cur->next;
+       if (cur) return cur->t;
+       return NULL;
     }
-  
-  
+
  private:
-  const TrackList * l;
-  mutable TrackListNode *cur;
+    const TrackList * l;
+    mutable TrackListNode *cur;
 };
 
 #endif
