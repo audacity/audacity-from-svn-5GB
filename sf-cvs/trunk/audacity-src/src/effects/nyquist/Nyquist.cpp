@@ -130,6 +130,12 @@ void EffectNyquist::Parse(wxString line)
       return;
    }
 
+   // We're on verison 1.  Reject if it's an earlier version.
+   if (len>=2 && tokens[0]=="version" && tokens[1]!="1") {
+      mOK = false;
+      return;
+   }
+
    if (len>=2 && tokens[0]=="name") {
       mName = UnQuote(tokens[1]);
       return;
