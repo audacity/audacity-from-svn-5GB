@@ -322,6 +322,7 @@ void AudioIO::FillBuffers()
       double deltat = block / mRate;
       if (mT + deltat > mT1) {
          deltat = mT1 - mT;
+         if(deltat < 0.0) return;
          block = (sampleCount)(deltat * mRate + 0.5);
       }
       
