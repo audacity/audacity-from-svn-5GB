@@ -175,6 +175,7 @@ Mixer::Mixer(int numChannels, int bufferSize, bool interleaved)
   mBufferSize = bufferSize;
   mInterleaved = interleaved;
   mUseVolumeSlider = false;
+  mAPalette = NULL;
 
   if (mInterleaved) {
 	mNumBuffers = 1;
@@ -199,9 +200,10 @@ Mixer::~Mixer()
   delete[] mTemp;
 }
 
-void Mixer::UseVolumeSlider(bool yes)
+void Mixer::UseVolumeSlider(APalette* palette)
 {
-  mUseVolumeSlider = yes;
+  mUseVolumeSlider = true;
+  mAPalette = palette;
 }
 
 void Mixer::Clear()
@@ -278,7 +280,7 @@ void Mixer::Mix(int *channelFlags, WaveTrack *src, double t0, double t1)
 	
   double volume;
   if (mUseVolumeSlider)
-	volume = gAPalette->GetSoundVol();
+	volume = mAPalette->GetSoundVol();
   else
 	volume = 1.0;
 

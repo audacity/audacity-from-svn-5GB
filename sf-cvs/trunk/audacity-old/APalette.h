@@ -24,27 +24,33 @@
 #include <wx/pen.h>
 #include <wx/minifram.h>
 
+#include "Project.h"
+
 class AButton;
 class ASlider;
 class APalette;
+class APaletteFrame;
 
-extern APalette *gAPalette;
+extern APaletteFrame *gAPaletteFrame;
+extern bool gWindowedPalette;
 
-void InitAPalette(wxWindow *parent);
+void InitAPaletteFrame(wxWindow *parent);
+int GetAPaletteHeight();
 
-// Define a new mini frame
-class APalette: public wxMiniFrame
+void ShowWindowedPalette(wxPoint *where = NULL);
+void HideWindowedPalette();
+
+class APalette: public wxWindow
 {
 public:
   APalette(wxWindow *parent, wxWindowID id,
-		   const wxString& title,
-		   const wxPoint& pos);
+		   const wxPoint& pos,
+		   const wxSize& size);
 
   virtual ~APalette();
 
   int GetCurrentTool();
   
-  void OnCloseWindow(wxCloseEvent& event);
   void OnPaint(wxPaintEvent& event);
   void OnTool(wxCommandEvent& evt);
 
@@ -71,6 +77,21 @@ private:
     
 DECLARE_EVENT_TABLE()
 };
+
+class APaletteFrame: public wxMiniFrame
+{
+public:
+  APaletteFrame(wxWindow *parent, wxWindowID id,
+				const wxString& title,
+				const wxPoint& pos);
+
+  void OnCloseWindow(wxCloseEvent& event);
+
+  APalette     mPalette;
+
+DECLARE_EVENT_TABLE()
+};
+
 
 #define ID_FIRST_TOOL      500
 #define ID_IBEAM           500

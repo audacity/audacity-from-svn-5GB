@@ -15,6 +15,7 @@
 
 #include "WaveTrack.h"
 
+class APalette;
 class DirManager;
 
 bool QuickMix(TrackList *tracks, DirManager *dirManager);
@@ -24,7 +25,7 @@ public:
   Mixer(int numChannels, int bufferSize, bool interleaved);
   virtual ~Mixer();
 
-  void UseVolumeSlider(bool yes);
+  void UseVolumeSlider(APalette *palette);
 
   void Clear();
   void MixLeft(WaveTrack *src, double t0, double t1);
@@ -45,6 +46,7 @@ private:
   int        mInterleavedBufferSize;
   bool       mInterleaved;
   bool       mUseVolumeSlider;
+  APalette   *mAPalette;
   sampleType **mBuffer;
   sampleType *mTemp;
 };

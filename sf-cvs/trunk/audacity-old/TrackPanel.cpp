@@ -22,9 +22,27 @@
 #include "APalette.h"
 #include "AColor.h"
 #include "Track.h"
-#include "Play.h"
+#include "Project.h"
 #include "WaveTrack.h"
 #include "LabelTrack.h"
+
+enum {
+  TrackPanelFirstID = 2000,
+
+  OnChannelLeftID,
+  OnChannelRightID,
+  OnChannelMonoID,
+
+  OnRate8ID,
+  OnRate11ID,
+  OnRate22ID,
+  OnRate44ID,
+  OnRate48ID,
+  OnRateOtherID,
+
+  OnWaveformID,
+  OnSpectrumID
+};
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
@@ -53,11 +71,11 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
 					   const wxSize& size,
 					   TrackList *tracks,
 					   ViewInfo *viewInfo,
-					   wxStatusBar *statusBar) :
+					   TrackPanelListener *listener) :
   wxWindow(parent, id, pos, size),
   mTracks(tracks),
   mViewInfo(viewInfo),
-  mStatusBar(statusBar),
+  mListener(listener),
   mBitmap(NULL),
   mAutoScrolling(false)
 {
@@ -147,10 +165,7 @@ void TrackPanel::OnTimer()
 
 	if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
 	  mAutoScrolling = true;
-	  wxEvent *e = new wxEvent(GetId());
-	  e->SetEventType(OnScrollRightID);
-	  GetParent()->ProcessEvent(*e);
-	  delete e;
+	  mListener->TP_ScrollRight();
 
 	  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
 	  HandleSelect(*e2);
@@ -161,10 +176,7 @@ void TrackPanel::OnTimer()
 
 	if (mMouseMostRecentX < mCapturedRect.x) {
 	  mAutoScrolling = true;
-	  wxEvent *e = new wxEvent(GetId());
-	  e->SetEventType(OnScrollLeftID);
-	  GetParent()->ProcessEvent(*e);      
-	  delete e;
+	  mListener->TP_ScrollRight();
 
 	  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
 	  HandleSelect(*e2);
@@ -243,21 +255,12 @@ void TrackPanel::OnPaint(wxPaintEvent& event)
 
 void TrackPanel::MakeParentPushState()
 {
-  wxEvent *e = new wxEvent(GetId());
-  e->SetEventType(OnPushStateID);
-  GetParent()->ProcessEvent(*e);
-  delete e;
+  mListener->TP_PushState();
 }
 
 void TrackPanel::MakeParentRedrawScrollbars()
 {
-  // An AudacityProject is programmed to redraw its scrollbars
-  // whenever it gets a thumb release message from its main pane.
-
-  wxScrollEvent *e =
-	new wxScrollEvent(wxEVT_SCROLL_THUMBTRACK, GetId());      
-  GetParent()->ProcessEvent(*e);      
-  delete e;
+  mListener->TP_RedrawScrollbars();
 }
 
 void TrackPanel::HandleCursor(wxMouseEvent& event)
@@ -290,7 +293,7 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 	if (event.m_y >= (r.y + r.height - 10) &&
 		event.m_y <  (r.y + r.height)) {	  
 
-	  mStatusBar->SetStatusText("Click and drag to resize the track", 0);
+	  mListener->TP_DisplayStatusMessage("Click and drag to resize the track", 0);
 
 	  SetCursor(*mResizeCursor);
 	  return;
@@ -298,32 +301,32 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 
 	// Otherwise set the cursor based on the current tool
 
-	switch(gAPalette->GetCurrentTool()) {
+	switch(mListener->TP_GetCurrentTool()) {
 	case 0: // select
-	  mStatusBar->SetStatusText("Click and drag to select audio", 0);
+	  mListener->TP_DisplayStatusMessage("Click and drag to select audio", 0);
 	  SetCursor(*mSelectCursor);
 	  break;
 	case 1: // envelope
-	  mStatusBar->SetStatusText("Click and drag to edit the "
+	  mListener->TP_DisplayStatusMessage("Click and drag to edit the "
 								"amplitude envelope", 0);
 	  SetCursor(*mArrowCursor);
 	  break;
 	case 2: // move/slide
-	  mStatusBar->SetStatusText("Click and drag to move a track "
+	  mListener->TP_DisplayStatusMessage("Click and drag to move a track "
 								"in time", 0);
 	  SetCursor(*mSlideCursor);
 	  break;
 	case 3: // zoom
 	  #ifdef __WXMAC__
-	  mStatusBar->SetStatusText("Click to Zoom In, Shift-Click to Zoom Out",
+	  mListener->TP_DisplayStatusMessage("Click to Zoom In, Shift-Click to Zoom Out",
 								0);
 	  #endif
 	  #ifdef __WXMSW__
-	  mStatusBar->SetStatusText("Left-Click to Zoom In, "
+	  mListener->TP_DisplayStatusMessage("Left-Click to Zoom In, "
 								"Right-Click to Zoom Out", 0);
 	  #endif
 	  #ifdef __WXGTK__
-	  mStatusBar->SetStatusText("Left=Zoom In, Right=Zoom Out, "
+	  mListener->TP_DisplayStatusMessage("Left=Zoom In, Right=Zoom Out, "
 								"Middle=Normal", 0);
 	  #endif
 	  if (event.ShiftDown())
@@ -370,7 +373,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		  mSelStart = mViewInfo->sel0;
 		}
 
-		mStatusBar->SetStatusText(
+		mListener->TP_DisplayStatusMessage(
 		  wxString::Format("Selection: %lf - %lf s",
 						   mViewInfo->sel0,
 						   mViewInfo->sel1), 1);
@@ -384,7 +387,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		mViewInfo->sel0 = mSelStart;
 		mViewInfo->sel1 = mSelStart;
 
-		mStatusBar->SetStatusText(
+		mListener->TP_DisplayStatusMessage(
 		  wxString::Format("Cursor: %lf s", mSelStart), 1);
 
 		mIsSelecting = true;
@@ -450,7 +453,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		mViewInfo->sel1 = mSelStart;
 	  }
 
-	  mStatusBar->SetStatusText(
+	  mListener->TP_DisplayStatusMessage(
 	    wxString::Format("Selection: %lf - %lf s",
 						 mViewInfo->sel0,
 						 mViewInfo->sel1), 1);
@@ -840,16 +843,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent& event)
 
   switch(event.KeyCode()) {
   case WXK_SPACE:
-	if (gSoundPlayer->IsBusy()) {
-	  gAPalette->OnStop();
-	  gAPalette->SetPlay(false);
-	  gAPalette->SetStop(true);
-	}
-	else {
-	  gAPalette->OnPlay();
-	  gAPalette->SetPlay(true);
-	  gAPalette->SetStop(false);
-	}
+	mListener->TP_OnPlayKey();
 	break;
 
   default:
@@ -870,6 +864,8 @@ void TrackPanel::OnKeyEvent(wxKeyEvent& event)
 
 void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 {
+  mListener->TP_HasMouse();
+
   if (!mAutoScrolling) {
 	mMouseMostRecentX = event.m_x;
 	mMouseMostRecentY = event.m_y;
@@ -908,7 +904,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 	return;
   }
 
-  switch(gAPalette->GetCurrentTool()) {
+  switch(mListener->TP_GetCurrentTool()) {
 
   case 0: // select
 	HandleSelect(event);
@@ -1111,7 +1107,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
   VTrack *t;
   int num=0;
 
-  bool envelopeFlag = (gAPalette->GetCurrentTool() == 1);
+  bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
   
   t = mTracks->First();
   while(t) {

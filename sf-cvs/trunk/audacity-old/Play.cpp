@@ -92,8 +92,8 @@ void SoundPlayer::Finish()
 {
   snd_close(&mAudioOut);
 
-  gAPalette->SetPlay(false);
-  gAPalette->SetStop(false);
+  mProject->GetAPalette()->SetPlay(false);
+  mProject->GetAPalette()->SetStop(false);
   mStop = false;
 
   // TODO mProject->SoundDone();
@@ -139,7 +139,7 @@ void SoundPlayer::OnTimer()
     int i;
 
 	Mixer *mixer = new Mixer(2, block, true);
-	mixer->UseVolumeSlider(true);
+	mixer->UseVolumeSlider(mProject->GetAPalette());
 	mixer->Clear();
 
     VTrack *vt = mTracks->First();

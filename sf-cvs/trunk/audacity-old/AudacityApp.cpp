@@ -65,12 +65,16 @@ wxWindow *gParentWindow = NULL;
 
 void QuitAudacity()
 {
-  if (gAPalette)
-	gAPalette->Destroy();
+  if (gAPaletteFrame)
+	gAPaletteFrame->Destroy();
   if (gFreqWindow)
 	gFreqWindow->Destroy();
   if (gParentFrame)
     gParentFrame->Destroy();
+
+  int len = gAudacityProjects.Count();
+  for(int i=0; i<len; i++)
+	gAudacityProjects[i]->Destroy();
 }
 
 IMPLEMENT_APP(AudacityApp)
@@ -110,11 +114,10 @@ bool AudacityApp::OnInit()
   #endif
   */
 
-  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
-  SetTopWindow(gAPalette);
-
-  InitAPalette(project);
+  InitAPaletteFrame(gParentWindow);
   InitFreqWindow(gParentWindow);
+  AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+  SetTopWindow(project);
 
   // Parse command-line arguments
 

@@ -21,28 +21,6 @@ class wxStatusBar;
 class TrackList;
 class VTrack;
 
-enum {
-  TrackPanelFirstID = 2000,
-
-  OnScrollLeftID,
-  OnScrollRightID,
-  OnPushStateID,
-
-  OnChannelLeftID,
-  OnChannelRightID,
-  OnChannelMonoID,
-
-  OnRate8ID,
-  OnRate11ID,
-  OnRate22ID,
-  OnRate44ID,
-  OnRate48ID,
-  OnRateOtherID,
-
-  OnWaveformID,
-  OnSpectrumID
-};
-
 struct ViewInfo {
 
   // Current selection
@@ -77,16 +55,29 @@ public:
   TrackPanel *parent;
 };
 
+class TrackPanelListener {
+public:
+  virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
+  virtual int  TP_GetCurrentTool() = 0;
+  virtual void TP_OnPlayKey() = 0;
+  virtual void TP_PushState() = 0;
+  virtual void TP_RedrawScrollbars() = 0;
+  virtual void TP_ScrollLeft() = 0;
+  virtual void TP_ScrollRight() = 0;
+  virtual void TP_HasMouse() = 0;
+};
+
 class TrackPanel: public wxWindow
 {
 public:
 
-  TrackPanel(wxWindow *parent, wxWindowID id,
+  TrackPanel(wxWindow *parent,
+			 wxWindowID id,
 			 const wxPoint& pos,
 			 const wxSize& size,
 			 TrackList *tracks,
 			 ViewInfo *viewInfo,
-			 wxStatusBar *statusBar);
+			 TrackPanelListener *listener);
 
   virtual ~TrackPanel();
 
@@ -147,6 +138,8 @@ private:
   void DrawTracks(wxDC& dc);
 
   inline void Bevel(wxDC& dc, bool up, wxRect &r);
+
+  TrackPanelListener *mListener;
 
   TrackList       *mTracks;
   ViewInfo        *mViewInfo;

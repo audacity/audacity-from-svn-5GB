@@ -28,7 +28,10 @@
 #include "UndoManager.h"
 
 class wxBoxSizer;
+class wxDragImage;
+
 class TrackList;
+class APalette;
 
 class AudacityProject;
 
@@ -36,7 +39,11 @@ AudacityProject *CreateNewAudacityProject(wxWindow *parentFrame);
 AudacityProject *GetActiveProject();
 void RedrawAllProjects();
 
-class AudacityProject: public wxFrame
+WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
+
+extern AProjectArray gAudacityProjects;
+
+class AudacityProject: public wxFrame, public TrackPanelListener
 {
 public:
 
@@ -53,6 +60,8 @@ public:
   TrackList  *GetTracks();
   double      GetSel0();
   double      GetSel1();
+  APalette   *GetAPalette();
+  wxString    GetName();
 
   // File I/O
 
@@ -92,6 +101,8 @@ public:
 
   void OnPlotSpectrum();
 
+  void OnFloatPalette();
+
   // Project Menu
 
   void OnImport();
@@ -120,9 +131,10 @@ public:
   void OnMouseEvent(wxMouseEvent& event);  
   void OnSize(wxSizeEvent &event);
   void OnScroll(wxScrollEvent &event);
-  void OnScrollUpdate(wxScrollEvent &event);
   void OnCloseWindow();
   void OnExit();
+
+  void HandleResize();
 
   // Other commands
 
@@ -134,6 +146,22 @@ public:
   void OnScrollRight();
   void FinishAutoScroll();
   void FixScrollbars();
+
+  // TrackPanel callback methods
+
+  virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum);
+  virtual int  TP_GetCurrentTool();
+  virtual void TP_OnPlayKey();
+  virtual void TP_PushState();
+  virtual void TP_RedrawScrollbars();
+  virtual void TP_ScrollLeft();
+  virtual void TP_ScrollRight();
+  virtual void TP_HasMouse();
+
+  // APalette
+
+  void ShowPalette();
+  void HidePalette();
 
 private:
 
@@ -181,10 +209,11 @@ private:
 
   // Window elements
 
+  APalette    *mAPalette;
+  wxPoint      mPaletteHotspot;
+  wxDragImage *mDrag;
   TrackPanel  *mTrackPanel;
-
   wxStatusBar *mStatusBar;
-
   wxScrollBar *mHsbar;
   wxScrollBar *mVsbar;
 

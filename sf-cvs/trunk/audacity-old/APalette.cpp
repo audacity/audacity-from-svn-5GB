@@ -35,23 +35,25 @@
 #include "Project.h"
 #include "Play.h"
 
-APalette *gAPalette = NULL;
+APaletteFrame *gAPaletteFrame = NULL;
+
+bool gWindowedPalette = false;
 
 #ifdef __WXMAC__
-#define APALETTE_HEIGHT 55
+#define APALETTE_HEIGHT_OFFSET 0
 #endif
 
 #ifdef __WXGTK__
-#define APALETTE_HEIGHT 75
+#define APALETTE_HEIGHT_OFFSET 22
 #endif
 
 #ifdef __WXMSW__
-#define APALETTE_HEIGHT 80
+#define APALETTE_HEIGHT_OFFSET 25
 #endif
 
 #include "xpm/Palette.xpm"
 
-void InitAPalette(wxWindow *parent)
+void InitAPaletteFrame(wxWindow *parent)
 {
   wxPoint where;
 
@@ -62,19 +64,65 @@ void InitAPalette(wxWindow *parent)
   where.y += 20;
   #endif
 
-  #ifdef __WXMSW__
-  where.y -= 3;
-  #endif
+  gAPaletteFrame = new APaletteFrame(parent, -1, "Audacity Palette",
+								where);
 
-  gAPalette = new APalette(parent, -1, "Audacity Palette",
-						   where);
-  gAPalette->Show(TRUE);
+  if (gWindowedPalette) {
+	gAPaletteFrame->Show(TRUE);
+  }
+}
+
+int GetAPaletteHeight()
+{
+  return 55;
+}
+
+void ShowWindowedPalette(wxPoint *where /* = NULL */)
+{
+  if (where)
+	gAPaletteFrame->Move(*where);
+
+  gAPaletteFrame->Show(true);
+  gWindowedPalette = true;
+
+  int len = gAudacityProjects.Count();
+  for(int i=0; i<len; i++)
+	gAudacityProjects[i]->HidePalette();
+}
+
+void HideWindowedPalette()
+{
+  gAPaletteFrame->Show(false);
+  gWindowedPalette = false;
+
+  int len = gAudacityProjects.Count();
+  for(int i=0; i<len; i++)
+	gAudacityProjects[i]->ShowPalette();
+}
+
+// APaletteFrame
+
+BEGIN_EVENT_TABLE(APaletteFrame, wxMiniFrame)
+  EVT_CLOSE  (              APaletteFrame::OnCloseWindow)
+END_EVENT_TABLE()
+
+APaletteFrame::APaletteFrame(wxWindow* parent,
+							 wxWindowID id,
+							 const wxString& title,
+							 const wxPoint& pos) :
+  wxMiniFrame(parent, id, title, pos,
+			  wxSize(300, GetAPaletteHeight() + APALETTE_HEIGHT_OFFSET),
+              wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
+			  wxMINIMIZE_BOX |
+			  wxFRAME_FLOAT_ON_PARENT),
+  mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
+{
+
 }
 
 // APalette
 
-BEGIN_EVENT_TABLE(APalette, wxMiniFrame)
-  EVT_CLOSE  (              APalette::OnCloseWindow)
+BEGIN_EVENT_TABLE(APalette, wxWindow)
   EVT_PAINT  (              APalette::OnPaint)
   EVT_COMMAND_RANGE (ID_FIRST_TOOL, ID_LAST_TOOL,
                      wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnTool)
@@ -84,11 +132,10 @@ BEGIN_EVENT_TABLE(APalette, wxMiniFrame)
                      wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
 END_EVENT_TABLE()
 
-APalette::APalette(wxWindow* parent, wxWindowID id, const wxString& title,
-				   const wxPoint& pos) :
-  wxMiniFrame(parent, id, title, pos, wxSize(300, APALETTE_HEIGHT),
-              wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP |
-			  wxFRAME_FLOAT_ON_PARENT)
+APalette::APalette(wxWindow* parent, wxWindowID id,
+				   const wxPoint& pos,
+				   const wxSize& size) :
+  wxWindow(parent, id, pos, size)
 {
   mTool[0] =
     new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
@@ -212,12 +259,12 @@ void APalette::OnPaint(wxPaintEvent &evt)
 
   dc.SetPen(*wxBLACK_PEN);
 
-  dc.DrawLine(27, 0, 27, 55);
-  dc.DrawLine(55, 0, 55, 55);
+  dc.DrawLine(27, 0, 27, height-1);
+  dc.DrawLine(55, 0, 55, height-1);
   dc.DrawLine(0, 27, 55, 27);
 }
 
-void APalette::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
+void APaletteFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 {
-  this->Show(FALSE);
+  HideWindowedPalette();
 }

@@ -20,35 +20,36 @@
 #ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/dc.h>
+#include <wx/dcmemory.h>
+#include <wx/dragimag.h>
 #include <wx/menu.h>
 #include <wx/string.h>
 #endif
 
 #include <wx/textfile.h>
 
-#include "Project.h"
+#include "AboutDialog.h"
 #include "AudacityApp.h"
 #include "AColor.h"
 #include "APalette.h"
+#include "Export.h"
+#include "FreqWindow.h"
 #include "Import.h"
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
 #include "ImportMP3.h"
-#include "Mix.h"
-#include "Export.h"
-#include "AboutDialog.h"
-#include "Track.h"
-#include "WaveTrack.h"
-#include "NoteTrack.h"
 #include "LabelTrack.h"
+#include "Mix.h"
+#include "NoteTrack.h"
+#include "Play.h"
+#include "Project.h"
+#include "Track.h"
 #include "TrackPanel.h"
-#include "FreqWindow.h"
+#include "WaveTrack.h"
 #include "effects/Effect.h"
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double     AudacityProject::msClipLen = 0.0;
-
-WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 
 #ifdef __WXMAC__
 const int sbarWidth = 16;
@@ -64,11 +65,29 @@ int gAudacityDocNum = 0;
 AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
 
+AudacityProject *GetActiveProject()
+{
+  return gActiveProject;
+}
+
+void SetActiveProject(AudacityProject *project)
+{
+  gActiveProject = project;
+}
+
 AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
 {
   wxPoint where;
   where.x = 10;
-  where.y = 85;
+  where.y = 10;
+
+  int width = 600;
+  int height = 400;
+
+  if (gWindowedPalette) {
+	where.y += 75;
+	height -= 75;
+  }
 
   #ifdef __WXMAC__
   where.y += 50;
@@ -79,20 +98,15 @@ AudacityProject *CreateNewAudacityProject(wxWindow *parentWindow)
 
   AudacityProject *p =
 	new AudacityProject(parentWindow, -1, 
-						where, wxSize(600, 300));
+						where, wxSize(width, height));
 
   p->Show(true);
 
   gAudacityDocNum = (gAudacityDocNum+1)%10;
 
-  gActiveProject = p;
+  SetActiveProject(p);
 
   return p;
-}
-
-AudacityProject *GetActiveProject()
-{
-  return gActiveProject;
 }
 
 void RedrawAllProjects()
@@ -142,6 +156,8 @@ enum {
 
   PlotSpectrumID,
 
+  FloatPaletteID,
+
   // Project Menu
   
   ImportID,
@@ -176,12 +192,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_CLOSE(AudacityProject::OnCloseWindow)
   EVT_SIZE (AudacityProject::OnSize)
   EVT_ACTIVATE (AudacityProject::OnActivate)
-  EVT_CUSTOM (OnScrollLeftID, TrackPanelID, AudacityProject::OnScrollLeft)
-  EVT_CUSTOM (OnScrollRightID, TrackPanelID, AudacityProject::OnScrollRight)
-  EVT_CUSTOM (OnPushStateID, TrackPanelID, AudacityProject::PushState)
   EVT_COMMAND_SCROLL  (HSBarID,   AudacityProject::OnScroll)
   EVT_COMMAND_SCROLL  (VSBarID,   AudacityProject::OnScroll)
-  EVT_COMMAND_SCROLL  (TrackPanelID,   AudacityProject::OnScrollUpdate)
   // File menu
   EVT_MENU(NewID, AudacityProject::OnNew)
   EVT_MENU(OpenID, AudacityProject::OnOpen)
@@ -206,6 +218,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(ZoomNormalID, AudacityProject::OnZoomNormal)
   EVT_MENU(ZoomFitID, AudacityProject::OnZoomFit)
   EVT_MENU(PlotSpectrumID, AudacityProject::OnPlotSpectrum)
+  EVT_MENU(FloatPaletteID, AudacityProject::OnFloatPalette)
   // Project menu
   EVT_MENU(ImportID, AudacityProject::OnImport)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
@@ -219,17 +232,17 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(AboutID, AudacityProject::OnAbout)
 END_EVENT_TABLE()
 
-int gOpenProjects = 0;
-
 AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 								 const wxPoint& pos, const wxSize& size) :
   wxFrame(parent, id, "Audacity", pos, size),
   mDirty(false),
   mTrackPanel(NULL),
+  mAPalette(NULL),
   mRate(44100.0),
+  mDrag(NULL),
   mAutoScrolling(false)
 {
-  mStatusBar = CreateStatusBar(2);
+  mStatusBar = CreateStatusBar(1);
 
   mStatusBar->SetStatusText("Welcome to Audacity version " 
 							AUDACITY_VERSION_STRING, 0);
@@ -303,6 +316,8 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mViewMenu->Append(ZoomFitID, "Fit in &Window\tCtrl+F");
   mViewMenu->AppendSeparator();
   mViewMenu->Append(PlotSpectrumID, "&Plot Spectrum\tCtrl+U");
+  mViewMenu->AppendSeparator();
+  mViewMenu->Append(FloatPaletteID, "Float/Unfloat Palette");
 
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
@@ -348,32 +363,47 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 
   SetMenuBar(mMenuBar);
 
+  int left=0, top=0, width, height;
+  GetClientSize(&width, &height);
+
+  //
+  // Create the Palette (if we're not using a windowed palette)
+  // 
+
+  if (!gWindowedPalette) {
+	int h = GetAPaletteHeight();
+
+	mAPalette = new APalette(this, 52,
+							 wxPoint(10, 0),
+							 wxSize(width-10, h));
+	
+	top += h+1;
+	height -= h+1;
+  }
+
   //
   // Create the TrackPanel and the scrollbars
   //
 
-  int width, height;
-  GetClientSize(&width, &height);
-
   mTrackPanel = new TrackPanel(this, TrackPanelID,
-							   wxPoint(0, 0),
+							   wxPoint(left, top),
 							   wxSize(width-sbarWidth, height-sbarWidth),
 							   mTracks, &mViewInfo,
-							   mStatusBar);
+							   this);
 
   int hoffset = mTrackPanel->GetLabelOffset()-1;
   int voffset = mTrackPanel->GetRulerHeight();
 
   mHsbar =
 	new wxScrollBar(this, HSBarID, 
-					wxPoint(hoffset, height-sbarWidth),
+					wxPoint(hoffset, top+height-sbarWidth),
 					wxSize(width-hoffset-sbarWidth, sbarWidth),
 					wxSB_HORIZONTAL);
 
   mVsbar =
 	new wxScrollBar(this, VSBarID,
 					wxPoint(width-sbarWidth, voffset),
-					wxSize(sbarWidth, height-sbarWidth-voffset),
+					wxSize(sbarWidth, top+height-sbarWidth-voffset),
 					wxSB_VERTICAL);
 
   InitialState();
@@ -382,7 +412,6 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   // Min size, max size
   SetSizeHints(250,200,20000,20000);
 
-  gOpenProjects++;
   gAudacityProjects.Add(this);
 }
 
@@ -390,10 +419,9 @@ AudacityProject::~AudacityProject()
 {
   // TODO delete mTracks;
 
-  gOpenProjects--;
   gAudacityProjects.Remove(this);
 
-  if (gOpenProjects <= 0)
+  if (gAudacityProjects.IsEmpty())
 	QuitAudacity();
 }
 
@@ -401,6 +429,13 @@ void AudacityProject::RedrawProject()
 {
   FixScrollbars();
   mTrackPanel->Refresh(false);
+}
+
+wxString AudacityProject::GetName()
+{
+  wxString n = mName;
+
+  return n;
 }
 
 double AudacityProject::GetRate()
@@ -421,6 +456,14 @@ double AudacityProject::GetSel1()
 TrackList *AudacityProject::GetTracks()
 {
   return mTracks;
+}
+
+APalette *AudacityProject::GetAPalette()
+{
+  if (mAPalette)
+	return mAPalette;
+  else
+	return &(gAPaletteFrame->mPalette);
 }
 
 void AudacityProject::FinishAutoScroll()
@@ -536,35 +579,41 @@ void AudacityProject::FixScrollbars()
   }
 }
 
-void AudacityProject::OnSize(wxSizeEvent &event)
+void AudacityProject::HandleResize()
 {
   if (mTrackPanel) {
-
+	
+	int left=0, top=0;
     int width, height;
     GetClientSize(&width, &height);
 
-    mTrackPanel->SetSize(0, 0,
+	if (!gWindowedPalette) {
+	  int h = GetAPaletteHeight();
+	  
+	  mAPalette->SetSize(10, 0, width-10, h);
+	  
+	  top += h+1;
+	  height -= h+1;
+	}
+
+    mTrackPanel->SetSize(left, top,
   					     width-sbarWidth, height-sbarWidth);
 
     int hoffset = mTrackPanel->GetLabelOffset()-1;
     int voffset = mTrackPanel->GetRulerHeight();
 
-    mHsbar->SetSize(hoffset, height-sbarWidth,
+    mHsbar->SetSize(hoffset, top+height-sbarWidth,
 				    width-hoffset-sbarWidth, sbarWidth);
     mVsbar->SetSize(width-sbarWidth, voffset,
-				    sbarWidth, height-sbarWidth-voffset);
+				    sbarWidth, top+height-sbarWidth-voffset);
 
     FixScrollbars();
   }
 }
 
-void AudacityProject::OnScrollUpdate(wxScrollEvent &event)
+void AudacityProject::OnSize(wxSizeEvent &event)
 {
-  // We get this message from our TrackPanel when we need
-  // to recalculate our scrollbars
-
-  FixScrollbars();
-  gActiveProject = this;
+  HandleResize();
 }
 
 void AudacityProject::OnScroll(wxScrollEvent &event)
@@ -601,7 +650,7 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
 	}
   */
 
-  gActiveProject = this;
+  SetActiveProject(this);
 
   if (!mAutoScrolling) {
 	mTrackPanel->Refresh(false);
@@ -613,8 +662,6 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
 
 bool AudacityProject::ProcessEvent(wxEvent& event)
 {
-  gActiveProject = this;
-
   int numEffects = Effect::GetNumEffects();
 
   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED &&
@@ -668,16 +715,113 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   r.width = width;
   r.height = sbarWidth;
   dc.DrawRectangle(r);
+
+  // If we're displaying the palette inside the window,
+  // draw little bumps to the left of the palette to
+  // indicate it's grabbable
+
+  if (!gWindowedPalette) {
+	int h = GetAPaletteHeight();
+
+	r.x = 0;
+	r.y = 0;
+	r.width = 10;
+	r.height = h;
+	dc.DrawRectangle(r);
+
+	int i;
+
+	AColor::Light(&dc, false);
+	for(i=h/2-20; i<h/2+20; i+=4)
+	  dc.DrawLine(3,i,6,i);
+	AColor::Dark(&dc, false);
+	for(i=h/2-19; i<h/2+21; i+=4)
+	  dc.DrawLine(3,i,6,i);
+
+	dc.SetPen(*wxBLACK_PEN);
+	dc.DrawLine(9, 0, 9, h);
+
+	dc.DrawLine(0, h, width, h);
+  }
 }
 
 void AudacityProject::OnActivate(wxActivateEvent& event)
 {
-  gActiveProject = this;
+  printf("Activate: %s\n", (const char *)GetName());
+
+  SetActiveProject(this);
+}
+
+void AudacityProject::ShowPalette()
+{
+  if (!mAPalette) {
+	int h = GetAPaletteHeight();
+
+	int width, height;
+	GetSize(&width, &height);
+	
+	mAPalette = new APalette(this, 52,
+							 wxPoint(10, 0),
+							 wxSize(width-10, h));
+  }
+  HandleResize();
+}
+
+void AudacityProject::HidePalette()
+{
+  if (mAPalette) {
+	delete mAPalette;
+	mAPalette = NULL;
+  }
+  HandleResize();
 }
 
 void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 {
+  SetActiveProject(this);
 
+  wxPoint hotspot;
+  hotspot.x = event.m_x;
+  hotspot.y = event.m_y;
+
+  wxPoint mouse = ClientToScreen(hotspot);
+
+  if (event.ButtonDown() && !mDrag &&
+	  !gWindowedPalette &&
+	  event.m_x<10 && event.m_y < GetAPaletteHeight()) {
+
+	int width, height;
+	mAPalette->GetSize(&width, &height);
+
+	wxClientDC dc(this);
+
+	wxBitmap *bitmap = new wxBitmap(width, height);
+	wxMemoryDC memDC;
+	memDC.SelectObject(*bitmap);
+	memDC.Blit(0, 0, width, height, &dc, 10, 0);
+	memDC.SelectObject(wxNullBitmap);
+
+	mDrag = new wxDragImage(*bitmap);
+
+	mDrag->BeginDrag(hotspot, this, true);
+	mDrag->Move(mouse);
+	mDrag->Show();
+	mPaletteHotspot = hotspot;
+  }
+
+  if (event.Dragging() && mDrag) {
+	mDrag->Move(mouse);
+  }
+  
+  if (event.ButtonUp() && mDrag) {
+	mDrag->Hide();
+	mDrag->EndDrag();
+	delete mDrag;
+	mDrag = NULL;
+
+	mouse -= mPaletteHotspot;
+	ShowWindowedPalette(&mouse);
+  }
 }
 
 void AudacityProject::OnAbout()
@@ -1029,12 +1173,7 @@ void AudacityProject::OnSaveAs()
 
 void AudacityProject::OnExit()
 {
-  #ifdef __WXMSW__
-  this->Destroy();
   QuitAudacity();
-  #else
-  wxExit();
-  #endif
 }
 
 void AudacityProject::ImportFile(wxString fileName)
@@ -1443,6 +1582,14 @@ void AudacityProject::OnPlotSpectrum()
   delete[] data_sample;
 }
 
+void AudacityProject::OnFloatPalette()
+{
+  if (gWindowedPalette)
+	HideWindowedPalette();
+  else
+	ShowWindowedPalette();
+}
+
 //
 // Undo/History methods
 //
@@ -1651,3 +1798,63 @@ void AudacityProject::SelectNone()
   mTrackPanel->Refresh(false);
 }
 
+// TrackPanel callback method
+void AudacityProject::TP_DisplayStatusMessage(const char *msg, int fieldNum)
+{
+  if (mStatusBar->GetFieldsCount() < (fieldNum+1))
+	mStatusBar->SetFieldsCount(fieldNum+1);
+  mStatusBar->SetStatusText(msg, fieldNum);
+}
+
+// TrackPanel callback method
+int  AudacityProject::TP_GetCurrentTool()
+{
+  return GetAPalette()->GetCurrentTool();
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_OnPlayKey()
+{ 
+  APalette *palette = GetAPalette();
+
+  if (gSoundPlayer->IsBusy()) {
+	palette->OnStop();
+	palette->SetPlay(false);
+	palette->SetStop(true);
+  }
+  else {
+	palette->OnPlay();
+	palette->SetPlay(true);
+	palette->SetStop(false);
+  }
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_PushState()
+{
+  
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_ScrollLeft()
+{
+  OnScrollLeft();
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_ScrollRight()
+{
+  OnScrollRight();
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_RedrawScrollbars()
+{
+  FixScrollbars();
+}
+
+// TrackPanel callback method
+void AudacityProject::TP_HasMouse()
+{
+  SetActiveProject(this);
+}
