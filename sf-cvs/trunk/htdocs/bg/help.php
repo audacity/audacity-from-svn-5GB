@@ -12,7 +12,39 @@
 </p>
 
 <p>
-<a href="docs/contents.html">Ръководство за потребителя/документация</a>
+Търсене в документацията на Audacity:
+
+<?php
+/* Include the iSearch search form */
+
+/* Relative reference to isearch directory */
+$isearch_path = "isearch";
+
+/* Set the width of the entry box in chars */
+$isearch_searchFormWidth = 20;
+
+/* Optional - set target frame for search results.
+ * Default value is "_self".
+ */
+$isearch_resultFrame = "_self";
+
+/* Optional - allow the user to select "all words" or "any words" to match.
+ * Default value is False.
+ */
+$isearch_allowSetOperator = False;
+
+/* Optional - add a "Search Internet" button to be displayed.
+ * Default value is True.
+ */
+$isearch_allowSearchInternet = False;
+
+/* Optional - Determine whether page containing this form is UTF-8 encoded.
+ * Default value is True.
+ */
+$isearch_charsetUtf8 = "True";
+
+include("$isearch_path/isearch_form.inc.php");
+?>
 </p>
 
 <p>
