@@ -14,7 +14,7 @@ RSYNC=rsync
 RSYNC_ARGS=-Cavz --exclude download_stats.txt
 UPLOAD_PATH=shell.sf.net:/home/groups/a/au/audacity/htdocs/
 
-publish: all
+publish:
 	chmod --quiet -R g+rwX .
 	chmod --quiet -R o+rX .
 	$(RSYNC) $(RSYNC_ARGS) ./ $(UPLOAD_PATH)
