@@ -13,8 +13,8 @@ Authors:
   Shane Mueller
 
 ================================================================
-This version is currently accurate for Audacity version 1.2.2.
-Last Updated: July 19, 2004
+This version is currently accurate for Audacity version 1.2.3.
+Last Updated: December 9, 2004
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -25,15 +25,9 @@ Microsoft at
 
   http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
 
-Audacity can be built with Visual C++ .NET 7.1. Let Visual Studio 
-automatically upgrade the .dsp project files. Then manually fix the 
-soundtouch project file: Remove all the .cc files from the project, then 
-re-add them (except for mmx_gcc.cc, which for some reason is not 
-converted correctly). You might also have trouble with the 
-precompiled headers in the Audacity project itself - you can fix that 
-by turning off the precompiled headers for that project. Finally, in the 
-release build configuration, you have to remove "libci.lib" from the 
-input linker setting. 
+Audacity can be built with Visual C++ .NET 7.1 (or 2003). Just 
+build wxWidgets with the .NET C++, and then use 
+"audacity.vcproj" instead of "audacity.dsw".
 
 It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked run-time libraries.
