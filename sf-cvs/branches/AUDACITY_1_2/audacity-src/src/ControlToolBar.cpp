@@ -702,7 +702,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          } else
          {
             // msmeyer: Show error message if stream could not be opened
-            wxMessageBox(_("Error while opening sound device. Please check the output "
+            wxMessageBox(_("Error while opening sound device. Please check the input "
                            "device settings and the project sample rate."),
                          _("Error"), wxOK | wxICON_EXCLAMATION, this);
          }
@@ -850,6 +850,11 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          mBusyProject = p;
       }
       else {
+         // msmeyer: Show error message if stream could not be opened
+         wxMessageBox(_("Error while opening sound device. Please check the output "
+                        "device settings and the project sample rate."),
+                      _("Error"), wxOK | wxICON_EXCLAMATION, this);
+
          SetPlay(false);
          SetStop(false);
          SetRecord(false);
@@ -1003,7 +1008,9 @@ void ControlToolBar::EnableDisableButtons()
    } else mPlay->Disable();
 #endif
 
-   mPlay->SetEnabled(tracks && !busy);
+   //mPlay->SetEnabled(tracks && !busy);
+   mPlay->SetEnabled(tracks && !mRecord->IsDown());
+
    mStop->SetEnabled(busy);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
