@@ -20,6 +20,7 @@
 #include "ExportPCM.h"
 #include "ExportMP3.h"
 #include "ExportOGG.h"
+#include "ExportCL.h"
 
 #include "sndfile.h"
 
@@ -196,6 +197,20 @@ bool ExportLossy(AudacityProject *project,
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
 #endif
    }
+   else if( format == "External Program" ) {
+#ifdef __WXGTK__
+      wxString extension = gPrefs->Read( "/FileFormats/ExternalProgramExportExtension", "" );
+      fName = ExportCommon(project, "External Program", "." + extension,
+                        selectionOnly, t0, t1, &stereo);
 
+      if (fName == "")
+         return false;
+
+      return ::ExportCL(project, stereo, fName,
+                      selectionOnly, t0, t1);
+#else
+      wxMessageBox(_("Command-line exporting is only supported on UNIX"));
+#endif
+   }
 }
 
