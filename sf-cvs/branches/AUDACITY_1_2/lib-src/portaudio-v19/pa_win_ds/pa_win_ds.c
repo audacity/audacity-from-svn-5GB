@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.1 2003-09-18 22:13:25 habes Exp $
+ * $Id: pa_win_ds.c,v 1.1.2.1 2004-04-22 04:39:42 mbrubeck Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -31,7 +31,9 @@
 
 /** @file
 
-    @todo implement underflow/overflow streamCallback statusFlags, paNeverDropInput.
+    @todo implement paInputOverflow callback status flag
+    
+    @todo implement paNeverDropInput.
 
     @todo implement host api specific extension to set i/o buffer sizes in frames
 
@@ -56,7 +58,6 @@
 
     old TODOs from phil, need to work out if these have been done:
         O- fix "patest_stop.c"
-        O- Handle buffer underflow, overflow, etc.
 */
 
 #include <stdio.h>
@@ -70,6 +71,12 @@
 #include "pa_process.h"
 
 #include "dsound_wrapper.h"
+
+#if (defined(WIN32) && (defined(_MSC_VER) && (_MSC_VER >= 1200))) /* MSC version 6 and above */
+#pragma comment( lib, "dsound.lib" )
+#pragma comment( lib, "winmm.lib" )
+#endif
+
 
 #define PRINT(x) /* { printf x; fflush(stdout); } */
 #define ERR_RPT(x) PRINT(x)
@@ -182,6 +189,8 @@ typedef struct PaWinDsStream
     double           framesWritten;
     double           secondsPerHostByte; /* Used to optimize latency calculation for outTime */
 
+    PaStreamCallbackFlags callbackFlags;
+    
 /* FIXME - move all below to PaUtilStreamRepresentation */
     volatile int     isStarted;
     volatile int     isActive;
@@ -448,6 +457,10 @@ static PaError AddOutputDeviceInfoFromDirectSound(
                 deviceInfo->defaultHighInputLatency = 0.;   /** @todo IMPLEMENT ME */
                 deviceInfo->defaultHighOutputLatency = 0.;  /** @todo IMPLEMENT ME */
                 deviceInfo->defaultSampleRate = 0;          /** @todo IMPLEMENT ME */
+
+
+                //printf( "min %d max %d\n", caps.dwMinSecondarySampleRate, caps.dwMaxSecondarySampleRate );
+                // dwFlags | DSCAPS_CONTINUOUSRATE 
             }
         }
 
@@ -713,7 +726,8 @@ PaError PaWinDs_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiInde
     PaUtil_InitializeStreamInterface( &winDsHostApi->callbackStreamInterface, CloseStream, StartStream,
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
                                       GetStreamTime, GetStreamCpuLoad,
-                                      PaUtil_DummyRead, PaUtil_DummyWrite, PaUtil_DummyGetAvailable, PaUtil_DummyGetAvailable );
+                                      PaUtil_DummyRead, PaUtil_DummyWrite,
+                                      PaUtil_DummyGetReadAvailable, PaUtil_DummyGetWriteAvailable );
 
     PaUtil_InitializeStreamInterface( &winDsHostApi->blockingStreamInterface, CloseStream, StartStream,
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
@@ -855,6 +869,16 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
     
     /*
         IMPLEMENT ME:
+
+            - if a full duplex stream is requested, check that the combination
+                of input and output parameters is supported if necessary
+
+            - check that the device supports sampleRate
+
+        Because the buffer adapter handles conversion between all standard
+        sample formats, the following checks are only required if paCustomFormat
+        is implemented, or under some other unusual conditions.
+
             - check that input device can support inputSampleFormat, or that
                 we have the capability to convert from outputSampleFormat to
                 a native format
@@ -862,11 +886,6 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
             - check that output device can support outputSampleFormat, or that
                 we have the capability to convert from outputSampleFormat to
                 a native format
-
-            - if a full duplex stream is requested, check that the combination
-                of input and output parameters is supported
-
-            - check that the device supports sampleRate
     */
 
     return paFormatIsSupported;
@@ -1034,11 +1053,6 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
         PaUtil_InitializeStreamRepresentation( &stream->streamRepresentation,
                                                &winDsHostApi->blockingStreamInterface, streamCallback, userData );
     }
-
-    stream->streamRepresentation.streamInfo.inputLatency = 0.;  /* FIXME: not initialised anywhere else */
-    stream->streamRepresentation.streamInfo.outputLatency = 0.;
-    stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
-
     
     PaUtil_InitializeCpuLoadMeasurer( &stream->cpuLoadMeasurer, sampleRate );
 
@@ -1068,6 +1082,14 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     if( result != paNoError )
         goto error;
 
+
+    stream->streamRepresentation.streamInfo.inputLatency =
+            PaUtil_GetBufferProcessorInputLatency(&stream->bufferProcessor);   /* FIXME: not initialised anywhere else */
+    stream->streamRepresentation.streamInfo.outputLatency =
+            PaUtil_GetBufferProcessorOutputLatency(&stream->bufferProcessor);    /* FIXME: not initialised anywhere else */
+    stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
+
+    
 /* DirectSound specific initialization */
     {
         HRESULT          hr;
@@ -1233,6 +1255,7 @@ static PaError Pa_TimeSlice( PaWinDsStream *stream )
     HRESULT           hresult;
     double            outputLatency = 0;
     PaStreamCallbackTimeInfo timeInfo = {0,0,0}; /** @todo implement inputBufferAdcTime */
+    
 /* Input */
     LPBYTE            lpInBuf1 = NULL;
     LPBYTE            lpInBuf2 = NULL;
@@ -1252,13 +1275,20 @@ static PaError Pa_TimeSlice( PaWinDsStream *stream )
         DSW_QueryInputFilled( dsw, &bytesFilled );
         framesToXfer = numInFramesReady = bytesFilled / dsw->dsw_BytesPerInputFrame;
         outputLatency = ((double)bytesFilled) * stream->secondsPerHostByte;
+
+        /** @todo Check for overflow */
     }
 
     /* How much output room is available? */
     if( stream->bufferProcessor.outputChannelCount > 0 )
     {
+        UINT previousUnderflowCount = dsw->dsw_OutputUnderflows;
         DSW_QueryOutputSpace( dsw, &bytesEmpty );
         framesToXfer = numOutFramesReady = bytesEmpty / dsw->dsw_BytesPerOutputFrame;
+
+        /* Check for underflow */
+        if( dsw->dsw_OutputUnderflows != previousUnderflowCount )
+            stream->callbackFlags |= paOutputUnderflow;
     }
 
     if( (numInFramesReady > 0) && (numOutFramesReady > 0) )
@@ -1277,8 +1307,9 @@ static PaError Pa_TimeSlice( PaWinDsStream *stream )
         timeInfo.outputBufferDacTime = timeInfo.currentTime + outputLatency;
 
 
-        PaUtil_BeginBufferProcessing( &stream->bufferProcessor, &timeInfo, 0 /** @todo pass underflow/overflow flags when necessary */ );
-
+        PaUtil_BeginBufferProcessing( &stream->bufferProcessor, &timeInfo, stream->callbackFlags );
+        stream->callbackFlags = 0;
+        
     /* Input */
         if( stream->bufferProcessor.inputChannelCount > 0 )
         {
@@ -1342,6 +1373,8 @@ static PaError Pa_TimeSlice( PaWinDsStream *stream )
         
         if( stream->bufferProcessor.outputChannelCount > 0 )
         {
+        /* FIXME: an underflow could happen here */
+
         /* Update our buffer offset and unlock sound buffer */
             bytesProcessed = numFrames * dsw->dsw_BytesPerOutputFrame;
             dsw->dsw_WriteOffset = (dsw->dsw_WriteOffset + bytesProcessed) % dsw->dsw_OutputSize;
@@ -1352,6 +1385,8 @@ static PaError Pa_TimeSlice( PaWinDsStream *stream )
 error1:
         if( stream->bufferProcessor.inputChannelCount > 0 )
         {
+        /* FIXME: an overflow could happen here */
+
         /* Update our buffer offset and unlock sound buffer */
             bytesProcessed = numFrames * dsw->dsw_BytesPerInputFrame;
             dsw->dsw_ReadOffset = (dsw->dsw_ReadOffset + bytesProcessed) % dsw->dsw_InputSize;
@@ -1458,6 +1493,7 @@ static PaError StartStream( PaStream *s )
     }
 
     stream->framesWritten = 0;
+    stream->callbackFlags = 0;
 
     stream->abortProcessing = 0;
     stream->stopProcessing = 0;

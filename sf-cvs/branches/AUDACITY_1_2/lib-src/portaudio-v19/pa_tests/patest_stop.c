@@ -13,7 +13,7 @@
 	@author Phil Burk <philburk@softsynth.com>
 */
 /*
- * $Id: patest_stop.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: patest_stop.c,v 1.1.2.1 2004-04-22 04:39:42 mbrubeck Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -70,7 +70,7 @@
 
 typedef struct
 {
-    float  waveform[TABLE_SIZE + 1]; // add one for guard point for interpolation
+    float  waveform[TABLE_SIZE + 1]; /* Add one for guard point for interpolation. */
     float  phase_increment;
     float  phase;
     float *tune;
@@ -188,7 +188,7 @@ int main(void)
                                (0.1 * sin( ((double)(5*i)/(double)TABLE_SIZE) * M_PI * 2. ))
                            );
     }
-    data.waveform[TABLE_SIZE] = data.waveform[0]; // set guard point
+    data.waveform[TABLE_SIZE] = data.waveform[0]; /* Set guard point. */
     data.tune = &simpleTune[0];
     data.notesPerTune = sizeof(simpleTune) / sizeof(float);
 
@@ -263,13 +263,14 @@ int TestStopMode( paTestData *data )
 
     if( data->stopMode == MODE_FINISH )
     {
-        while( Pa_IsStreamActive( stream ) )
+        while( ( err = Pa_IsStreamActive( stream ) ) == 1 )
         {
             /*printf("outTime = %g, note# = %d, repeat# = %d\n", data->outTime,
              data->noteCounter, data->repeatCounter  );
-            fflush(stdout); /**/
+            fflush(stdout); */
             Pa_Sleep( SLEEP_DUR );
         }
+        if( err < 0 ) goto error;
     }
     else
     {
@@ -277,7 +278,7 @@ int TestStopMode( paTestData *data )
         {
             /*printf("outTime = %g, note# = %d, repeat# = %d\n", data->outTime,
              data->noteCounter, data->repeatCounter  );
-            fflush(stdout); /**/
+            fflush(stdout); */
             Pa_Sleep( SLEEP_DUR );
         }
     }

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_front.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -58,6 +58,9 @@ enquire about status on the PortAudio mailing list first.
 
 
 /** @file
+ @brief Implements public PortAudio API, checks some errors, forwards to
+ host API implementations.
+ 
  Implements the functions defined in the PortAudio API, checks for
  some parameter and state inconsistencies and forwards API requests to
  specific Host API implementations (via the interface declared in
@@ -78,15 +81,13 @@ enquire about status on the PortAudio mailing list first.
     @todo Consider adding a new error code for when (inputParameters == NULL)
     && (outputParameters == NULL)
 
-    @todo review use of defaultHighInputLatency for suggestedLatency in
-    Pa_OpenDefaultStream.
-
     @todo review whether Pa_CloseStream() should call the interface's
     CloseStream function if aborting the stream returns an error code.
 
-    @todo Consider returning an error code if a NULL buffer pointer, or a
-    zero or negative frame count, is passed to Pa_ReadStream or Pa_WriteStream.
+    @todo Create new error codes if a NULL buffer pointer, or a
+    zero frame count is passed to Pa_ReadStream or Pa_WriteStream.
 */
+
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -459,6 +460,14 @@ const char *Pa_GetErrorText( PaError errorCode )
     case paIncompatibleHostApiSpecificStreamInfo:   result = "Incompatible host API specific stream info"; break;
     case paStreamIsStopped:          result = "Stream is stopped"; break;
     case paStreamIsNotStopped:       result = "Stream is not stopped"; break;
+    case paInputOverflowed:          result = "Input overflowed"; break;
+    case paOutputUnderflowed:        result = "Output underflowed"; break;
+    case paHostApiNotFound:          result = "Host API not found"; break;
+    case paInvalidHostApi:           result = "Invalid host API"; break;
+    case paCanNotReadFromACallbackStream:       result = "Can't read from a callback stream"; break;
+    case paCanNotWriteToACallbackStream:        result = "Can't write to a callback stream"; break;
+    case paCanNotReadFromAnOutputOnlyStream:    result = "Can't read from an output only stream"; break;
+    case paCanNotWriteToAnInputOnlyStream:      result = "Can't write to an input only stream"; break;
     default:                         result = "Illegal error number"; break;
     }
     return result;
@@ -932,23 +941,27 @@ static int SampleFormatIsValid( PaSampleFormat format )
  
     PaStreamFlags streamFlags
         - unused platform neutral flags are zero
+        - paNeverDropInput is only used for full-duplex callback streams with
+            variable buffer size (paFramesPerBufferUnspecified)
 */
 static PaError ValidateOpenStreamParameters(
     const PaStreamParameters *inputParameters,
     const PaStreamParameters *outputParameters,
     double sampleRate,
+    unsigned long framesPerBuffer,
     PaStreamFlags streamFlags,
+    PaStreamCallback *streamCallback,
     PaUtilHostApiRepresentation **hostApi,
     PaDeviceIndex *hostApiInputDevice,
     PaDeviceIndex *hostApiOutputDevice )
 {
-    int inputHostApiIndex, outputHostApiIndex;
+    int inputHostApiIndex  = -1, /* Surpress uninitialised var warnings: compiler does */
+        outputHostApiIndex = -1; /* not see that if inputParameters and outputParame-  */
+                                 /* ters are both nonzero, these indices are set.      */
 
     if( (inputParameters == NULL) && (outputParameters == NULL) )
     {
-
         return paInvalidDevice; /** @todo should be a new error code "invalid device parameters" or something */
-
     }
     else
     {
@@ -1070,6 +1083,21 @@ static PaError ValidateOpenStreamParameters(
     if( ((streamFlags & ~paPlatformSpecificFlags) & ~(paClipOff | paDitherOff | paNeverDropInput | paPrimeOutputBuffersUsingStreamCallback ) ) != 0 )
         return paInvalidFlag;
 
+    if( streamFlags & paNeverDropInput )
+    {
+        /* must be a callback stream */
+        if( !streamCallback )
+             return paInvalidFlag;
+
+        /* must be a full duplex stream */
+        if( (inputParameters == NULL) || (outputParameters == NULL) )
+            return paInvalidFlag;
+
+        /* must use paFramesPerBufferUnspecified */
+        if( framesPerBuffer != paFramesPerBufferUnspecified )
+            return paInvalidFlag;
+    }
+    
     return paNoError;
 }
 
@@ -1126,7 +1154,7 @@ PaError Pa_IsFormatSupported( const PaStreamParameters *inputParameters,
 
     result = ValidateOpenStreamParameters( inputParameters,
                                            outputParameters,
-                                           sampleRate, paNoFlag,
+                                           sampleRate, 0, paNoFlag, 0,
                                            &hostApi,
                                            &hostApiInputDevice,
                                            &hostApiOutputDevice );
@@ -1264,7 +1292,8 @@ PaError Pa_OpenStream( PaStream** stream,
 
     result = ValidateOpenStreamParameters( inputParameters,
                                            outputParameters,
-                                           sampleRate, streamFlags,
+                                           sampleRate, framesPerBuffer,
+                                           streamFlags, streamCallback,
                                            &hostApi,
                                            &hostApiInputDevice,
                                            &hostApiOutputDevice );
@@ -1356,7 +1385,12 @@ PaError Pa_OpenDefaultStream( PaStream** stream,
         hostApiInputParameters.device = Pa_GetDefaultInputDevice();
         hostApiInputParameters.channelCount = inputChannelCount;
         hostApiInputParameters.sampleFormat = sampleFormat;
-        hostApiInputParameters.suggestedLatency =  /** @todo REVIEW: should we be using high input latency here? */
+        /* defaultHighInputLatency is used below instead of
+           defaultLowInputLatency because it is more important for the default
+           stream to work reliably than it is for it to work with the lowest
+           latency.
+         */
+        hostApiInputParameters.suggestedLatency = 
              Pa_GetDeviceInfo( hostApiInputParameters.device )->defaultHighInputLatency;
         hostApiInputParameters.hostApiSpecificStreamInfo = NULL;
         hostApiInputParametersPtr = &hostApiInputParameters;
@@ -1371,7 +1405,12 @@ PaError Pa_OpenDefaultStream( PaStream** stream,
         hostApiOutputParameters.device = Pa_GetDefaultOutputDevice();
         hostApiOutputParameters.channelCount = outputChannelCount;
         hostApiOutputParameters.sampleFormat = sampleFormat;
-        hostApiOutputParameters.suggestedLatency =  /** @todo REVIEW: should we be using high input latency here? */
+        /* defaultHighOutputLatency is used below instead of
+           defaultLowOutputLatency because it is more important for the default
+           stream to work reliably than it is for it to work with the lowest
+           latency.
+         */
+        hostApiOutputParameters.suggestedLatency =
              Pa_GetDeviceInfo( hostApiOutputParameters.device )->defaultHighOutputLatency;
         hostApiOutputParameters.hostApiSpecificStreamInfo = NULL;
         hostApiOutputParametersPtr = &hostApiOutputParameters;
@@ -1396,7 +1435,7 @@ PaError Pa_OpenDefaultStream( PaStream** stream,
 }
 
 
-static PaError ValidateStream( PaStream* stream )
+PaError PaUtil_ValidateStreamPointer( PaStream* stream )
 {
     if( !PA_IS_INITIALISED_ ) return paNotInitialized;
 
@@ -1412,7 +1451,7 @@ static PaError ValidateStream( PaStream* stream )
 PaError Pa_CloseStream( PaStream* stream )
 {
     PaUtilStreamInterface *interface;
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_CloseStream called:\n" );
@@ -1427,10 +1466,13 @@ PaError Pa_CloseStream( PaStream* stream )
     if( result == paNoError )
     {
         interface = PA_STREAM_INTERFACE(stream);
-        if( !interface->IsStopped( stream ) )
-        {
+
+        /* abort the stream if it isn't stopped */
+        result = interface->IsStopped( stream );
+        if( result == 1 )
+            result = paNoError;
+        else if( result == 0 )
             result = interface->Abort( stream );
-        }
 
         if( result == paNoError )                 /** @todo REVIEW: shouldn't we close anyway? */
             result = interface->Close( stream );
@@ -1447,7 +1489,7 @@ PaError Pa_CloseStream( PaStream* stream )
 
 PaError Pa_SetStreamFinishedCallback( PaStream *stream, PaStreamFinishedCallback* streamFinishedCallback )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_SetStreamFinishedCallback called:\n" );
@@ -1457,13 +1499,15 @@ PaError Pa_SetStreamFinishedCallback( PaStream *stream, PaStreamFinishedCallback
 
     if( result == paNoError )
     {
-        if( !PA_STREAM_INTERFACE(stream)->IsStopped( stream ) )
+        result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+        if( result == 0 )
         {
             result = paStreamIsNotStopped ;
         }
-        else
+        if( result == 1 )
         {
             PA_STREAM_REP( stream )->streamFinishedCallback = streamFinishedCallback;
+            result = paNoError;
         }
     }
 
@@ -1479,7 +1523,7 @@ PaError Pa_SetStreamFinishedCallback( PaStream *stream, PaStreamFinishedCallback
 
 PaError Pa_StartStream( PaStream *stream )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_StartStream called:\n" );
@@ -1488,11 +1532,12 @@ PaError Pa_StartStream( PaStream *stream )
 
     if( result == paNoError )
     {
-        if( !PA_STREAM_INTERFACE(stream)->IsStopped( stream ) )
+        result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+        if( result == 0 )
         {
             result = paStreamIsNotStopped ;
         }
-        else
+        else if( result == 1 )
         {
             result = PA_STREAM_INTERFACE(stream)->Start( stream );
         }
@@ -1509,7 +1554,7 @@ PaError Pa_StartStream( PaStream *stream )
 
 PaError Pa_StopStream( PaStream *stream )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_StopStream called\n" );
@@ -1518,13 +1563,14 @@ PaError Pa_StopStream( PaStream *stream )
 
     if( result == paNoError )
     {
-        if( PA_STREAM_INTERFACE(stream)->IsStopped( stream ) )
-        {
-            result = paStreamIsStopped;
-        }
-        else
+        result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+        if( result == 0 )
         {
             result = PA_STREAM_INTERFACE(stream)->Stop( stream );
+        }
+        else if( result == 1 )
+        {
+            result = paStreamIsStopped;
         }
     }
 
@@ -1539,7 +1585,7 @@ PaError Pa_StopStream( PaStream *stream )
 
 PaError Pa_AbortStream( PaStream *stream )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_AbortStream called:\n" );
@@ -1548,13 +1594,14 @@ PaError Pa_AbortStream( PaStream *stream )
 
     if( result == paNoError )
     {
-        if( PA_STREAM_INTERFACE(stream)->IsStopped( stream ) )
-        {
-            result = paStreamIsStopped;
-        }
-        else
+        result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+        if( result == 0 )
         {
             result = PA_STREAM_INTERFACE(stream)->Abort( stream );
+        }
+        else if( result == 1 )
+        {
+            result = paStreamIsStopped;
         }
     }
 
@@ -1569,7 +1616,7 @@ PaError Pa_AbortStream( PaStream *stream )
 
 PaError Pa_IsStreamStopped( PaStream *stream )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_IsStreamStopped called:\n" );
@@ -1590,7 +1637,7 @@ PaError Pa_IsStreamStopped( PaStream *stream )
 
 PaError Pa_IsStreamActive( PaStream *stream )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_IsStreamActive called:\n" );
@@ -1611,7 +1658,7 @@ PaError Pa_IsStreamActive( PaStream *stream )
 
 const PaStreamInfo* Pa_GetStreamInfo( PaStream *stream )
 {
-    PaError error = ValidateStream( stream );
+    PaError error = PaUtil_ValidateStreamPointer( stream );
     const PaStreamInfo *result;
 
 #ifdef PA_LOG_API_CALLS
@@ -1653,7 +1700,7 @@ const PaStreamInfo* Pa_GetStreamInfo( PaStream *stream )
 
 PaTime Pa_GetStreamTime( PaStream *stream )
 {
-    PaError error = ValidateStream( stream );
+    PaError error = PaUtil_ValidateStreamPointer( stream );
     PaTime result;
 
 #ifdef PA_LOG_API_CALLS
@@ -1688,7 +1735,7 @@ PaTime Pa_GetStreamTime( PaStream *stream )
 
 double Pa_GetStreamCpuLoad( PaStream* stream )
 {
-    PaError error = ValidateStream( stream );
+    PaError error = PaUtil_ValidateStreamPointer( stream );
     double result;
 
 #ifdef PA_LOG_API_CALLS
@@ -1726,16 +1773,36 @@ PaError Pa_ReadStream( PaStream* stream,
                        void *buffer,
                        unsigned long frames )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_ReadStream called:\n" );
     PaUtil_DebugPrint("\tPaStream* stream: 0x%p\n", stream );
 #endif
 
-    /** @todo should return an error if buffer is zero or frames <= 0 */
-    if( frames > 0 && buffer != 0 )
-        result = PA_STREAM_INTERFACE(stream)->Read( stream, buffer, frames );
+    if( result == paNoError )
+    {
+        if( frames == 0 )
+        {
+            result = paInternalError; /** @todo should return a different error code */
+        }
+        else if( buffer == 0 )
+        {
+            result = paInternalError; /** @todo should return a different error code */
+        }
+        else
+        {
+            result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+            if( result == 0 )
+            {
+                result = PA_STREAM_INTERFACE(stream)->Read( stream, buffer, frames );
+            }
+            else if( result == 1 )
+            {
+                result = paStreamIsStopped;
+            }
+        }
+    }
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_ReadStream returned:\n" );
@@ -1750,16 +1817,36 @@ PaError Pa_WriteStream( PaStream* stream,
                         const void *buffer,
                         unsigned long frames )
 {
-    PaError result = ValidateStream( stream );
+    PaError result = PaUtil_ValidateStreamPointer( stream );
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_WriteStream called:\n" );
     PaUtil_DebugPrint("\tPaStream* stream: 0x%p\n", stream );
 #endif
 
-    /** @todo should return an error if buffer is zero or frames <= 0 */
-    if( frames > 0 && buffer != 0 )
-        result = PA_STREAM_INTERFACE(stream)->Write( stream, buffer, frames );
+    if( result == paNoError )
+    {
+        if( frames == 0 )
+        {
+            result = paInternalError; /** @todo should return a different error code */
+        }
+        else if( buffer == 0 )
+        {
+            result = paInternalError; /** @todo should return a different error code */
+        }
+        else
+        {
+            result = PA_STREAM_INTERFACE(stream)->IsStopped( stream );
+            if( result == 0 )
+            {
+                result = PA_STREAM_INTERFACE(stream)->Write( stream, buffer, frames );
+            }
+            else if( result == 1 )
+            {
+                result = paStreamIsStopped;
+            }  
+        }
+    }
 
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_WriteStream returned:\n" );
@@ -1771,7 +1858,7 @@ PaError Pa_WriteStream( PaStream* stream,
 
 signed long Pa_GetStreamReadAvailable( PaStream* stream )
 {
-    PaError error = ValidateStream( stream );
+    PaError error = PaUtil_ValidateStreamPointer( stream );
     signed long result;
 
 #ifdef PA_LOG_API_CALLS
@@ -1806,7 +1893,7 @@ signed long Pa_GetStreamReadAvailable( PaStream* stream )
 
 signed long Pa_GetStreamWriteAvailable( PaStream* stream )
 {
-    PaError error = ValidateStream( stream );
+    PaError error = PaUtil_ValidateStreamPointer( stream );
     signed long result;
 
 #ifdef PA_LOG_API_CALLS

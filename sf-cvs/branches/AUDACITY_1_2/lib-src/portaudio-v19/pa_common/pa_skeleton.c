@@ -1,5 +1,5 @@
 /*
- * $Id: pa_skeleton.c,v 1.1 2003-09-18 22:13:24 habes Exp $
+ * $Id: pa_skeleton.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
  * Portable Audio I/O Library skeleton implementation
  * demonstrates how to use the common functions to implement support
  * for a host API
@@ -31,6 +31,15 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/** @file
+ @brief Skeleton implementation of support for a host API.
+
+ @note This file is provided as a starting point for implementing support for
+ a new host API. IMPLEMENT ME comments are used to indicate functionality
+ which much be customised for each implementation.
+*/
+
+
 #include <string.h> /* strlen() */
 
 #include "pa_util.h"
@@ -39,14 +48,6 @@
 #include "pa_stream.h"
 #include "pa_cpuload.h"
 #include "pa_process.h"
-
-/** @file
-    NOTE TO IMPLEMENTORS:
-
-    This file is provided as a starting point for implementing support for
-    a new host API. IMPLEMENT ME comments are used to indicate functionality
-    which much be customised for each implementation.
-*/
 
 
 /* prototypes for functions declared in this file */
@@ -201,7 +202,8 @@ PaError PaSkeleton_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiI
     PaUtil_InitializeStreamInterface( &skeletonHostApi->callbackStreamInterface, CloseStream, StartStream,
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
                                       GetStreamTime, GetStreamCpuLoad,
-                                      PaUtil_DummyRead, PaUtil_DummyWrite, PaUtil_DummyGetAvailable, PaUtil_DummyGetAvailable );
+                                      PaUtil_DummyRead, PaUtil_DummyWrite,
+                                      PaUtil_DummyGetReadAvailable, PaUtil_DummyGetWriteAvailable );
 
     PaUtil_InitializeStreamInterface( &skeletonHostApi->blockingStreamInterface, CloseStream, StartStream,
                                       StopStream, AbortStream, IsStreamStopped, IsStreamActive,
@@ -257,6 +259,11 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
         inputChannelCount = inputParameters->channelCount;
         inputSampleFormat = inputParameters->sampleFormat;
 
+        /* all standard sample formats are supported by the buffer adapter,
+            this implementation doesn't support any custom sample formats */
+        if( inputSampleFormat & paCustomFormat )
+            return paSampleFormatNotSupported;
+            
         /* unless alternate device specification is supported, reject the use of
             paUseHostApiSpecificDeviceSpecification */
 
@@ -280,14 +287,19 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
     {
         outputChannelCount = outputParameters->channelCount;
         outputSampleFormat = outputParameters->sampleFormat;
-        
+
+        /* all standard sample formats are supported by the buffer adapter,
+            this implementation doesn't support any custom sample formats */
+        if( outputSampleFormat & paCustomFormat )
+            return paSampleFormatNotSupported;
+            
         /* unless alternate device specification is supported, reject the use of
             paUseHostApiSpecificDeviceSpecification */
 
         if( outputParameters->device == paUseHostApiSpecificDeviceSpecification )
             return paInvalidDevice;
 
-        /* check that output device can support inputChannelCount */
+        /* check that output device can support outputChannelCount */
         if( outputChannelCount > hostApi->deviceInfos[ outputParameters->device ]->maxOutputChannels )
             return paInvalidChannelCount;
 
@@ -302,25 +314,28 @@ static PaError IsFormatSupported( struct PaUtilHostApiRepresentation *hostApi,
     
     /*
         IMPLEMENT ME:
+
+            - if a full duplex stream is requested, check that the combination
+                of input and output parameters is supported if necessary
+
+            - check that the device supports sampleRate
+
+        Because the buffer adapter handles conversion between all standard
+        sample formats, the following checks are only required if paCustomFormat
+        is implemented, or under some other unusual conditions.
+
             - check that input device can support inputSampleFormat, or that
-                we have the capability to convert from outputSampleFormat to
+                we have the capability to convert from inputSampleFormat to
                 a native format
 
             - check that output device can support outputSampleFormat, or that
                 we have the capability to convert from outputSampleFormat to
                 a native format
-
-            - if a full duplex stream is requested, check that the combination
-                of input and output parameters is supported
-
-            - check that the device supports sampleRate
     */
 
 
     /* suppress unused variable warnings */
     (void) sampleRate;
-    (void) inputSampleFormat;
-    (void) outputSampleFormat;
 
     return paFormatIsSupported;
 }
@@ -387,6 +402,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     else
     {
         inputChannelCount = 0;
+        inputSampleFormat = hostInputSampleFormat = paInt16; /* Surpress 'uninitialised var' warnings. */
     }
 
     if( outputParameters )
@@ -415,6 +431,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     else
     {
         outputChannelCount = 0;
+        outputSampleFormat = hostOutputSampleFormat = paInt16; /* Surpress 'uninitialized var' warnings. */
     }
 
     /*
@@ -467,14 +484,6 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
                                                &skeletonHostApi->blockingStreamInterface, streamCallback, userData );
     }
 
-    /*
-        IMPLEMENT ME: initialise the following fields with estimated or actual
-        values.
-    */
-    stream->streamRepresentation.streamInfo.inputLatency = 0.;
-    stream->streamRepresentation.streamInfo.outputLatency = 0.;
-    stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
-
     PaUtil_InitializeCpuLoadMeasurer( &stream->cpuLoadMeasurer, sampleRate );
 
 
@@ -492,6 +501,18 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     if( result != paNoError )
         goto error;
 
+
+    /*
+        IMPLEMENT ME: initialise the following fields with estimated or actual
+        values.
+    */
+    stream->streamRepresentation.streamInfo.inputLatency =
+            PaUtil_GetBufferProcessorInputLatency(&stream->bufferProcessor);
+    stream->streamRepresentation.streamInfo.outputLatency =
+            PaUtil_GetBufferProcessorOutputLatency(&stream->bufferProcessor);
+    stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
+
+    
     /*
         IMPLEMENT ME:
             - additional stream setup + opening
