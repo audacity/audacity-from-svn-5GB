@@ -105,7 +105,7 @@ audacity-help.htb: help/*
 # rule for building libmpeg3 -- however, it's only built if selected in
 # the configure script
 mpeg3/libmpeg3.a:
-	make -C mpeg3
+	$(MAKE) -C mpeg3
 
 #
 # You can optionally "make dep" to make dependencies.
