@@ -234,13 +234,6 @@ AC_ARG_WITH(help,
 	use_help=$withval,
 	use_help="yes")
 
-if [[ "$use_portmixer" = "yes" ]] ; then
-	AC_DEFINE(USE_PORTMIXER, 1,	
-	[Define if PortMixer support should be enabled])
-	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
-fi
-
-
 if [[ "$use_soundtouch" = "yes" ]] ; then
 	AC_DEFINE(USE_SOUNDTOUCH, 1,	
 	[Define if SoundTouch support should be enabled])
@@ -255,7 +248,14 @@ if [[ "$use_soundtouch" = "yes" ]] ; then
 fi
 
 if [[ "$use_portmixer" = "yes" ]] && [[ "$use_portaudio" = "v19" ]] ; then
-	AC_MSG_ERROR([*** PortAudio v19 does not work with PortMixer (at least not yet) ])
+	echo "*** PortAudio v19 does not work with PortMixer (at least not yet)"
+	use_portmixer="no"
+fi
+
+if [[ "$use_portmixer" = "yes" ]] ; then
+	AC_DEFINE(USE_PORTMIXER, 1,	
+	[Define if PortMixer support should be enabled])
+	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
 fi
 
 if [[ "$use_nyquist" = "yes" ]] ; then
@@ -534,6 +534,24 @@ if [[ "$use_portaudio" = "v19" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
 	CXXFLAGS="-I../lib-src/portaudio-v19/pa_common $CXXFLAGS"
 
+	dnl Quick and dirty code to link with ALSA and Jack libs
+	dnl if necessary...
+
+	AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
+	AC_CHECK_LIB(jack, jack_client_new, have_jack=yes, have_jack=no)
+
+   if [[ $have_alsa = "yes" ]] ; then
+		LIBS="$LIBS -lasound"
+	fi
+
+	if [[ $have_jack = "yes" ]] ; then
+		LIBS="$LIBS -ljack"
+	fi
+
+	if [[ "$use_ladspa" = "default" ]] ; then
+		use_ladspa="yes";
+	fi
+
 	AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
 
 else
@@ -756,7 +774,7 @@ else
 fi
 
 if [[ "$use_portaudio" = "v19" ]] ; then
-	echo "  with    portaudio v19  (note: if portmixer is enabled it will not work)";
+	echo "  with    portaudio v19  (not yet compatible with portmixer)";
 else
 	echo "  with    portaudio v18";
 fi
