@@ -246,7 +246,7 @@ wxString ExportCommon(AudacityProject *project,
       if (path.Length() > 0 && path.Last() == wxFILE_SEP_PATH)
          endOfPathSep = "";
       else
-         endOfPathSep = "\\";
+         endOfPathSep = wxFILE_SEP_PATH;
 
       fName = path + endOfPathSep + 
          nameOnly + "." + extension;
