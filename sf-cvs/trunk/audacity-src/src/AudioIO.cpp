@@ -251,17 +251,24 @@ void AudioIO::HandleDeviceChange()
          recDeviceNum = j;
    }
 
-   // TODO: open two streams (one after another), for playback
-   // and recording separately
    PortAudioStream *stream;
    int error;
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
-                         paNoDevice, 0, paFloat32, NULL,
+                         playDeviceNum, 2, paFloat32, NULL,
                          44100, 512, 1, paClipOff | paDitherOff,
                          audacityAudioCallback, NULL);
-   if( !error )
+
+   if( error ) {
+      error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
+                            paNoDevice, 0, paFloat32, NULL,
+                            44100, 512, 1, paClipOff | paDitherOff,
+                            audacityAudioCallback, NULL);
+   }
+
+   if( !error ) {
       mPortMixer = Px_OpenMixer(stream, 0);
-   Pa_CloseStream(stream);
+      Pa_CloseStream(stream);
+   }
 
    // Determine mixer capabilities - it it doesn't support either
    // input or output, we emulate them (by multiplying this value
