@@ -21,6 +21,7 @@ Known bugs to fix:
 - Stereo "linked" track that's really two mono tracks
   Check upon opening project
 - Find VST folder on startup
+- Must warn user if temp directory can't be created
 
 -----------------------------------------------------------
 Unit tests:
