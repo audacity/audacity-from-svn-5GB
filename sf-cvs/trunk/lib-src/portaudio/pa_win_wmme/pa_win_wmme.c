@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.8 2003-03-02 08:01:46 dmazzoni Exp $
+ * $Id: pa_win_wmme.c,v 1.9 2004-07-28 13:04:35 jamescrook Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *
@@ -1685,8 +1685,10 @@ static PaError PaHost_UpdateStreamTime( PaWMMEStreamData *wmmeStreamData )
     /* This data has two variables and is shared by foreground and background.
      * So we need to make it thread safe. */
     EnterCriticalSection( &wmmeStreamData->streamLock );
-    wmmeStreamData->framesPlayed += ((long)mmtime.u.sample) - wmmeStreamData->lastPosition;
+    wmmeStreamData->framesPlayed += (long)((DWORD)mmtime.u.sample - (DWORD)(wmmeStreamData->lastPosition));
     wmmeStreamData->lastPosition = (long)mmtime.u.sample;
+//    wmmeStreamData->framesPlayed += ((long)mmtime.u.sample) - wmmeStreamData->lastPosition;
+//    wmmeStreamData->lastPosition = (long)mmtime.u.sample;
     LeaveCriticalSection( &wmmeStreamData->streamLock );
     
     return paNoError;
