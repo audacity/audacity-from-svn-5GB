@@ -3193,7 +3193,7 @@ if test "${with_lib_preference+set}" = set; then
   withval="$with_lib_preference"
   lib_preference=$withval
 else
-  lib_preference="localsystem"
+  lib_preference="local system"
 fi;
 
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
@@ -4873,7 +4873,7 @@ for lib in $LIBRARIES ; do
       for sys_or_local in $lib_preference ; do
          # example: LIBMAD_SYSTEM_AVAILABLE
          eval AVAILABLE="\$${lib}_${sys_or_local}_AVAILABLE"
-         if test $AVAILABLE = yes ; then
+         if test "$AVAILABLE" = "yes" ; then
             eval ${lib}_USE_${sys_or_local}="yes"
             lib_activated="yes"
             { echo "$as_me:$LINENO: Using $sys_or_local libraries for $lib" >&5

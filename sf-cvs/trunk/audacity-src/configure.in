@@ -93,7 +93,7 @@ AC_ARG_WITH(lib-preference,
             [AC_HELP_STRING([--with-lib-preference],
                             [use local and/or system libraries, in preferred order [system,local]])],
             lib_preference=$withval,
-            lib_preference="localsystem")
+            lib_preference="local system")
 
 LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
 
@@ -124,7 +124,7 @@ for lib in $LIBRARIES ; do
       for sys_or_local in $lib_preference ; do
          # example: LIBMAD_SYSTEM_AVAILABLE
          eval AVAILABLE="\$${lib}_${sys_or_local}_AVAILABLE"
-         if test $AVAILABLE = yes ; then
+         if test "$AVAILABLE" = "yes" ; then
             eval ${lib}_USE_${sys_or_local}="yes"
             lib_activated="yes"
             AC_MSG_NOTICE([Using $sys_or_local libraries for $lib])
