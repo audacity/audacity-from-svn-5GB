@@ -198,28 +198,6 @@
 				RelativePath="..\src\AColor.h">
 			</File>
 			<File
-				RelativePath="..\src\AStatus.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\src\AStatus.h">
-			</File>
-			<File
 				RelativePath="..\src\AudacityApp.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -438,28 +416,6 @@
 			</File>
 			<File
 				RelativePath="..\src\FileFormats.h">
-			</File>
-			<File
-				RelativePath="..\src\FormatSelection.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\src\FormatSelection.h">
 			</File>
 			<File
 				RelativePath="..\src\FreqWindow.cpp">
@@ -966,6 +922,12 @@
 			</File>
 			<File
 				RelativePath="..\src\SampleFormat.h">
+			</File>
+			<File
+				RelativePath="..\src\SelectionBar.cpp">
+			</File>
+			<File
+				RelativePath="..\src\SelectionBar.h">
 			</File>
 			<File
 				RelativePath="..\src\Sequence.cpp">
@@ -2464,6 +2426,12 @@
 			</File>
 			<File
 				RelativePath="..\src\widgets\Ruler.h">
+			</File>
+			<File
+				RelativePath="..\src\widgets\TimeTextCtrl.cpp">
+			</File>
+			<File
+				RelativePath="..\src\widgets\TimeTextCtrl.h">
 			</File>
 			<File
 				RelativePath="..\src\widgets\Warning.cpp">
