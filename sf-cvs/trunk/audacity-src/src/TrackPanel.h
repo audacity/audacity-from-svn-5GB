@@ -151,6 +151,8 @@ class TrackPanel:public wxWindow {
    void SetSelectionFormat(int iformat);
    void SetSnapTo(int snapto);
 
+   void HandleShiftKey(bool down);
+
  private:
 
    void TrackSpecificMouseEvent(wxMouseEvent & event);
@@ -191,6 +193,8 @@ class TrackPanel:public wxWindow {
    void HandleZoom(wxMouseEvent & event);
    void DragZoom(int x);
    void DoZoomInOut(wxMouseEvent &event, int x_center);
+
+   void HandleVZoom(wxMouseEvent & event);
 
    // BG: Handle drawing
    void HandleDraw(wxMouseEvent & event);
@@ -251,7 +255,7 @@ class TrackPanel:public wxWindow {
 
 //   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
-   int GetVRulerWidth() const { return 30;}
+   int GetVRulerWidth() const { return 36;}
    int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
@@ -321,6 +325,8 @@ class TrackPanel:public wxWindow {
 
    bool mIndicatorShowing;
 
+   wxMouseEvent mLastMouseEvent;
+
    int mMouseClickX;
    int mMouseClickY;
 
@@ -346,6 +352,7 @@ class TrackPanel:public wxWindow {
    int mInitialUpperTrackHeight;
    bool mAutoScrolling;
 
+   bool mIsVZooming;
    bool mIsClosing;
    bool mIsSelecting;
    bool mIsResizing;
