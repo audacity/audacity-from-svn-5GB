@@ -109,6 +109,8 @@ class TrackPanel:public wxWindow {
 
 
    void HandleLabelClick(wxMouseEvent & event);
+   void HandleRearrange(wxMouseEvent & event);
+   void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
    bool MuteSoloFunc(VTrack *t, wxRect r, int x, int f, bool solo);
@@ -230,11 +232,17 @@ class TrackPanel:public wxWindow {
    bool mIsClosing;
    bool mIsSelecting;
    bool mIsResizing;
+   bool mIsRearranging;
    bool mIsSliding;
    bool mIsEnveloping;
    bool mIsMuting;
    bool mIsSoloing;
 
+   // JH: if the user is dragging a track, at what y
+   //   coordinate should the dragging track move up or down?
+   int mMoveUpThreshold;
+   int mMoveDownThreshold;
+   
    // AS: MAGIC NUMBER: I'm not sure why 3.
    bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
 

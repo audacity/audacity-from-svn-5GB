@@ -145,6 +145,7 @@ mAutoScrolling(false)
    mIsClosing = false;
    mIsSelecting = false;
    mIsResizing = false;
+   mIsRearranging = false;
    mIsSliding = false;
    mIsEnveloping = false;
    mIsMuting = false;
@@ -1172,6 +1173,12 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
 
+   // JH: also, capture the current track for rearranging, so the user
+   //  can drag the track up or down to swap it with others
+   mCapturedTrack = t;
+   mIsRearranging = true;
+   TrackPanel::CalculateRearrangingThresholds(event);
+
    // AS: If the shift botton is being held down, then just invert 
    //  the selection on this track.
    if (event.ShiftDown()) {
@@ -1185,6 +1192,51 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    mViewInfo->sel0 = mTracks->GetMinOffset();
    mViewInfo->sel1 = mTracks->GetMaxLen();
    Refresh(false);
+}
+
+
+// JH: the user is dragging one of the tracks: change the track order
+//   accordingly
+void TrackPanel::HandleRearrange(wxMouseEvent & event)
+{
+   // are we finishing the drag?
+   if(event.ButtonUp(1)) {
+      mCapturedTrack = NULL;
+      mIsRearranging = false;
+      return;
+   }
+   if(event.m_y < mMoveUpThreshold)
+      mTracks->MoveUp(mCapturedTrack);
+   else if(event.m_y > mMoveDownThreshold)
+      mTracks->MoveDown(mCapturedTrack);
+   else
+      return;
+
+   // JH: if we moved up or down, recalculate the thresholds
+   TrackPanel::CalculateRearrangingThresholds(event);
+   Refresh(false);
+}
+      
+
+// JH: figure out how far the user must drag the mouse up or down
+//   before the track will swap with the one above or below
+void TrackPanel::CalculateRearrangingThresholds(wxMouseEvent & event)
+{
+   wxASSERT(mRearranging && mCapturedTrack);
+
+   // JH: this will probably need to be tweaked a bit, I'm just
+   //   not sure what formula will have the best feel for the
+   //   user.
+
+   if(mTracks->CanMoveUp(mCapturedTrack))
+      mMoveUpThreshold = event.m_y - mTracks->GetPrev(mCapturedTrack)->GetHeight();
+   else
+      mMoveUpThreshold = INT_MIN;
+
+   if(mTracks->CanMoveDown(mCapturedTrack))
+      mMoveDownThreshold = event.m_y + mTracks->GetNext(mCapturedTrack)->GetHeight();
+   else
+      mMoveDownThreshold = INT_MAX;
 }
 
 // AS: Mute or solo the given track (t).  If solo is true, we're 
@@ -1368,6 +1420,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       HandleResize(event);
       HandleCursor(event);
    }
+   else if(mIsRearranging)
+      HandleRearrange(event);
    else
       TrackSpecificMouseEvent(event);
 }
