@@ -310,6 +310,9 @@ AudacityProject::~AudacityProject()
 
    delete mTags;
 
+   mTracks->Clear(true);
+   delete mTracks;
+
    gAudacityProjects.Remove(this);
 
    if (gAudacityProjects.IsEmpty())
@@ -955,7 +958,6 @@ void AudacityProject::OpenFile(wxString fileName)
    }
 
    mTracks->Clear();
-   InitialState();
 
    mTracks->Load(&f, &mDirManager);
 
@@ -978,6 +980,7 @@ void AudacityProject::OpenFile(wxString fileName)
 
    f.Close();
 
+   InitialState();
    FixScrollbars();
    mTrackPanel->Refresh(false);
 
@@ -1275,7 +1278,8 @@ void AudacityProject::PopState(TrackList * l)
       //    printf("Popping track with %d samples\n",
       //           ((WaveTrack *)t)->numSamples);
       //  ((WaveTrack *)t)->Debug();
-      mTracks->Add(t->Duplicate());
+      VTrack *copy = t->Duplicate();
+      mTracks->Add(copy);
       t = iter.Next();
    }
 }

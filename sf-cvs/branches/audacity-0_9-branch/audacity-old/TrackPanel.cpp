@@ -2087,6 +2087,8 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
          t = iter.Next();
    }
 
+   delete toRemove;
+
    MakeParentPushState();
    MakeParentRedrawScrollbars();
 
