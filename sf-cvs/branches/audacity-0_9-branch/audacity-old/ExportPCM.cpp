@@ -8,6 +8,12 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
+#include <Files.h>
+#include <Resources.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
+
 #include <wx/string.h>
 #include <wx/window.h>
 #include <wx/msgdlg.h>

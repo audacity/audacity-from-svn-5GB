@@ -166,14 +166,8 @@ PrefsPanel(parent)
             wxString bitrates[] = { "56", "96", "128", "192", "256", "320" };
             int numBitrates = 6;
 
-            #ifdef __WXMAC__
-            // This is just to work around a wxChoice auto-sizing bug
-            mMP3Bitrate = new wxChoice(
-               this, -1, wxDefaultPosition, wxSize(120,-1), numBitrates, bitrates);
-            #else
             mMP3Bitrate = new wxChoice(
                this, -1, wxDefaultPosition, wxDefaultSize, numBitrates, bitrates);
-            #endif
 
             mp3InfoSizer->Add(mMP3Bitrate, 0, 
                wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);

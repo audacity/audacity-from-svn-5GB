@@ -90,6 +90,7 @@ wxDialog(parent, -1, "Audacity Preferences", wxDefaultPosition,
 
    buttonSizer->Add(mCancel, 0, wxALL, 7);
    buttonSizer->Add(mOK, 0, wxALL, 7);
+   buttonSizer->Add(10, 10);
    
    topSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
 

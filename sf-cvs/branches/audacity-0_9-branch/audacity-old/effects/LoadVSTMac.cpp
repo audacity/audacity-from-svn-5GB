@@ -10,6 +10,9 @@
 
 #include <CodeFragments.h>
 #include <Resources.h>
+#include <Files.h>
+
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
 #include "AudioEffect.hpp"      // VST API
 

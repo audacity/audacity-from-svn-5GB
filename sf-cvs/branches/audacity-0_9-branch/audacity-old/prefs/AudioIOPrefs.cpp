@@ -8,6 +8,11 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
+#include <Sound.h>
+#include <TextUtils.h>
+#endif
+
 #include <wx/window.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
@@ -68,7 +73,8 @@ PrefsPanel(parent)
    Handle iconH;
    Str255 name;
    SPBGetIndexedDevice(0, name, &iconH);
-   wxString defaultRecordingDevice = p2cstr(name);
+   CopyPascalStringToC((const unsigned char *)name, (char *)name);
+   wxString defaultRecordingDevice = name;
    defaultRecordingDevice += "\n";
    defaultRecordingDevice += "Built-in Mic";
 #endif // __WXMAC__

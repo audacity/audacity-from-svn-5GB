@@ -40,6 +40,11 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
+#include <Files.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
+
 #include <wx/dynlib.h>
 #include <wx/msgdlg.h>
 #include <wx/utils.h>
