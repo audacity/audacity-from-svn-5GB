@@ -100,3 +100,13 @@ III: PLUGINS: MAC
 IV: PLUGINS: WINDOWS (TM)
 	 a. LADSPA (NA)
 	 b. VST
+		 From http://www.geocrawler.com/lists/3/SourceForge/14679/0/8743885/
+		 cf: http://www.cycling74.com/index.html
+
+		 Laverne: lock-up
+		 Pluggo: quit
+		 Pluggo Synth: quit
+		 Pluggo Sync: quit
+		 Resonation: quit
+		 Genereic Effect: lock-up
+		 LFO: works
