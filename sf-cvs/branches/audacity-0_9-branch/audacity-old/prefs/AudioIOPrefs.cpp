@@ -55,6 +55,21 @@ BEGIN_EVENT_TABLE(AudioIOPrefs, wxPanel)
    EVT_CHOICE(RecordingDeviceChoiceID, AudioIOPrefs::OnRecordingDeviceChoice)   
 END_EVENT_TABLE()
 
+#ifdef __DARWIN__
+const char *p2cstr(unsigned char *pstr)
+{
+   static char str[256];
+   int len, i;
+
+   len = ((unsigned char *)pstr)[0];
+   for(i=0; i<len; i++)
+      str[i] = pstr[i+1];
+   str[len] = 0;
+
+   return (const char *)str;
+}
+#endif
+
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
