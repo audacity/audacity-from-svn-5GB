@@ -1,4 +1,46 @@
 <pre>
+Changes in 1.2.0-pre2:
+
+  * Online help completed.  The full manual is nearly complete
+    and will be posted to the website for online browsing shortly.
+
+  * Audacity will no longer let you do unsafe editing operations
+    while playing or recording.  This eliminates many potential
+    crashes.
+
+  * Fixed ability to cancel Quit button.
+
+  * New resampling library, with no restrictions on the maximum or
+    minimum rate of resampling.
+
+  * Audacity now supports LADSPA plug-ins on all platforms, and
+    supports VST plug-ins through an optional LADSPA plug-in
+    called the "VST Enabler", which you can download separately.
+    Because of licensing issues, Audacity cannot be distributed
+    with VST support built-in.
+
+  * Mac OS X keyboard shortcut problems have been fixed.
+
+  * Mac OS X audio muting problems have been fixed.
+
+  * Mac OS X playback/recording cursor sync problems have been fixed.
+
+  * Silence now displays a straight line again, instead of nothing.
+
+  * Added a vertical ruler to the Waveform dB display.
+
+  * Fixed crash in Change Pitch.
+
+  * You can now Paste if nothing is selected.
+
+  * Canceling an Import operation doesn't cause an extra error
+    dialog to appear.
+
+  * Audacity now handles filenames with international characters
+    correctly.
+
+  * Minor improvements to build system on Unix systems.
+
 New features in Audacity 1.2.0-pre1:
 
   * User Interface
