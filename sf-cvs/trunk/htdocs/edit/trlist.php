@@ -76,6 +76,38 @@ if ($newtranslation) {
 
 print "$update";
 
+
+BoxTop("Main Phrases List");
+
+$yes=0;
+$total=0;
+foreach($english as $key => $phrase) {
+	if ($translation[$key]) {
+      $yes++;
+   }
+   $total++;
+}
+
+if ($yes == $total) {
+	print "All phrases translated.";
+}
+else if ($yes == 0) {
+	print "No phrases have been translated.";
+}
+else {
+	print "$yes of $total phrases translated.";
+}
+
+print "<form action=trmain.php method=post>\n";
+print "<input type=hidden name=lang value=$lang>\n";
+print "<input type=hidden name=passwd value=\"$passwd\">\n";
+print "<input type=submit value=\"Edit Main Phrase List\">\n";
+print "</form>\n";
+
+BoxBottom();
+
+print "<p>\n";
+
 BoxTop("Edit Translations");
 
 ?>
