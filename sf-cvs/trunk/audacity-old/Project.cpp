@@ -351,7 +351,11 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
     mEffectMenu->Append(FirstEffectID+fi,
 						(Effect::GetEffect(fi))->GetEffectName());
   
-  mHelpMenu = new wxMenu;
+  #ifdef __WXMAC__
+	wxApp::s_macAboutMenuItemId = AboutID;
+  #endif
+  
+  mHelpMenu = new wxMenu();
   mHelpMenu->Append(AboutID, "About Audacity...");
 
   mMenuBar->Append(mFileMenu, "&File");
