@@ -16,7 +16,7 @@
 
 <h3><?=_("Recommended Download")?></h3>
 <ul>
-  <li><p><?php printf(_('For Mac OS X: <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macos_url, macosx_version, macosx_size)?></p></li>
+  <li><p><?php printf(_('For Mac OS X: <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_url, macosx_version, macosx_size)?></p></li>
   <!-- TODO: Installation instructions? -->
 
   <li><p><?php printf(_('For Mac OS 9: <a href="%s">Audacity %s</a> (.sit file, %.1lf MB)'), "../latest/".$mac_classic_url, mac_classic_version, mac_classic_size)?></p></li>
