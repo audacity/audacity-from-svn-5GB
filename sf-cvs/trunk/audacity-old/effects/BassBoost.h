@@ -4,7 +4,11 @@
 
   Bass Boost
 
-  Nasca Octavian Paul   <paulnasca@email.ro> or <paulnasca@yahoo.com>
+  Effect programming:
+  Nasca Octavian Paul
+
+  UI programming:
+  Dominic Mazzoni (with the help of wxDesigner)
 
 **********************************************************************/
 
