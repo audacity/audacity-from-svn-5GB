@@ -5,6 +5,13 @@ requests and plans, and organize them by which
 release they're going in.
 
 -----------------------------------------------------------
+Docs
+-----------------------------------------------------------
+
+- Add "how do I import a RealPlayer / WMA file"?
+  to the F.A.Q. (loop in sound card)
+
+-----------------------------------------------------------
 Website / Sourceforge
 -----------------------------------------------------------
 
