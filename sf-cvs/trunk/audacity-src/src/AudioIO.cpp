@@ -592,19 +592,21 @@ bool AudioIO::IsBusy()
 
 bool AudioIO::IsPlaying()
 {
-   return (mProject != NULL && mNumOutChannels > 0);
+   return (mProject && mNumOutChannels > 0);
 }
 
 bool AudioIO::IsRecording(VTrack *t)
 {
-   bool recording = (mProject != NULL && mNumInChannels > 0);
+   if (!mProject || !mNumInChannels)
+      return false;
 
-   if (t && recording)
+   if (t) {
       for (int i = 0; i < mNumInChannels; i++)
          if (mInTracks[i] == t)
             return true;
-
-   return recording;
+      return false;
+   }
+   return true;
 }
 
 void AudioIOTimer::Notify()
