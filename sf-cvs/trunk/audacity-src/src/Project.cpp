@@ -115,7 +115,8 @@ const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the 
 //for the purpose of project placement (not to keep track of the number)
 //It is only accurate modulo ten, and does not decrement when a project is
 //closed.
-static int gAudacityDocNum = 0;
+static int gAudacityOffsetInc = 0;
+static int gAudacityPosInc = 0;
 //This is a pointer to the currently-active project.
 static AudacityProject *gActiveProject;
 //This array holds onto all of the projects currently open
@@ -137,41 +138,18 @@ void SetActiveProject(AudacityProject * project)
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
-   //where determines the point that a new window should open at.
-   wxPoint where;
-   where.x = 10;
-   where.y = 10;
-
-   int width = 600;
-   int height = 400;
-
-   //These conditional values assist in improving placement and size
-   //of new windows on different platforms.
-#ifdef __WXMAC__
-   where.y += 50;
-#endif
-
-#ifdef __WXGTK__
-   height += 20;
-#endif
-
-#ifdef __WXMSW__
-   height += 40;
-#endif
-
-   //Placement depends on the number of open documents
-   where.x += gAudacityDocNum * 25;
-   where.y += gAudacityDocNum * 25;
+   bool bMaximized;
+   wxRect wndRect;
+   GetNextWindowPlacement(&wndRect, &bMaximized);
 
    //Create and show a new project
    AudacityProject *p = new AudacityProject(parentWindow, -1,
-                                            where, wxSize(width, height));
-   p->Show(true);
+                                            wxPoint(wndRect.x, wndRect.y), wxSize(wndRect.width, wndRect.height));
 
-   //Increment the number of documents. This is not exact, and
-   //wraps around after you open ten.  Also, the number is not decremented
-   //when you close a project.
-   gAudacityDocNum = (gAudacityDocNum + 1) % 10;
+   if(bMaximized)
+      p->Maximize(true);
+
+   p->Show(true);
 
    //Set the new project as active:
    SetActiveProject(p);
@@ -192,8 +170,119 @@ void CloseAllProjects()
    for (size_t i = 0; i < len; i++)
       gAudacityProjects[i]->Close();
 
-   //Set the project number to 0
-   gAudacityDocNum=0;
+   //Set the Offset and Position increments to 0
+   gAudacityOffsetInc = 0;
+   gAudacityPosInc = 0;
+}
+
+// BG: The default size and position of the first window
+void GetDefaultWindowRect(wxRect *defRect)
+{
+   //the point that a new window should open at.
+   defRect->x = 10;
+   defRect->y = 10;
+
+   defRect->width = 600;
+   defRect->height = 400;
+
+   //These conditional values assist in improving placement and size
+   //of new windows on different platforms.
+#ifdef __WXMAC__
+   defRect->y += 50;
+#endif
+
+#ifdef __WXGTK__
+   defRect->height += 20;
+#endif
+
+#ifdef __WXMSW__
+   defRect->height += 40;
+#endif
+}
+
+// BG: Calculate where to place the next window (could be the first window)
+// BG: Does not store X and Y in prefs. This is intentional.
+void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
+{
+   wxRect defWndRect;
+
+   GetDefaultWindowRect(&defWndRect);
+
+   *bMaximized = false;
+
+   if(gAudacityProjects.IsEmpty())
+   {
+      //Read the values from the registry, or use the defaults
+      nextRect->SetWidth(gPrefs->Read("/Window/Width", defWndRect.GetWidth()));
+      nextRect->SetHeight(gPrefs->Read("/Window/Height", defWndRect.GetHeight()));
+
+      gPrefs->Read("/Window/Maximized", bMaximized);
+   }
+   else
+   {
+      //Base the values on the previous Window
+      *nextRect = gAudacityProjects[gAudacityProjects.GetCount()-1]->GetRect();
+
+      *bMaximized = gAudacityProjects[gAudacityProjects.GetCount()-1]->IsMaximized();
+   }
+
+   nextRect->x = defWndRect.x;
+   nextRect->y = defWndRect.y;
+
+   //Placement depends on the increments
+   nextRect->x += (gAudacityPosInc * 25) + (gAudacityOffsetInc * 25);
+   nextRect->y += gAudacityPosInc * 25;
+
+   //Make sure that the Window will be completely visible
+
+   //Get the size of the screen
+   wxRect screenRect;
+   wxClientDisplayRect(&screenRect.x, &screenRect.y, &screenRect.width, &screenRect.height);
+
+   //First check if we need to reset the increments
+
+   //Have we hit the bottom of the screen?
+   if( (nextRect->y+nextRect->height > screenRect.y+screenRect.height) )
+   {
+      //Reset Position increment
+      gAudacityPosInc = 0;
+
+      //Increment Offset increment
+      gAudacityOffsetInc++;
+
+      //Recalculate the position on the screen
+      nextRect->x = defWndRect.x;
+      nextRect->y = defWndRect.y;
+
+      nextRect->x += (gAudacityPosInc * 25) + (gAudacityOffsetInc * 25);
+      nextRect->y += gAudacityPosInc * 25;
+   }
+
+   //Have we hit the right side of the screen?
+   if( (nextRect->x+nextRect->width > screenRect.x+screenRect.width) )
+   {
+      //Reset both Position and Offset increments
+      gAudacityPosInc = 0;
+      gAudacityOffsetInc = 0;
+
+      //Recalculate the position on the screen
+      nextRect->x = defWndRect.x;
+      nextRect->y = defWndRect.y;
+      //No need to compute the offset and position, just use the defaults
+   }
+
+   //Next check if the screen is too small for the default Audacity width and height
+   //Uses both comparisons from above
+   if( (nextRect->x+nextRect->width > screenRect.x+screenRect.width) ||
+       (nextRect->y+nextRect->height > screenRect.y+screenRect.height) )
+   {
+      //Resize the Audacity window to fit in the screen
+      nextRect->width = screenRect.width-nextRect->x;
+      nextRect->height = screenRect.height-nextRect->y;
+   }
+
+   //Increment Position increment
+   gAudacityPosInc++;
 }
 
 enum {

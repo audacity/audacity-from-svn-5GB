@@ -89,6 +89,11 @@ void QuitAudacity(bool bForce)
    // Try to close each open window.  If the user hits Cancel
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
+
+   // BG: Store size of Window 0.
+   wxSize wndSize = gAudacityProjects[0]->GetSize();
+   bool wndMaximized = gAudacityProjects[0]->IsMaximized();
+
    size_t len = gAudacityProjects.Count();
    for (size_t i = 0; i < len; i++) {
       if (!gAudacityProjects[i]->Close())
@@ -99,6 +104,11 @@ void QuitAudacity(bool bForce)
          }
       }
    }
+
+   // BG: Save Window position
+   gPrefs->Write("/Window/Width", wndSize.GetWidth());
+   gPrefs->Write("/Window/Height", wndSize.GetHeight());
+   gPrefs->Write("/Window/Maximized", wndMaximized);
 
    if (gFreqWindow)
       gFreqWindow->Destroy();
