@@ -859,7 +859,7 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
      if (IsDragZooming())
        Refresh(false);
    }
-   else if (event.ButtonUp(1)) {
+   else if (event.ButtonUp()) {
      if (mZoomEnd < mZoomStart)
        std::swap(mZoomEnd, mZoomStart);
 
