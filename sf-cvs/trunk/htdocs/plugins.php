@@ -45,6 +45,9 @@ function plugins($process) {
           print "<a href=\"nyquist/$base.zip\">";
           print "$name</a>\n";
           print "<a href=\"nyquist/$base.html\">[Info]</a>\n";
+          if (file_exists("nyquist/${base}1.mp3")) {
+            print "<a href=\"nyquist/${base}1.mp3\">[MP3 Clip]</a>\n";
+          }
         }
         else {
           print "<li>No name from $nameline\n";
