@@ -498,3 +498,6 @@ cleaner: clean
 	rm -f *.gold */*.gold
 	rm -f playparms
 	rm -f points.dat
+
+distclean: cleaner
+	rm -f Makefile

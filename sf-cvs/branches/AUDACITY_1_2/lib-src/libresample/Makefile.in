@@ -42,7 +42,7 @@ tests/resample-sndfile: libresample.a tests/resample-sndfile.c
 clean:
 	rm -f $(TARGETS) $(OBJS)
 
-dist: clean
+distclean: clean
 	rm -f Makefile
 	rm -f config.status config.cache config.log src/config.h
 	rm -f *~ src/*~ tests/*~ include/*~
