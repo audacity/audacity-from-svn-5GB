@@ -43,7 +43,7 @@ int Import(AudacityProject *project,
    wxWindow *parent = project;
 
    if (!fName.Right(3).CmpNoCase("mid") ||
-       !fName.Right(3).CmpNoCase("midi")) {
+       !fName.Right(4).CmpNoCase("midi")) {
       wxMessageBox("Please use the Import MIDI command instead.",
                    "Import audio file", wxOK | wxCENTRE, parent);
       return 0;
