@@ -70,6 +70,10 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 Changes in 0.93:
 
+* Supports arbitrary project sample rate
+
+* Mac: opens documents from the Finder
+
 * Floating tool palette is now dockable
 
 * Fixed bugs in handling multiple open projects
