@@ -159,6 +159,8 @@ class TrackPanel:public wxWindow {
    void DrawRulerMarks    (wxDC *dc, const wxRect r, bool text);
    void DrawRulerIndicator(wxDC *dc);
 
+   void DrawTrackIndicator(wxDC *dc);
+
    void DrawTracks(wxDC * dc);
 
    void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
@@ -201,6 +203,15 @@ class TrackPanel:public wxWindow {
      TrackPanel *parent;
    } mTimer;
    
+
+   //This keeps track of where the last vertical
+   //play indicator was.
+   int mLastIndicator;
+   
+   // This indicates whether the last indicator drawing
+   // existed, so that we can draw over it to erase it
+   bool mPlayIndicatorExists;
+
    int mTimeCount;
 
    wxBitmap *mBitmap;

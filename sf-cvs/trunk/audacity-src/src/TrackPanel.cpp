@@ -235,6 +235,11 @@ mAutoScrolling(false)
    mTimeCount = 0;
    mTimer.parent = this;
    mTimer.Start(50, FALSE);
+
+   //Initialize the indicator playing state, so that
+   //we know that no drawing line needs to be erased.
+   mPlayIndicatorExists=false;
+
 }
 
 TrackPanel::~TrackPanel()
@@ -279,6 +284,10 @@ void TrackPanel::SetStop(bool bStopped)
 {
    mViewInfo->bIsPlaying = !bStopped;
 
+   
+   // Set the play indicator boolean to false.
+   mPlayIndicatorExists=false;
+   
    Refresh(false);
 }
 
@@ -405,7 +414,7 @@ void TrackPanel::ScrollDuringDrag()
 //  we cheat a little.  The indicator is drawn during the ruler
 //  drawing process (that should probably change, but...), so
 //  we create a memory DC and tell the ruler to draw itself there,
-//  antd then just blit that to the screen.
+//  and then just blit that to the screen.
 void TrackPanel::UpdateIndicator()
 {
    double indicator = gAudioIO->GetIndicator();
@@ -423,11 +432,18 @@ void TrackPanel::UpdateIndicator()
                            gAudioIO->GetProject() ==
                            (AudacityProject *) GetParent());
 
+
+
       int width, height;
       GetSize(&width, &height);
       height = GetRulerHeight();
 
       wxClientDC dc(this);
+    
+      //Draw the line across all tracks specifying where play is
+      DrawTrackIndicator(&dc);
+
+
       wxMemoryDC memDC;
       wxBitmap rulerBitmap;
       rulerBitmap.Create(width, height);
@@ -435,7 +451,8 @@ void TrackPanel::UpdateIndicator()
       memDC.SelectObject(rulerBitmap);
 
       DrawRuler(&memDC, true);
-
+    
+      
       dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
    }
 }
@@ -638,7 +655,11 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          SelectionHandleClick(event, t, r, num);
       else
          SelectNone();
+      
+
+      mPlayIndicatorExists=false;
       Refresh(false);
+      
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
@@ -648,7 +669,11 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mViewInfo->sel0 = mTracks->GetMinOffset();
       mViewInfo->sel1 = mTracks->GetEndTime();
       mTracks->Select(mCapturedTrack);
+
+      //Set the playindicator to false so it doesn't get undrawn
+      mPlayIndicatorExists=false;
       Refresh(false);
+
       mCapturedTrack = NULL;
       mIsSelecting = false;
    } else
@@ -780,6 +805,9 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
                   mTracks->Select(t);
             }
          }
+
+         //Set the playindicator to false so it doesn't get undrawn
+         mPlayIndicatorExists=false;
 
          Refresh(false);
 
@@ -994,8 +1022,14 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
    } else if (event.Dragging()) {
       mZoomEnd = event.m_x;
 
-      if (IsDragZooming())
+      if (IsDragZooming()){
+
+         //Set the playindicator to false so it doesn't get undrawn
+         mPlayIndicatorExists=false;
+      
          Refresh(false);
+
+      }
    } else if (event.ButtonUp()) {
 
       if (mZoomEnd < mZoomStart) {
@@ -1012,6 +1046,8 @@ void TrackPanel::HandleZoom(wxMouseEvent & event)
       mZoomEnd = mZoomStart = 0;
 
       MakeParentRedrawScrollbars();
+      //Set the playindicator to false so it doesn't get undrawn
+      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
@@ -1115,7 +1151,9 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
       mListener->TP_RedrawScrollbars();
 
       mListener->TP_DisplayStatusMessage("", 0);        //STM: Clear message if all tracks are removed
-
+      
+      //Set the playindicator to false so it doesn't get undrawn
+      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
@@ -1541,6 +1579,9 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
                newTrackHeight = 20;
             mCapturedTrack->SetHeight(newTrackHeight);
          }
+         
+         //Set the playindicator to false so it doesn't get undrawn
+         mPlayIndicatorExists=false;
          Refresh(false);
       }
       // DM: This happens when the button is released from a drag.
@@ -1576,6 +1617,9 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       if (t->GetKind() == Track::Label && t->GetSelected()) {
          ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
                                       event);
+         
+         //Set the playindicator to false so it doesn't get undrawn
+         mPlayIndicatorExists=false;
          Refresh(false);
          MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
          event.Skip();
@@ -1807,6 +1851,10 @@ void TrackPanel::DrawRulerMarks(wxDC * dc, const wxRect r, bool /*text */ )
    mRuler->Draw(*dc);
 }
 
+//
+//This draws the little triangular indicator on the 
+//ruler.
+//
 void TrackPanel::DrawRulerIndicator(wxDC * dc)
 {
    // Draw indicator
@@ -1830,6 +1878,48 @@ void TrackPanel::DrawRulerIndicator(wxDC * dc)
       tri[2].y = 1;
 
       dc->DrawPolygon(3, tri);
+   }
+}
+
+//
+// This draws the play indicator as a vertical line on each of the tracks
+//
+void TrackPanel::DrawTrackIndicator(wxDC * dc)
+{
+   // Draw indicator
+   double ind = gAudioIO->GetIndicator();
+   int indp = 0;
+   if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
+      indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
+ 
+      //Only redraw things if the indicator position has changed since the last
+      //time this function was called.  This stops the flickering that can occur
+      //when the view is zoomed waaaaay out.
+      if (indp != mLastIndicator) { 
+         dc->SetPen(*wxWHITE_PEN);
+         dc->SetLogicalFunction(wxXOR);
+         
+         //Get the size of the trackpanel region, so we know where to redraw
+         int width, height;
+         GetSize(&width, &height);   
+         
+         
+         //If an indicator line needs to be erased, do so by redrawing a small
+         // rectangle surrounding it.
+           wxRect r;
+         if(mPlayIndicatorExists)
+            r = wxRect(0,0, indp,height);    //Redraw everything before indicator, just in case
+         else {
+            r = wxRect(mLastIndicator,0,1,height); //Redraw sliver around previous indicator
+            mPlayIndicatorExists = true;
+         }
+         
+         Refresh(false, &r);                // This get rid of the previous indicator
+         
+         dc->DrawLine(indp,0,indp,height);  // This draws the new indicator
+         mLastIndicator=indp;               // This updates the old indicator value to the new indicator position
+      
+      }
    }
 }
 
@@ -2369,6 +2459,7 @@ void TrackPanel::OnMoveTrack(wxEvent & event)
                                            event.GetId() ==
                                            OnMoveUpID ? _("up") :
                                            _("down")));
+      mPlayIndicatorExists=false;
       Refresh(false);
    }
 }
