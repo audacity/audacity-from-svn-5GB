@@ -22,8 +22,31 @@ AC_CHECK_LIB(m, main)
 AC_CHECK_LIB(pthread, pthread_create)
 AC_CHECK_LIB(resolv, main)
 AC_CHECK_LIB(wx_gtk, main)
+
+dnl if libvorbisfile AND headers are already installed, do nothing. if not,
+dnl add the static libraries to the command line and vorbis/include
+dnl to the header search path. NOTE: any files that #include vorbis headers
+dnl must be in the base source directory (not a big problem, only one does)
+dnl
+dnl We could probably get away with checking only for the headers (why would
+dnl somone install the headers and not the library?) but we'll be complete
+dnl
+dnl TODO: Make this non-i386 specific (use an $(ARCH) variable)
+use_our_vorbis() {
+	CFLAGS="$CFLAGS -Ivorbis/include"
+	LIBS="-$LIBS vorbis/linux/lib/libvorbisfile.a vorbis/linux/lib/libvorbis.a vorbis/linux/lib/libogg.a"
+	echo "Using bundled libvorbis instead..."
+}
+
+check_vorbis_header() {
+	AC_CHECK_HEADER(vorbis/vorbisfile.h,
+					LIBS="$LIBS -lvorbisfile -lvorbis -logg", dnl success!
+					use_our_vorbis)
+}
+
 AC_CHECK_LIB(vorbisfile, ov_open, 
-	 LIBS="$LIBS -lvorbis -lvorbisfile",,-lvorbis)
+	 check_vorbis_header ,use_our_vorbis,
+	 -lvorbis -logg) dnl auxiliary library that -lvorbisfile needs
 
 dnl Checks for header files.
 AC_HEADER_STDC

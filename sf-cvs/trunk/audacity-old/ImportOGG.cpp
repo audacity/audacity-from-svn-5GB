@@ -42,7 +42,7 @@ bool ImportOGG(wxWindow *parent,
 	wxFFile file(Filename);
 	
 	if(!file.IsOpened()) {
-		wxMessageBox("Unable to open file " + Filename);
+		// No need for a message box, it's done automatically (but how?)
 		return false;
 	}
 
@@ -151,6 +151,11 @@ bool ImportOGG(wxWindow *parent,
 					ov_time_total(&vf, bitstream));
 
 	} while(!cancelled && bytesRead != 0 && bitstream == 0);
+
+	/* ...the rest is de-allocation */
+	ov_clear(&vf);
+	file.Detach();  // so that it doesn't try to close the file (ov_clear()
+	                // did that already)
 
 	delete[] mainBuffer;
 	

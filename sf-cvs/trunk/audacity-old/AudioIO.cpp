@@ -27,13 +27,9 @@
 #include "WaveTrack.h"
 #include "Mix.h"
 #include "APalette.h"
+#include "Prefs.h"
 
 AudioIO *gAudioIO;
-
-#ifdef __WXGTK__
-bool gLinuxFirstTime = true;
-char gLinuxDevice[256] = "/dev/dsp";
-#endif
 
 #ifdef BOUNCE
 #include "Bounce.h"
@@ -68,21 +64,6 @@ bool AudioIO::StartPlay(AudacityProject *project,
   if (mProject)
 	return false;
 
-#ifdef __WXGTK__
-  if (gLinuxFirstTime) {
-	wxString newDev = wxGetTextFromUser("Enter audio device to use:",
-										"Audio I/O",
-										gLinuxDevice,
-										project,
-										-1, -1, TRUE);
-	if (newDev == "")
-	  return false;
-
-	strcpy(gLinuxDevice, (const char *)newDev);
-	gLinuxFirstTime = false;
-  }
-#endif
-
   mRecording = false;
   mTracks = tracks;
   mT0 = t0;
@@ -96,7 +77,8 @@ bool AudioIO::StartPlay(AudacityProject *project,
   mSndNode.format.bits = 16;
   mSndNode.format.srate = project->GetRate();
 #ifdef __WXGTK__
-  strcpy(mSndNode.u.audio.devicename,gLinuxDevice);
+  wxString linuxDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "/dev/dsp");
+  strcpy(mSndNode.u.audio.devicename,linuxDevice.c_str());
 #else
   strcpy(mSndNode.u.audio.devicename,"");
 #endif
@@ -110,7 +92,8 @@ bool AudioIO::StartPlay(AudacityProject *project,
   int err = snd_open(&mSndNode, &flags);
 
   if (err) {
-	wxMessageBox(wxString::Format("Error opening audio device: %d",err));
+	wxMessageBox(wxString::Format(
+		"Error opening audio device--adjust it in your preferences: %d",err));
 	return false;
   }
   
@@ -124,10 +107,6 @@ bool AudioIO::StartPlay(AudacityProject *project,
 
   // Do this last because this is what signals the timer to go
   mProject = project;
-
-#ifdef __WXGTK__
-  gLinuxFirstTime = false;
-#endif
 
 #ifdef BOUNCE
   gBounce = new Bounce(project, 0, "Bounce", wxPoint(150,150));
@@ -167,21 +146,6 @@ bool AudioIO::StartRecord(AudacityProject *project,
   if (mProject)
 	return false;
 
-#ifdef __WXGTK__
-  if (gLinuxFirstTime) {
-	wxString newDev = wxGetTextFromUser("Enter audio device to use:",
-										"Audio I/O",
-										gLinuxDevice,
-										project,
-										-1, -1, TRUE);
-	if (newDev == "")
-	  return false;
-
-	strcpy(gLinuxDevice, (const char *)newDev);
-	gLinuxFirstTime = false;
-  }
-#endif
-
   mRecordLeft = new WaveTrack(project->GetDirManager());
   mRecordLeft->selected = true;
   mRecordLeft->channel = VTrack::LeftChannel;
@@ -208,7 +172,8 @@ bool AudioIO::StartRecord(AudacityProject *project,
   mSndNode.format.bits = 16;
   mSndNode.format.srate = project->GetRate();
 #ifdef __WXGTK__
-  strcpy(mSndNode.u.audio.devicename,gLinuxDevice);
+  wxString linuxDevice = gPrefs->Read("/AudioIO/RecordingDevice", "/dev/dsp");
+  strcpy(mSndNode.u.audio.devicename,linuxDevice.c_str());
 #else
   strcpy(mSndNode.u.audio.devicename,"");
 #endif
@@ -222,7 +187,8 @@ bool AudioIO::StartRecord(AudacityProject *project,
   int err = snd_open(&mSndNode, &flags);
 
   if (err) {
-	wxMessageBox(wxString::Format("Error opening audio device: %d",err));
+	wxMessageBox(wxString::Format(
+		"Error opening audio device--adjust it in your preferences: %d",err));
 	return false;
   }
 
@@ -238,10 +204,6 @@ bool AudioIO::StartRecord(AudacityProject *project,
   mProject = project;
 
   mProject->RedrawProject();
-
-#ifdef __WXGTK__
-  gLinuxFirstTime = false;
-#endif
 
   return true;
 }

@@ -52,6 +52,7 @@
 #include "TrackPanel.h"
 #include "WaveTrack.h"
 #include "effects/Effect.h"
+#include "prefs/PrefsDialog.h"
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double     AudacityProject::msClipLen = 0.0;
@@ -147,6 +148,7 @@ enum {
   ExportLabelsID,
   ExportMixID,
   ExportSelectionID,
+  PreferencesID,
   ExitID,
 
   // Edit Menu
@@ -171,7 +173,7 @@ enum {
   FloatPaletteID,
 
   // Project Menu
-  
+
   ImportID,
   ImportLabelsID,
   ImportMIDIID,
@@ -218,6 +220,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MENU(ExportLabelsID, AudacityProject::OnExportLabels)
   EVT_MENU(ExportMixID, AudacityProject::OnExportMix)
   EVT_MENU(ExportSelectionID, AudacityProject::OnExportSelection)
+  EVT_MENU(PreferencesID, AudacityProject::OnPreferences)
   EVT_MENU(ExitID, AudacityProject::OnExit)
   // Edit menu
   EVT_MENU(UndoID, AudacityProject::Undo)
@@ -257,10 +260,11 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mDirty(false),
   mTrackPanel(NULL),
   mAPalette(NULL),
-  mRate(44100.0),
+  mRate((double)gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
   mDrag(NULL),
   mAutoScrolling(false)
 {
+
   //
   // Create track list
   //
@@ -309,6 +313,8 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mFileMenu->Append(ExportSelectionID, "Export &Selection...");
   mFileMenu->Append(ExportMixID, "&Export Mix...");
   mFileMenu->Append(ExportLabelsID, "Export &Labels...");
+  mFileMenu->AppendSeparator();
+  mFileMenu->Append(PreferencesID, "&Preferences\tCtrl+P");
   mFileMenu->AppendSeparator();
   mFileMenu->Append(ExitID, "E&xit");
 
@@ -1409,11 +1415,17 @@ void AudacityProject::SaveAs()
   Save(false, true);
 }
 
+void AudacityProject::OnPreferences(wxCommandEvent& event)
+{
+	PrefsDialog dialog;
+	dialog.ShowModal();
+}
+
 void AudacityProject::OnExit(wxCommandEvent& event)
 {
   QuitAudacity();
 }
-
+	
 void AudacityProject::ImportFile(wxString fileName)
 {
   WaveTrack *left = 0;

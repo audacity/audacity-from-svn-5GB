@@ -6,6 +6,33 @@
 
   Dominic Mazzoni
 
+
+  Preference field specification:
+  	/
+		Version					- Audacity Version that created these prefs
+		DefaultOpenPath			- Default directory for new file selector
+	/FileFormats
+		CopyOrEditUncompressedData - Copy data from uncompressed files or
+			[ "copy", "edit"]   - edit in place?
+		DefaultExportFormat		- Default format to export data in
+			[ "AIFF", "WAV", "IRCAM", "AU", "Ogg Vorbis", "MP3" ]
+	/SamplingRate
+		DefaultProjectSampleRate- New projects will have this rate
+			[ 8000, 11025, 22050, 44100, 48000 ]
+	/AudioIO
+		PlaybackDevice(*)		- device file to use for playback
+		RecordingDevice(*)		- device file to use for recording
+	/Display
+		WaveformColor			- 0xRRGGBB  --since it will be stored in
+		ShadowColor				- 			  decimal, it will be somewhat
+		SpectrumLowColor		-			  non-intuitive to edit, but
+		SpectrumHighColor		-			  much easier to parse.
+	
+
+	(*): wxGTK
+	(+): wxWin
+	($): wxMac
+
 **********************************************************************/
 
 #include <wx/wxprec.h>

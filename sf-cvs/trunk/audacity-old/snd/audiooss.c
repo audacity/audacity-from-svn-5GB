@@ -81,7 +81,7 @@ int audio_open(snd_type snd, long *flags)
   if (snd->write_flag == SND_READ) {
 	/* open audio input */
 
-	/* Open /dev/dspW */
+	/* Open /dev/dsp */
 	dp->audio_fd = open(device, O_RDONLY, 0);
 	
 	if (dp->audio_fd == -1)
@@ -90,7 +90,7 @@ int audio_open(snd_type snd, long *flags)
   else {
 	/* open audio output */
 
-	/* Open /dev/dspW */
+	/* Open /dev/dsp */
 	dp->audio_fd = open(device, O_WRONLY, 0);
 	
 	if (dp->audio_fd == -1)

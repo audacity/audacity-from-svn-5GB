@@ -61,7 +61,11 @@ OBJS = \
 	$(OBJDIR)/snd/sndheader.c.o \
 	$(OBJDIR)/snd/sndlinux.c.o \
 	$(OBJDIR)/snd/sndcvt.c.o \
-	$(OBJDIR)/snd/sndio.c.o
+	$(OBJDIR)/snd/sndio.c.o \
+	$(OBJDIR)/prefs/PrefsDialog.cpp.o \
+	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
+	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
+	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o
 
 ########################################
 # DEPENDENCIES
@@ -77,13 +81,14 @@ audacity: $(OBJS) Makefile
 
 #
 # You can optionally "make dep" to make dependencies.
-# The sed script sticks the object directory name before .o files
-# in .depend, i.e. it replaces foo.o: with obj/foo.o
+# voodoo magic in the form of a perl script turns
+# Foo.o: Foo.cpp into obj/Foo.cpp.o: Foo.cpp
 #
+# I'm not brave enough to try and translate that regex to sed
 
 dep:
 	$(CCC) -M $(CFLAGS) $(DEPS) | \
-		sed "s/\(.*\)\.o:/$(OBJDIR)\/\1.o:/" \
+		perl -pe 's/^(.*)\.o: (\w+\.(\w+))/$(OBJDIR)\/$$1.$$3.o: $$2/;' \
 		> .depend
 
 #
@@ -98,7 +103,7 @@ clean:
 # We stick object files in separate directories for convenience
 #
 
-dirs: obj obj/snd obj/effects
+dirs: obj obj/snd obj/effects obj/prefs
 
 obj:
 	mkdir obj
@@ -108,6 +113,9 @@ obj/snd:
 
 obj/effects:
 	mkdir obj/effects
+
+obj/prefs:
+	mkdir obj/prefs
 
 #
 # Rules for compiling C/C++ files
