@@ -16,6 +16,11 @@
 // Increment this every time you release a new version
 #define AUDACITY_VERSION_STRING "1.1.1"
 
+// Increment this every time the prefs need to be reset
+// the first part (before the r) indicates the version the reset took place
+// the second part (after the r) indicates the number of times the prefs have been reset within the same version
+#define AUDACITY_PREFS_VERSION_STRING "1.1.1r1"
+
 // Don't change this unless the file format changes
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "1.1.0"

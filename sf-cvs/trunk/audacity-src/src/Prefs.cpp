@@ -105,7 +105,20 @@ void InitPreferences()
 #endif
 #endif
 
-   gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
+   gPrefs->Write("/Version", (wxString)AUDACITY_VERSION_STRING);
+
+   // BG: Make sure the users prefs are up to date
+   // BG: Otherwise reset some of them to their defaults
+   wxString prefsversion;
+   prefsversion = gPrefs->Read("/PrefsVersion", "");
+
+   if(prefsversion.CmpNoCase((wxString)AUDACITY_PREFS_VERSION_STRING))
+   {
+      // BG: Reset the prefs by removing them
+      gPrefs->DeleteGroup("/Keyboard");
+      gPrefs->DeleteGroup("/Locale");
+      gPrefs->Write("/PrefsVersion", (wxString)AUDACITY_PREFS_VERSION_STRING);
+   }
 }
 
 void FinishPreferences()
