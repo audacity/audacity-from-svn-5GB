@@ -54,7 +54,6 @@ class TrackArtist {
    int mInsetBottom;
 
    bool mUpdateSpectrogram;
-   bool mUpdatePitch;
 
    wxBrush blankBrush;
    wxBrush unselectedBrush;

@@ -70,8 +70,7 @@ class TrackInfoCache:public wxObject {
 
 TrackArtist::TrackArtist()
 {
-   gPrefs->Read("/GUI/SpectroGram", &mUpdateSpectrogram, true);
-   gPrefs->Read("/GUI/Pitch", &mUpdatePitch, true);
+   gPrefs->Read("/GUI/UpdateSpectrogram", &mUpdateSpectrogram, true);
 
    AColor::Init();
 
@@ -119,8 +118,7 @@ TrackArtist::~TrackArtist()
 
 void TrackArtist::ReReadSettings()
 {
-   gPrefs->Read("/GUI/SpectroGram", &mUpdateSpectrogram, true);
-   gPrefs->Read("/GUI/Pitch", &mUpdatePitch, true);
+   gPrefs->Read("/GUI/UpdateSpectrogram", &mUpdateSpectrogram, true);
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -1049,10 +1047,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
                                wxDC & dc, wxRect & r,
                                ViewInfo * viewInfo, bool autocorrelation)
 {
-   if(!mUpdateSpectrogram && !autocorrelation)
-      return;
-
-   if(!mUpdatePitch && autocorrelation)
+   if(!mUpdateSpectrogram)
       return;
 
    double h = viewInfo->h;
