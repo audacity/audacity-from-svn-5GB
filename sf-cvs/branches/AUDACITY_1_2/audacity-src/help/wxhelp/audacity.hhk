@@ -409,6 +409,10 @@ Index
 		<param name="Local" value="menu_view.htm">
 	</object>
 	<li><object type="text/sitemap">
+		<param name="Name" value="Float Meter Toolbar">
+		<param name="Local" value="menu_view.htm">
+	</object>
+	<li><object type="text/sitemap">
 		<param name="Name" value="BassBoost">
 		<param name="Local" value="menu_effect.htm">
 	</object>

@@ -32,6 +32,11 @@ Contents
 			<param name="Local" value="toolbar_edit.htm">
 			</object>
 
+		<li><object type="text/sitemap">
+			<param name="Name" value="Meter Toolbar">
+			<param name="Local" value="toolbar_meter.htm">
+			</object>
+
       </ul>
 
 	<li><object type="text/sitemap">
