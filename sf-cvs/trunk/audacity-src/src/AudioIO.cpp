@@ -446,7 +446,7 @@ void AudioIO::FillBuffers()
    // Recording buffers
    
    unsigned int numFull = 0;
-   unsigned int j, f, c; // loop counters
+   unsigned int f, c; // loop counters
    sampleCount flatLen;
       
    for(i=0; i<mNumInBuffers; i++) {
@@ -473,6 +473,7 @@ void AudioIO::FillBuffers()
 
          switch(mFormat) {
          case floatSample:
+            int j;
             for(j=0; j<mInBuffer[minIndex].len; j++)
                for(c=0; c<mNumInChannels; c++) {
                   ((float *)flat[c])[flatLen+j] =
@@ -530,7 +531,7 @@ void AudioIO::Stop()
    mPortStream = NULL;
 
    if (mNumOutChannels > 0) {
-      for(int i=0; i<mMaxBuffers; i++) {
+      for(unsigned int i=0; i<mMaxBuffers; i++) {
          mOutBuffer[i].ID = 0;
          DeleteSamples(mOutBuffer[i].data);
          mOutBuffer[i].data = NULL;
@@ -539,7 +540,7 @@ void AudioIO::Stop()
    }
 
    if (mNumInChannels > 0) {
-      for(int i=0; i<mMaxBuffers; i++) {
+      for(unsigned int i=0; i<mMaxBuffers; i++) {
          mInBuffer[i].ID = 0;
          DeleteSamples(mInBuffer[i].data);
          mInBuffer[i].data = NULL;
@@ -601,7 +602,7 @@ bool AudioIO::IsRecording(VTrack *t)
       return false;
 
    if (t) {
-      for (int i = 0; i < mNumInChannels; i++)
+      for (unsigned int i = 0; i < mNumInChannels; i++)
          if (mInTracks[i] == t)
             return true;
       return false;
