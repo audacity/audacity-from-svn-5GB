@@ -21,24 +21,24 @@ Audacity е безплатен редактор за звук.
 </p>
 
 <p>
-Екипът на Audacity е издал и версия 1.1.0, която е с качество "бета" и
+Екипът на Audacity е издал и версия 1.2.0-pre1, която е с качество "бета" и
 показва новите неща, по които активно се работи в момента. Тя съдържа
 много нови възможности, но не е толкова изгладена и стабилна.
 </p>
 
 <center>
-<a href="http://wxwindows.org/"><img src="images/wxwindows.gif" border="0"></a>
+ <a target=_top href="http://wxwindows.org/"><font size=1>[]</font></a>
 </center>
 
 <p>
 Audacity се разработва от екип от доброволци по модела на отворения код.
 Написана е на C и C++ с използване на многоплатформения развоен комплект
-<a href="http://www.wxwindows.org/">wxWindows</a>.
+<a target=_top href="http://www.wxwindows.org/">wxWindows</a>.
 Целият изходен код на програмата е достъпен при условията на лиценза 
-<a href="http://www.gnu.org/copyleft/gpl.html"
+<a target=_top href="http://www.gnu.org/copyleft/gpl.html"
 >GNU General Public License</a>, който по същество позволява на всеки
 да променя изходния код, при условие, че публикува промените.
-Кодът се намира на <a href="http://www.sourceforge.net">SourceForge</a>.
+Кодът се намира на <a target=_top href="http://www.sourceforge.net">SourceForge</a>.
 </p>
 
 <p>
