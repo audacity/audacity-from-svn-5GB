@@ -10,53 +10,6 @@ BoxTop($linksStr);
 
 <p>
 <font size=+1>
-Support Audacity:
-</font>
-</p>
-
-<form method="post"
-    action="http://osdir.com/modules.php?op=modload&name=Downloads&file=index">
-<table border="0" cellspacing="0" cellpadding="2">
-  <tr>
-    <td align="center">
-      <b>Vote for this App on O'Reilly's <a href="http://www.osdir.com/">OSDir.com!</a></b>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <table border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td valign="top">
-            <select name="rating">
-              <option selected>--</option><br>
-              <option value="10">10</option><br>
-              <option value="9">9</option><br>
-              <option value="8">8</option><br>
-              <option value="7">7</option><br>
-              <option value="6">6</option><br>
-              <option value="5">5</option><br>
-              <option value="4">4</option><br>
-              <option value="3">3</option><br>
-              <option value="2">2</option><br>
-              <option value="1">1</option><br>
-            </select>
-          </td>
-          <td valign="top">
-            <input type="hidden" name="ratinglid" value="148">
-            <input type="hidden" name="ratinguser" value="outside">
-            <input type="hidden" name="require(" value="addrating">
-            <input type="submit" value="Vote!">
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-</form>
-
-
-<p>
-<font size=+1>
 Links to Other Audio Editors
 </font>
 </p>
@@ -287,6 +240,53 @@ including a description of the program in French
 <li><a href="http://www.telesofts.com/">Telesofts.com (French PC Magazine, Programmez)</a>
 </ul>
 
+
+
+<p>
+<font size=+1>
+Support Audacity:
+</font>
+</p>
+
+<form method="post"
+    action="http://osdir.com/modules.php?op=modload&name=Downloads&file=index">
+<table border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td align="center">
+      <b>Vote for this App on O'Reilly's <a href="http://www.osdir.com/">OSDir.com!</a></b>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td valign="top">
+            <select name="rating">
+              <option selected>--</option><br>
+              <option value="10">10</option><br>
+              <option value="9">9</option><br>
+              <option value="8">8</option><br>
+              <option value="7">7</option><br>
+              <option value="6">6</option><br>
+              <option value="5">5</option><br>
+              <option value="4">4</option><br>
+              <option value="3">3</option><br>
+              <option value="2">2</option><br>
+              <option value="1">1</option><br>
+            </select>
+          </td>
+          <td valign="top">
+            <input type="hidden" name="ratinglid" value="148">
+            <input type="hidden" name="ratinguser" value="outside">
+            <input type="hidden" name="require(" value="addrating">
+            <input type="submit" value="Vote!">
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</form>
 
 
 
