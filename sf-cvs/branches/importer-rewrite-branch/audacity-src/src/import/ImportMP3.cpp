@@ -198,7 +198,7 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    if(mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0)
    {
       /* success */
-      printf("success\n");
+      /* printf("success\n"); */
 
       mad_decoder_finish(&mDecoder);
 
@@ -217,7 +217,7 @@ bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
    else {
 
       /* failure */
-      printf("failure\n");
+      /* printf("failure\n"); */
 
       mad_decoder_finish(&mDecoder);
 
@@ -360,11 +360,14 @@ enum mad_flow error_cb(void *_data, struct mad_stream *stream,
      MAD_FLOW_BREAK    = 0x0011,
      MAD_FLOW_IGNORE   = 0x0020
    }; */
+   /*
    printf("decoding error 0x%04x (%s)\n",
       stream->error, mad_stream_errorstr(stream));
+   */
 
+   return MAD_FLOW_CONTINUE;
 
-   return MAD_FLOW_BREAK;
+   /* return MAD_FLOW_BREAK; */
 }
 
 
