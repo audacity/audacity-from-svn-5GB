@@ -7,13 +7,13 @@ if(@ARGV == 0) {
 	exit;
 }
 
-unless(-f "Audacity.h") {
+unless(-f "src/Audacity.h") {
 	print "Must be run from Audacity directory\n";
 	exit;
 }
 
 # find version number
-open(HEADER, "Audacity.h");
+open(HEADER, "src/Audacity.h");
 @lines = <HEADER>;
 $lines = join " ", @lines;
 $lines =~ /AUDACITY_VERSION_STRING "([0-9.a-z]*)"/;
@@ -63,17 +63,27 @@ elsif($ARGV[0] eq "src") {
 	`cp -r . ../audacity-src-$version`;
 	chdir "../audacity-src-$version";
 
-	printf "removing CVS directories...\n";
+	print "removing CVS directories...\n";
 	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
 
-	printf "removing emacs temp files...\n";
+	print "removing emacs temp files...\n";
 	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
 
-	printf "removing executable and other intermediate files...\n";
+	print "removing executable and other intermediate files...\n";
 	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
 
-	printf "removing the copy of this script...\n";
-	`rm -f maketarball`;
+	print "removing scripts...\n";
+	`rm -rf scripts`;
+
+   print "removing libraries that should be installed locally...\n";
+   `rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
+   `rm -rf lib-src/wave++`;
+
+   print "removing other things that only belong in CVS\n";
+   `rm -rf help qa`;
+
+   print "removing files that only pertain to windows or mac...\n";
+   `rm -rf win mac`;
 
 	print "making tarball audacity-src-$version.tgz...\n";
 	chdir "..";
