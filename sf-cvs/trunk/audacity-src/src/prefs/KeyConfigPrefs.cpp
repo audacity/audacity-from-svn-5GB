@@ -233,6 +233,7 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 
 void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 {
+   mKeysList->DeleteAllItems();
    mAudacity->AssignDefaults();
    UpdateKeyList();
 }
