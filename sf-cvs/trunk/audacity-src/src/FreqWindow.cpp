@@ -1062,7 +1062,7 @@ void FreqWindow::Recalc()
    mFreqPlot->Refresh(false);
 }
 
-void FreqWindow::OnExport()
+void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
 {
    wxString fName = _("spectrum.txt");
 
