@@ -2008,8 +2008,12 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
    if (event.ButtonDown())
       CaptureMouse();
-   else if (event.ButtonUp() && HasCapture())
+   else if (event.ButtonUp()) {
+      #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+      if (HasCapture())
+      #endif
       ReleaseMouse();
+   }
 
    if (mIsClosing)
       HandleClosing(event);
