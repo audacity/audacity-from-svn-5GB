@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.93: December 3, 2000
+Version 0.94: January 15, 2001
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -15,6 +15,7 @@ Authors:
   Jason Cohen <cohen3+@andrew.cmu.edu>
   Robert Leidle <rfl+@andrew.cmu.edu>
   Mark Tomlinson <marktoml@hotmail.com>
+  Joshua Haberman <joshua@haberman.com>
 
 For changelog, see the bottom of this document
 
@@ -67,6 +68,30 @@ for Windows and CodeWarrior for Mac are supported) please
 email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 -------------------------------------------------------------
+
+Known problems:
+
+* Windows: The floating tool palette does not minimize when
+  minimizing a project window.  As a workaround, you can
+  just keep the tool palette docked with the project window.
+
+-------------------------------------------------------------
+
+Changes in 0.94:
+
+* Preferences dialog (Joshua Haberman)
+
+* OGG Vorbis import (Joshua Haberman)
+
+* Silence, Insert Silence commands
+
+* Split and Duplicate commands
+
+* Mac OS X support
+
+* Supports recording on Mac OS 8 and 9
+
+* Many bug fixes
 
 Changes in 0.93:
 
