@@ -21,16 +21,13 @@
 <img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
 </p>
 
-<?php include GetTranslation("beta-1.2.0-pre1-problems"); ?>
-<?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
+<h2><?php print $downloadSectionStr; ?></h2>
 
 <table border="0">
 
 <tr>
 <td colspan=2>
-<center><b>
-<?php print "Windows ($winBetaVersion)" ?>
-</b></center>
+<h3><?php print "Windows ($winBetaVersion)" ?></h3>
 </td>
 </tr>
 
@@ -68,9 +65,7 @@
 
 <tr>
 <td colspan=2>
-<center><b>
-<?php print "Mac OS X ($macOSXBetaVersion)" ?>
-</b></center>
+<h3><?php print "Mac OS X ($macOSXBetaVersion)" ?></h3>
 </td>
 </tr>
 
@@ -96,9 +91,7 @@
 
 <tr>
 <td colspan=2>
-<center><b>
-<?php print "Source Code ($srcBetaVersion)" ?>
-</b></center>
+<h3><?php print "Source Code ($srcBetaVersion)" ?></h3>
 </td>
 </tr>
 
@@ -127,43 +120,11 @@ Source code dependencies:
 </td>
 </tr>
 
-<!--
-
-<tr>
-<td valign=center
-><?php print "<a href=\"$rpm\">";
-?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
-</td>
-<td valign=center
-><?php print "<a href=\"$rpm\">audacity-i386.rpm";
-?></a>
-<?php print "($rpmStr, $rpmBetaSize)"; ?>
-</td>
-</tr>
-
--->
-
 <tr>
 <td colspan=2>
-<center><b>
-<?php print "Mac OS 9 ($macOS9BetaVersion)" ?>
-</b></center>
+<h3><?php print "Mac OS 9 ($macOS9BetaVersion)" ?></h3>
 </td>
 </tr>
-
-<!--
-<tr>
-<td valign=center
-><?php print "<a href=\"$os9\">";
-?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
-</td>
-<td valign=center
-><?php print "<a href=\"$os9\">audacity-mac.sit";
-?></a>
-<?php print "($sitStr, $macOS9BetaSize)"; ?>
-</td>
-</tr>
--->
 
 <tr>
 <td></td>
@@ -176,11 +137,8 @@ Source code dependencies:
 
 <center><hr width=50%></center>
 
-<!--
-<a href="http://www.maindex.com/lame/pages/beta_Win32_DLL.html">
-<?php print "$lameStr</a> $lameStr2"; ?>
-<br>
--->
+<?php include GetTranslation("beta-1.2.0-pre1-problems"); ?>
+<?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
 
@@ -191,9 +149,4 @@ Source code dependencies:
   include 'bottom.inc.php';
 
 ?>
-
-
-
-
-
 
