@@ -45,17 +45,20 @@ WarningDialog::WarningDialog(wxWindow *parent, wxString message):
    wxDialog(parent, (wxWindowID)-1, (wxString)_("Warning"))
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *vSizer = new wxBoxSizer(wxVERTICAL);
 
    wxStaticText *statText = new wxStaticText(this, -1, message);
-   mainSizer->Add(statText, 0, wxALIGN_LEFT|wxALL, 5);
+   vSizer->Add(statText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mCheckBox = new wxCheckBox(this, -1, _("Don't show this warning again"));
-   mainSizer->Add(mCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
+   vSizer->Add(mCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
    ok->SetFocus();
-   mainSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
+   vSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   mainSizer->Add(vSizer, 0, wxALL, 15);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);
