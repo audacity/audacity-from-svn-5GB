@@ -159,6 +159,22 @@ Index
 		<param name="Name" value="Amplify...">
 		<param name="Local" value="menu5.htm">
 		</object>
+    <li><object>
+		<param name="Name" value="BassBoost...">
+		<param name="Local" value="menu5.htm">
+		</object>
+    <li><object>
+		<param name="Name" value="Phaser...">
+		<param name="Local" value="menu5.htm">
+		</object>
+    <li><object>
+		<param name="Name" value="Wahwah...">
+		<param name="Local" value="menu5.htm">
+		</object>
+    <li><object>
+		<param name="Name" value="FFT Filter...">
+		<param name="Local" value="menu5.htm">
+		</object>
 	<li><object>
 		<param name="Name" value="Fade In">
 		<param name="Local" value="menu5.htm">
@@ -248,6 +264,14 @@ Index
 	<li><object>
 		<param name="Name" value="MP3">
 		<param name="Local" value="fileformats.htm#mp3">
+		</object>
+    <li><object>
+		<param name="Name" value="MP3, exporting">
+		<param name="Local" value="exportmp3.htm">
+		</object>
+    <li><object>
+		<param name="Name" value="Exporting MP3 Files">
+		<param name="Local" value="exportmp3.htm">
 		</object>
 	<li><object>
 		<param name="Name" value="Ogg Vorbis">
