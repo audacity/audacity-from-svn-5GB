@@ -7,7 +7,7 @@
 <appendix id="vorbis-over-ogg">
 <appendixinfo>
  <releaseinfo>
-  $Id: a1-encapsulation_ogg.xml,v 1.1.1.1 2004-11-13 16:51:21 mbrubeck Exp $
+  $Id: a1-encapsulation_ogg.xml,v 1.1.1.1.2.1 2004-11-25 02:45:42 mbrubeck Exp $
  </releaseinfo>
 </appendixinfo>
 <title>Embedding Vorbis into an Ogg stream</title>

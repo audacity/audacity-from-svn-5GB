@@ -7,7 +7,7 @@
 <section id="vorbis-spec-codebook">
 <sectioninfo>
 <releaseinfo>
- $Id: 03-codebook.xml,v 1.1.1.1 2004-11-13 16:51:21 mbrubeck Exp $
+ $Id: 03-codebook.xml,v 1.1.1.1.2.1 2004-11-25 02:45:42 mbrubeck Exp $
 </releaseinfo>
 </sectioninfo>
 <title>Probability Model and Codebooks</title>
