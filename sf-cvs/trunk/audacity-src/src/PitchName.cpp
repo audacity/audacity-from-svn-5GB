@@ -43,8 +43,8 @@ char * p_PitchName;
 
 // PitchName takes pitchNum (as per result from 
 // Freq2Pitch) and returns a standard pitch/note name [C, C#, etc.). 
-// Sharps are the default, unless, b_Wantb_WantFlats is true.
-char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
+// Sharps are the default, unless, bWantFlats is true.
+char * PitchName(float pitchNum, bool bWantFlats /* = false */)
 {
    p_PitchName = gPitchName;
 
@@ -53,7 +53,7 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
       *p_PitchName++ = 'C';
       break;
    case 1:
-      if (b_WantFlats) {
+      if (bWantFlats) {
          *p_PitchName++ = 'D';
          *p_PitchName++ = 'b';
       } else {
@@ -65,7 +65,7 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
       *p_PitchName++ = 'D';
       break;
    case 3:
-      if (b_WantFlats) {
+      if (bWantFlats) {
          *p_PitchName++ = 'E';
          *p_PitchName++ = 'b';
       } else {
@@ -80,7 +80,7 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
       *p_PitchName++ = 'F';
       break;
    case 6:
-      if (b_WantFlats) {
+      if (bWantFlats) {
          *p_PitchName++ = 'G';
          *p_PitchName++ = 'b';
       } else {
@@ -92,7 +92,7 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
       *p_PitchName++ = 'G';
       break;
    case 8:
-      if (b_WantFlats) {
+      if (bWantFlats) {
          *p_PitchName++ = 'A';
          *p_PitchName++ = 'b';
       } else {
@@ -104,7 +104,7 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
       *p_PitchName++ = 'A';
       break;
    case 10:
-      if (b_WantFlats) {
+      if (bWantFlats) {
          *p_PitchName++ = 'B';
          *p_PitchName++ = 'b';
       } else {
@@ -125,9 +125,9 @@ char * PitchName(float pitchNum, bool b_WantFlats /* = false */)
 // PitchName_Absolute does the same thing as PitchName, but appends 
 // the register number, e.g., instead of "C" it will return "C4" 
 // if the pitchNum corresonds to middle C.
-char * PitchName_Absolute(float pitchNum, bool b_WantFlats /* = false */)
+char * PitchName_Absolute(float pitchNum, bool bWantFlats /* = false */)
 {
-   PitchName(pitchNum, b_WantFlats); 
+   PitchName(pitchNum, bWantFlats); 
 
 	// PitchName sets p_PitchName to the next available char in gPitchName, 
 	// so it's ready to append the register number.
