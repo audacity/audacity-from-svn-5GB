@@ -1,8 +1,8 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity е безплатен редактор за звук с отворен код.
-Възможностите й включват запис и възпроизвеждане на звук,
+Audacity е свободен редактор за звук.
+Възможностите на програмата включват запис и възпроизвеждане на звук,
 импорт и експорт на формати WAV, AIFF, Ogg Vorbis, MP3 и др.
 С нея можете да редактирате звуците чрез изрязване, копиране и вмъкване
 (и да отменяте неограничен брой операции), да смесвате
@@ -13,7 +13,7 @@ Audacity е безплатен редактор за звук с отворен код.
 </p>
 
 <center>
-<a href="http://wxwidgets.org/"><img src="images/wxwindows.gif" border="0"></a>
+<a target=_top href="http://wxwidgets.org/"><img src="images/wxwindows.gif" border="0"></a>
 </center>
 
 <p>
@@ -31,6 +31,7 @@ Audacity се разработва от екип от доброволци по модела на отворения код.
 Въпроси или коментари?
 Пращайте е-поща на <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a> (кореспонденцията е на английски, но в бъдеще евентуално ще има отделни пощенски списъци и за други езици).
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
 
 <!-- Translators: please make a note here that the "audacity-help"
