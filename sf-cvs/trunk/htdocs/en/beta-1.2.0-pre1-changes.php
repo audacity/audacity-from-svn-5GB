@@ -1,7 +1,7 @@
 <h2>Changes in Audacity 1.2</h2>
 
-This section lists major changes since our last stable release, Audacity
-1.0.0.   Users of our beta versions should see the release notes for
+This page lists major changes since our last stable release, Audacity
+1.0.0.   Users of our beta versions should see the changelog for
 <a href="<?php print "betanotes.php$langQueryStr"; ?>">changes since Audacity 1.1.0</a>.
 
 <h3>Professional-Quality Audio</h3>
