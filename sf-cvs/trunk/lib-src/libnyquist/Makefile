@@ -13,6 +13,7 @@ LFLAGS = -lm
 INTGEN = misc/intgen
 
 OBJECTS = 	nyx/nyx.o \
+	xlisp/path.o \
 	xlisp/extern.o xlisp/xldmem.o xlisp/xlbfun.o xlisp/xlcont.o  \
 	xlisp/xldbug.o xlisp/xleval.o xlisp/xlfio.o xlisp/xlftab.o  \
 	xlisp/xlglob.o xlisp/xlimage.o xlisp/xlinit.o xlisp/xlio.o  \
