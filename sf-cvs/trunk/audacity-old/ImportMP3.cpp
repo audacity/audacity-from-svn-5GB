@@ -252,7 +252,7 @@ bool ImportMP3(AudacityProject * project,
    if(data.progress)
       delete data.progress;
 
-   if(data->cancelled && *data.leftTrack) {
+   if(data.cancelled && *data.leftTrack) {
       delete *data.leftTrack;
       if(*data.rightTrack)
          delete *data.rightTrack;
