@@ -21,11 +21,11 @@
 #include "Wahwah.h"
 
 #ifdef __WXMAC__
-#include "LoadVSTMac.h"
+#include "VST/LoadVSTMac.h"
 #endif
 
 #ifdef __WXMSW__
-#include "LoadVSTWin.h"
+#include "VST/LoadVSTWin.h"
 #endif
 
 void LoadEffects()
