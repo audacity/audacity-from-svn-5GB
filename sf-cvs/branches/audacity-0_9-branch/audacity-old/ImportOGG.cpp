@@ -117,6 +117,7 @@ bool ImportOGG(wxWindow * parent,
 
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096
+   
    const int bufferSize = WaveTrack::GetIdealBlockSize();
    sampleType *mainBuffer = new sampleType[CODEC_TRANSFER_SIZE];
 
@@ -124,6 +125,14 @@ bool ImportOGG(wxWindow * parent,
    for (int i = 0; i < *numChannels; i++) {
       buffers[i] = new sampleType[bufferSize];
    }
+
+   /* determine endianness (clever trick courtesy of Nicholas Devillard,
+    * (http://www.eso.org/~ndevilla/endian/) */
+   int testvar = 1, endian;
+   if(*(char *)&testvar)
+      endian = 0;  // little endian
+   else
+      endian = 1;  // big endian
 
    /* number of samples currently in each channel's buffer */
    int bufferCount = 0;
@@ -134,7 +143,7 @@ bool ImportOGG(wxWindow * parent,
 
    do {
       bytesRead = ov_read(&vf, (char *) mainBuffer, CODEC_TRANSFER_SIZE,
-                          0,    // little endian
+                          endian,
                           2,    // word length (2 for 16 bit samples)
                           1,    // signed
                           &bitstream);
