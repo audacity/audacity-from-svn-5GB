@@ -263,6 +263,12 @@ END_EVENT_TABLE()
 // main frame
 bool AudacityApp::OnInit()
 {
+   // Unused strings that we want to be translated, even though
+   // we're not using them yet...
+   wxString future1 = _("Master Gain Control");
+   wxString future2 = _("Input Meter");
+   wxString future3 = _("Output Meter");
+
    {
       wxLogNull dontLog;
 
