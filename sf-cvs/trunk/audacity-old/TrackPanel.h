@@ -111,14 +111,6 @@ private:
   VTrack *FindTrack(int mouseX, int mouseY, bool label,
 					wxRect *trackRect = NULL, int *trackNum = NULL);
 
-  // Find track info by pointer
-  //bool FindTrack(VTrack *target, bool label,
-	//			 wxRect *trackRect = NULL, int *trackNum = NULL);
-
-  bool GetLabelFieldRect(wxRect &labelRect,
-						 int field, bool rightOnly,
-						 wxRect& fieldRect);
-
   int GetTitleWidth();
   int GetTitleOffset();
   int GetVRulerWidth();  
@@ -130,6 +122,7 @@ private:
   void DrawRuler(wxDC *dc, bool text = true);
   void DrawTracks(wxDC *dc);
   
+  void GetTrackControlsRect(wxRect &trackRect, wxRect &r);
   void GetCloseBoxRect(wxRect &trackRect, wxRect &r);
   void GetTitleBarRect(wxRect &trackRect, wxRect &r);
 
@@ -184,7 +177,9 @@ private:
   wxCursor        *mZoomInCursor;
   wxCursor        *mZoomOutCursor;
 
-  wxMenu          *mTrackMenu;
+  wxMenu          *mWaveTrackMenu;
+  wxMenu          *mNoteTrackMenu;
+  wxMenu          *mLabelTrackMenu;
   wxMenu          *mRateMenu;
 
   VTrack          *mPopupMenuTarget;

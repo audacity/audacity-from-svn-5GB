@@ -29,7 +29,7 @@ NoteTrack::NoteTrack(DirManager *projDirManager):
 
 void NoteTrack::DrawLabelControls(wxDC &dc, wxRect &r)
 {
-  int wid = 23;
+  int wid = 20;
   int ht = 16;
 
   if (r.height < ht*4)
