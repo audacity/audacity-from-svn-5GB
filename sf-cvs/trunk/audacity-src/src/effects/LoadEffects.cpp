@@ -40,7 +40,7 @@
 #include "ladspa/LoadLadspa.h"
 #endif
 
-void LoadEffects()
+void LoadEffects(wxString searchDir)
 {
    Effect::RegisterEffect(new EffectAmplify(), false);
    Effect::RegisterEffect(new EffectBassBoost(), false);
@@ -60,9 +60,7 @@ void LoadEffects()
 #endif
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
-# ifndef __UNIX__
-   LoadVSTPlugins();
-# endif
+   LoadVSTPlugins(searchDir);
 #endif
 
 #ifdef USE_LADSPA

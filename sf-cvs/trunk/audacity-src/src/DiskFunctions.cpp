@@ -9,6 +9,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #ifdef WIN32
 #include <windows.h>            //the windows stuff
 #include <tchar.h>
@@ -115,7 +117,7 @@ wxLongLong GetFreeDiskSpace(TCHAR * path)
 
 #elif defined(__WXMAC__)
 
-#ifdef __UNIX__
+#ifdef __MACOSX__
 # include <CoreServices/CoreServices.h>
 #else
 # include <Files.h>

@@ -10,6 +10,8 @@
 
 extern "C" {
 
-   void LoadVSTPlugins();
+   #include <wx/string.h>
+
+   void LoadVSTPlugins(wxString searchDir);
 
 };

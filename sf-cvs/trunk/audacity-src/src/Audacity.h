@@ -30,11 +30,7 @@ extern ToolBarStub *gEditToolBarStub;
 void QuitAudacity();
 
 #ifdef __WXMAC__
-# include "configmac.h"
-# include <wx/defs.h>
-# ifdef __UNIX__
-#  include "configunix.h"
-# endif
+#include "configmac.h"
 #endif
 
 #ifdef __WXGTK__

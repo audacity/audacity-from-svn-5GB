@@ -15,27 +15,28 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "Project.h"
 
-#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/string.h>
+
+#ifdef __MACOSX__
+#include <CoreServices/CoreServices.h>
+#endif
+
+#ifdef __MACOS9__
+#include <Files.h>
 #endif
 
 #ifdef __WXMAC__
-# ifdef __UNIX__
-#  include <CoreServices/CoreServices.h>
-# else
-#  include <Files.h>
-# endif
- void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #else
-# include <wx/dragimag.h>
+#include <wx/dragimag.h>
 #endif
 
 #include <wx/event.h>
@@ -45,7 +46,6 @@
 #include <wx/textfile.h>
 #include <wx/menu.h>
 
-#include "Audacity.h"
 #include "AudacityApp.h"
 #include "AColor.h"
 #include "AStatus.h"

@@ -11,6 +11,8 @@
 #ifndef __AUDACITY_LOAD_EFFECTS__
 #define __AUDACITY_LOAD_EFFECTS__
 
-void LoadEffects();
+#include <wx/string.h>
+
+void LoadEffects(wxString searchDir);
 
 #endif // define __AUDACITY_LOAD_EFFECTS__

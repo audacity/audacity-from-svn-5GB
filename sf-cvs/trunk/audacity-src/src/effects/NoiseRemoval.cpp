@@ -12,22 +12,22 @@
 
 **********************************************************************/
 
-#include <math.h>
+#include "../Audacity.h"
 
-#include <wx/defs.h>
+#include <math.h>
 
 #ifdef __WXMSW__
 #include <float.h>
 #define finite(x) _finite(x)
 #endif
 
-#ifdef __WXMAC__
-# ifdef __UNIX__
-#  include <math.h>
-# else
-#  include <fp.h>
-#  define finite(x) isfinite(x)
-# endif
+#ifdef __MACOSX__
+#include <math.h>
+#endif
+
+#ifdef __MACOS9__
+#include <fp.h>
+#define finite(x) isfinite(x)
 #endif
 
 #include <wx/msgdlg.h>

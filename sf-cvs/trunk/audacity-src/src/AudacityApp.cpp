@@ -8,7 +8,8 @@
 
 **********************************************************************/
 
-#include <wx/defs.h>
+#include "Audacity.h" // This should always be included first
+
 #include <wx/app.h>
 #include <wx/window.h>
 #include <wx/intl.h>
@@ -21,13 +22,13 @@
 #include <unistd.h>
 #endif
 
-#ifdef __WXMAC__
-# ifdef __UNIX__
-#  include <ApplicationServices/ApplicationServices.h>
-# else
-#  include <AEDataModel.h>
-#  include <AppleEvents.h>
-# endif
+#ifdef __MACOS9__
+#include <AEDataModel.h>
+#include <AppleEvents.h>
+#endif
+
+#ifdef __MACOSX__
+#include <ApplicationServices/ApplicationServices.h>
 #endif
 
 #include "AudacityApp.h"
@@ -117,7 +118,7 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
 }
 
 /* prototype of MoreFiles fn, included in wxMac already */
-#ifdef __UNIX__
+#ifdef __MACOSX__
 extern "C" {
 pascal OSErr FSpGetFullPath(const FSSpec * spec,
 		     short *fullPathLength, Handle * fullPath);
@@ -240,7 +241,7 @@ bool AudacityApp::OnInit()
    } else
       mLocale = NULL;
 
-   LoadEffects();
+   LoadEffects(wxPathOnly(argv[0]));
 
 #ifdef __WXMAC__
 
@@ -308,7 +309,7 @@ bool AudacityApp::OnInit()
    SetTopWindow(project);
 
    // Can't handle command-line args on Mac OS X yet...
-   #if !(defined(__WXMAC__) && defined(__UNIX__))
+   #ifndef __MACOSX__
 
    // Parse command-line arguments
 
