@@ -71,6 +71,7 @@ OBJS = \
 	$(OBJDIR)/effects/Amplify.o \
 	$(OBJDIR)/effects/Invert.o \
 	$(OBJDIR)/effects/SimpleMono.o \
+	$(OBJDIR)/effects/ToneGen.o \
 	$(OBJDIR)/export/Export.o \
 	$(OBJDIR)/export/ExportMP3.o \
 	$(OBJDIR)/export/ExportOGG.o \
@@ -105,7 +106,6 @@ TEMP_DISABLED_EFFECTS = \
 	$(OBJDIR)/effects/NoiseRemoval.o \
 	$(OBJDIR)/effects/Phaser.o \
 	$(OBJDIR)/effects/Reverse.o \
-	$(OBJDIR)/effects/ToneGen.o \
 	$(OBJDIR)/effects/Wahwah.o \
 
 
