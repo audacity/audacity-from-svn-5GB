@@ -20,4 +20,8 @@ Hjälp</a>.
 <p>
 I denna version behöver du, för att kunna använda VST plug-ins, ladda ner "VST Enabler" separat. Den kommer att bli tillgänglig snart.</p>
 
+<p>
+<b>(Windows installer fixed Oct 1, 2003)</b>
+</p>
+
 <?php BoxBottom(); ?>
