@@ -6,6 +6,9 @@
 *-----------+-----------------------------------------------------------------
 *  2-Apr-91 | JDW : further changes
 * 16-Feb-92 | GWL : use reg_timebase in seq_play()
+* 28-Apr-03 |  DM : false->FALSE, true->TRUE, portability changes
+* 19-May-03 | RBD : no longer assume seq->current remains untouched between 
+*           |       note inserts
 *****************************************************************************/
 
 #include "stdio.h"
@@ -21,16 +24,16 @@
 extern int moxcdebug;
 extern timebase_type default_base;
 
-boolean seq_print = false;      /* debugging print switch */
+boolean seq_print = FALSE;      /* debugging print switch */
 
 seq_type sequence;      /* this is a global to be accessed by routines called
                          * from the sequence */
 
 /* clock state: */
 time_type clock_ticksize;       /* millisec per tick shifted 16 bits */
-boolean clock_running = false;  /* true if clock is running */
-boolean external_midi_clock = false;
-boolean suppress_midi_clock = false;
+boolean clock_running = FALSE;  /* TRUE if clock is running */
+boolean external_midi_clock = FALSE;
+boolean suppress_midi_clock = FALSE;
 
 private void insert_event();
 private void process_event();
@@ -54,7 +57,7 @@ private char *chunk_alloc(seq_type seq, int size)
     /* gprintf(TRANS, "chunk_alloc: seq %lx size %d\n", seq, size); */
     if (size & 1) size++;	/* make it even */
     if (chunk->free + size >= CHUNK_SIZE) {
-        chunk_type new_chunk = chunk_create(false);
+        chunk_type new_chunk = chunk_create(FALSE);
         if (!chunk) {
             gprintf(FATAL, "Out of memory while reading seq\n");
             return NULL;
@@ -111,7 +114,7 @@ private void clock_tick(seq, fraction)
         midi_clock();
         cause((delay_type)delay, clock_tick, seq, fraction);
     } else {
-        clock_running = false;
+        clock_running = FALSE;
         midi_stop();
         midi_clock(); /* stop takes effect on next clock, so provide one */
     }
@@ -157,7 +160,7 @@ private event_type event_create(seq, size, etime, eline)
         result->nline = eline;
         /* since we know the time, we can insert now: */
         insert_event(seq, result);
-        seq_duration(seq) = max(seq_duration(seq), etime);
+        seq_duration(seq) = MAX(seq_duration(seq), etime);
     }
     return result;
 }
@@ -277,7 +280,7 @@ event_type insert_ctrlramp(seq, rtime, rline, voice, step, dur, ctrl, v1, v2)
         event->u.ramp.u.ctrl.from_value = v1;
         event->u.ramp.u.ctrl.to_value = v2;
         seq_ctrlcount(seq)++;
-        seq_duration(seq) = max(seq_duration(seq), rtime + dur);
+        seq_duration(seq) = MAX(seq_duration(seq), rtime + dur);
     }
     return event;
 }
@@ -353,7 +356,7 @@ event_type insert_deframp(seq, rtime, rline, voice, step, dur,
         event->u.ramp.u.def.parm_num = parm_num;
         event->u.ramp.u.def.to_value = to_value;
         seq_ctrlcount(seq)++;
-        seq_duration(seq) = max(seq_duration(seq), rtime + dur);
+        seq_duration(seq) = MAX(seq_duration(seq), rtime + dur);
     }
     return event;
 }
@@ -394,13 +397,16 @@ private void insert_event(seq, event)
         seq->current = event;
     } else {
         /* insert somewhere after the head of the list
-         * assume: current is not NULL.  why?  because it is only null
-         * before the first insertion, which is taken
-         * care of in the previous arm of this conditional.
+         * do not assume: current is not NULL.  Although we always leave
+		 * it set, the client may access the sequence before the next
+		 * insert.
          */
         register event_type previous;
         register event_type insert_before;
 
+		if (!seq->current) {
+			seq->current = seq_eventlist(seq);
+		}
         if (event->ntime >= seq->current->ntime) {
             /* insertion point is after current */
             previous = seq->current;
@@ -512,7 +518,7 @@ event_type insert_note(seq, ntime, nline, voice, pitch, dur, loud)
         event->value = pitch;
         event->u.note.ndur = (dur << 8) + loud;
         seq_notecount(seq)++;
-        seq_duration(seq) = max(seq_duration(seq), ntime + dur);
+        seq_duration(seq) = MAX(seq_duration(seq), ntime + dur);
     }
     return event;
 }
@@ -616,7 +622,7 @@ private void process_event(seq)
                     clock_ticksize = event->u.clock.ticksize;
                     if (!clock_running && !suppress_midi_clock && 
                         !external_midi_clock) {
-                        clock_running = true;
+                        clock_running = TRUE;
                         midi_start();
                         clock_tick(seq, 0L);
                     }
@@ -677,7 +683,7 @@ private void process_event(seq)
         cause((delay_type)(event->ntime - virttime), process_event, seq);
     } else if (seq->noteoff_count == 0 && seq->note_enable) {
         /* if we're just advancing to a start point, note_enable will be
-         * false and this won't get called:
+         * FALSE and this won't get called:
          */
         if (seq->stopfunc) {
             (*(seq->stopfunc))(seq);
@@ -741,7 +747,7 @@ void report_enabled_channels(seq)
             if (i > (range_open_at + 1)) {
                 gprintf(TRANS, "-%d", i - 1);
             }
-            range_open_at = 0; /* false */
+            range_open_at = 0; /* FALSE */
         }
         mask = mask >> 1;
     }
@@ -764,7 +770,7 @@ void send_macro(ptr, voice, parameter, parm_num, value, nline)
   int nline;
 {
     register unsigned char code, *loc;
-    while (code = *ptr++) {
+    while ((code = *ptr++)) {
         loc = ptr + *ptr;
         ptr++;
         if (code <= nmacroparms) {
@@ -842,7 +848,7 @@ void seq_cause_noteoff_meth(seq, delay, voice, pitch)
 seq_type seq_copy(from_seq)
   seq_type from_seq;
 {
-    register seq_type seq = seq_init(seq_alloc(), false);
+    register seq_type seq = seq_init(seq_alloc(), FALSE);
     if (!seq) return NULL;
     seq->chunklist = from_seq->chunklist;
     seq->current = seq_events(seq);
@@ -860,7 +866,7 @@ seq_type seq_copy(from_seq)
 /**/
 seq_type seq_create()
 {
-    return seq_init(seq_alloc(), true);
+    return seq_init(seq_alloc(), TRUE);
 }
 
 
@@ -950,7 +956,7 @@ seq_type seq_init(seq, create_chunk)
     }
     seq->chunklist = NULL;
     if (create_chunk) {
-        seq->chunklist = chunk_create(true);
+        seq->chunklist = chunk_create(TRUE);
         if (!seq->chunklist) {
             seq_free(seq);
             return NULL;
@@ -969,13 +975,13 @@ seq_type seq_init(seq, create_chunk)
     seq->current = NULL;
     seq->transpose = 0;
     seq->loudness = 0;
-    seq->cycleflag = false;
+    seq->cycleflag = FALSE;
     seq->cycledur = 0L;
     seq->rate = 256L;
-    seq->paused = false;
+    seq->paused = FALSE;
     seq->stopfunc = noop;
     seq->channel_mask = 0xFFFFFFFFL;
-    seq->runflag = seq->note_enable = false;
+    seq->runflag = seq->note_enable = FALSE;
     return seq;
 }
 
@@ -1050,7 +1056,7 @@ void seq_noteon_meth(seq, chan, pitch, vel)
 time_type seq_pause(seq_type seq, boolean flag)
 {
     if (!seq->paused && flag) {
-        seq->paused = true;
+        seq->paused = TRUE;
         seq->rate = seq->timebase->rate;
         set_rate(seq->timebase, STOPRATE);
     } else if (seq->paused && !flag) {
@@ -1081,10 +1087,10 @@ void seq_play(seq)
     virttime = reg_timebase->virt_base;
     /* note that set_rate will set reg_timebase->real_base to eventtime */
     set_rate(reg_timebase, seq->rate);
-    seq->paused = false; /* in case the score had been paused; note that
-                            seq_pause() has no effect if paused is true */
-    seq->runflag = true;
-    seq->note_enable = true;
+    seq->paused = FALSE; /* in case the score had been paused; note that
+                            seq_pause() has no effect if paused is TRUE */
+    seq->runflag = TRUE;
+    seq->note_enable = TRUE;
 
     /* restore previous timebase */
     timebase_use(prev_timebase);
@@ -1119,8 +1125,8 @@ void seq_reset_meth(seq)
     set_virttime(seq->timebase, 0L);
     seq->current = seq_events(seq);
     seq->noteoff_count = 0L;
-    seq->runflag = true;
-    seq->paused = true;
+    seq->runflag = TRUE;
+    seq->paused = TRUE;
     if (seq->current)
         cause((delay_type)(seq->current->ntime - virttime), process_event, seq);
     timebase_use(old_timebase);
@@ -1171,13 +1177,13 @@ void seq_start_time(seq, start_time)
         seq_reset(seq);
     }
     timebase_use(seq->timebase);
-    seq->note_enable = false;
+    seq->note_enable = FALSE;
     /* prime the pump */
     set_rate(timebase, STOPRATE);
     set_virttime(timebase, start_time);
     catchup();
-    seq->note_enable = true;
-    seq->paused = true;
+    seq->note_enable = TRUE;
+    seq->paused = TRUE;
     /* restore previous timebase */
     timebase_use(prev_timebase);
 }
@@ -1195,7 +1201,7 @@ void seq_stop(seq)
             gprintf(TRANS, "seq_reset swap from timebase 0x%x to 0x%x\n",
                     timebase, seq->timebase);
         timebase = seq->timebase;
-        seq->runflag = false;
+        seq->runflag = FALSE;
         set_rate(timebase, STOPRATE);
         set_virttime(timebase, MAXTIME);
         catchup();

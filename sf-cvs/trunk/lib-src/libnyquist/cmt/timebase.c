@@ -6,6 +6,7 @@
 *-----------+-----------------------------------------------------------------
 *  2-Apr-91 | JDW : further changes
 * 21-Mar-92 | GWL : abort recovery
+* 28-Apr-03 |  DM : true->TRUE
 *****************************************************************************/
 
 
@@ -194,7 +195,7 @@ void insert_base(timebase)
 
     if (next_time != MAXTIME) {
         /* insert into the list */
-        while (true) {
+        while (TRUE) {
             if (! *ptr) {
                 *ptr = timebase;
                 timebase->next = NULL;

@@ -7,10 +7,14 @@
 ----------------------------------------------------------------------------
  02-May-1988 | JCD : portable & AMIGA version.
  17-Oct-1988 | JCD : more portability (FREE).
+ 28-Apr-2003 | DM  : changed includes for portability
 ****************************************************************************/
 
 #include "switches.h"
-#include "stdio.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "cext.h"
 #include "userio.h"
 

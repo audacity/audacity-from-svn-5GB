@@ -5,10 +5,13 @@
 *-----------+--------------------------------------------------------------
 * 11-Mar-94 | Created Change Log
 * 11-Mar-94 | PLu : Added private to function defs.
+* 28-Apr-03 |  DM : changed for portability, true->TRUE, false->FALSE
 ****************************************************************************/
 
 #include "switches.h"
-#include "stdio.h"
+
+#include <stdio.h>
+
 #include "cext.h"
 #include "midifns.h"
 #include "timebase.h"
@@ -36,7 +39,7 @@ private int deframp_count;
 private int seti_count;
 
 private int last_velocity;
-private last_voice = seq_dflt_voice;
+private int last_voice = seq_dflt_voice;
 
 
 /* next_event_time -- get the time of the next event */
@@ -55,10 +58,10 @@ private boolean next_event_time(event, next_time)
             event = event->next;
         } else {
             *next_time = event->ntime;
-            return true;
+            return TRUE;
         }
     }
-    return false;
+    return FALSE;
 }
 
 
@@ -75,7 +78,7 @@ void seq_write(seq_type seq, FILE *f, boolean abs_flag)
     last_voice = seq_dflt_voice;
 
     fprintf(f, "!MSEC\n");
-    clock_started = false;
+    clock_started = FALSE;
     tempo_change_at = 0;
 
     macro_count = 0;
@@ -163,7 +166,7 @@ private void write_event(seq, event, f, abs_flag)
                 } else {
                     fprintf(f, "!tempo %d\n", new_tempo);
                     fprintf(f, "!clock\n");
-                    clock_started = true;
+                    clock_started = TRUE;
                 }
                 clock_half_tick = (event->u.clock.ticksize) >> 17;
                 break;
@@ -183,10 +186,11 @@ private void write_event(seq, event, f, abs_flag)
                  */
                 break;
               case CTRLRAMP_VALUE:
-                fprintf(f, "!ramp ~%d(%d) ~%d(%d) U%ld U%ld ",
+                fprintf(f, "!ramp ~%d(%d) ~%d(%d) U%d U%d ",
                         event->u.ramp.ctrl, event->u.ramp.u.ctrl.from_value,
                         event->u.ramp.ctrl, event->u.ramp.u.ctrl.to_value,
-                        event->u.ramp.step, event->u.ramp.dur);
+                        (int)event->u.ramp.step,
+                        (int)event->u.ramp.dur);
                 write_voice(f, voice);
                 write_time(f, event, abs_flag);
                 break;

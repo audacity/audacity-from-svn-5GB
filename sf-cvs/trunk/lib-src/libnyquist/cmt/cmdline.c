@@ -72,9 +72,10 @@
 * 13-Jun-86 | Created Change Log
 *  6-Aug-86 | Modified for Lattice 3.0 -- use "void" to type some routines
 * 20-Sep-89 | Redesigned the interface, adding cl_syntax call.
-* 2-April-91 | JDW : further changes
+*  2-Apr-91 | JDW : further changes
 * 27-Dec-93 | "@file" as first arg reads command line args from file
 * 11-Mar-94 | PLu: Add private to cl_search() definition.
+* 28-Apr-03 | DM: true->TRUE, false->FALSE
 *****************************************************************************/
 
 /* stdlib.h not on PMAX */
@@ -94,7 +95,7 @@ private int n_syntax = 0;       /* number of strings so far */
 private char **argv;            /* command line argument vector */
 private int argc;               /* length of argv */
 
-private boolean cl_rdy = false;    /* set to true when initialized */
+private boolean cl_rdy = FALSE;    /* set to TRUE when initialized */
 
 #define cl_OPT 1
 #define cl_SW 2
@@ -183,7 +184,7 @@ void cl_help()
 *    Checks that all command line entries are valid.
 *    Saves info for use by other routines.
 * Returns:
-*    True if syntax checks OK, otherwise false
+*    TRUE if syntax checks OK, otherwise false
 *****************************************************************************/
 
 boolean cl_init(av, ac)
@@ -196,7 +197,7 @@ boolean cl_init(av, ac)
     /* check for help request */
     if (argc == 2 && strcmp(argv[1], "?") == 0) {
         cl_help();
-        return false; /* avoid cl_search which would complain about "?" */
+        return FALSE; /* avoid cl_search which would complain about "?" */
     }
     /* check for indirection */
     if (argc == 2 && *(argv[1]) == '@') {
@@ -204,7 +205,7 @@ boolean cl_init(av, ac)
         indirect_command(av[1] + 1, av[0]);
     }
     /* check command line syntax: */
-    cl_rdy = true;
+    cl_rdy = TRUE;
     return (cl_rdy = (cl_search("true", cl_INIT, 0) != NULL));
 }
 
@@ -256,7 +257,7 @@ private char *cl_search(name, opt_sw, n)
 {
     register int i = 1;    /* index into command line */
     boolean abbr;
-    boolean result = true;
+    boolean result = TRUE;
 
     ready_check();
 
@@ -276,7 +277,7 @@ private char *cl_search(name, opt_sw, n)
                 if (i >= argc /* || *arg == '-' */) {
                     if (opt_sw == cl_INIT) {
                         gprintf(ERROR, "missing argument after %s\n", arg);
-                        result = false;
+                        result = FALSE;
                     }
                 } else if (opt_sw == cl_OPT &&
                     (strcmp(arg + 1, name) == 0 ||
@@ -290,7 +291,7 @@ private char *cl_search(name, opt_sw, n)
                     return arg;
             } else if (opt_sw == cl_INIT)  {
                 gprintf(ERROR, "invalid switch: %s\n", arg);
-                result = false;
+                result = FALSE;
             }
         } else if (opt_sw == cl_ARG) {
             if (n == 1) return arg;
@@ -299,7 +300,7 @@ private char *cl_search(name, opt_sw, n)
         i++; /* skip to next field */
     }
     if (opt_sw == cl_INIT) {
-        /* return name or NULL to represent true or false */
+        /* return name or NULL to represent TRUE or FALSE */
         return (result ? name : NULL);
     }
     return NULL;
@@ -324,7 +325,7 @@ char *name;
 * Inputs:
 *    char *name:    switch name
 * Outputs:
-*    boolean:    true if switch found
+*    boolean:    TRUE if switch found
 ****************************************************************/
 
 boolean cl_switch(name)
@@ -339,10 +340,10 @@ boolean cl_syntax(char *s)
 {
     if (n_syntax < syntax_max) {
         syntax[n_syntax++] = s;
-        return true;
+        return TRUE;
     } else {
         gprintf(ERROR, "cl_syntax: out of room\n");
-        return false;
+        return FALSE;
     }
 }
 
@@ -350,20 +351,20 @@ boolean cl_syntax(char *s)
 *           find_string
 * Inputs:
 *    char *s:    string to find, terminated by any non-alphanumeric
-*    boolean *abbr: set true if s is an abbreviation, otherwise false
+*    boolean *abbr: set TRUE if s is an abbreviation, otherwise false
 * Effect:
 *    Looks for s in syntax strings
 * Returns:
-*    0 = false = not found, 1 = cl_OPT = option, 2 = cl_SW = switch
+*    0 = FALSE = not found, 1 = cl_OPT = option, 2 = cl_SW = switch
 *****************************************************************/
 
 private int find_string(s, abbr)
   char *s;
   boolean *abbr;
 {
-    int found_it = false;
+    int found_it = FALSE;
     int i;
-    *abbr = false;
+    *abbr = FALSE;
     for (i = 0; i < n_syntax; i++) {    /* loop through strings */
         register char *syntax_ptr = syntax[i];
         while (*syntax_ptr != EOS) {
@@ -388,7 +389,7 @@ private int find_string(s, abbr)
     }
 
     /* no match, maybe there is a single character match */
-    if (s[0] == EOS || s[1] != EOS) return false;
+    if (s[0] == EOS || s[1] != EOS) return FALSE;
 
     for (i = 0; i < n_syntax; i++) {    /* loop through strings */
         char *syntax_ptr = syntax[i];
@@ -396,21 +397,21 @@ private int find_string(s, abbr)
             while (*syntax_ptr != EOS &&
                    !(isalnum(*syntax_ptr))) syntax_ptr++;
             if (s[0] == *syntax_ptr) {
-                if (found_it) return false;     /* ambiguous */
+                if (found_it) return FALSE;     /* ambiguous */
                 /* else, find the type */
                 while (*syntax_ptr != '<' && *syntax_ptr != EOS)
                     syntax_ptr++;
                 syntax_ptr++;
                 if (*syntax_ptr == 's') found_it = cl_SW;
                 else if (*syntax_ptr == 'o') found_it = cl_OPT;
-                else return false;      /* error in string syntax */
+                else return FALSE;      /* error in string syntax */
             }
             /* no match, so go to next */
             while (*syntax_ptr != ';' && *syntax_ptr != EOS) syntax_ptr++;
             if (*syntax_ptr == ';') syntax_ptr++;
         }
     }
-    if (found_it) *abbr = true;
+    if (found_it) *abbr = TRUE;
     return found_it;
 }
 
@@ -423,13 +424,13 @@ boolean get_arg(file, arg)
 {
     int c;
     while ((c = getc(file)) != EOF && isspace(c)) ;
-    if (c == EOF) return false;
+    if (c == EOF) return FALSE;
     ungetc(c, file);
     while ((c = getc(file)) != EOF && !isspace(c)) {
             *arg++ = c;
     }
     *arg = 0;
-    return true;
+    return TRUE;
 }
 
 

@@ -25,9 +25,17 @@
 /* We're moving toward the elimination of switches.h, so try to map
  * predefined constants into our standard constants shown above:
  */
+
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  new conditional compilation structure
+ * 28Apr03  rbd remove macro redefinitions: MICROSOFT 
+ */
+
+
+
 /* Microsoft C compiler: */
 #ifdef _MSC_VER
-#define MICROSOFT
 #endif
 #ifdef _MSDOS
 #define DOS
