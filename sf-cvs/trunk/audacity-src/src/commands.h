@@ -143,7 +143,8 @@
 
       // Plugin Menu
 
-      FirstPluginID = 3000
+      FirstPluginID = 3000,
+      FirstPluginSubMenuID = 4000
    };
 
 #endif
