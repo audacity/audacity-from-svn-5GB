@@ -173,7 +173,7 @@ bool DirectoriesPrefs::Apply()
          wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
       if(ans == wxYES) {
-         if(!wxMkdir(mTempDir, 0600)) {
+         if(!wxMkdir(mTempDir, 0777)) {
             /* wxWindows throws up a decent looking dialog */
             return false;
          }
