@@ -116,8 +116,13 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
-wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
-
+/* Declare Static functions */
+static wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
+static pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
+                    AppleEvent * theReply, long Refcon);
+pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
+                         long Refcon);
+                         
 pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
                     AppleEvent * theReply, long Refcon)
 {

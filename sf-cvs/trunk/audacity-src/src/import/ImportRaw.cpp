@@ -31,6 +31,20 @@
 
 #include "../FFT.h"
 
+/* Declare Static functions */
+static float AmpStat(float *data, int len);
+static float JumpStat(float *data, int len);
+static float RedundantStereo(float *data, int len);
+static float PredictStat(float *data, int len);
+static float FreqStat(float *data, int len);
+static void Extract(bool bits16,
+             bool sign,
+             bool stereo,
+             bool bigendian,
+             bool offset,
+             char *rawData, int dataSize,
+             float *data1, float *data2, int *len1, int *len2);
+
 // bits16, signed, stereo, bigendian
 
 #define MODE_8_SIGNED 0,1,0,0

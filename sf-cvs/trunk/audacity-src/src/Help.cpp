@@ -24,6 +24,8 @@
 #include <wx/defs.h>
 #include <wx/window.h>
 
+#include "Help.h"
+
 void InitHelp(wxWindow * parent)
 {
 }

@@ -18,7 +18,10 @@
 #ifndef __AUDACITY_PROJECT__
 #define __AUDACITY_PROJECT__
 
-#ifndef __WXMAC__
+#ifdef __WXMAC__
+#include <Files.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#else
 // Work around bugs in <wx/dragimag.h>, wxGTK 2.2.9.2
 // (bad use of preprocessor, failure to forward-declare class names)
 // Bug report forwarded to wxWindows team.

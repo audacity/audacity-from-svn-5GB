@@ -300,6 +300,13 @@ void FreqWindow::OnAxisChoice(wxCommandEvent & event)
 // the degree-three polynomial which best fits these points and
 // returns the value of this polynomial at a value x.  Usually
 // 0 < x < 3
+
+/* Declare Static functions */
+static float CubicInterpolate(float y0, float y1, float y2, float y3, float x);
+static float CubicMaximize(float y0, float y1, float y2, float y3);
+static float Freq2Pitch(float freq);
+static char *PitchName(int pitch, bool flats);
+
 float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
 {
    float a, b, c, d;

@@ -34,11 +34,16 @@
 #include "../Track.h"
 #include "../WaveTrack.h"
 
+/* Declare Static functions */
+static wxString ExportCommon(AudacityProject *project,
+                      wxString format, wxString extension,
+                      bool selectionOnly, double *t0, double *t1,
+                      bool *isStereo);
+                      
 /*
  * This first function contains the code common to both
  * Export() and ExportLossy():
  */
-
 wxString ExportCommon(AudacityProject *project,
                       wxString format, wxString extension,
                       bool selectionOnly, double *t0, double *t1,

@@ -30,6 +30,9 @@
 
 #include "LadspaEffect.h"
 
+/* Declare Static functions */
+static void SearchLadspaInDir(wxString dir);
+
 void SearchLadspaInDir(wxString dir)
 {
    wxLogNull nolog;

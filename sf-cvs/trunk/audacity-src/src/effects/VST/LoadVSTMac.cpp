@@ -24,15 +24,18 @@
 void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
 #include "AEffect.h"
-#include "AudioEffect.hpp"     // VST API
+#include "AudioEffect.hpp"        // VST API
 
-#include "VSTEffect.h"         // This class's header
+#include "VSTEffect.h"            // This class's header
 #include "../../DirManager.h"     // Audacity class which handles data structures
+#include "LoadVSTMac.h"   
 
 int audacityVSTID = 1;
 
 extern "C" {
    
+   long audioMaster(AEffect * effect, long opcode, long index,
+                    long value, void *ptr, float opt);
    long audioMaster(AEffect * effect, long opcode, long index,
                     long value, void *ptr, float opt)
    {
@@ -48,7 +51,8 @@ extern "C" {
 
    typedef AEffect *(*vstPluginMain)(audioMasterCallback audioMaster);
 
-   void LoadVSTPlugins(wxString searchDir) {
+   void LoadVSTPlugins(wxString searchDir) 
+   {
       wxString pathChar = DirManager::GetPathChar();
       wxString home = DirManager::GetHomeDir();
       #ifdef __MACOSX__
@@ -63,9 +67,10 @@ extern "C" {
       audioMasterCallback audioMasterFPtr =
          (audioMasterCallback)NewCFMFromMachO(audioMaster);
 #else
-    // What is the corrct way of creating an audioMasterCallback in OS 9/ Carbon 
-      audioMasterCallback audioMasterFPtr = audioMaster; 
-#endif  //   __MACOSX__
+    // What is the corrct way of creating an audioMasterCallback in OS 9/Carbon 
+	// audioMasterCallback audioMasterFPtr = NULL; 
+      audioMasterCallback audioMasterFPtr = audioMaster;
+#endif      
 
       fname = wxFindFirstFile((const char *) (vstDirPath + pathChar + "*"));
 

@@ -79,7 +79,7 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mBitmap[2] = new wxBitmap(down);
    mBitmap[3] = new wxBitmap(dis);
 #endif
-   
+
    GetSize(&mWidth, &mHeight);
 }
 
