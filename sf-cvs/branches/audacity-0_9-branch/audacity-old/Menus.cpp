@@ -73,9 +73,13 @@ void AudacityProject::CreateMenuBar()
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportMixID, mExportString);
    mFileMenu->Append(ExportSelectionID, mExportSelectionString);
+
+#ifndef __MACOSX__
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportMP3MixID, "Export as MP3...");
    mFileMenu->Append(ExportMP3SelectionID, "Export selection as MP3...");
+#endif
+
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportOGGMixID, "Export as OGG...");
    mFileMenu->Append(ExportOGGSelectionID, "Export selection as OGG...");
@@ -268,9 +272,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
    mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
                      numTracksSelected > 0 && nonZeroRegionSelected);
+#ifndef __MACOSX__
    mFileMenu->Enable(ExportMP3MixID, numTracks > 0);
    mFileMenu->Enable(ExportMP3SelectionID,
                      numTracksSelected > 0 && nonZeroRegionSelected);
+#endif
    mFileMenu->Enable(ExportOGGMixID, numTracks > 0);
    mFileMenu->Enable(ExportOGGSelectionID,
                      numTracksSelected > 0 && nonZeroRegionSelected);
