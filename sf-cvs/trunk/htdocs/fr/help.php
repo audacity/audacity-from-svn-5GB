@@ -1,6 +1,11 @@
 <?php BoxTop("$helpStr - Audacity 1.2.0"); ?>
 
 <p>
+<b>Mode d'emploi <i>en français</i></b>:
+[<a href="audacity-mode-d'emploi.pdf">Télécharger (700ko PDF)</a>]
+</p>
+
+<p>
 Audacity 1.2 Manuel complet en anglais : 
 [<a href="manual-1.2">Parcourir en ligne</a>]
 [<a href="audacity-manual-1.2.zip">Télécharger (450ko ZIP)</a>]
