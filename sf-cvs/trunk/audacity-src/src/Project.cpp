@@ -637,6 +637,11 @@ AudacityProject::~AudacityProject()
    delete mTracks;
    mTracks = NULL;
 
+   delete mRecentFiles;
+   mRecentFiles = NULL;
+   delete mRecentProjects;
+   mRecentProjects = NULL;
+
    // MM: Tell the DirManager it can now delete itself
    // if it finds it is no longer needed. If it is still
    // used (f.e. by the clipboard), it will recognize this
@@ -1848,11 +1853,33 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
          AudacityProject *newProject =
             CreateNewAudacityProject(gParentWindow);
          newProject->OpenFile(fileName);
+         if(newFileName.GetExt() == "aup") {
+            newProject->mRecentProjects->AddFileToHistory(fileName);
+            gPrefs->SetPath("/RecentProjects");
+            newProject->mRecentProjects->Save(*gPrefs);
+            gPrefs->SetPath("..");
+         } else {
+            newProject->mRecentFiles->AddFileToHistory(fileName);
+            gPrefs->SetPath("/RecentFiles");
+            newProject->mRecentFiles->Save(*gPrefs);
+            gPrefs->SetPath("..");
+         }
       } else {
          // This project is clean; it's never been touched.  Therefore
          // all relevant member variables are in their initial state,
          // and it's okay to open a new project inside this window.
          proj->OpenFile(fileName);
+         if(newFileName.GetExt() == "aup") {
+            proj->mRecentProjects->AddFileToHistory(fileName);
+            gPrefs->SetPath("/RecentProjects");
+            proj->mRecentProjects->Save(*gPrefs);
+            gPrefs->SetPath("..");
+         } else {
+            proj->mRecentFiles->AddFileToHistory(fileName);
+            gPrefs->SetPath("/RecentFiles");
+            proj->mRecentFiles->Save(*gPrefs);
+            gPrefs->SetPath("..");
+         }
       }
    }
 }
@@ -2420,7 +2447,16 @@ bool AudacityProject::SaveAs()
    mFileName = fName + ".aup";
    SetTitle(GetName());
 
-   return Save(false, true);
+   bool sucess = Save(false, true);
+
+   if(sucess) {
+      mRecentProjects->AddFileToHistory(mFileName);
+      gPrefs->SetPath("/RecentProjects");
+      mRecentProjects->Save(*gPrefs);
+      gPrefs->SetPath("..");
+   }
+
+   return(sucess);
 }
 
 //

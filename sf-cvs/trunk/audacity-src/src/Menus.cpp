@@ -193,6 +193,25 @@ void AudacityProject::CreateMenusAndCommands()
    /* i18n-hint: On Windows and Linux, the Preferences shortcut should be Ctrl+P or something like that */
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
+
+   // Recent Files and Recent Projects menus
+   wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
+   c->EndSubMenu();
+   // TODO - read the number of files to store in history from preferences
+   mRecentFiles = new audFileHistory(6, wxID_FILE1);
+   mRecentFiles->UseMenu(pm);
+   pm = c->BeginSubMenu(_("Recent Pro&jects..."));
+   c->EndSubMenu();
+   mRecentProjects = new audFileHistory(6, 6050);
+   mRecentProjects->UseMenu(pm);
+   gPrefs->SetPath("/RecentFiles");
+   mRecentFiles->Load(*gPrefs);
+   gPrefs->SetPath("..");
+   gPrefs->SetPath("/RecentProjects");
+   mRecentProjects->Load(*gPrefs);
+   gPrefs->SetPath("..");
+   c->AddSeparator();
+
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
    c->SetCommandFlags("Exit", 0, 0);
   #endif

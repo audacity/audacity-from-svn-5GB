@@ -36,6 +36,7 @@
 #include "ToolBar.h"
 #include "TrackPanel.h"
 #include "xml/XMLTagHandler.h"
+#include "AudacityFileHistory.h"
 
 #include "commands/CommandManager.h"
 
@@ -127,6 +128,12 @@ class AudacityProject:public wxFrame,
    bool Save(bool overwrite = true, bool fromSaveAs = false);
    bool SaveAs();
    void Clear();
+
+   wxString GetFileName() { return mFileName; }
+   bool GetDirty() { return mDirty; }
+   bool GetIsEmpty() { return mTracks->IsEmpty(); }
+   audFileHistory *GetRecentFiles() { return mRecentFiles; }
+   audFileHistory *GetRecentProjects() { return mRecentProjects; }
 
 #include "Menus.h"
 
@@ -318,6 +325,10 @@ class AudacityProject:public wxFrame,
    int  mAudioIOToken;
 
    bool mIsDeleting;
+
+   // Recent File and Project History
+   audFileHistory *mRecentFiles;
+   audFileHistory *mRecentProjects;
 
  public:
     DECLARE_EVENT_TABLE()

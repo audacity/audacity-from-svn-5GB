@@ -108,7 +108,7 @@ class CommandManager: public XMLTagHandler
    void BeginMenu(wxString tName);
    void EndMenu();
 
-   void BeginSubMenu(wxString tName);
+   wxMenu* BeginSubMenu(wxString tName);
    void EndSubMenu();
 
    void AddItem(wxString name, wxString label, CommandFunctor *callback);

@@ -22,6 +22,7 @@
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
+#include <wx/file.h>
 #include <wx/filename.h>
 
 #ifdef __WXGTK__
@@ -236,7 +237,122 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_MENU(wxID_PREFERENCES, AudacityApp::OnMenuPreferences)
    EVT_MENU(wxID_EXIT, AudacityApp::OnMenuExit)
 #endif
+   // Recent file event handlers.  
+   EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
+   EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
 END_EVENT_TABLE()
+
+// Backend for OnMRUFile and OnMRUProject
+bool AudacityApp::MRUOpen(wxString fileName) {
+   // Most of the checks below are copied from AudacityProject::ShowFileDialog
+   // - some rationalisation might be possible.
+   
+   AudacityProject *proj = GetActiveProject();
+   
+   if(!fileName.IsEmpty()) {
+      
+      // verify that the file exists 
+      if(wxFile::Exists(fileName)) {
+         wxFileName newFileName(fileName);
+         
+         gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
+         
+         // Make sure it isn't already open
+         size_t numProjects = gAudacityProjects.Count();
+         for (size_t i = 0; i < numProjects; i++) {
+            if (newFileName.SameAs(gAudacityProjects[i]->GetFileName())) {
+               wxMessageBox(wxString::Format(_("%s is already open in another window."),
+                  (const char *)newFileName.GetName()),
+                  _("Error opening project"),
+                  wxOK | wxCENTRE);
+               continue;
+            }
+         }
+         
+         // DMM: If the project is dirty, that means it's been touched at
+         // all, and it's not safe to open a new project directly in its
+         // place.  Only if the project is brand-new clean and the user
+         // hasn't done any action at all is it safe for Open to take place
+         // inside the current project.
+         //
+         // If you try to Open a new project inside the current window when
+         // there are no tracks, but there's an Undo history, etc, then
+         // bad things can happen, including data files moving to the new
+         // project directory, etc.
+         if (!proj || proj->GetDirty() || !proj->GetIsEmpty()) {
+            // Open in a new window
+            AudacityProject *newProject =
+               CreateNewAudacityProject(gParentWindow);
+            newProject->OpenFile(fileName);
+            if(newFileName.GetExt() == "aup") {
+               newProject->GetRecentProjects()->AddFileToHistory(fileName);
+               gPrefs->SetPath("/RecentProjects");
+               newProject->GetRecentProjects()->Save(*gPrefs);
+               gPrefs->SetPath("..");
+            } else {
+               newProject->GetRecentFiles()->AddFileToHistory(fileName);
+               gPrefs->SetPath("/RecentFiles");
+               newProject->GetRecentFiles()->Save(*gPrefs);
+               gPrefs->SetPath("..");
+            }
+         } else {
+            // This project is clean; it's never been touched.  Therefore
+            // all relevant member variables are in their initial state,
+            // and it's okay to open a new project inside this window.
+            proj->OpenFile(fileName);
+            if(newFileName.GetExt() == "aup") {
+               proj->GetRecentProjects()->AddFileToHistory(fileName);
+               gPrefs->SetPath("/RecentProjects");
+               proj->GetRecentProjects()->Save(*gPrefs);
+               gPrefs->SetPath("..");
+            } else {
+               proj->GetRecentFiles()->AddFileToHistory(fileName);
+               gPrefs->SetPath("/RecentFiles");
+               proj->GetRecentFiles()->Save(*gPrefs);
+               gPrefs->SetPath("..");
+            }
+         }
+         
+      } else {
+         // File doesn't exist - remove file from history
+         wxMessageBox(wxString::Format(_("%s does not exist and could not be opened.\n\nIt has been removed from the history list."), 
+                      (const char *)fileName));
+         return(false);
+      }
+   }
+   return(true);
+}
+
+void AudacityApp::OnMRUFile(wxCommandEvent& event) {
+   AudacityProject *proj = GetActiveProject();
+
+   int n = event.GetId() - wxID_FILE1;
+   wxString fileName = proj->GetRecentFiles()->GetHistoryFile(n);
+
+   bool opened = MRUOpen(fileName);
+   if(!opened) {
+      proj->GetRecentFiles()->RemoveFileFromHistory(n);
+      gPrefs->SetPath("/RecentFiles");
+      proj->GetRecentFiles()->Save(*gPrefs);
+      gPrefs->SetPath("..");
+   }
+}
+
+void AudacityApp::OnMRUProject(wxCommandEvent& event) {
+   AudacityProject *proj = GetActiveProject();
+
+   int n = event.GetId() - 6050;
+   wxString fileName = proj->GetRecentProjects()->GetHistoryFile(n);
+
+   bool opened = MRUOpen(fileName);
+   if(!opened) {
+      proj->GetRecentProjects()->RemoveFileFromHistory(n);
+      gPrefs->SetPath("/RecentProjects");
+      proj->GetRecentProjects()->Save(*gPrefs);
+      gPrefs->SetPath("..");
+   }
+}
+
 
 // The `main program' equivalent, creating the windows and returning the
 // main frame

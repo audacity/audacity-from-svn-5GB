@@ -48,6 +48,7 @@ OBJS = \
 	AStatus.o \
 	AboutDialog.o \
 	AudacityApp.o \
+	AudacityFileHistory.o \
 	AudioIO.o \
 	Benchmark.o \
 	ControlToolBar.o \
