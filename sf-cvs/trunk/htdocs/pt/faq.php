@@ -73,6 +73,8 @@ disponível publicamente na Internet e você pode modificá-lo à
 vontade, apenas deixando as suas alterações e este novo fonte 
 disponível também sob as mesmas condições da GPL.
 <p>
+O programa foi construído usando as bibliotecas wxWidgets, que são licenciadas segundo a LGPL, que é ainda menos restritiva que a GPL. Para conhecer mais, visite <a href="http://wxwidgets.org/">wxwidgets.org</a>.
+<p>
 Uma razão para o Audacity ser livre é para tornar-se mais 
 popular. Nós da equipe de desenvolvimento do Audacity 
 preferimos ver milhões de pessoas utilizando nosso programa

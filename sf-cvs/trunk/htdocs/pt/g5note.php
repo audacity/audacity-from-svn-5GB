@@ -1,1 +1,1 @@
-Nota: O Audacity versão 1.2.0-pre3 aparentemente é incompatível com o processador G5. Espera-se liberar em breve uma correção para esta falha.
+Nota: O Audacity versão 1.2.0-pre3 aparentemente é incompatível com o processador G5. Espera-se liberar em breve uma correção para esta falha. Visite <a href="http://audacityteam.org/mac/">esta página see this page</a> para maiores informações.

@@ -23,12 +23,12 @@ O código está disponível no serviço<a href="http://www.sourceforge.net">SourceFo
 </p>
 
 <p>
-Perguntas - Comentários?
+<b>Perguntas - Comentários?<p></b>
 Envie seu email para <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>
 </p>
 
-<p>
+<p><p>
 Nota: As mensagens devem estar em inglês. <p>
 Caso deseje criar ou manter uma lista de ajuda do Audacity em português brasileiro, fique à vontade para nos escrever! 
 </p>
