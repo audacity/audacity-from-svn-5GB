@@ -37,6 +37,7 @@ int Sequence::sMaxDiskBlockSize = 1048576;
 Sequence::Sequence(DirManager * projDirManager, sampleFormat format)
 {
    mDirManager = projDirManager;
+   mDirManager->Ref();
    mNumSamples = 0;
    mSampleFormat = format;
    mBlock = new BlockArray();
@@ -48,6 +49,7 @@ Sequence::Sequence(DirManager * projDirManager, sampleFormat format)
 Sequence::Sequence(const Sequence &orig)
 {
    mDirManager = orig.mDirManager;
+   mDirManager->Ref();
    mNumSamples = 0;
    mSampleFormat = orig.mSampleFormat;
    mMaxSamples = orig.mMaxSamples;
@@ -67,6 +69,7 @@ Sequence::~Sequence()
    }
 
    delete mBlock;
+   mDirManager->Deref();
 }
 
 sampleCount Sequence::GetMaxBlockSize() const

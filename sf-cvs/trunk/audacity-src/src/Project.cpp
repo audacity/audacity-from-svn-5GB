@@ -336,6 +336,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mDrag = NULL;
    #endif
 
+   // MM: DirManager is created dynamically, freed on demand via ref-counting
+   // MM: We don't need to Ref() here because it start with refcount=1
+   mDirManager = new DirManager();
+
    // Create track list
    mTracks = new TrackList();
    mLastSavedTracks = NULL;
@@ -515,7 +519,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Create tags object
    mTags = new Tags();
 
-   mTrackFactory = new TrackFactory(&mDirManager);
+   mTrackFactory = new TrackFactory(mDirManager);
    mImporter = new Importer;
    mImportingRaw = false;
 
@@ -572,6 +576,12 @@ AudacityProject::~AudacityProject()
    delete mTracks;
    mTracks = NULL;
 
+   // MM: Tell the DirManager it can now delete itself
+   // if it finds it is no longer needed. If it is still
+   // used (f.e. by the clipboard), it will recognize this
+   // and will destroy itself later.
+   mDirManager->Deref();
+
    gAudacityProjects.Remove(this);
 
    #ifdef __WXMAC__
@@ -608,7 +618,7 @@ void AudacityProject::RedrawProject()
 
 DirManager *AudacityProject::GetDirManager()
 {
-   return &mDirManager;
+   return mDirManager;
 }
 
 TrackFactory *AudacityProject::GetTrackFactory()
@@ -1781,7 +1791,7 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
          wxString projName = value;
          wxString projPath = wxPathOnly(mFileName);
          
-         if (!mDirManager.SetProject(projPath, projName, false)) {
+         if (!mDirManager->SetProject(projPath, projName, false)) {
             return false;
          }
 
@@ -1920,7 +1930,7 @@ void AudacityProject::OpenLegacyProjectFile()
    projName = f.GetNextLine();
    projPath = wxPathOnly(mFileName);
 
-   if (!mDirManager.SetProject(projPath, projName, false))
+   if (!mDirManager->SetProject(projPath, projName, false))
       return;
 
    if (f.GetNextLine() != "sel0")
@@ -1953,7 +1963,7 @@ void AudacityProject::OpenLegacyProjectFile()
    }
 
    mTracks->Clear();
-   mTracks->Load(&f, &mDirManager);
+   mTracks->Load(&f, mDirManager);
 
    // By making a duplicate set of pointers to the existing blocks
    // on disk, we add one to their reference count, guaranteeing
@@ -1983,7 +1993,7 @@ void AudacityProject::OpenLegacyProjectFile()
 bool AudacityProject::Save(bool overwrite /* = true */ ,
                            bool fromSaveAs /* = false */ )
 {
-   if (!fromSaveAs && mDirManager.GetProjectName() == "")
+   if (!fromSaveAs && mDirManager->GetProjectName() == "")
       return SaveAs();
 
    //
@@ -2005,7 +2015,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       wxRename(mFileName, safetyFileName);
    }
 
-   if (fromSaveAs || mDirManager.GetProjectName() == "") {
+   if (fromSaveAs || mDirManager->GetProjectName() == "") {
 
       // This block of code is duplicated in WriteXML, for now...
       wxString project = mFileName;
@@ -2032,7 +2042,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
       // This renames the project directory, and moves or copies
       // all of our block files over
-      bool success = mDirManager.SetProject(projPath, projName, !overwrite);
+      bool success = mDirManager->SetProject(projPath, projName, !overwrite);
       
       // Unlock all blocks in all tracks of the last saved version
       if (mLastSavedTracks && !overwrite) {
@@ -2166,7 +2176,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
    mTrackPanel->Refresh(false);
 
-   if (initiallyEmpty && mDirManager.GetProjectName() == "") {
+   if (initiallyEmpty && mDirManager->GetProjectName() == "") {
       wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + ".aup";
       SetTitle(GetName());
@@ -2467,7 +2477,7 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
    // gAudioIO->GetNumCaptureChannels() should only be positive 
    // when we are recording.
    if (gAudioIO->GetNumCaptureChannels() > 0) {
-      wxLongLong freeSpace = mDirManager.GetFreeDiskSpace();
+      wxLongLong freeSpace = mDirManager->GetFreeDiskSpace();
       if (freeSpace >= 0) {
          wxString msg;
          double recTime;
