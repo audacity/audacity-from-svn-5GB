@@ -1,19 +1,19 @@
 # translation of ru.po to Russian
 # Russian translation of Audacity 1.1.
 # Copyright (C) 2002,2003 Free Software Foundation, Inc.
-# Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419
-# Alexandre Prokoudine <avp@altlinux.ru>, 2003
+# Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419.
+# Alexandre Prokoudine <avp@altlinux.ru>, 2003.
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2003-07-04 17:26+0400\n"
+"POT-Creation-Date: 2003-07-09 12:49+0400\n"
+"PO-Revision-Date: 2003-07-09 12:52+0400\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=KOI8-R\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.1\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: ../src/widgets/AButton.cpp:180
 msgid " (disabled)"
@@ -400,7 +400,7 @@ msgstr "Всегда разрешать паузы"
 msgid "Amount to import:"
 msgstr "Сколько импортировать:"
 
-#: ../src/effects/Amplify.cpp:310
+#: ../src/effects/Amplify.cpp:132
 msgid "Amplification (dB):"
 msgstr "Усиление (Дб):"
 
@@ -412,15 +412,15 @@ msgstr "Настройки усиления"
 msgid "Amplify"
 msgstr "Усиление сигнала"
 
-#: ../src/effects/Amplify.cpp:300
+#: ../src/effects/Amplify.cpp:122
 msgid "Amplify by Dominic Mazzoni"
 msgstr "Усиление сигнала - Доминик Маццони"
 
-#: ../src/effects/Amplify.h:47
+#: ../src/effects/Amplify.h:48
 msgid "Amplify..."
 msgstr "Усилить сигнал..."
 
-#: ../src/effects/Amplify.h:51
+#: ../src/effects/Amplify.h:52
 msgid "Amplifying"
 msgstr "Производится усиление сигнала"
 
@@ -469,10 +469,10 @@ msgstr ""
 "Применён эффект: %s %d этапов, %.0f%% не обработано, частота = %.1f Гц, "
 "начальная фаза = %.0f deg, глубина = %d, отдача = %.0f%%"
 
-#: ../src/effects/Echo.cpp:26
+#: ../src/effects/Echo.cpp:27
 #, c-format
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
-msgstr "Применён эффект: %s задержка = %f секунд, коэффициент распада = %f"
+msgstr "Применён эффект: %s задержка = %f секунд, коэффициент спада = %f"
 
 #: ../src/effects/BassBoost.cpp:35
 #, c-format
@@ -786,17 +786,18 @@ msgstr "Невозможно отменить"
 msgid "Can't process replacing"
 msgstr "Не удаётся произвести замену"
 
-#: ../src/Tags.cpp:660 ../src/effects/VST/VSTEffect.cpp:97
-#: ../src/effects/VST/VSTEffect.cpp:451 ../src/effects/Amplify.cpp:360
-#: ../src/effects/AvcCompressor.cpp:715 ../src/effects/BassBoost.cpp:334
-#: ../src/effects/ChangePitch.cpp:396 ../src/effects/ChangeSpeed.cpp:429
-#: ../src/effects/ChangeTempo.cpp:286 ../src/effects/Compressor.cpp:469
-#: ../src/effects/Equalization.cpp:682 ../src/effects/Filter.cpp:477
-#: ../src/effects/Normalize.cpp:248 ../src/effects/Phaser.cpp:537
-#: ../src/effects/Repeat.cpp:240 ../src/effects/ToneGen.cpp:347
-#: ../src/effects/Wahwah.cpp:528 ../src/effects/ladspa/LadspaEffect.cpp:486
-#: ../src/effects/nyquist/Nyquist.cpp:619 ../src/import/ImportRaw.cpp:408
 #: ../src/prefs/FileFormatPrefs.cpp:473 ../src/prefs/PrefsDialog.cpp:105
+#: ../src/effects/VST/VSTEffect.cpp:97 ../src/effects/VST/VSTEffect.cpp:451
+#: ../src/effects/ToneGen.cpp:347 ../src/effects/AvcCompressor.cpp:715
+#: ../src/effects/Amplify.cpp:190 ../src/effects/Compressor.cpp:469
+#: ../src/effects/Wahwah.cpp:528 ../src/effects/BassBoost.cpp:334
+#: ../src/effects/Filter.cpp:477 ../src/effects/ChangeSpeed.cpp:430
+#: ../src/effects/Repeat.cpp:240 ../src/effects/Echo.cpp:242
+#: ../src/effects/ladspa/LadspaEffect.cpp:486
+#: ../src/effects/ChangePitch.cpp:396 ../src/effects/ChangeTempo.cpp:286
+#: ../src/effects/Phaser.cpp:537 ../src/effects/nyquist/Nyquist.cpp:619
+#: ../src/effects/Normalize.cpp:248 ../src/effects/Equalization.cpp:682
+#: ../src/Tags.cpp:660 ../src/import/ImportRaw.cpp:408
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -852,7 +853,7 @@ msgstr "Изменить несколько семплов"
 msgid "Change Speed"
 msgstr "Изменить скорость"
 
-#: ../src/effects/ChangeSpeed.cpp:330
+#: ../src/effects/ChangeSpeed.cpp:331
 msgid "Change Speed, affecting both Tempo and Pitch"
 msgstr "Изменить скорость, влияя на темп и высоту тона"
 
@@ -953,8 +954,8 @@ msgstr "Выберите..."
 msgid "Cleaning up temporary files..."
 msgstr "Временные файлы удаляются..."
 
-#: ../src/effects/Equalization.cpp:667 ../src/effects/Filter.cpp:463
-#: ../src/prefs/KeyConfigPrefs.cpp:98
+#: ../src/prefs/KeyConfigPrefs.cpp:98 ../src/effects/Filter.cpp:463
+#: ../src/effects/Equalization.cpp:667
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1003,8 +1004,8 @@ msgstr ""
 "отдаления, перетаскивание с нажатой кнопкой для выделения области "
 "масштабирования."
 
-#: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:119
-#: ../src/effects/NoiseRemoval.cpp:420
+#: ../src/FreqWindow.cpp:119 ../src/effects/NoiseRemoval.cpp:420
+#: ../src/Benchmark.cpp:223
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1071,8 +1072,8 @@ msgstr "Копировать"
 msgid "Could not open MP3 encoding library!"
 msgstr "Не удалось открыть библиотеку для экспорта в MP3!"
 
-#: ../src/Menus.cpp:2025 ../src/Project.cpp:1687 ../src/Project.cpp:1695
-#: ../src/import/ImportMIDI.cpp:30
+#: ../src/import/ImportMIDI.cpp:30 ../src/Menus.cpp:2025
+#: ../src/Project.cpp:1687 ../src/Project.cpp:1695
 msgid "Could not open file: "
 msgstr "Не удалось открыть файл: "
 
@@ -1099,8 +1100,8 @@ msgstr "Не удалось найти каталог с данными проекта: \"%s\""
 msgid "Couldn't open the Audacity Help file."
 msgstr "Не удалось открыть файл справки Audacity."
 
-#: ../src/FreqWindow.cpp:1005 ../src/Menus.cpp:1131 ../src/Project.cpp:1993
-#: ../src/prefs/KeyConfigPrefs.cpp:171
+#: ../src/FreqWindow.cpp:1005 ../src/prefs/KeyConfigPrefs.cpp:171
+#: ../src/Menus.cpp:1131 ../src/Project.cpp:1993
 msgid "Couldn't write to file: "
 msgstr "Не удалось произвести запись в файл: "
 
@@ -1278,7 +1279,7 @@ msgstr "Курсор: %lf сек   [привязка по семплам]"
 msgid "Cursor: %li samples   [Snap-To Samples]"
 msgstr "Курсор: %li семплов   [привязка по семплам]"
 
-#: ../src/EditToolBar.cpp:144 ../src/Menus.cpp:1267
+#: ../src/Menus.cpp:1267 ../src/EditToolBar.cpp:144
 msgid "Cut"
 msgstr "Вырезать"
 
@@ -1293,6 +1294,10 @@ msgstr "Д&ублировать\tCtrl+D"
 #: ../src/effects/Phaser.cpp:442
 msgid "DRY"
 msgstr "DRY"
+
+#: ../src/effects/Echo.cpp:209
+msgid "Decay factor:"
+msgstr "Коэффициент спада: "
 
 #: ../src/prefs/QualityPrefs.cpp:117
 msgid "Default Sample Format:"
@@ -1312,8 +1317,8 @@ msgstr "Стандартный байтовый порядок"
 msgid "Defaults"
 msgstr "Сбросить установки"
 
-#: ../src/effects/Echo.cpp:34
-msgid "Delay time (seconds): "
+#: ../src/effects/Echo.cpp:190
+msgid "Delay time (seconds):"
 msgstr "Время задержки (сек):"
 
 #: ../src/Project.cpp:2322
@@ -1379,7 +1384,7 @@ msgstr "Прицепить панель микшера"
 msgid "Documentation Writer"
 msgstr "Автор документации"
 
-#: ../src/effects/Amplify.cpp:344
+#: ../src/effects/Amplify.cpp:166
 msgid "Don't allow clipping"
 msgstr "Не разрешать кадрирование"
 
@@ -1429,11 +1434,11 @@ msgstr "Компрессор динамического диапазона - Доминик Маццони"
 msgid "E&xit"
 msgstr "Вы&йти\tCtrl+Q"
 
-#: ../src/effects/Echo.cpp:33
+#: ../src/effects/Echo.cpp:33 ../src/effects/Echo.cpp:175
 msgid "Echo"
 msgstr "Добавка эхо"
 
-#: ../src/effects/Echo.h:28
+#: ../src/effects/Echo.h:36
 msgid "Echo..."
 msgstr "Добавить эхо..."
 
@@ -1485,11 +1490,7 @@ msgstr "Введите частоту в Гц (семплов в сек):"
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Введите частоту в Гц (семплов в сек) в диапазоне между 1 и 100000:"
 
-#: ../src/effects/Echo.cpp:49
-msgid "Enter the decay factor: "
-msgstr "Введите коэффициент распада: "
-
-#: ../src/TrackPanel.cpp:1597 ../src/prefs/MousePrefs.cpp:98
+#: ../src/prefs/MousePrefs.cpp:98 ../src/TrackPanel.cpp:1597
 msgid "Envelope"
 msgstr "Огибающая"
 
@@ -1505,8 +1506,8 @@ msgstr "Эквалайзер"
 msgid "Equalization..."
 msgstr "Эквалайзер..."
 
-#: ../src/ControlToolBar.cpp:640 ../src/effects/Effect.cpp:321
-#: ../src/prefs/DirectoriesPrefs.cpp:203
+#: ../src/prefs/DirectoriesPrefs.cpp:203 ../src/effects/Effect.cpp:321
+#: ../src/ControlToolBar.cpp:640
 msgid "Error"
 msgstr "Ошибка"
 
@@ -1552,7 +1553,7 @@ msgstr "Произошла ошибка при сохранении клавиатурных привязок"
 msgid "Error saving project"
 msgstr "Произошла ошибка при сохранении файла проекта"
 
-#: ../src/ControlToolBar.cpp:638 ../src/effects/Effect.cpp:319
+#: ../src/effects/Effect.cpp:319 ../src/ControlToolBar.cpp:638
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -1578,8 +1579,8 @@ msgstr "Ошибка: каталог защищён от записи или диск переполнен?"
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Предполагалось прочитать %d семплов, получено %d семплов.\n"
 
-#: ../src/export/ExportMP3.cpp:1352 ../src/export/ExportOGG.cpp:172
-#: ../src/export/ExportPCM.cpp:135
+#: ../src/export/ExportOGG.cpp:193 ../src/export/ExportPCM.cpp:135
+#: ../src/export/ExportMP3.cpp:1352
 msgid "Export"
 msgstr "Экспортировать"
 
@@ -1623,7 +1624,7 @@ msgstr "Экспортировать результаты спектрального анализа в файл:"
 msgid "Export..."
 msgstr "Экспорт..."
 
-#: ../src/export/ExportOGG.cpp:169
+#: ../src/export/ExportOGG.cpp:190
 msgid "Exporting the entire project as Ogg Vorbis"
 msgstr "Весь проект экспортируется в файл Ogg Vorbis"
 
@@ -1640,7 +1641,7 @@ msgstr "Весь проект экспортируется в файл MP3"
 msgid "Exporting the entire project using command-line encoder"
 msgstr "Весь проект экспортируется через консольный энкодер"
 
-#: ../src/export/ExportOGG.cpp:168
+#: ../src/export/ExportOGG.cpp:189
 msgid "Exporting the selected audio as Ogg Vorbis"
 msgstr "Выделенное экспортируется в файл Ogg Vorbis"
 
@@ -1840,9 +1841,9 @@ msgstr "ID3v1 (более распространен)"
 msgid "ID3v2 (more flexible)"
 msgstr "ID3v2 (более гибок)"
 
-#: ../src/Project.cpp:2063 ../src/Project.cpp:2110
-#: ../src/import/ImportPCM.cpp:396 ../src/import/ImportPCM.cpp:481
-#: ../src/import/ImportRaw.cpp:405
+#: ../src/import/ImportRaw.cpp:405 ../src/import/ImportPCM.cpp:396
+#: ../src/import/ImportPCM.cpp:481 ../src/Project.cpp:2063
+#: ../src/Project.cpp:2110
 msgid "Import"
 msgstr "Вставка"
 
@@ -1971,11 +1972,11 @@ msgstr "Поддержка модулей LADSPA отключена"
 msgid "LADSPA plug-in support enabled"
 msgstr "Поддержка модулей LADSPA включена"
 
-#: ../src/effects/Phaser.cpp:463 ../src/effects/Wahwah.cpp:438
+#: ../src/effects/Wahwah.cpp:438 ../src/effects/Phaser.cpp:463
 msgid "LFO Frequency (Hz):"
 msgstr "Частота LFO (Гц):"
 
-#: ../src/effects/Phaser.cpp:479 ../src/effects/Wahwah.cpp:454
+#: ../src/effects/Wahwah.cpp:454 ../src/effects/Phaser.cpp:479
 msgid "LFO Start Phase (deg.):"
 msgstr "Начальная фаза LFO (степень):"
 
@@ -2173,8 +2174,8 @@ msgstr "Макс. частота должна находиться в пределах от 100 Гц до 100 000 Гц"
 #, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
 msgstr ""
-"Маскимально возможная продолжительность аттрибута '%s' - %d. "
-"Пришлось \"отрезать\" не поместившиеся данные."
+"Маскимально возможная продолжительность аттрибута '%s' - %d. Пришлось "
+"\"отрезать\" не поместившиеся данные."
 
 #: ../src/import/ImportOGG.cpp:123
 msgid "Media read error"
@@ -2308,7 +2309,7 @@ msgstr "Создать новую дорожку &времени"
 msgid "New La&bel Track"
 msgstr "Создать новую дорожку для за&меток"
 
-#: ../src/effects/Amplify.cpp:332
+#: ../src/effects/Amplify.cpp:154
 msgid "New Peak Amplitude (dB):"
 msgstr "Новая пиковая амплитуда (Дб):"
 
@@ -2355,8 +2356,8 @@ msgstr "Удаление шума - Доминик Маццони"
 msgid "Noise Removal..."
 msgstr "Удаление шума..."
 
-#: ../src/effects/ladspa/LadspaEffect.cpp:430
 #: ../src/prefs/QualityPrefs.cpp:170
+#: ../src/effects/ladspa/LadspaEffect.cpp:430
 msgid "None"
 msgstr "Ничего"
 
@@ -2448,17 +2449,17 @@ msgstr " Настройка экспорта в OGG "
 msgid "OGG Quality:"
 msgstr "Качество OGG:"
 
-#: ../src/LangChoice.cpp:93 ../src/Tags.cpp:653
+#: ../src/prefs/FileFormatPrefs.cpp:466 ../src/prefs/PrefsDialog.cpp:96
 #: ../src/effects/VST/VSTEffect.cpp:93 ../src/effects/VST/VSTEffect.cpp:449
-#: ../src/effects/Amplify.cpp:353 ../src/effects/AvcCompressor.cpp:707
-#: ../src/effects/BassBoost.cpp:327 ../src/effects/ChangePitch.cpp:390
-#: ../src/effects/ChangeSpeed.cpp:423 ../src/effects/ChangeTempo.cpp:280
-#: ../src/effects/Compressor.cpp:465 ../src/effects/Equalization.cpp:677
-#: ../src/effects/Filter.cpp:473 ../src/effects/Normalize.cpp:244
-#: ../src/effects/Phaser.cpp:531 ../src/effects/Repeat.cpp:236
-#: ../src/effects/Wahwah.cpp:522 ../src/effects/ladspa/LadspaEffect.cpp:481
-#: ../src/effects/nyquist/Nyquist.cpp:614 ../src/prefs/FileFormatPrefs.cpp:466
-#: ../src/prefs/PrefsDialog.cpp:96 ../src/widgets/Warning.cpp:55
+#: ../src/effects/AvcCompressor.cpp:707 ../src/effects/Amplify.cpp:184
+#: ../src/effects/Compressor.cpp:465 ../src/effects/Wahwah.cpp:522
+#: ../src/effects/BassBoost.cpp:327 ../src/effects/Filter.cpp:473
+#: ../src/effects/ChangeSpeed.cpp:424 ../src/effects/Repeat.cpp:236
+#: ../src/effects/Echo.cpp:236 ../src/effects/ladspa/LadspaEffect.cpp:481
+#: ../src/effects/ChangePitch.cpp:390 ../src/effects/ChangeTempo.cpp:280
+#: ../src/effects/Phaser.cpp:531 ../src/effects/nyquist/Nyquist.cpp:614
+#: ../src/effects/Normalize.cpp:244 ../src/effects/Equalization.cpp:677
+#: ../src/Tags.cpp:653 ../src/LangChoice.cpp:93 ../src/widgets/Warning.cpp:55
 msgid "OK"
 msgstr "OK"
 
@@ -2510,8 +2511,8 @@ msgstr "Первоначальное значение"
 msgid "Other contributors:"
 msgstr "Другие участники проекта:"
 
-#: ../src/AStatus.cpp:75 ../src/TrackPanel.cpp:546
-#: ../src/prefs/FileFormatPrefs.cpp:105 ../src/prefs/QualityPrefs.cpp:94
+#: ../src/AStatus.cpp:75 ../src/prefs/FileFormatPrefs.cpp:105
+#: ../src/prefs/QualityPrefs.cpp:94 ../src/TrackPanel.cpp:546
 msgid "Other..."
 msgstr "Другая..."
 
@@ -2543,7 +2544,7 @@ msgstr "PAL ч:мм:сс:кк при 25 fps"
 msgid "Pan"
 msgstr "Баланс"
 
-#: ../src/EditToolBar.cpp:148 ../src/Menus.cpp:1336
+#: ../src/Menus.cpp:1336 ../src/EditToolBar.cpp:148
 msgid "Paste"
 msgstr "Вставить"
 
@@ -2564,12 +2565,12 @@ msgstr "Приостановить\tP"
 msgid "Pencil"
 msgstr "\"Карандаш\""
 
-#: ../src/effects/ChangePitch.cpp:354 ../src/effects/ChangeSpeed.cpp:353
+#: ../src/effects/ChangeSpeed.cpp:354 ../src/effects/ChangePitch.cpp:354
 #: ../src/effects/ChangeTempo.cpp:182
 msgid "Percent Change:"
 msgstr "Процентное изменение:"
 
-#: ../src/effects/Echo.h:32
+#: ../src/effects/Echo.h:40
 msgid "Performing Echo"
 msgstr "Применяется эффект \"Эхо\""
 
@@ -2637,14 +2638,6 @@ msgstr "Воспроизвести/Остановить\tSpacebar"
 #: ../src/prefs/AudioIOPrefs.cpp:71
 msgid "Playback"
 msgstr "Воспроизведение"
-
-#: ../src/effects/Echo.cpp:56
-msgid "Please enter a positive number for the decay factor: "
-msgstr "Введите положительное число для коэффициента распада: "
-
-#: ../src/effects/Echo.cpp:42
-msgid "Please enter a positive number for the delay time: "
-msgstr "Введите положительное число для времени задержки: "
 
 #: ../src/commands/CommandManager.cpp:314
 #, c-format
@@ -3235,7 +3228,7 @@ msgstr "По очертаниям"
 msgid "Shift-Left-Click"
 msgstr "Shift-Left-Щелчок"
 
-#: ../src/Menus.cpp:1402 ../src/effects/Silence.h:27
+#: ../src/effects/Silence.h:27 ../src/Menus.cpp:1402
 msgid "Silence"
 msgstr "Создать тишину"
 
@@ -3373,7 +3366,7 @@ msgstr "Этапы:"
 msgid "Standard Autocorrelation"
 msgstr "Стандартная автокорреляция"
 
-#: ../src/effects/ChangeSpeed.cpp:389
+#: ../src/effects/ChangeSpeed.cpp:390
 msgid "Standard Vinyl RPM:   from"
 msgstr "Стандартное значение об/мин пластинки:   от"
 
@@ -3598,7 +3591,7 @@ msgstr "Невозможно определить"
 msgid "Unable to open project file."
 msgstr "Невозможно открыть файл проекта"
 
-#: ../src/export/ExportMP3.cpp:1281 ../src/export/ExportOGG.cpp:45
+#: ../src/export/ExportOGG.cpp:53 ../src/export/ExportMP3.cpp:1281
 msgid "Unable to open target file for writing"
 msgstr "Невозможно открыть конечный файл для записи"
 
@@ -3859,7 +3852,11 @@ msgstr "[Привязка выключена]"
 msgid "[Snap-To On]"
 msgstr "[Привязка включена]"
 
-#: ../src/effects/ChangePitch.cpp:248 ../src/effects/ChangeSpeed.cpp:335
+#: ../src/effects/Echo.cpp:180
+msgid "by Dominic Mazzoni && Vaughan Johnson"
+msgstr "-- Dominic Mazzoni && Vaughan Johnson"
+
+#: ../src/effects/ChangeSpeed.cpp:336 ../src/effects/ChangePitch.cpp:248
 #: ../src/effects/ChangeTempo.cpp:164
 msgid "by Vaughan Johnson && Dominic Mazzoni"
 msgstr "(Vaughan Johnson && Dominic Mazzoni)"
@@ -3881,7 +3878,7 @@ msgstr "cdda мин:сек:кадры при 75 fps"
 msgid "cdda sectors+bytes (snap to samples)"
 msgstr "cdda секторы+байты (привязка по семплам)"
 
-#: ../src/TrackPanel.cpp:4043 ../src/effects/ChangePitch.cpp:278
+#: ../src/effects/ChangePitch.cpp:278 ../src/TrackPanel.cpp:4043
 msgid "down"
 msgstr "вниз"
 
@@ -3924,7 +3921,7 @@ msgstr "мин:сек+семплы (привязка по семплам)"
 #. abbreviation meaning "not
 #. applicable" (in other words,
 #. unimportant, not relevant).
-#: ../src/effects/ChangeSpeed.cpp:386
+#: ../src/effects/ChangeSpeed.cpp:387
 msgid "n/a"
 msgstr "не указано"
 
@@ -3952,8 +3949,8 @@ msgstr "сек+семплы (привязка по семплам)"
 msgid "spectrum.txt"
 msgstr "spectrum.txt"
 
-#: ../src/effects/ChangePitch.cpp:285 ../src/effects/ChangePitch.cpp:331
-#: ../src/effects/ChangeSpeed.cpp:399 ../src/effects/ChangeTempo.cpp:223
+#: ../src/effects/ChangeSpeed.cpp:400 ../src/effects/ChangePitch.cpp:285
+#: ../src/effects/ChangePitch.cpp:331 ../src/effects/ChangeTempo.cpp:223
 #: ../src/effects/ChangeTempo.cpp:254
 msgid "to"
 msgstr "до"
@@ -3974,17 +3971,23 @@ msgstr "к концу дорожки"
 msgid "to Track Start"
 msgstr "к началу дорожки"
 
-#: ../src/TrackPanel.cpp:4042 ../src/effects/ChangePitch.cpp:278
+#: ../src/effects/ChangePitch.cpp:278 ../src/TrackPanel.cpp:4042
 msgid "up"
 msgstr "вверх"
 
-#: ../src/effects/ChangeSpeed.cpp:340
+#: ../src/effects/ChangeSpeed.cpp:341
 msgid "using SampleRate, by Erik de Castro Lopo"
 msgstr "с использованием библиотеки SampleRate (Erik de Castro Lopo)"
 
 #: ../src/effects/ChangePitch.cpp:253 ../src/effects/ChangeTempo.cpp:169
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "с использованием SoundTouch (Olli Parviainen)"
+
+#~ msgid "Please enter a positive number for the decay factor: "
+#~ msgstr "Введите положительное число для коэффициента распада: "
+
+#~ msgid "Please enter a positive number for the delay time: "
+#~ msgstr "Введите положительное число для времени задержки: "
 
 #~ msgid ""
 #~ "Maximum length of attribute 'Album' is 30 characters. Data was truncated."
