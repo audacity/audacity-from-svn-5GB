@@ -35,6 +35,7 @@
 ///
 CommandManager::CommandManager():
    mCurrentID(0),
+   mHiddenID(0),
    mCurrentMenu(NULL)
 {
 }
@@ -48,52 +49,38 @@ CommandManager::~CommandManager()
    PurgeData();
 }
 
-///
-/// Cleans up menubars that are wx arrays
-///
 void CommandManager::PurgeData()
 {
    size_t i;
 
-   //FIXME: Why is this #ifdeffed out?
-   //deleting the callbacks crashes,
-   //but shouldn't we delete the other stuff?
-   //If we don't delete the command list it grows 
-   //each time we go through KeyboardPrefs.
-   #if 0
-
-   //delete the menubars
-   for(i = 0; i < mMenuBarList.GetCount(); i++)
-      delete mMenuBarList[i]->menubar;
-
-   //clear the arrays
-   WX_CLEAR_ARRAY(mMenuBarList);
    mMenuBarList.Clear();
-
-   WX_CLEAR_ARRAY(mSubMenuList);
    mSubMenuList.Clear();
-
-   for(i=0; i<mCommandList.GetCount(); i++)
-      delete mCommandList[i]->callback;
-   #endif
-
-   WX_CLEAR_ARRAY(mCommandList);
    mCommandList.Clear();
-
-   //reset other variables
+   mCommandNameHash.clear();
+   mCommandKeyHash.clear();
+   mCommandIDHash.clear();
    mCurrentMenu = NULL;
    mCurrentID = 0;
 
-//   #endif
+   // TODO: Does this crash on Windows???
+   #if 0
+   for(i=0; i<mCommandList.GetCount(); i++)
+      delete mCommandList[i]->callback;
+   #endif
 }
-
 
 
 ///
 /// Makes a new menubar for placement on the top of a project
 /// Names it according to the passed-in string argument.
+///
+/// If the menubar already exists, simply returns it.
 wxMenuBar *CommandManager::AddMenuBar(wxString sMenu)
 {
+   wxMenuBar *menuBar = GetMenuBar(sMenu);
+   if (menuBar)
+      return menuBar;
+
    MenuBarListEntry *tmpEntry = new MenuBarListEntry;
 
    tmpEntry->menubar = new wxMenuBar();
@@ -135,8 +122,13 @@ wxMenuBar * CommandManager::CurrentMenuBar()
 ///
 /// This makes a new menu and adds it to the 'CurrentMenuBar'
 ///
+/// If the menu already exists, all of the items in it are
+/// cleared instead.
+///
 void CommandManager::BeginMenu(wxString tName)
 {
+   
+
    wxMenu *tmpMenu = new wxMenu();
 
    mCurrentMenu = tmpMenu;
@@ -222,7 +214,7 @@ wxMenu * CommandManager::CurrentMenu()
 
 ///
 /// Add a menu item to the current menu.  When the user selects it, the
-/// given function pointer will be called (via the CommandManagerListener)
+/// given functor will be called
 void CommandManager::AddItem(wxString name, wxString label,
                              CommandFunctor *callback)
 {
@@ -230,16 +222,28 @@ void CommandManager::AddItem(wxString name, wxString label,
 
    // Replace the accel key with the one from the preferences
    label = label.BeforeFirst('\t');
-   if (mCommandIDHash[ID]->key)
-      label = label + "\t" + mCommandIDHash[ID]->key;
 
-   CurrentMenu()->Append(ID, label);
+   // This is a very weird hack.  Under GTK, menu labels are totally
+   // linked to accelerators the first time you create a menu item
+   // with that label and can't be changed.  This causes all sorts of
+   // problems.  As a workaround, we create each menu item with a
+   // made-up name (just an ID number string) but with the accelerator
+   // we want, then immediately change the label to the correct string.
+   // -DMM
+   mHiddenID++;
+   wxString dummy;
+   dummy.Printf("%08d", mHiddenID);
+   if (mCommandIDHash[ID]->key)
+      dummy = dummy + "\t" + mCommandIDHash[ID]->key;
+
+   CurrentMenu()->Append(ID, dummy);
+   CurrentMenu()->SetLabel(ID, label);
 }
 
 ///
 /// Add a list of menu items to the current menu.  When the user selects any
-/// one of these, the given function pointer will be called (via the
-/// CommandManagerListener) with its position in the list as the index number.
+/// one of these, the given functor will be called
+/// with its position in the list as the index number.
 /// When you call Enable on this command name, it will enable or disable
 /// all of the items at once.
 void CommandManager::AddItemList(wxString name, wxArrayString labels,
@@ -341,8 +345,9 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
 
    // Key from preferences overridse the default key given
    gPrefs->SetPath("/NewKeys");
-   if (gPrefs->HasEntry(name))
+   if (gPrefs->HasEntry(name)) {
       tmpEntry->key = gPrefs->Read(name, GetKey(label));
+   }
    gPrefs->SetPath("/");
    
    mCommandList.Add(tmpEntry);

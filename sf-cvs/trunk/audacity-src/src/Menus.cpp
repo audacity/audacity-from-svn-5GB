@@ -342,7 +342,8 @@ void AudacityProject::ModifyUndoMenus()
       mCommandManager.Enable("Undo", true);
    }
    else {
-      mCommandManager.Modify("Undo", _("Can't Undo"));
+      mCommandManager.Modify("Undo", 
+                             wxString::Format(_("Can't Undo")));
       mCommandManager.Enable("Undo", false);
    }
 
@@ -362,7 +363,9 @@ void AudacityProject::ModifyUndoMenus()
 
 void AudacityProject::RebuildMenuBar()
 {
-   SetMenuBar(NULL);
+   wxMenuBar *menuBar = GetMenuBar();
+   DetachMenuBar();
+   delete menuBar;
    mCommandManager.PurgeData();
    CreateMenusAndCommands();
 }

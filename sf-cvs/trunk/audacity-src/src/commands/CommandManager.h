@@ -140,6 +140,7 @@ private:
    CommandNameHash  mCommandKeyHash;
    CommandIDHash  mCommandIDHash;
    int mCurrentID;
+   int mHiddenID;
    wxMenu * mCurrentMenu;
 };
 
