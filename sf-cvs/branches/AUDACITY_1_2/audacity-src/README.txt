@@ -245,21 +245,13 @@ Known issues/problems:
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
 
-  * The About window does not display correctly in locales with
-    non-Western character sets.
-
-  * The Change Pitch effect crashes when used with tracks that
-    have 96 KHz sample rates.
-
-  * Windows only: Audacity crashes when using the Time Track
-    "Set Rate" command.
-
   * Windows only: If you installed one of the 1.1.x beta versions,
     you must uninstall it before installing Audacity 1.2.
     (You do not need to uninstall earlier 1.2 or 1.0 releases.)
 
   * Linux only: Recording in full duplex on some Linux systems causes
-    mono recordings to sound slowed-down.
+    mono recordings to sound slowed-down or low-pitched.  To work around
+    this problem, set Audacity to record in stereo.
 
   * Mac OS X only: Audacity cannot work with files or folders that
     are contained inside folders with international characters
@@ -297,8 +289,8 @@ Changes in 1.2.2:
     platform (e.g., copying a project from a Mac to a PC).
 
   * Fixed serious bug that could cause data loss when you save and
-    then load an Audacity project containing repeated or duplicate
-    data.
+    then load and re-edit an Audacity project containing repeated
+    or duplicate data.
 
   * Fixed bug that could cause instability when pasting, splitting,
     or duplicating a label track.
@@ -312,6 +304,12 @@ Changes in 1.2.2:
   * Basic printing support has been added.  Currently it scales the
     entire project to fit exactly on one page.  Try printing in
     landscape orientation for best results.
+
+  * Mac OS X and Windows: Audacity ships with a newer version of
+    the Ogg Vorbis encoder.  Vorbis compression will now have higher
+    quality and smaller file sizes.
+
+  * Other minor bug fixes and performance improvements.
 
 Changes in 1.2.1:
 
