@@ -120,19 +120,18 @@ wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
 
    frame = id3_tag_findframe(tp, name, 0);
    if (frame) {
-      if (frame->nfields > 0) {
-         unsigned int i;
-         for(i=0; i<frame->nfields; i++) {
-            union id3_field *field = &frame->fields[i];
-            if (field->type == ID3_FIELD_TYPE_STRINGLIST &&
-                id3_field_getnstrings(field) > 0) {
-               const id3_ucs4_t *ustr = id3_field_getstrings(field, 0);
-               char *str = (char *)id3_ucs4_latin1duplicate(ustr);
-               wxString s = str;
-               free(str);
-               return s;
-            }
-         }
+      const id3_ucs4_t *ustr;
+
+      if (strcmp(name, ID3_FRAME_COMMENT) == 0)
+	 ustr = id3_field_getfullstring(&frame->fields[3]);
+      else
+	 ustr = id3_field_getstrings(&frame->fields[1], 0);
+
+      if (ustr) {
+	 char *str = (char *)id3_ucs4_latin1duplicate(ustr);
+	 wxString s = str;
+	 free(str);
+	 return s;
       }
    }
 
@@ -219,7 +218,12 @@ struct id3_frame *MakeID3Frame(const char *name, const char *data)
   ucs4 = (id3_ucs4_t *)malloc((id3_latin1_length(latin1) + 1) * sizeof(*ucs4));
   if (ucs4) {
     id3_latin1_decode(latin1, ucs4);
-    id3_field_setstrings(&frame->fields[1], 1, &ucs4);
+
+    if (strcmp(name, ID3_FRAME_COMMENT) == 0)
+       id3_field_setfullstring(&frame->fields[3], ucs4);
+    else
+       id3_field_setstrings(&frame->fields[1], 1, &ucs4);
+
     free(ucs4);
   }
 
