@@ -142,10 +142,12 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 
       // Byte-swapping is neccesary on big-endian machines, since
       // WAV files are little-endian
-#ifdef wxBYTE_ORDER == wxBIG_ENDIAN
-      short *buffer = (short*)mixed;
-      for( int i = 0; i < numSamples; i++ )
-         buffer[i] = wxINT16_SWAP_ON_BE(buffer[i]);
+#if wxBYTE_ORDER == wxBIG_ENDIAN
+      {
+         short *buffer = (short*)mixed;
+         for( int i = 0; i < numSamples; i++ )
+            buffer[i] = wxINT16_SWAP_ON_BE(buffer[i]);
+      }
 #endif
 
       fwrite( mixed, numSamples * channels * SAMPLE_SIZE(int16Sample), 1, pipe );
