@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Audacity
-AppVerName=Audacity 1.2.0
+AppVerName=Audacity 1.2.1
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
@@ -78,6 +78,8 @@ Source: "E:\sfw_dev\audacity\win\Release\Nyquist\xlinit.lsp"; DestDir: "{app}\Ny
 ; doesn't work:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\analyze.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\beat.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\clicktrack.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\crossfadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\crossfadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 ; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadein.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 ; redundant:     Source: "E:\sfw_dev\audacity\win\Release\Plug-Ins\fadeout.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
