@@ -93,10 +93,10 @@ There are three settings that need changing:
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
-look in the Windows help system. You want to creat an 
+look in the Windows help system. You want to create an 
 environment variable WXWIN, set to the top-level directory 
 where you installed wxWindows. For example, 
-in your Autoexec.bat file, you might have a line:
+in your "autoexec.bat" file, you might have a line:
 
    set WXWIN="C:\wxWindows_2.3.3"
 
@@ -131,8 +131,8 @@ Release build, or "libcmt.lib" for a Debug build.
 STEP 6:  Build Audacity
 -----------------------
 To build libsndfile on Windows, you'll need to copy both 
-"sndfile.h" and "config.h" from "libsndfile/Win32/" to 
-"libsndfile/src/" before you compile. 
+"config.h" and "sndfile.h" from "audacity\lib-src\libsndfile\Win32" 
+to "audacity\lib-src\libsndfile\Win32" before you compile. 
 
 Now select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
