@@ -62,7 +62,10 @@ class AudacityApp:public wxApp {
 
  private:
    wxLocale *mLocale;
-//   wxSingleInstanceChecker *mChecker;
+
+#ifdef __WXMSW__
+   void *mSingleInstanceMutex;
+#endif
 
  public:
     DECLARE_EVENT_TABLE()
