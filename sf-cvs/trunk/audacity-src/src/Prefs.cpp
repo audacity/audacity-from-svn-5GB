@@ -14,11 +14,13 @@
 	/FileFormats
 		CopyOrEditUncompressedData - Copy data from uncompressed files or
 			[ "copy", "edit"]   - edit in place?
-		DefaultExportFormat		- Default format to export data in
-			[ "AIFF", "WAV", "IRCAM", "AU", "Ogg Vorbis", "MP3" ]
+		ExportFormat		   - Format to export PCM data in
+                             (this number is a libsndfile format)
+      ExportFormatBits     - Bitsize of exported PCM data
+         [ 8, 16, 24, 32 ]
 	/SamplingRate
 		DefaultProjectSampleRate- New projects will have this rate
-			[ 8000, 11025, 22050, 44100, 48000 ]
+			[ 8000, 11025, 16000, 22050, 44100, 48000 ]
 	/AudioIO
 		PlaybackDevice(*)		- device file to use for playback
 		RecordingDevice(*)		- device file to use for recording

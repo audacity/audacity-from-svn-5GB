@@ -41,10 +41,18 @@ AudioIO::AudioIO()
    
    // Run our timer function once every 200 ms, i.e. 5 times/sec
    mTimer.Start(200, FALSE);
+
+   PaError err = Pa_Initialize();
+
+   if (err != paNoError) {
+      wxMessageBox(Pa_GetErrorText(err));
+      return;
+   }
 }
 
 AudioIO::~AudioIO()
 {
+   Pa_Terminate();
 }
 
 int audacityAudioCallback(
@@ -140,19 +148,38 @@ bool AudioIO::OpenDevice()
 {
    PaError         error;
    int             numPortAudioBuffers;
-   
+   int             recDeviceNum;
+   int             playDeviceNum;
+   wxString        recDevice;
+   wxString        playDevice;
+
    numPortAudioBuffers = Pa_GetMinNumBuffers(mBufferSize, mRate);
 
+   recDeviceNum = Pa_GetDefaultInputDeviceID();
+   playDeviceNum = Pa_GetDefaultOutputDeviceID();
+
+   recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
+   playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+
+   for(int j=0; j<Pa_CountDevices(); j++) {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
+      if (info->name == playDevice)
+         playDeviceNum = j;
+      if (info->name == recDevice)
+         recDeviceNum = j;
+   }
+
+   if (mNumOutChannels<=0)
+      playDeviceNum = paNoDevice;
+   if (mNumInChannels<=0)
+      recDeviceNum = paNoDevice;
+
    error = Pa_OpenStream(&mPortStream,
-                         mNumInChannels>0?
-                            Pa_GetDefaultInputDeviceID():
-                            paNoDevice,
+                         recDeviceNum,
                          mNumInChannels,
                          paInt16,
                          NULL, /* inputDriverInfo */
-                         mNumOutChannels>0?
-                            Pa_GetDefaultOutputDeviceID():
-                            paNoDevice,
+                         playDeviceNum,
                          mNumOutChannels,
                          paInt16,
                          NULL,
@@ -162,18 +189,6 @@ bool AudioIO::OpenDevice()
                          paClipOff | paDitherOff,
                          audacityAudioCallback,
                          NULL);
-
-   /*
-   error = Pa_OpenDefaultStream(&mPortStream,
-                                mNumInChannels,
-                                mNumOutChannels,
-                                paInt16,
-                                mRate,
-                                (unsigned long)mBufferSize,
-                                (unsigned long)2,
-                                audacityAudioCallback,
-                                NULL);
-   */
 
    return (mPortStream != NULL && error == paNoError);
 }

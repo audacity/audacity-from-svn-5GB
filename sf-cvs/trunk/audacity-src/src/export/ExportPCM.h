@@ -18,7 +18,7 @@ class DirManager;
 class WaveTrack;
 
 bool ExportPCM(AudacityProject *project,
-               wxString format, bool stereo, wxString fName,
+               bool stereo, wxString fName,
                bool selectionOnly, double t0, double t1);
 
 

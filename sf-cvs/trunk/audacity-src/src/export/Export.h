@@ -16,7 +16,9 @@ class DirManager;
 class WaveTrack;
 
 bool Export(AudacityProject *project,
-            wxString format,
             bool selectionOnly, double t0, double t1);
+
+bool ExportLossy(AudacityProject *project,
+                 bool selectionOnly, double t0, double t1);
 
 #endif

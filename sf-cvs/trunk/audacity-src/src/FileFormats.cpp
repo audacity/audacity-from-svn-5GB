@@ -33,12 +33,38 @@ wxString HeaderNames[14] = {
    "Propellorheads Rex2",
    "Berkeley/IRCAM/CARL"};
 
+wxString ExtensionNames[14] = {
+   "wav",
+   "aiff",
+   "au",
+   "au",
+   "raw",
+   "par",
+   "iff",
+   "nist",
+   "wma",
+   "samp",
+   "voc",
+   "sd2",
+   "rex2",
+   "ircam"};
+
 wxString sf_header_name(int format)
 {
    if (format >= 0x10000)
       return HeaderNames[(format/0x10000)-1];
    else if (format>=0 && format<14)
       return HeaderNames[format];
+   else
+      return "Unknown header";
+}
+
+wxString sf_header_extension(int format)
+{
+   if (format >= 0x10000)
+      return ExtensionNames[(format/0x10000)-1];
+   else if (format>=0 && format<14)
+      return ExtensionNames[format];
    else
       return "Unknown header";
 }

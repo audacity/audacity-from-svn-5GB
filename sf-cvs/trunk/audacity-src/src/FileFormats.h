@@ -14,6 +14,7 @@
 
 int sf_num_headers();
 wxString sf_header_name(int format);
+wxString sf_header_extension(int format);
 
 int sf_num_encodings();
 wxString sf_encoding_name(int subtype);

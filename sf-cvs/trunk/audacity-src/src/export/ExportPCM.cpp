@@ -8,14 +8,11 @@
 
 **********************************************************************/
 
-#include <wx/textctrl.h>
 #include <wx/string.h>
 #include <wx/window.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
 #include <wx/timer.h>
-
-//#include "snd/snd.h"
 
 #include "../Audacity.h"
 #include "../LabelTrack.h"
@@ -25,7 +22,7 @@
 #include "../WaveTrack.h"
 
 bool ExportPCM(AudacityProject *project,
-               wxString format, bool stereo, wxString fName,
+               bool stereo, wxString fName,
                bool selectionOnly, double t0, double t1)
 {
    wxMessageBox("In process of being rewritten, sorry...");

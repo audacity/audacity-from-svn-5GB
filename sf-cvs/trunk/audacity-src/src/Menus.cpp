@@ -425,30 +425,22 @@ void AudacityProject::OnExportLabels(wxCommandEvent & event)
 
 void AudacityProject::OnExportMix(wxCommandEvent & event)
 {
-   wxString format =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");   
-
-   ::Export(this, format, false, 0.0, mTracks->GetMaxLen());
+   ::Export(this, false, 0.0, mTracks->GetMaxLen());
 }
 
 void AudacityProject::OnExportSelection(wxCommandEvent & event)
 {
-   wxString format =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");   
-
-   ::Export(this, format, true, mViewInfo.sel0, mViewInfo.sel1);
+   ::Export(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportLossyMix(wxCommandEvent & event)
 {
-   // Until Ogg Vorbis is supported, this is hard-coded to MP3
-   ::Export(this, "MP3", false, 0.0, mTracks->GetMaxLen());
+   ::ExportLossy(this, false, 0.0, mTracks->GetMaxLen());
 }
 
 void AudacityProject::OnExportLossySelection(wxCommandEvent & event)
 {
-   // Until Ogg Vorbis is supported, this is hard-coded to MP3
-   ::Export(this, "MP3", true, mViewInfo.sel0, mViewInfo.sel1);
+   ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnPreferences(wxCommandEvent & event)

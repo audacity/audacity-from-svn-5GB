@@ -160,6 +160,8 @@ bool AudacityApp::OnInit()
    InitPreferences();
    InitAudioIO();
 
+   LoadEffects();
+
 #ifdef __WXMAC__
    AEInstallEventHandler(kCoreEventClass,
                          kAEOpenDocuments,
