@@ -25,20 +25,32 @@ class wxString;
 
 class iAVC;
 
-#include <wx/intl.h>
+//!!!!!!!!!!!!!!!!!!!!!!!!!  I M P O R T A N T  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// IMPORTANT:  This define determines type of sample: float or short int
+#define  IAVC_FLOAT			// use floating point in iAVC
+
 #include "SimplePairedTwoTrack.h"
 
-#include "../../lib-src/iAVC/iAVC.h"	// for MULTIPLY_PCT_ARRAY_SIZE
+#include "../../lib-src/iAVC/iAVC.h"	// for MULTIPLY_PCT_ARRAY_SIZE and IAVCSAMPLETYPE
 
 class WaveTrack;
+class AvcCompressorDialog;				// defined later in this file
 
-class EffectAvcCompressor: public EffectSimplePairedTwoTrackInt16 {
+#ifdef IAVC_FLOAT
+	#define AVCCOMPSAMPLETYPE  floatSample
+#else
+	#define AVCCOMPSAMPLETYPE  int16Sample
+#endif
+
+//typedef for IAVCSAMPLETYPE is in iAVC.h
+
+class EffectAvcCompressor: public EffectSimplePairedTwoTrack<IAVCSAMPLETYPE,AVCCOMPSAMPLETYPE> {
    
 public:
    
    EffectAvcCompressor();
 
-   virtual ~EffectAvcCompressor() {}
+   virtual ~EffectAvcCompressor();
    
    virtual wxString GetEffectName() {
       return wxString(_("Automatic Volume Control..."));
@@ -55,11 +67,13 @@ protected:
    virtual bool Init();				// invoked by Effect
 
    // invoked by SimplePairedTwoTrack
-   virtual bool ProcessSimplePairedTwoTrack(short int *bufferLeft, 
-											short int *bufferRight, // may be 0
-											sampleCount len);
+   bool ProcessSimplePairedTwoTrack ( /*IAVCSAMPLETYPE*/ void *bufferLeft, 
+									  /*IAVCSAMPLETYPE*/ void *bufferRight, // may be 0
+									  sampleCount len);
 	AutoVolCtrl  mAutoVolCtrl;	// iAVC class (LGPL license)
 	long  mnChangeWindow;
+
+	AvcCompressorDialog*	mpDialog;
 };
 
 // WDR: class declarations

@@ -20,6 +20,13 @@
 //	License along with this library; if not, write to the Free Software
 //	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+//  If you change the algorithm or find other sets of values that improve the
+//	output results, please send me a copy so that I can incorporate them into
+//  iAVC.  Of course, you are not required to send me any updates under the
+//	LGPL license, but please consider doing so under the spirit of open source
+//	and in appreciation of being able to take advantage of my efforts expended
+//  in developing iAVC.
+
 //  This code implements a "poor man's" dynamic range compression algorithm
 //	that was build on hueristics.  It's purpose is to perform dynamic range
 //  compression in real time using only integer arithmetic.  Processing time
@@ -41,7 +48,8 @@
 //                              this many samples.  Helps avoid distorted
 //                              transitions from loud to soft.  This is only
 //                              useful if the caller delays retrieving samples
-//                              by at least this many samples.
+//                              by at least this many samples.  (The lookahead
+//								window is currently NOT being used.)
 
 //   |- oldest sample                                         newest sample -|
 //   |                                                                       |
@@ -65,8 +73,13 @@
 //      the class definition so the SetNextSample and PutNextSample methods can be
 //      inline for faster processing in realtime environments.  (I don't trust
 //      all C++ compilers to honor the inline directive so I'm forcing inline through
-//      the use of define symbols.  See DRCinlineSample.cpp for how to use define
+//      the use of define symbols.)  See DRCinlineSample.cpp for how to use define
 //      symbols for inline code.
+
+// The define symbol "IAVC_FLOAT" is used to perform calculations in floating point
+//		instead of integer.  Floating point samples are expected to be in the range
+//		or -1.0 to +1.0.  Note that the multiplier array size remains 
+//		MULTIPLY_PCT_ARRAY_SIZE.
 
 #ifndef _IAVC_H_
 #define _IAVC_H_
@@ -82,7 +95,8 @@
     #undef   IAVC_ADJUSTMULTIPLIER
 #endif
 
-#define  MULTIPLY_PCT_ARRAY_SIZE  ( 32767 + 2 )
+#define  MAX_INTEGER_SAMPLE_VALUE ( 32767 )		// for 16 bit samples
+#define  MULTIPLY_PCT_ARRAY_SIZE  ( MAX_INTEGER_SAMPLE_VALUE + 2 )
 
 #define  DEFAULT_MINIMUM_SAMPLES_BEFORE_SWITCH  	1100
 #define  MIN_MINIMUM_SAMPLES_BEFORE_SWITCH             1
@@ -99,20 +113,48 @@
 #define  DEFAULT_NUMBER_OF_TRACKS                      2
 #define  MAX_NUMBER_OF_TRACKS                          2
 
-#ifndef _WINDOWS
-  #include <stdio.h>
-  #ifndef NULL
-  #define NULL 0L
-  #endif
-  #define AfxMessageBox( pText ) { fprintf(stderr,"MESSAGE: %s\n",pText); };
-  #define max(a,b)  ( (a<b)?b:a )
-  #define abs(a)    ( (a<0)?-a:a )
+#include <stdio.h>
+
+#ifndef NULL
+  #define NULL 0
 #endif
 
-#define APPLY_MULTIPLY_FACTOR(x)  (long(x)<<8)
-#define UNDO_MULTIPLY_FACTOR(x)   (long(x)>>8)
+#ifndef AfxMessageBox
+  #define AfxMessageBox( pText ) { fprintf(stderr,"MESSAGE: %s\n",pText); };
+#endif
 
-#define MAX_SAMPLE_VALUE    32767  // + or -, ignore case of -32768
+#ifndef maxVal
+  #define maxVal(a,b)  ( (a<b)?b:a )
+#endif
+
+#ifndef absVal
+  #define absVal(a)    ( (a<0)?-a:a )
+#endif
+
+
+#ifdef IAVC_FLOAT
+//#pragma message("iAVC using floating point samples")
+	typedef float IAVCSAMPLETYPE;
+	typedef float IAVCSUMTYPE;
+	typedef float IAVCMULTIPLYPCT;
+	#define APPLY_MULTIPLY_FACTOR(x)		(x)
+	#define UNDO_MULTIPLY_FACTOR(x)			(x)
+	#define AVG_TO_MULTIPLIER_SUBSCRIPT(x)	long(x*MAX_INTEGER_SAMPLE_VALUE)
+	#define MULTIPLY_FACTOR_TO_INT_X256(x)	(int(x*256))
+	#define DEFAULT_MAX_SAMPLE_VALUE		1  // values range from -1 to 1 for float
+	#define IF_CLIP(x)						( absVal(x) > m_nMaxSampleValue )
+#else
+//#pragma message("iAVC using short int samples")
+	typedef short int IAVCSAMPLETYPE;
+	typedef long IAVCSUMTYPE;
+	typedef long IAVCMULTIPLYPCT;
+	#define APPLY_MULTIPLY_FACTOR(x)		(long(x)<<8)
+	#define UNDO_MULTIPLY_FACTOR(x)			(long(x)>>8)
+	#define AVG_TO_MULTIPLIER_SUBSCRIPT(x)  (x)
+	#define MULTIPLY_FACTOR_TO_INT_X256(x)	(x)
+	#define DEFAULT_MAX_SAMPLE_VALUE		32767  // for 16 bit samples, -32767 to 32767
+	#define IF_CLIP(x)						( x != IAVCSAMPLETYPE ( x ) )
+#endif
 
 struct Sample;
 
@@ -132,7 +174,7 @@ public:
                                unsigned long nAdjusterWindowSize,
                                unsigned long nLookAheadWindowSize );	
 	bool SetMinSamplesBeforeSwitch ( unsigned long nMinSamplesBeforeSwitch );
-	void SetMaxPctChangeAtOnce ( unsigned long nPctChange );  // in %, e.g. 10 for 10%
+	void SetMaxPctChangeAtOnce ( IAVCMULTIPLYPCT nPctChange );  // in %, e.g. 10 for 10%
 	void SetMultipliers ( unsigned short int nValueWanted [ MULTIPLY_PCT_ARRAY_SIZE ] );
 							// e.g. if a sample with value 10000 is to be changed to be 20000, then
 							//		nValueWanted [ 10000 ] = 20000;
@@ -142,8 +184,8 @@ public:
 
 	// Processing samples.  In version 1 you MUST do a SetNextSample followed by a GetNextSample
     //                      If only one track the right sample must = 0.
-	bool SetNextSample ( short int left, short int right );		    // return true if AOK
-	bool GetNextSample ( short int & left, short int & right );		// return true if AOK
+	bool SetNextSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE right );		    // return true if AOK
+	bool GetNextSample ( IAVCSAMPLETYPE & left, IAVCSAMPLETYPE & right );		// return true if AOK
 
 protected:
 
@@ -153,6 +195,7 @@ protected:
 #ifdef IAVC_INLINE   
     
 };          // end class definition here if not C++ (make data definitions below outside of class
+#pragma message("iAVC using inline methods")
 
 #endif
 
@@ -162,10 +205,10 @@ protected:
 	    Sample*	        m_pAvgPartner;	// node "m_nSamplesInAvg" (i.e. adjuster size) before this node
         Sample*         m_pLookaheadPartner; // node "m_nLookAheadWindowSize" before this node
 
-	    short int		m_nLeft;
-	    short int		m_nRight;
+	    IAVCSAMPLETYPE	m_nLeft;
+	    IAVCSAMPLETYPE	m_nRight;
 	    long			m_nSampleValid;     // =1 if node contains a sample value, =0 if no value
-        long            m_nSampleAbsSum;    // abs(left) + abs(right), zero if not valid
+        IAVCSUMTYPE     m_nSampleAbsAvg;    // ( abs(left) + abs(right) ) / num_tracks, zero if not valid
     };
 
 	// Following are parameters whose values are provided by caller
@@ -173,17 +216,18 @@ protected:
 	unsigned long   m_nSamplesInAvg;				// <= m_nSampleWindowSize
     unsigned long   m_nLookAheadWindowSize;         // <= m_nMinSamplesBeforeSwitch & <= m_nSampleWindowSize
 	unsigned long	m_nMinSamplesBeforeSwitch;		// minimum number of samples between multiplier changes
-    long            m_nMaxChangePct;                // maximum % change in multiplier at a time
-	unsigned long	m_nMultiplyPct [ MULTIPLY_PCT_ARRAY_SIZE ];	// desired multiplier % for each sample value
+    IAVCMULTIPLYPCT m_nMaxChangePct;                // maximum % change in multiplier at a time
+	IAVCMULTIPLYPCT	m_nMultiplyPct [ MULTIPLY_PCT_ARRAY_SIZE ];	// desired multiplier % for each sample value
 	unsigned long	m_nNumTracks;					// = 2 for stereo, = 1 for mono
+	IAVCSUMTYPE     m_nMaxSampleValue;				// e.g. 32767 for 16 bit
 
 	// Following are internal attributes
-	unsigned long	m_nSampleSum;				// sum of sound samples in current sample window
-	unsigned long	m_nSamplesInSum;			// number of samples in m_nSampleSum ( <= m_nSamplesInAvg )
-	long			m_nCurrentMultiplier;		// current % multiplier for sample
+	IAVCSUMTYPE  	m_nSampleAvgSum;			// sum of sound samples in current sample window
+	unsigned long	m_nSamplesInSum;			// number of samples in m_nSampleAvgSum ( <= m_nSamplesInAvg )
+	IAVCMULTIPLYPCT	m_nCurrentMultiplier;		// current % multiplier for sample
 	Sample*     	m_pNextSet;					// next node for SetNextSample
 	Sample*     	m_pNextGet;					// next node for GetNextSample
-    unsigned int    m_nLookaheadSum;            // sum of lookahead samples
+    IAVCSUMTYPE     m_nLookaheadSum;            // sum of lookahead samples
     unsigned int    m_nSamplesInLookahead;      // number of samples in m_nLookaheadSum
     signed long     m_nNumSamplesBeforeNextSwitch; // number of samples before next switch
 
