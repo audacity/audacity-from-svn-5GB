@@ -929,6 +929,43 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    }
 }
 
+// This actually removes the specified track.  Called from HandleClosing.
+void TrackPanel::RemoveTrack(VTrack * toRemove)
+{
+   TrackListIterator iter(mTracks);
+
+   VTrack *partner = mTracks->GetLink(toRemove);
+   wxString name;
+
+   VTrack *t = iter.First();
+   while (t && t != toRemove && t != partner)
+      t = iter.Next();
+
+   if (t && (t == toRemove || t == partner)) {
+      name = t->GetName();
+      delete t;
+      t = iter.RemoveCurrent();
+   }
+
+   if (partner) {
+      // Repeat to find the other half of a linked track
+      t = iter.First();
+      while (t && t != toRemove && t != partner)
+         t = iter.Next();
+
+      if (t && (t == toRemove || t == partner)) {
+         delete t;
+         t = iter.RemoveCurrent();
+      }
+   }
+
+   MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
+                                        name.c_str()));
+   MakeParentRedrawScrollbars();
+
+   Refresh(false);
+}
+
 // AS: Handle when the mute or solo button is pressed for some track.
 void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 {
@@ -1885,33 +1922,6 @@ void TrackPanel::OnMergeStereo()
                mPopupMenuTarget->GetName().c_str()));
    } else
       mPopupMenuTarget->SetLinked(false);
-   Refresh(false);
-}
-
-// AS: This actually removes the specified track.  Not sure where
-//  it gets called from, though.  Seems oddly placed among these handlers.
-void TrackPanel::RemoveTrack(VTrack * toRemove)
-{
-   TrackListIterator iter(mTracks);
-
-   VTrack *partner = mTracks->GetLink(toRemove);
-   wxString name;
-
-   VTrack *t = iter.First();
-   while (t && t != toRemove && t != partner)
-      t = iter.Next();
-
-   if (t && (t == toRemove || t == partner)) {
-      name = t->GetName();
-      t = iter.RemoveCurrent();
-   }
-
-   delete toRemove;
-
-   MakeParentPushState(wxString::Format(_("Removed track '%s.'"),
-                                        name.c_str()));
-   MakeParentRedrawScrollbars();
-
    Refresh(false);
 }
 
