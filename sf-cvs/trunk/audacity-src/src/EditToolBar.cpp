@@ -76,7 +76,7 @@ EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
 void EditToolBar::InitializeEditToolBar()
 {
    mIdealSize = wxSize(340, 27);
-   mTitle = "Audacity Edit Toolbar";
+   mTitle = _("Audacity Edit Toolbar");
    mType = EditToolBarID;
    mNumDividers = 0;
 
