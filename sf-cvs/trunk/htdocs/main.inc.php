@@ -93,6 +93,7 @@ $docsStr =             "Download latest documentation";
 
 $clickEnlargeStr =     "(Click on any image to enlarge.)";
 
+$listPrivacyStr =    "(This is a public mailing list, and the archives are published online.  See our <a href=\"/privacy.php?lang=$langLinkStr\">privacy policy</a>.)";
 
 // Span this on two lines so that the translation editor script
 // doesn't count it as a language...
