@@ -10,7 +10,7 @@ align="center">
 
 <p>
 
-General:<br>
+Questões Gerais:<br>
 <a href="#g1">O Audacity é realmente gratuito?</a><br>
 <a href="#g2">Quem desenvolve o Audacity?</a><br>
 <a href="#g3">Como posso ajudar?<a><br>
@@ -18,7 +18,7 @@ General:<br>
 
 <p>
 
-Installation:<br>
+Instalação:<br>
 
 <a href="#i1">Windows: O que faço com o arquivo .EXE?</a><br>
 <a href="#i2">Windows: Como desinstalar o Audacity?</a><br>
@@ -30,7 +30,7 @@ libwx_gtk.so?</a><br>
 
 <p>
 
-Usando o Audacity:<br>
+Uso do Audacity:<br>
 
 <a href="#a1">Como mixar várias faixas em uma só?</a><br>
 <a href="#a2">Posso remover os vocais de uma gravação?</a><br>
@@ -249,7 +249,7 @@ então encontrar o "wx-config".<br>
 
 <p>
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">Using Audacity</font>
+<font size="+1">Uso do Audacity</font>
 </td></tr></table>
 
 <p>
