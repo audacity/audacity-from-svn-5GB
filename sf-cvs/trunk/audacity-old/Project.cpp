@@ -754,7 +754,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
 	mAPalette->GetSize(&width, &height);
 
     #ifdef __WXMAC__
-    
+    /*
     Point startPt;
     startPt.h = hotspot.x;
     startPt.v = hotspot.y;
@@ -776,7 +776,7 @@ void AudacityProject::OnMouseEvent(wxMouseEvent& event)
     mouse.y += (short)((result & 0xFFFF0000)>>16);
     
     ShowWindowedPalette(&mouse);
-    
+    */
     #else
 
 	wxClientDC dc(this);
@@ -1099,7 +1099,7 @@ void AudacityProject::Save(bool overwrite /* = true */,
 #ifdef __WXMAC__
   FSSpec spec ;
 
-	wxUnixFilename2FSSpec( mFileName , &spec ) ;
+	wxMacFilename2FSSpec( mFileName , &spec ) ;
 	FInfo finfo ;
 	if ( FSpGetFInfo( &spec , &finfo ) == noErr )
 	{
