@@ -190,6 +190,11 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
+DEP_FILES =  .deps/alaw_test.P .deps/check_log_buffer.P \
+.deps/command_test.P .deps/error_test.P .deps/floating_point_test.P \
+.deps/lossy_comp_test.P .deps/peak_chunk_test.P .deps/read_seek_test.P \
+.deps/sftest.P .deps/sfversion.P .deps/stdin_test.P .deps/stdio_test.P \
+.deps/stdout_test.P .deps/ulaw_test.P .deps/write_read_test.P
 SOURCES = $(sfversion_SOURCES) $(read_seek_test_SOURCES) $(floating_point_test_SOURCES) $(write_read_test_SOURCES) $(lossy_comp_test_SOURCES) $(error_test_SOURCES) $(ulaw_test_SOURCES) $(alaw_test_SOURCES) $(sftest_SOURCES) $(peak_chunk_test_SOURCES) $(command_test_SOURCES) $(stdin_test_SOURCES) $(stdout_test_SOURCES) $(stdio_test_SOURCES)
 OBJECTS = $(sfversion_OBJECTS) $(read_seek_test_OBJECTS) $(floating_point_test_OBJECTS) $(write_read_test_OBJECTS) $(lossy_comp_test_OBJECTS) $(error_test_OBJECTS) $(ulaw_test_OBJECTS) $(alaw_test_OBJECTS) $(sftest_OBJECTS) $(peak_chunk_test_OBJECTS) $(command_test_OBJECTS) $(stdin_test_OBJECTS) $(stdout_test_OBJECTS) $(stdio_test_OBJECTS)
 
@@ -197,9 +202,9 @@ all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps tests/Makefile
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu tests/Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
@@ -212,9 +217,6 @@ clean-noinstPROGRAMS:
 distclean-noinstPROGRAMS:
 
 maintainer-clean-noinstPROGRAMS:
-
-.c.o:
-	$(COMPILE) -c $<
 
 .s.o:
 	$(COMPILE) -c $<
@@ -231,9 +233,6 @@ distclean-compile:
 	-rm -f *.tab.c
 
 maintainer-clean-compile:
-
-.c.lo:
-	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
 .s.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
@@ -341,6 +340,11 @@ distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 subdir = tests
 
 distdir: $(DISTFILES)
+	here=`cd $(top_builddir) && pwd`; \
+	top_distdir=`cd $(top_distdir) && pwd`; \
+	distdir=`cd $(distdir) && pwd`; \
+	cd $(top_srcdir) \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here --srcdir-name=$(top_srcdir) --output-dir=$$top_distdir --gnu tests/Makefile
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -351,24 +355,38 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-alaw_test.o: alaw_test.c ../src/sndfile.h check_log_buffer.h
-check_log_buffer.o: check_log_buffer.c ../src/sndfile.h \
-	check_log_buffer.h
-command_test.o: command_test.c ../src/sndfile.h
-error_test.o: error_test.c ../src/sndfile.h
-floating_point_test.o: floating_point_test.c ../src/sndfile.h \
-	check_log_buffer.h
-lossy_comp_test.o: lossy_comp_test.c ../src/sndfile.h check_log_buffer.h
-peak_chunk_test.o: peak_chunk_test.c ../src/sndfile.h
-read_seek_test.o: read_seek_test.c ../src/sndfile.h check_log_buffer.h
-sftest.o: sftest.c ../src/sndfile.h
-sfversion.o: sfversion.c ../src/sndfile.h
-stdin_test.o: stdin_test.c ../src/sndfile.h
-stdio_test.o: stdio_test.c
-stdout_test.o: stdout_test.c ../src/sndfile.h
-ulaw_test.o: ulaw_test.c ../src/sndfile.h check_log_buffer.h
-write_read_test.o: write_read_test.c ../src/sndfile.h check_log_buffer.h
 
+DEPS_MAGIC := $(shell mkdir .deps > /dev/null 2>&1 || :)
+
+-include $(DEP_FILES)
+
+mostlyclean-depend:
+
+clean-depend:
+
+distclean-depend:
+	-rm -rf .deps
+
+maintainer-clean-depend:
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
 info-am:
 info: info-am
 dvi-am:
@@ -405,27 +423,27 @@ distclean-generic:
 
 maintainer-clean-generic:
 mostlyclean-am:  mostlyclean-noinstPROGRAMS mostlyclean-compile \
-		mostlyclean-libtool mostlyclean-tags \
+		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
 		mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
 clean-am:  clean-noinstPROGRAMS clean-compile clean-libtool clean-tags \
-		clean-generic mostlyclean-am
+		clean-depend clean-generic mostlyclean-am
 
 clean: clean-am
 
 distclean-am:  distclean-noinstPROGRAMS distclean-compile \
-		distclean-libtool distclean-tags distclean-generic \
-		clean-am
+		distclean-libtool distclean-tags distclean-depend \
+		distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
 maintainer-clean-am:  maintainer-clean-noinstPROGRAMS \
 		maintainer-clean-compile maintainer-clean-libtool \
-		maintainer-clean-tags maintainer-clean-generic \
-		distclean-am
+		maintainer-clean-tags maintainer-clean-depend \
+		maintainer-clean-generic distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
@@ -436,12 +454,14 @@ clean-noinstPROGRAMS maintainer-clean-noinstPROGRAMS \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile mostlyclean-libtool distclean-libtool \
 clean-libtool maintainer-clean-libtool tags mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
-dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+distclean-tags clean-tags maintainer-clean-tags distdir \
+mostlyclean-depend distclean-depend clean-depend \
+maintainer-clean-depend info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
 check: generic-test ulaw_test alaw_test floating_point_test first-test \
