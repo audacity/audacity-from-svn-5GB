@@ -156,7 +156,8 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
       len -= block;
       s += block;
       
-      TrackProgress(count, (s-start)/(double)originalLen);
+      if (TrackProgress(count, (s-start)/(double)originalLen))
+         break;
    }
 
    delete[]buffer;
