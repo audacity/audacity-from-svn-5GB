@@ -1336,7 +1336,6 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   int ctrpitch = 60;
   int pitch0;
   int pitchht = 4;
-  int n;
 
   int numPitches = r.height / pitchht;
   pitch0 = (ctrpitch - numPitches/2);

@@ -186,7 +186,6 @@ void Ruler::FindTickSizes()
    // that are easy for humans to grok.  This is the most tricky
    // with time.
 
-   int i;
    double d;
 
    // As a heuristic, we want at least 16 pixels

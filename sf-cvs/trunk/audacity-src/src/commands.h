@@ -5,6 +5,9 @@
 
 #ifdef AUDACITY_MENUS_COMMANDS_METHODS
 
+   WX_DEFINE_ARRAY(int *, CommandStateArray);
+   CommandStateArray mCommandState;
+
    WX_DEFINE_ARRAY(int *, CommandIDArray);
    CommandIDArray mCommandIDs;
 
@@ -178,6 +181,7 @@ enum {
    mCommandIDs.Add( CMD_CETINT(ExitID) );
    mCommandNames.Add( CMD_CSTNAME("Exit") );
    mCommandDesc.Add( CMD_CSTNAME("Exit") );
+
    // Edit menu
    mCommandFunctions.Add( CMD_CACFUNC(AudacityProject::Undo) );
    mCommandIDs.Add( CMD_CETINT(UndoID) );
@@ -238,6 +242,7 @@ enum {
    mCommandIDs.Add( CMD_CETINT(SelectAllID) );
    mCommandNames.Add( CMD_CSTNAME("Select All") );
    mCommandDesc.Add( CMD_CSTNAME("Select All") );
+
    // View menu
    mCommandFunctions.Add( CMD_CACFUNC(AudacityProject::OnZoomIn) );
    mCommandIDs.Add( CMD_CETINT(ZoomInID) );
@@ -273,6 +278,7 @@ enum {
    mCommandIDs.Add( CMD_CETINT(FloatPaletteID) );
    mCommandNames.Add( CMD_CSTNAME("Float Palette") );
    mCommandDesc.Add( CMD_CSTNAME("Float Palette") );
+
    // Project menu
    mCommandFunctions.Add( CMD_CACFUNC(AudacityProject::OnImport) );
    mCommandIDs.Add( CMD_CETINT(ImportID) );
@@ -328,6 +334,7 @@ enum {
    mCommandIDs.Add( CMD_CETINT(RemoveTracksID) );
    mCommandNames.Add( CMD_CSTNAME("Remove Tracks") );
    mCommandDesc.Add( CMD_CSTNAME("Remove Tracks") );
+
    // Help menu
    mCommandFunctions.Add( CMD_CACFUNC(AudacityProject::OnAbout) );
    mCommandIDs.Add( CMD_CETINT(AboutID) );
@@ -353,6 +360,11 @@ enum {
    mCommandIDs.Add( CMD_CETINT(BenchmarkID) );
    mCommandNames.Add( CMD_CSTNAME("Benchmark") );
    mCommandDesc.Add( CMD_CSTNAME("Benchmark") );
+
+   for(int i = 0; i < GetNumCommands(); i++)
+   {
+      mCommandState.Add( CMD_CETINT(1) );
+   }
 }
 
 #endif

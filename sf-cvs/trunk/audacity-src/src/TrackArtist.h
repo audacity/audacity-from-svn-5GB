@@ -26,8 +26,8 @@ class WaveTrack;
 class NoteTrack;
 class LabelTrack;
 class TrackList;
-class ViewInfo;
-struct TrackInfoCache;
+struct ViewInfo;
+class TrackInfoCache;
 
 class TrackArtist {
 
