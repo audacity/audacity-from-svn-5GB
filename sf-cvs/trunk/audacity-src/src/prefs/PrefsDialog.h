@@ -12,10 +12,11 @@
 #define __AUDACITY_PREFS_DIALOG__
 
 #include <wx/dialog.h>
-#include <wx/window.h>
-#include <wx/event.h>
-#include <wx/button.h>
-#include <wx/notebook.h>
+
+class wxNotebook;
+class wxWindow;
+class wxButton;
+class wxCommandEvent;
 
 class PrefsDialog:public wxDialog {
 

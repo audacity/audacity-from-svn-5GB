@@ -15,6 +15,9 @@
 #include <wx/font.h>
 #include <wx/msgdlg.h>
 #include <wx/intl.h>
+#include <wx/notebook.h>
+#include <wx/event.h>
+#include <wx/button.h>
 
 #include "../Prefs.h"
 

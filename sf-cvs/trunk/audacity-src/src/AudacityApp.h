@@ -13,6 +13,8 @@
 
 #include <wx/app.h>
 
+class wxLocale;
+
 void QuitAudacity();
 
 class AudacityApp:public wxApp {
@@ -21,5 +23,6 @@ class AudacityApp:public wxApp {
    int OnExit(void);
 
  private:
+   wxLocale *mLocale;
 //   wxSingleInstanceChecker *mChecker;
 };
