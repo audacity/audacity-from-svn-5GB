@@ -1,6 +1,51 @@
 <?php BoxTop("$releaseNotesStr $betaVersion"); ?>
 
 <pre>
+New features in Audacity 1.1.3:
+  * User Interface
+    - New Mixer toolbar allows you to control the output
+      volume, input volume, and input source directly
+      from Audacity.
+    - Every track now has its own gain and pan controls.
+
+  * File I/O
+    - Uses improved project file format.  (Unfortunately reading
+      previous formats, including 1.1.1, is not supported.)
+    - Block files (stored in Audacity project directories) now
+      use the standard AU format.  Though some Audacity
+      meta-information is in these files, they can now be
+      read by many other popular audio programs as well.
+    - Fixed some bugs relating to reading/writing audio
+      files with more than 16 bits per sample.
+    - Import RAW is functional again, with a simpler GUI
+      but support for far more file formats.  The
+      autodetection algorithms are much more accurate than
+      in 1.0.
+
+  * Audio I/O
+    - Completely rewritten audio I/O, with lower latency
+      and minimal chance of buffer underruns while
+      recording.
+
+  * Resampling
+    - Using high quality resampling algorithms, with the
+      option of better quality for mixing than for real-time
+      playback
+
+    - Preliminary support for Time Tracks, for changing
+      playback speed over time.
+
+  * Many more bug fixes and new features
+
+New features in Audacity 1.1.2:
+  * User Interface
+    - Fixed bug in Windows version, for track menu commands 
+	  "Name..." and "Split Stereo Track"/"Make Stereo Track".
+  * Effects
+    - Nyquist support on Windows (supports plug-ins written 
+	  in Nyquist, an interpreted functional language based 
+	  on Lisp).
+
 Known bugs in Audacity 1.1.1:
 
   * Do not run the Benchmark command on Windows - it may crash.
