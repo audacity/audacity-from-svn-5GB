@@ -17,10 +17,8 @@
 #include "../WaveTrack.h"
 
 #include <wx/button.h>
-#include <wx/intl.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
-#include <wx/slider.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 

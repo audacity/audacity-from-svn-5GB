@@ -89,6 +89,10 @@ SOURCE=..\source\SoundTouch\AAFilter.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\source\SoundTouch\cpu_detect_x86_win.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\source\SoundTouch\FIFOSampleBuffer.cpp
 # End Source File
 # Begin Source File
@@ -109,6 +113,10 @@ SOURCE=..\source\SoundTouch\SoundTouch.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\source\SoundTouch\sse_win.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\source\SoundTouch\TDStretch.cpp
 # End Source File
 # End Group
@@ -117,7 +125,11 @@ SOURCE=..\source\SoundTouch\TDStretch.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
 # Begin Source File
 
-SOURCE=..\src\AAFilter.h
+SOURCE=..\source\SoundTouch\AAFilter.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\source\SoundTouch\cpu_detect.h
 # End Source File
 # Begin Source File
 
@@ -125,19 +137,15 @@ SOURCE=..\include\FIFOSampleBuffer.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\FIFOSamplePipe.h
+SOURCE=..\include\FIFOSamplePipe.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\FIRFilter.h
+SOURCE=..\source\SoundTouch\FIRFilter.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\mmx.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\RateTransposer.h
+SOURCE=..\source\SoundTouch\RateTransposer.h
 # End Source File
 # Begin Source File
 
@@ -149,7 +157,7 @@ SOURCE=..\include\STTypes.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\TDStretch.h
+SOURCE=..\source\SoundTouch\TDStretch.h
 # End Source File
 # End Group
 # End Target

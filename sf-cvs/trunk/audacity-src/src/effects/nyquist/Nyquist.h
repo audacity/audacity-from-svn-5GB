@@ -12,14 +12,15 @@
 #define __AUDACITY_EFFECT_NYQUIST__
 
 #include <wx/button.h>
+#include <wx/datetime.h>
 #include <wx/dialog.h>
 #include <wx/filename.h>
-#include <wx/datetime.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+
 #include "../Effect.h"
 
 #include "nyx.h"

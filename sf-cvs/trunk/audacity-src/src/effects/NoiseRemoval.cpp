@@ -39,7 +39,6 @@
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
-#include <wx/slider.h>
 #include <wx/statbox.h>
 #include <wx/stattext.h>
 

@@ -16,13 +16,12 @@
 #include "Effect.h"
 #include "../Resample.h"
 
+#include <wx/choice.h>
 #include <wx/dialog.h>
 #include <wx/intl.h>
-
-class wxString;
-class wxChoice;
-class wxTextCtrl;
-class wxSlider;
+#include <wx/slider.h>
+#include <wx/string.h>
+#include <wx/textctrl.h>
 
 class EffectChangeSpeed : public Effect {
 

@@ -28,7 +28,6 @@
 #include <wx/image.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
-#include <wx/slider.h>
 #include <wx/stattext.h>
 #include <wx/textdlg.h>
 #include <wx/sizer.h>

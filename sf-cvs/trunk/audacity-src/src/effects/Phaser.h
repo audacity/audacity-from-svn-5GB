@@ -18,12 +18,12 @@
 
 #include <wx/dialog.h>
 #include <wx/intl.h>
+#include <wx/slider.h>
 
 class wxString;
 class wxTextCtrl;
 class wxSizer;
 class wxSpinCtrl;
-class wxSlider;
 
 #include "SimpleMono.h"
 

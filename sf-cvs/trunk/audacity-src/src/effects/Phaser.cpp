@@ -18,11 +18,9 @@
 #include "../WaveTrack.h"
 #include "../FFT.h"
 
-#include <wx/intl.h>
 #include <wx/button.h>
 #include <wx/textctrl.h>
 #include <wx/sizer.h>
-#include <wx/slider.h>
 #include <wx/spinctrl.h>
 #include <wx/stattext.h>
 

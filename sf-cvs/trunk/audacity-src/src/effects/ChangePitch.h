@@ -20,13 +20,12 @@
 
 #include <wx/dialog.h>
 #include <wx/intl.h>
+#include <wx/slider.h>
 
 class wxString;
 class wxChoice;
 class wxRadioBox;
 class wxTextCtrl;
-class wxSlider;
-class wxChoice;
 class wxChoice;
 
 class EffectChangePitch:public EffectSoundTouch {

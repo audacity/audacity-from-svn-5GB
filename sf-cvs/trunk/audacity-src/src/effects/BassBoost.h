@@ -19,6 +19,7 @@
 
 #include <wx/dialog.h>
 #include <wx/intl.h>
+#include <wx/slider.h>
 
 // Declare window functions
 
@@ -27,7 +28,6 @@
 #define ID_BOOST_TEXT   10003
 #define ID_BOOST_SLIDER 10004
 
-class wxSlider;
 class wxSizer;
 class wxTextCtrl;
 
