@@ -483,6 +483,10 @@ SOURCE=..\src\effects\LoadEffects.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\Noise.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\NoiseRemoval.cpp
 # End Source File
 # Begin Source File
@@ -504,6 +508,10 @@ SOURCE=..\src\effects\Reverse.cpp
 # Begin Source File
 
 SOURCE=..\src\effects\Reverse.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Silence.cpp
 # End Source File
 # Begin Source File
 
