@@ -119,6 +119,9 @@ Select the Directories tab in the popup.
 ------------------------------------------------------------
 OPTION 4-2. Set a virtual drive for your wxWindows directory
 ------------------------------------------------------------
+(NB: This option is only applicable if you are running 
+Windows 95, 98 or ME)
+
 The audacity.dsp file assumes that you might have wxWindows
 installed on your "W:" drive.  Normally "W:" is not a drive
 on most systems but it is very easy to map your wxWindows
@@ -181,11 +184,12 @@ following.
 
 Go to the "Project"->"Settings" menu item in Visual Studio.
 
-Ignore lib. Select "Win32 Debug" or "Win32Release" as
+Ignore lib. Select "Win32 Debug" or "Win32 Release" as
 appropriate for the build you were doing from the "Settings For"
 combo. Select only "Audacity" in the tree, the Link tab, and
 "Input" in the combo box. Enter "libcmtd.lib" in the
-"Ignore Libraries" box.
+"Ignore Libraries" box if you were attempting to perform a
+Release build, or "libcmt.lib" for a Debug build.
 
 -----------------------
 STEP 6:  Build Audacity
