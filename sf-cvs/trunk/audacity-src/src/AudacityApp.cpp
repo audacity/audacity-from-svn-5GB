@@ -1098,7 +1098,7 @@ void AudacityApp::AssociateFileTypes()
 					}
 				}
 				if (root_key.IsEmpty()) {
-					//vvv Warn that we can't set keys. Ask whether to set pref for no retry?
+					//v Warn that we can't set keys. Ask whether to set pref for no retry?
 				} else {
 					associateFileTypes = "Audacity.Project"; // Finally set value for .AUP key
 
