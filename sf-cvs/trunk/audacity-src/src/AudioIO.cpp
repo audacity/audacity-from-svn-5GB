@@ -39,8 +39,8 @@ AudioIO::AudioIO()
    mHardStop = false;
    mInTracks = NULL;
    mPortStream = NULL;
-   mMaxBuffers = 24;
-   mInitialNumOutBuffers = 4;
+   mMaxBuffers = 48;
+   mInitialNumOutBuffers = 8;
    mFormat = floatSample;
 
    PaError err = Pa_Initialize();
@@ -163,6 +163,9 @@ bool AudioIO::OpenDevice()
    wxString        playDevice;
 
    numPortAudioBuffers = Pa_GetMinNumBuffers(mBufferSize, mRate);
+
+   if (mNumInChannels>0)
+      numPortAudioBuffers *= 2;
 
    recDeviceNum = Pa_GetDefaultInputDeviceID();
    playDeviceNum = Pa_GetDefaultOutputDeviceID();
