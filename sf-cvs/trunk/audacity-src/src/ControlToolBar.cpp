@@ -61,7 +61,7 @@ enum {
    ID_REW_BUTTON,
 
    ID_FIRST_TOOL = ID_SELECT,
-   ID_LAST_TOOL = ID_DRAW
+   ID_LAST_TOOL = ID_MULTI
 };
 
 // Strings to convert a tool number into a status message
@@ -70,7 +70,7 @@ const char * MessageOfTool[numTools] = { _("Click and drag to select audio"),
 #if defined( __WXMAC__ )
    _("Click to Zoom In, Shift-Click to Zoom Out"),
 #elif defined( __WXMSW__ )
-   _("Left-Click to Zoom In, Right-Click to Zoom Out"),
+   _("Drag to Zoom Into Region, Right-Click to Zoom Out"),
 #elif defined( __WXGTK__ )
    _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
 #endif
@@ -94,8 +94,6 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
    EVT_CHAR(ControlToolBar::OnKeyEvent)
    EVT_COMMAND_RANGE(ID_FIRST_TOOL, ID_LAST_TOOL,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnTool)
-   EVT_COMMAND(ID_MULTI,
-         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnMultiTool)
    EVT_COMMAND(ID_PLAY_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPlay)
    EVT_COMMAND(ID_STOP_BUTTON,
@@ -134,7 +132,6 @@ void ControlToolBar::InitializeControlToolBar()
    mIdealSize = wxSize(400, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
-   mInMultiMode = false;
 
    wxColour backgroundColour =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
@@ -146,6 +143,7 @@ void ControlToolBar::InitializeControlToolBar()
    wxASSERT( slideTool    == ID_SLIDE    - ID_FIRST_TOOL );
    wxASSERT( zoomTool     == ID_ZOOM     - ID_FIRST_TOOL );
    wxASSERT( drawTool     == ID_DRAW     - ID_FIRST_TOOL );
+   wxASSERT( multiTool    == ID_MULTI    - ID_FIRST_TOOL );
 
    MakeButtons();
 
@@ -316,34 +314,15 @@ void ControlToolBar::RegenerateToolsTooltips()
 //   to workaround the problem.  The problem is not fully understood though
 //   (as of April 2003).
    
-   if( !mInMultiMode )
-   {
-      wxSafeYield(); //Deal with some queued up messages...
-      mTool[selectTool]->SetToolTip(_("Selection Tool"));
-      mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
-      mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
-      mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
-      mTool[drawTool]->SetToolTip(_("Draw Tool"));
-      mMultiTool->SetToolTip(_("Multi-Tool Mode"));
-      wxSafeYield();
-      return;
-   }
-
+   wxSafeYield(); //Deal with some queued up messages...
+   mTool[selectTool]->SetToolTip(_("Selection Tool"));
+   mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
+   mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
+   mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
+   mTool[drawTool]->SetToolTip(_("Draw Tool"));
+   mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
    wxSafeYield();
-
-   //Tool tips for multi-mode.
-   //_("//Note for translators: Tooltips - concise text prefered.")
-   mTool[envelopeTool]->SetToolTips( _("Show Envelope"), _("Hide Envelope"));
-   mTool[slideTool]->SetToolTips(    _("Show Time-shifters"), _("Hide Time-shifters"));
-   //Sample blobs get larger when enabled.  (must be zoomed in sufficiently to see).
-   mTool[drawTool]->SetToolTips(     _("Enable Sample Edits"),  _("No Sample Edits"));
-   //No visual handle for these two, though the cursor does change.
-   //If both are enabled, can still zoom in or out using right mouse button.
-   mTool[selectTool]->SetToolTips(   _("Enable Selections"), _("No Selections"));
-   mTool[zoomTool]->SetToolTips(     _("Enable Zoom"),      _("No Zoom"));
-   //
-   mMultiTool->SetToolTips(          _("Multi-Tool Mode"),  _("Single-Tool Mode"));
-   wxSafeYield();
+   return;
 
 }
 
@@ -422,10 +401,8 @@ void ControlToolBar::MakeButtons()
    mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 0, 28);
    mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_ENVELOPE, 28, 0);
    mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_SLIDE, 28, 28);
-
-   mTool[drawTool] = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
-   mMultiTool = MakeTool(Multi, MultiAlpha, ID_MULTI, 56, 28); 
-   mMultiTool->SetButtonToggles( true );
+   mTool[drawTool]  = MakeTool(Draw, DrawAlpha, ID_DRAW, 56, 0);
+   mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 56, 28); 
    RegenerateToolsTooltips();
 
 #ifdef __WXMAC__
@@ -504,11 +481,17 @@ void ControlToolBar::UpdatePrefs()
 #endif
 }
 
+/// Gets the currently active tool
+/// In Multi-mode this might not return the multi-tool itself
+/// since the active tool may be changed by what you hover over.
 int ControlToolBar::GetCurrentTool()
 {
    return mCurrentTool;
 }
 
+/// Sets the currently active tool
+/// @param tool - The index of the tool to be used.
+/// @param show - should we update the button display?
 void ControlToolBar::SetCurrentTool(int tool, bool show)
 {
    //In multi-mode the current tool is shown by the 
@@ -760,7 +743,7 @@ bool ControlToolBar::GetDrawToolDown()
 
 bool ControlToolBar::GetMultiToolDown()
 {
-   return mMultiTool->IsDown();
+   return mTool[ multiTool ]->IsDown();
 }
 
 const char * ControlToolBar::GetMessageForTool( int ToolNumber )
@@ -773,24 +756,6 @@ const char * ControlToolBar::GetMessageForTool( int ToolNumber )
 
 void ControlToolBar::OnTool(wxCommandEvent & evt)
 {
-   if( mInMultiMode ){
-      //We're in multimode and the buttons have been
-      //updated. 
-      //Need to have one of the 'default tools' available.
-      //So check that at least one is down.
-      if( !mTool[selectTool]->IsDown() && !mTool[zoomTool]->IsDown() )
-      {
-         //Whichever one we just popped up, push down the other.
-         int toolToPushDown = (evt.GetId() == ID_SELECT) ? zoomTool : selectTool;
-         mTool[ toolToPushDown ]->PushDown();
-      }
-      RegenerateToolsTooltips();
-      //What gets displayed will also have
-      //changed as a result.
-      RedrawAllProjects();
-      return;
-   }
-
    mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
    for (int i = 0; i < numTools; i++)
       if (i == mCurrentTool) 
@@ -798,39 +763,6 @@ void ControlToolBar::OnTool(wxCommandEvent & evt)
       else
          mTool[i]->PopUp();
 
-   RedrawAllProjects();
-}
-
-
-void ControlToolBar::OnMultiTool(wxCommandEvent & evt)
-{
-   // Enter multi-mode?
-   if( !mInMultiMode ){
-      mInMultiMode = true;
-      mPreviousTool = mCurrentTool;
-      mCurrentTool = selectTool;
-      // In multi-mode, all tools are active.
-      // So all buttons go down and are to 'toggle'.
-      for(int i=0;i<numTools;i++){
-         mTool[i]->PushDown();
-         // Become interested in 'up' events for all tools.
-         mTool[i]->SetButtonToggles( true );
-      }
-   }
-   // ELSE leave multi mode.
-   else {
-      mInMultiMode = false;
-      mCurrentTool = mPreviousTool;
-      for (int i = 0; i < numTools; i++){
-         // No longer interested in 'up' events.
-         mTool[i]->SetButtonToggles( false );
-         if (i == mCurrentTool) 
-            mTool[i]->PushDown();
-         else
-            mTool[i]->PopUp();
-      }
-   }
-   RegenerateToolsTooltips();
    RedrawAllProjects();
 }
 

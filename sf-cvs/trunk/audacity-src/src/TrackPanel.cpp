@@ -972,13 +972,20 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       //moves.  I had some worries about calling it when in 
       //multimode as it then has to hit-test all 'objects' in
       //the track panel, but performance seems fine in 
-      //practice (on a P700).
+      //practice (on a P500).
       ControlToolBar * ctb = mListener->TP_GetControlToolBar();
       if( ctb == NULL )
          return;
 
       int tool = DetermineToolToUse( ctb, event );
-      tip = ctb->GetMessageForTool( tool );
+
+      //In Multi-tool mode, give multitool prompt if no-special-hit.
+      if( ctb->GetMultiToolDown() && (tool==selectTool )) {
+         tip = _("Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences");
+      }
+      else{
+         tip = ctb->GetMessageForTool( tool );
+      }
 
       // Change the cursor based on the selected tool.
       switch (tool) {
@@ -1448,10 +1455,6 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 //  mViewInfo actually keeps track of our zoom constant,
 //  so we achieve zooming by altering the zoom constant
 //  and forcing a refresh.
-// JKC: Dragging is now only handled if left mouse button.
-//  is down too.  This prevents this code being used when 
-//  you are clicking on the right mouse button (to zoom 
-//  out) and accidently drag as you do so.
 void TrackPanel::HandleZoom(wxMouseEvent & event)
 {
    if (event.ButtonDown() || event.ButtonDClick(1)) {
@@ -2646,7 +2649,10 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
    }
 }
 
-
+/// If we are in multimode, looks at the type of track and where we are on it to 
+/// determine what object we are hovering over and hence what tool to use.
+/// @param pCtb - A pointer to the control tool bar
+/// @param event - Mouse event, with info about position and what mouse buttons are down.
 int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
 {
    int currentTool = pCtb->GetCurrentTool();
@@ -2673,36 +2679,37 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    if( !pTrack )
       return currentTool;
 
-   //Also exit if it's not a WaveTrack
-   if(pTrack->GetKind() != Track::Wave) 
-      return currentTool;
+   int trackKind = pTrack->GetKind();
+   currentTool = selectTool; // the default.
 
-   // The order in which we hit test determines 
+   if( event.ButtonIsDown(3) || event.ButtonUp(3)){
+      currentTool = zoomTool;
+   } else if( trackKind == Track::Time ){
+      currentTool = envelopeTool;
+   } else if( trackKind == Track::Label ){
+      currentTool = selectTool;
+   } else if( trackKind != Track::Wave) {
+      currentTool = selectTool;
+   // So we are in a wave track.
+   // From here on the order in which we hit test determines 
    // which tool takes priority in the rare cases where it
    // could be more than one.
-   currentTool = selectTool; // the default.
-   if( HitTestEnvelope( pCtb, pTrack, r, event ) ){
+   } else if( HitTestEnvelope( pTrack, r, event ) ){
       currentTool = envelopeTool;
-   } else if( HitTestSlide( pCtb, pTrack, r, event )){
+   } else if( HitTestSlide( pTrack, r, event )){
       currentTool = slideTool;
-   } else if( HitTestSamples( pCtb, pTrack, r, event )){
+   } else if( HitTestSamples( pTrack, r, event )){
       currentTool = drawTool;
-   } else if( pCtb->GetSelectToolDown() && !event.ButtonIsDown(3) && !event.ButtonUp(3)){
-      currentTool = selectTool;
-   } else if( pCtb->GetZoomToolDown() ){
-      currentTool = zoomTool;
    }
+
    //Use the false argument since in multimode we don't 
    //want the toolpanel to update.
    pCtb->SetCurrentTool( currentTool, false );
    return currentTool;
 }
 
-bool TrackPanel::HitTestEnvelope(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
 {
-   if( !pCtb->GetEnvelopeToolDown() )
-      return false;
-
    WaveTrack *wavetrack = (WaveTrack *)track;
    Envelope *envelope = wavetrack->GetEnvelope();
 
@@ -2733,11 +2740,8 @@ bool TrackPanel::HitTestEnvelope(ControlToolBar * pCtb, Track *track, wxRect &r,
    return( abs( yValue - yMisalign - yMouse ) < yTolerance );
 }
 
-bool TrackPanel::HitTestSamples(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
 {
-   if( !pCtb->GetDrawToolDown() )
-      return false;
-
    WaveTrack *wavetrack = (WaveTrack *)track;
    //Get rate in order to calculate the critical zoom threshold
    double rate = wavetrack->GetRate();
@@ -2776,10 +2780,8 @@ bool TrackPanel::HitTestSamples(ControlToolBar * pCtb, Track *track, wxRect &r, 
    return( abs( yValue -  yMouse ) < yTolerance );   
 }
 
-bool TrackPanel::HitTestSlide(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+bool TrackPanel::HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event)
 {
-   if( !pCtb->GetSlideToolDown() )
-      return false;
    // Perhaps we should delegate this to TrackArtist as only TrackArtist
    // knows what the real sizes are??
 
@@ -3152,9 +3154,10 @@ void TrackPanel::DrawTracks(wxDC * dc)
    if( pCtb == NULL )
       return;
 
-   bool envelopeFlag = pCtb->GetEnvelopeToolDown();
-   bool samplesFlag  = pCtb->GetDrawToolDown();
-   bool sliderFlag   = pCtb->GetSlideToolDown()  && pCtb->GetMultiToolDown();
+   bool bMultiToolDown = pCtb->GetMultiToolDown();
+   bool envelopeFlag   = pCtb->GetEnvelopeToolDown() || bMultiToolDown;
+   bool samplesFlag    = pCtb->GetDrawToolDown() || bMultiToolDown;
+   bool sliderFlag     = bMultiToolDown;
 
    // The track artist actually draws the stuff inside each track
    mTrackArtist->DrawTracks(mTracks, *dc, tracksRect,
