@@ -30,6 +30,10 @@
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 
+const long EffectEqualization::windowSize = EQwindowSize;
+const float EffectEqualization::loFreq = EQloFreq;
+const int EffectEqualization::nCurvePoints = EQnCurvePoints;
+
 const float EffectEqualization::curvex[] =
   {
     30., 31., 50., 63., 70., 100., 125., 200., 250., 300.,
@@ -39,7 +43,7 @@ const float EffectEqualization::curvex[] =
 
 // EffectEqualization::nCurvePoints = sizeof(curvex)/sizeof(float);
 
-const float EffectEqualization::curvey[][nCurvePoints] =
+const float EffectEqualization::curvey[][EQnCurvePoints] =
    {
       {
 	// acoustic (see p 52)
