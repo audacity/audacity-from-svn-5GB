@@ -23,7 +23,10 @@ class MousePrefs:public PrefsPanel {
  public:
    MousePrefs(wxWindow * parent);
    ~MousePrefs();
-   void AddItem( wxString const & MouseButtons, wxString const & Tool, wxString const & Action );
+   void AddItem( wxString const & MouseButtons, 
+      wxString const & Tool, 
+      wxString const & Action,
+      wxString const & Comment = wxString(""));
    bool Apply();
 
  private:
