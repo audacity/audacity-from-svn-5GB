@@ -7,6 +7,8 @@
   Brian Gunlogson
   Dominic Mazzoni
 
+  See CommandManager.h for an overview of this class.
+
 **********************************************************************/
 
 #include "../Audacity.h"
@@ -42,7 +44,9 @@
 CommandManager::CommandManager():
    mCurrentID(0),
    mHiddenID(0),
-   mCurrentMenu(NULL)
+   mCurrentMenu(NULL),
+   mDefaultFlags(0),
+   mDefaultMask(0)
 {
 }
 
@@ -382,6 +386,9 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    tmpEntry->count = count;
    tmpEntry->key = GetKey(label);
    tmpEntry->defaultKey = GetKey(label);
+   tmpEntry->flags = mDefaultFlags;
+   tmpEntry->mask = mDefaultMask;
+   tmpEntry->enabled = true;
 
    // Key from preferences overridse the default key given
    gPrefs->SetPath("/NewKeys");
@@ -421,22 +428,52 @@ wxString CommandManager::GetKey(wxString label)
 ///If you give it the name of a multi-item (one that was
 ///added using AddItemList(), it will enable or disable all
 ///of them at once
+void CommandManager::Enable(CommandListEntry *entry, bool enabled)
+{
+   // Don't do anything if the command's enabled state
+   // is already the same
+   if (entry->enabled == enabled)
+      return;
+
+   entry->enabled = enabled;
+
+   if (!entry->menu)
+      return;
+
+   entry->menu->Enable(entry->id, enabled);
+   if (entry->multi) {
+      int i;
+      int ID = entry->id;
+      for(i=1; i<entry->count; i++) {
+         ID = NextIdentifier(ID);
+         entry->menu->Enable(ID, enabled);            
+      }
+   }
+}
+
 void CommandManager::Enable(wxString name, bool enabled)
 {
    CommandListEntry *entry = mCommandNameHash[name];
-   if (entry && entry->menu) {
-      entry->menu->Enable(entry->id, enabled);
-      if (entry->multi) {
-         int i;
-         int ID = entry->id;
-         for(i=1; i<entry->count; i++) {
-            ID = NextIdentifier(ID);
-            entry->menu->Enable(ID, enabled);            
-         }
-      }
-   }
-   else {
+   if (!entry && entry->menu) {
       //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name);
+      return;
+   }
+
+   Enable(entry, enabled);
+}
+
+void CommandManager::EnableUsingFlags(wxUint32 flags, wxUint32 mask)
+{
+   unsigned int i;
+
+   for(i=0; i<mCommandList.GetCount(); i++) {
+      CommandListEntry *entry = mCommandList[i];
+      wxUint32 combinedMask = (mask & entry->mask);
+      if (combinedMask) {
+         bool enable = ((flags & combinedMask) ==
+                        (entry->flags & combinedMask));
+         Enable(entry, enable);
+      }
    }
 }
 
@@ -454,13 +491,23 @@ void CommandManager::Modify(wxString name, wxString newLabel)
 
 ///Call this when a menu event is received.
 ///If it matches a command, it will call the appropriate
-///CommandManagerListener function.
-bool CommandManager::HandleMenuID(int id)
+///CommandManagerListener function.  If you pass any flags,
+///the command won't be executed unless the flags are compatible
+///with the command's flags.
+bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
 {
    CommandListEntry *entry = mCommandIDHash[id];
    if (!entry)
       return false;
 
+   wxUint32 combinedMask = (mask & entry->mask);
+   if (combinedMask) {
+      bool allowed = ((flags & combinedMask) ==
+                      (entry->flags & combinedMask));
+      if (!allowed)
+         return true;
+   }
+   
    (*(entry->callback))(entry->index);
 
    return true;
@@ -468,38 +515,24 @@ bool CommandManager::HandleMenuID(int id)
 
 ///Call this when a key event is received.
 ///If it matches a command, it will call the appropriate
-///CommandManagerListener function.
+///CommandManagerListener function.  If you pass any flags,
+///the command won't be executed unless the flags are compatible
+///with the command's flags.
 
-///*****************************************************************************
-///*****Required for Ugly Hack (tm) below.
-#include "../Project.h"
-///*****End Ugly Hack
-///*****************************************************************************
-
-bool CommandManager::HandleKey(wxKeyEvent &evt)
+bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 {
    wxString keyStr = KeyEventToKeyString(evt);
-	
-	///*****************************************************************************
-	///***** Ugly Hack (tm)
-	///*****The following is an ugly hack to make shift-space operate play-loop.
-	///*****This should be removed when multiple key-bindings are allowed.
-#if 1
-	if(   strcmp(keyStr, "Shift+Spacebar")==0
-			|| strcmp(keyStr, "Shift+Meta+Spacebar")==0  //For me, meta shows up when numlock is on.
-		)
-		{
-			AudacityProject * project = GetActiveProject();
-			project->OnPlayLooped();
-
-			return true;
-		}
-#endif
-	///*****End Ugly Hack
-	///*****************************************************************************
 	CommandListEntry *entry = mCommandKeyHash[keyStr];
    if (!entry)
       return false;
+
+   wxUint32 combinedMask = (mask & entry->mask);
+   if (combinedMask) {
+      bool allowed = ((flags & combinedMask) ==
+                      (entry->flags & combinedMask));
+      if (!allowed)
+         return true;
+   }
 
    (*(entry->callback))(entry->index);
 
@@ -617,4 +650,43 @@ void CommandManager::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "</audacitykeyboard>\n");
+}
+
+void CommandManager::SetDefaultFlags(wxUint32 flags, wxUint32 mask)
+{
+   mDefaultFlags = flags;
+   mDefaultMask = mask;
+}
+
+void CommandManager::SetCommandFlags(wxString name,
+                                     wxUint32 flags, wxUint32 mask)
+{
+   CommandListEntry *entry = mCommandNameHash[name];
+   if (entry) {
+      entry->flags = flags;
+      entry->mask = mask;
+   }
+}
+
+void CommandManager::SetCommandFlags(const char **names,
+                                     wxUint32 flags, wxUint32 mask)
+{
+   const char **nptr = names;
+   while(*nptr) {
+      SetCommandFlags(wxString(*nptr), flags, mask);
+      nptr++;
+   }
+}
+
+void CommandManager::SetCommandFlags(wxUint32 flags, wxUint32 mask, ...)
+{
+   va_list list;
+   va_start(list, mask); 
+   for(;;) {
+      const char *name = va_arg(list, const char *);
+      if (!name)
+         break;
+      SetCommandFlags(wxString(name), flags, mask);
+   }
+   va_end(list);
 }

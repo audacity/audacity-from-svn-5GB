@@ -335,7 +335,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
      mSnapTo(0),
      mDirty(false),
-     mFirstTimeUpdateMenus(true),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
      mImporter(NULL),
@@ -412,7 +411,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //      mTotalToolBarHeight += h;
    }
 
-#if USE_PORTMIXER
    if (gMixerToolBarStub) {
       if (gMixerToolBarStub->GetLoadedStatus()
           && !gMixerToolBarStub->GetWindowedStatus()) {
@@ -426,7 +424,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 //         mTotalToolBarHeight += h;
       }
    }
-#endif
 
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()
@@ -1056,7 +1053,7 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
       }   
    }
    
-   return mCommandManager.HandleKey(event);
+   return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
 }
 
 bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
@@ -1077,7 +1074,8 @@ bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
 bool AudacityProject::ProcessEvent(wxEvent & event)
 {
    if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
-      if (mCommandManager.HandleMenuID(event.GetId()))
+      if (mCommandManager.HandleMenuID(event.GetId(),
+                                       GetUpdateFlags(), 0xFFFFFFFF))
          return true;
    }
 

@@ -94,6 +94,22 @@ private:
    audCommandListFunction mCommandListFunction;
 };
 
+// These flags represent the majority of the states that affect
+// whether or not items in menus are enabled or disabled.
+enum {
+   AudioIONotBusyFlag     = 0x00000001,
+   TimeSelectedFlag       = 0x00000002,
+   TracksSelectedFlag     = 0x00000004,
+   TracksExistFlag        = 0x00000008,
+   LabelTracksExistFlag   = 0x00000010,
+   WaveTracksSelectedFlag = 0x00000020,
+   ClipboardFlag          = 0x00000040,
+   UnsavedChangesFlag     = 0x00000080,
+   HasLastEffectFlag      = 0x00000100,
+   UndoAvailableFlag      = 0x00000200,
+   RedoAvailableFlag      = 0x00000400
+};
+
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
 
 void AudacityProject::CreateMenusAndCommands()
@@ -105,13 +121,24 @@ void AudacityProject::CreateMenusAndCommands()
 
    wxMenuBar *menubar = c->AddMenuBar("appmenu");
 
+   //
+   // File menu
+   //
+
    c->BeginMenu(_("&File"));
+   c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->AddItem("New",            _("&New\tCtrl+N"),                   FN(OnNew));
+   c->SetCommandFlags("New", 0, 0);
    c->AddItem("Open",           _("&Open...\tCtrl+O"),               FN(OnOpen));
+   c->SetCommandFlags("Open", 0, 0);
    c->AddItem("Close",          _("&Close\tCtrl+W"),                 FN(OnClose));
    c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
+   c->SetCommandFlags("Save",
+                      AudioIONotBusyFlag | UnsavedChangesFlag,
+                      AudioIONotBusyFlag | UnsavedChangesFlag);
    c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
    c->AddSeparator();
+
    // These 'export' strings are modified later in ModifyExportMenus(), so don't put them
    // up for i18n as it just makes more work for the translators.
    c->AddItem("Export",         "Export As...",                   FN(OnExportMix));
@@ -125,23 +152,42 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("ExportLabels",   _("Export &Labels..."),              FN(OnExportLabels));
 
-   //
+   // Enable Export commands only when there are tracks
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag,
+                      "Export", "ExportMP3", "ExportOgg", NULL);
+   // Enable Export Selection commands only when there's a selection
+   c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                      "ExportSel", "ExportMP3Sel", "ExportOggSel", NULL);
+
+   c->SetCommandFlags("ExportLabels",
+                      AudioIONotBusyFlag | LabelTracksExistFlag,
+                      AudioIONotBusyFlag | LabelTracksExistFlag);
+
    // On Mac OS X, Preferences and Quit are in the application menu,
    // not the File menu.
-   //
-
-#ifndef __WXMAC__
+  #ifndef __WXMAC__
    c->AddSeparator();
    c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
-
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
-#endif
-
+   c->SetCommandFlags("Exit", 0, 0);
+  #endif
    c->EndMenu();
 
+   //
+   // Edit Menu
+   //
+
    c->BeginMenu(_("&Edit"));
+   c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag);
+
    c->AddItem("Undo",           _("&Undo\tCtrl+Z"),                  FN(OnUndo));
+   c->SetCommandFlags("Undo",
+                      AudioIONotBusyFlag | UndoAvailableFlag,
+                      AudioIONotBusyFlag | UndoAvailableFlag);
 
    // The default shortcut key for Redo is different
    // on different platforms.
@@ -154,11 +200,17 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
 
    c->AddItem("Redo",           redoLabel,                           FN(OnRedo));
+   c->SetCommandFlags("Redo",
+                      AudioIONotBusyFlag | RedoAvailableFlag,
+                      AudioIONotBusyFlag | RedoAvailableFlag);
 
    c->AddSeparator();
    c->AddItem("Cut",            _("Cu&t\tCtrl+X"),                   FN(OnCut));
    c->AddItem("Copy",           _("&Copy\tCtrl+C"),                  FN(OnCopy)); 
    c->AddItem("Paste",          _("&Paste\tCtrl+V"),                 FN(OnPaste));
+   c->SetCommandFlags("Paste",
+                      AudioIONotBusyFlag | ClipboardFlag,
+                      AudioIONotBusyFlag | ClipboardFlag);
    c->AddItem("Trim",           _("&Trim\tCtrl+T"),                  FN(OnTrim));
    c->AddSeparator();
    c->AddItem("Delete",         _("&Delete\tCtrl+K"),                FN(OnDelete));
@@ -171,22 +223,33 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginSubMenu(_("Select..."));
    c->AddItem("SelectAll",      _("&All\tCtrl+A"),                   FN(OnSelectAll));
+   c->SetCommandFlags("SelectAll",
+                      TracksExistFlag, TracksExistFlag);
    c->AddItem("SelStartCursor", _("Start to Cursor"),                FN(OnSelectStartCursor));
    c->AddItem("SelCursorEnd",   _("Cursor to End"),                  FN(OnSelectCursorEnd));
+   c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
+                      "SelStartCursor", "SelCursorEnd", NULL);
 
    c->EndSubMenu();
    c->AddItem("ZeroCross",      _("Find Zero Crossings\tZ"),         FN(OnZeroCrossing));
    c->AddSeparator();
    c->AddItem("SelSave",        _("Selection Save"),                 FN(OnSelectionSave));
    c->AddItem("SelRestore",     _("Selection Restore"),              FN(OnSelectionRestore));
+   c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
+                      "SelSave", "SelRestore", NULL);
    c->AddSeparator();
 
    c->BeginSubMenu(_("Move Cursor..."));
 
    c->AddItem("CursTrackStart", _("to Track Start"),                 FN(OnCursorTrackStart));
    c->AddItem("CursTrackEnd",   _("to Track End"),                   FN(OnCursorTrackEnd));
+   c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
+                      "CursTrackStart", "CursTrackEnd", NULL);
    c->AddItem("CursSelStart",   _("to Selection Start"),             FN(OnCursorSelStart));
    c->AddItem("CursSelEnd",     _("to Selection End"),               FN(OnCursorSelEnd));
+   c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
+                      "CursSelStart", "CursSelEnd", NULL);
+                      
    c->EndSubMenu();
 
    c->BeginSubMenu(_("Snap-To..."));
@@ -195,6 +258,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("SnapOn",         _("Snap On"),                        FN(OnSnapOn));
    /* i18n-hint: Set snap-to mode on or off */
    c->AddItem("SnapOff",        _("Snap Off"),                       FN(OnSnapOff));
+
+   c->SetCommandFlags(0, 0, "SnapOn", "SnapOff", NULL);
+
    c->EndSubMenu();
 
    // Alternate strings
@@ -205,7 +271,12 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->EndMenu();
 
+   //
+   // Edit Menu
+   //
+
    c->BeginMenu(_("&View"));
+   c->SetDefaultFlags(0, 0);
    c->AddItem("ZoomIn",         _("Zoom &In\tCtrl+1"),               FN(OnZoomIn));
    c->AddItem("ZoomNormal",     _("Zoom &Normal\tCtrl+2"),           FN(OnZoomNormal));
    c->AddItem("ZoomOut",        _("Zoom &Out\tCtrl+3"),              FN(OnZoomOut));
@@ -221,13 +292,21 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
+   c->SetCommandFlags("PlotSpectrum",
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
    c->EndMenu();
 
+   //
+   // Project Menu
+   //
+
    c->BeginMenu(_("&Project"));
+   c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
    c->AddItem("ImportAudio",    _("&Import Audio...\tCtrl+I"),       FN(OnImport));
    c->AddItem("ImportLabels",   _("Import &Labels..."),              FN(OnImportLabels));
    c->AddItem("ImportMIDI",     _("Import &MIDI..."),                FN(OnImportMIDI));
@@ -236,6 +315,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("EditID3",        _("&Edit ID3 Tags..."),              FN(OnEditID3));
    c->AddSeparator();
    c->AddItem("QuickMix",       _("&Quick Mix"),                     FN(OnQuickMix));
+   c->SetCommandFlags("QuickMix",
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag,
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag);
    c->AddSeparator();
    c->AddItem("NewAudioTrack",  _("New &Audio Track"),               FN(OnNewWaveTrack));
    c->AddItem("NewStereoTrack", _("New &Stereo Track"),              FN(OnNewStereoTrack));
@@ -243,6 +325,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("NewTimeTrack",   _("New &Time Track"),                FN(OnNewTimeTrack));
    c->AddSeparator();
    c->AddItem("RemoveTracks",   _("Remo&ve Tracks"),                 FN(OnRemoveTracks));
+   c->SetCommandFlags("RemoveTracks",
+                      AudioIONotBusyFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag);
    c->AddSeparator();
 
    wxArrayString alignLabels;
@@ -257,19 +342,33 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginSubMenu(_("Align Tracks..."));
    c->AddItemList("Align", alignLabels, FN(OnAlign));
+   c->SetCommandFlags("Align",
+                      AudioIONotBusyFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag);
    c->EndSubMenu();
 
    alignLabels.Remove(7); // Can't align together and move cursor
 
    c->BeginSubMenu(_("Align and move cursor..."));
-   c->AddItemList("Align", alignLabels, FN(OnAlignMoveSel));
+   c->AddItemList("AlignMove", alignLabels, FN(OnAlignMoveSel));
+   c->SetCommandFlags("AlignMove",
+                      AudioIONotBusyFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag);
    c->EndSubMenu();
 
    c->AddSeparator();   
    c->AddItem("AddLabel",       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
+   c->SetCommandFlags("AddLabel", 0, 0);
    c->EndMenu();
 
+   //
+   // Generate, Effect & Analyze menus
+   //
+
    c->BeginMenu(_("&Generate"));
+   c->SetDefaultFlags(AudioIONotBusyFlag,
+                      AudioIONotBusyFlag);
+
    effects = Effect::GetEffects(INSERT_EFFECT | BUILTIN_EFFECT);
    if(effects->GetCount()){
       for(i=0; i<effects->GetCount(); i++)
@@ -290,7 +389,13 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("Effe&ct"));
+   c->SetDefaultFlags(AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag,
+                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag);
+
    c->AddItem("RepeatLastEffect",     _("Repeat Last Effect\tCtrl+R"),    FN(OnRepeatLastEffect));
+   c->SetCommandFlags("RepeatLastEffect",
+                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag,
+                      AudioIONotBusyFlag | TimeSelectedFlag | WaveTracksSelectedFlag | HasLastEffectFlag);
    c->AddSeparator();
 
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT);
@@ -336,6 +441,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("&Help"));
+   c->SetDefaultFlags(0, 0);
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
    c->AddSeparator();   
    c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
@@ -351,6 +457,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    SetMenuBar(menubar);
 
+   c->SetDefaultFlags(0, 0);
    c->AddCommand("SelectTool",  _("Selection Tool\tF1"),          FN(OnSelectTool));
    c->AddCommand("EnvelopeTool",_("Envelope Tool\tF2"),           FN(OnEnvelopeTool));
    c->AddCommand("DrawTool",    _("Draw Tool\tF3"),               FN(OnDrawTool));
@@ -369,6 +476,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("PlayOneSec",     _("Play One Second\t1"),       FN(OnPlayOneSecond));
    c->AddCommand("PlayToSelection",_("Play One Second\tB"),       FN(OnPlayToSelection));
    c->AddCommand("PlayLooped",     _("Play Looped\tL"),           FN(OnPlayLooped));
+   c->AddCommand("PlayLoopAlt",    _("Play Looped\tShift+Spacebar"), FN(OnPlayLooped));
 
    c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
    c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
@@ -377,6 +485,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelEnd",      _("Selection to End\tShift+End"),    FN(OnSelToEnd));
 
    c->AddCommand("DeleteKey",      _("DeleteKey\tBackspace"),           FN(OnDelete));
+   c->SetCommandFlags("DeleteKey",
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
+                      AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
@@ -384,6 +495,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelExtRight", _("Selection Extend Right\tShift+Right"),   FN(OnSelExtendRight));
    c->AddCommand("SelCntrLeft", _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand("SelCntrRight",_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
+
+   mLastFlags = 0;
+   mLastToolBarCheckSum = 0;
 
    mSel0save = 0;
    mSel1save = 0;
@@ -443,47 +557,55 @@ void AudacityProject::RebuildMenuBar()
    CreateMenusAndCommands();
 }
 
-void AudacityProject::UpdateMenus()
+wxUint32 AudacityProject::GetUpdateFlags()
 {
-   if (!gControlToolBarStub)
-      return;
+   // This method determines all of the flags that determine whether
+   // certain menu items and commands should be enabled or disabled,
+   // and returns them in a bitfield.  Note that if none of the flags
+   // have changed, it's not necessary to even check for updates.
+   wxUint32 flags = 0;
 
-   mCommandManager.Enable("Save", mUndoManager.UnsavedChanges());
+   if (GetAudioIOToken() == 0 ||
+       !gAudioIO->IsAudioTokenActive(GetAudioIOToken()))
+      flags |= AudioIONotBusyFlag;
 
-   bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
-
-   int numTracks = 0;
-   int numTracksSelected = 0;
-   int numWaveTracks = 0;
-   int numWaveTracksSelected = 0;
-   int numLabelTracks = 0;
-   int numLabelTracksSelected = 0;
+   if (mViewInfo.sel1 > mViewInfo.sel0)
+      flags |= TimeSelectedFlag;
 
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    while (t) {
-      numTracks++;
-      // JH: logically, we only want to count a stereo pair as one track. Right??
-      // I'm changing it and hoping I don't break anything
-      if (t->GetKind() == Track::Wave && t->GetLinked() == false)
-         numWaveTracks++;
+      flags |= TracksExistFlag;
       if (t->GetKind() == Track::Label)
-         numLabelTracks++;
+         flags |= LabelTracksExistFlag;
       if (t->GetSelected()) {
-         numTracksSelected++;
-         // JH: logically, we only want to count a stereo pair as one track. Right??
-         // I'm changing it and hoping I don't break anything
+         flags |= TracksSelectedFlag;
          if (t->GetKind() == Track::Wave && t->GetLinked() == false)
-            numWaveTracksSelected++;
-         else if(t->GetKind() == Track::Label)
-            numLabelTracksSelected++;
-
+            flags |= WaveTracksSelectedFlag;
       }
       t = iter.Next();
    }
 
-   mCommandManager.Enable("Paste", numTracksSelected > 0 && msClipLen > 0.0);
+   if (msClipLen > 0.0)
+      flags |= ClipboardFlag;
 
+   if (mUndoManager.UnsavedChanges())
+      flags |= UnsavedChangesFlag;
+
+   if (Effect::GetLastEffect() != NULL)
+      flags |= HasLastEffectFlag;
+
+   if (mUndoManager.UndoAvailable())
+      flags |= UndoAvailableFlag;
+
+   if (mUndoManager.RedoAvailable())
+      flags |= RedoAvailableFlag;
+
+   return flags;
+}
+
+int AudacityProject::GetToolBarChecksum()
+{
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
    toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
@@ -503,76 +625,12 @@ void AudacityProject::UpdateMenus()
             toolBarCheckSum += 24;
       }
    }
-   
-   // Get ahold of the clipboard status
-   bool clipboardStatus = static_cast<bool>(GetActiveProject()->Clipboard());
 
-   bool hasLastEffect = (Effect::GetLastEffect() != NULL);
+   return toolBarCheckSum;
+}
 
-   // Return from this function if nothing's changed since
-   // the last time we were here.
- 
-   if (!mFirstTimeUpdateMenus &&
-       mLastNonZeroRegionSelected == nonZeroRegionSelected &&
-       mLastNumTracks == numTracks &&
-       mLastNumTracksSelected == numTracksSelected &&
-       mLastNumWaveTracks == numWaveTracks &&
-       mLastNumWaveTracksSelected == numWaveTracksSelected &&
-       mLastNumLabelTracks == numLabelTracks &&
-       mLastZoomLevel == mViewInfo.zoom &&
-       mLastToolBarCheckSum == toolBarCheckSum &&
-       mLastUndoState == mUndoManager.UndoAvailable() &&
-       mLastRedoState == mUndoManager.RedoAvailable() &&
-       mLastClipboardState == clipboardStatus &&
-       mLastHasLastEffect == hasLastEffect) 
-      return;
-   
-   // Otherwise, save state and then update all of the menus
-
-   mFirstTimeUpdateMenus = false;
-   mLastNonZeroRegionSelected = nonZeroRegionSelected;
-   mLastNumTracks = numTracks;
-   mLastNumTracksSelected = numTracksSelected;
-   mLastNumWaveTracks = numWaveTracks;
-   mLastNumWaveTracksSelected = numWaveTracksSelected;
-   mLastNumLabelTracks = numLabelTracks;
-   mLastZoomLevel = mViewInfo.zoom;
-   mLastToolBarCheckSum = toolBarCheckSum;
-   mLastUndoState = mUndoManager.UndoAvailable();
-   mLastRedoState = mUndoManager.RedoAvailable();  
-   mLastClipboardState = clipboardStatus;
-   mLastHasLastEffect = hasLastEffect;
-
-   bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
-
-   mCommandManager.Enable("Export", numTracks > 0);
-   mCommandManager.Enable("ExportSel", anySelection);
-   mCommandManager.Enable("ExportMP3", numTracks > 0);
-   mCommandManager.Enable("ExportMP3Sel", anySelection);
-   mCommandManager.Enable("ExportOgg", numTracks > 0);
-   mCommandManager.Enable("ExportOggSel", anySelection);
-   mCommandManager.Enable("ExportLabels", numLabelTracks > 0);
-
-   mCommandManager.Enable("Cut", anySelection);
-   mCommandManager.Enable("Copy", anySelection);
-   mCommandManager.Enable("Trim", anySelection);
-   mCommandManager.Enable("Delete", anySelection);
-   mCommandManager.Enable("Silence", anySelection);
-   mCommandManager.Enable("Split", anySelection);
-   //mCommandManager.Enable("SplitLabels", numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
-   mCommandManager.Enable("Duplicate", anySelection);
-   mCommandManager.Enable("SelectAll", numTracks > 0);
-   mCommandManager.Enable("SelStartCursor", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-   mCommandManager.Enable("SelCursorEnd", numWaveTracksSelected > 0 && !nonZeroRegionSelected);
-
-   mCommandManager.Enable("Undo", mUndoManager.UndoAvailable());
-   mCommandManager.Enable("Redo", mUndoManager.RedoAvailable());
-
-   mCommandManager.Enable("PlotSpectrum", numWaveTracksSelected > 0
-                     && nonZeroRegionSelected);
-
-   //Modify toolbar-specific Menus
-
+void AudacityProject::ModifyToolbarMenus()
+{
    if (gEditToolBarStub) {
 
      // Loaded or unloaded?
@@ -601,28 +659,29 @@ void AudacityProject::UpdateMenus()
    }
    else {
       mCommandManager.Enable("FloatMixerTB", false);
+   }   
+}
+
+void AudacityProject::UpdateMenus()
+{
+   if (gControlToolBarStub) {
+      int toolBarCheckSum = GetToolBarChecksum();
+
+      if (mLastToolBarCheckSum != toolBarCheckSum) {
+         mLastToolBarCheckSum = toolBarCheckSum;
+         ModifyToolbarMenus();
+      }
    }
 
-   mCommandManager.Enable("QuickMix", numWaveTracksSelected > 0);
-   mCommandManager.Enable("SelSave", numWaveTracksSelected > 0);
-   mCommandManager.Enable("SelRestore", numWaveTracksSelected > 0);
-   mCommandManager.Enable("CursTrackStart", numWaveTracksSelected > 0);
-   mCommandManager.Enable("CursTrackEnd", numWaveTracksSelected > 0);
-   mCommandManager.Enable("CursSelStart", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   mCommandManager.Enable("CursSelEnd", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   mCommandManager.Enable("Align", numWaveTracksSelected > 0);
-   mCommandManager.Enable("RemoveTracks", numTracksSelected > 0);
+   // Return from this function if nothing's changed since
+   // the last time we were here.
+   wxUint32 flags = GetUpdateFlags();
+   if (flags == mLastFlags)
+      return;
 
-   // Effects menus
-
-   mCommandManager.Enable("RepeatLastEffect", numWaveTracksSelected > 0 &&
-                          nonZeroRegionSelected &&
-                          hasLastEffect);
-   mCommandManager.Enable("Effect", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   mCommandManager.Enable("EffectPlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   mCommandManager.Enable("Analyze", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   mCommandManager.Enable("AnalyzePlugin", numWaveTracksSelected > 0 && nonZeroRegionSelected);
-
+   mLastFlags = flags;
+   mCommandManager.EnableUsingFlags(flags, 0xFFFFFFFF);
+   
    //Now, go through each toolbar, and and call EnableDisableButtons()
    unsigned int i;
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
@@ -631,11 +690,8 @@ void AudacityProject::UpdateMenus()
 
    //Now, do the same thing for the (possibly invisible) floating toolbars
    gControlToolBarStub->GetToolBar()->EnableDisableButtons();
-
-   //gEditToolBarStub might be null:
-   if(gEditToolBarStub){
+   if(gEditToolBarStub)
       gEditToolBarStub->GetToolBar()->EnableDisableButtons();
-   }
 }
 
 //
@@ -1808,6 +1864,9 @@ void AudacityProject::OnZoomFitV()
 
       t = iter.Next();
    }
+
+   if (count == 0)
+      return;
 
    height = height / count;
 
