@@ -34,6 +34,10 @@
   For the record, we aim to support LAME 3.70 on. Since LAME 3.70 was
   released in April of 2000, that should be plenty.
 
+  UPDATE: Linux now uses the stable, function-based interface for
+  getting and settting parameters, so it should be forward compatible.
+  However, it requires LAME 3.89 or greater.
+
 **********************************************************************/
 
 #include <wx/dynlib.h>
@@ -340,8 +344,14 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
       void SetBitrate(int rate) { lame_set_brate(mGF, rate); }
       int GetBitrate() { return lame_get_quality(mGF); }
 
-      void SetQuality(int quality) { lame_set_quality(mGF, quality); }
-      int GetQuality() { return lame_get_quality(mGF); }
+      /* lame specifies 0: highest and 9: lowest. We want 1: lowest and 10: highest */
+      void SetQuality(int quality) { lame_set_quality(mGF, 10 - quality); }
+      int GetQuality() {
+         int quality = (10 - lame_get_quality(mGF)); 
+         printf(" quality: %d\n", quality);
+         printf(" lame's returning: %d\n", lame_get_quality(mGF));
+         return quality;
+      }
    };
 
 MP3Exporter *gMP3Exporter = NULL;
