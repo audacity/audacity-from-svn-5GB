@@ -116,7 +116,7 @@ void InitPreferences()
 
   gPrefs = (wxConfig *) new wxFileConfig(appName,
                                          vendorName,
-                                         prefsPath,
+                                         "",
                                          prefsPath,
                                          wxCONFIG_USE_GLOBAL_FILE);
   
