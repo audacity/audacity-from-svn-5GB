@@ -38,8 +38,6 @@ Audacity 1.2 Online Help:
 <?php BoxBottom(); ?>
 
 <p>
-<br>
-</p>
 
 <?php BoxTop("$helpStr - Audacity 1.0.0"); ?>
 
