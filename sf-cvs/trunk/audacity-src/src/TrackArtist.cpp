@@ -1041,14 +1041,14 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
-   // if nothing is on the screen
-   if ((sampleCount) (h * rate + 0.5) >= numSamples)
-      return;
-
    WaveTrack *track = (WaveTrack *) cache->track;
    sampleCount numSamples = track->numSamples;
    double tOffset = track->GetOffset();
    double rate = track->GetRate();
+
+   // if nothing is on the screen
+   if ((sampleCount) (h * rate + 0.5) >= numSamples)
+      return;
 
    if (!track->GetSelected())
       sel0 = sel1 = 0.0;
