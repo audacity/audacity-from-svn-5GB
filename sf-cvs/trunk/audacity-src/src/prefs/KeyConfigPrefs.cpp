@@ -21,19 +21,21 @@
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 
-#define CommandsListID      7001
-#define DescriptionTextID   7002
-#define KeysListID          7003
-#define CurrentComboID      7004
-#define RemoveComboButtonID 7005
-#define ClearComboButtonID  7006
-#define AddComboButtonID    7007
+#define CommandsListID         7001
+#define DescriptionTextID      7002
+#define KeysListID             7003
+#define CurrentComboID         7004
+#define RemoveComboButtonID    7005
+#define ClearComboButtonID     7006
+#define AddComboButtonID       7007
+#define AssignDefaultsButtonID 7008
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
    EVT_BUTTON(RemoveComboButtonID, KeyConfigPrefs::RemoveComboFromList)
    EVT_BUTTON(ClearComboButtonID, KeyConfigPrefs::ClearComboList)
    EVT_BUTTON(AddComboButtonID, KeyConfigPrefs::AddComboToList)
+   EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
@@ -114,6 +116,9 @@ PrefsPanel(parent), mCommandSelected(-1)
          hKeySizer2, 0, 
          wxALL, 0 );
 
+      vKeySizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
+                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
       vKeyConfigSizer->Add(
          vKeySizer, 0, 
          wxALL, TOP_LEVEL_BORDER );
@@ -146,6 +151,23 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
       return;
    }
 
+   UpdateKeyList();
+
+   if(wDescLabel)
+   {
+      // BG: Set the description
+      wDescLabel->SetLabel(_("Description:\n ")
+            + mAudacity->GetCommandDesc(mCommandSelected));
+   }
+
+/*
+   // BG: Test the function
+   (this->*((wxEventFunction) (mAudacity->GetCommandFunc(mCommandSelected))))(event);
+*/
+}
+
+void KeyConfigPrefs::UpdateKeyList()
+{
    gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", mCommandSelected));
 
    long keyIndex;
@@ -163,18 +185,6 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    }
 
    gPrefs->SetPath("/");
-
-   if(wDescLabel)
-   {
-      // BG: Set the description
-      wDescLabel->SetLabel(_("Description:\n ")
-            + mAudacity->GetCommandDesc(mCommandSelected));
-   }
-
-/*
-   // BG: Test the function
-   (this->*((wxEventFunction) (mAudacity->GetCommandFunc(mCommandSelected))))(event);
-*/
 }
 
 void KeyConfigPrefs::RemoveComboFromList(wxCommandEvent& event)
@@ -219,6 +229,12 @@ void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
    mAudacity->TokenizeCommandStrings(mCommandSelected);
 
    mCurrentComboText->SetValue("");
+}
+
+void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
+{
+   mAudacity->AssignDefaults();
+   UpdateKeyList();
 }
 
 bool KeyConfigPrefs::Apply()

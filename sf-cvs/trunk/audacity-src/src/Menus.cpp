@@ -265,6 +265,15 @@ void AudacityProject::BuildMenuBar()
    mInsertSilenceAmount = 1.0;
 }
 
+void AudacityProject::AssignDefaults()
+{
+#define AUDACITY_MENUS_COMMANDS_DEFAULT_SHORTCUTS
+#include "commands.h"
+#undef AUDACITY_MENUS_COMMANDS_DEFAULT_SHORTCUTS
+
+   TokenizeCommandStrings(-1);
+}
+
 void AudacityProject::TokenizeCommandStrings(int mVal)
 {
    int startVal = mVal;
