@@ -461,7 +461,9 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
   */
 
   mTrackPanel->Refresh(false);
-
+  #ifdef __WXMAC__
+  mTrackPanel->MacUpdateImmediately();
+  #endif
 }
 
 bool AudacityProject::ProcessEvent(wxEvent& event)
