@@ -1,7 +1,7 @@
 <h1>Audacity <?php print $betaVersion; ?></h1>
 
 <p>
-O Audacity <?php print $betaVersion; ?> é a terceira versão liberada para testes do editor de áudio gratuito Audacity. Espera-se que os usuários possam conhecer e testar os novos recursos da próxima versão final, 1.2.0.
+O Audacity <?php print $betaVersion; ?> é a versão de testes do editor de áudio gratuito Audacity. Espera-se que os usuários possam conhecer e testar os novos recursos da próxima versão final.
 </p>
 
 <p>
