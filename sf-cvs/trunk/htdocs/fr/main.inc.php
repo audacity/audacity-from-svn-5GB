@@ -53,5 +53,6 @@ $latestBetaStr = "Dernière version (Bêta):";
 $releaseNotesStr = "Notes de mises à jour";
 $releaseNotesStr2 = "Notes de mises à jour (Quoi de neuf dans cette version?)";
 $vstLinksHereStr = "Télécharger les modules VST";
+$docsStr = "Télécharger la plus nouvelle documentation";
 $clickEnlargeStr = "(Cliquer sur une image pour l'agrandir.)";
 ?>
