@@ -16,7 +16,7 @@ question is answered.
 
 <li>
 Join: <a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Audacity-Users Mailing List</a><br>
-Browse: <a href="http://www.geocrawler.com/lists/3/SourceForge/14680/0/">Audacity-Users Archives</a><br>
+Browse: <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=827">Audacity-Users Archives</a><br>
 This is a new mailing list where Audacity users can talk with one another
 and share their ideas.  If you think that your question could be answered
 by other Audacity users, please join the mailing list and ask your
@@ -27,7 +27,7 @@ asked.
 <li>
 Email: <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a><br>
-or Browse: <a href="http://www.geocrawler.com/lists/3/SourceForge/14679/0/">Audacity-Help Archives</a><br>
+or Browse: <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">Audacity-Help Archives</a><br>
 If you're having a technical problem with Audacity, and it's too
 specific to bother other Audacity users, send mail to this address.
 It will be read by a team of Audacity developers and maintainers.
