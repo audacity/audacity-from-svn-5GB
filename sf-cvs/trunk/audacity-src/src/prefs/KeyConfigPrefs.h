@@ -36,9 +36,10 @@ class KeyConfigPrefs:public PrefsPanel {
    void AssignDefaults(wxCommandEvent& event);
    void RebuildMenus(wxCommandEvent& event);
    void CmdsCfgLocation(wxCommandEvent& event);
+   void RepopulateBindingsList();
 
    SysKeyTextCtrl *mCurrentComboText;
-
+   wxListCtrl * mList;
    AudacityProject *mAudacity;
 
  public:

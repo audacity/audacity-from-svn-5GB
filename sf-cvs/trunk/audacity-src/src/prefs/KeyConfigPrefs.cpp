@@ -43,48 +43,86 @@ PrefsPanel(parent)
 
    topSizer = new wxBoxSizer( wxVERTICAL );
 
-   {
-      //Add label
-      topSizer->Add(
-               new wxStaticText(this, -1,
-                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the 'Audacity-Commands.xml' file.\nIf you need to know what a specific key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse 'Audacity-Commands.xml' and rebuild the menus.")),
-               0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
+   //Add label
+   topSizer->Add(
+      new wxStaticText(this, -1,
+      _("This code has undergone a rewrite. The GUI is not complete.\n"
+        "To define custom keybindings edit the 'Audacity-Commands.xml' file.\n"
+        "Click Assign Defaults to revert the menus back to default.\n"
+        "Click Rebuild Menus to reparse 'Audacity-Commands.xml' and rebuild the menus.")
+        ),
+      0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
-      //Add key combo text box
-      mCurrentComboText = NULL;
-      mCurrentComboText = new SysKeyTextCtrl(
-         this, CurrentComboID, "",
-         wxDefaultPosition, wxSize(115, -1), 0 );
+   // This code for displaying keybindings is similar to code in MousePrefs.
+   // Would be nice to create a new 'Bindings' class which both 
+   // KeyConfigPrefs and MousePrefs use.
+   mList = new wxListCtrl( this, -1 ,
+      wxDefaultPosition, wxSize(100,100),
+      wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
+      );
 
-      topSizer->Add(mCurrentComboText, 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
+   wxASSERT( mList );
 
-      //Add assign defaults button
-      topSizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
-                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+   //An empty first column is a workaround - under Win98 the first column 
+   //can't be right aligned.
+   mList->InsertColumn(0, _T(""), wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(1, _("Key Combination"), wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(2, _("Command Action"),  wxLIST_FORMAT_LEFT );
 
-      //Add rebuild menus button
-      topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
-                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+   gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+   mList->SetColumnWidth( 0, 0 ); // First column width is zero, to hide it.
+//   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+   // Would like to use wxLIST_AUTOSIZE but
+   // wxWindows does not look at the size of column heading.
+   mList->SetColumnWidth( 1, 100 ); // Set width to 100 pixels.
+   mList->SetColumnWidth( 2, wxLIST_AUTOSIZE );
 
-      //Add change commands.cfg location button
-      topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Audacity-Commands.xml Location")), 0,
-                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+   topSizer->Add( mList, 1, 
+                       wxGROW | wxALL, GENERIC_CONTROL_BORDER);
 
-      bool bFalse = false;
-      //Check commands.cfg location status
-      wxString locationStatus;
-      if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
-         locationStatus += wxString("\n* ") + wxString(_("Queued for location change"));
-      if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
-         locationStatus += wxString("\n* ") + wxString(_("Location change failed"));
+   //Add key combo text box
+   mCurrentComboText = NULL;
+   mCurrentComboText = new SysKeyTextCtrl(
+      this, CurrentComboID, "",
+      wxDefaultPosition, wxSize(115, -1), 0 );
 
-      //Add label
-      topSizer->Add(
-               new wxStaticText(this, -1,
-                  gCommandsCfgLocation + locationStatus),
-               0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
-   }
+   wxStaticText * pComboLabel = new wxStaticText(this, -1,
+      "To see the name for a key combination, type it in the box on the left.\n");
+
+   wxBoxSizer * pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
+
+   pComboLabelSizer->Add( mCurrentComboText, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   pComboLabelSizer->Add( pComboLabel, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   topSizer->Add(pComboLabelSizer, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+
+   //Add assign defaults button
+   topSizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
+                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+   //Add rebuild menus button
+   topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
+                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+   //Add change commands.cfg location button
+   topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Audacity-Commands.xml Location")), 0,
+                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+   bool bFalse = false;
+   //Check commands.cfg location status
+   wxString locationStatus;
+   if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
+      locationStatus += wxString("\n* ") + wxString(_("Queued for location change"));
+   if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
+      locationStatus += wxString("\n* ") + wxString(_("Location change failed"));
+
+   //Add label
+   topSizer->Add(
+            new wxStaticText(this, -1,
+               gCommandsCfgLocation + locationStatus),
+            0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
@@ -95,6 +133,13 @@ PrefsPanel(parent)
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
 }
+
+void KeyConfigPrefs::RepopulateBindingsList()
+{
+   mList->DeleteAllItems(); // Delete contents, but not the column headers.
+   gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+}
+
 
 void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 {
@@ -108,6 +153,8 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
          gAudacityProjects[i]->UpdateMenus();
       }
    }
+   // Update the list that is displayed on screen.
+   RepopulateBindingsList();
 }
 
 void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
@@ -122,12 +169,15 @@ void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
          gAudacityProjects[i]->UpdateMenus();
       }
    }
+   // Update the list that is displayed on screen.
+   RepopulateBindingsList();
 }
 
 void KeyConfigPrefs::CmdsCfgLocation(wxCommandEvent& event)
 {
    gPrefs->Write("/QDeleteCmdCfgLocation", true);
-   wxMessageBox(_("Audacity needs to be restarted for this change to take effect.\nPlease close all open Audacity projects."));
+   wxMessageBox(_("You will be prompted for a new location when Audacity is next restarted.\n"
+      "Please close all open Audacity projects."));
 }
 
 bool KeyConfigPrefs::Apply()
@@ -141,7 +191,6 @@ KeyConfigPrefs::~KeyConfigPrefs()
 
 
 //BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
-
 BEGIN_EVENT_TABLE(SysKeyTextCtrl, wxTextCtrl)
    EVT_KEY_DOWN(SysKeyTextCtrl::OnKey)
    EVT_CHAR(SysKeyTextCtrl::OnChar)
@@ -163,7 +212,7 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 }
 
 //BG: It works on Windows, but we need to trap WM_CHAR
-//DM: On Linux, now it works except for Ctrl+3...Ctrl+8
+//DM: On Linux, now it works except for Ctrl+3...Ctrl+8 (April/2003)
 void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
    wxString newStr = "";

@@ -11,10 +11,11 @@
 **********************************************************************/
 
 #include <wx/tokenzr.h>
+#include <wx/log.h>
+#include <wx/textctrl.h> // Needed for listctrl.h to include OK.
+#include <wx/listctrl.h>
 
 #include "CommandsMenu.h"
-
-
 
 
 // On wxGTK, there may be many many many plugins, but the menus don't automatically
@@ -28,7 +29,6 @@
 #define MAX_MENU_LEN 1000
 #define MAX_SUBMENU_LEN 1000
 #endif
-
 
 ///
 ///  Standard Constructor
@@ -135,7 +135,6 @@ void CommandsMenu::EndMenu()
 }
 
 
-
 ///
 /// This starts a new submenu, and names it according to
 /// the function's argument.
@@ -169,7 +168,6 @@ void CommandsMenu::EndSubMenu()
 
    delete tmpSubMenu;
 }
-
 
 ///
 /// This returns the 'Current' Submenu, which is the one at the
@@ -274,24 +272,17 @@ void CommandsMenu::AppendEffects(EffectArray *effs, wxString sType, bool spill)
    BeginSubMenu(wxString::Format(_("Plugins 1 to %i"), tmpmax));
 
    for (i=0; i<effLen; i++) {
-     
-
-     AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
-     
-     if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1))
-       {
-
-	 EndSubMenu();
-	 listnum++;
-	 
-	 tmpmax = i + MAX_SUBMENU_LEN  < effLen? 1 + i + MAX_SUBMENU_LEN: effLen;
-	 //This label the plugins by number in the submenu title (1 to 15, 15 to 30, etc.)
+      AppendEffect((*effs)[i]->GetID(), (*effs)[i]->GetEffectName(), sType);
+      
+      if(((i+1) % MAX_SUBMENU_LEN) == 0 && i != (effLen - 1)){
+         
+         EndSubMenu();
+         listnum++;
+         
+         tmpmax = i + MAX_SUBMENU_LEN  < effLen? 1 + i + MAX_SUBMENU_LEN: effLen;
+         //This label the plugins by number in the submenu title (1 to 15, 15 to 30, etc.)
          BeginSubMenu(wxString::Format(_("Plugins %i to %i"),i+2,tmpmax));
-       }
-
-
-
-     
+      }
    }
 
    EndSubMenu();
@@ -440,4 +431,50 @@ wxString CommandsMenu::AppendComboString(wxString tName, wxString sKeys)
       return tName;
 
    return (tName+"\t"+firstKey);
+}
+
+/// FillKeyBindingsList populates a wxListCtrl with 
+/// The key binding information, e.g. Ctrl-O == 'Open'.
+/// It would be better design if there was a CommandsMenuIterator
+/// for then CommandsMenu wouldn't need to inculude <listctrl.h>
+void CommandsMenu::FillKeyBindingsList( wxListCtrl * pList )
+{
+   int j=0;
+   for(unsigned int i = 0; i < mIdentifierNameList.GetCount(); i++)
+   {
+      IdentifierNameListEntry * pEntry = mIdentifierNameList[i];
+
+      if( !pEntry->keys.IsEmpty() )
+      {
+         // We get the function name but don't currently use it.
+         wxString label = pEntry->menu->GetLabel( pEntry->id );
+         wxString key   = pEntry->keys;
+         wxString func  = pEntry->functions;
+
+         // Non-standard use of the StartsWith function to 
+         // remove a prefix of 'On' if it is present.
+         func.StartsWith( "On", &func );
+
+         // The menu label is in the currently selected language.
+         // We'd like to use it, but it has extra 'stuff' in it.
+         // so we remove that stuff.
+         label.Replace("&","");
+         label.Replace("...","\t");
+         int descriptionLength =label.First("\t");
+         if( descriptionLength > 0)
+            label = label.Truncate( descriptionLength );
+
+#if 0
+         wxLogDebug("Key: %s Value: %s Label: %s", 
+            key,
+            func,
+            label
+            );
+#endif
+         pList->InsertItem( j, _T("") );
+         pList->SetItem( j, 1, key );
+         pList->SetItem( j, 2, label );
+         j++;
+      }
+   }
 }

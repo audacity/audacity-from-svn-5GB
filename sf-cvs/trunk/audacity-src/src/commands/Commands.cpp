@@ -244,3 +244,8 @@ void Commands::EnableItemsByFunction(wxString sMenuBarName, wxString sFunction, 
       EnableID = mCommandsReader.GetCommandsMenu()->GetIdentifiersFromFunction(sFunction);
    }
 }
+
+void Commands::FillKeyBindingsList(wxListCtrl * pList )
+{
+   mCommandsReader.GetCommandsMenu()->FillKeyBindingsList(pList);
+}

@@ -18,6 +18,8 @@ class AudacityProject;
 #include "CommandsWriter.h"
 #include "CommandsReader.h"
 
+class wxListCtrl;
+
 typedef void (AudacityProject::*audEventFunction)();
 
 class Commands
@@ -40,6 +42,7 @@ public:
 
    void ChangeText(wxString sMenuBarName, wxString sFunctions, wxString sNewText);
    void EnableItemsByFunction(wxString sMenuBarName, wxString sFunction, bool bEnable);
+   void FillKeyBindingsList(wxListCtrl * pList);
 
 private:
    bool ExecuteFunctionsList(wxString sFunctions);
