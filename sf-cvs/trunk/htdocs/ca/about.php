@@ -44,12 +44,7 @@ Envieu un missatge a <a href="mailto:audacity-help@lists.sourceforge.net"
 
 <br>
 (<b>Nota:</b> tot i que aquest lloc Web es trobi en català, la versió 1.0 de
-l'Audacity només es troba disponible en anglès. En canvi l'Audacity 1.1 es troba en castellà i en diversos altres idiomes. Si desitgeu per tant una versió de l'Audacity en es vostre idioma descarregueu la versió Beta. Sinó haureu d'utilitzar una versió únicament en anglès.)
+l'Audacity només es troba disponible en anglès. En canvi l'Audacity 1.1 es troba en català i en diversos altres idiomes. Si desitgeu per tant una versió de l'Audacity en es vostre idioma descarregueu la versió Beta. Sinó haureu d'utilitzar una versió únicament en anglès.)
 </p>
-
-<!-- Translators: please make a note here that the "audacity-help"
-     address is intended for people who speak English.  We will have
-     alternative mailing lists for other languages set up soon...
--->
 
 <?php BoxBottom(); ?>
