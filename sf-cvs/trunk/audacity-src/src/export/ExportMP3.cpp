@@ -246,11 +246,19 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             wxLogNull logNo;
 
             //BG: I was unable to test the wxDynamicLibrary code on this platform
-            wxDynamicLibrary lame_enc_lib;
 
             if (wxFileExists(mLibPath))
+            {
+               if(lame_enc_lib.IsLoaded())
+               {
+                  lame_enc_lib.Unload();
+               }
+
                if(!lame_enc_lib.Load(mLibPath))
+               {
                   return false;
+               }
+            }
             else
                return false;
 
@@ -305,10 +313,10 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
-      const char *GetLibraryVersion() {
+      wxString GetLibraryVersion() {
          if(!mLibraryLoaded) return "";
 
-         return wxString::Format("LAME %s", get_lame_version()).c_str();
+         return wxString::Format("LAME %s", get_lame_version());
       }
 
       int InitializeStream(int channels, int sampleRate) {
@@ -605,10 +613,10 @@ MP3Exporter *GetMP3Exporter()
 
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
-      const char *GetLibraryVersion() {
+      wxString GetLibraryVersion() {
          if(!mLibraryLoaded) return "";
 
-         return wxString::Format("LAME %s", get_lame_version()).c_str();
+         return wxString::Format("LAME %s", get_lame_version());
       }
 
       int InitializeStream(int channels, int sampleRate) {
@@ -798,11 +806,19 @@ MP3Exporter *GetMP3Exporter()
             wxLogNull logNo;
 
             //BG: I was unable to test the wxDynamicLibrary code on this platform
-            wxDynamicLibrary lame_enc_lib;
 
             if (wxFileExists(mLibPath))
+            {
+               if(lame_enc_lib.IsLoaded())
+               {
+                  lame_enc_lib.Unload();
+               }
+
                if(!lame_enc_lib.Load(mLibPath))
+               {
                   return false;
+               }
+            }
             else
                return false;
 
@@ -837,7 +853,7 @@ MP3Exporter *GetMP3Exporter()
 
       bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
-      const char *GetLibraryVersion() {
+      wxString GetLibraryVersion() {
          if(!mLibraryLoaded) return "";
 
          if(get_lame_version)
@@ -1030,11 +1046,18 @@ public:
    bool  LoadLibrary() {
       wxLogNull logNo;
 
-      wxDynamicLibrary lame_enc_lib;
-
       if (wxFileExists(mLibPath))
+      {
+         if(lame_enc_lib.IsLoaded())
+         {
+            lame_enc_lib.Unload();
+         }
+
          if(!lame_enc_lib.Load(mLibPath))
+         {
             return false;
+         }
+      }
       else
          return false;
 
@@ -1058,15 +1081,15 @@ public:
 
    bool ValidLibraryLoaded() { return mLibraryLoaded; }
 
-   const char *GetLibraryVersion() {
+   wxString GetLibraryVersion() {
       BE_VERSION ver;
 
       if(!mLibraryLoaded)
-         return NULL;
+         return "";
 
       beVersion(&ver);
 
-      return wxString::Format("LAME v%d.%d", ver.byMajorVersion, ver.byMinorVersion).c_str();
+	  return wxString::Format("LAME v%d.%d", ver.byMajorVersion, ver.byMinorVersion);
    }
 
    int InitializeStream(int channels, int sampleRate) {

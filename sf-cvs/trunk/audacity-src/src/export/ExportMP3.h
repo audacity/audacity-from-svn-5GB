@@ -12,6 +12,7 @@
 #define __AUDACITY_EXPORTMP3__
 
 #include <wx/string.h>
+#include <wx/dynlib.h>
 
 class AudacityProject;
 
@@ -28,7 +29,7 @@ class MP3Exporter {
       virtual bool FindLibrary(wxWindow *parent);
       virtual bool LoadLibrary() = 0;
       virtual bool ValidLibraryLoaded() = 0;
-      virtual const char *GetLibraryVersion() = 0;
+      virtual wxString GetLibraryVersion() = 0;
 
       /* returns the number of samples PER CHANNEL to send for each call to EncodeBuffer */
       virtual int InitializeStream(int channels, int sampleRate) = 0;
@@ -54,6 +55,7 @@ class MP3Exporter {
 
   protected:
    wxString mLibPath;
+   wxDynamicLibrary lame_enc_lib;
 };
 
 #define MP3CONFIG_BITRATE 0x00000001
