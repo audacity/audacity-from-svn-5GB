@@ -323,7 +323,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 // Takes a value between -1      and     +1 and returns a value between 
 //                       -height and height.
 // This function isn't used anymore.  Use GetWaveYPosNew instead.
-int TrackArtist::GetWaveYPos(float value, int height, bool dB)
+int TrackArtist::GetWaveYPos(float value, int height, bool dB, float dBr)
 {
    float sign = (value >= 0 ? 1 : -1);
 
@@ -331,7 +331,7 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
       if (value == 0 || height == 0)
          return 0;
       float db = 20 * log10(fabs(value));
-      float val = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
+      float val = (db + dBr) / dBr;
       if (val < 0.0)
          val = float(0.0);
       if (val > 1.0)
@@ -353,20 +353,23 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
 // then use the zoomMin, zoomMax and height values without having 
 // to have them passed in to it??
 int TrackArtist::GetWaveYPosNew(float value, float min, float max,
-                                int height, bool dB, bool clip)
+                                int height, bool dB, float dBr, bool clip)
 {
    float sign = (value >= 0 ? 1 : -1);
 
    if (dB) {
-      if (value == 0 || height == 0)
-         return 0;
+     if (height == 0) return 0;
+
+     if(value != 0.){
       float db = 20 * log10(fabs(value));
-      value = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
-      if (value < 0.0)
+       value = (db + dBr) / dBr;
+       if (value < 0.0){
          value = float(0.0);
-      if (value > 1.0)
+       }
+       if (clip && value > 1.0)
          value = float(1.0);
       value *= sign;
+   }
    }
 
    if (clip) {
@@ -383,15 +386,16 @@ int TrackArtist::GetWaveYPosNew(float value, float min, float max,
 
 // This function isn't used anymore.  Use GetWaveYPosNew instead.
 // (and pass in clip=false)
-int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB)
+int TrackArtist::GetWaveYPosUnclipped(float value, int height, bool dB, 
+				      float dBr)
 {
    float sign = (value >= 0 ? 1 : -1);
 
    if (dB) {
       if (value == 0 || height == 0)
-         return 0;
+         return height/2;
       float db = 20 * log10(fabs(value));
-      float val = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
+      float val = (db + dBr) / dBr;
       if (val < 0.0)
          val = float(0.0);
       return (int) (sign * (height * val + 0.5));
@@ -449,6 +453,7 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
    int *mintop = new int[r.width];
    int *minbot = new int[r.width];
    int x;
+   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
    // First we compute the truncated shape of the waveform background.
    // If drawEnvelope is true, then we compute the lower border of the
@@ -456,14 +461,14 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
 
    for (x = 0; x < r.width; x++) {
       maxtop[x] = GetWaveYPosNew(env[x], zoomMin, zoomMax,
-                                 r.height, dB, true);
+                                 r.height, dB, dBr, true);
       maxbot[x] = GetWaveYPosNew(env[x]-0.5, zoomMin, zoomMax,
-                                 r.height, dB, true);
+                                 r.height, dB, dBr, true);
 
       mintop[x] = GetWaveYPosNew(-env[x]+0.5, zoomMin, zoomMax,
-                                 r.height, dB, true);
+                                 r.height, dB, dBr, true);
       minbot[x] = GetWaveYPosNew(-env[x], zoomMin, zoomMax,
-                                 r.height, dB, true);
+                                 r.height, dB, dBr, true);
 
       if (!drawEnvelope || dB || maxbot[x] > mintop[x]) {
          maxbot[x] = halfHeight;
@@ -569,6 +574,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
    double rate = track->GetRate();
    sampleCount s0 = (sampleCount) (t0 * rate + 0.5);
    sampleCount slen = (sampleCount) (r.width * rate / pps + 0.5);
+   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    
    if (s0 > 1)
       s0--;
@@ -599,7 +605,7 @@ void TrackArtist::DrawIndividualSamples(wxDC &dc, wxRect r,
       xpos[s] = (int) xx;
 
       ypos[s] = GetWaveYPosNew(buffer[s] * track->GetEnvelope()->GetValue(tt),
-                               zoomMin, zoomMax, r.height, dB, false);
+                               zoomMin, zoomMax, r.height, dB, dBr, false);
       if (ypos[s] < -1)
          ypos[s] = -1;
       if (ypos[s] > r.height)
@@ -647,16 +653,17 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
    int *r1 = new int[r.width];
    int *r2 = new int[r.width];
    int x;
+   float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
    for (x = 0; x < r.width; x++) {
       h1[x] = GetWaveYPosNew(min[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true);
+                             r.height, dB, dBr, true);
       h2[x] = GetWaveYPosNew(max[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true);
+                             r.height, dB, dBr, true);
       r1[x] = GetWaveYPosNew(-rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true);
+                             r.height, dB, dBr, true);
       r2[x] = GetWaveYPosNew(rms[x] * envValues[x], zoomMin, zoomMax,
-                             r.height, dB, true);
+                             r.height, dB, dBr, true);
 
       // JKC: This adjustment to h1[] and h2[] ensures that the drawn
       // waveform is continuous.
@@ -749,8 +756,8 @@ void TrackArtist::DrawEnvLine(wxDC &dc, wxRect r, int x, int y, bool top)
          dc.DrawLine(r.x + x, r.y + y,
                      r.x + x, r.y + y + 3);
       else
-         dc.DrawLine(r.x + x, r.y + y - 2,
-                     r.x + x, r.y + y + 1);
+         dc.DrawLine(r.x + x, r.y + y - 3,
+                     r.x + x, r.y + y );
    }
 }
 
@@ -951,12 +958,20 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
+	 float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
 
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
-                                 mid.height, dB, false);
+                                 mid.height, dB, dBr, false);
 
-         envBottom = GetWaveYPosNew(-envValues[x], zoomMin, zoomMax,
-                                    mid.height, dB, false);
+         envBottom = GetWaveYPosNew(-envValues[x]-.000000001, zoomMin, zoomMax,
+                                    mid.height, dB, dBr, false);
+
+	 /* make the collision at zero actually look solid */
+	 if(envBottom-envTop < 3){
+	   int value = (zoomMax / (zoomMax - zoomMin)) * mid.height;
+   	   envTop=value-1;
+	   envBottom=value+2;
+	 }
 
          DrawEnvLine(dc, mid, x, envTop, true);
          DrawEnvLine(dc, mid, x, envBottom, false);

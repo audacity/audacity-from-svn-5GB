@@ -22,6 +22,7 @@
 #include <wx/log.h>
 
 #include "AColor.h"
+#include "Prefs.h"
 #include "DirManager.h"
 
 Envelope::Envelope()
@@ -117,10 +118,11 @@ double Envelope::toDB(double value)
    if (value == 0)
       return 0;
    
+   double envdBRange = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
    double sign = (value >= 0 ? 1 : -1);
 
    double db = 20 * log10(fabs(value));
-   double val = (db + ENV_DB_RANGE) / ENV_DB_RANGE;
+   double val = (db + envdBRange) / envdBRange;
    if (val < 0.0)
       val = 0.0;
    if (val > 1.0)
@@ -134,13 +136,15 @@ double Envelope::fromDB(double value) const
    if (value == 0)
       return 0;
 
-   return pow(10.0, ((value * ENV_DB_RANGE) - ENV_DB_RANGE) / 20.0);
+   double sign = (value >= 0 ? 1 : -1);
+   double envdBRange = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+   return pow(10.0, ((fabs(value) * envdBRange) - envdBRange) / 20.0)*sign;;
 }
 
 void DrawPoint(wxDC & dc, wxRect & r, int x, int y, bool top)
 {
-   if (y >= 0 && y < r.height) {
-      wxRect circle(r.x + x - 2, r.y + (top? y: y-4),
+   if (y >= 0 && y <= r.height) {
+      wxRect circle(r.x + x - 2, r.y + (top? y: y-5),
                     4, 4);
       dc.DrawEllipse(circle);
    }
@@ -268,10 +272,10 @@ void Envelope::GetEventParams(int &height, bool &upper, bool dB,
    height = r.height;
 
    if (mMirror) {
-      if (dB) {
-         zoomMin = -1.0;
-         zoomMax = 1.0;
-      }
+     //if (dB) {
+     //  zoomMin = -1.0;
+     //    zoomMax = 1.0;
+     // }  --this code breaks dragging a zoomed envelope in db mode
 
       int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
       upper = (event.m_y - r.y < ctr);
@@ -309,10 +313,13 @@ float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
    float v;
 
    v = zoomMax - (y/(float)height) * (zoomMax - zoomMin);
+
    if (dB)
       v = fromDB(v);
+
    if ((upper && v < 0) || (!upper && v > 0))
       v = 0;
+   else
    if (!upper)
       v = -v;
 
@@ -498,7 +505,7 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
 
    */
 
-   double newVal = ValueOfPixel(event.m_y - r.y, height, upper, dB,
+   double newVal = ValueOfPixel(event.m_y - r.y, height, mUpper, dB,
                                 zoomMin, zoomMax);   
 
    //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
@@ -854,9 +861,9 @@ void Envelope::GetValues(double *buffer, int bufferLen,
 
             // Special case for the log of zero
             if (mEnv[lo]->val <= 0.0)
-               vprev = -4.6;       // This corresponds to the log10 of 1/32768
+               vprev = -7;       // This corresponds to -140 dB
             if (mEnv[hi]->val <= 0.0)
-               vnext = -4.6;
+               vnext = -7;
          }
          else {
             vprev = mEnv[lo]->val;
@@ -889,10 +896,11 @@ void Envelope::GetValues(double *buffer, int bufferLen,
                vstep = 0.0;
          }
       } else {
-         if (mDB)
+	if (mDB){
             buffer[b] = buffer[b - 1] * vstep;
-         else
+         }else{
             buffer[b] = buffer[b - 1] + vstep;
+      }
       }
 
       t += tstep;

@@ -125,10 +125,12 @@ void QuitAudacity(bool bForce)
          }
          else
          {
-            if (!gAudacityProjects[i]->Close())
+	   if (!gAudacityProjects[i]->Close()){
+	       gIsQuitting = false;
                return;
          }
       }
+   }
    }
 
    if (gFreqWindow)
