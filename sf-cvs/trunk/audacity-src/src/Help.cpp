@@ -21,6 +21,9 @@
 
 #ifdef __WXMAC__
 
+#include <wx/defs.h>
+#include <wx/window.h>
+
 void InitHelp(wxWindow * parent)
 {
 }

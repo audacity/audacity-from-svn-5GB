@@ -11,6 +11,9 @@
 #ifndef __AUDACITY_KEY_CONFIG_PREFS__
 #define __AUDACITY_KEY_CONFIG_PREFS__
 
+#include <wx/defs.h>
+#include <wx/textctrl.h>
+
 #include "PrefsPanel.h"
 #include "../Project.h"
 

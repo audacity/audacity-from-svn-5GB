@@ -74,8 +74,9 @@ double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
 
 #ifdef __WXMAC__
-
-#include <Files.h>
+# ifndef __UNIX__
+#  include <Files.h>
+# endif
 
 void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 
@@ -1511,8 +1512,12 @@ void AudacityProject::Import(wxString fileName)
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
+
+   #if !defined(__WXMAC__) || !defined(__UNIX__)
    wxEvent e;
    OnZoomFit(e);
+   #endif
+
    mTrackPanel->Refresh(false);
 
    if (initiallyEmpty) {
