@@ -2362,6 +2362,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
          t->SetMinimized(!t->GetMinimized());
          if (mTracks->GetLink(t))
             mTracks->GetLink(t)->SetMinimized(t->GetMinimized());
+         MakeParentModifyState();
       }
 
       mIsMinimizing = false;
