@@ -38,6 +38,7 @@
 #include "Prefs.h"
 #include "Spectrum.h"
 #include "ViewInfo.h"
+#include "widgets/Ruler.h"
 
 const int octaveHeight = 62;
 const int blackPos[5] = { 6, 16, 32, 42, 52 };
@@ -242,33 +243,13 @@ void TrackArtist::DrawVRuler(VTrack * t, wxDC * dc, wxRect & r)
       bev.Inflate(-1, -1);
       AColor::Bevel(*dc, true, bev);
 
-      if (r.height < 40)
-         return;
+      Ruler vruler;
+      vruler.SetBounds(r.x, r.y+1, r.x + r.width, r.y + r.height-2);
+      vruler.SetOrientation(wxVERTICAL);
+      vruler.SetRange(1.0, -1.0);
+      vruler.SetFormat(Ruler::RealFormat);
 
-      dc->SetPen(*wxBLACK_PEN);
-      int ctr = r.height / 2;
-
-      wxString num;
-      long textWidth, textHeight;
-
-      num = "1.0";
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
-
-      num = "0";
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth,
-                   r.y + ctr - textHeight / 2);
-
-      dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth,
-                   r.y + ctr);
-      dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2,
-                   r.y + ctr);
-
-      num = "-1.0";
-      dc->GetTextExtent(num, &textWidth, &textHeight);
-      dc->DrawText(num, r.x + r.width - 3 - textWidth,
-                   r.y + r.height - 2 - textHeight);
+      vruler.Draw(*dc);
    }
 
    if (t->GetKind() == VTrack::Wave

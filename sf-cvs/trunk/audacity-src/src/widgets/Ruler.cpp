@@ -190,7 +190,7 @@ void Ruler::FindTickSizes()
 
    // As a heuristic, we want at least 16 pixels
    // between each minor tick
-   double units = 16 * mUPP;
+   double units = 16 * fabs(mUPP);
 
    mDigits = 0;
 
@@ -422,7 +422,7 @@ void Ruler::Tick(int pos, double d, bool major)
          strPos = 0;
       if (strPos + strW >= mLength)
          strPos = mLength - strW;
-      strLeft = strPos;
+      strLeft = mLeft + strPos;
       strTop = mBottom - strH - 6;
    }
    else {
@@ -432,7 +432,7 @@ void Ruler::Tick(int pos, double d, bool major)
          strPos = 0;
       if (strPos + strH >= mLength)
          strPos = mLength - strH;
-      strTop = strPos;      
+      strTop = mTop + strPos;
       strLeft = mRight - strW - 6;
    }
 
@@ -506,35 +506,37 @@ void Ruler::Update()
    }
 
    // Zero (if it's in the middle somewhere)
-   if (mMin < 0.0 && mMax > 0.0) {
+   if (mMin * mMax < 0.0) {
       int mid = (int)(mLength*(mMin/(mMin-mMax)) + 0.5);
       Tick(mid, 0.0, true);
    }
+   
+   double sg = mUPP > 0.0? 1.0: -1.0;
 
    // Major ticks
    double d = mMin - mUPP/2;
-   int majorInt = (int)floor(d / mMajor);
+   int majorInt = (int)floor(sg * d / mMajor);
    i = -1;
    while(i <= mLength) {
       i++;
       d += mUPP;
 
-      if ((int)floor(d / mMajor) > majorInt) {
-         majorInt = (int)floor(d / mMajor);
+      if ((int)floor(sg * d / mMajor) > majorInt) {
+         majorInt = (int)floor(sg * d / mMajor);
          Tick(i, majorInt * mMajor, true);
       }
    }
 
    // Minor ticks
    d = mMin - mUPP/2;
-   int minorInt = (int)floor(d / mMinor);
+   int minorInt = (int)floor(sg * d / mMinor);
    i = -1;
    while(i <= mLength) {
       i++;
       d += mUPP;
 
-      if ((int)floor(d / mMinor) > minorInt) {
-         minorInt = (int)floor(d / mMinor);
+      if ((int)floor(sg * d / mMinor) > minorInt) {
+         minorInt = (int)floor(sg * d / mMinor);
          Tick(i, minorInt * mMinor, false);
       }
    }
@@ -573,7 +575,8 @@ void Ruler::Draw(wxDC& dc)
 
       if (mMajorLabels[i].text)
          mDC->DrawText(mMajorLabels[i].text,
-                       mMajorLabels[i].lx, mMajorLabels[i].ly);
+                       mMajorLabels[i].lx,
+                       mMajorLabels[i].ly);
    }
 
    mDC->SetFont(*mMinorFont);
@@ -590,7 +593,8 @@ void Ruler::Draw(wxDC& dc)
 
       if (mMinorLabels[i].text)
          mDC->DrawText(mMinorLabels[i].text,
-                       mMinorLabels[i].lx, mMinorLabels[i].ly);
+                       mMinorLabels[i].lx,
+                       mMinorLabels[i].ly);
    }
 }
 
