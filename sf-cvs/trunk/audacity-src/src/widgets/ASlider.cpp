@@ -206,6 +206,9 @@ LWSlider::LWSlider(wxWindow *parent,
       stepValue = STEP_CONTINUOUS;
       break;
    default:
+      minValue = 0.0f;
+      maxValue = 1.0f;
+      stepValue = 0.0f;
       wxASSERT(false); // undefined style
    }
 
@@ -213,7 +216,7 @@ LWSlider::LWSlider(wxWindow *parent,
         true, style, heavyweight);
 }
 
-LWSlider::Init(wxWindow * parent,
+void LWSlider::Init(wxWindow * parent,
      wxString name,
      const wxPoint &pos,
      const wxSize &size,
@@ -464,7 +467,7 @@ void LWSlider::FormatPopWin()
       if (mCurrentValue > 0)
          valstr = "+" + valstr;
       
-      label.Printf("%s: %s dB", (const char*)mName, valstr);
+      label.Printf("%s: %s dB", (const char*)mName, (const char *)valstr);
       break;
    case PAN_SLIDER:
       if (mCurrentValue == 0.0)

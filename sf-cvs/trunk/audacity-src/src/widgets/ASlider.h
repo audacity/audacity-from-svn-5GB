@@ -69,7 +69,7 @@ class LWSlider
             int style,
             bool heavyweight=false);
 
-   Init(wxWindow * parent,
+   void Init(wxWindow * parent,
       wxString name,
       const wxPoint &pos,
       const wxSize &size,
@@ -79,7 +79,7 @@ class LWSlider
       bool canUseShift,
       int style,
       bool heavyweight=false
-      );
+   );
 
    virtual ~LWSlider();
 
