@@ -91,11 +91,9 @@ OBJS = \
 	$(OBJDIR)/export/ExportPCM.o \
 	$(OBJDIR)/export/ExportCL.o \
 	$(OBJDIR)/import/Import.o \
-	$(OBJDIR)/import/ImportMIDI.o \
 	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportOGG.o \
 	$(OBJDIR)/import/ImportPCM.o \
-	$(OBJDIR)/import/ImportRaw.o \
 	$(OBJDIR)/prefs/PrefsDialog.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.o \
 	$(OBJDIR)/prefs/QualityPrefs.o \
@@ -109,6 +107,10 @@ OBJS = \
 	$(OBJDIR)/widgets/Ruler.o \
 	$(OBJDIR)/xml/XMLFileReader.o \
 
+TEMPORARILY_DISABLED_IMPORTER_OBJS = \
+	$(OBJDIR)/import/ImportMIDI.o \
+	$(OBJDIR)/import/ImportPCM.o \
+	$(OBJDIR)/import/ImportRaw.o \
 
 ########################################
 # DEPENDENCIES

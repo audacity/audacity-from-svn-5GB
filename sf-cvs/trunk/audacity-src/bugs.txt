@@ -7,6 +7,15 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Program crashes if gPrefs can't be created (Linux)...
+- Fade doesn't fade out quite enough - it should finish
+  fading out a hair early.
+- Removing 4 minutes from a saved project file crashes
+  (see email from Jon (Gary) Salkind.)
+- Noise Removal: errors every 47 seconds or so (at block
+  boundaries - reproducible)
+- Plot Spectrum doesn't obey the selection - it grabs
+  all tracks (or the last track?), not the selected track
 - Crash with FireWire audio devices on OS 9
 - Can't record on OS 9 when Finale is open
 - Export doesn't work on Mac OS 9???   AIFF???
@@ -58,7 +67,8 @@ Known bugs to fix:
   to ln -s /usr/lib/libwx_gtk-2.2.so /usr/lib/libwx_gtk.so
 - 'amplify' effect can change -1 amplitude to +1
 -  when the top track of a stereo track is shrunk so that
-  the 'solo' and 'mute' fields appear beside the lower track, these   buttons no longer work
+  the 'solo' and 'mute' fields appear beside the lower track, these
+  buttons no longer work
 - layout of Edit toolbar buttons sucks in Windows(tm) (my fault)
 - drag-floating toolbars produces wierd ghosting of other previous
   images in Windows(tm).
@@ -82,6 +92,7 @@ Known bugs to fix:
 Possible bugs to investigate:
 -----------------------------------------------------------
 
+- Silence at the end of Ogg files?  (Email from John Jack)
 - Exporting tracks with envelopes and an offset can result
   in different WAV output than what you see on the screen in
   the editor.  (See email from Mike Tyson).

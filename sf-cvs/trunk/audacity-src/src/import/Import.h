@@ -17,15 +17,60 @@
 #ifndef _IMPORT_
 #define _IMPORT_
 
-class WaveTrack;
-class DirManager;
-class AudacityProject;
+#include <wx/string.h>
+#include <wx/list.h>
+#include <wx/listimpl.cpp>
 
-wxString TrackNameFromFileName(wxString fName);
+class TrackFactory;
+class Track;
+class ImportPlugin;
+class ImportFileHandle;
+class UnusableImportPlugin;
+typedef bool progress_callback_t( void *userData, float percent );
 
-// returns number of tracks imported
-int Import(AudacityProject *project,
-           wxString fName,
-           WaveTrack *** tracks);
+class Format {
+public:
+   wxString formatName;
+   wxStringList formatExtensions;
+
+   Format(wxString _formatName, wxStringList _formatExtensions):
+      formatName(_formatName),
+      formatExtensions(_formatExtensions)
+   {
+   }
+};
+
+class ImportPluginList;
+class UnusableImportPluginList;
+
+WX_DECLARE_LIST(Format, FormatList);
+
+
+class Importer {
+public:
+   Importer();
+   ~Importer();
+
+   void GetSupportedImportFormats(FormatList *formatList);
+
+   // returns number of tracks imported
+   // if zero, the import failed and errorMessage will be set.
+   int Import(wxString fName,
+              TrackFactory *trackFactory,
+              Track *** tracks,
+              wxString &errorMessage,
+              progress_callback_t progressCallback,
+              void *userData);
+
+   // get a possibly more detailed description of the kind of file
+   // that is being opened.  ONLY callable from INSIDE THE CALLBACK.
+   wxString GetFileDescription();
+
+private:
+   ImportPluginList *mImportPluginList;
+   UnusableImportPluginList *mUnusableImportPluginList;
+   ImportFileHandle *mInFile;
+};
 
 #endif
+

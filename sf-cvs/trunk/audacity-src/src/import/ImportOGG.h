@@ -8,20 +8,14 @@
 
 **********************************************************************/
 
-#ifdef USE_LIBVORBIS
-
 #ifndef __AUDACITY_IMPORT_OGG__
 #define __AUDACITY_IMPORT_OGG__
 
-#include <wx/string.h>
+class ImportPluginList;
+class UnusableImportPluginList;
 
-class DirManager;
-class WaveTrack;
-
-bool ImportOGG(wxWindow * parent,
-               wxString Filename, WaveTrack *** channels, int *numChannels,
-               DirManager * dirManager);
-
+void GetOGGImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList);
 
 #endif
-#endif
+

@@ -48,10 +48,9 @@ bool ExportPCM(AudacityProject *project,
    wxWindow    *parent = project;
    TrackList   *tracks = project->GetTracks();
    int          sf_format = ReadExportFormatPref();
-   int          sf_formatBits = ReadExportFormatBitsPref();
    wxString     formatStr;
    SF_INFO      info;
-   SNDFILE     *sf;
+   SNDFILE     *sf = NULL;
    int          err;
 
    formatStr = sf_header_name(sf_format & SF_FORMAT_TYPEMASK);
@@ -59,26 +58,22 @@ bool ExportPCM(AudacityProject *project,
    // Use libsndfile to export file
 
    info.samplerate = (unsigned int)(rate + 0.5);
-   info.samples = (unsigned int)((t1 - t0)*rate + 0.5);
+   info.frames = (unsigned int)((t1 - t0)*rate + 0.5);
    info.channels = stereo? 2: 1;
-   info.pcmbitwidth = sf_formatBits;
    info.format = sf_format;
    info.sections = 1;
    info.seekable = 0;
 
    // If we can't export exactly the format they requested,
-   // try the default format for that header type, and try
-   // 16-bit samples.
+   // try the default format for that header type...
    if (!sf_format_check(&info))
       info.format = (info.format & SF_FORMAT_TYPEMASK);
-   if (!sf_format_check(&info))
-      info.pcmbitwidth = 16;
    if (!sf_format_check(&info)) {
       wxMessageBox(_("Cannot export audio in this format."));
       return false;
    }
 
-   sf = sf_open_write((const char *)fName, &info);
+   sf = sf_open((const char *)fName, SFM_WRITE, &info);
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     (const char *)fName));
@@ -86,14 +81,10 @@ bool ExportPCM(AudacityProject *project,
    }
 
    sampleFormat format;
-
-   if (info.pcmbitwidth == 16 &&
-       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM) ||
-       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_BE) ||
-       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_LE))
-      format = int16Sample;
-   else
+   if (sf_subtype_more_than_16_bits(info.format))
       format = floatSample;
+   else
+      format = int16Sample;
 
    double timeStep = 10.0;      // write in blocks of 10 secs
 

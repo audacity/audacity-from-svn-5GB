@@ -26,7 +26,7 @@
 #include "ControlToolBar.h"
 
 
-bool QuickMix(TrackList *tracks, DirManager *dirManager,
+bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
               double rate, sampleFormat format)
 {
    WaveTrack **waveArray;
@@ -78,13 +78,13 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager,
       t = iter.Next();
    }
 
-   WaveTrack *mixLeft = new WaveTrack(dirManager, format);
+   WaveTrack *mixLeft = trackFactory->NewWaveTrack(format);
    mixLeft->SetRate(rate);
    mixLeft->SetChannel(Track::MonoChannel);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (!mono) {
-      mixRight = new WaveTrack(dirManager, format);
+      mixRight = trackFactory->NewWaveTrack(format);
       mixRight->SetRate(rate);
       mixRight->SetName(_("Mix"));
       mixLeft->SetChannel(Track::LeftChannel);

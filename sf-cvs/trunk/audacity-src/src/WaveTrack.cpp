@@ -81,6 +81,11 @@ public:
    float       *freq;
 };
 
+WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format)
+{
+   return new WaveTrack(mDirManager, format);
+}
+
 WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format):
    Track(projDirManager)
 {

@@ -13,14 +13,28 @@
   Much of this source code is based on 'minimad.c' as distributed
   with libmad.
 
-  TODO (important!): solve the chicken and egg problem.
-  
 **********************************************************************/
 
 #include <wx/defs.h>
 #include "../Audacity.h"
 
-#ifdef USE_LIBMAD
+#include "Import.h"
+#include "ImportMP3.h"
+#include "ImportPlugin.h"
+
+#ifndef USE_LIBMAD
+
+void GetMP3ImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList)
+{
+   UnusableImportPlugin* mp3IsUnsupported =
+      new UnusableImportPlugin("MP3",
+                               wxStringList("mp3", "mp2", "mpg", "mpeg", NULL));
+
+   unusableImportPluginList->Append(mp3IsUnsupported);
+}
+
+#else /* USE_LIBMAD */
 
 #include <wx/textctrl.h>
 #include <wx/file.h>
@@ -35,17 +49,8 @@ extern "C" {
 #include "mad.h"
 }
 
-#include "Import.h"
-#include "ImportMP3.h"
-
-#include "../DirManager.h"
 #include "../WaveTrack.h"
-#include "../Project.h"
-#include "../Tags.h"
-
-/* in mad.h, this struct is declared inside another struct. gcc's down with
- * that, but g++ complains of it being undeclared if you do. This isn't
- * a pretty solution, but it's really the only one. */
+//#include "../Tags.h"
 
 #define INPUT_BUFFER_SIZE 65535
 #define PROGRESS_SCALING_FACTOR 100000
@@ -53,28 +58,70 @@ extern "C" {
 /* this is a private structure we can use for whatever we like, and it will get
  * passed to each of the callback routines, allowing us to keep track of
  * things. */
-struct priv_data {
+struct private_data {
    wxFile *file;            /* the file containing the mp3 data we're feeding the encoder */
    unsigned char *inputBuffer;
-   WaveTrack **leftTrack, **rightTrack;
-   float *leftBuffer, *rightBuffer;
-   sampleCount bufferSize;  /* how big each of the above buffers is */
-   sampleCount numDecoded;  /* how many decoded samples are sitting in each buffer */
-   wxString name;           /* what to name the created tracks */ 
-   wxProgressDialog *progress;
+   TrackFactory *trackFactory;
+   WaveTrack **channels;
+   int numChannels;
+   progress_callback_t *progressCallback;
+   void *userData;
    bool cancelled;
-   DirManager *dirManager;  /* Grr. don't ask. */
-   wxWindow *parent;        /* Likewise. */
 };
 
-/* Declare Static functions */
-static enum mad_flow input_cb(void *_data, struct mad_stream *stream);
-static enum mad_flow output_cb(void *_data,
+class MP3ImportPlugin : public ImportPlugin
+{
+public:
+   MP3ImportPlugin():
+      ImportPlugin(wxStringList("mp3", "mp2", "mpg", "mpeg", NULL))
+   {
+   }
+
+   ~MP3ImportPlugin() { }
+
+   wxString GetPluginFormatDescription();
+   ImportFileHandle *Open(wxString Filename);
+};
+
+class MP3ImportFileHandle : public ImportFileHandle
+{
+public:
+   MP3ImportFileHandle(wxFile *file):
+      mFile(file),
+      mUserData(NULL)
+   {
+      mPrivateData.progressCallback = NULL;
+   }
+
+   ~MP3ImportFileHandle();
+
+   void SetProgressCallback(progress_callback_t *function,
+                            void *userData);
+   wxString GetFileDescription();
+   int GetFileUncompressedBytes();
+   bool Import(TrackFactory *trackFactory, Track ***outTracks,
+               int *outNumTracks);
+private:
+   wxFile *mFile;
+   void *mUserData;
+   struct private_data mPrivateData;
+   mad_decoder mDecoder;
+};
+
+void GetMP3ImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList)
+{
+   importPluginList->Append(new MP3ImportPlugin);
+}
+
+/* The MAD callbacks */
+enum mad_flow input_cb(void *_data, struct mad_stream *stream);
+enum mad_flow output_cb(void *_data,
                         struct mad_header const *header,
                         struct mad_pcm *pcm);
-static enum mad_flow error_cb(void *_data, struct mad_stream *stream, 
+enum mad_flow error_cb(void *_data, struct mad_stream *stream,
                        struct mad_frame *frame);
-                                              
+
 /* convert libmad's fixed point representation to 16 bit signed integers. This
  * code is taken verbatim from minimad.c. */
 
@@ -84,31 +131,146 @@ inline float scale(mad_fixed_t sample)
 }
 
 
+wxString MP3ImportPlugin::GetPluginFormatDescription()
+{
+   return "MP3";
+}
+
+ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
+{
+   wxFile *file = new wxFile((char *) Filename.c_str());
+
+   if (!file->IsOpened()) {
+      delete file;
+      return NULL;
+   }
+
+   /* There's no way to tell if this is a valid mp3 file before actually
+    * decoding, so we return a valid FileHandle. */
+
+   return new MP3ImportFileHandle(file);
+}
+
+
+void MP3ImportFileHandle::SetProgressCallback(progress_callback_t *function,
+                                          void *userData)
+{
+   mPrivateData.progressCallback = function;
+   mPrivateData.userData = userData;
+}
+
+wxString MP3ImportFileHandle::GetFileDescription()
+{
+   return "MP3";
+}
+
+int MP3ImportFileHandle::GetFileUncompressedBytes()
+{
+   // TODO
+   return 0;
+}
+
+bool MP3ImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
+                             int *outNumTracks)
+{
+   int chn;
+
+   /* Prepare decoder data, initialize decoder */
+
+   mPrivateData.file        = mFile;
+   mPrivateData.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
+   mPrivateData.channels   = NULL;
+   mPrivateData.cancelled   = false;
+   mPrivateData.numChannels = 0;
+   mPrivateData.trackFactory= trackFactory;
+
+   mad_decoder_init(&mDecoder, &mPrivateData, input_cb, 0, 0, output_cb, error_cb, 0);
+
+   /*
+    TODO: where should this go?
+   Tags *tags = project->GetTags();
+   tags->ImportID3(fName);
+
+    */
+
+   /* and send the decoder on its way! */
+
+   if(mad_decoder_run(&mDecoder, MAD_DECODER_MODE_SYNC) == 0)
+   {
+      /* success */
+      /* printf("success\n"); */
+
+      mad_decoder_finish(&mDecoder);
+
+      /* copy the WaveTrack pointers into the Track pointer list that
+       * we are expected to fill */
+      *outTracks = new Track* [mPrivateData.numChannels];
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+         (*outTracks)[chn] = mPrivateData.channels[chn];
+      *outNumTracks = mPrivateData.numChannels;
+
+      delete mPrivateData.inputBuffer;
+      delete[] mPrivateData.channels;
+
+      return true;
+   }
+   else {
+
+      /* failure */
+      /* printf("failure\n"); */
+
+      mad_decoder_finish(&mDecoder);
+
+      /* delete everything */
+      for(chn = 0; chn < mPrivateData.numChannels; chn++)
+         delete mPrivateData.channels[chn];
+
+      delete[] mPrivateData.channels;
+      delete mPrivateData.inputBuffer;
+
+      return false;
+   }
+}
+
+MP3ImportFileHandle::~MP3ImportFileHandle()
+{
+   if(mFile) {
+      if (mFile->IsOpened())
+         mFile->Close();
+      delete mFile;
+   }
+}
+
+//
+//   MAD Callbacks
+//
+
+/* The input callback is called when the decoder wants more data. */
+
 enum mad_flow input_cb(void *_data, struct mad_stream *stream)
 {
-   struct priv_data *data = (struct priv_data *)_data;
+   struct private_data *data = (struct private_data *)_data;
 
-   if(!data->progress)
-      data->progress = new wxProgressDialog("Import",
-                                            "Importing MP3 file...",
-                                            1000,
-                                            data->parent,
-                                            wxPD_CAN_ABORT | wxPD_ELAPSED_TIME |
-                                            wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-
-   if( data->progress &&
-      !data->progress->Update( int(1000.0 * data->file->Tell() /
-                                   data->file->Length()) ) ) {      
-      /* user cancelled */
-
-      data->cancelled = true;
-      return MAD_FLOW_STOP;
+   if(data->progressCallback) {
+      data->cancelled = data->progressCallback(data->userData,
+                                               (float)data->file->Tell() /
+                                               data->file->Length());
+      if(data->cancelled)
+         return MAD_FLOW_STOP;
    }
 
    if(data->file->Eof()) {
       data->cancelled = false;
       return MAD_FLOW_STOP;
    }
+
+   /* "Each time you refill your buffer, you need to preserve the data in
+    *  your existing buffer from stream.next_frame to the end.
+    *
+    *  This usually amounts to calling memmove() on this unconsumed portion
+    *  of the buffer and appending new data after it, before calling
+    *  mad_stream_buffer()"
+    *           -- Rob Leslie, on the mad-dev mailing list */
 
    unsigned int unconsumedBytes;
    if(stream->next_frame) {
@@ -118,69 +280,70 @@ enum mad_flow input_cb(void *_data, struct mad_stream *stream)
    else
       unconsumedBytes = 0;
 
-   
-   size_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
-                                  INPUT_BUFFER_SIZE - unconsumedBytes);
+
+   off_t read = data->file->Read(data->inputBuffer + unconsumedBytes,
+                                 INPUT_BUFFER_SIZE - unconsumedBytes);
 
    mad_stream_buffer(stream, data->inputBuffer, read + unconsumedBytes);
 
    return MAD_FLOW_CONTINUE;
 }
 
+/* The output callback is called every time the decoder has finished decoding
+ * a frame, allowing us to use the decoded data */
+
 enum mad_flow output_cb(void *_data,
                         struct mad_header const *header,
                         struct mad_pcm *pcm)
 {
-   unsigned int channels, samplerate;
+   int channels, samplerate;
    sampleCount samples;
-   mad_fixed_t const *left, *right;
-   struct priv_data *data = (struct priv_data *)_data;
+   struct private_data *data = (struct private_data *)_data;
+   int chn, smpl;
 
    samplerate= pcm->samplerate;
    channels  = pcm->channels;
    samples   = pcm->length;
-   left      = pcm->samples[0];
-   right     = pcm->samples[1];
 
-   /* the left and right buffers get created on the first run */
- 
-   if(!data->leftBuffer) {
-      data->leftBuffer = new float[data->bufferSize];
-      *data->leftTrack = new WaveTrack(data->dirManager, floatSample);
-      (*data->leftTrack)->SetChannel(Track::MonoChannel);
-      (*data->leftTrack)->SetName(data->name);
-      (*data->leftTrack)->SetRate(samplerate);
-      
-      if(channels == 2) {
-         data->rightBuffer = new float[data->bufferSize];
-         *data->rightTrack = new WaveTrack(data->dirManager, floatSample);
-         (*data->leftTrack)->SetChannel(Track::LeftChannel);
-         (*data->rightTrack)->SetChannel(Track::RightChannel);
-         (*data->rightTrack)->SetName(data->name);
-         (*data->rightTrack)->SetRate(samplerate);
-         (*data->leftTrack)->SetLinked(true);
+   /* If this is the first run, we need to create the WaveTracks that
+    * will hold the data.  We do this now because now is the first
+    * moment when we know how many channels there are. */
+
+   if(!data->channels) {
+      data->channels = new WaveTrack* [channels];
+
+      for(chn = 0; chn < channels; chn++) {
+         data->channels[chn] = data->trackFactory->NewWaveTrack(floatSample);
+         data->channels[chn]->SetRate(samplerate);
+         data->channels[chn]->SetChannel(Track::MonoChannel);
       }
+
+      /* special case: 2 channels is understood to be stereo */
+      if(channels == 2) {
+         data->channels[0]->SetChannel(Track::LeftChannel);
+         data->channels[1]->SetChannel(Track::RightChannel);
+         data->channels[0]->SetLinked(true);
+      }
+      data->numChannels = channels;
    }
 
-   if(data->numDecoded + samples > data->bufferSize) {
-      (*data->leftTrack)->Append((samplePtr)data->leftBuffer,
-                                 floatSample,
-                                 data->numDecoded);
-      if(channels == 2)
-         (*data->rightTrack)->Append((samplePtr)data->rightBuffer,
-                                     floatSample,
-                                     data->numDecoded);
+   /* TODO: get rid of this by adding fixed-point support to SampleFormat.
+    * For now, we allocate temporary float buffers to convert the fixed
+    * point samples into something we can feed to the WaveTrack.  Allocating
+    * big blocks of data like this isn't a great idea, but it's temporary.
+    */
+   float **channelBuffers = new float* [channels];
+   for(chn = 0; chn < channels; chn++)
+      channelBuffers[chn] = new float [samples];
 
-      data->numDecoded = 0;
-   }
+   for(smpl = 0; smpl < samples; smpl++)
+      for(chn = 0; chn < channels; chn++)
+         channelBuffers[chn][smpl] = scale(pcm->samples[chn][smpl]);
 
-   while(samples--) {
-      data->leftBuffer[data->numDecoded] = scale(*left++);
-      if(channels == 2)
-         data->rightBuffer[data->numDecoded] = scale(*right++);
-
-      data->numDecoded++;
-   }
+   for(chn = 0; chn < channels; chn++)
+      data->channels[chn]->Append((samplePtr)channelBuffers[chn],
+                                  floatSample,
+                                  samples);
 
    return MAD_FLOW_CONTINUE;
 }
@@ -194,92 +357,16 @@ enum mad_flow error_cb(void *_data, struct mad_stream *stream,
      MAD_FLOW_BREAK    = 0x0011,
      MAD_FLOW_IGNORE   = 0x0020
    }; */
+   /*
+   printf("decoding error 0x%04x (%s)\n",
+      stream->error, mad_stream_errorstr(stream));
+   */
 
    return MAD_FLOW_CONTINUE;
-}
 
-
-
-bool ImportMP3(AudacityProject * project,
-               wxString fName, WaveTrack ** left, WaveTrack ** right)
-{
-   DirManager *dirManager = project->GetDirManager();
-   wxWindow *parent = project;
-
-   Tags *tags = project->GetTags();
-   tags->ImportID3(fName);
-
-   *left = NULL;
-   *right = NULL;
-
-   wxBusyCursor wait;
-
-   /* Prepare decoder data, initialize decoder */
-
-   wxFile file((char *) fName.c_str());
-
-   if (!file.IsOpened()) {
-      wxMessageBox( _("Could not open file: ") + fName);
-      return false;
-   }
-
-   struct priv_data data;
-   struct mad_decoder decoder;
-
-   data.file        = &file;
-   data.inputBuffer = new unsigned char [INPUT_BUFFER_SIZE];
-   data.leftTrack   = left;
-   data.rightTrack  = right;
-   data.leftBuffer  = NULL;
-   data.rightBuffer = NULL;
-   data.bufferSize  = 1048576;
-   data.numDecoded  = 0;
-   data.name        = TrackNameFromFileName(fName);
-   data.progress    = NULL;
-   data.cancelled   = false;
-   data.dirManager  = dirManager;
-   data.parent      = parent;
-
-   wxStartTimer();
-   
-   mad_decoder_init(&decoder, &data, input_cb, 0, 0, output_cb, error_cb, 0);
-   
-   /* and send the decoder on its way! */
-
-   mad_decoder_run(&decoder, MAD_DECODER_MODE_SYNC);
-
-   mad_decoder_finish(&decoder);
-
-   /* write anything left in the buffers and clean up */
-
-   (*data.leftTrack)->Append((samplePtr)data.leftBuffer,
-                             floatSample,
-                             data.numDecoded);
-   if(data.rightBuffer)
-      (*data.rightTrack)->Append((samplePtr)data.rightBuffer,
-                                 floatSample,
-                                 data.numDecoded);
-
-   if(data.leftBuffer)
-      delete [] data.leftBuffer;
-   
-   if(data.rightBuffer)
-      delete [] data.rightBuffer;
-
-   if(data.progress)
-      delete data.progress;
-
-   if(data.cancelled && *data.leftTrack) {
-      delete *data.leftTrack;
-      if(*data.rightTrack)
-         delete *data.rightTrack;
-
-      return false;
-   }
-
-
-   return true;
+   /* return MAD_FLOW_BREAK; */
 }
 
 
 #endif                          /* defined(USE_LIBMAD) */
+

@@ -37,6 +37,3 @@ extern int gMenusDirty;
 
 int ReadExportFormatPref();
 void WriteExportFormatPref(unsigned int format);
-
-int ReadExportFormatBitsPref();
-void WriteExportFormatBitsPref(int bits);
