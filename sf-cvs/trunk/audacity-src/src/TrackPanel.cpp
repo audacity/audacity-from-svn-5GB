@@ -21,7 +21,7 @@
 #endif
 
 #include <math.h>
-#include <algorithm>
+//#include <algorithm>
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
@@ -894,8 +894,8 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
          Refresh(false);
    }
    else if (event.ButtonUp()) {
-      if (mZoomEnd < mZoomStart)
-         std::swap(mZoomEnd, mZoomStart);
+      //if (mZoomEnd < mZoomStart)
+         //std::swap(mZoomEnd, mZoomStart);
 
       wxRect r;
 
@@ -1236,7 +1236,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
 //   before the track will swap with the one above or below
 void TrackPanel::CalculateRearrangingThresholds(wxMouseEvent & event)
 {
-   wxASSERT(mRearranging && mCapturedTrack);
+   wxASSERT(mCapturedTrack);
 
    // JH: this will probably need to be tweaked a bit, I'm just
    //   not sure what formula will have the best feel for the
