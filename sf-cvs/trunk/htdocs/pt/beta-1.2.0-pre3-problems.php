@@ -1,4 +1,4 @@
-<h2>Problemas já conhecidos agora:</h2>
+<h2>Falhas relatadas:</h2>
 
 <p>
 As seguintes falhas já foram relatadas até agora no Audacity 1.2.0-pre3:
