@@ -226,8 +226,8 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
 	const wxString strArray_PitchNames[] = 
-		{_("C"), _("C#/Db"), _("D"), _("D#/Eb"), _("E"), _("F"), 
-			_("F#/Gb"), _("G"), _("G#/Ab"), _("A"), _("A#/Bb"), _("B")};
+		{"C", "C#/Db", "D", "D#/Eb", "E", "F", 
+       "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"};
 	const int numChoicesPitchNames = 12;
 
    wxChoice * pChoice_FromPitch =
@@ -268,7 +268,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 												wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_SemitonesChange =
-       new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, _("0.0"), 
+       new wxTextCtrl(this, ID_TEXT_SEMITONESCHANGE, "0.0", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_SemitonesChange->Add(pTextCtrl_SemitonesChange, 0, 
@@ -326,7 +326,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    wxTextCtrl * pTextCtrl_PercentChange =
-       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, _("0.0"), 
+       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
@@ -397,7 +397,7 @@ bool ChangePitchDialog::TransferDataToWindow()
 	if (pTextCtrl) {
 		wxString str;
 		if (m_FromFrequency > 0.0)
-			str.Printf(_("%.3f"), m_FromFrequency);
+			str.Printf("%.3f", m_FromFrequency);
 		else
 			str = "";
 		pTextCtrl->SetValue(str);
@@ -770,7 +770,7 @@ void ChangePitchDialog::Update_Text_SemitonesChange()
 	wxTextCtrl * pTextCtrl = this->GetTextCtrl_SemitonesChange();
 	if (pTextCtrl) {
 		wxString str;
-		str.Printf(_("%.2f"), m_SemitonesChange);
+		str.Printf("%.2f", m_SemitonesChange);
 		pTextCtrl->SetValue(str);
 	}
 }
@@ -781,7 +781,7 @@ void ChangePitchDialog::Update_Text_ToFrequency()
 	if (pTextCtrl) {
 		wxString str;
 		if (m_ToFrequency > 0.0)
-			str.Printf(_("%.3f"), m_ToFrequency);
+			str.Printf("%.3f", m_ToFrequency);
 		else
 			str = "";
 		pTextCtrl->SetValue(str);
@@ -794,7 +794,7 @@ void ChangePitchDialog::Update_Text_PercentChange()
 	wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
 	if (pTextCtrl) {
 		wxString str;
-		str.Printf(_("%.1f"), m_PercentChange);
+		str.Printf("%.1f", m_PercentChange);
 		pTextCtrl->SetValue(str);
 	}
 }
