@@ -77,6 +77,9 @@ double sel1save = 0.0;
 
 void AudacityProject::CreateMenuBar()
 {
+   mCreatingSubMenu = false;
+   mTempMenu = NULL;
+
    mMenusDirtyCheck = gMenusDirty;
    mFirstTimeUpdateMenus = true;
 

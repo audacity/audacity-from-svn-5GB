@@ -144,7 +144,8 @@ enum menuType {
       CursorSelStartID,
       CursorSelEndID,
       /*DUMMY SEPARATOR*/
-      AlignID = CursorSelEndID + 2,
+      /*DUMMY SUBMENU THINGY*/
+      AlignID = CursorSelEndID + 3,
       AlignZeroID,
       AlignCursorID,
       AlignSelStartID,
@@ -159,7 +160,8 @@ enum menuType {
       AlignGroupEndSelStartID,
       AlignGroupEndSelEndID,
 
-      AlignSubMenuID,      //The overall align submenu 
+      /*DUMMY SUBMENU THINGY*/
+      AlignSubMenuID = AlignGroupEndSelEndID + 2,      //The overall align submenu 
       // Help Menu
       AboutID ,
       /*DUMMY SEPARATOR*/
