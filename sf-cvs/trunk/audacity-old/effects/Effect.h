@@ -14,7 +14,11 @@
 #include <wx/dynarray.h>
 #include <wx/string.h>
 
+#ifdef __WXMAC__
+#include "WaveTrack.h"
+#else
 #include "../WaveTrack.h"
+#endif
 
 class Effect;
 
