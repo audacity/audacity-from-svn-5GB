@@ -1,0 +1,149 @@
+Compiling Audacity under Windows using Microsoft Visual C++ 6.0
+
+Authors:
+  Vince Busam
+  Steve Jolly
+  Shane Mueller
+  Vaughan Johnson
+
+================================================================
+This version is currently accurate for Audacity version 1.1.1.
+Last Updated: November 10, 2002
+If the advice here is inaccurate or incomplete, please
+email audacity-devel@lists.sourceforge.net.
+================================================================
+
+Before trying to compile Audacity, please make sure that
+your copy of Visual C++ 6.0 has been upgraded to Service
+Patch 5.  If you require it, this patch is available from
+Microsoft at
+
+  http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
+
+It is worth noting that Audacity uses VC++'s multithreaded
+statically-linked run-time libraries.
+
+---------------------------
+STEP 1:  Download wxWindows
+---------------------------
+To simplify the implementation of a near-identical user
+interface across platforms, Audacity uses classes and
+resources from wxWindows, a portable GUI framework for C++
+(and Python).  You must download and build wxWindows before
+attempting to compile Audacity, or nothing will work!
+
+wxWindows is available from http://www.wxwindows.org.
+Similar to the Linux kernel, wxWindows is available as
+stable and development branches.  
+
+Audacity 1.1.1 uses wxWindows 2.3.3, the unstable development 
+branch, available at
+
+  http://www.wxwindows.org/dl_msw2.htm#dev
+
+
+------------------------
+STEP 2:  Build wxWindows
+------------------------
+When you have downloaded and installed wxWindows, you must
+build it.  First though, to be compatible with Audacity, you
+must alter the build settings to use the multithreaded
+statically-linked run-time libraries instead of the
+multithreaded DLL run-time libraries.  This isn't hard:
+
+1. Launch Visual C++ and open the workspace file called
+   "wxWindows.dsw" in the "src" directory of your wxWindows
+   installation.
+
+2. Select "Project"->"Settings" (Alt+F7), choose "Win32 Release"
+   in the "Settings For" combo box and select everything visible
+   in the tree window on the left of the dialog box.
+
+3. Now select the "C/C++" tab and change "Use run-time library"
+   under the 'Code Generation' combo box to "Multithreaded".
+
+4. Now select "Win32 Debug" from the "Settings For" combo and
+   change the run-time library to "Debug Multithreaded".
+
+5. Now you can click "OK" and build wxWindows by selecting
+   "Build"->"Batch Build" and clicking "Rebuild All".
+
+This will build both Debug and Release versions of the
+wxWindows library.
+
+--------------------------
+STEP 3:  Download Audacity
+--------------------------
+Now you can compile Audacity.  If you want to checkout a
+copy of the latest source code from CVS (assuming you
+haven't already!), there are instructions at
+http://audacity.sourceforge.net/cvs.php. Run Visual C++ and
+load the Audacity workspace: it's "audacity.dsw" in the
+"win" directory of the Audacity source tree.
+
+--------------------------------------------
+STEP 4:  Set wxWindows location for Audacity
+--------------------------------------------
+Before you can start the build process, you must update the
+project settings to tell Visual C++ where to find wxWindows.
+There are three settings that need changing:
+    1.  Include Directory (e.g., "C:\wxWindows_2.3.3\include")
+    2.  Resource Directory (e.g., "C:\wxWindows_2.3.3\include")
+    3.  Library Directory (e.g., "C:\wxWindows_2.3.3\lib")
+
+Fortunately, this is parameterized, using a Windows system 
+environment variable. There are various ways to set these, so 
+look in the Windows help system. You want to create an 
+environment variable WXWIN, set to the top-level directory 
+where you installed wxWindows. For example, 
+in your "autoexec.bat" file, you might have a line:
+
+   set WXWIN="C:\wxWindows_2.3.3"
+
+Note that you don't want a trailing backslash on that. In the 
+Audacity project file, there are declarations like 
+
+   $(WXWIN)\include
+
+that get interpreted as, e.g., "C:\wxWindows_2.3.3\include".
+
+Once you have set the WXWIN environment variable correctly, 
+the Audacity project file's declarations will do the rest.
+
+---------------------------
+STEP 5:  Ignore lib setting
+---------------------------
+Some people previously reported error messages linking
+Audacity.  You may not have this problem.  However, if you
+receive error messages during the link process, try the
+following.
+
+Go to the "Project"->"Settings" menu item in Visual Studio.
+
+Ignore lib. Select "Win32 Debug" or "Win32 Release" as
+appropriate for the build you were doing from the "Settings For"
+combo. Select only "Audacity" in the tree, the Link tab, and
+"Input" in the combo box. Enter "libcmtd.lib" in the
+"Ignore Libraries" box if you were attempting to perform a
+Release build, or "libcmt.lib" for a Debug build.
+
+-----------------------
+STEP 6:  Build Audacity
+-----------------------
+To build libsndfile on Windows, you'll need to copy both 
+"config.h" and "sndfile.h" from "audacity\lib-src\libsndfile\Win32" 
+to "audacity\lib-src\libsndfile\Win32" before you compile. 
+
+Now select the configuration that you wish to build
+("Audacity - Win32 Release" for general use, "Audacity -
+Win32 Debug" for a slower but debuggable executable) from
+the "Build"->"Set Active Configuration" dialog and choose
+"Build"->"Rebuild All" to compile Audacity!
+
+That's all - if this procedure doesn't work, you can ask for
+help on the Audacity development mailing list:
+audacity-devel@lists.sourceforge.net.  The first suggestion
+is likely to be "try it again with a clean installation of
+the wxWindows source and the latest Audacity source from
+CVS" though, so if that's not what you just attempted, you
+might want to try that first... 

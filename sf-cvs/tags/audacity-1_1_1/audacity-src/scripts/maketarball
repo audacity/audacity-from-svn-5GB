@@ -1,0 +1,62 @@
+#!/usr/bin/perl
+
+print "maketarball 1.1.1 -- make Audacity distribution tarball\n";
+
+unless(-f "src/Audacity.h") {
+	print "Must be run from Audacity directory\n";
+	exit;
+}
+
+# find version number
+open(HEADER, "src/Audacity.h");
+@lines = <HEADER>;
+$lines = join " ", @lines;
+$lines =~ /AUDACITY_VERSION_STRING "([0-9.a-z]*)"/;
+$version = $1;
+print "version set to $version...\n";
+close(HEADER);
+
+print "making copy of source directory...\n";
+`cp -r . ../audacity-src-$version`;
+chdir "../audacity-src-$version";
+
+print "removing CVS directories...\n";
+`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing emacs temp files...\n";
+`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+
+print "removing executable and other intermediate files...\n";
+`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+
+print "removing bugs and todo lists\n";
+`rm -f bugs.txt todo.txt`;
+
+print "removing scripts...\n";
+`rm -rf scripts`;
+
+print "removing libraries that should be installed locally...\n";
+`rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
+`rm -rf lib-src/wave++`;
+
+print "removing qa\n";
+`rm -rf qa`;
+
+print "removing help files (haven't been updated for 1.1)\n";
+`rm -rf help/webbrowser`;
+`rm -rf help/wxhelp`;
+
+print "removing Doxygen (since we're not making use of it yet\n";
+`rm -f audacity.dox`;
+
+print "removing wxstd locale files (since they should come with wxWindows\n";
+`rm -rf locale/wxstd`;
+
+printf "removing Nyquist plug-ins that are just for show\n";
+`rm -f plug-ins/analyze.ny plug-ins/beat.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+
+#print "making tarball audacity-src-$version.tgz...\n";
+chdir "..";
+#`tar zcf audacity-src-$version.tgz audacity-src-$version`;
+
+print "done.\n";
