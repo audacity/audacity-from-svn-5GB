@@ -11,7 +11,7 @@
 
 <p>
 <b>Cross-platform <a href="nyquist.php">Nyquist</a>
-plug-ins (contributed by users)</b>
+plug-ins (contributed by users)</b>:
 </p>
 <p>
 (To use, unzip and drop in Audacity's <b>Plug-ins</b> folder.
