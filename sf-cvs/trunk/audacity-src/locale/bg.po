@@ -2,14 +2,13 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../src/ToolBar.cpp:419 ../src/prefs/KeyConfigPrefs.cpp:151
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2002-07-03 08:30-0700\n"
-"PO-Revision-Date: 2002-06-10 12:46+0200\n"
+"PO-Revision-Date: 2002-07-04 11:21+0200\n"
 "Last-Translator: Mikhail Balabanov <mishob@hotmail.com>\n"
-"Language-Team: Bulgarian\n"
+"Language-Team: Bulgarian <mishob@hotmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=windows-1251\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,7 +25,7 @@ msgstr "  Дължина за смесване: %f с\n"
 
 #: ../src/widgets/AButton.cpp:121
 msgid " (disabled)"
-msgstr ""
+msgstr " (недостъпно)"
 
 #: ../src/effects/VST/AudioEffect.cpp:371
 #: ../src/effects/VST/AudioEffect.cpp:375
@@ -39,62 +38,60 @@ msgid " window"
 msgstr " прозорец"
 
 #: ../src/commands.h:178
-#, fuzzy
 msgid "&Close"
-msgstr "Затваряне"
+msgstr "&Затваряне"
 
 #: ../src/commands.h:210
-#, fuzzy
 msgid "&Delete"
-msgstr "Изтриване"
+msgstr "&Изтриване"
 
-#: ../src/Menus.cpp:88 ../src/Menus.cpp:115
+#: ../src/Menus.cpp:88
+#: ../src/Menus.cpp:115
 msgid "&Edit"
 msgstr "&Редакция"
 
-#: ../src/commands.h:167 ../src/prefs/FileFormatPrefs.cpp:344
+#: ../src/commands.h:167
+#: ../src/prefs/FileFormatPrefs.cpp:344
 #, c-format
 msgid "&Export as %s..."
 msgstr "&Експорт като %s..."
 
-#: ../src/Menus.cpp:87 ../src/Menus.cpp:114
+#: ../src/Menus.cpp:87
+#: ../src/Menus.cpp:114
 msgid "&File"
 msgstr "&Файл"
 
 #: ../src/commands.h:226
-#, fuzzy
 msgid "&Fit in Window"
-msgstr "Напасване към прозореца"
+msgstr "Напасване към &прозореца"
 
-#: ../src/Menus.cpp:94 ../src/Menus.cpp:126
+#: ../src/Menus.cpp:94
+#: ../src/Menus.cpp:126
 msgid "&Help"
 msgstr "&Помощ"
 
 #: ../src/commands.h:240
-#, fuzzy
 msgid "&Import Audio..."
-msgstr "Импорт на звук"
+msgstr "&Импорт на звук"
 
 #: ../src/commands.h:214
 msgid "&Insert Silence..."
 msgstr "&Вмъкване на тишина..."
 
 #: ../src/commands.h:176
-#, fuzzy
 msgid "&New"
-msgstr "Нов"
+msgstr "&Нов"
 
 #: ../src/commands.h:177
-#, fuzzy
 msgid "&Open..."
-msgstr "&Отваряне...\tCtrl+O"
+msgstr "&Отваряне..."
 
 #: ../src/commands.h:194
-#, fuzzy
 msgid "&Preferences..."
-msgstr "Настройка"
+msgstr "Нас&тройка"
 
-#: ../src/Menus.cpp:90 ../src/Menus.cpp:117
+#: ../src/Menus.cpp:90
+#: ../src/Menus.cpp:117
 msgid "&Project"
 msgstr "&Проект"
 
@@ -103,39 +100,34 @@ msgid "&Quick Mix"
 msgstr "&Бързо смесване"
 
 #: ../src/commands.h:201
-#, fuzzy
 msgid "&Redo"
-msgstr "Възстановяване"
+msgstr "&Възстановяване"
 
 #: ../src/commands.h:261
 msgid "&Remove Track(s)"
 msgstr "&Премахване на писта(и)"
 
 #: ../src/commands.h:179
-#, fuzzy
 msgid "&Save Project"
-msgstr "Съхраняване на проект"
+msgstr "&Съхраняване на проект"
 
 #: ../src/commands.h:211
-#, fuzzy
 msgid "&Silence"
-msgstr "Тишина"
+msgstr "&Нулиране"
 
 #: ../src/commands.h:207
-#, fuzzy
 msgid "&Trim"
-msgstr "Подрязване"
+msgstr "Под&рязване"
 
-#: ../src/Menus.cpp:89 ../src/Menus.cpp:116
+#: ../src/Menus.cpp:89
+#: ../src/Menus.cpp:116
 msgid "&View"
 msgstr "&Изглед"
 
 #: ../src/prefs/FileFormatPrefs.cpp:409
-msgid ""
-"(Not all combinations of headers, data sizes,\n"
+msgid "(Not all combinations of headers, data sizes,\n"
 "and encodings are possible.)"
-msgstr ""
-"(Не всички комбинации от заглавни блокове,\n"
+msgstr "(Не всички комбинации от заглавни блокове,\n"
 "размери на данните и кодиране са възможни.)"
 
 #: ../src/prefs/FileFormatPrefs.cpp:269
@@ -191,7 +183,8 @@ msgstr "Нов редактор за цифров звук"
 msgid "About Audacity"
 msgstr "За Audacity"
 
-#: ../src/AboutDialog.cpp:66 ../src/commands.h:264
+#: ../src/AboutDialog.cpp:66
+#: ../src/commands.h:264
 msgid "About Audacity..."
 msgstr "За Audacity..."
 
@@ -213,7 +206,7 @@ msgstr "Албум:"
 
 #: ../src/AboutDialog.cpp:143
 msgid "Algorithms, MIDI & Audio I/O programming"
-msgstr ""
+msgstr "Алгоритми, програмиране на вход/изход на звук и MIDI"
 
 #: ../src/commands.h:253
 msgid "Align Tracks &Together"
@@ -244,31 +237,16 @@ msgid "All files (*.*)|*.*"
 msgstr "Всички файлове (*.*)|*.*"
 
 #: ../src/Project.cpp:1124
-msgid ""
-"All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files "
-"(*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files "
-"(*.snd)|*.snd|MP3 files (*.mp3)|*.mp3"
-msgstr ""
-"Всички файлове (*.*)|*.*|Проекти на Audacity (*.aup)|*.aup|Формат WAV "
-"(*.wav)|*.wav|Формат AIFF (*.aif)|*.aif|Формат AU (*.au)|*.au|Формат IRCAM "
-"(*.snd)|*.snd|Формат MP3 (*.mp3)|*.mp3"
+msgid "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 files (*.mp3)|*.mp3"
+msgstr "Всички файлове (*.*)|*.*|Проекти на Audacity (*.aup)|*.aup|Формат WAV (*.wav)|*.wav|Формат AIFF (*.aif)|*.aif|Формат AU (*.au)|*.au|Формат IRCAM (*.snd)|*.snd|Формат MP3 (*.mp3)|*.mp3"
 
 #: ../src/Menus.cpp:1427
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
-msgstr ""
-"Всички файлове (*.*)|*.*|Формат MIDI (*.mid)|*.mid|Формат на Allegro "
-"(*.gro)|*.gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgstr "Всички файлове (*.*)|*.*|Формат MIDI (*.mid)|*.mid|Формат на Allegro (*.gro)|*.gro"
 
 #: ../src/Menus.cpp:1360
-msgid ""
-"All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
-"files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 files (*.mp3)|*.mp3|Ogg "
-"Vorbis files (*.ogg)|*.ogg"
-msgstr ""
-"Всички файлове (*.*)|*.*|Формат WAV (*.wav)|*.wav|Формат AIFF "
-"(*.aif)|*.aif|Формат AU (*.au)|*.au|Формат IRCAM (*.snd)|*.snd|Формат MP3 "
-"(*.mp3)|*.mp3|Формат на Ogg Vorbis (*.ogg)|*.ogg"
+msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|IRCAM files (*.snd)|*.snd|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg"
+msgstr "Всички файлове (*.*)|*.*|Формат WAV (*.wav)|*.wav|Формат AIFF (*.aif)|*.aif|Формат AU (*.au)|*.au|Формат IRCAM (*.snd)|*.snd|Формат MP3 (*.mp3)|*.mp3|Формат на Ogg Vorbis (*.ogg)|*.ogg"
 
 #: ../src/FileFormats.cpp:31
 msgid "Amiga IFF/SVX8/SV16"
@@ -295,9 +273,8 @@ msgid "Amplifying"
 msgstr "Усилване"
 
 #: ../src/effects/ToneGen.cpp:258
-#, fuzzy
 msgid "Amplitude (0-1)"
-msgstr "Нова пикова амплитуда (дБ):"
+msgstr "Амплитуда (0-1)"
 
 #: ../src/FileFormats.cpp:26
 msgid "Apple/SGI AIFF"
@@ -325,15 +302,13 @@ msgstr "Изпълнител:"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:119
 msgid "Assign Defaults"
-msgstr ""
+msgstr "Подразбирани настройки"
 
 #: ../src/Benchmark.cpp:491
 #, c-format
-msgid ""
-"At 44100 Hz, 16-bits per sample, the estimated number of\n"
+msgid "At 44100 Hz, 16-bits per sample, the estimated number of\n"
 "simultaneous tracks that could be played at once: %.1f\n"
-msgstr ""
-"С честота 44100 Хц и 16-битови отчети приблизителният\n"
+msgstr "С честота 44100 Хц и 16-битови отчети приблизителният\n"
 "брой едновременно възпроизвеждани писти е: %.1f\n"
 
 #: ../src/AboutDialog.cpp:191
@@ -349,31 +324,24 @@ msgid "Audacity Preferences"
 msgstr "Настройка на Audacity"
 
 #: ../src/DirManager.cpp:100
-msgid ""
-"Audacity could not find a place to store temporary files.\n"
+msgid "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
-msgstr ""
-"Audacity не намери назначение за временните файлове.\n"
+msgstr "Audacity не намери назначение за временните файлове.\n"
 "Моля, посочете директория в прозореца Настройка."
 
 #: ../src/import/Import.cpp:128
-msgid ""
-"Audacity did not recognize the type of this file.\n"
+msgid "Audacity did not recognize the type of this file.\n"
 "Would you like to try to import it as raw PCM audio data?"
-msgstr ""
-"Audacityне разпознава типа на този файл.\n"
+msgstr "Audacityне разпознава типа на този файл.\n"
 "Желаете ли импорт на неформатирани данни (PCM)?"
 
 #: ../src/export/ExportMP3.cpp:493
 msgid ""
-"Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
-"exporting library available separately.  See the documentation for more "
-"information.\n"
+"Audacity does not export MP3 files directly, but instead uses LAME, an MP3 exporting library available separately.  See the documentation for more information.\n"
 "\n"
 "Would you like to locate LameLib now?"
 msgstr ""
-"Audacity не експортира пряко във формат MP3, а използва LAME, отделна "
-"библиотека за експорт към MP3.  Вижте документацията за повече информация.\n"
+"Audacity не експортира пряко във формат MP3, а използва LAME, отделна библиотека за експорт към MP3.  Вижте документацията за повече информация.\n"
 "\n"
 "Желаете ли незабавно търсене за LameLib?"
 
@@ -381,8 +349,7 @@ msgstr ""
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses the\n"
 "freely available LAME library to handle MP3 file encoding.  You must\n"
-"obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,and then "
-"locate this file for Audacity.  You only need to do this once.\n"
+"obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,and then locate this file for Audacity.  You only need to do this once.\n"
 "\n"
 "Would you like to locate lame_enc.dll now?"
 msgstr ""
@@ -412,24 +379,12 @@ msgstr ""
 "Желаете ли незабавно търсене за libmp3lame.so?"
 
 #: ../src/AboutDialog.cpp:72
-#, fuzzy
-msgid ""
-"Audacity is a free program being written by a team of developers using "
-"Sourceforge, an online service for open-source projects.  It is based on the "
-"wxWindows toolkit and is available for Windows, MacOS 9 and X, Linux, and "
-"other Unix-like systems."
-msgstr ""
-"Audacity е безплатна програма, разработвана от екип от програмисти чрез "
-"Sourceforge - мрежова услуга за проекти с отворен код.  Програмата се базира "
-"на развойния комплект wxWindows и има версии за Windows, MacOS и Linux."
+msgid "Audacity is a free program being written by a team of developers using Sourceforge, an online service for open-source projects.  It is based on the wxWindows toolkit and is available for Windows, MacOS 9 and X, Linux, and other Unix-like systems."
+msgstr "Audacity е безплатна програма, разработвана от екип от програмисти чрез Sourceforge - мрежова услуга за проекти с отворен код.  Програмата се базира на развойния комплект wxWindows и има версии за Windows, MacOS 9 и X, Linux и други съвместими с Unix системи."
 
 #: ../src/DirManager.cpp:109
-msgid ""
-"Audacity is now going to exit.  Please launch Audacity again to use the new "
-"temporary directory."
-msgstr ""
-"Audacity ще се затвори.  Стартирайте я отново, за да се използва вече новата "
-"временна директория."
+msgid "Audacity is now going to exit.  Please launch Audacity again to use the new temporary directory."
+msgstr "Audacity ще се затвори.  Стартирайте я отново, за да се използва вече новата временна директория."
 
 #: ../src/Project.cpp:1628
 msgid "Audacity projects (*.aup)|*.aup"
@@ -437,12 +392,8 @@ msgstr "Проекти на Audacity (*.aup)|*.aup"
 
 #: ../src/export/ExportMP3.cpp:112
 #, c-format
-msgid ""
-"Audacity was expecting a library named \"%s\".  Are you sure you want to "
-"attempt to export MP3 files using \"%s\"?"
-msgstr ""
-"Audacity очаква библиотека с име \"%s\".  Сигурни ли сте, че искате опит за "
-"експорт към MP3 чрез \"%s\"?"
+msgid "Audacity was expecting a library named \"%s\".  Are you sure you want to attempt to export MP3 files using \"%s\"?"
+msgstr "Audacity очаква библиотека с име \"%s\".  Сигурни ли сте, че искате опит за експорт към MP3 чрез \"%s\"?"
 
 #: ../src/prefs/PrefsDialog.cpp:71
 msgid "Audio I/O"
@@ -460,7 +411,8 @@ msgstr "Автор:"
 msgid "Autoscroll while playing"
 msgstr "Местене на изгледа при възпроизвеждане"
 
-#: ../src/Menus.cpp:1101 ../src/Menus.cpp:1105
+#: ../src/Menus.cpp:1101
+#: ../src/Menus.cpp:1105
 msgid "Bad number of seconds."
 msgstr "Грешен брой секунди."
 
@@ -505,11 +457,16 @@ msgstr "Усилване (дБ):"
 msgid "Boosting Bass Frequencies"
 msgstr "Усилване на басовите честоти"
 
-#: ../src/Tags.cpp:598 ../src/effects/Amplify.cpp:350
-#: ../src/effects/BassBoost.cpp:352 ../src/effects/Filter.cpp:439
-#: ../src/effects/Phaser.cpp:575 ../src/effects/ToneGen.cpp:280
-#: ../src/effects/Wahwah.cpp:560 ../src/effects/ladspa/LadspaEffect.cpp:422
-#: ../src/import/ImportRaw.cpp:891 ../src/prefs/FileFormatPrefs.cpp:486
+#: ../src/Tags.cpp:598
+#: ../src/effects/Amplify.cpp:350
+#: ../src/effects/BassBoost.cpp:352
+#: ../src/effects/Filter.cpp:439
+#: ../src/effects/Phaser.cpp:575
+#: ../src/effects/ToneGen.cpp:280
+#: ../src/effects/Wahwah.cpp:560
+#: ../src/effects/ladspa/LadspaEffect.cpp:422
+#: ../src/import/ImportRaw.cpp:891
+#: ../src/prefs/FileFormatPrefs.cpp:486
 #: ../src/prefs/PrefsDialog.cpp:95
 msgid "Cancel"
 msgstr "Отказ"
@@ -536,7 +493,8 @@ msgstr "Ново име на пистата:"
 msgid "Changed '%s' to %d Hz"
 msgstr "Писта '%s' бе предискретизирана на %d Хц"
 
-#: ../src/TrackPanel.cpp:2190 ../src/TrackPanel.cpp:2292
+#: ../src/TrackPanel.cpp:2190
+#: ../src/TrackPanel.cpp:2292
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Писта '%s' бе преобразувана в %s"
@@ -547,11 +505,8 @@ msgid "Changed '%s' to %s display"
 msgstr "Изгледът към '%s' бе превключен на %s"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:203
-msgid ""
-"Changes to temporary directory will not take effect until Audacity is "
-"restarted"
-msgstr ""
-"Смяната на временната директория влиза в сила след рестартиране на Audacity"
+msgid "Changes to temporary directory will not take effect until Audacity is restarted"
+msgstr "Смяната на временната директория влиза в сила след рестартиране на Audacity"
 
 #: ../src/Benchmark.cpp:441
 msgid "Checking file pointer leaks:\n"
@@ -569,24 +524,23 @@ msgstr "Избор..."
 msgid "Cleaning up temporary files..."
 msgstr "Изчистване на временните файлове..."
 
-#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:430
+#: ../src/Benchmark.cpp:213
+#: ../src/effects/Filter.cpp:430
 #: ../src/prefs/KeyConfigPrefs.cpp:97
 msgid "Clear"
 msgstr "Изчистване"
 
 #: ../src/TrackPanel.cpp:606
-#, fuzzy
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr "Щракнете и влачете, за да промените размера на двете писти"
+msgstr "Щракнете и влачете, за да настроите относителния размер на стерео-пистите."
 
 #: ../src/TrackPanel.cpp:490
 msgid "Click and drag to edit the amplitude envelope"
 msgstr "Щракнете и влачете, за да зададете обвиваща крива"
 
 #: ../src/TrackPanel.cpp:499
-#, fuzzy
 msgid "Click and drag to edit the samples"
-msgstr "Щракнете и влачете, за да зададете обвиваща крива"
+msgstr "Щракнете и влачете, за да редактирате отчетите"
 
 #: ../src/TrackPanel.cpp:491
 msgid "Click and drag to move a track in time"
@@ -594,18 +548,15 @@ msgstr "Щракнете и влачете, за да местите пистата във времето"
 
 #: ../src/TrackPanel.cpp:575
 msgid "Click and drag to move left selection boundary."
-msgstr ""
-"Щракнете и влачете, за да местите лявата граница на маркираната област."
+msgstr "Щракнете и влачете, за да местите лявата граница на маркираната област."
 
 #: ../src/TrackPanel.cpp:580
 msgid "Click and drag to move right selection boundary."
-msgstr ""
-"Щракнете и влачете, за да местите дясната граница на маркираната област."
+msgstr "Щракнете и влачете, за да местите дясната граница на маркираната област."
 
 #: ../src/TrackPanel.cpp:611
-#, fuzzy
 msgid "Click and drag to resize the track."
-msgstr "Щракнете и влачете, за да промените размера на пистата"
+msgstr "Щракнете и влачете, за да промените размера на пистата."
 
 #: ../src/TrackPanel.cpp:489
 msgid "Click and drag to select audio"
@@ -615,7 +566,9 @@ msgstr "Щракнете и влачете, за да маркирате звук"
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Щракнете за увеличаване, щракнете с Shift за умаляване"
 
-#: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:178
+#: ../src/Benchmark.cpp:218
+#: ../src/FreqWindow.cpp:120
+#: ../src/commands.h:178
 #: ../src/effects/NoiseRemoval.cpp:404
 msgid "Close"
 msgstr "Затваряне"
@@ -660,7 +613,8 @@ msgstr "Компресиране"
 msgid "Compressor..."
 msgstr "Свиване на амплитудата..."
 
-#: ../src/EditToolBar.cpp:153 ../src/commands.h:205
+#: ../src/EditToolBar.cpp:153
+#: ../src/commands.h:205
 msgid "Copy"
 msgstr "Копиране"
 
@@ -668,33 +622,37 @@ msgstr "Копиране"
 msgid "Could not open MP3 encoding library!"
 msgstr "Не бе възможно отварянето на библиотеката за кодиране в MP3!"
 
-#: ../src/Menus.cpp:1399 ../src/Project.cpp:1171 ../src/Project.cpp:1177
-#: ../src/Project.cpp:1370 ../src/import/ImportMIDI.cpp:30
-#: ../src/import/ImportMP3.cpp:219 ../src/import/ImportRaw.cpp:300
+#: ../src/Menus.cpp:1399
+#: ../src/Project.cpp:1171
+#: ../src/Project.cpp:1177
+#: ../src/Project.cpp:1370
+#: ../src/import/ImportMIDI.cpp:30
+#: ../src/import/ImportMP3.cpp:219
+#: ../src/import/ImportRaw.cpp:300
 #: ../src/import/ImportRaw.cpp:768
 msgid "Could not open file: "
 msgstr "Не бе възможно отварянето на файл:"
 
 #: ../src/Project.cpp:1519
 #, c-format
-msgid ""
-"Could not save project.  Perhaps %s is not writeable,\n"
+msgid "Could not save project.  Perhaps %s is not writeable,\n"
 "or the disk is full."
-msgstr ""
-"Грешка при съхраняване на проект.  Може би в %s не може да се записва,\n"
+msgstr "Грешка при съхраняване на проект.  Може би в %s не може да се записва,\n"
 "или дискът е пълен."
 
 #: ../src/Help.cpp:86
 msgid "Couldn't open the Audacity Help file."
 msgstr "Невъзможно бе отварянето на справочния файл."
 
-#: ../src/FreqWindow.cpp:1078 ../src/Menus.cpp:679 ../src/Project.cpp:1531
+#: ../src/FreqWindow.cpp:1078
+#: ../src/Menus.cpp:679
+#: ../src/Project.cpp:1531
 msgid "Couldn't write to file: "
 msgstr "Не бе възможен запис във файл: "
 
 #: ../src/effects/ToneGen.cpp:274
 msgid "Create Tone"
-msgstr ""
+msgstr "Създаване на тон"
 
 #: ../src/Menus.cpp:1587
 msgid "Created new audio track"
@@ -735,7 +693,8 @@ msgstr "Курсор: %d Хц (%s) = %d дБ    Пик: %d Хц (%s)"
 msgid "Cursor: %lf s"
 msgstr "Курсор: %lf s"
 
-#: ../src/EditToolBar.cpp:151 ../src/commands.h:204
+#: ../src/EditToolBar.cpp:151
+#: ../src/commands.h:204
 msgid "Cut"
 msgstr "Изрязване"
 
@@ -754,9 +713,8 @@ msgid "Cut: %d - %d \n"
 msgstr "Изрязване: %d - %d \n"
 
 #: ../src/commands.h:217
-#, fuzzy
 msgid "D&uplicate"
-msgstr "Данните бяха дублирани"
+msgstr "&Дублиране"
 
 #: ../src/FileFormats.cpp:28
 msgid "DEC AU"
@@ -803,19 +761,20 @@ msgstr "Дълбочина (%):"
 msgid "Depth:"
 msgstr "Дълбочина:"
 
-#: ../src/prefs/KeyConfigPrefs.cpp:72 ../src/prefs/KeyConfigPrefs.cpp:161
-msgid ""
-"Description:\n"
+#: ../src/prefs/KeyConfigPrefs.cpp:72
+#: ../src/prefs/KeyConfigPrefs.cpp:161
+msgid "Description:\n"
 " "
-msgstr ""
-"Описание:\n"
+msgstr "Описание:\n"
 " "
 
-#: ../src/prefs/AudioIOPrefs.cpp:100 ../src/prefs/AudioIOPrefs.cpp:149
+#: ../src/prefs/AudioIOPrefs.cpp:100
+#: ../src/prefs/AudioIOPrefs.cpp:149
 msgid "Device:"
 msgstr "Устройство:"
 
-#: ../src/prefs/PrefsDialog.cpp:75 ../src/prefs/PrefsDialog.cpp:171
+#: ../src/prefs/PrefsDialog.cpp:75
+#: ../src/prefs/PrefsDialog.cpp:171
 msgid "Directories"
 msgstr "Директории"
 
@@ -855,7 +814,7 @@ msgstr "Скачване на лентата Редакция"
 
 #: ../src/AboutDialog.cpp:127
 msgid "Documentation Writer"
-msgstr ""
+msgstr "Документация"
 
 #: ../src/Benchmark.cpp:447
 msgid "Doing correctness check...\n"
@@ -870,18 +829,16 @@ msgid "Down Octave"
 msgstr "Октава надолу"
 
 #: ../src/TrackPanel.cpp:545
-#, fuzzy
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr "Влачете пистата нагоре или надолу, за да смените реда на пистите."
+msgstr "Влачете етикета вертикално, за да смените реда на пистите."
 
 #: ../src/ControlToolBar.cpp:390
 msgid "Draw Tool"
-msgstr ""
+msgstr "Инструмент за чертане"
 
 #: ../src/commands.h:217
-#, fuzzy
 msgid "Duplicate"
-msgstr "Данните бяха дублирани"
+msgstr "Дублиране"
 
 #: ../src/Menus.cpp:955
 msgid "Duplicated"
@@ -901,36 +858,36 @@ msgstr "Ехо..."
 
 #: ../src/commands.h:247
 msgid "Edit ID3 Tags"
-msgstr "Редакция на блокове ID3"
+msgstr "Редакция на етикети ID3"
 
 #: ../src/Menus.cpp:1499
 msgid "Edit ID3 Tags (for MP3 exporting)"
-msgstr "Редакция на блокове ID3 (за експорт към MP3)"
+msgstr "Редакция на етикети ID3 (за експорт към MP3)"
 
 #: ../src/commands.h:247
 msgid "Edit ID3 Tags..."
-msgstr "Редакция на блокове ID3"
+msgstr "Редакция на етикети ID3..."
 
 #: ../src/AboutDialog.cpp:119
 msgid "Edit Toolbar, and general developer"
-msgstr ""
+msgstr "Лента Редакция и обща развойна дейност"
 
 #: ../src/export/ExportMP3.cpp:915
 msgid "Edit the ID3 tags for the MP3 file"
-msgstr "Редакция на блокове ID3 за експорт към MP3"
+msgstr "Редакция на етикети ID3 за експорт към MP3"
 
 #: ../src/prefs/FileFormatPrefs.cpp:80
 msgid "Edit the original in place"
 msgstr "Редактиране на оригинала на място"
 
-#: ../src/Menus.cpp:91 ../src/Menus.cpp:118
+#: ../src/Menus.cpp:91
+#: ../src/Menus.cpp:118
 msgid "Effec&t"
 msgstr "&Ефект"
 
 #: ../src/AboutDialog.cpp:131
-#, fuzzy
 msgid "Effects programmer"
-msgstr "Програмиране на ефекти"
+msgstr "Програмист - ефекти"
 
 #: ../src/Mix.cpp:170
 #, c-format
@@ -938,9 +895,8 @@ msgid "Elapsed time: %f sec\n"
 msgstr "Изминало време: %f с\n"
 
 #: ../src/prefs/GUIPrefs.cpp:51
-#, fuzzy
 msgid "Enable Edit Toolbar"
-msgstr "Освобождаване на лентата Редакция"
+msgstr "Включване на лентата Редакция"
 
 #: ../src/prefs/FileFormatPrefs.cpp:455
 msgid "Encoding: "
@@ -980,11 +936,9 @@ msgid "Error (file may not have been written): %s"
 msgstr "Грешка (файлът може да не е записан: %s"
 
 #: ../src/AudioIO.cpp:261
-msgid ""
-"Error opening audio device.\n"
+msgid "Error opening audio device.\n"
 "(Change the device in the Preferences dialog.)"
-msgstr ""
-"Грешка при отваряне на аудио устройство.\n"
+msgstr "Грешка при отваряне на аудио устройство.\n"
 "(Сменете устройството в прозореца Настройка.)"
 
 #: ../src/import/ImportMIDI.cpp:45
@@ -1014,7 +968,9 @@ msgstr "Изход"
 msgid "Expected %d bytes, got %d bytes."
 msgstr "Очакват се %d байта, а са получени %d."
 
-#: ../src/Benchmark.cpp:374 ../src/Benchmark.cpp:396 ../src/Benchmark.cpp:409
+#: ../src/Benchmark.cpp:374
+#: ../src/Benchmark.cpp:396
+#: ../src/Benchmark.cpp:409
 #, c-format
 msgid "Expected len %d, track len %d.\n"
 msgstr "Очаква се дължина %d, а дължината на пистата е %d.\n"
@@ -1024,7 +980,8 @@ msgstr "Очаква се дължина %d, а дължината на пистата е %d.\n"
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Очакват се %d отчета, а са получени %d.\n"
 
-#: ../src/export/ExportMP3.cpp:1004 ../src/export/ExportOGG.cpp:186
+#: ../src/export/ExportMP3.cpp:1004
+#: ../src/export/ExportOGG.cpp:186
 #: ../src/export/ExportPCM.cpp:158
 msgid "Export"
 msgstr "Експорт"
@@ -1053,7 +1010,8 @@ msgstr "Експорт на надписи"
 msgid "Export Labels As:"
 msgstr "Експорт на надписи като:"
 
-#: ../src/export/ExportMP3.cpp:82 ../src/export/ExportMP3.cpp:119
+#: ../src/export/ExportMP3.cpp:82
+#: ../src/export/ExportMP3.cpp:119
 msgid "Export MP3"
 msgstr "Експорт във формат MP3"
 
@@ -1065,8 +1023,10 @@ msgstr "Експорт на маркираното като"
 msgid "Export Selection As (lossy)"
 msgstr "Експорт на маркираното като (със загуба)"
 
-#: ../src/commands.h:168 ../src/commands.h:172
-#: ../src/prefs/FileFormatPrefs.cpp:345 ../src/prefs/FileFormatPrefs.cpp:347
+#: ../src/commands.h:168
+#: ../src/commands.h:172
+#: ../src/prefs/FileFormatPrefs.cpp:345
+#: ../src/prefs/FileFormatPrefs.cpp:347
 #, c-format
 msgid "Export Selection as %s..."
 msgstr "Експорт на маркираното като %s..."
@@ -1075,7 +1035,8 @@ msgstr "Експорт на маркираното като %s..."
 msgid "Export Spectral Data As:"
 msgstr "Експорт на спектрални данни като:"
 
-#: ../src/commands.h:171 ../src/prefs/FileFormatPrefs.cpp:346
+#: ../src/commands.h:171
+#: ../src/prefs/FileFormatPrefs.cpp:346
 #, c-format
 msgid "Export as %s..."
 msgstr "Експорт като %s..."
@@ -1174,11 +1135,13 @@ msgstr "Напасване към прозореца"
 msgid "Fit selection in window"
 msgstr "Напасване на маркираната област към прозореца"
 
-#: ../src/Project.cpp:888 ../src/commands.h:235
+#: ../src/Project.cpp:888
+#: ../src/commands.h:235
 msgid "Float Control Toolbar"
 msgstr "Откъсване на лентата Контрол"
 
-#: ../src/Menus.cpp:534 ../src/commands.h:236
+#: ../src/Menus.cpp:534
+#: ../src/commands.h:236
 msgid "Float Edit Toolbar"
 msgstr "Откъсване на лентата Редакция"
 
@@ -1199,9 +1162,8 @@ msgid "Frequency (Hz):"
 msgstr "Честота (Хц):"
 
 #: ../src/effects/ToneGen.cpp:242
-#, fuzzy
 msgid "Frequency / Hz"
-msgstr "Честота (Хц):"
+msgstr "Честота (Хц)"
 
 #: ../src/FreqWindow.cpp:62
 msgid "Frequency Analysis"
@@ -1213,7 +1175,7 @@ msgstr "Кодиране GSM 6.10"
 
 #: ../src/effects/ToneGen.h:42
 msgid "Generating Tone"
-msgstr ""
+msgstr "Генерира се тон"
 
 #: ../src/Tags.cpp:558
 msgid "Genre:"
@@ -1247,8 +1209,10 @@ msgstr "ID3v1 (по-съвместим)"
 msgid "ID3v2 (more flexible)"
 msgstr "ID3v2 (по-гъвкав)"
 
-#: ../src/import/ImportOGG.cpp:167 ../src/import/ImportPCM.cpp:132
-#: ../src/import/ImportPCM.cpp:217 ../src/import/ImportRaw.cpp:890
+#: ../src/import/ImportOGG.cpp:167
+#: ../src/import/ImportPCM.cpp:132
+#: ../src/import/ImportPCM.cpp:217
+#: ../src/import/ImportRaw.cpp:890
 msgid "Import"
 msgstr "Импорт"
 
@@ -1276,7 +1240,8 @@ msgstr "Импорт от Ogg Vorbis"
 msgid "Import Raw &Data..."
 msgstr "Импорт на неформатирани &данни"
 
-#: ../src/commands.h:243 ../src/import/ImportRaw.cpp:856
+#: ../src/commands.h:243
+#: ../src/import/ImportRaw.cpp:856
 msgid "Import Raw Data"
 msgstr "Импорт на неформатирани данни"
 
@@ -1313,7 +1278,8 @@ msgstr "Импорт от файл %s..."
 msgid "Importing Ogg Vorbis File..."
 msgstr "Импорт от файл на Ogg Vorbis..."
 
-#: ../src/Menus.cpp:1094 ../src/commands.h:214
+#: ../src/Menus.cpp:1094
+#: ../src/commands.h:214
 msgid "Insert Silence"
 msgstr "Вмъкване на тишина"
 
@@ -1338,7 +1304,8 @@ msgstr "Въведение"
 msgid "Invalid Vorbis bitstream header"
 msgstr "Невалиден заглавен блок на двоичен поток във формат Vorbis"
 
-#: ../src/AStatus.cpp:273 ../src/TrackPanel.cpp:2350
+#: ../src/AStatus.cpp:273
+#: ../src/TrackPanel.cpp:2350
 msgid "Invalid rate."
 msgstr "Грешна честота на дискретизация."
 
@@ -1356,17 +1323,19 @@ msgstr "Клавиатура"
 
 #: ../src/AboutDialog.cpp:115
 msgid "Keyboard shortcuts, and general developer"
-msgstr ""
+msgstr "Клавишни комбинации и обща развойна дейност"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:89
 msgid "Keys"
 msgstr "Клавиши"
 
-#: ../src/effects/Phaser.cpp:501 ../src/effects/Wahwah.cpp:470
+#: ../src/effects/Phaser.cpp:501
+#: ../src/effects/Wahwah.cpp:470
 msgid "LFO Frequency (Hz):"
 msgstr "Честота на НЧО (Хц):"
 
-#: ../src/effects/Phaser.cpp:517 ../src/effects/Wahwah.cpp:486
+#: ../src/effects/Phaser.cpp:517
+#: ../src/effects/Wahwah.cpp:486
 msgid "LFO Start Phase (deg.):"
 msgstr "Нач. фаза на НЧО (градуси):"
 
@@ -1472,7 +1441,8 @@ msgstr "Максималната честота трябва да е между 100 Хц и 100 000 Хц"
 msgid "Media read error"
 msgstr "Грешка при четене от носителя"
 
-#: ../src/Mix.cpp:84 ../src/Mix.cpp:89
+#: ../src/Mix.cpp:84
+#: ../src/Mix.cpp:89
 msgid "Mix"
 msgstr "Смесване"
 
@@ -1492,12 +1462,14 @@ msgstr "Моно, "
 msgid "More"
 msgstr "Повече"
 
-#: ../src/TrackPanel.cpp:192 ../src/TrackPanel.cpp:213
+#: ../src/TrackPanel.cpp:192
+#: ../src/TrackPanel.cpp:213
 #: ../src/TrackPanel.cpp:222
 msgid "Move Track Down"
 msgstr "Местене на пистата надолу"
 
-#: ../src/TrackPanel.cpp:191 ../src/TrackPanel.cpp:212
+#: ../src/TrackPanel.cpp:191
+#: ../src/TrackPanel.cpp:212
 #: ../src/TrackPanel.cpp:221
 msgid "Move Track Up"
 msgstr "Местене на пистата нагоре"
@@ -1515,7 +1487,8 @@ msgstr "Изкл."
 msgid "NIST/Sphere"
 msgstr "NIST/Sphere"
 
-#: ../src/TrackPanel.cpp:189 ../src/TrackPanel.cpp:210
+#: ../src/TrackPanel.cpp:189
+#: ../src/TrackPanel.cpp:210
 #: ../src/TrackPanel.cpp:219
 msgid "Name..."
 msgstr "Име"
@@ -1553,11 +1526,9 @@ msgid "No audio data is selected."
 msgstr "Не са избрани звукови данни."
 
 #: ../src/export/Export.cpp:93
-msgid ""
-"No tracks are selected!\n"
+msgid "No tracks are selected!\n"
 "Choose Export... to export all tracks."
-msgstr ""
-"Няма маркирани писти!\n"
+msgstr "Няма маркирани писти!\n"
 "Изберете Експорт..., за да експортирате всички писти."
 
 #: ../src/effects/NoiseRemoval.cpp:60
@@ -1625,20 +1596,22 @@ msgid "Number of seconds of silence to insert:"
 msgstr "Брой секунди тишина за вмъкване:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:140
-#, fuzzy
 msgid "OGG Export Setup"
-msgstr "Настройка на експорт към MP3"
+msgstr "Настройка на експорт към OGG"
 
 #: ../src/prefs/FileFormatPrefs.cpp:149
-#, fuzzy
 msgid "OGG Quality:"
-msgstr "Качество"
+msgstr "Качество:"
 
-#: ../src/Tags.cpp:591 ../src/effects/Amplify.cpp:343
-#: ../src/effects/BassBoost.cpp:345 ../src/effects/Filter.cpp:435
-#: ../src/effects/Phaser.cpp:569 ../src/effects/Wahwah.cpp:554
+#: ../src/Tags.cpp:591
+#: ../src/effects/Amplify.cpp:343
+#: ../src/effects/BassBoost.cpp:345
+#: ../src/effects/Filter.cpp:435
+#: ../src/effects/Phaser.cpp:569
+#: ../src/effects/Wahwah.cpp:554
 #: ../src/effects/ladspa/LadspaEffect.cpp:417
-#: ../src/prefs/FileFormatPrefs.cpp:479 ../src/prefs/PrefsDialog.cpp:86
+#: ../src/prefs/FileFormatPrefs.cpp:479
+#: ../src/prefs/PrefsDialog.cpp:86
 msgid "OK"
 msgstr "Готово"
 
@@ -1646,7 +1619,8 @@ msgstr "Готово"
 msgid "Ogg Vorbis support is not included in this build of Audacity"
 msgstr "Тази версия на Audacity не поддържа Ogg Vorbis"
 
-#: ../src/commands.h:269 ../src/commands.h:271
+#: ../src/commands.h:269
+#: ../src/commands.h:271
 msgid "Online Help"
 msgstr "Справочна система"
 
@@ -1658,26 +1632,22 @@ msgstr "Азбучен указател"
 msgid "Online Help Index..."
 msgstr "Азбучен указател..."
 
-#: ../src/commands.h:269 ../src/commands.h:271
+#: ../src/commands.h:269
+#: ../src/commands.h:271
 msgid "Online Help..."
 msgstr "Справочна система..."
 
 #: ../src/export/ExportMP3.cpp:487
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
-msgstr ""
+msgstr "Само LAMELib|LAMELib|Споделени библиотеки (*)|*"
 
 #: ../src/export/ExportMP3.cpp:718
-#, fuzzy
-msgid ""
-"Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries "
-"(*.dll)|*.dll|All Files (*.*)|*"
-msgstr "Библиотеки за динам. свързване (*.dll)|*.dll"
+msgid "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|All Files (*.*)|*"
+msgstr "Само lame_enc.dll|lame_enc.dll|Библиотеки за динам. свързване (*.dll)|*.dll|Всички файлове (*.*)|*"
 
 #: ../src/export/ExportMP3.cpp:229
-msgid ""
-"Only libmp3lame.so|libmp3lame.so|Shared Object files (*.so)|*.so|All Files "
-"(*)|*"
-msgstr ""
+msgid "Only libmp3lame.so|libmp3lame.so|Shared Object files (*.so)|*.so|All Files (*)|*"
+msgstr "Само libmp3lame.so|libmp3lame.so|Споделени обектни файлове (*.so)|*.so|Всички файлове (*)|*"
 
 #: ../src/commands.h:177
 msgid "Open"
@@ -1687,7 +1657,8 @@ msgstr "Отваряне"
 msgid "Other contributors:"
 msgstr "Други контрибутори:"
 
-#: ../src/AStatus.cpp:70 ../src/TrackPanel.cpp:181
+#: ../src/AStatus.cpp:70
+#: ../src/TrackPanel.cpp:181
 #: ../src/prefs/FileFormatPrefs.cpp:107
 msgid "Other..."
 msgstr "Друго..."
@@ -1698,17 +1669,18 @@ msgstr "PCM"
 
 #: ../src/FileFormats.cpp:126
 msgid "PCM big-endian"
-msgstr "PCM, старши битове в края"
+msgstr "PCM, старши байт в началото"
 
 #: ../src/FileFormats.cpp:127
 msgid "PCM little-endian"
-msgstr "PCM, младши битове в края"
+msgstr "PCM, младши байт в началото"
 
 #: ../src/Benchmark.cpp:465
 msgid "Passed correctness check!\n"
 msgstr "Проверката за коректност бе успешна!\n"
 
-#: ../src/EditToolBar.cpp:155 ../src/commands.h:206
+#: ../src/EditToolBar.cpp:155
+#: ../src/commands.h:206
 msgid "Paste"
 msgstr "Вмъкване"
 
@@ -1791,14 +1763,15 @@ msgstr "Моля, използвайте командата Импорт от MIDI."
 msgid "Plot Spectrum"
 msgstr "Чертане на спектъра"
 
-#: ../src/Menus.cpp:92 ../src/Menus.cpp:119
+#: ../src/Menus.cpp:92
+#: ../src/Menus.cpp:119
 msgid "Plugin&s"
 msgstr "П&риставки"
 
 #: ../src/Menus.cpp:249
 #, c-format
 msgid "Plugins %d to %d"
-msgstr ""
+msgstr "Приставки %d - %d"
 
 #: ../src/commands.h:194
 msgid "Preferences"
@@ -1808,14 +1781,14 @@ msgstr "Настройка"
 msgid "Preparing...\n"
 msgstr "Подготовка...\n"
 
-#: ../src/AboutDialog.cpp:107 ../src/AboutDialog.cpp:111
+#: ../src/AboutDialog.cpp:107
+#: ../src/AboutDialog.cpp:111
 msgid "Primary developer"
-msgstr ""
+msgstr "Основен разработчик"
 
 #: ../src/AboutDialog.cpp:123
-#, fuzzy
 msgid "Programmer"
-msgstr "Ход на операцията"
+msgstr "Програмист"
 
 #: ../src/DirManager.cpp:180
 msgid "Progress"
@@ -1837,7 +1810,8 @@ msgstr "Propellorheads Rex2"
 msgid "Quality"
 msgstr "Качество"
 
-#: ../src/Mix.cpp:149 ../src/commands.h:250
+#: ../src/Mix.cpp:149
+#: ../src/commands.h:250
 msgid "Quick Mix"
 msgstr "Бързо смесване"
 
@@ -1873,14 +1847,14 @@ msgstr "Устройство за запис"
 msgid "Rectangular"
 msgstr "Правоъгълен"
 
-#: ../src/EditToolBar.cpp:163 ../src/commands.h:201
+#: ../src/EditToolBar.cpp:163
+#: ../src/commands.h:201
 msgid "Redo"
 msgstr "Възстановяване"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:94
-#, fuzzy
 msgid "Remove"
-msgstr "Премахване на шум"
+msgstr "Премахване"
 
 #: ../src/effects/NoiseRemoval.cpp:397
 msgid "Remove Noise"
@@ -1992,7 +1966,7 @@ msgstr "%s бе съхранен"
 
 #: ../src/effects/ToneGen.cpp:35
 msgid "Sawtooth"
-msgstr ""
+msgstr "\"Трион\""
 
 #: ../src/commands.h:275
 msgid "Search Online Help"
@@ -2042,7 +2016,8 @@ msgstr ""
 "изберете колко шум да бъде премахнат\n"
 "и щракнете върху Премахване на шум.\n"
 
-#: ../src/Menus.cpp:1356 ../src/Project.cpp:1120
+#: ../src/Menus.cpp:1356
+#: ../src/Project.cpp:1120
 msgid "Select an audio file..."
 msgstr "Избор на звуков файл..."
 
@@ -2054,12 +2029,15 @@ msgstr "Избор на некомпресиран звуков файл..."
 msgid "Selection Tool"
 msgstr "Инструмент за маркиране"
 
-#: ../src/TrackPanel.cpp:683 ../src/TrackPanel.cpp:767
+#: ../src/TrackPanel.cpp:683
+#: ../src/TrackPanel.cpp:767
 #, c-format
 msgid "Selection: %lf - %lf s"
 msgstr "Маркирано: %lf - %lf с"
 
-#: ../src/AStatus.cpp:263 ../src/TrackPanel.cpp:207 ../src/TrackPanel.cpp:2340
+#: ../src/AStatus.cpp:263
+#: ../src/TrackPanel.cpp:207
+#: ../src/TrackPanel.cpp:2340
 msgid "Set Rate"
 msgstr "Задаване на честота на дискретизация"
 
@@ -2077,7 +2055,7 @@ msgstr "Подробна информация за всички редакции"
 
 #: ../src/commands.h:211
 msgid "Silence"
-msgstr "Тишина"
+msgstr "Нулиране"
 
 #: ../src/EditToolBar.cpp:159
 msgid "Silence selection"
@@ -2089,9 +2067,8 @@ msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Маркираните писти бяха нулирани в отрязък от %.2f секунди от %.2f"
 
 #: ../src/effects/ToneGen.cpp:33
-#, fuzzy
 msgid "Sine"
-msgstr "Размер"
+msgstr "Синус"
 
 #: ../src/HistoryWindow.cpp:61
 msgid "Size"
@@ -2115,19 +2092,12 @@ msgid "Solo"
 msgstr "Соло"
 
 #: ../src/Prefs.cpp:104
-msgid ""
-"Some of your preferences were from an earlier version of Audacity and have "
-"been reset."
-msgstr ""
-"Някои настройки, останали от по-стара версия на Audacity бяха нулирани."
+msgid "Some of your preferences were from an earlier version of Audacity and have been reset."
+msgstr "Някои настройки, останали от по-стара версия на Audacity бяха нулирани."
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:126
-msgid ""
-"Sorry, Ladspa Effects cannot be performed on stereo tracks where the "
-"individual channels of the track do not match."
-msgstr ""
-"Съжаляваме, ефектите Ladspa не могат да се прилагат върху стерео писти, в "
-"които каналите на пистата не си пасват."
+msgid "Sorry, Ladspa Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
+msgstr "Съжаляваме, ефектите Ladspa не могат да се прилагат върху стерео писти, в които каналите на пистата не си пасват."
 
 #: ../src/export/Export.cpp:133
 msgid "Sorry, pathnames longer than 256 characters not supported."
@@ -2139,17 +2109,19 @@ msgstr "Sound Designer 2"
 
 #: ../src/AboutDialog.cpp:166
 msgid "Special thanks:"
-msgstr ""
+msgstr "Специални благодарности:"
 
 #: ../src/prefs/PrefsDialog.cpp:74
 msgid "Spectrograms"
 msgstr "Спектрограми"
 
-#: ../src/FreqWindow.cpp:126 ../src/TrackPanel.cpp:196
+#: ../src/FreqWindow.cpp:126
+#: ../src/TrackPanel.cpp:196
 msgid "Spectrum"
 msgstr "Спектър"
 
-#: ../src/Menus.cpp:1001 ../src/commands.h:215
+#: ../src/Menus.cpp:1001
+#: ../src/commands.h:215
 msgid "Split"
 msgstr "Разделяне"
 
@@ -2172,7 +2144,7 @@ msgstr "Разделяне на стерео писта '%s'"
 
 #: ../src/effects/ToneGen.cpp:34
 msgid "Square"
-msgstr ""
+msgstr "Квадрат"
 
 #: ../src/effects/Phaser.cpp:459
 msgid "Stages:"
@@ -2224,7 +2196,7 @@ msgstr "Текстови файлове (*.txt)|*.txt|Всички файлове (*.*)|*.*"
 
 #: ../src/Project.cpp:1142
 msgid "That project is already open in another window."
-msgstr ""
+msgstr "Този проект вече е отворен в друг прозорец."
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
@@ -2245,23 +2217,12 @@ msgid "There were %d possibly repeated frames, last near %lf seconds."
 msgstr "Имаше %d евентуално повторени кадъра, последният около %lf секунди."
 
 #: ../src/AboutDialog.cpp:78
-#, fuzzy
-msgid ""
-"This is a beta version of the program.  It may contain bugs and unfinished "
-"features.  We depend on your feedback, so please visit our website and give "
-"us your bug reports and feature requests."
-msgstr ""
-"Тази програма е бета-версия! Много хора я намират за полезна и стабилна за "
-"всекидневна употреба, но тя не е завършена и за нея няма гаранции!  "
-"Разчитаме на обратната връзка от вас, така че, моля, посетете сайта ни и ни "
-"уведомете за открити грешки или предложете нови възможности."
+msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
+msgstr "Тази програма е бета-версия. Тя може да съдържа грешки и недовършени компоненти.  Разчитаме на обратната връзка от вас - моля, посетете сайта ни и ни уведомете за открити грешки или предложете нови възможности."
 
 #: ../src/Project.cpp:1385
-msgid ""
-"This project was saved by a different version of Audacity and is no longer "
-"supported."
-msgstr ""
-"Този проект е съхранен с различна версия на Audacity и вече не се поддържа."
+msgid "This project was saved by a different version of Audacity and is no longer supported."
+msgstr "Този проект е съхранен с различна версия на Audacity и вече не се поддържа."
 
 #: ../src/import/Import.cpp:99
 msgid "This version of Audacity was not compiled with MP3 support."
@@ -2296,11 +2257,11 @@ msgstr "Заглавие:"
 
 #: ../src/effects/ToneGen.cpp:29
 msgid "Tone Generator"
-msgstr ""
+msgstr "Генератор на тонове"
 
 #: ../src/effects/ToneGen.h:40
 msgid "Tone Generator..."
-msgstr ""
+msgstr "Генератор на тонове..."
 
 #: ../src/Benchmark.cpp:442
 #, c-format
@@ -2315,7 +2276,8 @@ msgstr "Име на писта"
 msgid "Track Number:"
 msgstr "Номер на писта:"
 
-#: ../src/Benchmark.cpp:393 ../src/Benchmark.cpp:408
+#: ../src/Benchmark.cpp:393
+#: ../src/Benchmark.cpp:408
 #, c-format
 msgid "Trial %d\n"
 msgstr "Опит %d\n"
@@ -2336,7 +2298,8 @@ msgstr "Подрязване на файла до марк. област"
 msgid "Unable to determine"
 msgstr "Невъзможно е да се определи"
 
-#: ../src/export/ExportMP3.cpp:908 ../src/export/ExportOGG.cpp:45
+#: ../src/export/ExportMP3.cpp:908
+#: ../src/export/ExportOGG.cpp:45
 msgid "Unable to open target file for writing"
 msgstr "Невъзможно бе отварянето за запис на файла-назначение"
 
@@ -2344,11 +2307,13 @@ msgstr "Невъзможно бе отварянето за запис на файла-назначение"
 msgid "Uncompressed Export Format"
 msgstr "Некомпресиран формат за експорт"
 
-#: ../src/EditToolBar.cpp:162 ../src/commands.h:200
+#: ../src/EditToolBar.cpp:162
+#: ../src/commands.h:200
 msgid "Undo"
 msgstr "Отмяна"
 
-#: ../src/HistoryWindow.cpp:47 ../src/commands.h:230
+#: ../src/HistoryWindow.cpp:47
+#: ../src/commands.h:230
 msgid "Undo History"
 msgstr "Действия за отмяна"
 
@@ -2374,7 +2339,8 @@ msgstr "Непознат параметър в командния ред: %s\n"
 msgid "Unknown file type"
 msgstr "Непознат тип файлове"
 
-#: ../src/FileFormats.cpp:101 ../src/FileFormats.cpp:111
+#: ../src/FileFormats.cpp:101
+#: ../src/FileFormats.cpp:111
 msgid "Unknown header"
 msgstr "Непознат заглавен блок"
 
@@ -2388,7 +2354,7 @@ msgstr "Обновяване на спектрограмата при възпроизвеждане"
 
 #: ../src/prefs/FileFormatPrefs.cpp:158
 msgid "Use OGG instead of MP3"
-msgstr ""
+msgstr "Използване на OGG вместо MP3"
 
 #: ../src/Benchmark.cpp:342
 #, c-format
@@ -2429,12 +2395,8 @@ msgid "Wahwah..."
 msgstr "Ефект 'Уа-уа'..."
 
 #: ../src/DirManager.cpp:133
-msgid ""
-"Warning: there is very little free disk space left on this volume. Please "
-"select another temporary directory in your preferences."
-msgstr ""
-"Внимание: на този том има съвсем малко свободно място. Моля, изберете друга "
-"временна директория в настройките."
+msgid "Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences."
+msgstr "Внимание: на този том има съвсем малко свободно място. Моля, изберете друга временна директория в настройките."
 
 #: ../src/TrackPanel.cpp:194
 msgid "Waveform"
@@ -2445,9 +2407,8 @@ msgid "Waveform (dB)"
 msgstr "Вълнова форма (дБ)"
 
 #: ../src/effects/ToneGen.cpp:228
-#, fuzzy
 msgid "Waveform:"
-msgstr "Вълнова форма"
+msgstr "Вълнова форма:"
 
 #: ../src/effects/WaveletDenoise.h:37
 msgid "Wavelet Denoising..."
@@ -2479,31 +2440,27 @@ msgid "Year:"
 msgstr "Година:"
 
 #: ../src/export/Export.cpp:115
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "Пистите ще бъдат смесени в единичен моно канал в експортирания файл."
 
 #: ../src/export/Export.cpp:111
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "Пистите ще бъдат смесени в два стерео канала в експортирания файл."
 
 #: ../src/commands.h:223
-#, fuzzy
 msgid "Zoom &In"
-msgstr "Увеличаване"
+msgstr "&Увеличаване"
 
 #: ../src/commands.h:224
-#, fuzzy
 msgid "Zoom &Normal"
-msgstr "Нормален мащаб"
+msgstr "&Нормален мащаб"
 
 #: ../src/commands.h:225
-#, fuzzy
 msgid "Zoom &Out"
-msgstr "Смаляване"
+msgstr "&Смаляване"
 
-#: ../src/EditToolBar.cpp:167 ../src/commands.h:223
+#: ../src/EditToolBar.cpp:167
+#: ../src/commands.h:223
 msgid "Zoom In"
 msgstr "Увеличаване"
 
@@ -2511,7 +2468,8 @@ msgstr "Увеличаване"
 msgid "Zoom Normal"
 msgstr "Нормален мащаб"
 
-#: ../src/EditToolBar.cpp:169 ../src/commands.h:225
+#: ../src/EditToolBar.cpp:169
+#: ../src/commands.h:225
 msgid "Zoom Out"
 msgstr "Смаляване"
 
@@ -2520,9 +2478,8 @@ msgid "Zoom Tool"
 msgstr "Инструмент за мащаб"
 
 #: ../src/commands.h:227
-#, fuzzy
 msgid "Zoom to &Selection"
-msgstr "Мащабиране до маркираната област"
+msgstr "&Мащабиране до маркираната област"
 
 #: ../src/commands.h:227
 msgid "Zoom to Selection"
@@ -2534,15 +2491,15 @@ msgstr "benchmark.txt"
 
 #: ../src/import/ImportRaw.cpp:883
 msgid "big-endian"
-msgstr "старши битове в края"
+msgstr "старши байт в началото"
 
 #: ../src/FileFormats.cpp:135
 msgid "big-endian floating-point"
-msgstr "плаваща запетая, старши битове в края"
+msgstr "плаваща запетая, старши байт в началото"
 
 #: ../src/TrackPanel.cpp:2371
 msgid "down"
-msgstr ""
+msgstr "нагоре"
 
 #: ../src/FileFormats.cpp:121
 msgid "floating-point"
@@ -2558,11 +2515,11 @@ msgstr "наляво"
 
 #: ../src/import/ImportRaw.cpp:881
 msgid "little-endian"
-msgstr "младши битове в края"
+msgstr "младши байт в началото"
 
 #: ../src/FileFormats.cpp:136
 msgid "little-endian floating-point"
-msgstr "плаваща запетая, младши битове в края"
+msgstr "плаваща запетая, младши байт в началото"
 
 #: ../src/import/ImportRaw.cpp:876
 msgid "mono"
@@ -2598,120 +2555,5 @@ msgstr "PCM без знак"
 
 #: ../src/TrackPanel.cpp:2370
 msgid "up"
-msgstr ""
+msgstr "надолу"
 
-#~ msgid "&Close\tCtrl+W"
-#~ msgstr "&Затваряне\tCtrl+W"
-
-#~ msgid "&Delete\tCtrl+K"
-#~ msgstr "&Изтриване\tCtrl+K"
-
-#~ msgid "&Fit in Window\tCtrl+F"
-#~ msgstr "&Напасване към прозореца\tCtrl+F"
-
-#~ msgid "&Import Audio...\tCtrl+I"
-#~ msgstr "&Импорт на звук...\tCtrl+I"
-
-#~ msgid "&New\tCtrl+N"
-#~ msgstr "&Нов\tCtrl+N"
-
-#~ msgid "&Preferences...\tCtrl+P"
-#~ msgstr "Нас&тройка...\tCtrl+P"
-
-#~ msgid "&Redo\tCtrl+R"
-#~ msgstr "Възст&ановяване\tCtrl+R"
-
-#~ msgid "&Save Project\tCtrl+S"
-#~ msgstr "С&ъхраняване на проект\tCtrl+S"
-
-#~ msgid "&Silence\tCtrl+L"
-#~ msgstr "&Тишина\tCtrl+L"
-
-#~ msgid "&Trim\tCtrl+T"
-#~ msgstr "&Подрязване\tCtrl+T"
-
-#~ msgid "256 - default"
-#~ msgstr "256 - по подразбиране"
-
-#~ msgid "4096 - most narrowband"
-#~ msgstr "4096 - най-тясна честотна лента"
-
-#~ msgid "64 - most wideband"
-#~ msgstr "64 - най-широка честотна лента"
-
-#~ msgid "Audio and MIDI I/O Libraries"
-#~ msgstr "Входно-изходни библиотеки за звук и MIDI"
-
-#~ msgid "Copy\tCtrl+C"
-#~ msgstr "Копиране\tCtrl+C"
-
-#~ msgid "Cut\tCtrl+X"
-#~ msgstr "Изрязване\tCtrl+X"
-
-#~ msgid "D&uplicate\tCtrl+D"
-#~ msgstr "&Дубликат\tCtrl+D"
-
-#~ msgid "Error loading a Track.\n"
-#~ msgstr "Грешка при зареждане на писта.\n"
-
-#~ msgid "Error reading WaveTrack in line %d"
-#~ msgstr "Грешка при четене на WaveTrack в ред %d"
-
-#~ msgid "Internal error (WaveTrack)"
-#~ msgstr "Вътрешна грешка (WaveTrack)"
-
-#~ msgid "Load Edit Toolbar"
-#~ msgstr "Зареждане на лента Редакция"
-
-#~ msgid "Paste\tCtrl+V"
-#~ msgstr "Вмъкване\tCtrl+V"
-
-#~ msgid "Performing VST Effect: \""
-#~ msgstr "Прилага се ефект VST: \""
-
-#~ msgid "Plot Spectrum\tCtrl+U"
-#~ msgstr "Чертане на спектъра\tCtrl+U"
-
-#~ msgid ""
-#~ "Preferences dialog, MP3 importing and exporting,and general development"
-#~ msgstr "Прозорец Настройка, импорт и експорт на MP3 и обща развойна дейност"
-
-#~ msgid "Select All\tCtrl+A"
-#~ msgstr "Маркиране - всичко\tCtrl+A"
-
-#~ msgid "Shared Libraries|*"
-#~ msgstr "Споделени библиотеки|*"
-
-#~ msgid "Shared Object files (*.so)|*.so"
-#~ msgstr "Споделени обектни файлове (*.so)|*.so"
-
-#~ msgid ""
-#~ "Sorry, VST Effects cannot be performed on stereo tracks where the individual "
-#~ "channels of the track do not match."
-#~ msgstr ""
-#~ "Съжаляваме, ефектите VST не могат да се прилагат върху стерео писти, в които "
-#~ "каналите на пистата не си пасват."
-
-#~ msgid "Split\tCtrl+Y"
-#~ msgstr "Разделяне\tCtrl+Y"
-
-#~ msgid "The file named \"%s\" is missing from the project."
-#~ msgstr "Файлът с име \"%s\" липсва от проекта."
-
-#~ msgid "Undo\tCtrl+Z"
-#~ msgstr "Отмяна\tCtrl+Z"
-
-#~ msgid "VST Plug-in parameters:"
-#~ msgstr "Параметри за приставка VST:"
-
-#~ msgid "Zoom &In\tCtrl+1"
-#~ msgstr "&Увеличаване\tCtrl+1"
-
-#~ msgid "Zoom &Normal\tCtrl+2"
-#~ msgstr "&Нормален мащаб\tCtrl+2"
-
-#~ msgid "Zoom &Out\tCtrl+3"
-#~ msgstr "&Смаляване\tCtrl+3"
-
-#~ msgid "Zoom to &Selection\tCtrl+E"
-#~ msgstr "&Мащабиране до марк. област\tCtrl+E"
