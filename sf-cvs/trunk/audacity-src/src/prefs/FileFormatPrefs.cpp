@@ -335,15 +335,17 @@ bool FileFormatPrefs::Apply()
 
    const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
 
-   if (mAudacity) {
-      // TODO: should do for all open projects, right???
-
-      mAudacity->SetCommandValue(ExportMixID, wxString::Format(_("&Export as %s..."), pcmFmt));
-      mAudacity->SetCommandValue(ExportSelectionID, wxString::Format(_("Export Selection as %s..."), pcmFmt));
-      mAudacity->SetCommandValue(ExportLossyMixID, wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
-      mAudacity->SetCommandValue(ExportLossySelectionID, wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
-
-      mAudacity->RebuildMenuBar();
+   // should do for all open projects, right???
+   // BG: Probably, lets try it
+   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
+   {
+      if(gAudacityProjects[i])
+      {
+         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportMix"), wxString::Format(_("&Export as %s..."), pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportSelection"), wxString::Format(_("Export Selection as %s..."), pcmFmt));
+         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportLossyMix"), wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
+         gAudacityProjects[i]->GetCommands()->ChangeText(wxString("appmenu"), wxString("OnExportLossySelection"), wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
+      }
    }
 
    return true;

@@ -21,21 +21,13 @@
 #include "../Prefs.h"
 #include "KeyConfigPrefs.h"
 
-#define CommandsListID         7001
-#define DescriptionTextID      7002
-#define KeysListID             7003
-#define CurrentComboID         7004
-#define RemoveComboButtonID    7005
-#define ClearComboButtonID     7006
-#define AddComboButtonID       7007
-#define AssignDefaultsButtonID 7008
+#define AssignDefaultsButtonID 7001
+#define CurrentComboID         7002
+#define RebuildMenusButtonID   7003
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
-   EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
-   EVT_BUTTON(RemoveComboButtonID, KeyConfigPrefs::RemoveComboFromList)
-   EVT_BUTTON(ClearComboButtonID, KeyConfigPrefs::ClearComboList)
-   EVT_BUTTON(AddComboButtonID, KeyConfigPrefs::AddComboToList)
    EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
+   EVT_BUTTON(RebuildMenusButtonID, KeyConfigPrefs::RebuildMenus)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
@@ -48,86 +40,28 @@ PrefsPanel(parent), mCommandSelected(-1)
    topSizer = new wxBoxSizer( wxVERTICAL );
 
    {
-      wxBoxSizer *vKeyConfigSizer = new wxBoxSizer(wxHORIZONTAL);
-
-      wxBoxSizer *vCommandSizer = new wxBoxSizer(wxVERTICAL);
-
-      // BG: Create list control that will hold the commands supported under the selected category
-      mCommandsList = new wxListCtrl(this, CommandsListID, wxDefaultPosition, wxSize(200, 180),
-                                         wxLC_REPORT | wxLC_SINGLE_SEL /* | wxLC_EDIT_LABELS */);
-
-      mCommandsList->SetSizeHints(200, 180);
-
-      mCommandsList->InsertColumn(0, _("Commands"), wxLIST_FORMAT_LEFT, 200);
-
-      //Insert supported commands into list control
-      for(int i = 0; i < mAudacity->GetNumCommands(); i++)
-      {
-         mCommandsList->InsertItem(i, mAudacity->GetCommandName(i));
-      }
-
-      vCommandSizer->Add(mCommandsList, 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      vCommandSizer->Add(
-               new wxStaticText(this, DescriptionTextID,
-                  _("Description:\n ") + wxString(_("Nothing selected."))),
+      //Add label
+      topSizer->Add(
+               new wxStaticText(this, -1,
+                  _("This code has undergone a rewrite. The GUI is not complete.\nYou can still define custom keybindings; edit the './commands.cfg' file.\nIf you need to know what a speciffic key combo is called, type it in the box below.\nClick Assign Defaults to revert the menus back to default.\nClick Rebuild Menus to reparse './commands.cfg' and rebuild the menus.")),
                0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
-      vKeyConfigSizer->Add(
-         vCommandSizer, 0, 
-         wxALL, TOP_LEVEL_BORDER );
-
-      wxBoxSizer *vKeySizer = new wxBoxSizer(wxVERTICAL);
-      wxBoxSizer *hKeySizer1 = new wxBoxSizer(wxHORIZONTAL);
-      wxBoxSizer *hKeySizer2 = new wxBoxSizer(wxHORIZONTAL);
-
-      // BG: Create list control that will hold the commands supported under the selected category
-      mKeysList = new wxListCtrl(this, KeysListID, wxDefaultPosition, wxSize(200, 180),
-                                         wxLC_REPORT /* | wxLC_EDIT_LABELS */);
-
-      mKeysList->SetSizeHints(200, 180);
-
-      mKeysList->InsertColumn(0, _("Keys"), wxLIST_FORMAT_LEFT, 200);
-
-      vKeySizer->Add(mKeysList, 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      hKeySizer1->Add(new wxButton(this, RemoveComboButtonID, _("Remove")), 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      hKeySizer1->Add(new wxButton(this, ClearComboButtonID, _("Clear")), 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      vKeySizer->Add(
-         hKeySizer1, 0, 
-         wxALL, 0 );
-
+      //Add key combo text box
       mCurrentComboText = NULL;
       mCurrentComboText = new SysKeyTextCtrl(
          this, CurrentComboID, "",
          wxDefaultPosition, wxSize(115, -1), 0 );
 
-      hKeySizer2->Add(mCurrentComboText, 0,
+      topSizer->Add(mCurrentComboText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
-      hKeySizer2->Add(new wxButton(this, AddComboButtonID, _("Add")), 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      vKeySizer->Add(
-         hKeySizer2, 0, 
-         wxALL, 0 );
-
-      vKeySizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
+      //Add assign defaults button
+      topSizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
                           wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
-      vKeyConfigSizer->Add(
-         vKeySizer, 0, 
-         wxALL, TOP_LEVEL_BORDER );
-
-      topSizer->Add(
-         vKeyConfigSizer, 0, 
-         wxALIGN_LEFT|wxALL, TOP_LEVEL_BORDER );
+      //Add rebuild menus button
+      topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
+                          wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
    }
 
    outSizer = new wxBoxSizer( wxVERTICAL );
@@ -140,116 +74,34 @@ PrefsPanel(parent), mCommandSelected(-1)
    outSizer->SetSizeHints(this);
 }
 
-void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
-{
-   wxWindow *wDescLabel = FindWindow(DescriptionTextID);
-   mCommandSelected = event.GetIndex();
-
-   mKeysList->DeleteAllItems();
-
-   if(mAudacity->GetMenuType(mCommandSelected) == typeSeparator)
-   {
-      if(wDescLabel)
-         wDescLabel->SetLabel("");
-
-      return;
-   }
-
-   UpdateKeyList();
-
-   if(wDescLabel)
-   {
-      // BG: Set the description
-      wDescLabel->SetLabel(_("Description:\n ")
-            + mAudacity->GetCommandDesc(mCommandSelected));
-   }
-
-/*
-   // BG: Test the function
-   (this->*((wxEventFunction) (mAudacity->GetCommandFunc(mCommandSelected))))(event);
-*/
-}
-
-void KeyConfigPrefs::UpdateKeyList()
-{
-   gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", mCommandSelected));
-
-   long keyIndex;
-   wxString keyString;
-
-   if(gPrefs->GetFirstEntry(keyString, keyIndex))
-   {
-      mKeysList->InsertItem(0, keyString);
-      while(gPrefs->GetNextEntry(keyString, keyIndex))
-      {
-         mKeysList->InsertItem(mKeysList->GetItemCount(), keyString);
-      }
-   }
-
-   gPrefs->SetPath("/");
-}
-
-void KeyConfigPrefs::RemoveComboFromList(wxCommandEvent& event)
-{
-   long item = -1;
-
-   for ( ;; )
-   {
-      item = mKeysList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-
-      if ( item == -1 )
-         break;
-
-      gPrefs->DeleteEntry("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + mKeysList->GetItemText(item), true);
-
-      mKeysList->DeleteItem(item);
-   }
-
-   mAudacity->TokenizeCommandStrings(mCommandSelected);
-}
-
-void KeyConfigPrefs::ClearComboList(wxCommandEvent& event)
-{
-   gPrefs->DeleteGroup("/Keyboard/" + wxString::Format("%i", mCommandSelected));
-   mKeysList->DeleteAllItems();
-   mAudacity->TokenizeCommandStrings(mCommandSelected);
-}
-
-void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
-{
-   wxString comboString = mCurrentComboText->GetValue();
-
-   //BG: Cannot add blank key or empty category or seperator items
-   if((!comboString.length()) || (mCommandSelected < 0) || (mAudacity->GetMenuType(mCommandSelected) == typeSeparator))
-      return;
-
-   //BG: Check to see if shortcut is in use
-   if(mAudacity->FindCommandByCombos(comboString) >= 0)
-      return;
-
-   mKeysList->InsertItem(mKeysList->GetItemCount(), comboString);
-
-   gPrefs->Write("/Keyboard/" + wxString::Format("%i", mCommandSelected) + "/" + comboString, (long)0);
-
-   mAudacity->TokenizeCommandStrings(mCommandSelected);
-
-   mCurrentComboText->SetValue("");
-}
-
 void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 {
-   mKeysList->DeleteAllItems();
-   mAudacity->AssignDefaults();
-   UpdateKeyList();
+   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
+   {
+      if(gAudacityProjects[i])
+      {
+         gAudacityProjects[i]->SetMenuBar(NULL);
+         gAudacityProjects[i]->GetCommands()->AssignDefaults();
+         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar(wxString("appmenu")));
+      }
+   }
+}
+
+void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
+{
+   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
+   {
+      if(gAudacityProjects[i])
+      {
+         gAudacityProjects[i]->SetMenuBar(NULL);
+         gAudacityProjects[i]->GetCommands()->Reparse();
+         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar(wxString("appmenu")));
+      }
+   }
 }
 
 bool KeyConfigPrefs::Apply()
 {
-   mAudacity = GetActiveProject();
-
-   if (mAudacity)	
-      mAudacity->RebuildMenuBar();
-
    return true;
 }
 

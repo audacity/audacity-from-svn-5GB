@@ -160,14 +160,6 @@ SOURCE=..\src\BlockFile.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\commandkeys.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\commands.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\ControlToolBar.cpp
 # End Source File
 # Begin Source File
@@ -277,10 +269,6 @@ SOURCE=..\src\Languages.cpp
 # Begin Source File
 
 SOURCE=..\src\Languages.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\Menus.cpp
 # End Source File
 # Begin Source File
 
@@ -829,6 +817,54 @@ SOURCE=..\src\effects\nyquist\Nyquist.cpp
 # Begin Source File
 
 SOURCE=..\src\effects\nyquist\Nyquist.h
+# End Source File
+# End Group
+# Begin Group "src/commands"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\commands\Commands.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\Commands.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsCallback.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsCallback.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsDefaultData.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsMenu.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsMenu.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsReader.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsReader.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsWriter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\commands\CommandsWriter.h
 # End Source File
 # End Group
 # Begin Source File
