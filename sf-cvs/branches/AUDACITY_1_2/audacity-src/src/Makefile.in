@@ -63,6 +63,7 @@ OBJS = \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
 	$(OBJDIR)/PitchName.o \
+	$(OBJDIR)/PlatformCompatibility.o \
 	$(OBJDIR)/Project.o \
 	$(OBJDIR)/Resample.o \
 	$(OBJDIR)/RingBuffer.o \
