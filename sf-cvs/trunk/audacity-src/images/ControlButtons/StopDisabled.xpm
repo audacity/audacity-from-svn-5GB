@@ -1,5 +1,5 @@
 /* XPM */
-static char * StopDisabled[] = {
+static const char * StopDisabled[] = {
 "16 16 26 1",
 " 	c None",
 ".	c #737373",

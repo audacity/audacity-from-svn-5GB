@@ -17,8 +17,8 @@
 
 EffectEcho::EffectEcho()
 {
-   delay = 1.0;
-   decay = 0.5;
+   delay = float(1.0);
+   decay = float(0.5);
 }
 
 bool EffectEcho::PromptUser()

@@ -2670,7 +2670,7 @@ void TrackPanel::DisplaySelection()
 
    //Do more complex stuff here to support user-based configuration
    //of timescales (m/s/ms/samples/etc.).
-   float scale = 1.0;
+   float scale = float(1.0);
 
 
    //Display a message about the selection in the status message window

@@ -35,10 +35,10 @@ EffectPhaser::EffectPhaser()
 {
    freq = (float)0.4;
    depth = 100;
-   startphase = 0.0;
+   startphase = float(0.0);
    stages = 2;
    drywet = 128;
-   fb = 0.0;
+   fb = float(0.0);
 }
 
 bool EffectPhaser::PromptUser()
@@ -116,9 +116,9 @@ bool EffectPhaser::ProcessSimpleMono(float *buffer, sampleCount len)
       
       // Prevents clipping
       if (out < -1.0)
-         out = -1.0;
+         out = float(-1.0);
       else if (out > 1.0)
-         out = 1.0;
+         out = float(1.0);
       
       buffer[i] = out;
    }

@@ -182,8 +182,8 @@ bool Sequence::GetMinMax(sampleCount start, sampleCount len,
                          float * outMin, float * outMax) const
 {
    if (len == 0 || mBlock->Count() == 0) {
-      *outMin = 0.0;
-      *outMax = 0.0;
+      *outMin = float(0.0);
+      *outMax = float(0.0);
       return true;
    }
 
@@ -1097,7 +1097,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
    int pixel = 0;
    float theMin = 0;
    float theMax = 0;
-   float sumsq = 0.0;
+   float sumsq = float(0.0);
    unsigned int b = block0;
    int jcount = 0;
 
@@ -1140,7 +1140,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
             theMin = temp[0];
             theMax = temp[0];
          }
-         sumsq = 0.0;
+         sumsq = float(0.0);
          jcount = 0;
       }
       
@@ -1160,7 +1160,7 @@ bool Sequence::GetWaveDisplay(float *min, float *max, float *rms,
             if (where[pixel] != where[pixel - 1]) {
                theMin = FLT_MAX;
                theMax = -FLT_MAX;
-               sumsq = 0.0;
+               sumsq = float(0.0);
                jcount = 0;
             }
          }

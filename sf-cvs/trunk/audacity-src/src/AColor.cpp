@@ -273,12 +273,12 @@ void GetColorGradient(float value,
    } else {
       const int gsteps = 4;
       float gradient[gsteps + 1][3] = {
-         {0.75, 0.75, 0.75},    // lt gray
-         {0.30, 0.60, 1.00},    // lt blue
-         {0.90, 0.10, 0.90},    // violet
-         {1.00, 0.00, 0.00},    // red
-         {1.00, 1.00, 1.00}
-      };                        // white
+         {float(0.75), float(0.75), float(0.75)},    // lt gray
+         {float(0.30), float(0.60), float(1.00)},    // lt blue
+         {float(0.90), float(0.10), float(0.90)},    // violet
+         {float(1.00), float(0.00), float(0.00)},    // red
+         {float(1.00), float(1.00), float(1.00)}     // white
+      };                        
 
       int left = int (value * gsteps);
       int right = (left == gsteps ? gsteps : left + 1);

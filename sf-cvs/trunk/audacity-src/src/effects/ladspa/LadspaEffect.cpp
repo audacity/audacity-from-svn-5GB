@@ -61,7 +61,7 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
           LADSPA_IS_PORT_INPUT(d)) {
          numInputControls++;
 
-         float val = 1.0;
+         float val = float(1.0);
          LADSPA_PortRangeHint hint = mData->PortRangeHints[p];
 
          if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor) &&
@@ -482,8 +482,8 @@ void LadspaEffectDialog::HandleSlider()
          continue;
 
       float val;
-      float lower = 0.0;
-      float upper = 10.0;
+      float lower = float(0.0);
+      float upper = float(10.0);
       float range;
 
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
@@ -527,8 +527,8 @@ void LadspaEffectDialog::HandleText()
    for (unsigned long p = 0; p < numParams; p++) {
       double dval;
       float val;
-      float lower = 0.0;
-      float upper = 10.0;
+      float lower = float(0.0);
+      float upper = float(10.0);
       float range;
 
       fields[p]->GetValue().ToDouble(&dval);

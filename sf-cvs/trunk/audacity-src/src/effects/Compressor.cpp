@@ -95,7 +95,7 @@ float EffectCompressor::DoCompression(float x)
    if (level > mThreshold)
       mult = mGain * pow(mThreshold/level, mInvRatio);
    else
-      mult = 1.0;
+      mult = float(1.0);
 
    mMult = mult*mDecayMult + mMult*(1.0-mDecayMult);
 

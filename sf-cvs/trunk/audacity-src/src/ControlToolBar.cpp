@@ -584,7 +584,7 @@ float ControlToolBar::GetSoundVol()
    int v = mVolume->Get();
 
    if (v == 0)
-      return 0.0;
+      return float(0.0);
 
    return (pow(2.0, (v / 10.0)) / 256.0);
 }

@@ -38,7 +38,7 @@ bool ComputeSpectrum(float * data, int width, int height,
 
    int i;
    for (i = 0; i < windowSize; i++)
-      processed[i] = 0.0;
+      processed[i] = float(0.0);
    int half = windowSize / 2;
 
    float *in = new float[windowSize];
@@ -97,7 +97,7 @@ bool ComputeSpectrum(float * data, int width, int height,
       // Clip at zero, copy to temp array
       for (i = 0; i < maxSamples; i++) {
          if (processed[i] < 0.0)
-            processed[i] = 0.0;
+            processed[i] = float(0.0);
          out[i] = processed[i];
       }
 
@@ -112,7 +112,7 @@ bool ComputeSpectrum(float * data, int width, int height,
       // Clip at zero again
       for (i = 0; i < maxSamples; i++)
          if (processed[i] < 0.0)
-            processed[i] = 0.0;
+            processed[i] = float(0.0);
 
       // Find new max
       float max = 0;
@@ -139,7 +139,7 @@ bool ComputeSpectrum(float * data, int width, int height,
 
       float binwidth = bin1 - bin0;
 
-      float value = 0.0;
+      float value = float(0.0);
 
       if (int (bin1) == int (bin0))
          value = processed[int (bin0)];
@@ -161,9 +161,9 @@ bool ComputeSpectrum(float * data, int width, int height,
       }
 
       if (value > 1.0)
-         value = 1.0;
+         value = float(1.0);
       if (value < 0.0)
-         value = 0.0;
+         value = float(0.0);
 
       grayscaleOut[i] = value;
    }

@@ -162,7 +162,6 @@ static wxString GetID3FieldStr(struct id3_tag *tp, const char *name);
 static int GetNumGenres();
 static wxString GetGenreNum(int i);
 
-
 wxString GetID3FieldStr(struct id3_tag *tp, const char *name)
 {
    struct id3_frame *frame;

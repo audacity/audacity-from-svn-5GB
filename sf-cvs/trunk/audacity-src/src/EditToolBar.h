@@ -77,7 +77,7 @@ class EditToolBar:public ToolBar {
    void OnButton(wxCommandEvent &event);
 
  private:
-   void AddButton(char **fg, char **disabled, char **alpha,
+   void AddButton(const char **fg, const char **disabled, const char **alpha,
                   int id, const char *tooltip);
    void AddSeparator();
 

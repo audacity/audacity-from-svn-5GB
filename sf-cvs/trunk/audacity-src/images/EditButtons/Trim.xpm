@@ -1,5 +1,5 @@
 /* XPM */
-static char * Trim[] = {
+static const char * Trim[] = {
 "20 18 4 1",
 " 	c None",
 ".	c #CCCCCC",

@@ -84,8 +84,8 @@ bool EffectNoiseRemoval::Process()
 {
    if (doProfile) {
       for(int i=0; i<windowSize; i++) {
-         sum[i] = 0.0;
-         sumsq[i] = 0.0;
+         sum[i] = float(0.0);
+         sumsq[i] = float(0.0);
          profileCount[i] = 0;
       }
    }
@@ -145,7 +145,7 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
    
    for(i=0; i<windowSize; i++) {
       lastWindow[i] = 0;
-      smoothing[i] = 0.0;
+      smoothing[i] = float(0.0);
    }
    
    while((s < len)&&((len-s)!=(windowSize/2))) {
@@ -258,9 +258,9 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
       float smooth;
       
       if (plog[i] < noiseGate[i] + (level/2.0))
-         smooth = 0.0;
+         smooth = float(0.0);
       else
-         smooth = 1.0;
+         smooth = float(1.0);
       
       smoothing[i] = smooth * 0.5 + smoothing[i] * 0.5;
    }
@@ -273,7 +273,7 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
           smoothing[i-2]<0.1 &&
           smoothing[i+1]<0.1 &&
           smoothing[i+2]<0.1)
-          smoothing[i] = 0.0;
+          smoothing[i] = float(0.0);
    }
 
    outr[0] *= smoothing[0];

@@ -25,6 +25,7 @@
 #include "Reverse.h"
 #include "ToneGen.h"
 #include "Wahwah.h"
+#include "LoadEffects.h"
 
 #ifdef USE_WAVELET
 #include "WaveletDenoise.h"
@@ -41,8 +42,6 @@
 #ifdef USE_LADSPA
 #include "ladspa/LoadLadspa.h"
 #endif
-
-#include "LoadEffects.h"
 
 void LoadEffects(wxString searchDir)
 {

@@ -304,16 +304,16 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB)
       // The smallest value we will see is -45.15 (10*log10(1/32768))
       float val = (db + 45.0) / 45.0;
       if (val < 0.0)
-         val = 0.0;
+         val = float(0.0);
       if (val > 1.0)
-         val = 1.0;
+         val = float(1.0);
 
       return (int) (sign * (height * val + 0.5));
    } else {
       if (value < -1.0)
-         value = -1.0;
+         value = float(-1.0);
       if (value > 1.0)
-         value = 1.0;
+         value = float(1.0);
       return (int) (value * height + sign * 0.5);
    }
 }

@@ -1,5 +1,5 @@
 /* XPM */
-static char * ZoomOutAlpha[] = {
+static const char * ZoomOutAlpha[] = {
 "20 18 3 1",
 " 	c None",
 ".	c #000000",
