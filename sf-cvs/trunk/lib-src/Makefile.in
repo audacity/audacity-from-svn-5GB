@@ -30,6 +30,9 @@ libid3tag/.libs/libid3tag.a:
 
 libmad/mad.h: libmad/.libs/libmad.a
 
+libsamplerate/src/.libs/libsamplerate.a:
+	cd libsamplerate && $(MAKE)
+
 libsndfile/src/.libs/libsndfile.a:
 	cd libsndfile && $(MAKE)
 
@@ -51,6 +54,7 @@ clean:
 	-$(MAKE) -C libid3tag clean
 	-$(MAKE) -C libmad clean
 	-$(MAKE) -C libogg clean
+	-$(MAKE) -C libsamplerate clean
 	-$(MAKE) -C libsndfile clean
 	-$(MAKE) -C libvorbis clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
@@ -64,6 +68,7 @@ distclean:
 	-$(MAKE) -C libid3tag distclean
 	-$(MAKE) -C libmad distclean
 	-$(MAKE) -C libogg distclean
+	-$(MAKE) -C libsamplerate distclean
 	-$(MAKE) -C libsndfile distclean
 	-$(MAKE) -C libvorbis distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
