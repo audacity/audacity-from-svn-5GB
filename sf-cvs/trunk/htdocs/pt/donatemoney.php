@@ -34,4 +34,12 @@ Para doar mais de 50 dólares americanos, ou enviar-nos um cheque pagável nos Est
 
 <p>
 
+Agora, estamos aceitando doações pelo Paypal através do sistema de doações do SourceForge:
+
+<center>
+<a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Donate by PayPal"></a>
+</center>
+
+<p>
 <?php BoxBottom(); ?>
