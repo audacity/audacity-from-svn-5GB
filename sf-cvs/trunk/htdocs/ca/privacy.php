@@ -8,7 +8,7 @@
 </p>
 
 <p>
-Valorem la vostra privadesa.
+Valorem la privacitat de les vostres dades.
 </p>
 
 <p> En cap circumstància, els desenvolupadors de l'Audacity i/o mantenidors del llistat de correu compartiran el llistat de persones amb terceres parts.  No emmagatzemem cap altra informació sobre els usuaris en el llistat (ni tan sols el vostre nom!) i mai no enviarem el llistat de direccions a cap lloc on es pugui fer públic.
@@ -29,7 +29,7 @@ Això hauria d'extreure immediatament la vostra adreça del llistat; no es requere
 
 <p>
 Aquestes són <i>llistes de discussió</i>. Els missatges que envieu a aquestes llistes, incloent <a href="http://lists.sourceforge.net/lists/listinfo/audacity-help">audacity-help</a>,
-s'enviaran a centenars de persones, entre les que s'inclouen els desenvolupadors de l'Audacity i altres usuaris. Diverses webs, incloent Sourceforge.net, poden publicar recopilacions dels missatges enviats a aquestes llistes. Les recopilacions no acostumen a incloure les adreces de correu dels qui envien els missatges, però com que es tracta de llistes públiques res no impedeix que algú altre s'hi subscrigui i es dediqui a publicar les seves pròpies recopilacions, amb adreces incloses. Si esteu preocupats per la privadesa hauríeu de fer servir adreces de correu temporals o dedicades només a aquest fi.
+s'enviaran a centenars de persones, entre les que s'inclouen els desenvolupadors de l'Audacity i altres usuaris. Diverses webs, incloent Sourceforge.net, poden publicar recopilacions dels missatges enviats a aquestes llistes. Les recopilacions no acostumen a incloure les adreces de correu dels qui envien els missatges, però com que es tracta de llistes públiques res no impedeix que algú altre s'hi subscrigui i es dediqui a publicar les seves pròpies recopilacions, amb adreces incloses. Si esteu preocupats per la privacitat de les dades personals hauríeu de fer servir adreces de correu temporals o dedicades només a aquest fi.
 </p>
 
 <p>

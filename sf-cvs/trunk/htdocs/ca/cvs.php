@@ -18,7 +18,7 @@ actualment, ja que hem començat a treballar en la versió 1.3.0.
   un client cvs per descarregar una branca cvs al vostre ordinador. 
   Quan hagueu fet un "checkout", el vostre client CVS 
   serà capaç d'ajudar-vos a mantenir la vostra versió actualitzada 
-  amb la dels altre4s desenvolupadors de l'Audacity. Seguiu les 
+  amb la dels altres desenvolupadors de l'Audacity. Seguiu les 
   instruccions següents per obtenir el codi font:
 
 
