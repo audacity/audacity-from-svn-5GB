@@ -30,6 +30,10 @@
 
 #include <math.h>
 
+#if DEBUG_DRAW_TIMING
+#include <sys/time.h>
+#endif
+
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/log.h>
@@ -668,6 +672,7 @@ void TrackPanel::OnTimer()
          p->TP_PushState("Recorded Audio");
       }
 
+      MakeParentRedrawScrollbars();
       p->SetAudioIOToken(0);
       p->RedrawProject();         
    }
@@ -686,15 +691,32 @@ void TrackPanel::OnTimer()
        !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 && !mIsSelecting) {
       DrawCursors();
    }
-   // BG: Update the screen while playing
-   if(gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
-      mRedrawAfterStop = false;
-      if (gAudioIO->GetNumCaptureChannels()) {
-         if ((mTimeCount % 5) == 0)
-            p->RedrawProject();
+
+   if(gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+      gAudioIO->GetNumCaptureChannels()) {
+
+      // Periodically update the display while recording
+      
+      if (!mRedrawAfterStop) {
+         Refresh(false);
+         mRedrawAfterStop = true;
       }
-      else if ((mTimeCount % 20) == 0)
-         p->RedrawProject();
+      else {
+         if ((mTimeCount % 5) == 0) {
+            // Refresh only the waveform area, not the labels
+            // (This actually speeds up redrawing!)
+            wxRect trackRect;
+            GetSize(&trackRect.width, &trackRect.height);
+            trackRect.x = GetLeftOffset(); 
+            trackRect.y = 0;
+            trackRect.width -= GetLeftOffset();
+            Refresh(false, &trackRect);
+         }
+         
+         if ((mTimeCount % 40) == 0) {
+            MakeParentRedrawScrollbars();
+         }
+      }
    }
    if(mTimeCount > 1000)
       mTimeCount = 0;
@@ -716,20 +738,26 @@ void TrackPanel::ScrollDuringDrag()
    //  this flag also causes the Mac to redraw immediately rather
    //  than waiting for the next update event; this makes scrolling
    //  smoother on MacOS 9.
-   mAutoScrolling = true;
 
-   if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width)
+   if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
+      mAutoScrolling = true;
       mListener->TP_ScrollRight();
-   else if (mMouseMostRecentX < mCapturedRect.x)
+   }
+   else if (mMouseMostRecentX < mCapturedRect.x) {
+      mAutoScrolling = true;
       mListener->TP_ScrollLeft();
+   }
 
-   // AS: To keep the selection working properly as we scroll,
-   //  we fake a mouse event (remember, this function is called
-   //  from a timer tick).
-   wxMouseEvent e(wxEVT_MOTION);        // AS: For some reason, GCC won't let us pass this directly.
-   HandleSelect(e);
+   if (mAutoScrolling) {
+      // AS: To keep the selection working properly as we scroll,
+      //  we fake a mouse event (remember, this function is called
+      //  from a timer tick).
 
-   mAutoScrolling = false;
+      // AS: For some reason, GCC won't let us pass this directly.
+      wxMouseEvent e(wxEVT_MOTION);
+      HandleSelect(e);
+      mAutoScrolling = false;
+   }
 }
 
 // AS: This updates the indicator (on a timer tick) that shows
@@ -796,8 +824,39 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 {
    wxPaintDC dc(this);
-   
+
    wxRegionIterator upd(GetUpdateRegion()); // get the update rect list
+   
+#ifdef __WXMAC__
+
+   // Mac OS X automatically double-buffers the screen for you,
+   // so our bitmap is unneccessary
+
+   #if DEBUG_DRAW_TIMING
+   struct timeval t1, t2;
+   gettimeofday(&t1, NULL);
+   #endif
+
+   dc.BeginDrawing();
+
+   DrawTracks(&dc);
+   DrawRuler(&dc);
+   RemoveStaleIndicators(&upd);
+   //UpdateIndicator(&dc);
+   RemoveStaleCursors(&upd);
+   if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
+      DrawCursors(&dc);
+
+   dc.EndDrawing();
+   
+   #if DEBUG_DRAW_TIMING
+   gettimeofday(&t2, NULL);
+   printf("Total: %.3f\n", 
+          (t2.tv_sec + t2.tv_usec*0.000001) - 
+          (t1.tv_sec + t1.tv_usec*0.000001));
+   #endif
+
+#else
 
    int width, height;
    GetSize(&width, &height);
@@ -818,13 +877,14 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    DrawTracks(&memDC);
    DrawRuler(&memDC);
    RemoveStaleIndicators(&upd);
-   UpdateIndicator(&memDC);
+   //UpdateIndicator(&memDC);
    RemoveStaleCursors(&upd);
 
    if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&memDC);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+#endif
 }
 
 // AS: Make our Parent (well, whoever is listening to us) push their state.
@@ -1143,7 +1203,14 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
             }
          }
 
-         Refresh(false);
+         // Refresh only the waveform area, not the labels
+         // (This actually speeds up redrawing!)
+         wxRect trackRect;
+         GetSize(&trackRect.width, &trackRect.height);
+         trackRect.x = GetLeftOffset(); 
+         trackRect.y = 0;
+         trackRect.width -= GetLeftOffset();
+         Refresh(false, &trackRect);
 
 #ifdef __WXMAC__
          if (mAutoScrolling)
@@ -2740,8 +2807,8 @@ void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
                          const wxRect *rect /* = NULL */)
 {
-   mPlayIndicatorExists=false;
-   wxWindow::Refresh(eraseBackground);
+   mPlayIndicatorExists = false;
+   wxWindow::Refresh(eraseBackground, rect);
    DisplaySelection();
 }
 
@@ -2893,12 +2960,25 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
    if (!skipBorder)
       DrawOutside(t, dc, r, labelw, vrul, trackRect, index);
 
-   r = trackRect;
-   r.x += GetVRulerOffset();
-   r.y += kTopInset;
-   r.width = GetVRulerWidth();
-   r.height -= (kTopInset + 2);
-   mTrackArtist->DrawVRuler(t, dc, r);
+   // Believe it of not, we can speed up redrawing if we don't
+   // redraw the vertical ruler when only the waveform data has
+   // changed.
+
+   int width, height;
+   GetSize(&width, &height);
+   wxRegion region = GetUpdateRegion();
+   wxRect rbox = region.GetBox();
+   printf("Update Region: %d %d %d %d\n",
+          rbox.x, rbox.y, rbox.width, rbox.height);
+   wxRegionContain contain = region.Contains(0, 0, GetLeftOffset(), height);
+   if (contain == wxPartRegion || contain == wxInRegion) {
+      r = trackRect;
+      r.x += GetVRulerOffset();
+      r.y += kTopInset;
+      r.width = GetVRulerWidth();
+      r.height -= (kTopInset + 2);
+      mTrackArtist->DrawVRuler(t, dc, r);
+   }
 
    trackRect.y += t->GetHeight();
 }
