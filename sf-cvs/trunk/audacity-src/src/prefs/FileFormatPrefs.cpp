@@ -16,6 +16,8 @@
 #include <wx/msgdlg.h>
 #include <wx/button.h>
 
+#include "sndfile.h"
+
 #include "../export/ExportMP3.h"
 #include "../FileFormats.h"
 #include "../Prefs.h"
@@ -29,9 +31,11 @@ wxString gCopyOrEditOptions[] = {
 
 #define ID_MP3_FIND_BUTTON         7001
 #define ID_EXPORT_OPTIONS_BUTTON   7002
+#define ID_FORMAT_CHOICE           7003
 
 BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
    EVT_BUTTON(ID_MP3_FIND_BUTTON, FileFormatPrefs::OnMP3FindButton)
+   EVT_CHOICE(ID_FORMAT_CHOICE,   FileFormatPrefs::OnFormatChoice)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
@@ -49,17 +53,9 @@ PrefsPanel(parent)
    long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
    wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
 
-   wxString defaultFormat = gPCMFormats[gDefaultPCMFormat].name;
-   wxString exportFormat =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", defaultFormat);
-
-   int formatPos = gDefaultPCMFormat;
-   int i;
-   for (i = 0; i < gNumPCMFormats; i++)
-      if (exportFormat.IsSameAs(gPCMFormats[i].name, false)) {
-         formatPos = i;
-         break;
-      }
+   /* TODO: read from prefs */
+   mFormat = SF_FORMAT_WAV | SF_FORMAT_PCM_LE;
+   mFormatBits = 16;
 
    /* Begin layout code... */
 
@@ -97,31 +93,40 @@ PrefsPanel(parent)
          new wxStaticBox(this, -1, "Uncompressed Export Format"),
          wxVERTICAL);
 
-      wxString *formatStrings = new wxString[gNumPCMFormats];
-      for(i=0; i<gNumPCMFormats; i++)
-         formatStrings[i] = gPCMFormats[i].name;
+      int numSimpleFormats = sf_num_simple_formats();
+      int sel = numSimpleFormats;
+
+      wxString *formatStrings = new wxString[numSimpleFormats+1];
+      for(int i=0; i<numSimpleFormats; i++) {
+         formatStrings[i] = sf_simple_format(i)->name;
+         if (mFormat == sf_simple_format(i)->format &&
+             mFormatBits == sf_simple_format(i)->pcmbitwidth)
+            sel = i;
+      }
+      formatStrings[numSimpleFormats] = "Other...";
 
       #ifdef __WXMAC__
         // This is just to work around a wxChoice auto-sizing bug
         mDefaultExportFormat = new wxChoice(
-           this, -1, wxDefaultPosition, wxSize(200,-1),
-           gNumPCMFormats, formatStrings);
+           this, ID_FORMAT_CHOICE, wxDefaultPosition, wxSize(200,-1),
+           numSimpleFormats+1, formatStrings);
       #else
         mDefaultExportFormat = new wxChoice(
-           this, -1, wxDefaultPosition, wxDefaultSize,
-           gNumPCMFormats, formatStrings);
+           this, ID_FORMAT_CHOICE, wxDefaultPosition, wxDefaultSize,
+           numSimpleFormats+1, formatStrings);
       #endif
-        mDefaultExportFormat->SetSelection(formatPos);
 
+      mDefaultExportFormat->SetSelection(sel);
+        
       delete[] formatStrings;
 
-      mExportOptionsButton = new wxButton(this, ID_EXPORT_OPTIONS_BUTTON,
-                                          "Export Options...");
-
+      mFormatText = new wxStaticText(this, -1, "CAPITAL LETTERS");
+      SetFormatText();
+      
       defFormatSizer->Add(mDefaultExportFormat, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
-      defFormatSizer->Add(mExportOptionsButton, 0,
+      defFormatSizer->Add(mFormatText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
       topSizer->Add(
@@ -219,6 +224,35 @@ void FileFormatPrefs::SetMP3VersionText()
    
    mMP3Version->SetLabel(versionString);
 }
+
+void FileFormatPrefs::SetFormatText()
+{
+   wxString formatString;
+
+   formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
+
+   formatString += wxString::Format(", %d-bit data", mFormatBits);   
+
+   formatString += ", " + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
+
+   mFormatText->SetLabel(formatString);
+}
+
+void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
+{
+   int sel = mDefaultExportFormat->GetSelection();
+   int numSimpleFormats = sf_num_simple_formats();
+
+   if (sel == numSimpleFormats) {
+      Other();
+   }
+   else {
+      mFormat = sf_simple_format(sel)->format;
+      mFormatBits = sf_simple_format(sel)->pcmbitwidth;
+   }
+
+   SetFormatText();
+}
          
 void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
@@ -247,11 +281,11 @@ bool FileFormatPrefs::Apply()
    
    gPrefs->SetPath("/FileFormats");
 
-   wxString originalExportFormat = gPrefs->Read("DefaultExportFormat", "");
-   wxString defaultExportFormat = gPCMFormats[format].name;
+   //wxString originalExportFormat = gPrefs->Read("DefaultExportFormat", "");
+   //wxString defaultExportFormat = gPCMFormats[format].name;
 
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
-   gPrefs->Write("DefaultExportFormat", defaultExportFormat);
+   //gPrefs->Write("DefaultExportFormat", defaultExportFormat);
 
    if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
@@ -259,17 +293,201 @@ bool FileFormatPrefs::Apply()
       gPrefs->Write("MP3Bitrate", bitrate);
    }
    
-   if (originalExportFormat != defaultExportFormat) {
+   //if (originalExportFormat != defaultExportFormat) {
       // Force the menu bar to get recreated
-      gMenusDirty++;
-   }
+   //   gMenusDirty++;
+   //}
 
    gPrefs->SetPath("/");
    return true;
 
 }
 
-
 FileFormatPrefs::~FileFormatPrefs()
 {
+}
+
+#define ID_HEADER_CHOICE           7101
+#define ID_BITS_CHOICE             7102
+#define ID_ENCODING_CHOICE         7103
+
+class OtherFormatDialog:public wxDialog {
+ public:
+   // constructors and destructors
+   OtherFormatDialog(wxWindow * parent, wxWindowID id,
+                     unsigned int format,
+                     unsigned int formatBits);
+
+public:
+   void OnChoice(wxCommandEvent & event);
+   void OnOk(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+   void ValidateChoices();
+
+   unsigned int  mFormat;
+   unsigned int  mFormatBits;
+
+   wxButton   *mOK;
+   wxChoice   *mHeaderChoice;
+   wxChoice   *mBitsChoice;
+   wxChoice   *mEncodingChoice;
+
+   DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(OtherFormatDialog, wxDialog)
+   EVT_CHOICE(ID_HEADER_CHOICE,   OtherFormatDialog::OnChoice)
+   EVT_CHOICE(ID_BITS_CHOICE,     OtherFormatDialog::OnChoice)
+   EVT_CHOICE(ID_ENCODING_CHOICE, OtherFormatDialog::OnChoice)
+   EVT_BUTTON(wxID_OK,            OtherFormatDialog::OnOk)
+   EVT_BUTTON(wxID_CANCEL,        OtherFormatDialog::OnCancel)
+END_EVENT_TABLE()
+
+OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
+                                     unsigned int format,
+                                     unsigned int formatBits):
+   wxDialog(parent, id,
+            "File Format")
+{
+   mFormat = format;
+   mFormatBits = formatBits;
+
+   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+
+   wxControl *item;
+
+   item = new wxStaticText(this, -1,
+                           "(Not all combinations of headers, data sizes,\n"
+                           "and encodings are possible.)",
+                           wxDefaultPosition, wxDefaultSize, 0);
+   mainSizer->Add(item, 0,
+                  wxALIGN_LEFT | wxALL, 5);
+
+   /***/
+   
+   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
+
+   item = new wxStaticText(this, -1, "Header: ",
+                        wxDefaultPosition, wxDefaultSize, 0);
+   gridSizer->Add(item, 0,
+                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   wxString *headerStrings = new wxString[sf_num_headers()];
+   for(int i=0; i<sf_num_headers(); i++)
+      headerStrings[i] = sf_header_name(i);
+   mHeaderChoice = 
+      new wxChoice(this, ID_HEADER_CHOICE,
+                   wxDefaultPosition, wxDefaultSize,
+                   sf_num_headers(), headerStrings);
+   mHeaderChoice->SetSelection(((mFormat & SF_FORMAT_TYPEMASK) / 0x10000)-1);
+   gridSizer->Add(mHeaderChoice, 1, wxEXPAND | wxALL, 5);
+
+   /***/
+
+   item = new wxStaticText(this, -1, "Data Size: ",
+                        wxDefaultPosition, wxDefaultSize, 0);
+   gridSizer->Add(item, 0,
+                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+   wxString bitStrings[4] = {
+      "8-bit",
+      "16-bit",
+      "24-bit",
+      "32-bit"};
+   mBitsChoice = 
+      new wxChoice(this, ID_BITS_CHOICE,
+                   wxDefaultPosition, wxDefaultSize,
+                   4, bitStrings);
+   mBitsChoice->SetSelection(mFormatBits/8 - 1);
+   gridSizer->Add(mBitsChoice, 1, wxEXPAND | wxALL, 5);
+
+   /***/
+
+   item = new wxStaticText(this, -1, "Encoding: ",
+                           wxDefaultPosition, wxDefaultSize, 0);
+   gridSizer->Add(item, 0,
+                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+   wxString *encodingStrings = new wxString[sf_num_encodings()];
+   for(int i=0; i<sf_num_encodings(); i++)
+      encodingStrings[i] = sf_encoding_name(i+1);
+   mEncodingChoice = 
+      new wxChoice(this, ID_ENCODING_CHOICE,
+                   wxDefaultPosition, wxDefaultSize,
+                   sf_num_encodings(), encodingStrings);
+   mEncodingChoice->SetSelection((mFormat & SF_FORMAT_SUBMASK) - 1);
+                                        
+   gridSizer->Add(mEncodingChoice, 1, wxEXPAND | wxALL, 5);
+
+   /***/
+
+   mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+   
+   /***/
+   
+   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   mOK = 
+       new wxButton(this, wxID_OK, "OK", wxDefaultPosition,
+                    wxDefaultSize, 0);
+   mOK->SetDefault();
+   mOK->SetFocus();
+   okSizer->Add(mOK, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxButton *cancel =
+       new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition,
+                    wxDefaultSize, 0);
+   okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   SetAutoLayout(TRUE);
+   SetSizer(mainSizer);
+   mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
+}
+
+void OtherFormatDialog::ValidateChoices()
+{
+   SF_INFO info = 
+   {44100, 1, 2, mFormatBits, mFormat, 1, 1};
+   
+   if (sf_format_check(&info))
+      mOK->Enable(true);
+   else
+      mOK->Enable(false);
+}
+
+void OtherFormatDialog::OnChoice(wxCommandEvent & event)
+{
+   int h = mHeaderChoice->GetSelection();
+   int b = mBitsChoice->GetSelection();
+   int e = mEncodingChoice->GetSelection();
+
+   mFormat = (h+1)*0x10000 + (e+1);
+   mFormatBits = (b+1)*8;
+
+   ValidateChoices();
+}
+
+void OtherFormatDialog::OnOk(wxCommandEvent & event)
+{
+   EndModal(true);
+}
+
+void OtherFormatDialog::OnCancel(wxCommandEvent & event)
+{
+   EndModal(false);
+}
+
+void FileFormatPrefs::Other()
+{
+   OtherFormatDialog dlog(this, -1,
+                          mFormat, mFormatBits);
+   dlog.CentreOnParent();
+   dlog.ShowModal();
+
+   if (dlog.GetReturnCode()) {
+      mFormat = dlog.mFormat;
+      mFormatBits = dlog.mFormatBits;
+   }
 }

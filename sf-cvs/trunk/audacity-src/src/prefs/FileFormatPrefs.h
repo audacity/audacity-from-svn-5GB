@@ -26,19 +26,26 @@ class FileFormatPrefs:public PrefsPanel {
    ~FileFormatPrefs();
    bool Apply();
    
+   void OnFormatChoice(wxCommandEvent& evt);
    void OnMP3FindButton(wxCommandEvent& evt);
 
  private:
    wxRadioButton *mCopyOrEdit[2];
-   int mNumFormats;
    wxChoice *mMP3Bitrate;
    wxButton *mMP3FindButton;
    wxStaticText *mMP3Version;
 
    wxChoice *mDefaultExportFormat;
    wxButton *mExportOptionsButton;
+   wxStaticText *mFormatText;
+
+   int mFormat;
+   int mFormatBits;
 
    void SetMP3VersionText();
+   void SetFormatText();
+
+   void Other();
 
  public:
    DECLARE_EVENT_TABLE();

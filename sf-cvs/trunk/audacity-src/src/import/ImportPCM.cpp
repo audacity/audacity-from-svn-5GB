@@ -67,12 +67,9 @@ bool ImportPCM(wxWindow * parent,
    }
 
    wxString progressStr;
-   wxString formatName;
-   for(int z=0; z<gNumPCMFormats; z++)
-      if ((info.format & SF_FORMAT_TYPEMASK) == gPCMFormats[z].id)
-         formatName = gPCMFormats[z].name;
+   wxString formatName = sf_header_name(info.format & SF_FORMAT_TYPEMASK);
    progressStr.Printf("Importing %s file...",
-                      formatName);
+                      (const char *)formatName);
 
    *numChannels = info.channels;
    *channels = new WaveTrack*[*numChannels];
