@@ -36,6 +36,9 @@
 #include <Carbon/Carbon.h>
 #endif
 
+const int VSTEFFECT_SLIDER_ID = 13100;
+const int PREVIEW_ID          = 13101;
+
 class VSTEffectGUIDialog : public wxDialog
 {
 public:
@@ -45,6 +48,7 @@ public:
 
    void OnOk(wxCommandEvent &event);
    void OnCancel(wxCommandEvent &event);
+   void OnPreview(wxCommandEvent &event);
 
    void OnIdle(wxIdleEvent &event);
 
@@ -58,6 +62,7 @@ private:
 BEGIN_EVENT_TABLE(VSTEffectGUIDialog,wxDialog)
    EVT_BUTTON( wxID_OK, VSTEffectGUIDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, VSTEffectGUIDialog::OnCancel )
+   EVT_BUTTON( PREVIEW_ID, VSTEffectGUIDialog::OnPreview )
    EVT_IDLE( VSTEffectGUIDialog::OnIdle )
 END_EVENT_TABLE()
 
@@ -81,6 +86,10 @@ VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
+   wxButton *preview =
+      new wxButton(this, PREVIEW_ID, mEffect->GetPreviewName());
+   hSizer->Add(preview, 0, wxALIGN_CENTRE|wxALL, 5);
+
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
    hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
@@ -99,6 +108,11 @@ VSTEffectGUIDialog::VSTEffectGUIDialog(wxWindow *parent, wxWindowID id,
 void VSTEffectGUIDialog::OnIdle(wxIdleEvent &event)
 {
    mEffect->callDispatcher(mAEffect, effEditIdle, 0, 0, NULL, 0.0);
+}
+
+void VSTEffectGUIDialog::OnPreview(wxCommandEvent &event)
+{
+   mEffect->Preview();
 }
 
 void VSTEffectGUIDialog::OnOk(wxCommandEvent &event)
@@ -367,11 +381,10 @@ void VSTEffect::End()
    fOutBuffer = NULL;
 }
 
-const int VSTEFFECT_SLIDER_ID = 13100;
-
 BEGIN_EVENT_TABLE(VSTEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, VSTEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, VSTEffectDialog::OnCancel)
+    EVT_BUTTON(PREVIEW_ID, VSTEffectDialog::OnPreview)
     EVT_COMMAND_SCROLL(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSlider)
     EVT_SLIDER(VSTEFFECT_SLIDER_ID, VSTEffectDialog::OnSliderCmd)
 END_EVENT_TABLE()
@@ -428,6 +441,10 @@ VSTEffectDialog::VSTEffectDialog(wxWindow * parent,
       y += 35;
    }
 
+   wxButton *preview =
+      new wxButton(this, PREVIEW_ID,
+                   vst->GetPreviewName(),
+                   wxPoint(10, y), wxSize(80, 30));
    wxButton *ok =
        new wxButton(this, wxID_OK, "OK", wxPoint(110, y), wxSize(80, 30));
    wxButton *cancel =
@@ -501,6 +518,11 @@ void VSTEffectDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 void VSTEffectDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(FALSE);
+}
+
+void VSTEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
+{
+   vst->Preview();
 }
 
 #ifdef __MACOSX__
