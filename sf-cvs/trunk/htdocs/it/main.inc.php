@@ -1,6 +1,6 @@
 <?php
 $charset = "ISO-8859-1";
-$translatorName = "Vaccari Federico";
+$translatorName = "Vaccari Federico & Aldo Boccacci";
 $languageStr = "Italian";
 $metaDescription = "Audacity, un audio editor libero e multi piattaforma";
 $helpSectionStr = "Aiuto";
