@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  FormatSelection.h
+  FormatSelection.cpp
 
   Greg Mekkes
 
@@ -20,16 +20,16 @@ wxArrayString GetSelectionFormats()
 {
    wxArrayString a;
 
-   a.Add(_("min:sec (from ruler)"));
-   a.Add(_("sec (from ruler)"));
-   a.Add(_("film frames 24 fps (from ruler)"));
-   a.Add(_("film h:mm:ss:ff 24 fps (from ruler)"));
-   a.Add(_("PAL frames 25 fps (from ruler)"));
-   a.Add(_("PAL h:mm:ss:ff 25 fps (from ruler)"));
-   a.Add(_("NTSC frames 29.97 fps (from ruler)"));
-   a.Add(_("NTSC drop-frame h:mm:ss:ff (from ruler)"));
-   a.Add(_("NTSC non-drop-frame h:mm:ss:ff (from ruler)"));
-   a.Add(_("cdda min:sec:frames 75 fps (from ruler)"));
+   a.Add(_("min:sec"));
+   a.Add(_("sec"));
+   a.Add(_("film frames 24 fps"));
+   a.Add(_("film h:mm:ss:ff 24 fps"));
+   a.Add(_("PAL frames 25 fps"));
+   a.Add(_("PAL h:mm:ss:ff 25 fps"));
+   a.Add(_("NTSC frames 29.97 fps"));
+   a.Add(_("NTSC drop-frame h:mm:ss:ff"));
+   a.Add(_("NTSC non-drop-frame h:mm:ss:ff"));
+   a.Add(_("cdda min:sec:frames 75 fps"));
    a.Add(_("samples (snap to samples)"));
    a.Add(_("min:sec (snap to samples)"));
    a.Add(_("sec (snap to samples)"));
@@ -98,11 +98,7 @@ wxString FormatSelection(int iformat, int iSnapTo,
    //       iformat values based on rate and samples.
    //
 
-   // samplerate is set as a global double near the top of TrackPanel.cpp
-   // It is initialized there to 44100, which is the default project rate,
-   // unless it is changed in preferences.  Logic added to OnRateChange
-   // and OnRateOther resets this samplerate value.  For each selection format
-   // that is based on rate, the current rate is printed in the info line.
+   // samplerate is now set to the project sample rate
 
    // Issues related to rounding functions:
    //   rint of a double is a double
@@ -600,11 +596,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %li samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       isamples1, samplerate);
+         result.Printf(_("Cursor: %li samples   [Snap-To Samples]"),
+                       isamples1);
       else
-         result.Printf(_("Selection: %li - %li (%li samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       isamples1, isamples2, isamplestot, samplerate);
+         result.Printf(_("Selection: %li - %li (%li samples)   [Snap-To Samples]"),
+                       isamples1, isamples2, isamplestot);
       break;
 
    case SELECTION_FORMAT_MIN_SEC:
@@ -624,11 +620,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %i:%09.6lf min:sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       imin1, dsec1, samplerate);
+         result.Printf(_("Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"),
+                       imin1, dsec1);
       else
-         result.Printf(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       imin1, dsec1, imin2, dsec2, imintot, dsectot, samplerate);
+         result.Printf(_("Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"),
+                       imin1, dsec1, imin2, dsec2, imintot, dsectot);
       break;
 
    case SELECTION_FORMAT_SEC:
@@ -645,11 +641,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %lf sec   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       dsec1, samplerate);
+         result.Printf(_("Cursor: %lf sec   [Snap-To Samples]"),
+                       dsec1);
       else
-         result.Printf(_("Selection: %lf - %lf (%lf sec)   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       dsec1, dsec2, dsectot, samplerate);
+         result.Printf(_("Selection: %lf - %lf (%lf sec)   [Snap-To Samples]"),
+                       dsec1, dsec2, dsectot);
       break;
 
    case SELECTION_FORMAT_MIN_SEC_SAMPLES:
@@ -672,11 +668,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %i:%02i+%i min:sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       imin1, isec1, isamp1, samplerate);
+         result.Printf(_("Cursor: %i:%02i+%i min:sec+samples   [Snap-To Samples]"),
+                       imin1, isec1, isamp1);
       else
-         result.Printf(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       imin1, isec1, isamp1, imin2, isec2, isamp2, imintot, isectot, isamptot, samplerate);
+         result.Printf(_("Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [Snap-To Samples]"),
+                       imin1, isec1, isamp1, imin2, isec2, isamp2, imintot, isectot, isamptot);
       break;
 
    case SELECTION_FORMAT_SEC_SAMPLES:
@@ -696,11 +692,11 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %i+%i sec+samples   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       isec1, isamp1, samplerate);
+         result.Printf(_("Cursor: %i+%i sec+samples   [Snap-To Samples]"),
+                       isec1, isamp1);
       else
-         result.Printf(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)   [based on rate = %7.1f - use Set Rate to reset/set]"),
-                       isec1, isamp1, isec2, isamp2, isectot, isamptot, samplerate);
+         result.Printf(_("Selection: %i+%i - %i+%i (%i+%i sec+samples)   [Snap-To Samples]"),
+                       isec1, isamp1, isec2, isamp2, isectot, isamptot);
       break;
 
    case SELECTION_FORMAT_CDDA_SECTORS_BYTES:
@@ -730,15 +726,15 @@ wxString FormatSelection(int iformat, int iSnapTo,
       viewInfo->sel1 = double(isamples2)/samplerate;
       // display a message about the selection in the status message window
       if(viewInfo->sel0 == viewInfo->sel1)
-         result.Printf(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [based on rate = %7.1f - for use with 44100 only]"),
-                       isector1, ibyte1, samplerate);
+         result.Printf(_("Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"),
+                       isector1, ibyte1);
       else
-         result.Printf(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [based on rate = %7.1f - for use with 44100 only]"),
-                       isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot, samplerate);
+         result.Printf(_("Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"),
+                       isector1, ibyte1, isector2, ibyte2, isectortot, ibytetot);
       break;
 
    default:
-      result.Printf(_("Selection: invalid iformat value (%i) in TrackPanel.cpp"),iformat);
+      result.Printf(_("Selection: invalid iformat value (%i) in FormatSelection.cpp"),iformat);
       break;
 
    }
