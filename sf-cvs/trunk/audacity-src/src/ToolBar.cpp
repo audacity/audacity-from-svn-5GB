@@ -47,9 +47,9 @@
 ////////////////////////////////////////////////////////////
 
 
-// ToolBarStub Constructer. Requires a ToolBarType.
-// Whenever a ToolBarStub is around, there will be a floating
-// ToolBarFrame.  It may be hidden or unhidden.
+/// ToolBarStub Constructer. Requires a ToolBarType.
+/// Whenever a ToolBarStub is around, there will be a floating
+/// ToolBarFrame.  It may be hidden or unhidden.
 ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
 {
    //Create a frame with a toolbar of type tbt inside it
@@ -66,7 +66,7 @@ ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt)
 } 
 
 
-//ToolBarStub destructer
+/// ToolBarStub destructer
 ToolBarStub::~ToolBarStub() 
 {
    if (mToolBarFrame) {
@@ -76,8 +76,8 @@ ToolBarStub::~ToolBarStub()
 }
 
 
-// This will add a new toolbar to all project windows, 
-// even if one of that type already exists.
+/// This will add a new toolbar to all project windows, 
+/// even if one of that type already exists.
 void ToolBarStub::LoadAll() 
 {
    wxUpdateUIEvent evt;
@@ -91,9 +91,9 @@ void ToolBarStub::LoadAll()
 } 
 
 
-// This will unload the toolbar from all windows
-// If more than one toolbar of this type exists in a window, this
-// will unload them all
+/// This will unload the toolbar from all windows
+/// If more than one toolbar of this type exists in a window, this
+/// will unload them all
 void ToolBarStub::UnloadAll() 
 {
    wxUpdateUIEvent evt;
@@ -105,8 +105,8 @@ void ToolBarStub::UnloadAll()
    }
 } 
 
-#include <iostream.h>
-// This will make the floating ToolBarFrame appear at the specified location
+
+/// This will make the floating ToolBarFrame appear at the specified location
 void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ ) 
 {
    if (!mWindowedStatus) {
@@ -114,12 +114,10 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
       //Move the frame to the mouse position
       if (where)
          {
-            cout <<"here" << where->x <<"--" << where->y << endl;
             mToolBarFrame->Move(*where);
-            cout << "helle" << endl;
          }
       else
-         cout << "UHOHH" << endl;
+
       //Show the new window
       mToolBarFrame->Show();
    }
@@ -127,7 +125,7 @@ void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ )
 }
 
 
-// This will make the floating ToolBarFrame disappear (but it will still exist).
+/// This will make the floating ToolBarFrame disappear (but it will still exist).
 void ToolBarStub::HideWindowedToolBar() 
 {
    if (mWindowedStatus) {
@@ -137,15 +135,15 @@ void ToolBarStub::HideWindowedToolBar()
 }
 
 
-// This finds out if a ToolBar of this type is loaded in
-// a given project window
+/// This finds out if a ToolBar of this type is loaded in
+/// a given project window
 bool ToolBarStub::IsToolBarLoaded(AudacityProject * p) 
 {
    return p->IsToolBarLoaded(mType);
 }
 
 
-// This will return a pointer to the ToolBar inside the member ToolBarFrame
+/// This will return a pointer to the ToolBar inside the member ToolBarFrame
 ToolBar * ToolBarStub::GetToolBar() 
 {
    return mToolBarFrame ? mToolBarFrame->GetToolBar() : NULL;
@@ -156,8 +154,8 @@ ToolBar * ToolBarStub::GetToolBar()
 /// Methods for ToolBar
 ////////////////////////////////////////////////////////////
 
-// Constructor for ToolBar. Should be used by children toolbars
-// to instantiate the initial parameters of the toolbar.
+/// Constructor for ToolBar. Should be used by children toolbars
+/// to instantiate the initial parameters of the toolbar.
 ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
       wxSize & size) : wxWindow(parent, id, pos, size)
 {
@@ -202,6 +200,26 @@ ToolBar::~ToolBar()
 
 }
 
+
+
+   ///This is a generic function that will make a button, given
+   ///generic button images.
+   ///  Parameters:
+   ///
+   /// up:           An image of the blank button in its "up" state
+   /// down:         An image of the blank button in its "down" state
+   /// hilite        An image of the blank button with the hilite halo
+   /// foreground:   A color bitmap of the icon on the button when its
+   ///                 enabled--Can be a solid field.
+   /// disabledfg:   A color bitmap of the icon when its disabled--can be a solid field.
+   /// alpha:        A greyscale mask that determines how much of the
+   ///                 foreground shows through
+   /// id            Button ID
+   /// placement     Location on the toolbar
+   /// processdownevents      boolean that determine whether the button will process events
+   ///                        if it is in the down position (and pop up when clicked in the down position)
+   /// xoff          x-offset to place icon pixmaps at, with respect to background image
+   /// yoff          y-offset to place icon pixmaps at, with respect to background image
 AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                               wxImage * hilite,
                               const char **foreground,
@@ -211,24 +229,6 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                               bool processdownevents, wxSize size,
                               int xoff, int yoff) 
 {
-   //This is a generic function that will make a button, given
-   //generic button images.
-   //  Parameters:
-   //
-   // up:           An image of the blank button in its "up" state
-   // down:         An image of the blank button in its "down" state
-   // hilite        An image of the blank button with the hilite halo
-   // foreground:   A color bitmap of the icon on the button when its
-   //                 enabled--Can be a solid field.
-   // disabledfg:   A color bitmap of the icon when its disabled--can be a solid field.
-   // alpha:        A greyscale mask that determines how much of the
-   //                 foreground shows through
-   // id            Button ID
-   // placement     Location on the toolbar
-   // processdownevents      boolean that determine whether the button will process events
-   //                        if it is in the down position (and pop up when clicked in the down position)
-   // xoff          x-offset to place icon pixmaps at, with respect to background image
-   // yoff          y-offset to place icon pixmaps at, with respect to background image
 
    wxImage * color 			= new wxImage(wxBitmap(foreground).ConvertToImage());
    wxImage * color_disabled = new wxImage(wxBitmap(disabledfg).ConvertToImage());
@@ -254,7 +254,7 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    return button;
 }
 
-//This changes the state a button (from up to down or vice versa)
+///This changes the state a button (from up to down or vice versa)
 void ToolBar::SetButton(bool down, AButton * button) 
 {
    if (down)
@@ -263,6 +263,8 @@ void ToolBar::SetButton(bool down, AButton * button)
       button->PopUp();
 }
 
+
+/// This draws the background of a toolbar
 void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 {
    #if defined(__WXMAC__)
@@ -312,12 +314,11 @@ BEGIN_EVENT_TABLE(ToolBarFrame, wxMiniFrame)
    EVT_CLOSE(ToolBarFrame::OnCloseWindow)
 END_EVENT_TABLE()  
 
-// There are three Constructors for ToolBarFrame. The first two take an actual
-// toolbar as an argument, and create a frame around it.  The third takes a
-// ToolBarType, and constructs a new ToolBar of that type inside the new
-// frame.  To instantiate a new toolbar, add a condition to the switch
-// statement inside the third constructor.
-
+/// There are three Constructors for ToolBarFrame. The first two take an actual
+/// toolbar as an argument, and create a frame around it.  The third takes a
+/// ToolBarType, and constructs a new ToolBar of that type inside the new
+/// frame.  To instantiate a new toolbar, add a condition to the switch
+/// statement inside the third constructor.
 ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB,
                            const wxString & Title, const wxPoint & position)
    : wxMiniFrame(parent, -1, Title, position,
@@ -330,7 +331,10 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB,
    SetSize(TB->GetIdealSize());
 } 
 
-
+///
+///This is a alternate constructor for a toolbarframe, taking a 
+/// toolbar as an argument
+///
 ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB)
    : wxMiniFrame(parent, -1, TB->GetTitle(), wxPoint(0, 0), TB->GetSize(),
          wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX
@@ -340,7 +344,9 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, ToolBar * TB)
 
 } 
 
-
+///
+///Alternate constructor for a ToolBarFrame. You give it a type and
+///It will create a toolabr of that type inside the frame.
 ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
    : wxMiniFrame(gParentWindow, -1, "", wxPoint(1, 1),
          wxSize(20, 20),
@@ -370,12 +376,15 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
            TOOLBAR_HEIGHT_OFFSET));
 }
 
-
+///
+/// Standard ToolBarFrame destructor
 ToolBarFrame::~ToolBarFrame() 
 {
    delete mToolBar;
 }
 
+
+/// This hides the floating toolbar, effectively 'hiding' the window
 void ToolBarFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
 {
    this->Hide();
