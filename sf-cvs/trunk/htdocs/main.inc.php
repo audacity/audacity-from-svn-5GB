@@ -83,13 +83,14 @@ $vstLinksHereStr =     "Download VST Plug-ins here:";
 
 $docsStr =             "Download latest documentation";
 
+$clickEnlargeStr =     "(Click on any image to enlarge.)";
+
+
 // Span this on two lines so that the translation editor script
 // doesn't count it as a language...
 $translatorName =
   "";
 //
-
-include phpLang_current.'/main.inc.php';
 
 function BoxTop($title)
 {
@@ -121,5 +122,7 @@ function IncludeFile($name)
 		include "en/${name}.php";
 	}
 }
+
+IncludeFile("main.inc");
 
 ?>
