@@ -33,6 +33,7 @@
 #include "export/Export.h"
 #include "prefs/PrefsDialog.h"
 #include "HistoryWindow.h"
+#include "Internat.h"
 #include "FileFormats.h"
 #include "FormatSelection.h"
 #include "FreqWindow.h"
@@ -1185,23 +1186,23 @@ void AudacityProject::OnExportLabels()
    // Move existing files out of the way.  Otherwise wxTextFile will
    // append to (rather than replace) the current file.
 
-   if (wxFileExists(fName)) {
+   if (wxFileExists(FILENAME(fName))) {
 #ifdef __WXGTK__
       wxString safetyFileName = fName + "~";
 #else
       wxString safetyFileName = fName + ".bak";
 #endif
 
-      if (wxFileExists(safetyFileName))
-         wxRemoveFile(safetyFileName);
+      if (wxFileExists(FILENAME(safetyFileName)))
+         wxRemoveFile(FILENAME(safetyFileName));
 
       wxRename(fName, safetyFileName);
    }
 
-   wxTextFile f(fName);
+   wxTextFile f(FILENAME(fName));
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
-   temp->Create(fName);
+   temp->Create(FILENAME(fName));
    delete temp;
 #else
    f.Create();
@@ -2046,7 +2047,7 @@ void AudacityProject::OnFloatMixerToolBar()
 
 void AudacityProject::OnImport()
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",FROMFILENAME(::wxGetCwd()));
 
    // TODO: Build the list of file types dynamically
    
@@ -2083,7 +2084,7 @@ void AudacityProject::OnImport()
 
 void AudacityProject::OnImportLabels()
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",FROMFILENAME(::wxGetCwd()));
 
    wxString fileName =
        wxFileSelector(_("Select a text file containing labels..."),
@@ -2125,7 +2126,7 @@ void AudacityProject::OnImportLabels()
 
 void AudacityProject::OnImportMIDI()
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",FROMFILENAME(::wxGetCwd()));
 
    wxString fileName = wxFileSelector(_("Select a MIDI file..."),
                                       path,     // Path
@@ -2161,7 +2162,7 @@ void AudacityProject::OnImportMIDI()
 
 void AudacityProject::OnImportRaw()
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",FROMFILENAME(::wxGetCwd()));
 
    wxString fileName =
        wxFileSelector(_("Select any uncompressed audio file..."),

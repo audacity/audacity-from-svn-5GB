@@ -33,6 +33,7 @@
 #include <wx/msgdlg.h>
 
 #include "Audacity.h"
+#include "../Internat.h"
 
 #ifdef USE_LIBID3TAG 
    #include <id3tag.h>
@@ -224,7 +225,7 @@ void Tags::ImportID3(wxString fileName)
 {
 #ifdef USE_LIBID3TAG 
 
-   struct id3_file *fp = id3_file_open((const char *)fileName,
+   struct id3_file *fp = id3_file_open((const char *)FILENAME(fileName),
                                        ID3_FILE_MODE_READONLY);
    if (!fp) return;
 

@@ -5,6 +5,7 @@
   Internat.cpp
 
   Markus Meyer
+  Dominic Mazzoni (Mac OS X code)
 
 **********************************************************************/
 
@@ -13,10 +14,16 @@
 #include <wx/log.h>
 #include <wx/intl.h>
 
+#ifdef __WXMAC__
+#include <wx/mac/private.h>
+#endif
+
 #include <locale.h>
 
 wxChar Internat::mDecimalSeparator = '.'; // default
 wxMBConv *Internat::mConvLocal = 0;
+void *Internat::mTECToUTF = NULL;
+void *Internat::mTECFromUTF = NULL;
 
 void Internat::Init()
 {
@@ -41,6 +48,30 @@ void Internat::Init()
 
    // Reset to C numeric locale
    setlocale(LC_NUMERIC, "C");
+
+   #ifdef __WXMAC__
+   // Set up a special converter to/from the Mac-specific local
+   // encoding (usually MacRoman)
+   OSStatus status = noErr;
+   TECObjectRef ec;
+
+   TextEncoding MacEncoding = GetApplicationTextEncoding();
+   TextEncoding UTF8 = CreateTextEncoding(kTextEncodingUnicodeDefault,
+                                          kUnicodeNoSubset,
+                                          kUnicodeUTF8Format);
+   status = TECCreateConverter(&ec, MacEncoding, UTF8);
+   if (status == noErr)
+      mTECToUTF = (void *)ec;
+   else
+      mTECToUTF = NULL;
+   
+   status = TECCreateConverter(&ec, UTF8, MacEncoding);
+   if (status == noErr)
+      mTECFromUTF = (void *)ec;
+   else
+      mTECFromUTF = NULL;
+
+   #endif
 }
 
 wxChar Internat::GetDecimalSeparator()
@@ -105,6 +136,69 @@ wxString Internat::ToString(double numberToConvert,
    return result;
 }
 
+#ifdef __WXMAC__
+
+// wxMac 2.4.x doesn't support converting to/from Mac encodings yet,
+// so we use Mac OS X-specific code
+
+wxString MacConvertString(TECObjectRef ec,
+                          wxString input)
+{
+   OSStatus status = noErr;
+   ByteCount byteOutLen;
+   ByteCount byteInLen = input.Length();
+   ByteCount byteBufferLen = byteInLen * 8 + 1;
+   char* buf = new char[byteBufferLen] ;
+
+   status = TECConvertText(ec,
+                           (ConstTextPtr)input.c_str(),
+                           byteInLen,
+                           &byteInLen,
+                           (TextPtr)buf,
+                           byteBufferLen,
+                           &byteOutLen);
+
+   if (status != noErr) {
+      delete[] buf;
+      return input;
+   }
+
+   buf[byteOutLen] = 0;
+
+   wxString result = wxString(buf);
+   delete[] buf;
+
+   return result;
+}
+
+wxString Internat::LocalToUTF8(const wxString &s)
+{
+   if (!mTECToUTF)
+      return s;
+
+   return MacConvertString((TECObjectRef)mTECToUTF, s);
+}
+
+wxString Internat::UTF8ToLocal(const wxString &s)
+{
+   if (!mTECFromUTF)
+      return s;
+
+   return MacConvertString((TECObjectRef)mTECFromUTF, s);
+}
+
+wxString Internat::ToFilename(const wxString &s)
+{
+   return LocalToUTF8(s);
+}
+
+wxString Internat::FromFilename(const wxString &s)
+{
+   return UTF8ToLocal(s);
+}
+
+#else
+
 wxString Internat::LocalToUTF8(const wxString &s)
 {
    return wxString(s.wc_str(*mConvLocal), wxConvUTF8);
@@ -115,3 +209,14 @@ wxString Internat::UTF8ToLocal(const wxString &s)
    return wxString(s.wc_str(wxConvUTF8), *mConvLocal);
 }
 
+wxString Internat::ToFilename(const wxString &s)
+{
+   return s;
+}
+
+wxString Internat::FromFilename(const wxString &s)
+{
+   return s;
+}
+
+#endif

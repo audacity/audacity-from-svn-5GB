@@ -20,6 +20,7 @@
 
 #include <wx/defs.h>
 
+#include "../Internat.h"
 #include "RawAudioGuess.h"
 
 #define RAW_GUESS_DEBUG 1
@@ -1054,7 +1055,7 @@ int RawAudioGuess(const char *in_fname,
    *out_offset = 0;
    *out_channels = 1;
 
-   inf = fopen(in_fname, "rb");
+   inf = fopen(FILENAME(in_fname), "rb");
 
    if (!inf) {
      #if RAW_GUESS_DEBUG

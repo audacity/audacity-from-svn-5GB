@@ -15,6 +15,7 @@
 
 #include "PCMAliasBlockFile.h"
 #include "../FileFormats.h"
+#include "../Internat.h"
 
 PCMAliasBlockFile::PCMAliasBlockFile(wxFileName fileName,
                      wxFileName aliasedFile, sampleCount aliasStart,
@@ -50,7 +51,8 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    SF_INFO info;
 
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf = sf_open(mAliasedFileName.GetFullPath(), SFM_READ, &info);
+   SNDFILE *sf = sf_open(FILENAME(mAliasedFileName.GetFullPath()),
+                         SFM_READ, &info);
 
    if (!sf)
       return 0;

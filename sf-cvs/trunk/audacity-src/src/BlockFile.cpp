@@ -16,6 +16,7 @@
 #include <wx/ffile.h>
 
 #include "BlockFile.h"
+#include "Internat.h"
 
 const int headerTagLen = 20;
 char headerTag[headerTagLen + 1] = "AudacityBlockFile112";
@@ -58,7 +59,7 @@ BlockFile::BlockFile(wxFileName fileName, sampleCount samples):
 BlockFile::~BlockFile()
 {
    if (!mLocked && mFileName.HasName())
-      wxRemoveFile(mFileName.GetFullPath());
+      wxRemoveFile(FILENAME(mFileName.GetFullPath()));
 }
 
 /// Returns the file name of the disk file associated with this
@@ -416,7 +417,7 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
    mAliasStart(aliasStart),
    mAliasChannel(aliasChannel)
 {
-   if( !existingSummaryFile.FileExists() )
+   if( !wxFileExists(FILENAME(existingSummaryFile.GetFullPath())))
    {
       // Throw an exception?
       return;
@@ -432,13 +433,13 @@ AliasBlockFile::AliasBlockFile(wxFileName existingSummaryFile,
 /// summarize.
 void AliasBlockFile::WriteSummary()
 {
-   wxASSERT( !mFileName.FileExists() );
+   wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())));
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
    wxFFile summaryFile;
 
-   if( !summaryFile.Open(mFileName.GetFullPath(), "wb") )
+   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "wb") )
       // failed.  what to do?
       return;
 
@@ -467,7 +468,7 @@ bool AliasBlockFile::ReadSummary(void *data)
 {
    wxFFile summaryFile;
 
-   if( !summaryFile.Open(mFileName.GetFullPath(), "rb") )
+   if( !summaryFile.Open(FILENAME(mFileName.GetFullPath()), "rb") )
       return false;
 
    int read = summaryFile.Read(data, (size_t)mSummaryInfo.totalSummaryBytes);
@@ -492,7 +493,7 @@ void AliasBlockFile::ChangeAliasedFile(wxFileName newAliasedFile)
 
 int AliasBlockFile::GetSpaceUsage()
 {
-   wxFFile summaryFile(mFileName.GetFullPath());
+   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()));
    return summaryFile.Length();
 }
 

@@ -13,6 +13,7 @@
 #include <wx/file.h>
 #include <wx/intl.h>
 
+#include "../Internat.h"
 #include "../NoteTrack.h"
 #include "ImportMIDI.h"
 
@@ -24,7 +25,7 @@
 
 bool ImportMIDI(wxString fName, NoteTrack * dest)
 {
-   FILE *mf = fopen(fName, "rb");
+   FILE *mf = fopen(FILENAME(fName), "rb");
 
    if (!mf || ferror(mf)) {
       wxMessageBox( _("Could not open file: ") + fName);

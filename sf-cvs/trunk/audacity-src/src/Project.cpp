@@ -1639,7 +1639,8 @@ void AudacityProject::OnDropFiles(wxDropFilesEvent & event)
 // static method, can be called outside of a project
 void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 {
-   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+   wxString path = gPrefs->Read("/DefaultOpenPath",
+                                FROMFILENAME(::wxGetCwd()));
 
    wxFileDialog dlog(proj, _("Select one or more audio files..."),
                      path, "",
@@ -1705,14 +1706,14 @@ void AudacityProject::OpenFile(wxString fileName)
    wxString firstLine = "AudacityProject";
    char temp[16];
 
-   if (!::wxFileExists(fileName)) {
+   if (!::wxFileExists(FILENAME(fileName))) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
                    wxOK | wxCENTRE, this);
       return;
    }
 
-   wxFFile *ff = new wxFFile(fileName);
+   wxFFile *ff = new wxFFile(FILENAME(fileName));
    if (!ff->IsOpened()) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
@@ -1942,7 +1943,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    //
 
    wxString safetyFileName = "";
-   if (wxFileExists(mFileName)) {
+   if (wxFileExists(FILENAME(mFileName))) {
 
 #ifdef __WXGTK__
       safetyFileName = mFileName + "~";
@@ -1950,10 +1951,10 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       safetyFileName = mFileName + ".bak";
 #endif
 
-      if (wxFileExists(safetyFileName))
-         wxRemoveFile(safetyFileName);
+      if (wxFileExists(FILENAME(safetyFileName)))
+         wxRemoveFile(FILENAME(safetyFileName));
 
-      wxRename(mFileName, safetyFileName);
+      wxRename(FILENAME(mFileName), FILENAME(safetyFileName));
    }
 
    if (fromSaveAs || mDirManager->GetProjectName() == "") {
@@ -2004,20 +2005,20 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
                       _("Error saving project"),
                       wxOK | wxCENTRE, this);
          if (safetyFileName)
-            wxRename(safetyFileName, mFileName);
+            wxRename(FILENAME(safetyFileName), FILENAME(mFileName));
          
          return false;
       }
    }
 
-   FILE *fp = fopen(mFileName, "wb");
+   FILE *fp = fopen(FILENAME(mFileName), "wb");
    if (!fp || ferror(fp)) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName,
                    _("Error saving project"),
                    wxOK | wxCENTRE, this);
 
       if (safetyFileName)
-         wxRename(safetyFileName, mFileName);
+         wxRename(FILENAME(safetyFileName), FILENAME(mFileName));
       
       return false;
    }
@@ -2030,7 +2031,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 #ifdef __WXMAC__
    FSSpec spec;
 
-   wxMacFilename2FSSpec(mFileName, &spec);
+   wxMacFilename2FSSpec(FILENAME(mFileName), &spec);
    FInfo finfo;
    if (FSpGetFInfo(&spec, &finfo) == noErr) {
       finfo.fdType = AUDACITY_PROJECT_TYPE;

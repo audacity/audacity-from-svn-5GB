@@ -33,6 +33,7 @@
 
 #include "../../Audacity.h"
 #include "../../AudacityApp.h"
+#include "../../Internat.h"
 #include "LadspaEffect.h"
 
 void LoadLadspaEffect(wxString fname)
@@ -44,15 +45,15 @@ void LoadLadspaEffect(wxString fname)
    // open other plug-ins, we set the current working
    // directory to be the plug-in's directory.
 
-   wxString saveOldCWD = ::wxGetCwd();
+   wxString saveOldCWD = FROMFILENAME(::wxGetCwd());
    wxString prefix = ::wxPathOnly(fname);
-   ::wxSetWorkingDirectory(prefix);
+   ::wxSetWorkingDirectory(FILENAME(prefix));
 
 #if defined(__WXGTK__) || defined(__WXMAC__)
 
    void *libHandle = NULL;
 
-   libHandle = dlopen(fname, RTLD_LAZY);
+   libHandle = dlopen(FILENAME(fname), RTLD_LAZY);
    
    mainFn = (LADSPA_Descriptor_Function)
       dlsym(libHandle, descriptorFnName);
@@ -66,7 +67,7 @@ void LoadLadspaEffect(wxString fname)
 
    wxDllType libHandle = NULL;
      
-   libHandle = wxDllLoader::LoadLibrary(fname);
+   libHandle = wxDllLoader::LoadLibrary(FILENAME(fname));
    mainFn = (LADSPA_Descriptor_Function)
       wxDllLoader::GetSymbol(libHandle, descriptorFnName);
 #endif

@@ -20,6 +20,7 @@
 
 #include "../Audacity.h"
 #include "../FileFormats.h"
+#include "../Internat.h"
 #include "../LabelTrack.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -73,7 +74,7 @@ bool ExportPCM(AudacityProject *project,
       return false;
    }
 
-   sf = sf_open((const char *)fName, SFM_WRITE, &info);
+   sf = sf_open((const char *)FILENAME(fName), SFM_WRITE, &info);
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     (const char *)fName));
@@ -164,7 +165,7 @@ bool ExportPCM(AudacityProject *project,
 
    FSSpec spec;
 
-   wxMacFilename2FSSpec(fName, &spec);
+   wxMacFilename2FSSpec(FILENAME(fName), &spec);
 
    FInfo finfo;
    if (FSpGetFInfo(&spec, &finfo) == noErr) {

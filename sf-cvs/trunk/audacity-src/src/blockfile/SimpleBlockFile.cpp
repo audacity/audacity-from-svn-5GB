@@ -47,12 +47,12 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
                                  sampleFormat format):
    BlockFile(wxFileName(baseFileName.GetFullPath() + ".au"), sampleLen)
 {
-   wxASSERT( !mFileName.FileExists() );
+   wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
    wxFFile file;
 
-   if( !file.Open((const wxChar *) mFileName.GetFullPath(), "wb") )
+   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "wb") )
        // Throw an exception?
        return;
 
@@ -129,7 +129,7 @@ SimpleBlockFile::SimpleBlockFile(wxFileName existingFile, sampleCount len,
    BlockFile(existingFile, len)
 {
 
-   if( !existingFile.FileExists() )
+   if( !wxFileExists(FILENAME(existingFile.GetFullPath())))
       // throw an exception?
       ;
 
@@ -150,7 +150,7 @@ bool SimpleBlockFile::ReadSummary(void *data)
 {
    wxFFile file;
 
-   if( !file.Open((const wxChar *) mFileName.GetFullPath(), "rb") )
+   if( !file.Open((const wxChar *)FILENAME(mFileName.GetFullPath()), "rb") )
       return false;
 
    // The offset is just past the au header
@@ -175,7 +175,7 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    SF_INFO info;
 
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf = sf_open(mFileName.GetFullPath(), SFM_READ, &info);
+   SNDFILE *sf = sf_open(FILENAME(mFileName.GetFullPath()), SFM_READ, &info);
 
    if (!sf)
       return 0;
