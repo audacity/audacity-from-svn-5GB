@@ -36,7 +36,8 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
                  char **upXPM,
                  char **overXPM,
                  char **downXPM,
-                 char **disXPM):
+                 char **disXPM,
+                 bool processdownevents):
    wxWindow(parent, id, pos, size)
 {
    mWasShiftDown = false;
@@ -44,6 +45,8 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mButtonState = AButtonUp;
    mIsClicking = false;
    mEnabled = true;
+   mProcessDownEvents=processdownevents;
+
 
    mBitmap[0] = new wxBitmap((const char **) upXPM);
    mBitmap[1] = new wxBitmap((const char **) overXPM);
@@ -54,12 +57,13 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
 }
 
 AButton::AButton(wxWindow * parent, wxWindowID id,
-                const wxPoint & pos,
-                const wxSize & size,
-                wxImage *up,
-                wxImage *over,
-                wxImage *down,
-                wxImage *dis):
+                 const wxPoint & pos,
+                 const wxSize & size,
+                 wxImage *up,
+                 wxImage *over,
+                 wxImage *down,
+                 wxImage *dis,
+                 bool processdownevents):
    wxWindow(parent, id, pos, size)
 {
    mWasShiftDown = false;
@@ -67,7 +71,8 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
    mButtonState = AButtonUp;
    mIsClicking = false;
    mEnabled = true;
-   
+   mProcessDownEvents = processdownevents;
+
 #if wxVERSION_NUMBER < 2303
    mBitmap[0] = new wxBitmap(up->ConvertToBitmap());
    mBitmap[1] = new wxBitmap(over->ConvertToBitmap());
@@ -103,10 +108,10 @@ void AButton::OnPaint(wxPaintEvent & event)
 #endif
 }
 
+
 void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-  
- 
+
   if (event.Leaving()){
       GetActiveProject()->TP_DisplayStatusMessage("",0);
    }
@@ -129,51 +134,119 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
       GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
    }
 
-
-   if (mButtonIsDown || !mEnabled) {
+   //If the graphical button is disabled, or the button is down
+   // the button can't process down events, get out of here.
+   if (!mEnabled || (mButtonIsDown && !mProcessDownEvents) ) {
       this->Refresh(false);
       return;
    }
 
-   if (event.ButtonUp()) {
+   //If the mouse button is released, the following stuff happens
+   if (event.ButtonUp() ) {
       mIsClicking = false;
       ReleaseMouse();
 
+
+      //Only process the event if you are releasing on the button--if you moved
+      //off the button, dump the event.
       if (event.m_x >= 0 && event.m_y >= 0 &&
           event.m_x < mWidth && event.m_y < mHeight) {
-         mButtonState = AButtonDown;
-         mButtonIsDown = true;
+      
+         // Although this may be a little redundant, I'm segregating
+         // two types of buttons for clarity
+         // mProcessDownEvents=false buttons can only by pushed down-their pushing up must
+         // be handled immediately, by the action of another button, or by
+         // some other event (e.g., the file ending stops playing and pops up
+         // the play button.
+         // mProcessDownEvents=true buttons can be pushed down and then pushed up again
+         // by clicking on them again once in the down state.
+         if(mProcessDownEvents)
+            {
+               if(mButtonIsDown)
+                  {
+                     
+                     //If the button is down, set the button state to up 
+                     // and 'over'--highlighted.
+                     mButtonState = AButtonOver;
+                     mButtonIsDown = false;          
+                  }
+               else
+                  {
+                     //If the button is up, set the button state to down
+                     mButtonState=AButtonDown;
+                     mButtonIsDown=true;
+                  }
+            }
+         else
+            {
+               //If it is a one-state button,
+               //Set the button state to down undconditionally
+               mButtonState = AButtonDown;
+               mButtonIsDown = true;
+            }
 
          mWasShiftDown = event.ShiftDown();
 
+         //Create an event for the parent window to process.
          wxCommandEvent *e =
              new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
          GetParent()->ProcessEvent(*e);
          delete e;
       }
+
       this->Refresh(false);
       return;
    }
+      //This handles the mouse down event.
    else if (event.ButtonDown()) {
       mIsClicking = true;
       CaptureMouse();
    }
 
-   if (mIsClicking) {
-      if (event.m_x >= 0 && event.m_y >= 0 &&
-          event.m_x < mWidth && event.m_y < mHeight) {
-         mButtonState = AButtonDown;
-      } else
-         mButtonState = AButtonUp;
-   }
-   else {
-      if (event.Entering())
-         mButtonState = AButtonOver;
-      else if (event.Leaving())
-         mButtonState = AButtonUp;
-   }
+
+   //This following logic handles button in situations other than the 
+   //up-click
+   if (mProcessDownEvents)
+      {
+         if (mIsClicking) {
+            if (event.m_x >= 0 && event.m_y >= 0 &&
+                event.m_x < mWidth && event.m_y < mHeight) {
+               mButtonState =  AButtonDown;
+            } else
+               mButtonState = mButtonIsDown ? AButtonDown: AButtonUp;
+         }
+         else {
+            if (event.Entering())
+               mButtonState = mButtonIsDown ? AButtonDown: AButtonOver;
+            
+            //If mouse leaves the button, put it in its previous state.
+            else if (event.Leaving())
+               mButtonState = mButtonIsDown ? AButtonDown: AButtonUp;
+            
+         }
+
+      }
+   else  //This is a push-down-only traditional button
+      {
+         if (mIsClicking) {
+            if (event.m_x >= 0 && event.m_y >= 0 &&
+                event.m_x < mWidth && event.m_y < mHeight) {
+               mButtonState = AButtonDown;
+            } else
+               mButtonState = AButtonUp;
+         }
+         else {
+            if (event.Entering())
+               mButtonState = AButtonOver;
+            else if (event.Leaving())
+               mButtonState = AButtonUp;
+         }
+         
+         
+      }
+   //Do a final Refresh() event
    this->Refresh(false);
-}
+   }
 
 bool AButton::WasShiftDown()
 {
@@ -206,7 +279,10 @@ void AButton::PushDown()
 
 void AButton::PopUp()
 {
+    
    mButtonIsDown = false;
    mButtonState = AButtonUp;
+
+
    this->Refresh(false);
 }
