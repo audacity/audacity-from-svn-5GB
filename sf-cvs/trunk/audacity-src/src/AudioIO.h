@@ -68,6 +68,9 @@ class AudioIO {
    void OnTimer();
 
    sampleFormat GetFormat();
+
+   void AddDroppedSamples(int nSamples);
+
    void SetPaused(bool state);
    bool GetPaused();
 
@@ -87,7 +90,9 @@ class AudioIO {
    double              mT1;
    bool                mHardStop;
    bool                mPaused;
-   
+
+   int                 mDroppedSamples;
+
    PortAudioStream    *mPortStream;
 
    unsigned int        mNumInChannels;
