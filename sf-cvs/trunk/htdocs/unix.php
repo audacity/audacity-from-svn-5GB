@@ -111,6 +111,8 @@ These RPMs have been reported to work well with Caldera OpenLinux, also.
 
 ?>
 
+<p>
+
 <?php BoxTop("Unix Tips"); ?>
 
 <p>
