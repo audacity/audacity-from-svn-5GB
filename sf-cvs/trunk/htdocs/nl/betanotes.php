@@ -1,6 +1,44 @@
 <?php BoxTop("$releaseNotesStr $betaVersion"); ?>
 
 <pre>
+Bekende fouten in Audacity 1.1.3:
+- Het plaatst een bestand met de naam "Audacity-Commands.xml" in je home   directory of ergens anders op je computer. Dit bestand is nodig om
+Audacity 1.1.3 te kunnen gebruiken. We verontschuldigen ons voor de hierdoor ontstane wanorde op je computer en we beloven om in de volgende versie ervoor te zorgen dat het bestand om een geschiktere plaats terecht komt.
+
+Nieuwe mogelijkheden in Audacity 1.1.3:
+  * Gebruikers Interface
+- Nieuwe Mixer werkbalk zorgt ervoor dat je direct vanuit Audacity controle     kunt uitoefenen over uitgaande volume, inkomende volume en de invoerbron
+- Elke track heeft nu een eigen 'gain' en 'pan' controle.
+
+  * Bestand I/O
+- Gebruikt een verbeterd project bestandsformaat.(Ongelukkigerwijs wordt het lezen van vorige bestandsformaten, waaronder versie 1.1.1, niet ondersteund.
+- Block bestanden (opgeslagen in Audacity project directories) gebruiken nu het standaard AU formaat. Hoewel sommige Audacity meta-informatie in deze bestanden aanwezig is, kunnen ze nu ook door andere populaire audioprogramma's worden gelezen.
+- Sommige fouten zijn opgelost betreffende het lezen/schrijven van audiobestanden van meer dan 16 bits per sample.
+    - Importeren van RAW is weer functioneel, met een simpelere GUI
+      maar ondersteuning voor veel meer bestandsformaten. De
+      autodetectie algorithmes zijn veel accurater dan die in versie 1.0.
+      
+  * Audio I/O
+    - Compleet herschreven audio I/O, met lagere latency
+      en minimale kans op buffer underruns tijdens het opnemen.
+
+  * Resampling
+    - Gebruik van hoge kwaliteit resampling algorithmes, met de
+      optie voor betere kwaliteit voor mixen dan voor real-time
+      playback.
+
+- Ondersteuning voor Time Tracks, voor verandering playback snelheid via tijd.
+
+  * Veel meer fouten herstel en nieuwe mogelijkheden
+
+Nieuww mogelijkheden in Audacity 1.1.2:
+  * Gebruikers Interface
+    - Herstelde fout in de Windows versie, voor de track menu commando's 
+      "Name..." en "Splits Stereo Track"/"Maak Stereo Track".
+  * Effecten
+    - Nyquist ondersteuning voor Windows (ondersteund plug-ins geschreven met 
+      Nyquist, een geïnterpreteerde functionele taal gebasserd op Lisp).
+
 Bekende fouten in Audacity 1.1.1:
 
   * Gebruik het Benchmark commando in Windows niet - het zou kunnen vastlopen.
