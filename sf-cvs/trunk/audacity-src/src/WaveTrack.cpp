@@ -818,7 +818,7 @@ bool WaveTrack::HandleXMLTag(const char *tag, const char **attrs)
             double d;
             wxString(value).ToDouble(&d);
             if (d >= -1.0 && d <= 1.0)
-               mGain = d;
+               mPan = d;
          }
          else if (!strcmp(attr, "name"))
             mName = value;
