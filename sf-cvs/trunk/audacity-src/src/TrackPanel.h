@@ -254,6 +254,7 @@ class TrackPanel:public wxWindow {
    bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
 
    wxCursor *mArrowCursor;
+   wxCursor *mPencilCursor;
    wxCursor *mSelectCursor;
    wxCursor *mResizeCursor;
    wxCursor *mSlideCursor;
