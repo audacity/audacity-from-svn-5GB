@@ -335,12 +335,17 @@ bool FileFormatPrefs::Apply()
 
    const char *pcmFmt = ((wxString)sf_header_name(mFormat & SF_FORMAT_TYPEMASK)).c_str();
 
-   mAudacity->SetCommandValue(ExportMixID, wxString::Format(_("&Export as %s..."), pcmFmt));
-   mAudacity->SetCommandValue(ExportSelectionID, wxString::Format(_("Export Selection as %s..."), pcmFmt));
-   mAudacity->SetCommandValue(ExportLossyMixID, wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
-   mAudacity->SetCommandValue(ExportLossySelectionID, wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
+   if (mAudacity) {
+      // TODO: should do for all open projects, right???
 
-   mAudacity->RebuildMenuBar();
+      mAudacity->SetCommandValue(ExportMixID, wxString::Format(_("&Export as %s..."), pcmFmt));
+      mAudacity->SetCommandValue(ExportSelectionID, wxString::Format(_("Export Selection as %s..."), pcmFmt));
+      mAudacity->SetCommandValue(ExportLossyMixID, wxString::Format(_("Export as %s..."), lossyFormat.c_str()));
+      mAudacity->SetCommandValue(ExportLossySelectionID, wxString::Format(_("Export Selection as %s..."), lossyFormat.c_str()));
+
+      mAudacity->RebuildMenuBar();
+   }
+
    return true;
 }
 
