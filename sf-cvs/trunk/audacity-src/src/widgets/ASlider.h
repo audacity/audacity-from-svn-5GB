@@ -211,7 +211,7 @@ class SliderDialog: public wxDialog
    ~SliderDialog();
    
    void OnMouseEvent(wxMouseEvent &event);
-   void OnPaint(wxMouseEvent &event);
+   void OnPaint(wxPaintEvent &event);
    void OnKeyEvent(wxCommandEvent &event);
    void OnEnter(wxCommandEvent & event);
    void OnOK(wxCommandEvent & evt);

@@ -72,6 +72,8 @@ public:
    ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt);
    virtual ~ToolBarMiniFrame();
    
+   void OnClose();
+   void OnCloseButton(wxCommandEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
    virtual void DoShow(bool visible);
    virtual void DoMove(wxPoint where);
@@ -467,7 +469,7 @@ void ToolBar::PlaceButton(int i, wxWindow *pWind)
 BEGIN_EVENT_TABLE(ToolBarMiniFrame, wxMiniFrame) 
    EVT_CLOSE(ToolBarMiniFrame::OnCloseWindow)
    EVT_MOUSE_EVENTS(ToolBarMiniFrame::OnMouseEvent)
-   EVT_BUTTON(TOOLBAR_CLOSE_BUTTON, ToolBarMiniFrame::OnCloseWindow)
+   EVT_BUTTON(TOOLBAR_CLOSE_BUTTON, ToolBarMiniFrame::OnCloseButton)
 END_EVENT_TABLE()  
 
 ///Constructor for a ToolBarMiniFrame. You give it a type and
@@ -518,11 +520,21 @@ void ToolBarMiniFrame::OnMouseEvent(wxMouseEvent& evt)
 
 
 /// This hides the floating toolbar, effectively 'hiding' the window
-void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
+void ToolBarMiniFrame::OnClose() 
 {
    AudacityProject * p = GetActiveProject();
    ToolBarStub * tbs = ToolBarFrame::GetToolBar()->GetToolBarStub();
    p->FloatToolBar(tbs);
+} 
+
+void ToolBarMiniFrame::OnCloseButton(wxCommandEvent & WXUNUSED(event)) 
+{
+   OnClose();
+} 
+
+void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
+{
+   OnClose();
 } 
 
 void ToolBarMiniFrame::DoShow(bool visible)

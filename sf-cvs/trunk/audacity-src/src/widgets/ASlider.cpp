@@ -234,7 +234,7 @@ SliderDialog::~SliderDialog()
 }
 
 
-void SliderDialog::OnPaint(wxMouseEvent & event)
+void SliderDialog::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
    mSlider->OnPaint(dc, false);
@@ -255,13 +255,13 @@ void SliderDialog::OnMouseEvent(wxMouseEvent & event)
       || event.ButtonUp(1)
       || (event.m_wheelRotation != 0)
       )
-      {
-         mSlider->OnMouseEvent(event);
-         //update the text control accordingly.
-         mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
-      }
-   OnPaint(event);
-
+   {
+      mSlider->OnMouseEvent(event);
+      //update the text control accordingly.
+      mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
+   }
+   wxPaintEvent dummy;
+   OnPaint(dummy);
 }
 
 
@@ -287,7 +287,7 @@ void SliderDialog::OnEnter(wxCommandEvent & event)
    //Set the text value to the slider's
    mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
 
-   wxMouseEvent dummy;
+   wxPaintEvent dummy;
    //repaint
    OnPaint(dummy);
 
