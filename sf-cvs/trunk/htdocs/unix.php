@@ -30,6 +30,19 @@
 </td>
 </tr>
 
+<tr>
+<td></td>
+<td>
+<p><?php print "$sourceDepStr"; ?></p>
+<ul>
+<li><a href="http://wxwidgets.org/downld2.htm">wxWidgets 2.4</a> (required)
+<li><a href="http://www.mars.org/home/rob/proj/mpeg/">MAD (Mpeg Audio Decoder)</a> (optional)
+<li><a href="http://vorbis.com/download.psp">Ogg Vorbis</a> (optional)
+<li><a href="http://www.mp3dev.org/mp3/download/download.html">LAME</a> (optional)
+</ul>
+</td>
+</tr>
+
 </table>
 
 <center><hr width=50%></center>
