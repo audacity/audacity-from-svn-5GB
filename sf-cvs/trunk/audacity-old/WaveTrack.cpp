@@ -552,10 +552,11 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 		  cache.where[x] <= oldcache.where[oldcache.len-1]) {
 
 		int ox =
-		  int(oldcache.len * (cache.where[x] - oldcache.where[0]) /
+		  int((double(oldcache.len) * (cache.where[x] - oldcache.where[0])) /
 			  (oldcache.where[oldcache.len-1] - oldcache.where[0])+0.5);
 
-		if (cache.where[x] == oldcache.where[ox]) {
+		if (ox >= 0 && ox <= oldcache.len &&
+			cache.where[x] == oldcache.where[ox]) {
 
 		  for(sampleCount i=0; i<screenHeight; i++)
 			cache.freq[screenHeight*x + i] =
