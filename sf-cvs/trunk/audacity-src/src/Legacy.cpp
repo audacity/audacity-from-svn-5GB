@@ -92,6 +92,7 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
       }
       else {
          fprintf(outf, " channel='2'");
+         line = channel;
       }
 
       if (line == "linked") {
