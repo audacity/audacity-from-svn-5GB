@@ -20,6 +20,9 @@
 #include <wx/window.h>
 
 class wxBitmap;
+class wxImage;
+class wxSize;
+class wxPoint;
 
 class ASlider:public wxWindow {
  public:
