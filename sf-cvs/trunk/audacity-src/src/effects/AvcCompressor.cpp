@@ -68,10 +68,10 @@
 #define MINPCT_MAX		50
 
 EffectAvcCompressor::EffectAvcCompressor():
-			mpDialog ( NULL ),
 			mpBufferList ( NULL ),
 			mpBufferPrevious ( NULL ),
-			mnDelay ( 0 )
+			mnDelay ( 0 ),
+			mpDialog ( NULL )
 {
 }
 
