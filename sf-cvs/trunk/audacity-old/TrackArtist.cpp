@@ -144,7 +144,7 @@ void TrackArtist::DrawTracks(TrackList *tracks,
 	if (!info) {
     info = new TrackInfoCache();
     info->track = t;
-    info->dirty = t->dirty;
+    info->dirty = t->dirty-1;
     info->len = 0;
     info->start = 0.0;
     info->pps = 1.0;
@@ -370,8 +370,9 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
   
   sampleCount x;
 
-  for(x=0; x<cache->len+1; x++)
-	cache->where[x] = (sampleCount)(start*rate + x*rate/pps + 0.5);
+  for(x=0; x<cache->len+1; x++) {
+	cache->where[x] = (sampleCount)(start*rate + ((double)x)*rate/pps + 0.5);
+  }
 
   sampleCount s0 = cache->where[0];
   sampleCount s1 = cache->where[cache->len];
@@ -490,6 +491,9 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
     
     x = 0;
 
+	theMin = temp[x];
+	theMax = temp[x];
+
     while(x < num) {
 
       while (pixel < screenWidth &&
@@ -551,11 +555,11 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache *cache,
     
   }
 
-  do {
+  while (pixel <= p1) {
 	cache->min[pixel-1] = theMin;
 	cache->max[pixel-1] = theMax;
 	pixel++;
-  } while (pixel <= p1);
+  } 
 
   cache->dirty = track->dirty;
 
