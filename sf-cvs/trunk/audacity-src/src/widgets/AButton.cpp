@@ -25,6 +25,10 @@
 #include "../Project.h"
 #include <wx/tooltip.h>
 
+#if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+#define USE_HASCAPTURE
+#endif
+
 BEGIN_EVENT_TABLE(AButton, wxWindow)
     EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
     EVT_PAINT(AButton::OnPaint)
@@ -142,7 +146,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    }
 
    //If the mouse button is released, the following stuff happens
-   if (event.ButtonUp() && HasCapture()) {
+   if (event.ButtonUp() ) {
       mIsClicking = false;
       ReleaseMouse();
 
@@ -267,7 +271,9 @@ void AButton::Disable()
 {
    mEnabled = false;
    mButtonState = AButtonDis;
-   if (HasCapture())
+#ifdef USE_HASCAPTURE
+   if (GetCapture()==this)
+#endif
       ReleaseMouse();
    this->Refresh(false);
 }
@@ -284,7 +290,9 @@ void AButton::PopUp()
     
    mButtonIsDown = false;
    mButtonState = AButtonUp;
-   if (HasCapture())
+#ifdef USE_HASCAPTURE
+   if (GetCapture()==this)
+#endif
       ReleaseMouse();
 
    this->Refresh(false);
