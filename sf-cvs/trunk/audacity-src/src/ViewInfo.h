@@ -12,7 +12,7 @@
 #define __AUDACITY_VIEWINFO__
 
 const double gMaxZoom = 6000000,
-             gMinZoom = 1.0;
+             gMinZoom = 0.001;
 
 struct ViewInfo {
 
