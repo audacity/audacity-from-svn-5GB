@@ -345,6 +345,10 @@ enum mad_flow output_cb(void *_data,
                                   floatSample,
                                   samples);
 
+   for(chn = 0; chn < channels; chn++)
+      delete[] channelBuffers[chn];
+   delete[] channelBuffers;
+
    return MAD_FLOW_CONTINUE;
 }
 
