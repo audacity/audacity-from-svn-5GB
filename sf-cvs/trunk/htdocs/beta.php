@@ -14,30 +14,177 @@
   BoxTop($betaVersionsStr);
 ?>
 
-<p>
-  July 30, 2003
+<?php include GetTranslation("beta-1.2.0-pre1"); ?>
+
+<p align="center">
+<a href="images/audacity-1.2.0-pre1.png">
+<img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
+<br>
+Screen shot: Audacity 1.2.0-pre1 on Linux
 </p>
 
-<p>
-  Thanks for your interest in beta versions of Audacity.  We have temporarily
-  removed the links to beta versions of Audacity while we work out licensing
-  issues and prepare for the next stable release, Audacity 1.2.0, in the next
-  few weeks.
-</p>
+<?php include GetTranslation("beta-1.2.0-pre1-problems"); ?>
+<?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 
-<p>
-  We will be distributing a prerelease version of Audacity 1.2.0 to a small
-  group of users very soon.  If you are interested in helping to test, please
-  join one of our <a href="http://sourceforge.net/mail/?group_id=6235">mailing lists</a>.
-</p>
+<table border="0">
 
-<p>
-  If you haven't used Audacity before, you may want to try version 1.0 until
-  the next version is released.  Download version 1.0 here:
-  <a href="windows.php">[Windows]</a> 
-  <a href="mac.php">[Mac]</a> 
-  <a href="unix.php">[Unix]</a>.
-</p>
+<tr>
+<td colspan=2>
+<center><b>
+<?php print "Windows ($winBetaVersion)" ?>
+</b></center>
+</td>
+</tr>
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$exe\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$exe\">audacity-win.exe";
+?></a>
+<?php print "($installerStr, $winBetaSize)"; ?>
+</td>
+</tr>
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$zip\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$zip\">audacity-win.zip";
+?></a>
+<?php print "($zipStr, $winBetaZipSize)"; ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<a href="http://mitiok.free.fr/">
+<?php print "$lameStr</a>"; ?>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<center><b>
+<?php print "Mac OS X ($macOSXBetaVersion)" ?>
+</b></center>
+</td>
+</tr>
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$osx\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$osx\">audacity-macosx.dmg";
+?></a>
+<?php print "($dmgStr, $macOSXBetaSize)"; ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+<a href="http://spaghetticode.org/lame/">
+<?php print "$lameStr</a>"; ?>
+</td>
+</tr>
+
+<tr>
+<td colspan=2>
+<center><b>
+<?php print "Source Code ($srcBetaVersion)" ?>
+</b></center>
+</td>
+</tr>
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$src\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$src\">audacity-src.tgz";
+?></a>
+<?php print "($tarballStr, $srcBetaSize)"; ?>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+Source code dependencies:
+<ul>
+<li><a href="http://www.wxwindows.org/downld2.htm">wxWindows 2.4.0</a> (required)
+     <li><a href="http://www.mars.org/home/rob/proj/mpeg/">MAD (Mpeg Audio Decoder)</a> (optional)
+     <li><a href="http://www.xiph.org/ogg/vorbis/download.html">Ogg Vorbis</a> (optional)
+     <li><a href="http://www.mp3dev.org/mp3/download/download.html">LAME</a> (optional)
+</ul>
+</td>
+</tr>
+
+<!--
+
+<tr>
+<td valign=center
+><?php print "<a href=\"$rpm\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$rpm\">audacity-i386.rpm";
+?></a>
+<?php print "($rpmStr, $rpmBetaSize)"; ?>
+</td>
+</tr>
+
+-->
+
+<tr>
+<td colspan=2>
+<center><b>
+<?php print "Mac OS 9 ($macOS9BetaVersion)" ?>
+</b></center>
+</td>
+</tr>
+
+<!--
+<tr>
+<td valign=center
+><?php print "<a href=\"$os9\">";
+?><img src=images/DownloadIcon.gif width=32 height=32 border=0></a>
+</td>
+<td valign=center
+><?php print "<a href=\"$os9\">audacity-mac.sit";
+?></a>
+<?php print "($sitStr, $macOS9BetaSize)"; ?>
+</td>
+</tr>
+-->
+
+<tr>
+<td></td>
+<td>
+<?php include GetTranslation("macos9note"); ?>
+</td>
+</tr>
+
+</table>
+
+<center><hr width=50%></center>
+
+<!--
+<a href="http://www.maindex.com/lame/pages/beta_Win32_DLL.html">
+<?php print "$lameStr</a> $lameStr2"; ?>
+<br>
+-->
+
+<?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
 
 <?php
 

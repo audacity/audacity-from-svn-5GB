@@ -20,10 +20,10 @@ intuitive interface make it more enjoyable to use than other
 audio editors, including commercial ones.
 </p>
 
-<p> The developers of Audacity have also released version 1.1.0, which
-is a beta-quality preview of new things we are actively working on.
-It contains many, many new features, but is not quite as polished and
-stable.
+<p>
+The developers of Audacity have also released version 1.2.0-pre1, which is
+a beta-quality preview of new things we are actively working on.  It contains
+many, many new features, but is not quite as polished and stable.
 </p>
 
 <center>
@@ -51,7 +51,7 @@ Send email to <a href="mailto:audacity-help@lists.sourceforge.net"
 
 <!-- Translators: please make a note here that the "audacity-help"
      address is intended for people who speak English.  We will have
-     alternative mailing lists for other languages set up soon...
+     alternative mailing lists for other languages eventually...
 -->
 
 <?php BoxBottom(); ?>
