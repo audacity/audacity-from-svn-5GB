@@ -18,7 +18,6 @@ CFLAGS = -g -O2 \
 	-I/Developer/Headers/FlatCarbon \
 	-I../wxWindows/macbuildstatic/lib/wx/include/mac-2.3 \
 	-I../wxWindows/include \
-	-I../wxWindows/src/mac/morefile \
         -I../libmad \
         -I../libogg/include \
         -I../libvorbis/include \
@@ -103,37 +102,20 @@ OBJS = \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.cpp.o \
-	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o \
 
 ########################################
 # DEPENDENCIES
 DEPS = $(OBJS:$(OBJDIR)/%.o=%)
 ########################################
-all: dirs audacity
-audacity: $(OBJS) Makefile
-	$(CCC) -o audacity $(OBJS) $(LIBS)
+all: dirs Audacity.app
+Audacity.app: $(OBJS) Makefile
+	$(CCC) -o Audacity.app $(OBJS) $(LIBS)
 	/Developer/Tools/Rez audacity.r Carbon.r -t APPL -c auDy \
 		../wxWindows/macbuildstatic/lib/libwx_mac-2.3.r \
-		-o audacity
-	/Developer/Tools/SetFile -a avBstClinmed audacity
+		-o Audacity.app
+	/Developer/Tools/SetFile -a avBstClinmed Audacity.app
 
-#
-#
-install:
-	-test -d $(PREFIX)/share/doc/audacity || \
-		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
-	-test -f audacity-help.htb || $(INSTALL) -m 644 audacity-help.htb \
-		$(PREFIX)/share/doc/audacity/audacity-help.htb
-	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
-	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
-	-test -d $(PREFIX)/bin || \
-		mkdir -m 755 -p $(PREFIX)/bin
-	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
-#
-# make help file from the help directory
-audacity-help.htb: help/* help/images/*
-	rm -f audacity-help.htb
-	cd help && zip ../audacity-help.htb *.htm images/*.png *.hhc *.hhk *.hhp
 #
 # build id3lib from included source -- only if selected in configure script
 id3lib/src/.libs/libid3.a:

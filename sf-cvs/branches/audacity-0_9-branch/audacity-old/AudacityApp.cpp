@@ -106,7 +106,10 @@ void QuitAudacity()
 }
 
 IMPLEMENT_APP(AudacityApp)
-#if defined(__WXMAC__) && !defined(__DARWIN__)
+#if defined(__WXMAC__)
+
+wxString wxMacFSSpec2MacFilename( const FSSpec *spec ) ;
+
 pascal OSErr AEQuit(const AppleEvent * theAppleEvent, AppleEvent * theReply,
                     long Refcon)
 {
@@ -114,10 +117,6 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent, AppleEvent * theReply,
 
    return noErr;
 }
-
-/* prototype of MoreFiles fn, included in wxMac already */
-pascal OSErr FSpGetFullPath(const FSSpec * spec,
-                            short *fullPathLength, Handle * fullPath);
 
 pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
                          long Refcon)
@@ -147,24 +146,13 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
    for (i = 1; i <= itemsInList; i++) {
       AEGetNthPtr(&docList, i, typeFSS, &keywd, &returnedType,
                   (Ptr) & theSpec, sizeof(theSpec), &actualSize);
+      wxString fName = wxMacFSSpec2MacFilename(&theSpec);
 
-      if (noErr == FSpGetFullPath(&theSpec, &namelen, &nameh)) {
-         HLock(nameh);
-         char *str = new char[namelen + 1];
-         memcpy(str, (char *) *nameh, namelen);
-         str[namelen] = 0;
-         HUnlock(nameh);
-         DisposeHandle(nameh);
-
-         AudacityProject *project = GetActiveProject();
-
-         if (project == NULL || !project->GetTracks()->IsEmpty()) {
-            project = CreateNewAudacityProject(gParentWindow);
-         }
-         project->OpenFile(str);
-
-         delete[]str;
+      AudacityProject *project = GetActiveProject();
+      if (project == NULL || !project->GetTracks()->IsEmpty()) {
+         project = CreateNewAudacityProject(gParentWindow);
       }
+      project->OpenFile(fName);
    }
 
    return noErr;
@@ -232,7 +220,7 @@ bool AudacityApp::OnInit()
    LoadVSTPlugins(wxPathOnly(argv[0]));
 #endif
 
-#if defined(__WXMAC__) && !defined(__DARWIN__)
+#if defined(__WXMAC__)
    AEInstallEventHandler(kCoreEventClass,
                          kAEOpenDocuments,
                          NewAEEventHandlerUPP(AEOpenFiles), 0, 0);
@@ -262,6 +250,8 @@ bool AudacityApp::OnInit()
    InitFreqWindow(gParentWindow);
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);
+
+#ifndef __DARWIN__
 
    // Parse command-line arguments
 
@@ -307,7 +297,6 @@ bool AudacityApp::OnInit()
 
          if (argv[option][0] == '-' && !handled) {
             printf("Unknown command line option: %s\n", argv[option]);
-            exit(0);
          }
 
          if (!handled)
@@ -315,6 +304,8 @@ bool AudacityApp::OnInit()
 
       }                         // for option...
    }                            // if (argc>1)
+
+#endif
 
    return TRUE;
 }
