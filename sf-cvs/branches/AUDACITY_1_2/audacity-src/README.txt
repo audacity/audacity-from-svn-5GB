@@ -252,6 +252,16 @@ Known issues/problems:
 
 Changes in 1.2.0-pre4:
 
+  * Fixed problems that could occur when importing certain
+    non-seekable PCM audio files, such as GSM610.
+
+  * Fixed bug that was causing the samples to shift off-screen
+    horizonally when zoomed in very far and the track had a
+    time-shift offset.
+
+  * Fixed bugs in the new resampler that added noise to resampled
+    audio on some systems.
+
   * Mac OS X: Supports Playthrough (listen to what you're recording
     while recording it)
 
