@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="Audacity" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** NICHT BEARBEITEN **
+# ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
 CFG=Audacity - Win32 Debug
-!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
-!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
 !MESSAGE 
 !MESSAGE NMAKE /f "audacity.mak".
 !MESSAGE 
-!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
-!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
 !MESSAGE NMAKE /f "audacity.mak" CFG="Audacity - Win32 Debug"
 !MESSAGE 
-!MESSAGE Für die Konfiguration stehen zur Auswahl:
+!MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "Audacity - Win32 Release" (basierend auf  "Win32 (x86) Application")
-!MESSAGE "Audacity - Win32 Debug" (basierend auf  "Win32 (x86) Application")
+!MESSAGE "Audacity - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "Audacity - Win32 Debug" (based on "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -292,6 +292,14 @@ SOURCE=..\src\Menus.cpp
 # Begin Source File
 
 SOURCE=..\src\Menus.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\MeterToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\MeterToolBar.h
 # End Source File
 # Begin Source File
 
@@ -695,6 +703,14 @@ SOURCE=..\src\export\ExportMP3.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\export\ExportMultiple.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportMultiple.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\export\ExportOGG.cpp
 # End Source File
 # Begin Source File
@@ -864,6 +880,14 @@ SOURCE=..\src\widgets\ASlider.cpp
 # Begin Source File
 
 SOURCE=..\src\widgets\ASlider.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Meter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Meter.h
 # End Source File
 # Begin Source File
 
