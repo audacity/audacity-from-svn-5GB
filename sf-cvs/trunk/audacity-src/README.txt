@@ -273,6 +273,8 @@ Changes in 1.2.0-pre2:
 
   * Mac OS X audio muting problems have been fixed.
 
+  * Mac OS X playback/recording cursor sync problems have been fixed.
+
   * Silence now displays a straight line again, instead of nothing.
 
   * Added a vertical ruler to the Waveform dB display.
