@@ -83,6 +83,9 @@ void AudacityProject::CreateMenuBar()
 
    wxMenu *menu = 0;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
+      if (mCommandMenuItem[i]->separatorPrev)
+         menu->AppendSeparator();
+
       switch (mCommandMenuItem[i]->category) {
          case fileMenu:
             menu = mFileMenu;
@@ -104,10 +107,7 @@ void AudacityProject::CreateMenuBar()
             break;
       }
 
-      if (mCommandMenuItem[i]->commandString == "---")
-         menu->AppendSeparator();
-      else
-         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+      menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
    }
 /*
    mFileMenu->Append(NewID, _("&New"));
