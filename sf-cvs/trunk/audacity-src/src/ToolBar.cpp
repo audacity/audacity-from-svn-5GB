@@ -371,7 +371,6 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
    height = mIdealSize.GetHeight();
    dc.DrawRectangle(0, 0, width, height);
 
-
 #if 0
    // JKC: This code draws a grid of lines around the first few
    // buttons on the toolbar.

@@ -36,6 +36,7 @@ Track::Track(DirManager * projDirManager)
    mSolo      = false;
 
    mHeight = 136;
+   mMinimized = false;
 
    mOffset = 0.0;
 

@@ -219,10 +219,9 @@ void MixerToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-#ifdef USE_AQUA_THEME
-   // Mac has an Aqua background...
    DrawBackground(dc, width, height); 
-#else
+
+#ifndef USE_AQUA_THEME
    // Reduce width by 3 to visually separate from next 
    // Grab bar
    wxRect BevelRect( 0,0,width-3,height-1);

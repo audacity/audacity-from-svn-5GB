@@ -997,14 +997,9 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
    int width, height;
    GetSize(&width, &height);
 
-
-#ifdef USE_AQUA_THEME
-   // Mac has an Aqua background...
    DrawBackground(dc, width, height); 
-#else
-   //TODO: Get rid of all the magic numbers used in sizing.
-   // On other platforms put the big buttons on a beveled platform.
-   DrawBackground(dc, 81, height);
+
+#ifndef USE_AQUA_THEME
    // Width is reduced by an extra two pixels to visually separate
    // the control toolbar from the next grab bar on the right.
    wxRect bevelRect( 81, 0, width-84, height-1 );

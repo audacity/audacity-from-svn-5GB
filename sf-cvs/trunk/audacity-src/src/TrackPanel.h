@@ -91,6 +91,7 @@ private:
    void DrawMuteSolo(wxDC * dc, const wxRect r, Track * t, bool down, bool solo);
    void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
    void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index);
+   void DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, bool minimized);
 
    void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
    void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
@@ -98,6 +99,7 @@ private:
    void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
    void GetGainRect(const wxRect r, wxRect &dest) const;
    void GetPanRect(const wxRect r, wxRect &dest) const;
+   void GetMinimizeRect(const wxRect r, wxRect &dest, bool minimized) const;
 
 public:
    LWSliderArray mGains;
@@ -214,8 +216,10 @@ class TrackPanel:public wxWindow {
    void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
+   void HandleMinimizing(wxMouseEvent & event);
    void HandleSliders(wxMouseEvent &event, bool pan);
    bool MuteSoloFunc(Track *t, wxRect r, int x, int f, bool solo);
+   bool MinimizeFunc(Track *t, wxRect r, int x, int f);
    bool GainFunc(Track * t, wxRect r, wxMouseEvent &event,
                  int index, int x, int y);
    bool PanFunc(Track * t, wxRect r, wxMouseEvent &event,
@@ -365,7 +369,8 @@ class TrackPanel:public wxWindow {
    bool mIsMuting;
    bool mIsSoloing;
    bool mIsGainSliding;
-   bool mIsPanSliding;   
+   bool mIsPanSliding;
+   bool mIsMinimizing;
    bool mAdjustSelectionEdges;
 
    // JH: if the user is dragging a track, at what y

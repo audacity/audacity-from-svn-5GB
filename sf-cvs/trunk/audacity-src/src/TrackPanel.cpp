@@ -332,7 +332,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsSoloing = false;
    mIsGainSliding = false;
    mIsPanSliding = false;
-
+   mIsMinimizing = false;
 
    gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 
@@ -2337,6 +2337,40 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 }
 
 
+void TrackPanel::HandleMinimizing(wxMouseEvent & event)
+{
+   Track *t = mCapturedTrack;
+   wxRect r = mCapturedRect;
+
+   if( t==NULL ){
+      mIsMinimizing = false;
+      mCapturedTrack = NULL;
+      return;
+   }
+
+   wxRect buttonRect;
+   mTrackLabel.GetMinimizeRect(r, buttonRect, t->GetMinimized());
+
+   wxClientDC dc(this);
+
+   if (event.Dragging()) {
+      mTrackLabel.DrawMinimize(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y), t->GetMinimized());
+   }
+   else if (event.ButtonUp(1)) {
+      if (buttonRect.Inside(event.m_x, event.m_y))
+      {
+         t->SetMinimized(!t->GetMinimized());
+         if (mTracks->GetLink(t))
+            mTracks->GetLink(t)->SetMinimized(t->GetMinimized());
+      }
+
+      mIsMinimizing = false;
+      mCapturedTrack = NULL;
+
+      mTrackLabel.DrawMinimize(&dc, r, t, false, t->GetMinimized());
+      Refresh(false);
+   }
+}
 
 void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 {
@@ -2515,6 +2549,11 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
    }
+   // MM: Check minimize buttons on WaveTracks
+   if (!second) {
+      if (MinimizeFunc(t, r, event.m_x, event.m_y))
+         return;
+   }
    // DM: Check Gain and Pan on WaveTracks:
    if (!second && t->GetKind() == Track::Wave) {
       if (GainFunc(t, r, event,
@@ -2679,6 +2718,22 @@ bool TrackPanel::MuteSoloFunc(Track * t, wxRect r, int x, int y,
    return false;
 }
 
+bool TrackPanel::MinimizeFunc(Track * t, wxRect r, int x, int y)
+{
+   wxRect buttonRect;
+   mTrackLabel.GetMinimizeRect(r, buttonRect, t->GetMinimized());
+   if (buttonRect.Inside(x, y)) {
+      wxClientDC dc(this);
+      mIsMinimizing = true;
+      mTrackLabel.DrawMinimize(&dc, r, t, true, t->GetMinimized());
+      mCapturedTrack = t;
+      mCapturedRect = r;
+
+      return true;
+   }
+
+   return false;
+}
 
 // DM: HandleResize gets called when:
 //  1. A mouse-down event occurs in the "resize region" of a track,
@@ -2700,6 +2755,9 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       // DM: Figure out what track is about to be resized
       Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
       Track *label = FindTrack(event.m_x, event.m_y, true, true, &rLabel, &num);
+
+      if (t->GetMinimized())
+         return; // Don't resize when minimized
 
       // If the click is at the bottom of a non-linked track label, we
       // treat it as a normal resize.  If the label is of a linked track,
@@ -2999,6 +3057,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       HandleSliders(event, false);
    else if (mIsPanSliding)
       HandleSliders(event, true);
+   else if (mIsMinimizing)
+      HandleMinimizing(event);
    else
       TrackSpecificMouseEvent(event);
 }
@@ -3571,6 +3631,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    mTrackLabel.DrawCloseBox(dc, r, false);
    mTrackLabel.DrawTitleBar(dc, r, t, false);
 
+   mTrackLabel.DrawMinimize(dc, r, t, mIsMinimizing, t->GetMinimized());
+
    if (t->GetKind() == Track::Wave) {
       mTrackLabel.DrawMuteSolo(dc, r, t, mIsMuting, false);
       mTrackLabel.DrawMuteSolo(dc, r, t, mIsSoloing, true);
@@ -3580,7 +3642,7 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
 
    r = trackRect;
 
-   if (t->GetKind() == Track::Wave) {
+   if (t->GetKind() == Track::Wave && !t->GetMinimized()) {
       int offset;
 
       #ifdef __WXMAC__
@@ -4172,6 +4234,13 @@ void TrackLabel::GetPanRect(const wxRect r, wxRect & dest) const
    dest.height = 25;
 }
 
+void TrackLabel::GetMinimizeRect(const wxRect r, wxRect &dest, bool minimized) const
+{
+   dest.x = r.x + 2;
+   dest.width = 92;
+   dest.y = r.y + r.height - 18;
+   dest.height = 14;
+}
 
 void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
                              const int labelw)
@@ -4275,6 +4344,46 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
    }
 }
 
+void TrackLabel::DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, bool minimized)
+{
+   wxRect bev;
+   GetMinimizeRect(r, bev, minimized);
+    
+   AColor::Solo(dc, false, t->GetSelected());
+   dc->DrawRectangle(bev);
+    
+   AColor::Dark(dc, t->GetSelected());
+
+   // Calculate center
+   int x = bev.x + bev.width / 2;
+   int y = bev.y + bev.height / 2;
+
+   wxPoint pts[3];
+
+   if (minimized)
+   {
+      pts[0].x = x - 4;
+      pts[0].y = y - 3;
+      pts[1].x = x + 4;
+      pts[1].y = y - 3;
+      pts[2].x = x;
+      pts[2].y = y + 3;
+
+   } else
+   {
+      pts[0].x = x;
+      pts[0].y = y - 3;
+      pts[1].x = x + 4;
+      pts[1].y = y + 3;
+      pts[2].x = x - 4;
+      pts[2].y = y + 3;
+   }
+   
+   dc->DrawPolygon(3, pts);
+
+   AColor::Bevel(*dc, !down, bev);
+}
+
 void TrackLabel::MakeMoreSliders()
 {
    wxRect r(0, 0, 1000, 1000);
@@ -4329,8 +4438,6 @@ void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
       mPans[index]->OnPaint(*dc, t->GetSelected());
    }
 }
-
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

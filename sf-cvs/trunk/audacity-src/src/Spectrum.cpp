@@ -20,6 +20,8 @@ bool ComputeSpectrum(float * data, int width, int height,
 {
    int windowFunc = 3;
 
+   printf("ComputeSpectrum %d\n", windowSize);
+
    if (width < windowSize)
       return false;
 
