@@ -1928,7 +1928,7 @@ void AudacityProject::OnImportRaw()
                       path,     // Path
                       "",       // Name
                       "",       // Extension
-                      _("All files (*.*)|*.*"),
+                      _("All files (*)|*"),
                       0,        // Flags
                       this);    // Parent
 
