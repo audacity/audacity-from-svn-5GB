@@ -48,12 +48,15 @@
 #include "../AColor.h"
 #include "../images/ControlButtons.h"
 
+// Code duplication warning: these apparently need to be in the
+// same order as the enum in ControlToolBar.cpp
+
 enum {
    ID_SELECT,
-   ID_ZOOM,
    ID_ENVELOPE,
-   ID_SLIDE,
    ID_DRAW,
+   ID_ZOOM,
+   ID_SLIDE,
    ID_MULTI,
    ID_PLAY_BUTTON,
    ID_RECORD_BUTTON,
