@@ -20,6 +20,8 @@
 #ifdef WIN32
 #include <sys/stat.h>
 #include "io.h"
+#elif defined(__FreeBSD__)
+#include <sys/stat.h>
 #else
 #include <stat.h>
 #endif

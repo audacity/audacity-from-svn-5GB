@@ -59,6 +59,9 @@ void snd_free(void *a);
 #elif defined(IRIX)
   #include "sndirix.h"
 
+#elif defined(__FreeBSD__)
+  #include "sndfreebsd.h"
+
 #elif defined(_WIN32)
   #ifndef WIN32
     #define WIN32

@@ -39,7 +39,7 @@ bool ImportOGG(wxWindow *parent,
 			   wxString Filename, WaveTrack **channels[], int *numChannels,
 			   DirManager *dirManager)
 {
-  #ifndef __WXGTK__
+  #ifndef linux
   // This is only temporary until the OGG Vorbis libraries are linked in on the
   // Mac and Windows
   return false;

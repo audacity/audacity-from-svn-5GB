@@ -41,6 +41,10 @@ bool ImportMP3(wxWindow *parent,
 			   wxString fName, WaveTrack **left, WaveTrack **right, 
 			   DirManager *dirManager)
 {
+// XXX: This is very hackish.
+#ifdef __FreeBSD__
+  return false;
+#else
   wxBusyCursor wait;
 
   XA_DecoderInfo *decoder;
@@ -213,5 +217,6 @@ bool ImportMP3(wxWindow *parent,
   }
 
   return true;
+#endif
 }
 
