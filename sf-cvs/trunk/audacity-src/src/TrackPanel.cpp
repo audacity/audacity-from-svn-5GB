@@ -2765,7 +2765,9 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
       mIsGainSliding = false;
       mIsPanSliding = false;
 
-      MakeParentModifyState();
+      MakeParentPushState(pan ? _("Moved pan slider") : _("Moved gain slider"),
+                          pan ? _("Pan") : _("Gain"),
+                          true /* consolidate */);
    }
 
    this->Refresh(false);
