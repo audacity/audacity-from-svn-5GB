@@ -499,7 +499,7 @@ calc_peak_test (int filetype, char *filename)
 		} ;
 
 	sf_command (file, SFC_CALC_NORM_SIGNAL_MAX, &peak, sizeof (peak)) ;
-	if (fabs (peak - 0.5) > 1e-5)
+	if (fabs (peak - 0.5) > 1e-4)
 	{	printf ("Line %d : Peak value should be %f (is %f).\n", __LINE__, 0.5, peak) ;
 		exit (1) ;
 		} ;

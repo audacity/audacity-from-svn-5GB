@@ -56,11 +56,7 @@ enum
 
 	/* PEAK chunk location. */
 	SF_SCALE_MAX		= 52,
-	SF_SCALE_MIN		= 53,
-
-	/* Char type for 8 bit files. */
-	SF_CHARS_SIGNED		= 200,
-	SF_CHARS_UNSIGNED	= 201
+	SF_SCALE_MIN		= 53
 } ; 
 
 #define		SFM_MASK 	(SFM_READ | SFM_WRITE | SFM_RDWR)
@@ -78,6 +74,7 @@ enum
 	/* Formats supported read only. */
 	SF_FORMAT_WVE			= 0x4020000,		/* Psion ALaw Sound File */
 	SF_FORMAT_TXW			= 0x4030000,		/* Yamaha TX16 sampler file */
+	SF_FORMAT_DWD			= 0x4040000,		/* DiamondWare Digirized */
 
 	/* Following are detected but not supported. */
 	SF_FORMAT_REX			= 0x090000,			/* Propellorheads Rex/Rcy */
@@ -145,7 +142,6 @@ typedef struct sf_private_tag
 	
 	int				mode ;			/* Open mode : SFM_READ, SFM_WRITE or SFM_RDWR. */
 	int				endian ;		/* File endianness : SF_ENDIAN_LITTLE or SF_ENDIAN_BIG. */
-	int				chars ;			/* Chars are SF_CHARS_SIGNED or SF_CHARS_UNSIGNED. */
 	int				float_endswap ;	/* Need to endswap float32s? */
 	
 	SF_INFO			sf ; 	
@@ -402,10 +398,12 @@ int		wav_open	(SF_PRIVATE *psf) ;
 
 /* In progress. Do not currently work. */
 
-int		sds_open	(SF_PRIVATE *psf) ;
 int		rx2_open	(SF_PRIVATE *psf) ;
+int		sds_open	(SF_PRIVATE *psf) ;
 int		sd2_open	(SF_PRIVATE *psf) ;
 int		txw_open	(SF_PRIVATE *psf) ;
+int		wve_open	(SF_PRIVATE *psf) ;
+int		dwd_open	(SF_PRIVATE *psf) ;
 
 /*------------------------------------------------------------------------------------ 
 **	Init functions for a number of common data encodings. 

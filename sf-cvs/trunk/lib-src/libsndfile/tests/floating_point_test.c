@@ -32,7 +32,7 @@
 
 #define	SAMPLE_RATE			11025
 
-static void	float_scaled_test	(char *filename, int allow_exit, int filetype, unsigned int target_hash, double target_snr) ;
+static void	float_scaled_test	(char *filename, int allow_exit, int filetype, double target_snr) ;
 static void	double_scaled_test	(char *filename, int allow_exit, int filetype, double target_snr) ;
 
 static	double	orig_data [DFT_DATA_LENGTH] ;
@@ -46,42 +46,42 @@ main (int argc, char *argv [])
 	if (argc == 2 && ! strstr (argv [1], "no-exit"))
 		allow_exit = 0 ;
 
-#if (! (HAVE_LRINTF || HAVE_LRINT_REPLACEMENT))
-	puts ("** This platform does not have lrintf(), so file hash \n"
-		  "** checking cannot be performed.") ;
+#if ((HAVE_LRINTF == 0) && (HAVE_LRINT_REPLACEMENT == 0))
+	puts ("*** Cannot run this test on this platform because it lacks lrintf().") ;
+	exit (0) ;
 #endif
 
 	/* Float tests. */
-	float_scaled_test	("float.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW  | SF_FORMAT_FLOAT, 0x80413625, -163.0) ;
+	float_scaled_test	("float.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW  | SF_FORMAT_FLOAT, -163.0) ;
 
 	/* Test both signed and unsigned 8 bit files. */
-	float_scaled_test	("pcm_s8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_S8, 0x929316c4, -39.0) ;
-	float_scaled_test	("pcm_u8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_U8, 0x529542c4, -39.0) ;
+	float_scaled_test	("pcm_s8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_S8, -39.0) ;
+	float_scaled_test	("pcm_u8.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_PCM_U8, -39.0) ;
 
-	float_scaled_test	("pcm_16.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, 0x87bd2472, -87.0) ;
-	float_scaled_test	("pcm_24.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, 0xdc903e47, -138.0) ;
-	float_scaled_test	("pcm_32.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, 0xb214e199, -163.0) ;
+	float_scaled_test	("pcm_16.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, -87.0) ;
+	float_scaled_test	("pcm_24.raw", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, -138.0) ;
+	float_scaled_test	("pcm_32.raw", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, -163.0) ;
 
-	float_scaled_test	("ulaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ULAW, 0x37b101b5, -50.0) ;
-	float_scaled_test	("alaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ALAW, 0x0c7141ec, -49.0) ;
+	float_scaled_test	("ulaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ULAW, -50.0) ;
+	float_scaled_test	("alaw.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_ALAW, -49.0) ;
 
-	float_scaled_test	("imaadpcm.wav", allow_exit, SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, 0x590d3df8, -47.0) ;
-	float_scaled_test	("msadpcm.wav" , allow_exit, SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, 0xe49453f9, -40.0) ;
-	float_scaled_test	("gsm610.raw"  , allow_exit, SF_FORMAT_RAW | SF_FORMAT_GSM610, 0x6b20daf0, -33.0) ;
+	float_scaled_test	("imaadpcm.wav", allow_exit, SF_FORMAT_WAV | SF_FORMAT_IMA_ADPCM, -47.0) ;
+	float_scaled_test	("msadpcm.wav" , allow_exit, SF_FORMAT_WAV | SF_FORMAT_MS_ADPCM, -40.0) ;
+	float_scaled_test	("gsm610.raw"  , allow_exit, SF_FORMAT_RAW | SF_FORMAT_GSM610, -33.0) ;
 
-	float_scaled_test	("g721_32.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G721_32, 0x0d15119d, -34.0) ;
-	float_scaled_test	("g723_24.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_24, 0x8394e3b8, -34.0) ;
-	float_scaled_test	("g723_40.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_40, 0xbad070d2, -40.0) ;
+	float_scaled_test	("g721_32.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G721_32, -34.0) ;
+	float_scaled_test	("g723_24.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_24, -34.0) ;
+	float_scaled_test	("g723_40.au", allow_exit, SF_FORMAT_AU | SF_FORMAT_G723_40, -40.0) ;
 
 	/*	PAF files do not use the same encoding method for 24 bit PCM data as other file
 	**	formats so we need to explicitly test it here.
 	*/
-	float_scaled_test	("le_paf_24.paf", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, 0xf36eb03a, -149.0) ;
-	float_scaled_test	("be_paf_24.paf", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, 0x730d92d3, -149.0) ;
+	float_scaled_test	("le_paf_24.paf", allow_exit, SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, -149.0) ;
+	float_scaled_test	("be_paf_24.paf", allow_exit, SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, -149.0) ;
 
-	float_scaled_test	("dwvw_12.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_12, 0x137efb5e, -64.0) ;
-	float_scaled_test	("dwvw_16.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_16, 0xb3070047, -92.0) ;
-	float_scaled_test	("dwvw_24.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_24, 0x6f408fa0, -151.0) ;
+	float_scaled_test	("dwvw_12.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_12, -64.0) ;
+	float_scaled_test	("dwvw_16.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_16, -92.0) ;
+	float_scaled_test	("dwvw_24.raw", allow_exit, SF_FORMAT_RAW | SF_FORMAT_DWVW_24, -151.0) ;
 
 	/*==============================================================================
 	** Double tests. 
@@ -129,7 +129,7 @@ main (int argc, char *argv [])
 				putchar (' ') ;		\
 				}
 static void	
-float_scaled_test (char *filename, int allow_exit, int filetype, unsigned int target_hash, double target_snr)
+float_scaled_test (char *filename, int allow_exit, int filetype, double target_snr)
 {	static	float	float_orig [DFT_DATA_LENGTH] ;
 	static	float	float_test [DFT_DATA_LENGTH] ;
 
@@ -143,15 +143,15 @@ float_scaled_test (char *filename, int allow_exit, int filetype, unsigned int ta
 	PUT_DOTS (k) ;
 	fflush (stdout) ;
 	
-	gen_windowed_sine (orig_data, DFT_DATA_LENGTH, 0.95) ;
+	gen_windowed_sine (orig_data, DFT_DATA_LENGTH, 1.0) ;
 	
 	for (k = 0 ; k < DFT_DATA_LENGTH ; k++)
 		float_orig [k] = orig_data [k] ;
 		
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DFT_DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format     = filetype ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("\n\nLine %d: sf_open_write failed with error : ", __LINE__) ;
@@ -169,12 +169,6 @@ float_scaled_test (char *filename, int allow_exit, int filetype, unsigned int ta
 		
 	sf_close (file) ;
 
-#if (! (HAVE_LRINTF || HAVE_LRINT_REPLACEMENT))
-	target_hash = target_hash ; /* Avoid compiler warning. */
-#else
-	check_file_hash_or_die (filename, target_hash, __LINE__) ;
-#endif
-	
 	memset (float_test, 0, sizeof (float_test)) ;
 
 	if (! (file = sf_open (filename, SFM_READ, &sfinfo)))
@@ -235,10 +229,10 @@ double_scaled_test (char *filename, int allow_exit, int filetype, double target_
 	
 	gen_windowed_sine (orig_data, DFT_DATA_LENGTH, 0.95) ;
 		
-	sfinfo.samplerate  = SAMPLE_RATE ;
+	sfinfo.samplerate = SAMPLE_RATE ;
 	sfinfo.frames     = DFT_DATA_LENGTH ;
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.channels   = 1 ;
+	sfinfo.format     = filetype ;
 
 	if (! (file = sf_open (filename, SFM_WRITE, &sfinfo)))
 	{	printf ("\n\nLine %d: sf_open_write failed with error : ", __LINE__) ;

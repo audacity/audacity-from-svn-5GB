@@ -27,18 +27,6 @@
 #include	"sfendian.h"
 #include	"common.h"
 
-/*------------------------------------------------------------------------------
-** Macros to handle big/little endian issues.
-*/
-
-#define  SFE_SDS_NOT_SDS 		666
-#define  SFE_SDS_BAD_BIT_WIDTH	667
-
-#define	SDS_DATA_OFFSET			0x15
-#define SDS_BLOCK_SIZE			127
-
-#define SDS_BYTES_PER_BLOCK		120
-
 #if (ENABLE_EXPERIMENTAL_CODE == 0)
 
 int
@@ -51,14 +39,29 @@ sds_open	(SF_PRIVATE *psf)
 #else
 
 /*------------------------------------------------------------------------------
+** Macros to handle big/little endian issues.
+*/
+
+/* Error values. Move these to common.h later. */
+#define  SFE_SDS_NOT_SDS 			666
+#define  SFE_SDS_BAD_BIT_WIDTH		667
+
+#define	SDS_DATA_OFFSET				0x15
+#define SDS_BLOCK_SIZE				127
+
+#define SDS_AUDIO_BYTES_PER_BLOCK	120
+
+#define SDS_3BYTE_TO_INT_DECODE(x) (((x) & 0x7F) | (((x) & 0x7F00) >> 1) | (((x) & 0x7F0000) >> 2))
+
+/*------------------------------------------------------------------------------
 ** Typedefs.
 */
 
 typedef struct tag_SDS_PRIVATE
 {	int bitwidth, blockcount, frames ;
+	int read_block, read_count, sample_count ;
 
-	int (*reader) (struct tag_SDS_PRIVATE *psds) ;
-	int (*writer) (struct tag_SDS_PRIVATE *psds) ;
+	int (*reader) (SF_PRIVATE *psf, struct tag_SDS_PRIVATE *psds) ;
 
 	int	blockindex, block, samplesperblock ;
 	unsigned char data [SDS_BLOCK_SIZE] ;
@@ -83,9 +86,9 @@ static sf_count_t sds_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len) ;
 
 static sf_count_t sds_seek (SF_PRIVATE *psf, int mode, sf_count_t offset) ;
 
-static int sds_2byte_read (SDS_PRIVATE *psds) ;
-static int sds_3byte_read (SDS_PRIVATE *psds) ;
-static int sds_4byte_read (SDS_PRIVATE *psds) ;
+static int sds_2byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds) ;
+static int sds_3byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds) ;
+static int sds_4byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds) ;
 
 static int sds_read (SF_PRIVATE *psf, SDS_PRIVATE *psds, int *iptr, int readcount) ;
 
@@ -184,26 +187,81 @@ sds_read_header (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 	if (marker != 0xF07E || byte != 0x01)
 		return SFE_SDS_NOT_SDS ;
 
-	psf_log_printf (psf, "Read only : Midi Sample Dump Standard\nF07E\n Channels : %d\n", channel) ;
+	psf_log_printf (psf, "Read only : Midi Sample Dump Standard (.sds)\nF07E\n Midi Channel  : %d\n", channel) ;
 
-	bytesread += psf_binheader_readf (psf, "e2133331", &sample_no, &bitwidth, &samp_period,
-						&samp_length, &sustain_loop_start, &sustain_loop_end, &loop_type) ;
+	bytesread += psf_binheader_readf (psf, "e213", &sample_no, &bitwidth, &samp_period) ;
+
+	sample_no = SDS_3BYTE_TO_INT_DECODE (sample_no) ;
+	samp_period = SDS_3BYTE_TO_INT_DECODE (samp_period) ;
 
 	psds->bitwidth = bitwidth ;
 
 	psf->sf.samplerate = (int) (1.0 / (1e-9 * samp_period)) ;
-	psf->sf.frames = samp_length ;
 
 	psf_log_printf (psf, 	" Sample Number : %d\n"
 							" Bit Width     : %d\n"
-							" Sample Rate   : %d\n"
-							" Sample Length : %d\n"
-							" Sustain Loop\n"
-							"   Start     : %d\n"
-							"   End       : %d\n"
-							"   Loop Type : %d\n",
-			sample_no, psds->bitwidth, psf->sf.samplerate, samp_length,
+							" Sample Rate   : %d\n",
+			sample_no, psds->bitwidth, psf->sf.samplerate) ;
+
+	bytesread += psf_binheader_readf (psf, "e3331", &samp_length, &sustain_loop_start, &sustain_loop_end, &loop_type) ;
+
+	samp_length = SDS_3BYTE_TO_INT_DECODE (samp_length) ;
+
+	sustain_loop_start = SDS_3BYTE_TO_INT_DECODE (sustain_loop_start) ;
+	sustain_loop_end   = SDS_3BYTE_TO_INT_DECODE (sustain_loop_end) ;
+
+	psf_log_printf (psf, 	" Sustain Loop\n"
+							"     Start     : %d\n"
+							"     End       : %d\n"
+							"     Loop Type : %d\n",
 			sustain_loop_start, sustain_loop_end, loop_type) ;
+
+	psf->dataoffset = SDS_DATA_OFFSET ;
+	psf->datalength = psf->filelength - psf->dataoffset ;
+
+	psds->blockcount = psf->datalength % SDS_BLOCK_SIZE ;
+
+	bytesread += psf_binheader_readf (psf, "1", &byte) ;
+	if (byte != 0xF7)
+		psf_log_printf (psf, "bad end : %X\n", byte & 0xFF) ;
+
+	for (psds->blockcount = 0 ; bytesread < psf->filelength ; psds->blockcount++)
+	{
+		bytesread += psf_binheader_readf (psf, "E2", &marker) ;
+
+		if (marker == 0)
+			break ;
+
+		psf_binheader_readf (psf, "j", SDS_BLOCK_SIZE - 2) ;
+		bytesread += SDS_BLOCK_SIZE - 2 ;
+		} ;
+
+	if (psf->datalength % SDS_BLOCK_SIZE)
+		psf_log_printf (psf, " Datalength    : %D (truncated data??? %d)\n", psf->datalength, (int) (psf->datalength % SDS_BLOCK_SIZE)) ;
+	else
+		psf_log_printf (psf, " Datalength    : %D\n", psf->datalength) ;
+
+	psf_log_printf (psf, " Blocks        : %d\n", psds->blockcount) ;
+
+	psds->samplesperblock = SDS_AUDIO_BYTES_PER_BLOCK / ((psds->bitwidth + 6) / 7) ;
+	psf_log_printf (psf, " Samples/Block : %d\n", psds->samplesperblock) ;
+
+	/* Check data length. Last block can contain padding. */
+	if (psds->blockcount * psds->samplesperblock < (int) samp_length ||
+			(psds->blockcount - 1) * psds->samplesperblock > (int) samp_length)
+	{	psf_log_printf (psf, " Samples       : %d (should be %d)\n", samp_length, psds->blockcount * psds->samplesperblock) ;
+		samp_length = psds->blockcount * psds->samplesperblock ;
+		}
+	else
+		psf_log_printf (psf, " Samples       : %d\n", samp_length) ;
+
+	psf->sf.frames = samp_length ;
+	psds->sample_count = samp_length ;
+
+	/* Always Mono */
+	psf->sf.channels = 1 ;
+	psf->sf.sections = 1 ;
+	
 
 	/*
 	** Lie to the user about PCM bit width. Always round up to the next
@@ -231,37 +289,6 @@ sds_read_header (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 			return SFE_SDS_BAD_BIT_WIDTH ;
 		} ;
 
-	psf->dataoffset = SDS_DATA_OFFSET ;
-	psf->datalength = psf->filelength - psf->dataoffset ;
-
-	psds->blockcount = psf->datalength % SDS_BLOCK_SIZE ;
-
-	bytesread += psf_binheader_readf (psf, "1", &byte) ;
-	if (byte != 0xF7)
-		psf_log_printf (psf, "bad end : %X\n", byte & 0xFF) ;
-
-	for (psds->blockcount = 0 ; bytesread < psf->filelength ; psds->blockcount++)
-	{
-		bytesread += psf_binheader_readf (psf, "E2", &marker) ;
-
-		if (marker == 0)
-			break ;
-
-		psf_binheader_readf (psf, "j", SDS_BLOCK_SIZE - 2) ;
-		bytesread += SDS_BLOCK_SIZE - 2 ;
-		} ;
-
-	if (psf->datalength % SDS_BLOCK_SIZE)
-		psf_log_printf (psf, " Datalength : %D (truncated data??? %d)\n", psf->datalength, (int) (psf->datalength % SDS_BLOCK_SIZE)) ;
-	else
-		psf_log_printf (psf, " Datalength : %D\n", psf->datalength) ;
-
-	psf_log_printf (psf, " Blocks     : %d\n", psds->blockcount) ;
-
-	/* Always Mono */
-	psf->sf.channels = 1 ;
-	psf->sf.sections = 1 ;
-
 	psf_fseek (psf->filedes, SDS_DATA_OFFSET, SEEK_SET) ;
 
 	return 0 ;
@@ -288,15 +315,15 @@ sds_init (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 
 	if (psds->bitwidth < 14)
 	{	psds->reader = sds_2byte_read ;
-		psds->samplesperblock = SDS_BYTES_PER_BLOCK / 2 ;
+		psds->samplesperblock = SDS_AUDIO_BYTES_PER_BLOCK / 2 ;
 		}
 	else if (psds->bitwidth < 21)
 	{	psds->reader = sds_3byte_read ;
-		psds->samplesperblock = SDS_BYTES_PER_BLOCK / 3 ;
+		psds->samplesperblock = SDS_AUDIO_BYTES_PER_BLOCK / 3 ;
 		}
 	else
 	{	psds->reader = sds_4byte_read ;
-		psds->samplesperblock = SDS_BYTES_PER_BLOCK / 4 ;
+		psds->samplesperblock = SDS_AUDIO_BYTES_PER_BLOCK / 4 ;
 		} ;
 
 	psf->read_short  = sds_read_s ;
@@ -304,82 +331,210 @@ sds_init (SF_PRIVATE *psf, SDS_PRIVATE *psds)
 	psf->read_float  = sds_read_f ;
 	psf->read_double = sds_read_d ;
 
-
-
 	return 0 ;
 } /* dsds_init */
 
 static int
-sds_2byte_read (SDS_PRIVATE *psds)
-{	if (psds)
-	{	puts ("sds_2byte_read") ;
-		exit (1) ;
-		} ;
-	return 0 ;
-} /* sds_2byte_read */
+sds_2byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
+{	unsigned char *ucptr, checksum ;
+	unsigned int sample ;
+	int 	k ;
 
-static int
-sds_3byte_read (SDS_PRIVATE *psds)
-{	unsigned char /*-*ucptr,-*/ checksum ;
-	int k ;
-	
+	psds->read_block ++ ;
+	psds->read_count = 0 ;
+
+	if (psds->read_block * psds->samplesperblock > psds->sample_count)
+	{	memset (psds->samples, 0, psds->samplesperblock * sizeof (int)) ;
+		return 1 ;
+		} ;
+
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
+
+	if (psds->data [0] != 0xF0)
+	{	printf ("Error A : %02X\n", psds->data [0] & 0xFF) ;
+		} ;
+
 	checksum = psds->data [1] ;
 	if (checksum != 0x7E)
 	{	printf ("Error 1 : %02X\n", checksum & 0xFF) ;
-		exit (1) ;
 		}
-	
-	for (k = 2 ; k < SDS_BLOCK_SIZE - 3 ; k ++)
-	{	printf ("%02X %02X\n", checksum & 0xFF, psds->data [k] & 0xFF) ;
-		checksum ^= psds->data [k] ;
-		} ;
-	checksum &= 0x7F ;
-		
-	if (checksum != psds->data [SDS_BLOCK_SIZE - 2])
-	{	printf ("checksum is %02X should be %02X\n", checksum, psds->data [SDS_BLOCK_SIZE - 2]) ;
-		exit (1) ;
-		} ;
-	
-puts ("checksum OK") ;
-	
-	puts ("sds_2byte_read") ;
-	exit (1) ;
 
-	return 0 ;
+	for (k = 2 ; k < SDS_BLOCK_SIZE - 3 ; k ++)
+		checksum ^= psds->data [k] ;
+
+	checksum &= 0x7F ;
+
+	if (checksum != psds->data [SDS_BLOCK_SIZE - 2])
+	{	psf_log_printf (psf, "Block %d : checksum is %02X should be %02X\n", psds->data [4], checksum, psds->data [SDS_BLOCK_SIZE - 2]) ;
+		} ;
+
+	ucptr = psds->data + 5 ;
+	for (k = 0 ; k < 120 ; k += 2)
+	{	sample = (ucptr [k] << 25) + (ucptr [k + 1] << 18) ;
+		psds->samples [k / 2] = (int) (sample - 0x80000000) ;
+		} ;
+
+	return 1 ;
+} /* sds_2byte_read */
+
+static int
+sds_3byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
+{	unsigned char *ucptr, checksum ;
+	unsigned int sample ;
+	int 	k ;
+
+	psds->read_block ++ ;
+	psds->read_count = 0 ;
+
+	if (psds->read_block * psds->samplesperblock > psds->sample_count)
+	{	memset (psds->samples, 0, psds->samplesperblock * sizeof (int)) ;
+		return 1 ;
+		} ;
+
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
+
+	if (psds->data [0] != 0xF0)
+	{	printf ("Error A : %02X\n", psds->data [0] & 0xFF) ;
+		} ;
+
+	checksum = psds->data [1] ;
+	if (checksum != 0x7E)
+	{	printf ("Error 1 : %02X\n", checksum & 0xFF) ;
+		}
+
+	for (k = 2 ; k < SDS_BLOCK_SIZE - 3 ; k ++)
+		checksum ^= psds->data [k] ;
+
+	checksum &= 0x7F ;
+
+	if (checksum != psds->data [SDS_BLOCK_SIZE - 2])
+	{	psf_log_printf (psf, "Block %d : checksum is %02X should be %02X\n", psds->data [4], checksum, psds->data [SDS_BLOCK_SIZE - 2]) ;
+		} ;
+
+	ucptr = psds->data + 5 ;
+	for (k = 0 ; k < 120 ; k += 3)
+	{	sample = (ucptr [k] << 25) + (ucptr [k + 1] << 18) + (ucptr [k + 2] << 11) ;
+		psds->samples [k / 3] = (int) (sample - 0x80000000) ;
+		} ;
+
+	return 1 ;
 } /* sds_3byte_read */
 
 static int
-sds_4byte_read (SDS_PRIVATE *psds)
-{	if (psds)
-	{	puts ("sds_4byte_read") ;
-		exit (1) ;
+sds_4byte_read (SF_PRIVATE *psf, SDS_PRIVATE *psds)
+{	unsigned char *ucptr, checksum ;
+	unsigned int sample ;
+	int 	k ;
+
+	psds->read_block ++ ;
+	psds->read_count = 0 ;
+
+	if (psds->read_block * psds->samplesperblock > psds->sample_count)
+	{	memset (psds->samples, 0, psds->samplesperblock * sizeof (int)) ;
+		return 1 ;
 		} ;
-	return 0 ;
+
+	if ((k = psf_fread (psds->data, 1, SDS_BLOCK_SIZE, psf->filedes)) != SDS_BLOCK_SIZE)
+		psf_log_printf (psf, "*** Warning : short read (%d != %d).\n", k, SDS_BLOCK_SIZE) ;
+
+	if (psds->data [0] != 0xF0)
+	{	printf ("Error A : %02X\n", psds->data [0] & 0xFF) ;
+		} ;
+
+	checksum = psds->data [1] ;
+	if (checksum != 0x7E)
+	{	printf ("Error 1 : %02X\n", checksum & 0xFF) ;
+		}
+
+	for (k = 2 ; k < SDS_BLOCK_SIZE - 3 ; k ++)
+		checksum ^= psds->data [k] ;
+
+	checksum &= 0x7F ;
+
+	if (checksum != psds->data [SDS_BLOCK_SIZE - 2])
+	{	psf_log_printf (psf, "Block %d : checksum is %02X should be %02X\n", psds->data [4], checksum, psds->data [SDS_BLOCK_SIZE - 2]) ;
+		} ;
+
+	ucptr = psds->data + 5 ;
+	for (k = 0 ; k < 120 ; k += 4)
+	{	sample = (ucptr [k] << 25) + (ucptr [k + 1] << 18) + (ucptr [k + 2] << 11) + (ucptr [k + 3] << 4) ;
+		psds->samples [k / 4] = (int) (sample - 0x80000000) ;
+		} ;
+
+	return 1 ;
 } /* sds_4byte_read */
 
 
 static sf_count_t
 sds_read_s (SF_PRIVATE *psf, short *ptr, sf_count_t len)
-{	if (! (psf && ptr))
-		return len ;
+{	SDS_PRIVATE	*psds ;
+	int			*iptr ;
+	int			k, bufferlen, readcount, count ;
+	sf_count_t	total = 0 ;
 
-	return 0 ;
+	if (! psf->fdata)
+		return 0 ;
+	psds = (SDS_PRIVATE*) psf->fdata ;
+
+	iptr = (int*) psf->buffer ;
+	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
+	while (len > 0)
+	{	readcount = (len >= bufferlen) ? bufferlen : len ;
+		count = sds_read (psf, psds, iptr, readcount) ;
+		for (k = 0 ; k < readcount ; k++)
+			ptr [total + k] = iptr [k] >> 16 ;
+		total += count ;
+		len -= readcount ;
+		} ;
+
+	return total ;
 } /* sds_read_s */
 
 static sf_count_t
 sds_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
-{	if (! (psf && ptr))
-		return len ;
+{	SDS_PRIVATE *psds ; 
+	int			total ;
 
-	return 0 ;
+	if (! psf->fdata)
+		return 0 ;
+	psds = (SDS_PRIVATE*) psf->fdata ;
+	
+	total = sds_read (psf, psds, ptr, len) ;
+
+	return total ;
 } /* sds_read_i */
 
 static sf_count_t
 sds_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
-{	if (! (psf && ptr))
-		return len ;
+{	SDS_PRIVATE	*psds ;
+	int			*iptr ;
+	int			k, bufferlen, readcount, count ;
+	sf_count_t	total = 0 ;
+	float		normfact ;
 
-	return 0 ;
+	if (! psf->fdata)
+		return 0 ;
+	psds = (SDS_PRIVATE*) psf->fdata ;
+
+	if (psf->norm_float == SF_TRUE)
+		normfact = 1.0 / 0x80000000 ;
+	else 
+		normfact = 1.0 / (1 << psds->bitwidth) ;
+
+	iptr = (int*) psf->buffer ;
+	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
+	while (len > 0)
+	{	readcount = (len >= bufferlen) ? bufferlen : len ;
+		count = sds_read (psf, psds, iptr, readcount) ;
+		for (k = 0 ; k < readcount ; k++)
+			ptr [total + k] = normfact * iptr [k] ;
+		total += count ;
+		len -= readcount ;
+		} ;
+
+	return total ;
 } /* sds_read_f */
 
 static sf_count_t
@@ -394,7 +549,10 @@ sds_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		return 0 ;
 	psds = (SDS_PRIVATE*) psf->fdata ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? (1.0 / 0x80000000) : 1.0 ;
+	if (psf->norm_double == SF_TRUE)
+		normfact = 1.0 / 0x80000000 ;
+	else 
+		normfact = 1.0 / (1 << psds->bitwidth) ;
 
 	iptr = (int*) psf->buffer ;
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
@@ -406,6 +564,7 @@ sds_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 		total += count ;
 		len -= readcount ;
 		} ;
+
 	return total ;
 } /* sds_read_d */
 
@@ -418,18 +577,28 @@ sds_seek (SF_PRIVATE *psf, int mode, sf_count_t offset)
 } /* sds_seek */
 
 static int
-sds_read (SF_PRIVATE *psf, SDS_PRIVATE *psds, int *iptr, int readcount)
-{
-	if (psf_fread (psds->data, SDS_BLOCK_SIZE, 1, psf->filedes) != 1)
-		return 0 ;
-		
-	if (psds->data [0] != 0xF0)
-	{	printf ("Error A : %02X\n", psds->data [0] & 0xFF) ;
-		exit (1) ;
+sds_read (SF_PRIVATE *psf, SDS_PRIVATE *psds, int *ptr, int len)
+{	int	count, total = 0 ;
+
+	while (total < len)
+	{	
+		if (psds->read_block * psds->samplesperblock >= psds->sample_count)
+		{	memset (&(ptr[total]), 0, (len - total) * sizeof (int)) ;
+			return total ;
+			} ;
+
+		if (psds->read_count >= psds->samplesperblock)
+			psds->reader (psf, psds) ;
+
+		count = (psds->samplesperblock - psds->read_count) ;
+		count = (len - total > count) ? count : len - total ;
+
+		memcpy (&(ptr[total]), &(psds->samples [psds->read_count]), count * sizeof (int)) ;
+		total += count ;
+		psds->read_count += count ;
 		} ;
-	
-	psds->reader (psds) ;
-	return 0 ;
+
+	return total ;
 } /* sds_read */
 
 #endif

@@ -140,7 +140,6 @@ au_open	(SF_PRIVATE *psf)
 				break ;
 
 		case  SF_FORMAT_PCM_S8 :	/* 8-bit linear PCM. */
-				psf->chars = SF_CHARS_SIGNED ;
 				error = pcm_init (psf) ;
 				break ;
 
