@@ -129,6 +129,7 @@ class Meter : public wxPanel
    void OnClip(wxCommandEvent &evt);
    void OnMonitor(wxCommandEvent &evt);
    void OnFloat(wxCommandEvent &evt);
+   void OnDisable(wxCommandEvent &evt);
    
  private:
    void DrawMeterBar(wxDC &dc, MeterBar *meterBar);
