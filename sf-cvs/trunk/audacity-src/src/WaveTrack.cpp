@@ -589,8 +589,7 @@ sampleCount WaveTrack::GetMaxBlockSize()
 
 sampleCount WaveTrack::GetIdealBlockSize()
 {
-   wxASSERT(GetClipIterator()); // must have sequence
-   return GetClipIterator()->GetData()->GetSequence()->GetIdealBlockSize();
+   return GetLastOrCreateClip()->GetSequence()->GetIdealBlockSize();
 }
 
 bool WaveTrack::Flush()
