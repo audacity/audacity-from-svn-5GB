@@ -26,6 +26,9 @@ audacity-help.htb: help/*
 	rm -f audacity-help.htb
 	cd help && $(ZIP) ../audacity-help.htb *.htm *.png *.hhc *.hhk *.hhp
 
+dep:
+	cd src && $(MAKE) dep
+
 clean:
 	cd lib-src && $(MAKE) clean
 	cd src && $(MAKE) clean
