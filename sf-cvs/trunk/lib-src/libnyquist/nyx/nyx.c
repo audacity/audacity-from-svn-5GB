@@ -13,7 +13,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <math.h>
+
+#ifndef WIN32
 #include <unistd.h>
+#endif
 
 /* nyx includes */
 #include "nyx.h"
