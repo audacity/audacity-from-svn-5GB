@@ -137,7 +137,7 @@ binary-common:
 #	dh_python
 	dh_makeshlibs -V
 	dh_installdeb
-	dh_shlibdeps
+	dh_shlibdeps -ldebian/libvorbis0a/usr/lib
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
