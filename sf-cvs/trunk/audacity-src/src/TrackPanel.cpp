@@ -3286,8 +3286,8 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
      
       if ((lTrack->getSelectedIndex() != -1) && lTrack->OverTextBox(lTrack->GetLabel(lTrack->getSelectedIndex()), event.m_x, event.m_y)) {
          mPopupMenuTarget = lTrack;
-         mLabelTrackLabelMenu->Enable(OnCutSelectedTextID, true);
-         mLabelTrackLabelMenu->Enable(OnCopySelectedTextID, true);
+         mLabelTrackLabelMenu->Enable(OnCutSelectedTextID, lTrack->IsTextSelected());
+         mLabelTrackLabelMenu->Enable(OnCopySelectedTextID, lTrack->IsTextSelected());
          mLabelTrackLabelMenu->Enable(OnPasteSelectedTextID, lTrack->IsTextClipSupported());
          PopupMenu(mLabelTrackLabelMenu, event.m_x + 1, event.m_y + 1);
          // it's an invalid dragging event

@@ -73,9 +73,11 @@ class LabelTrack:public Track {
                bool selectionOnly, double t0, double t1);
 
  public:
-	 bool IsGoodLabelCharacter( long keyCode );
-	 bool IsGoodLabelFirstCharacter( long keyCode );
-	 void CreateCustomGlyphs();
+	bool IsGoodLabelCharacter( long keyCode );
+	bool IsGoodLabelFirstCharacter( long keyCode );
+   bool IsTextSelected();
+
+	void CreateCustomGlyphs();
    LabelTrack(DirManager * projDirManager);
    LabelTrack(const LabelTrack &orig);
 
@@ -105,12 +107,13 @@ class LabelTrack:public Track {
 #endif
 
    virtual bool Cut  (double t0, double t1, Track ** dest);
-   // JKC Do not add the const modifier to Copy(), because then it 
+   // JKC Do not add the const modifier to Copy(), Clear()
+   // or Paste() because then it 
    // is no longer recognised as a virtual function matching the 
    // one in Track.
    virtual bool Copy (double t0, double t1, Track ** dest);// const;
    virtual bool Clear(double t0, double t1);
-   virtual bool Paste(double t, const Track * src);
+   virtual bool Paste(double t, Track * src);
 
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
