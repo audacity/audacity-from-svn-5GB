@@ -86,8 +86,6 @@ class AudioIO {
    double GetPauseIndicator();
    void Finish();
 
-   wxCriticalSection   mFinishSection;
-   wxCriticalSection   mStopSection;
    AudioThread        *mThread;
    AudacityProject    *mProject;
    TrackList          *mTracks;
