@@ -14,6 +14,14 @@
 
 #include "TrackPanel.h"
 
+#ifdef __WXDEBUG__
+ #ifdef __WXMSW__
+  #error "Comment out this line to compile."
+  //A hack that allows you to compile on Windows as a debug build.
+  #define MSW_DEBUG_HACK_DISABLE_STL
+ #endif
+#endif
+
 #ifdef __WXMAC__
 #ifdef __UNIX__
 #include <Carbon/Carbon.h>
@@ -21,7 +29,10 @@
 #endif
 
 #include <math.h>
-#include <algorithm>
+
+#ifndef MSW_DEBUG_HACK_DISABLE_STL
+ #include <algorithm>
+#endif
 
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
@@ -962,8 +973,11 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
          Refresh(false);
    }
    else if (event.ButtonUp()) {
+
+#ifndef MSW_DEBUG_HACK_DISABLE_STL
       if (mZoomEnd < mZoomStart)
          std::swap(mZoomEnd, mZoomStart);
+#endif
 
       wxRect r;
 
