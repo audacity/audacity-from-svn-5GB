@@ -61,9 +61,6 @@ void AudacityProject::CreateMenuBar()
 
    mMenuBar = new wxMenuBar();
 
-   // Note: if you change the titles of any of the menus here,
-   // you must also change the title in OnUpdateMenus, below.
-   
    int format = ReadExportFormatPref();                         
    wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
 
@@ -216,10 +213,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    // titles above.
 
    mFileMenu->Enable(SaveID, mUndoManager.UnsavedChanges());
-   mEditMenu->Enable(mEditMenu->FindItem(_("Undo")),
-                     mUndoManager.UndoAvailable());
-   mEditMenu->Enable(mEditMenu->FindItem(_("Redo")),
-                     mUndoManager.RedoAvailable());
+   mEditMenu->Enable(UndoID, mUndoManager.UndoAvailable());
+   mEditMenu->Enable(RedoID, mUndoManager.RedoAvailable());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -245,8 +240,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       t = iter.Next();
    }
 
-   mEditMenu->Enable(mEditMenu->FindItem("Paste"),
-                     numTracksSelected > 0 && msClipLen > 0.0);
+   mEditMenu->Enable(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
    // Return from this function if nothing's changed since
    // the last time we were here.
@@ -270,59 +264,41 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mLastNumWaveTracksSelected = numWaveTracksSelected;
    mLastNumLabelTracks = numLabelTracks;
 
-   mFileMenu->Enable(mFileMenu->FindItem(mExportString), numTracks > 0);
-   mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionString),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mFileMenu->Enable(mFileMenu->FindItem(mExportLossyString), numTracks > 0);
-   mFileMenu->Enable(mFileMenu->FindItem(mExportSelectionLossyString),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mFileMenu->Enable(mFileMenu->FindItem(_("Export Labels...")),
-                     numLabelTracks > 0);
+   bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
-   mEditMenu->Enable(mEditMenu->FindItem(_("Cut")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Copy")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Delete")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Silence")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Insert Silence...")),
-                     numTracksSelected > 0);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Split")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Duplicate")),
-                     numTracksSelected > 0 && nonZeroRegionSelected);
-   mEditMenu->Enable(mEditMenu->FindItem(_("Select All")), numTracks > 0);
+   mFileMenu->Enable(ExportMixID, numTracks > 0);
+   mFileMenu->Enable(ExportSelectionID, anySelection);
+   mFileMenu->Enable(ExportLossyMixID, numTracks > 0);
+   mFileMenu->Enable(ExportLossySelectionID, anySelection);
+   mFileMenu->Enable(ExportLabelsID, numLabelTracks > 0);
 
-   mViewMenu->Enable(mViewMenu->FindItem(_("Plot Spectrum")),
+   mEditMenu->Enable(CutID, anySelection);
+   mEditMenu->Enable(CopyID, anySelection);
+   mEditMenu->Enable(DeleteID, anySelection);
+   mEditMenu->Enable(SilenceID, anySelection);
+   mEditMenu->Enable(InsertSilenceID, numTracksSelected > 0);
+   mEditMenu->Enable(SplitID, anySelection);
+   mEditMenu->Enable(DuplicateID, anySelection);
+   mEditMenu->Enable(SelectAllID, numTracks > 0);
+
+   mViewMenu->Enable(PlotSpectrumID,
                      numWaveTracksSelected > 0 && nonZeroRegionSelected);
 
-   mProjectMenu->Enable(mProjectMenu->FindItem(_("Quick Mix")),
-                        numWaveTracksSelected > 1);
+   mProjectMenu->Enable(QuickMixID, numWaveTracksSelected > 1);
 
-   mProjectMenu->Enable(mProjectMenu->FindItem(_("Align Tracks Together")),
-                        numTracksSelected > 1);
-   mProjectMenu->Enable(mProjectMenu->FindItem(_("Align with Zero")),
-                        numTracksSelected > 0);
-   mProjectMenu->Enable(mProjectMenu->FindItem(_("Remove Track(s)")),
-                        numTracksSelected > 0);
+   mProjectMenu->Enable(AlignID, numTracksSelected > 1);
+   mProjectMenu->Enable(AlignZeroID, numTracksSelected > 0);
+   mProjectMenu->Enable(RemoveTracksID, numTracksSelected > 0);
 
    int e;
    for (e = 0; e < Effect::GetNumEffects(false); e++) {
-      Effect *f = Effect::GetEffect(e, false);
-      wxString effectName = f->GetEffectName();
-      int itemNo = mEffectMenu->FindItem(effectName);
-      mEffectMenu->Enable(itemNo,
+      mEffectMenu->Enable(FirstEffectID + e,
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
 
    for (e = 0; e < Effect::GetNumEffects(true); e++) {
-      Effect *f = Effect::GetEffect(e, true);
-      wxString effectName = f->GetEffectName();
-      int itemNo = mPluginMenu->FindItem(effectName);
-      mPluginMenu->Enable(itemNo,
+      mPluginMenu->Enable(FirstPluginID + e,
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
