@@ -230,10 +230,6 @@ SOURCE=..\xlisp\xleval.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\xlisp\xlextstart.c
-# End Source File
-# Begin Source File
-
 SOURCE=..\xlisp\xlfio.c
 # End Source File
 # Begin Source File
@@ -539,10 +535,6 @@ SOURCE=..\tran\prod.c
 # Begin Source File
 
 SOURCE=..\tran\pwl.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\tran\quant.c.c
 # End Source File
 # Begin Source File
 
