@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-02-25 17:21+0100\n"
+"PO-Revision-Date: 2004-02-26 15:59+0100\n"
 "Last-Translator: Christian BROCHEC <christian.brochec@ac-rennes.fr>\n"
 "Language-Team: FRENCH2 <christian.brochec@ac-rennes.fr>\n"
 "MIME-Version: 1.0\n"
@@ -45,9 +45,9 @@ msgid "%d seconds"
 msgstr "%d secondes"
 
 #: ../src/Project.cpp:1715
-#, fuzzy, c-format
+#, c-format
 msgid "%s is already open in another window."
-msgstr "Ce projet est déjà ouvert dans une autre fenêtre."
+msgstr "%s est déjà ouvert dans une autre fenêtre."
 
 #  i18n-hint: This is the pattern for filenames that are created
 #  when a file needs to be backed up to a different name.  For
@@ -181,7 +181,7 @@ msgstr "&Silence\tCtrl+L"
 
 #: ../src/Menus.cpp:214
 msgid "&Trim\tCtrl+T"
-msgstr "& Ne garder que la sélection\tCtrl+T"
+msgstr "Ne garder que la sélection\tCtrl+T"
 
 #: ../src/Menus.cpp:187
 msgid "&Undo\tCtrl+Z"
@@ -230,9 +230,8 @@ msgid "-145 dB (PCM range of 24 bit samples)"
 msgstr "-145 dB (étendue PCM en échantillonnage 24 bits)"
 
 #: ../src/prefs/GUIPrefs.cpp:145
-#, fuzzy
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr "-36 dB (niveau superficiel pour édition de grande amplitude)"
+msgstr "-36 dB (pour édition de grande amplitude)"
 
 #: ../src/prefs/GUIPrefs.cpp:152
 msgid "-48 dB (PCM range of 8 bit samples)"
@@ -340,7 +339,7 @@ msgstr "Aligner les pistes entre elles"
 
 #: ../src/Menus.cpp:343
 msgid "Align Tracks..."
-msgstr "Aligner les pistes"
+msgstr "Aligner les pistes...."
 
 #: ../src/Menus.cpp:352
 msgid "Align and move cursor..."
@@ -420,7 +419,7 @@ msgstr "Toujours autoriser la pause."
 
 #: ../src/import/ImportRaw.cpp:360
 msgid "Amount to import:"
-msgstr ""
+msgstr "Portion à importer :"
 
 #: ../src/effects/Amplify.cpp:133
 msgid "Amplification (dB):"
@@ -873,9 +872,8 @@ msgid "Change Pitch..."
 msgstr "Changer la hauteur..."
 
 #: ../src/prefs/MousePrefs.cpp:100
-#, fuzzy
 msgid "Change Sample"
-msgstr "Echantillon déplacé"
+msgstr "Modifier l'échantillon"
 
 #: ../src/prefs/MousePrefs.cpp:102
 msgid "Change Several Samples"
@@ -1191,7 +1189,7 @@ msgstr "Curseur gauche\tGauche"
 
 #: ../src/Menus.cpp:498
 msgid "Cursor Right\tRight"
-msgstr "Curseur droitet\tDroite"
+msgstr "Curseur droite\tDroite"
 
 #: ../src/Menus.cpp:229
 msgid "Cursor to End"
@@ -1634,9 +1632,9 @@ msgid "Error: is directory write-protected or disk full?"
 msgstr "Erreur : répertoire protégé en écriture ou disque plein ?."
 
 #: ../src/Sequence.cpp:779
-#, c-format
+#, fuzzy, c-format
 msgid "Expected to read %d samples, got %d samples.\n"
-msgstr ""
+msgstr "Au lieu de %d échantillons attendus en lecture, %d reçus.\n"
 
 #: ../src/export/ExportMP3.cpp:1424
 #: ../src/export/ExportOGG.cpp:195
@@ -1761,7 +1759,6 @@ msgid "Fast Sinc Interpolation"
 msgstr "Interpolation rapide"
 
 #: ../src/effects/Phaser.cpp:546
-#, fuzzy
 msgid "Feedback (%):"
 msgstr "Retour (%) :"
 
@@ -1934,7 +1931,7 @@ msgstr "Importer &MIDI..."
 
 #: ../src/Menus.cpp:313
 msgid "Import &Raw Data..."
-msgstr "Importer des données &Raw"
+msgstr "Importer des données &Raw..."
 
 #: ../src/Menus.cpp:2314
 msgid "Import Labels"
@@ -2535,7 +2532,7 @@ msgstr "Piste de note"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr ""
+msgstr "Note: Frapper Cmd+Q pour quitter. Toutes les autres touches sont valides."
 
 #: ../src/Menus.cpp:1364
 msgid "Nothing to redo"
@@ -2635,7 +2632,7 @@ msgstr "Seulement lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)
 
 #: ../src/export/ExportMP3.cpp:255
 msgid "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Extended Libraries (*.so*)|*.so*|All Files (*)|*"
-msgstr "Seulement libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|Libraries étendues (*.so*)|*.so*|Tous fichiers (*)|*"
+msgstr "Seulement libmp3lame.so|libmp3lame.so|Fichiers Primary Shared Object (*.so)|*.so|Libraries étendues (*.so*)|*.so*|Tous fichiers (*)|*"
 
 #: ../src/Legacy.cpp:338
 msgid "Opening Audacity Project"
@@ -2715,7 +2712,7 @@ msgstr "Crayon"
 #: ../src/effects/ChangeSpeed.cpp:306
 #: ../src/effects/ChangeTempo.cpp:183
 msgid "Percent Change:"
-msgstr ""
+msgstr "Pourcentage de modification :"
 
 #: ../src/effects/Echo.h:40
 msgid "Performing Echo"
@@ -2775,9 +2772,8 @@ msgid "Play One Second\t1"
 msgstr "Lire une seconde\t1"
 
 #: ../src/Menus.cpp:477
-#, fuzzy
 msgid "Play To Selection\tB"
-msgstr "Jouer une seconde\tB"
+msgstr "Lire jusqu'à la sélection\tB"
 
 #: ../src/prefs/AudioIOPrefs.cpp:212
 msgid "Play other tracks while recording new one"
@@ -3135,7 +3131,7 @@ msgstr "Dents de scie"
 
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Scroll up or down"
-msgstr ""
+msgstr "Défilement haut/bas"
 
 #: ../src/Help.cpp:106
 msgid "Search for?"
@@ -3148,9 +3144,8 @@ msgstr "Aide par mot-clé"
 #: ../src/prefs/MousePrefs.cpp:88
 #: ../src/prefs/MousePrefs.cpp:89
 #: ../src/prefs/MousePrefs.cpp:90
-#, fuzzy
 msgid "Select"
-msgstr "Tout Sélectionner"
+msgstr "Sélection"
 
 #: ../src/Menus.cpp:2325
 msgid "Select a MIDI file..."
@@ -3207,7 +3202,7 @@ msgstr "Réduire la sélection à droite\tCtrl+Maj+Gauche"
 
 #: ../src/Menus.cpp:499
 msgid "Selection Extend Left\tShift+Left"
-msgstr "Etendre la sélection à gauchet\tMaj+Gauche"
+msgstr "Etendre la sélection à gauche\tMaj+Gauche"
 
 #: ../src/Menus.cpp:500
 msgid "Selection Extend Right\tShift+Right"
@@ -3231,11 +3226,11 @@ msgstr "Outil de sélection\tF1"
 
 #: ../src/Menus.cpp:485
 msgid "Selection to End\tShift+End"
-msgstr "Sélectionner jusqu'à la fin\tShift+Fin"
+msgstr "Sélectionner jusqu'à la fin\tMaj.+Fin"
 
 #: ../src/Menus.cpp:484
 msgid "Selection to Start\tShift+Home"
-msgstr "Sélectionner depuis le début\tShift+Début"
+msgstr "Sélectionner depuis le début\tMaj.t+Début"
 
 #: ../src/FormatSelection.cpp:415
 #, c-format
@@ -3253,7 +3248,7 @@ msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
 msgstr "Sélection : %.3lf - %.3lf (%.3lf film)   %s"
 
 #: ../src/FormatSelection.cpp:635
-#, fuzzy, c-format
+#, c-format
 msgid "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)   %s"
 msgstr "Sélection : %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:trames)   %s"
 
@@ -3373,7 +3368,7 @@ msgstr "Passer la sélection de  '%d' à '%d'"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
-msgstr "Onde."
+msgstr "Onde"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Shift-Left-Click"
@@ -3394,9 +3389,8 @@ msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Pistes sélectionnées rendues muettes de %.2f secondes à %.2f"
 
 #: ../src/effects/ToneGen.cpp:45
-#, fuzzy
 msgid "Sine"
-msgstr "Sinusoïdale"
+msgstr "Sinusoïde"
 
 #: ../src/HistoryWindow.cpp:63
 msgid "Size"
@@ -3577,9 +3571,8 @@ msgid "There are no label tracks to export."
 msgstr "Il n'y a pas de piste d'index à exporter"
 
 #: ../src/AudioIO.cpp:163
-#, fuzzy
 msgid "There was an error initializing the audio i/o layer.\n"
-msgstr "Une erreur s'est produite au cours de l'initialisation de l'audio.\n"
+msgstr "Une erreur s'est produite au cours de l'initialisation de l'E/S audio.\n"
 
 #: ../src/AboutDialog.cpp:130
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
@@ -4017,7 +4010,7 @@ msgstr "CDDA secteurs+octets (à l'échantillon près)"
 #: ../src/TrackPanel.cpp:4340
 #: ../src/effects/ChangePitch.cpp:275
 msgid "down"
-msgstr ""
+msgstr "bas"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:27
@@ -4124,7 +4117,7 @@ msgstr "Traduction française par Christian Brochec (CDDP 22)"
 #: ../src/TrackPanel.cpp:4339
 #: ../src/effects/ChangePitch.cpp:275
 msgid "up"
-msgstr ""
+msgstr "haut"
 
 #: ../src/effects/ChangeSpeed.cpp:293
 msgid "using SampleRate, by Erik de Castro Lopo"
