@@ -18,7 +18,7 @@
   <?php print "$latestBetaStr $betaVersion<br>"; ?>
 </center>
 
-<?php IncludeFile("beta"); ?>
+<?php include GetTranslation("beta"); ?>
 
 <table border="0">
 

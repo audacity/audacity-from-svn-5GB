@@ -109,20 +109,20 @@ function BoxBottom()
 	print '</td></tr></table></td></tr></table>';
 }
 
-function IncludeFile($name)
+function GetTranslation($name)
 {
 	$f = phpLang_current.'/'.$name.'.php';
 	if (file_exists("updates/$f")) {
-		include "updates/$f";
+		return "updates/$f";
 	}
 	else if (file_exists($f)) {
-		include $f;
+		return $f;
 	}
 	else {
-		include "en/${name}.php";
+		return "en/${name}.php";
 	}
 }
 
-IncludeFile("main.inc");
+include GetTranslation("main.inc");
 
 ?>

@@ -95,19 +95,19 @@ These RPMs have been reported to work well with Caldera OpenLinux, also.
 
   print "<p>";
 
-  IncludeFile("debian");
+  include GetTranslation("debian");
 
   print "<p>";
 
-  IncludeFile("sisyphus");
+  include GetTranslation("sisyphus");
 
   print "<p>";
 
-  IncludeFile("mandrake");
+  include GetTranslation("mandrake");
 
   print "<p>";
 
-  IncludeFile("gentoo");
+  include GetTranslation("gentoo");
 
   include 'bottom.inc.php';
 
