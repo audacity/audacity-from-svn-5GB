@@ -33,4 +33,17 @@ private:
   float ratio;
 };
 
+class EffectMaxAmplify: public Effect {
+
+public:
+  EffectMaxAmplify();
+
+  virtual wxString GetEffectName() { return wxString("Maximize Amplitude"); }
+
+  virtual bool Begin(wxWindow *parent);
+  virtual bool DoIt(WaveTrack *t,
+		    sampleCount start,
+		    sampleCount len);
+};
+
 #endif

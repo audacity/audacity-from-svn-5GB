@@ -5,6 +5,7 @@
   Amplify.cpp
 
   Robert Leidle
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -12,6 +13,10 @@
 
 #include "Amplify.h"
 #include "../WaveTrack.h"
+
+//
+// EffectAmplify
+//
 
 EffectAmplify::EffectAmplify()
 {
@@ -71,5 +76,53 @@ bool EffectAmplify::DoIt(WaveTrack *t,
   return true;
 }
 
+//
+// EffectMaxAmplify
+//
 
+EffectMaxAmplify::EffectMaxAmplify()
+{
+}
 
+bool EffectMaxAmplify::Begin(wxWindow *parent)
+{
+  return true;
+}
+
+bool EffectMaxAmplify::DoIt(WaveTrack *t,
+			 sampleCount start,
+			 sampleCount len)
+{
+  sampleType min;
+  sampleType max;
+  
+  t->GetMinMax(start, len, &min, &max);
+  
+  float ratio = 32767.0 / (abs(min) > abs(max)? abs(min): abs(max));
+  
+  if (ratio <= 1.0)
+    return;
+
+  sampleCount s = start;
+  sampleCount blockSize = t->GetIdealBlockSize();
+  
+  sampleType *buffer = new sampleType[blockSize];
+    
+  while(len) {
+    int block = blockSize;
+    if (block > len)
+      block = len;
+    
+    t->Get(buffer, s, block);
+    for(int i=0; i<block; i++)
+      buffer[i] = (sampleType)(buffer[i] * ratio);
+    t->Set(buffer, s, block);
+    
+    len -= block;
+    s += block;
+  }
+
+  delete[] buffer;
+
+  return true;
+}
