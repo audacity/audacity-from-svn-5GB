@@ -30,8 +30,10 @@ void *Internat::mTECFromUTF = NULL;
 
 void Internat::Init()
 {
+   #ifndef __WXMAC__
    // Set up character-set conversion for UTF-8 input and output.
    mConvLocal = new wxCSConv(wxLocale::GetSystemEncodingName());
+   #endif
 
    // There is no way to check the 'default' (rather than the current
    // decimal separator character), so we set the 'default' number locale
