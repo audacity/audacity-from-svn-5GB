@@ -35,6 +35,7 @@ LVAL s_ifmt=NIL,s_ffmt=NIL;
 LVAL s_1plus=NIL,s_2plus=NIL,s_3plus=NIL;
 LVAL s_1star=NIL,s_2star=NIL,s_3star=NIL;
 LVAL s_minus=NIL,s_printcase=NIL;
+LVAL s_search_path=NIL;
 
 /* keywords */
 LVAL k_test=NIL,k_tnot=NIL;

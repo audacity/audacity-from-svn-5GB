@@ -3,6 +3,11 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
 #include "xlisp.h"
 
 /* external variables */
@@ -50,6 +55,7 @@ LVAL xsendsuper(void)
                             getivar(cdr(p),SUPERCLASS),
                             xlgasymbol()));
     xlfail("not in a method");
+    return NULL; /* never called */
 }
 
 /* xlclass - define a class */
@@ -304,7 +310,7 @@ LOCAL LVAL entermsg(LVAL cls, LVAL msg)
 /* xsendmsg - send a message to an object */
 LOCAL LVAL xsendmsg(LVAL obj, LVAL cls, LVAL sym)
 {
-    LVAL msg,msgcls,method,val,p;
+    LVAL msg=NULL,msgcls,method,val,p;
 
     /* look for the message in the class or superclasses */
     for (msgcls = cls; msgcls; ) {
@@ -357,7 +363,7 @@ send_message:
 /* evmethod - evaluate a method */
 LOCAL LVAL evmethod(LVAL obj, LVAL msgcls, LVAL method)
 {
-    LVAL oldenv,oldfenv,cptr,name,val;
+    LVAL oldenv,oldfenv,cptr,name,val=NULL;
     XLCONTEXT cntxt;
 
     /* protect some pointers */
@@ -377,7 +383,7 @@ LOCAL LVAL evmethod(LVAL obj, LVAL msgcls, LVAL method)
     xlabind(method,xlargc,xlargv);
 
     /* setup the implicit block */
-    if (name = getname(method))
+    if ((name = getname(method)))
         xlbegin(&cntxt,CF_RETURN,name);
 
     /* execute the block */

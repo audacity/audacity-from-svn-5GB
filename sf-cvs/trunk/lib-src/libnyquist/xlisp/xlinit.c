@@ -40,6 +40,7 @@ extern LVAL a_subr,a_fsubr,a_cons,a_symbol;
 extern LVAL a_fixnum,a_flonum,a_string,a_stream,a_object;
 extern LVAL a_vector,a_closure,a_char,a_ustream,a_extern;
 extern LVAL s_gcflag,s_gchook;
+extern LVAL s_search_path;
 extern FUNDEF funtab[];
 
 /* forward declarations */
@@ -230,6 +231,9 @@ void xlsymbols(void)
     /* enter a symbol to control printing of garbage collection messages */
     s_gcflag = xlenter("*GC-FLAG*");
     s_gchook = xlenter("*GC-HOOK*");
+
+    /* enter the symbol for the search path */
+    s_search_path = xlenter("*SEARCH-PATH*");
 
     /* enter a copyright notice into the oblist */
     sym = xlenter("**Copyright-1988-by-David-Betz**");

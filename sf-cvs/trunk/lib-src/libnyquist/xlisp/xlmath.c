@@ -3,6 +3,11 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
 #include "xlisp.h"
 #include <math.h>
 
@@ -60,10 +65,10 @@ LVAL xgcd(void)
 /* binary - handle binary operations */
 LOCAL LVAL binary(int fcn)
 {
-    FIXTYPE ival,iarg;
-    FLOTYPE fval,farg;
+    FIXTYPE ival=0,iarg=0;
+    FLOTYPE fval=0,farg=0;
     LVAL arg;
-    int mode;
+    int mode=0;
 
     /* get the first argument */
     arg = xlgetarg();
@@ -176,6 +181,11 @@ LOCAL LVAL binary(int fcn)
     case 'I':	return (cvfixnum(ival));
     case 'F':	return (cvflonum(fval));
     }
+
+    /* This shouldn't fall through, but just in case, this will
+       catch it and make the compiler happy... */
+    xlerror("bad argument type",arg);
+    return NULL;
 }
 
 /* checkizero - check for integer division by zero */
@@ -256,8 +266,10 @@ LOCAL LVAL unary(int fcn)
         }
         return (cvflonum(fval));
     }
-    else
+    else {
         xlerror("bad argument type",arg);
+        return NULL;
+    }
 }
 
 /* unary predicates */
@@ -271,7 +283,7 @@ LVAL xoddp(void)   { return (predicate('O')); } /* oddp */
 LOCAL LVAL predicate(int fcn)
 {
     FLOTYPE fval;
-    FIXTYPE ival;
+    FIXTYPE ival=0;
     LVAL arg;
 
     /* get the argument */
@@ -317,10 +329,10 @@ LVAL xgtr(void) { return (compare('>')); } /* > */
 /* compare - common compare function */
 LOCAL LVAL compare(int fcn)
 {
-    FIXTYPE icmp,ival,iarg;
-    FLOTYPE fcmp,fval,farg;
+    FIXTYPE icmp,ival=0,iarg=0;
+    FLOTYPE fcmp,fval=0,farg=0;
     LVAL arg;
-    int mode;
+    int mode=0;
 
     /* get the first argument */
     arg = xlgetarg();

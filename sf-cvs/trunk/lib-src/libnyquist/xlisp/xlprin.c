@@ -4,7 +4,10 @@
         Permission is granted for unrestricted non-commercial use
 
  * HISTORY
- * 3-Apr-88	Dale Amon at CMU-CSD
+ * 28-Apr-03    Mazzoni
+ *  Eliminated some compiler warnings
+ *
+ *  3-Apr-88	Dale Amon at CMU-CSD
  *	Added extern support to xlisp 2.0
  *
  * 18-Oct-87	Dale Amon at CMU-CSD
@@ -56,7 +59,7 @@ void xlprint(LVAL fptr, LVAL vptr, int flag)
             xlputc(fptr,'(');
             for (nptr = vptr; nptr != NIL; nptr = next) {
                 xlprint(fptr,car(nptr),flag);
-                if (next = cdr(nptr))
+                if ((next = cdr(nptr))) {
                     if (consp(next))
                         xlputc(fptr,' ');
                     else {
@@ -64,6 +67,7 @@ void xlprint(LVAL fptr, LVAL vptr, int flag)
                         xlprint(fptr,next,flag);
                         break;
                     }
+                }
             }
             xlputc(fptr,')');
             break;
@@ -241,7 +245,7 @@ LOCAL void putqstring(LVAL fptr, LVAL str)
 void putatm(LVAL fptr, char *tag, LVAL val)
 {
     sprintf(buf,"#<%s: #",tag); xlputstr(fptr,buf);
-    sprintf(buf,AFMT,val); xlputstr(fptr,buf);
+    sprintf(buf,AFMT,(int)val); xlputstr(fptr,buf);
     xlputc(fptr,'>');
 }
 
@@ -250,7 +254,7 @@ LOCAL void putsubr(LVAL fptr, char *tag, LVAL val)
 {
     sprintf(buf,"#<%s-%s: #",tag,funtab[getoffset(val)].fd_name);
     xlputstr(fptr,buf);
-    sprintf(buf,AFMT,val); xlputstr(fptr,buf);
+    sprintf(buf,AFMT,(int)val); xlputstr(fptr,buf);
     xlputc(fptr,'>');
 }
 
@@ -258,12 +262,12 @@ LOCAL void putsubr(LVAL fptr, char *tag, LVAL val)
 LOCAL void putclosure(LVAL fptr, LVAL val)
 {
     LVAL name;
-    if (name = getname(val))
+    if ((name = getname(val)))
         sprintf(buf,"#<Closure-%s: #",getstring(getpname(name)));
     else
         strcpy(buf,"#<Closure: #");
     xlputstr(fptr,buf);
-    sprintf(buf,AFMT,val); xlputstr(fptr,buf);
+    sprintf(buf,AFMT,(int)val); xlputstr(fptr,buf);
     xlputc(fptr,'>');
 /*
     xlputstr(fptr,"\nName:   "); xlprint(fptr,getname(val),TRUE);

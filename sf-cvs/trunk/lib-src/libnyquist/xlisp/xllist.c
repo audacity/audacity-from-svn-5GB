@@ -3,6 +3,13 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ * 28Apr03 rbd  fix check in sort routine
+ */
+
+
 #include "xlisp.h"
 
 /* forward declarations */
@@ -109,7 +116,7 @@ LVAL xcons(void)
 /* xlist - built a list of the arguments */
 LVAL xlist(void)
 {
-    LVAL last,next,val;
+    LVAL last=NULL,next,val;
 
     /* protect some pointers */
     xlsave1(val);
@@ -134,7 +141,7 @@ LVAL xlist(void)
 /* xappend - built-in function append */
 LVAL xappend(void)
 {
-    LVAL list,last,next,val;
+    LVAL list,last=NULL,next,val;
 
     /* protect some pointers */
     xlsave1(val);
@@ -336,7 +343,7 @@ LOCAL LVAL sublis(LVAL alist, LVAL expr, LVAL fcn, int tresult)
 {
     LVAL carval,cdrval,pair;
 
-    if (pair = assoc(expr,alist,fcn,tresult))
+    if ((pair = assoc(expr,alist,fcn,tresult)))
         return (cdr(pair));
     else if (consp(expr)) {
         xlsave1(carval);
@@ -364,7 +371,7 @@ LOCAL LVAL assoc(LVAL expr, LVAL alist, LVAL fcn, int tresult)
 /* xremove - built-in function 'remove' */
 LVAL xremove(void)
 {
-    LVAL x,list,fcn,val,last,next;
+    LVAL x,list,fcn,val,last=NULL,next;
     int tresult;
 
     /* protect some pointers */
@@ -412,7 +419,7 @@ LVAL xremifnot(void)
 /* remif - common code for 'remove-if' and 'remove-if-not' */
 LOCAL LVAL remif(int tresult)
 {
-    LVAL list,fcn,val,last,next;
+    LVAL list,fcn,val,last=NULL,next;
 
     /* protect some pointers */
     xlstkcheck(2);
@@ -517,7 +524,7 @@ LOCAL LVAL nth(int carflag)
 /* xlength - return the length of a list or string */
 LVAL xlength(void)
 {
-    FIXTYPE n;
+    FIXTYPE n=0;
     LVAL arg;
 
     /* get the list or string */
@@ -669,7 +676,7 @@ LVAL xrplcd(void)
 /* xnconc - destructively append lists */
 LVAL xnconc(void)
 {
-    LVAL next,last,val;
+    LVAL next,last=NULL,val;
 
     /* initialize */
     val = NIL;
@@ -831,8 +838,7 @@ LVAL xsort(void)
     /* sort the list */
     list = sortlist(list,fcn);
 
-    /* gc(); */
-    if (ntype(list) == FREE_NODE) {
+    if (list && (ntype(list) == FREE_NODE)) {
         stdputstr("error in sort 2");
     }
 

@@ -5,6 +5,9 @@
 
 /* HISTORY
  *
+ * 28-Apr-03	Dominic Mazzoni
+ *  Eliminated some compiler warnings
+ *
  * 25-Oct-87	Roger Dannenberg at NeXT
  *  profiling code added: enable with (PROFILE t), disable with
  *  (PROFILE nil).  While enabled, the profile code counts evals
@@ -115,6 +118,7 @@ LVAL xtype(void)
     case USTREAM:	return (a_ustream);
     case EXTERN:	return (exttype(arg));
     default:		xlfail("bad node type");
+       return NIL; /* never happens */    
     }
 }
 
@@ -145,13 +149,14 @@ LVAL xquit()
 
 
 /* xexit does not return anything, so turn off "no return value" warning" */
-#pragma warning(disable: 4035)
+/* #pragma warning(disable: 4035) */
 
 /* xexit - get out of xlisp */
 LVAL xexit(void)
 {
     xllastarg();
     xlisp_wrapup();
+    return NIL; /* never happens */
 }
 
 /* xpeek - peek at a location in memory */

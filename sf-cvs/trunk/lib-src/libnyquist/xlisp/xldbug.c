@@ -3,6 +3,12 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
+
 #include "stdlib.h"
 #include "xlisp.h"
 
@@ -125,7 +131,7 @@ LOCAL void breakloop(char *hdr, char *cmsg, char *emsg, LVAL arg, int cflag)
     for (type = 0; type == 0; ) {
 
         /* setup the continue trap */
-        if (type = setjmp(cntxt.c_jmpbuf))
+        if ((type = setjmp(cntxt.c_jmpbuf)))
             switch (type) {
             case CF_CLEANUP:
                 continue;
@@ -140,13 +146,20 @@ LOCAL void breakloop(char *hdr, char *cmsg, char *emsg, LVAL arg, int cflag)
                 else xlabort("this error can't be continued");
             }
 
+        #ifndef READLINE
         /* print a prompt */
         sprintf(buf,"%d> ",xldebug);
         dbgputstr(buf);
+        #endif
 
         /* read an expression and check for eof */
         if (!xlread(getvalue(s_debugio),&expr,FALSE)) {
             type = CF_CLEANUP;
+
+            #ifdef READLINE
+            dbgputstr("\n");
+            #endif
+
             break;
         }
 
@@ -184,7 +197,7 @@ void xlbaktrace(int n)
         p = fp + 1;
         errputstr("Function: ");
         errprint(*p++);
-        if (argc = (int)getfixnum(*p++))
+        if ((argc = (int)getfixnum(*p++)))
             errputstr("Arguments:\n");
         while (--argc >= 0) {
             errputstr("  ");

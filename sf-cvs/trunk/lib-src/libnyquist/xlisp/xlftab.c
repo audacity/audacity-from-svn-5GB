@@ -4,7 +4,9 @@
     Permission is granted for unrestricted non-commercial use
 
 HISTORY
-1-Apr-88	Dale Amon at CSD
+23-Apr-03   Mazzoni
+        Eliminated some compiler warnings
+ 1-Apr-88	Dale Amon at CSD
         Added include file hook for local language extensions:
         localdefs.h and localptrs.h
 
@@ -473,11 +475,12 @@ FUNDEF funtab[] = {
 /* xnotimp does not return anything on purpose, so disable
  * "no return value" warning
  */
-#pragma warning(disable: 4716)
+/* #pragma warning(disable: 4716)*/
 
 /* xnotimp - function table entries that are currently not implemented */
 LOCAL LVAL xnotimp(void)
 {
     xlfail("function not implemented");
+    return NIL; /* never happens */
 }
 

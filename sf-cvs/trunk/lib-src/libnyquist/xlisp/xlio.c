@@ -3,6 +3,11 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
 #include "xlisp.h"
 
 /* external variables */
@@ -12,7 +17,7 @@ extern int xlfsize;
 /* xlgetc - get a character from a file or stream */
 int xlgetc(LVAL fptr)
 {
-    LVAL lptr,cptr;
+    LVAL lptr, cptr=NULL;
     FILE *fp;
     int ch;
 
@@ -35,7 +40,7 @@ int xlgetc(LVAL fptr)
     }
 
     /* otherwise, check for a buffered character */
-    else if (ch = getsavech(fptr))
+    else if ((ch = getsavech(fptr)))
         setsavech(fptr,'\0');
 
     /* otherwise, check for terminal input or file input */
@@ -78,7 +83,7 @@ void xlungetc(LVAL fptr, int ch)
 /* xlpeek - peek at a character from a file or stream */
 int xlpeek(LVAL fptr)
 {
-    LVAL lptr,cptr;
+    LVAL lptr, cptr=NULL;
     int ch;
 
     /* check for input from nil */

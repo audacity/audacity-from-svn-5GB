@@ -4,6 +4,7 @@
         Permission is granted for unrestricted non-commercial use	*/
 
 /* HISTORY
+ * 28-apr-03 DM  eliminate some compiler warnings
  * 12-oct-90 RBD added xlatomcount to keep track of how many atoms there are.
  *	(something I need for writing out score files).
  */
@@ -15,7 +16,6 @@ extern int xlatomcount;
 
 /* forward declarations */
 FORWARD LVAL findprop(LVAL sym, LVAL prp);
-FORWARD LOCAL void test_one_env(LVAL environment, int i, char *s);
 
 #ifdef FRAME_DEBUG
 /* these routines were used to debug a missing call to protect().
@@ -30,6 +30,8 @@ int envstack_top = 0;
 LVAL envstack[envstack_max];
 LVAL *fpstack[envstack_max];
 extern long cons_count;
+
+FORWARD LOCAL void test_one_env(LVAL environment, int i, char *s);
 
 void push_xlenv(void)
 {
@@ -89,7 +91,6 @@ LOCAL void report_exit(char *msg, int i)
     stdprint(fpstack[i][1]);
     xlabort(msg);
 }
-
 
 LOCAL void test_one_env(LVAL environment, int i, char *s)
 {
@@ -209,7 +210,7 @@ LVAL xlxgetvalue(LVAL sym)
     LVAL val;
 
     /* check the environment list */
-    for (fp = xlenv; fp; fp = cdr(fp)) {
+    for (fp = xlenv; fp; fp = cdr(fp))
 
         /* check for an instance variable */
         if ((ep = car(fp)) && objectp(car(ep))) {
@@ -223,7 +224,6 @@ LVAL xlxgetvalue(LVAL sym)
                 if (sym == car(car(ep)))
                     return (cdr(car(ep)));
         }
-    }
 
     /* return the global value */
     return (getvalue(sym));
@@ -239,35 +239,18 @@ void xlsetvalue(LVAL sym, LVAL val)
 
         /* check for an instance variable */
         if ((ep = car(fp)) && objectp(car(ep))) {
-           if (xlobsetvalue(ep,sym,val))
-              return;
+            if (xlobsetvalue(ep,sym,val))
+                return;
         }
 
         /* check an environment stack frame */
         else {
             for (; ep; ep = cdr(ep))
                 if (sym == car(car(ep))) {
-
-                   /*
-                   printf("ENV SET VALUE:\n");
-                   printf("  ");
-                   dbgprint(car(ep));
-                   printf("  ");
-                   dbgprint(val);
-                   */
-
                     rplacd(car(ep),val);
                     return;
                 }
         }
-
-    /*
-    printf("GLOB SET VALUE:\n");
-    printf("  ");
-    dbgprint(sym);
-    printf("  ");
-    dbgprint(val);
-    */
 
     /* store the global value */
     setvalue(sym,val);
@@ -329,7 +312,7 @@ LVAL xlgetprop(LVAL sym, LVAL prp)
 void xlputprop(LVAL sym, LVAL val, LVAL prp)
 {
     LVAL pair;
-    if (pair = findprop(sym,prp))
+    if ((pair = findprop(sym,prp)))
         rplaca(pair,val);
     else
         setplist(sym,cons(prp,cons(val,getplist(sym))));
@@ -341,11 +324,12 @@ void xlremprop(LVAL sym, LVAL prp)
     LVAL last,p;
     last = NIL;
     for (p = getplist(sym); consp(p) && consp(cdr(p)); p = cdr(last)) {
-        if (car(p) == prp)
+        if (car(p) == prp) {
             if (last)
                 rplacd(last,cdr(cdr(p)));
             else
                 setplist(sym,cdr(cdr(p)));
+        }
         last = cdr(p);
     }
 }

@@ -4,6 +4,7 @@
         Permission is granted for unrestricted non-commercial use       */
 
 /* HISTORY 
+  28 Apr 03  DM   eliminated some compiler warnings
   12 Oct 90  RBD  added profiling support 
  */
 
@@ -87,7 +88,7 @@ LVAL xlxeval(LVAL expr)
 /* xlapply - apply a function to arguments (already on the stack) */
 LVAL xlapply(int argc)
 {
-    LVAL *oldargv,fun,val;
+    LVAL *oldargv,fun,val=NULL;
     LVAL funname;
     LVAL old_profile_fixnum = profile_fixnum;
     FIXTYPE *old_profile_count_ptr = profile_count_ptr;
@@ -173,7 +174,7 @@ LVAL xlapply(int argc)
 /* evform - evaluate a form */
 LOCAL LVAL evform(LVAL form)
 {
-    LVAL fun,args,val,type;
+    LVAL fun,args,val=NULL,type;
     LVAL tracing=NIL;
     LVAL *argv;
     LVAL old_profile_fixnum = profile_fixnum;
@@ -457,7 +458,7 @@ LOCAL LVAL evfun(LVAL fun, int argc, LVAL *argv)
     xlabind(fun,argc,argv);
 
     /* setup the implicit block */
-    if (name = getname(fun))
+    if ((name = getname(fun)))
         xlbegin(&cntxt,CF_RETURN,name);
 
     /* execute the block */
@@ -485,7 +486,7 @@ LOCAL LVAL evfun(LVAL fun, int argc, LVAL *argv)
 /* xlclose - create a function closure */
 LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
 {
-    LVAL closure,key,arg,def,svar,new,last;
+    LVAL closure,key=NULL,arg,def,svar,new,last;
     char keyname[STRMAX+2];
 
     /* protect some pointers */
@@ -529,9 +530,9 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
             /* get the default expression and specified-p variable */
             def = svar = NIL;
             if (consp(arg)) {
-                if (def = cdr(arg))
+                if ((def = cdr(arg))) {
                     if (consp(def)) {
-                        if (svar = cdr(def))
+                        if ((svar = cdr(def))) {
                             if (consp(svar)) {
                                 svar = car(svar);
                                 if (!symbolp(svar))
@@ -539,10 +540,12 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
                             }
                             else
                                 badarglist();
+                        }
                         def = car(def);
                     }
                     else
                         badarglist();
+                }
                 arg = car(arg);
             }
 
@@ -590,9 +593,9 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
             /* get the default expression and specified-p variable */
             def = svar = NIL;
             if (consp(arg)) {
-                if (def = cdr(arg))
+                if ((def = cdr(arg))) {
                     if (consp(def)) {
-                        if (svar = cdr(def))
+                        if ((svar = cdr(def))) {
                             if (consp(svar)) {
                                 svar = car(svar);
                                 if (!symbolp(svar))
@@ -600,10 +603,12 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
                             }
                             else
                                 badarglist();
+                        }
                         def = car(def);
                     }
                     else
                         badarglist();
+                }
                 arg = car(arg);
             }
 
@@ -612,11 +617,12 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
                 key = car(arg);
                 if (!symbolp(key))
                     badarglist();
-                if (arg = cdr(arg))
+                if ((arg = cdr(arg))) {
                     if (consp(arg))
                         arg = car(arg);
                     else
                         badarglist();
+                }
             }
             else if (symbolp(arg)) {
                 strcpy(keyname,":");
@@ -658,11 +664,12 @@ LVAL xlclose(LVAL name, LVAL type, LVAL fargs, LVAL body, LVAL env, LVAL fenv)
             /* get the initial value */
             def = NIL;
             if (consp(arg)) {
-                if (def = cdr(arg))
+                if ((def = cdr(arg))) {
                     if (consp(def))
                         def = car(def);
                     else
                         badarglist();
+                }
                 arg = car(arg);
             }
 
@@ -741,14 +748,14 @@ void xlabind(LVAL fun, int argc, LVAL *argv)
     rargc = argc;
     
     /* handle '&rest' argument */
-    if (arg = getrest(fun)) {
+    if ((arg = getrest(fun))) {
         def = makearglist(argc,argv);
         xlbind(arg,def);
         argc = 0;
     }
 
     /* handle '&key' arguments */
-    if (fargs = getkargs(fun)) {
+    if ((fargs = getkargs(fun))) {
         for (; fargs; fargs = cdr(fargs)) {
 
             /* get keyword, argument, default and specified-p variable */

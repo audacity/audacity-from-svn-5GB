@@ -3,7 +3,16 @@
         All Rights Reserved
         Permission is granted for unrestricted non-commercial use	*/
 
-#include "string.h"
+/* CHANGE LOG
+ * --------------------------------------------------------------------
+ * 28Apr03  dm  eliminate some compiler warnings
+ */
+
+
+#include "switches.h"
+
+#include <string.h>
+
 #include "xlisp.h"
 
 /* do some sanity checking: */
@@ -128,7 +137,7 @@ LOCAL LVAL flatsize(int pflag)
 /* xlopen - open a text or binary file */
 LVAL xlopen(int binaryflag)
 {
-    char *name,*mode;
+    char *name,*mode=NULL;
     FILE *fp;
     LVAL dir;
 
@@ -625,7 +634,7 @@ LVAL xformat(void)
     fmt = getstring(xlgastring());
 
     /* process the format string */
-    while (ch = *fmt++)
+    while ((ch = *fmt++))
         if (ch == '~') {
             switch (*fmt++) {
             case '\0':

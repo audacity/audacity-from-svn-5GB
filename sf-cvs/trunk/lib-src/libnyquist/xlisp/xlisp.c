@@ -184,8 +184,10 @@ void xlisp_main()
             xlflush();
         }
 
+        #ifndef READLINE
         /* print a prompt */
         stdputstr("> ");
+        #endif
 
         /* read an expression */
         if (!xlread(getvalue(s_stdin),&expr,FALSE))
