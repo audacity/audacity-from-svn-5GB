@@ -1,2 +1,3 @@
-EXTRA_DIST = index.html libsndfile.jpg api.html bugs.html \
-				sf_info.html new_file_type.HOWTO
+EXTRA_DIST = index.html libsndfile.jpg libsndfile.css api.html command.html \
+				bugs.html sndfile_info.html new_file_type.HOWTO pkgconfig.html \
+				win32.html FAQ.html

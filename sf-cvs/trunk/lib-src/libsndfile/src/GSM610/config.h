@@ -4,8 +4,6 @@
  * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
  */
 
-/*$Header: /var/tmp/richard/audsvn/sf-cvs-backup/audacity-cvsbackup/lib-src/libsndfile/src/GSM610/config.h,v 1.1.1.1 2001-10-15 04:39:20 dmazzoni Exp $*/
-
 #ifndef	CONFIG_H
 #define	CONFIG_H
 

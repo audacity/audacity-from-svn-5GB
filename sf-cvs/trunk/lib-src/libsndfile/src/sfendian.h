@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -18,69 +18,97 @@
 
 #include	"config.h"
 
-#if HAVE_ENDIAN_H
-	/* This is the best way to do it. Unfortunately Sparc Solaris (and
-	** possibly others) don't have <endian.h>
-	*/
-	#include	<endian.h>
-	#if (__BYTE_ORDER == __LITTLE_ENDIAN)
-		#define	CPU_IS_LITTLE_ENDIAN		1
-		#define	CPU_IS_BIG_ENDIAN			0
-	#elif (__BYTE_ORDER == __BIG_ENDIAN)
-		#define	CPU_IS_LITTLE_ENDIAN		0
-		#define	CPU_IS_BIG_ENDIAN			1
-	#else
-		#error "A bit confused about endian-ness! Have <endian.h> but not __BYTEORDER."
-	#endif
-#else
-	/* If we don't have <endian.h> use the guess based on target processor
-	** from the autoconf process.
-	*/
-	#if GUESS_LITTLE_ENDIAN
-		#define	CPU_IS_LITTLE_ENDIAN		1
-		#define	CPU_IS_BIG_ENDIAN			0
-	#elif GUESS_BIG_ENDIAN
-		#define	CPU_IS_LITTLE_ENDIAN		0
-		#define	CPU_IS_BIG_ENDIAN			1
-	#else
-		#error "Endian guess seems incorrect."
-	#endif
-#endif	
-
-#define		ENDSWAP_SHORT(x)			((((x)>>8)&0xFF)|(((x)&0xFF)<<8))
-#define		ENDSWAP_INT(x)				((((x)>>24)&0xFF)|(((x)>>8)&0xFF00)|(((x)&0xFF00)<<8)|(((x)&0xFF)<<24))
+/* 
+** Many file types (ie WAV, AIFF) use sets of four consecutive bytes as a 
+** marker indicating different sections of the file. 
+** The following MAKE_MARKER macro allows th creation of integer constants
+** for these markers.
+*/
 
 #if (CPU_IS_LITTLE_ENDIAN == 1)
-	#define	H2LE_SHORT(x)				(x)
-	#define	H2LE_INT(x)					(x)
-	#define	LE2H_SHORT(x)				(x)
-	#define	LE2H_INT(x)					(x)
-
-	#define	BE2H_INT(x)					ENDSWAP_INT(x)
-	#define	BE2H_SHORT(x)				ENDSWAP_SHORT(x)
-	#define	H2BE_INT(x)					ENDSWAP_INT(x)
-	#define	H2BE_SHORT(x)				ENDSWAP_SHORT(x)
-
+	#define	MAKE_MARKER(a,b,c,d)	((a)|((b)<<8)|((c)<<16)|((d)<<24))
 #elif (CPU_IS_BIG_ENDIAN == 1)
-	#define	H2LE_SHORT(x)				ENDSWAP_SHORT(x)
-	#define	H2LE_INT(x)					ENDSWAP_INT(x)
-	#define	LE2H_SHORT(x)				ENDSWAP_SHORT(x)
-	#define	LE2H_INT(x)					ENDSWAP_INT(x)
-
-	#define	BE2H_INT(x)					(x)
-	#define	BE2H_SHORT(x)				(x)
-	#define	H2BE_INT(x)					(x)
-	#define	H2BE_SHORT(x)				(x)
-
+	#define	MAKE_MARKER(a,b,c,d)	(((a)<<24)|((b)<<16)|((c)<<8)|(d))
 #else
-	#error "Cannot determine endian-ness of processor."
+	#error "Target CPU endian-ness unknown. May need to hand edit src/config.h"
 #endif
+
+/* wo standard endswap macros. */
+
+#define	ENDSWAP_SHORT(x)	((((x)>>8)&0xFF)+(((x)&0xFF)<<8))
+#define	ENDSWAP_INT(x)		((((x)>>24)&0xFF)+(((x)>>8)&0xFF00)+(((x)&0xFF00)<<8)+(((x)&0xFF)<<24))
+/*
+** Macros to handle reading of data of a specific endian-ness into host endian
+** shorts and ints. The single input is an unsigned char* pointer to the start
+** of the object. There are two versions of each macro as we need to deal with
+** both big and little endian CPUs.
+*/
 
 #if (CPU_IS_LITTLE_ENDIAN == 1)
-#	define	MAKE_MARKER(a,b,c,d)		((a)|((b)<<8)|((c)<<16)|((d)<<24))
+	#define LES2H_SHORT(x)			(x)
+	#define LEI2H_INT(x)			(x)
+
+	#define LES2H_SHORT_PTR(x)		(((short*) x) [0])
+	#define LES2H_INT_PTR(x)		((((short*) x) [0]) << 16)
+
+	#define LET2H_SHORT_PTR(x)		((x) [1] + ((x) [2] << 8))
+	#define LET2H_INT_PTR(x)		(((x) [0] << 8) + ((x) [1] << 16) + ((x) [2] << 24))
+
+	#define	LEI2H_SHORT_PTR(x)		((((int*) x) [0]) >> 16)
+	#define	LEI2H_INT_PTR(x)		(((int*) x) [0])
+
+	#define BES2H_SHORT(x)			ENDSWAP_SHORT(x)
+	#define BEI2H_INT(x)			ENDSWAP_INT(x)
+
+	#define BES2H_SHORT_PTR(x)		(((x) [0] << 8) + (x) [1])
+	#define BES2H_INT_PTR(x)		(((x) [0] << 24) + ((x) [1] << 16))
+
+	#define BET2H_SHORT_PTR(x)		(((x) [0] << 8) + (x) [1])
+	#define BET2H_INT_PTR(x)		(((x) [0] << 24) + ((x) [1] << 16) + ((x) [2] << 8))
+
+	#define BEI2H_SHORT_PTR(x)		(((x) [0] << 8) + (x) [1])
+	#define BEI2H_INT_PTR(x)		(((x) [0] << 24) + ((x) [1] << 16) + ((x) [2] << 8) + (x) [3])
+
 #elif (CPU_IS_BIG_ENDIAN == 1)
-#	define	MAKE_MARKER(a,b,c,d)		(((a)<<24)|((b)<<16)|((c)<<8)|(d))
+	#define LES2H_SHORT(x)			ENDSWAP_SHORT(x)
+	#define LEI2H_INT(x)			ENDSWAP_INT(x)
+
+	#define LES2H_SHORT_PTR(x)		((x) [0] + ((x) [1] << 8))
+	#define LES2H_INT_PTR(x)		(((x) [0] << 16) + ((x) [1] << 24))
+
+	#define LET2H_SHORT_PTR(x)		((x) [1] + ((x) [2] << 8))
+	#define LET2H_INT_PTR(x)		(((x) [0] << 8) + ((x) [1] << 16) + ((x) [2] << 24))
+
+	#define	LEI2H_SHORT_PTR(x)		((x) [2] + ((x) [3] << 8))
+	#define	LEI2H_INT_PTR(x)		((x) [0] + ((x) [1] << 8) + ((x) [2] << 16) + ((x) [3] << 24))
+
+	#define BES2H_SHORT(x)			(x)
+	#define BEI2H_INT(x)			(x)
+
+	#define BES2H_SHORT_PTR(x)		(((short*) x) [0])
+	#define BES2H_INT_PTR(x)		((((short*) x) [0]) << 16)
+
+	#define BET2H_SHORT_PTR(x)		(((x) [0] << 8) + (x) [1])
+	#define BET2H_INT_PTR(x)		(((x) [0] << 24) + ((x) [1] << 16) + ((x) [2] << 8))
+
+	#define BEI2H_SHORT_PTR(x)		((((int*) x) [0]) >> 16)
+	#define BEI2H_INT_PTR(x)		(((int*) x) [0])
+
 #else
-#	error "Cannot determine endian-ness of processor."
+	#error "Target CPU endian-ness unknown. May need to hand edit src/config.h"
 #endif
+
+/* Endian swapping routines implemented in sfendian.c. */
+
+void	endswap_short_array	(short *ptr, int len) ;
+void	endswap_int_array 	(int *ptr, int len) ;
+
+/* Always swaps 8 byte values whether sizeof (long) == 8 or not. */
+void	endswap_long_array  (long *ptr, int len) ; 
+
+void	endswap_short_copy	(short *dest, short *src, int len) ;
+void	endswap_int_copy 	(int *dest, int *src, int len) ;
+
+/* Always swaps 8 byte values whether sizeof (long) == 8 or not. */
+void	endswap_long_copy  (long *dest, long *src, int len) ; 
 

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -28,10 +28,11 @@
 
 static	char	strbuffer [BUFFER_SIZE] ;
 
-int		main (int argc, char *argv[])
-{	sf_get_lib_version (strbuffer, BUFFER_SIZE) ;
+int		
+main (void)
+{	sf_command (NULL, SFC_GET_LIB_VERSION, strbuffer, sizeof (strbuffer)) ;
 		
-	printf (strbuffer) ;
+	printf ("%s", strbuffer) ;
 
 	return 0 ;
 } /* main */

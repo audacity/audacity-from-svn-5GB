@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include	<unistd.h>
 #include	<sys/types.h>
 #include	<sys/stat.h>
+#include	<sys/wait.h>
 
 #define		SAMPLE_COUNT		12345
 
@@ -37,7 +38,7 @@ static size_t	file_length (char *filename) ;
 static int		file_exists (char *filename) ;
 
 static char *filetypes [] =
-{	"wav", "aiff", "au", "paf", "svx", "nist", "ircam", NULL
+{	"raw", "wav", "aiff", "au", "paf", "svx", "nist", "ircam", "voc", "w64", NULL
 } ; 
 
 int
@@ -45,14 +46,16 @@ main (void)
 {	static char buffer [256] ;
 	int k, file_size, retval ;
 	
-	if (! file_exists ("libsndfile.spc.in"))
+	if (file_exists ("libsndfile.spec.in"))
 		chdir ("tests") ;
-		
+
 	for (k = 0 ; filetypes [k] ; k++)
 	{	snprintf (buffer, sizeof (buffer), "./stdout_test %s %d > stdio.%s", filetypes [k], SAMPLE_COUNT, filetypes [k]) ;
 		if ((retval = system (buffer)))
+		{	retval = WEXITSTATUS (retval) ;
 			exit (retval) ;
-		
+			} ;
+
 		snprintf (buffer, sizeof (buffer), "stdio.%s", filetypes [k]) ;
 		if ((file_size = file_length (buffer)) < SAMPLE_COUNT)
 		{	printf ("\n    Error : test file '%s' too small (%d).\n\n", buffer, file_size) ;

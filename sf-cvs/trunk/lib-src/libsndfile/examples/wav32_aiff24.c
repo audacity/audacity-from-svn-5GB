@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2001 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -33,10 +33,10 @@ void    copy_data (SNDFILE *outfile, SNDFILE *infile, unsigned int len, double n
 
 	readcount = len ;
 	while (readcount == len)
-	{	readcount = sf_read_double (infile, data, len, 0) ;
+	{	readcount = sf_read_double (infile, data, len) ;
 		for (k = 0 ; k < readcount ; k++)
 			data [k] *= normfactor ;
-		sf_write_double (outfile, data, readcount, 0) ;
+		sf_write_double (outfile, data, readcount) ;
 		} ;
 
 	return ;
@@ -73,7 +73,7 @@ main (int argc, char *argv[])
 		return  1 ;
 		} ;
 		
-	if (! (infile = sf_open_read (infilename, &sfinfo)))
+	if (! (infile = sf_open (infilename, SFM_READ, &sfinfo)))
 	{	fprintf (stderr, "Not able to open input file %s.\n", infilename) ;
 		sf_perror (NULL) ;
 		return  1 ;
@@ -84,10 +84,10 @@ main (int argc, char *argv[])
 		return  1 ;
 		} ;
 	
-	sfinfo.format = (SF_FORMAT_AIFF | SF_FORMAT_PCM) ;
-	sfinfo.pcmbitwidth = 24 ;
-		
-	normfactor = sf_signal_max (infile) ;
+	sfinfo.format = (SF_FORMAT_AIFF | SF_FORMAT_PCM_24) ;
+	
+	sf_command (infile, SFC_CALC_SIGNAL_MAX, &normfactor, sizeof (normfactor)) ;
+
 	if (normfactor < 1.0 && normfactor > 0.0)
 		normfactor = ((double) 0x400000) ;
 	else
@@ -95,7 +95,7 @@ main (int argc, char *argv[])
 	
 	fprintf (stderr, "normfactor : %g\n", normfactor) ;
 	
-	if (! (outfile = sf_open_write (outfilename, &sfinfo)))
+	if (! (outfile = sf_open (outfilename, SFM_WRITE, &sfinfo)))
 	{	fprintf (stderr, "Not able to open output file %s.\n", outfilename) ;
 		return  1 ;
 		} ;
