@@ -1533,7 +1533,11 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
       //In Multi-tool mode, give multitool prompt if no-special-hit.
       if( ctb->GetMultiToolDown() && (tool==selectTool )) {
+         #ifdef __WXMAC__
+         tip = _("Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences");
+         #else
          tip = _("Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences");
+         #endif
       }
       else{
          tip = ctb->GetMessageForTool( tool );
