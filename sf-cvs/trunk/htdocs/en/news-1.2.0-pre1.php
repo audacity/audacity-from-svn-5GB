@@ -16,8 +16,8 @@ higher.  Audacity 1.2.0-pre1 fixes many bugs from the last beta release.
 </p>
 
 <p>
-The <a href="beta.php?<?php print "$langLinkStr"; ?>">Beta Versions</a> has
-complete release notes and download links.
+The <a href="beta.php?<?php print "$langLinkStr"; ?>">Beta Versions</a> page
+has complete release notes and download links.
 </p>
 
 <p>
