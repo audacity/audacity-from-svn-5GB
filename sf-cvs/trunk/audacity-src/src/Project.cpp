@@ -40,14 +40,12 @@
 #endif
 
 #ifdef __WXMAC__
-#define __MOVIES__        /* Apple's Movies.h not compatible with Audacity */
-/*#define __MACHELP__*/
-
+#define __MOVIES__  /* Apple's Movies.h not compatible with Audacity */
 #include <wx/mac/private.h>
-#else
+#endif
+
 #include <wx/dragimag.h>
 #include <wx/generic/dragimgg.h>
-#endif
 
 #include <wx/event.h>
 #include <wx/filedlg.h>
@@ -347,9 +345,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mDraggingToolBar(NoneID),
      mIsDeleting(false)
 {
-   #ifndef __WXMAC__
    mDrag = NULL;
-   #endif
 
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
@@ -1078,7 +1074,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 /// @param iToolBar - index in toolbar array of toolbar to decorate.
 void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
 {
-   AColor::Medium(&dc, false);
    unsigned int j;
 
    int toolbarwidth;
@@ -1091,15 +1086,19 @@ void AudacityProject::DecorateToolBar( wxPaintDC & dc, int iToolBar )
    mToolBarArray[iToolBar]->GetPosition(&toolbarleft, &toolbartop );
    toolbarbottom = toolbartop + toolbarheight;
 
+
    //Draw a rectangle around the "grab-bar"
    wxRect r;
    r.x = toolbarleft-grabberWidth;
    r.y = toolbartop;
    r.width = grabberWidth-1;
    r.height = toolbarheight-1;
-   // filled rectangle.
+
+   #ifndef __WXMAC__
+   AColor::Medium(&dc, false);   // filled rectangle.
    dc.DrawRectangle(r);
    AColor::Bevel( dc, true, r );
+   #endif
 
 #if 0
    //JKC: Draw a beveled rectangle round the grab-bar.
@@ -1358,9 +1357,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
       toolbar =
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
-      #ifndef __WXMAC__
       mCommandManager.Modify("FloatControlTB", _("Float Control Toolbar"));
-      #endif
       mToolBarArray.Insert(toolbar, 0);
       break;
 
@@ -1427,12 +1424,9 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          //Now, do any changes specific to different toolbar types
          switch (t) {
          case ControlToolBarID:
-            
-#ifndef __WXMAC__
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
             mCommandManager.Modify("FloatControlTB", _("Dock Control Toolbar"));
-#endif
             break;
             
          case EditToolBarID:
@@ -1493,8 +1487,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
    hotspot.x = event.m_x;
    hotspot.y = event.m_y;
 
-#ifndef __WXMAC__
-
    //mouse is relative to the screen
    wxPoint mouse = ClientToScreen(hotspot);
 
@@ -1531,14 +1523,14 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
 
       //copy an image of the toolbar into the box
       memDC->Blit(1, 1, width, height, &dc, x, y - 1);
-      delete memDC;
 
       mDrag = new wxGenericDragImage(*bitmap);
+      delete memDC;
       delete bitmap;
 
       hotspot = hotspot - wxPoint(x,y);
 
-	   mDrag->BeginDrag(hotspot, this, true);
+      mDrag->BeginDrag(hotspot, this, true);
       mDrag->Move(hotspot);
       mToolBarHotspot = hotspot;
 
@@ -1551,8 +1543,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       mDrag->Show();
 
    } else if (event.ButtonUp() && mDrag) {
-
-
       mDrag->Hide();
       mDrag->EndDrag();
       delete mDrag;
@@ -1582,7 +1572,6 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       mDraggingToolBar = NoneID;
       HandleResize();
    }
-#endif
 }
 
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)

@@ -20,24 +20,9 @@
 
 #include "Audacity.h"
 
-#if defined(__MACOS9__)
-#include <Files.h>
-#elif defined(__MACOSX__)
-
-#else
-// Work around bugs in <wx/dragimag.h>, wxGTK 2.2.9.2
-// (bad use of preprocessor, failure to forward-declare class names)
-// Bug report forwarded to wxWindows team.
-class wxRect;
-class wxMemoryDC;
-class wxDC;
-class wxTimer;
 #include <wx/defs.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
-#include <wx/generic/dragimgg.h>
-#endif
-
 #include <wx/frame.h>
 #include <wx/intl.h>
 
@@ -316,9 +301,7 @@ class AudacityProject:public wxFrame,
    AStatus *mStatus;
    wxPoint mToolBarHotspot;
 
-#ifndef __WXMAC__
    wxGenericDragImage *mDrag;
-#endif
 
    TrackPanel *mTrackPanel;
    TrackFactory *mTrackFactory;

@@ -218,12 +218,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
-#ifndef __WXMAC__
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
-#endif
    c->EndMenu();
 
    c->BeginMenu(_("&Project"));
@@ -560,7 +558,6 @@ void AudacityProject::UpdateMenus()
    mCommandManager.Enable("PlotSpectrum", numWaveTracksSelected > 0
                      && nonZeroRegionSelected);
 
-#ifndef __WXMAC__
    //Modify toolbar-specific Menus
 
    if (gEditToolBarStub) {
@@ -592,8 +589,6 @@ void AudacityProject::UpdateMenus()
    else {
       mCommandManager.Enable("FloatMixerTB", false);
    }
-
-#endif
 
    mCommandManager.Enable("QuickMix", numWaveTracksSelected > 0);
    mCommandManager.Enable("SelSave", numWaveTracksSelected > 0);
