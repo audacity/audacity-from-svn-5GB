@@ -340,6 +340,7 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
    mEnvelope->Mirror(false);
    mEnvelope->SetTrackLen(1.0);
 
+   SetSizeHints(100, 80);
 }
 
 
@@ -513,11 +514,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    MakeEqualizationDialog(loFreq, hiFreq,
 			  mEnvelope,
 			  &mPanel,
-			  this, TRUE, mEnvelope); 
-   
-   SetSizeHints(300, 300, 20000, 20000);
-
-   SetSize(400, 300);
+			  this); 
 
    mLoFreq = loFreq;
    mHiFreq = hiFreq;
@@ -672,7 +669,7 @@ wxSizer * MakeEqualizationDialog(
    (*pan) = new EqualizationPanel( loFreq, hiFreq, 
 				   env,
 				   parent, ID_FILTERPANEL,
-				   wxDefaultPosition, wxDefaultSize );
+				   wxDefaultPosition, wxSize(100,80) );
    wxWindow *item2 = (*pan);
    wxASSERT( item2 );
    item0->Add( item2, 1, wxGROW|wxALIGN_CENTRE|wxALL, 4);
@@ -744,7 +741,6 @@ wxSizer * MakeEqualizationDialog(
 
    if (set_sizer)
       {
-         parent->SetAutoLayout( TRUE );
          parent->SetSizer( item0 );
          if (call_fit)
             {
