@@ -1037,6 +1037,7 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
       ClearSamples(silence, format, 0, mMaxSamples);
    }
 
+   BlockFile *silenceBlock = NULL;
    int b = FindBlock(start);
 
    while (len) {
@@ -1054,9 +1055,29 @@ bool Sequence::Set(samplePtr buffer, sampleFormat format,
                       blen);
          }
          buffer += (blen * SAMPLE_SIZE(format));
-      } else
-         CopyWrite(silence, mBlock->Item(b), start - mBlock->Item(b)->start,
-                   blen);
+      }
+      else {
+         // If it's a full block of silence
+         if (start == mBlock->Item(b)->start &&
+             blen == mBlock->Item(b)->len) {
+
+            // Use a single shared silence block
+            if (silenceBlock) {
+               mDirManager->Deref(mBlock->Item(b)->f);
+               mBlock->Item(b)->f = silenceBlock;
+               mDirManager->Ref(silenceBlock);
+            }
+            else {
+               CopyWrite(silence, mBlock->Item(b), 0, blen);
+               silenceBlock = mBlock->Item(b)->f;
+            }
+         }
+         else {
+            // Otherwise write silence just to the portion of the block
+            CopyWrite(silence, mBlock->Item(b),
+                      start - mBlock->Item(b)->start, blen);
+         }
+      }
 
       len -= blen;
       start += blen;
