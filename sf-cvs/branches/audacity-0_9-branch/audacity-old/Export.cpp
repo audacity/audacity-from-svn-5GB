@@ -63,6 +63,7 @@ bool Export(AudacityProject *project,
     * right, left, mono, and make sure at least one track is selected */
 
    int numSelected = 0, numLeft = 0, numRight = 0, numMono = 0;
+   float earliestBegin = t1, latestEnd = t0;
    double rate = 0;
 
    TrackListIterator iter1(tracks);
@@ -88,11 +89,21 @@ bool Export(AudacityProject *project,
                numRight++;
             if (tr->channel == VTrack::MonoChannel)
                numMono++;
+            
+            if(tr->tOffset < earliestBegin)
+               earliestBegin = tr->tOffset;
+            if(tr->GetMaxLen() > latestEnd)
+               latestEnd = tr->GetMaxLen();
          }
       }
 
       tr = iter1.Next();
    }
+
+   if(earliestBegin > t0)
+      t0 = earliestBegin;
+   if(latestEnd < t1)
+      t1 = latestEnd;
 
    if (numSelected == 0 && selectionOnly) {
       wxMessageBox("No tracks are selected!\n"
