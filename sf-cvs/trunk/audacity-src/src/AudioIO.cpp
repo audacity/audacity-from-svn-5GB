@@ -150,8 +150,6 @@ int audacityAudioCallback(
    //
 
    if (outputBuffer && numOutChannels > 0) {
-      float volume = gAudioIO->mProject->GetControlToolBar()->GetSoundVol();
-
       float *outputFloats = (float *)outputBuffer;
       for(i=0; i<framesPerBuffer*numOutChannels; i++)
          outputFloats[i] = 0.0;
@@ -199,14 +197,18 @@ int audacityAudioCallback(
             gAudioIO->mReachedEnd = true;
 
          if (vt->GetChannel() == Track::LeftChannel ||
-             vt->GetChannel() == Track::MonoChannel)
+             vt->GetChannel() == Track::MonoChannel) {
+            float volume = vt->GetChannelGain(0);
             for(i=0; i<len; i++)
                outputFloats[numOutChannels*i] += volume*tempFloats[i];
+         }
          
          if (vt->GetChannel() == Track::RightChannel ||
-             vt->GetChannel() == Track::MonoChannel)
+             vt->GetChannel() == Track::MonoChannel) {
+            float volume = vt->GetChannelGain(1);
             for(i=0; i<len; i++)
                outputFloats[numOutChannels*i+1] += volume*tempFloats[i];
+         }
       }
    }
    
@@ -362,6 +364,7 @@ bool AudioIO::Start()
                                    mT0, mT1, 1, mOutBufferSize, false,
                                    mRate, floatSample,
                                    false);
+         mOutMixers[i]->ApplyTrackGains(false);
       }
    }
 

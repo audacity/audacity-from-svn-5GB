@@ -22,25 +22,52 @@ class wxImage;
 class wxSize;
 class wxPoint;
 
-class ASlider:public wxWindow {
+#define FRAC_SLIDER 1    // 0.0...1.0
+#define DB_SLIDER 2      // -36...36 dB
+#define PAN_SLIDER 3     // -1.0...1.0
+
+//
+// Lightweight slider - i.e. a slider that doesn't appear in
+// its own window, but rather draws itself inside an existing
+// window (used inside Track Labels).  The ASlider class,
+// which uses this class, is below.
+//
+
+class LWSlider
+{
+   friend class ASlider;
+
  public:
 
-   ASlider(wxWindow * parent, wxWindowID id,
-           wxString name,
-           const wxPoint & pos,
-           const wxSize & size);
+   LWSlider(wxWindow * parent,
+            wxString name,
+            const wxPoint &pos,
+            const wxSize &size,
+            int style);
 
-    virtual ~ ASlider();
+   virtual ~LWSlider();
 
-   virtual float Get();
-   virtual void Set(float value);
+   float Get();
+   void Set(float value);
 
-   virtual void OnPaint(wxPaintEvent & event);
-   virtual void OnMouseEvent(wxMouseEvent & event);
+   void Move(const wxPoint &newpos);
+
+   void OnPaint(wxDC &dc, bool selected);
+   void OnMouseEvent(wxMouseEvent &event);
+   void Refresh();
 
  private:
 
    void FormatPopWin();
+
+   wxWindow *mParent;
+
+   bool mHW; // is it really heavyweight (in a window)
+
+   int mStyle;                  // FRAC, PAN, or DB
+
+   int mLeft;
+   int mTop;
 
    int mWidth;                  //In pixels
    int mHeight;                 //In pixels
@@ -64,12 +91,34 @@ class ASlider:public wxWindow {
    bool mIsDragging;
 
    wxBitmap *mBitmap;
+   wxBitmap *mSelBitmap;
    wxBitmap *mThumbBitmap;
+   wxBitmap *mSelThumbBitmap;
 
    wxString mName;
 
- public:
+};
 
+class ASlider :public wxWindow
+{
+ public:
+   ASlider(wxWindow * parent, wxWindowID id,
+           wxString name,
+           const wxPoint & pos,
+           const wxSize & size);
+
+   virtual ~ASlider();
+   
+   float Get();
+   void Set(float value);
+
+   void OnPaint(wxPaintEvent & event);
+   void OnMouseEvent(wxMouseEvent & event);
+
+ private:
+   LWSlider *mLWSlider;
+
+ public:
     DECLARE_EVENT_TABLE()
 };
 

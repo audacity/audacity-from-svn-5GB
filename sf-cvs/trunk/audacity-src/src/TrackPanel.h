@@ -25,7 +25,10 @@ class TrackList;
 class Track;
 class TrackPanel;
 class TrackArtist;
+class WaveTrack;
 class Ruler;
+class LWSlider;
+
 struct ViewInfo;
 
 struct tpBitmap
@@ -36,6 +39,7 @@ struct tpBitmap
 };
 
 WX_DEFINE_ARRAY(tpBitmap *, tpBitmapArray);
+WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 
 class TrackPanelListener {
  public:
@@ -132,7 +136,13 @@ class TrackPanel:public wxWindow {
    void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
+   void HandleSliders(wxMouseEvent &event, bool pan);
+   void MakeMoreSliders();
    bool MuteSoloFunc(Track *t, wxRect r, int x, int f, bool solo);
+   bool GainFunc(Track * t, wxRect r, wxMouseEvent &event,
+                 int index, int x, int y);
+   bool PanFunc(Track * t, wxRect r, wxMouseEvent &event,
+                int index, int x, int y);
    void MakeParentRedrawScrollbars();
    
    // AS: Pushing the state preserves state for Undo operations.
@@ -190,6 +200,8 @@ class TrackPanel:public wxWindow {
    void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
    void GetTitleBarRect(const wxRect r, wxRect &dest) const;
    void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
+   void GetGainRect(const wxRect r, wxRect &dest) const;
+   void GetPanRect(const wxRect r, wxRect &dest) const;
 
    void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
    void DrawTitleBar(wxDC * dc, const wxRect r, Track * t, bool down);
@@ -198,10 +210,12 @@ class TrackPanel:public wxWindow {
    void DrawVRuler(wxDC * dc, const wxRect r, Track * t);
 
    void DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRect clip);
-   void DrawEverythingElse(Track *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect);
+   void DrawEverythingElse(Track *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect,
+                           int index);
    void DrawOutside(Track *t, wxDC *dc, const wxRect rec, const int labelw, 
-		    const int vrul, const wxRect trackRect);
+                    const int vrul, const wxRect trackRect, int index);
    void DrawZooming(wxDC* dc, const wxRect clip);
+   void DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index);
 
    void DrawShadow            (Track *t, wxDC* dc, const wxRect r);
    void DrawBordersAroundTrack(Track *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
@@ -217,6 +231,9 @@ class TrackPanel:public wxWindow {
    wxStatusBar *mStatusBar;
 
    Ruler *mRuler;
+
+   LWSliderArray mGains;
+   LWSliderArray mPans;
 
    TrackArtist *mTrackArtist;
 
@@ -285,7 +302,8 @@ class TrackPanel:public wxWindow {
    bool mIsEnveloping;
    bool mIsMuting;
    bool mIsSoloing;
-   
+   bool mIsGainSliding;
+   bool mIsPanSliding;   
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?

@@ -28,8 +28,9 @@ class DirManager;
 bool QuickMix(TrackList * tracks, TrackFactory *factory,
               double rate, sampleFormat format);
 
-void MixBuffers(int numChannels, int *channelFlags, sampleFormat format,
-                samplePtr src, samplePtr *dests, int len, bool interleaved);
+void MixBuffers(int numChannels, int *channelFlags, float *gains,
+                sampleFormat format, samplePtr src,
+                samplePtr *dests, int len, bool interleaved);
 
 class Mixer {
  public:
@@ -45,6 +46,12 @@ class Mixer {
          bool highQuality = true);
 
    virtual ~ Mixer();
+
+   //
+   // Setup
+   //
+
+   void ApplyTrackGains(bool apply = true); // True by default
 
    //
    // Processing
@@ -81,6 +88,8 @@ class Mixer {
    WaveTrack      **mInputTrack;
    TimeTrack       *mTimeTrack;
    longSampleCount *mSamplePos;
+   bool             mApplyTrackGains;
+   float           *mGains;
    double          *mEnvValues;
    double           mT;  // Current time
    double           mT0; // Start time
