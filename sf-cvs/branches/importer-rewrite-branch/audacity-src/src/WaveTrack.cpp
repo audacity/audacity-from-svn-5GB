@@ -81,6 +81,11 @@ public:
    float       *freq;
 };
 
+WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format)
+{
+   return new WaveTrack(mDirManager, format);
+}
+
 WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format):
    Track(projDirManager)
 {
@@ -771,7 +776,7 @@ bool WaveTrack::Lock()
    if (!Flush())
       return false;
 
-   mSequence->Lock();
+   return mSequence->Lock();
 }
 
 bool WaveTrack::Unlock()
@@ -779,7 +784,7 @@ bool WaveTrack::Unlock()
    if (!Flush())
       return false;
 
-   mSequence->Unlock();
+   return mSequence->Unlock();
 }
 
 longSampleCount WaveTrack::TimeToLongSamples(double t0)

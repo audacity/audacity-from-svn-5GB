@@ -19,6 +19,11 @@
 #include "NoteTrack.h"
 #include "DirManager.h"
 
+NoteTrack *TrackFactory::NewNoteTrack()
+{
+   return new NoteTrack(mDirManager);
+}
+
 NoteTrack::NoteTrack(DirManager * projDirManager):
 Track(projDirManager)
 {

@@ -13,6 +13,7 @@
 
 #include <wx/string.h>
 
+#include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
 
 class wxTextFile;
@@ -234,6 +235,31 @@ class ConstTrackListIterator {
  private:
     const TrackList * l;
     mutable TrackListNode *cur;
+};
+
+
+class WaveTrack;
+class NoteTrack;
+class LabelTrack;
+class DirManager;
+
+class TrackFactory
+{
+ private:
+   TrackFactory(DirManager *dirManager):
+      mDirManager(dirManager)
+   {
+   }
+
+   DirManager *mDirManager;
+   friend class AudacityProject;
+
+ public:
+   // These methods are defined in WaveTrack.cpp, NoteTrack.cpp,
+   // and LabelTrack.cpp respectively
+   WaveTrack *NewWaveTrack(sampleFormat format = floatSample);
+   NoteTrack *NewNoteTrack();
+   LabelTrack *NewLabelTrack();
 };
 
 #endif

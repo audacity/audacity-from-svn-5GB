@@ -1366,6 +1366,7 @@ void AudacityProject::OnImport(wxEvent & event)
 {
    wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
 
+   // TODO: Build the list of file types dynamically
    wxString fileName = wxFileSelector(_("Select an audio file..."),
                                       path,     // Path
                                       "",       // Name
@@ -1449,7 +1450,7 @@ void AudacityProject::OnImportMIDI(wxEvent & event)
 
       NoteTrack *newTrack = new NoteTrack(&mDirManager);
 
-      if (::ImportMIDI(fileName, newTrack)) {
+      if (0/*::ImportMIDI(fileName, newTrack)*/) {
 
          SelectNone();
          mTracks->Add(newTrack);
@@ -1484,7 +1485,7 @@ void AudacityProject::OnImportRaw(wxEvent & event)
       WaveTrack *left = 0;
       WaveTrack *right = 0;
 
-      if (::ImportRaw(this, fileName, &left, &right, &mDirManager)) {
+      if (0/*::ImportRaw(this, fileName, &left, &right, &mDirManager)*/) {
 
          SelectNone();
 
@@ -1514,7 +1515,7 @@ void AudacityProject::OnEditID3(wxEvent & event)
 
 void AudacityProject::OnQuickMix(wxEvent & event)
 {
-   if (::QuickMix(mTracks, &mDirManager, mRate, mDefaultFormat)) {
+   if (::QuickMix(mTracks, mTrackFactory, mRate, mDefaultFormat)) {
 
       // After the tracks have been mixed, remove the originals
 
@@ -1590,7 +1591,7 @@ void AudacityProject::OnAlign(wxEvent & event)
 
 void AudacityProject::OnNewWaveTrack(wxEvent & event)
 {
-   WaveTrack *t = new WaveTrack(&mDirManager, mDefaultFormat);
+   WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
    t->SetRate(mRate);
    SelectNone();
 
