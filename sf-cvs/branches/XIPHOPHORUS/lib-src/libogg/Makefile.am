@@ -1,29 +1,23 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = foreign dist-zip
+AUTOMAKE_OPTIONS = foreign 1.6 dist-zip
 
-SUBDIRS = lib include doc examples win32 debian vq
+SUBDIRS = src include doc win32 debian
 
 m4datadir = $(datadir)/aclocal
-m4data_DATA = vorbis.m4
+m4data_DATA = ogg.m4
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = vorbis.pc vorbisenc.pc vorbisfile.pc
+pkgconfig_DATA = ogg.pc
 
-EXTRA_DIST = todo.txt macos macosx autogen.sh \
-	libvorbis.spec libvorbis.spec.in \
-	vorbis.m4 vorbis.pc.in vorbisenc.pc.in vorbisfile.pc.in \
-       vorbis-uninstalled.pc.in \
-       vorbisenc-uninstalled.pc.in \
-       vorbisfile-uninstalled.pc.in
-
-DISTCHECK_CONFIGURE_FLAGS = --enable-docs
+EXTRA_DIST = README AUTHORS CHANGES COPYING \
+	libogg.spec libogg.spec.in \
+	ogg.m4 ogg.pc.in ogg-uninstalled.pc.in \
+	macos macosx
 
 dist-hook:
 	rm -rf `find $(distdir)/macos -name CVS`
-	rm -rf `find $(distdir)/macos -name .svn`
 	rm -rf `find $(distdir)/macosx -name CVS`
-	rm -rf `find $(distdir)/macosx -name .svn`
 
 debug:
 	$(MAKE) all CFLAGS="@DEBUG@"
