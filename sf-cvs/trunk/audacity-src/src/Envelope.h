@@ -42,7 +42,7 @@ class Envelope {
 
    void Mirror(bool mirror);
 
-   void CopyFrom(const Envelope * e);
+   void CopyFrom(const Envelope * e, double t0, double t1);
 
    // File I/O
 

@@ -55,20 +55,43 @@ void Envelope::Flatten(double value)
    Insert(1000000000.0, value);
 }
 
-void Envelope::CopyFrom(const Envelope * e)
+void Envelope::CopyFrom(const Envelope * e, double t0, double t1)
 {
-   mOffset = e->mOffset;
-   int len = e->mEnv.Count();
-   mTrackLen = e->mEnv[len - 1]->t;
+   mOffset = wxMax(t0, e->mOffset);
+   mTrackLen = wxMin(t1 - mOffset, e->mTrackLen);
+
    int i;
    for (i = 0; i < mEnv.Count(); i++)
       delete mEnv[i];
    mEnv.Clear();
-   mEnv.Alloc(len);
-   for (i = 0; i < len; i++) {
+   
+   int len = e->mEnv.Count();
+
+   // Create the point at 0 
+   EnvPoint *pt = new EnvPoint();
+   pt->t = 0;
+   pt->val = e->GetValue(t0);
+   mEnv.Add(pt);
+
+   // Skip the points that come before the copied region
+   i = 0;
+   while (i < len && e->mEnv[i]->t <= t0 - mOffset)
+      i++;
+
+   // Copy points from inside the copied region
+   while (i < len && e->mEnv[i]->t < mOffset + mTrackLen) {
       EnvPoint *pt = new EnvPoint();
-      pt->t = e->mEnv[i]->t;
+      pt->t = e->mEnv[i]->t + e->mOffset - mOffset;
       pt->val = e->mEnv[i]->val;
+      mEnv.Add(pt);
+      i++;
+   }
+
+   // Create the final point
+   if (i > 0 && e->mEnv[i-i]->t != mOffset + mTrackLen) {
+      EnvPoint *pt = new EnvPoint();
+      pt->t = mTrackLen;
+      pt->val = e->GetValue(t1);
       mEnv.Add(pt);
    }
 }
@@ -260,6 +283,9 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       } else {
          // Create new point
          double when = h + (event.m_x - r.x) / pps - mOffset;
+
+         if (when <= 0 || when >= mTrackLen)
+            return false;
 
          int dy;
          if (upper)

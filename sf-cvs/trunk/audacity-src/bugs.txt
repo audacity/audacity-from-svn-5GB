@@ -7,8 +7,6 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
-- Shouldn't be able to create Envelope points beyond
-  the end of a track.
 - Problems recording at other than 44100 Hz on Mac
 - Recording at a rate other than 44100 works, but the
   track created has the wrong rate in its label
@@ -103,3 +101,4 @@ Fixed:
 - Filenames with a period outside the extension are truncated.
 - "New..." menu item should be "New"
 - Crash in NoiseRemoval effect on Windows.
+- Shouldn't create envelope points outside the track range.

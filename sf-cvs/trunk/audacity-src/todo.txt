@@ -54,7 +54,6 @@ UI::
   and Audacity project files
 - Crash recovery
 - Clean up a project directory upon open
-- Make Alt-F select the File menu on Windows
 - Make "Exit program upon closing last window" an option
   in the Preferences.  (The alternative would be to create
   a new empty project when you close the last window.)
