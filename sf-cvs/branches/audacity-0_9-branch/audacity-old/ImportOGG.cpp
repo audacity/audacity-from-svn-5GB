@@ -153,6 +153,13 @@ bool ImportOGG(wxWindow * parent,
                           2,    // word length (2 for 16 bit samples)
                           1,    // signed
                           &bitstream);
+
+      if (bytesRead < 0) {
+         wxMessageBox("Invalid Ogg Vorbis file " + Filename, "Error",
+               wxICON_ERROR|wxOK|wxCENTRE);
+         break;
+      }
+
       samplesRead = bytesRead / *numChannels / sizeof(sampleType);
 
       if (samplesRead + bufferCount > bufferSize) {
