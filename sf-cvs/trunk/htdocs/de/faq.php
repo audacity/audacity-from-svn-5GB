@@ -26,9 +26,14 @@ Verwendung:<br>
 <a href="#a1">Wie kann ich zwei Stücke mixen?</a><br>
 <a href="#a2">Kann man Stimmen entfernen?</a><br>
 
-<a href="#a3">When I try to record harmonies with myself,
-              why are the two tracks out of sync?</a><br>
+<a href="#a3">Wenn ich versuche Harmonien aufzunehmen sind beide Stücke nicht zeitgleich bzw. nicht synchron ?
+             </a><br>
 <a href="#a4">Warum wird bei Audacity kein MP3 encoder mitgeliefert?</a><br>
+<a href="#a5">Kann man RealAudio oder anderes "gestreamte audio" aufnehmen ?</a><br>
+<a href="#a6">Hilfe! Ich drücke Aufnahme, aber alles was ich bekomme ist "Stille"!</a><br>
+<a href="#a7">Wie trenne ich ein Lied (Track) in verschiedene Stücke ?</a><br>
+<a href="#a8">Wie bekomme ich die Lieder von einer Audio CD ?</a><br>
+
 <p>
 
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
@@ -82,14 +87,7 @@ Wo wäre das Programm dann jetzt?
 </b></font>
 
 <p>
-Audacity was started in the fall of 1999
-by Dominic Mazzoni while he was a graduate
-student at Carnegie Mellon University in Pittsburgh, PA, USA.
-He was working on a research project with his advisor, Professor
-Roger Dannenberg, and they needed a tool that would let them
-visualize audio analysis algorithms.  Over time, this program
-developed into a general audio editor, and other people started
-helping out.
+Dominic Mazzoni startet die Entwicklung von Audacity im Herbst 1999, während er Student an der Carnegie Mellon University in Pittsburgh, PA, USA war. Er arbeitet an einer Forschungsarbeit mit seinem Professor Roger Dannenberg und sie benötigten ein Programm, das Audioanalysen bildlich sichtbar machte. Nach einiger Zeit entwickelte das Programm sich zu einem, für viele Zwecke einsetzbare, Audiobearbeitungsprogramm und andere Leute beteiligten sich an der Weiterentwicklung.
 <p>
 Heute wird das Programm mit Hilfe von Sourceforge entwickelt,
 wodurch viele Menschen über das Internet an freien Softwareprojekten zusammenarbeiten können.
@@ -281,15 +279,9 @@ Einfach probieren!
               why are the two tracks out of sync?
 </b></font>
 <p>
-This is normal and it happens because there is a small delay
-between when Audacity starts playing sound and when it actually
-reaches your speaker.  Audacity does not automatically try to
-correct for this delay, and you must do it manually.
-<p>
-To correct this delay, use the
-Time Shift tool to slide
-one of the tracks over until they line up.  Note that you can
-use the tool while you are listening to the recording.
+Das ist normal und liegt daran, daß es eine kurze Zeitverzögerung zwischen dem Abspielen der Töne im Programm und dem erreichen deiner Lautsprecher gibt (Also dem Hören). Audacity berichtigt diese kurze Zeitverzögerung nicht automatisch, daß musst du manuell machen.
+
+Um dies zu tun, benutze das "Timeshift" Modul von Audacity und verschiebe eine der beiden Spuren, bis sie synchron sind. Dies kannst du tun, während du das ganze anhörst.
 
 <p>
 
@@ -308,8 +300,46 @@ Als Kompromiss wurde die Möglichkeit, externe Encoder zu verwenden, eingebaut.
 Die Encoder müssen separat geladen werden und es liegt an Ihnen,
 ob Sie deren Lizenzbestimmungen akzepieren wollen.
 
+<a href="#a5"></a>
+<font size=+1><b>
+5. Kann man RealAudio oder anderes "gestreamte Audio" aufnehmen ?<br><p>
+</b></font>
+Eigentlich nicht. Die meiste Musik , die gestreamt wird, auch die die für den RealOne Player, Windows Media Player oder Quicktime geliefert wird, soll eigentlich verhindern, dass du diese aufnehmen kannst.
 <p>
-Für Nähere Informationen lesen Sie in unserer Online Hilfe nach.
+Aber es ist immer noch m&ouml;glich alles, was du auf deinem Computer abspielen kannst, auch aufzunehmen. Verbinde dazu nur deinen Outputkanal an der Soundkarte (in der Regel der grüne Ausgang) mit dem Line In Eingang deiner Soundkarte. Benutzte dazu ein 1/8 Inch Audio Stereo Kabel.
+<p>
+Wenn du dies so gemacht hast, kann Audacity alles aufnehmen, was abgespielt wird. Dr&uuml;cke dazu erst den Aufnahmeknopf in Audacity, danach den „Start“ Knopf in deiner Anwendung und Audacity nimmt alles auf ! (vgl. auch die n&auml;chste Frage).
+
+
+
+<p>
+<a href="#a6"></a>
+<font size=+1><b>
+6. Hilfe! Ich drücke Aufnahme, aber alles was ich bekomme ist "Stille"!</b></font>
+<br>
+<p>
+Audacity benutzt zur Aufnahme den Standard Input, der in deinem Betriebssystem festgelegt ist. Wenn man mehrere M&ouml;glichkeiten hat, Aufnahmen zu starten, kann , bei einer falschen Wahl, Audacity nur „Stille“ aufnehmen.
+Ein Beispiel: Du hast ein Mikrofon angeschlossen und hast aber im Input den Line In Eingang gew&auml;hlt. Dann kommt nichts an und Audacity kann auch nichts aufnehmen.
+<p>
+Wenn du Windows benutzt, kann du mit Rechts-Klick auf das Lautst&auml;rke-Symbol (Rechts unten) den Input-Kanal w&auml;hlen.
+<p>
+Wenn du Mac OS9 besitzt, geht dies &uuml;ber die Sound Control. Wenn du Mac OSX benutzt, gehe &uuml;ber die Sound Control in den Systemeinstellungen (Bei 10.2 oder h&ouml;her ist dies ein eigener Reiter).
+
+<p>
+<a href="#a7"></a>
+<font size=+1><b>
+7. Wie trenne ich ein Lied (Track) in verschiedene Stücke ?</b></font><br>
+<p>
+in Übersetzung
+<p>
+<a href="#a8"></a>
+<font size=+1><b>
+8. Wie bekomme ich die Lieder von einer Audio CD ?</b></font><br>
+<p>
+in Übersetzung
+<p>
+<p>
+Für nähere Informationen lesen Sie in unserer Online Hilfe nach.
 
 
 <?php BoxBottom(); ?>
