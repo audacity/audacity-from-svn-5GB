@@ -2,6 +2,7 @@
 #define PA_HOST_H
 
 /*
+ * $Id: pa_host.h,v 1.2 2002-02-11 00:25:48 dmazzoni Exp $
  * Host dependant internal API for PortAudio
  *
  * Author: Phil Burk  <philburk@softsynth.com>
@@ -37,7 +38,8 @@
  */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
 #ifndef SUPPORT_AUDIO_CAPTURE
@@ -45,16 +47,16 @@ extern "C" {
 #endif
 
 #ifndef int32
-typedef long int32;
+    typedef long int32;
 #endif
 #ifndef uint32
-typedef unsigned long uint32;
+    typedef unsigned long uint32;
 #endif
 #ifndef int16
-typedef short int16;
+    typedef short int16;
 #endif
 #ifndef uint16
-typedef unsigned short uint16;
+    typedef unsigned short uint16;
 #endif
 
 #define PA_MAGIC    (0x18273645)
@@ -62,42 +64,43 @@ typedef unsigned short uint16;
 /************************************************************************************/
 /****************** Structures ******************************************************/
 /************************************************************************************/
- 
+
 typedef struct internalPortAudioStream
 {
-	uint32                    past_Magic;  /* ID for struct to catch bugs. */
-/* User specified information. */
-	uint32                    past_FramesPerUserBuffer;
-	uint32                    past_NumUserBuffers;
-	double                    past_SampleRate;     /* Closest supported sample rate. */
-	int                       past_NumInputChannels;
-	int                       past_NumOutputChannels;
-	PaDeviceID                past_InputDeviceID;
-	PaDeviceID                past_OutputDeviceID;
-	PaSampleFormat            past_InputSampleFormat;
-	PaSampleFormat            past_OutputSampleFormat;
-	void                     *past_DeviceData;
-	PortAudioCallback        *past_Callback;
-	void                     *past_UserData;
-	uint32                    past_Flags;
-/* Flags for communicating between foreground and background. */
-	volatile int              past_IsActive;      /* Background is still playing. */
-	volatile int              past_StopSoon;      /* Background should keep playing when buffers empty. */
-	volatile int              past_StopNow;       /* Background should stop playing now. */
-/* These buffers are used when the native format does not match the user format. */
-	void                     *past_InputBuffer;
-	uint32                    past_InputBufferSize;
-	void                     *past_OutputBuffer;
-	uint32                    past_OutputBufferSize;
-/* Measurements */
-	uint32                    past_NumCallbacks;
-	PaTimestamp               past_FrameCount;    /* Frames output to buffer. */
-/* For measuring CPU utilization. */
-	double                    past_AverageInsideCount;
-	double                    past_AverageTotalCount;
-	double                    past_Usage;
-	int                       past_IfLastExitValid;
-} internalPortAudioStream;
+    uint32                    past_Magic;  /* ID for struct to catch bugs. */
+    /* User specified information. */
+    uint32                    past_FramesPerUserBuffer;
+    uint32                    past_NumUserBuffers;
+    double                    past_SampleRate;     /* Closest supported sample rate. */
+    int                       past_NumInputChannels;
+    int                       past_NumOutputChannels;
+    PaDeviceID                past_InputDeviceID;
+    PaDeviceID                past_OutputDeviceID;
+    PaSampleFormat            past_InputSampleFormat;
+    PaSampleFormat            past_OutputSampleFormat;
+    void                     *past_DeviceData;
+    PortAudioCallback        *past_Callback;
+    void                     *past_UserData;
+    uint32                    past_Flags;
+    /* Flags for communicating between foreground and background. */
+    volatile int              past_IsActive;      /* Background is still playing. */
+    volatile int              past_StopSoon;      /* Background should keep playing when buffers empty. */
+    volatile int              past_StopNow;       /* Background should stop playing now. */
+    /* These buffers are used when the native format does not match the user format. */
+    void                     *past_InputBuffer;
+    uint32                    past_InputBufferSize;
+    void                     *past_OutputBuffer;
+    uint32                    past_OutputBufferSize;
+    /* Measurements */
+    uint32                    past_NumCallbacks;
+    PaTimestamp               past_FrameCount;    /* Frames output to buffer. */
+    /* For measuring CPU utilization. */
+    double                    past_AverageInsideCount;
+    double                    past_AverageTotalCount;
+    double                    past_Usage;
+    int                       past_IfLastExitValid;
+}
+internalPortAudioStream;
 
 /************************************************************************************/
 /****************** Prototypes ******************************************************/
@@ -117,21 +120,21 @@ PaError PaHost_StartEngine( internalPortAudioStream   *past );
 PaError PaHost_StopEngine( internalPortAudioStream *past, int abort );
 PaError PaHost_StreamActive( internalPortAudioStream   *past );
 
-long Pa_CallConvertInt16( internalPortAudioStream   *past, 
-            short *nativeInputBuffer,
-            short *nativeOutputBuffer );
+long Pa_CallConvertInt16( internalPortAudioStream   *past,
+                          short *nativeInputBuffer,
+                          short *nativeOutputBuffer );
 
-long Pa_CallConvertFloat32( internalPortAudioStream   *past, 
-            float *nativeInputBuffer,
-            float *nativeOutputBuffer );
+long Pa_CallConvertFloat32( internalPortAudioStream   *past,
+                            float *nativeInputBuffer,
+                            float *nativeOutputBuffer );
 
 void   *PaHost_AllocateFastMemory( long numBytes );
 void    PaHost_FreeFastMemory( void *addr, long numBytes );
 
 PaError PaHost_ValidateSampleRate( PaDeviceID id, double requestedFrameRate,
-            double *closestFrameRatePtr );
+                                   double *closestFrameRatePtr );
 int PaHost_FindClosestTableEntry( double allowableError,  const double *rateTable,
-            int numRates, double frameRate );
+                                  int numRates, double frameRate );
 
 #ifdef __cplusplus
 }
