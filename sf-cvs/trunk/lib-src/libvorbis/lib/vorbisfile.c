@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: stdio-based convenience library for opening/seeking/decoding
- last mod: $Id: vorbisfile.c,v 1.5 2004-03-21 17:23:34 mbrubeck Exp $
+ last mod: $Id: vorbisfile.c,v 1.6 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -539,6 +539,7 @@ static int _fetch_and_process_packet(OggVorbis_File *vf,
     }
 
     if(vf->ready_state>=OPENED){
+      ogg_int64_t ret;
       if(!readp)return(0);
       if(_get_next_page(vf,&og,-1)<0)return(OV_EOF); /* eof. 
 							leave unitialized */

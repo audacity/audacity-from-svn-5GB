@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: utility functions for loading .vqh and .vqd files
- last mod: $Id: bookutil.c,v 1.4 2002-10-31 07:00:48 dmazzoni Exp $
+ last mod: $Id: bookutil.c,v 1.5 2004-11-13 17:44:43 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -446,13 +446,13 @@ void build_tree_from_lengths(int vals, long *hist, long *lengths){
     
     /* find the two nodes to join */
     for(j=0;j<vals;j++)
-      if(least==-1 || hist[j]<least){
+      if(least==-1 || hist[j]<=least){
 	least=hist[j];
 	first=membership[j];
       }
     least=-1;
     for(j=0;j<vals;j++)
-      if((least==-1 || hist[j]<least) && membership[j]!=first){
+      if((least==-1 || hist[j]<=least) && membership[j]!=first){
 	least=hist[j];
 	second=membership[j];
       }

@@ -13,9 +13,13 @@
  ********************************************************************
 
  function: #ifdef jail to whip a few platforms into the UNIX ideal.
- last mod: $Id: os.h,v 1.5 2004-03-21 17:23:34 mbrubeck Exp $
+ last mod: $Id: os.h,v 1.6 2004-11-13 17:44:40 mbrubeck Exp $
 
  ********************************************************************/
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <math.h>
 #include <ogg/os_types.h>
@@ -37,11 +41,16 @@
 #  define M_PI (3.1415926536f)
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__SYMBIAN32__)
 #  include <malloc.h>
 #  define rint(x)   (floor((x)+0.5f)) 
 #  define NO_FLOAT_MATH_LIB
 #  define FAST_HYPOT(a, b) sqrt((a)*(a) + (b)*(b))
+#endif
+
+#if defined(__SYMBIAN32__) && defined(__WINS__)
+void *_alloca(size_t size);
+#  define alloca _alloca
 #endif
 
 #ifndef FAST_HYPOT
