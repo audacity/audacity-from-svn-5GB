@@ -11,16 +11,16 @@
 
 **********************************************************************/
 
-#include "../Audacity.h"
+#include "../Audacity.h" // for USE_SOUNDTOUCH
 
 #if USE_SOUNDTOUCH
 
 #include <math.h>
 
-#include <SoundTouch.h>
-
 #include <wx/intl.h>
 #include <wx/valtext.h>
+
+#include <SoundTouch.h>
 
 #include "ChangeTempo.h"
 
@@ -64,7 +64,10 @@ bool EffectChangeTempo::PromptUser()
    dlog.m_ToBPM = m_ToBPM;
    dlog.m_FromLength = m_FromLength;
    dlog.m_ToLength = m_ToLength;
-   dlog.TransferDataToWindow();
+	//v Don't need to call TransferDataToWindow, although other 
+	//		Audacity dialogs (from which I derived this one) do it, because 
+	//		ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
+	//		which calls dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
