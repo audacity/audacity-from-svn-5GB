@@ -39,6 +39,8 @@ class MixerToolBar:public ToolBar {
    virtual void OnKeyEvent(wxKeyEvent & event);
    virtual void EnableDisableButtons();
 
+   void OnSlider(wxCommandEvent & event);
+
  private:
 
    void InitializeMixerToolBar();
