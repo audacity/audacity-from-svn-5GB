@@ -23,7 +23,7 @@ class VTrack;
 class TrackPanel;
 class TrackArtist;
 class Ruler;
-class ViewInfo;
+struct ViewInfo;
 
 class TrackPanelListener {
  public:

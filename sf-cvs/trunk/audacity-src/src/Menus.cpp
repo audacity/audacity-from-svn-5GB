@@ -230,6 +230,17 @@ int AudacityProject::GetNumCommands()
    return mCommandNames.GetCount();
 }
 
+void AudacityProject::SetCommandState(int idItem, int iVal)
+{
+   for(int i = 0; i < mCommandIDs.GetCount(); i++)
+   {
+      if(mCommandIDs[i] == (int *)idItem)
+      {
+         mCommandState[i] = (int *)iVal;
+      }
+   }
+}
+
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
@@ -242,8 +253,13 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    // titles above.
 
    mFileMenu->Enable(SaveID, mUndoManager.UnsavedChanges());
+   SetCommandState(SaveID, mUndoManager.UnsavedChanges());
+
    mEditMenu->Enable(UndoID, mUndoManager.UndoAvailable());
+   SetCommandState(UndoID, mUndoManager.UndoAvailable());
+
    mEditMenu->Enable(RedoID, mUndoManager.RedoAvailable());
+   SetCommandState(RedoID, mUndoManager.RedoAvailable());
 
    bool nonZeroRegionSelected = (mViewInfo.sel1 > mViewInfo.sel0);
 
@@ -270,6 +286,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    }
 
    mEditMenu->Enable(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
+   SetCommandState(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
    // Return from this function if nothing's changed since
    // the last time we were here.
@@ -296,28 +313,45 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
    mFileMenu->Enable(ExportMixID, numTracks > 0);
+   SetCommandState(ExportMixID, numTracks > 0);
    mFileMenu->Enable(ExportSelectionID, anySelection);
+   SetCommandState(ExportSelectionID, anySelection);
    mFileMenu->Enable(ExportLossyMixID, numTracks > 0);
+   SetCommandState(ExportLossyMixID, numTracks > 0);
    mFileMenu->Enable(ExportLossySelectionID, anySelection);
+   SetCommandState(ExportLossySelectionID, anySelection);
    mFileMenu->Enable(ExportLabelsID, numLabelTracks > 0);
+   SetCommandState(ExportLabelsID, numLabelTracks > 0);
 
    mEditMenu->Enable(CutID, anySelection);
+   SetCommandState(CutID, anySelection);
    mEditMenu->Enable(CopyID, anySelection);
+   SetCommandState(CopyID, anySelection);
    mEditMenu->Enable(DeleteID, anySelection);
+   SetCommandState(DeleteID, anySelection);
    mEditMenu->Enable(SilenceID, anySelection);
+   SetCommandState(SilenceID, anySelection);
    mEditMenu->Enable(InsertSilenceID, numTracksSelected > 0);
+   SetCommandState(InsertSilenceID, numTracksSelected > 0);
    mEditMenu->Enable(SplitID, anySelection);
+   SetCommandState(SplitID, anySelection);
    mEditMenu->Enable(DuplicateID, anySelection);
+   SetCommandState(DuplicateID, anySelection);
    mEditMenu->Enable(SelectAllID, numTracks > 0);
+   SetCommandState(SelectAllID, numTracks > 0);
 
-   mViewMenu->Enable(PlotSpectrumID,
-                     numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mViewMenu->Enable(PlotSpectrumID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   SetCommandState(PlotSpectrumID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
 
    mProjectMenu->Enable(QuickMixID, numWaveTracksSelected > 1);
+   SetCommandState(QuickMixID, numWaveTracksSelected > 1);
 
    mProjectMenu->Enable(AlignID, numTracksSelected > 1);
+   SetCommandState(AlignID, numTracksSelected > 1);
    mProjectMenu->Enable(AlignZeroID, numTracksSelected > 0);
+   SetCommandState(AlignZeroID, numTracksSelected > 0);
    mProjectMenu->Enable(RemoveTracksID, numTracksSelected > 0);
+   SetCommandState(RemoveTracksID, numTracksSelected > 0);
 
    int e;
    for (e = 0; e < Effect::GetNumEffects(false); e++) {

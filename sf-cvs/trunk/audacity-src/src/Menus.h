@@ -53,6 +53,8 @@ wxString &GetCommandDesc(int nIndex);
 wxObjectEventFunction &GetCommandFunc(int nIndex);
 int GetNumCommands();
 
+void SetCommandState(int idItem, int iVal);
+
 void OnUpdateMenus(wxUpdateUIEvent & event);
 
 // Generic menu handler

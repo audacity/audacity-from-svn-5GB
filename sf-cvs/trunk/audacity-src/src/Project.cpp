@@ -344,6 +344,7 @@ AudacityProject::~AudacityProject()
    }
    mCommandFunctions.Clear();
    mCommandIDs.Clear();
+   mCommandState.Clear();
 
    gAudacityProjects.Remove(this);
 
