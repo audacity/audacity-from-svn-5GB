@@ -1426,7 +1426,7 @@ void AudacityProject::OnBenchmark(wxEvent & event)
 
 //
 
-void AudacityProject::OnSeperator(wxEvent & event)
+void AudacityProject::OnSeparator(wxEvent & event)
 {
 
 }

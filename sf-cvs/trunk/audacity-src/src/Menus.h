@@ -154,6 +154,6 @@ void OnBenchmark(wxEvent & event);
 
        //
 
-void OnSeperator(wxEvent & event);
+void OnSeparator(wxEvent & event);
 
 #endif
