@@ -1,5 +1,5 @@
 /* XPM */
-static const char * AudacityLogo[] = {
+static const char * AudacityLogo_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "215 190 256 2",
 "   c #010207",

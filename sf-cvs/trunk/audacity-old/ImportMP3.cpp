@@ -20,6 +20,7 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
+#ifndef USE_name_of_mp3_lib
 #ifdef __WXGTK__
 #include "xaudio/linux/include/decoder.h"
 #include "xaudio/linux/include/mpeg_codec.h"
@@ -36,6 +37,7 @@
 #include "xaudio/mac/include/mpeg_codec.h"
 #include "xaudio/mac/include/file_input.h"
 #endif
+#endif
 
 bool ImportMP3(wxWindow *parent,
 			   wxString fName, WaveTrack **left, WaveTrack **right, 
@@ -45,6 +47,12 @@ bool ImportMP3(wxWindow *parent,
 #ifdef __FreeBSD__
   return false;
 #else
+
+#ifdef USE_name_of_mp3_lib
+  /* Dominic: put your free-mp3-library code here
+   * also, s/name_of_mp3_lib/LIBWHATEVER/g for the defines */
+#else
+  /* Use XAUDIO */
   wxBusyCursor wait;
 
   XA_DecoderInfo *decoder;
@@ -217,6 +225,8 @@ bool ImportMP3(wxWindow *parent,
   }
 
   return true;
-#endif
+#else /* USE_FREE_MP3_LIB */	
+
+#endif /* __FREEBSD__
 }
 

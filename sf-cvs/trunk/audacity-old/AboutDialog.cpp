@@ -89,7 +89,7 @@ AboutDialog::AboutDialog(wxWindow *parent)
   ok->SetFocus();
   #endif
 	
-  logo = new wxBitmap((const char **)AudacityLogo);
+  logo = new wxBitmap((const char **)AudacityLogo_xpm);
 
   icon =
 	  new wxStaticBitmap(panel, -1, *logo, wxPoint(93, 30), wxSize(215, 190));

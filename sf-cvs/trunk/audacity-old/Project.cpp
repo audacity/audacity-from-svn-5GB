@@ -73,6 +73,10 @@ const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 #endif
 
+#if defined(__WXGTK__) || defined(__WXMOTIF__)
+#include "xpm/AudacityLogo.xpm"
+#endif
+
 int gAudacityDocNum = 0;
 AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
@@ -273,6 +277,14 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 
   InitialState();
   FixScrollbars();
+
+  //
+  // Set the Icon
+  //
+
+  // loads either the XPM or the windows resource, depending on the platform
+  wxIcon ic(wxICON(AudacityLogo)); 
+  SetIcon(ic);
 
   // Min size, max size
   SetSizeHints(250,200,20000,20000);
