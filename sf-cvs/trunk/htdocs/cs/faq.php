@@ -162,195 +162,129 @@ Audacity není tøeba instalovat. Prostì pøetáhnìte adresáø Audacity do svého adre
 <a name="a1"></a>
 <font size=+1><b>
 
-1. How do I mix two tracks together?
+1. Jak mám namixovat dvì stopy dohromady?
 </b></font>
 <p>
 
-Audacity mixes automatically.  All you have to do is
-import two tracks into the same project, which you can
-do using the "Import Audio" command in the Project
-menu, or simply by dragging the two audio files to
-Audacity.  When you press the record button, Audacity
-generates a new track automatically, also.
+Audacity mixuje automaticky. Všechno co musíte udìlat je naimportovat dvì stopy do stejného projektu, co dosáhnete s pomocí pøíkazu "Importovat Audio" v menu Projekt, nebo jednoduše pøetaením dvou audio souborù do Audacity. Audacity automaticky generuje novou stopu také pokud stisknete nahrávací tlaèítko (Record).
 
 <p>
 
-In order to save your mix, you can either Export the
-project, which will automatically mix all of your
-tracks together, or you can select your tracks and
-use the "Quick Mix" command in the Project menu.
+Pokud jde o to jak namixované dílo uloit, mùete buï vyexportovat celı projekt, èím automaticky smixujete všechny stopy dohromady, nebo mùete oznaèit stopy a pouít pøíkaz "Rychlı mix (Quick Mix)" z mìnu Projekt.
 
 <p>
 <a name="a2"></a>
 <font size=+1><b>
-2. Can I remove the vocals from a recording?
+2. Dá se z nahrávky odstranit zpìv/hlas?
 </b></font>
 <p>
 
-With some stereo recordings, it is possible to remove the vocals
-because of the way in which the recording was mixed at the studio.
-Often, the vocals are placed in the exact center of the recording,
-while all other instruments are slightly off-center.  If you
-subtract the right channel from the left channel, the vocals get
-completely canceled out, leaving only the other instruments.
+U nìkterıch stereo nahrávek je to moné díky zpùsobu jakım je nahrávka mixována ve studiu. Vokály jsou èasto umístìny pøesnì ve støedu, zatímco hudební nástroje jsou trochu mimo støed. Jestlie odeètete pravı kanál od levého, vokály se zcela vzájemnì vyruší a zùstanou jen ostatní nástroje.
 <p>
 
-<b>This only works on some recordings!</b>
+<b>Funguje to jen u nìkterıch nahrávek!</b>
 <p>
-To attempt this in Audacity, import a stereo recording, then
-click on the track pop-up menu (the little down-arrow next to
-the name of the track) and select "Split Stereo Track".
-Now select the lower track (the right channel) and use the
-"Invert" effect (from the Effect menu).  Finally, use the
-track pop-up menus to make both channels Mono channels,
-and then mix them together using Quick Mix.  If you're lucky,
-the vocals will be gone.
+Jestlie to chcete zkusit v Audacity, naimportujte stereo nahrávku, potom kliknìte na pop-up menu stopy (malá šipka dolù vedle jména stopy) a zvolte "Oddìlit stereo stopy". Nyní vyberte niší stopu (pravı kanál) a pouijte efekt "Invertovat" (z menu Efekty). Nakonec pomocí pop-up menu náleejících ke stopám udìlejte z obou kanálù Mono kanály a smixujte je dohromady s pouitím Rychlého Mixu. Kdy budete mít štìstí, vokály budou pryè.<p>
 
-<p>
 <a name="a3"></a>
 <font size=+1><b>
-3. When I try to record harmonies with myself,
-              why are the two tracks out of sync?
+3.  Kdy zkusím nahrát svùj vlastní druhı hlas (harmonii), stopy nejsou synchronní. Proè?
 </b></font>
 <p>
-This is normal and it happens because there is a small delay
-between when Audacity starts playing sound and when it actually
-reaches your speaker.  Audacity does not automatically try to
-correct for this delay, and you must do it manually.
+To je normální a stává se to proto, e mezi okamikem kdy Audacity zaène pøehrávat a okamikem kdy zvuk skuteènì dosáhne vašeho reproduktoru vznikne malá prodleva. Audacity ji nezkouší automaticky opravovat, take to musíte udìlat ruènì.
 <p>
-To correct this delay, use the
-Time Shift tool to slide
-one of the tracks over until they line up.  Note that you can
-use the tool while you are listening to the recording.
-
+K opravì této prodlevy, pouijte nástroj "Èasovı posun" (Time Shift). Posouvejte jednu ze stop, dokud nebudou v souladu. Nástroj mùete pouívat a souèasnì poslouchat nahrávku.
 <p>
 
 <a name="a4"></a>
 <font size=+1><b>
-4. Why doesn't Audacity ship with an MP3 encoder?
+4.  Proè Audacity neobsahuje MP3 encoder?
 </b></font>
 <p>
-
-Unfortunately, the algorithm to encode or create MP3 files
-is patented, and <b>Audacity</b> would not be able to
-include an MP3 exporting algorithm without either
-charging a fee or violating the law in many countries.
+Naneštìstí je algoritmus kódování nebo vytváøení MP3 souborù patentován, a Audacity nebude moci obsahovat algoritmus pro export do MP3 bez toho aby buï byly zaplaceny poplatky nebo byl porušen zákon v mnoha zemích.
 <p>
-As a compromise, Audacity comes with the ability to use
-other MP3 encoders, which you must download separately.
-It is up to you to make sure you are in compliance with
-any licensing restrictions imposed by MP3 encoders.
+Coby s kompromisním øešením Audacity pøichází se schopností pouívat vnìjší MP3 enkodéry, které musíte stáhnout zvláš. Je na vás, abyste se ujistili, e jste v souladu s licenèními omezeními, která MP3 enkodéry vyadují.
 <p>
-For more information, see the page on Exporting MP3 files in
-our Online Help.
-
-<p>
+Další informace získáte na stránce Export do souborù MP3 v naší on-line nápovìdì.<p>
 
 
 
 <a name="a5"></a>
 <font size=+1><b>
-5. Can I record RealAudio or other streaming audio?
+5. Mùu nahrávat RealAudio nebo jiné streamované audio?
 </b></font>
 </p><p>
 
-Not automatically.  Most streaming audio, including most music delivered to
-the RealOne Player, Windows Media Player, and Quicktime, is specifically
-designed to prevent you from recording it.
+Automaticky ne. Vìtšina streamovaného audia, vèetnì vìtšiny hudby dodávané do programù RealOne Player, Windows Media Player, a Quicktime, je zvláš upravena aby se zabránilo nahrávání.
 </p><p>
-Still, it's almost always still possible to record anything your computer
-can play by looping your sound-out jack to your sound-in/microphone jack
-on your computer's sound card.
+Stále je však monost nahrát cokoliv, co váš poèítaè mùe pøehrát pomocí smyèky z vıstupu vaší zvukové karty do jejího vstupu (konektory jack vzadu na poèítaèi).
 </p><p>
-Use a 1/8 inch stereo mini to 1/8 inch stereo mini cable.  Connect one end
-to the sound-out jack on your computer or sound card (where you would
-plug speakers or headphones - it's often colored green).  Connect the other
-end to the microphone or line-in jack (it's often colored red).
+Pouijte stereo kabel se dvìma 3,5 mm jacky. Jeden konec zapojte do vıstupu zvukové karty (kam pøipojujete reproduktory nebo sluchátka - èasto má zelenou barvu). Druhı konec zapojte do mikrofonního nebo linkového (line-in) vstupu (èasto bıvá èervenı).
 </p><p>
-Now Audacity can record anything your computer plays.  Press Record
-in Audacity, and then press Play in your streaming audio program.
+Teï Audacity mùe nahrávat cokoliv, co váš poèítaè pøehrává. V Audacity stisknìte nahrávání (Record) a v programu, kterım pøehráváte streamované audio stisknìte pøehrávání (Play).
 </p><p>
 
 <a name="a6"></a>
 <font size=+1><b>
-6. Help! I press Record, but all I get is silence!
+6. Pomoc! Maèkám Record, ale nenahraju nic ne ticho!
 </b></font>
 </p><p>
-Audacity records from the default input source that is selected by
-your operating system.  If you have multiple input sources (such as
-a built-in microphone, an external microphone, line-in jack, or an
-audio CD) you have to select one of these to record from.  If you are
-trying to record from a microphone, for example, but your input source
-is set to "line in", then Audacity will just record silence.
+Audacity nahrává z pøedvoleného zdroje, kterı je nastaven vaším operaèním systémem. Jestlie máte více zdrojù vstupu (jako napø. vestavìnı mikrofon, externí mikrofon, lineární vstup (jack) nebo audio CD), musíte zvolit, ze kterého se má nahrávat. Pokud se napøíklad pokoušíte nahrávat z mikrofonu, ale jako vstupní zdroj je zvolen lineární vstup (line-in), Audacity prostì nahraje ticho.
 </p><p>
-If you use Windows, you can set the input source by right-clicking
-on the volume icon in your tool tray (in the lower-right corner of
-your screen).
+Pouíváte-li Windows, mùete zdroj vstupu nastavit kliknutím pravım myšítkem na ikonì hlasitosti v pravém dolním rohu obrazovky (system tray).
 </p><p>
-If you use Mac OS 9, use the Sound control panel.  On Mac OS X, use
-the Sound panel in the System Preferences (there's an Input tab if you
-have 10.2 or higher).
+Pouíváte-li Mac OS 9, pouijte Sound control panel. V Mac OS X pouijte Sound panel v System Preferences (pokud pouíváte 10.2 nebo vyší, je tam tabulka vstupù).
 </p><p>
-On Linux, use a mixer like "xmixer" or "kmix".
+Na Linuxu pouijte nìjakı mixer, jako je "xmixer" nebo "kmix".
 </p><p>
 
 <a name="a7"></a>
 <font size=+1><b>
-7. How do I split a single file into multiple tracks?
+7. Jak rozdìlím jeden soubor do více stop?
 </b></font>
 </p><p>
-Sometimes you might end up with a recording of multiple songs that are
-in a single file.  If you want to burn these songs onto a CD as separate
-tracks, you need to create a separate file for each song.
+Nìkdy se mùe stát, e máte jen jeden velkı soubor, ve kterém je uloeno více skladeb. Pokud tyto skladby chcete vypálit na CD jako oddìlené stopy, musíte pro kadou vytvoøit samostatnı soubor.
 </p><p>
-There are lots of ways to split a recording into multiple tracks using
-Audacity.  Here are a few methods you can try:
+Je mnoho zpùsobù jak s Audacity rozdìlit nahrávku na více èástí. Tady je nìkolik metod, které mùete vyzkoušet:
 </p><p>
-Method 1: Export Selection
+Metoda 1: Exportovat vıbìr
 </p><ul>
-<li>Select the region of audio corresponding to the first track.
-</li><li>Choose "Export Selection as WAV" from the File menu, and save it to
-    disk.
-</li><li>Continue for all remaining tracks.
+<li>Vyberte èást audia, která odpovídá první stopì.
+</li><li>Zvolte "Exportovat vıbìr jako WAV" z menu Soubor a ulote na disk.
+</li><li>Postup zopakujte pro všechny zbıvající stopy.
 </li></ul>
 <p>
-Method 2: Delete and Undo
+Metoda 2: Smazat a vrátit
 </p><ul>
-<li>Delete everything <i>except</i> for the first track.
-</li><li>Choose "Export as WAV" from the File menu, and save the first track
-    to disk.
-</li><li>Select "Undo" from the Edit menu.  Keep undo-ing until you have the rest
-    of your audio back.  (Audacity has unlimited undo.)
-</li><li>Continue for all remaining tracks.
+<li>Smate všechno <i>kromì</i> první stopy.
+</li><li>Zvolte "Exportovat jako WAV" z menu Soubor a ulote první stopu na disk.
+</li><li>Zvolte "Zpìt" z menu Úpravy. Pomocí této funkce vracejte úpravy tak dlouho, dokud zase nebudete mít zbytek své nahrávky zpìt. (Audacity poèet vrácenıch kroku nijak neomezuje.)
+</li><li>Postup zopakujte pro všechny zbıvající stopy.
 </li></ul>
 <p>
-Method 3: Split and Export
+Metoda 3: Rozdìlit a exportovat
 </p><ul>
-<li>Select what you would like to be the first track.
-</li><li>Choose "Split" from the Edit menu, which moves the selection into
-    a separate track within Audacity.
-</li><li>Keep doing this until all of the songs are in separate tracks.
-    Don't forget that you can Undo at any point if you make a mistake.
-</li><li>Now go back through and use "Export Selection as WAV" to export each
-    track to a separate file.  To quickly select each track, click on its
-    label (anywhere in the area to the left of the waveform, underneath
-    the title).
+<li>Vyberte to co má podle vás bıt první stopou.
+</li><li>Zvolte "Rozdìlit" z menu Úpravy, co pøesune vıbìr do zvláštní stopy uvnitø Audacity.
+</li><li>Provádìjte toté, dokud všechny skladby nejsou v oddìlenıch stopách. Nezapomeòte, e pokud udìláte nìjakou chybu, mùete jakıkoliv krok vrátit zpìt.
+</li><li>Nyní se vrate zpìt a pomocí funce "Exportovat jako WAV" ukládejte kadou stopu do zvláštního souboru. Stopy lze rychle vybírat kliknutím na jejich jmenovku (kamkoliv pod titulek nalevo od grafické køivky).
 </li></ul>
 <p>
 
 <a name="a8"></a>
 <font size=+1><b>
-8. How do I get songs from an audio CD?
+8. Jak mám dostat skladby z audio CD?
 </b></font>
 </p><p>
-Audacity does not extract songs from audio CDs.  You need to use a
-"ripper" program for this.
+Audacity neextrahuje skladby z audio CD. K tomu musíte pouít program zvanı "ripper".
 </p><p>
-For Windows, we recommend <a href="http://cdexos.sourceforge.net/">CDex</a>.
+Pro Windows doporuèujeme <a href="http://cdexos.sourceforge.net/">CDex</a>.
 </p><p>
-For Mac OS (9 and X), we recommend Apple's <a href="http://www.apple.com/itunes/">iTunes</a>.
+Pro Mac OS (9 a X), doporuèujeme <a href="http://www.apple.com/itunes/">iTunes</a> od Apple.
 </p><p>
-For Linux, try <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
+V Linuxu mùete zkusit program <a href="http://www.xiph.org/paranoia/">Paranoia</a>.<br>
+<!-- Translators note: -->
+(Pozn. pøekladatele: Nebo grafickı <a href="http://www.nostatic.org/grip/">GRIP</a>.)</p>
 
 <?php BoxBottom(); ?>
 
