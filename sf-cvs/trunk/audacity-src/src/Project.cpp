@@ -324,6 +324,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   int i;
+
    if (gAudioIO->IsBusy() && gAudioIO->GetProject()==this)
       gAudioIO->HardStop();
 
@@ -338,13 +340,23 @@ AudacityProject::~AudacityProject()
    mCommandDesc.Clear();
    WX_CLEAR_ARRAY(mCommandNames)
    mCommandNames.Clear();
-   for(int i = 1; i <= mCommandFunctions.GetCount(); i++)
+   for(i = 1; i <= mCommandFunctions.GetCount(); i++)
    {
       free(mCommandFunctions[i-1]);
    }
    mCommandFunctions.Clear();
    mCommandIDs.Clear();
    mCommandState.Clear();
+   for(i = 1; i <= mCommandUsedKey.GetCount(); i++)
+   {
+      free(mCommandUsedKey[i-1]);
+   }
+   mCommandUsedKey.Clear();
+   for(i = 1; i <= mCommandAssignedKey.GetCount(); i++)
+   {
+      free(mCommandAssignedKey[i-1]);
+   }
+   mCommandAssignedKey.Clear();
 
    gAudacityProjects.Remove(this);
 
