@@ -43,7 +43,7 @@ Lembre-se sempre de dizer a maior quantidade possível de informações sobre o seu
 
 <li><b>Teste versões beta</b>
 <p>
-Junto a versão final do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa.
+Junto à versão estável do Audacity, sempre há uma versão beta, que traz novos recursos que estão sendo testados e serão adicionados em versões futuras do programa.
 Teste esta versão e diga-nos o que pareceu interessante, o que funcionou, o que ainda precisa ser ajustado, etc.
 <p>
 

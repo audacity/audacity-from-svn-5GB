@@ -22,11 +22,9 @@ Instalação:<br>
 
 <a href="#i1">Windows: O que faço com o arquivo .EXE?</a><br>
 <a href="#i2">Windows: Como desinstalar o Audacity?</a><br>
-<a href="#i3">Mac: O que faço com o arquivo .SIT?</a><br>
+<a href="#i3">Mac Classic: O que faço com o arquivo .SIT?</a><br>
 <a href="#i4">Unix: Problemas com dependências de RPM ao instalar</a><br>
-<a href="#i5">Unix: Problemas ao carregar a biblioteca compartilhada 
-
-libwx_gtk.so?</a><br>
+<a href="#i5">Unix: Problemas ao carregar a biblioteca compartilhada libwx_gtk.so?</a><br>
 
 <p>
 
@@ -37,12 +35,10 @@ Uso do Audacity:<br>
 <a href="#a3">When I try to record harmonies with myself,
               why are the two tracks out of sync? (Tradução Pendente)</a><br>
 <a href="#a4">Por que o Audacity não salva arquivos em formato MP3?</a><br>
-<a href="#a5">É possível salvar arquivos do RealAudio ou outros formatos de Fluxo 
-
-Contínuo?</a><br>
+<a href="#a5">É possível salvar arquivos do RealAudio ou outros formatos de Fluxo Contínuo?</a><br>
 <a href="#a6">Clicando "Gravar" nenhum som é gravado!</a><br>
 <a href="#a7">Como transformar um único som em diversas faixas?</a><br>
-<a href="#a8">Como gravar sons de um CD?</a><br>
+<a href="#a8">Como captar e gravar sons de um CD?</a><br>
 
 <p>
 
@@ -450,9 +446,7 @@ parte, conhecido por "Ripper".
 </p><p>
 Para Windows, recomendamos o <a href="http://cdexos.sourceforge.net/">CDex</a>.
 </p><p>
-Para Mac OS (9 e X), recomendamos o Apple <a 
-
-href="http://www.apple.com/itunes/">iTunes</a>.
+Para Mac OS (9 e X), recomendamos o Apple <a href="http://www.apple.com/itunes/">iTunes</a>.
 </p><p>
 Para Linux, tente o <a href="http://www.xiph.org/paranoia/">Paranoia</a>.
 

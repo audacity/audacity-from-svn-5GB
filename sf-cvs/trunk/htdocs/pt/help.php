@@ -48,7 +48,8 @@ Os caminhos para conseguir ajuda são:
   <b>4. Ler a Guia de Referência Rápida do Audacity 1.2:</b>
 <blockquote>
 <p> A Guia de Referência Rápida explica os recursos do programa um a um,
-de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique aqui e leia a Guia.</a>
+de maneira simples e objetiva: <p><a href="onlinehelp-1.2/contents.htm">Clique aqui e leia a Guia.</a> <a href="onlinehelp-1.2/reference.html">(Versão para impressão)</a>
+
 
 </blockquote>
   <p><p><br><b>5. Copiar o manual do usuário</b>
