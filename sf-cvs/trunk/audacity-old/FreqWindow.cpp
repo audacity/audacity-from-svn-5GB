@@ -123,13 +123,15 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
   mCloseButton->SetFocus();							  
   #endif
 
-  wxString algChoiceStrings[2] = {"Spectrum",
+  wxString algChoiceStrings[4] = {"Spectrum",
+								  "Autocorrelation",
+								  "Enhanced Autocor.",
 								  "Cepstrum"};
   
   mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
 							wxPoint(10, 260),
 							wxSize(160, 20),
-							2, algChoiceStrings);
+							4, algChoiceStrings);
 
   mAlgChoice->SetSelection(0);
 
@@ -405,7 +407,7 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
 	bin1 = freq1 * mRate;
   }
   binwidth = bin1-bin0;
-  
+
   float value = 0.0;
   
   if (binwidth < 1.0) {
@@ -413,14 +415,15 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
 	int ibin = int(binmid) - 1;
 	if (ibin < 1)
 	  ibin = 1;
-	if (ibin >= mWindowSize/2 - 3)
-	  ibin = mWindowSize/2 - 4;
+	if (ibin >= mProcessedSize - 3)
+	  ibin = mProcessedSize - 4;
 	
 	value = CubicInterpolate(mProcessed[ibin],
 							 mProcessed[ibin+1],
 							 mProcessed[ibin+2],
 							 mProcessed[ibin+3],
 							 binmid - ibin);
+
   }
   else {
 	if (int(bin1) > int(bin0))
@@ -434,7 +437,7 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
 	
 	value /= binwidth;
   }
-  
+
   return value;
 }
 
@@ -483,9 +486,7 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	return;
   }
   
-  const int topDB = 10;
-  const int bottomDB = -80;
-  int totalDB = (topDB - bottomDB);
+  float yTotal = (mYMax - mYMin);
 
   int alg = mAlgChoice->GetSelection();
 
@@ -503,8 +504,8 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
   // Draw y axis and gridlines
 
   if (alg==0) {
-	for(i=bottomDB; i<=topDB; i+=10) {
-	  int y = r.y + r.height - 1 - (i - bottomDB)*(r.height-1)/totalDB;
+	for(i=(int)mYMin; i<=(int)mYMax; i+=mYStep) {
+	  int y = r.y + r.height - 1 - (i - mYMin)*(r.height-1)/yTotal;
 	  
 	  // Light blue gridline
 	  memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
@@ -514,7 +515,7 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	  memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
 	  memDC.DrawLine(mInfoRect.x, y, r.x, y);
 	  
-	  if (i != bottomDB) {
+	  if (i != (int)mYMin) {
 		wxString label = wxString::Format("%d dB", i);
 		long labelWidth, labelHeight;
 		memDC.GetTextExtent(label, &labelWidth, &labelHeight);
@@ -524,53 +525,75 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 	}
   }
   else {
-	int y = r.y + r.height/2;
-
-	// Light blue gridline
-	memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
-	memDC.DrawLine(r.x, y, r.x + r.width, y);
-	
-	// Pure blue axis line
-	memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
-	memDC.DrawLine(mInfoRect.x, y, r.x, y);
-
-	wxString label = "0.0";
+	wxString label;
 	long labelWidth, labelHeight;
+
+	if (fabs(mYMax) < 1.0)
+	  label.Printf("%.3f", mYMax);
+	else
+	  label.Printf("%.1f", mYMax);
 	memDC.GetTextExtent(label, &labelWidth, &labelHeight);
 	memDC.DrawText(label, 
-				   r.x - labelWidth - 2, y+1);
+				   r.x - labelWidth - 2, r.y + 2);
+
+	if (fabs(mYMin) < 1.0)
+	  label.Printf("%.3f", mYMin);
+	else
+	  label.Printf("%.1f", mYMin);
+	memDC.GetTextExtent(label, &labelWidth, &labelHeight);
+	memDC.DrawText(label, 
+				   r.x - labelWidth - 2, r.y + r.height - labelHeight-2);
+
+	if (mYMax > 0.0 && mYMin < 0.0) {
+	  int y = int((mYMax / (mYMax - mYMin))*r.height);
+	  
+	  if (y > labelHeight+4 && y < r.height-2*labelHeight-4) {
+		label = "0.0";
+		memDC.GetTextExtent(label, &labelWidth, &labelHeight);
+		memDC.DrawText(label, 
+					   r.x - labelWidth - 2, r.y + y - labelHeight);
+
+		// Light blue gridline
+		memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
+		memDC.DrawLine(r.x, r.y + y, r.x + r.width, r.y + y);
+		
+		// Pure blue axis line
+		memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
+		memDC.DrawLine(mInfoRect.x, r.y + y, r.x, r.y + y);
+	  }
+	}
   }
   
   // Draw x axis and gridlines
   
   int width = r.width-2;
 
-  float min_freq, max_freq, ratio, freq, last, freq_step;
+  float xMin, xMax, xPos, xRatio, xLast, xStep;
 
   if (alg==0) {  
-	min_freq = mRate/mWindowSize;
-	max_freq = mRate/2;
-	ratio = max_freq / min_freq;
-	freq = min_freq;
-	last = freq/2.0;
+	xMin = mRate/mWindowSize;
+	xMax = mRate/2;
+	xRatio = xMax / xMin;
+	xPos = xMin;
+	xLast = xPos/2.0;
 	if (mLogAxis)
-	  freq_step = pow(2.0, (log(ratio)/log(2)) / width);
+	  xStep = pow(2.0, (log(xRatio)/log(2)) / width);
 	else
-	  freq_step = (max_freq - min_freq) / width;
+	  xStep = (xMax - xMin) / width;
   }
   else {
-	min_freq = 0;
-	max_freq = mWindowSize/mRate;
-	freq = min_freq;
-	last = freq/2.0;
-	freq_step = (max_freq - min_freq) / width;
+	xMin = 0;
+	xMax = mProcessedSize/mRate;
+	xPos = xMin;
+	xLast = xPos/2.0;
+	xStep = (xMax - xMin) / width;
   }
   
   int nextx = 0;
 
   for(i=0; i<width; i++) {
         
-	if ((mLogAxis && freq / last >= 2.0) ||
+	if ((mLogAxis && xPos / xLast >= 2.0) ||
 		(!mLogAxis && (i%60)==0)) {
 	  int x = i + 1;
         
@@ -588,13 +611,13 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
         	
 		wxString label;
 		if (alg==0) {
-		  if (freq < 950.0)
-			label = wxString::Format("%dHz", int(freq+0.5));
+		  if (xPos < 950.0)
+			label = wxString::Format("%dHz", int(xPos+0.5));
 		  else
-			label = wxString::Format("%dKHz", int((freq/1000.0)+0.5));
+			label = wxString::Format("%dKHz", int((xPos/1000.0)+0.5));
 		}
 		else
-		  label = wxString::Format("%.4f s", freq);
+		  label = wxString::Format("%.4f s", xPos);
 		long labelWidth, labelHeight;
 		memDC.GetTextExtent(label, &labelWidth, &labelHeight);
 		if (x + labelWidth < width)
@@ -603,13 +626,13 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 		nextx = x + labelWidth + 4;
 	  }
 
-	  last *= 2.0;
+	  xLast *= 2.0;
 	}
     
 	if (mLogAxis)
-	  freq *= freq_step;
+	  xPos *= xStep;
 	else
-	  freq += freq_step;
+	  xPos += xStep;
   }
 
   // Draw the plot
@@ -619,22 +642,17 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
   else
 	memDC.SetPen(wxPen(wxColour(200,50,150),1,wxSOLID));
 
-  freq = min_freq;
+  xPos = xMin;
 
   for(i=0; i<width; i++) {
     float y;
     
     if (mLogAxis)
-      y = GetProcessedValue(freq, freq*freq_step);
+      y = GetProcessedValue(xPos, xPos*xStep);
     else
-      y = GetProcessedValue(freq, freq+freq_step);
+      y = GetProcessedValue(xPos, xPos+xStep);
     
-    float ynorm;
-
-	if (alg==0)
-	  ynorm = (y - bottomDB) / totalDB;
-	else
-	  ynorm = (y + 30.0) / 60.0;
+    float ynorm = (y - mYMin) / yTotal;
 
 	int lineheight = int(ynorm * (r.height-1));
 
@@ -646,9 +664,9 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 				  r.x + 1 + i, r.y + r.height - 1);
     
     if (mLogAxis)
-      freq *= freq_step;
+      xPos *= xStep;
     else
-      freq += freq_step;
+      xPos += xStep;
   }
   
   // Find the peak nearest the cursor and plot it
@@ -656,9 +674,9 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
   float bestpeak = 0.0;
   if (r.Inside(mMouseX, mMouseY)) {
     if (mLogAxis)
-      freq = min_freq * pow(freq_step, mMouseX - (r.x + 1));
+      xPos = xMin * pow(xStep, mMouseX - (r.x + 1));
     else
-      freq = min_freq + freq_step * (mMouseX - (r.x + 1));
+      xPos = xMin + xStep * (mMouseX - (r.x + 1));
  
     bool up = (mProcessed[1] > mProcessed[0]);
     float bestdist = 1000000;
@@ -673,22 +691,28 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
                                             mProcessed[leftbin+1],
                                             mProcessed[leftbin+2],
                                             mProcessed[leftbin+3]);
-        float thispeak = max * mRate / mWindowSize;
-        if (fabs(thispeak - freq) < bestdist) {
-          bestpeak = thispeak;
-          bestdist = fabs(thispeak - freq);
-          if (thispeak > freq)
-            break;
-        }
+
+		float thispeak;
+		if (alg==0)
+		  thispeak = max * mRate / mWindowSize;
+		else
+		  thispeak = max / mRate;
+
+		if (fabs(thispeak - xPos) < bestdist) {
+		  bestpeak = thispeak;
+		  bestdist = fabs(thispeak - xPos);
+		  if (thispeak > xPos)
+			break;
+		}
       }
       up = nowUp;
     }
 
     int px;
     if (mLogAxis)
-      px = int(log(bestpeak/min_freq)/log(freq_step));
+      px = int(log(bestpeak/xMin)/log(xStep));
     else
-      px = int((bestpeak-min_freq)*width/(max_freq-min_freq));
+      px = int((bestpeak-xMin)*width/(xMax-xMin));
     
     memDC.SetPen(wxPen(wxColour(200,0,0),1,wxSOLID));
     memDC.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
@@ -720,20 +744,41 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
     float value;
     
     if (mLogAxis) {
-      freq = min_freq * pow(freq_step, mMouseX - (r.x + 1));
-      value = GetProcessedValue(freq, freq * freq_step);
+      xPos = xMin * pow(xStep, mMouseX - (r.x + 1));
+      value = GetProcessedValue(xPos, xPos * xStep);
     }
     else {
-      freq = min_freq + freq_step * (mMouseX - (r.x + 1));
-      value = GetProcessedValue(freq, freq + freq_step);
+      xPos = xMin + xStep * (mMouseX - (r.x + 1));
+      value = GetProcessedValue(xPos, xPos + xStep);
     }
 
-	int bestpitch = int(Freq2Pitch(bestpeak)+0.5);
-    
-    wxString info = wxString::Format("%d Hz: %d dB    Peak: %d Hz (%s)",
-                                      int(freq+0.5), int(value+0.5),
-                                      int(bestpeak+0.5),
-                                      PitchName(bestpitch, false));
+	wxString info;
+
+	if (alg==0) {
+	  wxString xpitch = PitchName(int(Freq2Pitch(xPos)+0.5), false);
+	  wxString peakpitch = PitchName(int(Freq2Pitch(bestpeak)+0.5), false);
+	  info.Printf("Cursor: freq=%d Hz (%s), magnitude=%d dB    "
+				  "Peak: freq=%d Hz (%s)",
+				  int(xPos+0.5),
+				  (const char *)xpitch,
+				  int(value+0.5),
+				  int(bestpeak+0.5),
+				  (const char *)peakpitch);
+	}
+	else if (xPos > 0.0 && bestpeak > 0.0) {
+	  wxString xpitch = PitchName(int(Freq2Pitch(1.0/xPos)+0.5), false);
+	  wxString peakpitch = PitchName(int(Freq2Pitch(1.0/bestpeak)+0.5), false);
+	  info.Printf("Cursor: lag=%.4f sec, freq=%d Hz (%s), magnitude=%f    "
+				  "Peak: lag=%.4f sec, freq= %d Hz (%s)",
+				  xPos,
+				  int(1.0/xPos + 0.5),
+				  (const char *)xpitch,
+				  value,
+				  bestpeak,
+				  int(1.0/bestpeak + 0.5),
+				  (const char *)peakpitch);
+	}
+
     memDC.DrawText(info,
 				   mInfoRect.x + 2, mInfoRect.y + 2);
   }  
@@ -797,6 +842,7 @@ void FreqWindow::Recalc()
   int half = mWindowSize/2;
 
   float *in = new float[mWindowSize];
+  float *in2 = new float[mWindowSize];
   float *out = new float[mWindowSize];
   float *out2 = new float[mWindowSize];
 
@@ -808,38 +854,168 @@ void FreqWindow::Recalc()
 	  
     WindowFunc(windowFunc, mWindowSize, in);
 
-	if (alg==0) {
+	switch(alg) {
+	case 0: // Spectrum
 	  PowerSpectrum(mWindowSize, in, out);
 	  
 	  for(i=0; i<half; i++)
 		mProcessed[i] += out[i];
-	}
-	else {
+	  break;
+
+	case 1:
+	case 2: // Autocorrelation or Enhanced Autocorrelation
+
+	  // Take FFT
 	  FFT(mWindowSize, false, in, NULL, out, out2);
 
+	  // Compute power
 	  for(i=0; i<mWindowSize; i++)
-		mProcessed[i] += log(out[i]*out[i] + out2[i]*out2[i]);
-	}
+		in[i] = (out[i]*out[i]) + (out2[i]*out2[i]);
+
+	  // Tolonen and Karjalainen recommend taking the magnitude
+	  // of the DFT to the power of 0.67, instead of typically
+	  // taking the power or the magnitude.  (This corresponds to
+	  // the cube root of the power.)
+
+	  for(i=0; i<mWindowSize; i++)
+		in[i] = pow(in[i], 1.0/3.0); //pow(sqrt(in[i]), 0.67);
+
+	  // Take FFT
+	  FFT(mWindowSize, false, in, NULL, out, out2);
+
+	  // Take real part of result
+	  for(i=0; i<half; i++)
+		mProcessed[i] += out[i];
+	  break;
+
+	case 3: // Cepstrum
+	  FFT(mWindowSize, false, in, NULL, out, out2);
+
+	  // Compute log power
+	  for(i=0; i<mWindowSize; i++)
+		in[i] = log((out[i]*out[i]) + (out2[i]*out2[i]));
+
+	  // Take IFFT
+	  FFT(mWindowSize, true, in, NULL, out, out2);
+	  
+	  // Take real part of result
+	  for(i=0; i<half; i++)
+		mProcessed[i] += out[i];
+
+	  break;
+	}//switch
 
 	start += half;
 	windows++;
   }
 
-  if (alg==0) {
+  switch(alg) {
+  case 0: // Spectrum
     // Convert to decibels
     for(i=0; i<half; i++)
 	  mProcessed[i] = 10*log10(mProcessed[i]/mWindowSize/windows);
-	  
-	mProcessedSize = mWindowSize / 2;
-  }
-  else {
-    mProcessedSize = mWindowSize;
+	
+	mProcessedSize = half;
+	mYMin = -90;
+	mYMax = 10;
+	mYStep = 10;
+	break;
 
+  case 1: // Autocorrelation
+    for(i=0; i<half; i++)
+	  mProcessed[i] = mProcessed[i]/windows;
+
+	// Find min/max
+	mYMin = mProcessed[0];
+	mYMax = mProcessed[0];
+	for(i=1; i<half; i++)
+	  if (mProcessed[i] > mYMax)
+		mYMax = mProcessed[i];
+	  else if (mProcessed[i] < mYMin)
+		mYMin = mProcessed[i];
+
+	mYStep = 1;
+
+    mProcessedSize = half;
+	break;
+
+  case 2: // Enhanced Autocorrelation
+    for(i=0; i<half; i++)
+	  mProcessed[i] = mProcessed[i]/windows;
+
+	// Find min/max
+	mYMin = mProcessed[0];
+	mYMax = mProcessed[0];
+	for(i=1; i<half; i++)
+	  if (mProcessed[i] > mYMax)
+		mYMax = mProcessed[i];
+	  else if (mProcessed[i] < mYMin)
+		mYMin = mProcessed[i];
+
+	// Peak Pruning as described by Tolonen and Karjalainen, 2000
+	// They suggest clipping at zero, but I find this cuts out too
+	// much data.
+
+	// Clip at zero, copy to temp array
+	for(i=0; i<half; i++) {
+	  if (mProcessed[i] < 0.0)
+		mProcessed[i] = 0.0;
+	  out[i] = mProcessed[i];
+	}
+
+	// Subtract a time-doubled signal (linearly interp.) from the original
+	for(i=0; i<half; i++)
+	  if ((i%2)==0)
+		mProcessed[i] -= out[i/2];
+	  else
+		mProcessed[i] -= ((out[i/2] + out[i/2+1]) / 2);
+
+	// Clip at zero again
+	for(i=0; i<half; i++)
+	  if (mProcessed[i] < 0.0)
+		mProcessed[i] = 0.0;
+
+	// Find new min/max
+	mYMin = mProcessed[0];
+	mYMax = mProcessed[0];
+	for(i=1; i<half; i++)
+	  if (mProcessed[i] > mYMax)
+		mYMax = mProcessed[i];
+	  else if (mProcessed[i] < mYMin)
+		mYMin = mProcessed[i];
+
+	mYStep = 1;
+
+    mProcessedSize = half;
+	break;
+
+  case 3: // Cepstrum
+    for(i=0; i<half; i++)
+	  mProcessed[i] = mProcessed[i]/windows;
+
+	// Find min/max, ignoring first and last few values
+	int ignore = 4;
+	mYMin = mProcessed[ignore];
+	mYMax = mProcessed[ignore];
+	for(i=ignore+1; i<half-ignore; i++)
+	  if (mProcessed[i] > mYMax)
+		mYMax = mProcessed[i];
+	  else if (mProcessed[i] < mYMin)
+		mYMin = mProcessed[i];
+
+	mYStep = 1;
+
+    mProcessedSize = half;
+	break;
+  }
+
+	/*
 	// Inverse FFT
     FFT(mProcessedSize, true, mProcessed, NULL, out, out2);
 
     for(i=0; i<mProcessedSize; i++)
       mProcessed[i] = out[i];
+	*/
 
     /*
     // Normalize, ignoring first and last few Cepstral coefficients
@@ -865,9 +1041,8 @@ void FreqWindow::Recalc()
       mProcessed[i] = ((mProcessed[i]-min)/(max-min))*90 - 80;
 	*/
 
-  }
-
   delete[] in;
+  delete[] in2;
   delete[] out;
   delete[] out2;
 

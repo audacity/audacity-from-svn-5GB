@@ -101,7 +101,11 @@ private:
   int       mWindowSize;
   float     *mProcessed;
   int       mProcessedSize;
+
   bool      mLogAxis;
+  float     mYMin;
+  float     mYMax;
+  float     mYStep;
   
   wxBitmap  *mBitmap;
   
