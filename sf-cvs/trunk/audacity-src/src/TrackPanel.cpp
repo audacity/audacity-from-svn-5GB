@@ -461,7 +461,7 @@ void TrackPanel::RemoveStaleCursors(wxRegionIterator * upd)
       //Does the rectangle intersect with the cursor?
       //If it does, remove it
       size_t i = 0;
-      while(!mPreviousCursorData.IsEmpty())
+      while(i < mPreviousCursorData.GetCount())
       {
          wxRect cursorRect(mPreviousCursorData[i]->x, mPreviousCursorData[i]->y, mPreviousCursorData[i]->bitmap->GetWidth(), mPreviousCursorData[i]->bitmap->GetHeight());
 
@@ -495,7 +495,7 @@ void TrackPanel::RemoveStaleIndicators(wxRegionIterator * upd)
       //Does the rectangle intersect with the indicator?
       //If it does, remove it
       size_t i = 0;
-      while(!mScreenAtIndicator.IsEmpty())
+      while(i < mScreenAtIndicator.GetCount())
       {
          wxRect indicatorRect(mScreenAtIndicator[i]->x, mScreenAtIndicator[i]->y, mScreenAtIndicator[i]->bitmap->GetWidth(), mScreenAtIndicator[i]->bitmap->GetHeight());
 
