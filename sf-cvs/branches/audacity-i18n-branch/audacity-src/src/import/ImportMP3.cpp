@@ -226,8 +226,7 @@ bool ImportMP3(AudacityProject * project,
    wxFile file((char *) fName.c_str());
 
    if (!file.IsOpened()) {
-      wxMessageBox(wxString::Format(_("Could not open %s"),
-                   (const char *) fName));
+      wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
 

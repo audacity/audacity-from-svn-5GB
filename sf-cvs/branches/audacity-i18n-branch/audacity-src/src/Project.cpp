@@ -869,13 +869,13 @@ void AudacityProject::OpenFile(wxString fileName)
    char temp[16];
 
    if (!::wxFileExists(fileName)) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
 
    wxFile ff(fileName);
    if (!ff.IsOpened()) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
    ff.Read(temp, 15);
@@ -893,7 +893,7 @@ void AudacityProject::OpenFile(wxString fileName)
 
    f.Open(fileName);
    if (!f.IsOpened()) {
-      wxMessageBox("Couldn't open " + mFileName);
+      wxMessageBox(_("Could not open file: ") + mFileName);
       return;
    }
 
@@ -1097,7 +1097,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
 #endif
    f.Open();
    if (!f.IsOpened()) {
-      wxMessageBox(_("Couldn't write to ") + mFileName);
+      wxMessageBox(_("Couldn't write to file: ") + mFileName);
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);

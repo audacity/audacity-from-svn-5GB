@@ -296,8 +296,7 @@ bool GuessPCMFormat(wxString fName,
    inf.Open(fName, wxFile::read);
 
    if (!inf.IsOpened()) {
-      wxMessageBox(wxString::Format(_("Could not open %s"),
-                   (const char *) fName));
+      wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
 
@@ -769,8 +768,7 @@ bool ImportRaw(wxWindow * parent,
    wxFile inf;
    inf.Open(fName, wxFile::read);
    if (!inf.IsOpened()) {
-      wxMessageBox(wxString::Format(_("Could not open %s"),
-                   (const char *) fName));
+      wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
    int len = inf.Length();

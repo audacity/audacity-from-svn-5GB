@@ -428,7 +428,7 @@ void AudacityProject::OnExportLabels(wxCommandEvent & event)
 #endif
    f.Open();
    if (!f.IsOpened()) {
-      wxMessageBox(_("Couldn't write to ") + fName);
+      wxMessageBox(_("Couldn't write to file: ") + fName);
       return;
    }
 
@@ -932,7 +932,7 @@ void AudacityProject::OnImportLabels(wxCommandEvent & event)
 
       f.Open(fileName);
       if (!f.IsOpened()) {
-         wxMessageBox(_("Couldn't open ") + fileName);
+         wxMessageBox(_("Could not open file: ") + fileName);
          return;
       }
 
