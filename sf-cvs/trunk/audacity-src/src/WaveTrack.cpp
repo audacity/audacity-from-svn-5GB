@@ -161,7 +161,7 @@ VTrack *WaveTrack::Duplicate() const
 void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
                           sampleType * outMin, sampleType * outMax) const
 {
-   if (block->Count() == 0) {
+   if (len == 0 || block->Count() == 0) {
       *outMin = 0;
       *outMax = 0;
       return;
