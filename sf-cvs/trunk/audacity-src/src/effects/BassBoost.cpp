@@ -65,7 +65,7 @@ bool EffectBassBoost::NewTrackSimpleMono()
 
 bool EffectBassBoost::PromptUser()
 {
-   BassBoostDialog dlog(mParent, -1, _("BassBoost"));
+   BassBoostDialog dlog(this, mParent, -1, _("BassBoost"));
    dlog.freq = frequency;
    dlog.boost = dB_boost;
    dlog.TransferDataToWindow();
@@ -120,6 +120,7 @@ bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len)
 // WDR: event table for BassBoostDialog
 
 BEGIN_EVENT_TABLE(BassBoostDialog, wxDialog)
+    EVT_BUTTON(ID_PREVIEW, BassBoostDialog::OnPreview)
     EVT_BUTTON(wxID_OK, BassBoostDialog::OnOk)
     EVT_BUTTON(wxID_CANCEL, BassBoostDialog::OnCancel)
     EVT_SLIDER(ID_FREQ_SLIDER, BassBoostDialog::OnFreqSlider)
@@ -128,8 +129,14 @@ BEGIN_EVENT_TABLE(BassBoostDialog, wxDialog)
     EVT_TEXT(ID_BOOST_TEXT, BassBoostDialog::OnBoostText)
 END_EVENT_TABLE()
 
-BassBoostDialog::BassBoostDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, title, position, size, style)
+BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
+                                 wxWindow * parent, wxWindowID id,
+                                 const wxString & title,
+                                 const wxPoint & position,
+                                 const wxSize & size,
+                                 long style):
+   wxDialog(parent, id, title, position, size, style),
+   mEffect(effect)
 {
    MakeBassBoostDialog(this, TRUE, TRUE);
 }
@@ -239,6 +246,14 @@ void BassBoostDialog::OnFreqSlider(wxCommandEvent & event)
    GetFreqText()->SetValue(str);
 }
 
+void BassBoostDialog::OnPreview(wxCommandEvent & event)
+{
+   TransferDataFromWindow();
+   mEffect->frequency = freq;
+   mEffect->dB_boost = boost;
+   mEffect->Preview();
+}
+
 void BassBoostDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
@@ -255,8 +270,8 @@ void BassBoostDialog::OnCancel(wxCommandEvent & event)
    EndModal(false);
 }
 
-wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer)
+wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
+                                              bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
 
@@ -303,6 +318,10 @@ wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
    item0->Add(item2, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxBoxSizer *item9 = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton *item9b =
+      new wxButton(parent, ID_PREVIEW, mEffect->GetPreviewName());
+   item9->Add(item9b, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item10 =
        new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
