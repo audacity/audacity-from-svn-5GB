@@ -24,12 +24,10 @@
 
 #include <math.h>
 
-#include <wx/wxprec.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/dcmemory.h>
 
-#include "AvcCompressor.h"
 #include "../WaveTrack.h"
 #include "../Envelope.h"
 #include "../widgets/Ruler.h"
@@ -42,7 +40,12 @@
 	#define max(a,b)  ( (a<b)?b:a )
 #endif
 
-#include "../../lib-src/iAVC/iAVC.h"
+//!!!!!!!!!!!!!!!!!!!!!!!!!  I M P O R T A N T  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// IMPORTANT:  This define determines if iAVC generates in line code.
+//#define  IAVC_INLINE		// use inline code for get and put of samples
+
+#include "AvcCompressor.h"
+
 #include "../../lib-src/iAVC/iAVCsamples.h"
 #include "../../lib-src/iAVC/iAVC.cpp"
 
@@ -62,34 +65,43 @@
 #define MINPCT_MIN		5
 #define MINPCT_MAX		50
 
-EffectAvcCompressor::EffectAvcCompressor()
+EffectAvcCompressor::EffectAvcCompressor():
+			mpDialog ( NULL )
 {
+}
+
+EffectAvcCompressor::~EffectAvcCompressor()
+{
+	if ( mpDialog != NULL )
+		delete mpDialog;
 }
 
 bool EffectAvcCompressor::PromptUser()
 {
-   AvcCompressorDialog dlog(mParent, -1, _("Automatic Volume Control"));
+   if ( mpDialog == NULL )	// reuse dialog so we keep user changes to values
+	   mpDialog = new AvcCompressorDialog(mParent, -1, _("Automatic Volume Control"));
 
-   dlog.CentreOnParent();
-   dlog.ShowModal();
+   mpDialog->CentreOnParent();
+   mpDialog->ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (!mpDialog->GetReturnCode())
       return false;
+
+   mAutoVolCtrl.Reset();	// reset control before setting values
 
    // Set parameters for iAVC class
    unsigned short int nTransform [ MULTIPLY_PCT_ARRAY_SIZE ];
-   mnChangeWindow=dlog.GetChangeWindow();
-   dlog.GetTransformArray(nTransform);
+   mnChangeWindow=mpDialog->GetChangeWindow();
+   mpDialog->GetTransformArray(nTransform);
 
-   if ( mAutoVolCtrl.SetSampleWindowSize(dlog.GetAdjusterWindow()+mnChangeWindow,
-											dlog.GetAdjusterWindow(),
+   if ( mAutoVolCtrl.SetSampleWindowSize(mpDialog->GetAdjusterWindow()+mnChangeWindow,
+											mpDialog->GetAdjusterWindow(),
 											0) == false ||
 											mAutoVolCtrl.SetMinSamplesBeforeSwitch(mnChangeWindow) == false ) {
             wxMessageBox("Error setting parameters for automatic volume control.");
             return false;
    }
-   
-   mAutoVolCtrl.SetMaxPctChangeAtOnce(dlog.GetMinimumPercent());
+   mAutoVolCtrl.SetMaxPctChangeAtOnce(mpDialog->GetMinimumPercent());
    mAutoVolCtrl.SetMultipliers(nTransform);
    mAutoVolCtrl.SetNumberTracks(mnTracks);
 
@@ -98,29 +110,43 @@ bool EffectAvcCompressor::PromptUser()
 
 bool EffectAvcCompressor::Init()	// invoked before PromptUser
 {
-	if ( EffectSimplePairedTwoTrackInt16::Init() == false )
+	if ( EffectSimplePairedTwoTrack<IAVCSAMPLETYPE,AVCCOMPSAMPLETYPE>::Init() == false )
 		return false;
 
 	return true;
 }
 
-bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(short int *bufferLeft, 
-													  short int *bufferRight, // may be 0
+bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(/*IAVCSAMPLETYPE*/ void *bufferLeft, 
+													  /*IAVCSAMPLETYPE*/ void *bufferRight, // may be 0
 													  sampleCount len)
 {
+	IAVCSAMPLETYPE* typedBufferLeft  = (IAVCSAMPLETYPE*)bufferLeft;
+	IAVCSAMPLETYPE* typedBufferRight = (IAVCSAMPLETYPE*)bufferRight;
 	sampleCount i;
-	short int left;
-	short int right = 0;
+	IAVCSAMPLETYPE left;
+	IAVCSAMPLETYPE right = 0;
 
 	for ( i = 0 ; i < len ; ++i ) {
-		left = bufferLeft[i];
-		if ( bufferRight )
-			right = bufferRight[i];
-		mAutoVolCtrl.SetNextSample(left, right);
-		mAutoVolCtrl.GetNextSample(left, right);
-		bufferLeft[i] = left;
-		if ( bufferRight )
-			bufferRight[i] = right;
+		left = typedBufferLeft[i];
+		if ( typedBufferRight )
+			right = typedBufferRight[i];
+		#ifdef IAVC_INLINE
+			// use inline SetNextSample()
+			#define	IAVC_SETNEXTSAMPLE
+			#include "../../lib-src/iAVC/iAVC.cpp"
+			#undef  IAVC_SETNEXTSAMPLE
+			// use inline GetNextSample()
+			#define IAVC_GETNEXTSAMPLE
+			#include "../../lib-src/iAVC/iAVC.cpp"
+			#undef  IAVC_SETNEXTSAMPLE
+		#else
+			// call SetNextSample() and GetNextSample()
+			mAutoVolCtrl.SetNextSample(left, right);
+			mAutoVolCtrl.GetNextSample(left, right);
+		#endif
+		typedBufferLeft[i] = left;
+		if ( typedBufferRight )
+			typedBufferRight[i] = right;
 	}
 	return true;
 }
@@ -234,7 +260,7 @@ bool AvcCompressorDialog::LongRangeCheck ( wxWindow *window,
 	return true;
 }
 
-// WDR: handler implementations for NoiseRemovalDialog
+// WDR: handler implementations for AvcCompressorDialog
 
 void AvcCompressorDialog::OnOK(wxCommandEvent &event)
 {
@@ -319,6 +345,8 @@ void AvcCompressorDialog::OnCancel(wxCommandEvent &event)
 
 void AvcCompressorDialog::OnRestoreDefaults(wxCommandEvent &event)
 {
+	static int* naSampleChoicesHoriz[5] = {iHoriz_1K_1K,iHoriz_1K_3HK,iHoriz_E75_5K,iHoriz_75_3500,iHoriz_AE75_3HK};
+	static int* naSampleChoicesVert[5]  = {iVert_1K_1K, iVert_1K_3HK, iVert_E75_5K, iVert_75_3500, iVert_AE75_3HK};
 	mstrAdjWin.Printf(_("%d"), ADJWIN_DEFAULT);
 	mstrDelay.Printf(_("%d"), DELAY_DEFAULT);
 	mstrChangeWin.Printf(_("%d"), CHANGE_DEFAULT);
@@ -328,8 +356,8 @@ void AvcCompressorDialog::OnRestoreDefaults(wxCommandEvent &event)
 		mctlCheckBoxes[i]->SetValue(true);
 		mctlXAxis[i]->Show ( true );
 		mctlYAxis[i]->Show ( true );
-		mstrXAxis[i].Printf( _("%d"), iHoriz_AE75_3HK[i] );
-		mstrYAxis[i].Printf( _("%d"), iVert_AE75_3HK[i] );
+		mstrXAxis[i].Printf( _("%d"), naSampleChoicesHoriz[4][i] );
+		mstrYAxis[i].Printf( _("%d"), naSampleChoicesVert[4][i] );
 	}
 	TransferDataToWindow();
 }

@@ -20,6 +20,12 @@
 //	License along with this library; if not, write to the Free Software
 //	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+//  If you change the algorithm or find other sets of values that improve the
+//	output results, please send me a copy so that I can incorporate them into
+//  iAVC.  Of course, you are not required to send me any updates under the
+//	LGPL license, but please consider doing so under the spirit of open source
+//	and in appreciation of being able to take advantage of my efforts expended
+//  in developing iAVC.
 
 //  This code implements a "poor man's" dynamic range compression algorithm
 //	that was build on hueristics.  It's purpose is to perform dynamic range
@@ -54,20 +60,31 @@
     #include "../Logger/IDebugLog.h"
 #else
   #ifdef _DEBUG
-	#define log0(fn,lf,ulid,fmt)			    fprintf(stderr,fmt);
-	#define log1(fn,lf,ulid,fmt,p1)			    fprintf(stderr,fmt,p1);
-	#define log2(fn,lf,ulid,fmt,p1,p2)			fprintf(stderr,fmt,p1,p2);
-	#define log3(fn,lf,ulid,fmt,p1,p2,p3)		fprintf(stderr,fmt,p1,p2,p3);
-	#define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)	fprintf(stderr,fmt,p1,p2,p3,p4);
-	#define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	fprintf(stderr,fmt,p1,p2,p3,p4,p5);
+    #ifdef _WINDOWS
+  	  #define _MFC_OVERRIDES_NEW
+	  #include <crtdbg.h>			// user _RPTF0 to get file name and line in output
+	  #define log0(fn,lf,ulid,fmt)					_RPT0(_CRT_WARN,fmt);
+	  #define log1(fn,lf,ulid,fmt,p1)			    _RPT1(_CRT_WARN,fmt,p1);
+	  #define log2(fn,lf,ulid,fmt,p1,p2)			_RPT2(_CRT_WARN,fmt,p1,p2);
+	  #define log3(fn,lf,ulid,fmt,p1,p2,p3)			_RPT3(_CRT_WARN,fmt,p1,p2,p3);
+	  #define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)		_RPT4(_CRT_WARN,fmt,p1,p2,p3,p4);
+	  #define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	_RPT5(_CRT_WARN,fmt,p1,p2,p3,p4,p5);
+	#elif
+	  #define log0(fn,lf,ulid,fmt)					fprintf(stderr,fmt);
+	  #define log1(fn,lf,ulid,fmt,p1)			    fprintf(stderr,fmt,p1);
+	  #define log2(fn,lf,ulid,fmt,p1,p2)			fprintf(stderr,fmt,p1,p2);
+	  #define log3(fn,lf,ulid,fmt,p1,p2,p3)			fprintf(stderr,fmt,p1,p2,p3);
+	  #define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)		fprintf(stderr,fmt,p1,p2,p3,p4);
+	  #define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	fprintf(stderr,fmt,p1,p2,p3,p4,p5);
+	#endif  // _WINDOWS
   #else
-	#define log0(fn,lf,ulid,fmt)			;
-	#define log1(fn,lf,ulid,fmt,p1)			;
+	#define log0(fn,lf,ulid,fmt)				;
+	#define log1(fn,lf,ulid,fmt,p1)				;
 	#define log2(fn,lf,ulid,fmt,p1,p2)			;
 	#define log3(fn,lf,ulid,fmt,p1,p2,p3)		;
 	#define log4(fn,lf,ulid,fmt,p1,p2,p3,p4)	;
 	#define log5(fn,lf,ulid,fmt,p1,p2,p3,p4,p5)	;
-  #endif
+  #endif	// _DEBUG
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -87,6 +104,7 @@ AutoVolCtrl::AutoVolCtrl()
     m_nMinSamplesBeforeSwitch   = DEFAULT_MINIMUM_SAMPLES_BEFORE_SWITCH;
     m_nNumTracks                = DEFAULT_NUMBER_OF_TRACKS;
     m_nMaxChangePct             = DEFAULT_MAX_PCT_CHANGE_AT_ONCE;
+	m_nMaxSampleValue           = DEFAULT_MAX_SAMPLE_VALUE;
 
 	SetSampleWindowSize ( m_nSampleWindowSize, 
                           m_nSamplesInAvg, 
@@ -95,7 +113,7 @@ AutoVolCtrl::AutoVolCtrl()
 
 	// set multipliers to a nil transform
 	for ( int i = 0 ; i < MULTIPLY_PCT_ARRAY_SIZE ; ++i )
-		m_nMultiplyPct [ i ] = APPLY_MULTIPLY_FACTOR ( 1 );		// default to no transform	
+		m_nMultiplyPct [ i ] = IAVCMULTIPLYPCT ( APPLY_MULTIPLY_FACTOR ( 1 ) );		// default to no transform	
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -131,9 +149,10 @@ void AutoVolCtrl::Reset()
 	SetMinSamplesBeforeSwitch ( m_nMinSamplesBeforeSwitch );		
 	SetMaxPctChangeAtOnce ( m_nMaxChangePct );			// e.g. 10% 
 	SetNumberTracks ( m_nNumTracks );
+	m_nMaxSampleValue = DEFAULT_MAX_SAMPLE_VALUE; //TODO: make a method so caller can set
 	
 	// set our internal data
-	m_nSampleSum = 0;				
+	m_nSampleAvgSum = 0;				
 	m_nSamplesInSum = 0;
 	m_nCurrentMultiplier = APPLY_MULTIPLY_FACTOR ( 1 );
 	m_nTotalSamples = 0;
@@ -178,7 +197,7 @@ bool AutoVolCtrl::SetSampleWindowSize ( unsigned long nSampleWindowSize,
 		m_pSampleList [ j ].m_nLeft = 0;
 		m_pSampleList [ j ].m_nRight = 0;
 		m_pSampleList [ j ].m_nSampleValid = 0;         // false
-        m_pSampleList [ j ].m_nSampleAbsSum = 0;
+        m_pSampleList [ j ].m_nSampleAbsAvg = 0;
         // set average partner
 		m_pSampleList [ j ].m_pAvgPartner = ( j < m_nSamplesInAvg ) ? 
 												&(m_pSampleList [ m_nSampleWindowSize - m_nSamplesInAvg + j]) :
@@ -231,7 +250,7 @@ bool AutoVolCtrl::SetMinSamplesBeforeSwitch ( unsigned long nMinSamplesBeforeSwi
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-void AutoVolCtrl::SetMaxPctChangeAtOnce ( unsigned long nPctChange )
+void AutoVolCtrl::SetMaxPctChangeAtOnce ( IAVCMULTIPLYPCT nPctChange )
 {
     m_nMaxChangePct = nPctChange;
 }
@@ -246,12 +265,12 @@ void AutoVolCtrl::SetMultipliers ( unsigned short int nValueWanted [ MULTIPLY_PC
 {
 	for ( int i = 1 ; i < MULTIPLY_PCT_ARRAY_SIZE ; ++i )
 	{
-		m_nMultiplyPct [ i ] = APPLY_MULTIPLY_FACTOR ( nValueWanted [ i ] ) / long ( i );
+		m_nMultiplyPct [ i ] = APPLY_MULTIPLY_FACTOR ( nValueWanted [ i ] ) / IAVCMULTIPLYPCT ( i );
 		if ( ( i % 1000 ) == 0 )
 		    log3(CN_iAVC,LL_DEBUG,0, "SetMultipliers at sample %d, =%d (0x%X)\n",
 										i,
-										m_nMultiplyPct [ i ],
-										m_nMultiplyPct [ i ] );
+										MULTIPLY_FACTOR_TO_INT_X256(m_nMultiplyPct [ i ]),
+										MULTIPLY_FACTOR_TO_INT_X256(m_nMultiplyPct [ i ]) );
 	}
 	m_nMultiplyPct [ 0 ] = m_nMultiplyPct [ 1 ];
 }
@@ -284,7 +303,7 @@ void AutoVolCtrl::ZeroSampleWindow()
 		m_pSampleList [ j ].m_nLeft = 0;
 		m_pSampleList [ j ].m_nRight = 0;
 		m_pSampleList [ j ].m_nSampleValid = 0;         // false
-        m_pSampleList [ j ].m_nSampleAbsSum = 0;
+        m_pSampleList [ j ].m_nSampleAbsAvg = 0;
     }
 
 	// set subscripts for where next data goes or comes from
@@ -298,7 +317,7 @@ void AutoVolCtrl::ZeroSampleWindow()
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-bool AutoVolCtrl::SetNextSample ( short int left, short int right )
+bool AutoVolCtrl::SetNextSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE right )
 {
 
 #endif      // !defined...
@@ -312,28 +331,28 @@ bool AutoVolCtrl::SetNextSample ( short int left, short int right )
     //{   // TEMP
 	//	log8(CN_iAVC,LL_DEBUG,0, 
     //                    "# = %d, sum = %d,"
-    //                    ", nextSet=%d, AddTo=%d (%d), RemoveFrom=%d (%d), newAbs=%d",
-	//					m_nSamplesInSum, 
-    //                    m_nSampleSum, 
+    //                    ", nextSet=%d, AddToAvg=%d (%d), RemoveFromAvg=%d (%d), newAbsAvg=%d",
+	//					  m_nSamplesInSum, 
+    //                    long(m_nSampleAvgSum), 
     //                    m_pNextSet - m_pSampleList,
-    //                    pAddToSum - m_pSampleList, pAddToSum->m_nSampleAbsSum,
-    //                    pRemoveFromSum - m_pSampleList, pRemoveFromSum->m_nSampleAbsSum,
-    //                    abs ( left ) + abs ( right ) );
+    //                    pAddToSum - m_pSampleList, long(pAddToSum->m_nSampleAbsAvg),
+    //                    pRemoveFromSum - m_pSampleList, long(pRemoveFromSum->m_nSampleAbsAvg),
+    //                    long( absVal ( left ) + absVal ( right ) ) / m_nNumTracks );
     //}
 
 	// take this sample out of the sample sum (if valid)
-	m_nSampleSum -= pRemoveFromSum->m_nSampleAbsSum;
+	m_nSampleAvgSum -= pRemoveFromSum->m_nSampleAbsAvg;
 	m_nSamplesInSum -= pRemoveFromSum->m_nSampleValid;
 
-    // form total value for this cell
-    m_pNextSet->m_nSampleAbsSum = abs ( left ) + abs ( right );
+    // form average value for this cell
+    m_pNextSet->m_nSampleAbsAvg = ( absVal ( left ) + absVal ( right ) ) / m_nNumTracks;
 	// put in new sample
 	m_pNextSet->m_nLeft = left;	
 	m_pNextSet->m_nRight = right;
 	m_pNextSet->m_nSampleValid = 1;     // true, node will now always have a valid sample in it
 
     // add a node's samples into the sample sum (if valid)
-	m_nSampleSum += pAddToSum->m_nSampleAbsSum;
+	m_nSampleAvgSum += pAddToSum->m_nSampleAbsAvg;
 	m_nSamplesInSum += pAddToSum->m_nSampleValid;
 
 
@@ -342,12 +361,12 @@ bool AutoVolCtrl::SetNextSample ( short int left, short int right )
     //{   // Figure out lookahead average for our lookahead partner
     //    Sample* pLookaheadPartner = pAddToSum;      // take this nodes samples out of lookahead sum
     //	// take this sample out of the sum (if valid)
-	//	m_nLookaheadSum -= pLookaheadPartner->m_nSampleAbsSum;
+	//	m_nLookaheadSum -= pLookaheadPartner->m_nSampleAbsAvg;
 	//	m_nSamplesInLookahead -= pLookaheadPartner->m_nSampleValid;
     //
 	//    // add into the lookahead sum the new values
 	//    ++m_nSamplesInLookahead;
-	//    m_nLookaheadSum += m_pNextSet->m_nSampleAbsSum;
+	//    m_nLookaheadSum += m_pNextSet->m_nSampleAbsAvg;
     //}
 
 	m_pNextSet = m_pNextSet->m_pNext;
@@ -364,7 +383,7 @@ bool AutoVolCtrl::SetNextSample ( short int left, short int right )
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-bool AutoVolCtrl::GetNextSample ( short int & left, short int & right )
+bool AutoVolCtrl::GetNextSample ( IAVCSAMPLETYPE & left, IAVCSAMPLETYPE & right )
 {
 
 #endif      // !defined...
@@ -379,7 +398,7 @@ bool AutoVolCtrl::GetNextSample ( short int & left, short int & right )
 #undef IAVC_GETNEXTSAMPLE
 #define IAVC_ADJUSTMULTIPLIER
 //#pragma message("inlining AdjustMultiplier 1st time")
-#include "DynRangeComp.cpp"
+#include "iAVC.cpp"
 #define IAVC_GETNEXTSAMPLE
 #undef  IAVC_ADJUSTMULTIPLIER
 #else
@@ -398,21 +417,29 @@ bool AutoVolCtrl::GetNextSample ( short int & left, short int & right )
 	    if ( ( m_nTotalSamples % 10000 ) <= 1 )
 	    {
 		    log4(CN_iAVC,LL_DEBUG,0, 
-                            "Number of samples in sum = %d, sample sum = %d, tracks = %d, sample avg = %d\n",
-						    m_nSamplesInSum, m_nSampleSum, m_nNumTracks,
-						    ( m_nSampleSum / m_nSamplesInSum ) / m_nNumTracks );
+                            "Sample %d, Number of samples in sum = %d, sample sum = %d, sample avg = %d\n",
+							m_nTotalSamples,
+						    m_nSamplesInSum, 
+							long ( AVG_TO_MULTIPLIER_SUBSCRIPT(m_nSampleAvgSum) ),
+						    long ( AVG_TO_MULTIPLIER_SUBSCRIPT(m_nSampleAvgSum/m_nSamplesInSum) ) );
 	    }
 
 	    nClip = 0;
+
+	    if ( IF_CLIP ( left ) || IF_CLIP ( right ) || m_nTotalSamples == 55666 )
+		{
+		    log2(CN_iAVC,LL_ERROR,0,"ERROR: Sample out of range, left=%d, right=%d\n",
+							AVG_TO_MULTIPLIER_SUBSCRIPT( m_pNextGet->m_nLeft ),
+							AVG_TO_MULTIPLIER_SUBSCRIPT( m_pNextGet->m_nRight ) );
+		}
     }
 
-	long lLeft = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nLeft  );
-	left = (short int) ( lLeft );
+	IAVCSUMTYPE nLeft;
+	IAVCSUMTYPE nRight;
+	nLeft  = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nLeft  );
+	nRight = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nRight );
 
-	long lRight = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nRight );
-	right = (short int) ( lRight );
-
-    if ( long ( left ) != lLeft || long ( right ) != lRight )
+    if ( IF_CLIP ( nLeft ) || IF_CLIP ( nRight ) )
     {   // We had a clip, see if we can adjust multiplier down.
 
         // What do we do?  If this is a momentary pop, like a pop on a record, we should
@@ -423,7 +450,13 @@ bool AutoVolCtrl::GetNextSample ( short int & left, short int & right )
         //      now and not wait for the end of the next change window.  To figure out the
         //      new multiplier, we'll just use this sample.
 
-        m_nCurrentMultiplier = m_nMultiplyPct [ m_pNextGet->m_nSampleAbsSum / m_nNumTracks ];  // always positive
+        m_nCurrentMultiplier = m_nMultiplyPct [ AVG_TO_MULTIPLIER_SUBSCRIPT(m_pNextGet->m_nSampleAbsAvg) ];  // always positive
+        m_nNumSamplesBeforeNextSwitch = m_nMinSamplesBeforeSwitch;
+
+        if ( c_WithDebug )
+        {
+		    nClip = 1;
+        }
 
 //        // This path will take extra time, but shouldn't occur very often.
 //        m_nNumSamplesBeforeNextSwitch = 0;      // for multiplier adjustment
@@ -440,45 +473,44 @@ bool AutoVolCtrl::GetNextSample ( short int & left, short int & right )
 //	    AdjustMultiplier();
 //#endif
 
-	    long lLeft = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nLeft  );
-	    left = (short int) ( lLeft );
+	    nLeft = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nLeft  );
+	    nRight = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nRight );
 
-	    long lRight = UNDO_MULTIPLY_FACTOR ( m_nCurrentMultiplier * m_pNextGet->m_nRight );
-	    right = (short int) ( lRight );
-
-	    if ( long ( left ) != lLeft )
+	    if ( IF_CLIP ( nLeft ) || IF_CLIP ( nRight ) )
 	    {
-		    left = m_pNextGet->m_nLeft;	// don't clip, use original values instead
-            if ( c_WithDebug )
-            {
-		        nClip = 1;
-            }
-	    }
-
-	    if ( long ( right ) != lRight )
-	    {
-		    right = m_pNextGet->m_nRight;	// don't clip, use original values instead
-            if ( c_WithDebug )
-		        nClip = 1;
+		    nLeft = m_pNextGet->m_nLeft;	// don't clip, use original values instead
+		    nRight = m_pNextGet->m_nRight;	// don't clip, use original values instead
 	    }
     }
+	left = nLeft;
+	right = nRight;
 
     if ( c_WithDebug )
     {
 	    if ( nClip != 0 )
 	    {
 		    m_nClips += nClip;
-		    if ( ( m_nClips % 250 ) == 0 )
+		    if ( ( m_nClips % 1 ) == 0 )
 		    {	// m_nTotalSamples may be off if buffered (i.e. more put samples than get samples done)
-			    log4(CN_iAVC,LL_DEBUG,0, "Sample %d clipped, orig left=%d, right=%d, total clips=%d\n", 
-											    m_nTotalSamples, m_pNextGet->m_nLeft, m_pNextGet->m_nRight, m_nClips ); 
-			    log4(CN_iAVC,LL_DEBUG,0, "Left %d -> %d, Right %d -> %d\n", lLeft, left, lRight, right );
+			    log4(CN_iAVC,LL_DEBUG,0, "Sample %d clipped, orig left=%d, right=%d, multiplier=0x%X\n", 
+											    m_nTotalSamples, 
+												AVG_TO_MULTIPLIER_SUBSCRIPT(m_pNextGet->m_nLeft), 
+												AVG_TO_MULTIPLIER_SUBSCRIPT(m_pNextGet->m_nRight), 
+												MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier) ); 
 		    }
 	    }
 
         if ( ( m_nTotalSamples % 5000 ) == 0 )
 	    {
-		    log4(CN_iAVC,LL_DEBUG,0, "Transformed %d->%d  %d->%d\n", m_pNextGet->m_nLeft, left, m_pNextGet->m_nRight, right );
+			log3(CN_iAVC,LL_DEBUG,0, "Sample %d, multiplier=%d (0x%X),...\n",
+				 m_nTotalSamples,
+				 MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier),
+				 MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier) );
+		    log4(CN_iAVC,LL_DEBUG,0, "         , Transformed %d->%d  %d->%d\n", 
+				 long(AVG_TO_MULTIPLIER_SUBSCRIPT(m_pNextGet->m_nLeft)), 
+				 long(AVG_TO_MULTIPLIER_SUBSCRIPT(left)), 
+				 long(AVG_TO_MULTIPLIER_SUBSCRIPT(m_pNextGet->m_nRight)), 
+				 long(AVG_TO_MULTIPLIER_SUBSCRIPT(right)) );
 	    }
     }
 
@@ -503,18 +535,18 @@ void AutoVolCtrl::AdjustMultiplier()
     {
 		log3(CN_iAVC,LL_DEBUG,0, "DEBUG   at sample %d, mul now=0x%X (%d)\n", 
 									m_nTotalSamples,
-									m_nCurrentMultiplier, 
-									m_nCurrentMultiplier );
+									long(m_nCurrentMultiplier), 
+									long(m_nCurrentMultiplier) );
         long nLookaheadAvg;
         if ( m_nSamplesInLookahead > 0 )
-            nLookaheadAvg= ( m_nLookaheadSum/m_nSamplesInLookahead ) / m_nNumTracks;
+            nLookaheadAvg= m_nLookaheadSum/m_nSamplesInLookahead;
         else
             nLookaheadAvg = 0;
 		log4(CN_iAVC,LL_DEBUG,0, "        sample max=%d, sample win avg=%d, lookahead avg=%d, avg multiplier=0x%X\n",
-                                    max(abs(m_pNextGet->m_nLeft),abs(m_pNextGet->m_nRight)),
-                                    ( m_nSampleSum / m_nSamplesInSum ) / m_nNumTracks,
+                                    long(maxVal(absVal(m_pNextGet->m_nLeft),absVal(m_pNextGet->m_nRight))),
+                                    long(m_nSampleAvgSum / m_nSamplesInSum),
                                     nLookaheadAvg,
-                                    m_nMultiplyPct [ nLookaheadAvg ] );
+                                    long(m_nMultiplyPct [ nLookaheadAvg ]) );
     }
 
 
@@ -525,59 +557,67 @@ void AutoVolCtrl::AdjustMultiplier()
     --m_nNumSamplesBeforeNextSwitch;
 	if ( m_nNumSamplesBeforeNextSwitch <= 0 )
 	{	// long time since last change, see if it is time to change the multiplier
-        long nCurSampleAvg = ( m_nSamplesInSum <= 0 ) ? 0 :
-                                            ( m_nSampleSum / m_nSamplesInSum ) / m_nNumTracks;
-		long nNewMultiplier = m_nMultiplyPct [ nCurSampleAvg ];         // always positive
-		long nMultiplierDiff = nNewMultiplier - m_nCurrentMultiplier;   // positive or negative
+        long nCurSampleAvgSubscript = ( m_nSamplesInSum <= 0 ) ? 0 :
+                                            ( AVG_TO_MULTIPLIER_SUBSCRIPT(m_nSampleAvgSum) / m_nSamplesInSum );
+		IAVCMULTIPLYPCT nNewMultiplier = m_nMultiplyPct [ nCurSampleAvgSubscript ];         // always positive
+		IAVCMULTIPLYPCT nMultiplierDiff = nNewMultiplier - m_nCurrentMultiplier;   // positive or negative
 		// if new multiplier is 1, force change to get to 1  (nChangeThreshold always positive)
-		long nChangeThreshold = ( nMultiplierDiff != 0 &&
-								  nNewMultiplier == APPLY_MULTIPLY_FACTOR ( 1 ) ) ?
-										nMultiplierDiff :       
-										m_nCurrentMultiplier * m_nMaxChangePct / 100; // % of current multiplier
+		IAVCMULTIPLYPCT nChangeThreshold = ( nMultiplierDiff != 0 &&
+										     nNewMultiplier == APPLY_MULTIPLY_FACTOR ( 1 ) ) ?
+											      nMultiplierDiff :       
+											      IAVCMULTIPLYPCT ( m_nCurrentMultiplier * m_nMaxChangePct / 100 ); // % of current multiplier
         //NOTUSED - not using lookahead
         //unsigned long nLookaheadAvg;
         //if ( m_nSamplesInLookahead > 0 )
-        //    nLookaheadAvg = ( m_nLookaheadSum/m_nSamplesInLookahead ) / m_nNumTracks;
+        //    nLookaheadAvg = m_nLookaheadSum/m_nSamplesInLookahead;
         //else
         //    nLookaheadAvg = 0;
         //long nLookaheadMultiplier = m_nMultiplyPct [ nLookaheadAvg ];
 
 		if ( nMultiplierDiff >= nChangeThreshold )
 		{	// adjust multiplier up
+		    log4(CN_iAVC,LL_DEBUG,0, "Multiplier UP   old=%d, new=%d, diff=%d, threshold=%d\n", 
+										MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier), 
+										MULTIPLY_FACTOR_TO_INT_X256(nNewMultiplier),
+										MULTIPLY_FACTOR_TO_INT_X256(nMultiplierDiff),
+										MULTIPLY_FACTOR_TO_INT_X256(nChangeThreshold) );
 			m_nCurrentMultiplier = nNewMultiplier;  // or  m_nCurrentMultiplier += nChangeThreshold;
             m_nNumSamplesBeforeNextSwitch = m_nMinSamplesBeforeSwitch;
             if ( c_WithDebug )
             {
 			    ++m_nNumMultiplerChanges;
-		        log5(CN_iAVC,LL_DEBUG,0, "Multiplier up   at sample %d, current avg=%d, now=0x%X (%d), want=0x%X\n", 
+		        log4(CN_iAVC,LL_DEBUG,0, "Multiplier UP   at sample %d, current avg=%d, now=%d (0x%X)\n", 
 										    m_nTotalSamples,
-                                            nCurSampleAvg,
-										    m_nCurrentMultiplier, 
-										    m_nCurrentMultiplier, 
-										    nNewMultiplier);
+                                            nCurSampleAvgSubscript,
+										    MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier), 
+										    MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier) );
                 //NOTUSED - not using lookahead
 		        //log2(CN_iAVC,LL_DEBUG,0, "                lookahead: avg=%d, avg multiplier=0x%X\n",
-                //                            nLookaheadAvg,
-                //                            nLookaheadMultiplier );
+                //                            long(nLookaheadAvg),
+                //                            long(nLookaheadMultiplier) );
             }
 		}
 		else if ( nMultiplierDiff <= - nChangeThreshold )
 		{	// adjust multiplier down
+		    log4(CN_iAVC,LL_DEBUG,0, "Multiplier DOWN old=%d, new=%d, diff=%d, threshold=%d\n", 
+										MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier), 
+										MULTIPLY_FACTOR_TO_INT_X256(nNewMultiplier),
+										MULTIPLY_FACTOR_TO_INT_X256(nMultiplierDiff),
+										MULTIPLY_FACTOR_TO_INT_X256(nChangeThreshold) );
 			m_nCurrentMultiplier = nNewMultiplier;  // or m_nCurrentMultiplier -= nChangeThreshold;
             m_nNumSamplesBeforeNextSwitch = m_nMinSamplesBeforeSwitch;
             if ( c_WithDebug )
             {
 			    ++m_nNumMultiplerChanges;
-		        log5(CN_iAVC,LL_DEBUG,0, "Multiplier down at sample %d, current avg=%d, now=0x%X (%d), want=0x%X\n", 
+		        log4(CN_iAVC,LL_DEBUG,0, "Multiplier DOWN at sample %d, current avg=%d, now=%d (0x%X)\n", 
 										    m_nTotalSamples,
-                                            nCurSampleAvg,
-										    m_nCurrentMultiplier, 
-										    m_nCurrentMultiplier, 
-										    nNewMultiplier);
+                                            nCurSampleAvgSubscript,
+										    MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier), 
+										    MULTIPLY_FACTOR_TO_INT_X256(m_nCurrentMultiplier) );
                 //NOTUSED - not using lookahead
 		        //log2(CN_iAVC,LL_DEBUG,0, "                lookahead: avg=%d, avg multiplier=0x%X\n",
-                //                            nLookaheadAvg,
-                //                            nLookaheadMultiplier );
+                //                            long(nLookaheadAvg),
+                //                            long(nLookaheadMultiplier) );
             }
 		}
 	}
