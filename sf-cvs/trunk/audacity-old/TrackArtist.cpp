@@ -717,8 +717,10 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   
   if (tpost > t1) {
     wxRect post = r;
+
     post.x += (int)((t1-tpre)*pps);
     post.width = r.width - (post.x - r.x);
+
     mid.width -= post.width;
 	if (post.x < r.x) {
 	  post.width -= (r.x - post.x);
@@ -782,58 +784,60 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   if (showIndividualSamples) {
 	// We're zoomed in really far, so show points and curves
 
-	sampleCount s0 = (sampleCount)(t0*rate + 0.5);
-	sampleCount slen = (sampleCount)(mid.width * rate / pps + 0.5);
-
-	if (s0 > 1) {
-	  s0--;
-	}
-	slen += 4;
-	if (s0+slen > track->numSamples)
-	  slen = track->numSamples - s0;
-
-	sampleType *buffer = new sampleType[slen];
-	track->Get(buffer, s0, slen);
-	int *xpos = new int[slen];
-	int *ypos = new int[slen];
-
-	sampleCount s;
-	for(s=0; s<slen; s++) {
-	  double xx = ((double(s0+s)/rate + tOffset - h)*pps + 0.5);
-	  if (xx < -10000)
-		xx = -10000;
-	  if (xx > 10000)
-		xx = 10000;
-	  double tt = (s0 + s)/rate - tOffset;
-	  xpos[s] = (int)xx;
-	  ypos[s] = ctr-GetWaveYPos(buffer[s]/32768.0 *
-								track->envelope.GetValue(tt),
-								mid.height/2,
-								dB);
-	}
-
-	// Draw lines
-	for(s=0; s<slen-1; s++) {
-	  dc.DrawLine(mid.x+xpos[s], ypos[s],
-				  mid.x+xpos[s+1], ypos[s+1]);
-	}
-
-	if (showPoints) {
-	  // Draw points
-	  wxRect pr;
-	  pr.width = 3;
-	  pr.height = 3;
-	  dc.SetBrush(sampleBrush);
-	  for(s=0; s<slen; s++) {
-		pr.x = mid.x+xpos[s]-1;
-		pr.y = ypos[s]-1;
-		dc.DrawEllipse(pr);
+	if (mid.width > 0) {
+	  sampleCount s0 = (sampleCount)(t0*rate + 0.5);
+	  sampleCount slen = (sampleCount)(mid.width * rate / pps + 0.5);
+	  
+	  if (s0 > 1) {
+		s0--;
 	  }
+	  slen += 4;
+	  if (s0+slen > track->numSamples)
+		slen = track->numSamples - s0;
+	  
+	  sampleType *buffer = new sampleType[slen];
+	  track->Get(buffer, s0, slen);
+	  int *xpos = new int[slen];
+	  int *ypos = new int[slen];
+	  
+	  sampleCount s;
+	  for(s=0; s<slen; s++) {
+		double xx = ((double(s0+s)/rate + tOffset - h)*pps + 0.5);
+		if (xx < -10000)
+		  xx = -10000;
+		if (xx > 10000)
+		  xx = 10000;
+		double tt = (s0 + s)/rate - tOffset;
+		xpos[s] = (int)xx;
+		ypos[s] = ctr-GetWaveYPos(buffer[s]/32768.0 *
+								  track->envelope.GetValue(tt),
+								  mid.height/2,
+								  dB);
+	  }
+	  
+	  // Draw lines
+	  for(s=0; s<slen-1; s++) {
+		dc.DrawLine(mid.x+xpos[s], ypos[s],
+					mid.x+xpos[s+1], ypos[s+1]);
+	  }
+	  
+	  if (showPoints) {
+		// Draw points
+		wxRect pr;
+		pr.width = 3;
+		pr.height = 3;
+		dc.SetBrush(sampleBrush);
+		for(s=0; s<slen; s++) {
+		  pr.x = mid.x+xpos[s]-1;
+		  pr.y = ypos[s]-1;
+		  dc.DrawEllipse(pr);
+		}
+	  }
+	  
+	  delete[] buffer;
+	  delete[] xpos;
+	  delete[] ypos;
 	}
-
-	delete[] buffer;
-	delete[] xpos;
-	delete[] ypos;
   }
   else {
 	// The more typical view - we display a line representing the
