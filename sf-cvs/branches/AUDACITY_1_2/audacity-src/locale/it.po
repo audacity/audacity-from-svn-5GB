@@ -1,19 +1,19 @@
 # translation of it.po to italiano
 # translation of audacity.po to italiano
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # , 2003
-# Aldo Boccacci <zorba_@tin.it>, 2003
+# Aldo Boccacci <zorba_@tin.it>, 2003, 2004.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacity\n"
+"Project-Id-Version: it\n"
 "POT-Creation-Date: 2003-07-03 23:55-0700\n"
-"PO-Revision-Date: 2003-09-04 18:50+0000\n"
+"PO-Revision-Date: 2004-01-29 14:10+0100\n"
 "Last-Translator: Aldo Boccacci <zorba_@tin.it>\n"
 "Language-Team: italiano <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0\n"
+"X-Generator: KBabel 1.0.2\n"
 
 #: ../src/Mix.cpp:160
 #, c-format
@@ -101,7 +101,7 @@ msgstr "&Effetti"
 #: ../src/Menus.cpp:391 ../src/Menus.cpp:397
 #, c-format
 msgid "&Export Selection as %s..."
-msgstr "&Esporta selezione come %s..."
+msgstr "&Esporta Selezione come %s..."
 
 #: ../src/Menus.cpp:388 ../src/Menus.cpp:394
 #, c-format
@@ -256,7 +256,7 @@ msgstr "Azione"
 
 #: ../src/Menus.cpp:268
 msgid "Add Label At Selection\tCtrl+B"
-msgstr "Aggiungi un'etichetta alla selezione\tCtrl+B"
+msgstr "Aggiungi un'Etichetta alla Selezione\tCtrl+B"
 
 #: ../src/Menus.cpp:2471
 msgid "Added label"
@@ -304,7 +304,7 @@ msgstr "Allinea la Fine con l'Inizio della Selezione"
 
 #: ../src/Menus.cpp:255
 msgid "Align Tracks Together"
-msgstr "Allinea tutte le tracce"
+msgstr "Allinea Tutte le Tracce"
 
 #: ../src/Menus.cpp:257
 msgid "Align Tracks..."
@@ -773,7 +773,7 @@ msgstr "La dimensione dei blocchi deve essere compresa nell'intervallo 1 - 1024 
 
 #: ../src/effects/BassBoost.cpp:303
 msgid "Boost (dB):"
-msgstr "Amplifica (dB):"
+msgstr "Incremento (dB):"
 
 #: ../src/effects/BassBoost.h:49
 msgid "Boosting Bass Frequencies"
@@ -1646,11 +1646,11 @@ msgstr "Esporta MP3"
 
 #: ../src/Menus.cpp:118
 msgid "Export Selection As MP3..."
-msgstr "Esporta selezione come MP3..."
+msgstr "Esporta Selezione come MP3..."
 
 #: ../src/Menus.cpp:121
 msgid "Export Selection As Ogg Vorbis..."
-msgstr "Esporta selezione come OGG Vorbis..."
+msgstr "Esporta Selezione come OGG Vorbis..."
 
 #: ../src/FreqWindow.cpp:983
 msgid "Export Spectral Data As:"
@@ -2084,7 +2084,7 @@ msgstr "Durata (secondi):   da"
 
 #: ../src/effects/NoiseRemoval.cpp:405
 msgid "Less"
-msgstr "Meno"
+msgstr "Poco"
 
 #: ../src/HistoryWindow.cpp:85
 msgid "Levels to discard: "
@@ -2262,7 +2262,7 @@ msgstr "Mono, "
 
 #: ../src/effects/NoiseRemoval.cpp:408
 msgid "More"
-msgstr "Esteso"
+msgstr "Molto"
 
 #: ../src/prefs/PrefsDialog.cpp:87
 msgid "Mouse"
@@ -3022,7 +3022,7 @@ msgstr "Salva %s Come:"
 
 #: ../src/Menus.cpp:110
 msgid "Save Project &As..."
-msgstr "S&alva il Progetto con nome..."
+msgstr "S&alva il Progetto con Nome..."
 
 #: ../src/Project.cpp:2174
 msgid "Save Project As:"
@@ -3144,7 +3144,7 @@ msgstr "Seleziona fino alla fine\tShift+End"
 
 #: ../src/Menus.cpp:365
 msgid "Selection to Start\tShift+Home"
-msgstr "Seleziona dall'inizio\tShift+Home"
+msgstr "Seleziona dall'Inizio\tShift+Home"
 
 #: ../src/FormatSelection.cpp:399
 #, c-format
@@ -3295,11 +3295,11 @@ msgstr "Imposta Limiti..."
 
 #: ../src/AStatus.cpp:342 ../src/TrackPanel.cpp:572 ../src/TrackPanel.cpp:3943
 msgid "Set Rate"
-msgstr "Imposta frequenza"
+msgstr "Imposta la Frequenza"
 
 #: ../src/TrackPanel.cpp:570
 msgid "Set Sample Format"
-msgstr "Imposta la frequenza di campionamento"
+msgstr "Imposta la Risoluzione"
 
 #: ../src/Menus.cpp:214
 msgid "Set Selection Format"
@@ -3482,7 +3482,7 @@ msgstr "Start offset:"
 
 #: ../src/Menus.cpp:171
 msgid "Start to Cursor"
-msgstr "Dall'inizio al Cursore"
+msgstr "Dall'Inizio al Cursore"
 
 #: ../src/effects/NoiseRemoval.cpp:374
 msgid "Step 1"
