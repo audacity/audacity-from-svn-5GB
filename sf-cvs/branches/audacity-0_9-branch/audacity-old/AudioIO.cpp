@@ -8,7 +8,9 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
 #include <Events.h>
+#endif
 
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
