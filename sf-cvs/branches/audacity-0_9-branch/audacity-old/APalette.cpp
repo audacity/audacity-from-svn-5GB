@@ -194,7 +194,7 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
 
    mVolume =
        new ASlider(this, 0, wxPoint(sliderX, 14), wxSize(100, 28),
-                   (char **) Slider, (char **) SliderThumb, 100);
+                   (char **) Slider, (char **) SliderThumb, 80);
 
    mVolume->Set(80);
 
