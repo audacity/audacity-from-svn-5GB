@@ -22,6 +22,9 @@ CXXFLAGS = @CXXFLAGS@
 # CPPFLAGS are for both C and C++.
 CPPFLAGS = @CPPFLAGS@ -Iallegro -Iinclude -Iinclude/linux
 
+# Files that must exist in order to compile a C/C++ files
+CDEPEND = @CDEPEND@
+
 LIBS = @LIBS@
 
 ########################################
@@ -146,6 +149,8 @@ lib-src/libvorbis/lib/.libs/libvorbisfile.a:
 lib-src/libmad/.libs/libmad.a:
 	cd lib-src/libmad && $(MAKE)
 
+lib-src/libmad/mad.h: lib-src/libmad/.libs/libmad.a
+
 lib-src/libsndfile/src/.libs/libsndfile.a:
 	cd lib-src/libsndfile && $(MAKE)
 
@@ -202,10 +207,10 @@ obj/prefs:
 # Rules for compiling C/C++ files
 #
 
-$(OBJDIR)/%.cpp.o: %.cpp configunix.h
+$(OBJDIR)/%.cpp.o: %.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
 
-$(OBJDIR)/%.c.o: %.c configunix.h
+$(OBJDIR)/%.c.o: %.c configunix.h $(CDEPEND)
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 #

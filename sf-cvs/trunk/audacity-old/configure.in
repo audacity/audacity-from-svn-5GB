@@ -38,6 +38,7 @@ AC_PROG_INSTALL
 dnl extra variables
 AC_SUBST(EXTRAOBJS)
 AC_SUBST(MAKEALL)
+AC_SUBST(CDEPEND)
 
 dnl Required sublibraries
 SUBDIRS="$SUBDIRS lib-src/libsndfile"
@@ -82,6 +83,7 @@ if [[ "$use_libmad" = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS lib-src/libmad/.libs/libmad.a"
 	SUBDIRS="$SUBDIRS lib-src/libmad"
 	CXXFLAGS="$CXXFLAGS -Ilib-src/libmad"
+	CDEPEND="$CDEPEND lib-src/libmad/mad.h"
 
    mp3support="true"
 fi
