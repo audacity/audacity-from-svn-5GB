@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib libci.lib libFLAC++.lib libFLAC.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win"
+# ADD LINK32 libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib libci.lib libFLAC++.lib libFLAC.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\source\SoundTouch\Release" /libpath:"..\lib-src\libresample\win"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -81,8 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib libFLAC++d.lib libFLACd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"msvcrtd.lib" /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\win" /libpath:"..\lib-src\libresample\win" /IGNORE:4049
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib libFLAC++d.lib libFLACd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept /libpath:"..\lib-src\libogg\win32\static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_debug" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_debug" /libpath:"$(WXWIN)\lib" /libpath:"..\lib-src\libid3tag" /libpath:"..\lib-src\expat" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro" /libpath:"..\lib-src\libnyquist" /libpath:"..\lib-src\portmixer\winproj" /libpath:"..\lib-src\libsamplerate\Win32" /libpath:"..\lib-src\libflac\obj\lib" /libpath:"..\lib-src\soundtouch\source\SoundTouch\Debug" /libpath:"..\lib-src\libresample\win" /IGNORE:4049
+# SUBTRACT LINK32 /verbose /pdb:none /nodefaultlib
 
 !ENDIF 
 
@@ -295,6 +295,14 @@ SOURCE=..\src\Menus.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\MeterToolBar.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\MeterToolBar.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Mix.cpp
 # End Source File
 # Begin Source File
@@ -324,6 +332,14 @@ SOURCE=..\src\PitchName.cpp
 # Begin Source File
 
 SOURCE=..\src\PitchName.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\PlatformCompatibility.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\PlatformCompatibility.h
 # End Source File
 # Begin Source File
 
@@ -687,6 +703,14 @@ SOURCE=..\src\export\ExportMP3.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\export\ExportMultiple.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportMultiple.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\export\ExportOGG.cpp
 # End Source File
 # Begin Source File
@@ -868,6 +892,14 @@ SOURCE=..\src\widgets\ASlider.cpp
 # Begin Source File
 
 SOURCE=..\src\widgets\ASlider.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Meter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Meter.h
 # End Source File
 # Begin Source File
 
