@@ -131,14 +131,14 @@ bool EffectAvcCompressor::ProcessSimplePairedTwoTrack(short int *bufferLeft,
 // WDR: event table for AvcCompressorDialog
 
 BEGIN_EVENT_TABLE(AvcCompressorDialog,wxDialog)
-   EVT_BUTTON( wxID_OK, OnOK )
-   EVT_BUTTON( wxID_CANCEL, OnCancel )
-   EVT_BUTTON( ID_RESTORE_DEFAULTS, OnRestoreDefaults )
-   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+1, OnCheckBox)
-   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+2, OnCheckBox)
-   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+3, OnCheckBox)
-   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+4, OnCheckBox)
-   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+5, OnCheckBox)
+   EVT_BUTTON( wxID_OK, AvcCompressorDialog::OnOK )
+   EVT_BUTTON( wxID_CANCEL, AvcCompressorDialog::OnCancel )
+   EVT_BUTTON( ID_RESTORE_DEFAULTS, AvcCompressorDialog::OnRestoreDefaults )
+   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+1, AvcCompressorDialog::OnCheckBox)
+   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+2, AvcCompressorDialog::OnCheckBox)
+   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+3, AvcCompressorDialog::OnCheckBox)
+   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+4, AvcCompressorDialog::OnCheckBox)
+   EVT_CHECKBOX(ID_FIRST_CURVE_CHECK+5, AvcCompressorDialog::OnCheckBox)
 END_EVENT_TABLE()
 
 AvcCompressorDialog::AvcCompressorDialog(wxWindow *parent, wxWindowID id,
@@ -204,7 +204,8 @@ void AvcCompressorDialog::GetTransformArray( unsigned short int nTransform[MULTI
 
 			iBias = iOld - ( i * iMultiply / iDivide );
 		}
-		nTransform [ i ] = unsigned short int ( i * iMultiply / iDivide + iBias );
+		nTransform [ i ] = (unsigned short int)
+         ( i * iMultiply / iDivide + iBias );
 	}
 	// set boundary case for loudest sound
 	nTransform [ MULTIPLY_PCT_ARRAY_SIZE - 1 ] = MULTIPLY_PCT_ARRAY_SIZE - 1;
@@ -530,3 +531,4 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	return mainSizer;
 }
+
