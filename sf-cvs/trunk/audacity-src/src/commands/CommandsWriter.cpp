@@ -6,7 +6,7 @@
 
   Brian Gunlogson
 
-  This class handles writing the default commands.cfg.
+  This class handles writing the default commands XML file.
 
 **********************************************************************/
 

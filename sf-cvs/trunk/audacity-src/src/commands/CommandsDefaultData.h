@@ -6,7 +6,7 @@
 
   Brian Gunlogson
 
-  This file contains the default commands.cfg file. It also contains
+  This file contains the default commands XML file. It also contains
   the translation strings.
 
 **********************************************************************/
