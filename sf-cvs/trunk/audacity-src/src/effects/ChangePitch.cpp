@@ -147,9 +147,7 @@ bool EffectChangePitch::PromptUser()
 bool EffectChangePitch::Process()
 {
    mSoundTouch = new SoundTouch();
-   mSoundTouch->setChannels(1);
    mSoundTouch->setPitchSemiTones((float)(m_SemitonesChange));
-
    return this->EffectSoundTouch::Process();
 }
 

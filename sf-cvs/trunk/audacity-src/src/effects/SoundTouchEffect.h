@@ -4,7 +4,7 @@
 
   SoundTouchEffect.h
 
-  Dominic Mazzoni
+  Dominic Mazzoni, Vaughan Johnson
 
   This abstract class contains all of the common code for an
   effect that uses SoundTouch to do its processing (ChangeTempo
@@ -36,12 +36,15 @@ class EffectSoundTouch:public Effect {
  private:
    bool ProcessOne(WaveTrack * t,
                    longSampleCount start, longSampleCount end);
+   bool ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack, 
+                        longSampleCount start, longSampleCount end);
+   bool ProcessStereoResults(const unsigned int outputCount, 
+                              WaveTrack* outputLeftTrack, 
+                              WaveTrack* outputRightTrack);
 
    int    mCurTrackNum;
-   double mCurRate;
    double mCurT0;
    double mCurT1;
-   int    mCurChannel;
 
 	double m_maxNewLength;
 };

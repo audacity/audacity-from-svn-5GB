@@ -86,7 +86,6 @@ bool EffectChangeTempo::PromptUser()
 bool EffectChangeTempo::Process()
 {
    mSoundTouch = new SoundTouch();
-   mSoundTouch->setChannels(1);
    mSoundTouch->setTempoChange(m_PercentChange);
    return this->EffectSoundTouch::Process();
 }
