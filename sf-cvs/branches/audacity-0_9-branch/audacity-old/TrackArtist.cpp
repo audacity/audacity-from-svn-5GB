@@ -1068,7 +1068,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 
    double t0 = (tpre >= 0.0 ? tpre : 0.0);
 
-   if ((sampleCount) (tpre * rate + 0.5) >= numSamples)
+   if (tpre >= (double) numSamples / (double) rate)
       return;
 
    int ssel0 = (int) ((sel0 - tOffset) * rate + 0.5);
@@ -1098,7 +1098,7 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
    while (x < r.width) {
       sampleCount w0 = (sampleCount) ((tpre + x * tstep) * rate + 0.5);
 
-      if (w0 < 0 || w0 >= numSamples) {
+      if ((tpre + x) < 0 || w0 >= numSamples) {
          for (int yy = 0; yy < r.height; yy++) {
             data[(yy * r.width + x) * 3] = 214;
             data[(yy * r.width + x) * 3 + 1] = 214;
