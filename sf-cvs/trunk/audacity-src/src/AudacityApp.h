@@ -14,6 +14,7 @@
 #include <wx/app.h>
 
 class wxLocale;
+class wxSingleInstanceChecker;
 
 void SaveWindowSize();
 
@@ -67,9 +68,7 @@ class AudacityApp:public wxApp {
  private:
    wxLocale *mLocale;
 
-#ifdef __WXMSW__
-   void *mSingleInstanceMutex;
-#endif
+   wxSingleInstanceChecker *mChecker;
 
  public:
     DECLARE_EVENT_TABLE()
