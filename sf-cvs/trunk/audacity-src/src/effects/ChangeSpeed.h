@@ -103,7 +103,7 @@ class ChangeSpeedDialog:public wxDialog {
    void OnChoice_FromVinyl(wxCommandEvent & event); 
    void OnChoice_ToVinyl(wxCommandEvent & event); 
 
-   void OnPreview( wxCommandEvent &event );
+   void OnPreview(wxCommandEvent &event);
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 

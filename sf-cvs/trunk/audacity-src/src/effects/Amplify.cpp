@@ -176,18 +176,18 @@ wxDialog(parent, id, title, position, size, style)
    wxButton * pButton_Preview = 
 		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
    pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
-   pBoxSizer_OK->Add(40, 8); // horizontal spacer
+   pBoxSizer_OK->Add(25, 8); // horizontal spacer
+
+   wxButton *item11 =
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   pBoxSizer_OK->Add(item11, 0, wxALIGN_CENTER | wxALL, 5);
 
    wxButton *item10 =
        new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    item10->SetDefault();
    item10->SetFocus();
    pBoxSizer_OK->Add(item10, 0, wxALIGN_CENTER | wxALL, 5);
-
-   wxButton *item11 =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   pBoxSizer_OK->Add(item11, 0, wxALIGN_CENTER | wxALL, 5);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 5);
 

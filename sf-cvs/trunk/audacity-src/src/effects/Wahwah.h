@@ -9,6 +9,7 @@
 
   UI programming:
   Dominic Mazzoni (with the help of wxDesigner)
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -72,11 +73,13 @@ class EffectWahwah:public EffectSimpleMono {
  private:
    float freq, startphase;
    float depth, freqofs, res;
+
+friend class WahwahDialog;
 };
 
 // Declare window functions
 
-#define ID_TEXT 10000
+#define ID_BUTTON_PREVIEW 10000
 #define ID_STAGES 10001
 #define ID_DRYWET 10002
 #define ID_FREQTEXT 10003
@@ -102,10 +105,11 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit =
 class WahwahDialog:public wxDialog {
  public:
    // constructors and destructors
-   WahwahDialog(wxWindow * parent, wxWindowID id, const wxString & title,
-                const wxPoint & pos = wxDefaultPosition,
-                const wxSize & size = wxDefaultSize,
-                long style = wxDEFAULT_DIALOG_STYLE);
+   WahwahDialog(EffectWahwah * effect, 
+						wxWindow * parent, wxWindowID id, const wxString & title,
+						const wxPoint & pos = wxDefaultPosition,
+						const wxSize & size = wxDefaultSize,
+						long style = wxDEFAULT_DIALOG_STYLE);
 
    // WDR: method declarations for WahwahDialog
    wxSlider *GetResonanceSlider() {
@@ -162,11 +166,12 @@ class WahwahDialog:public wxDialog {
    void OnPhaseText(wxCommandEvent & event);
    void OnFreqText(wxCommandEvent & event);
    void OnFreqOffText(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent &event);
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
  private:
-   DECLARE_EVENT_TABLE()
+	EffectWahwah * m_pEffect;
 
  public:
    float freq;
@@ -174,6 +179,9 @@ class WahwahDialog:public wxDialog {
    float startphase;
    float res;
    float depth;
+
+ private:
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

@@ -5,6 +5,7 @@
   Normalize.h
 
   Dominic Mazzoni
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -65,6 +66,8 @@ public:
    float mMax;
    double mSum;
    int mCount;
+
+friend class NormalizeDialog;
 };
 
 //----------------------------------------------------------------------------
@@ -87,6 +90,7 @@ public:
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
    
+   void OnPreview(wxCommandEvent &event);
    void OnOk( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
 

@@ -5,6 +5,7 @@
   Normalize.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -208,9 +209,12 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 // NormalizeDialog
 //----------------------------------------------------------------------------
 
+#define ID_BUTTON_PREVIEW 10001
+
 BEGIN_EVENT_TABLE(NormalizeDialog,wxDialog)
    EVT_BUTTON( wxID_OK, NormalizeDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, NormalizeDialog::OnCancel )
+	EVT_BUTTON(ID_BUTTON_PREVIEW, NormalizeDialog::OnPreview)
 END_EVENT_TABLE()
 
 NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
@@ -241,12 +245,18 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
-   ok->SetDefault();
-   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
+   wxButton * pButton_Preview = 
+		new wxButton(this, ID_BUTTON_PREVIEW, mEffect->GetPreviewName());
+   hSizer->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
+   hSizer->Add(20, 10); // horizontal spacer
 
    wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
    hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
+
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   ok->SetDefault();
+   ok->SetFocus();
+   hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -272,6 +282,23 @@ bool NormalizeDialog::TransferDataFromWindow()
    mDC = mDCCheckBox->GetValue();
 
    return true;
+}
+
+void NormalizeDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+
+	// Save & restore parameters around Preview, because we didn't do OK.
+   bool oldGain = mEffect->mGain;
+   bool oldDC = mEffect->mDC;
+
+   mEffect->mGain = mGain;
+   mEffect->mDC = mDC;
+   
+	mEffect->Preview();
+   
+	mEffect->mGain = oldGain;
+   mEffect->mDC = oldDC;
 }
 
 void NormalizeDialog::OnOk(wxCommandEvent &event)

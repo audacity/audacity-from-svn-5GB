@@ -363,14 +363,18 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
 // FilterDialog
 //----------------------------------------------------------------------------
 
-// WDR: event table for FilterDialog
+enum {
+	ID_FILTERPANEL = 10001, 
+	ID_CLEAR,
+	ID_BUTTON_PREVIEW
+};
 
 BEGIN_EVENT_TABLE(FilterDialog,wxDialog)
    EVT_BUTTON( wxID_OK, FilterDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, FilterDialog::OnCancel )
    EVT_SIZE( FilterDialog::OnSize )
    EVT_BUTTON( ID_CLEAR, FilterDialog::OnClear )
-   EVT_BUTTON( ID_PREVIEW, FilterDialog::OnPreview )
+   EVT_BUTTON( ID_BUTTON_PREVIEW, FilterDialog::OnPreview )
 END_EVENT_TABLE()
 
 FilterDialog::FilterDialog(EffectFilter *effect,
@@ -449,7 +453,7 @@ wxSizer *FilterDialog::MakeFilterDialog( wxWindow *parent,
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-   wxStaticText *item1 = new wxStaticText( parent, ID_TEXT,
+   wxStaticText *item1 = new wxStaticText( parent, -1,
                        _("FFT Filter by Dominic Mazzoni"), wxDefaultPosition,
                        wxDefaultSize, wxALIGN_CENTRE );
    item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 5 );
@@ -465,17 +469,19 @@ wxSizer *FilterDialog::MakeFilterDialog( wxWindow *parent,
 
    item3->Add( 20, 20, 1, wxALIGN_CENTRE|wxALL, 5 );
 
-   wxButton *item4b = new wxButton( parent, ID_PREVIEW,
+   wxButton *item4b = new wxButton( parent, ID_BUTTON_PREVIEW,
                                     mEffect->GetPreviewName(),
                                     wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item4b, 0, wxALIGN_CENTRE|wxALL, 5 );
-
-   wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-   item5->SetDefault();
-   item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
+   item3->Add(20, 8); // horizontal spacer
 
    wxButton *item6 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item6, 0, wxALIGN_CENTRE|wxALL, 5 );
+
+   wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+   item5->SetDefault();
+   item5->SetFocus();
+   item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 

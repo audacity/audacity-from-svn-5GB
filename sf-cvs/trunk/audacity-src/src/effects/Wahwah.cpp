@@ -9,6 +9,7 @@
 
   UI programming:
   Dominic Mazzoni (with the help of wxDesigner)
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -48,7 +49,7 @@ wxString EffectWahwah::GetEffectDescription() {
 
 bool EffectWahwah::PromptUser()
 {
-   WahwahDialog dlog(mParent, -1, _("Wahwah"));
+   WahwahDialog dlog(this, mParent, -1, _("Wahwah"));
 
    dlog.freq = freq;
    dlog.freqoff = freqofs * 100;
@@ -167,11 +168,15 @@ BEGIN_EVENT_TABLE(WahwahDialog, wxDialog)
     EVT_SLIDER(ID_PHASESLIDER, WahwahDialog::OnPhaseSlider)
     EVT_SLIDER(ID_DEPTHSLIDER, WahwahDialog::OnDepthSlider)
     EVT_SLIDER(ID_RESONANCESLIDER, WahwahDialog::OnResonanceSlider)
+    EVT_BUTTON(ID_BUTTON_PREVIEW, WahwahDialog::OnPreview)
 END_EVENT_TABLE()
 
-WahwahDialog::WahwahDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
+WahwahDialog::WahwahDialog(EffectWahwah * effect, 
+									wxWindow * parent, wxWindowID id, const wxString & title, 
+									const wxPoint & position, const wxSize & size, long style):
 wxDialog(parent, id, title, position, size, style)
 {
+	m_pEffect = effect;
    CreateWahwahDialog(this, TRUE);
 }
 
@@ -404,6 +409,32 @@ void WahwahDialog::OnFreqOffText(wxCommandEvent & event)
    }
 }
 
+void WahwahDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+
+	// Save & restore parameters around Preview, because we didn't do OK.
+   float old_freq = m_pEffect->freq;
+   float old_freqofs = m_pEffect->freqofs;
+	float old_startphase = m_pEffect->startphase;
+   float old_res = m_pEffect->res;
+   float old_depth = m_pEffect->depth;
+   
+   m_pEffect->freq = freq;
+   m_pEffect->freqofs = freqoff / 100;
+   m_pEffect->startphase = startphase * M_PI / 180;
+   m_pEffect->res = res;
+   m_pEffect->depth = depth / 100;
+
+   m_pEffect->Preview();
+
+   m_pEffect->freq = old_freq;
+   m_pEffect->freqofs = old_freqofs;
+   m_pEffect->startphase = old_startphase;
+   m_pEffect->res = old_res;
+   m_pEffect->depth = old_depth;
+}
+
 void WahwahDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
@@ -428,14 +459,14 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
 
    wxStaticText *item1 =
-       new wxStaticText(parent, ID_TEXT, _("Wahwah by Nasca Octavian Paul"),
+       new wxStaticText(parent, -1, _("Wahwah by Nasca Octavian Paul"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxFlexGridSizer *item10 = new wxFlexGridSizer(3, 0, 0);
 
    wxStaticText *item11 =
-       new wxStaticText(parent, ID_TEXT, _("LFO Frequency (Hz):"),
+       new wxStaticText(parent, -1, _("LFO Frequency (Hz):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item11, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -451,7 +482,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
    item10->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item14 =
-       new wxStaticText(parent, ID_TEXT, _("LFO Start Phase (deg.):"),
+       new wxStaticText(parent, -1, _("LFO Start Phase (deg.):"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item10->Add(item14, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -467,7 +498,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
    item10->Add(item16, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item17 =
-       new wxStaticText(parent, ID_TEXT, _("Depth (%):"), wxDefaultPosition,
+       new wxStaticText(parent, -1, _("Depth (%):"), wxDefaultPosition,
                         wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item17, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -483,7 +514,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
    item10->Add(item19, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item20 =
-       new wxStaticText(parent, ID_TEXT, _("Resonance:"), wxDefaultPosition,
+       new wxStaticText(parent, -1, _("Resonance:"), wxDefaultPosition,
                         wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item20, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -499,7 +530,7 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
    item10->Add(item22, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxStaticText *item30 =
-       new wxStaticText(parent, ID_TEXT, _("Wah Frequency Offset (%):"),
+       new wxStaticText(parent, -1, _("Wah Frequency Offset (%):"),
                         wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT);
    item10->Add(item30, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL,
                5);
@@ -518,16 +549,23 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
 
    wxBoxSizer *item23 = new wxBoxSizer(wxHORIZONTAL);
 
-   wxButton *item24 =
-       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item24->SetDefault();
-   item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
+   wxButton * pButton_Preview = 
+		new wxButton(parent, ID_BUTTON_PREVIEW, 
+							_("Preview")); //v Should be m_pEffect->GetPreviewName().
+   item23->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
+   item23->Add(20, 10); // horizontal spacer
 
    wxButton *item25 =
        new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item23->Add(item25, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxButton *item24 =
+       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   item24->SetDefault();
+   item24->SetFocus();
+   item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item23, 0, wxALIGN_CENTRE | wxALL, 5);
 
