@@ -4143,6 +4143,11 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
    mPopupMenuTarget->SetLinked(true);
    Track *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner) {
+      // Set partner's parameters to match target.
+      partner->SetMute(mPopupMenuTarget->GetMute());
+      partner->SetSolo(mPopupMenuTarget->GetSolo());
+      partner->SetSelected(mPopupMenuTarget->GetSelected());
+
       mPopupMenuTarget->SetChannel(Track::LeftChannel);
       partner->SetChannel(Track::RightChannel);
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
