@@ -3,6 +3,18 @@
 #include "snd.h"
 #include "sndfileio.h"
 
+#ifdef __MACOSX__
+int min(int a, int b)
+{
+   return (a<b? a: b);
+}
+
+int max(int a, int b)
+{
+   return (a>b? a: b);
+}
+#endif
+
 void snd_fail(char *msg)
 {
     printf("ERROR: %s\n", msg);
