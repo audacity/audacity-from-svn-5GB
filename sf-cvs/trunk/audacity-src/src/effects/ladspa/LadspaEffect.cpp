@@ -12,6 +12,7 @@
 
 #include "ladspa.h"
 
+#include <wx/wxprec.h>
 #include <wx/button.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
