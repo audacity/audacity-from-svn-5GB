@@ -23,23 +23,23 @@
 
 #ifdef AUDACITY_COMMANDS_CALLBACK_POINTERS
 
-#define NUM_CALLBACK_FUNCTIONS 67
+#define NUM_CALLBACK_FUNCTIONS 68
 
 audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&AudacityProject::OnOpen,&AudacityProject::OnClose,
 &AudacityProject::OnSave,&AudacityProject::OnSaveAs,&AudacityProject::OnExportMix,&AudacityProject::OnExportSelection,
 &AudacityProject::OnExportLossyMix,&AudacityProject::OnExportLossySelection,&AudacityProject::OnExportLabels,
 &AudacityProject::OnPreferences,&AudacityProject::OnExit,&AudacityProject::Undo,&AudacityProject::Redo,
-&AudacityProject::UndoHistory,&AudacityProject::Cut,&AudacityProject::Copy,&AudacityProject::Paste,&AudacityProject::Trim,
-&AudacityProject::OnDelete,&AudacityProject::OnSilence,&AudacityProject::OnSplit,&AudacityProject::OnSplitLabels,
-&AudacityProject::OnDuplicate,&AudacityProject::OnSelectAll,&AudacityProject::OnSelectCursorEnd,
-&AudacityProject::OnSelectStartCursor,&AudacityProject::OnZoomIn,&AudacityProject::OnZoomOut,
-&AudacityProject::OnZoomNormal,&AudacityProject::OnZoomFit,&AudacityProject::OnZoomSel,&AudacityProject::OnPlotSpectrum,
-&AudacityProject::OnFloatControlToolBar,&AudacityProject::OnLoadEditToolBar,&AudacityProject::OnFloatEditToolBar,
-&AudacityProject::OnImport,&AudacityProject::OnImportLabels,&AudacityProject::OnImportMIDI,&AudacityProject::OnImportRaw,
-&AudacityProject::OnEditID3,&AudacityProject::OnQuickMix,&AudacityProject::OnSelectionSave,
-&AudacityProject::OnSelectionRestore,&AudacityProject::OnCursorTrackStart,&AudacityProject::OnCursorTrackEnd,
-&AudacityProject::OnCursorSelStart,&AudacityProject::OnCursorSelEnd,&AudacityProject::OnAlignZero,
-&AudacityProject::OnAlign,&AudacityProject::OnAlignSelStart,&AudacityProject::OnAlignSelEnd,
+&AudacityProject::UndoHistory,&AudacityProject::Cut,&AudacityProject::Copy,&AudacityProject::Paste,
+&AudacityProject::PasteOver,&AudacityProject::Trim,&AudacityProject::OnDelete,&AudacityProject::OnSilence,
+&AudacityProject::OnSplit,&AudacityProject::OnSplitLabels,&AudacityProject::OnDuplicate,&AudacityProject::OnSelectAll,
+&AudacityProject::OnSelectCursorEnd,&AudacityProject::OnSelectStartCursor,&AudacityProject::OnZoomIn,
+&AudacityProject::OnZoomOut,&AudacityProject::OnZoomNormal,&AudacityProject::OnZoomFit,&AudacityProject::OnZoomSel,
+&AudacityProject::OnPlotSpectrum,&AudacityProject::OnFloatControlToolBar,&AudacityProject::OnLoadEditToolBar,
+&AudacityProject::OnFloatEditToolBar,&AudacityProject::OnImport,&AudacityProject::OnImportLabels,
+&AudacityProject::OnImportMIDI,&AudacityProject::OnImportRaw,&AudacityProject::OnEditID3,&AudacityProject::OnQuickMix,
+&AudacityProject::OnSelectionSave,&AudacityProject::OnSelectionRestore,&AudacityProject::OnCursorTrackStart,
+&AudacityProject::OnCursorTrackEnd,&AudacityProject::OnCursorSelStart,&AudacityProject::OnCursorSelEnd,
+&AudacityProject::OnAlignZero,&AudacityProject::OnAlign,&AudacityProject::OnAlignSelStart,&AudacityProject::OnAlignSelEnd,
 &AudacityProject::OnAlignEndSelStart,&AudacityProject::OnAlignEndSelEnd,&AudacityProject::OnAlignGroupSelStart,
 &AudacityProject::OnAlignGroupSelEnd,&AudacityProject::OnAlignGroupEndSelStart,&AudacityProject::OnAlignGroupEndSelEnd,
 &AudacityProject::OnNewWaveTrack,&AudacityProject::OnNewLabelTrack,&AudacityProject::OnRemoveTracks,
@@ -48,7 +48,7 @@ audEventFunction callback_function_pointers[] = {&AudacityProject::OnNew,&Audaci
 
 const char *callback_function_strings[] = {"OnNew","OnOpen","OnClose","OnSave","OnSaveAs","OnExportMix","OnExportSelection",
 "OnExportLossyMix","OnExportLossySelection","OnExportLabels","OnPreferences","OnExit","Undo","Redo","UndoHistory","Cut",
-"Copy","Paste","Trim","OnDelete","OnSilence","OnSplit","OnSplitLabels","OnDuplicate","OnSelectAll","OnSelectCursorEnd",
+"Copy","Paste","PasteOver","Trim","OnDelete","OnSilence","OnSplit","OnSplitLabels","OnDuplicate","OnSelectAll","OnSelectCursorEnd",
 "OnSelectStartCursor","OnZoomIn","OnZoomOut","OnZoomNormal","OnZoomFit","OnZoomSel","OnPlotSpectrum",
 "OnFloatControlToolBar","OnLoadEditToolBar","OnFloatEditToolBar","OnImport","OnImportLabels","OnImportMIDI","OnImportRaw",
 "OnEditID3","OnQuickMix","OnSelectionSave","OnSelectionRestore","OnCursorTrackStart","OnCursorTrackEnd","OnCursorSelStart",
@@ -90,6 +90,7 @@ void UndoHistory();
 void Cut();
 void Copy();
 void Paste();
+void PasteOver();
 void Trim();
 
 void OnDelete();
