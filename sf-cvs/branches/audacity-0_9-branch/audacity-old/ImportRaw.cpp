@@ -732,6 +732,10 @@ bool ImportRaw(wxWindow * parent,
    dlg.endian[big]->SetValue(true);
    dlg.offset[offset]->SetValue(true);
 
+   // Make the preview panel refresh with 
+   wxCommandEvent dummy;
+   dlg.RadioButtonPushed(dummy);
+
    dlg.ShowModal();
    if (!dlg.GetReturnCode())
       return false;
