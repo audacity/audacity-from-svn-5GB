@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2003 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: frame.h,v 1.1.1.1 2002-04-14 08:52:43 dmazzoni Exp $
+ * $Id: frame.h,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
  */
 
 # ifndef LIBID3TAG_FRAME_H
@@ -25,9 +25,6 @@
 # include "id3tag.h"
 
 int id3_frame_validid(char const *);
-
-struct id3_frame *id3_frame_new(char const *);
-void id3_frame_delete(struct id3_frame *);
 
 void id3_frame_addref(struct id3_frame *);
 void id3_frame_delref(struct id3_frame *);

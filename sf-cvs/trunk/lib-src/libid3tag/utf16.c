@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2003 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: utf16.c,v 1.1.1.1 2002-04-14 08:52:41 dmazzoni Exp $
+ * $Id: utf16.c,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -66,6 +66,21 @@ id3_length_t id3_utf16_size(id3_utf16_t const *utf16)
     ++ptr;
 
   return ptr - utf16 + 1;
+}
+
+/*
+ * NAME:	utf16->ucs4duplicate()
+ * DESCRIPTION:	duplicate and decode a utf16 string into ucs4
+ */
+id3_ucs4_t *id3_utf16_ucs4duplicate(id3_utf16_t const *utf16)
+{
+  id3_ucs4_t *ucs4;
+
+  ucs4 = malloc((id3_utf16_length(utf16) + 1) * sizeof(*ucs4));
+  if (ucs4)
+    id3_utf16_decode(utf16, ucs4);
+
+  return release(ucs4);
 }
 
 /*
@@ -211,12 +226,9 @@ id3_length_t id3_utf16_serialize(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
 
   while (*ucs4) {
     switch (id3_utf16_encodechar(out = utf16, *ucs4++)) {
-    case 2:
-      size += id3_utf16_put(ptr, *out++, byteorder);
-    case 1:
-      size += id3_utf16_put(ptr, *out++, byteorder);
-    case 0:
-      break;
+    case 2: size += id3_utf16_put(ptr, *out++, byteorder);
+    case 1: size += id3_utf16_put(ptr, *out++, byteorder);
+    case 0: break;
     }
   }
 
