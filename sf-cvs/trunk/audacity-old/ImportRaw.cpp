@@ -26,7 +26,7 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 
-#include "Fourier.h"
+#include "FFT.h"
 
 // bits16, signed, stereo, bigendian
 
@@ -118,25 +118,21 @@ float FreqStat(float *data, int len)
   
   // Calculate fft bins
   
-  float *realout = new float[len];
-  float *imagout = new float[len];
+  float *out = new float[len];
   
-  fft_float (len, 0, data, 0, realout, imagout);
-  float freq = 0.0;
+  PowerSpectrum(len, data, out);
   float max = 0.0;
-  for(i=0; i<len; i++) {
-    float norm;
-    norm = sqrt((realout[i] * realout[i]) + (imagout[i] * imagout[i]));
-    if (norm > max)
-      max = norm;
-    realout[i] = norm;
-  }
-  for(i=0; i<len; i++) {
-    freq += realout[i] * i / len / len;
+  for(i=0; i<len/2; i++) {
+	if (out[i] > max)
+	  max = out[i];
   }
 
-  delete[] realout;
-  delete[] imagout;
+  float freq = 0.0;
+  for(i=0; i<len/2; i++) {
+    freq += (out[i] / max) * (i / (len/2));
+  }
+
+  delete[] out;
 
   return freq;
 }

@@ -12,7 +12,7 @@
 
 #include "Spectrum.h"
 
-#include "Fourier.h"
+#include "FFT.h"
 
 // Bartlett Window (looks like a triangle)
 #define WINDOW(j,a,b) (1.0-fabs((((j)-1)-(a))*(b)))
@@ -109,7 +109,7 @@ bool ComputeSpectrum(sampleType *data, int width, int height,
 
     // Apply fourier transform
 
-    fft_float(mm,0,w,0,real,imag);
+    FFT(mm,0,w,0,real,imag);
 
     for(j=0; j<mm; j++)
       w[j] = sqrt(SQR(real[j])+SQR(imag[j]));

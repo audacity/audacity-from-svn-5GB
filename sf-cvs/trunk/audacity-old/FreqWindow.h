@@ -56,6 +56,7 @@ private:
   wxChoice  *mFuncChoice;
 
   wxRect    mPlotRect;
+  wxRect    mInfoRect;
 
   int       mDataLen;
   float     *mData;

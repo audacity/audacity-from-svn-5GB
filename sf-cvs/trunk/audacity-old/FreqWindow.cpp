@@ -23,6 +23,7 @@
 
 #include <math.h>
 
+#include "AColor.h"
 #include "FreqWindow.h"
 #include "FFT.h"
 
@@ -85,22 +86,25 @@ FreqWindow::FreqWindow(wxFrame* parent, wxWindowID id, const wxString& title,
   mPlotRect.x = 10;
   mPlotRect.y = 10;
   mPlotRect.width = 420;
-  mPlotRect.height = 240;
+  mPlotRect.height = 215;
+
+  mInfoRect.x = 10;
+  mInfoRect.y = 225;
+  mInfoRect.width = 420;
+  mInfoRect.height = 15;
 
   mCloseButton = new wxButton(this, FreqCloseButtonID,
 							  "Close",
 							  wxPoint(360, 260),
 							  wxSize(60, 30));
 
-  wxString algChoiceStrings[4] = {"Spectrum",
-								  "Log Spectrum (not working yet)",
-								  "Cepstrum (not implemented yet)",
-								  "Log Cepstrum (not implemented yet)"};
+  wxString algChoiceStrings[2] = {"Spectrum",
+								  "Cepstrum"};
   
   mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
 							wxPoint(10, 260),
 							wxSize(100, 30),
-							4, algChoiceStrings);
+							2, algChoiceStrings);
 
   mAlgChoice->SetSelection(0);
 
@@ -172,21 +176,51 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
   dc.SetPen(mBackgroundPen);
   dc.DrawRectangle(0, 0, width, height);
 
+  AColor::Dark(&dc, false);
+  dc.DrawLine(mInfoRect.x, mInfoRect.y,
+			  mInfoRect.x + mInfoRect.width, mInfoRect.y);
+  dc.DrawLine(mInfoRect.x, mInfoRect.y,
+			  mInfoRect.x, mInfoRect.y + mInfoRect.height);
+  AColor::Light(&dc, false);
+  dc.DrawLine(mInfoRect.x, mInfoRect.y + mInfoRect.height,
+			  mInfoRect.x + mInfoRect.width, mInfoRect.y + mInfoRect.height);
+  dc.DrawLine(mInfoRect.x + mInfoRect.width, mInfoRect.y,
+			  mInfoRect.x + mInfoRect.width, mInfoRect.y + mInfoRect.height);
+
+  wxFont infoFont(10, wxSWISS, wxNORMAL, wxNORMAL);
+  dc.SetFont(infoFont);
+
+  dc.DrawText("Info here",
+			  mInfoRect.x + 2, mInfoRect.y + 2);
+
+  int leftMargin = 40;
+  int bottomMargin = 20;
+
+  wxRect r = mPlotRect;
+  r.x += leftMargin;
+  r.width -= leftMargin;
+  r.height -= bottomMargin;
+
   dc.SetPen(*wxBLACK_PEN);
   dc.SetBrush(*wxWHITE_BRUSH);
-  dc.DrawRectangle(mPlotRect);
+  dc.DrawRectangle(r);
 
   if (!mProcessed) {
 	if (mData && mDataLen < mWindowSize)
 	  dc.DrawText("Not enough data selected.",
-				  mPlotRect.x + 5, mPlotRect.y + 5);
+				  r.x + 5, r.y + 5);
 
 	return;
   }
 
+  dc.SetPen(wxPen(wxColour(50,150,50),1,wxSOLID));
+
+  const int topDB = 10;
+  const int bottomDB = -80;
+
   int i;
 
-  width = mPlotRect.width;
+  width = r.width-2;
   for(i=0; i<width; i++) {
 	float x = i * (mWindowSize/2) /(float)width;
 	float xfrac = x - ((int)x);
@@ -194,12 +228,13 @@ void FreqWindow::OnPaint(wxPaintEvent &evt)
 	float y =
 	  (xint+1>=mWindowSize/2? 0.0: mProcessed[xint+1])*xfrac +
 	  (xint<0? 0.0: mProcessed[xint])*(1.0-xfrac);
-	if (y < 0.0)
-	  y = 0;
-	int lineheight = int(y * mPlotRect.height);
+	float ynorm = (y - bottomDB) / (topDB - bottomDB);
 
-	dc.DrawLine(mPlotRect.x + i, mPlotRect.y + mPlotRect.height - lineheight,
-				mPlotRect.x + i, mPlotRect.y + mPlotRect.height);
+	int lineheight = int(ynorm * (r.height-2));
+
+	if (ynorm > 0.0)
+	  dc.DrawLine(r.x + 1 + i, r.y + r.height - 1 - lineheight,
+				  r.x + 1 + i, r.y + r.height - 1);
   }
 }
 
@@ -260,6 +295,7 @@ void FreqWindow::Recalc()
   float *out = new float[mWindowSize];
 
   int start = 0;
+  int windows = 0;
   while(start + mWindowSize <= mDataLen) {
 	for(i=0; i<mWindowSize; i++)
 	  in[i] = mData[start+i];
@@ -288,34 +324,16 @@ void FreqWindow::Recalc()
 
 	PowerSpectrum(mWindowSize, in, out);
 
-	if (alg >= 1 && alg <= 3) {
-	  // Log spectrum, cepstrum, and log cepstrum all want
-	  // us to take the log of the answer
-
-	  for(i=0; i<half; i++)
-		out[i] = log(out[i]);
-	}
-
-	if (alg >= 2 && alg <= 3) {
-	  // TODO: cepstrum
-	}
-
-	// We add all of the different spectra just by adding -
-	// the normalization takes care of the averaging
 	for(i=0; i<half; i++)
 	  mProcessed[i] += out[i];
 
 	start += half;
+	windows++;
   }
 
-  // Normalize
-  float max = 0.0;
+  // Convert to decibels
   for(i=0; i<half; i++)
-	if (mProcessed[i] > max)
-	  max = mProcessed[i];
-
-  for(i=0; i<half; i++)
-	mProcessed[i] /= max;
+	mProcessed[i] = 10*log10(mProcessed[i]/mWindowSize/windows);
 
   delete[] in;
   delete[] out;
