@@ -115,6 +115,7 @@ class AmplifyDialog:public wxDialog {
    void CheckClip();
 
  private:
+   bool mLoopDetect;
    DECLARE_EVENT_TABLE()
 
  public:
