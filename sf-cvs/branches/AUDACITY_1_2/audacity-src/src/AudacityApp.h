@@ -11,6 +11,9 @@
 
 **********************************************************************/
 
+#ifndef __AUDACITY_APP__
+#define __AUDACITY_APP__
+
 #include <wx/app.h>
 
 class wxLocale;
@@ -79,3 +82,5 @@ class AudacityApp:public wxApp {
 };
 
 extern AudacityApp & wxGetApp();
+
+#endif // __AUDACITY_APP__
