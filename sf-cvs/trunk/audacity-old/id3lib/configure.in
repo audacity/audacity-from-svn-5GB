@@ -1,4 +1,4 @@
-# $Id: configure.in,v 1.1 2001-07-08 08:49:07 dmazzoni Exp $
+# $Id: configure.in,v 1.2 2001-07-29 00:18:11 habes Exp $
 
 # Copyright 1999, 2000 Scott Thomas Haug <eldamitri@users.sourceforge.net>
 #  
@@ -80,7 +80,7 @@ ID3LIB_FULLNAME=$ID3LIB_NAME-$ID3LIB_VERSION
 
 AC_SUBST(ID3LIB_FULLNAME)
 
-AM_CONFIG_HEADER(config.h)
+AM_CONFIG_HEADER(config.h.unix:config.h.in)
 
 AM_INIT_AUTOMAKE($PACKAGE,$VERSION)
 
