@@ -56,8 +56,8 @@ class AudioIO {
    /* If successful, returns a token identifying this particular stream
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
-                   sampleFormat captureFormat, TimeTrack *timeTrack,
-                   double sampleRate, double t0, double t1);
+                   TimeTrack *timeTrack, double sampleRate,
+                   double t0, double t1);
 
    void StopStream();
    /* Returns true if the audio i/o is running at all */
