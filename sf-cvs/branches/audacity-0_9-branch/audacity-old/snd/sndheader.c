@@ -156,7 +156,7 @@ short readshort(int file, long *read_in)
 }
 
 
-long revlong(long l)
+int32_t revlong(int32_t l)
 {
     return (((l >> 0) & 0xFF) << 24) |
 	(((l >> 8) & 0xFF) << 16) |
@@ -204,10 +204,10 @@ unsigned char readuchar(int file, long *read_in)
 #define writeitem(F,L,T) snd_file_write(F, (char *) L, sizeof(T));
 
 
-void writelong(int file, long l)
+void writelong(int file, int32_t l)
 {
     l = htonl(l);
-    writeitem(file, &l, long);
+    writeitem(file, &l, int32_t);
 }
 
 void writeshort(int file, short s)
