@@ -387,6 +387,7 @@ void Envelope::CollapseRegion(double t0, double t1)
          delete mEnv[i];
          mEnv.RemoveAt(i);
          len--;
+         i--;
       }
 
    for (i = 0; i < len; i++)
