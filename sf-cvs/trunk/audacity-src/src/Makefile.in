@@ -159,7 +159,7 @@ $(OPTOBJS) $(OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
 DIRS = \
 	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/effects/ladspa \
 	$(OBJDIR)/effects/VST $(OBJDIR)/effects/nyquist $(OBJDIR)/export \
-	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml
+	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml \
 	$(OBJDIR)/commands
 
 dirs: $(DIRS)
