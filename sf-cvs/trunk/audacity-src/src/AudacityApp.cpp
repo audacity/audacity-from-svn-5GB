@@ -261,23 +261,44 @@ bool AudacityApp::OnInit()
       wxRegKey associateFileTypes;
 
       associateFileTypes.SetName("HKCR\\.AUP");
-      associateFileTypes.Create(true);
-      associateFileTypes = "Audacity.Project";
+      if(!associateFileTypes.Exists())
+      {
+         associateFileTypes.Create(true);
+         associateFileTypes = "Audacity.Project";
+      }
 
       associateFileTypes.SetName("HKCR\\Audacity.Project");
-      associateFileTypes.Create(true);
-      associateFileTypes = "Audacity Project File";
+      if(!associateFileTypes.Exists())
+      {
+         associateFileTypes.Create(true);
+         associateFileTypes = "Audacity Project File";
+      }
 
       associateFileTypes.SetName("HKCR\\Audacity.Project\\shell");
-      associateFileTypes.Create(true);
-      associateFileTypes = "";
+      if(!associateFileTypes.Exists())
+      {
+         associateFileTypes.Create(true);
+         associateFileTypes = "";
+      }
 
       associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open");
-      associateFileTypes.Create(true);
+      if(!associateFileTypes.Exists())
+      {
+         associateFileTypes.Create(true);
+      }
 
       associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open\\command");
-      associateFileTypes.Create(true);
-      associateFileTypes = (wxString)argv[0] + (wxString)" %1";
+
+      wxString tmpRegAudPath;
+      if(associateFileTypes.Exists())
+      {
+         tmpRegAudPath = wxString(associateFileTypes).Lower();
+      }
+      if(!associateFileTypes.Exists() || (tmpRegAudPath.Find("\\audacity.exe") >= 0))
+      {
+         associateFileTypes.Create(true);
+         associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
+      }
    }
 
    #endif
