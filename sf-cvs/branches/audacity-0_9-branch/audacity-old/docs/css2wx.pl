@@ -38,7 +38,7 @@
 
 @list = glob("*.html");
 
-$targetdir = "../help"; # stuff 'em where ?
+$targetdir = "../help/"; # stuff 'em where ?
 
 @tagwork = (	'<p class=menuref_item>',	'</p>',		# 1
 		'<font size="+2" color="RED">',	'</font>',	# insert after opening tag & before closing tag
