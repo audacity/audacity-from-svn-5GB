@@ -104,9 +104,9 @@ Type: dirifempty; Name: "{commonprograms}\Audacity"
 [Registry]
 Root: HKCR; Subkey: ".AUP"; ValueType: string; ValueData: "Audacity.Project"; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
 Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueData: "Audacity Project File"; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
-Root: HKCR; Subkey: "Audacity.Project\\shell"; ValueType: string; ValueData: ""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
-Root: HKCR; Subkey: "Audacity.Project\\shell\\open"; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
-Root: HKCR; Subkey: "Audacity.Project\\shell\\open\\command"; ValueType: string; ValueData: "{app}\audacity.exe ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
+Root: HKCR; Subkey: "Audacity.Project\shell"; ValueType: string; ValueData: ""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
+Root: HKCR; Subkey: "Audacity.Project\shell\open"; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
+Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueData: "{app}\audacity.exe ""%1"""; Flags: createvalueifdoesntexist uninsdeletekey; Tasks: associate_aup
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
