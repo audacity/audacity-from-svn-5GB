@@ -232,10 +232,10 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
 }
 
-// BG: For now, just rereads the autoscroll setting
 void TrackPanel::ReReadSettings()
 {
    gPrefs->Read("/GUI/AutoScroll", &mTrackIndicator, false);
+   mTrackArtist->ReReadSettings();
 }
 
 void TrackPanel::SelectNone()
@@ -1016,8 +1016,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 
       theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
       theMenu->Enable(OnWaveformDBID, display != WaveTrack::WaveformDBDisplay);
-      theMenu->Enable(OnSpectrumID, (display != WaveTrack::SpectrumDisplay)&&(!this->mTrackIndicator)); // BG: Also disable if following progress indicator, because redraws are way too slow in this mode
-      theMenu->Enable(OnPitchID, (display != WaveTrack::PitchDisplay)&&(!this->mTrackIndicator)); // BG: Also disable if following progress indicator, because redraws are way too slow in this mode
+      theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
+      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
    }
 
    if (t->GetKind() == VTrack::Note)
