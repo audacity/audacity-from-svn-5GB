@@ -150,8 +150,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    // These 'export' strings are modified later in ModifyExportMenus(), so don't put them
    // up for i18n as it just makes more work for the translators.
-   c->AddItem(wxT("Export"),         wxT("Export As..."),                   FN(OnExportMix));
-   c->AddItem(wxT("ExportSel"),      wxT("Export Selection As..."),         FN(OnExportSelection));
+   c->AddItem(wxT("Export"),         _("Export As..."),                   FN(OnExportMix));
+   c->AddItem(wxT("ExportSel"),      _("Export Selection As..."),         FN(OnExportSelection));
    c->AddSeparator();
    c->AddItem(wxT("ExportMP3"),      _("Export As MP3..."),               FN(OnExportMP3Mix));
    c->AddItem(wxT("ExportMP3Sel"),   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
