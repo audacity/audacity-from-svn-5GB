@@ -30,6 +30,9 @@ BODY,.linknobg   {      background-color : White;	}
 
 .linknobg        {      text-decoration : none;	}
 
+HR.menu		 {      noshade:noshade; color:yellow; height:4px; text-align:left; border:1px solid red; }
+
+
 P, .sf, UL, LI, OL, TD, .linknobg
                  {      font-size : 13px; /*10pt;95%;*/ 	}
 
