@@ -34,6 +34,10 @@ class TrackList;
 class Ruler;
 struct ViewInfo;
 
+#ifndef uchar
+typedef unsigned char uchar;
+#endif
+
 class TrackArtist {
 
  public:
@@ -99,21 +103,21 @@ class TrackArtist {
 
    // Waveform utility functions
 
-   void DrawWaveformBackground(wxDC &dc, wxRect r, int ctr,
+   void DrawWaveformBackground(wxDC &dc, wxRect r, uchar *imageBuffer,
                                int *where, int ssel0, int ssel1,
                                double *env, 
                                float zoomMin, float zoomMax,
                                bool dB, bool drawEnvelope);
 
    void DrawIndividualSamples(wxDC &dc, wxRect r,
-                              int ctr, WaveTrack *track,
+                              WaveTrack *track,
                               double t0, double pps, double h,
                               float zoomMin, float zoomMax,
                               bool dB,
                               bool drawSamples,
                               bool showPoints);
 
-   void DrawMinMaxRMS(wxDC &dc, wxRect r,
+   void DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
                       float zoomMin, float zoomMax,
                       double *envValues,
                       float *min, float *max, float *rms,
