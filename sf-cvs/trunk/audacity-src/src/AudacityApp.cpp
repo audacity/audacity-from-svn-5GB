@@ -39,6 +39,7 @@
 #include "Project.h"
 #include "WaveTrack.h"
 
+
 class ToolBar;
 class ControlToolBar;
 
@@ -77,6 +78,8 @@ void QuitAudacity()
 
    if (gFreqWindow)
       gFreqWindow->Destroy();
+
+
    if (gParentFrame)
       gParentFrame->Destroy();
 
@@ -84,10 +87,12 @@ void QuitAudacity()
    gParentFrame = NULL;
 
 
+
    if (gControlToolBarStub) {
       delete gControlToolBarStub;
       gControlToolBarStub = NULL;
    }
+
    if (gEditToolBarStub) {
       delete gEditToolBarStub;
       gEditToolBarStub = NULL;
@@ -106,7 +111,6 @@ pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
                     AppleEvent * theReply, long Refcon)
 {
    QuitAudacity();
-
    return noErr;
 }
 
@@ -209,9 +213,12 @@ bool AudacityApp::OnInit()
 
    //Initiate globally-held toolbar stubs here.
    gControlToolBarStub = new ToolBarStub(gParentWindow, ControlToolBarID);
-   gEditToolBarStub = NULL;  //Don't load this until user requests via menu
+   
+   // Changing the following to NULL will make the application
+   // load without the toolbar in memory at all.
 
-   // new ToolBarStub(gParentWindow, EditToolBarID);
+   gEditToolBarStub =  new ToolBarStub(gParentWindow, EditToolBarID);
+   
 
    InitFreqWindow(gParentWindow);
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
