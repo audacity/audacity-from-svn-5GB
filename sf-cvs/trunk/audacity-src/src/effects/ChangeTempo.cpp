@@ -15,6 +15,8 @@
 
 #if USE_SOUNDTOUCH
 
+#include <SoundTouch.h>
+
 #include "ChangeTempo.h"
 
 #include <math.h>
@@ -26,8 +28,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/valtext.h>
-
-#include <SoundTouch.h>
 
 
 //
