@@ -566,15 +566,11 @@ void AudacityProject::FixScrollbars()
    if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
       mViewInfo.vpos = 0;
       mTrackPanel->Refresh();
-      //REDRAW(trackPanel);
-      //REDRAW(rulerPanel);
       rescroll = false;
    }
    if (mViewInfo.screen >= mViewInfo.total && mViewInfo.sbarH != 0) {
       mViewInfo.sbarH = 0;
       mTrackPanel->Refresh();
-      //REDRAW(trackPanel);
-      //REDRAW(rulerPanel);
       rescroll = false;
    }
 
@@ -587,11 +583,8 @@ void AudacityProject::FixScrollbars()
 
    mViewInfo.lastZoom = mViewInfo.zoom;
 
-   if (rescroll && mViewInfo.screen < mViewInfo.total) {
+   if (rescroll && mViewInfo.screen < mViewInfo.total)
       mTrackPanel->Refresh();
-      //REDRAW(trackPanel);
-      //REDRAW(rulerPanel);
-   }
 }
 
 void AudacityProject::HandleResize()
