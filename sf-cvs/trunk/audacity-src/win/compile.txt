@@ -4,10 +4,11 @@ Authors:
   Vince Busam
   Steve Jolly
   Shane Mueller
+  Vaughan Johnson
 
 ================================================================
-This version is currently accurate for Audacity version 1.1.
-Last Updated: July 13, 2002
+This version is currently accurate for Audacity version 1.1.1.
+Last Updated: November 10, 2002
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -33,11 +34,13 @@ attempting to compile Audacity, or nothing will work!
 
 wxWindows is available from http://www.wxwindows.org.
 Similar to the Linux kernel, wxWindows is available as
-stable and development branches.  Audacity is currently
-written against wxWindows 2.2.9, which can be downloaded
-from
+stable and development branches.  
 
-  http://www.wxwindows.org/dl_msw2.htm#stable
+Audacity 1.1.1 uses wxWindows 2.3.3, the unstable development 
+branch, available at
+
+  http://www.wxwindows.org/dl_msw2.htm#dev
+
 
 ------------------------
 STEP 2:  Build wxWindows
@@ -49,8 +52,8 @@ statically-linked run-time libraries instead of the
 multithreaded DLL run-time libraries.  This isn't hard:
 
 1. Launch Visual C++ and open the workspace file called
-   "wxvc.dsw" in the "wx2\src" directory of your wxWindows
-   installation.  (Ignore "wxvc_dll.dsw".)
+   "wxWindows.dsw" in the "src" directory of your wxWindows
+   installation.
 
 2. Select "Project"->"Settings" (Alt+F7), choose "Win32 Release"
    in the "Settings For" combo box and select everything visible
@@ -84,95 +87,28 @@ STEP 4:  Set wxWindows location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWindows.
 There are three settings that need changing:
-    1.  Include Directories (e.g. D:\wxWindows\wx2\include)
-    2.  Resource Directory  (e.g. D:\wxWindows\wx2\include)
-    3.  Library Directory   (e.g. D:\wxWindows\wx2\lib)
+    1.  Include Directory (e.g., "C:\wxWindows_2.3.3\include")
+    2.  Resource Directory (e.g., "C:\wxWindows_2.3.3\include")
+    3.  Library Directory (e.g., "C:\wxWindows_2.3.3\lib")
 
-All of the examples below assume you have installed the
-wxWindows directory at "D:\wxWindows" and therefore the
-"D:\wxWindows\wx2" directory exists.
+Fortunately, this is parameterized, using a Windows system 
+environment variable. There are various ways to set these, so 
+look in the Windows help system. You want to creat an 
+environment variable WXWIN, set to the top-level directory 
+where you installed wxWindows. For example, 
+in your Autoexec.bat file, you might have a line:
 
-There are at least three ways you can set the directories.
-Select the best option for your development environment.
-If you are not sure which option is best for you, start out
-using Option 4.1.  You can always switch to another option
-later.
+   set WXWIN="C:\wxWindows_2.3.3"
 
------------------------------------------------------
-OPTION 4-1. Set wxWindows directories global for VC++
------------------------------------------------------
-This is the "easiest" option, and you only have to do it once.
-The disadvantage is it puts the wxWindows directories in
-the path for all of the builds you do from Visual Studio for
-VC++.
+Note that you don't want a trailing backslash on that. In the 
+Audacity project file, there are declarations like 
 
-Go to the "Tools"->"Option" menu item in Visual Studio.
-Select the Directories tab in the popup.
+   $(WXWIN)\include
 
-1.  Select "Include files" in the right combo box and add the
-    wxWindows include directory to the end of the list.  This
-    also sets the resource directory automatically.
-    (Hint: Click twice on the empty dotted box.)
-2.  Select "Library files" in the right combo box and add the
-    wxWindows lib directory to the end of the list.
+that get interpreted as, e.g., "C:\wxWindows_2.3.3\include".
 
-------------------------------------------------------------
-OPTION 4-2. Set a virtual drive for your wxWindows directory
-------------------------------------------------------------
-(NB: This option is only applicable if you are running 
-Windows 95, 98 or ME)
-
-The audacity.dsp file assumes that you might have wxWindows
-installed on your "W:" drive.  Normally "W:" is not a drive
-on most systems but it is very easy to map your wxWindows
-directory to act as a "W:" virtual drive.
-
-In your C:autoexec.bat file, add the following line:
-
-subst W: D:\wxWindows\
-
-where instead of "D:\wxWindows\" you put the acutal
-directory where you have installed wxWindows.
-
-Reboot your system.  In Windows Explorer (or My Computer)
-you should now see a W: drive with the wx2 directory in it.
-
-This option may not be the best option for everyone because
-there have been reports of filesharing problems with files
-in virtual drives.  However, you only have to set this up
-once - not everytime you download a new version of Audacity. 
-
---------------------------------------------------------------
-OPTION 4-3. Set wxWindows directories in the Audacity dsp file
---------------------------------------------------------------
-This option sets the wxWindows directories only for the Audacity
-project; it does not affect any other projects you have.  The
-disadvantage is that you have to redo this change everytime you
-download a new version of audacity.dsp.
-
-Go to the "Project"->"Settings" menu item in Visual Studio.
-
-1. Include Directory. Select "All Configurations" from the
-   "Settings For" combo and select all the top-level entries in
-   the tree. Choose the "C/C++" tab, select "Preprocessor" from
-   "Category" combo and enter the path of your wx2\include
-   the directory in the "Additional Include Directories" box.
-   (e.g. If you installed wxWindows in a directory called
-   "D:\wxWindows" then enter "D:\wxWindows\wx2\include".)
-   (Note: It may only be necessary to select the Audacity entry
-   and not all top-level entries.  Would someone please try this
-   and report?)
-
-2. Resource Directory.  Select the "Resources" tab and add the
-   same path as for the Include Directory in the "Additional
-   resource include directories" box.
-
-3. Libraries.  Deselect everything in the tree but
-   "Audacity" and click on the "Link" tab.  Select "Input" from
-   the "Category" combo and add the path of your wx2\lib
-   directory to the end of the list of paths in the "Additional
-   library path" box.  (eg ",D:\wxWindows\wx2\lib" - don't
-   forget the comma!)
+Once you have set the WXWIN environment variable correctly, 
+the Audacity project file's declarations will do the rest.
 
 ---------------------------
 STEP 5:  Ignore lib setting
@@ -194,6 +130,10 @@ Release build, or "libcmt.lib" for a Debug build.
 -----------------------
 STEP 6:  Build Audacity
 -----------------------
+To build libsndfile on Windows, you'll need to copy both 
+"sndfile.h" and "config.h" from "libsndfile/Win32/" to 
+"libsndfile/src/" before you compile. 
+
 Now select the configuration that you wish to build
 ("Audacity - Win32 Release" for general use, "Audacity -
 Win32 Debug" for a slower but debuggable executable) from
