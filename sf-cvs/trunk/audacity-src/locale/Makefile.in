@@ -39,7 +39,7 @@ XGETTEXT=xgettext
 XARGS=xargs
 
 # common xgettext args: C++ syntax, use the specified macro names as markers
-XGETTEXT_ARGS=-C -k_ -s -j
+XGETTEXT_ARGS=-C -k_ -s -j --add-comments="i18n-hint"
 
 # implicit rules
 
