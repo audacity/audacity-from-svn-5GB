@@ -180,6 +180,8 @@ CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cflags`"
 if [[ "$host_os" = "darwin5.3" ]] ; then
 	dnl Mac OS X CoreAudio configuration
 
+	CXXFLAGS="-I../mac $CXXFLAGS"
+
 	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
