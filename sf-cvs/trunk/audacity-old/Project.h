@@ -122,6 +122,9 @@ public:
   void OnImportRaw(wxCommandEvent& event);
 
   void OnQuickMix(wxCommandEvent& event);
+  
+  void OnAlignZero(wxCommandEvent& event);
+  void OnAlign(wxCommandEvent& event);
 
   void OnNewWaveTrack(wxCommandEvent& event);
   void OnNewLabelTrack(wxCommandEvent& event);

@@ -25,7 +25,10 @@
 #include <wx/string.h>
 #endif
 
+#ifndef __WXMAC__
 #include <wx/dragimag.h>
+#endif
+
 #include <wx/textfile.h>
 
 #include "AboutDialog.h"
@@ -174,7 +177,8 @@ enum {
   ImportMP3ID,
   ImportRawID,
   
-  // Track Menu
+  AlignZeroID,
+  AlignID,
 
   NewWaveTrackID,
   NewLabelTrackID,
@@ -234,6 +238,8 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
   EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
   EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
+  EVT_MENU(AlignID, AudacityProject::OnAlign)
+  EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
   EVT_MENU(QuickMixID, AudacityProject::OnQuickMix)
   EVT_MENU(NewWaveTrackID, AudacityProject::OnNewWaveTrack)
   EVT_MENU(NewLabelTrackID, AudacityProject::OnNewLabelTrack)
@@ -332,6 +338,9 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(QuickMixID, "&Quick Mix");
+  mProjectMenu->AppendSeparator();
+  mProjectMenu->Append(AlignID, "Align Tracks Together");
+  mProjectMenu->Append(AlignZeroID, "Align with Zero");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(NewWaveTrackID, "New &Audio Track");
   mProjectMenu->Append(NewLabelTrackID, "New &Label Track");
@@ -1613,8 +1622,64 @@ void AudacityProject::OnQuickMix(wxCommandEvent& event)
     PushState();
     
     FixScrollbars();
-	mTrackPanel->Refresh(false);
+    mTrackPanel->Refresh(false);
   }
+}
+
+void AudacityProject::OnAlignZero(wxCommandEvent& event)
+{
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
+
+  while(t) {
+		if (t->selected)
+		  t->tOffset = 0.0;
+
+		t = iter.Next();
+  }
+
+  PushState();
+
+  mTrackPanel->Refresh(false);
+  UpdateMenus();
+}
+
+void AudacityProject::OnAlign(wxCommandEvent& event)
+{
+  double avg = 0.0;
+  int num = 0;
+
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
+
+  while(t) {
+		if (t->selected) {
+		  avg += t->tOffset;
+		  num++;
+		}
+
+		t = iter.Next();
+  }
+  
+  if (num) {
+    avg /= num;
+  
+	  TrackListIterator iter2(mTracks);
+	  t = iter2.First();
+
+	  while(t) {
+			if (t->selected)
+			  t->tOffset = avg;
+
+			t = iter2.Next();
+	  }
+  }
+
+  PushState();
+
+  mTrackPanel->Refresh(false);
+  UpdateMenus();
+  
 }
 
 void AudacityProject::OnNewWaveTrack(wxCommandEvent& event)
