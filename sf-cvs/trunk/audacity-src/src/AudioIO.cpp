@@ -164,10 +164,10 @@ AudioIO::AudioIO()
       errStr += _("You will not be able to play or record audio.\n\n");
       wxString paErrStr = Pa_GetErrorText(err);
       if (paErrStr)
-         errStr += "Error: "+paErrStr;
+         errStr += _("Error: ")+paErrStr;
       // XXX: we are in libaudacity, popping up dialogs not allowed!  A
       // long-term solution will probably involve exceptions
-      wxMessageBox(errStr, "Error Initializing Audio", wxICON_ERROR|wxOK);
+      wxMessageBox(errStr, _("Error Initializing Audio"), wxICON_ERROR|wxOK);
 
       // Since PortAudio is not initialized, all calls to PortAudio
       // functions will fail.  This will give reasonable behavior, since

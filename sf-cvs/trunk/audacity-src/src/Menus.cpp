@@ -100,11 +100,6 @@ void AudacityProject::CreateMenusAndCommands()
    wxArrayString names;
    unsigned int i;
 
-// Use the following to build only a tiny part of the interface
-// So as to track down the memory leak.
-//#define BuildInterface 1
-#define BuildInterface 0
-
    wxMenuBar *menubar = c->AddMenuBar("appmenu");
 
    c->BeginMenu(_("&File"));
@@ -114,8 +109,10 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("Save",           _("&Save Project\tCtrl+S"),          FN(OnSave));
    c->AddItem("SaveAs",         _("Save Project &As..."),            FN(OnSaveAs));
    c->AddSeparator();
-   c->AddItem("Export",         "Export As...",                      FN(OnExportMix));
-   c->AddItem("ExportSel",      "Export Selection As...",            FN(OnExportSelection));
+   // These 'export' strings are modified later in ModifyExportMenus(), so don't put them
+   // up for i18n as it just makes more work for the translators.
+   c->AddItem("Export",         "Export As...",                   FN(OnExportMix));
+   c->AddItem("ExportSel",      "Export Selection As...",         FN(OnExportSelection));
    c->AddSeparator();
    c->AddItem("ExportMP3",      _("Export As MP3..."),               FN(OnExportMP3Mix));
    c->AddItem("ExportMP3Sel",   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));

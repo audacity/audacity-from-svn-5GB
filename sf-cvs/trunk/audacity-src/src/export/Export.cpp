@@ -177,7 +177,7 @@ wxString ExportCommon(AudacityProject *project,
       if ((nameOnly.Left(1)=="." && extension=="") ||
           (nameOnly=="" && extension!="")) {
          wxString prompt =
-            "Are you sure you want to save the file as \""+
+            _("Are you sure you want to save the file as \"")+
             ::wxFileNameFromPath(fName)+"\"?\n";
          
          int action = wxMessageBox(prompt,
@@ -215,11 +215,11 @@ wxString ExportCommon(AudacityProject *project,
          #endif
 
          wxString prompt;
-         prompt.Printf("You are about to save a %s file with the name %s.\n"
+         prompt.Printf(_("You are about to save a %s file with the name %s.\n"
                        "Normally these files end in %s, and some programs "
                        "will not open files with nonstandard extensions.\n"
                        "Are you sure you want to save the file "
-                       "under this name?",
+                       "under this name?"),
                        (const char *)format,
                        (const char *)("\""+nameOnly+"."+extension+"\""),
                        (const char *)("\"."+defaultExtension+"\""));
