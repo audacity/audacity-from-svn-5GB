@@ -23,23 +23,22 @@ Als je de stabiele broncode van Audacity wilt gebruiken, versie 1.2.x, dien je n
 <h4>Anonieme CVS toegang met een command-line cvs client:</h4>
 <p>Tik het volgende in op de command line (merk op dat het een 
 enkele zin is zonder entertoets aanslagen):<br>
-<ul><tt>cvs -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity
+<ul><tt>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity
 login </tt><br></ul>
 en druk de entertoets in als om een wachtwoord wordt gevraagd.
 
 <p>Dan, <b>om de laatste branch te verkrijgen(1.3.0)</b> (als een enkele zin):
 <br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
 of <b>voor de stabiele branch (1.2.0)</b> (als een enkele zin):<br>
-   <ul><tt>cvs -z3 -
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r AUDACITY_1_2 audacity</tt></ul>
 of <b>voor de oude 1.0 branch (1.0.0)</b> (als een enkele zin):<br>
-   <ul><tt>cvs -z3 -
-d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
+   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Als alternatief kun je je <tt>CVSROOT</tt> omgeving
-aanapssen naar
-<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
+aanpassen naar
+<tt>:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt>
 (zie hieronder).<br>
 Dan, <b>om de laatste instabiele branch te verkrijgen (1.3.0)</b>, toets in<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
@@ -53,20 +52,20 @@ je je command shell's bronbestand gebruiken, of een van de volgende
 commando's:
 <h5>In bash of bourne shell, als een enkele zin:</h5>
 <ul><tt>export
-CVSROOT=:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
-<h5>In csh of een gelijke daarvan, in een enkele zin</h5>
+CVSROOT=:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
+<h5>In csh of een opvolger daarvan, in een enkele zin</h5>
 <ul><tt>setenv CVSROOT
-:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt><br></ul>
+:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt><br></ul>
 
 <hr width="80%">
 
 <h4>Anonieme CVS toegang met een grafische client</h4>
 
 Voor een grafische client zoals wincvs, maccvs, of gcvs,
-(beschikbaar op <a href="http://cvsgui.org">cvsgui.org</a>) moet je
+(beschikbaar op <a href="http://wincvs.org">wincvs.org</a>) moet je
 de 
 <tt>CVSROOT</tt> variabel (in het Admin|voorkeuren submenu) instellen als 
-<tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
+<tt>:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity</tt>
 en selecteer "pserver" of "Password" authenticatie. Dan, moet je je,
 onder de Globals tab van de Voorkeurs dialoog, ervan vergewissen
 dat je "Checkout read-only (CVSREAD)" niet hebt afgevinkt.  Dan,
@@ -74,7 +73,7 @@ login kiezen, en de entertoets indrukken voor het wachtwoord (het is
 ""). Tenslotte, kies "Create|Checkout module", kies een
 locatie waar je de checked-out branch wilt plaatsen, en
 volg de instructies hieronder afhankelijk van welke branch dat je wilt.
-Als je een foutmelding krijgt, vergewis je er dan van dat je de <tt>CVSROOT</tt>
+Als je een foutmelding krijgt, vergewis je er dan van dat de <tt>CVSROOT</tt>
 variabel aan het einde geen spaties bevat--wat
 zou kunnen gebeuren als je de variabellen rechtstreeks van deze webpagina hebt gekopieerd.
 
