@@ -109,7 +109,7 @@ enum {
    ImportLabelsID,
    ImportMIDIID,
    ImportRawID,
-#ifdef USE_ID3LIB
+#ifdef USE_LIBID3TAG
    SeparatorIDimportraw,
    EditID3ID,
 #endif
@@ -224,7 +224,7 @@ enum {
    CMD_ADDMENU("Import Labels...", "Import Labels...", OnImportLabels, projectMenu, enabledMenu);
    CMD_ADDMENU("Import &MIDI...", "Import MIDI", OnImportMIDI, projectMenu, enabledMenu);
    CMD_ADDMENU("Import Raw Data...", "Import Raw Data", OnImportRaw, projectMenu, enabledMenu);
-#ifdef USE_ID3LIB
+#ifdef USE_LIBID3TAG
    CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("Edit ID3 Tags...", "Edit ID3 Tags", OnEditID3, projectMenu, enabledMenu);
 #endif
