@@ -235,8 +235,7 @@ class TrackPanel:public wxWindow {
    void OnChangeOctave (wxEvent &event);
    void OnChannelChange(wxEvent &event);
    void OnSetDisplay   (wxEvent &event);
-   void OnSetTimeTrackRange ();
-   void OnSetTimeTrackConverter();
+   void OnSetTimeTrackRange (wxEvent &event);
 
    void SetMenuCheck( wxMenu & menu, int newId );
    void SetRate(Track *pTrack, double rate);
