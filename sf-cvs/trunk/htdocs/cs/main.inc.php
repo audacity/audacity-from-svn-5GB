@@ -38,7 +38,7 @@ $browseDoxygenStr = "Procházet dokumentaci Doxygen";
 $creditsStr = "Podìkování";
 $sourceStr = "Zdrojový kód";
 $sourceDepStr = "Závislosti zdrojového kódu";
-$linuxStr = "Linuxová binárka";
+$linuxStr = "Pøeložený program pro Linux";
 $linuxStr2 = "Toto je staticky pøeložený program, který by mìl fungovat na jakékoliv Linuxové distribuci. Prostì jen rozbalte a spuste binárku 'audacity', nebo mùžete instalovat tak, že jako root zadáte  'make install'.";
 $macOS9ReqStr = "Vyžaduje  Mac OS 8.6 nebo vyšší";
 $macOSXReqStr = "Vyžaduje Mac OS X 10.1 nebo vyšší";
@@ -60,7 +60,7 @@ $releaseNotesStr = "Poznámky k vydání";
 $releaseNotesStr2 = "Poznámky k vydání (co je nového v této verzi?)";
 $vstLinksHereStr = "Zde stahujte VST Plug-iny";
 $altDownloadStr = "Máte problémy se stahováním? Potøebujete pøedchozí verzi?";
-$altDownloadStr2 = "Další odkazy na stežení najdete, když kliknete sem.";
+$altDownloadStr2 = "Další odkazy na stažení najdete, když kliknete sem.";
 $docsStr = "Stažení nejnovìjší dokumentace";
 $clickEnlargeStr = "(Kliknutím na obrázek zobrazíte zvìtšeninu.)";
 ?>
