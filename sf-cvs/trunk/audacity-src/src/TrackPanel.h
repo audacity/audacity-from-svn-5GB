@@ -28,6 +28,7 @@ class TrackArtist;
 class WaveTrack;
 class Ruler;
 class LWSlider;
+class ControlToolBar; //Needed because state of controls can affect what gets drawn.
 
 struct ViewInfo;
 
@@ -45,6 +46,7 @@ class TrackPanelListener {
  public:
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
    virtual int TP_GetCurrentTool() = 0;
+   virtual ControlToolBar * TP_GetControlToolBar() = 0;
    virtual void TP_OnPlayKey() = 0;
    virtual void TP_PushState(wxString desc) = 0;
    virtual void TP_RedrawScrollbars() = 0;
@@ -97,6 +99,12 @@ class TrackPanel:public wxWindow {
    void ScrollDuringDrag();
    void UpdateIndicator(wxDC * dc = NULL);
    void RemoveStaleIndicators(wxRegionIterator * upd);
+
+   // Working out where to dispatch the event to.
+   int DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event);
+   bool HitTestEnvelope(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
+   bool HitTestSamples(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
+   bool HitTestSlide(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event);
 
    // AS: Selection handling
    void HandleSelect(wxMouseEvent & event);

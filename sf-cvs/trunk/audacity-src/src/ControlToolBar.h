@@ -42,12 +42,14 @@ class wxPoint;
 
 enum {
    selectTool,
+   zoomTool,
    envelopeTool,
    slideTool,
-   zoomTool,
    drawTool,
    numTools
 };
+
+
 
 
 class ControlToolBar:public ToolBar {
@@ -60,11 +62,10 @@ class ControlToolBar:public ToolBar {
 
    void UpdatePrefs();
 
-   int GetCurrentTool();
-
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
+   void OnMultiTool(wxCommandEvent & evt);
 
    void OnRewind(wxCommandEvent &evt);
    void OnPlay(wxCommandEvent &evt);
@@ -77,14 +78,26 @@ class ControlToolBar:public ToolBar {
    void SetPlay(bool down);
    void SetStop(bool down);
    void SetRecord(bool down);
+   void SetCurrentTool(int tool, bool show);
 
+   //These interrogate the state of the buttons or controls.
    float GetSoundVol();
+   int GetCurrentTool();
+   bool GetSelectToolDown();
+   bool GetZoomToolDown();
+   bool GetEnvelopeToolDown();
+   bool GetSlideToolDown();
+   bool GetDrawToolDown();
+   bool GetMultiToolDown();
+
+   const char * GetMessageForTool( int ToolNumber );
 
    virtual void EnableDisableButtons();
 
  private:
 
    void InitializeControlToolBar();
+   void RegenerateToolsTooltips();
 
    wxImage *MakeToolImage(wxImage * tool, wxImage * mask, int style);
    AButton *MakeTool(const char **tool, const char **alpha,
@@ -95,6 +108,7 @@ class ControlToolBar:public ToolBar {
    int mButtonPos;
 
    AButton *mTool[numTools];
+   AButton *mMultiTool;
 
    AButton *mRewind;
    AButton *mPlay;
@@ -107,6 +121,7 @@ class ControlToolBar:public ToolBar {
 
    ASlider *mVolume;
    int mCurrentTool;
+   int mPreviousTool;
 
    wxBitmap *mDivBitmap;
    wxBitmap *mMuteBitmap;
@@ -116,8 +131,9 @@ class ControlToolBar:public ToolBar {
    wxImage *downPattern;
    wxImage *hilitePattern;
 
-   bool mPaused;         //Determines which state we are in (paused or not paused)
-   //                      This maybe doesn't belong in the toolbar.
+   //Maybe button state values shouldn't be duplicated in this toolbar?
+   bool mInMultiMode;    //If true, tool to apply is determined by mouse x,y.
+   bool mPaused;         //Play or record is paused or not paused?
    bool mAlwaysEnablePause;
 
    DECLARE_EVENT_TABLE()

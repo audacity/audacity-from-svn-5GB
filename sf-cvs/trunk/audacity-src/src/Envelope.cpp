@@ -164,7 +164,7 @@ void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
          if (dB)
             y = int (toDB(v) * height);
          else
-         y = int (v * height);
+            y = int (v * height);
 
          wxRect circle(r.x + x - 1, ctr - y, 4, 4);
          dc.DrawEllipse(circle);
@@ -282,15 +282,10 @@ bool Envelope::Save(wxTextFile * out, bool overwrite)
 
 #endif /* LEGACY_PROJECT_FILE_SUPPORT */
 
-
-// Returns true if parent needs to be redrawn
-bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
-                          double h, double pps, bool dB)
+//
+void Envelope::GetEventParams( int &ctr, int &height, bool &upper, 
+   wxMouseEvent & event, wxRect & r )
 {
-   //h -= mOffset;
-
-   int ctr, height;
-   bool upper;
    if (mMirror) {
       height = r.height / 2;
       ctr = r.y + height;
@@ -301,158 +296,192 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       ctr = r.y + height;
       upper = true;
    }
-
-   if (event.ButtonDown()) {
-      mIsDeleting = false;
-      double tleft = h - mOffset;
-      double tright = tleft + (r.width / pps);
-      int bestNum = -1;
-      int bestDist = 10;
-
-      int len = mEnv.Count();
-      for (int i = 0; i < len; i++) {
-         if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
-            double v = mEnv[i]->val;
-            int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
-            int dy;
-
-            if (dB)
-               dy = int (toDB(v) * height);
-            else
-            dy = int (v * height);
-
-            int y;
-            if (upper)
-               y = int (ctr - dy);
-            else
-            y = int (ctr + dy);
+}
 
 #ifndef SQR
 #define SQR(X) ((X)*(X))
 #endif
 
-            int d =
-                int (sqrt(SQR(x - event.m_x) + SQR(y - event.m_y)) + 0.5);
-            if (d < bestDist) {
-               bestNum = i;
-               bestDist = d;
-            }
-         }
-      }
+bool Envelope::HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
+                          double h, double pps, bool dB )
+{
+   int ctr, height;
+   bool upper;
+   GetEventParams( ctr, height, upper, event, r );
 
-      if (bestNum >= 0) {
-         mDragPoint = bestNum;
-      } else {
-         // Create new point
-         double when = h + (event.m_x - r.x) / pps - mOffset;
+   mIsDeleting = false;
+   double tleft = h - mOffset;
+   double tright = tleft + (r.width / pps);
+   int bestNum = -1;
+   int bestDist = 10;
 
-         if (when <= 0 || when >= mTrackLen)
-            return false;
-
+   int len = mEnv.Count();
+   for (int i = 0; i < len; i++) {
+      if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
+         double v = mEnv[i]->val;
+         int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
          int dy;
-         if (upper)
-            dy = ctr - event.m_y;
-         else
-            dy = event.m_y - ctr;
-
-         double newVal;
 
          if (dB)
-            newVal = fromDB(dy / double (height));
+            dy = int (toDB(v) * height);
          else
-            newVal = dy / double (height);
+            dy = int (v * height);
 
-         if (newVal < 0.0)
-            newVal = 0.0;
-         if (newVal > 1.0)
-            newVal = 1.0;
+         int y;
+         if (upper)
+            y = int (ctr - dy);
+         else
+            y = int (ctr + dy);
 
-         mDragPoint = Insert(when, newVal);
-         mDirty = true;
+         int d =
+             int (sqrt(SQR(x - event.m_x) + SQR(y - event.m_y)) + 0.5);
+         if (d < bestDist) {
+            bestNum = i;
+            bestDist = d;
+         }
       }
-
-      mUpper = upper;
-
-      mInitialWhen = mEnv[mDragPoint]->t;
-      mInitialVal = mEnv[mDragPoint]->val;
-
-      mInitialX = event.m_x;
-      mInitialY = event.m_y;
-
-      return true;
    }
 
-   if (event.Dragging() && mDragPoint >= 0) {
-      mDirty = true;
+   if (bestNum >= 0) {
+      mDragPoint = bestNum;
+   } else {
+      // Create new point
+      double when = h + (event.m_x - r.x) / pps - mOffset;
 
-      wxRect larger = r;
-      larger.Inflate(5, 5);
-
-      if (!mIsDeleting &&
-          mDragPoint > 0 && mDragPoint < (int)mEnv.Count() - 1 &&
-          !larger.Inside(event.m_x, event.m_y)) {
-
-         mEnv[mDragPoint]->t = mEnv[mDragPoint - 1]->t;
-         mEnv[mDragPoint]->val = mEnv[mDragPoint - 1]->val;
-
-         mIsDeleting = true;
-
-         return true;
-      }
-
-      if (larger.Inside(event.m_x, event.m_y))
-         mIsDeleting = false;
-
-      if (mIsDeleting)
+      if (when <= 0 || when >= mTrackLen)
          return false;
 
-      int y;
-      if (mUpper)
-         y = ctr - event.m_y;
+      int dy;
+      if (upper)
+         dy = ctr - event.m_y;
       else
-         y = event.m_y - ctr;
+         dy = event.m_y - ctr;
 
       double newVal;
 
       if (dB)
-         newVal = fromDB(y / double (height));
+         newVal = fromDB(dy / double (height));
       else
-         newVal = y / double (height);
+         newVal = dy / double (height);
 
       if (newVal < 0.0)
          newVal = 0.0;
       if (newVal > 1.0)
          newVal = 1.0;
 
-      double newWhen = mInitialWhen + (event.m_x - mInitialX) / pps;
+      mDragPoint = Insert(when, newVal);
+      mDirty = true;
+   }
 
-      if (mDragPoint > 0 && newWhen < mEnv[mDragPoint - 1]->t)
-         newWhen = mEnv[mDragPoint - 1]->t;
+   mUpper = upper;
 
-      if (mDragPoint < (int)mEnv.Count() - 1
-          && newWhen > (double)mEnv[mDragPoint + 1]->t)
-         newWhen = mEnv[mDragPoint + 1]->t;
+   mInitialWhen = mEnv[mDragPoint]->t;
+   mInitialVal = mEnv[mDragPoint]->val;
 
-      if (mDragPoint == 0)
-         newWhen = 0;
+   mInitialX = event.m_x;
+   mInitialY = event.m_y;
 
-      if (mDragPoint == (int)mEnv.Count() - 1)
-         newWhen = mTrackLen;
+   return true;
+}
 
-      mEnv[mDragPoint]->t = newWhen;
-      mEnv[mDragPoint]->val = newVal;
+bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
+                          double h, double pps, bool dB )
+{
+   int ctr, height;
+   bool upper;
+   GetEventParams( ctr, height, upper, event, r );
+
+   mDirty = true;
+
+   wxRect larger = r;
+   larger.Inflate(5, 5);
+
+   if (!mIsDeleting &&
+       mDragPoint > 0 && mDragPoint < (int)mEnv.Count() - 1 &&
+       !larger.Inside(event.m_x, event.m_y)) {
+
+      mEnv[mDragPoint]->t = mEnv[mDragPoint - 1]->t;
+      mEnv[mDragPoint]->val = mEnv[mDragPoint - 1]->val;
+
+      mIsDeleting = true;
 
       return true;
    }
 
-   if (event.ButtonUp()) {
-      if (mIsDeleting) {
-         delete mEnv[mDragPoint];
-         mEnv.RemoveAt(mDragPoint);
-      }
-      mDragPoint = -1;
-      return true;
+   if (larger.Inside(event.m_x, event.m_y))
+      mIsDeleting = false;
+
+   if (mIsDeleting)
+      return false;
+
+   int y;
+   if (mUpper)
+      y = ctr - event.m_y;
+   else
+      y = event.m_y - ctr;
+
+   double newVal;
+
+   if (dB)
+      newVal = fromDB(y / double (height));
+   else
+      newVal = y / double (height);
+
+   if (newVal < 0.0)
+      newVal = 0.0;
+   if (newVal > 1.0)
+      newVal = 1.0;
+
+   double newWhen = mInitialWhen + (event.m_x - mInitialX) / pps;
+
+   if (mDragPoint > 0 && newWhen < mEnv[mDragPoint - 1]->t)
+      newWhen = mEnv[mDragPoint - 1]->t;
+
+   if (mDragPoint < (int)mEnv.Count() - 1
+       && newWhen > (double)mEnv[mDragPoint + 1]->t)
+      newWhen = mEnv[mDragPoint + 1]->t;
+
+   if (mDragPoint == 0)
+      newWhen = 0;
+
+   if (mDragPoint == (int)mEnv.Count() - 1)
+      newWhen = mTrackLen;
+
+   mEnv[mDragPoint]->t = newWhen;
+   mEnv[mDragPoint]->val = newVal;
+
+   return true;
+}
+
+bool Envelope::HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
+                          double h, double pps, bool dB )
+{
+   int ctr, height;
+   bool upper;
+   GetEventParams( ctr, height, upper, event, r );
+
+   if (mIsDeleting) {
+      delete mEnv[mDragPoint];
+      mEnv.RemoveAt(mDragPoint);
    }
+   mDragPoint = -1;
+   return true;
+}
+
+
+// Returns true if parent needs to be redrawn
+bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
+                          double h, double pps, bool dB)
+{
+
+   if (event.ButtonDown())
+      return HandleMouseButtonDown( event, r, h, pps,dB );
+
+   if (event.Dragging() && mDragPoint >= 0) 
+      return HandleDragging( event, r, h, pps,dB );
+
+   if (event.ButtonUp()) 
+      return HandleMouseButtonUp( event, r, h, pps,dB );
 
    return false;
 }
@@ -626,6 +655,15 @@ double Envelope::GetValue(double t) const
    GetValues(&temp, 1, t, 1.0);
    return temp;
 }
+
+// 'X' is in pixels and relative to track.
+double Envelope::GetValueAtX( int x, wxRect & r, double h, double pps )
+{
+   // Convert x to time.
+   double t = (x - r.x) / pps + h ;//-mOffset;
+   return GetValue( t );
+}
+
 
 void Envelope::GetValues(double *buffer, int bufferLen,
                          double t0, double tstep) const

@@ -917,20 +917,6 @@ void TrackPanel::MakeParentResize()
    mListener->TP_HandleResize();
 }
 
-// AS: This is still bad unclean: it's dependant on select=0, envelope=1, 
-//  move/slide=2, zoom=3, and draw=4.  And this should go somewhere else...
-const char *pMessages[] = { _("Click and drag to select audio"),
-   _("Click and drag to edit the amplitude envelope"),
-   _("Click and drag to move a track in time"),
-#if defined( __WXMAC__ )
-   _("Click to Zoom In, Shift-Click to Zoom Out"),
-#elif defined( __WXMSW__ )
-   _("Left-Click to Zoom In, Right-Click to Zoom Out"),
-#elif defined( __WXGTK__ )
-   _("Left=Zoom In, Right=Zoom Out, Middle=Normal"),
-#endif
-   _("Click and drag to edit the samples")
-};
 
 
 // AS: THandleCursor( ) sets the cursor drawn at the mouse location.
@@ -981,11 +967,21 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    }
    // Otherwise, we must be over the wave window 
    else {
-      int operation = mListener->TP_GetCurrentTool();
-      tip = pMessages[operation];
+
+      //JKC: DetermineToolToUse is called whenever the mouse 
+      //moves.  I had some worries about calling it when in 
+      //multimode as it then has to hit-test all 'objects' in
+      //the track panel, but performance seems fine in 
+      //practice (on a P700).
+      ControlToolBar * ctb = mListener->TP_GetControlToolBar();
+      if( ctb == NULL )
+         return;
+
+      int tool = DetermineToolToUse( ctb, event );
+      tip = ctb->GetMessageForTool( tool );
 
       // Change the cursor based on the selected tool.
-      switch (operation) {
+      switch (tool) {
       case selectTool:
          SetCursor(*mSelectCursor);
 
@@ -1309,53 +1305,53 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 void TrackPanel::ForwardEventToEnvelope(wxMouseEvent & event)
 {
    if (mCapturedTrack && mCapturedTrack->GetKind() == Track::Time)
-     {
-       TimeTrack *ptimetrack = (TimeTrack *) mCapturedTrack;
-       Envelope *pspeedenvelope = ptimetrack->GetEnvelope();
-       
-       bool needUpdate = pspeedenvelope->MouseEvent(event, mCapturedRect,
-						    mViewInfo->h, mViewInfo->zoom,
-						    false);
-       if( needUpdate )
-	 {
-	   //ptimetrack->Draw();
-	   Refresh(false);
-	 }
-     }
+   {
+      TimeTrack *ptimetrack = (TimeTrack *) mCapturedTrack;
+      Envelope *pspeedenvelope = ptimetrack->GetEnvelope();
+      
+      bool needUpdate = pspeedenvelope->MouseEvent(event, mCapturedRect,
+         mViewInfo->h, mViewInfo->zoom,
+         false);
+      if( needUpdate )
+      {
+         //ptimetrack->Draw();
+         Refresh(false);
+      }
+   }
    else if (mCapturedTrack && mCapturedTrack->GetKind() == Track::Wave)
-     {
-       WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
-       Envelope *penvelope = pwavetrack->GetEnvelope();
-
-       // AS: WaveTracks can be displayed in several different formats.
-       //  This asks which one is in use. (ie, Wave, Spectrum, etc)
-       int display = pwavetrack->GetDisplay();
-       bool needUpdate = false;
-       
-       // AS: If we're using the right type of display for envelope operations
-       //  ie one of the Wave displays
-       if (display <= 1) {
-	 bool dB = (display == 1);
-	 
-	 // AS: Then forward our mouse event to the envelope.  It'll recalculate
-	 //  and then tell us wether or not to redraw.
-	 needUpdate = penvelope->MouseEvent(event, mCapturedRect,
-					    mViewInfo->h, mViewInfo->zoom,
-					    dB);
-	 
-	 // If this track is linked to another track, make the identical
-	 // change to the linked envelope:
-	 WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
-	 if (link) {
-	   Envelope *e2 = link->GetEnvelope();
-	   needUpdate |= e2->MouseEvent(event, mCapturedRect,
-					mViewInfo->h, mViewInfo->zoom, dB);
-	 }
-       }
-       if (needUpdate) {
-	 Refresh(false);
-       }
-     }
+   {
+      WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
+      Envelope *penvelope = pwavetrack->GetEnvelope();
+      
+      // AS: WaveTracks can be displayed in several different formats.
+      //  This asks which one is in use. (ie, Wave, Spectrum, etc)
+      int display = pwavetrack->GetDisplay();
+      bool needUpdate = false;
+      
+      // AS: If we're using the right type of display for envelope operations
+      //  ie one of the Wave displays
+      if (display <= 1) {
+         bool dB = (display == 1);
+         
+         // AS: Then forward our mouse event to the envelope.  It'll recalculate
+         //  and then tell us wether or not to redraw.
+         needUpdate = penvelope->MouseEvent(event, mCapturedRect,
+            mViewInfo->h, mViewInfo->zoom,
+            dB);
+         
+         // If this track is linked to another track, make the identical
+         // change to the linked envelope:
+         WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
+         if (link) {
+            Envelope *e2 = link->GetEnvelope();
+            needUpdate |= e2->MouseEvent(event, mCapturedRect,
+               mViewInfo->h, mViewInfo->zoom, dB);
+         }
+      }
+      if (needUpdate) {
+         Refresh(false);
+      }
+   }
 }
 
 void TrackPanel::HandleSlide(wxMouseEvent & event)
@@ -1458,16 +1454,14 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 //  out) and accidently drag as you do so.
 void TrackPanel::HandleZoom(wxMouseEvent & event)
 {
-   if (event.ButtonDown(1) || event.ButtonDClick(1)) {
+   if (event.ButtonDown() || event.ButtonDClick(1)) {
       mZoomStart = event.m_x;
       mZoomEnd = event.m_x;
-   } else if (event.Dragging() && event.LeftIsDown()) {
+   } else if (event.Dragging() ) {
+
       mZoomEnd = event.m_x;
-
       if (IsDragZooming()){
-
          Refresh(false);
-
       }
    } else if (event.ButtonUp()) {
 
@@ -2563,7 +2557,13 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       return;
    }
 
-   switch (mListener->TP_GetCurrentTool()) {
+   ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
+   if( pCtb == NULL )
+      return;
+
+   int toolToUse = DetermineToolToUse(pCtb, event);
+
+   switch (toolToUse) {
    case selectTool:
       HandleSelect(event);
       break;
@@ -2590,6 +2590,159 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       mCapturedTrack = NULL;
    }
 }
+
+
+int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
+{
+   int currentTool = pCtb->GetCurrentTool();
+
+   // Unless in Multimode keep using the current tool.
+   if( !pCtb->GetMultiToolDown() )
+      return currentTool;
+
+   // We NEVER change tools whilst we are dragging.
+   if( event.Dragging() )
+      return currentTool;
+
+   // Just like dragging.
+   // But, this event might be the final button up
+   // so keep the same tool.
+   if( mIsSliding || mIsSelecting || mIsEnveloping )
+      return currentTool;
+
+   // So now we have to find out what we are near to..
+   wxRect r;
+   int num;
+
+   Track *pTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
+   if( !pTrack )
+      return currentTool;
+
+   //Also exit if it's not a WaveTrack
+   if(pTrack->GetKind() != Track::Wave) 
+      return currentTool;
+
+   // The order in which we hit test determines 
+   // which tool takes priority in the rare cases where it
+   // could be more than one.
+   currentTool = selectTool; // the default.
+   if( HitTestEnvelope( pCtb, pTrack, r, event ) ){
+      currentTool = envelopeTool;
+   } else if( HitTestSlide( pCtb, pTrack, r, event )){
+      currentTool = slideTool;
+   } else if( HitTestSamples( pCtb, pTrack, r, event )){
+      currentTool = drawTool;
+   } else if( pCtb->GetSelectToolDown() && !event.ButtonIsDown(3) && !event.ButtonUp(3)){
+      currentTool = selectTool;
+   } else if( pCtb->GetZoomToolDown() ){
+      currentTool = zoomTool;
+   }
+   //Use the false argument since in multimode we don't 
+   //want the toolpanel to update.
+   pCtb->SetCurrentTool( currentTool, false );
+   return currentTool;
+}
+
+bool TrackPanel::HitTestEnvelope(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+{
+   if( !pCtb->GetEnvelopeToolDown() )
+      return false;
+
+   WaveTrack *wavetrack = (WaveTrack *)track;
+   Envelope *envelope = wavetrack->GetEnvelope();
+
+   int displayType = wavetrack->GetDisplay();
+   // Not an envelope hit, unless we're using a type of wavetrack display 
+   // suitable for envelopes operations, ie one of the Wave displays.
+   if ( displayType > 1) 
+      return false;  // No envelope, not a hit, so return.
+
+   // Get y distance of envelope point from center line (in pixels).
+   bool dB = (displayType == 1);
+   double envValue = envelope->GetValueAtX( 
+      event.m_x, r, mViewInfo->h, mViewInfo->zoom );
+   int yValue = mTrackArtist->GetWaveYPos( envValue, r.height/2, dB );
+   yValue = abs(yValue);
+
+   // Get y distance of mouse from center line (in pixels).
+   int ctr = r.y + r.height/2;
+   int yMouse = abs(ctr - event.m_y);
+   
+   // JKC: It happens that the envelope is actually drawn offset from its 
+   // 'true' position (it is 3 pixels wide).  yMisalign is really a fudge
+   // factor to allow us to hit it exactly, but I wouldn't dream of 
+   // calling it yFudgeFactor :)
+   const int yMisalign = 2; 
+   // Perhaps yTolerance should be put into preferences?
+   const int yTolerance = 5; // how far from envelope we may be and count as a hit.
+   return( abs( yValue - yMisalign - yMouse ) < yTolerance );
+}
+
+bool TrackPanel::HitTestSamples(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+{
+   if( !pCtb->GetDrawToolDown() )
+      return false;
+
+   WaveTrack *wavetrack = (WaveTrack *)track;
+   //Get rate in order to calculate the critical zoom threshold
+   double rate = wavetrack->GetRate();
+
+   //Find out the zoom level
+   bool showPoints = (mViewInfo->zoom / rate > 3.0);
+   if( !showPoints )
+      return false;
+
+   int displayType = wavetrack->GetDisplay();
+   if ( displayType > 1) 
+      return false;  // Not a wave, so return.
+
+   //Get the sequence of samples from the actual track structure
+   Sequence *seq = wavetrack->GetSequence();
+
+   float oneSample;
+   double pps = mViewInfo->zoom;
+   double tt = (event.m_x - r.x) / pps + mViewInfo->h - wavetrack->GetOffset();
+   int    s0 = (int)(tt * rate + 0.5);
+
+   // Just get one sample.
+   seq->Get((samplePtr)&oneSample, floatSample, s0, 1);
+   
+   // Get y distance of envelope point from center line (in pixels).
+   bool dB = (displayType == 1);
+   int yValue = mTrackArtist->GetWaveYPos( oneSample *
+      wavetrack->GetEnvelope()->GetValue(tt), r.height / 2, dB);   
+
+   // Get y distance of mouse from center line (in pixels).
+   int ctr = r.y + r.height/2;
+   int yMouse = ctr - event.m_y;
+
+   // Perhaps yTolerance should be put into preferences?
+   const int yTolerance = 10; // More tolerance on samples than on envelope.
+   return( abs( yValue -  yMouse ) < yTolerance );   
+}
+
+bool TrackPanel::HitTestSlide(ControlToolBar * pCtb, Track *track, wxRect &r, wxMouseEvent & event)
+{
+   if( !pCtb->GetSlideToolDown() )
+      return false;
+   // Perhaps we should delegate this to TrackArtist as only TrackArtist
+   // knows what the real sizes are??
+
+   // The drag Handle width includes border, width and a little extra margin.
+   const int adjustedDragHandleWidth = 14;
+   // The hotspot for the cursor isn't at its centre.  Adjust for this. 
+   const int hotspotOffset = 5;
+
+   // We are doing an approximate test here - is the mouse in the right or left border?
+   if( event.m_x + hotspotOffset < r.x + adjustedDragHandleWidth)
+      return true;
+
+   if( event.m_x + hotspotOffset > r.x + r.width - adjustedDragHandleWidth)
+      return true;
+
+   return false;
+}
+
 
 void TrackPanel::SetLabelFont(wxDC * dc)
 {
@@ -2939,13 +3092,19 @@ void TrackPanel::DrawTracks(wxDC * dc)
    tracksRect.x += GetLabelWidth();
    tracksRect.width -= GetLabelWidth();
 
-   // AS: Presumably 1 indicates that we are using the "Envelope"
-   //  adjusting tool (for changing the amplitude envelope).
-   bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
+   ControlToolBar *pCtb = mListener->TP_GetControlToolBar();
+   //No control tool bar?  All bets are off.  Could happen as the application closes.
+   if( pCtb == NULL )
+      return;
+
+   bool envelopeFlag = pCtb->GetEnvelopeToolDown();
+   bool samplesFlag  = pCtb->GetDrawToolDown();
+   bool sliderFlag   = pCtb->GetSlideToolDown()  && pCtb->GetMultiToolDown();
 
    // The track artist actually draws the stuff inside each track
    mTrackArtist->DrawTracks(mTracks, *dc, tracksRect,
-                            clip, mViewInfo, envelopeFlag);
+                            clip, mViewInfo, 
+                            envelopeFlag, samplesFlag, sliderFlag);
 
    DrawEverythingElse(dc, panelRect, clip);
 }

@@ -85,6 +85,7 @@ extern AProjectArray gAudacityProjects;
 WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 WX_DEFINE_ARRAY(wxMenu *, MenuArray);
 
+
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
                       public AStatusListener,
@@ -193,6 +194,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_HasMouse();
    virtual void TP_ScrollWindow(double scrollto);
    virtual void TP_HandleResize();
+   virtual ControlToolBar * TP_GetControlToolBar();
 
    // ToolBar
 

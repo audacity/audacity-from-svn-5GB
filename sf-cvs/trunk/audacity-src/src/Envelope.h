@@ -98,9 +98,17 @@ class Envelope : public XMLTagHandler {
 
    void Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB);
 
-   // Returns true if parents needs to be redrawn
+   // Each ofthese returns true if parents needs to be redrawn
    bool MouseEvent(wxMouseEvent & event, wxRect & r,
-                   double h, double pps, bool dB);
+      double h, double pps, bool dB);
+   bool HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
+      double h, double pps, bool dB );
+   bool HandleDragging( wxMouseEvent & event, wxRect & r,
+      double h, double pps, bool dB );
+   bool HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
+      double h, double pps, bool dB );
+   void GetEventParams( int &ctr, int &height, bool &upper, 
+      wxMouseEvent & event, wxRect & r );
 
    // Handling Cut/Copy/Paste events
    void CollapseRegion(double t0, double t1);
@@ -115,7 +123,8 @@ class Envelope : public XMLTagHandler {
 
    // Accessors
 
-   double GetValue(double t) const;
+   double GetValue(double t) const; // value at time.
+   double GetValueAtX( int x, wxRect & r, double h, double pps); // value at pixel X
 
    // This is much faster than calling GetValue() multiple times
    // if you need more than one value in a row.
