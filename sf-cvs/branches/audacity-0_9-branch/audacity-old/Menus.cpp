@@ -168,7 +168,6 @@ void AudacityProject::CreateMenuBar()
    mHelpMenu->Append(HelpSearchID, "Search Online Help...");
    mHelpMenu->AppendSeparator();
    mHelpMenu->Append(SetHelpFileID, "Locate Help File...");
-
 #endif
 
    mMenuBar->Append(mFileMenu, "&File");

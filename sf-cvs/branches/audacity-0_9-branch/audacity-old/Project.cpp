@@ -15,6 +15,11 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
+#include <Files.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
+
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP

@@ -1053,13 +1053,7 @@ void FreqWindow::OnExport()
       return;
 
    wxTextFile f(fName);
-#ifdef __WXMAC__
-   wxFile *temp = new wxFile();
-   temp->Create(fName);
-   delete temp;
-#else
    f.Create();
-#endif
    f.Open();
    if (!f.IsOpened()) {
       wxMessageBox("Couldn't write to " + fName);

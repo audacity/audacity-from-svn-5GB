@@ -8,6 +8,10 @@
 
 **********************************************************************/
 
+#ifdef __WXMAC__
+#include <Menus.h>
+#endif
+
 #include <math.h>
 
 #include <wx/dcclient.h>
@@ -1091,7 +1095,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
                          ("Move Track Down"), mTracks->CanMoveDown(t));
 
 #ifdef __WXMAC__
-         ::InsertMenu(mRateMenu->GetHMenu(), -1);
+         ::InsertMenu((MenuHandle)mRateMenu->GetHMenu(), -1);
 #endif
 
          PopupMenu(theMenu, titleRect.x + 1,

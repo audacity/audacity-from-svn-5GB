@@ -8,18 +8,10 @@
 
 **********************************************************************/
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <Events.h>
 
 #include <wx/textdlg.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
 #include <wx/msgdlg.h>
-#endif
 
 #include "AudioIO.h"
 #include "Project.h"
