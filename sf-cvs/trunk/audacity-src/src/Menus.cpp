@@ -276,7 +276,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem("SelSave",        _("Selection Save"),                 FN(OnSelectionSave));
    c->AddItem("SelRestore",     _("Selection Restore"),              FN(OnSelectionRestore));
-   c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
+   c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
                       "SelSave", "SelRestore", NULL);
    c->AddSeparator();
 
