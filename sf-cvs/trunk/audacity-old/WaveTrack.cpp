@@ -184,10 +184,8 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
   wxMutexLocker lock(*blockMutex);
   #endif
 
-  if (cache.min) delete[] cache.min;
-  if (cache.max) delete[] cache.max;
-  if (cache.where) delete[] cache.where;
-  if (cache.freq) delete[] cache.freq;
+  DisplayCache oldcache = cache;
+
   cache.freq = NULL;
 
   cache.spectrum = false;
@@ -204,8 +202,60 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
   sampleCount x;
 
   for(x=0; x<cache.len+1; x++)
-	cache.where[x] = (sampleCount)(start*rate + x*rate/pps);
-  
+	cache.where[x] = (sampleCount)(start*rate + x*rate/pps + 0.5);
+
+  sampleCount s0 = cache.where[0];
+  sampleCount s1 = cache.where[cache.len];
+  int p0 = 0;
+  int p1 = cache.len;
+
+  // Optimization: if the old cache is good and overlaps
+  // with the current one, re-use as much of the cache as
+  // possible
+
+  if (!oldcache.spectrum &&
+	  oldcache.pps == pps &&
+	  oldcache.where[0] < cache.where[cache.len] &&
+	  oldcache.where[oldcache.len] > cache.where[0]) {
+
+	s0 = cache.where[cache.len];
+	s1 = cache.where[0];
+	p0 = cache.len;
+	p1 = 0;
+
+	for(x=0; x<cache.len; x++)
+
+	  if (cache.where[x] >= oldcache.where[0] &&
+		  cache.where[x] <= oldcache.where[oldcache.len-1]) {
+
+		int ox =
+		  int((double(oldcache.len) * (cache.where[x] - oldcache.where[0])) /
+			  (oldcache.where[oldcache.len] - oldcache.where[0])+0.5);
+
+		if (ox >= 0 && ox <= oldcache.len &&
+			cache.where[x] == oldcache.where[ox]) {
+
+		  cache.min[x] = oldcache.min[ox];
+		  cache.max[x] = oldcache.max[ox];
+		  
+		}
+		else
+		  wxASSERT(0);
+
+	  }
+	  else {
+		if (cache.where[x] < s0) {
+		  s0 = cache.where[x];
+		  p0 = x;
+		}
+		if (cache.where[x+1] > s1) {
+		  s1 = cache.where[x+1];
+		  p1 = x+1;
+		}
+	  }
+		
+  }
+
   int divisor;
   if (rate/pps >= 65536) // samp/sec / pixels/sec = samp / pixel
     divisor = 65536;
@@ -214,8 +264,6 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
   else
     divisor = 1;
   
-  sampleCount s0 = (sampleCount)(start * rate);
-  sampleCount s1 = (sampleCount)((start + screenWidth/pps)*rate);
   if (s1 > numSamples)
     s1 = numSamples;
     
@@ -226,7 +274,7 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
   sampleType *temp = new sampleType[maxSamples];
   
   sampleCount dstX = 0;
-  int pixel = 0;
+  int pixel = p0;
   
   sampleType theMin;
   sampleType theMax;
@@ -237,7 +285,9 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
     
     sampleCount num;
 
-    num = ((block->Item(b)->len - (srcX - block->Item(b)->start)) + divisor-1) / divisor;
+    num = ((block->Item(b)->len -
+			(srcX - block->Item(b)->start)) + divisor-1)
+	  / divisor;
 
     if (num > (s1 - srcX + divisor-1)/divisor) {
       num = (s1 - srcX+divisor-1)/divisor;
@@ -245,13 +295,19 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 
     switch(divisor) {
     case 1:
-      Read(temp, block->Item(b), srcX - block->Item(b)->start, num);
+      Read(temp, block->Item(b),
+		   srcX - block->Item(b)->start,
+		   num);
       break;
     case 256:
-      Read256(temp, block->Item(b), (srcX - block->Item(b)->start)/divisor, num);
+      Read256(temp, block->Item(b),
+			  (srcX - block->Item(b)->start)/divisor,
+			  num);
       break;
     case 65536:
-      Read64K(temp, block->Item(b), (srcX - block->Item(b)->start)/divisor, num);
+      Read64K(temp, block->Item(b),
+			  (srcX - block->Item(b)->start)/divisor,
+			  num);
       break;
     default:
       wxASSERT(0);
@@ -266,7 +322,7 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 
       while (pixel < screenWidth &&
 			 cache.where[pixel]/divisor == srcX/divisor + x) {
-        if (pixel>0) {
+        if (pixel>p0) {
           cache.min[pixel-1] = theMin;
           cache.max[pixel-1] = theMax;
         }
@@ -327,9 +383,14 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 	cache.min[pixel-1] = theMin;
 	cache.max[pixel-1] = theMax;
 	pixel++;
-  } while (pixel < cache.len);
+  } while (pixel <= p1);
 
   cache.dirty = false;
+
+  if (oldcache.min) delete[] oldcache.min;
+  if (oldcache.max) delete[] oldcache.max;
+  if (oldcache.where) delete[] oldcache.where;
+  if (oldcache.freq) delete[] oldcache.freq;
 
   delete[] temp;
 }
@@ -352,13 +413,13 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
   if (t0 > t1)
     t0 = t1;
   
-  sampleCount s0 = (sampleCount)(t0 * rate);
-  sampleCount s1 = (sampleCount)(t1 * rate);
+  sampleCount s0 = (sampleCount)(t0 * rate + 0.5);
+  sampleCount s1 = (sampleCount)(t1 * rate + 0.5);
 
   sampleCount slen = (sampleCount)(s1-s0);
 
-  int ssel0 = (int)((sel0 - tOffset) * rate);
-  int ssel1 = (int)((sel1 - tOffset) * rate);
+  int ssel0 = (int)((sel0 - tOffset) * rate + 0.5);
+  int ssel1 = (int)((sel1 - tOffset) * rate + 0.5);
 
   if (sel1 < tOffset) {
 	ssel0 = 0;
@@ -539,7 +600,7 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
   
   for(x=0; x<cache.len+1; x++) {
 	recalc[x] = true;
-	cache.where[x] = (sampleCount)(start*rate + x*rate/pps);
+	cache.where[x] = (sampleCount)(start*rate + x*rate/pps + 0.5);
   }
 
   // Optimization: if the old cache is good and overlaps
@@ -559,7 +620,7 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 
 		int ox =
 		  int((double(oldcache.len) * (cache.where[x] - oldcache.where[0])) /
-			  (oldcache.where[oldcache.len-1] - oldcache.where[0])+0.5);
+			  (oldcache.where[oldcache.len] - oldcache.where[0])+0.5);
 
 		if (ox >= 0 && ox <= oldcache.len &&
 			cache.where[x] == oldcache.where[ox]) {
@@ -570,6 +631,8 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 		  
 		  recalc[x] = false;
 		}
+		else
+		  wxASSERT(0);
 
 	  }
 		
@@ -580,7 +643,7 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 
   for(x=0; x<cache.len; x++)
 	if (recalc[x]) {
-	  
+
 	  sampleCount start = cache.where[x];
 	  sampleCount len = windowSize;
 	  
@@ -625,10 +688,10 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   double t0 = (tpre >= 0.0? tpre: 0.0);
 
-  int ssel0 = (int)((sel0 - tOffset) * rate);
-  int ssel1 = (int)((sel1 - tOffset) * rate);
+  int ssel0 = (int)((sel0 - tOffset) * rate + 0.5);
+  int ssel1 = (int)((sel1 - tOffset) * rate + 0.5);
 
-  if (tpre*rate >= numSamples)
+  if ((sampleCount)(tpre*rate + 0.5) >= numSamples)
     return;
 
   // We draw directly to a bit image in memory,
@@ -647,7 +710,7 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   int i=0;
   while(x<r.width) {
-    sampleCount w0 = (sampleCount)((tpre+x*tstep)*rate);
+    sampleCount w0 = (sampleCount)((tpre+x*tstep)*rate + 0.5);
 
     if (w0 < 0 || w0 >= numSamples) {
       for(int yy=0; yy<r.height; yy++) {
@@ -741,8 +804,8 @@ void WaveTrack::Copy(double t0, double t1, VTrack **dest)
   wxMutexLocker lock(*blockMutex);
   #endif
 
-  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate);
-  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate);
+  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate + 0.5);
+  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate + 0.5);
 
   if (s0 < 0)
     s0 = 0;
@@ -808,7 +871,7 @@ void WaveTrack::Paste(double t, VTrack *src)
   wxMutexLocker lock(*blockMutex);
   #endif
 
-  sampleCount s = (sampleCount)((t - tOffset) * rate);
+  sampleCount s = (sampleCount)((t - tOffset) * rate + 0.5);
 
   if (s < 0)
     s = 0;
@@ -1016,7 +1079,7 @@ void WaveTrack::Paste(double t, VTrack *src)
   wxMutexLocker lock(*blockMutex);
   #endif
 
-  sampleCount s = (sampleCount)((t - tOffset) * rate);
+  sampleCount s = (sampleCount)((t - tOffset) * rate + 0.5);
 
   if (s < 0)
     s = 0;
@@ -1156,8 +1219,8 @@ void WaveTrack::Clear(double t0, double t1)
 
   envelope.CollapseRegion(t0, t1);
 
-  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate);
-  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate);
+  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate + 0.5);
+  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate + 0.5);
 
   if (s0 < 0)
     s0 = 0;
@@ -1174,8 +1237,8 @@ void WaveTrack::Silence(double t0, double t1)
 {
   wxASSERT(t0 <= t1);
 
-  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate);
-  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate);
+  sampleCount s0 = (sampleCount)((t0 - tOffset) * rate + 0.5);
+  sampleCount s1 = (sampleCount)((t1 - tOffset) * rate + 0.5);
 
   if (s0 < 0)
     s0 = 0;
@@ -1193,7 +1256,7 @@ void WaveTrack::InsertSilence(double t, double lenSecs)
   // Create a new track containing as much silence as we
   // need to insert, and then call Paste to do the insertion
 
-  sampleCount len = (sampleCount)(lenSecs * rate);
+  sampleCount len = (sampleCount)(lenSecs * rate + 0.5);
 
   WaveTrack *sTrack = new WaveTrack(dirManager);	
   sTrack->rate = rate;

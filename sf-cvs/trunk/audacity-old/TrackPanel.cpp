@@ -595,7 +595,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
       start = t->numSamples;
     int twidth, theight;
     GetTracksUsableArea(&twidth, &theight);
-    sampleCount len = twidth * t->rate / mViewInfo->zoom;
+    sampleCount len = (sampleCount)(twidth * t->rate / mViewInfo->zoom + 0.5);
     if (start + len > t->numSamples)
       len = t->numSamples - start;
 
@@ -613,7 +613,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
     t->Get(buffer, start, len);
     
     double latency = 0.1;
-    sampleCount blockLen = t->rate * latency;
+    sampleCount blockLen = (sampleCount)(t->rate * latency + 0.5);
     sampleType *blockBuffer = new sampleType[blockLen];
     
     snd_node     audioOut;
@@ -643,7 +643,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
     wxGetMousePosition(&x, &y);
     ScreenToClient(&x, &y);
     x -= GetLabelOffset();
-    pos = int(x * t->rate / mViewInfo->zoom);
+    pos = int(x * t->rate / mViewInfo->zoom + 0.5);
 
     while(Button()) {
       curTime = TickCount() * 1000 / 60;//::wxGetElapsedTime();
@@ -655,14 +655,14 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
           wxGetMousePosition(&x, &y);
           ScreenToClient(&x, &y);
           x -= GetLabelOffset();
-          int newPos = int(x * t->rate / mViewInfo->zoom);
+          int newPos = int(x * t->rate / mViewInfo->zoom + 0.5);
           int deltaSamples = newPos - pos;
           int deltaTime = curTime - lastTime;
           int sign = 1;
           if (deltaSamples < 0)
             sign = -1;
           int rate = 44100 * sign;
-          int playLen = rate * block / t->rate;          
+          int playLen = int(rate * block / t->rate + 0.5);          
         
           if (deltaSamples == 0)
             for(i=0; i<block; i++) {
