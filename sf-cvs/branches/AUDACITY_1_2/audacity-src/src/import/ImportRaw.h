@@ -11,10 +11,11 @@
 #ifndef __AUDACITY_IMPORT_RAW__
 #define __AUDACITY_IMPORT_RAW__
 
+#include "Import.h"
+
 class WaveTrack;
 class DirManager;
-
-#include "Import.h"
+class wxWindow;
 
 int ImportRaw(wxWindow *parent, wxString fileName,
               TrackFactory *trackFactory, Track ***outTracks,

@@ -422,8 +422,9 @@ bool ChangeSpeedDialog::TransferDataFromWindow()
 
 	// percent change controls
    if (m_pTextCtrl_PercentChange) {
+      double newValue = 0;
       str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue = Internat::ToDouble(str);
+      str.ToDouble(&newValue);
 		m_PercentChange = newValue;
 	}
 
@@ -449,8 +450,9 @@ void ChangeSpeedDialog::OnText_PercentChange(wxCommandEvent & event)
       return;
 
    if (m_pTextCtrl_PercentChange) {
+      double newValue = 0;
       wxString str = m_pTextCtrl_PercentChange->GetValue();
-      double newValue = Internat::ToDouble(str);
+      str.ToDouble(&newValue);
 		m_PercentChange = newValue;
 
       m_bLoopDetect = true;
