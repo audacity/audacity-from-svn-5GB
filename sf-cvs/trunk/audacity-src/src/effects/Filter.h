@@ -43,6 +43,8 @@ public:
    virtual bool PromptUser();
    
    virtual bool Process();
+
+   virtual void Preview();
    
 private:
    bool ProcessOne(int count, WaveTrack * track,
@@ -91,15 +93,17 @@ private:
 #define ID_TEXT 10000
 #define ID_FILTERPANEL 10001
 #define ID_CLEAR 10002
-
-wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit = TRUE,
-                           bool set_sizer = TRUE );
+#define ID_PREVIEW 10003
 
 class FilterDialog: public wxDialog
 {
 public:
+   wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit = TRUE,
+                              bool set_sizer = TRUE );
+
    // constructors and destructors
-   FilterDialog( wxWindow *parent, wxWindowID id, const wxString &title,
+   FilterDialog( EffectFilter *effect,
+                 wxWindow *parent, wxWindowID id, const wxString &title,
                  const wxPoint& pos = wxDefaultPosition,
                  const wxSize& size = wxDefaultSize,
                  long style = wxDEFAULT_DIALOG_STYLE );
@@ -119,7 +123,10 @@ private:
    void OnClear( wxCommandEvent &event );
    void OnOk( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
+   void OnPreview( wxCommandEvent &event );
    void OnSize( wxSizeEvent &event );
+
+   EffectFilter *mEffect;
    
 private:
    DECLARE_EVENT_TABLE()

@@ -50,7 +50,7 @@ EffectFilter::~EffectFilter()
 
 bool EffectFilter::PromptUser()
 {
-   FilterDialog dlog(mParent, -1, _("FFT Filter"));
+   FilterDialog dlog(this, mParent, -1, _("FFT Filter"));
    dlog.SetEnvelope(mEnvelope);
 
    dlog.CentreOnParent();
@@ -65,6 +65,16 @@ bool EffectFilter::PromptUser()
    }
    
    return true;
+}
+
+void EffectFilter::Preview()
+{
+   for(int i=0; i<=windowSize/2; i++) {
+      double envVal = mEnvelope->GetValue(((double)i)/(windowSize/2));
+      filterFunc[i] = (float)(pow(4.0, envVal*2.0 - 1.0));
+   }
+
+   Effect::Preview();
 }
 
 bool EffectFilter::Process()
@@ -360,13 +370,16 @@ BEGIN_EVENT_TABLE(FilterDialog,wxDialog)
    EVT_BUTTON( wxID_CANCEL, FilterDialog::OnCancel )
    EVT_SIZE( FilterDialog::OnSize )
    EVT_BUTTON( ID_CLEAR, FilterDialog::OnClear )
+   EVT_BUTTON( ID_PREVIEW, FilterDialog::OnPreview )
 END_EVENT_TABLE()
 
-FilterDialog::FilterDialog(wxWindow *parent, wxWindowID id,
+FilterDialog::FilterDialog(EffectFilter *effect,
+                           wxWindow *parent, wxWindowID id,
                            const wxString &title,
                            const wxPoint &position, const wxSize& size,
                            long style ) :
-   wxDialog( parent, id, title, position, size, style )
+   wxDialog( parent, id, title, position, size, style ),
+   mEffect(effect)
 {
    MakeFilterDialog( this, TRUE ); 
    
@@ -410,6 +423,11 @@ void FilterDialog::OnSize(wxSizeEvent &event)
    event.Skip();
 }
 
+void FilterDialog::OnPreview(wxCommandEvent &event)
+{
+   mEffect->Preview();
+}
+
 void FilterDialog::OnOk(wxCommandEvent &event)
 {
    TransferDataFromWindow();
@@ -426,7 +444,8 @@ void FilterDialog::OnCancel(wxCommandEvent &event)
    EndModal(false);
 }
 
-wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit, bool set_sizer )
+wxSizer *FilterDialog::MakeFilterDialog( wxWindow *parent,
+                                         bool call_fit, bool set_sizer )
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
@@ -445,6 +464,11 @@ wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit, bool set_sizer )
    item3->Add( item4, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    item3->Add( 20, 20, 1, wxALIGN_CENTRE|wxALL, 5 );
+
+   wxButton *item4b = new wxButton( parent, ID_PREVIEW,
+                                    mEffect->GetPreviewName(),
+                                    wxDefaultPosition, wxDefaultSize, 0 );
+   item3->Add( item4b, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
    item5->SetDefault();
