@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: window functions
- last mod: $Id: window.c,v 1.1.1.1 2001-08-14 19:04:27 habes Exp $
+ last mod: $Id: window.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  ********************************************************************/
 
@@ -21,7 +21,7 @@
 #include "misc.h"
 
 float *_vorbis_window(int type, int window,int left,int right){
-  float *ret=_ogg_calloc(window,sizeof(float));
+  float *ret=_ogg_calloc(window,sizeof(*ret));
 
   switch(type){
   case 0:

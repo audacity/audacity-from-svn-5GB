@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: PCM data envelope analysis and manipulation
- last mod: $Id: envelope.c,v 1.1.1.1 2001-08-14 19:04:27 habes Exp $
+ last mod: $Id: envelope.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  Preecho calculation.
 
@@ -82,14 +82,13 @@ static float cheb_bandpass1k_A[]={
 
 void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
   codec_setup_info *ci=vi->codec_setup;
-  vorbis_info_psy_global *gi=ci->psy_g_param;
+  vorbis_info_psy_global *gi=&ci->psy_g_param;
   int ch=vi->channels;
-  int window=gi->envelopesa;
   int i;
-  e->winlength=window;
+  e->winlength=ci->blocksizes[0]/2; /* not random */
   e->minenergy=fromdB(gi->preecho_minenergy);
-  e->iir=_ogg_calloc(ch*4,sizeof(IIR_state));
-  e->filtered=_ogg_calloc(ch*4,sizeof(float *));
+  e->iir=_ogg_calloc(ch*4,sizeof(*e->iir));
+  e->filtered=_ogg_calloc(ch*4,sizeof(*e->filtered));
   e->ch=ch;
   e->storage=128;
   for(i=0;i<ch*4;i+=4){
@@ -103,10 +102,10 @@ void _ve_envelope_init(envelope_lookup *e,vorbis_info *vi){
     IIR_init(e->iir+i+3,cheb_bandpass_stages,cheb_bandpass1k_gain,
 	     cheb_bandpass1k_A,cheb_bandpass_B);
 
-    e->filtered[i]=_ogg_calloc(e->storage,sizeof(float));
-    e->filtered[i+1]=_ogg_calloc(e->storage,sizeof(float));
-    e->filtered[i+2]=_ogg_calloc(e->storage,sizeof(float));
-    e->filtered[i+3]=_ogg_calloc(e->storage,sizeof(float));
+    e->filtered[i]=_ogg_calloc(e->storage,sizeof(*e->filtered[i]));
+    e->filtered[i+1]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+1]));
+    e->filtered[i+2]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+2]));
+    e->filtered[i+3]=_ogg_calloc(e->storage,sizeof(*e->filtered[i+3]));
   }
 
 }
@@ -119,7 +118,7 @@ void _ve_envelope_clear(envelope_lookup *e){
   }
   _ogg_free(e->filtered);
   _ogg_free(e->iir);
-  memset(e,0,sizeof(envelope_lookup));
+  memset(e,0,sizeof(*e));
 }
 
 /* straight threshhold based until we find something that works better
@@ -148,10 +147,10 @@ static float _ve_deltai(envelope_lookup *ve,float *pre,float *post){
   return(B-A);
 }
 
-long _ve_envelope_search(vorbis_dsp_state *v,long searchpoint){
+long _ve_envelope_search(vorbis_dsp_state *v){
   vorbis_info *vi=v->vi;
   codec_setup_info *ci=vi->codec_setup;
-  vorbis_info_psy_global *gi=ci->psy_g_param;
+  vorbis_info_psy_global *gi=&ci->psy_g_param;
   envelope_lookup *ve=((backend_lookup_state *)(v->backend_state))->ve;
   long i,j,k;
 
@@ -159,7 +158,7 @@ long _ve_envelope_search(vorbis_dsp_state *v,long searchpoint){
   if(v->pcm_storage>ve->storage){
     ve->storage=v->pcm_storage;
     for(i=0;i<ve->ch*4;i++)
-      ve->filtered[i]=_ogg_realloc(ve->filtered[i],ve->storage*sizeof(float));
+      ve->filtered[i]=_ogg_realloc(ve->filtered[i],ve->storage*sizeof(*ve->filtered[i]));
   }
 
   /* catch up the highpass to match the pcm */
@@ -192,45 +191,96 @@ long _ve_envelope_search(vorbis_dsp_state *v,long searchpoint){
 
   ve->current=v->pcm_current;
 
-  /* Now search through our cached highpass data for breaking points */
-  /* starting point */
-  if(v->W)
-    j=v->centerW+ci->blocksizes[1]/4-ci->blocksizes[0]/4;
-  else
-    j=v->centerW;
+  {
+    int flag=-1;
+    long centerW=v->centerW;
+    long beginW=centerW-ci->blocksizes[v->W]/4;
+    /*long endW=centerW+ci->blocksizes[v->W]/4+ci->blocksizes[0]/4;*/
+    long testW=centerW+ci->blocksizes[v->W]/4+ci->blocksizes[1]/2+ci->blocksizes[0]/4;
+    if(v->W)
+      beginW-=ci->blocksizes[v->lW]/4;
+    else
+      beginW-=ci->blocksizes[0]/4;
 
-  if(j<ve->lastmark)j=ve->lastmark;
-  
-  while(j+ve->winlength<=v->pcm_current){
-    if(j>=searchpoint)return(1);
+    if(ve->mark>=centerW && ve->mark<testW)return(0);
+    if(ve->mark>=testW)return(1);
 
-    ve->lastmark=j;
-    for(i=0;i<ve->ch;i++){
-      for(k=0;k<4;k++){
-	float *filtered=ve->filtered[i*4+k]+j;
-	float m=_ve_deltai(ve,filtered-ve->winlength,filtered);
-      
-	if(m>gi->preecho_thresh[k])return(0);
-	if(m<gi->postecho_thresh[k])return(0);
+    if(v->W)
+      j=ve->cursor;
+    else
+      j=centerW-ci->blocksizes[0]/4;
+    
+    while(j+ve->winlength*3/2<=v->pcm_current){
+      if(j>=testW)return(1);
+      ve->cursor=j;
 
+      for(i=0;i<ve->ch;i++){
+	for(k=0;k<4;k++){
+	  float *filtered=ve->filtered[i*4+k]+j;
+	  float *filtered2=ve->filtered[i*4+k]+j+ve->winlength/2;
+	  float m=_ve_deltai(ve,filtered-ve->winlength,filtered);
+	  float mm=_ve_deltai(ve,filtered2-ve->winlength,filtered2);
+	  
+	  if(m>gi->preecho_thresh[k] || m<gi->postecho_thresh[k]){
+	    if(j<=centerW){
+	      ve->prevmark=ve->mark=j;
+	    }else{
+	      /* if a quarter-short-block advance is an even stronger
+		 reading, set *that* as the impulse point. */
+	      if((m>0. && mm>m) || (m<0. && mm<m))
+		flag=j+ve->winlength/2;
+	      else
+		if(flag<0)flag=j;
+	    }
+	  }
+	}
       }
+      
+      if(flag>=0){
+ 	ve->prevmark=ve->mark;
+	ve->mark=flag;
+	if(flag>=testW)return(1);
+	return(0);
+      }
+      
+      j+=ve->winlength/2;
     }
-
-    j+=min(ci->blocksizes[0],ve->winlength)/2;
-   
   }
-  if(j>=searchpoint)return(1);
  
   return(-1);
+}
+
+int _ve_envelope_mark(vorbis_dsp_state *v){
+  envelope_lookup *ve=((backend_lookup_state *)(v->backend_state))->ve;
+  vorbis_info *vi=v->vi;
+  codec_setup_info *ci=vi->codec_setup;
+  long centerW=v->centerW;
+  long beginW=centerW-ci->blocksizes[v->W]/4;
+  long endW=centerW+ci->blocksizes[v->W]/4;
+  if(v->W){
+    beginW-=ci->blocksizes[v->lW]/4;
+    endW+=ci->blocksizes[v->nW]/4;
+  }else{
+    beginW-=ci->blocksizes[0]/4;
+    endW+=ci->blocksizes[0]/4;
+  }
+
+  if(ve->prevmark>=beginW && ve->prevmark<endW)return(1);
+  if(ve->mark>=beginW && ve->mark<endW)return(1);
+  return(0);
 }
 
 void _ve_envelope_shift(envelope_lookup *e,long shift){
   int i;
   for(i=0;i<e->ch*4;i++)
     memmove(e->filtered[i],e->filtered[i]+shift,(e->current-shift)*
-	    sizeof(float));
+	    sizeof(*e->filtered[i]));
   e->current-=shift;
-  e->lastmark-=shift;
+  if(e->prevmark>=0)
+    e->prevmark-=shift;
+  if(e->mark>=0)
+    e->mark-=shift;
+  e->cursor-=shift;
 }
 
 

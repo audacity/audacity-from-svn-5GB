@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: floor backend 0 implementation
- last mod: $Id: floor0.c,v 1.1.1.1 2001-08-14 19:04:27 habes Exp $
+ last mod: $Id: floor0.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  ********************************************************************/
 
@@ -63,7 +63,7 @@ static long _f0_fit(codebook *book,
     lsp[i]=(orig[i+cursor]-base);
   best=_best(book,lsp,1);
 
-  memcpy(lsp,book->valuelist+best*dim,dim*sizeof(float));
+  memcpy(lsp,book->valuelist+best*dim,dim*sizeof(*lsp));
   for(i=0;i<dim;i++)
     lsp[i]+=base;
   return(best);
@@ -73,21 +73,22 @@ static long _f0_fit(codebook *book,
 
 static vorbis_info_floor *floor0_copy_info (vorbis_info_floor *i){
   vorbis_info_floor0 *info=(vorbis_info_floor0 *)i;
-  vorbis_info_floor0 *ret=_ogg_malloc(sizeof(vorbis_info_floor0));
-  memcpy(ret,info,sizeof(vorbis_info_floor0));
+  vorbis_info_floor0 *ret=_ogg_malloc(sizeof(*ret));
+  memcpy(ret,info,sizeof(*ret));
   return(ret);
 }
 
 static void floor0_free_info(vorbis_info_floor *i){
-  if(i){
-    memset(i,0,sizeof(vorbis_info_floor0));
-    _ogg_free(i);
+  vorbis_info_floor0 *info=(vorbis_info_floor0 *)i;
+  if(info){
+    memset(info,0,sizeof(*info));
+    _ogg_free(info);
   }
 }
 
 static void floor0_free_look(vorbis_look_floor *i){
   vorbis_look_floor0 *look=(vorbis_look_floor0 *)i;
-  if(i){
+  if(look){
 
     /*fprintf(stderr,"floor 0 bit usage %f\n",
       (float)look->bits/look->frames);*/
@@ -95,7 +96,7 @@ static void floor0_free_look(vorbis_look_floor *i){
     if(look->linearmap)_ogg_free(look->linearmap);
     if(look->lsp_look)_ogg_free(look->lsp_look);
     lpc_clear(&look->lpclook);
-    memset(look,0,sizeof(vorbis_look_floor0));
+    memset(look,0,sizeof(*look));
     _ogg_free(look);
   }
 }
@@ -117,7 +118,7 @@ static vorbis_info_floor *floor0_unpack (vorbis_info *vi,oggpack_buffer *opb){
   codec_setup_info     *ci=vi->codec_setup;
   int j;
 
-  vorbis_info_floor0 *info=_ogg_malloc(sizeof(vorbis_info_floor0));
+  vorbis_info_floor0 *info=_ogg_malloc(sizeof(*info));
   info->order=oggpack_read(opb,8);
   info->rate=oggpack_read(opb,16);
   info->barkmap=oggpack_read(opb,16);
@@ -156,7 +157,7 @@ static vorbis_look_floor *floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi
   vorbis_info        *vi=vd->vi;
   codec_setup_info   *ci=vi->codec_setup;
   vorbis_info_floor0 *info=(vorbis_info_floor0 *)i;
-  vorbis_look_floor0 *look=_ogg_calloc(1,sizeof(vorbis_look_floor0));
+  vorbis_look_floor0 *look=_ogg_calloc(1,sizeof(*look));
   look->m=info->order;
   look->n=ci->blocksizes[mi->blockflag]/2;
   look->ln=info->barkmap;
@@ -176,7 +177,7 @@ static vorbis_look_floor *floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi
      the encoder may do what it wishes in filling them.  They're
      necessary in some mapping combinations to keep the scale spacing
      accurate */
-  look->linearmap=_ogg_malloc((look->n+1)*sizeof(int));
+  look->linearmap=_ogg_malloc((look->n+1)*sizeof(*look->linearmap));
   for(j=0;j<look->n;j++){
     int val=floor( toBARK((info->rate/2.f)/look->n*j) 
 		   *scale); /* bark numbers represent band edges */
@@ -185,7 +186,7 @@ static vorbis_look_floor *floor0_look (vorbis_dsp_state *vd,vorbis_info_mode *mi
   }
   look->linearmap[j]=-1;
 
-  look->lsp_look=_ogg_malloc(look->ln*sizeof(float));
+  look->lsp_look=_ogg_malloc(look->ln*sizeof(*look->lsp_look));
   for(j=0;j<look->ln;j++)
     look->lsp_look[j]=2*cos(M_PI/look->ln*j);
 
@@ -200,12 +201,12 @@ float _curve_to_lpc(float *curve,float *lpc,
   /* map the input curve to a bark-scale curve for encoding */
   
   int mapped=l->ln;
-  float *work=alloca(sizeof(float)*mapped);
+  float *work=alloca(sizeof(*work)*mapped);
   int i,j,last=0;
   int bark=0;
   static int seq=0;
 
-  memset(work,0,sizeof(float)*mapped);
+  memset(work,0,sizeof(*work)*mapped);
   
   /* Only the decode side is behavior-specced; for now in the encoder,
      we select the maximum value of each band as representative (this
@@ -265,7 +266,6 @@ static int floor0_forward(vorbis_block *vb,vorbis_look_floor *in,
   vorbis_look_floor0 *look=(vorbis_look_floor0 *)in;
   vorbis_info_floor0 *info=look->vi;
   float amp;
-  long bits=0;
   long val=0;
   static int seq=0;
 
@@ -323,7 +323,7 @@ static int floor0_forward(vorbis_block *vb,vorbis_look_floor *in,
   look->frames++;
 
   if(val){
-    float *lspwork=alloca(look->m*sizeof(float));
+    float *lspwork=alloca(look->m*sizeof(*lspwork));
 
     /* the spec supports using one of a number of codebooks.  Right
        now, encode using this lib supports only one */
@@ -392,7 +392,7 @@ static int floor0_forward(vorbis_block *vb,vorbis_look_floor *in,
     for(j=0;j<look->n;j++)
       codedflr[j]=1.f;
     vorbis_lsp_to_curve(codedflr,look->linearmap,look->n,look->ln,
-			lspwork,look->m,amp,info->ampdB);
+			lspwork,look->m,amp,(float)info->ampdB);
 
     _analysis_output("barklsp",seq-1,codedflr,look->n,1,1);
     _analysis_output("lsp3",seq-1,codedflr,look->n,0,1);
@@ -404,8 +404,8 @@ static int floor0_forward(vorbis_block *vb,vorbis_look_floor *in,
     fclose(of);
 #endif
 
-  memset(codedflr,0,sizeof(float)*look->n);
-  memset(mdct,0,sizeof(float)*look->n);
+  memset(codedflr,0,sizeof(*codedflr)*look->n);
+  memset(mdct,0,sizeof(*mdct)*look->n);
   return(val);
 }
 
@@ -424,7 +424,7 @@ static void *floor0_inverse1(vorbis_block *vb,vorbis_look_floor *i){
       backend_lookup_state *be=vb->vd->backend_state;
       codebook *b=be->fullbooks+info->books[booknum];
       float last=0.f;
-      float *lsp=_vorbis_block_alloc(vb,sizeof(float)*(look->m+1));
+      float *lsp=_vorbis_block_alloc(vb,sizeof(*lsp)*(look->m+1));
             
       for(j=0;j<look->m;j+=b->dim)
 	if(vorbis_book_decodev_set(b,lsp+j,&vb->opb,b->dim)==-1)goto eop;
@@ -452,10 +452,10 @@ static int floor0_inverse2(vorbis_block *vb,vorbis_look_floor *i,
 
     /* take the coefficients back to a spectral envelope curve */
     vorbis_lsp_to_curve(out,look->linearmap,look->n,look->ln,
-			lsp,look->m,amp,info->ampdB);
+			lsp,look->m,amp,(float)info->ampdB);
     return(1);
   }
-  memset(out,0,sizeof(float)*look->n);
+  memset(out,0,sizeof(*out)*look->n);
   return(0);
 }
 

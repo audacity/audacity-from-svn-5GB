@@ -7,12 +7,12 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: utility main for setting entropy encoding parameters
            for lattice codebooks
- last mod: $Id: latticetune.c,v 1.1.1.1 2001-08-14 19:04:44 habes Exp $
+ last mod: $Id: latticetune.c,v 1.1.1.2 2002-04-21 23:36:53 habes Exp $
 
  ********************************************************************/
 
@@ -23,7 +23,7 @@
 #include <errno.h>
 #include "bookutil.h"
 
-static char *strrcmp_i(char *s,char *cmp){
+static int strrcmp_i(char *s,char *cmp){
   return(strncmp(s+strlen(s)-strlen(cmp),cmp,strlen(cmp)));
 }
 
@@ -106,49 +106,21 @@ int main(int argc,char *argv[]){
     }
   }
 
+  /* now we simply count already collated by-entry data */
   if(!strrcmp_i(argv[0],"res0tune") || !strrcmp_i(argv[0],"res1tune")){
-    long step,adv,max;
-    long lines=0;
-    long cols=-1;
-    float *vec;
-    long interleave=1;
-    if(!strrcmp_i(argv[0],"res1tune"))
-      interleave=0;
 
     line=setup_line(in);
     while(line){
-      int code;
-      if(!(lines&0xfff))spinnit("codewords so far...",lines);
 
-      if(cols==-1){
-	char *temp=line;
-	while(*temp==' ')temp++;
-	for(cols=0;*temp;cols++){
-	  while(*temp>32)temp++;
-	  while(*temp==' ')temp++;
-	}
-	vec=alloca(sizeof(float)*cols);
-	if(interleave){
-	  step=cols/dim;
-	  adv=1;
-	  max=step;
-	}else{
-	  step=1;
-	  adv=dim;
-	  max=cols-dim+1;
-	}
-      }
-      
-      for(j=0;j<cols;j++)
-	if(get_line_value(in,vec+j)){
-	  fprintf(stderr,"Too few columns on line %ld in data file\n",lines);
-	  exit(1);
-	}
-      
-      for(j=0;j<max;j+=adv){
-	lines++;
-	code=_best(b,vec+j,step);
-      	hits[code]++;
+      /* code:hits\n */
+      /* likely to have multiple listing for each code entry; must
+         accumulate */
+
+      char *pos=strchr(line,':');
+      if(pos){
+	long code=atol(line);
+	long val=atol(pos+1); 
+	hits[code]+=val;
       }
 
       line=setup_line(in);
@@ -179,7 +151,7 @@ int main(int argc,char *argv[]){
 		 _float32_unpack(c->q_min));
 	  indexdiv*=bins;
 	}
-	fprintf(stderr,"\t|",(1<<(base-c->lengthlist[j])));
+	fprintf(stderr,"\t|");
 	for(k=0;k<base-c->lengthlist[j];k++)fprintf(stderr,"*");
 	fprintf(stderr,"\n");
       }
