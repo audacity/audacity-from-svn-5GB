@@ -171,11 +171,12 @@ private:
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;
+   #endif
+
    bool                mEmulateMixerOutputVol;
    bool                mEmulateMixerInputVol;
    float               mMixerOutputVol;
    float               mMixerInputVol;
-   #endif
 
    bool                mPlayLooped;
 
