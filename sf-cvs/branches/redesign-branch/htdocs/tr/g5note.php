@@ -1,0 +1,1 @@
+Not: Audacity 1.2.0-pre3 G5 ile uyumlu deðildir. Eðer G5 yada 1.2.0-pre3 versiyonu ile uyumsuz bir ses kartýnýz varsa <a href="http://audacityteam.org/mac/">lütfen bu sayfayý</a> okuyun. Þuan sahip olduðumuz Audacity'nin bir test versiyonu tüm sistemlerde çalýþmalýdýr, ancak son versiyonu için hala çalýþýyoruz.
