@@ -97,6 +97,10 @@
 <?php
   print "<p>";
 
+  include GetTranslation("fedora");
+
+  print "<p>";
+
   include GetTranslation("debian");
 
   print "<p>";
