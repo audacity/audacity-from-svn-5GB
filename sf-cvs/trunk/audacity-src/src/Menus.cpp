@@ -1027,7 +1027,7 @@ void AudacityProject::OnZoomSel(wxEvent & event)
    if (mViewInfo.sel1 <= mViewInfo.sel0)
       return;
 
-   Zoom(mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0)),
+   Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0)),
    TP_ScrollWindow(mViewInfo.sel0);
 }
 
