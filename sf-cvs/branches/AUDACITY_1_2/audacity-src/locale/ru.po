@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-02-04 10:52+0300\n"
+"PO-Revision-Date: 2004-02-28 16:56+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@musicjournal.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1324,7 +1324,7 @@ msgstr "Коэффициент спада: "
 
 #: ../src/prefs/QualityPrefs.cpp:114
 msgid "Default Sample Format:"
-msgstr "Формат семплов по умолчанию:"
+msgstr "Битовая глубина по умолчанию:"
 
 #: ../src/prefs/QualityPrefs.cpp:80
 msgid "Default Sample Rate:"
@@ -1484,7 +1484,7 @@ msgstr "Правка ID3-тегов для MP3-файла"
 
 #: ../src/Menus.cpp:391
 msgid "Effe&ct"
-msgstr "Эффекты (&F)"
+msgstr "Эффекты (&T)"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:453
 msgid "Effect Settings"
@@ -1896,7 +1896,7 @@ msgstr "Высококачественное сглаживание:"
 
 #: ../src/prefs/QualityPrefs.cpp:147
 msgid "High-quality sample rate converter:"
-msgstr "Высококачественный преобразователь частоты дискретизации:"
+msgstr "Высококачеств. преобразование частоты дискрет.:"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
 #. cycles per second.
@@ -1914,11 +1914,11 @@ msgstr "Экспорт ID3-тегов включён"
 
 #: ../src/Tags.cpp:554
 msgid "ID3v1 (more compatible)"
-msgstr "ID3v1 (более распространен)"
+msgstr "ID3v1 (более распространённый)"
 
 #: ../src/Tags.cpp:555
 msgid "ID3v2 (more flexible)"
-msgstr "ID3v2 (более гибок)"
+msgstr "ID3v2 (более функциональный)"
 
 #: ../src/Project.cpp:2146
 #: ../src/Project.cpp:2193
@@ -2774,7 +2774,7 @@ msgstr "Воспроизвести выделение\tB"
 
 #: ../src/prefs/AudioIOPrefs.cpp:212
 msgid "Play other tracks while recording new one"
-msgstr "Воспроизводить другие дорожки при записи новой"
+msgstr "Воспроизводить существующие дорожки при записи новой"
 
 #: ../src/Menus.cpp:471
 msgid "Play/Stop\tSpacebar"
@@ -2900,7 +2900,7 @@ msgstr "Сглаживание в режиме реального времени:"
 
 #: ../src/prefs/QualityPrefs.cpp:136
 msgid "Real-time sample rate converter:"
-msgstr "Real-time преобразователь частоты дискретизации:"
+msgstr "Преобразование частоты дискрет. в реал. времени:"
 
 #: ../src/ControlToolBar.cpp:467
 #: ../src/Project.cpp:1639
@@ -3341,7 +3341,7 @@ msgstr "Установить частоту"
 
 #: ../src/TrackPanel.cpp:842
 msgid "Set Sample Format"
-msgstr "Установить частоту квантования семпла"
+msgstr "Установить битовую глубину семпла"
 
 #: ../src/Menus.cpp:288
 msgid "Set Selection Format"
