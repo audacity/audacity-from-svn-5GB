@@ -368,10 +368,8 @@ AudacityProject::~AudacityProject()
   gOpenProjects--;
   gAudacityProjects.Remove(this);
 
-  if (gOpenProjects <= 0) {
-	// This forces us to quit the application
-	gAPalette->Destroy();
-  }
+  if (gOpenProjects <= 0)
+	QuitAudacity();
 }
 
 void AudacityProject::RedrawProject()

@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.9 (pre): September 5, 2000
+Version 0.9e (pre): September 28, 2000
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -78,6 +78,13 @@ Changes from 0.8 to 0.9:
   project file format is now text-based for easy
   debugging.  Eventually it will probably move to XML.
 
+* Improved handling of wave tracks: as before, the data
+  is stored in blocks, but now, the blocks are correctly
+  limited to betweek n and 2n bytes each (for some n),
+  which guarantees editing operations always take the
+  same amount of time, while also ensuring that projects
+  don't get more fragmented over time.
+
 * Rewritten user interface code.  The shades of gray
   are taken from the OS, and the project window has been
   redesigned to have more consistent layout across all
@@ -90,7 +97,9 @@ Changes from 0.8 to 0.9:
 * Flashing cursor indicates the current editing position
 
 * Much improved ruler - besides looking nicer, the ruler
-  now displays the selection and the cursor
+  now displays the selection and the cursor.
 
 * The zoom tool centers on the cursor so you can zoom
-  into wherever you are
+  into wherever you are.
+
+* Zoom menu

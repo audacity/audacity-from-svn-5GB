@@ -12,11 +12,13 @@
 **********************************************************************/
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "0.9d"
+#define AUDACITY_VERSION_STRING "0.9e"
 
 // Don't change this unless the file format changes
 // in an irrevocable way
 #define AUDACITY_FILE_FORMAT_VERSION "0.9"
+
+void QuitAudacity();
 
 class AudacityApp: public wxApp
 {

@@ -26,6 +26,7 @@
 #include "AButton.h"
 #include "ASlider.h"
 #include "APalette.h"
+#include "FreqWindow.h"
 #include "Play.h"
 #include "Project.h"
 #include "effects/Amplify.h"
@@ -57,6 +58,14 @@ void wxOnAssert(const char* fileName, int lineNumber, const char* msg)
 }
 #endif
 
+void QuitAudacity()
+{
+  if (gAPalette)
+	gAPalette->Destroy();
+  if (gFreqWindow)
+	gFreqWindow->Destroy();
+}
+
 IMPLEMENT_APP(AudacityApp)
 
 // The `main program' equivalent, creating the windows and returning the
@@ -79,6 +88,8 @@ bool AudacityApp::OnInit()
   SetExitOnFrameDelete(true);
 
   InitAPalette(NULL);
+  InitFreqWindow(NULL);
+  gFreqWindow->Show(true); //temp
   AudacityProject *project = CreateNewAudacityProject();
   SetTopWindow(gAPalette);
 
