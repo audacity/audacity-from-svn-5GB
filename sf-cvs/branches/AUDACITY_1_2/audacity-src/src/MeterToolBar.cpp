@@ -12,6 +12,9 @@
 
 #include <wx/defs.h>
 #include <wx/intl.h>
+
+#include <wx/object.h> // tooltip.h needs this but doesn't include it.
+#include <wx/window.h> // tooltip.h needs this but doesn't include it.
 #include <wx/tooltip.h>
 
 #include "MeterToolBar.h"
