@@ -575,20 +575,24 @@ void AudioIOPrefs::GetRecordingInputs(int deviceNum, int *theCount, int *theSele
    wxString *names;
    Handle iconH;
 
+   *theCount = 0;
+   *theSelected = 0;
+   *theNames = NULL;
+
    wxString selectedInput = mRecDevice.AfterLast('\n');
 
    SPBGetIndexedDevice(deviceNum+1, deviceName, &iconH);
 
    err = SPBOpenDevice(deviceName, siReadPermission, &refnum);
 
-   if (err != 0) {
-      *theCount = 0;
-      *theSelected = 0;
-      *theNames = NULL;
-   }
+   if (err != 0)
+      return;
 
    SPBGetDeviceInfo (refnum, siInputAvailable, &infoList);
    count = infoList.count;
+   
+   if (count<0 || count>50)
+      return;
 
    // Get default from OS in case the one in the prefs was not found.
    SPBGetDeviceInfo (refnum, siInputSource, &selected);
