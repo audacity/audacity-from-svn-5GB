@@ -106,8 +106,9 @@ double Envelope::toDB(double value)
 
    double sign = (value >= 0 ? 1 : -1);
 
-   double db = 10 * log10(fabs(value));
+   double db = 20 * log10(fabs(value));
    // The smallest value we will see is -45.15 (10*log10(1/32768))
+   // XXX FIXME This is wrong - swh
    double val = (db + 45.0) / 45.0;
    if (val < 0.0)
       val = 0.0;
@@ -122,7 +123,7 @@ double Envelope::fromDB(double value) const
    if (value == 0)
       return 0;
 
-   return pow(10.0, ((value * 45.0) - 45.0) / 10.0);
+   return pow(10.0, ((value * 45.0) - 45.0) / 20.0);
 }
 
 void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB)
