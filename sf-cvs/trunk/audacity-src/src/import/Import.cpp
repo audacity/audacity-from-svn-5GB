@@ -29,6 +29,7 @@
 #include "ImportOGG.h"
 #include "ImportRaw.h"
 #include "ImportLOF.h"
+#include "ImportFLAC.h"
 #include "../Track.h"
 
 WX_DEFINE_LIST(ImportPluginList);
@@ -44,6 +45,7 @@ Importer::Importer()
    // in the order defined here.
    GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetFLACImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
    GetLOFImportPlugin(mImportPluginList, mUnusableImportPluginList);
 }
