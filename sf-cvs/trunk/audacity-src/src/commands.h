@@ -43,14 +43,12 @@ struct CommandMenuItem
 
 #ifdef AUDACITY_MENUS_COMMANDS_ENUM
 
-#define MenuBaseID 1101
-
 enum {
-   MenusFirstID = 1100,
+   MenuBaseID = 1100,
 
    // File Menu
 
-   NewID,
+   NewID = MenuBaseID,
    OpenID,
    CloseID,
    SaveID,
