@@ -549,7 +549,9 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
          SetStop(false);
          OnPlay();
       }
+      return;
    }
+   else event.Skip();
 }
 
 int APalette::GetCurrentTool()

@@ -1270,6 +1270,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          mListener->TP_OnPlayKey();
          break;
       default:
+         event.Skip();
          break;
    }
 }
