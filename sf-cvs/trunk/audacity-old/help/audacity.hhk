@@ -176,6 +176,83 @@ Index
 		<param name="Local" value="menu5.htm">
 		</object>
 
+	<li><object>
+		<param name="Name" value="Selection Tool">
+		<param name="Local" value="toolbar.htm#selection">
+		</object>
+	<li><object>
+		<param name="Name" value="Envelope Tool">
+		<param name="Local" value="toolbar.htm#envelope">
+		</object>
+	<li><object>
+		<param name="Name" value="Time Shift Tool">
+		<param name="Local" value="toolbar.htm#timeshift">
+		</object>
+	<li><object>
+		<param name="Name" value="Zoom Tool">
+		<param name="Local" value="toolbar.htm#zoom">
+		</object>
+	<li><object>
+		<param name="Name" value="Toolbar">
+		<param name="Local" value="toolbar.htm">
+		</object>
+	<li><object>
+		<param name="Name" value="Play Button">
+		<param name="Local" value="toolbar.htm#play">
+		</object>
+	<li><object>
+		<param name="Name" value="Stop Button">
+		<param name="Local" value="toolbar.htm#stop">
+		</object>
+	<li><object>
+		<param name="Name" value="Record Button">
+		<param name="Local" value="toolbar.htm#record">
+		</object>
+	<li><object>
+		<param name="Name" value="Master Gain Control">
+		<param name="Local" value="toolbar.htm#gain">
+		</object>
+	<li><object>
+		<param name="Name" value="Gain Control">
+		<param name="Local" value="toolbar.htm#gain">
+		</object>
+	<li><object>
+		<param name="Name" value="Volume Control">
+		<param name="Local" value="toolbar.htm#gain">
+		</object>
+
+	<li><object>
+		<param name="Name" value="AUP">
+		<param name="Local" value="fileformats.htm#aup">
+		</object>
+	<li><object>
+		<param name="Name" value="WAV">
+		<param name="Local" value="fileformats.htm#wav">
+		</object>
+	<li><object>
+		<param name="Name" value="AIFF">
+		<param name="Local" value="fileformats.htm#aiff">
+		</object>
+	<li><object>
+		<param name="Name" value="AU">
+		<param name="Local" value="fileformats.htm#au">
+		</object>
+	<li><object>
+		<param name="Name" value="NeXT">
+		<param name="Local" value="fileformats.htm#next">
+		</object>
+	<li><object>
+		<param name="Name" value="IRCAM">
+		<param name="Local" value="fileformats.htm#ircam">
+		</object>
+	<li><object>
+		<param name="Name" value="MP3">
+		<param name="Local" value="fileformats.htm#mp3">
+		</object>
+	<li><object>
+		<param name="Name" value="Ogg Vorbis">
+		<param name="Local" value="fileformats.htm#ogg">
+		</object>
 
 	<li><object>
 		<param name="Name" value="Introduction">

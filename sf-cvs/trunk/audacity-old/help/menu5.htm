@@ -1,47 +1,55 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>Effect Menu</title>
+<title>Tracks</title>
 </head>
 <body>
 
 <h1>
-Effect Menu
+Tracks
 </h1>
 
+<a name="audio"></a>
 <h2>
-What are effects?
+Audio tracks
 </h2>
 
-Effects are transformations that are applied to audio to change its
-sound.  Audacity contains a few built-in effects which do very basic
-operations such as changing the amplitude, fading in and out, and
-echoing.  To apply an effect, select a region of audio or select
-an entire track, and then select the name of the effect in the Effect
-menu.  Most effects present a dialog box where you can choose the
-parameters of the effect.  If you don't like how the effect sounds,
-you can always <a href="menu2.htm#undo">Undo</a>.
+Audio tracks contain digitally sampled sounds.  In Audacity, two
+stereo channels are represented by two stereo tracks.
+Each audio track has a <i>sample rate</i>: common values include
+8000 (telephone), 16000 (speech), 44100 (CD Audio), and 48000 (DAT).
 
-<a name="plugin"></a>
+<a name="note"></a>
 <h2>
-Plug-in effects
+Note tracks
 </h2>
 
-Instead of trying to provide you with a complete set of effects,
-Audacity supports plug-in effects in the Cubase VST format.
-There are hundreds of free, shareware, and commercial VST plug-ins
-available to do everything from reverb and chorus effects to
-noise reduction and filtering.  A simple web search will get you
-started in the right direction, or you can use the links from
-Audacity's web page.
+Note tracks display data loaded from a MIDI file.  They are currently
+not editable or playable.
+
+<a name="label"></a>
+<h2>
+Label tracks
+</h2>
+
+Label tracks can be used to annotate a document and later save these
+annotations in a text file.
+To create a Label track, select 
+<a href="menu4.htm#newlabeltrack">New Label Track</a> from the
+Project menu.  To add a new label, select some region of your audio
+using the <a href="toolbar.htm#selection">Selection Tool</a>, and
+then hit an alphanumeric key on the keyboard.  Anything you type
+will go into the current label.  You can use the backspace key to
+edit the current label.
 <p>
-To use a Cubase plug-in in Audacity, place the plug-ins in a directory
-(folder) called VST in your Audacity directory.  If you don't already
-have a directory called VST, create one.  The next time you start
-Audacity, those plug-ins will appear in your Effect menu.
-<p>
-Unfortunately, plug-ins are not supported on Unix systems yet.
-If you are a Linux developer and would like to help, let us know!
+Press Enter or Return to finish editing a label.<br>
+Use the left and right arrow keys to move from one label to another.<br>
+To select a label, click on it in the Label track.
+To remove a label, select it, then use backspace to get rid of it,
+then press Enter or Return.  Alternatively, you can select a range of
+labels using the <a href="toolbar.htm#selection">Selection Tool</a>
+and then select <a href="menu2.htm#silence">Silence</a> from the
+Edit menu.
 
 </body>
 </html>

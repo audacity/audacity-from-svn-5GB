@@ -9,7 +9,95 @@
 Toolbar
 </h1>
 
-Audacity is blah, blah, blah
+<a name="selection"></a>
+<h2>
+Selection Tool
+</h2>
+This is the main tool you use to select audio.  Click in a track to
+position the cursor, or click and drag to select a range of audio.  If
+you drag from one track to another, you can select multiple tracks.
+Extend a selection by shift-clicking a new point in the track.
+<p>
+Playback will always begin at the position of the selection cursor.
+If a range of audio is selected, only the selected range will play.
+
+<a name="envelope"></a>
+<h2>
+Envelope Tool
+</h2>
+The envelope tool gives you detailed control over how tracks fade
+in and out, right in the main track window.  When the envelope tool
+is selected, the amplitude envelope of each track is highlighted in
+a green line, with control points at the beginning and end of each
+track.  To change a control point, click it and drag it to a new
+position.  To add a new point, click anywhere in the track where there
+is not already a control point.  To remove a point, click on it and
+drag it outside of the track until it disappears, then release.
+
+<a name="timeshift"></a>
+<h2>
+Time Shift Tool
+</h2>
+This tool allows you to change the relative positioning of tracks
+relative to one another in time.  To use this tool, simply click in a
+track and drag it to the left or right.  To align two tracks together
+or reset their time shift back to zero, use the
+<a href="menu4.htm#aligntogether">Align Tracks Together</a> or
+<a href="menu4.htm#alignzero">Align with Zero</a> 
+commands.
+
+<a name="zoom"></a>
+<h2>
+Zoom Tool
+</h2>
+This tool allows you to zoom in or out of a specific part of the audio.
+To zoom in, click anywhere in the audio.  To zoom out, right-click or
+shift-click.  If you have a middle button, you can middle-click to
+do the same thing as 
+<a href="menu3.htm#zoomnormal>Zoom Normal</a>.
+
+<a name="play"></a>
+<h2>
+Play Button
+</h2>
+
+Press the play button to listen to the audio in your project.  You can
+also hit the spacebar to start or stop playback.  Playback begins
+at the current cursor position.  If a region of audio is selected, only
+the selected region will play.  To quickly play the entire project,
+execute 
+<a href="menu2.htm#selectall">Select All</a> before playing.
+If there are multiple tracks going to the same channel in your
+project, they will be mixed automatically for playback.
+
+<a name="stop"></a>
+<h2>
+Stop Button
+</h2>
+Press the stop button or hit the spacebar to stop playback immediately.
+
+<a name="record"></a>
+<h2>
+Record Button
+</h2>
+Press the record button to record a new track from your computer's
+sound input device.  Use the 
+<a href="prefs.htm">Preferences</a> to configure the recording options.
+In particular, there is an option to record stereo or mono, and there is
+an option to play the other tracks while recording, which doesn't work
+on all systems.
+<p>
+Recording always happens at the project's sample rate.
+
+<a name="gain"></a>
+<h2>
+Master Gain Control
+</h2>
+The Master Gain Control is a slider which controls the volume of the
+audio output by Audacity to your hardware.  Pushing the slider all the
+way to the left will mute Audacity, and pushing it to the right will
+increase the volume of everything beyond its normal level and may cause
+clipping.
 
 </body>
 </html>
