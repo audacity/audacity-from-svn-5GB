@@ -355,6 +355,7 @@ class TrackPanel:public wxWindow {
    bool mIsVZooming;
    bool mIsClosing;
    bool mIsSelecting;
+   bool mIsAdjustingLabel;
    bool mIsResizing;
    bool mIsResizingBelowLinkedTracks;
    bool mIsResizingBetweenLinkedTracks;
@@ -365,7 +366,6 @@ class TrackPanel:public wxWindow {
    bool mIsSoloing;
    bool mIsGainSliding;
    bool mIsPanSliding;   
-
    bool mAdjustSelectionEdges;
 
    // JH: if the user is dragging a track, at what y
@@ -384,6 +384,8 @@ class TrackPanel:public wxWindow {
    wxCursor *mSmoothCursor;
    wxCursor *mZoomInCursor;
    wxCursor *mZoomOutCursor;
+   wxCursor *mLabelCursorLeft;
+   wxCursor *mLabelCursorRight;
    wxCursor *mRearrangeCursor;
    wxCursor *mDisabledCursor;
    wxCursor *mAdjustLeftSelectionCursor;

@@ -23,6 +23,10 @@
 #include "DirManager.h"
 #include "Internat.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 // static member variables.
 bool LabelTrack::mbGlyphsReady=false;
 // TODO: Currently we're only using three of these icons, since we
@@ -53,7 +57,9 @@ LabelTrack *TrackFactory::NewLabelTrack()
 }
 
 LabelTrack::LabelTrack(DirManager * projDirManager):
-Track(projDirManager)
+   Track(projDirManager),
+   mIsAdjustingLabel(false),
+   mAdjustingEdge(0)
 {
    InitColours();
    SetName(_("Label Track"));
@@ -67,7 +73,10 @@ Track(projDirManager)
 }
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
-Track(orig)
+   Track(orig),
+   mIsAdjustingLabel(false),
+   mAdjustingEdge(0)
+   
 {
    InitColours();
 
@@ -274,7 +283,10 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
       int x  = r.x + (int) ((mLabels[i]->t  - h) * pps);
       int x1 = r.x + (int) ((mLabels[i]->t1 - h) * pps);
       int y = r.y;
+#if 0
+      //THIS DOESN'T CURRENTLY GET USED.
       int height = r.height;
+#endif
       mLabels[i]->x=x;
       mLabels[i]->x1=x1;
       mLabels[i]->y=-1;// -ve indicates nothing doing.
@@ -516,26 +528,145 @@ double LabelTrack::GetEndTime()
    else
       return mLabels[len - 1]->t;
 }
+ 
 
-void LabelTrack::MouseDown(int x, int y, wxRect & r, double h, double pps,
-                           double *newSel0, double *newSel1)
+//This returns 0 if not over a glyph,
+// 1 if over the left-hand glyph, and 
+// 2 if over the right-hand glyph on a label.
+int LabelTrack::OverGlyph(int x, int y)
 {
-   LabelStruct * pLabel;
 
+   //Determine the new selection.
+   LabelStruct * pLabel;
+   
    for (int i = 0; i < (int)mLabels.Count(); i++) {
       pLabel = mLabels[i];
-      if( (pLabel->xText-(mIconWidth/2) < x) && 
-          (x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
-          (abs(pLabel->y-y)<mIconHeight/2))
+      
+      //over left selection bound
+      if(abs(pLabel->y - y) < 4 &&
+         abs(pLabel->x - x) < 4
+         )
+         {
+            mMouseOverLabel = i;
+            return 1;
+         }
+      
+      //click on right selection bound
+      if(abs(pLabel->y-y ) < 4 &&
+         abs(pLabel->x1-x) < 4)
+         {
+            mMouseOverLabel = i;
+            return 2;
+         }
+   }
+
+   //If not over a label, reset it
+   mMouseOverLabel = -1;
+   return 0;
+}
+
+void LabelTrack::HandleMouse(const wxMouseEvent & evt,
+                             wxRect & r, double h, double pps,
+                             double *newSel0, double *newSel1)
+{
+
+   if(evt.ButtonUp(1) )
       {
-         mSelIndex = i;
-         *newSel0 = mLabels[i]->t;
-         *newSel1 = mLabels[i]->t1;
+         
+         mIsAdjustingLabel = false;
+         mMouseOverLabel = -1;
          return;
       }
-   }
-   mSelIndex = -1;
+
+   
+   if(evt.Dragging())
+      {
+         
+         //If we are currently adjusting a label, 
+         //just reset its value and redraw.
+         
+         if(mIsAdjustingLabel )  // This guard is necessary but hides another bug.  && mSelIndex != -1)
+            {
+
+               //1 is left edge, 2 is right edge, 0 is nothing.
+               if(mAdjustingEdge == 1) 
+                  mLabels[mSelIndex]->t  = h + (evt.m_x - r.x)/pps;
+
+               else if (mAdjustingEdge == 2)
+                  mLabels[mSelIndex]->t1 = h + (evt.m_x - r.x)/pps;
+               
+                              
+
+               //Now, make sure that t < t1
+               //If not, set both of them equal to the adjusting label location.
+               //This pushes both of them in one direction, instead of swapping
+               //bounds like happens for the selection region.
+               if( mLabels[mSelIndex]->t > mLabels[mSelIndex]->t1)
+                  {
+
+                     //1 is left edge, 2 is right edge, 0 is nothing.
+                     if(mAdjustingEdge == 1) 
+                        mLabels[mSelIndex]->t1  = mLabels[mSelIndex]->t;
+                     else 
+                        mLabels[mSelIndex]->t  = mLabels[mSelIndex]->t1;
+                     
+                  }
+
+               //Set the selection region to be equal to
+               //the new size of the label.
+               *newSel0 = mLabels[mSelIndex]->t;
+               *newSel1 = mLabels[mSelIndex]->t1;
+
+             
+            }
+         return;
+      }
+
+   
+   if( evt.ButtonDown())
+      {
+         //OverGlyph sets mMouseOverLabel to be the chosen label.         
+         mAdjustingEdge = OverGlyph(evt.m_x, evt.m_y);   
+
+         if(mMouseOverLabel != -1)
+            {
+
+               //The mouse was clicked on the label adjuster.
+               mSelIndex = mMouseOverLabel;
+               if(mAdjustingEdge == 1)
+                  {
+                     mIsAdjustingLabel = true;
+                     mLabels[mSelIndex]->t = h + (evt.m_x-r.x)/pps;
+                     return;
+                  }
+               else if (mAdjustingEdge == 2)
+                  {
+                     mIsAdjustingLabel = true;
+                     mLabels[mSelIndex]->t1 = h + (evt.m_x-r.x)/pps;
+                     return;
+                  }
+            }
+
+
+         
+         LabelStruct * pLabel;
+         
+         //OK, they aren't dragging or clicking on an edge.
+         for (int i = 0; i < (int)mLabels.Count(); i++) {
+            pLabel = mLabels[i];
+            if( (pLabel->xText-(mIconWidth/2) < evt.m_x) && 
+                (evt.m_x<pLabel->xText+pLabel->width+(mIconWidth/2)) &&
+                (abs(pLabel->y-evt.m_y)<mIconHeight/2))
+               {
+                  mSelIndex = i;
+                  *newSel0 = mLabels[i]->t;
+                  *newSel1 = mLabels[i]->t1;
+                  return;
+               }
+         }
+      }
 }
+
 
 #ifdef __WXMAC__
 // HACK: why does each key event happen twice on wxMac?
@@ -543,7 +674,7 @@ bool gMacRepeat = false;
 #endif
 
 void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
-{
+{ 
 #ifdef __WXMAC__
    // HACK: why does each key event happen twice on wxMac?
    gMacRepeat = !gMacRepeat;
@@ -555,20 +686,33 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 
    if (mSelIndex >= 0) {
       switch (keyCode) {
-      case WXK_BACK:{
+      case WXK_BACK:
+         {
             int len = mLabels[mSelIndex]->title.Length();
+
+            //If the label is not blank get rid of a letter
             if (len > 0)
-               mLabels[mSelIndex]->title =
-                   mLabels[mSelIndex]->title.Left(len - 1);
+               {
+                  mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(len - 1);
+               }
+               else
+               {
+
+                  delete mLabels[mSelIndex];
+                  mLabels.RemoveAt(mSelIndex);
+                  mSelIndex = -1;
+               }
          }
          break;
 
+      case WXK_DELETE:
       case WXK_RETURN:
       case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == "") {
             delete mLabels[mSelIndex];
             mLabels.RemoveAt(mSelIndex);
          }
+         
          mSelIndex = -1;
          break;
 
@@ -622,8 +766,9 @@ bool LabelTrack::IsSelected() const
 void LabelTrack::Export(wxTextFile & f)
 {
    for (int i = 0; i < (int)mLabels.Count(); i++) {
-      f.AddLine(wxString::Format("%f\t%s",
+      f.AddLine(wxString::Format("%f\t%f\t%s",
                                  (double)mLabels[i]->t,
+                                 (double)mLabels[i]->t1,
                                  (const char *) (mLabels[i]->title)));
    }
 }
@@ -631,17 +776,21 @@ void LabelTrack::Export(wxTextFile & f)
 void LabelTrack::Import(wxTextFile & in)
 {
    wxString currentLine;
-   int i, len;
+   int i, i2,len;
    int index, lines;
-   wxString s;
+   wxString s,s1;
    wxString title;
-   double t;
+   double t,t1;
 
    lines = in.GetLineCount();
 
    mLabels.Clear();
    mLabels.Alloc(lines);
 
+
+   //Currently, we assume that a tag file has two values and a label
+   //on each line. If the second token is not a number, we treat
+   //it as a single-value label.
    for (index = 0; index < lines; index++) {
       currentLine = in.GetLine(index);
 
@@ -649,25 +798,70 @@ void LabelTrack::Import(wxTextFile & in)
       if (len == 0)
          return;
 
+      
+      //get the timepoint of the left edge of the label.
       i = 0;
       while (i < len && currentLine.GetChar(i) != ' '
              && currentLine.GetChar(i) != '\t')
-         i++;
-
+         {
+            i++;
+         }
       s = currentLine.Left(i);
+
+
       if (!Internat::CompatibleToDouble(s, &t))
          return;
 
+
+
+      //Increment one letter.
+      i++;
+
+      //Now, go until we find the start of the get the next token
       while (i < len
              && (currentLine.GetChar(i) == ' '
                  || currentLine.GetChar(i) == '\t'))
-         i++;
+          {
+             i++;
+          }
+      //Keep track of the start of the second token
+      i2=i;
 
-      title = currentLine.Right(len - i);
+      //Now, go to the end of the second token.
+      while (i < len && currentLine.GetChar(i) != ' '
+             && currentLine.GetChar(i) != '\t')
+         {
+            i++;
+         }
 
+
+      //We are at the end of the second token.      
+      s1 = currentLine.Mid(i2,i-i2+1).Strip(wxString::stripType(0x3));
+
+      if (!Internat::CompatibleToDouble(s1, &t1))
+         {
+
+            //s1 is not a number.
+            t1 = t;  //This is a one-sided label; t1 == t.
+
+            //Because s1 is not a number, the label should be
+            //The rest of the line, starting at i2;
+            title = currentLine.Right(len - i2).Strip(wxString::stripType(0x3));  //0x3 indicates both
+         }
+      else
+         {
+
+            //s1 is a number, and it is stored correctly in t1.
+            //The title should be the remainder of the line, 
+            //After we eat 
+
+            //Get rid of spaces at either end 
+            title = currentLine.Right(len - i).Strip(wxString::stripType(0x3)); //0x3 indicates both.
+
+         }
       LabelStruct *l = new LabelStruct();
       l->t = t;
-      l->t1 = t;
+      l->t1 = t1;
       l->title = title;
       mLabels.Add(l);
    }
@@ -944,7 +1138,7 @@ const LabelStruct *LabelTrack::GetLabel(int index) const
    return mLabels[index];
 }
 
-void LabelTrack::AddLabel(double t, double t1, const wxString &title)
+int LabelTrack::AddLabel(double t, double t1, const wxString &title)
 {
    LabelStruct *l = new LabelStruct();
    l->t = t;
@@ -960,6 +1154,8 @@ void LabelTrack::AddLabel(double t, double t1, const wxString &title)
    mLabels.Insert(l, pos);
 
    mSelIndex = pos;
+
+   return pos;
 }
 
 // Private method called from the constructor

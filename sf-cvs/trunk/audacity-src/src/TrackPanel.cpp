@@ -106,461 +106,10 @@
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 
-// Mac only supports 16x16 pixel cursors.
-#ifdef __WXMAC__
-#define CURSORS_SIZE16
-#else
-#define CURSORS_SIZE32
-#endif
-
-#ifdef CURSORS_SIZE32
-//--FIXME: Move these XPMs out into an external file,
-// once the basic idea of custom icons has been validated.
-// Cursors MUST be 32x32 (or they will be resized).
-// You only get black, white and transparent to use.
-
-// N.B. Under windows the mask color must be in 
-// the color palette.  To cater for Win2K a mask
-// color of saturated red was used.  (middle grey 
-
-/* XPM */
-static const char * DisabledCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-".............######.............",
-"...........##++++++##...........",
-"..........#++++++++++#..........",
-".........#++++####++++#.........",
-".........#+++#...#++++#.........",
-"........#+++#...#++++++#........",
-"........#++#...#+++##++#........",
-"........#++#..#+++#.#++#........",
-"........#++#.#+++#..#++#........",
-"........#++##+++#...#++#........",
-"........#++++++#...#+++#........",
-".........#++++#...#+++#.........",
-".........#++++####++++#.........",
-"..........#++++++++++#..........",
-"...........##++++++##...........",
-".............######.............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-/* XPM */
-static const char * EnvCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"............#########...........",
-"............#+++++++#...........",
-".............#+++++#............",
-"..............#+++#.............",
-"...............#+#..............",
-"................#...............",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................#...............",
-"...............#+#..............",
-"..............#+++#.............",
-".............#+++++#............",
-"............#+++++++#...........",
-"............#########...........",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-/* XPM */
-static const char * TimeCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"...........++.......++..........",
-"..........+#+.......+#+.........",
-".........+##+.......+##+........",
-"........+###+++++++++###+.......",
-".......+#################+......",
-"........+###+++++++++###+.......",
-".........+##+.......+##+........",
-"..........+#+.......+#+.........",
-"...........++.......++..........",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
+//This loads the appropriate set of cursors, depending on platform.
+#include "../images/Cursors.h"
 
 
-static const char * IBeamCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-".............####.###...........",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-"................##..............",
-".............####.###...........",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-//Image of a pencil.
-static const char * DrawCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-".................+++............",
-"................+###+...........",
-"...............+#+###+..........",
-"..............+#+####+..........",
-"..............+#####+...........",
-".............+#++###+...........",
-".............+#+###+............",
-"............+#++###+............",
-"............+#+###+.............",
-"...........+#++###+.............",
-"...........+#+###+..............",
-"...........+#####+..............",
-"...........+####+...............",
-"...........+###+................",
-"...........+##+.................",
-"...........+#+..................",
-"............+...................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-static const char * ZoomInCursorXpm[] = {
-"32 32 3 1",
-"+	c #FFFFFF",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................++++............",
-"...............+####+...........",
-"..............+##...#+..........",
-".............+#..##..#+.........",
-"............+##..##..##+........",
-"............+#.######.#+........",
-"............+#.######.#+........",
-"............+##..##..##+........",
-".............+#..##..#+.........",
-"............+####..##+..........",
-"...........+###+####+...........",
-"..........+###+.++++............",
-".........+###+..................",
-"........+###+...................",
-".......+###+....................",
-"........+#+.....................",
-".........+......................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-static const char * ZoomOutCursorXpm[] = {
-"32 32 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................++++............",
-"...............+####+...........",
-"..............+##...#+..........",
-".............+#......#+.........",
-"............+##......##+........",
-"............+#.######.#+........",
-"............+#.######.#+........",
-"............+##......##+........",
-".............+#......#+.........",
-"............+####..##+..........",
-"...........+###+####+...........",
-"..........+###+.++++............",
-".........+###+..................",
-"........+###+...................",
-".......+###+....................",
-"........+#+.....................",
-".........+......................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................",
-"................................"};
-
-#else
-// cursors size 16.
-
-/* XPM */
-static const char * DisabledCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-".....######.....",
-"...##++++++##...",
-"..#++++++++++#..",
-".#++++####++++#.",
-".#+++#...#++++#.",
-"#+++#...#++++++#",
-"#++#...#+++##++#",
-"#++#..#+++#.#++#",
-"#++#.#+++#..#++#",
-"#++##+++#...#++#",
-"#++++++#...#+++#",
-".#++++#...#+++#.",
-".#++++####++++#.",
-"..#++++++++++#..",
-"...##++++++##...",
-".....######....."};
-
-/* XPM */
-static const char * EnvCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"......#####.....",
-"......#+++#.....",
-".......#+#......",
-"........#.......",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"........#.......",
-".......#+#......",
-"......#+++#.....",
-"......#####....."};
-
-/* XPM */
-static const char * TimeCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"................",
-"................",
-"................",
-"................",
-"....++....++....",
-"...+#+....+#+...",
-"..+##+....+##+..",
-".+###++++++###+.",
-"+##############+",
-".+###++++++###+.",
-"..+##+....+##+..",
-"...+#+....+#+...",
-"....++....++....",
-"................",
-"................",
-"................"};
-
-
-// Classic optical illusion.
-// the beam looks taller than the arrow.
-static const char * IBeamCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"....####.###....",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-".......##.......",
-"....####.###...."};
-
-//Image of a pencil.
-static const char * DrawCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"........+###+...",
-".......+#+###+..",
-"......+#+####+..",
-"......+#####+...",
-".....+#++###+...",
-".....+#+###+....",
-"....+#++###+....",
-"....+#+###+.....",
-"...+#++###+.....",
-"...+#+###+......",
-"...+#####+......",
-"...+####+.......",
-"...+###+........",
-"...+##+.........",
-"...+#+..........",
-"....+..........."};
-
-static const char * ZoomInCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"........++++....",
-".......+####+...",
-"......+##...#+..",
-".....+#..##..#+.",
-"....+##..##..##+",
-"....+#.######.#+",
-"....+#.######.#+",
-"....+##..##..##+",
-".....+#..##..#+.",
-"....+####..##+..",
-"...+###+####+...",
-"..+###+.++++....",
-".+###+..........",
-"+###+...........",
-"###+............",
-"+#+............."};
-
-static const char * ZoomOutCursorXpm[] = {
-"16 16 3 1",
-".	c #FF0000", // mask color = RGB:255,0,0
-"#	c #000000",
-"+	c #FFFFFF",
-"........++++....",
-".......+####+...",
-"......+##...#+..",
-".....+#......#+.",
-"....+##......##+",
-"....+#.######.#+",
-"....+#.######.#+",
-"....+##......##+",
-".....+#......#+.",
-"....+####..##+..",
-"...+###+####+...",
-"..+###+.++++....",
-".+###+..........",
-"+###+...........",
-"###+............",
-"+#+............."};
-
-#endif
-
-//-- End of XPM FIXME
 
 //FIXME: the code below is obsolete
 //#if defined(__WXMAC__) && !defined(__UNIX__)
@@ -772,6 +321,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsVZooming = false;
    mIsClosing = false;
    mIsSelecting = false;
+   mIsAdjustingLabel = false;
    mIsResizing = false;
    mIsResizingBetweenLinkedTracks = false;
    mIsResizingBelowLinkedTracks = false;
@@ -782,6 +332,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsSoloing = false;
    mIsGainSliding = false;
    mIsPanSliding = false;
+
 
    gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 
@@ -796,6 +347,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mSlideCursor   = MakeCursor( wxCURSOR_SIZEWE,    TimeCursorXpm,    16, 16);
    mZoomInCursor  = MakeCursor( wxCURSOR_MAGNIFIER, ZoomInCursorXpm,  19, 15);
    mZoomOutCursor = MakeCursor( wxCURSOR_MAGNIFIER, ZoomOutCursorXpm, 19, 15);
+   mLabelCursorLeft  = MakeCursor( wxCURSOR_ARROW,  LabelCursorLeftXpm, 19, 15);
+   mLabelCursorRight = MakeCursor( wxCURSOR_ARROW,  LabelCursorRightXpm, 16, 16);
 
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
@@ -916,6 +469,8 @@ TrackPanel::~TrackPanel()
    delete mSmoothCursor;
    delete mZoomInCursor;
    delete mZoomOutCursor;
+   delete mLabelCursorLeft;
+   delete mLabelCursorRight;
    delete mRearrangeCursor;
    delete mAdjustLeftSelectionCursor;
    delete mAdjustRightSelectionCursor;
@@ -1499,6 +1054,9 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       return;
    }
 
+   
+
+
    const char *tip = 0;
 
    // (3) They're over the label or vertical ruler.
@@ -1518,6 +1076,25 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    }
    // Otherwise, we must be over the wave window 
    else {
+
+      
+      //See if we are above a label track
+      if (t->GetKind() == Track::Label)
+         {
+            int edge=((LabelTrack*)t)->OverGlyph(event.m_x, event.m_y);
+            if(edge == 1)
+               {
+                  SetCursor(*mLabelCursorLeft);
+                  return;
+               }
+            else if (edge == 2)
+               {
+                  SetCursor(*mLabelCursorRight);
+                  return;
+               }
+         }
+  
+
 
       //JKC: DetermineToolToUse is called whenever the mouse 
       //moves.  I had some worries about calling it when in 
@@ -1651,7 +1228,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       mCapturedTrack = NULL;
       mIsSelecting = false;
-      
+      mIsAdjustingLabel = false;      //Stop adjusting label if we happen to up-click on a non-label track.
       //Send the new selection state to the undo/redo stack:
       MakeParentModifyState();
       
@@ -1671,8 +1248,9 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsSelecting = false;
       MakeParentModifyState();
-   } else
-      SelectionHandleDrag(event);
+   } 
+
+   SelectionHandleDrag(event);
 }
 
 // AS: This function gets called when we're handling selection
@@ -1739,11 +1317,17 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          DisplaySelection();
       }
 
+
+
+#if 1      //Determine if user clicked on a label track. 
+
       if (pTrack->GetKind() == Track::Label) {
-         ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
-                                            mCapturedRect,
-                                            mViewInfo->h, mViewInfo->zoom,
-                                            &mViewInfo->sel0, &mViewInfo->sel1);
+
+         
+         ((LabelTrack *) pTrack)->HandleMouse(event, mCapturedRect,
+                                                  mViewInfo->h, mViewInfo->zoom,
+                                                  &mViewInfo->sel0, &mViewInfo->sel1);
+         
          if (((LabelTrack *) pTrack)->IsSelected()) {
             // If the user clicked a label, select all other tracks too
             TrackListIterator iter(mTracks);
@@ -1752,8 +1336,11 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
                t->SetSelected(true);
                t = iter.Next();
             }
+            
          }
       }
+#endif
+
    }
    mIsSelecting = true;
 }
@@ -1774,14 +1361,18 @@ void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
 //  handle it here.
 void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 {
+ 
+
    // AS: If we're not in the process of selecting (set in
    //  the SelectionHandleClick above), fuhggeddaboudit.
+
    if (!mIsSelecting)
       return;
-
+   
    if (event.Dragging() || mAutoScrolling) {
       wxRect r = mCapturedRect;
       int num = mCapturedNum;
+ 
       Track *pTrack = mCapturedTrack;
 
       // AS: Note that FindTrack will replace r and num's values.
@@ -2303,7 +1894,7 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
 }
 
 
-// BG: This handles drawing
+// BG: This handles drawing; adjusting individual samples by hand using the draw tool(s)
 //  Stm:
 // There are several member data structure for handling drawing:
 //   mDrawingTrack:               keeps track of which track you clicked down on, so drawing doesn't 
@@ -3227,6 +2818,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
    }
 }
 
+
 // MM: Handle mouse wheel rotation (for zoom in/out and vertical scrolling)
 void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
 {
@@ -3360,10 +2952,10 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 {
    mListener->TP_HasMouse();
-
+   
    if (event.m_wheelRotation != 0)
       HandleWheelRotation(event);
-
+   
    if (!mAutoScrolling) {
       mMouseMostRecentX = event.m_x;
       mMouseMostRecentY = event.m_y;
@@ -3371,7 +2963,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
    if (event.ButtonDown(1)) {
       mCapturedTrack = NULL;
-
+      
       wxActivateEvent e;
       GetParent()->ProcessEvent(e);
 
@@ -3436,6 +3028,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       return;
    }
 
+   //Determine if user clicked on the track's left-hand label
    if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
       if (event.m_x >= GetVRulerOffset()) {
          HandleVZoom(event);
@@ -3447,6 +3040,48 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       }
       return;
    }
+
+
+ 
+   //Determine if user clicked on a label track.  If so, use MouseDown handler for 
+   //the label track.
+   int num;
+   Track *pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+   
+   if (pTrack && (pTrack->GetKind() == Track::Label)) {
+      
+      if(event.ButtonDown(1))      {
+         //If the button was pressed, check to see if we are over
+         //a glyph (this is the second of three calls to the function).
+         //std::cout << ((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y) << std::endl;
+         if(((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y))
+            {
+
+               mIsAdjustingLabel = true;
+            }
+
+      } else if (event.Dragging()) {
+         ;
+         
+      }  else if( event.ButtonUp(1)) {
+
+         mIsAdjustingLabel = false;
+      }
+         
+      ((LabelTrack *) pTrack)->HandleMouse(event, mCapturedRect,
+                                           mViewInfo->h, mViewInfo->zoom,
+                                           &mViewInfo->sel0, &mViewInfo->sel1);
+      
+   }
+   
+   //If we are adjusting a label on a labeltrack, do not do anything 
+   //that follows. Instead, redraw the track.
+   if(mIsAdjustingLabel)
+      {
+
+         Refresh(false);
+         return;
+      }
 
    ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
    if( pCtb == NULL )
