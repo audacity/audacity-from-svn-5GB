@@ -60,18 +60,12 @@ Canada.
 <h3>Active Developers</h3>
 
 <p>
-<b>Brian Gunlogson</b> is working on the adding completely
-configurable keyboard shortcuts to Audacity 1.1.
+<b>Shane Mueller</b> wrote the new toolbar code for Audacity 1.1, 
+and contributed to a number of other areas. He holds a Ph.D. in Cognitive
+Psychology from the University of Michigan, and uses Audacity as a tool 
+to study human verbal memory and speech.
 <br>
-<tt>email: bmg300 <b>@</b> yahoo.com</tt><br>
-</p>
 
-<p>
-<b>Shane Mueller</b> wrote the new toolbar code for Audacity 1.1.
-He is a graduate student in Psychology at the University of
-Michigan.<br>
-<tt>email: smueller <b>@</b> umich.edu</tt><br>
-<a href="http://www-personal.umich.edu/~smueller/">web page</a>
 </p>
 
 <p>
@@ -110,6 +104,15 @@ He lives and works in Germany.
 </p>
 
 <h3>Other Notable Contributions</h3>
+
+<p>
+<b>Brian Gunlogson</b> worked on the adding completely
+configurable keyboard shortcuts to Audacity 1.1, brought the Windows branch
+to point where it attracted many new contributors, and contributed a host of other features
+and fixes.
+<br>
+<tt>email: bmg300 <b>@</b> yahoo.com</tt><br>
+</p>
 
 <p>
 <b>Roger Dannenberg</b> wrote the sound file I/O,
