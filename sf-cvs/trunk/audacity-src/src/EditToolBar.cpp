@@ -132,6 +132,7 @@ AButton *EditToolBar::MakeButton(wxImage * up,
                                  wxImage * down,
                                  wxImage * hilite,
                                  char const **foreground,
+                                 char const **disabled,
                                  char const **alpha, int id, int left)
 {
    wxPoint p;
@@ -140,7 +141,7 @@ AButton *EditToolBar::MakeButton(wxImage * up,
 
    AButton *button = this->ToolBar::MakeButton(up, down, hilite,
                                                foreground,
-                                               (const char **) Disabled,
+                                               disabled,
                                                alpha,
                                                wxWindowID(id), p,
                                                wxSize(27, 27), 3, 3);
@@ -182,6 +183,7 @@ void EditToolBar::MakeButtons()
    //Cut Button
    mCut = MakeButton(upPattern, downPattern, hilitePattern,
                      (char const **) Cut,
+                     (char const **) CutDisabled,
                      (char const **) CutAlpha, ETBCutID, 1);
    mCut->SetToolTip(_("Cut selection (to clipboard)"));
 
@@ -189,6 +191,7 @@ void EditToolBar::MakeButtons()
    //Copy Button
    mCopy = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Copy,
+                      (char const **) CopyDisabled,
                       (char const **) CopyAlpha, ETBCopyID, 28);
    mCopy->SetToolTip(_("Copy selection to clipboard"));
 
@@ -196,18 +199,21 @@ void EditToolBar::MakeButtons()
    //Paste Button
    mPaste = MakeButton(upPattern, downPattern, hilitePattern,
                        (char const **) Paste,
+                       (char const **) PasteDisabled,
                        (char const **) PasteAlpha, ETBPasteID, 55);
    mPaste->SetToolTip(_("Paste clipboard"));
 
    //Trim Button
    mTrim = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Trim,
+                      (char const **) TrimDisabled,
                       (char const **) TrimAlpha, ETBTrimID, 82);
    mTrim->SetToolTip(_("Trim everything outside selection"));
 
    //Silence Button
    mSilence = MakeButton(upPattern, downPattern, hilitePattern,
                          (char const **) Silence,
+                         (char const **) SilenceDisabled,
                          (char const **) SilenceAlpha, ETBSilenceID, 109);
    mSilence->SetToolTip(_("Insert Silence"));
 
@@ -216,12 +222,14 @@ void EditToolBar::MakeButtons()
    //Undo Button
    mUndo = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Undo,
+                      (char const **) UndoDisabled,
                       (char const **) UndoAlpha, ETBUndoID, 150);
    mUndo->SetToolTip(_("Undo last action"));
 
    //Redo Button
    mRedo = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Redo,
+                      (char const **) RedoDisabled,
                       (char const **) RedoAlpha, ETBRedoID, 177);
    mRedo->SetToolTip(_("Redo last undo"));
 
@@ -230,24 +238,28 @@ void EditToolBar::MakeButtons()
    //Zoom In Button
    mZoomIn = MakeButton(upPattern, downPattern, hilitePattern,
                         (char const **) ZoomIn,
+                        (char const **) ZoomInDisabled,
                         (char const **) ZoomInAlpha, ETBZoomInID, 220);
    mZoomIn->SetToolTip(_("Zoom In"));
 
    //Zoom Out Button
    mZoomOut = MakeButton(upPattern, downPattern, hilitePattern,
                          (char const **) ZoomOut,
+                         (char const **) ZoomOutDisabled,
                          (char const **) ZoomOutAlpha, ETBZoomOutID, 247);
    mZoomOut->SetToolTip(_("Zoom Out"));
 
    //Zoom to selection Button
    mZoomSel = MakeButton(upPattern, downPattern, hilitePattern,
                          (char const **) ZoomSel,
+                         (char const **) ZoomSelDisabled,
                          (char const **) ZoomSelAlpha, ETBZoomSelID, 274);
    mZoomSel->SetToolTip(_("Fit selection in window"));
 
    //Zoom All Button
    mZoomFit = MakeButton(upPattern, downPattern, hilitePattern,
                          (char const **) ZoomFit,
+                         (char const **) ZoomFitDisabled,
                          (char const **) ZoomFitAlpha, ETBZoomFitID, 302);
    mZoomFit->SetToolTip(_("Fit entire file in window"));
 
