@@ -119,7 +119,7 @@ AC_CHECK_FILE(lib-src/libid3tag/frame.h,
               default_libid3tag="yes",
               default_libid3tag="system")
 
-AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h,
+AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h.in,
               default_libsndfile="local",
               default_libsndfile="system")
 
