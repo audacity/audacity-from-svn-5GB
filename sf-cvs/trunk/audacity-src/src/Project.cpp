@@ -95,7 +95,6 @@
 #include "Experimental.h"
 
 
-
 using std::cout;
 
 TrackList *AudacityProject::msClipboard = new TrackList();

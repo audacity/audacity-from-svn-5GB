@@ -6,8 +6,7 @@
 
   Dominic Mazzoni
 
-  This class is a custom slider.  Values are always returned
-  between 0.0 and 1.0, inclusive.
+  This class is a custom slider.  
 
 **********************************************************************/
 
@@ -16,11 +15,14 @@
 
 #include <wx/defs.h>
 #include <wx/window.h>
+#include <wx/dialog.h>
 
 class wxBitmap;
 class wxImage;
 class wxSize;
 class wxPoint;
+class wxTextCtrl;
+class wxButton;
 
 //
 // Predefined slider types
@@ -28,7 +30,7 @@ class wxPoint;
 #define FRAC_SLIDER 1    // 0.0...1.0
 #define DB_SLIDER 2      // -36...36 dB
 #define PAN_SLIDER 3     // -1.0...1.0
-#define SPEED_SLIDER 4  // 0.0 .. 4.0
+#define SPEED_SLIDER 4  // 0.0 ..3.0 
 
 // Customizable slider only: If stepValue is STEP_CONTINUOUS,
 // every value on the slider between minValue and maxValue
@@ -36,13 +38,21 @@ class wxPoint;
 //
 #define STEP_CONTINUOUS 0.0f
 
+
+
+
+
+
+
+
+
+
 //
 // Lightweight slider - i.e. a slider that doesn't appear in
 // its own window, but rather draws itself inside an existing
 // window (used inside Track Labels).  The ASlider class,
 // which uses this class, is below.
 //
-
 class LWSlider
 {
    friend class ASlider;
@@ -180,6 +190,48 @@ class ASlider :public wxWindow
  public:
     DECLARE_EVENT_TABLE()
 };
+
+
+
+#define SLIDER_DIALOG_TEXTCTRL 100
+
+
+// This is a modal dialog that contains an ASlider
+// and a text-entry box which can be used to set the
+// value of a slider.
+class SliderDialog: public wxDialog
+{
+ public:
+   SliderDialog(wxWindow * parent, wxWindowID id,
+                const wxString & title, 
+                wxPoint position,
+                wxSize size, 
+                int style,
+                float value);
+   ~SliderDialog();
+   
+   void OnMouseEvent(wxMouseEvent &event);
+   void OnPaint(wxMouseEvent &event);
+   void OnKeyEvent(wxCommandEvent &event);
+   void OnEnter(wxCommandEvent & event);
+   void OnOK(wxCommandEvent & evt);
+   void OnCancel(wxCommandEvent & evt);
+   float Get();
+   
+ private:
+   
+   bool mIsTextEditing;  //are we editing the the text right now?
+   float mLastSliderPos; 
+   
+   LWSlider * mSlider;
+   wxTextCtrl * mTextCtrl;
+   wxButton * mOK;
+   wxButton * mCancel;
+     
+ public:
+   DECLARE_EVENT_TABLE()
+};
+
 
 #endif
 

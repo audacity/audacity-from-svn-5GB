@@ -2574,6 +2574,7 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
 
 void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 {
+
    LWSlider *slider;
 
    if (pan)
@@ -2581,7 +2582,16 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    else
       slider = mTrackLabel.mGains[mCapturedNum];
 
+
+
    slider->OnMouseEvent(event);
+
+   //If we have a double-click, do this...
+   if(event.ButtonDClick(1))
+      {
+         mMouseCapture = IsUncaptured;
+      }
+
    float newValue = slider->Get();
    WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
    
@@ -2747,6 +2757,9 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
    }
+
+
+   
    // DM: Check Gain and Pan on WaveTracks:
    if (!second && t->GetKind() == Track::Wave) {
       if (GainFunc(t, r, event,
@@ -2759,18 +2772,21 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
                   num-1, event.m_x, event.m_y))
          return;
    }
-   // DM: If it's a NoteTrack, it has special controls
-   if (!second && t && t->GetKind() == Track::Note) {
-      wxRect midiRect;
-      mTrackLabel.GetTrackControlsRect(r, midiRect);
-      if (midiRect.Inside(event.m_x, event.m_y)) {
-         ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
-                                       event.RightDown()
-                                       || event.RightDClick());
-         Refresh(false);
-         return;
+
+
+
+      // DM: If it's a NoteTrack, it has special controls
+      if (!second && t && t->GetKind() == Track::Note) {
+         wxRect midiRect;
+         mTrackLabel.GetTrackControlsRect(r, midiRect);
+         if (midiRect.Inside(event.m_x, event.m_y)) {
+            ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
+                                          event.RightDown()
+                                          || event.RightDClick());
+            Refresh(false);
+            return;
+         }
       }
-   }
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
 
@@ -4844,6 +4860,7 @@ void TrackLabel::DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, b
 
 void TrackLabel::MakeMoreSliders()
 {
+
    wxRect r(0, 0, 1000, 1000);
    wxRect gainRect;
    wxRect panRect;

@@ -6,10 +6,8 @@
 
   Dominic Mazzoni
 
-  This class is a custom slider (currently used just for the volume
-  control).  It is not very customizable in the sense that the
-  background image must be exactly the size you want it, but it does
-  allow for a slicker look and feel by allowing you to use images
+  This class is a custom slider, allowing for a 
+  slicker look and feel by allowing you to use images
   for the slider background and the thumb.
 
 **********************************************************************/
@@ -24,6 +22,13 @@
 #include <wx/panel.h>
 #include <wx/tooltip.h>
 #include <wx/debug.h>
+#include <wx/textctrl.h>
+#include <wx/valtext.h>
+#include <wx/dialog.h>
+#include <wx/sizer.h>
+#include <wx/button.h>
+#include <wx/statline.h>
+
 
 #if defined(__WXMSW__) && !defined(__CYGWIN__)
 #define USE_POPUPWIN 1
@@ -41,6 +46,8 @@
 #include "../Project.h"
 
 #include "../../images/SliderThumb.xpm"
+
+#include <iostream>
 
 #if defined __WXMSW__
 const int sliderFontSize = 10;
@@ -156,6 +163,155 @@ void TipPanel::OnPaint(wxPaintEvent& event)
    dc.DrawText(label, (width-textWidth)/2, (height-textHeight)/2);
 }
 
+
+
+
+///
+///SliderDialog
+///
+
+BEGIN_EVENT_TABLE(SliderDialog, wxDialog)
+   EVT_MOUSE_EVENTS(SliderDialog::OnMouseEvent)
+   EVT_TEXT_ENTER(SLIDER_DIALOG_TEXTCTRL,SliderDialog::OnEnter)
+   EVT_TEXT(SLIDER_DIALOG_TEXTCTRL,SliderDialog::OnKeyEvent)
+   EVT_PAINT(SliderDialog::OnPaint)
+   EVT_BUTTON(wxID_OK,SliderDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL,SliderDialog::OnCancel)
+END_EVENT_TABLE()
+   ;
+#define SLIDER_DIALOG_WIDTH 200
+#define SLIDER_DIALOG_HEIGHT 90
+SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
+                           const wxString & title, 
+                           wxPoint position,
+                           wxSize size,
+                           int style, 
+                           float value):
+   wxDialog(NULL,id,title, position,wxSize(SLIDER_DIALOG_WIDTH, SLIDER_DIALOG_HEIGHT))
+{
+   
+   wxBeginBusyCursor();
+   wxString * dummy = new wxString(wxString::Format("%2.2f",value));
+
+   //Keep track of the height
+   int h = 1;
+   //Add the text
+
+   int w = 0;
+   w =  (SLIDER_DIALOG_WIDTH - size.GetWidth())/2;
+   mTextCtrl = new wxTextCtrl(this,SLIDER_DIALOG_TEXTCTRL,*dummy,
+                              wxPoint(w,h),
+                              size,
+                              wxTE_PROCESS_ENTER, 
+                              wxTextValidator(wxFILTER_NUMERIC,dummy));
+
+   h+= size.GetHeight()+1;
+
+  //Add a slider 
+   mSlider = new LWSlider(this, title,wxPoint(w,h),size,style);
+   mSlider->Set(value);
+   mSlider->SetId(id);
+   
+   mLastSliderPos = value;
+
+   h+= size.GetHeight()+1;
+
+   //create buttons 
+   mOK =     new  wxButton(this, wxID_OK,_("OK"),         wxPoint(10,h),wxSize(80,20),wxCLIP_SIBLINGS);
+   mCancel = new  wxButton(this, wxID_CANCEL,_("Cancel"), wxPoint(110,h),wxSize(80,20),wxCLIP_SIBLINGS);
+      
+   mTextCtrl->SetFocus();
+   mIsTextEditing = false;
+   wxEndBusyCursor();
+}
+
+SliderDialog::~SliderDialog()
+{
+   delete mSlider;
+   delete mTextCtrl;
+   delete mOK;
+   delete mCancel;
+}
+
+
+void SliderDialog::OnPaint(wxMouseEvent & event)
+{
+   wxPaintDC dc(this);
+   mSlider->OnPaint(dc, false);
+}
+
+
+void SliderDialog::OnMouseEvent(wxMouseEvent & event)
+{
+   
+   //Kill any double-clicks right away, to avoid recursive dialogs.
+   if (event.ButtonDClick(1))
+      return;
+
+
+   //Forward dragging and buttondown events tothe slider
+   if(event.Dragging() 
+      || event.ButtonDown(1) 
+      || event.ButtonUp(1)
+      || (event.m_wheelRotation != 0)
+      )
+      {
+         mSlider->OnMouseEvent(event);
+         //update the text control accordingly.
+         mTextCtrl->SetValue(wxString::Format("%2.2f",mSlider->Get()));
+      }
+   OnPaint(event);
+
+}
+
+
+void SliderDialog::OnKeyEvent(wxCommandEvent & event)
+{
+   //Do not do anything here right now.  Possibly, better rounding
+   //and validation could go here.
+}
+
+
+
+void SliderDialog::OnEnter(wxCommandEvent & event)
+{
+
+   wxString text = mTextCtrl->GetValue();
+   //Convert to a double
+   double val=0;
+   text.ToDouble(&val);
+
+   //Set the slider to the value.
+   mSlider->Set(val);
+
+   //Set the text value to the slider's
+   mTextCtrl->SetValue(wxString::Format("%2.2f",mSlider->Get()));
+
+   wxMouseEvent dummy;
+   //repaint
+   OnPaint(dummy);
+
+   mOK->SetFocus();
+   mIsTextEditing = false;
+
+}
+
+
+void SliderDialog::OnOK(wxCommandEvent & evt)
+{
+   EndModal(wxID_OK);
+}
+void SliderDialog::OnCancel(wxCommandEvent & evt)
+{
+   EndModal(wxID_CANCEL);
+}
+
+float SliderDialog:: Get()
+{
+   return mSlider->Get();
+}
+
+
 //
 // LWSlider
 //
@@ -207,7 +363,7 @@ LWSlider::LWSlider(wxWindow *parent,
       break;
    case SPEED_SLIDER:
       minValue = 0.0f;
-      maxValue = 5.0f;
+      maxValue = 3.0f;
       stepValue = STEP_CONTINUOUS;
       break;
 
@@ -371,11 +527,13 @@ void LWSlider::Init(wxWindow * parent,
 
 LWSlider::~LWSlider()
 {
+
    delete mBitmap;
    delete mSelBitmap;
    delete mThumbBitmap;
    delete mSelThumbBitmap;
    delete mPopWin;
+
 }
 
 void LWSlider::SetId(wxWindowID id)
@@ -525,8 +683,24 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    }
    
    float prevValue = mCurrentValue;
+   if (event.ButtonDClick())
+      {
+         //On a double-click, we should pop up a dialog.
+         SliderDialog * dialog = new SliderDialog(mParent, -1,
+                                                  mName,
+                                                  wxPoint(event.m_x,event.m_y),
+                                                  wxSize(mWidth,mHeight),
+                                                  mStyle,
+                                                  Get());
 
-   if (event.ButtonDown()) {
+
+         if(dialog->ShowModal() == wxID_OK)
+               Set(dialog->Get());
+
+         dialog->Destroy();
+         Refresh();
+
+      } else  if (event.ButtonDown()) {
 
       //This jumps the thumb to clicked position
       if (!mIsDragging) {
@@ -550,22 +724,40 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       ((TipPanel *)mPopWin)->SetPos(wxPoint(-1000, -1000));
    } else if (event.Dragging() && mIsDragging) {
       mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
-   }
+   } else if (event.m_wheelRotation != 0)
+      {
+         
+         //Calculate the number of steps in a given direction this event
+         //represents (allows for two or more clicks on a single event.)
+         int steps =  event.m_wheelRotation /
+            (event.m_wheelDelta > 0 ? event.m_wheelDelta : 120);
+                  
+         float stepSize  = mStepValue;
+         if(stepSize == 0)
+            {
+               stepSize = (mMaxValue - mMinValue)/10;
+            }
+         Set(Get()+ steps * stepSize);
+         Refresh();
+      }
+
+
 
    if (prevValue != mCurrentValue) {
       FormatPopWin();
       mPopWin->Refresh();
       Refresh();
-
+      
       wxCommandEvent *e =
          new wxCommandEvent(wxEVT_COMMAND_SLIDER_UPDATED, mID);
       int intValue =
          (int)((mCurrentValue - mMinValue) * 1000.0f
-         / (mMaxValue - mMinValue));
+               / (mMaxValue - mMinValue));
       e->SetInt( intValue );
       mParent->ProcessEvent(*e);
       delete e;
    }
+   
 }
 
 int LWSlider::ValueToPosition(float val)
@@ -677,6 +869,7 @@ void ASlider::OnPaint(wxPaintEvent &event)
 
 void ASlider::OnMouseEvent(wxMouseEvent &event)
 {
+
    mLWSlider->OnMouseEvent(event);
 }
 
