@@ -264,14 +264,6 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
-   /* Clear out the (partially-full) buffer. */
-   if (samplesSinceLastCallback > 0)
-      for (c = 0; c < *outNumTracks; c++)
-          channels[c]->Append((char *)(mainBuffer + c),
-                              int16Sample,
-                              samplesRead,
-                              *outNumTracks);
-
    for(c = 0; c < *outNumTracks; c++)
       channels[c]->Flush();
 
