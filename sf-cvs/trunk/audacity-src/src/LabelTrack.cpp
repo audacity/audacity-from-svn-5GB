@@ -58,9 +58,9 @@ LabelTrack *TrackFactory::NewLabelTrack()
 
 LabelTrack::LabelTrack(DirManager * projDirManager):
    Track(projDirManager),
-   mIsAdjustingLabel(false),
    mMouseOverLabelLeft(-1),
-   mMouseOverLabelRight(-1)
+   mMouseOverLabelRight(-1),
+   mIsAdjustingLabel(false)
 {
    InitColours();
    SetName(_("Label Track"));
@@ -75,9 +75,9 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
    Track(orig),
-   mIsAdjustingLabel(false),
    mMouseOverLabelLeft(-1),
-   mMouseOverLabelRight(-1)
+   mMouseOverLabelRight(-1),
+   mIsAdjustingLabel(false)
 {
    InitColours();
 
@@ -543,12 +543,20 @@ double LabelTrack::GetStartTime()
 
 double LabelTrack::GetEndTime()
 {
+   //we need to scan through all the labels, because the last
+   //label might not have the right-most end (if there is overlap).
    int len = mLabels.Count();
-
    if (len == 0)
       return 0.0;
-   else
-      return mLabels[len - 1]->t1;
+ 
+   double end = 0.0;
+   for(int i = 0; i < len; i++)
+      {
+         
+         if(mLabels[i]->t1 > end)
+            end = mLabels[i]->t1;
+      }
+   return end;
 }
  
 
