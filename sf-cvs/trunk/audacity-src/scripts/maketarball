@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-print "maketarball 1.1.1 -- make Audacity distribution tarball\n";
+print "maketarball 1.1.3 -- make Audacity distribution tarball\n";
 
 unless(-f "src/Audacity.h") {
 	print "Must be run from Audacity directory\n";
@@ -37,7 +37,7 @@ print "removing scripts...\n";
 
 print "removing libraries that should be installed locally...\n";
 `rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
-`rm -rf lib-src/wave++`;
+`rm -rf lib-src/wave++ lib-src/libflac`;
 
 print "removing qa\n";
 `rm -rf qa`;
@@ -46,14 +46,11 @@ print "removing help files (haven't been updated for 1.1)\n";
 `rm -rf help/webbrowser`;
 `rm -rf help/wxhelp`;
 
-print "removing Doxygen (since we're not making use of it yet\n";
-`rm -f audacity.dox`;
-
 print "removing wxstd locale files (since they should come with wxWindows\n";
 `rm -rf locale/wxstd`;
 
 printf "removing Nyquist plug-ins that are just for show\n";
-`rm -f plug-ins/analyze.ny plug-ins/beat.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
+`rm -f plug-ins/analyze.ny plug-ins/fadein.ny plug-ins/fadeout.ny`;
 
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
