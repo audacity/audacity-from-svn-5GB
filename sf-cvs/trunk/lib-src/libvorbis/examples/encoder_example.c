@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: simple example encoder
- last mod: $Id: encoder_example.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+ last mod: $Id: encoder_example.c,v 1.1.1.3 2002-10-26 19:40:06 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -32,7 +32,7 @@
 #include <fcntl.h>
 #endif
 
-#if defined(macintosh) && defined(__MWERKS__)
+#if defined(__MACOS__) && defined(__MWERKS__)
 #include <console.h>      /* CodeWarrior's Mac "command-line" support */
 #endif
 
@@ -52,7 +52,7 @@ int main(){
   vorbis_dsp_state vd; /* central working state for the packet->PCM decoder */
   vorbis_block     vb; /* local working space for packet->PCM decode */
 
-  int eos=0;
+  int eos=0,ret;
   int i, founddata;
 
 #if defined(macintosh) && defined(__MWERKS__)
@@ -67,6 +67,8 @@ int main(){
      example, after all. */
 
 #ifdef _WIN32 /* We need to set stdin/stdout to binary mode. Damn windows. */
+  /* if we were reading/writing a file, it would also need to in
+     binary mode, eg, fopen("file.wav","wb"); */
   /* Beware the evil ifdef. We avoid these where we can, but this one we 
      cannot. Don't add any more, you'll probably go to hell if you do. */
   _setmode( _fileno( stdin ), _O_BINARY );
@@ -83,7 +85,7 @@ int main(){
   {
     fread(readbuffer,1,2,stdin);
 
-    if ( ! strncmp(readbuffer, "da", 2) )
+    if ( ! strncmp((char*)readbuffer, "da", 2) )
     {
       founddata = 1;
       fread(readbuffer,1,6,stdin);
@@ -93,11 +95,44 @@ int main(){
 
   /********** Encode setup ************/
 
-  /* choose an encoding mode */
-  /* (quality mode .4: 44kHz stereo coupled, roughly 128kbps VBR) */
   vorbis_info_init(&vi);
 
-  vorbis_encode_init_vbr(&vi,2,44100,.1); // max compression
+  /* choose an encoding mode.  A few possibilities commented out, one
+     actually used: */
+
+  /*********************************************************************
+   Encoding using a VBR quality mode.  The usable range is -.1
+   (lowest quality, smallest file) to 1. (highest quality, largest file).
+   Example quality mode .4: 44kHz stereo coupled, roughly 128kbps VBR 
+  
+   ret = vorbis_encode_init_vbr(&vi,2,44100,.4);
+
+   ---------------------------------------------------------------------
+
+   Encoding using an average bitrate mode (ABR).
+   example: 44kHz stereo coupled, average 128kbps VBR 
+  
+   ret = vorbis_encode_init(&vi,2,44100,-1,128000,-1);
+
+   ---------------------------------------------------------------------
+
+   Encode using a qulity mode, but select that quality mode by asking for
+   an approximate bitrate.  This is not ABR, it is true VBR, but selected
+   using the bitrate interface, and then turning bitrate management off:
+
+   ret = ( vorbis_encode_setup_managed(&vi,2,44100,-1,128000,-1) ||
+           vorbis_encode_ctl(&vi,OV_ECTL_RATEMANAGE_AVG,NULL) ||
+           vorbis_encode_setup_init(&vi));
+
+   *********************************************************************/
+
+  ret=vorbis_encode_init_vbr(&vi,2,44100,.5);
+
+  /* do not continue if setup failed; this can happen if we ask for a
+     mode that libVorbis does not support (eg, too low a bitrate, etc,
+     will return 'OV_EIMPL') */
+
+  if(ret)exit(1);
 
   /* add a comment */
   vorbis_comment_init(&vc);
@@ -131,9 +166,8 @@ int main(){
     ogg_stream_packetin(&os,&header_comm);
     ogg_stream_packetin(&os,&header_code);
 
-	/* We don't have to write out here, but doing so makes streaming 
-	 * much easier, so we do, flushing ALL pages. This ensures the actual
-	 * audio data will start on a new page
+	/* This ensures the actual
+	 * audio data will start on a new page, as per spec
 	 */
 	while(!eos){
 		int result=ogg_stream_flush(&os,&og);

@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: simple example decoder
- last mod: $Id: decoder_example.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+ last mod: $Id: decoder_example.c,v 1.1.1.3 2002-10-26 19:40:05 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -31,12 +31,14 @@
 #include <fcntl.h>
 #endif
 
-#if defined(macintosh) && defined(__MWERKS__)
+#if defined(__MACOS__) && defined(__MWERKS__)
 #include <console.h>      /* CodeWarrior's Mac "command-line" support */
 #endif
 
 ogg_int16_t convbuffer[4096]; /* take 8k out of the data segment, not the stack */
 int convsize=4096;
+
+extern void _VDBG_dump(void);
 
 int main(){
   ogg_sync_state   oy; /* sync and verify incoming physical bitstream */

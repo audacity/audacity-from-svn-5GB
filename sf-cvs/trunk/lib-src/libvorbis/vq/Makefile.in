@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -94,24 +94,12 @@ AUTOMAKE_OPTIONS = foreign
 
 INCLUDES = -I../lib -I$(top_srcdir)/include @OGG_CFLAGS@
 
-EXTRA_PROGRAMS = lspvqtrain genericvqtrain residuevqtrain vqbuild 	vqcascade vqmetrics latticebuild latticepare latticehint 	latticetune huffbuild residuesplit distribution
+EXTRA_PROGRAMS = latticebuild latticepare latticehint 	latticetune huffbuild distribution
 
 CLEANFILES = $(EXTRA_PROGRAMS)
 
 LDFLAGS = -static
 LDADD = ../lib/libvorbis.la
-
-lspvqtrain_SOURCES = lspdata.c train.c vqgen.c bookutil.c 	vqgen.h bookutil.h vqext.h
-
-genericvqtrain_SOURCES = genericdata.c train.c vqgen.c bookutil.c 	vqgen.h bookutil.h vqext.h
-
-residuevqtrain_SOURCES = residuedata.c train.c vqgen.c bookutil.c 	vqgen.h bookutil.h vqext.h
-
-vqbuild_SOURCES = build.c vqgen.c bookutil.c vqsplit.c 	vqgen.h bookutil.h vqext.h
-
-vqcascade_SOURCES = run.c cascade.c vqgen.c bookutil.c 	vqgen.h bookutil.h
-
-vqmetrics_SOURCES = run.c metrics.c vqgen.c bookutil.c 	vqgen.h bookutil.h
 
 latticebuild_SOURCES = latticebuild.c vqgen.c bookutil.c 	vqgen.h bookutil.h
 
@@ -123,8 +111,6 @@ latticetune_SOURCES = latticetune.c vqgen.c bookutil.c 	vqgen.h bookutil.h
 
 huffbuild_SOURCES = huffbuild.c vqgen.c bookutil.c 	vqgen.h bookutil.h
 
-residuesplit_SOURCES = residuesplit.c vqgen.c bookutil.c 	vqgen.h bookutil.h
-
 distribution_SOURCES = distribution.c bookutil.c 	bookutil.h
 
 
@@ -134,36 +120,6 @@ CONFIG_CLEAN_FILES =
 
 DEFS = @DEFS@ -I. -I$(srcdir) 
 CPPFLAGS = @CPPFLAGS@
-lspvqtrain_OBJECTS =  lspdata.$(OBJEXT) train.$(OBJEXT) vqgen.$(OBJEXT) \
-bookutil.$(OBJEXT)
-lspvqtrain_LDADD = $(LDADD)
-lspvqtrain_DEPENDENCIES =  ../lib/libvorbis.la
-lspvqtrain_LDFLAGS = 
-genericvqtrain_OBJECTS =  genericdata.$(OBJEXT) train.$(OBJEXT) \
-vqgen.$(OBJEXT) bookutil.$(OBJEXT)
-genericvqtrain_LDADD = $(LDADD)
-genericvqtrain_DEPENDENCIES =  ../lib/libvorbis.la
-genericvqtrain_LDFLAGS = 
-residuevqtrain_OBJECTS =  residuedata.$(OBJEXT) train.$(OBJEXT) \
-vqgen.$(OBJEXT) bookutil.$(OBJEXT)
-residuevqtrain_LDADD = $(LDADD)
-residuevqtrain_DEPENDENCIES =  ../lib/libvorbis.la
-residuevqtrain_LDFLAGS = 
-vqbuild_OBJECTS =  build.$(OBJEXT) vqgen.$(OBJEXT) bookutil.$(OBJEXT) \
-vqsplit.$(OBJEXT)
-vqbuild_LDADD = $(LDADD)
-vqbuild_DEPENDENCIES =  ../lib/libvorbis.la
-vqbuild_LDFLAGS = 
-vqcascade_OBJECTS =  run.$(OBJEXT) cascade.$(OBJEXT) vqgen.$(OBJEXT) \
-bookutil.$(OBJEXT)
-vqcascade_LDADD = $(LDADD)
-vqcascade_DEPENDENCIES =  ../lib/libvorbis.la
-vqcascade_LDFLAGS = 
-vqmetrics_OBJECTS =  run.$(OBJEXT) metrics.$(OBJEXT) vqgen.$(OBJEXT) \
-bookutil.$(OBJEXT)
-vqmetrics_LDADD = $(LDADD)
-vqmetrics_DEPENDENCIES =  ../lib/libvorbis.la
-vqmetrics_LDFLAGS = 
 latticebuild_OBJECTS =  latticebuild.$(OBJEXT) vqgen.$(OBJEXT) \
 bookutil.$(OBJEXT)
 latticebuild_LDADD = $(LDADD)
@@ -188,11 +144,6 @@ bookutil.$(OBJEXT)
 huffbuild_LDADD = $(LDADD)
 huffbuild_DEPENDENCIES =  ../lib/libvorbis.la
 huffbuild_LDFLAGS = 
-residuesplit_OBJECTS =  residuesplit.$(OBJEXT) vqgen.$(OBJEXT) \
-bookutil.$(OBJEXT)
-residuesplit_LDADD = $(LDADD)
-residuesplit_DEPENDENCIES =  ../lib/libvorbis.la
-residuesplit_LDFLAGS = 
 distribution_OBJECTS =  distribution.$(OBJEXT) bookutil.$(OBJEXT)
 distribution_LDADD = $(LDADD)
 distribution_DEPENDENCIES =  ../lib/libvorbis.la
@@ -209,8 +160,8 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = tar
 GZIP_ENV = --best
-SOURCES = $(lspvqtrain_SOURCES) $(genericvqtrain_SOURCES) $(residuevqtrain_SOURCES) $(vqbuild_SOURCES) $(vqcascade_SOURCES) $(vqmetrics_SOURCES) $(latticebuild_SOURCES) $(latticepare_SOURCES) $(latticehint_SOURCES) $(latticetune_SOURCES) $(huffbuild_SOURCES) $(residuesplit_SOURCES) $(distribution_SOURCES)
-OBJECTS = $(lspvqtrain_OBJECTS) $(genericvqtrain_OBJECTS) $(residuevqtrain_OBJECTS) $(vqbuild_OBJECTS) $(vqcascade_OBJECTS) $(vqmetrics_OBJECTS) $(latticebuild_OBJECTS) $(latticepare_OBJECTS) $(latticehint_OBJECTS) $(latticetune_OBJECTS) $(huffbuild_OBJECTS) $(residuesplit_OBJECTS) $(distribution_OBJECTS)
+SOURCES = $(latticebuild_SOURCES) $(latticepare_SOURCES) $(latticehint_SOURCES) $(latticetune_SOURCES) $(huffbuild_SOURCES) $(distribution_SOURCES)
+OBJECTS = $(latticebuild_OBJECTS) $(latticepare_OBJECTS) $(latticehint_OBJECTS) $(latticetune_OBJECTS) $(huffbuild_OBJECTS) $(distribution_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
@@ -267,30 +218,6 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-lspvqtrain$(EXEEXT): $(lspvqtrain_OBJECTS) $(lspvqtrain_DEPENDENCIES)
-	@rm -f lspvqtrain$(EXEEXT)
-	$(LINK) $(lspvqtrain_LDFLAGS) $(lspvqtrain_OBJECTS) $(lspvqtrain_LDADD) $(LIBS)
-
-genericvqtrain$(EXEEXT): $(genericvqtrain_OBJECTS) $(genericvqtrain_DEPENDENCIES)
-	@rm -f genericvqtrain$(EXEEXT)
-	$(LINK) $(genericvqtrain_LDFLAGS) $(genericvqtrain_OBJECTS) $(genericvqtrain_LDADD) $(LIBS)
-
-residuevqtrain$(EXEEXT): $(residuevqtrain_OBJECTS) $(residuevqtrain_DEPENDENCIES)
-	@rm -f residuevqtrain$(EXEEXT)
-	$(LINK) $(residuevqtrain_LDFLAGS) $(residuevqtrain_OBJECTS) $(residuevqtrain_LDADD) $(LIBS)
-
-vqbuild$(EXEEXT): $(vqbuild_OBJECTS) $(vqbuild_DEPENDENCIES)
-	@rm -f vqbuild$(EXEEXT)
-	$(LINK) $(vqbuild_LDFLAGS) $(vqbuild_OBJECTS) $(vqbuild_LDADD) $(LIBS)
-
-vqcascade$(EXEEXT): $(vqcascade_OBJECTS) $(vqcascade_DEPENDENCIES)
-	@rm -f vqcascade$(EXEEXT)
-	$(LINK) $(vqcascade_LDFLAGS) $(vqcascade_OBJECTS) $(vqcascade_LDADD) $(LIBS)
-
-vqmetrics$(EXEEXT): $(vqmetrics_OBJECTS) $(vqmetrics_DEPENDENCIES)
-	@rm -f vqmetrics$(EXEEXT)
-	$(LINK) $(vqmetrics_LDFLAGS) $(vqmetrics_OBJECTS) $(vqmetrics_LDADD) $(LIBS)
-
 latticebuild$(EXEEXT): $(latticebuild_OBJECTS) $(latticebuild_DEPENDENCIES)
 	@rm -f latticebuild$(EXEEXT)
 	$(LINK) $(latticebuild_LDFLAGS) $(latticebuild_OBJECTS) $(latticebuild_LDADD) $(LIBS)
@@ -310,10 +237,6 @@ latticetune$(EXEEXT): $(latticetune_OBJECTS) $(latticetune_DEPENDENCIES)
 huffbuild$(EXEEXT): $(huffbuild_OBJECTS) $(huffbuild_DEPENDENCIES)
 	@rm -f huffbuild$(EXEEXT)
 	$(LINK) $(huffbuild_LDFLAGS) $(huffbuild_OBJECTS) $(huffbuild_LDADD) $(LIBS)
-
-residuesplit$(EXEEXT): $(residuesplit_OBJECTS) $(residuesplit_DEPENDENCIES)
-	@rm -f residuesplit$(EXEEXT)
-	$(LINK) $(residuesplit_LDFLAGS) $(residuesplit_OBJECTS) $(residuesplit_LDADD) $(LIBS)
 
 distribution$(EXEEXT): $(distribution_OBJECTS) $(distribution_DEPENDENCIES)
 	@rm -f distribution$(EXEEXT)
@@ -337,7 +260,7 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	  awk '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
 	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+	  || (cd $(srcdir) && etags -o $$here/TAGS $(ETAGS_ARGS) $$tags  $$unique $(LISP))
 
 mostlyclean-tags:
 

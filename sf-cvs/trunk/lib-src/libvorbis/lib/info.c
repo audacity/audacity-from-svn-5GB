@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: maintain the info structure, info <-> header packets
- last mod: $Id: info.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
+ last mod: $Id: info.c,v 1.1.1.3 2002-10-26 19:39:32 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -34,7 +34,8 @@
 /* helpers */
 static int ilog2(unsigned int v){
   int ret=0;
-  while(v>1){
+  if(v)--v;
+  while(v){
     ret++;
     v>>=1;
   }
@@ -163,9 +164,6 @@ void vorbis_info_clear(vorbis_info *vi){
     for(i=0;i<ci->maps;i++) /* unpack does the range checking */
       _mapping_P[ci->map_type[i]]->free_info(ci->map_param[i]);
 
-    for(i=0;i<ci->times;i++) /* unpack does the range checking */
-      _time_P[ci->time_type[i]]->free_info(ci->time_param[i]);
-
     for(i=0;i<ci->floors;i++) /* unpack does the range checking */
       _floor_P[ci->floor_type[i]]->free_info(ci->floor_param[i]);
     
@@ -177,7 +175,11 @@ void vorbis_info_clear(vorbis_info *vi){
 	/* knows if the book was not alloced */
 	vorbis_staticbook_destroy(ci->book_param[i]);
       }
+      if(ci->fullbooks)
+	vorbis_book_clear(ci->fullbooks+i);
     }
+    if(ci->fullbooks)
+	_ogg_free(ci->fullbooks);
     
     for(i=0;i<ci->psys;i++)
       _vi_psy_free(ci->psy_param[i]);
@@ -261,15 +263,13 @@ static int _vorbis_unpack_books(vorbis_info *vi,oggpack_buffer *opb){
     if(vorbis_staticbook_unpack(opb,ci->book_param[i]))goto err_out;
   }
 
-  /* time backend settings */
-  ci->times=oggpack_read(opb,6)+1;
-  /*ci->time_type=_ogg_malloc(ci->times*sizeof(*ci->time_type));*/
-  /*ci->time_param=_ogg_calloc(ci->times,sizeof(void *));*/
-  for(i=0;i<ci->times;i++){
-    ci->time_type[i]=oggpack_read(opb,16);
-    if(ci->time_type[i]<0 || ci->time_type[i]>=VI_TIMEB)goto err_out;
-    ci->time_param[i]=_time_P[ci->time_type[i]]->unpack(vi,opb);
-    if(!ci->time_param[i])goto err_out;
+  /* time backend settings; hooks are unused */
+  {
+    int times=oggpack_read(opb,6)+1;
+    for(i=0;i<times;i++){
+      int test=oggpack_read(opb,16);
+      if(test<0 || test>=VI_TIMEB)goto err_out;
+    }
   }
 
   /* floor backend settings */
@@ -416,7 +416,7 @@ static int _vorbis_pack_info(oggpack_buffer *opb,vorbis_info *vi){
 }
 
 static int _vorbis_pack_comment(oggpack_buffer *opb,vorbis_comment *vc){
-  char temp[]="Xiphophorus libVorbis I 20011231";
+  char temp[]="Xiph.Org libVorbis I 20020717";
   int bytes = strlen(temp);
 
   /* preamble */  
@@ -459,18 +459,18 @@ static int _vorbis_pack_books(oggpack_buffer *opb,vorbis_info *vi){
   for(i=0;i<ci->books;i++)
     if(vorbis_staticbook_pack(ci->book_param[i],opb))goto err_out;
 
-  /* times */
-  oggpack_write(opb,ci->times-1,6);
-  for(i=0;i<ci->times;i++){
-    oggpack_write(opb,ci->time_type[i],16);
-    _time_P[ci->time_type[i]]->pack(ci->time_param[i],opb);
-  }
+  /* times; hook placeholders */
+  oggpack_write(opb,0,6);
+  oggpack_write(opb,0,16);
 
   /* floors */
   oggpack_write(opb,ci->floors-1,6);
   for(i=0;i<ci->floors;i++){
     oggpack_write(opb,ci->floor_type[i],16);
-    _floor_P[ci->floor_type[i]]->pack(ci->floor_param[i],opb);
+    if(_floor_P[ci->floor_type[i]]->pack)
+      _floor_P[ci->floor_type[i]]->pack(ci->floor_param[i],opb);
+    else
+      goto err_out;
   }
 
   /* residues */
