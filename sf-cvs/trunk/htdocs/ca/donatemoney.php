@@ -1,21 +1,21 @@
 <?php BoxTop($donateMoneyStr); ?>
 
 <p>
-L'Audacity ha estat escrit per voluntaris en el seu temps lliure. No és programari de pagament i ningú de qui hi treballa espera guanyar diners. Tot i així, si feu una donació monetària ens ajudareu a pagar i mantenir l'hostetjament de la pàgina d'internet, les eines de desenvolupament, i el maquinari d'àudio - coses que necessitem a fi de poder proporcionar l'Audacity de manera gratuïta i continuar millorar-lo. Llisqueu fins a la final d'aquest document si desitgeu fer un pagament amb targeta de crèdit. Podeu donar donacions tan petites com ara un dòlar.
+L'Audacity ha estat escrit per voluntaris en el seu temps lliure. No és un programari de pagament ni shareware, i ningú dels qui hi treballen espera guanyar-hi diners. Tot i així, si feu una donació monetària ens ajudareu a pagar i mantenir l'hostatge de la web, les eines de desenvolupament i aparells d'àudio - coses que necessitem a fi de poder proporcionar l'Audacity de manera gratuïta i continuar millorant-lo. Vegeu al final d'aquest document si desitgeu fer un pagament amb targeta de crèdit. Podeu fer donacions tan petites com un dòlar.
 </p>
 
 <p>
-Enviant-nos diners podeu ajudar a cobrir els costos de manteniment, eines de desenvolupament i nou programari d'àudio. Noteu que ara per ara tenim la sort de tenir gran part de l'hostetjament de manera gratuïta, però això podria canviar en el futur. Els vostres dòlars d'avui poden ajudar aquest lloc web en el futur.
+Enviant-nos diners podeu ajudar a cobrir els costos de manteniment, eines de desenvolupament i nous aparells d'àudio. Ara per ara tenim la sort de tenir gran part de l'hostatge de manera gratuïta, però això podria canviar en el futur. Els vostres dòlars d'avui poden ajudar aquest lloc web en el futur.
 <p>
-Els desenvolupadors de l'Audacity els agradaria obtenir maquinari d'àudio de qualitat, de manera que podrien realitzar increïbles millores en l'edició de sons. Els vostres diners faran això possible que puguem treballar amb aquestes eines.
+Als desenvolupadors de l'Audacity ens agradaria obtenir aparells d'àudio de darrera generació, per tal de poder començar a convertir-lo en una solució completa multi-pistes. Els vostres diners faran possible que ens puguem posar a treballar de seguida.
 <p>
 Heu d'entendre que no us oferim cap mena de garantia o promesa quan ens doneu diners.
 <p>
-Normalment acceptem diners via el sistema Amazon Honor. Utilitzeu la vostra targeta de crèdit i feu un pagament tan petit com un dòlar o d'un màxim de 50$.
+Acceptem diners mitjançant el sistema Amazon Honor. Podeu fer servir la vostra targeta de crèdit i fer un pagament des d'un dòlar fins a 50$.
 <p>
-si desitgeu donar més de 50$, o desitgeu enviar un xec personal visiteu la
+si desitgeu donar més de 50$, o si desitgeu enviar un xec personal visiteu la
 <?php print "<a href=credits.php?$langLinkStr>";
-?>pàgina de crèdits</a> i envieu un missatge a un o més dels desenvolupadors individuals.
+?>pàgina de crèdits</a> i envieu un missatge a alguna de les adreces personals dels desenvolupadors.
 <p>
 
 <center>
@@ -26,9 +26,17 @@ si desitgeu donar més de 50$, o desitgeu enviar un xec personal visiteu la
 <area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Learn More" target=_top>
 </map>
 <!-- End Amazon Honor System Paybox -->
+<p>
+</center>
+
+<p>
+També acceptem pagaments PayPal mitjançant el sistema de donacions de SourceForge:
+
+<center>
+<a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Donacions per PayPal"></a>
 </center>
 
 <p>
 
 <?php BoxBottom(); ?>
-
