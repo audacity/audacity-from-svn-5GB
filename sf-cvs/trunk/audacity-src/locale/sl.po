@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Slovenian - 1.0\n"
-"POT-Creation-Date: 2002-11-06 00:01-0800\n"
+"POT-Creation-Date: 2002-11-09 15:20-0800\n"
 "PO-Revision-Date: 2002-09-03 12:41+0100\n"
 "Last-Translator: Rok Hecl <kutulu@volja.net>\n"
 "Language-Team: Slovenian <kutulu@volja.net>\n"
@@ -619,7 +619,7 @@ msgstr ""
 "Audacity ni prepoznal vrste datoteke.\n"
 "Bi radi poskusili uvoziti posnetek v PCM formatu?"
 
-#: ../src/export/ExportMP3.cpp:496
+#: ../src/export/ExportMP3.cpp:510 ../src/export/ExportMP3.cpp:797
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
 "exporting library available separately.  See the documentation for more "
@@ -633,7 +633,7 @@ msgstr ""
 "\n"
 "Bi radi poiskali pot do LameLib zdaj?"
 
-#: ../src/export/ExportMP3.cpp:726
+#: ../src/export/ExportMP3.cpp:1027
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses the\n"
 "freely available LAME library to handle MP3 file encoding.  You must\n"
@@ -770,7 +770,7 @@ msgstr "Boostanje nizkih frekvenc"
 
 #: ../src/Tags.cpp:606 ../src/effects/Amplify.cpp:356
 #: ../src/effects/AvcCompressor.cpp:704 ../src/effects/BassBoost.cpp:315
-#: ../src/effects/Filter.cpp:443 ../src/effects/Phaser.cpp:537
+#: ../src/effects/Filter.cpp:444 ../src/effects/Phaser.cpp:537
 #: ../src/effects/ToneGen.cpp:346 ../src/effects/Wahwah.cpp:528
 #: ../src/effects/ladspa/LadspaEffect.cpp:448
 #: ../src/effects/nyquist/Nyquist.cpp:568 ../src/import/ImportRaw.cpp:907
@@ -851,7 +851,7 @@ msgstr "Izberi..."
 msgid "Cleaning up temporary files..."
 msgstr "Bri¹em zaèasne datoteke..."
 
-#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:434
+#: ../src/Benchmark.cpp:213 ../src/effects/Filter.cpp:435
 #: ../src/prefs/KeyConfigPrefs.cpp:99
 msgid "Clear"
 msgstr "Pobri¹i"
@@ -894,7 +894,7 @@ msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Kliknite za Povecavo, Shift-Klik za Pomanj¹anje"
 
 #: ../src/Benchmark.cpp:218 ../src/FreqWindow.cpp:120 ../src/commands.h:215
-#: ../src/effects/NoiseRemoval.cpp:408
+#: ../src/effects/NoiseRemoval.cpp:409
 msgid "Close"
 msgstr "Zapri"
 
@@ -943,7 +943,7 @@ msgstr "Kompresor..."
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: ../src/export/ExportMP3.cpp:894
+#: ../src/export/ExportMP3.cpp:1195
 msgid "Could not open MP3 encoding library!"
 msgstr "Napaka pri odpiranju knji¾nice za MP3 kodiranje!"
 
@@ -1262,7 +1262,7 @@ msgstr "Spremeni ID3 zapis (za izvoz v MP3 obliki)"
 msgid "Edit ID3 Tags..."
 msgstr "Spremeni ID3 zapis..."
 
-#: ../src/export/ExportMP3.cpp:918
+#: ../src/export/ExportMP3.cpp:1219
 msgid "Edit the ID3 tags for the MP3 file"
 msgstr "Spremeni ID3 zapis v tej MP3 datoteki"
 
@@ -1332,7 +1332,7 @@ msgstr "Napaka"
 msgid "Error (file may not have been written): %s"
 msgstr "Napaka (datoteka mogoèe ni bila zapisana): %s"
 
-#: ../src/AudioIO.cpp:278
+#: ../src/AudioIO.cpp:281
 msgid ""
 "Error opening audio device.\n"
 "(Change the device in the Preferences dialog.)"
@@ -1377,7 +1377,7 @@ msgstr "Prièakovana dol¾ina %d, dol¾ina posnetka %d.\n"
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Za branje prièakovanih %d primerkov, prejetih %d primerkov.\n"
 
-#: ../src/export/ExportMP3.cpp:1007 ../src/export/ExportOGG.cpp:186
+#: ../src/export/ExportMP3.cpp:1308 ../src/export/ExportOGG.cpp:186
 #: ../src/export/ExportPCM.cpp:153
 msgid "Export"
 msgstr "Izvozi"
@@ -1446,7 +1446,7 @@ msgstr "Izva¾am celoten projekt kot Ogg Vorbis"
 msgid "Exporting the entire project as a %s file"
 msgstr "Izva¾am celoten projekt kot %s datoteko"
 
-#: ../src/export/ExportMP3.cpp:1004
+#: ../src/export/ExportMP3.cpp:1305
 msgid "Exporting the entire project as an mp3"
 msgstr "Izva¾am celoten projekt kot mp3"
 
@@ -1459,7 +1459,7 @@ msgstr "Izva¾am oznaèeno kot Ogg Vorbis"
 msgid "Exporting the selected audio as a %s file"
 msgstr "Izva¾am oznaèeno kot %s datoteko"
 
-#: ../src/export/ExportMP3.cpp:1001
+#: ../src/export/ExportMP3.cpp:1302
 msgid "Exporting the selected audio as an mp3"
 msgstr "Izva¾am oznaèeno kot mp3"
 
@@ -1467,7 +1467,7 @@ msgstr "Izva¾am oznaèeno kot mp3"
 msgid "FFT Filter"
 msgstr "FFT Filter"
 
-#: ../src/effects/Filter.cpp:424
+#: ../src/effects/Filter.cpp:425
 msgid "FFT Filter by Dominic Mazzoni"
 msgstr "FFT Filter od Dominica Mazzonija"
 
@@ -1586,7 +1586,7 @@ msgstr "Delam Ton"
 msgid "Genre:"
 msgstr "Zvrst:"
 
-#: ../src/effects/NoiseRemoval.cpp:371
+#: ../src/effects/NoiseRemoval.cpp:372
 msgid "Get Noise Profile"
 msgstr "Dobi Profil ©uma"
 
@@ -1774,7 +1774,7 @@ msgstr "Levi-Klik za poveèanje, Desni-Klik za pomanj¹anje"
 msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Levo=Poveèava, Desno=Pomanj¹anje, Sredina=Normalno"
 
-#: ../src/effects/NoiseRemoval.cpp:393
+#: ../src/effects/NoiseRemoval.cpp:394
 msgid "Less"
 msgstr "Manj"
 
@@ -1880,7 +1880,7 @@ msgstr "Mono"
 msgid "Mono, "
 msgstr "Mono, "
 
-#: ../src/effects/NoiseRemoval.cpp:396
+#: ../src/effects/NoiseRemoval.cpp:397
 msgid "More"
 msgstr "Veè"
 
@@ -1960,7 +1960,7 @@ msgstr ""
 msgid "Noise Removal"
 msgstr "Odstranjevanje ©umov"
 
-#: ../src/effects/NoiseRemoval.cpp:355
+#: ../src/effects/NoiseRemoval.cpp:356
 msgid "Noise Removal by Dominic Mazzoni"
 msgstr "Odstranjevanje ©uma od Dominica Mazzonija"
 
@@ -1976,7 +1976,7 @@ msgstr "Prazno"
 msgid "Not SPECIFIED YET!"
 msgstr "Nedokonèano!"
 
-#: ../src/export/ExportMP3.cpp:901
+#: ../src/export/ExportMP3.cpp:1202
 msgid "Not a valid or supported MP3 encoding library!"
 msgstr "Neveljavna ali nepodprta knji¾nica za MP3 kodiranje!"
 
@@ -2048,7 +2048,7 @@ msgstr "OGG Kvaliteta:"
 
 #: ../src/LangChoice.cpp:91 ../src/Tags.cpp:599 ../src/effects/Amplify.cpp:349
 #: ../src/effects/AvcCompressor.cpp:696 ../src/effects/BassBoost.cpp:308
-#: ../src/effects/Filter.cpp:439 ../src/effects/Phaser.cpp:531
+#: ../src/effects/Filter.cpp:440 ../src/effects/Phaser.cpp:531
 #: ../src/effects/Wahwah.cpp:522 ../src/effects/ladspa/LadspaEffect.cpp:443
 #: ../src/effects/nyquist/Nyquist.cpp:563 ../src/prefs/FileFormatPrefs.cpp:456
 #: ../src/prefs/PrefsDialog.cpp:88
@@ -2083,11 +2083,16 @@ msgstr "Index Online Pomoèi..."
 msgid "Online Help..."
 msgstr "Online Pomoè..."
 
-#: ../src/export/ExportMP3.cpp:490
+#: ../src/export/ExportMP3.cpp:791
 msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
 msgstr "Samo LAMELib|LAMELib|Deljene knji¾nice (*)|*"
 
-#: ../src/export/ExportMP3.cpp:721
+#: ../src/export/ExportMP3.cpp:504
+#, fuzzy
+msgid "Only LameLib|LameLib|All Files (*)|*"
+msgstr "Samo LAMELib|LAMELib|Deljene knji¾nice (*)|*"
+
+#: ../src/export/ExportMP3.cpp:1022
 msgid ""
 "Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries "
 "(*.dll)|*.dll|All Files (*.*)|*"
@@ -2297,7 +2302,7 @@ msgstr "Ponovi"
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../src/effects/NoiseRemoval.cpp:401
+#: ../src/effects/NoiseRemoval.cpp:402
 msgid "Remove Noise"
 msgstr "Odstrani ©um"
 
@@ -2449,7 +2454,7 @@ msgstr ""
 msgid "Select a MIDI file..."
 msgstr "Izberi MIDI datoteko..."
 
-#: ../src/effects/NoiseRemoval.cpp:365
+#: ../src/effects/NoiseRemoval.cpp:366
 msgid ""
 "Select a few seconds of just noise\n"
 "so Audacity knows what to filter out, then\n"
@@ -2463,7 +2468,7 @@ msgstr ""
 msgid "Select a text file containing labels..."
 msgstr "Izberite datoteko z naslovi..."
 
-#: ../src/effects/NoiseRemoval.cpp:382
+#: ../src/effects/NoiseRemoval.cpp:383
 msgid ""
 "Select all of the audio you want filtered,\n"
 "choose how much noise you want filtered out,\n"
@@ -2631,7 +2636,7 @@ msgstr "Slid posnetek '%s' %s %.02f sekund"
 msgid "Solo"
 msgstr "Solo"
 
-#: ../src/Prefs.cpp:102
+#: ../src/Prefs.cpp:103
 msgid ""
 "Some of your preferences were from an earlier version of Audacity and have "
 "been reset."
@@ -2700,11 +2705,11 @@ msgstr "Stopnje:"
 msgid "Standard Autocorrelation"
 msgstr "Standard Autocorrelation"
 
-#: ../src/effects/NoiseRemoval.cpp:362
+#: ../src/effects/NoiseRemoval.cpp:363
 msgid "Step 1"
 msgstr "Korak 1"
 
-#: ../src/effects/NoiseRemoval.cpp:379
+#: ../src/effects/NoiseRemoval.cpp:380
 msgid "Step 2"
 msgstr "Korak 2"
 
@@ -2752,12 +2757,12 @@ msgstr "Maksimalna frekvenca mora biti ¹tevilo"
 msgid "There are no label tracks to export."
 msgstr "Naslovni posnetki za izvoz ne obstajajo."
 
-#: ../src/AudioIO.cpp:605
+#: ../src/AudioIO.cpp:609
 #, c-format
 msgid "There were %d buffer underruns, data was lost."
 msgstr "Bilo je %d spominskih preobremenitev, podatki izgubljeni."
 
-#: ../src/AudioIO.cpp:611
+#: ../src/AudioIO.cpp:615
 #, c-format
 msgid "There were %d possibly repeated frames, last near %lf seconds."
 msgstr "Bilo je %d mo¾nih duplikatov okvirjev, trajanje okoli %lf sekund."
@@ -2863,7 +2868,7 @@ msgstr "Zo¾i datoteko v oznako"
 msgid "Unable to determine"
 msgstr "Nemogoèe doloèiti"
 
-#: ../src/export/ExportMP3.cpp:911 ../src/export/ExportOGG.cpp:45
+#: ../src/export/ExportMP3.cpp:1212 ../src/export/ExportOGG.cpp:45
 msgid "Unable to open target file for writing"
 msgstr "Nemogoèe odpreti datoteko za zapisovanje"
 
