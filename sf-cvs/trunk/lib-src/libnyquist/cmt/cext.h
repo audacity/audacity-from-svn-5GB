@@ -56,7 +56,7 @@ typedef unsigned long ulong;
 /* There's a name conflict between true/false as an enum type in
  * Apple #includes:Types.h on the Mac, and true/false as #defined below
  */
-#ifdef THINK_C
+#ifdef MACINTOSH
 #include "Types.h"
 #else
 #define true 1
@@ -74,8 +74,8 @@ typedef unsigned char byte;
 typedef unsigned short ushort;
 typedef unsigned long ulong;
 
-FILE *fopen(char *filename, char *mode);
-int fclose(FILE *file);
+/*FILE *fopen(char *filename, char *mode);
+int fclose(FILE *file);*/
 
 #else
 #ifdef DOS
