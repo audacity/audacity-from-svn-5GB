@@ -93,14 +93,21 @@ AboutDialog::AboutDialog(wxWindow * parent)
    #endif
    informationStr += "<br>\n";
 
-   #ifdef __WXGTK__
    # if USE_LADSPA
    informationStr += _("LADSPA plug-in support enabled");
    # else
    informationStr += _("LADSPA plug-in support disabled");
    # endif
    informationStr += "<br>\n";
+
+   #if USE_LIBRESAMPLE
+   informationStr += _("Libresample support enabled");
+   #elif USE_LIBSAMPLERATE
+   informationStr += _("Libsamplerate support enabled");
+   #else
+   informationStr += _("No resampling support enabled");
    #endif
+   informationStr += "<br>\n";
 
    // wxWindows version:
    informationStr += wxVERSION_STRING;
@@ -250,7 +257,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "The Ogg Vorbis Team<br>"
       "Rob Leslie (libmad)<br>"
       "Ross Bencina and Phil Burk (PortAudio)<br>"
-      "Erik de Castro Lopo (libsndfile and libsamplerate)<br>"
+      "Erik de Castro Lopo (libsndfile)<br>"
       "Olli Parviainen (soundtouch)<br>"
       "Verilogix, Inc.<br>"
 
