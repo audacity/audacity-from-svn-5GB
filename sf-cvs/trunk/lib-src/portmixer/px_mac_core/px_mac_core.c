@@ -143,52 +143,80 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
  PCM output volume
 */
 
+static PxVolume Px_GetVolume(AudioDeviceID device, Boolean isInput)
+{
+   OSStatus err;
+   UInt32   outSize;
+   Float32  vol, maxvol=0.0;
+   UInt32   mute, anymuted=0;
+   int ch;
+   PxVolume max;
+
+   for(ch=0; ch<=2; ch++) {
+      outSize = sizeof(Float32);
+      err = AudioDeviceGetProperty(device, ch, isInput,
+                                   kAudioDevicePropertyVolumeScalar,
+                                   &outSize, &vol);
+      if (!err) {
+         if (vol > maxvol)
+            maxvol = vol;
+      }
+
+      outSize = sizeof(UInt32);
+      err = AudioDeviceGetProperty(device, ch, isInput,
+                                   kAudioDevicePropertyMute,
+                                   &outSize, &mute);
+
+      if (!err) {
+         if (mute)
+            anymuted = 1;
+      }
+   }
+
+   if (anymuted)
+      maxvol = 0.0;
+
+   return maxvol;
+}
+
+static void Px_SetVolume(AudioDeviceID device, Boolean isInput,
+                         PxVolume volume)
+{
+   Float32  vol = volume;
+   UInt32 mute = 0;
+   int ch;
+   OSStatus err;
+
+   /* Implement a passive attitude towards muting.  If they
+      drag the volume above 0.05, unmute it.  But if they
+      drag the volume down below that, just set the volume,
+      don't actually mute.
+   */
+
+   for(ch=0; ch<=2; ch++) {
+      err =  AudioDeviceSetProperty(device, 0, ch, isInput,
+                                    kAudioDevicePropertyVolumeScalar,
+                                    sizeof(Float32), &vol);
+      if (vol > 0.05) {
+         err =  AudioDeviceSetProperty(device, 0, ch, isInput,
+                                       kAudioDevicePropertyMute,
+                                       sizeof(UInt32), &mute);
+      }
+   }
+}
+
 PxVolume Px_GetPCMOutputVolume( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
-   OSStatus err;
-   UInt32   outSize;
-   Float32  left, right;
 
-   outSize = sizeof(Float32);
-   err =  AudioDeviceGetProperty(info->output, 0, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &left);
-
-   if (err == 0)
-      return (PxVolume)left;
-
-   err =  AudioDeviceGetProperty(info->output, 1, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &left);
-
-   if (err)
-      return 0.0;
-
-   err =  AudioDeviceGetProperty(info->output, 2, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &right);
-   if (err)
-      return (PxVolume)left;
-   else
-      return (PxVolume)((left+right)/2);
+   return Px_GetVolume(info->output, IS_OUTPUT);
 }
 
 void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
 {
    PxInfo *info = (PxInfo *)mixer;
-   Float32  vol = volume;
-   OSStatus err;
 
-   err =  AudioDeviceSetProperty(info->output, 0, 0, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
-   err =  AudioDeviceSetProperty(info->output, 0, 1, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
-   err =  AudioDeviceSetProperty(info->output, 0, 2, IS_OUTPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
+   Px_SetVolume(info->output, IS_OUTPUT, volume);
 }
 
 /*
@@ -199,26 +227,25 @@ int Px_GetNumOutputVolumes( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return 0;
+   return 1;
 }
 
 const char *Px_GetOutputVolumeName( PxMixer *mixer, int i )
 {
-   PxInfo *info = (PxInfo *)mixer;
-   
-   return NULL;
+   if (i == 0)
+      return "PCM";
+   else
+      return "";
 }
 
 PxVolume Px_GetOutputVolume( PxMixer *mixer, int i )
 {
-   PxInfo *info = (PxInfo *)mixer;
-
-   return NULL;
+   return Px_GetPCMOutputVolume(mixer);
 }
 
 void Px_SetOutputVolume( PxMixer *mixer, int i, PxVolume volume )
 {
-   PxInfo *info = (PxInfo *)mixer;
+   Px_SetPCMOutputVolume(mixer, volume);
 }
 
 /*
@@ -258,49 +285,15 @@ void Px_SetCurrentInputSource( PxMixer *mixer, int i )
 PxVolume Px_GetInputVolume( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
-   OSStatus err;
-   UInt32   outSize;
-   Float32  left, right;
 
-   outSize = sizeof(Float32);
-   err =  AudioDeviceGetProperty(info->input, 0, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &left);
-
-   if (err == 0)
-      return (PxVolume)left;
-
-   err =  AudioDeviceGetProperty(info->input, 1, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &left);   
-
-   if (err)
-      return 0.0;
-
-   err =  AudioDeviceGetProperty(info->input, 2, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 &outSize, &right);
-   if (err)
-      return (PxVolume)left;
-   else
-      return (PxVolume)((left+right)/2);
+   return Px_GetVolume(info->input, IS_INPUT);
 }
 
 void Px_SetInputVolume( PxMixer *mixer, PxVolume volume )
 {
    PxInfo *info = (PxInfo *)mixer;
-   Float32  vol = volume;
-   OSStatus err;
 
-   err =  AudioDeviceSetProperty(info->input, 0, 0, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
-   err =  AudioDeviceSetProperty(info->input, 0, 1, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
-   err =  AudioDeviceSetProperty(info->input, 0, 2, IS_INPUT,
-                                 kAudioDevicePropertyVolumeScalar,
-                                 sizeof(Float32), &vol);
+   Px_SetVolume(info->input, IS_INPUT, volume);
 }
 
 /*
