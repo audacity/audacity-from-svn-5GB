@@ -22,6 +22,7 @@ Dit is een nieuwe mailing lijst waarmee Audacity gebruikers met elkaar kunnen co
 E-mail: <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a><br>
 of Surf naar: <a href="http://sourceforge.net/mailarchive/forum.php?forum_id=828">Audacity-Help Archives</a><br>
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font>
 Als je technische problemen in Audacity ondervindt die te specifiek zijn om andere Audacity gebruikers mee lastig te vallen, kun je een e-mail sturen naar dit adres.
 Het zal gelezen worden door een team van Audacity ontwikkelaars en de onderhouders ervan.
 Je kunt dit adres ook gebruiken als je dringend contact met de Audacity ontwikkelaars i.v.m. een andere reden, nodig bent.
