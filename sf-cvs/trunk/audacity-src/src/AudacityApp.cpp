@@ -300,61 +300,11 @@ bool AudacityApp::OnInit()
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
 
-	/* We do this in the Windows installer now, 
-		to avoid issues where user doesn't have admin privileges.
-
-		May want to move this to Prefs if people want to manually change associations.
-
-		#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
-			//BG: On Windows, associate the aup file type with Audacity
-			{
-				wxRegKey associateFileTypes;
-
-				associateFileTypes.SetName("HKCR\\.AUP");
-				if(!associateFileTypes.Exists())
-				{
-					associateFileTypes.Create(true);
-					associateFileTypes = "Audacity.Project";
-				}
-
-				associateFileTypes.SetName("HKCR\\Audacity.Project");
-				if(!associateFileTypes.Exists())
-				{
-					associateFileTypes.Create(true);
-					associateFileTypes = "Audacity Project File";
-				}
-
-				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell");
-				if(!associateFileTypes.Exists())
-				{
-					associateFileTypes.Create(true);
-					associateFileTypes = "";
-				}
-
-				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open");
-				if(!associateFileTypes.Exists())
-				{
-					associateFileTypes.Create(true);
-				}
-
-				associateFileTypes.SetName("HKCR\\Audacity.Project\\shell\\open\\command");
-
-				wxString tmpRegAudPath;
-				if(associateFileTypes.Exists())
-				{
-					tmpRegAudPath = wxString(associateFileTypes).Lower();
-				}
-				if(!associateFileTypes.Exists() || (tmpRegAudPath.Find("\\audacity.exe") >= 0))
-				{
-					associateFileTypes.Create(true);
-					associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
-				}
-			}
-
-		#endif
-	*/
-
    InitPreferences();
+
+	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+		this->AssociateFileTypes(); 
+	#endif
 
    //
    // Paths: set search path and temp dir path
@@ -830,6 +780,96 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
    
 }
 
+//BG: On Windows, associate the aup file type with Audacity
+/* We do this in the Windows installer now, 
+	to avoid issues where user doesn't have admin privileges, but 
+	in case that didn't work, allow the user to decide at startup.
+
+	//v Should encapsulate this & allow access from Prefs, too, 
+	//		if people want to manually change associations.
+*/
+#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
+void AudacityApp::AssociateFileTypes()
+{
+	wxRegKey associateFileTypes;
+	associateFileTypes.SetName("HKCR\\.AUP");
+	bool bKeyExists = associateFileTypes.Exists();
+	if (!bKeyExists) {
+		// Not at HKEY_CLASSES_ROOT. Try HKEY_CURRENT_USER.
+		associateFileTypes.SetName("HKCU\\.AUP");
+		bKeyExists = associateFileTypes.Exists();
+	}
+	if (!bKeyExists) {	
+		// File types are not currently associated. 
+		// Check pref in case user has already decided against it.
+		bool bWantAssociateFiles = true;
+		if (!gPrefs->Read("/WantAssociateFiles", &bWantAssociateFiles) || 
+				bWantAssociateFiles) {
+			// Either there's no pref or user does want associations 
+			// and they got stepped on, so ask.
+			int wantAssoc = 
+				wxMessageBox(
+					_("Audacity project (.AUP) files are not currently \nassociated with Audacity. \n\nAssociate them, so they open on double-click?"), 
+					_("Audacity Project Files"), 
+					wxYES_NO | wxICON_QUESTION);
+			if (wantAssoc == wxYES) {
+				gPrefs->Write("/WantAssociateFiles", true);
+
+				wxString root_key = "HKCR";
+				associateFileTypes.SetName("HKCR\\.AUP"); // Start again with HKEY_CLASSES_ROOT.
+				if (!associateFileTypes.Create(true)) {
+					// Not at HKEY_CLASSES_ROOT. Try HKEY_CURRENT_USER.
+					associateFileTypes.SetName("HKCU\\.AUP");
+					if (!associateFileTypes.Create(true)) { 
+						// Actually, can't create keys. Empty root_key to flag failure.
+						root_key.Empty();
+					} else {
+						// User must not have privileges to create at HKEY_CLASSES_ROOT.
+						// Succeeded setting key for HKEY_CURRENT_USER. Continue that way.
+						root_key = "HKCU";
+					}
+				}
+				if (root_key.IsEmpty()) {
+					//vvv Warn that we can't set keys. Ask whether to set pref for no retry?
+				} else {
+					associateFileTypes = "Audacity.Project"; // Finally set value for .AUP key
+
+					associateFileTypes.SetName(root_key + "\\Audacity.Project");
+					if(!associateFileTypes.Exists()) {
+						associateFileTypes.Create(true);
+						associateFileTypes = "Audacity Project File";
+					}
+
+					associateFileTypes.SetName(root_key + "\\Audacity.Project\\shell");
+					if(!associateFileTypes.Exists()) {
+						associateFileTypes.Create(true);
+						associateFileTypes = "";
+					}
+
+					associateFileTypes.SetName(root_key + "\\Audacity.Project\\shell\\open");
+					if(!associateFileTypes.Exists()) {
+						associateFileTypes.Create(true);
+					}
+
+					associateFileTypes.SetName(root_key + "\\Audacity.Project\\shell\\open\\command");
+					wxString tmpRegAudPath;
+					if(associateFileTypes.Exists()) {
+						tmpRegAudPath = wxString(associateFileTypes).Lower();
+					}
+					if (!associateFileTypes.Exists() || 
+							(tmpRegAudPath.Find("\\audacity.exe") >= 0)) {
+						associateFileTypes.Create(true);
+						associateFileTypes = (wxString)argv[0] + (wxString)" \"%1\"";
+					}
+				}
+			} else {
+				// User said no. Set a pref so we don't keep asking.
+				gPrefs->Write("/WantAssociateFiles", false);
+			}
+		}
+	}
+}
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -841,4 +881,3 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
 //
 // vim: et sts=3 sw=3
 // arch-tag: 49c2c7b5-6e93-4f33-83ab-ddac56ea598d
-

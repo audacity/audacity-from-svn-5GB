@@ -288,14 +288,16 @@ void Effect::Preview()
    mT0 = t0;
    mT1 = t1;
 
-   if (Init()) {
-      Process();
-      End();   
-      if (mProgress) {
-         delete mProgress;
-         mProgress = NULL;
-      }
+   // Effect is already inited; we call Process, End, and then Init
+   // again, so the state is exactly the way it was before Preview
+   // was called.
+   Process();
+   End();   
+   if (mProgress) {
+      delete mProgress;
+      mProgress = NULL;
    }
+   Init();
 
    mT0 = t0save;
    mT1 = t1save;
