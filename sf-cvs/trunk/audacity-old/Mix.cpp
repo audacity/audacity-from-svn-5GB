@@ -20,7 +20,7 @@
 #include "Envelope.h"
 #include "APalette.h"
 
-bool QuickMix(TrackList * tracks, DirManager * dirManager)
+bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
 {
    WaveTrack **waveArray;
    VTrack *t;
@@ -85,13 +85,13 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager)
    }
 
    WaveTrack *mixLeft = new WaveTrack(dirManager);
-   mixLeft->rate = waveArray[0]->rate;
+   mixLeft->rate = rate;
    mixLeft->channel = VTrack::MonoChannel;
    mixLeft->name = "Mix";
    WaveTrack *mixRight = 0;
    if (!mono) {
       mixRight = new WaveTrack(dirManager);
-      mixRight->rate = waveArray[0]->rate;
+      mixRight->rate = rate;
       mixRight->name = "Mix";
       mixLeft->channel = VTrack::LeftChannel;
       mixRight->channel = VTrack::RightChannel;
@@ -101,7 +101,7 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager)
    int maxBlockLen = mixLeft->GetIdealBlockSize();
    double maxBlockTime = maxBlockLen / mixLeft->rate;
 
-   Mixer *mixer = new Mixer(mono ? 1 : 2, maxBlockLen, false);
+   Mixer *mixer = new Mixer(mono ? 1 : 2, maxBlockLen, false, rate);
 
    wxProgressDialog *progress = NULL;
    wxYield();
@@ -182,11 +182,12 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager)
    return true;
 }
 
-Mixer::Mixer(int numChannels, int bufferSize, bool interleaved)
+Mixer::Mixer(int numChannels, int bufferSize, bool interleaved, double rate)
 {
    mNumChannels = numChannels;
    mBufferSize = bufferSize;
    mInterleaved = interleaved;
+   mRate = rate;
    mUseVolumeSlider = false;
    mAPalette = NULL;
 
@@ -197,11 +198,12 @@ Mixer::Mixer(int numChannels, int bufferSize, bool interleaved)
       mNumBuffers = mNumChannels;
       mInterleavedBufferSize = mBufferSize;
    }
-
+   
    mBuffer = new sampleType *[mNumBuffers];
    for (int c = 0; c < mNumBuffers; c++)
       mBuffer[c] = new sampleType[mInterleavedBufferSize];
-   mTemp = new sampleType[mBufferSize];
+   mTempBufferSize = mBufferSize*2;
+   mTemp = new sampleType[mTempBufferSize];
    mEnvValues = new double[mBufferSize];
 }
 
@@ -253,48 +255,51 @@ void Mixer::MixMono(WaveTrack * src, double t0, double t1)
    delete flags;
 }
 
-void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
+void Mixer::GetSamples(WaveTrack *src, int s0, int slen)
 {
-   // First get the samples
+   // Retrieves samples from a track, even outside of the range which
+   // contains samples.  (Fills in extra space with zeros.)
+   // Puts samples in mTemp
+   
+   if (slen > mTempBufferSize) {
+      mTempBufferSize = slen;
+      delete[] mTemp;
+      mTemp = new sampleType[mTempBufferSize];
+   }
+   
+   int soffset = 0;
+   int getlen = slen;
+   if (s0 < 0) {
+      soffset = -s0;
+      getlen -= soffset;
+      s0 = 0;
+   }
+   if (s0+getlen > src->numSamples) {
+      getlen = src->numSamples - s0;
+   }
+   
+   src->Get(&mTemp[soffset], (sampleCount)s0, (sampleCount)getlen);
+   
+   int i;
+   for(i=0; i<soffset; i++)
+      mTemp[i] = 0;
+   for(i=soffset+getlen; i<slen; i++)
+      mTemp[i] = 0;
+}
 
+void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1)
+{
    if ((t0 - src->tOffset) >= src->numSamples / src->rate ||
        (t1 - src->tOffset) <= 0)
       return;
+      
+   int s0 = int ((t0 - src->tOffset) * src->rate);
+   int slen = int ((t1 - t0) * src->rate) + 2;  // get a couple more samples than we need
+   int destlen = int ((t1 - t0) * mRate + 0.5);
+   int frac = int(32768.0 * (t0 - s0/src->rate));
+   int fracstep = int(32768.0 * src->rate/mRate + 0.5);
 
-   int s0 = int ((t0 - src->tOffset) * src->rate + 0.5);
-   int s1 = int ((t1 - src->tOffset) * src->rate + 0.5);
-
-   int slen = s1 - s0;
-   int soffset = 0;
-
-   if (s0 < 0) {
-      soffset = -s0;
-      slen -= soffset;
-      s0 = 0;
-   }
-   if (s1 > (int) src->numSamples) {
-      slen -= (s1 - src->numSamples);
-      s1 = src->numSamples;
-   }
-   // Sometimes the length of the data we want to grab
-   // ends up one sample too big, so we truncate it
-   if (soffset + slen >= mBufferSize) {
-      slen = (mBufferSize - soffset);
-      s1 = s0 + slen;
-   }
-
-   if (slen <= 0)
-      return;
-
-   int i;
-
-   // Get the samples from the track
-   src->Get(mTemp, (sampleCount) s0, (sampleCount) slen);
-
-   // Apply the envelope and volume
-
-   t0 = s0 / src->rate + src->tOffset;
-   t1 = s1 / src->rate + src->tOffset;
+   GetSamples(src, s0, slen);
 
    double volume;
    if (mUseVolumeSlider)
@@ -304,14 +309,9 @@ void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
 
    Envelope *e = src->GetEnvelope();
 
-   e->GetValues(mEnvValues, slen, t0, 1.0 / src->rate);
+   e->GetValues(mEnvValues, mBufferSize, t0, 1.0 / mRate);
 
-   for (i = 0; i < slen; i++) {
-      mTemp[soffset + i] =
-          sampleType(mTemp[soffset + i] * volume * mEnvValues[i]);
-   }
-
-   // Then mix it down to the appropriate tracks
+   // Mix it down to the appropriate tracks
 
    for (int c = 0; c < mNumChannels; c++) {
       if (!channelFlags[c])
@@ -321,10 +321,71 @@ void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
       int skip;
 
       if (mInterleaved) {
-         dest = &mBuffer[0][(mNumChannels * soffset) + c];
+         dest = &mBuffer[0][c];
          skip = mNumChannels;
       } else {
-         dest = &mBuffer[c][soffset];
+         dest = &mBuffer[c][0];
+         skip = 1;
+      }
+
+      // This is the mixing inner loop, which we want
+      // as optimized as possible
+
+      int i = 0;
+      for (int j = 0; j < destlen; j++) {
+         sampleType value = (mTemp[i]*(32768-frac) + mTemp[i+1]*frac) >> 15;
+         frac += fracstep;
+         i += (frac >> 15);      // frac/32768
+         frac = (frac & 0x7FFF); // frac%32768
+      
+         *dest += sampleType(value * volume * mEnvValues[j] + 0.5);
+         dest += skip;
+      }
+   }
+}
+
+void Mixer::MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1)
+{
+   if ((t0 - src->tOffset) >= src->numSamples / src->rate ||
+       (t1 - src->tOffset) <= 0)
+      return;
+      
+   int s0 = int ((t0 - src->tOffset) * src->rate + 0.5);
+   int s1 = int ((t1 - src->tOffset) * src->rate + 0.5);
+
+   int slen = s1 - s0;
+
+   if (slen <= 0)
+      return;
+   if (slen > mBufferSize)
+      slen = mBufferSize;
+
+   GetSamples(src, s0, slen);
+
+   double volume;
+   if (mUseVolumeSlider)
+      volume = mAPalette->GetSoundVol();
+   else
+      volume = 1.0;
+
+   Envelope *e = src->GetEnvelope();
+
+   e->GetValues(mEnvValues, slen, t0, 1.0 / mRate);
+
+   // Mix it down to the appropriate tracks
+
+   for (int c = 0; c < mNumChannels; c++) {
+      if (!channelFlags[c])
+         continue;
+
+      sampleType *dest;
+      int skip;
+
+      if (mInterleaved) {
+         dest = &mBuffer[0][c];
+         skip = mNumChannels;
+      } else {
+         dest = &mBuffer[c][0];
          skip = 1;
       }
 
@@ -332,12 +393,19 @@ void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
       // as optimized as possible
 
       for (int j = 0; j < slen; j++) {
-         *dest += mTemp[j];
+         *dest += sampleType(mTemp[j] * volume * mEnvValues[j] + 0.5);
          dest += skip;
       }
    }
 }
 
+void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
+{
+   if (src->rate - mRate >= 0.5 || src->rate - mRate <= -0.5)
+      MixDiffRates(channelFlags, src, t0, t1);
+   else
+      MixSameRate(channelFlags, src, t0, t1);
+}
 
 sampleType *Mixer::GetBuffer()
 {

@@ -2,38 +2,62 @@
 
   Audacity: A Digital Audio Editor
 
-  FilterFade.h
+  Compressor.h
 
   Dominic Mazzoni
 
 **********************************************************************/
 
-#ifndef __FILTER_COMPRESSOR__
-#define __FILTER_COMPRESSOR__
+#ifndef __AUDACITY_EFFECT_COMPRESSOR__
+#define __AUDACITY_EFFECT_COMPRESSOR__
 
-#include <wx/string.h>
+class wxString;
 
-#include "WaveTrack.h"
-#include "Filter.h"
+#include "Effect.h"
 
-class FilterCompressor:public Filter {
+class WaveTrack;
 
- private:
-   int increment;
-   int how_far;
-   int max_region;
-
- public:
-    virtual bool Prepare(WaveTrack * t, double t0, double t1,
-                         sampleCount total);
-   virtual wxString GetFilterName() {
-      return wxString("Compressor...");
-   } virtual int MaxBlockLen() {
-      return 65536;
+class EffectCompressor: public Effect {
+   
+public:
+   
+   EffectCompressor();
+   
+   virtual wxString GetEffectName() {
+      return wxString("Compressor/Expander...");
    }
-   virtual void DoIt(sampleType * src, sampleType * dst,
-                     sampleCount total, sampleCount x, sampleCount len);
+   
+   virtual wxString GetEffectAction() {
+      return wxString("Compressing/Expanding");
+   }
+   
+   virtual bool PromptUser();
+   
+   virtual bool Process();
+   
+private:
+   bool ProcessOne(int count, WaveTrack * t,
+                   sampleCount start, sampleCount len);
+                   
+   sampleType DoCompression(sampleType x);
+   
+   bool      mRMS;
+   double    mAttackTime;
+   double    mDecayTime;
+   double    mThresholdDB;
+   double    mRatio;
+   double    mGainDB;
+   
+   double    mMult;
+   double    mThreshold;
+   double    mDecayMult;
+   double    mGain;
+   double    mInvRatio;
+   double    mRMSSum;
+   int       mCircleSize;
+   int       mCirclePos;
+   double   *mCircle;
 };
 
 #endif
-#endif
+

@@ -108,7 +108,7 @@ bool ExportPCM(AudacityProject *project,
 
       sampleCount numSamples = int (deltat * rate + 0.5);
 
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true);
+      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true, rate);
       wxASSERT(mixer);
       mixer->Clear();
 

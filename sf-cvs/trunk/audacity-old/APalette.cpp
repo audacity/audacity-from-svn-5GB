@@ -326,7 +326,7 @@ void APalette::OnRecord()
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();
       if (t1 == t0)
-         t1 = t->GetMaxLen();
+         t1 = 1000000000.0;  // record for a long, long time (tens of years)
       bool success = gAudioIO->StartRecord(p, t, t0, t1);
       if (!success) {
          SetPlay(false);

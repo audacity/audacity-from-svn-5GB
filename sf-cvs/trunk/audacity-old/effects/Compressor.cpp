@@ -2,73 +2,130 @@
 
   Audacity: A Digital Audio Editor
 
-  FilterFade.cpp
+  Compressor.cpp
 
   Dominic Mazzoni
 
 **********************************************************************/
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
+#include <math.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
+#include "Compressor.h"
+#include "../WaveTrack.h"
 
-#include "Filter.h"
-#include "FilterCompressor.h"
-
-bool FilterCompressor::Prepare(WaveTrack * t, double t0, double t1,
-                               sampleCount total)
+EffectCompressor::EffectCompressor()
 {
-   wxString temp;
-   wxWindow *parent = NULL;
+   mRMS = true;
+   mAttackTime = 0.1;
+   mDecayTime = 0.1;
+   mThresholdDB = -32;
+   mRatio = 8.0;        // positive number
+   mGainDB = 4.0;
+}
 
-   temp =
-       wxGetTextFromUser
-       ("Please enter an increment (in milliseconds) to apply the filter to",
-        "Increment: ", "1", parent, -1, -1, TRUE);
+bool EffectCompressor::PromptUser()
+{
+   return true;
+}
 
-   if (temp == "")
-      return false;
+bool EffectCompressor::Process()
+{
+   mThreshold = pow(10.0, mThresholdDB/10);
+   mGain = pow(10.0, mGainDB/10);
+   mInvRatio = 1.0 - 1.0 / mRatio;
 
-   while (sscanf((const char *) temp, "%d", &increment) < 0) {
-      temp = wxGetTextFromUser("Please enter a value greater than zero:",
-                               "Increment: ", "1", parent, -1, -1, TRUE);
-      if (temp == "")
+   TrackListIterator iter(mWaveTracks);
+   VTrack *t = iter.First();
+   int count = 0;
+   while(t) {
+      sampleCount start, len;
+      GetSamples((WaveTrack *)t, &start, &len);
+      
+      bool success = ProcessOne(count, (WaveTrack *)t, start, len);
+      
+      if (!success)
          return false;
+   
+      t = iter.Next();
+      count++;
    }
-
-   how_far = 0;
-
-   increment *= t->rate / 100;
 
    return true;
 }
 
-void FilterCompressor::DoIt(sampleType * src, sampleType * dst,
-                            sampleCount total, sampleCount x,
-                            sampleCount len)
+bool EffectCompressor::ProcessOne(int count, WaveTrack * t,
+                                    sampleCount start, sampleCount len)
 {
-   for (int i = 0; i < len; i++) {
-      if (how_far == 2 * increment)
-         how_far = 0;
-      if (how_far == 0) {
-         for (int i2 = i; i2 < len && i2 <= increment; i2++) {
-            if (i2 == i)
-               max_region = src[i];
-            else if (src[i2] > max_region)
-               max_region = src[i2];
-         }
-      } else if (how_far <= increment) {
-         dst[i] = (sampleType) (src[i] * 32767 / max_region);
-      } else
-         dst[i] = (sampleType) (src[i]);
-      ++how_far;
+   mDecayMult = exp(log(0.1)/(mDecayTime*t->rate));
+   mCircleSize = int(mAttackTime * t->rate + 0.5);
+   mCircle = new double[mCircleSize];
+   for(int j=0; j<mCircleSize; j++)
+      mCircle[j] = 0.0;
+   mCirclePos = 0;
+   mRMSSum = 0.0;
+   mMult = 1.0;
+   
+   sampleCount s = start;
+   sampleCount originalLen = len;
+   sampleCount blockSize = t->GetMaxBlockSize();
+
+   sampleType *buffer = new sampleType[blockSize];
+   
+   while (len) {
+      unsigned int block = t->GetBestBlockSize(s);
+      if (block > len)
+         block = len;
+
+      t->Get(buffer, s, block);
+      for (unsigned int i = 0; i < block; i++) {
+         buffer[i] = DoCompression(buffer[i]);
+      }
+      t->Set(buffer, s, block);
+
+      len -= block;
+      s += block;
+      
+      TrackProgress(count, (s-start)/(double)originalLen);
    }
+
+   delete[] buffer;
+   delete[] mCircle;
+
+   return true;
 }
+
+sampleType EffectCompressor::DoCompression(sampleType x)
+{
+   double value = x/32767.0;
+   double level;
+   double mult;
+   
+   if (mRMS) {
+      // Calculate current level from root-mean-squared of
+      // circular buffer ("RMS")
+      mRMSSum -= mCircle[mCirclePos];
+      mCircle[mCirclePos] = value*value;
+      mRMSSum += mCircle[mCirclePos];
+      mCirclePos = (mCirclePos+1)%mCircleSize;
+      level = sqrt(mRMSSum/mCircleSize);
+   }
+   else {
+      // Calculate current level from value at other end of
+      // circular buffer ("Peak")
+      level = mCircle[mCirclePos];
+      mCircle[mCirclePos] = value>0? value: -value;
+      mCirclePos = (mCirclePos+1)%mCircleSize;
+   }
+   
+   if (level > mThreshold)
+      mult = mGain * pow(mThreshold/level, mInvRatio);
+   else
+      mult = 1.0;
+
+   mMult = mult*mDecayMult + mMult*(1.0-mDecayMult);
+
+   return (sampleType)(value*mMult*32767.0);
 }

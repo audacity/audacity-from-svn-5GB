@@ -913,7 +913,7 @@ bool ExportMP3(AudacityProject *project,
       }
 
 
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true);
+      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true, rate);
       wxASSERT(mixer);
       mixer->Clear();
 

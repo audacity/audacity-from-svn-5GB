@@ -96,6 +96,11 @@ class AudioIO {
    AudioIOBuffer      *mOutBuffer;
    AudioIOBuffer      *mInBuffer;
    
+   int                 mInUnderruns;
+   int                 mRepeats;
+   int                 mLastChecksum;
+   double              mRepeatPoint;
+   
    friend int audacityAudioCallback(
 		void *inputBuffer, void *outputBuffer,
 		unsigned long framesPerBuffer,

@@ -8,10 +8,35 @@ META::
 
 
 -----------------------------------------------------------
+Known bugs to fix:
+-----------------------------------------------------------
+
+- Zoom tool shouldn't change selection
+- Scrolling with the zoom tool shouldn't zoom.
+- Closing a project window should throw away all blockfiles
+  other than the ones in the last saved version.  (Implement
+  this in conjunction with save changes dialogs.)
+- Save As... for a project should work.
+
+-----------------------------------------------------------
+Unit tests:
+-----------------------------------------------------------
+
+- Need to test that block size does remain constrained
+  even with lots of edits in one place.
+- Need to verify that the new 1.0 mixing code plays every
+  sample one and only once.
+
+-----------------------------------------------------------
 1.0 (required):
 -----------------------------------------------------------
 
 UI::
+- Save changes? dialog
+- Finish history window
+- Import... should be able to import Audacity projects.
+- Crash recovery
+- Clean up a project directory upon open
 - Make Alt-F select the File menu on Windows
 - Make "Exit program upon closing last window" an option
   in the Preferences.  (The alternative would be to create
@@ -30,7 +55,7 @@ UI::
 - Out of disk space checks
 - History window, with ability to throw away undo information to
   save disk space
-- Autoscrolling during playback
+- Autoscrolling during playback (and recording?)
 
 Audio I/O::
 - import/export ogg vorbis everywhere

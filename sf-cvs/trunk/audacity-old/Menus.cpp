@@ -1008,7 +1008,7 @@ void AudacityProject::OnEditID3(wxCommandEvent & event)
 
 void AudacityProject::OnQuickMix(wxCommandEvent & event)
 {
-   if (::QuickMix(mTracks, &mDirManager)) {
+   if (::QuickMix(mTracks, &mDirManager, mRate)) {
 
       // After the tracks have been mixed, remove the originals
 

@@ -18,11 +18,11 @@
 class APalette;
 class DirManager;
 
-bool QuickMix(TrackList * tracks, DirManager * dirManager);
+bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate);
 
 class Mixer {
  public:
-   Mixer(int numChannels, int bufferSize, bool interleaved);
+   Mixer(int numChannels, int bufferSize, bool interleaved, double rate);
    virtual ~ Mixer();
 
    void UseVolumeSlider(APalette * palette);
@@ -40,6 +40,10 @@ class Mixer {
    sampleType *GetBuffer(int channel);
 
  private:
+   void GetSamples(WaveTrack *src, int s0, int slen);
+   void MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1);
+   void MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1);
+
    int mNumChannels;
    int mNumBuffers;
    int mBufferSize;
@@ -48,8 +52,11 @@ class Mixer {
    bool mUseVolumeSlider;
    APalette *mAPalette;
    sampleType **mBuffer;
-   sampleType *mTemp;
    double *mEnvValues;
+   double mRate;
+
+   sampleType *mTemp;
+   int mTempBufferSize;
 };
 
 #endif

@@ -269,7 +269,7 @@ void TrackPanel::OnTimer()
 #endif
 
    if (mIndicatorShowing ||
-       (gAudioIO->IsPlaying() &&
+       (gAudioIO->IsBusy() &&
         gAudioIO->GetProject() == (AudacityProject *) GetParent())) {
 
       double ind = gAudioIO->GetIndicator();
@@ -2210,9 +2210,7 @@ void TrackPanel::OnRateOther()
 {
    if (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave) {
       wxString defaultStr;
-      defaultStr.Printf("%d",
-                        (int) ((WaveTrack *) mPopupMenuTarget)->rate +
-                        0.5);
+      defaultStr.Printf("%d",(int)(((WaveTrack *) mPopupMenuTarget)->rate+0.5));
       wxString rateStr =
           wxGetTextFromUser("Enter a rate in Hz (samples per second):",
                             "Set Rate",

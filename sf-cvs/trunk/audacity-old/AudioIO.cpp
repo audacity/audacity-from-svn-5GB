@@ -10,18 +10,9 @@
 
 **********************************************************************/
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#include <wx/textdlg.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
 #include <wx/msgdlg.h>
-#endif
+#include <wx/textdlg.h>
+#include <wx/timer.h>
 
 #include "AudioIO.h"
 #include "Project.h"
@@ -46,7 +37,7 @@ AudioIO::AudioIO()
    mInTracks = NULL;
    mPortStream = NULL;
    mMaxBuffers = 24;
-   mInitialNumOutBuffers = 2;
+   mInitialNumOutBuffers = 4;
    
    // Run our timer function once every 200 ms, i.e. 5 times/sec
    mTimer.Start(200, FALSE);
@@ -110,17 +101,36 @@ int audacityAudioCallback(
    //
    
    if (inputBuffer && numInChannels > 0) {
-      for(i=0; i<gAudioIO->mNumInBuffers; i++)
+      bool found = false;
+      for(i=0; i<gAudioIO->mNumInBuffers; i++) {
          if (gAudioIO->mInBuffer[i].ID == 0) {
-            int len = framesPerBuffer; //gAudioIO->mBufferSize;
+            int len = framesPerBuffer;
             
             AudioIOBuffer *b = &gAudioIO->mInBuffer[i];
             memcpy(b->data, inputBuffer, len * numInChannels * sizeof(sampleType));
             b->len = len;
             b->ID = gAudioIO->mInID;
             gAudioIO->mInID++;
+            found = true;
+            
+            int checksum = 0;
+            for(int k=0; k<len*numInChannels; k++)
+               checksum += ((sampleType *)inputBuffer)[k];
+            if (checksum == gAudioIO->mLastChecksum) {
+               gAudioIO->mRepeats++;
+               gAudioIO->mRepeatPoint = gAudioIO->mT;
+            }
+            gAudioIO->mLastChecksum = checksum;
+            
             break;
          }
+      }
+      
+      if (!found) {
+         // we had a buffer underrun!
+         
+         gAudioIO->mInUnderruns++;
+      }
    }
    
    return 0;
@@ -173,7 +183,9 @@ bool AudioIO::Start()
    mT = mT0;
    mOutID = 1;
    mInID = 1;
-   mBufferSize = 4096;   
+   mBufferSize = 4096;
+   mInUnderruns = 0;
+   mRepeats = 0;
 
    int i;
 
@@ -297,7 +309,7 @@ void AudioIO::FillBuffers()
          block = (sampleCount)(deltat * mRate + 0.5);
       }
       
-      Mixer *mixer = new Mixer(mNumOutChannels, block, true);
+      Mixer *mixer = new Mixer(mNumOutChannels, block, true, mRate);
       mixer->UseVolumeSlider(mProject->GetAPalette());
       mixer->Clear();
 
@@ -391,7 +403,7 @@ void AudioIO::FillBuffers()
          numFull++;
    }
    
-   if (numFull > (mNumInBuffers/2)) {
+   if (numFull > 8) {
    
       sampleType **flat = new sampleType*[mNumInChannels];
       for(i=0; i<mNumInChannels; i++)
@@ -407,9 +419,15 @@ void AudioIO::FillBuffers()
                minIndex = i;
                minID = mInBuffer[i].ID;
             }
+
+         if (minID == mInID+1) {    ///////
+            minID = mInID+1;       /////////
+         }                         /////////
+         
          for(j=0; j<mInBuffer[minIndex].len; j++)
-            for(c=0; c<mNumInChannels; c++)
+            for(c=0; c<mNumInChannels; c++) {
                flat[c][flatLen+j] = mInBuffer[minIndex].data[j*mNumInChannels + c];
+            }
          flatLen += mInBuffer[minIndex].len;
          mInBuffer[minIndex].ID = 0;
       }
@@ -477,6 +495,18 @@ void AudioIO::Stop()
    }
 
    mProject = NULL;
+   
+   if (mInUnderruns) {
+      wxString str;
+      str.Printf("There were %d buffer underruns, data was lost.", mInUnderruns);
+      wxMessageBox(str);
+   }
+   if (mRepeats) {
+      wxString str;
+      str.Printf("There were %d possibly repeated frames, last near %lf seconds.",
+                 mRepeats, mRepeatPoint);
+      wxMessageBox(str);
+   }
 }
 
 void AudioIO::HardStop()
