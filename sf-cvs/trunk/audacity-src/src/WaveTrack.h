@@ -104,7 +104,8 @@ class WaveTrack: public Track {
    bool Set(samplePtr buffer, sampleFormat format,
             longSampleCount start, sampleCount len);
 
-   bool Append(samplePtr buffer, sampleFormat format, sampleCount len);
+   bool Append(samplePtr buffer, sampleFormat format,
+               sampleCount len, unsigned int stride=1);
    bool AppendAlias(wxString fName, sampleCount start,
                     sampleCount len, int channel);
 

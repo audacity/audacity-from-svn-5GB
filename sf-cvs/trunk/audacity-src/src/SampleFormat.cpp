@@ -89,15 +89,24 @@ void ClearSamples(samplePtr src, sampleFormat format,
 void CopySamples(samplePtr src, sampleFormat srcFormat,
                  samplePtr dst, sampleFormat dstFormat,
                  unsigned int len,
-                 bool highQuality /* = true */)
+                 bool highQuality, /* = true */
+                 unsigned int stride /* = 1 */)
 {
    if (len == 0)
       return;
 
    int srcBytes = SAMPLE_SIZE(srcFormat);
+   unsigned int i;
 
    if (srcFormat == dstFormat) {
-      memcpy(dst, src, len*srcBytes);
+      if (stride == 1)
+         memcpy(dst, src, len*srcBytes);
+      else
+         for(i=0; i<len; i++) {
+            memcpy(dst, src, srcBytes);
+            dst += srcBytes;
+            src += stride * srcBytes;
+         }
       return;
    }
 
@@ -106,48 +115,68 @@ void CopySamples(samplePtr src, sampleFormat srcFormat,
       return;
    }
 
-   unsigned int i;
    float fHalf = 0.5;
    float fDiv16 = 32767.5;
    float fDiv24 = 8388607.5;
 
    switch(dstFormat) {
    case floatSample:
-      if (srcFormat == int16Sample)
-         for(i=0; i<len; i++)
-            ((float *)dst)[i] = (((short *)src)[i] + fHalf) / fDiv16;
-      else if (srcFormat == int24Sample)
-         for(i=0; i<len; i++)
-            ((float *)dst)[i] = (((int *)src)[i] + fHalf) / fDiv24;
+      if (srcFormat == int16Sample) {
+         short *sp = (short *)src;
+         for(i=0; i<len; i++) {
+            ((float *)dst)[i] = (*sp + fHalf) / fDiv16;
+            sp += stride;
+         }
+      }
+      else if (srcFormat == int24Sample) {
+         int *sp = (int *)src;
+         for(i=0; i<len; i++) {
+            ((float *)dst)[i] = (*sp + fHalf) / fDiv24;
+            sp += stride;
+         }
+      }
       break;
 
    case int24Sample:
-      if (srcFormat == int16Sample)
-         for(i=0; i<len; i++)
-            ((int *)dst)[i] = ((int)((short *)src)[i]) << 8;
+      if (srcFormat == int16Sample) {
+         short *sp = (short *)src;
+         for(i=0; i<len; i++) {
+            ((int *)dst)[i] = ((int)*sp) << 8;
+            sp += stride;
+         }
+      }
       else if (srcFormat == floatSample)
          switch(gDither) {
-         case 0:
-            for(i=0; i<len; i++)
-               ((int *)dst)[i] = (int)floor(((float *)src)[i] * fDiv24);
-            break;
+         case 0: {
+            float *sp = (float *)src;
+            for(i=0; i<len; i++) {
+               ((int *)dst)[i] = (int)floor(*sp * fDiv24);
+               sp += stride;
+            }
+         } break;
          }
       break;
 
    case int16Sample:
       if (srcFormat == floatSample)
          switch(gDither) {
-         case 0:
-            for(i=0; i<len; i++)
-               ((short *)dst)[i] = (short)floor(((float *)src)[i] * fDiv16);
-            break;
+         case 0: {
+            float *sp = (float *)src;
+            for(i=0; i<len; i++) {
+               ((short *)dst)[i] = (short)floor(*sp * fDiv16);
+               sp += stride;
+            }
+         } break;
          }
       else if (srcFormat == int24Sample)
          switch(gDither) {
-         case 0:
-            for(i=0; i<len; i++)
-               ((short *)dst)[i] = (short)(((int *)src)[i] >> 8);
-            break;
+         case 0: {
+            int *sp = (int *)sp;
+            for(i=0; i<len; i++) {
+               ((short *)dst)[i] = (short)(*sp >> 8);
+               sp += stride;
+            }
+         } break;
          }
       break;
    }
