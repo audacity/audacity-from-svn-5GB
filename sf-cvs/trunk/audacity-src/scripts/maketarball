@@ -39,8 +39,12 @@ print "removing libraries that should be installed locally...\n";
 `rm -rf lib-src/libogg lib-src/libvorbis lib-src/libmad lib-src/id3lib lib-src/libid3tag`;
 `rm -rf lib-src/wave++`;
 
-print "removing other things that only belong in CVS\n";
-`rm -rf help qa`;
+print "removing qa\n";
+`rm -rf qa`;
+
+print "removing help files (haven't been updated for 1.1)\n";
+`rm -rf help/webbrowser`;
+`rm -rf help/wxhelp`;
 
 print "removing Doxygen (since we're not making use of it yet\n";
 `rm -f audacity.dox`;

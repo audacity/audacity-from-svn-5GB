@@ -3,24 +3,56 @@ PREFIX = @prefix@
 ZIP = @ZIP@
 
 .PHONY: all
-all: audacity audacity-help.htb
+all: audacity help/audacity.1.gz
 
 .PHONY: audacity
 audacity:
 	cd lib-src && $(MAKE)
 	cd src && $(MAKE)
+	cd locale && $(MAKE)
 
 .PHONY: install
 install: audacity
-	-test -d $(PREFIX)/share/doc/audacity || \
-		mkdir -m 755 -p $(PREFIX)/share/doc/audacity
+	$(INSTALL) -d $(PREFIX)/bin
+	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
+	$(INSTALL) -d $(PREFIX)/share/doc/audacity
 	-test -f audacity-help.htb && $(INSTALL) -m 644 audacity-help.htb \
 		$(PREFIX)/share/doc/audacity/audacity-help.htb
 	$(INSTALL) -m 644 README.txt $(PREFIX)/share/doc/audacity/README.txt
 	$(INSTALL) -m 644 LICENSE.txt $(PREFIX)/share/doc/audacity/LICENSE.txt
-	-test -d $(PREFIX)/bin || \
-		mkdir -m 755 -p $(PREFIX)/bin
-	$(INSTALL) -m 755 audacity $(PREFIX)/bin/audacity
+	$(INSTALL) -d $(PREFIX)/share/man/man1
+	-test -f help/audacity.1.gz && \
+		$(INSTALL) -m 644 help/audacity.1.gz \
+		$(PREFIX)/share/man/man1
+	$(INSTALL) -d $(PREFIX)/share/audacity/nyquist
+	$(INSTALL) -m 644 nyquist/*.lsp $(PREFIX)/share/audacity/nyquist
+	$(INSTALL) -d $(PREFIX)/share/audacity/plug-ins
+	$(INSTALL) -m 644 plug-ins/*.lsp $(PREFIX)/share/audacity/plug-ins
+	$(INSTALL) -d $(PREFIX)/share/locale/bg/LC_MESSAGES
+	$(INSTALL) -m 644 bg/audacity.mo $(PREFIX)/share/locale/bg/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/da/LC_MESSAGES
+	$(INSTALL) -m 644 da/audacity.mo $(PREFIX)/share/locale/da/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/de/LC_MESSAGES
+	$(INSTALL) -m 644 de/audacity.mo $(PREFIX)/share/locale/de/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/es/LC_MESSAGES
+	$(INSTALL) -m 644 es/audacity.mo $(PREFIX)/share/locale/es/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/fr/LC_MESSAGES
+	$(INSTALL) -m 644 fr/audacity.mo $(PREFIX)/share/locale/fr/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/hu/LC_MESSAGES
+	$(INSTALL) -m 644 hu/audacity.mo $(PREFIX)/share/locale/hu/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/it/LC_MESSAGES
+	$(INSTALL) -m 644 it/audacity.mo $(PREFIX)/share/locale/it/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/nl/LC_MESSAGES
+	$(INSTALL) -m 644 nl/audacity.mo $(PREFIX)/share/locale/nl/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/pl/LC_MESSAGES
+	$(INSTALL) -m 644 pl/audacity.mo $(PREFIX)/share/locale/pl/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/ru/LC_MESSAGES
+	$(INSTALL) -m 644 ru/audacity.mo $(PREFIX)/share/locale/ru/LC_MESSAGES
+	$(INSTALL) -d $(PREFIX)/share/locale/sl/LC_MESSAGES
+	$(INSTALL) -m 644 sl/audacity.mo $(PREFIX)/share/locale/sl/LC_MESSAGES
+
+help/audacity.1.gz:
+	gzip help/audacity.1
 
 audacity-help.htb: help/wxhelp/*
 	rm -f audacity-help.htb
