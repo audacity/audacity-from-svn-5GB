@@ -23,7 +23,6 @@
 #include <wx/valtext.h>
 
 #include "ChangeTempo.h"
-#include "../WaveTrack.h"
 
 //
 // EffectChangeTempo
