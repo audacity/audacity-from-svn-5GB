@@ -1127,6 +1127,18 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                outputFloats[numPlaybackChannels*i+1] += gain*tempFloats[i];
          }
       }
+
+      //
+      // Clip output to [-1.0,+1.0] range (msmeyer)
+      //
+      for( i = 0; i < framesPerBuffer*numPlaybackChannels; i++)
+      {
+          float f = outputFloats[i];
+          if (f > 1.0)
+              outputFloats[i] = 1.0;
+          else if (f < -1.0)
+              outputFloats[i] = -1.0;
+      }
    }
 
    //
