@@ -226,8 +226,15 @@ also supported) please email audacity-help@lists.sourceforge.net
 
 Known issues/problems:
 
+  * The user's manual is still under construction.  Updates for
+    Audacity 1.2 are about 75% complete.  There may be some missing
+    or incomplete pages.
+
   * Audacity may crash if audio is edited while the program is
     playing or recording.
+
+  * (MacOS X only?) If you select Quit, but then cancel the Quit operation,
+    then the Quit and Preferences commands stop working.
 
   * Some imported MP3 files may have pops or clicks caused by clipping.
 
@@ -242,6 +249,13 @@ Known issues/problems:
 
   * Recording in full duplex (play existing tracks while recording) on some
     Linux systems causes the recording to sound slowed-down.
+
+  * MacOS X only:  The Find Zero Crossings command has "Command-Z" listed as
+    the shortcut, but the actual shortcut is "Z".  The shortcuts for "Online
+    Help" and "Open" conflict.
+
+  * MacOS X only: For audio with zero amplitude, Audacity may display nothing
+    (instead of thin straight line).
 
 -------------------------------------------------------------
 
