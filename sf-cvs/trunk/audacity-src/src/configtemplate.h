@@ -63,6 +63,9 @@
 /* Define if wave++ is present */
 #undef USE_WAVELET
 
+/* The program's install prefix (i.e. "/usr/local") */
+#undef INSTALL_PREFIX
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
