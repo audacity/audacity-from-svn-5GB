@@ -22,51 +22,58 @@
 bool EffectSimpleMono::Process()
 {
    TrackListIterator iter(mWaveTracks);
-   WaveTrack *t = (WaveTrack *)iter.First();
+   WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
-   while(t) {
-      double start = mT0;
-      sampleCount len = (sampleCount)floor((mT1 - mT0)*t->GetRate() + 0.5);
-      bool success = ProcessOne(count, t, start, len);
-      
-      if (!success)
-         return false;
-   
-      t = (WaveTrack *)iter.Next();
+   while (track) {
+      double starttime = mT0;
+      double endtime = mT1;
+
+      if (starttime < track->GetEndTime()) {    //make sure part of track is within selection
+         if (endtime > track->GetEndTime())
+            endtime = track->GetEndTime();      //make sure all of track is within selection
+         sampleCount len =
+             (sampleCount) floor((endtime - starttime) * track->GetRate() + 0.5);
+
+         bool success = ProcessOne(count, track, starttime, len);
+
+         if (!success)
+            return false;
+      }
+
+      track = (WaveTrack *) iter.Next();
       count++;
    }
-   
+
    return true;
 }
 
-bool EffectSimpleMono::ProcessOne(int count, WaveTrack *track,
-                              double start, sampleCount len)
+bool EffectSimpleMono::ProcessOne(int count, WaveTrack * track,
+                                  double start, sampleCount len)
 {
    double t = start;
    sampleCount s = 0;
-   
+
    float *buffer = new float[track->GetMaxBlockSize()];
-   
+
    while (s < len) {
       sampleCount block = track->GetBestBlockSize(t);
-      if (s+block > len)
-         block = len-s;
+      if (s + block > len)
+         block = len - s;
 
-      track->Get((samplePtr)buffer, floatSample, t, block);
+      track->Get((samplePtr) buffer, floatSample, t, block);
       if (!ProcessSimpleMono(buffer, block, track->GetRate())) {
-         delete[] buffer;
+         delete[]buffer;
          return false;
       }
-      track->Set((samplePtr)buffer, floatSample, t, block);
+      track->Set((samplePtr) buffer, floatSample, t, block);
 
       s += block;
-      t += (block/track->GetRate());
+      t += (block / track->GetRate());
 
-      TrackProgress(count, s/(double)len);
+      TrackProgress(count, s / (double) len);
    }
 
-   delete[] buffer;
+   delete[]buffer;
 
    return true;
 }
-
