@@ -106,6 +106,12 @@ void SoundPlayer::Finish()
   mProject = NULL;
 }
 
+bool Record(AudacityProject *project,
+			TrackList *tracks)
+{
+  return false;
+}
+
 void SoundPlayer::OnTimer()
 {
   if (!mProject) return;

@@ -1161,7 +1161,7 @@ void AudacityProject::OnOpen(wxCommandEvent& event)
 void AudacityProject::Save(bool overwrite /* = true */)
 {
   if (mName == "" || mFileName == "") {
-	OnSaveAs(wxCommandEvent());
+	SaveAs();
 	return;
   }
 
@@ -1288,6 +1288,11 @@ void AudacityProject::OnSave(wxCommandEvent& event)
 
 void AudacityProject::OnSaveAs(wxCommandEvent& event)
 {
+  SaveAs();
+}
+
+void AudacityProject::SaveAs()
+{
   wxString fName = mFileName;
   if (fName == "")
     fName = ".aup";
@@ -1370,7 +1375,7 @@ void AudacityProject::ImportFile(wxString fileName)
 
     PushState();
 	
-	OnZoomFit(wxCommandEvent());
+	ZoomFit();
   }
 }
 
@@ -1697,7 +1702,7 @@ void AudacityProject::OnZoomNormal(wxCommandEvent& event)
   mTrackPanel->Refresh(false);
 }
 
-void AudacityProject::OnZoomFit(wxCommandEvent& event)
+void AudacityProject::ZoomFit()
 {
   double len = mTracks->GetMaxLen();
   int w, h;
@@ -1707,6 +1712,11 @@ void AudacityProject::OnZoomFit(wxCommandEvent& event)
   mViewInfo.zoom = w / len;
   FixScrollbars();
   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnZoomFit(wxCommandEvent& event)
+{
+  ZoomFit();
 }
 
 void AudacityProject::OnPlotSpectrum(wxCommandEvent& event)
@@ -1892,7 +1902,7 @@ void AudacityProject::Copy(wxCommandEvent& event)
 void AudacityProject::Paste(wxCommandEvent& event)
 {
   if (mViewInfo.sel0 != mViewInfo.sel1)
-    Clear(wxCommandEvent());
+    Clear();
     
   wxASSERT(mViewInfo.sel0 == mViewInfo.sel1);
 
@@ -1922,7 +1932,12 @@ void AudacityProject::Paste(wxCommandEvent& event)
   UpdateMenus();
 }
 
-void AudacityProject::Clear(wxCommandEvent& event)
+void AudacityProject::OnClear(wxCommandEvent& event)
+{
+  Clear();
+}
+
+void AudacityProject::Clear()
 {
   VTrack *n = mTracks->First();
 

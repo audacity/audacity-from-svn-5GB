@@ -70,6 +70,7 @@ public:
 
   void OpenFile(wxString fileName);
   void Save(bool overwrite = true);
+  void SaveAs();
   void ImportFile(wxString fileName);
   void ImportMP3(wxString fileName);
 
@@ -92,7 +93,8 @@ public:
   void Cut(wxCommandEvent& event);
   void Copy(wxCommandEvent& event);
   void Paste(wxCommandEvent& event);
-  void Clear(wxCommandEvent& event);  
+  void Clear();
+  void OnClear(wxCommandEvent& event);  
   void SelectAll(wxCommandEvent& event);
 
   void Undo(wxCommandEvent& event);
@@ -104,6 +106,8 @@ public:
   void OnZoomOut(wxCommandEvent& event);
   void OnZoomNormal(wxCommandEvent& event);
   void OnZoomFit(wxCommandEvent& event);
+
+  void ZoomFit();
 
   void OnPlotSpectrum(wxCommandEvent& event);
 

@@ -6,7 +6,7 @@
 
   Dominic Mazzoni
 
-  Use the SND library to play sound
+  Use the SND library to play and record sound
 
 **********************************************************************/
 
@@ -42,6 +42,9 @@ public:
   bool Begin(AudacityProject *project,
 			 TrackList *tracks,
 			 double t0, double t1);
+
+  bool Record(AudacityProject *project,
+			  TrackList *tracks);			  
 
   void OnTimer();
 
