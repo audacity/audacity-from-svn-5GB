@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: bitrate tracking and management
- last mod: $Id: bitrate.c,v 1.1.1.2 2002-10-26 19:39:35 dmazzoni Exp $
+ last mod: $Id: bitrate.c,v 1.1.1.3 2004-03-21 16:52:49 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -170,7 +170,7 @@ void vorbis_bitrate_clear(bitrate_manager_state *bm){
 
 int vorbis_bitrate_managed(vorbis_block *vb){
   vorbis_dsp_state      *vd=vb->vd;
-  backend_lookup_state  *b=vd->backend_state; 
+  private_state         *b=vd->backend_state; 
   bitrate_manager_state *bm=&b->bms;
 
   if(bm->queue_binned)return(1);
@@ -182,7 +182,7 @@ int vorbis_bitrate_addblock(vorbis_block *vb){
   int i; 
   vorbis_block_internal *vbi=vb->internal;
   vorbis_dsp_state      *vd=vb->vd;
-  backend_lookup_state  *b=vd->backend_state; 
+  private_state         *b=vd->backend_state; 
   bitrate_manager_state *bm=&b->bms;
   vorbis_info           *vi=vd->vi;
   codec_setup_info      *ci=vi->codec_setup;
@@ -493,7 +493,7 @@ int vorbis_bitrate_addblock(vorbis_block *vb){
 }
 
 int vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,ogg_packet *op){
-  backend_lookup_state  *b=vd->backend_state;
+  private_state         *b=vd->backend_state;
   bitrate_manager_state *bm=&b->bms;
 
   if(bm->queue_size==0){

@@ -11,16 +11,16 @@
  ********************************************************************
 
  function: window functions
- last mod: $Id: window.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
+ last mod: $Id: window.h,v 1.1.1.4 2004-03-21 16:52:54 mbrubeck Exp $
 
  ********************************************************************/
 
 #ifndef _V_WINDOW_
 #define _V_WINDOW_
 
-extern float *_vorbis_window(int type,int left);
-extern void _vorbis_apply_window(float *d,float *window[2],long *blocksizes,
-				 int lW,int W,int nW);
+extern float *_vorbis_window_get(int n);
+extern void _vorbis_apply_window(float *d,int *winno,long *blocksizes,
+                          int lW,int W,int nW);
 
 
 #endif

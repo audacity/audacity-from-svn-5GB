@@ -12,7 +12,7 @@
 
  function: simple utility that runs audio through the psychoacoustics
            without encoding
- last mod: $Id: psytune.c,v 1.1.1.3 2002-10-26 19:39:37 dmazzoni Exp $
+ last mod: $Id: psytune.c,v 1.1.1.4 2004-03-21 16:52:55 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -280,7 +280,7 @@ int main(int argc,char *argv[]){
   flr[1]=_ogg_calloc(framesize/2,sizeof(float));
   buffer=_ogg_malloc(framesize*4);
   buffer2=buffer+framesize*2;
-  window=_vorbis_window(0,framesize,framesize/2,framesize/2);
+  window=_vorbis_window_create(0,framesize,framesize/2,framesize/2);
   mdct_init(&m_look,framesize);
   drft_init(&f_look,framesize);
   _vp_psy_init(&p_look,&_psy_set0,&_psy_set0G,framesize/2,44100);
