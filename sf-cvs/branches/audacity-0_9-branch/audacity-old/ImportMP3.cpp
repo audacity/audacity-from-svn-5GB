@@ -245,6 +245,9 @@ bool ImportMP3(AudacityProject * project,
    DirManager *dirManager = project->GetDirManager();
    wxWindow *parent = project;
 
+   *left = NULL;
+   *right = NULL;
+
    Tags *tags = project->GetTags();
    tags->ImportID3(fName);
 
