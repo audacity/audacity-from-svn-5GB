@@ -98,10 +98,9 @@ class AudacityProject:public wxFrame,
    AudacityProject(wxWindow * parent, wxWindowID id,
                    const wxPoint & pos, const wxSize & size);
 
-    virtual ~ AudacityProject();
+   virtual ~ AudacityProject();
 
    // Accessors
-
    Commands *GetCommands() { return &mCommands; };
 
    TrackList *GetTracks() { return mTracks; };
@@ -150,6 +149,7 @@ class AudacityProject:public wxFrame,
    void OnDropFiles(wxDropFilesEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+   void OnIconize(wxIconizeEvent &event);
    void OnSize(wxSizeEvent & event);
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
@@ -301,6 +301,7 @@ class AudacityProject:public wxFrame,
    bool mAutoScrolling;
    bool mActive;
    bool mImportingRaw;
+   bool mIconized;
    HistoryWindow *mHistoryWindow;
 
    ToolBarArray mToolBarArray;

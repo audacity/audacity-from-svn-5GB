@@ -944,6 +944,9 @@ int AudacityApp::OnAllKeys(wxKeyEvent& event)
    return -1;
 }
 
+
+
+
 int AudacityApp::OnExit()
 {
    while(Pending())

@@ -138,6 +138,7 @@ class ToolBarStub {
    //toolbars from EVERY window.
    void LoadAll();
    void UnloadAll();
+   void Iconize(bool bIconize);
    void ShowWindowedToolBar(wxPoint * where = NULL);
    void HideWindowedToolBar();
    bool IsToolBarLoaded(AudacityProject *);
