@@ -1,6 +1,15 @@
 <?php BoxTop("Nyquist"); ?>
 
 <p>
+<?php print "<a href=nyquist.php?$langLinkStr>";
+?>Part 1: Introduction to Nyquist and Lisp programming.</a><br>
+<?php print "<a href=nyquist2.php?$langLinkStr>";
+?>Part 2: Programming in Nyquist.</a><br>
+<?php print "<a href=nyquist3.php?$langLinkStr>";
+?>Part 3: Creating Nyquist plug-ins.</a><br>
+</p>
+
+<p>
 Beginning with version 1.1.1, Audacity allows you to use the Nyquist
 programming language to write your own plug-in effects for Audacity.
 Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using

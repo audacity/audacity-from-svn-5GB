@@ -1,7 +1,12 @@
 <?php BoxTop("Nyquist (3)"); ?>
 
 <p>
-<b>Creating Nyquist plug-in effects for Audacity</b>
+<?php print "<a href=nyquist.php?$langLinkStr>";
+?>Part 1: Introduction to Nyquist and Lisp programming.</a><br>
+<?php print "<a href=nyquist2.php?$langLinkStr>";
+?>Part 2: Programming in Nyquist.</a><br>
+<?php print "<a href=nyquist3.php?$langLinkStr>";
+?>Part 3: Creating Nyquist plug-ins.</a><br>
 </p>
 
 <p>
