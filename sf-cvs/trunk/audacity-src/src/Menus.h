@@ -54,6 +54,9 @@ wxObjectEventFunction &GetCommandFunc(int nIndex);
 int GetNumCommands();
 
 void SetCommandState(int idItem, int iVal);
+int GetCommandState(int nIndex);
+
+bool GetCommandKeyText(int idItem, wxString *retName);
 
 void OnUpdateMenus(wxUpdateUIEvent & event);
 

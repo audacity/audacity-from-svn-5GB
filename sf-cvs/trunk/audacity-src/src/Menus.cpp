@@ -76,10 +76,10 @@ void AudacityProject::CreateMenuBar()
                                       lossyFormat.c_str());
 
    mFileMenu = new wxMenu();
-   mFileMenu->Append(NewID, _("&New\tCtrl+N"));
-   mFileMenu->Append(OpenID, _("&Open...\tCtrl+O"));
-   mFileMenu->Append(CloseID, _("&Close\tCtrl+W"));
-   mFileMenu->Append(SaveID, _("&Save Project\tCtrl+S"));
+   mFileMenu->Append(NewID, _("&New"));
+   mFileMenu->Append(OpenID, _("&Open..."));
+   mFileMenu->Append(CloseID, _("&Close"));
+   mFileMenu->Append(SaveID, _("&Save Project"));
    mFileMenu->Append(SaveAsID, _("Save Project &As..."));
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportMixID, mExportString);
@@ -90,36 +90,36 @@ void AudacityProject::CreateMenuBar()
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExportLabelsID, _("Export &Labels..."));
    mFileMenu->AppendSeparator();
-   mFileMenu->Append(PreferencesID, _("&Preferences...\tCtrl+P"));
+   mFileMenu->Append(PreferencesID, _("&Preferences..."));
    mFileMenu->AppendSeparator();
    mFileMenu->Append(ExitID, _("E&xit"));
 
    mEditMenu = new wxMenu();
-   mEditMenu->Append(UndoID, _("&Undo\tCtrl+Z"));
-   mEditMenu->Append(RedoID, _("&Redo\tCtrl+R"));
+   mEditMenu->Append(UndoID, _("&Undo"));
+   mEditMenu->Append(RedoID, _("&Redo"));
    mEditMenu->AppendSeparator();
-   mEditMenu->Append(CutID, _("Cut\tCtrl+X"));
-   mEditMenu->Append(CopyID, _("Copy\tCtrl+C"));
-   mEditMenu->Append(PasteID, _("Paste\tCtrl+V"));
+   mEditMenu->Append(CutID, _("Cut"));
+   mEditMenu->Append(CopyID, _("Copy"));
+   mEditMenu->Append(PasteID, _("Paste"));
    mEditMenu->AppendSeparator();
-   mEditMenu->Append(DeleteID, _("&Delete\tCtrl+K"));
-   mEditMenu->Append(SilenceID, _("Silence\tCtrl+L"));
+   mEditMenu->Append(DeleteID, _("&Delete"));
+   mEditMenu->Append(SilenceID, _("Silence"));
    mEditMenu->AppendSeparator();
    mEditMenu->Append(InsertSilenceID, _("Insert Silence..."));
-   mEditMenu->Append(SplitID, _("Split\tCtrl+Y"));
-   mEditMenu->Append(DuplicateID, _("Duplicate\tCtrl+D"));
+   mEditMenu->Append(SplitID, _("Split"));
+   mEditMenu->Append(DuplicateID, _("Duplicate"));
    mEditMenu->AppendSeparator();
-   mEditMenu->Append(SelectAllID, _("&Select All\tCtrl+A"));
+   mEditMenu->Append(SelectAllID, _("&Select All"));
 
    mViewMenu = new wxMenu();
-   mViewMenu->Append(ZoomInID, _("Zoom &In\tCtrl+1"));
-   mViewMenu->Append(ZoomNormalID, _("Zoom &Normal\tCtrl+2"));
-   mViewMenu->Append(ZoomOutID, _("Zoom &Out\tCtrl+3"));
-   mViewMenu->Append(ZoomFitID, _("Fit in &Window\tCtrl+F"));
-   mViewMenu->Append(ZoomSelID, _("Zoom to &Selection\tCtrl+E"));
+   mViewMenu->Append(ZoomInID, _("Zoom &In"));
+   mViewMenu->Append(ZoomNormalID, _("Zoom &Normal"));
+   mViewMenu->Append(ZoomOutID, _("Zoom &Out"));
+   mViewMenu->Append(ZoomFitID, _("Fit in &Window"));
+   mViewMenu->Append(ZoomSelID, _("Zoom to &Selection"));
    mViewMenu->AppendSeparator();
    mViewMenu->Append(UndoHistoryID, _("History"));
-   mViewMenu->Append(PlotSpectrumID, _("&Plot Spectrum\tCtrl+U"));
+   mViewMenu->Append(PlotSpectrumID, _("&Plot Spectrum"));
 
 #ifndef __WXMAC__
    mViewMenu->AppendSeparator();
@@ -127,7 +127,7 @@ void AudacityProject::CreateMenuBar()
 #endif
 
    mProjectMenu = new wxMenu();
-   mProjectMenu->Append(ImportID, _("&Import Audio...\tCtrl+I"));
+   mProjectMenu->Append(ImportID, _("&Import Audio..."));
    mProjectMenu->Append(ImportLabelsID, _("Import Labels..."));
    mProjectMenu->Append(ImportMIDIID, _("Import &MIDI..."));
    mProjectMenu->Append(ImportRawID, _("Import Raw Data..."));
@@ -241,6 +241,33 @@ void AudacityProject::SetCommandState(int idItem, int iVal)
    }
 }
 
+int AudacityProject::GetCommandState(int nIndex)
+{
+   return (int)mCommandState[nIndex];
+}
+
+bool AudacityProject::GetCommandKeyText(int idItem, wxString *retName)
+{
+   wxKeyEvent tmpKeyEvent;
+
+   for(int i = 0; i < mCommandIDs.GetCount(); i++)
+   {
+      if(mCommandIDs[i] == (int *)idItem)
+      {
+         memcpy(&tmpKeyEvent, mCommandAssignedKey[i], sizeof(wxKeyEvent));
+         if(!tmpKeyEvent.GetKeyCode()) return false;
+         *retName += "\t";
+         if(tmpKeyEvent.ControlDown()) *retName += "Ctrl+";
+         if(tmpKeyEvent.AltDown()) *retName += "Alt+";
+         if(tmpKeyEvent.ShiftDown()) *retName += "Shift+";
+         *retName += (char)toupper(tmpKeyEvent.GetKeyCode());
+         return true;
+      }
+   }
+
+   return false;
+}
+
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
    if (mMenusDirtyCheck != gMenusDirty) {
@@ -248,6 +275,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       TODO!
       */
    }
+
+#define AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
+#include "commands.h"
+#undef AUDACITY_MENUS_COMMANDS_ACCELL_TABLE
 
    // Note that the titles of the menus here are dependent on the
    // titles above.
@@ -375,7 +406,7 @@ bool AudacityProject::HandleMenuEvent(wxEvent & event)
 {
    for(int i = 0; i < mCommandIDs.GetCount(); i++)
    {
-      if(mCommandIDs[i] == (int *)event.GetId())
+      if((mCommandIDs[i] == (int *)event.GetId()) && (GetCommandState(i)))
       {
          (this->*((wxEventFunction) (this->GetCommandFunc(i))))(event);
       }
