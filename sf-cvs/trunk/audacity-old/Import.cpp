@@ -21,6 +21,13 @@
 
 #include "snd/snd.h"
 
+// General purpose function used by other importers
+// TODO: use this in all importers
+wxString TrackNameFromFileName(wxString fName)
+{
+  return fName.AfterLast('/').AfterLast('\\').BeforeFirst('.');
+}
+
 bool ImportWAV(wxWindow *parent,
                wxString fName, WaveTrack **dest1, WaveTrack **dest2,
                DirManager *dirManager)
@@ -68,11 +75,13 @@ bool ImportWAV(wxWindow *parent,
   *dest1 = new WaveTrack(dirManager);
   wxASSERT(*dest1);
   (*dest1)->rate = sndfile.format.srate;
+  (*dest1)->name = TrackNameFromFileName(fName);
   if (channels == 2) {
     *dest2 = new WaveTrack(dirManager);
     wxASSERT(*dest1);
     (*dest2)->rate = sndfile.format.srate;
-	(*dest1)->linked = true;
+    (*dest2)->name = TrackNameFromFileName(fName);
+    (*dest1)->linked = true;
   }
 
   long fileTotalFrames;

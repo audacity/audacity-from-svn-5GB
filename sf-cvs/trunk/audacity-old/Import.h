@@ -14,6 +14,8 @@
 class WaveTrack;
 class DirManager;
 
+wxString TrackNameFromFileName(wxString fName);
+
 bool ImportWAV(wxWindow *parent,
 			   wxString fName, WaveTrack **dest1, WaveTrack **dest2,
                DirManager *dirManager);
