@@ -145,10 +145,10 @@ TrackList *UndoManager::Undo(double *sel0, double *sel1)
 {
    wxASSERT(UndoAvailable());
 
-   current--;
-
    *sel0 = stack[current]->sel0;
    *sel1 = stack[current]->sel1;
+
+   current--;
 
    return stack[current]->tracks;
 }
