@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: #ifdef jail to whip a few platforms into the UNIX ideal.
- last mod: $Id: os_types.h,v 1.2 2002-04-21 23:55:25 habes Exp $
+ last mod: $Id: os_types.h,v 1.3 2002-04-22 00:07:41 habes Exp $
 
  ********************************************************************/
 #ifndef _OS_TYPES_H
@@ -41,13 +41,21 @@
    typedef _G_int16_t ogg_int16_t;
 #  endif
 
-#elif defined(macintosh)
+#elif defined(__MACOS__)
 
 #  include <sys/types.h>
    typedef SInt16 ogg_int16_t;
    typedef SInt32 ogg_int32_t;
    typedef UInt32 ogg_uint32_t;
    typedef SInt64 ogg_int64_t;
+
+#elif defined(__MACOSX__) /* MacOS X Framework build */
+
+#  include <sys/types.h>
+   typedef int16_t ogg_int16_t;
+   typedef int32_t ogg_int32_t;
+   typedef u_int32_t ogg_uint32_t;
+   typedef int64_t ogg_int64_t;
 
 #elif defined(__BEOS__)
 
