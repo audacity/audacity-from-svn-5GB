@@ -223,6 +223,7 @@ psf_ftruncate (int fd, sf_count_t len)
 **		__int64 _lseeki64 (int handle, __int64 offset, int origin);
 */
 
+#include <io.h>
 #include <direct.h>
 
 #define	_IFMT		_S_IFMT
