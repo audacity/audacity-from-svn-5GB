@@ -21,10 +21,7 @@
 #include "../Dither.h"
 #include "../AudioIO.h"
 #include "QualityPrefs.h"
-
-#if USE_LIBSAMPLERATE
-#include <samplerate.h>
-#endif
+#include "../Resample.h"
 
 int formats[] = {
    int16Sample,
@@ -124,20 +121,14 @@ PrefsPanel(parent)
       top2Sizer->Add( mSampleFormats, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    }
 
-   #if USE_LIBSAMPLERATE
-
-   int converterHQ = 
-      gPrefs->Read("/Quality/HQSampleRateConverter", (long)SRC_SINC_FASTEST);
-   int converter = 
-      gPrefs->Read("/Quality/SampleRateConverter", (long)SRC_SINC_FASTEST);
+   int converterHQ = Resample::GetBestMethod();
+   int converter = Resample::GetFastMethod();
+   int numConverters = Resample::GetNumMethods();
 
    wxString *converterStrings;
-   int numConverters = 0;
-   while(src_get_name(numConverters))
-      numConverters++;
    converterStrings = new wxString[numConverters];
    for(i=0; i<numConverters; i++)
-      converterStrings[i] = src_get_name(i);
+      converterStrings[i] = Resample::GetMethodName(i);
 
    wxBoxSizer *top3Sizer = new wxBoxSizer( wxHORIZONTAL );
 
@@ -162,7 +153,6 @@ PrefsPanel(parent)
    top4Sizer->Add(mHQConverters, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
    
    delete[] converterStrings;
-   #endif
 
    // These ditherers are currently defined
    int numDithers = 4;
@@ -206,10 +196,8 @@ PrefsPanel(parent)
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top2Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
-   #if USE_LIBSAMPLERATE
    outSizer->Add(top3Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top4Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-   #endif
 
    outSizer->Add(top5Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
    outSizer->Add(top6Sizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
@@ -242,12 +230,10 @@ bool QualityPrefs::Apply()
    /* Audacity will automatically re-read this value whenever a new project
     * is created, so don't bother making it do so now... */
 
-   #if USE_LIBSAMPLERATE
    int converter = mConverters->GetSelection();
    int converterHQ = mHQConverters->GetSelection();
-   gPrefs->Write("/Quality/HQSampleRateConverter", (long)converterHQ);
-   gPrefs->Write("/Quality/SampleRateConverter", (long)converter);
-   #endif
+   Resample::SetFastMethod(mConverters->GetSelection());
+   Resample::SetBestMethod(mHQConverters->GetSelection());
 
    // Save dither options
    int dither = mDithers->GetSelection();

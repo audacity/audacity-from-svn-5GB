@@ -218,7 +218,6 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    mQueueLen = new int[mNumInputTracks];
    mSampleQueue = new float *[mNumInputTracks];
    mSRC = new Resample*[mNumInputTracks];
-   int error;
    for(i=0; i<mNumInputTracks; i++) {
       double factor = (mRate / mInputTrack[i]->GetRate());
       double lowFactor = factor, highFactor = factor;
