@@ -581,7 +581,7 @@ void TrackPanel::HandleZoom(wxMouseEvent& event)
 
 void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 {
-  if (event.ButtonDown()) {
+  if (event.ButtonDown() || event.ButtonDClick()) {
 	wxRect r;
 	int num;
 	
@@ -1010,9 +1010,9 @@ void TrackPanel::DrawTracks(wxDC& dc)
 		Bevel(dc, true, displayRect);
 		wxString str;
 		if (((WaveTrack *)t)->GetDisplay() == 1)
-		  str = "Spectrm";
+		  str = "Spectr";
 		else
-		  str = "Wavefrm";
+		  str = "Wavefm";
 		dc.DrawText(str, displayRect.x + 3, displayRect.y + 2);
 	  }
 	}
