@@ -322,7 +322,7 @@ PxVolume Px_GetInputVolume( PxMixer *mixer )
    if (i < 0)
       return 0.0;
 
-   return GetVolume(info->fd, info->recs[i]);
+   return GetVolume(info->fd, SOUND_MIXER_IGAIN);
 }
 
 void Px_SetInputVolume( PxMixer *mixer, PxVolume volume )
@@ -337,7 +337,7 @@ void Px_SetInputVolume( PxMixer *mixer, PxVolume volume )
 
    vol = (int)((volume * 100.0) + 0.5);
    vol = (vol | (vol<<8));
-   ioctl(info->fd, MIXER_WRITE(info->recs[i]), &vol);
+   ioctl(info->fd, MIXER_WRITE(SOUND_MIXER_IGAIN), &vol);
 }
 
 /*
@@ -364,15 +364,33 @@ void Px_SetOutputBalance( PxMixer *mixer, PxBalance balance )
 
 int Px_SupportsPlaythrough( PxMixer *mixer )
 {
-   return 0;
+   return 1;
 }
 
 PxVolume Px_GetPlaythrough( PxMixer *mixer )
 {
-   return 0.0;
+   PxInfo *info = (PxInfo *)mixer;
+   int i;
+
+   i = Px_GetCurrentInputSource(mixer);
+   if (i < 0)
+      return 0.0;
+
+   return GetVolume(info->fd, info->recs[i]);
 }
 
 void Px_SetPlaythrough( PxMixer *mixer, PxVolume volume )
 {
+   PxInfo *info = (PxInfo *)mixer;
+   int vol;
+   int i;
+
+   i = Px_GetCurrentInputSource(mixer);
+   if (i < 0)
+      return;
+
+   vol = (int)((volume * 100.0) + 0.5);
+   vol = (vol | (vol<<8));
+   ioctl(info->fd, MIXER_WRITE(info->recs[i]), &vol);
 }
 
