@@ -13,6 +13,21 @@
 #include "Spectrum.h"
 #include "FFT.h"
 
+#if 1 //(UGLY_IEEE754_FLOAT32_HACK :-)
+
+static inline float todB_a(const float *x){
+  return (float)((*(int32_t *)x)&0x7fffffff) * 7.17711438e-7f -764.6161886f;
+}
+
+#else
+
+static inline float todB_a(const float *x){
+  return todB(*x);
+}
+
+#endif
+
+
 bool ComputeSpectrum(float * data, int width, int height,
                      int maxFreq, int windowSize,
                      double rate, float *grayscaleOut,
@@ -120,8 +135,12 @@ bool ComputeSpectrum(float * data, int width, int height,
          processed[maxSamples - 1 - i] = in[i];
    } else {
       // Convert to decibels
-      for (i = 0; i < maxSamples; i++)
-         processed[i] = 10 * log10(processed[i] / windowSize / windows);
+      // But do it safely; -Inf is nobody's friend
+
+      for (i = 0; i < maxSamples; i++){
+         float temp=(processed[i] / windowSize / windows);
+         processed[i] = todB_a(&temp);
+      }
    }
 
    // Finally, put it into bins in grayscaleOut[], normalized to a 0.0-1.0 scale
@@ -130,14 +149,14 @@ bool ComputeSpectrum(float * data, int width, int height,
       float bin0 = float (i) * maxSamples / height;
       float bin1 = float (i + 1) * maxSamples / height;
 
-      float binwidth = bin1 - bin0;
-
-      float value = float(0.0);
+      float value;
 
       if (int (bin1) == int (bin0))
          value = processed[int (bin0)];
       else {
-         value += processed[int (bin0)] * (int (bin0) + 1 - bin0);
+         float binwidth= bin1 - bin0;
+         value = processed[int (bin0)] * (1.f - bin0 + (int)bin0);
+
          bin0 = 1 + int (bin0);
          while (bin0 < int (bin1)) {
             value += processed[int (bin0)];

@@ -13,6 +13,8 @@
 
 #include "PrefsPanel.h"
 
+#define numFFTSizes  10
+
 class wxRadioButton;
 class wxCheckBox;
 class wxTextCtrl;
@@ -25,8 +27,8 @@ class SpectrumPrefs:public PrefsPanel {
    bool Apply();
 
  private:
-   /* an arbitrary limit designed to be past what we'll ever need */
-   wxRadioButton *mFFTSize[20];
+
+   wxRadioButton *mFFTSize[numFFTSizes];
    wxCheckBox *mGrayscale;
 
    wxTextCtrl *mMaxFreqCtrl;

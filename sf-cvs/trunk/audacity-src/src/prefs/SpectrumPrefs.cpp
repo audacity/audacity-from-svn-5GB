@@ -22,9 +22,10 @@
 #include "../Prefs.h"
 #include "SpectrumPrefs.h"
 
-int numFFTSizes = 7;
-
-int FFTSizes[] = {
+int FFTSizes[numFFTSizes] = {
+   8,
+   16,
+   32,
    64,
    128,
    256,
@@ -34,8 +35,11 @@ int FFTSizes[] = {
    4096
 };
 
-wxString stringFFTSizes[] = {
-   wxTRANSLATE("64 - most wideband"),
+wxString stringFFTSizes[numFFTSizes] = {
+   wxTRANSLATE("8 - most wideband"),
+               "16",
+               "32",
+               "64",
                "128",
    wxTRANSLATE("256 - default"),
                "512",
@@ -56,7 +60,7 @@ PrefsPanel(parent)
    wxString maxFreqStr;
    maxFreqStr.Printf("%d", maxFreq);
 
-   int pos = 3;                 // Fall back to 256 if it doesn't match anything else
+   int pos = 5;      // Fall back to 256 if it doesn't match anything else
    for (i = 0; i < numFFTSizes; i++)
       if (fftSize == FFTSizes[i]) {
          pos = i;
