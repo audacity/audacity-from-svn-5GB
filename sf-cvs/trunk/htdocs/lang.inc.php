@@ -159,16 +159,22 @@ if(defined('phpLang_current')) {
 
 // function that adds the flags with links for existing files
 // give as first parameter the HTML string to put between each flag
-function AddFlags($between = "", $showCurrent = false)
+function AddFlags($between = "", $betw2 = "", $showCurrent = false)
 {
  reset($GLOBALS["phpLang_languages"]);
  $temp = "";
+ $count=0;
  while(list($key, $name) = each($GLOBALS["phpLang_languages"])) {
   if(file_exists($name[0]) && ($showCurrent || $name[0] != phpLang_current)) {
    echo($temp.'<a href="'.phpLang_currentURI.phpLang_urlParam.'='.$name[0].'">');
    echo('<img src="'.phpLang_images.$name[0].'.gif" border="0" align="middle" width="24" height="16" alt="'.$name[1].'" />');
    echo('</a>');
-   $temp = $between;
+   if ($count%2 == 0) {
+     $temp = $betw2;
+   }
+   else {
+     $temp = $between;
+   }
   }
  }
 }
