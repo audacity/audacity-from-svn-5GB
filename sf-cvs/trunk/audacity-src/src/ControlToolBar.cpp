@@ -904,7 +904,8 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 #else
    // On other platforms put the big buttons on a beveled platform.
    DrawBackground(dc, 84, height);
-   AColor::Bevel( dc, true, wxRect( 83, 0, width-84, height-1 ) );
+   wxRect bevelRect( 83, 0, width-84, height-1 );
+   AColor::Bevel( dc, true, bevelRect );
 #endif
 
 #if 0
