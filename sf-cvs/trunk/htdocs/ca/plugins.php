@@ -1,18 +1,15 @@
 <p>
-L'Audacity permet l'ús dels pedaços d'efectes VST en les plataformes de Macintosh i Windows.
-Podeu trobar pedaços que facin tot tipus d'efectes tals com filtres, ressons o equalitzadors, i molt més!  Ací trobareu un llistat de llocs a on descarregar-se aquests pedaços.
+L'Audacity 1.2 suporta els complements <a href="http://www.ladspa.org/">LADSPA</a> i
+<a href="nyquist.php">Nyquist</a> de manera nattiva, i també els complements VST si s'instal·la l'eina  optional <a href="http://audacityteam.org/vst/">Audacity VST Enabler</a>.
+</p>
+<p>
+L'Audacity 1.2.0 ve amb alguns complements LADSPA i Nyquist d'exemple a la carpeta <b>Plug-ins</b>. Per fer servir el VST Enabler i altres complements només cal copiar-los a aquesta carpeta. La propera vegada que obriu l'Audacity, trobareu els complements en el menú 'Efecte' (o en els menús 'Genera' o 'Analitza'). Els complements sempre apareixen al final d'aquests menús, i els efectes que l'Audacity porta de sèrie es mostren al principi.
 </p>
 
 <p>
-S'està millorant el suport de l'Audacity per a pedaços. Us agrairíem que ens féssiu saber si trobeu un pedaç VST que no sembli funcionar amb l'Audacity, i provarem de fixar-lo. 
+El suport de l'Audacity als complements està millorant. Si us plau, aviseu-nos  si trobeu algun complement VST que no funcioni correctament amb l'Audacity i intentarem arreglar-ho. 
 </p>
 
 <p>
-Per utilitzar un pedaç VST d'efecte amb l'Audacity, només cal que creeu una carpeta anomenada
-<b>VST</b> en la vostra carpeta de l'Audacity, si encara no en teniu cap, i arrossegueu-hi els vostres pedaços!  El proper cop que obriu l'Audacity, els pedaços estaran en el vostre menú d'efectes.
+Aquests són alguns llocs des dels que es poden descarregar complements:
 </p>
-
-<p>
-Hi ha alguns llocs on descarregar pedaços VST:
-</p>
-
