@@ -3,50 +3,50 @@ all: @LOCAL_LIBS@ @BUILDLIBS@
 
 allegro.a:
 	$(MAKE) -C allegro
-	ln -s allegro/allegro.a allegro.a
+	ln -sf allegro/allegro.a allegro.a
 
 dlcompat/libdl.a:
 	cd dlcompat && $(MAKE)
 
 expat.a:
 	$(MAKE) -C expat
-	ln -s expat/expat.a expat.a
+	ln -sf expat/expat.a expat.a
 
 libogg.a:
 	$(MAKE) -C libogg
-	ln -s libogg/src/.libs/libogg.a libogg.a
+	ln -sf libogg/src/.libs/libogg.a libogg.a
 
 libvorbis.a libvorbisfile.a libvorbisenc.a:
 	$(MAKE) -C libvorbis
-	ln -s libvorbis/lib/.libs/libvorbis.a libvorbis.a
-	ln -s libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
-	ln -s libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
+	ln -sf libvorbis/lib/.libs/libvorbis.a libvorbis.a
+	ln -sf libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
+	ln -sf libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
 
 libnyquist.a:
 	$(MAKE) -C libnyquist
-	ln -s libnyquist/libnyquist.a libnyquist.a
+	ln -sf libnyquist/libnyquist.a libnyquist.a
 
 libmad.a:
 	$(MAKE) -C libmad
-	ln -s libmad/.libs/libmad.a libmad.a
+	ln -sf libmad/.libs/libmad.a libmad.a
 
 libid3tag.a:
 	$(MAKE) -C libid3tag
-	ln -s libid3tag/.libs/libid3tag.a libid3tag.a
+	ln -sf libid3tag/.libs/libid3tag.a libid3tag.a
 
 libmad/mad.h: libmad/.libs/libmad.a
 
 libsamplerate.a:
 	$(MAKE) -C libsamplerate
-	ln -s libsamplerate/src/.libs/libsamplerate.a libsamplerate.a
+	ln -sf libsamplerate/src/.libs/libsamplerate.a libsamplerate.a
 
 libresample.a:
 	$(MAKE) -C libresample
-	ln -s libresample/libresample.a libresample.a
+	ln -sf libresample/libresample.a libresample.a
 
 libsndfile.a:
 	$(MAKE) -C libsndfile
-	ln -s libsndfile/src/.libs/libsndfile.a libsndfile.a
+	ln -sf libsndfile/src/.libs/libsndfile.a libsndfile.a
 
 soundtouch.a:
 	$(MAKE) -C soundtouch
