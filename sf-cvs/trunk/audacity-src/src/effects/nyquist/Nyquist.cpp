@@ -32,7 +32,7 @@ wxString EffectNyquist::UnQuote(wxString s)
    wxString out;
    int len = s.Length();
    
-   if (len>=2 && s[0]=='\"' && s[len-1]=='\"')
+   if (len>=2 && s.GetChar(0)=='\"' && s.GetChar(len-1)=='\"')
       return s.Mid(1, len-2);
    else
       return s;
@@ -61,19 +61,19 @@ void EffectNyquist::Parse(wxString line)
    bool q = false;
    wxString tok = "";
    for(i=1; i<len; i++) {
-      if (line[i]=='\\')
+      if (line.GetChar(i)=='\\')
          sl = true;
-      else if (line[i]=='"')
+      else if (line.GetChar(i)=='"')
          q = !q;
       else {
-         if (!q && !sl && line[i]==' ' || line[i]=='\t') {
+         if (!q && !sl && line.GetChar(i)==' ' || line.GetChar(i)=='\t') {
             tokens.Add(tok);
             tok = "";
          }
-         else if (sl && line[i]=='n')
+         else if (sl && line.GetChar(i)=='n')
             tok += '\n';
          else
-            tok += line[i];
+            tok += line.GetChar(i);
          
          sl = false;
       }
@@ -162,7 +162,7 @@ EffectNyquist::EffectNyquist(wxString fName)
    wxString line;
    for(i=0; i<len; i++) {
       line = f[i];
-      if (line.Length()>1 && line[0]==';')
+      if (line.Length()>1 && line.GetChar(0)==';')
          Parse(line);
       else
          mCmd += line + "\n";
