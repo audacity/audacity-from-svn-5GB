@@ -2,17 +2,16 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Audacity
-AppVerName=Audacity 0.98
+AppName=Audacity 1.1
+AppVerName=Audacity 1.1.0
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
-DefaultDirName={pf}\Audacity
-DefaultGroupName=Audacity
-AllowNoIcons=yes
+DefaultDirName={pf}\Audacity 1.1
+DefaultGroupName=Audacity 1.1
 AlwaysCreateUninstallIcon=yes
-LicenseFile=C:\LOCAL_PATH_HERE\audacity-win-0.98b\LICENSE.txt
-InfoBeforeFile=C:\LOCAL_PATH_HERE\audacity-0.98\audacity-win-0.98b\README.txt
+LicenseFile=e:\dev\audacity-win-1_1_0\LICENSE.txt
+InfoBeforeFile=e:\dev\audacity-win-1_1_0\README.txt
 ; uncomment the following line if you want your installation to run on NT 3.51 too.
 ; MinVersion=4,3.51
 
@@ -20,27 +19,24 @@ InfoBeforeFile=C:\LOCAL_PATH_HERE\audacity-0.98\audacity-win-0.98b\README.txt
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
 
 [Files]
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\README.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity-help.htb"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\LICENSE.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
-Source: "C:\LOCAL_PATH_HERE\audacity-win-0.98b\vst\*.*"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\audacity.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\LICENSE.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\README.txt"; DestDir: "{app}"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\vst\Freeverb2.dll"; DestDir: "{app}\vst"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\vst\Freeverb-readme.txt"; DestDir: "{app}\vst"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\da\audacity.mo"; DestDir: "{app}\da"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\da\wxstd.mo"; DestDir: "{app}\da"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\fr\audacity.mo"; DestDir: "{app}\fr"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\fr\wxstd.mo"; DestDir: "{app}\fr"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\es\audacity.mo"; DestDir: "{app}\es"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\es\wxstd.mo"; DestDir: "{app}\es"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\ru\audacity.mo"; DestDir: "{app}\ru"; CopyMode: alwaysoverwrite
+Source: "e:\dev\audacity-win-1_1_0\ru\wxstd.mo"; DestDir: "{app}\ru"; CopyMode: alwaysoverwrite
 
 [Icons]
-Name: "{group}\Audacity"; Filename: "{app}\audacity.exe"
-Name: "{userdesktop}\Audacity"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
+Name: "{group}\Audacity 1.1"; Filename: "{app}\audacity.exe"
+Name: "{userdesktop}\Audacity 1.1"; Filename: "{app}\audacity.exe"; MinVersion: 4,4; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\audacity.exe"; Description: "Launch Audacity"; Flags: nowait postinstall skipifsilent
-
-[Registry]
-Root: HKCR; Subkey: ".aup"; ValueType: string; ValueName: ""; ValueData: "Audacity.Project"; Flags: uninsdeletevalue
-
-Root: HKCR; Subkey: "Audacity.Project"; ValueType: string; ValueName: ""; ValueData: "Audacity Project File"; Flags: uninsdeletekey
-
-Root: HKCR; Subkey: "Audacity.Project\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\audacity.exe,0"
-
-Root: HKCR; Subkey: "Audacity.Project\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\audacity.exe"" ""%1"""
-
 
