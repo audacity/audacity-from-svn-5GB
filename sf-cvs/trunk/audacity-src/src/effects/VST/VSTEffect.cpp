@@ -67,7 +67,8 @@ bool VSTEffect::Init()
       TrackListIterator iter(mWaveTracks);
       Track *left = iter.First();
       while(left) {
-         sampleCount lstart, rstart, llen, rlen;
+         longSampleCount lstart, rstart;
+         sampleCount llen, rlen;
          GetSamples((WaveTrack *)left, &lstart, &llen);
          
          if (left->GetLinked()) {
