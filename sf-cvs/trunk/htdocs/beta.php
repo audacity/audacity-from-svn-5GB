@@ -17,6 +17,10 @@
 
 <?php include GetTranslation("beta-1.2.0-pre3"); ?>
 
+<p>
+<?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
+</p>
+
 <p align="center">
 <a href="<?php print "screenshots.php?$langLinkStr"; ?>">
 <img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
