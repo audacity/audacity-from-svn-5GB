@@ -41,7 +41,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
 
 #if 0
 
-   This code doesn't work yet
+// This code doesn't work yet
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxArrayString results;
