@@ -7,13 +7,13 @@ if(@ARGV == 0) {
 	exit;
 }
 
-unless(-f "AudacityApp.cpp") {
+unless(-f "Audacity.h") {
 	print "Must be run from Audacity directory\n";
 	exit;
 }
 
 # find version number
-open(HEADER, "AudacityApp.h");
+open(HEADER, "Audacity.h");
 @lines = <HEADER>;
 $lines = join " ", @lines;
 $lines =~ /AUDACITY_VERSION_STRING "([0-9.a-z]*)"/;
@@ -40,6 +40,9 @@ if($ARGV[0] eq "debian") {
 
 	printf "removing executable and other intermediate files...\n";
 	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+
+	printf "removing emacs temp files...\n";
+	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
 
 	printf "removing the copy of this script...\n";
 	`rm -f maketarball`;
@@ -69,6 +72,9 @@ elsif($ARGV[0] eq "src") {
 	printf "removing CVS directories...\n";
 	`find . -name "CVS" -exec rm -rf '{}' \\; 2> /dev/null`;
 
+	printf "removing emacs temp files...\n";
+	`find . -name "*~" -exec rm -rf '{}' \\; 2> /dev/null`;
+
 	printf "removing executable and other intermediate files...\n";
 	`rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
 
@@ -80,7 +86,7 @@ elsif($ARGV[0] eq "src") {
 	`tar zcf audacity-src-$version.tgz audacity-src-$version`;
 	
 	print "deleting temporary copy...\n";
-	`rm -rf audacity-$version`;
+	`rm -rf audacity-src-$version`;
 	
 	print "done.\n";
 } else {
@@ -96,6 +102,6 @@ sub display_usage() {
 	print "Available Targets:\n";
 	print "  debian - Debian GNU/Linux source tarball:\n";
 	print "           removes xaudio and non-Linux files\n";
-	print "  src - Removes development files for SourceForge distribution\n";
+	print "  src    - The full compilable source distribution\n";
 	print "\n";
 }
