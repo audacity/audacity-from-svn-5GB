@@ -31,6 +31,13 @@ Envelope::Envelope()
   mIsDeleting = false;
 }
 
+Envelope::~Envelope()
+{
+  int len = mEnv.Count();
+  for(int i=0; i<len; i++)
+	delete mEnv[i];
+}
+
 void Envelope::CopyFrom(Envelope *e)
 {
   mOffset = e->mOffset;
@@ -77,18 +84,45 @@ void Envelope::Draw(wxDC &dc, wxRect &r, double h, double pps)
 
 bool Envelope::Load(wxTextFile *in, DirManager *dirManager)
 {
-    return true;
+  if (in->GetNextLine() != "EnvNumPoints") return false;
+
+  long len;
+  if (!(in->GetNextLine().ToLong(&len))) return false;
+
+  mEnv.Clear();
+  mEnv.Alloc(len);
+
+  for(int i=0; i<len; i++) {
+	EnvPoint *e = new EnvPoint();
+	if (!(in->GetNextLine().ToDouble(&e->t))) return false;
+	if (!(in->GetNextLine().ToDouble(&e->val))) return false;
+	if (i>0 && mEnv[i-1]->t > e->t) return false;
+	mEnv.Add(e);
+  }
+
+  if (in->GetNextLine() != "EnvEnd") return false;
+
+  return true;
 }
 
 bool Envelope::Save(wxTextFile *out, bool overwrite)
 {
-    return true;
+  out->AddLine("EnvNumPoints");
+  int len = mEnv.Count();
+  out->AddLine(wxString::Format("%d", len));
+  for(int i=0; i<len; i++) {
+	out->AddLine(wxString::Format("%lf", mEnv[i]->t));
+	out->AddLine(wxString::Format("%lf", mEnv[i]->val));
+  }
+  out->AddLine("EnvEnd");
+
+  return true;
 }
 
 // Returns true if parent needs to be redrawn
 bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
 {
-  h -= mOffset;
+  //h -= mOffset;
 
   int ctr = r.y + r.height/2;
   bool upper = (event.m_y < ctr);
@@ -222,6 +256,47 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
   }
   
   return false;
+}
+
+void Envelope::CollapseRegion(double t0, double t1)
+{
+  // This gets called when somebody clears samples.  All of the
+  // control points within the region disappear and the points
+  // to the right get shifted over.
+
+  t0 -= mOffset;
+  t1 -= mOffset;
+
+  int len = mEnv.Count();
+
+  for(int i=1; i<len-1; i++)
+	if (mEnv[i]->t >= t0 && mEnv[i]->t < t1) {
+	  delete mEnv[i];
+	  mEnv.RemoveAt(i);
+	  len--;
+	}
+
+  for(int i=0; i<len; i++)
+	if (mEnv[i]->t >= t1)
+	  mEnv[i]->t -= (t1 - t0);
+}
+
+void Envelope::ExpandRegion(double t0, double deltat)
+{
+  t0 -= mOffset;
+
+  // This gets called when somebody pastes samples.  All of the
+  // control points to the right of the paste get shifted to the
+  // right.  It's not always exactly what you wanted, but it's
+  // at least intuitive how to fix it.  If you think about it, you'll
+  // realize there's no logical way to preserve envelope information
+  // across a cut/paste sequence.
+
+  int len = mEnv.Count();
+
+  for(int i=0; i<len; i++)
+	if (mEnv[i]->t > t0)
+	  mEnv[i]->t += deltat;
 }
 
 // Private methods

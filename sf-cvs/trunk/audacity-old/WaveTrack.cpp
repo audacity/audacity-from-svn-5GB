@@ -351,7 +351,12 @@ void WaveTrack::DrawMinmax(wxDC &dc, wxRect &r, double h, double pps,
     post.x += (int)((t1-tpre)*pps);
     post.width = r.width - (post.x - r.x);
     mid.width -= post.width;
-    dc.DrawRectangle(post);
+	if (post.x < r.x) {
+	  post.width -= (r.x - post.x);
+	  post.x = r.x;
+	}
+	if (post.width > 0)
+	  dc.DrawRectangle(post);
   }
   
   mid.height -= 2;
@@ -616,6 +621,8 @@ void WaveTrack::Paste(double t, VTrack *src)
 {
   wxASSERT(src->GetKind() == WaveTrack::Wave);
 
+  envelope.ExpandRegion(t, src->GetMaxLen());
+
   #if wxUSE_THREADS
   wxMutexLocker lock(*blockMutex);
   #endif
@@ -759,6 +766,8 @@ void WaveTrack::Clear(double t0, double t1)
 {
   wxASSERT(t0 < t1);
 
+  envelope.CollapseRegion(t0, t1);
+
   sampleCount s0 = (sampleCount)((t0 - tOffset) * rate);
   sampleCount s1 = (sampleCount)((t1 - tOffset) * rate);
 
@@ -792,6 +801,8 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   bool result = VTrack::Load(in, dirManager);
 
+  envelope.SetOffset(tOffset);
+
   if (result) {
 	result = envelope.Load(in, dirManager);
   }
@@ -800,6 +811,10 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
     wxMessageBox("Error loading a Track.\n");
     return false;
   }
+
+  #if wxUSE_THREADS
+  blockMutex->Lock();
+  #endif
 
   int b;
   long longNumSamples;
@@ -837,6 +852,12 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 	w->f = dirManager->GetBlockFile(name);
 	
 	if (!w->f) {
+	  
+	  numSamples = 0;
+	  block->Clear();
+
+	  blockMutex->Unlock();	  
+
 	  wxString msg;
 	  msg.Printf("The file named \"%s\" is missing from the project.",
 				 (const char *)name);
@@ -847,6 +868,8 @@ bool WaveTrack::Load(wxTextFile *in, DirManager *dirManager)
 
 	block->Add(w);
   }
+
+  blockMutex->Unlock();
   
   return true;
 

@@ -34,6 +34,8 @@ class Envelope
 public:
   Envelope();
 
+  virtual ~Envelope();
+
   void CopyFrom(Envelope *e);
 
   // File I/O
@@ -48,10 +50,13 @@ public:
   // Returns true if parents needs to be redrawn
   bool MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps);
 
+  // Handling Cut/Copy/Paste events
+  void CollapseRegion(double t0, double t1);
+  void ExpandRegion(double t0, double deltat);
+
   // Control
 
   void SetOffset(double newOffset);
-
   void SetTrackLen(double trackLen);
 
   // Accessors

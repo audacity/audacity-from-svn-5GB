@@ -12,7 +12,7 @@
 **********************************************************************/
 
 // Increment this every time you release a new version
-#define AUDACITY_VERSION_STRING "0.9b"
+#define AUDACITY_VERSION_STRING "0.9d"
 
 // Don't change this unless the file format changes
 // in an irrevocable way

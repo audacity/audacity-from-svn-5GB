@@ -15,9 +15,18 @@
 #include <wx/window.h>
 
 class wxRect;
+class wxStatusBar;
 
 class TrackList;
 class VTrack;
+
+enum {
+  TrackPanelFirstID = 2000,
+
+  OnScrollLeftID,
+  OnScrollRightID,
+  OnPushStateID
+};
 
 struct ViewInfo {
 
@@ -61,7 +70,8 @@ public:
 			 const wxPoint& pos,
 			 const wxSize& size,
 			 TrackList *tracks,
-			 ViewInfo *viewInfo);
+			 ViewInfo *viewInfo,
+			 wxStatusBar *statusBar);
 
   virtual ~TrackPanel();
 
@@ -89,6 +99,7 @@ private:
   void HandleLabelClick(wxMouseEvent& event);
 
   void MakeParentRedrawScrollbars();
+  void MakeParentPushState();
 
   VTrack *FindTrack(int mouseX, int mouseY, bool label,
 					wxRect *trackRect = NULL, int *trackNum = NULL);
@@ -100,6 +111,7 @@ private:
 
   TrackList       *mTracks;
   ViewInfo        *mViewInfo;
+  wxStatusBar     *mStatusBar;
 
   AudacityTimer   mTimer;
   int             mTimeCount;
@@ -121,6 +133,8 @@ private:
   int             mMouseMostRecentY;
 
   int             mInitialTrackHeight;
+
+  bool            mAutoScrolling;
 
   bool            mIsSelecting;
   bool            mIsResizing;

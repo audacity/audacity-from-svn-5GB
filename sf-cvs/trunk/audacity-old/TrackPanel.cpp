@@ -13,6 +13,7 @@
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
+#include <wx/statusbr.h>
 
 #include "TrackPanel.h"
 #include "APalette.h"
@@ -29,11 +30,14 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
 					   const wxPoint& pos,
 					   const wxSize& size,
 					   TrackList *tracks,
-					   ViewInfo *viewInfo) :
+					   ViewInfo *viewInfo,
+					   wxStatusBar *statusBar) :
   wxWindow(parent, id, pos, size),
   mTracks(tracks),
   mViewInfo(viewInfo),
-  mBitmap(NULL)
+  mStatusBar(statusBar),
+  mBitmap(NULL),
+  mAutoScrolling(false)
 {
   mIsSelecting = false;
   mIsResizing = false;
@@ -90,7 +94,36 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height)
 
 void TrackPanel::OnTimer()
 {
-  // Handle auto-scroll
+  if (mIsSelecting && mCapturedTrack) {
+
+	if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
+	  mAutoScrolling = true;
+	  wxEvent *e = new wxEvent(GetId());
+	  e->SetEventType(OnScrollRightID);
+	  GetParent()->ProcessEvent(*e);
+	  delete e;
+
+	  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
+	  HandleSelect(*e2);
+	  delete e2;
+
+	  mAutoScrolling = false;
+	}
+
+	if (mMouseMostRecentX < mCapturedRect.x) {
+	  mAutoScrolling = true;
+	  wxEvent *e = new wxEvent(GetId());
+	  e->SetEventType(OnScrollLeftID);
+	  GetParent()->ProcessEvent(*e);      
+	  delete e;
+
+	  wxMouseEvent *e2 = new wxMouseEvent(wxEVT_MOTION);
+	  HandleSelect(*e2);
+	  delete e2;
+
+	  mAutoScrolling = false;
+	}
+  }
   
   mTimeCount = (mTimeCount+1)%10;
   if (mTimeCount == 0) {
@@ -159,6 +192,14 @@ void TrackPanel::OnPaint(wxPaintEvent& event)
   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 }
 
+void TrackPanel::MakeParentPushState()
+{
+  wxEvent *e = new wxEvent(GetId());
+  e->SetEventType(OnPushStateID);
+  GetParent()->ProcessEvent(*e);
+  delete e;
+}
+
 void TrackPanel::MakeParentRedrawScrollbars()
 {
   // An AudacityProject is programmed to redraw its scrollbars
@@ -199,6 +240,9 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 
 	if (event.m_y >= (r.y + r.height - 10) &&
 		event.m_y <  (r.y + r.height)) {	  
+
+	  mStatusBar->SetStatusText("Click and drag to resize the track", 0);
+
 	  SetCursor(*mResizeCursor);
 	  return;
 	}
@@ -207,15 +251,32 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 
 	switch(gAPalette->GetCurrentTool()) {
 	case 0: // select
+	  mStatusBar->SetStatusText("Click and drag to select audio", 0);
 	  SetCursor(*mSelectCursor);
 	  break;
 	case 1: // envelope
+	  mStatusBar->SetStatusText("Click and drag to edit the "
+								"amplitude envelope", 0);
 	  SetCursor(*mArrowCursor);
 	  break;
 	case 2: // move/slide
+	  mStatusBar->SetStatusText("Click and drag to move a track "
+								"in time", 0);
 	  SetCursor(*mSlideCursor);
 	  break;
 	case 3: // zoom
+	  #ifdef __WXMAC__
+	  mStatusBar->SetStatusText("Click to Zoom In, Shift-Click to Zoom Out",
+								0);
+	  #endif
+	  #ifdef __WXMSW__
+	  mStatusBar->SetStatusText("Left-Click to Zoom In, "
+								"Right-Click to Zoom Out", 0);
+	  #endif
+	  #ifdef __WXGTK__
+	  mStatusBar->SetStatusText("Left=Zoom In, Right=Zoom Out, "
+								"Middle=Normal", 0);
+	  #endif
 	  if (event.ShiftDown())
 		SetCursor(*mZoomInCursor);
 	  else
@@ -245,9 +306,6 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	  mMouseClickX = event.m_x;
 	  mMouseClickY = event.m_y;
 	  
-	  mMouseMostRecentX = event.m_x;
-	  mMouseMostRecentY = event.m_y;
-
 	  if (event.ShiftDown()) { // Extend selection
 		double selend = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
 		
@@ -262,6 +320,11 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		  mViewInfo->sel1 = selend;
 		  mSelStart = mViewInfo->sel0;
 		}
+
+		mStatusBar->SetStatusText(
+		  wxString::Format("Selection: %lf - %lf s",
+						   mViewInfo->sel0,
+						   mViewInfo->sel1), 1);
 	  }
 	  else { // Selecting
 		mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
@@ -271,6 +334,9 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		
 		mViewInfo->sel0 = mSelStart;
 		mViewInfo->sel1 = mSelStart;
+
+		mStatusBar->SetStatusText(
+		  wxString::Format("Cursor: %lf s", mSelStart), 1);
 
 		mIsSelecting = true;
 	  }
@@ -289,7 +355,7 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
   if (!mIsSelecting)
 	return;
 
-  if (event.Dragging()) {
+  if (event.Dragging() || mAutoScrolling) {
 	VTrack *t;
 	wxRect r;
 	int num;
@@ -303,12 +369,19 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	  t = FindTrack(event.m_x, event.m_y, false, &r, &num);
 	
 	if (t) {
-	  mMouseMostRecentX = event.m_x;
-	  mMouseMostRecentY = event.m_y;
-	  
 	  // Selecting
 	  
-      double selend = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
+	  int x, y;
+	  if (mAutoScrolling) {
+		x = mMouseMostRecentX;
+		y = mMouseMostRecentY;
+	  }
+	  else {
+		x = event.m_x;
+		y = event.m_y;
+	  }
+
+      double selend = mViewInfo->h + ((x - r.x) / mViewInfo->zoom);
       
 	  if (selend < 0.0)
 		selend = 0.0;
@@ -322,10 +395,15 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 		mViewInfo->sel1 = mSelStart;
 	  }
 
+	  mStatusBar->SetStatusText(
+	    wxString::Format("Selection: %lf - %lf s",
+						 mViewInfo->sel0,
+						 mViewInfo->sel1), 1);
+
 	  // Handle which tracks are selected
 
 	  int num2;
-	  if (0 != FindTrack(event.m_x, event.m_y, false, NULL, &num2)) {
+	  if (0 != FindTrack(x, y, false, NULL, &num2)) {
 		// The tracks numbered num...num2 should be selected
 		
 		VTrack *t = mTracks->First();
@@ -342,6 +420,11 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	  //status->SetLabel(str);
 
 	  Refresh(false);
+
+      #ifdef __WXMAC__
+	  if (mAutoScrolling)
+		MacUpdateImmediately();
+      #endif
     }
 	return;
   }
@@ -378,6 +461,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent& event)
 
   if (event.ButtonUp()) {
 	mCapturedTrack = NULL;
+	MakeParentPushState();
   }
 }
 
@@ -397,9 +481,6 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	  mMouseClickX = event.m_x;
 	  mMouseClickY = event.m_y;
 	  
-	  mMouseMostRecentX = event.m_x;
-	  mMouseMostRecentY = event.m_y;
-	  
 	  mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
 	  mIsSliding = true;
 	}
@@ -409,9 +490,6 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	return;
   
   if (event.Dragging() && mCapturedTrack) {	
-
-	mMouseMostRecentX = event.m_x;
-	mMouseMostRecentY = event.m_y;
 
 	double selend = mViewInfo->h +
 	  ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
@@ -431,6 +509,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	mCapturedTrack = NULL;
 	mIsSliding = false;
 	MakeParentRedrawScrollbars();
+	MakeParentPushState();
   }
   
 }
@@ -500,9 +579,6 @@ void TrackPanel::HandleResize(wxMouseEvent& event)
 	  mMouseClickX = event.m_x;
 	  mMouseClickY = event.m_y;
 	  
-	  mMouseMostRecentX = event.m_x;
-	  mMouseMostRecentY = event.m_y;
-
 	  mIsResizing = true;
 	  mInitialTrackHeight = t->GetHeight();
 	}
@@ -524,12 +600,20 @@ void TrackPanel::HandleResize(wxMouseEvent& event)
 	mCapturedTrack = NULL;
 	mIsResizing = false;
 	MakeParentRedrawScrollbars();
+	MakeParentPushState();
   }
 }
 
 void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 {
+  if (!mAutoScrolling) {
+	mMouseMostRecentX = event.m_x;
+	mMouseMostRecentY = event.m_y;
+  }
+
   if (event.ButtonDown()) {
+	mCapturedTrack = NULL;
+
 	wxActivateEvent *e = new wxActivateEvent();
 	GetParent()->ProcessEvent(*e);      
 	delete e;
@@ -576,7 +660,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
 	break;
   }
 
-  if (event.Moving() || event.ButtonUp()) {
+  if ((event.Moving() || event.ButtonUp()) &&
+	  !mIsSelecting && !mIsEnveloping &&
+	  !mIsSliding) {
 	HandleCursor(event);
   }
   if (event.ButtonUp()) {
@@ -744,9 +830,13 @@ void TrackPanel::DrawRuler(wxDC& dc)
 
 void TrackPanel::DrawTracks(wxDC& dc)
 {
+  int windowWidth;
+  int windowHeight;
+  GetSize(&windowWidth, &windowHeight);
+
   wxRect r;
-  
-  GetSize(&r.width, &r.height);
+  r.width = windowWidth;
+  r.height = windowHeight;
   r.x = 0;
   r.y = -mViewInfo->vpos;
 
@@ -762,6 +852,16 @@ void TrackPanel::DrawTracks(wxDC& dc)
   t = mTracks->First();
   while(t) {
 	r.height = t->GetHeight();
+
+	// Skip it if it's totally offscreen
+	if (r.y + r.height < GetRulerHeight() ||
+		r.y >windowHeight) {
+	  
+	  r.y += r.height;
+	  num++;
+	  t = mTracks->Next();
+	  continue;
+	}
 
 	// Draw label area
 
@@ -882,7 +982,11 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	  dc->DrawRectangle(innerRect);
 	  */
 	}
-		
+
+	// Code duplication warning:  If you add anything here
+	// that happens any time in the loop, add it to the top
+	// of this loop also for the special case of tracks that
+	// are totally offscreen.
     r.y += r.height;
 	num++;
     t = mTracks->Next();

@@ -119,6 +119,13 @@ enum {
   ClearID,
   SelectAllID,
 
+  // View Menu
+
+  ZoomInID,
+  ZoomOutID,
+  ZoomNormalID,
+  ZoomFitID,
+
   // Project Menu
   
   ImportID,
@@ -153,6 +160,9 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_CLOSE(AudacityProject::OnCloseWindow)
   EVT_SIZE (AudacityProject::OnSize)
   EVT_ACTIVATE (AudacityProject::OnActivate)
+  EVT_CUSTOM (OnScrollLeftID, TrackPanelID, AudacityProject::OnScrollLeft)
+  EVT_CUSTOM (OnScrollRightID, TrackPanelID, AudacityProject::OnScrollRight)
+  EVT_CUSTOM (OnPushStateID, TrackPanelID, AudacityProject::PushState)
   EVT_COMMAND_SCROLL  (HSBarID,   AudacityProject::OnScroll)
   EVT_COMMAND_SCROLL  (VSBarID,   AudacityProject::OnScroll)
   EVT_COMMAND_SCROLL  (TrackPanelID,   AudacityProject::OnScrollUpdate)
@@ -172,6 +182,11 @@ BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
   EVT_MENU(PasteID, AudacityProject::Paste)
   EVT_MENU(ClearID, AudacityProject::Clear)
   EVT_MENU(SelectAllID, AudacityProject::SelectAll)
+  // View menu
+  EVT_MENU(ZoomInID, AudacityProject::OnZoomIn)
+  EVT_MENU(ZoomOutID, AudacityProject::OnZoomOut)
+  EVT_MENU(ZoomNormalID, AudacityProject::OnZoomNormal)
+  EVT_MENU(ZoomFitID, AudacityProject::OnZoomFit)
   // Project menu
   EVT_MENU(ImportID, AudacityProject::OnImport)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
@@ -191,9 +206,13 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   wxFrame(parent, id, "Audacity", pos, size),
   mDirty(false),
   mTrackPanel(NULL),
-  mRate(44100.0)
+  mRate(44100.0),
+  mAutoScrolling(false)
 {
-  CreateStatusBar(1);
+  mStatusBar = CreateStatusBar(2);
+
+  mStatusBar->SetStatusText("Welcome to Audacity version " 
+							AUDACITY_VERSION_STRING, 0);
 
   //
   // Create track list
@@ -253,6 +272,12 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mEditMenu->AppendSeparator();
   mEditMenu->Append(SelectAllID, "Select All\tCtrl+A");
 
+  mViewMenu = new wxMenu();
+  mViewMenu->Append(ZoomInID, "Zoom &In\tCtrl+1");
+  mViewMenu->Append(ZoomNormalID, "Zoom &Normal\tCtrl+2");
+  mViewMenu->Append(ZoomOutID, "Zoom &Out\tCtrl+3");
+  mViewMenu->Append(ZoomFitID, "Fit in &Window\tCtrl+F");
+
   mProjectMenu = new wxMenu();
   mProjectMenu->Append(ImportID, "&Import Audio...\tCtrl+I");
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
@@ -289,6 +314,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 
   mMenuBar->Append(mFileMenu, "&File");
   mMenuBar->Append(mEditMenu, "&Edit");
+  mMenuBar->Append(mViewMenu, "&View");
   mMenuBar->Append(mProjectMenu, "&Project");
   //  mMenuBar->Append(mTrackMenu, "&Track");
   mMenuBar->Append(mEffectMenu, "E&ffect");
@@ -306,7 +332,8 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
   mTrackPanel = new TrackPanel(this, TrackPanelID,
 							   wxPoint(0, 0),
 							   wxSize(width-sbarWidth, height-sbarWidth),
-							   mTracks, &mViewInfo);
+							   mTracks, &mViewInfo,
+							   mStatusBar);
 
   int hoffset = mTrackPanel->GetLabelOffset()-1;
   int voffset = mTrackPanel->GetRulerHeight();
@@ -370,6 +397,42 @@ double AudacityProject::GetSel1()
 TrackList *AudacityProject::GetTracks()
 {
   return mTracks;
+}
+
+void AudacityProject::FinishAutoScroll()
+{
+  // Set a flag so we don't have to generate two update events
+  mAutoScrolling = true;
+
+  // Call our Scroll method which updates our ViewInfo variables
+  // to reflect the positions of the scrollbars
+  wxScrollEvent *dummy = new wxScrollEvent();
+  OnScroll(*dummy);
+  delete dummy;
+
+  mAutoScrolling = false;
+}
+
+void AudacityProject::OnScrollLeft()
+{
+  int pos = mHsbar->GetThumbPosition();
+  int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+
+  if (pos > 0) {
+	mHsbar->SetThumbPosition(pos-1);
+	FinishAutoScroll();
+  }
+}
+
+void AudacityProject::OnScrollRight()
+{
+  int pos = mHsbar->GetThumbPosition();
+  int max = mHsbar->GetRange() - mHsbar->GetThumbSize();
+
+  if (pos < max) {
+	mHsbar->SetThumbPosition(pos+1);
+	FinishAutoScroll();
+  }
 }
 
 void AudacityProject::FixScrollbars()
@@ -515,10 +578,13 @@ void AudacityProject::OnScroll(wxScrollEvent &event)
   */
 
   gActiveProject = this;
-  mTrackPanel->Refresh(false);
-  #ifdef __WXMAC__
-  mTrackPanel->MacUpdateImmediately();
-  #endif
+
+  if (!mAutoScrolling) {
+	mTrackPanel->Refresh(false);
+    #ifdef __WXMAC__
+	  mTrackPanel->MacUpdateImmediately();
+    #endif
+  }
 }
 
 bool AudacityProject::ProcessEvent(wxEvent& event)
@@ -819,9 +885,8 @@ void AudacityProject::ImportFile(wxString fileName)
     }
 
     PushState();
-
-    FixScrollbars();
-	mTrackPanel->Refresh(false);
+	
+	OnZoomFit();
   }
 }
 
@@ -1032,6 +1097,43 @@ void AudacityProject::OnImportMP3()
 void AudacityProject::UpdateMenus()
 {
   
+}
+
+//
+// Zoom methods
+//
+
+void AudacityProject::OnZoomIn()
+{
+  mViewInfo.zoom *= 2.0;
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnZoomOut()
+{
+  mViewInfo.zoom /= 2.0;
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnZoomNormal()
+{
+  mViewInfo.zoom = 44100.0 / 512.0;
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnZoomFit()
+{
+  double len = mTracks->GetMaxLen();
+  int w, h;
+  mTrackPanel->GetTracksUsableArea(&w, &h);
+  w -= 10;
+  
+  mViewInfo.zoom = w / len;
+  FixScrollbars();
+  mTrackPanel->Refresh(false);
 }
 
 //

@@ -21,6 +21,7 @@
 #include <wx/frame.h>
 #include <wx/window.h>
 #include <wx/scrolbar.h>
+#include <wx/statusbr.h>
 
 #include "DirManager.h"
 #include "TrackPanel.h"
@@ -79,6 +80,13 @@ public:
   void Undo();
   void Redo();
 
+  // View Menu
+
+  void OnZoomIn();
+  void OnZoomOut();
+  void OnZoomNormal();
+  void OnZoomFit();
+
   // Project Menu
 
   void OnImport();
@@ -116,6 +124,9 @@ public:
 
   // Scrollbars
 
+  void OnScrollLeft();
+  void OnScrollRight();
+  void FinishAutoScroll();
   void FixScrollbars();
 
 private:
@@ -154,6 +165,7 @@ private:
   wxMenuBar   *mMenuBar;
   wxMenu      *mFileMenu;
   wxMenu      *mEditMenu;
+  wxMenu      *mViewMenu;
   wxMenu      *mProjectMenu;
   wxMenu      *mTrackMenu;
   wxMenu      *mEffectMenu;
@@ -163,8 +175,12 @@ private:
 
   TrackPanel  *mTrackPanel;
 
+  wxStatusBar *mStatusBar;
+
   wxScrollBar *mHsbar;
   wxScrollBar *mVsbar;
+
+  bool        mAutoScrolling;
 
 public:
 
