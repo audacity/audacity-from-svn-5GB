@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -32,7 +33,7 @@ public:
    // constructors and destructors
    BenchmarkDialog( wxWindow *parent );
    
-   wxSizer *MakeBenchmarkDialog( wxPanel *parent, bool call_fit = TRUE,
+   wxSizer *MakeBenchmarkDialog( wxWindow *parent, bool call_fit = TRUE,
                                  bool set_sizer = TRUE );
    
 private:
@@ -127,7 +128,7 @@ BenchmarkDialog::BenchmarkDialog(wxWindow *parent):
 
    HoldPrint(false);
 
-   MakeBenchmarkDialog( this, TRUE ); 
+   MakeBenchmarkDialog( this );
 }
 
 // WDR: handler implementations for BenchmarkDialog
@@ -137,7 +138,7 @@ void BenchmarkDialog::OnClose(wxCommandEvent &event)
    EndModal(0);
 }
 
-wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxPanel *parent, bool call_fit, bool set_sizer )
+wxSizer *BenchmarkDialog::MakeBenchmarkDialog( wxWindow *parent, bool call_fit, bool set_sizer )
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(4, 0, 0);

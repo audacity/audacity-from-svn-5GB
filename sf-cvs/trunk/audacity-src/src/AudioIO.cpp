@@ -10,6 +10,7 @@
 
 **********************************************************************/
 
+#include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/timer.h>

@@ -70,7 +70,7 @@ class EffectAmplify:public Effect {
 // AmplifyDialog
 //----------------------------------------------------------------------------
 
-wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
+wxSizer *MakeAmplifyDialog(wxWindow * parent, bool call_fit,
                            bool set_sizer);
 
 class AmplifyDialog:public wxDialog {

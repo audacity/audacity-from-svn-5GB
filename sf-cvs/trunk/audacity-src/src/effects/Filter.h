@@ -91,7 +91,7 @@ private:
 #define ID_FILTERPANEL 10001
 #define ID_CLEAR 10002
 
-wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit = TRUE,
+wxSizer *MakeFilterDialog( wxWindow *parent, bool call_fit = TRUE,
                            bool set_sizer = TRUE );
 
 class FilterDialog: public wxDialog

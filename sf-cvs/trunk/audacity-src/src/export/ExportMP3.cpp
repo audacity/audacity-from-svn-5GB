@@ -55,6 +55,10 @@
 #include "../Tags.h"
 #include "../WaveTrack.h"
 
+#if defined(__WXMAC__) && defined(__UNIX__)
+#include <CoreServices/CoreServices.h>
+void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
+#endif
 
 MP3Exporter::MP3Exporter()
 {

@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
 #include <wx/choice.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>

@@ -18,7 +18,7 @@ class wxWindow;
 class wxFrame;
 class wxProgressDialog;
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(__UNIX__)
 #include "WaveTrack.h"
 #else
 #include "../WaveTrack.h"

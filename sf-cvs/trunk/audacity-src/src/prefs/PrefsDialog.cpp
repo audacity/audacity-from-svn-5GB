@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/event.h>

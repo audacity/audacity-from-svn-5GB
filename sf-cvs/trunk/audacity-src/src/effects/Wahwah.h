@@ -84,7 +84,7 @@ class EffectWahwah:public Effect {
 #define ID_FREQOFFTEXT 10011
 #define ID_FREQOFFSLIDER 10012
 
-wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit =
+wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit =
                             TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations

@@ -44,6 +44,7 @@
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
+#include <wx/msgdlg.h>
 #include <wx/app.h>
 #include <wx/config.h>
 #include <wx/intl.h>
@@ -52,8 +53,12 @@
 #include "sndfile.h"
 
 #ifdef __WXMAC__
+#ifdef __UNIX__
+#include <CoreServices/CoreServices.h>
+#else
 #include <Files.h>
 #include <Folders.h>
+#endif
 
 /* prototype of MoreFiles fn, included in wxMac already */
 pascal OSErr FSpGetFullPath(const FSSpec * spec,

@@ -10,6 +10,7 @@
 
 #include <math.h>
 
+#include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>

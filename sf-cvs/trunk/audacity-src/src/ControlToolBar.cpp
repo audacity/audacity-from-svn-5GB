@@ -19,12 +19,15 @@
 #endif
 
 #ifndef WX_PRECOMP
+#include <wx/defs.h>
+#include <wx/event.h>
 #include <wx/brush.h>
 #include <wx/dcclient.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #endif
 
+#include <wx/log.h>
 #include <wx/image.h>
 #include <wx/tooltip.h>
 

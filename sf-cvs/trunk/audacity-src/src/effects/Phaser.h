@@ -87,7 +87,7 @@ class EffectPhaser:public Effect {
 #define ID_DEPTHSLIDER 10008
 #define ID_FEEDBACKTEXT 10009
 #define ID_FEEDBACKSLIDER 10010
-wxSizer *CreatePhaserDialog(wxPanel * parent, bool call_fit =
+wxSizer *CreatePhaserDialog(wxWindow * parent, bool call_fit =
                             TRUE, bool set_sizer = TRUE);
 
 // WDR: class declarations

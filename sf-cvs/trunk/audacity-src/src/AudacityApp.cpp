@@ -25,8 +25,12 @@
 #endif
 
 #ifdef __WXMAC__
-#include <AEDataModel.h>
-#include <AppleEvents.h>
+# ifdef __UNIX__
+#  include <ApplicationServices/ApplicationServices.h>
+# else
+#  include <AEDataModel.h>
+#  include <AppleEvents.h>
+# endif
 #endif
 
 #include "AudacityApp.h"

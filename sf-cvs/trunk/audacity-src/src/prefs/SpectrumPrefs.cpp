@@ -8,6 +8,7 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/colordlg.h>
 #include <wx/intl.h>
