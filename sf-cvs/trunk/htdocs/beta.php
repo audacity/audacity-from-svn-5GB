@@ -14,15 +14,23 @@
 
   BoxTop($betaVersionsStr);
 ?>
-<?php include GetTranslation("beta-redirect"); ?>
+<?php /* include GetTranslation("beta-redirect"); */ ?>
 
-<?php /*
 <?php include GetTranslation("beta-about"); ?>
+
+<h3><?php print $downloadSectionStr; ?></h3>
+<ul>
+<li><a href="beta/audacity-win.php/audacity-win.exe">Windows</a>
+<li><a href="beta/audacity-macosx.php/audacity-macosx.dmg">Mac OS X</a>
+<li><a href="beta/audacity-src.php/audacity-src.tar.gz"><?php print $sourceStr; ?></a>
+</ul>
 
 <p>
 <?php print "<a href=betanotes.php?$langLinkStr>$releaseNotesStr2</a>"; ?>
 </p>
 
+<?php
+/*
 <p align="center">
 <a href="<?php print "screenshots.php?$langLinkStr"; ?>">
 <img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
