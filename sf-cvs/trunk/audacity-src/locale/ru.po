@@ -1101,6 +1101,7 @@ msgid ""
 "Description:\n"
 " "
 msgstr "Описание:\n"
+" "
 
 #: ../src/prefs/AudioIOPrefs.cpp:100 ../src/prefs/AudioIOPrefs.cpp:149
 msgid "Device:"
