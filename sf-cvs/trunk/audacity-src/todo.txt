@@ -65,8 +65,6 @@ UI::
   the background color is very dark
 - Select dialog box ("1.5 - 3.0 seconds")
 - Show selection (i.e. zoom such that the selection fits)
-- Select to end
-- Select to start
 - Invert selection (for now, until we allow discontiguous selections,
                     this should mean two options: select up to selection,
                     and select after selection)
@@ -76,15 +74,12 @@ UI::
 - Pan control for each track
 - Volume control for each track
 - Trim (= opposite of delete -- delete all but selection)
-- Autoscrolling during playback (and recording?)
 - Vertical bar indicating playback/recording position, too
 - Add high-quality resampling
 - Legend (Ruler) for pitch and spectrum
 - Recognize .mp2, .mpg, .mpeg as libmad-capable files
 - Plug-ins should be split into many separate menus on Linux/GTK
   (if you have lots of them)
-- How about a key to "jump left 5 seconds" -- allowing you to
-  find a pop/click easily
 
 Import/Export
 - Import latest libsndfile; finish exporting code
