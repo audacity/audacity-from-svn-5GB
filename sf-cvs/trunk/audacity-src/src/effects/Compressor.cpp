@@ -23,7 +23,7 @@
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
-#include "../Acolor.h"
+#include "../AColor.h"
 
 EffectCompressor::EffectCompressor()
 {
