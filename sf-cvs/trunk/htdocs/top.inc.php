@@ -19,7 +19,7 @@ header("Content-type: text/html; charset=$charset");
 <body bgcolor="#ffffff">
 
 <!-- main table - nav bar goes on left, top bar and news goes on right -->
-<table border="0" cellpadding="0" cellspacing="10" width="100%">
+<table border="0" cellpadding="0" cellspacing="10" width="100%" summary="">
 <tr><td valign="top" width="192">
 
 <?php include 'sidebar.php' ?>
@@ -30,3 +30,4 @@ header("Content-type: text/html; charset=$charset");
 
 <?php include 'topbar.php' ?>
 
+<a name="maincontent"></a>

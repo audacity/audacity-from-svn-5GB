@@ -1,6 +1,7 @@
 <!-- sidebar table - a double table to give it a border -->
-<table border="0" cellpadding="1" cellspacing="0" bgcolor="#000099"><tr><td>
-<table border="0" cellspacing="1" cellpadding="4">
+<a style="display: none" href="#maincontent">Skip to main content</a>
+<table border="0" cellpadding="1" cellspacing="0" bgcolor="#000099" summary=""><tr><td>
+<table border="0" cellspacing="1" cellpadding="4" summary="Navigation menu">
 
 <tr><td align="center" bgcolor="#dddddd">
 <font size="+1"><b><?php print $helpSectionStr; ?></b></font>
