@@ -1502,6 +1502,32 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 
    mSelStart = selend;
 }
+// GM: alternate version of DoSlide implementing snap-to
+// functionality based on sample rate.  Commented out for
+// now since this is just based on TrackPanel global
+// variable 'samplerate'.
+//void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
+//{
+//   double selend = mViewInfo->h +
+//       ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
+//
+//   clip_bottom(selend, 0.0);
+//
+//   selend = rint(samplerate*selend) / samplerate;
+//
+//   if (selend != mSelStart) {
+//      mCapturedTrack->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+//      totalOffset += rint(samplerate * (selend - mSelStart)) / samplerate;
+//
+//      Track *link = mTracks->GetLink(mCapturedTrack);
+//      if (link)
+//        link->Offset(rint(samplerate * (selend - mSelStart)) / samplerate);
+//
+//      Refresh(false);
+//   }
+//
+//   mSelStart = selend;
+//}
 
 // AS: This function takes care of our different zoom 
 //  possibilities.  It is possible for a user to just
