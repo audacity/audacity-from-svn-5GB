@@ -1,6 +1,6 @@
 body {
 	background:white; color:black;
-	font:87.5%/1.5 "Bitstream Vera Sans", "Verdana", sans-serif;
+	font:87.5%/1.5 sans-serif;
 	margin:0; padding:0;
 }
 :link { color:#00d; }
