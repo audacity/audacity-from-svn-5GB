@@ -14,5 +14,5 @@ audacity-help@lists.sourceforge.net</a>
 
 <p>
 Your feedback will help us make the final release stable and bug-free!
-We hope to release the new stable version in August 2003.
+We hope to release the new stable version in September 2003.
 </p>
