@@ -94,7 +94,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
 
    if (event.ButtonDown()) {
       mIsClicking = true;
-      //CaptureMouse();
+      CaptureMouse();
    }
 
    if (mIsClicking) {

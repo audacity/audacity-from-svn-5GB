@@ -242,6 +242,7 @@ void TrackPanel::OnTimer()
    if (mIsSelecting && mCapturedTrack) {
 
       if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
+
          mAutoScrolling = true;
          mListener->TP_ScrollRight();
 
@@ -1229,6 +1230,12 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
 
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 {
+   if (event.ButtonDown())
+      CaptureMouse();
+
+   if (event.ButtonUp())
+      ReleaseMouse();
+
    mListener->TP_HasMouse();
 
    if (!mAutoScrolling) {
