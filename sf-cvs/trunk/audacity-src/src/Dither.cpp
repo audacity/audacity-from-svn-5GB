@@ -10,27 +10,22 @@
 
 **********************************************************************/
 
+// Erik de Castro Lopo's header file that
+// makes sure that we have lrint and lrintf
+// (Note: this file should be included first)
+#include "float_cast.h" 
+
 #include <stdlib.h>
 #include <math.h>
-#include <sys/types.h>
-#include <memory.h>
-#include <assert.h>
+#include <string.h>
+//#include <sys/types.h>
+//#include <memory.h>
+//#include <assert.h>
+
+#include <wx/defs.h>
 
 #include "Dither.h"
 
-//////////////////////////////////////////////////////////////////////////
-// Define lrintf() function because it is not available
-// on this specific platform.
-// XXX: Add autoconf code to detect availability on compile time!
-#ifdef _WIN32
-
-static inline int lrintf(float f)
-{
-    f += (3<<22);
-    return *((int*)&f) - 0x4b400000;
-}
-
-#endif
 //////////////////////////////////////////////////////////////////////////
 
 // Constants for the noise shaping buffer
@@ -108,7 +103,7 @@ const float Dither::SHAPED_BS[] = { 2.033f, -2.165f, 1.959f, -1.590f, 0.6149f };
         DITHER_FLOAT_TO_INT16(dither, dst, src, len, stride); \
     else if (srcFormat == floatSample && dstFormat == int24Sample) \
         DITHER_FLOAT_TO_INT24(dither, dst, src, len, stride); \
-    else assert(false); \
+    else wxASSERT(false); \
     } while (0)
 
 
@@ -135,14 +130,14 @@ void Dither::Apply(enum DitherType ditherType,
     unsigned int i;
 
     // This code is not designed for 16-bit or 64-bit machine
-    assert(sizeof(int) == 4);
-    assert(sizeof(short) == 2);
+    wxASSERT(sizeof(int) == 4);
+    wxASSERT(sizeof(short) == 2);
 
     // Check parameters
-    assert(source);
-    assert(dest);
-    assert(len >= 0);
-    assert(stride > 0);
+    wxASSERT(source);
+    wxASSERT(dest);
+    wxASSERT(len >= 0);
+    wxASSERT(stride > 0);
 
     if (len == 0)
         return; // nothing to do
@@ -198,7 +193,7 @@ void Dither::Apply(enum DitherType ditherType,
             for (i = 0; i < len; i++, d++, s+= stride)
                 *d = FROM_INT24(s);
         } else
-            assert(false); // source format unknown
+            wxASSERT(false); // source format unknown
     } else
     if (sourceFormat == int16Sample && destFormat == int24Sample)
     {
@@ -229,7 +224,7 @@ void Dither::Apply(enum DitherType ditherType,
             DITHER(ShapedDither, dest, destFormat, source, sourceFormat, len, stride);
             break;
         default:
-            assert(false); // unknown dither algorithm
+            wxASSERT(false); // unknown dither algorithm
         }
     }
 }

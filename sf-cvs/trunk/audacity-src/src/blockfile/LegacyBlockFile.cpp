@@ -42,8 +42,6 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
       // throw an exception?
       ;
 
-   printf("LegacyBlockFile!\n");
-
    mSummaryInfo.bytesPerFrame = sizeof(float) * 3; /* min, max, rms */
    mSummaryInfo.totalSummaryBytes = summaryLen;
    mSummaryInfo.offset64K = 20; /* legacy header tag len */
@@ -63,11 +61,6 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
    float *data = new float[mSummaryInfo.frames64K * 3];
    wxFFile summaryFile;
    if( !summaryFile.Open(mFileName.GetFullPath(), "rb") ) {
-
-
-      printf("Couldn't open '%s'\n", (const char *)mFileName.GetFullPath());
-
-
       delete[] data;
       return;
    }
@@ -92,9 +85,6 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
    mRMS = sqrt(sumsq / count);
 
    delete[] data;
-
-   printf("%s: min=%.3f max=%.3f, rms=%.3f\n",
-          (const char *)mFileName.GetFullPath(), mMin, mMax, mRMS);
 }
 
 LegacyBlockFile::~LegacyBlockFile()
@@ -213,10 +203,9 @@ void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 
 /// static
 BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
-                                         sampleFormat format)
+                                         sampleCount len, sampleFormat format)
 {
    wxFileName fileName;
-   sampleCount len = 0;
    sampleCount summaryLen = 0;
 
    while(*attrs)

@@ -49,6 +49,7 @@ class LegacyBlockFile : public BlockFile {
    /// Write an XML representation of this file
    void SaveXML(int depth, wxFFile &xmlFile);
    static BlockFile *BuildFromXML(wxString dir, const char **attrs,
+                                  sampleCount len,
                                   sampleFormat format);
    int GetSpaceUsage();
 

@@ -79,6 +79,12 @@
 /* Define if soundtouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
+/* Define if you have C99's lrint function. */
+#undef HAVE_LRINT
+
+/* Define if you have C99's lrintf function. */
+#undef HAVE_LRINTF
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 

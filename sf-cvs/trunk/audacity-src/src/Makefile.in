@@ -135,6 +135,16 @@ LIBAUDACITY_OBJS = \
 	$(OBJDIR)/blockfile/SimpleBlockFile.o \
 	$(OBJDIR)/blockfile/PCMAliasBlockFile.o \
 
+#
+# We stick object files in separate directories for convenience
+#
+
+DIRS = \
+	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/effects/ladspa \
+	$(OBJDIR)/effects/VST $(OBJDIR)/effects/nyquist $(OBJDIR)/export \
+	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml \
+	$(OBJDIR)/commands $(OBJDIR)/blockfile
+
 ########################################
 # DEPENDENCIES
 
@@ -143,12 +153,12 @@ DEPS = $(OBJS:$(OBJDIR)/%.o=%.cpp) $(OPTOBJS:$(OBJDIR)/%.o=%.cpp) \
 
 ########################################
 
-all: dirs libaudacity.a ../audacity
+all: $(DIRS) libaudacity.a ../audacity
 
-libaudacity.a: dirs $(LIBAUDACITY_OBJS)
+libaudacity.a: $(DIRS) $(LIBAUDACITY_OBJS)
 	ar rcs libaudacity.a $(LIBAUDACITY_OBJS)
 
-../audacity: $(OBJS) $(EXTRAOBJS) $(OPTOBJS) libaudacity.a Makefile
+../audacity: $(DIRS) $(OBJS) $(EXTRAOBJS) $(OPTOBJS) libaudacity.a Makefile
 	$(CCC) -o ../audacity $(OBJS) $(OPTOBJS) $(EXTRAOBJS) libaudacity.a $(LIBS)
 	@AFTERBUILD@
 
@@ -172,18 +182,6 @@ clean:
 
 $(OPTOBJS) $(OBJS) $(LIBAUDACITY_OBJS): $(OBJDIR)/%.o: %.cpp configunix.h $(CDEPEND)
 	$(CCC) -c $(CXXFLAGS) $(CPPFLAGS) $< -o $@
-
-#
-# We stick object files in separate directories for convenience
-#
-
-DIRS = \
-	$(OBJDIR) $(OBJDIR)/effects $(OBJDIR)/effects/ladspa \
-	$(OBJDIR)/effects/VST $(OBJDIR)/effects/nyquist $(OBJDIR)/export \
-	$(OBJDIR)/import $(OBJDIR)/prefs $(OBJDIR)/widgets $(OBJDIR)/xml \
-	$(OBJDIR)/commands $(OBJDIR)/blockfile
-
-dirs: $(DIRS)
 
 $(DIRS): %: 
 	-test -d $@ || mkdir $@

@@ -595,6 +595,10 @@ bool Sequence::HandleXMLTag(const char *tag, const char **attrs)
          
          if (!strcmp(attr, "start"))
             wb->start = atoi(value);
+
+         // Handle length tag from legacy project file
+         if (!strcmp(attr, "len"))
+            mDirManager->SetLoadingBlockLength(atoi(value));
  
       } // while
 
