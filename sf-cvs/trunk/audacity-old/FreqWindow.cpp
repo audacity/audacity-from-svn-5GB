@@ -119,13 +119,13 @@ FreqWindow::FreqWindow(wxWindow* parent, wxWindowID id, const wxString& title,
 							  wxPoint(350, 290),
 							  wxSize(70, 20));
 
-  wxString algChoiceStrings[1] = {"Spectrum"};
-								  //"Cepstrum"};
+  wxString algChoiceStrings[2] = {"Spectrum",
+								  "Cepstrum"};
   
   mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
 							wxPoint(10, 260),
 							wxSize(160, 20),
-							1, algChoiceStrings);
+							2, algChoiceStrings);
 
   mAlgChoice->SetSelection(0);
 
@@ -384,39 +384,49 @@ char *PitchName(int pitch, bool flats)
 
 float FreqWindow::GetProcessedValue(float freq0, float freq1)
 {
-    float bin0 = freq0 * mWindowSize / mRate;
-    float bin1 = freq1 * mWindowSize / mRate;
-    float binwidth = bin1-bin0;
+  int alg = mAlgChoice->GetSelection();
+  
+  float bin0, bin1, binwidth;
 
-    float value = 0.0;
-
-    if (binwidth < 1.0) {
-      float binmid = (bin0 + bin1)/2.0;
-      int ibin = int(binmid) - 1;
-      if (ibin < 1)
-        ibin = 1;
-      if (ibin >= mWindowSize/2 - 3)
-        ibin = mWindowSize/2 - 4;
-      
-      value = CubicInterpolate(mProcessed[ibin],
-                               mProcessed[ibin+1],
-                               mProcessed[ibin+2],
-                               mProcessed[ibin+3],
-                               binmid - ibin);
-    }
-    else {
-      value += mProcessed[int(bin0)]*(int(bin0)+1-bin0);
-      bin0 = 1+int(bin0);
-      while(bin0 < int(bin1)) {
-        value += mProcessed[int(bin0)];
-        bin0 += 1.0;
-      }
-      value += mProcessed[int(bin1)]*(bin1-int(bin1));    
-
-      value /= binwidth;
-    }
-    
-    return value;
+  if (alg==0) {
+	bin0 = freq0 * mWindowSize / mRate;
+	bin1 = freq1 * mWindowSize / mRate;
+  }
+  else {
+	bin0 = freq0 * mRate;
+	bin1 = freq1 * mRate;
+  }
+  binwidth = bin1-bin0;
+  
+  float value = 0.0;
+  
+  if (binwidth < 1.0) {
+	float binmid = (bin0 + bin1)/2.0;
+	int ibin = int(binmid) - 1;
+	if (ibin < 1)
+	  ibin = 1;
+	if (ibin >= mWindowSize/2 - 3)
+	  ibin = mWindowSize/2 - 4;
+	
+	value = CubicInterpolate(mProcessed[ibin],
+							 mProcessed[ibin+1],
+							 mProcessed[ibin+2],
+							 mProcessed[ibin+3],
+							 binmid - ibin);
+  }
+  else {
+	value += mProcessed[int(bin0)]*(int(bin0)+1-bin0);
+	bin0 = 1+int(bin0);
+	while(bin0 < int(bin1)) {
+	  value += mProcessed[int(bin0)];
+	  bin0 += 1.0;
+	}
+	value += mProcessed[int(bin1)]*(bin1-int(bin1));    
+	
+	value /= binwidth;
+  }
+  
+  return value;
 }
 
 void FreqWindow::OnPaint(wxPaintEvent &evt)
@@ -468,6 +478,8 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
   const int bottomDB = -80;
   int totalDB = (topDB - bottomDB);
 
+  int alg = mAlgChoice->GetSelection();
+
   int i;
 
 #ifdef __WXMSW__
@@ -481,86 +493,122 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
 
   // Draw y axis and gridlines
 
-  for(i=bottomDB; i<=topDB; i+=10) {
-	int y = r.y + r.height - 1 - (i - bottomDB)*(r.height-1)/totalDB;
+  if (alg==0) {
+	for(i=bottomDB; i<=topDB; i+=10) {
+	  int y = r.y + r.height - 1 - (i - bottomDB)*(r.height-1)/totalDB;
+	  
+	  // Light blue gridline
+	  memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
+	  memDC.DrawLine(r.x, y, r.x + r.width, y);
+	  
+	  // Pure blue axis line
+	  memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
+	  memDC.DrawLine(mInfoRect.x, y, r.x, y);
+	  
+	  if (i != bottomDB) {
+		wxString label = wxString::Format("%d dB", i);
+		long labelWidth, labelHeight;
+		memDC.GetTextExtent(label, &labelWidth, &labelHeight);
+		memDC.DrawText(label, 
+					   r.x - labelWidth - 2, y+1);
+	  }
+	}
+  }
+  else {
+	int y = r.y + r.height/2;
 
 	// Light blue gridline
 	memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
 	memDC.DrawLine(r.x, y, r.x + r.width, y);
-
+	
 	// Pure blue axis line
 	memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
 	memDC.DrawLine(mInfoRect.x, y, r.x, y);
 
-	if (i != bottomDB) {
-	  wxString label = wxString::Format("%d dB", i);
-	  long labelWidth, labelHeight;
-	  memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-	  memDC.DrawText(label, 
-				  r.x - labelWidth - 2, y+1);
-	}
+	wxString label = "0.0";
+	long labelWidth, labelHeight;
+	memDC.GetTextExtent(label, &labelWidth, &labelHeight);
+	memDC.DrawText(label, 
+				   r.x - labelWidth - 2, y+1);
   }
   
   // Draw x axis and gridlines
   
   int width = r.width-2;
-  
-  float min_freq = mRate/mWindowSize;
-  float max_freq = mRate/2;
-  float ratio = max_freq / min_freq;
-  float freq = min_freq;
-  float last = freq/2.0;
-  float freq_step;
-  if (mLogAxis)
-    freq_step = pow(2.0, (log(ratio)/log(2)) / width);
-  else
-    freq_step = (max_freq - min_freq) / width;
+
+  float min_freq, max_freq, ratio, freq, last, freq_step;
+
+  if (alg==0) {  
+	min_freq = mRate/mWindowSize;
+	max_freq = mRate/2;
+	ratio = max_freq / min_freq;
+	freq = min_freq;
+	last = freq/2.0;
+	if (mLogAxis)
+	  freq_step = pow(2.0, (log(ratio)/log(2)) / width);
+	else
+	  freq_step = (max_freq - min_freq) / width;
+  }
+  else {
+	min_freq = 0;
+	max_freq = mWindowSize/mRate;
+	freq = min_freq;
+	last = freq/2.0;
+	freq_step = (max_freq - min_freq) / width;
+  }
   
   int nextx = 0;
 
   for(i=0; i<width; i++) {
         
-    if ((mLogAxis && freq / last >= 2.0) ||
-        (!mLogAxis && (i%60)==0)) {
-        int x = i + 1;
+	if ((mLogAxis && freq / last >= 2.0) ||
+		(!mLogAxis && (i%60)==0)) {
+	  int x = i + 1;
         
-    	// Light blue gridline
-    	memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
-    	memDC.DrawLine(r.x + x, r.y, r.x + x, r.y + r.height);
+	  // Light blue gridline
+	  memDC.SetPen(wxPen(wxColour(204,204,255),1,wxSOLID));
+	  memDC.DrawLine(r.x + x, r.y, r.x + x, r.y + r.height);
 
-        if (x >= nextx) {
+	  if (x >= nextx) {
         
-        	// Pure blue axis line
-        	memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
-        	memDC.DrawLine(r.x + x, r.y + r.height, r.x + x, r.y + r.height + 15);
+		// Pure blue axis line
+		memDC.SetPen(wxPen(wxColour(0,0,255),1,wxSOLID));
+		memDC.DrawLine(r.x + x, r.y + r.height, r.x + x, r.y + r.height + 15);
         	
-        	// Label
+		// Label
         	
-        	wxString label;
-        	if (freq < 950.0)
-        	  label = wxString::Format("%dHz", int(freq+0.5));
-        	else
-        	  label = wxString::Format("%dKHz", int((freq/1000.0)+0.5));
-    	    long labelWidth, labelHeight;
-    	    memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-    	    if (x + labelWidth < width)
-    	      memDC.DrawText(label,
-    		    		  r.x + x + 3, r.y + r.height + 2);
-    		nextx = x + labelWidth + 4;
-        }
+		wxString label;
+		if (alg==0) {
+		  if (freq < 950.0)
+			label = wxString::Format("%dHz", int(freq+0.5));
+		  else
+			label = wxString::Format("%dKHz", int((freq/1000.0)+0.5));
+		}
+		else
+		  label = wxString::Format("%.4f s", freq);
+		long labelWidth, labelHeight;
+		memDC.GetTextExtent(label, &labelWidth, &labelHeight);
+		if (x + labelWidth < width)
+		  memDC.DrawText(label,
+						 r.x + x + 3, r.y + r.height + 2);
+		nextx = x + labelWidth + 4;
+	  }
 
-        last *= 2.0;
-    }
+	  last *= 2.0;
+	}
     
-    if (mLogAxis)
-      freq *= freq_step;
-    else
-      freq += freq_step;
+	if (mLogAxis)
+	  freq *= freq_step;
+	else
+	  freq += freq_step;
   }
 
   // Draw the plot
 
-  memDC.SetPen(wxPen(wxColour(50,150,50),1,wxSOLID));
+  if (alg==0)
+	memDC.SetPen(wxPen(wxColour(50,150,50),1,wxSOLID));
+  else
+	memDC.SetPen(wxPen(wxColour(200,50,150),1,wxSOLID));
 
   freq = min_freq;
 
@@ -572,7 +620,12 @@ void FreqWindow::PlotPaint(wxPaintEvent &evt)
     else
       y = GetProcessedValue(freq, freq+freq_step);
     
-    float ynorm = (y - bottomDB) / totalDB;
+    float ynorm;
+
+	if (alg==0)
+	  ynorm = (y - bottomDB) / totalDB;
+	else
+	  ynorm = (y + 30.0) / 60.0;
 
 	int lineheight = int(ynorm * (r.height-1));
 
@@ -736,6 +789,7 @@ void FreqWindow::Recalc()
 
   float *in = new float[mWindowSize];
   float *out = new float[mWindowSize];
+  float *out2 = new float[mWindowSize];
 
   int start = 0;
   int windows = 0;
@@ -745,10 +799,18 @@ void FreqWindow::Recalc()
 	  
     WindowFunc(windowFunc, mWindowSize, in);
 
-	PowerSpectrum(mWindowSize, in, out);
+	if (alg==0) {
+	  PowerSpectrum(mWindowSize, in, out);
+	  
+	  for(i=0; i<half; i++)
+		mProcessed[i] += out[i];
+	}
+	else {
+	  FFT(mWindowSize, false, in, NULL, out, out2);
 
-	for(i=0; i<half; i++)
-	  mProcessed[i] += out[i];
+	  for(i=0; i<mWindowSize; i++)
+		mProcessed[i] += log(out[i]*out[i] + out2[i]*out2[i]);
+	}
 
 	start += half;
 	windows++;
@@ -762,51 +824,43 @@ void FreqWindow::Recalc()
 	mProcessedSize = mWindowSize / 2;
   }
   else {
-    mProcessedSize = mWindowSize / 4;
+    mProcessedSize = mWindowSize;
 
-    for(i=0; i<half; i++)
-	  mProcessed[i] = log(mProcessed[i]/mWindowSize/windows);
-  
-    // For a Cepstrum, do an IFFT on this data
-    
+	// Inverse FFT
+    FFT(mProcessedSize, true, mProcessed, NULL, out, out2);
+
+    for(i=0; i<mProcessedSize; i++)
+      mProcessed[i] = out[i];
+
     /*
+    // Normalize, ignoring first and last few Cepstral coefficients
     
-    for(i=0; i<half; i++)
-      out[i] = mProcessed[i];
-    
-    PowerSpectrum(half, out, mProcessed);*/
-    
-    float *out1 = new float[half];
-    float *out2 = new float[half];
-    
-    FFT(half, true, mProcessed, NULL, out1, out2);
-
-    for(i=0; i<half/2; i++) {
-      mProcessed[i] = out1[i]*out1[i] + out2[i]*out2[i];
-    }
-    
-    delete[] out1;
-    delete[] out2;
-    
-    // Normalize
-    
-    float min = mProcessed[0];
-    float max = mProcessed[0];
-    for(i=1; i<half/2; i++) {
-      if (mProcessed[i] < min)
+    float min = mProcessed[15];
+    float max = mProcessed[15];
+	int imin = 16;
+	int imax = 16;
+    for(i=17; i<mProcessedSize-16; i++) {
+      if (mProcessed[i] < min) {
         min = mProcessed[i];
-      if (mProcessed[i] > max)
+		imin = i;
+	  }
+      if (mProcessed[i] > max) {
         max = mProcessed[i];
+		imax = i;
+	  }
     }
+
+	printf("%f (%d) - %f (%d)\n", min, imin, max, imax);
     
-    for(i=0; i<half/2; i++) {
+    for(i=0; i<mProcessedSize; i++)
       mProcessed[i] = ((mProcessed[i]-min)/(max-min))*90 - 80;
-      mProcessed[i+half/2] = mProcessed[i];
-    }
+	*/
+
   }
 
   delete[] in;
   delete[] out;
+  delete[] out2;
 
   mFreqPlot->Refresh(false);
 }
