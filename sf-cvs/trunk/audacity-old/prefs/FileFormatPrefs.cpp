@@ -66,7 +66,7 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 		}
 		
   int numFormats = 1;
-  while(gDefaultExportFormatOptions[numFormats-1] != "***last")
+  while(gDefaultExportFormatOptions[numFormats] != "***last")
     numFormats++;
 	
 	mDefaultExportFormat = new wxRadioBox(this, -1,
