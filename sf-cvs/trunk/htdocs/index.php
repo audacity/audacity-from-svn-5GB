@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = "Audacity";
 include 'top.inc.php';
-include phpLang_current.'/index.php';
+IncludeFile("index");
 include 'bottom.inc.php';
 
 ?>

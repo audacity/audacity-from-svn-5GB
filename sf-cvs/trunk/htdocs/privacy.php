@@ -3,7 +3,7 @@
 require_once 'main.inc.php';
 $title = $privacyPolicyStr;
 include 'top.inc.php';
-include phpLang_current.'/privacy.php';
+IncludeFile("privacy");
 include 'bottom.inc.php';
 
 ?>

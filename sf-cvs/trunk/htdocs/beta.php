@@ -18,7 +18,7 @@
   <?php print "$latestBetaStr $betaVersion<br>"; ?>
 </center>
 
-<?php include phpLang_current.'/beta.php'; ?>
+<?php IncludeFile("beta"); ?>
 
 <table border="0">
 

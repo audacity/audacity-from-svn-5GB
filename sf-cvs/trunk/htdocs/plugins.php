@@ -6,7 +6,7 @@
 
   BoxTop($pluginsStr);
 
-  include phpLang_current.'/plugins.php';
+  IncludeFile("beta");
 ?>
 
 <b>Windows:</b>
