@@ -107,6 +107,7 @@ class AudacityProject:public wxFrame,
    void Rewind(bool shift);
    void SkipEnd(bool shift);
    void ReReadSettings();
+   void SetStop(bool bStopped);
 
    // Scrollbars
 
@@ -125,7 +126,7 @@ class AudacityProject:public wxFrame,
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
    virtual void TP_HasMouse();
-   virtual void TP_ScrollIndicator(double indicator);
+   virtual void TP_ScrollWindow(double scrollto);
    virtual void TP_HandleResize();
 
    // APalette

@@ -233,9 +233,15 @@ TrackPanel::~TrackPanel()
 
 void TrackPanel::ReReadSettings()
 {
-   mViewInfo->bIsPlaying = (gAudioIO->IsBusy() && gAudioIO->GetProject());
    gPrefs->Read("/GUI/AutoScroll", &mViewInfo->bUpdateTrackIndicator, true);
    gPrefs->Read("/GUI/UpdateSpectrogram", &mViewInfo->bUpdateSpectrogram, true);
+}
+
+void TrackPanel::SetStop(bool bStopped)
+{
+   mViewInfo->bIsPlaying = !bStopped;
+
+   Refresh(false);
 }
 
 void TrackPanel::SelectNone()
@@ -373,7 +379,7 @@ void TrackPanel::UpdateIndicator()
   // BG: Scroll screen if option is set
   if (mViewInfo->bUpdateTrackIndicator && gAudioIO->IsBusy()
                       && gAudioIO->GetProject() && !onScreen)
-     mListener->TP_ScrollIndicator(indicator);
+     mListener->TP_ScrollWindow(indicator);
 
   if (mIndicatorShowing || onScreen) {
     mIndicatorShowing = (onScreen &&

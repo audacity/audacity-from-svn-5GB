@@ -34,7 +34,7 @@ class TrackPanelListener {
    virtual void TP_RedrawScrollbars() = 0;
    virtual void TP_ScrollLeft() = 0;
    virtual void TP_ScrollRight() = 0;
-   virtual void TP_ScrollIndicator(double indicator) = 0;
+   virtual void TP_ScrollWindow(double scrollto) = 0;
    virtual void TP_HasMouse() = 0;
    virtual void TP_HandleResize() = 0;
 };
@@ -66,6 +66,7 @@ class TrackPanel:public wxWindow {
    void SelectNone();
 
    void ReReadSettings();
+   void SetStop(bool bStopped);
 
  private:
 
