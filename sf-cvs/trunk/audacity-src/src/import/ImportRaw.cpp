@@ -851,11 +851,11 @@ BEGIN_EVENT_TABLE(ImportDialog, wxDialog)
     EVT_RADIOBUTTON(PREV_RADIO_ID, ImportDialog::RadioButtonPushed)
     END_EVENT_TABLE()
 
-    IMPLEMENT_CLASS(ImportDialog, wxDialog)
+IMPLEMENT_CLASS(ImportDialog, wxDialog)
 
-    ImportDialog::ImportDialog(char *data,
-                               int dataLen,
-                               wxWindow * parent, const wxPoint & pos)
+ImportDialog::ImportDialog(char *data,
+                           int dataLen,
+                           wxWindow * parent, const wxPoint & pos)
 :wxDialog(parent, -1, "Import Raw Data", pos,
           wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {

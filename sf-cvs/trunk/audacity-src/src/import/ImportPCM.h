@@ -14,8 +14,6 @@
 class WaveTrack;
 class DirManager;
 
-wxString TrackNameFromFileName(wxString fName);
-
 bool IsPCM(wxString fName);
 
 bool ImportPCM(wxWindow * parent,

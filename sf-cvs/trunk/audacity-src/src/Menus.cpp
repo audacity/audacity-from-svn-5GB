@@ -73,7 +73,7 @@ void AudacityProject::CreateMenuBar()
                                       lossyFormat.c_str());
 
    mFileMenu = new wxMenu();
-   mFileMenu->Append(NewID, _("&New...\tCtrl+N"));
+   mFileMenu->Append(NewID, _("&New\tCtrl+N"));
    mFileMenu->Append(OpenID, _("&Open...\tCtrl+O"));
    mFileMenu->Append(CloseID, _("&Close\tCtrl+W"));
    mFileMenu->Append(SaveID, _("&Save Project\tCtrl+S"));
