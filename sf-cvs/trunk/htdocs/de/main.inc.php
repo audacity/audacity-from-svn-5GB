@@ -30,7 +30,7 @@ $translationStr = "Übersetzungsprojekt";
 $donateTimeStr = "Spende Zeit";
 $donateMoneyStr = "Spende Geld";
 $develSectionStr = "Entwickler";
-$develListStr = "Audacity-Devel List";
+$develListStr = "Audacity-Entwickler Liste";
 $develNewsStr = "Entwicklungsneuigkeiten";
 $sourceForgeStr = "SourceForge Projekt";
 $browseSourceStr = "Durchsuche den Quelltext";
@@ -58,6 +58,8 @@ $releaseNotesStr = "Release Notes";
 $releaseNotesStr2 = "Release Notes (was ist neu in dieser Version?)";
 $vstLinksHereStr = "VST Plug-in Download:";
 $altDownloadStr = "Probleme beim Download ?";
+$altDownloadStr2 = "Klicken Sie bitte hier für andere Downloadlinks";
 $docsStr = "Download der aktuellen Dokumentation";
 $clickEnlargeStr = "Klicke auf das Bild um es zu vergrössern";
+$listPrivacyStr = ">Privacy Policy.)";
 ?>
