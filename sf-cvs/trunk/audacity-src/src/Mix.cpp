@@ -347,9 +347,6 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
    
 #if USE_LIBSAMPLERATE
 
-
-int inn = 0, outt = 0;
-
 // TODO: SRC limits are 1/12 to 12 * playback.  Make sure we respect this
 sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
                                     longSampleCount *pos, float *queue,
@@ -414,8 +411,6 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          warpFactor = (mTimeTrack->GetRangeLower() * (1 - warpFactor) +
                        warpFactor * mTimeTrack->GetRangeUpper())/100.0;
 
-         printf("%f ", warpFactor);
-
          mySrcData.src_ratio /= warpFactor;
       }
 
@@ -427,10 +422,6 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
       *queueLen -= mySrcData.input_frames_used;
       out += mySrcData.output_frames_gen;
       t += (mySrcData.input_frames_used / track->GetRate());
-
-      inn += mySrcData.input_frames_used;
-      outt += mySrcData.output_frames_gen;
-      printf("%d %d\n", inn, outt);
 
       if (mySrcData.end_of_input)
          break;
