@@ -1933,6 +1933,7 @@ void TrackPanel::OnSetDisplay(wxEvent &event)
                           mPopupMenuTarget->GetName().c_str(),
                           gModes[id - OnWaveformID]));
    mPopupMenuTarget = NULL;
+   ReReadSettings();
    Refresh(false);
 }
 
