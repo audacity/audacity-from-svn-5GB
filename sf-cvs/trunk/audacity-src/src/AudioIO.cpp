@@ -22,7 +22,6 @@
 
 **********************************************************************/
 
-#include <iostream>
 #include <math.h>
 #include <stdlib.h>
 
@@ -1104,6 +1103,7 @@ double AudioIO::GetStreamTime()
    // [JH]: I need to diagram this, but I'm pretty sure this calculation
    // is off by one buffer size
    double time = lastBufferTime + deltat;
+
    return NormalizeStreamTime(time);
 #else
    PaStream *stream = mPortStreamV18;
@@ -1645,7 +1645,10 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       
      #if USE_PORTAUDIO_V19
       gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
-      gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+      if (numPlaybackChannels > 0)
+         gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+      else
+         gAudioIO->mLastBufferAudibleTime = timeInfo->inputBufferAdcTime;
      #endif
 
       // Record the reported latency from PortAudio.
