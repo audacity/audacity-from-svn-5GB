@@ -45,197 +45,117 @@ Uívání Audacity:<br>
 
 <a name="g1"></a>
 <font size=+1><b>
-1. Is Audacity really free?  Why?<br>
+1.  Je Audacity opravdu free? Proè?<br>
 
 </b></font>
 
 <p>
-
-Yes, in almost all senses.  Audacity is not only distributed
-free of charge, but you are also free to do almost anything
-you want with it.
+Ano, témìø ve všech smìrech. Audacity je distribuována nejen bezplatnì, ale mùete s ní dìlat témìø všechno co chcete.
 <p>
-Audacity is distributed under the terms of the
+Audacity je šíøena v souladu s podmínkami
 <a href="http://www.gnu.org/copyleft/gpl.html"
 >General Public License (GPL)</a>.
-You are free to use this program for personal or commercial
-purposes.  You are also free to give it away or sell it.
-The source code to this program is freely available on the
-web, and you are free to modify it for your own use, however
-any changes you make must also be distributed under the GPL.
+Tento program smíte svobodnì pouít pro osobní nebo komerèní úèely. Mùete ji také svobodnì darovat nebo prodávat. Zdrojovı kód je volnì k dispozici na webu a mùete ho svobodnì upravovat k vlastnímu pouití, nicménì jakékoliv zmìny musejí bıt šíøeny také v souladu s GPL.
 <p>
-Audacity was build using wxWindows, a software library which
-is released under the less-restrictive LGPL.  
-For more information, please visit 
+Audacity byla sestavena s vyuitím wxWindows, softwarové knihovny, která je uvolnìna v souladu s ménì restriktivní licencí LGPL. Další informace získáte na 
 <a href="http://www.wxwindows.org">wxwindows.org</a>.
 <p>
-The authors of Audacity decided to release it under the GPL
-for many reasons.  Some of us do it out of generosity.
-Some of us do it for moral reasons, because we feel that
-all software should be free, while others of us believe that
-there is a need for both free and commercial software in the
-world.
+Autoøi Audacity se rozhodli pro licenci GPL z mnoha dùvodù. Nìkteøí z nás ze štìdrosti. Nìkteøí z nás z morálních dùvodù, protoe cítíme, e všechen software by mìl bıt svobodnı, zatímco jiní z nás vìøí, e na svìtì je zapotøebí svobodného i komerèního softwaru.
 <p>
-One reason Audacity is free is so that it will be more popular.
-Many of us would rather see a million people happily using
-Audacity for free than have a thousand people pay us.
-Most users are more friendly when they get something for free.
-
-<p>
-Yet another reason is that it encourages collaboration.  If Audacity
-was shareware, it is unlikely that dozens of people around the
-world would have contributed code, bug fixes, documentation,
-and graphics.
-
+Jeden z dùvodù proè je Audacity free je, e tak bude populárnìjší. Mnozí z nás radìji uvidí milion lidí šastnì a svobodnì uívajících Audacity, ne tisíc platících. Vìtšina uivatelù je také pøátelštìjších, kdy dostanou nìco zdarma.<p>
+eštì dalším dùvodem je, e to stimuluje ke spolupráci. Kdyby Audacity byla shareware, je velmi nepravdìpodobné, e by spousta lidí po celém svìtì chtìlo pøispívat ke kódu, opravám chyb, dokumentaci a grafice.
 <p>
 <a name="g2"></a>
 <font size=+1><b>
-2. Who Developed Audacity?<br>
+2. Kdo napsal Audacity?<br>
 </b></font>
 
 <p>
 
-Audacity was started in the fall of 1999
-by Dominic Mazzoni while he was a graduate
-student at Carnegie Mellon University in Pittsburgh, PA, USA.
-He was working on a research project with his advisor, Professor
-Roger Dannenberg, and they needed a tool that would let them
-visualize audio analysis algorithms.  Over time, this program
-developed into a general audio editor, and other people started
-helping out.
+Práce na Audacity byla zapoèata na sklonku roku 1999 Dominicem Mazzonim, v dobì kdy konèil studium na Carnegie Mellon University v Pittsburghu, PA, USA. Pracoval na vızkumném projektu se svım odbornım poradcem, profesorem Rogerem Dannenbergem a potøebovali nástroj, kterı by jim umoòoval vizualizovat algoritmy pro analızu zvuku. Postupem èasu se tento program vyvinul ve všeobecnı audio editor, a zaèali pomáhat další lidé.
 <p>
-Today, Audacity is developed using Sourceforge, an online site
-that allows people around the world to collaborate on free
-software projects.  See <a href="http://www.sourceforge.net"
->sourceforge.net</a> for more information.
-Dozens of people have contributed to
-Audacity, and progress is continually accelerating.
-
+V souèasné dobì je Audacity vyvíjena s vyuitím Sourceforge, internetovımi stránkami, které umoòují lidem na celém svìtì spolupracovat na svobodnıch softwarovıch projektech. Další informace získáte na sourceforge.net. Spousta lidí u k Audacity pøispìla a vıvoj se stále zrychluje.
 <p>
 
 <a name="g3"></a>
 <font size=+1><b>
-3. How can I help to improve Audacity?<br>
+3. Jak mùu pomoct s vylepšením Audacity?<br>
 </b></font>
 
-Find bugs and tell us about them.
-Write code.  Translate it into your language.  Draw graphics.
-Join the Audacity-Users mailing list.  Send us money.
+Vyhledávejte chyby a dejte nám o nich zprávu. Programujte. Pøelote ji do své rodné øeèi. Namalujte grafiku. Pøipojte se k uivatelské e-mailové konferenci. Pošlete nám peníze.
 <p>
-Please see our new <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Donation</a>
-page for more details on how you can help out.
+Podívejte se prosím na naší novou <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Darovací</a>
+ stránku, jestli chcete získat podrobnìjší informace o tom jak mùete pomoci.
 <p>
 
 <a name="g4"></a>
 <font size=+1><b>
-4. I found a bug!  Now what?<br>
+4. Našel jsem chybu! Co teï?<br>
 </b></font>
 <p>
-
-The most important thing when reporting a bug is to be
-as specific as possible.  Give us enough information that
-we can reproduce the bug ourselves, otherwise it's unlikely
-that we'll be able to fix it.
+Nejdùleitìjší vìc pøi nahlašování chyb je dodat co nejpøesnìjší popis. Dejte nám dostatek informací, abychom chybu mohli zopakovat, jinak je krajnì nepravdìpodobné, e ji budeme schopni opravit.
 <p>
-Be sure to let us know what operating system you run
-(such as Windows 98, MacOS 9.1, RedHat Linux 7.1, etc.)
-and any other information about your computer that you
-think might be relevant.
+Dejte pozor abyste nahlásili jakı operaèní systém pouíváte (jako napø. Windows 98, MacOS 9.1, RedHat Linux 7.1, atd.). Nahlašte také jakékoliv jiné informace o vašem poèítaèi, o kterıch si myslíte, e by mohly bıt relevantní.
 <p>
-Then, can you reproduce the bug?  If it happens consistently,
-tell us the exact sequence of events which causes the bug to
-occur.  If you get an error message, make sure you send us
-the exact text of the error message.
+Daøí se vám chybu zopakovat? Jestlie k chybì dochází vdy, napište nám pøesnı sled událostí, které k ní vedou. Jestlie dostáváte chybové hlášení, dejte pozor abyste nám poslali jeho pøesnı text.
 <p>
-
-We want to squash all of the bugs!  Thanks for taking the time to
-help us track them down.
-
+Chceme vychytat všechny mouchy! Dìkujeme vám za èas, kterı strávíte jejich vyhledáváním.
 <p>
 <br>
 <p>
 
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">Installation</font>
+<font size="+1">Instalace</font>
 </td></tr></table>
 
 <p>
 <a name="i1"></a>
 <font size=+1><b>
-1. Windows: What do I do with the .exe file?<br>
+1. Windows: Co mám dìlat s tím .exe souborem?<br>
 </b></font>
 
-<p>From the browser, select the option to "Run from current
-location".  This launches the Audacity setup program, which will install the
-Audacity program files and create an entry in the start menu.
+<p>V prohlíeèi zvolte "Otevøít z aktuálního umístìní". Spustí se instalaèní program Audacity, kterı nainstaluje programové soubory a vytvoøí poloku ve startovním menu.
 <p>
-If you already downloaded the file, just double-click on it to
-start the installer.
+Pokud jste soubor u stáhli, prostì na nìm 2x kliknìte a instalace se spustí.
 <p>
-If you prefer not to use the Installer program, you can also
-download Audacity as a ZIP file, which you can decompress
-using WinZip.
-
+Pokud upøednostòujete NEpouívat instalèní program, mùete Audacity stáhnout jako ZIP soubor, kterı se dá rozbalit napø. pomocí programu WinZip.
 <p>
 <a name="i2"></a>
 <font size=+1><b>
-2. Windows: How do I uninstall Audacity?<br>
+2. Windows: Jak mám Audacity odinstalovat?<br>
 </b></font>
 
-<p><font size=+0>Audacity can be uninstalled by opening
-Add/Remove Programs in
-the Control Panel.  Select "Audacity" from the list and
-click the button
-"Add/Remove".
-This launches the Audacity uninstall program.
+<p><font size=+0>Audacity se dá odinstalovat, kdy otevøete poloku Pøidat nebo odebrat programy v Ovládacích panelech. Ze seznamu zvolte "Audacity" a kliknìte na tlaèítko "Pøidat/Odebrat". Tím spustíte odinstalaèní program.
 
 <p>
-<a name="i3"></a> <font size=+1><b> 3. Mac: What do I do with
-the .sit file?<br> </b></font>
+<a name="i3"></a> <font size=+1><b> 3.  Mac: Co mám dìlat s tím .sit souborem?<br> </b></font>
 
 <p>
-You need a recent version of StuffIt Expander.  StuffIt Expander
-comes with all Macintoshes and is usually configured by default
-with all Mac web browsers.  If Audacity does not decompress
-automatically, drag "audacity.sit" to StuffIt Expander to decompress
-it.
+Potøebujete novou verzi StuffIt Expanderu. StuffIt Expander je souèástí všech Macintoshù a obvykle je konfigurován jako vıchozí pro všechny Mac web browsery. Pokud se Audacity nerozbalí automaticky, pøetáhnìte "audacity.sit" na StuffIt Expander, èím k rozbalení dojde.
 <p>
-There is no need to install Audacity.  Just drag the Audacity
-folder to your Applications folder, or wherever else you would
-like to put it.  To uninstall, just drag the entire folder to
-the trash.
-
+Audacity není tøeba instalovat. Prostì pøetáhnìte adresáø Audacity do svého adresáøe s aplikacemi, nebo kamkoliv jinam, kde ji chcete mít. Pokud chcete odinstalovat, pøetáhnìte celı adresáø do koše.
 <p>
 <a name="i4"></a>
 <font size=+1><b>
-4. Unix: Why do I get failed dependencies when installing from the RPM?
+4.  Unix: Proè mi to hlásí chybìjící závislosti, kdy instaluju z RPM?
 <br></b></font>
 
-<p><font size=+0>First, ensure that the wxGTK is installed; a link can be found
-from our Linux page - http://audacity.sourceforge.net/linux.html. If the RPM
-still fails to install, this is an unresolved issue.  Simply install the RPM
-using the flag --nodeps.</font>
+<p><font size=+0>Nejprve se ujistìte, e máte naistalováno wxGTK; odkaz mùete nají na naší Linuxové stránce - http://audacity.sourceforge.net/linux.html. Jestlie se RPM stále odmítá naistalovat, je to nìjakı nevysvìtlitelnı problém. Prostì instalujte s pouitím volby --nodeps.</font>
 
 <p>
 <a name="i5"></a>
 <font size=+1><b>
 
-5. Unix: Why do I get an error while loading
-	the shared library libwx_gtk.so?<br></b></font>
+5. Unix: Proè mi to hlásí chybu bìhem nahrávání sdílené knihovny libwx_gtk.so?<br></b></font>
 
-<p><font size=+0>This could be one of two problems:
-<br>- If you installed the wxWindows RPM, be sure to run "ldconfig" (as
-root) so your system knows about the new library.
+<p><font size=+0>Mùe to bıt jeden z tìchto problémù:
+<br>- Jestlie jste instalovali RPM wxWindows, ujistìte se, e jste spustili "ldconfig" (jako root), tj. e váš systém ví o nové knihovnì.
 
-<br><br>- If you installed wxWindows
-from source, it may have been installed in /usr/local, but /usr/local/lib may
-not be in your library path. Add /usr/local/lib to the file "/etc/ld.so.conf"
-and then run "ldconfig". You may also want to add "/usr/local/bin" to your path,
-so that programs can find the "wx-config" utility.<br>
+<br><br>- Jestlie jste instalovali wxWindows ze zdrojového kódu, mùe bıt instalováno v /usr/local, ale /usr/local/lib nemusí odpovídat vaší nastavené cestì ke knihovnám. Pøidejte /usr/local/lib do souboru "/etc/ld.so.conf" a spuste "ldconfig". Moná také budete chtít do své cesty pøidat "/usr/local/bin", take programy najdou utilitu "wx-config".<br>
 
 <p>
 <table cellpadding=6 width=100%><tr><td bgcolor="#ffd0d0" align="center">
-<font size="+1">Using Audacity</font>
+<font size="+1">Uívání Audacity</font>
 </td></tr></table>
 
 <p>
