@@ -5,6 +5,7 @@
   KeyConfigPrefs.h
 
   Brian Gunlogson
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -13,6 +14,7 @@
 
 #include <wx/defs.h>
 #include <wx/textctrl.h>
+#include <wx/string.h>
 
 #include "PrefsPanel.h"
 #include "../Project.h"
@@ -23,7 +25,9 @@ class wxStaticText;
 class wxListCtrl;
 class wxListEvent;
 class wxWindow;
+
 class SysKeyTextCtrl;
+class CommandManager;
 
 class KeyConfigPrefs:public PrefsPanel {
 
@@ -34,13 +38,16 @@ class KeyConfigPrefs:public PrefsPanel {
 
  private:
    void AssignDefaults(wxCommandEvent& event);
-   void RebuildMenus(wxCommandEvent& event);
-   void CmdsCfgLocation(wxCommandEvent& event);
+   void OnSet(wxCommandEvent& event);
+   void OnClear(wxCommandEvent& event);
+   void OnItemSelected(wxListEvent &event);
    void RepopulateBindingsList();
 
    SysKeyTextCtrl *mCurrentComboText;
    wxListCtrl * mList;
-   AudacityProject *mAudacity;
+   CommandManager *mManager;
+   int mCommandSelected;
+   wxArrayString mNames;
 
  public:
    DECLARE_EVENT_TABLE();

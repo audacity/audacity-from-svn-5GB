@@ -5,6 +5,7 @@
   KeyConfigPrefs.cpp
 
   Brian Gunlogson
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -18,45 +19,42 @@
 #include <wx/choice.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
+#include <wx/menuitem.h>
 
 #include "../Prefs.h"
+#include "../commands/CommandManager.h"
+#include "../commands/Keyboard.h"
+
 #include "KeyConfigPrefs.h"
 
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
-#define RebuildMenusButtonID    7003
-#define ChooseCmdsCfgLocationID 7004
+#define SetButtonID             7003
+#define ClearButtonID             7004
+#define CommandsListID          7005
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
-   EVT_BUTTON(RebuildMenusButtonID, KeyConfigPrefs::RebuildMenus)
-   EVT_BUTTON(ChooseCmdsCfgLocationID, KeyConfigPrefs::CmdsCfgLocation)
+   EVT_BUTTON(SetButtonID, KeyConfigPrefs::OnSet)
+   EVT_BUTTON(ClearButtonID, KeyConfigPrefs::OnClear)
+   EVT_LIST_ITEM_SELECTED(CommandsListID, KeyConfigPrefs::OnItemSelected)
 END_EVENT_TABLE()
 
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
-   mAudacity = GetActiveProject();
-   if (!mAudacity)
+   AudacityProject *project = GetActiveProject();
+   if (!project)
       return;
+   mManager = project->GetCommandManager();
 
    topSizer = new wxBoxSizer( wxVERTICAL );
-
-   //Add label
-   topSizer->Add(
-      new wxStaticText(this, -1,
-      _("This code has undergone a rewrite. The GUI is not complete.\n"
-        "To define custom keybindings edit the 'Audacity-Commands.xml' file.\n"
-        "Click Assign Defaults to revert the menus back to default.\n"
-        "Click Rebuild Menus to reparse 'Audacity-Commands.xml' and rebuild the menus.")
-        ),
-      0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
 
    // This code for displaying keybindings is similar to code in MousePrefs.
    // Would be nice to create a new 'Bindings' class which both 
    // KeyConfigPrefs and MousePrefs use.
-   mList = new wxListCtrl( this, -1 ,
-      wxDefaultPosition, wxSize(100,100),
+   mList = new wxListCtrl( this, CommandsListID ,
+      wxDefaultPosition, wxSize(500,250),
       wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
       );
 
@@ -65,65 +63,43 @@ PrefsPanel(parent)
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
    mList->InsertColumn(0, _T(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(1, _("Key Combination"), wxLIST_FORMAT_RIGHT );
-   mList->InsertColumn(2, _("Command Action"),  wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(1, _("Command"),  wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(2, _("Key Combination"), wxLIST_FORMAT_RIGHT );
 
-   // TODO
-   //gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
+   RepopulateBindingsList();
 
    mList->SetColumnWidth( 0, 0 ); // First column width is zero, to hide it.
-//   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+   //   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
    // Would like to use wxLIST_AUTOSIZE but
    // wxWindows does not look at the size of column heading.
-   mList->SetColumnWidth( 1, 100 ); // Set width to 100 pixels.
-   mList->SetColumnWidth( 2, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( 1, 250 );
+   mList->SetColumnWidth( 2, 212 );
 
    topSizer->Add( mList, 1, 
-                       wxGROW | wxALL, GENERIC_CONTROL_BORDER);
+                  wxGROW | wxALL, GENERIC_CONTROL_BORDER);
 
    //Add key combo text box
-   mCurrentComboText = NULL;
    mCurrentComboText = new SysKeyTextCtrl(
       this, CurrentComboID, "",
       wxDefaultPosition, wxSize(115, -1), 0 );
 
-   wxStaticText * pComboLabel = new wxStaticText(this, -1,
-      "To see the name for a key combination, type it in the box on the left.\n");
+   wxButton *pSetButton = new wxButton(this, SetButtonID, _("Set"));
+   wxButton *pClearButton = new wxButton(this, ClearButtonID, _("Clear"));
 
    wxBoxSizer * pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
 
    pComboLabelSizer->Add( mCurrentComboText, 0,
                        wxALL, GENERIC_CONTROL_BORDER);
-   pComboLabelSizer->Add( pComboLabel, 0,
+   pComboLabelSizer->Add( pSetButton, 0,
+                       wxALL, GENERIC_CONTROL_BORDER);
+   pComboLabelSizer->Add( pClearButton, 0,
                        wxALL, GENERIC_CONTROL_BORDER);
    topSizer->Add(pComboLabelSizer, 0,
                        wxALL, GENERIC_CONTROL_BORDER);
 
    //Add assign defaults button
    topSizer->Add(new wxButton(this, AssignDefaultsButtonID, _("Assign Defaults")), 0,
-                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   //Add rebuild menus button
-   topSizer->Add(new wxButton(this, RebuildMenusButtonID, _("Rebuild Menus")), 0,
-                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   //Add change commands.cfg location button
-   topSizer->Add(new wxButton(this, ChooseCmdsCfgLocationID, _("Change Audacity-Commands.xml Location")), 0,
-                       wxALIGN_CENTER_HORIZONTAL|wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   bool bFalse = false;
-   //Check commands.cfg location status
-   wxString locationStatus;
-   if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
-      locationStatus += wxString("\n* ") + wxString(_("Queued for location change"));
-   if(gPrefs->Read("/DeleteCmdCfgLocation", &bFalse))
-      locationStatus += wxString("\n* ") + wxString(_("Location change failed"));
-
-   //Add label
-   topSizer->Add(
-            new wxStaticText(this, -1,
-                             /*gCommandsCfgLocation*/"" + locationStatus),
-            0, wxALIGN_LEFT|wxALL, GENERIC_CONTROL_BORDER);
+                 wxALL, GENERIC_CONTROL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
@@ -133,11 +109,56 @@ PrefsPanel(parent)
 
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
+
+   mCommandSelected = -1;
+}
+
+void KeyConfigPrefs::OnSet(wxCommandEvent& event)
+{
+   if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
+      return;
+
+   mList->SetItem( mCommandSelected, 2, mCurrentComboText->GetValue() );
+}
+
+void KeyConfigPrefs::OnClear(wxCommandEvent& event)
+{
+   mCurrentComboText->Clear();
+
+   if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
+      return;
+
+   mList->SetItem( mCommandSelected, 2, "" );
+}
+
+void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
+{
+   mCommandSelected = event.GetIndex();
+   if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount()) {
+      mCurrentComboText->SetLabel("");
+      return;
+   }
+   
+   wxString key = mManager->GetKeyFromName(mNames[mCommandSelected]);
+   mCurrentComboText->Clear();
+   mCurrentComboText->AppendText(key);
+   mCurrentComboText->SetFocus();
 }
 
 void KeyConfigPrefs::RepopulateBindingsList()
 {
    mList->DeleteAllItems(); // Delete contents, but not the column headers.
+   mNames.Clear();
+   mManager->GetAllCommandNames(mNames, false);
+   unsigned int i;
+   for(i=0; i<mNames.GetCount(); i++) {
+      mList->InsertItem( i, _T("") );
+
+      wxString label = mManager->GetLabelFromName(mNames[i]);
+      label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
+      mList->SetItem( i, 1, label );
+      mList->SetItem( i, 2, mManager->GetKeyFromName(mNames[i]) );
+   }
 
    // TODO
    //gAudacityProjects[0]->GetCommands()->FillKeyBindingsList(mList);
@@ -146,55 +167,52 @@ void KeyConfigPrefs::RepopulateBindingsList()
 
 void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 {
-#if 0
+   unsigned int i;
 
-   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
-   {
-      if(gAudacityProjects[i])
-      {
-         gAudacityProjects[i]->SetMenuBar(NULL);
-         gAudacityProjects[i]->GetCommands()->AssignDefaults();
-         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
-         gAudacityProjects[i]->UpdateMenus();
-      }
+   for(i=0; i<mNames.GetCount(); i++) {
+      mList->SetItem( i, 2, mManager->GetDefaultKeyFromName(mNames[i]) );
    }
-
-   #endif
-
-   // Update the list that is displayed on screen.
-   RepopulateBindingsList();
-}
-
-void KeyConfigPrefs::RebuildMenus(wxCommandEvent& event)
-{
-   #if 0
-
-   for(unsigned int i = 0; i < gAudacityProjects.GetCount(); i++)
-   {
-      if(gAudacityProjects[i])
-      {
-         gAudacityProjects[i]->SetMenuBar(NULL);
-         gAudacityProjects[i]->GetCommands()->Reparse();
-         gAudacityProjects[i]->SetMenuBar(gAudacityProjects[i]->GetCommands()->GetMenuBar("appmenu"));
-         gAudacityProjects[i]->UpdateMenus();
-      }
-   }
-
-   #endif
-
-   // Update the list that is displayed on screen.
-   RepopulateBindingsList();
-}
-
-void KeyConfigPrefs::CmdsCfgLocation(wxCommandEvent& event)
-{
-   gPrefs->Write("/QDeleteCmdCfgLocation", true);
-   wxMessageBox(_("You will be prompted for a new location when Audacity is next restarted.\n"
-      "Please close all open Audacity projects."));
 }
 
 bool KeyConfigPrefs::Apply()
 {
+   unsigned int i;
+   wxListItem item;
+
+   gPrefs->SetPath("/NewKeys");
+
+   //
+   // Only store the key in the preferences if it's different 
+   // than the default value.
+   //
+
+   item.m_col = 2;
+   for(i=0; i<mNames.GetCount(); i++) {
+      item.m_itemId = i;
+      mList->GetItem(item);
+      wxString name = mNames[i];
+      wxString key = item.m_text;
+      wxString defaultKey = mManager->GetDefaultKeyFromName(name);
+
+      if (gPrefs->HasEntry(name)) {
+         wxString oldKey = gPrefs->Read(name, key);
+         if (oldKey != key)
+            gPrefs->Write(name, key);
+         if (key == defaultKey)
+            gPrefs->DeleteEntry(name);
+      }
+      else {
+         if (key != defaultKey)
+            gPrefs->Write(name, key);
+      }
+   }
+
+   gPrefs->SetPath("/");
+
+   for(i=0; i<gAudacityProjects.GetCount(); i++)
+      if(gAudacityProjects[i])
+         gAudacityProjects[i]->RebuildMenuBar();
+
    return true;
 }
 
@@ -228,268 +246,7 @@ SysKeyTextCtrl::~SysKeyTextCtrl()
 //DM: On Linux, now it works except for Ctrl+3...Ctrl+8 (April/2003)
 void SysKeyTextCtrl::OnKey(wxKeyEvent& event)
 {
-   wxString newStr = "";
-
-   //
-   // Code Duplication alert: this code is now in commands/Keyboard.cpp
-   //
-
-   long key = event.GetKeyCode();
-
-   if(event.ControlDown())
-      newStr += "Ctrl+";
-
-   if(event.AltDown())
-      newStr += "Alt+";
-
-   if(event.ShiftDown())
-      newStr += "Shift+";
-
-   if (event.ControlDown() && key >= 1 && key <= 26)
-      newStr += (char)(64 + key);
-   else if (key >= 33 && key <= 126)
-      newStr += (char)key;
-   else
-   {
-      switch(key)
-      {
-      case WXK_BACK:
-         newStr += "Backspace";
-         break;
-      case WXK_DELETE:
-         newStr += "Delete";
-         break;
-      case WXK_SPACE:
-         newStr += "Spacebar";
-         break;
-      case WXK_PRIOR:
-         newStr += "PageUp";
-         break;
-      case WXK_NEXT:
-         newStr += "PageDown";
-         break;
-      case WXK_END:
-         newStr += "End";
-         break;
-      case WXK_HOME:
-         newStr += "Home";
-         break;
-      case WXK_LEFT:
-         newStr += "Left";
-         break;
-      case WXK_UP:
-         newStr += "Up";
-         break;
-      case WXK_RIGHT:
-         newStr += "Right";
-         break;
-      case WXK_DOWN:
-         newStr += "Down";
-         break;
-      case WXK_INSERT:
-         newStr += "Insert";
-         break;
-      case WXK_NUMPAD0:
-         newStr += "NUMPAD0";
-         break;
-      case WXK_NUMPAD1:
-         newStr += "NUMPAD1";
-         break;
-      case WXK_NUMPAD2:
-         newStr += "NUMPAD2";
-         break;
-      case WXK_NUMPAD3:
-         newStr += "NUMPAD3";
-         break;
-      case WXK_NUMPAD4:
-         newStr += "NUMPAD4";
-         break;
-      case WXK_NUMPAD5:
-         newStr += "NUMPAD5";
-         break;
-      case WXK_NUMPAD6:
-         newStr += "NUMPAD6";
-         break;
-      case WXK_NUMPAD7:
-         newStr += "NUMPAD7";
-         break;
-      case WXK_NUMPAD8:
-         newStr += "NUMPAD8";
-         break;
-      case WXK_NUMPAD9:
-         newStr += "NUMPAD9";
-         break;
-      case WXK_MULTIPLY:
-         newStr += "*";
-         break;
-      case WXK_ADD:
-         newStr += "+";
-         break;
-      case WXK_SUBTRACT:
-         newStr += "-";
-         break;
-      case WXK_DECIMAL:
-         newStr += ".";
-         break;
-      case WXK_DIVIDE:
-         newStr += "/";
-         break;
-      case WXK_F1:
-         newStr += "F1";
-         break;
-      case WXK_F2:
-         newStr += "F2";
-         break;
-      case WXK_F3:
-         newStr += "F3";
-         break;
-      case WXK_F4:
-         newStr += "F4";
-         break;
-      case WXK_F5:
-         newStr += "F5";
-         break;
-      case WXK_F6:
-         newStr += "F6";
-         break;
-      case WXK_F7:
-         newStr += "F7";
-         break;
-      case WXK_F8:
-         newStr += "F8";
-         break;
-      case WXK_F9:
-         newStr += "F9";
-         break;
-      case WXK_F10:
-         newStr += "F10";
-         break;
-      case WXK_F11:
-         newStr += "F11";
-         break;
-      case WXK_F12:
-         newStr += "F12";
-         break;
-      case WXK_F13:
-         newStr += "F13";
-         break;
-      case WXK_F14:
-         newStr += "F14";
-         break;
-      case WXK_F15:
-         newStr += "F15";
-         break;
-      case WXK_F16:
-         newStr += "F16";
-         break;
-      case WXK_F17:
-         newStr += "F17";
-         break;
-      case WXK_F18:
-         newStr += "F18";
-         break;
-      case WXK_F19:
-         newStr += "F19";
-         break;
-      case WXK_F20:
-         newStr += "F20";
-         break;
-      case WXK_F21:
-         newStr += "F21";
-         break;
-      case WXK_F22:
-         newStr += "F22";
-         break;
-      case WXK_F23:
-         newStr += "F23";
-         break;
-      case WXK_F24:
-         newStr += "F24";
-         break;
-      case WXK_PAGEUP:
-         newStr += "PageUp";
-         break;
-      case WXK_PAGEDOWN:
-         newStr += "PageDown";
-         break;
-      case WXK_NUMPAD_ENTER:
-         newStr += "NUMPAD_ENTER";
-         break;
-      case WXK_NUMPAD_F1:
-         newStr += "NUMPAD_F1";
-         break;
-      case WXK_NUMPAD_F2:
-         newStr += "NUMPAD_F2";
-         break;
-      case WXK_NUMPAD_F3:
-         newStr += "NUMPAD_F3";
-         break;
-      case WXK_NUMPAD_F4:
-         newStr += "NUMPAD_F4";
-         break;
-      case WXK_NUMPAD_HOME:
-         newStr += "NUMPAD_HOME";
-         break;
-      case WXK_NUMPAD_LEFT:
-         newStr += "NUMPAD_LEFT";
-         break;
-      case WXK_NUMPAD_UP:
-         newStr += "NUMPAD_UP";
-         break;
-      case WXK_NUMPAD_RIGHT:
-         newStr += "NUMPAD_RIGHT";
-         break;
-      case WXK_NUMPAD_DOWN:
-         newStr += "NUMPAD_DOWN";
-         break;
-      case WXK_NUMPAD_PRIOR:
-         newStr += "NUMPAD_PAGEUP";
-         break;
-      case WXK_NUMPAD_PAGEUP:
-         newStr += "NUMPAD_PAGEUP";
-         break;
-      case WXK_NUMPAD_NEXT:
-         newStr += "NUMPAD_PAGEDOWN";
-         break;
-      case WXK_NUMPAD_PAGEDOWN:
-         newStr += "NUMPAD_PAGEDOWN";
-         break;
-      case WXK_NUMPAD_END:
-         newStr += "NUMPAD_END";
-         break;
-      case WXK_NUMPAD_BEGIN:
-         newStr += "NUMPAD_HOME";
-         break;
-      case WXK_NUMPAD_INSERT:
-         newStr += "NUMPAD_INSERT";
-         break;
-      case WXK_NUMPAD_DELETE:
-         newStr += "NUMPAD_DELETE";
-         break;
-      case WXK_NUMPAD_EQUAL:
-         newStr += "NUMPAD_EQUAL";
-         break;
-      case WXK_NUMPAD_MULTIPLY:
-         newStr += "NUMPAD_MULTIPLY";
-         break;
-      case WXK_NUMPAD_ADD:
-         newStr += "NUMPAD_ADD";
-         break;
-      case WXK_NUMPAD_SUBTRACT:
-         newStr += "NUMPAD_SUBTRACT";
-         break;
-      case WXK_NUMPAD_DECIMAL:
-         newStr += "NUMPAD_DECIMAL";
-         break;
-      case WXK_NUMPAD_DIVIDE:
-         newStr += "NUMPAD_DIVIDE";
-         break;
-      default:
-         return; // Don't change it if we don't recognize the key
-      }
-   }
-
-   SetValue(newStr);
+   SetValue(KeyEventToKeyString(event));
 }
 
 //BG: Trap WM_CHAR
