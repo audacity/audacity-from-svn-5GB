@@ -846,11 +846,12 @@ bool LabelTrack::PasteSelectedText()
    // if the mouse is clicked in text box
    if (mInBox) {
       // if text data is available
-      if (wxTheClipboard->Open()) {
-         if (wxTheClipboard->IsSupported( wxDF_TEXT )) {
+      if (wxTheClipboard->IsSupported(wxDF_TEXT))
+      {
+         if (wxTheClipboard->Open()) {
             wxTheClipboard->GetData( data );
+            wxTheClipboard->Close();
          }
-         wxTheClipboard->Close();
       }
 
       // if there is some highlighted text
@@ -892,12 +893,9 @@ bool LabelTrack::PasteSelectedText()
 
 
 /// @return true if the text data is available in the clipboard, false otherwise
-bool LabelTrack::IsTextClipSupported() {
-   if (wxTheClipboard->Open()) {
-      if (wxTheClipboard->IsSupported( wxDF_TEXT ))
-         return true;
-   }
-   return false;
+bool LabelTrack::IsTextClipSupported()
+{
+   return wxTheClipboard->IsSupported(wxDF_TEXT);
 }
 
 
