@@ -76,19 +76,19 @@ libSoundTouch.a: soundtouch-recursive
 
 # PortAudio
 portaudio/pa_unix_oss/portaudio.a:
-	$(MAKE) -C cd portaudio/pa_unix_oss
+	$(MAKE) -C portaudio/pa_unix_oss
 
 portaudio-v19/lib/libportaudio.a:
-	$(MAKE) -C cd portaudio-v19
+	$(MAKE) -C portaudio-v19
 
 portaudio/pa_mac_core/portaudio.a:
-	$(MAKE) -C cd portaudio/pa_mac_core
+	$(MAKE) -C portaudio/pa_mac_core
 
 portmixer/px_unix_oss/portmixer.a:
-	$(MAKE) -C cd portmixer/px_unix_oss
+	$(MAKE) -C portmixer/px_unix_oss
 
 portmixer/px_mac_core/portmixer.a:
-	$(MAKE) -C cd portmixer/px_mac_core
+	$(MAKE) -C portmixer/px_mac_core
 
 
 # Utility rules
