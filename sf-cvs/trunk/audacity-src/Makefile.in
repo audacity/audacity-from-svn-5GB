@@ -82,6 +82,6 @@ distclean: clean
 	$(MAKE) -C lib-src distclean
 
 	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
-	rm -f lib-src/expat/Makefile locale/Makefile src/configunix.h
+	rm -f locale/Makefile src/configunix.h
 	rm -f config.log config.status
 
