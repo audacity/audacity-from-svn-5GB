@@ -7,6 +7,10 @@ in Audacity.
 Known bugs to fix:
 -----------------------------------------------------------
 
+- Amplify's "avoid clipping" doesn't always work because
+  of roundoff errors...it needs to be more conservative
+  about not clipping.
+- Parsing XML files doesn't work on OS X.
 - Opening 21 windows crashes (Mac OS X, repeatable - don't
   open all at once, rather close, then open repeatedly...)
 - Open... shouldn't create a new project window, in

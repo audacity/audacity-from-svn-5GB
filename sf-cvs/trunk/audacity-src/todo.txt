@@ -105,6 +105,7 @@ Internationalization:
   working directory for language directories
 
 UI::
+- Allow opening multiple files (use wxFileDialog wxMULTIPLE option)
 - Label the "Left" and "Right" channels!
 - Select None
 - Small toolbar option
