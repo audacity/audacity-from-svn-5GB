@@ -134,11 +134,16 @@ void MixerToolBar::InitializeMixerToolBar()
 
    #if USE_PORTMIXER
    unsigned int    j;
+   int leftPosition = 355;
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
+   // Don't display it if there are no choices!
+   if (inputSources.GetCount() == 0)
+      leftPosition = -1000;
+
    mInputSourceChoice = new wxChoice(this, InputSourceID,
-                                     wxPoint(355, 2),
+                                     wxPoint(leftPosition, 2),
                                      wxSize(-1, 23));
    for(j = 0; j < inputSources.GetCount(); j++)
       mInputSourceChoice->Append(inputSources[j]);
