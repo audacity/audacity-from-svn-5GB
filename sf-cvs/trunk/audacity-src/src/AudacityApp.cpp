@@ -34,16 +34,6 @@
 #include <sys/stat.h>
 #endif
 
-#ifdef __MACOS9__
-#include <AEDataModel.h>
-#include <AppleEvents.h>
-#include <Files.h>
-#endif
-
-#ifdef __MACOSX__
-#include <ApplicationServices/ApplicationServices.h>
-#endif
-
 #include "AudacityApp.h"
 
 #include "AboutDialog.h"
@@ -154,8 +144,6 @@ void QuitAudacity(bool bForce)
    gFreqWindow = NULL;
    gParentFrame = NULL;
 
-
-
    if (gControlToolBarStub) {
       delete gControlToolBarStub;
       gControlToolBarStub = NULL;
@@ -201,84 +189,53 @@ IMPLEMENT_APP(AudacityApp)
 
 #ifdef __WXMAC__
 
-#define __MOVIES__      /* Apple's Movies.h not compatible with Audacity */
-/*#define __MACHELP__*/
-
-#include <wx/mac/private.h>
-
-/* Declare Static functions */
-static pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
-                    AppleEvent * theReply, long Refcon);
-pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
-                         long Refcon);
-                         
-pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
-                    AppleEvent * theReply, long Refcon)
+// in response of an open-document apple event
+void AudacityApp::MacOpenFile(const wxString &fileName)
 {
-   QuitAudacity();
-   return noErr;
-}
-
-pascal OSErr AEOpenPrefs(const AppleEvent * theAppleEvent,
-                         AppleEvent * theReply,
-                         long Refcon)
-{
-   PrefsDialog dialog(GetActiveProject());
-   dialog.ShowModal();
-   return noErr;
-}
-
-/* prototype of MoreFiles fn, included in wxMac already */
-
-pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply,
-                         long Refcon)
-{
-   AEDescList docList;
-   AEKeyword keywd;
-   DescType returnedType;
-   Size actualSize;
-   long itemsInList;
-   FSSpec theSpec;
-   OSErr err;
-   short i;
-
-   err =
-       AEGetParamDesc(theAppleEvent, keyDirectObject, typeAEList,
-                      &docList);
-   if (err != noErr)
-      return err;
-
-   err = AECountItems(&docList, &itemsInList);
-   if (err != noErr)
-      return err;
-
-   for (i = 1; i <= itemsInList; i++) {
-      AEGetNthPtr(&docList, i, typeFSS, &keywd, &returnedType,
-                  (Ptr) & theSpec, sizeof(theSpec), &actualSize);
-      wxString fName = wxMacFSSpec2MacFilename(&theSpec);
-
-      AudacityProject *project = GetActiveProject();
-      if (project == NULL || !project->GetTracks()->IsEmpty()) {
-         project = CreateNewAudacityProject(gParentWindow);
-      }
-      project->OpenFile(fName);
+   AudacityProject *project = GetActiveProject();
+   if (project == NULL || !project->GetTracks()->IsEmpty()) {
+      project = CreateNewAudacityProject(gParentWindow);
    }
+   project->OpenFile(fileName);
+}
 
-   return noErr;
+// in response of a print-document apple event
+void AudacityApp::MacPrintFile(const wxString &fileName)
+{
+   AudacityProject *project = GetActiveProject();
+   if (project == NULL || !project->GetTracks()->IsEmpty()) {
+      project = CreateNewAudacityProject(gParentWindow);
+   }
+   project->OpenFile(fileName);
+}
+
+// in response of a open-application apple event
+void AudacityApp::MacNewFile()
+{
+   // This method should only be used on the Mac platform
+   // when no project windows are open.
+ 
+   if(gAudacityProjects.GetCount() == 0)
+      CreateNewAudacityProject(gParentWindow);
+}
+
+// in response of a reopen-application apple event
+void AudacityApp::MacReopenApp()
+{
+   // Not sure what to do here...bring it to the foreground???
 }
 #endif
 
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
-#define globalNewID 4750
-#define globalOpenID 4751
-
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #ifdef __WXMAC__
-   EVT_MENU(globalNewID, AudacityApp::OnMenuNew)
-   EVT_MENU(globalOpenID, AudacityApp::OnMenuOpen)
+   EVT_MENU(wxID_NEW, AudacityApp::OnMenuNew)
+   EVT_MENU(wxID_OPEN, AudacityApp::OnMenuOpen)
+   EVT_MENU(wxID_ABOUT, AudacityApp::OnMenuAbout)
+   EVT_MENU(wxID_PREFERENCES, AudacityApp::OnMenuPreferences)
+   EVT_MENU(wxID_EXIT, AudacityApp::OnMenuExit)
 #endif
-
 END_EVENT_TABLE()
 
 // The `main program' equivalent, creating the windows and returning the
@@ -434,25 +391,6 @@ bool AudacityApp::OnInit()
 
 #ifdef __WXMAC__
 
-#ifdef __MACOSX__
-   EnableMenuCommand(NULL, kHICommandPreferences);
-#endif
-
-   AEInstallEventHandler(kCoreEventClass,
-                         kAEShowPreferences,
-                         NewAEEventHandlerUPP(AEOpenPrefs), 0, 0);   
-
-   // Install AppleEvent handlers (allows us to open documents
-   // that are dragged to our application's icon)
-
-   AEInstallEventHandler(kCoreEventClass,
-                         kAEOpenDocuments,
-                         NewAEEventHandlerUPP(AEOpenFiles), 0, 0);
-   AEInstallEventHandler(kCoreEventClass,
-                         kAEQuitApplication,
-                         NewAEEventHandlerUPP(AEQuit), 0, 0);
-
-
    // On the Mac, users don't expect a program to quit when you close the last window.
    // Create an offscreen frame with a menu bar.  The frame should never
    // be visible, but when all other windows are closed, this menu bar should
@@ -461,8 +399,10 @@ bool AudacityApp::OnInit()
    gParentFrame = new wxFrame(NULL, -1, "invisible", wxPoint(5000, 5000), wxSize(100, 100));
 
    wxMenu *fileMenu = new wxMenu();
-   fileMenu->Append(globalNewID, "&New\tCtrl+N");
-   fileMenu->Append(globalOpenID, "&Open...\tCtrl+O");
+   fileMenu->Append(wxID_NEW, "&New\tCtrl+N");
+   fileMenu->Append(wxID_OPEN, "&Open...\tCtrl+O");
+   /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
+   fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCtrl+,"));
 
    wxMenuBar *menuBar = new wxMenuBar();
    menuBar->Append(fileMenu, "&File");
