@@ -304,6 +304,14 @@ SOURCE=..\src\NoteTrack.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\PitchName.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\PitchName.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\Prefs.cpp
 # End Source File
 # Begin Source File
@@ -965,6 +973,14 @@ SOURCE=..\src\blockfile\PCMAliasBlockFile.cpp
 # Begin Source File
 
 SOURCE=..\src\blockfile\PCMAliasBlockFile.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\SilentBlockFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\blockfile\SilentBlockFile.h
 # End Source File
 # Begin Source File
 
