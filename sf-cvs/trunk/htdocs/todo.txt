@@ -1,5 +1,6 @@
+- Makefile: Use "make publish" for locale files only (CVS for the rest).
 - about/news: Add an RSS feed.  Should be localized (just like regular pages).
-    Should support "conditional GET" (Etag/If-Modified-Since) if possible.
+    Should support "conditional GET" (Etag/If-Modified-Since).
 - community/users: Add buttons and banners for users to put on web sites.
 - contact: Add section for press and PR.
 - download/*: Link to release notes from download pages?
