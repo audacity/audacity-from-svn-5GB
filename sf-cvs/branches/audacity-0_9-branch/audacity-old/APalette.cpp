@@ -239,12 +239,10 @@ APalette::~APalette()
 
 void APalette::OnKeyEvent(wxKeyEvent & event)
 {
-   if (event.ControlDown()) {
+   if (event.ControlDown() || event.AltDown()) {
       event.Skip();
       return;
    }
-
-   long key = event.KeyCode();
 
    if (event.KeyCode() == WXK_SPACE) {
       if (gAudioIO->IsBusy()) {
@@ -256,7 +254,9 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
          SetStop(false);
          OnPlay();
       }
+      return;
    }
+   event.Skip();
 }
 
 int APalette::GetCurrentTool()
