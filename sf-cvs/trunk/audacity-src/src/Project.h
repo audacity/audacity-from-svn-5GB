@@ -35,6 +35,7 @@ class wxTimer;
 #include <wx/defs.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
+#include <wx/generic/dragimgg.h>
 #endif
 
 #include <wx/frame.h>
@@ -204,6 +205,15 @@ class AudacityProject:public wxFrame,
    MixerToolBar *GetMixerToolBar();
    bool IsToolBarLoaded(enum ToolBarType);
 
+ private:
+   void DecorateToolBar( wxPaintDC & dc, int iToolBar );
+   int FlowLayout( int i, int x, int y, int width, int height );
+   void BoxLayout( int width );
+   void LayoutToolBars();
+   int GetGrabberFromEvent(wxMouseEvent & event);
+ public:
+
+
    // AStatus callback methods
 
    virtual void AS_SetRate(double rate);
@@ -290,7 +300,7 @@ class AudacityProject:public wxFrame,
    wxPoint mToolBarHotspot;
 
 #ifndef __WXMAC__
-   wxDragImage *mDrag;
+   wxGenericDragImage *mDrag;
 #endif
 
    TrackPanel *mTrackPanel;
