@@ -133,35 +133,10 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
    /* --------------------------------------------------------------------------*/
 
-   /* What follows is the subset of LAME functionality we can count on. */
-
-   typedef struct {
-      unsigned long num_samples;
-      int num_channels;
-      int in_samplerate;
-
-      /* The above are the ONLY members of this structure we can reliably read
-       * or write to. */
-
-      int space[1000];  /* to liberally accomadate for the real size of the struct */
-   } lame_global_flags;
-
-   /* All functions types are suffexed with _t because gcc won't let you have a
-    * type and a variable of the same name */
-
-   /* NOTE: Lame >= 3.88 renames this to lame_init_old, depricating it in favor
-    * of a lame_global_flags *lame_init(void). However, we'll still call the
-    * old one for consistancy's sake. Please don't break this again, LAME
-    * authors... */
-   typedef void lame_init_t(lame_global_flags *);
-
-   /* NOTE: Same deal with this one: >= 3.88 changes it to: const char
-    * *get_lame_version(), but this time they don't even leave us a
-    * compatibility version! aggh! */
-   typedef void lame_version_t(lame_global_flags *, char *);
-   typedef const char *get_lame_version_t();
-
-   typedef void lame_init_params_t(lame_global_flags*);
+   struct lame_global_flags;
+   typedef lame_global_flags *lame_init_t(void);
+   typedef int lame_init_params_t(lame_global_flags*);
+   typedef const char* get_lame_version_t(void);
 
    typedef int lame_encode_buffer_t (
          lame_global_flags* gf,
@@ -178,21 +153,39 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          unsigned char*     mp3buf,
          int                mp3buf_size );
 
-   typedef int lame_encode_finish_t(
+   typedef int lame_encode_flush_t(
          lame_global_flags *gf,
          unsigned char*     mp3buf,
          int                size );
+
+   typedef int lame_close_t(lame_global_flags*);
+   
+   typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_num_channels_t(lame_global_flags*, int );
+   typedef int lame_set_quality_t(lame_global_flags*, int);
+   typedef int lame_get_quality_t(lame_global_flags*);
+   typedef int lame_set_brate_t(lame_global_flags*, int);
+   typedef int lame_get_brate_t(lame_global_flags*);
+   
 
    /* --------------------------------------------------------------------------*/
 
    class LinuxLAMEExporter : public MP3Exporter {
       private:
+         /* function pointers to the symbols we get from the library */
          lame_init_t* lame_init;
-         lame_version_t* lame_version;
-         get_lame_version_t* get_lame_version;
          lame_init_params_t* lame_init_params;
          lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
-         lame_encode_finish_t* lame_encode_finish;
+         lame_encode_flush_t* lame_encode_flush;
+         lame_close_t* lame_close;
+         get_lame_version_t* get_lame_version;
+         
+         lame_set_in_samplerate_t* lame_set_in_samplerate;
+         lame_set_num_channels_t* lame_set_num_channels;
+         lame_set_quality_t* lame_set_quality;
+         lame_get_quality_t* lame_get_quality;
+         lame_set_brate_t* lame_set_brate;
+         lame_get_brate_t* lame_get_brate;
 
          lame_global_flags *mGF;
          
@@ -239,35 +232,59 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
             else
                return false;
 
-            lame_init = (lame_init_t *)wxDllLoader::GetSymbol(libHandle, "lame_init_old");
-            if(!lame_init)
-               lame_init = (lame_init_t *) wxDllLoader::GetSymbol(libHandle, "lame_init");
+            /* get function pointers from the shared library */
 
-            lame_version = (lame_version_t *) wxDllLoader::GetSymbol(libHandle, "lame_version");
-            
-            get_lame_version =
-               (get_lame_version_t *) wxDllLoader::GetSymbol(libHandle, "get_lame_version");
-
+            lame_init = (lame_init_t *)wxDllLoader::GetSymbol(libHandle, "lame_init");
+            get_lame_version = (get_lame_version_t *)wxDllLoader::GetSymbol(libHandle,
+                                                                         "get_lame_version");
             lame_init_params = 
                (lame_init_params_t *) wxDllLoader::GetSymbol(libHandle, "lame_init_params");
-
             lame_encode_buffer_interleaved =
                 (lame_encode_buffer_interleaved_t *) wxDllLoader::GetSymbol(libHandle,
-                                                                      "lame_encode_buffer_interleaved");
+                                                          "lame_encode_buffer_interleaved");
+            lame_encode_flush =
+                (lame_encode_flush_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_flush");
+            lame_close =
+                (lame_close_t *) wxDllLoader::GetSymbol(libHandle, "lame_close");
 
-            lame_encode_finish =
-                (lame_encode_finish_t *) wxDllLoader::GetSymbol(libHandle, "lame_encode_finish");
+            lame_close =
+                (lame_close_t *) wxDllLoader::GetSymbol(libHandle, "lame_close");
+
+            lame_set_in_samplerate =
+                (lame_set_in_samplerate_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_set_in_samplerate");
+            lame_set_num_channels =
+                (lame_set_num_channels_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_set_num_channels");
+            lame_set_quality =
+                (lame_set_quality_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_set_quality");
+            lame_get_quality =
+                (lame_get_quality_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_get_quality");
+            lame_set_brate =
+                (lame_set_brate_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_set_brate");
+            lame_get_brate =
+                (lame_get_brate_t *) wxDllLoader::GetSymbol(libHandle,
+                                                              "lame_get_brate");
+
+            /* we assume that if all the symbols are found, it's a valid library */
 
             if (!lame_init ||
+                !get_lame_version ||
                 !lame_init_params ||
                 !lame_encode_buffer_interleaved ||
-                !(lame_version || get_lame_version) ||
-                !lame_encode_finish) {
+                !lame_encode_flush ||
+                !lame_close ||
+                !lame_set_in_samplerate ||
+                !lame_set_num_channels ||
+                !lame_set_quality ||
+                !lame_set_brate) {
                return false;
             }
 
-            mGF = new lame_global_flags;
-            lame_init(mGF);
+            mGF = lame_init();
             mLibraryLoaded = true;
             return true;
          }
@@ -277,19 +294,14 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
       const char *GetLibraryVersion() {
          if(!mLibraryLoaded) return "";
 
-         if(get_lame_version)
-            return wxString::Format("LAME %s", get_lame_version()).c_str();
-         else {
-            lame_version(mGF, mVersion);
-            return wxString::Format("LAME %s", mVersion).c_str();
-         }
+         return wxString::Format("LAME %s", get_lame_version()).c_str();
       }
 
       int InitializeStream(int channels, int sampleRate) {
          if(!mLibraryLoaded) return -1;
 
-         mGF->num_channels = channels;
-         mGF->in_samplerate = sampleRate;
+         lame_set_num_channels(mGF, channels);
+         lame_set_in_samplerate(mGF, sampleRate);
 
          lame_init_params(mGF);
 
@@ -316,20 +328,21 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
       int FinishStream(unsigned char outbuffer[]) {
          mEncoding = false;
-         return lame_encode_finish(mGF, outbuffer, mOutBufferSize);
+         lame_encode_flush(mGF, outbuffer, mOutBufferSize);
+         lame_close(mGF);
       }
 
       void CancelEncoding() { mEncoding = false; }
 
-      int GetConfigurationCaps() { return 0; }
+      int GetConfigurationCaps() { return MP3CONFIG_BITRATE|MP3CONFIG_QUALITY; }
 
-      int GetQualityVariance() { return -1; }
+      int GetQualityVariance() { return 10; }
 
-      void SetBitrate(int rate) { }
-      int GetBitrate() { return -1; }
+      void SetBitrate(int rate) { lame_set_brate(mGF, rate); }
+      int GetBitrate() { return lame_get_quality(mGF); }
 
-      void SetQuality(int quality) { }
-      int GetQuality() { return -1; }
+      void SetQuality(int quality) { lame_set_quality(mGF, quality); }
+      int GetQuality() { return lame_get_quality(mGF); }
    };
 
 MP3Exporter *gMP3Exporter = NULL;
