@@ -152,7 +152,7 @@ void AColor::Init()
 //   soloBrush.SetColour(255, 140, 140);
    // Colors modified to avoid using reserved colors red and green.
    muteBrush[0].SetColour(160, 170, 210);
-   muteBrush[1].SetColour(160, 170, 210);
+   muteBrush[1].SetColour(160, 170, 190);
    soloBrush.SetColour(160, 170, 210);
 
 
