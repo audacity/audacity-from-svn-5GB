@@ -306,6 +306,13 @@ Changes in 1.2.2:
   * Mac OS X: improved support for the Griffin iMic by fixing a bug
     that was causing it to always record in mono instead of stereo.
 
+  * You can now change the font of a label track by choosing "Font..."
+    from the label track's pop-up menu.
+
+  * Basic printing support has been added.  Currently it scales the
+    entire project to fit exactly on one page.  Try printing in
+    landscape orientation for best results.
+
 Changes in 1.2.1:
 
   * The following translations have been added or updated:  Finnish,
