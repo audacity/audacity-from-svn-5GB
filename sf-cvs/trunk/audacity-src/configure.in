@@ -159,8 +159,9 @@ if [[ "$use_nyquist" = "yes" ]] ; then
 
 	BUILDLIBS="$BUILDLIBS libnyquist/libnyquist.a"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libnyquist/nyx"
-	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/Nyquist.o"
-	OPTOBJS="$OPTOBJS ../lib-src/libnyquist/libnyquist.a"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/nyquist/Nyquist.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/nyquist/LoadNyquist.o"
+	EXTRAOBJS="$EXTRAOBJS ../lib-src/libnyquist/libnyquist.a"
 fi
 
 if [[ "$use_libsndfile" = "no" ]] ; then
