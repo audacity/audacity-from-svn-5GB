@@ -125,9 +125,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
       translatorCredits += _("translator_credits");
       translatorCredits += "</center>";
    }
+   wxString localeStr = wxLocale::GetSystemEncodingName();
 
    wxString creditStr = 
       "<html>"
+      "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=" + localeStr + "\"></head>"
       "<body bgcolor=\"#ffffff\">"
       "<font size=1>"
       "<center>"
