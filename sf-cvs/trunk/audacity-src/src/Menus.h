@@ -150,6 +150,14 @@ void OnQuickMix(wxEvent & event);
 
 void OnAlignZero(wxEvent & event);
 void OnAlign(wxEvent & event);
+void OnAlignSelStart(wxEvent & event);
+void OnAlignSelEnd(wxEvent & event);
+void OnAlignEndSelStart(wxEvent & event);
+void OnAlignEndSelEnd(wxEvent & event);
+void OnAlignGroupSelStart(wxEvent & event);
+void OnAlignGroupSelEnd(wxEvent & event);
+void OnAlignGroupEndSelStart(wxEvent & event);
+void OnAlignGroupEndSelEnd(wxEvent & event);
 
 void OnNewWaveTrack(wxEvent & event);
 void OnNewLabelTrack(wxEvent & event);
