@@ -66,9 +66,7 @@ PrefsDialog::PrefsDialog(wxWindow *parent):
 								wxSize(90, 20));
 
 	/* All panel additions belong here */
-	#ifdef __WXGTK__
 	mCategories->Append("Audio I/O",    new AudioIOPrefs(this));
-	#endif
 	mCategories->Append("Sample Rates", new SampleRatePrefs(this));
 	mCategories->Append("File Formats", new FileFormatPrefs(this));
 	mCategories->Append("Spectrograms", new SpectrumPrefs(this));
