@@ -83,11 +83,10 @@ class ControlToolBar:public ToolBar {
    wxImage *MakeToolImage(wxImage * tool, wxImage * mask, int style);
    AButton *MakeTool(const char **tool, const char **alpha,
                      wxWindowID id, int left, int top);
-   AButton *MakeButton(wxImage * up, wxImage * down, wxImage * hilite,
-                       char const **foreground,
-                       char const **disabled,
-                       char const **alpha, int ID, int left);
+   AButton *MakeButton(char const **foreground, char const **disabled,
+                       char const **alpha, int id);
    void MakeButtons();
+   int mButtonPos;
 
    AButton *mTool[4];
 
@@ -106,6 +105,10 @@ class ControlToolBar:public ToolBar {
    wxBitmap *mDivBitmap;
    wxBitmap *mMuteBitmap;
    wxBitmap *mLoudBitmap;
+
+   wxImage *upPattern;
+   wxImage *downPattern;
+   wxImage *hilitePattern;
 
    DECLARE_EVENT_TABLE()
 };
