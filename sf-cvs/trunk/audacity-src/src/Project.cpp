@@ -1011,6 +1011,8 @@ bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
       if (tb)
          tb->OnShiftUp(event);
    }
+
+   return false;
 }
 
 bool AudacityProject::ProcessEvent(wxEvent & event)

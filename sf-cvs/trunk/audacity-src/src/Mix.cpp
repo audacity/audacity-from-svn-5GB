@@ -70,6 +70,8 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
       mono = true;
 
+   printf("mono: %d\n", (int)mono);
+
    double totalTime = 0.0;
 
    waveArray = new WaveTrack *[numWaves];
@@ -124,7 +126,8 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
       if (mono) {
          samplePtr buffer = mixer->GetBuffer();
          mixLeft->Append(buffer, format, blockLen);
-      } else {
+      }
+      else {
          samplePtr buffer;
          buffer = mixer->GetBuffer(0);
          mixLeft->Append(buffer, format, blockLen);
@@ -145,7 +148,7 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
    mixLeft->Flush();
    *newLeft = mixLeft;
    if (!mono) {
-      tracks->Add(mixRight);
+      mixRight->Flush();
       *newRight = mixRight;
    }
 
