@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-05-04 03:10-0800\n"
+"PO-Revision-Date: 2004-05-06 01:40-0800\n"
 "Last-Translator: abklinux <abklinux@hotmail.com>\n"
 "Language-Team: abklinux <abklinux@hotmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,9 @@ msgid ""
 "Audacity does not open this type of file.\n"
 "Try ripping it to a native audio format that Audacity can import."
 msgstr ""
+" .ملف قرص مضغوط صوتي  \n"
+".أوداسيتي لا تفتح ملف من هذا النوع\n"
+".حاول سحبه إلى صيغة صوت أصيلة بحيث تستطيع أوداسيتي أستيرادها"
 
 #  i18n-hint: This refers to a "window function", used in the
 #  Frequency analyze dialog box.
@@ -35,7 +38,7 @@ msgstr "نافذة"
 #: ../src/import/ImportRaw.cpp:336
 #, c-format
 msgid "%d Channels"
-msgstr ""
+msgstr "%d قنوات"
 
 #: ../src/effects/Repeat.cpp:282
 #, c-format
@@ -222,23 +225,23 @@ msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:166
 msgid "-120 dB (approximate limit of human hearing)"
-msgstr ""
+msgstr "( حدود سمع الإنسان تقريبا ) - dB120 "
 
 #: ../src/prefs/GUIPrefs.cpp:173
 msgid "-145 dB (PCM range of 24 bit samples)"
-msgstr ""
+msgstr "( من عينات 24بت PCM مدى ) - dB145 "
 
 #: ../src/prefs/GUIPrefs.cpp:145
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr ""
+msgstr "(  مدى ضحل لتحرير عالي-السعة  ) - dB36 "
 
 #: ../src/prefs/GUIPrefs.cpp:152
 msgid "-48 dB (PCM range of 8 bit samples)"
-msgstr ""
+msgstr "( من عينات 8بت PCM مدى ) - dB145 "
 
 #: ../src/prefs/GUIPrefs.cpp:159
 msgid "-96 dB (PCM range of 16 bit samples)"
-msgstr ""
+msgstr "( من عينات 16بت PCM مدى ) - dB96 "
 
 #: ../src/prefs/AudioIOPrefs.cpp:192
 msgid "1 (Mono)"
@@ -250,11 +253,11 @@ msgstr "1قناة (أحادي)1"
 
 #: ../src/prefs/AudioIOPrefs.cpp:193
 msgid "2 (Stereo)"
-msgstr ""
+msgstr "2 (ستريو)"
 
 #: ../src/import/ImportRaw.cpp:334
 msgid "2 Channels (Stereo)"
-msgstr ""
+msgstr "( 2قناة ( ستريو"
 
 #: ../src/prefs/SpectrumPrefs.cpp:40
 msgid "256 - default"
@@ -262,11 +265,11 @@ msgstr " 256- أفتراضي"
 
 #: ../src/prefs/SpectrumPrefs.cpp:44
 msgid "4096 - most narrowband"
-msgstr ""
+msgstr "4096- أغلب الحزمة الضيقة\" "
 
 #: ../src/prefs/SpectrumPrefs.cpp:38
 msgid "64 - most wideband"
-msgstr ""
+msgstr "64- أغلب الحزمة العريضة\" "
 
 #: ../src/AboutDialog.cpp:161
 msgid "A Free Digital Audio Editor"
@@ -290,11 +293,11 @@ msgstr "ملصق مضاف"
 
 #: ../src/TrackPanel.cpp:1888
 msgid "Adjusted envelope."
-msgstr ""
+msgstr ".ظرف معدل"
 
 #: ../src/effects/AvcCompressor.cpp:581
 msgid "Adjustment Delay:"
-msgstr ""
+msgstr ":تأخير تعديل"
 
 #: ../src/effects/AvcCompressor.cpp:564
 msgid "Adjustment Settings"
@@ -446,7 +449,7 @@ msgstr "يكبّر"
 
 #: ../src/effects/ToneGen.cpp:306
 msgid "Amplitude (0-1)"
-msgstr "(0-1) المدى"
+msgstr "(0-1) السعة"
 
 #: ../src/Project.cpp:1836
 msgid ""
@@ -511,7 +514,7 @@ msgstr ""
 
 #: ../src/effects/Noise.h:31
 msgid "Applied effect: Generate White Noise"
-msgstr ""
+msgstr "التأثير المطبق:توليد ضوضاء بيضاء"
 
 #: ../src/effects/Compressor.cpp:453
 msgid "Apply Gain after compressing"
@@ -552,7 +555,7 @@ msgstr ":زمن الهجوم"
 #: ../src/effects/Compressor.cpp:516
 #, c-format
 msgid "Attack Time: %.1f secs"
-msgstr ""
+msgstr " %.1f :زمن الهجوم "
 
 #: ../src/AboutDialog.cpp:295
 msgid "Audacious!"
@@ -694,7 +697,7 @@ msgstr ""
 
 #: ../src/Project.cpp:1785
 msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
-msgstr ""
+msgstr ".أوداسيتي غير قادر على تحويل مشروع أوداسيتي 1.0 إلى صيغة المشروع الجديد"
 
 #: ../src/prefs/PrefsDialog.cpp:84
 msgid "Audio I/O"
@@ -811,7 +814,7 @@ msgstr ".لا يمكن تصدير الصوت في هذه الصيغة"
 #: ../src/export/ExportPCM.cpp:79
 #, c-format
 msgid "Cannot export audio to %s"
-msgstr ""
+msgstr "%s لا يمكن تصدير الصوت إلى"
 
 #: ../src/widgets/ASlider.cpp:484
 msgid "Center"
@@ -826,7 +829,7 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Change Amplification Envelope"
-msgstr ""
+msgstr "تغيير ظرف تكبير"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Change ONE Sample only"
@@ -964,7 +967,7 @@ msgstr ".أنقر واسحب لضبط الحجم النسبي لمسارات ا�
 
 #: ../src/ControlToolBar.cpp:75
 msgid "Click and drag to edit the amplitude envelope"
-msgstr "انقر واسحب لتحرير ظرف المدى"
+msgstr "انقر واسحب لتحرير ظرف السعة"
 
 #: ../src/ControlToolBar.cpp:76
 msgid "Click and drag to edit the samples"
@@ -1014,7 +1017,7 @@ msgstr "حدث الأمر"
 
 #: ../src/export/Export.cpp:380
 msgid "Command-line exporting is only supported on UNIX"
-msgstr ""
+msgstr "تصدير سطر-الأوامر مدعوم فقط على يونيكس"
 
 #  i18n-hint: '-help', '-test' and
 #  '-blocksize' need to stay in English.
@@ -1050,6 +1053,8 @@ msgid ""
 "Converted a 1.0 project file to the new format.\n"
 "The old file has been saved as '%s'"
 msgstr ""
+".مشروع أوداسيتي 1.0 محول إلى الصيغة الجديدة\n"
+" '%s' الملف القديم تم حفظه كـ"
 
 #: ../src/EditToolBar.cpp:150
 msgid "Copy"
@@ -1057,7 +1062,7 @@ msgstr "نسخ"
 
 #: ../src/export/ExportMP3.cpp:1328
 msgid "Could not open MP3 encoding library!"
-msgstr ""
+msgstr "MP3 لا يمكن فتح مكتبة كتابة تشفير"
 
 #: ../src/Menus.cpp:2300
 #: ../src/Project.cpp:1763
@@ -1069,7 +1074,7 @@ msgstr "لا يمكن فتح الملف"
 #: ../src/xml/XMLFileReader.cpp:45
 #, c-format
 msgid "Could not open file: \"%s\""
-msgstr ""
+msgstr "لا يمكن فتح الملف \"%s\""
 
 #: ../src/Project.cpp:2054
 #, c-format
@@ -1116,11 +1121,12 @@ msgstr "مسار زمن جديد منشأ"
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Creating Noise Profile"
-msgstr ""
+msgstr "إنشاء مستوى ضوضاء "
 
 #: ../src/AboutDialog.cpp:174
+#, fuzzy
 msgid "Credits"
-msgstr ""
+msgstr "الفريق"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Ctrl-Left-Drag"
@@ -1312,7 +1318,7 @@ msgstr ""
 
 #: ../src/effects/Wahwah.cpp:497
 msgid "Depth (%):"
-msgstr ""
+msgstr " (%) :العمق"
 
 #: ../src/effects/Phaser.cpp:530
 msgid "Depth:"
@@ -1364,7 +1370,7 @@ msgstr "كاتب التوثيق"
 
 #: ../src/effects/Amplify.cpp:165
 msgid "Don't allow clipping"
-msgstr ""
+msgstr "لا تسمح بالتقليم"
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
@@ -1408,7 +1414,7 @@ msgstr "ضغط مدى حركي"
 
 #: ../src/effects/Compressor.cpp:417
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
-msgstr ""
+msgstr "Dominic Mazzoni  ضاغط مدى حركي بواسطة "
 
 #: ../src/Menus.cpp:174
 msgid "E&xit"
@@ -1425,11 +1431,11 @@ msgstr "...صدى"
 
 #: ../src/Menus.cpp:2404
 msgid "Edit ID3 Tags (for MP3 exporting)"
-msgstr ""
+msgstr "( MP3 لتصدير)  ID3  تحرير وسوم"
 
 #: ../src/export/ExportMP3.cpp:1352
 msgid "Edit the ID3 tags for the MP3 file"
-msgstr ""
+msgstr "MP3 لملف ID3  تحرير وسوم"
 
 #: ../src/Menus.cpp:391
 msgid "Effe&ct"
@@ -1441,7 +1447,7 @@ msgstr "إعدادات التأثير"
 
 #: ../src/AboutDialog.cpp:228
 msgid "Effects programmer"
-msgstr ""
+msgstr "مبرمج التأثيرات"
 
 #: ../src/prefs/GUIPrefs.cpp:80
 msgid "Enable Edit Toolbar"
@@ -1498,31 +1504,31 @@ msgstr "أداة الظرف\tF2"
 
 #: ../src/effects/Equalization.cpp:156
 msgid "Equalization"
-msgstr ""
+msgstr "مساواة"
 
 #: ../src/effects/Equalization.cpp:668
 msgid "Equalization, by Mitch Golden && Vaughan Johnson"
-msgstr ""
+msgstr "Mitch Golden و Vaughan Johnson مساواة بواسطة"
 
 #: ../src/effects/Equalization.h:38
 msgid "Equalization..."
-msgstr ""
+msgstr "يقوم بالمساواة"
 
 #: ../src/ControlToolBar.cpp:717
 #: ../src/ControlToolBar.cpp:866
 #: ../src/effects/Effect.cpp:332
 #: ../src/prefs/DirectoriesPrefs.cpp:204
 msgid "Error"
-msgstr ""
+msgstr "خطأ"
 
 #: ../src/export/ExportPCM.cpp:160
 #, c-format
 msgid "Error (file may not have been written): %s"
-msgstr ""
+msgstr " %s (خطأ (الملف ربما لم تتم كتابته"
 
 #: ../src/AudioIO.cpp:170
 msgid "Error Initializing Audio"
-msgstr ""
+msgstr "خطأ بدء الصوت"
 
 #: ../src/Project.cpp:2234
 msgid "Error importing"
@@ -1530,12 +1536,12 @@ msgstr "خطأ استيراد"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:206
 msgid "Error loading keyboard shortcuts"
-msgstr ""
+msgstr "خطأ تحميل اختصارات لوحة المفاتيح"
 
 #: ../src/Project.cpp:1764
 #: ../src/Project.cpp:1772
 msgid "Error opening file"
-msgstr ""
+msgstr "خطأ فتح ملف"
 
 #: ../src/Project.cpp:1717
 #: ../src/Project.cpp:1786
@@ -1543,37 +1549,37 @@ msgstr ""
 #: ../src/Project.cpp:1848
 #: ../src/Project.cpp:1877
 msgid "Error opening project"
-msgstr ""
+msgstr "خطأ فتح مشروع"
 
 #: ../src/import/ImportMIDI.cpp:46
 msgid "Error parsing Allegro file."
-msgstr ""
+msgstr " Allegro خطأ معالجة ملف"
 
 #: ../src/import/ImportMIDI.cpp:76
 msgid "Error parsing MIDI file."
-msgstr ""
+msgstr " MIDI خطأ معالجة ملف"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:174
 msgid "Error saving keyboard shortcuts"
-msgstr ""
+msgstr "خطأ حفظ اختصارات لوحة المفاتيح"
 
 #: ../src/Project.cpp:2058
 #: ../src/Project.cpp:2070
 msgid "Error saving project"
-msgstr ""
+msgstr "خطا حفظ ملف"
 
 #: ../src/ControlToolBar.cpp:715
 msgid "Error while opening sound device. Please check the input device settings and the project sample rate."
-msgstr ""
+msgstr "خطأ أثناء فتح جهاز الصوت. رجاء افحص إعدادت جهاز الدخل ومعدل عينة المشروع"
 
 #: ../src/ControlToolBar.cpp:864
 #: ../src/effects/Effect.cpp:330
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
-msgstr ""
+msgstr "خطأ أثناء فتح جهاز الصوت. رجاء افحص إعدادت جهاز الخرج ومعدل عينة المشروع"
 
 #: ../src/AudioIO.cpp:167
 msgid "Error: "
-msgstr ""
+msgstr ":خطأ"
 
 #: ../src/xml/XMLFileReader.cpp:63
 #, c-format
@@ -1651,7 +1657,7 @@ msgstr "MP3 تصدير كامل المشروع كـ"
 
 #: ../src/export/ExportCL.cpp:146
 msgid "Exporting the entire project using command-line encoder"
-msgstr "تصدير كامل المشروع باستخدام مشفر سطر الأوامر"
+msgstr "تصدير كامل المشروع باستخدام مشفر سطر-الأوامر"
 
 #: ../src/export/ExportOGG.cpp:191
 msgid "Exporting the selected audio as Ogg Vorbis"
@@ -1668,23 +1674,23 @@ msgstr "MP3 تصدير الصوت المحدد كـ"
 
 #: ../src/export/ExportCL.cpp:144
 msgid "Exporting the selected audio using command-line encoder"
-msgstr "تصدير الصوت المحدد باستخدام مشفر سطر الأوامر"
+msgstr "تصدير الصوت المحدد باستخدام مشفر سطر-لأوامر"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Extend Selection Range"
-msgstr ""
+msgstr "مد مدى التحديد"
 
 #: ../src/effects/Filter.cpp:53
 msgid "FFT Filter"
-msgstr "FFT مرشح "
+msgstr "FFT فلتر "
 
 #: ../src/effects/Filter.cpp:458
 msgid "FFT Filter by Dominic Mazzoni"
-msgstr " Dominic Mazzoni  بواسطة FFT مرشح"
+msgstr " Dominic Mazzoni  بواسطة FFT فلتر"
 
 #: ../src/effects/Filter.h:36
 msgid "FFT Filter..."
-msgstr "...FFT مرشح"
+msgstr "...FFT فلتر"
 
 #: ../src/prefs/SpectrumPrefs.cpp:70
 msgid "FFT Size"
@@ -1716,7 +1722,7 @@ msgstr ""
 
 #: ../src/prefs/FileFormatPrefs.cpp:395
 msgid "File Format"
-msgstr ""
+msgstr "صيغة الملف"
 
 #: ../src/prefs/PrefsDialog.cpp:86
 msgid "File Formats"
@@ -1759,7 +1765,7 @@ msgstr "طفو لوح أدوات الخلط"
 
 #: ../src/TrackPanel.cpp:4179
 msgid "Format Change"
-msgstr ""
+msgstr "تغيير الصيغة"
 
 #: ../src/Tags.cpp:557
 msgid "Format:"
@@ -1782,8 +1788,9 @@ msgid "Frequency (Hz):   from"
 msgstr "التردد هرتز   من   "
 
 #: ../src/effects/ToneGen.cpp:290
+#, fuzzy
 msgid "Frequency / Hz"
-msgstr "التردد هرتز"
+msgstr "التردد /هرتز"
 
 #: ../src/FreqWindow.cpp:68
 msgid "Frequency Analysis"
@@ -1817,7 +1824,7 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:419
 msgid "Get Noise Profile"
-msgstr ""
+msgstr "حصول على مستوى الضوضاء"
 
 #: ../src/prefs/SpectrumPrefs.cpp:94
 msgid "Grayscale"
@@ -1851,19 +1858,19 @@ msgstr "هرتز"
 
 #: ../src/AboutDialog.cpp:92
 msgid "ID3 tag exporting disabled"
-msgstr ""
+msgstr "معطل ID3 تصدير وسوم"
 
 #: ../src/AboutDialog.cpp:90
 msgid "ID3 tag exporting enabled"
-msgstr ""
+msgstr "ممكّن ID3 تصدير وسوم"
 
 #: ../src/Tags.cpp:554
 msgid "ID3v1 (more compatible)"
-msgstr ""
+msgstr "ID3v1 (أكثر توافقية)"
 
 #: ../src/Tags.cpp:555
 msgid "ID3v2 (more flexible)"
-msgstr ""
+msgstr "ID3v2 (أكثر مرونة)"
 
 #: ../src/Project.cpp:2146
 #: ../src/Project.cpp:2193
@@ -1940,7 +1947,7 @@ msgstr "الواجهة"
 
 #: ../src/import/ImportOGG.cpp:136
 msgid "Internal logic fault"
-msgstr ""
+msgstr "صدع منطقي داخلي"
 
 #: ../src/import/ImportOGG.cpp:133
 msgid "Invalid Vorbis bitstream header"
@@ -1968,11 +1975,11 @@ msgstr ""
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr ""
+msgstr "عكس"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
-msgstr ""
+msgstr "يعكس"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Key Combination"
@@ -1980,7 +1987,7 @@ msgstr ""
 
 #: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
-msgstr ""
+msgstr "لوحة المفاتيح"
 
 #  i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #: ../src/widgets/ASlider.cpp:329
@@ -1989,11 +1996,11 @@ msgstr "يسار"
 
 #: ../src/AboutDialog.cpp:99
 msgid "LADSPA plug-in support disabled"
-msgstr ""
+msgstr "معطل LADSPA دعم مقبس"
 
 #: ../src/AboutDialog.cpp:97
 msgid "LADSPA plug-in support enabled"
-msgstr ""
+msgstr "ممكّن LADSPA دعم مقبس"
 
 #: ../src/effects/Phaser.cpp:498
 #: ../src/effects/Wahwah.cpp:465
@@ -2031,7 +2038,7 @@ msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:129
 msgid "Language:"
-msgstr ""
+msgstr "Language:اللغة"
 
 #: ../src/widgets/ASlider.cpp:488
 msgid "Left"
@@ -2134,7 +2141,7 @@ msgstr ""
 
 #: ../src/commands/CommandManager.cpp:622
 msgid "Loading keyboard shortcuts"
-msgstr ""
+msgstr "تحميل اختصارت لوحة المفاتيح"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:57
 msgid "Location:"
@@ -2142,16 +2149,17 @@ msgstr ":الموقع"
 
 #: ../src/FreqWindow.cpp:178
 msgid "Log frequency"
-msgstr ""
+msgstr "تردد طويل"
 
 #: ../src/TrackPanel.cpp:4304
 #: ../src/TrackPanel.cpp:4305
+#, fuzzy
 msgid "Lower speed limit"
-msgstr ""
+msgstr "حد السرعة الدنيا"
 
 #: ../src/import/ImportLOF.cpp:362
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr ""
+msgstr " لا يمكن إزاحتها فرديا,  ربما ملفات الصوت فقط MIDI مسارات."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2333,17 +2341,17 @@ msgstr "صامت"
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr " اسقاط -إطار ساعة:دقيقة:ثانية:إطار NTSC"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
 msgid "NTSC frames 29.97 fps"
-msgstr ""
+msgstr " 29.97 fps  NTSC إطارات"
 
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:41
 msgid "NTSC non-drop-frame h:mm:ss:ff"
-msgstr ""
+msgstr " بلا اسقاط -إطار ساعة:دقيقة:ثانية:إطار NTSC"
 
 #: ../src/TrackPanel.cpp:4375
 msgid "Name Change"
@@ -2415,7 +2423,7 @@ msgid ""
 "No tracks are selected!\n"
 "Choose Export... to export all tracks."
 msgstr ""
-"!لا مسارات محدد\n"
+"!لا مسارات محددة\n"
 "أختر تصدير ...لتصدير كل المسارات"
 
 #: ../src/effects/NoiseRemoval.cpp:69
@@ -2424,11 +2432,11 @@ msgstr "إزالة الضوضاء"
 
 #: ../src/effects/NoiseRemoval.cpp:403
 msgid "Noise Removal by Dominic Mazzoni"
-msgstr ""
+msgstr "Dominic Mazzoni إزالة الضوضاء بواسطة"
 
 #: ../src/effects/NoiseRemoval.h:38
 msgid "Noise Removal..."
-msgstr ""
+msgstr "....إزالة الضوضاء"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:436
 #: ../src/effects/ladspa/LadspaEffect.cpp:444
@@ -2458,11 +2466,11 @@ msgstr "ينفذ عادي"
 
 #: ../src/export/ExportMP3.cpp:1335
 msgid "Not a valid or supported MP3 encoding library!"
-msgstr ""
+msgstr "\"مدعومة أو صالحة MP3  ليست مكتبة كتابة تشفير\""
 
 #: ../src/import/ImportOGG.cpp:127
 msgid "Not an Ogg Vorbis file"
-msgstr ""
+msgstr "Ogg Vorbis ليس ملف "
 
 #: ../src/FreqWindow.cpp:463
 msgid "Not enough data selected."
@@ -2470,11 +2478,11 @@ msgstr "لا بيانات كافية تم اختيارها"
 
 #: ../src/NoteTrack.cpp:30
 msgid "Note Track"
-msgstr ""
+msgstr "مسار ملاحظة"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr ""
+msgstr "سيغادر. جميع الأزرار الأخرى صالحة Cmd+Q ملاحظة:ضغط"
 
 #: ../src/Menus.cpp:1364
 msgid "Nothing to redo"
@@ -2578,7 +2586,7 @@ msgstr ""
 
 #: ../src/Legacy.cpp:338
 msgid "Opening Audacity Project"
-msgstr ""
+msgstr "يفتح مشروع أوداسيتي"
 
 #: ../src/effects/AvcCompressor.cpp:657
 msgid "Original Value"
@@ -2586,7 +2594,7 @@ msgstr "القيمة الأصلية"
 
 #: ../src/AboutDialog.cpp:241
 msgid "Other contributors:"
-msgstr ""
+msgstr ":مساهمون آخرون"
 
 #: ../src/AStatus.cpp:76
 #: ../src/TrackPanel.cpp:818
@@ -2597,7 +2605,7 @@ msgstr "...أخرى"
 
 #: ../src/Project.cpp:2579
 msgid "Out of disk space"
-msgstr ""
+msgstr "خارج مساحة القرص"
 
 #: ../src/AudacityApp.cpp:272
 msgid "Output Meter"
@@ -2610,13 +2618,13 @@ msgstr "حجم الخرج"
 #  i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:32
 msgid "PAL frames 25 fps"
-msgstr ""
+msgstr "25 fps  PAL  إطارات"
 
 #  i18n-hint: fps is "frames per second",
 #  and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
-msgstr ""
+msgstr " 25 fps ساعة:دقيقة:ثانية:إطار PAL"
 
 #  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
 #: ../src/TrackPanel.cpp:2767
@@ -2633,7 +2641,7 @@ msgstr "لصق"
 #: ../src/Menus.cpp:1525
 #: ../src/Menus.cpp:1569
 msgid "Pasted from the clipboard"
-msgstr ""
+msgstr "ملصقة من الحافظة"
 
 #: ../src/ControlToolBar.cpp:468
 msgid "Pause"
@@ -2667,7 +2675,7 @@ msgstr ""
 
 #: ../src/effects/Equalization.h:42
 msgid "Performing Equalization"
-msgstr ""
+msgstr "تطبيق مساواة"
 
 #: ../src/effects/Filter.h:40
 msgid "Performing FFT Filter"
@@ -2691,11 +2699,11 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:834
 msgid "Pitch (EAC)"
-msgstr ""
+msgstr "(EAC) الدرجة "
 
 #: ../src/effects/ChangePitch.cpp:260
 msgid "Pitch:   from"
-msgstr ""
+msgstr "الدرجة:  من"
 
 #: ../src/ControlToolBar.cpp:466
 msgid "Play (Shift for loop-play)"
@@ -2756,7 +2764,7 @@ msgstr "معاينة"
 
 #: ../src/Menus.cpp:469
 msgid "Previous Tool\tA"
-msgstr ""
+msgstr "الأداة السابقة\tA"
 
 #: ../src/AboutDialog.cpp:184
 #: ../src/AboutDialog.cpp:188
@@ -2765,7 +2773,7 @@ msgstr "المطور الابتدائي"
 
 #: ../src/AboutDialog.cpp:117
 msgid "Program build date:"
-msgstr ""
+msgstr ":تاريخ بناء البرنامج"
 
 #: ../src/AboutDialog.cpp:192
 #: ../src/AboutDialog.cpp:196
@@ -2776,7 +2784,7 @@ msgstr ""
 #: ../src/AboutDialog.cpp:216
 #: ../src/AboutDialog.cpp:220
 msgid "Programmer"
-msgstr ""
+msgstr "المبرمج"
 
 #: ../src/DirManager.cpp:225
 msgid "Progress"
@@ -2822,12 +2830,12 @@ msgstr ":النسبة"
 #: ../src/effects/Compressor.cpp:512
 #, c-format
 msgid "Ratio: %.0f:1"
-msgstr "النسبة: %.0f:1 من:1"
+msgstr " %.0f:1  :النسبة"
 
 #: ../src/effects/Compressor.cpp:514
 #, c-format
 msgid "Ratio: %.1f:1"
-msgstr ""
+msgstr " %.1f:1  :النسبة"
 
 #  i18n-hint: This refers to files that are opened directly
 #  without looking at the file header.  Same as "Import Raw"
@@ -2860,7 +2868,7 @@ msgstr "تسجيل\tت"
 #: ../src/Project.cpp:1639
 #: ../src/TrackPanel.cpp:1204
 msgid "Recorded Audio"
-msgstr ""
+msgstr "صوت مسجل"
 
 #: ../src/prefs/AudioIOPrefs.cpp:136
 msgid "Recording"
@@ -2908,7 +2916,7 @@ msgstr "إزالة الضوضاء"
 
 #: ../src/Menus.cpp:2756
 msgid "Remove Track"
-msgstr "إزالة المسار"
+msgstr "حذف المسار"
 
 #: ../src/effects/Normalize.cpp:239
 msgid "Remove any DC offset (center on 0 vertically)"
@@ -2925,7 +2933,7 @@ msgstr "حذف المسار'%s.'"
 
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
-msgstr ""
+msgstr "يزيل الضوضاء"
 
 #: ../src/TrackPanel.cpp:4372
 #, c-format
@@ -2979,11 +2987,11 @@ msgstr "إستعادة الافتراضات"
 
 #: ../src/effects/Reverse.h:30
 msgid "Reverse"
-msgstr ""
+msgstr "رجوع"
 
 #: ../src/effects/Reverse.h:34
 msgid "Reversing"
-msgstr ""
+msgstr "يتم الرجوع"
 
 #: ../src/widgets/ASlider.cpp:491
 msgid "Right"
@@ -3075,7 +3083,7 @@ msgstr ""
 
 #: ../src/Help.cpp:106
 msgid "Search for?"
-msgstr ""
+msgstr "بحث عن؟"
 
 #: ../src/Help.cpp:107
 msgid "Search help for keyword"
@@ -3097,6 +3105,9 @@ msgid ""
 "so Audacity knows what to filter out, then\n"
 "click Get Noise Profile:"
 msgstr ""
+"اختر ثواني قليلة من الضجة فقط\n"
+"ولذلك ستعرف أوداسيتي ماذا تفلتر، ثم\n"
+"انقر على حصول على مستوى الضوصاء"
 
 #: ../src/Menus.cpp:2284
 msgid "Select a text file containing labels..."
@@ -3108,6 +3119,9 @@ msgid ""
 "choose how much noise you want filtered out,\n"
 "and then click Remove Noise.\n"
 msgstr ""
+"حدد كل الصوت الذي تريد ترشيحه\n"
+"حدد كم حجم الضجة التي تريد فلترتها\n"
+".ثم انقر إزالة الضجة\n"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:188
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
@@ -3373,19 +3387,19 @@ msgstr ""
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:158
 msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr ""
+msgstr "آسف، تأثيرات المقبس لا يمكن أن تطبيق على مسارات ستيريو إذ أن القنوات الفردية في المسار  لا تطابق"
 
 #: ../src/effects/VST/VSTEffect.cpp:180
 msgid "Sorry, VST Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
-msgstr ""
+msgstr "لا يمكن أن تطبيق على مسارات ستيريو  إذ أن القنوات الفردية في المسار  لا تطابق  VST آسف تأثيرات"
 
 #: ../src/effects/nyquist/Nyquist.cpp:325
 msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
-msgstr ""
+msgstr "آسف، لا يمن تطبيق التأثير على مسارات ستيريو إذ أن المسارات لا تطابق"
 
 #: ../src/export/Export.cpp:183
 msgid "Sorry, pathnames longer than 256 characters not supported."
-msgstr ""
+msgstr " آسف،مسار الأسم الأطول من 256 رمزا غير مدعوم "
 
 #: ../src/AboutDialog.cpp:267
 msgid "Special thanks:"
@@ -3440,7 +3454,7 @@ msgstr "قياسي من Vinyl RPM:  "
 
 #: ../src/import/ImportRaw.cpp:349
 msgid "Start offset:"
-msgstr ""
+msgstr "إزاحة البداية"
 
 #: ../src/Menus.cpp:228
 msgid "Start to Cursor"
@@ -3476,7 +3490,7 @@ msgstr ""
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
-msgstr ""
+msgstr "التردد الأقصى  لا بد ان يكون رقما صحيحا"
 
 #: ../src/AudacityApp.cpp:281
 msgid ""
@@ -3493,7 +3507,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:2691
 msgid "The version of Audacity you are using does not support multiple time tracks."
-msgstr ""
+msgstr "إصدارة أوداسيتي التي تستخدمها لا تدعم مسارات الزمن المتعددة"
 
 #: ../src/Menus.cpp:1237
 msgid "There are no label tracks to export."
@@ -3505,7 +3519,7 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:130
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr ""
+msgstr "هذه إصدارة بيتا من البرنامج.ربما تحوي عللا وميزات غير تامة.نحن نعتمد على تغذيتك-العكسية,لذلك رجاء زر موقعنا على الوب وأعطنا تقارير العلل والميزات المطلوبة"
 
 #: ../src/AboutDialog.cpp:136
 msgid "This is a stable, completed release of Audacity.  However, if you find a bug or have a suggestion, please contact us.  We depend on feedback from users in order to continue to improve Audacity.  For more information, visit our website."
@@ -3514,7 +3528,7 @@ msgstr ""
 #: ../src/import/Import.cpp:159
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
-msgstr ""
+msgstr "%s هذه الإصدارة من أودا سيتي لم تترجم-تصرف مع دعم "
 
 #: ../src/effects/Compressor.cpp:428
 msgid "Threshold: "
@@ -3523,7 +3537,7 @@ msgstr ":العتبة"
 #: ../src/effects/Compressor.cpp:509
 #, c-format
 msgid "Threshold: %d dB"
-msgstr ""
+msgstr "%d dB :العتبة"
 
 #: ../src/TrackPanel.cpp:1999
 msgid "Time Shift"
@@ -3617,27 +3631,27 @@ msgstr "تقليم خارج التحديد"
 
 #: ../src/Menus.cpp:270
 msgid "Turn Grid Snap Off"
-msgstr ""
+msgstr "إيقاف قفز للشبكة"
 
 #: ../src/Menus.cpp:269
 msgid "Turn Grid Snap On"
-msgstr ""
+msgstr "تشغيل قفز للشبكة"
 
 #: ../src/Menus.cpp:268
 msgid "Turn Snap-To Off"
-msgstr ""
+msgstr "إيقاف قفز-إلى"
 
 #: ../src/Menus.cpp:267
 msgid "Turn Snap-To On"
-msgstr ""
+msgstr "تشغيل قفز-إلى"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:114
 msgid "Unable to determine"
-msgstr ""
+msgstr "غير قادر على التحديد"
 
 #: ../src/xml/XMLFileReader.cpp:83
 msgid "Unable to open project file."
-msgstr ""
+msgstr "غير قادر على فتح ملف المشروع"
 
 #: ../src/export/ExportMP3.cpp:1345
 #: ../src/export/ExportOGG.cpp:53
@@ -3669,7 +3683,7 @@ msgstr " %d  مستويات التراجع المتوفرة"
 #: ../src/AudacityApp.cpp:628
 #, c-format
 msgid "Unknown command line option: %s\n"
-msgstr ""
+msgstr " %s  :خيار سطر أوامر غير معروف\n"
 
 #: ../src/TrackPanel.cpp:852
 msgid "Up Octave"
@@ -3682,11 +3696,11 @@ msgstr "تحديث الطيف أثناء التشغيل"
 #: ../src/TrackPanel.cpp:4311
 #: ../src/TrackPanel.cpp:4312
 msgid "Upper speed limit"
-msgstr ""
+msgstr "حد السرعة العليا"
 
 #: ../src/prefs/FileFormatPrefs.cpp:158
 msgid "Use OGG instead of MP3"
-msgstr ""
+msgstr " MP3 بدلا عن OGG استخدام"
 
 #: ../src/AudacityApp.cpp:543
 #: ../src/AudacityApp.cpp:613
@@ -3696,14 +3710,14 @@ msgstr ""
 
 #: ../src/effects/VST/VSTEffect.cpp:410
 msgid "VST Plug-in parameters:"
-msgstr ""
+msgstr "VST بارامترات مقبس"
 
 #: ../src/effects/AvcCompressor.cpp:362
 #: ../src/effects/AvcCompressor.cpp:399
 #: ../src/effects/AvcCompressor.cpp:424
 #: ../src/effects/AvcCompressor.cpp:431
 msgid "Validation error"
-msgstr ""
+msgstr "خطأ صلاحية"
 
 #: ../src/effects/AvcCompressor.cpp:361
 #, c-format
@@ -3717,7 +3731,7 @@ msgstr ""
 
 #: ../src/import/ImportOGG.cpp:130
 msgid "Vorbis version mismatch"
-msgstr ""
+msgstr "غير مطابقة Vorbis إصدارة"
 
 #: ../src/AudacityApp.cpp:109
 msgid "WARNING: You may be prompted to save your work. Clicking cancel will have the same effect as clicking no."
@@ -3887,12 +3901,12 @@ msgstr "تصغير خطوة واحدة"
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:113
 msgid "[Snap-To Off]"
-msgstr ""
+msgstr "[قفز-إلى معطل]"
 
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:115
 msgid "[Snap-To On]"
-msgstr ""
+msgstr "[قفز-إلى ممكّن]"
 
 #: ../src/effects/Echo.cpp:183
 msgid "by Dominic Mazzoni && Vaughan Johnson"
@@ -3912,14 +3926,14 @@ msgstr ""
 #  cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
-msgstr ""
+msgstr "75 fps  دقيقة:ثانية:إطار cdda"
 
 #  i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #  A "sector" is a technical term - don't translate unless you're sure
 #  you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
-msgstr ""
+msgstr "(قفز -إلى العينات) cdda مسارات+بايتات"
 
 #: ../src/TrackPanel.cpp:4340
 #: ../src/effects/ChangePitch.cpp:275
@@ -3929,17 +3943,17 @@ msgstr ""
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:27
 msgid "film frames 24 fps"
-msgstr ""
+msgstr "24 fps إطارات فلم"
 
 #. i18n-hint: fps is "frames per second",
 #. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
-msgstr ""
+msgstr "24 fps فلم ساعة:دقيقة:ثانية:إطار"
 
 #: ../src/FormatSelection.cpp:25
 msgid "hr:min:sec"
-msgstr ""
+msgstr "ساعة:دقيقة:ثانية"
 
 #: ../src/Menus.cpp:1241
 msgid "labels.txt"
@@ -3951,15 +3965,15 @@ msgstr "يسار"
 
 #: ../src/FormatSelection.cpp:23
 msgid "min:sec"
-msgstr ""
+msgstr "دقيقة:ثانية"
 
 #: ../src/FormatSelection.cpp:46
 msgid "min:sec (snap to samples)"
-msgstr ""
+msgstr "(دقيقة:ثانية (قفز -إلى العينات"
 
 #: ../src/FormatSelection.cpp:48
 msgid "min:sec+samples (snap to samples)"
-msgstr ""
+msgstr "(دقيقة:ثانية+عينات (قفز -إلى العينات"
 
 #. i18n-hint: n/a is an English
 #. abbreviation meaning "not
@@ -3975,19 +3989,19 @@ msgstr "يمين"
 
 #: ../src/FormatSelection.cpp:45
 msgid "samples (snap to samples)"
-msgstr ""
+msgstr "(عينات (قفز -إلى العينات"
 
 #: ../src/FormatSelection.cpp:24
 msgid "sec"
-msgstr ""
+msgstr "ثانية"
 
 #: ../src/FormatSelection.cpp:47
 msgid "sec (snap to samples)"
-msgstr ""
+msgstr "(ثانية (قفز -إلى العينات"
 
 #: ../src/FormatSelection.cpp:49
 msgid "sec+samples (snap to samples)"
-msgstr ""
+msgstr "(ثانية+عينات (قفز -إلى العينات"
 
 #: ../src/FreqWindow.cpp:996
 msgid "spectrum.txt"
