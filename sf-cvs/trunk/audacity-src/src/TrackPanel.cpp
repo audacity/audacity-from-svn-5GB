@@ -1082,6 +1082,8 @@ bool TrackPanel::SetCursorByActivity( )
       return true;
    case IsAdjustingLabel:
       return true;
+   case IsOverCutLine:
+      SetCursor( unsafe ? *mDisabledCursor : *mArrowCursor);
    default:
       break;
    }
@@ -3245,6 +3247,62 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    }
 }
 
+bool TrackPanel::HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event)
+{
+   if (mMouseCapture == IsOverCutLine)
+   {
+      if (!mCapturedCutLineRect.Inside(event.m_x, event.m_y))
+      {
+         SetCapturedTrack( NULL );
+         SetCursorByActivity();
+         return false;
+      }
+
+      if (event.LeftDown())
+      {
+         // When user presses left button on cut line, expand the line again
+         track->ExpandCutLine(mCapturedCutLine);
+         WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
+         linked->ExpandCutLine(mCapturedCutLine);
+         Refresh(false);
+      }
+
+      if (event.RightDown())
+      {
+         Refresh(false);
+         track->RemoveCutLine(mCapturedCutLine);
+         WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
+         linked->RemoveCutLine(mCapturedCutLine);
+         Refresh(false);
+      }
+
+      return true;
+   }
+
+   for (int i=0; i<track->GetNumCachedCutLines(); i++)
+   {
+      double x = (track->GetCachedCutLine(i) - mViewInfo->h) * mViewInfo->zoom;
+      if (x >= 0 && x < r.width)
+      {
+         wxRect cutlineRect;
+         cutlineRect.x = r.x + x - 5;
+         cutlineRect.width = 11;
+         cutlineRect.y = r.y;
+         cutlineRect.height = r.height;
+         if (cutlineRect.Inside(event.m_x, event.m_y))
+         {
+            SetCapturedTrack(track, IsOverCutLine);
+            mCapturedCutLine = track->GetCachedCutLine(i);
+            mCapturedCutLineRect = cutlineRect;
+            SetCursorByActivity();
+            return true;
+         }
+      }
+   }
+
+   return false;
+}
+
 /// Event has happened on a track and it has been determined to be a label track.
 /// TODO: This fucntion is one of a large number of functions in 
 /// TrackPanel which suitably modified belong in other classes.
@@ -3405,7 +3463,14 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
       if(HandleLabelTrackMouseEvent( (LabelTrack *) pTrack, r, event ))
          return;
    }
-   
+
+   if (pTrack && (pTrack->GetKind() == Track::Wave) && 
+       (mMouseCapture == IsUncaptured || mMouseCapture == IsOverCutLine))
+   {
+      if (HandleCutLinesMouseEvent( (WaveTrack *) pTrack, r, event ))
+         return;
+   }
+
    ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
    if( pCtb == NULL )
       return;

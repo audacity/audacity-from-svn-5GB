@@ -71,6 +71,8 @@ class Sequence: public XMLTagHandler {
    bool SetSilence(sampleCount s0, sampleCount len);
    bool InsertSilence(sampleCount s0, sampleCount len);
 
+   DirManager* GetDirManager() { return mDirManager; }
+
    //
    // XMLTagHandler callback methods for loading and saving
    //

@@ -95,6 +95,12 @@ class WaveTrack: public Track {
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
 
+   virtual bool SplitAt(double t);
+   virtual bool CutAndAddCutLine(double t0, double t1, Track **dest);
+   virtual bool ClearAndAddCutLine(double t0, double t1);
+
+   bool ClearWithCutLines(double t0, double t1, bool addCutLines);
+
    /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,
                sampleCount len, unsigned int stride=1);
@@ -211,6 +217,19 @@ class WaveTrack: public Track {
    void SetDisplayRect(const wxRect& r) { mDisplayRect = r; }
    void GetDisplayRect(wxRect* r) { *r = mDisplayRect; }
 
+   // Cache cut lines for later speedy access
+   void UpdateCutLinesCache();
+
+   // Get number of cached cut lines
+   int GetNumCachedCutLines() { return mDisplayNumCutLines; }
+   double GetCachedCutLine(int index) { return mDisplayCutLines[index]; }
+
+   // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
+   bool ExpandCutLine(double cutLinePosition);
+
+   // Remove cut line, without expanding the audio in it
+   bool RemoveCutLine(double cutLinePosition);
+
    //
    // The following code will eventually become part of a GUIWaveTrack
    // and will be taken out of the WaveTrack class:
@@ -251,6 +270,9 @@ class WaveTrack: public Track {
    float         mDisplayMin;
    float         mDisplayMax;
    int           mDisplay; // type of display, from WaveTrackDisplay enum
+   int           mDisplayNumCutLines;
+   int           mDisplayNumCutLinesAllocated;
+   double*       mDisplayCutLines;
 
    //
    // Protected methods

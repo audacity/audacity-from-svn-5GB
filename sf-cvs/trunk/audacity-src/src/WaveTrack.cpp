@@ -63,6 +63,9 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    SetName(_("Audio Track"));
    mDisplayMin = -1.0;
    mDisplayMax = 1.0;
+   mDisplayNumCutLines = 0;
+   mDisplayCutLines = NULL;
+   mDisplayNumCutLinesAllocated = 0;
 }
 
 WaveTrack::WaveTrack(WaveTrack &orig):
@@ -88,6 +91,9 @@ void WaveTrack::Init(const WaveTrack &orig)
    mDisplay = orig.mDisplay;
    mDisplayMin = orig.mDisplayMin;
    mDisplayMax = orig.mDisplayMax;
+   mDisplayNumCutLines = 0;
+   mDisplayCutLines = NULL;
+   mDisplayNumCutLinesAllocated = 0;
 }
 
 WaveTrack::~WaveTrack()
@@ -95,6 +101,8 @@ WaveTrack::~WaveTrack()
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       delete it->GetData();
    mClips.Clear();
+   if (mDisplayCutLines)
+      delete mDisplayCutLines;
 }
 
 double WaveTrack::GetOffset()
@@ -205,6 +213,17 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
    return Clear(t0, t1);
 }
 
+bool WaveTrack::CutAndAddCutLine(double t0, double t1, Track **dest)
+{
+   if (t1 < t0)
+      return false;
+
+   // Cut is the same as 'Copy', then 'Delete'
+   if (!Copy(t0, t1, dest))
+      return false;
+   return ClearAndAddCutLine(t0, t1);
+}
+
 bool WaveTrack::Copy(double t0, double t1, Track **dest)
 {
    *dest = NULL;
@@ -228,6 +247,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          //printf("copy: clip %i is in copy region\n", (int)clip);
          
          WaveClip *newClip = new WaveClip(*clip);
+         newClip->RemoveAllCutLines();
          newClip->Offset(-t0);
          newTrack->mClips.Append(newClip);
       } else
@@ -237,6 +257,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          //printf("copy: clip %i is affected by command\n", (int)clip);
          
          WaveClip *newClip = new WaveClip(*clip);
+         newClip->RemoveAllCutLines();
          double clip_t0 = t0;
          double clip_t1 = t1;
          if (clip_t0 < clip->GetStartTime())
@@ -342,18 +363,7 @@ bool WaveTrack::Paste(double t0, Track *src)
       {
          // Exhibit traditional behaviour
          // printf("paste: traditional behaviour\n");
-         
-         longSampleCount s0;
-         insideClip->TimeToSamplesClip(t0, &s0);
-
-         // printf("pasting at time %f (this is sample %i)\n", t0, s0);
-
-         if (insideClip->GetSequence()->Paste(s0, other->GetClipByIndex(0)->GetSequence()))
-         {
-            insideClip->MarkChanged();
-            return true;
-         } else
-            return false;
+         return insideClip->Paste(t0, other->GetClipByIndex(0));
       }
 
       // Just fall through and exhibit new behaviour
@@ -376,6 +386,16 @@ bool WaveTrack::Paste(double t0, Track *src)
 
 bool WaveTrack::Clear(double t0, double t1)
 {
+   return ClearWithCutLines(t0, t1, false);
+}
+
+bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
+{
+   return ClearWithCutLines(t0, t1, true);
+}
+
+bool WaveTrack::ClearWithCutLines(double t0, double t1, bool addCutLines)
+{
    if (t1 < t0)
       return false;
 
@@ -394,22 +414,14 @@ bool WaveTrack::Clear(double t0, double t1)
       if (t1 > clip->GetStartTime() && t0 < clip->GetEndTime())
       {
          // Clip data is affected by command
-         longSampleCount s0, s1;
-         clip->TimeToSamplesClip(t0, &s0);
-         clip->TimeToSamplesClip(t1, &s1);
-         if (clip->GetSequence()->Delete(s0, s1-s0))
+         if (addCutLines)
          {
-            clip->GetEnvelope()->CollapseRegion(t0, t1);
-            clip->MarkChanged();
+            if (!clip->ClearAndAddCutLine(t0,t1))
+               return false;
          } else
          {
-            wxASSERT(false);
-            return false;
-         }
-
-         if (t0 < clip->GetStartTime())
-         {
-            clip->Offset(-(clip->GetStartTime() - t0));
+            if (!clip->Clear(t0,t1))
+               return false;
          }
       } else
       if (clip->GetStartTime() >= t1)
@@ -1034,6 +1046,86 @@ bool WaveTrack::CanInsertClip(WaveClip* clip)
    }
 
    return true;
+}
+
+bool WaveTrack::SplitAt(double t)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip* c = it->GetData();
+      if (t > c->GetStartTime() && t < c->GetEndTime())
+      {
+         WaveClip* newClip = new WaveClip(*c);
+         if (!c->Clear(t, c->GetEndTime()))
+         {
+            delete newClip;
+            return false;
+         }
+         if (!newClip->Clear(c->GetStartTime(), t))
+         {
+            delete newClip;
+            return false;
+         }
+         newClip->Offset(t - c->GetStartTime());
+         mClips.Append(newClip);
+         return true;
+      }
+   }
+
+   return true;
+}
+
+void WaveTrack::UpdateCutLinesCache()
+{
+   WaveClipList::Node* it;
+   mDisplayNumCutLines = 0;
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+      mDisplayNumCutLines += it->GetData()->GetCutLines()->GetCount();
+
+   if (mDisplayNumCutLines == 0)
+      return;
+
+   if (mDisplayNumCutLines > mDisplayNumCutLinesAllocated)
+   {
+      // Only realloc, if we need more space than before. Otherwise
+      // just use block from before.
+      if (mDisplayCutLines)
+         delete mDisplayCutLines;
+      mDisplayCutLines = new double[mDisplayNumCutLines];
+      mDisplayNumCutLinesAllocated = mDisplayNumCutLines;
+   }
+
+   int curpos = 0;
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClipList* cutlines = it->GetData()->GetCutLines();
+      for (WaveClipList::Node* jt = cutlines->GetFirst(); jt; jt=jt->GetNext())
+      {
+         mDisplayCutLines[curpos] = jt->GetData()->GetOffset() + it->GetData()->GetOffset();
+         curpos++;
+      }
+   }
+}
+
+// Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
+bool WaveTrack::ExpandCutLine(double cutLinePosition)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (it->GetData()->ExpandCutLine(cutLinePosition))
+         return true;
+
+   return false;
+}
+
+bool WaveTrack::RemoveCutLine(double cutLinePosition)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (it->GetData()->RemoveCutLine(cutLinePosition))
+         return true;
+
+   return false;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
