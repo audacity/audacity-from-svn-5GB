@@ -21,6 +21,8 @@
    #include <wx/string.h>
 #endif
 
+#include "sndfile.h"
+
 #include <wx/textfile.h>
 
 #include "Audacity.h"
@@ -28,6 +30,7 @@
 #include "APalette.h"
 #include "Benchmark.h"
 #include "export/Export.h"
+#include "FileFormats.h"
 #include "FreqWindow.h"
 #include "Help.h"
 #include "import/Import.h"
@@ -59,8 +62,9 @@ void AudacityProject::CreateMenuBar()
    // Note: if you change the titles of any of the menus here,
    // you must also change the title in OnUpdateMenus, below.
    
-   wxString pcmFormat =
-       gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
+   int format = ReadExportFormatPref();                         
+   wxString pcmFormat = sf_header_name(format & SF_FORMAT_TYPEMASK);
+
    mExportString.Printf("&Export as %s...", pcmFormat.c_str());
    mExportSelectionString.Printf("Export &Selection as %s...", pcmFormat.c_str());
    wxString lossyFormat =
