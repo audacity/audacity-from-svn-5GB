@@ -102,27 +102,21 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-New features in Audacity 1.1.0:
+Major new features in Audacity 1.1.0:
 
   * Automatic real-time resampling (using linear
-    interpolation)
-
+      interpolation)
   * 24-bit and 32-bit sample formats
-
   * New toolbar buttons and a new Edit toolbar
-
   * Autoscroll while playing or recording
-
   * LADSPA effects plugins on Linux / Unix
-
-  * Many improvements to appearance and user interface
+  * Ogg Vorbis exporting
+  * Export to command-line programs on Unix
+  * Many user interface improvements
 
 New libraries in Audacity 1.1:
 
   * libmad for fast MP3 importing
-
-  * libid3tag for MP3 importing and exporting
-
+  * libid3tag for editing MP3 file information
   * libsndfile to read and write more audio file formats
-
   * PortAudio for cross-platform audio playing and recording
