@@ -202,7 +202,7 @@ void Px_SetMasterVolume( PxMixer *mixer, PxVolume volume )
    PxInfo *info = (PxInfo *)mixer;
 
    int vol = (int)((volume * 100.0) + 0.5);
-   vol = (vol & (vol<<8));
+   vol = (vol | (vol<<8));
    ioctl(info->fd, MIXER_WRITE(SOUND_MIXER_VOLUME), &vol);
 }
 
@@ -222,7 +222,7 @@ void Px_SetPCMOutputVolume( PxMixer *mixer, PxVolume volume )
    PxInfo *info = (PxInfo *)mixer;
 
    int vol = (int)((volume * 100.0) + 0.5);
-   vol = (vol & (vol<<8));
+   vol = (vol | (vol<<8));
    ioctl(info->fd, MIXER_WRITE(SOUND_MIXER_PCM), &vol);
 }
 
@@ -257,7 +257,7 @@ void Px_SetOutputVolume( PxMixer *mixer, int i, PxVolume volume )
    PxInfo *info = (PxInfo *)mixer;
 
    int vol = (int)((volume * 100.0) + 0.5);
-   vol = (vol & (vol<<8));
+   vol = (vol | (vol<<8));
    ioctl(info->fd, MIXER_WRITE(info->outs[i]), &vol);
 }
 
@@ -336,7 +336,7 @@ void Px_SetInputVolume( PxMixer *mixer, PxVolume volume )
       return;
 
    vol = (int)((volume * 100.0) + 0.5);
-   vol = (vol & (vol<<8));
+   vol = (vol | (vol<<8));
    ioctl(info->fd, MIXER_WRITE(info->recs[i]), &vol);
 }
 
