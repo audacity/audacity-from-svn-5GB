@@ -503,7 +503,7 @@ ToolBarFrame::ToolBarFrame(wxWindow * parent, enum ToolBarType tbt)
    : wxMiniFrame(gParentWindow, -1, _(""), wxPoint(1, 1),
          wxSize(20, 20),
          wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP | wxMINIMIZE_BOX
-         | wxFRAME_FLOAT_ON_PARENT)
+         | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
 {
    //Create an embedded toolbar of the proper type
    switch (tbt) {
