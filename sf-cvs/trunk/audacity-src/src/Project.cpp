@@ -1493,9 +1493,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       }
    }
 
-   //BG: Attempt to fix some crashes by not processing messages once we 'destroy' the window.
-   SetEventHandler(&mNullEventHandler);
-   mTrackPanel->SetEventHandler(&mNullEventHandler);
+   //BG: Process messages before we destroy the window
+   wxSafeYield();
    Destroy();
 }
 

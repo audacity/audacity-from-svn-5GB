@@ -99,12 +99,14 @@ void QuitAudacity(bool bForce)
 
       size_t len = gAudacityProjects.Count();
       for (size_t i = 0; i < len; i++) {
-         if (!gAudacityProjects[i]->Close())
+         if(bForce)
          {
-            if(!bForce)
-            {
+            gAudacityProjects[i]->Close(true);
+         }
+         else
+         {
+            if (!gAudacityProjects[i]->Close())
                return;
-            }
          }
       }
 
