@@ -97,15 +97,15 @@ void aresonvv_nss_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the hz1 input sample block: */
 	susp_check_term_samples(hz1, hz1_ptr, hz1_cnt);
-	togo = min(togo, susp->hz1_cnt);
+	togo = MIN(togo, susp->hz1_cnt);
 
 	/* don't run past the bw input sample block: */
 	susp_check_term_samples(bw, bw_ptr, bw_cnt);
-	togo = min(togo, susp->bw_cnt);
+	togo = MIN(togo, susp->bw_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -258,11 +258,11 @@ void aresonvv_nsi_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the hz1 input sample block: */
 	susp_check_term_samples(hz1, hz1_ptr, hz1_cnt);
-	togo = min(togo, susp->hz1_cnt);
+	togo = MIN(togo, susp->hz1_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -420,11 +420,11 @@ void aresonvv_nsr_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the hz1 input sample block: */
 	susp_check_term_samples(hz1, hz1_ptr, hz1_cnt);
-	togo = min(togo, susp->hz1_cnt);
+	togo = MIN(togo, susp->hz1_cnt);
 
 	/* grab next bw_x1_sample when phase goes past 1.0; */
 	/* use bw_n (computed below) to avoid roundoff errors: */
@@ -441,7 +441,7 @@ void aresonvv_nsr_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->omc3 = 1.0 - susp->c3co;
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->bw_n);
+	togo = MIN(togo, susp->bw_n);
 	bw_val = susp->bw_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -584,11 +584,11 @@ void aresonvv_nis_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the bw input sample block: */
 	susp_check_term_samples(bw, bw_ptr, bw_cnt);
-	togo = min(togo, susp->bw_cnt);
+	togo = MIN(togo, susp->bw_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -757,7 +757,7 @@ void aresonvv_nii_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -930,7 +930,7 @@ void aresonvv_nir_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next bw_x1_sample when phase goes past 1.0; */
 	/* use bw_n (computed below) to avoid roundoff errors: */
@@ -947,7 +947,7 @@ void aresonvv_nir_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->omc3 = 1.0 - susp->c3co;
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->bw_n);
+	togo = MIN(togo, susp->bw_n);
 	bw_val = susp->bw_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -1098,7 +1098,7 @@ void aresonvv_nrs_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next hz1_x1_sample when phase goes past 1.0; */
 	/* use hz1_n (computed below) to avoid roundoff errors: */
@@ -1112,11 +1112,11 @@ void aresonvv_nrs_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->coshz = cos(susp->hz1_x1_sample);
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->hz1_n);
+	togo = MIN(togo, susp->hz1_n);
 	hz1_val = susp->hz1_x1_sample;
 	/* don't run past the bw input sample block: */
 	susp_check_term_samples(bw, bw_ptr, bw_cnt);
-	togo = min(togo, susp->bw_cnt);
+	togo = MIN(togo, susp->bw_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -1267,7 +1267,7 @@ void aresonvv_nri_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next hz1_x1_sample when phase goes past 1.0; */
 	/* use hz1_n (computed below) to avoid roundoff errors: */
@@ -1281,7 +1281,7 @@ void aresonvv_nri_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->coshz = cos(susp->hz1_x1_sample);
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->hz1_n);
+	togo = MIN(togo, susp->hz1_n);
 	hz1_val = susp->hz1_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -1432,7 +1432,7 @@ void aresonvv_nrr_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next hz1_x1_sample when phase goes past 1.0; */
 	/* use hz1_n (computed below) to avoid roundoff errors: */
@@ -1446,7 +1446,7 @@ void aresonvv_nrr_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->coshz = cos(susp->hz1_x1_sample);
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->hz1_n);
+	togo = MIN(togo, susp->hz1_n);
 	hz1_val = susp->hz1_x1_sample;
 	/* grab next bw_x1_sample when phase goes past 1.0; */
 	/* use bw_n (computed below) to avoid roundoff errors: */
@@ -1463,7 +1463,7 @@ void aresonvv_nrr_fetch(register aresonvv_susp_type susp, snd_list_type snd_list
 	    susp->omc3 = 1.0 - susp->c3co;
 	    susp->recompute = true;
 	}
-	togo = min(togo, susp->bw_n);
+	togo = MIN(togo, susp->bw_n);
 	bw_val = susp->bw_x1_sample;
 	if (susp->recompute) {
 	    susp->recompute = false;
@@ -1626,7 +1626,7 @@ sound_type snd_make_aresonvv(sound_type s1, sound_type hz1, sound_type bw, int n
 {
     register aresonvv_susp_type susp;
     rate_type sr = s1->sr;
-    time_type t0 = max(max(s1->t0, hz1->t0), bw->t0);
+    time_type t0 = MAX(max(s1->t0, hz1->t0), bw->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -1683,7 +1683,7 @@ sound_type snd_make_aresonvv(sound_type s1, sound_type hz1, sound_type bw, int n
     if (t0 < hz1->t0) sound_prepend_zeros(hz1, t0);
     if (t0 < bw->t0) sound_prepend_zeros(bw, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s1->t0, min(hz1->t0, min(bw->t0, t0)));
+    t0_min = MIN(s1->t0, min(hz1->t0, min(bw->t0, t0)));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

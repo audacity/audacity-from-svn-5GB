@@ -72,11 +72,11 @@ void tapf_sn_fetch(register tapf_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the vardelay input sample block: */
 	susp_check_term_samples(vardelay, vardelay_ptr, vardelay_cnt);
-	togo = min(togo, susp->vardelay_cnt);
+	togo = MIN(togo, susp->vardelay_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -218,7 +218,7 @@ void tapf_si_fetch(register tapf_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -369,7 +369,7 @@ void tapf_sr_fetch(register tapf_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next vardelay_x2_sample when phase goes past 1.0; */
 	/* we use vardelay_n (computed below) to avoid roundoff errors: */
@@ -384,7 +384,7 @@ void tapf_sr_fetch(register tapf_susp_type susp, snd_list_type snd_list)
 	    susp->vardelay_n = (long) ((1.0 - susp->vardelay_pHaSe) *
 					susp->output_per_vardelay);
 	}
-	togo = min(togo, susp->vardelay_n);
+	togo = MIN(togo, susp->vardelay_n);
 	vardelay_DeLtA = (sample_type) ((vardelay_x2_sample - susp->vardelay_x1_sample) * susp->vardelay_pHaSe_iNcR);
 	vardelay_val = (sample_type) (susp->vardelay_x1_sample * (1.0 - susp->vardelay_pHaSe) +
 		 vardelay_x2_sample * susp->vardelay_pHaSe);
@@ -548,7 +548,7 @@ sound_type snd_make_tapf(sound_type s1, double offset, sound_type vardelay, doub
 {
     register tapf_susp_type susp;
     rate_type sr = s1->sr;
-    time_type t0 = max(s1->t0, vardelay->t0);
+    time_type t0 = MAX(s1->t0, vardelay->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -556,7 +556,7 @@ sound_type snd_make_tapf(sound_type s1, double offset, sound_type vardelay, doub
     susp->offset = offset * s1->sr;
     susp->vdscale = vardelay->scale * s1->sr;
     susp->maxdelay = (long)(maxdelay * s1->sr);
-    susp->bufflen = max(2, (long) (susp->maxdelay + 0.5));
+    susp->bufflen = MAX(2, (long) (susp->maxdelay + 0.5));
     susp->index = susp->bufflen;
     susp->buffer = (sample_type *) calloc(susp->bufflen + 1, sizeof(sample_type));
 
@@ -580,7 +580,7 @@ sound_type snd_make_tapf(sound_type s1, double offset, sound_type vardelay, doub
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < vardelay->t0) sound_prepend_zeros(vardelay, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s1->t0, min(vardelay->t0, t0));
+    t0_min = MIN(s1->t0, min(vardelay->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -52,7 +52,7 @@ void partial_n_fetch(register partial_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the env input sample block: */
 	susp_check_term_log_samples(env, env_ptr, env_cnt);
-	togo = min(togo, susp->env_cnt);
+	togo = MIN(togo, susp->env_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -146,7 +146,7 @@ void partial_s_fetch(register partial_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the env input sample block: */
 	susp_check_term_log_samples(env, env_ptr, env_cnt);
-	togo = min(togo, susp->env_cnt);
+	togo = MIN(togo, susp->env_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -283,7 +283,7 @@ sound_type snd_make_partial(rate_type sr, double hz, sound_type env)
     /* handle unequal start times, if any */
     if (t0 < env->t0) sound_prepend_zeros(env, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(env->t0, t0);
+    t0_min = MIN(env->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

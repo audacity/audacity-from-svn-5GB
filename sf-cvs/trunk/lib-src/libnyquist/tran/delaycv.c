@@ -54,11 +54,11 @@ void delaycv_nn_fetch(register delaycv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s input sample block: */
 	susp_check_term_samples(s, s_ptr, s_cnt);
-	togo = min(togo, susp->s_cnt);
+	togo = MIN(togo, susp->s_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -127,11 +127,11 @@ void delaycv_ns_fetch(register delaycv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s input sample block: */
 	susp_check_term_samples(s, s_ptr, s_cnt);
-	togo = min(togo, susp->s_cnt);
+	togo = MIN(togo, susp->s_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -235,8 +235,8 @@ void delaycv_print_tree(delaycv_susp_type susp, int n)
 sound_type snd_make_delaycv(sound_type s, time_type delay, sound_type feedback)
 {
     register delaycv_susp_type susp;
-    rate_type sr = max(s->sr, feedback->sr);
-    time_type t0 = max(s->t0, feedback->t0);
+    rate_type sr = MAX(s->sr, feedback->sr);
+    time_type t0 = MAX(s->t0, feedback->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -267,7 +267,7 @@ sound_type snd_make_delaycv(sound_type s, time_type delay, sound_type feedback)
     if (t0 < s->t0) sound_prepend_zeros(s, t0);
     if (t0 < feedback->t0) sound_prepend_zeros(feedback, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s->t0, min(feedback->t0, t0));
+    t0_min = MIN(s->t0, min(feedback->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

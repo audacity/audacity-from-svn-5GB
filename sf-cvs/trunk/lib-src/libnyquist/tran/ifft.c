@@ -220,7 +220,7 @@ out:        togo = 0;   /* indicate termination */
             free (temp_fft);
 */
         }
-        togo = min(togo, susp->stepsize - susp->index);
+        togo = MIN(togo, susp->stepsize - susp->index);
 
 	n = togo;
 	index_reg = susp->index;

@@ -131,7 +131,7 @@ void gate_n_fetch(register gate_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the signal input sample block: */
 	susp_check_term_samples(signal, signal_ptr, signal_cnt);
-	togo = min(togo, susp->signal_cnt);
+	togo = MIN(togo, susp->signal_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -315,7 +315,7 @@ sound_type snd_make_gate(sound_type signal, time_type lookahead, double risetime
     susp->start_fall = 0;
     susp->start_rise = 0;
     susp->stop_count = 0;
-    susp->delay_len = max(1, round(signal->sr * lookahead));
+    susp->delay_len = MAX(1, round(signal->sr * lookahead));
     susp->state = ST_OFF;
     susp->value = susp->floor;
     susp->susp.fetch = gate_n_fetch;
@@ -323,7 +323,7 @@ sound_type snd_make_gate(sound_type signal, time_type lookahead, double risetime
     /* handle unequal start times, if any */
     if (t0 < signal->t0) sound_prepend_zeros(signal, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(signal->t0, t0);
+    t0_min = MIN(signal->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

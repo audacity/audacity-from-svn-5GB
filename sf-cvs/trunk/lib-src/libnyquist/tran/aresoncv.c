@@ -74,11 +74,11 @@ void aresoncv_ns_fetch(register aresoncv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past the bw input sample block: */
 	susp_check_term_samples(bw, bw_ptr, bw_cnt);
-	togo = min(togo, susp->bw_cnt);
+	togo = MIN(togo, susp->bw_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -196,7 +196,7 @@ void aresoncv_ni_fetch(register aresoncv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -324,7 +324,7 @@ void aresoncv_nr_fetch(register aresoncv_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the s1 input sample block: */
 	susp_check_term_log_samples(s1, s1_ptr, s1_cnt);
-	togo = min(togo, susp->s1_cnt);
+	togo = MIN(togo, susp->s1_cnt);
 
 	/* grab next bw_x1_sample when phase goes past 1.0; */
 	/* use bw_n (computed below) to avoid roundoff errors: */
@@ -336,7 +336,7 @@ void aresoncv_nr_fetch(register aresoncv_susp_type susp, snd_list_type snd_list)
 	    susp->bw_n = (long) ((1.0 - susp->bw_pHaSe) *
 					susp->output_per_bw);
 	}
-	togo = min(togo, susp->bw_n);
+	togo = MIN(togo, susp->bw_n);
 	bw_val = susp->bw_x1_sample;
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -475,7 +475,7 @@ sound_type snd_make_aresoncv(sound_type s1, double hz, sound_type bw, int normal
 {
     register aresoncv_susp_type susp;
     rate_type sr = s1->sr;
-    time_type t0 = max(s1->t0, bw->t0);
+    time_type t0 = MAX(s1->t0, bw->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -512,7 +512,7 @@ sound_type snd_make_aresoncv(sound_type s1, double hz, sound_type bw, int normal
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < bw->t0) sound_prepend_zeros(bw, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(s1->t0, min(bw->t0, t0));
+    t0_min = MIN(s1->t0, min(bw->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

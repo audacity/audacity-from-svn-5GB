@@ -61,15 +61,15 @@ void alpassvv_nnn_fetch(register alpassvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the delaysnd input sample block: */
 	susp_check_samples(delaysnd, delaysnd_ptr, delaysnd_cnt);
-	togo = min(togo, susp->delaysnd_cnt);
+	togo = MIN(togo, susp->delaysnd_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -177,15 +177,15 @@ void alpassvv_nns_fetch(register alpassvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the delaysnd input sample block: */
 	susp_check_samples(delaysnd, delaysnd_ptr, delaysnd_cnt);
-	togo = min(togo, susp->delaysnd_cnt);
+	togo = MIN(togo, susp->delaysnd_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -293,15 +293,15 @@ void alpassvv_nsn_fetch(register alpassvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the delaysnd input sample block: */
 	susp_check_samples(delaysnd, delaysnd_ptr, delaysnd_cnt);
-	togo = min(togo, susp->delaysnd_cnt);
+	togo = MIN(togo, susp->delaysnd_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -410,15 +410,15 @@ void alpassvv_nss_fetch(register alpassvv_susp_type susp, snd_list_type snd_list
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past the delaysnd input sample block: */
 	susp_check_samples(delaysnd, delaysnd_ptr, delaysnd_cnt);
-	togo = min(togo, susp->delaysnd_cnt);
+	togo = MIN(togo, susp->delaysnd_cnt);
 
 	/* don't run past the feedback input sample block: */
 	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-	togo = min(togo, susp->feedback_cnt);
+	togo = MIN(togo, susp->feedback_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -572,8 +572,8 @@ void alpassvv_print_tree(alpassvv_susp_type susp, int n)
 sound_type snd_make_alpassvv(sound_type input, sound_type delaysnd, sound_type feedback, double maxdelay)
 {
     register alpassvv_susp_type susp;
-    rate_type sr = max(max(input->sr, delaysnd->sr), feedback->sr);
-    time_type t0 = max(input->t0, delaysnd->t0);
+    rate_type sr = MAX(max(input->sr, delaysnd->sr), feedback->sr);
+    time_type t0 = MAX(input->t0, delaysnd->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -586,7 +586,7 @@ sound_type snd_make_alpassvv(sound_type input, sound_type delaysnd, sound_type f
 
     falloc_generic(susp, alpassvv_susp_node, "snd_make_alpassvv");
     susp->delay_scale_factor = (float) (input->sr * delaysnd->scale);
-    susp->buflen = max(2, (long) (input->sr * maxdelay + 2.5));
+    susp->buflen = MAX(2, (long) (input->sr * maxdelay + 2.5));
     susp->delaybuf = (sample_type *) calloc (susp->buflen + 1, sizeof(sample_type));
     susp->delayptr = susp->delaybuf;
     susp->endptr = susp->delaybuf + susp->buflen;
@@ -609,7 +609,7 @@ sound_type snd_make_alpassvv(sound_type input, sound_type delaysnd, sound_type f
     if (t0 < delaysnd->t0) sound_prepend_zeros(delaysnd, t0);
     if (t0 < feedback->t0) sound_prepend_zeros(feedback, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(input->t0, min(delaysnd->t0, min(feedback->t0, t0)));
+    t0_min = MIN(input->t0, min(delaysnd->t0, min(feedback->t0, t0)));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -45,7 +45,7 @@ void exp_s_fetch(register exp_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the in input sample block: */
 	susp_check_term_log_samples(in, in_ptr, in_cnt);
-	togo = min(togo, susp->in_cnt);
+	togo = MIN(togo, susp->in_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -167,7 +167,7 @@ sound_type snd_make_exp(sound_type in)
     /* handle unequal start times, if any */
     if (t0 < in->t0) sound_prepend_zeros(in, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(in->t0, t0);
+    t0_min = MIN(in->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -55,7 +55,7 @@ void shape_s_fetch(register shape_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the sin input sample block: */
 	susp_check_term_log_samples(sin, sin_ptr, sin_cnt);
-	togo = min(togo, susp->sin_cnt);
+	togo = MIN(togo, susp->sin_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -200,7 +200,7 @@ sound_type snd_make_shape(sound_type sin, sound_type fn, double origin)
     /* handle unequal start times, if any */
     if (t0 < sin->t0) sound_prepend_zeros(sin, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(sin->t0, t0);
+    t0_min = MIN(sin->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

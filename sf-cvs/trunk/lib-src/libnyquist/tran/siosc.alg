@@ -102,7 +102,7 @@ long siosc_table_update(siosc_susp_type susp, long cur)
             n = susp->next_breakpoint - cur;
             if (n == 0) n = siosc_table_update(susp, cur);
         }
-        togo = min(n, togo);
+        togo = MIN(n, togo);
 ")
 
 (INNER-LOOP "	    table_index = (long) phase;

@@ -12,7 +12,7 @@
 (START (MAX input delaysnd))
 (STATE ("float" "delay_scale_factor" "(float) (input->sr * delaysnd->scale)")
        ("double" "feedback" "feedback")
-       ("long" "buflen" "max(2, (long) (input->sr * maxdelay + 2.5))")
+       ("long" "buflen" "MAX(2, (long) (input->sr * maxdelay + 2.5))")
        ("sample_type *" "delaybuf"
                "(sample_type *) calloc (susp->buflen + 1, sizeof(sample_type))")
        ("sample_type *" "delayptr" "susp->delaybuf")

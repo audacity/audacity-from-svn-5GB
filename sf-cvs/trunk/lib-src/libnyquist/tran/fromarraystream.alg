@@ -59,7 +59,7 @@ out:	    togo = 0;	/* indicate termination */
             }
             susp->array = NULL; /* free the array */
         }
-        togo = min(togo, susp->length - susp->index);
+        togo = MIN(togo, susp->length - susp->index);
 ")
   (INNER-LOOP "output = samples[index++];")
   (CONSTANT "length" "samples" "array" "src")

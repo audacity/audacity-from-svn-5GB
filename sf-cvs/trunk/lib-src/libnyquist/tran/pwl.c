@@ -105,7 +105,7 @@ out:	    togo = 0;	/* indicate termination */
           if (nn == 0) {
               if (compute_lvl(susp) || compute_incr(susp, &nn, cur)) goto out;
           }
-          togo = min(nn, togo);
+          togo = MIN(nn, togo);
         }
 
 	n = togo;

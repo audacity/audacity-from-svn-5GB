@@ -51,7 +51,7 @@ void congen_s_fetch(register congen_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the sndin input sample block: */
 	susp_check_term_samples(sndin, sndin_ptr, sndin_cnt);
-	togo = min(togo, susp->sndin_cnt);
+	togo = MIN(togo, susp->sndin_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -155,7 +155,7 @@ sound_type snd_make_congen(sound_type sndin, double risetime, double falltime)
     /* handle unequal start times, if any */
     if (t0 < sndin->t0) sound_prepend_zeros(sndin, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(sndin->t0, t0);
+    t0_min = MIN(sndin->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -189,7 +189,7 @@ out:        togo = 0;   /* indicate termination */
             free (temp_fft);
 */
         }
-        togo = min(togo, susp->stepsize - susp->index);
+        togo = MIN(togo, susp->stepsize - susp->index);
 ")
   (INNER-LOOP "output = outbuf[index++];")
   (CONSTANT "length" "samples" "array" "src" "window")

@@ -72,7 +72,7 @@ void convolve_s_fetch(register convolve_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the x_snd input sample block: */
 	susp_check_term_log_samples(x_snd, x_snd_ptr, x_snd_cnt);
-	togo = min(togo, susp->x_snd_cnt);
+	togo = MIN(togo, susp->x_snd_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -231,7 +231,7 @@ sound_type snd_make_convolve(sound_type x_snd, sound_type h_snd)
     /* handle unequal start times, if any */
     if (t0 < x_snd->t0) sound_prepend_zeros(x_snd, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(x_snd->t0, t0);
+    t0_min = MIN(x_snd->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

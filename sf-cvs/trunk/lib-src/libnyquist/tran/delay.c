@@ -52,7 +52,7 @@ void delay_n_fetch(register delay_susp_type susp, snd_list_type snd_list)
 
 	/* don't run past the input input sample block: */
 	susp_check_term_samples(input, input_ptr, input_cnt);
-	togo = min(togo, susp->input_cnt);
+	togo = MIN(togo, susp->input_cnt);
 
 	/* don't run past terminate time */
 	if (susp->terminate_cnt != UNKNOWN &&
@@ -152,7 +152,7 @@ sound_type snd_make_delay(sound_type input, time_type delay, double feedback)
 
     falloc_generic(susp, delay_susp_node, "snd_make_delay");
     susp->feedback = feedback;
-    susp->delaylen = max(1, round(input->sr * delay));
+    susp->delaylen = MAX(1, round(input->sr * delay));
     susp->delaybuf = (sample_type *) calloc (susp->delaylen, sizeof(sample_type));
     susp->delayptr = susp->delaybuf;
     susp->endptr = susp->delaybuf + susp->delaylen;
@@ -161,7 +161,7 @@ sound_type snd_make_delay(sound_type input, time_type delay, double feedback)
     /* handle unequal start times, if any */
     if (t0 < input->t0) sound_prepend_zeros(input, t0);
     /* minimum start time over all inputs: */
-    t0_min = min(input->t0, t0);
+    t0_min = MIN(input->t0, t0);
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
