@@ -383,7 +383,6 @@ AudacityProject::~AudacityProject()
    mTracks = NULL;
 
 
-   WX_CLEAR_ARRAY(mCommandMenuItem)
    mCommandMenuItem.Clear();
 
 
