@@ -17,8 +17,7 @@
 
 #include "Audacity.h"
 
-#include "Project.h"
-
+#include <wx/wxprec.h>
 #include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/dcmemory.h>
@@ -45,6 +44,8 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include <wx/scrolbar.h>
 #include <wx/textfile.h>
 #include <wx/menu.h>
+
+#include "Project.h"
 
 #include "AudacityApp.h"
 #include "AColor.h"
@@ -740,7 +741,7 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
    return wxFrame::ProcessEvent(event);
 }
 
-void AudacityProject::OnPaint(wxPaintEvent & event)
+void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 {
    wxPaintDC dc(this);
 
