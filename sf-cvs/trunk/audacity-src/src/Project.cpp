@@ -321,6 +321,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
      mDirty(false),
+     mFirstTimeUpdateMenus(true),
      mTrackPanel(NULL),
      mTrackFactory(NULL),
      mImporter(NULL),
@@ -328,8 +329,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mActive(true),
      mHistoryWindow(NULL),
      mTotalToolBarHeight(0),
-     mDraggingToolBar(NoneID),
-     mFirstTimeUpdateMenus(true)
+     mDraggingToolBar(NoneID)
 {
    #ifndef __WXMAC__
    mDrag = NULL;
@@ -512,6 +512,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mTrackFactory = new TrackFactory(&mDirManager);
    mImporter = new Importer;
+   mImportingRaw = false;
 
 #ifdef __WXMSW__
    // Accept drag 'n' drop files
@@ -908,7 +909,6 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
 
 bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
 {
-   int numEffects = Effect::GetNumEffects();
    Effect *f = NULL;
 
    f = Effect::GetEffect(nEffectIndex);
@@ -2004,12 +2004,19 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
    const int progressDialogGranularity = 1000;
 
    if (self->mImportProgressDialog) {
-      return !self->mImportProgressDialog->Update(percent * progressDialogGranularity);
+      return !self->mImportProgressDialog->Update((int)(percent * progressDialogGranularity));
    }
    else if (wxGetElapsedTime(false) > 500) {
-      wxString dialogMessage = _("Importing ") +
-                               self->mImporter->GetFileDescription() +
-                               _(" File...");
+      wxString description;
+
+      if (self->mImportingRaw)
+         description = _("Raw");
+      else
+         description = self->mImporter->GetFileDescription();
+         
+      wxString dialogMessage;
+      dialogMessage.Printf(_("Importing %s File..."),
+                           (const char *)description);
 
       self->mImportProgressDialog = new wxProgressDialog(_("Import"),
                                          dialogMessage,
@@ -2018,39 +2025,16 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
                                          wxPD_CAN_ABORT |
                                          wxPD_REMAINING_TIME |
                                          wxPD_AUTO_HIDE);
-      return !self->mImportProgressDialog->Update(percent * progressDialogGranularity);
+      return !self->mImportProgressDialog->Update((int)(percent * progressDialogGranularity));
    }
    else {
       return 0;
    }
 }
 
-void AudacityProject::Import(wxString fileName)
+void AudacityProject::AddImportedTracks(wxString fileName,
+                                        Track **newTracks, int numTracks)
 {
-   Track **newTracks;
-   int numTracks;
-   wxString errorMessage;
-
-   wxStartTimer();
-
-   wxASSERT(!mImportProgressDialog);
-
-   // TODO: use the callback to draw a progressdialog
-   numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
-                                 errorMessage,
-                                 AudacityProject::ImportProgressCallback,
-                                 this);
-
-   if(mImportProgressDialog) {
-      delete mImportProgressDialog;
-      mImportProgressDialog = NULL;
-   }
-
-   if (numTracks <= 0) {
-      wxMessageBox(errorMessage);
-      return;
-   }
-
    SelectNone();
 
    // TODO: detect which (if any) were WaveTracks and get the rate from them
@@ -2082,7 +2066,35 @@ void AudacityProject::Import(wxString fileName)
       SetTitle(GetName());
    }
 
-   HandleResize();
+   HandleResize();   
+}
+
+void AudacityProject::Import(wxString fileName)
+{
+   Track **newTracks;
+   int numTracks;
+   wxString errorMessage;
+
+   wxStartTimer();
+
+   wxASSERT(!mImportProgressDialog);
+
+   numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
+                                 errorMessage,
+                                 AudacityProject::ImportProgressCallback,
+                                 this);
+
+   if(mImportProgressDialog) {
+      delete mImportProgressDialog;
+      mImportProgressDialog = NULL;
+   }
+
+   if (numTracks <= 0) {
+      wxMessageBox(errorMessage);
+      return;
+   }
+
+   AddImportedTracks(fileName, newTracks, numTracks);
 }
 
 bool AudacityProject::SaveAs()
@@ -2297,7 +2309,7 @@ ControlToolBar *AudacityProject::GetControlToolBar()
 
 MixerToolBar *AudacityProject::GetMixerToolBar()
 {
-   for(int i=0; i<mToolBarArray.GetCount(); i++)
+   for(unsigned int i=0; i<mToolBarArray.GetCount(); i++)
       if ((mToolBarArray[i]->GetType()) == MixerToolBarID)
          return (MixerToolBar *)mToolBarArray[i];
 

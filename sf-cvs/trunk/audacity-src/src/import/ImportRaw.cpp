@@ -12,1053 +12,471 @@
 
 #include <wx/defs.h>
 #include <wx/button.h>
-#include <wx/dc.h>
-#include <wx/dcmemory.h>
-#include <wx/file.h>
-#include <wx/radiobut.h>
-#include <wx/sizer.h>
-#include <wx/thread.h>
-#include <wx/timer.h>
-#include <wx/msgdlg.h>
-#include <wx/progdlg.h>
+#include <wx/choice.h>
 #include <wx/intl.h>
+#include <wx/msgdlg.h>
+#include <wx/panel.h>
+#include <wx/progdlg.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/timer.h>
+
+#include "sndfile.h"
 
 #include "Import.h"
 #include "ImportRaw.h"
 
+#include "RawAudioGuess.h"
+
+#include "../Prefs.h"
+#include "../FileFormats.h"
+
 #include "../WaveTrack.h"
 #include "../DirManager.h"
 
-#include "../FFT.h"
+class ImportRawDialog:public wxDialog {
 
-/* Declare Static functions */
-static float AmpStat(float *data, int len);
-static float JumpStat(float *data, int len);
-static float RedundantStereo(float *data, int len);
-static float PredictStat(float *data, int len);
-static float FreqStat(float *data, int len);
-static void Extract(bool bits16,
-             bool sign,
-             bool stereo,
-             bool bigendian,
-             bool offset,
-             char *rawData, int dataSize,
-             float *data1, float *data2, int *len1, int *len2);
+  public:
+   ImportRawDialog(wxWindow * parent,
+                   int encoding, int channels,
+                   int offset, double rate);
+   ~ImportRawDialog();
 
-// bits16, signed, stereo, bigendian
+   void OnOK(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+   void OnPlay(wxCommandEvent & event);
+   void OnChoice(wxCommandEvent & event);
 
-#define MODE_8_SIGNED 0,1,0,0
-#define MODE_8_UNSIGNED 0,0,0,0
-#define MODE_8_SIGNED_STEREO 0,1,1,0
-#define MODE_8_UNSIGNED_STEREO 0,0,1,0
-#define MODE_16_SIGNED_BE 1,1,0,1
-#define MODE_16_UNSIGNED_BE 1,0,0,1
-#define MODE_16_SIGNED_STEREO_BE 1,1,1,1
-#define MODE_16_UNSIGNED_STEREO_BE 1,0,1,1
-#define MODE_16_SIGNED_LE 1,1,0,0
-#define MODE_16_UNSIGNED_LE 1,0,0,0
-#define MODE_16_SIGNED_STEREO_LE 1,1,1,0
-#define MODE_16_UNSIGNED_STEREO_LE 1,0,1,0
+   // in and out
+   int mEncoding;
+   int mChannels;
+   int mOffset;
+   double mRate;
+   double mPercent;
 
-float AmpStat(float *data, int len)
+ private:
+
+   wxButton   *mOK;
+   wxChoice   *mEncodingChoice;
+   wxChoice   *mEndianChoice;
+   wxChoice   *mChannelChoice;
+   wxTextCtrl *mOffsetText;
+   wxTextCtrl *mPercentText;
+   wxTextCtrl *mRateText;
+
+   DECLARE_EVENT_TABLE()
+};
+
+int ImportRaw(wxWindow *parent, wxString fileName,
+              TrackFactory *trackFactory, Track ***outTracks,
+              progress_callback_t progressCallback, void *userData)
 {
-   int i;
+   int encoding = 0; // Guess Format
+   int numChannels = 0;
+   sampleFormat format;
+   sf_count_t offset = 0;
+   int int_offset = 0;
+   longSampleCount totalFrames;
+   double rate = 44100.0;
+   double percent = 100.0;
+   SNDFILE *sndFile;
+   SF_INFO sndInfo;
+   int result;
 
-   if (len == 0)
-      return float(1.0);
+   encoding = RawAudioGuess((const char *)fileName,
+                            &int_offset, &numChannels);
+   offset = (sf_count_t)int_offset;
 
-   // Calculate standard deviation of the amplitudes
-
-   float sum = float(0.0);
-   float sumofsquares = float(0.0);
-
-   for (i = 0; i < len; i++) {
-      float x = fabs(data[i]);
-      sum += x;
-      sumofsquares += x * x;
+   if (encoding <= 0) {
+      // Unable to guess.  Use mono, 16-bit samples with CPU endianness
+      // as the default.
+      encoding = SF_FORMAT_RAW | SF_ENDIAN_CPU | SF_FORMAT_PCM_16;
+      numChannels = 1;
+      offset = 0;
    }
 
-   float avg = sum / len;
-   float variance = sumofsquares / len - (avg * avg);
-
-   float dev = sqrt(variance);
-
-   return dev;
-}
-
-float JumpStat(float *data, int len)
-{
-   int i;
-
-   // Calculate 1.0 - avg jump
-   // A score near 1.0 means avg jump is pretty small
-
-   float avg = float(0.0);
-   for (i = 0; i < len - 1; i++)
-      avg += fabs(data[i + 1] - data[i]);
-   avg = 1.0 - (avg / (len - 1) / 2.0);
-
-   return avg;
-}
-
-float RedundantStereo(float *data, int len)
-{
-   int i;
-   int c = 0;
-
-   for (i = 1; i < len - 1; i += 2)
-      if (fabs(data[i + 1] - data[i]) > fabs(data[i] - data[i - 1]))
-         c++;
-
-   return ((c * 2.0) / (len - 2));
-}
-
-#if NOT_NEEDED_FOR_LINK
-float PredictStat(float *data, int len)
-{
-   int i;
-
-   // Calculate 1.0 - avg distance between a sample and the
-   // midpoint of its two neighboring samples
-   // A score near 1.0 means the neighbors are good predictors
-
-   float avg = 0.0;
-   for (i = 1; i < len - 1; i++)
-      avg += fabs(data[i] - (data[i - 1] + data[i - 2]) / 2);
-   avg = 1.0 - (avg / (len - 1) / 2.0);
-
-   return avg;
-}
-
-float FreqStat(float *data, int len)
-{
-   int i;
-
-   // Calculate fft bins
-
-   float *out = new float[len];
-
-   PowerSpectrum(len, data, out);
-   float max = 0.0;
-   for (i = 0; i < len / 2; i++) {
-      if (out[i] > max)
-         max = out[i];
-   }
-
-   float freq = 0.0;
-   for (i = 0; i < len / 2; i++) {
-      freq += (out[i] / max) * (i / (len / 2));
-   }
-
-   delete[]out;
-
-   return freq;
-}
-#endif 
-
-void Extract(bool bits16,
-             bool sign,
-             bool stereo,
-             bool bigendian,
-             bool offset,
-             char *rawData, int dataSize,
-             float *data1, float *data2, int *len1, int *len2)
-{
-   *len1 = 0;
-   *len2 = 0;
-
-   if (offset && bits16) {
-      rawData++;
-      dataSize--;
-   }
-
-   int rawCount = 0;
-   int dataCount1 = 0;
-   int dataCount2 = 0;
-
-   if (!bits16 && sign && !stereo)
-      while (rawCount < dataSize) {
-         // 8-bit signed
-         data1[dataCount1++] =
-             (*(signed char *) (&rawData[rawCount++])) / 128.0;
-      }
-   if (!bits16 && !sign && !stereo)
-      while (rawCount < dataSize) {
-         // 8-bit unsigned
-         data1[dataCount1++] =
-             (*(unsigned char *) &rawData[rawCount++]) / 128.0 - 1.0;
-      }
-   if (!bits16 && sign && stereo)
-      while (rawCount + 1 < dataSize) {
-         // 8-bit signed stereo
-         data1[dataCount1++] =
-             (*(signed char *) &rawData[rawCount++]) / 128.0;
-         data2[dataCount2++] =
-             (*(signed char *) &rawData[rawCount++]) / 128.0;
-      }
-   if (!bits16 && !sign && stereo)
-      while (rawCount + 1 < dataSize) {
-         // 8-bit unsigned stereo
-         data1[dataCount1++] =
-             (*(unsigned char *) &rawData[rawCount++]) / 128.0 - 1.0;
-         data2[dataCount2++] =
-             (*(unsigned char *) &rawData[rawCount++]) / 128.0 - 1.0;
-      }
-   if (bits16 && sign && !stereo && bigendian)
-      while (rawCount + 1 < dataSize) {
-         // 16-bit signed BE
-         data1[dataCount1++] =
-             wxINT16_SWAP_ON_LE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-      }
-   if (bits16 && !sign && !stereo && bigendian)
-      while (rawCount + 1 < dataSize) {
-         // 16-bit unsigned BE
-         data1[dataCount1++] = wxUINT16_SWAP_ON_LE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-      }
-   if (bits16 && sign && stereo && bigendian)
-      while (rawCount + 3 < dataSize) {
-         // 16-bit signed stereo BE
-         data1[dataCount1++] =
-             wxINT16_SWAP_ON_LE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-         data2[dataCount2++] =
-             wxINT16_SWAP_ON_LE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-      }
-   if (bits16 && sign && stereo && bigendian)
-      while (rawCount + 3 < dataSize) {
-         // 16-bit unsigned stereo BE
-         data1[dataCount1++] = wxUINT16_SWAP_ON_LE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-         data2[dataCount2++] = wxUINT16_SWAP_ON_LE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-      }
-   if (bits16 && sign && !stereo && !bigendian)
-      while (rawCount + 1 < dataSize) {
-         // 16-bit signed LE
-         data1[dataCount1++] =
-             wxINT16_SWAP_ON_BE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-      }
-   if (bits16 && !sign && !stereo && !bigendian)
-      while (rawCount + 1 < dataSize) {
-         // 16-bit unsigned LE
-         data1[dataCount1++] = wxUINT16_SWAP_ON_BE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-      }
-   if (bits16 && sign && stereo && !bigendian)
-      while (rawCount + 3 < dataSize) {
-         // 16-bit signed stereo LE
-         data1[dataCount1++] =
-             wxINT16_SWAP_ON_BE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-         data2[dataCount2++] =
-             wxINT16_SWAP_ON_BE(*
-                                ((signed short *) &rawData[rawCount += 2]))
-             / 32768.0;
-      }
-   if (bits16 && !sign && stereo && !bigendian)
-      while (rawCount + 3 < dataSize) {
-         // 16-bit unsigned stereo LE
-         data1[dataCount1++] = wxUINT16_SWAP_ON_BE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-         data2[dataCount2++] = wxUINT16_SWAP_ON_BE(*((unsigned short *)
-                                                     &rawData[rawCount +=
-                                                              2]))
-             / 32768.0 - 1.0;
-      }
-
-   *len1 = dataCount1;
-   *len2 = dataCount2;
-}
-
-bool GuessPCMFormat(wxString fName,
-                    bool & guess16bit,
-                    bool & guessSigned,
-                    bool & guessStereo,
-                    bool & guessBigEndian,
-                    bool & guessOffset,
-                    char **sampleData, int *sampleDataLen)
-{
-   guess16bit = false;
-   guessSigned = false;
-   guessStereo = false;
-   guessBigEndian = false;
-   guessOffset = false;
-
-#ifdef IMPORT_DEBUG
-   FILE *af = fopen("raw.txt", "a");
-   fprintf(af, "File: %s\n", (const char *) fName);
-#endif
-
-   wxFile inf;
-
-   inf.Open(fName, wxFile::read);
-
-   if (!inf.IsOpened()) {
-      wxMessageBox( _("Could not open file: ") + fName);
+   ImportRawDialog dlog(parent, encoding, numChannels, (int)offset, rate);
+   dlog.ShowModal();
+   if (!dlog.GetReturnCode())
       return false;
+
+   encoding = dlog.mEncoding;
+   numChannels = dlog.mChannels;
+   rate = dlog.mRate;
+   offset = (sf_count_t)dlog.mOffset;
+   percent = dlog.mPercent;
+
+   memset(&sndInfo, 0, sizeof(SF_INFO));
+   sndInfo.samplerate = (int)rate;
+   sndInfo.channels = (int)numChannels;
+   sndInfo.format = encoding | SF_FORMAT_RAW;
+   sndFile = sf_open((const char *)fileName, SFM_READ, &sndInfo);
+   if (!sndFile) {
+      // TODO: Handle error
+      char str[1000];
+      sf_error_str((SNDFILE *)NULL, str, 1000);
+      printf("%s\n", str);
+
+      return 0;
    }
 
-   const int headerSkipSize = 8192;
-   const int dataSize = 8192;
-   const int numTests = 11;
-
-   inf.Seek(0, wxFromEnd);
-   int fileLen = inf.Tell();
-
-   int test;
-
-   fileLen -= headerSkipSize;   // skip header
-
-   if (fileLen < dataSize) {
-      wxMessageBox(_("File not large enough to analyze."));
-      return false;
+   result = sf_command(sndFile, SFC_SET_RAW_START_OFFSET, &offset, sizeof(offset));
+   if (result != 0) {
+      char str[1000];
+      sf_error_str(sndFile, str, 1000);
+      printf("%s\n", str);
    }
 
-   char *rawData[numTests];
-   for (test = 0; test < numTests; test++) {
-      rawData[test] = new char[dataSize + 4];
-      wxASSERT(rawData[test]);
-
-      int startPoint = (fileLen - dataSize) * (test + 1) / (numTests + 2);
-
-      inf.Seek(headerSkipSize + startPoint, wxFromStart);
-      int actual = inf.Read((void *) rawData[test], dataSize);
-      if (actual != dataSize) {
-         wxString message;
-         message.Printf(_("Expected %d bytes, got %d bytes."), dataSize,
-                        actual);
-         wxMessageBox(message);
-         return false;
-      }
-   }
-
-   inf.Close();
-
-   bool evenMSB[numTests];
-
-   char *rawData2 = new char[dataSize + 4];
-   float *data1 = new float[dataSize + 4];
-   float *data2 = new float[dataSize + 4];
-   int len1;
-   int len2;
+   sf_seek(sndFile, 0, SEEK_SET);
+   
+   totalFrames = (longSampleCount)(sndInfo.frames * percent / 100.0);
 
    //
-   // First test: we attempt to determine if the data is 8-bit or 16-bit.
-   // We extract the odd and even bytes interpreted as signed-valued samples,
-   // and compare their amplitude distributions.  Noting that in 16-bit values,
-   // the less significant 8 bits should have roughly flat distribution, while
-   // the more significant 8 bits should have a tighter distribution, with a
-   // smaller standard deviation.
+   // Sample format:
    //
-   // Note that this correctly makes the distinction whether we are dealing with
-   // mono or stereo data.
+   // In general, go with the user's preferences.  However, if
+   // the file is higher-quality, go with a format which preserves
+   // the quality of the original file.
    //
-   // It is important that we run this test on multiple sections of the file,
-   // since some parts of the file might contain non-audio data, and also that
-   // we do not assume that the byte order is consistent throughout the file
-   // (because a 16-bit file might have odd-length blocks in the middle of the
-   // file).
-   // 
+   
+   format = (sampleFormat)
+      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
 
-   int vote8 = 0;
-   int vote16 = 0;
+   if (format != floatSample &&
+       sf_subtype_more_than_16_bits(encoding))
+      format = floatSample;
 
-   for (test = 0; test < numTests; test++) {
-      Extract(MODE_8_SIGNED_STEREO, false, rawData[test], dataSize,
-              data1, data2, &len1, &len2);
-      float even = AmpStat(data1, len1);
-      float odd = AmpStat(data2, len2);
-      if ((even > 0.15) && (odd > 0.15)) {
-#ifdef IMPORT_DEBUG
-         fprintf(af, "Both appear random.\n");
-#endif
-      }
-      if ((even > 0.15) || (odd > 0.15)) {
-         vote16++;
+   WaveTrack **channels = new WaveTrack *[numChannels];
 
-         // Record which of the two was the MSB for future reference
-         evenMSB[test] = (even < odd);
-      } else
-         vote8++;
+   int c;
+   for (c = 0; c < numChannels; c++) {
+      channels[c] = trackFactory->NewWaveTrack(format);
+      channels[c]->SetRate(rate);
 
-   }
-
-   if (vote8 > vote16)
-      guess16bit = false;
-   else
-      guess16bit = true;
-
-   if (!guess16bit) {
-      // 8-bit
-#ifdef IMPORT_DEBUG
-      fprintf(af, "8-bit\n");
-#endif
-
-      //
-      // Next we compare signed to unsigned, interpreted as if the file were
-      // stereo just to be safe.  If the file is actually mono, the test
-      // still works, and we lose a tiny bit of accuracy.  (It would not make
-      // sense to assume the file is mono, because if the two tracks are not
-      // very similar we would get inaccurate results.)
-      //
-      // The JumpTest measures the average jump between two successive samples
-      // and returns a value 0-1.  0 is maximally discontinuous, 1 is smooth.
-      // 
-
-      int signvotes = 0;
-      int unsignvotes = 0;
-
-      for (test = 0; test < numTests; test++) {
-         Extract(MODE_8_SIGNED_STEREO, false, rawData[test], dataSize,
-                 data1, data2, &len1, &len2);
-         float signL = JumpStat(data1, len1);
-         float signR = JumpStat(data2, len2);
-         Extract(MODE_8_UNSIGNED_STEREO, false, rawData[test], dataSize,
-                 data1, data2, &len1, &len2);
-         float unsignL = JumpStat(data1, len1);
-         float unsignR = JumpStat(data2, len2);
-
-         if (signL > unsignL)
-            signvotes++;
-         else
-            unsignvotes++;
-
-         if (signR > unsignR)
-            signvotes++;
-         else
-            unsignvotes++;
-      }
-
-      if (signvotes > unsignvotes)
-         guessSigned = true;
-      else
-         guessSigned = false;
-
-#ifdef IMPORT_DEBUG
-      if (guessSigned)
-         fprintf(af, "signed\n");
-      else
-         fprintf(af, "unsigned\n");
-#endif
-
-      // Finally we test stereo/mono.  We use the same JumpStat, and say
-      // that the file is stereo if and only if for the majority of the
-      // tests, the left channel and the right channel are more smooth than
-      // the entire stream interpreted as one channel.
-
-      int stereoVotes = 0;
-      int monoVotes = 0;
-
-      for (test = 0; test < numTests; test++) {
-         Extract(0, guessSigned, 1, 0, 0, rawData[test], dataSize, data1,
-                 data2, &len1, &len2);
-         float leftChannel = JumpStat(data1, len1);
-         float rightChannel = JumpStat(data2, len2);
-         Extract(0, guessSigned, 0, 0, 0, rawData[test], dataSize, data1,
-                 data2, &len1, &len2);
-         float combinedChannel = JumpStat(data1, len1);
-
-         if (leftChannel > combinedChannel
-             && rightChannel > combinedChannel)
-            stereoVotes++;
-         else
-            monoVotes++;
-      }
-
-      if (stereoVotes > monoVotes)
-         guessStereo = true;
-      else
-         guessStereo = false;
-
-      if (guessStereo == false) {
-
-         // test for repeated-byte, redundant stereo
-
-         int rstereoVotes = 0;
-         int rmonoVotes = 0;
-
-         for (test = 0; test < numTests; test++) {
-            Extract(0, guessSigned, 0, 0, 0, rawData[test], dataSize,
-                    data1, data2, &len1, &len2);
-            float redundant = RedundantStereo(data1, len1);
-
-            if (redundant > 0.9 || redundant < 0.1)
-               rstereoVotes++;
-            else
-               rmonoVotes++;
+      if (numChannels > 1)
+         switch (c) {
+         case 0:
+            channels[c]->SetChannel(Track::LeftChannel);
+            break;
+         case 1:
+            channels[c]->SetChannel(Track::RightChannel);
+            break;
+         default:
+            channels[c]->SetChannel(Track::MonoChannel);
          }
+   }
 
-         if (rstereoVotes > rmonoVotes)
-            guessStereo = true;
+   if (numChannels == 2)
+      channels[0]->SetLinked(true);
 
-      }
-#ifdef IMPORT_DEBUG
-      if (guessStereo)
-         fprintf(af, "stereo\n");
+   sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
+   bool cancelled = false;
+
+   samplePtr srcbuffer = NewSamples(maxBlockSize * numChannels, format);
+   samplePtr buffer = NewSamples(maxBlockSize, format);
+   
+   longSampleCount framescompleted = 0;
+   
+   long block;
+   do {
+      block = maxBlockSize;
+
+      if (block + framescompleted > totalFrames)
+         block = totalFrames - framescompleted;
+      
+      if (format == int16Sample)
+         block = sf_readf_short(sndFile, (short *)srcbuffer, block);
       else
-         fprintf(af, "mono\n");
-#endif
+         block = sf_readf_float(sndFile, (float *)srcbuffer, block);
 
-   } else {
-      // 16-bit
-#ifdef IMPORT_DEBUG
-      fprintf(af, "16-bit\n");
-#endif
-
-      // 
-      // Do the signed/unsigned test by using only the MSB.
-      //
-
-      int signvotes = 0;
-      int unsignvotes = 0;
-
-      for (test = 0; test < numTests; test++) {
-
-         // Extract a new array of the MSBs only:
-
-         for (int i = 0; i < dataSize / 2; i++)
-            rawData2[i] = rawData[test][2 * i + (evenMSB ? 0 : 1)];
-
-         // Test signed/unsigned of the MSB
-
-         Extract(MODE_8_SIGNED_STEREO, 0,
-                 rawData2, dataSize / 2, data1, data2, &len1, &len2);
-         float signL = JumpStat(data1, len1);
-         float signR = JumpStat(data2, len2);
-         Extract(MODE_8_UNSIGNED_STEREO, 0,
-                 rawData2, dataSize / 2, data1, data2, &len1, &len2);
-         float unsignL = JumpStat(data1, len1);
-         float unsignR = JumpStat(data2, len2);
-
-         if (signL > unsignL)
-            signvotes++;
-         else
-            unsignvotes++;
-
-         if (signR > unsignR)
-            signvotes++;
-         else
-            unsignvotes++;
-      }
-
-      if (signvotes > unsignvotes)
-         guessSigned = true;
-      else
-         guessSigned = false;
-
-#ifdef IMPORT_DEBUG
-      if (guessSigned)
-         fprintf(af, "signed\n");
-      else
-         fprintf(af, "unsigned\n");
-#endif
-
-      //
-      // Test mono/stereo using only the MSB
-      //
-
-      int stereoVotes = 0;
-      int monoVotes = 0;
-
-      for (test = 0; test < numTests; test++) {
-
-         // Extract a new array of the MSBs only:
-
-         for (int i = 0; i < dataSize / 2; i++)
-            rawData2[i] = rawData[test][2 * i + (evenMSB ? 0 : 1)];
-
-         Extract(0, guessSigned, 1, 0, 0,
-                 rawData2, dataSize / 2, data1, data2, &len1, &len2);
-         float leftChannel = JumpStat(data1, len1);
-         float rightChannel = JumpStat(data2, len2);
-         Extract(0, guessSigned, 0, 0, 0,
-                 rawData2, dataSize / 2, data1, data2, &len1, &len2);
-         float combinedChannel = JumpStat(data1, len1);
-
-         if (leftChannel > combinedChannel
-             && rightChannel > combinedChannel)
-            stereoVotes++;
-         else
-            monoVotes++;
-      }
-
-      if (stereoVotes > monoVotes)
-         guessStereo = true;
-      else
-         guessStereo = false;
-
-      if (guessStereo == false) {
-
-         // Test for repeated-byte, redundant stereo
-
-         int rstereoVotes = 0;
-         int rmonoVotes = 0;
-
-         for (test = 0; test < numTests; test++) {
-
-            // Extract a new array of the MSBs only:
-
-            for (int i = 0; i < dataSize / 2; i++)
-               rawData2[i] = rawData[test][2 * i + (evenMSB ? 0 : 1)];
-
-            Extract(0, guessSigned, 0, 0, 0, rawData[test], dataSize / 2,
-                    data1, data2, &len1, &len2);
-            float redundant = RedundantStereo(data1, len1);
-
-            if (redundant > 0.9 || redundant < 0.1)
-               rstereoVotes++;
-            else
-               rmonoVotes++;
+      if (block) {
+         for(c=0; c<numChannels; c++) {
+            if (format==int16Sample) {
+               for(int j=0; j<block; j++)
+                  ((short *)buffer)[j] =
+                     ((short *)srcbuffer)[numChannels*j+c];
+            }
+            else {
+               for(int j=0; j<block; j++)
+                  ((float *)buffer)[j] =
+                     ((float *)srcbuffer)[numChannels*j+c];
+            }
+            
+            channels[c]->Append(buffer, format, block);
          }
-
-         if (rstereoVotes > rmonoVotes)
-            guessStereo = true;
-
-      }
-#ifdef IMPORT_DEBUG
-      if (guessStereo)
-         fprintf(af, "stereo\n");
-      else
-         fprintf(af, "mono\n");
-#endif
-
-      //
-      // Finally, determine the endianness and offset.
-      // 
-      // Odd MSB -> BigEndian or LittleEndian with Offset
-      // Even MSB -> LittleEndian or BigEndian with Offset
-      //
-
-      guessBigEndian = (!evenMSB);
-      guessOffset = 0;
-
-      int formerVotes = 0;
-      int latterVotes = 0;
-
-      for (test = 0; test < numTests; test++) {
-
-         Extract(1, guessSigned, guessStereo, guessBigEndian, guessOffset,
-                 rawData[test], dataSize, data1, data2, &len1, &len2);
-         float former = JumpStat(data1, len1);
-         Extract(1, guessSigned, guessStereo, !guessBigEndian,
-                 !guessOffset, rawData[test], dataSize, data1, data2,
-                 &len1, &len2);
-         float latter = JumpStat(data1, len1);
-
-         if (former > latter)
-            formerVotes++;
-         else
-            latterVotes++;
+         framescompleted += block;
       }
 
-      if (latterVotes > formerVotes) {
-         guessBigEndian = !guessBigEndian;
-         guessOffset = !guessOffset;
-      }
-#ifdef IMPORT_DEBUG
-      if (guessBigEndian)
-         fprintf(af, "big endian\n");
-      else
-         fprintf(af, "little endian\n");
-#endif
+      if( progressCallback )
+         cancelled = progressCallback(userData, framescompleted*1.0 / totalFrames);
+      if (cancelled)
+         break;
+      
+   } while (block > 0 && framescompleted < totalFrames);
 
-#ifdef IMPORT_DEBUG
-      if (guessOffset)
-         fprintf(af, "offset 1 byte\n");
-      else
-         fprintf(af, "no byte offset\n");
-#endif
+   sf_close(sndFile);
 
+   if (cancelled) {
+      for (c = 0; c < numChannels; c++)
+         delete channels[c];
+      delete[] channels;
+
+      return 0;
    }
+   else {
+      *outTracks = (Track **)channels;
 
-   if (sampleData) {
-      *sampleData = new char[dataSize];
-      *sampleDataLen = dataSize;
-      for (int i = 0; i < dataSize; i++)
-         (*sampleData)[i] = rawData[numTests / 2][i];
+      return numChannels;
    }
-
-   for (test = 0; test < numTests; test++) {
-      delete[]rawData[test];
-   }
-
-   delete[]data1;
-   delete[]data2;
-   delete[]rawData2;
-
-#ifdef IMPORT_DEBUG
-   fprintf(af, "\n");
-   fclose(af);
-#endif
-
-   return true;
 }
 
-bool ImportRaw(wxWindow * parent,
-               wxString fName,
-               WaveTrack ** dest1, WaveTrack ** dest2,
-               DirManager * dirManager)
-{
-   *dest1 = 0;
-   *dest2 = 0;
+//
+// ImportRawDialog
+//
 
-   bool b16 = true;
-   bool sign = true;
-   bool stereo = false;
-   bool big = false;
-   bool offset = false;
+enum {
+   ChoiceID = 9000,
+   PlayID
+};
 
-   char *data;
-   int dataLen;
-
-   bool success =
-       GuessPCMFormat(fName, b16, sign, stereo, big, offset, &data,
-                      &dataLen);
-
-   if (!success) {
-
-      return false;
-   }
-
-   ImportDialog dlg(data, dataLen, parent);
-
-   dlg.bits[b16]->SetValue(true);
-   dlg.sign[!sign]->SetValue(true);
-   dlg.stereo[stereo]->SetValue(true);
-   dlg.endian[big]->SetValue(true);
-   dlg.offset[offset]->SetValue(true);
-   dlg.RefreshPreview();
-
-   dlg.ShowModal();
-   if (!dlg.GetReturnCode())
-      return false;
-
-   b16    = dlg.bits[1]->GetValue();
-   sign   = dlg.sign[0]->GetValue();
-   stereo = dlg.stereo[1]->GetValue();
-   big    = dlg.endian[1]->GetValue();
-   offset = dlg.offset[1]->GetValue();
-
-   *dest1 = new WaveTrack(dirManager);
-   (*dest1)->SetName(TrackNameFromFileName(fName));
-   (*dest1)->SetChannel(Track::MonoChannel);
-   wxASSERT(*dest1);
-   if (stereo) {
-      *dest2 = new WaveTrack(dirManager);
-      wxASSERT(*dest2);
-      (*dest2)->SetName(TrackNameFromFileName(fName));
-      (*dest1)->SetChannel(Track::LeftChannel);
-      (*dest2)->SetChannel(Track::RightChannel);
-      (*dest1)->SetLinked(true);
-   }
-
-   wxProgressDialog *progress = NULL;
-   wxYield();
-   wxStartTimer();
-   wxBusyCursor busy;
-
-   bool cancelling = false;
-
-   wxFile inf;
-   inf.Open(fName, wxFile::read);
-   if (!inf.IsOpened()) {
-      wxMessageBox( _("Could not open file: ") + fName);
-      return false;
-   }
-   int len = inf.Length();
-
-   if (offset) {
-      char junk;
-      inf.Read(&junk, 1);
-      offset = false;
-      len--;
-   }
-
-   int blockSize = 1048576;
-   int bytescompleted = 0;
-
-   char *buffer = new char[blockSize];
-   float *data1 = new float[blockSize];
-   float *data2 = new float[blockSize];
-   short *samples1 = new short[blockSize];
-   short *samples2 = new short[blockSize];
-   wxASSERT(buffer);
-   wxASSERT(samples1);
-   wxASSERT(samples2);
-   int numBytes = len;
-   while (numBytes && !cancelling) {
-      int block = (numBytes < blockSize ? numBytes : blockSize);
-      int actual = inf.Read((void *) buffer, block);
-      int len1, len2, i;
-
-      Extract(b16, sign, stereo, big, offset,
-              buffer, block, data1, data2, &len1, &len2);
-
-      for (i = 0; i < len1; i++) {
-         samples1[i] = (short) (data1[i] * 32767);
-      }
-      (*dest1)->Append((samplePtr)samples1, int16Sample, len1);
-
-      if (stereo) {
-         for (i = 0; i < len2; i++) {
-            samples2[i] = (short) (data2[i] * 32767);
-         }
-         (*dest2)->Append((samplePtr)samples2, int16Sample, len2);
-      }
-
-      numBytes -= actual;
-      bytescompleted += actual;
-
-      if (!progress && wxGetElapsedTime(false) > 500) {
-         progress =
-             new wxProgressDialog("Import",
-                                  "Importing raw audio data",
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-      }
-
-      if (progress) {
-         int progressvalue = (bytescompleted > len) ? len : bytescompleted;
-         cancelling = !progress->Update(progressvalue * 1000.0 / len);
-      }
-
-   }
-   delete[]buffer;
-   delete[]data1;
-   delete[]data2;
-   delete[]samples1;
-   delete[]samples2;
-
-   if (progress)
-      delete progress;
-
-   return true;
-}
-
-const int PREV_RADIO_ID = 9000;
-
-BEGIN_EVENT_TABLE(ImportDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, ImportDialog::OnOK)
-    EVT_BUTTON(wxID_CANCEL, ImportDialog::OnCancel)
-    EVT_RADIOBUTTON(PREV_RADIO_ID, ImportDialog::RadioButtonPushed)
+BEGIN_EVENT_TABLE(ImportRawDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, ImportRawDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL, ImportRawDialog::OnCancel)
+   EVT_BUTTON(PlayID, ImportRawDialog::OnPlay)
+   EVT_CHOICE(ChoiceID, ImportRawDialog::OnChoice)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(ImportDialog, wxDialog)
-
-ImportDialog::ImportDialog(char *data,
-                           int dataLen,
-                           wxWindow * parent, const wxPoint & pos)
-:wxDialog(parent, -1, _("Import Raw Data"), pos,
-          wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+ImportRawDialog::ImportRawDialog(wxWindow * parent,
+                                 int encoding, int channels,
+                                 int offset, double rate)
+   :wxDialog(parent, -1, _("Import Raw Data"),
+             wxDefaultPosition, wxDefaultSize,
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+    mEncoding(encoding), mChannels(channels),
+    mOffset(offset), mRate(rate)
 {
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *topSizer = new wxBoxSizer(wxHORIZONTAL);
-   wxBoxSizer *bottomSizer = new wxBoxSizer(wxHORIZONTAL);
-   wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
+   wxBoxSizer *mainSizer, *hSizer, *vSizer;
+   wxFlexGridSizer *gridSizer;
+   wxButton *button;
+   int selection, i;
 
-   bits[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, _("8-bit"), wxDefaultPosition,
-                         wxDefaultSize, wxRB_GROUP);
-   bits[1] = new wxRadioButton(this, PREV_RADIO_ID, _("16-bit"));
+   mainSizer = new wxBoxSizer(wxVERTICAL);
+   
+   hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   sign[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, _("signed"), wxDefaultPosition,
-                         wxDefaultSize, wxRB_GROUP);
-   sign[1] = new wxRadioButton(this, PREV_RADIO_ID, _("unsigned"));
+   //
+   // Left-Side Controls (for manually selecting format)
+   //
 
-   stereo[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, _("mono"), wxDefaultPosition,
-                         wxDefaultSize, wxRB_GROUP);
-   stereo[1] = new wxRadioButton(this, PREV_RADIO_ID, _("stereo"));
+   vSizer = new wxBoxSizer(wxVERTICAL);
 
-   endian[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, _("little-endian"),
-                         wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-   endian[1] = new wxRadioButton(this, PREV_RADIO_ID, _("big-endian"));
+   // Encoding Choice
 
-   offset[0] =
-       new wxRadioButton(this, PREV_RADIO_ID, _("0-byte offset"),
-                         wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-   offset[1] = new wxRadioButton(this, PREV_RADIO_ID, _("1-byte offset"));
+   wxString *encodingStrings = new wxString[sf_num_encodings()];
+   selection = 0;
+   for(i=0; i<sf_num_encodings(); i++) {
+      encodingStrings[i] = sf_encoding_index_name(i);
+      if ((mEncoding & SF_FORMAT_SUBMASK) == (int)sf_encoding_index_to_subtype(i))
+         selection = i;
+   }
+   mEncodingChoice = 
+      new wxChoice(this, ChoiceID,
+                   wxDefaultPosition, wxDefaultSize,
+                   sf_num_encodings(), encodingStrings);
+   mEncodingChoice->SetSelection(selection);
+   vSizer->Add(mEncodingChoice, 0, wxALIGN_LEFT | wxALL, 5);
+   delete[] encodingStrings;
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("Import"));
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   // Endian choice
 
-   preview = new PreviewPanel(data, dataLen,
-                              this, wxDefaultPosition,
-                              wxSize(400, 180), 0);
+   wxString endianStrings[4] =
+      {_("No endianness"),
+       _("Little-endian"),
+       _("Big-endian"),
+       _("Default endianness")};
+   mEndianChoice =
+      new wxChoice(this, ChoiceID,
+                   wxDefaultPosition, wxDefaultSize,
+                   4, endianStrings);
+   switch(mEncoding & (SF_FORMAT_ENDMASK)) {
+   case SF_ENDIAN_FILE:
+      mEndianChoice->SetSelection(0);
+      break;
+   case SF_ENDIAN_LITTLE:
+      mEndianChoice->SetSelection(1);
+      break;
+   case SF_ENDIAN_BIG:
+      mEndianChoice->SetSelection(2);
+      break;
+   case SF_ENDIAN_CPU:
+      mEndianChoice->SetSelection(3);
+      break;
+   }
+   vSizer->Add(mEndianChoice, 0, wxALIGN_LEFT | wxALL, 5);
 
-   leftSizer->Add(bits[0], 0, wxLEFT);
-   rightSizer->Add(bits[1], 0, wxLEFT);
+   // Channels choice
 
-   leftSizer->Add(sign[0], 0, wxLEFT);
-   rightSizer->Add(sign[1], 0, wxLEFT);
+   wxString channelStrings[16];
+   channelStrings[0].Printf("1 Channel (Mono)");
+   channelStrings[1].Printf("2 Channels (Stereo)");
+   for(i=2; i<16; i++) {
+      channelStrings[i].Printf("%d Channels", i+1);
+   }
+   mChannelChoice =
+      new wxChoice(this, ChoiceID,
+                   wxDefaultPosition, wxDefaultSize,
+                   16, channelStrings);
+   mChannelChoice->SetSelection(mChannels-1);
+   vSizer->Add(mChannelChoice, 0, wxALIGN_LEFT | wxALL, 5);
 
-   leftSizer->Add(stereo[0], 0, wxLEFT);
-   rightSizer->Add(stereo[1], 0, wxLEFT);
+   // Offset text
 
-   leftSizer->Add(endian[0], 0, wxLEFT);
-   rightSizer->Add(endian[1], 0, wxLEFT);
+   gridSizer = new wxFlexGridSizer(3, 0, 0);
+   
+   gridSizer->Add(new wxStaticText(this, 0, _("Start offset:")),
+                  0, wxALIGN_LEFT | wxALL, 5);
 
-   leftSizer->Add(offset[0], 0, wxLEFT);
-   rightSizer->Add(offset[1], 0, wxLEFT);
+   mOffsetText = new wxTextCtrl(this, 0, wxString::Format("%d", mOffset));
+   gridSizer->Add(mOffsetText, 0, wxALIGN_LEFT | wxALL, 5);
 
-   topSizer->Add(leftSizer, 0, wxCENTER);
-   topSizer->Add(rightSizer, 0, wxCENTER);
-   topSizer->Add(preview, 0, wxEXPAND | wxALL, 8);
+   gridSizer->Add(new wxStaticText(this, 0, _("bytes")),
+                  0, wxALIGN_LEFT | wxALL, 5);
 
-   bottomSizer->Add(ok, 0, wxCENTER);
-   bottomSizer->Add(cancel, 0, wxCENTER);
+   // Percent text
 
-   mainSizer->Add(topSizer, 0, wxCENTER);
-   mainSizer->Add(bottomSizer, 0, wxCENTER | wxALL, 8);
+   gridSizer->Add(new wxStaticText(this, 0, _("Amount to import:")),
+                  0, wxALIGN_LEFT | wxALL, 5);
+
+   mPercentText = new wxTextCtrl(this, 0, "100");
+   gridSizer->Add(mPercentText, 0, wxALIGN_LEFT | wxALL, 5);
+
+   gridSizer->Add(new wxStaticText(this, 0, _("%")),
+                  0, wxALIGN_LEFT | wxALL, 5);
+
+   // Rate text
+
+   gridSizer->Add(new wxStaticText(this, 0, _("Sample rate:")),
+                  0, wxALIGN_LEFT | wxALL, 5);
+
+   mRateText = new wxTextCtrl(this, 0, wxString::Format("%d", (int)mRate));
+   gridSizer->Add(mRateText, 0, wxALIGN_LEFT | wxALL, 5);
+
+   gridSizer->Add(new wxStaticText(this, 0, _("Hz")),
+                  0, wxALIGN_LEFT | wxALL, 5);
+
+   vSizer->Add(gridSizer, 0, wxALIGN_LEFT | wxALL, 0);
+
+   hSizer->Add(vSizer, 0, wxALIGN_TOP | wxALL, 5);
+
+   //
+   // Preview Pane goes here
+   //
+
+   wxPanel *p = new wxPanel(this, 0, wxDefaultPosition, wxSize(100, 100));
+   hSizer->Add(p, 0, wxALIGN_TOP | wxALL, 5);
+
+   mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
+
+   //
+   // Button row
+   //
+
+   hSizer = new wxBoxSizer(wxHORIZONTAL);
+
+   /*
+   button = new wxButton(this, PlayID, _("Play"));
+   hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+   */
+
+   mOK = new wxButton(this, wxID_OK, _("Import"));
+   hSizer->Add(mOK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+   mainSizer->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5);
 
    SetAutoLayout(true);
    SetSizer(mainSizer);
 
-   mainSizer->SetSizeHints(this);
    mainSizer->Fit(this);
+   mainSizer->SetSizeHints(this);
 
-   Centre(wxBOTH | wxCENTER_FRAME);
+   Centre(wxBOTH);
 }
 
-ImportDialog::~ImportDialog()
+ImportRawDialog::~ImportRawDialog()
 {
 }
 
-void ImportDialog::OnOK(wxCommandEvent & WXUNUSED(event))
+void ImportRawDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
+   long l;
+   double d;
+   
+   mEncoding = sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
+   mEncoding += (mEndianChoice->GetSelection() * 0x10000000);
+   mChannels = mChannelChoice->GetSelection() + 1;
+   mOffsetText->GetValue().ToLong(&l);
+   mOffset = l;
+   mPercentText->GetValue().ToDouble(&d);
+   mPercent = d;
+   mRateText->GetValue().ToDouble(&d);
+   mRate = d;
+
+   if (mChannels < 1 || mChannels > 16)
+      mChannels = 1;
+   if (mOffset < 0)
+      mOffset = 0;
+   if (mPercent < 0.0)
+      mPercent = 0.0;
+   if (mPercent > 100.0)
+      mPercent = 100.0;
+   if (mRate < 100.0)
+      mRate = 100.0;
+   if (mRate > 100000.0)
+      mRate = 100000.0;
+
    EndModal(true);
 }
 
-void ImportDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
+void ImportRawDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
 {
    EndModal(false);
 }
 
-BEGIN_EVENT_TABLE(PreviewPanel, wxPanel)
-    EVT_PAINT(PreviewPanel::OnPaint)
-    EVT_ERASE_BACKGROUND(PreviewPanel::OnEraseBackground)
-END_EVENT_TABLE()
-
-void PreviewPanel::OnEraseBackground(wxEraseEvent & ignore)
+void ImportRawDialog::OnPlay(wxCommandEvent & WXUNUSED(event))
 {
 }
 
-void PreviewPanel::OnPaint(wxPaintEvent & event)
+void ImportRawDialog::OnChoice(wxCommandEvent & WXUNUSED(event))
 {
-   wxPaintDC dc(this);
+   SF_INFO info;
 
-   wxRect r;
-   r.x = 0;
-   r.y = 0;
-   GetSize(&r.width, &r.height);
-   if (r.width != bitWidth || r.height != bitHeight || !bitmap) {
-      bitWidth = r.width;
-      bitHeight = r.height;
+   memset(&info, 0, sizeof(SF_INFO));
 
-      if (bitmap)
-         delete bitmap;
+   mEncoding = sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
+   mEncoding += (mEndianChoice->GetSelection() * 0x10000000);
 
-      bitmap = new wxBitmap(r.width, r.height);
+   info.format = mEncoding | SF_FORMAT_RAW;
+   info.channels = mChannelChoice->GetSelection() + 1;
+   info.samplerate = 44100;
+
+   if (sf_format_check(&info)) {
+      mOK->Enable(true);
+      return;
    }
 
-   wxMemoryDC memDC;
-
-   memDC.SelectObject(*bitmap);
-
-   memDC.SetBrush(wxBrush(wxColour(153, 153, 255), wxSOLID));
-   memDC.DrawRectangle(r);
-
-   memDC.SetPen(wxPen(wxColour(0, 0, 0), 1, wxSOLID));
-
-   Extract(param[0], param[1], param[2], param[3], param[4],
-           rawData, dataLen, data1, data2, &len1, &len2);
-
-   if (param[2]) {
-      // stereo
-
-      int ctr = r.height / 2;
-      memDC.DrawLine(1, ctr, r.width - 1, ctr);
-      ctr /= 2;
-
-      int i;
-      for (i = 0; i < (r.width - 2) / 2 && i < len1 - 1; i++)
-         memDC.DrawLine(i * 2 + 1, ctr - (ctr * data1[i]), i * 2 + 3,
-                        ctr - (ctr * data1[i + 1]));
-
-      for (i = 0; i < (r.width - 2) / 2 && i < len1 - 1; i++)
-         memDC.DrawLine(i * 2 + 1, 3 * ctr - (ctr * data2[i]), i * 2 + 3,
-                        3 * ctr - (ctr * data2[i + 1]));
-
-   } else {
-      int ctr = r.height / 2;
-
-      for (int i = 0; i < (r.width - 2) / 2 && i < len1 - 1; i++)
-         memDC.DrawLine(i * 2 + 1, ctr - (ctr * data1[i]), i * 2 + 3,
-                        ctr - (ctr * data1[i + 1]));
+   // Try it with 1-channel
+   info.channels = 1;
+   if (sf_format_check(&info)) {
+      mChannelChoice->SetSelection(0);
+      mOK->Enable(true);
+      return;
    }
 
-   //  view->DrawTracks(&memDC, &r);
-
-   dc.Blit(0, 0, r.width, r.height, &memDC, 0, 0, wxCOPY, FALSE);
+   // Otherwise, this is an unsupported format
+   mOK->Enable(false);
 }
 
-void ImportDialog::RadioButtonPushed(wxCommandEvent & event)
-{
-   RefreshPreview();
-}
-
-void ImportDialog::RefreshPreview()
-{
-   preview->param[0] = bits[1]->GetValue();
-   preview->param[1] = sign[0]->GetValue();
-   preview->param[2] = stereo[1]->GetValue();
-   preview->param[3] = endian[1]->GetValue();
-   preview->param[4] = offset[1]->GetValue();
-
-   preview->Refresh(false);
-}
-
-PreviewPanel::PreviewPanel(char *rawData, int dataLen, wxWindow * parent,
-                           const wxPoint & pos, const wxSize & size,
-                           const long style):wxPanel(parent, -1, pos, size,
-                                                     style)
-{
-   this->rawData = rawData;
-   this->dataLen = dataLen;
-
-   data1 = new float[dataLen];
-   data2 = new float[dataLen];
-
-   bitWidth = bitHeight = 0;
-   bitmap = 0;
-}
-
-PreviewPanel::~PreviewPanel()
-{
-   delete data1;
-   delete data2;
-}
