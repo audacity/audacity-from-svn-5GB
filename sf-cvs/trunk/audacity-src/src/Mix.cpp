@@ -215,14 +215,22 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    mQueueMaxLen = 65536;
    mProcessLen = 1024;
 
+   double warpFactor = 1.0;
+   if (timeTrack) {
+      warpFactor = timeTrack->GetEnvelope()->GetValue(startTime);
+      warpFactor = (timeTrack->GetRangeLower() * (1 - warpFactor) +
+                    warpFactor * timeTrack->GetRangeUpper())/100.0;
+   }
+
    mQueueStart = new int[mNumInputTracks];
    mQueueLen = new int[mNumInputTracks];
    mSampleQueue = new float *[mNumInputTracks];
    mSRC = new SRC_STATE*[mNumInputTracks];
    int error;
    for(i=0; i<mNumInputTracks; i++) {
+      double warp = (mRate / mInputTrack[i]->GetRate()) / warpFactor;
       mSRC[i] = src_new(converterType, 1, &error);
-      src_set_ratio(mSRC[i], mRate / mInputTrack[i]->GetRate());
+      src_set_ratio(mSRC[i], warp);
       mSampleQueue[i] = new float[mQueueMaxLen];
       mQueueStart[i] = 0;
       mQueueLen[i] = 0;
