@@ -188,7 +188,7 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent, AppleEvent * theReply
 }
 #endif
 
-typedef int (AudacityApp::*SPECIALKEYEVENT)(wxEvent&);
+typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 
@@ -534,7 +534,8 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 int AudacityApp::FilterEvent(wxEvent& event)
 {
    if(event.GetEventType() == wxEVT_KEY_DOWN)
-      return (this->*((SPECIALKEYEVENT) &(AudacityApp::OnAllKeys)))(event);
+      return (this->*((SPECIALKEYEVENT) &(AudacityApp::OnAllKeys)))
+         ((wxKeyEvent&)event);
 
    return -1;
 }
