@@ -18,7 +18,7 @@ CFLAGS = @CFLAGS@
 CXXFLAGS = @CXXFLAGS@
 
 # CPPFLAGS are for both C and C++.
-CPPFLAGS = -Wall -pedantic -Iinclude -Iinclude/linux @CPPFLAGS@ 
+CPPFLAGS = -Wall -Iinclude -Iinclude/linux @CPPFLAGS@ 
 
 # Files that must exist in order to compile a C/C++ files
 CDEPEND = @CDEPEND@
