@@ -38,9 +38,6 @@ AudioIO::AudioIO()
    mPortStream = NULL;
    mMaxBuffers = 24;
    mInitialNumOutBuffers = 4;
-   
-   // Run our timer function once every 200 ms, i.e. 5 times/sec
-   mTimer.Start(200, FALSE);
 
    PaError err = Pa_Initialize();
 
@@ -48,6 +45,9 @@ AudioIO::AudioIO()
       wxMessageBox(Pa_GetErrorText(err));
       return;
    }
+   
+   // Run our timer function once every 200 ms, i.e. 5 times/sec
+   mTimer.Start(200, FALSE);
 }
 
 AudioIO::~AudioIO()
