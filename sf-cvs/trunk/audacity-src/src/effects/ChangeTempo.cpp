@@ -403,6 +403,8 @@ void ChangeTempoDialog::OnText_PercentChange(wxCommandEvent & event)
 		this->Update_Text_ToBPM();
 		this->Update_Text_ToLength();
       m_bLoopDetect = false;
+
+      FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
    }
 }
 
