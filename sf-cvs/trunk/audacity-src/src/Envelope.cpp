@@ -188,7 +188,7 @@ bool Envelope::Load(wxTextFile * in, DirManager * dirManager)
    WX_CLEAR_ARRAY(mEnv)
    mEnv.Alloc(len);
 
-   for (int i = 0; i < len; i++) {
+   for (unsigned long i = 0; i < len; i++) {
       EnvPoint *e = new EnvPoint();
       if (!(in->GetNextLine().ToDouble(&e->t)))
          return false;
@@ -425,8 +425,8 @@ void Envelope::Paste(double t0, Envelope *e)
    t0 = wxMin(t0 - mOffset, mTrackLen);
    double deltat = e->mTrackLen;
 
-   int i;
-   int len = mEnv.Count();
+   unsigned int i;
+   unsigned int len = mEnv.Count();
    if (!len) return;
 
    // Shift existing points to the right

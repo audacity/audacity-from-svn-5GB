@@ -20,6 +20,7 @@
 #include <wx/msgdlg.h>
 
 #include <vorbis/vorbisenc.h>
+#include <vorbis/codec.h>
 
 #include "../Project.h"
 #include "../Mix.h"
@@ -33,11 +34,11 @@
 // here, g++ complains of "implicit declarations.  Even weirder, the function
 // vorbis_analysis_buffer(), which is ALSO in codec.h and ALSO used in this file
 // works fine.  I'm so confused!!
-extern "C" {
-extern int      vorbis_bitrate_addblock(vorbis_block *vb);
-extern int      vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,
-					   ogg_packet *op);
-}
+//extern "C" {
+//extern int      vorbis_bitrate_addblock(vorbis_block *vb);
+//extern int      vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,
+//					   ogg_packet *op);
+//}
 
 bool ExportOGG(AudacityProject *project,
                bool stereo, wxString fName,

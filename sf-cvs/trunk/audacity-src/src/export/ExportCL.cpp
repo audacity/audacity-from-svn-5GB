@@ -97,7 +97,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 
    fwrite( &header, sizeof(wav_header), 1, pipe );
 
-   sampleCount maxSamples = int (timeStep * rate + 0.5);
+   //sampleCount maxSamples = int (timeStep * rate + 0.5);
 
    wxProgressDialog *progress = NULL;
    wxYield();
