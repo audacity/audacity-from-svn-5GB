@@ -28,7 +28,7 @@
   <li><a href="http://www.crmav.com/gear/index_28.shtml">Plug-ins</a>
   from <a href="http://www.crmav.com/">CRMAV</a>
 
-  <li><a href="http://www.smartelectronix.com/software.htm"
+  <li><a href="http://www.smartelectronix.com"
   >Freeware plug-ins from SmartElectronix</a>
 
   <li><a href="http://www.sinusweb.de/"
@@ -60,7 +60,7 @@
   Freeware and shareware plugins</a> from
   <a href="http://www.macmusic.org/">MacMusic</a>.
 
-  <li><a href="http://www.smartelectronix.com/plug.htm"
+  <li><a href="http://www.smartelectronix.com"
   >Freeware plug-ins from SmartElectronix</a>
 
   <li><a href="http://www.greenoak.com/vst.html"
