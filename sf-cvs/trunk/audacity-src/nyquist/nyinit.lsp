@@ -29,4 +29,5 @@
 (format t "    Copyright (c) 1991,1992,1995 by Roger B. Dannenberg~%")
 (format t "    Version 2.22~%~%")
 
-(setf *gc-flag* t)
+;;(re)Setting *gc-flag* nil to keep garbage-collection notices from printing.
+(setf *gc-flag* nil)
