@@ -97,8 +97,8 @@ void AColor::Init()
   #if defined(__WXMAC__) // && defined(TARGET_CARBON)
 
   // unselected
-  lightBrush[0].SetColour(246,246,255);
-  mediumBrush[0].SetColour(232,232,232);
+  lightBrush[0].SetColour(236,236,236);
+  mediumBrush[0].SetColour(220,220,220);
   darkBrush[0].SetColour(140,140,160);
   lightPen[0].SetColour(246,246,255);
   mediumPen[0].SetColour(232,232,232);
