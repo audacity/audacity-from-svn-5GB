@@ -116,7 +116,7 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
                wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnPause)
 END_EVENT_TABLE()
 
-//Standard contructor
+//Standard constructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
 ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55))
 {
