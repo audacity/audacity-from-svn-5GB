@@ -2228,8 +2228,9 @@ void TrackPanel::OnRateOther()
    if (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave) {
       wxString defaultStr;
       defaultStr.Printf("%d",
-                        (int) ((WaveTrack *) mPopupMenuTarget)->rate +
-                        0.5);
+                        (int) (((WaveTrack *) mPopupMenuTarget)->rate +
+                        0.5));
+
       wxString rateStr =
           wxGetTextFromUser("Enter a rate in Hz (samples per second):",
                             "Set Rate",
