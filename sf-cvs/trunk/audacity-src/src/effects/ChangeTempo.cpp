@@ -6,7 +6,7 @@
 
   Vaughan Johnson, Dominic Mazzoni
   
-  Change Tempo effect, that allows speeding up or 
+  Change Tempo effect provides speeding up or 
   slowing down tempo without changing pitch.
 
 **********************************************************************/
