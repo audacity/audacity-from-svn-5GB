@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -16,14 +16,14 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include	"config.h"
+
 #include	<stdio.h>
-#include	<unistd.h>
 #include	<fcntl.h>
 #include	<string.h>
 #include	<ctype.h>
 
 #include	"sndfile.h"
-#include	"config.h"
 #include	"sfendian.h"
 #include	"common.h"
 #include	"au.h"
@@ -132,36 +132,37 @@ au_open	(SF_PRIVATE *psf)
 
 	psf->close = au_close ;
 
-	psf->blockwidth  = psf->bytewidth * psf->sf.channels ;
+	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
 
 	switch (subformat)
-	{	case  SF_FORMAT_ULAW :	/* 8-bit Ulaw encoding. */
+	{	case SF_FORMAT_ULAW :	/* 8-bit Ulaw encoding. */
 				ulaw_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_PCM_S8 :	/* 8-bit linear PCM. */
+		case SF_FORMAT_PCM_S8 :	/* 8-bit linear PCM. */
 				error = pcm_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_PCM_16 :	/* 16-bit linear PCM. */
-		case  SF_FORMAT_PCM_24 :	/* 24-bit linear PCM */
-		case  SF_FORMAT_PCM_32 :	/* 32-bit linear PCM. */
+		case SF_FORMAT_PCM_16 :	/* 16-bit linear PCM. */
+		case SF_FORMAT_PCM_24 :	/* 24-bit linear PCM */
+		case SF_FORMAT_PCM_32 :	/* 32-bit linear PCM. */
 				error = pcm_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_FLOAT :	/* 32-bit floats. */
-				error = float32_init (psf) ;
-				break ;
-
-		case  SF_FORMAT_DOUBLE :	/* 64-bit double precision floats. */
-				error = double64_init (psf) ;
-				break ;
-
-		case  SF_FORMAT_ALAW :	/* 8-bit Alaw encoding. */
+		case SF_FORMAT_ALAW :	/* 8-bit Alaw encoding. */
 				alaw_init (psf) ;
 				break ;
 
-		case  SF_FORMAT_G721_32 :
+		/* Lite remove start */
+		case SF_FORMAT_FLOAT :	/* 32-bit floats. */
+				error = float32_init (psf) ;
+				break ;
+
+		case SF_FORMAT_DOUBLE :	/* 64-bit double precision floats. */
+				error = double64_init (psf) ;
+				break ;
+
+		case SF_FORMAT_G721_32 :
 				if (psf->mode == SFM_READ)
 					error = au_g72x_reader_init (psf, AU_H_G721_32) ;
 				else if (psf->mode == SFM_WRITE)
@@ -169,7 +170,7 @@ au_open	(SF_PRIVATE *psf)
 				psf->sf.seekable = SF_FALSE ;
 				break ;
 
-		case  SF_FORMAT_G723_24 :
+		case SF_FORMAT_G723_24 :
 				if (psf->mode == SFM_READ)
 					error = au_g72x_reader_init (psf, AU_H_G723_24) ;
 				else if (psf->mode == SFM_WRITE)
@@ -177,15 +178,16 @@ au_open	(SF_PRIVATE *psf)
 				psf->sf.seekable = SF_FALSE ;
 				break ;
 
-		case  SF_FORMAT_G723_40 :
+		case SF_FORMAT_G723_40 :
 				if (psf->mode == SFM_READ)
 					error = au_g72x_reader_init (psf, AU_H_G723_40) ;
 				else if (psf->mode == SFM_WRITE)
 					error = au_g72x_writer_init (psf, AU_H_G723_40) ;
 				psf->sf.seekable = SF_FALSE ;
 				break ;
+		/* Lite remove end */
 
-		default :   break ;
+		default :	break ;
 		} ;
 
 	return error ;
@@ -205,11 +207,11 @@ au_nh_open	(SF_PRIVATE *psf)
 
 	psf->sf.format = SF_FORMAT_AU | SF_FORMAT_ULAW ;
 
- 	psf->dataoffset     = 0 ;
-	psf->endian         = 0 ;  /* Irrelevant but it must be something. */
+ 	psf->dataoffset		= 0 ;
+	psf->endian			= 0 ;	/* Irrelevant but it must be something. */
 	psf->sf.samplerate	= 8000 ;
-	psf->sf.channels 	= 1 ;
-	psf->bytewidth   	= 1 ;	/* Before decoding */
+	psf->sf.channels	= 1 ;
+	psf->bytewidth		= 1 ;	/* Before decoding */
 
 	ulaw_init (psf) ;
 
@@ -226,26 +228,10 @@ au_nh_open	(SF_PRIVATE *psf)
 */
 
 static int
-au_close	(SF_PRIVATE  *psf)
+au_close	(SF_PRIVATE *psf)
 {
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	/*  Now we know for certain the length of the file we can
-		 *  re-write correct values for the datasize header element.
-		 */
-
-		psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-
-		psf->datalength = psf->filelength - AU_DATA_OFFSET ;
-		psf_fseek (psf, 0, SEEK_SET) ;
-
-		psf->sf.frames = psf->datalength / psf->blockwidth ;
-		au_write_header (psf, SF_FALSE) ;
-		} ;
-
-	if (psf->fdata)
-		free (psf->fdata) ;
-	psf->fdata = NULL ;
+		au_write_header (psf, SF_TRUE) ;
 
 	return 0 ;
 } /* au_close */
@@ -253,14 +239,15 @@ au_close	(SF_PRIVATE  *psf)
 static int
 au_write_header (SF_PRIVATE *psf, int calc_length)
 {	sf_count_t	current ;
-	int			encoding ;
+	int			encoding, datalength ;
+
+	if (psf->pipeoffset > 0)
+		return 0 ;
 
 	current = psf_ftell (psf) ;
 
 	if (calc_length)
-	{	psf_fseek (psf, 0, SEEK_END) ;
-		psf->filelength = psf_ftell (psf) ;
-		psf_fseek (psf, 0, SEEK_SET) ;
+	{	psf->filelength = psf_get_filelen (psf) ;
 
 		psf->datalength = psf->filelength - psf->dataoffset ;
 		if (psf->dataend)
@@ -276,15 +263,31 @@ au_write_header (SF_PRIVATE *psf, int calc_length)
 	/* Reset the current header length to zero. */
 	psf->header [0] = 0 ;
 	psf->headindex = 0 ;
-	psf_fseek (psf, 0, SEEK_SET) ;
+
+	/*
+	** Only attempt to seek if we are not writng to a pipe. If we are
+	** writing to a pipe we shouldn't be here anyway.
+	*/
+	if (psf->is_pipe == SF_FALSE)
+		psf_fseek (psf, 0, SEEK_SET) ;
+
+	/*
+	**	AU format files allow a datalength value of -1 if the datalength
+	**	is not know at the time the header is written.
+	**	Also use this value of -1 if the datalength > 2 gigabytes.
+	*/
+	if (psf->datalength	< 0 || psf->datalength > 0x7FFFFFFF)
+		datalength = -1 ;
+	else
+		datalength = (int) (psf->datalength & 0x7FFFFFFF) ;
 
 	if (psf->endian == SF_ENDIAN_BIG)
 	{	psf_binheader_writef (psf, "Em4", DOTSND_MARKER, AU_DATA_OFFSET) ;
-		psf_binheader_writef (psf, "Et8444", psf->datalength, encoding, psf->sf.samplerate, psf->sf.channels) ;
+		psf_binheader_writef (psf, "E4444", datalength, encoding, psf->sf.samplerate, psf->sf.channels) ;
 		}
-	else if  (psf->endian == SF_ENDIAN_LITTLE)
+	else if (psf->endian == SF_ENDIAN_LITTLE)
 	{	psf_binheader_writef (psf, "em4", DNSDOT_MARKER, AU_DATA_OFFSET) ;
-		psf_binheader_writef (psf, "et8444", psf->datalength, encoding, psf->sf.samplerate, psf->sf.channels) ;
+		psf_binheader_writef (psf, "e4444", datalength, encoding, psf->sf.samplerate, psf->sf.channels) ;
 		}
 	else
 		return (psf->error = SFE_BAD_OPEN_FORMAT) ;
@@ -349,13 +352,21 @@ au_read_header (SF_PRIVATE *psf)
 	else
 		return SFE_AU_NO_DOTSND ;
 
-
 	psf_log_printf (psf, "  Data Offset : %d\n", au_fmt.dataoffset) ;
 
-	if (au_fmt.datasize == -1 || au_fmt.dataoffset + au_fmt.datasize == psf->filelength)
+	if (psf->fileoffset > 0 && au_fmt.datasize == -1)
+	{	psf_log_printf (psf, "  Data Size   : -1\n") ;
+		return SFE_AU_EMBED_BAD_LEN ;
+		} ;
+
+	if (psf->fileoffset > 0)
+	{	psf->filelength = au_fmt.dataoffset + au_fmt.datasize ;
+		psf_log_printf (psf, "  Data Size   : %d\n", au_fmt.datasize) ;
+		}
+	else if (au_fmt.datasize == -1 || au_fmt.dataoffset + au_fmt.datasize == psf->filelength)
 		psf_log_printf (psf, "  Data Size   : %d\n", au_fmt.datasize) ;
 	else if (au_fmt.dataoffset + au_fmt.datasize < psf->filelength)
-	{	psf->filelength = au_fmt.dataoffset + au_fmt.dataoffset ;
+	{	psf->filelength = au_fmt.dataoffset + au_fmt.datasize ;
 		psf_log_printf (psf, "  Data Size   : %d\n", au_fmt.datasize) ;
 		}
 	else
@@ -367,8 +378,8 @@ au_read_header (SF_PRIVATE *psf)
  	psf->dataoffset = au_fmt.dataoffset ;
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
- 	if (psf_fseek (psf, psf->dataoffset, SEEK_SET) != psf->dataoffset)
-		return SFE_BAD_SEEK ;
+	if (psf_ftell (psf) < psf->dataoffset)
+		psf_binheader_readf (psf, "j", psf->dataoffset - psf_ftell (psf)) ;
 
 	psf->close = au_close ;
 
@@ -386,79 +397,79 @@ au_read_header (SF_PRIVATE *psf)
 	psf->sf.format = psf->sf.format & SF_FORMAT_ENDMASK ;
 
 	switch (au_fmt.encoding)
-	{	case  AU_ENCODING_ULAW_8 :
+	{	case AU_ENCODING_ULAW_8 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_ULAW ;
-				psf->bytewidth  = 1 ;	/* Before decoding */
+				psf->bytewidth = 1 ;	/* Before decoding */
 				psf_log_printf (psf, "8-bit ISDN u-law\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_PCM_8 :
+		case AU_ENCODING_PCM_8 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_PCM_S8 ;
-				psf->bytewidth  = 1 ;
+				psf->bytewidth = 1 ;
 				psf_log_printf (psf, "8-bit linear PCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_PCM_16 :
+		case AU_ENCODING_PCM_16 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_PCM_16 ;
-				psf->bytewidth  = 2 ;
+				psf->bytewidth = 2 ;
 				psf_log_printf (psf, "16-bit linear PCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_PCM_24 :
+		case AU_ENCODING_PCM_24 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_PCM_24 ;
-				psf->bytewidth  = 3 ;
+				psf->bytewidth = 3 ;
 				psf_log_printf (psf, "24-bit linear PCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_PCM_32 :
+		case AU_ENCODING_PCM_32 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_PCM_32 ;
-				psf->bytewidth  = 4 ;
+				psf->bytewidth = 4 ;
 				psf_log_printf (psf, "32-bit linear PCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_FLOAT :
+		case AU_ENCODING_FLOAT :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_FLOAT ;
-				psf->bytewidth  = 4 ;
+				psf->bytewidth = 4 ;
 				psf_log_printf (psf, "32-bit float\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_DOUBLE :
+		case AU_ENCODING_DOUBLE :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_DOUBLE ;
-				psf->bytewidth  = 8 ;
+				psf->bytewidth = 8 ;
 				psf_log_printf (psf, "64-bit double precision float\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_ALAW_8 :
+		case AU_ENCODING_ALAW_8 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_ALAW ;
-				psf->bytewidth  = 1 ;	/* Before decoding */
+				psf->bytewidth = 1 ;	/* Before decoding */
 				psf_log_printf (psf, "8-bit ISDN A-law\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_ADPCM_G721_32 :
+		case AU_ENCODING_ADPCM_G721_32 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_G721_32 ;
-				psf->bytewidth  = 0 ;
+				psf->bytewidth = 0 ;
 				psf_log_printf (psf, "G721 32kbs ADPCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_ADPCM_G723_24 :
+		case AU_ENCODING_ADPCM_G723_24 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_G723_24 ;
-				psf->bytewidth  = 0 ;
+				psf->bytewidth = 0 ;
 				psf_log_printf (psf, "G723 24kbs ADPCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_ADPCM_G723_40 :
+		case AU_ENCODING_ADPCM_G723_40 :
 				psf->sf.format |= SF_FORMAT_AU | SF_FORMAT_G723_40 ;
-				psf->bytewidth  = 0 ;
+				psf->bytewidth = 0 ;
 				psf_log_printf (psf, "G723 40kbs ADPCM\n") ;
-				break  ;
+				break ;
 
-		case  AU_ENCODING_ADPCM_G722 :
+		case AU_ENCODING_ADPCM_G722 :
 				psf_log_printf (psf, "G722 64 kbs ADPCM (unsupported)\n") ;
 				break ;
 
-		case  AU_ENCODING_NEXT :
+		case AU_ENCODING_NEXT :
 				psf_log_printf (psf, "Weird NeXT encoding format (unsupported)\n") ;
-				break  ;
+				break ;
 
 		default :
 				psf_log_printf (psf, "Unknown!!\n") ;
@@ -475,3 +486,10 @@ au_read_header (SF_PRIVATE *psf)
 
 	return 0 ;
 } /* au_read_header */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 31f691b1-cde9-4ed2-9469-6bca60fb9cd0
+*/

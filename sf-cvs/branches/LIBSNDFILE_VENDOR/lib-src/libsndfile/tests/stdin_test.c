@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,118 +16,135 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include "config.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<unistd.h>
-#include	<math.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
-#include	<sndfile.h>
+#include <sndfile.h>
 
-#include	"utils.h"
+#include "utils.h"
 
-#define	BUFFER_LEN		(1<<10)
+#define	BUFFER_LEN		(1<<16)
 
-static	void	stdin_test	(char *str, int typemajor, int count) ;
+static	void	stdin_test	(int typemajor, int count) ;
 
 int
 main (int argc, char *argv [])
-{	int	count, bDoAll = 0, nTests = 0 ;
+{	int		do_all = 0, test_count = 0 ;
 
-	if (argc != 3 || !(count = atoi (argv [2])))
+	if (BUFFER_LEN < PIPE_TEST_LEN)
+	{	fprintf (stderr, "Error : BUFFER_LEN < PIPE_TEST_LEN.\n\n") ;
+		exit (1) ;
+		} ;
+
+	if (argc != 2)
 	{	fprintf (stderr, "This program cannot be run by itself. It needs\n") ;
 		fprintf (stderr, "to be run from the stdio_test program.\n") ;
 		exit (1) ;
 		} ;
 
-	bDoAll = ! strcmp (argv [1], "all") ;
+	do_all = ! strcmp (argv [1], "all") ;
 
-	if (bDoAll || ! strcmp (argv [1], "raw"))
-	{	stdin_test	("raw", SF_FORMAT_RAW, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "raw"))
+	{	stdin_test	(SF_FORMAT_RAW, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "wav"))
-	{	stdin_test	("wav", SF_FORMAT_WAV, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "wav"))
+	{	stdin_test	(SF_FORMAT_WAV, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "aiff"))
-	{	stdin_test	("aiff", SF_FORMAT_AIFF, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "aiff"))
+	{	stdin_test	(SF_FORMAT_AIFF, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "au"))
-	{	stdin_test	("au", SF_FORMAT_AU, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "au"))
+	{	stdin_test	(SF_FORMAT_AU, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "paf"))
-	{	stdin_test	("paf", SF_FORMAT_PAF, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "paf"))
+	{	stdin_test	(SF_FORMAT_PAF, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "svx"))
-	{	stdin_test	("svx", SF_FORMAT_SVX, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "svx"))
+	{	stdin_test	(SF_FORMAT_SVX, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "nist"))
-	{	stdin_test	("nist", SF_FORMAT_NIST, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "nist"))
+	{	stdin_test	(SF_FORMAT_NIST, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "ircam"))
-	{	stdin_test	("ircam", SF_FORMAT_IRCAM, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "ircam"))
+	{	stdin_test	(SF_FORMAT_IRCAM, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "voc"))
-	{	stdin_test	("voc", SF_FORMAT_VOC, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "voc"))
+	{	stdin_test	(SF_FORMAT_VOC, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "w64"))
-	{	stdin_test	("w64", SF_FORMAT_W64, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "w64"))
+	{	stdin_test	(SF_FORMAT_W64, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "mat4"))
-	{	stdin_test	("mat4", SF_FORMAT_MAT4, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "mat4"))
+	{	stdin_test	(SF_FORMAT_MAT4, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "mat5"))
-	{	stdin_test	("mat5", SF_FORMAT_MAT5, count) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "mat5"))
+	{	stdin_test	(SF_FORMAT_MAT5, PIPE_TEST_LEN) ;
+		test_count++ ;
 		} ;
 
-	if (nTests == 0)
-	{	printf ("************************************\n") ;
-		printf ("*  No '%s' test defined.\n", argv [1]) ;
-		printf ("************************************\n") ;
+	if (do_all || ! strcmp (argv [1], "pvf"))
+	{	stdin_test	(SF_FORMAT_PVF, PIPE_TEST_LEN) ;
+		test_count++ ;
+		} ;
+
+	if (do_all || ! strcmp (argv [1], "htk"))
+	{	stdin_test	(SF_FORMAT_HTK, PIPE_TEST_LEN) ;
+		test_count++ ;
+		} ;
+
+	if (test_count == 0)
+	{	fprintf (stderr, "************************************\n") ;
+		fprintf (stderr, "*  No '%s' test defined.\n", argv [1]) ;
+		fprintf (stderr, "************************************\n") ;
 		return 1 ;
 		} ;
 
-	return 0;
+	return 0 ;
 } /* main */
 
 static	void
-stdin_test	(char *str, int typemajor, int count)
+stdin_test	(int typemajor, int count)
 {	static	short	data [BUFFER_LEN] ;
 
 	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int			k, total ;
 
-	fprintf (stderr, "    %-5s : reading %d frames from stdin .... ", str, count) ;
-
 	if (typemajor == SF_FORMAT_RAW)
-	{	sfinfo.samplerate = 44100 ;
-		sfinfo.format 	  = SF_FORMAT_RAW | SF_FORMAT_PCM_16 ;
-		sfinfo.channels   = 1 ;
-		sfinfo.frames     = 0 ;
+	{	sfinfo.samplerate	= 44100 ;
+		sfinfo.format		= SF_FORMAT_RAW | SF_FORMAT_PCM_16 ;
+		sfinfo.channels		= 1 ;
+		sfinfo.frames		= 0 ;
 		}
 	else
 		sfinfo.format = 0 ;
@@ -140,38 +157,48 @@ stdin_test	(char *str, int typemajor, int count)
 		} ;
 
 	if ((sfinfo.format & SF_FORMAT_TYPEMASK) != typemajor)
-	{	fprintf (stderr, "\n\nError : File type doesn't match\n") ;
+	{	fprintf (stderr, "\n\nError : File type doesn't match.\n") ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.samplerate  != 44100)
-	{	fprintf (stderr, "\n\nError : sample rate (%d) should be 44100\n", sfinfo.samplerate) ;
+	if (sfinfo.samplerate != 44100)
+	{	fprintf (stderr, "\n\nError : Sample rate (%d) should be 44100\n", sfinfo.samplerate) ;
 		exit (1) ;
 		} ;
 
-	if (sfinfo.channels  != 1)
-	{	fprintf (stderr, "\n\nError : channels (%d) should be 1\n", sfinfo.channels) ;
+	if (sfinfo.channels != 1)
+	{	fprintf (stderr, "\n\nError : Channels (%d) should be 1\n", sfinfo.channels) ;
 		exit (1) ;
 		} ;
 
 	if (sfinfo.frames < count)
-	{	fprintf (stderr, "\n\nError : sample count (%ld) should be %d\n", (long) sfinfo.frames, count) ;
+	{	fprintf (stderr, "\n\nError : Sample count (%ld) should be %d\n", (long) sfinfo.frames, count) ;
 		exit (1) ;
 		} ;
 
 	total = 0 ;
-	while ((k = sf_read_short (file, data, BUFFER_LEN)))
+	while ((k = sf_read_short (file, data + total, BUFFER_LEN - total)) > 0)
 		total += k ;
 
-
 	if (total != count)
-	{	fprintf (stderr, "\n\nError : expected (%d).frames, read %d\n", count, total) ;
+	{	fprintf (stderr, "\n\nError : Expected %d frames, read %d.\n", count, total) ;
 		exit (1) ;
 		} ;
 
-	sf_close (file) ;
+	for (k = 0 ; k < total ; k++)
+		if (data [k] != PIPE_INDEX (k))
+		{	printf ("\n\nError : data [%d] == %d, should have been %d.\n\n", k, data [k], k) ;
+			exit (1) ;
+			} ;
 
-	fprintf (stderr, "ok\n") ;
+	sf_close (file) ;
 
 	return ;
 } /* stdin_test */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 5e470e3e-743e-4bbc-a588-ec883843c938
+*/

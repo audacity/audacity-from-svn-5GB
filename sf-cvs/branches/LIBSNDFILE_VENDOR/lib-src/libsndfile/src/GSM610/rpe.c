@@ -102,7 +102,7 @@ static void Weighting_filter (
 		 * those we lost when replacing L_MULT by '*'.
 		 */
 
-		L_result = SASR( L_result, 13 );
+		L_result = SASR_L( L_result, 13 );
 		x[k] =  (  L_result < MIN_WORD ? MIN_WORD
 			: (L_result > MAX_WORD ? MAX_WORD : L_result ));
 	}
@@ -137,7 +137,7 @@ static void RPE_grid_selection (
 	 *
 	 *	for (i = 0; i <= 12; i++) {
 	 *
-	 *		temp1    = SASR( x[m + 3*i], 2 );
+	 *		temp1    = SASR_W( x[m + 3*i], 2 );
 	 *
 	 *		assert(temp1 != MIN_WORD);
 	 *
@@ -153,7 +153,7 @@ static void RPE_grid_selection (
 	 */
 
 #undef	STEP
-#define	STEP( m, i )		L_temp = SASR( x[m + 3 * i], 2 );	\
+#define	STEP( m, i )		L_temp = SASR_W( x[m + 3 * i], 2 );	\
 				L_result += L_temp * L_temp;
 
 	/* common part of 0 and 3 */
@@ -219,34 +219,34 @@ static void RPE_grid_selection (
 
 static void APCM_quantization_xmaxc_to_exp_mant (
 	word		xmaxc,		/* IN 	*/
-	word		* exp_out,	/* OUT	*/
+	word		* expon_out,	/* OUT	*/
 	word		* mant_out )	/* OUT  */
 {
-	word	exp, mant;
+	word	expon, mant;
 
-	/* Compute exponent and mantissa of the decoded version of xmaxc
+	/* Compute expononent and mantissa of the decoded version of xmaxc
 	 */
 
-	exp = 0;
-	if (xmaxc > 15) exp = SASR(xmaxc, 3) - 1;
-	mant = xmaxc - (exp << 3);
+	expon = 0;
+	if (xmaxc > 15) expon = SASR_W(xmaxc, 3) - 1;
+	mant = xmaxc - (expon << 3);
 
 	if (mant == 0) {
-		exp  = -4;
+		expon  = -4;
 		mant = 7;
 	}
 	else {
 		while (mant <= 7) {
 			mant = mant << 1 | 1;
-			exp--;
+			expon--;
 		}
 		mant -= 8;
 	}
 
-	assert( exp  >= -4 && exp <= 6 );
+	assert( expon  >= -4 && expon <= 6 );
 	assert( mant >= 0 && mant <= 7 );
 
-	*exp_out  = exp;
+	*expon_out  = expon;
 	*mant_out = mant;
 }
 
@@ -254,14 +254,14 @@ static void APCM_quantization (
 	word		* xM,		/* [0..12]		IN	*/
 	word		* xMc,		/* [0..12]		OUT	*/
 	word		* mant_out,	/* 			OUT	*/
-	word		* exp_out,	/*			OUT	*/
+	word		* expon_out,	/*			OUT	*/
 	word		* xmaxc_out	/*			OUT	*/
 )
 {
 	int	i, itest;
 
 	word	xmax, xmaxc, temp, temp1, temp2;
-	word	exp, mant;
+	word	expon, mant;
 
 
 	/*  Find the maximum absolute value xmax of xM[0..12].
@@ -277,36 +277,36 @@ static void APCM_quantization (
 	/*  Qantizing and coding of xmax to get xmaxc.
 	 */
 
-	exp   = 0;
-	temp  = SASR( xmax, 9 );
+	expon   = 0;
+	temp  = SASR_W( xmax, 9 );
 	itest = 0;
 
 	for (i = 0; i <= 5; i++) {
 
 		itest |= (temp <= 0);
-		temp = SASR( temp, 1 );
+		temp = SASR_W( temp, 1 );
 
-		assert(exp <= 5);
-		if (itest == 0) exp++;		/* exp = add (exp, 1) */
+		assert(expon <= 5);
+		if (itest == 0) expon++;		/* expon = add (expon, 1) */
 	}
 
-	assert(exp <= 6 && exp >= 0);
-	temp = exp + 5;
+	assert(expon <= 6 && expon >= 0);
+	temp = expon + 5;
 
 	assert(temp <= 11 && temp >= 0);
-	xmaxc = gsm_add( SASR(xmax, temp), exp << 3 );
+	xmaxc = gsm_add( SASR_W(xmax, temp), (word) (expon << 3) );
 
 	/*   Quantizing and coding of the xM[0..12] RPE sequence
 	 *   to get the xMc[0..12]
 	 */
 
-	APCM_quantization_xmaxc_to_exp_mant( xmaxc, &exp, &mant );
+	APCM_quantization_xmaxc_to_exp_mant( xmaxc, &expon, &mant );
 
 	/*  This computation uses the fact that the decoded version of xmaxc
-	 *  can be calculated by using the exponent and the mantissa part of
+	 *  can be calculated by using the expononent and the mantissa part of
 	 *  xmaxc (logarithmic table).
 	 *  So, this method avoids any division and uses only a scaling
-	 *  of the RPE samples by a function of the exponent.  A direct 
+	 *  of the RPE samples by a function of the expononent.  A direct 
 	 *  multiplication by the inverse of the mantissa (NRFAC[0..7]
 	 *  found in table 4.5) gives the 3 bit coded version xMc[0..12]
 	 *  of the RPE samples.
@@ -316,10 +316,10 @@ static void APCM_quantization (
 	/* Direct computation of xMc[0..12] using table 4.5
 	 */
 
-	assert( exp <= 4096 && exp >= -4096);
+	assert( expon <= 4096 && expon >= -4096);
 	assert( mant >= 0 && mant <= 7 ); 
 
-	temp1 = 6 - exp;		/* normalization by the exponent */
+	temp1 = 6 - expon;		/* normalization by the expononent */
 	temp2 = gsm_NRFAC[ mant ];  	/* inverse mantissa 		 */
 
 	for (i = 0; i <= 12; i++) {
@@ -328,7 +328,7 @@ static void APCM_quantization (
 
 		temp = xM[i] << temp1;
 		temp = GSM_MULT( temp, temp2 );
-		temp = SASR(temp, 12);
+		temp = SASR_W(temp, 12);
 		xMc[i] = temp + 4;		/* see note below */
 	}
 
@@ -336,7 +336,7 @@ static void APCM_quantization (
 	 */
 
 	*mant_out  = mant;
-	*exp_out   = exp;
+	*expon_out   = expon;
 	*xmaxc_out = xmaxc;
 }
 
@@ -345,7 +345,7 @@ static void APCM_quantization (
 static void APCM_inverse_quantization (
 	register word	* xMc,	/* [0..12]			IN 	*/
 	word		mant,
-	word		exp,
+	word		expon,
 	register word	* xMp)	/* [0..12]			OUT 	*/
 /* 
  *  This part is for decoding the RPE sequence of coded xMc[0..12]
@@ -355,12 +355,11 @@ static void APCM_inverse_quantization (
 {
 	int	i;
 	word	temp, temp1, temp2, temp3;
-	longword	ltmp;
 
 	assert( mant >= 0 && mant <= 7 ); 
 
 	temp1 = gsm_FAC[ mant ];	/* see 4.2-15 for mant */
-	temp2 = gsm_sub( 6, exp );	/* see 4.2-15 for exp  */
+	temp2 = gsm_sub( 6, expon );	/* see 4.2-15 for exp  */
 	temp3 = gsm_asl( 1, gsm_sub( temp2, 1 ));
 
 	for (i = 13; i--;) {
@@ -452,13 +451,13 @@ void Gsm_RPE_Encoding (
 {
 	word	x[40];
 	word	xM[13], xMp[13];
-	word	mant, exp;
+	word	mant, expon;
 
 	Weighting_filter(e, x);
 	RPE_grid_selection(x, xM, Mc);
 
-	APCM_quantization(	xM, xMc, &mant, &exp, xmaxc);
-	APCM_inverse_quantization(  xMc,  mant,  exp, xMp);
+	APCM_quantization(	xM, xMc, &mant, &expon, xmaxc);
+	APCM_inverse_quantization(  xMc,  mant,  expon, xMp);
 
 	RPE_grid_positioning( *Mc, xMp, e );
 
@@ -473,11 +472,19 @@ void Gsm_RPE_Decoding (
 	word		* erp	 /* [0..39]			OUT 	*/
 )
 {
-	word	exp, mant;
+	word	expon, mant;
 	word	xMp[ 13 ];
 
-	APCM_quantization_xmaxc_to_exp_mant( xmaxcr, &exp, &mant );
-	APCM_inverse_quantization( xMcr, mant, exp, xMp );
+	APCM_quantization_xmaxc_to_exp_mant( xmaxcr, &expon, &mant );
+	APCM_inverse_quantization( xMcr, mant, expon, xMp );
 	RPE_grid_positioning( Mcr, xMp, erp );
 
 }
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 82005b9e-1560-4e94-9ddb-00cb14867295
+*/
+

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2002 Erik de Castro Lopo <erikd@zip.com.au>
+** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,9 +16,16 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include	<stdio.h>
-#include	<string.h>
-#include	<unistd.h>
+#include "config.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include	<math.h>
 
 #if (defined (WIN32) || defined (_WIN32))
@@ -35,26 +42,22 @@ static int truncate (const char *filename, int ignored) ;
 
 #define	SILLY_WRITE_COUNT	(234)
 
-static void	pcm_test_char	(char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_short	(char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_24bit	(char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_int	(char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_float	(char *str, int filetype, int long_file_ok) ;
-static void	pcm_test_double	(char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_char (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_short (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_24bit (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_int (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_float (const char *str, int filetype, int long_file_ok) ;
+static void	pcm_test_double (const char *str, int filetype, int long_file_ok) ;
 
-
-enum
-{	FALSE = 0,
-	TRUE  = 1
-} ;
+static void empty_file_test (const char *filename, int format) ;
 
 static	double	orig_data [DATA_LENGTH] ;
 static	double	test_data [DATA_LENGTH] ;
 
 int
 main (int argc, char **argv)
-{	int		bDoAll = 0 ;
-	int		nTests = 0 ;
+{	int		do_all = 0 ;
+	int		test_count = 0 ;
 
 	if (argc != 2)
 	{	printf ("Usage : %s <test>\n", argv [0]) ;
@@ -62,6 +65,7 @@ main (int argc, char **argv)
 		printf ("           wav   - test WAV file functions (little endian)\n") ;
 		printf ("           aiff  - test AIFF file functions (big endian)\n") ;
 		printf ("           au    - test AU file functions\n") ;
+		printf ("           avr   - test AVR file functions\n") ;
 		printf ("           raw   - test RAW header-less PCM file functions\n") ;
 		printf ("           paf   - test PAF file functions\n") ;
 		printf ("           svx   - test 8SVX/16SV file functions\n") ;
@@ -73,190 +77,249 @@ main (int argc, char **argv)
 		exit (1) ;
 		} ;
 
-	bDoAll = !strcmp (argv [1], "all");
+	do_all = !strcmp (argv [1], "all") ;
 
-	if (bDoAll || ! strcmp (argv [1], "wav"))
-	{	pcm_test_char 	("char.wav"  , SF_FORMAT_WAV | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_short	("short.wav" , SF_FORMAT_WAV | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit.wav" , SF_FORMAT_WAV | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int.wav"   , SF_FORMAT_WAV | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float.wav" , SF_FORMAT_WAV | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double.wav", SF_FORMAT_WAV | SF_FORMAT_DOUBLE, FALSE) ;
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "wav"))
+	{	empty_file_test ("empty_char.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.wav", SF_FORMAT_WAV | SF_FORMAT_FLOAT) ;
+
+		pcm_test_char	("char.wav"		, SF_FORMAT_WAV | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_short	("short.wav"	, SF_FORMAT_WAV | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit.wav"	, SF_FORMAT_WAV | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int.wav"		, SF_FORMAT_WAV | SF_FORMAT_PCM_32, SF_FALSE) ;
+
+		pcm_test_24bit	("24bit.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_PCM_32, SF_FALSE) ;
+
+		/* Lite remove start */
+		pcm_test_float	("float.wav"	, SF_FORMAT_WAV | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double.wav"	, SF_FORMAT_WAV | SF_FORMAT_DOUBLE, SF_FALSE) ;
+
+		pcm_test_float	("float.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double.wavex"	, SF_FORMAT_WAVEX | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "aiff"))
-	{	pcm_test_char	("char_u8.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_char	("char_s8.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_short	("short.aiff"  , SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit.aiff"  , SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int.aiff"    , SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "aiff"))
+	{	empty_file_test ("empty_char.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.aiff", SF_FORMAT_AIFF | SF_FORMAT_FLOAT) ;
 
-		pcm_test_short	("short_sowt.aifc", SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_sowt.aifc", SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int_sowt.aifc"  , SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_char	("char_u8.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_char	("char_s8.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit.aiff"	, SF_FORMAT_AIFF | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int.aiff"		, SF_FORMAT_AIFF | SF_FORMAT_PCM_32, SF_FALSE) ;
 
-		pcm_test_short	("short_twos.aifc", SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_twos.aifc", SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int_twos.aifc"  , SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_short	("short_sowt.aifc"	, SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_sowt.aifc"	, SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int_sowt.aifc"	, SF_ENDIAN_LITTLE | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, SF_FALSE) ;
 
-		pcm_test_short	("dwvw16.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_16, TRUE) ;
-		pcm_test_24bit	("dwvw24.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_24, TRUE) ;
+		pcm_test_short	("short_twos.aifc"	, SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_twos.aifc"	, SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int_twos.aifc"	, SF_ENDIAN_BIG | SF_FORMAT_AIFF | SF_FORMAT_PCM_32, SF_FALSE) ;
 
-		pcm_test_float	("float.aifc" , SF_FORMAT_AIFF | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double.aifc", SF_FORMAT_AIFF | SF_FORMAT_DOUBLE, FALSE) ;
+		/* Lite remove start */
+		pcm_test_short	("dwvw16.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_16, SF_TRUE) ;
+		pcm_test_24bit	("dwvw24.aifc", SF_FORMAT_AIFF | SF_FORMAT_DWVW_24, SF_TRUE) ;
 
-		nTests++ ;
+		pcm_test_float	("float.aifc"	, SF_FORMAT_AIFF | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double.aifc"	, SF_FORMAT_AIFF | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "au"))
-	{	pcm_test_char	("char.au"  , SF_FORMAT_AU | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_short	("short.au" , SF_FORMAT_AU | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit.au" , SF_FORMAT_AU | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int.au"   , SF_FORMAT_AU | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float.au" , SF_FORMAT_AU | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double.au", SF_FORMAT_AU | SF_FORMAT_DOUBLE, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "au"))
+	{	pcm_test_char	("char.au"	, SF_FORMAT_AU | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.au"	, SF_FORMAT_AU | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit.au"	, SF_FORMAT_AU | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int.au"	, SF_FORMAT_AU | SF_FORMAT_PCM_32, SF_FALSE) ;
+		/* Lite remove start */
+		pcm_test_float	("float.au"	, SF_FORMAT_AU | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double.au", SF_FORMAT_AU | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
 
-		pcm_test_char	("char_le.au"  , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_short	("short_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int_le.au"   , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float_le.au" , SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double_le.au", SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_DOUBLE, FALSE) ;
-
-		nTests++ ;
+		pcm_test_char	("char_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_PCM_32, SF_FALSE) ;
+		/* Lite remove start */
+		pcm_test_float	("float_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double_le.au"	, SF_ENDIAN_LITTLE | SF_FORMAT_AU | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "raw"))
-	{	pcm_test_char	("char_s8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_char	("char_u8.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_U8, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "raw"))
+	{	pcm_test_char	("char_s8.raw"	, SF_FORMAT_RAW | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_char	("char_u8.raw"	, SF_FORMAT_RAW | SF_FORMAT_PCM_U8, SF_FALSE) ;
 
-		pcm_test_short	("short_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_24bit	("24bit_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int_le.raw"  , SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_int	("int_be.raw"  , SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_PCM_32, FALSE) ;
+		pcm_test_short	("short_le.raw"	, SF_ENDIAN_LITTLE	| SF_FORMAT_RAW | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_be.raw"	, SF_ENDIAN_BIG		| SF_FORMAT_RAW | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_le.raw"	, SF_ENDIAN_LITTLE	| SF_FORMAT_RAW | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_24bit	("24bit_be.raw"	, SF_ENDIAN_BIG		| SF_FORMAT_RAW | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int_le.raw"	, SF_ENDIAN_LITTLE	| SF_FORMAT_RAW | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_int	("int_be.raw"	, SF_ENDIAN_BIG		| SF_FORMAT_RAW | SF_FORMAT_PCM_32, SF_FALSE) ;
 
-		pcm_test_float	("float_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_float	("float_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_FLOAT , FALSE) ;
+		/* Lite remove start */
+		pcm_test_float	("float_le.raw"	, SF_ENDIAN_LITTLE	| SF_FORMAT_RAW | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_float	("float_be.raw"	, SF_ENDIAN_BIG		| SF_FORMAT_RAW | SF_FORMAT_FLOAT , SF_FALSE) ;
 
-		pcm_test_double	("double_le.raw", SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, FALSE) ;
-		pcm_test_double	("double_be.raw", SF_ENDIAN_BIG    | SF_FORMAT_RAW | SF_FORMAT_DOUBLE, FALSE) ;
-
-		nTests++ ;
+		pcm_test_double	("double_le.raw", SF_ENDIAN_LITTLE	| SF_FORMAT_RAW | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		pcm_test_double	("double_be.raw", SF_ENDIAN_BIG		| SF_FORMAT_RAW | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "paf"))
-	{	pcm_test_char	("char_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_char	("char_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_short	("short_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_le.paf", SF_ENDIAN_LITTLE | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
-		pcm_test_24bit	("24bit_be.paf", SF_ENDIAN_BIG    | SF_FORMAT_PAF | SF_FORMAT_PCM_24, TRUE) ;
-
-		nTests++ ;
+	/* Lite remove start */
+	if (do_all || ! strcmp (argv [1], "paf"))
+	{	pcm_test_char	("char_le.paf", SF_ENDIAN_LITTLE	| SF_FORMAT_PAF | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_char	("char_be.paf", SF_ENDIAN_BIG		| SF_FORMAT_PAF | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short_le.paf", SF_ENDIAN_LITTLE	| SF_FORMAT_PAF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_be.paf", SF_ENDIAN_BIG		| SF_FORMAT_PAF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_le.paf", SF_ENDIAN_LITTLE	| SF_FORMAT_PAF | SF_FORMAT_PCM_24, SF_TRUE) ;
+		pcm_test_24bit	("24bit_be.paf", SF_ENDIAN_BIG		| SF_FORMAT_PAF | SF_FORMAT_PCM_24, SF_TRUE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "svx"))
-	{	pcm_test_char	("char.svx" , SF_FORMAT_SVX | SF_FORMAT_PCM_S8, FALSE) ;
-		pcm_test_short	("short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "svx"))
+	{	empty_file_test ("empty_char.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_S8) ;
+		empty_file_test ("empty_short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16) ;
 
-		nTests++ ;
+		pcm_test_char	("char.svx" , SF_FORMAT_SVX | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.svx", SF_FORMAT_SVX | SF_FORMAT_PCM_16, SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "nist"))
-	{	pcm_test_short	("short_le.nist", SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_be.nist", SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit_le.nist", SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_24bit	("24bit_be.nist", SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int_le.nist"  , SF_ENDIAN_LITTLE | SF_FORMAT_NIST | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_int 	("int_be.nist"  , SF_ENDIAN_BIG    | SF_FORMAT_NIST | SF_FORMAT_PCM_32, FALSE) ;
-
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "nist"))
+	{	pcm_test_short	("short_le.nist", SF_ENDIAN_LITTLE	| SF_FORMAT_NIST | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_be.nist", SF_ENDIAN_BIG		| SF_FORMAT_NIST | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit_le.nist", SF_ENDIAN_LITTLE	| SF_FORMAT_NIST | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_24bit	("24bit_be.nist", SF_ENDIAN_BIG		| SF_FORMAT_NIST | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int_le.nist"	, SF_ENDIAN_LITTLE	| SF_FORMAT_NIST | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_int 	("int_be.nist"	, SF_ENDIAN_BIG		| SF_FORMAT_NIST | SF_FORMAT_PCM_32, SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "ircam"))
-	{	pcm_test_short	("short_be.ircam", SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_le.ircam", SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_int	("int_be.ircam"  , SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_int 	("int_le.ircam"  , SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float_be.ircam", SF_ENDIAN_BIG    | SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_float	("float_le.ircam", SF_ENDIAN_LITTLE | SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , FALSE) ;
-
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "ircam"))
+	{	pcm_test_short	("short_be.ircam"	, SF_ENDIAN_BIG	| SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_le.ircam"	, SF_ENDIAN_LITTLE	| SF_FORMAT_IRCAM | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_int	("int_be.ircam"		, SF_ENDIAN_BIG	| SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_int 	("int_le.ircam"		, SF_ENDIAN_LITTLE	| SF_FORMAT_IRCAM | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_float	("float_be.ircam"	, SF_ENDIAN_BIG	| SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_float	("float_le.ircam"	, SF_ENDIAN_LITTLE	| SF_FORMAT_IRCAM | SF_FORMAT_FLOAT , SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "voc"))
-	{	pcm_test_char 	("char.voc" , SF_FORMAT_VOC | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_short	("short.voc", SF_FORMAT_VOC | SF_FORMAT_PCM_16, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "voc"))
+	{	pcm_test_char 	("char.voc" , SF_FORMAT_VOC | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_short	("short.voc", SF_FORMAT_VOC | SF_FORMAT_PCM_16, SF_FALSE) ;
 
-		nTests++ ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "w64"))
-	{	pcm_test_char 	("char.w64"  , SF_FORMAT_W64 | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_short	("short.w64" , SF_FORMAT_W64 | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_24bit	("24bit.w64" , SF_FORMAT_W64 | SF_FORMAT_PCM_24, FALSE) ;
-		pcm_test_int	("int.w64"   , SF_FORMAT_W64 | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float.w64" , SF_FORMAT_W64 | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double.w64", SF_FORMAT_W64 | SF_FORMAT_DOUBLE, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "mat4"))
+	{	empty_file_test ("empty_short.mat4", SF_FORMAT_MAT4 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.mat4", SF_FORMAT_MAT4 | SF_FORMAT_FLOAT) ;
 
-		nTests++ ;
+		pcm_test_short	("short_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_int	("int_be.mat4"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_int 	("int_le.mat4"		, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_float	("float_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_float	("float_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double_be.mat4"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		pcm_test_double	("double_le.mat4"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "mat4"))
-	{	pcm_test_short	("short_be.mat4" , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_le.mat4" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_int	("int_be.mat4"   , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_int 	("int_le.mat4"   , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float_be.mat4" , SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_float	("float_le.mat4" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double_be.mat4", SF_ENDIAN_BIG    | SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, FALSE) ;
-		pcm_test_double	("double_le.mat4", SF_ENDIAN_LITTLE | SF_FORMAT_MAT4 | SF_FORMAT_DOUBLE, FALSE) ;
+	if (do_all || ! strcmp (argv [1], "mat5"))
+	{	empty_file_test ("empty_char.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.mat5", SF_FORMAT_MAT5 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.mat5", SF_FORMAT_MAT5 | SF_FORMAT_FLOAT) ;
 
-		nTests++ ;
+		pcm_test_char 	("char_be.mat5"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_char 	("char_le.mat5"		, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_short	("short_be.mat5"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_short	("short_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_int	("int_be.mat5"		, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_int 	("int_le.mat5"		, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, SF_FALSE) ;
+		pcm_test_float	("float_be.mat5"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_float	("float_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double_be.mat5"	, SF_ENDIAN_BIG	| SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		pcm_test_double	("double_le.mat5"	, SF_ENDIAN_LITTLE	| SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (bDoAll || ! strcmp (argv [1], "mat5"))
-	{	pcm_test_char 	("char_be.mat5"  , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_char 	("char_le.mat5"  , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_U8, FALSE) ;
-		pcm_test_short	("short_be.mat5" , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_short	("short_le.mat5" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_16, FALSE) ;
-		pcm_test_int	("int_be.mat5"   , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_int 	("int_le.mat5"   , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_PCM_32, FALSE) ;
-		pcm_test_float	("float_be.mat5" , SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_float	("float_le.mat5" , SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_FLOAT , FALSE) ;
-		pcm_test_double	("double_be.mat5", SF_ENDIAN_BIG    | SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, FALSE) ;
-		pcm_test_double	("double_le.mat5", SF_ENDIAN_LITTLE | SF_FORMAT_MAT5 | SF_FORMAT_DOUBLE, FALSE) ;
-
-		nTests++ ;
+	if (do_all || ! strcmp (argv [1], "pvf"))
+	{	pcm_test_char 	("char.pvf"	, SF_FORMAT_PVF | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.pvf", SF_FORMAT_PVF | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_int	("int.pvf"	, SF_FORMAT_PVF | SF_FORMAT_PCM_32, SF_FALSE) ;
+		test_count++ ;
 		} ;
 
-	if (nTests == 0)
+	if (do_all || ! strcmp (argv [1], "htk"))
+	{	pcm_test_short	("short.htk", SF_FORMAT_HTK | SF_FORMAT_PCM_16, SF_FALSE) ;
+		test_count++ ;
+		} ;
+
+	if (do_all || ! strcmp (argv [1], "avr"))
+	{	pcm_test_char 	("char_u8.avr"	, SF_FORMAT_AVR | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_char 	("char_s8.avr"	, SF_FORMAT_AVR | SF_FORMAT_PCM_S8, SF_FALSE) ;
+		pcm_test_short	("short.avr"	, SF_FORMAT_AVR | SF_FORMAT_PCM_16, SF_FALSE) ;
+		test_count++ ;
+		} ;
+	/* Lite remove end */
+
+	if (do_all || ! strcmp (argv [1], "w64"))
+	{	empty_file_test ("empty_char.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_U8) ;
+		empty_file_test ("empty_short.w64", SF_FORMAT_W64 | SF_FORMAT_PCM_16) ;
+		empty_file_test ("empty_float.w64", SF_FORMAT_W64 | SF_FORMAT_FLOAT) ;
+
+		pcm_test_char	("char.w64"		, SF_FORMAT_W64 | SF_FORMAT_PCM_U8, SF_FALSE) ;
+		pcm_test_short	("short.w64"	, SF_FORMAT_W64 | SF_FORMAT_PCM_16, SF_FALSE) ;
+		pcm_test_24bit	("24bit.w64"	, SF_FORMAT_W64 | SF_FORMAT_PCM_24, SF_FALSE) ;
+		pcm_test_int	("int.w64"		, SF_FORMAT_W64 | SF_FORMAT_PCM_32, SF_FALSE) ;
+		/* Lite remove start */
+		pcm_test_float	("float.w64"	, SF_FORMAT_W64 | SF_FORMAT_FLOAT , SF_FALSE) ;
+		pcm_test_double	("double.w64"	, SF_FORMAT_W64 | SF_FORMAT_DOUBLE, SF_FALSE) ;
+		/* Lite remove end */
+		test_count++ ;
+		} ;
+
+	if (do_all || ! strcmp (argv [1], "sds"))
+	{	pcm_test_char	("char.sds"		, SF_FORMAT_SDS | SF_FORMAT_PCM_S8, SF_TRUE) ;
+		pcm_test_short	("short.sds"	, SF_FORMAT_SDS | SF_FORMAT_PCM_16, SF_TRUE) ;
+		pcm_test_24bit	("24bit.sds"	, SF_FORMAT_SDS | SF_FORMAT_PCM_24, SF_TRUE) ;
+		test_count++ ;
+		} ;
+
+	if (test_count == 0)
 	{	printf ("Mono : ************************************\n") ;
 		printf ("Mono : *  No '%s' test defined.\n", argv [1]) ;
 		printf ("Mono : ************************************\n") ;
 		return 1 ;
 		} ;
 
-	return 0;
+	return 0 ;
 } /* main */
 
 /*============================================================================================
 **	Helper functions and macros.
 */
 
-static void	create_short_file (char *filename) ;
+static void	create_short_file (const char *filename) ;
 
 #define	CHAR_ERROR(x,y)		(abs ((x) - (y)) > 255)
 #define	INT_ERROR(x,y)		(((x) - (y)) != 0)
 #define	TRIBYTE_ERROR(x,y)	(abs ((x) - (y)) > 255)
 #define	FLOAT_ERROR(x,y)	(fabs ((x) - (y)) > 1e-5)
 
-#define CONVERT_DATA(k,len,new,orig)	\
-			{	for ((k) = 0 ; (k) < (len) ; (k)++)	\
-					(new) [k] = (orig) [k] ;		\
+#define CONVERT_DATA(k,len,new,orig)					\
+			{	for ((k) = 0 ; (k) < (len) ; (k) ++)	\
+					(new) [k] = (orig) [k] ;			\
 				}
 
 
@@ -264,7 +327,7 @@ static void	create_short_file (char *filename) ;
 */
 
 static void
-pcm_test_char (char *filename, int filetype, int long_file_ok)
+pcm_test_char (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	short		*orig, *test ;
@@ -273,10 +336,10 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_char", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
 
@@ -290,23 +353,14 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_short_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (short)) ;
 
@@ -335,7 +389,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_short_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -356,7 +410,8 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -382,7 +437,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -398,6 +453,14 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_short (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -411,10 +474,10 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -441,10 +504,10 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -455,7 +518,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_short_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_short_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -528,17 +591,14 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -555,9 +615,11 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_short_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -591,7 +653,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_short_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -649,7 +711,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -659,10 +721,9 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_char */
 
@@ -671,7 +732,7 @@ pcm_test_char (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_short (char *filename, int filetype, int long_file_ok)
+pcm_test_short (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	short		*orig, *test ;
@@ -680,10 +741,10 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_short", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, 32000.0) ;
 
@@ -697,23 +758,14 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_short_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (short)) ;
 
@@ -742,7 +794,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_short_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -763,7 +815,8 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -789,7 +842,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_short_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -805,6 +858,14 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_short (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -818,10 +879,10 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -848,10 +909,10 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -862,7 +923,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_short_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_short_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -935,17 +996,14 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -962,9 +1020,11 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_short_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -998,7 +1058,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_short_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1056,7 +1116,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_short_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -1066,10 +1126,9 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_short */
 
@@ -1078,7 +1137,7 @@ pcm_test_short (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_24bit (char *filename, int filetype, int long_file_ok)
+pcm_test_24bit (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int		*orig, *test ;
@@ -1087,10 +1146,10 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_24bit", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
@@ -1104,23 +1163,14 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_int_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (int)) ;
 
@@ -1149,7 +1199,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_int_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1170,7 +1220,8 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -1196,7 +1247,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -1212,6 +1263,14 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_int (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -1225,10 +1284,10 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -1255,10 +1314,10 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -1269,7 +1328,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_int_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_int_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -1342,17 +1401,14 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -1369,9 +1425,11 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_int_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -1405,7 +1463,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_int_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1463,7 +1521,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -1473,10 +1531,9 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_24bit */
 
@@ -1485,7 +1542,7 @@ pcm_test_24bit (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_int (char *filename, int filetype, int long_file_ok)
+pcm_test_int (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	int		*orig, *test ;
@@ -1494,10 +1551,10 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_int", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, (1.0 * 0x7F000000)) ;
 
@@ -1511,23 +1568,14 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_int_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (int)) ;
 
@@ -1556,7 +1604,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_int_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1577,7 +1625,8 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -1603,7 +1652,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_int_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -1619,6 +1668,14 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_int (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -1632,10 +1689,10 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -1662,10 +1719,10 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -1676,7 +1733,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_int_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_int_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -1749,17 +1806,14 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -1776,9 +1830,11 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_int_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -1812,7 +1868,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_int_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1870,7 +1926,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_int_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -1880,10 +1936,9 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_int */
 
@@ -1892,7 +1947,7 @@ pcm_test_int (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_float (char *filename, int filetype, int long_file_ok)
+pcm_test_float (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	float		*orig, *test ;
@@ -1901,10 +1956,10 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_float", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
 
@@ -1918,23 +1973,14 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_float_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (float)) ;
 
@@ -1963,7 +2009,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_float_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -1984,7 +2030,8 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -2010,7 +2057,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_float_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -2026,6 +2073,14 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_float (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -2039,10 +2094,10 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -2069,10 +2124,10 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -2083,7 +2138,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_float_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_float_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -2156,17 +2211,14 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -2183,9 +2235,11 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_float_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -2219,7 +2273,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_float_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -2277,7 +2331,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_float_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -2287,10 +2341,9 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_float */
 
@@ -2299,7 +2352,7 @@ pcm_test_float (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-pcm_test_double (char *filename, int filetype, int long_file_ok)
+pcm_test_double (const char *filename, int filetype, int long_file_ok)
 {	SNDFILE		*file ;
 	SF_INFO		sfinfo ;
 	double		*orig, *test ;
@@ -2308,10 +2361,10 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 
 	print_test_name ("pcm_test_double", filename) ;
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 1 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	gen_windowed_sine (orig_data, DATA_LENGTH, 1.0) ;
 
@@ -2325,23 +2378,14 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_write_double_or_die (file, 0, orig, items, __LINE__) ;
 
 	/* Add non-audio data after the audio. */
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
-
-/*-if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_16)
-{
-	char str [256] ;
-	snprintf (str, sizeof (str), "hexdump %s", filename) ;
-
-	puts ("\n") ;
-
-	system (str) ;
-	exit (1) ;
-}-*/
 
 	memset (test, 0, items * sizeof (double)) ;
 
@@ -2370,7 +2414,7 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_read_double_or_die (file, 0, test, items, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -2391,7 +2435,8 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 
 	if ((filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_16 ||
 			(filetype & SF_FORMAT_SUBMASK) == SF_FORMAT_DWVW_24)
-	{	unlink (filename) ;
+	{	sf_close (file) ;
+		unlink (filename) ;
 		printf ("ok\n") ;
 		return ;
 		} ;
@@ -2417,7 +2462,7 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_read_double_or_die (file, 0, test + 10, 4, __LINE__) ;
 	for (k = 10 ; k < 14 ; k++)
@@ -2433,6 +2478,14 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	while (count < sfinfo.frames)
 		count += sf_read_double (file, test, 311) ;
 
+	/* Check that no error has occurred. */
+	if (sf_error (file))
+	{	printf ("\n\nLine %d : Mono : error where there shouldn't have been one.\n", __LINE__) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	/* Check that we haven't read beyond EOF. */
 	if (count > sfinfo.frames)
 	{	printf ("\n\nLines %d : read past end of file (%ld should be %ld)\n", __LINE__, (long) count, (long) sfinfo.frames) ;
 		exit (1) ;
@@ -2446,10 +2499,10 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	** Now test Mono RDWR.
 	*/
 
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		unlink (filename) ;
@@ -2476,10 +2529,10 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	/* Opening a zero length file RDWR is allowed, but the SF_INFO struct must contain
 	** all the usual data required when opening the file in WRITE mode.
 	*/
-	sfinfo.samplerate = SAMPLE_RATE ;
-	sfinfo.frames     = DATA_LENGTH ;
-	sfinfo.channels   = 1 ;
-	sfinfo.format 	  = filetype ;
+	sfinfo.samplerate	= SAMPLE_RATE ;
+	sfinfo.frames		= DATA_LENGTH ;
+	sfinfo.channels		= 1 ;
+	sfinfo.format		= filetype ;
 
 	file = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, __LINE__) ;
 
@@ -2490,7 +2543,7 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	{	orig [20] = pass * 2 ;
 
 		/* Write some data. */
-		test_write_double_or_die (file, 0, orig, DATA_LENGTH, __LINE__) ;
+		test_write_double_or_die (file, pass, orig, DATA_LENGTH, __LINE__) ;
 
 		test_read_write_position_or_die (file, __LINE__, pass, (pass - 1) * DATA_LENGTH, pass * DATA_LENGTH) ;
 
@@ -2563,17 +2616,14 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 	** Now test Stereo.
 	*/
 
-	sfinfo.samplerate  = 44100 ;
-	sfinfo.frames     = SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
-	sfinfo.channels    = 2 ;
-	sfinfo.format 	   = filetype ;
+	sfinfo.samplerate	= 44100 ;
+	sfinfo.frames		= SILLY_WRITE_COUNT ; /* Wrong length. Library should correct this on sf_close. */
+	sfinfo.channels		= 2 ;
+	sfinfo.format		= filetype ;
 
 	if (! sf_format_check (&sfinfo))
-	{	/* SVX currently only supports mono. */
-		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_SVX)
-			printf ("ok, (no stereo)\n") ;
-		unlink (filename) ;
-		printf ("ok\n") ;
+	{	unlink (filename) ;
+		printf ("ok, (no stereo)\n") ;
 		return ;
 		} ;
 
@@ -2590,9 +2640,11 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 
 	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, __LINE__) ;
 
+	sf_set_string (file, SF_STR_ARTIST, "Your name here") ;
+
 	test_writef_double_or_die (file, 0, orig, frames, __LINE__) ;
 
-	sf_command (file, SFC_TEST_ADD_TRAILING_DATA, NULL, 0) ;
+	sf_set_string (file, SF_STR_COPYRIGHT, "Copyright (c) 2003") ;
 
 	sf_close (file) ;
 
@@ -2626,7 +2678,7 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 		exit (1) ;
 		} ;
 
-	check_log_buffer_or_die (file) ;
+	check_log_buffer_or_die (file, __LINE__) ;
 
 	test_readf_double_or_die (file, 0, test, frames, __LINE__) ;
 	for (k = 0 ; k < items ; k++)
@@ -2684,7 +2736,7 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	/* Seek to offset from end of file. */
-	test_seek_or_die (file, -(sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
+	test_seek_or_die (file, -1 * (sfinfo.frames - 10), SEEK_END, 10, sfinfo.channels, __LINE__) ;
 
 	test_readf_double_or_die (file, 0, test + 20, 2, __LINE__) ;
 	for (k = 20 ; k < 24 ; k++)
@@ -2694,10 +2746,9 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 			} ;
 
 	sf_close (file) ;
-
 	unlink (filename) ;
-	printf ("ok\n") ;
 
+	puts ("ok") ;
 	return ;
 } /* pcm_test_double */
 
@@ -2707,7 +2758,72 @@ pcm_test_double (char *filename, int filetype, int long_file_ok)
 */
 
 static void
-create_short_file (char *filename)
+empty_file_test (const char *filename, int format)
+{	SNDFILE		*file ;
+	SF_INFO	info ;
+
+	print_test_name ("empty_file_test", filename) ;
+
+	unlink (filename) ;
+
+	info.samplerate = 48000 ;
+	info.channels = 2 ;
+	info.format = format ;
+
+	if (sf_format_check (&info) == SF_FALSE)
+	{	info.channels = 1 ;
+		if (sf_format_check (&info) == SF_FALSE)
+		{	puts ("invalid file format") ;
+			return ;
+			} ;
+		} ;
+
+	/* Create an empty file. */
+	file = test_open_file_or_die (filename, SFM_WRITE, &info, __LINE__) ;
+	sf_close (file) ;
+
+	/* Open for read and check the length. */
+	file = test_open_file_or_die (filename, SFM_READ, &info, __LINE__) ;
+
+	if (SF_COUNT_TO_LONG (info.frames) != 0)
+	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
+			exit (1) ;
+			} ;
+
+	sf_close (file) ;
+
+	/* Open for read/write and check the length. */
+	file = test_open_file_or_die (filename, SFM_RDWR, &info, __LINE__) ;
+
+	if (SF_COUNT_TO_LONG (info.frames) != 0)
+	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
+		exit (1) ;
+		} ;
+
+	sf_close (file) ;
+
+	/* Open for read and check the length. */
+	file = test_open_file_or_die (filename, SFM_READ, &info, __LINE__) ;
+
+	if (SF_COUNT_TO_LONG (info.frames) != 0)
+	{	printf ("\n\nError : frame count (%ld) should be zero.\n", SF_COUNT_TO_LONG (info.frames)) ;
+		exit (1) ;
+		} ;
+
+	sf_close (file) ;
+
+	unlink (filename) ;
+	puts ("ok") ;
+
+	return ;
+} /* empty_file_test */
+
+
+/*----------------------------------------------------------------------------------------
+*/
+
+static void
+create_short_file (const char *filename)
 {	FILE *file ;
 
 	if (! (file = fopen (filename, "w")))
@@ -2733,6 +2849,8 @@ static int
 truncate (const char *filename, int ignored)
 {	int fd ;
 
+	ignored = 0 ;
+
 	if ((fd = open (filename, O_RDWR | O_TRUNC | O_BINARY)) < 0)
 		return 0 ;
 
@@ -2742,3 +2860,5 @@ truncate (const char *filename, int ignored)
 } /* truncate */
 
 #endif
+
+
