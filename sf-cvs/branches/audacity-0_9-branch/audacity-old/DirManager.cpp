@@ -31,7 +31,6 @@ bool DirManager::firstCtor = true;
 wxString DirManager::tempDirName = ".audacity_temp";
 
 int DirManager::defaultHashTableSize = 10000;
-bool DirManager::hashWarning = false;
 
 // The character which separates directories differs from platform
 // to platform.  On Unix, it's a "/", on Windows it's "/" or "\"
@@ -116,7 +115,8 @@ DirManager::DirManager()
    projPath = "";
    projName = "";
 
-   blockFileHash = new wxHashTable(wxKEY_STRING, defaultHashTableSize);
+   hashTableSize = defaultHashTableSize;
+   blockFileHash = new wxHashTable(wxKEY_STRING, hashTableSize);
 
    // Make sure there is plenty of space for temp files
 
@@ -187,6 +187,8 @@ void DirManager::CleanTempDir()
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
                             bool create)
 {
+   lastProject = projPath;
+
    if (projPath == "")
       projPath =::wxGetCwd();
 
@@ -269,6 +271,7 @@ BlockFile *DirManager::NewTempAliasBlockFile(int localLen,
                                            start, len, channel);
 
    blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
+   aliasList.Add(fullPath);
 
    CheckHashTableSize();
 
@@ -297,6 +300,7 @@ BlockFile *DirManager::NewAliasBlockFile(int localLen,
                                            start, len, channel);
 
    blockFileHash->Put(theFileName, (wxObject *) newBlockFile);
+   aliasList.Add(fullPath);
 
    CheckHashTableSize();
 
@@ -350,10 +354,13 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in)
    } else {
       BlockFile *newBlockFile;
 
-      if (alias)
+      if (alias) {
          newBlockFile = new BlockFile(blockName, pathName,
                                       localLen,
                                       aliasFullPath, start, len, channel);
+
+         aliasList.Add(aliasFullPath);
+      }
       else
          newBlockFile = new BlockFile(blockName, pathName);
 
@@ -371,20 +378,42 @@ void DirManager::MakePartOfProject(BlockFile * f)
 {
    wxString newFullPath = projFull + pathChar + f->mName;
    if (newFullPath != f->mFullPath) {
-      bool ok = wxRenameFile(f->mFullPath, newFullPath);
-      if (ok)
-         f->mFullPath = newFullPath;
-      else {
-         ok = wxCopyFile(f->mFullPath, newFullPath);
-         if (ok) {
-            wxRemoveFile(f->mFullPath);
+      if (lastProject != "") {
+         // If the last project was not the temporary project,
+         // copy the file instead of moving it.  (Otherwise we
+         // would destroy the old project.)
+         bool ok = wxCopyFile(f->mFullPath, newFullPath);
+         if (ok)
             f->mFullPath = newFullPath;
-         } else {
+         else {
             wxString msg;
             msg.Printf("Could not rename %s to %s",
                        (const char *) f->mFullPath,
                        (const char *) newFullPath);
             wxMessageBox(msg);
+         }
+      }
+      else {
+         // Otherwise, we're simply saving a project for
+         // the first time.  We're moving block files from
+         // the temporary directory to their own project
+         // directory.
+
+         bool ok = wxRenameFile(f->mFullPath, newFullPath);
+         if (ok)
+            f->mFullPath = newFullPath;
+         else {
+            ok = wxCopyFile(f->mFullPath, newFullPath);
+            if (ok) {
+               wxRemoveFile(f->mFullPath);
+               f->mFullPath = newFullPath;
+            } else {
+               wxString msg;
+               msg.Printf("Could not rename %s to %s",
+                          (const char *) f->mFullPath,
+                          (const char *) newFullPath);
+               wxMessageBox(msg);
+            }
          }
       }
    }
@@ -413,13 +442,134 @@ void DirManager::Deref(BlockFile * f)
 
 void DirManager::CheckHashTableSize()
 {
-#ifdef __WXDEBUG__
-   if (!hashWarning && blockFileHash->GetCount() >= defaultHashTableSize) {
-      hashWarning = true;
-      wxString msg;
-      msg.Printf("Warning: DirManager hash table full (%d entries).",
-                 blockFileHash->GetCount());
-      wxMessageBox(msg);
+   // This method makes sure that our hash table doesn't fill up.
+   // When it's about halfway full (i.e. starting to exceed its
+   // capacity), we create a new hash table with double the size,
+   // and copy everything over.
+
+   if (blockFileHash->GetCount() >= hashTableSize/2) {
+      wxBusyCursor busy;
+      hashTableSize *= 2;
+
+      wxHashTable *newHash = new wxHashTable(wxKEY_STRING, hashTableSize);
+      blockFileHash->BeginFind();
+      wxNode *n = blockFileHash->Next();
+      while(n) {
+         BlockFile *b = (BlockFile *)n->GetData();
+         newHash->Put(b->GetName(), (wxObject *) b);
+         n = blockFileHash->Next();
+      }
+
+      delete blockFileHash;
+      blockFileHash = newHash;
    }
-#endif
+
+}
+
+bool DirManager::EnsureSafeFilename(wxString fName)
+{
+   // Quick check: If it's not even in our alias list,
+   // then the file name is A-OK.
+   if (!aliasList.Member(fName))
+      return true;
+
+   // If any of the following commands fail, your guess is as
+   // good as mine why.  The following error message is the
+   // best we can do - we'll use it if any of the renames,
+   // creates, or deletes fail.
+   wxString errStr =
+      "Error: is directory write-protected or disk full?";
+
+   // Figure out what the new name for the existing file
+   // would be.  Try to go from "mysong.wav" to "mysong-old1.wav".
+   // Keep trying until we find a filename that doesn't exist.
+
+   wxString pathOnly, nameOnly, extension;
+   wxString renamedFile;
+   ::wxSplitPath(fName, &pathOnly, &nameOnly, &extension);
+
+   int i = 0;
+   do {
+      i++;
+      if (extension != "")
+         renamedFile.Printf("%s%s%s-old%d.%s",
+                            (const char *)pathOnly,
+                            (const char *)pathChar,
+                            (const char *)nameOnly,
+                            i,
+                            (const char *)extension);
+      else
+         renamedFile.Printf("%s%s%s-old%d",
+                            (const char *)pathOnly,
+                            (const char *)pathChar,
+                            (const char *)nameOnly,
+                            i);
+
+   } while (wxFileExists(renamedFile));
+
+   // Test creating a file by that name to make sure it will
+   // be possible to do the rename
+
+   wxFile testFile(renamedFile, wxFile::write);
+   if (!testFile.IsOpened()) {
+      wxMessageBox(errStr);
+      return false;
+   }
+   if (!wxRemoveFile(renamedFile)) {
+      wxMessageBox(errStr);
+      return false;
+   }
+
+   printf("Renamed file: %s\n", (const char *)renamedFile);
+
+   // Go through our block files and see if any indeed point to
+   // the file we're concerned about.  If so, point the block file
+   // to the renamed file and when we're done, perform the rename.
+
+   bool needToRename = false;
+   wxBusyCursor busy;
+   blockFileHash->BeginFind();
+   wxNode *n = blockFileHash->Next();
+   while(n) {
+      BlockFile *b = (BlockFile *)n->GetData();
+
+      if (b->IsAlias() && b->GetAliasedFile() == fName) {
+         needToRename = true;
+         printf("Changing block %s\n", (const char *)b->GetName());
+         b->ChangeAliasedFile(renamedFile);
+      }
+
+      n = blockFileHash->Next();
+   }
+
+   if (needToRename) {
+      if (!wxRenameFile(fName, renamedFile)) {
+         // ACK!!! The renaming was unsuccessful!!!
+         // (This shouldn't happen, since we tried creating a
+         // file of this name and then deleted it just a
+         // second earlier.)  But we'll handle this scenario
+         // just in case!!!
+
+         // Put things back where they were
+         blockFileHash->BeginFind();
+         n = blockFileHash->Next();
+         while(n) {
+            BlockFile *b = (BlockFile *)n->GetData();
+            if (b->IsAlias() && b->GetAliasedFile() == renamedFile)
+               b->ChangeAliasedFile(fName);            
+            n = blockFileHash->Next();
+         }
+
+         // Print error message and cancel the export
+         wxMessageBox(errStr);
+         return false;
+      }
+
+      aliasList.Delete(fName);
+      aliasList.Add(renamedFile);
+   }
+
+   // Success!!!  Either we successfully renamed the file,
+   // or we didn't need to!
+   return true;
 }
