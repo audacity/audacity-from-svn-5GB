@@ -287,10 +287,10 @@ void AudioIO::HandleDeviceChange()
       mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, mMixerInputVol);
 
-   #if 1
+   #if 0
    printf("PortMixer: Output: %s Input: %s\n",
-          mEmulateMixerOutputVol? "native": "emulated",
-          mEmulateMixerInputVol? "native": "emulated");
+          mEmulateMixerOutputVol? "emulated": "native",
+          mEmulateMixerInputVol? "emulated": "native");
    #endif
 
    mMixerInputVol = 1.0;
