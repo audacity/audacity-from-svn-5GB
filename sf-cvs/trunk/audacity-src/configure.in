@@ -63,19 +63,19 @@ AC_ARG_WITH(libmad,
 	[AC_HELP_STRING([--with-libmad],
       [use libmad for mp3 decoding support [default=yes]])],
 	use_libmad=$withval,
-	use_libmad="yes")
+	use_libmad="system")
 
 AC_ARG_WITH(vorbis,
 	[AC_HELP_STRING([--with-vorbis],
 		[enable ogg vorbis support [default=yes]])],
 	use_vorbis=$withval,
-	use_vorbis="yes")
+	use_vorbis="system")
 
 AC_ARG_WITH(id3tag,
 	[AC_HELP_STRING([--with-id3tag],
 		[compile with libid3tag [default=yes]])],
 	use_libid3tag=$withval,
-	use_libid3tag="yes")
+	use_libid3tag="system")
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
