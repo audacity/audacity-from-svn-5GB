@@ -106,7 +106,7 @@ Source code dependencies:
 <ul>
 <li><a href="http://www.wxwindows.org/downld2.htm">wxWindows 2.4.0</a> (required)
      <li><a href="http://www.mars.org/home/rob/proj/mpeg/">MAD (Mpeg Audio Decoder)</a> (optional)
-     <li><a href="http://www.xiph.org/ogg/vorbis/download.html">Ogg Vorbis</a> (optional)
+     <li><a href="http://vorbis.com/download.psp">Ogg Vorbis</a> (optional)
      <li><a href="http://www.mp3dev.org/mp3/download/download.html">LAME</a> (optional)
 </ul>
 </td>
