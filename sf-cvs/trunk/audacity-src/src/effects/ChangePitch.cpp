@@ -238,7 +238,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 
 	const wxString strArray_RadioPitchUpDown[] = {_("up"), _("down")};
 	wxRadioBox * pRadioBox_PitchUpDown = 
-		new wxRadioBox(this, ID_RADIOBOX_PITCHUPDOWN, _(""), 
+		new wxRadioBox(this, ID_RADIOBOX_PITCHUPDOWN, "", 
 							wxDefaultPosition, wxDefaultSize, 
 							2, strArray_RadioPitchUpDown, 1);
    pBoxSizer_Pitch->Add(pRadioBox_PitchUpDown, 0, 
@@ -288,7 +288,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_FromFrequency =
-       new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, _(""), 
+       new wxTextCtrl(this, ID_TEXT_FROMFREQUENCY, "", 
 								wxDefaultPosition, wxSize(64, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Frequency->Add(pTextCtrl_FromFrequency, 0, 
@@ -301,7 +301,7 @@ ChangePitchDialog::ChangePitchDialog(wxWindow * parent,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_ToFrequency =
-       new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, _(""), 
+       new wxTextCtrl(this, ID_TEXT_TOFREQUENCY, "", 
 								wxDefaultPosition, wxSize(64, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Frequency->Add(pTextCtrl_ToFrequency, 0, 
@@ -399,7 +399,7 @@ bool ChangePitchDialog::TransferDataToWindow()
 		if (m_FromFrequency > 0.0)
 			str.Printf(_("%.3f"), m_FromFrequency);
 		else
-			str = _("");
+			str = "";
 		pTextCtrl->SetValue(str);
 	}
 
@@ -783,7 +783,7 @@ void ChangePitchDialog::Update_Text_ToFrequency()
 		if (m_ToFrequency > 0.0)
 			str.Printf(_("%.3f"), m_ToFrequency);
 		else
-			str = _("");
+			str = "";
 		pTextCtrl->SetValue(str);
 	}
 }

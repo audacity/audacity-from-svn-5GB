@@ -185,7 +185,7 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_FromBPM =
-       new wxTextCtrl(this, ID_TEXT_FROMBPM, _(""), 
+       new wxTextCtrl(this, ID_TEXT_FROMBPM, "", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(pTextCtrl_FromBPM, 0, 
@@ -198,7 +198,7 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_ToBPM =
-       new wxTextCtrl(this, ID_TEXT_TOBPM, _(""), 
+       new wxTextCtrl(this, ID_TEXT_TOBPM, "", 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(pTextCtrl_ToBPM, 0, 
@@ -217,7 +217,7 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_FromLength =
-       new wxTextCtrl(this, ID_TEXT_FROMLENGTH, _(""), 
+       new wxTextCtrl(this, ID_TEXT_FROMLENGTH, "", 
 								wxDefaultPosition, wxSize(48, -1), 
 								wxTE_READONLY); // Read only because it's from the selection.
 								// No validator because it's read only.
@@ -231,7 +231,7 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_ToLength =
-       new wxTextCtrl(this, ID_TEXT_TOLENGTH, _(""), 
+       new wxTextCtrl(this, ID_TEXT_TOLENGTH, "", 
 								wxDefaultPosition, wxSize(48, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Length->Add(pTextCtrl_ToLength, 0, 
@@ -288,7 +288,7 @@ bool ChangeTempoDialog::TransferDataToWindow()
 		if (m_FromBPM != 0)
 			str.Printf(_("%d"), m_FromBPM);
 		else
-			str = _("");
+			str = "";
 		pTextCtrl->SetValue(str);
 	}
 
@@ -297,7 +297,7 @@ bool ChangeTempoDialog::TransferDataToWindow()
 		if (m_ToBPM != 0)
 			str.Printf(_("%d"), m_ToBPM);
 		else
-			str = _("");
+			str = "";
 		pTextCtrl->SetValue(str);
 	}
 
