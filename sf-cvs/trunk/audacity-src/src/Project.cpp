@@ -104,10 +104,19 @@ const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the 
 #include "../images/AudacityLogo.xpm"
 #endif
 
-
+//The following global counts the number of documents that have been opened
+//for the purpose of project placement (not to keep track of the number)
+//It is only accurate modulo ten, and does not decrement when a project is
+//closed.
 int gAudacityDocNum = 0;
+
+
+//This array holds onto all of the projects currently open
 AProjectArray gAudacityProjects;
+//This is a pointer to the currently-active project.
 AudacityProject *gActiveProject;
+
+
 
 AudacityProject *GetActiveProject()
 {
@@ -130,7 +139,8 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    int width = 600;
    int height = 400;
 
-
+   //These conditional values assist in improving placement and size
+   //of new windows on different platforms.
 #ifdef __WXMAC__
    where.y += 50;
 #endif
@@ -143,17 +153,23 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    height += 40;
 #endif
 
+   //Placement depends on the number of open documents
    where.x += gAudacityDocNum * 25;
    where.y += gAudacityDocNum * 25;
 
+   //Create and show a new project
    AudacityProject *p = new AudacityProject(parentWindow, -1,
                                             where, wxSize(width, height));
-
    p->Show(true);
 
+   //Increment the number of documents. This is not exact, and
+   //wraps around after you open ten.  Also, the number is not decremented
+   //when you close a project.
    gAudacityDocNum = (gAudacityDocNum + 1) % 10;
 
+   //Set the new project as active:
    SetActiveProject(p);
+
    return p;
 }
 
@@ -169,6 +185,9 @@ void CloseAllProjects()
    int len = gAudacityProjects.GetCount();
    for (int i = 0; i < len; i++)
       gAudacityProjects[i]->Close();
+
+   //Set the project number to 0
+   gAudacityDocNum=0;
 }
 
 enum {
@@ -467,6 +486,11 @@ void AudacityProject::FinishAutoScroll()
    mAutoScrolling = false;
 }
 
+
+///
+/// This method handles general left-scrolling, either for drag-scrolling
+/// or when the scrollbar is clicked to the left of the thumb
+///
 void AudacityProject::OnScrollLeft()
 {
    int pos = mHsbar->GetThumbPosition();
@@ -477,6 +501,10 @@ void AudacityProject::OnScrollLeft()
       FinishAutoScroll();
    }
 }
+///
+/// This method handles general right-scrolling, either for drag-scrolling
+/// or when the scrollbar is clicked to the right of the thumb
+///
 
 void AudacityProject::OnScrollRight()
 {
@@ -490,6 +518,9 @@ void AudacityProject::OnScrollRight()
    }
 }
 
+///
+///  This handles when the left direction button on the scrollbar is depresssed
+///
 void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
 {
    int pos = mHsbar->GetThumbPosition();
@@ -501,7 +532,9 @@ void AudacityProject::OnScrollLeftButton(wxScrollEvent & event)
    }
 }
 
-
+///
+///  This handles when the right direction button on the scrollbar is depresssed
+///
 void AudacityProject::OnScrollRightButton(wxScrollEvent & event)
 {
    int pos = mHsbar->GetThumbPosition();
@@ -1744,6 +1777,15 @@ void AudacityProject::SelectNone()
    mTrackPanel->Refresh(false);
 }
 
+
+///////////////////////////////////////////////////////////////////
+// This method 'rewinds' the track, by setting the cursor to 0 and
+// scrolling the window to fit 0 on the left side of it 
+// (maintaining  current zoom).  
+// If shift is held down, it will extend the left edge of the 
+// selection to 0 (holding right edge constant), otherwise it will
+// move both left and right edge of selection to 0 
+///////////////////////////////////////////////////////////////////
 void AudacityProject::Rewind(bool shift)
 {
    mViewInfo.sel0 = 0;
@@ -1753,6 +1795,15 @@ void AudacityProject::Rewind(bool shift)
    TP_ScrollWindow(0);
 }
 
+
+///////////////////////////////////////////////////////////////////
+// This method 'fast-forwards' the track, by setting the cursor to
+// the end of the samples on the selected track and  scrolling the
+//  window to fit the end on its right side (maintaining  current zoom).  
+// If shift is held down, it will extend the right edge of the 
+// selection to the end (holding left edge constant), otherwise it will
+// move both left and right edge of selection to the end 
+///////////////////////////////////////////////////////////////////
 void AudacityProject::SkipEnd(bool shift)
 {
    double len = mTracks->GetEndTime();
