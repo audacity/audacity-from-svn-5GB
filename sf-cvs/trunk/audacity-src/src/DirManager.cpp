@@ -31,7 +31,7 @@
 int DirManager::numDirManagers = 0;
 int DirManager::fileIndex = 0;
 bool DirManager::firstCtor = true;
-wxString DirManager::tempDirName = ".audacity_temp";
+wxString DirManager::tempDirName = ".audacity_1_1_temp";
 
 unsigned int DirManager::defaultHashTableSize = 10000;
 
