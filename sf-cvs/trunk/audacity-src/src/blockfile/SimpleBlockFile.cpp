@@ -100,8 +100,14 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
       // we can't write the buffer directly to disk, because 24-bit samples
       // on disk need to be packed, not padded to 32 bits like they are in
       // memory
+      int *int24sampleData = (int*)sampleData;
+
       for( int i = 0; i < sampleLen; i++ )
-         file.Write(&sampleData[i], 3);
+#if wxBYTE_ORDER == wxBIG_ENDIAN
+         file.Write((char*)&int24sampleData[i] + 1, 3);
+#else
+         file.Write((char*)&int24sampleData[i], 3);
+#endif
    }
    else
    {
@@ -187,13 +193,26 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    int framesRead = 0;
 
+   // If both the src and dest formats are integer formats,
+   // read integers from the file (otherwise we would be
+   // converting to float and back, which is unneccesary)
    if (format == int16Sample &&
-       !sf_subtype_more_than_16_bits(info.format)) {
-      // Special case: if the file is in 16-bit (or less) format,
-      // and the calling method wants 16-bit data, go ahead and
-      // read 16-bit data directly.  This is a pretty common
-      // case, as most audio files are 16-bit.
+       sf_subtype_is_integer(info.format)) {
       framesRead = sf_readf_short(sf, (short *)data, len);
+   }
+   else
+   if (format == int24Sample &&
+       sf_subtype_is_integer(info.format))
+   {
+      framesRead = sf_readf_int(sf, (int *)data, len);
+
+      // libsndfile gave us the 3 byte sample in the 3 most
+      // significant bytes -- we want it in the 3 least
+      // significant bytes.  The cast to unsigned prevents
+      // sign extension.
+      int *intPtr = (int *)data;
+      for( int i = 0; i < framesRead; i++ )
+         intPtr[i] = (unsigned int)intPtr[i] >> 8;
    }
    else {
       // Otherwise, let libsndfile handle the conversion and

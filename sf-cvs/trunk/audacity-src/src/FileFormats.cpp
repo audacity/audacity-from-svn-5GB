@@ -186,6 +186,14 @@ bool sf_subtype_more_than_16_bits(unsigned int format)
            subtype == SF_FORMAT_PCM_24 ||
            subtype == SF_FORMAT_PCM_32);
 }
+
+bool sf_subtype_is_integer(unsigned int format)
+{
+   unsigned int subtype = format & SF_FORMAT_SUBMASK;
+   return (subtype == SF_FORMAT_PCM_16 ||
+           subtype == SF_FORMAT_PCM_24 ||
+           subtype == SF_FORMAT_PCM_32);
+}
       
 void sf_get_all_extensions(wxStringList exts)
 {

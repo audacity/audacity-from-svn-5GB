@@ -423,7 +423,7 @@ dnl Checks for library functions.
 AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
 					  lib-src/allegro/Makefile lib-src/expat/Makefile
-                                          locale/Makefile])
+                                          locale/Makefile tests/Makefile])
 
 AC_CONFIG_SUBDIRS([$SUBDIRS])
 AC_OUTPUT

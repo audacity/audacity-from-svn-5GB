@@ -17,6 +17,10 @@ audacity:
 	$(MAKE) -C src
 	$(MAKE) -C locale
 
+.PHONY: src/libaudacity.a
+src/libaudacity.a:
+	$(MAKE) -C src libaudacity.a
+
 .PHONY: install
 install: audacity audacity-help.htb
 	# install the binary
@@ -62,12 +66,16 @@ audacity-help.htb: help/wxhelp/*
 dox:
 	doxygen audacity.dox
 
+check: src/libaudacity.a
+	$(MAKE) -C tests check
+
 dep:
 	$(MAKE) -C src dep
 
 clean:
 	$(MAKE) -C lib-src clean
 	$(MAKE) -C src clean
+	$(MAKE) -C tests clean
 	rm -f audacity-help.htb
 	rm -f audacity
 	rm -f help/audacity.1.gz
@@ -81,6 +89,7 @@ veryclean: clean
 distclean: clean
 	$(MAKE) -C locale distclean
 	$(MAKE) -C lib-src distclean
+	$(MAKE) -C tests distclean
 
 	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
 	rm -f locale/Makefile src/configunix.h
