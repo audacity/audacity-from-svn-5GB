@@ -1,103 +1,87 @@
 <h2>Zmìny v Audacity 1.2</h2>
 
-This page lists major changes since our last stable release, Audacity
-1.0.0.   Users of our beta versions should see the changelog for
-<a href="<?php print "betanotes.php$langQueryStr"; ?>">changes since Audacity 1.1.0</a>.
+Tato stránka obsahuje popis nejvýznamnìjších zmìn od vydání naší poslední stabilní verze Audacity 1.0.0. Uživatelé betaverzí by se mìli podívat na changelog <a href="<?php print "betanotes.php$langQueryStr"; ?>">zmìny od vydání Audacity 1.1.0</a>.
 
-<h3>Professional-Quality Audio</h3>
+<h3>Zvuk v profesionální kvalitì</h3>
 
 <ul>
 <li>
-Audacity can now record and edit 24-bit and 32-bit (floating-point)
-samples.  Tracks with different sample rates and formats can exist in
-the same project, and Audacity will convert them in realtime whenever
-necessary.  High-quality dithering and resampling is used for all
-conversions.  
+Audacity nyní umí nahrávat a upravovat 24 a 32 bitové vzorky (pohyblivá øadová èárka). V jednom projektu mohou být stopy s rozdílnými vzorkovacími frekvencemi i formáty, pøièemž pokud je tøeba, Audacity je zkonvertuje v reálném èase. Pro všechny konverze je použito vysoce kvalitní pøevzorkování a dithering.
 </li>
 
 <li>
-Audacity's sound input and output has been improved.  Audacity can now
-record more than two channels at once.  Buffering is improved, for lower
-chances of skipping and buffer underruns.
+Vstup a výstup zvuku v Audacity byl vylepšen. Audacity nyní mùže nahrávat více než dva kanály najednou. Aby se pøedešlo pøeskakování a podteèení vyrovnávací pamìti (buffer underruns), byla zlepšena práce s bufferem.
 </li>
 </ul>
 
 <a href="screenshots.php<?php print $langQueryStr; ?>">
 <img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
-<h3>Effects</h3>
+<h3>Efekty</h3>
+
+<!--
+-->
 
 <ul>
 <li>
-Three new effects change the pitch and tempo of a track:
+Tøi nové efekty na zmìnu ladìní a rychlosti stopy:
  <ul>
-  <li>Change Pitch raises or lowers the tone of a selection, without
-  affecting the speed.</li>
-  <li>Change Tempo makes the selection play faster or slower, without
-  altering the pitch.</li>
-  <li>Change Speed alters both the playback speed and the pitch, just
-  like changing the speed of a turntable or tape player.</li>
+<li>"Zmìna ladìní" zvýší nebo sníží zvuk výbrané èásti bez vlivu na rychlost.</li>
+<li>"Zmìna tempa" zrychlí nebo zpomalí vybranou èást bez vlivu na výšku ladìní.</li>
+<li>"Zmìna rychlosti" zmìní rychlost pøehrávání i výšku ladìní, jako když zmìníte rychlost gramofonu nebo magnetofonu.</li>
  </ul>
 </li>
 
 <li>
-Most effects now include a "Preview" button, which allows you to try
-different settings without closing the effect window.  A new command
-allows you to repeat the last effect without re-opening the window.
+Vìtšina efektù nyní obsahuje tlaèítko "Preview", které umožòuje vyzkoušet rùzná nastavení pøed zavøením efektového okna. Nový pøíkaz vám umožní zopakovat poslednì použitý efekt bez opìtovného otevírání okna.
 </li>
 
 <li>
-Other new effects include:
+Další nové efekty obsahují:
  <ul>
-  <li>Compressor, for dynamic range compression.</li>
-  <li>Repeat, to loop samples.</li>
-  <li>Normalize, to adjust volume and correct DC bias.</li>
+<li>Kompresor, pro dynamic range kompresi.</li>
+<li>Opakování, pro vytváøení smyèek ze vzorkù.</li>
+<li>Normalizace, pro úpravu hlasitosti a opravu DC bias.</li>
  </ul>
 </li>
 </ul>
 
 
-<h3>New Editing Features</h3>
+<h3>Nové editaèní vlastnosti</h3>
 
 <ul>
 <li>
-The Envelope tool, used for smoothly fading tracks in and out, can now be
-used to make tracks louder than their original volume as well as quieter.
+Nástrojem Obálka, døíve používanému k postupnému zesilování a zeslabování stop, mùžete nyní také dosáhnout toho, aby stopy byly hlasitìjší nebo slabší než je originální hlasitost.
 </li>
 
 <li>
-The new "Time track" feature is similar to the volume envelope, but
-instead changes the playback speed smoothly as a track plays.
+Nová vlastnost "Time track" je podobná obálce hlasitosti, ale rychlost se dá mìnit pøímo pøi pøehrávání.
 </li>
 
 <li>
-Each track now has its own Gain and Pan controls, for easier mixing.
+Každá stopa má nyní v zájmu jednoduššího mixování vlastní nastavení Gain (zisk) a Pan (panorama).
 <a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
 </li>
 
 <li>
-Audacity can find zero-crossings, to help create smooth cuts and loops.
-Press "Z" to move selection edges to the nearest zero-crossings.
+Audacity nyní umí najít nulové pøechody, èímž napomáhá snadnìjšímu vytváøení støihù a smyèek. Stisknìte "Z" a hranice výbìru se pøesunou na nejbližší nulový pøechod.
 </li>
 </ul>
 
 
-<h3>Plugins</h3>
+<h3>Pluginy</h3>
 
 <ul>
 <li>
-On Linux, Audacity can now load <a href="http://www.ladspa.org/">LADSPA</a>
-plugins.
+V Linuxu umí Audacity naèítat <a href="http://www.ladspa.org/">LADSPA</a> pluginy.
 </li>
 
 <li>
-Audacity 1.2 features a digital signal processing language called
-<a href="nyquist.php">Nyquist</a>, which allows users to program new effects
-in a LISP-like language.
+Audacity 1.2 pøináší jazyk pro manipulaci s digitálním signálem, zvaný <a href="nyquist.php">Nyquist</a>, který uživatelùm umožòuje naprogramovat nové efekty v jazyce podobném LISPu.
 </li>
 </ul>
 
 
-<h3>File Import and Export</h3>
+<h3>Import a export souborù</h3>
 
 <ul>
 <li>
@@ -121,7 +105,7 @@ offsets listed in a text file.
 </ul>
 
 
-<h3>Improved User Interface</h3>
+<h3>Vylepšené uživatelské rozhraní</h3>
 
 <a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
 <ul>
