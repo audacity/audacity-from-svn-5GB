@@ -2352,7 +2352,8 @@ void AudacityProject::OnImportRaw()
 
 void AudacityProject::OnEditID3()
 {
-   mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)"));
+   if (mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)")))
+      PushState(_("Edit ID3 tags"), _("Edit ID3 Tags"));
 }
 
 void AudacityProject::OnQuickMix()
