@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "Audacity"=".\audacity.dsp" - Package Owner=<4>
+Project: "Audacity"=.\audacity.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -20,11 +20,14 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name PAStaticWMME
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name allegro
+    End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "PAStaticWMME"=".\lib-src\portaudio\winproj\PAStaticWMME\PAStaticWMME.dsp" - Package Owner=<4>
+Project: "PAStaticWMME"="..\lib-src\portaudio\winproj\PAStaticWMME\PAStaticWMME.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -36,7 +39,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "libmad"=".\lib-src\libmad\libmad.dsp" - Package Owner=<4>
+Project: "allegro"="..\lib-src\allegro\allegro.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -48,7 +51,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "libsndfile"=".\lib-src\libsndfile\Win32\libsndfile.dsp" - Package Owner=<4>
+Project: "libmad"="..\lib-src\libmad\libmad.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -60,7 +63,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "ogg_static"=".\lib-src\libogg\win32\ogg_static.dsp" - Package Owner=<4>
+Project: "libsndfile"="..\lib-src\libsndfile\Win32\libsndfile.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -72,7 +75,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "vorbis_static"=".\lib-src\libvorbis\win32\vorbis_static.dsp" - Package Owner=<4>
+Project: "ogg_static"="..\lib-src\libogg\win32\ogg_static.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -84,7 +87,19 @@ Package=<4>
 
 ###############################################################################
 
-Project: "vorbisfile_static"=".\lib-src\libvorbis\win32\vorbisfile_static.dsp" - Package Owner=<4>
+Project: "vorbis_static"="..\lib-src\libvorbis\win32\vorbis_static.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "vorbisfile_static"="..\lib-src\libvorbis\win32\vorbisfile_static.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

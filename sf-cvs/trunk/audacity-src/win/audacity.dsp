@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "include" /I "include\win32" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "." /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /D "NDEBUG" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 mad.lib sndfile.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib PAStaticWMME.lib wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"MSVCRT.LIB" /nodefaultlib:"MSVCIRT.LIB" /libpath:"lib-src\libmad" /libpath:"lib-src\libsndfile\Win32" /libpath:"lib-src\libogg\win32\static_release" /libpath:"lib-src\libvorbis\win32\vorbis_static_release" /libpath:"lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"lib-src\portaudio\winproj\lib"
+# ADD LINK32 mad.lib sndfile.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib PAStaticWMME.lib wx.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"MSVCRT.LIB" /nodefaultlib:"MSVCIRT.LIB" /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "Audacity - Win32 Debug"
@@ -71,7 +71,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /GX /ZI /Od /I "include" /I "include\win32" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
+# ADD CPP /nologo /MTd /W3 /GX /ZI /Od /I "." /I "..\src\include" /I "..\src\include\win32" /I "..\lib-src\allegro" /D "_DEBUG" /D DEBUG=1 /D "__WXDEBUG__" /D "__WX__" /D "WIN32" /D "_WINDOWS" /D "__WINDOWS__" /D "__WXMSW__" /D "__WIN95__" /D "__WIN32__" /D WINVER=0x0400 /D "STRICT" /YX"wx/wxprec.h" /FD /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib winmm.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 madd.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib sndfiled.lib PAStaticWMMED.lib wxd.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /incremental:no /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /nodefaultlib:"msvcrtd.lib" /nodefaultlib:"msvcirt.lib" /nodefaultlib:"msvcirtd.lib" /pdbtype:sept /libpath:"lib-src\libmad" /libpath:"lib-src\libsndfile\Win32" /libpath:"lib-src\libogg\win32\static_release" /libpath:"lib-src\libvorbis\win32\vorbis_static_release" /libpath:"lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"lib-src\portaudio\winproj\lib"
+# ADD LINK32 madd.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib sndfiled.lib PAStaticWMMED.lib wxd.lib xpm.lib png.lib zlib.lib jpeg.lib tiff.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib /nologo /subsystem:windows /incremental:no /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libcid.lib" /nodefaultlib:"msvcrt.lib" /nodefaultlib:"msvcrtd.lib" /nodefaultlib:"msvcirt.lib" /nodefaultlib:"msvcirtd.lib" /pdbtype:sept /libpath:"..\lib-src\libmad" /libpath:"..\lib-src\libsndfile\Win32" /libpath:"..\lib-src\libogg\win32\static_release" /libpath:"..\lib-src\libvorbis\win32\vorbis_static_release" /libpath:"..\lib-src\libvorbis\win32\vorbisfile_static_release" /libpath:"..\lib-src\portaudio\winproj\lib" /libpath:"..\lib-src\allegro"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ENDIF 
@@ -90,235 +90,9 @@ LINK32=link.exe
 
 # Name "Audacity - Win32 Release"
 # Name "Audacity - Win32 Debug"
-# Begin Group "VST"
+# Begin Group "src"
 
 # PROP Default_Filter ""
-
-# Begin Source File
-
-SOURCE=..\src\effects\AEffect.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\aeffectx.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\audioeffectx.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\audioeffectx.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\vstcontrols.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VSTEffect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\VSTEffect.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\vstgui.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\LoadVSTWin.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\LoadVSTWin.h
-# End Source File
-
-
-# End Group
-
-# Begin Group "effects"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\src\effects\Amplify.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Amplify.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\AudioEffect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\BassBoost.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\BassBoost.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Compressor.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Compressor.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Echo.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Echo.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Effect.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Effect.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Fade.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Fade.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Filter.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Filter.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\NoiseRemoval.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\NoiseRemoval.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Phaser.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Phaser.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Wahwah.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\effects\Wahwah.h
-# End Source File
-# End Group
-# Begin Group "Resources"
-
-# PROP Default_Filter ".bmp, .cur, .rc, .ico"
-# Begin Source File
-
-SOURCE=.\audacity.rc
-# End Source File
-# Begin Source File
-
-SOURCE=.\audacity.ico
-# End Source File
-# End Group
-# Begin Group "prefs"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=..\src\prefs\AudioIOPrefs.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\AudioIOPrefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\DirectoriesPrefs.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\DirectoriesPrefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\FileFormatPrefs.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\FileFormatPrefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\PrefsDialog.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\PrefsDialog.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\PrefsPanel.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\SampleRatePrefs.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\SampleRatePrefs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\SpectrumPrefs.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\prefs\SpectrumPrefs.h
-# End Source File
-# End Group
-
-# Begin Group "widgets"
-
-# PROP Default_Filter ""
-
-# Begin Source File
-
-SOURCE=..\src\widgets\AButton.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\widgets\AButton.h
-# End Source File
-
-# Begin Source File
-
-SOURCE=..\src\widgets\ASlider.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\widgets\ASlider.h
-# End Source File
-
-# End Group
-
 # Begin Source File
 
 SOURCE=..\src\AboutDialog.cpp
@@ -422,30 +196,6 @@ SOURCE=..\src\Envelope.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\Export.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\Export.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ExportMP3.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ExportMP3.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ExportPCM.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ExportPCM.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\FFT.cpp
 # End Source File
 # Begin Source File
@@ -483,50 +233,6 @@ SOURCE=..\src\HistoryWindow.cpp
 # Begin Source File
 
 SOURCE=..\src\HistoryWindow.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\Import.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\Import.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportMIDI.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportMIDI.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportMP3.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportMP3.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportOGG.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportPCM.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportPCM.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportRaw.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ImportRaw.h
 # End Source File
 # Begin Source File
 
@@ -640,5 +346,310 @@ SOURCE=..\src\WaveTrack.cpp
 
 SOURCE=..\src\WaveTrack.h
 # End Source File
+# End Group
+# Begin Group "src/effects"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\effects\Amplify.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Amplify.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\BassBoost.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\BassBoost.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Compressor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Compressor.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Echo.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Echo.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Effect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Effect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Fade.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Fade.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Filter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Filter.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\LoadEffects.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\LoadEffects.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\NoiseRemoval.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\NoiseRemoval.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Phaser.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Phaser.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Wahwah.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Wahwah.h
+# End Source File
+# End Group
+# Begin Group "src/effects/VST"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\effects\VST\AEffect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\aeffectx.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\AudioEffect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\audioeffectx.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\audioeffectx.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\LoadVSTWin.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\LoadVSTWin.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\vstcontrols.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\VSTEffect.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\VST\VSTEffect.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\vstgui.h
+# End Source File
+# End Group
+# Begin Group "src/export"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\export\Export.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\Export.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportMP3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportMP3.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportPCM.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\export\ExportPCM.h
+# End Source File
+# End Group
+# Begin Group "src/import"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\import\Import.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\Import.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportMIDI.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportMIDI.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportMP3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportMP3.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportOGG.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportPCM.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportPCM.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportRaw.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportRaw.h
+# End Source File
+# End Group
+# Begin Group "src/prefs"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\prefs\AudioIOPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\AudioIOPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\DirectoriesPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\DirectoriesPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\FileFormatPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\FileFormatPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\PrefsDialog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\PrefsDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\PrefsPanel.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\SampleRatePrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\SampleRatePrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\SpectrumPrefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\prefs\SpectrumPrefs.h
+# End Source File
+# End Group
+# Begin Group "src/widgets"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\src\widgets\AButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\AButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\ASlider.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\ASlider.h
+# End Source File
+# End Group
+# Begin Group "Resources"
+
+# PROP Default_Filter ".bmp, .cur, .rc, .ico"
+# Begin Source File
+
+SOURCE=.\audacity.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\audacity.rc
+# End Source File
+# End Group
 # End Target
 # End Project
