@@ -22,7 +22,6 @@
 
 #ifdef AUDACITY_MENUS_METHODS
 private:
-double mInsertSilenceAmount;
 
 wxString mExportString;
 wxString mExportSelectionString;
@@ -115,7 +114,6 @@ void Trim(wxEvent & event);
 void OnDelete(wxEvent & event);
 void OnSilence(wxEvent & event);
 
-void OnInsertSilence(wxEvent & event);
 void OnSplit(wxEvent & event);
 void OnSplitLabels(wxEvent & event);
 void OnDuplicate(wxEvent & event);

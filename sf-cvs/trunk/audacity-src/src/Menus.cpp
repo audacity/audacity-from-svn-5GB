@@ -254,10 +254,6 @@ void AudacityProject::BuildMenuBar()
    wxApp::s_macAboutMenuItemId = AboutID;
 #endif
 
-   //This sets how much silence will be inserted if no region is selected when the
-   //insert silence menu option is selected
-   mInsertSilenceAmount = 1.0;
-
    if (mGenerateMenu->GetMenuItemCount() > 0)
       return;
 
@@ -522,7 +518,6 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetMenuState(mEditMenu, TrimID, anySelection);
    SetMenuState(mEditMenu, DeleteID, anySelection);
    SetMenuState(mEditMenu, SilenceID, anySelection);
-   SetMenuState(mEditMenu, InsertSilenceID, numTracksSelected > 0);
    SetMenuState(mEditMenu, SplitID, anySelection);
    SetMenuState(mEditMenu, SplitLabelsID, numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
    SetMenuState(mEditMenu, DuplicateID, anySelection);
@@ -1117,56 +1112,6 @@ void AudacityProject::OnSplitLabels(wxEvent & event)
    }
 
    PushState(_("Split at labels"));
-
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
-}
-
-void AudacityProject::OnInsertSilence(wxEvent & event)
-{ 
-   // Default value should be equal to the selection region if
-   // selected region is greater than 0.  If 0, use the last/default amount
-   double selectedTime = mViewInfo.sel1 - mViewInfo.sel0;
-   if (selectedTime>.000001) 
-      mInsertSilenceAmount = selectedTime;
-
-   
-   wxString amountStr =
-       wxGetTextFromUser(_("Number of seconds of silence to insert:"),
-                         _("Insert Silence"),
-                         wxString::Format("%f", (double)mInsertSilenceAmount),
-                         this, -1, -1, TRUE);
-
-   if (amountStr == "")
-      return;
-   if (!amountStr.ToDouble(&mInsertSilenceAmount)) {
-      wxMessageBox(_("Bad number of seconds."));
-      return;
-   }
-   if (mInsertSilenceAmount <= 0.0) {
-      wxMessageBox(_("Bad number of seconds."));
-      return;
-   }
-
-   // if (mViewInfo.sel0 != mViewInfo.sel1)
-   //   Clear();
-
-   wxASSERT(mViewInfo.sel0 == mViewInfo.sel1);
-
-   TrackListIterator iter(mTracks);
-
-   Track *n = iter.First();
-
-   while (n) {
-      if (n->GetSelected())
-         n->InsertSilence(mViewInfo.sel0, mInsertSilenceAmount);
-
-      n = iter.Next();
-   }
-
-   PushState(wxString::
-             Format(_("Inserted %.2f seconds of silence at %.2f"),
-                    mInsertSilenceAmount, mViewInfo.sel0));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);

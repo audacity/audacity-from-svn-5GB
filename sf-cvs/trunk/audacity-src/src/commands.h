@@ -81,8 +81,7 @@
       DeleteID = TrimID + 2,
       SilenceID,
       /*DUMMY SEPARATOR*/
-      InsertSilenceID = SilenceID + 2,
-      SplitID,
+      SplitID = SilenceID + 2,
       SplitLabelsID,
       DuplicateID,
       /*DUMMY SEPARATOR*/
@@ -234,7 +233,6 @@
    CMD_ADDMENU(_("&Silence"), _("Silence"), OnSilence, editMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(editMenu);
-   CMD_ADDMENU(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split"), _("Split"), OnSplit, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split At Labels"), _("Split At Labels"), OnSplitLabels, editMenu, enabledMenu);
    CMD_ADDMENU(_("D&uplicate"), _("Duplicate"), OnDuplicate, editMenu, enabledMenu);
