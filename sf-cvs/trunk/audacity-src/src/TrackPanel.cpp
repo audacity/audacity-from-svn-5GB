@@ -451,6 +451,74 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height) const
    *width -= 2 + kLeftInset;
 }
 
+void TrackPanel::RemoveStaleCursors(wxRegionIterator * upd)
+{
+   while((*upd).HaveRects())
+   {
+      wxRect rect;
+      rect = (*upd).GetRect(); //convert the region to a rectangle
+
+      //Does the rectangle intersect with the cursor?
+      //If it does, remove it
+      size_t i = 0;
+      while(!mPreviousCursorData.IsEmpty())
+      {
+         wxRect cursorRect(mPreviousCursorData[i]->x, mPreviousCursorData[i]->y, mPreviousCursorData[i]->bitmap->GetWidth(), mPreviousCursorData[i]->bitmap->GetHeight());
+
+         if(rect.Intersects(cursorRect))
+         {
+            //delete this cursor
+            delete mPreviousCursorData[i]->bitmap;
+            tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[i];
+            mPreviousCursorData.RemoveAt(i);
+            delete tmpDeletedTpBitmap;
+         }
+         else
+         {
+            i++; //skip over this cursor
+         }
+      }
+
+      (*upd)++; //move to next update region
+   }
+   
+   upd->Reset(); //reset the iterator to point to the first update region
+}
+
+void TrackPanel::RemoveStaleIndicators(wxRegionIterator * upd)
+{
+   while((*upd).HaveRects())
+   {
+      wxRect rect;
+      rect = (*upd).GetRect(); //convert the region to a rectangle
+
+      //Does the rectangle intersect with the indicator?
+      //If it does, remove it
+      size_t i = 0;
+      while(!mScreenAtIndicator.IsEmpty())
+      {
+         wxRect indicatorRect(mScreenAtIndicator[i]->x, mScreenAtIndicator[i]->y, mScreenAtIndicator[i]->bitmap->GetWidth(), mScreenAtIndicator[i]->bitmap->GetHeight());
+
+         if(rect.Intersects(indicatorRect))
+         {
+            //delete this indicator
+            delete mScreenAtIndicator[i]->bitmap;
+            tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[i];
+            mScreenAtIndicator.RemoveAt(i);
+            delete tmpDeletedTpBitmap;
+         }
+         else
+         {
+            i++; //skip over this indicator
+         }
+      }
+
+      (*upd)++; //move to next update region
+   }
+   
+   upd->Reset(); //reset the iterator to point to the first update region
+}
+
 // AS: This function draws the cursor things, both in the
 //  ruler as seen at the top of the screen, but also in each of the
 //  selected tracks.
@@ -467,9 +535,7 @@ void TrackPanel::DrawCursors(wxDC * dc)
    }
 
    wxMemoryDC tmpDrawDC;
-   dc->SetLogicalFunction(wxINVERT);
-   dc->SetPen(*wxBLACK_PEN);
-   dc->SetBrush(*wxBLACK_BRUSH);
+   AColor::CursorColor(dc);
 
    //Erase old cursor
    while(!mPreviousCursorData.IsEmpty())
@@ -701,6 +767,9 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 {
    wxPaintDC dc(this);
+   
+   wxRegionIterator upd(GetUpdateRegion()); // get the update rect list
+
    int width, height;
    GetSize(&width, &height);
    if (width != mPrevWidth || height != mPrevHeight || !mBitmap) {
@@ -719,7 +788,9 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
    DrawTracks(&memDC);
    DrawRuler(&memDC);
+   RemoveStaleIndicators(&upd);
    UpdateIndicator(&memDC);
+   RemoveStaleCursors(&upd);
 
    if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&memDC);
@@ -2512,77 +2583,67 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    int indp = 0;
    wxMemoryDC tmpDrawDC;
 
-   //If you are supposed to erase the indicator, do so:
-   if(mPlayIndicatorExists) {
-      while(!mScreenAtIndicator.IsEmpty())
-      {
-         tmpDrawDC.SelectObject(*mScreenAtIndicator[0]->bitmap);
-         dc->Blit(mScreenAtIndicator[0]->x, mScreenAtIndicator[0]->y, mScreenAtIndicator[0]->bitmap->GetWidth(), mScreenAtIndicator[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
-         tmpDrawDC.SelectObject(wxNullBitmap);
-         delete mScreenAtIndicator[0]->bitmap;
-         tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
-         mScreenAtIndicator.RemoveAt(0);
-         delete tmpDeletedTpBitmap;
-      }
-      mScreenAtIndicator.Clear();
+   //Erase the indicator
+   while(!mScreenAtIndicator.IsEmpty())
+   {
+      tmpDrawDC.SelectObject(*mScreenAtIndicator[0]->bitmap);
+      dc->Blit(mScreenAtIndicator[0]->x, mScreenAtIndicator[0]->y, mScreenAtIndicator[0]->bitmap->GetWidth(), mScreenAtIndicator[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
+      tmpDrawDC.SelectObject(wxNullBitmap);
+      delete mScreenAtIndicator[0]->bitmap;
+      tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
+      mScreenAtIndicator.RemoveAt(0);
+      delete tmpDeletedTpBitmap;
    }
+   mScreenAtIndicator.Clear();
 
    if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
       indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
 
-#ifdef OLD_INDICATOR_BEHAVIOR
-         dc->SetPen(*wxBLACK_PEN);
-         dc->SetLogicalFunction(wxINVERT);
-#else
-         dc->SetPen(*wxGREEN_PEN);
-#endif
+      AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() ? false : true));
          
-         //Get the size of the trackpanel region, so we know where to redraw
-         int width, height;
-         GetSize(&width, &height);   
-         
-         
-         int x = indp;
-         int y = -mViewInfo->vpos + GetRulerHeight();
-        
-          
-           if (x >= GetLeftOffset()) {
-            // Draw cursor in all selected tracks
-            TrackListIterator iter(mTracks);
+      //Get the size of the trackpanel region, so we know where to redraw
+      int width, height;
+      GetSize(&width, &height);   
 
-            // Iterate through each track
-            for (Track * t = iter.First(); t; t = iter.Next()) {
-               int height = t->GetHeight();
-               if ( t->GetKind() != Track::Label) {
-                  wxCoord top = y + kTopInset + 1;
-                  wxCoord bottom = y + height - 2;
+      int x = indp;
+      int y = -mViewInfo->vpos + GetRulerHeight();
 
-                  //Save bitmaps of the areas that we are going to overwrite
-                  wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
-                  tmpDrawDC.SelectObject(*tmpBitmap);
+      if (x >= GetLeftOffset())
+      {
+         // Draw cursor in all selected tracks
+         TrackListIterator iter(mTracks);
 
-                  //Copy the part of the screen into the bitmap, using the memory DC
-                  tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
-                  tmpDrawDC.SelectObject(wxNullBitmap);
+         // Iterate through each track
+         for (Track * t = iter.First(); t; t = iter.Next())
+         {
+            int height = t->GetHeight();
+            if ( t->GetKind() != Track::Label)
+            {
+               wxCoord top = y + kTopInset + 1;
+               wxCoord bottom = y + height - 2;
 
-                  //Add the bitmap to the array
-                  tpBitmap *tmpTpBitmap = new tpBitmap;
-                  tmpTpBitmap->x = x;
-                  tmpTpBitmap->y = top;
-                  tmpTpBitmap->bitmap = tmpBitmap;
-                  mScreenAtIndicator.Add(tmpTpBitmap);
+               //Save bitmaps of the areas that we are going to overwrite
+               wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
+               tmpDrawDC.SelectObject(*tmpBitmap);
 
-                  //Draw the new indicator in its correct location
-                  dc->DrawLine(x, top, x, bottom);
-               
-               }
-               //Increment y so you draw on the proper track
-               y += height;
+               //Copy the part of the screen into the bitmap, using the memory DC
+               tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
+               tmpDrawDC.SelectObject(wxNullBitmap);
+
+               //Add the bitmap to the array
+               tpBitmap *tmpTpBitmap = new tpBitmap;
+               tmpTpBitmap->x = x;
+               tmpTpBitmap->y = top;
+               tmpTpBitmap->bitmap = tmpBitmap;
+               mScreenAtIndicator.Add(tmpTpBitmap);
+
+               //Draw the new indicator in its correct location
+               dc->DrawLine(x, top, x, bottom);
             }
-
-           }
-           //Set the boolean to true so that things get redrawn next time.
-           mPlayIndicatorExists=true;
+            //Increment y so you draw on the proper track
+            y += height;
+         }
+      }
    }
 }
 

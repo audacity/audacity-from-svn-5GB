@@ -29,7 +29,10 @@ class AColor {
    static void Light(wxDC * dc, bool selected);
    static void Medium(wxDC * dc, bool selected);
    static void Dark(wxDC * dc, bool selected);
-   
+
+   static void CursorColor(wxDC * dc);
+   static void IndicatorColor(wxDC * dc, bool recording);
+
    static void Mute(wxDC * dc, bool on, bool selected, bool soloing);
    static void Solo(wxDC * dc, bool on, bool selected);
 
@@ -44,6 +47,9 @@ class AColor {
    static wxPen mediumPen[2];
    static wxPen darkPen[2];
    
+   static wxPen cursorPen;
+   static wxPen indicatorPen[2];
+
    static wxBrush muteBrush[2];
    static wxBrush soloBrush;
 

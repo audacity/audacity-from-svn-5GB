@@ -25,6 +25,9 @@ wxPen AColor::lightPen[2];
 wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
+wxPen AColor::cursorPen;
+wxPen AColor::indicatorPen[2];
+
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
 
@@ -77,6 +80,22 @@ void AColor::Dark(wxDC * dc, bool selected)
    dc->SetPen(darkPen[index]);
 }
 
+void AColor::CursorColor(wxDC * dc)
+{
+   if (!inited)
+      Init();
+   dc->SetLogicalFunction(wxINVERT);
+   dc->SetPen(cursorPen);
+}
+
+void AColor::IndicatorColor(wxDC * dc, bool recording)
+{
+   if (!inited)
+      Init();
+   int index = (int) recording;
+   dc->SetPen(indicatorPen[index]);
+}
+
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
@@ -125,6 +144,10 @@ void AColor::Init()
    muteBrush[0].SetColour(110, 220, 110);
    muteBrush[1].SetColour(170, 180, 170);
    soloBrush.SetColour(255, 140, 140);
+
+   cursorPen.SetColour(0, 0, 0);
+   indicatorPen[0].SetColour(255, 0, 51); //recording
+   indicatorPen[1].SetColour(0, 255, 51); //playback
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected
