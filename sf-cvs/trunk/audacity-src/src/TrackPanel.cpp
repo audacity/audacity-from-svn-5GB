@@ -497,7 +497,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
   // AS: Ok, did the user just click the mouse, release the mouse,
   //  or drag?
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
      wxRect r; 
      int num;  
      
@@ -513,7 +513,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
      
      Refresh(false);
    }
-   else if (event.ButtonUp()) {
+   else if (event.ButtonUp(1)) {
      mCapturedTrack = NULL;
      mIsSelecting = false;
    }
@@ -686,7 +686,7 @@ double TrackPanel::PositionToTime(int mouseXCoordinate,
 //  amplitude envelope on a track.
 void TrackPanel::HandleEnvelope(wxMouseEvent & event)
 {
-  if (event.ButtonDown()) {
+  if (event.ButtonDown(1)) {
      wxRect r;
      int num;
      mCapturedTrack = FindTrack(event.m_x, event.m_y, false, &r, &num);
@@ -705,7 +705,7 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
    if (mCapturedTrack)
      ForwardEventToEnvelope(event);
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       MakeParentPushState("Adjusted envelope.");
    }
@@ -765,7 +765,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
    static double totalOffset;
    static wxString name;
 
-   if (event.ButtonDown())
+   if (event.ButtonDown(1))
      StartSlide(event, totalOffset, name);
 
    if (!mIsSliding)
@@ -775,7 +775,7 @@ void TrackPanel::HandleSlide(wxMouseEvent & event)
      DoSlide(event, totalOffset);
 
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       mIsSliding = false;
       MakeParentRedrawScrollbars();
@@ -849,7 +849,7 @@ void TrackPanel::DoSlide(wxMouseEvent &event, double& totalOffset)
 //  and forcing a refresh.
 void TrackPanel::HandleZoom(wxMouseEvent &event)
 {
-   if (event.ButtonDown() || event.ButtonDClick()) {
+   if (event.ButtonDown(1) || event.ButtonDClick(1)) {
       mZoomStart = event.m_x;
       mZoomEnd = event.m_x;
    }
@@ -859,7 +859,7 @@ void TrackPanel::HandleZoom(wxMouseEvent &event)
      if (IsDragZooming())
        Refresh(false);
    }
-   else if (event.ButtonUp()) {
+   else if (event.ButtonUp(1)) {
      if (mZoomEnd < mZoomStart)
        std::swap(mZoomEnd, mZoomStart);
 
@@ -928,7 +928,7 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 
    if (event.Dragging())
       DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
-   else if (event.ButtonUp()) {
+   else if (event.ButtonUp(1)) {
       DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
          RemoveTrack(t);
@@ -952,7 +952,7 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 
    if (event.Dragging())
       DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y), solo);
-   else if (event.ButtonUp()) {
+   else if (event.ButtonUp(1)) {
 
       if (buttonRect.Inside(event.m_x, event.m_y))
       {
@@ -1049,7 +1049,7 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 {
    // AS: If not a click, ignore the mouse event.
-   if (!(event.ButtonDown() || event.ButtonDClick()))
+   if (!(event.ButtonDown(1) || event.ButtonDClick(1)))
       return;
 
    wxRect r;
@@ -1068,14 +1068,6 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    bool second = false;
    if (!t->GetLinked() && mTracks->GetLink(t))
       second = true;
-
-   // AS: If the shift botton is being held down, then invert 
-   //  the selection on this track.
-   if (event.ShiftDown()) {
-      mTracks->Select(t, !t->GetSelected());
-      Refresh(false);
-      return;
-   }
 
    wxRect closeRect;
    GetCloseBoxRect(r, closeRect);
@@ -1124,12 +1116,22 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
+
+   // AS: If the shift botton is being held down, then just invert 
+   //  the selection on this track.
+   if (event.ShiftDown()) {
+      mTracks->Select(t, !t->GetSelected());
+      Refresh(false);
+      return;
+   }
+
    SelectNone();
    mTracks->Select(t);
    mViewInfo->sel0 = mTracks->GetMinOffset();
    mViewInfo->sel1 = mTracks->GetMaxLen();
    Refresh(false);
 }
+
 // AS: Mute or solo the given track (t).  If solo is true, we're 
 //  soloing, otherwise we're muting.  Basically, check and see 
 //  whether x and y fall within the  area of the appropriate button.
@@ -1166,7 +1168,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
    //  We use this opportunity to save which track they clicked on,
    //  and the initial height of the track, so as they drag we can
    //  update the track size.
-   if (event.ButtonDown()) {
+   if (event.ButtonDown(1)) {
 
       wxRect r;
       int num;
@@ -1209,7 +1211,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       //  Since we actually took care of resizing the track when
       //  we got drag events, all we have to do here is clean up.
       //  We also push the state so that this action is undo-able.
-      else if (event.ButtonUp()) {
+      else if (event.ButtonUp(1)) {
          mCapturedTrack = NULL;
          mIsResizing = false;
          MakeParentRedrawScrollbars();
@@ -1263,7 +1265,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
     mMouseMostRecentY = event.m_y;
   }
 
-  if (event.ButtonDown()) {
+  if (event.ButtonDown(1)) {
     mCapturedTrack = NULL;
     
     wxActivateEvent e;
@@ -1295,7 +1297,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 
   // AS: MAGIC NUMBER: Hey, here's that 5 again.  What's
   //  going on here?
-  if (event.ButtonDown() &&
+  if (event.ButtonDown(1) &&
       event.m_y >= (r.y + r.height - 5) &&
       event.m_y < (r.y + r.height + 5)) {
     HandleResize(event);
@@ -1316,11 +1318,11 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
   case 3: HandleZoom    (event); break;
   }
 
-  if ((event.Moving() || event.ButtonUp()) &&
+  if ((event.Moving() || event.ButtonUp(1)) &&
       !mIsSelecting && !mIsEnveloping && !mIsSliding) {
     HandleCursor(event);
   }
-  if (event.ButtonUp()) {
+  if (event.ButtonUp(1)) {
     mCapturedTrack = NULL;
   }
 }
