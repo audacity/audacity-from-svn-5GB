@@ -525,6 +525,8 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
 
    mPause->PopUp();
    mPaused=false;
+   //Make sure you tell gAudioIO to unpause
+   gAudioIO->SetPaused(mPaused);
    GetActiveProject()->SetAudioIOToken(0);
 
    if (mRecording)
