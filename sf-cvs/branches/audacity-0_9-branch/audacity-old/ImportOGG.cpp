@@ -185,6 +185,11 @@ bool ImportOGG(wxWindow * parent,
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
+   /* Clear out the (partially-full) buffer. */
+   if (bufferCount > 0)
+      for (int c = 0; c < *numChannels; c++)
+         (*channels)[c]->Append(buffers[c], bufferCount);
+
    /* ...the rest is de-allocation */
    ov_clear(&vf);
 
