@@ -12,8 +12,6 @@
 
 #include "../Audacity.h" // for USE_LIBSAMPLERATE
 
-#if USE_LIBSAMPLERATE
-
 #include <math.h>
 
 #include <wx/intl.h>
@@ -31,9 +29,6 @@
 
 EffectChangeSpeed::EffectChangeSpeed()
 {
-	// libsamplerate related
-	m_pSRC_STATE = NULL;
-
 	// control values
 	m_PercentChange = 0.0;
 	m_FromVinyl = 0; 
@@ -72,30 +67,7 @@ bool EffectChangeSpeed::PromptUser()
 
 bool EffectChangeSpeed::Process()
 {
-	// initialize for libsamplerate (SRC)
-	//		per examples of Mixer::Mixer() and sndfile-resample.c example
-
-   // Since this is a non-real-time effect, we use the high-quality
-   // sample rate converter chosen by the user.
-	bool bHighQuality = true;
-
-   long converterType = SRC_SINC_FASTEST; // Audacity default
-   if (bHighQuality)
-      converterType = gPrefs->Read("/Quality/HQSampleRateConverter",
-													(long)SRC_SINC_FASTEST);
-   else
-      converterType = gPrefs->Read("/Quality/SampleRateConverter",
-													(long)SRC_SINC_FASTEST);
-	
-	int error;
-	m_pSRC_STATE = src_new(converterType, 1, &error);
-	if (m_pSRC_STATE == NULL) {
-		this->ReportLibSampleRateError(error);
-		return false;
-	}
-
-	// The rest is just like EffectSoundTouch::Process(),
-   // except deleting m_pSRC_STATE.
+	// Similar to EffectSoundTouch::Process()
 
    //Iterate over each track
    TrackListIterator iter(mWaveTracks);
@@ -120,7 +92,7 @@ bool EffectChangeSpeed::Process()
          //Transform the marker timepoints to samples
          longSampleCount start = track->TimeToLongSamples(curT0);
          longSampleCount end = track->TimeToLongSamples(curT1);
-         
+
          //ProcessOne() (implemented below) processes a single track
          if (!ProcessOne(track, start, end))
             return false;
@@ -131,8 +103,6 @@ bool EffectChangeSpeed::Process()
       mCurTrackNum++;
    }
 
-	m_pSRC_STATE = src_delete(m_pSRC_STATE);
-
 	mT1 = mT0 + m_maxNewLength; // Update selection.
    return true;
 }
@@ -142,7 +112,7 @@ bool EffectChangeSpeed::Process()
 bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 												longSampleCount start, longSampleCount end)
 {
-	if ((track == NULL) || (m_pSRC_STATE == NULL))
+	if (track == NULL)
 		return false;
 
 	// initialization, per examples of Mixer::Mixer and
@@ -161,28 +131,13 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
    float * inBuffer = new float[inBufferSize];
 
-	// If the speed is slowed, the output buffer needs to be bigger 
-	//	than the input buffer.
-	double bufferSizeFactor = 100.0 / (100.0 + m_PercentChange);
+   double factor = 100.0 / (100.0 + m_PercentChange);
 	sampleCount outBufferSize = 
-						(sampleCount)(bufferSizeFactor + 1.0) *	// Add 1.0 to round up
-						inBufferSize;
+      (sampleCount)((factor * inBufferSize) + 10);
    float * outBuffer = new float[outBufferSize]; 
 
-	// Set up the libsamplerate stuff for this track.
-	SRC_DATA	theSRC_DATA;
-	theSRC_DATA.data_in = inBuffer;
-	theSRC_DATA.data_out = outBuffer;
-	theSRC_DATA.src_ratio = bufferSizeFactor;
-
-	// Using src_reset, there's no need to create a new SRC_STATE
-   // for each track.
-
-	int error;
-   if ((error = src_reset(m_pSRC_STATE)) != 0) {
-		this->ReportLibSampleRateError(error);
-		return false;
-	}
+	// Set up the resampling stuff for this track.
+   Resample resample(true, factor, factor);
 
    //Go through the track one buffer at a time. samplePos counts which
    //sample the current buffer starts at.
@@ -200,24 +155,27 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
       //Get the samples from the track and put them in the buffer
       track->Get((samplePtr) inBuffer, floatSample, samplePos, blockSize);
 
-		// libsamplerate
-		theSRC_DATA.input_frames = blockSize;
-		theSRC_DATA.output_frames = outBufferSize;
-		theSRC_DATA.end_of_input = (int)((samplePos + blockSize) >= end);
-
-		if ((error = src_process(m_pSRC_STATE, &theSRC_DATA)) != 0) {
-			this->ReportLibSampleRateError(error);
+      int inUsed;
+      int outgen = resample.Process(factor,
+                                    inBuffer,
+                                    blockSize,
+                                    ((samplePos + blockSize) >= end),
+                                    &inUsed,
+                                    outBuffer,
+                                    outBufferSize);
+      if (outgen < 0) {
 			bLoopSuccess = false;
 			break;
 		}
-      if (theSRC_DATA.output_frames_gen > 0) 
+
+      if (outgen > 0)
          outputTrack->Append((samplePtr)outBuffer, floatSample, 
-										theSRC_DATA.output_frames_gen);
+                             outgen);
 
-      //Increment samplePos one blockfull of samples
-      samplePos += blockSize; 
+      // Increment samplePos
+      samplePos += inUsed;
 
-      //Update the Progress meter
+      // Update the Progress meter
       if (TrackProgress(mCurTrackNum, (samplePos - start) / len)) {
 			bLoopSuccess = false;
 			break;
@@ -246,17 +204,6 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
    delete outputTrack;
 
    return bLoopSuccess;
-}
-
-void EffectChangeSpeed::ReportLibSampleRateError(int error)
-{
-	wxString str;
-   /* i18n-hint: LibSampleRate is the name of a library and
-      doesn't need to be translated. */
-	str.Printf(_("LibSampleRate error: %s"), src_strerror(error));
-   /* i18n-hint: LibSampleRate is the name of a library and
-      doesn't need to be translated. */
-	wxMessageBox(str, _("LibSampleRate error"));
 }
 
 
@@ -648,5 +595,3 @@ void ChangeSpeedDialog::Update_PercentChange()
 		this->Update_Slider_PercentChange();
 	}
 }
-
-#endif // USE_LIBSAMPLERATE

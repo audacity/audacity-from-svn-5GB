@@ -10,8 +10,6 @@
 
 **********************************************************************/
 
-#if USE_LIBSAMPLERATE
-
 #ifndef __AUDACITY_EFFECT_CHANGESPEED__
 #define __AUDACITY_EFFECT_CHANGESPEED__
 
@@ -25,13 +23,10 @@
 
 #include <wx/intl.h>
 
-#include <samplerate.h>
-
 #include "Effect.h"
-
+#include "../Resample.h"
 
 class wxString;
-
 
 class EffectChangeSpeed : public Effect {
 
@@ -55,12 +50,8 @@ class EffectChangeSpeed : public Effect {
  private:
    bool ProcessOne(WaveTrack * t,
                    longSampleCount start, longSampleCount end);
-	void ReportLibSampleRateError(int error);
 
  private:
-	// libsamplerate related
-	SRC_STATE *	m_pSRC_STATE;
-
 	// track related
    int    mCurTrackNum;
 	double m_maxNewLength;
@@ -134,5 +125,3 @@ class ChangeSpeedDialog:public wxDialog {
 
 
 #endif // __AUDACITY_EFFECT_CHANGESPEED__
-
-#endif // USE_LIBSAMPLERATE
