@@ -1,4 +1,55 @@
 <pre>
+Changements dans la version 1.2.0-pre3:
+
+  * Résolution d'un bogue grisant Export lorsque rien n'est sélectionné.
+
+  * Résolution de crash causé par Audacity sur ordinateur équipé d'une carte son sans support de mixage.
+
+  * Crash résolu lors de l'importation de données Raw.
+
+  * Stabilisation de Nouvelle piste Stéréo.
+
+  * Amélioration esthétiques pour Mac OS X.
+
+  * Support de VST Enabler ajouté à la version Windows.
+
+  * Résolution d'un crash survenant lors de la fermeture d'Audacity alors que la boîte de dialogue est ouverte.
+
+  * Résolution d'un bogue de double affichage sous Mac OS X dans les pistes d'index.
+
+  * The recording level control on Linux now adjusts the IGAIN,
+    rather than the playthrough level of the recording source.
+
+  * Résolution d'un bogue provoquant une corruption de l'enregistrement en 16-bit stéeréos.
+
+  * Résolution d'un bogue causant une perte de données lors de l'effacement de toutes les pistes d'un projet enregistré et de l'ouverture d'un nouveau fichier dans la même fenêtre .
+
+  * Ajout d'une possibilité de disposition ergonomique des boutons (dans Préférences > Interface)
+
+  * Added preliminary support for wxX11
+
+  * Added fully transparent Windows XP icon
+
+  * Fixed crash if you try to record (or play) and no audio
+    devices exist, or if the audio device doesn't support the
+    mode you selected.
+
+  * Audacity no longer sets the process priority to high while
+    recording on Windows.  Users can still do this manually
+    using the Task Manager.
+
+  * Fixed bug that caused last ~100 ms of the selection to get
+    cut off on Windows.
+
+  * Fixed FFT Filter and Equalization effects dialogs.
+
+  * Fixed bugs in Unix build system (DESTDIR in locale directory,
+    choosing libsamplerate instead of libresample)
+
+  * Support for LADSPA plug-ins on Windows added, and 
+    three open source LADSPA plug-ins ported to Windows
+    (GVerb reverb, SC4 compressor, and Hard Limiter)
+
 Changements dans la version 1.2.0-pre2:
 
   * Aide en ligne complètée. Le manual complet est proche de la finalisation et sera en ligne bientôt.
