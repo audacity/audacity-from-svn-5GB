@@ -2,7 +2,7 @@
 
 <p>
 Audacity 1.2.0-pre3 is een publieke testvrijgave van het gratis Audacity (geluidsbewerker). In 1.2.0-pre2 zijn alle bekende grote fouten hersteld en
-toegevoeg is ondersteuning van de <a href="http://audacityteam.org/vst/"
+toegevoegd is ondersteuning van de <a href="http://audacityteam.org/vst/"
 >VST Enabler</a>.
 Iedereen die 1.2.0-pre2 of een andere beta versie van Audacity (1.1.x) test, wordt hierbij aangemoedigd direct een upgrade van het programma uit te voeren.
 </p>
