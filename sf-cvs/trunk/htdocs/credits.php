@@ -21,10 +21,10 @@ General comments and questions about Audacity should be sent to
 He is in charge of the internationalization and localization
 efforts for Audacity version 1.1, and has also contributed
 many other features and bug fixes.  He graduated from Harvey Mudd
-College in May, 2002 and is currently living in Vancouver, B.C.,
-Canada.
+College in May, 2002 and is currently living in Seattle, WA.
 <br>
 <tt>email: mbrubeck <b>@</b> cs.hmc.edu</tt><br>
+<a href="http://advogato.org/person/mbrubeck/">web page</a><br>
 </p>
 
 <p>
