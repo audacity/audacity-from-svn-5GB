@@ -34,11 +34,10 @@
 #include "NoteTrack.h"
 #include "Track.h"
 #include "TrackArtist.h"
+#include "Prefs.h"
 #include "Project.h"
 #include "ViewInfo.h"
 #include "WaveTrack.h"
-
-#include "prefs.h"
 
 #include "widgets/Ruler.h"
 
@@ -1107,7 +1106,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    // DM: Check Mute and Solo buttons on WaveTracks:
    if (!second && t->GetKind() == VTrack::Wave) {
      if (MuteSoloFunc(t, r, event.m_x, event.m_y, false) ||
-	 MuteSoloFunc(t, r, event.m_x, event.m_y, true ))
+         MuteSoloFunc(t, r, event.m_x, event.m_y, true ))
        return;
    }      
    
