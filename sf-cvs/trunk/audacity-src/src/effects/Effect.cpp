@@ -261,12 +261,6 @@ void Effect::Preview()
                    &mixLeft, &mixRight))
       return;
 
-   WaveTrackArray playbackTracks;
-   WaveTrackArray recordingTracks;
-   playbackTracks.Add(mixLeft);
-   if (mixRight)
-      playbackTracks.Add(mixRight);
-
    // Apply effect
 
    TrackList *saveWaveTracks = mWaveTracks;
@@ -285,6 +279,12 @@ void Effect::Preview()
    Process();
    mT0 = t0save;
    mT1 = t1save;
+
+   WaveTrackArray playbackTracks;
+   WaveTrackArray recordingTracks;
+   playbackTracks.Add(mixLeft);
+   if (mixRight)
+      playbackTracks.Add(mixRight);
 
    // Start audio playing
    
