@@ -202,7 +202,6 @@ void KeyConfigPrefs::ClearComboList(wxCommandEvent& event)
 
 void KeyConfigPrefs::AddComboToList(wxCommandEvent& event)
 {
-   int i;
    wxString comboString = mCurrentComboText->GetValue();
 
    //BG: Cannot add blank key or empty category or seperator items
