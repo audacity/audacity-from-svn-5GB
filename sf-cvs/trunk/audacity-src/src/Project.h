@@ -100,6 +100,7 @@ class AudacityProject:public wxFrame,
 
    // File I/O
 
+   static void ShowOpenDialog(AudacityProject *proj);
    void OpenFile(wxString fileName);
    void Import(wxString fileName);
    bool Save(bool overwrite = true, bool fromSaveAs = false);

@@ -30,10 +30,10 @@
 #ifdef __WXMAC__
 # ifdef __UNIX__
 #  include <CoreServices/CoreServices.h>
+# else
+#  include <Files.h>
 # endif
-
-void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
-
+ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #else
 # include <wx/dragimag.h>
 #endif
@@ -46,6 +46,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 #include <wx/menu.h>
 
 #include "Audacity.h"
+#include "AudacityApp.h"
 #include "AColor.h"
 #include "AStatus.h"
 #include "AudioIO.h"
@@ -384,10 +385,23 @@ AudacityProject::~AudacityProject()
 
    gAudacityProjects.Remove(this);
 
+   #ifdef __WXMAC__
+   if (gAudacityProjects.IsEmpty())   
+      wxGetApp().SetTopWindow(gParentFrame);
+   #else
    if (gAudacityProjects.IsEmpty())
       QuitAudacity();
-   else if (gActiveProject == this)
-      gActiveProject = gAudacityProjects[0];
+   #endif
+
+   if (gActiveProject == this) {
+      // Find a new active project
+      if (gAudacityProjects.Count() > 0) {
+         gActiveProject = gAudacityProjects[0];
+         wxGetApp().SetTopWindow(gParentFrame);
+      }
+      else
+         gActiveProject = NULL;
+   }
 }
 
 void AudacityProject::RedrawProject()
@@ -847,8 +861,10 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
       toolbar =
           new ControlToolBar(this, -1, wxPoint(10, tbheight),
                              wxSize(width - 10, h));
+      #ifndef __WXMAC__
       ((wxMenuItemBase *) mViewMenu->FindItem(FloatControlToolBarID))->
           SetName(_("Float Control Toolbar"));
+      #endif
       mToolBarArray.Insert(toolbar, 0);
       break;
 
@@ -896,11 +912,13 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
          switch (t) {
          case ControlToolBarID:
 
+          #ifndef __WXMAC__
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
             ((wxMenuItemBase *) mViewMenu->
              FindItem(FloatControlToolBarID))->
                SetName(_("Dock Control Toolbar"));
+          #endif
             break;
 
          case EditToolBarID:
@@ -1069,6 +1087,47 @@ void AudacityProject::OnDropFiles(wxDropFilesEvent & event)
       int i;
       for (i = 0; i < numFiles; i++)
          Import(files[i]);
+   }
+}
+
+// static method, can be called outside of a project
+void AudacityProject::ShowOpenDialog(AudacityProject *proj)
+{
+   wxString path = gPrefs->Read("/DefaultOpenPath",::wxGetCwd());
+
+   wxString fileName = wxFileSelector(_("Select an audio file..."),
+                                      path,     // Path
+                                      "",       // Name
+                                      "",       // Extension
+                                      _("All files (*.*)|*.*|"
+                                        "Audacity projects (*.aup)|*.aup|"
+                                        "WAV files (*.wav)|*.wav|"
+                                        "AIFF files (*.aif)|*.aif|"
+                                        "AU files (*.au)|*.au|"
+                                        "IRCAM files (*.snd)|*.snd|"
+                                        "MP3 files (*.mp3)|*.mp3"),
+                                      0,        // Flags
+                                      proj);    // Parent
+
+   if (fileName != "") {
+      gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
+
+      // Make sure it isn't already open
+      int numProjects = gAudacityProjects.Count();
+      for (int i = 0; i < numProjects; i++)
+         if (gAudacityProjects[i]->mFileName == fileName) {
+            wxMessageBox
+                ("That project is already open in another window.");
+            return;
+         }
+
+      // Open in a new window if this one is in use
+      if (!proj || proj->mDirty || !proj->mTracks->IsEmpty()) {
+         AudacityProject *newProject =
+             CreateNewAudacityProject(gParentWindow);
+         newProject->OpenFile(fileName);
+      } else
+         proj->OpenFile(fileName);
    }
 }
 
@@ -1517,10 +1576,8 @@ void AudacityProject::Import(wxString fileName)
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
 
-   #if !defined(__WXMAC__) || !defined(__UNIX__)
-   wxEvent e;
+   wxCommandEvent e;
    OnZoomFit(e);
-   #endif
 
    mTrackPanel->Refresh(false);
 
