@@ -405,6 +405,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
       mTotalToolBarHeight += h;
    }
 
+#if USE_PORTMIXER
    if (gMixerToolBarStub) {
       if (gMixerToolBarStub->GetLoadedStatus()
           && !gMixerToolBarStub->GetWindowedStatus()) {
@@ -418,6 +419,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
          mTotalToolBarHeight += h;
       }
    }
+#endif
 
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()

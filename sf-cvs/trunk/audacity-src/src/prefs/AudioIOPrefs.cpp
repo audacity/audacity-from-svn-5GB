@@ -222,10 +222,12 @@ bool AudioIOPrefs::Apply()
 
    /* Step 3: Make audio sub-system re-read preferences */
 
+#if USE_PORTMIXER
    gAudioIO->HandleDeviceChange();
 
    for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
        gAudacityProjects[i]->GetMixerToolBar()->UpdateControls();
+#endif // USE_PORTMIXER
 
    return true;
 }
