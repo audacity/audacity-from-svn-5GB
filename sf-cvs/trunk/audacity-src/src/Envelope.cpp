@@ -145,16 +145,16 @@ double Envelope::fromDB(double value) const
 void DrawPoint(wxDC & dc, wxRect & r, int x, int y, bool top, bool contour)
 {
    if (y >= 0 && y <= r.height) {
-     if(contour){
-       wxRect circle(r.x + x - 2, r.y + y - 2,
-		     4, 4);
-      dc.DrawEllipse(circle);
-     }else{
-       wxRect circle(r.x + x - 2, r.y + (top? y-1: y-4),
-                    4, 4);
-      dc.DrawEllipse(circle);
+      if(contour){
+         wxRect circle(r.x + x - 2, r.y + y - 2,
+                       4, 4);
+         dc.DrawEllipse(circle);
+      }else{
+         wxRect circle(r.x + x - 2, r.y + (top? y-1: y-4),
+                       4, 4);
+         dc.DrawEllipse(circle);
+      }
    }
-}
 }
 
 void Envelope::Draw(wxDC & dc, wxRect & r, double h, double pps, bool dB,

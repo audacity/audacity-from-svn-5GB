@@ -42,10 +42,10 @@ class wxPoint;
 
 enum {
    selectTool,
-   zoomTool,
    envelopeTool,
-   slideTool,
    drawTool,
+   zoomTool,
+   slideTool,
    multiTool,
    numTools
 };

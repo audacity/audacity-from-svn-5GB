@@ -29,6 +29,18 @@ double NearestZeroCrossing(double t0);
 double mSel0save;
 double mSel1save;
  
+        // Selecting a tool from the keyboard
+
+void OnSelectTool();
+void OnZoomTool();
+void OnEnvelopeTool();
+void OnTimeShiftTool();
+void OnDrawTool();
+void OnMultiTool();
+
+void OnNextTool();
+void OnPrevTool();
+
         // Audio I/O Commands
 
 void OnStop();

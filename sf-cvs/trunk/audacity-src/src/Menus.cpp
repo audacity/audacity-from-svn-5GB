@@ -348,6 +348,16 @@ void AudacityProject::CreateMenusAndCommands()
 
    SetMenuBar(menubar);
 
+   c->AddCommand("SelectTool",  _("Selection Tool\tF1"),          FN(OnSelectTool));
+   c->AddCommand("EnvelopeTool",_("Envelope Tool\tF2"),           FN(OnEnvelopeTool));
+   c->AddCommand("DrawTool",    _("Draw Tool\tF3"),               FN(OnDrawTool));
+   c->AddCommand("ZoomTool",    _("Zoom Tool\tF4"),               FN(OnZoomTool));
+   c->AddCommand("TimeShiftTool",_("Time Shift Tool\tF5"),        FN(OnTimeShiftTool));
+   c->AddCommand("MultiTool",   _("Multi Tool\tF6"),              FN(OnMultiTool));
+
+   c->AddCommand("NextTool",   _("Next Tool\tD"),                 FN(OnNextTool));
+   c->AddCommand("PrevTool",   _("Previous Tool\tA"),             FN(OnPrevTool));
+
    c->AddCommand("Play/Stop",   _("Play/Stop\tSpacebar"),         FN(OnPlayStop));
    c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
    c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
@@ -624,6 +634,68 @@ void AudacityProject::UpdateMenus()
       gEditToolBarStub->GetToolBar()->EnableDisableButtons();
    }
 }
+
+//
+// Tool selection commands
+//
+
+void AudacityProject::OnSelectTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(selectTool, true);
+}
+
+void AudacityProject::OnZoomTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(zoomTool, true);
+}
+
+void AudacityProject::OnEnvelopeTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(envelopeTool, true);
+}
+
+void AudacityProject::OnTimeShiftTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(slideTool, true);
+}
+
+void AudacityProject::OnDrawTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(drawTool, true);
+}
+
+void AudacityProject::OnMultiTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool(multiTool, true);
+}
+
+
+void AudacityProject::OnNextTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool((toolbar->GetCurrentTool()+1)%numTools, true);
+}
+
+void AudacityProject::OnPrevTool()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   if (toolbar)
+      toolbar->SetCurrentTool((toolbar->GetCurrentTool()+(numTools-1))%numTools, true);
+}
+
 
 //
 // Audio I/O Commands
