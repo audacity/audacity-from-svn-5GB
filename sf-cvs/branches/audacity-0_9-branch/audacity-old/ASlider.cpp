@@ -23,6 +23,7 @@
 BEGIN_EVENT_TABLE(ASlider, wxWindow)
    EVT_MOUSE_EVENTS(ASlider::OnMouseEvent)
    EVT_PAINT(ASlider::OnPaint)
+   EVT_SET_FOCUS(ASlider::OnFocus)
 END_EVENT_TABLE()
 
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
@@ -44,6 +45,14 @@ ASlider::~ASlider()
 {
    delete mBitmap;
    delete mThumbBitmap;
+}
+
+void ASlider::OnFocus(wxFocusEvent & event)
+{
+   // We don't want the focus!!!  Give it to our parent...
+
+   if (GetParent())
+      GetParent()->SetFocus();
 }
 
 void ASlider::OnPaint(wxPaintEvent & event)

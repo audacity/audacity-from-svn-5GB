@@ -36,6 +36,8 @@ class ASlider:public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 
+   virtual void OnFocus(wxFocusEvent & event);
+
  private:
 
    int mWidth;                  //In pixels

@@ -22,9 +22,10 @@
 #include "AButton.h"
 
 BEGIN_EVENT_TABLE(AButton, wxWindow)
-    EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
-    EVT_PAINT(AButton::OnPaint)
-    END_EVENT_TABLE()
+   EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
+   EVT_PAINT(AButton::OnPaint)
+   EVT_SET_FOCUS(AButton::OnFocus)
+END_EVENT_TABLE()
 
 AButton::AButton(wxWindow * parent, wxWindowID id,
                      const wxPoint & pos,
@@ -53,6 +54,14 @@ AButton::~AButton()
    delete mBitmap[1];
    delete mBitmap[2];
    delete mBitmap[3];
+}
+
+void AButton::OnFocus(wxFocusEvent & event)
+{
+   // We don't want the focus!!!  Give it to our parent...
+
+   if (GetParent())
+      GetParent()->SetFocus();
 }
 
 void AButton::OnPaint(wxPaintEvent & event)

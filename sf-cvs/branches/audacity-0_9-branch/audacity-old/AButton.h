@@ -41,6 +41,8 @@ class AButton:public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
 
+   virtual void OnFocus(wxFocusEvent & event);
+
  private:
 
    enum AButtonState {
