@@ -92,8 +92,7 @@
 <tr>
 <td></td>
 <td>
-Note: Audacity 1.2.0-pre3 is apparently not compatible with the G5.
-We hope to release an update soon...
+<?php include GetTranslation("g5note"); ?>
 </td>
 </tr>
 
