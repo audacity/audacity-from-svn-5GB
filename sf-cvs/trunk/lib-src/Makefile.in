@@ -51,6 +51,9 @@ libsndfile/src/.libs/libsndfile.a:
 portaudio/pa_unix_oss/portaudio.a:
 	cd portaudio/pa_unix_oss && $(MAKE)
 
+portaudio-v19/lib/libportaudio.a:
+	cd portaudio-v19 && $(MAKE)
+
 portaudio/pa_mac_core/portaudio.a:
 	cd portaudio/pa_mac_core && $(MAKE)
 

@@ -27,10 +27,6 @@
 #include "WaveTrack.h"
 #include "SampleFormat.h"
 
-#ifdef paUseHostApiSpecificDeviceSpecification
-#define USE_PORTAUDIO_V19 1
-#endif
-
 class AudioIO;
 class RingBuffer;
 class Mixer;

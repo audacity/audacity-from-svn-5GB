@@ -7,6 +7,12 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define if you have C99's lrint function. */
+#undef HAVE_LRINT
+
+/* Define if you have C99's lrintf function. */
+#undef HAVE_LRINTF
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
@@ -58,20 +64,14 @@
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
+/* Define if the FLAC library is present */
+#undef USE_LIBFLAC
+
 /* Define if libid3tag is present */
 #undef USE_LIBID3TAG
 
 /* Define if mp3 support is implemented with the libmad library */
 #undef USE_LIBMAD
-
-/* Define if the ogg vorbis decoding library is present */
-#undef USE_LIBVORBIS
-
-/* Define if Nyquist support should be enabled */
-#undef USE_NYQUIST
-
-/* Define if PortMixer support should be enabled */
-#undef USE_PORTMIXER
 
 /* Define if libresample support should be enabled */
 #undef USE_LIBRESAMPLE
@@ -79,14 +79,20 @@
 /* Define if libsamplerate support should be enabled */
 #undef USE_LIBSAMPLERATE
 
-/* Define if soundtouch support should be enabled */
+/* Define if the ogg vorbis decoding library is present */
+#undef USE_LIBVORBIS
+
+/* Define if Nyquist support should be enabled */
+#undef USE_NYQUIST
+
+/* Define if PortAudio v19 is being used (instead of v18) */
+#undef USE_PORTAUDIO_V19
+
+/* Define if PortMixer support should be enabled */
+#undef USE_PORTMIXER
+
+/* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
-
-/* Define if you have C99's lrint function. */
-#undef HAVE_LRINT
-
-/* Define if you have C99's lrintf function. */
-#undef HAVE_LRINTF
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
