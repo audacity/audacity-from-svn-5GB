@@ -30,7 +30,7 @@ EffectToneGen::EffectToneGen()
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    const char* waveformNames[] = {"sine", "square", "sawtooth"};
-   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, length = %.6lf"), 
+   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
                            (const char *)(this->GetEffectName()), 
                            waveformNames[waveform], frequency, amplitude, length); 
 } 
@@ -154,20 +154,15 @@ bool EffectToneGen::Process()
 #define WAVEFORM_MIN 0
 #define WAVEFORM_MAX 2
 
-// WDR: event table for PhaserDialog
-
 BEGIN_EVENT_TABLE(ToneGenDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, ToneGenDialog::OnCreateTone)
-EVT_BUTTON(wxID_CANCEL, ToneGenDialog::OnCancel)
-//   EVT_TEXT(ID_FREQTEXT, ToneGenDialog::OnFreqText)
-//   EVT_CHOICE(ID_WAVEFORM, ToneGenDialog::OnWaveformChoice)
+   EVT_BUTTON(wxID_OK, ToneGenDialog::OnCreateTone)
+   EVT_BUTTON(wxID_CANCEL, ToneGenDialog::OnCancel)
 END_EVENT_TABLE()
 
 ToneGenDialog::ToneGenDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
 wxDialog(parent, id, title, position, size, style)
 {
    CreateToneGenDialog(this, TRUE);
-
 }
 
 bool ToneGenDialog::Validate()
