@@ -121,6 +121,7 @@ class TrackListIterator {
    // Iterate functions
    VTrack *First();
    VTrack *Next();
+   VTrack *Prev();
    VTrack *RemoveCurrent();     // returns next
    VTrack *Insert(VTrack *t);   // inserts after cur, returns new node
 

@@ -155,6 +155,17 @@ VTrack *TrackListIterator::Next()
       return NULL;
 }
 
+VTrack *TrackListIterator::Prev()
+{
+   if (cur)
+      cur = cur->prev;
+
+   if (cur)
+      return cur->t;
+   else
+      return NULL;
+}
+
 VTrack *TrackListIterator::RemoveCurrent()
 {
    TrackListNode *p = cur;
