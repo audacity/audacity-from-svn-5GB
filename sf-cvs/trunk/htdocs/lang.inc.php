@@ -66,6 +66,7 @@ $phpLang_languages = array(
  "sk|slovak"   => array('sk', 'slovak'),
  "sv|swedish"   => array('sv', 'swedish'),
  "si|slovenian" => array('si', 'slovenian'),
+ "tr|turkish" => array('tr', 'turkish'),
  "es([-_][[:alpha:]]{2})?|spanish"  => array('es', 'spanish'),
  "th|thai"   => array('th', 'thai'),
  "pt[-_]br"   => array('pt-br', 'brazilian portuguese'),
