@@ -526,9 +526,5 @@ void ToolBar::EnableDisableButtons(int sumOfFlags)
 //is accomplished entirely through modular arithmetic
 bool ToolBar::ExtractFlag(int flagsum, int bit)
 {
-   //Ghetto 2^bit calculator
-   unsigned int power=1;
-   for(unsigned int i=0;i<bit;i++) power *= 2;
-
-   return (flagsum % ( power*2)) / power;
+   return flagsum & (1<<bit);
 }
