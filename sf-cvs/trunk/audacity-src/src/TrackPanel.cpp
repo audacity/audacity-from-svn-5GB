@@ -4362,13 +4362,17 @@ void TrackLabel::DrawSliders(wxDC *dc, WaveTrack *t, wxRect r, int index)
    GetGainRect(r, gainRect);
    GetPanRect(r, panRect);
 
-   mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
-   mGains[index]->Set(t->GetGain());
-   mGains[index]->OnPaint(*dc, t->GetSelected());
+   if (gainRect.y + gainRect.height < r.y + r.height - 1) {
+      mGains[index]->Move(wxPoint(gainRect.x, gainRect.y));
+      mGains[index]->Set(t->GetGain());
+      mGains[index]->OnPaint(*dc, t->GetSelected());
+   }
 
-   mPans[index]->Move(wxPoint(panRect.x, panRect.y));
-   mPans[index]->Set(t->GetPan());
-   mPans[index]->OnPaint(*dc, t->GetSelected());
+   if (panRect.y + panRect.height < r.y + r.height - 1) {
+      mPans[index]->Move(wxPoint(panRect.x, panRect.y));
+      mPans[index]->Set(t->GetPan());
+      mPans[index]->OnPaint(*dc, t->GetSelected());
+   }
 }
 
 
