@@ -164,7 +164,7 @@ bool Export(WaveTrack *left, WaveTrack *right)
   wxString fName =
           wxFileSelector("Export Selected Audio As:",
                          NULL,
-                         fName,
+                         "",
                          extension,
                          "*.*",
                          wxSAVE,

@@ -90,7 +90,7 @@ bool SoundPlayer::Begin(AudacityProject *project,
 
 void SoundPlayer::Finish()
 {
-  snd_close(&mAudioOut);  
+  snd_close(&mAudioOut);
 
   gAPalette->SetPlay(false);
   gAPalette->SetStop(false);
@@ -126,21 +126,19 @@ void SoundPlayer::OnTimer()
     int maxFrames = int(mProject->GetRate() * deltat);
     int block = snd_poll(&mAudioOut);
 
-    #ifdef __WXGTK__
-    // snd for Linux is not written yet...
-    block = 44100;
-    #endif
+    if (block == 0)
+      return;
 
     if (block > maxFrames)
       block = maxFrames;
 
-    if (block == 0) {
-      return;
-    }
+	if (block < maxFrames) {
+	  deltat = block / mProject->GetRate();
+	}
 
     int i;
 
-	Mixer *mixer = new Mixer(2, maxFrames, true);
+	Mixer *mixer = new Mixer(2, block, true);
 	mixer->UseVolumeSlider(true);
 	mixer->Clear();
 
