@@ -184,6 +184,7 @@ AudioIO::AudioIO()
 
 #if defined(USE_PORTMIXER)
    mPortMixer = NULL;
+   mPreviousHWPlaythrough = -1.0;
    HandleDeviceChange();
 #else
    mEmulateMixerOutputVol = true;
@@ -196,8 +197,13 @@ AudioIO::AudioIO()
 AudioIO::~AudioIO()
 {
 #if defined(USE_PORTMIXER)
-   if( mPortMixer )
+   if( mPortMixer ) {
+      #if __WXMAC__
+      if (Px_SupportsPlaythrough(mPortMixer) && mPreviousHWPlaythrough >= 0.0)
+         Px_SetPlaythrough(mPortMixer, mPreviousHWPlaythrough);
+      #endif
       Px_CloseMixer(mPortMixer);
+   }
    mPortMixer = NULL;
 #endif
    Pa_Terminate();
@@ -573,8 +579,13 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 #if USE_PORTMIXER
 
-   if (mPortMixer)
-      Px_CloseMixer(mPortMixer);         
+   if (mPortMixer) {
+      #if __WXMAC__
+      if (Px_SupportsPlaythrough(mPortMixer) && mPreviousHWPlaythrough >= 0.0)
+         Px_SetPlaythrough(mPortMixer, mPreviousHWPlaythrough);
+      #endif
+      Px_CloseMixer(mPortMixer);
+   }
    mPortMixer = NULL;
    if (mPortStreamV18 != NULL && mLastPaError == paNoError) {
       mPortMixer = Px_OpenMixer(mPortStreamV18, 0);
@@ -583,6 +594,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       if (mPortMixer) {
          if (Px_SupportsPlaythrough(mPortMixer)) {
             bool playthrough;
+
+            mPreviousHWPlaythrough = Px_GetPlaythrough(mPortMixer);
+
             gPrefs->Read("/AudioIO/Playthrough", &playthrough, false);
             if (playthrough)
                Px_SetPlaythrough(mPortMixer, 1.0);
@@ -895,6 +909,17 @@ void AudioIO::StopStream()
       wxYield();
       wxUsleep( 50 );
    }
+
+   // Turn off HW playthrough if PortMixer is being used
+
+  #if defined(USE_PORTMIXER)
+   if( mPortMixer ) {
+      #if __WXMAC__
+      if (Px_SupportsPlaythrough(mPortMixer) && mPreviousHWPlaythrough >= 0.0)
+         Px_SetPlaythrough(mPortMixer, mPreviousHWPlaythrough);
+      #endif
+   }
+  #endif
 
 #if USE_PORTAUDIO_V19
    if (mPortStreamV19) {
