@@ -3446,8 +3446,8 @@ echo "${ECHO_T}$ac_cv_lib_vorbisfile_vorbis_bitrate_addblock" >&6
 if test $ac_cv_lib_vorbisfile_vorbis_bitrate_addblock = yes; then
   true
 else
-  	   { { echo "$as_me:$LINENO: error: *** Ogg Vorbis libraries not found or they are too old. libvorbis >= 1.0-rc3 must be installed for Ogg Vorbis support" >&5
-echo "$as_me: error: *** Ogg Vorbis libraries not found or they are too old. libvorbis >= 1.0-rc3 must be installed for Ogg Vorbis support" >&2;}
+  	   { { echo "$as_me:$LINENO: error: *** Ogg Vorbis libraries not found or they are too old. (>= 1.0-rc3 required). Run configure --without-vorbis to disable it." >&5
+echo "$as_me: error: *** Ogg Vorbis libraries not found or they are too old. (>= 1.0-rc3 required). Run configure --without-vorbis to disable it." >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -3555,8 +3555,8 @@ fi
 if test $ac_cv_header_vorbis_vorbisfile_h = yes; then
   :
 else
-  { { echo "$as_me:$LINENO: error: *** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support" >&5
-echo "$as_me: error: *** Ogg Vorbis headers not found. libvorbis must be installed for Ogg Vorbis support" >&2;}
+  { { echo "$as_me:$LINENO: error: *** Ogg Vorbis headers not found.  Run configure --without-vorbis to disable it" >&5
+echo "$as_me: error: *** Ogg Vorbis headers not found.  Run configure --without-vorbis to disable it" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
