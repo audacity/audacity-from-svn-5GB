@@ -812,10 +812,9 @@ void AudioIO::StopStream()
    mAudioThreadFillBuffersLoopRunning = false;
 
 #if USE_PORTAUDIO_V19
-   if (mInCallbackFinishedState)
-      Pa_StopStream( mPortStreamV19 );
-   else
-      Pa_AbortStream( mPortStreamV19 );
+   // TODO: should we call Pa_StopStream instead if we reached
+   // the end of the selection, as opposed to the user canceling?
+   Pa_AbortStream( mPortStreamV19 );
    Pa_CloseStream( mPortStreamV19 );
    mPortStreamV19 = NULL;
 #else
