@@ -24,6 +24,7 @@ AC_SUBST(TARGETS)
 TARGETS="libresample.a tests/testresample"
 
 AC_CHECK_LIB(sndfile, sf_open, have_libsndfile=yes, have_libsndfile=no)
+AC_CHECK_HEADER(sndfile.h, , have_libsndfile=no)
 
 if [[ $have_libsndfile = "yes" ]] ; then
 	TARGETS="$TARGETS tests/resample-sndfile"
