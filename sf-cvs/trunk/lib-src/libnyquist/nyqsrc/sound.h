@@ -3,6 +3,11 @@
 #ifdef __APPLE__
 #define HUGE_VAL 1e50
 #else
+
+#ifdef round
+#undef round
+#endif
+
 #include <math.h>
 #endif
 
