@@ -241,7 +241,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
          //Create an event for the parent window to process.
          wxCommandEvent *e =
              new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
-         GetParent()->ProcessEvent(*e);
+         GetParent()->AddPendingEvent(*e);
          delete e;
       }
 
