@@ -274,6 +274,9 @@ Changes in 1.2.0:
 
   * Correctly display translated messages in the status bar.
 
+  * When the cursor is on-screen, the Zoom In button now zooms
+    to the area around the cursor.
+
   * Mac OS X: Fixed audio problems on the Apple PowerMac G5.
 
   * Linux/ALSA: Work around a bug in ALSA's OSS emulation that
