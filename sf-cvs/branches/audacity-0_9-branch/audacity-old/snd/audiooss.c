@@ -203,7 +203,7 @@ int audio_open(snd_type snd, long *flags)
       /* open audio output */
 
       /* Open /dev/dsp */
-      dp->audio_fd = open(device, O_WRONLY, 0);
+      dp->audio_fd = open(device, O_WRONLY|O_NOBLOCK, 0);
 	
       if (dp->audio_fd == -1)
          return !SND_SUCCESS;
