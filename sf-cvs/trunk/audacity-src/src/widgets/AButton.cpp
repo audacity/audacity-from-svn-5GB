@@ -98,16 +98,30 @@ void AButton::OnPaint(wxPaintEvent & event)
 
 void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-   if (event.Entering()) {
-      // Display the tooltip in the status bar
+  
+ 
+  if (event.Leaving()){
+      GetActiveProject()->TP_DisplayStatusMessage("",0);
+   }
+
+
+// In windows, Leave/Enter events appear to clobber each other,
+// so the new enter event doesn't get processed.  If we change to a newer
+// version of WXWINDOWS, (Post version 2), this may be fixed
+
+#if defined __WXMSW__
+   else {
+#else
+   else if (event.Entering()) {
+#endif
+
+   // Display the tooltip in the status bar
       wxString tip = this->GetToolTip()->GetTip();
       if (!mEnabled)
          tip += _(" (disabled)");
       GetActiveProject()->TP_DisplayStatusMessage(tip, 0);
    }
-   else if (event.Leaving()) {
-      GetActiveProject()->TP_DisplayStatusMessage("",0);
-   }
+
 
    if (mButtonIsDown || !mEnabled) {
       this->Refresh(false);
