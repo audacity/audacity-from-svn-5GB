@@ -20,6 +20,16 @@
 #include <wx/checkbox.h>
 #include <wx/intl.h>
 
+class iAVCBufferList
+{
+public:
+	// The following 4 values describe the buffers that still need output values inserted
+	iAVCBufferList *	mpNext;
+	void *				mpLeftBuffer;
+	void *				mpRightBuffer;
+	sampleCount			mnLen;				// number of entries in buffers
+	sampleCount			mnNext;			// next output position in buffers
+};
 
 class wxString;
 
@@ -60,6 +70,7 @@ public:
       return wxString(_("Changing volume"));
    }
    
+   virtual void End();
    
 protected:
 
@@ -73,7 +84,16 @@ protected:
 	AutoVolCtrl  mAutoVolCtrl;	// iAVC class (LGPL license)
 	long  mnChangeWindow;
 
+	iAVCBufferList * mpBufferList;
+	iAVCBufferList * mpBufferPrevious;
+
+	long			 mnDelay;		// delay between when sample set and when it got.
+
 	AvcCompressorDialog*	mpDialog;
+
+private:
+   void OutputSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE right );
+
 };
 
 // WDR: class declarations
@@ -129,6 +149,8 @@ protected:
     void OnOK(wxCommandEvent &event);
 	void OnRestoreDefaults(wxCommandEvent &event);
 	void OnCheckBox(wxCommandEvent & event);
+	void ReadPrefs();
+	void WritePrefs();
 
 	bool LongRangeCheck (  wxWindow *window,
 						   const long nValue,
