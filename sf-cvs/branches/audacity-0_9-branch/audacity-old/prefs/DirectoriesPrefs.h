@@ -28,6 +28,8 @@ class DirectoriesPrefs:public PrefsPanel {
    bool Apply();
    void UpdateFreeSpace(wxCommandEvent &event);
 
+   void OnChooseTempDir(wxCommandEvent &event);
+
  private:
    wxString FormatSize(wxLongLong size);
    wxStaticBox *mEnclosingBox;
@@ -36,7 +38,7 @@ class DirectoriesPrefs:public PrefsPanel {
    wxTextCtrl   *mTempDirText;
    wxStaticText *mFreeSpaceLabel;
    wxStaticText *mFreeSpace;
-   
+
    wxString      mOldTempDir;
    wxString      mTempDir;
 
