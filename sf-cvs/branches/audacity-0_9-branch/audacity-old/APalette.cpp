@@ -252,9 +252,9 @@ void APalette::OnKeyEvent(wxKeyEvent & event)
          SetPlay(false);
          SetStop(true);
       } else {
-         OnPlay();
          SetPlay(true);
          SetStop(false);
+         OnPlay();
       }
    }
 }
