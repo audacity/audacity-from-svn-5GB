@@ -1555,7 +1555,7 @@ void AudacityProject::ZoomFit()
 
 void AudacityProject::ZoomSel()
 {
-   if (mViewInfo.sel1 >= mViewInfo.sel0) return;
+   if (mViewInfo.sel1 <= mViewInfo.sel0) return;
 
    // BG: CTRL+E
    // BG: Zoom to selection
