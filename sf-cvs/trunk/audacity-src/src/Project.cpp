@@ -919,7 +919,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
             //should change the menu entry of this project
             ((wxMenuItemBase *) mViewMenu->
              FindItem(FloatControlToolBarID))->
-SetName(_("Unfloat Control Toolbar"));
+               SetName(_("Dock Control Toolbar"));
             break;
 
          case EditToolBarID:
