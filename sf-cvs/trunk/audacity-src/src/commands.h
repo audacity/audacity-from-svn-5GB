@@ -24,6 +24,18 @@
    enum menuCategory {fileMenu = 0, editMenu, viewMenu, projectMenu, effectMenu,
                       pluginMenu, helpMenu, numMenus};
 
+   // BG: This is the structure that holds information about individual command keys.
+
+   struct CommandKey
+   {
+      bool controlDown;
+      bool altDown;
+      bool shiftDown;
+      int keycode;
+   };
+
+   WX_DEFINE_ARRAY(CommandKey *, CommandKeyArray);
+
    // BG: This is the structure that holds information about individual command items.
 
    struct CommandMenuItem
@@ -34,6 +46,7 @@
       menuCategory     category;
       menuState        state;
       bool             separatorPrev;
+      CommandKeyArray  keys;
    };
 
    WX_DEFINE_ARRAY(CommandMenuItem *, CommandMenuItemArray);
