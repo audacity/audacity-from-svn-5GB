@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
     EVT_CHOICE(FreqSizeChoiceID, FreqWindow::OnSizeChoice)
     EVT_CHOICE(FreqFuncChoiceID, FreqWindow::OnFuncChoice)
     EVT_CHOICE(FreqAxisChoiceID, FreqWindow::OnAxisChoice)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
@@ -263,6 +263,15 @@ void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
 
 void FreqWindow::OnAlgChoice(wxCommandEvent & event)
 {
+   int alg = mAlgChoice->GetSelection();
+   if (alg == 0) { // Spectrum
+      mAxisChoice->Enable();
+      mLogAxis = mAxisChoice->GetSelection();
+   }
+   else {
+      mLogAxis = false;
+      mAxisChoice->Disable();
+   }
    Recalc();
 }
 
