@@ -48,6 +48,11 @@ Ruler::Ruler()
    mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
 
+   #ifdef __WXMAC__
+   mMinorFont->SetNoAntiAliasing(true);
+   mMajorFont->SetNoAntiAliasing(true);
+   #endif
+
    mMajorLabels = 0;
    mMinorLabels = 0;
    mBits = NULL;
@@ -167,6 +172,11 @@ void Ruler::SetFonts(wxFont &minorFont, wxFont &majorFont)
 {
    *mMinorFont = minorFont;
    *mMajorFont = majorFont;
+
+   #ifdef __WXMAC__
+   mMinorFont->SetNoAntiAliasing(true);
+   mMajorFont->SetNoAntiAliasing(true);
+   #endif
 
    Invalidate();
 }
