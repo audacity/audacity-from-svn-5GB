@@ -37,6 +37,7 @@
 #include "SpectrumPrefs.h"
 #include "MousePrefs.h"
 
+
 enum {
    CategoriesID = 1000
 };
@@ -164,7 +165,6 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
    unsigned int j;
 
    gPrefs->Write("/Prefs/PrefsCategory", (long)mCategories->GetSelection());
-
    for (i = 0; i < mCategories->GetPageCount(); i++) {
       PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
 
@@ -176,12 +176,11 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
       }
    }
 
-   // BG: Send all Audacity projects a prefrence update notification
+   // BG: Send all Audacity projects a preference update notification
    for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
       gAudacityProjects[j]->UpdatePrefs();
    }
-
    EndModal(0);
 }
 
