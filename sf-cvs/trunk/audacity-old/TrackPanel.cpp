@@ -47,6 +47,8 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
   mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
 
+  mCapturedTrack = NULL;
+
   mTimeCount = 0;
   mTimer.parent = this;
   mTimer.Start(50, FALSE);
