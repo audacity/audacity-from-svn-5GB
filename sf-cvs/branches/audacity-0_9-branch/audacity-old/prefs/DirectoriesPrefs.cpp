@@ -39,6 +39,7 @@ END_EVENT_TABLE()
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   mTempDirText = NULL;
    mTempDir = gPrefs->Read("/Directories/TempDir", "");
    mOldTempDir = mTempDir;
 
@@ -143,6 +144,9 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
    static wxLongLong space;
    static wxString tempDir;
    static char tmp[200];
+
+   if (mTempDirText == NULL)
+      return;
 
    tempDir = mTempDirText->GetValue();
 

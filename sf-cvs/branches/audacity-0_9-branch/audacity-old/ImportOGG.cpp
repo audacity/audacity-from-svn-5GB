@@ -49,7 +49,7 @@ bool ImportOGG(wxWindow * parent,
                wxString Filename, WaveTrack ** channels[],
                int *numChannels, DirManager * dirManager)
 {
-
+   int c;
    wxLogNull logNo;   /* disable automatic dialog generation */
    wxFFile file(Filename, "rb");
 
@@ -94,7 +94,7 @@ bool ImportOGG(wxWindow * parent,
    *numChannels = vi->channels;
    *channels = new WaveTrack *[*numChannels];
 
-   for (int c = 0; c < *numChannels; c++) {
+   for (c = 0; c < *numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
       (*channels)[c]->rate = vi->rate;
 
@@ -191,7 +191,7 @@ bool ImportOGG(wxWindow * parent,
 
    delete[]mainBuffer;
 
-   for (int c = 0; c < *numChannels; c++)
+   for (c = 0; c < *numChannels; c++)
       delete[]buffers[c];
    delete[]buffers;
 
