@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  Importer.h
+  ImportPlugin.h
 
   Joshua Haberman
 
