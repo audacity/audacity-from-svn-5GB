@@ -91,9 +91,9 @@ class Track: public XMLTagHandler {
    void SetSolo    (bool s) { mSolo     = s; }
 
    int    GetChannel() const { return mChannel; }
-   double GetOffset () const { return mOffset; }
+   virtual double GetOffset () { return mOffset; }
 
-   void Offset(double t) { SetOffset(mOffset + t); }
+   void Offset(double t) { SetOffset(GetOffset() + t); }
    virtual void SetOffset (double o) { mOffset = o; }
 
    void SetChannel(int    c) { mChannel = c; }

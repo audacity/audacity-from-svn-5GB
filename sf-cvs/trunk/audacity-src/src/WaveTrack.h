@@ -47,6 +47,7 @@ class WaveTrack: public Track {
  public:
 
    virtual ~WaveTrack();
+   virtual double GetOffset();
    virtual void SetOffset (double o);
 
    // Start time is the earliest time there is a clip
