@@ -164,9 +164,9 @@ bool AudioIO::OpenDevice()
 
    for(int j=0; j<Pa_CountDevices(); j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->name == playDevice)
+      if (info->name == playDevice && info->maxOutputChannels > 0)
          playDeviceNum = j;
-      if (info->name == recDevice)
+      if (info->name == recDevice && info->maxInputChannels > 0)
          recDeviceNum = j;
    }
 
