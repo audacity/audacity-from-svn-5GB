@@ -7,10 +7,14 @@ Audacity 1.2 - kompletní manuál:
 </p>
 
 <p>
-Audacity 1.2 on-line nápovìda:
+Audacity 1.2 referenèní pøíruèka:
 [<a href="onlinehelp-1.2/contents.htm">prohlížení</a>]
 </p>
 
+<p>
+<a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
+(Veøejnì-editovatelná dokumentace, tipy, triky, a další vìci)
+</p>
 
 <p>
 
