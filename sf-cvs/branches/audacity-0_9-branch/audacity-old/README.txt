@@ -103,7 +103,22 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 0.98b:
+Changes in 0.99:
+
+  - Audacity is now stable and fully-functioning on MacOS X
+
+  - "Save Changes" dialog on MacOS and Linux
+
+  - Tooltips
+
+  - New keyboard shortcuts and commands
+
+  - Label tracks can now be used to mark selection regions.
+    Adding labels uses a new command -- see the user's manual.
+
+  - Miscellaneous bug fixes
+
+Changes in 0.98b (Windows-only release):
 
   - Fixed "Noise Removal" crash
 
