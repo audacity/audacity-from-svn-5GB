@@ -14,7 +14,7 @@ LIBS = @LIBS@
 # to C++. CPPFLAGS are for both
 CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@ -Wall -Iallegro
-CXXFLAGS = -Werror
+CXXFLAGS = @CXXFLAGS@
 CCC = @CXX@
 CC = @CC@
 
