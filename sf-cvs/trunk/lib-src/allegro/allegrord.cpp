@@ -433,7 +433,7 @@ double Allegro_reader::parse_after_dur(double dur, char *field, int n, double ba
     return dur;
 }
 
-struct {
+static struct {
     char *str;
     int val;
 } loud_lookup[] = { {"FFF", 127}, {"FF", 120}, {"F", 110}, {"MF", 100}, 
