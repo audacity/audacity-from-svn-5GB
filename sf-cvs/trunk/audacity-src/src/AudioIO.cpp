@@ -117,12 +117,15 @@ AudioIO::AudioIO()
    mThread = new AudioThread();
    mThread->Create();
 
-
-#if USE_PORTMIXER
-#ifndef USE_PORTAUDIO_V19
    mPortMixer = NULL;
+
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
    HandleDeviceChange();
-#endif
+#else
+   mEmulateMixerOutputVol = true;
+   mMixerOutputVol = 1.0;
+   mEmulateMixerInputVol = true;
+   mMixerInputVol = 1.0;
 #endif
 }
 
@@ -139,11 +142,14 @@ AudioIO::~AudioIO()
    delete mThread;
 }
 
-#if USE_PORTMIXER
-#ifndef USE_PORTAUDIO_V19 // PortMixer doesn't support v19 yet...
 void AudioIO::SetMixer(int recordDevice, float recordVolume,
                        float playbackVolume)
 {
+   mMixerOutputVol = playbackVolume;
+   mMixerInputVol = recordVolume;
+
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+
    PxMixer *mixer = mPortMixer;
 
    if( mixer )
@@ -158,30 +164,47 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
          Px_SetInputVolume(mixer, recordVolume);
       if( fabs(oldPlaybackVolume-playbackVolume) > 0.05 )
          Px_SetPCMOutputVolume(mixer, playbackVolume);
+
+      return;
    }
+#endif
 }
 
 void AudioIO::GetMixer(int *recordDevice, float *recordVolume,
                        float *playbackVolume)
 {
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+
    PxMixer *mixer = mPortMixer;
 
    if( mixer )
    {
       *recordDevice = Px_GetCurrentInputSource(mixer);
-      *recordVolume = Px_GetInputVolume(mixer);
-      *playbackVolume = Px_GetPCMOutputVolume(mixer);
+
+      if (mEmulateMixerInputVol)
+         *recordVolume = mMixerInputVol;
+      else
+         *recordVolume = Px_GetInputVolume(mixer);
+
+      if (mEmulateMixerOutputVol)
+         *playbackVolume = mMixerOutputVol;
+      else
+         *playbackVolume = Px_GetPCMOutputVolume(mixer);
+
+      return;
    }
-   else
-   {
-      *recordDevice = 0;
-      *recordVolume = 0;
-      *playbackVolume = 0;
-   }
+
+#endif
+
+   *recordDevice = 0;
+   *recordVolume = mMixerInputVol;
+   *playbackVolume = mMixerOutputVol;
 }
 
 wxArrayString AudioIO::GetInputSourceNames()
 {
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
+
    wxArrayString deviceNames;
 
    if( mPortMixer )
@@ -192,6 +215,14 @@ wxArrayString AudioIO::GetInputSourceNames()
    }
 
    return deviceNames;
+
+#else
+
+   wxArrayString blank;
+
+   return blank;
+
+#endif
 }
 
 void AudioIO::HandleDeviceChange()
@@ -199,6 +230,8 @@ void AudioIO::HandleDeviceChange()
    // This should not happen, but it would screw things up if it did.
    if( IsStreamActive() )
       return;
+
+#if defined(USE_PORTMIXER) && !defined(USE_PORTAUDIO_V19)
 
    if( mPortMixer )
       Px_CloseMixer(mPortMixer);
@@ -229,9 +262,38 @@ void AudioIO::HandleDeviceChange()
    if( !error )
       mPortMixer = Px_OpenMixer(stream, 0);
    Pa_CloseStream(stream);
+
+   // Determine mixer capabilities - it it doesn't support either
+   // input or output, we emulate them (by multiplying this value
+   // by all incoming/outgoing samples)
+
+   mEmulateMixerOutputVol = false;
+   Px_SetPCMOutputVolume(mPortMixer, 1.0);
+   if (Px_GetPCMOutputVolume(mPortMixer) < 0.95)
+      mEmulateMixerOutputVol = true;
+   Px_SetPCMOutputVolume(mPortMixer, 0.0);
+   if (Px_GetPCMOutputVolume(mPortMixer) > 0.05)
+      mEmulateMixerOutputVol = true;
+
+   mEmulateMixerInputVol = false;
+   Px_SetInputVolume(mPortMixer, 1.0);
+   if (Px_GetInputVolume(mPortMixer) < 0.95)
+      mEmulateMixerInputVol = true;
+   Px_SetInputVolume(mPortMixer, 0.0);
+   if (Px_GetInputVolume(mPortMixer) > 0.05)
+      mEmulateMixerInputVol = true;
+
+   #if 1
+   printf("PortMixer: Output: %s Input: %s\n",
+          mEmulateMixerOutputVol? "native": "emulated",
+          mEmulateMixerInputVol? "native": "emulated");
+   #endif
+
+   mMixerInputVol = 1.0;
+   mMixerOutputVol = 1.0;
+
+#endif
 }
-#endif
-#endif
 
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
@@ -1027,6 +1089,10 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
              vt->GetChannel() == Track::MonoChannel)
          {
             float gain = vt->GetChannelGain(0);
+
+            if (gAudioIO->mEmulateMixerOutputVol)
+               gain *= gAudioIO->mMixerOutputVol;
+
             for(i=0; i<len; i++)
                outputFloats[numPlaybackChannels*i] += gain*tempFloats[i];
          }
@@ -1035,6 +1101,10 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
              vt->GetChannel() == Track::MonoChannel)
          {
             float gain = vt->GetChannelGain(1);
+
+            if (gAudioIO->mEmulateMixerOutputVol)
+               gain *= gAudioIO->mMixerOutputVol;
+
             for(i=0; i<len; i++)
                outputFloats[numPlaybackChannels*i+1] += gain*tempFloats[i];
          }
@@ -1062,10 +1132,15 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          printf("lost %d samples\n", (int)(framesPerBuffer - len));
       }
 
+      float gain = 1.0;
+
+      if (gAudioIO->mEmulateMixerInputVol)
+         gain = gAudioIO->mMixerInputVol;
+
       if (len > 0) {
          for( t = 0; t < numCaptureChannels; t++) {
             for( i = 0; i < len; i++)
-               tempFloats[i] = inputFloats[numCaptureChannels*i+t];
+               tempFloats[i] = inputFloats[numCaptureChannels*i+t] * gain;
 
             gAudioIO->mCaptureBuffers[t]->Put((samplePtr)tempFloats,
                                               gAudioIO->mCaptureFormat, len);
