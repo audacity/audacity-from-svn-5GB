@@ -74,7 +74,10 @@ bool EffectChangeSpeed::Process()
 	// initialize for libsamplerate (SRC)
 	//		per examples of Mixer::Mixer() and sndfile-resample.c example
 
-	bool bHighQuality = true; //v This should come from prefs, too!
+   // Since this is a non-real-time effect, we use the high-quality
+   // sample rate converter chosen by the user.
+	bool bHighQuality = true;
+
    long converterType = SRC_SINC_FASTEST; // Audacity default
    if (bHighQuality)
       converterType = gPrefs->Read("/Quality/HQSampleRateConverter",
@@ -90,7 +93,8 @@ bool EffectChangeSpeed::Process()
 		return false;
 	}
 
-	// The rest is just like EffectSoundTouch::Process(), except deleting m_pSRC_STATE.
+	// The rest is just like EffectSoundTouch::Process(),
+   // except deleting m_pSRC_STATE.
 
    //Iterate over each track
    TrackListIterator iter(mWaveTracks);
@@ -140,7 +144,9 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 	if ((track == NULL) || (m_pSRC_STATE == NULL))
 		return false;
 
-	// initialization, per examples of Mixer::Mixer and EffectSoundTouch::ProcessOne
+	// initialization, per examples of Mixer::Mixer and
+   // EffectSoundTouch::ProcessOne
+
    WaveTrack * outputTrack = mFactory->NewWaveTrack(track->GetSampleFormat());
 
    //Get the length of the selection (as double). len is
@@ -157,7 +163,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 	//	than the input buffer.
 	double bufferSizeFactor = 100.0 / (100.0 + m_PercentChange);
 	sampleCount outBufferSize = 
-						(sampleCount)(bufferSizeFactor + 1.0) * // Add 1.0 to round up.
+						(sampleCount)(bufferSizeFactor + 1.0) *// Add 1.0 to round up
 						inBufferSize;
    float * outBuffer = new float[outBufferSize]; 
 
@@ -167,7 +173,9 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 	theSRC_DATA.data_out = outBuffer;
 	theSRC_DATA.src_ratio = bufferSizeFactor;
 
-	// Using src_reset, there's no need to create a new SRC_STATE for each track, . 
+	// Using src_reset, there's no need to create a new SRC_STATE
+   // for each track.
+
 	int error;
    if ((error = src_reset(m_pSRC_STATE)) != 0) {
 		this->ReportLibSampleRateError(error);
