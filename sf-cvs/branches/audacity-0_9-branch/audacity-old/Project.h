@@ -90,6 +90,7 @@ class AudacityProject:public wxFrame,
    void OnSize(wxSizeEvent & event);
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
+   void OnDropFiles(wxDropFilesEvent & event);
 
    void HandleResize();
 

@@ -125,6 +125,10 @@ Changes in 0.97:
 
   - Improved click-drag zoom.
 
+  - Support drag-and-drop to import audio files (Windows only)
+
+  - Improved Export file dialog (asks about strange extensions)
+
   - Other bug fixes
 
 * MacOS:
