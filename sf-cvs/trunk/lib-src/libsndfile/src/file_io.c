@@ -32,7 +32,7 @@
 #endif
 
 #if (HAVE_DECL_S_IRGRP == 0)
-#include <sf_unistd.h>
+#include "sf_unistd.h"
 #endif
 
 #include <string.h>
