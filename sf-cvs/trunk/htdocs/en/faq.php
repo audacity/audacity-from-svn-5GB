@@ -141,7 +141,9 @@ page for more details on how you can help out.
 The most important thing when reporting a bug is to be
 as specific as possible.  Give us enough information that
 we can reproduce the bug ourselves, otherwise it's unlikely
-that we'll be able to fix it.
+that we'll be able to fix it.  Send bug reports to
+<a href="mailto:audacity-help@lists.sourceforge.net">
+&lt;audacity-help@lists.sourceforge.net&gt;</a>.
 <p>
 Be sure to let us know what operating system you run
 (such as Windows 98, MacOS 9.1, RedHat Linux 7.1, etc.)
