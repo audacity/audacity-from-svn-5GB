@@ -300,6 +300,9 @@ Changes in 1.2.2:
     then load an Audacity project containing repeated or duplicate
     data.
 
+  * Fixed bug that could cause instability when pasting, splitting,
+    or duplicating a label track.
+
 Changes in 1.2.1:
 
   * The following translations have been added or updated:  Finnish,
