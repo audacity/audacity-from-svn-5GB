@@ -720,6 +720,14 @@ SOURCE=..\src\import\Import.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\import\ImportLOF.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportLOF.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\import\ImportMIDI.cpp
 # End Source File
 # Begin Source File
