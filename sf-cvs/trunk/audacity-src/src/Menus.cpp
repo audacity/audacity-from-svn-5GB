@@ -90,6 +90,7 @@ void AudacityProject::CreateMenuBar()
    mMenuBar->Append(mProjectMenu, _("&Project"));
    mMenuBar->Append(mEffectMenu, _("Effec&t"));
    mMenuBar->Append(mPluginMenu, _("Plugin&s"));
+
    mMenuBar->Append(mHelpMenu, _("&Help"));
 
    SetMenuBar(mMenuBar);
@@ -115,7 +116,12 @@ void AudacityProject::RebuildMenuBar()
    delete mMenuBar->Replace(viewMenu, mViewMenu, _("&View"));
    delete mMenuBar->Replace(projectMenu, mProjectMenu, _("&Project"));
    delete mMenuBar->Replace(effectMenu, mEffectMenu, _("Effec&t"));
-   delete mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
+   wxMenu * tmp = mMenuBar->Replace(pluginMenu, mPluginMenu, _("Plugin&s"));
+   for(int e = 0; e < tmp->GetMenuItemCount(); e++){
+      tmp->Destroy(FirstPluginSubMenuID + e);
+   }
+
+   delete tmp;
    delete mMenuBar->Replace(helpMenu, mHelpMenu, _("&Help"));
 
    BuildMenuBar();
@@ -228,7 +234,6 @@ void AudacityProject::BuildMenuBar()
       //There are more than MAX_NUMBER_OF_PLUGINS_IN_MENU plugins: make submenus
       
  
-      int numPluginSubMenus = (numPlugins) / MAX_NUMBER_OF_PLUGINS_IN_MENU + 1;
       wxMenu * tmp;
       wxString label;
       tmp = new wxMenu;
@@ -239,7 +244,7 @@ void AudacityProject::BuildMenuBar()
       submenu=0;
       for (fi = 0; fi < numPlugins; fi++){
   
-         tmp->Append(FirstPluginID + fi + numPluginSubMenus,
+         tmp->Append(FirstPluginID + fi,
                      (Effect::GetEffect(fi, true))->GetEffectName());
     
          //
@@ -249,9 +254,12 @@ void AudacityProject::BuildMenuBar()
             
             upper = fi +1;   //upper limit should be the current plugin number (+1)
             label =  wxString::Format(_("Plugins %d to %d"), lower, upper);  //make submenu label
-            mPluginMenu->Append(FirstPluginID + submenu++, label, tmp++ , label);   //Add submenu
-            tmp= new wxMenu;                                                 //reset temp. menu
-            lower += MAX_NUMBER_OF_PLUGINS_IN_MENU;                          //reset lower for next time.
+            mPluginMenu->Append(FirstPluginSubMenuID + submenu, label, tmp , label);   //Add submenu
+            submenu++;                                          //Increment submenu counter
+
+            lower += MAX_NUMBER_OF_PLUGINS_IN_MENU;              //reset lower for next time.
+            if(fi != (numPlugins -1))
+               tmp= new wxMenu;                                 //reset temp. menu
          }
 
       }
@@ -518,11 +526,11 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
 	//Enable/disable the Plugins menu options.
    int numPlugins = Effect::GetNumEffects(true);
-   int numPluginSubMenus = (numPlugins) / MAX_NUMBER_OF_PLUGINS_IN_MENU + 1;
+
 
    //enable or disable each menu item based on whether there is a selection.
    for (e = 0; e < numPlugins; e++) {
-      mPluginMenu->Enable(FirstPluginID + e + numPluginSubMenus,
+      mPluginMenu->Enable(FirstPluginID + e,
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
