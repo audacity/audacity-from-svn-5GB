@@ -214,15 +214,15 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
    mLoudBitmap = new wxBitmap((const char **) Loud);
 #endif
 
-   mTool[0]->SetToolTip(_("Selection Tool"));
-   mTool[1]->SetToolTip(_("Envelope Tool"));
-   mTool[2]->SetToolTip(_("Time Shift Tool"));
-   mTool[3]->SetToolTip(_("Zoom Tool"));
+   mTool[0]->SetToolTip("Selection Tool");
+   mTool[1]->SetToolTip("Envelope Tool");
+   mTool[2]->SetToolTip("Time Shift Tool");
+   mTool[3]->SetToolTip("Zoom Tool");
 
-   mPlay->SetToolTip(_("Play"));
-   mStop->SetToolTip(_("Stop"));
-   mRecord->SetToolTip(_("Record"));
-   mVolume->SetToolTip(_("Master Gain Control"));
+   mPlay->SetToolTip("Play");
+   mStop->SetToolTip("Stop");
+   mRecord->SetToolTip("Record");
+   mVolume->SetToolTip("Master Gain Control");
 
    wxToolTip::Enable(true);
    wxToolTip::SetDelay(1200);
