@@ -14,6 +14,7 @@
 **********************************************************************/
 
 #include <wx/wxprec.h>
+#include <wx/tokenzr.h>
 
 #ifndef WX_PRECOMP
 #include <wx/app.h>
@@ -148,6 +149,24 @@ void AudacityProject::BuildMenuBar()
       if (mCommandMenuItem[i]->separatorPrev)
          menu->AppendSeparator();
       menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
+
+      gPrefs->SetPath("/Keyboard/" + wxString::Format("%i", i));
+
+      long keyIndex;
+      wxString keyString;
+
+      mCommandMenuItem[i]->comboStrings = "";
+
+      if(gPrefs->GetFirstEntry(keyString, keyIndex))
+      {
+         mCommandMenuItem[i]->comboStrings = keyString;
+         while(gPrefs->GetNextEntry(keyString, keyIndex))
+         {
+            mCommandMenuItem[i]->comboStrings += ":" + keyString;
+         }
+      }
+
+      gPrefs->SetPath("/");
    }
 
    int numEffects = Effect::GetNumEffects(false);
@@ -217,6 +236,22 @@ void AudacityProject::SetCommandValue(int nID, wxString sName)
    }
 }
 
+int AudacityProject::FindCommandByCombos(wxString cName)
+{
+   for(int i = 0; i < GetNumCommands(); i++)
+   {
+      wxStringTokenizer tName(mCommandMenuItem[i]->comboStrings, ":");
+      while (tName.HasMoreTokens())
+      {
+          wxString token = tName.GetNextToken();
+
+          if(!cName.CmpNoCase(token))
+             return i;
+      }
+   }
+
+   return -1;
+}
 
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {

@@ -1543,6 +1543,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
                                       event);
          Refresh(false);
          MakeParentPushState("TrackPanel::OnKeyEvent() FIXME!!");
+         event.Skip();
          return;
       }
    }
@@ -1585,10 +1586,9 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          mViewInfo->sel0 = mViewInfo->sel1;
       mListener->TP_ScrollWindow(mViewInfo->sel1);
       break;
-   default:
-      event.Skip();
-      break;
    }
+
+   event.Skip();
 }
 
 // AS: This handles just generic mouse events.  Then, based

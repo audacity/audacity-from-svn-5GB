@@ -180,6 +180,7 @@ enum {
 #undef AUDACITY_MENUS_GLOBALS
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
+    EVT_CHAR_HOOK(AudacityProject::OnKey)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
     EVT_CLOSE(AudacityProject::OnCloseWindow)
@@ -683,6 +684,12 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       } else if (HandleMenuEvent(event))
          return true;
    }
+   /*
+   else if ((event.GetEventType() == wxEVT_CHAR) || (event.GetEventType() == wxEVT_CHAR_HOOK) || (event.GetEventType() == wxEVT_NAVIGATION_KEY) || (event.GetEventType() == wxEVT_KEY_DOWN))
+   {
+      return false;
+   }
+   */
 
    if (f) {
       TrackListIterator iter(mTracks);
@@ -809,6 +816,37 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
    AColor::Medium(&dc, false);
    dc.DrawRectangle(f);
    AColor::Bevel(dc, true, f);
+}
+
+void AudacityProject::OnKey(wxKeyEvent& event)
+{
+   wxString newStr = "";
+
+   long key = event.GetKeyCode();
+
+   if(event.ControlDown())
+      newStr += "Ctrl+";
+
+   if(event.AltDown())
+      newStr += "Alt+";
+
+   if(event.ShiftDown())
+      newStr += "Shift+";
+
+   if (event.ControlDown() && key >= 1 && key <= 26)
+      newStr += (char)(64 + key);
+   else if (key >= 33 && key <= 126)
+      newStr += (char)key;
+   else if (key == WXK_BACK)
+      newStr = "Backspace";
+   else if (key == WXK_DELETE)
+      newStr = "Delete";
+   else if (key == WXK_SPACE)
+      newStr = "Spacebar";
+   else
+      return; // Don't change it if we don't recognize the key
+
+   (this->*((wxEventFunction) (GetCommandFunc(FindCommandByCombos(newStr)))))(event);
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
