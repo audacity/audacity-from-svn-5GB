@@ -19,6 +19,7 @@ Developers:
   Shane Mueller
   Vaughan Johnson
   Greg Mekkes
+  James Crook
   Vince Busam
   Augustus Saunders  
   Tony Oetzmann
