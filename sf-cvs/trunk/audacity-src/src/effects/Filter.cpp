@@ -333,7 +333,7 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
    if (mEnvelope->MouseEvent(event, mEnvRect, 0.0, mEnvRect.width, false))
       Refresh(false);
 
-   if (event.ButtonUp()) {
+   if (event.ButtonUp() && HasCapture()) {
       ReleaseMouse();
    }
 }
