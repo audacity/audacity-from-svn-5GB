@@ -361,20 +361,22 @@ void AudioIO::HandleDeviceChange()
    mMixerOutputVol = Px_GetPCMOutputVolume(mPortMixer);
    mEmulateMixerOutputVol = false;
    Px_SetPCMOutputVolume(mPortMixer, 0.0);
-   if (Px_GetPCMOutputVolume(mPortMixer) > 0.05)
+   if (Px_GetPCMOutputVolume(mPortMixer) > 0.1)
       mEmulateMixerOutputVol = true;
-   Px_SetPCMOutputVolume(mPortMixer, 1.0);
-   if (Px_GetPCMOutputVolume(mPortMixer) < 0.95)
+   Px_SetPCMOutputVolume(mPortMixer, 0.2);
+   if (Px_GetPCMOutputVolume(mPortMixer) < 0.1 ||
+       Px_GetPCMOutputVolume(mPortMixer) > 0.3)
       mEmulateMixerOutputVol = true;
    Px_SetPCMOutputVolume(mPortMixer, mMixerOutputVol);
 
    mMixerInputVol = Px_GetInputVolume(mPortMixer);
    mEmulateMixerInputVol = false;
    Px_SetInputVolume(mPortMixer, 0.0);
-   if (Px_GetInputVolume(mPortMixer) > 0.05)
+   if (Px_GetInputVolume(mPortMixer) > 0.1)
       mEmulateMixerInputVol = true;
-   Px_SetInputVolume(mPortMixer, 1.0);
-   if (Px_GetInputVolume(mPortMixer) < 0.95)
+   Px_SetInputVolume(mPortMixer, 0.2);
+   if (Px_GetInputVolume(mPortMixer) < 0.1 ||
+       Px_GetInputVolume(mPortMixer) < 0.3)
       mEmulateMixerInputVol = true;
    Px_SetInputVolume(mPortMixer, mMixerInputVol);
 
