@@ -53,18 +53,18 @@
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.wxwindows.org">wxWindows</a>
+><a target=_top href="http://www.wxwidgets.org">wxWidgets</a>
 <td bgcolor="#ccccff"
 >Това е многоплатформена библиотека, която позволява ГПИ (менютата,
     бутоните, прозорците, чертането и т.н.) да работят еднакво на системи
-    Mac, Windows и Unix. wxWindows съдържа и други полезни класове на C++
+    Mac, Windows и Unix. wxWidgets съдържа и други полезни класове на C++
     и Audacity е изцяло зависима от тази библиотека. Горещо ви я препоръчваме,
     ако искате да пишете многоплатформени приложения.
 </tr>
 
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.mars.org/home/rob/proj/mpeg/">libmad</a>
+><a target=_top href="http://www.mars.org/home/rob/proj/mpeg/">libmad</a>
 <td bgcolor="#ccccff"
 ><p>
     MAD означава MPEG Audio Decoder. Това е един от малкото безплатни
@@ -81,7 +81,7 @@
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.mars.org/home/rob/proj/mpeg/">libid3tag</a></td>
+><a target=_top href="http://www.mars.org/home/rob/proj/mpeg/">libid3tag</a></td>
 <td bgcolor="#ccccff"
 ><p>
     Тази библиотека също е от Роб Лесли (автор на libmad, виж по-горе)
@@ -95,7 +95,7 @@
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.xiph.org/ogg/vorbis/"
+><a target=_top href="http://www.xiph.org/ogg/vorbis/"
 >libogg<br>libvorbis<br>libvorbisfile</a>
 </td>
 
@@ -104,8 +104,8 @@
 <p>Ogg Vorbis е и свободен формат за компресия на звук, и библиотека,
 която кодира и декодира файлове в този формат. Тя е замислена да
 замени MP3 и много хора смятат, че форматът й се равнява и понякога
-превъзхожда MP3 и по качество на звука, и по размер. Актуалната
-(бета-)версия на Audacity импортира и експортира файлове във формат
+превъзхожда MP3 и по качество на звука, и по размер. Текущата
+версия на Audacity импортира и експортира файлове във формат
 Ogg Vorbis.
 </p>
 </td>
@@ -113,7 +113,7 @@ Ogg Vorbis.
 <tr>
 <td bgcolor="#ccccff"
 >
-<a href="http://www.portaudio.com">portaudio</a>
+<a target=_top href="http://www.portaudio.com">portaudio</a>
 </td>
 <td bgcolor="#ccccff"
 >
@@ -126,7 +126,7 @@ Ogg Vorbis.
 </tr>
 <tr>
 <td bgcolor="#ccccff"
-><a href="http://www.zip.com.au/~erikd/libsndfile/">libsndfile</a></td>
+><a target=_top href="http://www.zip.com.au/~erikd/libsndfile/">libsndfile</a></td>
 
 <td bgcolor="#ccccff"
 >
