@@ -36,9 +36,8 @@ WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
 class LabelTrack: public VTrack
 {
   friend class BouncePane;
-  friend bool Export(wxWindow *parent,
-			TrackList *tracks, bool selectionOnly,
-			double t0, double t1);
+  friend bool ExportPCM(wxString format, bool stereo, double rate, wxString fName, 
+        wxWindow *parent, TrackList *tracks, bool selectionOnly, double t0, double t1);
 
 public:
   LabelTrack(DirManager *projDirManager);
