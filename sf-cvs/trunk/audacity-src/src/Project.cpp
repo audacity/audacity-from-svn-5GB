@@ -1573,7 +1573,7 @@ void AudacityProject::ZoomFit()
 
    mViewInfo.zoom = w / len;
    FixScrollbars();
-   mTrackPanel->Refresh(false);
+   TP_ScrollWindow(0.0);
 }
 
 void AudacityProject::ZoomSel()
