@@ -12,18 +12,24 @@
 **********************************************************************/
 
 #include "../Audacity.h" // for USE_SOUNDTOUCH
-#include "../Internat.h"
 
 #if USE_SOUNDTOUCH
 
+#include "ChangeTempo.h"
+#include "../Internat.h"
+
 #include <math.h>
 
+#include <wx/button.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/valtext.h>
 
 #include <SoundTouch.h>
 
-#include "ChangeTempo.h"
 
 //
 // EffectChangeTempo

@@ -13,13 +13,15 @@
 
 **********************************************************************/
 
-#include <math.h>
+#include "BassBoost.h"
+#include "../WaveTrack.h"
 
 #include <wx/msgdlg.h>
 #include <wx/intl.h>
 
-#include "BassBoost.h"
-#include "../WaveTrack.h"
+#include <math.h>
+
+#define ID_BUTTON_PREVIEW      10005
 
 //
 // EffectBassBoost

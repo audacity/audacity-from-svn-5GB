@@ -12,6 +12,10 @@
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/button.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/validate.h>
 #include <wx/valtext.h>
 

@@ -13,10 +13,10 @@
 #ifndef __AUDACITY_EFFECT_SILENCE__
 #define __AUDACITY_EFFECT_SILENCE__
 
+#include "Effect.h"
+
 #include <wx/defs.h>
 #include <wx/intl.h>
-
-#include "Effect.h"
 
 class EffectSilence:public Effect {
 

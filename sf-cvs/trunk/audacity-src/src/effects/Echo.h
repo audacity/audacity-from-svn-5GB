@@ -14,15 +14,13 @@
 
 class wxString;
 
-#include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
 
 #include <wx/intl.h>
 
 #include "Effect.h"
+
+class wxStaticText;
 
 class WaveTrack;
 

@@ -14,7 +14,11 @@
 
 **********************************************************************/
 
-#include <math.h>
+#include "Equalization.h"
+#include "../Envelope.h"
+#include "../FFT.h"
+#include "../WaveTrack.h"
+#include "../widgets/Ruler.h"
 
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
@@ -25,11 +29,9 @@
 #include <wx/string.h>
 #include <wx/radiobox.h>
 
-#include "Equalization.h"
-#include "../Envelope.h"
-#include "../FFT.h"
-#include "../WaveTrack.h"
-#include "../widgets/Ruler.h"
+#include <math.h>
+
+#define ID_BUTTON_PREVIEW 10004
 
 const float EffectEqualization::curvex[] =
   {

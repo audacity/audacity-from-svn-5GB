@@ -16,19 +16,15 @@
 #ifndef __AUDACITY_EFFECT_CHANGETEMPO__
 #define __AUDACITY_EFFECT_CHANGETEMPO__
 
-#include <wx/button.h>
-#include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-
-#include <wx/intl.h>
-
 #include "SoundTouchEffect.h"
 
+#include <wx/intl.h>
+#include <wx/dialog.h>
 
 class wxString;
+class wxSlider;
+class wxTextCtrl;
+class wxSlider;
 
 
 class EffectChangeTempo:public EffectSoundTouch {

@@ -15,6 +15,8 @@
 #ifndef __AUDACITY_EFFECT_BASS_BOOST__
 #define __AUDACITY_EFFECT_BASS_BOOST__
 
+#include "SimpleMono.h"
+
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/stattext.h>
@@ -29,9 +31,6 @@
 #define ID_FREQ_SLIDER  10002
 #define ID_BOOST_TEXT   10003
 #define ID_BOOST_SLIDER 10004
-#define ID_BUTTON_PREVIEW      10005
-
-#include "SimpleMono.h"
 
 class WaveTrack;
 

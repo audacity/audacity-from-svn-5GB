@@ -16,17 +16,14 @@
 #ifndef __AUDACITY_EFFECT_PHASER__
 #define __AUDACITY_EFFECT_PHASER__
 
-#include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-#include <wx/spinbutt.h>
-#include <wx/spinctrl.h>
 #include <wx/intl.h>
 
 class wxString;
+class wxTextCtrl;
+class wxSizer;
+class wxSpinCtrl;
+class wxSlider;
 
 #include "SimpleMono.h"
 
@@ -90,7 +87,6 @@ friend class PhaserDialog;
 
 // Declare window functions
 
-#define ID_BUTTON_PREVIEW 10000
 #define ID_STAGES 10001
 #define ID_DRYWET 10002
 #define ID_FREQTEXT 10003

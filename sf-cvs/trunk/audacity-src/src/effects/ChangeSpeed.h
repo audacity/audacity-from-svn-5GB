@@ -13,20 +13,16 @@
 #ifndef __AUDACITY_EFFECT_CHANGESPEED__
 #define __AUDACITY_EFFECT_CHANGESPEED__
 
-#include <wx/button.h>
-#include <wx/choice.h>
-#include <wx/dialog.h>
-#include <wx/stattext.h>
-#include <wx/slider.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
-
-#include <wx/intl.h>
-
 #include "Effect.h"
 #include "../Resample.h"
 
+#include <wx/dialog.h>
+#include <wx/intl.h>
+
 class wxString;
+class wxChoice;
+class wxTextCtrl;
+class wxSlider;
 
 class EffectChangeSpeed : public Effect {
 

@@ -13,15 +13,23 @@
 
 **********************************************************************/
 
-#include <math.h>
-
-//#include <wx/generic/textdlgg.h>
-#include <wx/intl.h>
-
 #include "Phaser.h"
+
 #include "../WaveTrack.h"
 #include "../FFT.h"
 #include "../Internat.h"
+
+#include <wx/intl.h>
+#include <wx/button.h>
+#include <wx/textctrl.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/spinctrl.h>
+#include <wx/stattext.h>
+
+#include <math.h>
+
+#define ID_BUTTON_PREVIEW 10000
 
 //
 // EffectPhaser

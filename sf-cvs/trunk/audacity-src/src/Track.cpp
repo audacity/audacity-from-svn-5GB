@@ -20,8 +20,10 @@
 #include "TimeTrack.h"
 #include "DirManager.h"
 
+#ifdef _MSC_VER
 //Disable truncation warnings
 #pragma warning( disable : 4786 )
+#endif
 
 Track::Track(DirManager * projDirManager) 
   : mDirManager(projDirManager)
