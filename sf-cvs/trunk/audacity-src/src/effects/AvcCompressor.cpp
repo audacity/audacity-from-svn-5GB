@@ -82,10 +82,13 @@ EffectAvcCompressor::~EffectAvcCompressor()
 }
 
 wxString EffectAvcCompressor::GetEffectDescription() { 
+   return "Applied effect: AVC"; // XXX: temporary
+
    // Note: This is useful only after values have been set. 
 
-   return wxString::Format(_("Applied effect: %s"),
-                           this->GetEffectDescription());
+   // FIXME: Compile error (cannot pass wxString to Format).
+   //return wxString::Format(_("Applied effect: %s"),
+   //                        this->GetEffectDescription());
 
                            //old                           
    //return wxString::Format("Applied effect: %s change window = %d samples", 
