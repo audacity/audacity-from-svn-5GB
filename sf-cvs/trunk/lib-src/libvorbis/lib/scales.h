@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: linear scale -> dB, Bark and Mel scales
- last mod: $Id: scales.h,v 1.2 2002-10-26 20:28:17 dmazzoni Exp $
+ last mod: $Id: scales.h,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
 
  ********************************************************************/
 

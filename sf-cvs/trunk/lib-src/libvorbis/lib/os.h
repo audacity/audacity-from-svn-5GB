@@ -13,7 +13,7 @@
  ********************************************************************
 
  function: #ifdef jail to whip a few platforms into the UNIX ideal.
- last mod: $Id: os.h,v 1.2 2002-10-26 20:28:17 dmazzoni Exp $
+ last mod: $Id: os.h,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
 
  ********************************************************************/
 
