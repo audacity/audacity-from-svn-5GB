@@ -11,10 +11,15 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
+#if USE_SOUNDTOUCH
+
 #include <math.h>
 
+#include <SoundTouch.h>
+
 #include <wx/intl.h>
-#include <wx/msgdlg.h> //v for "not yet implemented"
 #include <wx/valtext.h>
 
 #include "ChangeTempo.h"
@@ -46,6 +51,9 @@ bool EffectChangeTempo::Init()
 	// was invoked, so recalculate the Length parameters.
 	m_FromLength = mT1 - mT0;
 	m_ToLength = (m_FromLength * 100.0) / (100.0 + m_PercentChange);
+
+   mSoundTouch = NULL;
+
 	return true;
 }
 
@@ -69,12 +77,10 @@ bool EffectChangeTempo::PromptUser()
    m_ToBPM = dlog.m_ToBPM;
    m_ToLength = dlog.m_ToLength;
 
-   return true;
-}
+   mSoundTouch = new SoundTouch();
+   mSoundTouch->setChannels(1);
+   mSoundTouch->setTempoChange(m_PercentChange);
 
-bool EffectChangeTempo::ProcessSimpleMono(float * buffer, sampleCount len)
-{
-	//v WSOLA or Soundstretch?
    return true;
 }
 
@@ -474,9 +480,6 @@ void ChangeTempoDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
    
-	wxMessageBox(_("Change Tempo not yet implemented."),
-                _("Not Yet Implemented"));
-
    if (Validate()) 
       EndModal(true);
    else 
@@ -538,3 +541,5 @@ void ChangeTempoDialog::Update_Text_ToLength()
 		pTextCtrl_ToLength->SetValue(str);
 	}
 }
+
+#endif // USE_SOUNDTOUCH

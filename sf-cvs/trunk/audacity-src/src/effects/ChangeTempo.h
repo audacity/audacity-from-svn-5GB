@@ -11,6 +11,8 @@
 
 **********************************************************************/
 
+#if USE_SOUNDTOUCH
+
 #ifndef __AUDACITY_EFFECT_CHANGETEMPO__
 #define __AUDACITY_EFFECT_CHANGETEMPO__
 
@@ -23,7 +25,7 @@
 
 #include <wx/intl.h>
 
-#include "SimpleMono.h"
+#include "SoundTouchEffect.h"
 
 #define ID_TEXT 10000
 #define ID_TEXT_PERCENTCHANGE 10001
@@ -38,7 +40,7 @@ class WaveTrack;
 class wxString;
 
 
-class EffectChangeTempo:public EffectSimpleMono {
+class EffectChangeTempo:public EffectSoundTouch {
 
  public:
    EffectChangeTempo();
@@ -58,9 +60,6 @@ class EffectChangeTempo:public EffectSimpleMono {
 
    virtual bool PromptUser();
    
- protected:
-   virtual bool ProcessSimpleMono(float * buffer, sampleCount len);
-
  private:
    double			m_PercentChange;	// percent change to apply to tempo
 												// -100% is meaningless, but sky's the upper limit
@@ -143,3 +142,5 @@ class ChangeTempoDialog:public wxDialog {
 
 
 #endif // __AUDACITY_EFFECT_CHANGETEMPO__
+
+#endif // USE_SOUNDTOUCH
