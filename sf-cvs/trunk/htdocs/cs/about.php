@@ -1,11 +1,11 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity je svobodný (free) audio editor. Mùžete nahrávat a pøehrávat zvuk, importovat a exportovat WAV, AIFF, a MP3 soubory, a mnoho dalších vìcí. Editujte svoje zvukové nahrávky s využitím funkcí Vyjmout, Kopírovat a Vložit (s neomezenou možností vrácení akcí), mixujte stopy dohromady, nebo na svoje nahrávky aplikujte efekty . Audacity disponuje také vestavìným editorem amplitudové obálky, nastavitelným spektrogramovým režimem a oknem pro aplikace provádìjící frekvenèní analýzu. Dále vestavìnými efekty vèetnì Zdùraznìní basù (Bass Boost), Kvákadla (Wahwah) a Odstraòovaèem šumu (Noise Removal). Podporuje také efektové VST plug-iny.
+Audacity je svobodný (free) audio editor. Mùžete nahrávat a pøehrávat zvuk, importovat a exportovat WAV, AIFF a MP3 soubory, stejnì jako mnoho dalších vìcí. Editujte svoje zvukové nahrávky s využitím funkcí Vyjmout, Kopírovat a Vložit (s neomezenou možností vrácení akcí), mixujte stopy dohromady, nebo na svoje nahrávky aplikujte efekty. Audacity disponuje také vestavìným editorem amplitudové obálky, nastavitelným spektrogramovým režimem a oknem pro aplikace provádìjící frekvenèní analýzu. Dále je vybavena vestavìnými efekty, vèetnì Zdùraznìní basù (Bass Boost), Kvákadla (Wahwah) a Odstraòovaèe šumu (Noise Removal). Podporuje také efektové VST plug-iny.
 </p>
 
 <p>
-Verze Audacity 1.0.0 je prozatím nejstabilnìjší verze, kterou jsme uvolnili, a mnoho lidí shledalo, že unikátní vlastnosti a intuitivní ovládání tento program èiní uživatelsky pøíjemnìjším než jiné audio editory, vèetnì komerèních.
+Verze Audacity 1.0.0 je prozatím nejstabilnìjší verze, kterou jsme uvolnili, a mnoho lidí shledalo, že unikátní vlastnosti a intuitivní ovládání èiní tento program uživatelsky pøíjemnìjším než jiné audio editory, vèetnì komerèních.
 </p>
 
 <p>

@@ -15,7 +15,7 @@ Poèínaje verzí 1.1.1, Audacity umožòuje využít programovací jazyk Nyquist k psan
 <p>
 Nyquist byl napsán 
 <a href="http://www-2.cs.cmu.edu/~rbd/">Rogerem B. Dannenbergem</a>
- a byl zamýšlen jako ucelený programovací jazyk pro audio syntézu a analýzu s podporou MIDI, nahrávání a pøehrávání zvuku, vsupu a výstupu souborù, objektovì orientovaného programování, profilování, odstraòování chyb (debuggingu) a dalších vìcí. Audacity používá jen èást funkcionality Nyquistu, která vám umožní vzít jednoduché funkce Nyquistu a použít je ke zpracování zvukových dat. Audacity neobsahuje žádnou podporu pro ladìní (debugging) Nyquistového kódu, takže jestliže se pokoušíte napsat komplikovaný plug-in, možná shledáte jednodušším poøídit si plnou verzi Nyquistu, vyvíjet v ní a potom pøevést výsledek na Audacity plug-in. Nyquist je k dispozici na stránkách Carnegie Mellon University Computer Music Project:
+ a byl zamýšlen jako ucelený programovací jazyk pro audio syntézu a analýzu s podporou MIDI, nahrávání a pøehrávání zvuku, vstupu a výstupu souborù, objektovì orientovaného programování, profilování, odstraòování chyb (debuggingu) a dalších vìcí. Audacity používá jen èást funkcionality Nyquistu, která vám umožní vzít jednoduché funkce Nyquistu a použít je ke zpracování zvukových dat. Audacity neobsahuje žádnou podporu pro ladìní (debugging) Nyquistového kódu, takže jestliže se pokoušíte napsat komplikovaný plug-in, možná shledáte jednodušším poøídit si plnou verzi Nyquistu, vyvíjet v ní a potom pøevést výsledek na Audacity plug-in. Nyquist je k dispozici na stránkách Carnegie Mellon University Computer Music Project:
 <ul>
 <a href="http://www-2.cs.cmu.edu/~music/music.software.html"
 >CMU Computer Music Project Software</a> - 

@@ -15,15 +15,15 @@ Nové vlastnosti v Audacity 1.1.3:
     - Každá stopa má nyní vlastní nastavení "gain" a panorama (pan).
 
   * Vstup a výstup souborù (File I/O)
-    - Používá se nový vylepšený projektový formát. (Bohužel naèítání
+    - Používá se nový vylepšený projektový formát. (Bohužel, naèítání
       pøedešlých formátù, vèetnì 1.1.1, není podporováno.)
-    - Blokové soubory (uložené vadresáøi projektù) nyní
+    - Blokové soubory (uložené v adresáøi projektù) nyní
       používají standardní AU formát.  Aèkoliv jsou v tìchto souborech
       nìkteré meta-informace Audacity, mohou být naèítány i mnoha jinými
       populárními audio programy.
     - Byly opraveny nìkteré chyby týkající se naèítání a zapisování
       audio souborù s více než 16ti bity na vzorek.
-    - Import RAW je znovu funkèní a to s jednodušším rozhraním (GUI)
+    - Import RAW je znovu funkèní, a to s jednodušším rozhraním (GUI),
       ale zato s podporou daleko více souborových formátù.
       Autodetekèní algoritmy jsou mnohem pøesnìjší než u verze 1.0.
 
@@ -52,7 +52,7 @@ Nové vlastnosti v Audacity 1.1.2:
 Známé chyby v Audacity 1.1.1:
 
   * Nespouštìjte pøíkaz Benchmark na Windowsech - mùže zhavarovat.
-    Pro vìtšinu uživatelù se jedná o nepotøebnou funci - je urèena
+    Pro vìtšinu uživatelù se jedná o nepotøebnou funkci - je urèena
     vývojáøùm, aby posoudili rychlost programu na rùzných poèítaèích
     a operaèních systémech.
 
@@ -94,7 +94,7 @@ Nové vlastnosti v Audacity 1.1.1:
     - Podpora pro export do MP3 s použitím LameLib Carbon
   * Unix
     - Audacity má nyní manuálovou stránku (popisuje øádkové pøíkazy
-      a jak nastavit vyhledávací cestu)
+      a postup jak nastavit vyhledávací cestu)
   * Formáty souborù
     - Používá se libsndfile 1.0, která opravuje nìkteré chyby
       a zlepšuje výkon

@@ -7,9 +7,9 @@ Audacity píší dobrovolníci ve svém volném èase. Není to shareware a nikdo z tìch
 <p>
 Když nám pošlete peníze, pomùžete nám pokrýt náklady na pøipojení k internetu, vývojové nástroje a nový zvukový hardware. V souèasné dobì máme naštìstí témìø všechen hosting bezplatnì, ale to se v budoucnosti mùže zmìnit. Vaše dnešní pøispìní pomùže tuto stránku zachovat i pro zítøek.
 <p>
-Vývojáøi Audacity by chtìli zakoupit nìjaký high-end audio hardware, aby mohli zaèít pøetváøet Audacity na komplexní vícestopé øešení pro úpravu zvuku (multitrack editing solution). Vaše peníze nám umožní abychom na tìchto vlastnostech zaèali pracovat døíve.
+Vývojáøi Audacity by chtìli zakoupit nìjaký high-end audio hardware, aby mohli zaèít pøetváøet Audacity na komplexní vícestopé øešení pro úpravu zvuku (multitrack editing solution). Vaše peníze nám umožní, abychom na tìchto vlastnostech zaèali pracovat døíve.
 <p>
-Prosíme uvìdomte si, že když nám dáte peníze, neposkytujeme žádné záruky nebo závazné sliby.
+Prosíme, uvìdomte si, že když nám dáte peníze, neposkytujeme žádné záruky nebo závazné sliby.
 <p>
 V souèasné dobì pøijímáme peníze prostøednictvím Amazon Honor System. Použijte svou kreditní kartu a uskuteènìte platbu od tøeba i jednoho dolaru až do $50.
 <p>

@@ -1,4 +1,4 @@
-<?php BoxTop('19. bøezna 2003: Verze 1.1.3 uvonìna'); ?>
+<?php BoxTop('19. bøezna 2003: Verze 1.1.3 uvolnìna'); ?>
 
 <p>
 Stahujte ze stránky <?php print "<a href=beta.php?$langLinkStr>"; ?>Beta verzí</a>.

@@ -50,7 +50,7 @@ Uívání Audacity:<br>
 </b></font>
 
 <p>
-Ano, témìø ve všech smìrech. Audacity je distribuována nejen bezplatnì, ale mùete s ní dìlat témìø všechno co chcete.
+Ano je, témìø ve všech smìrech. Audacity je distribuována nejen bezplatnì, ale mùete s ní dìlat témìø všechno co chcete.
 <p>
 Audacity je šíøena v souladu s podmínkami
 <a href="http://www.gnu.org/copyleft/gpl.html"
@@ -63,7 +63,7 @@ Audacity byla sestavena s vyuitím wxWindows, softwarové knihovny, která je uvol
 Autoøi Audacity se rozhodli pro licenci GPL z mnoha dùvodù. Nìkteøí z nás ze štìdrosti. Nìkteøí z nás z morálních dùvodù, protoe cítíme, e všechen software by mìl bıt svobodnı, zatímco jiní z nás vìøí, e na svìtì je zapotøebí svobodného i komerèního softwaru.
 <p>
 Jeden z dùvodù proè je Audacity free je, e tak bude populárnìjší. Mnozí z nás radìji uvidí milion lidí šastnì a svobodnì uívajících Audacity, ne tisíc platících. Vìtšina uivatelù je také pøátelštìjších, kdy dostanou nìco zdarma.<p>
-eštì dalším dùvodem je, e to stimuluje ke spolupráci. Kdyby Audacity byla shareware, je velmi nepravdìpodobné, e by spousta lidí po celém svìtì chtìlo pøispívat ke kódu, opravám chyb, dokumentaci a grafice.
+Dalším dùvodem také je, e to stimuluje ke spolupráci. Kdyby Audacity byla shareware, je velmi nepravdìpodobné, e by spousta lidí po celém svìtì chtìlo pøispívat ke kódu, opravám chyb, dokumentaci a grafice.
 <p>
 <a name="g2"></a>
 <font size=+1><b>
@@ -79,13 +79,12 @@ V souèasné dobì je Audacity vyvíjena s vyuitím Sourceforge, internetovımi strán
 
 <a name="g3"></a>
 <font size=+1><b>
-3. Jak mùu pomoct s vylepšením Audacity?<br>
+3. Jak mùu pomoci s vylepšením Audacity?<br>
 </b></font>
 
 Vyhledávejte chyby a dejte nám o nich zprávu. Programujte. Pøelote ji do své rodné øeèi. Namalujte grafiku. Pøipojte se k uivatelské e-mailové konferenci. Pošlete nám peníze.
 <p>
-Podívejte se prosím na naší novou <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Darovací</a>
- stránku, jestli chcete získat podrobnìjší informace o tom jak mùete pomoci.
+Jestli chcete získat podrobnìjší informace o tom, jak mùete pomoci, podívejte se prosím na naší novou <?php print "<a href=donatetime.php?$langLinkStr>"; ?>Darovací</a> stránku.
 <p>
 
 <a name="g4"></a>
@@ -97,7 +96,7 @@ Nejdùleitìjší vìc pøi nahlašování chyb je dodat co nejpøesnìjší popis. Dejte ná
 <p>
 Dejte pozor abyste nahlásili jakı operaèní systém pouíváte (jako napø. Windows 98, MacOS 9.1, RedHat Linux 7.1, atd.). Nahlašte také jakékoliv jiné informace o vašem poèítaèi, o kterıch si myslíte, e by mohly bıt relevantní.
 <p>
-Daøí se vám chybu zopakovat? Jestlie k chybì dochází vdy, napište nám pøesnı sled událostí, které k ní vedou. Jestlie dostáváte chybové hlášení, dejte pozor abyste nám poslali jeho pøesnı text.
+Daøí se vám chybu zopakovat? Jestlie k chybì dochází vdy znovu, napište nám pøesnı sled událostí, které k ní vedou. Jestlie dostáváte chybové hlášení, dejte pozor abyste nám poslali jeho pøesnı text.
 <p>
 Chceme vychytat všechny mouchy! Dìkujeme vám za èas, kterı strávíte jejich vyhledáváním.
 <p>
@@ -118,7 +117,7 @@ Chceme vychytat všechny mouchy! Dìkujeme vám za èas, kterı strávíte jejich vyhle
 <p>
 Pokud jste soubor u stáhli, prostì na nìm 2x kliknìte a instalace se spustí.
 <p>
-Pokud upøednostòujete NEpouívat instalèní program, mùete Audacity stáhnout jako ZIP soubor, kterı se dá rozbalit napø. pomocí programu WinZip.
+Pokud upøednostòujete NEpouívat instalaèní program, mùete Audacity stáhnout jako ZIP soubor, kterı se dá rozbalit napø. pomocí programu WinZip.
 <p>
 <a name="i2"></a>
 <font size=+1><b>
@@ -166,11 +165,11 @@ Audacity není tøeba instalovat. Prostì pøetáhnìte adresáø Audacity do svého adre
 </b></font>
 <p>
 
-Audacity mixuje automaticky. Všechno co musíte udìlat je naimportovat dvì stopy do stejného projektu, co dosáhnete s pomocí pøíkazu "Importovat Audio" v menu Projekt, nebo jednoduše pøetaením dvou audio souborù do Audacity. Audacity automaticky generuje novou stopu také pokud stisknete nahrávací tlaèítko (Record).
+Audacity mixuje automaticky. Všechno co musíte udìlat, je naimportovat dvì stopy do stejného projektu, èeho dosáhnete s pomocí pøíkazu "Importovat Audio" v menu Projekt, nebo jednoduše pøetaením dvou audio souborù do Audacity. Audacity automaticky generuje novou stopu také pokud stisknete nahrávací tlaèítko (Record).
 
 <p>
 
-Pokud jde o to jak namixované dílo uloit, mùete buï vyexportovat celı projekt, èím automaticky smixujete všechny stopy dohromady, nebo mùete oznaèit stopy a pouít pøíkaz "Rychlı mix (Quick Mix)" z mìnu Projekt.
+Pokud jde o to jak namixované dílo uloit, mùete buï vyexportovat celı projekt, èím automaticky smixujete všechny stopy dohromady, nebo mùete oznaèit stopy a pouít pøíkaz "Rychlı mix (Quick Mix)" z menu Projekt.
 
 <p>
 <a name="a2"></a>
@@ -191,9 +190,9 @@ Jestlie to chcete zkusit v Audacity, naimportujte stereo nahrávku, potom kliknì
 3.  Kdy zkusím nahrát svùj vlastní druhı hlas (harmonii), stopy nejsou synchronní. Proè?
 </b></font>
 <p>
-To je normální a stává se to proto, e mezi okamikem kdy Audacity zaène pøehrávat a okamikem kdy zvuk skuteènì dosáhne vašeho reproduktoru vznikne malá prodleva. Audacity ji nezkouší automaticky opravovat, take to musíte udìlat ruènì.
+To je normální a stává se to proto, e mezi okamikem kdy Audacity zaène pøehrávat a okamikem, kdy zvuk skuteènì dosáhne vašeho reproduktoru vznikne malá prodleva. Audacity ji nezkouší automaticky opravovat, take to musíte udìlat ruènì.
 <p>
-K opravì této prodlevy, pouijte nástroj "Èasovı posun" (Time Shift). Posouvejte jednu ze stop, dokud nebudou v souladu. Nástroj mùete pouívat a souèasnì poslouchat nahrávku.
+K opravì této prodlevy pouijte nástroj "Èasovı posun" (Time Shift). Posouvejte jednu ze stop, dokud nebudou v souladu. Nástroj mùete pouívat a souèasnì poslouchat nahrávku.
 <p>
 
 <a name="a4"></a>
@@ -201,7 +200,7 @@ K opravì této prodlevy, pouijte nástroj "Èasovı posun" (Time Shift). Posouvejte
 4.  Proè Audacity neobsahuje MP3 encoder?
 </b></font>
 <p>
-Naneštìstí je algoritmus kódování nebo vytváøení MP3 souborù patentován, a Audacity nebude moci obsahovat algoritmus pro export do MP3 bez toho aby buï byly zaplaceny poplatky nebo byl porušen zákon v mnoha zemích.
+Naneštìstí je algoritmus kódování nebo vytváøení MP3 souborù patentován. Audacity nebude moci obsahovat algoritmus pro export do MP3 bez toho, aby byly buï zaplaceny poplatky, nebo byl porušen zákon v mnoha zemích.
 <p>
 Coby s kompromisním øešením Audacity pøichází se schopností pouívat vnìjší MP3 enkodéry, které musíte stáhnout zvláš. Je na vás, abyste se ujistili, e jste v souladu s licenèními omezeními, která MP3 enkodéry vyadují.
 <p>
@@ -215,7 +214,7 @@ Další informace získáte na stránce Export do souborù MP3 v naší on-line nápovìdì
 </b></font>
 </p><p>
 
-Automaticky ne. Vìtšina streamovaného audia, vèetnì vìtšiny hudby dodávané do programù RealOne Player, Windows Media Player, a Quicktime, je zvláš upravena aby se zabránilo nahrávání.
+Automaticky ne. Vìtšina streamovaného audia, vèetnì vìtšiny hudby dodávané do programù RealOne Player, Windows Media Player a Quicktime, je zvláš upravena aby se zabránilo nahrávání.
 </p><p>
 Stále je však monost nahrát cokoliv, co váš poèítaè mùe pøehrát pomocí smyèky z vıstupu vaší zvukové karty do jejího vstupu (konektory jack vzadu na poèítaèi).
 </p><p>
@@ -264,10 +263,10 @@ Metoda 2: Smazat a vrátit
 <p>
 Metoda 3: Rozdìlit a exportovat
 </p><ul>
-<li>Vyberte to co má podle vás bıt první stopou.
+<li>Vyberte to, co má podle vás bıt první stopou.
 </li><li>Zvolte "Rozdìlit" z menu Úpravy, co pøesune vıbìr do zvláštní stopy uvnitø Audacity.
 </li><li>Provádìjte toté, dokud všechny skladby nejsou v oddìlenıch stopách. Nezapomeòte, e pokud udìláte nìjakou chybu, mùete jakıkoliv krok vrátit zpìt.
-</li><li>Nyní se vrate zpìt a pomocí funce "Exportovat jako WAV" ukládejte kadou stopu do zvláštního souboru. Stopy lze rychle vybírat kliknutím na jejich jmenovku (kamkoliv pod titulek nalevo od grafické køivky).
+</li><li>Nyní se vrate zpìt a pomocí funce "Exportovat jako WAV" ukládejte kadou stopu do zvláštního souboru. Stopy lze rychle vybírat kliknutím na jejich jmenovku (kamkoliv pod titulek, nalevo od grafické køivky).
 </li></ul>
 <p>
 
@@ -280,7 +279,7 @@ Audacity neextrahuje skladby z audio CD. K tomu musíte pouít program zvanı "rip
 </p><p>
 Pro Windows doporuèujeme <a href="http://cdexos.sourceforge.net/">CDex</a>.
 </p><p>
-Pro Mac OS (9 a X), doporuèujeme <a href="http://www.apple.com/itunes/">iTunes</a> od Apple.
+Pro Mac OS (9 a X) doporuèujeme <a href="http://www.apple.com/itunes/">iTunes</a> od Apple.
 </p><p>
 V Linuxu mùete zkusit program <a href="http://www.xiph.org/paranoia/">Paranoia</a>.<br>
 <!-- Translators note: -->

@@ -1,6 +1,6 @@
 <?php
 $charset = "windows-1250";
-$translatorName = "Ales Tosovsky";
+$translatorName = "Ales Tosovsky, language corrections by Vladimir Krupka";
 $languageStr = "Czech";
 $metaDescription = "Audacity, svobodný multiplatformní editor digitálního audia";
 $helpSectionStr = "Nápovìda";
