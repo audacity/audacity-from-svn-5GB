@@ -180,6 +180,10 @@ pascal OSErr AEOpenFiles(const AppleEvent * theAppleEvent,
 }
 #endif
 
+BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+    EVT_CHAR(AudacityApp::OnKey)
+END_EVENT_TABLE()
+
 // The `main program' equivalent, creating the windows and returning the
 // main frame
 bool AudacityApp::OnInit()
@@ -323,6 +327,38 @@ bool AudacityApp::OnInit()
    #endif // not Mac OS X
 
    return TRUE;
+}
+
+void AudacityApp::OnKey(wxKeyEvent& event)
+{
+   AudacityProject *audacityPrj = GetActiveProject();
+   wxString newStr = "";
+
+   long key = event.GetKeyCode();
+
+   if(event.ControlDown())
+      newStr += "Ctrl+";
+
+   if(event.AltDown())
+      newStr += "Alt+";
+
+   if(event.ShiftDown())
+      newStr += "Shift+";
+
+   if (event.ControlDown() && key >= 1 && key <= 26)
+      newStr += (char)(64 + key);
+   else if (key >= 33 && key <= 126)
+      newStr += (char)key;
+   else if (key == WXK_BACK)
+      newStr = "Backspace";
+   else if (key == WXK_DELETE)
+      newStr = "Delete";
+   else if (key == WXK_SPACE)
+      newStr = "Spacebar";
+   else
+      return; // Don't change it if we don't recognize the key
+
+   (audacityPrj->*((wxEventFunction) (audacityPrj->GetCommandFunc(audacityPrj->FindCommandByCombos(newStr)))))(event);
 }
 
 int AudacityApp::OnExit()

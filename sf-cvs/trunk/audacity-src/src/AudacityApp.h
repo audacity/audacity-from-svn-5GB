@@ -22,7 +22,12 @@ class AudacityApp:public wxApp {
    bool OnInit(void);
    int OnExit(void);
 
+   void OnKey(wxKeyEvent& event);
+
  private:
    wxLocale *mLocale;
 //   wxSingleInstanceChecker *mChecker;
+
+ public:
+    DECLARE_EVENT_TABLE()
 };

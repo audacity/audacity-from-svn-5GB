@@ -180,7 +180,6 @@ enum {
 #undef AUDACITY_MENUS_GLOBALS
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
-    EVT_CHAR(AudacityProject::OnKey)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
     EVT_CLOSE(AudacityProject::OnCloseWindow)
@@ -810,42 +809,6 @@ void AudacityProject::OnPaint(wxPaintEvent & event)
    AColor::Medium(&dc, false);
    dc.DrawRectangle(f);
    AColor::Bevel(dc, true, f);
-}
-
-void AudacityProject::OnKey(wxKeyEvent& event)
-{
-   wxString newStr = "";
-
-   long key = event.GetKeyCode();
-
-   if(event.ControlDown())
-      newStr += "Ctrl+";
-
-   if(event.AltDown())
-      newStr += "Alt+";
-
-   if(event.ShiftDown())
-      newStr += "Shift+";
-
-   if (event.ControlDown() && key >= 1 && key <= 26)
-      newStr += (char)(64 + key);
-   else if (key >= 33 && key <= 126)
-      newStr += (char)key;
-   else if (key == WXK_BACK)
-      newStr = "Backspace";
-   else if (key == WXK_DELETE)
-      newStr = "Delete";
-   else if (key == WXK_SPACE)
-      newStr = "Spacebar";
-   else
-   {
-      event.Skip();
-      return; // Don't change it if we don't recognize the key
-   }
-
-   (this->*((wxEventFunction) (GetCommandFunc(FindCommandByCombos(newStr)))))(event);
-
-   event.Skip();
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
