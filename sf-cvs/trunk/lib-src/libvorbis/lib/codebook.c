@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: basic codebook pack/unpack/code/decode operations
- last mod: $Id: codebook.c,v 1.1.1.1 2001-08-14 19:04:28 habes Exp $
+ last mod: $Id: codebook.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  ********************************************************************/
 
@@ -148,7 +148,7 @@ int vorbis_staticbook_pack(const static_codebook *c,oggpack_buffer *opb){
    readies the codebook auxiliary structures for decode *************/
 int vorbis_staticbook_unpack(oggpack_buffer *opb,static_codebook *s){
   long i,j;
-  memset(s,0,sizeof(static_codebook));
+  memset(s,0,sizeof(*s));
   s->allocedp=1;
 
   /* make sure alignment is correct */
@@ -160,10 +160,10 @@ int vorbis_staticbook_unpack(oggpack_buffer *opb,static_codebook *s){
   if(s->entries==-1)goto _eofout;
 
   /* codeword ordering.... length ordered or unordered? */
-  switch(oggpack_read(opb,1)){
+  switch((int)oggpack_read(opb,1)){
   case 0:
     /* unordered */
-    s->lengthlist=_ogg_malloc(sizeof(long)*s->entries);
+    s->lengthlist=_ogg_malloc(sizeof(*s->lengthlist)*s->entries);
 
     /* allocated but unused entries? */
     if(oggpack_read(opb,1)){
@@ -191,12 +191,12 @@ int vorbis_staticbook_unpack(oggpack_buffer *opb,static_codebook *s){
     /* ordered */
     {
       long length=oggpack_read(opb,5)+1;
-      s->lengthlist=_ogg_malloc(sizeof(long)*s->entries);
+      s->lengthlist=_ogg_malloc(sizeof(*s->lengthlist)*s->entries);
 
       for(i=0;i<s->entries;){
 	long num=oggpack_read(opb,_ilog(s->entries-i));
 	if(num==-1)goto _eofout;
-	for(j=0;j<num;j++,i++)
+	for(j=0;j<num && i<s->entries;j++,i++)
 	  s->lengthlist[i]=length;
 	length++;
       }
@@ -222,7 +222,7 @@ int vorbis_staticbook_unpack(oggpack_buffer *opb,static_codebook *s){
     s->q_sequencep=oggpack_read(opb,1);
 
     {
-      int quantvals;
+      int quantvals=0;
       switch(s->maptype){
       case 1:
 	quantvals=_book_maptype1_quantvals(s);
@@ -233,11 +233,11 @@ int vorbis_staticbook_unpack(oggpack_buffer *opb,static_codebook *s){
       }
       
       /* quantized values */
-      s->quantlist=_ogg_malloc(sizeof(long)*quantvals);
+      s->quantlist=_ogg_malloc(sizeof(*s->quantlist)*quantvals);
       for(i=0;i<quantvals;i++)
 	s->quantlist[i]=oggpack_read(opb,s->q_quant);
       
-      if(s->quantlist[quantvals-1]==-1)goto _eofout;
+      if(quantvals&&s->quantlist[quantvals-1]==-1)goto _eofout;
     }
     break;
   default:
@@ -327,7 +327,7 @@ long vorbis_book_decode(codebook *book, oggpack_buffer *b){
   }
 
   do{
-    switch(oggpack_read1(b)){
+    switch((int)oggpack_read1(b)){
     case 0:
       ptr=t->ptr0[ptr];
       break;
@@ -344,8 +344,8 @@ long vorbis_book_decode(codebook *book, oggpack_buffer *b){
 /* returns 0 on OK or -1 on eof *************************************/
 long vorbis_book_decodevs_add(codebook *book,float *a,oggpack_buffer *b,int n){
   int step=n/book->dim;
-  long *entry = alloca(sizeof(long)*step);
-  float **t = alloca(sizeof(float *)*step);
+  long *entry = alloca(sizeof(*entry)*step);
+  float **t = alloca(sizeof(*t)*step);
   int i,j,o;
 
   for (i = 0; i < step; i++) {
@@ -377,7 +377,7 @@ long vorbis_book_decodev_add(codebook *book,float *a,oggpack_buffer *b,int n){
       if(entry==-1)return(-1);
       t     = book->valuelist+entry*book->dim;
       j=0;
-      switch(book->dim){
+      switch((int)book->dim){
       case 8:
 	a[i++]+=t[j++];
       case 7:
@@ -418,7 +418,7 @@ long vorbis_book_decodev_set(codebook *book,float *a,oggpack_buffer *b,int n){
 
 long vorbis_book_decodevv_add(codebook *book,float **a,long offset,int ch,
 			      oggpack_buffer *b,int n){
-  long i,j,k,entry;
+  long i,j,entry;
   int chptr=0;
 
   for(i=offset/ch;i<(offset+n)/ch;){
@@ -523,10 +523,10 @@ int main(){
   while(testlist[ptr]){
     codebook c;
     static_codebook s;
-    float *qv=alloca(sizeof(float)*TESTSIZE);
-    float *iv=alloca(sizeof(float)*TESTSIZE);
-    memcpy(qv,testvec[ptr],sizeof(float)*TESTSIZE);
-    memset(iv,0,sizeof(float)*TESTSIZE);
+    float *qv=alloca(sizeof(*qv)*TESTSIZE);
+    float *iv=alloca(sizeof(*iv)*TESTSIZE);
+    memcpy(qv,testvec[ptr],sizeof(*qv)*TESTSIZE);
+    memset(iv,0,sizeof(*iv)*TESTSIZE);
 
     fprintf(stderr,"\tpacking/coding %ld... ",ptr);
 

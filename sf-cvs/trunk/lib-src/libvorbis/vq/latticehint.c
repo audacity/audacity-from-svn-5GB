@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: utility main for building thresh/pigeonhole encode hints
- last mod: $Id: latticehint.c,v 1.1.1.1 2001-08-14 19:04:44 habes Exp $
+ last mod: $Id: latticehint.c,v 1.1.1.2 2002-04-21 23:36:53 habes Exp $
 
  ********************************************************************/
 
@@ -209,6 +209,7 @@ int main(int argc,char *argv[]){
   }
 
   /* Do we want to gen a pigeonhole hint? */
+#if 0
   for(i=0;i<entries;i++)if(c->lengthlist[i]==0)break;
   if(c->q_sequencep || i<entries){
     long **tempstack;
@@ -420,6 +421,7 @@ int main(int argc,char *argv[]){
       }
     }
   }
+#endif
 
   write_codebook(stdout,name,c); 
   fprintf(stderr,"\r                                                     "

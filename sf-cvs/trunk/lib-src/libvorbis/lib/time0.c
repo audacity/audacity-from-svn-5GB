@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: time backend 0 (dummy)
- last mod: $Id: time0.c,v 1.1.1.1 2001-08-14 19:04:27 habes Exp $
+ last mod: $Id: time0.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
  ********************************************************************/
 

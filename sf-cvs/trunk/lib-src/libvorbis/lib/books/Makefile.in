@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -64,15 +64,20 @@ CC = @CC@
 CPP = @CPP@
 DEBUG = @DEBUG@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
+STRIP = @STRIP@
 VERSION = @VERSION@
 VE_LIB_AGE = @VE_LIB_AGE@
 VE_LIB_CURRENT = @VE_LIB_CURRENT@
@@ -86,8 +91,7 @@ V_LIB_REVISION = @V_LIB_REVISION@
 pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign
-
-EXTRA_DIST = line_1024x31_0sub0.vqh line_1024x31_0sub1.vqh line_1024x31_1sub0.vqh line_1024x31_1sub1.vqh line_1024x31_2sub1.vqh line_1024x31_2sub2.vqh line_1024x31_2sub3.vqh line_1024x31_3sub1.vqh line_1024x31_3sub2.vqh line_1024x31_3sub3.vqh line_1024x31_class0.vqh line_1024x31_class1.vqh line_1024x31_class2.vqh line_1024x31_class3.vqh line_128x19_0sub0.vqh line_128x19_1sub1.vqh line_128x19_1sub2.vqh line_128x19_1sub3.vqh line_128x19_2sub1.vqh line_128x19_2sub2.vqh line_128x19_2sub3.vqh line_128x19_class1.vqh line_128x19_class2.vqh line_128x7_0sub0.vqh line_128x7_1sub1.vqh line_128x7_1sub2.vqh line_128x7_1sub3.vqh line_128x7_2sub1.vqh line_128x7_2sub2.vqh line_128x7_2sub3.vqh line_128x7_class1.vqh line_128x7_class2.vqh lsp12_0.vqh lsp12_1.vqh lsp30_0.vqh lsp30_1.vqh lsp9_0.vqh lsp9_1.vqh res_22c_Z_1024aux.vqh res_22c_Z_128aux.vqh res_32c_Z_1024aux.vqh res_32c_Z_128aux.vqh res_44_A_1024aux.vqh res_44_A_128aux.vqh res_44_B_1024aux.vqh res_44_B_128aux.vqh res_44c_A_1024aux.vqh res_44c_A_128aux.vqh res_44c_B_1024aux.vqh res_44c_B_128aux.vqh res_44c_C_1024aux.vqh res_44c_C_128aux.vqh res_44c_E_1024aux.vqh res_44c_E_128aux.vqh res_44c_X_1024aux.vqh res_44c_X_128aux.vqh res_44c_Y_1024aux.vqh res_44c_Y_128aux.vqh res_44c_Z_1024aux.vqh res_44c_Z_128aux.vqh res_44_Y_1024aux.vqh res_44_Y_128aux.vqh res_44_Z_1024aux.vqh res_44_Z_128aux.vqh res_Ac_1024_1.vqh res_Ac_1024_2.vqh res_Ac_1024_3.vqh res_Ac_1024_4.vqh res_Ac_1024_5.vqh res_Ac_1024_6.vqh res_Ac_1024_7a.vqh res_Ac_1024_7.vqh res_Ac_1024_8a.vqh res_Ac_1024_8.vqh res_Ac_1024_9a.vqh res_Ac_1024_9b.vqh res_Ac_1024_9.vqh res_Ac_1.vqh res_Ac_2.vqh res_Ac_3.vqh res_Ac_4.vqh res_Ac_5.vqh res_Ac_6.vqh res_Ac_7a.vqh res_Ac_7.vqh res_Ac_8a.vqh res_Ac_8.vqh res_Ac_9a.vqh res_Ac_9b.vqh res_Ac_9.vqh res_B_1.vqh res_B_2.vqh res_B_3.vqh res_B_4.vqh res_B_5a.vqh res_B_5.vqh res_B_6a.vqh res_B_6b.vqh res_B_6.vqh res_Bc_1.vqh res_Bc_2.vqh res_Bc_3.vqh res_Bc_4.vqh res_Bc_5.vqh res_Bc_6.vqh res_Bc_7a.vqh res_Bc_7.vqh res_Bc_8a.vqh res_Bc_8.vqh res_Bc_9a.vqh res_Bc_9b.vqh res_Bc_9.vqh res_Cc_1.vqh res_Cc_2.vqh res_Cc_3.vqh res_Cc_4.vqh res_Cc_5.vqh res_Cc_6.vqh res_Cc_7.vqh res_Cc_8a.vqh res_Cc_8.vqh res_Cc_9a.vqh res_Cc_9b.vqh res_Cc_9.vqh res_Ec_1.vqh res_Ec_2.vqh res_Ec_3.vqh res_Ec_4.vqh res_Ec_5.vqh res_Ec_6.vqh res_Ec_7.vqh res_Ec_8a.vqh res_Ec_8.vqh res_Ec_9a.vqh res_Ec_9b.vqh res_Ec_9.vqh res_Xc_1.vqh res_Xc_2.vqh res_Xc_3.vqh res_Xc_4.vqh res_Xc_5.vqh res_Xc_6.vqh res_Xc_7.vqh res_Xc_8.vqh res_Xc_9a.vqh res_Xc_9b.vqh res_Xc_9.vqh res_Z_1.vqh res_Z_2.vqh res_Z_3.vqh res_Z_4.vqh res_Z_5.vqh res_Z_6a.vqh res_Z_6b.vqh res_Z_6.vqh res_Zc_1024aux.vqh res_Zc_128aux.vqh res_Zc_1.vqh res_Zc_2.vqh res_Zc_3.vqh res_Zc_4.vqh res_Zc_5.vqh res_Zc_6.vqh res_Zc_7.vqh res_Zc_8.vqh res_Zc_9a.vqh res_Zc_9b.vqh res_Zc_9.vqh temp26040.vqh
+SUBDIRS = coupled uncoupled floor
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
 DIST_COMMON =  Makefile.am Makefile.in
@@ -95,7 +99,7 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
+TAR = tar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
@@ -106,9 +110,95 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-tags: TAGS
-TAGS:
 
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+
+@SET_MAKE@
+
+all-recursive install-data-recursive install-exec-recursive \
+installdirs-recursive install-recursive uninstall-recursive  \
+check-recursive installcheck-recursive info-recursive dvi-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
+	  rev="$$subdir $$rev"; \
+	  test "$$subdir" = "." && dot_seen=yes; \
+	done; \
+	test "$$dot_seen" = "no" && rev=". $$rev"; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+   if test "$$subdir" = .; then :; else \
+	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
+   fi; \
+	done; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
@@ -125,30 +215,41 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
+	for subdir in $(SUBDIRS); do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d $(distdir)/$$subdir \
+	    || mkdir $(distdir)/$$subdir \
+	    || exit 1; \
+	    chmod 777 $(distdir)/$$subdir; \
+	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      || exit 1; \
+	  fi; \
+	done
 info-am:
-info: info-am
+info: info-recursive
 dvi-am:
-dvi: dvi-am
+dvi: dvi-recursive
 check-am: all-am
-check: check-am
+check: check-recursive
 installcheck-am:
-installcheck: installcheck-am
+installcheck: installcheck-recursive
 install-exec-am:
-install-exec: install-exec-am
+install-exec: install-exec-recursive
 
 install-data-am:
-install-data: install-data-am
+install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-install: install-am
+install: install-recursive
 uninstall-am:
-uninstall: uninstall-am
+uninstall: uninstall-recursive
 all-am: Makefile
-all-redirect: all-am
+all-redirect: all-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
-installdirs:
+installdirs: installdirs-recursive
+installdirs-am:
 
 
 mostlyclean-generic:
@@ -160,31 +261,38 @@ distclean-generic:
 	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
 
 maintainer-clean-generic:
-mostlyclean-am:  mostlyclean-generic
+mostlyclean-am:  mostlyclean-tags mostlyclean-generic
 
-mostlyclean: mostlyclean-am
+mostlyclean: mostlyclean-recursive
 
-clean-am:  clean-generic mostlyclean-am
+clean-am:  clean-tags clean-generic mostlyclean-am
 
-clean: clean-am
+clean: clean-recursive
 
-distclean-am:  distclean-generic clean-am
+distclean-am:  distclean-tags distclean-generic clean-am
 	-rm -f libtool
 
-distclean: distclean-am
+distclean: distclean-recursive
 
-maintainer-clean-am:  maintainer-clean-generic distclean-am
+maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
-maintainer-clean: maintainer-clean-am
+maintainer-clean: maintainer-clean-recursive
 
-.PHONY: tags distdir info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
-install-data-am install-data install-am install uninstall-am uninstall \
-all-redirect all-am all installdirs mostlyclean-generic \
-distclean-generic clean-generic maintainer-clean-generic clean \
-mostlyclean distclean maintainer-clean
+.PHONY: install-data-recursive uninstall-data-recursive \
+install-exec-recursive uninstall-exec-recursive installdirs-recursive \
+uninstalldirs-recursive all-recursive check-recursive \
+installcheck-recursive info-recursive dvi-recursive \
+mostlyclean-recursive distclean-recursive clean-recursive \
+maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-redirect all-am all installdirs-am \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

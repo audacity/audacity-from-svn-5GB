@@ -7,12 +7,12 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: simple utility that runs audio through the psychoacoustics
            without encoding
- last mod: $Id: psytune.c,v 1.1.1.1 2001-08-14 19:04:29 habes Exp $
+ last mod: $Id: psytune.c,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
 
  ********************************************************************/
 
@@ -51,7 +51,7 @@ static vorbis_info_psy_global _psy_set0G={
 static vp_part _vp_part0[]={
   {    1,9e10f, 9e10f,       1.f,9999.f},
   { 9999,  .75f, 9e10f,       .5f,9999.f},
-  //{ 9999, 1.5f, 9e10f,       .5f,9999.f},
+/*{ 9999, 1.5f, 9e10f,       .5f,9999.f},*/
   {   18,9e10f, 9e10f,       .5f,  30.f},
   { 9999,9e10f, 9e10f,       .5f,  30.f}
 };

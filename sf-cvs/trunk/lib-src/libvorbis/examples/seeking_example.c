@@ -7,11 +7,11 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: illustrate seeking, and test it too
- last mod: $Id: seeking_example.c,v 1.1.1.1 2001-08-14 19:04:42 habes Exp $
+ last mod: $Id: seeking_example.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
 
  ********************************************************************/
 
@@ -19,8 +19,11 @@
 #include <stdio.h>
 #include "vorbis/codec.h"
 #include "vorbis/vorbisfile.h"
-#include "../lib/misc.h"
 
+#ifdef _WIN32 /* We need the following two to set stdin/stdout to binary */
+# include <io.h>
+# include <fcntl.h>
+#endif
 
 void _verify(OggVorbis_File *ov,ogg_int64_t pos,
 	     ogg_int64_t val,ogg_int64_t pcmval,
@@ -62,6 +65,12 @@ int main(){
   ogg_int64_t pcmlength;
   char *bigassbuffer;
   int dummy;
+
+#ifdef _WIN32 /* We need to set stdin/stdout to binary mode. Damn windows. */
+  _setmode( _fileno( stdin ), _O_BINARY );
+  _setmode( _fileno( stdout ), _O_BINARY );
+#endif
+
 
   /* open the file/pipe on stdin */
   if(ov_open(stdin,&ov,NULL,-1)<0){

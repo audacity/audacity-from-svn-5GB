@@ -7,13 +7,13 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: *unnormalized* fft transform
- last mod: $Id: smallft.c,v 1.1.1.1 2001-08-14 19:04:26 habes Exp $
+ last mod: $Id: smallft.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
 
-********************************************************************/
+ ********************************************************************/
 
 /* FFT implementation from OggSquish, minus cosine transforms,
  * minus all but radix 2/4 case.  In Vorbis we only need this
@@ -1240,8 +1240,8 @@ void drft_backward(drft_lookup *l,float *data){
 
 void drft_init(drft_lookup *l,int n){
   l->n=n;
-  l->trigcache=_ogg_calloc(3*n,sizeof(float));
-  l->splitcache=_ogg_calloc(32,sizeof(int));
+  l->trigcache=_ogg_calloc(3*n,sizeof(*l->trigcache));
+  l->splitcache=_ogg_calloc(32,sizeof(*l->splitcache));
   fdrffti(n, l->trigcache, l->splitcache);
 }
 
@@ -1249,6 +1249,6 @@ void drft_clear(drft_lookup *l){
   if(l){
     if(l->trigcache)_ogg_free(l->trigcache);
     if(l->splitcache)_ogg_free(l->splitcache);
-    memset(l,0,sizeof(drft_lookup));
+    memset(l,0,sizeof(*l));
   }
 }

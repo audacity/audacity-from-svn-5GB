@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -64,15 +64,20 @@ CC = @CC@
 CPP = @CPP@
 DEBUG = @DEBUG@
 DLLTOOL = @DLLTOOL@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 MAKEINFO = @MAKEINFO@
 OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
 OGG_CFLAGS = @OGG_CFLAGS@
 OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
 PROFILE = @PROFILE@
 RANLIB = @RANLIB@
+STRIP = @STRIP@
 VERSION = @VERSION@
 VE_LIB_AGE = @VE_LIB_AGE@
 VE_LIB_CURRENT = @VE_LIB_CURRENT@
@@ -129,56 +134,66 @@ CONFIG_CLEAN_FILES =
 
 DEFS = @DEFS@ -I. -I$(srcdir) 
 CPPFLAGS = @CPPFLAGS@
-LIBS = @LIBS@
-lspvqtrain_OBJECTS =  lspdata.o train.o vqgen.o bookutil.o
+lspvqtrain_OBJECTS =  lspdata.$(OBJEXT) train.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 lspvqtrain_LDADD = $(LDADD)
 lspvqtrain_DEPENDENCIES =  ../lib/libvorbis.la
 lspvqtrain_LDFLAGS = 
-genericvqtrain_OBJECTS =  genericdata.o train.o vqgen.o bookutil.o
+genericvqtrain_OBJECTS =  genericdata.$(OBJEXT) train.$(OBJEXT) \
+vqgen.$(OBJEXT) bookutil.$(OBJEXT)
 genericvqtrain_LDADD = $(LDADD)
 genericvqtrain_DEPENDENCIES =  ../lib/libvorbis.la
 genericvqtrain_LDFLAGS = 
-residuevqtrain_OBJECTS =  residuedata.o train.o vqgen.o bookutil.o
+residuevqtrain_OBJECTS =  residuedata.$(OBJEXT) train.$(OBJEXT) \
+vqgen.$(OBJEXT) bookutil.$(OBJEXT)
 residuevqtrain_LDADD = $(LDADD)
 residuevqtrain_DEPENDENCIES =  ../lib/libvorbis.la
 residuevqtrain_LDFLAGS = 
-vqbuild_OBJECTS =  build.o vqgen.o bookutil.o vqsplit.o
+vqbuild_OBJECTS =  build.$(OBJEXT) vqgen.$(OBJEXT) bookutil.$(OBJEXT) \
+vqsplit.$(OBJEXT)
 vqbuild_LDADD = $(LDADD)
 vqbuild_DEPENDENCIES =  ../lib/libvorbis.la
 vqbuild_LDFLAGS = 
-vqcascade_OBJECTS =  run.o cascade.o vqgen.o bookutil.o
+vqcascade_OBJECTS =  run.$(OBJEXT) cascade.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 vqcascade_LDADD = $(LDADD)
 vqcascade_DEPENDENCIES =  ../lib/libvorbis.la
 vqcascade_LDFLAGS = 
-vqmetrics_OBJECTS =  run.o metrics.o vqgen.o bookutil.o
+vqmetrics_OBJECTS =  run.$(OBJEXT) metrics.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 vqmetrics_LDADD = $(LDADD)
 vqmetrics_DEPENDENCIES =  ../lib/libvorbis.la
 vqmetrics_LDFLAGS = 
-latticebuild_OBJECTS =  latticebuild.o vqgen.o bookutil.o
+latticebuild_OBJECTS =  latticebuild.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 latticebuild_LDADD = $(LDADD)
 latticebuild_DEPENDENCIES =  ../lib/libvorbis.la
 latticebuild_LDFLAGS = 
-latticepare_OBJECTS =  latticepare.o vqgen.o bookutil.o vqsplit.o
+latticepare_OBJECTS =  latticepare.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT) vqsplit.$(OBJEXT)
 latticepare_LDADD = $(LDADD)
 latticepare_DEPENDENCIES =  ../lib/libvorbis.la
 latticepare_LDFLAGS = 
-latticehint_OBJECTS =  latticehint.o bookutil.o
+latticehint_OBJECTS =  latticehint.$(OBJEXT) bookutil.$(OBJEXT)
 latticehint_LDADD = $(LDADD)
 latticehint_DEPENDENCIES =  ../lib/libvorbis.la
 latticehint_LDFLAGS = 
-latticetune_OBJECTS =  latticetune.o vqgen.o bookutil.o
+latticetune_OBJECTS =  latticetune.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 latticetune_LDADD = $(LDADD)
 latticetune_DEPENDENCIES =  ../lib/libvorbis.la
 latticetune_LDFLAGS = 
-huffbuild_OBJECTS =  huffbuild.o vqgen.o bookutil.o
+huffbuild_OBJECTS =  huffbuild.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 huffbuild_LDADD = $(LDADD)
 huffbuild_DEPENDENCIES =  ../lib/libvorbis.la
 huffbuild_LDFLAGS = 
-residuesplit_OBJECTS =  residuesplit.o vqgen.o bookutil.o
+residuesplit_OBJECTS =  residuesplit.$(OBJEXT) vqgen.$(OBJEXT) \
+bookutil.$(OBJEXT)
 residuesplit_LDADD = $(LDADD)
 residuesplit_DEPENDENCIES =  ../lib/libvorbis.la
 residuesplit_LDFLAGS = 
-distribution_OBJECTS =  distribution.o bookutil.o
+distribution_OBJECTS =  distribution.$(OBJEXT) bookutil.$(OBJEXT)
 distribution_LDADD = $(LDADD)
 distribution_DEPENDENCIES =  ../lib/libvorbis.la
 distribution_LDFLAGS = 
@@ -192,14 +207,14 @@ DIST_COMMON =  Makefile.am Makefile.in
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = gtar
+TAR = tar
 GZIP_ENV = --best
 SOURCES = $(lspvqtrain_SOURCES) $(genericvqtrain_SOURCES) $(residuevqtrain_SOURCES) $(vqbuild_SOURCES) $(vqcascade_SOURCES) $(vqmetrics_SOURCES) $(latticebuild_SOURCES) $(latticepare_SOURCES) $(latticehint_SOURCES) $(latticetune_SOURCES) $(huffbuild_SOURCES) $(residuesplit_SOURCES) $(distribution_SOURCES)
 OBJECTS = $(lspvqtrain_OBJECTS) $(genericvqtrain_OBJECTS) $(residuevqtrain_OBJECTS) $(vqbuild_OBJECTS) $(vqcascade_OBJECTS) $(vqmetrics_OBJECTS) $(latticebuild_OBJECTS) $(latticepare_OBJECTS) $(latticehint_OBJECTS) $(latticetune_OBJECTS) $(huffbuild_OBJECTS) $(residuesplit_OBJECTS) $(distribution_OBJECTS)
 
 all: all-redirect
 .SUFFIXES:
-.SUFFIXES: .S .c .lo .o .s
+.SUFFIXES: .S .c .lo .o .obj .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps vq/Makefile
 
@@ -211,6 +226,11 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 .c.o:
 	$(COMPILE) -c $<
 
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
 .s.o:
 	$(COMPILE) -c $<
 
@@ -219,6 +239,7 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 
 mostlyclean-compile:
 	-rm -f *.o core *.core
+	-rm -f *.$(OBJEXT)
 
 clean-compile:
 
@@ -246,56 +267,56 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
-lspvqtrain: $(lspvqtrain_OBJECTS) $(lspvqtrain_DEPENDENCIES)
-	@rm -f lspvqtrain
+lspvqtrain$(EXEEXT): $(lspvqtrain_OBJECTS) $(lspvqtrain_DEPENDENCIES)
+	@rm -f lspvqtrain$(EXEEXT)
 	$(LINK) $(lspvqtrain_LDFLAGS) $(lspvqtrain_OBJECTS) $(lspvqtrain_LDADD) $(LIBS)
 
-genericvqtrain: $(genericvqtrain_OBJECTS) $(genericvqtrain_DEPENDENCIES)
-	@rm -f genericvqtrain
+genericvqtrain$(EXEEXT): $(genericvqtrain_OBJECTS) $(genericvqtrain_DEPENDENCIES)
+	@rm -f genericvqtrain$(EXEEXT)
 	$(LINK) $(genericvqtrain_LDFLAGS) $(genericvqtrain_OBJECTS) $(genericvqtrain_LDADD) $(LIBS)
 
-residuevqtrain: $(residuevqtrain_OBJECTS) $(residuevqtrain_DEPENDENCIES)
-	@rm -f residuevqtrain
+residuevqtrain$(EXEEXT): $(residuevqtrain_OBJECTS) $(residuevqtrain_DEPENDENCIES)
+	@rm -f residuevqtrain$(EXEEXT)
 	$(LINK) $(residuevqtrain_LDFLAGS) $(residuevqtrain_OBJECTS) $(residuevqtrain_LDADD) $(LIBS)
 
-vqbuild: $(vqbuild_OBJECTS) $(vqbuild_DEPENDENCIES)
-	@rm -f vqbuild
+vqbuild$(EXEEXT): $(vqbuild_OBJECTS) $(vqbuild_DEPENDENCIES)
+	@rm -f vqbuild$(EXEEXT)
 	$(LINK) $(vqbuild_LDFLAGS) $(vqbuild_OBJECTS) $(vqbuild_LDADD) $(LIBS)
 
-vqcascade: $(vqcascade_OBJECTS) $(vqcascade_DEPENDENCIES)
-	@rm -f vqcascade
+vqcascade$(EXEEXT): $(vqcascade_OBJECTS) $(vqcascade_DEPENDENCIES)
+	@rm -f vqcascade$(EXEEXT)
 	$(LINK) $(vqcascade_LDFLAGS) $(vqcascade_OBJECTS) $(vqcascade_LDADD) $(LIBS)
 
-vqmetrics: $(vqmetrics_OBJECTS) $(vqmetrics_DEPENDENCIES)
-	@rm -f vqmetrics
+vqmetrics$(EXEEXT): $(vqmetrics_OBJECTS) $(vqmetrics_DEPENDENCIES)
+	@rm -f vqmetrics$(EXEEXT)
 	$(LINK) $(vqmetrics_LDFLAGS) $(vqmetrics_OBJECTS) $(vqmetrics_LDADD) $(LIBS)
 
-latticebuild: $(latticebuild_OBJECTS) $(latticebuild_DEPENDENCIES)
-	@rm -f latticebuild
+latticebuild$(EXEEXT): $(latticebuild_OBJECTS) $(latticebuild_DEPENDENCIES)
+	@rm -f latticebuild$(EXEEXT)
 	$(LINK) $(latticebuild_LDFLAGS) $(latticebuild_OBJECTS) $(latticebuild_LDADD) $(LIBS)
 
-latticepare: $(latticepare_OBJECTS) $(latticepare_DEPENDENCIES)
-	@rm -f latticepare
+latticepare$(EXEEXT): $(latticepare_OBJECTS) $(latticepare_DEPENDENCIES)
+	@rm -f latticepare$(EXEEXT)
 	$(LINK) $(latticepare_LDFLAGS) $(latticepare_OBJECTS) $(latticepare_LDADD) $(LIBS)
 
-latticehint: $(latticehint_OBJECTS) $(latticehint_DEPENDENCIES)
-	@rm -f latticehint
+latticehint$(EXEEXT): $(latticehint_OBJECTS) $(latticehint_DEPENDENCIES)
+	@rm -f latticehint$(EXEEXT)
 	$(LINK) $(latticehint_LDFLAGS) $(latticehint_OBJECTS) $(latticehint_LDADD) $(LIBS)
 
-latticetune: $(latticetune_OBJECTS) $(latticetune_DEPENDENCIES)
-	@rm -f latticetune
+latticetune$(EXEEXT): $(latticetune_OBJECTS) $(latticetune_DEPENDENCIES)
+	@rm -f latticetune$(EXEEXT)
 	$(LINK) $(latticetune_LDFLAGS) $(latticetune_OBJECTS) $(latticetune_LDADD) $(LIBS)
 
-huffbuild: $(huffbuild_OBJECTS) $(huffbuild_DEPENDENCIES)
-	@rm -f huffbuild
+huffbuild$(EXEEXT): $(huffbuild_OBJECTS) $(huffbuild_DEPENDENCIES)
+	@rm -f huffbuild$(EXEEXT)
 	$(LINK) $(huffbuild_LDFLAGS) $(huffbuild_OBJECTS) $(huffbuild_LDADD) $(LIBS)
 
-residuesplit: $(residuesplit_OBJECTS) $(residuesplit_DEPENDENCIES)
-	@rm -f residuesplit
+residuesplit$(EXEEXT): $(residuesplit_OBJECTS) $(residuesplit_DEPENDENCIES)
+	@rm -f residuesplit$(EXEEXT)
 	$(LINK) $(residuesplit_LDFLAGS) $(residuesplit_OBJECTS) $(residuesplit_LDADD) $(LIBS)
 
-distribution: $(distribution_OBJECTS) $(distribution_DEPENDENCIES)
-	@rm -f distribution
+distribution$(EXEEXT): $(distribution_OBJECTS) $(distribution_DEPENDENCIES)
+	@rm -f distribution$(EXEEXT)
 	$(LINK) $(distribution_LDFLAGS) $(distribution_OBJECTS) $(distribution_LDADD) $(LIBS)
 
 tags: TAGS

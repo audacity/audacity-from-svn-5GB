@@ -1,5 +1,9 @@
+;
 ; vorbisfile.def
-LIBRARY vorbisfile
+;
+; last modified: $Id: vorbisfile.def,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
+;
+LIBRARY
 EXPORTS
 ov_clear
 ov_open

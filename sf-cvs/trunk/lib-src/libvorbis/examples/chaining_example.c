@@ -7,20 +7,32 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: illustrate simple use of chained bitstream and vorbisfile.a
- last mod: $Id: chaining_example.c,v 1.1.1.1 2001-08-14 19:04:42 habes Exp $
+ last mod: $Id: chaining_example.c,v 1.1.1.2 2002-04-21 23:36:52 habes Exp $
 
  ********************************************************************/
 
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
+#ifdef _WIN32 /* We need the following two to set stdin/stdout to binary */
+#include <io.h>
+#include <fcntl.h>
+#endif
+
 int main(){
   OggVorbis_File ov;
   int i;
+
+#ifdef _WIN32 /* We need to set stdin/stdout to binary mode. Damn windows. */
+  /* Beware the evil ifdef. We avoid these where we can, but this one we 
+     cannot. Don't add any more, you'll probably go to hell if you do. */
+  _setmode( _fileno( stdin ), _O_BINARY );
+  _setmode( _fileno( stdout ), _O_BINARY );
+#endif
 
   /* open the file/pipe on stdin */
   if(ov_open(stdin,&ov,NULL,-1)<0){
@@ -48,23 +60,11 @@ int main(){
 	   ov_serialnumber(&ov,i));
     printf("\t\theader length: %ld bytes\n",(long)
 	   (ov.dataoffsets[i]-ov.offsets[i]));
-    printf("\t\tcompressed length: %ld bytes ",(long)(ov_raw_total(&ov,i)));
-    printf(" play time: %lds\n",(long)ov_time_total(&ov,i));
+    printf("\t\tcompressed length: %ld bytes\n",(long)(ov_raw_total(&ov,i)));
+    printf("\t\tplay time: %lds\n",(long)ov_time_total(&ov,i));
   }
 
   ov_clear(&ov);
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -7,12 +7,12 @@
  *                                                                  *
  * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
-
+ *                                                                  *
  ********************************************************************
 
  function: libvorbis backend and mapping structures; needed for 
            static mode headers
- last mod: $Id: backends.h,v 1.1.1.1 2001-08-14 19:04:28 habes Exp $
+ last mod: $Id: backends.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
 
  ********************************************************************/
 
@@ -130,7 +130,7 @@ typedef struct{
   long **(*class)      (struct vorbis_block *,vorbis_look_residue *,
 			float **,int *,int);
   int  (*forward)      (struct vorbis_block *,vorbis_look_residue *,
-			float **,float **,int *,int,int,long **);
+			float **,float **,int *,int,int,long **,ogg_uint32_t *);
   int  (*inverse)      (struct vorbis_block *,vorbis_look_residue *,
 			float **,int *,int);
 } vorbis_func_residue;
@@ -152,7 +152,6 @@ typedef struct vorbis_info_residue0{
   float  ampmax[64];       /* book amp threshholds*/
   int    subgrp[64];       /* book heuristic subgroup size */
   int    blimit[64];       /* subgroup position limits */
-  int    passlimit[32];     /* iteration limit per couple/quant pass */
 } vorbis_info_residue0;
 
 /* Mapping backend generic *****************************************/
