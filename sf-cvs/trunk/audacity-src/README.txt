@@ -180,6 +180,14 @@ New features in Audacity 1.1.3:
   * File I/O
     - Fixed some bugs relating to reading/writing audio
       files with more than 16 bits per sample.
+    - Import RAW is functional again, with a simpler GUI
+      but support for far more file formats.  The
+      autodetection algorithms are much more accurate than
+      in 1.0.
+
+  * Editing
+    - Snap-to mode, plus selection display formats for
+      common domains such as CD audio, NTSC frames, etc.
 
   * Audio I/O
     - Completely rewritten audio I/O, with lower latency
@@ -194,13 +202,7 @@ New features in Audacity 1.1.3:
     - Preliminary support for Time Tracks, for changing
       playback speed over time.
 
-  * Importing
-    - Import RAW is functional again, with a simpler GUI
-      but support for far more file formats.  The
-      autodetection algorithms are much more accurate than
-      in 1.0.
-
-  * Many bug fixes and other features, too
+  * Many more bug fixes and new features
 
 New features in Audacity 1.1.2:
   * User Interface
