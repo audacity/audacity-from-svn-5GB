@@ -105,7 +105,7 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
       lastWindow[i] = 0;
    
    while(len) {
-      unsigned int block = idealBlockLen;
+      sampleCount block = idealBlockLen;
       if (block > len)
          block = len;
       
@@ -158,8 +158,7 @@ void EffectFilter::Filter(sampleCount len,
    float *outr = new float[len];
    float *outi = new float[len];
    
-   unsigned int i;
-   
+   int i;
    for(i=0; i<len; i++)
       inr[i] = buffer[i];
 

@@ -52,7 +52,7 @@ bool EffectInvert::ProcessOne(int count, WaveTrack *t,
    float *buffer = new float[blockSize];
    
    while (len > 0) {
-      unsigned int block = t->GetBestBlockSize(s);
+      sampleCount block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 

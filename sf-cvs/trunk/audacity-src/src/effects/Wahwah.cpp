@@ -115,13 +115,13 @@ bool EffectWahwah::ProcessOne(int count, WaveTrack * t,
    float *buffer = new float[blockSize];
 
    while (len) {
-      unsigned int block = t->GetBestBlockSize(s);
+      sampleCount block = t->GetBestBlockSize(s);
       if (block > len)
          block = len;
 
       t->Get(buffer, s, block);
 
-      for (unsigned int i = 0; i < block; i++) {
+      for (int i = 0; i < block; i++) {
          in = buffer[i];
 
          if ((skipcount++) % lfoskipsamples == 0) {

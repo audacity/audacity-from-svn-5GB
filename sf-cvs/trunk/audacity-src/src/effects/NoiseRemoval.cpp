@@ -108,10 +108,9 @@ bool EffectNoiseRemoval::Process()
    
    if (doProfile) {
       for(int i=0; i<=windowSize/2; i++) {
-         float avg = sum[i] / profileCount[i];
-         float stddev = sqrt(sumsq[i] - (sum[i]*sum[i])/profileCount[i]) / profileCount[i];
-
-         noiseGate[i] = avg;
+         //float stddev = sqrt(sumsq[i] - (sum[i]*sum[i])/profileCount[i])
+         //                               / profileCount[i];
+         noiseGate[i] = sum[i] / profileCount[i]; // average
       }
       
       hasProfile = true;
@@ -145,14 +144,13 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * t,
    }
    
    while(len) {
-      int block = idealBlockLen;
+      sampleCount block = idealBlockLen;
       if (block > len)
          block = len;
       
       t->Get(buffer, s, block);
       
       for(i=0; i<block; i+=windowSize/2) {
-         int wlen = i + windowSize;
          int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;

@@ -96,7 +96,7 @@ bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
     }
 
     while(len) {
-        int block = idealBlockLen;
+        sampleCount block = idealBlockLen;
         if (block > len)
             block = len;
 
