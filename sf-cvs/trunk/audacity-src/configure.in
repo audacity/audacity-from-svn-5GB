@@ -223,9 +223,9 @@ AC_ARG_WITH(soundtouch,
 
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
-		[Make the help file "audacity-help.htb" [default=no]])],
+		[Make the help file "audacity-1.2-help.htb" [default=yes]])],
 	use_help=$withval,
-	use_help="no")
+	use_help="yes")
 
 if [[ "$use_portmixer" = "yes" ]] ; then
 	AC_DEFINE(USE_PORTMIXER, 1,	
