@@ -230,7 +230,7 @@ psf_get_format_info (SF_FORMAT_INFO *data)
 double
 psf_calc_signal_max (SF_PRIVATE *psf, int normalize)
 {	sf_count_t	position ;
-	double 		max_val = 0.0, temp, *data ;
+	double 		max_val, temp, *data ;
 	int			k, len, readcount, save_state ;
 
 	/* If the file is not seekable, there is nothing we can do. */
@@ -245,19 +245,18 @@ psf_calc_signal_max (SF_PRIVATE *psf, int normalize)
 		} ;
 
 	save_state = sf_command ((SNDFILE*) psf, SFC_GET_NORM_DOUBLE, NULL, 0) ;
-
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, normalize) ;
 
 	/* Brute force. Read the whole file and find the biggest sample. */
-	position = sf_seek ((SNDFILE*) psf, 0, SEEK_CUR) ; /* Get current position in file */
-	sf_seek ((SNDFILE*) psf, 0, SEEK_SET) ;			/* Go to start of file. */
+	/* Get current position in file */
+	position = sf_seek ((SNDFILE*) psf, 0, SEEK_CUR) ;
+	/* Go to start of file. */
+	sf_seek ((SNDFILE*) psf, 0, SEEK_SET) ;
 
-	len = sizeof (psf->buffer) / sizeof (double) ;
+	data = psf->u.dbuf ;
+	len = ARRAY_LEN (psf->u.dbuf) ;
 
-	data = (double*) psf->buffer ;
-
-	readcount = len ;
-	while (readcount > 0)
+	for (readcount = 1, max_val = 0.0 ; readcount > 0 ; /* nothing */)
 	{	readcount = sf_read_double ((SNDFILE*) psf, data, len) ;
 		for (k = 0 ; k < readcount ; k++)
 		{	temp = fabs (data [k]) ;
@@ -265,8 +264,8 @@ psf_calc_signal_max (SF_PRIVATE *psf, int normalize)
 			} ;
 		} ;
 
-	sf_seek ((SNDFILE*) psf, position, SEEK_SET) ;		/* Return to original position. */
-
+	/* Return to SNDFILE to original state. */
+	sf_seek ((SNDFILE*) psf, position, SEEK_SET) ;
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, save_state) ;
 
 	return	max_val ;
@@ -295,9 +294,9 @@ psf_calc_max_all_channels (SF_PRIVATE *psf, double *peaks, int normalize)
 	position = sf_seek ((SNDFILE*) psf, 0, SEEK_CUR) ; /* Get current position in file */
 	sf_seek ((SNDFILE*) psf, 0, SEEK_SET) ;			/* Go to start of file. */
 
-	len = sizeof (psf->buffer) / sizeof (double) ;
+	len = ARRAY_LEN (psf->u.dbuf) ;
 
-	data = (double*) psf->buffer ;
+	data = psf->u.dbuf ;
 
 	chan = 0 ;
 	readcount = len ;
@@ -315,7 +314,7 @@ psf_calc_max_all_channels (SF_PRIVATE *psf, double *peaks, int normalize)
 	sf_command ((SNDFILE*) psf, SFC_SET_NORM_DOUBLE, NULL, save_state) ;
 
 	return	0 ;
-} /* psf_calc_signal_max */
+} /* psf_calc_max_all_channels */
 
 /*
 ** Do not edit or modify anything in this comment block.

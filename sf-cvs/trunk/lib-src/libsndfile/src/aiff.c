@@ -50,6 +50,7 @@
 #define SFX_MARKER	(MAKE_MARKER ('S', 'F', 'X', '!'))
 
 #define PEAK_MARKER	(MAKE_MARKER ('P', 'E', 'A', 'K'))
+#define basc_MARKER	(MAKE_MARKER ('b', 'a', 's', 'c'))
 
 /* Supported AIFC encodings.*/
 #define NONE_MARKER	(MAKE_MARKER ('N', 'O', 'N', 'E'))
@@ -85,6 +86,10 @@
 #define SIZEOF_AIFC_COMM		24
 #define SIZEOF_SSND_CHUNK		8
 #define SIZEOF_INST_CHUNK		20
+
+/* Is it constant? */
+#define SIZEOF_basc_CHUNK				0x54
+#define SIZEOF_basc_CHUNK_PADDING		66
 
 /* AIFC/IMA4 defines. */
 #define AIFC_IMA4_BLOCK_LEN				34
@@ -134,6 +139,31 @@ typedef struct
 	INST_LOOP	release_loop ;
 } INST_CHUNK ;
 
+
+enum
+{	basc_SCALE_MINOR = 1,
+	basc_SCALE_MAJOR,
+	basc_SCALE_NEITHER,
+	basc_SCALE_BOTH,
+} ;
+
+enum
+{	basc_TYPE_LOOP = 0,
+	basc_TYPE_ONE_SHOT,
+} ;
+
+
+typedef struct
+{	unsigned int	version ;
+	unsigned int	numBeats ;
+	unsigned short	rootNote ;
+	unsigned short	scaleType ;
+	unsigned short	sigNumerator ;
+	unsigned short	sigDenominator ;
+	unsigned short	loopType ;
+	char			zero_bytes [SIZEOF_basc_CHUNK_PADDING] ;
+} basc_CHUNK ;
+
 /*------------------------------------------------------------------------------
  * Private static functions.
  */
@@ -155,6 +185,7 @@ static int	aiff_command (SF_PRIVATE *psf, int command, void *data, int datasize)
 
 static const char *get_loop_mode_str (short mode) ;
 
+static int aiff_read_basc_chunk (SF_PRIVATE * psf) ;
 
 /*------------------------------------------------------------------------------
 ** Public function.
@@ -393,14 +424,14 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					psf_log_printf (psf, "  time stamp : %d\n", psf->pchunk->timestamp) ;
 					psf_log_printf (psf, "    Ch   Position       Value\n") ;
 
-					cptr = (char *) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					for (dword = 0 ; dword < psf->sf.channels ; dword++)
 					{	psf_binheader_readf (psf, "Ef4", &(psf->pchunk->peaks [dword].value),
 														&(psf->pchunk->peaks [dword].position)) ;
 
-						LSF_SNPRINTF (cptr, sizeof (psf->buffer), "    %2d   %-12d   %g\n",
+						LSF_SNPRINTF (cptr, sizeof (psf->u.scbuf), "    %2d   %-12d   %g\n",
 								dword, psf->pchunk->peaks [dword].position, psf->pchunk->peaks [dword].value) ;
-						cptr [sizeof (psf->buffer) - 1] = 0 ;
+						cptr [sizeof (psf->u.scbuf) - 1] = 0 ;
 						psf_log_printf (psf, cptr) ;
 						} ;
 
@@ -438,17 +469,16 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 
 			case c_MARKER :
 					psf_binheader_readf (psf, "E4", &dword) ;
-					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword > SIGNED_SIZEOF (psf->buffer))
+					if (dword > SIGNED_SIZEOF (psf->u.scbuf) - 1)
 					{	psf_log_printf (psf, " %M : %d (too big)\n", marker, dword) ;
 						return SFE_INTERNAL ;
 						} ;
 
-					cptr = (char*) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					psf_binheader_readf (psf, "b", cptr, dword) ;
-					cptr [dword - 1] = 0 ;
+					cptr [dword] = 0 ;
 					psf_log_printf (psf, " %M : %s\n", marker, cptr) ;
 					psf_store_string (psf, SF_STR_COPYRIGHT, cptr) ;
 					break ;
@@ -458,12 +488,12 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword > SIGNED_SIZEOF (psf->buffer))
+					if (dword > SIGNED_SIZEOF (psf->u.scbuf))
 					{	psf_log_printf (psf, " %M : %d (too big)\n", marker, dword) ;
 						return SFE_INTERNAL ;
 						} ;
 
-					cptr = (char*) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					psf_binheader_readf (psf, "b", cptr, dword) ;
 					cptr [dword - 1] = 0 ;
 					psf_log_printf (psf, " %M : %s\n", marker, cptr) ;
@@ -471,20 +501,31 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					break ;
 
 			case COMT_MARKER :
-					psf_binheader_readf (psf, "E4", &dword) ;
+				{	unsigned short count, id, len ;
+					unsigned int timestamp ;
+
+					psf_binheader_readf (psf, "E42", &dword, &count) ;
+					psf_log_printf (psf, " %M : %d\n  count  : %d\n", marker, dword, count) ;
 					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword > SIGNED_SIZEOF (psf->buffer))
-					{	psf_log_printf (psf, " %M : %d (too big)\n", marker, dword) ;
-						return SFE_INTERNAL ;
-						} ;
 
-					cptr = (char*) psf->buffer ;
-					psf_binheader_readf (psf, "b", cptr, dword) ;
-					cptr [dword - 1] = 0 ;
-					psf_log_printf (psf, " %M : %s\n", marker, cptr) ;
-					psf_store_string (psf, SF_STR_COMMENT, cptr) ;
+					for (k = 0 ; k < count ; k++)
+					{	psf_binheader_readf (psf, "E422", &timestamp, &id, &len) ;
+
+						psf_log_printf (psf, "   time   : 0x%x\n   marker : %x\n   length : %d\n", timestamp, id, len) ;
+
+						if (len + 1 > SIGNED_SIZEOF (psf->u.scbuf))
+						{	psf_log_printf (psf, "\nError : string length (%d) too big.\n", len) ;
+							return SFE_INTERNAL ;
+							} ;
+
+						cptr = psf->u.scbuf ;
+						psf_binheader_readf (psf, "b", cptr, len) ;
+						cptr [len] = 0 ;
+						psf_log_printf (psf, "   string : %s\n", cptr) ;
+						} ;
+					} ;
 					break ;
 
 			case APPL_MARKER :
@@ -492,13 +533,13 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword >= SIGNED_SIZEOF (psf->buffer))
+					if (dword >= SIGNED_SIZEOF (psf->u.scbuf))
 					{	psf_log_printf (psf, " %M : %d (too big, skipping)\n", marker, dword) ;
 						psf_binheader_readf (psf, "j", dword) ;
 						break ;
 						} ;
 
-					cptr = (char*) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					psf_binheader_readf (psf, "b", cptr, dword) ;
 					cptr [dword - 1] = 0 ;
 
@@ -517,12 +558,12 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword > SIGNED_SIZEOF (psf->buffer))
+					if (dword > SIGNED_SIZEOF (psf->u.scbuf))
 					{	psf_log_printf (psf, " %M : %d (too big)\n", marker, dword) ;
 						return SFE_INTERNAL ;
 						} ;
 
-					cptr = (char*) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					psf_binheader_readf (psf, "b", cptr, dword) ;
 					cptr [dword - 1] = 0 ;
 					psf_log_printf (psf, " %M : %s\n", marker, cptr) ;
@@ -531,18 +572,18 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 
 			case ANNO_MARKER :
 					psf_binheader_readf (psf, "E4", &dword) ;
-					dword += (dword & 1) ;
 					if (dword == 0)
 						break ;
-					if (dword > SIGNED_SIZEOF (psf->buffer))
+					if (dword > SIGNED_SIZEOF (psf->u.scbuf) - 1)
 					{	psf_log_printf (psf, " %M : %d (too big)\n", marker, dword) ;
 						return SFE_INTERNAL ;
 						} ;
 
-					cptr = (char*) psf->buffer ;
+					cptr = psf->u.scbuf ;
 					psf_binheader_readf (psf, "b", cptr, dword) ;
-					cptr [dword - 1] = 0 ;
+					cptr [dword] = 0 ;
 					psf_log_printf (psf, " %M : %s\n", marker, cptr) ;
+					psf_store_string (psf, SF_STR_COMMENT, cptr) ;
 					break ;
 
 			case INST_MARKER :
@@ -581,6 +622,21 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 						} ;
 					break ;
 
+			case basc_MARKER :
+					psf_binheader_readf (psf, "E4", &dword) ;
+
+					if (dword != SIZEOF_basc_CHUNK)
+					{	psf_log_printf (psf, " %M : %d (should be %d)\n", marker, dword, SIZEOF_basc_CHUNK) ;
+						psf_binheader_readf (psf, "j", dword) ;
+						break ;
+						} ;
+
+					psf_log_printf (psf, " basc : %u\n", dword) ;
+
+					if ((error = aiff_read_basc_chunk (psf)))
+						return error ;
+					break ;
+
 			case MARK_MARKER :
 					psf_binheader_readf (psf, "E4", &dword) ;
 					psf_log_printf (psf, " %M : %d\n", marker, dword) ;
@@ -597,8 +653,8 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 
 							pstr_len += (pstr_len & 1) + 1 ; /* fudgy, fudgy, hack, hack */
 
-							bytesread += psf_binheader_readf (psf, "b", psf->buffer, pstr_len) ;
-							psf_log_printf (psf, "   Name     : %s\n", psf->buffer) ;
+							bytesread += psf_binheader_readf (psf, "b", psf->u.scbuf, pstr_len) ;
+							psf_log_printf (psf, "   Name     : %s\n", psf->u.scbuf) ;
 
 							mark_count -- ;
 							} ;
@@ -625,7 +681,7 @@ aiff_read_header (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 					if (isprint ((marker >> 24) & 0xFF) && isprint ((marker >> 16) & 0xFF)
 						&& isprint ((marker >> 8) & 0xFF) && isprint (marker & 0xFF))
 					{	psf_binheader_readf (psf, "E4", &dword) ;
-						psf_log_printf (psf, "%M : %d (unknown marker)\n", marker, dword) ;
+						psf_log_printf (psf, " %M : %d (unknown marker)\n", marker, dword) ;
 
 						psf_binheader_readf (psf, "j", dword) ;
 						break ;
@@ -682,6 +738,8 @@ static int
 aiff_read_comm_chunk (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 {	int error = 0, bytesread, subformat ;
 
+	psf->u.scbuf [0] = 0 ;
+
 	bytesread = psf_binheader_readf (psf, "E4", &(comm_fmt->size)) ;
 
 	/* The COMM chunk has an int aligned to an odd word boundary. Some
@@ -703,11 +761,11 @@ aiff_read_comm_chunk (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 
 		bytesread += psf_binheader_readf (psf, "Em1", &(comm_fmt->encoding), &encoding_len) ;
 
-		memset (psf->buffer, 0, comm_fmt->size) ;
+		memset (psf->u.scbuf, 0, comm_fmt->size) ;
 
-		bytesread += psf_binheader_readf (psf, "b", psf->buffer,
+		bytesread += psf_binheader_readf (psf, "b", psf->u.scbuf,
 							comm_fmt->size - SIZEOF_AIFC_COMM + 1) ;
-		psf->buffer [encoding_len] = 0 ;
+		psf->u.scbuf [encoding_len] = 0 ;
 		} ;
 
 	psf_log_printf (psf, " COMM : %d\n", comm_fmt->size) ;
@@ -807,10 +865,10 @@ aiff_read_comm_chunk (SF_PRIVATE *psf, COMM_CHUNK *comm_fmt)
 			error = SFE_UNIMPLEMENTED ;
 		} ;
 
-	if (! psf->buffer [0])
+	if (! psf->u.scbuf [0])
 		psf_log_printf (psf, "  Encoding    : %M\n", comm_fmt->encoding) ;
 	else
-		psf_log_printf (psf, "  Encoding    : %M => %s\n", comm_fmt->encoding, (char*) psf->buffer) ;
+		psf_log_printf (psf, "  Encoding    : %M => %s\n", comm_fmt->encoding, psf->u.scbuf) ;
 
 	return error ;
 } /* aiff_read_comm_chunk */
@@ -1104,7 +1162,7 @@ aiff_write_strings (SF_PRIVATE *psf, int location)
 				break ;
 
 			case SF_STR_COMMENT :
-				psf_binheader_writef (psf, "Ems", COMT_MARKER, psf->strings [k].str) ;
+				psf_binheader_writef (psf, "Ems", ANNO_MARKER, psf->strings [k].str) ;
 				break ;
 
 			/*
@@ -1214,6 +1272,69 @@ uint2tenbytefloat (unsigned int num, unsigned char *bytes)
 	bytes [5] = num & 0xFF ;
 
 } /* uint2tenbytefloat */
+
+static int
+aiff_read_basc_chunk (SF_PRIVATE * psf)
+{	const char * type_str ;
+	basc_CHUNK bc ;
+
+	psf_binheader_readf (psf, "E442", &bc.version, &bc.numBeats, &bc.rootNote) ;
+	psf_binheader_readf (psf, "E222", &bc.scaleType, &bc.sigNumerator, &bc.sigDenominator) ;
+	psf_binheader_readf (psf, "E2b", &bc.loopType, &bc.zero_bytes, SIZEOF_basc_CHUNK_PADDING) ;
+
+	psf_log_printf (psf, "  Version ? : %u\n  Num Beats : %u\n  Root Note : 0x%x\n",
+						bc.version, bc.numBeats, bc.rootNote) ;
+
+	switch (bc.scaleType)
+	{	case basc_SCALE_MINOR :
+				type_str = "MINOR" ;
+				break ;
+		case basc_SCALE_MAJOR :
+				type_str = "MAJOR" ;
+				break ;
+		case basc_SCALE_NEITHER :
+				type_str = "NEITHER" ;
+				break ;
+		case basc_SCALE_BOTH :
+				type_str = "BOTH" ;
+				break ;
+		default :
+				type_str = "!!WRONG!!" ;
+				break ;
+		} ;
+
+	psf_log_printf (psf, 	"  ScaleType : 0x%x (%s)\n", bc.scaleType, type_str) ;
+	psf_log_printf (psf, 	"  Time Sig  : %d/%d\n", bc.sigNumerator, bc.sigDenominator) ;
+
+	switch (bc.loopType)
+	{	case basc_TYPE_ONE_SHOT :
+				type_str = "One Shot" ;
+				break ;
+		case basc_TYPE_LOOP :
+				type_str = "Loop" ;
+				break ;
+		default:
+				type_str = "!!WRONG!!" ;
+				break ;
+		} ;
+
+	psf_log_printf (psf, "  Loop Type : 0x%x (%s)\n", bc.loopType, type_str) ;
+
+	if ((psf->loop_info = calloc (1, sizeof (SF_LOOP_INFO))) == NULL)
+		return SFE_MALLOC_FAILED ;
+
+	psf->loop_info->time_sig_num	= bc.sigNumerator ;
+	psf->loop_info->time_sig_den	= bc.sigDenominator ;
+	psf->loop_info->loop_mode		= (bc.loopType == basc_TYPE_ONE_SHOT) ? SF_LOOP_NONE : SF_LOOP_FORWARD ;
+	psf->loop_info->num_beats		= bc.numBeats ;
+
+	/* Can always be recalculated from other known fields. */
+	psf->loop_info->bpm = (1.0 / psf->sf.frames) * psf->sf.samplerate
+							* ((bc.numBeats * 4.0) / bc.sigDenominator) * 60.0 ;
+	psf->loop_info->root_key = bc.rootNote ;
+
+	return 0 ;
+} /* aiff_read_basc_chunk */
 
 /*
 ** Do not edit or modify anything in this comment block.
