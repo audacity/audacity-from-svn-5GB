@@ -57,7 +57,10 @@ wxString DirManager::temp = (DirManager::home +
 DirManager::DirManager()
 {
   if (firstCtor) {
-	temp = gPrefs->Read("/Directories/TempDir", temp);
+	wxString tempPref = gPrefs->Read("/Directories/TempDir", temp);
+	if (tempPref == "" || tempPref[0]!='/')
+	  tempPref = temp;
+	temp = tempPref;
     if (!wxPathExists(temp))
       wxMkdir(temp);
 	gPrefs->Write("/Directories/TempDir", temp);
@@ -92,7 +95,7 @@ DirManager::~DirManager()
   numDirManagers--;
   if (numDirManagers==0) {
     CleanTempDir();
-    ::wxRmdir(temp);
+    //::wxRmdir(temp);
   }
 }
 
@@ -104,8 +107,10 @@ void DirManager::CleanTempDir()
 
   fname = wxFindFirstFile((const char *)(temp + pathChar + "*.auf"));
   while (fname != "") {
-    count++;
-    fnameList.Add(fname);
+    if (fname.Length() >= 5 && fname.Right(3)=="auf") {
+      count++;
+      fnameList.Add(fname);
+    }
     fname = wxFindNextFile();
   }
 
