@@ -61,6 +61,10 @@ VTrack *VTrack::Duplicate()
 {
   VTrack *copy = new VTrack(dirManager);
 
+  // Code duplication warning: if you add code here, you should
+  // probably add it to WaveTrack::Duplicate also, which out
+  // of necessity overrides this entire function
+
   copy->collapsedHeight = collapsedHeight;
   copy->expandedHeight = expandedHeight;
   copy->tOffset = tOffset;

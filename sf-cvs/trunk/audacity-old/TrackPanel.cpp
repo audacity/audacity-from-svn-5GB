@@ -13,6 +13,9 @@
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
 #include <wx/statusbr.h>
 
 #include "TrackPanel.h"
@@ -24,6 +27,20 @@
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
   EVT_PAINT(TrackPanel::OnPaint)
+
+  EVT_MENU(OnChannelLeftID, TrackPanel::OnChannelLeft)
+  EVT_MENU(OnChannelRightID, TrackPanel::OnChannelRight)
+  EVT_MENU(OnChannelMonoID, TrackPanel::OnChannelMono)
+
+  EVT_MENU(OnWaveformID, TrackPanel::OnWaveform)
+  EVT_MENU(OnSpectrumID, TrackPanel::OnSpectrum)
+
+  EVT_MENU(OnRate8ID, TrackPanel::OnRate8)
+  EVT_MENU(OnRate11ID, TrackPanel::OnRate11)
+  EVT_MENU(OnRate22ID, TrackPanel::OnRate22)
+  EVT_MENU(OnRate44ID, TrackPanel::OnRate44)
+  EVT_MENU(OnRate48ID, TrackPanel::OnRate48)
+  EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
 END_EVENT_TABLE()
 
 TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
@@ -51,7 +68,26 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
   mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
 
+  mChannelMenu = new wxMenu();
+  mChannelMenu->Append(OnChannelLeftID, "Left");
+  mChannelMenu->Append(OnChannelRightID, "Right");
+  mChannelMenu->Append(OnChannelMonoID, "Mono");
+
+  mRateMenu = new wxMenu();
+  mRateMenu->Append(OnRate8ID, "8000 Hz");
+  mRateMenu->Append(OnRate11ID, "11025 Hz");
+  mRateMenu->Append(OnRate22ID, "22050 Hz");
+  mRateMenu->Append(OnRate44ID, "44100 Hz");
+  mRateMenu->Append(OnRate48ID, "48000 Hz");
+  mRateMenu->Append(OnRateOtherID, "Other...");
+
+  mDisplayMenu = new wxMenu();
+  mDisplayMenu->Append(OnWaveformID, "Waveform");
+  mDisplayMenu->Append(OnSpectrumID, "Spectrum");
+
   mCapturedTrack = NULL;
+
+  mPopupMenuTarget = NULL;
 
   mTimeCount = 0;
   mTimer.parent = this;
@@ -69,6 +105,10 @@ TrackPanel::~TrackPanel()
   delete mResizeCursor;
   delete mZoomInCursor;
   delete mZoomOutCursor;
+
+  delete mChannelMenu;
+  delete mRateMenu;
+  delete mDisplayMenu;
 }
 
 void TrackPanel::SelectNone()
@@ -552,12 +592,61 @@ void TrackPanel::HandleLabelClick(wxMouseEvent& event)
 		t->selected = !t->selected;
 	  }
 	  else {
+
+		// First see if the user is clicking on a Popup menu
+
+		wxRect tempRect;
+		wxRect fieldRect;
+		wxMenu *popupMenu = NULL;
+
+		r.width++;
+		r.y-=5;
+		
+		if (GetLabelFieldRect(r, 1, true, tempRect))
+		  if (tempRect.Inside(event.m_x, event.m_y)) {
+			popupMenu = mChannelMenu;
+			fieldRect = tempRect;
+		  }
+
+		if (t->GetKind() == VTrack::Wave) {
+		  if (GetLabelFieldRect(r, 2, true, tempRect))
+			if (tempRect.Inside(event.m_x, event.m_y)) {
+			  popupMenu = mRateMenu;
+			  fieldRect = tempRect;
+			}
+		  
+		  if (GetLabelFieldRect(r, 3, true, tempRect))
+			if (tempRect.Inside(event.m_x, event.m_y)) {
+			  popupMenu = mDisplayMenu;
+			  fieldRect = tempRect;
+			}
+		}
+
+		if (popupMenu) {
+		  mPopupMenuTarget = t;
+		  
+		  wxClientDC dc(this);
+		  Bevel(dc, false, fieldRect);
+		  PopupMenu(popupMenu,
+					fieldRect.x, fieldRect.y + fieldRect.height);
+		  Bevel(dc, true, fieldRect);
+
+		  return;
+		}
+
+		// If they weren't clicking on a particular field,
+		// deselect other tracks and select this one.
+
 		SelectNone();
 		t->selected = true;
 		mViewInfo->sel0 = 0.0;
 		mViewInfo->sel1 = mTracks->GetMaxLen();
 	  }
 
+	  Refresh(false);
+	}
+	else {
+	  SelectNone();
 	  Refresh(false);
 	}
   }
@@ -883,60 +972,49 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	AColor::Medium(&dc, t->selected);
 	dc.DrawRectangle(labelRect);
 	Bevel(dc, false, labelRect);
+	labelRect.Inflate(4, 4);
 
-	int top = labelRect.y;
-	int height = labelRect.height;
-
-	wxRect titleRect = labelRect;
-	if (height > 23) {
-	  titleRect.height = 23;
-	  titleRect.Inflate(-4, -4);
+	wxRect titleRect;
+	if (GetLabelFieldRect(labelRect, 0, false, titleRect)) {
 	  Bevel(dc, false, titleRect);
-	  char str[100];
-	  sprintf(str,"Track %d", num+1);
-	  dc.DrawText(str, titleRect.x + 3, titleRect.y + 2);
-	  top += 27;
-	  height -= 27;
+	  dc.DrawText(wxString::Format("Track %d", num+1),
+				  titleRect.x + 7, titleRect.y + 2);
+	}
+	
+	wxRect channelRect;
+	if (GetLabelFieldRect(labelRect, 1, true, channelRect)) {
+	  dc.DrawText("Channel:", labelRect.x + 7, channelRect.y + 2);
+	  Bevel(dc, true, channelRect);
+	  wxString str;
+	  switch(t->channel) {
+	  case VTrack::MonoChannel: str = "Mono"; break;
+	  case VTrack::LeftChannel: str = "Left"; break;
+	  case VTrack::RightChannel: str = "Right"; break;
+	  default: str = "Other"; break;
+	  }
+	  dc.DrawText(str, channelRect.x + 3, channelRect.y + 2);	  
 	}
 
 	if (t->GetKind()==VTrack::Wave) {
-	  wxRect rateRect = labelRect;
-	  if (height > 23) {
-		rateRect.y = top;
-		rateRect.height = 23;
-		rateRect.Inflate(-4, -4);
-		dc.DrawText("Rate:", rateRect.x + 2, rateRect.y + 2);
-		rateRect.x += rateRect.width / 2;
-		rateRect.width /= 2;
+	  wxRect rateRect;
+	  if (GetLabelFieldRect(labelRect, 2, true, rateRect)) {
+		dc.DrawText("Rate:", labelRect.x + 7, rateRect.y + 2);
 		Bevel(dc, true, rateRect);
-		char str[100];
-		sprintf(str,"%d",(int)(((WaveTrack *)t)->rate + 0.5));
-		dc.DrawText(str, rateRect.x + 3, rateRect.y + 2);
-		top += 23;
-		height -= 23;
+		dc.DrawText(wxString::Format("%d",int(((WaveTrack *)t)->rate + 0.5)),
+					rateRect.x + 3, rateRect.y + 2);
 	  }
-	}
 
-	wxRect channelRect = labelRect;
-	if (channelRect.height > 23) {
-	  channelRect.y = top;
-	  channelRect.height = 23;
-	  channelRect.Inflate(-4, -4);
-	  dc.DrawText("Channel:", channelRect.x + 2, channelRect.y + 2);
-	  channelRect.x += channelRect.width / 2;
-	  channelRect.width /= 2;
-	  Bevel(dc, true, channelRect);
-	  wxString str;
-	  switch(t->channel)
-		{
-		case VTrack::MonoChannel: str = "Mono"; break;
-		case VTrack::LeftChannel: str = "Left"; break;
-		case VTrack::RightChannel: str = "Right"; break;
-		default: str = "Other"; break;
-		}
-	  dc.DrawText(str, channelRect.x + 3, channelRect.y + 2);
-	  top += 23;
-	  height -= 23;
+	  wxRect displayRect;
+	  if (GetLabelFieldRect(labelRect, 3, true, displayRect)) {
+		dc.DrawText("Display:", labelRect.x + 7, displayRect.y + 2);
+		Bevel(dc, true, displayRect);
+		wxString str;
+		if (((WaveTrack *)t)->GetDisplay() == 1)
+		  str = "Spectrm";
+		else
+		  str = "Wavefrm";
+		dc.DrawText(str, displayRect.x + 3, displayRect.y + 2);
+	  }
 	}
 
 	// Draw track area
@@ -997,6 +1075,169 @@ void TrackPanel::DrawTracks(wxDC& dc)
   dc.DrawRectangle(r);
 }
 
+void TrackPanel::OnChannelLeft()
+{
+  if (mPopupMenuTarget) {
+	mPopupMenuTarget->channel = VTrack::LeftChannel;
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnChannelRight()
+{
+  if (mPopupMenuTarget) {
+	mPopupMenuTarget->channel = VTrack::RightChannel;
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnChannelMono()
+{
+  if (mPopupMenuTarget) {
+	mPopupMenuTarget->channel = VTrack::MonoChannel;
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnWaveform()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetDisplay(0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnSpectrum()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetDisplay(1);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate8()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(8000.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate11()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(11025.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate22()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(22050.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate44()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(44100.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate48()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(48000.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRateOther()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	wxString defaultStr;
+	defaultStr.Printf("%d",(int)((WaveTrack *)mPopupMenuTarget)->rate);
+	wxString rateStr =
+	  wxGetTextFromUser("Enter a rate in Hz (samples per second):",
+						"Set Rate",
+						defaultStr);
+
+	if (rateStr != "") {
+	  double theRate;
+	  if (rateStr.ToDouble(&theRate) &&
+		  theRate>=1 &&
+		  theRate<=100000) {
+		((WaveTrack *)mPopupMenuTarget)->SetRate(theRate);
+		MakeParentPushState();
+		MakeParentRedrawScrollbars();
+		Refresh(false);
+	  }
+	  else
+		wxMessageBox("Invalid rate.");
+	}
+
+	mPopupMenuTarget = NULL;
+  }
+}
+
+bool TrackPanel::GetLabelFieldRect(wxRect &trackRect,
+					   int field, bool right,
+					   wxRect& fieldRect)
+
+{
+  // The label area on the left of each track displays many fields
+  // such as the track name, channel, rate, and display.  This routine
+  // figures out the rectangle for a particular field.
+
+  wxRect tempRect;
+
+  tempRect = trackRect;
+  tempRect.Inflate(-8, -8);
+  tempRect.y += field*21;
+  tempRect.height = 17;
+  if (right) {
+	tempRect.x += (tempRect.width/2);
+	tempRect.width -= tempRect.width/2;
+  }
+
+  // Only return true if there's actually enough room for this field
+
+  if (tempRect.y + tempRect.height + 9 < trackRect.y + trackRect.height) {
+	fieldRect = tempRect;
+	return true;
+  }
+
+  return false;
+}
+
 VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 							 wxRect *trackRect, int *trackNum)
 {
@@ -1040,6 +1281,49 @@ VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 	*trackNum = n-1;
   
   return NULL;
+}
+
+bool TrackPanel::FindTrack(VTrack *target,
+						   bool label,
+						   wxRect *trackRect, int *trackNum)
+{
+  wxRect r;
+  if (label) {
+	r.x = 0;
+	r.width = GetLabelWidth() - 1;
+  }
+  else {
+	int wid, ht;
+	r.x = GetLabelWidth() + 5;
+	GetSize(&wid, &ht);
+	r.width = wid - GetLabelWidth() - 10;
+  }
+  r.y = -mViewInfo->vpos;
+  r.y += GetRulerHeight();
+
+  VTrack *t = mTracks->First();
+
+  int n=1;
+
+  r.y += 5; // Offset top border
+  
+  while(t) {
+	r.height = t->GetHeight();
+	
+  	if (t == target) {
+      if (trackRect)
+        *trackRect = r;
+      if (trackNum)
+        *trackNum = n;
+      return true;
+    }
+
+	r.y += r.height;
+	n++;
+	t = mTracks->Next();
+  }
+
+  return false;
 }
 
 int TrackPanel::GetLabelWidth()

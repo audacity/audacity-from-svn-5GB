@@ -40,6 +40,9 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
   *left = new WaveTrack(dirManager);
   *right = new WaveTrack(dirManager);
 
+  (*left)->channel = VTrack::LeftChannel;
+  (*right)->channel = VTrack::RightChannel;
+
   wxProgressDialog *progress = NULL;
 
   wxYield();

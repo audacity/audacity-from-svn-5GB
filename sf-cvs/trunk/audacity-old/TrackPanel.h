@@ -14,6 +14,7 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 
+class wxMenu;
 class wxRect;
 class wxStatusBar;
 
@@ -25,7 +26,21 @@ enum {
 
   OnScrollLeftID,
   OnScrollRightID,
-  OnPushStateID
+  OnPushStateID,
+
+  OnChannelLeftID,
+  OnChannelRightID,
+  OnChannelMonoID,
+
+  OnRate8ID,
+  OnRate11ID,
+  OnRate22ID,
+  OnRate44ID,
+  OnRate48ID,
+  OnRateOtherID,
+
+  OnWaveformID,
+  OnSpectrumID
 };
 
 struct ViewInfo {
@@ -101,8 +116,31 @@ private:
   void MakeParentRedrawScrollbars();
   void MakeParentPushState();
 
+  void OnChannelLeft();
+  void OnChannelRight();
+  void OnChannelMono();
+
+  void OnWaveform();
+  void OnSpectrum();
+
+  void OnRate8();
+  void OnRate11();
+  void OnRate22();
+  void OnRate44();
+  void OnRate48();
+  void OnRateOther();
+
+  // Find track info by coordinate
   VTrack *FindTrack(int mouseX, int mouseY, bool label,
 					wxRect *trackRect = NULL, int *trackNum = NULL);
+
+  // Find track info by pointer
+  bool FindTrack(VTrack *target, bool label,
+				 wxRect *trackRect = NULL, int *trackNum = NULL);
+
+  bool GetLabelFieldRect(wxRect &labelRect,
+						 int field, bool rightOnly,
+						 wxRect& fieldRect);
 
   void DrawRuler(wxDC& dc);
   void DrawTracks(wxDC& dc);
@@ -147,6 +185,12 @@ private:
   wxCursor        *mSlideCursor;
   wxCursor        *mZoomInCursor;
   wxCursor        *mZoomOutCursor;
+
+  wxMenu          *mChannelMenu;
+  wxMenu          *mRateMenu;
+  wxMenu          *mDisplayMenu;
+
+  VTrack          *mPopupMenuTarget;
 
 public:
 

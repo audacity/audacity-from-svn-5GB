@@ -114,6 +114,17 @@ double WaveTrack::GetMaxLen()
   return ((double)numSamples)/(rate) + tOffset;
 }
 
+double WaveTrack::GetRate()
+{
+  return rate;
+}
+
+void WaveTrack::SetRate(double newRate)
+{
+  rate = newRate;
+  cache.dirty = true;
+}
+
 void WaveTrack::Offset(double t)
 {
   VTrack::Offset(t);
@@ -130,6 +141,7 @@ VTrack *WaveTrack::Duplicate()
   copy->Paste(0.0, this);
   copy->collapsedHeight = collapsedHeight;
   copy->expandedHeight = expandedHeight;
+  copy->channel = channel;
   copy->selected = selected;
   copy->envelope.CopyFrom(&envelope);
 

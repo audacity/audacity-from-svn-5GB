@@ -99,6 +99,9 @@ public:
 
   virtual double GetMaxLen();
 
+  double GetRate();
+  void SetRate(double newRate);
+
   Envelope *GetEnvelope() {return &envelope;}
 
   sampleType Get(sampleCount pos);
