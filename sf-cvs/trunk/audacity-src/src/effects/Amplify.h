@@ -31,6 +31,7 @@
 #define ID_PEAK_TEXT 10002
 #define ID_AMP_SLIDER 10003
 #define ID_CLIP_CHECKBOX 10004
+#define ID_BUTTON_PREVIEW 10005
 
 class wxString;
 
@@ -64,24 +65,26 @@ class EffectAmplify:public EffectSimpleMono {
  private:
    float ratio;
    float peak;
+
+
+friend class AmplifyDialog;
 };
 
 //----------------------------------------------------------------------------
 // AmplifyDialog
 //----------------------------------------------------------------------------
 
-wxSizer *MakeAmplifyDialog(wxWindow * parent, bool call_fit,
-                           bool set_sizer);
-
 class AmplifyDialog:public wxDialog {
  public:
    // constructors and destructors
-   AmplifyDialog(wxWindow * parent, wxWindowID id,
-                 const wxString & title, const wxPoint & pos =
-                 wxDefaultPosition, const wxSize & size =
-                 wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+   AmplifyDialog(EffectAmplify * effect, 
+						wxWindow * parent, wxWindowID id,
+						const wxString & title, 
+						const wxPoint & pos = wxDefaultPosition, 
+						const wxSize & size = wxDefaultSize, 
+						long style = wxDEFAULT_DIALOG_STYLE);
 
-   // WDR: method declarations for BassBoostDialog
+   // control accessors
    wxSlider *GetAmpSlider() {
       return (wxSlider *) FindWindow(ID_AMP_SLIDER);
    }
@@ -102,14 +105,12 @@ class AmplifyDialog:public wxDialog {
    virtual bool TransferDataFromWindow();
 
  private:
-   // WDR: member variable declarations for BassBoostDialog
-
- private:
-   // WDR: handler declarations for BassBoostDialog
+	// handlers
    void OnAmpText(wxCommandEvent & event);
    void OnPeakText(wxCommandEvent & event);
    void OnAmpSlider(wxCommandEvent & event);
    void OnClipCheckBox(wxCommandEvent & event);
+   void OnPreview( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
@@ -117,6 +118,7 @@ class AmplifyDialog:public wxDialog {
 
  private:
    bool mLoopDetect;
+	EffectAmplify * m_pEffect;
    DECLARE_EVENT_TABLE()
 
  public:
@@ -125,5 +127,4 @@ class AmplifyDialog:public wxDialog {
    bool noclip;
 };
 
-
-#endif
+#endif // __AUDACITY_EFFECT_AMPLIFY__

@@ -58,7 +58,7 @@ bool EffectAmplify::Init()
 
 bool EffectAmplify::PromptUser()
 {
-   AmplifyDialog dlog(mParent, -1, _("Amplify"));
+   AmplifyDialog dlog(this, mParent, -1, _("Amplify"));
    dlog.peak = peak;
    dlog.ratio = 1.0 / peak;
    dlog.TransferDataToWindow();
@@ -99,16 +99,111 @@ BEGIN_EVENT_TABLE(AmplifyDialog, wxDialog)
     EVT_TEXT(ID_AMP_TEXT, AmplifyDialog::OnAmpText)
     EVT_TEXT(ID_PEAK_TEXT, AmplifyDialog::OnPeakText)
     EVT_CHECKBOX(ID_CLIP_CHECKBOX, AmplifyDialog::OnClipCheckBox)
+    EVT_BUTTON(ID_BUTTON_PREVIEW, AmplifyDialog::OnPreview)
 END_EVENT_TABLE()
 
-AmplifyDialog::AmplifyDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
+AmplifyDialog::AmplifyDialog(EffectAmplify * effect, 
+									  wxWindow * parent, wxWindowID id, 
+									  const wxString & title, 
+									  const wxPoint & position, const wxSize & size, 
+									  long style):
 wxDialog(parent, id, title, position, size, style)
 {
+   mLoopDetect = false;
+	m_pEffect = effect;
+
    ratio = float(1.0);
    peak = float(0.0);
-   mLoopDetect = false;
 
-   MakeAmplifyDialog(this, TRUE, TRUE);
+   wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
+
+   wxStaticText *item1 =
+       new wxStaticText(this, ID_TEXT,
+                        _("Amplify by Dominic Mazzoni"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_Dialog->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
+
+   item2->Add( 10, 10, 1, wxGROW | wxALL, 5 );
+   
+   wxStaticText *item3 =
+       new wxStaticText(this, ID_TEXT,
+                        _("Amplification (dB):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item2->Add(item3, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+   wxTextCtrl *item4 =
+       new wxTextCtrl(this, ID_AMP_TEXT, "", wxDefaultPosition,
+                      wxSize(60, -1), 0);
+   item2->Add(item4, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+   pBoxSizer_Dialog->Add(item2, 0, wxGROW | wxALIGN_CENTRE | wxALL, 5);
+
+   wxSlider *item5 =
+       new wxSlider(this, ID_AMP_SLIDER, 0, AMP_MIN, AMP_MAX,
+                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
+   pBoxSizer_Dialog->Add(item5, 1, wxGROW | wxALIGN_CENTRE | wxLEFT | wxRIGHT, 5);
+
+   wxBoxSizer *item6 = new wxBoxSizer(wxHORIZONTAL);
+   
+   item6->Add( 10, 10, 1, wxGROW | wxALL, 5 );
+   
+   wxStaticText *item7 =
+       new wxStaticText(this, ID_TEXT,
+                        _("New Peak Amplitude (dB):"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item6->Add(item7, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+   wxTextCtrl *item8 =
+       new wxTextCtrl(this, ID_PEAK_TEXT, "", wxDefaultPosition,
+                      wxSize(60, -1), 0);
+   item6->Add(item8, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+
+   pBoxSizer_Dialog->Add(item6, 0, wxGROW | wxALIGN_CENTRE | wxALL, 5);
+
+   wxCheckBox *item8b = new wxCheckBox(this, ID_CLIP_CHECKBOX,
+                        _("Don't allow clipping"),
+                        wxDefaultPosition, wxDefaultSize, 0);
+   item8b->SetValue(true);
+
+   pBoxSizer_Dialog->Add(item8b, 0, wxALIGN_LEFT | wxALL, 5);
+
+
+	// Preview, OK, & Cancel buttons
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+
+   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
+
+   wxButton * pButton_Preview = 
+		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
+   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_OK->Add(40, 8); // horizontal spacer
+
+   wxButton *item10 =
+       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
+   item10->SetDefault();
+   item10->SetFocus();
+   pBoxSizer_OK->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   wxButton *item11 =
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                    wxDefaultSize, 0);
+   pBoxSizer_OK->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
+
+   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTRE | wxALL, 5);
+
+	// These bools are from the old MakeAmplifyDialog, now merged into this constructor.
+	bool call_fit = true;
+	bool set_sizer = true;
+   if (set_sizer) {
+      this->SetAutoLayout(TRUE);
+      this->SetSizer(pBoxSizer_Dialog);
+      if (call_fit) {
+         pBoxSizer_Dialog->Fit(this);
+         pBoxSizer_Dialog->SetSizeHints(this);
+      }
+   }
 }
 
 bool AmplifyDialog::Validate()
@@ -269,6 +364,25 @@ void AmplifyDialog::CheckClip()
    }
 }
 
+void AmplifyDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+
+	// Save & restore parameters around Preview, because we didn't do OK.
+	float oldRatio = m_pEffect->ratio;
+	float oldPeak = m_pEffect->peak;
+
+   m_pEffect->ratio = ratio;
+   if (noclip && ratio*peak > 1.0)
+      m_pEffect->ratio = 1.0 / peak;
+   m_pEffect->peak = peak;
+
+   m_pEffect->Preview();
+
+   m_pEffect->ratio = oldRatio;
+   m_pEffect->peak = oldPeak;
+}
+
 void AmplifyDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
@@ -289,90 +403,4 @@ void AmplifyDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(false);
 }
-
-wxSizer *MakeAmplifyDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer)
-{
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-   wxStaticText *item1 =
-       new wxStaticText(parent, ID_TEXT,
-                        _("Amplify by Dominic Mazzoni"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   item2->Add( 10, 10, 1, wxGROW | wxALL, 5 );
-   
-   wxStaticText *item3 =
-       new wxStaticText(parent, ID_TEXT,
-                        _("Amplification (dB):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item2->Add(item3, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
-
-   wxTextCtrl *item4 =
-       new wxTextCtrl(parent, ID_AMP_TEXT, "", wxDefaultPosition,
-                      wxSize(60, -1), 0);
-   item2->Add(item4, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
-
-   item0->Add(item2, 0, wxGROW | wxALIGN_CENTRE | wxALL, 5);
-
-   wxSlider *item5 =
-       new wxSlider(parent, ID_AMP_SLIDER, 0, AMP_MIN, AMP_MAX,
-                    wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   item0->Add(item5, 1, wxGROW | wxALIGN_CENTRE | wxLEFT | wxRIGHT, 5);
-
-   wxBoxSizer *item6 = new wxBoxSizer(wxHORIZONTAL);
-   
-   item6->Add( 10, 10, 1, wxGROW | wxALL, 5 );
-   
-   wxStaticText *item7 =
-       new wxStaticText(parent, ID_TEXT,
-                        _("New Peak Amplitude (dB):"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item6->Add(item7, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
-
-   wxTextCtrl *item8 =
-       new wxTextCtrl(parent, ID_PEAK_TEXT, "", wxDefaultPosition,
-                      wxSize(60, -1), 0);
-   item6->Add(item8, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
-
-   item0->Add(item6, 0, wxGROW | wxALIGN_CENTRE | wxALL, 5);
-
-   wxCheckBox *item8b = new wxCheckBox(parent, ID_CLIP_CHECKBOX,
-                        _("Don't allow clipping"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   item8b->SetValue(true);
-
-   item0->Add(item8b, 0, wxALIGN_LEFT | wxALL, 5);
-
-   wxBoxSizer *item9 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *item10 =
-       new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item10->SetDefault();
-   item10->SetFocus();
-   item9->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item11 =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item9->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   if (set_sizer) {
-      parent->SetAutoLayout(TRUE);
-      parent->SetSizer(item0);
-      if (call_fit) {
-         item0->Fit(parent);
-         item0->SetSizeHints(parent);
-      }
-   }
-
-   return item0;
-}
-
 
