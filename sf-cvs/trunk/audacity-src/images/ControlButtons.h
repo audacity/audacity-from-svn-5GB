@@ -1,4 +1,4 @@
-#include "ControlButtons/Disabled.xpm"
+//#include "ControlButtons/Disabled.xpm"
 #include "ControlButtons/DownButton.xpm"
 #include "ControlButtons/EnvelopeAlpha.xpm"
 #include "ControlButtons/Envelope.xpm"
