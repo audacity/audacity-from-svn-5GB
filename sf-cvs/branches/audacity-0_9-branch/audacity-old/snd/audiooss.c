@@ -156,6 +156,7 @@ void *playback_thread(void *param)
    while(!dp->stop_flag) {
       if (dp->len > 0) {
          int block = dp->len;
+         int written;
          if (block > buffer_size)
             block = buffer_size;
 
@@ -163,7 +164,13 @@ void *playback_thread(void *param)
          copy_from_wrap_buffer(dp, buffer, block);
          pthread_mutex_unlock(&dp->mutex);
 
-         write(dp->audio_fd, buffer, block);
+         written = 0;
+         while(written < block) {
+            int rval = write(dp->audio_fd, buffer, block);
+            if (rval < 0)
+               return;
+            written += rval;
+         }
       }
       else {
          sched_yield();
@@ -189,26 +196,13 @@ int audio_open(snd_type snd, long *flags)
    if (snd->u.audio.devicename[0] != 0)
       device = snd->u.audio.devicename;
 
-   if (snd->write_flag == SND_READ) {
-      /* open audio input */
-
-      /* Open /dev/dsp */
-      dp->audio_fd = open(device, O_RDWR|O_NONBLOCK, 0);
+   dp->audio_fd = open(device, O_RDWR|O_NONBLOCK, 0);
 	
-      if (dp->audio_fd == -1)
-         return !SND_SUCCESS;
+   if (dp->audio_fd == -1)
+      return !SND_SUCCESS;
 
-   }
-   else {
-      /* open audio output */
-
-      /* Open /dev/dsp */
-      dp->audio_fd = open(device, O_RDWR|O_NONBLOCK, 0);
-	
-      if (dp->audio_fd == -1)
-         return !SND_SUCCESS;
-   }
-
+   close(dp->audio_fd);
+   dp->audio_fd = open(device, O_RDWR, 0);
 	
    /* Set format to signed 16-bit little-endian */
    format = AFMT_S16_LE;
