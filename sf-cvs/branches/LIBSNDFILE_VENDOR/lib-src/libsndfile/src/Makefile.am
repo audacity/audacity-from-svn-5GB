@@ -15,7 +15,7 @@ COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c \
 
 FILESPECIFIC = aiff.c au.c au_g72x.c nist.c paf.c raw.c svx.c \
 				wav.c wav_w64.c voc.c ircam.c w64.c \
-				sd2.c rx2.c txw.c sds.c
+				sd2.c rx2.c txw.c sds.c wve.c dwd.c
 				
 libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS)
 libsndfile_la_LDFLAGS = -version-info @SHARED_VERSION_INFO@

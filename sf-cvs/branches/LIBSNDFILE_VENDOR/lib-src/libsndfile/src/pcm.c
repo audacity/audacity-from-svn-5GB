@@ -174,13 +174,28 @@ static void d2lei_array (double *src, int *dest, int count, double normfact) ;
 /*-----------------------------------------------------------------------------------------------
 */
 
+enum
+{	/* Char type for 8 bit files. */
+	SF_CHARS_SIGNED		= 200,
+	SF_CHARS_UNSIGNED	= 201
+} ;
+
+/*-----------------------------------------------------------------------------------------------
+*/
+
 int
 pcm_init (SF_PRIVATE *psf)
-{
+{	int chars = 0 ;
+
 	psf->blockwidth = psf->bytewidth * psf->sf.channels ;
+	
+	if ((psf->sf.format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_S8)
+		chars = SF_CHARS_SIGNED ;
+	else if ((psf->sf.format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_U8)
+		chars = SF_CHARS_UNSIGNED ;
 
 	if (psf->mode == SFM_READ || psf->mode == SFM_RDWR)
-	{	switch (psf->bytewidth * 0x10000 + psf->endian + psf->chars)
+	{	switch (psf->bytewidth * 0x10000 + psf->endian + chars)
 		{	case (0x10000 + SF_ENDIAN_BIG + SF_CHARS_SIGNED) :
 			case (0x10000 + SF_ENDIAN_LITTLE + SF_CHARS_SIGNED) :
 					psf->read_short  = pcm_read_sc2s ;
@@ -233,12 +248,14 @@ pcm_init (SF_PRIVATE *psf)
 					psf->read_float  = pcm_read_lei2f ;
 					psf->read_double = pcm_read_lei2d ;
 					break ;
-			default : return SFE_UNIMPLEMENTED ;
+			default : 
+				psf_log_printf (psf, "pcm.c returning SFE_UNIMPLEMENTED\n") ;
+				return SFE_UNIMPLEMENTED ;
 			} ;
 		} ;
 
 	if (psf->mode == SFM_WRITE || psf->mode == SFM_RDWR)
-	{	switch (psf->bytewidth * 0x10000 + psf->endian + psf->chars)
+	{	switch (psf->bytewidth * 0x10000 + psf->endian + chars)
 		{	case (0x10000 + SF_ENDIAN_BIG + SF_CHARS_SIGNED) :
 			case (0x10000 + SF_ENDIAN_LITTLE + SF_CHARS_SIGNED) :
 					psf->write_short  = pcm_write_s2sc ;
@@ -296,7 +313,9 @@ pcm_init (SF_PRIVATE *psf)
 					psf->write_double = pcm_write_d2lei ;
 					break ;
 
-			default : return SFE_UNIMPLEMENTED ;
+			default : 
+				psf_log_printf (psf, "pcm.c returning SFE_UNIMPLEMENTED\n") ;
+				return SFE_UNIMPLEMENTED ;
 			} ;
 
 		} ;
@@ -1519,7 +1538,7 @@ pcm_write_f2sc	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7F) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (signed char) ;
 
@@ -1546,7 +1565,7 @@ pcm_write_f2uc	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7F) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (unsigned char) ;
 
@@ -1573,7 +1592,7 @@ pcm_write_f2bes	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x8000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (short) ;
 
@@ -1600,7 +1619,7 @@ pcm_write_f2les	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x8000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (short) ;
 
@@ -1627,7 +1646,7 @@ pcm_write_f2let	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x800000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / SIZEOF_TRIBYTE ;
 
@@ -1654,7 +1673,7 @@ pcm_write_f2bet	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x800000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFF) : 1.0 ;
 
 
 	bufferlen = sizeof (psf->buffer) / SIZEOF_TRIBYTE ;
@@ -1682,7 +1701,7 @@ pcm_write_f2bei	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 
 
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
@@ -1710,7 +1729,7 @@ pcm_write_f2lei	(SF_PRIVATE *psf, float *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	float	normfact ;
 
-	normfact = (psf->norm_float == SF_TRUE) ? ((float) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
 
@@ -1740,7 +1759,7 @@ pcm_write_d2sc	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7F) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (signed char) ;
 
@@ -1767,7 +1786,7 @@ pcm_write_d2uc	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7F) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (unsigned char) ;
 
@@ -1794,7 +1813,7 @@ pcm_write_d2bes	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x8000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (short) ;
 
@@ -1821,7 +1840,7 @@ pcm_write_d2les	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x8000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (short) ;
 
@@ -1848,7 +1867,7 @@ pcm_write_d2let	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x800000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / SIZEOF_TRIBYTE ;
 
@@ -1875,7 +1894,7 @@ pcm_write_d2bet	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x800000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / SIZEOF_TRIBYTE ;
 
@@ -1902,7 +1921,7 @@ pcm_write_d2bei	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
 
@@ -1929,7 +1948,7 @@ pcm_write_d2lei	(SF_PRIVATE *psf, double *ptr, sf_count_t len)
 	sf_count_t	total = 0 ;
 	double	normfact ;
 
-	normfact = (psf->norm_double == SF_TRUE) ? ((double) 0x80000000) : 1.0 ;
+	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFFFFFF) : 1.0 ;
 
 	bufferlen = sizeof (psf->buffer) / sizeof (int) ;
 

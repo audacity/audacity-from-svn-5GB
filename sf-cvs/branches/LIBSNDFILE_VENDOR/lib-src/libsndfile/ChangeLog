@@ -1,3 +1,103 @@
+2002-08-16  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * tests/floating_point_test.c
+    Disable testing on machines without lrintf().
+
+    * Win32/Makefile.msvc
+    Added dwd.c and wve.c to build.
+
+    * configure.in
+    Bumped version to 1.0.0.
+
+2002-08-15  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/file_io.c
+    Add a #include for Mac OS 9. Thanks to Stephane Letz.
+
+    * src/wav.c
+    Changed an snprintf to LSF_SNPRINTF.
+
+    * doc/Makefile.am
+    Added version-1.html.
+
+2002-08-14  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * configure.in
+    Bumped version to 1.0.rc6.
+
+    * src/*.c
+    Modified scaling of normalised floats and doubles to integers. Until now
+    this has been done by multiplying by 0x8000 for short output, 0x80000000
+    for 32 bit ints and so on. Unfortunately this can cause an overflow and
+    wrap around in the target value. All thes values have therefore been
+    reduced to 0x7FFF, 0x7FFFFFFF and so on. The conversion from ints to
+    normalised floats and doubles remains unchanged. This does mean that for
+    repeated conversions normalised float -> pcm16 -> normalised float would
+    result in a decrease in amplitude of 0x7FFF/0x8000 on every round trip.
+    This is undesirable but less undesireable than the wrap around I am trying
+    to avoid.
+
+    * tests/floating_point_test.c
+    Removed file hash checking because new float scaling procedure introduced
+    above prevented the ability to crate a has on both x86 and PowerPC systems.
+
+2002-08-13  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/txw.c
+    Completed reading of TXW files. Seek doesn't work yet.
+
+    * src/file_io.c
+    Added a MacOS 9 replacement for ftruncate().
+
+    * MacOS/sndfile.h
+    Added MacOS 9 header file. This should be copied into src/ to compile
+    libsndfile for MacOS9.
+
+2002-08-12  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/sndfile.c
+    Fixed commands SF_SET_NORM_DOUBLE and SFC_SET_NORM_FLOAT to return their
+    values after being set. Reported by Jussi Laako.
+
+    * configure.in
+    If autogen is not found, touch all .c and .h files in tests/.
+
+    * src/common.c
+    Added format width specifier to psf_log_printf() for %u, %d, %D and %X.
+
+    * src/dwd.c
+    Completed implementation of read only access to these files.
+
+    * src/common.h src/*.c src/pcm.c
+    Removed redundant field chars from SF_PRIVATE struct and modified
+    pcm_init() to do without it.
+
+2002-08-11  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
+
+    * src/wve.c
+    New file implementing read of Psion Alaw files. This will be a read only
+    format. Implementation complete.
+
+    * src/dwd/c
+    Started implementation of DiamondWare Digitized files. Also read only, not
+    complete.
+
+    * src/wav.c
+    Add parsing of 'smpl' chunk.
+
+    * src/paf.c
+    Fixed reading on un-normalized doubles and floats from 24 bit PAF files.
+    This brings it into line with the reading of 8 bit files into
+    un-normalized doubles which returns values in the range [-128, 127].
+
+    * src/common.c
+    Modified psf_log_printf() to accept the %% conversion specifier to allow
+    printing of a single '%'.
+
+    * src/sds.c
+    Read only of 16 bit samples is working. Need to build a test harness for
+    this and other read only formats.
+
 2002-08-10  Erik de Castro Lopo  <erikd AT zipworld DOT com DOT au>
 
     * configure.in

@@ -117,9 +117,6 @@ svx_open	(SF_PRIVATE *psf)
 
 	psf->close        = svx_close ;
 
-	if (psf->bytewidth == 1)
-		psf->chars = SF_CHARS_SIGNED ;
-
 	if ((error = pcm_init (psf)))
 		return error ;
 
