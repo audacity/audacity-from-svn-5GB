@@ -679,6 +679,19 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
             h2[x]=h1[x-1]+1;
       }
 
+      if (imageBuffer) {
+         // Make the height at least one, otherwise the waveform can
+         // shrink to nothing.  This scenario is handled differently
+         // if we use wx to draw, instead of the image buffer - see
+         // MM comment below.
+         if( h1[x] == h2[x]) {
+            if (h1[x] < r.height-1)
+               h1[x]++;
+            else
+               h2[x]--;
+         }
+      }
+
       // Make sure the rms isn't larger than the waveform
       // min/max
       if (r1[x] > h1[x]-1)
@@ -725,7 +738,7 @@ void TrackArtist::DrawMinMaxRMS(wxDC &dc, wxRect r, uchar *imageBuffer,
             if (h1[x]+1 == h2[x])
                 dc.DrawPoint(r.x + x, r.y + h2[x]);
             else
-                dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
+               dc.DrawLine(r.x + x, r.y + h2[x], r.x + x, r.y + h1[x]+1 );
          }
       }
       
@@ -962,21 +975,21 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
 
       for (x = 0; x < mid.width; x++) {
          int envTop, envBottom;
-	 float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
-
+         float dBr = gPrefs->Read("/GUI/EnvdBRange", ENV_DB_RANGE);
+         
          envTop = GetWaveYPosNew(envValues[x], zoomMin, zoomMax,
                                  mid.height, dB, true, dBr, false);
-
+         
          envBottom = GetWaveYPosNew(-envValues[x], zoomMin, zoomMax,
                                     mid.height, dB, true, dBr, false);
-
-	 /* make the collision at zero actually look solid */
-	 if(envBottom-envTop < 3){
-	   int value = (zoomMax / (zoomMax - zoomMin)) * mid.height;
-   	   envTop=value-1;
-	   envBottom=value+2;
-	 }
-
+         
+         /* make the collision at zero actually look solid */
+         if(envBottom-envTop < 3){
+            int value = (int)((zoomMax / (zoomMax - zoomMin)) * mid.height);
+            envTop=value-1;
+            envBottom=value+2;
+         }
+         
          DrawEnvLine(dc, mid, x, envTop, true);
          DrawEnvLine(dc, mid, x, envBottom, false);
       }
