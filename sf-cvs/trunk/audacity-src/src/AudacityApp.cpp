@@ -701,6 +701,7 @@ int AudacityApp::OnAllKeys(wxKeyEvent& event)
 
 int AudacityApp::OnExit()
 {
+   gIsQuitting = true;
    while(Pending())
    {
       Dispatch();
