@@ -23,7 +23,7 @@
 #include "../Internat.h"
 #include "RawAudioGuess.h"
 
-#define RAW_GUESS_DEBUG 1
+#define RAW_GUESS_DEBUG 0
 
 #if RAW_GUESS_DEBUG
 static FILE *g_raw_debug_file = NULL;
