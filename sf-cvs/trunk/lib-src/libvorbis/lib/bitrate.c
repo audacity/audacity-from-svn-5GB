@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: bitrate tracking and management
- last mod: $Id: bitrate.c,v 1.6 2004-11-13 17:44:40 mbrubeck Exp $
+ last mod: $Id: bitrate.c,v 1.7 2004-11-13 18:27:55 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -63,7 +63,7 @@ void vorbis_bitrate_clear(bitrate_manager_state *bm){
 
 int vorbis_bitrate_managed(vorbis_block *vb){
   vorbis_dsp_state      *vd=vb->vd;
-  backend_lookup_state  *b=vd->backend_state; 
+  private_state         *b=vd->backend_state; 
   bitrate_manager_state *bm=&b->bms;
 
   if(bm && bm->managed)return(1);
@@ -74,7 +74,7 @@ int vorbis_bitrate_managed(vorbis_block *vb){
 int vorbis_bitrate_addblock(vorbis_block *vb){
   vorbis_block_internal *vbi=vb->internal;
   vorbis_dsp_state      *vd=vb->vd;
-  backend_lookup_state  *b=vd->backend_state; 
+  private_state         *b=vd->backend_state; 
   bitrate_manager_state *bm=&b->bms;
   vorbis_info           *vi=vd->vi;
   codec_setup_info      *ci=vi->codec_setup;
@@ -228,7 +228,7 @@ int vorbis_bitrate_addblock(vorbis_block *vb){
 }
 
 int vorbis_bitrate_flushpacket(vorbis_dsp_state *vd,ogg_packet *op){
-  backend_lookup_state  *b=vd->backend_state;
+  private_state         *b=vd->backend_state;
   bitrate_manager_state *bm=&b->bms;
   vorbis_block          *vb=bm->vb;
   int                    choice=PACKETBLOBS/2;
