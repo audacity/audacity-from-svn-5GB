@@ -1,6 +1,6 @@
 /*
  * libid3tag - ID3 tag manipulation library
- * Copyright (C) 2000-2003 Underbit Technologies, Inc.
+ * Copyright (C) 2000-2004 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: file.c,v 1.2 2003-09-07 01:21:44 dmazzoni Exp $
+ * $Id: file.c,v 1.3 2004-06-08 06:38:15 dmazzoni Exp $
  */
 
 # ifdef HAVE_CONFIG_H
@@ -522,7 +522,7 @@ int v1_write(struct id3_file *file,
     if (fseek(file->iofile, (file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0,
 	      SEEK_END) == -1 ||
 	(location = ftell(file->iofile)) == -1 ||
-	fwrite(data, 128, 1, file->iofile) == 0 ||
+	fwrite(data, 128, 1, file->iofile) != 1 ||
 	fflush(file->iofile) == EOF)
       return -1;
 
@@ -577,13 +577,14 @@ int v2_write(struct id3_file *file,
 {
   assert(!data || length > 0);
 
-  if (((file->ntags == 1 && !(file->flags & ID3_FILE_FLAG_ID3V1)) ||
+  if (data &&
+      ((file->ntags == 1 && !(file->flags & ID3_FILE_FLAG_ID3V1)) ||
        (file->ntags == 2 &&  (file->flags & ID3_FILE_FLAG_ID3V1))) &&
       file->tags[0].length == length) {
     /* easy special case: rewrite existing tag in-place */
 
     if (fseek(file->iofile, file->tags[0].location, SEEK_SET) == -1 ||
-	fwrite(data, length, 1, file->iofile) == 0 ||
+	fwrite(data, length, 1, file->iofile) != 1 ||
 	fflush(file->iofile) == EOF)
       return -1;
 
