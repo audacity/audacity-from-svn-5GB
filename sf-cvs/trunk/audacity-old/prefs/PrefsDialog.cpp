@@ -137,7 +137,26 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
    EndModal(0);
 }
 
-
 PrefsDialog::~PrefsDialog()
 {
 }
+
+void PrefsDialog::SelectPageByName(wxString pageName)
+{
+   int n = mCategories->GetPageCount();
+
+   int i;
+
+   for(i=0; i<n; i++)
+      if (mCategories->GetPageText(i) == pageName) {
+         mCategories->SetSelection(i);
+         return;
+      }
+}
+
+
+void PrefsDialog::ShowTempDirPage()
+{
+   SelectPageByName("Directories");   
+}
+

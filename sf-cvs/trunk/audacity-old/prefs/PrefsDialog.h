@@ -27,6 +27,9 @@ class PrefsDialog:public wxDialog {
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
+   void SelectPageByName(wxString pageName);
+   void ShowTempDirPage();
+
  private:
    wxNotebook *mCategories;
    wxButton *mOK;
