@@ -506,10 +506,8 @@ void AudioIO::OnTimer()
    
    FillBuffers();
    
-   if (mT1!=mT0 && mT >= mT1 && GetIndicator() >= mT1) {
+   if (mT1!=mT0 && mT >= mT1 && GetIndicator() >= mT1)
       Stop();
-      return;
-   }
 }
 
 void AudioIO::Stop()
