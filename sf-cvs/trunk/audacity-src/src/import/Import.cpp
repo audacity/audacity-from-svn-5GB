@@ -18,138 +18,140 @@
 #include <wx/msgdlg.h>
 #include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/listimpl.cpp>
 
 #include "../Audacity.h"
 
+#include "Import.h"
+#include "ImportPlugin.h"
 #include "ImportPCM.h"
 #include "ImportMP3.h"
 #include "ImportOGG.h"
 #include "ImportRaw.h"
-#include "Import.h"
+#include "../Track.h"
 
-#include "../Project.h"
+WX_DEFINE_LIST(ImportPluginList);
+WX_DEFINE_LIST(UnusableImportPluginList);
 
-#ifdef __WXMAC__
-#define __MOVIES__            /* Apple's Movies.h not compatible with Audacity */
-#define __MACHELP__           /* Apple's Movies.h not compatible with Audacity */
-
-#include <wx/mac/private.h>
-# ifdef __UNIX__
-#  include <CoreServices/CoreServices.h>
-# else
-# endif
-#endif
-
-// General purpose function used by importers
-wxString TrackNameFromFileName(wxString fName)
+Importer::Importer()
 {
-   return fName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
+   mImportPluginList = new ImportPluginList;
+   mUnusableImportPluginList = new UnusableImportPluginList;
+
+   // build the list of import plugin and/or unusableImporters.
+   // order is significant.  If none match, they will all be tried
+   // in the order defined here.
+   GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
+
+   // TODO: others
+}
+
+Importer::~Importer()
+{
+   delete mImportPluginList;
+   delete mUnusableImportPluginList;
+}
+
+void Importer::GetSupportedImportFormats(FormatList *formatList)
+{
+   ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
+   while(importPluginNode)
+   {
+      ImportPlugin *importPlugin = importPluginNode->GetData();
+      formatList->Append(new Format(importPlugin->GetPluginFormatDescription(),
+                                    importPlugin->GetSupportedExtensions()));
+      importPluginNode = importPluginNode->GetNext();
+   }
 }
 
 // returns number of tracks imported
-int Import(AudacityProject *project,
-           wxString fName,
-           WaveTrack *** tracks)
+int Importer::Import(wxString fName,
+                     TrackFactory *trackFactory,
+                     Track *** tracks,
+                     wxString &errorMessage,
+                     progress_callback_t progressCallback,
+                     void *userData)
 {
-   bool success;
    int numTracks = 0;
-   DirManager *dirManager = project->GetDirManager();
-   wxWindow *parent = project;
 
-   if (!fName.Right(3).CmpNoCase("mid") ||
-       !fName.Right(4).CmpNoCase("midi") ||
-       !fName.Right(3).CmpNoCase("gro")) {
-      wxMessageBox(_("Please use the Import MIDI command instead."),
-                   _("Import audio file"), wxOK | wxCENTRE, parent);
-      return 0;
+   // see if any of the plugins expect this extension and if so give
+   // that plugins first dibs
+   wxString extension = fName.AfterLast('.');
+   ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
+   while(importPluginNode)
+   {
+      ImportPlugin *plugin = importPluginNode->GetData();
+      if( plugin->SupportsExtension(extension) )
+      {
+         mInFile = plugin->Open(fName);
+         if( mInFile != NULL )
+         {
+            mInFile->SetProgressCallback(progressCallback, userData);
+            if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
+            {
+               // success!
+               delete mInFile;
+               return numTracks;
+            }
+            delete mInFile;
+         }
+      }
+      importPluginNode = importPluginNode->GetNext();
    }
 
-   bool isMP3 = false;
-
-   if (!fName.Right(3).CmpNoCase("mp3") ||
-       !fName.Right(3).CmpNoCase("mp2") ||
-       !fName.Right(3).CmpNoCase("mpg") ||
-       !fName.Right(4).CmpNoCase("mpeg"))
-      isMP3 = true;
-   
-#ifdef __WXMAC__
-   FSSpec spec;
-   FInfo finfo;
-   wxMacFilename2FSSpec(fName, &spec);
-   if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      if (finfo.fdType == 'MP3 ' ||
-          finfo.fdType == 'mp3 ' ||
-          finfo.fdType == 'MPG ' ||
-          finfo.fdType == 'MPEG')
-         isMP3 = true;
+   // no importPlugin that recognized the extension succeeded.  However, the
+   // file might be misnamed.  So this time we try all the importPlugins
+   // in order and see if any of them can handle the file
+   importPluginNode = mImportPluginList->GetFirst();
+   while(importPluginNode)
+   {
+      ImportPlugin *plugin = importPluginNode->GetData();
+      mInFile = plugin->Open(fName);
+      if( mInFile != NULL )
+      {
+         mInFile->SetProgressCallback(progressCallback, userData);
+         if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
+         {
+            // success!
+            delete mInFile;
+            return numTracks;
+         }
+         delete mInFile;
+      }
+      importPluginNode = importPluginNode->GetNext();
    }
-#endif
-   
-   if (isMP3) {
-#ifdef MP3SUPPORT
-      *tracks = new WaveTrack *[2];
-      success =::ImportMP3(project, fName,
-                           &(*tracks)[0], &(*tracks)[1]);
-      if (!success)
+
+   // None of our plugins can handle this file.  It might be that
+   // Audacity supports this format, but support was not compiled in.
+   // If so, notify the user of this fact
+   UnusableImportPluginList::Node *unusableImporterNode
+      = mUnusableImportPluginList->GetFirst();
+   while(unusableImporterNode)
+   {
+      UnusableImportPlugin *unusableImportPlugin = unusableImporterNode->GetData();
+      if( unusableImportPlugin->SupportsExtension(extension) )
+      {
+         errorMessage = _("This version of Audacity was not compiled with ") +
+                        unusableImportPlugin->GetPluginFormatDescription() +
+                        _(" support.");
          return 0;
-
-      numTracks = 1;
-      if ((*tracks)[1] != NULL)
-         numTracks = 2;
-
-      return numTracks;
-#else
-      wxMessageBox(_("This version of Audacity was not compiled "
-                     "with MP3 support."));
-      return 0;
-#endif
+      }
+      unusableImporterNode = unusableImporterNode->GetNext();
    }
 
-   if (!fName.Right(3).CmpNoCase("ogg")) {
-#ifdef USE_LIBVORBIS
-      success =::ImportOGG(parent, fName, tracks, &numTracks, dirManager);
-      if (!success)
-         return 0;
-
-      return numTracks;
-#else
-      wxMessageBox(_("This version of Audacity was not compiled "
-                     "with Ogg Vorbis support."), _("Import Ogg Vorbis"),
-                   wxOK | wxCENTRE, parent);
-      return 0;
-#endif
-   }
-
-   if (::IsPCM(fName)) {
-      success =::ImportPCM(parent, fName, tracks, &numTracks, dirManager);
-      if (!success)
-         return 0;
-
-      return numTracks;
-   }
-
-   int action = wxMessageBox(_("Audacity did not recognize the type "
-                               "of this file.\n"
-                               "Would you like to try to import it as "
-                               "raw PCM audio data?"),
-                             _("Unknown file type"),
-                             wxYES_NO | wxICON_EXCLAMATION,
-                             parent);
-
-   if (action == wxYES) {
-      *tracks = new WaveTrack *[2];
-      success =::ImportRaw(parent, fName,
-                           &(*tracks)[0], &(*tracks)[1], dirManager);
-      if (!success)
-         return 0;
-
-      numTracks = 1;
-      if ((*tracks)[1] != NULL)
-         numTracks = 2;
-
-      return numTracks;
-   }
-
+   // we were not able to recognize the file type
+   errorMessage = _("Audacity did not recognize the type "
+                    "of this file.\n"
+                    "If it is uncompressed, try importing it "
+                    "using \"Import Raw\"" );
    return 0;
 }
+
+wxString Importer::GetFileDescription()
+{
+   return mInFile->GetFileDescription();
+}
+
 

@@ -16,10 +16,8 @@
 	/FileFormats
 		CopyOrEditUncompressedData - Copy data from uncompressed files or
 			[ "copy", "edit"]   - edit in place?
-		ExportFormat			- Format to export PCM data in
-			(this number is a libsndfile format)
-		ExportFormatBits		- Bitsize of exported PCM data
-			[ 8, 16, 24, 32 ]
+		ExportFormat_SF1		   - Format to export PCM data in
+                             (this number is a libsndfile1.0 format)
 	/SamplingRate
 		DefaultProjectSampleRate- New projects will have this rate
 			[ 8000, 11025, 16000, 22050, 44100, 48000 ]
@@ -121,23 +119,11 @@ void FinishPreferences()
 
 int ReadExportFormatPref()
 {
-   return gPrefs->Read("/FileFormats/ExportFormat",
-                       (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM));
+   return gPrefs->Read("/FileFormats/ExportFormat_SF1",
+                       (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM_16));
 }
 
 void WriteExportFormatPref(unsigned int format)
 {
-   gPrefs->Write("/FileFormats/ExportFormat", (long int)format);
+   gPrefs->Write("/FileFormats/ExportFormat_SF1", (long int)format);
 }
-
-int ReadExportFormatBitsPref()
-{
-   return gPrefs->Read("/FileFormats/ExportFormatBits",
-                       (long int)16);
-}
-
-void WriteExportFormatBitsPref(int bits)
-{
-   gPrefs->Write("/FileFormats/ExportFormatBits", (long int)bits);
-}
-

@@ -25,18 +25,29 @@ class SpecCache;
 
 class WaveTrack: public Track {
 
- public:
+ private:
 
    //
    // Constructor / Destructor / Duplicator
    //
+   // Private since only factories are allowed to construct WaveTracks
+   //
 
    WaveTrack(DirManager * projDirManager, sampleFormat format = floatSample);
    WaveTrack(WaveTrack &orig);
-   virtual ~WaveTrack();
 
    void Init(const WaveTrack &orig);
    virtual Track *Duplicate();
+
+   friend class TrackFactory;
+
+   // REMOVE ME: one we figure out the coupling between AudacityProject
+   // and AudioIO
+   friend class AudioIO;
+
+ public:
+
+   virtual ~WaveTrack();
 
    //
    // Identifying the type of track

@@ -50,12 +50,14 @@ class wxWindow;
 class wxBoxSizer;
 class wxScrollEvent;
 class wxScrollBar;
+class wxProgressDialog;
 
 class Toolbar;
 class TrackList;
 class Tags;
 class ControlToolBar;
 class HistoryWindow;
+class Importer;
 
 class AudacityProject;
 
@@ -198,6 +200,12 @@ class AudacityProject:public wxFrame,
    void PushState(wxString desc, bool makeDirty = true);
    void PopState(TrackList * l);
 
+   // Callbacks for backend operations
+
+   static bool ImportProgressCallback(void *self, float percent);
+
+   wxProgressDialog *mImportProgressDialog;
+
    // The project's name and file info
 
    wxString mFileName;
@@ -251,6 +259,8 @@ class AudacityProject:public wxFrame,
 #endif
 
    TrackPanel *mTrackPanel;
+   TrackFactory *mTrackFactory;
+   Importer *mImporter;
    wxScrollBar *mHsbar;
    wxScrollBar *mVsbar;
    bool mAutoScrolling;

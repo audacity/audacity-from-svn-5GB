@@ -20,7 +20,7 @@
 class ControlToolBar;
 class DirManager;
 
-bool QuickMix(TrackList * tracks, DirManager * dirManager,
+bool QuickMix(TrackList * tracks, TrackFactory *factory,
               double rate, sampleFormat format);
 
 class Mixer {

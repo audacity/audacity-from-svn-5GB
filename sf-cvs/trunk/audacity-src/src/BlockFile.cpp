@@ -122,7 +122,7 @@ int BlockFile::ReadData(void *data, sampleFormat format,
 
    if (mType == BLOCK_TYPE_ALIAS) {
       SF_INFO info;
-      SNDFILE *sf = sf_open_read(mAliasFullPath, &info);
+      SNDFILE *sf = sf_open(mAliasFullPath, SFM_READ, &info);
 
       if (!sf)
          return 0;
@@ -143,14 +143,14 @@ int BlockFile::ReadData(void *data, sampleFormat format,
          framesRead = sf_readf_float(sf, (float *)buffer, len);
          for (i = 0; i < framesRead; i++)
             ((float *)data)[i] =
-               ((float *)buffer)[(info.channels * i) + mChannel] / 32767.0;
+               ((float *)buffer)[(info.channels * i) + mChannel];
          break;
       
       default:
          framesRead = sf_readf_float(sf, (float *)buffer, len);
          for (i = 0; i < framesRead; i++)
             ((float *)buffer)[i] =
-               ((float *)buffer)[(info.channels * i) + mChannel] / 32767.0;
+               ((float *)buffer)[(info.channels * i) + mChannel];
          CopySamples((samplePtr)buffer, floatSample,
                      (samplePtr)data, format, framesRead);
       }

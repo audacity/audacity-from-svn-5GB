@@ -18,42 +18,100 @@
 **********************************************************************/
 
 #include "../Audacity.h"
+#include "ImportOGG.h"
 
-#ifdef USE_LIBVORBIS
+#ifndef USE_LIBVORBIS
+
+void GetOGGImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList)
+{
+   UnusableImportPlugin* oggIsUnsupported =
+      new UnusableImportPlugin("Ogg Vorbis",
+                               wxStringList("ogg", NULL));
+
+   unusableImportPluginList->Append(oggIsUnsupported);
+}
+
+#else /* USE_LIBVORBIS */
 
 #include <wx/string.h>
-#include <wx/timer.h>
 #include <wx/utils.h>
-#include <wx/msgdlg.h>
-#include <wx/progdlg.h>
 #include <wx/intl.h>
 /* ffile.h must be included AFTER at least one other wx header that includes
  * wx/setup.h, otherwise #ifdefs erronously collapse it to nothing. This is
- * a bug in wxWindows (ffile.h should itself include wx/setup.h), and it 
+ * a bug in wxWindows (ffile.h should itself include wx/setup.h), and it
  * was a bitch to track down. */
 #include <wx/ffile.h>
 
 #include <vorbis/vorbisfile.h>
 
-#include "ImportOGG.h"
-
 #include "../WaveTrack.h"
-#include "../DirManager.h"
+#include "ImportPlugin.h"
 
-bool ImportOGG(wxWindow * parent,
-               wxString Filename, WaveTrack ** channels[],
-               int *numChannels, DirManager * dirManager)
+class OggImportPlugin : public ImportPlugin
 {
-
-   wxFFile file(Filename, "rb");
-
-   if (!file.IsOpened()) {
-      // No need for a message box, it's done automatically (but how?)
-      return false;
+public:
+   OggImportPlugin():
+      ImportPlugin(wxStringList("ogg", NULL))
+   {
    }
 
-   OggVorbis_File vf;
-   int err = ov_open(file.fp(), &vf, NULL, 0);
+   ~OggImportPlugin() { }
+
+   wxString GetPluginFormatDescription();
+   ImportFileHandle *Open(wxString Filename);
+};
+
+
+class OggImportFileHandle : public ImportFileHandle
+{
+public:
+   OggImportFileHandle(wxFFile *file, OggVorbis_File *vorbisFile):
+      mFile(file),
+      mVorbisFile(vorbisFile),
+      mProgressCallback(NULL),
+      mUserData(NULL)
+   {
+   }
+   ~OggImportFileHandle();
+
+   void SetProgressCallback(progress_callback_t *function,
+                            void *userData);
+   wxString GetFileDescription();
+   int GetFileUncompressedBytes();
+   bool Import(TrackFactory *trackFactory, Track ***outTracks,
+               int *outNumTracks);
+private:
+   wxFFile *mFile;
+   OggVorbis_File *mVorbisFile;
+   progress_callback_t *mProgressCallback;
+   void *mUserData;
+};
+
+void GetOGGImportPlugin(ImportPluginList *importPluginList,
+                        UnusableImportPluginList *unusableImportPluginList)
+{
+   importPluginList->Append(new OggImportPlugin);
+}
+
+wxString OggImportPlugin::GetPluginFormatDescription()
+{
+    return "Ogg Vorbis";
+}
+
+ImportFileHandle *OggImportPlugin::Open(wxString filename)
+{
+   OggVorbis_File *vorbisFile = new OggVorbis_File;
+   wxFFile *file = new wxFFile(filename, "rb");
+
+   if (!file->IsOpened()) {
+      // No need for a message box, it's done automatically (but how?)
+      delete vorbisFile;
+      delete file;
+      return NULL;
+   }
+
+   int err = ov_open(file->fp(), vorbisFile, NULL, 0);
 
    if (err < 0) {
       wxString message;
@@ -76,52 +134,74 @@ bool ImportOGG(wxWindow * parent,
             break;
       }
 
-      wxMessageBox(message);
-      file.Close();
-      return false;
+      // what to do with message?
+      file->Close();
+      delete vorbisFile;
+      delete file;
+      return NULL;
    }
+
+   return new OggImportFileHandle(file, vorbisFile);
+}
+
+void OggImportFileHandle::SetProgressCallback(progress_callback_t progressCallback,
+                                      void *userData)
+{
+   mProgressCallback = progressCallback;
+   mUserData = userData;
+}
+
+wxString OggImportFileHandle::GetFileDescription()
+{
+   return "Ogg Vorbis";
+}
+
+int OggImportFileHandle::GetFileUncompressedBytes()
+{
+   // TODO:
+   return 0;
+}
+
+bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
+                                 int *outNumTracks)
+{
+   wxASSERT(mFile->IsOpened());
 
    /* -1 is for the current logical bitstream */
-   vorbis_info *vi = ov_info(&vf, -1);
+   vorbis_info *vi = ov_info(mVorbisFile, -1);
 
-   *numChannels = vi->channels;
-   *channels = new WaveTrack *[*numChannels];
+   *outNumTracks = vi->channels;
+   WaveTrack **channels = new WaveTrack *[*outNumTracks];
 
    int c;
-   for (c = 0; c < *numChannels; c++) {
-      (*channels)[c] = new WaveTrack(dirManager, int16Sample);
-      (*channels)[c]->SetRate(vi->rate);
+   for (c = 0; c < *outNumTracks; c++) {
+      channels[c] = trackFactory->NewWaveTrack(int16Sample);
+      channels[c]->SetRate(vi->rate);
 
-      switch (c) {
+      if (*outNumTracks > 1)
+         switch (c) {
          case 0:
-            (*channels)[c]->SetChannel(Track::LeftChannel);
+            channels[c]->SetChannel(Track::LeftChannel);
             break;
          case 1:
-            (*channels)[c]->SetChannel(Track::RightChannel);
+            channels[c]->SetChannel(Track::RightChannel);
             break;
          default:
-            (*channels)[c]->SetChannel(Track::MonoChannel);
-      }
+            channels[c]->SetChannel(Track::MonoChannel);
+         }
    }
 
-   if (*numChannels == 2)
-      (*channels)[0]->SetLinked(true);
-
-   wxProgressDialog *progress = NULL;
-
-   wxYield();
-   wxStartTimer();
+   if (*outNumTracks == 2)
+      channels[0]->SetLinked(true);
 
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096
-   
-   const int bufferSize = 1048576;
-   short *mainBuffer = new short[CODEC_TRANSFER_SIZE];
 
-   short **buffers = new short *[*numChannels];
-   for (int i = 0; i < *numChannels; i++) {
-      buffers[i] = new short[bufferSize];
-   }
+/* The number of samples to read between calls to the callback.
+ * Balance between responsiveness of the GUI and throughput of import. */
+#define SAMPLES_PER_CALLBACK 100000
+
+   short *mainBuffer = new short[CODEC_TRANSFER_SIZE];
 
    /* determine endianness (clever trick courtesy of Nicholas Devillard,
     * (http://www.eso.org/~ndevilla/endian/) */
@@ -132,76 +212,69 @@ bool ImportOGG(wxWindow * parent,
       endian = 1;  // big endian
 
    /* number of samples currently in each channel's buffer */
-   int bufferCount = 0;
    bool cancelled = false;
    long bytesRead = 0;
    long samplesRead = 0;
    int bitstream = 0;
+   int samplesSinceLastCallback = 0;
 
    do {
-      bytesRead = ov_read(&vf, (char *) mainBuffer, CODEC_TRANSFER_SIZE,
+      /* get data from the decoder */
+      bytesRead = ov_read(mVorbisFile, (char *) mainBuffer,
+                          CODEC_TRANSFER_SIZE,
                           endian,
                           2,    // word length (2 for 16 bit samples)
                           1,    // signed
                           &bitstream);
-      samplesRead = bytesRead / *numChannels / sizeof(short);
+      samplesRead = bytesRead / *outNumTracks / sizeof(short);
 
-      if (samplesRead + bufferCount > bufferSize) {
-         for (c = 0; c < *numChannels; c++)
-            (*channels)[c]->Append((samplePtr)buffers[c],
-                                   int16Sample,
-                                   bufferCount);
-         bufferCount = 0;
+      /* give the data to the wavetracks */
+      for(c = 0; c < *outNumTracks; c++)
+          channels[c]->Append((char *)(mainBuffer + c),
+                              int16Sample,
+                              samplesRead,
+                              *outNumTracks);
+
+      samplesSinceLastCallback += samplesRead;
+      if( samplesSinceLastCallback > SAMPLES_PER_CALLBACK )
+      {
+          if( mProgressCallback )
+             cancelled = mProgressCallback(mUserData,
+                                           ov_time_tell(mVorbisFile) /
+                                           ov_time_total(mVorbisFile, bitstream));
+          samplesSinceLastCallback -= SAMPLES_PER_CALLBACK;
       }
-
-      /* Un-interleave */
-      for (int s = 0; s < samplesRead; s++)
-         for (c = 0; c < *numChannels; c++)
-            buffers[c][s + bufferCount] =
-                mainBuffer[s * (*numChannels) + c];
-
-      bufferCount += samplesRead;
-
-
-      if (!progress && wxGetElapsedTime(false) > 500)
-         progress = new wxProgressDialog(_("Import"),
-                                         _("Importing Ogg Vorbis File..."),
-                                         1000,
-                                         parent,
-                                         wxPD_CAN_ABORT |
-                                         wxPD_REMAINING_TIME |
-                                         wxPD_AUTO_HIDE);
-
-      if (progress)
-         cancelled = !progress->Update((int)(ov_time_tell(&vf) * 1000 /
-                                             ov_time_total(&vf, bitstream)));
 
    } while (!cancelled && bytesRead != 0 && bitstream == 0);
 
    /* ...the rest is de-allocation */
-   ov_clear(&vf);
-   file.Detach();    // so that it doesn't try to close the file (ov_clear()
-                     // did that already)
-
    delete[]mainBuffer;
 
-   for (c = 0; c < *numChannels; c++)
-      delete[]buffers[c];
-   delete[]buffers;
-
-   if (progress)
-      delete progress;
-
    if (cancelled) {
-      for (c = 0; c < *numChannels; c++)
-         delete(*channels)[c];
-      delete[] * channels;
+      for (c = 0; c < *outNumTracks; c++)
+         delete channels[c];
+      delete[] channels;
 
       return false;
    }
+   else {
+      *outTracks = new Track *[*outNumTracks];
+      for(c = 0; c < *outNumTracks; c++)
+         (*outTracks)[c] = channels[c];
+      delete[] channels;
 
-   return true;
+      return true;
+   }
+}
 
+OggImportFileHandle::~OggImportFileHandle()
+{
+   ov_clear(mVorbisFile);
+   mFile->Detach();    // so that it doesn't try to close the file (ov_clear()
+                       // did that already)
+
+   delete mVorbisFile;
+   delete mFile;
 }
 
 #endif                          /* USE_LIBVORBIS */

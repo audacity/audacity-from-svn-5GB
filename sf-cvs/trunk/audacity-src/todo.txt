@@ -82,6 +82,7 @@ Unit tests::
   sample one and only once.
 
 Audio::
+- Improve latency of PortAudio
 - Smart Record dialog
   - VU meter
   - Control latency
@@ -112,6 +113,8 @@ Internationalization:
   working directory for language directories
 
 UI::
+- Turn off autoscrolling if the user manually hits the scroll bar.
+- Metronome
 - Allow opening multiple files (use wxFileDialog wxMULTIPLE option)
 - Label the "Left" and "Right" channels!
 - Select None

@@ -43,9 +43,6 @@ AC_SUBST(CDEPEND)
 AC_SUBST(AFTERBUILD)
 
 dnl Required sublibraries
-SUBDIRS="$SUBDIRS lib-src/libsndfile"
-BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
-EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 
 BUILDLIBS="$BUILDLIBS expat/expat.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/expat/expat.a"
@@ -214,6 +211,16 @@ if [[ "$WX_CONFIG" = "no" ]] ; then
 fi
 LIBS="$LIBS `$WX_CONFIG --libs`"
 CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
+
+dnl libsndfile -- we need at least version 1.0
+PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
+                  dnl if found...
+                  LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
+
+                  dnl if not found...
+                  SUBDIRS="$SUBDIRS lib-src/libsndfile"
+                  BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
+                  EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a")
 
 AC_CANONICAL_HOST
 

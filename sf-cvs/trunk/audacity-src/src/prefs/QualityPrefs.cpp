@@ -16,6 +16,7 @@
 #include <wx/textctrl.h>
 
 #include "../Prefs.h"
+#include "../SampleFormat.h"
 #include "QualityPrefs.h"
 
 int rates[] = { 8000,
@@ -36,12 +37,14 @@ wxString stringRates[] = { "8000 Hz",
    "Other"
 };
 
-int formats[] = { 0x00020001,
-   0x00040001,
-   0x0004000F
+int formats[] = {
+   int16Sample,
+   int24Sample,
+   floatSample
 };
 
-wxString stringFormats[] = { "16-bit",
+wxString stringFormats[] = {
+   "16-bit",
    "24-bit",
    "32-bit float"
 };
@@ -62,7 +65,7 @@ PrefsPanel(parent)
    int rate =
        gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", 44100);
    int format =
-      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", 0x0004000F);
+      gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
 
    int pos = NUM_RATES;     // Fall back to other
    for (i = 0; i < NUM_RATES; i++)
@@ -128,7 +131,7 @@ PrefsPanel(parent)
 bool QualityPrefs::Apply()
 {
    long rate = 44100;
-   long format = 0x0004000F;
+   long format = floatSample;
    int sel = mSampleRates->GetSelection();
    int fmtsel = mSampleFormats->GetSelection();
 
