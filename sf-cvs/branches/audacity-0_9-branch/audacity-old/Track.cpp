@@ -182,6 +182,22 @@ VTrack *TrackListIterator::RemoveCurrent()
       return NULL;
 }
 
+VTrack *TrackListIterator::Insert(VTrack *t)
+{
+   TrackListNode *n = new TrackListNode();
+   n->t = t;
+   n->prev = cur;
+   n->next = cur->next;
+
+   if (n->next)
+      n->next->prev = n;
+
+   cur->next = n;
+
+   cur = n;
+   return cur->t;
+}
+
 //
 // TrackList
 //

@@ -658,7 +658,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
             dest->linked = n->linked;
             dest->SetOffset( wxMax(n->tOffset, mViewInfo.sel0) );
 
-            newTracks.Add(dest);
+            iter.Insert(dest);
          }
       }
       n = iter.Next();
@@ -705,7 +705,7 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
             else
                n->Silence(sel0, sel1);
 
-            newTracks.Add(dest);
+            iter.Insert(dest);
          }
       }
       n = iter.Next();
