@@ -437,6 +437,9 @@ bool EffectNyquist::ProcessOne()
                                  mControls[j].val);
    cmd += mCmd;
 
+   int i;
+	for (i = 0; i < mCurNumChannels; i++)
+		mCurBuffer[i] = NULL;
    rval = nyx_eval_expression(cmd);
 
    if (rval == nyx_string) {
@@ -501,7 +504,6 @@ bool EffectNyquist::ProcessOne()
       return false;
    }
    
-   int i;
    int outChannels;
 
    outChannels = nyx_get_audio_num_channels();
