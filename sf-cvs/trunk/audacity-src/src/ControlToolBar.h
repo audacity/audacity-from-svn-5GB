@@ -63,12 +63,12 @@ class ControlToolBar:public ToolBar {
    virtual void OnKeyEvent(wxKeyEvent & event);
    void OnTool(wxCommandEvent & evt);
 
-   void OnRewind();
-   void OnPlay();
-   void OnStop();
-   void OnRecord();
-   void OnFF();
-   void OnPause();
+   void OnRewind(wxCommandEvent &evt);
+   void OnPlay(wxCommandEvent &evt);
+   void OnStop(wxCommandEvent &evt);
+   void OnRecord(wxCommandEvent &evt);
+   void OnFF(wxCommandEvent &evt);
+   void OnPause(wxCommandEvent &evt);
 
    //These allow buttons to be controlled externally:
    void SetPlay(bool down);
