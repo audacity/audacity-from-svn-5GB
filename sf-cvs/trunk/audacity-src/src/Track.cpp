@@ -436,6 +436,10 @@ bool TrackList::IsEmpty() const
    return (head == NULL);
 }
 
+#ifdef new
+#undef new
+#endif
+
 #include <map>
 #include "BlockFile.h"
 #include "Sequence.h"
@@ -477,7 +481,6 @@ unsigned int TrackList::GetSpaceUsage()
 
    return bytes;
 }
-
 
 #include <set>
 #include "UndoManager.h"
