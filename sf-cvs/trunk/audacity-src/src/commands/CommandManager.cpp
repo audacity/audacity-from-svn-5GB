@@ -5,8 +5,7 @@
   CommandManager.cpp
 
   Brian Gunlogson
-
-  This class creates menus, but does not assign them to anything.
+  Dominic Mazzoni
 
 **********************************************************************/
 
@@ -364,8 +363,12 @@ void CommandManager::Enable(wxString name, bool enabled)
 void CommandManager::Modify(wxString name, wxString newLabel)
 {
    CommandListEntry *entry = mCommandNameHash[name];
-   if (entry && entry->menu)
+   if (entry && entry->menu) {
+      newLabel = newLabel.BeforeFirst('\t');
+      /*if (entry->key)
+        newLabel = newLabel + "\t" + entry->key;*/
       entry->menu->SetLabel(entry->id, newLabel);
+   }
 }
 
 ///Call this when a menu event is received.

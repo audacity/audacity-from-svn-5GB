@@ -157,7 +157,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndSubMenu();
 
    c->AddSeparator();
-   c->AddItem("UndoHistory",    _("&Undo History..."),               FN(OnHistory));
+   c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
    c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
 #ifndef __WXMAC__
    c->AddSeparator();
@@ -326,6 +326,39 @@ void AudacityProject::ModifyExportMenus()
    mCommandManager.Modify("ExportLossySel",
                           wxString::Format(_("&Export Selection as %s..."),
                                            (const char *)lossyFormat));
+}
+
+void AudacityProject::ModifyUndoMenus()
+{
+   wxString desc;
+   wxString size;
+   int cur = mUndoManager.GetCurrentState();
+   int num = mUndoManager.GetNumStates();
+
+   if (mUndoManager.UndoAvailable()) {
+      mUndoManager.GetDescription(cur, &desc, &size);
+      mCommandManager.Modify("Undo",
+                             wxString::Format(_("&Undo %s"),
+                                              (const char *)desc));
+      mCommandManager.Enable("Undo", true);
+   }
+   else {
+      mCommandManager.Modify("Undo", _("Can't Undo"));
+      mCommandManager.Enable("Undo", false);
+   }
+
+   if (mUndoManager.RedoAvailable()) {
+      mUndoManager.GetDescription(cur+1, &desc, &size);
+      mCommandManager.Modify("Redo",
+                             wxString::Format(_("&Redo %s"),
+                                              (const char *)desc));
+      mCommandManager.Enable("Redo", true);
+   }
+   else {
+      mCommandManager.Modify("Redo",
+                             wxString::Format(_("Can't Redo")));
+      mCommandManager.Enable("Redo", false);
+   }
 }
 
 //
@@ -699,7 +732,8 @@ void AudacityProject::OnUndo()
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
-   
+
+   ModifyUndoMenus();   
 }
 
 void AudacityProject::OnRedo()
@@ -718,6 +752,7 @@ void AudacityProject::OnRedo()
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
 
+   ModifyUndoMenus();
 }
 
 void AudacityProject::OnHistory()

@@ -2313,6 +2313,7 @@ void AudacityProject::InitialState()
    mUndoManager.ClearStates();
    PushState(_("Created new project"), false);
    mUndoManager.StateSaved();
+   ModifyUndoMenus();
 }
 
 void AudacityProject::PushState(wxString desc,
@@ -2328,6 +2329,8 @@ void AudacityProject::PushState(wxString desc,
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
+
+   ModifyUndoMenus();
 
    UpdateMenus();
 }
