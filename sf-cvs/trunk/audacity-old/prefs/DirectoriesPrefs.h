@@ -26,7 +26,7 @@ class DirectoriesPrefs:public PrefsPanel {
    DirectoriesPrefs(wxWindow * parent);
    ~DirectoriesPrefs();
    bool Apply();
-   void SetTempDir(wxCommandEvent & event);
+   void UpdateFreeSpace(wxCommandEvent &event);
 
  private:
    wxString FormatSize(wxLongLong size);
@@ -39,6 +39,9 @@ class DirectoriesPrefs:public PrefsPanel {
    
    wxString      mOldTempDir;
    wxString      mTempDir;
+
+public:
+   DECLARE_EVENT_TABLE();
 
 };
 

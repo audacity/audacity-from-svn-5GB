@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include <wx/window.h>
 #include <wx/statbox.h>
 #include <wx/textdlg.h>
@@ -17,10 +19,19 @@
 #include <wx/dirdlg.h>
 #include <wx/sizer.h>
 #include <wx/log.h>
+#include <wx/event.h>
 
 #include "../Prefs.h"
 #include "../DiskFunctions.h"
 #include "DirectoriesPrefs.h"
+
+enum {
+   TempDirID = 1000
+};
+
+BEGIN_EVENT_TABLE(DirectoriesPrefs, wxPanel)
+   EVT_TEXT(TempDirID, DirectoriesPrefs::UpdateFreeSpace)
+END_EVENT_TABLE()
 
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
@@ -41,16 +52,19 @@ PrefsPanel(parent)
          this, -1, "Location:", wxDefaultPosition,
          wxDefaultSize, wxALIGN_RIGHT );
 
+      /* Order is important here: mFreeSpace must be allocated before
+         mTempDirText, so that the handler doesn't try to operate on
+         mFreeSpace before it exists! */
+      mFreeSpace = new wxStaticText(
+         this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
+         wxDefaultPosition, wxDefaultSize, 0 );
+
       mTempDirText = new wxTextCtrl(
-         this, -1, mTempDir,
+         this, TempDirID, mTempDir,
          wxDefaultPosition, wxSize(160, -1), 0 );
 
       mFreeSpaceLabel = new wxStaticText(
          this, -1, "Free Space:",
-         wxDefaultPosition, wxDefaultSize, 0 );
-
-      mFreeSpace = new wxStaticText(
-         this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
          wxDefaultPosition, wxDefaultSize, 0 );
         
       tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
@@ -77,7 +91,7 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    wxString sizeStr;
 
    /* wxLongLong contains no built-in conversion to double */
-   double dSize = size.GetHi() * 4294967296;  // 2 ^ 32
+   double dSize = size.GetHi() * pow(2, 32);  // 2 ^ 32
    dSize += size.GetLo();
 
    if (size == -1L)
@@ -101,6 +115,18 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 }
 
 
+void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
+{
+   static wxLongLong space;
+   mTempDir.sprintf("%s", event.GetString().c_str());
+   if(!wxDirExists(mTempDir))
+      mTempDir = mTempDir.BeforeLast(wxFILE_SEP_PATH);
+      
+   space = GetFreeDiskSpace(mTempDir.c_str());
+   
+   mFreeSpace->SetLabel(FormatSize(space));
+}
+   
 bool DirectoriesPrefs::Apply()
 {
    

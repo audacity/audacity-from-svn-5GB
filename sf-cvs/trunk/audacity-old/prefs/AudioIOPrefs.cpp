@@ -425,13 +425,13 @@ PrefsPanel(parent)
 
    mRecordStereo = new wxCheckBox(this, -1, "Record in Stereo");
    mRecordStereo->SetValue(recordStereo);
-   topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
+   topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, 2);
 
 
 
    mDuplex = new wxCheckBox(this, -1, "Play While Recording");
    mDuplex->SetValue(duplex);
-   topSizer->Add(mDuplex, 0, wxGROW|wxALL, RADIO_BUTTON_BORDER);
+   topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
 
    SetAutoLayout(true);
    topSizer->Fit(this);

@@ -131,6 +131,8 @@
          }
 
          bool  LoadLibrary(wxString fileName = "") {
+            wxLogNull logNo;
+
             if(fileName == "") fileName = "libmp3lame.so";
 
             wxDllType libHandle = NULL;
@@ -180,10 +182,10 @@
          if(!mLibraryLoaded) return "";
 
          if(get_lame_version)
-            return get_lame_version();
+            return wxString::Format("LAME %s", get_lame_version()).c_str();
          else {
             lame_version(mGF, mVersion);
-            return mVersion;
+            return wxString::Format("LAME %s", mVersion).c_str();
          }
       }
 
@@ -222,6 +224,8 @@
       }
 
       void CancelEncoding() { mEncoding = false; }
+
+      int GetConfigurationCaps() { return 0; }
 
       int GetQualityVariance() { return -1; }
 
