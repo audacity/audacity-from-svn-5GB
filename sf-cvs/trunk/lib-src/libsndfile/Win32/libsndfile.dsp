@@ -157,6 +157,10 @@ SOURCE=..\src\nist.c
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\ogg.c
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\paf.c
 # End Source File
 # Begin Source File
@@ -202,6 +206,10 @@ SOURCE=..\src\ulaw.c
 # Begin Source File
 
 SOURCE=..\src\voc.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\vox_adpcm.c
 # End Source File
 # Begin Source File
 
