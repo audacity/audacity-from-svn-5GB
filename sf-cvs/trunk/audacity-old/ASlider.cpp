@@ -60,14 +60,20 @@ ASlider::~ASlider()
 void ASlider::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
+  int thumbPos = mValue * (mWidth - mThumbWidth) / mMax;
+  int thumbY = (mHeight - mThumbHeight) / 2;
+
+  #ifdef __WXMAC__
+  dc.DrawBitmap(*mBitmap, 0, 0);
+  dc.DrawBitmap(*mThumbBitmap, thumbPos, thumbY);
+  #else
   wxMemoryDC memDC;
   memDC.SelectObject(*mBitmap);
   dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
-  int thumbPos = mValue * (mWidth - mThumbWidth) / mMax;
-  int thumbY = (mHeight - mThumbHeight) / 2;
   memDC.SelectObject(*mThumbBitmap);
   dc.Blit(thumbPos, thumbY, mThumbWidth, mThumbHeight,
 		  &memDC, 0, 0, wxCOPY, FALSE);
+  #endif
 }
 
 void ASlider::OnMouseEvent(wxMouseEvent& event)

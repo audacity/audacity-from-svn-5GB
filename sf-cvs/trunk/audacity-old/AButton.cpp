@@ -63,9 +63,13 @@ AButton::~AButton()
 void AButton::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
+  #ifdef __WXMAC__
+  dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
+  #else
   wxMemoryDC memDC;
   memDC.SelectObject(*mBitmap[mButtonState]);
   dc.Blit(0, 0, mWidth, mHeight, &memDC, 0, 0, wxCOPY, FALSE);
+  #endif
 }
 
 void AButton::OnMouseEvent(wxMouseEvent& event)

@@ -80,7 +80,8 @@ END_EVENT_TABLE()
 
 APalette::APalette(wxFrame* parent, wxWindowID id, const wxString& title,
 				   const wxPoint& pos) :
-  wxMiniFrame(parent, id, title, pos, wxSize(300, APALETTE_HEIGHT) )
+  wxMiniFrame(parent, id, title, pos, wxSize(300, APALETTE_HEIGHT),
+              wxTINY_CAPTION_HORIZ | wxSTAY_ON_TOP )
 {
   mTool[0] =
     new AButton(this, ID_IBEAM, wxPoint(0, 0), wxSize(27, 27),
@@ -186,9 +187,9 @@ void APalette::OnTool(wxCommandEvent& evt)
       mTool[i]->PushDown();
     else
       mTool[i]->PopUp();
-
-  if (mCurrentTool==1 || prev==1)
-	RedrawAllProjects();
+      
+  if (mCurrentTool == 1 || prev==1)
+    RedrawAllProjects();
 }
 
 void APalette::OnPaint(wxPaintEvent &evt)

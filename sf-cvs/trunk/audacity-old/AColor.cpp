@@ -85,11 +85,11 @@ void AColor::Init()
 
   // selected
   lightBrush[1].SetColour(204,204,255);
-  mediumBrush[1].SetColour(130,130,204);
-  darkBrush[1].SetColour(130,130,170);
+  mediumBrush[1].SetColour(180,180,192);
+  darkBrush[1].SetColour(148,148,170);
   lightPen[1].SetColour(204,204,255);
-  mediumPen[1].SetColour(130,130,204);
-  darkPen[1].SetColour(130,130,170);
+  mediumPen[1].SetColour(180,180,192);
+  darkPen[1].SetColour(148,148,170);
 
   #endif
 
