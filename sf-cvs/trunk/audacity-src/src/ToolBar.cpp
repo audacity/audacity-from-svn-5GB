@@ -21,8 +21,10 @@
 #endif  /*  */
 
 #ifndef WX_PRECOMP
+#include <wx/defs.h>
 #include <wx/brush.h>
 #include <wx/dcclient.h>
+#include <wx/dcmemory.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #endif  /*  */
