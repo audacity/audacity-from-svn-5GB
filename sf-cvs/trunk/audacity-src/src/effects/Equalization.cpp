@@ -30,10 +30,6 @@
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 
-const long EffectEqualization::windowSize = EQwindowSize;
-const float EffectEqualization::loFreq = EQloFreq;
-const int EffectEqualization::nCurvePoints = EQnCurvePoints;
-
 const float EffectEqualization::curvex[] =
   {
     30., 31., 50., 63., 70., 100., 125., 200., 250., 300.,
@@ -41,9 +37,7 @@ const float EffectEqualization::curvex[] =
     5000., 6000., 7000., 8000., 9000., 10000., 15000., 16000.
   };
 
-// EffectEqualization::nCurvePoints = sizeof(curvex)/sizeof(float);
-
-const float EffectEqualization::curvey[][EQnCurvePoints] =
+const float EffectEqualization::curvey[][nCurvePoints] =
    {
       {
 	// acoustic (see p 52)
@@ -157,7 +151,7 @@ bool EffectEqualization::PromptUser()
    WaveTrack *t = (WaveTrack *) iter.First();
    float hiFreq = ((float)(t->GetRate())/2.);
 
-   EqualizationDialog dlog(loFreq, hiFreq, mFilterFunc, windowSize,
+   EqualizationDialog dlog(((double)loFreqI), hiFreq, mFilterFunc, windowSize,
 			   mParent, -1, _("Equaliation"));
 
    dlog.CentreOnParent();
@@ -564,7 +558,7 @@ bool EqualizationDialog::TransferDataFromWindow()
    }
 
    for(i=0;i<mWindowSize/2;i++) {
-      mFilterFunc[i] = (float)(pow(10., mFilterFunc[i]/10.));
+      mFilterFunc[i] = (float)(pow(10., mFilterFunc[i]/20.));
    }
 
    return TRUE;
