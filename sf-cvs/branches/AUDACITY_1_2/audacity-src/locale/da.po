@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-02-04 21:17+0100\n"
+"PO-Revision-Date: 2004-02-27 00:35+0100\n"
 "Last-Translator: Henrik Ræder Clausen <henrik@fangorn.dk>\n"
 "Language-Team: Dansk <henrik@fangorn.dk>\n"
 "MIME-Version: 1.0\n"
@@ -117,7 +117,7 @@ msgstr "&Generér"
 
 #: ../src/Menus.cpp:443
 msgid "&Help"
-msgstr "&Hjaelp"
+msgstr "&Hjælp"
 
 #: ../src/Menus.cpp:293
 msgid "&History..."
@@ -276,7 +276,7 @@ msgstr "Et frit digitalt lydredigeringsprogram"
 
 #: ../src/AboutDialog.cpp:68
 msgid "About Audacity..."
-msgstr "Om Audacity..."
+msgstr "Om Audacity ..."
 
 #: ../src/HistoryWindow.cpp:62
 msgid "Action"
@@ -328,11 +328,11 @@ msgstr "Sæt afslutningen til markøren"
 
 #: ../src/Menus.cpp:340
 msgid "Align End with Selection End"
-msgstr "Sæt slut til enden af markering."
+msgstr "Sæt slut til enden af markering"
 
 #: ../src/Menus.cpp:339
 msgid "Align End with Selection Start"
-msgstr "Sæt slut til begyndelsen af markering."
+msgstr "Sæt slut til begyndelsen af markering"
 
 #: ../src/Menus.cpp:341
 msgid "Align Tracks Together"
@@ -341,11 +341,11 @@ msgstr "Kombinér spor"
 # Bøjningen er problematisk.
 #: ../src/Menus.cpp:343
 msgid "Align Tracks..."
-msgstr "Koordiner spor..."
+msgstr "Koordiner spor ..."
 
 #: ../src/Menus.cpp:352
 msgid "Align and move cursor..."
-msgstr "Koordinér med og flyt markør..."
+msgstr "Koordinér med og flyt markør ..."
 
 #: ../src/Menus.cpp:335
 msgid "Align with &Cursor"
@@ -3576,7 +3576,7 @@ msgid ""
 msgstr ""
 "Systemet har opdaget, at du har en anden kopi af Audacity kørende.\n"
 "At køre to kopier af Audacity samtidig kan give datatab eller få\n"
-"systemet til at gå ned, og er derfor blokeret.\n"
+"systemet til at gå ned, og muligheden er derfor blokeret.\n"
 "\n"
 "Du kan bruge kommandoerne Ny og Åbn i det allerede kørende\n"
 "program til at have flere projekter åbne samtidig.\n"
