@@ -985,6 +985,21 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
 
 bool AudacityProject::HandleKeyEvent(wxKeyEvent & event)
 {
+   // If there is a selected label track and the event did not
+   // involve the control key, the label track gets dibs.
+   // By returning "false", that says that we want someone else
+   // to have a crack at it.
+
+   if (!event.ControlDown()) {
+      TrackListIterator iter(mTracks);
+      Track *t = iter.First();
+      while (t) {
+         if (t->GetKind() == Track::Label && t->GetSelected())
+            return false;
+         t = iter.Next();
+      }   
+   }
+   
    return mCommandManager.HandleKey(event);
 }
 
