@@ -5,6 +5,7 @@
   Repeat.cpp
 
   Dominic Mazzoni
+  Vaughan Johnson
 
 **********************************************************************/
 
@@ -85,6 +86,8 @@ bool EffectRepeat::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *) iter.First();
    int count = 0;
+	double maxDestLen = 0.0;
+	double newDestLen = 0.0;
    while (track) {
       double trackStart = track->GetStartTime();
       double trackEnd = track->GetEndTime();
@@ -171,9 +174,16 @@ bool EffectRepeat::Process()
       int actualCopies = desiredUnitTracks * numCopies;
       if (actualCopies > desiredCopies) {
          double oneLen = unitTrack->GetEndTime() / numCopies;
-         double clearLen = oneLen * (desiredCopies - actualCopies);
-         dest->Clear(dest->GetEndTime() - clearLen, clearLen);
-      }
+         double clearLen = oneLen * (actualCopies - desiredCopies);
+			double oldDestLen = dest->GetEndTime();
+			newDestLen = oldDestLen - clearLen;
+         dest->Clear(newDestLen, oldDestLen);
+      } else {
+			newDestLen = dest->GetEndTime();
+		}
+
+		if (newDestLen > maxDestLen)
+			maxDestLen = newDestLen;
 
       track->Clear(t0, t1);
       track->Paste(t0, dest);
@@ -185,6 +195,7 @@ bool EffectRepeat::Process()
       count++;
    }
 
+	mT1 = mT0 + maxDestLen;
    return true;
 }
 
@@ -208,7 +219,7 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
 
    wxStaticText *statText =
       new wxStaticText(this, -1,
-                       _("Repeat by Dominic Mazzoni"));
+                       _("Repeat by Dominic Mazzoni && Vaughan Johnson"));
    mainSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -216,7 +227,7 @@ RepeatDialog::RepeatDialog(wxWindow *parent, wxWindowID id,
    statText =
       new wxStaticText(this, -1,
                        _("Number of times to repeat: "));
-   hSizer->Add(statText, 0, wxALL, 5);
+   hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    
    mRepeatCount =
       new wxTextCtrl(this, ID_REPEAT_TEXT, "10", wxDefaultPosition,
@@ -263,7 +274,7 @@ void RepeatDialog::OnRepeatTextChange(wxCommandEvent & event)
 
 void RepeatDialog::DisplayNewTime()
 {
-   int newTime = (int)(selectionTimeSecs * repeatCount);
+   int newTime = (int)(selectionTimeSecs * (repeatCount + 1));
    wxString str;
 
    str = _("New selection length: ");
