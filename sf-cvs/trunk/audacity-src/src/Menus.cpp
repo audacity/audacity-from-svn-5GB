@@ -71,9 +71,9 @@ void AudacityProject::CreateMenuBar()
    mMenuBar = new wxMenuBar();
 
 #define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commands.h" // BG: Generate an array of command names, and their corresponding functions
+#include "commands.h"           // BG: Generate an array of command names, and their corresponding functions
 #undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
-#include "commandkeys.h" // BG: Generate an array of keys combos that cannot be used
+#include "commandkeys.h"        // BG: Generate an array of keys combos that cannot be used
 
    mFileMenu = new wxMenu();
    mEditMenu = new wxMenu();
@@ -82,19 +82,31 @@ void AudacityProject::CreateMenuBar()
    mHelpMenu = new wxMenu();
 
    wxMenu *menu = 0;
-   for(i = 0; i < mCommandMenuItem.Count(); i++) {
-      switch(mCommandMenuItem[i]->category) {
-         case fileMenu:    menu = mFileMenu;    break;
-         case editMenu:    menu = mEditMenu;    break;
-         case viewMenu:    menu = mViewMenu;    break;
-         case projectMenu: menu = mProjectMenu; break;
-         case helpMenu:    menu = mHelpMenu;    break;
-         default: break;// ERROR -- should not happen
+   for (i = 0; i < mCommandMenuItem.Count(); i++) {
+      switch (mCommandMenuItem[i]->category) {
+      case fileMenu:
+         menu = mFileMenu;
+         break;
+      case editMenu:
+         menu = mEditMenu;
+         break;
+      case viewMenu:
+         menu = mViewMenu;
+         break;
+      case projectMenu:
+         menu = mProjectMenu;
+         break;
+      case helpMenu:
+         menu = mHelpMenu;
+         break;
+      default:
+         break;                 // ERROR -- should not happen
       }
 
-      if(mCommandMenuItem[i]->commandString == "---")
+      if (mCommandMenuItem[i]->commandString == "---")
          menu->AppendSeparator();
-      else menu->Append(i+MenuBaseID, mCommandMenuItem[i]->commandString);
+      else
+         menu->Append(i + MenuBaseID, mCommandMenuItem[i]->commandString);
    }
 /*
    mFileMenu->Append(NewID, _("&New"));
@@ -146,7 +158,7 @@ void AudacityProject::CreateMenuBar()
 
    if (gControlToolBarStub->GetWindowedStatus()) {
       mViewMenu->Append(FloatControlToolBarID,
-                        _("Unfloat Control Toolbar"));
+                        _("Dock Control Toolbar"));
    } else {
       mViewMenu->Append(FloatControlToolBarID,
                         _("Float Control Toolbar"));
@@ -170,7 +182,7 @@ void AudacityProject::CreateMenuBar()
 
 
       if(gEditToolBarStub->GetWindowedStatus()) 
-         mViewMenu->Append(FloatEditToolBarID, _("Unfloat Edit Toolbar"));
+         mViewMenu->Append(FloatEditToolBarID, _("Dock Edit Toolbar"));
       else
          mViewMenu->Append(FloatEditToolBarID,    _("Float Edit Toolbar"));
 
@@ -280,10 +292,9 @@ int AudacityProject::GetNumCommands()
 
 void AudacityProject::SetCommandState(int nID, int iVal)
 {
-   int idz = (nID-MenuBaseID);
-   if((idz >= 0) && (idz < GetNumCommands()))
-   {
-      mCommandMenuItem[idz]->state = (menuState)iVal;
+   int idz = (nID - MenuBaseID);
+   if ((idz >= 0) && (idz < GetNumCommands())) {
+      mCommandMenuItem[idz]->state = (menuState) iVal;
    }
 }
 
@@ -345,6 +356,68 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mEditMenu->Enable(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
    SetCommandState(PasteID, numTracksSelected > 0 && msClipLen > 0.0);
 
+
+
+
+
+
+
+   //Modify toolbar-specific Menus
+
+   if (gEditToolBarStub) {
+
+      if (gEditToolBarStub->GetLoadedStatus()) {
+
+         if (gEditToolBarStub->GetWindowedStatus()) {
+
+            //Loaded/windowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Unload Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Dock Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(true);
+         } else {
+
+            //Loaded/unwindowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Unload Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Float Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(true);
+         }
+      } else {
+
+         if (gEditToolBarStub->GetWindowedStatus()) {
+
+            //Unloaded/windowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Load Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Dock Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(false);
+         } else {
+
+            //Unloaded/unwindowed
+            ((wxMenuItemBase *) mViewMenu->FindItem(LoadEditToolBarID))->
+                SetName(_("Load Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                SetName(_("Float Edit Toolbar"));
+            ((wxMenuItemBase *) mViewMenu->FindItem(FloatEditToolBarID))->
+                Enable(false);
+
+         }
+      }
+   }
+
+
+
+
+
+
+
    // Return from this function if nothing's changed since
    // the last time we were here.
 
@@ -399,8 +472,10 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mEditMenu->Enable(SelectAllID, numTracks > 0);
    SetCommandState(SelectAllID, numTracks > 0);
 
-   mViewMenu->Enable(PlotSpectrumID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
-   SetCommandState(PlotSpectrumID, numWaveTracksSelected > 0 && nonZeroRegionSelected);
+   mViewMenu->Enable(PlotSpectrumID, numWaveTracksSelected > 0
+                     && nonZeroRegionSelected);
+   SetCommandState(PlotSpectrumID, numWaveTracksSelected > 0
+                   && nonZeroRegionSelected);
 
    mProjectMenu->Enable(QuickMixID, numWaveTracksSelected > 1);
    SetCommandState(QuickMixID, numWaveTracksSelected > 1);
@@ -424,6 +499,18 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
                           numWaveTracksSelected > 0
                           && nonZeroRegionSelected);
    }
+
+
+   //Now, go through each toolbar, and and call EnableDisableButtons()
+
+   int i;
+   for (i = 0; i < mToolBarArray.GetCount(); i++) {
+
+      mToolBarArray[i]->EnableDisableButtons(anySelection, numTracks);
+
+   }
+
+
 }
 
 //
@@ -432,13 +519,12 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 
 bool AudacityProject::HandleMenuEvent(wxEvent & event)
 {
-   int idz = (event.GetId()-MenuBaseID);
-   if((idz >= 0) && (idz < GetNumCommands()))
-   {
-      (this->*((audEventFunction) (this->GetCommandFunc(idz))))(event);
+   int idz = (event.GetId() - MenuBaseID);
+   if ((idz >= 0) && (idz < GetNumCommands())) {
+      (this->*((audEventFunction) (this->GetCommandFunc(idz)))) (event);
    }
 
-   return true; //handled message
+   return true;                 //handled message
 }
 
 //
@@ -738,7 +824,7 @@ void AudacityProject::Paste(wxEvent & event)
 
 void AudacityProject::Trim(wxEvent & event)
 {
-   if(mViewInfo.sel0 >= mViewInfo.sel1)
+   if (mViewInfo.sel0 >= mViewInfo.sel1)
       return;
 
    TrackListIterator iter(mTracks);
@@ -759,7 +845,7 @@ void AudacityProject::Trim(wxEvent & event)
 
    FixScrollbars();
    mTrackPanel->Refresh(false);
-   PushState(_("Trim file to selection"));   
+   PushState(_("Trim file to selection"));
 }
 
 
@@ -968,14 +1054,10 @@ void AudacityProject::OnZoomSel(wxEvent & event)
 
 void AudacityProject::OnPlotSpectrum(wxEvent & event)
 {
-   #if 0
+#if 0
 
 
-     TODO NOW
-
-
-
-   int selcount = 0;
+   TODO NOW int selcount = 0;
    WaveTrack *selt = NULL;
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
@@ -1032,7 +1114,7 @@ void AudacityProject::OnPlotSpectrum(wxEvent & event)
    delete[]data;
    delete[]data_sample;
 
-   #endif
+#endif
 }
 
 
@@ -1051,54 +1133,45 @@ void AudacityProject::OnFloatControlToolBar(wxEvent & event)
 
 void AudacityProject::OnLoadEditToolBar(wxEvent & event)
 {
-   if (gEditToolBarStub) 
-      {  
-         if (gEditToolBarStub->GetLoadedStatus()) 
-            {
+   if (gEditToolBarStub) {
+      if (gEditToolBarStub->GetLoadedStatus()) {
 
-               //the toolbar is "loaded", meaning its visible either in the window or floating
+         //the toolbar is "loaded", meaning its visible either in the window or floating
 
-               gEditToolBarStub->SetLoadedStatus(false);
-               gEditToolBarStub->HideWindowedToolBar();        
-               gEditToolBarStub->UnloadAll();
-               
-            }
-         else
-            {
- 
-               //the toolbar is not "loaded", meaning that although the stub exists, 
-               //the toolbar is not visible either in a window or floating around
-               gEditToolBarStub->SetLoadedStatus(true);
-               
-               if(gEditToolBarStub->GetWindowedStatus())
-                  {
-                     //Make the floating toolbar appear
-                     gEditToolBarStub->ShowWindowedToolBar();
-                     gEditToolBarStub->LoadAll();
-                  }
-               else
-                  {
-                     //Make it appear in all the windows
-                     gEditToolBarStub->LoadAll();
-                  }
-               
- 
-            }
+         gEditToolBarStub->SetLoadedStatus(false);
+         gEditToolBarStub->HideWindowedToolBar();
+         gEditToolBarStub->UnloadAll();
+
+      } else {
+
+         //the toolbar is not "loaded", meaning that although the stub exists, 
+         //the toolbar is not visible either in a window or floating around
+         gEditToolBarStub->SetLoadedStatus(true);
+
+         if (gEditToolBarStub->GetWindowedStatus()) {
+            //Make the floating toolbar appear
+            gEditToolBarStub->ShowWindowedToolBar();
+            gEditToolBarStub->LoadAll();
+         } else {
+            //Make it appear in all the windows
+            gEditToolBarStub->LoadAll();
+         }
+
+
       }
-   else
-      {
-         gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
-         gEditToolBarStub->LoadAll();
-      }
+   } else {
+      gEditToolBarStub = new ToolBarStub(gParentWindow, EditToolBarID);
+      gEditToolBarStub->LoadAll();
+   }
 }
 
 
 void AudacityProject::OnFloatEditToolBar(wxEvent & event)
 {
-   if (gEditToolBarStub ){
+   if (gEditToolBarStub) {
 
       if (gEditToolBarStub->GetWindowedStatus()) {
-         
+
          gEditToolBarStub->HideWindowedToolBar();
          gEditToolBarStub->LoadAll();
 
