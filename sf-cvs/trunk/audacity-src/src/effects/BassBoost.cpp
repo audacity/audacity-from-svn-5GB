@@ -33,7 +33,7 @@ EffectBassBoost::EffectBassBoost()
 wxString EffectBassBoost::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"), 
-                           this->GetEffectName(), frequency, dB_boost); 
+                           (const char *)(this->GetEffectName()), frequency, dB_boost); 
 } 
 
 bool EffectBassBoost::NewTrackSimpleMono()

@@ -44,7 +44,7 @@ EffectPhaser::EffectPhaser()
 wxString EffectPhaser::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    return wxString::Format(_("Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = %.0f deg, depth = %d, feedback = %.0f%%"), 
-                           this->GetEffectName(), 
+                           (const char *)(this->GetEffectName()), 
                            stages, 
                            float(drywet*100/255), 
                            freq, 
