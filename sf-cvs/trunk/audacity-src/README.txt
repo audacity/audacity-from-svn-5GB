@@ -178,6 +178,12 @@ New features in Audacity 1.1.3:
     - Every track now has its own gain and pan controls.
 
   * File I/O
+    - Uses improved project file format.  (Unfortunately reading
+      previous formats, including 1.1.1, is not supported.)
+    - Block files (stored in Audacity project directories) now
+      use the standard AU format.  Though some Audacity
+      meta-information is in these files, they can now be
+      read by many other popular audio programs as well.
     - Fixed some bugs relating to reading/writing audio
       files with more than 16 bits per sample.
     - Import RAW is functional again, with a simpler GUI
