@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+
+#include <wx/wxprec.h> 
 #include "ToneGen.h"
 #include "../WaveTrack.h"
 
