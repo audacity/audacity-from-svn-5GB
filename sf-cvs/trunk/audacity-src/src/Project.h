@@ -18,8 +18,12 @@
 #ifndef __AUDACITY_PROJECT__
 #define __AUDACITY_PROJECT__
 
-#ifdef __WXMAC__
+#include "Audacity.h"
+
+#if defined(__MACOS9__)
 #include <Files.h>
+#elseif defined(__MACOSX__)
+
 #else
 // Work around bugs in <wx/dragimag.h>, wxGTK 2.2.9.2
 // (bad use of preprocessor, failure to forward-declare class names)
@@ -27,6 +31,8 @@
 class wxRect;
 class wxMemoryDC;
 class wxDC;
+#include <wx/defs.h>
+#include <wx/log.h>
 #include <wx/dragimag.h>
 #endif
 

@@ -25,6 +25,7 @@
 #include <wx/event.h>
 #include <wx/brush.h>
 #include <wx/intl.h>
+#include <wx/log.h>
 #include <wx/settings.h>
 #endif
 
