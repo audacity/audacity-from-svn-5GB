@@ -64,10 +64,10 @@ bool EffectChangeTempo::PromptUser()
    dlog.m_ToBPM = m_ToBPM;
    dlog.m_FromLength = m_FromLength;
    dlog.m_ToLength = m_ToLength;
-	//v Don't need to call TransferDataToWindow, although other 
-	//		Audacity dialogs (from which I derived this one) do it, because 
-	//		ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
-	//		which calls dlog.TransferDataToWindow();
+	// Don't need to call TransferDataToWindow, although other 
+	//	Audacity dialogs (from which I derived this one) do it, because 
+	//	ShowModal calls stuff that eventually calls wxWindowBase::OnInitDialog, 
+	//	which calls dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
 
