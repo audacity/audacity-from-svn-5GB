@@ -82,6 +82,9 @@ class LabelTrack:public VTrack {
 
    bool IsSelected() const;
 
+   int GetNumLabels() const;
+   const LabelStruct *GetLabel(int index) const;
+
  private:
 
    int mSelIndex;

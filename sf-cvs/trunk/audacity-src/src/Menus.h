@@ -116,6 +116,7 @@ void OnSilence(wxEvent & event);
 
 void OnInsertSilence(wxEvent & event);
 void OnSplit(wxEvent & event);
+void OnSplitLabels(wxEvent & event);
 void OnDuplicate(wxEvent & event);
 
 void OnSelectAll(wxEvent & event);

@@ -73,6 +73,7 @@ enum {
    SilenceID,
    InsertSilenceID,
    SplitID,
+   SplitLabelsID,
    DuplicateID,
    SelectAllID,
 
@@ -178,6 +179,7 @@ enum {
 
    CMD_ADDMENUSEP(_("&Insert Silence..."), _("Insert Silence"), OnInsertSilence, editMenu, enabledMenu);
    CMD_ADDMENU(_("Split\tCtrl+Y"), _("New"), OnSplit, editMenu, enabledMenu);
+   CMD_ADDMENU(_("Split At Labels"), _("New"), OnSplitLabels, editMenu, enabledMenu);
    CMD_ADDMENU(_("D&uplicate\tCtrl+D"), _("New"), OnDuplicate, editMenu, enabledMenu);
 
    CMD_ADDMENUSEP(_("Select All\tCtrl+A"), _("Select All"), OnSelectAll, editMenu, enabledMenu);

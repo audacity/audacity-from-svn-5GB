@@ -241,6 +241,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    int numWaveTracks = 0;
    int numWaveTracksSelected = 0;
    int numLabelTracks = 0;
+   int numLabelTracksSelected = 0;
 
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
@@ -254,6 +255,9 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
          numTracksSelected++;
          if (t->GetKind() == VTrack::Wave)
             numWaveTracksSelected++;
+         else if(t->GetKind() == VTrack::Label)
+            numLabelTracksSelected++;
+
       }
       t = iter.Next();
    }
@@ -321,6 +325,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    SetMenuState(mEditMenu, SilenceID, anySelection);
    SetMenuState(mEditMenu, InsertSilenceID, numTracksSelected > 0);
    SetMenuState(mEditMenu, SplitID, anySelection);
+   SetMenuState(mEditMenu, SplitLabelsID, numLabelTracksSelected == 1 && numWaveTracksSelected == 1);
    SetMenuState(mEditMenu, DuplicateID, anySelection);
    SetMenuState(mEditMenu, SelectAllID, numTracks > 0);
 
@@ -824,6 +829,58 @@ void AudacityProject::OnSplit(wxEvent & event)
    }
 
    PushState(_("Split"));
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnSplitLabels(wxEvent & event)
+{
+   // There is one wavetrack and one labeltrack selected. find them.
+   TrackListIterator iter(mTracks);
+
+   VTrack *n = iter.First();
+   VTrack *wave = 0;
+   LabelTrack *label = 0;
+
+   while(n) {
+      if(n->GetSelected()) {
+         if(n->GetKind() == VTrack::Wave)
+            wave = n;
+         else if(n->GetKind() == VTrack::Label)
+            label = (LabelTrack*)n;  // cast necessary to call LabelTrack specific methods
+      }
+      n = iter.Next();
+   }
+
+   // one new track for every label, from that label to the next
+   
+   TrackList newTracks;
+
+   for(int i = 0; i < label->GetNumLabels(); i++) {
+      wxString name = label->GetLabel(i)->title;
+      double begin = label->GetLabel(i)->t;
+      double end;
+
+      // if on the last label, extend to the end of the wavetrack
+      if(i == label->GetNumLabels() - 1)
+         end = wave->GetMaxLen();
+      else
+         end = label->GetLabel(i+1)->t;
+
+      VTrack *dest = 0;
+
+      wave->Copy(begin, end, &dest);
+      if (dest) {
+         dest->Init(*wave);
+         dest->SetOffset(wxMax(begin, wave->GetOffset()));
+         dest->SetName(name);
+         
+         mTracks->Add(dest);
+      }
+   }
+
+   PushState(_("Split at labels"));
 
    FixScrollbars();
    mTrackPanel->Refresh(false);

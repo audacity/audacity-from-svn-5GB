@@ -531,6 +531,16 @@ void LabelTrack::InsertSilence(double t, double len)
          mLabels[i]->t += len;
 }
 
+int LabelTrack::GetNumLabels() const
+{
+   return mLabels.Count();
+}
+
+const LabelStruct *LabelTrack::GetLabel(int index) const
+{
+   return mLabels[index];
+}
+
 // Private method called from the constructor
 void LabelTrack::InitColours()
 {
