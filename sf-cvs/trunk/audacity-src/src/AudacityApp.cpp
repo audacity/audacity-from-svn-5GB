@@ -942,12 +942,15 @@ int AudacityApp::OnExit()
       Dispatch();
    }
 
-   bool bFalse = false;
-   //Should we change the commands.cfg location next startup?
-   if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
+   if(gPrefs)
    {
-      gPrefs->DeleteEntry("/QDeleteCmdCfgLocation");
-      gPrefs->Write("/DeleteCmdCfgLocation", true);
+      bool bFalse = false;
+      //Should we change the commands.cfg location next startup?
+      if(gPrefs->Read("/QDeleteCmdCfgLocation", &bFalse))
+      {
+         gPrefs->DeleteEntry("/QDeleteCmdCfgLocation");
+         gPrefs->Write("/DeleteCmdCfgLocation", true);
+      }
    }
 
    FinishPreferences();
