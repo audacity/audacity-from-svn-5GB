@@ -40,8 +40,6 @@ void InitPreferences()
   gPrefs = new wxConfig(appName);
   wxConfigBase::Set(gPrefs);
 
-  printf("Created prefs.");
-  
   #else
   
   wxString prefsFileName = "Audacity Preferences";

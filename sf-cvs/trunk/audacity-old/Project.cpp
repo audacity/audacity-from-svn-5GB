@@ -194,7 +194,7 @@ enum {
   FirstEffectID  // Keep this the last enum please
 };
 
-BEGIN_EVENT_TABLE(AudacityProject, wxWindow)
+BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
   EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
   EVT_PAINT(AudacityProject::OnPaint)
   EVT_CLOSE(AudacityProject::OnCloseWindow)
