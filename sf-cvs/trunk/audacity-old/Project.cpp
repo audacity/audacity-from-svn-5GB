@@ -600,8 +600,8 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
     // This indicates we handled the event.
     return true;
   }
-  
-  return wxWindow::ProcessEvent(event);
+
+  return wxFrame::ProcessEvent(event);
 }
 
 void AudacityProject::OnPaint(wxPaintEvent& event)
@@ -692,9 +692,9 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
 
 void AudacityProject::OnActivate(wxActivateEvent& event)
 {
-  printf("Activate: %s\n", (const char *)GetName());
-
   SetActiveProject(this);
+  
+  event.Skip();
 }
 
 void AudacityProject::ShowPalette()
