@@ -795,7 +795,7 @@ long snd_read_header(snd_type snd, long *flags)
 	    if (strncmp("data", buf, 4) == 0) break;
 	    n = readrevlong(snd->u.file.file, &read_in);    /* length of form */
 	    snd->u.file.byte_offset = 
-		snd_file_lseek(snd->u.file.file, n, SND_SEEK_CUR);
+          snd_file_lseek(snd->u.file.file, n, SND_SEEK_CUR);
 	}
 	snd->u.file.byte_offset += 8; /* "data" and length use 8 bytes */
 	snd->u.file.current_offset = snd->u.file.byte_offset;
