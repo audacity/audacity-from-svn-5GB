@@ -55,6 +55,41 @@ class TrackArtist {
 
    void SetInset(int left, int top, int right, int bottom);
 
+   //
+   // Lower-level drawing functions
+   // 
+
+   void DrawWaveform(WaveTrack *track,
+                     wxDC & dc, wxRect & r,
+                     ViewInfo * viewInfo, 
+                     bool drawEnvelope, bool drawSamples,
+                     bool drawSliders, bool dB, bool muted);
+
+   void DrawSpectrum(WaveTrack *track,
+                     wxDC & dc, wxRect & r,
+                     ViewInfo * viewInfo, bool autocorrelation);
+
+   void DrawNoteTrack(NoteTrack *track,
+                      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawLabelTrack(LabelTrack *track,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawTimeTrack(TimeTrack *track,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
+
+   void DrawTimeSlider(WaveTrack *track,
+                       wxDC & dc, wxRect & r, ViewInfo * viewInfo,
+                       bool rightwards);
+
+   void SetBackgroundBrushes(wxBrush unselectedBrush, wxBrush selectedBrush,
+			     wxPen unselectedPen, wxPen selectedPen) {
+     this->unselectedBrush = unselectedBrush;
+     this->selectedBrush = selectedBrush;
+     this->unselectedPen = unselectedPen;
+     this->selectedPen = selectedPen;
+   }
+
  private:
 
    int mInsetLeft;
@@ -80,29 +115,6 @@ class TrackArtist {
    wxPen shadowPen;
 
    Ruler *vruler;
-
-   void DrawWaveform(WaveTrack *track,
-                     wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, 
-                     bool drawEnvelope, bool drawSamples,
-                     bool drawSliders, bool dB, bool muted);
-
-   void DrawSpectrum(WaveTrack *track,
-                     wxDC & dc, wxRect & r,
-                     ViewInfo * viewInfo, bool autocorrelation);
-
-   void DrawNoteTrack(NoteTrack *track,
-                      wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-
-   void DrawLabelTrack(LabelTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-
-   void DrawTimeTrack(TimeTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo);
-
-   void DrawTimeSlider(WaveTrack *track,
-                       wxDC & dc, wxRect & r, ViewInfo * viewInfo,
-                       bool rightwards);
 
    // Waveform utility functions
 

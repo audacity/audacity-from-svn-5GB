@@ -41,6 +41,7 @@
 #include "FormatSelection.h"
 #include "FreqWindow.h"
 #include "Prefs.h"
+#include "Printing.h"
 #include "NoteTrack.h"
 #include "Tags.h"
 #include "Mix.h"
@@ -170,6 +171,15 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags("ExportMultiple",
                       AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag);                      
+   c->AddSeparator();
+   c->AddItem("PageSetup",   _("Page Setup..."),              FN(OnPageSetup));
+   c->AddItem("Print",       _("Print..."),                   FN(OnPrint));
+   c->SetCommandFlags("PageSetup",
+                      AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag);
+   c->SetCommandFlags("Print",
+                      AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag);   
 
   #ifdef __WXMAC__
    /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
@@ -1403,6 +1413,16 @@ void AudacityProject::OnPreferences()
 {
    PrefsDialog dialog(this /* parent */ );
    dialog.ShowModal();
+}
+
+void AudacityProject::OnPageSetup()
+{
+   HandlePageSetup(this);
+}
+
+void AudacityProject::OnPrint()
+{
+   HandlePrint(this, GetName(), mTracks);
 }
 
 //
