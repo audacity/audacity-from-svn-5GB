@@ -119,6 +119,7 @@ class DirManager: public XMLTagHandler {
    wxHashTable *blockFileHash;
 
    static unsigned int defaultHashTableSize;
+   static bool dontDeleteTempFiles;
    unsigned int hashTableSize;
    void CheckHashTableSize();
 
