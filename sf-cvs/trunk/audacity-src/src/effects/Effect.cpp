@@ -19,22 +19,54 @@
 // public static methods
 //
 
-EffectArray *Effect::mEffects[2] = {new EffectArray(), new EffectArray()};
+EffectArray Effect::mEffects;
+int Effect::sNumEffects = 0;
 
-int Effect::RegisterEffect(Effect * f, bool plugin)
+void Effect::RegisterEffect(Effect *f)
 {
-   mEffects[plugin?1:0]->Add(f);
-   return mEffects[plugin?1:0]->Count();
+   f->mID = sNumEffects;
+   sNumEffects++;
+
+   // Insert the effect into the list in alphabetical order
+   // A linear search is good enough as long as there are
+   // only a few dozen or even a few hundred effects.
+   wxString name = f->GetEffectName();
+   int len = mEffects.GetCount();
+   int i;
+   for(i=0; i<len; i++)
+      if (name.CmpNoCase(mEffects[i]->GetEffectName()) < 0) {
+         mEffects.Insert(f, i);
+         break;
+      }
+   if (i==len)
+      mEffects.Add(f);
 }
 
-int Effect::GetNumEffects(bool plugin)
+int Effect::GetNumEffects()
 {
-   return mEffects[plugin?1:0]->Count();
+   return sNumEffects;
 }
 
-Effect *Effect::GetEffect(int i, bool plugin)
+Effect *Effect::GetEffect(int ID)
 {
-   return (*mEffects[plugin?1:0])[i];
+   if (ID >= 0 && ID < sNumEffects)
+      return mEffects[ID];
+   else
+      return NULL;
+}
+
+EffectArray *Effect::GetEffects(int flags = ALL_EFFECTS)
+{
+   EffectArray *results = new EffectArray();
+
+   int len = mEffects.GetCount();
+   for(int i=0; i<len; i++) {
+      int g = mEffects[i]->GetEffectFlags();
+      if ((flags & g) == g)
+         results->Add(mEffects[i]);
+   }
+
+   return results;
 }
 
 //

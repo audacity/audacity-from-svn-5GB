@@ -28,6 +28,15 @@ class Effect;
 
 WX_DEFINE_ARRAY(Effect *, EffectArray);
 
+#define PLUGIN_EFFECT   0x0001
+#define BUILTIN_EFFECT  0x0002
+
+#define INSERT_EFFECT   0x0010
+#define PROCESS_EFFECT  0x0020
+#define ANALYZE_EFFECT  0x0040
+
+#define ALL_EFFECTS     0x00FF
+
 class Effect {
 
  //
@@ -37,9 +46,14 @@ class Effect {
  // them by index number, usually when the user selects one from a menu.
  //
  public:
-   static int RegisterEffect(Effect * f, bool plugin);
-   static int GetNumEffects(bool plugin);
-   static Effect *GetEffect(int i, bool plugin);
+   static void RegisterEffect(Effect *f);
+   static Effect *GetEffect(int ID);
+   static int GetNumEffects();
+
+   // Returns a sorted array of effects, which may be filtered
+   // using the flags parameter.  The caller should dispose
+   // of the array when done.
+   static EffectArray *GetEffects(int flags = ALL_EFFECTS);
 
  // 
  // public methods
@@ -60,6 +74,20 @@ class Effect {
    // "Filtering", or if the effect is "Bass Boost", the action
    // is "Boosting Bass Frequencies".
    virtual wxString GetEffectAction() = 0;
+
+   // Return flags which tell you what kind of effect this is.
+   // It will be either a built-in or a plug-in effect, and it
+   // will be one of Insert, Process, or Analyze.
+   virtual int GetEffectFlags() {
+      // Default - covers most built-in effects.
+      return BUILTIN_EFFECT | PROCESS_EFFECT;
+   }
+
+   // Get an unique ID assigned to each registered effect.
+   // The first effect will have ID zero.
+   int GetID() {
+      return mID;
+   }
 
    // Returns true on success.  Will only operate on tracks that
    // have the "selected" flag set to true, which is consistent with
@@ -148,10 +176,13 @@ class Effect {
  // Used only by the base Effect class
  //
  private:
-   static EffectArray *mEffects[2];
+   static EffectArray mEffects;
    
    int mNumTracks;
    int mNumGroups;
+
+   int mID;
+   static int sNumEffects;
    
    wxProgressDialog *mProgress;
 };

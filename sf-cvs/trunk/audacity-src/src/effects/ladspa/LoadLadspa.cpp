@@ -74,7 +74,7 @@ void SearchLadspaInDir(wxString dir)
          data = mainFn(index);
          while(data) {
             LadspaEffect *effect = new LadspaEffect(data);
-            Effect::RegisterEffect(effect, true);
+            Effect::RegisterEffect(effect);
 
             // Get next plugin
             index++;

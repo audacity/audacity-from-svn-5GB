@@ -56,6 +56,8 @@ public:
 void CreateMenuBar();
 void BuildMenuBar();
 void RebuildMenuBar();
+void AppendEffects(EffectArray *effs, wxMenu *menu,
+                   bool spill);
 
 void AssignDefaults();
 

@@ -129,7 +129,7 @@ extern "C" {
                   
                   VSTEffect *vst =
                      new VSTEffect(wxString(fragNameCStr), theEffect);
-                  Effect::RegisterEffect(vst, true);
+                  Effect::RegisterEffect(vst);
                }
 
                #ifdef __MACOSX__

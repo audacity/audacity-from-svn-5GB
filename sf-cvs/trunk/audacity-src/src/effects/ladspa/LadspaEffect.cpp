@@ -78,6 +78,15 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
          inputControls[p] = val;
       }
    }
+
+   flags = PLUGIN_EFFECT;
+
+   if (inputs == 0)
+      flags |= INSERT_EFFECT;
+   else if (outputs == 0)
+      flags |= ANALYZE_EFFECT;
+   else
+      flags |= PROCESS_EFFECT;   
 }
 
 LadspaEffect::~LadspaEffect()
