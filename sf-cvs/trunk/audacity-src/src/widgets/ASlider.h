@@ -47,6 +47,8 @@ class LWSlider
 
    virtual ~LWSlider();
 
+   void SetId(wxWindowID id);
+
    float Get();
    void Set(float value);
 
@@ -89,6 +91,8 @@ class LWSlider
 
    int mClickValue;
    int mClickX;
+
+   wxWindowID mID;
 
    wxWindow *mPopWin;
 
