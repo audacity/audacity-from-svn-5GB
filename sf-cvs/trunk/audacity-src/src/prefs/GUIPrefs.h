@@ -13,15 +13,13 @@
 #define __AUDACITY_GUI_PREFS__
 
 #include <wx/string.h>
-#include <wx/longlong.h>
 
 #include "PrefsPanel.h"
 
 class wxWindow;
-class wxStaticBox;
 class wxCheckBox;
 
-class GUIPrefs:public PrefsPanel {
+class GUIPrefs : public PrefsPanel {
 
  public:
    GUIPrefs(wxWindow * parent);
@@ -30,10 +28,6 @@ class GUIPrefs:public PrefsPanel {
 
  private:
     wxCheckBox *mAutoscroll;
-
-public:
-   DECLARE_EVENT_TABLE();
-
 };
 
 #endif
