@@ -51,69 +51,69 @@ void fromarraystream__fetch(register fromarraystream_susp_type susp, snd_list_ty
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
 
-    if (susp->src == NULL) {
+        if (susp->src == NULL) {
 out:	    togo = 0;	/* indicate termination */
-        break;	/* we're done */
-    }
-    if (susp->index >= susp->length) {
-        long i;
-        susp->index = 0;
-        susp->array = xleval(cons(s_send, cons(susp->src, consa(s_next))));
-        susp->index = 0;
-        if (susp->array == NULL) {
-        susp->src = NULL;
-        goto out;
-        } else if (!vectorp(susp->array)) {
-        xlerror("array expected", susp->array);
-        } else if (susp->samples == NULL) {
-        /* assume arrays are all the same size as first one;
-           now that we know the size, we just have to do this
-           first allocation.
-         */
-        susp->length = getsize(susp->array);
-        if (susp->length < 1) xlerror("array has no elements", susp->array);
-        susp->samples = 
-            (sample_type *) calloc(susp->length,
-                       sizeof(sample_type));
-        } else if (getsize(susp->array) != susp->length) {
-        xlerror("arrays must all be the same length", susp->array);
+            break;	/* we're done */
         }
-        /* at this point, we have a new array and a place to put samples */
-        for (i = 0; i < susp->length; i++) {
-        LVAL elem = getelement(susp->array, i);
-        if (ntype(elem) != FLONUM) {
-            xlerror("flonum expected", elem);
+        if (susp->index >= susp->length) {
+            long i;
+            susp->index = 0;
+            susp->array = xleval(cons(s_send, cons(susp->src, consa(s_next))));
+            susp->index = 0;
+            if (susp->array == NULL) {
+                susp->src = NULL;
+                goto out;
+            } else if (!vectorp(susp->array)) {
+                xlerror("array expected", susp->array);
+            } else if (susp->samples == NULL) {
+                /* assume arrays are all the same size as first one;
+                   now that we know the size, we just have to do this
+                   first allocation.
+                 */
+                susp->length = getsize(susp->array);
+                if (susp->length < 1) xlerror("array has no elements", susp->array);
+                susp->samples = 
+                    (sample_type *) calloc(susp->length,
+                                           sizeof(sample_type));
+            } else if (getsize(susp->array) != susp->length) {
+                xlerror("arrays must all be the same length", susp->array);
+            }
+            /* at this point, we have a new array and a place to put samples */
+            for (i = 0; i < susp->length; i++) {
+                LVAL elem = getelement(susp->array, i);
+                if (ntype(elem) != FLONUM) {
+                    xlerror("flonum expected", elem);
+                }
+                susp->samples[i] = (sample_type) getflonum(elem);
+            }
+            susp->array = NULL; /* free the array */
         }
-        susp->samples[i] = (sample_type) getflonum(elem);
-        }
-        susp->array = NULL; /* free the array */
-    }
-    togo = min(togo, susp->length - susp->index);
+        togo = min(togo, susp->length - susp->index);
 
-    n = togo;
-    index_reg = susp->index;
-    samples_reg = susp->samples;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	index_reg = susp->index;
+	samples_reg = susp->samples;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = samples_reg[index_reg++];;
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    susp->index = index_reg;
-    out_ptr += togo;
-    cnt += togo;
+	susp->index = index_reg;
+	out_ptr += togo;
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* fromarraystream__fetch */
 

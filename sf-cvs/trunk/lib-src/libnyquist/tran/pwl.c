@@ -62,13 +62,13 @@ boolean compute_incr(pwl_susp_type susp, long *n, long cur)
 {
     double target;
     while (*n == 0) {
-    *n = getfixnum(car(susp->bpt_ptr)) - cur;
-    /* if there is a 2nd element of the pair, get the target */
-    if (cdr(susp->bpt_ptr))
-        target = getflonum(car(cdr(susp->bpt_ptr)));
-    else target = 0.0;
-    if (*n > 0) susp->incr = (target - susp->lvl) / *n;
-    else if (compute_lvl(susp)) return true;
+        *n = getfixnum(car(susp->bpt_ptr)) - cur;
+        /* if there is a 2nd element of the pair, get the target */
+        if (cdr(susp->bpt_ptr))
+            target = getflonum(car(cdr(susp->bpt_ptr)));
+        else target = 0.0;
+        if (*n > 0) susp->incr = (target - susp->lvl) / *n;
+        else if (compute_lvl(susp)) return true;
     }
     return false;
 }
@@ -91,42 +91,42 @@ void pwl__fetch(register pwl_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
 
-    if (susp->bpt_ptr == NULL) {
+        if (susp->bpt_ptr == NULL) {
 out:	    togo = 0;	/* indicate termination */
-        break;	/* we're done */
-    }
-    { long cur = susp->susp.current + cnt;
-      long nn = getfixnum(car(susp->bpt_ptr)) - cur;
-      if (nn == 0) {
-          if (compute_lvl(susp) || compute_incr(susp, &nn, cur)) goto out;
-      }
-      togo = min(nn, togo);
-    }
+            break;	/* we're done */
+        }
+        { long cur = susp->susp.current + cnt;
+          long nn = getfixnum(car(susp->bpt_ptr)) - cur;
+          if (nn == 0) {
+              if (compute_lvl(susp) || compute_incr(susp, &nn, cur)) goto out;
+          }
+          togo = min(nn, togo);
+        }
 
-    n = togo;
-    incr_reg = susp->incr;
-    lvl_reg = susp->lvl;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	incr_reg = susp->incr;
+	lvl_reg = susp->lvl;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = (sample_type) lvl_reg; lvl_reg += incr_reg;;
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    susp->lvl += susp->incr * togo;
-    out_ptr += togo;
-    cnt += togo;
+	susp->lvl += susp->incr * togo;
+	out_ptr += togo;
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* pwl__fetch */
 
@@ -158,7 +158,7 @@ sound_type snd_make_pwl(time_type t0, rate_type sr, LVAL lis)
     susp->bpt_ptr = lis;
     susp->incr = 0.0;
     susp->lvl = 0.0; 
-     { long temp = 0; compute_incr(susp, &temp, 0); };
+         { long temp = 0; compute_incr(susp, &temp, 0); };
     susp->susp.fetch = pwl__fetch;
 
     /* initialize susp state */

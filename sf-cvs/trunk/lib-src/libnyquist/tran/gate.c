@@ -125,31 +125,31 @@ void gate_n_fetch(register gate_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past the signal input sample block: */
-    susp_check_term_samples(signal, signal_ptr, signal_cnt);
-    togo = min(togo, susp->signal_cnt);
+	/* don't run past the signal input sample block: */
+	susp_check_term_samples(signal, signal_ptr, signal_cnt);
+	togo = min(togo, susp->signal_cnt);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
-    n = togo;
-    threshold_reg = susp->threshold;
-    off_count_reg = susp->off_count;
-    stop_count_reg = susp->stop_count;
-    delay_len_reg = susp->delay_len;
-    state_reg = susp->state;
-    value_reg = susp->value;
-    signal_ptr_reg = susp->signal_ptr;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	threshold_reg = susp->threshold;
+	off_count_reg = susp->off_count;
+	stop_count_reg = susp->stop_count;
+	delay_len_reg = susp->delay_len;
+	state_reg = susp->state;
+	value_reg = susp->value;
+	signal_ptr_reg = susp->signal_ptr;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 {
         sample_type future = *signal_ptr_reg++;
         long now = susp->susp.current + cnt + togo - n;
@@ -220,26 +220,26 @@ void gate_n_fetch(register gate_susp_type susp, snd_list_type snd_list)
           }
           *out_ptr_reg++ = (sample_type) value_reg;
       };
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    togo -= n;
-    susp->off_count = off_count_reg;
-    susp->stop_count = stop_count_reg;
-    susp->state = state_reg;
-    susp->value = value_reg;
-    /* using signal_ptr_reg is a bad idea on RS/6000: */
-    susp->signal_ptr += togo;
-    out_ptr += togo;
-    susp_took(signal_cnt, togo);
-    cnt += togo;
+	togo -= n;
+	susp->off_count = off_count_reg;
+	susp->stop_count = stop_count_reg;
+	susp->state = state_reg;
+	susp->value = value_reg;
+	/* using signal_ptr_reg is a bad idea on RS/6000: */
+	susp->signal_ptr += togo;
+	out_ptr += togo;
+	susp_took(signal_cnt, togo);
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* gate_n_fetch */
 
@@ -254,8 +254,8 @@ void gate_toss_fetch(susp, snd_list)
 
     /* fetch samples from signal up to final_time for this block of zeros */
     while ((round((final_time - susp->signal->t0) * susp->signal->sr)) >=
-       susp->signal->current)
-    susp_get_samples(signal, signal_ptr, signal_cnt);
+	   susp->signal->current)
+	susp_get_samples(signal, signal_ptr, signal_cnt);
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     n = round((final_time - susp->signal->t0) * susp->signal->sr -
@@ -292,7 +292,7 @@ sound_type snd_make_gate(sound_type signal, time_type lookahead, double risetime
 {
     register gate_susp_type susp;
     rate_type sr = signal->sr;
-    time_type t0 = 0.0;
+    time_type t0 = signal->t0;
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -327,8 +327,8 @@ sound_type snd_make_gate(sound_type signal, time_type lookahead, double risetime
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
-    susp->susp.keep_fetch = susp->susp.fetch;
-    susp->susp.fetch = gate_toss_fetch;
+	susp->susp.keep_fetch = susp->susp.fetch;
+	susp->susp.fetch = gate_toss_fetch;
     }
 
     /* initialize susp state */

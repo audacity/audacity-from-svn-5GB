@@ -48,55 +48,55 @@ void delaycv_nn_fetch(register delaycv_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past the s input sample block: */
-    susp_check_term_samples(s, s_ptr, s_cnt);
-    togo = min(togo, susp->s_cnt);
+	/* don't run past the s input sample block: */
+	susp_check_term_samples(s, s_ptr, s_cnt);
+	togo = min(togo, susp->s_cnt);
 
-    /* don't run past the feedback input sample block: */
-    susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-    togo = min(togo, susp->feedback_cnt);
+	/* don't run past the feedback input sample block: */
+	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
+	togo = min(togo, susp->feedback_cnt);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
-    n = togo;
-    delayptr_reg = susp->delayptr;
-    endptr_reg = susp->endptr;
-    feedback_ptr_reg = susp->feedback_ptr;
-    s_ptr_reg = susp->s_ptr;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	delayptr_reg = susp->delayptr;
+	endptr_reg = susp->endptr;
+	feedback_ptr_reg = susp->feedback_ptr;
+	s_ptr_reg = susp->s_ptr;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = *delayptr_reg;
          *delayptr_reg = *delayptr_reg * *feedback_ptr_reg++ + *s_ptr_reg++;
          if (++delayptr_reg >= endptr_reg) delayptr_reg = susp->delaybuf;;
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    susp->delayptr = delayptr_reg;
-    susp->endptr = endptr_reg;
-    /* using feedback_ptr_reg is a bad idea on RS/6000: */
-    susp->feedback_ptr += togo;
-    /* using s_ptr_reg is a bad idea on RS/6000: */
-    susp->s_ptr += togo;
-    out_ptr += togo;
-    susp_took(s_cnt, togo);
-    susp_took(feedback_cnt, togo);
-    cnt += togo;
+	susp->delayptr = delayptr_reg;
+	susp->endptr = endptr_reg;
+	/* using feedback_ptr_reg is a bad idea on RS/6000: */
+	susp->feedback_ptr += togo;
+	/* using s_ptr_reg is a bad idea on RS/6000: */
+	susp->s_ptr += togo;
+	out_ptr += togo;
+	susp_took(s_cnt, togo);
+	susp_took(feedback_cnt, togo);
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* delaycv_nn_fetch */
 
@@ -121,55 +121,55 @@ void delaycv_ns_fetch(register delaycv_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past the s input sample block: */
-    susp_check_term_samples(s, s_ptr, s_cnt);
-    togo = min(togo, susp->s_cnt);
+	/* don't run past the s input sample block: */
+	susp_check_term_samples(s, s_ptr, s_cnt);
+	togo = min(togo, susp->s_cnt);
 
-    /* don't run past the feedback input sample block: */
-    susp_check_samples(feedback, feedback_ptr, feedback_cnt);
-    togo = min(togo, susp->feedback_cnt);
+	/* don't run past the feedback input sample block: */
+	susp_check_samples(feedback, feedback_ptr, feedback_cnt);
+	togo = min(togo, susp->feedback_cnt);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
-    n = togo;
-    delayptr_reg = susp->delayptr;
-    endptr_reg = susp->endptr;
-    feedback_ptr_reg = susp->feedback_ptr;
-    s_ptr_reg = susp->s_ptr;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	delayptr_reg = susp->delayptr;
+	endptr_reg = susp->endptr;
+	feedback_ptr_reg = susp->feedback_ptr;
+	s_ptr_reg = susp->s_ptr;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
 *out_ptr_reg++ = *delayptr_reg;
          *delayptr_reg = *delayptr_reg * (feedback_scale_reg * *feedback_ptr_reg++) + *s_ptr_reg++;
          if (++delayptr_reg >= endptr_reg) delayptr_reg = susp->delaybuf;;
-    } while (--n); /* inner loop */
+	} while (--n); /* inner loop */
 
-    susp->delayptr = delayptr_reg;
-    susp->endptr = endptr_reg;
-    /* using feedback_ptr_reg is a bad idea on RS/6000: */
-    susp->feedback_ptr += togo;
-    /* using s_ptr_reg is a bad idea on RS/6000: */
-    susp->s_ptr += togo;
-    out_ptr += togo;
-    susp_took(s_cnt, togo);
-    susp_took(feedback_cnt, togo);
-    cnt += togo;
+	susp->delayptr = delayptr_reg;
+	susp->endptr = endptr_reg;
+	/* using feedback_ptr_reg is a bad idea on RS/6000: */
+	susp->feedback_ptr += togo;
+	/* using s_ptr_reg is a bad idea on RS/6000: */
+	susp->s_ptr += togo;
+	out_ptr += togo;
+	susp_took(s_cnt, togo);
+	susp_took(feedback_cnt, togo);
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* delaycv_ns_fetch */
 
@@ -184,12 +184,12 @@ void delaycv_toss_fetch(susp, snd_list)
 
     /* fetch samples from s up to final_time for this block of zeros */
     while ((round((final_time - susp->s->t0) * susp->s->sr)) >=
-       susp->s->current)
-    susp_get_samples(s, s_ptr, s_cnt);
+	   susp->s->current)
+	susp_get_samples(s, s_ptr, s_cnt);
     /* fetch samples from feedback up to final_time for this block of zeros */
     while ((round((final_time - susp->feedback->t0) * susp->feedback->sr)) >=
-       susp->feedback->current)
-    susp_get_samples(feedback, feedback_ptr, feedback_cnt);
+	   susp->feedback->current)
+	susp_get_samples(feedback, feedback_ptr, feedback_cnt);
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     n = round((final_time - susp->s->t0) * susp->s->sr -
@@ -236,7 +236,7 @@ sound_type snd_make_delaycv(sound_type s, time_type delay, sound_type feedback)
 {
     register delaycv_susp_type susp;
     rate_type sr = max(s->sr, feedback->sr);
-    time_type t0 = 0.0;
+    time_type t0 = max(s->t0, feedback->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -259,6 +259,7 @@ sound_type snd_make_delaycv(sound_type s, time_type delay, sound_type feedback)
     switch (interp_desc) {
       case INTERP_nn: susp->susp.fetch = delaycv_nn_fetch; break;
       case INTERP_ns: susp->susp.fetch = delaycv_ns_fetch; break;
+      default: snd_badsr(); break;
     }
 
     susp->terminate_cnt = UNKNOWN;
@@ -270,8 +271,8 @@ sound_type snd_make_delaycv(sound_type s, time_type delay, sound_type feedback)
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
-    susp->susp.keep_fetch = susp->susp.fetch;
-    susp->susp.fetch = delaycv_toss_fetch;
+	susp->susp.keep_fetch = susp->susp.fetch;
+	susp->susp.fetch = delaycv_toss_fetch;
     }
 
     /* initialize susp state */

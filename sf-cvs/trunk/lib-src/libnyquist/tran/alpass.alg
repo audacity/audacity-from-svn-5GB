@@ -1,6 +1,7 @@
 (ALPASS-ALG
 (NAME "alpass")
 (ARGUMENTS ("sound_type" "input") ("time_type" "delay") ("double" "feedback"))
+(START (MIN input))
 (STATE ("double" "feedback" "feedback")
        ("long" "delaylen" "max(1, round(input->sr * delay))")
        ("sample_type *" "delaybuf"

@@ -100,90 +100,90 @@ void follow_s_fetch(register follow_susp_type susp, snd_list_type snd_list)
     snd_list->block = out;
 
     while (cnt < max_sample_block_len) { /* outer loop */
-    /* first compute how many samples to generate in inner loop: */
-    /* don't overflow the output sample block: */
-    togo = max_sample_block_len - cnt;
+	/* first compute how many samples to generate in inner loop: */
+	/* don't overflow the output sample block: */
+	togo = max_sample_block_len - cnt;
 
-    /* don't run past the sndin input sample block: */
-    susp_check_term_samples(sndin, sndin_ptr, sndin_cnt);
-    togo = min(togo, susp->sndin_cnt);
+	/* don't run past the sndin input sample block: */
+	susp_check_term_samples(sndin, sndin_ptr, sndin_cnt);
+	togo = min(togo, susp->sndin_cnt);
 
-    /* don't run past terminate time */
-    if (susp->terminate_cnt != UNKNOWN &&
-        susp->terminate_cnt <= susp->susp.current + cnt + togo) {
-        togo = susp->terminate_cnt - (susp->susp.current + cnt);
-        if (togo == 0) break;
-    }
+	/* don't run past terminate time */
+	if (susp->terminate_cnt != UNKNOWN &&
+	    susp->terminate_cnt <= susp->susp.current + cnt + togo) {
+	    togo = susp->terminate_cnt - (susp->susp.current + cnt);
+	    if (togo == 0) break;
+	}
 
-    n = togo;
-    lookahead_reg = susp->lookahead;
-    delayptr_reg = susp->delayptr;
-    prevptr_reg = susp->prevptr;
-    endptr_reg = susp->endptr;
-    floor_reg = susp->floor;
-    rise_factor_reg = susp->rise_factor;
-    fall_factor_reg = susp->fall_factor;
-    sndin_ptr_reg = susp->sndin_ptr;
-    out_ptr_reg = out_ptr;
-    if (n) do { /* the inner sample computation loop */
+	n = togo;
+	lookahead_reg = susp->lookahead;
+	delayptr_reg = susp->delayptr;
+	prevptr_reg = susp->prevptr;
+	endptr_reg = susp->endptr;
+	floor_reg = susp->floor;
+	rise_factor_reg = susp->rise_factor;
+	fall_factor_reg = susp->fall_factor;
+	sndin_ptr_reg = susp->sndin_ptr;
+	out_ptr_reg = out_ptr;
+	if (n) do { /* the inner sample computation loop */
             sample_type current = (sndin_scale_reg * *sndin_ptr_reg++);
-        sample_type high = (sample_type) (*prevptr_reg * rise_factor_reg);
-        sample_type low = (sample_type) (*prevptr_reg * fall_factor_reg);
-        if (low < floor_reg) low = (sample_type) floor_reg;
-        if (current < low) *delayptr_reg = (sample_type) low;
-        else if (current < high) *delayptr_reg = current;
-        else /* current > high */ {
-        /* work back from current */
-        double rise_inverse = 1.0 / rise_factor_reg;
-        double temp = current * rise_inverse;
-        boolean ok = false;
-        sample_type *ptr = prevptr_reg;
-        int i;
-                   
-        for (i = 0; i < lookahead_reg - 2; i++) {
-            if (*ptr < temp) {
-            *ptr-- = (sample_type) temp;
-            temp *= rise_inverse;
-            if (ptr < susp->delaybuf)
-            ptr = endptr_reg - 1;
-            } else {
-            ok = true;
-            break;
+            sample_type high = (sample_type) (*prevptr_reg * rise_factor_reg);
+            sample_type low = (sample_type) (*prevptr_reg * fall_factor_reg);
+            if (low < floor_reg) low = (sample_type) floor_reg;
+            if (current < low) *delayptr_reg = (sample_type) low;
+            else if (current < high) *delayptr_reg = current;
+            else /* current > high */ {
+                /* work back from current */
+                double rise_inverse = 1.0 / rise_factor_reg;
+                double temp = current * rise_inverse;
+                boolean ok = false;
+                sample_type *ptr = prevptr_reg;
+                int i;
+                               
+                for (i = 0; i < lookahead_reg - 2; i++) {
+                    if (*ptr < temp) {
+                    *ptr-- = (sample_type) temp;
+                    temp *= rise_inverse;
+                    if (ptr < susp->delaybuf)
+                        ptr = endptr_reg - 1;
+                    } else {
+                        ok = true;
+                        break;
+                    }
+                }
+                if (!ok && (*ptr < temp)) {
+                    temp = *ptr;
+                    for (i = 0; i < lookahead_reg - 1; i++) {
+                        ptr++;
+                        if (ptr == endptr_reg) ptr = susp->delaybuf;
+                        temp *= rise_factor_reg;
+                        *ptr = (sample_type) temp;
+                    }
+                } else *delayptr_reg = current;
             }
-        }
-        if (!ok && (*ptr < temp)) {
-            temp = *ptr;
-            for (i = 0; i < lookahead_reg - 1; i++) {
-            ptr++;
-            if (ptr == endptr_reg) ptr = susp->delaybuf;
-            temp *= rise_factor_reg;
-            *ptr = (sample_type) temp;
-            }
-        } else *delayptr_reg = current;
-        }
-        prevptr_reg = delayptr_reg++;
-        if (delayptr_reg == endptr_reg) delayptr_reg = susp->delaybuf;
-        *out_ptr_reg++ = *delayptr_reg;;
-    } while (--n); /* inner loop */
+            prevptr_reg = delayptr_reg++;
+            if (delayptr_reg == endptr_reg) delayptr_reg = susp->delaybuf;
+            *out_ptr_reg++ = *delayptr_reg;;
+	} while (--n); /* inner loop */
 
-    togo -= n;
-    susp->lookahead = lookahead_reg;
-    susp->delayptr = delayptr_reg;
-    susp->prevptr = prevptr_reg;
-    susp->floor = floor_reg;
-    /* using sndin_ptr_reg is a bad idea on RS/6000: */
-    susp->sndin_ptr += togo;
-    out_ptr += togo;
-    susp_took(sndin_cnt, togo);
-    cnt += togo;
+	togo -= n;
+	susp->lookahead = lookahead_reg;
+	susp->delayptr = delayptr_reg;
+	susp->prevptr = prevptr_reg;
+	susp->floor = floor_reg;
+	/* using sndin_ptr_reg is a bad idea on RS/6000: */
+	susp->sndin_ptr += togo;
+	out_ptr += togo;
+	susp_took(sndin_cnt, togo);
+	cnt += togo;
     } /* outer loop */
 
     /* test for termination */
     if (togo == 0 && cnt == 0) {
-    snd_list_terminate(snd_list);
+	snd_list_terminate(snd_list);
     } else {
-    snd_list->block_len = cnt;
-    susp->susp.current += cnt;
+	snd_list->block_len = cnt;
+	susp->susp.current += cnt;
     }
 } /* follow_s_fetch */
 
@@ -198,8 +198,8 @@ void follow_toss_fetch(susp, snd_list)
 
     /* fetch samples from sndin up to final_time for this block of zeros */
     while ((round((final_time - susp->sndin->t0) * susp->sndin->sr)) >=
-       susp->sndin->current)
-    susp_get_samples(sndin, sndin_ptr, sndin_cnt);
+	   susp->sndin->current)
+	susp_get_samples(sndin, sndin_ptr, sndin_cnt);
     /* convert to normal processing when we hit final_count */
     /* we want each signal positioned at final_time */
     n = round((final_time - susp->sndin->t0) * susp->sndin->sr -
@@ -236,7 +236,7 @@ sound_type snd_make_follow(sound_type sndin, double floor, double risetime, doub
 {
     register follow_susp_type susp;
     rate_type sr = sndin->sr;
-    time_type t0 = 0.0;
+    time_type t0 = sndin->t0;
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -260,8 +260,8 @@ sound_type snd_make_follow(sound_type sndin, double floor, double risetime, doub
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
-    susp->susp.keep_fetch = susp->susp.fetch;
-    susp->susp.fetch = follow_toss_fetch;
+	susp->susp.keep_fetch = susp->susp.fetch;
+	susp->susp.fetch = follow_toss_fetch;
     }
 
     /* initialize susp state */

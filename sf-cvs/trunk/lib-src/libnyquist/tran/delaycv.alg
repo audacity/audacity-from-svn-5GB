@@ -1,6 +1,7 @@
 (DELAYCV-ALG
 (NAME "delaycv")
 (ARGUMENTS ("sound_type" "s") ("time_type" "delay") ("sound_type" "feedback"))
+(START (MAX s feedback))
 (STATE ("long" "delaylen" "round(s->sr * delay)")
        ("sample_type *" "delaybuf"
                "(sample_type *) calloc (sizeof(double), susp->delaylen)")

@@ -11,7 +11,7 @@
 (STATE ("double" "offset" "offset * s1->sr")
        ("double" "vdscale" "vardelay->scale * s1->sr")
        ("double" "maxdelay" "maxdelay * s1->sr")
-       ("long" "bufflen" "(long) (susp->maxdelay + 1.5)")
+       ("long" "bufflen" "max(2, (long) (susp->maxdelay + 1.5))")
        ("long" "index" "susp->bufflen")
        ("sample_type *" "buffer" 
         "(sample_type *) calloc(susp->bufflen + 1, sizeof(sample_type))"))
@@ -20,8 +20,8 @@
 (INNER-LOOP-LOCALS "            double phase;
             long i;
 ")
-(INNER-LOOP "	    phase = vardelay * vdscale + offset;
-            /* now phase should give number of samples of delay */
+(INNER-LOOP "        phase = vardelay * vdscale + offset;
+        /* now phase should give number of samples of delay */
         if (phase < 0) phase = 0;
         else if (phase > maxdelay) phase = maxdelay;
         phase = (double) index - phase;
@@ -33,7 +33,7 @@
          * is bufflen + 1 to allow for a repeated sample at the
          * end. This allows for efficient interpolation.
          */ 
-            buffer[index++] = s1;
+        buffer[index++] = s1;
         if (index > bufflen) {
             buffer[0] = buffer[bufflen];
             index = 1;
@@ -46,7 +46,7 @@
         i = (long) phase;    /* put integer part in i */
         phase -= (double) i; /* put fractional part in phase */	     
             output = (sample_type) (buffer[i] * (1.0 - phase) + 
-                            buffer[i + 1] * phase);")
+                                    buffer[i + 1] * phase);")
 (FINALIZATION "    free(susp->buffer);
 ")
 )

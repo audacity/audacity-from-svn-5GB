@@ -2,6 +2,7 @@
 (NAME "gate")
 (ARGUMENTS ("sound_type" "signal") ("time_type" "lookahead") ("double" "risetime")
            ("double" "falltime") ("double" "floor") ("double" "threshold"))
+(START (MIN signal))
 (SUPPORT-FUNCTIONS "#define ST_HOLD 0
 #define ST_FALL 1
 #define ST_FALL_UNTIL 2
