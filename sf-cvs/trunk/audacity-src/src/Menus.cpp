@@ -288,6 +288,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("Stop",        _("Stop\tS"),                     FN(OnStop));
    c->AddCommand("Pause",       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand("Record",      _("Record\tR"),                   FN(OnRecord));
+   
+   c->AddCommand("PlayOneSec",  _("Play One Second\t1"),          FN(OnPlayOneSecond));
+
    c->AddCommand("SkipStart",   _("Skip to Start\tHome"),         FN(OnSkipStart));
    c->AddCommand("SkipEnd",     _("Skip to End\tEnd"),            FN(OnSkipEnd));
 
@@ -328,6 +331,27 @@ void AudacityProject::ModifyExportMenus()
 //
 // Audio I/O Commands
 //
+
+void AudacityProject::OnPlayOneSecond()
+{
+   ControlToolBar *toolbar = GetControlToolBar();
+   wxCommandEvent evt;
+
+   //If busy, stop playing, make sure everything is unpaused.
+   if (gAudioIO->IsStreamActive()) {
+      toolbar->SetPlay(false);        //Pops
+      toolbar->SetStop(true);         //Pushes stop down
+      toolbar->OnStop(evt);
+
+      ::wxUsleep(300);
+
+      if (gAudioIO->IsStreamActive())
+         return;
+   }
+
+   double pos = mTrackPanel->GetMostRecentXPos();
+   toolbar->PlayPlayRegion(pos - 0.5, pos + 0.5);
+}
 
 void AudacityProject::OnPlayStop()
 {

@@ -126,6 +126,8 @@ class TrackPanel:public wxWindow {
    void OnMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
 
+   double GetMostRecentXPos();
+
    void OnTimer();
 
    int GetRulerHeight();

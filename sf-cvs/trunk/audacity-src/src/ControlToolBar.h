@@ -80,6 +80,8 @@ class ControlToolBar:public ToolBar {
    void SetRecord(bool down);
    void SetCurrentTool(int tool, bool show);
 
+   void PlayPlayRegion(double t0, double t1);
+
    //These interrogate the state of the buttons or controls.
    float GetSoundVol();
    int GetCurrentTool();

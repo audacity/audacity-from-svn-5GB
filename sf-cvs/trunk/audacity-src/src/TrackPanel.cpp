@@ -2911,6 +2911,12 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
    }
 }
 
+double TrackPanel::GetMostRecentXPos()
+{
+   return mViewInfo->h +
+      (mMouseMostRecentX - GetLabelWidth()) / mViewInfo->zoom;
+}
+
 int TrackPanel::GetRulerHeight()
 { 
    return AdornedRulerPanel::GetRulerHeight();
