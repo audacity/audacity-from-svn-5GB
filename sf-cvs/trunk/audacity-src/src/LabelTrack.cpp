@@ -669,17 +669,21 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
 
 
 #ifdef __WXMAC__
-// HACK: why does each key event happen twice on wxMac?
-bool gMacRepeat = false;
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
+  // HACK: Workaround wxMac <=2.4 bug
+  bool gMacRepeat = false;
+ #endif
 #endif
 
 void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 { 
 #ifdef __WXMAC__
-   // HACK: why does each key event happen twice on wxMac?
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
+  // HACK: Workaround wxMac <=2.4 bug
    gMacRepeat = !gMacRepeat;
    if (gMacRepeat)
       return;
+ #endif
 #endif
 
    long keyCode = event.KeyCode();
