@@ -23,6 +23,7 @@ plug-ins (contributed by users)</b>:
 <li><a href="nyquist/lfopan.zip">LFO Pan</a>
 <li><a href="nyquist/pan.zip">Pan</a>
 <li><a href="nyquist/ramppan.zip">Ramp Pan</a>
+<!-- <li><a href="nyquist/touchtone.zip">Touch Tones</a> -->
 </ul>
 
 <b>Windows:</b>
