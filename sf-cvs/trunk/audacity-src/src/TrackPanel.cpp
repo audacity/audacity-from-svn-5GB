@@ -341,6 +341,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mIsGainSliding = false;
    mIsPanSliding = false;
    mIsMinimizing = false;
+   mSlideUpDownOnly = false;
 
    gPrefs->Read("/GUI/AdjustSelectionEdges", &mAdjustSelectionEdges, true);
 
@@ -1660,7 +1661,10 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
       //  MakeParentPushState on ButtonUp.
       name = vt->GetName();
       
-      if (vt->GetKind() == Track::Wave && !event.ShiftDown())
+      ControlToolBar * ctb = mListener->TP_GetControlToolBar();
+      bool multiToolModeActive = (ctb && ctb->GetMultiToolDown());
+
+      if (vt->GetKind() == Track::Wave && !event.ShiftDown() && !multiToolModeActive)
       {
          WaveTrack* wt = (WaveTrack*)vt;
          mCapturedClip = wt->GetClipIndex(wt->GetClipAtX(event.m_x));
@@ -1670,6 +1674,8 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
       {
          mCapturedClip = -1;
       }
+      
+      mSlideUpDownOnly = event.ControlDown();
 
       mCapturedTrack = vt;
       mCapturedRect = r;
@@ -1742,6 +1748,9 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    }
 
    // Implement sliding within the track
+   if (mSlideUpDownOnly)
+      return;
+      
    double samplerate = ((WaveTrack *)mCapturedTrack)->GetRate();
 
    double selend = mViewInfo->h +

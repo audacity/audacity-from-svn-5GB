@@ -97,9 +97,14 @@ WaveTrack::~WaveTrack()
    mClips.Clear();
 }
 
-void WaveTrack::SetOffset (double o)
+double WaveTrack::GetOffset()
 {
-   double delta = o - mOffset;
+   return GetStartTime();
+}
+
+void WaveTrack::SetOffset(double o)
+{
+   double delta = o - GetOffset();
 
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {

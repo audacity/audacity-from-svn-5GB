@@ -378,6 +378,7 @@ class TrackPanel:public wxWindow {
    bool mIsPanSliding;
    bool mIsMinimizing;
    bool mAdjustSelectionEdges;
+   bool mSlideUpDownOnly;
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?

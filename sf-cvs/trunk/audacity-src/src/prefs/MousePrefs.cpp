@@ -95,7 +95,10 @@ PrefsPanel(parent)
    AddItem( _("Right-Click"),      _("Zoom"),      _("Zoom out one step") );
    AddItem( _("Right-Drag"),       _("Zoom"),      _("Zoom in on a Range"), _("same as left-drag") );
 
-   AddItem( _("Left-Drag"),        _("Time-Shift"),_("Time shift sequence") );
+   AddItem( _("Left-Drag"),        _("Time-Shift"),_("Time shift clip or move up/down between tracks") );
+   AddItem( _("Shift-Left-Drag"),  _("Time-Shift"),_("Time shift all clips in track") );
+   AddItem( _("Ctrl-Left-Drag"),   _("Time-Shift"),_("Move clip up/down between tracks") );
+   
    AddItem( _("Left-Drag"),        _("Envelope"),  _("Change Amplification Envelope") );
 
    AddItem( _("Left-Click"),       _("Pencil"),    _("Change Sample") );
