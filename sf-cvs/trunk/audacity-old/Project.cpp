@@ -39,7 +39,11 @@
 #include "FreqWindow.h"
 #include "Import.h"
 #include "ImportMP3.h"
+
+#ifdef HAVE_LIBVORBISFILE
 #include "ImportOGG.h"
+#endif
+
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
@@ -832,6 +836,7 @@ void AudacityProject::OpenFile(wxString fileName)
     }
   }
 
+#ifdef HAVE_LIBVORBISFILE
   // Check for .OGG suffix
 
   if (!fileName.Right(3).CmpNoCase("ogg")) {
@@ -850,6 +855,7 @@ void AudacityProject::OpenFile(wxString fileName)
 	    return;
     }
   }
+#endif /* HAVE_LIBVORBISFILE */
 
   // Check for .WAV, .AIFF, .AIF, .AU, or .IRCAM suffix
 
@@ -1258,6 +1264,7 @@ void AudacityProject::ImportMP3(wxString fileName)
   }
 }
 
+#ifdef HAVE_LIBVORBISFILE
 void AudacityProject::ImportOGG(wxString fileName)
 {
 	WaveTrack **channels = 0;
@@ -1277,6 +1284,7 @@ void AudacityProject::ImportOGG(wxString fileName)
 		mTrackPanel->Refresh(false);
 	}
 }
+#endif /* HAVE_LIBVORBISFILE */
 
 //
 // Zoom methods

@@ -127,7 +127,9 @@ enum {
   EVT_MENU(ImportLabelsID, AudacityProject::OnImportLabels)
   EVT_MENU(ImportMIDIID, AudacityProject::OnImportMIDI)
   EVT_MENU(ImportRawID, AudacityProject::OnImportRaw)
+#ifdef HAVE_LIBVORBISFILE
   EVT_MENU(ImportOGGID, AudacityProject::OnImportOGG)
+#endif
   EVT_MENU(ImportMP3ID, AudacityProject::OnImportMP3)
   EVT_MENU(AlignID, AudacityProject::OnAlign)
   EVT_MENU(AlignZeroID, AudacityProject::OnAlignZero)
@@ -202,7 +204,9 @@ public:
 	void OnImportLabels(wxCommandEvent& event);
 	void OnImportMIDI(wxCommandEvent& event);
 	void OnImportMP3(wxCommandEvent& event);
-  void OnImportOGG(wxCommandEvent& event);
+#ifdef HAVE_LIBVORBISFILE
+	void OnImportOGG(wxCommandEvent& event);
+#endif
 	void OnImportRaw(wxCommandEvent& event);
 
 	void OnQuickMix(wxCommandEvent& event);

@@ -17,6 +17,8 @@
 
 **********************************************************************/
 
+#ifdef HAVE_LIBVORBISFILE
+
 #include <wx/string.h>
 #include <wx/timer.h>
 #include <wx/utils.h>
@@ -39,11 +41,6 @@ bool ImportOGG(wxWindow *parent,
 			   wxString Filename, WaveTrack **channels[], int *numChannels,
 			   DirManager *dirManager)
 {
-  #ifdef __WXMAC__
-  // This is only temporary until the OGG Vorbis libraries are linked in on the
-  // Mac
-  return false;
-  #else
 
 	wxFFile file(Filename);
 	
@@ -190,5 +187,6 @@ bool ImportOGG(wxWindow *parent,
 
 	return true;
 
-	#endif  // defined __WXGTK__
 }
+
+#endif /* HAVE_LIBVORBISFILE */

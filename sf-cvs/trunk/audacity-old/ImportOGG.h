@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#ifdef HAVE_LIBVORBISFILE
+
 #ifndef __AUDACITY_IMPORT_OGG__
 #define __AUDACITY_IMPORT_OGG__
 
@@ -21,4 +23,5 @@ bool ImportOGG(wxWindow *parent,
 			   DirManager *dirManager);
 
 
+#endif
 #endif

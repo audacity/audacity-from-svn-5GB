@@ -32,6 +32,11 @@
 #include "ImportRaw.h"
 #include "ImportMIDI.h"
 #include "ImportMP3.h"
+
+#ifdef HAVE_LIBVORBISFILE
+#include "ImportOGG.h"
+#endif
+
 #include "LabelTrack.h"
 #include "Mix.h"
 #include "NoteTrack.h"
@@ -98,7 +103,9 @@ void AudacityProject::CreateMenuBar()
   mProjectMenu->Append(ImportLabelsID, "Import Labels...");
   mProjectMenu->Append(ImportMIDIID, "Import &MIDI...");
   mProjectMenu->Append(ImportMP3ID, "Import MP&3...");
+#ifdef HAVE_LIBVORBISFILE
   mProjectMenu->Append(ImportOGGID, "Import &OGG...");
+#endif
   mProjectMenu->Append(ImportRawID, "Import Raw Data...");
   mProjectMenu->AppendSeparator();
   mProjectMenu->Append(QuickMixID, "&Quick Mix");
@@ -792,6 +799,7 @@ void AudacityProject::OnImportMP3(wxCommandEvent& event)
 	  ImportMP3(fileName);
 }
 
+#ifdef HAVE_LIBVORBISFILE
 void AudacityProject::OnImportOGG(wxCommandEvent& event)
 {
 	wxString fileName =
@@ -806,6 +814,7 @@ void AudacityProject::OnImportOGG(wxCommandEvent& event)
 	if(fileName != "")
 		ImportOGG(fileName);
 }
+#endif /* HAVE_LIBVORBISFILE */
 
 void AudacityProject::OnImportRaw(wxCommandEvent& event)
 {

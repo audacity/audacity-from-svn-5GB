@@ -73,7 +73,9 @@ public:
   void SaveAs();
   void ImportFile(wxString fileName);
   void ImportMP3(wxString fileName);
+#ifdef HAVE_LIBVORBISFILE
   void ImportOGG(wxString fileName);
+#endif
 
   void Clear();
 

@@ -20,7 +20,9 @@ wxString gDefaultExportFormatOptions [] = { "AIFF",
 	                                        "WAV",
 										    "IRCAM",
 										    "AU",
+										#ifdef HAVE_LIBVORBISFILE
 										    "Ogg Vorbis",
+										#endif
                                             "MP3" };
 
 FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
@@ -66,7 +68,11 @@ FileFormatPrefs::FileFormatPrefs(wxWindow *parent):
 								   wxSize (GetSize().GetWidth() -
 								   		   PREFS_SIDE_MARGINS * 2,
 								   		   160),
+								#ifdef HAVE_LIBVORBISFILE
 								   6,
+								#else
+								   5,
+								#endif
 								   gDefaultExportFormatOptions,
 								   1);
 	mDefaultExportFormat->SetSelection(pos);
