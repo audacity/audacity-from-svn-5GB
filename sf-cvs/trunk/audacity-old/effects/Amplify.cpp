@@ -101,7 +101,7 @@ bool EffectMaxAmplify::DoIt(WaveTrack *t,
   float ratio = 32767.0 / (abs(min) > abs(max)? abs(min): abs(max));
   
   if (ratio <= 1.0)
-    return;
+    return true;
 
   sampleCount s = start;
   sampleCount blockSize = t->GetIdealBlockSize();
