@@ -178,7 +178,8 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
       channels[c] = trackFactory->NewWaveTrack(int16Sample);
       channels[c]->SetRate(vi->rate);
 
-      switch (c) {
+      if (*outNumTracks > 1)
+         switch (c) {
          case 0:
             channels[c]->SetChannel(Track::LeftChannel);
             break;
@@ -187,7 +188,7 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
             break;
          default:
             channels[c]->SetChannel(Track::MonoChannel);
-      }
+         }
    }
 
    if (*outNumTracks == 2)

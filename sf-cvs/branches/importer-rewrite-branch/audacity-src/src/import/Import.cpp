@@ -43,6 +43,7 @@ Importer::Importer()
    // in the order defined here.
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
    //GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   GetPCMImportPlugin(mImportPluginList, mUnusableImportPluginList);
 
    // TODO: others
 }

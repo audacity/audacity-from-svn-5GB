@@ -54,7 +54,6 @@ PrefsPanel(parent)
    wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
 
    mFormat = ReadExportFormatPref();
-   mFormatBits = ReadExportFormatBitsPref();
 
    wxString lossyFormat = gPrefs->Read("/FileFormats/LossyExportFormat", "MP3");
    long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
@@ -100,8 +99,7 @@ PrefsPanel(parent)
       wxString *formatStrings = new wxString[numSimpleFormats+1];
       for(int i=0; i<numSimpleFormats; i++) {
          formatStrings[i] = sf_simple_format(i)->name;
-         if (mFormat == sf_simple_format(i)->format &&
-             mFormatBits == sf_simple_format(i)->pcmbitwidth)
+         if (mFormat == sf_simple_format(i)->format)
             sel = i;
       }
       formatStrings[numSimpleFormats] = _("Other...");
@@ -268,8 +266,6 @@ void FileFormatPrefs::SetFormatText()
 
    formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
 
-   formatString += wxString::Format(_(", %d-bit data"), mFormatBits);   
-
    formatString += ", " + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
 
    mFormatText->SetLabel(formatString);
@@ -285,7 +281,6 @@ void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
    }
    else {
       mFormat = sf_simple_format(sel)->format;
-      mFormatBits = sf_simple_format(sel)->pcmbitwidth;
    }
 
    SetFormatText();
@@ -310,10 +305,8 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 bool FileFormatPrefs::Apply()
 {
    unsigned int originalExportFormat = ReadExportFormatPref();
-   unsigned int originalExportBits = ReadExportFormatBitsPref();
 
    WriteExportFormatPref(mFormat);
-   WriteExportFormatBitsPref(mFormatBits);
    
    gPrefs->SetPath("/FileFormats");
 
@@ -329,8 +322,7 @@ bool FileFormatPrefs::Apply()
    }
    gPrefs->SetPath("/");
       
-   if (originalExportFormat != mFormat ||
-       originalExportBits != mFormatBits)
+   if (originalExportFormat != mFormat)
       gMenusDirty++;
 
    wxString lossyFormat = "MP3";
@@ -364,8 +356,7 @@ class OtherFormatDialog:public wxDialog {
  public:
    // constructors and destructors
    OtherFormatDialog(wxWindow * parent, wxWindowID id,
-                     unsigned int format,
-                     unsigned int formatBits);
+                     unsigned int format);
 
 public:
    void OnChoice(wxCommandEvent & event);
@@ -375,7 +366,6 @@ public:
    void ValidateChoices();
 
    unsigned int  mFormat;
-   unsigned int  mFormatBits;
 
    wxButton   *mOK;
    wxChoice   *mHeaderChoice;
@@ -394,21 +384,19 @@ BEGIN_EVENT_TABLE(OtherFormatDialog, wxDialog)
 END_EVENT_TABLE()
 
 OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
-                                     unsigned int format,
-                                     unsigned int formatBits):
+                                     unsigned int format):
    wxDialog(parent, id,
             _("File Format"),
             wxDefaultPosition, wxDefaultSize)
 {
    mFormat = format;
-   mFormatBits = formatBits;
 
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
    wxControl *item;
 
    item = new wxStaticText(this, -1,
-                     _("(Not all combinations of headers, data sizes,\n"
+                     _("(Not all combinations of headers\n"
                        "and encodings are possible.)"),
                      wxDefaultPosition, wxDefaultSize, 0);
 
@@ -433,24 +421,6 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
                    sf_num_headers(), headerStrings);
    mHeaderChoice->SetSelection(((mFormat & SF_FORMAT_TYPEMASK) / 0x10000)-1);
    gridSizer->Add(mHeaderChoice, 1, wxEXPAND | wxALL, 5);
-
-   /***/
-
-   item = new wxStaticText(this, -1, _("Data Size: "),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item, 0,
-                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-   wxString bitStrings[4] = {
-      "8-bit",
-      "16-bit",
-      "24-bit",
-      "32-bit"};
-   mBitsChoice = 
-      new wxChoice(this, ID_BITS_CHOICE,
-                   wxDefaultPosition, wxDefaultSize,
-                   4, bitStrings);
-   mBitsChoice->SetSelection(mFormatBits/8 - 1);
-   gridSizer->Add(mBitsChoice, 1, wxEXPAND | wxALL, 5);
 
    /***/
 
@@ -500,7 +470,7 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
 void OtherFormatDialog::ValidateChoices()
 {
    SF_INFO info = 
-   {44100, 1, 2, mFormatBits, mFormat, 1, 1};
+   {44100, 1, 2, mFormat, 1, 1};
    
    if (sf_format_check(&info))
       mOK->Enable(true);
@@ -511,11 +481,9 @@ void OtherFormatDialog::ValidateChoices()
 void OtherFormatDialog::OnChoice(wxCommandEvent & event)
 {
    int h = mHeaderChoice->GetSelection();
-   int b = mBitsChoice->GetSelection();
    int e = mEncodingChoice->GetSelection();
 
    mFormat = (h+1)*0x10000 + (e+1);
-   mFormatBits = (b+1)*8;
 
    ValidateChoices();
 }
@@ -533,12 +501,11 @@ void OtherFormatDialog::OnCancel(wxCommandEvent & event)
 void FileFormatPrefs::Other()
 {
    OtherFormatDialog dlog(this, -1,
-                          mFormat, mFormatBits);
+                          mFormat);
    dlog.CentreOnParent();
    dlog.ShowModal();
 
    if (dlog.GetReturnCode()) {
       mFormat = dlog.mFormat;
-      mFormatBits = dlog.mFormatBits;
    }
 }
