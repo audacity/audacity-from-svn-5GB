@@ -1,9 +1,10 @@
 <?php
 $charset = "UTF-8";
 $translatorName = "Tomasz Bańdura";
+$languageStr = "Polski";
 $metaDescription = "Audacity, darmowy wielopltformowy edytor audio";
 $helpSectionStr = "Pomoc";
-$aboutStr = "Co to jest jest Audacity?";
+$aboutStr = "Co to jest Audacity?";
 $screenshotsStr = "Zrzuty ekranu";
 $helpStr = "Pomoc Oline";
 $faqStr = "F.A.Q.";
@@ -24,15 +25,21 @@ $addEmailStr = "Dodaj";
 $removeEmailStr = "Usuń";
 $privacyPolicyStr = "Ochrona prywatności";
 $communitySectionStr = "Społeczność";
-$usersListStr = "Lista użytkowników Audacity";
+$usersListStr = "Lista użytkownikow Audacity";
+$translationStr = "Projekt tłumaczenia";
 $develSectionStr = "Deweloperzy";
+$sourceForgeStr = "Projekt Sourceforge";
+$browseSourceStr = "Przeszukaj kod źródłowy";
+$creditsStr = "Twórcy";
 $sourceStr = "Kod źródłowy";
-$sourceDepStr = "Wymagane biblioteki";
+$sourceDepStr = "Zależności (ymagane biblioteki)";
 $linuxStr = "Linux - Binaria";
+$windowsReqStr = "Wymaga systemu Windows 98,ME,2000 lub XP";
+$installerStr = "Program instalacyjny";
 $zipStr = "plik ZIP";
-$tarballStr = "Spakowane źródła";
 $rpmStr = "Binaria RPM";
 $latestStableStr = "Ostatnia stabilna wersja:";
 $latestBetaStr = "Ostatnia wersja Beta:";
 $vstLinksHereStr = "Pobierz wtyczki VST tutaj:";
+$docsStr = "Pobierz najnowszą wersję dokumentacji";
 ?>
