@@ -2,16 +2,20 @@
  * 
  * Sample rate transposer. Changes sample rate by using linear interpolation 
  * together with anti-alias filtering (first order interpolation with anti-
- * alias filtering should be quite adequate for this application)
+ * alias filtering should be quite adequate for this application).
+ *
+ * Use either of the derived classes of 'RateTransposerInteger' or 
+ * 'RateTransposerFloat' for corresponding integer/floating point tranposing
+ * algorithm implementation.
  *
  * Author        : Copyright (c) Olli Parviainen
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:43 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-10-26 19:09:37 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: RateTransposer.h,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
+ * $Id: RateTransposer.h,v 1.2 2004-10-26 19:09:37 vjohnson Exp $
  *
  * License :
  * 
@@ -43,16 +47,24 @@
 
 #include "STTypes.h"
 
+namespace soundtouch
+{
+
+/// A common linear samplerate transposer class.
+///
+/// Note: Use function "RateTransposer::newInstance()" to create a new class 
+/// instance instead of the "new" operator; that function automatically 
+/// chooses a correct implementation depending on if integer or floating 
+/// arithmetics are to be used.
 class RateTransposer : public FIFOProcessor
 {
-private:
+protected:
     /// Anti-alias filter object
     AAFilter *pAAFilter;
 
-    int iSlopeCount;
-    uint uRate;
+    float fRate;
+
     uint uChannels;
-    soundtouch::SAMPLETYPE sPrevSampleL, sPrevSampleR;
 
     /// Buffer for collecting samples to feed the anti-alias filter between
     /// two batches
@@ -66,14 +78,16 @@ private:
 
     BOOL bUseAAFilter;
 
-    void resetRegisters();
+    void init();
 
-    uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
+    virtual void resetRegisters() = 0;
+
+    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
                          const soundtouch::SAMPLETYPE *src, 
-                         uint numSamples);
-    uint transposeMono(soundtouch::SAMPLETYPE *dest, 
+                         uint numSamples) = 0;
+    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
                        const soundtouch::SAMPLETYPE *src, 
-                       uint numSamples);
+                       uint numSamples) = 0;
     uint transpose(soundtouch::SAMPLETYPE *dest, 
                    const soundtouch::SAMPLETYPE *src, 
                    uint numSamples);
@@ -92,9 +106,19 @@ private:
     void processSamples(const soundtouch::SAMPLETYPE *src, 
                         uint numSamples);
 
+
 public:
     RateTransposer();
     virtual ~RateTransposer();
+
+    /// Operator 'new' is overloaded so that it automatically creates a suitable instance 
+    /// depending on if we're to use integer or floating point arithmetics.
+    void *operator new(size_t s);
+
+    /// Use this function instead of "new" operator to create a new instance of this class. 
+    /// This function automatically chooses a correct implementation, depending on if 
+    /// integer ot floating point arithmetics are to be used.
+    static RateTransposer *newInstance();
 
     /// Returns the output buffer object
     FIFOSamplePipe *getOutput() { return &outputBuffer; };
@@ -113,20 +137,22 @@ public:
 
     /// Sets new target rate. Normal rate = 1.0, smaller values represent slower 
     /// rate, larger faster rates.
-    void setRate(float newRate);
+    virtual void setRate(float newRate);
 
     /// Sets the number of channels, 1 = mono, 2 = stereo
     void setChannels(uint channels);
 
     /// Adds 'numSamples' pcs of samples from the 'samples' memory position into
     /// the input of the object.
-    virtual void putSamples(const soundtouch::SAMPLETYPE *samples, uint numSamples);
+    void putSamples(const soundtouch::SAMPLETYPE *samples, uint numSamples);
 
     /// Clears all the samples in the object
-    virtual void clear();
+    void clear();
 
     /// Returns nonzero if there aren't any samples available for outputting.
-    virtual uint isEmpty();
+    uint isEmpty();
 };
+
+}
 
 #endif

@@ -11,10 +11,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:44 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-10-26 19:09:38 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: TDStretch.h,v 1.1.1.1 2004-03-14 15:51:44 mbrubeck Exp $
+ * $Id: TDStretch.h,v 1.2 2004-10-26 19:09:38 vjohnson Exp $
  *
  * License :
  * 
@@ -44,6 +44,9 @@
 #include "RateTransposer.h"
 #include "FIFOSamplePipe.h"
 
+namespace soundtouch
+{
+
 // Default values for sound processing parameters:
 
 /// Default length of a single processing sequence, in milliseconds. This determines to how 
@@ -68,7 +71,7 @@
 /// around, try reducing this setting.
 ///
 /// Increasing this value increases computational burden & vice versa.
-#define DEFAULT_SEEKWINDOW_MS   28
+#define DEFAULT_SEEKWINDOW_MS   14
 
 /// Overlap length in milliseconds. When the chopped sound sequences are mixed back together, 
 /// to form a continuous sound stream, this parameter defines over how long period the two 
@@ -90,16 +93,17 @@ protected:
     uint sampleReq;
     float tempo;
 
-    soundtouch::SAMPLETYPE *pMidBuffer;
-    soundtouch::SAMPLETYPE *pRefMidBuffer;
-    soundtouch::SAMPLETYPE *pRefMidBufferUnaligned;
+    SAMPLETYPE *pMidBuffer;
+    SAMPLETYPE *pRefMidBuffer;
+    SAMPLETYPE *pRefMidBufferUnaligned;
     uint overlapLength;
     uint overlapDividerBits;
-    uint slopingDividerBits;
     uint slopingDivider;
     uint seekLength;
     uint seekWindowLength;
     uint maxOffset;
+    float nominalSkip;
+    float skipFract;
     FIFOSampleBuffer outputBuffer;
     FIFOSampleBuffer inputBuffer;
     BOOL bQuickseek;
@@ -110,19 +114,28 @@ protected:
     uint seekWindowMs;
     uint overlapMs;
 
-    virtual uint seekBestOverlapPositionStereo(const soundtouch::SAMPLETYPE *refPos);
-    virtual uint seekBestOverlapPositionStereoQuick(const soundtouch::SAMPLETYPE *refPos);
-    virtual uint seekBestOverlapPositionMono(const soundtouch::SAMPLETYPE *refPos);
-    virtual uint seekBestOverlapPositionMonoQuick(const soundtouch::SAMPLETYPE *refPos);
-    uint seekBestOverlapPosition(const soundtouch::SAMPLETYPE *refPos);
+    void acceptNewOverlapLength(uint newOverlapLength);
 
-    virtual void overlapStereo(soundtouch::SAMPLETYPE *output, const soundtouch::SAMPLETYPE *input) const;
-    virtual void overlapMono(soundtouch::SAMPLETYPE *output, const soundtouch::SAMPLETYPE *input) const;
+    virtual void clearCrossCorrState();
+    void calculateOverlapLength(uint overlapMs);
+
+    virtual LONG_SAMPLETYPE calcCrossCorrStereo(const SAMPLETYPE *mixingPos, const SAMPLETYPE *compare) const;
+    virtual LONG_SAMPLETYPE calcCrossCorrMono(const SAMPLETYPE *mixingPos, const SAMPLETYPE *compare) const;
+
+    virtual uint seekBestOverlapPositionStereo(const SAMPLETYPE *refPos);
+    virtual uint seekBestOverlapPositionStereoQuick(const SAMPLETYPE *refPos);
+    virtual uint seekBestOverlapPositionMono(const SAMPLETYPE *refPos);
+    virtual uint seekBestOverlapPositionMonoQuick(const SAMPLETYPE *refPos);
+    uint seekBestOverlapPosition(const SAMPLETYPE *refPos);
+
+    virtual void overlapStereo(SAMPLETYPE *output, const SAMPLETYPE *input) const;
+    virtual void overlapMono(SAMPLETYPE *output, const SAMPLETYPE *input) const;
 
     void clearMidBuffer();
-    void overlap(soundtouch::SAMPLETYPE *output, const soundtouch::SAMPLETYPE *input, uint ovlPos) const;
+    void overlap(SAMPLETYPE *output, const SAMPLETYPE *input, uint ovlPos) const;
 
-    void slopeReferenceSamplesStereo();
+    void precalcCorrReferenceMono();
+    void precalcCorrReferenceStereo();
 
     void processNominalTempo();
 
@@ -137,9 +150,12 @@ public:
     virtual ~TDStretch();
 
     /// Operator 'new' is overloaded so that it automatically creates a suitable instance 
-    /// depending on if we've a MMX-capable CPU available or not.
+    /// depending on if we've a MMX/SSE/etc-capable CPU available or not.
     void *operator new(size_t s);
 
+    /// Use this function instead of "new" operator to create a new instance of this class. 
+    /// This function automatically chooses a correct feature set depending on if the CPU
+    /// supports MMX/SSE/etc extensions.
     static TDStretch *newInstance();
     
     /// Returns the output buffer object
@@ -190,25 +206,24 @@ public:
     /// Adds 'numsamples' pcs of samples from the 'samples' memory position into
     /// the input of the object.
     virtual void putSamples(
-            const soundtouch::SAMPLETYPE *samples,  ///< Input sample data
+            const SAMPLETYPE *samples,  ///< Input sample data
             uint numSamples                         ///< Number of samples in 'samples' so that one sample
                                                     ///< contains both channels if stereo
             );
 };
 
 
+
+// Implementation-specific class declarations:
+
 #ifdef ALLOW_MMX
     /// Class that implements MMX optimized routines for 16bit integer samples type.
     class TDStretchMMX : public TDStretch
     {
-    private:
-        int calculateCrossCorrelation(const short *mixingPos, const short *compare) const;
-
     protected:
-        virtual uint seekBestOverlapPositionStereoQuick(const short *other);
-        virtual uint seekBestOverlapPositionStereo(const short *other);
-
+        long calcCrossCorrStereo(const short *mixingPos, const short *compare) const;
         virtual void overlapStereo(short *output, const short *input) const;
+        virtual void clearCrossCorrState();
     };
 #endif /// ALLOW_MMX
 
@@ -217,14 +232,8 @@ public:
     /// Class that implements 3DNow! optimized routines for floating point samples type.
     class TDStretch3DNow : public TDStretch
     {
-    private:
-        float calculateCrossCorrelation(const float *mixingPos, const float *compare) const;
-
     protected:
-        virtual uint seekBestOverlapPositionStereoQuick(const float *other);
-        virtual uint seekBestOverlapPositionStereo(const float *other);
-
-        virtual void overlapStereo(float *output, const float *input) const;
+        double calcCrossCorrStereo(const float *mixingPos, const float *compare) const;
     };
 #endif /// ALLOW_3DNOW
 
@@ -233,16 +242,11 @@ public:
     /// Class that implements SSE optimized routines for floating point samples type.
     class TDStretchSSE : public TDStretch
     {
-    private:
-        float calculateCrossCorrelation(const float *mixingPos, const float *compare) const;
-
     protected:
-        virtual uint seekBestOverlapPositionStereoQuick(const float *other);
-        virtual uint seekBestOverlapPositionStereo(const float *other);
-
-        virtual void overlapStereo(float *output, const float *input) const;
+        double calcCrossCorrStereo(const float *mixingPos, const float *compare) const;
     };
 
 #endif /// ALLOW_SSE
 
+}
 #endif  /// TDStretch_H

@@ -13,10 +13,10 @@
  * Author e-mail   : oparviai @ iki.fi
  * File created    : 13-Jan-2002
  *
- * Last changed  : $Date: 2004-03-14 15:51:43 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-10-26 19:09:36 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: mmx_gcc.cpp,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
+ * $Id: mmx_gcc.cpp,v 1.2 2004-10-26 19:09:36 vjohnson Exp $
  *
  * Acknowledgements:
  * Adopted for gcc : Stuart Lamble <sjl @ debian.lib.monash.edu.au>
@@ -70,7 +70,7 @@ using namespace std;
 extern int scanOffsets[4][24];
 
 // Calculates cross correlation of two buffers
-inline int TDStretchMMX::calculateCrossCorrelation(const short *pV1, const short *pV2) const
+inline int TDStretchMMX::calcCrossCorrStereo(const short *pV1, const short *pV2) const
 {
 #ifdef __i386__
     int corr;
@@ -199,111 +199,12 @@ inline int TDStretchMMX::calculateCrossCorrelation(const short *pV1, const short
 #endif
 }
 
-static inline void _clearEMMS()
+void TDStretchMMX::clearCrossCorrState()
 {
 #ifdef __i386__
     asm volatile("EMMS");
 #endif
 }
-
-// MMX-optimized version of the function "seekBestOverlapPositionStereo"
-uint TDStretchMMX::seekBestOverlapPositionStereo(const short *other)
-{
-#ifdef __i386__
-    uint bestoffs;
-    int bestcorr, corr;
-    uint corrOffset, i;
-
-    // Slopes the amplitude of the "midBuffer" samples
-    slopeReferenceSamplesStereo();
-
-    bestcorr = INT_MIN;
-    bestoffs = 0;
-    corrOffset = 0;
-
-    // Scans for the best correlation value by testing each possible position
-    // over the permitted range.
-    for (i = 0; i < seekLength; i ++) 
-    {
-        // Calculates the cross-correlation value for the mixing position 
-        // corresponding to "i"
-        corr = calculateCrossCorrelation(other + 2 * i, pRefMidBuffer);
-
-        // Checks for the highest correlation value
-        if (corr > bestcorr) 
-        {
-            bestoffs = i;
-            bestcorr = corr;
-        }
-    }
-    // Clear the MMX state before leaving the subroutine
-    _clearEMMS();
-    
-    return bestoffs;
-#else
-    throw runtime_error("MMX not supported");
-    return 0;
-#endif
-}
-
-
-
-// MMX-optimized version of the function "seekBestOverlapPositionStereoQuick"
-uint TDStretchMMX::seekBestOverlapPositionStereoQuick(const short *other)
-{
-#ifdef __i386__
-    short *local_refMidBuffer = pRefMidBuffer;
-    uint bestpos, scancount, i;
-    int bestcorr,corr;
-    uint corrPos, tempPos;
-
-    // Slopes the amplitude of the "midBuffer" samples
-    slopeReferenceSamplesStereo();
-
-    bestcorr = INT_MIN;
-    bestpos = scanOffsets[0][0];
-    corrPos = 0;
-    tempPos = 0;
-
-    // Scans for the best correlation value using four-pass hierarchical search.
-    //
-    // The look-up table "scans" has hierarchical position adjusting steps.
-    // In first pass the routine searhes for the highest correlation with 
-    // relatively coarse steps, then rescans the neighbourhood of the highest
-    // correlation with better resolution and so on.
-
-    for (scancount = 0;scancount < 4; scancount ++) 
-    {
-        i = 0;
-        while (scanOffsets[scancount][i]) 
-        {
-            tempPos = corrPos + scanOffsets[scancount][i];
-            if (tempPos >= seekLength) break;
-
-            // Calculates correlation value for the mixing position
-            // corresponding to "tempPos"
-            corr = calculateCrossCorrelation(other + 2 * tempPos, pRefMidBuffer);
-            // Checks for the highest correlation value
-            if (corr > bestcorr) 
-            {
-                bestpos = tempPos;
-                bestcorr = corr;
-            }
-
-            i ++;
-        }
-        corrPos = bestpos;
-    }
-    // Clear the MMX state before leaving the subroutine
-    _clearEMMS();
-    
-    return bestpos;
-#else
-    throw runtime_error("MMX not supported");
-    return 0;
-#endif
-}
-
 
 
 // MMX-optimized version of the function overlapStereo
@@ -472,6 +373,7 @@ void FIRFilterMMX::setCoefficients(const short *coeffs, uint newLength, uint uRe
     FIRFilter::setCoefficients(coeffs, newLength, uResultDivFactor);
 
     // Ensure that filter coeffs array is aligned to 16-byte boundary
+    delete[] filterCoeffsUnalign;
     filterCoeffsUnalign = new short[2 * newLength + 8];
     filterCoeffsAlign = (short *)(((uint)filterCoeffsUnalign + 15) & -16);
 
