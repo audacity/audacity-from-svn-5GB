@@ -1,7 +1,7 @@
 <?php BoxTop($aboutStr); ?>
 
 <p>
-Audacity er et fritt og gratis lydredigeringsprogram.
+Audacity er et kostnadsfritt lydredigeringsprogram.
 Det kan spille inn lyder, spille av lyder, importere og eksportere formatene WAV, AIFF, Ogg Vorbis og MP3 filer og mer.
 Benytt det til å redigere dine lyder med funksjoner som Klipp, Kopier og Lim Inn (med ubegrensede angremuligheter), mikse spor sammen eller legge effekter på dine opptak.
 Det har også innebygd redigering av amplitydeprofil, en justerbar spektrogramfunksjon og et vindu for frekvensanalyse for bruk ved lydanalyse.
@@ -23,6 +23,12 @@ Kildekoden er lagret på <a href="http://www.sourceforge.net">SourceForge</a>.
 Spørsmål/kommentarer?
 Send en e-post til <a href="mailto:audacity-help@lists.sourceforge.net"
 >audacity-help@lists.sourceforge.net</a>. Denne listen er engelskspråklig.
+<br><font size=-1><?php print "$listPrivacyStr"; ?></font></br>
 </p>
+
+<!-- Translators: please make a note here that the "audacity-help"
+     address is intended for people who speak English.  We will have
+     alternative mailing lists for other languages eventually...
+-->
 
 <?php BoxBottom(); ?>
