@@ -99,6 +99,7 @@ PrefsPanel(parent)
    mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, playNames);
    mPlayChoice->SetSelection(playIndex);
+   delete[] playNames;
 
    pFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 
@@ -148,6 +149,7 @@ PrefsPanel(parent)
    mRecChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
                               numDevices, recNames);
    mRecChoice->SetSelection(recIndex);
+   delete[] recNames;
 
    rFileSizer->Add(
       new wxStaticText(this, -1, _("Device:")), 0, 

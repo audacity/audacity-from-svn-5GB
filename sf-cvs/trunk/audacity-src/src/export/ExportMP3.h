@@ -62,6 +62,7 @@ class MP3Exporter {
 #define MP3CONFIG_QUALITY 0x00000002
 
 MP3Exporter *GetMP3Exporter();
+void         ReleaseMP3Exporter();
         
 bool ExportMP3(AudacityProject *project,
                bool stereo, wxString fName,
