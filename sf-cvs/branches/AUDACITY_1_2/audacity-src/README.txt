@@ -287,6 +287,9 @@ Changes in 1.2.0-pre4:
     Windows registry now always contains the full path to the
     executable.
 
+  * The Delete key can now be used to delete the current selection,
+    in addition to the Backspace key.
+
   * Mac OS X: Supports Playthrough (listen to what you're recording
     while recording it)
 
