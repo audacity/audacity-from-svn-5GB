@@ -6,6 +6,13 @@
 
   Joshua Haberman
 
+  This program is distributed under the GNU General Public License, version 2.
+  A copy of this license is included with this source.
+
+  Portions from vorbis-tools, copyright 2000-2002 Michael Smith
+  <msmith@labyrinth.net.au>; Vorbize, Kenneth Arnold <kcarnold@yahoo.com>;
+  and libvorbis examples, Monty <monty@xiph.org>
+
 **********************************************************************/
 
 #include "../Audacity.h"
@@ -38,6 +45,7 @@ bool ExportOGG(AudacityProject *project,
 
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
    bool      cancelling = false;
+   int       eos = 0;
 
    wxFFile outFile(fName, "wb");
 
@@ -113,24 +121,27 @@ bool ExportOGG(AudacityProject *project,
                             stereo? 2: 1, SAMPLES_PER_RUN, false,
                             rate, floatSample);
 
-   while(!cancelling) {
+   while(!cancelling && !eos) {
+      float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
 
-      if (samplesThisRun == 0)
-         break;
-      
-      float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
-      
-      float *left = (float *)mixer->GetBuffer(0);
-      memcpy(vorbis_buffer[0], left, sizeof(float)*SAMPLES_PER_RUN);
-
-      if(stereo) {
-         float *right = (float *)mixer->GetBuffer(1);
-         memcpy(vorbis_buffer[1], right, sizeof(float)*SAMPLES_PER_RUN);
+      if (samplesThisRun == 0) {
+         // Tell the library that we wrote 0 bytes - signalling the end.
+         vorbis_analysis_wrote(&dsp, 0);
       }
+      else {
+         
+         float *left = (float *)mixer->GetBuffer(0);
+         memcpy(vorbis_buffer[0], left, sizeof(float)*SAMPLES_PER_RUN);
 
-      // tell the encoder how many samples we have
-      vorbis_analysis_wrote(&dsp, samplesThisRun);
+         if(stereo) {
+            float *right = (float *)mixer->GetBuffer(1);
+            memcpy(vorbis_buffer[1], right, sizeof(float)*SAMPLES_PER_RUN);
+         }
+
+         // tell the encoder how many samples we have
+         vorbis_analysis_wrote(&dsp, samplesThisRun);
+      }
 
       // I don't understand what this call does, so here is the comment
       // from the example, verbatim:
@@ -148,12 +159,22 @@ bool ExportOGG(AudacityProject *project,
 
             // add the packet to the bitstream
             ogg_stream_packetin(&stream, &packet);
-            int result = ogg_stream_pageout(&stream, &page);
 
-            if(result != 0) {
+            // From vorbis-tools-1.0/oggenc/encode.c:
+            //   If we've gone over a page boundary, we can do actual output,
+            //   so do so (for however many pages are available).
+
+            while (!eos) {
+					int result = ogg_stream_pageout(&stream, &page);
+					if (!result)
+                  break;
+
                outFile.Write(page.header, page.header_len);
                outFile.Write(page.body, page.body_len);
-            }
+
+               if (ogg_page_eos(&page))
+                  eos = 1;
+				}
          }
       }
 
@@ -178,6 +199,12 @@ bool ExportOGG(AudacityProject *project,
    }
 
    delete mixer;
+
+	ogg_stream_clear(&stream);
+
+	vorbis_block_clear(&block);
+	vorbis_dsp_clear(&dsp);
+	vorbis_info_clear(&info);
 
    outFile.Close();
 
