@@ -718,8 +718,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent &event)
    if (!mCapturedTrack || mCapturedTrack->GetKind() != VTrack::Wave)
       return;
 
-   WaveTrack* pwavetrack = dynamic_cast<WaveTrack*>(mCapturedTrack);
-   assert(pwavetrack);
+   WaveTrack* pwavetrack = (WaveTrack*) mCapturedTrack;
    Envelope *penvelope = pwavetrack->GetEnvelope();
 
    // AS: WaveTracks can be displayed in several different formats.
@@ -739,8 +738,7 @@ void TrackPanel::ForwardEventToEnvelope(wxMouseEvent &event)
 
       // If this track is linked to another track, make the identical
       // change to the linked envelope:
-      WaveTrack *link =
-         dynamic_cast<WaveTrack*>(mTracks->GetLink(mCapturedTrack));
+      WaveTrack *link = (WaveTrack*) mTracks->GetLink(mCapturedTrack);
       if (link) {
          Envelope *e2 = link->GetEnvelope();
          needUpdate |= e2->MouseEvent(event, mCapturedRect,
@@ -2040,7 +2038,7 @@ void TrackPanel::OnChangeOctave(wxEvent &event)
 {
    assert (event.GetId() == OnUpOctaveID || event.GetId() == OnDownOctaveID);
    assert(mPopupMenuTarget->GetKind() == VTrack::Note);
-   NoteTrack *t = dynamic_cast<NoteTrack*>(mPopupMenuTarget);
+   NoteTrack *t = (NoteTrack*) mPopupMenuTarget;
 
    bool bDown = (OnDownOctaveID == event.GetId());
    t->SetBottomNote( t->GetBottomNote() + ((bDown) ? -12 : 12));

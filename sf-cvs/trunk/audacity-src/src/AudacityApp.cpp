@@ -18,8 +18,6 @@
 #endif
 
 #include <wx/fs_zip.h>
-#include <iostream>
-
 #include <wx/image.h>
 
 #ifdef __WXGTK__
