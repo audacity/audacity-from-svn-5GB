@@ -6,9 +6,9 @@ Die Installation erfolgt wie folgt:
 </p>
 <xmp>$ apt-get update && apt-get install audacity</xmp>
 <p>
-Wer noch potato nutzen sollte (Debian 2.2), kann das Paket in der
+Wenn Sie noch potato nutzen sollten (Debian 2.2), können Sie das Paket in der
  <a href="http://sourceforge.net/project/showfiles.php?group_id=6235">
-SourceForge files area</a> downloaden, oder folgende Zeile in die sources.list eintragen:
+SourceForge files area</a> herunterladen oder folgende Zeile in die sources.list eintragen:
 </p>
 <xmp>
 deb http://audacity.sourceforge.net potato/

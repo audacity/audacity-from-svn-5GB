@@ -1,62 +1,71 @@
 <?php BoxTop($donateTimeStr); ?>
 
 <p>
-Audacity wurde von Freiwilligen in ihrer Freizeit geschrieben.  Wenn
-Audacity Dir gefällt und Du es unterstützen oder helfen möchtest sind hier einige Anregungen:
+Audacity wurde ehrenamtlich und auf freiwilliger Basis entwickelt. Wenn
+Audacity Ihnen gefällt und Sie uns unterstützen möchten sind hier einige Anregungen:
 </p>
 
 <ul>
 
-<li><b>Sag uns Hallo!</b>
+<li><b>Nehmen Sie Kontakt zu uns auf!</b>
 <p>
-Wenn Audacity Dir gefällt, teile es uns mit!  Schicke uns Email an
-<a href="mailto:audacity-help@lists.sourceforge.net"
->audacity-help@lists.sourceforge.net</a>
-und lasse uns wissen, dass Du es magst.  Es macht uns glücklich zu wissen, dass
-es den Leuten gefällt.  Außerdem kannst Du uns Kommentare und Verbesserungsvorschläge schicken - Wir verbessern Audacity immer weiter und Deine Meinung ist uns wichtig.
+  Tun Sie das im <a href="http://audacity.fuchsi.de/">Audacity-Forum</a>.
+Wir freuen uns zu hören, dass Audacity Ihnen gefällt.
+Außerdem dürfen Sie uns gerne Ihre Verbesserungsvorschläge schicken. Wir
+entwickeln Audacity immer weiter und Ihr Lob und Ihre Kritik sind uns sehr wichtig.
 <p>
 
-<li><b>Trete der Benutzer-Gemeinschaft bei</b>
+<li><b>Melden Sie sich beim <a href="http://audacity.fuchsi.de/">Audacity-Forum</a> an!</b>
 <p>
-Diese Mailingliste ist ein guter Platz wo Benutzer miteinander reden und Ihre Ideen teilen können.
-<a href="http://lists.sourceforge.net/lists/listinfo/audacity-users">Der  Audacity-Benutzer Mailingliste beitreten</a><br>
+Im neuen deutschsprachigen <a href="http://audacity.fuchsi.de/">Audacity-Forum</a> können
+Sie Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Wenn Audacity Ihnen gefällt
+und Sie gut damit arbeiten können, teilen Sie es uns mit! Eine Reihe von kompetenten und erfahrenen
+Benutzern und Entwicklern haben stets ein offenes Ohr für Ihr Anliegen.
+Es ist auch hilfreich, wenn Sie sich die Zeit nehmen, um einen aufgetretenen Fehler zu reproduzieren
+und uns eine genaue Beschreibung zuschicken, in der Schritt für Schritt erklärt ist, wie der Fehler
+hervorgerufen wird.
+Teilen Sie uns in jeden Fall Ihr Betriebssystem mit!
+(z.B. Windows 2000, Mac OS 9, etc.).
 
 
-<li><b>Hilf bei der Übersetzung</b>
+<li><b>Helfen Sie bei der Übersetzung!</b>
 <p>
-Wenn Du fließend Englisch und eine andere Sprache kannst, kannst Du anderen Menschen helfen, die Deine Sprache sprechen.  Wir brauchen Leute um die Programm-Menus und Dialoge zu übersetzen, für die Dokumentation und die Webseite.
-Wir brauchen auch Leute die bei der Mailingliste helfen, damit Benutzer Fragen in Ihrer eigene Sprache stellen und Antworten bekommen können - Du kannst entweder beim Beantworten der Fragen helfen, oder die Fragen ins Englische übersetzen und an eine englische Mailingliste schicken
+Wenn Sie fließend Englisch und eine andere Sprache können, können Sie anderen Benutzern helfen,
+die ebenfalls Ihre Sprache sprechen. Sie können uns dabei unterstützen, die Programm-Menus
+und Dialoge zu übersetzen. Sie können auch an der Dokumentation oder der Website mitarbeiten.
+
+Gerne können Sie sich im <a href="http://audacity.fuchsi.de/">Audacity-Forum</a> zur Verfügung stellen,
+dass Benutzer Fragen in Ihrer eigenen Sprache stellen und Antworten bekommen können.
 <p>
 <a href="http://audacity.sourceforge.net/translation/"
->Hier klicken, um mehr über die Übersetzung zu lernen.</a>
-<p>
-
-<li><b>Teile uns Fehler mit</b>
-<p>
-Wenn Du einen Fehler in Audacity findest, 
-<a href="mailto:audacity-help@lists.sourceforge.net"
->lass es uns wissen</a>.
-Es ist hilfreich, wenn Du Dir die Zeit nimmst um den Fehler zu reproduzieren und uns eine genaue Beschreibung zuschickst, in der Schritt für Schritt erklärt ist, wie der Fehler hervorgerufen werden kann.  Teile uns auf jeden Fall Dein Betriebssystem mit (z.B. Windows 2000, Mac OS 9, etc.).
+>Klicken Sie hier, um mehr über die Übersetzung zu erfahren.</a>
 <p>
 
 
-<li><b>Hilf als Beta-Tester</b>
+<li><b>Werden Sie Beta-Tester!</b>
 <p>
-Zusätzlich zu den stabilen Versionen von Audacity haben wir auch eine Beta-Version. Diese Version hat in der Regel neue Funktionen, die noch nicht getestet wurden.  Wenn Du helfen möchtest, lade diese Version von Audacity herunter und spiele ein wenig damit herum.  Teile uns mit, was Dir gefällt und was nicht und wie man etwas verbessern könnte.  Passe besonders auf <i>regressions</i> auf - Dinge die bisher funktionierten aber in der neuen Version nicht mehr.
-<p>
-
-<li><b>Hilf als Entwickler</b>
-<p>
-Wenn Du bereits ein erfahrener C++ Programmierer bist und Dich mit Tools wie CVS auskennst, wäre es toll, wenn Du bei der Entwicklung von Audacity helfen könntest.
-Bitte lade den neuesten Quellcode per CVS herunter, kompilieren ihn und schreibe Dich in der 
-<a href=http://lists.sourceforge.net/lists/listinfo/audacity-devel>
-<?php print $develListStr; ?></a> ein.
+Zusätzlich zu den stabilen Versionen von Audacity haben wir auch eine Beta-Version.
+Diese Version hat in der Regel neue Funktionen, die noch nicht getestet wurden.
+Wenn Sie helfen möchten, laden Sie diese Version von Audacity herunter und experimentieren Sie
+ein wenig damit herum. Teilen Sie uns im <a href="http://audacity.fuchsi.de/">Audacity-Forum</a> mit,
+was Ihnen gefällt und was nicht und was wir verbessern können.
+Achten Sie bitte besonders auf <i>regressions</i> (i.e. Funktionen, die bisher in Ordnung waren, aber
+in der neuen Version Probleme machen.)
 <p>
 
-<li><b>Spende Geld</b>
+<li><b>Helfen Sie uns als Entwickler!</b>
 <p>
-Wenn die anderen Punkte für Dich nicht in Frage kommen, könntest Du
-<?php print "<a href=donatemoney.php?$langLinkStr>"; ?>Geld Spenden</a>.
+Wenn Sie bereits ein erfahrener C++ Programmierer sind und sich mit Tools wie CVS auskennen,
+würden wir uns freuen, wenn Sie uns bei der Entwicklung von Audacity helfen könnten.
+Bitte laden Sie den neuesten Quellcode per CVS herunter, kompilieren Sie ihn und schreiben
+Sie eine <a href="mailto:markus@audacityteam.org">e-mail an Markus vom Audacity-Team.</a>
+<p>
+
+<li><b>Spenden Sie Geld!</b>
+<p>
+Wenn die anderen Punkte für Sie nicht in Frage kommen und Sie uns trotzdem gerne unterstützen
+würden, könnten Sie uns eine Spende zukommen lassen. Wenden Sie sich bitte per
+<a href="mailto:markus@audacityteam.org">e-mail an Markus vom Audacity-Team.</a>
 </p>
 
 </ul>
