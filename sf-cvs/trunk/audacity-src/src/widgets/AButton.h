@@ -61,7 +61,6 @@ class AButton:public wxWindow {
    bool IsDown(){ return mButtonIsDown;}
    void SetButtonToggles( bool toggler ){ mProcessDownEvents = toggler;}
    void Toggle(){ mButtonIsDown ? PopUp() : PushDown();}
-   void SetToolTips( wxString enabled, wxString disabled );
 
  private:
 
