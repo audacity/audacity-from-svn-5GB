@@ -106,6 +106,8 @@ private:
    wxString         mAction;
    wxString         mInfo;
    int              mFlags;
+   bool             mDebug;
+   wxString         mDebugOutput;
 
    NyqControlArray  mControls;
 
@@ -140,12 +142,48 @@ class NyquistDialog:public wxDialog {
    void OnText(wxCommandEvent & event);
    void OnSlider(wxCommandEvent & event);
    void OnOk(wxCommandEvent & event);
+   void OnDebug(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
  private:
    DECLARE_EVENT_TABLE()
 
 };
+
+class NyquistInputDialog:public wxDialog {
+ public:
+   NyquistInputDialog(wxWindow * parent, wxWindowID id,
+                      const wxString & title,
+                      const wxString & prompt,
+                      wxString initialCommand);
+
+   wxString GetCommand();
+
+ private:
+   wxTextCtrl *mCommandText;
+
+   void OnOk(wxCommandEvent & event);
+   void OnDebug(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+
+ private:
+   DECLARE_EVENT_TABLE()
+};
+
+class NyquistOutputDialog:public wxDialog {
+ public:
+   NyquistOutputDialog(wxWindow * parent, wxWindowID id,
+                       const wxString & title,
+                       const wxString & prompt,
+                       wxString message);
+
+ private:
+   void OnOk(wxCommandEvent & event);
+
+ private:
+   DECLARE_EVENT_TABLE()
+};
+
 
 #endif
 
