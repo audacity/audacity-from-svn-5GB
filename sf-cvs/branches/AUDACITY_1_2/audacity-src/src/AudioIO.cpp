@@ -1697,7 +1697,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          else {
             CopySamples((samplePtr)inputBuffer, gAudioIO->mCaptureFormat,
                         (samplePtr)tempFloats, floatSample,
-                        framesPerBuffer);
+                        framesPerBuffer * numCaptureChannels);
             gAudioIO->mInputMeter->UpdateDisplay(numCaptureChannels,
                                                  framesPerBuffer,
                                                  tempFloats);
