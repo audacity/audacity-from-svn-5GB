@@ -964,6 +964,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    wxRect r;
    int num;
+   bool second = false;
 
    VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
 
@@ -974,7 +975,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }
 
    if (!t->linked && mTracks->GetLink(t))
-      return;
+      second = true;
 
    if (event.ShiftDown()) {
       mTracks->Select(t, !t->selected);
@@ -984,7 +985,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    wxRect closeRect;
    GetCloseBoxRect(r, closeRect);
-   if (closeRect.Inside(event.m_x, event.m_y)) {
+   if (!second && closeRect.Inside(event.m_x, event.m_y)) {
       wxClientDC dc(this);
       DrawCloseBox(&dc, r, true);
       mIsClosing = true;
@@ -995,7 +996,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
 
    wxRect titleRect;
    GetTitleBarRect(r, titleRect);
-   if (titleRect.Inside(event.m_x, event.m_y)) {
+   if (!second && titleRect.Inside(event.m_x, event.m_y)) {
       mPopupMenuTarget = t;
       {
          wxClientDC dc(this);
@@ -1069,7 +1070,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }
    
    // Check Mute and Solo buttons on WaveTracks:
-   if (t->GetKind() == VTrack::Wave) {
+   if (!second && t->GetKind() == VTrack::Wave) {
       wxRect muteRect;
       GetMuteRect(r, muteRect);
       if (muteRect.Inside(event.m_x, event.m_y)) {
@@ -1094,7 +1095,7 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
    }      
    
    // If it's a NoteTrack, it has special controls
-   if (t && t->GetKind() == VTrack::Note) {
+   if (!second && t && t->GetKind() == VTrack::Note) {
       wxRect midiRect;
       GetTrackControlsRect(r, midiRect);
       if (midiRect.Inside(event.m_x, event.m_y)) {
