@@ -616,6 +616,10 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
   double rate = track->GetRate();
  
+  // Determine whether we 
+  bool showIndividualSamples = (pps / rate > 0.5);
+  bool showPoints = (pps / rate > 3.0);
+
   double t0 = (tpre >= 0.0? tpre: 0.0);
   double t1 = (tpost < (numSamples / rate)? tpost : (numSamples / rate));
   
@@ -682,7 +686,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
     dc.SetPen(*wxRED_PEN);	    
     dc.DrawLine(mid.x, ctr, mid.x + mid.width, ctr);
 
-    PrepareCacheWaveform(cache, t0, pps, mid.width);
+	PrepareCacheWaveform(cache, t0, pps, mid.width);
     
     heights = new int[mid.width];
   }
@@ -721,21 +725,81 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
   dc.SetPen(samplePen);
 
-  t = t0;
-  for(x=0; x<mid.width; x++) {
-	
-    int h1 = ctr-GetWaveYPos(cache->min[x]/32768.0 *
-							 track->envelope.GetValue(t+tOffset),
-							 mid.height/2,
-							 dB);
-    int h2 = ctr-GetWaveYPos(cache->max[x]/32768.0 *
-							 track->envelope.GetValue(t+tOffset),
-							 mid.height/2,
-							 dB);
-    
-    dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
+  if (showIndividualSamples) {
+	// We're zoomed in really far, so show points and curves
 
-	t += 1/pps;
+	sampleCount s0 = (sampleCount)(t0*rate + 0.5);
+	sampleCount slen = (sampleCount)(mid.width * rate / pps + 0.5);
+
+	if (s0 > 1) {
+	  s0--;
+	}
+	slen += 4;
+	if (s0+slen > track->numSamples)
+	  slen = track->numSamples - s0;
+
+	sampleType *buffer = new sampleType[slen];
+	track->Get(buffer, s0, slen);
+	int *xpos = new int[slen];
+	int *ypos = new int[slen];
+
+	t = t0;
+	sampleCount s;
+	for(s=0; s<slen; s++) {
+	  double xx = ((double(s0+s)/rate + tOffset - h)*pps + 0.5);
+	  if (xx < -10000)
+		xx = -10000;
+	  if (xx > 10000)
+		xx = 10000;
+	  xpos[s] = (int)xx;
+	  ypos[s] = ctr-GetWaveYPos(buffer[s]/32768.0 *
+								track->envelope.GetValue(t+tOffset),
+								mid.height/2,
+								dB);
+	}
+
+	// Draw lines
+	for(s=0; s<slen-1; s++) {
+	  dc.DrawLine(mid.x+xpos[s], ypos[s],
+				  mid.x+xpos[s+1], ypos[s+1]);
+	}
+
+	if (showPoints) {
+	  // Draw points
+	  wxRect pr;
+	  pr.width = 3;
+	  pr.height = 3;
+	  dc.SetBrush(sampleBrush);
+	  for(s=0; s<slen; s++) {
+		pr.x = mid.x+xpos[s]-1;
+		pr.y = ypos[s]-1;
+		dc.DrawEllipse(pr);
+	  }
+	}
+
+	delete[] buffer;
+	delete[] xpos;
+	delete[] ypos;
+  }
+  else {
+	// The more typical view - we display a line representing the
+	// min and max of the samples in this region
+	t = t0;
+	for(x=0; x<mid.width; x++) {
+	  
+	  int h1 = ctr-GetWaveYPos(cache->min[x]/32768.0 *
+							   track->envelope.GetValue(t+tOffset),
+							   mid.height/2,
+							   dB);
+	  int h2 = ctr-GetWaveYPos(cache->max[x]/32768.0 *
+							   track->envelope.GetValue(t+tOffset),
+							   mid.height/2,
+							   dB);
+	  
+	  dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
+	  
+	  t += 1/pps;
+	}
   }
 
   if (drawEnvelope) {

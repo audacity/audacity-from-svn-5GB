@@ -831,6 +831,9 @@ void TrackPanel::HandleZoom(wxMouseEvent& event)
 	
 	if (event.MiddleDown() || event.MiddleDClick())
 	  mViewInfo->zoom = 44100.0 / 512.0;
+
+	if (mViewInfo->zoom > 6000000)
+	  mViewInfo->zoom = 6000000;
 	
 	double new_center_h = mViewInfo->h + (event.m_x - 115) / mViewInfo->zoom;
 	
@@ -1428,6 +1431,16 @@ void TrackPanel::DrawTracks(wxDC *dc)
 
   bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
 
+  // The track artist actually draws the stuff inside each track
+
+  mTrackArtist->DrawTracks(mTracks,
+						   *dc, tracksRect,
+						   clip,
+						   mViewInfo,
+						   envelopeFlag);
+
+  // We draw everything else
+
   TrackListIterator iter(mTracks);
   
   wxRect trackRect = panelRect;
@@ -1491,12 +1504,13 @@ void TrackPanel::DrawTracks(wxDC *dc)
       dc->DrawRectangle(fill);
       
       // fill in track
-      // --- TODO: get rid of this - TrackArtist should be smart enough to clean up its own area!
+	  /*
       fill = r;
       fill.x = labelw;
       fill.width -= (labelw - r.x);
       AColor::Medium(dc, false);
       dc->DrawRectangle(fill);
+	  */
       
       // Borders around track and label area
       dc->SetPen(*wxBLACK_PEN);
@@ -1561,14 +1575,6 @@ void TrackPanel::DrawTracks(wxDC *dc)
     num++;
     t = iter.Next();
   }
-
-  // The track artist actually draws the stuff in the tracks
-
-  mTrackArtist->DrawTracks(mTracks,
-						   *dc, tracksRect,
-						   clip,
-						   mViewInfo,
-						   envelopeFlag);
 
   // Paint over the part below the tracks
 
