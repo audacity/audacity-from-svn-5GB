@@ -53,36 +53,36 @@ enum {
    CloseID,
    SaveID,
    SaveAsID,
-   SeperatorIDsaveas,
+   SeparatorIDsaveas,
    ExportMixID,
    ExportSelectionID,
-   SeperatorIDexportselection,
+   SeparatorIDexportselection,
    ExportLossyMixID,
    ExportLossySelectionID,
-   SeperatorIDexportlossyselection,
+   SeparatorIDexportlossyselection,
    ExportLabelsID,
-   SeperatorIDexportlabels,
+   SeparatorIDexportlabels,
    PreferencesID,
-   SeperatorIDpreferences,
+   SeparatorIDpreferences,
    ExitID,
 
    // Edit Menu
 
    UndoID,
    RedoID,
-   SeperatorIDredo,
+   SeparatorIDredo,
    CutID,
    CopyID,
    PasteID,
    TrimID,
-   SeperatorIDtrim,
+   SeparatorIDtrim,
    DeleteID,
    SilenceID,
-   SeperatorIDsilence,
+   SeparatorIDsilence,
    InsertSilenceID,
    SplitID,
    DuplicateID,
-   SeperatorIDduplicate,
+   SeparatorIDduplicate,
    SelectAllID,
 
    // View Menu
@@ -92,12 +92,12 @@ enum {
    ZoomOutID,
    ZoomFitID,
    ZoomSelID,
-   SeperatorIDzoomsel,
+   SeparatorIDzoomsel,
    UndoHistoryID,
    PlotSpectrumID,
 
 #ifndef __WXMAC__
-   SeperatorIDplotspectrum,
+   SeparatorIDplotspectrum,
    FloatControlToolBarID, 
    LoadEditToolBarID,
    FloatEditToolBarID,
@@ -110,30 +110,30 @@ enum {
    ImportMIDIID,
    ImportRawID,
 #ifdef USE_ID3LIB
-   SeperatorIDimportraw,
+   SeparatorIDimportraw,
    EditID3ID,
 #endif
-   SeperatorIDeditid3,
+   SeparatorIDeditid3,
    QuickMixID,
-   SeperatorIDquickmix,
+   SeparatorIDquickmix,
    AlignID,
    AlignZeroID,
-   SeperatorIDalignzero,
+   SeparatorIDalignzero,
    NewWaveTrackID,
    NewLabelTrackID,
-   SeperatorIDnewlabeltrack,
+   SeparatorIDnewlabeltrack,
    RemoveTracksID,
 
    // Help Menu
 
    AboutID,
 #ifndef __WXMAC__
-   SeperatorIDabout,
+   SeparatorIDabout,
 #endif
    HelpID,
    HelpIndexID,
    HelpSearchID,
-   SeperatorIDhelpsearch,
+   SeparatorIDhelpsearch,
    BenchmarkID,
 
    // Effect Menu
@@ -172,35 +172,35 @@ enum {
    CMD_ADDMENU("Close\tCtrl+W", "Close", OnClose, fileMenu, enabledMenu);
    CMD_ADDMENU("Save Project\tCtrl+S", "Save Project", OnSave, fileMenu, enabledMenu);
    CMD_ADDMENU("Save Project &As...", "Save Project As", OnSaveAs, fileMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportString, "Export As", OnExportMix, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportSelectionString, "Export Selection As", OnExportSelection, fileMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportLossyString, "Export As (lossy)", OnExportLossyMix, fileMenu, enabledMenu);
    CMD_ADDMENU(mExportSelectionLossyString, "Export Selection As (lossy)", OnExportLossySelection, fileMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, fileMenu, enabledMenu);
    CMD_ADDMENU("Export &Labels...", "Export Labels", OnExportLabels, fileMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, fileMenu, enabledMenu);
    CMD_ADDMENU("Preferences...\tCtrl+P", "Preferences", OnPreferences, fileMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, fileMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, fileMenu, enabledMenu);
    CMD_ADDMENU("E&xit", "Exit", OnExit, fileMenu, enabledMenu);
 
    // Edit menu
    CMD_ADDMENU("Undo\tCtrl+Z", "Undo", Undo, editMenu, enabledMenu);
    CMD_ADDMENU("Redo\tCtrl+R", "Redo", Redo, editMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, editMenu, enabledMenu);
    CMD_ADDMENU("Cut\tCtrl+X", "Cut", Cut, editMenu, enabledMenu);
    CMD_ADDMENU("Copy\tCtrl+C", "Copy", Copy, editMenu, enabledMenu);
    CMD_ADDMENU("Paste\tCtrl+V", "Paste", Paste, editMenu, enabledMenu);
    CMD_ADDMENU("Trim\tCtrl+T", "Trim", Trim, editMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, editMenu, enabledMenu);
    CMD_ADDMENU("Delete\tCtrl+K", "Delete", OnDelete, editMenu, enabledMenu);
    CMD_ADDMENU("Silence\tCtrl+L", "Silence", OnSilence, editMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, editMenu, enabledMenu);
    CMD_ADDMENU("Insert Silence...", "Insert Silence", OnInsertSilence, editMenu, enabledMenu);
    CMD_ADDMENU("Split\tCtrl+Y", "New", OnSplit, editMenu, enabledMenu);
    CMD_ADDMENU("Duplicate\tCtrl+D", "New", OnDuplicate, editMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, editMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, editMenu, enabledMenu);
    CMD_ADDMENU("Select All\tCtrl+A", "Select All", OnSelectAll, editMenu, enabledMenu);
 
    // View menu
@@ -209,11 +209,11 @@ enum {
    CMD_ADDMENU("Zoom Out\tCtrl+3", "Zoom Out", OnZoomOut, viewMenu, enabledMenu);
    CMD_ADDMENU("Fit in Window\tCtrl+F", "Fit in Window", OnZoomFit, viewMenu, enabledMenu);
    CMD_ADDMENU("Zoom to Selection\tCtrl+E", "Zoom to Selection", OnZoomSel, viewMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, viewMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, viewMenu, enabledMenu);
    CMD_ADDMENU("History", "Undo History", UndoHistory, viewMenu, enabledMenu);
    CMD_ADDMENU("Plot Spectrum\tCtrl+U", "Plot Spectrum", OnPlotSpectrum, viewMenu, enabledMenu);
 #ifndef __WXMAC__
-   CMD_ADDMENU("---", "Seperator", OnSeperator, viewMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, viewMenu, enabledMenu);
    CMD_ADDMENU("Float Control Toolbar", "Float Control Toolbar", OnFloatControlToolBar, viewMenu, enabledMenu);
    CMD_ADDMENU("Unload Edit Toolbar", "Load Edit Toolbar", OnLoadEditToolBar, viewMenu, enabledMenu);
    CMD_ADDMENU("Float Edit Toolbar", "Float Edit Toolbar", OnFloatEditToolBar, viewMenu, enabledMenu);
@@ -225,29 +225,29 @@ enum {
    CMD_ADDMENU("Import &MIDI...", "Import MIDI", OnImportMIDI, projectMenu, enabledMenu);
    CMD_ADDMENU("Import Raw Data...", "Import Raw Data", OnImportRaw, projectMenu, enabledMenu);
 #ifdef USE_ID3LIB
-   CMD_ADDMENU("---", "Seperator", OnSeperator, projectMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("Edit ID3 Tags...", "Edit ID3 Tags", OnEditID3, projectMenu, enabledMenu);
 #endif
-   CMD_ADDMENU("---", "Seperator", OnSeperator, projectMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("&Quick Mix", "Quick Mix", OnQuickMix, projectMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, projectMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("Align Tracks Together", "Align Tracks Together", OnAlign, projectMenu, enabledMenu);
    CMD_ADDMENU("Align with Zero", "Align with Zero", OnAlignZero, projectMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, projectMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("New &Audio Track", "New Audio Track", OnNewWaveTrack, projectMenu, enabledMenu);
    CMD_ADDMENU("New &Label Track", "New Label Track", OnNewLabelTrack, projectMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, projectMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, projectMenu, enabledMenu);
    CMD_ADDMENU("&Remove Track(s)", "Remove Track(s)", OnRemoveTracks, projectMenu, enabledMenu);
 
    // Help menu
    CMD_ADDMENU("About Audacity...", "About Audacity", OnAbout, helpMenu, enabledMenu);
 #ifndef __WXMAC__
-   CMD_ADDMENU("---", "Seperator", OnSeperator, helpMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, helpMenu, enabledMenu);
 #endif
    CMD_ADDMENU("Online Help...", "Online Help", OnHelp, helpMenu, enabledMenu);
    CMD_ADDMENU("Online Help Index...", "Online Help Index", OnHelpIndex, helpMenu, enabledMenu);
    CMD_ADDMENU("Search Online Help...", "Search Online Help", OnHelpSearch, helpMenu, enabledMenu);
-   CMD_ADDMENU("---", "Seperator", OnSeperator, helpMenu, enabledMenu);
+   CMD_ADDMENU("---", "Separator", OnSeparator, helpMenu, enabledMenu);
    CMD_ADDMENU("Run Benchmark...", "Run Benchmark", OnBenchmark, helpMenu, enabledMenu);
 }
 
