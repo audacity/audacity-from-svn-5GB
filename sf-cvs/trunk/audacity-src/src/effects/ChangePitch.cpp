@@ -713,6 +713,8 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
 		this->Update_Text_ToFrequency();
 		this->Update_Slider_PercentChange();
       m_bLoopDetect = false;
+
+      FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
    }
 }
 
