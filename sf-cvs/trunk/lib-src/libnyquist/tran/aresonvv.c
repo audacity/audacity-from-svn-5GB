@@ -1626,7 +1626,7 @@ sound_type snd_make_aresonvv(sound_type s1, sound_type hz1, sound_type bw, int n
 {
     register aresonvv_susp_type susp;
     rate_type sr = s1->sr;
-    time_type t0 = MAX(max(s1->t0, hz1->t0), bw->t0);
+    time_type t0 = MAX(MAX(s1->t0, hz1->t0), bw->t0);
     int interp_desc = 0;
     sample_type scale_factor = 1.0F;
     time_type t0_min = t0;
@@ -1683,7 +1683,7 @@ sound_type snd_make_aresonvv(sound_type s1, sound_type hz1, sound_type bw, int n
     if (t0 < hz1->t0) sound_prepend_zeros(hz1, t0);
     if (t0 < bw->t0) sound_prepend_zeros(bw, t0);
     /* minimum start time over all inputs: */
-    t0_min = MIN(s1->t0, min(hz1->t0, min(bw->t0, t0)));
+    t0_min = MIN(s1->t0, MIN(hz1->t0, MIN(bw->t0, t0)));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

@@ -198,7 +198,7 @@ sound_type snd_make_maxv(sound_type s1, sound_type s2)
     if (t0 < s1->t0) sound_prepend_zeros(s1, t0);
     if (t0 < s2->t0) sound_prepend_zeros(s2, t0);
     /* minimum start time over all inputs: */
-    t0_min = MIN(s1->t0, min(s2->t0, t0));
+    t0_min = MIN(s1->t0, MIN(s2->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {

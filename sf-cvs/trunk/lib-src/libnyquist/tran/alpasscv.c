@@ -269,7 +269,7 @@ sound_type snd_make_alpasscv(sound_type input, time_type delay, sound_type feedb
     if (t0 < input->t0) sound_prepend_zeros(input, t0);
     if (t0 < feedback->t0) sound_prepend_zeros(feedback, t0);
     /* minimum start time over all inputs: */
-    t0_min = MIN(input->t0, min(feedback->t0, t0));
+    t0_min = MIN(input->t0, MIN(feedback->t0, t0));
     /* how many samples to toss before t0: */
     susp->susp.toss_cnt = (long) ((t0 - t0_min) * sr + 0.5);
     if (susp->susp.toss_cnt > 0) {
