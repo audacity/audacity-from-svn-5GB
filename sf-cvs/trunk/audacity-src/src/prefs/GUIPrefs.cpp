@@ -249,7 +249,7 @@ bool GUIPrefs::Apply()
 
 
    int localeIndex = mLocale->GetSelection();
-   if (localeIndex >= 0 && localeIndex < mLangCodes.Length())
+   if (localeIndex >= 0 && localeIndex < mLangCodes.GetCount())
       gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
 
    int envdBRange=36;
