@@ -609,7 +609,7 @@ void ChangePitchDialog::OnText_SemitonesChange(wxCommandEvent & event)
 	if (m_pTextCtrl_SemitonesChange) {
 		wxString str = m_pTextCtrl_SemitonesChange->GetValue();
       double newValue = 0;
-      str.ToDouble(&newDouble);
+      str.ToDouble(&newValue);
 		m_SemitonesChange = newValue;
 
 		this->Calc_PercentChange();
@@ -696,7 +696,7 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
    if (m_pTextCtrl_PercentChange) {
       wxString str = m_pTextCtrl_PercentChange->GetValue();
       double newValue = 0;
-      str.ToDouble(&newDouble);
+      str.ToDouble(&newValue);
 		m_PercentChange = newValue;
 
 		this->Calc_SemitonesChange_fromPercentChange();
