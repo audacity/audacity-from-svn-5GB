@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.2
+Version 1.2.3
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -261,6 +261,26 @@ Known issues/problems:
     with accented characters in their names will cause problems.
 
 -------------------------------------------------------------
+
+Changes in 1.2.3:
+
+  * Fixed a bug that caused recording to stop or display incorrectly
+    after about 50 minutes on some Windows systems.  (This partly fixed
+    in Audacity 1.2.2, but still didn't work on some systems.)
+
+  * The Change Pitch and Change Tempo effects have been upgraded to
+    use a new version of the SoundTouch library by Olli Parviainen,
+    with better speed and higher quality.
+
+  * Fixed a bug that caused the program to run slowly while displaying
+    using the evelope tool.
+
+  * Shift-clicking on a mute or solo button now un-mutes (or un-solos)
+    all other tracks.
+
+  * New or updated translations: Italian (it), Hungarian (hu),
+    Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh),
+    Norsk-Bokmal (nb), French (fr).
 
 Changes in 1.2.2:
 
