@@ -111,13 +111,13 @@ sampleCount WaveTrack::GetIdealBlockSize() const
 
 void WaveTrack::Lock()
 {
-   for (int i = 0; i < mBlock->Count(); i++)
+   for (unsigned int i = 0; i < mBlock->Count(); i++)
       mBlock->Item(i)->f->Lock();
 }
 
 void WaveTrack::Unlock()
 {
-   for (int i = 0; i < mBlock->Count(); i++)
+   for (unsigned int i = 0; i < mBlock->Count(); i++)
       mBlock->Item(i)->f->Unlock();
 }
 
@@ -218,7 +218,8 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len,
    // First calculate the min/max of the blocks in the middle of this region;
    // this is very fast because we have the min/max of every entire block
    // already in memory.
-   unsigned int b, i;
+   unsigned int b;
+   int i;
 
    for (b = block0 + 1; b < block1; b++) {
       if (mBlock->Item(b)->min < min)
@@ -326,7 +327,7 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest) const
 
    samplePtr buffer = NewSamples(mMaxSamples, mSampleFormat);
 
-   unsigned int blocklen;
+   int blocklen;
 
    // Do the first block
 
@@ -660,8 +661,6 @@ void WaveTrack::AppendAlias(wxString fullPath,
    newBlock->len = len;
    newBlock->f = GetDirManager()->NewBlockFile(mSummary.totalSummaryBytes);
    newBlock->f->SetAliasedData(fullPath, start, len, channel);
-
-   BlockFile *f = newBlock->f;
 
    samplePtr buffer = NewSamples(len, mSampleFormat);
    Read(buffer, mSampleFormat, newBlock, 0, len);
@@ -1155,7 +1154,7 @@ void WaveTrack::Set(samplePtr buffer, sampleFormat format,
 {
    wxASSERT(start < mNumSamples && start + len <= mNumSamples);
 
-   samplePtr temp;
+   samplePtr temp = NULL;
    if (format != mSampleFormat) {
       temp = NewSamples(mMaxSamples, mSampleFormat);
       wxASSERT(temp);
@@ -1171,8 +1170,7 @@ void WaveTrack::Set(samplePtr buffer, sampleFormat format,
    int b = FindBlock(start);
 
    while (len) {
-      unsigned int blen =
-         mBlock->Item(b)->start + mBlock->Item(b)->len - start;
+      int blen = mBlock->Item(b)->start + mBlock->Item(b)->len - start;
       if (blen > len)
          blen = len;
 
@@ -1207,7 +1205,7 @@ void WaveTrack::Set(samplePtr buffer, sampleFormat format,
 void WaveTrack::Append(samplePtr buffer, sampleFormat format,
                        sampleCount len)
 {
-   samplePtr temp;
+   samplePtr temp = NULL;
    if (format != mSampleFormat) {
       temp = NewSamples(mMaxSamples, mSampleFormat);
       wxASSERT(temp);
@@ -1526,7 +1524,7 @@ void WaveTrack::Delete(sampleCount start, sampleCount len)
 void WaveTrack::ConsistencyCheck(const char *whereStr)
 {
    unsigned int i;
-   unsigned int pos = 0;
+   int pos = 0;
    unsigned int numBlocks = mBlock->Count();
    bool error = false;
 
@@ -1553,7 +1551,7 @@ void WaveTrack::ConsistencyCheck(const char *whereStr)
 void WaveTrack::DebugPrintf(wxString *dest)
 {
    unsigned int i;
-   unsigned int pos = 0;
+   int pos = 0;
 
    for (i = 0; i < mBlock->Count(); i++) {
       *dest += wxString::Format
