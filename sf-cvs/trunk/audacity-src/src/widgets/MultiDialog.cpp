@@ -83,7 +83,7 @@ MultiDialog::MultiDialog(wxString prompt,
    SetSizer(mainSizer);
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
-   delete *prompts;
+   delete[] prompts;
 }
 
 void MultiDialog::OnOK(wxCommandEvent &event)
