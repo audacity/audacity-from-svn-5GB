@@ -1069,6 +1069,18 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    mViewInfo->h += (center_h - new_center_h);
 }
 
+bool TrackPanel::IsDragDrawing()
+{
+   int result = abs(mDrawMouseEnd - mDrawMouseStart);
+
+   //If threshold is reached, keep it there.
+   if(result > 3)
+      mDrawMouseStart = -10;
+
+   return (result > 3);
+}
+
+
 // BG: This handles drawing
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
@@ -1140,10 +1152,11 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          float yval = -(event.m_y-yoffset) + (selectedTrack->GetHeight()/2);
 
 
-         //Calculate the sign of the event. Not clear on why this matters
-         float sign = (event.m_y >= 0 ? 1 : -1);
+         //Calculate the sign of yval
+         float sign = (yval >= 0 ? 1 : -1);
 
-         mDrawEnd = ((float)(yval - (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
+         //Take yval and add .5 or -.5 depending on the sign. Then devide it by half the track height.
+         mDrawEnd = ((float)(yval + (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
 
          mDrawMouseEnd = event.m_y;
 
