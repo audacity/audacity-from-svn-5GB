@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.92: November 13, 2000
+Version 0.93: December ??, 2000
 
 http://www.cs.cmu.edu/~music/audacity/
 
@@ -68,7 +68,26 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 -------------------------------------------------------------
 
-Changes from 0.8 to 0.9:
+Changes in 0.93:
+
+* Floating tool palette is now dockable
+
+* Fixed bugs in handling multiple open projects
+
+Changes in 0.92:
+
+* Added Frequency Plot window and improved Spectrum display
+
+* Fixed bug in File:Open when the file to be opened was
+  actually a large WAV file
+
+Changes in 0.91:
+
+* Uses xaudio library to import mp3 files
+
+* Zoom menu
+
+Changes in 0.9:
 
 * New floating tool palette with four tools (selection,
   sliding, zooming, and envelope editing) plus play and
@@ -106,11 +125,4 @@ Changes from 0.8 to 0.9:
 
 * The zoom tool centers on the cursor so you can zoom
   into wherever you are.
-
-* Zoom menu
-
-* Frequency plot window
-
-* Improved MP3 importing
-
 
