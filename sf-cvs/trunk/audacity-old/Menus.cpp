@@ -975,7 +975,7 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent& event)
 
 void AudacityProject::OnAbout(wxCommandEvent& event)
 {
-  AboutDialog dlog;
+  AboutDialog dlog(this);
   dlog.ShowModal();
 }
 
