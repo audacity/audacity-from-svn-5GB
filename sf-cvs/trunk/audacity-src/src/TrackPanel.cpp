@@ -1834,6 +1834,9 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 void TrackPanel::HandleVZoom(wxMouseEvent & event)
 {
    if (event.ButtonDown() || event.ButtonDClick()) {
+      if (mCapturedTrack)
+         return;
+
       mCapturedTrack = FindTrack(event.m_x, event.m_y, true,
                                  &mCapturedRect, &mCapturedNum);
 
@@ -1848,12 +1851,16 @@ void TrackPanel::HandleVZoom(wxMouseEvent & event)
       mZoomEnd = event.m_y;
    }
    else if (event.Dragging()) {
+      printf("DRAG\n");
       mZoomEnd = event.m_y;
       if (IsDragZooming()){
          Refresh(false);
       }
    }
    else if (event.ButtonUp()) {
+      if (!mCapturedTrack)
+         return;
+
       mIsVZooming = false;
       if (mCapturedTrack->GetKind() != Track::Wave)
          return;
@@ -3109,8 +3116,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
          ReleaseMouse();
    }
 
-   if (mIsVZooming)
+   if (mIsVZooming) {
       HandleVZoom(event);
+   }
    else if (mIsClosing)
       HandleClosing(event);
    else if (mIsMuting)
