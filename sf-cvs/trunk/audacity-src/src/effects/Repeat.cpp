@@ -32,9 +32,36 @@ wxString EffectRepeat::GetEffectDescription() {
 
 bool EffectRepeat::PromptUser()
 {
+   //
+   // Figure out the maximum number of times the selection
+   // could be repeated without overflowing any track
+   //
+   int maxCount = -1;
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *track = (WaveTrack *) iter.First();
+   while (track) {
+      sampleCount trackLen = 
+         (sampleCount)((track->GetEndTime() - track->GetStartTime()) * 
+                       track->GetRate());
+      sampleCount selectionLen = (sampleCount)((mT1 - mT0) * track->GetRate());
+      int availSamples = 2147483647 - trackLen;
+      int count = availSamples / selectionLen;
+      if (maxCount == -1 || count < maxCount)
+         maxCount = count;
+
+      track = (WaveTrack *) iter.Next();
+   }
+   
+   if (maxCount <= 1) {
+      wxMessageBox(_("Tracks are too long to repeat the selection."),
+                   _("Repeat"), wxOK | wxCENTRE, mParent);
+      return false;
+   }
+
    RepeatDialog dlog(mParent, -1, _("Repeat"));
    dlog.repeatCount = repeatCount;
    dlog.selectionTimeSecs = mT1 - mT0;
+   dlog.maxCount = maxCount;
    dlog.TransferDataToWindow();
 
    dlog.CentreOnParent();
@@ -45,10 +72,10 @@ bool EffectRepeat::PromptUser()
       return false;
 
    repeatCount = dlog.repeatCount;
-
-   // Sensible limit: no more than 24 hours worth
-   if (repeatCount * (mT1 - mT0) > (60 * 60 * 24))
-      repeatCount = (int)((60 * 60 * 24) / (mT1 - mT0));
+   if (repeatCount > maxCount)
+      repeatCount = maxCount;
+   if (repeatCount < 1)
+      repeatCount = 1;
 
    return true;
 }
@@ -232,14 +259,14 @@ void RepeatDialog::DisplayNewTime()
 {
    int newTime = (int)(selectionTimeSecs * repeatCount);
    wxString str;
-   
+
    str = _("New selection length: ");
    if (newTime >= 120)
       str += wxString::Format(_("%d minutes, %d seconds"),
                               newTime/60, newTime%60);
    else
       str += wxString::Format(_("%d seconds"),
-                              newTime%60);
+                              newTime);
 
    mTotalTime->SetLabel(str);
 }
@@ -265,6 +292,8 @@ bool RepeatDialog::TransferDataFromWindow()
    repeatCount = l;
    if (repeatCount < 1)
       repeatCount = 1;
+   if (repeatCount > maxCount)
+      repeatCount = maxCount;
 
    return true;
 }
