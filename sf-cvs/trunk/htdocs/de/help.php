@@ -11,6 +11,42 @@ Das Benutzerhandbuch findet man hier:<p>
 <hr>
 </hr>
 
+<p>
+<?php print "<a href=tutorials.php?$langLinkStr>";
+?>Anleitungen</a> <img src="http://audacity.sourceforge.net/flags/de.gif">
+</p>
+
+<p>
+<?php print "<a href=faq.php?$langLinkStr>";
+?>Häufig gestellte Fragen (F.A.Q.)</a> <img src="http://audacity.sourceforge.net/flags/de.gif">
+</p>
+
+<p>
+Im neuen <a href="http://audacity.fuchsi.de/">deutschsprachigen Audacity-Forum</a> können Sie
+Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Eine Reihe von kompetenten und
+erfahrenen Benutzern und Entwicklern haben stets ein offenes Ohr für Ihr Anliegen.
+</p>
+<p>
+Die deutsche Hilfedatei für das Programm Audacity erhalten Sie im deutschen Forum an dieser Stelle : <a href="http://audacity.fuchsi.de/214"> http://audacity.fuchsi.de/214 </a> . Im offiziellen Download des Programmes ist nur eine englische Hilfedatei enthalten. <img src="http://audacity.sourceforge.net/flags/de.gif">
+<p></p>
+In der letzten Distribution von Audacity 1.2.3 sind noch einige englische Textstrings und Fehlermeldungen enthalten. Um auch diese letzten englischen Texte in deutscher Sprache zu erhalten, benötigt man die neuste deutsche Audacity.mo Datei. Diese erhält man <a href="http://audacity.fuchsi.de/215">hier</a>. <img src="http://audacity.sourceforge.net/flags/de.gif">
+<p></p>
+
+
+
+
+<p>
+<a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
+(Dokumentation, durch Nutzer, für Nutzer, komplett änderbar mit Tipps und Tricks und vielem mehr...)<img src="http://audacity.sourceforge.net/flags/en.gif">
+</p>
+
+
+
+
+
+<hr>
+</hr>
+
 
 <p>
 <h3><b>Durchsuchen Sie die Audacity Webseite und Dokumentationen:</b></h3>
@@ -36,25 +72,6 @@ Das Benutzerhandbuch findet man hier:<p>
 <hr>
 </hr>
 
-<p>
-<?php print "<a href=tutorials.php?$langLinkStr>";
-?>Anleitungen</a> <img src="http://audacity.sourceforge.net/flags/de.gif">
-</p>
-
-<p>
-<?php print "<a href=faq.php?$langLinkStr>";
-?>Häufig gestellte Fragen (F.A.Q.)</a> <img src="http://audacity.sourceforge.net/flags/de.gif">
-</p>
-
-<p>
-Im neuen <a href="http://audacity.fuchsi.de/">deutschsprachigen Audacity-Forum</a> können Sie
-Fragen zu Audacity stellen und Anmerkungen sowie Kritik loswerden. Eine Reihe von kompetenten und
-erfahrenen Benutzern und Entwicklern haben stets ein offenes Ohr für Ihr Anliegen.
-</p>
-<p>
-<a href="http://www.audacityteam.org/wiki">Audacity Wiki</a>
-(Dokumentation, durch Nutzer, für Nutzer, komplett änderbar mit Tipps und Tricks und vielem mehr...)<img src="http://audacity.sourceforge.net/flags/en.gif">
-</p>
 
 <p>
 
