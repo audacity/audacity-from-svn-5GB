@@ -25,8 +25,27 @@
 #include <sndfile.h>
 #endif
 
+#if HAVE_STDINT_H
+#include <stdint.h>
+#endif
+
+#ifdef UNUSED
+#elif defined (__GNUC__)
+#	define UNUSED(x) UNUSED_ ## x __attribute__ ((unused))
+#elif defined (__LCLINT__)
+#	define UNUSED(x) /*@unused@*/ x
+#else
+#	define UNUSED(x) x
+#endif
+
+#ifdef __GNUC__
+#	define WARN_UNUSED	__attribute__((warn_unused_result))
+#else
+#	define WARN_UNUSED
+#endif
+
 #define	SF_BUFFER_LEN			(8192*2)
-#define	SF_FILENAME_LEN			(256)
+#define	SF_FILENAME_LEN			(512)
 #define	SF_HEADER_LEN			(4096)
 #define	SF_TEXT_LEN				(1024)
 #define SF_SYSERR_LEN			(256)
@@ -88,7 +107,6 @@ enum
 	SF_FORMAT_OGG			= 0x4090000,
 
 	SF_FORMAT_REX			= 0x40A0000,		/* Propellorheads Rex/Rcy */
-	SF_FORMAT_SD2			= 0x40C0000,		/* Sound Designer 2 */
 	SF_FORMAT_REX2			= 0x40D0000,		/* Propellorheads Rex2 */
 	SF_FORMAT_KRZ			= 0x40E0000,		/* Kurzweil sampler file */
 	SF_FORMAT_WMA			= 0x4100000,		/* Windows Media Audio. */
@@ -105,7 +123,7 @@ enum
 } ;
 
 /*---------------------------------------------------------------------------------------
-**	PEAK_CHUNK_OLD - This chunk type is common to both AIFF and WAVE files although their
+**	PEAK_CHUNK - This chunk type is common to both AIFF and WAVE files although their
 **	endian encodings are different.
 */
 
@@ -118,9 +136,17 @@ typedef struct
 {	unsigned int	version ;	/* version of the PEAK chunk */
 	unsigned int	timestamp ;	/* secs since 1/1/1970  */
 #if HAVE_FLEXIBLE_ARRAY
-	PEAK_POS		peaks [] ;	/* the per channel peak info */
+	/* the per channel peak info */
+	PEAK_POS		peaks [] ;
 #else
-	PEAK_POS		peaks [1] ;	/* the per channel peak info */
+	/*
+	** This is not ISO compliant C. It works on some compilers which
+	** don't support the ISO standard flexible struct array which is
+	** used above. If your compiler doesn't ike this I suggest you find
+	** youself a 1999 ISO C standards compilant compiler. GCC-3.X is
+	** highly recommended.
+	*/
+	PEAK_POS		peaks [0] ;
 #endif
 } PEAK_CHUNK ;
 
@@ -138,8 +164,24 @@ typedef struct
 
 typedef struct sf_private_tag
 {	/* Force the compiler to double align the start of buffer. */
-	double			buffer		[SF_BUFFER_LEN / sizeof (double)] ;
-	char			filename	[SF_FILENAME_LEN] ;
+	union
+	{	double			dbuf	[SF_BUFFER_LEN / sizeof (double)] ;
+#if (defined (SIZEOF_INT64_T) && (SIZEOF_INT64_T == 8))
+		int64_t			lbuf	[SF_BUFFER_LEN / sizeof (int64_t)] ;
+#else
+		long			lbuf	[SF_BUFFER_LEN / sizeof (double)] ;
+#endif
+		float			fbuf	[SF_BUFFER_LEN / sizeof (float)] ;
+		int				ibuf	[SF_BUFFER_LEN / sizeof (int)] ;
+		short			sbuf	[SF_BUFFER_LEN / sizeof (short)] ;
+		char			cbuf	[SF_BUFFER_LEN / sizeof (char)] ;
+		signed char		scbuf	[SF_BUFFER_LEN / sizeof (signed char)] ;
+		unsigned char	ucbuf	[SF_BUFFER_LEN / sizeof (signed char)] ;
+		} u ;
+
+	char			filepath	[SF_FILENAME_LEN] ;
+	char			rsrcpath	[SF_FILENAME_LEN] ;
+	char			filename	[SF_FILENAME_LEN / 4] ;
 
 	char			syserr		[SF_SYSERR_LEN] ;
 
@@ -167,7 +209,8 @@ typedef struct sf_private_tag
 	int				has_text ;
 	int				do_not_close_descriptor ;
 
-	int 			filedes ;
+	/* File descriptors for the file and (possibly) the resource fork. */
+	int 			filedes, rsrcdes ;
 
 	int				end_of_file ;
 	int				error ;
@@ -175,6 +218,13 @@ typedef struct sf_private_tag
 	int				mode ;			/* Open mode : SFM_READ, SFM_WRITE or SFM_RDWR. */
 	int				endian ;		/* File endianness : SF_ENDIAN_LITTLE or SF_ENDIAN_BIG. */
 	int				float_endswap ;	/* Need to endswap float32s? */
+
+	/*
+	** Maximum float value for calculating the multiplier for
+	** float/double to short/int conversions.
+	*/
+	int				float_int_mult ;
+	float			float_max ;
 
 	/* Vairables for handling pipes. */
 	int				is_pipe ;		/* True if file is a pipe. */
@@ -190,8 +240,13 @@ typedef struct sf_private_tag
 	int				peak_loc ;		/* Write a PEAK chunk at the start or end of the file? */
 	PEAK_CHUNK		*pchunk ;
 
+	/* Loop Info */
+	SF_LOOP_INFO	*loop_info ;
+
 	sf_count_t		filelength ;	/* Overall length of (embedded) file. */
 	sf_count_t		fileoffset ;	/* Offset in number of bytes from beginning of file. */
+
+	sf_count_t		rsrclength ;	/* Length of the resource fork (if it exists). */
 
 	sf_count_t		dataoffset ;	/* Offset in number of bytes from beginning of file. */
 	sf_count_t		datalength ;	/* Length in bytes of the audio data. */
@@ -290,15 +345,16 @@ enum
 	SFE_BAD_OPEN_MODE,
 	SFE_OPEN_PIPE_RDWR,
 	SFE_RDWR_POSITION,
+	SFE_RDWR_BAD_HEADER,
 
 	SFE_STR_NO_SUPPORT,
+	SFE_STR_NOT_WRITE,
 	SFE_STR_MAX_DATA,
 	SFE_STR_MAX_COUNT,
 	SFE_STR_BAD_TYPE,
 	SFE_STR_NO_ADD_END,
 	SFE_STR_BAD_STRING,
 	SFE_STR_WEIRD,
-	SFE_RDWR_BAD_HEADER,
 
 	SFE_WAV_NO_RIFF,
 	SFE_WAV_NO_WAVE,
@@ -404,6 +460,14 @@ enum
 	SFE_SDS_NOT_SDS,
 	SFE_SDS_BAD_BIT_WIDTH,
 
+	SFE_SD2_FD_DISALLOWED,
+	SFE_SD2_BAD_DATA_OFFSET,
+	SFE_SD2_BAD_MAP_OFFSET,
+	SFE_SD2_BAD_DATA_LENGTH,
+	SFE_SD2_BAD_MAP_LENGTH,
+	SFE_SD2_BAD_RSRC,
+	SFE_SD2_BAD_SAMPLE_SIZE,
+
 	SFE_MAX_ERROR			/* This must be last in list. */
 } ;
 
@@ -467,6 +531,7 @@ int		psf_calc_max_all_channels	(SF_PRIVATE *psf, double *peaks, int normalize) ;
 /* Functions in strings.c. */
 
 const char* psf_get_string (SF_PRIVATE *psf, int str_type) ;
+int psf_set_string (SF_PRIVATE *psf, int str_type, const char *str) ;
 int psf_store_string (SF_PRIVATE *psf, int str_type, const char *str) ;
 
 /* Default seek function. Use for PCM and float encoded data. */
@@ -489,7 +554,7 @@ void psf_set_file (SF_PRIVATE *psf, int fd) ;
 
 sf_count_t psf_fseek (SF_PRIVATE *psf, sf_count_t offset, int whence) ;
 sf_count_t psf_fread (void *ptr, sf_count_t bytes, sf_count_t count, SF_PRIVATE *psf) ;
-sf_count_t psf_fwrite (void *ptr, sf_count_t bytes, sf_count_t count, SF_PRIVATE *psf) ;
+sf_count_t psf_fwrite (const void *ptr, sf_count_t bytes, sf_count_t count, SF_PRIVATE *psf) ;
 sf_count_t psf_fgets (char *buffer, sf_count_t bufsize, SF_PRIVATE *psf) ;
 sf_count_t psf_ftell (SF_PRIVATE *psf) ;
 sf_count_t psf_get_filelen (SF_PRIVATE *psf) ;
@@ -498,6 +563,10 @@ int psf_is_pipe (SF_PRIVATE *psf) ;
 
 int psf_ftruncate (SF_PRIVATE *psf, sf_count_t len) ;
 int psf_fclose (SF_PRIVATE *psf) ;
+
+/* Open and close the resource fork of a file. */
+int psf_open_rsrc (SF_PRIVATE *psf, int mode) ;
+int psf_close_rsrc (SF_PRIVATE *psf) ;
 
 /*
 void psf_fclearerr (SF_PRIVATE *psf) ;
@@ -520,6 +589,7 @@ int		nist_open	(SF_PRIVATE *psf) ;
 int		paf_open	(SF_PRIVATE *psf) ;
 int		pvf_open	(SF_PRIVATE *psf) ;
 int		raw_open	(SF_PRIVATE *psf) ;
+int		sd2_open	(SF_PRIVATE *psf) ;
 int		sds_open	(SF_PRIVATE *psf) ;
 int		svx_open	(SF_PRIVATE *psf) ;
 int		voc_open	(SF_PRIVATE *psf) ;
@@ -531,7 +601,6 @@ int		xi_open		(SF_PRIVATE *psf) ;
 
 int		ogg_open	(SF_PRIVATE *psf) ;
 int		rx2_open	(SF_PRIVATE *psf) ;
-int		sd2_open	(SF_PRIVATE *psf) ;
 int		txw_open	(SF_PRIVATE *psf) ;
 int		wve_open	(SF_PRIVATE *psf) ;
 int		dwd_open	(SF_PRIVATE *psf) ;

@@ -86,15 +86,16 @@ ErrorStruct SndfileErrors [] =
 	{	SFE_BAD_OPEN_MODE		, "Error: bad mode parameter for file open." },
 	{	SFE_OPEN_PIPE_RDWR		, "Error: attempt toopen a pipe in read/write mode." },
 	{	SFE_RDWR_POSITION		, "Error on RDWR position (cryptic)." },
+	{	SFE_RDWR_BAD_HEADER		, "Error : Cannot open file in read/write mode due to string data in header." },
 
 	{	SFE_STR_NO_SUPPORT		, "Error : File type does not support string data." },
+	{	SFE_STR_NOT_WRITE		, "Error : Trying to set a string when file is not in write mode." },
 	{	SFE_STR_MAX_DATA		, "Error : Maximum string data storage reached." },
 	{	SFE_STR_MAX_COUNT		, "Error : Maximum string data count reached." },
 	{	SFE_STR_BAD_TYPE		, "Error : Bad string data type." },
 	{	SFE_STR_NO_ADD_END		, "Error : file type does not support strings added at end of file." },
 	{	SFE_STR_BAD_STRING		, "Error : bad string." },
 	{	SFE_STR_WEIRD			, "Error : Weird string error." },
-	{	SFE_RDWR_BAD_HEADER		, "Error : Cannot open file in read/write mode due to string data in header." },
 
 	{	SFE_WAV_NO_RIFF			, "Error in WAV file. No 'RIFF' chunk marker." },
 	{	SFE_WAV_NO_WAVE			, "Error in WAV file. No 'WAVE' chunk marker." },
@@ -205,6 +206,14 @@ ErrorStruct SndfileErrors [] =
 	{	SFE_SDS_NOT_SDS			, "Error : not an SDS file." },
 	{	SFE_SDS_BAD_BIT_WIDTH	, "Error : bad bit width for SDS file." },
 
+	{	SFE_SD2_FD_DISALLOWED	, "Error : cannot open SD2 file without a file name." },
+	{	SFE_SD2_BAD_DATA_OFFSET	, "Error : bad data offset." },
+	{	SFE_SD2_BAD_MAP_OFFSET	, "Error : bad map offset." },
+	{	SFE_SD2_BAD_DATA_LENGTH	, "Error : bad data length." },
+	{	SFE_SD2_BAD_MAP_LENGTH	, "Error : bad map length." },
+	{	SFE_SD2_BAD_RSRC		, "Error : bad resource fork." },
+	{	SFE_SD2_BAD_SAMPLE_SIZE	, "Error : bad sample size." },
+
 	{	SFE_DWVW_BAD_BITWIDTH	, "Error : Bad bit width for DWVW encoding. Must be 12, 16 or 24." },
 	{	SFE_G72X_NOT_MONO		, "Error : G72x encoding does not support more than 1 channel." },
 
@@ -223,6 +232,8 @@ static void	save_header_info (SF_PRIVATE *psf) ;
 static void	copy_filename (SF_PRIVATE *psf, const char *path) ;
 static int	psf_close (SF_PRIVATE *psf) ;
 static int	psf_open_file (SF_PRIVATE *psf, int mode, SF_INFO *sfinfo) ;
+
+static int	try_resource_fork (SF_PRIVATE * psf, int mode) ;
 
 /*------------------------------------------------------------------------------
 ** Private (static) variables.
@@ -267,6 +278,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 		} ;
 
 	memset (psf, 0, sizeof (SF_PRIVATE)) ;
+	psf->rsrcdes = -1 ;
 
 	psf_log_printf (psf, "File : %s\n", path) ;
 
@@ -299,12 +311,18 @@ sf_open_fd	(int fd, int mode, SF_INFO *sfinfo, int close_desc)
 {	SF_PRIVATE 	*psf ;
 	int			error ;
 
+	if ((sfinfo->format & SF_FORMAT_TYPEMASK) == SF_FORMAT_SD2)
+	{	sf_errno = SFE_SD2_FD_DISALLOWED ;
+		return	NULL ;
+		} ;
+
 	if ((psf = calloc (1, sizeof (SF_PRIVATE))) == NULL)
 	{	sf_errno = SFE_MALLOC_FAILED ;
 		return	NULL ;
 		} ;
 
 	psf_set_file (psf, fd) ;
+	psf->rsrcdes = -1 ;
 	psf->is_pipe = psf_is_pipe (psf) ;
 	psf->fileoffset = psf_ftell (psf) ;
 
@@ -673,15 +691,13 @@ sf_format_check	(const SF_INFO *info)
 					return 1 ;
 				break ;
 
-		/*-
 		case SF_FORMAT_SD2 :
-				/+* SD2 is strictly big endian. *+/
+				/* SD2 is strictly big endian. */
 				if (endian == SF_ENDIAN_LITTLE || endian == SF_ENDIAN_CPU)
 					return 0 ;
-				if (subformat == SF_FORMAT_PCM_16)
+				if (subformat == SF_FORMAT_PCM_S8 || subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_24)
 					return 1 ;
 				break ;
-		-*/
 
 		default : break ;
 		} ;
@@ -746,7 +762,7 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 			return psf_get_format_info (data) ;
 		} ;
 
-	if (! sndfile && command == SFC_GET_LOG_INFO)
+	if (sndfile == NULL && command == SFC_GET_LOG_INFO)
 	{	if (data == NULL)
 			return (psf->error = SFE_BAD_CONTROL_CMD) ;
 		LSF_SNPRINTF (data, datasize, "%s", sf_logbuffer) ;
@@ -769,6 +785,16 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 
 		case SFC_GET_NORM_DOUBLE :
 			return psf->norm_double ;
+
+		case SFC_SET_SCALE_FLOAT_INT_READ :
+			{	int old_value = psf->float_int_mult ;
+
+				psf->float_int_mult = (datasize != 0) ? SF_TRUE : SF_FALSE ;
+				if (psf->float_int_mult && psf->float_max < 0.0)
+					psf->float_max = psf_calc_signal_max (psf, SF_FALSE) ;
+				return old_value ;
+				}
+			break ;
 
 		case SFC_SET_ADD_PEAK_CHUNK :
 			{	int format = psf->sf.format & SF_FORMAT_TYPEMASK ;
@@ -916,6 +942,18 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 		case SFC_GET_CLIPPING :
 			return psf->add_clipping ;
 
+		case SFC_GET_LOOP_INFO :
+			if (datasize != sizeof (SF_LOOP_INFO))
+				return SF_FALSE ;
+			if (psf->loop_info != NULL)
+			{	SF_LOOP_INFO *temp = (SF_LOOP_INFO *) data ;
+				memcpy (temp, psf->loop_info, sizeof (SF_LOOP_INFO)) ;
+
+				return SF_TRUE ;
+				} ;
+
+			return SF_FALSE ;
+
 		default :
 			/* Must be a file specific command. Pass it on. */
 			if (psf->command)
@@ -1061,7 +1099,7 @@ sf_set_string (SNDFILE *sndfile, int str_type, const char* str)
 
 	VALIDATE_SNDFILE_AND_ASSIGN_PSF (sndfile, psf, 1) ;
 
-	return psf_store_string (psf, str_type, str) ;
+	return psf_set_string (psf, str_type, str) ;
 } /* sf_get_string */
 
 /*==============================================================================
@@ -1910,6 +1948,18 @@ sf_writef_double	(SNDFILE *sndfile, double *ptr, sf_count_t frames)
 */
 
 static int
+try_resource_fork (SF_PRIVATE * psf, int mode)
+{
+	if (psf_open_rsrc (psf, mode) != 0)
+		return 0 ;
+
+	/* More checking here. */
+	psf_log_printf (psf, "Resource fork : %s\n", psf->rsrcpath) ;
+
+	return SF_FORMAT_SD2 ;
+} /* try_resource_fork */
+
+static int
 format_from_extension (const char *filename)
 {	char *cptr ;
 	char buffer [16] ;
@@ -1950,8 +2000,7 @@ format_from_extension (const char *filename)
 
 static int
 guess_file_type (SF_PRIVATE *psf, const char *filename)
-{	int 			buffer [3], format ;
-	unsigned char	cptr [0x40] ;
+{	int buffer [3], format ;
 
 	if (psf_binheader_readf (psf, "b", &buffer, SIGNED_SIZEOF (buffer)) != SIGNED_SIZEOF (buffer))
 	{	psf->error = SFE_BAD_FILE_READ ;
@@ -2049,21 +2098,9 @@ guess_file_type (SF_PRIVATE *psf, const char *filename)
 	if (buffer [0] == MAKE_MARKER ('2', 'B', 'I', 'T'))
 		return SF_FORMAT_AVR ;
 
-	if (OS_IS_MACOSX && (format = macos_guess_file_type (psf, filename)) != 0)
+	/* This must be the second last one. */
+	if (psf->filelength > 0 && (format = try_resource_fork (psf, SFM_READ)) != 0)
 		return format ;
-
-	/*	Detect wacky MacOS header stuff. This might be "Sound Designer II". */
-	memcpy (cptr , buffer, sizeof (buffer)) ;
-	if (cptr [0] == 0 && cptr [1] > 0 && psf->sf.seekable)
-	{	psf_binheader_readf (psf, "pb", 0, &cptr, SIGNED_SIZEOF (cptr)) ;
-
-		if (cptr [1] < (sizeof (cptr) - 3) && cptr [cptr [1] + 2] == 0 && strlen (((char*) cptr) + 2) == cptr [1])
-		{	psf_log_printf (psf, "Weird MacOS Header.\n") ;
-			psf_binheader_readf (psf, "em", &buffer) ;
-			if (buffer [0] == MAKE_MARKER (0, 'S', 'd', '2'))
-				return SF_FORMAT_SD2 ;
-			} ;
-		} ;
 
 	/* This must be the last one. */
 	if ((format = format_from_extension (filename)) != 0)
@@ -2119,12 +2156,14 @@ static void
 copy_filename (SF_PRIVATE *psf, const char *path)
 {	const char *cptr ;
 
+	LSF_SNPRINTF (psf->filepath, sizeof (psf->filepath), "%s", path) ;
+
 	if ((cptr = strrchr (path, '/')) || (cptr = strrchr (path, '\\')))
 		cptr ++ ;
 	else
 		cptr = path ;
 
-	memset (psf->filename, 0, SF_FILENAME_LEN) ;
+	memset (psf->filename, 0, sizeof (psf->filename)) ;
 
 	LSF_SNPRINTF (psf->filename, sizeof (psf->filename), "%s", cptr) ;
 
@@ -2141,6 +2180,9 @@ psf_close (SF_PRIVATE *psf)
 		error = psf->close (psf) ;
 
 	psf_fclose (psf) ;
+
+	if (psf->rsrcdes >= 0)
+		psf_close_rsrc (psf) ;
 
 	if (psf->fdata)
 		free (psf->fdata) ;
@@ -2175,6 +2217,11 @@ psf_open_file (SF_PRIVATE *psf, int mode, SF_INFO *sfinfo)
 	if (sfinfo == NULL)
 		return SFE_BAD_SF_INFO_PTR ;
 
+	/* Zero out these fields. */
+	sfinfo->frames = 0 ;
+	sfinfo->sections = 0 ;
+	sfinfo->seekable = 0 ;
+
 	if (mode == SFM_READ)
 	{	if ((sfinfo->format & SF_FORMAT_TYPEMASK) == SF_FORMAT_RAW)
 		{	if (sf_format_check (sfinfo) == 0)
@@ -2200,6 +2247,8 @@ psf_open_file (SF_PRIVATE *psf, int mode, SF_INFO *sfinfo)
 	psf->auto_header 	= SF_FALSE ;
 	psf->rwf_endian		= SF_ENDIAN_LITTLE ;
 	psf->seek			= psf_default_seek ;
+	psf->float_int_mult = 0 ;
+	psf->float_max		= -1.0 ;
 
 	psf->sf.sections = 1 ;
 

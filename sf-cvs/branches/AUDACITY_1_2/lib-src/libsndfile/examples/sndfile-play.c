@@ -76,8 +76,6 @@ alsa_play (int argc, char *argv [])
 	snd_pcm_t * alsa_dev ;
 	int		k, readcount, subformat ;
 
-puts (__func__) ;
-
 	for (k = 1 ; k < argc ; k++)
 	{	memset (&sfinfo, 0, sizeof (sfinfo)) ;
 
@@ -448,7 +446,8 @@ typedef struct
 	SNDFILE 		*sndfile ;
 	SF_INFO 		sfinfo ;
 
-	int 			done_playing ;
+	int				fake_stereo ;
+	int				done_playing ;
 } MacOSXAudioData ;
 
 #include <math.h>
@@ -459,7 +458,7 @@ macosx_audio_out_callback (AudioDeviceID device, const AudioTimeStamp* current_t
 	AudioBufferList*	data_out, const AudioTimeStamp* time_out,
 	void* client_data)
 {	MacOSXAudioData	*audio_data ;
-	int		size, sample_count, read_count ;
+	int		size, sample_count, read_count, k ;
 	float	*buffer ;
 
 	/* Prevent compiler warnings. */
@@ -476,10 +475,22 @@ macosx_audio_out_callback (AudioDeviceID device, const AudioTimeStamp* current_t
 
 	buffer = (float*) data_out->mBuffers [0].mData ;
 
-	read_count = sf_read_float (audio_data->sndfile, buffer, sample_count) ;
+	if (audio_data->fake_stereo != 0)
+	{	read_count = sf_read_float (audio_data->sndfile, buffer, sample_count / 2) ;
 
+		for (k = read_count - 1 ; k >= 0 ; k--)
+		{	buffer [2 * k	] = buffer [k] ;
+			buffer [2 * k + 1] = buffer [k] ;
+			} ;
+		read_count *= 2 ;
+		}
+	else
+		read_count = sf_read_float (audio_data->sndfile, buffer, sample_count) ;
+
+	/* Fill the remainder with zeroes. */
 	if (read_count < sample_count)
-	{	memset (&(buffer [read_count]), 0, (sample_count - read_count) * sizeof (float)) ;
+	{	if (audio_data->fake_stereo == 0)
+			memset (&(buffer [read_count]), 0, (sample_count - read_count) * sizeof (float)) ;
 		/* Tell the main application to terminate. */
 		audio_data->done_playing = SF_TRUE ;
 		} ;
@@ -494,13 +505,14 @@ macosx_play (int argc, char *argv [])
 	UInt32		count, buffer_size ;
 	int 		k ;
 
+	audio_data.fake_stereo = 0 ;
 	audio_data.device = kAudioDeviceUnknown ;
 
 	/*  get the default output device for the HAL */
 	count = sizeof (AudioDeviceID) ;
 	if ((err = AudioHardwareGetProperty (kAudioHardwarePropertyDefaultOutputDevice,
 				&count, (void *) &(audio_data.device))) != noErr)
-	{	printf ("AudioHardwareGetProperty failed.\n") ;
+	{	printf ("AudioHardwareGetProperty (kAudioDevicePropertyDefaultOutputDevice) failed.\n") ;
 		return ;
 		} ;
 
@@ -508,7 +520,7 @@ macosx_play (int argc, char *argv [])
 	count = sizeof (UInt32) ;
 	if ((err = AudioDeviceGetProperty (audio_data.device, 0, false, kAudioDevicePropertyBufferSize,
 				&count, &buffer_size)) != noErr)
-	{	printf ("AudioDeviceGetProperty (AudioDeviceGetProperty) failed.\n") ;
+	{	printf ("AudioDeviceGetProperty (kAudioDevicePropertyBufferSize) failed.\n") ;
 		return ;
 		} ;
 
@@ -533,8 +545,13 @@ macosx_play (int argc, char *argv [])
 			continue ;
 			} ;
 
-
 		audio_data.format.mSampleRate = audio_data.sfinfo.samplerate ;
+
+		if (audio_data.sfinfo.channels == 1)
+		{	audio_data.format.mChannelsPerFrame = 2 ;
+			audio_data.fake_stereo = 1 ;
+			}
+		else
 		audio_data.format.mChannelsPerFrame = audio_data.sfinfo.channels ;
 
 		if ((err = AudioDeviceSetProperty (audio_data.device, NULL, 0, false, kAudioDevicePropertyStreamFormat,
@@ -569,7 +586,7 @@ macosx_play (int argc, char *argv [])
 			} ;
 
 		err = AudioDeviceRemoveIOProc (audio_data.device, macosx_audio_out_callback) ;
-        if (err != noErr)
+		if (err != noErr)
 		{	printf ("AudioDeviceRemoveIOProc failed.\n") ;
 			return ;
 			} ;
@@ -596,18 +613,20 @@ macosx_play (int argc, char *argv [])
 #define	WIN32_BUFFER_LEN	(1<<15)
 
 typedef struct
-{	HWAVEOUT		hwave ;
-	WAVEHDR			whdr [2] ;
+{	HWAVEOUT	hwave ;
+	WAVEHDR		whdr [2] ;
 
-	HANDLE			Event ;
+	CRITICAL_SECTION	mutex ;		/* to control access to BuffersInUSe */
+	HANDLE		Event ;			/* signal that a buffer is free */
 
-	short			buffer [WIN32_BUFFER_LEN / sizeof (short)] ;
-	int				current, bufferlen ;
+	short		buffer [WIN32_BUFFER_LEN / sizeof (short)] ;
+	int			current, bufferlen ;
+	int			BuffersInUse ;
 
-	SNDFILE 		*sndfile ;
-	SF_INFO 		sfinfo ;
+	SNDFILE 	*sndfile ;
+	SF_INFO 	sfinfo ;
 
-	sf_count_t		remaining ;
+	sf_count_t	remaining ;
 } Win32_Audio_Data ;
 
 
@@ -615,6 +634,7 @@ static void
 win32_play_data (Win32_Audio_Data *audio_data)
 {	int thisread, readcount ;
 
+	/* fill a buffer if there is more data and we can read it sucessfully */
 	readcount = (audio_data->remaining > audio_data->bufferlen) ? audio_data->bufferlen : (int) audio_data->remaining ;
 
 	thisread = (int) sf_read_short (audio_data->sndfile, (short *) (audio_data->whdr [audio_data->current].lpData), readcount) ;
@@ -622,34 +642,35 @@ win32_play_data (Win32_Audio_Data *audio_data)
 	audio_data->remaining -= thisread ;
 
 	if (thisread > 0)
-	{	/* Fix buffer length is only a partial block. */
-		if (thisread * SIGNED_SIZEOF (short) < audio_data->bufferlen)
+	{	/* Fix buffer length if this is only a partial block. */
+		if (thisread < audio_data->bufferlen)
 			audio_data->whdr [audio_data->current].dwBufferLength = thisread * sizeof (short) ;
 
 		/* Queue the WAVEHDR */
 		waveOutWrite (audio_data->hwave, (LPWAVEHDR) &(audio_data->whdr [audio_data->current]), sizeof (WAVEHDR)) ;
-		}
-	else
-	{	/* Stop playback */
-		waveOutPause (audio_data->hwave) ;
 
-		SetEvent (audio_data->Event) ;
+		/* count another buffer in use */
+		EnterCriticalSection (&audio_data->mutex) ;
+		audio_data->BuffersInUse ++ ;
+		LeaveCriticalSection (&audio_data->mutex) ;
+
+		/* use the other buffer next time */
+		audio_data->current = (audio_data->current + 1) % 2 ;
 		} ;
 
-	audio_data->current = (audio_data->current + 1) % 2 ;
-
+	return ;
 } /* win32_play_data */
 
-static DWORD CALLBACK
+static void CALLBACK
 win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD data, DWORD param1, DWORD param2)
 {	Win32_Audio_Data	*audio_data ;
 
-	if (data == 0)
-		return 1 ;
-
-	/* Preent compiler warnings. */
+	/* Prevent compiler warnings. */
 	hwave = hwave ;
 	param1 = param2 ;
+
+	if (data == 0)
+		return ;
 
 	/*
 	** I consider this technique of passing a pointer via an integer as
@@ -658,11 +679,21 @@ win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD data, DWORD param1, DW
 	*/
 	audio_data = (Win32_Audio_Data*) data ;
 
+	/* let main loop know a buffer is free */
 	if (msg == MM_WOM_DONE)
-		win32_play_data (audio_data) ;
+	{	EnterCriticalSection (&audio_data->mutex) ;
+		audio_data->BuffersInUse -- ;
+		LeaveCriticalSection (&audio_data->mutex) ;
+		SetEvent (audio_data->Event) ;
+		} ;
 
-  return 0 ;
+	return ;
 } /* win32_audio_out_callback */
+
+/* This is needed for earlier versions of the M$ development tools. */
+#ifndef DWORD_PTR
+#define DWORD_PTR DWORD
+#endif
 
 static void
 win32_play (int argc, char *argv [])
@@ -685,6 +716,7 @@ win32_play (int argc, char *argv [])
 		audio_data.remaining = audio_data.sfinfo.frames ;
 		audio_data.current = 0 ;
 
+		InitializeCriticalSection (&audio_data.mutex) ;
 		audio_data.Event = CreateEvent (0, FALSE, FALSE, 0) ;
 
 		wf.nChannels = audio_data.sfinfo.channels ;
@@ -698,15 +730,13 @@ win32_play (int argc, char *argv [])
 
 		wf.nAvgBytesPerSec = wf.nBlockAlign * wf.nSamplesPerSec ;
 
-		error = waveOutOpen (&(audio_data.hwave), WAVE_MAPPER, &wf, (DWORD) win32_audio_out_callback,
-							(DWORD) &audio_data, CALLBACK_FUNCTION) ;
+		error = waveOutOpen (&(audio_data.hwave), WAVE_MAPPER, &wf, (DWORD_PTR) win32_audio_out_callback,
+							(DWORD_PTR) &audio_data, CALLBACK_FUNCTION) ;
 		if (error)
 		{	puts ("waveOutOpen failed.") ;
 			audio_data.hwave = 0 ;
 			continue ;
 			} ;
-
-		waveOutPause (audio_data.hwave) ;
 
 		audio_data.whdr [0].lpData = (char*) audio_data.buffer ;
 		audio_data.whdr [1].lpData = ((char*) audio_data.buffer) + sizeof (audio_data.buffer) / 2 ;
@@ -717,6 +747,7 @@ win32_play (int argc, char *argv [])
 		audio_data.whdr [0].dwFlags = 0 ;
 		audio_data.whdr [1].dwFlags = 0 ;
 
+		/* length of each audio buffer in samples */
 		audio_data.bufferlen = sizeof (audio_data.buffer) / 2 / sizeof (short) ;
 
 		/* Prepare the WAVEHDRs */
@@ -733,23 +764,28 @@ win32_play (int argc, char *argv [])
 			continue ;
 			} ;
 
-		waveOutRestart (audio_data.hwave) ;
-
-		/* Need to call this twice to queue up enough audio. */
+		/* Fill up both buffers with audio data */
+		audio_data.BuffersInUse = 0 ;
 		win32_play_data (&audio_data) ;
 		win32_play_data (&audio_data) ;
 
-		/* Wait for playback to finish. My callback notifies me when all wave data has been played */
-		WaitForSingleObject (audio_data.Event, INFINITE) ;
+		/* loop until both buffers are released */
+		while (audio_data.BuffersInUse > 0)
+		{
+			/* wait for buffer to be released */
+			WaitForSingleObject (audio_data.Event, INFINITE) ;
 
-		waveOutPause (audio_data.hwave) ;
-		waveOutReset (audio_data.hwave) ;
+			/* refill the buffer if there is more data to play */
+			win32_play_data (&audio_data) ;
+			} ;
 
 		waveOutUnprepareHeader (audio_data.hwave, &(audio_data.whdr [0]), sizeof (WAVEHDR)) ;
 		waveOutUnprepareHeader (audio_data.hwave, &(audio_data.whdr [1]), sizeof (WAVEHDR)) ;
 
 		waveOutClose (audio_data.hwave) ;
 		audio_data.hwave = 0 ;
+
+		DeleteCriticalSection (&audio_data.mutex) ;
 
 		sf_close (audio_data.sndfile) ;
 		} ;
