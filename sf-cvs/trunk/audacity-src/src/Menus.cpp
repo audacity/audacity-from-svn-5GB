@@ -636,8 +636,7 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->Init(*n);
-            if (mViewInfo.sel0 > dest->GetOffset())
-               dest->SetOffset(mViewInfo.sel0);
+            dest->SetOffset( wxMax(mViewInfo.sel0, n->GetOffset()) );
             newTracks.Add(dest);
          }
       }

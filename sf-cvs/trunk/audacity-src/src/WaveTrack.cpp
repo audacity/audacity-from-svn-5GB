@@ -106,7 +106,7 @@ VTrack(orig)
    block = new BlockArray();
    Paste(0.0, &orig);
 
-   envelope.CopyFrom(&(orig.envelope));
+   envelope.CopyFrom(&(orig.envelope), GetOffset(), GetMaxLen());
 }
 
 WaveTrack::~WaveTrack()
@@ -315,12 +315,7 @@ void WaveTrack::Copy(double t0, double t1, VTrack ** dest) const
 
    delete[]buffer;
 
-   // If we are copying the entire track
-   if (t0 <= GetOffset() && t1 >= GetMaxLen()) {
-      // Note: We could actually do this when we aren't copying the whole
-      // track, but it produces weird isolated envelope control points.
-      ((WaveTrack *) * dest)->envelope.CopyFrom(&envelope);
-   }
+   ((WaveTrack *) *dest)->GetEnvelope()->CopyFrom(GetEnvelope(), t0, t1);
 }
 
 void WaveTrack::Paste(double t, const VTrack * src)
