@@ -143,10 +143,11 @@ void AudacityProject::CreateMenuBar()
 
 #ifndef __WXMAC__
    mHelpMenu->AppendSeparator();
+#endif
+
    mHelpMenu->Append(HelpID, "Online Help...");
    mHelpMenu->Append(HelpIndexID, "Online Help Index...");
    mHelpMenu->Append(HelpSearchID, "Search Online Help...");
-#endif
 
    mMenuBar->Append(mFileMenu, "&File");
    mMenuBar->Append(mEditMenu, "&Edit");
@@ -570,6 +571,7 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
       if (n->selected) {
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
+            dest->linked = n->linked;
             dest->tOffset = mViewInfo.sel0;
             newTracks.Add(dest);
 
