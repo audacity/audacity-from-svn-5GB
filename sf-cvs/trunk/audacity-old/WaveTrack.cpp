@@ -22,6 +22,7 @@
 #include "Spectrum.h"
 #include "WaveTrack.h"
 #include "DirManager.h"
+#include "Prefs.h"
 
 // Max file size of 16-bit samples is 1MB
 // (About 12 seconds of audio)
@@ -641,6 +642,8 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 
   PrepareCacheSpectrum(t0, pps, r.width, r.height);
 
+  bool isGrayscale = gPrefs->Read("/Spectrum/Grayscale", false);
+
   int i=0;
   while(x<r.width) {
     sampleCount w0 = (sampleCount)((tpre+x*tstep)*rate);
@@ -662,7 +665,11 @@ void WaveTrack::DrawSpectrum(wxDC &dc, wxRect &r, double h, double pps,
 	  bool selflag = (ssel0 <= w0 && w0 < ssel1);
 
 	  unsigned char rv, gv, bv;
-	  GetColorGradient(spec[r.height-1-yy], selflag, &rv, &gv, &bv);
+
+	  if (isGrayscale)
+		rv = gv = bv = char(214-214*spec[r.height-1-yy]);
+	  else
+		GetColorGradient(spec[r.height-1-yy], selflag, &rv, &gv, &bv);
 	  
 	  data[(yy*r.width + x)*3] = rv;
 	  data[(yy*r.width + x)*3+1] = gv;

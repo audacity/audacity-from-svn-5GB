@@ -14,9 +14,11 @@
 
 #include "FFT.h"
 
+#include "Prefs.h"
+
 int GetSpectrumWindowSize()
 {
-  return 256;
+  return gPrefs->Read("/Spectrum/FFTSize", 256);
 }
 
 bool ComputeSpectrum(sampleType *data, int width, int height,

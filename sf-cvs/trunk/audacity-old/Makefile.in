@@ -73,7 +73,8 @@ OBJS = \
 	$(OBJDIR)/prefs/PrefsDialog.cpp.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.cpp.o \
 	$(OBJDIR)/prefs/SampleRatePrefs.cpp.o \
-	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o
+	$(OBJDIR)/prefs/FileFormatPrefs.cpp.o \
+	$(OBJDIR)/prefs/SpectrumPrefs.cpp.o
 
 ########################################
 # DEPENDENCIES
