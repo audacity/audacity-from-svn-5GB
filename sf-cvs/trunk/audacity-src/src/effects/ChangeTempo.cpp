@@ -15,7 +15,7 @@
 
 #if USE_SOUNDTOUCH
 
-#include <SoundTouch.h>
+#include "SoundTouch.h"
 
 #include "ChangeTempo.h"
 

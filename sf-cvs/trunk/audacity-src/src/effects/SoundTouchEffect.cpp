@@ -18,7 +18,7 @@
 
 #include <math.h>
 
-#include <SoundTouch.h>
+#include "SoundTouch.h"
 
 #include "SoundTouchEffect.h"
 #include "../WaveTrack.h"

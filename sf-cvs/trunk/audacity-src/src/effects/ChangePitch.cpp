@@ -15,7 +15,7 @@
 
 #if USE_SOUNDTOUCH
 
-#include <SoundTouch.h>
+#include "SoundTouch.h"
 
 #include "ChangePitch.h"
 
@@ -357,7 +357,7 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-	//v Override wxTextValidator to disallow negative values <= -100.0?
+	//v Override wxTextValidator to disallow negative values < -100.0?
    m_pTextCtrl_PercentChange = 
 		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
 							wxDefaultPosition, wxSize(40, -1), 0,
@@ -713,7 +713,9 @@ void ChangePitchDialog::OnText_PercentChange(wxCommandEvent & event)
 		this->Update_Slider_PercentChange();
       m_bLoopDetect = false;
 
-      FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
+      //v Probably better to override wxTextValidator to disallow negative values.
+      // See comment in ChangePitchDialog::ChangePitchDialog.
+      this->FindWindow(wxID_OK)->Enable(m_PercentChange > -100.0);
    }
 }
 
