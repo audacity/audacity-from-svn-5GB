@@ -1,4 +1,38 @@
 <pre>
+Changements dans la version 1.2.0-pre2:
+
+  * Aide en ligne complètée. Le manual complet est proche de la finalisation et sera en ligne bientôt.
+
+  * Audacity ne vous laissera plus faire des opérations d'édition peu sûres pendant la lecture ou l'enregistrement. Cela élimine plusieurs crashes potentiels.
+
+  * Possibilité d'annuler le bouton quitter corrigée.
+
+  * Nouvelle librairie de rééchantillonnage, sans restrictions de taux maximum ou minimum de rééchantillonnage.
+
+  * Audacity supporte maintenant les plug-ins LADSPA sur toutes les plate-formes, et supporte les plug-ins VST à travers un plug-in LADSPA optionnel appelé "VST Enabler", que vous pouvez télécharger séparément. Pour des questions de licences, Audacity ne peu pas être distribuée avec un support VST intégré.
+
+  * Mac OS X: problèmes de raccourcis clavier corrigés.
+
+  * Mac OS X: problèmes de coupures de son corrigés.
+
+  * Mac OS X: les problèmes de synchro du curseur en lecture/enregistrement sont corrigés.
+
+  * Silence affiche de nouveau une ligne droite au lieu de rien.
+
+  * Ajouté une règle verticale à l'affichage Forme d'onde dB.
+
+  * Corrigé un crash dans changer Hauteur.
+
+  * Vous pouvez maintenant coller si rien n'est sélectionné.
+
+  * Annuler une opération d'importation ne fait plus apparaitre une dialogue d'erreur supplémentaire.
+
+  * Audacity prend maintenant correctement en charge les noms de fichiers avec des caractères internationaux.
+
+  * Ecrit maintenant des tags ID3v2.3 (au lieu de ID3v2.4), pour être compatible avec plus de lecteurs MP3.
+
+  * Minor improvements to build system on Unix systems.
+
 Nouvelles fonctionnalités d'Audacity 1.2.0-pre1:
 
   * Interface utilisateur
