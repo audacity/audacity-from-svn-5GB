@@ -19,11 +19,11 @@ $(POT_FILE): $(SOURCES)
 
 # Update the PO files (translated message catalogs).
 MSGMERGE=msgmerge
-MSGMERGE_ARGS=-U
+MSGMERGE_ARGS=-U --backup=none
 %/LC_MESSAGES/audacity_website.po: %.po $(POT_FILE)
 	mkdir -p $(@:%/audacity_website.po=%)
 	cp -f $< $@
-	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $<
+	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $(POT_FILE)
 	touch $@
 
 # Compile the PO files into MO files.
