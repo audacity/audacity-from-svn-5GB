@@ -198,10 +198,10 @@ wxImage *ChangeImageColour(wxImage *srcImage,
    return dstImage;
 }
 
-wxImage *OverlayImage(wxImage *background,
-                      wxImage *foreground,
-                      wxImage *mask,
-                      int xoff, int yoff)
+static wxImage *OverlayImage(wxImage *background,
+                             wxImage *foreground,
+                             wxImage *mask,
+                             int xoff, int yoff)
 {
    // Takes a background image, foreground image, and mask
    // (i.e. the alpha channel for the foreground), and
@@ -217,19 +217,32 @@ wxImage *OverlayImage(wxImage *background,
    int w2 = foreground->GetWidth();
    int h2 = foreground->GetHeight();
 
+   // If the foreground + offset is bigger than the background, masking
+   // should only occur within these bounds of the foreground image
+
+   int wcutoff =  (width > (w2 + xoff)) ? w2: width  - xoff;
+   int hcutoff = (height > (h2 + yoff)) ? h2: height - yoff;
+   
    wxImage *dstImage = new wxImage(width, height);
    unsigned char *dst = dstImage->GetData();
 
    int x, y;
-   
    memcpy(dst, bk, width*height*3);
 
-   for(y=0; y<h2; y++) {
+   // Go through the foreground image bit by bit and mask it on to the
+   // background, at an offset of xoff,yoff.
+   // BUT...Don't go beyond the size of the background image
+
+   for(y=0; y<hcutoff; y++) {
+   
       unsigned char *bkp = bk + 3*((y+yoff)*width+xoff);
       unsigned char *dstp = dst + 3*((y+yoff)*width+xoff);
-      for(x=0; x<w2; x++) {
-         int value = m[3*(y*w2+x)];
+
+      for(x=0; x < wcutoff; x++) {
+         
+         int value = m[3*(y*w2+x)];           
          int opp = 255 - value;
+      
          for(int c=0; c<3; c++)
             dstp[x*3+c] =
                ((bkp[x*3+c] * opp) + (fg[3*(y*w2+x)+c] * value)) / 255;
@@ -280,6 +293,17 @@ wxImage *MakeToolImage(wxImage *tool,
       *p++ = r; *p++ = g; *p++ = b;
    }
 
+   // 
+   // Overlay the tool on top of it
+   //
+
+   wxImage *result;
+   if (style == 2) // down
+      result = OverlayImage(background, tool, mask, 1, 1);
+   else
+      result = OverlayImage(background, tool, mask, 0, 0);
+   delete background;
+
    //
    // Top hilite
    //
@@ -290,12 +314,13 @@ wxImage *MakeToolImage(wxImage *tool,
       colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
    r = colour.Red(); g = colour.Green(); b = colour.Blue();
 
-   p = bkgnd;
+   unsigned char *res = result->GetData();
+   p = res;
    for(i=0; i<width; i++) {
       *p++ = r; *p++ = g; *p++ = b;
    }
 
-   p = bkgnd;
+   p = res;
    for(i=0; i<height; i++) {
       *p++ = r; *p++ = g; *p++ = b;
       p += 3*(width-1);
@@ -311,23 +336,16 @@ wxImage *MakeToolImage(wxImage *tool,
       colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
    r = colour.Red(); g = colour.Green(); b = colour.Blue();
 
-   p = bkgnd + 3*(height-1)*width;
+   p = res + 3*(height-1)*width;
    for(i=0; i<width; i++) {
       *p++ = r; *p++ = g; *p++ = b;
    }
 
-   p = bkgnd + 3*(width-1);
+   p = res + 3*(width-1);
    for(i=0; i<height; i++) {
       *p++ = r; *p++ = g; *p++ = b;
       p += 3*(width-1);
    }
-
-   // 
-   // Overlay the tool on top of it
-   //
-
-   wxImage *result = OverlayImage(background, tool, mask, 0, 0);
-   delete background;
 
    return result;
 }
