@@ -275,15 +275,22 @@ Changes in 1.2.2:
   * VU Meters added for both playback and recording.  Click on
     the recording meter to monitor the input without recording.
 
-  * Fixed freeze in Unix/X-Windows caused by captured mouse when
-    audio device hangs.  (Audacity may not respond, but it will
-    no longer freeze all of X.)
+  * Export Multiple - new feature that lets you export multiple
+    files at once, either by track, or split based on labels.
+
+  * MP3 tags dialog will only pop up the first time you export as
+    MP3; after that it will not pop up again as long as you have
+    filled in at least one tag.
 
   * You can now add a label at the current playback position - in
     the Project menu, with a shortcut of Ctrl+M.
 
   * Clicking on a label now selects all of the tracks, making it
     easier to use the label track to recall selections.
+
+  * Fixed freeze in Unix/X-Windows caused by captured mouse when
+    audio device hangs.  (Audacity may not respond, but it will
+    no longer freeze all of X.)
 
   * Fixed cosmetic bug that caused improper waveform display if
     you tried to open an Audacity project saved on a different
