@@ -1,21 +1,32 @@
-# Make PortAudio Library for Unix/OSS
+# Make PortAudio for Linux
+#
+# by Phil Burk
+#
+# To compile a test program, make a target with a .app suffix.
+# For example to compile "../pa_tests/pa_devs.c", enter:
+#    gmake pa_devs.app
+#
+# To compile and execute a test program, make a target with a .run suffix.
+# For example to build and run "../pa_tests/pa_devs.c", enter:
+#    gmake pa_devs.run
 
-CC = gcc
+VPATH  = ../pa_common ../pa_tests
+CFLAGS = -g -Wall -I../pa_common
+CC     = gcc
 
-override CFLAGS += -g -O -ansi -I../pa_common
-PASRC = ../pa_common/pa_lib.c pa_unix_oss.c
-PAINC = ../pa_common/portaudio.h
-PAOBJ = ../pa_common/pa_lib.o pa_unix_oss.o
+PAOBJS = pa_lib.o pa_unix_oss.o pa_unix.o
+PAINC  = portaudio.h pa_unix.h
+PALIBS =  -lm -lpthread
 
-portaudio.a: $(PAOBJ)
-	ar ruv portaudio.a $(PAOBJ)
-	ranlib portaudio.a
-#	cp portaudio.a $(DEST)
+all: patest_sine.run
+
+%.app: %.o $(PAOBJS) $(PAINC) Makefile
+	gcc $(CFLAGS) $*.o $(PAOBJS) $(PALIBS) -o $@
+
+%.run: %.app
+	./$*.app
 
 clean:
-	rm -f portaudio.a $(PAOBJ)
+	-rm *.app
+	-rm *.o
 
-distclean: clean
-
-%.o: %.c $(PAINC) Makefile
-	$(CC) -c $(CFLAGS) $< -o $@

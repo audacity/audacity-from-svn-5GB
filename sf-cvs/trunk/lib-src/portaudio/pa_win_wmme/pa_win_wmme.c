@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.7 2002-10-26 07:06:19 dmazzoni Exp $
+ * $Id: pa_win_wmme.c,v 1.8 2003-03-02 08:01:46 dmazzoni Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *

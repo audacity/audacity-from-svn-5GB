@@ -1,5 +1,5 @@
 /*
- * $Id: test_w_saw.c,v 1.2 2002-10-26 07:06:19 dmazzoni Exp $
+ * $Id: test_w_saw.c,v 1.3 2003-03-02 08:01:47 dmazzoni Exp $
  * test_w_saw.c
  * Generate stereo sawtooth waveforms.
  *
@@ -43,7 +43,7 @@
 #include <string.h>
 
 #define SAMPLE_RATE         (44100)
-#define NUM_SECONDS             (6)
+#define NUM_SECONDS            (15)
 #define SAMPLES_PER_FRAME       (2)
 
 #define FREQUENCY           (220.0f)
