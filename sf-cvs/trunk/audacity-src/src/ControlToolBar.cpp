@@ -115,7 +115,7 @@ END_EVENT_TABLE()
 
 //Standard contructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(400, 55))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55))
 {
    InitializeControlToolBar();
 }
@@ -134,7 +134,7 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void ControlToolBar::InitializeControlToolBar()
 {
-   mIdealSize = wxSize(400, 55);
+   mIdealSize = wxSize(420, 55);
    mTitle = _("Audacity Control Toolbar");
    mType = ControlToolBarID;
 
@@ -373,46 +373,89 @@ void ControlToolBar::MakeButtons()
 #endif
 
    /* Buttons */
+   int buttonOrder[6];
+   mButtonPos = 95;
+   
+   gPrefs->Read("/GUI/ErgonomicTransportButtons", &mErgonomicTransportButtons, true);
 
-   mButtonPos = 90;
-
-   mRewind = MakeButton((char const **) Rewind,
-                        (char const **) RewindDisabled,
-                        (char const **) RewindAlpha, ID_REW_BUTTON,
-                        false);
-   mRewind->SetToolTip(_("Skip to Start"));
-
-   mPlay = MakeButton((char const **) Play,
-                      (char const **) PlayDisabled,
-                      (char const **) PlayAlpha, ID_PLAY_BUTTON,
-                      false);
-   mPlay->SetToolTip(_("Play (Shift for loop-play)"));
-
-   MakeLoopImage();
-
-   mRecord = MakeButton((char const **) Record,
-                        (char const **) RecordDisabled,
-                        (char const **) RecordAlpha, ID_RECORD_BUTTON,
-                        false);
-   mRecord->SetToolTip(_("Record"));
-
-   mPause = MakeButton((char const **)Pause,
-                      (char const **) PauseDisabled,
-                      (char const **) PauseAlpha, ID_PAUSE_BUTTON,
-                       true);
-   mPause->SetToolTip(_("Pause"));
-
-   mStop = MakeButton((char const **) Stop,
-                      (char const **) StopDisabled,
-                      (char const **) StopAlpha, ID_STOP_BUTTON,
-                      false);
-   mStop->SetToolTip(_("Stop"));
-
-   mFF = MakeButton((char const **) FFwd,
-                    (char const **) FFwdDisabled,
-                    (char const **) FFwdAlpha, ID_FF_BUTTON,
-                    false);
-   mFF->SetToolTip(_("Skip to End"));
+   if (mErgonomicTransportButtons)
+   {
+      buttonOrder[0] = ID_PAUSE_BUTTON;
+      buttonOrder[1] = ID_PLAY_BUTTON;
+      buttonOrder[2] = ID_STOP_BUTTON;
+      buttonOrder[3] = ID_REW_BUTTON;
+      buttonOrder[4] = ID_FF_BUTTON;
+      buttonOrder[5] = ID_RECORD_BUTTON;
+   } else
+   {
+      buttonOrder[0] = ID_REW_BUTTON;
+      buttonOrder[1] = ID_PLAY_BUTTON;
+      buttonOrder[2] = ID_RECORD_BUTTON;
+      buttonOrder[3] = ID_PAUSE_BUTTON;
+      buttonOrder[4] = ID_STOP_BUTTON;
+      buttonOrder[5] = ID_FF_BUTTON;
+   }
+   
+   for (int iButton = 0; iButton < 6; iButton++)
+   {
+      switch (buttonOrder[iButton])
+      {
+      case ID_REW_BUTTON:
+         mRewind = MakeButton((char const **) Rewind,
+                              (char const **) RewindDisabled,
+                              (char const **) RewindAlpha, ID_REW_BUTTON,
+                              false);
+         mRewind->SetToolTip(_("Skip to Start"));
+         break;
+      
+      case ID_PLAY_BUTTON:
+         mPlay = MakeButton((char const **) Play,
+                            (char const **) PlayDisabled,
+                            (char const **) PlayAlpha, ID_PLAY_BUTTON,
+                            false);
+         mPlay->SetToolTip(_("Play (Shift for loop-play)"));
+         MakeLoopImage();
+         break;
+      
+      case ID_RECORD_BUTTON:
+         if (mErgonomicTransportButtons)
+            mButtonPos += 10; // space before record button
+         
+         mRecord = MakeButton((char const **) Record,
+                              (char const **) RecordDisabled,
+                              (char const **) RecordAlpha, ID_RECORD_BUTTON,
+                              false);
+         mRecord->SetToolTip(_("Record"));
+         break;
+      
+      case ID_PAUSE_BUTTON:
+         mPause = MakeButton((char const **)Pause,
+                            (char const **) PauseDisabled,
+                            (char const **) PauseAlpha, ID_PAUSE_BUTTON,
+                             true);
+         mPause->SetToolTip(_("Pause"));
+         break;
+      
+      case ID_STOP_BUTTON:
+         mStop = MakeButton((char const **) Stop,
+                            (char const **) StopDisabled,
+                            (char const **) StopAlpha, ID_STOP_BUTTON,
+                            false);
+         mStop->SetToolTip(_("Stop"));
+         break;
+      
+      case ID_FF_BUTTON:
+         mFF = MakeButton((char const **) FFwd,
+                          (char const **) FFwdDisabled,
+                          (char const **) FFwdAlpha, ID_FF_BUTTON,
+                          false);
+         mFF->SetToolTip(_("Skip to End"));
+         break;
+      
+      default:
+         wxASSERT(false); // unknown button id
+      }
+   }
 
 #ifndef __WXMAC__
    delete upPattern;
