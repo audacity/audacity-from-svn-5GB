@@ -89,7 +89,7 @@ int copy_to_wrap_buffer(oss_info info, void *src, int bytes_to_copy)
       info->len += block;
    }
 
-   return bytes_to_copy;
+   return copied;
 }
 
 
@@ -143,12 +143,12 @@ void *record_thread(void *param)
    free(buffer);
 }
 
-
 void *playback_thread(void *param)
 {
    oss_info dp = (oss_info)param;
    int buffer_size;
    char *buffer;
+   char *p;
    
    buffer_size = 65536;
    buffer = (char *)malloc(buffer_size);
@@ -166,7 +166,7 @@ void *playback_thread(void *param)
          write(dp->audio_fd, buffer, block);
       }
       else {
-         pthread_yield();
+         sched_yield();
       }
    }
 
@@ -234,15 +234,20 @@ int audio_open(snd_type snd, long *flags)
       return !SND_SUCCESS;
 
    /* finish initialization and start the thread */
-   
-   if (snd->u.audio.latency > 0.0)
-      dp->buffersize = rate * snd->u.audio.latency * snd_bytes_per_frame(snd);
+
+   if (snd->write_flag == SND_READ) {
+      /* always buffer 10 seconds of audio for reading
+         (no reason not to for this implementation */
+      dp->buffersize = rate * 10.0 * snd_bytes_per_frame(snd); 
+   }
    else {
-      if (snd->write_flag == SND_READ)
-         dp->buffersize = rate * 5.0 * snd_bytes_per_frame(snd);
+      if (snd->u.audio.latency > 0.0)
+         dp->buffersize = rate * snd->u.audio.latency * 
+            snd_bytes_per_frame(snd);
       else
          dp->buffersize = rate * 1.0 * snd_bytes_per_frame(snd);
    }
+
    dp->buffer = malloc(dp->buffersize);
    
    dp->start = 0;
@@ -286,9 +291,12 @@ long audio_read(snd_type snd, void *buffer, long length_in_bytes)
 {
    oss_info dp = get_oss_info(snd);
 
+   if (length_in_bytes <= 0)
+      return 0;
+
    pthread_mutex_lock(&dp->mutex);
 
-   if (dp->len > length_in_bytes)
+   if (length_in_bytes > dp->len)
       length_in_bytes = dp->len;
 
    copy_from_wrap_buffer(dp, buffer, length_in_bytes);
@@ -326,7 +334,7 @@ int audio_flush(snd_type snd)
          finished playing */
 
       while(dp->len > 0) {
-         pthread_yield();
+         sched_yield();
       }
    }
    
@@ -343,7 +351,7 @@ int audio_reset(snd_type snd)
    oss_info dp = get_oss_info(snd);
 
    dp->stop_flag = 1;
-   /* Force it to stop immediately by closing the
+   /* Try to force it to stop immediately by closing the
       audio file descriptor */
    close(dp->audio_fd);
    /* Wait for our thread to finish */
