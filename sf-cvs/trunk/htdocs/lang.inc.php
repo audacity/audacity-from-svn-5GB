@@ -169,7 +169,7 @@ function AddFlags($between = "", $betw2 = "", $showCurrent = false)
    echo($temp.'<a href="'.phpLang_currentURI.phpLang_urlParam.'='.$name[0].'">');
    echo('<img src="'.phpLang_images.$name[0].'.gif" border="0" align="middle" width="24" height="16" alt="'.$name[1].'" />');
    echo('</a>');
-   if ($count%2 == 0) {
+   if (($count & 1) == 0) {
      $temp = $betw2;
    }
    else {
