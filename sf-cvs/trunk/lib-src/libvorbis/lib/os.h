@@ -7,18 +7,20 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: #ifdef jail to whip a few platforms into the UNIX ideal.
- last mod: $Id: os.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
+ last mod: $Id: os.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
 
  ********************************************************************/
 
 #include <math.h>
 #include <ogg/os_types.h>
+
+#include "misc.h"
 
 #ifndef _V_IFDEFJAIL_H_
 #  define _V_IFDEFJAIL_H_
@@ -40,28 +42,6 @@
 #  define rint(x)   (floor((x)+0.5f)) 
 #  define NO_FLOAT_MATH_LIB
 #  define FAST_HYPOT(a, b) sqrt((a)*(a) + (b)*(b))
-#endif
-
-#ifdef HAVE_SQRTF
-#  define sqrt sqrtf
-#endif
-#ifdef HAVE_LOGF
-#  define log logf
-#endif
-#ifdef HAVE_EXPF
-#  define exp expf
-#endif
-#ifdef HAVE_ACOSF
-#  define acos acosf
-#endif
-#ifdef HAVE_ATANF
-#  define atan atanf
-#endif
-#ifdef HAVE_FREXPF
-#  define frexp frexpf
-#endif
-#ifdef HAVE_RINTF
-#  define rint rintf
 #endif
 
 #ifndef FAST_HYPOT
@@ -123,7 +103,7 @@ static inline int vorbis_ftoi(double f){  /* yes, double!  Otherwise,
 #endif
 
 
-#if defined(_WIN32) && !defined(__GNUC__)
+#if defined(_WIN32) && !defined(__GNUC__) && !defined(__BORLANDC__)
 #  define VORBIS_FPU_CONTROL
 
 typedef ogg_int16_t vorbis_fpu_control;

@@ -1,6 +1,6 @@
-# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
 
-# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -92,8 +92,7 @@ pthread_lib = @pthread_lib@
 
 AUTOMAKE_OPTIONS = foreign
 
-EXTRA_DIST = line_1024x31_0sub0.vqh line_1024x31_0sub1.vqh 	line_1024x31_1sub0.vqh line_1024x31_1sub1.vqh line_1024x31_2sub1.vqh 	line_1024x31_2sub2.vqh line_1024x31_2sub3.vqh line_1024x31_3sub1.vqh 	line_1024x31_3sub2.vqh line_1024x31_3sub3.vqh line_1024x31_class0.vqh 	line_1024x31_class1.vqh line_1024x31_class2.vqh line_1024x31_class3.vqh 	line_128x19_0sub0.vqh line_128x19_1sub1.vqh line_128x19_1sub2.vqh 	line_128x19_1sub3.vqh line_128x19_2sub1.vqh line_128x19_2sub2.vqh 	line_128x19_2sub3.vqh line_128x19_class1.vqh line_128x19_class2.vqh 	line_128x7_0sub0.vqh line_128x7_1sub1.vqh line_128x7_1sub2.vqh 	line_128x7_1sub3.vqh line_128x7_2sub1.vqh line_128x7_2sub2.vqh 	line_128x7_2sub3.vqh line_128x7_class1.vqh line_128x7_class2.vqh 	line_128x9_0sub0.vqh line_128x9_1sub1.vqh line_128x9_1sub2.vqh 	line_128x9_1sub3.vqh line_128x9_2sub1.vqh line_128x9_2sub2.vqh 	line_128x9_2sub3.vqh line_128x9_class1.vqh line_128x9_class2.vqh
-
+EXTRA_DIST = floor_books.h
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_CLEAN_FILES = 
 DIST_COMMON =  Makefile.am Makefile.in

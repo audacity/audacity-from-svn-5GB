@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
  function: registry for time, floor, res backends and channel mappings
- last mod: $Id: registry.h,v 1.1.1.2 2002-04-21 23:36:46 habes Exp $
+ last mod: $Id: registry.h,v 1.1.1.3 2002-10-26 19:39:35 dmazzoni Exp $
 
  ********************************************************************/
 
@@ -25,15 +25,8 @@
 #define VI_RESB 3
 #define VI_MAPB 1
 
-#if defined(_WIN32) && defined(VORBISDLL_IMPORT)
-# define EXTERN __declspec(dllimport) extern
-#else
-# define EXTERN extern
-#endif
-
-EXTERN vorbis_func_time      *_time_P[];
-EXTERN vorbis_func_floor     *_floor_P[];
-EXTERN vorbis_func_residue   *_residue_P[];
-EXTERN vorbis_func_mapping   *_mapping_P[];
+extern vorbis_func_floor     *_floor_P[];
+extern vorbis_func_residue   *_residue_P[];
+extern vorbis_func_mapping   *_mapping_P[];
 
 #endif

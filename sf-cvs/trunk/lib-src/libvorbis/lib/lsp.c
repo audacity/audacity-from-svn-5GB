@@ -5,13 +5,13 @@
  * GOVERNED BY A BSD-STYLE SOURCE LICENSE INCLUDED WITH THIS SOURCE *
  * IN 'COPYING'. PLEASE READ THESE TERMS BEFORE DISTRIBUTING.       *
  *                                                                  *
- * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001             *
+ * THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2002             *
  * by the XIPHOPHORUS Company http://www.xiph.org/                  *
  *                                                                  *
  ********************************************************************
 
   function: LSP (also called LSF) conversion routines
-  last mod: $Id: lsp.c,v 1.1.1.2 2002-04-21 23:36:45 habes Exp $
+  last mod: $Id: lsp.c,v 1.1.1.3 2002-10-26 19:39:30 dmazzoni Exp $
 
   The LSP generation code is taken (with minimal modification and a
   few bugfixes) from "On the Computation of the LSP Frequencies" by
@@ -51,7 +51,7 @@
    ARM family. */
 
 /* undefine both for the 'old' but more precise implementation */
-#undef   FLOAT_LOOKUP
+#define   FLOAT_LOOKUP
 #undef    INT_LOOKUP
 
 #ifdef FLOAT_LOOKUP
