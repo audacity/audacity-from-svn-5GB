@@ -59,7 +59,6 @@ OBJS = \
 	$(OBJDIR)/LangChoice.o \
 	$(OBJDIR)/Legacy.o \
 	$(OBJDIR)/Menus.o \
-	$(OBJDIR)/MeterToolBar.o \
 	$(OBJDIR)/Mix.o \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \
@@ -129,7 +128,6 @@ OBJS = \
 	$(OBJDIR)/prefs/SpectrumPrefs.o \
 	$(OBJDIR)/widgets/AButton.o \
 	$(OBJDIR)/widgets/ASlider.o \
-	$(OBJDIR)/widgets/Meter.o \
 	$(OBJDIR)/widgets/Ruler.o \
 	$(OBJDIR)/widgets/Warning.o \
 	$(OBJDIR)/xml/XMLFileReader.o \

@@ -299,7 +299,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
    c->AddItem("FloatMixerTB",   _("Float Mixer Toolbar"),            FN(OnFloatMixerToolBar));
-   c->AddItem("FloatMeterTB",   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
    c->EndMenu();
 
    //
@@ -614,24 +613,21 @@ int AudacityProject::GetToolBarChecksum()
 {
    //Calculate the ToolBarCheckSum (uniquely specifies state of all toolbars):
    int toolBarCheckSum = 0;
-   if (gControlToolBarStub->GetWindowedStatus())
-      toolBarCheckSum += 1;
+   toolBarCheckSum += gControlToolBarStub->GetWindowedStatus() ? 2 : 1;
    if (gEditToolBarStub) {
       if (gEditToolBarStub->GetLoadedStatus()) {
          if(gEditToolBarStub->GetWindowedStatus())
-            toolBarCheckSum += 2;
+            toolBarCheckSum += 6;
+         else
+            toolBarCheckSum += 3;
       }
    }
    if (gMixerToolBarStub) {
       if (gMixerToolBarStub->GetLoadedStatus()) {
          if(gMixerToolBarStub->GetWindowedStatus())
-            toolBarCheckSum += 4;
-      }
-   }
-   if (gMeterToolBarStub) {
-      if (gMeterToolBarStub->GetLoadedStatus()) {
-         if(gMeterToolBarStub->GetWindowedStatus())
-            toolBarCheckSum += 8;
+            toolBarCheckSum += 12;
+         else
+            toolBarCheckSum += 24;
       }
    }
 
@@ -668,21 +664,6 @@ void AudacityProject::ModifyToolbarMenus()
    }
    else {
       mCommandManager.Enable("FloatMixerTB", false);
-   }   
-
-   if (gMeterToolBarStub) {
-     
-     // Loaded or unloaded?
-     mCommandManager.Enable("FloatMeterTB", gMeterToolBarStub->GetLoadedStatus());
-     
-     // Floating or docked?
-     if (gMeterToolBarStub->GetWindowedStatus())
-        mCommandManager.Modify("FloatMeterTB", _("Dock Meter Toolbar"));
-     else
-        mCommandManager.Modify("FloatMeterTB", _("Float Meter Toolbar"));
-   }
-   else {
-      mCommandManager.Enable("FloatMeterTB", false);
    }   
 }
 
@@ -2243,58 +2224,6 @@ void AudacityProject::OnFloatMixerToolBar()
 
          gMixerToolBarStub->ShowWindowedToolBar();
          gMixerToolBarStub->UnloadAll();
-      }
-   }
-}
-
-void AudacityProject::OnLoadMeterToolBar()
-{
-   if (gMeterToolBarStub) {
-      if (gMeterToolBarStub->GetLoadedStatus()) {
-
-         //the toolbar is "loaded", meaning its visible either in the window
-         //or floating
-
-         gMeterToolBarStub->SetLoadedStatus(false);
-         gMeterToolBarStub->HideWindowedToolBar();
-         gMeterToolBarStub->UnloadAll();
-
-      } else {
-
-         //the toolbar is not "loaded", meaning that although the stub exists, 
-         //the toolbar is not visible either in a window or floating around
-         gMeterToolBarStub->SetLoadedStatus(true);
-
-         if (gMeterToolBarStub->GetWindowedStatus()) {
-            //Make the floating toolbar appear
-            gMeterToolBarStub->ShowWindowedToolBar();
-            gMeterToolBarStub->LoadAll();
-         } else {
-            //Make it appear in all the windows
-            gMeterToolBarStub->LoadAll();
-         }
-
-      }
-   } else {
-      gMeterToolBarStub = new ToolBarStub(gParentWindow, MeterToolBarID);
-      gMeterToolBarStub->LoadAll();
-   }
-}
-
-
-void AudacityProject::OnFloatMeterToolBar()
-{
-   if (gMeterToolBarStub) {
-
-      if (gMeterToolBarStub->GetWindowedStatus()) {
-
-         gMeterToolBarStub->HideWindowedToolBar();
-         gMeterToolBarStub->LoadAll();
-
-      } else {
-
-         gMeterToolBarStub->ShowWindowedToolBar();
-         gMeterToolBarStub->UnloadAll();
       }
    }
 }
