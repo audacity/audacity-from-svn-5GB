@@ -5,7 +5,7 @@ Problèmes connus avec Audacity 1.1.3:
   - Il place un fichier appelé "Audacity-Commands.xml" dans votre
     répertoire racine ou ailleurs sur votre disque dur. Ce fichier est
     nécessaire à Audacity 1.1.3 pour fonctionner. Nous sommes
-    désolés d'emcombrer ainsi votre ordinateur et prometons de placer
+    désolés d'emcombrer ainsi votre ordinateur et promettons de placer
     ce fichier à un meilleur endroit dans la prochaine version.
 
 Nouvelles fonctionnalités d'Audacity 1.1.3:
@@ -13,14 +13,14 @@ Nouvelles fonctionnalités d'Audacity 1.1.3:
     - Nouvelle barre d'outils de mixage vous permettant de contrôler le
       volume de sortie, le volume d'entrée, et la source entrante
       directement depuis Audacity.
-    - Chaque piste a désormais son propre réglage de gain et de pan.
+    - Chaque piste a désormais son propre réglage de gain et de panoramique.
 
   * Fichiers d'E/S 
     - Utilisation d'un format de fichier amélioré (malheureusement,
       il n'est plus possible de lire l'ancien format de fichiers, y compris
       le 1.1.1) 
     - Les fichier blocs (stockés dans le répertoire du projet Audacity)
-      Utilisent maintenant le format AU standard. Comme certaines 
+      utilisent maintenant le format AU standard. Comme certaines 
       méta-informations d'Audacity se trouvent dans ces fichiers, il
       peuvent désormais être lus par beaucoup d'autres logiciels audio.
     - Certains bugs relatifs à la lecture et l'écriture de fichier de plus de
@@ -31,8 +31,8 @@ Nouvelles fonctionnalités d'Audacity 1.1.3:
       que dans la version 1.0
 
   * E/S Audio
-    - E/S audio complétements réécrites, avec une latence plus basse
-      et des chances minimum de buffer underruns pendant 
+    - E/S audio complétement réécrites, avec une latence plus basse
+      et des chances minimum de mémoire tampon vide pendant 
       l'enregistrement.
 
   * Rééchantillonage
@@ -40,7 +40,7 @@ Nouvelles fonctionnalités d'Audacity 1.1.3:
       meilleure qualité pour le mixage que la lecture en temps réel.
 
     - Support préliminaire pour des pistes de temps, pour changer
-      La vitesse de lecture sur un temps donné.
+      la vitesse de lecture sur un temps donné.
 
   * Plusieurs corrections de bugs et nouvelles fonctionnalités
 
@@ -56,10 +56,10 @@ Bugs connus dans Audacity 1.1.1:
 
   * Ne lancez pas la commande test de performances sous Windows
     Il peut "planter". Ce n'est pas une commande utile pour la plupart des
-    utilisateurs -  elle à été conçue pour les développeurs afin de juger
+    utilisateurs -  elle a été conçue pour les développeurs afin de juger
     des performances sur différentes machines et systèmes.
 
-  * Mac OS X: De l'audio pourrait être perdue si vous tenez le bouton
+  * Mac OS X: De l'audio pourrait être perdu si vous tenez le bouton
     de la souris trop longtemps appuyé sur un menu pendant 
     l'enregistrement. Essayez de faire fonctionner Audacity seul pour
     de meilleurs résultats.
@@ -67,17 +67,17 @@ Bugs connus dans Audacity 1.1.1:
 Nouvelles fonctionnalités d'Audacity 1.1.1:
 
   * Interface utilisateur
-    - Tooltips appear in Statusbar.
+    - Des aides contextuelles apparaissent dans la barre de statut.
     - Vertical cursor follows play/record
-    - Pause button
-    - Drawing tool (with three different modes)
-    - Vertical Resizing of stereo tracks is more fun.
-    - Adjust selection by click-dragging selection boundary
+    - Bouton de pause
+    - Outil de dessin d'ondes (avec trois modes différents) 
+    - Le changement de taille des pistes stéréo est plus agréable.
+    - Ajustement de la sélection par glisser-déplacer de ses extrémités
     - Toolbar button context-sensitive enabling/disabling
     - Better zooming functionality (centers region)
     - Multiple ways to display the cursor position and selection
-    - Snap-to selection mode
-    - Drag tracks up and down
+    - Mode de sélection par arrondi
+    - Possibilité de déplacement vertical des pistes
     - Align and group align functions
     - Cursor save/restore
     - Working history window
