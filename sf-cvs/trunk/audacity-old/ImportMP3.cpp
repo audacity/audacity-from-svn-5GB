@@ -227,11 +227,7 @@ bool ImportMP3(wxWindow *parent,
     
   /* create and open input object */
 	
-#ifdef __WXMAC__
-  const char *cFName = ::wxUnix2MacFilename(fName);
-#else
   const char *cFName = (const char *)fName;
-#endif
 
   status = decoder_input_new(decoder, cFName, XA_DECODER_INPUT_AUTOSELECT);
   if (status != XA_SUCCESS) {

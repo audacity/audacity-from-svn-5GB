@@ -20,11 +20,7 @@
 
 bool ImportMIDI(wxString fName, NoteTrack *dest)
 {
-  #ifdef __WXMAC__
-  FILE *mf = fopen(::wxUnix2MacFilename(fName), "rb");
-  #else
   FILE *mf = fopen(fName, "rb");  
-  #endif
   
   if (!mf || ferror(mf)) {
     wxMessageBox(wxString::Format("Could not open %s", (const char *)fName));
