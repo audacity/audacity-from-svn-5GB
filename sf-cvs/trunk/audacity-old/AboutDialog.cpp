@@ -36,14 +36,14 @@ AboutDialog::AboutDialog()
 					   "A New Digital Audio Editor\n"
 					   "by Dominic Mazzoni, Roger Dannenberg, "
 					   "Jason Cohen, Robert Leidle,"
-					   "and Mark Tomlinson.\n"
+					   "Mark Tomlinson, and Joshua Haberman.\n"
 					   "Version " AUDACITY_VERSION_STRING "\n"
 					   "http://www.cs.cmu.edu/~music/audacity/");
   
   wxString caption("A New Digital Audio Editor\n"
 				   "by Dominic Mazzoni, Roger Dannenberg, "
 				   "Jason Cohen, Robert Leidle, "
-				   "and Mark Tomlinson.\n"
+				   "Mark Tomlinson, and Joshua Haberman.\n"
 				   "Version " AUDACITY_VERSION_STRING "\n"
 				   "http://www.cs.cmu.edu/~music/audacity/");
 				   
