@@ -78,7 +78,10 @@ void CommandsMenu::PurgeData()
          {
             wxMenu *tmpSubMenu = mnuSubArray[0];
             mnuSubArray.RemoveAt(0);
+
+            #if 0 // This appears to be a double-delete --dmazzoni
             delete tmpSubMenu;
+            #endif
          }
 
          //clear the menu array
