@@ -3921,9 +3921,17 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    r = trackRect;
 
    if (t->GetKind() == Track::Wave) {
-      dc->DrawText(TrackSubText(t), r.x + 16, r.y + 22);
+      int offset;
+
+      #ifdef __WXMAC__
+      offset = 8;
+      #else
+      offset = 16;
+      #endif
+
+      dc->DrawText(TrackSubText(t), r.x + offset, r.y + 22);
       dc->DrawText(GetSampleFormatStr
-                   (((WaveTrack *) t)->GetSampleFormat()), r.x + 16,
+                   (((WaveTrack *) t)->GetSampleFormat()), r.x + offset,
                    r.y + 38);
    } else if (t->GetKind() == Track::Note) {
       wxRect midiRect;
