@@ -29,7 +29,7 @@ $available_locales = array(
   "sl" => array("sl_SI", "Sloven&#353;&#269;ina"),
   "fi" => array("fi_FI", "Suomi"),
   "sv" => array("sv_SE", "Svenska"),
-  "sv" => array("ja_JP", "日本語"),
+  "ja" => array("ja_JP", "日本語"),
   "ru" => array("ru_RU", "Русский"),
   "zh-CN" => array("zh_CN.UTF-8", "&#20013;&#25991;(&#31616;)"),
 );
