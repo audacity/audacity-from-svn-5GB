@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-03-06 21:01+0100\n"
+"PO-Revision-Date: 2004-03-15 22:20+0100\n"
 "Last-Translator: Tomasz Bañdura <to.mek@wp.pl>\n"
 "Language-Team: Polski <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1773,7 +1773,7 @@ msgstr "Rozmiar FFT"
 
 #: ../src/effects/Fade.h:23
 msgid "Fade In"
-msgstr "Podg³a¶nianie"
+msgstr "Narastanie poziomu"
 
 #: ../src/effects/Fade.h:43
 msgid "Fade Out"
@@ -2043,7 +2043,7 @@ msgstr "Nieprawid³owe przesuniêcie okna w pliku LOF."
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "Odwróæ"
+msgstr "Odwróæ w pionie"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
@@ -2921,7 +2921,7 @@ msgstr "Pozosta³y czas nagrywania: 1 godzina i %d minut"
 
 #: ../src/prefs/QualityPrefs.cpp:161
 msgid "Rectangle"
-msgstr "prostok±tne"
+msgstr "Prostok±tny"
 
 #: ../src/FFT.cpp:364
 msgid "Rectangular"
@@ -3010,7 +3010,7 @@ msgstr "Przywróæ domy¶lne"
 
 #: ../src/effects/Reverse.h:30
 msgid "Reverse"
-msgstr "Odwróæ"
+msgstr "Odwróæ w czasie"
 
 #: ../src/effects/Reverse.h:34
 msgid "Reversing"
@@ -3381,7 +3381,7 @@ msgstr "Wysiszono zaznaczone ¶cie¿ki o d³ugo¶ci %.2f sekund od pozycji %.2f"
 
 #: ../src/effects/ToneGen.cpp:45
 msgid "Sine"
-msgstr "Sinusoida"
+msgstr "Sinus"
 
 #: ../src/HistoryWindow.cpp:63
 msgid "Size"
@@ -3662,7 +3662,7 @@ msgstr "¦cie¿ki s± zbyt d³ugie aby powtórnie wstawiæ zaznaczenie."
 
 #: ../src/prefs/QualityPrefs.cpp:162
 msgid "Triangle"
-msgstr "Przebieg trójk±tny"
+msgstr "Trójk±tny"
 
 #: ../src/Menus.cpp:1609
 msgid "Trim"
