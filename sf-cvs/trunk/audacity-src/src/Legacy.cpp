@@ -6,6 +6,10 @@
 
   Dominic Mazzoni
 
+  These routines convert Audacity project files from the
+  0.98...1.0 format into an XML format that's compatible with
+  Audacity 1.2.0 and newer.
+
 **********************************************************************/
 
 #include "Audacity.h"
@@ -198,6 +202,55 @@ bool ConvertLegacyTrack(wxTextFile *f, FILE *outf)
       fprintf(outf, "\t</wavetrack>\n");
       
       return true;
+   }
+   else if (kind == "LabelTrack") {
+      line = f->GetNextLine();
+      if (line != "NumMLabels")
+         return false;
+
+      long numLabels, l;
+
+      line = f->GetNextLine();
+      line.ToLong(&numLabels);
+      if (numLabels < 0 || numLabels > 1000000)
+         return false;
+
+      fprintf(outf, "\t<labeltrack name='Labels' numlabels='%ld'>\n",
+              numLabels);
+
+      for(l=0; l<numLabels; l++) {
+         wxString t, title;
+
+         t = f->GetNextLine();
+         title = f->GetNextLine();
+
+         fprintf(outf, "\t\t<label t='%s' title='%s' />\n",
+                 (const char *)t, (const char *)title);
+      }
+
+      fprintf(outf, "\t</labeltrack>\n");
+
+      line = f->GetNextLine();
+      if (line != "MLabelsEnd")
+         return false;
+
+      return true;
+   }
+   else if (kind == "NoteTrack") {
+      // Just skip over it - they didn't even work in version 1.0!
+
+      do {
+         line = f->GetNextLine();
+         if (line == "WaveTrack" ||
+             line == "NoteTrack" ||
+             line == "LabelTrack" |\
+             line == "EndTracks") {
+            f->GoToLine(f->GetCurrentLine()-1);
+            return true;
+         }
+      } while (f->GetCurrentLine() < f->GetLineCount());
+
+      return false;
    }
    else
       return false;
