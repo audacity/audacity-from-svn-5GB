@@ -6,14 +6,14 @@
   // beta/versions.inc.php...
 
   $stableVersion =   "1.0.0";
-  $betaVersion =     "1.2.0-pre3";
+  $betaVersion =     "1.2.0-pre4";
 
   $winStableVersion = "1.0.0";
   $winStableSize =    "1.6 MB";
   $winStableZipSize = "1.3 MB";
-  $winBetaVersion =   "1.2.0-pre3";
+  $winBetaVersion =   "1.2.0-pre4";
   $winBetaSize =      "2.7 MB";
-  $winBetaZipSize =   "2.5 MB";
+  $winBetaZipSize =   "2.4 MB";
 
   $macOS9StableVersion = "1.0.0";
   $macOS9StableSize =    "1.5 MB";
@@ -27,8 +27,8 @@
 
   $srcStableVersion = "1.0.0-2";
   $srcStableSize =    "1.6 MB";
-  $srcBetaVersion =   "1.2.0-pre3";
-  $srcBetaSize =      "2.7 MB";
+  $srcBetaVersion =   "1.2.0-pre4";
+  $srcBetaSize =      "3.2 MB";
 
   $linuxBetaVersion =   "1.2.0-pre3";
   $linuxBetaSize =      "2.5 MB";
