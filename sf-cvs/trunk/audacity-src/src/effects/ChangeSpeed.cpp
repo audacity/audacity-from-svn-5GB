@@ -170,7 +170,7 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 	// from/to Vinyl controls
    wxBoxSizer * pBoxSizer_Vinyl = new wxBoxSizer(wxHORIZONTAL);
 
-	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78", "n/a"};
+	const wxString strArray_VinylRPM[] = {_("33 1/3"), _("45"), _("78"), _("n/a")};
 	const int numChoices = 4;
 
    pStaticText =
