@@ -100,6 +100,7 @@ class DirManager: public XMLTagHandler {
    bool HandleXMLTag(const char *tag, const char **attrs);
    XMLTagHandler *HandleXMLChild(const char *tag) { return NULL; }
    void WriteXML(int depth, FILE *fp) { }
+   void AssignFile(wxFileName &filename,wxString value);
 
  private:
    void CleanTempDir(bool startup);
@@ -107,7 +108,7 @@ class DirManager: public XMLTagHandler {
    // Create new unique track name
    wxString NewTrackName();
 
-   wxFileName MakeBlockFileName(wxString inProjDir);
+   wxFileName MakeBlockFileName();
 
    // Create new unique names
    wxString NewTempBlockName();
@@ -140,6 +141,7 @@ class DirManager: public XMLTagHandler {
 
    static int numDirManagers;
    static int fileIndex;
+   static int dirIndex;
    static wxString tempDirName;
 
    friend class SequenceTest;

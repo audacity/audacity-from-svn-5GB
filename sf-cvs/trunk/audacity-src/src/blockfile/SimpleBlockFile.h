@@ -15,6 +15,7 @@
 #include <wx/filename.h>
 
 #include "../BlockFile.h"
+#include "../DirManager.h"
 
 /// A BlockFile that reads and writes uncompressed data using libsndfile
 
@@ -54,7 +55,7 @@ class SimpleBlockFile : public BlockFile {
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual int GetSpaceUsage();
 
-   static BlockFile *BuildFromXML(wxString dir, const char **attrs);
+   static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
 };
 
 #endif

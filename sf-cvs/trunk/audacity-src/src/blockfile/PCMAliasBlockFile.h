@@ -12,6 +12,7 @@
 #define __AUDACITY_PCMALIASBLOCKFILE__
 
 #include "../BlockFile.h"
+#include "../DirManager.h"
 
 /// An AliasBlockFile that references uncompressed data in an existing file
 class PCMAliasBlockFile : public AliasBlockFile
@@ -38,7 +39,7 @@ class PCMAliasBlockFile : public AliasBlockFile
    virtual void SaveXML(int depth, wxFFile &xmlFile);
    virtual BlockFile *Copy(wxFileName fileName);
 
-   static BlockFile *BuildFromXML(wxString projDir, const char **attrs);
+   static BlockFile *BuildFromXML(DirManager &dm, const char **attrs);
 };
 
 #endif

@@ -236,7 +236,7 @@ void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 }
 
 /// static
-BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
+BlockFile *SimpleBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 {
    wxFileName fileName;
    float min=0, max=0, rms=0;
@@ -248,7 +248,7 @@ BlockFile *SimpleBlockFile::BuildFromXML(wxString projDir, const char **attrs)
        const char *value = *attrs++;
 
        if( !strcmp(attr, "filename") )
-          fileName.Assign(projDir, value);
+	  dm.AssignFile(fileName,value);
        if( !strcmp(attr, "len") )
           len = atoi(value);
        if( !strcmp(attr, "min") )
