@@ -47,6 +47,10 @@ SUBDIRS="$SUBDIRS lib-src/libsndfile"
 BUILDLIBS="$BUILDLIBS libsndfile/src/.libs/libsndfile.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 
+BUILDLIBS="$BUILDLIBS expat/expat.a"
+EXTRAOBJS="$EXTRAOBJS ../lib-src/expat/expat.a"
+CXXFLAGS="$CXXFLAGS -I../lib-src/expat"
+
 dnl TODO enable/disable allegro
 BUILDLIBS="$BUILDLIBS allegro/allegro.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"
@@ -268,7 +272,7 @@ dnl Checks for library functions.
 
 AC_CONFIG_HEADER(src/configunix.h:src/configtemplate.h)
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
-					  lib-src/allegro/Makefile])
+					  lib-src/allegro/Makefile lib-src/expat/Makefile])
 
 AC_CONFIG_SUBDIRS([$SUBDIRS])
 AC_OUTPUT
