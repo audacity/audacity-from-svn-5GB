@@ -19,6 +19,8 @@
 #include "Sequence.h"
 #include "Spectrum.h"
 
+#include "Prefs.h"
+
 class WaveCache {
 public:
    WaveCache(int cacheLen)
@@ -81,19 +83,41 @@ public:
    float       *freq;
 };
 
-WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format)
+WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
 {
-   return new WaveTrack(mDirManager, format);
+   if (format == (sampleFormat)0) 
+   {
+      format = (sampleFormat) gPrefs->
+         Read("/SamplingRate/DefaultProjectSampleFormat", int16Sample);
+   }
+   if (rate == 0) 
+   {
+      rate = (double) gPrefs->
+         Read("/SamplingRate/DefaultProjectSampleRate", 44100.0);
+   }
+
+   return new WaveTrack(mDirManager, format, rate);
 }
 
-WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format):
+WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rate):
    Track(projDirManager)
 {
+   if (format == (sampleFormat)0) 
+   {
+      format = (sampleFormat) gPrefs->
+         Read("/SamplingRate/DefaultProjectSampleFormat", int16Sample);
+   }
+   if (rate == 0) 
+   {
+      rate = (double) gPrefs->
+         Read("/SamplingRate/DefaultProjectSampleRate", 44100.0);
+   }
+
    mDisplay = 0; // DELETEME
 
    mSequence = new Sequence(projDirManager, format);
    mEnvelope = new Envelope();
-   mRate = 44100.0;
+   mRate = rate;
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
    SetName(_("Audio Track"));
