@@ -549,7 +549,7 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
 int LWSlider::ValueToPosition(float val)
 {
-   return (int)((val - mMinValue) * mWidthX / (mMaxValue - mMinValue));
+   return (int)rint((val - mMinValue) * mWidthX / (mMaxValue - mMinValue));
 }
 
 float LWSlider::PositionToValue(int xPos, bool shiftDown)
