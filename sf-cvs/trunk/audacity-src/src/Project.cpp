@@ -1719,6 +1719,7 @@ void AudacityProject::OpenFile(wxString fileName)
       Track *t;
       TrackListIterator iter(mTracks);
       mLastSavedTracks = new TrackList();
+
       t = iter.First();
       while (t) {
          if (t->GetErrorOpening())
@@ -1998,6 +1999,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    }
 
    mLastSavedTracks = new TrackList();
+
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    while (t) {
@@ -2165,6 +2167,7 @@ void AudacityProject::InitialState()
    mUndoManager.ClearStates();
 
    TrackList *l = new TrackList(mTracks);
+
    mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
                           _("Created new project"), _(""));
    delete l;
