@@ -58,6 +58,7 @@ $browseDoxygenStr =    "Browse Doxygen Documentation";
 $creditsStr =          "Credits";
 
 $sourceStr =           "Source Code";
+$linuxStr =            "Linux Binary";
 
 $macOS9ReqStr =        "Requires Mac OS 8.6 or higher";
 $macOSXReqStr =        "Requires Mac OS X 10.1 or higher";
@@ -65,12 +66,14 @@ $windowsReqStr =       "Requires Windows 98, ME, 2000, or XP";
 
 $lameStr =             "LAME MP3 Encoder Library";
 $lameStr2 =            "(You must download this for Audacity to create MP3 files.)";
+$vstEnablerStr =       "VST Enabler";
 
 $installerStr =        "Installer program";
 $zipStr =              "ZIP file";
 $sitStr =              "StuffIt archive";
 $dmgStr =              "Mac OS X Disk Image";
 $tarballStr =          "Source code tarball";
+$linux386Str =         "Linux binary (i386 only)";
 $rpmStr =              "Binary RPM";
 $srpmStr =             "Source RPM";
 
@@ -82,6 +85,8 @@ $releaseNotesStr2 =    "Release Notes (what's new in this version?)";
 
 $vstLinksHereStr =     "Download VST Plug-ins here:";
 
+$altDownloadStr =      "Having trouble downloading?  Need a previous version?";
+$altDownloadStr2 =     "Click here for other download links.";
 $docsStr =             "Download latest documentation";
 
 $clickEnlargeStr =     "(Click on any image to enlarge.)";
