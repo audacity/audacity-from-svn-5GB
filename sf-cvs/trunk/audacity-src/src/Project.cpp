@@ -187,7 +187,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mHistoryWindow(NULL),
    mAutoScrolling(false)
 {
-
    //
    // Create track list
    //
@@ -335,6 +334,13 @@ AudacityProject::~AudacityProject()
    mTracks->Clear(true);
    delete mTracks;
    mTracks = NULL;
+
+   WX_CLEAR_ARRAY(mCommandNames)
+   for(int i = 1; i <= mCommandFunctions.GetCount(); i++)
+   {
+      free(mCommandFunctions[i-1]);
+   }
+   mCommandFunctions.Clear();
 
    gAudacityProjects.Remove(this);
 

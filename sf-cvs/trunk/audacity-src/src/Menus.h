@@ -180,8 +180,15 @@ int mLastNumLabelTracks;
 
 bool mFirstTimeUpdateMenus;
 
+#define AUDACITY_MENUS_COMMANDS_METHODS
+#include "commands.h"
+#undef AUDACITY_MENUS_COMMANDS_METHODS
+
 public:
 void CreateMenuBar();
+
+wxString &GetCommandName(int nIndex);
+int GetNumCommands();
 
 void OnUpdateMenus(wxUpdateUIEvent & event);
 
