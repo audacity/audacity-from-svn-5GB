@@ -31,6 +31,7 @@ if [[ $have_libsndfile = "yes" ]] ; then
 fi
 
 AC_CHECK_LIB(samplerate, src_simple, have_libsamplerate=yes, have_libsamplerate=no)
+AC_CHECK_HEADER(samplerate.h, , have_libsamplerate=no)
 
 if [[ $have_libsamplerate = "yes" ]] ; then
 	TARGETS="$TARGETS tests/compareresample"
