@@ -39,6 +39,12 @@ portaudio/pa_unix_oss/portaudio.a:
 portaudio/pa_mac_core/portaudio.a:
 	cd portaudio/pa_mac_core && $(MAKE)
 
+portmixer/px_unix_oss/portmixer.a:
+	cd portmixer/px_unix_oss && $(MAKE)
+
+portmixer/px_mac_core/portmixer.a:
+	cd portmixer/px_mac_core && $(MAKE)
+
 clean:
 	-$(MAKE) -C allegro clean
 	-$(MAKE) -C expat clean
@@ -49,6 +55,8 @@ clean:
 	-$(MAKE) -C libvorbis clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
 	-$(MAKE) -C portaudio/pa_mac_core clean
+	-$(MAKE) -C portmixer/px_unix_oss clean
+	-$(MAKE) -C portmixer/px_mac_core clean
 
 distclean:
 	-$(MAKE) -C allegro distclean
@@ -60,4 +68,5 @@ distclean:
 	-$(MAKE) -C libvorbis distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
 	-$(MAKE) -C portaudio/pa_mac_core distclean
-
+	-$(MAKE) -C portmixer/px_unix_oss distclean
+	-$(MAKE) -C portmixer/px_mac_core distclean

@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.2 (December 10, 2002)
+Version 1.1.3
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -170,6 +170,16 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
+New features in Audacity 1.1.3:
+  * User Interface
+    - New Mixer toolbar allows you to control the output
+      volume, input volume, and input source directly
+      from Audacity.
+
+  * File I/O
+    - Fixed some bugs relating to reading/writing audio
+      files with more than 16 bits per sample.
+
 New features in Audacity 1.1.2:
   * User Interface
     - Fixed bug in Windows version, for track menu commands 
@@ -178,7 +188,6 @@ New features in Audacity 1.1.2:
     - Nyquist support on Windows (supports plug-ins written 
 	  in Nyquist, an interpreted functional language based 
 	  on Lisp).
-
 
 New features in Audacity 1.1.1:
 

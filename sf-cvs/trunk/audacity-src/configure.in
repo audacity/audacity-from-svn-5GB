@@ -147,11 +147,23 @@ AC_ARG_WITH(nyquist,
 	use_nyquist=$withval,
 	use_nyquist="yes")
 
+AC_ARG_WITH(portmixer,
+	[AC_HELP_STRING([--with-portmixer],
+		[compile with PortMixer [default=yes]])],
+	use_portmixer=$withval,
+	use_portmixer="yes")
+
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
 		[Make the help file "audacity-help.htb" [default=yes]])],
 	use_help=$withval,
 	use_help="yes")
+
+if [[ "$use_portmixer" = "yes" ]] ; then
+	AC_DEFINE(USE_PORTMIXER, 1,	
+	[Define if PortMixer support should be enabled])
+	CXXFLAGS="-I../lib-src/portmixer/px_common $CXXFLAGS"
+fi
 
 if [[ "$use_nyquist" = "yes" ]] ; then
 	AC_DEFINE(USE_NYQUIST, 1,	
@@ -327,6 +339,11 @@ case "${host_os}" in
 	BUILDLIBS="$BUILDLIBS portaudio/pa_mac_core/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_mac_core/portaudio.a"
 
+   if [[ "$use_portmixer" = "yes" ]] ; then
+		BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"		
+   fi
+
 	LIBS="-framework AudioUnit -framework AudioToolbox $LIBS"
 	LIBS="-framework CoreAudio $LIBS -lz"
 
@@ -347,6 +364,11 @@ case "${host_os}" in
 
 	BUILDLIBS="$BUILDLIBS portaudio/pa_unix_oss/portaudio.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
+
+   if [[ "$use_portmixer" = "yes" ]] ; then
+		BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+		EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"		
+   fi
 
 	if [[ "$use_ladspa" = "default" ]] ; then
 		use_ladspa="yes";
@@ -425,6 +447,12 @@ else
 	else
 		echo "  without libvorbis";	
 	fi
+fi
+
+if [[ "$use_portmixer" = "yes" ]] ; then
+	echo "  with    portmixer";
+else
+	echo "  without portmixer";
 fi
 
 if [[ $use_help = "yes" ]] ; then
