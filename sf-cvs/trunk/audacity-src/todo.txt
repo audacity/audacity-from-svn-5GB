@@ -94,6 +94,10 @@ Internationalization:
   working directory for language directories
 
 UI::
+- Small toolbar option
+- Create our own progress dialog:
+  - Improved time estimate
+  - Stop and cancel buttons (not the same!)
 - Save preferences (write to disk) after closing dialog
 - A "mini view" of the whole project, which shows what part
   you're working on, etc. like a lot of other programs have
