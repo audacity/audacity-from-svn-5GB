@@ -275,9 +275,13 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        TrackList * tracks,
                        ViewInfo * viewInfo,
                        TrackPanelListener * listener)
-:wxWindow(parent, id, pos, size, wxWANTS_CHARS),
-mListener(listener), mTracks(tracks), mViewInfo(viewInfo), mBitmap(NULL),
-mAutoScrolling(false), mTrackLabel(this)
+   : wxWindow(parent, id, pos, size, wxWANTS_CHARS),
+     mTrackLabel(this),
+     mListener(listener),
+     mTracks(tracks),
+     mViewInfo(viewInfo),
+     mBitmap(NULL),
+     mAutoScrolling(false)
 {
    mIsClosing = false;
    mIsSelecting = false;
@@ -2075,8 +2079,8 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
       
       WaveTrack * track = (WaveTrack *)t;
-      SetMenuCheck( *mRateMenu,   IdOfRate(   track->GetRate()));
-      SetMenuCheck( *mFormatMenu, IdOfFormat( track->GetSampleFormat()));
+      SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
+      SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
  
    }
 

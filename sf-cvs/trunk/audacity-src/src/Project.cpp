@@ -331,6 +331,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRate((double) gPrefs->Read("/SamplingRate/DefaultProjectSampleRate", AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),
+     mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
+     mSnapTo(0),
      mDirty(false),
      mFirstTimeUpdateMenus(true),
      mTrackPanel(NULL),
@@ -340,9 +342,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mActive(true),
      mHistoryWindow(NULL),
      mTotalToolBarHeight(0),
-     mDraggingToolBar(NoneID),
-     mSelectionFormat(SELECTION_FORMAT_RULER_MIN_SEC),
-     mSnapTo(0)
+     mDraggingToolBar(NoneID)
 {
    #ifndef __WXMAC__
    mDrag = NULL;
