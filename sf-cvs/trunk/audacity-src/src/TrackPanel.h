@@ -224,6 +224,8 @@ class TrackPanel:public wxWindow {
 
    double PositionToTime(int mouseXCoordinate,
                          int trackLeftEdge) const;
+   int TimeToPosition(double time,
+                      int trackLeftEdge) const;
 
    int mInitialTrackHeight;
 
@@ -237,6 +239,7 @@ class TrackPanel:public wxWindow {
    bool mIsEnveloping;
    bool mIsMuting;
    bool mIsSoloing;
+
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?
@@ -253,6 +256,7 @@ class TrackPanel:public wxWindow {
    wxCursor *mZoomInCursor;
    wxCursor *mZoomOutCursor;
    wxCursor *mRearrangeCursor;
+   wxCursor *mAdjustSelectionCursor;
 
    wxMenu *mWaveTrackMenu;
    wxMenu *mNoteTrackMenu;
@@ -266,5 +270,13 @@ class TrackPanel:public wxWindow {
 
    DECLARE_EVENT_TABLE()
 };
+
+//This constant determines the size of the vertical region (in pixels) around
+//the bottom of a track that can be used for vertical track resizing.
+#define VERTICAL_TRACK_RESIZE_REGION 5
+
+//This constant determines the size of the horizontal region (in pixels) around
+//the right and left selection bounds that can be used for horizontal selection adjusting
+#define HORIZONTAL_SELECTION_RESIZE_REGION 5
 
 #endif

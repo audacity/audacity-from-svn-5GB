@@ -160,7 +160,7 @@ mAutoScrolling(false)
    mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mRearrangeCursor = new wxCursor(wxCURSOR_HAND);
-
+   mAdjustSelectionCursor = mSlideCursor;
    mRateMenu = new wxMenu();
    mRateMenu->Append(OnRate8ID, "8000 Hz");
    mRateMenu->Append(OnRate11ID, "11025 Hz");
@@ -245,6 +245,12 @@ TrackPanel::~TrackPanel()
    delete mZoomInCursor;
    delete mZoomOutCursor;
    delete mRearrangeCursor;
+
+   //mAdjustSelectionCursor is just a pointer to mSlideCursor, so deleting 
+   //it can cause a seg fault. If the cursors change, enable this code:
+#if 0
+   delete mAdjustSelectionCursor; 
+#endif
 
    // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
@@ -488,6 +494,7 @@ const char *pMessages[] = {_("Click and drag to select audio"),
 //  Also, it sets a message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
+
    // First, try to set the cursor based on the current action
    if      (mIsSelecting ) { SetCursor(*mSelectCursor); return; }
    else if (mIsSliding   ) { SetCursor(*mSlideCursor ); return; }
@@ -499,7 +506,8 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    VTrack *label = FindTrack(event.m_x, event.m_y, true, &r, &num);
    VTrack *nonlabel = FindTrack(event.m_x, event.m_y, false, &r, &num);
-
+         
+   /////////////////////////////////////////
    // if the mouse is over either a label *or* non-label part
    // of any track
    if (label || nonlabel) {
@@ -510,33 +518,85 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          mListener->
             TP_DisplayStatusMessage(_("Drag this track up or down to change the"
                      " order of the tracks."), 0);
-         
+         SetCursor(*mArrowCursor);
       }
+      /////////////////////////////////////////
       // next test to see if we're over the area that
       // resizes a track
-      else if (event.m_y >= (r.y + r.height - 5) &&
-          event.m_y < (r.y + r.height + 5)) {
-	// AS: MAGIC NUMBER: What is 5?
+      else if (event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION) &&
+          event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
 
          mListener->
              TP_DisplayStatusMessage(_("Click and drag to resize the track"),
                                      0);
          SetCursor(*mResizeCursor);
-      }
+      } 
+
+      /////////////////////////////////////////
+      //Otherwise, we must be over the wave window 
       else {
          int operation = mListener->TP_GetCurrentTool();
-         mListener->TP_DisplayStatusMessage(
-               pMessages[operation], 0);
-
+         int leftSel, rightSel;
+               
+         
          // Change the cursor based on the selected tool.
          switch (operation) {
-                case selectTool:   SetCursor(*mSelectCursor); break;
-                case envelopeTool: SetCursor(*mArrowCursor);  break;
-                case slideTool:    SetCursor(*mSlideCursor);  break;
-                case zoomTool:
+         case selectTool:  
+
+            leftSel = TimeToPosition(mViewInfo->sel0, r.x);
+            rightSel= TimeToPosition(mViewInfo->sel1, r.x);
+ 
+            ///////////////////////////////////////
+            // Check to see if the cursor is on top 
+            //of the left selection boundary
+            if( leftSel < rightSel
+                && event.m_x >= leftSel - HORIZONTAL_SELECTION_RESIZE_REGION  
+                && event.m_x <= leftSel + HORIZONTAL_SELECTION_RESIZE_REGION)
+               {
+                  mListener->TP_DisplayStatusMessage(_("Click and drag to move left selection boundary (Unimplemented)."),0);
+                  SetCursor(*mAdjustSelectionCursor);   
+               }
+            
+            ///////////////////////////////////////
+            // Check to see if the cursor is on top 
+            //of the right selection boundary, (or if right==left)
+
+            else if( event.m_x >= rightSel - HORIZONTAL_SELECTION_RESIZE_REGION  
+                     && event.m_x <= rightSel + HORIZONTAL_SELECTION_RESIZE_REGION
+                    )
+               {
+                  mListener->TP_DisplayStatusMessage(_("Click and drag to move right selection boundary (Unimplemented)."),0);
+                  SetCursor(*mAdjustSelectionCursor);                      
+               } 
+            
+            ///////////////////////////////////////
+            // Otherwise, draw the normal cursor 
+            //
+            else 
+               {
+                  mListener->TP_DisplayStatusMessage(pMessages[operation], 0);         
+                  SetCursor(*mSelectCursor); 
+               }
+            break;
+
+         case envelopeTool: 
+            SetCursor(*mArrowCursor);
+            mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
+            break;
+
+
+         case slideTool:
+            mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
+            SetCursor(*mSlideCursor); 
+            break;
+
+
+         case zoomTool:
+            mListener->TP_DisplayStatusMessage(pMessages[operation], 0);
             SetCursor(event.ShiftDown() ? *mZoomOutCursor : *mZoomInCursor);
             break;
          }
+         
       }
    } else {
       // Not over a track
@@ -544,11 +604,12 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    }
 }
 
+
 // AS: This function handles various ways of starting and extending
 //  selections.  These are the selections you make by clicking and
 //  dragging over a waveform.
 void TrackPanel::HandleSelect(wxMouseEvent & event)
-{
+      {
    // AS: Ok, did the user just click the mouse, release the mouse,
    //  or drag?
    if (event.ButtonDown(1)|| event.ButtonDown(3)) {
@@ -714,6 +775,13 @@ double TrackPanel::PositionToTime(int mouseXCoordinate,
 {
    return mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
                           / mViewInfo->zoom);  
+}
+
+
+// STM: Converts a project time to screen x position.
+int TrackPanel::TimeToPosition(double projectTime, int trackLeftEdge) const
+{
+   return static_cast<int>(mViewInfo->zoom * (projectTime - mViewInfo->h) + trackLeftEdge); 
 }
 
 // AS: HandleEnvelope gets called when the user is changing the
@@ -983,7 +1051,15 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    if(mTracks->IsEmpty())
    {
       mViewInfo->zoom = 44100.0 / 512.0;
+      
+      //STM: Set selection to 0,0
+      mViewInfo->sel0=0.0;
+      mViewInfo->sel1=0.0;
+
       mListener->TP_RedrawScrollbars();
+      
+      mListener->TP_DisplayStatusMessage(_(""),0);  //STM: Clear message if all tracks are removed
+      
       Refresh(false);
    }
 }
@@ -1217,6 +1293,7 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
    if(event.ButtonUp(1)) {
       mCapturedTrack = NULL;
       mIsRearranging = false;
+      SetCursor(*mArrowCursor);
       return;
    }
    if(event.m_y < mMoveUpThreshold)
@@ -1449,11 +1526,9 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
 
    FindTrack(event.m_x, event.m_y, false, &r, &dummy);
 
-   // AS: MAGIC NUMBER: Hey, here's that 5 again.  What's
-   //  going on here?
    if (event.ButtonDown(1) &&
-         event.m_y >= (r.y + r.height - 5) &&
-         event.m_y < (r.y + r.height + 5)) {
+         event.m_y >= (r.y + r.height - VERTICAL_TRACK_RESIZE_REGION) &&
+         event.m_y < (r.y + r.height + VERTICAL_TRACK_RESIZE_REGION)) {
       HandleResize(event);
       HandleCursor(event);
       return;
