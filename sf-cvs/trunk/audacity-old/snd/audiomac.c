@@ -71,10 +71,16 @@ pascal void doubleBack(SndChannelPtr channel, SndDoubleBufferPtr doubleBufferPtr
     else {
       // Send some silence through the speaker while we wait for
       // the program to catch up
+      
+      int waittime = 4096;      
       int i;
-      for(i=0; i<data->bufferSize / 2; i++)
+      
+      if (waittime > data->bufferSize)
+        waittime = data->bufferSize;
+      
+      for(i=0; i<waittime / 2; i++)
           ((short *)doubleBufferPtr->dbSoundData)[i] = 0;
-      doubleBufferPtr->dbNumFrames = data->bufferSize / data->frameSize;
+      doubleBufferPtr->dbNumFrames = waittime / data->frameSize;
       doubleBufferPtr->dbFlags |= dbBufferReady;
     }
   }
