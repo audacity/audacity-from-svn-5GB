@@ -167,6 +167,7 @@ mAutoScrolling(false)
    mPencilCursor = new wxCursor(wxCURSOR_PENCIL);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
    mSlideCursor = new wxCursor(wxCURSOR_SIZEWE);
+   mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
    mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
    mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
@@ -264,6 +265,7 @@ TrackPanel::~TrackPanel()
    delete mSelectCursor;
    delete mSlideCursor;
    delete mResizeCursor;
+   delete mSmoothCursor;
    delete mZoomInCursor;
    delete mZoomOutCursor;
    delete mRearrangeCursor;
@@ -615,7 +617,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
          break;
       case drawTool:
-         SetCursor(*mPencilCursor);
+         SetCursor(event.AltDown()? *mSmoothCursor : *mPencilCursor);
          break;
       }
    }
@@ -1082,7 +1084,6 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    mViewInfo->h += (center_h - new_center_h);
 }
 
-
 // BG: This handles drawing
 //  Stm:
 // There are several member data structure for handling drawing:
@@ -1097,7 +1098,7 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
    
-   double rate;   //Declare the track rate up-front because it gets used in multiple places later.
+   double rate;     //Declare the track rate up-front because it gets used in multiple places later.
 
    //The following happens on a single-click:
    // Select the track and store it away
@@ -1130,6 +1131,9 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       
       //Get rate in order to calculate the critical zoom threshold
       rate = ((WaveTrack *)mDrawingTrack)->GetRate();
+  
+
+
       //Find out the zoom level
       bool showPoints = (mViewInfo->zoom / rate > 3.0);
       
@@ -1142,30 +1146,119 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       
       //If we are still around, we are drawing in earnest.  Set some member data structures up:
       //First, calculate the starting sample.  To get this, we need the time
-      double t0 = PositionToTime(event.m_x, GetLeftOffset());
-      
+      double tOffset = mDrawingTrack->GetOffset();
+      double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
+   
+      float newLevel;   //Declare this for use later
+
       //convert this to samples
-      mDrawingStartSample = (sampleCount) (double)(t0 * rate + 0.5);;
+      mDrawingStartSample = (sampleCount) (double)(t0 * rate + 0.5 );
       
       //Now, figure out what the value of that sample is.      
       //First, get the sequence of samples so you can mess with it
       Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
 
-      //Get the sample and put it in the member variable
-      seq->Get((char*)&mDrawingStartSampleValue, floatSample, (int)mDrawingStartSample, 1);
-      
 
-      // Calculate where the mouse is located vertically (between +/- 1)
-      float newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
-      
-      //Make sure the new level is between +/-1
-      newLevel = newLevel >  1.0 ?  1.0: newLevel;
-      newLevel = newLevel < -1.0 ? -1.0: newLevel;
-      
+ 
+      //Determine how drawing should occur.  If alt is down, 
+      //do a smoothing, instead of redrawing.
+      if( event.m_altDown ) {
 
-      //Set the sample to the point of the mouse event
-      seq->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
+         //*************************************************
+         //***  ALT-DOWN-CLICK (SAMPLE SMOOTHING)        ***
+         //*************************************************
+         //
+         //  Smoothing works like this:  There is a smoothing kernel radius constant that
+         //  determines how wide the averaging window is.  Plus, there is a smoothing brush radius, 
+         //  which determines how many pixels wide around the selected pixel this smoothing is applied.
+         //
+         //  Samples will be replaced by a mixture of the original points and the smoothed points, 
+         //  with a triangular mixing probability whose value at the center point is 
+         //  SMOOTHING_PROPORTION_MAX and at the far bounds is SMOOTHING_PROPORTION_MIN
+
+         //Get the region of samples around the selected point
+         int sampleRegionSize = 1 + 2 * (SMOOTHING_KERNEL_RADIUS + SMOOTHING_BRUSH_RADIUS);
+         float *sampleRegion = new float[sampleRegionSize];
+         float * newSampleRegion = new float[1 + 2 * SMOOTHING_BRUSH_RADIUS];
+         
+         //Get a sample  from the track to do some tricks on.
+         seq->Get((samplePtr)sampleRegion, floatSample, 
+                  (int)mDrawingStartSample - SMOOTHING_KERNEL_RADIUS - SMOOTHING_BRUSH_RADIUS,
+                  sampleRegionSize);
+         
+         int i, j;
+
+         //Go through each point of the smoothing brush and apply a smoothing operation.
+         for(j = -SMOOTHING_BRUSH_RADIUS; j <= SMOOTHING_BRUSH_RADIUS; j++){
+            float sumOfSamples = 0;
+            for (i= -SMOOTHING_KERNEL_RADIUS; i <= SMOOTHING_KERNEL_RADIUS; i++){
+               //Go through each point of the smoothing kernel and find the average
+               
+               //The average is a weighted average, scaled by a weighting kernel that is simply triangular
+               // A triangular kernel across N items, with a radius of R ( 2 R + 1 points), if the farthest:
+               // points have a probability of a, the entire triangle has total probability of (R + 1)^2.
+               //      For sample number i and middle brush sample M,  (R + 1 - abs(M-i))/ ((R+1)^2) gives a 
+               //   legal distribution whose total probability is 1.
+               //
+               //
+               //                weighting factor                       value  
+               sumOfSamples += (SMOOTHING_KERNEL_RADIUS + 1 - abs(i)) * sampleRegion[i + j + SMOOTHING_KERNEL_RADIUS + SMOOTHING_BRUSH_RADIUS];
+
+            }
+            newSampleRegion[j + SMOOTHING_BRUSH_RADIUS] = sumOfSamples/((SMOOTHING_KERNEL_RADIUS + 1) *(SMOOTHING_KERNEL_RADIUS + 1) );
+         }
+         
+
+         // Now that the new sample levels are determined, go through each and mix it appropriately
+         // with the original point, according to a 2-part linear function whose center has probability
+         // SMOOTHING_PROPORTION_MAX and extends out SMOOTHING_BRUSH_RADIUS, at which the probability is
+         // SMOOTHING_PROPORTION_MIN.  _MIN and _MAX specify how much of the smoothed curve make it through.
+         
+         float prob;
+         
+         for(j=-SMOOTHING_BRUSH_RADIUS; j <= SMOOTHING_BRUSH_RADIUS; j++){
+
+            prob = SMOOTHING_PROPORTION_MAX - (float)abs(j)/SMOOTHING_BRUSH_RADIUS * (SMOOTHING_PROPORTION_MAX - SMOOTHING_PROPORTION_MIN);
+
+            newSampleRegion[j+SMOOTHING_BRUSH_RADIUS] =
+               newSampleRegion[j + SMOOTHING_BRUSH_RADIUS] * prob + 
+               sampleRegion[SMOOTHING_BRUSH_RADIUS + SMOOTHING_KERNEL_RADIUS + j] * (1 - prob);
+
+         }
+         
+
+
+         //Set the sample to the point of the mouse event
+         seq->Set((samplePtr)newSampleRegion, floatSample, mDrawingStartSample - SMOOTHING_BRUSH_RADIUS, 1 + 2 * SMOOTHING_BRUSH_RADIUS);
+
+         //Clean this up right away to avoid a memory leak
+         delete[] sampleRegion;
+         delete[] newSampleRegion;
       
+      } else {
+         
+         //*************************************************
+         //***   PLAIN DOWN-CLICK (NORMAL DRAWING)       ***
+         //*************************************************
+
+         //Otherwise (e.g., the alt button is not down) do normal redrawing, based on the mouse position.
+         // Calculate where the mouse is located vertically (between +/- 1)
+         
+
+         seq->Get((samplePtr)&mDrawingStartSampleValue, floatSample,(int) mDrawingStartSample, 1);
+         newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+      
+         //Make sure the new level is between +/-1
+         newLevel = newLevel >  1.0 ?  1.0: newLevel;
+         newLevel = newLevel < -1.0 ? -1.0: newLevel;
+
+         //Set the sample to the point of the mouse event
+         seq->Set((samplePtr)&newLevel, floatSample, mDrawingStartSample, 1);
+      
+  
+     }
+
+
       //Set the member data structures for drawing
       mDrawingLastDragSample=mDrawingStartSample;
       mDrawingLastDragSampleValue = newLevel;
@@ -1174,43 +1267,63 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
       Refresh(false);
    }
 
+   //*************************************************
+   //***    DRAG-DRAWING                           ***
+   //*************************************************
+
    //The following will happen on a drag or a down-click.
    // The point should get re-drawn at the location of the mouse.
-  else if (event.Dragging())
+   else if (event.Dragging())
       {
          //Exit if the mDrawingTrack is null.
          if( mDrawingTrack == NULL)
             return;
          
+         //Exit dragging if the alt key is down--Don't allow left-right dragging for smoothing operation
+         if (event.m_altDown)
+            return;
 
+         
          //Get the rate of the sequence, for use later
          rate = ((WaveTrack *)mDrawingTrack)->GetRate();
          sampleCount s0;     //declare this for use below.  It designates the sample number which to draw.
-
+         float newLevel;
          //Find the point that we want to redraw at. If the control button is down, 
          //adjust only the originally clicked-on sample 
+
+         //*************************************************
+         //***   CTRL-DOWN (Hold Initial Sample Constant ***
+         //*************************************************
+
          if( event.m_controlDown) {
             s0 = mDrawingStartSample;
-         }
-         else {
+         } else {
+            
+            //*************************************************
+            //***    Normal CLICK-drag  (Normal drawing)    ***
+            //*************************************************
+
             //Otherwise, adjust the sample you are dragging over right now.
             // Figure out what time the click was at
-            double t0 = PositionToTime(event.m_x, GetLeftOffset());
-            
+            double tOffset = mDrawingTrack->GetOffset();
+            double t0 = PositionToTime(event.m_x, GetLeftOffset()) - tOffset;
+   
             //convert this to samples
             s0 = (sampleCount) (double)(t0 * rate + 0.5);
          }
 
+         Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
+         seq->Get((samplePtr)&mDrawingStartSampleValue, floatSample, (int)mDrawingStartSample, 1);
+         
+         //Otherwise, do normal redrawing, based on the mouse position.
          // Calculate where the mouse is located vertically (between +/- 1)
-         float newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
-   
+         newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+         
          //Make sure the new level is between +/-1
          newLevel = newLevel >  1.0 ?  1.0: newLevel;
          newLevel = newLevel < -1.0 ? -1.0: newLevel;
-
-         //Get the sequence of samples so you can mess with it
-         Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
-
+         
+      
          //Now, redraw all samples between current and last redrawn sample
          
          //Handle cases of 0 or 1 special, to improve speed
@@ -1248,6 +1361,10 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          //Redraw the region of the selected track
          Refresh(false);
       }
+   
+   //*************************************************
+   //***    UP-CLICK  (Finish drawing)             ***
+   //*************************************************
    
    //On up-click, send the state to the undo stack
    else if(event.ButtonUp()) {

@@ -284,6 +284,7 @@ class TrackPanel:public wxWindow {
    wxCursor *mSelectCursor;
    wxCursor *mResizeCursor;
    wxCursor *mSlideCursor;
+   wxCursor *mSmoothCursor;
    wxCursor *mZoomInCursor;
    wxCursor *mZoomOutCursor;
    wxCursor *mRearrangeCursor;
@@ -310,5 +311,10 @@ class TrackPanel:public wxWindow {
 //This constant determines the size of the horizontal region (in pixels) around
 //the right and left selection bounds that can be used for horizontal selection adjusting
 #define SELECTION_RESIZE_REGION 3
+
+#define SMOOTHING_KERNEL_RADIUS 3
+#define SMOOTHING_BRUSH_RADIUS 5
+#define SMOOTHING_PROPORTION_MAX 0.7
+#define SMOOTHING_PROPORTION_MIN 0.0
 
 #endif
