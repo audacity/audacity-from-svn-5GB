@@ -64,17 +64,32 @@
 
 void AudacityProject::CreateMenuBar()
 {
-   unsigned int i;
-
    mMenusDirtyCheck = gMenusDirty;
    mFirstTimeUpdateMenus = true;
-
-   mMenuBar = new wxMenuBar();
 
 #define AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 #include "commands.h"           // BG: Generate an array of command names, and their corresponding functions
 #undef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
+
+   BuildMenuBar();
+}
+
+void AudacityProject::RebuildMenuBar()
+{
 #include "commandkeys.h"        // BG: Generate an array of keys combos that cannot be used
+
+   SetMenuBar(NULL);
+
+   delete mMenuBar;
+
+   BuildMenuBar();
+}
+
+void AudacityProject::BuildMenuBar()
+{
+   unsigned int i;
+
+   mMenuBar = new wxMenuBar();
 
    mFileMenu = new wxMenu();
    mEditMenu = new wxMenu();
