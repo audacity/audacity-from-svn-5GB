@@ -26,6 +26,11 @@ class wxString;
 class Envelope;
 class WaveTrack;
 
+//MSVC does not like 'pure specifiers' in class declarations
+#define EQwindowSize 16384
+#define EQloFreq 20.0
+#define EQnCurvePoints 28
+
 class EffectEqualization: public Effect {
    
 public:
@@ -46,11 +51,11 @@ public:
    virtual bool Process();
 
    // Number of samples in an FFT window
-   static const long windowSize = 16384;
+   static const long windowSize;
 
    // Low frequency of the FFT.  20Hz is the
    // low range of human hearing
-   static const float loFreq = 20.0;
+   static const float loFreq;
    
 private:
    bool ProcessOne(int count, WaveTrack * t,
@@ -69,9 +74,9 @@ public:
      nCurveTypes
    };
 
-   static const int nCurvePoints = 28;
+   static const int nCurvePoints;
    static const float curvex[];
-   static const float curvey[][nCurvePoints];
+   static const float curvey[][EQnCurvePoints];
    static const char * curveNames[];
 };
 

@@ -448,6 +448,14 @@ SOURCE=..\src\effects\Effect.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\effects\Equalization.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\effects\Equalization.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\effects\Fade.cpp
 # End Source File
 # Begin Source File
