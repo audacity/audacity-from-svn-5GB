@@ -12,11 +12,11 @@ La pàgina de <a href="beta.php><?php print "$langLinkStr"; ?>">versions beta</a>
 
 <p>
 Podeu navegar per al 
-<a href="manual-1.2">complet manualManual</a> actualitzat o
+<a href="manual-1.2">complet manual</a> actualitzat o
 <a href="onlinehelp-1.2/contents.htm">referències ràpides</a> per a l'Audacity 1.2.
-PEr a més opcions, vegeu la
+Per a més opcions, vegeu la pàgina d'
 <?php print "<a href=help.php?$langLinkStr>"; ?>
-Help</a> pàgina del <a href="http://www.audacityteam.org/wiki"
+ajuda</a> o el <a href="http://www.audacityteam.org/wiki"
 >Wiki de l'Audacity</a>.
 </p>
 
