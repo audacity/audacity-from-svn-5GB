@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "POT-Creation-Date: 2003-02-07 13:12+0300\n"
-"PO-Revision-Date: 2003-02-07 22:01+0300\n"
+"PO-Revision-Date: 2003-02-13 21:19+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "      Дорожки: %d\n"
 #: ../src/Mix.cpp:150
 #, c-format
 msgid "  Mix length: %f sec\n"
-msgstr "  Длина микса: %f сек\n"
+msgstr "  Длина смешивания: %f сек\n"
 
 #: ../src/widgets/AButton.cpp:126
 msgid " (disabled)"
@@ -470,7 +470,7 @@ msgstr ""
 #: ../src/effects/AvcCompressor.cpp:86
 #, c-format
 msgid "Applied effect: %s change window = %d samples"
-msgstr ""
+msgstr "Применён эффект: %s change window = %d сэмплов"
 
 #: ../src/effects/Echo.cpp:26
 #, c-format
@@ -678,7 +678,7 @@ msgstr "Аудио Вход/Выход"
 
 #: ../src/WaveTrack.cpp:125
 msgid "Audio Track"
-msgstr "Звуковая дорожка"
+msgstr "Дорожка"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:394
 msgid "Author: "
@@ -1087,7 +1087,7 @@ msgstr "Курсор: %.4f сек (%d Гц) (%s) = %f,    Пик: %.4f сек (%d Гц) (%s)"
 #: ../src/TrackPanel.cpp:3709
 #, c-format
 msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
-msgstr ""
+msgstr "Курсор: %02i:%02i:%06.3lf cdda мин:сек:кадров (75 fps)   %s"
 
 #: ../src/FreqWindow.cpp:816
 #, c-format
@@ -1185,12 +1185,18 @@ msgid ""
 "Deadlock detected in AudioIO::Finish, Audacity must close. Please report "
 "this to the Audacity developers."
 msgstr ""
+"В AudioIO::Finish обнаружена взаимная блокировка, \n"
+"сеанс работы с Audacity будет завершён. Пожалуйста, \n"
+"сообщите разработчикам Audaicty об этой ошибке."
 
 #: ../src/AudioIO.cpp:623
 msgid ""
 "Deadlock detected in AudioIO::Stop, Audacity must close. Please report this "
 "to the Audacity developers."
 msgstr ""
+"В AudioIO::Stop обнаружена взаимная блокировка,\n"
+"сеанс работы с Audacity будет завершён. Пожалуйста,\n"
+"сообщите разработчикам Audaicty об этой ошибке."
 
 #: ../src/prefs/QualityPrefs.cpp:116
 msgid "Default Sample Format:"
@@ -1726,7 +1732,7 @@ msgstr "Неверная частота"
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "Инвертировать"
+msgstr "Инвертировать..."
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
@@ -1922,7 +1928,7 @@ msgstr ""
 
 #: ../src/Mix.cpp:88 ../src/Mix.cpp:93
 msgid "Mix"
-msgstr "Микс"
+msgstr "Смешивание"
 
 #: ../src/effects/ToneGen.cpp:323
 msgid "Mix Output"
@@ -2148,6 +2154,10 @@ msgid ""
 "Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|"
 "Extended Libraries (*.so*)|*.so*|All Files (*)|*"
 msgstr ""
+"Только libmp3lame.so|libmp3lame.so| "
+"Первичные динамически загружаемые библиотеки (*.so)|*.so|"
+"Расширенные библиотеки (*.so*)|*.so*| "
+"Все файлы (*)|*"
 
 #: ../src/effects/AvcCompressor.cpp:645
 msgid "Original Value"
@@ -2293,7 +2303,7 @@ msgstr "Качество"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:78
 msgid "Queued for location change"
-msgstr ""
+msgstr "Ожидается изменение местоположения"
 
 #: ../src/Mix.cpp:130
 msgid "Quick Mix"
@@ -2395,7 +2405,7 @@ msgstr "Запустить"
 
 #: ../src/commands/CommandsDefaultData.h:322
 msgid "Run Benchmark..."
-msgstr "Запустить тест..."
+msgstr "Запустить тест производительности..."
 
 #: ../src/TrackPanel.cpp:3282 ../src/TrackPanel.cpp:3283
 msgid "Sample rate conversion method"
@@ -2613,7 +2623,7 @@ msgstr "Установить формат сэмплов"
 
 #: ../src/TrackPanel.cpp:294
 msgid "Set Snap-To Mode"
-msgstr ""
+msgstr "Мгновенный режим"
 
 #: ../src/TrackPanel.cpp:3253
 #, c-format
@@ -2788,6 +2798,8 @@ msgstr "Максимально возможная частота должна быть переменной величиной"
 #: ../src/commands/CommandsCallback.cpp:1999
 msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
+"Загруженная версия Audacity не может использовать\n"
+"несколько дорожек времени в одном проекте."
 
 #: ../src/commands/CommandsCallback.cpp:93
 msgid "There are no label tracks to export."
@@ -2802,6 +2814,16 @@ msgid ""
 "Click Assign Defaults to revert the menus back to default.\n"
 "Click Rebuild Menus to reparse 'commands.cfg' and rebuild the menus."
 msgstr ""
+"Эта часть исходного кода сейчас переписывается и графический "
+"интерфейс не закончен.\n"
+"Вы по-прежнему можете назначать горячие клавиши, редактируя "
+"файл 'commands.cfg'.\n"
+"Если вы хотите узнать, что приводит к нажатию той или иной "
+"комбинации клавиш, введите её в поле внизу.\n"
+"Щёлкните по \"Применить стандартные установки\" для "
+"возврата к стандартным горячим клавишам.\n"
+"Щёлкните по \"Перестроить меню\" для повторного считывания "
+"'commands.cfg' и перестройки меню."
 
 #: ../src/AboutDialog.cpp:120
 msgid ""
@@ -2883,7 +2905,7 @@ msgstr ""
 #: ../src/Benchmark.cpp:448
 #, c-format
 msgid "Track # blocks: %d\n"
-msgstr ""
+msgstr "Дорожка # блоков: %d\n"
 
 #: ../src/TrackPanel.cpp:3333
 msgid "Track Name"
