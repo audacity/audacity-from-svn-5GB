@@ -514,7 +514,7 @@ bool AudacityApp::OnInit()
       gEditToolBarStub = NULL;
 
    bool transcriptionToolBar;
-   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, true);
+   gPrefs->Read("/GUI/EnableTranscriptionToolBar", &transcriptionToolBar, false);
    if(transcriptionToolBar)
       gTranscriptionToolBarStub =  new ToolBarStub(gParentWindow, TranscriptionToolBarID);
    else
