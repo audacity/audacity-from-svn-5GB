@@ -234,7 +234,8 @@ void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    for(int i = 0; i < depth; i++)
       xmlFile.Write("\t");
    xmlFile.Write("<legacyblockfile ");
-   xmlFile.Write(wxString::Format("name='%s' ", mFileName.GetFullName().c_str()));
+   xmlFile.Write(wxString::Format("name='%s' ",
+                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
    xmlFile.Write(wxString::Format("len='%d' ", mLen));
    if (mSummaryInfo.fields < 3)
       xmlFile.Write(wxString::Format("norms='1' "));

@@ -123,6 +123,7 @@ OBJS = \
 	$(OBJDIR)/widgets/ASlider.o \
 	$(OBJDIR)/widgets/Ruler.o \
 	$(OBJDIR)/xml/XMLFileReader.o \
+	$(OBJDIR)/xml/XMLTagHandler.o \
 
 TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 	$(OBJDIR)/import/ImportMIDI.o \

@@ -66,8 +66,10 @@ void LegacyAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
       xmlFile.Write("\t");
    xmlFile.Write("<legacyblockfile ");
    xmlFile.Write("alias='1' ");
-   xmlFile.Write(wxString::Format("name='%s' ", mFileName.GetFullName().c_str()));
-   xmlFile.Write(wxString::Format("aliaspath='%s' ", mAliasedFileName.GetFullPath().c_str()));
+   xmlFile.Write(wxString::Format("name='%s' ",
+                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
+   xmlFile.Write(wxString::Format("aliaspath='%s' ",
+                                  XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
    xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
    xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
    xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));

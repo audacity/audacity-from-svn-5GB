@@ -1826,7 +1826,7 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<audacityproject ");
-   fprintf(fp, "projname=\"%s\" ", (const char *)projName);
+   fprintf(fp, "projname=\"%s\" ", (const char *)XMLEsc(projName));
    fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
    fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
    fprintf(fp, "sel0=\"%.10g\" ", mViewInfo.sel0);

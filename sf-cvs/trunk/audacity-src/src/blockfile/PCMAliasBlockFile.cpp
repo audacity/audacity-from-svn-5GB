@@ -108,8 +108,10 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    for(int i = 0; i < depth; i++)
       xmlFile.Write("\t");
    xmlFile.Write("<pcmaliasblockfile ");
-   xmlFile.Write(wxString::Format("summaryfile='%s' ", mFileName.GetFullName().c_str()));
-   xmlFile.Write(wxString::Format("aliasfile='%s' ", mAliasedFileName.GetFullPath().c_str()));
+   xmlFile.Write(wxString::Format("summaryfile='%s' ",
+                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
+   xmlFile.Write(wxString::Format("aliasfile='%s' ",
+                                  XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
    xmlFile.Write(wxString::Format("aliasstart='%d' ", mAliasStart));
    xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
    xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));

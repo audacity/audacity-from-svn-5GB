@@ -20,6 +20,10 @@
 class XMLTagHandler {
  public:
 
+   //
+   // Methods to override
+   //
+
    // This method will be called on your class if your class has
    // been registered to handle this particular tag.  Parse the
    // tag and the attribute-value pairs (null-terminated), and
@@ -43,6 +47,14 @@ class XMLTagHandler {
    // per line, and each tag should be preceded with [depth]
    // tab characters.
    virtual void WriteXML(int depth, FILE *fp) = 0;
+
+   //
+   // Utility methods you should call
+   //
+
+   // Escape a string, replacing certain characters with their
+   // XML encoding, i.e. '<' becomes '&lt;'
+   static wxString XMLEsc(wxString s);
 };
 
 #endif // define __AUDACITY_XML_TAG_HANDLER__

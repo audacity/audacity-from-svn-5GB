@@ -107,13 +107,13 @@ void Tags::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<tags ");
-   fprintf(fp, "title=\"%s\" ", (const char *)mTitle);
-   fprintf(fp, "artist=\"%s\" ", (const char *)mArtist);
-   fprintf(fp, "album=\"%s\" ", (const char *)mAlbum);
+   fprintf(fp, "title=\"%s\" ", XMLEsc(mTitle).c_str());
+   fprintf(fp, "artist=\"%s\" ", XMLEsc(mArtist).c_str());
+   fprintf(fp, "album=\"%s\" ", XMLEsc(mAlbum).c_str());
    fprintf(fp, "track=\"%d\" ", mTrackNum);
-   fprintf(fp, "year=\"%s\" ", (const char *)mYear);
+   fprintf(fp, "year=\"%s\" ", XMLEsc(mYear).c_str());
    fprintf(fp, "genre=\"%d\" ", mGenre);
-   fprintf(fp, "comments=\"%s\" ", (const char *)mComments);
+   fprintf(fp, "comments=\"%s\" ", XMLEsc(mComments).c_str());
    fprintf(fp, "id3v2=\"%d\" ", (int)mID3V2);
    fprintf(fp, "/>\n"); // XML shorthand for childless tag
 }

@@ -225,7 +225,8 @@ void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    for(int i = 0; i < depth; i++)
       xmlFile.Write("\t");
    xmlFile.Write("<simpleblockfile ");
-   xmlFile.Write(wxString::Format("filename='%s' ", mFileName.GetFullName().c_str()));
+   xmlFile.Write(wxString::Format("filename='%s' ",
+                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
    xmlFile.Write(wxString::Format("len='%d' ", mLen));
    xmlFile.Write(wxString::Format("min='%f' ", mMin));
    xmlFile.Write(wxString::Format("max='%f' ", mMax));

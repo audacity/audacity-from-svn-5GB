@@ -70,6 +70,12 @@ PrefsPanel(parent)
    topSizer->Add(mMixerToolBar, 0, wxGROW|wxALL, 2);
 
 
+   // Quit Audacity when last window closes?
+
+
+   // Enable/disable adjust selection edges
+
+
    // Locale
    GetLanguages(mLangCodes, mLangNames);
    int numLangs = mLangNames.GetCount();
