@@ -81,6 +81,12 @@ EffectAvcCompressor::~EffectAvcCompressor()
 		delete mpDialog;
 }
 
+wxString EffectAvcCompressor::GetEffectDescription() { 
+   // Note: This is useful only after values have been set. 
+   return wxString::Format(_("Applied effect: %s change window = %d samples"), 
+                           this->GetEffectName(), mnChangeWindow); 
+} 
+
 inline
 void EffectAvcCompressor::OutputSample ( IAVCSAMPLETYPE left, IAVCSAMPLETYPE right )
 {

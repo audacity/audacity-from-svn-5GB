@@ -44,6 +44,9 @@ class EffectPhaser:public EffectSimpleMono {
       return wxString(_("Applying Phaser"));
    }
    
+   // Useful only after PromptUser values have been set. 
+   virtual wxString GetEffectDescription(); 
+
    virtual bool PromptUser();
 
  protected:

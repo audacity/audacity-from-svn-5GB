@@ -21,6 +21,12 @@ EffectEcho::EffectEcho()
    decay = float(0.5);
 }
 
+wxString EffectEcho::GetEffectDescription() { 
+   // Note: This is useful only after values have been set. 
+   return wxString::Format(_("Applied effect: %s delay = %f seconds, decay factor = %f"), 
+                           this->GetEffectName(), delay, decay); 
+} 
+
 bool EffectEcho::PromptUser()
 {
    wxString temp;

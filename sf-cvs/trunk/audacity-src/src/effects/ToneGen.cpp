@@ -26,6 +26,14 @@ EffectToneGen::EffectToneGen()
    mix = false;
 }
 
+wxString EffectToneGen::GetEffectDescription() { 
+   // Note: This is useful only after values have been set. 
+   const char* waveformNames[] = {"sine", "square", "sawtooth"};
+   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f"), 
+                           this->GetEffectName(), 
+                           waveformNames[waveform], frequency, amplitude); 
+} 
+
 bool EffectToneGen::PromptUser()
 {
    ToneGenDialog dlog(mParent, -1, _("Tone Generator"));

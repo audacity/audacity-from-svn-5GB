@@ -31,6 +31,11 @@ class EffectSilence:public Effect {
       return wxString(_("Generating Silence"));
    }
 
+   // Useful only after PromptUser values have been set. 
+   virtual wxString GetEffectDescription() { 
+      return wxString(_("Applied effect: Generate Silence")); 
+   } 
+
    virtual int GetEffectFlags() {
       return BUILTIN_EFFECT | INSERT_EFFECT;
    }

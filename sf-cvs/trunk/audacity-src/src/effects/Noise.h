@@ -27,6 +27,10 @@ class EffectNoise:public Effect {
       return wxString(_("White Noise"));
    }
 
+   virtual wxString GetEffectDescription() { 
+      return wxString(_("Applied effect: \Generate White Noise")); 
+   } 
+
    virtual wxString GetEffectAction() {
       return wxString(_("Generating White Noise"));
    }

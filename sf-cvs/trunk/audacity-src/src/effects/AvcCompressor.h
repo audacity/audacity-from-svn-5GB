@@ -70,6 +70,9 @@ public:
       return wxString(_("Changing volume"));
    }
    
+   // Useful only after PromptUser values have been set. 
+   virtual wxString GetEffectDescription(); 
+
    virtual void End();
    
 protected:
