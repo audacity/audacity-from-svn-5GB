@@ -256,11 +256,11 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
 
    dnl see if libsndfile is available in the local tree
 
-   AC_CHECK_FILE(${srcdir}/lib-src/libsndfile/src/sndfile.h,
-                 libsndfile_h_found="yes",
-                 libsndfile_h_found="no")
+   AC_CHECK_FILE(${srcdir}/lib-src/libsndfile/src/sndfile.h.in,
+                 libsndfile_found="yes",
+                 libsndfile_found="no")
 
-   if test $libsndfile_h_found = yes ; then
+   if test $libsndfile_found = yes ; then
       LIBSNDFILE_LOCAL_AVAILABLE="yes"
       LIBSNDFILE_LOCAL_LIBS="libsndfile.a"
       LIBSNDFILE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsndfile/src'
