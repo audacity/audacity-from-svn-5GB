@@ -135,17 +135,18 @@ void AudioIO::Finish()
       mProject->GetAPalette()->SetRecord(false);
    }
 
+   if (mRecording) {
+      snd_close(&mRecordNode);
+      if (!mHardStop)
+         mProject->TP_PushState();
+   }
+
    mStop = false;
    mHardStop = false;
 
    if (!mRecording || (mRecording && mDuplex))
       snd_close(&mPlayNode);
 
-   if (mRecording) {
-      snd_close(&mRecordNode);
-      if (!mHardStop)
-         mProject->TP_PushState();
-   }
    // TODO mProject->SoundDone();
    mProject = NULL;
    mRecordLeft = NULL;
