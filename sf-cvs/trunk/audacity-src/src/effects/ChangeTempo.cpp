@@ -121,24 +121,40 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 
 	
 	// CREATE THE CONTROLS PROGRAMMATICALLY.
+	wxStaticText * pStaticText;
 
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
 
 	// heading
-   wxStaticText * pStaticText =
+   pStaticText =
 		new wxStaticText(this, ID_TEXT, _("Change Tempo without Changing Pitch"),
 								wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
 
+   pStaticText =
+		new wxStaticText(this, ID_TEXT, _("by Vaughan Johnson && Dominic Mazzoni"),
+								wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);
 
+   pStaticText =
+		new wxStaticText(this, ID_TEXT, _("using SoundTouch, by Olli Parviainen"),
+								wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
+
+	
 	// percent change controls
+	
+	// Group percent controls with spacers, 
+	// rather than static box, so they don't look isolated.
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+
    wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText =
 		new wxStaticText(this, ID_TEXT, _("Percent Change:"),
 								wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    wxTextCtrl * pTextCtrl_PercentChange =
@@ -146,58 +162,60 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxSlider * pSlider_PercentChange =
        new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
 							0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
    pBoxSizer_Dialog->Add(pSlider_PercentChange, 1, 
-									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 5);
+									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
+
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
 
 	// from/to beats-per-minute controls
    wxBoxSizer * pBoxSizer_BPM = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Beats per Minute (BPM):     From"),
+       new wxStaticText(this, ID_TEXT, _("Beats per Minute (BPM):   from"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_BPM->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_FromBPM =
        new wxTextCtrl(this, ID_TEXT_FROMBPM, _(""), 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(pTextCtrl_FromBPM, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("To"),
+       new wxStaticText(this, ID_TEXT, _("to"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_BPM->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_ToBPM =
        new wxTextCtrl(this, ID_TEXT_TOBPM, _(""), 
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_BPM->Add(pTextCtrl_ToBPM, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_BPM, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(pBoxSizer_BPM, 0, wxALIGN_CENTER | wxALL, 4);
 
 
 	// from/to length controls
    wxBoxSizer * pBoxSizer_Length = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Length (seconds):     From"),
+       new wxStaticText(this, ID_TEXT, _("Length (seconds):   from"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Length->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_FromLength =
        new wxTextCtrl(this, ID_TEXT_FROMLENGTH, _(""), 
@@ -205,25 +223,27 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
 								wxTE_READONLY); // Read only because it's from the selection.
 								// No validator because it's read only.
    pBoxSizer_Length->Add(pTextCtrl_FromLength, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+									wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("To"),
+       new wxStaticText(this, ID_TEXT, _("to"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Length->Add(pStaticText, 0, 
-									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+									wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxTextCtrl * pTextCtrl_ToLength =
        new wxTextCtrl(this, ID_TEXT_TOLENGTH, _(""), 
 								wxDefaultPosition, wxSize(48, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_Length->Add(pTextCtrl_ToLength, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(pBoxSizer_Length, 0, wxALIGN_CENTER | wxALL, 4);
 
 
 	// OK & Cancel buttons
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton * pButton_OK =
@@ -231,12 +251,12 @@ ChangeTempoDialog::ChangeTempoDialog(wxWindow * parent,
                     wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pButton_OK->SetFocus();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxButton * pButton_Cancel =
        new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
 
@@ -326,14 +346,14 @@ bool ChangeTempoDialog::TransferDataFromWindow()
    if (pTextCtrl) {
       str = pTextCtrl->GetValue();
       str.ToLong(&newLong);
-		m_FromBPM = (int)(newLong);
+		m_FromBPM = (unsigned int)(newLong);
 	}
 
    pTextCtrl = this->GetTextCtrl_ToBPM();
    if (pTextCtrl) {
       str = pTextCtrl->GetValue();
       str.ToLong(&newLong);
-		m_ToBPM = (int)(newLong);
+		m_ToBPM = (unsigned int)(newLong);
 	}
 
 
@@ -364,15 +384,9 @@ void ChangeTempoDialog::OnText_PercentChange(wxCommandEvent & event)
 		m_PercentChange = newValue;
 
       m_bLoopDetect = true;
-
 		this->Update_Slider_PercentChange();
-
-      // Update ToBPM iff FromBPM has been set.
-		if (m_FromBPM != 0) 
-			this->Update_Text_ToBPM();
-
+		this->Update_Text_ToBPM();
 		this->Update_Text_ToLength();
-
       m_bLoopDetect = false;
    }
 }
@@ -390,15 +404,9 @@ void ChangeTempoDialog::OnSlider_PercentChange(wxCommandEvent & event)
 			m_PercentChange = pow(m_PercentChange, PERCENTCHANGE_SLIDER_WARP);
 
 	   m_bLoopDetect = true;
-
 		this->Update_Text_PercentChange();
-
-      // Update ToBPM iff FromBPM has been set.
-		if (m_FromBPM != 0) 
-			this->Update_Text_ToBPM();
-
+		this->Update_Text_ToBPM();
 		this->Update_Text_ToLength();
-
 	   m_bLoopDetect = false;
 	}
 }
@@ -413,7 +421,7 @@ void ChangeTempoDialog::OnText_FromBPM(wxCommandEvent & event)
       wxString str = pTextCtrl_FromBPM->GetValue();
       long newValue;
       str.ToLong(&newValue);
-		m_FromBPM = (int)(newValue);
+		m_FromBPM = (unsigned int)(newValue);
 
       m_bLoopDetect = true;
 
@@ -433,7 +441,7 @@ void ChangeTempoDialog::OnText_ToBPM(wxCommandEvent & event)
       wxString str = pTextCtrl_ToBPM->GetValue();
       long newValue;
       str.ToLong(&newValue);
-		m_ToBPM = (int)(newValue);
+		m_ToBPM = (unsigned int)(newValue);
 
       m_bLoopDetect = true;
 
@@ -519,6 +527,10 @@ void ChangeTempoDialog::Update_Slider_PercentChange()
 void ChangeTempoDialog::Update_Text_ToBPM() 
 // Use m_FromBPM & m_PercentChange to set new m_ToBPM & control.
 {
+   // Update ToBPM iff FromBPM has been set.
+	if (m_FromBPM == 0) 
+		return;
+
 	m_ToBPM = (unsigned int)((((double)(m_FromBPM) * 
 											(100.0 + m_PercentChange)) / 100.0) + 
 										0.5); // Add 0.5 so trunc -> round.

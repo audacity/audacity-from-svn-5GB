@@ -112,24 +112,40 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 
 	
 	// CREATE THE CONTROLS PROGRAMMATICALLY.
+	wxStaticText * pStaticText;
 
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
 
 	// heading
-   wxStaticText * pStaticText =
+   pStaticText =
 		new wxStaticText(this, ID_TEXT, _("Change Speed, affecting both Tempo and Pitch"),
 								wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
 
+   pStaticText =
+		new wxStaticText(this, ID_TEXT, _("by Vaughan Johnson && Dominic Mazzoni"),
+								wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);
+
+   pStaticText =
+		new wxStaticText(this, ID_TEXT, _("using SampleRate, by Erik de Castro Lopo"),
+								wxDefaultPosition, wxDefaultSize, 0);
+   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
+
 
 	// percent change controls
+
+	// Group percent controls with spacers, 
+	// rather than static box, so they don't look isolated.
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+
    wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText =
 		new wxStaticText(this, ID_TEXT, _("Percent Change:"),
 								wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
    wxTextCtrl * pTextCtrl_PercentChange =
@@ -137,16 +153,18 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 								wxDefaultPosition, wxSize(40, -1), 0,
 								wxTextValidator(wxFILTER_NUMERIC));
    pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
-											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxSlider * pSlider_PercentChange =
        new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
 							0, PERCENTCHANGE_MIN, PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
    pBoxSizer_Dialog->Add(pSlider_PercentChange, 1, 
-									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 5);
+									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
+
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
 
 	// from/to Vinyl controls
@@ -156,31 +174,33 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 	const int numChoices = 4;
 
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Standard Vinyl RPM:     From"),
+       new wxStaticText(this, ID_TEXT, _("Standard Vinyl RPM:   from"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Vinyl->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxChoice * pChoice_FromVinyl = 
 		new wxChoice(this, ID_CHOICE_FROMVINYL, wxDefaultPosition, wxSize(64, -1), 
 							numChoices, strArray_VinylRPM);
-   pBoxSizer_Vinyl->Add(pChoice_FromVinyl, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Vinyl->Add(pChoice_FromVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
    pStaticText =
-       new wxStaticText(this, ID_TEXT, _("To"),
+       new wxStaticText(this, ID_TEXT, _("to"),
                         wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Vinyl->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
    wxChoice * pChoice_ToVinyl = 
 		new wxChoice(this, ID_CHOICE_TOVINYL, wxDefaultPosition, wxSize(64, -1), 
 							numChoices, strArray_VinylRPM);
-   pBoxSizer_Vinyl->Add(pChoice_ToVinyl, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Vinyl->Add(pChoice_ToVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
-   pBoxSizer_Dialog->Add(pBoxSizer_Vinyl, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_Dialog->Add(pBoxSizer_Vinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
 
 	// OK & Cancel buttons
+   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
+
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton * pButton_OK =
@@ -188,12 +208,12 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
                     wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pButton_OK->SetFocus();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxButton * pButton_Cancel =
        new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 5);
+   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
 
