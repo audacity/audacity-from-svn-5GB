@@ -106,6 +106,7 @@ private:
 	EffectNoiseRemoval * m_pEffect;
 
 public:
+   wxButton * m_pButton_GetProfile;
    wxSlider * m_pSlider;
    wxButton * m_pButton_Preview;
    wxButton * m_pButton_RemoveNoise;
