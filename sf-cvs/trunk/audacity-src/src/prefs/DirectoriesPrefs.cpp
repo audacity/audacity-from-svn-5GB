@@ -135,9 +135,10 @@ void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
                             "temporary directory"), gPrefs->Read("/Directories/TempDir", wxGetApp().defaultTempDir));
    dlog.ShowModal();
    if (dlog.GetPath() != "") {
-      mTempDirText->SetValue(dlog.GetPath() +
-                             wxFILE_SEP_PATH +
-                             ".audacity_temp");
+      wxFileName tmpDirPath;
+      tmpDirPath.AssignDir(dlog.GetPath());
+      tmpDirPath.AppendDir(".audacity_temp");
+      mTempDirText->SetValue(tmpDirPath.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR));
       UpdateFreeSpace(event);
    }
 }
