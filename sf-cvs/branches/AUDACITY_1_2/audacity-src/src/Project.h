@@ -21,6 +21,7 @@
 #include "Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/dnd.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
 #include <wx/generic/dragimgg.h>
@@ -77,6 +78,16 @@ enum PlayMode {
    normalPlay,
    oneSecondPlay,
    loopedPlay
+};
+
+class AudacityDropTarget : public wxFileDropTarget
+{
+ public:
+   AudacityDropTarget(AudacityProject *proj);
+   virtual ~AudacityDropTarget();
+   virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
+ private:
+   AudacityProject *mProject;
 };
 
 class AudacityProject:public wxFrame,
@@ -137,7 +148,6 @@ class AudacityProject:public wxFrame,
    void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
-   void OnDropFiles(wxDropFilesEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void OnIconize(wxIconizeEvent &event);
