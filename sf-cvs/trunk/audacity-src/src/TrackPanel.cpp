@@ -308,7 +308,9 @@ wxCursor * MakeCursor( int CursorId, const char * pXpm[36],  int HotX, int HotY 
 
 
 // Don't warn us about using 'this' in the base member initializer list.
+#ifndef __WXGTK__ //Get rid if this pragma for gtk
 #pragma warning( disable: 4355 )
+#endif
 TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        const wxPoint & pos,
                        const wxSize & size,
@@ -322,7 +324,9 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mViewInfo(viewInfo),
      mBitmap(NULL),
      mAutoScrolling(false)
+#ifndef __WXGTK__   //Get rid if this pragma for gtk
 #pragma warning( default: 4355 )
+#endif
 {
    mMouseCapture = IsUncaptured;
    mSlideUpDownOnly = false;
