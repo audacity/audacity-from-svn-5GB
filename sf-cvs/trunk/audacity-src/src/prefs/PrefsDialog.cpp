@@ -25,12 +25,11 @@
 #include "PrefsPanel.h"
 
 #include "AudioIOPrefs.h"
-#include "SampleRatePrefs.h"
-#include "FileFormatPrefs.h"
-#include "SpectrumPrefs.h"
 #include "DirectoriesPrefs.h"
+#include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
-
+#include "SampleRatePrefs.h"
+#include "SpectrumPrefs.h"
 
 enum {
    CategoriesID = 1000
@@ -72,7 +71,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
    mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
-   mCategories->AddPage(new GUIPrefs(mCategories), _("GUI"));
+   mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
 
    long selected = gPrefs->Read("/Prefs/PrefsCategory", 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())
