@@ -48,7 +48,7 @@ wxString EffectChangeSpeed::GetEffectDescription() {
 
 bool EffectChangeSpeed::PromptUser()
 {
-   ChangeSpeedDialog dlog(mParent, -1, _("Change Speed"));
+   ChangeSpeedDialog dlog(this, mParent, -1, _("Change Speed"));
    dlog.m_PercentChange = m_PercentChange;
    dlog.m_FromVinyl = m_FromVinyl;
    dlog.m_ToVinyl = m_ToVinyl;
@@ -164,7 +164,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 	//	than the input buffer.
 	double bufferSizeFactor = 100.0 / (100.0 + m_PercentChange);
 	sampleCount outBufferSize = 
-						(sampleCount)(bufferSizeFactor + 1.0) *// Add 1.0 to round up
+						(sampleCount)(bufferSizeFactor + 1.0) *	// Add 1.0 to round up
 						inBufferSize;
    float * outBuffer = new float[outBufferSize]; 
 
@@ -269,6 +269,14 @@ void EffectChangeSpeed::ReportLibSampleRateError(int error)
 #define CHOICE_78 2
 #define CHOICE_NA 3 
 
+
+#define ID_TEXT_PERCENTCHANGE 10001
+#define ID_SLIDER_PERCENTCHANGE 10002
+#define ID_CHOICE_FROMVINYL 10003
+#define ID_CHOICE_TOVINYL 10004
+#define ID_BUTTON_PREVIEW 10005
+
+
 // event table for ChangeSpeedDialog
 
 BEGIN_EVENT_TABLE(ChangeSpeedDialog, wxDialog)
@@ -279,16 +287,30 @@ BEGIN_EVENT_TABLE(ChangeSpeedDialog, wxDialog)
     EVT_SLIDER(ID_SLIDER_PERCENTCHANGE, ChangeSpeedDialog::OnSlider_PercentChange)
     EVT_CHOICE(ID_CHOICE_FROMVINYL, ChangeSpeedDialog::OnChoice_FromVinyl)
     EVT_CHOICE(ID_CHOICE_TOVINYL, ChangeSpeedDialog::OnChoice_ToVinyl)
+
+    EVT_BUTTON(ID_BUTTON_PREVIEW, ChangeSpeedDialog::OnPreview)
 END_EVENT_TABLE()
 
-ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent, 
-												 wxWindowID id, const wxString & title, 
-												 const wxPoint & position, const wxSize & size, 
-												 long style)
+ChangeSpeedDialog::ChangeSpeedDialog(EffectChangeSpeed * effect,
+													wxWindow * parent, wxWindowID id,
+													const wxString & title, 
+													const wxPoint & position, 
+													const wxSize & size, 
+													long style)
 : wxDialog(parent, id, title, position, size, style)
 {
    m_bLoopDetect = false;
+	m_pEffect = effect;
 
+	// NULL out these control members because there are some cases where the 
+	// event table handlers get called during this method, and those handlers that 
+	// can cause trouble check for NULL.
+   m_pTextCtrl_PercentChange = NULL;
+   m_pSlider_PercentChange = NULL;
+   m_pChoice_FromVinyl = NULL;
+   m_pChoice_ToVinyl = NULL;
+	
+	// effect parameters
 	m_PercentChange = 0.0;
 	m_FromVinyl = 0; 
 	m_ToVinyl = 0; 
@@ -300,19 +322,19 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
 
 	// heading
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("Change Speed, affecting both Tempo and Pitch"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("Change Speed, affecting both Tempo and Pitch"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
 
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("by Vaughan Johnson && Dominic Mazzoni"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("by Vaughan Johnson && Dominic Mazzoni"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);
 
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("using SampleRate, by Erik de Castro Lopo"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, 
+												_("using SampleRate, by Erik de Castro Lopo"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxBOTTOM | wxLEFT | wxRIGHT, 8);
 
 
@@ -324,27 +346,26 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 
    wxBoxSizer * pBoxSizer_PercentChange = new wxBoxSizer(wxHORIZONTAL);
    
-   pStaticText =
-		new wxStaticText(this, ID_TEXT, _("Percent Change:"),
-								wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Percent Change:"),
+												wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_PercentChange->Add(pStaticText, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
 	//v Override wxTextValidator to disallow negative values <= -100.0?
-   wxTextCtrl * pTextCtrl_PercentChange =
-       new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
-								wxDefaultPosition, wxSize(40, -1), 0,
-								wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_PercentChange->Add(pTextCtrl_PercentChange, 0, 
+   m_pTextCtrl_PercentChange = 
+		new wxTextCtrl(this, ID_TEXT_PERCENTCHANGE, "0.0", 
+							wxDefaultPosition, wxSize(40, -1), 0,
+							wxTextValidator(wxFILTER_NUMERIC));
+   pBoxSizer_PercentChange->Add(m_pTextCtrl_PercentChange, 0, 
 											wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_PercentChange, 0, wxALIGN_CENTER | wxALL, 4);
 
-   wxSlider * pSlider_PercentChange =
-       new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 
-							0, (int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
+   m_pSlider_PercentChange = 
+		new wxSlider(this, ID_SLIDER_PERCENTCHANGE, 0, 
+							(int)PERCENTCHANGE_MIN, (int)PERCENTCHANGE_MAX,
 							wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
-   pBoxSizer_Dialog->Add(pSlider_PercentChange, 1, 
+   pBoxSizer_Dialog->Add(m_pSlider_PercentChange, 1, 
 									wxGROW | wxALIGN_CENTER | wxLEFT | wxRIGHT, 4);
 
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
@@ -356,46 +377,47 @@ ChangeSpeedDialog::ChangeSpeedDialog(wxWindow * parent,
 	const wxString strArray_VinylRPM[] = {"33 1/3", "45", "78", _("n/a")};
 	const int numChoices = 4;
 
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("Standard Vinyl RPM:   from"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("Standard Vinyl RPM:   from"),
+									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Vinyl->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxChoice * pChoice_FromVinyl = 
-		new wxChoice(this, ID_CHOICE_FROMVINYL, wxDefaultPosition, wxSize(64, -1), 
-							numChoices, strArray_VinylRPM);
-   pBoxSizer_Vinyl->Add(pChoice_FromVinyl, 0, wxALIGN_CENTER | wxALL, 4);
+   m_pChoice_FromVinyl = 
+		new wxChoice(this, ID_CHOICE_FROMVINYL, 
+							wxDefaultPosition, wxSize(64, -1), numChoices, strArray_VinylRPM);
+   pBoxSizer_Vinyl->Add(m_pChoice_FromVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
-   pStaticText =
-       new wxStaticText(this, ID_TEXT, _("to"),
-                        wxDefaultPosition, wxDefaultSize, 0);
+   pStaticText = new wxStaticText(this, -1, _("to"),
+									       wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Vinyl->Add(pStaticText, 0, 
 								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
 
-   wxChoice * pChoice_ToVinyl = 
-		new wxChoice(this, ID_CHOICE_TOVINYL, wxDefaultPosition, wxSize(64, -1), 
-							numChoices, strArray_VinylRPM);
-   pBoxSizer_Vinyl->Add(pChoice_ToVinyl, 0, wxALIGN_CENTER | wxALL, 4);
+   m_pChoice_ToVinyl = 
+		new wxChoice(this, ID_CHOICE_TOVINYL, 
+							wxDefaultPosition, wxSize(64, -1), numChoices, strArray_VinylRPM);
+   pBoxSizer_Vinyl->Add(m_pChoice_ToVinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Vinyl, 0, wxALIGN_CENTER | wxALL, 4);
 
 
-	// OK & Cancel buttons
+	// Preview, OK, & Cancel buttons
    pBoxSizer_Dialog->Add(0, 8, 0); // spacer
 
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
+   wxButton * pButton_Preview = 
+		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
+   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
+   pBoxSizer_OK->Add(40, 8); // horizontal spacer
+
    wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pButton_OK->SetFocus();
    pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
@@ -421,13 +443,11 @@ bool ChangeSpeedDialog::TransferDataToWindow()
 	this->Update_Slider_PercentChange();
 
 	// from/to Vinyl controls
-	wxChoice * pChoice = this->GetChoice_FromVinyl();
-	if (pChoice) 
-		pChoice->SetSelection(m_FromVinyl);
+	if (m_pChoice_FromVinyl) 
+		m_pChoice_FromVinyl->SetSelection(m_FromVinyl);
 
-	pChoice = this->GetChoice_ToVinyl();
-	if (pChoice) 
-		pChoice->SetSelection(m_ToVinyl);
+	if (m_pChoice_ToVinyl) 
+		m_pChoice_ToVinyl->SetSelection(m_ToVinyl);
 
 	m_bLoopDetect = false;
 
@@ -439,9 +459,8 @@ bool ChangeSpeedDialog::TransferDataFromWindow()
 	wxString str;
 
 	// percent change controls
-   wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
-   if (pTextCtrl) {
-      str = pTextCtrl->GetValue();
+   if (m_pTextCtrl_PercentChange) {
+      str = m_pTextCtrl_PercentChange->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_PercentChange = newValue;
@@ -452,13 +471,11 @@ bool ChangeSpeedDialog::TransferDataFromWindow()
 
 
 	// from/to Vinyl controls
-	wxChoice * pChoice = this->GetChoice_FromVinyl();
-	if (pChoice) 
-		m_FromVinyl = pChoice->GetSelection();
+	if (m_pChoice_FromVinyl) 
+		m_FromVinyl = m_pChoice_FromVinyl->GetSelection();
 
-   pChoice = this->GetChoice_ToVinyl();
-	if (pChoice) 
-		m_ToVinyl = pChoice->GetSelection();
+	if (m_pChoice_ToVinyl) 
+		m_ToVinyl = m_pChoice_ToVinyl->GetSelection();
 
    return true;
 }
@@ -470,9 +487,8 @@ void ChangeSpeedDialog::OnText_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-   wxTextCtrl * pTextCtrl_PercentChange = this->GetTextCtrl_PercentChange();
-   if (pTextCtrl_PercentChange) {
-      wxString str = pTextCtrl_PercentChange->GetValue();
+   if (m_pTextCtrl_PercentChange) {
+      wxString str = m_pTextCtrl_PercentChange->GetValue();
       double newValue;
       str.ToDouble(&newValue);
 		m_PercentChange = newValue;
@@ -489,9 +505,8 @@ void ChangeSpeedDialog::OnSlider_PercentChange(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxSlider * slider = this->GetSlider_PercentChange();
-	if (slider) {
-		m_PercentChange = (double)(slider->GetValue()); 
+	if (m_pSlider_PercentChange) {
+		m_PercentChange = (double)(m_pSlider_PercentChange->GetValue()); 
 		// Warp positive values to actually go up faster & further than negatives.
 		if (m_PercentChange > 0.0)
 			m_PercentChange = pow(m_PercentChange, PERCENTCHANGE_SLIDER_WARP);
@@ -508,9 +523,8 @@ void ChangeSpeedDialog::OnChoice_FromVinyl(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxChoice * pChoice = this->GetChoice_FromVinyl();
-	if (pChoice) {
-		m_FromVinyl = pChoice->GetSelection();
+	if (m_pChoice_FromVinyl) {
+		m_FromVinyl = m_pChoice_FromVinyl->GetSelection();
 
       m_bLoopDetect = true;
 		this->Update_PercentChange();
@@ -523,9 +537,8 @@ void ChangeSpeedDialog::OnChoice_ToVinyl(wxCommandEvent & event)
    if (m_bLoopDetect)
       return;
 
-	wxChoice * pChoice = this->GetChoice_ToVinyl();
-	if (pChoice) {
-		m_ToVinyl = pChoice->GetSelection();
+	if (m_pChoice_ToVinyl) {
+		m_ToVinyl = m_pChoice_ToVinyl->GetSelection();
 
       m_bLoopDetect = true;
 		this->Update_PercentChange();
@@ -533,6 +546,17 @@ void ChangeSpeedDialog::OnChoice_ToVinyl(wxCommandEvent & event)
    }
 }
 
+
+void ChangeSpeedDialog::OnPreview(wxCommandEvent &event)
+{
+   TransferDataFromWindow();
+
+	// Save & restore m_pEffect->m_PercentChange around Preview, since we didn't do OK.
+	double oldPercentChange = m_pEffect->m_PercentChange;
+   m_pEffect->m_PercentChange = m_PercentChange;
+   m_pEffect->Preview();
+   m_pEffect->m_PercentChange = oldPercentChange; 
+}
 
 void ChangeSpeedDialog::OnOk(wxCommandEvent & event)
 {
@@ -554,40 +578,36 @@ void ChangeSpeedDialog::OnCancel(wxCommandEvent & event)
 
 void ChangeSpeedDialog::Update_Text_PercentChange()
 {
-	wxTextCtrl * pTextCtrl = this->GetTextCtrl_PercentChange();
-	if (pTextCtrl) {
+	if (m_pTextCtrl_PercentChange) {
 		wxString str;
 		str.Printf("%.1f", m_PercentChange);
-		pTextCtrl->SetValue(str);
+		m_pTextCtrl_PercentChange->SetValue(str);
 	}
 }
 
 void ChangeSpeedDialog::Update_Slider_PercentChange()
 {
-   wxSlider * slider = this->GetSlider_PercentChange();
-   if (slider) {
+   if (m_pSlider_PercentChange) {
 		double unwarped = m_PercentChange;
 		if (unwarped > 0.0)
 			// Un-warp values above zero to actually go up to PERCENTCHANGE_MAX.
 			unwarped = pow(m_PercentChange, (1.0 / PERCENTCHANGE_SLIDER_WARP));
-		slider->SetValue((int)(unwarped + 0.5)); // Add 0.5 so trunc -> round.
+		
+		// Add 0.5 to unwarped so trunc -> round.
+		m_pSlider_PercentChange->SetValue((int)(unwarped + 0.5)); 
 	}
 }
 
 void ChangeSpeedDialog::Update_Vinyl() 
 // Update Vinyl controls for new percent change.
 {
-	wxChoice * pChoice = this->GetChoice_ToVinyl();
-	if (pChoice) 
+	if (m_pChoice_ToVinyl) 
 		// Chances are so low that the slider will exactly match a 
 		// standard ratio, just turn it "n/a" unless it's 0.0.
-		if (m_PercentChange != 0.0)
-			pChoice->SetSelection(CHOICE_NA);
-		else {
-			wxChoice * pChoice_FromVinyl = this->GetChoice_FromVinyl();
-			if (pChoice_FromVinyl)
-				pChoice->SetSelection(pChoice_FromVinyl->GetSelection());
-		}
+		if ((m_PercentChange == 0.0) && m_pChoice_FromVinyl)
+			m_pChoice_ToVinyl->SetSelection(m_pChoice_FromVinyl->GetSelection());
+		else
+			m_pChoice_ToVinyl->SetSelection(CHOICE_NA);
 }
 
 void ChangeSpeedDialog::Update_PercentChange() 
