@@ -32,7 +32,8 @@
 		ShadowColor				- 			  decimal, it will be somewhat
 		SpectrumLowColor		-			  non-intuitive to edit, but
 		SpectrumHighColor		-			  much easier to parse.
-	
+   /Locale
+      Language             - two-letter language code for translations
 
 	(*): wxGTK
 	(+): wxWin

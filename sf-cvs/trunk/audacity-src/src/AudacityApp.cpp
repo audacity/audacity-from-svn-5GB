@@ -18,6 +18,7 @@
 #endif
 
 #include <wx/fs_zip.h>
+#include <iostream>
 
 #include <wx/image.h>
 
@@ -164,6 +165,17 @@ bool AudacityApp::OnInit()
 
    InitPreferences();
    InitAudioIO();
+
+   // Locale
+   // wxWindows 2.3 has a much nicer wxLocale API.  We can make this code much
+   // better once we move to wx 2.3/2.4.
+
+   wxString lang = gPrefs->Read("/Locale/Language", "en");
+
+   if (lang != "en") {
+      wxLocale *locale = new wxLocale("", lang, "");
+      locale->AddCatalog("audacity");
+   }
 
    LoadEffects();
 
