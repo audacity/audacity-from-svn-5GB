@@ -857,6 +857,14 @@ SOURCE=..\src\widgets\Ruler.cpp
 
 SOURCE=..\src\widgets\Ruler.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Warning.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\widgets\Warning.h
+# End Source File
 # End Group
 # Begin Group "Resources"
 
