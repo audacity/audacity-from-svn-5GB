@@ -960,7 +960,7 @@ void FreqWindow::Recalc()
    case 0:                     // Spectrum
       // Convert to decibels
       for (i = 0; i < half; i++)
-         mProcessed[i] = 20 * log10(mProcessed[i] / mWindowSize / windows);
+         mProcessed[i] = 10 * log10(mProcessed[i] / mWindowSize / windows);
 
       mProcessedSize = half;
       mYMin = -90;
