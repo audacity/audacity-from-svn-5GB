@@ -116,6 +116,7 @@
   <li>Jonathan Ryshpan</li>
   <li>Patrick Shirkey</li>
   <li>David R. Sky</li>
+  <li>Tuomas Suutari</li>
   <li>Mark Tomlinson</li>
   <li>David Topper</li>
   <li>Rudy Trubitt</li>
