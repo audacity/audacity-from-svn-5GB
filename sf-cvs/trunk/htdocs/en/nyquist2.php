@@ -13,16 +13,16 @@ What makes Nyquist distinct from Lisp is that it is designed to work with
 sound, and has lots of built-in primitives and functions that synthesize,
 analyze, and manipulate sounds.  Within Audacity, this makes it
 relatively easy to build complicated effects out of Nyquist's palette
-of filters.
+of built-in functions.
 </p>
 
 <p>
-In Nyquist, a variable can hold a sound.  A sound in Nyquist is not
-as simple as a list of samples; it is best to think of a sound as an
-object.  There are a lot of functions provided that allow you to
-stretch, distort, and combine sounds very efficiently.  If you need to access
-the individual samples of a sound, you can rip it apart and do so, but
-Nyquist is not very efficient at doing this.
+In Nyquist, a variable can hold a sound just as easily as it
+can hold a number or a string.  There are a lot of functions
+provided that allow you to stretch, distort, and combine sounds
+very efficiently.  It is even possible to "rip apart" a sound
+and access its individual samples, but that's beyond the scope
+of this tutorial.
 </p>
 
 <p>
