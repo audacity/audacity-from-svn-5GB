@@ -32,6 +32,7 @@
 #include "LoadEffects.h"
 
 #ifdef USE_SOUNDTOUCH
+#include "ChangePitch.h"
 #include "ChangeTempo.h"
 #endif
 
@@ -83,6 +84,7 @@ void LoadEffects()
    // [nothing built-in, but plug-ins might go here]
 
 #ifdef USE_SOUNDTOUCH
+   Effect::RegisterEffect(new EffectChangePitch());
    Effect::RegisterEffect(new EffectChangeTempo());
 #endif
 
