@@ -101,3 +101,6 @@ distclean:
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C soundtouch distclean
+
+# arch-tag: 90816e26-b5d1-4198-bce9-26488cc39a51
+

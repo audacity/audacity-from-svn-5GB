@@ -462,3 +462,5 @@ buttons. ][Done using a simpler one button solution 15/Jun/03].
 - Ability to drag tracks instead of move down, move down, move down
 - Save preferences (write to disk) after closing dialog
 
+arch-tag: 391c81dc-d7dc-48ea-9aec-98f4c9728be7
+

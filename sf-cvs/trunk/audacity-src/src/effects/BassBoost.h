@@ -126,3 +126,15 @@ class BassBoostDialog:public wxDialog {
 
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: b45174f7-ee03-4245-8de5-d75e16bd7009
+

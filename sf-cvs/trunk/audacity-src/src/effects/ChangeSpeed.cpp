@@ -595,3 +595,15 @@ void ChangeSpeedDialog::Update_PercentChange()
 		this->Update_Slider_PercentChange();
 	}
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 84775e31-325f-46fd-bcec-7336b0a574e1
+

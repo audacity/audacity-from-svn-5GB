@@ -166,3 +166,15 @@ bool ComputeSpectrum(float * data, int width, int height,
 
    return true;
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 29527ca5-00d0-442d-afde-d699aee29a31
+

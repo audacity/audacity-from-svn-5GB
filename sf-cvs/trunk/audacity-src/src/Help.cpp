@@ -120,3 +120,15 @@ void QuitHelp()
       gHelp = NULL;
    }
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 6165cbc3-295a-4e52-b76c-825123aa7935
+

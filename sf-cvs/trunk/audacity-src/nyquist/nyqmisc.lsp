@@ -25,3 +25,6 @@
     (format t "~A: srate ~A, t0 ~A, extent ~A, dur ~A, ~A: ~A"
       sound srate t0 extent dur samples (snd-samples sound nsamples))))
 
+
+; arch-tag: a2d8e495-b702-479f-9d4d-9b81c4199647
+

@@ -418,3 +418,15 @@ class TrackPanel:public wxWindow {
 #define SMOOTHING_PROPORTION_MIN 0.0
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 1f8c3d0e-849e-4f3c-95b5-9ead0789f999
+

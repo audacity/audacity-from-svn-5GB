@@ -158,3 +158,15 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
                                 min, max, rms);
 }
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 7afeef28-696c-40c6-9558-c1134ac04a66
+

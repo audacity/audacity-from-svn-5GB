@@ -17,3 +17,6 @@
 	 (sim (cue s)
 			(loud decay (at delay (delays s decay delay (- count 1)))))))
 (stretch-abs 1 (delays s (- 0 decay) delay count))
+
+; arch-tag: 9dc830cf-962c-4429-a587-b7607b5040fa
+

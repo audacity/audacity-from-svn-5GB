@@ -86,3 +86,15 @@ XMLTagHandler *XMLTagHandler::ReadXMLChild(const char *tag)
 {
    return HandleXMLChild(Internat::UTF8ToLocal(tag));
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 6aabae58-19bd-4b3a-aa6c-08432a7e106e
+

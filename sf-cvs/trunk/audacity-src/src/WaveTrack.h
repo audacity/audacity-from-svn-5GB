@@ -237,3 +237,15 @@ class WaveTrack: public Track {
 };
 
 #endif // __AUDACITY_WAVETRACK__
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: bf4c1c84-7a1d-4689-86fd-f6926b5d3f9a
+

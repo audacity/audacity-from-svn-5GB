@@ -75,3 +75,15 @@ class AudacityApp:public wxApp {
 };
 
 extern AudacityApp & wxGetApp();
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 31e7d5f1-bd9e-4348-bce1-6921effbd8e5
+

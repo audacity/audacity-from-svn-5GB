@@ -951,3 +951,15 @@ void ControlToolBar::EnableDisableButtons()
 }
 
 
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: ebfdc42a-6a03-4826-afa2-937a48c0565b
+

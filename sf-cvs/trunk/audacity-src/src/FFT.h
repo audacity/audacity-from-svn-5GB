@@ -87,3 +87,15 @@ const char *WindowFuncName(int whichFunction);
  */
 
 int NumWindowFuncs();
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 91e23340-889b-4c2d-89b0-0173315a0b32
+

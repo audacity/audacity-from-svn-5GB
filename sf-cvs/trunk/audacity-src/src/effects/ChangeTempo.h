@@ -128,3 +128,15 @@ class ChangeTempoDialog:public wxDialog {
 #endif // __AUDACITY_EFFECT_CHANGETEMPO__
 
 #endif // USE_SOUNDTOUCH
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: d5538ef9-b7b0-4dd9-a23b-8cce354262a8
+

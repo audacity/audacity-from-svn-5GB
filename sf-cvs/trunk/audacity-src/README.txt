@@ -474,3 +474,6 @@ New libraries in Audacity 1.1:
   * libid3tag for editing MP3 file information
   * libsndfile to read and write more audio file formats
   * PortAudio for cross-platform audio playing and recording
+
+arch-tag: ca45f641-c19e-4246-9d9c-0e937771678c
+

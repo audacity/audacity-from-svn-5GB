@@ -125,3 +125,15 @@ class ChangeSpeedDialog:public wxDialog {
 
 
 #endif // __AUDACITY_EFFECT_CHANGESPEED__
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 1b39309b-9855-4705-9637-6435a119be56
+

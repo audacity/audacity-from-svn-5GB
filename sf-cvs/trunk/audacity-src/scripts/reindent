@@ -35,3 +35,6 @@ foreach my $file (@ARGV) {
    system("$indent -kr -nut -i3 -nsob $file");
    system("rm $file~");
 }
+
+# arch-tag: b30b2ac9-5f36-4226-8b79-cb8ebfb908e1
+

@@ -314,3 +314,15 @@ void NormalizeDialog::OnCancel(wxCommandEvent &event)
 {
    EndModal(false);
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 0e9ab1c7-3cb3-4864-8f30-876218bea476
+

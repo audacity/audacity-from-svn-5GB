@@ -256,3 +256,15 @@ void EffectSimplePairedTwoTrack<_DataType,_xxxSample>::End()
 }
 
 #endif
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 72d8e0e3-6e8a-478e-a867-7e0acc902f4d
+

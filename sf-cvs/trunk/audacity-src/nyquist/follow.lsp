@@ -68,3 +68,6 @@
     ; = (snd-srate input)
     (mult (seq (s-rest (/ 20.0 88.2)) (cue input)) gain)))
 
+
+; arch-tag: e276f007-e894-4c2a-95b6-1fc4cbc74bfb
+

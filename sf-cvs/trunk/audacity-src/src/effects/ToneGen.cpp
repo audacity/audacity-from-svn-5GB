@@ -361,3 +361,15 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
 
    return item0;
 }
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: 04ea2450-8127-45c4-8702-6aaf5b60ed8c
+

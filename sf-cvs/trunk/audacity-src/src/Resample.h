@@ -94,3 +94,15 @@ class Resample
 };
 
 #endif // __AUDACITY_RESAMPLE_H__
+
+// Indentation settings for Vim and Emacs and unique identifier for Arch, a
+// version control system. Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+// arch-tag: bffbe34c-3029-47dc-af4c-f83d9a26002c
+
