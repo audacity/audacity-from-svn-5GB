@@ -28,6 +28,8 @@ public:
   static void Light(wxDC *dc, bool selected);
   static void Medium(wxDC *dc, bool selected);
   static void Dark(wxDC *dc, bool selected);
+  
+  static void MIDIChannel(wxDC *dc, int channel /* 1 - 16 */);
 
   static wxBrush lightBrush[2];
   static wxBrush mediumBrush[2];
