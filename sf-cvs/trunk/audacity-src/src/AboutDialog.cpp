@@ -111,16 +111,26 @@ AboutDialog::AboutDialog(wxWindow * parent)
    informationStr += " " __DATE__ "<br>\n";
 
    wxString par1Str = _(
-     "Audacity is a free program being written by a team of developers "
-     "using Sourceforge, an online service for open-source projects.  "
-     "It is based on the wxWindows toolkit and is available for "
-     "Windows, MacOS 9 and X, Linux, and other Unix-like systems.");
+     "Audacity is a free program written by a team of volunteer developers "
+     "around the world.  Coordination happens thanks to SourceForge.net, "
+     "an online service that provides free tools to open-source "
+     "software projects.  Audacity is available for Windows 98 and "
+     "newer, Mac OS X, Linux, and other Unix-like operating systems.  "
+     "Older versions of Audacity are available for Mac OS 9.");
 
+   #if 0 // Not beta anymore
    wxString par2Str = _(
      "This is a beta version of the program.  It may contain "
      "bugs and unfinished features.  We depend on your feedback, so "
      "please visit our website and give us your bug reports and "
      "feature requests." );
+   #else
+   wxString par2Str = _(
+     "This is a stable, completed release of Audacity.  However, if "
+     "you find a bug or have a suggestion, please contact us.  We "
+     "depend on feedback from users in order to continue to improve "
+     "Audacity.  For more information, visit our website.");
+   #endif
 
    wxString creditStr = 
       "<html>"
@@ -128,7 +138,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<font size=1>"
       "<center>"
       "<h3>Audacity " + versionStr + "</h3>"
-      + _("A New Digital Audio Editor") +
+      + _("A Free Digital Audio Editor") +
       "</center>"
       "<p>"
       + par1Str +
@@ -201,10 +211,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>" + _("Main Logo") + "</td>"
       "</tr>"
       "<tr>"
-      "<td>Tom Woodhams</td>"
-      "<td>" + _("Aqua Graphics (MacOS)") + "</td>"
-      "</tr>"
-      "<tr>"
       "<td>Roger Dannenberg</td>"
       "<td>" + _("Algorithms, MIDI & Audio I/O programming") + "</td>"
       "</tr>"
@@ -244,7 +250,8 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "The Ogg Vorbis Team<br>"
       "Rob Leslie (libmad)<br>"
       "Ross Bencina and Phil Burk (PortAudio)<br>"
-      "Erik de Castro Lopo (libsndfile)<br>"
+      "Erik de Castro Lopo (libsndfile and libsamplerate)<br>"
+      "Olli Parviainen (soundtouch)<br>"
       "Verilogix, Inc.<br>"
 
       "</center>"
