@@ -275,7 +275,7 @@ class TrackPanel:public wxWindow {
    // AS: MAGIC NUMBER: I'm not sure why 3.
    bool IsDragZooming() const { return abs(mZoomEnd - mZoomStart) > 3;}
 
-   bool IsDragDrawing() const { return abs(mDrawMouseEnd - mDrawMouseStart) > 3;}
+   bool IsDragDrawing();
 
    wxCursor *mArrowCursor;
    wxCursor *mPencilCursor;
