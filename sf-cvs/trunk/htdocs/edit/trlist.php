@@ -77,7 +77,7 @@ if ($newtranslation) {
 print "$update";
 
 
-BoxTop("Main Phrases List");
+BoxTop("Main Phrase List");
 
 $yes=0;
 $total=0;
