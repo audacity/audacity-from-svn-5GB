@@ -326,6 +326,10 @@ Changes in 1.2.2:
   * Fix a bug that occasionally caused crashes when applying effects
     to split tracks.
 
+  * Zoom In / Zoom Out now properly disable when they're not available.
+
+  * Fixed disk memory leak in Preview
+
   * Other minor bug fixes and performance improvements.
 
 Changes in 1.2.1:
