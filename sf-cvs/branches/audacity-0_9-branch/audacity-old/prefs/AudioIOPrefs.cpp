@@ -318,20 +318,20 @@ PrefsPanel(parent)
       {
          wxBoxSizer *pFileSizer = new wxBoxSizer(wxHORIZONTAL);
 
-		 int numDevices = waveInGetNumDevs();
-		 wxString *deviceNames = new wxString[numDevices];
-		 WAVEINCAPS caps;
+         int numDevices = waveOutGetNumDevs();
+         wxString *deviceNames = new wxString[numDevices];
+         WAVEOUTCAPS caps;
 
-		 for(int j = 0; j < numDevices; j++) {
-			 waveInGetDevCaps(j, &caps, sizeof(WAVEINCAPS));
-			 deviceNames[j] = caps.szPname;
-		 }
+         for(int j = 0; j < numDevices; j++) {
+             waveOutGetDevCaps(j, &caps, sizeof(WAVEOUTCAPS));
+             deviceNames[j] = caps.szPname;
+         }
 
          mPlaybackDeviceCtrl = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-			 numDevices, deviceNames);
-		 mPlaybackDeviceCtrl->SetStringSelection(mPlayDevice);
-		 if(mPlaybackDeviceCtrl->GetSelection() == -1)
-			 mPlaybackDeviceCtrl->SetSelection(0);
+             numDevices, deviceNames);
+         mPlaybackDeviceCtrl->SetStringSelection(mPlayDevice);
+         if(mPlaybackDeviceCtrl->GetSelection() == -1)
+             mPlaybackDeviceCtrl->SetSelection(0);
 
          pFileSizer->Add(
             new wxStaticText(this, -1, "Device:"), 0, 
@@ -383,21 +383,21 @@ PrefsPanel(parent)
 
          wxBoxSizer *rFileSizer = new wxBoxSizer(wxHORIZONTAL);
 
-		 
-		 int numDevices = waveOutGetNumDevs();
-		 wxString *deviceNames = new wxString[numDevices];
-		 WAVEOUTCAPS caps;
+         
+         int numDevices = waveInGetNumDevs();
+         wxString *deviceNames = new wxString[numDevices];
+         WAVEINCAPS caps;
 
-		 for(int j = 0; j < numDevices; j++) {
-			 waveOutGetDevCaps(j, &caps, sizeof(WAVEOUTCAPS));
-			 deviceNames[j] = caps.szPname;
-		 }
+         for(int j = 0; j < numDevices; j++) {
+             waveInGetDevCaps(j, &caps, sizeof(WAVEINCAPS));
+             deviceNames[j] = caps.szPname;
+         }
 
          mRecordingDeviceCtrl = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-			 numDevices, deviceNames);
-		 mRecordingDeviceCtrl->SetStringSelection(mRecDevice);
-		 if(mRecordingDeviceCtrl->GetSelection() == -1)
-			 mRecordingDeviceCtrl->SetSelection(0);
+             numDevices, deviceNames);
+         mRecordingDeviceCtrl->SetStringSelection(mRecDevice);
+         if(mRecordingDeviceCtrl->GetSelection() == -1)
+              mRecordingDeviceCtrl->SetSelection(0);
 
 
          rFileSizer->Add(
