@@ -29,22 +29,17 @@ END_EVENT_TABLE()
 ASlider::ASlider(wxWindow * parent, wxWindowID id,
                  const wxPoint & pos,
                  const wxSize & size,
-                 wxImage *slider,
-                 wxImage *thumb,
+                 wxImage * slider,
+                 wxImage * thumb,
                  int max):wxWindow(parent, id, pos, size)
 {
    mMax = max;
    mValue = 0;
-
    mIsDragging = false;
-
    mBitmap = new wxBitmap(slider->ConvertToBitmap());
-
    mThumbBitmap = new wxBitmap(thumb->ConvertToBitmap());
-
    mThumbWidth = mThumbBitmap->GetWidth();
    mThumbHeight = mThumbBitmap->GetHeight();
-
    GetSize(&mWidth, &mHeight);
 }
 
@@ -57,7 +52,9 @@ ASlider::~ASlider()
 void ASlider::OnPaint(wxPaintEvent & event)
 {
    wxPaintDC dc(this);
-   int thumbPos = mValue * (mWidth - mThumbWidth) / mMax;
+
+   //thumbPos should be in pixels
+   int thumbPos = mValue * (mWidth - 1 - mThumbWidth) / (mMax + 1);
    int thumbY = (mHeight - mThumbHeight) / 2;
 
 #if defined(__WXMAC__) || defined(__WXMSW__)
@@ -76,25 +73,52 @@ void ASlider::OnPaint(wxPaintEvent & event)
 void ASlider::OnMouseEvent(wxMouseEvent & event)
 {
    if (event.ButtonDown()) {
-      mIsDragging = true;
-      CaptureMouse();
-      mInitialX = event.m_x;
-      mInitialY = event.m_y;
-      mInitialPos = mValue * (mWidth - mThumbWidth) / mMax;
-   }
 
-   if (event.ButtonUp()) {
+      //This jumps the thumb to clicked position
+      if (!mIsDragging) {
+
+         //First, figure out where the thumb should go:
+         //The thumb should go at event.m_x - thumbwidth/2,
+         //BUT, shouldn't be less than 0 or greater than width - thumbwidth
+
+         int newthumbPos = event.m_x - mThumbWidth / 2;
+         if (newthumbPos < 0)
+            newthumbPos = 0;
+         if (newthumbPos > (mWidth - 1 - mThumbWidth))
+            newthumbPos = mWidth - 1 - mThumbWidth;
+
+         //calculate where (in pixels) the thumb currently is
+         int thumbPos = mValue * (mWidth - 1 - mThumbWidth) / (mMax + 1);
+
+         //Only move the thumb if we aren't clicking on it already
+         if ((newthumbPos < thumbPos)
+             || (newthumbPos > (thumbPos + mThumbWidth))) {
+            thumbPos = newthumbPos;
+
+            //Calculate the new value, based on thumbPos
+            mValue = thumbPos * (mMax + 1) / (mWidth - 1 - mThumbWidth);
+            this->Refresh(false);
+         }
+
+         mIsDragging = true;
+         CaptureMouse();
+      }
+
+   } else if (event.ButtonUp() && mIsDragging) {
       mIsDragging = false;
       ReleaseMouse();
-   }
+   } else if (mIsDragging) {
+      //If we're dragging, figure out where the thumb should go
+      int newthumbPos = event.m_x - mThumbWidth / 2;
+      if (newthumbPos < 0)
+         newthumbPos = 0;
+      if (newthumbPos > (mWidth - 1 - mThumbWidth))
+         newthumbPos = mWidth - 1 - mThumbWidth;
 
-   if (mIsDragging) {
-      int newPos = mInitialPos + (event.m_x - mInitialX);
-      int newValue = newPos * mMax / (mWidth - mThumbWidth);
-      if (newValue < 0)
-         newValue = 0;
-      if (newValue > mMax)
-         newValue = mMax;
+      //Calculate a new mValue based on new thumb position
+      int newValue = newthumbPos * (mMax + 1) / (mWidth - 1 - mThumbWidth);
+
+      //Redraw if necessary
       if (newValue != mValue) {
          mValue = newValue;
          this->Refresh(false);
@@ -110,5 +134,9 @@ int ASlider::Get()
 void ASlider::Set(int value)
 {
    mValue = value;
+   if (mValue < 0)
+      mValue = 0;
+   if (mValue > mMax)
+      mValue = mMax;
    this->Refresh(false);
 }

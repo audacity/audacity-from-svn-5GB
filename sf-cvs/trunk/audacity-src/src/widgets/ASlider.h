@@ -27,8 +27,7 @@ class ASlider:public wxWindow {
    ASlider(wxWindow * parent, wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
-           wxImage *slider, wxImage *thumb,
-           int max);
+           wxImage * slider, wxImage * thumb, int max);
 
     virtual ~ ASlider();
 
@@ -40,18 +39,14 @@ class ASlider:public wxWindow {
 
  private:
 
-   int mWidth;
-   int mHeight;
+   int mWidth;                  //In pixels
+   int mHeight;                 //In pixels
 
-   int mThumbWidth;
-   int mThumbHeight;
+   int mThumbWidth;             //In pixels
+   int mThumbHeight;            //In pixels
 
-   int mValue;
-   int mMax;
-
-   int mInitialX;
-   int mInitialY;
-   int mInitialPos;
+   int mValue;                  //slider value units
+   int mMax;                    //max slider value units
 
    bool mIsDragging;
 
