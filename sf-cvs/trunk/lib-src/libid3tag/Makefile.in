@@ -95,7 +95,7 @@ libid3tag_la_LDFLAGS = -version-info $(version_info)
 
 BUILT_SOURCES = frametype.c compat.c genre.dat
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/../../mkinstalldirs
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = 
 LTLIBRARIES =  $(lib_LTLIBRARIES)
@@ -121,12 +121,12 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
 HEADERS =  $(include_HEADERS)
 
 DIST_COMMON =  ./stamp-h.in Makefile.am Makefile.in acconfig.h \
-acinclude.m4 aclocal.m4 config.h.in configure configure.in
+acinclude.m4 aclocal.m4 config.h.in configure configure.in ltconfig
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
-TAR = tar
+TAR = gtar
 GZIP_ENV = --best
 SOURCES = $(libid3tag_la_SOURCES) $(EXTRA_libid3tag_la_SOURCES)
 OBJECTS = $(libid3tag_la_OBJECTS)
@@ -134,20 +134,27 @@ OBJECTS = $(libid3tag_la_OBJECTS)
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .lo .o .s
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps Makefile
 
-Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
-	cd $(top_builddir) \
-	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
+#commented out for Audacity
+#$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+#	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps Makefile
 
-$(ACLOCAL_M4):  configure.in  acinclude.m4
-	cd $(srcdir) && $(ACLOCAL)
+#commented out for Audacity
+#Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+#	cd $(top_builddir) \
+#	  && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
-config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
-	$(SHELL) ./config.status --recheck
-$(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
-	cd $(srcdir) && $(AUTOCONF)
+#commented out for Audacity
+#$(ACLOCAL_M4):  configure.in  acinclude.m4
+#	cd $(srcdir) && $(ACLOCAL)
+
+#commented out for Audacity
+#config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+#	$(SHELL) ./config.status --recheck
+
+#commented out for Audacity
+#$(srcdir)/configure: $(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
+#	cd $(srcdir) && $(AUTOCONF)
 
 config.h: stamp-h
 	@if test ! -f $@; then \
@@ -335,7 +342,6 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-
 info-am:
 info: info-am
 dvi-am:
