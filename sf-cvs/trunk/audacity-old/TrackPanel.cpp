@@ -254,7 +254,7 @@ void TrackPanel::OnTimer()
 		t = iter.First();
 		while(t) {
 		  int height = t->GetHeight();
-		  if (t->selected)
+		  if (t->selected && t->GetKind()!=VTrack::Label)
 			dc.DrawLine(x,y+5,x,y+height-5);
 		  t = iter.Next();
 		  y += height;
