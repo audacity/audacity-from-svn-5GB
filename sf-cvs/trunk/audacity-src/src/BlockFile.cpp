@@ -133,9 +133,9 @@ bool BlockFile::Deref()
 void *BlockFile::CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format)
 {
-   // all we have to do is ensure that the real summary is never bigger
-   // than this
-   static char fullSummary[200000];
+   static char *fullSummary = 0;
+   if(fullSummary)delete fullSummary;
+   fullSummary = new char[mSummaryInfo.totalSummaryBytes];
 
    memcpy(fullSummary, headerTag, headerTagLen);
 

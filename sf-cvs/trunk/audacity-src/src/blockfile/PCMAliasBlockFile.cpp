@@ -123,7 +123,7 @@ void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    xmlFile.Write("/>\n");
 }
 
-BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
+BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
@@ -136,7 +136,7 @@ BlockFile *PCMAliasBlockFile::BuildFromXML(wxString projDir, const char **attrs)
        const char *value = *attrs++;
 
        if( !wxStricmp(attr, "summaryfile") )
-          summaryFileName.Assign(projDir, value);
+	  dm.AssignFile(summaryFileName,value);
        if( !wxStricmp(attr, "aliasfile") )
           aliasFileName.Assign(value);
        if( !wxStricmp(attr, "aliasstart") )

@@ -44,7 +44,7 @@ void SilentBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 }
 
 /// static
-BlockFile *SilentBlockFile::BuildFromXML(wxString projDir, const char **attrs)
+BlockFile *SilentBlockFile::BuildFromXML(DirManager &dm, const char **attrs)
 {
    sampleCount len = 0;
 

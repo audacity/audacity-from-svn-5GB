@@ -19,6 +19,7 @@
 #include <wx/intl.h>
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/dir.h>
 #include <wx/object.h>
 
 #include "Audacity.h"
@@ -44,6 +45,7 @@
 
 int DirManager::numDirManagers = 0;
 int DirManager::fileIndex = 0;
+int DirManager::dirIndex = 0;
 bool DirManager::dontDeleteTempFiles = false;
 
 unsigned int DirManager::defaultHashTableSize = 10000;
@@ -102,6 +104,7 @@ DirManager::~DirManager()
    }
 }
 
+
 void DirManager::CleanTempDir(bool startup)
 {
    wxString fname;
@@ -117,6 +120,27 @@ void DirManager::CleanTempDir(bool startup)
       count++;
       fnameList.Add(fname);
       fname = wxFindNextFile();
+   }
+   {
+     // also need to clean up the new subdirs. Wildcards in the path
+     // spec of wxFindFirstFile don't seem to work; do it the hard way
+     wxDir dir(temp);
+     if(dir.IsOpened()){
+       bool cont= dir.GetFirst(&fname, "d*");
+       while ( cont ){
+
+	 fname = wxFindFirstFile((const char *) 
+				 (temp + wxFILE_SEP_PATH + 
+				  fname.c_str() + wxFILE_SEP_PATH + "d*"));
+	 while (fname != "") {
+	   count++;
+	   fnameList.Add(fname);
+	   fname = wxFindNextFile();
+	 }
+	 
+	 cont = dir.GetNext(&fname);
+       }
+     }
    }
 
    if (count == 0)
@@ -270,23 +294,65 @@ wxLongLong DirManager::GetFreeDiskSpace()
    return freeSpace;
 }
 
-wxFileName DirManager::MakeBlockFileName(wxString projDir)
+void DirManager::AssignFile(wxFileName &fileName,
+			    wxString value){
+
+  fileName.AssignDir(projFull != ""? projFull: temp);
+
+  if(value.GetChar(0)=='d'){
+    // this file is located in a subdiretory tree 
+    int location=value.Find('b');
+    wxString subdir=value.Mid(0,location);
+    fileName.AppendDir(subdir);
+
+    if(!fileName.DirExists())fileName.Mkdir();
+  }
+
+  fileName.SetName(value);
+}
+
+#define CHUNK_OF_FILES 0x80
+
+wxFileName DirManager::MakeBlockFileName()
 {
+   wxFileName ret;
    wxString baseFileName;
 
-   do {
-      baseFileName.Printf("b%05d", fileIndex++);
-   } while ( blockFileHash->Get(baseFileName) );
+   do{
+     baseFileName.Printf("d%03db%03d", dirIndex,fileIndex);
 
-   return wxFileName(projDir, baseFileName);
+     fileIndex++;
+     if((fileIndex & (CHUNK_OF_FILES-1)) == 0){
+
+       int dirMajor=(dirIndex + 1) & ~(CHUNK_OF_FILES-1);
+
+       // finished off the current chunk of files
+       // are we balancing or are we filling new directories?
+
+       if(dirIndex + 1 == fileIndex){
+	 // done filling chunk of new directories; go back and balance
+	 dirIndex = 0;
+       }else if (dirMajor == fileIndex - CHUNK_OF_FILES){
+	 // start filling next new directory
+	 dirIndex++;
+	 fileIndex=0;
+       }else if (dirMajor < fileIndex - CHUNK_OF_FILES){
+	 // balance the next preexisting directory
+	 dirIndex++;
+	 fileIndex -= CHUNK_OF_FILES;
+       } // else we continue
+     }
+   }while ( blockFileHash->Get(baseFileName) );
+   
+   AssignFile(ret,baseFileName);
+   return ret;
 }
 
 BlockFile *DirManager::NewSimpleBlockFile(
                                  samplePtr sampleData, sampleCount sampleLen,
                                  sampleFormat format)
 {
-   wxString loc = (projFull != ""? projFull: temp);
-   wxFileName fileName = MakeBlockFileName(loc);
+   wxFileName fileName = MakeBlockFileName();
 
    BlockFile *newBlockFile =
        new SimpleBlockFile(fileName, sampleData, sampleLen, format);
@@ -302,8 +368,7 @@ BlockFile *DirManager::NewAliasBlockFile(
                                  wxString aliasedFile, sampleCount aliasStart,
                                  sampleCount aliasLen, int aliasChannel)
 {
-   wxString loc = (projFull != ""? projFull: temp);
-   wxFileName fileName = MakeBlockFileName(loc);
+   wxFileName fileName = MakeBlockFileName();
 
    BlockFile *newBlockFile =
        new PCMAliasBlockFile(fileName,
@@ -327,8 +392,7 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
       return b;
    }
 
-   wxString dir = (projFull != ""? projFull: temp);
-   wxFileName newFile = MakeBlockFileName(dir);
+   wxFileName newFile = MakeBlockFileName();
 
    // We assume that the new file should have the same extension
    // as the existing file
@@ -357,11 +421,11 @@ bool DirManager::HandleXMLTag(const char *tag, const char **attrs)
       return false;
 
    if ( !wxStricmp(tag, "simpleblockfile") )
-      *mLoadingTarget = SimpleBlockFile::BuildFromXML(projFull, attrs);
+      *mLoadingTarget = SimpleBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, "pcmaliasblockfile") )
-      *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(projFull, attrs);
+      *mLoadingTarget = PCMAliasBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, "silentblockfile") )
-      *mLoadingTarget = SilentBlockFile::BuildFromXML(projFull, attrs);
+      *mLoadingTarget = SilentBlockFile::BuildFromXML(*this, attrs);
    else if( !wxStricmp(tag, "blockfile") ||
             !wxStricmp(tag, "legacyblockfile") ) {
       // Support Audacity version 1.1.1 project files
@@ -470,7 +534,8 @@ BlockFile *DirManager::LoadBlockFile(wxTextFile * in, sampleFormat format)
 
 bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 {
-   wxFileName newFileName(projFull, f->mFileName.GetFullName());
+   wxFileName newFileName;
+   AssignFile(newFileName,f->mFileName.GetFullName()); 
 
    if ( !(newFileName == f->mFileName) ) {
       bool ok = wxRenameFile(FILENAME(f->mFileName.GetFullPath()),
@@ -495,7 +560,9 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
 
 bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 {
-   wxFileName newFileName(projFull, f->mFileName.GetFullName());
+   wxFileName newFileName;
+   AssignFile(newFileName,f->mFileName.GetFullName()); 
+
    if ( !(newFileName == f->mFileName) ) {
       bool ok = wxCopyFile(FILENAME(f->mFileName.GetFullPath()),
                            FILENAME(newFileName.GetFullPath()));
