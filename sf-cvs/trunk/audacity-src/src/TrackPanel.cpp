@@ -1739,11 +1739,21 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          DisplaySelection();
       }
 
-      if (pTrack->GetKind() == Track::Label)
+      if (pTrack->GetKind() == Track::Label) {
          ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
                                             mCapturedRect,
                                             mViewInfo->h, mViewInfo->zoom,
                                             &mViewInfo->sel0, &mViewInfo->sel1);
+         if (((LabelTrack *) pTrack)->IsSelected()) {
+            // If the user clicked a label, select all other tracks too
+            TrackListIterator iter(mTracks);
+            Track *t = iter.First();
+            while (t) {
+               t->SetSelected(true);
+               t = iter.Next();
+            }
+         }
+      }
    }
    mIsSelecting = true;
 }
