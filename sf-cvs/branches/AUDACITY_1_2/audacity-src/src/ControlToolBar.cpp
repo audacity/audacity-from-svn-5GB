@@ -348,12 +348,16 @@ void ControlToolBar::RegenerateToolsTooltips()
 	// James confirms that commenting them out does not cause his original problem 
 	// to reappear, so they're commented out now.
 	//		wxSafeYield(); //Deal with some queued up messages...
+
+   #if wxUSE_TOOLTIPS
    mTool[selectTool]->SetToolTip(_("Selection Tool"));
    mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
    mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
    mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
    mTool[drawTool]->SetToolTip(_("Draw Tool"));
    mTool[multiTool]->SetToolTip(_("Multi-Tool Mode"));
+   #endif
+
    //		wxSafeYield();
    return;
 
@@ -411,7 +415,6 @@ void ControlToolBar::MakeButtons()
                               (char const **) RewindDisabled,
                               (char const **) RewindAlpha, ID_REW_BUTTON,
                               false);
-         mRewind->SetToolTip(_("Skip to Start"));
          break;
       
       case ID_PLAY_BUTTON:
@@ -419,7 +422,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) PlayDisabled,
                             (char const **) PlayAlpha, ID_PLAY_BUTTON,
                             false);
-         mPlay->SetToolTip(_("Play (Shift for loop-play)"));
          MakeLoopImage();
          break;
       
@@ -431,7 +433,6 @@ void ControlToolBar::MakeButtons()
                               (char const **) RecordDisabled,
                               (char const **) RecordAlpha, ID_RECORD_BUTTON,
                               false);
-         mRecord->SetToolTip(_("Record"));
          break;
       
       case ID_PAUSE_BUTTON:
@@ -439,7 +440,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) PauseDisabled,
                             (char const **) PauseAlpha, ID_PAUSE_BUTTON,
                              true);
-         mPause->SetToolTip(_("Pause"));
          break;
       
       case ID_STOP_BUTTON:
@@ -447,7 +447,6 @@ void ControlToolBar::MakeButtons()
                             (char const **) StopDisabled,
                             (char const **) StopAlpha, ID_STOP_BUTTON,
                             false);
-         mStop->SetToolTip(_("Stop"));
          break;
       
       case ID_FF_BUTTON:
@@ -455,13 +454,21 @@ void ControlToolBar::MakeButtons()
                           (char const **) FFwdDisabled,
                           (char const **) FFwdAlpha, ID_FF_BUTTON,
                           false);
-         mFF->SetToolTip(_("Skip to End"));
          break;
       
       default:
          wxASSERT(false); // unknown button id
       }
    }
+
+   #if wxUSE_TOOLTIPS
+         mRewind->SetToolTip(_("Skip to Start"));
+         mPlay->SetToolTip(_("Play (Shift for loop-play)"));
+         mRecord->SetToolTip(_("Record"));
+         mPause->SetToolTip(_("Pause"));
+         mStop->SetToolTip(_("Stop"));
+         mFF->SetToolTip(_("Skip to End"));
+   #endif
 
 #ifndef __WXMAC__
    delete upPattern;
@@ -491,12 +498,14 @@ void ControlToolBar::MakeButtons()
    mTool[multiTool] = MakeTool(Multi, MultiAlpha, ID_MULTI, 54, 28); 
    #endif
 
+#if wxUSE_TOOLTIPS
 #ifdef __WXMAC__
    wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
 #else
 // MB: Should make this a pref
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
+#endif
 #endif
 
    RegenerateToolsTooltips();

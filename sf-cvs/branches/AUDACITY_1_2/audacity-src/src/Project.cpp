@@ -103,21 +103,17 @@ const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 1;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
-#ifdef __WXMSW__
+#elif defined(__WXMSW__)
 const int sbarSpaceWidth = 16;
 const int sbarControlWidth = 16;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
-#ifdef __WXGTK__
+#else // wxGTK, wxMOTIF, wxX11
 const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#endif
 
-#if defined(__WXGTK__) || defined(__WXMOTIF__)
 #include "../images/AudacityLogo.xpm"
 #endif
 
@@ -513,7 +509,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //
 
    // loads either the XPM or the windows resource, depending on the platform
-#ifndef __WXMAC__
+#if !defined(__WXMAC__) && !defined(__WXX11__)
    wxIcon ic(wxICON(AudacityLogo));
    SetIcon(ic);
 #endif
