@@ -582,7 +582,7 @@ sampleCount Sequence::GetBestBlockSize(sampleCount start) const
    sampleCount result = (mBlock->Item(b)->start + mBlock->Item(b)->f->GetLength() - start);
    
    while(result < mMinSamples && b+1<numBlocks &&
-         (mBlock->Item(b)->f->GetLength()+result) <= mMaxSamples) {
+         (mBlock->Item(b+1)->f->GetLength()+result) <= mMaxSamples) {
       b++;
       result += mBlock->Item(b)->f->GetLength();
    }
