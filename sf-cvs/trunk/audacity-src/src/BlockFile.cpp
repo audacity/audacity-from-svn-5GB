@@ -127,7 +127,7 @@ int BlockFile::ReadData(void *data, sampleFormat format,
       if (!sf)
          return 0;
 
-      sf_seek(sf, start, SEEK_SET);
+      sf_seek(sf, mStart + start, SEEK_SET);
       samplePtr buffer = NewSamples(len * info.channels, floatSample);
 
       int framesRead = 0;
