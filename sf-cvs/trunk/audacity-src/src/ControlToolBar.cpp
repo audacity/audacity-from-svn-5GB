@@ -181,45 +181,40 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
    // a little button, for the toolbar.  The tool
    // is alpha-blended onto the background.
 
-   int width = tool->GetWidth();
-   int height = tool->GetHeight();
-   int i;
+   const char **src;
 
-   wxImage *background = new wxImage(width, height);
-   wxColour colour;
-   unsigned char *bkgnd = background->GetData();
-   unsigned char r, g, b;
-
-   //
-   // Background
-   //
-
-   colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-   r = colour.Red();
-   g = colour.Green();
-   b = colour.Blue();
-   if (style == 1) {            // hilite
-      r += (255 - r) / 2;
-      g += (255 - g) / 2;
-      b += (255 - b) / 2;
-   } else if (style == 2) {     // down
-      if ((r + g + b) / 3 > 128) {
-         r = r * 2 / 3;
-         g = g * 2 / 3;
-         b = b * 2 / 3;
-      } else {
-         r += (255 - r) / 3;
-         g += (255 - g) / 3;
-         b += (255 - b) / 3;
-      }
+   switch(style) {
+   case 1: // hilite
+      src = Hilite;
+      break;
+   case 2: // down
+      src = Down;
+      break;
+   default:
+      src = Up;
+      break;
    }
 
-   unsigned char *p = bkgnd;
-   for (i = 0; i < width * height; i++) {
-      *p++ = r;
-      *p++ = g;
-      *p++ = b;
-   }
+#if wxVERSION_NUMBER < 2303
+   wxImage *bkgndOriginal = new wxImage(wxBitmap(src));
+   wxImage *upOriginal = new wxImage(wxBitmap(Up));
+#else
+   wxImage *bkgndOriginal = new wxImage(wxBitmap(src).ConvertToImage());
+   wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
+#endif
+
+#ifdef __WXMAC__
+   wxImage *background = bkgndOriginal;
+#else
+   wxColour backgroundColour =
+       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+   wxColour baseColour;
+   unsigned char *data = upOriginal->GetData();
+   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
+   wxImage *background = ChangeImageColour(bkgndOriginal,
+                                           baseColour,
+                                           backgroundColour);
+#endif
 
    // 
    // Overlay the tool on top of it
@@ -232,60 +227,10 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
       result = OverlayImage(background, tool, mask, 0, 0);
    delete background;
 
-   //
-   // Top hilite
-   //
-
-   if (style == 2)              // down
-      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
-   else
-      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
-   r = colour.Red();
-   g = colour.Green();
-   b = colour.Blue();
-
-   unsigned char *res = result->GetData();
-   p = res;
-   for (i = 0; i < width; i++) {
-      *p++ = r;
-      *p++ = g;
-      *p++ = b;
-   }
-
-   p = res;
-   for (i = 0; i < height; i++) {
-      *p++ = r;
-      *p++ = g;
-      *p++ = b;
-      p += 3 * (width - 1);
-   }
-
-   //
-   // Bottom shadow
-   //
-
-   if (style == 2)              // down
-      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
-   else
-      colour = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
-   r = colour.Red();
-   g = colour.Green();
-   b = colour.Blue();
-
-   p = res + 3 * (height - 1) * width;
-   for (i = 0; i < width; i++) {
-      *p++ = r;
-      *p++ = g;
-      *p++ = b;
-   }
-
-   p = res + 3 * (width - 1);
-   for (i = 0; i < height; i++) {
-      *p++ = r;
-      *p++ = g;
-      *p++ = b;
-      p += 3 * (width - 1);
-   }
+   #ifndef __WXMAC__
+   delete bkgndOriginal;
+   delete upOriginal;
+   #endif
 
    return result;
 }
