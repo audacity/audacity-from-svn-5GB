@@ -28,6 +28,7 @@
 #include <wx/progdlg.h>
 #include <wx/string.h>
 #include <wx/timer.h>
+#include <wx/intl.h>
 
 extern "C" {
 #include "mad.h"
@@ -157,8 +158,8 @@ enum mad_flow output_cb(void *_data,
    */
 
    if(!data->progress /*&& wxGetElapsedTime() > 500*/)
-      data->progress = new wxProgressDialog("Import",
-                                            "Importing MP3 file...",
+      data->progress = new wxProgressDialog(_("Import"),
+                                            _("Importing MP3 file..."),
                                             1000,
                                             data->parent,
                                             wxPD_CAN_ABORT | wxPD_ELAPSED_TIME |
@@ -225,7 +226,8 @@ bool ImportMP3(AudacityProject * project,
    wxFile file((char *) fName.c_str());
 
    if (!file.IsOpened()) {
-      wxMessageBox("Could not open " + fName);
+      wxMessageBox(wxString::Format(_("Could not open %s"),
+                   (const char *) fName));
       return false;
    }
 

@@ -20,6 +20,7 @@
 #include <wx/timer.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/intl.h>
 
 #include "Import.h"
 #include "ImportRaw.h"
@@ -295,7 +296,8 @@ bool GuessPCMFormat(wxString fName,
    inf.Open(fName, wxFile::read);
 
    if (!inf.IsOpened()) {
-      wxMessageBox("Could not open " + fName);
+      wxMessageBox(wxString::Format(_("Could not open %s"),
+                   (const char *) fName));
       return false;
    }
 
@@ -311,7 +313,7 @@ bool GuessPCMFormat(wxString fName,
    fileLen -= headerSkipSize;   // skip header
 
    if (fileLen < dataSize) {
-      wxMessageBox("File not large enough to analyze.");
+      wxMessageBox(_("File not large enough to analyze."));
       return false;
    }
 
@@ -326,7 +328,7 @@ bool GuessPCMFormat(wxString fName,
       int actual = inf.Read((void *) rawData[test], dataSize);
       if (actual != dataSize) {
          wxString message;
-         message.Printf("Expected %d bytes, got %d bytes.", dataSize,
+         message.Printf(_("Expected %d bytes, got %d bytes."), dataSize,
                         actual);
          wxMessageBox(message);
          return false;
@@ -767,7 +769,8 @@ bool ImportRaw(wxWindow * parent,
    wxFile inf;
    inf.Open(fName, wxFile::read);
    if (!inf.IsOpened()) {
-      wxMessageBox("Could not open " + fName);
+      wxMessageBox(wxString::Format(_("Could not open %s"),
+                   (const char *) fName));
       return false;
    }
    int len = inf.Length();

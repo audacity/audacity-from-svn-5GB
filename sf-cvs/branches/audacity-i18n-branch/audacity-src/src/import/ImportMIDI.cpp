@@ -10,6 +10,7 @@
 
 #include <wx/msgdlg.h>
 #include <wx/file.h>
+#include <wx/intl.h>
 
 #include "../NoteTrack.h"
 #include "ImportMIDI.h"
@@ -26,7 +27,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
 
    if (!mf || ferror(mf)) {
       wxMessageBox(wxString::
-                   Format("Could not open %s", (const char *) fName));
+                   Format(_("Could not open %s"), (const char *) fName));
       return false;
    }
 
@@ -41,7 +42,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
       
       if (reader.seq.notes.len == 0) {
          // TODO: is there a better way to see if an error occurred?
-         wxMessageBox("Error parsing Allegro file.");
+         wxMessageBox(_("Error parsing Allegro file."));
          return false;
       }
       // need a Seq_ptr to a seq on the heap, but all we have is a reader member
@@ -71,7 +72,7 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
       
       if (reader->seq->notes.len == 0) {
          // TODO: is there a better way to see if an error occurred?
-         wxMessageBox("Error parsing MIDI file.");
+         wxMessageBox(_("Error parsing MIDI file."));
          return false;
       }
 
