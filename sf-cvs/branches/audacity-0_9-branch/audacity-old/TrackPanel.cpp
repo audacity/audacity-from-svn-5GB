@@ -10,6 +10,7 @@
 
 #ifdef __WXMAC__
 #include <Menus.h>
+#include <Types.h>
 #endif
 
 #include <math.h>
@@ -244,6 +245,14 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height)
 
 void TrackPanel::OnTimer()
 {
+#ifdef __WXMAC__
+   static long last = 0;
+   long now = TickCount();
+   if (now-last >= 0 && now-last < 3)
+     return;
+   last = now;
+#endif
+
    if (mIsSelecting && mCapturedTrack) {
 
       if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
