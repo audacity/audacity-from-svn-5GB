@@ -1033,7 +1033,9 @@ bool AudacityProject::ProcessEffectEvent(int nEffectIndex)
             newTrack->SetSelected(true);
          }
          else {
-            wxMessageBox(_("You must select a track first."));
+            wxMessageBox(_("You must select a track first."),
+                         _("Error applying effect"),
+                         wxOK | wxCENTRE, this);
             return true;
          }
       }
@@ -1729,15 +1731,18 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
    if (fileName != "") {
       gPrefs->Write("/DefaultOpenPath", wxPathOnly(fileName));
 
+      wxFileName newFileName(fileName);
+
       // Make sure it isn't already open
       size_t numProjects = gAudacityProjects.Count();
-      for (size_t i = 0; i < numProjects; i++)
-         if (gAudacityProjects[i]->mFileName == fileName) {
-            wxMessageBox
-                (_("That project is already open in another window."));
+      for (size_t i = 0; i < numProjects; i++) {
+         if (newFileName.SameAs(gAudacityProjects[i]->mFileName)) {
+            wxMessageBox(_("That project is already open in another window."),
+                         _("Error opening project"),
+                         wxOK | wxCENTRE);
             return;
          }
-
+      }
 
       // STM: Removing check of IsDirty(): as long as it's empty, why should we care?
       // (alternately, if its dirty and empty, we should clean it)
@@ -1763,14 +1768,17 @@ void AudacityProject::OpenFile(wxString fileName)
    char temp[16];
 
    if (!::wxFileExists(fileName)) {
-      wxMessageBox(_("Could not open file: ") + fileName);
+      wxMessageBox(_("Could not open file: ") + fileName,
+                   _("Error opening file"),
+                   wxOK | wxCENTRE, this);
       return;
    }
 
    wxFFile *ff = new wxFFile(fileName);
    if (!ff->IsOpened()) {
-      wxMessageBox(_("Could not open file: ") + fileName);
-      return;
+      wxMessageBox(_("Could not open file: ") + fileName,
+                   _("Error opening file"),
+                   wxOK | wxCENTRE, this);
    }
    ff->Read(temp, 15);
    temp[15] = 0;
@@ -1782,7 +1790,9 @@ void AudacityProject::OpenFile(wxString fileName)
       // Convert to the new format.
       bool success = ConvertLegacyProjectFile(wxFileName(fileName));
       if (!success) {
-         ::wxMessageBox(_("Audacity was unable to convert an Audacity 1.0 project to the new project format."));
+         wxMessageBox(_("Audacity was unable to convert an Audacity 1.0 project to the new project format."),
+                      _("Error opening project"),
+                      wxOK | wxCENTRE, this);
          return;
       }
       else {
@@ -1841,7 +1851,9 @@ void AudacityProject::OpenFile(wxString fileName)
       mFileName = "";
       SetTitle("Audacity");
 
-      wxMessageBox(xmlFile.GetErrorStr());
+      wxMessageBox(xmlFile.GetErrorStr(),
+                   _("Error opening project"),
+                   wxOK | wxCENTRE, this);
    }
 }
 
@@ -1866,6 +1878,12 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
          wxString projPath = wxPathOnly(mFileName);
          
          if (!mDirManager->SetProject(projPath, projName, false)) {
+
+            wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
+                                          (const char *)projName),
+                         _("Error opening project"),
+                         wxOK | wxCENTRE, this);
+
             return false;
          }
 
@@ -2037,7 +2055,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
          wxMessageBox(wxString::Format(_("Could not save project.  "
                                          "Perhaps %s is not writeable,\n"
                                          "or the disk is full."),
-                                       (const char *) project));
+                                       (const char *) project),
+                      _("Error saving project"),
+                      wxOK | wxCENTRE, this);
          if (safetyFileName)
             wxRename(safetyFileName, mFileName);
          
@@ -2047,7 +2067,9 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    FILE *fp = fopen(mFileName, "wb");
    if (!fp || ferror(fp)) {
-      wxMessageBox(_("Couldn't write to file: ") + mFileName);
+      wxMessageBox(_("Couldn't write to file: ") + mFileName,
+                   _("Error saving project"),
+                   wxOK | wxCENTRE, this);
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
@@ -2131,11 +2153,13 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 {
    SelectNone();
 
-   // TODO: detect which (if any) were WaveTracks and get the rate from them
    bool initiallyEmpty = mTracks->IsEmpty();
-   //double newRate = newTracks[0]->GetRate();
+   double newRate = 0;
 
    for (int i = 0; i < numTracks; i++) {
+      if (newRate == 0 && newTracks[i]->GetKind() == Track::Wave) {
+         newRate = ((WaveTrack *)newTracks[i])->GetRate();
+      }
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
       newTracks[i]->SetName(fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.'));
@@ -2143,9 +2167,9 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
    delete[]newTracks;
 
-   if (initiallyEmpty) {
-      //mRate = newRate;
-      //mStatus->SetRate(mRate);
+   if (initiallyEmpty && newRate > 0) {
+      mRate = newRate;
+      mStatus->SetRate(mRate);
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
@@ -2184,7 +2208,9 @@ void AudacityProject::Import(wxString fileName)
    }
 
    if (numTracks <= 0) {
-      wxMessageBox(errorMessage);
+      wxMessageBox(errorMessage,
+                   _("Error importing"),
+                   wxOK | wxCENTRE, this);
       return;
    }
 

@@ -8,6 +8,9 @@
 
 **********************************************************************/
 
+#include <wx/defs.h>
+#include <wx/intl.h>
+
 #include <string.h>
 
 #include "XMLFileReader.h"
@@ -38,7 +41,7 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
 {
    FILE *fp = fopen(fname, "rb");
    if (!fp || ferror(fp)) {
-      const char *formatStr = "Could not open file: \"%s\"";
+      const char *formatStr = _("Could not open file: \"%s\"");
       if (mErrorStr)
          delete[] mErrorStr;
       mErrorStr = new char[strlen(fname) + strlen(formatStr) + 10];
@@ -56,7 +59,7 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
       size_t len = fread(buffer, 1, bufferSize, fp);
       done = (len < bufferSize);
       if (!XML_Parse(mParser, buffer, len, done)) {
-         const char *formatStr = "Error: %s at line %d";
+         const char *formatStr = _("Error: %s at line %d");
          const char *errorStr = XML_ErrorString(XML_GetErrorCode(mParser));
          if (mErrorStr)
             delete[] mErrorStr;
@@ -76,7 +79,7 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
    if (mHandler[0])
       return true;
    else {
-      const char *errorStr = "File not in correct format";
+      const char *errorStr = _("Unable to open project file.");
       if (mErrorStr)
          delete[] mErrorStr;
       mErrorStr = new char[strlen(errorStr)+1];
@@ -116,9 +119,10 @@ void XMLFileReader::startElement(void *userData, const char *name,
          This->mHandler[This->mDepth] = NULL;
    }
 
-   if (This->mHandler[This->mDepth])
+   if (This->mHandler[This->mDepth]) {
       if (!This->mHandler[This->mDepth]->HandleXMLTag(name, atts))
          This->mHandler[This->mDepth] = 0;
+   }
 }
 
 // static
