@@ -139,8 +139,6 @@ void ControlToolBar::InitializeControlToolBar()
    delete thumbNew;
 #endif
 
-   //mVolume->Set(0.8);
-
    mCurrentTool = 0;
    mTool[0]->PushDown();
 
