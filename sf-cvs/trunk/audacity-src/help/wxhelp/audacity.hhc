@@ -162,6 +162,11 @@ Contents
 			</object>	
 
 		<li><object type="text/sitemap">
+			<param name="Name" value="Envelope Editing">
+			<param name="Local" value="envelope.htm">
+			</object>	
+
+		<li><object type="text/sitemap">
 			<param name="Name" value="Exporting MP3 Files">
 			<param name="Local" value="exportmp3.htm">
 			</object>
