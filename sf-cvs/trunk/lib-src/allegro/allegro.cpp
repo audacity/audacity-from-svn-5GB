@@ -90,7 +90,7 @@ char *heapify(char *s)
 }
 
 
-Attribute Atoms::insert_new(char *name, char attr_type)
+Attribute Atoms::insert_new(const char *name, char attr_type)
 {
     if (len == max) expand();
     char *h = new char[strlen(name) + 2];
@@ -112,7 +112,7 @@ Attribute Atoms::insert_attribute(Attribute attr)
 }
 
 
-Attribute Atoms::insert_string(char *name)
+Attribute Atoms::insert_string(const char *name)
 {
     char attr_type = name[strlen(name) - 1];
     for (int i = 0; i < len; i++) {
@@ -565,5 +565,3 @@ void Seq::set_events(Allegro_event_ptr *events, long len, long max)
 
 // sr_letter_to_type = {"i": 'Integer', "r": 'Real', "s": 'String',
 //                     "l": 'Logical', "a": 'Symbol'}
-
-
