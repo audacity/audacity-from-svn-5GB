@@ -744,7 +744,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   }
 
   track->envelope.GetValues(envValues, mid.width,
-							t0, tstep);
+							t0 + tOffset, tstep);
 
   double t = t0;
   int x;

@@ -157,39 +157,40 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r,
   bool upper = (event.m_y < ctr);
 
   if (event.ButtonDown()) {
-		mIsDeleting = false;
-		double tright = h + (r.width / pps);
-		int bestNum = -1;
-		int bestDist = 8;
+	mIsDeleting = false;
+	double tleft = h - mOffset;
+	double tright = tleft + (r.width / pps);
+	int bestNum = -1;
+	int bestDist = 10;
 
-		int len = mEnv.Count();
-		for(int i=0; i<len; i++) {
-		  if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
-			double v = mEnv[i]->val;
-			int x = int((mEnv[i]->t + mOffset - h) * pps) + r.x;
-			int dy;
+	int len = mEnv.Count();
+	for(int i=0; i<len; i++) {
+	  if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
+		double v = mEnv[i]->val;
+		int x = int((mEnv[i]->t + mOffset - h) * pps) + r.x;
+		int dy;
 
-			if (dB)
-			  dy = int(toDB(v)*(r.height/2));
-			else
-			  dy = int(v*(r.height/2));
+		if (dB)
+		  dy = int(toDB(v)*(r.height/2));
+		else
+		  dy = int(v*(r.height/2));
 
-			int y;
-			if (upper)
-			  y = int(ctr - dy);
-			else
-			  y = int(ctr + dy);
+		int y;
+		if (upper)
+		  y = int(ctr - dy);
+		else
+		  y = int(ctr + dy);
 			
-		     #ifndef SQR
-		     #define SQR(X) ((X)*(X))
-		     #endif
+        #ifndef SQR
+        #define SQR(X) ((X)*(X))
+        #endif
 			
-			int d = int(sqrt(SQR(x-event.m_x)+SQR(y-event.m_y))+0.5);
-			if (d < bestDist) {
-			  bestNum = i;
-			  bestDist = d;
-			}
+		int d = int(sqrt(SQR(x-event.m_x)+SQR(y-event.m_y))+0.5);
+		if (d < bestDist) {
+		  bestNum = i;
+		  bestDist = d;
 		}
+	  }
 	}
 
 	if (bestNum >= 0) {
