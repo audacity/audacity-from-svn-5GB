@@ -248,8 +248,9 @@ Known issues/problems:
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
 
-  * Windows only:  Also note that the Windows installer will replace
-    1.0.0 installations, but not the 1.1.x beta installations.
+  * Microsoft Windows(R) only:  Note that the Windows installer 
+    will replace 1.0.0 installations, but not the 1.1.x beta 
+    installations.
 
 -------------------------------------------------------------
 
@@ -266,13 +267,6 @@ Changes in 1.2.0-pre4:
     audio on some systems. If you experienced noise when exporting
     to a WAV, MP3 or OGG file you may have been bitten by this bug.
   
-  * Fixed problem that caused Windows XP to use the short name
-    of a file ("TESTFI~1.AUP"), which led to problems when the
-    file was later opened again using the long file name.
-    
-  * Fixed bug that caused file exports to fail if the destination
-    directory was the root folder of a Windows drive.
-    
   * Fixed bug that led to occasional crashes when using the
     time-shift tool in conjunction with high zoom factors.
     
@@ -283,12 +277,11 @@ Changes in 1.2.0-pre4:
     exported to stereo files when they contain tracks which are
     panned to the left or the right.
     
-  * Audacity's application information which is written to the
-    Windows registry now always contains the full path to the
-    executable.
-
   * The Delete key can now be used to delete the current selection,
     in addition to the Backspace key.
+
+  * Fixed bug where Audacity didn't ask whether to save 
+    changes if you close the project or exit while recording.
 
   * Mac OS X: Supports Playthrough (listen to what you're recording
     while recording it)
@@ -298,6 +291,22 @@ Changes in 1.2.0-pre4:
     has improved significantly.
 
   * Mac OS X: Supports playthrough if your hardware device supports it.
+
+  * MS Windows: Fixed problem that caused Windows XP to use 
+    the short name of a file ("TESTFI~1.AUP"), which led to 
+    problems when the file was later opened again using the 
+    long file name.
+    
+  * MS Windows: Fixed bug that caused file exports to fail 
+    if the destination directory was the root folder of a 
+    Windows drive.
+
+  * MS Windows: Audacity's application information which 
+    is written to the Windows registry now always contains 
+    the full path to the executable. 
+
+  * MS Windows: Fixed problems in trying to set the Windows 
+    registry as non-admin user, for file-type associations.
 
 Changes in 1.2.0-pre3:
 
