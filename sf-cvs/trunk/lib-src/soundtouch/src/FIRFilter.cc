@@ -82,6 +82,8 @@ uint FIRFilter::evaluateFilterStereo(Sample *dest, const Sample *src, const uint
 	    dest[j] = (Sample)suml;
 	    dest[j + 1] = (Sample)sumr;
 #else
+       dest[j] = 0;
+       dest[j+1] = 0;
 	    for (i = 0; i < length; i ++) {
 		    dest[j] += (src[pos + i] * filterCoeffs[i]) / resultDivisor;
 		    dest[j+1] += (src[pos + i + 1] * filterCoeffs[i]) / resultDivisor;
@@ -111,6 +113,7 @@ uint FIRFilter::evaluateFilterMono(Sample *dest, const Sample *src, const uint n
 	    sum = (sum < -32768) ? -32768 : (sum > 32767) ? 32767 : sum;
 	    dest[j] = (Sample)sum;
 #else 
+       dest[j] = 0;
 	    for (i = 0; i < length; i ++) {
 		    dest[j] += src[j + i] * filterCoeffs[i] / resultDivisor;
 	    }
