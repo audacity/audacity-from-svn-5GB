@@ -207,10 +207,11 @@ dep:
 	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) $(DEPS) | \
 		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' \
 		> .depend
-	$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h | \
-		sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' | \
-		sed 's/AudacityHeaders.o/AudacityHeaders.h.gch/' \
-		> .gchdepend
+	# Mac OS X only
+	#$(CCC) -MM $(CXXFLAGS) $(CPPFLAGS) AudacityHeaders.h | \
+	#	sed -e 's/^.*: \([^ ]*\)\.cpp/$(OBJDIR)\/\1.o: /' | \
+	#	sed 's/AudacityHeaders.o/AudacityHeaders.h.gch/' \
+	#	> .gchdepend
 
 clean:
 	rm -rf obj/
