@@ -891,7 +891,7 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    case ControlToolBarID:
       h = gControlToolBarStub->GetHeight();
       toolbar = new ControlToolBar(this, -1, wxPoint(10, tbheight), wxSize(width - 10, h));
-      mViewMenu->FindItem(FloatControlToolBarID)-> SetName(_("Float Control Toolbar"));
+      ((wxMenuItemBase *)mViewMenu->FindItem(FloatControlToolBarID))->SetName(_("Float Control Toolbar"));
       mToolBarArray.Insert(toolbar, 0);
       break;
 
@@ -934,17 +934,17 @@ void AudacityProject::MakeToolBarMenuEntriesCorrect ()
                   {
                  
                      //Loaded/windowed
-                     mViewMenu->FindItem(LoadEditToolBarID)->SetName(_("Unload Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->SetName(_("Unfloat Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->Enable(true);                 
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
                   }
                else
                   {
                   
                      //Loaded/unwindowed
-                     mViewMenu->FindItem(LoadEditToolBarID)->SetName(_("Unload Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->SetName(_("Float Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->Enable(true);                 
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Unload Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(true);                 
                   }
             }
          else
@@ -954,17 +954,17 @@ void AudacityProject::MakeToolBarMenuEntriesCorrect ()
                   {
                    
                      //Unloaded/windowed
-                     mViewMenu->FindItem(LoadEditToolBarID)->SetName(_("Load Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->SetName(_("Unfloat Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);                 
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Unfloat Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
                   }
                else
                   {
                   
                      //Unloaded/unwindowed
-                     mViewMenu->FindItem(LoadEditToolBarID)->SetName(_("Load Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->SetName(_("Float Editing Toolbar"));
-                     mViewMenu->FindItem(FloatEditToolBarID)->Enable(false);                 
+                     ((wxMenuItemBase *)mViewMenu->FindItem(LoadEditToolBarID))->SetName(_("Load Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->SetName(_("Float Editing Toolbar"));
+                     ((wxMenuItemBase *)mViewMenu->FindItem(FloatEditToolBarID))->Enable(false);                 
                      
                   }
             }
@@ -992,7 +992,7 @@ void AudacityProject::UnloadToolBar(enum ToolBarType t)
 
             //If the ControlToolBar is being unloaded from this project, you
             //should change the menu entry of this project
-            mViewMenu->FindItem(FloatControlToolBarID)->SetName(_("Unfloat Control Toolbar"));
+            ((wxMenuItemBase *)mViewMenu->FindItem(FloatControlToolBarID))->SetName(_("Unfloat Control Toolbar"));
             break;
 
          case EditToolBarID:
