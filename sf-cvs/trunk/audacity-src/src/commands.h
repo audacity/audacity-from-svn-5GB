@@ -25,8 +25,17 @@
                       generateMenu, effectMenu, analyzeMenu, helpMenu,
                       numMenus};
 
-   enum menuType { typeSeparator=0, typeNormal, typeCheckItem, typeRadioItem};
-   // BG: This is the structure that holds information about individual command items.
+enum menuType {
+   typeSeparator=0,
+   typeNormal, 
+   typeCheckItem,
+   typeRadioItem,
+   typeSubMenuStart,       //This will store the name of a submenu and indicate its beginning
+   typeSubMenuEnd,         //This will indicate the end of a submenu
+   typeSubMenuTitle        //The title of a submenu. Must come after the start/end 
+};
+
+// BG: This is the structure that holds information about individual command items.
 
    struct CommandMenuItem
    {
@@ -150,6 +159,7 @@
       AlignGroupEndSelStartID,
       AlignGroupEndSelEndID,
 
+      AlignSubMenuID,      //The overall align submenu 
       // Help Menu
       AboutID ,
       /*DUMMY SEPARATOR*/
@@ -174,10 +184,15 @@
 #ifdef AUDACITY_MENUS_COMMANDS_EVENT_TABLE
 
 {
-   #define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd->callbackFunction = fp;}
-   #define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState)         { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
-   #define CMD_ADDMENU_CHECKED(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeCheckItem; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); }
-   #define CMD_ADDMENU_SEP(nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem;  tmpCmd->type=typeSeparator;  tmpCmd->category = nCategory;  mCommandMenuItem.Add( tmpCmd ); }
+#define CMD_ADDFUNCTION(a) {fp = &AudacityProject::a; tmpCmd->callbackFunction = fp;}
+#define CMD_ADDMENU(commandName, commandDesc, callback, nCategory, nState)         { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeNormal;    CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); };
+#define CMD_ADDMENU_CHECKED(commandName, commandDesc, callback, nCategory, nState) { CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; tmpCmd->state = nState; tmpCmd->type=typeCheckItem; CMD_ADDFUNCTION(callback); mCommandMenuItem.Add( tmpCmd ); };
+#define CMD_ADDMENU_SEP(nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem;  tmpCmd->type=typeSeparator;  tmpCmd->category = nCategory;  mCommandMenuItem.Add( tmpCmd ); };
+
+   //See Menus.cpp inside BuildMenuBar for documentation on how to create a submenu
+#define CMD_ADDSUBMENUSTART(nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->type=typeSubMenuStart;  tmpCmd->category=nCategory;  mCommandMenuItem.Add( tmpCmd ); };
+#define CMD_ADDSUBMENUEND(nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem; tmpCmd->type=typeSubMenuEnd; tmpCmd->category=nCategory;   mCommandMenuItem.Add( tmpCmd ); };
+#define CMD_ADDSUBMENUTITLE(commandName, commandDesc, nCategory){ CommandMenuItem *tmpCmd = new CommandMenuItem;  tmpCmd->type=typeSubMenuTitle; tmpCmd->commandString = commandName; tmpCmd->descriptionString = commandDesc; tmpCmd->category = nCategory; mCommandMenuItem.Add( tmpCmd ); };
 
    audEventFunction fp;  //Set up temporary function pointer to use for assigning keybindings
 
@@ -290,6 +305,7 @@
    CMD_ADDMENU(_("Cursor to Selection End"), _("Cursor to Selection End"), OnCursorSelEnd, projectMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDSUBMENUSTART(projectMenu);
    CMD_ADDMENU(_("Align Tracks &Together"), _("Align Tracks Together"), OnAlign, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align with &Zero"), _("Align with Zero"), OnAlignZero, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align with &Cursor"), _("Align with Cursor"), OnAlignSelStart, projectMenu, enabledMenu);
@@ -310,7 +326,9 @@
    CMD_ADDMENU(_("Align Group End with Cursor"), _("Align Group End with Cursor"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align Group End with Selection Start"), _("Align Group End with Selection Start"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align Group End with Selection End"), _("Align Group End with Selection End"), OnAlignGroupEndSelEnd, projectMenu, enabledMenu);
-
+   CMD_ADDSUBMENUEND(projectMenu);
+   CMD_ADDSUBMENUTITLE(_("Align..."),_("Align"), projectMenu);
+      
    // Help menu
    CMD_ADDMENU(_("About Audacity..."), _("About Audacity"), OnAbout, helpMenu, enabledMenu);
    CMD_ADDMENU_SEP(helpMenu);

@@ -178,14 +178,19 @@ void AudacityProject::AppendEffects(EffectArray *effs, wxMenu *menu,
    }
 }
 
+
 void AudacityProject::BuildMenuBar()
 {
    unsigned int i;
    for (i = 0; i < mCommandMenuItem.Count(); i++) {
 
       wxMenu *menu = 0;
-      //This determines which menu the current MenuItem belongs to.
-      switch (mCommandMenuItem[i]->category) {
+
+      if(mCreatingSubMenu)
+         menu = mTempMenu;
+      else
+         //This determines which menu the current MenuItem belongs to.
+         switch (mCommandMenuItem[i]->category) {
          case fileMenu:
             menu = mFileMenu;
             break;
@@ -204,7 +209,7 @@ void AudacityProject::BuildMenuBar()
          default:
             // ERROR -- should not happen
             break;
-      }
+         }
 
       //BG: Tokenize menu shortcuts
       TokenizeCommandStrings(i);
@@ -244,6 +249,46 @@ void AudacityProject::BuildMenuBar()
          //Put in a normal item instead.
          menu->Append(i + MenuBaseID, menuString);
          break;
+
+
+         //-----------------------------------------
+         // The following three cases handle sub-menus embedded 
+         // within regular menus. To add a submenu, use the
+         // CMD_ADDSUBMENUSTART() CMD_ADDSUBMENUEND(), and 
+         // CMD_ADDSUBMENUTITLE() macros in commands.h.  At the beginning
+         // of a submenu, invoke the start macro, then do
+         // normal CMD_ADDMENU() macros, then finish with a
+         // CMD_SUBMENUEND() macro.  When a CMD_SUBMENUTITLE() is 
+         // invoked, the current submenu will get added to the current menu.
+         // If these macros are called out of order, terrible things might occur.
+         // You don't need to add an enum for the beginning and end, but
+         // you do need to add one for the title (enum found in commands.h)
+
+         // This only allows one-deep submenus: no sub-submenus can be created.
+         //---------------------------------------------
+      case typeSubMenuStart:
+         //Start a new temp submenu if there isn't one already 
+         if(!mTempMenu)
+            mTempMenu = new wxMenu;
+
+         mCreatingSubMenu = true;
+
+         break;
+
+      case typeSubMenuEnd:
+         mCreatingSubMenu = false;
+         break;
+
+      case typeSubMenuTitle:
+  
+         if(mTempMenu)
+            {
+               menu->Append(i + MenuBaseID, menuString, mTempMenu, menuString);
+               mTempMenu=NULL;
+            }
+         
+         break;
+
       default:
          //Error--this shouldn't happen
          break;
@@ -504,6 +549,8 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
    mLastUndoState = mUndoManager.UndoAvailable();
    mLastRedoState = mUndoManager.RedoAvailable();  
    mLastClipboardState = clipboardStatus;
+   mTempMenu=NULL;
+   mCreatingSubMenu = false;
 
    bool anySelection = numTracksSelected > 0 && nonZeroRegionSelected;
 
