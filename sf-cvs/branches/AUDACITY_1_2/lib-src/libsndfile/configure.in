@@ -241,7 +241,7 @@ if test $ac_cv_sizeof_double != 8 ; then
 	fi
 
 if test x"$ac_cv_prog_autogen" = "xno" ; then
-	touch tests/*.[ch]
+	touch tests/*.{c,h}
 	fi
 
 #====================================================================================
