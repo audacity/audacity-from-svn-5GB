@@ -395,7 +395,9 @@ wxSizer *MakeFilterDialog( wxPanel *parent, bool call_fit, bool set_sizer )
    item3->Add( 20, 20, 1, wxALIGN_CENTRE|wxALL, 5 );
 
    wxButton *item5 = new wxButton( parent, wxID_OK, "OK", wxDefaultPosition, wxDefaultSize, 0 );
+#ifndef TARGET_CARBON
    item5->SetDefault();
+#endif
    item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    wxButton *item6 = new wxButton( parent, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0 );

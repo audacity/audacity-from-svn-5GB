@@ -386,8 +386,10 @@ wxSizer *MakeAmplifyDialog(wxPanel * parent, bool call_fit,
    wxButton *item10 =
        new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
                     wxDefaultSize, 0);
+#ifndef TARGET_CARBON
    item10->SetDefault();
    item10->SetFocus();
+#endif
    item9->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item11 =

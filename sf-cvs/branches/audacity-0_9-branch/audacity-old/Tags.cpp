@@ -405,8 +405,10 @@ wxSizer *MakeTagsDialog(wxPanel * parent, bool call_fit,
    wxButton *item14 =
        new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
                     wxDefaultSize, 0);
+#ifndef TARGET_CARBON
    item14->SetDefault();
    item14->SetFocus();
+#endif
    okSizer->Add(item14, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item15 =

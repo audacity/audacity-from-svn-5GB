@@ -550,7 +550,9 @@ wxSizer *CreateWahwahDialog(wxPanel * parent, bool call_fit,
    wxButton *item24 =
        new wxButton(parent, wxID_OK, "OK", wxDefaultPosition,
                     wxDefaultSize, 0);
+#ifndef TARGET_CARBON
    item24->SetDefault();
+#endif
    item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item25 =
