@@ -1443,16 +1443,7 @@ void AudioIO::FillBuffers()
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
-#if USE_PORTAUDIO_V19
-int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
-                          unsigned long framesPerBuffer,
-                          const PaStreamCallbackTimeInfo *timeInfo,
-                          const PaStreamCallbackFlags statusFlags, void *userData )
-#else
-
-#define paContinue 0
-
-void DoSoftwarePlaythrough(void *inputBuffer,
+void DoSoftwarePlaythrough(const void *inputBuffer,
                            sampleFormat inputFormat,
                            int inputChannels,
                            float *outputBuffer,
@@ -1479,6 +1470,15 @@ void DoSoftwarePlaythrough(void *inputBuffer,
    }
    
 }
+
+#if USE_PORTAUDIO_V19
+int audacityAudioCallback(const void *inputBuffer, void *outputBuffer,
+                          unsigned long framesPerBuffer,
+                          const PaStreamCallbackTimeInfo *timeInfo,
+                          const PaStreamCallbackFlags statusFlags, void *userData )
+#else
+
+#define paContinue 0
 
 int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                           unsigned long framesPerBuffer,
