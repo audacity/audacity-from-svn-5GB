@@ -667,11 +667,11 @@ SOURCE=..\src\prefs\PrefsPanel.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\prefs\SampleRatePrefs.cpp
+SOURCE=..\src\prefs\QualityPrefs.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\prefs\SampleRatePrefs.h
+SOURCE=..\src\prefs\QualityPrefs.h
 # End Source File
 # Begin Source File
 
