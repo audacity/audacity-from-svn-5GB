@@ -141,6 +141,7 @@ wxString ExportCommon(AudacityProject *project,
    wxString defaultName = project->GetName();
    wxString fName;
    wxString maskString;
+   wxString endOfPathSep;
 
    if (defaultExtension.Left(1) == ".")
       defaultExtension =
@@ -242,7 +243,12 @@ wxString ExportCommon(AudacityProject *project,
          }
       }
 
-      fName = path + wxFILE_SEP_PATH + 
+      if (path.Length() > 0 && path.Last() == wxFILE_SEP_PATH)
+         endOfPathSep = "";
+      else
+         endOfPathSep = "\\";
+
+      fName = path + endOfPathSep + 
          nameOnly + "." + extension;
    } while(!fileOkay);
 
@@ -269,7 +275,7 @@ wxString ExportCommon(AudacityProject *project,
 
    int suffix = 0;
    while(::wxFileExists(FILENAME(fName))) {
-      fName = path + wxFILE_SEP_PATH + 
+      fName = path + endOfPathSep + 
          nameOnly + wxString::Format("%d", suffix) + "." + extension;
       suffix++;
    }
