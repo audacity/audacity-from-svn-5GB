@@ -2093,6 +2093,7 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    }
 
    delete toRemove;
+   if (partner) delete partner;
 
    MakeParentPushState();
    MakeParentRedrawScrollbars();
