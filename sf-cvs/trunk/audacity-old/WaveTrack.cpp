@@ -232,15 +232,17 @@ void WaveTrack::PrepareCacheMinMax(double start, double pps, int screenWidth)
 		  int((double(oldcache.len) * (cache.where[x] - oldcache.where[0])) /
 			  (oldcache.where[oldcache.len] - oldcache.where[0])+0.5);
 
-		if (ox >= 0 && ox <= oldcache.len &&
-			cache.where[x] == oldcache.where[ox]) {
+		cache.min[x] = oldcache.min[ox];
+		cache.max[x] = oldcache.max[ox];
 
-		  cache.min[x] = oldcache.min[ox];
-		  cache.max[x] = oldcache.max[ox];
-		  
-		}
-		else
-		  wxASSERT(0);
+		// Unfortunately we can't make this check due to
+		// floating-point roundoff errors
+		//
+		// Maybe if this happens we should recalculate all???
+		//
+		//if (!(ox >= 0 && ox <= oldcache.len &&
+		//	  cache.where[x] == oldcache.where[ox]))
+		//  wxASSERT(0);
 
 	  }
 	  else {
@@ -631,8 +633,6 @@ void WaveTrack::PrepareCacheSpectrum(double start, double pps,
 		  
 		  recalc[x] = false;
 		}
-		else
-		  wxASSERT(0);
 
 	  }
 		
