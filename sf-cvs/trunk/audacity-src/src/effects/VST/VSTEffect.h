@@ -1,4 +1,4 @@
-/**********************************************************************
+>/**********************************************************************
 
   Audacity: A Digital Audio Editor
 
@@ -7,6 +7,10 @@
   Dominic Mazzoni
 
 **********************************************************************/
+
+#include "../../Audacity.h"
+
+#if USE_VST
 
 #include "AudioEffect.hpp"      // VST API
 
@@ -123,3 +127,6 @@ void *NewCFMFromMachO(void *machofp);
 void DisposeCFMFromMachO(void *ptr);
 
 #endif
+
+#endif // USE_VST
+
