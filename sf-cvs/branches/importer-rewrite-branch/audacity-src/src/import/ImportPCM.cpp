@@ -130,7 +130,7 @@ wxString PCMImportFileHandle::GetFileDescription()
 
 int PCMImportFileHandle::GetFileUncompressedBytes()
 {
-   return mInfo.samples * mInfo.channels * SAMPLE_SIZE(mFormat);
+   return mInfo.frames * mInfo.channels * SAMPLE_SIZE(mFormat);
 }
 
 bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
@@ -163,7 +163,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    if (*outNumTracks == 2)
       channels[0]->SetLinked(true);
 
-   sampleCount fileTotalFrames = (sampleCount)mInfo.samples;
+   sampleCount fileTotalFrames = (sampleCount)mInfo.frames;
    sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
    bool cancelled = false;
    
@@ -356,7 +356,7 @@ bool ImportPCM(wxWindow * parent,
       (*channels)[0]->SetLinked(true);
    }
 
-   sampleCount fileTotalFrames = (sampleCount)info.samples;
+   sampleCount fileTotalFrames = (sampleCount)info.frames;
    sampleCount maxBlockSize = (*channels)[0]->GetMaxBlockSize();
 
    wxString copyEdit =

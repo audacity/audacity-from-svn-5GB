@@ -54,7 +54,7 @@ bool ExportPCM(AudacityProject *project,
    // Use libsndfile to export file
 
    info.samplerate = (unsigned int)(rate + 0.5);
-   info.samples = (unsigned int)((t1 - t0)*rate + 0.5);
+   info.frames = (unsigned int)((t1 - t0)*rate + 0.5);
    info.channels = stereo? 2: 1;
    info.format = sf_format;
    info.sections = 1;
