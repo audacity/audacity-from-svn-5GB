@@ -78,7 +78,7 @@
   <li>Martin Srebotnjak (sl)</li>
   <li>Cleber Tavano (pt_BR)</li>
   <li>Aleš Tošovský (cs)</li>
-  <li>Kevin Brubeck Unhammer (nb)</li>
+  <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Petri Vuorio (fi)</li>
   <li>Karsten Zeller (de)</li>
 </ul>
