@@ -625,8 +625,18 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
-   PlayCurrentRegion();
+   if(mPlay->WasShiftDown())
+     {
+       PlayCurrentRegion(true);
+     }
+   else
+     {
+       PlayCurrentRegion();
+     }
+
 }
+
+
 
 void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
 {
