@@ -798,11 +798,11 @@ void TrackPanel::StartSlide(wxMouseEvent &event, double& totalOffset, wxString& 
   
   VTrack *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
 
-  // AS: This name is used when we put a message in the undo list via
-  //  MakeParentPushState on ButtonUp.
-  name = vt->GetName();
-  
   if (vt) {
+    // AS: This name is used when we put a message in the undo list via
+    //  MakeParentPushState on ButtonUp.
+    name = vt->GetName();
+  
     mCapturedTrack = vt;
     mCapturedRect = r;
     mCapturedNum = num;
