@@ -57,6 +57,7 @@ OBJS = \
 	$(OBJDIR)/Prefs.o \
 	$(OBJDIR)/Project.o \
 	$(OBJDIR)/SampleFormat.o \
+	$(OBJDIR)/Sequence.o \
 	$(OBJDIR)/Spectrum.o \
 	$(OBJDIR)/Tags.o \
 	$(OBJDIR)/Track.o \
@@ -69,6 +70,7 @@ OBJS = \
 	$(OBJDIR)/effects/LoadEffects.o \
 	$(OBJDIR)/effects/Amplify.o \
 	$(OBJDIR)/effects/Invert.o \
+	$(OBJDIR)/effects/SimpleMono.o \
 	$(OBJDIR)/export/Export.o \
 	$(OBJDIR)/export/ExportMP3.o \
 	$(OBJDIR)/export/ExportOGG.o \
