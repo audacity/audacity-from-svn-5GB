@@ -542,11 +542,15 @@ AudacityProject::~AudacityProject()
 {
    delete mTimer;
 
-   //the commands code is responsible for deleting the menu bar, not Audacity's frame
    SetMenuBar(NULL);
 
-   if (gAudioIO->IsStreamActive(mAudioIOToken))
+   if (gAudioIO->IsStreamActive(mAudioIOToken)) {
       gAudioIO->StopStream();
+
+      while(gAudioIO->IsBusy()) {
+         wxUsleep(100);
+      }
+   }
 
    mTrackPanel->Destroy();
 
@@ -2366,20 +2370,7 @@ int AudacityProject::TP_GetCurrentTool()
 // TrackPanel callback method
 void AudacityProject::TP_OnPlayKey()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
-   wxCommandEvent evt;
-
-   //If busy, stop playing, make sure everything is unpaused.
-   if (gAudioIO->IsStreamActive()) {
-      toolbar->SetPlay(false);        //Pops
-      toolbar->SetStop(true);         //Pushes stop down
-      toolbar->OnStop(evt);
-   } else {
-      //Otherwise, start playing
-      toolbar->SetPlay(true);
-      toolbar->SetStop(false);
-      toolbar->OnPlay(evt);
-   }
+   OnPlayStop();
 }
 
 // TrackPanel callback method

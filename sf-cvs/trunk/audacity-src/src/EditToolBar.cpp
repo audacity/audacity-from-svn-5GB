@@ -189,7 +189,7 @@ void EditToolBar::OnButton(wxCommandEvent &event)
    AudacityProject *p = GetActiveProject();
    if (!p) return;
 
-   bool busy = gAudioIO->IsStreamActive();
+   bool busy = gAudioIO->IsBusy();
    int id = event.GetId();
 
    switch (id) {

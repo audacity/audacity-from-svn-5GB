@@ -60,13 +60,26 @@ class AudioIO {
                    double t0, double t1);
 
    void StopStream();
-   /* Returns true if the audio i/o is running at all */
+
+   /* Returns true if audio i/o is busy starting, stopping,
+      playing, or recording.  If it returns false, it's safe
+      to call StartStream. */
+   bool IsBusy();
+
+   /* Returns true if the audio i/o is running at all,
+      but doesn't return true if the device has been closed
+      but some disk i/o or cleanup is still going on.
+      If you want to know if it's safe to start a new
+      stream, use IsBusy()
+   */
    bool IsStreamActive();
+
    /* Returns true if the audio i/o is still running the stream instance
     * identified by this token, but doesn't return true if the device
     * has been closed but some disk i/o or cleanup is still going on
     */
    bool IsStreamActive(int token);
+
    /* Returns true if the stream is active, or even if audio I/O is
     * busy cleaning up its data or writing to disk.  This is used
     * by TrackPanel to determine when a track has been completely

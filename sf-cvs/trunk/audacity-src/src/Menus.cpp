@@ -570,17 +570,19 @@ void AudacityProject::OnPlayOneSecond()
    ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
-   //If busy, stop playing, make sure everything is unpaused.
-   if (gAudioIO->IsStreamActive()) {
+   // If this project is playing, stop playing
+   if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
       toolbar->SetPlay(false);        //Pops
       toolbar->SetStop(true);         //Pushes stop down
       toolbar->OnStop(evt);
 
-      ::wxUsleep(300);
-
-      if (gAudioIO->IsStreamActive())
-         return;
+      ::wxUsleep(100);
    }
+
+   // If it didn't stop playing quickly, or if some other
+   // project is playing, return
+   if (gAudioIO->IsBusy())
+      return;
 
    double pos = mTrackPanel->GetMostRecentXPos();
    toolbar->PlayPlayRegion(pos - 0.5, pos + 0.5);
@@ -590,11 +592,19 @@ void AudacityProject::OnPlayStop()
 {
    ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
-   
-   if (gAudioIO->IsStreamActive())
+
+   //If busy, stop playing, make sure everything is unpaused.
+   if (gAudioIO->IsStreamActive(GetAudioIOToken())) {
+      toolbar->SetPlay(false);        //Pops
+      toolbar->SetStop(true);         //Pushes stop down
       toolbar->OnStop(evt);
-   else
+   }
+   else if (!gAudioIO->IsBusy()) {
+      //Otherwise, start playing (assuming audio I/O isn't busy)
+      toolbar->SetPlay(true);
+      toolbar->SetStop(false);
       toolbar->OnPlay(evt);
+   }
 }
 
 void AudacityProject::OnStop()

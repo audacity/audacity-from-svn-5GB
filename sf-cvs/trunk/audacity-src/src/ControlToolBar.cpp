@@ -452,7 +452,8 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
          SetPlay(false);
          SetStop(true);
          OnStop(dummyEvent);
-      } else {
+      }
+      else if (!gAudioIO->IsBusy()) {
          SetPlay(true);
          SetStop(false);
          OnPlay(dummyEvent);
@@ -536,7 +537,7 @@ void ControlToolBar::SetRecord(bool down)
 
 void ControlToolBar::PlayPlayRegion(double t0, double t1)
 {
-   if (gAudioIO->IsStreamActive())
+   if (gAudioIO->IsBusy())
       return;
    
    mStop->Enable();
@@ -645,7 +646,7 @@ void ControlToolBar::OnStop(wxCommandEvent &evt)
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
-   if (gAudioIO->IsStreamActive())
+   if (gAudioIO->IsBusy())
       return;
 
    mPlay->Disable();
@@ -745,12 +746,13 @@ void ControlToolBar::OnRewind(wxCommandEvent &evt)
    mRewind->PushDown();
    mRewind->PopUp();
 
-   if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
-      OnStop(evt);
-
    AudacityProject *p = GetActiveProject();
-   if (p)
+   if (p) {
+      if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+         OnStop(evt);
+      
       p->Rewind(mRewind->WasShiftDown());
+   }
 }
 
 void ControlToolBar::OnFF(wxCommandEvent &evt)
@@ -758,12 +760,14 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
    mFF->PushDown();
    mFF->PopUp();
 
-   if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
-      OnStop(evt);
-
    AudacityProject *p = GetActiveProject();
-   if (p)
+
+   if (p) {
+      if (gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+         OnStop(evt);
+      
       p->SkipEnd(mFF->WasShiftDown());
+   }
 }
 
 float ControlToolBar::GetSoundVol()
@@ -848,7 +852,7 @@ void ControlToolBar::EnableDisableButtons()
    AudacityProject *p = GetActiveProject();
 
    bool tracks = (p && !p->GetTracks()->IsEmpty());
-   bool busy = gAudioIO->IsStreamActive();
+   bool busy = gAudioIO->IsBusy();
 
 #if 0
    if (tracks) {
