@@ -49,23 +49,22 @@ class FLACImportFileHandle;
 
 class MyFLACFile : public FLAC::Decoder::File
 {
+ public:
+   MyFLACFile(FLACImportFileHandle *handle) : mFile(handle) {}
+ private:
    friend class FLACImportFileHandle;
    FLACImportFileHandle *mFile;
-private:
-   void setFile(FLACImportFileHandle *file) { mFile=file; }
-protected:
+ protected:
    virtual FLAC__StreamDecoderWriteStatus write_callback(const FLAC__Frame *frame,
 							 const FLAC__int32 * const buffer[]);
    virtual void metadata_callback(const FLAC__StreamMetadata *metadata);
    virtual void error_callback(FLAC__StreamDecoderErrorStatus status);
-public:
-   MyFLACFile() : mFile(NULL) {}
 };
 
 
 class FLACImportPlugin : public ImportPlugin
 {
-public:
+ public:
    FLACImportPlugin():
       ImportPlugin(wxStringList("flac",NULL))
    {
@@ -82,8 +81,10 @@ class FLACImportFileHandle : public ImportFileHandle
 {
    friend class MyFLACFile;
 public:
-   FLACImportFileHandle(wxString name, MyFLACFile *file);
+   FLACImportFileHandle(wxString name);
    ~FLACImportFileHandle();
+
+   bool Init();
 
    void SetProgressCallback(progress_callback_t function,
                             void *userData);
@@ -129,7 +130,7 @@ void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
 
 void MyFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 {
-   assert(0);
+   wxASSERT(0);
 }
 
 
@@ -175,31 +176,47 @@ wxString FLACImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 {
-   MyFLACFile *file = new MyFLACFile;
-   file->set_filename(filename);
+   FLACImportFileHandle *handle = new FLACImportFileHandle(filename);
 
-   // Check for errors.
-   if (file->get_state() != FLAC__FILE_DECODER_OK)
+   bool success = handle->Init();
+   if (!success) {
+      delete handle;
       return NULL;
+   }
 
-   return new FLACImportFileHandle(filename,file);
+   return handle;
 }
 
 
-FLACImportFileHandle::FLACImportFileHandle(wxString name,
-					   MyFLACFile *file):
+FLACImportFileHandle::FLACImportFileHandle(wxString name):
    mName(name),
-   mFile(file),
+   mFile(new MyFLACFile(this)),
    mUserData(NULL),
    mProgressCallback(NULL),
    mSamplesDone(0),
    mStreamInfoDone(false)
 {
-   file->setFile(this);
    mFormat = (sampleFormat)
       gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
 }
 
+bool FLACImportFileHandle::Init()
+{
+   bool success = mFile->set_filename(mName);
+   if (!success) {
+      return false;
+   }
+   FLAC::Decoder::File::State state = mFile->init();
+   if (state != FLAC__FILE_DECODER_OK) {
+      return false;
+   }
+   mFile->process_until_end_of_metadata();
+   state = mFile->get_state();
+   if (state != FLAC__FILE_DECODER_OK) {
+      return false;
+   }
+   return true;
+}
 
 void FLACImportFileHandle::SetProgressCallback(progress_callback_t progressCallback,
                                       void *userData)
@@ -226,11 +243,7 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
 				  Track ***outTracks,
 				  int *outNumTracks)
 {
-   mFile->init();
-   mFile->process_until_end_of_metadata();
-   // FIXME handle errors
-
-   assert(mStreamInfoDone);
+   wxASSERT(mStreamInfoDone);
    
    *outNumTracks = mNumChannels;
 
