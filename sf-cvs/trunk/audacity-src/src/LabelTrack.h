@@ -11,12 +11,13 @@
 #ifndef _LABELTRACK_
 #define _LABELTRACK_
 
+#include "Track.h"
+
 #include <wx/brush.h>
+#include <wx/event.h>
 #include <wx/pen.h>
 #include <wx/dynarray.h>
 #include <wx/string.h>
-
-#include "Track.h"
 
 class wxKeyEvent;
 class wxTextFile;
