@@ -1,31 +1,34 @@
-<?php BoxTop("$releaseNotesStr $betaVersion"); ?>
+<?php BoxTop("$releaseNotesStr 1.1.3"); ?>
 
 <pre>
 Bekende fouten in Audacity 1.1.3:
-- Het plaatst een bestand met de naam "Audacity-Commands.xml" in je home
-directory of ergens anders op je computer. Dit bestand is nodig om
-Audacity 1.1.3 te kunnen gebruiken. We verontschuldigen ons voor de hierdoor 
-ontstane wanorde op je computer en we beloven om in de volgende versie ervoor 
-te zorgen dat het bestand om een geschiktere plaats terecht komt.
+- Het plaatst een bestand met de naam "Audacity-Commands.xml" in je
+  home directory of ergens anders op je computer. Dit bestand is nodig
+  om Audacity 1.1.3 te kunnen gebruiken. We verontschuldigen ons voor
+  de hierdoor ontstane wanorde op je computer en we beloven om in de
+  volgende versie ervoor te zorgen dat het bestand om een geschiktere
+  plaats terecht komt.
 
 Nieuwe mogelijkheden in Audacity 1.1.3:
   * Gebruikers Interface
-- Nieuwe Mixer werkbalk zorgt ervoor dat je direct vanuit Audacity controle 
-kunt uitoefenen over uitgaande volume, inkomende volume en de invoerbron
+- Nieuwe Mixer werkbalk zorgt ervoor dat je direct vanuit Audacity
+  controle kunt uitoefenen over uitgaande volume, inkomende volume
+  en de invoerbron
 - Elke track heeft nu een eigen 'gain' en 'pan' controle.
 
   * Bestand I/O
-- Gebruikt een verbeterd project bestandsformaat.(Ongelukkigerwijs wordt het 
-lezen van vorige bestandsformaten, waaronder versie 1.1.1, niet ondersteund.
-- Block bestanden (opgeslagen in Audacity project directories) gebruiken nu het 
-standaard AU formaat. Hoewel sommige Audacity meta-informatie in deze bestanden 
-aanwezig is, kunnen ze nu ook door andere populaire audioprogramma's worden 
-gelezen.
+- Gebruikt een verbeterd project bestandsformaat.(Ongelukkigerwijs wordt
+  het lezen van vorige bestandsformaten, waaronder versie 1.1.1, niet
+  ondersteund.
+- Block bestanden (opgeslagen in Audacity project directories) gebruiken
+  nu het standaard AU formaat. Hoewel sommige Audacity meta-informatie in
+  deze bestanden aanwezig is, kunnen ze nu ook door andere populaire
+  audioprogramma's worden gelezen.
 - Sommige fouten zijn opgelost betreffende het lezen/schrijven van 
-audiobestanden van meer dan 16 bits per sample.
+  audiobestanden van meer dan 16 bits per sample.
 - Importeren van RAW is weer functioneel, met een simpelere GUI
-maar ondersteuning voor veel meer bestandsformaten. De
-autodetectie algorithmes zijn veel accurater dan die in versie 1.0.
+  maar ondersteuning voor veel meer bestandsformaten. De
+  autodetectie algorithmes zijn veel accurater dan die in versie 1.0.
       
   * Audio I/O
     - Compleet herschreven audio I/O, met lagere latency
