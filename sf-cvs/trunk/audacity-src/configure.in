@@ -175,7 +175,7 @@ if [[ $use_wavelet = "yes" ]] ; then
 	SUBDIRS="$SUBDIRS wave++/source"
 	BUILDLIBS="$BUILDLIBS wave++/source/libw.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/wave++/source/libw.a"
-	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/WaveletDenoise.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/WaveletDenoise.o"
 
 	CXXFLAGS="$CXXFLAGS -I../lib-src/wave++/source"
 		
@@ -255,8 +255,8 @@ if [[ "$host_os" = "darwin5.3" ]] ; then
 
 	dnl VST
 	
-	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/VST/LoadVSTMac.cpp.o"
-	OPTOBJS="$(OPTOBJS) \$(OBJDIR)/effects/VST/VSTEffect.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/LoadVSTMac.cpp.o"
+	OPTOBJS="$OPTOBJS \$(OBJDIR)/effects/VST/VSTEffect.o"
 
 else
 	dnl Unix OSS configuration
