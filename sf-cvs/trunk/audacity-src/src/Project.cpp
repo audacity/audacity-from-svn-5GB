@@ -1172,6 +1172,8 @@ bool AudacityProject::IsActive()
 int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
 {
    int lastToolBarInRow;
+
+//   wxLogDebug("FlowLayout( i=%i, x=%i, y=%i, width=%i, height=%i",i,x,y,width,height );
    while( true) {
 
       wxSize s;
@@ -1188,18 +1190,33 @@ int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
       //IF finished, THEN (may adjust last toolbar size) and return.
       if( bFinishedSection ) {
          // ---- Start-height-adjustment
-         // JKC: All this logic does is to sometimes increase the height of 
-         // a toolbar so that the darker grey background doesn't show through.
-         // This works for two column layouts such as any Audacity will generate.
+         // JKC: The next bit of logic adjust toolbar height and is purest HACKery.
+         // The problem is we don't want the darker gray background to show,
+         // when toolbars having different heights.
+         // The fully 'correct' solution would be to create objects for the
+         // space-fillers which themselves get drawn.
+         // What we instead do is to increase the height of toolbars.
+         // We spot a possible need for this when we reach the end of a section
+         // and there is unused height in that section.
+         // One crazy 'feature' of the code here is that the same toolbar
+         // may get its height adjusted more than once.
          if((x>0) && ( i>0 )){
             int barX, barY;
+            int barWidth, barHeight;
             mToolBarArray[i-1]->GetPosition( &barX, &barY );
-            if( (barX - grabberWidth) == x )
-            {
-               int barWidth, barHeight;
-               mToolBarArray[i-1]->GetSize( &barWidth, &barHeight );
-               mToolBarArray[i-1]->SetSize( barWidth,  barHeight + height);
-//             wxLogDebug("Toolbar %i has extra height %i", i-1, barHeight + height );
+            mToolBarArray[i-1]->GetSize( &barWidth, &barHeight );
+            mToolBarArray[i-1]->SetSize( barWidth,  barHeight + height +extraSpace);
+//            wxLogDebug("a: At %i,%i for %i Toolbar %i has adjusted height %i", x,y,barY, i-1, barHeight + height+extraSpace );
+            // This adjusts the height of the preceding toolbar as well, provided it has the same y position.
+            if( i>1 ){
+               int bar2X, bar2Y;
+               mToolBarArray[i-2]->GetPosition( &bar2X, &bar2Y );
+               if( bar2Y == barY ){
+                  int dummy;
+                  mToolBarArray[i-2]->GetSize( &barWidth, &dummy );
+                  mToolBarArray[i-2]->SetSize( barWidth,  barHeight + height+extraSpace);
+//                  wxLogDebug("b: At %i,%i for %i Toolbar %i has adjusted height %i", x,y,bar2Y, i-2, barHeight + height + extraSpace );
+               }
             }
          }
          // ---- End-height-adjustment
@@ -1213,7 +1230,7 @@ int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
       // of the one just placed.
       lastToolBarInRow = i;
       i++;
-      // Here comes a recursive call, doing layout in a smaller region.
+      // Here comes a recursive call, doing layout in a smaller region to the right.
       i = FlowLayout( i, x+grabberWidth+s.GetWidth(), y, 
             width - (grabberWidth+s.GetWidth()), s.GetHeight());
       // Adjust the width of the last toolbar in each row to take up the remaining area.
@@ -1254,6 +1271,7 @@ void AudacityProject::LayoutToolBars()
    GetSize(&width, &height);
    mTotalToolBarHeight = extraSpace;
 
+// wxLogDebug("Toolbar Layout..." );
    // Start from coordinate (0,extraspace) to avoid drawing over the 
    // extra line under the menu bar in windoze.
    int nPlaced=FlowLayout( 0, 0, extraSpace, width, height );
