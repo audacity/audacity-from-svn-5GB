@@ -214,6 +214,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mMenuBar = NULL;
    CreateMenuBar();
+   
+   #ifdef __WXMAC__
+   // Work around a Mac OS 8.6 bug
+   wxActivateEvent activateEvt;
+   this->OnActivate(activateEvt);
+   #endif
 
    int left = 0, top = 0, width, height;
    GetClientSize(&width, &height);
