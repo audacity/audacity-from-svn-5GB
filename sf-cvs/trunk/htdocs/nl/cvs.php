@@ -4,8 +4,12 @@
 We gebruiken <a href="http://www.cvshome.org">CVS</a>, de Concurrent Versions
 System, om de gebruikers te helpen
 Audacity samen te ontwikkelen. Klik
- <a
+<a
 href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/audacity/audacity-src/">hier</a> om de broncode te bekijken in onze CVS opslagplaats.
+
+<p>
+<h3>Opmerking: Versie 1.2 heeft nu een broncode:</h3>
+Als je de stabiele broncode van Audacity wilt gebruiken, versie 1.2.x, dien je nu in te typen <tt>-r AUDACITY_1_2</tt> als je een cvs update of checkout uitvoert. Anders is het mogelijk dat je de CVS HEAD verkrijgt die mogelijk behoorlijk instabiel kan zijn oomdat we begonnen zijn met versie 1.3.0.
 
 <p><h3>Snelle Audacity CVS Hoe te:</h3>
   Als je toegang wilt krijgen tot de Audacity broncode, kun je
@@ -23,20 +27,25 @@ enkele zin is zonder entertoets aanslagen):<br>
 login </tt><br></ul>
 en druk de entertoets in als om een wachtwoord wordt gevraagd.
 
-<p>Dan, <b>om de laatste branch te verkrijgen(1.1.0)</b> (als een enkele zin):
+<p>Dan, <b>om de laatste branch te verkrijgen(1.3.0)</b> (als een enkele zin):
 <br>
    <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co
 audacity</tt></ul>
-of <b>voor de stabiele branch (0.9-1.0)</b> (als een enkele zin):<br>
-   <ul><tt>cvs -z3 -d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
+of <b>voor de stabiele branch (1.2.0)</b> (als een enkele zin):<br>
+   <ul><tt>cvs -z3 -
+of <b>voor de oude 1.0 branch (1.0.0)</b> (als een enkele zin):<br>
+   <ul><tt>cvs -z3 -
+d:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity co -r audacity-0_9-branch audacity-old</tt></ul>
 
-<p> Afwisslend kun je je <tt>CVSROOT</tt> omgeving
-veranderen naar
+<p> Als alternatief kun je je <tt>CVSROOT</tt> omgeving
+aanapssen naar
 <tt>:pserver:anonymous@cvs.audacity.sourceforge.net:/cvsroot/audacity</tt>
 (zie hieronder).<br>
-Dan, <b>om de laatste instabiele branch te verkrijgen (1.1.0)</b>, toets in<br> 
+Dan, <b>om de laatste instabiele branch te verkrijgen (1.3.0)</b>, toets in<br> 
    <ul><tt>cvs checkout audacity</tt></ul>
-Of, <b>voor de stabiele branch (0.9-1.0)</b>, toets in <br>
+Of, <b>voor de stabiele branch (1.2)</b>, toets in <br>
+   <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
+of <b>voor de oude 1.0 branch<b/>, toets in <br>
    <ul><tt>cvs checkout -r audacity-0_9-branch audacity-old</tt></ul>
 
 <p> Bij het instellen van de  <tt>CVSROOT</tt> omgevings variabel, kun
@@ -70,18 +79,26 @@ variabel aan het einde geen spaties bevat--wat
 zou kunnen gebeuren als je de variabellen rechtstreeks van deze webpagina hebt gekopieerd.
 
 <p>
-<b>Om de laatste instabiele branch te verkrijgen (1.1.0):</b><br>
+<b>Om de laatste instabiele branch te verkrijgen (1.3.0):</b><br>
 In de "Checkout Settings" dialoog, toets in
 <tt>audacity</tt> als module naam. Druk op de "OK" knop en de
 branch zal automatisch naar je computer worden gedownload.
 <p>
-<b>Om de stabiele (0.9-1.0) branch te verkrijgen: </b><br>
+<b>Om de stabiele (1.2.0) branch te verkrijgen: </b><br>
 In de "Checkout Settings" dialoog, toets in
 <tt>audacity-old</tt> als de module naam.  Dan, in de
 "Sticky options" tab, check het "Retrieve rev./tag/branch
-(-r)" vakje en toets in <tt>audacity-0_9-branch</tt> in het
+(-r)" vakje en toets in <tt>AUDACITY-1_2</tt> in het
 vakje ernaast. Druk op "OK" en de branch zal automatisch naar je computer
-worden gedownoad.
+worden gedownload.
+<p>
+<b>Om de oude vresie 1.0 branch te krijgen: </b><br>
+In de "Checkout Settings" dialoog, toets in
+<tt>audacity-old</tt> als de module naam.  Dan, in de
+"Sticky options" tab, check het "Retrieve rev./tag/branch
+(-r)" vakje en toets in <tt>audacity-0_9</tt> in het
+vakje ernaast. Druk op "OK" en de branch zal automatisch naar je computer
+worden gedownload.
 
 <hr width="80%">
 Nieuw met CVS?  Begin met het lezen van Jim Blandy's <a href="">Introductie

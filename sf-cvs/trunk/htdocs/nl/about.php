@@ -3,15 +3,15 @@
 <p>
 Audacity is een gratis audio geluidsbewerker.
 Je kunt geluid opnemen, geluid afspelen, importeren en exporteren van WAV, AIFF en MP3 bestanden, en nog veel meer.
-Gebruik het om je geluiden te bewerken met behulp van de knip, kopieër en plak functies (met ongelimiteerde Undo), mix tracks, of voeg effecten toe aan je opnames.
-Ook is een "amplitude envelope editor" ingebouwd, een volledig instelbare spectrogram modus en een frequentie analyseer venster voor audio analytische applicaties.
+Gebruik het om je geluiden te bewerken met behulp van de knip, kopieër en plak functies (met ongelimiteerde Herstelfunctie), mix tracks, of voeg effecten toe aan je opnames.
+Ook is een "amplitude envelope editor" ingebouwd, een volledig instelbare spectrogram modus en een frequentie analyseervenster voor audio analytische applicaties.
 Ingebouwde effecten zijn onder andere Bass Boost, Wahwah, en ruisverwijdering,
 en het ondersteund ook VST plug-in effecten.
 </p>
 
 <p>
 Audacity versie 1.0.0 is de meest stabiele versie die we tot nu toe hebben
-vrijgegeven, en veel mensen hebben al ondervonden dat door de unieke mogelijkheden en de intuitieve interface het makkelijker en beter te gebruiken is dan andere audio bewerkingsprogramma's, waaronder commercieele programma's.
+vrijgegeven, en veel mensen hebben al ondervonden dat door de unieke mogelijkheden en de intuitieve interface het makkelijker en beter te gebruiken is dan andere audio bewerkingsprogramma's, waaronder commercieële programma's.
 </p>
 
 <p> De ontwikkelaars van Audacity hebben ook <a href="<?php print "beta.php?$langLinkStr"; ?>">versie 1.2.0-pre1</a> vrijgegeven, welke
@@ -42,7 +42,7 @@ Stuur een email (in het Engels!)naar <a href="mailto:audacity-help@lists.sourcef
 </p>
 
 <!-- Engels is de voertaal en daarom dienen vragen en opmerkingen in het engels te worden gemaild. Ook de help-pagina is in het engels!
-We zullen in de toekomst meerdere talen ondersteunen maar tot aan dat moment alles in de engelse taal.
+We zullen in de toekomst meerdere talen ondersteunen maar tot aan dat moment alles s.v.p. in de engelse taal.
 -->
 
 <?php BoxBottom(); ?>
