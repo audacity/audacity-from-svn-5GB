@@ -22,7 +22,7 @@ class EffectBassBoost: public Effect {
 public:
   EffectBassBoost();
 
-  virtual wxString GetEffectName() { return wxString("BassBoost..."); }
+  virtual wxString GetEffectName() { return wxString("BassBoost"); }
 
   virtual bool Begin(wxWindow *parent);
   virtual bool DoIt(WaveTrack *t,
