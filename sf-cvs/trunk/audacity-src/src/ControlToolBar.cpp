@@ -511,8 +511,8 @@ void ControlToolBar::OnPlay()
 
       if (!success) {
          SetPlay(false);
-         //     SetStop(false);
-         //     SetRecord(false);
+         SetStop(false);
+         SetRecord(false);
       }
    }
 }
