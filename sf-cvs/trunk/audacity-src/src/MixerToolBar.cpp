@@ -89,13 +89,13 @@ void MixerToolBar::InitializeMixerToolBar()
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
-   wxImage *speaker = new wxImage(Speaker);
-   wxImage *speakerAlpha = new wxImage(SpeakerAlpha);
+   wxImage *speaker = new wxImage(wxBitmap(Speaker).ConvertToImage());
+   wxImage *speakerAlpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
    wxImage *bkgnd = CreateSysBackground(25, 25, 3,
                                         backgroundColour);
    wxImage *speakerFinal = OverlayImage(bkgnd, speaker, speakerAlpha, 0, 0);
-   wxImage *mic = new wxImage(Mic);
-   wxImage *micAlpha = new wxImage(MicAlpha);
+   wxImage *mic = new wxImage(wxBitmap(Mic).ConvertToImage());
+   wxImage *micAlpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
    wxImage *micFinal = OverlayImage(bkgnd, mic, micAlpha, 0, 0);
 
    mPlayBitmap = new wxBitmap(speakerFinal);
