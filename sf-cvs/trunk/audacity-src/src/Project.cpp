@@ -2713,16 +2713,16 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          recMins = (int)(recTime / 60.0);
 
          if (recMins >= 120)
-            msg.Printf(_("Recording time remaining: %d hours and %d minutes"),
+            msg.Printf(_("Disk space remains for recording %d hours and %d minutes."),
                        recMins/60, recMins%60);
          else if (recMins >= 60)
-            msg.Printf(_("Recording time remaining: 1 hour and %d minutes"),
+            msg.Printf(_("Disk space remains for recording 1 hour and %d minutes."),
                        recMins-60);
          else if (recMins > 3)
-            msg.Printf(_("Recording time remaining: %d minutes"),
+            msg.Printf(_("Disk space remains for recording %d minutes."),
                        recMins);
          else if (recTime >= 2)
-            msg.Printf(_("Recording time remaining: %d seconds"),
+            msg.Printf(_("Disk space remains for recording %d seconds."),
                        (int)recTime);
          else
             msg.Printf(_("Out of disk space"));
