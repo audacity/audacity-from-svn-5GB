@@ -150,7 +150,7 @@ void WaveTrack::GetMinMax(sampleCount start, sampleCount len, sampleType *outMin
   for(b=block0+1; b<block1; b++) {
     if (block->Item(b)->min < min)
       min = block->Item(b)->min;
-    if (block->Item(b)->max > max);
+    if (block->Item(b)->max > max)
       max = block->Item(b)->max;
   }
   
