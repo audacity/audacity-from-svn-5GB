@@ -80,7 +80,8 @@ void LabelTrack::ResetFont()
 void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
                       double sel0, double sel1)
 {
-   dc.SetFont(msFont);
+   if (msFont.Ok())
+      dc.SetFont(msFont);
 
    double right = h + r.width / pps;
    double dsel0 = sel0;
