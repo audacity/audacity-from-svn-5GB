@@ -122,7 +122,12 @@
       SeparatorDummy1,  ///*DUMMY SEPARATOR: necessary because of above conditional compilation*/
       QuickMixID,
       /*DUMMY SEPARATOR*/
-      SelectionSaveID = QuickMixID + 2,
+      NewWaveTrackID = QuickMixID + 2,
+      NewLabelTrackID,
+      /*DUMMY SEPARATOR*/
+      RemoveTracksID = NewLabelTrackID + 2,
+      /*DUMMY SEPARATOR*/
+      SelectionSaveID = RemoveTracksID + 2,
       SelectionRestoreID,
       /*DUMMY SEPARATOR*/
       CursorTrackStartID = SelectionRestoreID + 2,
@@ -144,11 +149,6 @@
       AlignGroupEndCursorID,
       AlignGroupEndSelStartID,
       AlignGroupEndSelEndID,
-      //*DUMMY SEPARATOR*/
-      NewWaveTrackID = AlignGroupEndSelEndID + 2,
-      NewLabelTrackID,
-      /*DUMMY SEPARATOR*/
-      RemoveTracksID = NewLabelTrackID + 2,
 
       // Help Menu
       AboutID ,
@@ -273,6 +273,13 @@
    CMD_ADDMENU(_("&Quick Mix"), _("Quick Mix"), OnQuickMix, projectMenu, enabledMenu);
 
    CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("New &Audio Track"), _("New Audio Track"), OnNewWaveTrack, projectMenu, enabledMenu);
+   CMD_ADDMENU(_("New &Label Track"), _("New Label Track"), OnNewLabelTrack, projectMenu, enabledMenu);
+
+   CMD_ADDMENU_SEP(projectMenu);
+   CMD_ADDMENU(_("&Remove Track(s)"), _("Remove Track(s)"), OnRemoveTracks, projectMenu, enabledMenu);
+
+   CMD_ADDMENU_SEP(projectMenu);
    CMD_ADDMENU(_("Cursor or Selection Save"), _("Cursor or Selection Save"), OnSelectionSave, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Cursor or Selection Restore"), _("Cursor or Selection Restore"), OnSelectionRestore, projectMenu, enabledMenu);
 
@@ -303,13 +310,6 @@
    CMD_ADDMENU(_("Align Group End with Cursor"), _("Align Group End with Cursor"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align Group End with Selection Start"), _("Align Group End with Selection Start"), OnAlignGroupEndSelStart, projectMenu, enabledMenu);
    CMD_ADDMENU(_("Align Group End with Selection End"), _("Align Group End with Selection End"), OnAlignGroupEndSelEnd, projectMenu, enabledMenu);
-
-   CMD_ADDMENU_SEP(projectMenu);
-   CMD_ADDMENU(_("New &Audio Track"), _("New Audio Track"), OnNewWaveTrack, projectMenu, enabledMenu);
-   CMD_ADDMENU(_("New &Label Track"), _("New Label Track"), OnNewLabelTrack, projectMenu, enabledMenu);
-
-   CMD_ADDMENU_SEP(projectMenu);
-   CMD_ADDMENU(_("&Remove Track(s)"), _("Remove Track(s)"), OnRemoveTracks, projectMenu, enabledMenu);
 
    // Help menu
    CMD_ADDMENU(_("About Audacity..."), _("About Audacity"), OnAbout, helpMenu, enabledMenu);
@@ -352,13 +352,13 @@ gPrefs->Write("/Keyboard/26/Ctrl+L", (long)0);
 gPrefs->Write("/Keyboard/25/Ctrl+K", (long)0);
 gPrefs->Write("/Keyboard/29/Ctrl+Y", (long)0);
 gPrefs->Write("/Keyboard/31/Ctrl+D", (long)0);
-gPrefs->Write("/Keyboard/33/Ctrl+A", (long)0);
-gPrefs->Write("/Keyboard/34/Ctrl+1", (long)0);
-gPrefs->Write("/Keyboard/35/Ctrl+2", (long)0);
-gPrefs->Write("/Keyboard/36/Ctrl+3", (long)0);
-gPrefs->Write("/Keyboard/37/Ctrl+F", (long)0);
-gPrefs->Write("/Keyboard/38/Ctrl+E", (long)0);
+gPrefs->Write("/Keyboard/32/Ctrl+A", (long)0);
+gPrefs->Write("/Keyboard/35/Ctrl+1", (long)0);
+gPrefs->Write("/Keyboard/36/Ctrl+2", (long)0);
+gPrefs->Write("/Keyboard/37/Ctrl+3", (long)0);
+gPrefs->Write("/Keyboard/38/Ctrl+F", (long)0);
+gPrefs->Write("/Keyboard/39/Ctrl+E", (long)0);
 gPrefs->Write("/Keyboard/41/Ctrl+U", (long)0);
-gPrefs->Write("/Keyboard/45/Ctrl+I", (long)0);
+gPrefs->Write("/Keyboard/46/Ctrl+I", (long)0);
 
 #endif

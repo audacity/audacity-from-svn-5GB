@@ -777,6 +777,8 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
    if (f) {
       TrackListIterator iter(mTracks);
       Track *t = iter.First();
+      wxCommandEvent dummyEvent;
+      double prevEndTime = mTracks->GetEndTime();
       int count = 0;
 
       while (t) {
@@ -793,6 +795,8 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       if (f->DoEffect(this, mTracks, mTrackFactory,
                       &mViewInfo.sel0, &mViewInfo.sel1)) {
          PushState(_("Applied an effect."));    // maybe more specific?
+         if (mTracks->GetEndTime() > prevEndTime)
+            OnZoomFit(dummyEvent);
          FixScrollbars();
 
          mTrackPanel->Refresh(false);

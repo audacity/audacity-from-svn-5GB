@@ -20,9 +20,11 @@
 #include "Fade.h"
 #include "Filter.h"
 #include "Invert.h"
+#include "Noise.h"
 #include "NoiseRemoval.h"
 #include "Phaser.h"
 #include "Reverse.h"
+#include "Silence.h"
 #include "ToneGen.h"
 #include "Wahwah.h"
 #include "LoadEffects.h"
@@ -49,6 +51,12 @@
 
 void LoadEffects()
 {
+   // Generate menu
+   Effect::RegisterEffect(new EffectNoise());
+   Effect::RegisterEffect(new EffectSilence());
+   Effect::RegisterEffect(new EffectToneGen());
+
+   // Effect menu
    Effect::RegisterEffect(new EffectAmplify());
    Effect::RegisterEffect(new EffectAvcCompressor());
    Effect::RegisterEffect(new EffectBassBoost());
@@ -61,9 +69,10 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectNoiseRemoval());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectReverse());
-   Effect::RegisterEffect(new EffectToneGen());
    Effect::RegisterEffect(new EffectWahwah());
 
+   // Analyze menu
+   // [nothing built-in, but plug-ins might go here]
 
 #ifdef USE_WAVELET
    Effect::RegisterEffect(new EffectWaveletDenoise());
@@ -80,6 +89,4 @@ void LoadEffects()
 #ifdef USE_LADSPA
    LoadLadspaPlugins();
 #endif
-
-   // TODO: sort
 }
