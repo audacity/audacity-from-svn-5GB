@@ -20,7 +20,7 @@
 #ifdef WIN32
 long GetFreeDiskSpace( TCHAR *path );
 #else
-long GetFreeDiskSpace( char *path );
+long GetFreeDiskSpace( const char *path );
 #endif
 /**
   * <path> could be a drive letter, full path to a file or directory,
@@ -88,7 +88,7 @@ long GetFreeDiskSpace( TCHAR *path )
 }
 #else
 #ifdef __WXMAC__
-long GetFreeDiskSpace( char *path )
+long GetFreeDiskSpace( const char *path )
 {
 	char *str = new char[strlen(path)+1];
 	strcpy(str, wxUnix2MacFilename(path));
@@ -131,7 +131,7 @@ long GetFreeDiskSpace( char *path )
 }
 #else
 #warning GetFreeDiskSpace has not been implemented on this system...
-long GetFreeDiskSpace( char *path )
+long GetFreeDiskSpace( const char *path )
 {
 	return -1L;
 }

@@ -41,6 +41,7 @@ OBJS = \
 	$(OBJDIR)/FourierD.cpp.o \
 	$(OBJDIR)/FourierF.cpp.o \
 	$(OBJDIR)/FFTMisc.cpp.o \
+	$(OBJDIR)/DiskFunctions.cpp.o \
 	$(OBJDIR)/DirManager.cpp.o \
 	$(OBJDIR)/UndoManager.cpp.o \
 	$(OBJDIR)/AboutDialog.cpp.o \

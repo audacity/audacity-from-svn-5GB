@@ -14,6 +14,6 @@
 #ifdef __WXMSW__
 long GetFreeDiskSpace( TCHAR *path );
 #else
-long GetFreeDiskSpace( char *path );
+long GetFreeDiskSpace( const char *path );
 #endif
 
