@@ -256,40 +256,61 @@ Known issues/problems:
 
   * Windows only: If you installed one of the 1.1.x beta versions,
     you must uninstall it before installing Audacity 1.2.
-    (You do not need to uninstall earlier 1.2 or 1.0 releases.)
+    (You do not need to uninstall Audacity 1.2 or 1.0 releases.)
 
   * Linux only: Recording in full duplex on some Linux systems causes
     mono recordings to sound slowed-down.
 
+  * Mac OS X only: On some Mac OS X systems, starting Audacity causes
+    USB audio devices such as the Griffin iMic to change their settings.
+    The settings can be changed back with Apple's "Audio MIDI Setup"
+    utility after Audacity has been started.
+
   * Mac OS X only: Audacity cannot work with files or folders that
     are contained inside folders with international characters
-    (accent marks, etc.) in their names.  Note that files with
-    accented characters work, and Audacity projects with
-    accented characters work.  Only files inside of folders
-    with accented characters in their names will cause problems.
+    (accent marks, etc.) in their names.
 
 -------------------------------------------------------------
 
 Changes in 1.2.1:
 
-  * Fix a possible crash when opening or resizing the Equalization window.
+  * The following translations have been added or updated:  Finnish,
+    French, Hungarian, Italian, Japanese, Norwegian, Polish, Russian.
+
+  * Fix a bug that could cause data to be lost when pasting audio
+    from one project into another, after the first project has been
+    saved and closed.
+
+  * Fix a possible crash when opening or resizing the Equalization
+    window, especially when using large system fonts.
 
   * Don't allow percentages less than -100% in Change Pitch/Speed/Tempo
-    effects.  Fixes a possible crash.
+    effects (fixes a possible crash).
 
-  * Correctly load saved ID3 tags from Audacity project files.
+  * Fix a crash when the temporary directory is not available on startup.
+
+  * Correctly load ID3 tags saved in Audacity project files.
 
   * On Linux and OS X, store lockfiles in the temp directory instead of
     the user's home directory.  This fixes problems in lab environments
     where users have restricted or network-mounted home directories.
 
+  * Fix a bug that prevented Nyquist effects from running when certain
+    regional settings were activated.
+
+  * Fix a bug in the Quick Mix command that could cause old temporary
+    files to not be deleted.
+
   * Linux: Fix endianness problems in playback on PowerPC.
 
   * Linux: Fix compilation problem in Nyquist on MIPS.
 
-  * Updated translations.
+  * Linux: Include a more recent PortAudio v19 snapshot (fixes compilation
+    problems when building with the --with-portaudio=v19 option).
 
-  * Two new Nyquist plug-ins: crossfadein.ny and crossfadeout.ny.
+  * Two new Nyquist plug-ins: "Cross Fade In" and "Cross Fade Out."
+  
+  * Other minor bug-fixes.
 
 Changes in 1.2.0:
 
