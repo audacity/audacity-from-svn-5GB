@@ -24,13 +24,17 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 
-#include "Mix.h"
-#include "RingBuffer.h"
-#include "SampleFormat.h"
 #include "WaveTrack.h"
+#include "SampleFormat.h"
+
+#ifdef paUseHostApiSpecificDeviceSpecification
+#define USE_PORTAUDIO_V19 1
+#endif
 
 class AudioIO;
-class AudacityProject;
+class RingBuffer;
+class Mixer;
+class TimeTrack;
 
 extern AudioIO *gAudioIO;
 
@@ -49,79 +53,63 @@ class AudioIO {
    AudioIO();
    ~AudioIO();
 
-   bool StartPlay(AudacityProject * project,
-                  TrackList * tracks, double t0, double t1);
+   /* If successful, returns a token identifying this particular stream
+    * instance.  For use with IsStreamActive() below */
+   int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
+                   sampleFormat captureFormat, TimeTrack *timeTrack,
+                   double sampleRate, double t0, double t1);
 
-   bool StartRecord(AudacityProject * project,
-                    TrackList * tracks, double t0, double t1);
+   void StopStream();
+   /* Returns true if the audio i/o is running at all */
+   bool IsStreamActive();
+   /* Returns true if the audio i/o is still running the stream instance
+    * identified by this token */
+   bool IsStreamActive(int token);
 
-   void Stop();
-   void HardStop();
    void SetPaused(bool state);
-   bool GetPaused(bool bIgnoreFirstPause = false);
-   void SetAlwaysEnablePause(bool bEnable);
+   bool IsPaused();
 
-   bool IsBusy();
-   bool IsPlaying();
-   bool IsRecording(Track *t = NULL);
-
-   // AS: This would be more properly named GetCurrentTime or
-   //  something like that.  The indicator is the little graphic
-   //  displayed in TrackPanel showing the current position while
-   //  you're playing or recording.
-   // BG: Note on comment above, GetCurrentTime is #defined in the windows header
-   //  files and cannot be used
-   double GetIndicator();
-
-   AudacityProject *GetProject();
-   sampleFormat GetFormat();
-   int GetNumRecordingChannels();
+   // This is given in seconds based on starting at t0
+   double GetStreamTime();
+   sampleFormat GetCaptureFormat() { return mCaptureFormat; }
+   int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
  private:
 
-   bool Start();
-   bool OpenDevice();
    void AdjustMixer();
-   void PrepareOutTracks(TrackList * tracks);
    void FillBuffers();
-   void AddDroppedSamples(sampleCount nSamples);
-   double GetPauseIndicator();
-   void Finish();
 
    AudioThread        *mThread;
-   AudacityProject    *mProject;
-   TrackList          *mTracks;
-   sampleCount         mInBufferSize;
-   RingBuffer        **mInBuffers;
-   WaveTrack         **mInTracks;
-   int                 mNumOutTracks;
-   sampleCount         mOutBufferSize;
-   RingBuffer        **mOutBuffers;
-   WaveTrack         **mOutTracks;
-   Mixer             **mOutMixers;
+   RingBuffer        **mCaptureBuffers;
+   WaveTrackArray      mCaptureTracks;
+   RingBuffer        **mPlaybackBuffers;
+   WaveTrackArray      mPlaybackTracks;
+   Mixer             **mPlaybackMixers;
+   int                 mStreamToken;
    double              mRate;
    double              mT;
-   double              mRecT;
    double              mT0;
    double              mT1;
-   bool                mStopping;
-   bool                mHardStop;
    bool                mPaused;
-   bool                mAlwaysEnablePause;
-   bool                mStarted;
-   bool                mReachedEnd;
    double              mPausePosition;
-   PortAudioStream    *mPortStream;
+#if USE_PORTAUDIO_V19
+   PaStream           *mPortStreamV19;
+#else
+   PortAudioStream    *mPortStreamV18;
    double              mLastIndicator;
    double              mLastStableIndicator;
-   int                 mPortAudioBufferSize;
-   unsigned int        mNumInChannels;
-   unsigned int        mNumOutChannels;
-   sampleFormat        mFormat;
+   volatile double     mPausedSeconds;
+   volatile bool       mInCallbackFinishedState;
+#endif
+   unsigned int        mNumCaptureChannels;
+   unsigned int        mNumPlaybackChannels;
+   sampleFormat        mCaptureFormat;
    float              *mTempFloats;
-   int                 mDroppedSamples;
    int                 mLostSamples;
-   bool                mFirstPause;
+   volatile bool       mAudioThreadShouldCallFillBuffersOnce;
+   volatile bool       mAudioThreadFillBuffersLoopRunning;
+   volatile double     mLastBufferAudibleTime;
+   volatile double     mTotalSamplesPlayed;
 
    #if USE_PORTMIXER
    PxMixer            *mPortMixer;
@@ -131,11 +119,20 @@ class AudioIO {
 
    friend void InitAudioIO();
    friend void DeinitAudioIO();
-   
+
+#if USE_PORTAUDIO_V19
    friend int audacityAudioCallback(
-		void *inputBuffer, void *outputBuffer,
-		unsigned long framesPerBuffer,
-		PaTimestamp outTime, void *userData );
+                void *inputBuffer, void *outputBuffer,
+                unsigned long framesPerBuffer,
+                const PaStreamCallbackTimeInfo *timeInfo,
+                PaStreamCallbackFlags statusFlags, void *userData );
+#else
+   friend int audacityAudioCallback(
+                void *inputBuffer, void *outputBuffer,
+                unsigned long framesPerBuffer,
+                PaTimestamp outTime, void *userData );
+#endif
+
 };
 
 #endif

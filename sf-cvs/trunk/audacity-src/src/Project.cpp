@@ -529,8 +529,8 @@ AudacityProject::~AudacityProject()
    //the commands code is responsible for deleting the menu bar, not Audacity's frame
    SetMenuBar(NULL);
 
-   if (gAudioIO->IsBusy() && gAudioIO->GetProject() == this)
-      gAudioIO->HardStop();
+   if (gAudioIO->IsStreamActive(mAudioIOToken))
+      gAudioIO->StopStream();
 
    //Go through the toolbar array and delete all the toolbars
    //Do this from the bottom, to avoid too much popping forward in the array
@@ -594,6 +594,21 @@ void AudacityProject::RedrawProject()
 DirManager *AudacityProject::GetDirManager()
 {
    return &mDirManager;
+}
+
+TrackFactory *AudacityProject::GetTrackFactory()
+{
+   return mTrackFactory;
+}
+
+int AudacityProject::GetAudioIOToken()
+{
+   return mAudioIOToken;
+}
+
+void AudacityProject::SetAudioIOToken(int token)
+{
+   mAudioIOToken = token;
 }
 
 Tags *AudacityProject::GetTags()
@@ -2329,8 +2344,7 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
    if (::wxGetUTCTime() - mLastStatusUpdateTime < 3)
       return;
 
-   if (gAudioIO->IsRecording() &&
-       gAudioIO->GetProject() == this) {
+   if (gAudioIO->IsStreamActive(mAudioIOToken)) {
       wxLongLong freeSpace = mDirManager.GetFreeDiskSpace();
       if (freeSpace >= 0) {
          wxString msg;
@@ -2338,8 +2352,8 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
          int recMins;
 
          recTime = freeSpace.GetHi() * 4294967296.0 + freeSpace.GetLo();
-         recTime /= SAMPLE_SIZE(gAudioIO->GetFormat());
-         recTime /= gAudioIO->GetNumRecordingChannels();
+         recTime /= SAMPLE_SIZE(gAudioIO->GetCaptureFormat());
+         recTime /= gAudioIO->GetNumCaptureChannels();
          recTime /= GetRate();
          recMins = (int)(recTime / 60.0);
 
@@ -2394,7 +2408,7 @@ void AudacityProject::TP_OnPlayKey()
    wxCommandEvent evt;
 
    //If busy, stop playing, make sure everything is unpaused.
-   if (gAudioIO->IsBusy()) {
+   if (gAudioIO->IsStreamActive()) {
       toolbar->SetPlay(false);        //Pops
       toolbar->SetStop(true);         //Pushes stop down
       toolbar->OnStop(evt);

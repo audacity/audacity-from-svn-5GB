@@ -144,10 +144,12 @@ void ControlToolBar::InitializeControlToolBar()
 
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
+#if 0
    mPaused=false;             //Turn the paused state to off
    if(!mAlwaysEnablePause)
       mPause->Disable();         //Turn the pause button off.
    gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
+#endif
 
 #if 0
 #if defined(__WXMAC__)          // && defined(TARGET_CARBON)
@@ -396,7 +398,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
    wxCommandEvent dummyEvent;
 
    if (event.KeyCode() == WXK_SPACE) {
-      if (gAudioIO->IsBusy()) {
+      if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken())) {
          SetPlay(false);
          SetStop(true);
          OnStop(dummyEvent);
@@ -413,6 +415,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 
 void ControlToolBar::UpdatePrefs()
 {
+#if 0
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
    if(mAlwaysEnablePause)
@@ -426,6 +429,7 @@ void ControlToolBar::UpdatePrefs()
    }
 
    gAudioIO->SetAlwaysEnablePause(mAlwaysEnablePause);
+#endif
 }
 
 int ControlToolBar::GetCurrentTool()
@@ -469,7 +473,7 @@ void ControlToolBar::SetRecord(bool down)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsStreamActive())
       return;
 
    mStop->Enable();
@@ -489,7 +493,20 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
       if (t0 > t->GetEndTime())
          t0 = t->GetEndTime();
 
-      bool success = (t1 > t0) && gAudioIO->StartPlay(p, t, t0, t1);
+      bool success = false;
+      if (t1 > t0)
+      {
+         int token =
+            gAudioIO->StartStream(t->GetWaveTrackArray(false),
+                                  WaveTrackArray(),
+                                  (sampleFormat)0, t->GetTimeTrack(),
+                                  p->GetRate(), t0, t1);
+         if (token != 0)
+         {
+            success = true;
+            p->SetAudioIOToken(token);
+         }
+      }
 
       if (!success) {
          SetPlay(false);
@@ -501,18 +518,23 @@ void ControlToolBar::OnPlay(wxCommandEvent &evt)
 
 void ControlToolBar::OnStop(wxCommandEvent &evt)
 {
-   gAudioIO->Stop();
+   bool mRecording = (gAudioIO->GetNumCaptureChannels() > 0);
    SetStop(false);
-   
+   gAudioIO->StopStream();
+   SetPlay(false);
+   SetRecord(false);
+
    mPause->PopUp();
-   if(!mAlwaysEnablePause)
-      mPause->Disable();
    mPaused=false;
+   GetActiveProject()->SetAudioIOToken(0);
+
+   if (mRecording)
+      GetActiveProject()->TP_PushState("Recorded Audio");
 }
 
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsStreamActive())
       return;
 
    mPlay->Disable();
@@ -528,8 +550,29 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       double t1 = p->GetSel1();
       if (t1 == t0)
          t1 = 1000000000.0;     // record for a long, long time (tens of years)
-      bool success = gAudioIO->StartRecord(p, t, t0, t1);
-      if (!success) {
+
+      /* TODO: set up stereo tracks if that is how the user has set up
+       * their preferences, and choose sample format based on prefs */
+      WaveTrackArray newRecordingTracks;
+      newRecordingTracks.Add(p->GetTrackFactory()->NewWaveTrack());
+      newRecordingTracks[0]->SetOffset(t0);
+
+      int token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
+                                        newRecordingTracks,
+                                        floatSample, t->GetTimeTrack(),
+                                        p->GetRate(), t0, t1);
+
+      bool success = (token != 0);
+      for( unsigned int i = 0; i < newRecordingTracks.GetCount(); i++ )
+         if (success)
+            t->Add(newRecordingTracks[i]);
+         else
+            delete newRecordingTracks[i];
+
+      if (success) {
+         GetActiveProject()->SetAudioIOToken(token);
+      }
+      else {
          SetPlay(false);
          SetStop(false);
          SetRecord(false);
@@ -556,7 +599,7 @@ void ControlToolBar::OnRewind(wxCommandEvent &evt)
 {
    mRewind->PopUp();
 
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
       OnStop(evt);
 
    AudacityProject *p = GetActiveProject();
@@ -568,7 +611,7 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
 {
    mFF->PopUp();
 
-   if (gAudioIO->IsBusy())
+   if (gAudioIO->IsStreamActive(GetActiveProject()->GetAudioIOToken()))
       OnStop(evt);
 
    AudacityProject *p = GetActiveProject();
@@ -622,7 +665,7 @@ void ControlToolBar::EnableDisableButtons()
    AudacityProject *p = GetActiveProject();
 
    bool tracks = (p && !p->GetTracks()->IsEmpty());
-   bool busy = gAudioIO->IsBusy();
+   bool busy = gAudioIO->IsStreamActive();
 
    if (tracks) {
       if (!busy)

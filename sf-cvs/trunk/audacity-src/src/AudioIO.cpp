@@ -5,12 +5,25 @@
   AudioIO.cpp
 
   Dominic Mazzoni
+  Joshua Haberman
 
   Use the PortAudio library to play and record sound
 
+  Great care and attention to detail are necessary for understanding and
+  modifying this system.  The code in this file is run from three
+  different thread contexts: the UI thread, the disk thread (which
+  this file creates and maintains) and the PortAudio callback thread.
+  To highlight this deliniation, the file is divided into three parts
+  based on what thread context each function is intended to run in.
+
+  TODO: run through all functions called from audio and portaudio threads
+  to verify they are thread-safe.
+
 **********************************************************************/
 
+#include <iostream>
 #include <math.h>
+#include <stdlib.h>
 
 #include <wx/log.h>
 #include <wx/textctrl.h>
@@ -19,21 +32,30 @@
 #include <wx/intl.h>
 
 #include "AudioIO.h"
-#include "Project.h"
-#include "Track.h"
 #include "WaveTrack.h"
-#include "Envelope.h"
 #include "Mix.h"
-#include "ControlToolBar.h"
-#include "MixerToolBar.h"
+#include "RingBuffer.h"
 #include "Prefs.h"
 #include "TimeTrack.h"
 
-#define AUDIOIO_DEADLOCK_THRESHOLD 100
-
-wxMutex gNoCallbackMutex;
-
 AudioIO *gAudioIO;
+
+#if USE_PORTAUDIO_V19
+int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
+                          unsigned long framesPerBuffer,
+                          const PaStreamCallbackTimeInfo *timeInfo,
+                          const PaStreamCallbackFlags statusFlags, void *userData );
+#else
+int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
+                          unsigned long framesPerBuffer,
+                          PaTimestamp outTime, void *userData );
+#endif
+
+//////////////////////////////////////////////////////////////////////
+//
+//     UI Thread Context
+//
+//////////////////////////////////////////////////////////////////////
 
 void InitAudioIO()
 {
@@ -48,45 +70,33 @@ void DeinitAudioIO()
 
 AudioIO::AudioIO()
 {
-   mProject = NULL;
-   mTracks = NULL;
-   mNumOutTracks = 0;
-   mInBufferSize = 44100 * 5;
-   mInBuffers = NULL;
-   mInTracks = NULL;
-   mOutBufferSize = 44100 * 5;
-   mOutBuffers = NULL;
-   mOutTracks = NULL;
-   mRate = 44100.0;
-   mT = 0.0;
-   mRecT = 0.0;
-   mT0 = 0.0;
-   mT1 = 0.0;
-   mHardStop = false;
-   mStopping = false;
-   mPaused = false;
-   mAlwaysEnablePause = false;
-   mStarted = false;
-   mReachedEnd = false;
-   mPausePosition = 0.0;
-   mPortStream = NULL;
-   mNumInChannels = 0;
-   mNumOutChannels = 0;
-   mFormat = floatSample;
+   mAudioThreadShouldCallFillBuffersOnce = false;
+   mAudioThreadFillBuffersLoopRunning = false;
+#if USE_PORTAUDIO_V19
+   mPortStreamV19 = NULL;
+#else
+   mPortStreamV18 = NULL;
+   mInCallbackFinishedState = false;
+#endif
+   mStreamToken = 0;
    mTempFloats = new float[65536]; // TODO: out channels * PortAudio buffer size
-   mLostSamples = 0;
-   mDroppedSamples = 0;
-   mFirstPause = true;
 
    PaError err = Pa_Initialize();
 
    if (err != paNoError) {
-      wxString errStr = _("Audacity was unable to find any audio devices.");
+      wxString errStr = _("There was an error initializing the audio i/o layer.\n");
+      errStr += _("You will not be able to play or record audio.\n\n");
       wxString paErrStr = Pa_GetErrorText(err);
       if (paErrStr)
-         errStr += "\nError: "+paErrStr;
-      wxMessageBox(errStr);
-      return;
+         errStr += "Error: "+paErrStr;
+      // XXX: we are in libaudacity, popping up dialogs not allowed!  A
+      // long-term solution will probably involve exceptions
+      wxMessageBox(errStr, "Error Initializing Audio", wxICON_ERROR|wxOK);
+
+      // Since PortAudio is not initialized, all calls to PortAudio
+      // functions will fail.  This will give reasonable behavior, since
+      // the user will be able to do things not relating to audio i/o,
+      // but any attempt to play or record will simply fail.
    }
 
    // Start thread
@@ -98,156 +108,15 @@ AudioIO::~AudioIO()
 {
    Pa_Terminate();
 
-   wxSafeYield();
-   mThread->Delete();
-   int deadlock_counter = 0;
-   while(mThread->IsRunning())
-   {
-      deadlock_counter++;
-
-      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
-      {
-         wxLogDebug("Deadlock detected, terminating thread");
-         mThread->Kill();
-         break;
-      }
-
-      wxSafeYield();
-   }
+   mThread->Wait();
 
    delete [] mTempFloats;
    delete mThread;
 }
 
-int audacityAudioCallback(
-   void *inputBuffer, void *outputBuffer,
-   unsigned long framesPerBuffer,
-   PaTimestamp outTime, void *userData )
-{
-   int numOutChannels = gAudioIO->mNumOutChannels;
-   int numOutTracks = gAudioIO->mNumOutTracks;
-   int numInChannels = gAudioIO->mNumInChannels;
-   float *tempFloats = gAudioIO->mTempFloats;
-   unsigned int i;
-   int t;
-
-   // WARNING: BG: If you return after the next block of code, remember to unlock the mutex
-
-   if(gAudioIO->GetPaused() || (gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)) {
-      if (outputBuffer && numOutChannels > 0) {
-         ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
-                      0, framesPerBuffer * numOutChannels);
-      }
-
-      gAudioIO->AddDroppedSamples(framesPerBuffer);
-      return 0;
-   }
-
-   gAudioIO->AdjustMixer();
-
-   //
-   // Mix and copy to PortAudio's output buffer
-   //
-
-   if (outputBuffer && numOutChannels > 0) {
-      float *outputFloats = (float *)outputBuffer;
-      for(i=0; i<framesPerBuffer*numOutChannels; i++)
-         outputFloats[i] = 0.0;
-      
-      int numSolo = 0;
-      for(t=0; t<numOutTracks; t++)
-         if (gAudioIO->mOutTracks[t]->GetSolo())
-            numSolo++;
-      
-      for(t=0; t<numOutTracks; t++) {   
-         WaveTrack *vt = (WaveTrack *)gAudioIO->mOutTracks[t];
-         WaveTrack *mt = vt;
-         
-         // We want to extract mute and solo information from
-         // the top of the two tracks if they're linked
-         // (i.e. a stereo pair only has one set of mute/solo buttons)
-         Track *partner = gAudioIO->mTracks->GetLink(vt);
-         if (partner && !vt->GetLinked())
-            mt = (WaveTrack *)partner;
-         else
-            mt = vt;
-         
-         // Cut if somebody else is soloing
-         if (numSolo>0 && !mt->GetSolo())
-         {
-            gAudioIO->mOutBuffers[t]->Discard(framesPerBuffer);
-            continue;
-         }
-         
-         // Cut if we're muted (unless we're soloing)
-         if (mt->GetMute() && !mt->GetSolo())
-         {
-            gAudioIO->mOutBuffers[t]->Discard(framesPerBuffer);
-            continue;
-         }
-         
-         unsigned int len = (unsigned int)
-            gAudioIO->mOutBuffers[t]->Get((samplePtr)tempFloats, floatSample,
-                                          (int)framesPerBuffer);
-
-         // If our buffer is empty and the time indicator is past
-         // the end, then we've actually finished playing the entire
-         // selection.
-         if (len == 0 && gAudioIO->mT >= gAudioIO->mT1)
-            gAudioIO->mReachedEnd = true;
-
-         if (vt->GetChannel() == Track::LeftChannel ||
-             vt->GetChannel() == Track::MonoChannel) {
-            float volume = vt->GetChannelGain(0);
-            for(i=0; i<len; i++)
-               outputFloats[numOutChannels*i] += volume*tempFloats[i];
-         }
-         
-         if (vt->GetChannel() == Track::RightChannel ||
-             vt->GetChannel() == Track::MonoChannel) {
-            float volume = vt->GetChannelGain(1);
-            for(i=0; i<len; i++)
-               outputFloats[numOutChannels*i+1] += volume*tempFloats[i];
-         }
-      }
-   }
-   
-   //
-   // Copy from PortAudio to our input buffers.
-   //
-   
-   if (inputBuffer && numInChannels > 0) {
-      float *inputFloats = (float *)inputBuffer;
-      unsigned int len = framesPerBuffer;
-      for(t=0; t<numInChannels; t++) {
-         unsigned int avail =
-            (unsigned int)gAudioIO->mInBuffers[t]->AvailForPut();
-         if (avail < len)
-            len = avail;
-      }
-
-      if (len < framesPerBuffer)
-         gAudioIO->mLostSamples += (framesPerBuffer - len);
-
-      if (len > 0) {
-         for(t=0; t<numInChannels; t++) {
-            for(i=0; i<len; i++)
-               tempFloats[i] = inputFloats[numInChannels*i+t];
-            
-            gAudioIO->mInBuffers[t]->Put((samplePtr)tempFloats,
-                                         floatSample, len);
-         }
-      }
-   }
-
-   gNoCallbackMutex.Unlock();
-
-   return 0;
-}
-
 void AudioIO::AdjustMixer()
 {
-#if USE_PORTMIXER
+#if 0 //USE_PORTMIXER
    AudacityProject *project = mProject;
    PxMixer *mixer = mPortMixer;
 
@@ -265,558 +134,475 @@ void AudioIO::AdjustMixer()
 #endif
 }
 
-bool AudioIO::OpenDevice()
+int AudioIO::StartStream(WaveTrackArray playbackTracks,
+                         WaveTrackArray captureTracks,
+                         sampleFormat captureFormat, TimeTrack *timeTrack,
+                         double sampleRate, double t0, double t1)
 {
-   PaError         error;
-   int             numPortAudioBuffers;
-   int             recDeviceNum;
-   int             playDeviceNum;
-   PaSampleFormat  paFormat;
-   wxString        recDevice;
-   wxString        playDevice;
+   if( IsStreamActive() )
+      return false;
 
-   numPortAudioBuffers = Pa_GetMinNumBuffers(mPortAudioBufferSize, mRate);
+   mRate    = sampleRate;
+   mT0      = t0;
+   mT       = t0;
+   mT1      = t1;
+   mPaused  = false;
+   mPlaybackTracks = playbackTracks;
+   mCaptureTracks  = captureTracks;
+   mTotalSamplesPlayed = 0;
+   mPausedSeconds = 0;
 
-   if (mNumInChannels>0)
-      numPortAudioBuffers *= 2;
+   //
+   // Attempt to open the device using the given parameters.  If we can't, it's
+   // pointless to proceed any further
+   //
 
-   recDeviceNum = Pa_GetDefaultInputDeviceID();
-   playDeviceNum = Pa_GetDefaultOutputDeviceID();
+#if USE_PORTAUDIO_V19
+   PaStreamParameters *playbackParameters;
+   PaStreamParameters *captureParameters;
 
-   recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
-   playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+   if( playbackTracks.GetCount() > 0 )
+   {
+      // For playback, everything gets mixed down to stereo
+      mNumPlaybackChannels = 2;
+      playbackParameters = new PaStreamParameters;
+      const PaDeviceInfo *playbackDeviceInfo;
 
-   mFormat = (sampleFormat)gPrefs->Read("/AudioIO/SampleFormat", floatSample);
-   paFormat = paFloat32;
+      playbackParameters->device = gPrefs->Read("/AudioIO/PlaybackDevice",
+                                                Pa_GetDefaultOutputDevice() );
 
-   for(int j=0; j<Pa_CountDevices(); j++) {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->name == playDevice && info->maxOutputChannels > 0)
-         playDeviceNum = j;
-      if (info->name == recDevice && info->maxInputChannels > 0)
-         recDeviceNum = j;
+      playbackDeviceInfo = Pa_GetDeviceInfo( playbackParameters->device );
+
+      if( playbackDeviceInfo == NULL )
+          return false;
+
+      // regardless of source formats, we always mix to float
+      playbackParameters->sampleFormat = paFloat32;
+      playbackParameters->hostApiSpecificStreamInfo = NULL;
+      playbackParameters->channelCount = mNumPlaybackChannels;
+      playbackParameters->suggestedLatency =
+         playbackDeviceInfo->defaultLowOutputLatency;
+   }
+   else
+   {
+      playbackParameters = NULL;
    }
 
-   if (mNumOutChannels<=0)
-      playDeviceNum = paNoDevice;
-   if (mNumInChannels<=0)
-      recDeviceNum = paNoDevice;
+   if( captureTracks.GetCount() > 0 )
+   {
+      // For capture, every input channel gets its own track
+      mNumCaptureChannels = mCaptureTracks.GetCount();
+      captureParameters = new PaStreamParameters;
+      const PaDeviceInfo *captureDeviceInfo;
 
-   error = Pa_OpenStream(&mPortStream,
-                         recDeviceNum,
-                         mNumInChannels,
-                         paFormat,
-                         NULL, /* inputDriverInfo */
-                         playDeviceNum,
-                         mNumOutChannels,
-                         paFormat,
-                         NULL,
-                         mRate,
-                         (unsigned long)mPortAudioBufferSize,
-                         (unsigned long)numPortAudioBuffers,
-                         paClipOff | paDitherOff,
-                         audacityAudioCallback,
-                         NULL);
+      captureParameters->device = gPrefs->Read("/AudioIO/RecordingDevice",
+                                               Pa_GetDefaultInputDevice() );
 
-#if USE_PORTMIXER
-   mPortMixer = NULL;
-   if (mPortStream != NULL && error == paNoError) {
-      mPortMixer = Px_OpenMixer(mPortStream, 0);
-      if (mPortMixer)
-         AdjustMixer();
-   }
-#endif
+      captureDeviceInfo = Pa_GetDeviceInfo( captureParameters->device );
 
-   return (mPortStream != NULL && error == paNoError);
-}
+      if( captureDeviceInfo == NULL )
+          return false;
 
-bool AudioIO::Start()
-{
-   mT = mT0;
-   mPortAudioBufferSize = 512;
-   mDroppedSamples = 0;
-   mLostSamples = 0;
-   mLastIndicator = mT0;
-   mLastStableIndicator = mT0;
-   if(!mAlwaysEnablePause)
-      mPaused = false;
-   mPausePosition = 0.0;
+      // capture in the requested format
+      switch( captureFormat )
+      {
+         case int16Sample:
+            captureParameters->sampleFormat = paInt16;
+            break;
 
-   unsigned int i;
+         case int24Sample:
+            captureParameters->sampleFormat = paInt24;
+            break;
 
-   if (mNumInChannels > 0) {
-      // 5 seconds of buffering per channel
-      mInBufferSize = (sampleCount)(mRate * 5);
-      mInBuffers = new RingBuffer*[mNumInChannels];
-      for(i=0; i<mNumInChannels; i++)
-         mInBuffers[i] = new RingBuffer(floatSample, mInBufferSize);
-   }
-
-   if (mNumOutChannels > 0) {
-      // 5 seconds of buffering per channel
-      mOutBufferSize = (sampleCount)(mRate * 5);
-      mOutBuffers = new RingBuffer*[mNumOutTracks];
-      mOutMixers = new Mixer*[mNumOutTracks];
-      for(i=0; i<(unsigned int)mNumOutTracks; i++) {
-         mOutBuffers[i] = new RingBuffer(floatSample, mOutBufferSize);
-         mOutMixers[i] = new Mixer(1, &mOutTracks[i],
-                                   mTracks->GetTimeTrack(),
-                                   mT0, mT1, 1, mOutBufferSize, false,
-                                   mRate, floatSample,
-                                   false);
-         mOutMixers[i]->ApplyTrackGains(false);
+         case floatSample:
+            captureParameters->sampleFormat = paFloat32;
+            break;
       }
+
+      captureParameters->hostApiSpecificStreamInfo = NULL;
+      captureParameters->channelCount = mNumCaptureChannels;
+      captureParameters->suggestedLatency =
+         captureDeviceInfo->defaultHighInputLatency;
+   }
+   else
+   {
+      captureParameters = NULL;
    }
 
-   FillBuffers();
+   PaError err = Pa_OpenStream( &mPortStreamV19,
+                                captureParameters, playbackParameters,
+                                mRate, paFramesPerBufferUnspecified,
+                                paNoFlag,
+                                audacityAudioCallback, NULL );
 
-   if (!OpenDevice()) {
-      wxMessageBox(_("Error opening audio device.\n"
-                     "(Change the device in the Preferences dialog.)"));
-      Finish();
-      return false;
-   }
+   // these may be null, but deleting a null pointer should never crash.
+   delete captureParameters;
+   delete playbackParameters;
 
-   PaError error = Pa_StartStream(mPortStream);
+#else
 
-   if (error == paNoError)
-      mStarted = true;
+   PaDeviceID captureDevice, playbackDevice;
+   PaSampleFormat paCaptureFormat;
 
-   mProject->SetStop(false);
-   mProject->HandleResize();
+   if( playbackTracks.GetCount() > 0 )
+   {
+      // For playback, everything gets mixed down to stereo
+      mNumPlaybackChannels = 2;
 
-   return (error == paNoError);
-}
+      playbackDevice =  Pa_GetDefaultOutputDeviceID();
+      wxString playbackDeviceName = gPrefs->Read("/AudioIO/PlaybackDevice", "");
 
-void AudioIO::PrepareOutTracks(TrackList * tracks)
-{
-   mNumOutTracks = 0;
-   TrackListIterator iter(mTracks);
-   Track *vt = iter.First();
-   while (vt) {
-      if (vt->GetKind() == Track::Wave)
-         mNumOutTracks++;
-      vt = iter.Next();
-   }
-
-   mOutTracks = new WaveTrack*[mNumOutTracks];
-
-   int j = 0;
-   TrackListIterator iter2(mTracks);
-   vt = iter2.First();
-   while (vt) {
-      if (vt->GetKind() == Track::Wave)
-         mOutTracks[j++] = (WaveTrack *)vt;
-      vt = iter2.Next();
-   }
-}
-
-bool AudioIO::StartPlay(AudacityProject * project, TrackList * tracks,
-                        double t0, double t1)
-{
-   if (mProject)
-      return false;
-
-   mProject = project;
-   mTracks = tracks;
-   mRate = project->GetRate();
-   mT0 = t0;
-   mT1 = t1;
-
-   mNumInChannels = 0;
-
-#if 0
-
-   TrackListIterator iter(mTracks);
-   for( Track* t = iter.First(); t != NULL; t = iter.Next() )
-      if (t->GetKind() == Track::Wave) {
-         WaveTrack* wt = (WaveTrack*)t;
-         
-         
-         TimeTrack* tt = t->GetTimeTrack();
-         if (tt) {
-            src_reset( wt->GetSRC() );
-            double warpFactor;
-            if( wt->GetStartTime() <= t0 )
-               warpFactor = tt->GetEnvelope()->GetValue( t0 );
-            else
-               warpFactor = tt->GetEnvelope()->GetValue( wt->GetStartTime() );
-            warpFactor = (tt->GetRangeLower() * (1 - warpFactor) + warpFactor * tt->GetRangeUpper())/100.0;
-            
-            
-            printf("src_set_ratio %f\n", 1/warpFactor);
-            src_set_ratio( wt->GetSRC(), 1/warpFactor );
+      if( playbackDeviceName != "" )
+      {
+         for( int i = 0; i < Pa_CountDevices(); i++)
+         {
+            const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+            if (info->name == playbackDeviceName && info->maxOutputChannels > 0)
+               playbackDevice = i;
          }
-
-
       }
+   }
+   else
+   {
+      playbackDevice = paNoDevice;
+      mNumPlaybackChannels = 0;
+   }
+
+
+   if( captureTracks.GetCount() > 0 )
+   {
+      // For capture, every input channel gets its own track
+      mNumCaptureChannels = mCaptureTracks.GetCount();
+
+      captureDevice =  Pa_GetDefaultInputDeviceID();
+      wxString captureDeviceName = gPrefs->Read("/AudioIO/RecordingDevice", "");
+
+      if( captureDeviceName != "" )
+      {
+         for( int i = 0; i < Pa_CountDevices(); i++)
+         {
+            const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+            if (info->name == captureDeviceName && info->maxInputChannels > 0)
+               captureDevice = i;
+         }
+      }
+
+      // capture in the requested format
+      switch( captureFormat )
+      {
+         case int16Sample:
+            paCaptureFormat = paInt16;
+            break;
+
+         case int24Sample:
+            paCaptureFormat = paInt24;
+            break;
+
+         case floatSample:
+            paCaptureFormat = paFloat32;
+            break;
+      }
+   }
+   else
+   {
+      captureDevice = paNoDevice;
+      mNumCaptureChannels = 0;
+   }
+
+   PaError err = Pa_OpenStream( &mPortStreamV18,
+                                /* capture parameters */
+                                captureDevice,
+                                mNumCaptureChannels,
+                                paCaptureFormat,
+                                NULL,
+                                /* playback parameters */
+                                playbackDevice,
+                                mNumPlaybackChannels,
+                                paFloat32,
+                                NULL,
+                                /* general parameters */
+                                mRate, 256, 0,
+                                paClipOff | paDitherOff,
+                                audacityAudioCallback, NULL );
+
+   mInCallbackFinishedState = false;
 
 #endif
 
-   mNumOutChannels = 2;
-
-   PrepareOutTracks(tracks);
-
-   return Start();
-}
-
-bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks, 
-                         double t0, double t1)
-{
-   if (mProject)
-      return false;
-      
-   mProject = project;
-   mTracks = tracks;
-   mRate = project->GetRate();
-   mT0 = t0;
-   mT1 = t1;
-
-   bool duplex;
-   long recordChannels;
-   gPrefs->Read("/AudioIO/RecordChannels", &recordChannels, 1L);
-   gPrefs->Read("/AudioIO/Duplex", &duplex, false);
-   mFormat = (sampleFormat)gPrefs->Read("/AudioIO/SampleFormat", floatSample);
-
-   mNumInChannels = recordChannels;
-   mNumOutChannels = duplex? 2: 0;
-   
-   if (mNumOutChannels > 0)
-      PrepareOutTracks(tracks);
-
-   mProject->SelectNone();
-
-   mInTracks = new WaveTrack*[mNumInChannels];
-   for(unsigned int i=0; i<mNumInChannels; i++) {
-      mInTracks[i] = new WaveTrack(project->GetDirManager(), mFormat);
-      mInTracks[i]->SetSelected(true);
-      mInTracks[i]->SetOffset(mT0);
-      if (recordChannels == 2)
-         mInTracks[i]->SetChannel(i==0? Track::LeftChannel : Track::RightChannel);
-      else
-         mInTracks[i]->SetChannel(Track::MonoChannel);
-      if (recordChannels==2 && i==0)
-         mInTracks[i]->SetLinked(true);
-      mInTracks[i]->SetRate(mRate);
-      
-      mTracks->Add(mInTracks[i]);
+   if( err != paNoError )
+   {
+      // we'll need a more complete way to indicate error
+      printf("failed here\n");
+      printf("%s\n", Pa_GetErrorText(err));
+      return 0;
    }
 
-   return Start();
+   //
+   // The stream has successfully been opened.  We now proceed in allocating
+   // the memory structures the stream will need.
+   //
+
+   if( mNumPlaybackChannels > 0 )
+   {
+      // Allocate output buffers.  For every output track we allocate
+      // a ring buffer of five seconds
+      sampleCount playbackBufferSize = (sampleCount)(mRate * 5);
+      mPlaybackBuffers = new RingBuffer* [mPlaybackTracks.GetCount()];
+      mPlaybackMixers  = new Mixer*      [mPlaybackTracks.GetCount()];
+
+      for( unsigned int i = 0; i < mPlaybackTracks.GetCount(); i++ )
+      {
+         mPlaybackBuffers[i] = new RingBuffer(floatSample, playbackBufferSize);
+
+         mPlaybackMixers[i]  = new Mixer(1, &mPlaybackTracks[i],
+                                         timeTrack, mT0, mT1, 1,
+                                         playbackBufferSize, false,
+                                         mRate, floatSample, false);
+         mPlaybackMixers[i]->ApplyTrackGains(false);
+      }
+   }
+
+   if( mNumCaptureChannels > 0 )
+   {
+      // Allocate input buffers.  For every input track we allocate
+      // a ring buffer of five seconds
+      sampleCount captureBufferSize = (sampleCount)(mRate * 5);
+      mCaptureBuffers = new RingBuffer* [mCaptureTracks.GetCount()];
+
+      for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
+         mCaptureBuffers[i] = new RingBuffer( captureFormat, captureBufferSize );
+   }
+
+   // We signal the audio thread to call FillBuffers, to prime the RingBuffers
+   // so that they will have data in them when the stream starts.  Having the
+   // audio thread call FillBuffers here makes the code more predictable, since
+   // FillBuffers will ALWAYS get called from the Audio thread.
+   mAudioThreadShouldCallFillBuffersOnce = true;
+
+   while( mAudioThreadShouldCallFillBuffersOnce == true )
+      wxUsleep( 50 );
+
+   // Now start the PortAudio stream!
+#if USE_PORTAUDIO_V19
+   err = Pa_StartStream( mPortStreamV19 );
+#else
+   err = Pa_StartStream( mPortStreamV18 );
+#endif
+
+   if( err != paNoError )
+   {
+      // TODO
+      // we'll need a more complete way to indicate error.
+      // AND we need to delete the ring buffers and mixers, etc.
+      printf("%s\n", Pa_GetErrorText(err));
+      return 0;
+   }
+
+   mAudioThreadFillBuffersLoopRunning = true;
+   mStreamToken = rand();
+
+#if USE_PORTAUDIO_V19
+   // To make GetStreamTime behave correctly before the callback sets
+   // mLastBufferAudibleTime the first time, we make a rough guess
+   // TODO: guess better
+   mLastBufferAudibleTime = Pa_GetStreamTime( mPortStreamV19 ) + (2048 / mRate);
+#endif
+
+   return mStreamToken;
 }
 
-void AudioIO::AddDroppedSamples(sampleCount nSamples)
+void AudioIO::StopStream()
 {
-   mDroppedSamples += nSamples;
-}
+#if USE_PORTAUDIO_V19
+   if( mPortStreamV19 == NULL || mStreamToken == 0 )
+      return;
 
-double AudioIO::GetPauseIndicator()
-{
-   return mPausePosition;
+   if( Pa_IsStreamStopped( mPortStreamV19 ) )
+      return;
+#else
+   if( mPortStreamV18 == NULL || mStreamToken == 0 )
+      return;
+
+   if( IsStreamActive() == false && mInCallbackFinishedState == false )
+      return;
+#endif
+
+   //
+   // We got here in one of two ways:
+   //
+   // 1. The user clicked the stop button and we therefore want to stop
+   //    as quickly as possible.  So we use AbortStream().  If this is
+   //    the case the portaudio stream is still in the Running state
+   //    (see PortAudio state machine docs).
+   //
+   // 2. The callback told PortAudio to stop the stream since it had
+   //    reached the end of the selection.  The UI thread discovered
+   //    this by noticing that AudioIO::IsActive() returned false.
+   //    IsActive() (which calls Pa_GetStreamActive()) will not return
+   //    false until all buffers have finished playing, so we can call
+   //    AbortStream without losing any samples.  If this is the case
+   //    we are in the "callback finished state" (see PortAudio state
+   //    machine docs).
+   //
+   // The moral of the story: We can call AbortStream safely, without
+   // losing samples.
+   //
+
+   mAudioThreadFillBuffersLoopRunning = false;
+
+#if USE_PORTAUDIO_V19
+   Pa_AbortStream( mPortStreamV19 );
+   Pa_CloseStream( mPortStreamV19 );
+   mPortStreamV19 = NULL;
+#else
+   Pa_AbortStream( mPortStreamV18 );
+   Pa_CloseStream( mPortStreamV18 );
+   mPortStreamV18 = NULL;
+   mInCallbackFinishedState = false;
+#endif
+
+   mStreamToken = 0;
+
+   // In either of the above cases, we want to make sure that any
+   // capture data that made it into the PortAudio callback makes it
+   // to the target WaveTrack.  To do this, we ask the audio thread to
+   // call FillBuffers one last time (it normally would not do so since
+   // Pa_GetStreamActive() would now return false
+   mAudioThreadShouldCallFillBuffersOnce = true;
+
+   while( mAudioThreadShouldCallFillBuffersOnce == true )
+   {
+      wxYield();
+      wxUsleep( 50 );
+   }
+
+   //
+   // Everything is taken care of.  Now, just free all the resources
+   // we allocated in StartStream()
+   //
+
+   if( mPlaybackTracks.GetCount() > 0 )
+   {
+      for( unsigned int i = 0; i < mPlaybackTracks.GetCount(); i++ )
+      {
+         delete mPlaybackBuffers[i];
+         delete mPlaybackMixers[i];
+      }
+
+      delete[] mPlaybackBuffers;
+      delete[] mPlaybackMixers;
+   }
+
+   if( mCaptureTracks.GetCount() > 0 )
+   {
+      for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
+      {
+         delete mCaptureBuffers[i];
+      }
+
+      delete[] mCaptureBuffers;
+   }
 }
 
 void AudioIO::SetPaused(bool state)
 {
    if(state)
    {
-      mFirstPause = true;
-      mPausePosition = GetIndicator();
+      // When we are beginning a pause, we note the time so that GetStreamTime
+      // can always return this position while we're paused
+      mPausePosition = GetStreamTime();
+   }
+   else
+   {
+#if USE_PORTAUDIO_V19
+      // When we're coming out of a pause, we guess mLastBufferAudibleTime so
+      // that the indicator won't be erratic between now and when the callback
+      // sets mLastBufferAudibleTime again.  This is similar to what happens
+      // in StartStream
+      mLastBufferAudibleTime = Pa_GetStreamTime( mPortStreamV19 ) + (2048 / mRate);
+#endif
    }
 
    mPaused = state;
 }
 
-bool AudioIO::GetPaused(bool bIgnoreFirstPause){
-   if(mFirstPause && bIgnoreFirstPause && mPaused)
-   {
-      mFirstPause = false;
-      return false;
-   }
-
+bool AudioIO::IsPaused()
+{
    return mPaused;
 }
 
-void AudioIO::FillBuffers()
+bool AudioIO::IsStreamActive()
 {
-   AudacityProject *project = mProject;
-   if (!project)
-      return;
-
-   int i;
-
-   // Playback buffers
-
-   if (mNumOutChannels > 0) {
-
-      unsigned int block = mOutBufferSize;
-      
-      for(i=0; i<mNumOutTracks; i++) {
-         unsigned int avail = mOutBuffers[i]->AvailForPut();
-         if (avail < block)
-            block = avail;
-      }
-
-      // Don't fill playback buffers unless we have at least 1 second free
-      if (block >= mRate || (mStopping && !mHardStop)) {
-         double deltat = block / mRate;
-
-         if (mT + deltat > mT1) {
-            deltat = mT1 - mT;
-            if(deltat < 0.0)
-               deltat = 0.0;
-            block = (unsigned int)(deltat * mRate + 0.5);
-         }
-
-         if (block > 0) {
-            for(i=0; i<mNumOutTracks; i++) {
-               int processed = mOutMixers[i]->Process(block);
-               samplePtr outBytes = mOutMixers[i]->GetBuffer();
-               mOutBuffers[i]->Put(outBytes, floatSample, processed);
-            }
-         }
-         
-         mT += deltat;
-      }
-   }
-   
-   // Recording buffers
-
-   if (mNumInChannels > 0) {
-      unsigned int len = mInBufferSize;
-      for(i=0; i<(int)mNumInChannels; i++) {
-         unsigned int avail = (unsigned int)mInBuffers[i]->AvailForGet();
-         if (avail < len)
-            len = avail;
-      }
-      
-      // Don't empty recording buffers unless we have at least
-      // 1 second recorded (or the user has pressed 'pause' or 'stop')
-      if (len >= mRate || (mPaused && len>0) || (mStopping && !mHardStop && len>0)) {
-         samplePtr temp = NewSamples(len, floatSample);
-         for(i=0; i<(int)mNumInChannels; i++) {
-            mInBuffers[i]->Get(temp, floatSample, len);
-            mInTracks[i]->Append(temp, floatSample, len);
-         }
-         DeleteSamples(temp);
-      }
-   }
-}
-
-void AudioIO::Stop()
-{
-   if (mStopping)
-      return;
-
-   AudacityProject *project = mProject;
-
-   if (!project)
-      return;
-
-   int deadlock_counter = 0;
-
-   while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
-   {
-      deadlock_counter++;
-
-      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
-      {
-         wxMessageBox(_("Deadlock detected in AudioIO::Stop, Audacity must close. Please report this to the Audacity developers."));
-         QuitAudacity(true);
-         return;
-      }
-
-      wxSafeYield();
-   }
-
-   if (!mHardStop) {
-      project->GetControlToolBar()->SetPlay(false);
-      project->GetControlToolBar()->SetStop(false);
-      project->GetControlToolBar()->SetRecord(false);
-   }
-   
-   // If we reached the end of the selection, we call Pa_StopStream,
-   // which waits until all buffers are finished.  If the user requested
-   // the stop, we call Pa_AbortStream, which stops immediately.
-
-   PortAudioStream *stream = mPortStream;
-
-   if (stream) {
-      #if USE_PORTMIXER
-      PxMixer *mixer = mPortMixer;
-      mPortMixer = NULL;
-      Px_CloseMixer(mixer);
-      #endif
-
-      if (mReachedEnd && !mHardStop)
-         Pa_StopStream(stream);
-      else
-         Pa_AbortStream(stream);
-
-      Pa_CloseStream(stream);
-   }
-
-   mPortStream = NULL;
-
-   mStopping = true;
-
-   gNoCallbackMutex.Unlock();
-}
-
-void AudioIO::HardStop()
-{
-   mHardStop = true;
-   Stop();
-}
-
-sampleFormat AudioIO::GetFormat()
-{
-   return mFormat;
-}
-
-bool AudioIO::IsBusy()
-{
-   return (mProject != NULL);
-}
-
-bool AudioIO::IsPlaying()
-{
-   return (mProject && mNumOutChannels > 0);
-}
-
-bool AudioIO::IsRecording(Track *t)
-{
-   if (!mProject || !mNumInChannels)
-      return false;
-
-   if (t) {
-      for (unsigned int i = 0; i < mNumInChannels; i++)
-         if (mInTracks[i] == t)
-            return true;
-      return false;
-   }
-   return true;
-}
-
-AudacityProject *AudioIO::GetProject()
-{
-   return mProject;
-}
-
-int AudioIO::GetNumRecordingChannels()
-{
-   if (!mProject)
-      return 0;
-
-   return mNumInChannels;
-}
-
-double AudioIO::GetIndicator()
-{
-   PortAudioStream *stream = mPortStream;
-   AudacityProject *project = mProject;
-
-   if (project && stream)
-      if(GetPaused())
-         return GetPauseIndicator();
-      else {
-         double streamTime = Pa_StreamTime(stream);
-         double indicator = mT0 + ((streamTime-mDroppedSamples)/ mRate);
-
-         // Pa_StreamTime can sometimes return wacky results, so we
-         // try to filter those out...
-         if (fabs(indicator - mLastIndicator) > 0.1) {
-            mLastIndicator = indicator;
-            return mLastStableIndicator;
-         }
-         mLastIndicator = indicator;
-         mLastStableIndicator = indicator;
-         return indicator;
-      }
+#if USE_PORTAUDIO_V19
+   if( mPortStreamV19 )
+      return Pa_IsStreamActive( mPortStreamV19 );
    else
-      return -1000000000.0;
+      return false;
+#else
+   if( mPortStreamV18 &&
+       Pa_StreamActive( mPortStreamV18 ) &&
+       mInCallbackFinishedState == false )
+      return true;
+   else
+      return false;
+#endif
 }
 
-void AudioIO::SetAlwaysEnablePause(bool bEnable)
+bool AudioIO::IsStreamActive(int token)
 {
-   mAlwaysEnablePause = bEnable;
+   if( IsStreamActive() && token == mStreamToken )
+      return true;
+   else
+      return false;
 }
 
-void AudioIO::Finish()
+double AudioIO::GetStreamTime()
 {
-   //If portaudio is still active, return
-   if(mPortStream)
-      return;
+   if( !IsStreamActive() )
+      return -1000000000;
 
-   AudacityProject *project = mProject;
+   if( mPaused )
+      return mPausePosition;
 
-   int deadlock_counter = 0;
+#if USE_PORTAUDIO_V19
 
-   while(gNoCallbackMutex.TryLock() != wxMUTEX_NO_ERROR)
-   {
-      deadlock_counter++;
+   PaStream *stream = mPortStreamV19;
 
-      if(deadlock_counter > AUDIOIO_DEADLOCK_THRESHOLD)
-      {
-         wxMessageBox(_("Deadlock detected in AudioIO::Finish, Audacity must close. Please report this to the Audacity developers."));
-         QuitAudacity(true);
-         return;
-      }
+   // Based on the number of samples we have written, this is the value
+   // in time that represents how far we are through the source data
+   double lastBufferTime =  mT0 + (mTotalSamplesPlayed / mRate);
 
-      mThread->Yield();
+   // This is the number of seconds ago that the last buffer started
+   // being heard.  It will be negative if the last buffer is not
+   // yet audible.
+   double deltat = Pa_GetStreamTime(stream) - mLastBufferAudibleTime;
+
+   double time = lastBufferTime + deltat;
+   return time;
+#else
+   PaStream *stream = mPortStreamV18;
+
+   double streamTime = Pa_StreamTime(stream);
+   double indicator = mT0 + (streamTime / mRate) - mPausedSeconds;
+
+   // Pa_StreamTime can sometimes return wacky results, so we
+   // try to filter those out...
+   if (fabs(indicator - mLastIndicator) > 0.1) {
+      mLastIndicator = indicator;
+      return mLastStableIndicator;
    }
-
-   // Note that this should only be called from the AudioThread,
-   // after it has received the Stop message
-
-   int i;
-   if (mNumOutChannels > 0) {
-      for(i=0; i<mNumOutTracks; i++) {
-         delete mOutBuffers[i];
-         delete mOutMixers[i];
-      }
-      delete[] mOutBuffers;
-      delete[] mOutMixers;
-      delete[] mOutTracks;
-   }
-   if (mNumInChannels > 0) {
-      for(i=0; i<(int)mNumInChannels; i++)
-         delete mInBuffers[i];
-      delete[] mInBuffers;
-      delete[] mInTracks;
-   }
-
-   if (!mHardStop) {
-      if (mNumInChannels > 0 && project)
-         project->TP_PushState("Recorded Audio");
-      
-      if (mLostSamples) {
-         wxString str;
-         str.Printf(_("Sorry, %d samples were lost during recording."),
-                    mLostSamples);
-         wxMessageBox(str);
-      }
-   }
-   
-   mNumOutChannels = 0;
-   mOutBuffers = NULL;
-   mOutTracks = NULL;
-   mNumInChannels = 0;
-   mInBuffers = NULL;
-   mInTracks = NULL;
-
-   if (project) {
-      project->SetStop(true);
-      project->HandleResize();
-   }
-   mStarted = false;
-   mProject = NULL;
-   mStopping = false;
-   mPaused = false;
-   mHardStop = false;   
-   mReachedEnd = false;
-
-   gNoCallbackMutex.Unlock();
+   mLastIndicator = indicator;
+   mLastStableIndicator = indicator;
+   return indicator;
+#endif
 }
+
+
+//////////////////////////////////////////////////////////////////////
+//
+//     Audio Thread Context
+//
+//////////////////////////////////////////////////////////////////////
 
 AudioThread::AudioThread():
    wxThread(wxTHREAD_JOINABLE)
@@ -825,27 +611,234 @@ AudioThread::AudioThread():
 
 wxThread::ExitCode AudioThread::Entry()
 {
-   wxLogDebug("AudioThread entry");
-
-   while(!TestDestroy()) {
-      if (gAudioIO->mProject && gAudioIO->mStarted)   
+   while( !TestDestroy() )
+   {
+      if( gAudioIO->mAudioThreadShouldCallFillBuffersOnce )
+      {
          gAudioIO->FillBuffers();
-
-      if (gAudioIO->mReachedEnd)
-         gAudioIO->Stop();
-
-      if (gAudioIO->mStopping) {
-         wxLogDebug("mStopping true in AudioThread");
-
+         gAudioIO->mAudioThreadShouldCallFillBuffersOnce = false;
+      }
+      else if( gAudioIO->mAudioThreadFillBuffersLoopRunning )
+      {
          gAudioIO->FillBuffers();
-         gAudioIO->Finish();
       }
 
       Sleep(10);
    }
 
-   wxLogDebug("AudioThread exit");
-
    return 0;
+}
+
+// This method is the data gateway between the audio thread (which
+// communicates with the disk) and the PortAudio callback thread
+// (which communicates with the audio device.
+void AudioIO::FillBuffers()
+{
+   if( mPlaybackTracks.GetCount() > 0 )
+   {
+      // Though extremely unlikely, it is possible that some buffers
+      // will have more samples available than others.  This could happen
+      // if we hit this code during the PortAudio callback.  To keep
+      // things simple, we only write as much data as is vacant in
+      // ALL buffers, and advance the global time by that much.
+      int commonlyAvail = mPlaybackBuffers[0]->AvailForPut();
+
+      for( unsigned int i = 1; i < mPlaybackTracks.GetCount(); i++ )
+      {
+         int thisBlockAvail = mPlaybackBuffers[i]->AvailForPut();
+
+         if( thisBlockAvail < commonlyAvail )
+            commonlyAvail = thisBlockAvail;
+      }
+
+      //
+      // Now determine how much this will globally advance playback time
+      //
+      double deltat = commonlyAvail / mRate;
+
+      if( mT + deltat > mT1 )
+      {
+         deltat = mT1 - mT;
+         if( deltat < 0.0 )
+            deltat = 0.0;
+         commonlyAvail = (int)(deltat * mRate + 0.5);
+      }
+      mT += deltat;
+
+      if( commonlyAvail > 0 )
+      {
+         for( unsigned int i = 0; i < mPlaybackTracks.GetCount(); i++ )
+         {
+            // The mixer here isn't actually mixing: it's just doing whatever
+            // warping is needed for the time track
+            int processed = mPlaybackMixers[i]->Process(commonlyAvail);
+            samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
+            mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
+         }
+      }
+   }
+
+   if( mCaptureTracks.GetCount() > 0 )
+   {
+      // For capture buffers, save everything available to disk
+      for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
+      {
+         int avail = mCaptureBuffers[i]->AvailForGet();
+         samplePtr temp = NewSamples(avail, mCaptureFormat);
+
+         mCaptureBuffers[i]->Get   (temp, mCaptureFormat, avail);
+         mCaptureTracks[i]-> Append(temp, mCaptureFormat, avail);
+
+         DeleteSamples(temp);
+      }
+   }
+}
+
+//////////////////////////////////////////////////////////////////////
+//
+//    PortAudio callback thread context
+//
+//////////////////////////////////////////////////////////////////////
+
+#if USE_PORTAUDIO_V19
+int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
+                          unsigned long framesPerBuffer,
+                          const PaStreamCallbackTimeInfo *timeInfo,
+                          const PaStreamCallbackFlags statusFlags, void *userData )
+#else
+
+#define paContinue 0
+
+int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
+                          unsigned long framesPerBuffer,
+                          PaTimestamp outTime, void *userData )
+#endif
+{
+   int numPlaybackChannels = gAudioIO->mNumPlaybackChannels;
+   int numPlaybackTracks = gAudioIO->mPlaybackTracks.GetCount();
+   int numCaptureChannels = gAudioIO->mNumCaptureChannels;
+   int callbackReturn = paContinue;
+   float *tempFloats = gAudioIO->mTempFloats;
+   unsigned int i;
+   int t;
+
+   if( gAudioIO->mPaused )
+   {
+      if (outputBuffer && numPlaybackChannels > 0)
+      {
+         ClearSamples((samplePtr)outputBuffer, floatSample,
+                      0, framesPerBuffer * numPlaybackChannels);
+      }
+
+      gAudioIO->mPausedSeconds += (float)framesPerBuffer / gAudioIO->mRate;
+      return paContinue;
+   }
+
+   gAudioIO->AdjustMixer();
+   //printf("Callback called.\n");
+
+   //
+   // Mix and copy to PortAudio's output buffer
+   //
+
+   if( outputBuffer && (numPlaybackChannels > 0) )
+   {
+      float *outputFloats = (float *)outputBuffer;
+      for( i = 0; i < framesPerBuffer*numPlaybackChannels; i++)
+         outputFloats[i] = 0.0;
+
+      int numSolo = 0;
+      for( t = 0; t < numPlaybackTracks; t++ )
+         if( gAudioIO->mPlaybackTracks[t]->GetSolo() )
+            numSolo++;
+
+      for( t = 0; t < numPlaybackTracks; t++)
+      {
+         WaveTrack *vt = gAudioIO->mPlaybackTracks[t];
+
+         // Cut if somebody else is soloing
+         if (numSolo>0 && !vt->GetSolo())
+         {
+            gAudioIO->mPlaybackBuffers[t]->Discard(framesPerBuffer);
+            continue;
+         }
+
+         // Cut if we're muted (unless we're soloing)
+         if (vt->GetMute() && !vt->GetSolo())
+         {
+            gAudioIO->mPlaybackBuffers[t]->Discard(framesPerBuffer);
+            continue;
+         }
+
+         unsigned int len = (unsigned int)
+            gAudioIO->mPlaybackBuffers[t]->Get((samplePtr)tempFloats, floatSample,
+                                               (int)framesPerBuffer);
+
+         // If our buffer is empty and the time indicator is past
+         // the end, then we've actually finished playing the entire
+         // selection.
+         if (len == 0 && gAudioIO->mT >= gAudioIO->mT1 )
+         {
+#if USE_PORTAUDIO_V19
+            callbackReturn = paComplete;
+#else
+            callbackReturn = 1;
+            gAudioIO->mInCallbackFinishedState = true;
+#endif
+         }
+
+         if (vt->GetChannel() == Track::LeftChannel ||
+             vt->GetChannel() == Track::MonoChannel)
+         {
+            float gain = vt->GetChannelGain(0);
+            for(i=0; i<len; i++)
+               outputFloats[numPlaybackChannels*i] += gain*tempFloats[i];
+         }
+
+         if (vt->GetChannel() == Track::RightChannel ||
+             vt->GetChannel() == Track::MonoChannel)
+         {
+            float gain = vt->GetChannelGain(1);
+            for(i=0; i<len; i++)
+               outputFloats[numPlaybackChannels*i+1] += gain*tempFloats[i];
+         }
+      }
+   }
+
+   //
+   // Copy from PortAudio to our input buffers.
+   //
+
+   if( inputBuffer && (numCaptureChannels > 0) )
+   {
+      float *inputFloats = (float *)inputBuffer;
+      unsigned int len = framesPerBuffer;
+      for( t = 0; t < numCaptureChannels; t++) {
+         unsigned int avail =
+            (unsigned int)gAudioIO->mCaptureBuffers[t]->AvailForPut();
+         if (avail < len)
+            len = avail;
+      }
+
+      if (len < framesPerBuffer)
+         gAudioIO->mLostSamples += (framesPerBuffer - len);
+
+      if (len > 0) {
+         for( t = 0; t < numCaptureChannels; t++) {
+            for( i = 0; i < len; i++)
+               tempFloats[i] = inputFloats[numCaptureChannels*i+t];
+
+            gAudioIO->mCaptureBuffers[t]->Put((samplePtr)tempFloats,
+                                              floatSample, len);
+         }
+      }
+   }
+
+#if USE_PORTAUDIO_V19
+   gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
+   gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
+#endif
+
+   return callbackReturn;
 }
 
