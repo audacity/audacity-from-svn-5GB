@@ -537,9 +537,9 @@ void AutoVolCtrl::AdjustMultiplier()
 									m_nTotalSamples,
 									long(m_nCurrentMultiplier), 
 									long(m_nCurrentMultiplier) );
-        long nLookaheadAvg;
+        long nLookaheadAvg;     // needs to be long since used as a subscript
         if ( m_nSamplesInLookahead > 0 )
-            nLookaheadAvg= m_nLookaheadSum/m_nSamplesInLookahead;
+            nLookaheadAvg= long ( m_nLookaheadSum/m_nSamplesInLookahead );
         else
             nLookaheadAvg = 0;
 		log4(CN_iAVC,LL_DEBUG,0, "        sample max=%d, sample win avg=%d, lookahead avg=%d, avg multiplier=0x%X\n",
