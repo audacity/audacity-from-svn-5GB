@@ -123,7 +123,7 @@ bool ImportMP3(wxString fName, WaveTrack **left, WaveTrack **right,
 
 #ifdef __WXMAC__
 	  int channels = decoder->output_buffer->channels;
-	  int samples = decoder->output_buffer->nb_samples / channels / 2;
+	  int samples = decoder->output_buffer->nb_samples;
 #endif
 
 	  if (bufferCount + samples > bufferSize) {

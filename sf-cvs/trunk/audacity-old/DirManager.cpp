@@ -120,8 +120,10 @@ bool DirManager::SetProject(wxString &projPath, wxString &projName, bool create)
       return wxMkdir(projFull);
   }
   else {
+    #ifndef __WXMAC__
     if (!wxPathExists(projFull))
       return false;
+    #endif
   }
 	
   return true;

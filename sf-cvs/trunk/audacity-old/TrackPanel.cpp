@@ -24,6 +24,8 @@
 #include "Track.h"
 #include "WaveTrack.h"
 
+#include "snd/snd.h"
+
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
   EVT_PAINT(TrackPanel::OnPaint)
@@ -511,10 +513,127 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	wxRect r;
 	int num;
 	
-	VTrack *t = FindTrack(event.m_x, event.m_y, false, &r, &num);
+	VTrack *vt = FindTrack(event.m_x, event.m_y, false, &r, &num);
+
+    if (!vt) return;
+    if (vt->GetKind() != VTrack::Wave) return;
+    WaveTrack *t = (WaveTrack *)vt;
+    
+    sampleCount start = mViewInfo->h - t->tOffset;
+    if (start < 0)
+      start = 0;
+    if (start > t->numSamples)
+      start = t->numSamples;
+    int twidth, theight;
+    GetTracksUsableArea(&twidth, &theight);
+    sampleCount len = twidth * t->rate / mViewInfo->zoom;
+    if (start + len > t->numSamples)
+      len = t->numSamples - start;
+
+    if (len > t->rate * 10) {
+      // 10 secs audio is plenty
+      ::wxMessageBox("Need to zoom in to scrub.");
+      return;
+    }
+
+    wxStartTimer();
+    long lastTime = TickCount() * 1000 / 60;//::wxGetElapsedTime();
+    long curTime;
+    
+    sampleType *buffer = new sampleType[len];
+    t->Get(buffer, start, len);
+    
+    double latency = 0.1;
+    sampleCount blockLen = t->rate * latency;
+    sampleType *blockBuffer = new sampleType[blockLen];
+    
+    snd_node     audioOut;
+    audioOut.device = SND_DEVICE_AUDIO;
+    audioOut.write_flag = SND_WRITE;
+    audioOut.format.channels = 1;
+    audioOut.format.mode = SND_MODE_PCM;
+    audioOut.format.bits = 16;
+    audioOut.format.srate = t->rate;
+    strcpy(audioOut.u.audio.devicename,"");
+    strcpy(audioOut.u.audio.interfacename,"");
+    audioOut.u.audio.descriptor = 0;
+    audioOut.u.audio.protocol = SND_COMPUTEAHEAD;
+    audioOut.u.audio.latency = latency;
+    audioOut.u.audio.granularity = latency;
+
+    long flags = 0;
+    int err = snd_open(&audioOut, &flags);
+
+    if (err) {
+      wxMessageBox(wxString::Format("Error opening audio device: %d",err));
+      return;
+    }
+
+    int pos;    
+    int x, y, i;
+    wxGetMousePosition(&x, &y);
+    ScreenToClient(&x, &y);
+    x -= GetLabelOffset();
+    pos = int(x * t->rate / mViewInfo->zoom);
+
+    while(Button()) {
+      curTime = TickCount() * 1000 / 60;//::wxGetElapsedTime();
+      if (curTime > lastTime) {
+        int block = snd_poll(&audioOut);
+        if (block > 0) {
+          if (block > blockLen)
+            block = blockLen;
+          wxGetMousePosition(&x, &y);
+          ScreenToClient(&x, &y);
+          x -= GetLabelOffset();
+          int newPos = int(x * t->rate / mViewInfo->zoom);
+          int deltaSamples = newPos - pos;
+          int deltaTime = curTime - lastTime;
+          int sign = 1;
+          if (deltaSamples < 0)
+            sign = -1;
+          int rate = /*44100 * sign;// */ deltaSamples * 1000 / deltaTime;
+          int playLen = rate * block / t->rate;          
+        
+          if (deltaSamples == 0)
+            for(i=0; i<block; i++) {
+              blockBuffer[i] = 0;
+            }
+          else
+            for(i=0; i<block; i++) {
+              int j = i * rate / (t->rate);
+              if (pos+j >= len || pos+j < 0)
+                blockBuffer[i] = 0;
+              else
+                blockBuffer[i] = buffer[pos+j];
+            }
+
+          snd_write(&audioOut, blockBuffer, block);          
+        
+          if (sign) {
+            pos += playLen;
+            if (pos > newPos)
+              pos = newPos;
+          }
+          else {
+            pos += playLen;
+            if (pos < newPos)
+              pos = newPos;
+          }
+          lastTime = curTime;
+        }
+      }
+    }
+    
+    snd_close(&audioOut);
+    
+    delete[] buffer;
+    delete[] blockBuffer;
 	
-	if (t) {
-	  mCapturedTrack = t;
+	/*
+	if (vt) {
+	
+	  mCapturedTrack = vt;
 	  mCapturedRect = r;
 	  mCapturedNum = num;
 	  
@@ -524,8 +643,9 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	  mSelStart = mViewInfo->h + ((event.m_x - r.x) / mViewInfo->zoom);
 	  mIsSliding = true;
 	}
+	*/
   }
-
+/*
   if (!mIsSliding)
 	return;
   
@@ -551,7 +671,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
 	MakeParentRedrawScrollbars();
 	MakeParentPushState();
   }
-  
+  */
 }
 
 void TrackPanel::HandleZoom(wxMouseEvent& event)

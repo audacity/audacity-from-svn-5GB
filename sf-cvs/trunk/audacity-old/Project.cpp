@@ -48,7 +48,13 @@ TrackList *AudacityProject::msClipboard = new TrackList();
 double     AudacityProject::msClipLen = 0.0;
 
 WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
+
+#ifdef __WXMAC__
+const int sbarWidth = 16;
+#else
 const int sbarWidth = 15;
+#endif
+
 int gAudacityDocNum = 0;
 AProjectArray gAudacityProjects;
 AudacityProject *gActiveProject;
@@ -317,7 +323,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 						(Effect::GetEffect(fi))->GetEffectName());
   
   mHelpMenu = new wxMenu;
-  mHelpMenu->Append(AboutID, "&About Audacity...");
+  mHelpMenu->Append(AboutID, "About Audacity...");
 
   mMenuBar->Append(mFileMenu, "&File");
   mMenuBar->Append(mEditMenu, "&Edit");
@@ -871,7 +877,11 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
 
   mTracks->Save(&f, overwrite);
 
+#ifdef __WXMAC__
+  f.Write(wxTextFileType_Mac);
+#else
   f.Write();
+#endif
   f.Close();
 
   if (mLastSavedTracks) {
@@ -1244,7 +1254,7 @@ void AudacityProject::OnPlotSpectrum()
   for(int i=0; i<slen; i++)
 	data[i] = data_sample[i] / 32767.;
 
-  gFreqWindow->Plot(slen, data);
+  gFreqWindow->Plot(slen, data, selt->rate);
   gFreqWindow->Show(true);
   gFreqWindow->Raise();
 

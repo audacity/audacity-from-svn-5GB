@@ -129,6 +129,8 @@ bool Export(WaveTrack *left, WaveTrack *right)
   d.headerChoice->SetSelection(header-1);
   d.bitsButton[bits16]->SetValue(TRUE);
   d.signButton[unsign]->SetValue(TRUE);
+  d.bitsButton[!bits16]->SetValue(FALSE);
+  d.signButton[!unsign]->SetValue(FALSE);
   d.ShowModal();
 
   if (!d.GetReturnCode())
@@ -158,9 +160,15 @@ bool Export(WaveTrack *left, WaveTrack *right)
 	extension = ".TXT";
 	break;
   }
-
+  
   wxString fName =
-    wxSaveFileSelector("", extension);
+          wxFileSelector("Export Selected Audio As:",
+                         NULL,
+                         fName,
+                         extension,
+                         "*.*",
+                         wxSAVE,
+                         &d);
 
   if (fName.Length() >= 256) {
     wxMessageBox("Sorry, pathnames longer than 256 characters not supported.");
@@ -173,10 +181,14 @@ bool Export(WaveTrack *left, WaveTrack *right)
   if (header == SND_HEAD_WAVE+1) {
 	// Export as text
 
-	// HACK!!!!!
-
 	wxTextFile f(fName);
-	f.Create();
+	#ifdef __WXMAC__
+    wxFile *temp = new wxFile();
+    temp->Create(fName);
+    delete temp;
+    #else
+    f.Create();
+    #endif
 	f.Open();
 	if (!f.IsOpened()) {
 	  wxMessageBox("Couldn't write to "+fName);
