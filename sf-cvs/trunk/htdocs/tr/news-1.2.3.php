@@ -1,8 +1,8 @@
-<?php BoxTop('Kasým 2004: Audacity 1.2.3 released'); ?>
+<?php BoxTop('Kasým 2004: Audacity 1.2.3 Duyuruldu'); ?>
 
 <p>
-Audacity 1.2.3 Audacity ses edötürünün en yeni kararlý versiyonudur.
-Bu daðýtýmda baze pencere sistemlerinde mevcut olan uzun kayýt sýrasýnda oluþan interfere hatasý düzeltilmiþtir. Ayrýca yeni eklenen bir kaç yeni dil desteði ve tespit edilmiþ hatalar giderilmiþtir. 
+Audacity 1.2.3, Audacity özgür ses edötürünün en yeni kararlý versiyonudur.
+Bu daðýtýmda bazý pencere sistemlerinde mevcut uzun kayýtlara engel olan ve Mac OS X'de rasgele çökmelere sebebiyet veren hatalar düzeltilmiþtir. Ayrýca eklenen bir kaç yeni dil desteði ve tespit edilmiþ bazý diðer hatalar da giderilmiþtir. 
 </p>
 
 <p>Audacity'yi Ýndirmek için:</p>

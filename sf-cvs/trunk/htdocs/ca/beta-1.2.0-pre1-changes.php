@@ -1,165 +1,160 @@
-<pre>
-Canvis a 1.2.0-pre3:
+<h2>Canvis a l'Audacity 1.2</h2>
 
-  * Arreglat un error que feia que l'ordre "Exporta" es veiés en gris
-    quan no hi havia res seleccionat.
+Principals canvis des de l'anterior versió estble, Audacity 1.0.0:
 
-  * Arreglat un error que apareixia quan s'obria l'Audacity en un ordinador
-    amb targeta de so sense suport de mesclador.
+<h3>Àudio de qualitat professional</h3>
 
-  * Arreglada la importació de dades crues.
+<ul>
+<li>
+L'Audacity pot ara enregistrar i eitar mostres de 24 bits i 32 bits (coma flotant).  
+En un mateix projecte poden coexisitr pistes amb diferents freqüències i formats, i l'Audacity 
+les convertirà n temps real quan sigui necessari.  En totes les conversions es fan servir tècniques 
+d'arrodoniment d'alta qualitat.
+</li>
 
-  * Arreglada l'ordre "Nova pista estèreo".
+<li>
+L'entrada i sortida de so de l'Audacity han estat millorades.  L'Audacity pot ara enregistrar més de 
+dos canals alhora. L'ús de memòria cau ha estat millorat, per reduir les possibilitats de trobar-se 
+amb situacions de desbordament de memòria.
+</li>
+</ul>
 
-  * Canvis cosmètics per al Mac OS X.
+<a href="screenshots.php<?php print $langQueryStr; ?>">
+<img alt="screenshots" border="0" src="images/screen/linux/change-pitch.png" align="right"></a>
+<h3>Effects</h3>
 
-  * Afegit el suport a l'habilitador VST en Windows.
+<ul>
+<li>
+Tres nous efectes que poden canviar el to i el tempo d'una pista:
+ <ul>
+  <li><b>Canvia el to</b> puja o baixa el to del fragment seleccionat, sense que es vegi afectada la velocitat.</li>
+  <li><b>Canvia el temps</b> fa que el fragment seleccionat s'escolti més de pressa o més poc a poc, sense modificar-ne el to.</li>
+  <li><b>Canvia la velocitat</b> afecta tant la velocitat de reproducció com el to, tal com passa si canvieu la velocitat de gir d'un tocadiscs.</li>
+ </ul>
+</li>
 
-  * Arreglat l'error que es produïa si es tancava l'Audacity amb el diàleg
-    de preferències obert.
+<li>
+La major part d'efectes inclouen un botó de vista preliminar, que us permet provar 
+diferents configuracions sense tancar la finestra d'efectes.  Una nova funció us permet 
+repetir el darrer efecte sense haver de tornar a obrir la finestra.
+</li>
 
-  * Arreglat l'error de lletres duplicades en les etiquetes de pistes 
-    amb Mac OS X.
-
-  * El nivell d'enregistrament en Linux ara ajusta l'IGAIN,
-    en comptes d'actuar sobre el nivell de la font d'enregistrament.
-
-  * Arreglat un error que causava corrupció de dades en enregistraments
-    estèreo de 16 bits.
-
-  * Arreglat l'error que provocava pèrdua de dades si esborràveu totes 
-    les pistes d'un projecte desat i obríeu un nou fitxer a la 
-    mateixa finestra.
-
-  * Afegit el suport al botò altern d'àudio (a les preferències d'interfície)
-
-  * Afegit el suport preliminar a wxX11
-
-  * Afegida una icona transparent per a Windows XP
-
-  * Arreglat l'error que es produia si intentàveu enregistrar (o reproduir)
-    sense tenir deispositius d'àudio, o si els dispositius no suportaven
-    el mode seleccionat.
-
-  * L'Audacity ja no es col·loca com a procés d'alta prioritat quan enregistra
-    en Windows.  Els usuaris poden continuar fent això des de
-    l'administrador de tasques.
-
-  * Arreglat un error que causava la pèrdua dels darrers ~100 ms de la
-    selecció quan es retallava, en Windows.
-
-  * Arreglats els diàlegs dels efectes "Filtre FFT" i "Equalització".
-
-  * Arreglats errors en el sistema de muntatge en Unix (DESTDIR al directori
-    local, escollint libsamplerate en comptes de libresample)
-
-  * Afegit el suport als complements LADSPA en Windows, i 
-    tres complements LADSPA de codi obert portats a Windows
-   (reverberador GVerb, compressor SC4, i Hard Limiter)
-
-Canvis a 1.2.0-pre2:
-
-  * Ajuda en línia completada. El manual està gairebé acabat i es
-    col·locarà a la web per poder ser consultat en breu.
-
-  * Audacity will no longer let you do unsafe editing operations
-    while playing or recording.  This eliminates many potential
-    crashes.
-
-  * Fixed ability to cancel Quit button.
-
-  * New resampling library, with no restrictions on the maximum or
-    minimum rate of resampling.
-
-  * Audacity now supports LADSPA plug-ins on all platforms, and
-    supports VST plug-ins through an optional LADSPA plug-in
-    called the "VST Enabler", which you can download separately.
-    Because of licensing issues, Audacity cannot be distributed
-    with VST support built-in.
-
-  * Mac OS X keyboard shortcut problems have been fixed.
-
-  * Mac OS X audio muting problems have been fixed.
-
-  * Mac OS X playback/recording cursor sync problems have been fixed.
-
-  * Silence now displays a straight line again, instead of nothing.
-
-  * Added a vertical ruler to the Waveform dB display.
-
-  * Fixed crash in Change Pitch.
-
-  * You can now Paste if nothing is selected.
-
-  * Canceling an Import operation doesn't cause an extra error
-    dialog to appear.
-
-  * Audacity now handles filenames with international characters
-    correctly.
-
-  * Now outputs ID3v2.3 tags (instead of ID3v2.4), to be
-    compatible with more MP3 players.
-
-  * Minor improvements to build system on Unix systems.
+<li>
+Altres efectes inclouen:
+ <ul>
+  <li>Compresor, per compressió de rang dinàmic.</li>
+  <li>Repeteix, per escoltar les mostres en cicle.</li>
+  <li>Normalitza, per ajustar el volum i corregir la desviació del punt central de l'ona.</li>
+ </ul>
+</li>
+</ul>
 
 
-Noves característiques de l'Audacity 1.2.0-pre1:
+<h3>Noves funcionalitats d'edició</h3>
 
-  * Interfície de l'usuari
-    - Ampliació vertical de les peces.
-    - S'ha millorat l'aparença i localització de les barres d'eines.
-    - Més cursors del ratolí.
-    - Implementació completa de dreceres de teclat editables.
-    - Troba zero-crossings.
-    - La roda del ratolí pot ser utilitzada per apropar i allunyar.
-    - Mode multi eina.
-    - Amplificador utilitzant un entorn.
-    - Les etiquetes poden emmagatzemar seleccions (com ara l'Audacity 1.0.0).
+<ul>
+<li>
+L'eina d'envolupant, emprada per produir fàdings d'inici i final, es pot fer servir ara també 
+per a pujar o baixar el volum global de les pistes.
+</li>
 
-  * Efectes
-    - Capacitat d'ordenar la repetició de l'últim efecte.
-    - S'ha millorat la compatibilitat amb el pedaç VST.
-    - Molts efectes ara tenen un botó de previsualització.
-    - Compressor (Rang dinàmic de compressió).
-    - Canvia el to (sense canviar el temps de compàs).
-    - Canvia el temps de compàs (sense canviar el to).
-    - Canvia la velocitat (canviant tant el temps com la velocitat).
-    - Repeteix (útil per crear bucles).
-    - Normalitza (ajusta el volum i DC bias).
+<li>
+La nova funcionalitat "Pista de temps" és similar a l'envolupant de volum, però en lloc de canviar la 
+intensitat del so srveix per a produir canvis progressius en la velocitat d'interpretació de la pista.
+</li>
 
-  * Àudio Entrada/Sortida
-    - ordre de previsualització d'un segon.
-    - Reproducció en bucleLooped.
+<li>
+Cada pista té ara els seus propis controls de guany i panoràmica, per facilitar les mescles.
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/linux/track-controls.png" align="right"></a>
+</li>
 
-  * Fitxer Entrada/Sortida
-    -L' Audacity 1.2.0 obre fitxers de projectes de totes les versions prèvies
-      de l'Audacity des de 0.98 fins a 1.1.3.
-    - Obre múltiples fitxers des del mateix diàleg.
-    - Utilitza un fitxer de text per especificar un llistat de fitxers d'àudio a obrir amb offsets.
-
-  * S'ha actualitzat el manual d'usuari.
+<li>
+L'Audacity pot trobar punts de creuament amb el zero, per ajudar a crear talls i bucles suaus.
+Premeu "Z" per moure els límits de la selecció als punts de creuament amb el zero més propers.
+</li>
+</ul>
 
 
-Errors fixats en l'Audacity 1.2.0-pre1
+<h3>Endollats</h3>
 
-  * Els fitxers de projectes amb caràcters especials han deixat de ser
-    invàlids.
+<ul>
+<li>
+En Linux, l'Audacity pot carregar ara endollats <a href="http://www.ladspa.org/">LADSPA</a>.
+</li>
 
-  * S'han fixat els sorolls de ratllades causats per mals truncaments .
+<li>
+L'Audacity 1.2 ofereix un llenguatge de procés de senyals digitals anomenat 
+<a href="nyquist.php">Nyquist</a>, que permet als usuaris programar nous efectes 
+en un llenguatge similar al LISP.
+</li>
+</ul>
 
-  * L'Audacity ja no exporta fitxers Ogg invàlids i no talla els últims
-    pocs segons dels fitxers Ogg exportats.
 
-  * Els fitxers MP3 Mono exporten a la velocitat correcta.
+<h3>Importació i exportació de fitxers</h3>
 
-  * S'ha fixat diversos resultats incorrectes des de l'eina d'entorn.
+<ul>
+<li>
+Els fitxers de projecte de l'Audacity 1.2 fan servir un nou format XML.  L'Audacity 1.2 
+obrirà i convertirà automàticament els fitxers de projecte de versions anteriors.
+</li>
 
-  * L'ordre de "Exportar etiquetes" ara sobreescriu correctament els
-    fitxers existents.
-  
-  * Ara es mostra correctament el número correcte de l'octava de les notes.
+<li>
+L'Audacity 1.2 fa servir la biblioteca <a href="http://www.underbit.com/products/mad/">libmad</a>
+per a una descompressió ràpida dels fitxers MP3.  La biblioteca <a href="http://www.zip.com.au/~erikd/libsndfile/">libsndfile</a>,
+ d'Erik de Castro Lopo, ofereix una compatibilitat millorada amb la majoria de formats de fitxers d'àudio no comprimit.
+</li>
 
-  * S'ha fixat diverses pèrdues de memòria.
+<li>
+Les finestres de diàleg d'importar i obrir permeten ara als usuaris de l'Audacity seleccionar 
+diversos fitxers cada vegada, i obrir-los users junts en un mateix projecte.  
+Un nou format de fitxer "LOF" permet a l'Audacity obrir grups de fitxers, fins i tot indicant punts de desplaçament (offsets), 
+mitjançant una llista escrita en un fitxer de text.
+</li>
+</ul>
 
-  * Molts altres petits erros fixats.
-</pre>
+
+<h3>Interfície d'usuari millorada</h3>
+
+<a href="screenshots.php<?php print $langQueryStr; ?>"><img alt="screenshots" border="0" src="images/screen/macosx/main-toolbar.png" align="right"></a>
+<ul>
+<li>
+Noves barres d'edició i mesclador, per un accés més ràpid a les funcions més comunes.
+</li>
+
+<li>
+La nova eina de dibuix permet ajustar les mostres una per una, quan s'està en la modalitat de zoom total. 
+La nova eina d'usos múltiples ofereix un accés ràpid a diverses funcionalitats d'edició sense que calgui 
+canviar d'eina.
+</li>
+
+<li>
+S'hn afegit moltes drecres de teclat, que poden ser personalitzades.
+</li>
+
+<li>
+Noves funcions:
+ <ul>
+  <li>Interpretació en bucle.  Premeu "L", o mantingueu premuda la tecla de majúscules mentre feu clic a "Interpreta".</li>
+  <li>Premeu "1" per escoltar un fragment d'un segon de durada de l'àudio que hi ha al voltant del cursor.</li>
+ </ul>
+</li>
+
+<li>
+La roda del ratolí es pot fer servir per a fer zoom cap a dins i cap a fora.
+</li>
+
+<li>
+Les pistes es poden augmentar verticalment fent clic o arrossegant les barres verticals. Feu majúscules-clic 
+o clic amb el botó dret per fer zoom enrere.  
+</li>
+
+<li>
+La barra d'estat pot mostrar ara el temps en diversos formats, incloent 
+segons, mostres o fotogrames de vídeo.
+</li>
+
+<li>
+L'interfície de l'Audacity es pot traduir ara a idiomes diferents de l'anglès.  Podeu fer-vos voluntaris 
+per ajudar a <a href="translation/">traduir l'Audacity</a> al vostre idioma.
+</li>
+</ul>
