@@ -156,7 +156,7 @@ template < class CLIPPEE, class CLIPVAL >
 void SetLabelFont(wxDC * dc)
 {
    int fontSize = 10;
-#if defined __WXMSW__
+#if defined __WXMSW__ || __WXGTK__
    fontSize = 8;
 #endif
 
@@ -2500,42 +2500,21 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
          mTrackLabel.DrawMuteSolo(&dc, r, t, buttonRect.Inside(event.m_x, event.m_y),
                    solo);
    }
-   else if (event.ButtonUp(1) ) {
-
-      if (buttonRect.Inside(event.m_x, event.m_y)) {
-         if (event.ShiftDown()) {
-            // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
-            TrackListIterator iter(mTracks);
-            Track *i = iter.First();
-            while (i) {
-               if (i == t) {
-                  if (solo)
-                     i->SetSolo(true);
-                  else
-                     i->SetMute(true);
-               }
-               else {
-                  if (solo)
-                     i->SetSolo(false);
-                  else
-                     i->SetMute(false);
-               }
-               i = iter.Next();
-            }
-         }
-         else {
-            // Normal click just toggles this track.
-            if (solo)
-               t->SetSolo(!t->GetSolo());
-            else
-               t->SetMute(!t->GetMute());
-         }
+   else if (event.ButtonUp(1) )
+      {
+         
+         if (buttonRect.Inside(event.m_x, event.m_y)) 
+            {
+               if(solo)
+                  
+                  OnTrackSolo(t,event.ShiftDown());
+               else
+                  OnTrackMute(t,event.ShiftDown());
+            }  
+         SetCapturedTrack( NULL );
+         // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
+         Refresh(false);
       }
-
-      SetCapturedTrack( NULL );
-      // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
-      Refresh(false);
-   }
 }
 
 void TrackPanel::HandleMinimizing(wxMouseEvent & event)
@@ -2621,66 +2600,15 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
                              Track * t, wxRect & r, int num)
 {
+
    ReleaseMouse();
    mPopupMenuTarget = t;
    {
       wxClientDC dc(this);
       mTrackLabel.DrawTitleBar(&dc, r, t, true);
    }
-   bool canMakeStereo = false;
-   Track *next = mTracks->GetNext(t);
-
-   wxMenu *theMenu = NULL;
-   if (t->GetKind() == Track::Time)
-      theMenu = mTimeTrackMenu;
-
-   if (t->GetKind() == Track::Wave) {
-      theMenu = mWaveTrackMenu;
-      if (next && !t->GetLinked() && !next->GetLinked()
-          && t->GetKind() == Track::Wave
-          && next->GetKind() == Track::Wave)
-         canMakeStereo = true;
-
-      theMenu->Enable(OnMergeStereoID, canMakeStereo);
-      theMenu->Enable(OnSplitStereoID, t->GetLinked());
-      theMenu->Enable(OnChannelMonoID, !t->GetLinked());
-      theMenu->Enable(OnChannelLeftID, !t->GetLinked());
-      theMenu->Enable(OnChannelRightID, !t->GetLinked());
-
-      int display = ((WaveTrack *) t)->GetDisplay();
-
-      theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
-      theMenu->Enable(OnWaveformDBID,
-                      display != WaveTrack::WaveformDBDisplay);
-      theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
-      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
-      
-      WaveTrack * track = (WaveTrack *)t;
-      SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
-      SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
-   }
-
-   if (t->GetKind() == Track::Note)
-      theMenu = mNoteTrackMenu;
-
-   if (t->GetKind() == Track::Label)
-      theMenu = mLabelTrackMenu;
-
-   if (theMenu) {
-      theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
-      theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
-
-#ifdef __WXMAC__
-      ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
-      ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
-#endif
-      PopupMenu(theMenu, titleRect.x + 1,
-                titleRect.y + titleRect.height + 1);
-#ifdef __WXMAC__
-      ::DeleteMenu(mFormatMenu->MacGetMenuId());
-      ::DeleteMenu(mRateMenu->MacGetMenuId());
-#endif
-   }
+ 
+   OnTrackMenu(t);
 
    Track *t2 = FindTrack(event.m_x, event.m_y, true, true, &r, &num);
    if (t2 == t) {
@@ -2688,6 +2616,9 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       mTrackLabel.DrawTitleBar(&dc, r, t, false);
    }
 }
+
+
+
 
 // AS: This handles when the user clicks on the "Label" area
 //  of a track, ie the part with all the buttons and the drop
@@ -2757,7 +2688,6 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
    }
-
 
    
    // DM: Check Gain and Pan on WaveTracks:
@@ -4071,6 +4001,309 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
    }
 }
 
+/// This cycles between tracks--selecting 
+/// a single track based on what is currently selected.
+///
+void TrackPanel::OnCycleTracks()
+{
+
+   Track * firstSelected = NULL;
+   Track * nextSelected = NULL;
+   Track * link = NULL;
+   firstSelected = GetFirstSelectedTrack();
+
+   if(firstSelected)
+      {
+         
+         link = mTracks->GetLink(firstSelected);
+         
+         if(link)
+         {
+            //Determine whether first selected is the first 
+            //or second stereo track.
+            if(mTracks->GetNext(firstSelected) == link)
+               {
+                  firstSelected = link;
+               }
+         }
+         
+         //get the next track.
+         nextSelected = mTracks->GetNext(firstSelected);
+      }
+
+
+   //If there is nothing chosen as 'nextselected', choose the first track.
+   if(!nextSelected)
+      {
+         //Nothing is selected, so choose the very first track.
+         TrackListIterator iter = TrackListIterator(mTracks);
+         nextSelected = iter.First();
+      }
+
+
+   //Get rid of all selections
+   SelectNone();
+
+   
+   //Now, select the track, if it exists
+   if( nextSelected)
+      {
+         nextSelected->SetSelected(true);
+      
+      }
+
+   //If the newly selected track is also stereo,
+   //also select it
+   link = mTracks->GetLink(nextSelected);
+   if(link)
+      {
+         link->SetSelected(true);
+      }
+
+   Refresh(false);
+}
+
+
+//The following functions operate controls on specified tracks,
+
+//This will pop up the track panning dialog for specified track
+void TrackPanel::OnTrackPan(Track * t)
+{
+   
+   if(!t) return;
+   //Make a dummy mouse event
+   wxMouseEvent evt = wxMouseEvent(wxEVT_LEFT_DCLICK);
+   LWSlider * slider = NULL;
+   
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mPans[tracknum-1];
+         slider->OnMouseEvent(evt);
+      }
+   float newValue = slider->Get();
+
+   WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+   ((WaveTrack*)t)->SetPan(newValue);
+   if (link)
+      link->SetPan(newValue);
+
+   MakeParentPushState(_("Adjusted Pan"), _("Pan"), true );
+
+   Refresh(false);
+}
+
+//This will pop up the track gain dialog for specified track
+void TrackPanel::OnTrackGain(Track * t)
+{
+   if(!t) return;
+   wxMouseEvent evt = wxMouseEvent(wxEVT_LEFT_DCLICK);
+   LWSlider * slider = NULL;
+
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mGains[tracknum-1];
+         slider->OnMouseEvent(evt);
+      }
+
+   float newValue = slider->Get();
+
+   WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+   ((WaveTrack*)t)->SetGain(newValue);
+   if (link)
+      link->SetGain(newValue);
+
+   MakeParentPushState(_("Adjusted gain"), _("Gain"), true );
+
+   Refresh(false);
+}
+
+void TrackPanel::OnTrackMenu(Track * t)
+{
+   if(t) 
+      {
+         mPopupMenuTarget = t;
+
+         bool canMakeStereo = false;
+         Track *next = mTracks->GetNext(t);
+         
+         wxMenu *theMenu = NULL;
+         if (t->GetKind() == Track::Time)
+            theMenu = mTimeTrackMenu;
+         
+         if (t->GetKind() == Track::Wave) {
+            theMenu = mWaveTrackMenu;
+            if (next && !t->GetLinked() && !next->GetLinked()
+                && t->GetKind() == Track::Wave
+                && next->GetKind() == Track::Wave)
+               canMakeStereo = true;
+            
+            theMenu->Enable(OnMergeStereoID, canMakeStereo);
+            theMenu->Enable(OnSplitStereoID, t->GetLinked());
+            theMenu->Enable(OnChannelMonoID, !t->GetLinked());
+            theMenu->Enable(OnChannelLeftID, !t->GetLinked());
+            theMenu->Enable(OnChannelRightID, !t->GetLinked());
+            
+            int display = ((WaveTrack *) t)->GetDisplay();
+            
+            theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
+            theMenu->Enable(OnWaveformDBID,
+                            display != WaveTrack::WaveformDBDisplay);
+            theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
+            theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
+            
+            WaveTrack * track = (WaveTrack *)t;
+            SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
+            SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
+         }
+         
+         if (t->GetKind() == Track::Note)
+            theMenu = mNoteTrackMenu;
+         
+         if (t->GetKind() == Track::Label)
+            theMenu = mLabelTrackMenu;
+         
+         if (theMenu) {
+            theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
+            theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
+            
+#ifdef __WXMAC__
+            ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
+            ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
+#endif
+
+            //We need to find the location of the menu rectangle.
+            wxRect r = FindTrackRect(t,true);
+            wxRect titleRect;
+            mTrackLabel.GetTitleBarRect(r,titleRect);
+
+            PopupMenu(theMenu, titleRect.x + 1,
+                      titleRect.y + titleRect.height + 1);
+            
+#ifdef __WXMAC__
+            ::DeleteMenu(mFormatMenu->MacGetMenuId());
+            ::DeleteMenu(mRateMenu->MacGetMenuId());
+#endif
+         }
+         
+         
+      }
+   SetCapturedTrack(NULL);
+   Refresh(false);
+}
+
+void TrackPanel::OnTrackMute(Track * t, bool shiftDown)
+{
+   if(t)
+      {         
+         if (shiftDown) 
+            {
+               // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+               TrackListIterator iter(mTracks);
+               Track *i = iter.First();
+               while (i) {
+                  if (i == t) {
+                     i->SetMute(true);
+                  }
+                  else {
+                     i->SetMute(false);
+                  }
+                  i = iter.Next();
+               }
+            }
+         else {
+            // Normal click just toggles this track.
+               t->SetMute(!t->GetMute());
+         }
+      }
+
+   Refresh(false);
+}
+
+
+void TrackPanel::OnTrackSolo(Track * t, bool shiftDown)
+{
+   if(t)
+      {         
+         if (shiftDown) 
+            {
+               // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+               TrackListIterator iter(mTracks);
+               Track *i = iter.First();
+               while (i) {
+                  if (i == t) {
+                     i->SetSolo(true);
+
+                  }
+                  else {
+                     i->SetSolo(false);
+                     
+                  }
+                  i = iter.Next();
+               }
+            }
+         else {
+            // Normal click just toggles this track.
+
+               t->SetSolo(!t->GetSolo());
+         }
+      }
+   Refresh(false);
+
+}
+
+void TrackPanel::OnTrackClose(Track * t)
+{
+
+   AudacityProject *p = GetProject();
+   if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
+      RemoveTrack(t);
+
+   SetCapturedTrack( NULL );
+   // BG: There are no more tracks on screen
+   if (mTracks->IsEmpty()) {
+      //BG: Set zoom to normal
+      mViewInfo->zoom = 44100.0 / 512.0;
+
+      //STM: Set selection to 0,0
+      mViewInfo->sel0 = 0.0;
+      mViewInfo->sel1 = 0.0;
+      
+      mListener->TP_RedrawScrollbars();
+      mListener->TP_DisplayStatusMessage("", 0);        //STM: Clear message if all tracks are removed
+   }
+   Refresh(false);
+}
+
+
+Track * TrackPanel::GetFirstSelectedTrack()
+{
+
+   TrackListIterator iter(mTracks);
+ 
+   for (Track * t = iter.First();t!=NULL;t=iter.Next())
+      {
+         //Find the first selected track
+         if(t->GetSelected())
+            {
+               return t;
+            }
+
+      }
+   //if nothing is selected, return the first track
+   Track * t = iter.First();
+
+   if(t)
+      return t;
+   else
+      return NULL;
+}
+
+
+
 void TrackPanel::DrawRuler( wxDC * dc, bool text )
 {
    AudacityProject *p = GetProject();
@@ -4220,6 +4453,7 @@ void TrackPanel::OnSetDisplay(wxCommandEvent & event)
    wxASSERT(id >= OnWaveformID && id <= OnPitchID);
    wxASSERT(mPopupMenuTarget
             && mPopupMenuTarget->GetKind() == Track::Wave);
+
    ((WaveTrack *) mPopupMenuTarget)->SetDisplay(id - OnWaveformID);
    Track *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner)
@@ -4575,7 +4809,11 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
          Track *link = mTracks->GetLink(t);
          r.height += link->GetHeight();
       }
+      
 
+      //Determine whether the mouse is inside 
+      //the current rectangle.  If so, recalculate
+      //the proper dimensions and return.
       if (r.Inside(mouseX, mouseY)) {
          if (trackRect) {
             r.y -= kTopInset;
@@ -4598,6 +4836,80 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
 
    return NULL;
 }
+
+
+//This tells you the (1-based) index of the track you pass to it.
+int TrackPanel::FindTrackNum(Track * target)
+{
+   if(!target) return 0;
+
+   TrackListIterator iter(mTracks);
+   int n = 1;
+
+   for (Track * t = iter.First(); t;
+        n++, t = iter.Next()) 
+      {
+         if(target == t)
+            {
+               return n;
+            }
+
+      }
+
+   return 0;
+}
+
+//This finds the rectangle of a given track, either the
+//of the label 'adornment' or the track itself
+wxRect TrackPanel::FindTrackRect(Track * target, bool label)
+{
+   if(!target) return wxRect(0,0,0,0);
+
+   bool linked = target->GetLinked();
+
+   wxRect r;
+   r.x = 0;
+   r.y = -mViewInfo->vpos;
+   r.y += GetRulerHeight();
+   r.y += kTopInset;
+   GetSize(&r.width, &r.height);
+
+   TrackListIterator iter(mTracks);
+
+   int n = 1;
+
+   for (Track * t = iter.First(); t;
+        r.y += t->GetHeight(), n++, t = iter.Next()) 
+      {
+         r.height = t->GetHeight();
+         
+         if (linked && t->GetLinked())
+            {
+               Track *link = mTracks->GetLink(t);
+               r.height += link->GetHeight();
+            }
+         
+         if ( t == target)
+            {
+               
+               r.y -= kTopInset;
+               if (label) 
+                  {
+                     r.x += kLeftInset;
+                     r.width -= kLeftInset;
+                     r.y += kTopInset;
+                     r.height -= kTopInset;
+                  }
+               
+               
+               
+               return r;
+            }
+
+      }
+   return r;
+}
+
 
 /// Displays the bounds of the selection in the status bar.
 void TrackPanel::DisplaySelection()

@@ -60,6 +60,9 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_SPACE:
          newStr += "Spacebar";
          break;
+      case WXK_TAB:
+         newStr += "Tab";
+         break;
       case WXK_PRIOR:
          newStr += "PageUp";
          break;

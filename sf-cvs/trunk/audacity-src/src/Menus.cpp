@@ -22,6 +22,7 @@
 #include <wx/msgdlg.h>
 #include <wx/filedlg.h>
 #include <wx/textfile.h>
+#include <wx/textdlg.h>
 #include <wx/progdlg.h>
 #include <wx/scrolbar.h>
 
@@ -559,6 +560,8 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
+
+   c->AddCommand("CycleTracks", _("Cycle Between Tracks\tTab"), FN(OnCycleTracks));
    c->AddCommand("CursorLeft",  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand("CursorRight", _("Cursor Right\tRight"),         FN(OnCursorRight));
    c->AddCommand("SelExtLeft",  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
@@ -566,7 +569,18 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand("SelCntrLeft", _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand("SelCntrRight",_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
 
+   c->AddCommand("SetLeftSelection",_("Set Left Selection at playback position\tCtrl+L"), FN(OnSetLeftSelection));
+   c->AddCommand("SetRightSelection",_("Set Left Selection at playback position\tCtrl+R"), FN(OnSetRightSelection));
+
+   c->AddCommand("TrackPan", _("Change pan on first selected track\tShift+P"),FN(OnTrackPan));
+   c->AddCommand("TrackGain", _("Change gain on first selected track\tShift+G"),FN(OnTrackGain));
+   c->AddCommand("TrackMenu",_("Open menu on first selected track\tShift+M"),FN(OnTrackMenu));
+   c->AddCommand("TrackMute",_("Mute/Unmute first selected track\tShift+U"),FN(OnTrackMute));
+   c->AddCommand("TrackSolo",_("Solo/Unsolo first selected track\tShift+S"),FN(OnTrackSolo));
+   c->AddCommand("TrackClose",_("Close first selected track\tShift+C"),FN(OnTrackClose));
+
    mLastFlags = 0;
+
    mLastToolBarCheckSum = 0;
 
    mSel0save = 0;
@@ -1050,6 +1064,14 @@ void AudacityProject::OnSelToEnd()
    SkipEnd(true);
 }
 
+
+void AudacityProject::OnCycleTracks()
+{
+   mTrackPanel->OnCycleTracks();
+   
+}
+
+
 void AudacityProject::OnCursorLeft()
 {
    if (mViewInfo.sel0 == mViewInfo.sel1) {
@@ -1107,6 +1129,111 @@ void AudacityProject::OnSelContractRight()
       mViewInfo.sel1 = mViewInfo.sel0;
    mTrackPanel->Refresh(false);
 }
+
+//this pops up a dialog which allows the left selection to be set.
+//If playing/recording is happening, it sets the left selection at
+//the current play position.
+void AudacityProject::OnSetLeftSelection()
+{
+   if (GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(GetAudioIOToken()))
+      {
+         double indicator = gAudioIO->GetStreamTime();
+         mViewInfo.sel0 = indicator;
+      }
+   else
+      {
+         wxString curval = wxString::Format("%2.2f",mViewInfo.sel0);
+         wxTextEntryDialog * dialog = new wxTextEntryDialog(this,
+                                                            _("Set Left Selection Bound"),
+                                                            _("Please Enter time"),
+                                                            curval,
+                                                            wxCANCEL|wxOK|wxCENTRE);
+         if(wxID_OK==dialog->ShowModal() )
+            {
+               //Get the value from the dialog
+               wxString val = dialog->GetValue();
+               double tmp;
+               val.ToDouble(&tmp);
+               mViewInfo.sel0 = tmp;
+               
+               //Make sure it is 'legal'
+               if(mViewInfo.sel0 < 0)
+                  mViewInfo.sel0 = 0;
+            }
+         delete dialog;
+      }
+
+   if(mViewInfo.sel1 < mViewInfo.sel0)
+      mViewInfo.sel1 = mViewInfo.sel0;
+   mTrackPanel->Refresh(false);
+   
+}
+
+
+void AudacityProject::OnSetRightSelection()
+{
+   if (GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(GetAudioIOToken())) 
+      {
+         double indicator = gAudioIO->GetStreamTime();
+         mViewInfo.sel1 = indicator;
+      }
+
+   else
+      {
+         wxString curval = wxString::Format("%2.2f",mViewInfo.sel1);
+         wxTextEntryDialog * dialog =  new wxTextEntryDialog(this,_("Set Right Selection Bound"),_("Please Enter time"),
+                                                      curval,wxCANCEL|wxOK|wxCENTRE);
+         if(wxID_OK==dialog->ShowModal() )
+            {
+               //Get the value from the dialog
+               wxString val = dialog->GetValue();
+               double tmp;
+               val.ToDouble(&tmp);
+               mViewInfo.sel1=tmp; 
+             
+               //Make sure it is 'legal'
+               if(mViewInfo.sel1 < 0)
+                  mViewInfo.sel1 = 0;
+            }
+         delete dialog;
+      }
+
+   if(mViewInfo.sel0 >  mViewInfo.sel0)
+      mViewInfo.sel0 = mViewInfo.sel1;
+   mTrackPanel->Refresh(false);
+   
+}
+
+void AudacityProject::OnTrackPan()
+{
+   mTrackPanel->OnTrackPan(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackGain()
+{
+   mTrackPanel->OnTrackGain(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackMenu()
+{
+   mTrackPanel->OnTrackMenu(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackMute()
+{
+   mTrackPanel->OnTrackMute(mTrackPanel->GetFirstSelectedTrack(),false);
+}
+void AudacityProject::OnTrackSolo()
+{
+   mTrackPanel->OnTrackSolo(mTrackPanel->GetFirstSelectedTrack(),false);
+}
+void AudacityProject::OnTrackClose()
+{
+   mTrackPanel->OnTrackClose(mTrackPanel->GetFirstSelectedTrack());
+}
+
 
 double AudacityProject::NearestZeroCrossing(double t0)
 {
@@ -2334,7 +2461,7 @@ void AudacityProject::LoadToolBar(ToolBarStub ** ppStub, enum ToolBarType t)
          // Logic to prevent the control tool bar being unloaded.
          // TODO: Move into caller(s) of this function so
          // that this function can remain generic.
-         if( pStub = gControlToolBarStub )
+         if( pStub == gControlToolBarStub )
             return;
          //the toolbar is "loaded", meaning its visible either in the window
          //or floating

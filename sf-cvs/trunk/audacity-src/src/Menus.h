@@ -65,7 +65,20 @@ void OnPlayOneSecond();
 void OnPlayToSelection();
 void OnPlayLooped();
 
+//Commands for affecting selection
+void OnCycleTracks();
+
+
+void OnTrackPan();
+void OnTrackGain();
+void OnTrackMenu();
+void OnTrackMute();
+void OnTrackSolo();
+void OnTrackClose();
+
+
         // Selection-Editing Commands
+
 
 void OnCursorLeft();
 void OnCursorRight();
@@ -73,6 +86,10 @@ void OnSelExtendLeft();
 void OnSelExtendRight();
 void OnSelContractLeft();
 void OnSelContractRight();
+
+void OnSetLeftSelection();
+void OnSetRightSelection();
+
 void OnSelToStart();
 void OnSelToEnd();
 

@@ -85,6 +85,8 @@ public:
    ~TrackLabel();
 
    int GetTitleWidth() const { return 100; }
+
+   
 private:
    void MakeMoreSliders();
    void EnsureSufficientSliders(int index);
@@ -110,7 +112,7 @@ public:
    LWSliderArray mPans;
    wxWindow * pParent;
 
-friend class TrackPanel;
+   friend class TrackPanel;
 };
 
 
@@ -161,6 +163,17 @@ class TrackPanel:public wxPanel {
 
    void HandleShiftKey(bool down);
    AudacityProject * GetProject() const;
+
+
+   void OnCycleTracks();
+   void OnTrackPan(Track * t);
+   void OnTrackGain(Track * t);
+   void OnTrackMenu(Track * t);
+   void OnTrackMute(Track * t, bool shiftdown);
+   void OnTrackSolo(Track * t, bool shiftdown);
+   void OnTrackClose(Track * t);
+   Track * GetFirstSelectedTrack();
+
 
  private:
 
@@ -296,11 +309,18 @@ class TrackPanel:public wxPanel {
    Track *FindTrack(int mouseX, int mouseY, bool label, bool link,
                      wxRect * trackRect = NULL, int *trackNum = NULL);
 
+   int FindTrackNum(Track * target);
+   wxRect FindTrackRect(Track * target, bool label);
+
 //   int GetTitleWidth() const { return 100; }
    int GetTitleOffset() const { return 0; }
    int GetVRulerWidth() const { return 36;}
    int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
+
+
+
+   //This cycles between tracks, determining which track is selected in a semi-clever way.
 
 private:
    void DrawRuler(wxDC * dc, bool text = true);
@@ -428,6 +448,7 @@ private:
 
    enum MouseCaptureEnum mMouseCapture;
    void SetCapturedTrack( Track * t, enum MouseCaptureEnum MouseCapture=IsUncaptured );
+
    bool mAdjustSelectionEdges;
    bool mSlideUpDownOnly;
 
