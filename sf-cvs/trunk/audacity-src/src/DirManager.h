@@ -53,23 +53,7 @@ class DirManager {
 
    wxString GetProjectName();
 
-   // Create new unique track name
-   wxString NewTrackName();
-
-   void MakeBlockFileName(wxString inProjDir,
-                          wxString &outFileName, wxString &outPathName);
-
-   BlockFile *NewTempBlockFile();
-   BlockFile *NewBlockFile();
-
-   BlockFile *NewTempAliasBlockFile(int localLen,
-                                    wxString fullPath,
-                                    sampleCount start,
-                                    sampleCount len, int channel);
-   BlockFile *NewAliasBlockFile(int localLen,
-                                wxString fullPath,
-                                sampleCount start,
-                                sampleCount len, int channel);
+   BlockFile *NewBlockFile(int summaryLen);
 
    // Adds one to the reference count of the block file,
    // UNLESS it is "locked", then it makes a new copy of
@@ -80,7 +64,7 @@ class DirManager {
    void SaveBlockFile(BlockFile * f, wxTextFile * out);
 
    bool MoveToNewProjectDirectory(BlockFile *f);
-      bool CopyToNewProjectDirectory(BlockFile *f);
+   bool CopyToNewProjectDirectory(BlockFile *f);
 
    bool EnsureSafeFilename(wxString fName);
 
@@ -95,6 +79,13 @@ class DirManager {
 
  private:
    void CleanTempDir();
+
+   // Create new unique track name
+   wxString NewTrackName();
+
+   void MakeBlockFileName(wxString inProjDir,
+                          wxString &outFileName,
+                          wxString &outPathName);
 
    // Create new unique names
    wxString NewTempBlockName();

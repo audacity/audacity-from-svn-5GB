@@ -183,6 +183,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                                                   size),
 mRate((double) gPrefs->
       Read("/SamplingRate/DefaultProjectSampleRate", 44100)),
+mDefaultFormat((sampleFormat) gPrefs->
+      Read("/SamplingRate/DefaultProjectSampleFormat", floatSample)),   
 mDirty(false), mDrag(NULL), mTrackPanel(NULL), mHistoryWindow(NULL),
 mAutoScrolling(false), mTotalToolBarHeight(0), mDraggingToolBar(NoneID)
 {
@@ -1338,12 +1340,9 @@ void AudacityProject::Import(wxString fileName)
    SelectNone();
 
    bool initiallyEmpty = mTracks->IsEmpty();
-   bool rateWarning = false;
    double newRate = newTracks[0]->GetRate();
 
    for (int i = 0; i < numTracks; i++) {
-      if (newTracks[i]->GetRate() != mRate)
-         rateWarning = true;
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
    }
@@ -1353,10 +1352,6 @@ void AudacityProject::Import(wxString fileName)
    if (initiallyEmpty) {
       mRate = newRate;
       mStatus->SetRate(mRate);
-   } else if (rateWarning) {
-      wxMessageBox(_("Warning: your file has multiple sampling rates.  "
-                     "Audacity will ignore any track which is not at "
-                     "the same sampling rate as the project."));
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));

@@ -18,57 +18,176 @@
 
 #include "sndfile.h"
 
-BlockFile::BlockFile(wxString name, wxString fullPath)
+BlockFile::BlockFile(wxString name, wxString fullPath, int summaryLen)
 {
    mName = name;
    mFullPath = fullPath;
    mType = BLOCK_TYPE_UNCOMPRESSED;
-   mMode = BLOCK_MODE_NOT_OPEN;
-
-   mFile = NULL;
-   mSoundFile = NULL;
-   mInfo = NULL;
+   mSampleFormat = floatSample;
+   mSummaryLen = summaryLen;
 
    mLocked = false;
-
-   mPos = 0;
-
-   mRefCount = 1;
-}
-
-BlockFile::BlockFile(wxString name, wxString fullPath,
-                     int localLen,
-                     wxString aliasFullPath,
-                     sampleCount aliasStart,
-                     sampleCount aliasLen, int aliasChannel)
-{
-   mName = name;
-   mFullPath = fullPath;
-
-   mType = BLOCK_TYPE_ALIAS;
-   mMode = BLOCK_MODE_NOT_OPEN;
-
-   mFile = NULL;
-
-   mAliasFullPath = aliasFullPath;
-   mLocalLen = localLen;
-   mStart = aliasStart;
-   mLen = aliasLen;
-   mChannel = aliasChannel;
-   mPos = 0;
-
-   mLocked = false;
-
-   mSoundFile = NULL;
-   mInfo = NULL;
 
    mRefCount = 1;
 }
 
 BlockFile::~BlockFile()
 {
-   if(mMode != BLOCK_MODE_NOT_OPEN)
-      Close();
+}
+
+bool BlockFile::WriteSummary(void *data)
+{
+   bool success;
+   wxFFile file;
+
+   if(wxFileExists(mFullPath))
+      success = file.Open((const wxChar *) mFullPath, "r+b");
+   else
+      success = file.Open((const wxChar *) mFullPath, "w+b");
+
+   if (!success)
+      return false;
+
+   int len = mSummaryLen;
+   int written = (int)file.Write(data, (size_t)len);
+
+   file.Close();
+
+   return (written == len);
+}
+
+bool BlockFile::WriteData(void *data, sampleFormat format, sampleCount len)
+{
+   bool success;
+   wxFFile file;
+   size_t bytes;
+
+   mType = BLOCK_TYPE_UNCOMPRESSED;
+   mSampleFormat = format;
+
+   if(wxFileExists(mFullPath))
+      success = file.Open((const wxChar *) mFullPath, "r+b");
+   else
+      success = file.Open((const wxChar *) mFullPath, "w+b");
+
+   if (!success)
+      return false;
+
+   file.Seek(mSummaryLen, wxFromStart);
+   bytes = len * SAMPLE_SIZE(format);
+   int written = (int)file.Write(data, bytes);
+   written /= SAMPLE_SIZE(format);
+
+   file.Close();
+
+   return (written == len);
+}
+
+void BlockFile::SetAliasedData(wxString aliasFullPath,
+                               sampleCount aliasStart, sampleCount aliasLen,
+                               int aliasChannel)
+{
+   mType = BLOCK_TYPE_ALIAS;
+
+   mAliasFullPath = aliasFullPath;
+   mStart = aliasStart;
+   mLen = aliasLen;
+   mChannel = aliasChannel;
+}
+
+bool BlockFile::ReadSummary(void *data)
+{
+   wxFFile file;
+
+   if (!file.Open((const wxChar *) mFullPath, "rb"))
+      return false;
+
+   int len = mSummaryLen;
+   int read = (int)file.Read(data, (size_t)len);
+
+   file.Close();
+
+   return (read == len);
+}
+
+sampleFormat BlockFile::GetNativeFormat()
+{
+   return mSampleFormat;
+}
+
+int BlockFile::ReadData(void *data, sampleFormat format,
+                        sampleCount start, sampleCount len)
+{
+   if (mType == BLOCK_TYPE_ALIAS) {
+      SF_INFO info;
+      SNDFILE *sf = sf_open_read(mAliasFullPath, &info);
+
+      if (!sf)
+         return 0;
+
+      sf_seek(sf, start, SEEK_SET);
+      samplePtr buffer = NewSamples(len * info.channels, floatSample);
+
+      int framesRead = 0;
+      switch(format) {
+      case int16Sample:
+         framesRead = sf_readf_short(sf, (short *)buffer, len);
+         for (int i = 0; i < framesRead; i++)
+            ((short *)data)[i] =
+               ((short *)buffer)[(info.channels * i) + mChannel];
+         break;
+
+      case floatSample:
+         framesRead = sf_readf_float(sf, (float *)buffer, len);
+         for (int i = 0; i < framesRead; i++)
+            ((float *)data)[i] =
+               ((float *)buffer)[(info.channels * i) + mChannel] / 32767.0;
+         break;
+      
+      default:
+         framesRead = sf_readf_float(sf, (float *)buffer, len);
+         for (int i = 0; i < framesRead; i++)
+            ((float *)buffer)[i] =
+               ((float *)buffer)[(info.channels * i) + mChannel] / 32767.0;
+         CopySamples((samplePtr)buffer, floatSample,
+                     (samplePtr)data, format, framesRead);
+      }
+
+      DeleteSamples(buffer);
+
+      sf_close(sf);
+
+      return framesRead;
+
+   }
+   else {
+      wxFFile file;
+      int read;
+
+      if (!file.Open((const wxChar *) mFullPath, "rb"))
+         return 0;
+
+      file.Seek(mSummaryLen +
+                start * SAMPLE_SIZE(mSampleFormat), wxFromStart);
+
+      if (format == mSampleFormat) {
+         int bytes = len * SAMPLE_SIZE(mSampleFormat);
+         read = (int)file.Read(data, (size_t)bytes);
+         read /= SAMPLE_SIZE(mSampleFormat);
+      }
+      else {
+         samplePtr buffer = NewSamples(len, mSampleFormat);
+         int srcBytes = len * SAMPLE_SIZE(mSampleFormat);
+         read = (int)file.Read(data, (size_t)srcBytes);
+         read /= SAMPLE_SIZE(mSampleFormat);
+         CopySamples(buffer, mSampleFormat,
+                     (samplePtr)data, format, read);
+         DeleteSamples(buffer);
+      }
+
+      file.Close();
+      return read;
+   }
 }
 
 void BlockFile::Lock()
@@ -98,6 +217,11 @@ wxString BlockFile::GetAliasedFile()
    return mAliasFullPath;
 }
 
+int BlockFile::GetSummaryLen()
+{
+   return mSummaryLen;
+}
+
 void BlockFile::ChangeAliasedFile(wxString newFile)
 {
    // This method is only called with the DirManager is moving
@@ -123,8 +247,6 @@ bool BlockFile::Deref()
 {
    mRefCount--;
    if (mRefCount <= 0) {
-      if(mMode != BLOCK_MODE_NOT_OPEN)
-         Close();
       wxRemoveFile(mFullPath);
       delete this;
       return true;
@@ -132,199 +254,3 @@ bool BlockFile::Deref()
       return false;
 }
 
-bool BlockFile::OpenReadHeader()
-{
-   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
-
-   mPos = 0;
-
-   mFile = new wxFFile();
-   bool success = mFile->Open((const wxChar *) mFullPath, "rb");
-
-   if(success)
-      mMode = BLOCK_MODE_READ_HEADER;
-
-   return success;
-}
-
-bool BlockFile::OpenReadData()
-{
-   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
-
-   if (mType == BLOCK_TYPE_ALIAS) {
-      mInfo = (void *)new SF_INFO;
-      mSoundFile = (void *)sf_open_read(mAliasFullPath, (SF_INFO *)mInfo);
-
-      if (mSoundFile != 0) {
-         sf_seek((SNDFILE *)mSoundFile, mStart, SEEK_SET);
-         mMode = BLOCK_MODE_READ_DATA;
-         mPos = WaveTrack::GetHeaderLen();
-         return true;
-      }
-      return false;
-   } else {
-
-      mFile = new wxFFile();
-      bool success = mFile->Open((const wxChar *) mFullPath, "rb");
-
-      if (success) {
-         mMode = BLOCK_MODE_READ_DATA;
-         SeekTo(0);     /* seek to the beginning of the data area */
-      }
-
-      return success;
-   }
-}
-
-bool BlockFile::OpenWriteHeader()
-{
-   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
-
-   mPos = 0;
-   bool success;
-
-   mFile = new wxFFile();
-
-   if(wxFileExists(mFullPath))
-      success = mFile->Open((const wxChar *) mFullPath, "r+b");
-   else
-      success = mFile->Open((const wxChar *) mFullPath, "w+b");
-
-   if(success) {
-      mMode = BLOCK_MODE_WRITE_HEADER;
-      mFile->Seek((long)0, wxFromStart);
-   }
-
-   return success;
-}
-
-bool BlockFile::OpenWriteData()
-{
-   wxASSERT(mMode == BLOCK_MODE_NOT_OPEN);
-
-   mPos = 0;
-   bool success;
-
-   mFile = new wxFFile();
-   if(wxFileExists(mFullPath))
-      success = mFile->Open((const wxChar *) mFullPath, "r+b");
-   else
-      success = mFile->Open((const wxChar *) mFullPath, "w+b");
-
-   if(success) {
-      mMode = BLOCK_MODE_WRITE_DATA;
-      mPos = WaveTrack::GetHeaderLen();
-      mFile->Seek((long)mPos, wxFromStart);
-   }
-
-   return success;
-}
-
-void BlockFile::Close()
-{
-   wxASSERT(mMode != BLOCK_MODE_NOT_OPEN);
-
-   if (mFile) {
-      mFile->Close();
-      delete mFile;
-      mFile = 0;
-   }
-
-   if (mType == BLOCK_TYPE_ALIAS && ((SNDFILE *)mSoundFile)) {
-      sf_close((SNDFILE *)mSoundFile);
-      mSoundFile = NULL;
-      delete (SF_INFO *)mInfo;
-   }
-
-   mMode = BLOCK_MODE_NOT_OPEN;
-}
-
-int BlockFile::Read(void *data, int len)
-{
-   wxASSERT(mMode & BLOCK_MODE_READING_MODE);
-   
-   /* make sure the read doesn't start in the header area and
-      end in the data area
-   */
-   
-   wxASSERT(!(mPos < WaveTrack::GetHeaderLen() &&
-              mPos + len > WaveTrack::GetHeaderLen()));
-   
-   /* if you're in data mode, make sure the pointer is in the data area */
-   
-   wxASSERT(mMode == BLOCK_MODE_READ_HEADER ||
-            mPos >= WaveTrack::GetHeaderLen());
-   
-   /* if you're in header mode, make sure the pointer is in the header area */
-   
-   wxASSERT(mMode == BLOCK_MODE_READ_DATA   ||
-            mPos < WaveTrack::GetHeaderLen());
-
-   if (mType == BLOCK_TYPE_ALIAS && mMode == BLOCK_MODE_READ_DATA) {
-      int channels = ((SF_INFO *)mInfo)->channels;     
-      int frames = len / sizeof(sampleType);
-      int bufferSize = frames * channels;
-      sampleType *buffer = new short[bufferSize];
-
-      int framesRead = sf_readf_short((SNDFILE *)mSoundFile, buffer, frames);
-      
-      for (int i = 0; i < framesRead; i++)
-         ((sampleType *) data)[i] = buffer[(channels * i) + mChannel];
-
-      delete[]buffer;
-
-      return (framesRead * sizeof(sampleType));
-   } else {
-      wxASSERT(mFile);
-
-      int rval = (int) mFile->Read(data, (size_t) len);
-
-      if (rval != len) {
-         printf(_("Expected %d bytes, got %d\n"), len, rval);
-         wxASSERT(0);
-      }
-
-      mPos += rval;
-
-      return rval;
-   }
-}
-
-int BlockFile::Write(void *data, int len)
-{
-   wxASSERT(mFile);
-   wxASSERT(mMode & BLOCK_MODE_WRITING_MODE);
-   wxASSERT(mType != BLOCK_TYPE_ALIAS || mMode == BLOCK_MODE_WRITE_HEADER);
-
-   int rval = (int) mFile->Write((const void *) data, (size_t) len);
-   mPos += rval;
-
-   return rval;
-}
-
-bool BlockFile::SeekTo(int where)
-{
-   /* all modes but these two are legit */
-
-   wxASSERT(mMode != BLOCK_MODE_NOT_OPEN && mMode != BLOCK_MODE_WRITE_DATA);
-   
-   if (mType == BLOCK_TYPE_ALIAS && mMode == BLOCK_MODE_READ_DATA) {
-
-      int channels = ((SF_INFO *)mInfo)->channels;
-      sf_seek((SNDFILE *)mSoundFile,
-              mStart + (where / sizeof(sampleType)),
-              SEEK_SET);
-      mPos = where + WaveTrack::GetHeaderLen();
-
-      return true;
-   } else {
-      
-      wxASSERT(mFile);
-      if(mMode == BLOCK_MODE_READ_DATA)
-         mPos = where + WaveTrack::GetHeaderLen();
-      else
-         mPos = where;
-      
-      return mFile->Seek((long) mPos, wxFromStart);
-   }
-}

@@ -15,10 +15,10 @@
 #include <wx/string.h>
 #include <wx/thread.h>
 
+#include "SampleFormat.h"
 #include "Envelope.h"
 #include "Track.h"
 
-typedef signed short sampleType;
 typedef int sampleCount;
 
 class DirManager;
@@ -30,8 +30,19 @@ class WaveBlock {
 
    sampleCount start;
    sampleCount len;
-   sampleType min;
-   sampleType max;
+   short       min;
+   short       max;
+   short       rms;
+};
+
+class SummaryInfo {
+ public:
+   int            bytesPerFrame;
+   sampleCount    frames64K;
+   int            offset64K;
+   sampleCount    frames256;
+   int            offset256;
+   int            totalSummaryBytes;
 };
 
 WX_DEFINE_ARRAY(WaveBlock *, BlockArray);
@@ -41,7 +52,10 @@ class WaveTrack:public VTrack {
    friend class TrackArtist;
 
    static void SetMaxDiskBlockSize(int bytes);
-   static int  GetMaxDiskBlockSize();
+   int  GetSummaryBytes() const;
+
+   sampleCount GetMaxBlockSize() const;
+   sampleCount GetIdealBlockSize() const;
 
    enum {
       WaveformDisplay,
@@ -76,85 +90,89 @@ class WaveTrack:public VTrack {
    virtual bool Save(wxTextFile * out, bool overwrite);
 
    virtual int GetKind() const { return Wave; } 
-   virtual void SetOffset(double t);
+   virtual void SetOffset(double t);   
 
    virtual double GetMaxLen() const;
 
-   void GetMinMax(sampleCount start, sampleCount len, sampleType * min,
-                  sampleType * max) const;
+   sampleFormat GetSampleFormat() const;
+   bool SetSampleFormat(sampleFormat format);
+   void ConvertToSampleFormat(sampleFormat format);
+
+   void GetMinMax(sampleCount start, sampleCount len,
+                  float * min, float * max) const;
 
    double GetRate() const;
    void SetRate(double newRate);
 
-   sampleCount GetNumSamples() const { return numSamples; }
-   void SetNumSamples(sampleCount sc) { numSamples = sc; }
+   sampleCount GetNumSamples() const { return mNumSamples; }
+   void SetNumSamples(sampleCount sc) { mNumSamples = sc; }
 
-   Envelope *GetEnvelope() { return &envelope; }
-   const Envelope *GetEnvelope() const { return &envelope; }
+   Envelope *GetEnvelope() { return &mEnvelope; }
+   const Envelope *GetEnvelope() const { return &mEnvelope; }
 
-   sampleType Get(sampleCount pos) const;
-   void Get(sampleType * buffer, sampleCount start, sampleCount len) const;
+   float Get(sampleCount pos) const;
+   void  Get(float * buffer, sampleCount start, sampleCount len) const;
+   void  Get(samplePtr buffer, sampleFormat format,
+             sampleCount start, sampleCount len) const;
 
-   void Set(sampleType * buffer, sampleCount start, sampleCount len);
-   void Append(sampleType * buffer, sampleCount len);
+   // Pass NULL to set silence
+   void Set(float * buffer,
+            sampleCount start, sampleCount len);
+   void Set(samplePtr buffer, sampleFormat format,
+            sampleCount start, sampleCount len);
+
+   void Append(samplePtr buffer, sampleFormat format, sampleCount len);
    void Delete(sampleCount start, sampleCount len);
    void AppendBlock(WaveBlock * b);
 
    void AppendAlias(wxString fullPath,
                     sampleCount start, sampleCount len, int channel);
 
-   static sampleCount GetMaxBlockSize();
-   static sampleCount GetIdealBlockSize();
-   static int GetHeaderLen();
    sampleCount GetBestBlockSize(sampleCount start) const;
 
-   BlockArray *GetBlockArray() const { return block; }
+   BlockArray *GetBlockArray() const { return mBlock; }
 
  private:
-   int display;                 // wave/spectrum
+   static int    sMaxDiskBlockSize;
+ private:
+   BlockArray   *mBlock;
+   sampleFormat  mSampleFormat;
+   sampleCount   mNumSamples;
+   double        mRate;
+   Envelope      mEnvelope;
+   SummaryInfo   mSummary;
 
-   BlockArray *block;
+   sampleCount   mMinSamples;
+   sampleCount   mMaxSamples;
 
-   sampleCount numSamples;
-   double rate;
+   // On-screen display info
+   int mDisplay; // wave/spectrum
 
-#if wxUSE_THREADS
-   wxMutex *blockMutex;
-#endif
-
-   Envelope envelope;
-
-   void Reblockify();
+ private:
    int FindBlock(sampleCount pos) const;
    int FindBlock(sampleCount pos, sampleCount lo,
                  sampleCount guess, sampleCount hi) const;
    WaveBlock *NewInitedWaveBlock();
-   bool InitBlock(WaveBlock * b);
 
-   void Read(sampleType * buffer, WaveBlock * b,
+   void Read(samplePtr buffer, sampleFormat format,
+             WaveBlock * b,
              sampleCount start, sampleCount len) const;
-   void Read256(sampleType * buffer, WaveBlock * b,
+   void Read256(short * buffer, WaveBlock * b,
                 sampleCount start, sampleCount len) const;
-   void Read64K(sampleType * buffer, WaveBlock * b,
+   void Read64K(short * buffer, WaveBlock * b,
                 sampleCount start, sampleCount len) const;
 
    // These are the two ways to write data to a block
-   void FirstWrite(sampleType * buffer, WaveBlock * b, sampleCount len);
-   void CopyWrite(sampleType * buffer, WaveBlock * b,
+   void FirstWrite(samplePtr buffer, WaveBlock * b, sampleCount len);
+   void CopyWrite(samplePtr buffer, WaveBlock * b,
                   sampleCount start, sampleCount len);
 
    // Both block-writing methods and AppendAlias call this
    // method to write the summary data
-   void UpdateSummaries(sampleType * buffer, WaveBlock * b,
+   void UpdateSummaries(samplePtr buffer, WaveBlock * b,
                         sampleCount len);
 
-   BlockArray *Blockify(sampleType * buffer, sampleCount len);
-
-   static sampleCount summary64KLen;
-   static sampleCount summary256Len;
-   static sampleCount totalHeaderLen;
-   static sampleCount maxSamples;
-   static sampleCount minSamples;
+   BlockArray *Blockify(samplePtr buffer, sampleCount len);
 
  public:
 

@@ -88,12 +88,12 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
    if (idealBlockLen % windowSize != 0)
       idealBlockLen += (windowSize - (idealBlockLen % windowSize));
    
-   sampleType *buffer = new sampleType[idealBlockLen];
+   float *buffer = new float[idealBlockLen];
    
-   sampleType *window1 = new sampleType[windowSize];
-   sampleType *window2 = new sampleType[windowSize];
-   sampleType *thisWindow = window1;
-   sampleType *lastWindow = window2;
+   float *window1 = new float[windowSize];
+   float *window2 = new float[windowSize];
+   float *thisWindow = window1;
+   float *lastWindow = window2;
    
    sampleCount originalLen = len;
    
@@ -125,7 +125,7 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
          for(j=0; j<windowSize/2; j++)
             buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
          
-         sampleType *tempP = thisWindow;
+         float *tempP = thisWindow;
          thisWindow = lastWindow;
          lastWindow = tempP;
       }
@@ -149,7 +149,7 @@ bool EffectFilter::ProcessOne(int count, WaveTrack * t,
 }
 
 void EffectFilter::Filter(sampleCount len,
-                          sampleType *buffer)
+                          float *buffer)
 {
    float *inr = new float[len];
    float *ini = new float[len];
@@ -159,7 +159,7 @@ void EffectFilter::Filter(sampleCount len,
    unsigned int i;
    
    for(i=0; i<len; i++)
-      inr[i] = buffer[i]/32767.;
+      inr[i] = buffer[i];
 
    // Apply window and FFT
    WindowFunc(3, len, inr); // Hanning window
@@ -183,7 +183,7 @@ void EffectFilter::Filter(sampleCount len,
    FFT(len, true, outr, outi, inr, ini);
    
    for(i=0; i<len; i++)
-      buffer[i] = sampleType(inr[i]*32767);
+      buffer[i] = float(inr[i]);
 
    delete[] inr;
    delete[] ini;

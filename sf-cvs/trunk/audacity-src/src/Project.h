@@ -163,9 +163,10 @@ class AudacityProject:public wxFrame,
 
    // The project's name and file info
 
-   wxString mFileName;
-   DirManager mDirManager;
-   double mRate;
+   wxString      mFileName;
+   DirManager    mDirManager;
+   double        mRate;
+   sampleFormat  mDefaultFormat;
 
    // Tags (artist name, song properties, MP3 ID3 info, etc.)
 

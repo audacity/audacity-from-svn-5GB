@@ -40,7 +40,7 @@ private:
    bool ProcessOne(int count, WaveTrack * t,
                    sampleCount start, sampleCount len);
                    
-   sampleType DoCompression(sampleType x);
+   float DoCompression(float x);
    
    bool      mRMS;
    double    mAttackTime;

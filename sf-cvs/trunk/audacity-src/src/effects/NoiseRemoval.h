@@ -52,9 +52,9 @@ private:
                    sampleCount start, sampleCount len);
 
    void GetProfile(sampleCount len,
-                   sampleType *buffer);
+                   float *buffer);
    void RemoveNoise(sampleCount len,
-                    sampleType *buffer);
+                    float *buffer);
    
    Envelope *mEnvelope;
 

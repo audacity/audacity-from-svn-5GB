@@ -79,12 +79,12 @@ bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
     if (idealBlockLen % windowSize != 0)
         idealBlockLen += (windowSize - (idealBlockLen % windowSize));
 
-    sampleType *buffer = new sampleType[idealBlockLen];
+    float *buffer = new float[idealBlockLen];
 
-    sampleType *window1 = new sampleType[windowSize];
-    sampleType *window2 = new sampleType[windowSize];
-    sampleType *thisWindow = window1;
-    sampleType *lastWindow = window2;
+    float *window1 = new float[windowSize];
+    float *window2 = new float[windowSize];
+    float *thisWindow = window1;
+    float *lastWindow = window2;
 
     sampleCount originalLen = len;
 
@@ -119,7 +119,7 @@ bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
             for(j=0; j<windowSize/2; j++)
                 buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
 
-            sampleType *tempP = thisWindow;
+            float *tempP = thisWindow;
             thisWindow = lastWindow;
             lastWindow = tempP;
         }
@@ -149,7 +149,7 @@ bool EffectWaveletDenoise::ProcessOne(int count, WaveTrack * t,
 // wavelet denoising algorithm.
 
 void EffectWaveletDenoise::RemoveNoise(sampleCount len,
-        sampleType *buffer,
+        float *buffer,
         bool first)
 {
     PQMF H(d20soqf, 0, 19);  // Daubechies filters
@@ -158,7 +158,7 @@ void EffectWaveletDenoise::RemoveNoise(sampleCount len,
     // Multiply by Hanning window
     float *window = new float[len];
     for (int i=0; i<len; i++) {
-        window[i] = buffer[i]/32767.;
+        window[i] = buffer[i];
     }
     WindowFunc(3, len, window);
 
@@ -197,5 +197,5 @@ void EffectWaveletDenoise::RemoveNoise(sampleCount len,
 
     // Write interval data back to buffer
     for (int i=0; i<len; i++)
-        buffer[i] = sampleType(output[i]*32767);
+        buffer[i] = output[i];
 }

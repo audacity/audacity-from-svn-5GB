@@ -56,7 +56,7 @@ struct priv_data {
    wxFile *file;            /* the file containing the mp3 data we're feeding the encoder */
    unsigned char *inputBuffer;
    WaveTrack **leftTrack, **rightTrack;
-   sampleType *leftBuffer, *rightBuffer;
+   float *leftBuffer, *rightBuffer;
    sampleCount bufferSize;  /* how big each of the above buffers is */
    sampleCount numDecoded;  /* how many decoded samples are sitting in each buffer */
    wxString name;           /* what to name the created tracks */ 
@@ -67,25 +67,13 @@ struct priv_data {
 };
 
 
-
 /* convert libmad's fixed point representation to 16 bit signed integers. This
  * code is taken verbatim from minimad.c. */
 
-inline sampleType scale(mad_fixed_t sample)
+inline float scale(mad_fixed_t sample)
 {
-  /* round */
-  sample += (1L << (MAD_F_FRACBITS - 16));
-
-  /* clip */
-  if (sample >= MAD_F_ONE)
-    sample = MAD_F_ONE - 1;
-  else if (sample < -MAD_F_ONE)
-    sample = -MAD_F_ONE;
-
-  /* quantize */
-  return sample >> (MAD_F_FRACBITS + 1 - 16);
+   return (float) (sample / (float) (1L << MAD_F_FRACBITS));
 }
-
 
 
 enum mad_flow input_cb(void *_data, struct mad_stream *stream)
@@ -150,15 +138,17 @@ enum mad_flow output_cb(void *_data,
    /* the left and right buffers get created on the first run */
  
    if(!data->leftBuffer) {
-      data->leftBuffer = new sampleType[data->bufferSize];
+      data->leftBuffer = new float[data->bufferSize];
       *data->leftTrack = new WaveTrack(data->dirManager);
+      (*data->leftTrack)->SetSampleFormat(floatSample);
       (*data->leftTrack)->SetChannel(VTrack::MonoChannel);
       (*data->leftTrack)->SetName(data->name);
       (*data->leftTrack)->SetRate(samplerate);
       
       if(channels == 2) {
-         data->rightBuffer = new sampleType[data->bufferSize];
+         data->rightBuffer = new float[data->bufferSize];
          *data->rightTrack = new WaveTrack(data->dirManager);
+         (*data->rightTrack)->SetSampleFormat(floatSample);
          (*data->leftTrack)->SetChannel(VTrack::LeftChannel);
          (*data->rightTrack)->SetChannel(VTrack::RightChannel);
          (*data->rightTrack)->SetName(data->name);
@@ -168,9 +158,13 @@ enum mad_flow output_cb(void *_data,
    }
 
    if(data->numDecoded + samples > data->bufferSize) {
-      (*data->leftTrack)->Append(data->leftBuffer, data->numDecoded);
+      (*data->leftTrack)->Append((samplePtr)data->leftBuffer,
+                                 floatSample,
+                                 data->numDecoded);
       if(channels == 2)
-         (*data->rightTrack)->Append(data->rightBuffer, data->numDecoded);
+         (*data->rightTrack)->Append((samplePtr)data->rightBuffer,
+                                     floatSample,
+                                     data->numDecoded);
 
       data->numDecoded = 0;
    }
@@ -235,7 +229,7 @@ bool ImportMP3(AudacityProject * project,
    data.rightTrack  = right;
    data.leftBuffer  = NULL;
    data.rightBuffer = NULL;
-   data.bufferSize  = WaveTrack::GetIdealBlockSize();
+   data.bufferSize  = 1048576;
    data.numDecoded  = 0;
    data.name        = TrackNameFromFileName(fName);
    data.progress    = NULL;
@@ -255,9 +249,13 @@ bool ImportMP3(AudacityProject * project,
 
    /* write anything left in the buffers and clean up */
 
-   (*data.leftTrack)->Append(data.leftBuffer, data.numDecoded);
+   (*data.leftTrack)->Append((samplePtr)data.leftBuffer,
+                             floatSample,
+                             data.numDecoded);
    if(data.rightBuffer)
-      (*data.rightTrack)->Append(data.rightBuffer, data.numDecoded);
+      (*data.rightTrack)->Append((samplePtr)data.rightBuffer,
+                                 floatSample,
+                                 data.numDecoded);
 
    if(data.leftBuffer)
       delete [] data.leftBuffer;

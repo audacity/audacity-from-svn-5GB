@@ -310,7 +310,6 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       return;
    }
 
-   int saveBlockSize = WaveTrack::GetMaxDiskBlockSize();
    WaveTrack::SetMaxDiskBlockSize(blockSize * 1024);
 
    wxBusyCursor busy;
@@ -328,21 +327,21 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    int len, scale;
    //scale = 7500 + (rand() % 1000);
    scale = 200 + (rand() % 100);
-   len = (dataSize * 1048576) / (scale*sizeof(sampleType));
+   len = (dataSize * 1048576) / (scale*sizeof(short));
    while(len < 20 || scale > (blockSize*1024)/4) {
       scale = (scale / 2) + (rand() % 100);
-      len = (dataSize * 1048576) / (scale*sizeof(sampleType));
+      len = (dataSize * 1048576) / (scale*sizeof(short));
    }
 
    Printf(_("Using %d blocks of %d samples each, for a total of "
             "%.1f MB.\n"),
-          len, scale, len*scale*sizeof(sampleType)/1048576.0);
+          len, scale, len*scale*sizeof(short)/1048576.0);
 
    int trials = numEdits;
 
-   sampleType *small = new sampleType[len];
-   sampleType *small2 = new sampleType[len];
-   sampleType *block = new sampleType[scale];
+   short *small = new short[len];
+   short *small2 = new short[len];
+   short *block = new short[scale];
 
    Printf(_("Preparing...\n"));
 
@@ -357,12 +356,12 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    wxStopWatch timer;
 
    for (i = 0; i < len; i++) {
-      v = sampleType(rand());
+      v = short(rand());
       small[i] = v;
       for (b = 0; b < scale; b++)
          block[b] = v;
 
-      t->Append(block, scale);
+      t->Append((samplePtr)block, int16Sample, scale);
    }
 
    if (t->GetNumSamples() != (sampleCount)len * scale) {
@@ -447,7 +446,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    timer.Start();
    for (i = 0; i < len; i++) {
       v = small[i];
-      t->Get(block, i * scale, scale);
+      t->Get((samplePtr)block, int16Sample, i * scale, scale);
       for (b = 0; b < scale; b++)
          if (block[b] != v) {
             bad++;
@@ -473,7 +472,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    for (i = 0; i < len; i++) {
       v = small[i];
-      t->Get(block, i * scale, scale);
+      t->Get((samplePtr)block, int16Sample, i * scale, scale);
       for (b = 0; b < scale; b++)
          if (block[b] != v)
             bad++;
@@ -495,7 +494,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    delete d;
 
-   WaveTrack::SetMaxDiskBlockSize(saveBlockSize);
+   WaveTrack::SetMaxDiskBlockSize(1048576);
    HoldPrint(false);
 
    return;
@@ -511,7 +510,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    delete d;
 
-   WaveTrack::SetMaxDiskBlockSize(saveBlockSize);
+   WaveTrack::SetMaxDiskBlockSize(1048576);
    HoldPrint(false);
 }
 

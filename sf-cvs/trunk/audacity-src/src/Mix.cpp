@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
@@ -22,7 +24,8 @@
 #include "ControlToolBar.h"
 
 
-bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
+bool QuickMix(TrackList *tracks, DirManager *dirManager,
+              double rate, sampleFormat format)
 {
    WaveTrack **waveArray;
    VTrack *t;
@@ -56,19 +59,6 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
       t = iter.Next();
    }
 
-   if (numWaves < 2) {
-      wxMessageBox(_("First select two or more tracks to mix together"));
-      return false;
-   }
-
-   if (numLeft == 1 && numRight == 1 && numWaves == 2) {
-      wxMessageBox(
-          _("Mix would have no effect.  If you want to mix a left and "
-            "a right channel together, turn them both into mono "
-            "channels first."));
-      return false;
-   }
-
    if (numMono == numWaves || numLeft == numWaves || numRight == numWaves)
       mono = true;
 
@@ -87,12 +77,14 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    }
 
    WaveTrack *mixLeft = new WaveTrack(dirManager);
+   mixLeft->SetSampleFormat(format);
    mixLeft->SetRate(rate);
    mixLeft->SetChannel(VTrack::MonoChannel);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (!mono) {
       mixRight = new WaveTrack(dirManager);
+      mixRight->SetSampleFormat(format);
       mixRight->SetRate(rate);
       mixRight->SetName(_("Mix"));
       mixLeft->SetChannel(VTrack::LeftChannel);
@@ -103,7 +95,8 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    int maxBlockLen = mixLeft->GetIdealBlockSize();
    double maxBlockTime = maxBlockLen / mixLeft->GetRate();
 
-   Mixer *mixer = new Mixer(mono ? 1 : 2, maxBlockLen, false, rate);
+   Mixer *mixer = new Mixer(mono ? 1 : 2, maxBlockLen, false,
+                            rate, format);
 
    wxProgressDialog *progress = NULL;
    wxYield();
@@ -139,14 +132,14 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
       }
 
       if (mono) {
-         sampleType *buffer = mixer->GetBuffer();
-         mixLeft->Append(buffer, blockLen);
+         samplePtr buffer = mixer->GetBuffer();
+         mixLeft->Append(buffer, format, blockLen);
       } else {
-         sampleType *buffer;
+         samplePtr buffer;
          buffer = mixer->GetBuffer(0);
-         mixLeft->Append(buffer, blockLen);
+         mixLeft->Append(buffer, format, blockLen);
          buffer = mixer->GetBuffer(1);
-         mixRight->Append(buffer, blockLen);
+         mixRight->Append(buffer, format, blockLen);
       }
 
       tt += blockTime;
@@ -184,12 +177,14 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    return true;
 }
 
-Mixer::Mixer(int numChannels, int bufferSize, bool interleaved, double rate)
+Mixer::Mixer(int numChannels, int bufferSize, bool interleaved,
+             double rate, sampleFormat format)
 {
    mNumChannels = numChannels;
    mBufferSize = bufferSize;
    mInterleaved = interleaved;
    mRate = rate;
+   mFormat = format;
    mUseVolumeSlider = false;
    mControlToolBar= NULL;
 
@@ -201,20 +196,20 @@ Mixer::Mixer(int numChannels, int bufferSize, bool interleaved, double rate)
       mInterleavedBufferSize = mBufferSize;
    }
    
-   mBuffer = new sampleType *[mNumBuffers];
+   mBuffer = new samplePtr[mNumBuffers];
    for (int c = 0; c < mNumBuffers; c++)
-      mBuffer[c] = new sampleType[mInterleavedBufferSize];
+      mBuffer[c] = NewSamples(mInterleavedBufferSize, mFormat);
    mTempBufferSize = mBufferSize*2;
-   mTemp = new sampleType[mTempBufferSize];
+   mTemp = NewSamples(mTempBufferSize, mFormat);
    mEnvValues = new double[mBufferSize];
 }
 
 Mixer::~Mixer()
 {
    for (int c = 0; c < mNumBuffers; c++)
-      delete[]mBuffer[c];
+      DeleteSamples(mBuffer[c]);
    delete[]mBuffer;
-   delete[]mTemp;
+   DeleteSamples(mTemp);
    delete[]mEnvValues;
 }
 
@@ -227,7 +222,7 @@ void Mixer::UseVolumeSlider(ControlToolBar * ctb)
 void Mixer::Clear()
 {
    for (int c = 0; c < mNumBuffers; c++)
-      memset(mBuffer[c], 0, mInterleavedBufferSize * sizeof(sampleType));
+      memset(mBuffer[c], 0, mInterleavedBufferSize * SAMPLE_SIZE(mFormat));
 }
 
 void Mixer::MixLeft(WaveTrack * src, double t0, double t1)
@@ -265,8 +260,8 @@ void Mixer::GetSamples(WaveTrack *src, int s0, int slen)
    
    if (slen > mTempBufferSize) {
       mTempBufferSize = slen;
-      delete[] mTemp;
-      mTemp = new sampleType[mTempBufferSize];
+      DeleteSamples(mTemp);
+      mTemp = NewSamples(mTempBufferSize, mFormat);
    }
    
    int soffset = 0;
@@ -280,26 +275,26 @@ void Mixer::GetSamples(WaveTrack *src, int s0, int slen)
       getlen = src->GetNumSamples() - s0;
    }
    
-   src->Get(&mTemp[soffset], (sampleCount)s0, (sampleCount)getlen);
-   
-   int i;
-   for(i=0; i<soffset; i++)
-      mTemp[i] = 0;
-   for(i=soffset+getlen; i<slen; i++)
-      mTemp[i] = 0;
+   src->Get(mTemp + soffset*SAMPLE_SIZE(mFormat), mFormat,
+            (sampleCount)s0, (sampleCount)getlen);
+
+   ClearSamples(mTemp, mFormat, 0, soffset);
+   ClearSamples(mTemp, mFormat, soffset+getlen, slen-(soffset+getlen));
 }
 
-void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1)
+void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src,
+                         double t0, double t1)
 {
    if ((t0 - src->GetOffset()) >= src->GetNumSamples() / src->GetRate() ||
        (t1 - src->GetOffset()) <= 0)
       return;
-      
+
    int s0 = int ((t0 - src->GetOffset()) * src->GetRate());
-   int slen = int ((t1 - t0) * src->GetRate()) + 2;  // get a couple more samples than we need
+
+   // get a couple more samples than we need
+   int slen = int ((t1 - t0) * src->GetRate()) + 2;
+
    int destlen = int ((t1 - t0) * mRate + 0.5);
-   int frac = int(32768.0 * (t0 - s0/src->GetRate()));
-   int fracstep = int(32768.0 * src->GetRate()/mRate + 0.5);
 
    GetSamples(src, s0, slen);
 
@@ -319,14 +314,14 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t
       if (!channelFlags[c])
          continue;
 
-      sampleType *dest;
+      samplePtr destPtr;
       int skip;
 
       if (mInterleaved) {
-         dest = &mBuffer[0][c];
+         destPtr = mBuffer[0] + c*SAMPLE_SIZE(mFormat);
          skip = mNumChannels;
       } else {
-         dest = &mBuffer[c][0];
+         destPtr = mBuffer[c];
          skip = 1;
       }
 
@@ -334,19 +329,64 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t
       // as optimized as possible
 
       int i = 0;
-      for (int j = 0; j < destlen; j++) {
-         sampleType value = (mTemp[i]*(32768-frac) + mTemp[i+1]*frac) >> 15;
-         frac += fracstep;
-         i += (frac >> 15);      // frac/32768
-         frac = (frac & 0x7FFF); // frac%32768
-      
-         *dest += sampleType(value * volume * mEnvValues[j] + 0.5);
-         dest += skip;
-      }
+      switch(mFormat) {
+      case int16Sample: {
+         short *temp = (short *)mTemp;
+         short *dest = (short *)destPtr;
+         int frac = int(32768.0 * (t0 - s0/src->GetRate()));
+         int fracstep = int(32768.0 * src->GetRate()/mRate + 0.5);
+
+         for (int j = 0; j < destlen; j++) {
+            short value = (temp[i]*(32768-frac) + temp[i+1]*frac) >> 15;
+            frac += fracstep;
+            i += (frac >> 15);      // frac/32768
+            frac = (frac & 0x7FFF); // frac%32768
+            
+            *dest += short(value * volume * mEnvValues[j] + 0.5);
+            dest += skip;
+         }
+      } break;
+      case int24Sample: {
+         int *temp = (int *)mTemp;
+         int *dest = (int *)destPtr;
+         float frac = t0 - s0/src->GetRate();
+         float fracstep = src->GetRate()/mRate;
+
+         for (int j = 0; j < destlen; j++) {
+            float value = (temp[i]*(1.0-frac) + temp[i+1]*frac);
+            frac += fracstep;
+            int integerPart = (int)frac;
+            i += integerPart;
+            frac -= (float)integerPart;
+            
+            *dest += int(value * volume * mEnvValues[j] + 0.5);
+            dest += skip;
+         }
+      } break;
+      case floatSample: {
+         float *temp = (float *)mTemp;
+         float *dest = (float *)destPtr;
+         float frac = t0 - s0/src->GetRate();
+         float fracstep = src->GetRate()/mRate;
+
+         for (int j = 0; j < destlen; j++) {
+            float value = temp[i]*(1.0-frac) + temp[i+1]*frac;
+            frac += fracstep;
+            int integerPart = (int)frac;
+            i += integerPart;
+            frac -= (float)integerPart;
+            
+            *dest += value * volume * mEnvValues[j];
+            dest += skip;
+         }
+      } break;
+      } // switch
+
    }
 }
 
-void Mixer::MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1)
+void Mixer::MixSameRate(int *channelFlags, WaveTrack * src,
+                        double t0, double t1)
 {
    if ((t0 - src->GetOffset()) >= src->GetNumSamples() / src->GetRate() ||
        (t1 - src->GetOffset()) <= 0)
@@ -380,24 +420,47 @@ void Mixer::MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1
       if (!channelFlags[c])
          continue;
 
-      sampleType *dest;
+      samplePtr destPtr;
       int skip;
 
       if (mInterleaved) {
-         dest = &mBuffer[0][c];
+         destPtr = mBuffer[0] + c*SAMPLE_SIZE(mFormat);
          skip = mNumChannels;
       } else {
-         dest = &mBuffer[c][0];
+         destPtr = mBuffer[c];
          skip = 1;
       }
 
       // This is the mixing inner loop, which we want
       // as optimized as possible
 
-      for (int j = 0; j < slen; j++) {
-         *dest += sampleType(mTemp[j] * volume * mEnvValues[j] + 0.5);
-         dest += skip;
-      }
+      int i = 0;
+      switch(mFormat) {
+      case int16Sample: {
+         short *dest = (short *)destPtr;
+         short *temp = (short *)mTemp;
+         for (int j = 0; j < slen; j++) {
+            *dest += (short)rint(temp[j] * volume * mEnvValues[j]);
+            dest += skip;
+         }
+      } break;
+      case int24Sample: {
+         int *dest = (int *)destPtr;
+         int *temp = (int *)mTemp;
+         for (int j = 0; j < slen; j++) {
+            *dest += (int)rint(temp[j] * volume * mEnvValues[j]);
+            dest += skip;
+         }
+      } break;
+      case floatSample: {
+         float *dest = (float *)destPtr;
+         float *temp = (float *)mTemp;
+         for (int j = 0; j < slen; j++) {
+            *dest += temp[j] * volume * mEnvValues[j];
+            dest += skip;
+         }
+      } break;
+      } // switch
    }
 }
 
@@ -409,12 +472,12 @@ void Mixer::Mix(int *channelFlags, WaveTrack * src, double t0, double t1)
       MixSameRate(channelFlags, src, t0, t1);
 }
 
-sampleType *Mixer::GetBuffer()
+samplePtr Mixer::GetBuffer()
 {
    return mBuffer[0];
 }
 
-sampleType *Mixer::GetBuffer(int channel)
+samplePtr Mixer::GetBuffer(int channel)
 {
    return mBuffer[channel];
 }

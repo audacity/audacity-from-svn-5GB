@@ -928,7 +928,8 @@ bool ExportMP3(AudacityProject *project,
       }
 
 
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true, rate);
+      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true,
+                               rate, int16Sample);
       wxASSERT(mixer);
       mixer->Clear();
 
@@ -949,7 +950,7 @@ bool ExportMP3(AudacityProject *project,
          tr = iter.Next();
       }
       
-      sampleType *mixed = mixer->GetBuffer();
+      short *mixed = (short *)mixer->GetBuffer();
 
       if(lastFrame)
          bytes = GetMP3Exporter()->EncodeRemainder(mixed, numSamples, buffer);

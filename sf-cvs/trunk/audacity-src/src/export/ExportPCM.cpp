@@ -34,22 +34,22 @@ bool ExportPCM(AudacityProject *project,
    double       rate = project->GetRate();
    wxWindow    *parent = project;
    TrackList   *tracks = project->GetTracks();
-   int          format = ReadExportFormatPref();
-   int          formatBits = ReadExportFormatBitsPref();
+   int          sf_format = ReadExportFormatPref();
+   int          sf_formatBits = ReadExportFormatBitsPref();
    wxString     formatStr;
    SF_INFO      info;
    SNDFILE     *sf;
    int          err;
 
-   formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
+   formatStr = sf_header_name(sf_format & SF_FORMAT_TYPEMASK);
 
    // Use libsndfile to export file
 
    info.samplerate = (unsigned int)(rate + 0.5);
    info.samples = (unsigned int)((t1 - t0)*rate + 0.5);
    info.channels = stereo? 2: 1;
-   info.pcmbitwidth = formatBits;
-   info.format = format;
+   info.pcmbitwidth = sf_formatBits;
+   info.format = sf_format;
    info.sections = 1;
    info.seekable = 0;
 
@@ -72,6 +72,16 @@ bool ExportPCM(AudacityProject *project,
       return false;
    }
 
+   sampleFormat format;
+
+   if (info.pcmbitwidth == 16 &&
+       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM) ||
+       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_BE) ||
+       ((sf_format & SF_FORMAT_SUBMASK) == SF_FORMAT_PCM_LE))
+      format = int16Sample;
+   else
+      format = floatSample;
+
    double timeStep = 10.0;      // write in blocks of 10 secs
 
    wxProgressDialog *progress = NULL;
@@ -90,7 +100,8 @@ bool ExportPCM(AudacityProject *project,
 
       sampleCount numSamples = int (deltat * rate + 0.5);
 
-      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true, rate);
+      Mixer *mixer = new Mixer(stereo ? 2 : 1, numSamples, true,
+                               rate, format);
       wxASSERT(mixer);
       mixer->Clear();
 
@@ -110,9 +121,12 @@ bool ExportPCM(AudacityProject *project,
          tr = iter.Next();
       }
 
-      sampleType *mixed = mixer->GetBuffer();
+      samplePtr mixed = mixer->GetBuffer();
 
-      sf_writef_short(sf, mixed, numSamples);
+      if (format == int16Sample)
+         sf_writef_short(sf, (short *)mixed, numSamples);
+      else
+         sf_writef_float(sf, (float *)mixed, numSamples);
 
       t += deltat;
 
@@ -165,7 +179,7 @@ bool ExportPCM(AudacityProject *project,
 
    FInfo finfo;
    if (FSpGetFInfo(&spec, &finfo) == noErr) {
-      finfo.fdType = sf_header_mactype(format & SF_FORMAT_TYPEMASK);
+      finfo.fdType = sf_header_mactype(sf_format & SF_FORMAT_TYPEMASK);
       finfo.fdCreator = AUDACITY_CREATOR;
 
       FSpSetFInfo(&spec, &finfo);

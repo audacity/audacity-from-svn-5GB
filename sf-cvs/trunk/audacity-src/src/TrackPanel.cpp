@@ -90,6 +90,10 @@ enum {
    OnRate48ID,
    OnRateOtherID,
 
+   On16BitID,
+   On24BitID,
+   OnFloatID,
+
    OnWaveformID,
    OnWaveformDBID,
    OnSpectrumID,
@@ -113,7 +117,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MENU_RANGE(OnChannelLeftID, OnChannelMonoID, TrackPanel::OnChannelChange)
     EVT_MENU_RANGE(OnWaveformID   , OnPitchID      , TrackPanel::OnSetDisplay   )
     EVT_MENU_RANGE(OnRate8ID      , OnRate48ID     , TrackPanel::OnRateChange   )
-
+    EVT_MENU_RANGE(On16BitID      , OnFloatID     ,  TrackPanel::OnFormatChange   )
     EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
     EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
     EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
@@ -157,6 +161,11 @@ mAutoScrolling(false)
    mRateMenu->Append(OnRate48ID, "48000 Hz");
    mRateMenu->Append(OnRateOtherID, _("Other..."));
 
+   mFormatMenu = new wxMenu();
+   mFormatMenu->Append(On16BitID, GetSampleFormatStr(int16Sample));
+   mFormatMenu->Append(On24BitID, GetSampleFormatStr(int24Sample));
+   mFormatMenu->Append(OnFloatID, GetSampleFormatStr(floatSample));
+
    mWaveTrackMenu = new wxMenu();
    mWaveTrackMenu->Append(OnSetNameID, _("Name..."));
    mWaveTrackMenu->AppendSeparator();
@@ -173,6 +182,8 @@ mAutoScrolling(false)
    mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
    mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
    mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
+   mWaveTrackMenu->AppendSeparator();
+   mWaveTrackMenu->Append(0, _("Set Sample Format"), mFormatMenu);
    mWaveTrackMenu->AppendSeparator();
    mWaveTrackMenu->Append(0, _("Set Rate"), mRateMenu);
 
@@ -223,7 +234,7 @@ TrackPanel::~TrackPanel()
    delete mZoomInCursor;
    delete mZoomOutCursor;
 
-   // Note that the submenus (mChannelMenu and mRateMenu)
+   // Note that the submenus (mRateMenu, ...)
    // are deleted by their parent
    delete mWaveTrackMenu;
    delete mNoteTrackMenu;
@@ -1059,12 +1070,14 @@ void TrackPanel::DoPopupMenu(wxMouseEvent &event, wxRect& titleRect,
 
 #ifdef __WXMAC__
       ::InsertMenu(mRateMenu->GetHMenu(), -1);
+      ::InsertMenu(mFormatMenu->GetHMenu(), -1);
 #endif
 
       PopupMenu(theMenu, titleRect.x + 1,
             titleRect.y + titleRect.height + 1);
 
 #ifdef __WXMAC__
+      ::DeleteMenu(mFormatMenu->MacGetMenuId());
       ::DeleteMenu(mRateMenu->MacGetMenuId());
 #endif
    }
@@ -1633,7 +1646,7 @@ void TrackPanel::GetTitleBarRect(const wxRect r, wxRect & dest) const
 void TrackPanel::GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const
 {
    dest.x = r.x + 8;
-   dest.y = r.y + 34;
+   dest.y = r.y + 50;
    dest.width = 36;
    dest.height = 16;
 
@@ -1842,8 +1855,11 @@ void TrackPanel::DrawOutside(VTrack *t, wxDC* dc, const wxRect rec, const int la
 
    r = trackRect;
 
-   if (t->GetKind() == VTrack::Wave)
+   if (t->GetKind() == VTrack::Wave) {
       dc->DrawText(TrackSubText(t), r.x + 6, r.y + 22);
+      dc->DrawText(GetSampleFormatStr(((WaveTrack *)t)->GetSampleFormat()),
+                   r.x + 6, r.y + 38);
+   }
    else if (t->GetKind() == VTrack::Note) {
       wxRect midiRect;
       GetTrackControlsRect(trackRect, midiRect);
@@ -1950,8 +1966,8 @@ const char* channelmsgs[] = {"'left' channel", "'right' channel",
 void TrackPanel::OnChannelChange(wxEvent &event)
 {
    int id = event.GetId();
-   assert (id >= OnChannelLeftID && id <= OnChannelMonoID);
-   assert (mPopupMenuTarget);
+   wxASSERT (id >= OnChannelLeftID && id <= OnChannelMonoID);
+   wxASSERT (mPopupMenuTarget);
    mPopupMenuTarget->SetChannel(channels[id - OnChannelLeftID]);
    MakeParentPushState(
          wxString::Format(_("Changed '%s' to %s"),
@@ -1964,7 +1980,7 @@ void TrackPanel::OnChannelChange(wxEvent &event)
 // AS: Split a stereo track into two tracks... ??
 void TrackPanel::OnSplitStereo()
 {
-   assert (mPopupMenuTarget);
+   wxASSERT (mPopupMenuTarget);
    mPopupMenuTarget->SetLinked(false);
    MakeParentPushState(
          wxString::Format(_("Split stereo track '%s'"),
@@ -1975,7 +1991,7 @@ void TrackPanel::OnSplitStereo()
 // AS: Merge two tracks into one steroe track ??
 void TrackPanel::OnMergeStereo()
 {
-   assert (mPopupMenuTarget); 
+   wxASSERT (mPopupMenuTarget); 
    mPopupMenuTarget->SetLinked(true);
    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner) {
@@ -1995,8 +2011,8 @@ const char* gModes[] = {"waveform", "waveformDB", "spectrum", "pitch"};
 void TrackPanel::OnSetDisplay(wxEvent &event)
 {
    int id = event.GetId();
-   assert (id >= OnWaveformID && id <= OnPitchID);
-   assert (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
+   wxASSERT (id >= OnWaveformID && id <= OnPitchID);
+   wxASSERT (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
    ((WaveTrack *) mPopupMenuTarget)->SetDisplay(id - OnWaveformID);
    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner)
@@ -2023,6 +2039,40 @@ void TrackPanel::SetRate(VTrack *pTrack, double rate)
                           pTrack->GetName().c_str(), rate));
 }
 
+// DM: Handles the selection from the Format submenu of the
+//  track menu.
+void TrackPanel::OnFormatChange(wxEvent &event)
+{
+   int id = event.GetId();
+   wxASSERT(id >= On16BitID && id <= OnFloatID); 
+   wxASSERT (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
+
+   sampleFormat newFormat;
+
+   switch(id) {
+   case On16BitID:
+      newFormat = int16Sample;
+      break;
+   case On24BitID:
+      newFormat = int24Sample;
+      break;
+   case OnFloatID:
+      newFormat = floatSample;
+      break;
+   }
+
+   ((WaveTrack *)mPopupMenuTarget)->ConvertToSampleFormat(newFormat);
+
+   MakeParentPushState(
+         wxString::Format(_("Changed '%s' to %s"), 
+                          mPopupMenuTarget->GetName().c_str(),
+                          GetSampleFormatStr(newFormat)));
+
+   mPopupMenuTarget = NULL;
+   MakeParentRedrawScrollbars();
+   Refresh(false);
+}
+
 // AS: Ok, this function handles the selection from the Rate
 //  submenu of the track menu, except for "Other" (see OnRateOther).
 //  gRates MUST CORRESPOND DIRECTLY TO THE RATES AS LISTED IN THE MENU!!
@@ -2031,8 +2081,8 @@ int gRates[] = {8000, 11025, 16000, 22050, 44100, 48000};
 void TrackPanel::OnRateChange(wxEvent &event)
 {
    int id = event.GetId();
-   assert(id >= OnRate8ID && id <= OnRate48ID); 
-   assert (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
+   wxASSERT(id >= OnRate8ID && id <= OnRate48ID); 
+   wxASSERT (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
 
    SetRate(mPopupMenuTarget, gRates[id - OnRate8ID]);
 
@@ -2045,7 +2095,7 @@ void TrackPanel::OnRateChange(wxEvent &event)
 //  from the Rate submenu on the Track menu.
 void TrackPanel::OnRateOther()
 {
-   assert (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
+   wxASSERT (mPopupMenuTarget && mPopupMenuTarget->GetKind() == VTrack::Wave);
 
    wxString defaultStr;
    defaultStr.Printf("%d",
@@ -2084,7 +2134,7 @@ void TrackPanel::OnRateOther()
 const char* gMove[] = {"up", "down"};
 void TrackPanel::OnMoveTrack(wxEvent &event)
 {
-   assert(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID );
+   wxASSERT(event.GetId() == OnMoveUpID || event.GetId() == OnMoveDownID );
    if (mTracks->Move(mPopupMenuTarget, OnMoveUpID == event.GetId())) {
       MakeParentPushState(
             wxString::Format(_("Moved '%s' %s"),
@@ -2098,8 +2148,8 @@ void TrackPanel::OnMoveTrack(wxEvent &event)
 //  whole sequence by an octave.
 void TrackPanel::OnChangeOctave(wxEvent &event)
 {
-   assert (event.GetId() == OnUpOctaveID || event.GetId() == OnDownOctaveID);
-   assert(mPopupMenuTarget->GetKind() == VTrack::Note);
+   wxASSERT (event.GetId() == OnUpOctaveID || event.GetId() == OnDownOctaveID);
+   wxASSERT(mPopupMenuTarget->GetKind() == VTrack::Note);
    NoteTrack *t = (NoteTrack*) mPopupMenuTarget;
 
    bool bDown = (OnDownOctaveID == event.GetId());

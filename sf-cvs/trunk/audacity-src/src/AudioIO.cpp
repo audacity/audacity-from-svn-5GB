@@ -40,6 +40,7 @@ AudioIO::AudioIO()
    mPortStream = NULL;
    mMaxBuffers = 24;
    mInitialNumOutBuffers = 4;
+   mFormat = floatSample;
 
    PaError err = Pa_Initialize();
 
@@ -84,12 +85,14 @@ int audacityAudioCallback(
          AudioIOBuffer *b = &gAudioIO->mOutBuffer[minIndex];
          sampleCount len  = b->len;
       
-         memcpy(outputBuffer, b->data, len * numOutChannels * sizeof(sampleType));
+         memcpy(outputBuffer, b->data,
+                len * numOutChannels * SAMPLE_SIZE(gAudioIO->GetFormat()));
 
          // Fill rest of buffer with silence
          if (len < framesPerBuffer)
-            for(i=len*numOutChannels; i<framesPerBuffer*numOutChannels; i++)
-               ((sampleType *)outputBuffer)[i] = 0;
+            ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
+                         len*numOutChannels,
+                         (framesPerBuffer-len)*numOutChannels);
          
          b->ID = 0;
       }
@@ -97,8 +100,8 @@ int audacityAudioCallback(
          // we had a buffer underrun!
          
          // play silence
-         for(i=0; i<framesPerBuffer * numOutChannels; i++)
-            ((sampleType *)outputBuffer)[i] = 0;
+         ClearSamples((samplePtr)outputBuffer, gAudioIO->GetFormat(),
+                      0, framesPerBuffer * numOutChannels);
          
          // increase number of output buffers to prevent another underrun!
          if (gAudioIO->mNumOutBuffers < gAudioIO->mMaxBuffers)
@@ -115,17 +118,19 @@ int audacityAudioCallback(
       for(i=0; i<gAudioIO->mNumInBuffers; i++) {
          if (gAudioIO->mInBuffer[i].ID == 0) {
             int len = framesPerBuffer;
+            int sampleSize = SAMPLE_SIZE(gAudioIO->GetFormat());
             
             AudioIOBuffer *b = &gAudioIO->mInBuffer[i];
-            memcpy(b->data, inputBuffer, len * numInChannels * sizeof(sampleType));
+            memcpy(b->data, inputBuffer,
+                   len * numInChannels * sampleSize);
             b->len = len;
             b->ID = gAudioIO->mInID;
             gAudioIO->mInID++;
             found = true;
             
             int checksum = 0;
-            for(int k=0; k<len*numInChannels; k++)
-               checksum += ((sampleType *)inputBuffer)[k];
+            for(int k=0; k<len*numInChannels*sampleSize; k++)
+               checksum += ((char *)inputBuffer)[k];
             if (checksum == gAudioIO->mLastChecksum) {
                gAudioIO->mRepeats++;
                gAudioIO->mRepeatPoint = gAudioIO->mT;
@@ -152,6 +157,7 @@ bool AudioIO::OpenDevice()
    int             numPortAudioBuffers;
    int             recDeviceNum;
    int             playDeviceNum;
+   PaSampleFormat  paFormat;
    wxString        recDevice;
    wxString        playDevice;
 
@@ -162,6 +168,21 @@ bool AudioIO::OpenDevice()
 
    recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
    playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
+
+   mFormat = (sampleFormat)gPrefs->Read("/AudioIO/SampleFormat", floatSample);
+
+   switch(mFormat) {
+   case floatSample:
+      paFormat = paFloat32;
+      break;
+   case int16Sample:
+      paFormat = paInt16;
+      break;
+   default:
+      // Debug message only
+      printf("Cannot output this sample format using PortAudio\n");
+      return false;
+   }
 
    for(int j=0; j<Pa_CountDevices(); j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
@@ -179,11 +200,11 @@ bool AudioIO::OpenDevice()
    error = Pa_OpenStream(&mPortStream,
                          recDeviceNum,
                          mNumInChannels,
-                         paInt16,
+                         paFormat,
                          NULL, /* inputDriverInfo */
                          playDeviceNum,
                          mNumOutChannels,
-                         paInt16,
+                         paFormat,
                          NULL,
                          mRate,
                          (unsigned long)mBufferSize,
@@ -211,7 +232,8 @@ bool AudioIO::Start()
       for(i=0; i<mMaxBuffers; i++) {
          mInBuffer[i].ID = 0;   // means it's empty
          mInBuffer[i].len = 0;
-         mInBuffer[i].data = new sampleType[mBufferSize*mNumInChannels];
+         mInBuffer[i].data = NewSamples(mBufferSize * mNumInChannels,
+                                        mFormat);
       }
    }
    else
@@ -222,7 +244,8 @@ bool AudioIO::Start()
       for(i=0; i<mMaxBuffers; i++) {
          mOutBuffer[i].ID = 0;   // means it's empty
          mOutBuffer[i].len = 0;
-         mOutBuffer[i].data = new sampleType[mBufferSize*mNumOutChannels];
+         mOutBuffer[i].data = NewSamples(mBufferSize * mNumOutChannels,
+                                         mFormat);
       }
    }
    else
@@ -282,6 +305,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    bool stereo, duplex;
    gPrefs->Read("/AudioIO/RecordStereo", &stereo, false);
    gPrefs->Read("/AudioIO/Duplex", &duplex, false);
+   mFormat = (sampleFormat)gPrefs->Read("/AudioIO/SampleFormat", floatSample);
 
    mNumInChannels = stereo? 2: 1;
    mNumInBuffers = mMaxBuffers;
@@ -296,6 +320,7 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
       mInTracks[i] = new WaveTrack(project->GetDirManager());
       mInTracks[i]->SetSelected(true);
       mInTracks[i]->SetOffset(mT0);
+      mInTracks[i]->SetSampleFormat(mFormat);
       if (stereo)
          mInTracks[i]->SetChannel(i==0? VTrack::LeftChannel : VTrack::RightChannel);
       else
@@ -331,9 +356,10 @@ void AudioIO::FillBuffers()
          block = (sampleCount)(deltat * mRate + 0.5);
       }
       
-      Mixer *mixer = new Mixer(mNumOutChannels, block, true, mRate);
-
+      Mixer *mixer = new Mixer(mNumOutChannels, block, true,
+                               mRate, mFormat);
       mixer->UseVolumeSlider(mProject->GetControlToolBar());
+
       mixer->Clear();
 
       TrackListIterator iter2(mTracks);
@@ -393,7 +419,8 @@ void AudioIO::FillBuffers()
    
       // Copy the mixed samples into the buffers
 
-      sampleType *outbytes = mixer->GetBuffer();   
+      samplePtr outbytes = mixer->GetBuffer();   
+
       for(i=0; i<mNumOutBuffers && block>0; i++)
          if (mOutBuffer[i].ID == 0) {
             sampleCount count;
@@ -402,9 +429,10 @@ void AudioIO::FillBuffers()
             else
                count = block;
             
-            memcpy(mOutBuffer[i].data, outbytes, count*mNumOutChannels*sizeof(sampleType));
+            memcpy(mOutBuffer[i].data, outbytes,
+                   count*mNumOutChannels*SAMPLE_SIZE(mFormat));
             block -= count;
-            outbytes += (count*mNumOutChannels);
+            outbytes += (count*mNumOutChannels*SAMPLE_SIZE(mFormat));
             mOutBuffer[i].len = count;
             mOutBuffer[i].ID = mOutID;
             mOutID++;
@@ -428,9 +456,9 @@ void AudioIO::FillBuffers()
    
    if (numFull > 8) {
    
-      sampleType **flat = new sampleType*[mNumInChannels];
+      samplePtr *flat = new samplePtr[mNumInChannels];
       for(i=0; i<mNumInChannels; i++)
-         flat[i] = new sampleType[numFull * mBufferSize];
+         flat[i] = NewSamples(numFull * mBufferSize, mFormat);
       
       flatLen = 0;
       for(f=0; f<numFull; f++) {
@@ -443,23 +471,27 @@ void AudioIO::FillBuffers()
                minID = mInBuffer[i].ID;
             }
 
-         if (minID == mInID+1) {    ///////
-            minID = mInID+1;       /////////
-         }                         /////////
-         
-         for(j=0; j<mInBuffer[minIndex].len; j++)
-            for(c=0; c<mNumInChannels; c++) {
-               flat[c][flatLen+j] = mInBuffer[minIndex].data[j*mNumInChannels + c];
-            }
+         switch(mFormat) {
+         case floatSample:
+            for(j=0; j<mInBuffer[minIndex].len; j++)
+               for(c=0; c<mNumInChannels; c++) {
+                  ((float *)flat[c])[flatLen+j] =
+                     ((float *)mInBuffer[minIndex].data)[j*mNumInChannels + c];
+               }
+            break;
+         default:
+            wxASSERT(0);
+         }
+
          flatLen += mInBuffer[minIndex].len;
          mInBuffer[minIndex].ID = 0;
       }
       
       for(i=0; i<mNumInChannels; i++)
-         mInTracks[i]->Append(flat[i], flatLen);
+         mInTracks[i]->Append(flat[i], mFormat, flatLen);
 
       for(i=0; i<mNumInChannels; i++)
-         delete[] flat[i];
+         DeleteSamples(flat[i]);
       delete[] flat;
 
       mProject->RedrawProject();
@@ -500,7 +532,7 @@ void AudioIO::Stop()
    if (mNumOutChannels > 0) {
       for(int i=0; i<mMaxBuffers; i++) {
          mOutBuffer[i].ID = 0;
-         delete [] mOutBuffer[i].data;
+         DeleteSamples(mOutBuffer[i].data);
          mOutBuffer[i].data = NULL;
       }
       mInitialNumOutBuffers = mNumOutBuffers;
@@ -509,7 +541,7 @@ void AudioIO::Stop()
    if (mNumInChannels > 0) {
       for(int i=0; i<mMaxBuffers; i++) {
          mInBuffer[i].ID = 0;
-         delete [] mInBuffer[i].data;
+         DeleteSamples(mInBuffer[i].data);
          mInBuffer[i].data = NULL;
       }
       delete[] mInTracks;
@@ -546,6 +578,11 @@ void AudioIO::HardStop()
    mProject = NULL;
    mHardStop = true;
    Stop();
+}
+
+sampleFormat AudioIO::GetFormat()
+{
+   return mFormat;
 }
 
 bool AudioIO::IsBusy()

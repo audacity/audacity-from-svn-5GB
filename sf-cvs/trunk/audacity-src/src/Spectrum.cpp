@@ -21,7 +21,7 @@ int GetSpectrumWindowSize()
    return gPrefs->Read("/Spectrum/FFTSize", 256);
 }
 
-bool ComputeSpectrum(sampleType * data, int width, int height,
+bool ComputeSpectrum(float * data, int width, int height,
                      double rate, float *grayscaleOut,
                      bool autocorrelation)
 {
@@ -49,7 +49,7 @@ bool ComputeSpectrum(sampleType * data, int width, int height,
    int windows = 0;
    while (start + windowSize <= width) {
       for (i = 0; i < windowSize; i++)
-         in[i] = data[start + i] / 32767.;
+         in[i] = data[start + i];
 
       WindowFunc(windowFunc, windowSize, in);
 

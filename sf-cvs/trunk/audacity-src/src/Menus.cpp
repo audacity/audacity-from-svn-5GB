@@ -1003,6 +1003,13 @@ void AudacityProject::OnZoomSel(wxCommandEvent & event)
 
 void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
 {
+   #if 0
+
+
+     TODO NOW
+
+
+
    int selcount = 0;
    WaveTrack *selt = NULL;
    TrackListIterator iter(mTracks);
@@ -1059,6 +1066,8 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
 
    delete[]data;
    delete[]data_sample;
+
+   #endif
 }
 
 
@@ -1293,7 +1302,7 @@ void AudacityProject::OnEditID3(wxCommandEvent & event)
 
 void AudacityProject::OnQuickMix(wxCommandEvent & event)
 {
-   if (::QuickMix(mTracks, &mDirManager, mRate)) {
+   if (::QuickMix(mTracks, &mDirManager, mRate, mDefaultFormat)) {
 
       // After the tracks have been mixed, remove the originals
 
