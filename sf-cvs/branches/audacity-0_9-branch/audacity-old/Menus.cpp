@@ -191,7 +191,17 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
       wxString pcmFormat =
        gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV");
       wxString lossyFormat = "MP3";
-   
+
+#ifdef __WXMSW__
+      mFileMenu->FindItem(ExportMixID)->SetText(
+		      "Export as " + pcmFormat + "...");
+      mFileMenu->FindItem(ExportSelectionID)->SetText(
+		      "Export Selection as " + pcmFormat + "...");
+      mFileMenu->FindItem(ExportLossyMixID)->SetText(
+		      "Export as " + lossyFormat + "...");
+      mFileMenu->FindItem(ExportLossySelectionID)->SetText(
+		      "Export as " + lossyFormat + "...");
+#else     
       mFileMenu->FindItem(ExportMixID)->SetName(
 		      "Export as " + pcmFormat + "...");
       mFileMenu->FindItem(ExportSelectionID)->SetName(
@@ -200,6 +210,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 		      "Export as " + lossyFormat + "...");
       mFileMenu->FindItem(ExportLossySelectionID)->SetName(
 		      "Export as " + lossyFormat + "...");
+#endif
    }
 
    // Note that the titles of the menus here are dependent on the
