@@ -12,6 +12,7 @@
 
 #include <wx/defs.h>
 #include <wx/app.h>
+#include <wx/log.h>
 #include <wx/window.h>
 #include <wx/intl.h>
 #include <wx/menu.h>
