@@ -33,7 +33,7 @@ class LabelStruct
 {
 public:
    void DrawLines( wxDC & dc, wxRect & r);
-   void DrawGlyphs( wxDC & dc, wxRect & r);
+   void DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRight);
    void DrawText( wxDC & dc, wxRect & r);
    
 public:
@@ -63,6 +63,8 @@ class LabelTrack:public Track {
                bool selectionOnly, double t0, double t1);
 
  public:
+	 bool IsGoodLabelCharacter( long keyCode );
+	 bool IsGoodLabelFirstCharacter( long keyCode );
 	 void CreateCustomGlyphs();
    LabelTrack(DirManager * projDirManager);
    LabelTrack(const LabelTrack &orig);
@@ -117,14 +119,22 @@ class LabelTrack:public Track {
    //This returns the index of the label we just added.
    int AddLabel(double t, double t1, const wxString &title = "");
 
+ public:
+   //These two are used by a TrackPanel KLUDGE, which is why they are public.
+   bool mbHitCenter;
+   //The edge variable tells us what state the icon is in.
+   //mOldEdge is useful for telling us when there has been a state change.
+   int mOldEdge;               
  private:
 
-   int mSelIndex;           //Keeps track of the currently selected label
-   int mMouseOverLabel;     //Keeps track of which label the mouse is currently over.
+   int mSelIndex;              //Keeps track of the currently selected label
+   int mMouseOverLabelLeft;    //Keeps track of which left label the mouse is currently over.
+   int mMouseOverLabelRight;   //Keeps track of which right label the mouse is currently over.
    LabelArray mLabels;
 
    wxBrush mUnselectedBrush;
    wxBrush mSelectedBrush;
+   wxBrush mTextNormalBrush;
    wxBrush mTextEditBrush;
 
    wxPen mLabelSurroundPen;
@@ -146,8 +156,6 @@ class LabelTrack:public Track {
    void ComputeTextPosition(wxRect & r, int index);
 
    bool mIsAdjustingLabel;
-   int mAdjustingEdge;
-      
 };
 
 #endif

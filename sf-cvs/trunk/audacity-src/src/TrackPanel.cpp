@@ -1054,46 +1054,55 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       return;
    }
 
-   
-
-
    const char *tip = 0;
 
    // (3) They're over the label or vertical ruler.
    if (label) {
       if (event.m_x >= GetVRulerOffset() &&
-          label->GetKind() == Track::Wave) {
+         label->GetKind() == Track::Wave) {
          tip = _("Click to vertically zoom in, Shift-click to zoom out, "
-                 "Drag to create a particular zoom region.");
+            "Drag to create a particular zoom region.");
          SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
       }
       else {
          // Set a status message if over a label
          tip = _("Drag the label vertically to change the "
-                 "order of the tracks.");
+            "order of the tracks.");
          SetCursor(*mArrowCursor);
       }
    }
    // Otherwise, we must be over the wave window 
    else {
-
       
       //See if we are above a label track
       if (t->GetKind() == Track::Label)
+      {
+         LabelTrack * pLT = (LabelTrack*)t;
+         int edge=pLT->OverGlyph(event.m_x, event.m_y);
+         if(edge && 1)
          {
-            int edge=((LabelTrack*)t)->OverGlyph(event.m_x, event.m_y);
-            if(edge == 1)
-               {
-                  SetCursor(*mLabelCursorLeft);
-                  return;
-               }
-            else if (edge == 2)
-               {
-                  SetCursor(*mLabelCursorRight);
-                  return;
-               }
+//          SetCursor(*mLabelCursorLeft);
+            SetCursor(*mArrowCursor);
          }
-  
+         else if (edge && 2)
+         {
+//          SetCursor(*mLabelCursorRight);
+            SetCursor(*mArrowCursor);
+         }
+
+         //KLUDGE: We refresh the whole Label track when the icon hovered over
+         //changes colouration.  As well as being inefficient we are also 
+         //doing stuff that should be delegated to the label track itself.
+         edge += pLT->mbHitCenter ? 4:0; 
+         if( edge != pLT->mOldEdge )
+         {
+            pLT->mOldEdge = edge;
+            Refresh(false);
+         }
+//       if( edge != 0 )
+         return;
+      }
+      
 
 
       //JKC: DetermineToolToUse is called whenever the mouse 
@@ -1324,7 +1333,7 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       if (pTrack->GetKind() == Track::Label) {
 
          
-         ((LabelTrack *) pTrack)->HandleMouse(event, mCapturedRect,
+         ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
                                                   mViewInfo->h, mViewInfo->zoom,
                                                   &mViewInfo->sel0, &mViewInfo->sel1);
          
@@ -3129,7 +3138,7 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
          mIsAdjustingLabel = false;
       }
          
-      ((LabelTrack *) pTrack)->HandleMouse(event, mCapturedRect,
+      ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
                                            mViewInfo->h, mViewInfo->zoom,
                                            &mViewInfo->sel0, &mViewInfo->sel1);
       
@@ -3520,7 +3529,7 @@ void TrackPanel::DrawEverythingElse(wxDC * dc, const wxRect panelRect,
       i++;
    }
 
-   if (IsDragZooming())
+   if (IsDragZooming()  && !mIsAdjustingLabel)
       DrawZooming(dc, clip);
 
    // Paint over the part below the tracks
