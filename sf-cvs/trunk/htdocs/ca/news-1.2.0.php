@@ -1,4 +1,4 @@
-<?php BoxTop('March 1, 2004: Audacity 1.2.0 released'); ?>
+<?php BoxTop('1 de Març de 2004: Llençament de l\'Audacity 1.2.0'); ?>
 
 <p>
 L'Audacity 1.2.0 és la nova versió estable del programa lliure d'edició de so digital Audacity.
