@@ -110,7 +110,7 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 0.96b:
+Changes in 0.97:
 
 * Installation/configuration
 
@@ -122,6 +122,8 @@ Changes in 0.96b:
 
   - Fixed Effects menu bug that would freeze if some but
     not all tracks were selected.
+
+  - Improved click-drag zoom.
 
 * MacOS:
 
