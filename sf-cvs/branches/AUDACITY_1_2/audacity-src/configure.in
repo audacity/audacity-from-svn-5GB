@@ -298,6 +298,14 @@ if [[ "$use_libsamplerate" = "yes" ]] ; then
 	use_libresample="no"
 fi
 
+if [[ "$use_libsamplerate" = "local" ]] ; then
+	use_libresample="no"
+fi
+
+if [[ "$use_libsamplerate" = "system" ]] ; then
+	use_libresample="no"
+fi
+
 if [[ "$use_libresample" = "yes" ]] ; then
 	use_libsamplerate="none";
 	BUILDLIBS="$BUILDLIBS libresample/libresample.a"
