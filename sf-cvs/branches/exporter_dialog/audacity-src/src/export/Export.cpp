@@ -21,6 +21,7 @@
 #include <wx/stattext.h>
 #include <wx/string.h>
 #include <wx/sizer.h>
+#include <wx/slider.h>
 
 #include "Exporter.h"
 #include "CLExporter.h"
@@ -355,11 +356,26 @@ FormatSelectionDialog::FormatSelectionDialog(AudacityProject * project, bool sel
   mSecondaryOptionSizer->Add(mOptionChooser,1, wxALL | wxALIGN_CENTER, 10);
 
 
+  
+
+  
+
+  //-------------------------------------------------------------------
+  //Create a hidden quality slider, for OGG (and maybe mp3/flac)
+  //--------------------------------------------------------------------
+  long oggQuality = gPrefs->Read("/FileFormats/OggExportQuality", 50)/10;
+  mQualitySlider = new wxSlider(this, -1, oggQuality, 0, 10,
+				wxDefaultPosition, wxDefaultSize,
+				wxSL_LABELS);
+  mQualitySlider->Hide();
+  mSecondaryOptionSizer->Add(mQualitySlider,1, wxALL | wxGROW, 1);
+
+  //-----------------
+  //Add them to the main sizer.
   topSizer->Add(leftSizer,1, wxALL | wxALIGN_CENTER, 10);
   topSizer->Add(mSecondaryOptionSizer,1, wxALL | wxALIGN_CENTER, 10);
-  
-  mainSizer->Add(topSizer,1, wxALL | wxALIGN_CENTER,10);
-  
+  mainSizer->Add(topSizer,1, wxALL | wxALIGN_CENTER,10);  
+
   //-----------------
   //Now, the bottom sizer.
 
@@ -403,11 +419,16 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
   switch(mCurrentFormatChoice)
     {
     case FORMAT_TYPE_OGG:         //Ogg Vorbis
+      mQualitySlider->Show();
+      mOptionChooser->Hide();
+      //      double    quality = (gPrefs->Read("/FileFormats/OggExportQuality", 50)/(float)100.0);
       break;
       
     case FORMAT_TYPE_MP3:         //MP3
       {
-
+	mQualitySlider->Hide();
+	mOptionChooser->Show();
+      
 	//Give user option of these bitrates to export to:
 	int numBitrates = 16;
 	wxString bitrates[] = { "16", "24", "32", "40", "48", "56", "64",
@@ -435,12 +456,21 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
 
 
     case FORMAT_TYPE_FLAC:         //FLAC
+	mQualitySlider->Hide();
+	mOptionChooser->Show();
+
       break;
 
     case FORMAT_TYPE_LABELS:        //Text labels 
+	mQualitySlider->Hide();
+	mOptionChooser->Show();
+
       break;
  
     case FORMAT_TYPE_COMMANDLINE:   //Command-line export
+	mQualitySlider->Hide();
+	mOptionChooser->Show();
+
       break;
 
 
@@ -459,6 +489,10 @@ void FormatSelectionDialog::OnSelectFormat(wxCommandEvent &event)
 
       
       {
+
+	mQualitySlider->Hide();
+	mOptionChooser->Show();
+
 	//Create an array of labels.  We may not use all of them.
 	//To do this, make a SF_INFO structure for each type, and the
 	//call sf_format_check() on it.  If it comes back true, the
@@ -581,9 +615,15 @@ void FormatSelectionDialog::OnOK(wxCommandEvent &event)
   switch(mCurrentFormatChoice)
     {
     case FORMAT_TYPE_OGG:         //Ogg Vorbis
+      {
       formatStr = _("Ogg Vorbis");
       defaultExtension = ".ogg";
-	break;
+      long oggQuality = mQualitySlider->GetValue();
+      gPrefs->Write("/FileFormats/OggExportQuality", (long)(oggQuality * 10));
+      tmpExporter = new OggExporter(mProject, m_t0, m_t1, mSelectionOnly,
+				    			    mRate,mNumExportedChannels, oggQuality);
+      }
+      break;
       
     case FORMAT_TYPE_MP3:         //MP3
 
@@ -598,7 +638,7 @@ void FormatSelectionDialog::OnOK(wxCommandEvent &event)
 					    mSelectionOnly, mRate, 
 					    mNumExportedChannels,
 					    128,//mBitRate,
-					    5);
+					    5); //Quality--possibly not used.
       }
 
       break;
