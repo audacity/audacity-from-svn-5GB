@@ -197,6 +197,7 @@ static void Px_SetVolume(AudioDeviceID device, Boolean isInput,
       err =  AudioDeviceSetProperty(device, 0, ch, isInput,
                                     kAudioDevicePropertyVolumeScalar,
                                     sizeof(Float32), &vol);
+
       if (vol > 0.05) {
          err =  AudioDeviceSetProperty(device, 0, ch, isInput,
                                        kAudioDevicePropertyMute,
@@ -325,7 +326,25 @@ void Px_SetOutputBalance( PxMixer *mixer, PxBalance balance )
 
 int Px_SupportsPlaythrough( PxMixer *mixer )
 {
-   return 1;
+   PxInfo  *info = (PxInfo *)mixer;
+   OSStatus err;
+   UInt32   outSize;
+   UInt32   flag;
+   int      result = 0;
+   int      ch;
+
+   outSize = sizeof(UInt32);
+
+   for(ch=0; ch<=2; ch++) {
+      flag = 0;
+      err =  AudioDeviceGetProperty(info->input, ch, IS_INPUT,
+                                    kAudioDevicePropertyPlayThru,
+                                    &outSize, &flag);
+      if (!err)
+         result = 1;
+   }
+
+   return result;
 }
 
 PxVolume Px_GetPlaythrough( PxMixer *mixer )
@@ -334,18 +353,21 @@ PxVolume Px_GetPlaythrough( PxMixer *mixer )
    OSStatus err;
    UInt32   outSize;
    UInt32   flag;
+   PxVolume result = 0.0;
+   int ch;
 
    outSize = sizeof(UInt32);
-   err =  AudioDeviceGetProperty(info->output, 0, IS_OUTPUT,
-                                 kAudioDevicePropertyPlayThru,
-                                 &outSize, &flag);
-   if (err)
-      return 0.0;
- 
-   if (flag)
-      return 1.0;
-   else
-      return 0.0;
+
+   for(ch=0; ch<=2; ch++) {
+      flag = 0;
+      err =  AudioDeviceGetProperty(info->input, ch, IS_INPUT,
+                                    kAudioDevicePropertyPlayThru,
+                                    &outSize, &flag);
+      if (!err && flag)
+         result = 1.0;
+   }
+
+   return result;
 }
 
 void Px_SetPlaythrough( PxMixer *mixer, PxVolume volume )
@@ -353,9 +375,12 @@ void Px_SetPlaythrough( PxMixer *mixer, PxVolume volume )
    PxInfo *info = (PxInfo *)mixer;
    UInt32 flag = (volume > 0.01);
    OSStatus err;
+   int ch;
 
-   err =  AudioDeviceSetProperty(info->output, 0, 0, IS_OUTPUT,
-                                 kAudioDevicePropertyPlayThru,
-                                 sizeof(UInt32), &flag);
+   for(ch=0; ch<=2; ch++) {
+      err =  AudioDeviceSetProperty(info->input, 0, ch, IS_INPUT,
+                                    kAudioDevicePropertyPlayThru,
+                                    sizeof(UInt32), &flag);
+   }
 }
 
