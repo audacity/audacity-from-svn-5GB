@@ -12,6 +12,8 @@
 
 **********************************************************************/
 
+#include "TrackPanel.h"
+
 #include <math.h>
 #include <algorithm>
 
@@ -25,10 +27,9 @@
 #include <wx/statusbr.h>
 #include <wx/intl.h>
 
-#include "TrackPanel.h"
-
 #include "AColor.h"
 #include "AudioIO.h"
+#include "Envelope.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
 #include "Track.h"
@@ -1418,40 +1419,23 @@ void TrackPanel::SetLabelFont(wxDC * dc)
 
 void TrackPanel::DrawRuler(wxDC * dc, bool text)
 {
-   // BG: Are there any tracks on the screen?
-   if(!mTracks->IsEmpty()) // BG: Yes, there are tracks on the screen
-   {
-      wxRect r;
+   wxRect r;
 
-      GetSize(&r.width, &r.height);
-      r.x = 0;
-      r.y = 0;
-      r.height = GetRulerHeight() - 1;
+   GetSize(&r.width, &r.height);
+   r.x = 0;
+   r.y = 0;
+   r.height = GetRulerHeight() - 1;
 
-      DrawRulerBorder(dc, r);
+   DrawRulerBorder(dc, r);
 
-      if (mViewInfo->sel0 < mViewInfo->sel1)
-        DrawRulerSelection(dc, r);
+   if (mViewInfo->sel0 < mViewInfo->sel1)
+      DrawRulerSelection(dc, r);
 
-      DrawRulerMarks(dc, r, text);
+   DrawRulerMarks(dc, r, text);
 
-      if (gAudioIO->IsBusy() &&
-          gAudioIO->GetProject() == (AudacityProject *) GetParent())
-        DrawRulerIndicator(dc);
-   }
-   else // BG: No, there are not any tracks on the screen
-   {
-      // BG: Draw grey area instead of ruler
-      wxRect r;
-
-      GetSize(&r.width, &r.height);
-      r.x = 0;
-      r.y = 0;
-      r.height = GetRulerHeight();
-
-      AColor::Dark(dc, false);
-      dc->DrawRectangle(r);
-   }
+   if (gAudioIO->IsBusy() &&
+         gAudioIO->GetProject() == (AudacityProject *) GetParent())
+      DrawRulerIndicator(dc);
 }
 
 void TrackPanel::DrawRulerBorder(wxDC* dc, wxRect &r)

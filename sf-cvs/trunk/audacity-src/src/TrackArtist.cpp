@@ -15,6 +15,8 @@
 
 **********************************************************************/
 
+#include "TrackArtist.h"
+
 #include <math.h>
 
 #include <wx/brush.h>
@@ -28,9 +30,8 @@
 
 #include "allegro.h"
 
-#include "TrackArtist.h"
-
 #include "AColor.h"
+#include "Envelope.h"
 #include "Track.h"
 #include "NoteTrack.h"
 #include "WaveTrack.h"
@@ -770,7 +771,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       envValues = new double[mid.width];
    }
 
-   track->mEnvelope.GetValues(envValues, mid.width, t0 + tOffset, tstep);
+   track->GetEnvelope()->GetValues(envValues, mid.width, t0 + tOffset, tstep);
 
    double t = t0;
    int x;
@@ -832,7 +833,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
             double tt = (s0 + s) / rate - tOffset;
             xpos[s] = (int) xx;
             ypos[s] = ctr - GetWaveYPos(buffer[s] / 32768.0 *
-                                        track->mEnvelope.GetValue(tt),
+                                        track->GetEnvelope()->GetValue(tt),
                                         mid.height / 2, dB);
          }
 
@@ -869,11 +870,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       for (x = 0; x < mid.width; x++) {
 
          h1[x] = ctr - GetWaveYPos(cache->min[x] / 32768.0 *
-                                   track->mEnvelope.GetValue(t + tOffset),
+                                   track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
          h2[x] = ctr - GetWaveYPos(cache->max[x] / 32768.0 *
-                                   track->mEnvelope.GetValue(t + tOffset),
+                                   track->GetEnvelope()->GetValue(t + tOffset),
                                    mid.height / 2,
                                    dB);
 
@@ -890,11 +891,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
       for (x = 0; x < mid.width; x++) {
 
          int r1 = ctr - GetWaveYPos(cache->rms[x] / -32768.0 *
-                                    track->mEnvelope.GetValue(t + tOffset),
+                                    track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
          int r2 = ctr - GetWaveYPos(cache->rms[x] / 32768.0 *
-                                    track->mEnvelope.GetValue(t + tOffset),
+                                    track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
 
@@ -951,7 +952,7 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    if (drawEnvelope) {
       wxRect envRect = r;
       envRect.height -= 2;
-      track->mEnvelope.Draw(dc, envRect, h, pps, dB);
+      track->GetEnvelope()->Draw(dc, envRect, h, pps, dB);
    }
 }
 
