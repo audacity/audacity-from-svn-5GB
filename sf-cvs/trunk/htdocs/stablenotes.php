@@ -7,6 +7,7 @@ include 'top.inc.php';
 ?>
 <?php BoxTop("$releaseNotesStr $stableVersion"); ?>
 <?php include GetTranslation("beta-1.2.0-pre3-problems"); ?>
+<?php include GetTranslation("1.2.1-changes"); ?>
 <?php include GetTranslation("beta-1.2.0-pre1-changes"); ?>
 <?php BoxBottom(); ?>
 
