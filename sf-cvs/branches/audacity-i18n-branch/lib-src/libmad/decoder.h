@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: decoder.h,v 1.1.1.2 2001-10-20 21:43:34 dmazzoni Exp $
+ * $Id: decoder.h,v 1.1.1.2.2.1 2002-01-21 23:21:48 mbrubeck Exp $
  */
 
 # ifndef LIBMAD_DECODER_H
@@ -32,10 +32,10 @@ enum mad_decoder_mode {
 };
 
 enum mad_flow {
-  MAD_FLOW_CONTINUE = 0x0000,
-  MAD_FLOW_STOP     = 0x0010,
-  MAD_FLOW_BREAK    = 0x0011,
-  MAD_FLOW_IGNORE   = 0x0020
+  MAD_FLOW_CONTINUE = 0x0000,	/* continue normally */
+  MAD_FLOW_STOP     = 0x0010,	/* stop decoding normally */
+  MAD_FLOW_BREAK    = 0x0011,	/* stop decoding and signal an error */
+  MAD_FLOW_IGNORE   = 0x0020	/* ignore the current frame */
 };
 
 struct mad_decoder {
@@ -82,7 +82,8 @@ void mad_decoder_init(struct mad_decoder *, void *,
 		      enum mad_flow (*)(void *, void *, unsigned int *));
 int mad_decoder_finish(struct mad_decoder *);
 
-# define mad_decoder_options(decoder, opts)  ((decoder)->options = (opts))
+# define mad_decoder_options(decoder, opts)  \
+    ((void) ((decoder)->options = (opts)))
 
 int mad_decoder_run(struct mad_decoder *, enum mad_decoder_mode);
 int mad_decoder_message(struct mad_decoder *, void *, unsigned int *);

@@ -161,7 +161,8 @@ PrefsPanel(parent)
    mRecordStereo->SetValue(recordStereo);
    topSizer->Add(mRecordStereo, 0, wxGROW|wxALL, 2);
 
-   mDuplex = new wxCheckBox(this, -1, "Play While Recording");
+   mDuplex = new wxCheckBox(this, -1,
+                            "Play other tracks while recording new one");
    mDuplex->SetValue(duplex);
    topSizer->Add(mDuplex, 0, wxGROW|wxALL, 2);
 

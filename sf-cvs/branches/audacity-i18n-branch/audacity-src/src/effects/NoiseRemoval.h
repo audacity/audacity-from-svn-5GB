@@ -23,6 +23,7 @@ class wxString;
 
 #include "Effect.h"
 
+class Envelope;
 class WaveTrack;
 
 class EffectNoiseRemoval: public Effect {
@@ -53,8 +54,10 @@ private:
    void GetProfile(sampleCount len,
                    sampleType *buffer);
    void RemoveNoise(sampleCount len,
-                    sampleType *buffer, bool first);   
+                    sampleType *buffer);
    
+   Envelope *mEnvelope;
+
    int       windowSize;
    float    *noiseGate;
    float    *sum;
@@ -88,7 +91,7 @@ public:
                        const wxSize& size = wxDefaultSize,
                        long style = wxDEFAULT_DIALOG_STYLE );
 
-   wxSizer *MakeNoiseRemovalDialog( wxPanel *parent, bool call_fit = TRUE,
+   wxSizer *MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit = TRUE,
                            bool set_sizer = TRUE );
    
    wxButton *mRemoveNoiseButton;

@@ -97,7 +97,8 @@ wxString LadspaEffect::GetEffectName()
 
 wxString LadspaEffect::GetEffectAction()
 {
-   return _("Performing Ladspa Effect: ") + "\""+pluginName+"\"";
+   return wxString::Format(_("Performing Ladspa Effect: %s"), 
+                           (const char *) pluginName);
 }
 
 bool LadspaEffect::Init()

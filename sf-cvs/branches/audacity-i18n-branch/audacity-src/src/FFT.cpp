@@ -350,7 +350,7 @@ int NumWindowFuncs()
    return 4;
 }
 
-char *WindowFuncName(int whichFunction)
+const char *WindowFuncName(int whichFunction)
 {
    switch (whichFunction) {
    default:

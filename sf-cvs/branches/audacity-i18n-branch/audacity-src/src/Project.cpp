@@ -52,6 +52,7 @@
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
+AudacityProject *AudacityProject::msClipProject = NULL;
 
 #ifdef __WXMAC__
 const int sbarSpaceWidth = 15;
@@ -250,8 +251,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                          wxSize(width, sh), mRate, this);
    height -= sh;
 
-   mStatus->SetField(_("Welcome to Audacity version ")
-                     AUDACITY_VERSION_STRING, 0);
+   mStatus->SetField(wxString::Format("Welcome to Audacity version %s",
+                     AUDACITY_VERSION_STRING), 0);
 
    //
    // Create the TrackPanel and the scrollbars
@@ -319,10 +320,21 @@ AudacityProject::~AudacityProject()
 
    delete mTags;
 
+   mTracks->Clear(true);
+   delete mTracks;
+
    gAudacityProjects.Remove(this);
 
    if (gAudacityProjects.IsEmpty())
       QuitAudacity();
+
+   if (gActiveProject == this) {
+      // Find a new active project
+      if (gAudacityProjects.Count() > 0)
+         gActiveProject = gAudacityProjects[0];
+      else
+         gActiveProject = NULL;
+   }
 }
 
 void AudacityProject::RedrawProject()
@@ -873,6 +885,14 @@ void AudacityProject::OpenFile(wxString fileName)
       return;
    }
 
+   // Make sure it isn't already open
+   int numProjects = gAudacityProjects.Count();
+   for (int i = 0; i < numProjects; i++)
+      if (gAudacityProjects[i]->mFileName == fileName) {
+         wxMessageBox("That project is already open in another window.");
+         return;
+      }
+   
    wxFile ff(fileName);
    if (!ff.IsOpened()) {
       wxMessageBox(_("Could not open file: ") + mFileName);
@@ -960,7 +980,6 @@ void AudacityProject::OpenFile(wxString fileName)
    }
 
    mTracks->Clear();
-   InitialState();
 
    mTracks->Load(&f, &mDirManager);
 
@@ -983,6 +1002,7 @@ void AudacityProject::OpenFile(wxString fileName)
 
    f.Close();
 
+   InitialState();
    FixScrollbars();
    mTrackPanel->Refresh(false);
 
@@ -1073,13 +1093,46 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
       project = project.Mid(0, project.Len() - 4);
    wxString projName = wxFileNameFromPath(project) + "_data";
    wxString projPath = wxPathOnly(project);
+
+   // We are about to move files from the current directory to
+   // the new directory.  We need to make sure files that belonged
+   // to the last saved project don't get erased, so we "lock" them.
+   // (Otherwise the new project would be fine, but the old one would
+   // be empty of all of its files.)
+
+   // Lock all blocks in all tracks of the last saved version
+   if (mLastSavedTracks && !overwrite) {
+      TrackListIterator iter(mLastSavedTracks);
+      VTrack *t = iter.First();
+      while (t) {
+         if (t->GetKind() == VTrack::Wave)
+            ((WaveTrack *) t)->Lock();
+         t = iter.Next();
+      }
+   }   
+
+   // This renames the project directory, and moves or copies
+   // all of our block files over
    bool success = mDirManager.SetProject(projPath, projName, !overwrite);
 
+   // Unlock all blocks in all tracks of the last saved version
+   if (mLastSavedTracks && !overwrite) {
+      TrackListIterator iter(mLastSavedTracks);
+      VTrack *t = iter.First();
+      while (t) {
+         if (t->GetKind() == VTrack::Wave)
+            ((WaveTrack *) t)->Unlock();
+         t = iter.Next();
+      }
+   }   
+
    if (!success) {
-      wxMessageBox( wxString::Format(
-                       (_("Could not save project because the directory %s "
-                          "could not be created."),
-                       (const char *) project));
+      wxMessageBox(wxString::
+                   Format
+                   (_("Could not save project.  "
+                      "Perhaps %s is not writeable,\n"
+                      "or the disk is full."),
+                    (const char *) project));
 
       if (safetyFileName)
          wxRename(safetyFileName, mFileName);
@@ -1088,13 +1141,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
    }
 
    wxTextFile f(mFileName);
-#ifdef __WXMAC__
-   wxFile *temp = new wxFile();
-   temp->Create(mFileName);
-   delete temp;
-#else
    f.Create();
-#endif
    f.Open();
    if (!f.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName);
@@ -1147,17 +1194,7 @@ void AudacityProject::Save(bool overwrite /* = true */ ,
 #endif
 
    if (mLastSavedTracks) {
-
-      TrackListIterator iter(mLastSavedTracks);
-      VTrack *t = iter.First();
-      while (t) {
-         if (t->GetKind() == VTrack::Wave && !overwrite)
-            ((WaveTrack *) t)->DeleteButDontDereference();
-         else
-            delete t;
-         t = iter.Next();
-      }
-
+      mLastSavedTracks->Clear(true);
       delete mLastSavedTracks;
    }
 
@@ -1252,7 +1289,7 @@ void AudacityProject::PushState(wxString desc, bool makeDirty /* = true */ )
 
 void AudacityProject::PopState(TrackList * l)
 {
-   mTracks->Clear();
+   mTracks->Clear(true);
    TrackListIterator iter(l);
    VTrack *t = iter.First();
    while (t) {
@@ -1287,7 +1324,7 @@ void AudacityProject::ClearClipboard()
    }
 
    msClipLen = 0.0;
-
+   msClipProject = NULL;
    msClipboard->Clear();
 }
 
