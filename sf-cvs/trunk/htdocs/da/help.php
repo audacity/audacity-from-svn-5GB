@@ -1,7 +1,16 @@
 <?php BoxTop($helpStr); ?>
 
 <p>
-<a href="docs/contents.html">Brugerguide / Dokumentation</a>
+<a href="docs/contents.html">Brugerguide / Dokumentation online</a>
+</p>
+
+<p>
+<?php print $docsStr; ?>:
+<ul>
+<li><a href="audacity-manual-1.0.0-A.zip">Engelsk</a>
+<li><a href="audacity-manual-1.0.0-bg.zip">Bulgarsk</a>
+<li><a href="audacity-manual-1.0.0-es.zip">Spank</a>
+</ul>
 </p>
 
 <p>
