@@ -26,6 +26,7 @@ wxPen AColor::mediumPen[2];
 wxPen AColor::darkPen[2];
 
 wxPen AColor::cursorPen;
+wxBrush AColor::indicatorBrush[2];
 wxPen AColor::indicatorPen[2];
 
 wxBrush AColor::muteBrush[2];
@@ -94,6 +95,7 @@ void AColor::IndicatorColor(wxDC * dc, bool recording)
       Init();
    int index = (int) recording;
    dc->SetPen(indicatorPen[index]);
+   dc->SetBrush(indicatorBrush[index]);
 }
 
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
@@ -146,8 +148,13 @@ void AColor::Init()
    soloBrush.SetColour(255, 140, 140);
 
    cursorPen.SetColour(0, 0, 0);
-   indicatorPen[0].SetColour(255, 0, 51); //recording
-   indicatorPen[1].SetColour(0, 255, 51); //playback
+//   indicatorPen[0].SetColour(255, 0, 51); //recording
+//   indicatorPen[1].SetColour(0, 255, 51); //playback
+   indicatorPen[0].SetColour(176, 0, 28); //recording
+   indicatorPen[1].SetColour( 36,96, 46); //playback
+   indicatorBrush[0].SetColour(190,129,129); //recording
+   indicatorBrush[1].SetColour( 28,171, 51); //playback
+
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected
@@ -315,9 +322,9 @@ void GetColorGradient(float value,
    }
 
    if (selected) {
-      r *= 0.77;
-      g *= 0.77;
-      b *= 0.885;
+      r *= 0.77f;
+      g *= 0.77f;
+      b *= 0.885f;
    }
 
    *red = (unsigned char) (255 * r);

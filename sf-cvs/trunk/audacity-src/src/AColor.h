@@ -49,6 +49,7 @@ class AColor {
    
    static wxPen cursorPen;
    static wxPen indicatorPen[2];
+   static wxBrush indicatorBrush[2];
 
    static wxBrush muteBrush[2];
    static wxBrush soloBrush;
