@@ -117,6 +117,7 @@ AudioIO::~AudioIO()
 
    /* Delete is a "graceful" way to stop the thread.
       (Kill is the not-graceful way.) */
+   wxYield();
    mThread->Delete();
 
    delete [] mTempFloats;
