@@ -2299,6 +2299,7 @@ void AudacityProject::SetStateTo(unsigned int n)
 
    HandleResize();
    mTrackPanel->Refresh(false);
+   ModifyUndoMenus();
 }
 
 //
