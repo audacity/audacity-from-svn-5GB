@@ -2175,7 +2175,7 @@ void AudacityProject::InitialState()
    TrackList *l = new TrackList(mTracks);
 
    mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
-                          _("Created new project"), _(""));
+                          _("Created new project"), "");
    delete l;
 
    mUndoManager.StateSaved();
