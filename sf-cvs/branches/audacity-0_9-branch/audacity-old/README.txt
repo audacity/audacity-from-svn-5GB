@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 0.98 (under development)
+Version 0.98 (January 21, 2002)
 
 http://audacity.sourceforge.net/
 
@@ -20,6 +20,7 @@ Authors:
   Logan Lewis <proxima@proxc.com>
   Matt Brubeck <mbrubeck@hmc.edu>
   Mark Phillips <mitb@totaldeath.com>
+  Tony Oetzmann <airon@epost.de>
 
 Icons and logo:
 
@@ -71,15 +72,19 @@ To compile on Linux and other Unix systems, simply run:
   ./configure
   make
   make install
+
+There are a few options to the configure script.  You can
+see them by running "./configure --help".
   
 If you want to do any development, you might want to generate
 dependencies:
 
   make dep
 
-For more information on compilation on other platforms (VC++
-for Windows and CodeWarrior for Mac are supported) please
-email audacity-devel@lists.sourceforge.net
+Project files for VC++ on Windows and CodeWarrior for Mac
+are included with the source code.  If you are having
+trouble compiling on a non-Unix platform, please email
+audacity-devel@lists.sourceforge.net
 
 -------------------------------------------------------------
 
@@ -102,6 +107,14 @@ Known issues/problems:
 -------------------------------------------------------------
 
 Changes in 0.98:
+
+* Effects
+
+  - New Invert effect
+
+  - New Reverse effect
+
+  - Improvements to Noise Removal effect
 
 * Bug fixes
 

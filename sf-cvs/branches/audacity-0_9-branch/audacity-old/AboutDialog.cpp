@@ -17,14 +17,14 @@
 #include "xpm/AudacityLogo.xpm"
 
 #ifdef __WXMSW__
-#define DLOG_HEIGHT 430
+#define DLOG_HEIGHT 440
 #else
-#define DLOG_HEIGHT 400
+#define DLOG_HEIGHT 410
 #endif
 
 const char *creditText =
   "<html>"
-  "<body bgcolor=\"#ffffff\">"
+  "<body bgcolor=\"#eeeeee\">"
   "<font size=1>"
   "<center>"
   "<h3>Audacity " AUDACITY_VERSION_STRING "</h3>"
@@ -71,6 +71,10 @@ const char *creditText =
   "<td>Tom Woodhams</td>"
   "<td>Aqua Graphics (MacOS)</td>"
   "</tr>"
+  "<tr>"
+  "<td>Tony Oetzmann</td>"
+  "<td>Tutorials and Online Help</td>"
+  "</tr>"
   "</table>"
   "<p>"
   "<center>"
@@ -78,10 +82,13 @@ const char *creditText =
   "<p>"
   "<br>"
   "Dave Beydler<br>"
+  "Matt Brubeck<br>"
   "Jason Cohen<br>"
   "Robert Leidle<br>"
   "Logan Lewis<br>" 
   "Jason Pepas<br>"
+  "Mark Phillips<br>"
+  "Jonathan Ryshpan<br>"
   "Mark Tomlinson<br>"
   "David Topper<br>"
   "Rudy Trubitt<br>"
@@ -144,7 +151,7 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
 
    wxButton *ok = new wxButton(panel, wxID_OK,
                                "Audacious!",
-                               wxPoint(150, 370),
+                               wxPoint(150, 375),
                                wxSize(100, 20));
 #ifndef TARGET_CARBON
    ok->SetDefault();
