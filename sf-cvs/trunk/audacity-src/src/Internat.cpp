@@ -22,8 +22,11 @@
 
 wxChar Internat::mDecimalSeparator = '.'; // default
 wxMBConv *Internat::mConvLocal = 0;
+
+#ifdef __WXMAC__
 void *Internat::mTECToUTF = NULL;
 void *Internat::mTECFromUTF = NULL;
+#endif
 
 void Internat::Init()
 {
