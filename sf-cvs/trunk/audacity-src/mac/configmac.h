@@ -11,7 +11,7 @@
 #define USE_LIBMAD
 
 // Ogg Vorbis support
-#define USE_LIBVORBIS
+// #define USE_LIBVORBIS
 
 // ID3 support
 #define USE_LIBID3TAG
