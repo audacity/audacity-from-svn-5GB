@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AUDACITY 1.2.0-pre4\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2004-02-29 23:02+0100\n"
+"PO-Revision-Date: 2004-04-20 18:12+0100\n"
 "Last-Translator: Kevin Brubeck Unhammer <kiwibird@online.no>\n"
 "Language-Team: Translators-Norway <kiwibird@online.no>\n"
 "MIME-Version: 1.0\n"
@@ -1175,7 +1175,7 @@ msgstr "Lagte nytt tidsspor"
 
 #: ../src/effects/NoiseRemoval.h:43
 msgid "Creating Noise Profile"
-msgstr "Lagte støyprofil"
+msgstr "Lager støyprofil"
 
 #: ../src/AboutDialog.cpp:174
 msgid "Credits"
@@ -2268,11 +2268,11 @@ msgstr "Hovedlogo"
 
 #: ../src/TrackPanel.cpp:4106
 msgid "Make Stereo"
-msgstr "Gjorde til stereo"
+msgstr "Gjør til stereo"
 
 #: ../src/TrackPanel.cpp:839
 msgid "Make Stereo Track"
-msgstr "Lagte stereospor"
+msgstr "Lag stereospor"
 
 #: ../src/prefs/FileFormatPrefs.cpp:72
 msgid "Make a copy of the file before editing (safer)"
