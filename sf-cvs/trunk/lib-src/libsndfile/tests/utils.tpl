@@ -32,7 +32,14 @@
 #define	PIPE_INDEX(x)	((x) + 500)
 #define	PIPE_TEST_LEN	12345
 
-void	gen_windowed_sine (double *data, int len, double maximum) ;
+#if (defined (WIN32) || defined (_WIN32))
+#define	snprintf	_snprintf
+#endif
+
+[+ FOR float_type
++]void gen_windowed_sine_[+ (get "name") +] ([+ (get "name") +] *data, int len, double maximum) ;
+[+ ENDFOR float_type
++]
 
 void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int line_num) ;
 
@@ -48,6 +55,12 @@ void	print_test_name (const char *test, const char *filename) ;
 [+ ENDFOR io_type
 +]
 
+void	delete_file (int format, const char *filename) ;
+
+void	count_open_files (void) ;
+void	increment_open_file_count (void) ;
+void	check_open_file_count_or_die (int lineno) ;
+
 #ifdef SNDFILE_H
 
 void 	dump_log_buffer (SNDFILE *file) ;
@@ -55,8 +68,9 @@ void 	check_log_buffer_or_die (SNDFILE *file, int line_num) ;
 int 	string_in_log_buffer (SNDFILE *file, const char *s) ;
 void	hexdump_file (const char * filename, sf_count_t offset, sf_count_t length) ;
 
+
 SNDFILE *test_open_file_or_die
-			(const char *filename, int mode, SF_INFO *sfinfo, int line_num) ;
+			(const char *filename, int mode, SF_INFO *sfinfo, int allow_fd, int line_num) ;
 
 void 	test_read_write_position_or_die
 			(SNDFILE *file, int line_num, int pass, sf_count_t read_pos, sf_count_t write_pos) ;
@@ -105,11 +119,12 @@ void	test_seek_or_die
 #define SIGNED_SIZEOF(x)	((int) (sizeof (x)))
 #define	LOG_BUFFER_SIZE		2048
 
+[+ FOR float_type +]
 void
-gen_windowed_sine (double *data, int len, double maximum)
+gen_windowed_sine_[+ (get "name") +] ([+ (get "name") +] *data, int len, double maximum)
 {	int k ;
 
-	memset (data, 0, len * sizeof (double)) ;
+	memset (data, 0, len * sizeof ([+ (get "name") +])) ;
 	/*
 	**	Choose a frequency of 1/32 so that it aligns perfectly with a DFT
 	**	bucket to minimise spreading of energy over more than one bucket.
@@ -126,8 +141,8 @@ gen_windowed_sine (double *data, int len, double maximum)
 		}
 
 	return ;
-} /* gen_windowed_sine */
-
+} /* gen_windowed_sine_[+ (get "name") +] */
+[+ ENDFOR float_type +]
 
 void
 check_file_hash_or_die (const char *filename, unsigned int target_hash, int line_num)
@@ -349,7 +364,7 @@ dump_log_buffer (SNDFILE *file)
 } /* dump_log_buffer */
 
 SNDFILE *
-test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line_num)
+test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int allow_fd, int line_num)
 {	static int count = 0 ;
 
 	SNDFILE *file ;
@@ -360,7 +375,6 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line
 	** Need to test both sf_open() and sf_open_fd().
 	** Do so alternately.
 	*/
-
 	switch (mode)
 	{	case SFM_READ :
 				modestr = "SFM_READ" ;
@@ -390,7 +404,7 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line
 	oflags |= O_BINARY ;
 #endif
 
-	if (((++count) & 1) == 1)
+	if (allow_fd && ((++count) & 1) == 1)
 	{	int fd ;
 
 		if (omode == 0)
@@ -520,6 +534,86 @@ test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die (SNDFILE *file, in
 	return ;
 } /* test_[+ (get "op_element") +]_[+ (get "io_element") +] */
 [+ ENDFOR io_type +][+ ENDFOR io_operation +]
+
+void
+delete_file (int format, const char *filename)
+{	char rsrc_name [512], *fname ;
+
+	unlink (filename) ;
+
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_SD2)
+		return ;
+
+	/*
+	** Now try for a resource fork stored as a separate file.
+	** Grab the un-adulterated filename again.
+	*/
+	snprintf (rsrc_name, sizeof (rsrc_name), "%s", filename) ;
+
+	if ((fname = strrchr (rsrc_name, '/')) != NULL)
+		fname ++ ;
+	else if ((fname = strrchr (rsrc_name, '\\')) != NULL)
+		fname ++ ;
+	else
+		fname = rsrc_name ;
+
+	memmove (fname + 2, fname, strlen (fname) + 1) ;
+	fname [0] = '.' ;
+	fname [1] = '_' ;
+
+	unlink (rsrc_name) ;
+} /* delete_file */
+
+static int allowed_open_files = -1;
+
+void
+count_open_files (void)
+{
+#if (defined (WIN32) || defined (_WIN32))
+	return ;
+#else
+	int k, count = 0 ;
+	struct stat statbuf ;
+
+	if (allowed_open_files > 0)
+		return ;
+
+	for (k = 0 ; k < 1024 ; k++)
+		if (fstat (k, &statbuf) == 0)
+			count ++ ;
+
+	allowed_open_files = count ;
+#endif
+} /* count_open_files */
+
+void
+increment_open_file_count (void)
+{	allowed_open_files ++ ;
+} /* increment_open_file_count */
+
+void
+check_open_file_count_or_die (int lineno)
+{
+#if (defined (WIN32) || defined (_WIN32))
+	lineno = 0 ;
+	return ;
+#else
+	int k, count = 0 ;
+	struct stat statbuf ;
+
+	if (allowed_open_files < 0)
+		count_open_files () ;
+
+	for (k = 0 ; k < 1024 ; k++)
+		if (fstat (k, &statbuf) == 0)
+			count ++ ;
+
+	if (count > allowed_open_files)
+	{	printf ("\nLine %d : number of open files (%d) > allowed (%d).\n\n", lineno, count, allowed_open_files) ;
+		exit (1) ;
+		} ;
+#endif
+} /* check_open_file_count_or_die */
 
 [+ ESAC +]
 

@@ -39,7 +39,7 @@ typedef struct IMA_ADPCM_PRIVATE_tag
 #if HAVE_FLEXIBLE_ARRAY
 	unsigned short	data	[] ; /* ISO C99 struct flexible array. */
 #else
-	unsigned short	data	[1] ; /* This is a hack and might not work. */
+	unsigned short	data	[0] ; /* This is a hack and might not work. */
 #endif
 } IMA_ADPCM_PRIVATE ;
 
@@ -365,7 +365,7 @@ count ++ ;
 
 		pima->block [blockindx] = (pima->samples [chan] >> 8) & 0xFF ;
 		pima->block [blockindx + 1] = (pima->samples [chan] & 0x80) + (pima->stepindx [chan] & 0x7F) ;
-		
+
 		pima->previous [chan] = pima->samples [chan] ;
 		} ;
 
@@ -416,11 +416,11 @@ count ++ ;
 
 	for (chan = 0 ; chan < pima->channels ; chan ++)
 	{	for (indx = pima->channels ; indx < pima->channels * pima->samplesperblock ; indx += 2 * pima->channels)
-		{	blockindx = chan * pima->blocksize + 2  + indx / 2;
+		{	blockindx = chan * pima->blocksize + 2 + indx / 2 ;
 
 if (0 && count ++ < 5)
 	printf ("chan: %d    blockindx: %3d    indx: %3d\n", chan, blockindx, indx) ;
-		
+
 			pima->block [blockindx] = pima->samples [indx] & 0x0F ;
 			pima->block [blockindx] |= (pima->samples [indx + pima->channels] << 4) & 0xF0 ;
 			} ;
@@ -686,8 +686,8 @@ ima_read_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		return 0 ;
 	pima = (IMA_ADPCM_PRIVATE*) psf->fdata ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
 		count = ima_read_block (psf, pima, sptr, readcount) ;
@@ -716,8 +716,8 @@ ima_read_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	normfact = (psf->norm_float == SF_TRUE) ? 1.0 / ((float) 0x8000) : 1.0 ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
 		count = ima_read_block (psf, pima, sptr, readcount) ;
@@ -746,8 +746,8 @@ ima_read_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	normfact = (psf->norm_double == SF_TRUE) ? 1.0 / ((double) 0x8000) : 1.0 ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	readcount = (len >= bufferlen) ? bufferlen : (int) len ;
 		count = ima_read_block (psf, pima, sptr, readcount) ;
@@ -922,8 +922,8 @@ ima_write_i (SF_PRIVATE *psf, int *ptr, sf_count_t len)
 		return 0 ;
 	pima = (IMA_ADPCM_PRIVATE*) psf->fdata ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		for (k = 0 ; k < writecount ; k++)
@@ -952,8 +952,8 @@ ima_write_f (SF_PRIVATE *psf, float *ptr, sf_count_t len)
 
 	normfact = (psf->norm_float == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		for (k = 0 ; k < writecount ; k++)
@@ -982,8 +982,8 @@ ima_write_d (SF_PRIVATE *psf, double *ptr, sf_count_t len)
 
 	normfact = (psf->norm_double == SF_TRUE) ? (1.0 * 0x7FFF) : 1.0 ;
 
-	sptr = (short*) psf->buffer ;
-	bufferlen = SF_BUFFER_LEN / sizeof (short) ;
+	sptr = psf->u.sbuf ;
+	bufferlen = ARRAY_LEN (psf->u.sbuf) ;
 	while (len > 0)
 	{	writecount = (len >= bufferlen) ? bufferlen : (int) len ;
 		for (k = 0 ; k < writecount ; k++)

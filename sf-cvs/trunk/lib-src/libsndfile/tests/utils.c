@@ -56,8 +56,32 @@
 #define SIGNED_SIZEOF(x)	((int) (sizeof (x)))
 #define	LOG_BUFFER_SIZE		2048
 
+
 void
-gen_windowed_sine (double *data, int len, double maximum)
+gen_windowed_sine_float (float *data, int len, double maximum)
+{	int k ;
+
+	memset (data, 0, len * sizeof (float)) ;
+	/*
+	**	Choose a frequency of 1/32 so that it aligns perfectly with a DFT
+	**	bucket to minimise spreading of energy over more than one bucket.
+	**	Also do not want to make the frequency too high as some of the
+	**	codecs (ie gsm610) have a quite severe high frequency roll off.
+	*/
+	len /= 2 ;
+
+	for (k = 0 ; k < len ; k++)
+	{	data [k] = sin (2.0 * k * M_PI * 1.0 / 32.0 + 0.4) ;
+
+		/* Apply Hanning Window. */
+		data [k] *= maximum * (0.5 - 0.5 * cos (2.0 * M_PI * k / ((len) - 1))) ;
+		}
+
+	return ;
+} /* gen_windowed_sine_float */
+
+void
+gen_windowed_sine_double (double *data, int len, double maximum)
 {	int k ;
 
 	memset (data, 0, len * sizeof (double)) ;
@@ -77,7 +101,7 @@ gen_windowed_sine (double *data, int len, double maximum)
 		}
 
 	return ;
-} /* gen_windowed_sine */
+} /* gen_windowed_sine_double */
 
 
 void
@@ -385,7 +409,7 @@ dump_log_buffer (SNDFILE *file)
 } /* dump_log_buffer */
 
 SNDFILE *
-test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line_num)
+test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int allow_fd, int line_num)
 {	static int count = 0 ;
 
 	SNDFILE *file ;
@@ -396,7 +420,6 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line
 	** Need to test both sf_open() and sf_open_fd().
 	** Do so alternately.
 	*/
-
 	switch (mode)
 	{	case SFM_READ :
 				modestr = "SFM_READ" ;
@@ -426,7 +449,7 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int line
 	oflags |= O_BINARY ;
 #endif
 
-	if (((++count) & 1) == 1)
+	if (allow_fd && ((++count) & 1) == 1)
 	{	int fd ;
 
 		if (omode == 0)
@@ -829,6 +852,86 @@ test_writef_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t fra
 	return ;
 } /* test_writef_double */
 
+
+void
+delete_file (int format, const char *filename)
+{	char rsrc_name [512], *fname ;
+
+	unlink (filename) ;
+
+	if ((format & SF_FORMAT_TYPEMASK) != SF_FORMAT_SD2)
+		return ;
+
+	/*
+	** Now try for a resource fork stored as a separate file.
+	** Grab the un-adulterated filename again.
+	*/
+	snprintf (rsrc_name, sizeof (rsrc_name), "%s", filename) ;
+
+	if ((fname = strrchr (rsrc_name, '/')) != NULL)
+		fname ++ ;
+	else if ((fname = strrchr (rsrc_name, '\\')) != NULL)
+		fname ++ ;
+	else
+		fname = rsrc_name ;
+
+	memmove (fname + 2, fname, strlen (fname) + 1) ;
+	fname [0] = '.' ;
+	fname [1] = '_' ;
+
+	unlink (rsrc_name) ;
+} /* delete_file */
+
+static int allowed_open_files = -1;
+
+void
+count_open_files (void)
+{
+#if (defined (WIN32) || defined (_WIN32))
+	return ;
+#else
+	int k, count = 0 ;
+	struct stat statbuf ;
+
+	if (allowed_open_files > 0)
+		return ;
+
+	for (k = 0 ; k < 1024 ; k++)
+		if (fstat (k, &statbuf) == 0)
+			count ++ ;
+
+	allowed_open_files = count ;
+#endif
+} /* count_open_files */
+
+void
+increment_open_file_count (void)
+{	allowed_open_files ++ ;
+} /* increment_open_file_count */
+
+void
+check_open_file_count_or_die (int lineno)
+{
+#if (defined (WIN32) || defined (_WIN32))
+	lineno = 0 ;
+	return ;
+#else
+	int k, count = 0 ;
+	struct stat statbuf ;
+
+	if (allowed_open_files < 0)
+		count_open_files () ;
+
+	for (k = 0 ; k < 1024 ; k++)
+		if (fstat (k, &statbuf) == 0)
+			count ++ ;
+
+	if (count > allowed_open_files)
+	{	printf ("\nLine %d : number of open files (%d) > allowed (%d).\n\n", lineno, count, allowed_open_files) ;
+		exit (1) ;
+		} ;
+#endif
+} /* check_open_file_count_or_die */
 
 
 
