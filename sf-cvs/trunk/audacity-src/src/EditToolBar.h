@@ -51,8 +51,15 @@ enum {
    ETBPasteID,
    ETBTrimID,
    ETBSilenceID,
+
    ETBUndoID,
-   ETBRedoID
+   ETBRedoID,
+   
+   ETBZoomInID,
+   ETBZoomOutID,
+   ETBZoomSelID,
+   ETBZoomFitID,
+
 };
 
 
@@ -79,8 +86,15 @@ class EditToolBar:public ToolBar {
    void OnPaste();
    void OnTrim();
    void OnSilence();
+   
    void OnUndo();
    void OnRedo();
+   
+   void OnZoomIn();
+   void OnZoomOut();
+   void OnZoomSel();
+   void OnZoomFit();
+
 
 
  private:
@@ -96,8 +110,14 @@ class EditToolBar:public ToolBar {
    AButton *mPaste;
    AButton *mTrim;
    AButton *mSilence;
+   
    AButton *mUndo;
    AButton *mRedo;
+
+   AButton *mZoomIn;
+   AButton *mZoomOut;
+   AButton *mZoomSel;
+   AButton *mZoomFit;
 
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;

@@ -80,11 +80,22 @@ IMPLEMENT_DYNAMIC_CLASS(EditToolBar, ToolBar)
                 wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnUndo)
     EVT_COMMAND(ETBRedoID,
                 wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnRedo)
+
+    EVT_COMMAND(ETBZoomInID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomIn)
+    EVT_COMMAND(ETBZoomOutID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomOut)
+    EVT_COMMAND(ETBZoomSelID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomSel)
+    EVT_COMMAND(ETBZoomFitID,
+                wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnZoomFit)
+
+
     END_EVENT_TABLE()
 
     //Standard contructor
 EditToolBar::EditToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(200, 27))
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(340, 27))
 {
    InitializeEditToolBar();
 }
@@ -103,7 +114,7 @@ EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void EditToolBar::InitializeEditToolBar()
 {
-   mIdealSize = wxSize(200, 27);
+   mIdealSize = wxSize(340, 27);
    mTitle = "Audacity Edit Toolbar";
    mType = EditToolBarID;
 
@@ -200,17 +211,48 @@ void EditToolBar::MakeButtons()
                          (char const **) SilenceAlpha, ETBSilenceID, 109);
    mSilence->SetToolTip(_("Insert Silence"));
    
+
+
+
    //Undo Button
    mUndo = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Undo,  
-                      (char const **) UndoAlpha, ETBUndoID, 136);
+                      (char const **) UndoAlpha, ETBUndoID, 150);
    mUndo->SetToolTip(_("Undo last action"));
  
    //Redo Button
    mRedo = MakeButton(upPattern, downPattern, hilitePattern,
                       (char const **) Redo,  
-                      (char const **) RedoAlpha, ETBRedoID, 163);
-   mRedo->SetToolTip(_("Redo last action"));
+                      (char const **) RedoAlpha, ETBRedoID, 177);
+   mRedo->SetToolTip(_("Redo last undo"));
+
+
+
+   //Zoom In Button
+   mZoomIn = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) ZoomIn,  
+                      (char const **) ZoomInAlpha, ETBZoomInID, 220);
+   mZoomIn->SetToolTip(_("Zoom In"));
+
+   //Zoom Out Button
+   mZoomOut = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) ZoomOut,  
+                      (char const **) ZoomOutAlpha, ETBZoomOutID, 247);
+   mZoomOut->SetToolTip(_("Zoom Out"));
+
+   //Zoom to selection Button
+   mZoomSel = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) ZoomSel,  
+                      (char const **) ZoomSelAlpha, ETBZoomSelID, 274);
+   mZoomSel->SetToolTip(_("Fit selection in window"));
+
+   //Zoom All Button
+   mZoomFit = MakeButton(upPattern, downPattern, hilitePattern,
+                      (char const **) ZoomFit,  
+                      (char const **) ZoomFitAlpha, ETBZoomFitID, 302);
+   mZoomFit->SetToolTip(_("Fit entire file in window"));
+
+
 
    delete upPattern;
    delete downPattern;
@@ -229,6 +271,10 @@ EditToolBar::~EditToolBar()
    delete mSilence;
    delete mUndo;
    delete mRedo;
+   delete mZoomIn;
+   delete mZoomOut;
+   delete mZoomSel;
+   delete mZoomFit;
 
    if (mBackgroundBitmap)
       delete mBackgroundBitmap;
@@ -252,83 +298,150 @@ void EditToolBar::OnKeyEvent(wxKeyEvent & event)
 
 void EditToolBar::OnCopy()
 { 
-  if (gAudioIO->IsBusy())
-      return;
-  wxCommandEvent event;
-  AudacityProject *p = GetActiveProject();
-  if (p) {
-     p->Copy(event);
-  }
+  if (!gAudioIO->IsBusy())
+     {
+        wxCommandEvent event;
+        AudacityProject *p = GetActiveProject();
+        if (p) {
+           p->Copy(event);
+        }
+     }
   SetButton(false, mCopy);
 }   
 
 void EditToolBar::OnCut()
 {
-   if (gAudioIO->IsBusy())
-      return;
-  wxCommandEvent event;
-  AudacityProject *p = GetActiveProject();
-  if (p) {
-   p->Cut(event);
-  }
-  SetButton(false, mCut);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Cut(event);
+         }
+      }
+   SetButton(false, mCut);
 }
+
 
 void EditToolBar::OnPaste()
 {
-   if (gAudioIO->IsBusy())
-      return;
-  wxCommandEvent event;
-   AudacityProject *p = GetActiveProject();
-   if (p) {
-   p->Paste(event);
-   }
-  SetButton(false, mPaste);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Paste(event);
+         }
+      }
+   SetButton(false, mPaste);
 }
 
 void EditToolBar::OnTrim()
 {
-   if (gAudioIO->IsBusy())
-      return;
-   //Not Implemented Yet.
-  SetButton(false, mTrim);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Trim(event);
+         }
+      }
+   SetButton(false, mTrim);
 }
 
 void EditToolBar::OnSilence()
 {
-   if (gAudioIO->IsBusy())
-      return;
-  wxCommandEvent event;
-   AudacityProject *p = GetActiveProject();
-   if (p) {
-      p->OnSilence(event);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->OnSilence(event);
+         }
       }
-  SetButton(false, mSilence);
+   SetButton(false, mSilence);
 }
 
 void EditToolBar::OnUndo()
 {
-   if (gAudioIO->IsBusy())
-      return;   
-   wxCommandEvent event;
-   AudacityProject *p = GetActiveProject();
-   if (p) {
-      p->Undo(event);
-   }
-  SetButton(false, mUndo);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Undo(event);
+         }
+      }
+   SetButton(false, mUndo);
 }
 
 void EditToolBar::OnRedo()
 {
-   if (gAudioIO->IsBusy())
-      return;   
-   wxCommandEvent event;
-   AudacityProject *p = GetActiveProject();
-   if (p) {
-      p->Redo(event);
-   }
-  SetButton(false, mRedo);
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->Redo(event);
+         }
+      }
+   SetButton(false, mRedo);
 }
+
+
+void EditToolBar::OnZoomIn()
+{
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->OnZoomIn(event);
+         }
+      }
+   SetButton(false, mZoomIn);
+}
+
+
+void EditToolBar::OnZoomOut()
+{
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->OnZoomOut(event);
+         }
+      }
+   SetButton(false, mZoomOut);
+}
+
+void EditToolBar::OnZoomSel()
+{
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->OnZoomSel(event);
+         }
+      }
+   SetButton(false, mZoomSel);
+}
+
+void EditToolBar::OnZoomFit()
+{
+   if (!gAudioIO->IsBusy())
+      {
+         wxCommandEvent event;
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            p->OnZoomFit(event);
+         }
+      }
+   SetButton(false, mZoomFit);
+}
+
 
 void EditToolBar::OnPaint(wxPaintEvent & evt)
 {
