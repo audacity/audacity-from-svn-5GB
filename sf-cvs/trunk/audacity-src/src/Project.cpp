@@ -542,6 +542,13 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
+   // DMM: Save the size of the last window the user closes
+   // (unless we're quitting - then the Quit routine will
+   // do it for us).
+   if (gAudacityProjects.GetCount() == 1 &&
+       !gIsQuitting)
+      SaveWindowSize();
+
    mIsDeleting = true;
 
    delete mTimer;

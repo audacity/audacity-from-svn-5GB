@@ -81,6 +81,19 @@ ToolBarStub *gEditToolBarStub = NULL;
 
 bool gIsQuitting = false;
 
+void SaveWindowSize()
+{
+   if(!gAudacityProjects.IsEmpty())
+   {
+      // BG: Save size of Window 0.
+      wxSize wndSize = gAudacityProjects[0]->GetSize();
+      bool wndMaximized = gAudacityProjects[0]->IsMaximized();
+      gPrefs->Write("/Window/Width", wndSize.GetWidth());
+      gPrefs->Write("/Window/Height", wndSize.GetHeight());
+      gPrefs->Write("/Window/Maximized", wndMaximized);   
+   }
+}
+
 void QuitAudacity(bool bForce)
 {
    if (gIsQuitting)
@@ -97,13 +110,11 @@ void QuitAudacity(bool bForce)
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
 
+   SaveWindowSize();
+
    // BG: Are there any projects open?
    if(!gAudacityProjects.IsEmpty())
    {
-      // BG: Store size of Window 0.
-      wxSize wndSize = gAudacityProjects[0]->GetSize();
-      bool wndMaximized = gAudacityProjects[0]->IsMaximized();
-
       size_t len = gAudacityProjects.Count();
       for (size_t i = 0; i < len; i++) {
          if(bForce)
@@ -116,11 +127,6 @@ void QuitAudacity(bool bForce)
                return;
          }
       }
-
-      // BG: Save Window position
-      gPrefs->Write("/Window/Width", wndSize.GetWidth());
-      gPrefs->Write("/Window/Height", wndSize.GetHeight());
-      gPrefs->Write("/Window/Maximized", wndMaximized);
    }
 
    if (gFreqWindow)
