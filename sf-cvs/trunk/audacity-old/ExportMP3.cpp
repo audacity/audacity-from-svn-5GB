@@ -242,14 +242,32 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
       verson 3.87, as distributed by N2MP3. */
 
    typedef struct {
-      unsigned long num_samples;
-      int num_channels;
-      int in_samplerate;
+      /* input file description */
+      unsigned long num_samples;  /* number of samples. default=2^32-1    */
+      int num_channels;           /* input number of channels. default=2  */
+      int in_samplerate;          /* input_samp_rate. default=44.1kHz     */
+      int out_samplerate;         /* output_samp_rate. (usually determined automatically)   */ 
+      float scale;                /* scale input by this amount */
 
-      /* The above are the ONLY members of this structure we can reliably read
-       * or write to. */
+      /* general control params */
+      int gtkflag;                /* run frame analyzer?       */
+      int bWriteVbrTag;           /* add Xing VBR tag?         */
+      int disable_waveheader;     /* disable writing of .wav header, when *decoding* */
+      int decode_only;            /* use lame/mpglib to convert mp3 to wav */
+      int ogg;                    /* encode to Vorbis .ogg file */
 
-      int space[1000];  /* to liberally accomadate for the real size of the struct */
+      int quality;                /* quality setting 0=best,  9=worst  */
+      int silent;                 /* disable some status output */
+      float update_interval;      /* to use Frank's time status display */
+      int brhist_disp;            /* enable VBR bitrate histogram display */
+      int mode;                       /* 0,1,2,3 stereo,jstereo,dual channel,mono */
+      int mode_fixed;                 /* use specified the mode, do not use lame's opinion of the best mode */
+      int force_ms;                   /* force M/S mode.  requires mode=1 */
+      int brate;                      /* bitrate */
+      float compression_ratio;          /* user specified compression ratio, instead of brate */
+      int free_format;                /* use free format? */
+
+      int space[10000];  /* to liberally accomadate for the real size of the struct */
    } lame_global_flags;
 
    /* All functions types are suffexed with _t because gcc won't let you have a
@@ -374,7 +392,13 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
 
          mGF->num_channels = channels;
          mGF->in_samplerate = sampleRate;
+         mGF->out_samplerate = sampleRate;
          mGF->num_samples = 0;
+         
+         if (channels == 1)
+            mGF->mode = 3;  // mono
+         else
+            mGF->mode = 1;  // joint stereo
 
          lame_init_params(mGF);
          
@@ -392,25 +416,37 @@ MP3Exporter *gMP3Exporter = &gLinuxLAMEExporter;
       int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
          if(!mEncoding) return -1;
          
-         for(int i=0; i<mSamplesPerChunk; i++) {
-            mLeftBuffer[i] = inbuffer[2*i];
-            mRightBuffer[i] = inbuffer[2*i+1];
-         }
+         if (mGF->num_channels == 2) {
+            for(int i=0; i<mSamplesPerChunk; i++) {
+               mLeftBuffer[i] = inbuffer[2*i];
+               mRightBuffer[i] = inbuffer[2*i+1];
+            }
 
-         return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, mSamplesPerChunk,
-                                   outbuffer, mOutBufferSize);
+            return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, mSamplesPerChunk,
+                                      outbuffer, mOutBufferSize);
+         }
+         else {
+            return lame_encode_buffer(mGF, inbuffer, inbuffer, mSamplesPerChunk,
+                       outbuffer, mOutBufferSize);
+         }
       }
 
       int EncodeRemainder(short int inbuffer[], int nSamples,
                         unsigned char outbuffer[]) {
 
-         for(int i=0; i<nSamples; i++) {
-            mLeftBuffer[i] = inbuffer[2*i];
-            mRightBuffer[i] = inbuffer[2*i+1];
-         }
+         if (mGF->num_channels == 2) {
+            for(int i=0; i<nSamples; i++) {
+               mLeftBuffer[i] = inbuffer[2*i];
+               mRightBuffer[i] = inbuffer[2*i+1];
+            }
 
-         return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, nSamples, outbuffer,
-            mOutBufferSize);
+            return lame_encode_buffer(mGF, mLeftBuffer, mRightBuffer, nSamples, outbuffer,
+               mOutBufferSize);
+         }
+         else {
+            return lame_encode_buffer(mGF, inbuffer, inbuffer, nSamples,
+                       outbuffer, mOutBufferSize);
+         }
       }
 
       int FinishStream(unsigned char outbuffer[]) {
