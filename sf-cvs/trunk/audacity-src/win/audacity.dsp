@@ -715,6 +715,14 @@ SOURCE=..\src\import\Import.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\import\ImportFLAC.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportFLAC.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\import\ImportLOF.cpp
 # End Source File
 # Begin Source File
@@ -748,6 +756,10 @@ SOURCE=..\src\import\ImportPCM.cpp
 # Begin Source File
 
 SOURCE=..\src\import\ImportPCM.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\ImportPlugin.h
 # End Source File
 # Begin Source File
 
