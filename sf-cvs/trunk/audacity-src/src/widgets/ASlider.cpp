@@ -18,6 +18,7 @@
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
+#include <wx/panel.h>
 #include <wx/tooltip.h>
 
 #include "ASlider.h"
@@ -121,11 +122,11 @@ ASlider::ASlider(wxWindow * parent, wxWindowID id,
    int divs = 10;
    double upp = divs / (double)(mWidthX-1);
    double d = 0;
-   int id = -1;
+   int int_d = -1;
    for(int p=0; p<=mWidthX; p++) {
-      if (((int)d) > id) {
-         id = (int)d;
-         int ht = (id==0 || id==divs? 5: 3);
+      if (((int)d) > int_d) {
+         int_d = (int)d;
+         int ht = (int_d==0 || int_d==divs? 5: 3);
          AColor::Light(dc, false);
          dc->DrawLine(mLeftX+p, mCenterY-ht, mLeftX+p, mCenterY);
          AColor::Dark(dc, false);
