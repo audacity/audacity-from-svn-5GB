@@ -28,7 +28,7 @@ bool EffectSilence::PromptUser()
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   SilenceDialog dlog(mParent, -1, _("Generate Silence"));
+   GenerateDialog dlog(mParent, -1, _("Generate Silence"));
    dlog.length = length;
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
@@ -62,23 +62,23 @@ bool EffectSilence::Process()
    return true;
 }
 
-BEGIN_EVENT_TABLE(SilenceDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, SilenceDialog::OnCreateSilence)
-   EVT_BUTTON(wxID_CANCEL, SilenceDialog::OnCancel)
+BEGIN_EVENT_TABLE(GenerateDialog, wxDialog)
+   EVT_BUTTON(wxID_OK, GenerateDialog::OnCreateSilence)
+   EVT_BUTTON(wxID_CANCEL, GenerateDialog::OnCancel)
 END_EVENT_TABLE()
 
-SilenceDialog::SilenceDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, title, position, size, style)
+GenerateDialog::GenerateDialog(wxWindow * parent, wxWindowID id, const wxString & action, const wxPoint & position, const wxSize & size, long style):
+wxDialog(parent, id, action, position, size, style)
 {
-   CreateSilenceDialog(this, TRUE);
+   CreateGenerateDialog(action, this, TRUE);
 }
 
-bool SilenceDialog::Validate()
+bool GenerateDialog::Validate()
 {
    return TRUE;
 }
 
-bool SilenceDialog::TransferDataToWindow()
+bool GenerateDialog::TransferDataToWindow()
 {
    wxTextCtrl *text = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
    if (text) {
@@ -91,7 +91,7 @@ bool SilenceDialog::TransferDataToWindow()
    return TRUE;
 }
 
-bool SilenceDialog::TransferDataFromWindow()
+bool GenerateDialog::TransferDataFromWindow()
 {
    wxTextCtrl *t = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
    if (t) {
@@ -100,9 +100,9 @@ bool SilenceDialog::TransferDataFromWindow()
    return TRUE;
 }
 
-// WDR: handler implementations for SilenceDialog
+// WDR: handler implementations for GenerateDialog
 
-void SilenceDialog::OnCreateSilence(wxCommandEvent & event)
+void GenerateDialog::OnCreateSilence(wxCommandEvent & event)
 {
    TransferDataFromWindow();
 
@@ -113,12 +113,12 @@ void SilenceDialog::OnCreateSilence(wxCommandEvent & event)
    }
 }
 
-void SilenceDialog::OnCancel(wxCommandEvent & event)
+void GenerateDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(false);
 }
 
-wxSizer *CreateSilenceDialog(wxWindow * parent, bool call_fit,
+wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool call_fit,
                              bool set_sizer)
 {
    wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
@@ -142,7 +142,7 @@ wxSizer *CreateSilenceDialog(wxWindow * parent, bool call_fit,
    item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("Generate Silence"), wxDefaultPosition,
+       new wxButton(parent, wxID_OK, action, wxDefaultPosition,
                     wxDefaultSize, 0);
    item12->SetDefault();
    item12->SetFocus();
