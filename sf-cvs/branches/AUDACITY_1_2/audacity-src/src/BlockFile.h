@@ -120,7 +120,7 @@ class BlockFile {
    virtual bool ReadSummary(void *data) = 0;
 
  private:
-   bool mLocked;
+   int mLockCount;
    int mRefCount;
 
  protected:
