@@ -293,6 +293,10 @@ bool Sequence::Paste(sampleCount s, const Sequence *src)
    if (s >= mNumSamples)
       s = mNumSamples;
 
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)src->mNumSamples) > 2147483647)
+      return false;
+
    BlockArray *srcBlock = src->mBlock;
    int addedLen = src->mNumSamples;
    unsigned int srcNumBlocks = srcBlock->Count();
@@ -482,6 +486,10 @@ bool Sequence::SetSilence(sampleCount s0, sampleCount len)
 
 bool Sequence::InsertSilence(sampleCount s0, sampleCount len)
 {
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)len) > 2147483647)
+      return false;
+
    // Create a new track containing as much silence as we
    // need to insert, and then call Paste to do the insertion.
    // We make use of a SilentBlockFile, which takes up no
@@ -519,6 +527,10 @@ bool Sequence::AppendAlias(wxString fullPath,
                            sampleCount start,
                            sampleCount len, int channel)
 {
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)len) > 2147483647)
+      return false;
+
    SeqBlock *newBlock = new SeqBlock();
 
    newBlock->start = mNumSamples;
@@ -533,6 +545,10 @@ bool Sequence::AppendAlias(wxString fullPath,
 
 bool Sequence::AppendBlock(SeqBlock * b)
 {
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)b->f->GetLength()) > 2147483647)
+      return false;
+
    SeqBlock *newBlock = new SeqBlock();
    newBlock->start = mNumSamples;
    newBlock->f = mDirManager->CopyBlockFile(b->f);
@@ -1064,6 +1080,10 @@ sampleCount Sequence::GetIdealAppendLen()
 bool Sequence::Append(samplePtr buffer, sampleFormat format,
                       sampleCount len)
 {
+   // Quick check to make sure that it doesn't overflow
+   if (((double)mNumSamples) + ((double)len) > 2147483647)
+      return false;
+
    samplePtr temp = NULL;
    if (format != mSampleFormat) {
       temp = NewSamples(mMaxSamples, mSampleFormat);

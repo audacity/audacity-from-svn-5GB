@@ -73,6 +73,7 @@ class RepeatDialog:public wxDialog {
 
  public:
    int repeatCount;
+   int maxCount;
    double selectionTimeSecs;
 };
 
