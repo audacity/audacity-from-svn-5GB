@@ -13,17 +13,25 @@
 
 #include <math.h>
 
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-#include <wx/brush.h>
-#include <wx/image.h>
-#include <wx/dcmemory.h>
-
 #include "Compressor.h"
+
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 #include "../AColor.h"
+
+#include <wx/bitmap.h>
+#include <wx/brush.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/dcmemory.h>
+#include <wx/image.h>
+#include <wx/msgdlg.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/stattext.h>
+#include <wx/textdlg.h>
+#include <wx/sizer.h>
 
 EffectCompressor::EffectCompressor()
 {

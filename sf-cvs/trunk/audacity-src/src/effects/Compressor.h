@@ -13,16 +13,16 @@
 
 class wxString;
 
-#include <wx/defs.h>
-#include <wx/bitmap.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/slider.h>
-#include <wx/panel.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/intl.h>
 #include "SimpleMono.h"
+
+#include <wx/defs.h>
+#include <wx/dialog.h>
+#include <wx/intl.h>
+#include <wx/panel.h>
+
+class wxCheckBox;
+class wxSlider;
+class wxStaticText;
 
 class WaveTrack;
 

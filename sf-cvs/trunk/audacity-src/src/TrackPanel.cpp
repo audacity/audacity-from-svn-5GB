@@ -3249,7 +3249,7 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
    } else
    {
       // MM: Zoom up/down when used without modifier keys
-      mListener->TP_ScrollUpDown(-steps * 4.0);
+      mListener->TP_ScrollUpDown(-steps * 4);
    }
 }
 
@@ -3574,7 +3574,7 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    // For amplification using the envelope we introduced the idea of contours.
    // The contours have the same shape as the envelope, which may be partially off-screen.
    // The contours are closer in to the center line.
-   int ContourSpacing = r.height / (2* (zoomMax-zoomMin));
+   int ContourSpacing = (int) (r.height / (2* (zoomMax-zoomMin)));
    const int MaxContours = 2;
 
    // Adding ContourSpacing/2 selects a region either side of the contour.

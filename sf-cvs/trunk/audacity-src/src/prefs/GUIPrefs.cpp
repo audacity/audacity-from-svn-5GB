@@ -10,7 +10,13 @@
 
 **********************************************************************/
 
+#include "GUIPrefs.h"
+
 #include "../Audacity.h"
+#include "../EditToolBar.h"
+#include "../Envelope.h"
+#include "../Languages.h"
+#include "../Prefs.h"
 
 #include <wx/defs.h>
 #include <wx/checkbox.h>
@@ -21,12 +27,6 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/radiobut.h>
-
-#include "GUIPrefs.h"
-#include "../Prefs.h"
-#include "../Languages.h"
-#include "../EditToolBar.h"
-#include "../Envelope.h"
 
 
 GUIPrefs::GUIPrefs(wxWindow * parent):
@@ -259,7 +259,7 @@ bool GUIPrefs::Apply()
 
 
    int localeIndex = mLocale->GetSelection();
-   if (localeIndex >= 0 && localeIndex < mLangCodes.GetCount())
+   if (localeIndex >= 0 && (unsigned) localeIndex < mLangCodes.GetCount())
       gPrefs->Write("/Locale/Language", mLangCodes[localeIndex]);
 
    int envdBRange=36;

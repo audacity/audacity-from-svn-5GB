@@ -8,20 +8,21 @@
 
 **********************************************************************/
 
+#include "QualityPrefs.h"
+
+#include "../Audacity.h"
+#include "../AudioIO.h"
+#include "../Dither.h"
+#include "../Prefs.h"
+#include "../Resample.h"
+#include "../SampleFormat.h"
+
 #include <wx/defs.h>
 #include <wx/choice.h>
 #include <wx/stattext.h>
 #include <wx/sizer.h>
 #include <wx/intl.h>
 #include <wx/textctrl.h>
-
-#include "../Audacity.h"
-#include "../Prefs.h"
-#include "../SampleFormat.h"
-#include "../Dither.h"
-#include "../AudioIO.h"
-#include "QualityPrefs.h"
-#include "../Resample.h"
 
 int formats[] = {
    int16Sample,
@@ -232,8 +233,8 @@ bool QualityPrefs::Apply()
 
    int converter = mConverters->GetSelection();
    int converterHQ = mHQConverters->GetSelection();
-   Resample::SetFastMethod(mConverters->GetSelection());
-   Resample::SetBestMethod(mHQConverters->GetSelection());
+   Resample::SetFastMethod(converter);
+   Resample::SetBestMethod(converterHQ);
 
    // Save dither options
    int dither = mDithers->GetSelection();

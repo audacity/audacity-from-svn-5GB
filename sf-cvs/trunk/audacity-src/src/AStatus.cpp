@@ -118,7 +118,6 @@ void AStatus::DrawDragHandle( wxDC * pDC, int x, int y )
 {
    int i, d;
    const int nStripes = 3;
-   const int StripeSpacing = 4;
    const int r=5;
 
    AColor::Medium( pDC, false );

@@ -20,6 +20,13 @@
 #include <wx/intl.h>
 #include <wx/radiobox.h>
 
+// Declare window functions
+
+#define ID_TEXT 10000
+#define ID_FILTERPANEL 10001
+#define ID_CLEAR 10002
+#define ID_LOADCURVE 10003
+
 class wxString;
 
 #include "Effect.h"
@@ -113,14 +120,6 @@ private:
 //----------------------------------------------------------------------------
 // EqualizationDialog
 //----------------------------------------------------------------------------
-
-// Declare window functions
-
-#define ID_TEXT 10000
-#define ID_FILTERPANEL 10001
-#define ID_CLEAR 10002
-#define ID_LOADCURVE 10003
-#define ID_BUTTON_PREVIEW 10004
 
 wxSizer *MakeEqualizationDialog( double loFreq, double hiFreq,
 				 Envelope *env,

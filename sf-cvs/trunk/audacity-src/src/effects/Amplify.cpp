@@ -13,13 +13,22 @@
 
 **********************************************************************/
 
-#include <math.h>
-#include <wx/intl.h>
-#include <wx/valtext.h>
-
 #include "Amplify.h"
+
 #include "../WaveTrack.h"
 #include "../Internat.h"
+
+#include <math.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/intl.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
+#include <wx/valtext.h>
+
+#define ID_BUTTON_PREVIEW 10005
 
 //
 // EffectAmplify

@@ -16,23 +16,18 @@
 #ifndef __AUDACITY_EFFECT_CHANGEPITCH__
 #define __AUDACITY_EFFECT_CHANGEPITCH__
 
-// wxWindows controls 
-#include <wx/button.h>
-#include <wx/choice.h>
-#include <wx/dialog.h>
-#include <wx/radiobox.h>
-#include <wx/sizer.h>
-#include <wx/slider.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-
-#include <wx/intl.h>
-
 #include "SoundTouchEffect.h"
 
+#include <wx/dialog.h>
+#include <wx/intl.h>
 
 class wxString;
-
+class wxChoice;
+class wxRadioBox;
+class wxTextCtrl;
+class wxSlider;
+class wxChoice;
+class wxChoice;
 
 class EffectChangePitch:public EffectSoundTouch {
 

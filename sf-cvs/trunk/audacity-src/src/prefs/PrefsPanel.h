@@ -24,6 +24,7 @@
 
 class wxWindow;
 class wxStaticBoxSizer;
+class wxBoxSizer;
 
 /* A few constants for an attempt at semi-uniformity */
 #define PREFS_FONT_SIZE     8
