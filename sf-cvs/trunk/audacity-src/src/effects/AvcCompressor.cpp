@@ -83,8 +83,13 @@ EffectAvcCompressor::~EffectAvcCompressor()
 
 wxString EffectAvcCompressor::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
-   return wxString::Format(_("Applied effect: %s change window = %d samples"), 
-                           (const char *)(this->GetEffectName()), mnChangeWindow); 
+
+   return wxString::Format(_("Applied effect: %s"),
+                           this->GetEffectDescription());
+
+                           //old                           
+   //return wxString::Format("Applied effect: %s change window = %d samples", 
+   //(const char *)(this->GetEffectName()), mnChangeWindow); 
 } 
 
 inline
@@ -581,6 +586,7 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 	flexGridSizer->Add(mctlDelay, 0, wxALIGN_CENTRE | wxALL, 5);
 
 	// 1.1.3  Min Change Window
+   /* i18n-hint: the minimum size of the window that is changed */
 	staticText =
        new wxStaticText(parent, ID_TEXT, _("Minimum Change Window:"),
                         wxDefaultPosition, wxDefaultSize, 0);
@@ -609,10 +615,13 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
 
 	leftSizer->Add( group, 0, wxALIGN_TOP |wxALL, 5 );
 
+   // DMM: the following text box is too difficult to translate as-is.  Taken out of
+   // i18n for now.
+
 	// 1.2 area under group box
 	staticText =
        new wxStaticText(parent, ID_TEXT,
-                        _("Above values are in samples.\n"
+                        ("Above values are in samples.\n"
 						  "Adjustment Window defines number of \nsamples in moving average.\n"
 						  "Change window defines minimum time \nbetween volume changes.\n"
 						  "Minimum % change of volume adjustment \nbefore making a volume change.\n"
