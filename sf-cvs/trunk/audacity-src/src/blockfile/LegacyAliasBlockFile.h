@@ -27,7 +27,8 @@ class LegacyAliasBlockFile : public PCMAliasBlockFile
                         sampleCount aliasStart,
                         sampleCount aliasLen,
                         int aliasChannel,
-                        sampleCount summaryLen);
+                        sampleCount summaryLen,
+                        bool noRMS);
    virtual ~LegacyAliasBlockFile();
 
    virtual void SaveXML(int depth, wxFFile &xmlFile);

@@ -30,11 +30,18 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                               int summaryLen,
                               sampleFormat format,
                               SummaryInfo *info,
+                              bool noRMS,
                               float *min, float *max, float *rms)
 {
+   int fields = 3; /* min, max, rms */
+
+   if (noRMS)
+      fields = 2;
+
+   info->fields = fields;
    info->format = format;
    info->bytesPerFrame =
-      SAMPLE_SIZE(info->format) * 3; /* min, max, rms */
+      SAMPLE_SIZE(info->format) * fields;
    info->totalSummaryBytes = summaryLen;
    info->offset64K = 20; /* legacy header tag len */
    info->frames64K = (summaryLen-20) /
@@ -51,8 +58,8 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
    // 64K summary data
    //
 
-   float *summary = new float[info->frames64K * 3];
-   samplePtr data = NewSamples(info->frames64K * 3,
+   float *summary = new float[info->frames64K * fields];
+   samplePtr data = NewSamples(info->frames64K * fields,
                                info->format);
 
    wxFFile summaryFile;
@@ -75,13 +82,17 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
    float sumsq = 0;
 
    for(int i=0; i<count; i++) {
-      if (summary[3*i] < (*min))
-         (*min) = summary[3*i];
-      if (summary[3*i+1] > (*max))
-         (*max) = summary[3*i+1];
-      sumsq += summary[3*i+2]*summary[3*i+2];
+      if (summary[fields*i] < (*min))
+         (*min) = summary[fields*i];
+      if (summary[fields*i+1] > (*max))
+         (*max) = summary[fields*i+1];
+      if (fields >= 3)
+         sumsq += summary[fields*i+2]*summary[fields*i+2];
    }
-   (*rms) = sqrt(sumsq / count);
+   if (fields >= 3)
+      (*rms) = sqrt(sumsq / count);
+   else
+      (*rms) = 0;
 
    DeleteSamples(data);
    delete[] summary;   
@@ -94,7 +105,8 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
 LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
                                  sampleFormat format,
                                  sampleCount summaryLen,
-                                 sampleCount len):
+                                 sampleCount len,
+                                 bool noRMS):
    BlockFile(existingFile, len),
    mFormat(format)
 {
@@ -102,9 +114,16 @@ LegacyBlockFile::LegacyBlockFile(wxFileName existingFile,
       // throw an exception?
       ;
 
+   sampleFormat summaryFormat;
+
+   if (noRMS)
+      summaryFormat = int16Sample;
+   else
+      summaryFormat = floatSample;
+
    ComputeLegacySummaryInfo(existingFile,
-                            summaryLen, floatSample,
-                            &mSummaryInfo,
+                            summaryLen, summaryFormat,
+                            &mSummaryInfo, noRMS,
                             &mMin, &mMax, &mRMS);
 }
 
@@ -218,6 +237,8 @@ void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    xmlFile.Write("<legacyblockfile ");
    xmlFile.Write(wxString::Format("name='%s' ", mFileName.GetFullName().c_str()));
    xmlFile.Write(wxString::Format("len='%d' ", mLen));
+   if (mSummaryInfo.fields < 3)
+      xmlFile.Write(wxString::Format("norms='1' "));
    xmlFile.Write(wxString::Format("summarylen='%d' ", mSummaryInfo.totalSummaryBytes));
    xmlFile.Write("/>\n");
 }
@@ -228,6 +249,7 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
 {
    wxFileName fileName;
    sampleCount summaryLen = 0;
+   int noRMS = 0;
 
    while(*attrs)
    {
@@ -238,11 +260,15 @@ BlockFile *LegacyBlockFile::BuildFromXML(wxString projDir, const char **attrs,
           fileName.Assign(projDir, value);
        if( !strcmp(attr, "len") )
           len = atoi(value);
+       if( !strcmp(attr, "norms") )
+          noRMS = (bool)atoi(value);
+       if( !strcmp(attr, "format") )
+          format = (sampleFormat)atoi(value);
        if( !strcmp(attr, "summarylen") )
           summaryLen = atoi(value);
    }
 
-   return new LegacyBlockFile(fileName, format, summaryLen, len);
+   return new LegacyBlockFile(fileName, format, summaryLen, len, noRMS);
 }
 
 /// Create a copy of this BlockFile, but using a different disk file.
@@ -253,7 +279,8 @@ BlockFile *LegacyBlockFile::Copy(wxFileName newFileName)
    BlockFile *newBlockFile = new LegacyBlockFile(newFileName,
                                                  mFormat,
                                                  mSummaryInfo.totalSummaryBytes,
-                                                 mLen);
+                                                 mLen,
+                                                 mSummaryInfo.fields < 3);
 
    return newBlockFile;
 }

@@ -52,6 +52,7 @@ OBJS = \
 	$(OBJDIR)/LabelTrack.o \
 	$(OBJDIR)/Languages.o \
 	$(OBJDIR)/LangChoice.o \
+	$(OBJDIR)/Legacy.o \
 	$(OBJDIR)/Mix.o \
 	$(OBJDIR)/MixerToolBar.o \
 	$(OBJDIR)/NoteTrack.o \

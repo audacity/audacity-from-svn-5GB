@@ -22,13 +22,21 @@ LegacyAliasBlockFile::LegacyAliasBlockFile(wxFileName fileName,
                                            sampleCount aliasStart,
                                            sampleCount aliasLen,
                                            int aliasChannel,
-                                           sampleCount summaryLen):
+                                           sampleCount summaryLen,
+                                           bool noRMS):
    PCMAliasBlockFile(fileName, aliasedFile, aliasStart, aliasLen,
                      aliasChannel, 0.0, 0.0, 0.0)
 {
+   sampleFormat format;
+
+   if (noRMS)
+      format = int16Sample;
+   else
+      format = floatSample;
+
    ComputeLegacySummaryInfo(fileName,
-                            summaryLen, floatSample,
-                            &mSummaryInfo,
+                            summaryLen, format,
+                            &mSummaryInfo, noRMS,
                             &mMin, &mMax, &mRMS);
 }
 
@@ -46,7 +54,8 @@ BlockFile *LegacyAliasBlockFile::Copy(wxFileName newFileName)
       new LegacyAliasBlockFile(newFileName,
                                mAliasedFileName, mAliasStart,
                                mLen, mAliasChannel,
-                               mSummaryInfo.totalSummaryBytes);
+                               mSummaryInfo.totalSummaryBytes,
+                               mSummaryInfo.fields < 3);
 
    return newBlockFile;
 }
@@ -63,6 +72,8 @@ void LegacyAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
    xmlFile.Write(wxString::Format("aliaslen='%d' ", mLen));
    xmlFile.Write(wxString::Format("aliaschannel='%d' ", mAliasChannel));
    xmlFile.Write(wxString::Format("summarylen='%d' ", mSummaryInfo.totalSummaryBytes));
+   if (mSummaryInfo.fields < 3)
+      xmlFile.Write(wxString::Format("norms='1' "));
    xmlFile.Write("/>\n");
 }
 
@@ -70,8 +81,10 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
 {
    wxFileName summaryFileName;
    wxFileName aliasFileName;
+   
    int aliasStart=0, aliasLen=0, aliasChannel=0;
    int summaryLen=0;
+   bool noRMS = false;
 
    while(*attrs)
    {
@@ -90,10 +103,12 @@ BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const char **att
           aliasChannel = atoi(value);
        if( !wxStricmp(attr, "summarylen") )
           summaryLen = atoi(value);
+       if( !wxStricmp(attr, "norms") )
+          noRMS = (bool)atoi(value);
    }
 
    return new LegacyAliasBlockFile(summaryFileName, aliasFileName,
                                    aliasStart, aliasLen, aliasChannel,
-                                   summaryLen);
+                                   summaryLen, noRMS);
 }
 

@@ -20,6 +20,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                               int summaryLen,
                               sampleFormat format,
                               SummaryInfo *info,
+                              bool noRMS,
                               float *min, float *max, float *rms);
                         
 
@@ -40,7 +41,8 @@ class LegacyBlockFile : public BlockFile {
    LegacyBlockFile(wxFileName existingFile,
                    sampleFormat format,
                    sampleCount summaryLen,
-                   sampleCount len);
+                   sampleCount len,
+                   bool noRMS);
    virtual ~LegacyBlockFile();
 
    // Reading
