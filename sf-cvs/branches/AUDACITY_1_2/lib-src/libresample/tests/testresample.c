@@ -91,7 +91,7 @@ void runtest(int srclen, double freq, double factor,
 
    for(i=0; i<statlen; i++) {
       double diff = sin((i/freq)/factor) - dst[i];
-      if (diff > 0.05) {
+      if (fabs(diff) > 0.05) {
          if (errcount == 0)
             printf("   First error at i=%d: expected %.3f, got %.3f\n",
                    i, sin((i/freq)/factor), dst[i]);
