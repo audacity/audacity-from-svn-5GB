@@ -15,7 +15,7 @@ Je napsána v jazyce C a C++, s využitím
 <a href="http://www.wxwindows.org/">wxWindows cross-platform toolkit</a>.
 Celý zdrojový kód programu je k dispozici v rámci
 <a href="http://www.gnu.org/copyleft/gpl.html"
->GNU General Public License</a> <a href="http://www.gnu.cz/gplcz.html"
+>GNU General Public License</a> <a href="http://www.supersvet.cz/dokumentace/gnu_gpl_cz.html"
 >(èeský pøeklad)</a>, která pøedevším umožòuje komukoliv upravovat zdrojový kód, pokud zmìny zveøejní.
 Kód je hostován na serveru <a href="http://www.sourceforge.net">SourceForge</a>.
 </p>
