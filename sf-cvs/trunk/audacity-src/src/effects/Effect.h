@@ -94,6 +94,10 @@ class Effect {
       return BUILTIN_EFFECT | PROCESS_EFFECT;
    }
 
+   // The Effect class fully implements the Preview method for you.
+   // Only override it if you need to do preprocessing or cleanup.
+   virtual void Preview();
+
    // Get an unique ID assigned to each registered effect.
    // The first effect will have ID zero.
    int GetID() {
@@ -107,8 +111,6 @@ class Effect {
                  TrackFactory *factory, double *t0, double *t1);
 
    wxString GetPreviewName();
-
-   void Preview();
 
  //
  // protected virtual methods
