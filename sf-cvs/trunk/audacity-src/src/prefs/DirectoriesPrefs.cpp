@@ -62,6 +62,7 @@ PrefsPanel(parent)
          this, -1, FormatSize(GetFreeDiskSpace((char *) (const char *) mTempDir)),
          wxDefaultPosition, wxDefaultSize, 0 );
 
+      mTempDirText = NULL;
       mTempDirText = new wxTextCtrl(
          this, TempDirID, mTempDir,
          wxDefaultPosition, wxSize(160, -1), 0 );
@@ -140,7 +141,9 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
    static wxString tempDir;
    static char tmp[200];
 
-   tempDir = mTempDirText->GetValue();
+   if (mTempDirText)
+      tempDir = mTempDirText->GetValue();
+   else return;
 
 #ifndef __WXMAC__  // the mac GetFreeDiskSpace routine does this automatically
    /* Try to be smart: if the directory doesn't exist, go up the
