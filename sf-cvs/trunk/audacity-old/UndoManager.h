@@ -57,6 +57,8 @@ class UndoManager {
    unsigned int GetCurrentState();
    void GetDescription(unsigned int n, wxString *desc, wxString *size);
    void SetDescription(unsigned int n, wxString desc);
+
+   TrackList *SetStateTo(unsigned int n, double *sel0, double *sel1);
    TrackList *Undo(double *sel0, double *sel1);
    TrackList *Redo(double *sel0, double *sel1);
 

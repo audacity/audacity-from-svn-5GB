@@ -14,6 +14,7 @@
 #include "xpm/Arrow.xpm"
 #include "HistoryWindow.h"
 #include "UndoManager.h"
+#include "Project.h"
 
 enum {
    HistoryListID = 1000,
@@ -22,17 +23,18 @@ enum {
 
 BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
    EVT_LIST_END_LABEL_EDIT(HistoryListID, HistoryWindow::OnLabelChanged)
+   EVT_LIST_ITEM_SELECTED(HistoryListID, HistoryWindow::OnItemSelected)
    EVT_BUTTON(DiscardID, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
-HistoryWindow::HistoryWindow(wxWindow *parent, UndoManager *manager):
+HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 wxDialog(parent, -1, "Undo History", wxDefaultPosition,
-         wxDefaultSize, wxDIALOG_MODAL /* for now */ | wxCAPTION | wxTHICK_FRAME)
+         wxDefaultSize, wxDIALOG_MODELESS | wxCAPTION | wxTHICK_FRAME)
 {
    mTopSizer = new wxBoxSizer(wxVERTICAL);
 
    mList = new wxListCtrl(this, HistoryListID, wxDefaultPosition, wxSize(350, 180),
-                          wxLC_REPORT | wxLC_EDIT_LABELS);
+                          wxLC_REPORT /* | wxLC_EDIT_LABELS */);
    mList->SetSizeHints(350, 180);
 
    wxImageList *imageList = new wxImageList(24, 24); //TODO: free
@@ -76,6 +78,7 @@ wxDialog(parent, -1, "Undo History", wxDefaultPosition,
    }
 
    mManager = manager;
+   mProject = parent;
 
    UpdateDisplay();
 
@@ -92,12 +95,29 @@ void HistoryWindow::UpdateDisplay()
    mList->DeleteAllItems();
    for(unsigned int i = 0; i < mManager->GetNumStates(); i++) {
       wxString desc, size;
+      wxListItem item;
+      
       mManager->GetDescription(i + 1, &desc, &size);
       mList->InsertItem(i, desc, i == mManager->GetCurrentState() - 1 ? 1 : 0);
       mList->SetItem(i, 1, size);
+
+      if(i > mManager->GetCurrentState() - 1) {
+         item.m_itemId = i;
+         item.SetTextColour(*wxLIGHT_GREY);
+         mList->SetItem(item);
+      }
    }
 
    mList->EnsureVisible(mManager->GetCurrentState() - 1);
+   
+   /* I may or may not like this, we'll see */
+   /*
+   wxListItem item;
+   item.m_itemId = mSelected;
+   item.m_state = wxLIST_STATE_SELECTED;
+   mList->SetItem(item);
+   */
+   
    mList->Show();
 
    mLevelsAvailable->SetLabel(wxString::Format("Undo Levels Available: %d",
@@ -112,6 +132,7 @@ void HistoryWindow::UpdateDisplay()
 void HistoryWindow::OnLabelChanged(wxListEvent &event)
 {
    mManager->SetDescription(event.GetIndex() + 1, event.GetItem().m_text);
+   UpdateDisplay();
 }
 
 void HistoryWindow::OnDiscard(wxCommandEvent &event)
@@ -119,6 +140,13 @@ void HistoryWindow::OnDiscard(wxCommandEvent &event)
    mManager->RemoveStates(mDiscardNum->GetValue());
    UpdateDisplay();
 }
+
+void HistoryWindow::OnItemSelected(wxListEvent &event)
+{
+   mSelected = event.GetIndex();
+   mProject->SetStateTo(mSelected + 1);
+   UpdateDisplay();
+}  
 
 HistoryWindow::~HistoryWindow()
 {

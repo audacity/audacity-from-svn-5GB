@@ -21,12 +21,14 @@
 #include <wx/listctrl.h>
 #include <wx/stattext.h>
 
+
+class AudacityProject;
 class UndoManager;
 
 class HistoryWindow :public wxDialog {
 
  public:
-   HistoryWindow(wxWindow * parent, UndoManager *manager);
+   HistoryWindow(AudacityProject * parent, UndoManager *manager);
    ~HistoryWindow();
 
    void UpdateDisplay();
@@ -35,13 +37,18 @@ class HistoryWindow :public wxDialog {
 
    void OnDiscard(wxCommandEvent & event);
    void OnLabelChanged(wxListEvent & event);
+   void OnItemSelected(wxListEvent & event);
 
+   AudacityProject *mProject;
+   
    wxBoxSizer *mTopSizer;
    wxListCtrl *mList;
    wxSpinCtrl *mDiscardNum;
    wxButton   *mDiscard;
    wxStaticText *mLevelsAvailable;
    UndoManager *mManager;
+
+   int mSelected;
 
  public:
    DECLARE_EVENT_TABLE()

@@ -125,6 +125,20 @@ void UndoManager::PushState(TrackList * l, double sel0, double sel1,
    current++;
 }
 
+TrackList *UndoManager::SetStateTo(unsigned int n, double *sel0, double *sel1)
+{
+   n -= 1;
+   
+   wxASSERT(n < stack.Count());
+
+   current = n;
+
+   *sel0 = stack[current]->sel0;
+   *sel1 = stack[current]->sel1;
+
+   return stack[current]->tracks;
+}
+
 TrackList *UndoManager::Undo(double *sel0, double *sel1)
 {
    wxASSERT(UndoAvailable());

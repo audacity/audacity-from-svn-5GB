@@ -1229,6 +1229,15 @@ void AudacityProject::PopState(TrackList * l)
    }
 }
 
+void AudacityProject::SetStateTo(unsigned int n)
+{
+   TrackList *l = mUndoManager.SetStateTo(n, &mViewInfo.sel0, &mViewInfo.sel1);
+   PopState(l);
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
+
 //
 // Clipboard methods
 //

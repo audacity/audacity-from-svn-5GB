@@ -89,7 +89,6 @@ void AudacityProject::CreateMenuBar()
    mEditMenu = new wxMenu();
    mEditMenu->Append(UndoID, "&Undo\tCtrl+Z");
    mEditMenu->Append(RedoID, "&Redo\tCtrl+R");
-   mEditMenu->Append(UndoHistoryID, "Undo History");
    mEditMenu->AppendSeparator();
    mEditMenu->Append(CutID, "Cut\tCtrl+X");
    mEditMenu->Append(CopyID, "Copy\tCtrl+C");
@@ -110,6 +109,7 @@ void AudacityProject::CreateMenuBar()
    mViewMenu->Append(ZoomOutID, "Zoom &Out\tCtrl+3");
    mViewMenu->Append(ZoomFitID, "Fit in &Window\tCtrl+F");
    mViewMenu->AppendSeparator();
+   mViewMenu->Append(UndoHistoryID, "History");
    mViewMenu->Append(PlotSpectrumID, "&Plot Spectrum\tCtrl+U");
 
 #ifndef __WXMAC__
@@ -467,6 +467,9 @@ void AudacityProject::Undo(wxCommandEvent & event)
    FixScrollbars();
    //UpdateMenus();
    mTrackPanel->Refresh(false);
+
+   if(mHistoryWindow)
+      mHistoryWindow->UpdateDisplay();
 }
 
 void AudacityProject::Redo(wxCommandEvent & event)
@@ -482,6 +485,9 @@ void AudacityProject::Redo(wxCommandEvent & event)
    FixScrollbars();
    //UpdateMenus();
    mTrackPanel->Refresh(false);
+
+   if(mHistoryWindow)
+      mHistoryWindow->UpdateDisplay();
 }
 
 void AudacityProject::UndoHistory(wxCommandEvent & event)

@@ -127,6 +127,8 @@ class AudacityProject:public wxFrame,
 
    virtual void AS_SetRate(double rate);
 
+   void SetStateTo(unsigned int n);
+
  private:
 
    // Private Methods
