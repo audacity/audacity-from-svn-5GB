@@ -136,7 +136,7 @@
       AlignGroupEndSelStartID,
       AlignGroupEndSelEndID,
       //*DUMMY SEPARATOR*/
-      NewWaveTrackID = AlignZeroID + 2,
+      NewWaveTrackID = AlignGroupEndSelEndID + 2,
       NewLabelTrackID,
       /*DUMMY SEPARATOR*/
       RemoveTracksID = NewLabelTrackID + 2,
