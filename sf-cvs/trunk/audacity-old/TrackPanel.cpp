@@ -1564,6 +1564,7 @@ void TrackPanel::DrawMute(wxDC * dc, wxRect & r, VTrack * t, bool down)
 
    long textWidth, textHeight;
    wxString str = "Mute";
+   SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
    dc->DrawText(str, bev.x + (bev.width - textWidth)/2, bev.y + 2);
 
@@ -1580,6 +1581,7 @@ void TrackPanel::DrawSolo(wxDC * dc, wxRect & r, VTrack * t, bool down)
 
    long textWidth, textHeight;
    wxString str = "Solo";
+   SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
    dc->DrawText(str, bev.x + (bev.width - textWidth)/2, bev.y + 2);
 
