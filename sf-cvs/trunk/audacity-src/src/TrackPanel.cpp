@@ -658,6 +658,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    memDC.SelectObject(*mBitmap);
 
    DrawTracks(&memDC);
+   DrawRuler(&memDC);
    UpdateIndicator(&memDC);
 
    if(!mIsSelecting && mViewInfo->sel0 == mViewInfo->sel1)
