@@ -21,6 +21,8 @@
 #include "ImportOGG.h"
 
 #ifndef USE_LIBVORBIS
+/* BPF There is no real reason to compile without LIBVORBIS, but if you do, you will needs this header */
+#include "ImportPlugin.h"  
 
 void GetOGGImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
