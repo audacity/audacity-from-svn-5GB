@@ -1781,6 +1781,8 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
 void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 {
    // Implement sliding between different tracks
+ 
+   //find which track we are dragging (mouseTrack)
    WaveTrackArray tracks = mTracks->GetWaveTrackArray(false);
    WaveTrack* mouseTrack = NULL;
    for (int i=0; i<(int)tracks.GetCount(); i++)
@@ -1795,6 +1797,9 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
       }
    }
 
+
+   //If the mouse is over a track that isn't the captured track,
+   //drag the clip to the mousetrack
    if (mCapturedClip >= 0 && mouseTrack && mouseTrack != mCapturedTrack)
    {
       // Make sure we always have the first linked track of a stereo track
@@ -1816,13 +1821,16 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    if (mSlideUpDownOnly)
       return;
       
+
    double samplerate = ((WaveTrack *)mCapturedTrack)->GetRate();
 
    double selend = mViewInfo->h +
        ((event.m_x - mCapturedRect.x) / mViewInfo->zoom);
 
+   //the selection end should be no less than 0.0:
    clip_bottom(selend, 0.0);
 
+   //Change selend from a time to a pixel
    selend = rint(samplerate*selend) / samplerate;
 
    if (selend != mSelStart) {
