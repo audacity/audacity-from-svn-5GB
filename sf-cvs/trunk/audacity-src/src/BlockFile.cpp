@@ -242,8 +242,8 @@ void BlockFile::GetMinMax(sampleCount start, sampleCount len,
                   float *outMin, float *outMax, float *outRMS)
 {
    // TODO: actually use summaries
-   float blockData[len];
-   this->ReadData((samplePtr)blockData, floatSample, start, len);
+   samplePtr blockData = NewSamples(len, floatSample);
+   this->ReadData(blockData, floatSample, start, len);
 
    float min = FLT_MAX;
    float max = -FLT_MAX;
@@ -257,6 +257,8 @@ void BlockFile::GetMinMax(sampleCount start, sampleCount len,
          min = blockData[i];
       sumsq = (blockData[i] * blockData[i]);
    }
+
+   DeleteSamples(blockData);
 
    *outMin = min;
    *outMax = max;
@@ -292,9 +294,7 @@ void BlockFile::GetMinMax(float *outMin, float *outMax, float *outRMS)
 bool BlockFile::Read256(float *buffer,
                         sampleCount start, sampleCount len)
 {
-   wxASSERT(b);
    wxASSERT(start >= 0);
-   wxASSERT(start + len <= ((b->len + 255) / 256));
 
    char *summary = new char[mSummaryInfo.totalSummaryBytes];
    if (!this->ReadSummary(summary)) {
@@ -409,12 +409,14 @@ void AliasBlockFile::WriteSummary()
 
    // To build the summary data, call ReadData (implemented by the
    // derived classes) to get the sample data
-   float sampleData[mAliasLen];
-   this->ReadData((samplePtr)sampleData, floatSample, 0, mAliasLen);
+   samplePtr sampleData = NewSamples(mAliasLen, floatSample);
+   this->ReadData(sampleData, floatSample, 0, mAliasLen);
 
-   void *summaryData = BlockFile::CalcSummary((samplePtr)sampleData, mAliasLen,
+   void *summaryData = BlockFile::CalcSummary(sampleData, mAliasLen,
                                             floatSample);
    summaryFile.Write(summaryData, mSummaryInfo.totalSummaryBytes);
+
+   DeleteSamples(sampleData);
 }
 
 AliasBlockFile::~AliasBlockFile()
