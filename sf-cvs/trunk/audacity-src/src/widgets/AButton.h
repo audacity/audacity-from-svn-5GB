@@ -33,13 +33,13 @@ class AButton:public wxWindow {
            wxImage *over,
            wxImage *down,
            wxImage *dis,
-           bool sticky);
+           bool processdownevents);
 
    AButton(wxWindow * parent, wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
            char **upXPM, char **overXPM, char **downXPM, char **disXPM,
-           bool sticky           
+           bool processdownevents           
            );
 
    virtual ~ AButton();
