@@ -15,6 +15,31 @@
 
 #include "xpm/AudacityLogo.xpm"
 
+class Eraser: public wxWindow {
+public:
+
+  Eraser(wxWindow *parent, wxWindowID id,
+		  const wxPoint& pos,
+		  const wxSize& size): wxWindow(parent, id, pos, size) {}
+  virtual void OnPaint(wxPaintEvent& event)
+  {
+    wxPaintDC dc(this);
+    dc.SetPen(*wxWHITE_PEN);
+    dc.SetBrush(*wxWHITE_BRUSH);
+    int x, y;
+    GetClientSize(&x, &y);
+    dc.DrawRectangle(0, 0, x, y);
+  }
+public:
+
+  DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(Eraser, wxWindow)
+  EVT_PAINT(Eraser::OnPaint)
+END_EVENT_TABLE()
+
+
 // ----------------------------------------------------------------------------
 // icons
 // ----------------------------------------------------------------------------
@@ -34,7 +59,7 @@ AboutDialog::AboutDialog(wxWindow *parent)
 {
   Centre();
 
-  wxWindow *panel = new wxWindow(this, -1,
+  Eraser *panel = new Eraser(this, -1,
 								 wxPoint(0, 0),
 								 wxSize(400, 400));
   panel->SetBackgroundColour(wxColour(255, 255, 255));
@@ -46,7 +71,7 @@ AboutDialog::AboutDialog(wxWindow *parent)
 					  "Jason Cohen, \n"
 					  "Robert Leidle, "
 					  "Mark Tomlinson, and Joshua Haberman.\n"
-					  "Logo by Harvey Lubin.\n\n"
+					  "Logo by Harvey Lubin\n\n"
 					  "http://www.cs.cmu.edu/~music/audacity/");
 
   new wxStaticText( panel, -1, topMessage, wxPoint(10, 10), wxSize(380, 20),
