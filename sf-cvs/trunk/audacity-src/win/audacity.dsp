@@ -110,6 +110,14 @@ SOURCE=..\src\AColor.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\APalette.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\APalette.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\AStatus.cpp
 # End Source File
 # Begin Source File
@@ -184,14 +192,6 @@ SOURCE=..\src\DiskFunctions.cpp
 # Begin Source File
 
 SOURCE=..\src\DiskFunctions.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\EditToolBar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\EditToolBar.h
 # End Source File
 # Begin Source File
 
@@ -708,14 +708,6 @@ SOURCE=.\wx\msw\bullseye.cur
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\ControlToolBar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ControlToolBar.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\wx\msw\error.ico
 # End Source File
 # Begin Source File
@@ -769,14 +761,6 @@ SOURCE=.\wx\msw\size.cur
 # Begin Source File
 
 SOURCE=.\wx\msw\tip.ico
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ToolBar.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\ToolBar.h
 # End Source File
 # Begin Source File
 
