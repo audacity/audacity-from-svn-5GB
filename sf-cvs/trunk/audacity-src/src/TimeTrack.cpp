@@ -145,7 +145,7 @@ void TimeTrack::WriteXML(int depth, FILE *fp)
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
    fprintf(fp, "<timetrack ");
-   fprintf(fp, "name=\"%s\" ", mName.c_str());
+   fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
    fprintf(fp, "channel=\"%d\" ", mChannel);
    fprintf(fp, "offset=\"%f\" ", mOffset);
    fprintf(fp, ">\n");

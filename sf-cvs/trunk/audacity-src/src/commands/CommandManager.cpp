@@ -569,9 +569,9 @@ void CommandManager::WriteXML(int depth, FILE *fp)
          label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
          
          fprintf(fp, "<command name=\"%s\" label=\"%s\" key=\"%s\" />\n",
-                 (const char *)mCommandList[j]->name,
-                 (const char *)label,
-                 (const char *)mCommandList[j]->key);
+                 XMLEsc(mCommandList[j]->name).c_str(),
+                 XMLEsc(label).c_str(),
+                 XMLEsc(mCommandList[j]->key).c_str());
       }
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");

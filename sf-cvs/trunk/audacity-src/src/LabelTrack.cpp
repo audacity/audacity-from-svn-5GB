@@ -390,7 +390,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
    fprintf(fp, "<labeltrack ");
-   fprintf(fp, "name=\"%s\" ", mName.c_str());
+   fprintf(fp, "name=\"%s\" ", XMLEsc(mName).c_str());
    fprintf(fp, "numlabels=\"%d\">\n", len);
 
    for (i = 0; i < len; i++) {
@@ -398,7 +398,7 @@ void LabelTrack::WriteXML(int depth, FILE *fp)
          fprintf(fp, "\t");
       fprintf(fp, "<label t=\"%.8g\" title=\"%s\"/>\n",
               mLabels[i]->t,
-              (const char *)mLabels[i]->title);
+              XMLEsc(mLabels[i]->title).c_str());
    }
    for(j=0; j<depth; j++)
       fprintf(fp, "\t");
