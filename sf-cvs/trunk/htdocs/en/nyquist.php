@@ -218,7 +218,7 @@ case sensitive.  They are converted to uppercase internally.</b>
 
 <p>
 <?php print "<a href=nyquist2.php?$langLinkStr>";
-?><b>Next page</b></a>
+?><b>Next page: Programming in Nyquist</b></a>
 </p>
 
 <?php BoxBottom(); ?>

@@ -143,7 +143,8 @@ you can add two sounds (or envelopes) with the <tt>add</tt> function.
 </p>
 
 <p>
-Nyquist comes with a number of common filters built-in:
+Nyquist comes with a number of common filters built-in.  Here are
+some of the more common ones:
 </p>
 
 <table border=0>
@@ -234,7 +235,7 @@ For more information, please read the
 
 <p>
 <?php print "<a href=nyquist3.php?$langLinkStr>";
-?><b>Next page</b></a>
+?><b>Next page: Creating Nyquist plug-ins</b></a>
 </p>
 
 <?php BoxBottom(); ?>
