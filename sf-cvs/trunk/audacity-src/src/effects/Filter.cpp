@@ -334,7 +334,7 @@ void FilterPanel::OnMouseEvent(wxMouseEvent & event)
       Refresh(false);
 
    if (event.ButtonUp()) {
-      #if (wxMAJOR_VERSION >= 2 && wxMINOR_VERSION >= 3)
+      #ifdef USE_HASCAPTURE
       if (HasCapture())
       #endif
       ReleaseMouse();

@@ -316,6 +316,14 @@ SOURCE=..\src\Project.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\RingBuffer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\RingBuffer.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\SampleFormat.cpp
 # End Source File
 # Begin Source File
