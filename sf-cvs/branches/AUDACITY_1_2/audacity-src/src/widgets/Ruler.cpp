@@ -192,10 +192,10 @@ void Ruler::OfflimitsPixels(int start, int end)
          mLength = mRight-mLeft;
       else
          mLength = mBottom-mTop;      
-      mUserBits = new int[mLength];
-      for(i=0; i<mLength; i++)
+      mUserBits = new int[mLength+1];
+      for(i=0; i<=mLength; i++)
          mUserBits[i] = 0;
-      mUserBitLen  = mLength;
+      mUserBitLen  = mLength+1;
    }
 
    if (end < start) {
@@ -206,8 +206,8 @@ void Ruler::OfflimitsPixels(int start, int end)
 
    if (start < 0)
       start = 0;
-   if (end > mLength-1)
-      end = mLength-1;
+   if (end > mLength)
+      end = mLength;
 
    for(i=start; i<=end; i++)
       mUserBits[i] = 1;
@@ -247,7 +247,7 @@ void Ruler::Invalidate()
       delete [] mBits;
       mBits = NULL;
    }
-   if (mUserBits && mLength != mUserBitLen) {
+   if (mUserBits && mLength+1 != mUserBitLen) {
       delete[] mUserBits;
       mUserBits = NULL;
       mUserBitLen = 0;
