@@ -23,76 +23,6 @@
 #define DLOG_HEIGHT 400
 #endif
 
-// MB: Figure out how to translate this
-// (problem is the VERSION_STRING macro in the middle)
-
-const char *creditText =
-  "<html>"
-  "<body bgcolor=\"#ffffff\">"
-  "<font size=1>"
-  "<center>"
-  "<h3>Audacity " AUDACITY_VERSION_STRING "</h3>"
-  "A New Digital Audio Editor"
-  "</center>"
-  "<p>"
-  "Audacity is a free program being written by a team of developers using "
-  "Sourceforge, an online service for open-source projects.  "
-  "It is based on the wxWindows toolkit and is available for "
-  "Windows, MacOS, and Linux."
-  "<p>"
-  "This program is still in beta!  Many people find it very useful "
-  "and stable enough for everyday use, but it is not finished and "
-  "comes with no guarantee!  We depend on your feedback, so "
-  "please visit our website and give us your bug reports and "
-  "feature requests."
-  "<p>"
-  "http://audacity.sourceforge.net/"
-  "<p>"
-  "<center><b>Credits</b></center>"
-  "<p>"
-  "<table border=0>"
-  "<tr>"
-  "<td>Dominic Mazzoni</td>"
-  "<td>Project leader and primary programmer</td>"
-  "</tr>"
-  "<tr>"
-  "<td>Joshua Haberman</td>"
-  "<td>Preferences dialog, MP3 importing and exporting, and general development</td>"
-  "</tr>"
-  "<tr>"
-  "<td>Roger Dannenberg</td>"
-  "<td>Audio and MIDI I/O Libraries</td>"
-  "</tr>"
-  "<tr>"
-  "<td>Nasca Octavian Paul</td>"
-  "<td>Effects programming</td>"
-  "</tr>"
-  "<tr>"
-  "<td>Harvey Lubin</td>"
-  "<td>Main Logo</td>"
-  "</tr>"
-  "<tr>"
-  "<td>Tom Woodhams</td>"
-  "<td>Aqua Graphics (MacOS)</td>"
-  "</tr>"
-  "</table>"
-  "<p>"
-  "<center>"
-  "<b>Other contributors:</b>"
-  "<p>"
-  "<br>"
-  "Dave Beydler<br>"
-  "Jason Cohen<br>"
-  "Robert Leidle<br>"
-  "Logan Lewis<br>" 
-  "Jason Pepas<br>"
-  "Mark Tomlinson<br>"
-  "David Topper<br>"
-  "Rudy Trubitt<br>"
-  "</center>"
-  "</font>"
-  "</body>"
-  "</html>";
 
 class Eraser:public wxWindow {
  public:
@@ -129,10 +59,94 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
 
     IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
-    AboutDialog::AboutDialog(wxWindow * parent)
+AboutDialog::AboutDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("About Audacity..."),
          wxDefaultPosition, wxSize(400, DLOG_HEIGHT))
 {
+   wxString versionStr = AUDACITY_VERSION_STRING;
+
+   wxString par1Str = _(
+     "Audacity is a free program being written by a team of developers "
+     "using Sourceforge, an online service for open-source projects.  "
+     "It is based on the wxWindows toolkit and is available for "
+     "Windows, MacOS, and Linux.");
+
+   wxString par2Str = _(
+     "This program is still in beta!  Many people find it very useful "
+     "and stable enough for everyday use, but it is not finished and "
+     "comes with no guarantee!  We depend on your feedback, so "
+     "please visit our website and give us your bug reports and "
+     "feature requests." );
+
+   wxString creditStr; 
+
+   puts(_("A New Digital Audio Editor"));
+   
+   creditStr = 
+      "<html>"
+      "<body bgcolor=\"#ffffff\">"
+      "<font size=1>"
+      "<center>"
+      "<h3>Audacity " + versionStr + "</h3>"
+      + _("A New Digital Audio Editor") +
+      "</center>"
+      "<p>"
+      + par1Str +
+      "<p>"
+      + par2Str +
+      "<p>"
+      "http://audacity.sourceforge.net/"
+      "<p>"
+      "<center><b>" + _("Credits") + "</b></center>"
+      "<p>"
+      "<table border=0>"
+      "<tr>"
+      "<td>Dominic Mazzoni</td>"
+      "<td>" + _("Project leader and primary programmer") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Joshua Haberman</td>"
+      "<td>" + _("Preferences dialog, MP3 importing and exporting,"
+                "and general development") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Roger Dannenberg</td>"
+      "<td>" + _("Audio and MIDI I/O Libraries") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Nasca Octavian Paul</td>"
+      "<td>" + _("Effects programming") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Harvey Lubin</td>"
+      "<td>" + _("Main Logo") + "</td>"
+      "</tr>"
+      "<tr>"
+      "<td>Tom Woodhams</td>"
+      "<td>" + _("Aqua Graphics (MacOS)") + "</td>"
+      "</tr>"
+      "</table>"
+      "<p>"
+      "<center>"
+      "<b>" + _("Other contributors:") + "</b>"
+      "<p>"
+      "<br>"
+      "Dave Beydler<br>"
+      "Jason Cohen<br>"
+      "Robert Leidle<br>"
+      "Logan Lewis<br>" 
+      "Jason Pepas<br>"
+      "Mark Tomlinson<br>"
+      "David Topper<br>"
+      "Rudy Trubitt<br>"
+      "</center>"
+      "</font>"
+      "</body>"
+      "</html>";
+   
+   puts("");
+   puts(creditStr);
+   
    Centre();
 
    Eraser *panel = new Eraser(this, -1,
@@ -140,7 +154,6 @@ BEGIN_EVENT_TABLE(Eraser, wxWindow)
                               wxSize(400, DLOG_HEIGHT));
    panel->SetBackgroundColour(wxColour(255, 255, 255));
 
-   wxString creditStr = creditText;
    wxHtmlWindow *html = new wxHtmlWindow(panel, -1,
                                          wxPoint(10, 210),
                                          wxSize(380, 150));
