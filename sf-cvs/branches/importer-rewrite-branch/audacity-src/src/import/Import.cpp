@@ -42,6 +42,7 @@ Importer::Importer()
    // order is significant.  If none match, they will all be tried
    // in the order defined here.
    GetOGGImportPlugin(mImportPluginList, mUnusableImportPluginList);
+   //GetMP3ImportPlugin(mImportPluginList, mUnusableImportPluginList);
 
    // TODO: others
 }
@@ -80,20 +81,20 @@ int Importer::Import(wxString fName,
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
    while(importPluginNode)
    {
-      mSelectedPlugin = importPluginNode->GetData();
-      if( mSelectedPlugin->SupportsExtension(extension) )
+      ImportPlugin *plugin = importPluginNode->GetData();
+      if( plugin->SupportsExtension(extension) )
       {
-         if( mSelectedPlugin->Open(fName) == true )
+         mInFile = plugin->Open(fName);
+         if( mInFile != NULL )
          {
-            mSelectedPlugin->SetProgressCallback(progressCallback, userData);
-            if( mSelectedPlugin->Import(trackFactory, tracks, &numTracks) == true )
+            mInFile->SetProgressCallback(progressCallback, userData);
+            if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
             {
                // success!
-               mSelectedPlugin->Close();
+               delete mInFile;
                return numTracks;
             }
-            mSelectedPlugin->Close();
-            break;
+            delete mInFile;
          }
       }
       importPluginNode = importPluginNode->GetNext();
@@ -105,18 +106,18 @@ int Importer::Import(wxString fName,
    importPluginNode = mImportPluginList->GetFirst();
    while(importPluginNode)
    {
-      mSelectedPlugin = importPluginNode->GetData();
-      if( mSelectedPlugin->Open(fName) == true )
+      ImportPlugin *plugin = importPluginNode->GetData();
+      mInFile = plugin->Open(fName);
+      if( mInFile != NULL )
       {
-         mSelectedPlugin->SetProgressCallback(progressCallback, userData);
-         if( mSelectedPlugin->Import(trackFactory, tracks, &numTracks) == true )
+         mInFile->SetProgressCallback(progressCallback, userData);
+         if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
          {
             // success!
-            mSelectedPlugin->Close();
+            delete mInFile;
             return numTracks;
          }
-         mSelectedPlugin->Close();
-         break;
+         delete mInFile;
       }
       importPluginNode = importPluginNode->GetNext();
    }
@@ -149,7 +150,7 @@ int Importer::Import(wxString fName,
 
 wxString Importer::GetFileDescription()
 {
-   return mSelectedPlugin->GetFileDescription();
+   return mInFile->GetFileDescription();
 }
 
 

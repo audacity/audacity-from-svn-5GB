@@ -11,7 +11,8 @@
 #ifndef __AUDACITY_IMPORT_OGG__
 #define __AUDACITY_IMPORT_OGG__
 
-#include "ImportPlugin.h"
+class ImportPluginList;
+class UnusableImportPluginList;
 
 void GetOGGImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList);

@@ -87,6 +87,7 @@ OBJS = \
 	$(OBJDIR)/export/ExportPCM.o \
 	$(OBJDIR)/export/ExportCL.o \
 	$(OBJDIR)/import/Import.o \
+	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportOGG.o \
 	$(OBJDIR)/prefs/PrefsDialog.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.o \
@@ -103,7 +104,6 @@ OBJS = \
 
 TEMPORARILY_DISABLED_IMPORTER_OBJS = \
 	$(OBJDIR)/import/ImportMIDI.o \
-	$(OBJDIR)/import/ImportMP3.o \
 	$(OBJDIR)/import/ImportPCM.o \
 	$(OBJDIR)/import/ImportRaw.o \
 
