@@ -68,6 +68,46 @@ AboutDialog::AboutDialog(wxWindow * parent)
 {
    wxString versionStr = AUDACITY_VERSION_STRING;
 
+   wxString informationStr;
+
+   #if MP3SUPPORT
+   informationStr += _("MP3 importing enabled");
+   #else
+   informationStr += _("MP3 importing disabled");
+   #endif
+   informationStr += "<br>\n";
+
+   #if USE_LIBVORBIS
+   informationStr += _("Ogg Vorbis importing enabled");
+   #else
+   informationStr += _("Ogg Vorbis importing disabled");
+   #endif
+   informationStr += "<br>\n";
+
+   #if USE_LIBID3TAG
+   informationStr += _("ID3 tag exporting enabled");
+   #else
+   informationStr += _("ID3 tag exporting disabled");
+   #endif
+   informationStr += "<br>\n";
+
+   #ifdef __WXGTK__
+   # if USE_LADSPA
+   informationStr += _("LADSPA plug-in suppport enabled");
+   # else
+   informationStr += _("LADSPA plug-in suppport disabled");
+   # endif
+   informationStr += "<br>\n";
+   #endif
+
+   // wxWindows version:
+   informationStr += wxVERSION_STRING;
+   informationStr += "<br>\n";
+
+   // Current date
+   informationStr += _("Program build date:");
+   informationStr += " " __DATE__ "<br>\n";
+
    wxString par1Str = _(
      "Audacity is a free program being written by a team of developers "
      "using Sourceforge, an online service for open-source projects.  "
@@ -94,6 +134,10 @@ AboutDialog::AboutDialog(wxWindow * parent)
       + par2Str +
       "<p>"
       "http://audacity.sourceforge.net/"
+      "<p>"
+      "<center><b>" + _("Information") + "</b></center>"
+      "<p>"
+      + informationStr +
       "<p>"
       "<center><b>" + _("Credits") + "</b></center>"
       "<p>"
