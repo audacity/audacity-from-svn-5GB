@@ -4,6 +4,9 @@
         Permission is granted for unrestricted non-commercial use
 
 HISTORY
+02-Apr-04   Matt Brubeck (patch from Stephen Gildea)
+                Remove broken PMAX-specific code (fixes 
+                compilation on Linux/MIPS).
 28-Apr-03   Mazzoni
                 Added declarations for path.c (new file)
 30-Mar-88	Dale Amon CMU-CSD
@@ -11,18 +14,7 @@ HISTORY
                 are reasonable.
 */
 
-/* system specific definitions */
-
-/* for PMAX */
-/* note: I'm using the following test to
- * detect a PMAX -- there may be a better way.
- */
-#if defined(mips) && !defined(sgi)
-char *getenv(char *name); /* for PMAX */
-#else
-#include <stdlib.h> /* normal case */
-#endif
-
+#include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <setjmp.h>
@@ -140,7 +132,6 @@ extern long ptrtoabs();
 
 /* Mac Metrowerks CW 6 */
 #ifdef __MWERKS__
-#include <stdlib.h>
 #define LSC
 #undef PATHNAMES
 #undef FILETABLE
