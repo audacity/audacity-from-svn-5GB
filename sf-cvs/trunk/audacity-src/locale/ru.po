@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"POT-Creation-Date: 2003-02-25 14:15+0300\n"
-"PO-Revision-Date: 2003-02-25 16:40+0300\n"
+"POT-Creation-Date: 2003-02-28 11:58+0300\n"
+"PO-Revision-Date: 2003-02-28 12:04+0300\n"
 "Last-Translator: Alexandre Prokoudine <avp@altlinux.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -823,7 +823,7 @@ msgstr "'%s' изменено на %s"
 #: ../src/TrackPanel.cpp:3054
 #, c-format
 msgid "Changed '%s' to %s display"
-msgstr ""
+msgstr "Отображение '%s' изменено на '%s'"
 
 #: ../src/TrackPanel.cpp:908 ../src/TrackPanel.cpp:925
 #: ../src/TrackPanel.cpp:1964
@@ -838,7 +838,7 @@ msgstr "Изменена громкость дорожки"
 msgid "Changed track panning"
 msgstr "Изменён баланс каналов дорожки"
 
-#: ../src/prefs/DirectoriesPrefs.cpp:208
+#: ../src/prefs/DirectoriesPrefs.cpp:213
 msgid ""
 "Changes to temporary directory will not take effect until Audacity is "
 "restarted"
@@ -1204,12 +1204,12 @@ msgstr "Устройство:"
 msgid "Directories"
 msgstr "Каталоги"
 
-#: ../src/prefs/DirectoriesPrefs.cpp:175
+#: ../src/prefs/DirectoriesPrefs.cpp:180
 #, c-format
 msgid "Directory %s does not exist. Create it?"
 msgstr "Каталог %s не существует. Создать его?"
 
-#: ../src/prefs/DirectoriesPrefs.cpp:196
+#: ../src/prefs/DirectoriesPrefs.cpp:201
 #, c-format
 msgid "Directory %s is not writable"
 msgstr "У вас нет прав на запись в каталог %s"
@@ -1355,7 +1355,7 @@ msgstr "Эквализация"
 msgid "Equalization..."
 msgstr "Эквализация..."
 
-#: ../src/prefs/DirectoriesPrefs.cpp:198
+#: ../src/prefs/DirectoriesPrefs.cpp:203
 msgid "Error"
 msgstr "Ошибка"
 
@@ -1954,7 +1954,7 @@ msgstr "Новая дорожка &времени"
 msgid "New Peak Amplitude (dB):"
 msgstr "Новая пиковая амплитуда (Дб):"
 
-#: ../src/prefs/DirectoriesPrefs.cpp:177
+#: ../src/prefs/DirectoriesPrefs.cpp:182
 msgid "New Temporary Directory"
 msgstr "Новый каталог для временных файлов"
 
@@ -2801,7 +2801,7 @@ msgstr "Дорожек с заметками для экспорта нет"
 
 #: ../src/AudioIO.cpp:87
 msgid "There was an error initializing the audio i/o layer.\n"
-msgstr ""
+msgstr "Произошла ошибка при инициализации слоя audio i/o.\n"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:50
 msgid ""
