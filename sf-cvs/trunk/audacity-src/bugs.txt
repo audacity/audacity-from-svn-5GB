@@ -72,7 +72,6 @@ Known bugs to fix:
 -  when the top track of a stereo track is shrunk so that
   the 'solo' and 'mute' fields appear beside the lower track, these
   buttons no longer work
-- layout of Edit toolbar buttons sucks in Windows(tm) (my fault)
 - drag-floating toolbars produces wierd ghosting of other previous
   images in Windows(tm).
 - Skip-to-beginning/skip-to-end go to the absolute beginning or the
@@ -91,6 +90,16 @@ Known bugs to fix:
   Wasn't present in 1.0 or 1.1.
 - Spacebar to play and stop only works after clicking an empty part
   of the the control bar in MacOS X. Wasn't in 1.0 or 1.1.
+- In Linux, if you are playing a track and you hit the
+  'stop' button at the same time that the track stops playing
+  by itself (because it reaches the end of the selection or
+  the end of the track), the entire X display becomes
+  unresponsive.  The mouse will still work, but you can't
+  click on anything in any window or panel. The only way to
+  proceed is to ctrl-alt-f1 to a terminal and kill the
+  audacity process.  This happens for me using sawfish2 and
+  gnome2.
+ 
 -----------------------------------------------------------
 Possible bugs to investigate:
 -----------------------------------------------------------
