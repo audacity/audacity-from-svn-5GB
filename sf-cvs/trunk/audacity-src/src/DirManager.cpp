@@ -32,74 +32,74 @@
 
 int DirManager::numDirManagers = 0;
 int DirManager::fileIndex = 0;
-bool DirManager::firstCtor = true;
 
 unsigned int DirManager::defaultHashTableSize = 10000;
 
 wxString DirManager::temp;
 
+// Static Init Method
+
+bool DirManager::InitDirManager()
+{
+   // We need to find a temp directory location.
+   
+   wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
+   wxString tempDefaultLoc = wxGetApp().defaultTempDir;
+   
+   temp = "";
+   
+   #ifdef __WXGTK__         
+   if (tempFromPrefs.GetChar(0) != '/')
+      tempFromPrefs = "";
+   #endif
+
+   // Stop wxWindows from printing its own error messages
+   
+   wxLogNull logNo;
+   
+   // Try temp dir that was stored in prefs first
+   
+   if (tempFromPrefs != "") {
+      if (wxPathExists(tempFromPrefs))
+         temp = tempFromPrefs;
+      else if (wxMkdir(tempFromPrefs))
+         temp = tempFromPrefs;
+   }
+
+   // If that didn't work, try the default location
+   
+   if (temp=="" && tempDefaultLoc != "") {
+      if (wxPathExists(tempDefaultLoc))
+         temp = tempDefaultLoc;
+      else if (wxMkdir(tempDefaultLoc))
+         temp = tempDefaultLoc;
+   }
+
+   if (temp != "") {
+      // Success
+      gPrefs->Write("/Directories/TempDir", temp);
+      return true;
+   }
+   else {
+      wxMessageBox(_("Audacity could not find a place to store "
+                     "temporary files.\n"
+                     "Please enter an appropriate "
+                     "directory in the preferences dialog."));
+      
+      PrefsDialog dialog(NULL);
+      dialog.ShowTempDirPage();
+      dialog.ShowModal();
+      
+      wxMessageBox(_("Audacity is now going to exit.  Please launch "
+                     "Audacity again to use the new temporary directory."));
+      return false;
+   }
+}
+
 // Methods
 
 DirManager::DirManager()
 {
-   if (firstCtor) {
-      // The first time a DirManager is created, we need to find
-      // a temp directory location.
-
-      firstCtor = false;
-
-      wxString tempFromPrefs = gPrefs->Read("/Directories/TempDir", "");
-      wxString tempDefaultLoc = wxGetApp().defaultTempDir;
-
-      temp = "";
-
-      #ifdef __WXGTK__         
-      if (tempFromPrefs.GetChar(0) != '/')
-         tempFromPrefs = "";
-      #endif
-
-      // Stop wxWindows from printing its own error messages
-
-      wxLogNull logNo;
-
-      // Try temp dir that was stored in prefs first
-
-      if (tempFromPrefs != "") {
-         if (wxPathExists(tempFromPrefs))
-            temp = tempFromPrefs;
-         else if (wxMkdir(tempFromPrefs))
-            temp = tempFromPrefs;
-      }
-
-      // If that didn't work, try the default location
-
-      if (temp=="" && tempDefaultLoc != "") {
-         if (wxPathExists(tempDefaultLoc))
-            temp = tempDefaultLoc;
-         else if (wxMkdir(tempDefaultLoc))
-            temp = tempDefaultLoc;
-      }
-
-      if (temp != "") {
-         // Success
-         gPrefs->Write("/Directories/TempDir", temp);
-      }
-      else {
-         wxMessageBox(_("Audacity could not find a place to store "
-                        "temporary files.\n"
-                        "Please enter an appropriate "
-                        "directory in the preferences dialog."));
-
-         PrefsDialog dialog(NULL);
-         dialog.ShowTempDirPage();
-         dialog.ShowModal();
-
-         wxMessageBox(_("Audacity is now going to exit.  Please launch "
-                        "Audacity again to use the new temporary directory."));
-         wxExit();
-      }
-
-   }
    numDirManagers++;
    if (numDirManagers == 1) {
       CleanTempDir();

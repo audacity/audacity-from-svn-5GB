@@ -45,6 +45,8 @@ class DirManager {
    DirManager();
    ~DirManager();
 
+   static bool InitDirManager();
+
    // Returns true on success.
    // If SetProject is told NOT to create the directory
    // but it doesn't already exist, SetProject fails and returns false.
@@ -107,7 +109,6 @@ class DirManager {
 
    static wxString temp;
 
-   static bool firstCtor;
    static int numDirManagers;
    static int fileIndex;
    static wxString tempDirName;
