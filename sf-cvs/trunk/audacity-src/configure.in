@@ -108,8 +108,22 @@ if [[ "$use_libmad" = "yes" ]] ; then
 	SUBDIRS="$SUBDIRS lib-src/libmad"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libmad"
 	CDEPEND="$CDEPEND ../lib-src/libmad/mad.h"
+fi
 
-   mp3support="true"
+if [[ "$use_libmad" = "system" ]] ; then
+
+   AC_CHECK_LIB(mad, mad_decoder_init, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** libmad not found.  Run configure --without-libmad to disable it.]))
+
+   AC_CHECK_HEADER(mad.h, ,
+		AC_MSG_ERROR([*** libmad headers not found.  Run configure --without-libmad to disable it.]))	
+	
+	AC_DEFINE(USE_LIBMAD, 1,
+		[Define if mp3 support is implemented with the libmad library])
+	AC_DEFINE(MP3SUPPORT, 1,
+      [Define if mp3 support is implemented])
+
+	LIBS="$LIBS -lmad"
 fi
 
 if [[ $use_vorbis = "yes" ]] ; then
@@ -164,6 +178,21 @@ if [[ $use_libid3tag = "yes" ]] ; then
 		
 	AC_DEFINE(USE_LIBID3TAG, 1,
       [Define if libid3tag is present])
+fi
+
+if [[ $use_libid3tag = "system" ]] ; then
+   AC_CHECK_LIB(id3tag, id3_file_open, true, dnl here true is just a nop
+	   AC_MSG_ERROR([*** libid3tag not found.  Run configure --without-id3tag to disable it.]),
+	   -lz) dnl auxiliary library that -lid3tag needs
+
+   AC_CHECK_HEADER(id3tag.h, ,
+		AC_MSG_ERROR([*** libid3tag headers not found.  Run configure --without-id3tag to disable it.]))
+	
+	AC_DEFINE(USE_LIBID3TAG, 1,
+      [Define if libid3tag is present])
+
+	LIBS="$LIBS -lid3tag"
+
 fi
 
 dnl if [[ $use_help = "yes" ]] ; then
@@ -250,13 +279,21 @@ echo "Finished configure:"
 if [[ $use_libid3tag = "yes" ]] ; then
 	echo "  with    libid3tag";
 else
-	echo "  without libid3tag";
+	if [[ $use_libid3tag = "system" ]] ; then
+		echo "  with    libid3tag (system)";
+	else
+		echo "  without libid3tag";	
+	fi
 fi
 
 if [[ $use_libmad = "yes" ]] ; then
 	echo "  with    libmad";
 else
-	echo "  without libmad";
+	if [[ $use_libmad = "system" ]] ; then
+		echo "  with    libmad (system)";
+	else
+		echo "  without libmad";	
+	fi
 fi
 
 if [[ $use_wavelet = "yes" ]] ; then
