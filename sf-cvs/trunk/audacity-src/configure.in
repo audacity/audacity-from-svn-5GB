@@ -721,15 +721,15 @@ else
 	fi
 fi
 
-if [[ $use_libflac = "local" ]] ; then	
-	echo "  with    libflac";
-else
-	if [[ $use_libflac = "system" ]] ; then
-		echo "  with    libflac (system)";
-	else
-		echo "  without libflac";	
-	fi
-fi
+dnl if [[ $use_libflac = "local" ]] ; then	
+dnl 	echo "  with    libflac";
+dnl else
+dnl 	if [[ $use_libflac = "system" ]] ; then
+dnl 		echo "  with    libflac (system)";
+dnl 	else
+dnl 		echo "  without libflac";	
+dnl 	fi
+dnl fi
 
 if [[ "$use_portmixer" = "yes" ]] ; then
 	echo "  with    portmixer";

@@ -5620,16 +5620,6 @@ else
 	fi
 fi
 
-if [ $use_libflac = "local" ] ; then
-	echo "  with    libflac";
-else
-	if [ $use_libflac = "system" ] ; then
-		echo "  with    libflac (system)";
-	else
-		echo "  without libflac";
-	fi
-fi
-
 if [ "$use_portmixer" = "yes" ] ; then
 	echo "  with    portmixer";
 else
