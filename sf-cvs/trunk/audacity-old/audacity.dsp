@@ -435,19 +435,19 @@ SOURCE=.\ASlider.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\AStatus.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AStatus.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\AudacityApp.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\AudacityApp.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\AudacityLogo.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\AudacitySmall.bmp
 # End Source File
 # Begin Source File
 
@@ -584,6 +584,14 @@ SOURCE=.\Play.cpp
 # Begin Source File
 
 SOURCE=.\Play.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Prefs.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Prefs.h
 # End Source File
 # Begin Source File
 

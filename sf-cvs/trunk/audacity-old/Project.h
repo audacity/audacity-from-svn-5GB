@@ -69,59 +69,62 @@ public:
   // File I/O
 
   void OpenFile(wxString fileName);
+  void Save(bool overwrite = true);
   void ImportFile(wxString fileName);
   void ImportMP3(wxString fileName);
 
   // File Menu
 
-  void OnNew();
-  void OnOpen();
-  void OnSave(bool overwrite = true);
-  void OnSaveAs();
+  void OnNew(wxCommandEvent& event);
+  void OnOpen(wxCommandEvent& event);
+  void OnClose(wxCommandEvent& event);
+  void OnSave(wxCommandEvent& event);
+  void OnSaveAs(wxCommandEvent& event);
 
-  void OnExportLabels();
-  void OnExportMix();
-  void OnExportSelection();
+  void OnExportLabels(wxCommandEvent& event);
+  void OnExportMix(wxCommandEvent& event);
+  void OnExportSelection(wxCommandEvent& event);
+
+  void OnExit(wxCommandEvent& event);
 
   // Edit Menu
 
-  void Cut();
-  void Copy();
-  void Paste();
-  void Clear();  
-  void SelectAll();
-  void SelectNone();
+  void Cut(wxCommandEvent& event);
+  void Copy(wxCommandEvent& event);
+  void Paste(wxCommandEvent& event);
+  void Clear(wxCommandEvent& event);  
+  void SelectAll(wxCommandEvent& event);
 
-  void Undo();
-  void Redo();
+  void Undo(wxCommandEvent& event);
+  void Redo(wxCommandEvent& event);
 
   // View Menu
 
-  void OnZoomIn();
-  void OnZoomOut();
-  void OnZoomNormal();
-  void OnZoomFit();
+  void OnZoomIn(wxCommandEvent& event);
+  void OnZoomOut(wxCommandEvent& event);
+  void OnZoomNormal(wxCommandEvent& event);
+  void OnZoomFit(wxCommandEvent& event);
 
-  void OnPlotSpectrum();
+  void OnPlotSpectrum(wxCommandEvent& event);
 
-  void OnFloatPalette();
+  void OnFloatPalette(wxCommandEvent& event);
 
   // Project Menu
 
-  void OnImport();
-  void OnImportMIDI();
-  void OnImportMP3();
-  void OnImportRaw();
+  void OnImport(wxCommandEvent& event);
+  void OnImportMIDI(wxCommandEvent& event);
+  void OnImportMP3(wxCommandEvent& event);
+  void OnImportRaw(wxCommandEvent& event);
 
-  void OnQuickMix();
+  void OnQuickMix(wxCommandEvent& event);
 
-  void OnNewWaveTrack();
-  void OnNewLabelTrack();
-  void OnRemoveTracks();
+  void OnNewWaveTrack(wxCommandEvent& event);
+  void OnNewLabelTrack(wxCommandEvent& event);
+  void OnRemoveTracks(wxCommandEvent& event);
 
   // Help Menu
 
-  void OnAbout();
+  void OnAbout(wxCommandEvent& event);
 
   void UpdateMenus();
 
@@ -134,14 +137,14 @@ public:
   void OnMouseEvent(wxMouseEvent& event);  
   void OnSize(wxSizeEvent &event);
   void OnScroll(wxScrollEvent &event);
-  void OnCloseWindow();
-  void OnExit();
+  void OnCloseWindow(wxCloseEvent &event);
 
   void HandleResize();
 
   // Other commands
 
   void RedrawProject();
+  void SelectNone();
 
   // Scrollbars
 

@@ -8,6 +8,13 @@
 
 **********************************************************************/
 
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/app.h>
+#include <wx/config.h>
+#endif
+
 #ifdef __WXMAC__
 #include <Files.h>
 #include <Folders.h>
@@ -18,9 +25,6 @@ pascal	OSErr	FSpGetFullPath(const FSSpec *spec,
 							               Handle *fullPath);
 
 #endif
-
-#include <wx/app.h>
-#include <wx/config.h>
 
 #include "AudacityApp.h"
 #include "Prefs.h"
