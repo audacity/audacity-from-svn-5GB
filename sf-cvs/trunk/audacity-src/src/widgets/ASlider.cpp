@@ -166,6 +166,7 @@ LWSlider::LWSlider(wxWindow *parent,
    mParent = parent;
    mStyle = style;
    mHW = false;
+   mID = -1;
 
    if (!(mWidth & 0))
       mWidth--;
@@ -275,6 +276,11 @@ LWSlider::~LWSlider()
    delete mThumbBitmap;
    delete mSelThumbBitmap;
    delete mPopWin;
+}
+
+void LWSlider::SetId(wxWindowID id)
+{
+   mID = id;
 }
 
 void LWSlider::CreatePopWin()
@@ -464,6 +470,12 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       FormatPopWin();
       mPopWin->Refresh();
       Refresh();
+
+      wxCommandEvent *e =
+         new wxCommandEvent(wxEVT_COMMAND_SLIDER_UPDATED, mID);
+      e->SetInt( mValue * 1000 / mWidthX );
+      mParent->ProcessEvent(*e);
+      delete e;
    }
 }
 
@@ -535,6 +547,7 @@ ASlider::ASlider(wxWindow * parent, wxWindowID id,
    wxWindow(parent, id, pos, size)
 {
    mLWSlider = new LWSlider(this, name, wxPoint(0, 0), size, FRAC_SLIDER);
+   mLWSlider->SetId(id);
    mLWSlider->mHW = true;
 }
 
