@@ -31,6 +31,7 @@ class NoteTrack;
 class LabelTrack;
 class TimeTrack;
 class TrackList;
+class Ruler;
 struct ViewInfo;
 
 class TrackArtist {
@@ -65,6 +66,8 @@ class TrackArtist {
    wxPen rmsPen;
    wxPen selsamplePen;
    wxPen shadowPen;
+
+   Ruler *vruler;
 
    int GetWaveYPos(float value, int height, bool dB);
 
