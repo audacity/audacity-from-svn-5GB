@@ -29,6 +29,8 @@
 #include <wx/image.h>
 #endif
 
+#include <wx/tooltip.h>
+
 #include <math.h>
 
 #include "AButton.h"
@@ -110,24 +112,19 @@ void HideWindowedPalette()
 
 BEGIN_EVENT_TABLE(APaletteFrame, wxMiniFrame)
     EVT_CLOSE(APaletteFrame::OnCloseWindow)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 APaletteFrame::APaletteFrame(wxWindow * parent,
-                                 wxWindowID id,
-                                 const wxString & title,
-                                 const wxPoint & pos):wxMiniFrame(parent,
-                                                                  id,
-                                                                  title,
-                                                                  pos,
-                                                                  wxSize
-                                                                  (360,
-                                                                   GetAPaletteHeight
-                                                                   () +
-                                                                   APALETTE_HEIGHT_OFFSET),
-                                                                  wxTINY_CAPTION_HORIZ |
-                                                                  wxSTAY_ON_TOP |
-                                                                  wxMINIMIZE_BOX |
-                                                                  wxFRAME_FLOAT_ON_PARENT),
+                             wxWindowID id,
+                             const wxString & title,
+                             const wxPoint & pos)
+                            :wxMiniFrame(parent, id, title, pos,
+                                         wxSize(360, GetAPaletteHeight() +
+                                          APALETTE_HEIGHT_OFFSET),
+                                         wxTINY_CAPTION_HORIZ
+                                         | wxSTAY_ON_TOP
+                                         | wxMINIMIZE_BOX
+                                         | wxFRAME_FLOAT_ON_PARENT),
 mPalette(this, 0, wxPoint(0, 0), wxSize(300, GetAPaletteHeight()))
 {
 
@@ -146,7 +143,7 @@ BEGIN_EVENT_TABLE(APalette, wxWindow)
                   wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnStop)
     EVT_COMMAND_RANGE(ID_RECORD_BUTTON, ID_RECORD_BUTTON,
                   wxEVT_COMMAND_BUTTON_CLICKED, APalette::OnRecord)
-    END_EVENT_TABLE()
+END_EVENT_TABLE()
 
 APalette::APalette(wxWindow * parent, wxWindowID id,
                        const wxPoint & pos,
@@ -216,6 +213,19 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
    mMuteBitmap = new wxBitmap((const char **) Mute);
    mLoudBitmap = new wxBitmap((const char **) Loud);
 #endif
+
+   mTool[0]->SetToolTip(_("Selection Tool"));
+   mTool[1]->SetToolTip(_("Envelope Tool"));
+   mTool[2]->SetToolTip(_("Time Shift Tool"));
+   mTool[3]->SetToolTip(_("Zoom Tool"));
+
+   mPlay->SetToolTip(_("Play"));
+   mStop->SetToolTip(_("Stop"));
+   mRecord->SetToolTip(_("Record"));
+   mVolume->SetToolTip(_("Master Gain Control"));
+
+   wxToolTip::Enable(true);
+   wxToolTip::SetDelay(1200);
 }
 
 APalette::~APalette()
