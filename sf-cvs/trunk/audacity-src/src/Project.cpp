@@ -38,6 +38,7 @@ void wxMacFilename2FSSpec( const char *path , FSSpec *spec ) ;
 # include <wx/dragimag.h>
 #endif
 
+#include <wx/event.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/scrolbar.h>
@@ -185,7 +186,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
-EVT_DROP_FILES(AudacityProject::OnDropFiles)
+    EVT_DROP_FILES(AudacityProject::OnDropFiles)
     // Update menu method
     EVT_UPDATE_UI(UndoID, AudacityProject::OnUpdateMenus)
 END_EVENT_TABLE()
@@ -1223,7 +1224,8 @@ void AudacityProject::Import(wxString fileName)
    }
 
    PushState(wxString::Format(_("Imported '%s'"), fileName.c_str()));
-   ZoomFit();
+   wxEvent e;
+   OnZoomFit(e);
    mTrackPanel->Refresh(false);
 
    if (initiallyEmpty) {
@@ -1404,39 +1406,6 @@ bool AudacityProject::SaveAs()
    SetTitle(GetName());
 
    return Save(false, true);
-}
-
-//
-// Zoom methods
-//
-
-void AudacityProject::ZoomFit()
-{
-   double len = mTracks->GetMaxLen();
-
-   if (len <= 0.0)
-      return;
-
-   int w, h;
-   mTrackPanel->GetTracksUsableArea(&w, &h);
-   w -= 10;
-
-   mViewInfo.zoom = w / len;
-   FixScrollbars();
-   TP_ScrollWindow(0.0);
-}
-
-void AudacityProject::ZoomSel()
-{
-   if (mViewInfo.sel1 <= mViewInfo.sel0)
-      return;
-
-   // BG: CTRL+E
-   // BG: Zoom to selection
-   mViewInfo.zoom *= mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0);
-
-   FixScrollbars();
-   TP_ScrollWindow(mViewInfo.sel0);
 }
 
 //

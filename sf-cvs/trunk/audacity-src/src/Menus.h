@@ -117,14 +117,12 @@ void OnSelectAll(wxEvent & event);
 
         // View Menu
 
+void Zoom(double level);
 void OnZoomIn(wxEvent & event);
 void OnZoomOut(wxEvent & event);
 void OnZoomNormal(wxEvent & event);
 void OnZoomFit(wxEvent & event);
 void OnZoomSel(wxEvent & event);
-
-void ZoomFit();
-void ZoomSel();
 
 void OnPlotSpectrum(wxEvent & event);
 
