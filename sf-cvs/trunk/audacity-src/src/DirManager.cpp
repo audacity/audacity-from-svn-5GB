@@ -89,7 +89,7 @@ bool DirManager::InitDirManager()
       // The permissions don't always seem to be set on
       // some platforms.  Hopefully this fixes it...
       #ifdef __UNIX__
-      chmod(temp, 0777);
+      chmod(temp, 0755);
       #endif
 
       gPrefs->Write("/Directories/TempDir", temp);
