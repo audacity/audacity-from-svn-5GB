@@ -538,6 +538,8 @@ AudacityProject::~AudacityProject()
    if (gAudioIO->IsStreamActive(mAudioIOToken))
       gAudioIO->StopStream();
 
+   mTrackPanel->Destroy();
+
    //Go through the toolbar array and delete all the toolbars
    //Do this from the bottom, to avoid too much popping forward in the array
    // that would be obtained if you keep deleting the 0th item from the front
