@@ -131,32 +131,32 @@ bool Envelope::MouseEvent(wxMouseEvent &event, wxRect &r, double h, double pps)
   bool upper = (event.m_y < ctr);
 
   if (event.ButtonDown()) {
-	mIsDeleting = false;
-	double tright = h + (r.width / pps);
-	int bestNum = -1;
-	int bestDist = 8;
+		mIsDeleting = false;
+		double tright = h + (r.width / pps);
+		int bestNum = -1;
+		int bestDist = 8;
 
-	int len = mEnv.Count();
-	for(int i=0; i<len; i++) {
-	  if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
-		double v = mEnv[i]->val;
-		int x = int((mEnv[i]->t - h) * pps) + r.x;
-		int y;
-		if (upper)
-		  y = int(ctr - v*(r.height/2));
-		else
-		  y = int(ctr + v*(r.height/2));
-		
-        #ifndef SQR
-        #define SQR(X) ((X)*(X))
-        #endif
-		
-		int d = int(sqrt(SQR(x-event.m_x)+SQR(y-event.m_y))+0.5);
-		if (d < bestDist) {
-		  bestNum = i;
-		  bestDist = d;
+		int len = mEnv.Count();
+		for(int i=0; i<len; i++) {
+		  if (mEnv[i]->t >= h && mEnv[i]->t <= tright) {
+			double v = mEnv[i]->val;
+			int x = int((mEnv[i]->t + mOffset - h) * pps) + r.x;
+			int y;
+			if (upper)
+			  y = int(ctr - v*(r.height/2));
+			else
+			  y = int(ctr + v*(r.height/2));
+			
+		     #ifndef SQR
+		     #define SQR(X) ((X)*(X))
+		     #endif
+			
+			int d = int(sqrt(SQR(x-event.m_x)+SQR(y-event.m_y))+0.5);
+			if (d < bestDist) {
+			  bestNum = i;
+			  bestDist = d;
+			}
 		}
-	  }
 	}
 
 	if (bestNum >= 0) {
@@ -384,25 +384,28 @@ double Envelope::GetValue(double t)
   int len = mEnv.Count();
   int i=0;
   while(i<len && t>mEnv[i]->t)
-	i++;
+    i++;
+	
+	if (i==0 && len>0)
+	  return mEnv[0]->val;
 
   if (i>0 && i<len) {
-	double t0 = mEnv[i-1]->t;
-	double t1 = mEnv[i]->t;
-	double v0 = mEnv[i-1]->val;
-	double v1 = mEnv[i]->val;
+		double t0 = mEnv[i-1]->t;
+		double t1 = mEnv[i]->t;
+		double v0 = mEnv[i-1]->val;
+		double v1 = mEnv[i]->val;
 
-	// Interpolate
+		// Interpolate
 
-	double dt = (t1 - t0);
+		double dt = (t1 - t0);
 
-	// This should never happen, but we certainly
-	// don't want to divide by zero...
-	if (dt <= 0.0)
-	  return 1.0;
+		// This should never happen, but we certainly
+		// don't want to divide by zero...
+		if (dt <= 0.0)
+		  return 1.0;
 
-	double to = t - t0;
-	return (v0*(dt-to) + v1*to) / dt;
+		double to = t - t0;
+		return (v0*(dt-to) + v1*to) / dt;
   }
   
   return 1.0;
