@@ -342,7 +342,14 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
          float *dest = (float *)destPtr;
          float *temp = (float *)src;
          for (int j = 0; j < len; j++) {
-            *dest += temp[j] * gain;
+            float f = *dest + temp[j] * gain;
+            // MM: XXX Should probably go outside the loop
+            if (f > 1.0f)
+               *dest = 1.0f;
+            else if (f < -1.0f)
+               *dest = -1.0f;
+            else
+               *dest = f;
             dest += skip;
          }
       } break;
