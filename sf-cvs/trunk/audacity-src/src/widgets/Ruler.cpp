@@ -52,12 +52,15 @@ Ruler::Ruler()
    mLabelEdges = true;
 
    mValid = false;
+
+   mBits = NULL;
 }
 
 Ruler::~Ruler()
 {
    Invalidate();  // frees up our arrays
 
+   delete[] mBits;
    delete mMinorFont;
    delete mMajorFont;
 }
@@ -515,6 +518,8 @@ void Ruler::Update()
    mUPP = (mMax-mMin)/mLength;
 
    int i;
+   if (mBits)
+      delete[] mBits;
    mBits = new int[mLength+1];
    for(i=0; i<=mLength; i++)
       mBits[i] = 0;
