@@ -710,21 +710,11 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    if (t0 > t1)
       t0 = t1;
 
-   unsigned int ssel0 = (unsigned int) ((sel0 - tOffset) * rate + 0.5);
-   unsigned int ssel1 = (unsigned int) ((sel1 - tOffset) * rate + 0.5);
+   int ssel0 = wxMin(0, int((sel0 - tOffset) * rate + 0.5));
+   int ssel1 = wxMin(0, int((sel1 - tOffset) * rate + 0.5));
 
-   if (sel0 < tOffset)
-       ssel0 = 0;
-
-   if (sel1 < tOffset)
-      ssel1 = 0;
-
-   if (ssel0 != ssel1) {
-      if (ssel0 < 0)
-         ssel0 = 0;
-      if (ssel1 > numSamples)
+   if (ssel0 != ssel1 && ssel1 > numSamples)
          ssel1 = numSamples;
-   }
 
    dc.SetBrush(blankBrush);
    dc.SetPen(blankPen);
@@ -1015,10 +1005,9 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
          if (cache->where[x] >= oldcache.where[0] &&
              cache->where[x] <= oldcache.where[oldcache.len - 1]) {
 
-            unsigned int ox =
-                (unsigned int) ((double (oldcache.len) *
-                      (cache->where[x] -
-                       oldcache.where[0])) /(oldcache.where[oldcache.len] -
+            int ox = (int) ((double (oldcache.len) *
+                      (cache->where[x] - oldcache.where[0]))
+                       / (oldcache.where[oldcache.len] -
                                              oldcache.where[0]) + 0.5);
 
             if (ox >= 0 && ox <= oldcache.len &&
@@ -1523,8 +1512,8 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
             int y = PITCH_TO_Y(note->pitch, bottom);
             long linecolor = LookupIntAttribute(note, linecolori, -1);
             long linethick = LookupIntAttribute(note, linethicki, 1);
-            long fillcolor;
-            long fillflag;
+            long fillcolor = -1;
+            long fillflag = 0;
 
             // set default color to be that of channel
             AColor::MIDIChannel(&dc, note->chan+1);
