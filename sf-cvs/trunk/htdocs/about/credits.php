@@ -110,6 +110,7 @@
   <li>Daniil Kolpakov</li>
   <li>Robert Leidle</li>
   <li>Logan Lewis</li>
+  <li>David Luff</li>
   <li>Jason Pepas</li>
   <li>Mark Phillips</li>
   <li>Jonathan Ryshpan</li>
