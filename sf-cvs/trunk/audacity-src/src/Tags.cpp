@@ -324,7 +324,8 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
    }
 
    if (mID3V2) {
-      tp->options |= ID3_TAG_OPTION_COMPRESSION;
+      tp->options &= (~ID3_TAG_OPTION_COMPRESSION); // No compression
+      tp->options |= ID3_TAG_OPTION_ID3V2_3;
       *endOfFile = false;      
    }
    else {
