@@ -111,6 +111,7 @@ void QuitAudacity()
 }
 
 IMPLEMENT_APP(AudacityApp)
+
 #ifdef __WXMAC__
 pascal OSErr AEQuit(const AppleEvent * theAppleEvent,
                     AppleEvent * theReply, long Refcon)
@@ -303,7 +304,7 @@ bool AudacityApp::OnInit()
    
    // Changing the following to NULL will make the application
    // load without the toolbar in memory at all.
-   
+
    bool editToolBar;
    gPrefs->Read("/GUI/EnableEditToolBar", &editToolBar, true);
    if(editToolBar)

@@ -273,7 +273,7 @@ void EffectNoiseRemoval::RemoveNoise(sampleCount len,
           smoothing[i-2]<0.1 &&
           smoothing[i+1]<0.1 &&
           smoothing[i+2]<0.1)
-         smoothing[i] = 0.0;
+          smoothing[i] = 0.0;
    }
 
    outr[0] *= smoothing[0];

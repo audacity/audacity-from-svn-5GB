@@ -41,7 +41,8 @@
 #ifdef _WINDOWS				// kludge for Audacity since we don't really have MS Windows
 	#define max(a,b)  ( (a<b)?b:a )
 #endif
-	#include "../../lib-src/iAVC/iAVC.h"
+
+#include "../../lib-src/iAVC/iAVC.h"
 #include "../../lib-src/iAVC/iAVCsamples.h"
 #include "../../lib-src/iAVC/iAVC.cpp"
 
@@ -87,6 +88,7 @@ bool EffectAvcCompressor::PromptUser()
             wxMessageBox("Error setting parameters for automatic volume control.");
             return false;
    }
+   
    mAutoVolCtrl.SetMaxPctChangeAtOnce(dlog.GetMinimumPercent());
    mAutoVolCtrl.SetMultipliers(nTransform);
    mAutoVolCtrl.SetNumberTracks(mnTracks);

@@ -16,24 +16,24 @@
 	/FileFormats
 		CopyOrEditUncompressedData - Copy data from uncompressed files or
 			[ "copy", "edit"]   - edit in place?
-		ExportFormat		   - Format to export PCM data in
-                             (this number is a libsndfile format)
-      ExportFormatBits     - Bitsize of exported PCM data
-         [ 8, 16, 24, 32 ]
+		ExportFormat			- Format to export PCM data in
+			(this number is a libsndfile format)
+		ExportFormatBits		- Bitsize of exported PCM data
+			[ 8, 16, 24, 32 ]
 	/SamplingRate
 		DefaultProjectSampleRate- New projects will have this rate
 			[ 8000, 11025, 16000, 22050, 44100, 48000 ]
 	/AudioIO
-      PlaybackDevice          - device to use for playback
-		RecordingDevice         - device to use for recording
-                     (these are device names understood by PortAudio)
+		PlaybackDevice			- device to use for playback
+		RecordingDevice			- device to use for recording
+			(these are device names understood by PortAudio)
 	/Display
 		WaveformColor			- 0xRRGGBB  --since it will be stored in
 		ShadowColor				- 			  decimal, it will be somewhat
-		SpectrumLowColor		-			  non-intuitive to edit, but
-		SpectrumHighColor		-			  much easier to parse.
-   /Locale
-      Language             - two-letter language code for translations
+		SpectrumLowColor		- 			  non-intuitive to edit, but
+		SpectrumHighColor		- 			  much easier to parse.
+	/Locale
+		Language				- two-letter language code for translations
 
 	(*): wxGTK
 	(+): wxWin

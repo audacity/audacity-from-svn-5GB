@@ -297,7 +297,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    if (!gControlToolBarStub->GetWindowedStatus()) {
       int h = gControlToolBarStub->GetHeight();
 
-
       ToolBar *tb = new ControlToolBar(this, 0, wxPoint(10, top),
                                        wxSize(width - 10 - sbarSpaceWidth, h));
       mToolBarArray.Add((ToolBar *) tb);
@@ -811,8 +810,6 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
    int width, height;
    GetClientSize(&width, &height);
 
-
-
    //Deal with the ToolBars 
    for (i = 0; i < mToolBarArray.GetCount(); i++) {
 
@@ -857,10 +854,7 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 	  dc.DrawLine(0, toolbartop, 0, toolbarbottom);
 #endif
       dc.DrawLine(0, toolbarbottom, width, toolbarbottom);
-
-      
-	  h++;
-  
+      h++;
    }
 
    //Now, h is equal to the total height of all the toolbars
@@ -910,7 +904,6 @@ void AudacityProject::LoadToolBar(enum ToolBarType t)
    //First, go through ToolBarArray and determine the current 
    //combined height of all toolbars.
    int tbheight = 0;
-
    int len = mToolBarArray.GetCount();
    for (int i = 0; i < len; i++)
       tbheight += mToolBarArray[i]->GetHeight();
