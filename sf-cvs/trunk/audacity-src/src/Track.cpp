@@ -25,6 +25,8 @@
 Track::Track(DirManager * projDirManager) 
   : mDirManager(projDirManager)
 {
+   mDirManager->Ref();
+
    mSelected  = false;
    mLinked    = false;
    mMute      = false;
@@ -41,6 +43,8 @@ Track::Track(DirManager * projDirManager)
 
 Track::Track(const Track &orig)
 {
+   mDirManager = NULL;
+
    Init(orig);
    mOffset = orig.mOffset;
    mDirty = rand();
@@ -50,14 +54,28 @@ Track::Track(const Track &orig)
 void Track::Init(const Track &orig)
 {
    mName = orig.mName;
-   
-   mDirManager = orig.mDirManager;
+
+   if (mDirManager != orig.mDirManager)
+   {
+      if (mDirManager)
+         mDirManager->Deref(); // MM: unreference old DirManager
+
+      // MM: Assign and ref new DirManager
+      mDirManager = orig.mDirManager;
+      mDirManager->Ref();
+   }
+
    mSelected = orig.mSelected;
    mLinked = orig.mLinked;
    mMute = orig.mMute;
    mSolo = orig.mSolo;
    mHeight = orig.mHeight;
    mChannel = orig.mChannel;
+}
+
+Track::~Track()
+{
+   mDirManager->Deref();
 }
 
 // TrackListIterator

@@ -912,7 +912,7 @@ void AudacityProject::OnImportLabels()
          return;
       }
 
-      LabelTrack *newTrack = new LabelTrack(&mDirManager);
+      LabelTrack *newTrack = new LabelTrack(mDirManager);
 
       newTrack->Import(f);
 
@@ -946,7 +946,7 @@ void AudacityProject::OnImportMIDI()
       path =::wxPathOnly(fileName);
       gPrefs->Write("/DefaultOpenPath", path);
 
-      NoteTrack *newTrack = new NoteTrack(&mDirManager);
+      NoteTrack *newTrack = new NoteTrack(mDirManager);
 
       if (::ImportMIDI(fileName, newTrack)) {
 
@@ -2026,7 +2026,7 @@ void AudacityProject::OnNewWaveTrack()
 
 void AudacityProject::OnNewLabelTrack()
 {
-   LabelTrack *t = new LabelTrack(&mDirManager);
+   LabelTrack *t = new LabelTrack(mDirManager);
 
    SelectNone();
 
@@ -2063,7 +2063,7 @@ void AudacityProject::OnNewTimeTrack()
       }
    else
       {
-         TimeTrack *t = new TimeTrack(&mDirManager);
+         TimeTrack *t = new TimeTrack(mDirManager);
 
          #if USE_LIBSAMPLERATE
          const char *str = NULL;
@@ -2106,7 +2106,7 @@ void AudacityProject::OnAddLabel()
    }
 
    if (!lt) {
-      lt = new LabelTrack(&mDirManager);
+      lt = new LabelTrack(mDirManager);
 
       SelectNone();
 

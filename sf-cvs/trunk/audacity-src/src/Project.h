@@ -235,7 +235,7 @@ class AudacityProject:public wxFrame,
    // The project's name and file info
 
    wxString mFileName;
-   DirManager mDirManager;
+   DirManager *mDirManager; // MM: DirManager now created dynamically
    double mRate;
    sampleFormat mDefaultFormat;
 

@@ -71,7 +71,7 @@ class Track: public XMLTagHandler {
    Track(DirManager * projDirManager);
    Track(const Track &orig);
 
-   virtual ~ Track() { }
+   virtual ~ Track();
    
    void Init(const Track &orig);
    virtual Track *Duplicate() = 0;

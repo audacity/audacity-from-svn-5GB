@@ -19,6 +19,7 @@
 #include <wx/intl.h>
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/object.h>
 
 // chmod
 #ifdef __UNIX__
@@ -116,6 +117,10 @@ bool DirManager::InitDirManager()
 
 DirManager::DirManager()
 {
+   wxLogDebug("DirManager: Created new instance");
+
+   mRef = 1; // MM: Initial refcount is 1 by convention
+
    numDirManagers++;
    if (numDirManagers == 1) {
       CleanTempDir();
@@ -148,6 +153,8 @@ DirManager::DirManager()
 
 DirManager::~DirManager()
 {
+   wxASSERT(mRef == 0); // MM: Otherwise, we shouldn't delete it
+
    if (blockFileHash)
       delete blockFileHash;
 
@@ -700,3 +707,22 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    return true;
 }
 
+void DirManager::Ref()
+{
+   wxASSERT(mRef > 0); // MM: If mRef is smaller, it should have been deleted already
+   ++mRef;
+}
+
+void DirManager::Deref()
+{
+   wxASSERT(mRef > 0); // MM: If mRef is smaller, it should have been deleted already
+   
+   --mRef;
+
+   // MM: Automatically delete if refcount reaches zero
+   if (mRef == 0)
+   {
+      wxLogDebug("DirManager::Deref: Automatically deleting 'this'");
+      delete this;
+   }
+}

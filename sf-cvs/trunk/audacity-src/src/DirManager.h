@@ -42,8 +42,16 @@ class BlockFile;
 
 class DirManager: public XMLTagHandler {
  public:
+
+   // MM: Construct DirManager with refcount=1
    DirManager();
+
+   // MM: Only called by Deref() when refcount reaches zero.
    virtual ~DirManager();
+
+   // MM: Ref count mechanism for the DirManager itself
+   void Ref();
+   void Deref();
 
    static bool InitDirManager();
 
@@ -105,6 +113,8 @@ class DirManager: public XMLTagHandler {
    wxString NewBlockName();
 
    //////////////////////////
+
+   int mRef; // MM: Current refcount
 
    wxHashTable *blockFileHash;
 
