@@ -128,7 +128,7 @@ bool Export(wxWindow * parent,
 
    wxString fName = wxFileSelector(wxString::Format("Save %s File As:",
                                                     (const char *) format),
-                                   NULL,
+                                   path,
                                    extension,   // default file name
                                    extension,   // extension
                                    "*.*",
