@@ -597,7 +597,17 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                    mid.height / 2,
                                    dB);
 
-         dc.DrawLine(mid.x + x, h2[x], mid.x + x, h1[x] + 1);
+         //JKC: This adjustment to h1[] and h2[] ensures that the drawn
+         //waveform is continuous.
+         if( x>0 )
+         {
+            if( h1[x] < h2[x-1] )
+               h1[x]=h2[x-1]-1;
+            if( h2[x] > h1[x-1] )
+               h2[x]=h1[x-1]+1;
+         }
+
+         dc.DrawLine(mid.x + x, h2[x], mid.x + x, h1[x]+1 );
          
          t += tstep;
       }
@@ -617,15 +627,20 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
                                     track->GetEnvelope()->GetValue(t + tOffset),
                                     mid.height / 2,
                                     dB);
+
+         // Ensure rms doesn't totally obscure samples further out.
          if (r1 > h1[x]-1)
             r1 = h1[x]-1;
          if (r2 < h2[x]+1)
             r2 = h2[x]+1;
 
-         dc.DrawLine(mid.x + x, r2, mid.x + x, r1 + 1);
+         // Draw rms provided it's got some +ve width.
+         if( r2 <= r1)
+            dc.DrawLine(mid.x + x, r2, mid.x + x, r1+1 );
 
          t += tstep;
       }
+
       delete[] h1;
       delete[] h2;
    }
