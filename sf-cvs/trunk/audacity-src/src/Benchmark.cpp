@@ -349,7 +349,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    int trials = numEdits;
 
-   short *small = new short[len];
+   short *small1 = new short[len];
    short *small2 = new short[len];
    short *block = new short[scale];
 
@@ -367,7 +367,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    for (i = 0; i < len; i++) {
       v = short(rand());
-      small[i] = v;
+      small1[i] = v;
       for (b = 0; b < scale; b++)
          block[b] = v;
 
@@ -422,16 +422,16 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
       }
       // Copy
       for (i = 0; i < xlen; i++)
-         small2[i] = small[x0 + i];
+         small2[i] = small1[x0 + i];
       // Delete
       for (i = 0; i < (len - x0 - xlen); i++)
-         small[x0 + i] = small[x0 + xlen + i];
+         small1[x0 + i] = small1[x0 + xlen + i];
       // Insert
       for (i = 0; i < (len - xlen - y0); i++)
-         small[len - i - 1] = small[len - i - 1 - xlen];
+         small1[len - i - 1] = small1[len - i - 1 - xlen];
       // Paste
       for (i = 0; i < xlen; i++)
-         small[y0 + i] = small2[i];
+         small1[y0 + i] = small2[i];
 
       delete tmp;
    }
@@ -461,7 +461,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    bad = 0;
    timer.Start();
    for (i = 0; i < len; i++) {
-      v = small[i];
+      v = small1[i];
       t->Get((samplePtr)block, int16Sample, i * scale, scale);
       for (b = 0; b < scale; b++)
          if (block[b] != v) {
@@ -487,7 +487,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
    timer.Start();
 
    for (i = 0; i < len; i++) {
-      v = small[i];
+      v = small1[i];
       t->Get((samplePtr)block, int16Sample, i * scale, scale);
       for (b = 0; b < scale; b++)
          if (block[b] != v)
@@ -504,7 +504,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    delete t;
 
-   delete[]small;
+   delete[]small1;
    delete[]small2;
    delete[]block;
 
@@ -521,7 +521,7 @@ void BenchmarkDialog::OnRun( wxCommandEvent &event )
 
    delete t;
 
-   delete[]small;
+   delete[]small1;
    delete[]small2;
    delete[]block;
 
