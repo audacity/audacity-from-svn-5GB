@@ -708,7 +708,19 @@ SOURCE=..\src\import\ImportPCM.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\import\ImportRaw.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\import\ImportRaw.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\RawAudioGuess.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\import\RawAudioGuess.h
 # End Source File
 # End Group
 # Begin Group "src/prefs"
