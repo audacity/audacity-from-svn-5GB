@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.0
+Version 1.2.0-pre1
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -226,48 +226,71 @@ also supported) please email audacity-help@lists.sourceforge.net
 
 Known issues/problems:
 
-* Windows: The floating tool palette does not minimize when
-  minimizing a project window.  As a workaround, you can
-  just keep the tool palette docked with the project window.
+  * Audacity may crash if audio is edited while the program is
+    playing or recording.
+
+  * Some imported MP3 files may have pops or clicks caused by clipping.
+
+  * The volume sliders in the mixer toolbar may reset the volume whenever
+    the program starts, on some systems.
+
+  * Audacity can import and display MIDI files, but they cannot be played
+    or edited.
+
+  * Audacity crashes when trying to convert to a sample rate more than 12
+    times faster or slower than the original rate.
+
+  * Recording in full duplex (play existing tracks while recording) on some
+    Linux systems causes the recording to sound slowed-down.
 
 -------------------------------------------------------------
 
 New features in Audacity 1.2.0:
   * User Interface
-    - Vertical zooming of tracks.  Click or drag on a track's
-      ruler to zoom in.  Shift-click or right-click to zoom in.
-    - Improved look and placement of toolbars
+    - Vertical zooming of tracks.
+    - Improved look and placement of toolbars.
+    - New custom mouse cursors.
     - Complete implementation of editable keyboard shortcuts.
-      You can optionally save/load a keyboard layout to share
-      with friends.
-    - Type "Z" to snap the selection to the nearest zero-crossings.
-	 - Support for opening multiple files from the same dialog.
-    - Support for using a text file to specify a list of audio files
-	   to open with offsets.
+    - Find zero-crossings.
+    - Mouse wheel can be used to zoom in and out.
+    - Multi-Tool mode.
+    - Amplify using envelope.
+    - Labels can store selections (like Audacity 1.0.0).
 
   * Effects
-    - Repeat Last Effect
+    - Repeat Last Effect command
     - Improved VST plug-in support
     - Most effects now have a Preview button
     - Compressor (Dynamic Range Compressor)
-    - Change Pitch (without changing tempo) - automatically
-      determines the starting fundamental frequency of the
-      area you have selected
+    - Change Pitch (without changing tempo)
     - Change Tempo (without changing pitch)
     - Change Speed (changing both pitch and tempo)
-    - Repeat effect - useful for creating loops
+    - Repeat (useful for creating loops)
+    - Normalize (adjust volume and DC bias)
 
   * Audio I/O
-    - Type "1" to hear a 1-second preview of the audio surrounding
-      the cursor
-    - Looped-play mode - hold down Shift while clicking Play, or
-      type "L".
+    - 1-second preview command.
+    - Looped play.
 
   * File I/O
     - Audacity 1.2.0 opens project files from all previous versions
       of Audacity from 0.98 through 1.1.3.
+    - Open multiple files from the same dialog.
+    - Use a text file to specify a list of audio files to open with offsets.
 
-  * Many more bug fixes and new features
+  * Updated user manual
+
+  * Bug fixes
+    - Project files with special characters are no longer invalid.
+    - "Scratchy" noises caused by bad clipping are fixed.
+    - Audacity no longer exports invalid Ogg files, and does not cut off the
+      last few seconds of exported Ogg files.
+    - Mono MP3 files now export at the correct speed.
+    - Many incorrect results from the Envelope tool have been fixed.
+    - The "Export Labels" command now overwrites existing files correctly.
+    - The "Plot Spectrum" window displays the correct octave numbers for
+      notes.
+    - Several memory leaks are fixed.
 
 New features in Audacity 1.1.3:
   * User Interface
