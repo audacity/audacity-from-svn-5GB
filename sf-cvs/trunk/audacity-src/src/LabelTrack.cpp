@@ -754,13 +754,22 @@ void LabelTrack::calculateFontHeight(wxDC & dc)
    mFontHeight += CursorExtraHeight - (charLeading+charDescent);
 }
 
-/// Cut the selected text in the text box
-///  @return true if text is selected in text box, false otherwise
-bool LabelTrack::CutSelectedText() 
+bool LabelTrack::IsTextSelected()
 {
    if (mSelIndex == -1)
       return false;
    if (!mLabels[mSelIndex]->highlighted)
+      return false;
+   if( mCurrentCursorPos == mInitialCursorPos ) 
+      return false;
+   return true;
+}
+
+/// Cut the selected text in the text box
+///  @return true if text is selected in text box, false otherwise
+bool LabelTrack::CutSelectedText() 
+{
+   if( !IsTextSelected() )
       return false;
 
    wxString left="";
@@ -1095,7 +1104,11 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          if (evt.RightDown())
          {
             if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+            {
+               mCurrentCursorPos=0;
+               mInitialCursorPos=0;
                mLabels[mSelIndex]->highlighted = false;
+            }
          }
          // set changeInitialMouseXPos flag
          mLabels[mSelIndex]->changeInitialMouseXPos = true;
@@ -1128,7 +1141,9 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
             if (evt.RightDown())
             {
                if (!highlightedRect.Inside(evt.m_x, evt.m_y))
+               {
                   mDragXPos = -1;
+               }
                else
                   // if it's in text box, don't need to reset the current cursor position
                   changeCursor = false;
@@ -1640,6 +1655,10 @@ bool LabelTrack::Cut(double t0, double t1, Track ** dest)
          mLabels[i]->t1 -= t0;
          ((LabelTrack *) (*dest))->mLabels.Add(mLabels[i]);
          mLabels.RemoveAt(i);
+         // If we've removed the selected label, then 
+         // better indicate that no label is selected.
+         if (i==mSelIndex)
+            mSelIndex=-1;
          len--;
          i--;
       }
@@ -1672,7 +1691,8 @@ bool LabelTrack::Copy(double t0, double t1, Track ** dest)
    return true;
 }
 
-bool LabelTrack::Paste(double t, const Track * src)
+
+bool LabelTrack::Paste(double t, Track * src)
 {
    if (src->GetKind() != Track::Label)
       return false;
