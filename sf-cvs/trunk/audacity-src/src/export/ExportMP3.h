@@ -39,6 +39,11 @@ class MP3Exporter {
       virtual int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) = 0;
       virtual int EncodeRemainder(short int inbuffer[], int nSamples,
                                unsigned char outbuffer[]) = 0;
+
+      virtual int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) = 0;
+      virtual int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                               unsigned char outbuffer[]) = 0;
+
       virtual int FinishStream(unsigned char outbuffer[]) = 0;
       virtual void CancelEncoding() = 0;
 
