@@ -2,6 +2,7 @@ dnl
 dnl audacity configure.in script
 dnl
 dnl Joshua Haberman
+dnl Dominic Mazzoni
 dnl
 
 dnl Process this file with autoconf to produce a configure script.
@@ -28,6 +29,16 @@ AC_SUBST(EXTRAOBJS)
 AC_SUBST(MAKEALL)
 
 dnl options
+AC_ARG_WITH(oss,
+	[AC_HELP_STRING([--with-oss],
+      [use Open Sound System (OSS) for Audio I/O [default=yes]])],
+	use_oss=$withval,
+	use_oss="default")
+AC_ARG_WITH(arts-soundserver,
+	[AC_HELP_STRING([--with-arts-soundserver],
+      [use the KDE/aRts soundserver instead of OSS [default=no]])],
+	use_arts=$withval,
+	use_arts="no")
 AC_ARG_WITH(libmpeg3,
 	[AC_HELP_STRING([--with-libmpeg3],
       [use libmpeg3 for mp3 support [default=no]])],
@@ -59,9 +70,24 @@ AC_CANONICAL_HOST
 host_cpu=`echo "$host_cpu" | sed "s/i.86/i386/"`
 host_os=`echo "$host_os" | sed "s/-.*//"`
 
-dnl if user has explicitly enabled both, warn that they are incompatible
+dnl if user has explicitly enabled both xaudio and libmpeg3,
+dnl warn that they are incompatible
 if [[ "$use_libmpeg3" = "yes" ] && [ "$use_xaudio" = "yes" ]] ; then
-	AC_MSG_ERROR([*** --use-libmpeg3 and --use-xaudio are mutually exclusive])
+	AC_MSG_ERROR([*** --with-libmpeg3 and --with-xaudio are mutually exclusive])
+fi
+
+if [[ "$use_oss" = "default" ] && [ "$use_arts" = "yes" ]] ; then
+	use_oss="no";
+fi
+
+if [[ "$use_oss" = "default" ] && [ "$use_arts" = "no" ]] ; then
+	use_oss="yes";
+fi
+
+dnl if user has explicitly enabled both oss and arts,
+dnl warn that they are incompatible
+if [[ "$use_oss" = "yes" ] && [ "$use_arts" = "yes" ]] ; then
+	AC_MSG_ERROR([*** --with-oss and --with-arts-soundserver are mutually exclusive])
 fi
 
 dnl make use_xaudio's default behave as advertised above (default=yes on i386/linux, no elsewhere)
@@ -142,6 +168,27 @@ if [[ $use_help = "yes" ]] ; then
 	MAKEALL="$MAKEALL audacity-help.htb"
 fi
 
+if [[ $use_oss = "yes" ]] ; then
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audiooss.c.o"
+
+	AC_DEFINE(USE_OSS, 1,
+		[Define if audio I/O happens with OSS])
+
+elif [[ "$use_arts" = "yes" ]]; then
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audioarts.c.o"
+	LIBS="$LIBS -lartsc"	
+
+	AC_DEFINE(USE_ARTS, 1,
+		[Define if audio I/O happens with KDE/aRts soundserver])
+
+else
+	EXTRAOBJS="$EXTRAOBJS \$(OBJDIR)/snd/audionone.c.o"
+
+	AC_DEFINE(USE_AUDIO_NONE, 1,
+		[Define if audio I/O was not compiled in])
+fi
+
+
 dnl --- check for required libraries ---
 
 dnl wxWindows -- we assume that if wx-config is found, wxWindows is successfully installed.
@@ -197,8 +244,19 @@ else
 	echo "  without help";
 fi
 
+if [[ $use_oss = "yes" ]] ; then
+	echo "  with    OSS for audio I/O";
+elif [[ "$use_arts" = "yes" ]]; then
+	echo "  with    KDE/aRts soundserver for audio I/O";
+else
+	echo "  without any audio I/O support  <-- WARNING!!!!!!!!!!";
+	echo "     (you should probably configure using either --with-oss or";
+	echo "     --with-arts-soundserver, unless you are sure that neither";
+	echo "     are supported on your system.)";
+fi
+
 echo "prefix=$prefix";
 
 echo ""
-echo "Run configure --help for explanation of these options,"
+echo "Run configure --help for an explanation of these options,"
 echo "otherwise type 'make' to build Audacity."

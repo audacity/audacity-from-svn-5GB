@@ -25,6 +25,8 @@ extern "C" {
 }
 #endif
 
+#include "../Audacity.h"
+
 #include "../Prefs.h"
 #include "AudioIOPrefs.h"
 
@@ -89,7 +91,22 @@ PrefsPanel(parent)
 
 #ifdef __WXGTK__
 
-   {
+   #if USE_AUDIO_NONE
+   wxString msg = 
+      "This version of Audacity was compiled without any "
+      "Audio I/O support.";
+   topSizer->Add(new wxStaticText(this, -1, msg),
+                 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   #elif USE_ARTS
+   wxString msg = 
+      "This version of Audacity was compiled to use the KDE/aRts "
+      "soundserver.\n"
+      "Please use your KDE control panel to configure audio I/O.";
+   topSizer->Add(new wxStaticText(this, -1, msg),
+                 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   #else
+
+   {      
       wxStaticBoxSizer *playbackSizer =
           new wxStaticBoxSizer(
             new wxStaticBox(this, -1, "Playback Device"),
@@ -135,9 +152,8 @@ PrefsPanel(parent)
       }
 
       topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+
    }
-
-
 
    {
       wxStaticBoxSizer *recordingSizer =
@@ -186,6 +202,8 @@ PrefsPanel(parent)
 
       topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
    }
+
+#endif // OSS
 
 #endif                          // __WXGTK__
 
@@ -445,6 +463,8 @@ bool AudioIOPrefs::Apply()
 {
    /* Step 1: Validate input */
 #ifdef __WXGTK__
+
+#if USE_OSS
    mPlayDevice = mPlaybackDeviceCtrl->GetValue();
    if (!wxFileExists(mPlayDevice) || wxDirExists(mPlayDevice)) {
       wxMessageBox("Invalid playback device.", "Error",
@@ -458,6 +478,8 @@ bool AudioIOPrefs::Apply()
                    wxOK | wxCENTRE | wxICON_EXCLAMATION);
       return false;
    }
+#endif
+
 #endif                          // __WXGTK__
 
 #ifdef __WXMAC__
