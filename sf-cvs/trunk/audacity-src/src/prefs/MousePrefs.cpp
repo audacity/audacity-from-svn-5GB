@@ -45,6 +45,8 @@
 #include "MousePrefs.h"
 
 
+// The numbers of the columns of the mList.
+enum { BlankColumn=0, ToolColumn=1, ActionColumn=2, ButtonsColumn=3};
 
 
 BEGIN_EVENT_TABLE(MousePrefs, wxPanel)
@@ -78,10 +80,10 @@ PrefsPanel(parent)
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(0, _T(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(1, _("Buttons"), wxLIST_FORMAT_RIGHT );
-   mList->InsertColumn(2, _("Tool"),    wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(3, _("Command Action"),  wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   _T(""),               wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(ToolColumn,    _("Tool"),            wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(ActionColumn,  _("Command Action"),  wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
 
    AddItem( _("Left-Click"),       _("Select"),    _("Set Selection Point") );
    AddItem( _("Left-Drag"),        _("Select"),    _("Set Selection Range") );
@@ -108,10 +110,10 @@ PrefsPanel(parent)
    AddItem( _("Wheel-Rotate"),     _("Any"),       _("Zoom in or out") );
    AddItem( _("Ctrl-Wheel-Rotate"),_("Any"),       _("Scroll Left or Right") );
 
-   mList->SetColumnWidth( 0, 0 ); // First column width is zero, to hide it.
-   mList->SetColumnWidth( 1, wxLIST_AUTOSIZE );
-   mList->SetColumnWidth( 2, wxLIST_AUTOSIZE );
-   mList->SetColumnWidth( 3, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
+   mList->SetColumnWidth( ToolColumn,   wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( ActionColumn, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( ButtonsColumn, wxLIST_AUTOSIZE );
 
    bindingsSizer->Add( mList, 1, wxEXPAND );
 //   topSizer->Add( bindingsSizer, 1, wxEXPAND );
@@ -128,14 +130,13 @@ MousePrefs::~MousePrefs()
 {
 }
 
-
 void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool, wxString const & Action )
 {
    int i=mList->GetItemCount();
    mList->InsertItem( i, _T("") );
-   mList->SetItem( i, 1, MouseButtons );
-   mList->SetItem( i, 2, Tool );
-   mList->SetItem( i, 3, Action );
+   mList->SetItem( i, ToolColumn, Tool );
+   mList->SetItem( i, ActionColumn, Action );
+   mList->SetItem( i, ButtonsColumn, MouseButtons );
 }
 
 

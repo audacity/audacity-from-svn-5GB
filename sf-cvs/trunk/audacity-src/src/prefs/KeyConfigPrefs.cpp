@@ -35,7 +35,7 @@
 
 
 // The numbers of the columns of the mList.
-enum { BlankColumn=0, KeyComboColumn=1, CommandColumn=2};
+enum { BlankColumn=0, CommandColumn=1, KeyComboColumn=2};
 
 BEGIN_EVENT_TABLE(KeyConfigPrefs, wxPanel)
    EVT_BUTTON(AssignDefaultsButtonID, KeyConfigPrefs::AssignDefaults)
@@ -67,16 +67,17 @@ PrefsPanel(parent)
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
    mList->InsertColumn(BlankColumn,    _T(""), wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_RIGHT );
-   mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(CommandColumn,  _("Command"),  wxLIST_FORMAT_RIGHT );
+   mList->InsertColumn(KeyComboColumn, _("Key Combination"), wxLIST_FORMAT_LEFT );
 
    RepopulateBindingsList();
 
    mList->SetColumnWidth( BlankColumn, 0 ); // First column width is zero, to hide it.
    // Would like to use wxLIST_AUTOSIZE but
    // wxWindows does not look at the size of column heading.
+//   mList->SetColumnWidth( CommandColumn, 250 );
+   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
    mList->SetColumnWidth( KeyComboColumn, 115 );
-   mList->SetColumnWidth( CommandColumn, 250 );
 
    topSizer->Add( mList, 1, 
                   wxGROW | wxALL, GENERIC_CONTROL_BORDER);
@@ -158,8 +159,8 @@ void KeyConfigPrefs::RepopulateBindingsList()
       mList->InsertItem( i, _T("") );
       wxString label = mManager->GetLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
-      mList->SetItem( i, KeyComboColumn, mManager->GetKeyFromName(mNames[i]) );
       mList->SetItem( i, CommandColumn, label );
+      mList->SetItem( i, KeyComboColumn, mManager->GetKeyFromName(mNames[i]) );
    }
 }
 
