@@ -29,7 +29,7 @@
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
 #include "KeyConfigPrefs.h"
-#include "SampleRatePrefs.h"
+#include "QualityPrefs.h"
 #include "SpectrumPrefs.h"
 
 enum {
@@ -68,7 +68,7 @@ wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
 
    /* All panel additions belong here */
    mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));
-   mCategories->AddPage(new SampleRatePrefs(mCategories), _("Sample Rates"));
+   mCategories->AddPage(new QualityPrefs(mCategories), _("Quality"));
    mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));

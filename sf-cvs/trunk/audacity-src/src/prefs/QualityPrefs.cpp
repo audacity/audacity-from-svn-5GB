@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  SampleRatePrefs.cpp
+  QualityPrefs.cpp
 
   Joshua Haberman
 
@@ -14,7 +14,7 @@
 #include <wx/intl.h>
 
 #include "../Prefs.h"
-#include "SampleRatePrefs.h"
+#include "QualityPrefs.h"
 
 int rates[] = { 8000,
    11025,
@@ -33,10 +33,10 @@ wxString stringRates[] = { "8000",
 };
 
 // Don't forget to change the size of the mSampleRates array in
-// SampleRatePrefs.h when you change this
+// QualityPrefs.h when you change this
 #define NUM_RATES 6
 
-SampleRatePrefs::SampleRatePrefs(wxWindow * parent):
+QualityPrefs::QualityPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    int rate =
@@ -85,7 +85,7 @@ PrefsPanel(parent)
    SetSizer(outSizer);
 }
 
-bool SampleRatePrefs::Apply()
+bool QualityPrefs::Apply()
 {
    long rate = 44100;
 
@@ -105,7 +105,7 @@ bool SampleRatePrefs::Apply()
 }
 
 
-SampleRatePrefs::~SampleRatePrefs()
+QualityPrefs::~QualityPrefs()
 {
 }
 

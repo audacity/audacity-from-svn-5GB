@@ -91,7 +91,7 @@ OBJS = \
 	$(OBJDIR)/import/ImportRaw.o \
 	$(OBJDIR)/prefs/PrefsDialog.o \
 	$(OBJDIR)/prefs/AudioIOPrefs.o \
-	$(OBJDIR)/prefs/SampleRatePrefs.o \
+	$(OBJDIR)/prefs/QualityPrefs.o \
 	$(OBJDIR)/prefs/FileFormatPrefs.o \
 	$(OBJDIR)/prefs/DirectoriesPrefs.o \
 	$(OBJDIR)/prefs/GUIPrefs.o \

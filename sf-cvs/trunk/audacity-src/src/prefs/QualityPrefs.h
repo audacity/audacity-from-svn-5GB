@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  SampleRatePrefs.h
+  QualityPrefs.h
 
   Joshua Haberman
 
@@ -15,11 +15,11 @@
 
 class wxRadioButton;
 
-class SampleRatePrefs:public PrefsPanel {
+class QualityPrefs:public PrefsPanel {
 
  public:
-   SampleRatePrefs(wxWindow * parent);
-   ~SampleRatePrefs();
+   QualityPrefs(wxWindow * parent);
+   ~QualityPrefs();
    bool Apply();
 
  private:
