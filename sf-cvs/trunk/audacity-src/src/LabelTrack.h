@@ -171,6 +171,7 @@ class LabelTrack:public Track {
    int mSelIndex;              //Keeps track of the currently selected label
    int mMouseOverLabelLeft;    //Keeps track of which left label the mouse is currently over.
    int mMouseOverLabelRight;   //Keeps track of which right label the mouse is currently over.
+   int mxMouseDisplacement;    //Displacement of mouse cursor from the centre being dragged.
    LabelArray mLabels;
 
    wxBrush mUnselectedBrush;
