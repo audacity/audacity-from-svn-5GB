@@ -49,6 +49,8 @@ Ruler::Ruler()
    mMajorLabels = 0;
    mMinorLabels = 0;
    
+   mLabelEdges = true;
+
    mValid = false;
 }
 
