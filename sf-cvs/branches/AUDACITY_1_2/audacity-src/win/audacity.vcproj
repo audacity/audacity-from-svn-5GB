@@ -87,7 +87,7 @@
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/O2 /GL"
+				AdditionalOptions="/O2 /GL /GA"
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				OptimizeForProcessor="3"
