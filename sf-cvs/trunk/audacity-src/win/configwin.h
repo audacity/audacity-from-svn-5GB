@@ -4,6 +4,7 @@
 #define MP3SUPPORT
 #define USE_LIBVORBIS
 #define USE_LIBID3TAG
+#define USE_NYQUIST
 
 #define INSTALL_PREFIX "."
 

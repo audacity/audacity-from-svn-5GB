@@ -38,18 +38,21 @@ void get_xlisp_path(char *paths, int paths_max)
 }
 
 
-/* vjohnson 
-	extern "C" {
-	long random_seed = 1534781L;
+#ifdef USE_NYQUIST
+	#ifndef __WXGTK__ // Not for Linux because stdlib.h for gcc defines its own random().
+		/* vjohnson */
+		extern "C" {
+		long random_seed = 1534781L;
 
-	short random(short lo, short hi)
-	{
-		random_seed *= 13L;
-		random_seed += 1874351L;
-		return((short)(lo + (((hi + 1 - lo) * ((0x00ffff00 & random_seed) >> 8)) >> 16)));
-	}
-	}
-*/
+		short random(short lo, short hi)
+		{
+			random_seed *= 13L;
+			random_seed += 1874351L;
+			return((short)(lo + (((hi + 1 - lo) * ((0x00ffff00 & random_seed) >> 8)) >> 16)));
+		}
+		}
+	#endif
+#endif
 
 
 #define UNINITIALIZED_CONTROL ((double)99999999.99)
