@@ -58,7 +58,7 @@ DirManager::DirManager()
 {
   if (firstCtor) {
 	wxString tempPref = gPrefs->Read("/Directories/TempDir", temp);
-	if (tempPref == "" || tempPref[0]!='/')
+	if (tempPref == "" || tempPref.GetChar(0)!='/')
 	  tempPref = temp;
 	temp = tempPref;
     if (!wxPathExists(temp))
