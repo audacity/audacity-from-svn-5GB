@@ -16,6 +16,8 @@
 
 #include "../../Audacity.h"
 
+#if USE_VST
+
 #include "AEffect.h"            // VST API
 #include "AEffEditor.hpp"
 
@@ -633,6 +635,6 @@ float VSTEffect::callGetParameter(AEffect * effect, long index)
    return effect->getParameter(effect, index);
 }
 
-#endif
+#endif // MACOSX
 
-
+#endif // USE_VST

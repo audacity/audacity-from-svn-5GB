@@ -9,6 +9,10 @@
 
 **********************************************************************/
 
+#include "../../Audacity.h"
+
+#if USE_VST
+
 #include "AudioEffect.hpp"      // VST API
 
 #include "VSTEffect.h"
@@ -90,3 +94,12 @@ extern "C" {
 
 
 };                              // extern "C"
+
+#else
+
+extern "C" {
+   void LoadVSTPlugins() {}
+}
+
+#endif // USE_VST
+

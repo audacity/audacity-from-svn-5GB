@@ -10,6 +10,8 @@
 
 #include "../../Audacity.h"
 
+#if USE_VST
+
 #define __MOVIES__   /* Apple's Movies.h not compatible with Audacity */
 /* #define __MACHELP__ */
 
@@ -164,3 +166,12 @@ extern "C" {
    }
 
 };                              // extern "C"
+
+#else
+
+extern "C" {
+   void LoadVSTPlugins() {}
+}
+
+#endif // USE_VST
+
