@@ -150,21 +150,22 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
    // Initiate processing buffers, most likely shorter than 
 	//	the length of the selection being processed.
-	//vvv If the speed is slowed, the output buffer needs to be bigger 
-	//		than the input buffer, but then, since bufferSize is 
-	//		a max block size for the track, need to make outBuffer 
-	//		be track->GetMaxBlockSize(), and inBuffer some fraction of that.
-	//		SRC won't write past the output_frames, so no overflow, 
-	//		but this is sometimes too small a buffer.
-	sampleCount bufferSize = track->GetMaxBlockSize();
-   float * inBuffer = new float[bufferSize];
-   float * outBuffer = new float[bufferSize];
+	sampleCount inBufferSize = track->GetMaxBlockSize();
+   float * inBuffer = new float[inBufferSize];
+
+	// If the speed is slowed, the output buffer needs to be bigger 
+	//	than the input buffer.
+	double bufferSizeFactor = 100.0 / (100.0 + m_PercentChange);
+	sampleCount outBufferSize = 
+						(sampleCount)(bufferSizeFactor + 1.0) * // Add 1.0 to round up.
+						inBufferSize;
+   float * outBuffer = new float[outBufferSize]; 
 
 	// Set up the libsamplerate stuff for this track.
 	SRC_DATA	theSRC_DATA;
 	theSRC_DATA.data_in = inBuffer;
 	theSRC_DATA.data_out = outBuffer;
-	theSRC_DATA.src_ratio = 100.0 / (100.0 + m_PercentChange);
+	theSRC_DATA.src_ratio = bufferSizeFactor;
 
 	// Using src_reset, there's no need to create a new SRC_STATE for each track, . 
 	int error;
@@ -191,7 +192,7 @@ bool EffectChangeSpeed::ProcessOne(WaveTrack * track,
 
 		// libsamplerate
 		theSRC_DATA.input_frames = blockSize;
-		theSRC_DATA.output_frames = bufferSize;
+		theSRC_DATA.output_frames = outBufferSize;
 		theSRC_DATA.end_of_input = (int)((samplePos + blockSize) >= end);
 
 		if ((error = src_process(m_pSRC_STATE, &theSRC_DATA)) != 0) {
@@ -245,7 +246,10 @@ void EffectChangeSpeed::ReportLibSampleRateError(int error)
 // ChangeSpeedDialog
 //----------------------------------------------------------------------------
 
-#define PERCENTCHANGE_MIN -99
+// -99 for PERCENTCHANGE_MIN is too much change for SRC (libsamplerate). 
+// This magic number gives src_ratio right at its limit.
+#define PERCENTCHANGE_MIN -91.66666667 
+
 #define PERCENTCHANGE_MAX 100 // warped above zero to actually go up to 400%
 #define PERCENTCHANGE_SLIDER_WARP 1.30105 // warp power takes max from 100 to 400.
 
@@ -443,7 +447,7 @@ bool ChangeSpeedDialog::TransferDataFromWindow()
 	if (pChoice) 
 		m_FromVinyl = pChoice->GetSelection();
 
-   pChoice = this->GetChoice_FromVinyl();
+   pChoice = this->GetChoice_ToVinyl();
 	if (pChoice) 
 		m_ToVinyl = pChoice->GetSelection();
 
@@ -567,8 +571,14 @@ void ChangeSpeedDialog::Update_Vinyl()
 	wxChoice * pChoice = this->GetChoice_ToVinyl();
 	if (pChoice) 
 		// Chances are so low that the slider will exactly match a 
-		// standard ratio, just turn it "n/a".
-		pChoice->SetSelection(CHOICE_NA);
+		// standard ratio, just turn it "n/a" unless it's 0.0.
+		if (m_PercentChange != 0.0)
+			pChoice->SetSelection(CHOICE_NA);
+		else {
+			wxChoice * pChoice_FromVinyl = this->GetChoice_FromVinyl();
+			if (pChoice_FromVinyl)
+				pChoice->SetSelection(pChoice_FromVinyl->GetSelection());
+		}
 }
 
 void ChangeSpeedDialog::Update_PercentChange() 
