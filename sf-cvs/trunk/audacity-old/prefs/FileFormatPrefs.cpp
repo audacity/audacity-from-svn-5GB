@@ -23,7 +23,7 @@ wxString gDefaultExportFormatOptions [] = { "AIFF",
                                             "WAV",
                                             "IRCAM",
                                             "AU",
-                                          #ifdef HAVE_LIBVORBISFILE
+                                          #ifdef USE_LIBVORBIS
                                             "Ogg Vorbis",
                                           #endif
                                             "MP3",
