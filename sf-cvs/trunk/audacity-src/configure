@@ -5029,7 +5029,7 @@ fi
       LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist/nyx'
       LIBNYQUIST_LOCAL_CPPSYMBOLS="USE_NYQUIST"
       LIBNYQUIST_LOCAL_OPTOBJS="effects/nyquist/Nyquist.o"
-      LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OBJS effects/nyquist/LoadNyquist.o"
+      LIBNYQUIST_LOCAL_OPTOBJS="$LIBNYQUIST_LOCAL_OPTOBJS effects/nyquist/LoadNyquist.o"
 
       { echo "$as_me:$LINENO: nyquist libraries are available in the local tree" >&5
 echo "$as_me: nyquist libraries are available in the local tree" >&6;}
@@ -5125,6 +5125,7 @@ for lib in $LIBRARIES ; do
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
    if test "$LIB_USE_LOCAL" = "yes" ; then
       eval LOCAL_LIBS=\"$LOCAL_LIBS \$${lib}_LOCAL_LIBS\"
+      eval OPTOBJS=\"$OPTOBJS \$${lib}_LOCAL_OPTOBJS\"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_LOCAL_CXXFLAGS\"
       eval CONFIG_SUBDIRS=\"\$${lib}_LOCAL_CONFIG_SUBDIRS\"
 
@@ -5141,6 +5142,7 @@ _ACEOF
       done
    elif test "$LIB_USE_SYSTEM" = "yes" ; then
       eval LIBS=\"$LIBS \$${lib}_SYSTEM_LIBS\"
+      eval OPTOBJS=\"$OPTOBJS \$${lib}_SYSTEM_OPTOBJS\"
       #LIBS="$LIBS $THESE_LIBS"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_SYSTEM_CXXFLAGS\"
 

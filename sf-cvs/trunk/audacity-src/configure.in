@@ -182,6 +182,7 @@ for lib in $LIBRARIES ; do
    eval LIB_USE_SYSTEM=\$${lib}_USE_SYSTEM
    if test "$LIB_USE_LOCAL" = "yes" ; then
       eval LOCAL_LIBS=\"$LOCAL_LIBS \$${lib}_LOCAL_LIBS\"
+      eval OPTOBJS=\"$OPTOBJS \$${lib}_LOCAL_OPTOBJS\"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_LOCAL_CXXFLAGS\"
       eval CONFIG_SUBDIRS=\"\$${lib}_LOCAL_CONFIG_SUBDIRS\"
       AC_CONFIG_SUBDIRS($CONFIG_SUBDIRS)
@@ -192,6 +193,7 @@ for lib in $LIBRARIES ; do
       done
    elif test "$LIB_USE_SYSTEM" = "yes" ; then
       eval LIBS=\"$LIBS \$${lib}_SYSTEM_LIBS\"
+      eval OPTOBJS=\"$OPTOBJS \$${lib}_SYSTEM_OPTOBJS\"
       #LIBS="$LIBS $THESE_LIBS"
       eval CXXFLAGS=\"\$CXXFLAGS \$${lib}_SYSTEM_CXXFLAGS\"
 
