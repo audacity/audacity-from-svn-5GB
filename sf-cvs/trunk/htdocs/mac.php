@@ -85,7 +85,15 @@ Known incompatibilities:
 </table>
 
 <p>
-<b>Notes:</b>
+<b>Note: We now recommend that all Mac OS X users try version 
+<a href="beta.php">Audacity 1.1.3</a> instead of 1.0.0.
+It's still in beta, but it has far surpassed version 1.0 in
+OS X support.  Both recording and MP3 exporting are broken
+   in Audacity 1.0, but they work much better in 1.1.3.
+</p>
+
+<p>
+<b>Notes:</b> (if you decide to use Audacity 1.0 anyway...)
 <ul>
 <li>Having problems when Audacity opens the first time?  Errors involving
 the temp directory?  This seems to affect some OS X users.
