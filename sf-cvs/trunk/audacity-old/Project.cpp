@@ -158,6 +158,7 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_SIZE(AudacityProject::OnSize)
     EVT_ACTIVATE(AudacityProject::OnActivate)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
+    EVT_DROP_FILES(AudacityProject::OnDropFiles)
 EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
 #define AUDACITY_MENUS_EVENT_TABLE
 #include "Menus.h"
@@ -301,6 +302,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    // Create tags object
    mTags = new Tags();
+
+   // Accept drag 'n' drop files
+   DragAcceptFiles(true);
 
    gAudacityProjects.Add(this);
 }
@@ -824,6 +828,19 @@ void AudacityProject::OnClose(wxCommandEvent & event)
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
    Destroy();
+}
+
+void AudacityProject::OnDropFiles(wxDropFilesEvent & event)
+{
+   int numFiles = event.GetNumberOfFiles();
+
+   if (numFiles > 0) {
+      wxString *files = event.GetFiles();
+
+      int i;
+      for(i=0; i<numFiles; i++)
+         Import(files[i]);
+   }
 }
 
 void AudacityProject::OpenFile(wxString fileName)
