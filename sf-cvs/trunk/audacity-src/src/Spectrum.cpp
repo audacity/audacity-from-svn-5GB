@@ -15,6 +15,27 @@
 
 #if 1 //(UGLY_IEEE754_FLOAT32_HACK :-)
 
+// Untile Dominic can let me know if there's a supported type provided
+// by the build system, fix non-UNIX builds!
+#if defined(_WIN32)
+#  if defined(__CYGWIN__)
+#    include <_G_config.h>
+     typedef _G_int32_t int32_t;
+#  elif defined(__MINGW32__)
+     typedef int int32_t; 
+#  else
+     /* MSVC/Borland */
+     typedef __int32 int32_t;
+#  endif
+#elif defined(__BEOS__)
+#  include <inttypes.h>
+#elif defined (__EMX__) || defined(DJGPP)
+   typedef int int32_t;
+#else
+/* MacOS, UNIX */
+#  include <sys/types.h>
+#endif
+
 static inline float todB_a(const float *x){
   return (float)((*(int32_t *)x)&0x7fffffff) * 7.17711438e-7f -764.6161886f;
 }
@@ -22,7 +43,7 @@ static inline float todB_a(const float *x){
 #else
 
 static inline float todB_a(const float *x){
-  return todB(*x);
+   return (*(x)==0?-400.f:log(*(x)**(x))*4.34294480f);
 }
 
 #endif
