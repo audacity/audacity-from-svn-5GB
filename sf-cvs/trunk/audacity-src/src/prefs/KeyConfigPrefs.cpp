@@ -42,6 +42,8 @@ KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
 PrefsPanel(parent), mCommandSelected(-1)
 {
    mAudacity = GetActiveProject();
+   if (!mAudacity)
+      return;
 
    topSizer = new wxBoxSizer( wxVERTICAL );
 
@@ -240,7 +242,11 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
 
 bool KeyConfigPrefs::Apply()
 {
-   mAudacity->RebuildMenuBar();
+   mAudacity = GetActiveProject();
+
+   if (mAudacity)	
+      mAudacity->RebuildMenuBar();
+
    return true;
 }
 
