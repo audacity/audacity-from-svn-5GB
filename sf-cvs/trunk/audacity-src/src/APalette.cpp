@@ -440,17 +440,17 @@ void APalette::MakeButtons()
 
    /* Tools */
 
-   mTool[0] = MakeTool(IBeam, IBeamAlpha, ID_IBEAM, 0, 0);
-   mTool[0]->SetToolTip(_("Selection Tool"));
+   mTool[selectTool] = MakeTool(IBeam, IBeamAlpha, ID_IBEAM, 0, 0);
+   mTool[selectTool]->SetToolTip(_("Selection Tool"));
 
-   mTool[1] = MakeTool(Envelope, EnvelopeAlpha, ID_SELECT, 28, 0);
-   mTool[1]->SetToolTip(_("Envelope Tool"));
+   mTool[envelopeTool] = MakeTool(Envelope, EnvelopeAlpha, ID_SELECT, 28, 0);
+   mTool[envelopeTool]->SetToolTip(_("Envelope Tool"));
 
-   mTool[2] = MakeTool(TimeShift, TimeShiftAlpha, ID_MOVE, 0, 28);
-   mTool[2]->SetToolTip(_("Time Shift Tool"));
+   mTool[slideTool] = MakeTool(TimeShift, TimeShiftAlpha, ID_MOVE, 0, 28);
+   mTool[slideTool]->SetToolTip(_("Time Shift Tool"));
 
-   mTool[3] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
-   mTool[3]->SetToolTip(_("Zoom Tool"));
+   mTool[zoomTool] = MakeTool(Zoom, ZoomAlpha, ID_ZOOM, 28, 28);
+   mTool[zoomTool]->SetToolTip(_("Zoom Tool"));
 
    wxToolTip::Enable(true);
    wxToolTip::SetDelay(1000);
@@ -492,8 +492,8 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
 
    mVolume->Set(80);
 
-   mCurrentTool = 0;
-   mTool[0]->PushDown();
+   mCurrentTool = selectTool;
+   mTool[selectTool]->PushDown();
 
    mBackgroundBrush.SetColour(backgroundColour);
    mBackgroundPen.SetColour(backgroundColour);
@@ -511,7 +511,7 @@ APalette::APalette(wxWindow * parent, wxWindowID id,
 
 APalette::~APalette()
 {
-   for (int i = 0; i < 4; i++)
+   for (int i = 0; i < numTools; i++)
       delete mTool[i];
 
    delete mRewind;
@@ -680,13 +680,13 @@ void APalette::OnTool(wxCommandEvent & evt)
 
    mCurrentTool = evt.GetId() - ID_FIRST_TOOL;
 
-   for (int i = 0; i < 4; i++)
+   for (int i = 0; i < numTools; i++)
       if (i == mCurrentTool)
          mTool[i]->PushDown();
       else
          mTool[i]->PopUp();
 
-   if (mCurrentTool == 1 || prev == 1)
+   if (mCurrentTool == envelopeTool || prev == envelopeTool)
       RedrawAllProjects();
 }
 

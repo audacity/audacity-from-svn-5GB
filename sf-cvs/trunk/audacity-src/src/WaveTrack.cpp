@@ -80,10 +80,8 @@ VTrack(projDirManager)
 {
    numSamples = 0;
    rate = 44100.0;
-
    SetName(_("Audio Track"));
-
-   display = WaveDisplay;
+   display = WaveformDisplay;
 
    block = new BlockArray();
 
