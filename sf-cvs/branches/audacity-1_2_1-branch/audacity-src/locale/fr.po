@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.1\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2004-02-26 15:59+0100\n"
+"PO-Revision-Date: 2004-04-30 10:08+0100\n"
 "Last-Translator: Christian BROCHEC <christian.brochec@ac-rennes.fr>\n"
 "Language-Team: FRENCH2 <christian.brochec@ac-rennes.fr>\n"
 "MIME-Version: 1.0\n"
@@ -283,15 +283,15 @@ msgstr "Action"
 
 #: ../src/Menus.cpp:360
 msgid "Add Label At Selection\tCtrl+B"
-msgstr "Ajouter un index à  la sélection\tCtrl+B"
+msgstr "Ajouter un marqueur à  la sélection\tCtrl+B"
 
 #: ../src/Menus.cpp:2738
 msgid "Added label"
-msgstr "Index ajouté"
+msgstr "Marqueur ajouté"
 
 #: ../src/TrackPanel.cpp:1888
 msgid "Adjusted envelope."
-msgstr "enveloppe ajustée."
+msgstr "Enveloppe ajustée."
 
 #: ../src/effects/AvcCompressor.cpp:581
 msgid "Adjustment Delay:"
@@ -371,23 +371,23 @@ msgstr "Curseur aligné"
 
 #: ../src/Menus.cpp:2558
 msgid "Aligned end with cursor"
-msgstr "Aligner la fin avec le curseur"
+msgstr "Fin alignée avec le curseur"
 
 #: ../src/Menus.cpp:2566
 msgid "Aligned end with selection end"
-msgstr "Aligner la fin avec la fin de la sélection"
+msgstr "Fin alignée avec la fin de la sélection"
 
 #: ../src/Menus.cpp:2562
 msgid "Aligned end with selection start"
-msgstr "Aligner la fin avec le début de la sélection"
+msgstr "Fin alignée avec le début de la sélection"
 
 #: ../src/Menus.cpp:2554
 msgid "Aligned with selection end"
-msgstr "Aligner avec la fin de la sélection"
+msgstr "Aligné avec la fin de la sélection"
 
 #: ../src/Menus.cpp:2550
 msgid "Aligned with selection start"
-msgstr "Aligner avec le début de la sélection"
+msgstr "Aligné avec le début de la sélection"
 
 #: ../src/Menus.cpp:2542
 msgid "Aligned with zero"
@@ -1145,11 +1145,11 @@ msgstr "Nouvelle piste audio créée"
 
 #: ../src/Menus.cpp:2666
 msgid "Created new label track"
-msgstr "Nouvelle piste d'index créée"
+msgstr "Nouvelle piste de marqueurs créée"
 
 #: ../src/Project.cpp:2299
 msgid "Created new project"
-msgstr "Nouveau Projet créé"
+msgstr "Nouveau projet créé"
 
 #: ../src/Menus.cpp:2651
 msgid "Created new stereo audio track"
@@ -1644,7 +1644,7 @@ msgstr "Exporter"
 
 #: ../src/Menus.cpp:153
 msgid "Export &Labels..."
-msgstr "Exporter les index..."
+msgstr "Exporter les marqueurs..."
 
 #: ../src/Menus.cpp:147
 msgid "Export As MP3..."
@@ -1660,7 +1660,7 @@ msgstr "Exporter les raccourcis clavier sous :"
 
 #: ../src/Menus.cpp:1243
 msgid "Export Labels As:"
-msgstr "Exporter les index sous :"
+msgstr "Exporter les marqueurs sous :"
 
 #: ../src/export/ExportMP3.cpp:104
 #: ../src/export/ExportMP3.cpp:144
@@ -1923,7 +1923,7 @@ msgstr "Importer"
 
 #: ../src/Menus.cpp:311
 msgid "Import &Labels..."
-msgstr "Importer &Les index..."
+msgstr "Importer &Les marqueurs..."
 
 #: ../src/Menus.cpp:312
 msgid "Import &MIDI..."
@@ -1935,7 +1935,7 @@ msgstr "Importer des données &Raw..."
 
 #: ../src/Menus.cpp:2314
 msgid "Import Labels"
-msgstr "Importer les index"
+msgstr "Importer les marqueurs"
 
 #: ../src/Menus.cpp:2349
 msgid "Import MIDI"
@@ -1958,7 +1958,7 @@ msgstr "Midi importé depuis '%s'"
 #: ../src/Menus.cpp:2313
 #, c-format
 msgid "Imported labels from '%s'"
-msgstr "Index importé depuis '%s'"
+msgstr "Marqueurs importés depuis '%s'"
 
 #: ../src/Project.cpp:2143
 #, c-format
@@ -2065,15 +2065,15 @@ msgstr "Erreur de LOF"
 
 #: ../src/Menus.cpp:2738
 msgid "Label"
-msgstr "Index"
+msgstr "Marqueur"
 
 #: ../src/TrackPanel.cpp:3275
 msgid "Label Edit"
-msgstr "Edition d'index"
+msgstr "Edition de marqueur"
 
 #: ../src/LabelTrack.cpp:32
 msgid "Label Track"
-msgstr "Piste d'index"
+msgstr "Piste de marqueurs"
 
 #: ../src/FreqWindow.cpp:1025
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
@@ -2295,7 +2295,7 @@ msgstr "Mixage des pistes"
 
 #: ../src/TrackPanel.cpp:3274
 msgid "Modified Label"
-msgstr "Index modifié"
+msgstr "Marqueur modifié"
 
 #: ../src/TrackPanel.cpp:836
 msgid "Mono"
@@ -2428,7 +2428,7 @@ msgstr "Nouvelle piste de &Temps"
 
 #: ../src/Menus.cpp:324
 msgid "New La&bel Track"
-msgstr "Nouvelle piste d'index"
+msgstr "Nouvelle piste de marqueurs"
 
 #: ../src/effects/Amplify.cpp:153
 msgid "New Peak Amplitude (dB):"
@@ -3163,7 +3163,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:2284
 msgid "Select a text file containing labels..."
-msgstr "Choisir un fichier texte contenant les index..."
+msgstr "Choisir un fichier texte contenant les marqueurs..."
 
 #: ../src/effects/NoiseRemoval.cpp:430
 msgid ""
@@ -3285,7 +3285,7 @@ msgstr "Sélection : %i+%04i - %i+%04i (%i+%04i cdda secteurs+octets)   [à l'écha
 #: ../src/FormatSelection.cpp:790
 #, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "Sélection: %i+%04i - %i+%04i (%i+%04i cdda secteurs+octets)    [à l'échantillon près]   Change l'échantillonnage du projet à 44100 pour cdda"
+msgstr "Sélection: %i+%04i - %i+%04i (%i+%04i cdda secteurs+octets)    [à l'échantillon près]   Change l'échantillonnage du projet à 44100 pour CDDA"
 
 #: ../src/FormatSelection.cpp:748
 #, c-format
@@ -3381,7 +3381,7 @@ msgstr "Silence"
 
 #: ../src/EditToolBar.cpp:156
 msgid "Silence selection"
-msgstr "Rendre muette la sélection"
+msgstr "Rendre la sélection muette"
 
 #: ../src/Menus.cpp:1633
 #, c-format
@@ -3483,7 +3483,7 @@ msgstr "Séparer la piste stéréo"
 
 #: ../src/Menus.cpp:1797
 msgid "Split at labels"
-msgstr "Séparer à l'index"
+msgstr "Séparer au marqueur"
 
 #: ../src/TrackPanel.cpp:4086
 #, c-format
@@ -3564,11 +3564,11 @@ msgstr ""
 
 #: ../src/Menus.cpp:2691
 msgid "The version of Audacity you are using does not support multiple time tracks."
-msgstr "La version d'Audacity que vous utilisez ne prend pas en charge des pistes temporelles multiples"
+msgstr "Cette version d'Audacity que vous utilisez ne prend pas en charge des pistes temporelles multiples"
 
 #: ../src/Menus.cpp:1237
 msgid "There are no label tracks to export."
-msgstr "Il n'y a pas de piste d'index à exporter"
+msgstr "Il n'y a pas de piste de marqueurs à exporter"
 
 #: ../src/AudioIO.cpp:163
 msgid "There was an error initializing the audio i/o layer.\n"
@@ -3995,7 +3995,7 @@ msgstr "Octets"
 #. cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
-msgstr "cdda min:sec:trames 75 t/s"
+msgstr "CDDA min:sec:trames 75 t/s"
 
 #  i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #  A "sector" is a technical term - don't translate unless you're sure
@@ -4029,7 +4029,7 @@ msgstr "hr:min:sec"
 
 #: ../src/Menus.cpp:1241
 msgid "labels.txt"
-msgstr "Index.txt"
+msgstr "Marqueurs.txt"
 
 #: ../src/TrackPanel.cpp:1996
 msgid "left"
@@ -4112,7 +4112,9 @@ msgstr "Curseur en début de piste"
 #: ../src/AboutDialog.cpp:149
 #: ../src/AboutDialog.cpp:151
 msgid "translator_credits"
-msgstr "Traduction française par Christian Brochec (CDDP 22)"
+msgstr ""
+"Traduction française par Christian Brochec (CDDP 22)\n"
+"christian.brochec@ac-rennes.fr"
 
 #: ../src/TrackPanel.cpp:4339
 #: ../src/effects/ChangePitch.cpp:275
