@@ -138,23 +138,6 @@ TrackList::~TrackList()
    Clear();
 }
 
-double TrackList::GetEndTime() const
-{
-   if (IsEmpty())
-      return 0.0;
-
-   double len = head->t->GetEndTime();
-   ConstTrackListIterator iter(this);
-
-   for (Track *t = iter.First(); t; t = iter.Next()) {
-      double l = t->GetEndTime();
-      if (l > len)
-         len = l;
-   }
-
-   return len;
-}
-
 double TrackList::GetMinOffset() const
 {
    if (IsEmpty())
@@ -600,3 +583,36 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
    return bytes;
 }
 
+double TrackList::GetStartTime() const
+{
+   if (IsEmpty())
+      return 0.0;
+   
+   double min = head->t->GetStartTime(); // head->t should be APIfied
+   ConstTrackListIterator iter(this);
+   
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      double l = t->GetStartTime();
+      if (l < min)
+         min = l;
+   }
+   
+   return min;
+}
+
+double TrackList::GetEndTime() const
+{
+   if (IsEmpty())
+      return 0.0;
+   
+   double max = head->t->GetEndTime();
+   ConstTrackListIterator iter(this);
+   
+   for (Track *t = iter.First(); t; t = iter.Next()) {
+      double l = t->GetEndTime();
+      if (l > max)
+         max = l;
+   }
+   
+   return max;
+}

@@ -235,20 +235,18 @@ void WaveTrack::SetOffset(double t)
 
 double WaveTrack::GetStartTime()
 {
-   if (mOffset >= 0.0)
-      return mOffset;
-   else
-      return 0.0;
+   // JS: mOffset is the minimum value and it is returned; no clipping to 0
+   return mOffset;
 }
 
 double WaveTrack::GetEndTime()
 {
    longSampleCount numSamples = mSequence->GetNumSamples() + mAppendBufferLen;
-
+   
    double maxLen = mOffset + numSamples/mRate;
-   if (maxLen < 0.0)
-      maxLen = 0.0;
-
+   // JS: calculated value is not the length;
+   // it is a maximum value and can be negative; no clipping to 0
+   
    return maxLen;
 }
 
