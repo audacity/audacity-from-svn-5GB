@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: 16kHz settings 
- last mod: $Id: setup_16.h,v 1.4.4.1 2004-07-30 06:57:30 mbrubeck Exp $
+ last mod: $Id: setup_16.h,v 1.4.4.2 2004-11-25 02:47:58 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -73,8 +73,8 @@ ve_setup_data_template ve_setup_16_stereo={
   _psy_noise_suppress,
   
   _psy_compand_8,
-  _psy_compand_8_mapping,
-  _psy_compand_8_mapping,
+  _psy_compand_16_mapping,
+  _psy_compand_16_mapping,
 
   {_noise_start_16,_noise_start_16},
   { _noise_part_16, _noise_part_16},
@@ -124,8 +124,8 @@ ve_setup_data_template ve_setup_16_uncoupled={
   _psy_noise_suppress,
   
   _psy_compand_8,
-  _psy_compand_8_mapping,
-  _psy_compand_8_mapping,
+  _psy_compand_16_mapping,
+  _psy_compand_16_mapping,
 
   {_noise_start_16,_noise_start_16},
   { _noise_part_16, _noise_part_16},

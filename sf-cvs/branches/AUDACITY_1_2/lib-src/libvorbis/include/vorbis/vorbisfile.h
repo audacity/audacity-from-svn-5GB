@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: stdio-based convenience library for opening/seeking/decoding
- last mod: $Id: vorbisfile.h,v 1.4.4.1 2004-07-30 06:57:29 mbrubeck Exp $
+ last mod: $Id: vorbisfile.h,v 1.4.4.2 2004-11-25 02:47:52 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -27,11 +27,11 @@ extern "C"
 #include "codec.h"
 
 /* The function prototypes for the callbacks are basically the same as for
- * the stdio functions fread, fseek, fclose, ftell. 
+ * the stdio functions fread, fseek, fclose, ftell.
  * The one difference is that the FILE * arguments have been replaced with
  * a void * - this is to be used as a pointer to whatever internal data these
  * functions might need. In the stdio case, it's just a FILE * cast to a void *
- * 
+ *
  * If you use other functions, check the docs for these functions and return
  * the right values. For seek_func(), you *MUST* return -1 if the stream is
  * unseekable
@@ -54,7 +54,7 @@ typedef struct OggVorbis_File {
   int              seekable;
   ogg_int64_t      offset;
   ogg_int64_t      end;
-  ogg_sync_state   oy; 
+  ogg_sync_state   oy;
 
   /* If the FILE handle isn't seekable (eg, a pipe), only the current
      stream appears */
@@ -112,6 +112,12 @@ extern int ov_pcm_seek_page(OggVorbis_File *vf,ogg_int64_t pos);
 extern int ov_time_seek(OggVorbis_File *vf,double pos);
 extern int ov_time_seek_page(OggVorbis_File *vf,double pos);
 
+extern int ov_raw_seek_lap(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ov_pcm_seek_lap(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ov_pcm_seek_page_lap(OggVorbis_File *vf,ogg_int64_t pos);
+extern int ov_time_seek_lap(OggVorbis_File *vf,double pos);
+extern int ov_time_seek_page_lap(OggVorbis_File *vf,double pos);
+
 extern ogg_int64_t ov_raw_tell(OggVorbis_File *vf);
 extern ogg_int64_t ov_pcm_tell(OggVorbis_File *vf);
 extern double ov_time_tell(OggVorbis_File *vf);
@@ -123,6 +129,10 @@ extern long ov_read_float(OggVorbis_File *vf,float ***pcm_channels,int samples,
 			  int *bitstream);
 extern long ov_read(OggVorbis_File *vf,char *buffer,int length,
 		    int bigendianp,int word,int sgned,int *bitstream);
+extern int ov_crosslap(OggVorbis_File *vf1,OggVorbis_File *vf2);
+
+extern int ov_halfrate(OggVorbis_File *vf,int flag);
+extern int ov_halfrate_p(OggVorbis_File *vf);
 
 #ifdef __cplusplus
 }

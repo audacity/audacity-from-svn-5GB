@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: 8kHz psychoacoustic settings 
- last mod: $Id: psych_8.h,v 1.4.4.1 2004-07-30 06:57:30 mbrubeck Exp $
+ last mod: $Id: psych_8.h,v 1.4.4.2 2004-11-25 02:47:58 mbrubeck Exp $
 
  ********************************************************************/
 
@@ -97,6 +97,6 @@ static int _psy_ath_floater_8[3]={
 };
 
 static int _psy_ath_abs_8[3]={
-  -110,-110,-140,
+  -130,-130,-140,
 };
 

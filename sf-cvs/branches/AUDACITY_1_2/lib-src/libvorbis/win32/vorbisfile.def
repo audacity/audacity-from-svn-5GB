@@ -1,7 +1,7 @@
 ;
 ; vorbisfile.def
 ;
-; last modified: $Id: vorbisfile.def,v 1.4.4.1 2004-07-30 06:57:31 mbrubeck Exp $
+; last modified: $Id: vorbisfile.def,v 1.4.4.2 2004-11-25 02:47:59 mbrubeck Exp $
 ;
 LIBRARY
 EXPORTS

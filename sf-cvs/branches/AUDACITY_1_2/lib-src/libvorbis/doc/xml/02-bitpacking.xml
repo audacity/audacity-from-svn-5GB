@@ -7,7 +7,7 @@
 <section id="vorbis-spec-bitpacking">
 <sectioninfo>
 <releaseinfo>
- $Id: 02-bitpacking.xml,v 1.1.1.1 2004-11-13 16:54:51 mbrubeck Exp $
+ $Id: 02-bitpacking.xml,v 1.1.1.1.2.1 2004-11-25 02:47:51 mbrubeck Exp $
 </releaseinfo>
 </sectioninfo>
 <title>Bitpacking Convention</title>
