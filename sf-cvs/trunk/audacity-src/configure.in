@@ -124,7 +124,7 @@ AC_CHECK_FILE(lib-src/libsamplerate/src/samplerate.h,
               default_libsamplerate="local",
               default_libsamplerate="system")
 
-AC_CHECK_FILE(lib-src/libresample/include/resample.h,
+AC_CHECK_FILE(lib-src/libresample/include/libresample.h,
               default_libresample="yes",
               default_libresample="no")
 
