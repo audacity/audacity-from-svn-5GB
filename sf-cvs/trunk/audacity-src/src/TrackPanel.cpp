@@ -1966,7 +1966,8 @@ void TrackPanel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 // no longer there won't get  XORed (to erase it), thus redrawing it on the 
 // TrackPanel
 //
-void TrackPanel::Refresh(bool eraseBackground) 
+void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
+                         const wxRect *rect /* = NULL */)
 {
    mPlayIndicatorExists=false;
    wxWindow::Refresh(eraseBackground);
