@@ -830,7 +830,13 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
   }
 
   wxTextFile f(mFileName);
+  #ifdef __WXMAC__
+  wxFile *temp = new wxFile();
+  temp->Create(mFileName);
+  delete temp;
+  #else
   f.Create();
+  #endif
   f.Open();
   if (!f.IsOpened()) {
 	wxMessageBox("Couldn't write to "+mFileName);
@@ -888,7 +894,19 @@ void AudacityProject::OnSave(bool overwrite /* = true */)
 
 void AudacityProject::OnSaveAs()
 {
-  wxString fName = wxSaveFileSelector("", "aup");
+  wxString fName = mFileName;
+  if (fName == "")
+    fName = ".aup";
+
+  fName = wxFileSelector("Save Project As:",
+                         NULL,
+                         fName,
+                         "aup",
+                         "*.aup",
+                         wxSAVE,
+                         this);
+
+  // wxString fName = wxSaveFileSelector("", "aup");
 
   if (fName == "")
 	return;
