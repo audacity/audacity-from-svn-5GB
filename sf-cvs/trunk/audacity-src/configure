@@ -2872,8 +2872,8 @@ if [ "$host_os" = "darwin5.3" ] ; then
 
 	LIBS="-framework CoreAudio $LIBS"
 
-	AFTERBUILD="cp audacity Audacity.app
-`$WX_CONFIG --rezflags` Audacity.App audacity.r -c auDy
+	AFTERBUILD="cp audacity Audacity.app \
+`$WX_CONFIG --rezflags` Audacity.App audacity.r -c auDy \
 /Developer/Tools/SetFile -a avBstClinmed Audacity.app"
 
 else
