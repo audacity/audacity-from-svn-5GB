@@ -2,32 +2,22 @@
 
 <p>
 Audacity is een gratis audio geluidsbewerker.
-Je kunt geluid opnemen, geluid afspelen, importeren en exporteren van WAV, AIFF en MP3 bestanden, en nog veel meer.
+Je kunt geluid opnemen, geluid afspelen, importeren en exporteren van WAV, AIFF, Ogg Vorbis en MP3 bestanden, en nog veel meer.
 Gebruik het om je geluiden te bewerken met behulp van de knip, kopieër en plak functies (met ongelimiteerde Herstelfunctie), mix tracks, of voeg effecten toe aan je opnames.
 Ook is een "amplitude envelope editor" ingebouwd, een volledig instelbare spectrogram modus en een frequentie analyseervenster voor audio analytische applicaties.
-Ingebouwde effecten zijn onder andere Bass Boost, Wahwah, en ruisverwijdering,
-en het ondersteund ook VST plug-in effecten.
-</p>
-
-<p>
-Audacity versie 1.0.0 is de meest stabiele versie die we tot nu toe hebben
-vrijgegeven, en veel mensen hebben al ondervonden dat door de unieke mogelijkheden en de intuitieve interface het makkelijker en beter te gebruiken is dan andere audio bewerkingsprogramma's, waaronder commercieële programma's.
-</p>
-
-<p> De ontwikkelaars van Audacity hebben ook <a href="<?php print "beta.php?$langLinkStr"; ?>">versie 1.2.0-pre1</a> vrijgegeven, welke
-een beta-kwaliteits uitgave is van nieuwe dingen waar we actief aan werken.
-Het bevat vele nieuwe mogelijkheden, maar is nog niet zo afgewerkt en stabiel.
+Ingebouwde effecten zijn onder andere Echo, Tempowijziging en ruisverwijdering
+en het ondersteund ook VST en LADSPA plug-in effecten.
 </p>
 
 <center>
-<a href="http://wxwindows.org/"><img src="images/wxwindows.gif" border="0"></a>
+<a href="http://wxwidgets.org/"><img src="images/wxwindows.gif" border="0"></a>
 </center>
 
 <p>
 Audacity wordt ontwikkeld door een team van vrijwilligers via het
 open-source model.
 Het is geschreven in C en C++, gebruik makend van
-<a href="http://www.wxwindows.org/">wxWindows</a> cross-platform toolkit.
+<a href="http://wxwidgets.org/">wxWidgets</a> cross-platform toolkit.
 De gehele broncode van het programma
 wordt beschikbaar gesteld overeenkomstig de
 <a href="http://www.gnu.org/copyleft/gpl.html"
