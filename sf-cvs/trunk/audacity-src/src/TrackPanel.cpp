@@ -14,10 +14,8 @@
 
 #include "TrackPanel.h"
 
-#ifdef __WXMAC__
-#ifdef __UNIX__
+#if defined(__WXMAC__) && defined(__UNIX__)
 #include <Carbon/Carbon.h>
-#endif
 #endif
 
 #include <math.h>
@@ -46,7 +44,7 @@
 #include "widgets/Ruler.h"
 
 #if defined(__WXMAC__) && !defined(__UNIX__)
-#  include <Menus.h>
+#include <Menus.h>
 #endif
 
 #define kLeftInset 4
@@ -1136,6 +1134,8 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
                              VTrack * t, wxRect & r, int num)
 {
+   ReleaseMouse();
+
    mPopupMenuTarget = t;
    {
       wxClientDC dc(this);
