@@ -1,0 +1,7 @@
+# DO NOT EDIT.  EDIT ./configure INSTEAD AND RERUN IT.
+CC = gcc
+NASM = nasm
+CFLAGS += -DHAVE_CSS
+CFLAGS += -DHAVE_MMX
+MMXOBJS = 	video/mmxidct.o 	video/reconmmx.o
+MMXOBJS2 = 	mmxidct.o 	reconmmx.o
