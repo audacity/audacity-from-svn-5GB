@@ -123,11 +123,10 @@ void WaveTrack::SetRate(double newRate)
    dirty++;                     // forces redraw
 }
 
-void WaveTrack::Offset(double t)
+void WaveTrack::SetOffset(double t)
 {
-   VTrack::Offset(t);
-
-   envelope.SetOffset(tOffset);
+   VTrack::SetOffset(t);
+   envelope.SetOffset(t);
 }
 
 VTrack *WaveTrack::Duplicate()

@@ -68,8 +68,12 @@ class VTrack {
    virtual void Toggle();
    virtual bool IsCollapsed();
 
-   virtual void Offset(double t) {
-      tOffset += t;
+   void Offset(double t) {
+      SetOffset(tOffset + t);
+   }
+
+   virtual void SetOffset(double t) {
+      tOffset = t;
    }
 
    virtual int GetKind() {
