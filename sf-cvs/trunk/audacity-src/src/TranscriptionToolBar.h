@@ -6,36 +6,22 @@
 
   Shane T. Mueller
 
-  This class manages the miniframe window (aka floating window)
-  which contains the tool selection (ibeam, envelope, move, zoom),
-  the play/stop/record buttons, and the volume control.  All of the
-  controls in this window were custom-written for Audacity - they
-  are not native controls on any platform - however, it is intended
-  that the images could be easily replaced to allow "skinning" or
-  just customization to match the look and feel of each platform.
-
 **********************************************************************/
 
 #ifndef __AUDACITY_TRANSCRIPTION_TOOLBAR__
 #define __AUDACITY_TRANSCRIPTION_TOOLBAR__
 
+#include "ToolBar.h"
+#include "Sequence.h" // for sampleCount
+
 #include <wx/brush.h>
 #include <wx/gdicmn.h>
 #include <wx/pen.h>
-#include <wx/minifram.h>
-#include <wx/file.h>
 
-#include "Prefs.h"
-#include "Project.h"
-//#include "VoiceKey.h"
-#include "ToolBar.h"
-
-class VoiceKey;
 class AButton;
 class ASlider;
-class ToolBar;
-class TranscriptionToolBarFrame;
- 
+class VoiceKey;
+class WaveTrack;
 
 enum
    {
