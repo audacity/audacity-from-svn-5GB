@@ -156,7 +156,9 @@ void SoundPlayer::OnTimer()
 	mixer->UseVolumeSlider(mProject->GetAPalette());
 	mixer->Clear();
 
-    VTrack *vt = mTracks->First();
+	TrackListIterator iter(mTracks);
+
+    VTrack *vt = iter.First();
     while(vt) {
       if (vt->GetKind() == VTrack::Wave) {
 	    WaveTrack *t = (WaveTrack *)vt;
@@ -174,7 +176,7 @@ void SoundPlayer::OnTimer()
 	    }
       }
 
-      vt = mTracks->Next();
+      vt = iter.Next();
     }
 
 	sampleType *outbytes = mixer->GetBuffer();

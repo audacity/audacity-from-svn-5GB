@@ -93,6 +93,67 @@ bool VTrack::IsCollapsed()
   return this->collapsed;
 }
 
+//
+// TrackListIterator
+//
+
+TrackListIterator::TrackListIterator(TrackList *l)
+{
+  this->l = l;
+}
+
+VTrack *TrackListIterator::First()
+{
+  cur = l->head;
+
+  if (cur)
+    return cur->t;
+  else
+    return NULL;
+}
+
+VTrack *TrackListIterator::Next()
+{
+  if (cur)
+	cur = cur->next;
+
+  if (cur)
+    return cur->t;
+  else
+    return NULL;
+}
+
+VTrack *TrackListIterator::RemoveCurrent()
+{
+  TrackListNode *p = cur;
+  TrackListNode *next = p->next;
+
+  // Remove p from the linked list
+	  
+  if (p->prev)
+	p->prev->next = next;
+  else
+	l->head = next;
+  
+  if (next)
+	next->prev = p->prev;
+  else
+	l->tail = p->prev;
+  
+  delete p;
+
+  cur = next;
+
+  if (cur)	
+	return cur->t;
+  else
+	return NULL;
+}
+
+//
+// TrackList
+//
+
 bool TrackList::Save(wxTextFile *out, bool overwrite)
 {
   TrackListNode *n = head;
@@ -165,19 +226,19 @@ TrackList::TrackList()
 {
   head = 0;
   tail = 0;
-  cur = 0;
 }
 
 TrackList::TrackList(TrackList *list)
 {
   head = 0;
   tail = 0;
-  cur = 0;
 
-  VTrack *t = list->First();
+  TrackListIterator iter(list);
+
+  VTrack *t = iter.First();
   while(t) {
 	Add(t);
-	t = list->Next();
+	t = iter.Next();
   }
 }
 
@@ -190,12 +251,14 @@ double TrackList::GetMaxLen()
 {
   double len = 0.0;
 
-  VTrack *t = First();
+  TrackListIterator iter(this);
+
+  VTrack *t = iter.First();
   while(t) {
 	double l = t->GetMaxLen();
 	if (l > len)
 	  len = l;
-	t = Next();
+	t = iter.Next();
   }
 
   return len;
@@ -205,10 +268,12 @@ int TrackList::GetHeight()
 {
   int height = 0;
 
-  VTrack *t = First();
+  TrackListIterator iter(this);
+
+  VTrack *t = iter.First();
   while(t) {
 	height += t->GetHeight();
-	t = Next();
+	t = iter.Next();
   }
 
   return height;
@@ -246,38 +311,10 @@ void TrackList::Remove(VTrack *t)
 	  
 	  delete p;
 	  
-	  cur = 0;
 	  return;
 	}
 	p = p->next;
   }
-}
-
-VTrack *TrackList::RemoveCurrent()
-{
-  TrackListNode *p = cur;
-  TrackListNode *next = p->next;
-
-  // Remove p from the linked list
-	  
-  if (p->prev)
-	p->prev->next = next;
-  else
-	head = next;
-  
-  if (next)
-	next->prev = p->prev;
-  else
-	tail = p->prev;
-  
-  delete p;
-
-  cur = next;
-
-  if (cur)	
-	return cur->t;
-  else
-	return NULL;
 }
 
 void TrackList::Clear()
@@ -301,23 +338,7 @@ bool TrackList::Contains(VTrack *t)
   return false;
 }
 
-VTrack *TrackList::First()
+bool TrackList::IsEmpty()
 {
-  cur = head;
-
-  if (cur)
-    return cur->t;
-  else
-    return 0;
-}
-
-VTrack *TrackList::Next()
-{
-  if (cur)
-	  cur = cur->next;
-
-  if (cur)
-    return cur->t;
-  else
-    return 0;
+  return (head == NULL);
 }

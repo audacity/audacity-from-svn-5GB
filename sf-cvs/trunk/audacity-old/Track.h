@@ -103,6 +103,23 @@ struct TrackListNode
   TrackListNode *prev;
 };
 
+class TrackList;
+
+class TrackListIterator
+{
+public:
+  TrackListIterator(TrackList *l);
+
+  // Iterate functions
+  VTrack *First();
+  VTrack *Next();
+  VTrack *RemoveCurrent(); // returns next
+
+private:
+  TrackList *l;
+  TrackListNode *cur;
+};
+
 class TrackList
 {
 public:
@@ -114,6 +131,8 @@ public:
 
   // Destructor
   ~TrackList();
+
+  friend class TrackListIterator;
 
   // Add a this Track or all children of this TrackGroup
   void Add(VTrack *t);
@@ -127,10 +146,7 @@ public:
   // Test
   bool Contains(VTrack *t);
 
-  // Iterate functions
-  VTrack *First();
-  VTrack *Next();
-  VTrack *RemoveCurrent(); // returns next
+  bool IsEmpty();
 
   double GetMaxLen();
   int GetHeight();
@@ -142,7 +158,6 @@ public:
 private:
   TrackListNode *head;
   TrackListNode *tail;
-  TrackListNode *cur;
 };
 
 #endif

@@ -140,14 +140,15 @@ TrackPanel::~TrackPanel()
 
 void TrackPanel::SelectNone()
 {
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
   while(t) {
 	t->selected = false;
 
 	if (t->GetKind() == VTrack::Label)
 	  ((LabelTrack *)t)->Unselect();
 
-	t = mTracks->Next();
+	t = iter.Next();
   }
 }
 
@@ -226,7 +227,7 @@ void TrackPanel::OnTimer()
    
   mTimeCount = (mTimeCount+1)%10;
   if (mTimeCount == 0) {
-	if (mTracks->First() != NULL &&
+	if (!mTracks->IsEmpty() &&
 		mViewInfo->sel0 == mViewInfo->sel1) {
 	  // The difference between a wxClientDC and a wxPaintDC
 	  // is that the wxClientDC is used outside of a paint loop,
@@ -249,12 +250,13 @@ void TrackPanel::OnTimer()
 	  if (x >= GetLabelOffset()) {
 		// Draw cursor in all selected tracks
 		VTrack *t;
-		t = mTracks->First();
+		TrackListIterator iter(mTracks);
+		t = iter.First();
 		while(t) {
 		  int height = t->GetHeight();
 		  if (t->selected)
 			dc.DrawLine(x,y+5,x,y+height-5);
-		  t = mTracks->Next();
+		  t = iter.Next();
 		  y += height;
 		}
 	  }
@@ -498,11 +500,12 @@ void TrackPanel::HandleSelect(wxMouseEvent& event)
 	  if (0 != FindTrack(x, y, false, NULL, &num2)) {
 		// The tracks numbered num...num2 should be selected
 		
-		VTrack *t = mTracks->First();
+		TrackListIterator iter(mTracks);
+		VTrack *t = iter.First();
 		int i=1;
 		while(t) {
 		  t->selected = (i>=num && i<=num2) || (i>=num2 && i<=num);
-		  t = mTracks->Next();
+		  t = iter.Next();
 		  i++;
 		}
 	  }
@@ -880,13 +883,15 @@ void TrackPanel::OnKeyEvent(wxKeyEvent& event)
 
   long key = event.KeyCode();
 
+  TrackListIterator iter(mTracks);
+
   switch(event.KeyCode()) {
   case WXK_SPACE:
 	mListener->TP_OnPlayKey();
 	break;
 
   default:
-	VTrack *t = mTracks->First();
+	VTrack *t = iter.First();
 	while(t) {
 	  if (/* t->selected && */ t->GetKind() == VTrack::Label) {
 		((LabelTrack *)t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event);
@@ -895,7 +900,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent& event)
 		return;
 	  }
 
-	  t = mTracks->Next();
+	  t = iter.Next();
 	}
 
   }
@@ -1182,8 +1187,10 @@ void TrackPanel::DrawTracks(wxDC& dc)
   int num=0;
 
   bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
+
+  TrackListIterator iter(mTracks);
   
-  t = mTracks->First();
+  t = iter.First();
   while(t) {
 	r.height = t->GetHeight();
 
@@ -1193,7 +1200,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	  
 	  r.y += r.height;
 	  num++;
-	  t = mTracks->Next();
+	  t = iter.Next();
 	  continue;
 	}
 
@@ -1313,7 +1320,7 @@ void TrackPanel::DrawTracks(wxDC& dc)
 	// are totally offscreen.
     r.y += r.height;
 	num++;
-    t = mTracks->Next();
+    t = iter.Next();
   }
 
   GetSize(&r.width, &r.height);
@@ -1501,7 +1508,8 @@ VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
   r.y = -mViewInfo->vpos;
   r.y += GetRulerHeight();
 
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
 
   int n=1;
 
@@ -1520,7 +1528,7 @@ VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 
 	r.y += r.height;
 	n++;
-	t = mTracks->Next();
+	t = iter.Next();
   }
 
   if (mouseY >= r.y && trackNum)
@@ -1547,7 +1555,9 @@ bool TrackPanel::FindTrack(VTrack *target,
   r.y = -mViewInfo->vpos;
   r.y += GetRulerHeight();
 
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *t = iter.First();
 
   int n=1;
 
@@ -1566,7 +1576,7 @@ bool TrackPanel::FindTrack(VTrack *target,
 
 	r.y += r.height;
 	n++;
-	t = mTracks->Next();
+	t = iter.Next();
   }
 
   return false;

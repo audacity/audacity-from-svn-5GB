@@ -717,13 +717,14 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
       event.GetId() >= FirstEffectID &&
       event.GetId() < FirstEffectID + numEffects) {
 
-    VTrack *t = mTracks->First();
+	TrackListIterator iter(mTracks);
+    VTrack *t = iter.First();
     int count = 0;
 
     while(t) {
       if (t->selected && t->GetKind() == (VTrack::Wave))
         count++;      
-      t = mTracks->Next();
+      t = iter.Next();
     }
 
     if (count==0 || mViewInfo.sel0 == mViewInfo.sel1) {
@@ -738,7 +739,7 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
 
     int index = 0;
 
-    t = mTracks->First();
+    t = iter.First();
 
     while(t) {
       if (t->selected && t->GetKind() == (VTrack::Wave)) {
@@ -753,7 +754,7 @@ bool AudacityProject::ProcessEvent(wxEvent& event)
         }
       }
       
-      t = mTracks->Next();
+      t = iter.Next();
     }
 
     f->End();
@@ -988,18 +989,18 @@ void AudacityProject::OpenFile(wxString fileName)
   // Check for .MP3 suffix
 
   if (!fileName.Right(3).CmpNoCase("mp3")) {
-    if (mDirty || mTracks->First() != NULL) {
+    if (mDirty || !mTracks->IsEmpty()) {
 	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 	    project->ImportMP3(fileName);
       return;
     }
     else {
 	    ImportMP3(fileName);
-      if (mTracks->First() != NULL) {
-        mFileName = fileName;
-        mName = wxFileNameFromPath(mFileName);
-        SetTitle(mName);
-      }
+		if (!mTracks->IsEmpty()) {
+		  mFileName = fileName;
+		  mName = wxFileNameFromPath(mFileName);
+		  SetTitle(mName);
+		}
 	    return;
     }
   }
@@ -1011,14 +1012,14 @@ void AudacityProject::OpenFile(wxString fileName)
       !fileName.Right(3).CmpNoCase("aif") ||
       !fileName.Right(2).CmpNoCase("au") ||
       !fileName.Right(5).CmpNoCase("ircam")) {
-    if (mDirty || mTracks->First() != NULL) {
+    if (mDirty || !mTracks->IsEmpty()) {
 	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 	    project->ImportMP3(fileName);
       return;
     }
     else {
 	    ImportFile(fileName);
-      if (mTracks->First() != NULL) {
+      if (!mTracks->IsEmpty()) {
         mFileName = fileName;
         mName = wxFileNameFromPath(mFileName);
         SetTitle(mName);
@@ -1065,14 +1066,14 @@ void AudacityProject::OpenFile(wxString fileName)
 
   if (!isProjectFile || f.GetFirstLine() != firstLine) {
     f.Close();
-    if (mDirty || mTracks->First() != NULL) {
+    if (mDirty || !mTracks->IsEmpty()) {
 	    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
 	    project->ImportFile(fileName);
       return;
     }
     else {
 	    ImportFile(fileName);
-      if (mTracks->First() != NULL) {
+      if (!mTracks->IsEmpty()) {
         mFileName = fileName;
         mName = wxFileNameFromPath(mFileName);
         SetTitle(mName);
@@ -1133,12 +1134,15 @@ void AudacityProject::OpenFile(wxString fileName)
   // the version saved on disk will be preserved until the
   // user selects Save().
 
-  VTrack *t;
-  mLastSavedTracks = new TrackList();
-  t = mTracks->First();
-  while(t) {
-    mLastSavedTracks->Add(t->Duplicate());
-    t = mTracks->Next();
+  if (1) {
+	VTrack *t;
+	TrackListIterator iter(mTracks);
+	mLastSavedTracks = new TrackList();
+	t = iter.First();
+	while(t) {
+	  mLastSavedTracks->Add(t->Duplicate());
+	  t = iter.Next();
+	}
   }
 
   f.Close();
@@ -1292,23 +1296,25 @@ void AudacityProject::Save(bool overwrite /* = true */)
 
   if (mLastSavedTracks) {
 
-	VTrack *t = mLastSavedTracks->First();
+	TrackListIterator iter(mLastSavedTracks);
+	VTrack *t = iter.First();
 	while(t) {
 	  if (t->GetKind() == VTrack::Wave && !overwrite)
 		((WaveTrack *)t)->DeleteButDontDereference();
 	  else
 		delete t;
-	  t = mLastSavedTracks->Next();
+	  t = iter.Next();
 	}
 
 	delete mLastSavedTracks;
   }
 
   mLastSavedTracks = new TrackList();
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
   while(t) {
     mLastSavedTracks->Add(t->Duplicate());
-    t = mTracks->Next();
+    t = iter.Next();
   }
 }
 
@@ -1364,7 +1370,7 @@ void AudacityProject::ImportFile(wxString fileName)
 
 	  SelectNone();
 
-	  if (mTracks->First() == NULL) {
+	  if (mTracks->IsEmpty()) {
 		if (left)
 		  mRate = left->rate;
 		else
@@ -1436,11 +1442,13 @@ void AudacityProject::OnExportLabels(wxCommandEvent& event)
   VTrack *t;
   int numLabelTracks = 0;
 
-  t = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  t = iter.First();
   while(t) {
 	if (t->GetKind() == VTrack::Label)
 	  numLabelTracks++;
-	t = mTracks->Next();
+	t = iter.Next();
   }
 
   if (numLabelTracks == 0) {
@@ -1474,13 +1482,13 @@ void AudacityProject::OnExportLabels(wxCommandEvent& event)
 	wxMessageBox("Couldn't write to "+fName);
 	return;
   }
-  
-  t = mTracks->First();
+
+  t = iter.First();
   while(t) {
 	if (t->GetKind() == VTrack::Label)
 	  ((LabelTrack *)t)->Export(f);
 
-	t = mTracks->Next();
+	t = iter.Next();
   }
   
   #ifdef __WXMAC__
@@ -1503,7 +1511,9 @@ void AudacityProject::OnExportSelection(wxCommandEvent& event)
   VTrack *t;
   int numSelected = 0;
 
-  t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  
+  t = iter.First();
   while(t) {
 	if (t->selected)
 	  numSelected++;
@@ -1511,7 +1521,7 @@ void AudacityProject::OnExportSelection(wxCommandEvent& event)
 	  wxMessageBox("Only audio tracks can be exported.");
 	  return;
 	}
-	t = mTracks->Next();
+	t = iter.Next();
   }
 
   if (numSelected == 0) {
@@ -1524,12 +1534,12 @@ void AudacityProject::OnExportSelection(wxCommandEvent& event)
 				 "Please select either one or two tracks.");
   }
 
-  left = mTracks->First();  
+  left = iter.First();  
   while (left && (!left->selected))
-	left = mTracks->Next();
+	left = iter.Next();
   
   do {
-	right = mTracks->Next();
+	right = iter.Next();
   } while (right && (!right->selected));
   
   ::Export((WaveTrack *)left, (WaveTrack *)right);
@@ -1616,13 +1626,14 @@ void AudacityProject::OnNewLabelTrack(wxCommandEvent& event)
 
 void AudacityProject::OnRemoveTracks(wxCommandEvent& event)
 {
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
 
   while(t) {
 	if (t->selected)
-	  t = mTracks->RemoveCurrent();
+	  t = iter.RemoveCurrent();
 	else
-	  t = mTracks->Next();
+	  t = iter.Next();
   }
 
   PushState();
@@ -1754,13 +1765,14 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent& event)
 {
   int selcount = 0;
   WaveTrack *selt;
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
   while(t) {
 	if (t->selected)
 	  selcount++;
 	if (t->GetKind() == VTrack::Wave)
 	  selt = (WaveTrack *)t;
-	t = mTracks->Next();
+	t = iter.Next();
   }
   if (selcount != 1) {
 	  wxMessageBox("Please select a single track first.\n");
@@ -1821,13 +1833,14 @@ void AudacityProject::PushState(bool makeDirty /* = true */)
 void AudacityProject::PopState(TrackList *l)
 {
   mTracks->Clear();
-  VTrack *t = l->First();
+  TrackListIterator iter(l);
+  VTrack *t = iter.First();
   while(t) {
 	//    printf("Popping track with %d samples\n",
 	//           ((WaveTrack *)t)->numSamples);
     //	((WaveTrack *)t)->Debug();
     mTracks->Add(t->Duplicate());
-    t = l->Next();
+    t = iter.Next();
   }
 }
 
@@ -1867,10 +1880,11 @@ void AudacityProject::Redo(wxCommandEvent& event)
 
 void AudacityProject::ClearClipboard()
 {
-  VTrack *n = msClipboard->First();
+  TrackListIterator iter(msClipboard);
+  VTrack *n = iter.First();
   while(n) {
     delete n;
-    n = msClipboard->Next();
+    n = iter.Next();
   }
   
   msClipLen = 0.0;
@@ -1882,7 +1896,9 @@ void AudacityProject::Cut(wxCommandEvent& event)
 {
   ClearClipboard();
 
-  VTrack *n = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *n = iter.First();
   VTrack *dest = 0;
 
   while(n) {
@@ -1891,7 +1907,7 @@ void AudacityProject::Cut(wxCommandEvent& event)
 	  if (dest)
 		msClipboard->Add(dest);
 	}
-	n = mTracks->Next();
+	n = iter.Next();
   }
 
   msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
@@ -1909,7 +1925,9 @@ void AudacityProject::Copy(wxCommandEvent& event)
 {
   ClearClipboard();
 
-  VTrack *n = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *n = iter.First();
   VTrack *dest = 0;
 
   while(n) {
@@ -1918,7 +1936,7 @@ void AudacityProject::Copy(wxCommandEvent& event)
 	  if (dest)
 		msClipboard->Add(dest);
 	}
-	n = mTracks->Next();
+	n = iter.Next();
   }
 
   msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
@@ -1939,16 +1957,19 @@ void AudacityProject::Paste(wxCommandEvent& event)
 
   double tsel = mViewInfo.sel0;
 
-  VTrack *n = mTracks->First();
-  VTrack *c = msClipboard->First();
+  TrackListIterator iter(mTracks);
+  TrackListIterator clipIter(mTracks);
+
+  VTrack *n = iter.First();
+  VTrack *c = clipIter.First();
 
   while(n && c) {
 	if (n->selected) {
 	  n->Paste(tsel, c);
-	  c = msClipboard->Next();
+	  c = clipIter.Next();
 	}
 	  
-	n = mTracks->Next();
+	n = iter.Next();
   }
 
   // TODO: What if we clicked past the end of the track?
@@ -1970,12 +1991,14 @@ void AudacityProject::OnClear(wxCommandEvent& event)
 
 void AudacityProject::Clear()
 {
-  VTrack *n = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *n = iter.First();
 
   while(n) {
 	if (n->selected)
 	  n->Clear(mViewInfo.sel0, mViewInfo.sel1);
-	n = mTracks->Next();
+	n = iter.Next();
   }
 
   mViewInfo.sel1 = mViewInfo.sel0;
@@ -1988,10 +2011,12 @@ void AudacityProject::Clear()
 
 void AudacityProject::SelectAll(wxCommandEvent& event)
 {
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *t = iter.First();
   while(t) {
 	t->selected = true;
-	t = mTracks->Next();
+	t = iter.Next();
   }
   mViewInfo.sel0 = 0.0;
   mViewInfo.sel1 = mTracks->GetMaxLen();
@@ -2002,10 +2027,12 @@ void AudacityProject::SelectAll(wxCommandEvent& event)
 
 void AudacityProject::SelectNone()
 {
-  VTrack *t = mTracks->First();
+  TrackListIterator iter(mTracks);
+
+  VTrack *t = iter.First();
   while(t) {
 	t->selected = false;
-	t = mTracks->Next();
+	t = iter.Next();
   }
   mTrackPanel->Refresh(false);
 }

@@ -31,7 +31,9 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager)
   bool mono = false;
   int w;
 
-  t = tracks->First();
+  TrackListIterator iter(tracks);
+
+  t = iter.First();
   while(t) {
     if (t->selected && t->GetKind() == VTrack::Wave) {
       numWaves++;
@@ -41,7 +43,7 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager)
 	  case VTrack::RightChannel: numRight++; break;
 	  }
 	}
-    t = tracks->Next();
+    t = iter.Next();
   }
   
   if (numWaves < 2) {
@@ -63,14 +65,14 @@ bool QuickMix(TrackList *tracks, DirManager *dirManager)
 
   waveArray = new WaveTrack*[numWaves];
   w = 0;
-  t = tracks->First();
+  t = iter.First();
   while(t) {
     if (t->selected && t->GetKind() == VTrack::Wave) {
       waveArray[w++] = (WaveTrack *)t;
 	  if (t->GetMaxLen() > totalTime)
 		totalTime = t->GetMaxLen();
 	}
-    t = tracks->Next();
+    t = iter.Next();
   }
 
   WaveTrack *mixLeft = new WaveTrack(dirManager);

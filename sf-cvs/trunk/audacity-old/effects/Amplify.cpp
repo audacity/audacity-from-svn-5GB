@@ -24,7 +24,6 @@ bool EffectAmplify::Begin(wxWindow *parent)
   wxString caption = "Amplification factor: ";
   wxString title = "Amplify";
   wxString default_value = "1.0";
-  float ratio;
 
   temp = wxGetTextFromUser(caption,
 			   title,
