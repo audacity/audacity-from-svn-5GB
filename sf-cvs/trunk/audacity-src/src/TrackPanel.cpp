@@ -107,8 +107,12 @@ enum {
    SELECTION_FORMAT_RULER_MIN_SEC,
    SELECTION_FORMAT_RULER_SEC,
    SELECTION_FORMAT_RULER_FILM_FRAMES,
+   SELECTION_FORMAT_RULER_FILM_HMMSSFF,
    SELECTION_FORMAT_RULER_PAL_FRAMES,
+   SELECTION_FORMAT_RULER_PAL_HMMSSFF,
    SELECTION_FORMAT_RULER_NTSC_FRAMES,
+   SELECTION_FORMAT_RULER_NTSC_DF_HMMSSFF,
+   SELECTION_FORMAT_RULER_NTSC_NDF_HMMSSFF,
    SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES,
    SELECTION_FORMAT_SAMPLES,
    SELECTION_FORMAT_MIN_SEC,
@@ -119,7 +123,8 @@ enum {
 };
 
 // samplerate is hardwired here to 44100, it should maybe read in the
-// project rate set in preferences as default
+// project rate set in preferences as default - it can be changed by
+// using Set Rate in the track pulldown menu
 double samplerate = 44100.0;
 
 // set default selection format
@@ -158,8 +163,12 @@ enum {
    OnFormatRulerMinSecID,
    OnFormatRulerSecID,
    OnFormatRulerFilmFramesID,
+   OnFormatRulerFilmhmmssffID,
    OnFormatRulerPALFramesID,
+   OnFormatRulerPALhmmssffID,
    OnFormatRulerNTSCFramesID,
+   OnFormatRulerNTSCDFhmmssffID,
+   OnFormatRulerNTSCnonDFhmmssffID,
    OnFormatRulerCddaMinSecFramesID,
    OnFormatSamplesID,
    OnFormatMinSecID,
@@ -261,8 +270,12 @@ mAutoScrolling(false)
    mSelectionMenu->Append(OnFormatRulerMinSecID, "min:sec (from ruler)");
    mSelectionMenu->Append(OnFormatRulerSecID, "sec (from ruler)");
    mSelectionMenu->Append(OnFormatRulerFilmFramesID, "film frames 24 fps (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerFilmhmmssffID, "film h:mm:ss:ff 24 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerPALFramesID, "PAL frames 25 fps (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerPALhmmssffID, "PAL h:mm:ss:ff 25 fps (from ruler)");
    mSelectionMenu->Append(OnFormatRulerNTSCFramesID, "NTSC frames 29.97 fps (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerNTSCDFhmmssffID, "NTSC drop-frame h:mm:ss:ff (from ruler)");
+   mSelectionMenu->Append(OnFormatRulerNTSCnonDFhmmssffID, "NTSC non-drop-frame h:mm:ss:ff (from ruler)");
    mSelectionMenu->Append(OnFormatRulerCddaMinSecFramesID, "cdda min:sec:frames 75 fps (from ruler)");
    mSelectionMenu->Append(OnFormatSamplesID, "samples (snap to samples)");
    mSelectionMenu->Append(OnFormatMinSecID, "min:sec (snap to samples)");
@@ -3272,11 +3285,23 @@ void TrackPanel::OnSelectionChange(wxEvent & event)
    case OnFormatRulerFilmFramesID:
       iformat = SELECTION_FORMAT_RULER_FILM_FRAMES;
       break;
+   case OnFormatRulerFilmhmmssffID:
+      iformat = SELECTION_FORMAT_RULER_FILM_HMMSSFF;
+      break;
    case OnFormatRulerPALFramesID:
       iformat = SELECTION_FORMAT_RULER_PAL_FRAMES;
       break;
+   case OnFormatRulerPALhmmssffID:
+      iformat = SELECTION_FORMAT_RULER_PAL_HMMSSFF;
+      break;
    case OnFormatRulerNTSCFramesID:
       iformat = SELECTION_FORMAT_RULER_NTSC_FRAMES;
+      break;
+   case OnFormatRulerNTSCDFhmmssffID:
+      iformat = SELECTION_FORMAT_RULER_NTSC_DF_HMMSSFF;
+      break;
+   case OnFormatRulerNTSCnonDFhmmssffID:
+      iformat = SELECTION_FORMAT_RULER_NTSC_NDF_HMMSSFF;
       break;
    case OnFormatRulerCddaMinSecFramesID:
       iformat = SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES;
@@ -3621,8 +3646,12 @@ void TrackPanel::DisplaySelection()
    //   iformat = SELECTION_FORMAT_RULER_MIN_SEC --> use min:sec.xxxxxx
    //   iformat = SELECTION_FORMAT_RULER_SEC --> use sec.xxxxxx
    //   iformat = SELECTION_FORMAT_RULER_FILM_FRAMES --> use film frames 24 fps
+   //   iformat = SELECTION_FORMAT_RULER_FILM_HMMSSFF --> use film h:mm:ss:ff 24 fps
    //   iformat = SELECTION_FORMAT_RULER_PAL_FRAMES --> use PAL frames 25 fps
+   //   iformat = SELECTION_FORMAT_RULER_PAL_HMMSSFF --> use PAL h:mm:ss:ff 25 fps
    //   iformat = SELECTION_FORMAT_RULER_NTSC_FRAMES --> use NTSC frames 29.97 fps
+   //   iformat = SELECTION_FORMAT_RULER_NTSC_DF_HMMSSFF --> use NTSC drop-frame h:mm:ss:ff
+   //   iformat = SELECTION_FORMAT_RULER_NTSC_NDF_HMMSSFF --> use NTSC non-drop-frame h:mm:ss:ff
    //   iformat = SELECTION_FORMAT_RULER_CDDA_MIN_SEC_FRAMES --> use cdda min:sec:frames 75 fps
    // formats that are based on rate and samples and snap to samples irregardless of iSnapTo
    //   iformat = SELECTION_FORMAT_SAMPLES --> use samples
@@ -3670,6 +3699,9 @@ void TrackPanel::DisplaySelection()
    SnapTo[0][1] = "[Snap-To On]";
 
    // variables used
+   int ihr1, ihr2, ihrtot;
+   int itenmin1, itenmin2, itenmintot;
+   int iaddmin1, iaddmin2, iaddmintot;
    int imin1, imin2, imintot;
    int isec1, isec2, isectot;
    int isamp1, isamp2, isamptot;
@@ -3678,6 +3710,7 @@ void TrackPanel::DisplaySelection()
    long int isamples1, isamples2, isamplestot;
    double dsec1, dsec2, dsectot;
    double dframes1, dframes2, dframestot;
+   double dframes1keep, dframestotkeep;
 
    switch (iformat) {
 
@@ -3795,6 +3828,72 @@ void TrackPanel::DisplaySelection()
          }
       break;
 
+   case SELECTION_FORMAT_RULER_FILM_HMMSSFF:
+      // use film h:mm:ss:ff 24 fps (from ruler)
+      dframes1 = start * 24.0;
+      dframes2 = end * 24.0;
+      dframestot = length * 24.0;
+      dframes1keep = dframes1;
+      dframestotkeep = dframestot;
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            dframes1keep = dframes1;
+            dframestotkeep = dframestot;
+            mViewInfo->sel0 = dframes1 / 24.0;
+            mViewInfo->sel1 = dframes2 / 24.0;
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
+
+      // one film hour = 86400 film frames
+      ihr1 = int(dframes1/86400.0);
+      ihr2 = int(dframes2/86400.0);
+      ihrtot = int(dframestot/86400.0);
+      dframes1 -= double(ihr1*86400);
+      dframes2 -= double(ihr2*86400);
+      dframestot -= double(ihrtot*86400);
+
+      // One minute of film = 1440 film frames.
+      imin1 = int(dframes1/1440.0);
+      imin2 = int(dframes2/1440.0);
+      imintot = int(dframestot/1440.0);
+      dframes1 -= double(imin1*1440);
+      dframes2 -= double(imin2*1440);
+      dframestot -= double(imintot*1440);
+
+      // One second of film = 24 frames.
+      isec1 = int(dframes1/24.0);
+      isec2 = int(dframes2/24.0);
+      isectot = int(dframestot/24.0);
+      dframes1 -= double(isec1*24);
+      dframes2 -= double(isec2*24);
+      dframestot -= double(isectot*24);
+
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
+                                              SnapTo[0][iSnapTo]),
+                                       1);
+         }
+      break;
+
+
    case SELECTION_FORMAT_RULER_PAL_FRAMES:
       // use PAL frames 25 fps (from ruler)
       dframes1 = start * 25.0;
@@ -3830,6 +3929,71 @@ void TrackPanel::DisplaySelection()
          }
       break;
 
+   case SELECTION_FORMAT_RULER_PAL_HMMSSFF:
+      // use PAL h:mm:ss:ff 25 fps (from ruler)
+      dframes1 = start * 25.0;
+      dframes2 = end * 25.0;
+      dframestot = length * 25.0;
+      dframes1keep = dframes1;
+      dframestotkeep = dframestot;
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            dframes1keep = dframes1;
+            dframestotkeep = dframestot;
+            mViewInfo->sel0 = dframes1 / 25.0;
+            mViewInfo->sel1 = dframes2 / 25.0;
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
+
+      // one PAL hour = 90000 PAL frames
+      ihr1 = int(dframes1/90000.0);
+      ihr2 = int(dframes2/90000.0);
+      ihrtot = int(dframestot/90000.0);
+      dframes1 -= double(ihr1*90000);
+      dframes2 -= double(ihr2*90000);
+      dframestot -= double(ihrtot*90000);
+
+      // One minute of PAL video = 1500 PAL frames.
+      imin1 = int(dframes1/1500.0);
+      imin2 = int(dframes2/1500.0);
+      imintot = int(dframestot/1500.0);
+      dframes1 -= double(imin1*1500);
+      dframes2 -= double(imin2*1500);
+      dframestot -= double(imintot*1500);
+
+      // One second of PAL video = 25 PAL frames.
+      isec1 = int(dframes1/25.0);
+      isec2 = int(dframes2/25.0);
+      isectot = int(dframestot/25.0);
+      dframes1 -= double(isec1*25);
+      dframes2 -= double(isec2*25);
+      dframestot -= double(isectot*25);
+
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
+                                              SnapTo[0][iSnapTo]),
+                                       1);
+         }
+      break;
+
    case SELECTION_FORMAT_RULER_NTSC_FRAMES:
       // use NTSC frames 29.97 fps (from ruler)
       dframes1 = start * (30000.0/1001.0);
@@ -3861,6 +4025,216 @@ void TrackPanel::DisplaySelection()
                TP_DisplayStatusMessage(wxString::
                                        Format(_("Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"),
                                               dframes1, dframes2, dframestot, SnapTo[0][iSnapTo]),
+                                       1);
+         }
+      break;
+
+   case SELECTION_FORMAT_RULER_NTSC_DF_HMMSSFF:
+      // use NTSC frop-frame h:mm:ss:ff (from ruler)
+      dframes1 = start * (30000.0/1001.0);
+      dframes2 = end * (30000.0/1001.0);
+      dframestot = length * (30000.0/1001.0);
+      dframes1keep = dframes1;
+      dframestotkeep = dframestot;
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            dframes1keep = dframes1;
+            dframestotkeep = dframestot;
+            mViewInfo->sel0 = dframes1 * (1001.0/30000.0);
+            mViewInfo->sel1 = dframes2 * (1001.0/30000.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
+
+      // one NTSC drop frame hour = 107892 NTSC frames
+      // with all dropped frames accounted for
+      ihr1 = int(dframes1/107892.0);
+      ihr2 = int(dframes2/107892.0);
+      ihrtot = int(dframestot/107892.0);
+      dframes1 -= double(ihr1*107892);
+      dframes2 -= double(ihr2*107892);
+      dframestot -= double(ihrtot*107892);
+      // ten minutes of NTSC drop frame = 17982 NTSC frames
+      // with all dropped frames accounted for
+      itenmin1 = int(dframes1/17982.0);
+      itenmin2 = int(dframes2/17982.0);
+      itenmintot = int(dframestot/17982.0);
+      imin1 = itenmin1 * 10;
+      imin2 = itenmin2 * 10;
+      imintot = itenmintot * 10;
+      dframes1 -= double(itenmin1*17982);
+      dframes2 -= double(itenmin2*17982);
+      dframestot -= double(itenmintot*17982);
+
+      // One minute of NTSC drop frame video = 1800 NTSC frames for every tenth minute.
+      // One minute of NTSC drop frame video = 1798 NTSC frames for all other minutes.
+      // The first minute of a ten minute section has all frames, the other nine have
+      // two frames dropped (only on the timeline frame index).
+      // To drop two frames on the timeline index, need to add 2 frames, effectively
+      // skipping two timeline frames by incrementing over them.
+      // This is accomplished when the amount of remaining frames at this point is
+      // greater than or equal to 1800.  If so, then 1800 is subtracted from the
+      // remaining frames, and the minute count is incremented by 1.  Then to drop
+      // the 2 frames on the timeline index, 2 is later added to the
+      // subsequent remaining frame count.  There are 30 frames in an NTSC drop-frame
+      // second because the two dropped frames in the timeline index effectively make the
+      // rate adjustment to the actual 29.97 frame rate, which is really 30000/1001.
+
+      if(dframes1 >= 1800.0)
+         {
+            dframes1 -= 1800.0;
+            imin1 += 1;
+            iaddmin1 = int(dframes1/1798.0);
+            dframes1 -= double(iaddmin1*1798);
+            imin1 += iaddmin1;
+            isec1 = int(dframes1/30.0);
+            dframes1 -= double(isec1*30);
+            dframes1 += 2.0;
+            if(dframes1 >= 30.0)
+               {
+                  isec1 += 1;
+                  dframes1 -= 30.0;
+               }
+         }
+      else
+         {
+            isec1 = int(dframes1/30.0);
+            dframes1 -= double(isec1*30);
+         }
+
+      if(dframes2 >= 1800.0)
+         {
+            dframes2 -= 1800.0;
+            imin2 += 1;
+            iaddmin2 = int(dframes2/1798.0);
+            dframes2 -= double(iaddmin2*1798);
+            imin2 += iaddmin2;
+            isec2 = int(dframes2/30.0);
+            dframes2 -= double(isec2*30);
+            dframes2 += 2.0;
+            if(dframes2 >= 30.0)
+               {
+                  isec2 += 1;
+                  dframes2 -= 30.0;
+               }
+         }
+      else
+         {
+            isec2 = int(dframes2/30.0);
+            dframes2 -= double(isec2*30);
+         }
+
+      if(dframestot >= 1800.0)
+         {
+            dframestot -= 1800.0;
+            imintot += 1;
+            iaddmintot = int(dframestot/1798.0);
+            dframestot -= double(iaddmintot*1798);
+            imintot += iaddmintot;
+            isectot = int(dframestot/30.0);
+            dframestot -= double(isectot*30);
+            dframestot += 2.0;
+            if(dframestot >= 30.0)
+               {
+                  isectot += 1;
+                  dframestot -= 30.0;
+               }
+         }
+      else
+         {
+            isectot = int(dframestot/30.0);
+            dframestot -= double(isectot*30);
+         }
+
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+                TP_DisplayStatusMessage(wxString::
+                Format(_("Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
+                                              SnapTo[0][iSnapTo]),
+                                       1);
+         }
+      break;
+
+   case SELECTION_FORMAT_RULER_NTSC_NDF_HMMSSFF:
+      // use NTSC non-frop-frame h:mm:ss:ff (from ruler)
+      dframes1 = start * (30000.0/1001.0);
+      dframes2 = end * (30000.0/1001.0);
+      dframestot = length * (30000.0/1001.0);
+      dframes1keep = dframes1;
+      dframestotkeep = dframestot;
+      if(iSnapTo == 1)
+         {
+            dframes1 = rint(dframes1);
+            dframes2 = rint(dframes2);
+            dframestot = rint(dframes2 - dframes1);
+            dframes1keep = dframes1;
+            dframestotkeep = dframestot;
+            mViewInfo->sel0 = dframes1 * (1001.0/30000.0);
+            mViewInfo->sel1 = dframes2 * (1001.0/30000.0);
+            // if rounding beyond end happens fix sel0 for proper cursor info
+            if(mViewInfo->sel0 > mViewInfo->sel1)
+               mViewInfo->sel0 = mViewInfo->sel1;
+         }
+
+      // one NTSC non drop frame hour = 108000 NTSC frames
+      ihr1 = int(dframes1/108000.0);
+      ihr2 = int(dframes2/108000.0);
+      ihrtot = int(dframestot/108000.0);
+      dframes1 -= double(ihr1*108000);
+      dframes2 -= double(ihr2*108000);
+      dframestot -= double(ihrtot*108000);
+
+      // One minute of NTSC non drop frame video = 1800 NTSC frames.
+      // Note that the frames will always play at 29.97 (really 30000/1001) fps,
+      // and the non drop frame timeline indexing will not match real time.
+      // NTSC non drop frame is just an alternate timeline frame indexing scheme.
+
+      imin1 = int(dframes1/1800.0);
+      imin2 = int(dframes2/1800.0);
+      imintot = int(dframestot/1800.0);
+      dframes1 -= double(imin1*1800);
+      dframes2 -= double(imin2*1800);
+      dframestot -= double(imintot*1800);
+
+      // One second of NTSC non drop frame video = 30 NTSC frames.
+      isec1 = int(dframes1/30.0);
+      isec2 = int(dframes2/30.0);
+      isectot = int(dframestot/30.0);
+      dframes1 -= double(isec1*30);
+      dframes2 -= double(isec2*30);
+      dframestot -= double(isectot*30);
+
+      // display a message about the selection in the status message window
+      if(start == end)
+         {
+           mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, dframes1keep, SnapTo[0][iSnapTo]),
+                                        1);
+         }
+      else
+         {
+            mListener->
+               TP_DisplayStatusMessage(wxString::
+               Format(_("Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"),
+                                  ihr1, imin1, isec1, dframes1, ihr2, imin2, isec2, dframes2, ihrtot, imintot, isectot, dframestot, dframestotkeep,
+                                              SnapTo[0][iSnapTo]),
                                        1);
          }
       break;
