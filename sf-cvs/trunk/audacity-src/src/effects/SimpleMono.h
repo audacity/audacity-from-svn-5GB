@@ -34,6 +34,10 @@ class EffectSimpleMono:public Effect {
    // Override this method
    virtual bool ProcessSimpleMono(float *buffer, sampleCount len, double samplerate) = 0;
 
+   // Optionally override this method if you need to do things
+   // before every track (including the first one)
+   virtual bool NewTrackSimpleMono(int count, double samplerate);
+
 };
 
 #endif
