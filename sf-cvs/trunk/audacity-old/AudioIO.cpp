@@ -45,6 +45,8 @@ AudioIO::AudioIO()
    mHardStop = false;
    mInTracks = NULL;
    mPortStream = NULL;
+   mMaxBuffers = 24;
+   mInitialNumOutBuffers = 2;
    
    // Run our timer function once every 100 ms, i.e. 10 times/sec
    mTimer.Start(100, FALSE);
@@ -60,32 +62,63 @@ int audacityAudioCallback(
 		PaTimestamp outTime, void *userData )
 {
    int numOutChannels = gAudioIO->mNumOutChannels;
+   int numInChannels = gAudioIO->mNumInChannels;
    int minIndex, minID = 0;
    int i;
-   for(i=0; i<gAudioIO->mNumBuffers; i++) {
-      if (gAudioIO->mOutBuffer[i].ID>0 &&
-          (minID==0 || gAudioIO->mOutBuffer[i].ID < minID)) {
-         minID = gAudioIO->mOutBuffer[i].ID;
-         minIndex = i;
+   
+   //
+   // Copy from our pool of output buffers to PortAudio's output buffer
+   //
+   
+   if (numOutChannels > 0) {
+   
+      for(i=0; i<gAudioIO->mNumOutBuffers; i++) {
+         if (gAudioIO->mOutBuffer[i].ID>0 &&
+             (minID==0 || gAudioIO->mOutBuffer[i].ID < minID)) {
+            minID = gAudioIO->mOutBuffer[i].ID;
+            minIndex = i;
+         }
+      }
+      if (minID > 0) {
+         AudioIOBuffer *b = &gAudioIO->mOutBuffer[minIndex];
+         sampleCount len  = b->len;
+      
+         memcpy(outputBuffer, b->data, len * numOutChannels * sizeof(sampleType));
+
+         // Fill rest of buffer with silence
+         if (len < framesPerBuffer)
+            for(i=len*numOutChannels; i<framesPerBuffer*numOutChannels; i++)
+               ((sampleType *)outputBuffer)[i] = 0;
+         
+         b->ID = 0;
+      }
+      else {
+         // we had a buffer underrun!
+         
+         // play silence
+         for(i=0; i<framesPerBuffer * numOutChannels; i++)
+            ((sampleType *)outputBuffer)[i] = 0;
+         
+         // increase number of output buffers to prevent another underrun!
+         if (gAudioIO->mNumOutBuffers < gAudioIO->mMaxBuffers)
+            gAudioIO->mNumOutBuffers++;
       }
    }
-   if (minID > 0) {
-      AudioIOBuffer *b = &gAudioIO->mOutBuffer[minIndex];
-      sampleCount len  = b->len;
    
-      memcpy(outputBuffer, b->data, len * numOutChannels * sizeof(sampleType));
-
-      // Fill rest of buffer with silence
-      if (len < framesPerBuffer)
-         for(i=len*numOutChannels; i<framesPerBuffer*numOutChannels; i++)
-            ((sampleType *)outputBuffer)[i] = 0;
-      
-      b->ID = 0;
-   }
-   else {
-      // we had a buffer underrun!
-      for(i=0; i<framesPerBuffer * numOutChannels; i++)
-         ((sampleType *)outputBuffer)[i] = 0;
+   //
+   // Copy from PortAudio's input buffer to one of our input buffers.
+   //
+   
+   if (numInChannels > 0) {
+      for(i=0; i<gAudioIO->mNumInBuffers; i++)
+         if (gAudioIO->mInBuffer[i].ID == 0) {
+            AudioIOBuffer *b = &gAudioIO->mInBuffer[i];
+            memcpy(b->data, outputBuffer, framesPerBuffer * numInChannels * sizeof(sampleType));
+            b->len = framesPerBuffer;
+            b->ID = gAudioIO->mInID;
+            gAudioIO->mInID++;
+            break;
+         }
    }
    
    return 0;
@@ -96,12 +129,12 @@ bool AudioIO::OpenDevice()
    PaError         error;
  
    error = Pa_OpenDefaultStream(&mPortStream,
-                                0,   // input channels
-                                2,   // output channels
+                                mNumInChannels,
+                                mNumOutChannels,
                                 paInt16,
                                 mRate,
                                 (unsigned long)mBufferSize,
-                                (unsigned long)2,    // number of buffers
+                                (unsigned long)2,
                                 audacityAudioCallback,
                                 NULL);
 
@@ -111,17 +144,33 @@ bool AudioIO::OpenDevice()
 bool AudioIO::Start()
 {
    mT = mT0;
-   mID = 1;
-   mNumBuffers = 3;
-   mBufferSize = 4096;
-   mInBuffer = NULL;
-   mOutBuffer = new AudioIOBuffer[mNumBuffers];
+   mOutID = 1;
+   mInID = 1;
+   mBufferSize = 4096;   
+
    int i;
-   for(i=0; i<mNumBuffers; i++) {
-      mOutBuffer[i].ID = 0;   // means it's empty
-      mOutBuffer[i].len = 0;
-      mOutBuffer[i].data = new sampleType[mBufferSize*mNumOutChannels];
+
+   if (mNumInChannels > 0) {
+      mInBuffer = new AudioIOBuffer[mMaxBuffers];
+      for(i=0; i<mMaxBuffers; i++) {
+         mInBuffer[i].ID = 0;   // means it's empty
+         mInBuffer[i].len = 0;
+         mInBuffer[i].data = new sampleType[mBufferSize*mNumInChannels];
+      }
    }
+   else
+      mInBuffer = NULL;
+
+   if (mNumOutChannels > 0) {
+      mOutBuffer = new AudioIOBuffer[mMaxBuffers];
+      for(i=0; i<mMaxBuffers; i++) {
+         mOutBuffer[i].ID = 0;   // means it's empty
+         mOutBuffer[i].len = 0;
+         mOutBuffer[i].data = new sampleType[mBufferSize*mNumOutChannels];
+      }
+   }
+   else
+      mOutBuffer = NULL;
    
    FillBuffers();
 
@@ -143,14 +192,17 @@ bool AudioIO::StartPlay(AudacityProject * project, TrackList * tracks,
    if (mProject)
       return false;
 
-   mRecording = false;
    mProject = project;
    mTracks = tracks;
    mRate = project->GetRate();
    mT0 = t0;
    mT1 = t1;
+
    mNumInChannels = 0;
+   mNumInBuffers = 0;
+
    mNumOutChannels = 2;
+   mNumOutBuffers = mInitialNumOutBuffers;
    
    return Start();
 }
@@ -160,128 +212,51 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
 {
    if (mProject)
       return false;
-
-   bool recordStereo;
-   gPrefs->Read("/AudioIO/RecordStereo", &recordStereo, false);
-   gPrefs->Read("/AudioIO/Duplex", &mDuplex, false);
-
-   mRecording = true;
+      
    mProject = project;
    mTracks = tracks;
    mRate = project->GetRate();
    mT0 = t0;
    mT1 = t1;
-   mNumInChannels = 2;
-   if (mDuplex)
-      mNumOutChannels = recordStereo? 2: 1;
-   else
-      mNumOutChannels = 0;
 
-   //mInTracks =  
+   bool stereo, duplex;
+   gPrefs->Read("/AudioIO/RecordStereo", &stereo, false);
+   gPrefs->Read("/AudioIO/Duplex", &duplex, false);
+
+   mNumInChannels = stereo? 2: 1;
+   mNumInBuffers = mMaxBuffers;
+
+   mNumOutChannels = duplex? 2: 0;
+   mNumOutBuffers = duplex? mInitialNumOutBuffers: 0;
    
+   mProject->SelectNone();
+
+   mInTracks = new WaveTrack*[mNumInChannels];
+   for(int i=0; i<mNumInChannels; i++) {
+      mInTracks[i] = new WaveTrack(project->GetDirManager());
+      mInTracks[i]->selected = true;
+      if (stereo)
+         mInTracks[i]->channel = i==0? VTrack::LeftChannel : VTrack::RightChannel;
+      else
+         mInTracks[i]->channel = VTrack::MonoChannel;
+      if (stereo && i==0)
+         mInTracks[i]->linked = true;
+      mInTracks[i]->rate = mRate;
+      
+      mTracks->Add(mInTracks[i]);
+   }
+
    return Start();
-
-/*
-   mRecordLeft = new WaveTrack(project->GetDirManager());
-   mRecordLeft->selected = true;
-   mRecordLeft->channel = (mRecordStereo ?
-                           VTrack::LeftChannel : VTrack::MonoChannel);
-
-   if (mRecordStereo) {
-      mRecordLeft->linked = true;
-      mRecordRight = new WaveTrack(project->GetDirManager());
-      mRecordRight->selected = true;
-      mRecordRight->channel = VTrack::RightChannel;
-   }
-
-   project->SelectNone();
-
-   tracks->Add(mRecordLeft);
-   if (mRecordStereo)
-      tracks->Add(mRecordRight);
-
-   mRecording = true;
-   mTracks = tracks;
-   mT0 = 0.0;
-   mT1 = 0.0;
-   mT = 0.0;
-   mRecT = 0.0;
-
-   mRecordNode.device = SND_DEVICE_AUDIO;
-   mRecordNode.write_flag = SND_READ;
-   mRecordNode.format.channels = mRecordStereo ? 2 : 1;
-   mRecordNode.format.mode = SND_MODE_PCM;
-   mRecordNode.format.bits = 16;
-   mRecordNode.format.srate = project->GetRate();
-   wxString deviceStr = gPrefs->Read("/AudioIO/RecordingDevice", "");
-#ifdef __WXGTK__
-   if (deviceStr == "")
-      deviceStr = "/dev/dsp";
-#endif
-   strcpy(mRecordNode.u.audio.devicename, deviceStr.c_str());
-   strcpy(mRecordNode.u.audio.interfacename, "");
-   mRecordNode.u.audio.descriptor = 0;
-   mRecordNode.u.audio.protocol = SND_COMPUTEAHEAD;
-   if (mDuplex)
-      mRecordNode.u.audio.latency = 6.0;
-   else {
-#ifdef __WXMAC__
-      mRecordNode.u.audio.latency = 1.0;
-#else
-      mRecordNode.u.audio.latency = 0.25;
-#endif
-   }
-   mRecordNode.u.audio.granularity = mRecordNode.u.audio.latency;
-
-   long flags = 0;
-   int err = snd_open(&mRecordNode, &flags);
-
-   if (err) {
-      wxMessageBox("Error opening audio device.\n"
-                   "(Change the device in the Preferences dialog.)");
-
-      return false;
-   }
-
-   if (mDuplex) {
-      if (!OpenPlaybackDevice(project)) {
-         wxMessageBox("Error opening audio device.\n"
-                      "Perhaps your sound card does not support\n"
-                      "simultaneous playing and recording.\n"
-                      "(Change the settings in the Preferences dialog.)");
-
-         snd_close(&mRecordNode);
-
-         return false;
-      }
-   }
-
-   mStopWatch.Start(0);
-
-#ifdef __WXMAC__
-   mStartTicks = TickCount();
-#endif
-
-   mTicks = 0;
-
-   // Do this last because this is what signals the timer to go
-   mProject = project;
-
-   mProject->RedrawProject();
-   
-   return true;
-
-*/
 }
-
 
 void AudioIO::FillBuffers()
 {
-   // Playback buffers
-
    unsigned int numEmpty = 0;
    int i;
-   for(i=0; i<mNumBuffers; i++) {
+   
+   // Playback buffers
+
+   for(i=0; i<mNumOutBuffers; i++) {
       if (mOutBuffer[i].ID == 0)
          numEmpty++;
    }
@@ -358,7 +333,7 @@ void AudioIO::FillBuffers()
    // Copy the mixed samples into the buffers
 
    sampleType *outbytes = mixer->GetBuffer();   
-   for(i=0; i<mNumBuffers && block>0; i++)
+   for(i=0; i<mNumOutBuffers && block>0; i++)
       if (mOutBuffer[i].ID == 0) {
          sampleCount count;
          if (block > mBufferSize)
@@ -370,8 +345,8 @@ void AudioIO::FillBuffers()
          block -= count;
          outbytes += (count*mNumOutChannels);
          mOutBuffer[i].len = count;
-         mOutBuffer[i].ID = mID;
-         mID++;
+         mOutBuffer[i].ID = mOutID;
+         mOutID++;
       }
 
    delete mixer;
@@ -380,7 +355,43 @@ void AudioIO::FillBuffers()
    
    // Recording buffers
    
-   // TODO
+   int numFull = 0;
+   int j, f, c;
+   sampleCount flatLen;
+      
+   for(i=0; i<mNumInBuffers; i++) {
+      if (mInBuffer[i].ID != 0)
+         numFull++;
+   }
+   
+   sampleType **flat = new sampleType*[mNumInChannels];
+   for(i=0; i<mNumInChannels; i++)
+      flat[i] = new sampleType[numFull * mBufferSize];
+   
+   flatLen = 0;
+   for(f=0; f<numFull; f++) {
+      int minID = mInID+1;
+      int minIndex;
+      for(i=0; i<mNumInBuffers; i++)
+         if (mInBuffer[i].ID > 0 &&
+             mInBuffer[i].ID < minID) {
+            minIndex = i;
+            minID = mInBuffer[i].ID;
+         }
+      for(j=0; j<mInBuffer[minIndex].len; j++)
+         for(c=0; c<mNumInChannels; c++)
+            flat[c][flatLen+j] = mInBuffer[minIndex].data[j*mNumInChannels + c];
+      flatLen += mInBuffer[minIndex].len;
+   }
+   
+   for(i=0; i<mNumInChannels; i++)
+      mInTracks[i]->Append(flat[i], flatLen);
+
+   for(i=0; i<mNumInChannels; i++)
+      delete[] flat[i];
+   delete[] flat;
+
+   mProject->RedrawProject();
 }
 
 void AudioIO::OnTimer()
@@ -390,50 +401,10 @@ void AudioIO::OnTimer()
    
    FillBuffers();
    
-   if (!mRecording && mT >= mT1 && GetIndicator() >= mT1) {
+   if (mT >= mT1 && GetIndicator() >= mT1) {
       Stop();
       return;
    }
-
-   /*
-   if (mRecording) {
-      int block = snd_poll(&mRecordNode);
-
-      #ifdef __WXMAC__
-      if (block > 22050) {
-      #else
-      if (block > 0) {
-      #endif
-
-         sampleType *in = new sampleType[block * 2];
-
-         snd_read(&mRecordNode, in, block);
-
-         if (mRecordStereo) {
-            sampleType *left = new sampleType[block];
-            sampleType *right = new sampleType[block];
-            for (int i = 0; i < block; i++) {
-               left[i] = in[2 * i];
-               right[i] = in[2 * i + 1];
-            }
-
-            mRecordLeft->Append(left, block);
-            mRecordRight->Append(right, block);
-            delete[]left;
-            delete[]right;
-         } else {
-            mRecordLeft->Append(in, block);
-         }
-
-         mProject->RedrawProject();
-
-         delete[]in;
-      }
-
-      if (!mDuplex)
-         return;
-   }*/
-
 }
 
 void AudioIO::Stop()
@@ -452,15 +423,27 @@ void AudioIO::Stop()
    Pa_AbortStream(mPortStream);
    Pa_CloseStream(mPortStream);
 
-   for(int i=0; i<mNumBuffers; i++)
-      mOutBuffer[i].ID = 0;
-   
-/*
-   if (mRecording) {
-      if (!mHardStop)
-         mProject->TP_PushState("Recorded Audio");
+   if (mNumOutChannels > 0) {
+      for(int i=0; i<mMaxBuffers; i++) {
+         mOutBuffer[i].ID = 0;
+         delete [] mOutBuffer[i].data;
+         mOutBuffer[i].data = NULL;
+      }
+      mInitialNumOutBuffers = mNumOutBuffers;
    }
-*/
+
+   if (mNumInChannels > 0) {
+      for(int i=0; i<mMaxBuffers; i++) {
+         mInBuffer[i].ID = 0;
+         delete [] mInBuffer[i].data;
+         mInBuffer[i].data = NULL;
+      }
+      delete[] mInTracks;
+      mInTracks = NULL;
+      
+      //if (!mHardStop)
+      //   mProject->TP_PushState("Recorded Audio");
+   }
 
    mProject = NULL;
 }
@@ -479,17 +462,12 @@ bool AudioIO::IsBusy()
 
 bool AudioIO::IsPlaying()
 {
-   if (mProject != NULL) {
-      if (!mRecording || (mRecording && mDuplex))
-         return true;
-   }
-
-   return false;
+   return (mProject != NULL && mNumOutChannels > 0);
 }
 
 bool AudioIO::IsRecording()
 {
-   return (mProject != NULL && mRecording);
+   return (mProject != NULL && mNumInChannels > 0);
 }
 
 void AudioIOTimer::Notify()
@@ -507,7 +485,5 @@ double AudioIO::GetIndicator()
    if (mProject)
       return mT0 + (Pa_StreamTime(mPortStream) / mRate);
    else
-      return -1000.0;
+      return -1000000000.0;
 }
-
-

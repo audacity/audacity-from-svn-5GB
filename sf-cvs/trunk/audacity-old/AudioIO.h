@@ -76,23 +76,23 @@ class AudioIO {
    double              mT0;
    double              mT1;
    bool                mHardStop;
-   int                 mID;
    
    PortAudioStream    *mPortStream;
 
    int                 mNumInChannels;
    int                 mNumOutChannels;
    
-   bool                mDuplex;                // play and record at same time
-   bool                mRecording;
-
    WaveTrack         **mInTracks;
 
    AudioIOTimer        mTimer;
-   wxStopWatch         mStopWatch;
    
    sampleCount         mBufferSize;
-   unsigned int        mNumBuffers;
+   int                 mInID;
+   int                 mOutID;
+   unsigned int        mMaxBuffers;
+   unsigned int        mInitialNumOutBuffers;
+   unsigned int        mNumOutBuffers;
+   unsigned int        mNumInBuffers;
    AudioIOBuffer      *mOutBuffer;
    AudioIOBuffer      *mInBuffer;
    
