@@ -212,6 +212,11 @@ For a complete list of Lisp / Nyquist functions, see the
 </p>
 
 <p>
+<b>Note: Symbols in Nyquist(like variable names and function names) are not
+case sensitive.  They are converted to uppercase internally.</b>
+</p>
+
+<p>
 <?php print "<a href=nyquist2.php?$langLinkStr>";
 ?><b>Next page</b></a>
 </p>
