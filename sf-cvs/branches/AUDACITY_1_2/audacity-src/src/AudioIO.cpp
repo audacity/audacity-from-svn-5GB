@@ -627,6 +627,14 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
 void AudioIO::StartMonitoring(double sampleRate)
 {
+#if USE_PORTAUDIO_V19
+   if ( mPortStreamV19 || mStreamToken )
+      return;
+#else
+   if ( mPortStreamV18 || mStreamToken )
+      return;
+#endif
+
    bool success;
    long captureChannels;
    sampleFormat captureFormat = (sampleFormat)
