@@ -103,20 +103,36 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 0.99:
+Changes in 1.0:
 
-  - Audacity is now more stable and functional on MacOS X
+  * Mac OS:
 
-  - "Save Changes" dialog on MacOS and Linux
+    - Audacity no longer quits when you close the last
+      window.  The menu bar remains and you can open a
+      new window.
 
-  - Tooltips
+    - Fixed bug which caused Preferences dialog not to
+      appear on Mac OS 9 with the ATM control panel
 
-  - New keyboard shortcuts and commands
+    - Fixed bug which prevented recording low sample rates
+      on Mac OS 9
 
-  - Label tracks can now be used to mark selection regions.
-    Adding labels uses a new command -- see the user's manual.
+    - Audacity is now more stable and functional on MacOS X
 
-  - Miscellaneous bug fixes
+  * New features:
+
+    - "Save Changes" dialog added to all platforms
+
+    - Tooltips
+
+    - New keyboard shortcuts and commands
+
+    - Label tracks can now be used to mark selection regions.
+      Adding labels uses a new command -- see the user's manual.
+
+  * Other:
+
+    - Miscellaneous bug fixes
 
 Changes in 0.98b (Windows-only bugfix release):
 
