@@ -41,6 +41,7 @@ Meta::
 - Move to new repository with src/ directory
 
 UI::
+- Undo shouldn't change the selection, but two Undos should...
 - Edit markers
 - Roger's Allegro stuff
 - Finish history window

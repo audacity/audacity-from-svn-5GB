@@ -26,6 +26,11 @@ Known bugs to fix:
 - Device prefs in Mac OS X
 - Duplicate doesn't work when a track is time-shifted
   past zero
+- Clicking close box only deletes one track of
+  stereo pair
+- Audacity "forgets" tracks' channels when saving/loading
+- Needs to handle temp directory better - bring up a
+  dialog if it's not there...
 
 -----------------------------------------------------------
 Possible bugs to investigate:
