@@ -314,12 +314,12 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
          short *dest = (short *)destPtr;
          short *temp = (short *)src;
          for (int j = 0; j < len; j++) {
-            float f = temp[j] * gain;
+            float f = temp[j] * gain + *dest;
             if (f > 32767)
                f = 32767;
             if (f < -32768)
                f = -32768;
-            *dest += (short)f;
+            *dest = (short)f;
             dest += skip;
          }
       } break;
@@ -327,12 +327,12 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
          int *dest = (int *)destPtr;
          int *temp = (int *)src;
          for (int j = 0; j < len; j++) {
-            float f = temp[j] * gain;
+            float f = temp[j] * gain + *dest;
             if (f > 8388607)
                f = 8388607;
             if (f < -8388608)
                f = -8388608;
-            *dest += (int)f;
+            *dest = (int)f;
             dest += skip;
          }
       } break;
