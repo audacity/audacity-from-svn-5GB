@@ -665,8 +665,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
                                 paClipOff | paDitherOff,
                                 audacityAudioCallback, NULL );
 
-   printf("Stream: %d err: %d\n", (int)mPortStreamV18, err);
-
 #if USE_PORTMIXER
 
    if (mPortMixer)
