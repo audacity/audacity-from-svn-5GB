@@ -295,7 +295,7 @@ void TranscriptionToolBar::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount
   }
 }
 
-void TranscriptionToolBar::OnStartOn()
+void TranscriptionToolBar::OnStartOn(wxCommandEvent &event)
 {
   //If IO is busy, abort immediately
   if (gAudioIO->IsBusy()){
@@ -330,7 +330,7 @@ void TranscriptionToolBar::OnStartOn()
     }
 }
 
-void TranscriptionToolBar::OnStartOff()
+void TranscriptionToolBar::OnStartOff(wxCommandEvent &event)
 {
    //If IO is busy, abort immediately
    if (gAudioIO->IsBusy()){
@@ -366,7 +366,7 @@ void TranscriptionToolBar::OnStartOff()
 	
 }
 
-void TranscriptionToolBar::OnEndOn()
+void TranscriptionToolBar::OnEndOn(wxCommandEvent &event)
 {
 	
   //If IO is busy, abort immediately
@@ -407,7 +407,7 @@ void TranscriptionToolBar::OnEndOn()
 
 
 
-void TranscriptionToolBar::OnEndOff()
+void TranscriptionToolBar::OnEndOff(wxCommandEvent &event)
 {
 	
   //If IO is busy, abort immediately
@@ -446,7 +446,7 @@ void TranscriptionToolBar::OnEndOff()
 
 
 
-void TranscriptionToolBar::OnCalibrate()
+void TranscriptionToolBar::OnCalibrate(wxCommandEvent &event)
 {
   //If IO is busy, abort immediately
   if (gAudioIO->IsBusy()){
@@ -492,7 +492,7 @@ void TranscriptionToolBar::OnCalibrate()
 //This automates selection through a selected region,
 //selecting its best guess for words and creating labels at those points.
 
-void TranscriptionToolBar::OnAutomateSelection()
+void TranscriptionToolBar::OnAutomateSelection(wxCommandEvent &event)
 {
 
 	
@@ -572,7 +572,7 @@ void TranscriptionToolBar::OnAutomateSelection()
 
 
 
-void TranscriptionToolBar::OnMakeLabel()
+void TranscriptionToolBar::OnMakeLabel(wxCommandEvent &event)
 {
    AudacityProject *p = GetActiveProject();
    SetButton(false, mButtons[TTB_MakeLabel]);  

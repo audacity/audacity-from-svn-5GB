@@ -64,13 +64,13 @@ class TranscriptionToolBar:public ToolBar {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
 
-   virtual void OnStartOn();
-   virtual void OnStartOff();
-   virtual void OnEndOn();
-   virtual void OnEndOff();
-   virtual void OnCalibrate();
-   virtual void OnMakeLabel();
-   virtual void OnAutomateSelection();
+   virtual void OnStartOn(wxCommandEvent &event);
+   virtual void OnStartOff(wxCommandEvent &event);
+   virtual void OnEndOn(wxCommandEvent &event);
+   virtual void OnEndOff(wxCommandEvent &event);
+   virtual void OnCalibrate(wxCommandEvent &event);
+   virtual void OnMakeLabel(wxCommandEvent &event);
+   virtual void OnAutomateSelection(wxCommandEvent &event);
    virtual double GetSensitivity();
    virtual void OnSensitivitySlider(wxCommandEvent& evt);
 
