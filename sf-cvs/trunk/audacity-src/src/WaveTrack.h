@@ -30,9 +30,9 @@ class WaveBlock {
 
    sampleCount start;
    sampleCount len;
-   short       min;
-   short       max;
-   short       rms;
+   float       min;
+   float       max;
+   float       rms;
 };
 
 class SummaryInfo {
@@ -167,9 +167,9 @@ class WaveTrack:public VTrack {
    void Read(samplePtr buffer, sampleFormat format,
              WaveBlock * b,
              sampleCount start, sampleCount len) const;
-   void Read256(short * buffer, WaveBlock * b,
+   void Read256(float * buffer, WaveBlock * b,
                 sampleCount start, sampleCount len) const;
-   void Read64K(short * buffer, WaveBlock * b,
+   void Read64K(float * buffer, WaveBlock * b,
                 sampleCount start, sampleCount len) const;
 
    // These are the two ways to write data to a block
