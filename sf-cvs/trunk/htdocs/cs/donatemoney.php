@@ -29,6 +29,15 @@ Pokud si pøejete darovat více než 50 dolarù, nebo poslat osobní šek, prosím navš
 </center>
 
 <p>
+Akceptujeme také platby PayPal prostøednictvím darovacího systému SourceForge:
+
+<center>
+<a href="http://sourceforge.net/donate/index.php?group_id=6235"><img
+src="images/paypal.gif" border="0" alt="Donate by PayPal"></a>
+</center>
+
+<p>
+
 
 <?php BoxBottom(); ?>
 
