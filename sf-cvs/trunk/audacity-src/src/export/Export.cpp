@@ -136,8 +136,8 @@ bool Export(AudacityProject *project,
    int      format;
    bool     stereo;
    
-   format = gPrefs->Read("/FileFormats/ExportFormat",
-                         SF_FORMAT_WAV | SF_FORMAT_PCM);
+   format = ReadExportFormatPref();
+                         
    formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
    extension = "." + sf_header_extension(format & SF_FORMAT_TYPEMASK);
 

@@ -49,6 +49,41 @@ wxString ExtensionNames[14] = {
    "rex2",
    "ircam"};
 
+#ifdef __WXMAC__
+
+// TODO: find out the appropriate OSType
+// for the ones with an '????'.  The others
+// are at least the same type used by
+// SoundApp.
+
+OSType MacNames[14] = {
+   'WAVE', // WAVE
+   'AIFF', // AIFF
+   'NeXT', // Sun/NeXT AU
+   'NeXT', // Sun/NeXT AU
+   'BINA', // RAW i.e. binary
+   'PAR ', // ??? Ensoniq PARIS
+   '8SVX', // Amiga IFF / SVX8
+   'NIST', // ??? NIST/Sphere
+   'WMA ', // ??? Windows Media Audio
+   'SAMP', // ??? SEK'D Samplitude
+   'VOC ', // VOC
+   'SFIL', // Sound Designer II
+   'REX2', // ?? Propellorheads Rex2
+   'IRCM'};// IRCAM
+
+OSType sf_header_mactype(int format)
+{
+   if (format >= 0x10000)
+      return MacNames[(format/0x10000)-1];
+   else if (format>=0 && format<14)
+      return MacNames[format];
+   else
+      return '????';
+}
+
+#endif // __WXMAC__
+
 wxString sf_header_name(int format)
 {
    if (format >= 0x10000)
@@ -105,15 +140,15 @@ wxString sf_encoding_name(int subtype)
 /* These should be kept alphabetical order. */
 static SF_FORMAT_SIMPLE_INFO
 psf_simple_format_array [SF_NUM_SIMPLE_FORMATS] = 
-{	{	SF_FORMAT_AIFF | SF_FORMAT_PCM_BE, 8,
+{	{	SF_FORMAT_AIFF | SF_FORMAT_PCM, 8,
 		"AIFF (Apple/SGI 8 bit)", "aiff"
 		},
 
-	{	SF_FORMAT_AIFF | SF_FORMAT_PCM_BE, 16,
+	{	SF_FORMAT_AIFF | SF_FORMAT_PCM, 16,
 		"AIFF (Apple/SGI 16 bit)", "aiff" 
 		},
 	
-	{	SF_FORMAT_AIFF | SF_FORMAT_FLOAT_BE, 32,
+	{	SF_FORMAT_AIFF | SF_FORMAT_FLOAT, 32,
 		"AIFF (Apple/SGI 32 bit float)", "aifc" 
 		},
 
@@ -121,7 +156,7 @@ psf_simple_format_array [SF_NUM_SIMPLE_FORMATS] =
 		"AU (Sun/Next 8-bit u-law)", "au"
 		},
 		
-	{	SF_FORMAT_AU | SF_FORMAT_PCM_BE, 16,
+	{	SF_FORMAT_AU | SF_FORMAT_PCM, 16,
 		"AU (Sun/Next 16 bit)", "au"
 		},
 		
@@ -133,15 +168,15 @@ psf_simple_format_array [SF_NUM_SIMPLE_FORMATS] =
 		"WAV (Microsoft 4 bit IMA ADPCM)", "wav"
 		},
 		
-	{	SF_FORMAT_WAV | SF_FORMAT_PCM_LE, 8,
+	{	SF_FORMAT_WAV | SF_FORMAT_PCM, 8,
 		"WAV (Microsoft 8 bit)", "wav"
 		},
 
-	{	SF_FORMAT_WAV | SF_FORMAT_PCM_LE, 16,
+	{	SF_FORMAT_WAV | SF_FORMAT_PCM, 16,
 		"WAV (Microsoft 16 bit)", "wav"
 		},
 
-	{	SF_FORMAT_WAV | SF_FORMAT_FLOAT_LE, 32,
+	{	SF_FORMAT_WAV | SF_FORMAT_FLOAT, 32,
 		"WAV (Microsoft 32 bit float)", "wav"
 		}
 } ; /* sf_simple_format_array */

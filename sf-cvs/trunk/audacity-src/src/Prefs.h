@@ -21,6 +21,9 @@
   value, so that if we later want to change this value, we only
   have to change it in one place.
 
+  See Prefs.cpp for a (complete?) list of preferences we keep
+  track of...
+
 **********************************************************************/
 
 #include <wx/config.h>
@@ -32,8 +35,8 @@ extern wxConfig *gPrefs;
 
 extern int gMenusDirty;
 
-int ReadFileFormatPref();
-void WriteFileFormatPref(int format);
+int ReadExportFormatPref();
+void WriteExportFormatPref(unsigned int format);
 
-int ReadFileFormatBitsPref();
-void WriteFileFormatBitsPref(int bits);
+int ReadExportFormatBitsPref();
+void WriteExportFormatBitsPref(int bits);

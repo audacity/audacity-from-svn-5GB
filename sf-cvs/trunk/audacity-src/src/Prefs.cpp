@@ -6,6 +6,8 @@
 
   Dominic Mazzoni
 
+  Audacity uses wxWindows' wxConfig class to handle preferences.
+  See Prefs.h for more information on how it works...
 
   Preference field specification:
   	/
@@ -22,8 +24,9 @@
 		DefaultProjectSampleRate- New projects will have this rate
 			[ 8000, 11025, 16000, 22050, 44100, 48000 ]
 	/AudioIO
-		PlaybackDevice(*)		- device file to use for playback
-		RecordingDevice(*)		- device file to use for recording
+      PlaybackDevice          - device to use for playback
+		RecordingDevice         - device to use for recording
+                     (these are device names understood by PortAudio)
 	/Display
 		WaveformColor			- 0xRRGGBB  --since it will be stored in
 		ShadowColor				- 			  decimal, it will be somewhat
@@ -43,6 +46,8 @@
 #include <wx/app.h>
 #include <wx/config.h>
 #endif
+
+#include "sndfile.h"
 
 #ifdef __WXMAC__
 #include <Files.h>
@@ -94,11 +99,6 @@ void InitPreferences()
    }
 #endif
 
-   // Fix exporting - MP3 is no longer a valid default export format in 0.96
-   // (it has its own menu items!)
-   if (gPrefs->Read("/FileFormats/DefaultExportFormat", "WAV") == "MP3")
-      gPrefs->Write("/FileFormats/DefaultExportFormat", "WAV");
-
    gPrefs->Write("/Version", AUDACITY_VERSION_STRING);
 }
 
@@ -110,3 +110,26 @@ void FinishPreferences()
       gPrefs = NULL;
    }
 }
+
+int ReadExportFormatPref()
+{
+   return gPrefs->Read("/FileFormats/ExportFormat",
+                       (long int)(SF_FORMAT_WAV | SF_FORMAT_PCM));
+}
+
+void WriteExportFormatPref(unsigned int format)
+{
+   gPrefs->Write("/FileFormats/ExportFormat", (long int)format);
+}
+
+int ReadExportFormatBitsPref()
+{
+   return gPrefs->Read("/FileFormats/ExportFormatBits",
+                       (long int)16);
+}
+
+void WriteExportFormatBitsPref(int bits)
+{
+   gPrefs->Write("/FileFormats/ExportFormatBits", (long int)bits);
+}
+

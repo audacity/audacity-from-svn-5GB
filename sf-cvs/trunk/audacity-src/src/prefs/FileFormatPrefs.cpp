@@ -53,9 +53,8 @@ PrefsPanel(parent)
    long mp3Bitrate = gPrefs->Read("/FileFormats/MP3Bitrate", 128);
    wxString mp3BitrateString = wxString::Format("%d", mp3Bitrate);
 
-   /* TODO: read from prefs */
-   mFormat = SF_FORMAT_WAV | SF_FORMAT_PCM_LE;
-   mFormatBits = 16;
+   mFormat = ReadExportFormatPref();
+   mFormatBits = ReadExportFormatBitsPref();
 
    /* Begin layout code... */
 
@@ -272,35 +271,31 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 
 bool FileFormatPrefs::Apply()
 {
-   wxString copyEditString[] = { "copy", "edit" };
+   int originalExportFormat = ReadExportFormatPref();
+   int originalExportBits = ReadExportFormatBitsPref();
 
-   int pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
-   wxString copyOrEdit = copyEditString[pos];
-
-   int format = mDefaultExportFormat->GetSelection();
+   WriteExportFormatPref(mFormat);
+   WriteExportFormatBitsPref(mFormatBits);
    
    gPrefs->SetPath("/FileFormats");
 
-   //wxString originalExportFormat = gPrefs->Read("DefaultExportFormat", "");
-   //wxString defaultExportFormat = gPCMFormats[format].name;
-
+   wxString copyEditString[] = { "copy", "edit" };
+   int pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
+   wxString copyOrEdit = copyEditString[pos];
    gPrefs->Write("CopyOrEditUncompressedData", copyOrEdit);
-   //gPrefs->Write("DefaultExportFormat", defaultExportFormat);
 
    if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
       gPrefs->Write("MP3Bitrate", bitrate);
    }
-   
-   //if (originalExportFormat != defaultExportFormat) {
-      // Force the menu bar to get recreated
-   //   gMenusDirty++;
-   //}
-
    gPrefs->SetPath("/");
-   return true;
+      
+   if (originalExportFormat != mFormat ||
+       originalExportBits != mFormatBits)
+      gMenusDirty++;
 
+   return true;
 }
 
 FileFormatPrefs::~FileFormatPrefs()
