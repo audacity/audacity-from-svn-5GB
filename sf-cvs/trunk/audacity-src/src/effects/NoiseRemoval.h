@@ -5,6 +5,7 @@
   NoiseRemoval.h
 
   Dominic Mazzoni
+  Vaughan Johnson (Preview)
 
 **********************************************************************/
 
@@ -69,6 +70,8 @@ private:
    bool      hasProfile;
    
    int       level;
+
+friend class NoiseRemovalDialog;
 };
 
 // WDR: class declarations
@@ -79,30 +82,33 @@ private:
 
 // Declare window functions
 
-#define ID_TEXT 10000
-#define ID_FILTERPANEL 10001
-#define ID_CLEAR 10002
-
 class NoiseRemovalDialog: public wxDialog
 {
 public:
    // constructors and destructors
-   NoiseRemovalDialog( wxWindow *parent, wxWindowID id, const wxString &title,
-                       const wxPoint& pos = wxDefaultPosition,
-                       const wxSize& size = wxDefaultSize,
-                       long style = wxDEFAULT_DIALOG_STYLE );
+   NoiseRemovalDialog(EffectNoiseRemoval * effect,
+								wxWindow *parent, wxWindowID id, 
+								const wxString &title,
+								const wxPoint& pos = wxDefaultPosition,
+								const wxSize& size = wxDefaultSize,
+								long style = wxDEFAULT_DIALOG_STYLE );
 
-   wxSizer *MakeNoiseRemovalDialog( wxWindow *parent, bool call_fit = TRUE,
-                           bool set_sizer = TRUE );
-   
-   wxButton *mRemoveNoiseButton;
-   wxSlider *mSlider;
+   wxSizer *MakeNoiseRemovalDialog(bool call_fit = true, bool set_sizer = true);
    
 private:
-   // WDR: handler declarations for FilterDialog
+   // handlers
    void OnGetProfile( wxCommandEvent &event );
+   void OnPreview(wxCommandEvent &event);
    void OnRemoveNoise( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
+   
+private:
+	EffectNoiseRemoval * m_pEffect;
+
+public:
+   wxSlider * m_pSlider;
+   wxButton * m_pButton_Preview;
+   wxButton * m_pButton_RemoveNoise;
    
 private:
    DECLARE_EVENT_TABLE()
