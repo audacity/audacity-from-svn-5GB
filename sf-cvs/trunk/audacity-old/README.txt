@@ -70,6 +70,10 @@ email Dominic Mazzoni <dmazzoni+@cs.cmu.edu>.
 
 Changes in 0.93:
 
+* Keeps track of some preferences
+
+* Displays playback indicator
+
 * Supports arbitrary project sample rate
 
 * Mac: opens documents from the Finder
