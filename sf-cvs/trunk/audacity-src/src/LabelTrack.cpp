@@ -29,11 +29,11 @@ using std::endl;
 
 // static member variables.
 bool LabelTrack::mbGlyphsReady=false;
-// TODO: Currently we're only using three of these icons, since we
-// don't yet support highlighting of the icons.
-// The plan is to make the icons draggable, and can drag one boundary
+// We have several variants of the icons (highlighting).
+// The icons are draggable, and you can drag one boundary
 // or all boundaries at the same timecode depending on whether you 
 // click the centre (for all) or the arrow part (for one).
+// Currently we have twelve variants but we're only using six.
 wxIcon LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
 int LabelTrack::mIconHeight;
 int LabelTrack::mIconWidth;
@@ -59,8 +59,8 @@ LabelTrack *TrackFactory::NewLabelTrack()
 LabelTrack::LabelTrack(DirManager * projDirManager):
    Track(projDirManager),
    mIsAdjustingLabel(false),
-   mMouseOverLabelLeft(0),
-   mMouseOverLabelRight(0)
+   mMouseOverLabelLeft(-1),
+   mMouseOverLabelRight(-1)
 {
    InitColours();
    SetName(_("Label Track"));
@@ -76,8 +76,8 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
 LabelTrack::LabelTrack(const LabelTrack &orig) :
    Track(orig),
    mIsAdjustingLabel(false),
-   mMouseOverLabelLeft(0),
-   mMouseOverLabelRight(0)
+   mMouseOverLabelLeft(-1),
+   mMouseOverLabelRight(-1)
 {
    InitColours();
 
@@ -278,26 +278,37 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
    const int xStart = r.x -(int)(h*pps) -100;
    for(i=0;i<MAX_NUM_ROWS;i++)
       xUsed[i]=xStart;
+   int nRowsUsed=0;
 
    for (i = 0; i < (int)mLabels.Count(); i++) 
    {
       int x  = r.x + (int) ((mLabels[i]->t  - h) * pps);
       int x1 = r.x + (int) ((mLabels[i]->t1 - h) * pps);
       int y = r.y;
-#if 0
-      //THIS DOESN'T CURRENTLY GET USED.
-      int height = r.height;
-#endif
+
       mLabels[i]->x=x;
       mLabels[i]->x1=x1;
       mLabels[i]->y=-1;// -ve indicates nothing doing.
       iRow=0;
-      // Find a row that can take a span starting at x.
-      while( (iRow<nRows) && (xUsed[iRow] > x ))
+      // Our first preference is a row that ends where we start.
+      // (This is to encourage merging of adjacent label boundaries).
+      while( (iRow<nRowsUsed) && (xUsed[iRow] != x ))
          iRow++;
+      // IF we didn't find one THEN 
+      // find any row that can take a span starting at x.
+      if( iRow >= nRowsUsed )
+      {
+         iRow=0;
+         while( (iRow<nRows) && (xUsed[iRow] > x ))
+            iRow++;
+      }
       // IF we found such a row THEN record a valid position.
       if( iRow<nRows )
       {
+         // Possibly update the number of rows actually used.
+         if( iRow >= nRowsUsed )
+            nRowsUsed=iRow+1;
+         // Record the position for this label
          y= r.y + iRow * yRowHeight +(yRowHeight/2)+1;
          mLabels[i]->y=y;
          // On this row we have used up to max of end marker and width.
@@ -359,8 +370,6 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRig
    if((x1 >= r.x) && (x1 <= (r.x+r.width)) && (x1>x+LabelTrack::mIconWidth))
       dc.DrawIcon( LabelTrack::mBoundaryGlyphs[GlyphRight], x1-xHalfWidth,yStart );
 }
-
-
 
 /// Draw the text of the label and also draw
 /// a long thin rectangle for its full extent 
@@ -543,9 +552,19 @@ double LabelTrack::GetEndTime()
 }
  
 
-//This returns 0 if not over a glyph,
-// 1 if over the left-hand glyph, and 
-// 2 if over the right-hand glyph on a label.
+/// OverGlyph returns 0 if not over a glyph,
+/// 1 if over the left-hand glyph, and 
+/// 2 if over the right-hand glyph on a label.
+/// 3 if over both right and left.
+///
+/// It also sets up member variables:
+///   mMouseLabelLeft - index of any left label hit
+///   mMouseLabelRight - index of any right label hit
+///   mbHitCenter     - if (x,y) 'hits the spot'.
+///
+/// TODO: Investigate what happens with large
+/// numbers of labels, might need a binary search
+/// rather than a linear one.
 int LabelTrack::OverGlyph(int x, int y)
 {
    //Determine the new selection.
@@ -558,7 +577,8 @@ int LabelTrack::OverGlyph(int x, int y)
    mMouseOverLabelLeft  = -1;
    mMouseOverLabelRight = -1;
    mbHitCenter = false;
-   for (int i = 0; i < (int)mLabels.Count(); i++) {
+   for (int i = 0; i < (int)mLabels.Count(); i++) 
+   {
       pLabel = mLabels[i];
       
       //over left or right selection bound
@@ -570,7 +590,8 @@ int LabelTrack::OverGlyph(int x, int y)
             mbHitCenter = true;
          result |= 1;
       }
-      // use else if so that we don't detect left and right of same label.
+      // use else-if so that we don't detect left and right 
+      // of the same label.
       else if( abs(pLabel->y-y ) < d1 &&
                abs(pLabel->x1 - d2 -x) < d1)
       {
@@ -583,11 +604,12 @@ int LabelTrack::OverGlyph(int x, int y)
    return result;
 }
 
+/// HandleMouse gets called with every mouse move or click.
+/// 
 void LabelTrack::HandleMouse(const wxMouseEvent & evt,
                              wxRect & r, double h, double pps,
                              double *newSel0, double *newSel1)
 {
-   
    if(evt.ButtonUp(1) )
    {
       mIsAdjustingLabel = false;
@@ -631,10 +653,10 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
             *newSel0 = mLabels[mSelIndex]->t;
             *newSel1 = mLabels[mSelIndex]->t1;
          }
+         SortLabels();
       }
       return;
    }
-   
    
    if( evt.ButtonDown())
    {
@@ -658,8 +680,9 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       }
       
       LabelStruct * pLabel;
-      
+
       //OK, they aren't dragging or clicking on an edge.
+      //TODO: Move this into a function 'FindLabel' or some such.
       for (int i = 0; i < (int)mLabels.Count(); i++) {
          pLabel = mLabels[i];
          if( (pLabel->xText-(mIconWidth/2) < evt.m_x) && 
@@ -683,6 +706,9 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
  #endif
 #endif
 
+/// KeyEvent is called for every keypress when over the label track.
+/// TODO: Modify so that it can pass unused characters on to 
+/// higher levels of the interface.
 void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 { 
 #ifdef __WXMAC__
@@ -695,28 +721,28 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
 #endif
 
    long keyCode = event.KeyCode();
-
+   
    if (mSelIndex >= 0) {
       switch (keyCode) {
       case WXK_BACK:
          {
             int len = mLabels[mSelIndex]->title.Length();
-
+            
             //If the label is not blank get rid of a letter
             if (len > 0)
-               {
-                  mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(len - 1);
-               }
-               else
-               {
-
-                  delete mLabels[mSelIndex];
-                  mLabels.RemoveAt(mSelIndex);
-                  mSelIndex = -1;
-               }
+            {
+               mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(len - 1);
+            }
+            else
+            {
+               
+               delete mLabels[mSelIndex];
+               mLabels.RemoveAt(mSelIndex);
+               mSelIndex = -1;
+            }
          }
          break;
-
+         
       case WXK_DELETE:
       case WXK_RETURN:
       case WXK_ESCAPE:
@@ -727,7 +753,7 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          
          mSelIndex = -1;
          break;
-
+         
       case WXK_TAB:
          if (event.ShiftDown()) {
             if (mSelIndex > 0)
@@ -737,9 +763,10 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
                mSelIndex++;
          }
          break;
-
+         
       default:
-         mLabels[mSelIndex]->title += keyCode;
+         if( IsGoodLabelCharacter( keyCode ))
+            mLabels[mSelIndex]->title += keyCode;
          break;
       }
    } 
@@ -747,25 +774,27 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
    {
       // Don't automatically start a label unless its one of the accepted 
       // characters.
-      // We can always create the label and then 
+      // We can always create the label and then type the forbidden character
+      // as our first character.
+      // TODO: (Possibly) pass the unused characters on to other keycode
+      // handlers, 
    }
    else
    {
       // Create new label
-
       LabelStruct *l = new LabelStruct();
       l->t = sel0;
       l->t1 = sel1;
       l->title += wxChar(keyCode);
-
+      
       int len = mLabels.Count();
       int pos = 0;
-
+      
       while (pos < len && l->t > mLabels[pos]->t)
          pos++;
-
+      
       mLabels.Insert(l, pos);
-
+      
       mSelIndex = pos;
    }
 }
@@ -780,9 +809,7 @@ bool LabelTrack::IsSelected() const
    return (mSelIndex >= 0 && mSelIndex < (int)mLabels.Count());
 }
 
-// TODO: Make Export include label end-times (LabelStruct::t1). 
-// Make Import handle files with or without end-times.
-
+/// Export labels including label start and end-times.
 void LabelTrack::Export(wxTextFile & f)
 {
    for (int i = 0; i < (int)mLabels.Count(); i++) {
@@ -793,6 +820,7 @@ void LabelTrack::Export(wxTextFile & f)
    }
 }
 
+/// Import labels, handling files with or without end-times.
 void LabelTrack::Import(wxTextFile & in)
 {
    wxString currentLine;
@@ -801,90 +829,82 @@ void LabelTrack::Import(wxTextFile & in)
    wxString s,s1;
    wxString title;
    double t,t1;
-
+   
    lines = in.GetLineCount();
-
+   
    mLabels.Clear();
    mLabels.Alloc(lines);
-
-
-   //Currently, we assume that a tag file has two values and a label
+   
+   //Currently, we expect a tag file to have two values and a label
    //on each line. If the second token is not a number, we treat
    //it as a single-value label.
    for (index = 0; index < lines; index++) {
       currentLine = in.GetLine(index);
-
+      
       len = currentLine.Length();
       if (len == 0)
          return;
-
       
       //get the timepoint of the left edge of the label.
       i = 0;
       while (i < len && currentLine.GetChar(i) != ' '
-             && currentLine.GetChar(i) != '\t')
-         {
-            i++;
-         }
+         && currentLine.GetChar(i) != '\t')
+      {
+         i++;
+      }
       s = currentLine.Left(i);
-
-
+      
       if (!Internat::CompatibleToDouble(s, &t))
          return;
-
-
-
+      
       //Increment one letter.
       i++;
-
+      
       //Now, go until we find the start of the get the next token
       while (i < len
-             && (currentLine.GetChar(i) == ' '
-                 || currentLine.GetChar(i) == '\t'))
-          {
-             i++;
-          }
+         && (currentLine.GetChar(i) == ' '
+         || currentLine.GetChar(i) == '\t'))
+      {
+         i++;
+      }
       //Keep track of the start of the second token
       i2=i;
-
+      
       //Now, go to the end of the second token.
       while (i < len && currentLine.GetChar(i) != ' '
-             && currentLine.GetChar(i) != '\t')
-         {
-            i++;
-         }
-
-
+         && currentLine.GetChar(i) != '\t')
+      {
+         i++;
+      }
+      
       //We are at the end of the second token.      
       s1 = currentLine.Mid(i2,i-i2+1).Strip(wxString::stripType(0x3));
-
       if (!Internat::CompatibleToDouble(s1, &t1))
-         {
-
-            //s1 is not a number.
-            t1 = t;  //This is a one-sided label; t1 == t.
-
-            //Because s1 is not a number, the label should be
-            //The rest of the line, starting at i2;
-            title = currentLine.Right(len - i2).Strip(wxString::stripType(0x3));  //0x3 indicates both
-         }
+      {
+         //s1 is not a number.
+         t1 = t;  //This is a one-sided label; t1 == t.
+         
+         //Because s1 is not a number, the label should be
+         //The rest of the line, starting at i2;
+         title = currentLine.Right(len - i2).Strip(wxString::stripType(0x3));  //0x3 indicates both
+      }
       else
-         {
-
-            //s1 is a number, and it is stored correctly in t1.
-            //The title should be the remainder of the line, 
-            //After we eat 
-
-            //Get rid of spaces at either end 
-            title = currentLine.Right(len - i).Strip(wxString::stripType(0x3)); //0x3 indicates both.
-
-         }
+      {
+         //s1 is a number, and it is stored correctly in t1.
+         //The title should be the remainder of the line, 
+         //After we eat 
+         
+         //Get rid of spaces at either end 
+         title = currentLine.Right(len - i).Strip(wxString::stripType(0x3)); //0x3 indicates both.
+         
+      }
       LabelStruct *l = new LabelStruct();
       l->t = t;
       l->t1 = t1;
       l->title = title;
       mLabels.Add(l);
    }
+   SortLabels();
 }
 
 bool LabelTrack::HandleXMLTag(const char *tag, const char **attrs)
@@ -1006,7 +1026,7 @@ bool LabelTrack::Load(wxTextFile * in, DirManager * dirManager)
 
    if (in->GetNextLine() != "MLabelsEnd")
       return false;
-
+   SortLabels();
    return true;
 }
 
@@ -1188,7 +1208,7 @@ void LabelTrack::InitColours()
 //   Green - Playback.
    mLabelSurroundPen.SetColour( 0, 0, 0);
    mTextEditBrush.SetColour( 255,255,255);
-   mTextNormalBrush.SetColour( 190,190,240 );// BEBEF0
+   mTextNormalBrush.SetColour( 190,190,240 );// #BEBEF0
 
    mUnselectedBrush.SetColour(192, 192, 192);
    mSelectedBrush.SetColour(148, 148, 170);
@@ -1303,6 +1323,9 @@ void LabelTrack::CreateCustomGlyphs()
    mbGlyphsReady=true;
 }
 
+/// The 'typing at selection creates label' feature
+/// will only accept these keyCodes as a first label 
+/// character.
 bool LabelTrack::IsGoodLabelFirstCharacter(long keyCode)
 {
    if(( 'a' <= keyCode ) && (keyCode <='z' ))
@@ -1314,6 +1337,7 @@ bool LabelTrack::IsGoodLabelFirstCharacter(long keyCode)
    return false;
 }
 
+/// We'll only accept these characters within a label
 bool LabelTrack::IsGoodLabelCharacter(long keyCode)
 {
 // if( IsGoodLabelFirstCharacter( keyCode ))
@@ -1322,6 +1346,56 @@ bool LabelTrack::IsGoodLabelCharacter(long keyCode)
       return false;
    return true;
 }
+
+/// Sorts the labels in order of their starting times.
+/// This function is called often (whilst dragging a label)
+/// We expect them to be very nearly in order, so insertion 
+/// sort (with a linear search) is a reasonable choice.  
+void LabelTrack::SortLabels()
+{
+   int i,j;
+   LabelStruct * pTemp;
+   for (i = 1; i < (int)mLabels.Count(); i++) 
+   {
+      j=i-1;
+      while( (j>=0) && (mLabels[j]->t > mLabels[i]->t) )
+      {  
+         j--;
+      }
+      j++;
+      if( j<i)
+      {
+         // Remove at i and insert at j.
+         pTemp = mLabels[i];
+         mLabels.RemoveAt( i );
+         mLabels.Insert(pTemp, j);
+
+         // Various indecese need to be updated with the moved items...
+         if( mMouseOverLabelLeft <=i )
+         {
+            if( mMouseOverLabelLeft == i )
+               mMouseOverLabelLeft=j;
+            else if( mMouseOverLabelLeft >= j)
+               mMouseOverLabelLeft++;
+         }
+         if( mMouseOverLabelRight <=i )
+         {
+            if( mMouseOverLabelRight == i )
+               mMouseOverLabelRight=j;
+            else if( mMouseOverLabelRight >= j)
+               mMouseOverLabelRight++;
+         }
+         if( mSelIndex <=i )
+         {
+            if( mSelIndex == i )
+               mSelIndex=j;
+            else if( mSelIndex >= j)
+               mSelIndex++;
+         }
+      }
+   }
+}
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
@@ -1333,3 +1407,4 @@ bool LabelTrack::IsGoodLabelCharacter(long keyCode)
 //
 // vim: et sts=3 sw=3
 // arch-tag: f321cf69-6f22-4a1b-a44b-b70d533227e3
+

@@ -976,8 +976,8 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 #endif
 }
 
-// AS: Make our Parent (well, whoever is listening to us) push their state.
-//  this causes application state to be preserved on a stack for undo ops.
+/// AS: Make our Parent (well, whoever is listening to us) push their state.
+///  this causes application state to be preserved on a stack for undo ops.
 void TrackPanel::MakeParentPushState(wxString desc, wxString shortDesc,
                                      bool consolidate)
 {
@@ -1005,9 +1005,9 @@ void TrackPanel::HandleShiftKey(bool down)
    HandleCursor(mLastMouseEvent);
 }
 
-// AS: THandleCursor( ) sets the cursor drawn at the mouse location.
-//  As this procedure checks which region the mouse is over, it is
-//  appropriate to establish the message in the status bar.
+/// AS: THandleCursor( ) sets the cursor drawn at the mouse location.
+///  As this procedure checks which region the mouse is over, it is
+///  appropriate to establish the message in the status bar.
 void TrackPanel::HandleCursor(wxMouseEvent & event)
 {
    mLastMouseEvent = event;
@@ -1035,6 +1035,9 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
    } else if (mIsRearranging) {
       SetCursor(*mRearrangeCursor);
       return;
+   } else if (mIsAdjustingLabel) {
+//    SetCursor(*mRearrangeCursor); Already set...
+      return;
    } else {
       // none of the above
 
@@ -1054,7 +1057,10 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       return;
    }
 
-   const char *tip = 0;
+   // Strategy here is to set the tip when we have determined and
+   // set the correct cursor.  We stop doing tests for whatwe've
+   // hit once the tip is not NULL.
+   const char *tip = NULL;
 
    // (3) They're over the label or vertical ruler.
    if (label) {
@@ -1071,40 +1077,68 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
          SetCursor(*mArrowCursor);
       }
    }
-   // Otherwise, we must be over the wave window 
-   else {
-      
-      //See if we are above a label track
-      if (t->GetKind() == Track::Label)
-      {
-         LabelTrack * pLT = (LabelTrack*)t;
-         int edge=pLT->OverGlyph(event.m_x, event.m_y);
-         if(edge && 1)
-         {
-//          SetCursor(*mLabelCursorLeft);
-            SetCursor(*mArrowCursor);
-         }
-         else if (edge && 2)
-         {
-//          SetCursor(*mLabelCursorRight);
-            SetCursor(*mArrowCursor);
-         }
 
-         //KLUDGE: We refresh the whole Label track when the icon hovered over
-         //changes colouration.  As well as being inefficient we are also 
-         //doing stuff that should be delegated to the label track itself.
-         edge += pLT->mbHitCenter ? 4:0; 
-         if( edge != pLT->mOldEdge )
-         {
-            pLT->mOldEdge = edge;
-            Refresh(false);
+   // Are we within the vertical resize area?
+   if ((tip == NULL ) && within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)) {
+      //Check to see whether it is the first channel of a stereo track
+      if (t->GetLinked()) {
+         if (!label) {
+            tip = _("Click and drag to adjust relative size "
+                    "of stereo tracks.");
+            SetCursor(*mResizeCursor);
          }
-//       if( edge != 0 )
-         return;
+      } else {
+         tip = _("Click and drag to resize the track.");
+         SetCursor(*mResizeCursor);
       }
-      
+   }
 
+   // Otherwise, we must be over a track of some kind 
+   if ((tip==NULL) && (t->GetKind() == Track::Label))
+   {
+      // We are over a label track
+      LabelTrack * pLT = (LabelTrack*)t;
+      int edge=pLT->OverGlyph(event.m_x, event.m_y);
+      if(edge && 1)
+      {
+//       SetCursor(*mLabelCursorLeft);
+         SetCursor(*mArrowCursor);
+      }
+      else if (edge && 2)
+      {
+//       SetCursor(*mLabelCursorRight);
+         SetCursor(*mArrowCursor);
+      }
 
+      //KLUDGE: We refresh the whole Label track when the icon hovered over
+      //changes colouration.  As well as being inefficient we are also 
+      //doing stuff that should be delegated to the label track itself.
+      edge += pLT->mbHitCenter ? 4:0; 
+      if( edge != pLT->mOldEdge )
+      {
+         pLT->mOldEdge = edge;
+         //TODO: Avoid full repaint, especially in envelope mode.
+         Refresh(false);
+      }
+      // IF edge!=0 THEN we've set the cursor and we're done.
+      // signal this by setting the tip.
+      if( edge != 0 )
+      {
+         if(pLT->mbHitCenter )
+         {
+            tip=_("Drag one or more label boundaries");
+         }
+         else
+         {
+            tip=_("Drag label boundary");
+         }
+      }
+      // ..and if we haven't yet determined the cursor, 
+      // we go on to do all the standard track hit tests.
+   }  
+
+   if( tip==NULL )
+   {
       //JKC: DetermineToolToUse is called whenever the mouse 
       //moves.  I had some worries about calling it when in 
       //multimode as it then has to hit-test all 'objects' in
@@ -1191,29 +1225,14 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       }
    }
 
-   // Are we within the vertical resize area?
-   if (within(event.m_y, r.y + r.height, TRACK_RESIZE_REGION)) {
-      //Check to see whether it is the first channel of a stereo track
-      if (t->GetLinked()) {
-         if (!label) {
-            tip = _("Click and drag to adjust relative size "
-                    "of stereo tracks.");
-            SetCursor(*mResizeCursor);
-         }
-      } else {
-         tip = _("Click and drag to resize the track.");
-         SetCursor(*mResizeCursor);
-      }
-   }
-
    if (tip)
       mListener->TP_DisplayStatusMessage(tip, 0);
 }
 
 
-// AS: This function handles various ways of starting and extending
-//  selections.  These are the selections you make by clicking and
-//  dragging over a waveform.
+/// AS: This function handles various ways of starting and extending
+///  selections.  These are the selections you make by clicking and
+///  dragging over a waveform.
 void TrackPanel::HandleSelect(wxMouseEvent & event)
 {
    // AS: Ok, did the user just click the mouse, release the mouse,
@@ -2766,7 +2785,7 @@ void TrackPanel::HandleResize(wxMouseEvent & event)
       Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
       Track *label = FindTrack(event.m_x, event.m_y, true, true, &rLabel, &num);
 
-      if (t->GetMinimized())
+      if (t && t->GetMinimized())
          return; // Don't resize when minimized
 
       // If the click is at the bottom of a non-linked track label, we
@@ -3032,11 +3051,16 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    if (event.ButtonDown(1)) {
       mCapturedTrack = NULL;
       
+      // The activate event is used to make the 
+      // parent window 'come alive' if it didn't have focus.
       wxActivateEvent e;
       GetParent()->ProcessEvent(e);
 
       // wxTimers seem to be a little unreliable, so this
       // "primes" it to make sure it keeps going for a while...
+
+      // TODO: Add a comment explaining what this 
+      // timer is for.
       mTimer.Stop();
       mTimer.Start(50, FALSE);
    }
@@ -3111,47 +3135,37 @@ void TrackPanel::TrackSpecificMouseEvent(wxMouseEvent & event)
       return;
    }
 
-
- 
    //Determine if user clicked on a label track.  If so, use MouseDown handler for 
    //the label track.
    int num;
    Track *pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
    
-   if (pTrack && (pTrack->GetKind() == Track::Label)) {
-      
-      if(event.ButtonDown(1))      {
+   if (pTrack && (pTrack->GetKind() == Track::Label)) 
+   {
+      if(event.ButtonDown(1))      
+      {
          //If the button was pressed, check to see if we are over
          //a glyph (this is the second of three calls to the function).
          //std::cout << ((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y) << std::endl;
          if(((LabelTrack*)pTrack)->OverGlyph(event.m_x, event.m_y))
-            {
-
-               mIsAdjustingLabel = true;
-            }
-
+            mIsAdjustingLabel = true;
       } else if (event.Dragging()) {
          ;
-         
-      }  else if( event.ButtonUp(1)) {
-
+      } else if( event.ButtonUp(1)) {
          mIsAdjustingLabel = false;
       }
-         
       ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
                                            mViewInfo->h, mViewInfo->zoom,
                                            &mViewInfo->sel0, &mViewInfo->sel1);
-      
    }
    
    //If we are adjusting a label on a labeltrack, do not do anything 
    //that follows. Instead, redraw the track.
    if(mIsAdjustingLabel)
-      {
-
-         Refresh(false);
-         return;
-      }
+   {
+      Refresh(false);
+      return;
+   }
 
    ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
    if( pCtb == NULL )
@@ -3244,7 +3258,7 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
    }
 
    //Use the false argument since in multimode we don't 
-   //want the toomTrackLabel to update.
+   //want the button indicating which tool is in use to be updated.
    pCtb->SetCurrentTool( currentTool, false );
    return currentTool;
 }

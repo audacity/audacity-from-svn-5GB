@@ -120,6 +120,7 @@ class LabelTrack:public Track {
    int AddLabel(double t, double t1, const wxString &title = "");
 
  public:
+	 void SortLabels();
    //These two are used by a TrackPanel KLUDGE, which is why they are public.
    bool mbHitCenter;
    //The edge variable tells us what state the icon is in.
