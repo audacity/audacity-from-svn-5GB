@@ -55,7 +55,10 @@ if ($dir = @opendir("../en/")) {
       $v = "e$n";
       if ($$v) {
 			$srcfile = "../en/$file";
-			$dstfile = "../$lang/$file";
+			$dstfile = "../updates/$lang/$file";
+         if (!file_exists($dstfile)) {         
+			  $dstfile = "../$lang/$file";
+         }
 			$filename = "$file";
       }
     }
