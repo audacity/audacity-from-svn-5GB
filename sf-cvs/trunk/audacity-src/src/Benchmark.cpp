@@ -16,6 +16,7 @@
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
 #include <wx/timer.h>
 #include <wx/utils.h>
 #include <wx/valgen.h>
