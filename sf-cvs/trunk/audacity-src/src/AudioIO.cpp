@@ -82,6 +82,7 @@ AudioIO::AudioIO()
    mTempFloats = new float[65536]; // TODO: out channels * PortAudio buffer size
 
    mNumCaptureChannels = 0;
+   mPaused = false;
 
    PaError err = Pa_Initialize();
 
