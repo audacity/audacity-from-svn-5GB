@@ -15,7 +15,7 @@ Scarica Audacity 1.2.0 per: </p>
 
 <p>
 Leggi le <a href="stablenotes.php<?php print $langQueryStr; ?>">Note 
-di rilascio/a>
+di rilascio</a>
 per vedere cosa è cambiato rispetto alla versione precedente, e quali sono i problemi conosciuti.
 </p>
 

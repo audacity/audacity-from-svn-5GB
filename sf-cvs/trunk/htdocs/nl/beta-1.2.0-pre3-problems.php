@@ -1,4 +1,4 @@
-h2>Bekende Problemen</h2>
+<h2>Bekende Problemen</h2>
 
 <p>
 Het volgende zijn bekende problemen in Audacity 1.2.0:
