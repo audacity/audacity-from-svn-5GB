@@ -555,7 +555,7 @@ void Ruler::Update()
 
       if ((int)floor(sg * d / mMajor) > majorInt) {
          majorInt = (int)floor(sg * d / mMajor);
-         Tick(i, majorInt * mMajor, true);
+         Tick(i, sg * majorInt * mMajor, true);
       }
    }
 
@@ -569,7 +569,7 @@ void Ruler::Update()
 
       if ((int)floor(sg * d / mMinor) > minorInt) {
          minorInt = (int)floor(sg * d / mMinor);
-         Tick(i, minorInt * mMinor, false);
+         Tick(i, sg * minorInt * mMinor, false);
       }
    }
 
