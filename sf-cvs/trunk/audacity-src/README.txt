@@ -1,6 +1,7 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.1.1 (under development)
+Version 1.1.0 (under development)
+For changelog, see the bottom of this document.
 
 http://audacity.sourceforge.net/
 
@@ -18,6 +19,10 @@ Authors:
   Joshua Haberman <joshua@haberman.com>
   Nasca Octavian Paul <paulnasca@email.ro> or <paulnasca@yahoo.com>
   Logan Lewis <proxima@proxc.com>
+  Matt Brubeck <mbrubeck@cs.hmc.edu>
+  Mark Phillips <mitb@totaldeath.com>
+  Tony Oetzmann <airon@epost.de>
+  Brian Gunlogson <bmg300@users.sf.net>
 
 Icons and logo:
 
@@ -27,8 +32,6 @@ Icons and logo:
 Aqua/MacOS graphics:
 
   Tom Woodhams <tom@imaginemedia.co.uk>
-
-For changelog, see the bottom of this document
 
 -------------------------------------------------------------
 
@@ -42,10 +45,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with
-this program (in a file called LICENSE.txt); if not, go to
-http://www.gnu.org/copyleft/gpl.html or write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+You should have received a copy of the GNU General Public License
+along with this program (in a file called LICENSE.txt); if not, go
+to http://www.gnu.org/copyleft/gpl.html or write to 
+
+  Free Software Foundation, Inc.
+  59 Temple Place - Suite 330
+  Boston, MA 02111-1307 USA
 
 -------------------------------------------------------------
 
@@ -63,11 +69,12 @@ To compile on Linux and other Unix systems, simply run:
 
   ./configure
   make
-  make install
+  make install  # as root
   
 If you want to do any development, you might want to generate
-dependencies:
+a configure cache and header dependencies:
 
+  ./configure -C
   make dep
 
 For more information on compilation on other platforms (VC++
@@ -77,15 +84,6 @@ email audacity-devel@lists.sourceforge.net
 -------------------------------------------------------------
 
 Known issues/problems:
-
-* All platforms: There is no warning asking you if you want
-  to save changes when you quit or close a window.
-
-* All platforms: Save As... does not correctly make a copy
-  of a project.  It moves the project, but leaves the old
-  one broken.  As a workaround, just copy the project file
-  and its data directory somewhere else manually when you
-  need to make a copy of a project.
 
 * Windows: The floating tool palette does not minimize when
   minimizing a project window.  As a workaround, you can
@@ -103,15 +101,27 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 1.1.1:
+New features in Audacity 1.1.0:
 
   * Automatic real-time resampling (using linear
     interpolation)
 
-New sublibraries:
+  * 24-bit and 32-bit sample formats
 
-  * Uses libmad for MP3 importing
+  * New toolbar buttons and a new Edit toolbar
 
-  * Uses libsndfile for sound file I/O
+  * Autoscroll while playing or recording
 
-  * Uses PortAudio for audio I/O
+  * LADSPA effects plugins on Linux / Unix
+
+  * Many improvements to appearance and user interface
+
+New libraries in Audacity 1.1:
+
+  * libmad for fast MP3 importing
+
+  * libid3tag for MP3 importing and exporting
+
+  * libsndfile to read and write more audio file formats
+
+  * PortAudio for cross-platform audio playing and recording

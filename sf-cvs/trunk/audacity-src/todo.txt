@@ -9,7 +9,6 @@ Website / Sourceforge
 -----------------------------------------------------------
 
 - Get announcement list running
-- Instructions for LAMELib or .sit archive
 - Upload some icons for people to use with
   KDE, GNOME, WindowMaker, AfterStep, BlackBox...
 - Note on website that Audacity is incompatible
@@ -21,7 +20,6 @@ Website / Sourceforge
 -----------------------------------------------------------
 
 - Address all bugs in "bugs.txt"
-- Add more keyboard shortcuts and "nudge" commands
 - Make Audacity compile on Unix even if dlopen is
   not supported (work around wxGTK 2.2.9 bug where
   it can't be found)
@@ -36,7 +34,7 @@ Website / Sourceforge
 - Select region by typing in start and stop times
 
 -----------------------------------------------------------
-1.1.1 / HEAD
+1.1 / HEAD
 -----------------------------------------------------------
 
 Unit tests:
@@ -44,7 +42,6 @@ Unit tests:
   sample one and only once.
 
 Audio:
-- Multiple sample formats (16-bit, float as a minimum)
 - Choice of dither
 - Pre-roll and post-roll: amount to play before and after
   a selection (see DG Malham email)
@@ -70,7 +67,6 @@ UI::
   the background color is very dark
 - Select dialog box ("1.5 - 3.0 seconds")
   and allow selection by frames (24 frames/sec), samples, etc.
-- Show selection (i.e. zoom such that the selection fits)
 - Invert selection (for now, until we allow discontiguous selections,
                     this should mean two options: select up to selection,
                     and select after selection)
@@ -79,13 +75,13 @@ UI::
 - Vertical zooming
 - Pan control for each track
 - Volume control for each track
-- Trim (= opposite of delete -- delete all but selection)
 - Vertical bar indicating playback/recording position, too
 - Add high-quality resampling
 - Legend (Ruler) for pitch and spectrum
 - Recognize .mp2, .mpg, .mpeg as libmad-capable files
 - Plug-ins should be split into many separate menus on Linux/GTK
   (if you have lots of them)
+- 1/24, 1/25 and 1/30-second frame count options for ruler.
 - Envelope editor should support linear, quadratic, and exponential,
   ideally with a right-click.  Default should be linear; it makes the
   most sense visually.
@@ -128,8 +124,6 @@ Future:
 - "Fit in window" also works vertically
 - Better adaptation to different font sizes (sizers)
 - Move to lossless compression (FLAC?) for internal representation
-- allow labels to contain selections, which would be activated by clicking
-  on the label
 - discontiguous selection
 - visualization window: VU meters, equalizer, continuous waveform, oscilloscope
 - Scrubbing
