@@ -1,1 +1,35 @@
-<?php BoxTop($donateMoneyStr); ?><p>Audacity est programmé par des bénévoles dans leurs temps libres.  Ce n'est pas un partagiciel et aucune des personnes impliquées ne s'attend à en retirer quelque revenu que ce soit.  Cela dit, les dons en argent nous aident à défrayer les coûts de la bande passante et de l'hébergement du site web, des outils de développement, de l'équipement audio et de tout ce dont nous avons besoin pour poursuivre le développement d'Audacity et le rendre disponible gratuitement.  Rendez-vous au bas de cette page si vous désirez effectuer un don par carte de crédit.  Vous pouvez contribuer aussi peu que un dollar.</p><p>En contribuant financièrement, vous nous aidez à assumer les coûts de la bande passante, des outils de développement et de nouveaux équipements audio. Notez que présentement, nous avons la chance d'avoir presque tout notre hébergement gratuitement, mais cela pourrait changer.  Un don aujourd'hui assurera le maintien du site web demain.</p><p>Les développeurs d'Audacity visent l'achat d'équipement audio de pointe pour faire d'Audacity un logiciel de traitement sonore multipistes complet.  Vos dons nous permettront d'y arriver plus vite.</p><p>Prenez note que lorsque vous contribuez financièrement, nous ne promettons ni ne garantissons aucun résultat.</p><p>Il est présentement possible de faire un don grâce au Amazon Honor System.  Le paiement peut être porté à votre carte de crédit pour un montant allant de un à 50 dollars.</p><p>Si vous souhaitez donner plus de 50 dollars, ou si vous préférez envoyer un chèque personnel, rendez-vous à la page du <?php print "<a href=credits.php?$langLinkStr>";?>générique</a> et envoyez un message électronique à au moins un des développeurs cités.</p><center><!-- Begin Amazon Honor System Paybox --><img src="http://s1.amazon.com/exec/varzea/tipbox/A2NTHQTXQE4A60/TVWQG2UJNWCBH" usemap="#TVWQG2UJNWCBH" border="0" alt="Amazon Honor System" width="150" height="150"><map name="TVWQG2UJNWCBH"><area coords="20,60,130,115" href="http://s1.amazon.com/exec/varzea/pay/TVWQG2UJNWCBH" alt="Cliquez ici pour donner" target=_top"><area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Pour en savoir plus" target=_top></map><!-- End Amazon Honor System Paybox --></center><p><?php BoxBottom(); ?>
+<?php BoxTop($donateMoneyStr); ?>
+
+<p>
+Audacity est programmé par des bénévoles dans leurs temps libres.  Ce n'est pas un partagiciel et aucune des personnes impliquées ne s'attend à en retirer quelque revenu que ce soit.  Cela dit, les dons en argent nous aident à défrayer les coûts de la bande passante et de l'hébergement du site web, des outils de développement, de l'équipement audio et de tout ce dont nous avons besoin pour poursuivre le développement d'Audacity et le rendre disponible gratuitement.  Rendez-vous au bas de cette page si vous désirez effectuer un don par carte de crédit.  Vous pouvez donner ne serait-ce qu'un dollar.
+</p>
+
+<p>
+En contribuant financièrement, vous nous aidez à assumer les coûts de la bande passante, des outils de développement et de nouveaux équipements audio. Notez que présentement, nous avons la chance d'avoir presque tout notre hébergement gratuitement, mais cela pourrait changer.  Un don aujourd'hui assurera le maintien du site web demain.
+</p>
+
+<p>
+Les développeurs d'Audacity visent l'achat d'équipement audio de pointe pour faire d'Audacity un logiciel de traitement sonore multipistes complet.  Vos dons nous permettront d'y arriver plus vite.
+</p>
+
+<p>
+Prenez note que lorsque vous contribuez financièrement, nous ne promettons ni ne garantissons aucun résultat.
+</p>
+
+<p>
+Il est présentement possible de faire un don grâce au Amazon Honor System.  Le paiement peut être porté à votre carte de crédit pour un montant allant de un à 50 dollars.</p>
+<p>
+Si vous souhaitez donner plus de 50 dollars, ou si vous préférez envoyer un chèque personnel, rendez-vous à la page du <?php print "<a href=credits.php?$langLinkStr>";?>générique</a> et envoyez un message électronique à au moins un des développeurs cités.
+</p>
+
+<center>
+<!-- Begin Amazon Honor System Paybox -->
+<img src="http://s1.amazon.com/exec/varzea/tipbox/A2NTHQTXQE4A60/TVWQG2UJNWCBH" usemap="#TVWQG2UJNWCBH" border="0" alt="Amazon Honor System" width="150" height="150"><map name="TVWQG2UJNWCBH"><area coords="20,60,130,115" href="http://s1.amazon.com/exec/varzea/pay/TVWQG2UJNWCBH" alt="Cliquez ici pour donner" target=_top">
+<area coords="5,135,145,145" href="http://s1.amazon.com/exec/varzea/subst/fx/help/how-we-know.html" alt="Pour en savoir plus" target=_top>
+</map>
+<!-- End Amazon Honor System Paybox -->
+</center>
+
+<p>
+
+<?php BoxBottom(); ?>
