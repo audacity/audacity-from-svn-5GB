@@ -495,14 +495,11 @@ void ChangeTempoDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 
-   m_pEffect->mSoundTouch = new SoundTouch();
-   m_pEffect->mSoundTouch->setChannels(1);
-   m_pEffect->mSoundTouch->setTempoChange(m_PercentChange);
-
+	// Save & restore parameters around Preview, because we didn't do OK.
+	double oldPercentChange = m_pEffect->m_PercentChange;
+	m_pEffect->m_PercentChange = m_PercentChange;
 	m_pEffect->Preview();
-
-	delete m_pEffect->mSoundTouch;
-	m_pEffect->mSoundTouch = NULL;
+	m_pEffect->m_PercentChange = oldPercentChange;
 }
 
 void ChangeTempoDialog::OnOk(wxCommandEvent & event)
