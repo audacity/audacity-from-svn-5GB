@@ -173,7 +173,7 @@ fi
 if [[ $use_libid3tag = "yes" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libid3tag/.libs/libid3tag.a"
 	BUILDLIBS="$BUILDLIBS libid3tag/.libs/libid3tag.a"
-	CPPFLAGS="$CPPFLAGS -I../lib-src"
+	CPPFLAGS="$CPPFLAGS -I../lib-src/libid3tag"
 	SUBDIRS="$SUBDIRS lib-src/libid3tag"
 		
 	AC_DEFINE(USE_LIBID3TAG, 1,
