@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: utility main for building codebooks from lattice descriptions
- last mod: $Id: latticebuild.c,v 1.3 2002-10-27 05:57:06 dmazzoni Exp $
+ last mod: $Id: latticebuild.c,v 1.4 2002-10-31 07:00:48 dmazzoni Exp $
 
  ********************************************************************/
 

@@ -11,7 +11,7 @@
  ********************************************************************
 
   function: LSP (also called LSF) conversion routines
-  last mod: $Id: lsp.h,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
+  last mod: $Id: lsp.h,v 1.4 2002-10-31 07:00:46 dmazzoni Exp $
 
  ********************************************************************/
 

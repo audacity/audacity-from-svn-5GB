@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: channel mapping 0 implementation
- last mod: $Id: mapping0.c,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
+ last mod: $Id: mapping0.c,v 1.4 2002-10-31 07:00:46 dmazzoni Exp $
 
  ********************************************************************/
 

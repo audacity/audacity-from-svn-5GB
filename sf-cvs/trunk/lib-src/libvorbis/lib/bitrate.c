@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: bitrate tracking and management
- last mod: $Id: bitrate.c,v 1.3 2002-10-27 05:57:05 dmazzoni Exp $
+ last mod: $Id: bitrate.c,v 1.4 2002-10-31 07:00:45 dmazzoni Exp $
 
  ********************************************************************/
 
