@@ -70,23 +70,23 @@ TrackArtist::TrackArtist()
 
    mTrackHash = NULL;
 
-   mInsetLeft = 0;
-   mInsetTop = 0;
-   mInsetRight = 0;
+   mInsetLeft   = 0;
+   mInsetTop    = 0;
+   mInsetRight  = 0;
    mInsetBottom = 0;
 
-   blankBrush.SetColour(214, 214, 214);
+   blankBrush     .SetColour(214, 214, 214);
    unselectedBrush.SetColour(192, 192, 192);
-   selectedBrush.SetColour(148, 148, 170);
-   sampleBrush.SetColour(50, 50, 200);
-   selsampleBrush.SetColour(50, 50, 200);
+   selectedBrush  .SetColour(148, 148, 170);
+   sampleBrush    .SetColour( 50,  50, 200);
+   selsampleBrush .SetColour( 50,  50, 200);
 
-   blankPen.SetColour(214, 214, 214);
+   blankPen     .SetColour(214, 214, 214);
    unselectedPen.SetColour(192, 192, 192);
-   selectedPen.SetColour(148, 148, 170);
-   samplePen.SetColour(50, 50, 200);
-   selsamplePen.SetColour(50, 50, 200);
-   shadowPen.SetColour(148, 148, 148);
+   selectedPen  .SetColour(148, 148, 170);
+   samplePen    .SetColour( 50,  50, 200);
+   selsamplePen .SetColour( 50,  50, 200);
+   shadowPen    .SetColour(148, 148, 148);
 }
 
 TrackArtist::~TrackArtist()
@@ -112,9 +112,9 @@ TrackArtist::~TrackArtist()
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
 {
-   mInsetLeft = left;
-   mInsetTop = top;
-   mInsetRight = right;
+   mInsetLeft   = left;
+   mInsetTop    = top;
+   mInsetRight  = right;
    mInsetBottom = bottom;
 }
 
@@ -149,7 +149,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       if (!info) {
          info = new TrackInfoCache();
          info->track = t;
-         info->dirty = t->dirty - 1;
+         info->dirty = t->GetDirty() - 1;
          info->len = 0;
          info->start = 0.0;
          info->pps = 1.0;
@@ -412,7 +412,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    WaveTrack *track = (WaveTrack *) cache->track;
 
    if (!cache->spectrum &&
-       track->dirty == cache->dirty &&
+       track->GetDirty() == cache->dirty &&
        pps == cache->pps &&
        start == cache->start && screenWidth <= (int)cache->len)
       return;
@@ -450,8 +450,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
    // Optimization: if the old cache is good and overlaps
    // with the current one, re-use as much of the cache as
    // possible
-
-   if (oldcache.dirty == track->dirty &&
+   if (oldcache.dirty == track->GetDirty() &&
        !oldcache.spectrum &&
        oldcache.pps == pps &&
        oldcache.where[0] < cache->where[cache->len] &&
@@ -628,7 +627,7 @@ void TrackArtist::PrepareCacheWaveform(TrackInfoCache * cache,
       pixel++;
    }
 
-   cache->dirty = track->dirty;
+   cache->dirty = track->GetDirty();
 
    if (oldcache.min)
       delete[]oldcache.min;
@@ -674,9 +673,9 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
 
    WaveTrack *track = (WaveTrack *) cache->track;
    sampleCount numSamples = track->numSamples;
-   double tOffset = track->tOffset;
+   double tOffset = track->GetOffset();
 
-   if (!track->selected)
+   if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
    double tpre = h - tOffset;
@@ -789,7 +788,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    }
 
    // Draw samples
-
    dc.SetPen(samplePen);
 
    if (showIndividualSamples) {
@@ -890,7 +888,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
 
    // Draw arrows on the left side if the track extends to the left of the
    // beginning of time.  :)
-
    if (h == 0.0 && tOffset < 0.0) {
       dc.SetPen(*wxWHITE_PEN);
       dc.DrawLine(r.x + 2, r.y + 6, r.x + 8, r.y + 6);
@@ -926,7 +923,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
    double rate = track->rate;
 
    if (cache->spectrum &&
-       track->dirty == cache->dirty &&
+       track->GetDirty() == cache->dirty &&
        pps == cache->pps &&
        start == cache->start &&
        screenWidth <= (int)cache->len && cache->fheight == (int)screenHeight)
@@ -959,8 +956,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
    // Optimization: if the old cache is good and overlaps
    // with the current one, re-use as much of the cache as
    // possible
-
-   if (oldcache.dirty == track->dirty &&
+   if (oldcache.dirty == track->GetDirty() &&
        oldcache.spectrum &&
        oldcache.pps == pps &&
        oldcache.fheight == screenHeight &&
@@ -1026,7 +1022,7 @@ void TrackArtist::PrepareCacheSpectrum(TrackInfoCache * cache,
    delete[]buffer;
    delete[]recalc;
 
-   cache->dirty = track->dirty;
+   cache->dirty = track->GetDirty();
 
    if (oldcache.min)
       delete[]oldcache.min;
@@ -1049,10 +1045,10 @@ void TrackArtist::DrawSpectrum(TrackInfoCache * cache,
 
    WaveTrack *track = (WaveTrack *) cache->track;
    sampleCount numSamples = track->numSamples;
-   double tOffset = track->tOffset;
+   double tOffset = track->GetOffset();
    double rate = track->GetRate();
 
-   if (!track->selected)
+   if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
    int x = 0;
@@ -1311,7 +1307,7 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   Seq_ptr seq = track->mSeq;
   int visibleChannels = track->mVisibleChannels;
 
-  if (!track->selected)
+  if (!track->GetSelected())
 	sel0 = sel1 = 0.0;
 
   int ctrpitch = 60;
@@ -1639,119 +1635,6 @@ void TrackArtist::DrawNoteTrack(TrackInfoCache *cache,
   dc.DestroyClippingRegion();
 }
 
-/*
-Old code - before Roger's allegro modifications
-
-void TrackArtist::DrawNoteTrack(TrackInfoCache * cache,
-                                wxDC & dc, wxRect & r, ViewInfo * viewInfo)
-{
-   double h = viewInfo->h;
-   double pps = viewInfo->zoom;
-   double sel0 = viewInfo->sel0;
-   double sel1 = viewInfo->sel1;
-
-   NoteTrack *track = (NoteTrack *) cache->track;
-   Seq_ptr seq = track->mSeq;
-   int visibleChannels = track->mVisibleChannels;
-
-   dc.SetBrush(blankBrush);
-   dc.SetPen(blankPen);
-   dc.DrawRectangle(r);
-
-   if (!track->selected)
-      sel0 = sel1 = 0.0;
-
-   int bottomNote = track->mBottomNote;
-   int bottom = r.height +
-       ((bottomNote / 12) * octaveHeight + notePos[bottomNote % 12]);
-
-   wxPen blackStripePen;
-   blackStripePen.SetColour(160, 160, 160);
-   wxBrush blackStripeBrush;
-   blackStripeBrush.SetColour(160, 160, 160);
-
-   dc.SetBrush(blackStripeBrush);
-
-   for (int octave = 0; octave < 50; octave++) {
-      int obottom = r.y + bottom - octave * octaveHeight;
-
-      if (obottom > r.y && obottom < r.y + r.height) {
-         dc.SetPen(*wxBLACK_PEN);
-         dc.DrawLine(r.x, obottom, r.x + r.width, obottom);
-      }
-      if (obottom - 26 > r.y && obottom - 26 < r.y + r.height) {
-         dc.SetPen(blackStripePen);
-         dc.DrawLine(r.x, obottom - 26, r.x + r.width, obottom - 26);
-      }
-
-      wxRect br = r;
-      br.height = 5;
-      for (int black = 0; black < 5; black++) {
-         br.y = obottom - blackPos[black] - 4;
-         if (br.y > r.y && br.y + br.height < r.y + r.height) {
-            dc.SetPen(blackStripePen);
-            dc.DrawRectangle(br);
-         }
-      }
-   }
-
-   int numEvents = seq->notes.len;
-   int index;
-
-   for (index = 0; index < numEvents; index++) {
-
-      if (seq->notes[index]->type == 'n') {
-
-         Note_ptr note = (Note_ptr) (seq->notes[index]);
-
-         if (visibleChannels & (1 << (seq->notes[index]->chan & 15))) {
-
-            int octave = (((int) (note->pitch + 0.5)) / 12);
-            int n = ((int) (note->pitch + 0.5)) % 12;
-
-            wxRect nr;
-            nr.y = bottom - octave * octaveHeight - notePos[n]
-                - 4;
-            nr.height = 5;
-
-            if (nr.y + nr.height >= 0 && nr.y < r.height) {
-
-               if (nr.y + nr.height > r.height)
-                  nr.height = r.height - nr.y;
-               if (nr.y < 0) {
-                  nr.height += nr.y;
-                  nr.y = 0;
-               }
-               nr.y += r.y;
-
-               nr.x = r.x + (int) ((note->time - h) * pps);
-               nr.width = (int) (note->dur * pps) + 1;
-
-               if (nr.x + nr.width >= r.x && nr.x < r.x + r.width) {
-                  if (nr.x < r.x) {
-                     nr.width -= (r.x - nr.x);
-                     nr.x = r.x;
-                  }
-                  if (nr.x + nr.width > r.x + r.width)
-                     nr.width = r.x + r.width - nr.x;
-
-                  AColor::MIDIChannel(&dc, note->chan + 1);
-
-                  if (note->time + note->dur >= sel0 && note->time <= sel1)
-                     dc.SetBrush(*wxWHITE_BRUSH);
-
-                  dc.DrawRectangle(nr);
-               }
-            }
-         }
-
-      }
-
-   }
-
-}
-*/
-
 void TrackArtist::DrawLabelTrack(TrackInfoCache * cache,
                                  wxDC & dc, wxRect & r,
                                  ViewInfo * viewInfo)
@@ -1761,7 +1644,7 @@ void TrackArtist::DrawLabelTrack(TrackInfoCache * cache,
    double sel0 = viewInfo->sel0;
    double sel1 = viewInfo->sel1;
 
-   if (!track->selected)
+   if (!track->GetSelected())
       sel0 = sel1 = 0.0;
 
    track->Draw(dc, r, viewInfo->h, viewInfo->zoom, sel0, sel1);

@@ -15,7 +15,7 @@ class labels;
 #include <wx/dialog.h>
 #include <wx/stattext.h>
 
-#include "../Effect.h"
+#include "Effect.h"
 
 class VSTEffect:public Effect {
 

@@ -35,9 +35,9 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
 
    t = iter.First();
    while (t) {
-      if (t->selected && t->GetKind() == VTrack::Wave) {
+      if (t->GetSelected() && t->GetKind() == VTrack::Wave) {
          numWaves++;
-         switch (t->channel) {
+         switch (t->GetChannel()) {
          case VTrack::MonoChannel:
             numLeft++;
             numRight++;
@@ -76,7 +76,7 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
    w = 0;
    t = iter.First();
    while (t) {
-      if (t->selected && t->GetKind() == VTrack::Wave) {
+      if (t->GetSelected() && t->GetKind() == VTrack::Wave) {
          waveArray[w++] = (WaveTrack *) t;
          if (t->GetMaxLen() > totalTime)
             totalTime = t->GetMaxLen();
@@ -86,16 +86,16 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
 
    WaveTrack *mixLeft = new WaveTrack(dirManager);
    mixLeft->rate = rate;
-   mixLeft->channel = VTrack::MonoChannel;
-   mixLeft->name = "Mix";
+   mixLeft->SetChannel(VTrack::MonoChannel);
+   mixLeft->SetName("Mix");
    WaveTrack *mixRight = 0;
    if (!mono) {
       mixRight = new WaveTrack(dirManager);
       mixRight->rate = rate;
-      mixRight->name = "Mix";
-      mixLeft->channel = VTrack::LeftChannel;
-      mixRight->channel = VTrack::RightChannel;
-      mixLeft->linked = true;
+      mixRight->SetName("Mix");
+      mixLeft->SetChannel(VTrack::LeftChannel);
+      mixRight->SetChannel(VTrack::RightChannel);
+      mixLeft->SetLinked(true);
    }
 
    int maxBlockLen = mixLeft->GetIdealBlockSize();
@@ -122,7 +122,7 @@ bool QuickMix(TrackList * tracks, DirManager * dirManager, double rate)
          if (mono)
             mixer->MixMono(waveArray[i], tt, tt + blockTime);
          else {
-            switch (waveArray[i]->channel) {
+            switch (waveArray[i]->GetChannel()) {
             case VTrack::LeftChannel:
                mixer->MixLeft(waveArray[i], tt, tt + blockTime);
                break;
@@ -289,11 +289,11 @@ void Mixer::GetSamples(WaveTrack *src, int s0, int slen)
 
 void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t1)
 {
-   if ((t0 - src->tOffset) >= src->numSamples / src->rate ||
-       (t1 - src->tOffset) <= 0)
+   if ((t0 - src->GetOffset()) >= src->numSamples / src->rate ||
+       (t1 - src->GetOffset()) <= 0)
       return;
       
-   int s0 = int ((t0 - src->tOffset) * src->rate);
+   int s0 = int ((t0 - src->GetOffset()) * src->rate);
    int slen = int ((t1 - t0) * src->rate) + 2;  // get a couple more samples than we need
    int destlen = int ((t1 - t0) * mRate + 0.5);
    int frac = int(32768.0 * (t0 - s0/src->rate));
@@ -346,12 +346,12 @@ void Mixer::MixDiffRates(int *channelFlags, WaveTrack * src, double t0, double t
 
 void Mixer::MixSameRate(int *channelFlags, WaveTrack * src, double t0, double t1)
 {
-   if ((t0 - src->tOffset) >= src->numSamples / src->rate ||
-       (t1 - src->tOffset) <= 0)
+   if ((t0 - src->GetOffset()) >= src->numSamples / src->rate ||
+       (t1 - src->GetOffset()) <= 0)
       return;
       
-   int s0 = int ((t0 - src->tOffset) * src->rate + 0.5);
-   int s1 = int ((t1 - src->tOffset) * src->rate + 0.5);
+   int s0 = int ((t0 - src->GetOffset()) * src->rate + 0.5);
+   int s1 = int ((t1 - src->GetOffset()) * src->rate + 0.5);
 
    int slen = s1 - s0;
 

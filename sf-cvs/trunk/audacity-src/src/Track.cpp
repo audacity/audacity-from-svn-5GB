@@ -17,13 +17,14 @@
 #include "LabelTrack.h"
 #include "DirManager.h"
 
-VTrack::VTrack(DirManager * projDirManager)
+VTrack::VTrack(DirManager * projDirManager) 
+  : dirManager(projDirManager)
 {
-   selected = false;
+   selected  = false;
    collapsed = false;
-   linked = false;
-   mute = false;
-   solo = false;
+   linked    = false;
+   mute      = false;
+   solo      = false;
 
    collapsedHeight = 20;
    expandedHeight = 121;
@@ -33,8 +34,6 @@ VTrack::VTrack(DirManager * projDirManager)
    dirty = 0;
 
    channel = MonoChannel;
-
-   dirManager = projDirManager;
 }
 
 bool VTrack::Load(wxTextFile * in, DirManager * dirManager)
@@ -68,7 +67,7 @@ bool VTrack::Save(wxTextFile * out, bool overwrite)
    out->AddLine(name);
    if (channel == LeftChannel)
       out->AddLine("left");
-   if (channel == RightChannel)
+   else if (channel == RightChannel)
       out->AddLine("right");
    if (linked)
       out->AddLine("linked");
@@ -78,14 +77,13 @@ bool VTrack::Save(wxTextFile * out, bool overwrite)
    return true;
 }
 
-VTrack *VTrack::Duplicate()
+VTrack *VTrack::Duplicate() const
 {
    VTrack *copy = new VTrack(dirManager);
 
    // Code duplication warning: if you add code here, you should
    // probably add it to WaveTrack::Duplicate also, which out
    // of necessity overrides this entire function
-
    copy->collapsedHeight = collapsedHeight;
    copy->expandedHeight = expandedHeight;
    copy->tOffset = tOffset;
@@ -101,36 +99,33 @@ VTrack *VTrack::Duplicate()
 void VTrack::SetHeight(int h)
 {
    Expand();
-   this->expandedHeight = h;
+   expandedHeight = h;
 }
 
 void VTrack::Collapse()
 {
-   this->collapsed = true;
+   collapsed = true;
 }
 
 void VTrack::Expand()
 {
-   this->collapsed = false;
+   collapsed = false;
 }
 
 void VTrack::Toggle()
 {
-   this->collapsed = !this->collapsed;
+   collapsed = !collapsed;
 }
 
-bool VTrack::IsCollapsed()
+bool VTrack::IsCollapsed() const
 {
-   return this->collapsed;
+   return collapsed;
 }
 
-//
 // TrackListIterator
-//
-
-TrackListIterator::TrackListIterator(TrackList * l)
+TrackListIterator::TrackListIterator(TrackList * val)
 {
-   this->l = l;
+   l = val;
 }
 
 VTrack *TrackListIterator::First()
@@ -160,7 +155,6 @@ VTrack *TrackListIterator::RemoveCurrent()
    TrackListNode *next = p->next;
 
    // Remove p from the linked list
-
    if (p->prev)
       p->prev->next = next;
    else
@@ -181,10 +175,7 @@ VTrack *TrackListIterator::RemoveCurrent()
       return NULL;
 }
 
-//
 // TrackList
-//
-
 bool TrackList::Save(wxTextFile * out, bool overwrite)
 {
    TrackListNode *n = head;
@@ -242,7 +233,7 @@ bool TrackList::Load(wxTextFile * in, DirManager * dirManager)
       }
 
       if (newt) {
-         this->Add(newt);
+         Add(newt);
          newt->Load(in, dirManager);
       }
    }
@@ -275,34 +266,29 @@ TrackList::~TrackList()
    Clear();
 }
 
-double TrackList::GetMaxLen()
+double TrackList::GetMaxLen() const
 {
    double len = 0.0;
 
-   TrackListIterator iter(this);
+   ConstTrackListIterator iter(this);
 
-   VTrack *t = iter.First();
-   while (t) {
+   for (VTrack *t = iter.First(); t; t = iter.Next()) {
       double l = t->GetMaxLen();
       if (l > len)
          len = l;
-      t = iter.Next();
    }
 
    return len;
 }
 
-int TrackList::GetHeight()
+int TrackList::GetHeight() const
 {
    int height = 0;
 
-   TrackListIterator iter(this);
+   ConstTrackListIterator iter(this);
 
-   VTrack *t = iter.First();
-   while (t) {
+   for (VTrack *t = iter.First(); t; t = iter.Next())
       height += t->GetHeight();
-      t = iter.Next();
-   }
 
    return height;
 }
@@ -360,11 +346,11 @@ void TrackList::Select(VTrack * t, bool selected /* = true */ )
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         t->selected = selected;
-         if (t->linked && p->next)
-            p->next->t->selected = selected;
-         else if (p->prev && p->prev->t->linked)
-            p->prev->t->selected = selected;
+         t->SetSelected(selected);
+         if (t->GetLinked() && p->next)
+            p->next->t->SetSelected(selected);
+         else if (p->prev && p->prev->t->GetLinked())
+            p->prev->t->SetSelected(selected);
 
          return;
       }
@@ -372,14 +358,14 @@ void TrackList::Select(VTrack * t, bool selected /* = true */ )
    }
 }
 
-VTrack *TrackList::GetLink(VTrack * t)
+VTrack *TrackList::GetLink(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         if (t->linked && p->next)
+         if (t->GetLinked() && p->next)
             return p->next->t;
-         else if (p->prev && p->prev->t->linked)
+         else if (p->prev && p->prev->t->GetLinked())
             return p->prev->t;
 
          return NULL;
@@ -389,7 +375,7 @@ VTrack *TrackList::GetLink(VTrack * t)
    return NULL;
 }
 
-VTrack *TrackList::GetNext(VTrack * t)
+VTrack *TrackList::GetNext(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -404,7 +390,7 @@ VTrack *TrackList::GetNext(VTrack * t)
    return NULL;
 }
 
-VTrack *TrackList::GetPrev(VTrack * t)
+VTrack *TrackList::GetPrev(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -419,12 +405,12 @@ VTrack *TrackList::GetPrev(VTrack * t)
    return NULL;
 }
 
-bool TrackList::CanMoveUp(VTrack * t)
+bool TrackList::CanMoveUp(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         if (p->prev && p->prev->t->linked)
+         if (p->prev && p->prev->t->GetLinked())
             return CanMoveUp(p->prev->t);
          else if (p->prev)
             return true;
@@ -436,12 +422,12 @@ bool TrackList::CanMoveUp(VTrack * t)
    return false;
 }
 
-bool TrackList::CanMoveDown(VTrack * t)
+bool TrackList::CanMoveDown(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         if (t->linked)
+         if (t->GetLinked())
             return (p->next != NULL && p->next->next != NULL);
          else
             return (p->next != NULL);
@@ -466,7 +452,7 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
 
    target[0] = s1;
    source[0] = target[0]->t;
-   if (source[0]->linked) {
+   if (source[0]->GetLinked()) {
       target[1] = target[0]->next;
       source[1] = target[1]->t;
    } else {
@@ -476,7 +462,7 @@ void TrackList::Swap(TrackListNode * s1, TrackListNode * s2)
 
    target[2] = s2;
    source[2] = target[2]->t;
-   if (source[2]->linked) {
+   if (source[2]->GetLinked()) {
       target[3] = target[2]->next;
       source[3] = target[3]->t;
    } else {
@@ -501,13 +487,13 @@ bool TrackList::MoveUp(VTrack * t)
    while (p) {
       if (p->t == t) {
          TrackListNode *second = p;
-         if (second->prev && second->prev->t->linked)
+         if (second->prev && second->prev->t->GetLinked())
             second = second->prev;
 
          TrackListNode *first = second->prev;
          if (!first)
             return false;
-         if (first->prev && first->prev->t->linked)
+         if (first->prev && first->prev->t->GetLinked())
             first = first->prev;
 
          Swap(first, second);
@@ -525,13 +511,13 @@ bool TrackList::MoveDown(VTrack * t)
    while (p) {
       if (p->t == t) {
          TrackListNode *first = p;
-         if (first->prev && first->prev->t->linked)
+         if (first->prev && first->prev->t->GetLinked())
             first = first->prev;
 
          TrackListNode *second;
          if (!p->next)
             return false;
-         if (p->t->linked)
+         if (p->t->GetLinked())
             second = p->next->next;
          else
             second = p->next;
@@ -544,7 +530,7 @@ bool TrackList::MoveDown(VTrack * t)
    return false;
 }
 
-bool TrackList::Contains(VTrack * t)
+bool TrackList::Contains(VTrack * t) const
 {
    TrackListNode *p = head;
    while (p) {
@@ -555,7 +541,7 @@ bool TrackList::Contains(VTrack * t)
    return false;
 }
 
-bool TrackList::IsEmpty()
+bool TrackList::IsEmpty() const
 {
    return (head == NULL);
 }

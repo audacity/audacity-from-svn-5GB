@@ -29,9 +29,9 @@ VTrack(projDirManager)
    mUnselectedPen.SetColour(192, 192, 192);
    mSelectedPen.SetColour(148, 148, 170);
 
-   name = "Label Track";
+   SetName("Label Track");
 
-   expandedHeight = 30;         // Label tracks are narrow
+   SetExpandedHeight(30);         // Label tracks are narrow
 
    mSelIndex = -1;
 }
@@ -300,7 +300,7 @@ void LabelTrack::Import(wxTextFile & in)
 
 VTrack *LabelTrack::Duplicate()
 {
-   LabelTrack *copy = new LabelTrack(dirManager);
+   LabelTrack *copy = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
@@ -310,7 +310,7 @@ VTrack *LabelTrack::Duplicate()
       copy->mLabels.Add(l);
    }
 
-   copy->name = name;
+   copy->SetName(GetName());
 
    return copy;
 }
@@ -361,7 +361,7 @@ bool LabelTrack::Save(wxTextFile * out, bool overwrite)
 
 void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
 {
-   *dest = new LabelTrack(dirManager);
+   *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {
@@ -380,7 +380,7 @@ void LabelTrack::Cut(double t0, double t1, VTrack ** dest)
 
 void LabelTrack::Copy(double t0, double t1, VTrack ** dest)
 {
-   *dest = new LabelTrack(dirManager);
+   *dest = new LabelTrack(GetDirManager());
    int len = mLabels.Count();
 
    for (int i = 0; i < len; i++) {

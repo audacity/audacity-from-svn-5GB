@@ -100,18 +100,18 @@ bool ImportOGG(wxWindow * parent,
 
       switch (c) {
          case 0:
-            (*channels)[c]->channel = VTrack::LeftChannel;
+            (*channels)[c]->SetChannel(VTrack::LeftChannel);
             break;
          case 1:
-            (*channels)[c]->channel = VTrack::RightChannel;
+            (*channels)[c]->SetChannel(VTrack::RightChannel);
             break;
          default:
-            (*channels)[c]->channel = VTrack::MonoChannel;
+            (*channels)[c]->SetChannel(VTrack::MonoChannel);
       }
    }
 
    if (*numChannels == 2)
-      (*channels)[0]->linked = true;
+      (*channels)[0]->SetLinked(true);
 
    wxProgressDialog *progress = NULL;
 

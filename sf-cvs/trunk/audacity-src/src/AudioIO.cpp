@@ -41,18 +41,10 @@ AudioIO::AudioIO()
    
    // Run our timer function once every 200 ms, i.e. 5 times/sec
    mTimer.Start(200, FALSE);
-
-   PaError err = Pa_Initialize();
-
-   if (err != paNoError) {
-      wxMessageBox(Pa_GetErrorText(err));
-      return;
-   }
 }
 
 AudioIO::~AudioIO()
 {
-   Pa_Terminate();
 }
 
 int audacityAudioCallback(
@@ -148,38 +140,19 @@ bool AudioIO::OpenDevice()
 {
    PaError         error;
    int             numPortAudioBuffers;
-   int             recDeviceNum;
-   int             playDeviceNum;
-   wxString        recDevice;
-   wxString        playDevice;
    
    numPortAudioBuffers = Pa_GetMinNumBuffers(mBufferSize, mRate);
 
-   recDeviceNum = Pa_GetDefaultInputDeviceID();
-   playDeviceNum = Pa_GetDefaultOutputDeviceID();
-
-   recDevice = gPrefs->Read("/AudioIO/RecordingDevice", "");
-   playDevice = gPrefs->Read("/AudioIO/PlaybackDevice", "");
-
-   for(int j=0; j<Pa_CountDevices(); j++) {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->name == playDevice)
-         playDeviceNum = j;
-      if (info->name == recDevice)
-         recDeviceNum = j;
-   }
-
-   if (mNumOutChannels<=0)
-      playDeviceNum = paNoDevice;
-   if (mNumInChannels<=0)
-      recDeviceNum = paNoDevice;
-
    error = Pa_OpenStream(&mPortStream,
-                         recDeviceNum,
+                         mNumInChannels>0?
+                            Pa_GetDefaultInputDeviceID():
+                            paNoDevice,
                          mNumInChannels,
                          paInt16,
                          NULL, /* inputDriverInfo */
-                         playDeviceNum,
+                         mNumOutChannels>0?
+                            Pa_GetDefaultOutputDeviceID():
+                            paNoDevice,
                          mNumOutChannels,
                          paInt16,
                          NULL,
@@ -189,6 +162,18 @@ bool AudioIO::OpenDevice()
                          paClipOff | paDitherOff,
                          audacityAudioCallback,
                          NULL);
+
+   /*
+   error = Pa_OpenDefaultStream(&mPortStream,
+                                mNumInChannels,
+                                mNumOutChannels,
+                                paInt16,
+                                mRate,
+                                (unsigned long)mBufferSize,
+                                (unsigned long)2,
+                                audacityAudioCallback,
+                                NULL);
+   */
 
    return (mPortStream != NULL && error == paNoError);
 }
@@ -288,14 +273,14 @@ bool AudioIO::StartRecord(AudacityProject * project, TrackList * tracks,
    mInTracks = new WaveTrack*[mNumInChannels];
    for(int i=0; i<mNumInChannels; i++) {
       mInTracks[i] = new WaveTrack(project->GetDirManager());
-      mInTracks[i]->selected = true;
-      mInTracks[i]->tOffset = mT0;
+      mInTracks[i]->SetSelected(true);
+      mInTracks[i]->SetOffset(mT0);
       if (stereo)
-         mInTracks[i]->channel = i==0? VTrack::LeftChannel : VTrack::RightChannel;
+         mInTracks[i]->SetChannel(i==0? VTrack::LeftChannel : VTrack::RightChannel);
       else
-         mInTracks[i]->channel = VTrack::MonoChannel;
+         mInTracks[i]->SetChannel(VTrack::MonoChannel);
       if (stereo && i==0)
-         mInTracks[i]->linked = true;
+         mInTracks[i]->SetLinked(true);
       mInTracks[i]->rate = mRate;
       
       mTracks->Add(mInTracks[i]);
@@ -332,7 +317,7 @@ void AudioIO::FillBuffers()
       int numSolo = 0;
       VTrack *vt = iter2.First();
       while (vt) {
-         if (vt->GetKind() == VTrack::Wave && vt->solo)
+         if (vt->GetKind() == VTrack::Wave && vt->GetSolo())
             numSolo++;
          vt = iter2.Next();
       }
@@ -348,26 +333,26 @@ void AudioIO::FillBuffers()
             // the top of the two tracks if they're linked
             // (i.e. a stereo pair only has one set of mute/solo buttons)
             VTrack *partner = mTracks->GetLink(vt);
-            if (partner && !vt->linked)
+            if (partner && !vt->GetLinked())
                mt = partner;
             else
                mt = vt;
 
             // Cut if somebody else is soloing
-            if (numSolo>0 && !mt->solo) {
+            if (numSolo>0 && !mt->GetSolo()) {
                vt = iter.Next();
                continue;
             }
             
             // Cut if we're muted (unless we're soloing)
-            if (mt->mute && !mt->solo) {
+            if (mt->GetMute() && !mt->GetSolo()) {
                vt = iter.Next();
                continue;
             }
 
             WaveTrack *t = (WaveTrack *) vt;
             
-            switch (t->channel) {
+            switch (t->GetChannel()) {
             case VTrack::LeftChannel:
                mixer->MixLeft(t, mT, mT + deltat);
                break;

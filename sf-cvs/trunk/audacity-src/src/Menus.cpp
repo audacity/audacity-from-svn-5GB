@@ -249,7 +249,7 @@ void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
          numWaveTracks++;
       if (t->GetKind() == VTrack::Label)
          numLabelTracks++;
-      if (t->selected) {
+      if (t->GetSelected()) {
          numTracksSelected++;
          if (t->GetKind() == VTrack::Wave)
             numWaveTracksSelected++;
@@ -518,7 +518,7 @@ void AudacityProject::Cut(wxCommandEvent & event)
    VTrack *dest = 0;
 
    while (n) {
-      if (n->selected) {
+      if (n->GetSelected()) {
          n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest)
             msClipboard->Add(dest);
@@ -547,7 +547,7 @@ void AudacityProject::Copy(wxCommandEvent & event)
    VTrack *dest = 0;
 
    while (n) {
-      if (n->selected) {
+      if (n->GetSelected()) {
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest)
             msClipboard->Add(dest);
@@ -580,7 +580,7 @@ void AudacityProject::Paste(wxCommandEvent & event)
    VTrack *c = clipIter.First();
 
    while (n && c) {
-      if (n->selected) {
+      if (n->GetSelected()) {
          n->Paste(tsel, c);
          c = clipIter.Next();
       }
@@ -612,7 +612,7 @@ void AudacityProject::OnSilence(wxCommandEvent & event)
    VTrack *n = iter.First();
 
    while (n) {
-      if (n->selected)
+      if (n->GetSelected())
          n->Silence(mViewInfo.sel0, mViewInfo.sel1);
 
       n = iter.Next();
@@ -635,12 +635,12 @@ void AudacityProject::OnDuplicate(wxCommandEvent & event)
    TrackList newTracks;
 
    while (n) {
-      if (n->selected) {
+      if (n->GetSelected()) {
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
-            dest->name = n->name;
-            dest->linked = n->linked;
-            dest->tOffset = mViewInfo.sel0;
+            dest->SetName(n->GetName());
+            dest->SetLinked(n->GetLinked());
+            dest->SetOffset(mViewInfo.sel0);
             newTracks.Add(dest);
          }
       }
@@ -670,11 +670,11 @@ void AudacityProject::OnSplit(wxCommandEvent & event)
    TrackList newTracks;
 
    while (n) {
-      if (n->selected) {
+      if (n->GetSelected()) {
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
-            dest->linked = n->linked;
-            dest->tOffset = mViewInfo.sel0;
+            dest->SetLinked(n->GetLinked());
+            dest->SetOffset(mViewInfo.sel0);
             newTracks.Add(dest);
 
             if (mViewInfo.sel1 >= n->GetMaxLen())
@@ -728,7 +728,7 @@ void AudacityProject::OnInsertSilence(wxCommandEvent & event)
    VTrack *n = iter.First();
 
    while (n) {
-      if (n->selected)
+      if (n->GetSelected())
          n->InsertSilence(mViewInfo.sel0, mInsertSilenceAmount);
 
       n = iter.Next();
@@ -748,7 +748,7 @@ void AudacityProject::OnSelectAll(wxCommandEvent & event)
 
    VTrack *t = iter.First();
    while (t) {
-      t->selected = true;
+      t->SetSelected(true);
       t = iter.Next();
    }
    mViewInfo.sel0 = 0.0;
@@ -797,7 +797,7 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
    TrackListIterator iter(mTracks);
    VTrack *t = iter.First();
    while (t) {
-      if (t->selected)
+      if (t->GetSelected())
          selcount++;
       if (t->GetKind() == VTrack::Wave)
          selt = (WaveTrack *) t;
@@ -818,9 +818,9 @@ void AudacityProject::OnPlotSpectrum(wxCommandEvent & event)
    }
 
 
-   sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->tOffset)
+   sampleCount s0 = (sampleCount) ((mViewInfo.sel0 - selt->GetOffset())
                                    * selt->rate);
-   sampleCount s1 = (sampleCount) ((mViewInfo.sel1 - selt->tOffset)
+   sampleCount s1 = (sampleCount) ((mViewInfo.sel1 - selt->GetOffset())
                                    * selt->rate);
    sampleCount slen = s1 - s0;
 
@@ -919,7 +919,7 @@ void AudacityProject::OnImportLabels(wxCommandEvent & event)
 
       SelectNone();
       mTracks->Add(newTrack);
-      newTrack->selected = true;
+      newTrack->SetSelected(true);
 
       PushState(
          wxString::Format("Imported labels from '%s'", fileName.c_str()));
@@ -953,7 +953,7 @@ void AudacityProject::OnImportMIDI(wxCommandEvent & event)
 
          SelectNone();
          mTracks->Add(newTrack);
-         newTrack->selected = true;
+         newTrack->SetSelected(true);
 
          PushState(
              wxString::Format("Imported MIDI from '%s'",
@@ -991,12 +991,12 @@ void AudacityProject::OnImportRaw(wxCommandEvent & event)
 
          if (left) {
             mTracks->Add(left);
-            left->selected = true;
+            left->SetSelected(true);
          }
 
          if (right) {
             mTracks->Add(right);
-            right->selected = true;
+            right->SetSelected(true);
          }
 
          PushState(
@@ -1024,7 +1024,7 @@ void AudacityProject::OnQuickMix(wxCommandEvent & event)
       VTrack *t = iter.First();
 
       while (t) {
-         if (t->selected)
+         if (t->GetSelected())
             t = iter.RemoveCurrent();
          else
             t = iter.Next();
@@ -1043,8 +1043,8 @@ void AudacityProject::OnAlignZero(wxCommandEvent & event)
    VTrack *t = iter.First();
 
    while (t) {
-      if (t->selected)
-         t->tOffset = 0.0;
+      if (t->GetSelected())
+         t->SetOffset(0.0);
 
       t = iter.Next();
    }
@@ -1064,8 +1064,8 @@ void AudacityProject::OnAlign(wxCommandEvent & event)
    VTrack *t = iter.First();
 
    while (t) {
-      if (t->selected) {
-         avg += t->tOffset;
+      if (t->GetSelected()) {
+         avg += t->GetOffset();
          num++;
       }
 
@@ -1079,8 +1079,8 @@ void AudacityProject::OnAlign(wxCommandEvent & event)
       t = iter2.First();
 
       while (t) {
-         if (t->selected)
-            t->tOffset = avg;
+         if (t->GetSelected())
+            t->SetOffset(avg);
 
          t = iter2.Next();
       }
@@ -1100,7 +1100,7 @@ void AudacityProject::OnNewWaveTrack(wxCommandEvent & event)
    SelectNone();
 
    mTracks->Add(t);
-   t->selected = true;
+   t->SetSelected(true);
 
    PushState("Created new audio track");
 
@@ -1115,7 +1115,7 @@ void AudacityProject::OnNewLabelTrack(wxCommandEvent & event)
    SelectNone();
 
    mTracks->Add(t);
-   t->selected = true;
+   t->SetSelected(true);
 
    PushState("Created new label track");
 
@@ -1129,7 +1129,7 @@ void AudacityProject::OnRemoveTracks(wxCommandEvent & event)
    VTrack *t = iter.First();
 
    while (t) {
-      if (t->selected)
+      if (t->GetSelected())
          t = iter.RemoveCurrent();
       else
          t = iter.Next();

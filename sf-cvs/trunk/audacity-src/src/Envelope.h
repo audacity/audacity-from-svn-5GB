@@ -39,7 +39,7 @@ class Envelope {
 
    void Mirror(bool mirror);
 
-   void CopyFrom(Envelope * e);
+   void CopyFrom(const Envelope * e);
 
    // File I/O
 
@@ -65,13 +65,13 @@ class Envelope {
 
    // Accessors
 
-   double GetValue(double t);
+   double GetValue(double t) const;
 
    // This is much faster than calling GetValue() multiple times
    // if you need more than one value in a row.
-   void GetValues(double *buffer, int len, double t0, double tstep);
+   void GetValues(double *buffer, int len, double t0, double tstep) const;
 
-   bool IsDirty();
+   bool IsDirty() const;
 
  private:
    
@@ -79,7 +79,7 @@ class Envelope {
 
    int Insert(double when, double value);
 
-   double fromDB(double x);
+   double fromDB(double x) const;
    double toDB(double x);
 
    EnvArray mEnv;

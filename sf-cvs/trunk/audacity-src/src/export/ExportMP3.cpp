@@ -923,12 +923,12 @@ bool ExportMP3(AudacityProject *project,
       VTrack *tr = iter.First();
       while (tr) {
          if (tr->GetKind() == VTrack::Wave) {
-            if (tr->selected || !selectionOnly) {
-               if (tr->channel == VTrack::MonoChannel)
+            if (tr->GetSelected() || !selectionOnly) {
+               if (tr->GetChannel() == VTrack::MonoChannel)
                   mixer->MixMono((WaveTrack *) tr, t, t + deltat);
-               if (tr->channel == VTrack::LeftChannel)
+               else if (tr->GetChannel() == VTrack::LeftChannel)
                   mixer->MixLeft((WaveTrack *) tr, t, t + deltat);
-               if (tr->channel == VTrack::RightChannel)
+               else if (tr->GetChannel() == VTrack::RightChannel)
                   mixer->MixRight((WaveTrack *) tr, t, t + deltat);
             }
          }

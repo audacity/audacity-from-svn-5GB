@@ -70,7 +70,7 @@ bool Export(AudacityProject *project,
 
    while (tr) {
       if (tr->GetKind() == VTrack::Wave) {
-         if (tr->selected || !selectionOnly) {
+         if (tr->GetSelected() || !selectionOnly) {
 
             if (rate == 0)
                rate = ((WaveTrack *) tr)->GetRate();
@@ -82,11 +82,11 @@ bool Export(AudacityProject *project,
 
             numSelected++;
 
-            if (tr->channel == VTrack::LeftChannel)
+            if (tr->GetChannel() == VTrack::LeftChannel)
                numLeft++;
-            if (tr->channel == VTrack::RightChannel)
+            else if (tr->GetChannel() == VTrack::RightChannel)
                numRight++;
-            if (tr->channel == VTrack::MonoChannel)
+            else if (tr->GetChannel() == VTrack::MonoChannel)
                numMono++;
          }
       }

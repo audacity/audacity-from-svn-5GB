@@ -27,9 +27,8 @@ class NoteTrack:public VTrack {
 
    NoteTrack(DirManager * projDirManager);
 
-   virtual int GetKind() {
-      return Note;
-   } virtual double GetMaxLen();
+   virtual int GetKind() const { return Note; } 
+   virtual double GetMaxLen() const { return mLen; }
 
    void DrawLabelControls(wxDC & dc, wxRect & r);
    bool LabelClick(wxRect & r, int x, int y, bool right);

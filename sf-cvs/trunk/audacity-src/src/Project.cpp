@@ -599,7 +599,7 @@ bool AudacityProject::ProcessEvent(wxEvent & event)
       int count = 0;
 
       while (t) {
-         if (t->selected && t->GetKind() == (VTrack::Wave))
+         if (t->GetSelected() && t->GetKind() == (VTrack::Wave))
             count++;
          t = iter.Next();
       }
@@ -1008,7 +1008,7 @@ void AudacityProject::Import(wxString fileName)
       if (newTracks[i]->rate != mRate)
          rateWarning = true;
       mTracks->Add(newTracks[i]);
-      newTracks[i]->selected = true;
+      newTracks[i]->SetSelected(true);
    }
 
    delete[]newTracks;
@@ -1290,7 +1290,7 @@ void AudacityProject::Clear()
    VTrack *n = iter.First();
 
    while (n) {
-      if (n->selected)
+      if (n->GetSelected())
          n->Clear(mViewInfo.sel0, mViewInfo.sel1);
       n = iter.Next();
    }
@@ -1310,7 +1310,7 @@ void AudacityProject::SelectNone()
 
    VTrack *t = iter.First();
    while (t) {
-      t->selected = false;
+      t->SetSelected(false);
       t = iter.Next();
    }
    mTrackPanel->Refresh(false);

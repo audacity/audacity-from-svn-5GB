@@ -25,12 +25,6 @@ class VTrack;
 class TrackPanel;
 class TrackArtist;
 
-class AudacityTimer:public wxTimer {
- public:
-   virtual void Notify();
-   TrackPanel *parent;
-};
-
 class TrackPanelListener {
  public:
    virtual void TP_DisplayStatusMessage(const char *msg, int fieldNum) = 0;
@@ -61,14 +55,46 @@ class TrackPanel:public wxWindow {
 
    void OnTimer();
 
-   int GetRulerHeight();
-   int GetLeftOffset();
+   int GetRulerHeight() const { return 20;}
+   int GetLeftOffset() const { return GetLabelWidth() + 1;}
 
-   void GetTracksUsableArea(int *width, int *height);
+   void GetTracksUsableArea(int *width, int *height) const;
 
    void SelectNone();
 
  private:
+
+   //AS: I added these functions during refactoring.
+   //As I understand the logic, I will rename them
+   //more appropriately.
+   void TimerFunc1();
+   void TimerFunc2();
+
+   void DrawCursors();
+
+   void ExtendSelection(wxMouseEvent &event);
+   void Augustus1(wxMouseEvent &event);
+   void Augustus3(wxMouseEvent &event, VTrack* pTrack, wxRect r, int num);
+   void ExtendSelection(int, int);
+   void OtherSelection(int, int);
+   void StartSelection(int, int);
+
+   bool SetCursor1();
+
+   void Envelope1(wxMouseEvent &event);
+   void Envelope2(wxMouseEvent &event);
+
+   void Slide1(wxMouseEvent &event, double& totalOffset, wxString& name);
+   void Slide2(wxMouseEvent &event, double& totalOffset, wxString& name);
+   void Slide3(double& totalOffset, wxString& name);
+
+   void Zoom1(wxMouseEvent &event);
+   void Zoom2(wxMouseEvent &event);
+   void Zoom3(wxMouseEvent &event, wxRect&);
+   void Zoom4(wxMouseEvent &event, wxRect&);
+
+   void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
+		    VTrack* t, wxRect &r, int num);
 
    void HandleCursor(wxMouseEvent & event);
    void HandleResize(wxMouseEvent & event);
@@ -78,35 +104,20 @@ class TrackPanel:public wxWindow {
    void HandleZoom(wxMouseEvent & event);
    void HandleLabelClick(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
-   void HandleMuting(wxMouseEvent & event);
-   void HandleSoloing(wxMouseEvent & event);
-
+   void HandleMutingSoloing(wxMouseEvent & event, bool solo);
+   bool MuteSoloFunc(VTrack *t, wxRect r, wxMouseEvent &event, bool solo);
    void MakeParentRedrawScrollbars();
    void MakeParentPushState(wxString desc);
 
    void OnSetName();
 
-   void OnMoveUp();
-   void OnMoveDown();
+   void OnMoveTrack    (wxEvent &event);
+   void OnChangeOctave (wxEvent &event);
+   void OnChannelChange(wxEvent &event);
+   void OnSetDisplay   (wxEvent &event);
 
-   void OnUpOctave();
-   void OnDownOctave();
-
-   void OnChannelLeft();
-   void OnChannelRight();
-   void OnChannelMono();
-
-   void OnWaveform();
-   void OnWaveformDB();
-   void OnSpectrum();
-   void OnPitch();
-
-   void OnRate8();
-   void OnRate11();
-   void OnRate16();
-   void OnRate22();
-   void OnRate44();
-   void OnRate48();
+   void SetRate(VTrack *pTrack, double rate);
+   void OnRateChange(wxEvent &event);
    void OnRateOther();
 
    void OnSplitStereo();
@@ -118,29 +129,45 @@ class TrackPanel:public wxWindow {
    VTrack *FindTrack(int mouseX, int mouseY, bool label,
                      wxRect * trackRect = NULL, int *trackNum = NULL);
 
-   int GetTitleWidth();
-   int GetTitleOffset();
-   int GetVRulerWidth();
-   int GetVRulerOffset();
-   int GetLabelWidth();
+   int GetTitleWidth() const { return 100; }
+   int GetTitleOffset() const { return 0; }
+   int GetVRulerWidth() const { return 30;}
+   int GetVRulerOffset() const { return GetTitleOffset() + GetTitleWidth();}
+   int GetLabelWidth() const { return GetTitleWidth() + GetVRulerWidth();}
 
    void SetLabelFont(wxDC * dc);
 
    void DrawRuler(wxDC * dc, bool text = true);
+   void DrawRulerBorder   (wxDC* dc, wxRect &r);
+   void DrawRulerSelection(wxDC* dc, const wxRect r);
+   void DrawRulerMarks    (wxDC *dc, const wxRect r, bool text);
+   void DrawRulerIndicator(wxDC *dc);
+
    void DrawTracks(wxDC * dc);
 
-   void GetTrackControlsRect(wxRect & trackRect, wxRect & r);
-   void GetCloseBoxRect(wxRect & trackRect, wxRect & r);
-   void GetTitleBarRect(wxRect & trackRect, wxRect & r);
-   void GetMuteRect(wxRect & trackRect, wxRect & r);
-   void GetSoloRect(wxRect & trackRect, wxRect & r);
+   void GetTrackControlsRect(const wxRect r, wxRect &dest) const;
+   void GetCloseBoxRect(const wxRect r, wxRect &dest) const;
+   void GetTitleBarRect(const wxRect r, wxRect &dest) const;
+   void GetMuteSoloRect(const wxRect r, wxRect &dest, bool solo) const;
 
-   void DrawCloseBox(wxDC * dc, wxRect & r, bool down);
-   void DrawTitleBar(wxDC * dc, wxRect & r, VTrack * t, bool down);
-   void DrawMute(wxDC * dc, wxRect & r, VTrack * t, bool down);
-   void DrawSolo(wxDC * dc, wxRect & r, VTrack * t, bool down);
+   void DrawCloseBox(wxDC * dc, const wxRect r, bool down);
+   void DrawTitleBar(wxDC * dc, const wxRect r, VTrack * t, bool down);
+   void DrawMuteSolo(wxDC * dc, const wxRect r, VTrack * t, bool down, bool solo);
 
-   void DrawVRuler(wxDC * dc, wxRect & r, VTrack * t);
+   void DrawVRuler(wxDC * dc, const wxRect r, VTrack * t);
+
+   void DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRect clip);
+   void DrawEverythingElse(VTrack *t, wxDC *dc, wxRect &r, wxRect &wxTrackRect);
+   void DrawOutside(VTrack *t, wxDC *dc, const wxRect rec, const int labelw, 
+		    const int vrul, const wxRect trackRect);
+   void DrawZooming(wxDC* dc, const wxRect clip);
+
+   void DrawShadow            (VTrack *t, wxDC* dc, const wxRect r);
+   void DrawBordersAroundTrack(VTrack *t, wxDC* dc, const wxRect r, const int labelw, const int vrul);
+   void FillInLabel           (VTrack *t, wxDC* dc, const wxRect r, const int labelw);
+   void DrawOutsideOfTrack    (VTrack *t, wxDC* dc, const wxRect r);
+
+   wxString TrackSubText(VTrack *t);
 
    TrackPanelListener *mListener;
 
@@ -150,7 +177,12 @@ class TrackPanel:public wxWindow {
 
    TrackArtist *mTrackArtist;
 
-   AudacityTimer mTimer;
+   class AudacityTimer:public wxTimer {
+   public:
+     virtual void Notify() { parent->OnTimer(); }
+     TrackPanel *parent;
+   } mTimer;
+   
    int mTimeCount;
 
    wxBitmap *mBitmap;

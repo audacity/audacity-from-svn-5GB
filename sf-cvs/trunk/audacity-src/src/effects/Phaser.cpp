@@ -81,7 +81,7 @@ bool EffectPhaser::Process()
       if (!success)
          return false;
       
-      if (t->linked) {
+      if (t->GetLinked()) {
          // In a stereo pair, the "other" half should be 180 degrees out of phase
          
          t = iter.Next();

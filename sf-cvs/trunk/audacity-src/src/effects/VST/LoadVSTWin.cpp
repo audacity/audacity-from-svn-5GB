@@ -13,7 +13,7 @@
 #include "AudioEffect.hpp"      // VST API
 
 #include "VSTEffect.h"          // This class's header
-#include "../../DirManager.h"      // Audacity class which handles data structures
+#include "../DirManager.h"      // Audacity class which handles data structures
 
 int audacityVSTID = 1;
 

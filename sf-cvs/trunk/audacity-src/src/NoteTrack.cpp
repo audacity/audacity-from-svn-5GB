@@ -19,7 +19,7 @@
 NoteTrack::NoteTrack(DirManager * projDirManager):
 VTrack(projDirManager)
 {
-   name = "Note Track";
+   SetName("Note Track");
 
    mSeq = NULL;
    mLen = 0.0;
@@ -102,11 +102,6 @@ bool NoteTrack::LabelClick(wxRect & r, int mx, int my, bool right)
       mVisibleChannels ^= (1 << channel);
 
    return true;
-}
-
-double NoteTrack::GetMaxLen()
-{
-   return mLen;
 }
 
 void NoteTrack::CalcLen()

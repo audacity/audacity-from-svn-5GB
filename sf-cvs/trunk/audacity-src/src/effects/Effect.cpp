@@ -92,8 +92,8 @@ void Effect::GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen)
    wxASSERT(s0);
    wxASSERT(slen);
 
-   unsigned int ss0 = (int) ((mT0 - t->tOffset) * t->rate);
-   unsigned int ss1 = (int) ((mT1 - t->tOffset) * t->rate);
+   unsigned int ss0 = (int) ((mT0 - t->GetOffset()) * t->rate);
+   unsigned int ss1 = (int) ((mT1 - t->GetOffset()) * t->rate);
 
    if (ss0 < 0)
       ss0 = 0;
@@ -149,7 +149,7 @@ void Effect::CountWaveTracks()
    VTrack *t = iter.First();
    
    while(t) {
-      if (!t->selected) {
+      if (!t->GetSelected()) {
          t = iter.Next();
          continue;
       }
@@ -157,7 +157,7 @@ void Effect::CountWaveTracks()
       if (t->GetKind() == VTrack::Wave) {
          mWaveTracks->Add(t);
          mNumTracks++;
-         if (!t->linked)
+         if (!t->GetLinked())
             mNumGroups++;
       }
       t = iter.Next();

@@ -78,14 +78,14 @@ bool ImportPCM(wxWindow * parent,
    for(c=0; c<*numChannels; c++) {
       (*channels)[c] = new WaveTrack(dirManager);
       (*channels)[c]->rate = info.samplerate;
-      (*channels)[c]->name = TrackNameFromFileName(fName);
-      (*channels)[c]->channel = VTrack::MonoChannel;
+      (*channels)[c]->SetName(TrackNameFromFileName(fName));
+      (*channels)[c]->SetChannel(VTrack::MonoChannel);
    }
 
    if (*numChannels == 2) {
-      (*channels)[0]->channel = VTrack::LeftChannel;
-      (*channels)[1]->channel = VTrack::RightChannel;
-      (*channels)[0]->linked = true;
+      (*channels)[0]->SetChannel(VTrack::LeftChannel);
+      (*channels)[1]->SetChannel(VTrack::RightChannel);
+      (*channels)[0]->SetLinked(true);
    }
 
    sampleCount fileTotalFrames = (sampleCount)info.samples;

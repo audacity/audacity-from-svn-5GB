@@ -53,7 +53,7 @@ void Envelope::Flatten(double value)
    Insert(1000000000.0, value);
 }
 
-void Envelope::CopyFrom(Envelope * e)
+void Envelope::CopyFrom(const Envelope * e)
 {
    mOffset = e->mOffset;
    int len = e->mEnv.Count();
@@ -80,7 +80,7 @@ double Envelope::toDB(double value)
    return sign * val;
 }
 
-double Envelope::fromDB(double value)
+double Envelope::fromDB(double value) const
 {
    if (value == 0)
       return 0;
@@ -447,8 +447,7 @@ void Envelope::SetTrackLen(double trackLen)
 }
 
 // Accessors
-
-double Envelope::GetValue(double t)
+double Envelope::GetValue(double t) const
 {
    t -= mOffset;
 
@@ -497,7 +496,7 @@ double Envelope::GetValue(double t)
 }
 
 void Envelope::GetValues(double *buffer, int bufferLen,
-                         double t0, double tstep)
+                         double t0, double tstep) const
 {
    t0 -= mOffset;
 
