@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c,v 1.8 2003-03-02 08:01:46 dmazzoni Exp $
+ * $Id: pa_win_wmme.c,v 1.8.4.1 2003-10-21 08:05:09 dmazzoni Exp $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)
  *
@@ -1339,12 +1339,16 @@ PaError PaHost_StartEngine( internalPortAudioStream *stream )
      * I also added result checks, so we might see more failures at initialization.
      * Thanks to Alberto di Bene for spotting this.
      */
+
+#if 0 /* dmazzoni: this seems to cause problems */
     if( !SetPriorityClass( GetCurrentProcess(), HIGH_PRIORITY_CLASS ) ) /* PLB20010816 */
     {
         result = paHostError;
         sPaHostError = GetLastError();;
         goto error;
     }
+#endif
+
     if( !SetThreadPriority( wmmeStreamData->engineThread, THREAD_PRIORITY_HIGHEST ) )
     {
         result = paHostError;
