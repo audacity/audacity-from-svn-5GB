@@ -170,7 +170,7 @@ void KeyConfigPrefs::AssignDefaults(wxCommandEvent& event)
    unsigned int i;
 
    for(i=0; i<mNames.GetCount(); i++) {
-      mList->SetItem( i, 1, mManager->GetDefaultKeyFromName(mNames[i]) );
+      mList->SetItem( i, KeyComboColumn, mManager->GetDefaultKeyFromName(mNames[i]) );
    }
 }
 
