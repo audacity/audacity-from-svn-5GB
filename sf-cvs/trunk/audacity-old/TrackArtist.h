@@ -38,12 +38,15 @@ public:
 				  ViewInfo *viewInfo,
 				  bool drawEnvelope);
   
-  void SetInset(int x, int y);
+  void SetInset(int left, int top, int right, int bottom);
 
 private:
   wxHashTable     *mTrackHash;
 
-  int mInsetX, mInsetY;
+  int mInsetLeft;
+  int mInsetTop;
+  int mInsetRight;
+  int mInsetBottom;
 
   wxBrush blankBrush;
   wxBrush unselectedBrush;

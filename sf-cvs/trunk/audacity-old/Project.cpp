@@ -252,7 +252,7 @@ AudacityProject::AudacityProject(wxWindow *parent, wxWindowID id,
 							   mTracks, &mViewInfo,
 							   this);
 
-  int hoffset = mTrackPanel->GetLabelOffset()-1;
+  int hoffset = mTrackPanel->GetLeftOffset()-1;
   int voffset = mTrackPanel->GetRulerHeight();
   
   #ifdef __WXMAC__
@@ -494,7 +494,7 @@ void AudacityProject::HandleResize()
     mTrackPanel->SetSize(left, top,
   					     width-sbarSpaceWidth, height-sbarSpaceWidth);
 
-    int hoffset = mTrackPanel->GetLabelOffset()-1;
+    int hoffset = mTrackPanel->GetLeftOffset()-1;
     int voffset = mTrackPanel->GetRulerHeight();
 
     mHsbar->SetSize(hoffset, top+height-sbarSpaceWidth,
@@ -697,7 +697,7 @@ void AudacityProject::OnPaint(wxPaintEvent& event)
   wxRect f;
   f.x = 0;
   f.y = top+height-sbarSpaceWidth+1;
-  f.width = mTrackPanel->GetLabelOffset()-2;
+  f.width = mTrackPanel->GetLeftOffset()-2;
   f.height = sbarSpaceWidth-2;
   AColor::Medium(&dc, false);
   dc.DrawRectangle(f);
@@ -1461,6 +1461,5 @@ void AudacityProject::TP_HasMouse()
   SetActiveProject(this);
   mTrackPanel->SetFocus();
 }
-
 
 

@@ -21,14 +21,11 @@ public:
   int collapsedHeight;
   int expandedHeight;
 
+  wxString name;
   bool selected;
-
   bool linked;
-
   int channel;
-
   double tOffset;
-
   int dirty;
 
   DirManager *dirManager;
@@ -43,9 +40,8 @@ public:
 	None,
 	Wave,
 	Note,
-	Beat,
 	Label
-  } kind;
+  } TrackKindEnum;
 
   VTrack(DirManager *projDirManager);
 
@@ -153,6 +149,8 @@ public:
   // immediately before or after it), return its partner.
   // Otherwise return null.
   VTrack *GetLink(VTrack *t);
+  
+  VTrack *GetNext(VTrack *t);
 
   // Test
   bool Contains(VTrack *t);

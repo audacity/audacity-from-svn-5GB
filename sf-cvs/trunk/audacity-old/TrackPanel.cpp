@@ -35,8 +35,13 @@
 extern Bounce *gBounce;
 #endif
 
+#define kLeftInset 4
+#define kTopInset 4
+
 enum {
   TrackPanelFirstID = 2000,
+  
+  OnSetNameID,
 
   OnChannelLeftID,
   OnChannelRightID,
@@ -51,7 +56,10 @@ enum {
   OnRateOtherID,
 
   OnWaveformID,
-  OnSpectrumID
+  OnSpectrumID,
+  
+  OnSplitStereoID,
+  OnMergeStereoID
 };
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
@@ -60,6 +68,8 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_CHAR(TrackPanel::OnKeyEvent)
 
   EVT_PAINT(TrackPanel::OnPaint)
+
+  EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
 
   EVT_MENU(OnChannelLeftID, TrackPanel::OnChannelLeft)
   EVT_MENU(OnChannelRightID, TrackPanel::OnChannelRight)
@@ -75,6 +85,9 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
   EVT_MENU(OnRate44ID, TrackPanel::OnRate44)
   EVT_MENU(OnRate48ID, TrackPanel::OnRate48)
   EVT_MENU(OnRateOtherID, TrackPanel::OnRateOther)
+  
+  EVT_MENU(OnSplitStereoID, TrackPanel::OnSplitStereo)
+  EVT_MENU(OnMergeStereoID, TrackPanel::OnMergeStereo)
 END_EVENT_TABLE()
 
 TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
@@ -90,6 +103,7 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mBitmap(NULL),
   mAutoScrolling(false)
 {
+  mIsClosing = false;
   mIsSelecting = false;
   mIsResizing = false;
   mIsSliding = false;
@@ -104,11 +118,6 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mZoomInCursor = new wxCursor(wxCURSOR_MAGNIFIER);
   mZoomOutCursor = new wxCursor(wxCURSOR_MAGNIFIER);
 
-  mChannelMenu = new wxMenu();
-  mChannelMenu->Append(OnChannelLeftID, "Left");
-  mChannelMenu->Append(OnChannelRightID, "Right");
-  mChannelMenu->Append(OnChannelMonoID, "Mono");
-
   mRateMenu = new wxMenu();
   mRateMenu->Append(OnRate8ID, "8000 Hz");
   mRateMenu->Append(OnRate11ID, "11025 Hz");
@@ -117,13 +126,23 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mRateMenu->Append(OnRate44ID, "44100 Hz");
   mRateMenu->Append(OnRate48ID, "48000 Hz");
   mRateMenu->Append(OnRateOtherID, "Other...");
-
-  mDisplayMenu = new wxMenu();
-  mDisplayMenu->Append(OnWaveformID, "Waveform");
-  mDisplayMenu->Append(OnSpectrumID, "Spectrum");
+  
+  mTrackMenu = new wxMenu();
+  mTrackMenu->Append(OnSetNameID, "Name...");
+  mTrackMenu->AppendSeparator();
+  mTrackMenu->Append(OnWaveformID, "Show Waveform");
+  mTrackMenu->Append(OnSpectrumID, "Show Spectrum");
+  mTrackMenu->AppendSeparator();
+  mTrackMenu->Append(OnChannelMonoID, "Mono");
+  mTrackMenu->Append(OnChannelLeftID, "Left Channel");
+  mTrackMenu->Append(OnChannelRightID, "Right Channel");
+  mTrackMenu->Append(OnMergeStereoID, "Make Stereo Track");
+  mTrackMenu->Append(OnSplitStereoID, "Split Stereo Track");
+  mTrackMenu->AppendSeparator();
+  mTrackMenu->Append(0, "Set Rate", mRateMenu);
 
   mTrackArtist = new TrackArtist();
-  mTrackArtist->SetInset(5, 5);
+  mTrackArtist->SetInset(1, kTopInset+2, kLeftInset+3, 2);
 
   mCapturedTrack = NULL;
 
@@ -148,9 +167,10 @@ TrackPanel::~TrackPanel()
   delete mZoomInCursor;
   delete mZoomOutCursor;
 
-  delete mChannelMenu;
-  delete mRateMenu;
-  delete mDisplayMenu;
+  // These are all deleted by their parent menu
+  //delete mChannelMenu;
+  //delete mRateMenu;
+  delete mTrackMenu;
 }
 
 void TrackPanel::SelectNone()
@@ -173,7 +193,7 @@ void TrackPanel::GetTracksUsableArea(int *width, int *height)
   GetSize(&w, &h);
 
   w -= GetLabelWidth();
-  w -= 10; // (4 pixel inset + 1 pixel bevel) * 2
+  w -= 2 + kLeftInset;
 
   *width = w;
   *height = h;
@@ -258,7 +278,7 @@ void TrackPanel::OnTimer()
 	  dc.SetPen(*wxBLACK_PEN);
 	  dc.SetBrush(*wxBLACK_BRUSH);
 	  
-	  int x = GetLabelOffset() +
+	  int x = GetLeftOffset() +
 		int((mViewInfo->sel0 - mViewInfo->h) * mViewInfo->zoom);
 
 	  int y = -mViewInfo->vpos + GetRulerHeight();
@@ -268,7 +288,7 @@ void TrackPanel::OnTimer()
         dc.DrawLine(x,1,x,GetRulerHeight()-2);
       }
 
-	  if (x >= GetLabelOffset()) {
+	  if (x >= GetLeftOffset()) {
 		// Draw cursor in all selected tracks
 		VTrack *t;
 		TrackListIterator iter(mTracks);
@@ -276,7 +296,7 @@ void TrackPanel::OnTimer()
 		while(t) {
 		  int height = t->GetHeight();
 		  if (t->selected && t->GetKind()!=VTrack::Label)
-			dc.DrawLine(x,y+5,x,y+height-5);
+			dc.DrawLine(x,y+kTopInset+1,x,y+height-2);
 		  t = iter.Next();
 		  y += height;
 		}
@@ -323,18 +343,18 @@ void TrackPanel::MakeParentRedrawScrollbars()
 void TrackPanel::HandleCursor(wxMouseEvent& event)
 {
   if (mIsSelecting) {
-	SetCursor(*mSelectCursor);	
-	return;
+    SetCursor(*mSelectCursor);	
+    return;
   }
 
   if (mIsSliding) {
-	SetCursor(*mSlideCursor);	
-	return;
+    SetCursor(*mSlideCursor);	
+    return;
   }
 
   if (mIsEnveloping) {
-	SetCursor(*mArrowCursor);	
-	return;
+    SetCursor(*mArrowCursor);	
+    return;
   }
 
   wxRect r;
@@ -344,58 +364,58 @@ void TrackPanel::HandleCursor(wxMouseEvent& event)
 
   if (t) {
 
-	// First test to see if we're over the area that
-	// resizes a track
+  	// First test to see if we're over the area that
+  	// resizes a track
 
-	if (event.m_y >= (r.y + r.height - 10) &&
-		event.m_y <  (r.y + r.height)) {	  
+  	if (event.m_y >= (r.y + r.height - 5) &&
+  		event.m_y <  (r.y + r.height + 5)) {	  
 
-	  mListener->TP_DisplayStatusMessage("Click and drag to resize the track", 0);
+  	  mListener->TP_DisplayStatusMessage("Click and drag to resize the track", 0);
 
-	  SetCursor(*mResizeCursor);
-	  return;
-	}
+  	  SetCursor(*mResizeCursor);
+  	  return;
+  	}
 
-	// Otherwise set the cursor based on the current tool
+  	// Otherwise set the cursor based on the current tool
 
-	switch(mListener->TP_GetCurrentTool()) {
-	case 0: // select
-	  mListener->TP_DisplayStatusMessage("Click and drag to select audio", 0);
-	  SetCursor(*mSelectCursor);
-	  break;
-	case 1: // envelope
-	  mListener->TP_DisplayStatusMessage("Click and drag to edit the "
-								"amplitude envelope", 0);
-	  SetCursor(*mArrowCursor);
-	  break;
-	case 2: // move/slide
-	  mListener->TP_DisplayStatusMessage("Click and drag to move a track "
-								"in time", 0);
-	  SetCursor(*mSlideCursor);
-	  break;
-	case 3: // zoom
-	  #ifdef __WXMAC__
-	  mListener->TP_DisplayStatusMessage("Click to Zoom In, Shift-Click to Zoom Out",
-								0);
-	  #endif
-	  #ifdef __WXMSW__
-	  mListener->TP_DisplayStatusMessage("Left-Click to Zoom In, "
-								"Right-Click to Zoom Out", 0);
-	  #endif
-	  #ifdef __WXGTK__
-	  mListener->TP_DisplayStatusMessage("Left=Zoom In, Right=Zoom Out, "
-								"Middle=Normal", 0);
-	  #endif
-	  if (event.ShiftDown())
-		SetCursor(*mZoomInCursor);
-	  else
-		SetCursor(*mZoomOutCursor);
-	  break;
-	}  
+  	switch(mListener->TP_GetCurrentTool()) {
+  	case 0: // select
+  	  mListener->TP_DisplayStatusMessage("Click and drag to select audio", 0);
+  	  SetCursor(*mSelectCursor);
+  	  break;
+  	case 1: // envelope
+  	  mListener->TP_DisplayStatusMessage("Click and drag to edit the "
+  								"amplitude envelope", 0);
+  	  SetCursor(*mArrowCursor);
+  	  break;
+  	case 2: // move/slide
+  	  mListener->TP_DisplayStatusMessage("Click and drag to move a track "
+  								"in time", 0);
+  	  SetCursor(*mSlideCursor);
+  	  break;
+  	case 3: // zoom
+  	  #ifdef __WXMAC__
+  	  mListener->TP_DisplayStatusMessage("Click to Zoom In, Shift-Click to Zoom Out",
+  								0);
+  	  #endif
+  	  #ifdef __WXMSW__
+  	  mListener->TP_DisplayStatusMessage("Left-Click to Zoom In, "
+  								"Right-Click to Zoom Out", 0);
+  	  #endif
+  	  #ifdef __WXGTK__
+  	  mListener->TP_DisplayStatusMessage("Left=Zoom In, Right=Zoom Out, "
+  								"Middle=Normal", 0);
+  	  #endif
+  	  if (event.ShiftDown())
+  		SetCursor(*mZoomInCursor);
+  	  else
+  		SetCursor(*mZoomOutCursor);
+  	  break;
+  	}  
   }
   else {
-	// Not over a track
-	SetCursor(*mArrowCursor);
+    // Not over a track
+    SetCursor(*mArrowCursor);
   }
 }
 
@@ -662,7 +682,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
     int x, y, i;
     wxGetMousePosition(&x, &y);
     ScreenToClient(&x, &y);
-    x -= GetLabelOffset();
+    x -= GetLeftOffset();
     pos = int(x * t->rate / mViewInfo->zoom + 0.5);
 
     while(Button()) {
@@ -674,7 +694,7 @@ void TrackPanel::HandleSlide(wxMouseEvent& event)
             block = blockLen;
           wxGetMousePosition(&x, &y);
           ScreenToClient(&x, &y);
-          x -= GetLabelOffset();
+          x -= GetLeftOffset();
           int newPos = int(x * t->rate / mViewInfo->zoom + 0.5);
           int deltaSamples = newPos - pos;
           int deltaTime = curTime - lastTime;
@@ -793,96 +813,176 @@ void TrackPanel::HandleZoom(wxMouseEvent& event)
   }
 }
 
-void TrackPanel::HandleLabelClick(wxMouseEvent& event)
+void TrackPanel::HandleClosing(wxMouseEvent& event)
 {
-  if (event.ButtonDown() || event.ButtonDClick()) {
-	wxRect r;
-	int num;
-	
-	VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
+  VTrack *t = mCapturedTrack;
+  wxRect r = mCapturedRect;
 
-	if (t) {
-	  if (event.ShiftDown()) {
-		mTracks->Select(t, !t->selected);
-	  }
-	  else {
-
-		// First see if the user is clicking on a Popup menu
-
-		wxRect tempRect;
-		wxRect fieldRect;
-		wxMenu *popupMenu = NULL;
-
-		r.width++;
-		r.y-=5;
-		
-		if (GetLabelFieldRect(r, 1, true, tempRect))
-		  if (tempRect.Inside(event.m_x, event.m_y)) {
-			popupMenu = mChannelMenu;
-			fieldRect = tempRect;
-		  }
-
-		if (t->GetKind() == VTrack::Wave) {
-		  if (GetLabelFieldRect(r, 2, true, tempRect))
-  			if (tempRect.Inside(event.m_x, event.m_y)) {
-  			  popupMenu = mRateMenu;
-  			  fieldRect = tempRect;
-  			}
-		  
-		  if (GetLabelFieldRect(r, 3, true, tempRect))
-  			if (tempRect.Inside(event.m_x, event.m_y)) {
-  			  popupMenu = mDisplayMenu;
-  			  fieldRect = tempRect;
-  			}
-		}
-		
-		if (t->GetKind()==VTrack::Note) {
-  	  wxRect midiRect;
-  	  if (GetLabelFieldRect(r, 2, false, midiRect)) {
-  	    midiRect.height = r.height - (midiRect.y - r.y) - (midiRect.x - r.x);
-  	    if (midiRect.Inside(event.m_x, event.m_y)) {
-  	      ((NoteTrack *)t)->LabelClick(midiRect, event.m_x, event.m_y,
-  	                                   event.RightDown() || event.RightDClick());
-  	      Refresh(false);
-  	      return;
-  	    }
-  	  }
-  	}
-
-		if (popupMenu) {
-		  mPopupMenuTarget = t;
-		  
-		  {
-		    wxClientDC dc(this);
-		    AColor::Bevel(dc, false, fieldRect);
-		  }
-		  PopupMenu(popupMenu,
-					fieldRect.x, fieldRect.y + fieldRect.height);
-		  {
-		    wxClientDC dc(this);
-   	 	    AColor::Bevel(dc, true, fieldRect);
-   	 	  }
-
-		  return;
-		}
-
-		// If they weren't clicking on a particular field,
-		// deselect other tracks and select this one.
-
-		SelectNone();
-		mTracks->Select(t);
-		mViewInfo->sel0 = 0.0;
-		mViewInfo->sel1 = mTracks->GetMaxLen();
-	  }
-
-	  Refresh(false);
-	}
-	else {
-	  SelectNone();
-	  Refresh(false);
-	}
+  wxRect closeRect;
+  GetCloseBoxRect(r, closeRect);
+  if (event.Dragging()) {
+    wxClientDC dc(this);
+    DrawCloseBox(&dc, r, closeRect.Inside(event.m_x, event.m_y));
+    return;
+  }
+  if (event.ButtonUp()) {
+    wxClientDC dc(this);
+    DrawCloseBox(&dc, r, false);
+    if (closeRect.Inside(event.m_x, event.m_y)) {
+      RemoveTrack(t);
+    }
+    mIsClosing = false;
   }
 }
+
+void TrackPanel::HandleLabelClick(wxMouseEvent& event)
+{
+  if (!(event.ButtonDown() || event.ButtonDClick()))
+    return;
+    
+  wxRect r;
+  int num;
+
+  VTrack *t = FindTrack(event.m_x, event.m_y, true, &r, &num);
+
+  if (!t) {
+    SelectNone();
+    Refresh(false);
+  }
+
+  if (event.ShiftDown()) {
+    mTracks->Select(t, !t->selected);
+    Refresh(false);
+    return;
+  }
+  
+  wxRect closeRect;
+  GetCloseBoxRect(r, closeRect);
+  if (closeRect.Inside(event.m_x, event.m_y)) {
+    wxClientDC dc(this);
+    DrawCloseBox(&dc, r, true);
+    mIsClosing = true;
+    mCapturedTrack = t;
+    mCapturedRect = r;
+    return;
+  }
+
+  wxRect titleRect;
+  GetTitleBarRect(r, titleRect);
+  if (titleRect.Inside(event.m_x, event.m_y)) {
+    mPopupMenuTarget = t;
+    {
+      wxClientDC dc(this);
+      DrawTitleBar(&dc, r, t, true);
+    }
+    bool canMakeStereo = false;
+    VTrack *next = mTracks->GetNext(t);
+    if (next && !t->linked && !next->linked &&
+        t->GetKind() == VTrack::Wave && next->GetKind() == VTrack::Wave)
+      canMakeStereo = true;
+    mTrackMenu->Enable(mTrackMenu->FindItem("Make Stereo Track"), canMakeStereo);
+    mTrackMenu->Enable(mTrackMenu->FindItem("Split Stereo Track"), t->linked);
+    mTrackMenu->Enable(mTrackMenu->FindItem("Mono"), !t->linked);
+    mTrackMenu->Enable(mTrackMenu->FindItem("Left Channel"), !t->linked);
+    mTrackMenu->Enable(mTrackMenu->FindItem("Right Channel"), !t->linked);
+    #ifdef __WXMAC__
+    ::InsertMenu( mRateMenu->GetHMenu() , -1 ) ;
+    #endif
+    
+    PopupMenu(mTrackMenu, titleRect.x+1, titleRect.y + titleRect.height+1);
+
+    #ifdef __WXMAC__
+    ::DeleteMenu( mRateMenu->MacGetMenuId() ) ;
+    #endif    
+    
+    {
+      wxClientDC dc(this);
+      DrawTitleBar(&dc, r, t, false);
+    }
+    return;
+  }
+  
+  // If they weren't clicking on a particular part of a track label,
+  // deselect other tracks and select this one.
+
+  SelectNone();
+  mTracks->Select(t);
+  mViewInfo->sel0 = 0.0;
+  mViewInfo->sel1 = mTracks->GetMaxLen();
+  Refresh(false);
+}
+
+/*
+  // First see if the user is clicking on a Popup menu
+
+  wxRect tempRect;
+  wxRect fieldRect;
+  wxMenu *popupMenu = NULL;
+
+  r.width++;
+  r.y-=5;
+
+  if (GetLabelFieldRect(r, 1, true, tempRect))
+  if (tempRect.Inside(event.m_x, event.m_y)) {
+  popupMenu = mChannelMenu;
+  fieldRect = tempRect;
+  }
+
+  if (t->GetKind() == VTrack::Wave) {
+  if (GetLabelFieldRect(r, 2, true, tempRect))
+  	if (tempRect.Inside(event.m_x, event.m_y)) {
+  	  popupMenu = mRateMenu;
+  	  fieldRect = tempRect;
+  	}
+
+  if (GetLabelFieldRect(r, 3, true, tempRect))
+  	if (tempRect.Inside(event.m_x, event.m_y)) {
+  	  popupMenu = mDisplayMenu;
+  	  fieldRect = tempRect;
+  	}
+  }
+
+  if (t->GetKind()==VTrack::Note) {
+  wxRect midiRect;
+  if (GetLabelFieldRect(r, 2, false, midiRect)) {
+   midiRect.height = r.height - (midiRect.y - r.y) - (midiRect.x - r.x);
+   if (midiRect.Inside(event.m_x, event.m_y)) {
+     ((NoteTrack *)t)->LabelClick(midiRect, event.m_x, event.m_y,
+                                  event.RightDown() || event.RightDClick());
+     Refresh(false);
+     return;
+   }
+  }
+  }
+
+  if (popupMenu) {
+  mPopupMenuTarget = t;
+
+  {
+   wxClientDC dc(this);
+   AColor::Bevel(dc, false, fieldRect);
+  }
+  PopupMenu(popupMenu,
+  		fieldRect.x, fieldRect.y + fieldRect.height);
+  {
+   wxClientDC dc(this);
+      AColor::Bevel(dc, true, fieldRect);
+    }
+
+  return;
+  }
+
+  // If they weren't clicking on a particular field,
+  // deselect other tracks and select this one.
+
+  SelectNone();
+  mTracks->Select(t);
+  mViewInfo->sel0 = 0.0;
+  mViewInfo->sel1 = mTracks->GetMaxLen();
+}
+
+Refresh(false);
+*/
 
 void TrackPanel::HandleResize(wxMouseEvent& event)
 {
@@ -962,22 +1062,27 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   mListener->TP_HasMouse();
 
   if (!mAutoScrolling) {
-	mMouseMostRecentX = event.m_x;
-	mMouseMostRecentY = event.m_y;
+  	mMouseMostRecentX = event.m_x;
+  	mMouseMostRecentY = event.m_y;
   }
 
   if (event.ButtonDown()) {
-	mCapturedTrack = NULL;
+  	mCapturedTrack = NULL;
 
-	wxActivateEvent *e = new wxActivateEvent();
-	GetParent()->ProcessEvent(*e);      
-	delete e;
+  	wxActivateEvent *e = new wxActivateEvent();
+  	GetParent()->ProcessEvent(*e);      
+  	delete e;
+  }
+  
+  if (mIsClosing) {
+    HandleClosing(event);
+    return;
   }
 
   if (mIsResizing) {
-	HandleResize(event);
-	HandleCursor(event);
-	return;
+  	HandleResize(event);
+  	HandleCursor(event);
+  	return;
   }
 
   wxRect r;
@@ -988,15 +1093,15 @@ void TrackPanel::OnMouseEvent(wxMouseEvent& event)
   if (event.ButtonDown() &&
 	  event.m_y >= (r.y + r.height - 10) &&
 	  event.m_y <  (r.y + r.height)) {
-	HandleResize(event);
-	HandleCursor(event);
-	return;
+  	HandleResize(event);
+  	HandleCursor(event);
+  	return;
   }
   
   if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
-	HandleLabelClick(event);
-	HandleCursor(event);
-	return;
+  	HandleLabelClick(event);
+  	HandleCursor(event);
+  	return;
   }
 
   switch(mListener->TP_GetCurrentTool()) {
@@ -1054,9 +1159,9 @@ void TrackPanel::DrawRuler(wxDC *dc, bool text)
 
   if (mViewInfo->sel0 < mViewInfo->sel1) {
     double sel0 = mViewInfo->sel0 - mViewInfo->h +
-      GetLabelOffset() / mViewInfo->zoom;
+      GetLeftOffset() / mViewInfo->zoom;
     double sel1 = mViewInfo->sel1 - mViewInfo->h +
-      GetLabelOffset() / mViewInfo->zoom;
+      GetLeftOffset() / mViewInfo->zoom;
 
     if (sel0 < 0.0)
       sel0 = 0.0;
@@ -1143,7 +1248,7 @@ void TrackPanel::DrawRuler(wxDC *dc, bool text)
   
   unit /= 4;
   
-  double pos = mViewInfo->h - GetLabelOffset() / mViewInfo->zoom;
+  double pos = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
   int unitcount = (int)(pos / unit);
 
   dc->SetTextForeground(wxColour(0,0,204));
@@ -1198,7 +1303,7 @@ void TrackPanel::DrawRuler(wxDC *dc, bool text)
     double ind = gAudioIO->GetIndicator();
   
     if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
-      int indp = GetLabelOffset() + int((ind - mViewInfo->h)*mViewInfo->zoom);
+      int indp = GetLeftOffset() + int((ind - mViewInfo->h)*mViewInfo->zoom);
 
       dc->SetPen(*wxTRANSPARENT_PEN);
       dc->SetBrush(*wxBLACK_BRUSH);
@@ -1217,6 +1322,277 @@ void TrackPanel::DrawRuler(wxDC *dc, bool text)
     }
   }
 }
+
+void TrackPanel::GetCloseBoxRect(wxRect &r, wxRect &dest)
+{
+  dest.x = r.x;
+  dest.y = r.y;
+  dest.width = 16;
+  dest.height = 16;
+}
+
+void TrackPanel::GetTitleBarRect(wxRect &r, wxRect &dest)
+{
+  dest.x = r.x + 16;
+  dest.y = r.y;
+  dest.width = GetTitleWidth() - r.x - 16;
+  dest.height = 16;
+}
+
+void TrackPanel::DrawCloseBox(wxDC *dc, wxRect &r, bool down)
+{
+  dc->SetPen(*wxBLACK_PEN);
+  dc->DrawLine(r.x + 3, r.y + 3, r.x + 13, r.y + 13);                   // close "x"
+  dc->DrawLine(r.x + 13, r.y + 3, r.x + 3, r.y + 13);
+  wxRect bev;
+  GetCloseBoxRect(r, bev);
+  bev.Inflate(-1, -1);
+  AColor::Bevel(*dc, !down, bev);
+}
+
+void TrackPanel::DrawTitleBar(wxDC *dc, wxRect &r, VTrack *t, bool down)
+{
+  wxRect bev;
+  GetTitleBarRect(r, bev);
+  bev.Inflate(-1, -1);
+  AColor::Bevel(*dc, true, bev);
+
+  // Draw title text
+  wxString titleStr = t->name;
+  int allowableWidth = GetTitleWidth() - 38 - kLeftInset;
+  long textWidth, textHeight;
+  dc->GetTextExtent(titleStr, &textWidth, &textHeight);
+  while(textWidth > allowableWidth) {
+    titleStr = titleStr.Left(titleStr.Length()-1);
+    dc->GetTextExtent(titleStr, &textWidth, &textHeight);
+  }
+  dc->DrawText(titleStr, r.x + 19, r.y + 2);
+
+  // Pop-up triangle
+  dc->SetPen(*wxBLACK_PEN);
+  int xx = r.x + GetTitleWidth() - 16 - kLeftInset;
+  int yy = r.y + 5;
+  int triWid = 11;
+  while(triWid>=1) {
+    dc->DrawLine(xx, yy, xx+triWid, yy);
+    xx++;
+    yy++;
+    triWid-=2;
+  }
+  
+  AColor::Bevel(*dc, !down, bev);
+}
+
+void TrackPanel::DrawVRuler(wxDC *dc, wxRect &r, VTrack *t)
+{
+  wxRect bev = r;
+  bev.Inflate(-1, -1);
+  AColor::Bevel(*dc, true, bev);
+  
+  dc->SetPen(*wxBLACK_PEN);
+  int ctr = r.height / 2;
+  
+  wxString num;
+  long textWidth, textHeight;
+
+  num = "1.0";
+  dc->GetTextExtent(num, &textWidth, &textHeight);
+  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + 2);
+
+  num = "0";
+  dc->GetTextExtent(num, &textWidth, &textHeight);
+  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + ctr - textHeight/2);
+
+  dc->DrawLine(r.x + 1, r.y + ctr, r.x + r.width - 4 - textWidth, r.y + ctr);
+  dc->DrawLine(r.x + r.width - 3, r.y + ctr, r.x + r.width - 2, r.y + ctr);
+
+  num = "-1.0";
+  dc->GetTextExtent(num, &textWidth, &textHeight);
+  dc->DrawText(num, r.x + r.width - 3 - textWidth, r.y + r.height - 2 - textHeight);
+}
+
+void TrackPanel::DrawTracks(wxDC *dc)
+{
+  wxRect clip;
+  clip.x = 0;
+  clip.y = 0;
+  GetSize(&clip.width, &clip.height);
+
+  wxRect panelRect = clip;
+  panelRect.y = -mViewInfo->vpos;
+
+  // Make room for ruler
+  panelRect.y += GetRulerHeight();
+  panelRect.height -= GetRulerHeight();
+  
+  VTrack *t;
+  int num=0;
+
+  wxRect tracksRect = panelRect;
+  tracksRect.x += GetLabelWidth();
+  tracksRect.width -= GetLabelWidth();
+
+  bool envelopeFlag = (mListener->TP_GetCurrentTool() == 1);
+
+  TrackListIterator iter(mTracks);
+  
+  wxRect trackRect = panelRect;
+  wxRect r;
+  
+  t = iter.First();
+  while(t) {
+    trackRect.height = t->GetHeight();
+
+    // Draw label area
+
+    int fontSize = 10;
+    #ifdef __WXMSW__
+    fontSize = 8;
+    #endif
+    
+    int labelw = GetLabelWidth();
+    int vrul = GetVRulerOffset();
+
+    wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+    dc->SetFont(labelFont);
+    dc->SetTextForeground(wxColour(0, 0, 0));
+
+    // If this track is linked to the next one, display a common
+    // border for both, otherwise draw a normal border
+
+    r = trackRect;
+
+    bool skipBorder = false;
+    if (t->linked) {
+      r.height += mTracks->GetLink(t)->GetHeight();
+    }
+    else if (mTracks->GetLink(t))
+      skipBorder = true;
+
+    if (!skipBorder) {
+    
+      // Fill in area outside of the track
+      AColor::Light(dc, false);
+      wxRect side = r;
+      side.width = kLeftInset;
+      dc->DrawRectangle(side);
+      side = r;
+      side.height = kTopInset;
+      dc->DrawRectangle(side);
+      side = r;
+      side.x += side.width - kTopInset;
+      side.width = kTopInset;
+      dc->DrawRectangle(side);
+      
+      if (t->linked) {
+        side = r;
+        side.y += side.height - kTopInset;
+        side.height = kTopInset;
+        dc->DrawRectangle(side);
+      }
+     
+      r.x += kLeftInset;
+      r.y += kTopInset;
+      r.width -= kLeftInset*2;
+      r.height -= kTopInset;
+      
+      // fill in label
+      wxRect fill = r;
+      fill.width = labelw - r.x;
+      AColor::Medium(dc, t->selected);
+      dc->DrawRectangle(fill);
+      
+      // fill in track
+      // --- TODO: get rid of this - TrackArtist should be smart enough to clean up its own area!
+      fill = r;
+      fill.x = labelw;
+      fill.width -= (labelw - r.x);
+      AColor::Medium(dc, false);
+      dc->DrawRectangle(fill);
+      
+      // Borders around track and label area
+      dc->SetPen(*wxBLACK_PEN);
+      dc->DrawLine(r.x, r.y, r.x + r.width-1, r.y);                           // top
+      dc->DrawLine(r.x, r.y, r.x, r.y + r.height-1);                          // left
+      dc->DrawLine(r.x, r.y + r.height-2, r.x + r.width-1, r.y + r.height-2); // bottom
+      dc->DrawLine(r.x + r.width-2, r.y, r.x + r.width-2, r.y + r.height-1);// right
+      dc->DrawLine(vrul, r.y, vrul, r.y + r.height-1);
+      dc->DrawLine(labelw, r.y, labelw, r.y + r.height-1);  // between vruler and track
+      
+      if (t->linked) {
+        int h1 = r.y + t->GetHeight() - kTopInset;
+        dc->DrawLine(vrul, h1-2, r.x + r.width-1, h1-2);
+        dc->DrawLine(vrul, h1 + kTopInset, r.x + r.width-1, h1 + kTopInset);
+      }
+
+      dc->DrawLine(r.x, r.y+16, GetTitleWidth(), r.y+16);                      // title bar
+      dc->DrawLine(r.x + 16, r.y, r.x + 16, r.y + 16);                      // close box
+
+      // Shadow
+      AColor::Dark(dc, false);
+      dc->DrawLine(r.x+1, r.y + r.height-1, r.x + r.width, r.y + r.height-1); // bottom
+      dc->DrawLine(r.x + r.width-1, r.y+1, r.x + r.width-1, r.y + r.height);// right
+
+      r.width = GetTitleWidth();
+      DrawCloseBox(dc, r, false);
+      DrawTitleBar(dc, r, t, false);
+
+      r = trackRect;
+      
+      if (t->GetKind()==VTrack::Wave) {
+        wxString s = wxString::Format("%dHz", (int)(((WaveTrack *)t)->GetRate()+0.5));
+        if (t->linked)
+          s = "Stereo, "+s;
+        else {
+          if (t->channel == VTrack::MonoChannel)
+            s = "Mono, "+s;
+          if (t->channel == VTrack::LeftChannel)
+            s = "Left, "+s;
+          if (t->channel == VTrack::RightChannel)
+            s = "Right, "+s;
+        }
+        dc->DrawText(s, r.x + 6, r.y + 22);
+      }
+
+      if (t->GetKind()==VTrack::Note) {
+        wxRect midiRect;
+        if (GetLabelFieldRect(r, 2, false, midiRect)) {
+          midiRect.height = r.height - (midiRect.y - r.y) - (midiRect.x - r.x);
+          ((NoteTrack *)t)->DrawLabelControls(*dc, midiRect);
+        }
+      }
+    }
+    
+    r = trackRect;
+    r.x += GetVRulerOffset();
+    r.y += kTopInset;
+    r.width = GetVRulerWidth();
+    r.height -= (kTopInset+2);
+    DrawVRuler(dc, r, t);
+    
+    trackRect.y += t->GetHeight();
+    num++;
+    t = iter.Next();
+  }
+
+  // The track artist actually draws the stuff in the tracks
+
+  mTrackArtist->DrawTracks(mTracks,
+						   *dc, tracksRect,
+						   clip,
+						   mViewInfo,
+						   envelopeFlag);
+
+  // Paint over the part below the tracks
+
+  GetSize(&trackRect.width, &trackRect.height);
+  AColor::Light(dc, false);
+  dc->DrawRectangle(trackRect);
+}
+
+/*
+
+old DrawTracks
 
 void TrackPanel::DrawTracks(wxDC *dc)
 {
@@ -1377,22 +1753,6 @@ void TrackPanel::DrawTracks(wxDC *dc)
 	wxRect innerRect = trackRect;
 	innerRect.Inflate(-1, -1);
 
-	/*
-
-	Drawing is taken care of by the TrackArtist now
-
-	if (!t->IsCollapsed()) {
-	  if (sel)
-		t->Draw(*dc, innerRect, h,
-				mViewInfo->zoom, mViewInfo->sel0, mViewInfo->sel1,
-				envelopeFlag);
-	  else
-		t->Draw(*dc, innerRect, h,
-				mViewInfo->zoom, 0.0, 0.0,
-				envelopeFlag);
-	}
-	*/
-
 	// Code duplication warning:  If you add anything here
 	// that happens any time in the loop, add it to the top
 	// of this loop also for the special case of tracks that
@@ -1416,6 +1776,7 @@ void TrackPanel::DrawTracks(wxDC *dc)
   AColor::Medium(dc, false);
   dc->DrawRectangle(r);
 }
+*/
 
 void TrackPanel::OnChannelLeft()
 {
@@ -1447,23 +1808,72 @@ void TrackPanel::OnChannelMono()
   }
 }
 
+void TrackPanel::OnSplitStereo()
+{
+  if (mPopupMenuTarget) {
+    mPopupMenuTarget->linked = false;
+    Refresh(false);
+  }
+}
+
+void TrackPanel::OnMergeStereo()
+{
+  if (mPopupMenuTarget) {
+    mPopupMenuTarget->linked = true;
+    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+    if (partner) {
+      mPopupMenuTarget->channel = VTrack::LeftChannel;
+      partner->channel = VTrack::RightChannel;
+    }
+    else
+      mPopupMenuTarget->linked = false;
+
+    Refresh(false);
+  }
+}
+
+void TrackPanel::RemoveTrack(VTrack *toRemove)
+{
+  TrackListIterator iter(mTracks);
+  VTrack *t = iter.First();
+  VTrack *partner = mTracks->GetLink(toRemove);
+
+  while(t) {
+  	if (t == toRemove || (partner && t == partner))
+  	  t = iter.RemoveCurrent();
+  	else
+  	  t = iter.Next();
+  }
+
+  MakeParentPushState();
+  MakeParentRedrawScrollbars();
+  
+  Refresh(false);
+}
+
 void TrackPanel::OnWaveform()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
-	((WaveTrack *)mPopupMenuTarget)->SetDisplay(0);
-	mPopupMenuTarget = NULL;
-	MakeParentPushState();
-	Refresh(false);
+    ((WaveTrack *)mPopupMenuTarget)->SetDisplay(0);
+    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+    if (partner)
+      ((WaveTrack *)partner)->SetDisplay(0);
+    mPopupMenuTarget = NULL;
+    MakeParentPushState();
+    Refresh(false);
   }
 }
 
 void TrackPanel::OnSpectrum()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
-	((WaveTrack *)mPopupMenuTarget)->SetDisplay(1);
-	mPopupMenuTarget = NULL;
-	MakeParentPushState();
-	Refresh(false);
+    ((WaveTrack *)mPopupMenuTarget)->SetDisplay(1);
+    VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+    if (partner)
+      ((WaveTrack *)partner)->SetDisplay(1);
+    mPopupMenuTarget = NULL;
+    MakeParentPushState();
+    Refresh(false);
   }
 }
 
@@ -1471,6 +1881,9 @@ void TrackPanel::OnRate8()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(8000.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(8000.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1482,6 +1895,9 @@ void TrackPanel::OnRate11()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(11025.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(11025.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1493,6 +1909,9 @@ void TrackPanel::OnRate16()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(16000.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(16000.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1504,6 +1923,9 @@ void TrackPanel::OnRate22()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(22050.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(22050.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1515,6 +1937,9 @@ void TrackPanel::OnRate44()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(44100.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(44100.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1526,6 +1951,9 @@ void TrackPanel::OnRate48()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(48000.0);
+	VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+  if (partner)
+    ((WaveTrack *)partner)->SetRate(48000.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
@@ -1536,28 +1964,46 @@ void TrackPanel::OnRate48()
 void TrackPanel::OnRateOther()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
-	wxString defaultStr;
-	defaultStr.Printf("%d",(int)((WaveTrack *)mPopupMenuTarget)->rate+0.5);
-	wxString rateStr =
-	  wxGetTextFromUser("Enter a rate in Hz (samples per second):",
-						"Set Rate",
-						defaultStr);
+    wxString defaultStr;
+    defaultStr.Printf("%d",(int)((WaveTrack *)mPopupMenuTarget)->rate+0.5);
+    wxString rateStr =
+      wxGetTextFromUser("Enter a rate in Hz (samples per second):",
+    					"Set Rate",
+    					defaultStr);
 
-	if (rateStr != "") {
-	  double theRate;
-	  if (rateStr.ToDouble(&theRate) &&
-		  theRate>=1 &&
-		  theRate<=100000) {
-		((WaveTrack *)mPopupMenuTarget)->SetRate(theRate);
-		MakeParentPushState();
-		MakeParentRedrawScrollbars();
-		Refresh(false);
-	  }
-	  else
-		wxMessageBox("Invalid rate.");
-	}
+    if (rateStr != "") {
+      double theRate;
+      if (rateStr.ToDouble(&theRate) &&
+    	  theRate>=1 &&
+    	  theRate<=100000) {
+    	((WaveTrack *)mPopupMenuTarget)->SetRate(theRate);
+      VTrack *partner = mTracks->GetLink(mPopupMenuTarget);
+       if (partner)
+           ((WaveTrack *)partner)->SetRate(theRate);
+        	MakeParentPushState();
+        	MakeParentRedrawScrollbars();
+        	Refresh(false);
+        }
+      else
+    	  wxMessageBox("Invalid rate.");
+    }
 
-	mPopupMenuTarget = NULL;
+    mPopupMenuTarget = NULL;
+  }
+}
+
+void TrackPanel::OnSetName()
+{
+  VTrack *t = mPopupMenuTarget;
+
+  if (t) {
+    wxString defaultStr = t->name;
+    wxString newName = wxGetTextFromUser("Change track name to:",
+                                         "Track Name",
+                                         defaultStr);
+    if (newName != "")
+      t->name = newName;
+    Refresh(false);
   }
 }
 
@@ -1594,49 +2040,54 @@ bool TrackPanel::GetLabelFieldRect(wxRect &trackRect,
 VTrack *TrackPanel::FindTrack(int mouseX, int mouseY, bool label,
 							 wxRect *trackRect, int *trackNum)
 {
-  wxRect r;
-  if (label) {
-	r.x = 0;
-	r.width = GetLabelWidth() - 1;
-  }
-  else {
-	int wid, ht;
-	r.x = GetLabelWidth() + 5;
-	GetSize(&wid, &ht);
-	r.width = wid - GetLabelWidth() - 10;
-  }
+  wxRect r;  
+  r.x = 0;
   r.y = -mViewInfo->vpos;
   r.y += GetRulerHeight();
+  GetSize(&r.width, &r.height);  
+  
+  if (label) {
+    r.width = GetLabelWidth() - kLeftInset;
+  }
+  else {
+    r.x += GetLabelWidth() + 1;
+    r.width -= GetLabelWidth() - 3;
+  }
 
   TrackListIterator iter(mTracks);
   VTrack *t = iter.First();
 
   int n=1;
 
-  r.y += 5; // Offset top border
-  
   while(t) {
-	r.height = t->GetHeight();
-	
-  	if (r.Inside(mouseX, mouseY)) {
-      if (trackRect)
+    r.height = t->GetHeight();
+
+    if (r.Inside(mouseX, mouseY)) {
+      if (trackRect) {
+        if (label) {
+          r.x += kLeftInset;
+          r.width -= kLeftInset;
+          r.y += kTopInset;
+          r.height -= kTopInset;
+        }
         *trackRect = r;
+      }
       if (trackNum)
         *trackNum = n;
       return t;
     }
 
-	r.y += r.height;
-	n++;
-	t = iter.Next();
+    r.y += r.height;
+    n++;
+    t = iter.Next();
   }
 
   if (mouseY >= r.y && trackNum)
-	*trackNum = n-1;
-  
+    *trackNum = n-1;
+
   return NULL;
 }
-
+/*
 bool TrackPanel::FindTrack(VTrack *target,
 						   bool label,
 						   wxRect *trackRect, int *trackNum)
@@ -1680,21 +2131,41 @@ bool TrackPanel::FindTrack(VTrack *target,
   }
 
   return false;
-}
-
-int TrackPanel::GetLabelWidth()
-{
-  return 110;
-}
-
-int TrackPanel::GetLabelOffset()
-{
-  return 115;
-}
+}*/
 
 int TrackPanel::GetRulerHeight()
 {
   return 20;
+}
+
+int TrackPanel::GetLeftOffset()
+{
+  return GetLabelWidth() + 1;
+}
+
+int TrackPanel::GetTitleWidth()
+{
+  return 100;
+}
+
+int TrackPanel::GetTitleOffset()
+{
+  return 0;
+}
+
+int TrackPanel::GetVRulerWidth()
+{
+  return 30;
+}
+
+int TrackPanel::GetVRulerOffset()
+{
+  return GetTitleOffset() + GetTitleWidth();
+}
+
+int TrackPanel::GetLabelWidth()
+{
+  return GetTitleWidth() + GetVRulerWidth();
 }
 
 //

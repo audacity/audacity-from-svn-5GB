@@ -26,7 +26,7 @@ VTrack::VTrack(DirManager *projDirManager)
   linked = false;
 
   collapsedHeight = 20;
-  expandedHeight = 160;
+  expandedHeight = 120;
 
   tOffset = 0.0;
 
@@ -41,10 +41,11 @@ bool VTrack::Load(wxTextFile *in, DirManager *dirManager)
 {
   this->dirManager = dirManager;
 
+  name = in->GetNextLine();
   wxString line = in->GetNextLine();
   if (line == "linked") {
-	linked = true;
-	line = in->GetNextLine();
+	  linked = true;
+	  line = in->GetNextLine();
   }
   if (line != "offset") return false;
   if (!(in->GetNextLine().ToDouble(&tOffset))) return false;
@@ -54,8 +55,9 @@ bool VTrack::Load(wxTextFile *in, DirManager *dirManager)
 
 bool VTrack::Save(wxTextFile *out, bool overwrite)
 {
+  out->AddLine(name);
   if (linked)
-	out->AddLine("linked");
+	  out->AddLine("linked");
   out->AddLine("offset");
   out->AddLine(wxString::Format("%f", tOffset));
 
@@ -74,6 +76,8 @@ VTrack *VTrack::Duplicate()
   copy->expandedHeight = expandedHeight;
   copy->tOffset = tOffset;
   copy->channel = channel;
+  copy->linked = linked;
+  copy->name = name;
 
   return copy;
 }
@@ -180,9 +184,6 @@ bool TrackList::Save(wxTextFile *out, bool overwrite)
 	  break;
 	case VTrack::Label:
 	  out->AddLine("LabelTrack");
-	  break;
-	case VTrack::Beat:
-	  out->AddLine("BeatTrack");
 	  break;
 	default:
 	  out->AddLine("Track");
@@ -368,6 +369,21 @@ VTrack *TrackList::GetLink(VTrack *t)
 	  return NULL;
 	}
 	p = p->next;
+  }
+  return NULL;
+}
+
+VTrack *TrackList::GetNext(VTrack *t)
+{
+  TrackListNode *p = head;
+  while(p) {
+  	if (p->t == t) {
+  	  if (p->next)
+  		  return p->next->t;
+  	  else
+  	    return NULL;
+  	}
+  	p = p->next;
   }
   return NULL;
 }

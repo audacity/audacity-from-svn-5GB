@@ -19,6 +19,8 @@
 NoteTrack::NoteTrack(DirManager *projDirManager):
   VTrack(projDirManager)
 {
+  name = "Note Track";
+
   mSeq = NULL;
   mLen = 0.0;
   

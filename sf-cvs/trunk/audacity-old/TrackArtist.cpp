@@ -59,8 +59,10 @@ TrackArtist::TrackArtist()
 {
   mTrackHash = NULL;
 
-  mInsetX = 0;
-  mInsetY = 0;
+  mInsetLeft = 0;
+  mInsetTop = 0;
+  mInsetRight = 0;
+  mInsetBottom = 0;
 
   blankBrush.SetColour(214,214,214);
   unselectedBrush.SetColour(192,192,192);
@@ -94,10 +96,12 @@ TrackArtist::~TrackArtist()
   }
 }
 
-void TrackArtist::SetInset(int x, int y)
+void TrackArtist::SetInset(int left, int top, int right, int bottom)
 {
-  mInsetX = x;
-  mInsetY = y;
+  mInsetLeft = left;
+  mInsetTop = top;
+  mInsetRight = right;
+  mInsetBottom = bottom;
 }
 
 void TrackArtist::DrawTracks(TrackList *tracks,
@@ -111,8 +115,8 @@ void TrackArtist::DrawTracks(TrackList *tracks,
   TrackListIterator countIter(tracks);
   VTrack *t = countIter.First();
   while(t) {
-	numTracks++;
-	t = countIter.Next();
+    numTracks++;
+    t = countIter.Next();
   }
 
   wxRect trackRect = r;
@@ -129,42 +133,44 @@ void TrackArtist::DrawTracks(TrackList *tracks,
 		mTrackHash->Delete((long)t);
 	}
 	if (!info) {
-	  info = new TrackInfoCache();
-	  info->track = t;
-	  info->dirty = t->dirty;
-	  info->len = 0;
-	  info->start = 0.0;
-	  info->pps = 1.0;
-	  info->min = NULL;
-	  info->max = NULL;
-	  info->where = NULL;
-	  info->freq = NULL;
-	  info->fheight = 0;
+    info = new TrackInfoCache();
+    info->track = t;
+    info->dirty = t->dirty;
+    info->len = 0;
+    info->start = 0.0;
+    info->pps = 1.0;
+    info->min = NULL;
+    info->max = NULL;
+    info->where = NULL;
+    info->freq = NULL;
+    info->fheight = 0;
 	}
 
 	trackRect.height = t->GetHeight();
 
-	if (trackRect.y < (clip.y+clip.height) &&
-		trackRect.y+trackRect.height > clip.y) {
+  if (trackRect.y < (clip.y+clip.height) &&
+    trackRect.y+trackRect.height > clip.y) {
 
-	  trackRect.Inflate(-mInsetX, -mInsetY);
+    wxRect rr = trackRect;
+    rr.x += mInsetLeft;
+    rr.y += mInsetTop;
+    rr.width -= (mInsetLeft + mInsetRight);
+    rr.height -= (mInsetTop + mInsetBottom);
 
-	  switch(t->GetKind()) {
-	  case VTrack::Wave:
-		if (((WaveTrack *)t)->GetDisplay()==1)
-		  DrawSpectrum(info, dc, trackRect, viewInfo);
-		else
-		  DrawWaveform(info, dc, trackRect, viewInfo, drawEnvelope);
-		break;
-	  case VTrack::Note:
-		DrawNoteTrack(info, dc, trackRect, viewInfo);
-		break;
-	  case VTrack::Label:
-		DrawLabelTrack(info, dc, trackRect, viewInfo);
-		break;
-	  }
-
-	  trackRect.Inflate(mInsetX, mInsetY);
+    switch(t->GetKind()) {
+    case VTrack::Wave:
+      if (((WaveTrack *)t)->GetDisplay()==1)
+        DrawSpectrum(info, dc, rr, viewInfo);
+      else
+        DrawWaveform(info, dc, rr, viewInfo, drawEnvelope);
+      break;
+    case VTrack::Note:
+      DrawNoteTrack(info, dc, rr, viewInfo);
+      break;
+    case VTrack::Label:
+      DrawLabelTrack(info, dc, rr, viewInfo);
+      break;
+    }
 
 	}
 
@@ -509,7 +515,6 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 	  //dc.DrawRectangle(post);
   }
   
-  mid.height -= 2;
   int ctr = r.y + (r.height/2);
   
   int *heights = NULL;
@@ -526,17 +531,9 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   double t = t0;
   int x;
   for(x=0; x<mid.width; x++) {
-    heights[x] = int(0.5 + (mid.height/2.0) *
+    heights[x] = int((mid.height/2) *
     				 track->envelope.GetValue(t+tOffset));
     t += 1/pps;
-  }
-
-  // Draw shadow
-
-  dc.SetPen(shadowPen);
-  for(x=0; x<mid.width; x++) {
-	if (x+2<r.width)
-	  dc.DrawLine(mid.x+x+2, ctr-heights[x]+2, mid.x+x+2, ctr+heights[x]+2);
   }
 
   // Draw track area
@@ -545,18 +542,18 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 
   for(x=0; x<mid.width; x++) {
 	
-	bool sel = false;
-	if (ssel0 <= cache->where[x] && cache->where[x+1] < ssel1) 
-	  sel = true;
+  	bool sel = false;
+  	if (ssel0 <= cache->where[x] && cache->where[x+1] < ssel1) 
+  	  sel = true;
 
-	if (sel && !usingSelPen)
-	  dc.SetPen(selectedPen);
-	else 
-	  if (!sel && usingSelPen)
-		dc.SetPen(unselectedPen);
-	usingSelPen = sel;
+  	if (sel && !usingSelPen)
+  	  dc.SetPen(selectedPen);
+  	else 
+  	  if (!sel && usingSelPen)
+  		dc.SetPen(unselectedPen);
+  	usingSelPen = sel;
 
-	dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, ctr+heights[x]);
+  	dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, ctr+heights[x]);
   }
 
   // Draw samples
@@ -567,21 +564,21 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
 	
     int h1 = ctr-(cache->min[x] * heights[x]) / 32767;
     int h2 = ctr-(cache->max[x] * heights[x]) / 32767;
-	
+    
     dc.DrawLine(mid.x+x,h2,mid.x+x,h1+1);
   }
 
   if (drawEnvelope) {
-	dc.SetPen(envelopePen);
+  	dc.SetPen(envelopePen);
 
-	for(x=0; x<mid.width; x++) {
-	  
-	  int z1 = ctr-heights[x]+3 > ctr? ctr: ctr-heights[x]+3;
-	  int z2 = ctr+heights[x]-3 < ctr? ctr: ctr+heights[x]-3;  
-	  dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, z1);
-	  dc.DrawLine(mid.x+x, ctr+heights[x], mid.x+x, z2);
+  	for(x=0; x<mid.width; x++) {
+  	  
+  	  int z1 = ctr-heights[x]+3 > ctr? ctr: ctr-heights[x]+3;
+  	  int z2 = ctr+heights[x]-3 < ctr? ctr: ctr+heights[x]-3;  
+  	  dc.DrawLine(mid.x+x, ctr-heights[x], mid.x+x, z1);
+  	  dc.DrawLine(mid.x+x, ctr+heights[x], mid.x+x, z2);
 
-	}
+  	}
   }
 
   if (heights)
@@ -602,9 +599,9 @@ void TrackArtist::DrawWaveform(TrackInfoCache *cache,
   }
 
   if (drawEnvelope) {
-	wxRect envRect = r;
-	envRect.height-=2;
-	track->envelope.Draw(dc, envRect, h, pps);
+  	wxRect envRect = r;
+  	envRect.height-=2;
+  	track->envelope.Draw(dc, envRect, h, pps);
   }
 }
 

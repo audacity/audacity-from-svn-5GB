@@ -28,6 +28,8 @@ LabelTrack::LabelTrack(DirManager *projDirManager):
   mFlagPen.SetColour(204, 0, 0);
   mUnselectedPen.SetColour(192,192,192);
   mSelectedPen.SetColour(148,148,170);
+  
+  name = "Label Track";
 
   expandedHeight = 30; // Label tracks are narrow
 
@@ -297,11 +299,13 @@ VTrack *LabelTrack::Duplicate()
   int len = mLabels.Count();
   
   for(int i=0; i<len; i++) {
-	LabelStruct *l = new LabelStruct();
-	l->t = mLabels[i]->t;
-	l->title = mLabels[i]->title;
-	copy->mLabels.Add(l);
+  	LabelStruct *l = new LabelStruct();
+  	l->t = mLabels[i]->t;
+  	l->title = mLabels[i]->title;
+  	copy->mLabels.Add(l);
   }
+  
+  copy->name = name;
   
   return copy;
 }
