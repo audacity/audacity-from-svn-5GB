@@ -267,7 +267,8 @@ void AButton::Disable()
 {
    mEnabled = false;
    mButtonState = AButtonDis;
-   ReleaseMouse();
+   if (HasCapture())
+      ReleaseMouse();
    this->Refresh(false);
 }
 
