@@ -20,8 +20,13 @@
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
 #include <wx/image.h>
+#include <wx/msgdlg.h>
 #include <wx/panel.h>
 #include <wx/tooltip.h>
+
+#ifdef __WXMSW__
+#include <wx/popupwin.h>
+#endif
 
 #include "ASlider.h"
 
@@ -32,11 +37,21 @@
 
 #include "../../images/SliderThumb.xpm"
 
+#if defined __WXMSW__
+const int sliderFontSize = 10;
+#else
+const int sliderFontSize = 12;
+#endif
+
 //
 // TipPanel
 //
 
+#ifdef __WXMSW__
+class TipPanel : public wxPopupWindow
+#else
 class TipPanel : public wxPanel
+#endif
 {
  public:
    TipPanel(wxWindow * parent, wxWindowID id,
@@ -49,8 +64,45 @@ class TipPanel : public wxPanel
 
    wxString label;
 
+   wxWindow *mParent;
+
    DECLARE_EVENT_TABLE()
 };
+
+#ifdef __WXMSW__
+
+BEGIN_EVENT_TABLE(TipPanel, wxPopupWindow)
+   EVT_PAINT(TipPanel::OnPaint)
+END_EVENT_TABLE()
+
+TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
+                   wxString label, const wxPoint &pos):
+   wxPopupWindow(parent)
+{
+   this->label = label;
+   mParent = parent;
+   SetPos(pos);
+}
+
+void TipPanel::SetPos(const wxPoint& pos)
+{
+   int x = pos.x;
+   int y = pos.y;
+
+   if (mParent)
+      mParent->ClientToScreen(&x,&y);
+
+   wxClientDC dc(this);
+   wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   dc.SetFont(labelFont);
+   int width, height;
+   dc.GetTextExtent(label, &width, &height);
+   width = (width * 4) / 3;
+   height += 4;
+   SetSize(x - width/2, y, width, height);
+}
+
+#else
 
 BEGIN_EVENT_TABLE(TipPanel, wxPanel)
    EVT_PAINT(TipPanel::OnPaint)
@@ -68,6 +120,8 @@ TipPanel::TipPanel(wxWindow *parent, wxWindowID id,
 void TipPanel::SetPos(const wxPoint& pos)
 {
    wxClientDC dc(this);
+   wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   dc->SetFont(labelFont);
    int width, height;
    dc.GetTextExtent(label, &width, &height);
    width += 4;
@@ -75,11 +129,15 @@ void TipPanel::SetPos(const wxPoint& pos)
    SetSize(pos.x - width/2, pos.y, width, height);   
 }
 
+#endif
+
 void TipPanel::OnPaint(wxPaintEvent& event)
 {
    wxPaintDC dc(this);
    int width, height, textWidth, textHeight;
 
+   wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   dc.SetFont(labelFont);
    GetClientSize(&width, &height);
    dc.SetPen(*wxBLACK_PEN);
    dc.SetBrush(*wxWHITE_BRUSH);
@@ -181,11 +239,7 @@ LWSlider::LWSlider(wxWindow *parent,
          dc->DrawLine(mRightX-5, mCenterY-12, mRightX-5, mCenterY-7);
          break;
       case PAN_SLIDER:
-         int fontSize = 10;
-         #if defined __WXMSW__
-         fontSize = 8;
-         #endif
-         wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+         wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
          dc->SetFont(labelFont);
          dc->DrawText(_("L"), mLeftX, 1);
          dc->DrawText(_("R"), mRightX-7, 1);
@@ -210,6 +264,7 @@ LWSlider::LWSlider(wxWindow *parent,
    
    mPopWin = NULL;
    Move(pos);
+   CreatePopWin();
 }
 
 LWSlider::~LWSlider()
@@ -221,18 +276,31 @@ LWSlider::~LWSlider()
    delete mPopWin;
 }
 
-void LWSlider::Move(const wxPoint &newpos)
+void LWSlider::CreatePopWin()
+{
+   if (mPopWin)
+      return;
+
+   wxString maxStr = mName + ": 000000";
+
+   if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER)
+      maxStr += "000";
+
+   wxWindow *top = mParent;
+   while(top && !top->IsTopLevel()) {
+      top = top->GetParent();
+   }
+
+   mPopWin = new TipPanel(top, -1, maxStr, wxDefaultPosition);
+   mPopWin->Hide();
+}
+
+void LWSlider::SetPopWinPosition()
 {
    int x, y, wx, wy;
 
-   if (mLeft == newpos.x && mTop == newpos.y)
-      return;
-
-   mLeft = newpos.x;
-   mTop = newpos.y;
-
    x=mWidth/2 + mLeft;
-   y=mHeight + mTop;
+   y=mHeight + mTop + 1;
    wxWindow *top = mParent;
    while(top && !top->IsTopLevel()) {
       top->GetPosition(&wx, &wy);
@@ -241,32 +309,21 @@ void LWSlider::Move(const wxPoint &newpos)
       top = top->GetParent();
    }
 
-   if (mPopWin) {
+   if (mPopWin)
       ((TipPanel *)mPopWin)->SetPos(wxPoint(x, y));
-   }
-   else {
-      wxString maxStr = mName + ": 000000";
+}
 
-      if (mStyle == PAN_SLIDER || mStyle == DB_SLIDER)
-         maxStr += "000";
-
-      mPopWin = new TipPanel(top, -1,
-                             maxStr,
-                             wxPoint(x, y));
-      mPopWin->Hide();
-   }
+void LWSlider::Move(const wxPoint &newpos)
+{
+   mLeft = newpos.x;
+   mTop = newpos.y;
 }
 
 void LWSlider::RecreateTipWin()
 {
    delete mPopWin;
    mPopWin = NULL;
-   int left = mLeft;
-   int top = mTop;
-
-   mLeft--;
-   mTop--;
-   Move(wxPoint(left, top));
+   CreatePopWin();
 }
 
 void LWSlider::OnPaint(wxDC &dc, bool selected)
@@ -297,6 +354,9 @@ void LWSlider::OnPaint(wxDC &dc, bool selected)
    dc.Blit(mLeft+thumbPos, mTop+thumbY, mThumbWidth, mThumbHeight,
            &memDC, 0, 0, wxCOPY, FALSE);
 #endif
+
+   if (mPopWin)
+      mPopWin->Refresh();
 }
 
 void LWSlider::FormatPopWin()
@@ -369,7 +429,6 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
 
          if (abs(newValue - mValue) > mThumbWidth/2) {
             mValue = newValue;
-            Refresh();
          }
 
          mClickValue = mValue;
@@ -379,9 +438,11 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          mParent->CaptureMouse();
 
          FormatPopWin();
-
+         SetPopWinPosition();
          mPopWin->Show();
       }
+
+      return;
 
    } else if (event.ButtonUp() && mIsDragging) {
       mIsDragging = false;
@@ -398,10 +459,10 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          mValue = mWidthX;
    }
 
-   if (oldValue != mValue || event.ButtonDown()) {
-      Refresh();
+   if (oldValue != mValue) {
       FormatPopWin();
       mPopWin->Refresh();
+      Refresh();
    }
 }
 
@@ -448,8 +509,7 @@ void LWSlider::Set(float value)
    if (mValue > mWidthX)
       mValue = mWidthX;
 
-   if (mHW)
-      mParent->Refresh(false);
+   Refresh();
 }
 
 void LWSlider::Refresh()
