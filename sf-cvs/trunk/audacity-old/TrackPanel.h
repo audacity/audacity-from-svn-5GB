@@ -117,6 +117,7 @@ private:
 
   void OnRate8();
   void OnRate11();
+  void OnRate16();
   void OnRate22();
   void OnRate44();
   void OnRate48();

@@ -28,6 +28,7 @@ enum {
 
   OnRate8ID,
   OnRate11ID,
+  OnRate16ID,
   OnRate22ID,
   OnRate44ID,
   OnRate48ID,
@@ -40,6 +41,7 @@ BEGIN_EVENT_TABLE (AStatus, wxWindow)
 
   EVT_MENU(OnRate8ID, AStatus::OnRate8)
   EVT_MENU(OnRate11ID, AStatus::OnRate11)
+  EVT_MENU(OnRate16ID, AStatus::OnRate16)
   EVT_MENU(OnRate22ID, AStatus::OnRate22)
   EVT_MENU(OnRate44ID, AStatus::OnRate44)
   EVT_MENU(OnRate48ID, AStatus::OnRate48)
@@ -61,6 +63,7 @@ AStatus::AStatus(wxWindow *parent, wxWindowID id,
   mRateMenu = new wxMenu();
   mRateMenu->Append(OnRate8ID, "8000 Hz");
   mRateMenu->Append(OnRate11ID, "11025 Hz");
+  mRateMenu->Append(OnRate16ID, "16000 Hz");
   mRateMenu->Append(OnRate22ID, "22050 Hz");
   mRateMenu->Append(OnRate44ID, "44100 Hz");
   mRateMenu->Append(OnRate48ID, "48000 Hz");
@@ -222,6 +225,13 @@ void AStatus::OnRate8()
 void AStatus::OnRate11()
 {
   mRate = 11025.0;
+  mListener->AS_SetRate(mRate);
+  Refresh(false);
+}
+
+void AStatus::OnRate16()
+{
+  mRate = 16000.0;
   mListener->AS_SetRate(mRate);
   Refresh(false);
 }

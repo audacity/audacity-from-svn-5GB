@@ -43,6 +43,7 @@ enum {
 
   OnRate8ID,
   OnRate11ID,
+  OnRate16ID,
   OnRate22ID,
   OnRate44ID,
   OnRate48ID,
@@ -68,6 +69,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
 
   EVT_MENU(OnRate8ID, TrackPanel::OnRate8)
   EVT_MENU(OnRate11ID, TrackPanel::OnRate11)
+  EVT_MENU(OnRate16ID, TrackPanel::OnRate16)
   EVT_MENU(OnRate22ID, TrackPanel::OnRate22)
   EVT_MENU(OnRate44ID, TrackPanel::OnRate44)
   EVT_MENU(OnRate48ID, TrackPanel::OnRate48)
@@ -109,6 +111,7 @@ TrackPanel::TrackPanel(wxWindow *parent, wxWindowID id,
   mRateMenu = new wxMenu();
   mRateMenu->Append(OnRate8ID, "8000 Hz");
   mRateMenu->Append(OnRate11ID, "11025 Hz");
+  mRateMenu->Append(OnRate16ID, "16000 Hz");
   mRateMenu->Append(OnRate22ID, "22050 Hz");
   mRateMenu->Append(OnRate44ID, "44100 Hz");
   mRateMenu->Append(OnRate48ID, "48000 Hz");
@@ -1426,6 +1429,17 @@ void TrackPanel::OnRate11()
 {
   if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
 	((WaveTrack *)mPopupMenuTarget)->SetRate(11025.0);
+	mPopupMenuTarget = NULL;
+	MakeParentPushState();
+	MakeParentRedrawScrollbars();
+	Refresh(false);
+  }
+}
+
+void TrackPanel::OnRate16()
+{
+  if (mPopupMenuTarget && mPopupMenuTarget->GetKind()==VTrack::Wave) {
+	((WaveTrack *)mPopupMenuTarget)->SetRate(16000.0);
 	mPopupMenuTarget = NULL;
 	MakeParentPushState();
 	MakeParentRedrawScrollbars();
