@@ -1216,13 +1216,14 @@ void AudacityProject::Save(bool overwrite /* = true */)
   if (wxFileExists(mFileName)) {
 
 	#ifdef __WXGTK__
-	safetyFileName = "~"+mFileName;
+	safetyFileName = mFileName+"~";
 	#else
 	safetyFileName = mFileName+".bak";
 	#endif
 
 	if (wxFileExists(safetyFileName))
 	  wxRemoveFile(safetyFileName);
+
 	wxRename(mFileName, safetyFileName);
   }
 
