@@ -151,25 +151,63 @@ int audio_open(snd_node *n, long *f)
     short sampleSize = 16;
     short twos = 0; /* i.e. signed */
     OSType compression = 'NONE';
+    SoundInfoList infoList;
+    int len, i, x, y, z;
+    short selected = 0;
+    char *device;
+    char *input;
+    char **buffer;
+    char oneInput[256];
+    char *deviceData;
   
-    data->recording = 1;  
+    data->recording = 1;
     
-    err = SPBOpenDevice("\p", siWritePermission, &data->refnum);
+    len = strlen(n->u.audio.devicename);
+    device = new char[len+1];
+    input = new char[len+1];
+    
+    strcpy(device, n->u.audio.devicename);
+    input[0] = 0;
+    for(i=0; i<len; i++) {
+       if (device[i] == '\n') {
+          device[i] = 0;
+          strcpy(input, &device[i+1]);
+          i = len;
+       }
+    }
+    
+    err = SPBOpenDevice(c2pstr(device), siWritePermission, &data->refnum);
     if (err)
       return !SND_SUCCESS;
     
-    err = SPBSetDeviceInfo(data->refnum, 'qual', &quality);
-    if (err)
-      return !SND_SUCCESS;
+    SPBGetDeviceInfo (data->refnum, siInputAvailable, &infoList);
 
-    err = SPBSetDeviceInfo(data->refnum, 'agc ', &gainControl);
-    if (err)
-      return !SND_SUCCESS;
+    SPBGetDeviceInfo (data->refnum, siInputSourceNames, &buffer);
+    deviceData = buffer[0] + 2;
+   
+    for(int x=0; x<infoList.count; x++) {
+      int y = *deviceData++;
+      z = 0;
+      while(y) {
+        oneInput[z++] = *deviceData++;
+        y--;
+      }
+      oneInput[z] = 0;
+      if (!strcmp(oneInput, input))
+        selected = x;
+    }
     
-    err = SPBSetDeviceInfo(data->refnum, 'srat', &sampleRateFixed);
-    if (err)
-      return !SND_SUCCESS;
+    selected++;
+    SPBSetDeviceInfo (data->refnum, siInputSource, &selected);
+    
+    SPBSetDeviceInfo(data->refnum, 'qual', &quality);
 
+    SPBSetDeviceInfo(data->refnum, 'agc ', &gainControl);
+    
+    SPBSetDeviceInfo(data->refnum, 'srat', &sampleRateFixed);
+
+    SPBSetDeviceInfo(data->refnum, 'plth', &playthroughVolume);
+    
     err = SPBSetDeviceInfo(data->refnum, 'ssiz', &sampleSize);
     if (err)
       return !SND_SUCCESS;
@@ -182,10 +220,6 @@ int audio_open(snd_node *n, long *f)
     if (err)
       return !SND_SUCCESS;
   
-    err = SPBSetDeviceInfo(data->refnum, 'plth', &playthroughVolume);
-    if (err)
-      return !SND_SUCCESS;
-    
     err = SPBSetDeviceInfo(data->refnum, 'twos', &twos);
     if (err)
       return !SND_SUCCESS;
@@ -219,6 +253,14 @@ int audio_open(snd_node *n, long *f)
 
     data->recording = 0;
     data->chan = NULL;
+    
+    
+    
+    
+    
+    ////////////////////////
+    
+    
     err = SndNewChannel(&data->chan, sampledSynth, 0, NULL);
   	
     if (err)
