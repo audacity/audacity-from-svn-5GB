@@ -8,10 +8,10 @@
  * Author e-mail : oparviai @ iki.fi
  * File created  : 13-Jan-2002
  * 
- * Last changed  : $Date: 2004-03-14 15:51:43 $
- * File revision : $Revision: 1.1.1.1 $
+ * Last changed  : $Date: 2004-03-21 03:53:16 $
+ * File revision : $Revision: 1.2 $
  *
- * $Id: RateTransposer.cpp,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
+ * $Id: RateTransposer.cpp,v 1.2 2004-03-21 03:53:16 mbrubeck Exp $
  *
  * License :
  * 
@@ -257,7 +257,7 @@ void RateTransposer::upsample(const SAMPLETYPE *src, uint numSamples)
 
     // First check that there's enough room in 'storeBuffer' 
     // (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = SCALE * numSamples / uRate + 16;
+    sizeTemp = (int)(SCALE * (double)numSamples / uRate + 16);
 
     // Transpose the samples, store the result into the end of "storeBuffer"
     count = transpose(storeBuffer.ptrEnd(sizeTemp), src, numSamples);
@@ -301,7 +301,7 @@ void RateTransposer::downsample(const SAMPLETYPE *src, uint numSamples)
     storeBuffer.receiveSamples(count);
 
     // Transpose the samples (+16 is to reserve some slack in the destination buffer)
-    sizeTemp = SCALE * numSamples / uRate + 16;
+    sizeTemp = (int)(SCALE * (double)numSamples / uRate + 16);
     count = transpose(outputBuffer.ptrEnd(sizeTemp), tempBuffer.ptrBegin(), count);
     outputBuffer.putSamples(count);
 }
