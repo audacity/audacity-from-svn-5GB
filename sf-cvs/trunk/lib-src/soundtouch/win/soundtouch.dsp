@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="soundtouch" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** NICHT BEARBEITEN **
+# ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
 CFG=soundtouch - Win32 Debug
-!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
-!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
 !MESSAGE 
 !MESSAGE NMAKE /f "soundtouch.mak".
 !MESSAGE 
-!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
-!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
 !MESSAGE NMAKE /f "soundtouch.mak" CFG="soundtouch - Win32 Debug"
 !MESSAGE 
-!MESSAGE Für die Konfiguration stehen zur Auswahl:
+!MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "soundtouch - Win32 Release" (basierend auf  "Win32 (x86) Static Library")
-!MESSAGE "soundtouch - Win32 Debug" (basierend auf  "Win32 (x86) Static Library")
+!MESSAGE "soundtouch - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "soundtouch - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -85,220 +85,31 @@ LIB32=link.exe -lib
 # PROP Default_Filter "cpp;cc;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\src\AAFilter.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\AAFilter.cc
-InputName=AAFilter
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\AAFilter.cc
-InputName=AAFilter
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\AAFilter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\FIFOSampleBuffer.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\FIFOSampleBuffer.cc
-InputName=FIFOSampleBuffer
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\FIFOSampleBuffer.cc
-InputName=FIFOSampleBuffer
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\FIFOSampleBuffer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\FIRFilter.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\FIRFilter.cc
-InputName=FIRFilter
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\FIRFilter.cc
-InputName=FIRFilter
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\FIRFilter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\mmx_win.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\mmx_win.cc
-InputName=mmx_win
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\mmx_win.cc
-InputName=mmx_win
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\mmx_win.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\RateTransposer.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\RateTransposer.cc
-InputName=RateTransposer
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\RateTransposer.cc
-InputName=RateTransposer
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\RateTransposer.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\SoundTouch.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\SoundTouch.cc
-InputName=SoundTouch
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\SoundTouch.cc
-InputName=SoundTouch
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\SoundTouch.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\TDStretch.cc
-
-!IF  "$(CFG)" == "soundtouch - Win32 Release"
-
-# Begin Custom Build
-IntDir=.\Release
-InputPath=..\src\TDStretch.cc
-InputName=TDStretch
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MT /W3 /GX /O2 /I "..\src" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "soundtouch - Win32 Debug"
-
-# Begin Custom Build
-IntDir=.\Debug
-InputPath=..\src\TDStretch.cc
-InputName=TDStretch
-
-"$(IntDir)\$(InputName).obj" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\src" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c /TP $(InputPath) /Fo$(IntDir)\$(InputName).obj
-
-# End Custom Build
-
-!ENDIF 
-
+SOURCE=..\source\SoundTouch\TDStretch.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -310,7 +121,7 @@ SOURCE=..\src\AAFilter.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\FIFOSampleBuffer.h
+SOURCE=..\include\FIFOSampleBuffer.h
 # End Source File
 # Begin Source File
 
@@ -330,11 +141,11 @@ SOURCE=..\src\RateTransposer.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\SoundTouch.h
+SOURCE=..\include\SoundTouch.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\STTypes.h
+SOURCE=..\include\STTypes.h
 # End Source File
 # Begin Source File
 
