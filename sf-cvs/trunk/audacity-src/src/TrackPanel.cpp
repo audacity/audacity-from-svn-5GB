@@ -1133,6 +1133,7 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    mViewInfo->h += (center_h - new_center_h);
 }
 
+
 // BG: This handles drawing
 //  Stm:
 // There are several member data structure for handling drawing:
@@ -1231,10 +1232,10 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
          float * newSampleRegion = new float[1 + 2 * SMOOTHING_BRUSH_RADIUS];
          
          //Get a sample  from the track to do some tricks on.
-         seq->Get((samplePtr)sampleRegion, floatSample, 
-                  (int)mDrawingStartSample - SMOOTHING_KERNEL_RADIUS - SMOOTHING_BRUSH_RADIUS,
-                  sampleRegionSize);
-         
+         ((WaveTrack*)mDrawingTrack)->Get((samplePtr)sampleRegion, floatSample, 
+                                          (int)mDrawingStartSample - SMOOTHING_KERNEL_RADIUS - SMOOTHING_BRUSH_RADIUS,
+                                          sampleRegionSize);
+
          int i, j;
 
          //Go through each point of the smoothing brush and apply a smoothing operation.
@@ -1272,13 +1273,12 @@ void TrackPanel::HandleDraw(wxMouseEvent & event)
             newSampleRegion[j+SMOOTHING_BRUSH_RADIUS] =
                newSampleRegion[j + SMOOTHING_BRUSH_RADIUS] * prob + 
                sampleRegion[SMOOTHING_BRUSH_RADIUS + SMOOTHING_KERNEL_RADIUS + j] * (1 - prob);
-
          }
-         
+       
 
 
          //Set the sample to the point of the mouse event
-         seq->Set((samplePtr)newSampleRegion, floatSample, mDrawingStartSample - SMOOTHING_BRUSH_RADIUS, 1 + 2 * SMOOTHING_BRUSH_RADIUS);
+         ((WaveTrack*)mDrawingTrack)->Set((samplePtr)newSampleRegion, floatSample, mDrawingStartSample - SMOOTHING_BRUSH_RADIUS, 1 + 2 * SMOOTHING_BRUSH_RADIUS);
 
          //Clean this up right away to avoid a memory leak
          delete[] sampleRegion;
