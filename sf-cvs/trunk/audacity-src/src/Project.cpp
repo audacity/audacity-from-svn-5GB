@@ -1640,7 +1640,7 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
    wxString path = gPrefs->Read("/DefaultOpenPath",
                                 FROMFILENAME(::wxGetCwd()));
 
-   wxFileDialog dlog(proj, _("Select one or more audio files..."),
+   wxFileDialog dlog(NULL, _("Select one or more audio files..."),
                      path, "",
                      _("All files (*.*)|*.*|"
                        "Audacity projects (*.aup)|*.aup|"
