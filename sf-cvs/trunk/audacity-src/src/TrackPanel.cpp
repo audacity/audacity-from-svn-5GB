@@ -519,6 +519,16 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       mCapturedTrack = NULL;
       mIsSelecting = false;
    }
+   else if (event.ButtonDClick(1) && !event.ShiftDown()) {
+      // Deselect all other tracks and select this one.
+      SelectNone();
+      mViewInfo->sel0 = mTracks->GetMinOffset();
+      mViewInfo->sel1 = mTracks->GetMaxLen();
+      mTracks->Select(mCapturedTrack);
+      Refresh(false);
+      mCapturedTrack = NULL;
+      mIsSelecting = false;
+   }
    else
       SelectionHandleDrag(event);
 }
@@ -535,19 +545,21 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
    mMouseClickX = event.m_x;
    mMouseClickY = event.m_y;
 
-   // AS: If the shift button is being held down, 
-   //  extend the current selection.
    if (event.ShiftDown()) {
+      // If the shift button is down, extend the current selection.
+      double x = PositionToTime(event.m_x, r.x);
 
-      ExtendSelectionRight(event.m_x, r.x);
+      // Edit the selection boundary nearest the mouse click.
+      if (fabs(x - mViewInfo->sel0) < fabs(x - mViewInfo->sel1))
+         mSelStart = mViewInfo->sel1;
+      else
+         mSelStart = mViewInfo->sel0;
 
-      mListener->
-         TP_DisplayStatusMessage(wxString::
-               Format(_("Selection: %lf - %lf s"),
-                  mViewInfo->sel0,
-                  mViewInfo->sel1), 1);
-   } else {  // AS: Otherwise, start a new selection
-
+      mListener->TP_DisplayStatusMessage(
+            wxString::Format(_("Selection: %lf - %lf s"),
+                             mViewInfo->sel0, mViewInfo->sel1), 1);
+   } else {
+      // Otherwise, start a new selection
       SelectNone();
       StartSelection(event.m_x, r.x);
 
@@ -555,14 +567,14 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent &event,
 
       mListener->TP_DisplayStatusMessage(
             wxString::Format(_("Cursor: %lf s"), mSelStart), 1);
-      mIsSelecting = true;
-
-      if (pTrack->GetKind() == VTrack::Label)
-         ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
-                                            mCapturedRect,
-                                            mViewInfo->h,
-                                            mViewInfo->zoom);
    }
+
+   if (pTrack->GetKind() == VTrack::Label)
+      ((LabelTrack *) pTrack)->MouseDown(mMouseClickX, mMouseClickY,
+                                         mCapturedRect,
+                                         mViewInfo->h,
+                                         mViewInfo->zoom);
+   mIsSelecting = true;
 }
 
 // AS: Reset our selection markers.
@@ -600,7 +612,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent &event)
          int x = mAutoScrolling ? mMouseMostRecentX : event.m_x;
          int y = mAutoScrolling ? mMouseMostRecentY : event.m_y;
 
-         ExtendSelectionLeft(x, r.x);
+         ExtendSelection(x, r.x);
 
          mListener->
             TP_DisplayStatusMessage(wxString::
@@ -631,33 +643,9 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent &event)
    }
 }
   
-// AS: Extend the selection to x, where x is in the context of the 
-//  current viewable area of the selected track.
-void TrackPanel::ExtendSelectionRight(int mouseXCoordinate,
-                                      int trackLeftEdge)
-{
-  double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
-
-  // JR: grabs either the left or right side, depending on
-  //  which is closer.
-  if (selend >= mViewInfo->sel1) {
-     mViewInfo->sel1 = selend;
-     mSelStart = mViewInfo->sel0;
-  } else if (selend <= mViewInfo->sel0) {
-     mViewInfo->sel0 = selend;
-     mSelStart = mViewInfo->sel1;
-  } else {
-     if ((mViewInfo->sel1 - selend) <= (selend - mViewInfo->sel0)) {
-        mViewInfo->sel1 = selend;
-     } else {
-        mViewInfo->sel0 = selend;
-     }
-  }
-}
-
-// AS: Extend the selection to the left.
-void TrackPanel::ExtendSelectionLeft(int mouseXCoordinate,
-                                     int trackLeftEdge)
+// Extend the existing selection
+void TrackPanel::ExtendSelection(int mouseXCoordinate,
+                                 int trackLeftEdge)
 {
    double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
 
@@ -1909,11 +1897,10 @@ void TrackPanel::RemoveTrack(VTrack * toRemove)
    VTrack *partner = mTracks->GetLink(toRemove);
    wxString name;
 
-   VTrack *t;
-   for (t = iter.First(); t && t != toRemove && t != partner;
-	t = iter.Next())
-     ;
-     
+   VTrack *t = iter.First();
+   while (t && t != toRemove && t != partner)
+      t = iter.Next();
+
    if (t && (t == toRemove || t == partner)) {
       name = t->GetName();
       t = iter.RemoveCurrent();

@@ -75,9 +75,8 @@ class TrackPanel:public wxWindow {
    void SelectionHandleDrag(wxMouseEvent &event);
    void SelectionHandleClick(wxMouseEvent &event, 
 			     VTrack* pTrack, wxRect r, int num);
-   void StartSelection      (int, int);
-   void ExtendSelectionRight(int, int);
-   void ExtendSelectionLeft (int, int);
+   void StartSelection (int, int);
+   void ExtendSelection(int, int);
 
    // AS: Cursor handling
    void HandleCursor(wxMouseEvent & event);
