@@ -121,6 +121,10 @@ install: lib/$(PALIB) lib/$(PADLLV)
 clean:
 	rm -f $(OBJS) $(TESTS) lib/$(PALIB)
 
+distclean: clean
+	rm -f Makefile
+	rm -f config.status config.cache config.log
+
 %.o: %.c Makefile $(PAINC)
 	$(CC) -c $(CFLAGS) $< -o $@
 

@@ -90,7 +90,9 @@ clean:
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
 	-$(MAKE) -C portmixer/px_win_wmme clean
+	-$(MAKE) -C portaudio-v19 clean
 	-$(MAKE) -C soundtouch clean
+	-$(MAKE) -C libnyquist clean
 
 distclean:
 	-$(MAKE) -C allegro distclean
@@ -110,4 +112,6 @@ distclean:
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C portmixer/px_win_wmme distclean
+	-$(MAKE) -C portaudio-v19 distclean
 	-$(MAKE) -C soundtouch distclean
+	-$(MAKE) -C libnyquist distclean
