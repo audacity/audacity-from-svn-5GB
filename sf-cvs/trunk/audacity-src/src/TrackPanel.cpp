@@ -241,6 +241,10 @@ mAutoScrolling(false)
    //we know that no drawing line needs to be erased.
    mPlayIndicatorExists=false;
 
+   //Initialize a a member variable pointing to the current
+   //drawing track.
+   mDrawingTrack =NULL;
+
 }
 
 TrackPanel::~TrackPanel()
@@ -1071,130 +1075,97 @@ void TrackPanel::DoZoomInOut(wxMouseEvent & event, int trackLeftEdge)
    mViewInfo->h += (center_h - new_center_h);
 }
 
-bool TrackPanel::IsDragDrawing()
-{
-   int result = abs(mDrawMouseEnd - mDrawMouseStart);
-
-   //If threshold is reached, keep it there.
-   if(result > 3)
-      mDrawMouseStart = -10;
-
-   return (result > 3);
-}
 
 // BG: This handles drawing
 void TrackPanel::HandleDraw(wxMouseEvent & event)
 {
-   if(event.ButtonDown(1) || event.ButtonDClick(1) || event.Dragging() || event.ButtonUp()) {
+   
+   double rate;   //Declare the track rate up-front because it gets used in multiple places later.
 
+   //The following happens on a single-click:
+   // Select the track and store it away
+   if (event.ButtonDown(1) ) {
+      
+      //declare a rectangle to determine clicking position
       wxRect r;
       int dummy;
+      
+      //Get the track the mouse is over, and save it away for future events
+      mDrawingTrack = FindTrack(event.m_x, event.m_y, false, &r, &dummy);
+      mDrawingTrackTop=r.y;
 
-      //BG: Get the track the mouse is over
-      Track *selectedTrack = FindTrack(event.m_x, event.m_y, false, &r, &dummy);
-
-      if(selectedTrack == NULL)
+      //If the mouse isn't over a track, exit the function and don't do anything
+      if(mDrawingTrack == NULL)
          return;
+      
+     
+      
+      ///
+      /// Get out of here if we shouldn't be drawing right now:
+      /// 
 
-      Sequence *seq = ((WaveTrack *)selectedTrack)->GetSequence();
-
-      double rate = ((WaveTrack *)selectedTrack)->GetRate();
-
-      if (event.ButtonDown(1) || event.ButtonDClick(1)) {
-
-         if(((WaveTrack *)selectedTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
+      //If we aren't displaying the waveform, Display a message dialog
+      if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
          {
             wxMessageBox("Draw currently only works with waveforms.", "Notice");
             return;
          }
 
-         bool showPoints = (mViewInfo->zoom / rate > 3.0);
-
-         if(!showPoints)
+      //Get rate in order to calculate the critical zoom threshold
+      rate = ((WaveTrack *)mDrawingTrack)->GetRate();
+      //Find out the zoom level
+      bool showPoints = (mViewInfo->zoom / rate > 3.0);
+      
+      //If we aren't zoomed in far enough, show a message dialog.
+      if(!showPoints)
          {
             wxMessageBox("You are not zoomed in enough. Zoom in until you can see the individual samples.", "Notice");
             return;
          }
 
+   }
+
+   //The following will happen on a drag or a down-click.
+   // The point should get re-drawn at the location of the mouse.
+   if (event.Dragging() || event.ButtonDown())
+      {
+         //Exit if the mDrawingTrack is null.
+         if( mDrawingTrack == NULL)
+            return;
+         
+         //Get the rate of the sequence
+         rate = ((WaveTrack *)mDrawingTrack)->GetRate();
+         
+         // Figure out what time the click was at
          double t0 = PositionToTime(event.m_x, GetLeftOffset());
-
+      
+         //convert this to samples
          sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
+      
+         // Calculate where the mouse is located vertically (between +/- 1)
+         float newLevel =  -2 * (float)(event.m_y - mDrawingTrackTop) / mDrawingTrack->GetHeight() + 1;
+   
+         //Make sure the new level is between +/-1
+         newLevel = newLevel >  1.0 ?  1.0: newLevel;
+         newLevel = newLevel < -1.0 ? -1.0: newLevel;
 
-         seq->Get((samplePtr)&mDrawStart, floatSample, s0, 1);
-         mDrawEnd = mDrawStart;
-
-         mDrawMouseXStart = event.m_x;
-         mDrawMouseStart = event.m_y;
-         mDrawMouseEnd = mDrawMouseStart;
-
-      } else if (event.Dragging()) {
-
-         // The following code handles dragging samples around with the draw tool
-         // event is relative to the top of the ruler, so this needs to be accounted for
-         // when doing the redrawing.
-
-         //Calculate the height of the sample:
-         // start with the negative vertical position of the mViewInfo
-         //I can't figure out why this is done:
-         float yoffset = -mViewInfo->vpos;
-
-         //Add the ruler height
-         yoffset += GetRulerHeight();
-
-         // Add the height of the pixel in question
-         // This is done by (1) finding the proportionate level that the current mouse event
-         // occurred at and multiplying by the track height to get an actual pixel location.
-
-         yoffset += selectedTrack->GetHeight() * (int)((mViewInfo->vpos + (event.m_y - GetRulerHeight())) 
-                                                       / selectedTrack->GetHeight());
-
-         // Now, yoffset should indicate the current vertical position of the sample on the track.  
-         // use it to calculate yval, which does???
-         float yval = -(event.m_y-yoffset) + (selectedTrack->GetHeight()/2);
-
-         //Calculate the sign of yval
-         float sign = (yval >= 0 ? 1 : -1);
-
-         //Take yval and add .5 or -.5 depending on the sign. Then devide it by half the track height.
-         mDrawEnd = ((float)(yval + (sign * 0.5)) / (float)(selectedTrack->GetHeight()/2));
-
-         mDrawMouseEnd = event.m_y;
-
-         if (IsDragDrawing()) {
-
-            double t0 = PositionToTime(mDrawMouseXStart, GetLeftOffset());
-
-            sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
-
-            seq->Set((samplePtr)&mDrawEnd, floatSample, s0, 1);
-
-            Refresh(false);
-
-         }
-
-      } else if (event.ButtonUp()) {
-
-         double t0 = PositionToTime(mDrawMouseXStart, GetLeftOffset());
-
-         sampleCount s0 = (sampleCount) (double)(t0 * rate + 0.5);
-
-         if (IsDragDrawing())
-         {
-            seq->Set((samplePtr)&mDrawEnd, floatSample, s0, 1);
-            MakeParentPushState(wxString::Format(_("Moved Sample")));
-         }
-         else
-         {
-            seq->Set((samplePtr)&mDrawStart, floatSample, s0, 1);
-         }
-
+         //Get the sequence of samples so you can mess with it
+         Sequence *seq = ((WaveTrack *)mDrawingTrack)->GetSequence();
+         //Set the sample to the point of the mouse event
+         seq->Set((samplePtr)&newLevel, floatSample, s0, 1);
+         
+         //Redraw the region of the selected track
          Refresh(false);
 
-         mDrawMouseStart = mDrawMouseEnd = mDrawMouseXStart = 0;
-
       }
+   
+   //On up-click, send the state to the undo stack
+   else if(event.ButtonUp()) {
+      mDrawingTrack=NULL;       //Set this to NULL so it will catch improper drag events.
+      MakeParentPushState(wxString::Format(_("Moved Sample")));
    }
 }
+
 
 // AS: This is for when a given track gets the x.
 void TrackPanel::HandleClosing(wxMouseEvent & event)
