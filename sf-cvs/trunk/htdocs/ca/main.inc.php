@@ -34,6 +34,7 @@ $develListStr = "Llistat de desenvolupadors de l'Audacity";
 $develNewsStr = "Notícies de desenvolupament";
 $sourceForgeStr = "Projecte SourceForge";
 $browseSourceStr = "Codi font";
+$browseDoxygenStr = "Navegueu per la documentació Doxygen";
 $creditsStr = "Crèdits";
 $sourceStr = "Codi Font";
 $macOS9ReqStr = "Requereix el Mac OS 8.6 o més elevat";
@@ -54,4 +55,5 @@ $releaseNotesStr = "Notes de llançament";
 $releaseNotesStr2 = "Notes de llançament (què hi ha de nou en aquesta versió?)";
 $vstLinksHereStr = "Descarregueu-vos els pedaços VST ací:";
 $docsStr = "Descarregueu-vos l'última documentació";
+$clickEnlargeStr = "(Cliqueu a qualsevol imatge per engrandir-la)";
 ?>
