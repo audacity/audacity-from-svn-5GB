@@ -10,7 +10,7 @@ Audacity 1.2.0-pre4 is nu beschikbaar voor Windows en Linux.  Een nieuwe vrijgav
 </p>
 
 <p>
-De <a href="beta.php?<?php print "$langQueryStr"; ?>">Beta Versies</a>
+De <a href="beta.php<?php print "$langQueryStr"; ?>">Beta Versies</a>
 pagina bevat de complete vrijgave notities en download links.
 </p>
 

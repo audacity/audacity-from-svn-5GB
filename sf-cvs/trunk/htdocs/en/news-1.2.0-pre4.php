@@ -13,7 +13,7 @@ Mac OS X will be available after we fix some important bugs on that platform.
 </p>
 
 <p>
-The <a href="beta.php?<?php print "$langQueryStr"; ?>">Beta Versions</a>
+The <a href="beta.php<?php print "$langQueryStr"; ?>">Beta Versions</a>
 page has complete release notes and download links.
 </p>
 
