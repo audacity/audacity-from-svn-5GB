@@ -710,8 +710,8 @@ void TrackArtist::DrawWaveform(TrackInfoCache * cache,
    if (t0 > t1)
       t0 = t1;
 
-   int ssel0 = wxMin(0, int((sel0 - tOffset) * rate + 0.5));
-   int ssel1 = wxMin(0, int((sel1 - tOffset) * rate + 0.5));
+   int ssel0 = wxMax(0, int((sel0 - tOffset) * rate + 0.5));
+   int ssel1 = wxMax(0, int((sel1 - tOffset) * rate + 0.5));
 
    if (ssel0 != ssel1 && ssel1 > numSamples)
          ssel1 = numSamples;
