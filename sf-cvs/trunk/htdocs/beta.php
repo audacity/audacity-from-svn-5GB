@@ -17,10 +17,8 @@
 <?php include GetTranslation("beta-1.2.0-pre1"); ?>
 
 <p align="center">
-<a href="images/audacity-1.2.0-pre1.png">
+<a href="<?php print "screenshots.php?$langLinkStr"; ?>">
 <img src="images/audacity-1.2.0-pre1-small.png" border=0 width=273 height=226></a>
-<br>
-Screen shot: Audacity 1.2.0-pre1 on Linux
 </p>
 
 <?php include GetTranslation("beta-1.2.0-pre1-problems"); ?>
