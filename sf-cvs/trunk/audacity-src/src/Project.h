@@ -20,25 +20,26 @@
 
 #include "Audacity.h"
 
+#include "AStatus.h"
+#include "AudacityFileHistory.h"
+#include "DirManager.h"
+#include "UndoManager.h"
+#include "ViewInfo.h"
+#include "ToolBar.h"
+#include "TrackPanel.h"
+
+#include "commands/CommandManager.h"
+#include "effects/Effect.h"
+#include "xml/XMLTagHandler.h"
+
 #include <wx/defs.h>
+#include <wx/dnd.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
 #include <wx/generic/dragimgg.h>
 #include <wx/frame.h>
 #include <wx/intl.h>
 #include <wx/dcclient.h>
-
-#include "AStatus.h"
-#include "DirManager.h"
-#include "effects/Effect.h"
-#include "UndoManager.h"
-#include "ViewInfo.h"
-#include "ToolBar.h"
-#include "TrackPanel.h"
-#include "xml/XMLTagHandler.h"
-#include "AudacityFileHistory.h"
-
-#include "commands/CommandManager.h"
 
 const int AudacityProjectTimerID = 5200;
 
@@ -80,6 +81,16 @@ enum PlayMode {
    normalPlay,
    oneSecondPlay,
    loopedPlay
+};
+
+class AudacityDropTarget : public wxFileDropTarget
+{
+ public:
+   AudacityDropTarget(AudacityProject *proj);
+   virtual ~AudacityDropTarget();
+   virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames);
+ private:
+   AudacityProject *mProject;
 };
 
 class AudacityProject:public wxFrame,
@@ -153,7 +164,6 @@ class AudacityProject:public wxFrame,
    void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
-   void OnDropFiles(wxDropFilesEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void OnIconize(wxIconizeEvent &event);

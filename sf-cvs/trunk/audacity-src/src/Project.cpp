@@ -153,6 +153,22 @@ void SetActiveProject(AudacityProject * project)
    wxTheApp->SetTopWindow(project);
 }
 
+AudacityDropTarget::AudacityDropTarget(AudacityProject *proj)
+   : mProject(proj)
+{
+}
+
+AudacityDropTarget::~AudacityDropTarget()
+{
+}
+
+bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+{
+   for (int i = 0; i < filenames.GetCount(); i++)
+      mProject->Import(filenames[i]);
+   return true;
+}
+
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
    bool bMaximized;
@@ -322,7 +338,6 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND_SCROLL_LINEDOWN(HSBarID, AudacityProject::OnScrollRightButton)
     EVT_COMMAND_SCROLL(HSBarID, AudacityProject::OnScroll)
     EVT_COMMAND_SCROLL(VSBarID, AudacityProject::OnScroll)
-    EVT_DROP_FILES(AudacityProject::OnDropFiles)
     EVT_TIMER(AudacityProjectTimerID, AudacityProject::OnTimer)
     // Update menu method
     EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
@@ -361,6 +376,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mDrag = NULL;
 
+   SetDropTarget(new AudacityDropTarget(this));
+   
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
    mDirManager = new DirManager();
@@ -549,11 +566,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mTrackFactory = new TrackFactory(mDirManager);
    mImporter = new Importer;
    mImportingRaw = false;
-
-#ifdef __WXMSW__
-   // Accept drag 'n' drop files
-   DragAcceptFiles(true);
-#endif
 
    gAudacityProjects.Add(this);
 }
@@ -1705,19 +1717,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //BG: Process messages before we destroy the window
    wxSafeYield();
    Destroy();
-}
-
-void AudacityProject::OnDropFiles(wxDropFilesEvent & event)
-{
-   int numFiles = event.GetNumberOfFiles();
-
-   if (numFiles > 0) {
-      wxString *files = event.GetFiles();
-
-      int i;
-      for (i = 0; i < numFiles; i++)
-         Import(files[i]);
-   }
 }
 
 // static method, can be called outside of a project
