@@ -2,11 +2,12 @@
 
 <pre>
 Problemas conocidos en Audacity 1.1.3:
-  - Coloca un archivo llamado "Audacity-Commands.xml" en tu directorio
-    principal u otra parte de tu computadora. Este archivo es necesario
-    para el funcionamiento de Audacity 1.1.3. Pedimos disculpas por
-    desordenar tu computadora y prometemos colocar el archivo en un
-    lugar más agradable en la próxima versión.
+  - Éste coloca un archivo llamado "Audacity-Commands.xml" en tu
+    directorio principal u otra parte de tu computadora. Este
+    archivo es necesario para el funcionamiento de Audacity 1.1.3.
+    Pedimos disculpas por desordenar tu computadora y prometemos
+    colocar el archivo en un lugar más agradable en la próxima
+    versión.
 
 Nuevas capacidades en Audacity 1.1.3:
   * Interface del Usuario
@@ -15,7 +16,7 @@ Nuevas capacidades en Audacity 1.1.3:
       de entrada directo desde Audacity.
 
   * Archivo E/S
-    - Utiliza un formato de achivo de proyecto mejorado.
+    - Utiliza un formato de archivo de proyecto mejorado.
       (Desafortunadamente la lectura de formatos previos,
       incluyendo 1.1.1, no es soportada.)
     - Archivos de bloque (guardados en directorios de proyecto de
