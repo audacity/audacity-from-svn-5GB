@@ -3020,17 +3020,17 @@ void TrackPanel::GetMuteSoloRect(const wxRect r, wxRect & dest, bool solo) const
 
 void TrackPanel::GetGainRect(const wxRect r, wxRect & dest) const
 {
-   dest.x = r.x + 8;
+   dest.x = r.x + 7;
    dest.y = r.y + 70;
-   dest.width = 80;
+   dest.width = 84;
    dest.height = 25;
 }
 
 void TrackPanel::GetPanRect(const wxRect r, wxRect & dest) const
 {
-   dest.x = r.x + 8;
+   dest.x = r.x + 7;
    dest.y = r.y + 100;
-   dest.width = 80;
+   dest.width = 84;
    dest.height = 25;
 }
 
