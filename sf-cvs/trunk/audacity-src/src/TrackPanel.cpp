@@ -303,6 +303,10 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mPencilCursor = new wxCursor(wxCURSOR_PENCIL);
    mSelectCursor = new wxCursor(wxCURSOR_IBEAM);
+
+   #ifdef __WXMAC__
+   mEnvelopeCursor = new wxCursor(wxCURSOR_ARROW);
+   #else
    {
       wxImage EnvImage = wxImage(wxBitmap(EnvCursorXpm).ConvertToImage());
       EnvImage.SetMaskColour(128,128,128);
@@ -311,6 +315,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
       EnvImage.SetOption( wxIMAGE_OPTION_CUR_HOTSPOT_Y, 16 );
       mEnvelopeCursor = new wxCursor( EnvImage );
    }
+   #endif
    mSlideCursor = new wxCursor(wxCURSOR_SIZEWE);
    mSmoothCursor = new wxCursor(wxCURSOR_SPRAYCAN);
    mResizeCursor = new wxCursor(wxCURSOR_SIZENS);
