@@ -9,16 +9,6 @@ clean:
 	rm -f $(MO_FILES) $(PO_FILES) $(POT_FILE)
 	rm -f $(PO_FILES:%=%~)
 
-# Make all files world-readable, and upload to SourceForge.
-RSYNC=rsync
-RSYNC_ARGS=-Crlvz
-UPLOAD_PATH=shell.sf.net:/home/groups/a/au/audacity/htdocs
-
-publish:
-	chmod --quiet -R g+rwX .
-	chmod --quiet -R o+rX .
-	$(RSYNC) $(RSYNC_ARGS) ./ $(UPLOAD_PATH)/
-
 # Build the POT file (message catalog template).
 SOURCES := $(wildcard *.php */*.php)
 XGETTEXT=xgettext
@@ -46,4 +36,4 @@ MSGFMT_ARGS=-fv
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
 
-.PHONY: publish clean all
+.PHONY: clean all
