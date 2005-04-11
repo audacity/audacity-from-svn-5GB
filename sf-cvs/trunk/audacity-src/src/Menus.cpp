@@ -390,7 +390,7 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag);
    c->EndSubMenu();
 
-   alignLabels.Remove(7); // Can't align together and move cursor
+   alignLabels.RemoveAt(7); // Can't align together and move cursor
 
    c->BeginSubMenu(_("Align and move cursor..."));
    c->AddItemList(wxT("AlignMove"), alignLabels, FN(OnAlignMoveSel));
