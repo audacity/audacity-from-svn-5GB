@@ -70,7 +70,7 @@
   <li>Ohkubo Kohei (ja)</li>
   <li>XiaoXi Liu (zh_CN)</li>
   <li>Tino Meinen (nl)</li>
-  <li>潘明忠 (zh_TW)</li>
+  <li><a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">潘明忠</a> (zh_TW)</li>
   <li>Ezequiel Plaza (es)</li>
   <li>Sebastian Pacholski (pl)</li>
   <li>Antonio Paniagua (es)</li>
