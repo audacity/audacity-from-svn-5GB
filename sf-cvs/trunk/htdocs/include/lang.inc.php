@@ -31,7 +31,8 @@ $available_locales = array(
   "sv" => array("sv_SE", "Svenska"),
   "ja" => array("ja_JP", "日本語"),
   "ru" => array("ru_RU", "Русский"),
-  "zh-CN" => array("zh_CN.UTF-8", "&#20013;&#25991;(&#31616;)"),
+  "zh-CN" => array("zh_CN.UTF-8", "中文(简)"),
+  "zh-TW" => array("zh_TW.UTF-8", "中文(繁)"),
 );
 
 // Set up the translation variables and libraries.
