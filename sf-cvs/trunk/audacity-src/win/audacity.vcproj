@@ -108,10 +108,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib PAStaticWMME.lib wxmsw.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib png.lib zlib.lib jpeg.lib tiff.lib libFLAC++.lib libFLAC.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
+				ShowProgress="2"
 				OutputFile=".\Release/audacity.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="..\lib-src\libogg\win32\static_release,..\lib-src\libvorbis\win32\vorbis_static_release,..\lib-src\libvorbis\win32\vorbisfile_static_release,$(WXWIN)\lib,..\lib-src\libid3tag,..\lib-src\expat,..\lib-src\libmad,..\lib-src\libsndfile\Win32,..\lib-src\portaudio\winproj\lib,..\lib-src\allegro,..\lib-src\libnyquist,..\lib-src\portmixer\winproj,..\lib-src\libsamplerate\Win32,..\lib-src\libflac\obj\lib,..\lib-src\soundtouch\source\SoundTouch\Release,..\lib-src\libresample\win"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Release/audacity.pdb"
 				SubSystem="2"
@@ -328,6 +330,28 @@
 			</File>
 			<File
 				RelativePath="..\src\DirManager.h">
+			</File>
+			<File
+				RelativePath="..\src\Dither.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\Dither.h">
 			</File>
 			<File
 				RelativePath="..\src\EditToolBar.cpp">
@@ -2245,6 +2269,28 @@
 				RelativePath="..\src\prefs\KeyConfigPrefs.h">
 			</File>
 			<File
+				RelativePath="..\src\prefs\MousePrefs.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="2"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\prefs\MousePrefs.h">
+			</File>
+			<File
 				RelativePath="..\src\prefs\PrefsDialog.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -2789,119 +2835,6 @@
 				RelativePath="..\src\effects\ladspa\LoadLadspa.h">
 			</File>
 		</Filter>
-		<File
-			RelativePath="wx\msw\blank.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\bullseye.cur">
-		</File>
-		<File
-			RelativePath="..\src\Dither.cpp">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\src\Dither.h">
-		</File>
-		<File
-			RelativePath="wx\msw\error.ico">
-		</File>
-		<File
-			RelativePath="wx\msw\hand.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\info.ico">
-		</File>
-		<File
-			RelativePath="wx\msw\magnif1.cur">
-		</File>
-		<File
-			RelativePath="..\src\prefs\MousePrefs.cpp">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="2"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\src\prefs\MousePrefs.h">
-		</File>
-		<File
-			RelativePath="wx\msw\noentry.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\pbrush.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\pencil.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\pntleft.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\pntright.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\query.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\question.ico">
-		</File>
-		<File
-			RelativePath="wx\msw\roller.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\size.cur">
-		</File>
-		<File
-			RelativePath="wx\msw\tip.ico">
-		</File>
-		<File
-			RelativePath="wx\msw\warning.ico">
-		</File>
-		<File
-			RelativePath="wx\msw\watch1.cur">
-		</File>
-		<File
-			RelativePath="wx\html\msw\wbook.ico">
-		</File>
-		<File
-			RelativePath="wx\html\msw\wfolder.ico">
-		</File>
-		<File
-			RelativePath="wx\html\msw\whelp.ico">
-		</File>
-		<File
-			RelativePath="wx\html\msw\whlproot.ico">
-		</File>
-		<File
-			RelativePath="wx\html\msw\wpage.ico">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
