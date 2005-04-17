@@ -861,6 +861,7 @@ msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you can’t run the installer because you are in a computer lab or "
 "other restricted environment, download and unzip this file instead."
+msgstr ""
 "<a href=\"%s\">Audacity %s zip檔案</a> (%.1lf MB)\n"
 " - 如果您在電腦室或受限的場所而無法執行安裝程式，則請下載並解壓此檔案。"
 
