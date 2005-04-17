@@ -81,7 +81,7 @@
   <li>Lars Carlsson (sv)</li>
   <li>Maxim Dziumanenko (uk)</li>
   <li>XiaoXi Liu (zh_CN)</li>
-  <li><a href="http://chido.idv.st/">Chido</a></li>
+  <li><a href="http://chido.idv.st/">Chido</a> (zh_TW)</li>
   <li>潘明忠 - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity 中文化</a> (zh_TW)</li>
 </ul>
 
