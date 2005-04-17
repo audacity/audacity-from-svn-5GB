@@ -50,38 +50,39 @@
 <?php
 ?>
 <ul>
-  <li>Lionel Allorge (fr)</li>
   <li>Mikhail Balabanov (bg)</li>
-  <li>Márton Balázs - <a href="http://documan.sourceforge.net/">documan magyarító oldala</a> (hu)</li>
-  <li>Olivier Ballestraz (fr)</li>
-  <li>Tomasz Bandura (pl)</li>
-  <li>Christian Brochec (fr)</li>
   <li>Francesc Busquets (ca)</li>
-  <li>Lars Carlsson (sv)</li>
   <li>Pau Crespo (ca)</li>
-  <li>Aldo Boccacci (it)</li>
-  <li>Henrik Clausen (da)</li>
-  <li>Maxim Dziumanenko (uk)</li>
-  <li>Rok Hecl (sl)</li>
-  <li>Jozsef Herczeg (hu)</li>
-  <li>Ilija Iliev (mk)</li>
-  <li>Yuri Ilyin (ru)</li>
-  <li>Christoph Kobe (de)</li>
-  <li>Ohkubo Kohei (ja)</li>
-  <li>XiaoXi Liu (zh_CN)</li>
-  <li>Tino Meinen (nl)</li>
-  <li>Micil Sheain Mhicil (ga)</li>
-  <li>潘明忠 - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity 中文化</a> (zh_TW)</li>
-  <li>Ezequiel Plaza (es)</li>
-  <li>Sebastian Pacholski (pl)</li>
-  <li>Antonio Paniagua (es)</li>
-  <li>Alexandre Prokoudine (ru)</li>
-  <li>Martin Srebotnjak (sl)</li>
-  <li>Cleber Tavano (pt_BR)</li>
   <li>Aleš Tošovský (cs)</li>
-  <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
-  <li>Petri Vuorio (fi)</li>
+  <li>Henrik Clausen (da)</li>
+  <li>Christoph Kobe (de)</li>
   <li>Karsten Zeller (de)</li>
+  <li>Antonio Paniagua (es)</li>
+  <li>Ezequiel Plaza (es)</li>
+  <li>Petri Vuorio (fi)</li>
+  <li>Lionel Allorge (fr)</li>
+  <li>Olivier Ballestraz (fr)</li>
+  <li>Christian Brochec (fr)</li>
+  <li>Micil Sheain Mhicil (ga)</li>
+  <li>Márton Balázs - <a href="http://documan.sourceforge.net/">documan magyarító oldala</a> (hu)</li>
+  <li>Jozsef Herczeg (hu)</li>
+  <li>Aldo Boccacci (it)</li>
+  <li>Ohkubo Kohei (ja)</li>
+  <li>Ilija Iliev (mk)</li>
+  <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
+  <li>Tino Meinen (nl)</li>
+  <li>Tomasz Bandura (pl)</li>
+  <li>Sebastian Pacholski (pl)</li>
+  <li>Cleber Tavano (pt_BR)</li>
+  <li>Yuri Ilyin (ru)</li>
+  <li>Alexandre Prokoudine (ru)</li>
+  <li>Rok Hecl (sl)</li>
+  <li>Martin Srebotnjak (sl)</li>
+  <li>Lars Carlsson (sv)</li>
+  <li>Maxim Dziumanenko (uk)</li>
+  <li>XiaoXi Liu (zh_CN)</li>
+  <li><a href="http://chido.idv.st/">Chido</a></li>
+  <li>潘明忠 - <a href="http://rt.openfoundry.org/Foundry/Project/index.html?Queue=210">Audacity 中文化</a> (zh_TW)</li>
 </ul>
 
 <h3><?=_("Libraries")?></h3>
