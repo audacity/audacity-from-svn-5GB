@@ -1,4 +1,3 @@
-# translation of audacity.po to zh_TW.po 
 # translation of audacity.po to Chinese(Tranditonal)
 # Chinese(Tranditonal) translation of Audacity 1.2.
 # Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
@@ -6,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2005-04-11 18:33+0800\n"
+"PO-Revision-Date: 2005-04-15 20:14+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -185,7 +184,7 @@ msgstr "靜音(&S)\tCtrl+L"
 
 #: ../src/Menus.cpp:247
 msgid "&Trim\tCtrl+T"
-msgstr "剪輯&Trim [留下所選區域]\tCtrl+T"
+msgstr "剪輯&[Trim(留下所選區域)]\tCtrl+T"
 
 #: ../src/Menus.cpp:220
 msgid "&Undo\tCtrl+Z"
@@ -326,15 +325,15 @@ msgstr "對齊"
 
 #: ../src/Menus.cpp:375
 msgid "Align End with Cursor"
-msgstr "結尾和游標對齊"
+msgstr "結束點和游標對齊"
 
 #: ../src/Menus.cpp:377
 msgid "Align End with Selection End"
-msgstr "結尾與選取範圍尾端對齊"
+msgstr "結束點與選取範圍尾端對齊"
 
 #: ../src/Menus.cpp:376
 msgid "Align End with Selection Start"
-msgstr "結尾與選取範圍前端對齊"
+msgstr "結束點與選取範圍前端對齊"
 
 #: ../src/Menus.cpp:378
 msgid "Align Tracks Together"
@@ -358,11 +357,11 @@ msgstr "與原點對齊(&Z)"
 
 #: ../src/Menus.cpp:374
 msgid "Align with Selection &End"
-msgstr "與選取範尾端對齊(&E)"
+msgstr "與選取範圍尾端對齊(&E)"
 
 #: ../src/Menus.cpp:373
 msgid "Align with Selection &Start"
-msgstr "與選取範前端對齊(&E)"
+msgstr "與選取範圍前端對齊(&E)"
 
 #: ../src/Menus.cpp:2869
 msgid "Aligned"
@@ -374,15 +373,15 @@ msgstr "已對齊游標"
 
 #: ../src/Menus.cpp:2857
 msgid "Aligned end with cursor"
-msgstr "已對齊結尾與游標"
+msgstr "已對齊結束點與游標"
 
 #: ../src/Menus.cpp:2865
 msgid "Aligned end with selection end"
-msgstr "已對齊結尾與選取範圍尾端"
+msgstr "已對齊結束點與選取範圍尾端"
 
 #: ../src/Menus.cpp:2861
 msgid "Aligned end with selection start"
-msgstr "已對齊結尾與選取範圍前端"
+msgstr "已對齊結束點與選取範圍前端"
 
 #: ../src/Menus.cpp:2853
 msgid "Aligned with selection end"
@@ -563,7 +562,7 @@ msgstr "上升時間： %.1f 秒"
 
 #: ../src/AboutDialog.cpp:271
 msgid "Audacious!"
-msgstr "Audacious!"
+msgstr "嗆聲！"
 
 #: ../src/ControlToolBar.cpp:141
 msgid "Audacity Control Toolbar"
@@ -583,7 +582,7 @@ msgstr "Audacity 儀表工具列"
 
 #: ../src/MixerToolBar.cpp:101
 msgid "Audacity Mixer Toolbar"
-msgstr "Audacity 混音器工具列"
+msgstr "Audacity 混音工具列"
 
 #: ../src/prefs/PrefsDialog.cpp:52
 msgid "Audacity Preferences"
@@ -741,7 +740,7 @@ msgstr "Audacity 1.0格式的成音工程不能轉換為新的成音工程格式
 
 #: ../src/prefs/PrefsDialog.cpp:84
 msgid "Audio I/O"
-msgstr "音源輸入/輸出"
+msgstr "音訊 I/O"
 
 #: ../src/WaveTrack.cpp:128
 msgid "Audio Track"
@@ -863,7 +862,7 @@ msgstr "無法匯出聲音至%s"
 
 #: ../src/effects/PopClick.cpp:63
 msgid "Cannot remove a pop or click at the very beginning of a track."
-msgstr "無法移除在音軌啟始點的噼啪聲或嘀噠聲。"
+msgstr "無法移除在音軌起始點的噼啪聲或嘀噠聲。"
 
 #: ../src/effects/PopClick.cpp:58
 msgid "Cannot remove a pop or click longer than one second."
@@ -1221,22 +1220,22 @@ msgstr "游標右移\tRight"
 
 #: ../src/Menus.cpp:262
 msgid "Cursor to End"
-msgstr "游標移至結尾"
+msgstr "從游標位置至結束點"
 
 #: ../src/FormatSelection.cpp:412
 #, c-format
 msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
-msgstr "游標位置： %.3lf F NTSC 畫格 (29.97 fps)【NTSC  (29.97 fps)】   %s"
+msgstr "游標位置： %.3lf F NTSC frames (29.97 fps)   %s"
 
 #: ../src/FormatSelection.cpp:334
 #, c-format
 msgid "Cursor: %.3lf PAL frames (25 fps)   %s"
-msgstr "游標位置：%.3lf PAL 畫格 (25 fps)【PAL (25 fps)】   %s"
+msgstr "游標位置：%.3lf PAL frames (25 fps)   %s"
 
 #: ../src/FormatSelection.cpp:256
 #, c-format
 msgid "Cursor: %.3lf film frames (24 fps)   %s"
-msgstr "游標位置：%.3lf 影片畫格 (24 fps)【film (24 fps)】%s"
+msgstr "游標位置：%.3lf 影片 frames (24 fps)   %s"
 
 #: ../src/FreqWindow.cpp:751
 #, c-format
@@ -1246,27 +1245,27 @@ msgstr "游標位置：%.4f 秒 (%d Hz) (%s) = %f，峰值： %.4f 秒 (%d Hz) (
 #: ../src/FormatSelection.cpp:632
 #, c-format
 msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
-msgstr "游標位置： %02i:%02i:%06.3lf cdda 時:分:秒:畫格(75 fps)   %s"
+msgstr "游標位置： %02i:%02i:%06.3lf cdda 時:分:秒:frames (75 fps)   %s"
 
 #: ../src/FormatSelection.cpp:532
 #, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"
-msgstr "游標位置：%1i:%02i:%02i:%06.3lf NTSC 失畫格 時:分:秒:畫格(%.3lf NTSC畫格)   %s"
+msgstr "游標位置：%1i:%02i:%02i:%06.3lf NTSC drop-frame 時:分:秒:ff (%.3lf NTSC frames)   %s"
 
 #: ../src/FormatSelection.cpp:590
 #, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"
-msgstr "游標位置：%1i:%02i:%02i:%06.3lf NTSC 無失畫格 時:分:秒:畫格(%.3lf NTSC畫格)   %s"
+msgstr "游標位置：%1i:%02i:%02i:%06.3lf NTSC non-drop-frame 時:分:秒:ff (%.3lf NTSC frames)   %s"
 
 #: ../src/FormatSelection.cpp:387
 #, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
-msgstr "游標位置：%1i:%02i:%02i:%06.3lf PAL 時:分:秒:畫格 25 fps (%.3lf PAL畫格)   %s"
+msgstr "游標位置：%1i:%02i:%02i:%06.3lf PAL 時:分:秒:ff 25 fps (%.3lf PAL frames)   %s"
 
 #: ../src/FormatSelection.cpp:309
 #, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
-msgstr "游標位置：%1i:%02i:%02i:%06.3lf 影片 時:分:秒:畫格 24 fps (%.3lf 影片畫格)   %s"
+msgstr "游標位置：%1i:%02i:%02i:%06.3lf 影片 時:分:秒:ff 24 fps (%.3lf 影片 frames)   %s"
 
 #: ../src/FormatSelection.cpp:232
 #, c-format
@@ -1281,22 +1280,22 @@ msgstr "游標位置：%d Hz (%s) = %d dB   峰值： %d Hz (%s)"
 #: ../src/FormatSelection.cpp:780
 #, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"
-msgstr "游標位置：%i+%04i cdda sectors+bytes (2352 bytes/sector)   [滑扣到取樣點]"
+msgstr "游標位置：%i+%04i cdda sectors+bytes (2352 bytes/sector)   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:783
 #, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "游標位置：%i+%04i cdda sectors+bytes (2352 bytes/sector)   [滑扣到取樣點] 針對cdda，將取樣率改為44100"
+msgstr "游標位置：%i+%04i cdda sectors+bytes (2352 bytes/sector)   [吸附至取樣點] 針對cdda，將取樣率改為44100"
 
 #: ../src/FormatSelection.cpp:745
 #, c-format
 msgid "Cursor: %i+%i sec+samples   [Snap-To Samples]"
-msgstr "游標位置：%i+%i sec+samples   [滑扣到取樣點]"
+msgstr "游標位置：%i+%i sec+samples   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:721
 #, c-format
 msgid "Cursor: %i:%02i+%i min:sec+samples   [Snap-To Samples]"
-msgstr "游標位置：%i:%02i+%i min:sec+samples   [滑扣到取樣點]"
+msgstr "游標位置：%i:%02i+%i min:sec+samples   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:161
 #, c-format
@@ -1306,7 +1305,7 @@ msgstr "游標位置：%i:%09.6f 分:秒   %s"
 #: ../src/FormatSelection.cpp:673
 #, c-format
 msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
-msgstr "游標位置：%i:%09.6lf 分:秒   [滑扣到取樣點]"
+msgstr "游標位置：%i:%09.6lf 分:秒   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:185
 #, c-format
@@ -1316,12 +1315,12 @@ msgstr "游標位置：%lf 秒   %s"
 #: ../src/FormatSelection.cpp:694
 #, c-format
 msgid "Cursor: %lf sec   [Snap-To Samples]"
-msgstr "游標位置：%lf sec   [滑扣到取樣點]"
+msgstr "游標位置：%lf sec   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:649
 #, c-format
 msgid "Cursor: %li samples   [Snap-To Samples]"
-msgstr "游標位置：%li samples   [滑扣到取樣點]"
+msgstr "游標位置：%li samples   [吸附至取樣點]"
 
 #: ../src/EditToolBar.cpp:148
 #: ../src/Menus.cpp:1662
@@ -1350,7 +1349,7 @@ msgstr "預設取樣格式："
 
 #: ../src/prefs/QualityPrefs.cpp:80
 msgid "Default Sample Rate:"
-msgstr "預設取樣速率："
+msgstr "預設取樣頻率："
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #: ../src/import/ImportRaw.cpp:308
@@ -1440,7 +1439,7 @@ msgstr "停駐儀表工作列"
 
 #: ../src/Menus.cpp:710
 msgid "Dock Mixer Toolbar"
-msgstr "停駐混音器工作列"
+msgstr "停駐混音工作列"
 
 #: ../src/AboutDialog.cpp:188
 msgid "Documentation Writer"
@@ -1480,11 +1479,11 @@ msgstr "拖拉僅針對目前波形有效。"
 
 #: ../src/Menus.cpp:1911
 msgid "Duplicate"
-msgstr "複製"
+msgstr "複製到新音軌"
 
 #: ../src/Menus.cpp:1911
 msgid "Duplicated"
-msgstr "已複製"
+msgstr "已複製到新音軌"
 
 #: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
@@ -1530,7 +1529,7 @@ msgstr "編輯此MP3檔案的ID3 Tags"
 
 #: ../src/Menus.cpp:430
 msgid "Effe&ct"
-msgstr "效果器[Effect](&C)"
+msgstr "效果(&C)"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:452
 msgid "Effect Settings"
@@ -1554,7 +1553,7 @@ msgstr "允許拖動選取範圍左右兩端。"
 
 #: ../src/prefs/GUIPrefs.cpp:113
 msgid "Enable ergonomic order of Audio I/O buttons"
-msgstr "啟用Audio I/O按鈕的人體工學順序[ergonomic order]"
+msgstr "啟用音訊 I/O按鈕的人體工學順序[ergonomic order]"
 
 #: ../src/effects/AvcCompressor.cpp:652
 msgid "Enabled"
@@ -1578,24 +1577,24 @@ msgstr "輸入取樣速率(Hz，每秒的取樣數)："
 
 #: ../src/TrackPanel.cpp:4292
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
-msgstr "輸入取樣速率(Hz，每秒的取樣數)，範圍介於1至100000："
+msgstr "輸入取樣頻率(Hz，每秒的取樣數)，範圍介於1至100000："
 
 #: ../src/prefs/MousePrefs.cpp:98
 #: ../src/TrackPanel.cpp:1905
 msgid "Envelope"
-msgstr "波封線"
+msgstr "波封"
 
 #: ../src/ControlToolBar.cpp:356
 msgid "Envelope Tool"
-msgstr "波封線"
+msgstr "波封工具"
 
 #: ../src/Menus.cpp:508
 msgid "Envelope Tool\tF2"
-msgstr "波封線工具\tF2"
+msgstr "波封工具\tF2"
 
 #: ../src/effects/Equalization.cpp:156
 msgid "Equalization"
-msgstr "等化器[Equalization]"
+msgstr "等化[Equalization]"
 
 #: ../src/effects/Equalization.cpp:665
 msgid "Equalization, by Mitch Golden && Vaughan Johnson"
@@ -1603,7 +1602,7 @@ msgstr "等化器(Mitch Golden和Vaughan Johnson提供)"
 
 #: ../src/effects/Equalization.h:38
 msgid "Equalization..."
-msgstr "等化器[Equalization]..."
+msgstr "等化[Equalization]..."
 
 #: ../src/ControlToolBar.cpp:722
 #: ../src/ControlToolBar.cpp:883
@@ -1665,12 +1664,12 @@ msgstr "儲存成音工程錯誤"
 
 #: ../src/ControlToolBar.cpp:881
 msgid "Error while opening sound device. Please check the input device settings and the project sample rate."
-msgstr "開啟聲音設備錯誤。請檢查輸入設備的設置及專案取樣率。"
+msgstr "開啟聲音設備錯誤。請檢查輸入設備的設置及專案取樣頻率。"
 
 #: ../src/ControlToolBar.cpp:720
 #: ../src/effects/Effect.cpp:330
 msgid "Error while opening sound device. Please check the output device settings and the project sample rate."
-msgstr "開啟聲音設備錯誤。請檢查輸出設備的設置及專案取樣率。"
+msgstr "開啟聲音設備錯誤。請檢查輸出設備的設置及專案取樣頻率。"
 
 #: ../src/AudioIO.cpp:170
 msgid "Error: "
@@ -1852,7 +1851,7 @@ msgstr "尋找程式庫位址"
 
 #: ../src/Menus.cpp:267
 msgid "Find Zero Crossings\tZ"
-msgstr "尋找過零點[Zero Crossing]\tZ"
+msgstr "尋找零交點[Zero Crossing]\tZ"
 
 #: ../src/export/ExportMultiple.cpp:621
 msgid "First file name:"
@@ -1888,7 +1887,7 @@ msgstr "浮動儀表工作列"
 #: ../src/Menus.cpp:334
 #: ../src/Menus.cpp:712
 msgid "Float Mixer Toolbar"
-msgstr "浮動混音器工作列"
+msgstr "浮動混音工作列"
 
 #: ../src/TrackPanel.cpp:862
 msgid "Font..."
@@ -1978,11 +1977,11 @@ msgstr "高品質Sinc內插法"
 
 #: ../src/prefs/QualityPrefs.cpp:186
 msgid "High-quality dither:"
-msgstr "高品質抖動："
+msgstr "高品質擾動："
 
 #: ../src/prefs/QualityPrefs.cpp:147
 msgid "High-quality sample rate converter:"
-msgstr "高品質取樣率轉換器："
+msgstr "高品質取樣頻率轉換器："
 
 #: ../src/widgets/Meter.cpp:285
 msgid "Horizontal Stereo"
@@ -2134,11 +2133,11 @@ msgstr "LOF 檔案視窗偏移無效。"
 # 波形上下反轉
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "反相[Invert]"
+msgstr "波形上下反轉[Invert]"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
-msgstr "反相中"
+msgstr "波形上下反轉中"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Key Combination"
@@ -2370,7 +2369,7 @@ msgstr "製作立體聲音軌"
 
 #: ../src/prefs/FileFormatPrefs.cpp:72
 msgid "Make a copy of the file before editing (safer)"
-msgstr "在編輯前製作檔案備份(更安全)"
+msgstr "在編輯前製作檔案備份(較安全)"
 
 #: ../src/AudacityApp.cpp:288
 msgid "Master Gain Control"
@@ -2516,17 +2515,17 @@ msgstr "靜音"
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr "NTSC 失畫格 時:分:秒:畫格"
+msgstr "NTSC 失畫格 時:分:秒:ff"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
 msgid "NTSC frames 29.97 fps"
-msgstr "NTSC 畫格 29.97 fps"
+msgstr "NTSC frames 29.97 fps"
 
 #. i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:41
 msgid "NTSC non-drop-frame h:mm:ss:ff"
-msgstr "NTSC 無失畫格 時:分:秒:畫格"
+msgstr "NTSC non-drop-frame 時:分:秒:ff"
 
 #: ../src/TrackPanel.cpp:4395
 msgid "Name Change"
@@ -2680,29 +2679,29 @@ msgstr "連續編號"
 
 #: ../src/effects/nyquist/Nyquist.cpp:259
 msgid "Nyquist Prompt"
-msgstr "奈奎斯特[Nyquist]表示式"
+msgstr "Nyquist 表示式"
 
 #: ../src/effects/nyquist/Nyquist.cpp:202
 msgid "Nyquist Prompt..."
-msgstr "奈奎斯特[Nyquist]表示式..."
+msgstr "Nyquist 表示式..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:512
 msgid "Nyquist did not return audio.\n"
-msgstr "奈奎斯特[Nyquist]運算沒有返回音訊。\n"
+msgstr "Nyquist 運算沒有返回音訊。\n"
 
 #: ../src/effects/nyquist/Nyquist.cpp:474
 #, c-format
 msgid "Nyquist returned the value: %d"
-msgstr "奈奎斯特[Nyquist]傳回值: %d"
+msgstr "Nyquist 傳回值: %d"
 
 #: ../src/effects/nyquist/Nyquist.cpp:465
 #, c-format
 msgid "Nyquist returned the value: %f"
-msgstr "奈奎斯特[Nyquist]傳回值: %f"
+msgstr "Nyquist 傳回值: %f"
 
 #: ../src/effects/nyquist/Nyquist.cpp:522
 msgid "Nyquist returned too many audio channels.\n"
-msgstr "奈奎斯特[Nyquist]傳回了過多的聲音聲道。\n"
+msgstr "Nyquist 傳回了過多的聲音聲道。\n"
 
 #: ../src/prefs/FileFormatPrefs.cpp:138
 msgid "OGG Export Setup"
@@ -2808,12 +2807,12 @@ msgstr "覆蓋現有的檔案"
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:32
 msgid "PAL frames 25 fps"
-msgstr "PAL畫格 25fps"
+msgstr "PAL frames 25fps"
 
 #. i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
-msgstr "PAL 時:分:秒:畫格 25 fps"
+msgstr "PAL 時:分:秒:ff 25 fps"
 
 #: ../src/Menus.cpp:180
 msgid "Page Setup..."
@@ -3050,7 +3049,7 @@ msgstr "即時擾動(dither)："
 
 #: ../src/prefs/QualityPrefs.cpp:136
 msgid "Real-time sample rate converter:"
-msgstr "即時取樣率轉換器："
+msgstr "即時取樣頻率轉換器："
 
 #: ../src/ControlToolBar.cpp:469
 #: ../src/Project.cpp:1691
@@ -3158,7 +3157,7 @@ msgstr "重複%s\tCtrl+R"
 
 #: ../src/Menus.cpp:434
 msgid "Repeat Last Effect\tCtrl+R"
-msgstr "重複最近一次特效\tCtrl+R"
+msgstr "重複最近一次效果\tCtrl+R"
 
 #: ../src/effects/Repeat.cpp:222
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
@@ -3251,7 +3250,7 @@ msgstr "%s另存新檔："
 
 #: ../src/Menus.cpp:147
 msgid "Save Project &As..."
-msgstr "另存專案(&A)..."
+msgstr "另存成音工程(&A)..."
 
 #: ../src/Project.cpp:2322
 msgid "Save Project As:"
@@ -3376,7 +3375,7 @@ msgstr "選取工具\tF1"
 
 #: ../src/Menus.cpp:531
 msgid "Selection to End\tShift+End"
-msgstr "移至終點\tShift+End"
+msgstr "移至結束點\tShift+End"
 
 #: ../src/Menus.cpp:530
 msgid "Selection to Start\tShift+Home"
@@ -3385,42 +3384,42 @@ msgstr "移至起點\tShift+Home"
 #: ../src/FormatSelection.cpp:415
 #, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
-msgstr "選取範圍：%.3lf - %.3lf (%.3lf NTSC 畫格)   %s"
+msgstr "選取範圍：%.3lf - %.3lf (%.3lf NTSC frames)   %s"
 
 #: ../src/FormatSelection.cpp:337
 #, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
-msgstr "選取範圍：%.3lf - %.3lf (%.3lf PAL 畫格)   %s"
+msgstr "選取範圍：%.3lf - %.3lf (%.3lf PAL frames)   %s"
 
 #: ../src/FormatSelection.cpp:259
 #, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
-msgstr "選取範圍：%.3lf - %.3lf (%.3lf 影片畫格)   %s"
+msgstr "選取範圍：%.3lf - %.3lf (%.3lf 影片 frames)   %s"
 
 #: ../src/FormatSelection.cpp:635
 #, c-format
 msgid "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:sec:frames)   %s"
-msgstr "選取範圍：%02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda 分:秒:幀)   %s"
+msgstr "選取範圍：%02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda 分:秒:frames)   %s"
 
 #: ../src/FormatSelection.cpp:535
 #, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
-msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC 失畫格 時:分:秒:畫格) (%.3lf NTSC畫格)   %s"
+msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC drop-frame 時:分:秒:ff) (%.3lf NTSC frames)   %s"
 
 #: ../src/FormatSelection.cpp:593
 #, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
-msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC 無失畫格 時:分:秒:畫格) (%.3lf NTSC畫格)   %s"
+msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf NTSC non-drop-frame 時:分:秒:ff) (%.3lf NTSC frames)   %s"
 
 #: ../src/FormatSelection.cpp:390
 #, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"
-msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL 時:分:秒:畫格) (%.3lf PAL畫格)   %s"
+msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf PAL 時:分:秒:ff) (%.3lf PAL frames)   %s"
 
 #: ../src/FormatSelection.cpp:312
 #, c-format
 msgid "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"
-msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf 影片 時:分:秒:畫格) (%.3lf 影片畫格)   %s"
+msgstr "選取範圍：%1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%06.3lf 影片 時:分:秒:ff) (%.3lf 影片 frames)   %s"
 
 #: ../src/FormatSelection.cpp:235
 #, c-format
@@ -3430,22 +3429,22 @@ msgstr "選取範圍：%1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f 時:�
 #: ../src/FormatSelection.cpp:787
 #, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
-msgstr "選取範圍：%i+%04i - %i+%04i (%i+%04i cdda sectors+bytes) [滑扣到取樣點]"
+msgstr "選取範圍：%i+%04i - %i+%04i (%i+%04i cdda sectors+bytes) [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:790
 #, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "選取範圍：%i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [滑扣到取樣點]    針對cdda，將取樣率改為44100"
+msgstr "選取範圍：%i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [吸附至取樣點]    針對cdda，將取樣率改為44100"
 
 #: ../src/FormatSelection.cpp:748
 #, c-format
 msgid "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [Snap-To Samples]"
-msgstr "選取範圍：%i+%i - %i+%i (%i+%i 秒+取樣點)   [滑扣到取樣點]"
+msgstr "選取範圍：%i+%i - %i+%i (%i+%i 秒+取樣點)   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:724
 #, c-format
 msgid "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [Snap-To Samples]"
-msgstr "選取範圍：%i:%02i+%i - %i:%02i+%i (%i:%02i+%i 分:秒+采樣)   [滑扣到取樣點]"
+msgstr "選取範圍：%i:%02i+%i - %i:%02i+%i (%i:%02i+%i 分:秒+采樣)   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:164
 #, c-format
@@ -3455,7 +3454,7 @@ msgstr "選取範圍：%i:%09.6f - %i:%09.6f (%i:%09.6f 分:秒)   %s"
 #: ../src/FormatSelection.cpp:676
 #, c-format
 msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
-msgstr "選取範圍：%i:%09.6lf - %i:%09.6lf (%i:%09.6lf 分:秒)   [滑扣到取樣點]"
+msgstr "選取範圍：%i:%09.6lf - %i:%09.6lf (%i:%09.6lf 分:秒)   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:188
 #, c-format
@@ -3465,12 +3464,12 @@ msgstr "選取範圍：%lf - %lf (%lf 秒)  %s"
 #: ../src/FormatSelection.cpp:697
 #, c-format
 msgid "Selection: %lf - %lf (%lf sec)   [Snap-To Samples]"
-msgstr "選取範圍：%lf - %lf (%lf 秒)   [滑扣到取樣點]"
+msgstr "選取範圍：%lf - %lf (%lf 秒)   [吸附至取樣點]"
 
 #: ../src/FormatSelection.cpp:652
 #, c-format
 msgid "Selection: %li - %li (%li samples)   [Snap-To Samples]"
-msgstr "選取範圍：%li - %li (%li 取樣點)   [滑扣到取樣點]"
+msgstr "選取範圍：%li - %li (%li 取樣點)   [吸附至取樣點]"
 
 #: ../src/effects/ChangePitch.cpp:297
 msgid "Semitones (half-steps):"
@@ -3547,19 +3546,19 @@ msgstr "大小"
 
 #: ../src/ControlToolBar.cpp:472
 msgid "Skip to End"
-msgstr "跳至結尾"
+msgstr "跳至結束點"
 
 #: ../src/Menus.cpp:528
 msgid "Skip to End\tEnd"
-msgstr "跳至結尾\tEnd"
+msgstr "跳至結束點\tEnd"
 
 #: ../src/ControlToolBar.cpp:467
 msgid "Skip to Start"
-msgstr "跳至開頭"
+msgstr "跳至起始點"
 
 #: ../src/Menus.cpp:527
 msgid "Skip to Start\tHome"
-msgstr "跳至開頭\tHome"
+msgstr "跳至起始點\tHome"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Smooth at Sample"
@@ -3568,16 +3567,16 @@ msgstr "平滑取樣"
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:293
 msgid "Snap Off"
-msgstr "關閉滑扣功能"
+msgstr "關閉吸附功能"
 
 #. i18n-hint: Set snap-to mode on or off
 #: ../src/Menus.cpp:291
 msgid "Snap On"
-msgstr "開啟滑扣功能"
+msgstr "開啟吸附功能"
 
 #: ../src/Menus.cpp:288
 msgid "Snap-To..."
-msgstr "滑扣到整秒數點..."
+msgstr "吸附至整秒數點..."
 
 #: ../src/prefs/AudioIOPrefs.cpp:244
 msgid "Software Playthrough (Play new track while recording it)"
@@ -3668,7 +3667,7 @@ msgstr "起始偏移："
 
 #: ../src/Menus.cpp:261
 msgid "Start to Cursor"
-msgstr "從起點到游標"
+msgstr "從起點至游標位置"
 
 #: ../src/effects/NoiseRemoval.cpp:410
 msgid "Step 1"
@@ -3790,11 +3789,11 @@ msgstr "移位"
 # 按下此按鈕後，可以用拖曳法將整音效檔的時間往前/往後移動。
 #: ../src/ControlToolBar.cpp:357
 msgid "Time Shift Tool"
-msgstr "移位工具"
+msgstr "時間移位工具"
 
 #: ../src/Menus.cpp:511
 msgid "Time Shift Tool\tF5"
-msgstr "移位工具\tF5"
+msgstr "時間移位工具\tF5"
 
 #: ../src/TimeTrack.cpp:38
 msgid "Time Track"
@@ -3880,19 +3879,19 @@ msgstr "剪輯非選取部分"
 
 #: ../src/Menus.cpp:303
 msgid "Turn Grid Snap Off"
-msgstr "關閉貼齊格線功能"
+msgstr "關閉格線吸附功能"
 
 #: ../src/Menus.cpp:302
 msgid "Turn Grid Snap On"
-msgstr "開啟貼齊格線功能"
+msgstr "開啟格線吸附功能"
 
 #: ../src/Menus.cpp:301
 msgid "Turn Snap-To Off"
-msgstr "關閉貼齊功能"
+msgstr "關閉吸附功能"
 
 #: ../src/Menus.cpp:300
 msgid "Turn Snap-To On"
-msgstr "開啟貼齊功能"
+msgstr "開啟吸附功能"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:114
 msgid "Unable to determine"
@@ -4040,7 +4039,7 @@ msgstr "滾輪"
 
 #: ../src/prefs/FileFormatPrefs.cpp:68
 msgid "When importing uncompressed audio files into Audacity"
-msgstr "當Aidacity匯入非壓縮音訊檔案時"
+msgstr "當 Aidacity 匯入非壓縮聲音檔案時"
 
 #. i18n-hint: It's asking for the location of a file, for
 #: ../src/export/ExportMP3.cpp:113
@@ -4161,12 +4160,12 @@ msgstr "縮小一級"
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:113
 msgid "[Snap-To Off]"
-msgstr "[貼齊功能關閉]"
+msgstr "[吸附功能關閉]"
 
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:115
 msgid "[Snap-To On]"
-msgstr "[貼齊功能開啟]"
+msgstr "[吸附功能開啟]"
 
 #: ../src/effects/Echo.cpp:182
 msgid "by Dominic Mazzoni && Vaughan Johnson"
@@ -4185,7 +4184,7 @@ msgstr "位元組"
 #. i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
-msgstr "cdda 分:秒:畫格 75 fps"
+msgstr "cdda 分:秒:frames 75 fps"
 
 #  i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #  A "sector" is a technical term - don't translate unless you're sure
@@ -4193,7 +4192,7 @@ msgstr "cdda 分:秒:畫格 75 fps"
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
-msgstr "cdda sectors+bytes (貼齊取樣點)"
+msgstr "cdda sectors+bytes (吸附至取樣點)"
 
 # 分貝
 #: ../src/widgets/Meter.cpp:293
@@ -4208,12 +4207,12 @@ msgstr "下"
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:27
 msgid "film frames 24 fps"
-msgstr "影片畫格 24 fps"
+msgstr "影片 frames 24 fps"
 
 #. i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
-msgstr "影片 時:分:秒:畫格  24 fps"
+msgstr "影片 時:分:秒:ff  24 fps"
 
 #: ../src/FormatSelection.cpp:25
 msgid "hr:min:sec"
@@ -4233,11 +4232,11 @@ msgstr "分:秒"
 
 #: ../src/FormatSelection.cpp:46
 msgid "min:sec (snap to samples)"
-msgstr "分:秒 (貼齊取樣點)"
+msgstr "分:秒 (吸附至取樣點)"
 
 #: ../src/FormatSelection.cpp:48
 msgid "min:sec+samples (snap to samples)"
-msgstr "分:秒+取樣 (貼齊取樣點)"
+msgstr "分:秒+取樣 (吸附至取樣點)"
 
 #  i18n-hint: n/a is an English
 #  abbreviation meaning "not
@@ -4254,7 +4253,7 @@ msgstr "右"
 
 #: ../src/FormatSelection.cpp:45
 msgid "samples (snap to samples)"
-msgstr "取樣 (貼齊取樣點)"
+msgstr "取樣 (吸附至取樣點)"
 
 #: ../src/FormatSelection.cpp:24
 msgid "sec"
@@ -4262,11 +4261,11 @@ msgstr "秒"
 
 #: ../src/FormatSelection.cpp:47
 msgid "sec (snap to samples)"
-msgstr "秒 (貼齊取樣點)"
+msgstr "秒 (吸附至取樣點)"
 
 #: ../src/FormatSelection.cpp:49
 msgid "sec+samples (snap to samples)"
-msgstr "秒+取樣 (貼齊取樣點)"
+msgstr "秒+取樣 (吸附至取樣點)"
 
 #: ../src/FreqWindow.cpp:996
 msgid "spectrum.txt"
@@ -4282,19 +4281,19 @@ msgstr "至"
 
 #: ../src/Menus.cpp:282
 msgid "to Selection End"
-msgstr "至選取結尾"
+msgstr "至選取結束點"
 
 #: ../src/Menus.cpp:281
 msgid "to Selection Start"
-msgstr "至選取啟始"
+msgstr "至選取起始點"
 
 #: ../src/Menus.cpp:278
 msgid "to Track End"
-msgstr "至音軌結尾"
+msgstr "至音軌結束點"
 
 #: ../src/Menus.cpp:277
 msgid "to Track Start"
-msgstr "至音軌啟始"
+msgstr "至音軌起始點"
 
 #. i18n-hint: The translation of "translator_credits" will appear
 #: ../src/AboutDialog.cpp:127
