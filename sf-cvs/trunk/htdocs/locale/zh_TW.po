@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: zh-TW\n"
 "Report-Msgid-Bugs-To: Audacity Translation mail-list <audacity-translation@lists.sourceforge.net>\n"
 "POT-Creation-Date: 2005-02-20 10:11-0800\n"
-"PO-Revision-Date: 2005-04-11 19:23+0800\n"
+"PO-Revision-Date: 2005-04-12 00:31+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity是一款免費的、易於使用的成音工程軟體和錄音器，可在Windows、Mac OS X、GNU/Linux及其它作業系統上執行。您可將Audacity用於:</p>\n"
+"<p>Audacity是一款免費的、易於使用的成音工程軟體和錄音器，可在Windows、Mac OS X、GNU/Linux及其它作業系統上執行。您可將Audacity用於：</p>\n"
 "\n"
 "<ul>\n"
 "  <li>現場錄音。</li>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "  <li>編輯Ogg Vorbis、MP3及WAV音訊文件。</li>\n"
 "  <li>剪下、複製、接合及混音。</li>\n"
 "  <li>改變錄音的速率或音高。</li>\n"
-"  <li>還有更多! 參見完整的<a href=\"features\">特色列表</a>。</p>\n"
+"  <li>還有更多！參見完整的<a href=\"features\">特色列表</a>。</p>\n"
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
@@ -53,7 +53,7 @@ msgid ""
 "\n"
 "<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
 msgstr ""
-"<h3>關於自由(Free，免費)軟體</h3>\n"
+"<h3>關於自由(Free)軟體</h3>\n"
 "\n"
 "<p>Audacity是自由軟體，由一組志願者開發，並在<a href=\"license\">GNU General Public License (GPL)</a>的許可下發佈。</p>\n"
 "\n"
@@ -120,7 +120,7 @@ msgid ""
 "</ul>"
 msgstr ""
 "<h3>錄音</h3>\n"
-"<p>Audacity可透過麥克風或混音器進行現場錄音，也能從盒式磁帶、唱片或MD轉錄數位化錄音。透過某些音效卡，它還能擷取音訊流。</p>\n"
+"<p>Audacity可透過麥克風或混音器進行現場錄音，也能從卡式磁帶、唱片或MD轉錄數位化錄音。透過某些音效卡，它還能擷取串流音訊。</p>\n"
 "<ul>\n"
 "  <li>從麥克風、線路輸入或其它信號源錄音。</li>\n"
 "  <li>在現有音軌上配音，以生成多音軌的錄音。</li>\n"
@@ -143,14 +143,14 @@ msgid ""
 "</ul>"
 msgstr ""
 "<h3>匯入與匯出</h3>\n"
-"<p>匯入音訊檔案，編輯它們，將她們與其他檔案或新的錄音進行合併。將您的錄音匯出為常見的檔案格式。</p>\n"
+"<p>匯入聲音檔案，編輯它們，將她們與其他檔案或新的錄音進行合併。將您的錄音匯出為常見的檔案格式。</p>\n"
 "<ul>\n"
 "  <li>匯入及匯出WAV、AIFF、AU及<a href=\"http://vorbis.com\">Ogg Vorbis</a>檔案。</li>\n"
 "  <li>匯入MPEG音訊(包括MP2和MP3檔案)，使用<a href=\"http://www.underbit.com/products/mad/\">libmad</a>。</li>\n"
 "  <li>匯出MP3檔案，使用額外的LAME編碼程式庫。</li>\n"
 "  <li>建立適合燒錄CD的WAV或AIFF檔案。</li>\n"
 "  <li>匯入及匯出所有<a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>支援的檔案格式。</li>\n"
-"  <li>開啟raw(不含標頭)音訊檔案，使用「匯入Raw」命令。</li>\n"
+"  <li>開啟raw(不含標頭)聲音檔案，使用「匯入原始數據」命令。</li>\n"
 "  <li><strong>注意：</strong> Audacity目前不支援WMA、AAC及其它私有的或者受限制的檔案格式。</li>\n"
 "</ul>"
 
@@ -169,7 +169,7 @@ msgstr ""
 "<h3>編輯</h3>\n"
 "<ul>\n"
 "  <li>易於編輯，提供剪下、複製、貼上及刪除功能。</li>\n"
-"  <li>提供無限的取消(及復原)操作，可復原任意步驟。</li>\n"
+"  <li>提供無限的復原(及重做)操作，可復原任意步驟。</li>\n"
 "  <li>快速地編輯大檔案。</li>\n"
 "  <li>編輯和混合不限個數的音軌。</li>\n"
 "  <li>使用拖拉工具改變單一取樣點。</li>\n"
@@ -199,13 +199,13 @@ msgstr ""
 "  <li>保持節拍的同時改變音高，反之亦然。</li>\n"
 "  <li>去除靜電雜音、嘶嘶聲、嗡嗡聲或其它持續背景雜音。</li>\n"
 "  <li>使用等化器、FFT過濾器及低音增強等特效以改變頻率。</li>\n"
-"  <li>使用壓縮、放大、標準化等特效調整音量。\n"
+"  <li>使用壓縮、放大、標準化等效果來調整音量。\n"
 "  <li>其它內建效果包括：\n"
 "    <ul>\n"
-"      <li>回聲</li>\n"
+"      <li>迴音</li>\n"
 "      <li>移相器</li>\n"
 "      <li>哇聲(Wahwah)</li>\n"
-"      <li>前後時間反轉</li>\n"
+"      <li>時間前後反轉</li>\n"
 "    </ul>\n"
 "  </li>\n"
 "</ul>"
@@ -224,8 +224,8 @@ msgstr ""
 "<ul>\n"
 "  <li>錄音及編輯16-bit、24-bit及32-bit(浮點)取樣。</li>\n"
 "  <li>最高頻寬達96KHz。</li>\n"
-"  <li>使用高品質重取樣和抖動算法進行取樣率和格式轉換。</li>\n"
-"  <li>在混合不同取樣率或格式的音軌時，Audacity將自動即時地進行轉換。</li>\n"
+"  <li>使用高品質重取樣和擾動算法進行取樣速率和格式轉換。</li>\n"
+"  <li>在混合不同取樣速率或格式的音軌時，Audacity將自動地轉換。</li>\n"
 "</ul>"
 
 #: about/features.php:71
@@ -240,10 +240,10 @@ msgid ""
 msgstr ""
 "<h3>外掛程式</h3>\n"
 "<ul>\n"
-"  <li>使用<a href=\"http://www.ladspa.org/\">LADSPA外掛程式</a>增加新的特效。</li>\n"
+"  <li>使用<a href=\"http://www.ladspa.org/\">LADSPA外掛程式</a>增加新的效果。</li>\n"
 "  <li>Audacity包括一些由<a href=\"http://plugin.org.uk/\">Steve Harris</a>提供的外掛程式樣本。</li>\n"
 "  <li>載入用於Windows及Mac系統的VST外掛程式，請使用額外的<a href=\"http://audacityteam.org/vst/\">VST Enabler</a>。</li>\n"
-"  <li>使用內建的<a href=\"../help/nyquist\">Nyquist</a>程式語言撰寫新的特效。</li>\n"
+"  <li>使用內建的<a href=\"../help/nyquist\">Nyquist</a>程式語言撰寫新的效果。</li>\n"
 "</ul>"
 
 #: about/features.php:79
@@ -284,20 +284,20 @@ msgid ""
 "These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
 "</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
 msgstr ""
-"這裡列出了部分為Audacity音訊編輯器作出了<a href=\"../community/\">貢獻</a>的人。</p>  \n"
-"</p>如果您對Audacity有什麼問題或回饋，請見<a href=\"../contact/\">聯絡頁</a>。"
+"這裡列出了部分為Audacity聲音編輯軟體作出了<a href=\"../community/\">貢獻</a>的人。</p>  \n"
+"</p>如果您對Audacity有什麼問題或回饋，請見<a href=\"../contact/\">聯絡我們</a>。"
 
 #: about/credits.php:18
 msgid "Lead Developers"
-msgstr "主要開發者"
+msgstr "專案領導者"
 
 #: about/credits.php:21
 msgid "Dominic is the project leader and original author of Audacity."
-msgstr "Dominic是Audacity的項目主管及原創作者。"
+msgstr "Dominic是Audacity的專案領導者及原創作者。"
 
 #: about/credits.php:28
 msgid "Active Developers"
-msgstr "積極的開發者"
+msgstr "主要開發者"
 
 #: about/credits.php:35
 msgid "Contributors"
@@ -316,7 +316,7 @@ msgstr "程式庫"
 
 #: about/credits.php:87
 msgid "Audacity is based on code from the following projects:"
-msgstr "Audacity基於來自以下項目的代碼:"
+msgstr "Audacity基於來自以下項目的代碼："
 
 #: about/credits.php:101
 msgid "Thanks"
@@ -383,11 +383,11 @@ msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a>是�
 
 #: about/links.php:19
 msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom enterprise and departmental Windows applications."
-msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a>構建定制的企業用及部門用的Windows軟體。"
+msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a>建構客制化的企業用及部門用的Windows軟體。"
 
 #: about/links.php:22
 msgid "Other Audio Software"
-msgstr "其它音訊軟體"
+msgstr "其它聲音軟體"
 
 #: about/links.php:23
 msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux."
@@ -425,7 +425,7 @@ msgstr "參與"
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
-msgstr "Audacity是由志願者開發的免費軟體。參與Audacity項目的方式如下:"
+msgstr "Audacity是由志願者開發的免費軟體。參與Audacity項目的方式如下："
 
 #: community/index.php:18
 #: main.inc.php:55
@@ -438,7 +438,7 @@ msgstr "請給我們回饋、報告錯誤，您也可以成為Audacity用戶社�
 
 #: community/index.php:22
 msgid "If you are fluent in both English and another language, you can help translate the Audacity software and web site.  We also need people to help provide support for Audacity in different languages."
-msgstr "如果您同時通曉英語和其它語言，您可以求助翻譯Audacity軟體及網站。我們也需要人手以提供不同語言的Audacity的支援。"
+msgstr "如果您同時通曉英語和其它語言，您可以幫忙翻譯Audacity軟體及網站。我們也需要人手提供不同語言的Audacity的支援。"
 
 #: community/index.php:24
 #: community/developers.php:9
@@ -525,7 +525,7 @@ msgstr "透過PayPal捐贈"
 
 #: community/donate.php:36
 msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
-msgstr "如果您希望透過個人支票或另一種形式支付，請瀏覽<a href=\"../about/credits\">貢獻者</a>頁面並與任何一個主要開發人員聯絡即可。"
+msgstr "如果您希望透過個人支票或另一種形式支付，請瀏覽<a href=\"../about/credits\">貢獻者</a>頁面並與任何一位專案領導者聯絡即可。"
 
 #: community/donate.php:38
 msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
@@ -533,7 +533,7 @@ msgstr "我們也希望各界有識的公司團體能夠有興趣<a href=\"http:
 
 #: community/translation.php:16
 msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
-msgstr "一群志願者在把Audacity聲音編輯器軟體翻譯為不同語言。如果您想參與，請加入<a href=\"../contact/lists#translation\">audacity-translation通信論壇</a>並做個自我介紹。"
+msgstr "一群志願者在把Audacity聲音編輯軟體翻譯為不同語言。如果您想參與，請加入<a href=\"../contact/lists#translation\">audacity-translation通信論壇</a>並做個自我介紹。"
 
 #: community/translation.php:18
 msgid "Resources for Translators"
@@ -588,13 +588,13 @@ msgid ""
 msgstr ""
 "<h3>翻譯說明</h3>\n"
 "\n"
-"<p>開始著手翻譯時，請下載上面的POT檔案。在翻譯前先將其改名為\"audacity.po\"。如果要編輯一個已有的翻譯檔案，請下載相應語言的PO檔案:</p>\n"
+"<p>開始著手翻譯時，請下載上面的POT檔案。在翻譯前先將其改名為\"audacity.po\"。如果要編輯一個已有的翻譯檔案，請下載相應語言的PO檔案：</p>\n"
 "<ul>\n"
 "  <li><a href=\"%s\">Audacity翻譯</a></li>\n"
 "  <li><a href=\"%s\">Audacity網站翻譯</a></li>\n"
 "</ul>\n"
 "\n"
-"<p>以下軟體可用於建立和編輯PO檔案:</p>\n"
+"<p>以下軟體可用於建立和編輯PO檔案：</p>\n"
 "<ul>\n"
 "  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a>，有Windows和Unix兩個版本。</li>\n"
 "  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a>在KDE環境執行。</li>\n"
@@ -607,9 +607,9 @@ msgstr ""
 "\n"
 "<ul>\n"
 "  <li><p>在poEdit中，一定要將\"charset\"項設置正確。 否則，poEdit將無法儲存含非英文字母的翻譯。</p>\n"
-"  <li><p>諸如<b>\"&amp;File\"</b>和<b>\"New &amp;Audio Track\"</b>的字元串是選單。在\"&amp;\"符號之後的字元是用作快速鍵的。</p>\n"
+"  <li><p>諸如<b>\"&amp;File\"</b>和<b>\"New &amp;Audio Track\"</b>的字串是選單。在\"&amp;\"符號之後的字元是用作快速鍵的。</p>\n"
 "  <li><p><b>\"Import Audio...\\tCtrl+i\"</b>也是選單項。其中\"\\t\"表示一個\"tab\"字元，它將選單文字和鍵盤命令分隔開來。</p>\n"
-"  <li><p>您還能發現許多諸如<b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>之類的字元串。\"%%\"記號表示了在字元串中插入數字或名字的地方。例如，所述字元串可能變為\"There were 4 buffer underruns, last near 3.01 seconds.\"。如果您要改變字元串中\"%%\"記號引用的順序，只需在要變為第一個引用的百分號後加上\"1$\"，在要變為第二個引用的百分號後加\"2$\"，依此類推。例如：</p>\n"
+"  <li><p>您還能發現許多諸如<b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>之類的字串。\"%%\"記號表示了在字串中插入數字或名稱的地方。例如，所述字串可能變為\"There were 4 buffer underruns, last near 3.01 seconds.\"。如果您要改變字串中\"%%\"記號引用的順序，只需在要變為第一個引用的百分號後加上\"1$\"，在要變為第二個引用的百分號後加\"2$\"，依此類推。例如：</p>\n"
 "  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
 "</ul>"
 
@@ -662,13 +662,13 @@ msgid ""
 msgstr ""
 "<h3 id=\"bugzilla\">Bugzilla系統</h3>\n"
 "<p>Audacity開發者使用<a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a>來跟蹤那些已被確認的錯誤。  如果您想修正這些錯誤，請查看<a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">待解決的錯誤</a>列表。</p>\n"
-"<p><strong>注意:</strong> 本Bugzilla系統僅限於從事開發的用途。如果您只是一位要報告錯誤的用戶，請<a href=\"../contact/\">給我們發電子郵件</a>。謝謝！</p>"
+"<p><strong>注意：</strong> 本Bugzilla系統僅限於從事開發的用途。如果您只是一位要報告錯誤的用戶，請<a href=\"../contact/\">給我們發電子郵件</a>。謝謝！</p>"
 
 #: contact/main.inc.php:11
 #: contact/index.php:9
 #: main.inc.php:47
 msgid "Contact Us"
-msgstr "聯絡方式"
+msgstr "聯絡我們"
 
 #: contact/main.inc.php:14
 #: contact/privacy.php:10
@@ -689,7 +689,7 @@ msgid ""
 "  <li>Include details of what you are trying to do, and any error messages or other problems you experience.</li>\n"
 "</ol>"
 msgstr ""
-"<p>如果您有疑問或意見要發給Audacity的開發者，請發e-mail至: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>。\n"
+"<p>如果您有疑問或意見要發給Audacity的開發者，請發e-mail至：<a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>。\n"
 "(這是一個公開的通信論壇。詳情請見我們的<a href=\"../contact/privacy\">隱私權政策</a>。)</p>\n"
 "\n"
 "<p><b>當您要報告錯誤或問題時，請：</b></p>\n"
@@ -733,7 +733,7 @@ msgid ""
 msgstr ""
 "<p>(這些條款適用於audacity-help、audacity-users以及其它的<a href=\"../contact/lists\">討論列表</a>。)</p>\n"
 "<p>這些列表都是公共的通信論壇。當您要向其中任何一個地址(包括<a href=\"../contact/\">audacity-help</a>)發信時，您的信將被轉寄給許多人，他們可能是Audacity的開發者，也可能是別的人。 SourceForge和其它網站可能公佈這些列表的存檔內容。 <b>出於隱私方面的考慮，您的郵件地址通常會被從公佈的存檔中刪去，Audacity的開發者們也不會將您的地址透露給任何人或者加入其它列表。</b> 但是，我們無法防止其他訂閱我們通信論壇的用戶看到及公佈您發往此列表的信件內容。</p>\n"
-"<p>如果您對此政策有任何問題，或者您不願意在公開的通信論壇發信，請給Audacity的主要開發者發送私人郵件，郵箱是: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>。</p>"
+"<p>如果您對此政策有任何問題，或者您不願意在公開的通信論壇發信，請給Audacity的主要開發者發送私人郵件，電子郵件信箱是：<a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>。</p>"
 
 #: contact/lists.php:12
 msgid "You must subscribe to send messages to this list."
@@ -822,7 +822,7 @@ msgstr "Linux/Unix"
 
 #: download/index.php:28
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
-msgstr "您還能透過<a href=\"buy\">購買</a>獲得一張Audacity的CD光碟。"
+msgstr "您還能<a href=\"buy\">購買</a>一張Audacity的CD光碟。"
 
 #: download/index.php:30
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
@@ -859,10 +859,10 @@ msgstr "localized_downloads_windows"
 #, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
-"  - If you can鈥檛 run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead."
-msgstr ""
+"  - If you can’t run the installer because you are in a computer lab or "
+"other restricted environment, download and unzip this file instead."
 "<a href=\"%s\">Audacity %s zip檔案</a> (%.1lf MB)\n"
-" - 如果您在電腦實驗室或受限的場所而無法執行安裝程式，則請下載並解壓此檔案。"
+" - 如果您在電腦室或受限的場所而無法執行安裝程式，則請下載並解壓此檔案。"
 
 #: download/windows.php:39
 #: download/mac.php:31
@@ -1030,7 +1030,7 @@ msgid ""
 "  <li><p>New or updated translations: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
 "</ul>"
 msgstr ""
-"<h3>Audacity 1.2.3中的改動部分</h3>\n"
+"<h3>Audacity 1.2.3中更動的部分</h3>\n"
 "<ul>\n"
 "  <li><p>Windows: 修正了一個在某些Windows系統上執行大概50分鐘後導致錄音停止或者顯示錯亂的錯誤。(這個錯誤在Audacity 1.2.2中被部分修正了，但在某些系統上還無法工作。)</p></li>\n"
 "  <li><p>Mac OS X: 修正了一個大的錯誤。該錯誤導致在Mac系統上執行的Audacity在經過一段隨機的時間後當機，特別是在播放或錄音時。</p></li>\n"
@@ -1038,8 +1038,8 @@ msgstr ""
 "  <li><p>libsnd檔案升級到1.0.11版。Audacity現在可以匯入Sound Designer II (SDII)檔案了。</p></li>\n"
 "  <li><p>修正了使用波封線工具導致程式執行變慢的錯誤。</p></li>\n"
 "<li><p>現在按住Shift鍵點擊「靜音」或「獨奏」按鈕將不會導致其它所有音軌都變為「非靜音」(「非獨奏」)了。</p></li>\n"
-"  <li><p>Nyquist外掛程式現在可以接受字串輸入了。同樣，在Nyquist特效對話框裡加入了\"調試\"(Debug)按鈕，這樣您就可以看到Nyquist輸出的所有資訊，便於調試。</p></li>\n"
-"  <li><p>當Audacity工程所參考的(化名的)音訊檔案找不到了，Audacity將一直播放靜音。在這之前，Audacity可能有時會重複先前最近播放的音訊。</p></li>\n"
+"  <li><p>Nyquist外掛程式現在可以接受字串輸入了。同樣，在Nyquist效果對話框裡加入了\"除錯\"(Debug)按鈕，這樣您就可以看到Nyquist輸出的所有資訊，便於除錯。</p></li>\n"
+"  <li><p>當Audacity成音工程所參考的(化名的)聲音檔案找不到了，Audacity將一直播放靜音。在這之前，Audacity可能有時會重複先前最近播放的聲音。</p></li>\n"
 "  <li><p>現在，當音訊I/O停止時音量單位表(UV表)將會復位。</p></li>\n"
 "  <li><p>新增的或升級的本地化檔案: 義大利語(it)、匈牙利語(hu)、烏克蘭語(uk)、西班牙語(es)、波蘭語(pl)、簡體中文(zh)、標準挪威語(nb)、法語(fr)、俄語(ru)。</p></li>\n"
 "</ul>"
@@ -1083,7 +1083,7 @@ msgstr "LADSPA外掛程式"
 
 #: download/plugins.php:17
 msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
-msgstr "Audacity內嵌了對LADSPA外掛程式的支援。這些外掛程式大多數是用於Linux系統的，但也有一些可以用於其它的作業系統。Audacity包含一些用於Mac及Windows系統的LADSPA效果例子。如要瞭解更多資訊及下載外掛程式，請瀏覽<a href=\"http://www.ladspa.org/\">LADSPA網站</a>。</p>"
+msgstr "Audacity內建了對LADSPA外掛程式的支援。這些外掛程式大多數是用於Linux系統的，但也有一些可以用於其它的作業系統。Audacity包含一些用於Mac及Windows系統的LADSPA效果例子。如要瞭解更多資訊及下載外掛程式，請瀏覽<a href=\"http://www.ladspa.org/\">LADSPA網站</a>。</p>"
 
 #: download/plugins.php:19
 msgid "Nyquist Plug-Ins"
@@ -1091,7 +1091,7 @@ msgstr "Nyquist外掛程式"
 
 #: download/plugins.php:20
 msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr "Audacity內嵌了對跨平台Nyquist特效的支持。您可以下載<a href=\"nyquistplugins\">Nyquist外掛程式</a>，或者使用<a href=\"../help/nyquist\">Nyquist程式語言</a>建立您自己的特效。"
+msgstr "Audacity內建了對跨平台Nyquist效果的支援。您可以下載<a href=\"nyquistplugins\">Nyquist外掛程式</a>，或者使用<a href=\"../help/nyquist\">Nyquist程式語言</a>建立您自己的效果。"
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
@@ -1128,8 +1128,8 @@ msgstr ""
 "<p>如果您有疑問，核查一下<a href=\"faq\">常見問題解答</a>的列表。</p>\n"
 "<p>關於Audacity使用方面的指南和求助，見：</p>\n"
 "<ul>\n"
-"  <li><a href=\"documentation\">文檔</a> - 閱讀用戶手冊及快速參考。</li>\n"
-"  <li><a href=\"tutorials\">教程</a> - 進階(step by step)文章教您如何使用Audacity。</li>\n"
+"  <li><a href=\"documentation\">文件</a> - 閱讀用戶手冊及快速參考。</li>\n"
+"  <li><a href=\"tutorials\">教學課程</a> - step by step文章教您如何使用Audacity。</li>\n"
 "</ul>\n"
 "<p>如果您的疑問在此處沒有解答，請<a href=\"../contact/\">聯絡我們</a>。</p>"
 
@@ -1156,23 +1156,23 @@ msgstr "文件"
 #. i18n-hint:  Please add a note that the manuals below are in English.  If
 #: help/documentation.php:16
 msgid "This page contains manuals and user』s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
-msgstr "此頁提供了Audacity的用戶手冊和指南。更多幫助見<a href=\"faq\">常見問題解答</a>及<a href=\"tutorials\">教程</a>。"
+msgstr "此頁提供了Audacity的用戶手冊和指南。更多幫助見<a href=\"faq\">常見問題解答</a>及<a href=\"tutorials\">教學課程</a>。"
 
 #: help/documentation.php:19
 msgid "Quick Reference Guide"
-msgstr "快速參考"
+msgstr "快速指引"
 
 #: help/documentation.php:21
 msgid "Read the Audacity reference online."
-msgstr "線上閱讀Audacity參考"
+msgstr "線上閱讀Audacity指引"
 
 #: help/documentation.php:21
 msgid "(You can also access this reference though the \"Help\" menu in the Audacity program.)"
-msgstr "(您也可以透過Audacity程式的\"幫助\"選單瀏覽這些參考文件。)"
+msgstr "(您也可以透過Audacity程式的\"幫助\"選單瀏覽這些指引文件。)"
 
 #: help/documentation.php:22
 msgid "Printable version of the Audacity reference."
-msgstr "列印版的Audacity參考。"
+msgstr "列印版的Audacity指引。"
 
 #: help/documentation.php:25
 msgid "Audacity User』s Manual"
@@ -1192,7 +1192,7 @@ msgstr "(欲使用下載好的手冊，解壓縮並開啟\"index.html\"檔案。
 
 #: help/faq.php:26
 msgid "Is Audacity really free?  Why?"
-msgstr "Audacity真的是免費的嗎? 為什麼?"
+msgstr "Audacity真的是免費的嗎？為什麼？"
 
 #: help/faq.php:27
 msgid ""
@@ -1200,10 +1200,10 @@ msgid ""
 "<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
 "<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>"
 msgstr ""
-"<p>是的，Audacity是<a href=\"../about/\">完全自由及開放源碼的軟體</a>。您可以為個人或商業用途而自由地使用該程序。您也可以隨意地分發、銷售或者為了您自己的用途而修改它，只要您遵循<a href=\"../about/license\">GNU General Public License</a>的條款。</p>\n"
+"<p>是的，Audacity是<a href=\"../about/\">完全自由及開放源碼的軟體</a>。您可以為個人或商業用途而自由地使用該程式。您也可以隨意地分發、銷售或者為了您自己的用途而修改它，只要您遵循<a href=\"../about/license\">GNU General Public License</a>的條款。</p>\n"
 "<p>Audacity的作者決定在GPL許可證下發行此軟體，這是出於多種原因的考慮。我們中的部分人這麼做是出於慷慨；部分人這麼做是出於道德上的考量，因為我們覺得所有的軟體都應該是自由且免費的；其餘人則相信自由軟體和商業軟體都有存在的空間。</p>\n"
 "<p>Audacity是自由軟體的原因之一是因為只有這樣她才會變得更加受歡迎及\n"
-"有用。還有另一個原因是她鼓勵協作。因為Audacity的自由許可，世界各地的許多人都貢獻了代碼、錯誤修正、文檔以及圖像。</p>"
+"有用。還有另一個原因是她鼓勵共同協作。因為Audacity的自由許可，世界各地的許多人都貢獻了代碼、錯誤修正、文件以及圖像。</p>"
 
 #: help/faq.php:32
 msgid "Does Audacity contain any spyware or adware?"
@@ -1211,7 +1211,7 @@ msgstr "Audacity包含有spyware或者adware嗎?"
 
 #: help/faq.php:33
 msgid "<p>No.  Audacity does not include any spyware or adware.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>"
-msgstr "<p>不。Audacity不包含任何spyware或adware。Audacity是<a href=\"../about/\">完全自由及開放源碼的</a>。它是由一個非盈利性群體開發的，任何人都可以獲得其源碼、用於學習和使用等目的。</p>"
+msgstr "<p>不。Audacity不包含任何spyware或adware。Audacity是<a href=\"../about/\">完全自由及開放源碼的</a>。它是由一個非盈利性群體開發的，任何人都可以獲得其原始碼、用於學習和使用等等。</p>"
 
 #: help/faq.php:36
 msgid "May I distribute copies of Audacity?"
@@ -1219,7 +1219,7 @@ msgstr "我可以散佈Audacity嗎?"
 
 #: help/faq.php:37
 msgid "<p>You can redistribute Audacity under the GNU General Public License, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see our <a href=\"../about/license\">license information</a>.</p>"
-msgstr "<p>你可以在GNU General Public License許可證下分發Audacity軟體，該許可證允許你修改、複製及銷售此軟體，只要你遵守同樣的許可證並公佈源碼。詳情見我們的<a href=\"../about/license\">許可證資訊</a>。</p>"
+msgstr "<p>你可以在GNU General Public License許可證下分發Audacity軟體，該許可證允許你修改、複製及銷售此軟體，只要你遵守同樣的許可證並公佈原始碼。詳情見我們的<a href=\"../about/license\">許可證資訊</a>。</p>"
 
 #: help/faq.php:40
 msgid "Someone is selling Audacity on eBay.  Is this legal?"
@@ -1231,18 +1231,18 @@ msgid ""
 "<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>\n"
 "<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
 msgstr ""
-"<p>銷售Audacity是合法的，只要銷售者提供的程序和源碼遵循<a href=\"../about/license\">GNU General Public License</a>許可證。</p>\n"
+"<p>銷售Audacity是合法的，只要銷售者提供的程式和原始碼遵循<a href=\"../about/license\">GNU General Public License</a>許可證。</p>\n"
 "<p>一些代理商試圖欺騙客戶，他們把銷售的軟體換成了另一個名字。如果您購買了這樣的產品並在後來發現它原來是Audacity的話，我們鼓勵您<b>要求退款或者進行投訴</b>——如果您覺得交易不公平。我們要求代理商正確地註明Audacity項目，以便用戶得到足夠的資訊做選擇。</p>\n"
 "<p><b>如果您需要Audacity的CD光碟</b>，請瀏覽列出的代理商的<a href=\"../download/buy\">購買網頁</a>。</p>"
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
-msgstr "Audacity能和盲人用的「讀屏」軟體一起工作嗎?"
+msgstr "Audacity能和盲人用的「讀螢幕」軟體一起工作嗎?"
 
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
 msgid "<p>Audacity works with most screen-reader programs, but some of Audacity』s features are difficult or impossible to use without a mouse.  We are working on improving the program』s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
-msgstr "<p>Audacity可以和大多數「讀屏」軟體一起工作，但一些Audacity的功能是需要鼠標操作的，沒有鼠標會使操作變得很困難或根本不可能。我們正在致力於改進軟體的輔助可用性及鍵盤快捷方式。詳情見<a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">給盲人用戶的Audacity</a>。</p>"
+msgstr "<p>Audacity可以和大多數「讀螢幕」軟體一起工作，但一些Audacity的功能是需要滑鼠操作的，沒有鼠標會使操作變得很困難或根本不可能。我們正在致力於改進軟體的輔助可用性及鍵盤快捷方式。詳情見<a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">給盲人用戶的Audacity</a>。</p>"
 
 #: help/faq.php:51
 msgid "What does 「time remaining」 mean?  Does Audacity expire?"
@@ -1258,7 +1258,7 @@ msgstr "安裝和外掛程式"
 
 #: help/faq.php:60
 msgid "How do I download and install the LAME MP3 encoder?"
-msgstr "怎樣下載和安裝LAME MP3編碼器?"
+msgstr "如何下載和安裝LAME MP3編碼器?"
 
 #: help/faq.php:61
 #, php-format
@@ -1314,7 +1314,7 @@ msgstr ""
 "<ol>\n"
 "<li><p>首先，下載並解壓縮<a href=\"%s\">VST Enabler</a>。</li>\n"
 "<li><p>將解壓的VST Enabler連同您自己的VST外掛程式一起放在Audacity安裝目錄下的「Plug-ins」目錄中。 (在Mac OS X系統裡，Audacity的安裝目錄通常在Applications目錄下。在Windows系統，其安裝目錄一般會在Program Files目錄裡。)</li>\n"
-"<li><p>下次您啟動Audacity的時候，您的VST特效外掛程式將顯示在「特效」選單下。</li>\n"
+"<li><p>下次您啟動Audacity的時候，您的VST效果外掛程式將顯示在「效果」選單下。</li>\n"
 "</ol>\n"
 "<p>又見: <a href=\"faq?s=install&amp;i=vst-bugs\">為什麼一些VST外掛程式看上去有問題，無法工作?</a></p>"
 
@@ -1328,7 +1328,7 @@ msgid ""
 "<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  \n"
 "<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
 msgstr ""
-"<p><a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a>提供的外掛程式還不能顯示定制的界面。相反，所有的VST外掛程式都使用通用的控制。因此，許多外掛程式看上去和執行起來和它們在別的程序裡的外觀和行為不太一樣。</p>\n"
+"<p><a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a>提供的外掛程式還不能顯示客制化的界面。相反，所有的VST外掛程式都使用通用的控制。因此，許多外掛程式看上去和執行起來和它們在別的程式裡的外觀和行為不太一樣。</p>\n"
 "<p>其它VST外掛程式可能根本無法工作，因為VST Enabler還含有錯誤(bugs)。如果您發現無法工作的外掛程式，請<a href\"../contact/\">聯絡我們</a>報告問題。</p>  \n"
 "<p>Audacity還不支持VST軟體音源(Virtul Studio Technology Instrument，VSTi)外掛程式。</p>"
 
@@ -1346,7 +1346,7 @@ msgstr "錄音"
 
 #: help/faq.php:104
 msgid "How can I record in stereo?"
-msgstr "怎樣錄製立體聲?"
+msgstr "如何錄製立體聲?"
 
 #: help/faq.php:105
 msgid "<p>To record in stereo, open the Audacity preferences.  In the 「Audio I/O」 section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
@@ -1369,12 +1369,12 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr ""
 "<p>首先，將Audacity設為<a href=\"faq?s=recording&amp;i=stereo\">立體聲錄音</a>。</p>\n"
-"<p>接下來，將立體聲音訊線的一端插入您的磁帶放音機、MD播放機或立體聲系統的「線性輸出(Line Out)」或「耳機(Headphone)」接口中。將音訊線的另一端插入您計算機的「線性輸入(Line In)」接口中。如果您沒有適合這些接口的線纜，可以去電子器材商店購買。</p>\n"
-"<p>在Audacity工具欄中選擇「線性輸入(Line In)」作為輸入源，然後按下錄音按鈕。錄音時，請啟動播放您的磁帶或碟片。當完成錄音後，按下停止按鈕。</p>\n"
+"<p>接下來，將立體聲音訊線的一端插入您的磁帶放音機、MD播放機或立體聲系統的「線路輸出(Line Out)」或「耳機(Headphone)」接頭中。將音源線的另一端插入您電腦的「線路輸入(Line In)」接頭中。如果您沒有適合這些接頭的線，可以去電子器材商店購買。</p>\n"
+"<p>在Audacity工具欄中選擇「線路輸入(Line In)」作為輸入源，然後按下錄音按鈕。錄音時，請啟動播放您的磁帶或碟片。當完成錄音後，按下停止按鈕。</p>\n"
 "<p>注意：</p>\n"
 "<ul>\n"
-"\t<li><p>不要把立體聲設備的輸出連接至計算機的「麥克風(Microphone)」接口，此接口只能饋入低功率(麥克風級，mic-level)的信號。正確的方法是使用「線性輸入(Line In)」接口。</p></li>\n"
-"\t<li><p>請不要把唱機跟計算機直接連接。從唱機輸出的信號有失真；它必須透過唱機前置放大器或者帶「唱機輸入(Phono)」接口接收機的校正才行。</p></li>\n"
+"\t<li><p>不要把立體聲設備的輸出連接至電腦的「麥克風(Microphone)」接頭，此接頭只能輸入低功率(麥克風級，mic-level)的信號。正確的方法是使用「線路輸入(Line In)」接頭。</p></li>\n"
+"\t<li><p>請不要把唱機跟電腦直接連接。從唱機輸出的信號有失真；它必須透過唱機前置放大器或者帶「唱機輸入(Phono)」接頭接收機的校正才行。</p></li>\n"
 "</ul>\n"
 "<p>又見：<a href=\"faq?s=files&amp;i=split\">怎樣將一段長的錄音分割成多個檔案</a>。</p>"
 
@@ -1388,7 +1388,7 @@ msgstr "又見："
 #: help/faq.php:202
 #: help/faq.php:226
 msgid "How do I save my recording on an audio CD?"
-msgstr "我怎樣才能在音樂CD光碟上儲存我的錄音?"
+msgstr "我如何在音樂CD光碟上儲存我的錄音?"
 
 #: help/faq.php:121
 msgid "Why can』t I hear what I』m recording?"
@@ -1403,10 +1403,10 @@ msgid ""
 "<p>Open the Audacity preferences.  In the 「Audio I/O」 section, turn on the 「playthrough」 option.  「Hardware Playthrough」 is best if it is available.  If it does not work, you can choose 「Software Playthrough」 instead.</p>\n"
 msgstr ""
 "<h3>Windows與Linux</h3>\n"
-"<p>如要監聽錄音，開啟計算機的音量控制面板。調高錄音源的回放音量並且去掉「靜音」復選框的對勾(該錄音源通常是「麥克風(Microphone)」或「線性輸入(Line in)」)。</p>\n"
-"<p>如果還不起作用的話，開啟Audacity的參數設定項。在「音訊I/O」欄, 選中「軟體回放」選項。</p>\n"
+"<p>如要監聽錄音，開啟電腦的音量控制面板。調高錄音源的播放音量並且去掉「靜音」復選框的對勾(該錄音源通常是「麥克風(Microphone)」或「線路輸入(Line in)」)。</p>\n"
+"<p>如果還不起作用的話，開啟Audacity的偏好設定項。在「音訊I/O」欄, 選中「軟體播放」選項。</p>\n"
 "<h3>Mac OS X</h3>\n"
-"<p>開啟Audacity的參數設定項。在「音訊I/O」欄，選中「回放」選項。如果「硬體回放」項可用的話，最好選該項。假如「硬體回放」不起作用的話，您可以選擇「軟體回放」。</p>\n"
+"<p>開啟Audacity的偏好設定項。在「音訊I/O」欄，選中「播放」選項。如果「硬體播放」項可用的話，最好選該項。假如「硬體播放」不起作用的話，您可以選擇「軟體播放」。</p>\n"
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
@@ -1425,8 +1425,8 @@ msgstr ""
 "<p>這叫做多音軌錄音。它使您可以自己錄製和聲，或者給一段現有的錄音增加新的音源(instrument)或人聲。實現的方法請遵循以下步驟:</p>\n"
 "<ol>\n"
 "  <li>匯入或錄製第一個音軌。</li>\n"
-"  <li>開啟參數設定項的「音訊I/O」欄，勾上<b>「在錄製新軌時播放其它的軌道」</b>那個選框。</li>\n"
-"  <li>關閉參數設定，然後點擊<b>錄音</b>按鈕。</li>\n"
+"  <li>開啟偏好設定項的「音訊I/O」欄，勾上<b>「在錄製新音軌時播放其它的軌道」</b>那個選框。</li>\n"
+"  <li>關閉偏好設定，然後點擊<b>錄音</b>按鈕。</li>\n"
 "</ol>\n"
 "<p>又見: <a href=\"faq?s=recording&amp;i=sync\">為什麼我的新音軌不能與前面的音軌同步?</a></p>"
 
@@ -1439,7 +1439,7 @@ msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
 msgstr ""
-"<p>當您進行<a href=\"faq?s=recording&amp;i=multi-track\">多音軌錄音</a>時，在回放和錄音之間會有一段不可預知的時延。Audacity試圖自動修正這個時延，但目前還不能在所有的計算機上都解決這個問題。</p>\n"
+"<p>當您進行<a href=\"faq?s=recording&amp;i=multi-track\">多音軌錄音</a>時，在播放和錄音之間會有一段不可預知的延遲。Audacity試圖自動修正這個延遲，但目前還不能在所有的電腦上解決這個問題。</p>\n"
 "<p>如果一個新音軌不能和其它音軌同步，請先放大，再用時間移動工具將新音軌拖至正確的位置。</p>"
 
 #: help/faq.php:145
@@ -1456,8 +1456,8 @@ msgid ""
 "<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr ""
 "<h3>Windows和Linux</h3>\n"
-"<p>對於大多數Windows及Linux上的音訊設備，均可實現對計算機上正在播放聲音的錄製，包括網路串流音訊。</p>\n"
-"<p>在Audacity混音工具列的下拉選單裡，選擇「Wave Out(波形輸出)」或者「Stereo Mix(立體聲混音)」作為輸入源(實際確切的名稱可能不一樣，取決於您計算機的音效卡)。 當按下錄音按鈕時，Audacity將會擷取所有正在電腦揚聲器上播放的聲音。</p>\n"
+"<p>對於大多數Windows及Linux上的音訊設備，均可實現對電腦上正在播放聲音的錄製，包括網路串流音訊。</p>\n"
+"<p>在Audacity混音工具列的下拉選單裡，選擇「Wave Out(波形輸出)」或者「Stereo Mix(立體聲混音)」作為輸入源(實際確切的名稱可能不一樣，取決於您電腦的音效卡)。 當按下錄音按鈕時，Audacity將會擷取所有正在電腦揚聲器上播放的聲音。</p>\n"
 "<p>如果這些步驟在您的電腦上不起作用，您可以用一條音源線將「線路輸出(Line Out)」接頭(外接音箱用的)和「線路輸入(Line In)」接頭對接起來，再將Audacity設為從「線路輸入(Line In)」錄音。</p>\n"
 "<h3>Mac OS X</h3>\n"
 "<p>Mac OS X用戶可以使用諸如<a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a>或者<a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>之類的軟體擷取串流音訊。</p>\n"
@@ -1477,7 +1477,7 @@ msgid ""
 "  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
 "</ol>"
 msgstr ""
-"<p>抱歉，Audacity還不支援計劃(定時)錄音。我們可能會在以後的版本中加入此功能。</p>\n"
+"<p>抱歉，Audacity還不支援定時錄音。我們可能會在以後的版本中加入此功能。</p>\n"
 "<p>目前您可以透過以下步驟使Audacity在某段時限後<b>停止</b>錄音：</p>\n"
 "<ol>\n"
 "  <li>在偏好設定項的「音訊I/O」欄中開啟「在錄製新軌時播放其它的軌道」選項。</li>\n"
@@ -1505,7 +1505,7 @@ msgstr "為什麼在我儲存工程時Audacity會建立一個滿是「.au」檔�
 
 #: help/faq.php:176
 msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently.  When you save a project, Audacity stores all of the pieces in a folder with a name like 「project_data.」</p>  <p>You do not need to open these files yourself.  Audacity will load them automatically when you open the 「project.aup」 file, which is saved in the same location as the 「data」 folder.</p>"
-msgstr "<p>Audacity會把長的音軌分成小的片段以便有效地進行編輯。 當您儲存工程時，Audacity會把所有的片段文件存儲在一個如「工程名_data」(即工程名+「_data」)的文件夾中。</p>  <p>您不必自己開啟這些文件。Audacity會在您開啟工程的「.aup」文件時自動讀入它們，此工程文件與「_data」文件夾位於同一個目錄。</p>"
+msgstr "<p>Audacity會把長的音軌分成小的片段以便有效地進行編輯。 當您儲存工程時，Audacity會把所有的片段檔案儲存在一個如「工程名_data」(即工程名+「_data」)的資料夾中。</p>  <p>您不必自己開啟這些檔案。Audacity會在您開啟工程的「.aup」檔案時自動讀入它們，此工程檔案與「_data」資料夾位於同一個資料夾。</p>"
 
 #: help/faq.php:180
 msgid "Audacity crashed!  Can I recover any unsaved data?"
@@ -1529,7 +1529,7 @@ msgid ""
 msgstr ""
 "<p>Audacity<b>不能</b>匯入或匯出<b>WMA、AAC、RealAudio、Shorten(SHN)</b>及許多其它私有格式的檔案。因為許可證及專利的限制，我們無法將這些格式的支援加入Audacity中。將來的版本也許可以透過使用安裝在您作業系統中的編解碼器來支援這些格式。</p>\n"
 "<p>Audacity還不支援某些開放格式，包括<b>Ogg Speex</b>及<b>FLAC</b>。我們希望以後的版本能支援它們。</p>\n"
-"<p>已支持格式的列表見<a href=\"../about/features\">特色列表</a>。</p>\n"
+"<p>已支援格式的列表見<a href=\"../about/features\">特色列表</a>。</p>\n"
 "<p>另見：<a href=\"faq?s=files&amp;i=midi\">為什麼不能播放MIDI檔案?</a></p>"
 
 #: help/faq.php:194
@@ -1538,7 +1538,7 @@ msgstr "為什麼不能播放MIDI檔案？"
 
 #: help/faq.php:195
 msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
-msgstr "<p>對不起，Audacity不能播放、編輯或者轉換MIDI檔案。它只能圖形化地顯示MIDI檔案(相對錄音的聲音而言，「匯入MIDI」的命令在「成音工程」選單裡)。我們可能在以後的版本裡加入編輯MIDI的功能，但目前Audacity還是關注於處理基於取樣的聲音(如WAV檔案)。</p>"
+msgstr "<p>對不起，Audacity不能播放、編輯或者轉換MIDI檔案。它只能圖形化地顯示MIDI檔案(相對錄音的聲音而言，「匯入MIDI」的命令在「成音工程」選單裡)。我們可能在以後的版本裡加入編輯MIDI的功能，但目前Audacity還是著重於處理基於取樣的聲音(如WAV檔案)。</p>"
 
 #: help/faq.php:198
 msgid "How do I import a track from an audio CD?"
@@ -1576,7 +1576,7 @@ msgstr ""
 "<ol>\n"
 "  <li>在Audacity視窗的底部，將成音工程的速率變為44100 Hz。</li>\n"
 "  <li>在「偏好設定」項的「檔案格式」欄，選擇WAV(16-bit...)或者AIFF(16-bit...)。</li>\n"
-"  <li>如果您的成音工程還不包含立體聲音軌，在專案選單裡選擇「新建立體聲音軌」(這將使Audacity將您的錄音匯出為立體聲文件)。</li>\n"
+"  <li>如果您的成音工程還不包含立體聲音軌，在專案選單裡選擇「新建立體聲音軌」(這將使Audacity將您的錄音匯出為立體聲檔案)。</li>\n"
 "</ol>\n"
 "<p>又見：<a href=\"faq?s=files&amp;i=split\">怎樣將一段長的錄音分割成多個檔案？</a></p>"
 
@@ -1597,9 +1597,9 @@ msgstr ""
 "<p>以下步驟教您從一段長錄音中為每首歌或段落建立一個單獨的文件。這在建立CD時特別有用，因為在CD上每個檔案都表現為一個單獨的音軌。</p>\n"
 "<ol>\n"
 "  <li>點擊第一首歌的起始位置，使游標位於該處。</li>\n"
-"  <li>在「工程」選單裡選擇「給音訊選段加上標題」。如果您願意的話，您可以輸入歌曲的名字(很遺憾，標籤名目前不支持中文)。</li>\n"
+"  <li>在「工程」選單裡選擇「在選取範圍加上標籤」。如果您願意的話，您可以輸入歌曲的名字(很遺憾，標籤名目前不支援中文)。</li>\n"
 "  <li>針對每首歌曲都重複第一步和第二步的操作。</li>\n"
-"  <li>完成後，在「檔案」選單裡的選擇「匯出多個文件」命令。當您按下「匯出」按鈕，Audacity將按照您選定的格式和位置把每首歌都儲存為一個單獨的檔案。</li>\n"
+"  <li>完成後，在「檔案」選單裡的選擇「匯出多個檔案」命令。當您按下「匯出」按鈕，Audacity將按照您選定的格式和位置把每首歌都儲存為一個單獨的檔案。</li>\n"
 "</ol>"
 
 #: help/faq.php:231
@@ -1612,7 +1612,7 @@ msgstr "為什麼我不能使用「效果」或其它一些選單項?"
 
 #: help/faq.php:235
 msgid "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the 「Select All」 command from the Edit menu.</p>"
-msgstr "<p>一些選單項在可用之前是灰色的或無效的。在選擇效果之前，您必須選定希望修改的聲音。透過點擊和拖曳選段工具可以使聲音選段變為反白顯示，或者也可以在編輯選單中選擇「全部」聲音。</p>"
+msgstr "<p>一些選單項在可用之前是灰色的或無效的。在選擇效果之前，您必須選定希望修改的聲音。透過點擊和選取工具可以使聲音選擇範圍變為反白顯示，或者也可以在編輯選單中選擇「全部」聲音。</p>"
 
 #: help/faq.php:238
 msgid "How do I combine two files into one longer file?"
@@ -1650,7 +1650,7 @@ msgstr "<p>為了混合兩個檔案，只需將它們都匯入Audacity中。它�
 
 #: help/faq.php:254
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
-msgstr "我能刪除一段錄音中的人聲以便生成卡拉OK音軌嗎？"
+msgstr "我該如何從此錄音中移除人聲變成卡拉OK音軌嗎？"
 
 #: help/faq.php:255
 msgid ""
@@ -1671,7 +1671,7 @@ msgstr ""
 "  <li>將您的立體聲檔案匯入Audacity。</li>\n"
 "  <li>開啟「音軌」選單(點擊音軌標題後的箭頭)，然後選擇「分割立體聲軌道」。</li>\n"
 "  <li>選擇下面的音軌(右聲道)。選擇音軌時可以點擊「靜音/獨奏」按鈕附近的區域。</li>\n"
-"  <li>在「特效」選單裡選擇「上下反轉」。</li>\n"
+"  <li>在「效果」選單裡選擇「反相」。</li>\n"
 "  <li>使用「音軌」選單，將每個音軌都變為「單聲道」的。</li>\n"
 "</ol>\n"
 "<p>按播放按鈕聽聽效果。如果幸運的話，人聲將會被消除掉，而大部分其它的樂器音源將不受影響，就像一個卡拉OK音軌。您可以用「檔案」選單裡的「匯出」命令儲存修改後的結果。</p>\n"
@@ -1686,12 +1686,12 @@ msgstr "常見問題解答"
 
 #: help/faq.php:292
 msgid "These are some of the most common questions about Audacity.  If your question isn』t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
-msgstr "這些是關於Audacity的最常見的問題。如果您的疑問在此處沒有解答，請見<a href=\"documentation\">文件</a>的幫助，或者<a href=\"../contact/\">與我們聯絡</a>。"
+msgstr "這些是關於Audacity的最常見的問題。如果您的疑問在此處沒有解答，請見<a href=\"documentation\">文件</a>的幫助，或者<a href=\"../contact/\">聯絡我們</a>。"
 
 #: help/tutorials.php:9
 #: main.inc.php:43
 msgid "Tutorials"
-msgstr "教程"
+msgstr "教學課程"
 
 #. i18n-hint:  Please add a note that the links on this page are in English.
 #: help/tutorials.php:16
@@ -1702,11 +1702,11 @@ msgstr "這些文章會一步一步地指導您如何使用Audacity完成一些�
 #: help/tutorials.php:22
 #: help/tutorials.php:23
 msgid "localized_tutorials"
-msgstr "本地化_教程"
+msgstr "本地化_教學課程"
 
 #: help/tutorials.php:27
 msgid "Audacity 1.2 Tutorial by Dan Eliot"
-msgstr "Audacity 1.2教程 (作者：Dan Eliot)"
+msgstr "Audacity 1.2教學課程 (作者：Dan Eliot)"
 
 #: help/tutorials.php:27
 msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
@@ -1714,7 +1714,7 @@ msgstr "學習如何開啟和編輯WAV檔案，以及將結果儲存為MP3。"
 
 #: help/tutorials.php:28
 msgid "Multi-Track Recording Tutorial from AGNULA"
-msgstr "來自AGNULA的多音軌錄音教程"
+msgstr "來自AGNULA的多音軌錄音教學課程"
 
 #: help/tutorials.php:28
 msgid "Make a simple multi-track recording."
@@ -1722,7 +1722,7 @@ msgstr "進行簡單的多音軌錄音。"
 
 #: help/tutorials.php:29
 msgid "Audacity Tutorial by Daniel James"
-msgstr "Audacity教程 (作者：Daniel James)"
+msgstr "Audacity教學課程 (作者：Daniel James)"
 
 #: help/tutorials.php:29
 msgid "Shows how to mix a multi-track project.  Includes sample sound files."
@@ -1866,9 +1866,9 @@ msgid ""
 msgstr ""
 "<p>從1.1.1版開始，Audacity允許您使用Nyquist程式語言您自己的外掛程式效果。與VST外掛程式及LADSPA外掛程式不同，Nyquist可用普通的文字編輯器編寫，無需編譯。</p>\n"
 "\n"
-"<p>Nyquist是由<a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a>發明的，其目的是作為一種完整的音訊合成和分析的程式語言，能支持MIDI、音訊的錄音和回放、文件讀寫操作、面向對像程式，提供測試、調試等許多功能。Audacity僅僅使用了Nyquist函數集的子集，允許您利用一些簡單的Nyquist函數來處理音訊數據。   Audacity不支持對Nyquist代碼的調試，所以如果您要寫一個比較複雜的外掛程式，您會發現使用完整版的Nyquist來開發將更容易，您可以在測試之後再將它改為Audacity外掛程式。您可從卡耐基梅隆大學(Carnegie Mellon University，CMU)的計算機音樂項目(Computer Music Project)獲得Nyquist:</p>\n"
+"<p>Nyquist是由<a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a>發明的，其目的是作為一種完整的音訊合成和分析的程式語言，能支援MIDI、音訊的錄音和播放、檔案I/O、物件導向程式，提供測試、除錯等許多功能。Audacity僅僅使用了Nyquist函數集的子集，允許您利用一些簡單的Nyquist函數來處理聲音。   Audacity不支援對Nyquist代碼的除錯，所以如果您要寫一個比較複雜的外掛程式，您會發現使用完整版的Nyquist來開發會更容易，您可以在測試之後再將它改為Audacity外掛程式。您可從卡內基美隆大學(Carnegie Mellon University，CMU)的電腦音樂項目(Computer Music Project)獲得Nyquist:</p>\n"
 "<ul>\n"
-"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU計算機音樂項目軟體(Computer Music Project Software)</a> - 在此下載完全版的Nyquist</a></li>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU電腦音樂專案軟體(Computer Music Project Software)</a> - 在此下載完整版的Nyquist</a></li>\n"
 "\t<li><a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">CMU的Nyquist完全參考手冊</a></li>\n"
 "</ul>\n"
 "\n"
@@ -1878,35 +1878,35 @@ msgstr ""
 "\n"
 "<p>Nyquist是基於Lisp的。如果您曾經使用過Lisp語言程式，您可以跳過本段，直接閱讀<a href=\"nyquist2\">下一頁</a>。  否則的話，請閱讀下面對於Lisp的簡要介紹：</p>\n"
 "\n"
-"<p>在Lisp(以及Nyquist)裡，一切都是S表達式(S-Expression)，即用空格分隔的、並且用圓括號括住的並且用圓括號括住的一系列記號(token，或單詞)。函數名總是S表達式的第一個記號，其它的記號都是該函數的參數。這有一個簡單的例子：</p>\n"
+"<p>在Lisp(以及Nyquist)裡，一切都是S-表示式(S-Expression)，即用空格分隔的、並且用圓括號括住的並且用圓括號括住的一系列記號(token，或單詞)。函數名是S-表示式的第一個記號，其它的記號都是該函數的參數。這有一個簡單的例子：</p>\n"
 "\n"
 "<pre>\n"
 "  (setf area (* 3.14159 (expt radius 2)))\n"
 "</pre>\n"
 "\n"
-"<p>讓我們分析一下這個例子。  最外面的S表達式有3個成員記號。第一個為<code>setf</code>，是該函數的名稱(其意思為英文「set-field」，即「賦值」)。 <code>setf</code>用於給變量賦值。(還有其它的類似函數，如<code>set</code>和<code>setq</code>，但<code>setf</code>是最有用的，所以我們在例子裡用了它。)在<code>setf</code>之後是<code>area</code>，為需要賦值的變量名。接下來是賦予該變量的值，在這裡是另一個S表達式。</p>\n"
+"<p>讓我們分析一下這個例子。  最外面的S-表示式有3個成員記號。第一個為<code>setf</code>，是該函數的名稱(其意思為英文「set-field」，即「賦值」)。 <code>setf</code>用於給變數賦值。(還有其它的類似函數，如<code>set</code>和<code>setq</code>，但<code>setf</code>是最有用的，所以我們在例子裡用了它。)在<code>setf</code>之後是<code>area</code>，為需要賦值的變數名。接下來是賦予該變數的值，在這裡是另一個S-表示式。</p>\n"
 "\n"
-"<p>Lisp沒有任何特殊的數學運算符 - 像在其它地方一樣，數學運算使用<i>前綴</i>標記，函數名(或操作符)出現在參數前面。 所以3乘以7在Lisp中不是「3*7」，而是寫作「(* 3 7)」。在Nyquist中，<code>expt</code>(指數)函數的第一個參數為第二個參數的冪。所以<code>(* 3.14159 (expt radius 2))</code>表示3.14159乘以<code>radius</code>(「半徑」)的平方，即圓面積公式。</p>\n"
+"<p>Lisp沒有任何特殊的數學運算子 - 像在其它地方一樣，數學運算使用<i>前綴</i>標記，函數名(或運算子)出現在參數前面。 所以3乘以7在Lisp中不是「3*7」，而是寫作「(* 3 7)」。在Nyquist中，<code>expt</code>(指數)函數的第二個參數為第一個參數的次方。所以<code>(* 3.14159 (expt radius 2))</code>表示3.14159乘以<code>radius</code>(「半徑」)的平方，即圓面積公式。</p>\n"
 "\n"
-"<p>為了避免每次都敲入全部的表達式，我們定義了圓面積函數，以供需要時調用:</p>\n"
+"<p>為了避免每次都敲入全部的表示式，我們定義了圓面積函數，以供需要時調用:</p>\n"
 "\n"
 "<pre>\n"
 "  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
 "</pre>\n"
 "\n"
-"<p><code>defun</code>函數用於定義新的函數。第一個參數是新函數的名稱，本例中是<code>circlearea</code>。 第二個參數是所定義函數的參數列表 - 這是少數幾個不被解釋為函數調用的S表達式之一。 最後一個表達式是函數的值。 現在如果我們要計算半徑為<code>r</code>的圓的面積，只需如下書寫:</p>\n"
+"<p><code>defun</code>函數用於定義新的函數。第一個參數是新函數的名稱，本例中是<code>circlearea</code>。 第二個參數是所定義函數的參數列表 - 這是少數幾個不被解釋為函數調用的S-表示式之一。 最後一個表示式是函數的值。 現在如果我們要計算半徑為<code>r</code>的圓的面積，只需如下書寫:</p>\n"
 "\n"
 "<pre>\n"
 "  (setf area (circlearea r))\n"
 "</pre>\n"
 "\n"
-"<p>S表示式僅僅是列表(list)的一種表示方法。Lisp使用列表來表示所有東西(「LISP」這個名稱來自於其英文全稱「LISt Processing language」，即列表處理語言)；因此知道怎樣操作列表是很有用的。讓我們從給變量賦一個數字列表開始。您不能這樣寫：</p>\n"
+"<p>S-表示式僅僅是列表(list)的一種表示方法。Lisp使用列表來表示所有東西(「LISP」這個名稱來自於其英文全稱「LISt Processing language」，即列表處理語言)；因此知道怎樣操作列表是很有用的。讓我們從給變數賦一個數字列表開始。您不能這樣寫：</p>\n"
 "\n"
 "<pre>\n"
 "  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
 "</pre>\n"
 "\n"
-"<p>原因是當Nyquist遇到一個S表達式時，它總是把表達式當作函數來運算，除非您表明它有其它的含義。<code>(1 2 3 4 5)</code>被看做參數為<code>(2 3 4 5)</code>的函數\"1\"；但因為沒有叫做\"1\"函數，Nyquist就會報錯。為了告訴Lisp您要將一個S表達式當作文本來處理，而不是作為函數處理，您需要<i>用引號表明</i>它。 在Nyquist中，您可以在一個列表前放一個單引號以標明之，如下所示:</p>\n"
+"<p>原因是當Nyquist遇到一個S-表示式時，它總是把表示式當作函數來運算，除非您表明它有其它的含義。<code>(1 2 3 4 5)</code>被看做參數為<code>(2 3 4 5)</code>的函數\"1\"；但因為沒有叫做\"1\"函數，Nyquist就會報錯。為了告訴Lisp您要將一個S-表示式當作文字來處理，而不是作為函數處理，您需要<i>用引號表明</i>它。 在Nyquist中，您可以在一個列表前放一個單引號以標明之，如下所示:</p>\n"
 "\n"
 "<pre>\n"
 "  (setf mylist '(1 2 3 4 5))\n"
@@ -1924,7 +1924,7 @@ msgstr ""
 "\n"
 "<p>此處有一些您可能需要的基本Lisp函數的清單。  完整的Lisp / Nyquist函數清單見<a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist參考手冊</a>。</p>\n"
 "\n"
-"<p><b>注意: 在Nyquist中的符號(如變量名和函數名)是不區分大小寫的。  在處理機內部所有的符號都會變成大寫。</b></p>\n"
+"<p><b>注意: 在Nyquist中的符號(如變數名和函數名)是不區分大小寫的。  在處理器內部所有的符號都會變成大寫。</b></p>\n"
 "\n"
 "<h4>數學函數</h4>\n"
 "<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
@@ -1964,7 +1964,7 @@ msgstr ""
 "\n"
 "<h4>控制</h4>\n"
 "<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
-"<tr><td><code>(if expr expr1 expr2)</code></td><td>如果表達式expr為真，則結果為對expr1求值；否則結果為expr2的值</td></tr> \n"
+"<tr><td><code>(if expr expr1 expr2)</code></td><td>如果表示式expr為真，則結果為對expr1求值；否則結果為expr2的值</td></tr> \n"
 "</table>\n"
 "\n"
 "<h3><a href=\"nyquist2\">下一節: 使用Nyquist程式</a></h3>"
@@ -2134,11 +2134,11 @@ msgid ""
 "\n"
 "<h3><a href=\"nyquist3\">Next: Creating Nyquist Plug-Ins</a></h3>"
 msgstr ""
-"<p>Nyquist區別於Lisp的地方在於它是專門為處理聲音而設計，它內嵌有許多用以合成、分析及操作聲音的基本表示式和函數。  Audacity集成了Nyquist，利用Nyquist內建的函數庫，使得生成一些複雜的效果變得十分方便。</p>\n"
+"<p>Nyquist區別於Lisp的地方在於它是專門為處理聲音而設計，它內建有許多用以合成、分析及操作聲音的基本表示式和函數。  Audacity集成了Nyquist，利用Nyquist內建的函數庫，使得生成一些複雜的效果變得十分方便。</p>\n"
 "\n"
-"<p>在Nyquist中，可以將聲音賦給一個變數，就像給變數賦數值或字元串一樣簡單。它提供的許多函數允許您高效地延伸、扭曲及合併聲音。您甚至可以\"抓取\"一段聲音並修改它的單個取樣點，但是那已經超出了本教程的範圍了。</p>\n"
+"<p>在Nyquist中，可以將聲音賦給一個變數，就像給變數賦數值或字串一樣簡單。它提供的許多函數允許您高效地延伸、扭曲及合併聲音。您甚至可以\"抓取\"一段聲音並修改它的單個取樣點，但是那已經超出了本教學課程的範圍了。</p>\n"
 "\n"
-"<p>在Audacity中使用Nyquist表達式，您只需選擇\"效果\"選單中的\"Nyquist表達式\"項。  已選的音訊將賦給變量<code>s</code>，該選段將被您鍵入的Nyquist表達式的結果代替。 在第3部分，您將學習怎樣用Nyquist創建特效外掛程式。</p>\n"
+"<p>在Audacity中使用Nyquist表示式，您只需選擇\"效果\"選單中的\"Nyquist表示式\"項。  已選的音訊將賦給變數<code>s</code>，該選段將被您鍵入的Nyquist表示式的結果代替。 在第3部分，您將學習怎樣用Nyquist建立效果外掛程式。</p>\n"
 "\n"
 "<h3>合成</h3>\n"
 "\n"
@@ -2152,13 +2152,13 @@ msgstr ""
 "\n"
 "<tr>\n"
 "<td>(const value [duration])</td>\n"
-"<td>生成一段常量(靜音)信號</td>\n"
+"<td>生成一段定量(靜音)信號</td>\n"
 "</tr>\n"
 "\n"
 "<tr>\n"
 "<td>(sine pitch [duration])</td>\n"
 "<td>生成給定音調和時長的正弦波。<br>\n"
-"    音調是MIDI音符數，60代表中音C。</td>\n"
+"    音調是MIDI音符數，60代表中央C。</td>\n"
 "</tr>\n"
 "\n"
 "<tr>\n"
@@ -2193,14 +2193,14 @@ msgstr ""
 "</table>\n"
 "\n"
 "<p>\n"
-"<b>包絡線(波封)</b>\n"
+"<b>波封</b>\n"
 "</p>\n"
 "\n"
-"<p>Nyquist支持波封處理。  透過給聲音設置波封，您可以控制其振幅的總體形狀。構建包絡的最簡單方法是用<code>env</code>函數，它有7個參數，這些參數通常用於修整合成的律音: attack time(上升時間), decay time(下降時間), release time(釋放時間), attack level(上升水平), decay level(下降水平), sustain level(持續水平), 以及overall duration(總持續時長)。 見下圖:</p>\n"
+"<p>Nyquist支援波封處理。  透過給聲音設置波封，您可以控制其振幅的總體形狀。構建波封的最簡單方法是用<code>env</code>函數，它有7個參數，這些參數通常用於修整合成的律音: attack time(上升時間), decay time(下降時間), release time(釋放時間), attack level(上升水平), decay level(下降水平), sustain level(持續水平), 以及overall duration(總持續時長)。 見下圖:</p>\n"
 "\n"
 "<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
 "\n"
-"<p>給一段聲音設置波封，只需用<code>mult</code> 函數。 如果<code>s</code>是聲音的話，那麼給這段聲音設置一個簡單包絡的寫法如下:</p>\n"
+"<p>給一段聲音設置波封，只需用<code>mult</code> 函數。 如果<code>s</code>是聲音的話，那麼給這段聲音設置一個簡單波封的寫法如下:</p>\n"
 "\n"
 "<pre>\n"
 "  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
@@ -2241,7 +2241,7 @@ msgstr ""
 "</tr>\n"
 "\n"
 "<tr>\n"
-"<td>(alpass sound decay hz)</td>\n"
+"<td>(allpass sound decay hz)</td>\n"
 "<td>全通濾波器。 產生時延效果，不會有梳狀濾波器的\n"
 "共振。  </td>\n"
 "</tr>\n"
@@ -2255,7 +2255,7 @@ msgstr ""
 "\n"
 "<h3>變換及合併聲音</h3>\n"
 "\n"
-"<p>Nyquist提供了許多種變換聲音的方法，逐一說明它們已經超出了本介紹性教程的範圍。這些函數不會直接修改聲音，而是修改Nyquist<em>環境(environment)</em>。  為了讓這些變化能影響聲音數據，您必須使用<code>cue</code>函數。</p>\n"
+"<p>Nyquist提供了許多種變換聲音的方法，逐一說明它們已經超出了本介紹性教學課程的範圍。這些函數不會直接修改聲音，而是修改Nyquist<em>環境(environment)</em>。  為了讓這些變化能影響聲音數據，您必須使用<code>cue</code>函數。</p>\n"
 "\n"
 "<table class=\"function-list\">\n"
 "\n"
@@ -2271,7 +2271,7 @@ msgstr ""
 "\n"
 "<tr>\n"
 "<td>(loud dB (cue sound))</td>\n"
-"<td>以給定的十進制數為變化量增大或減小<br>\n"
+"<td>以給定的十進位數為變化量增大或減小<br>\n"
 "    所指(cue)聲音的音量。</td>\n"
 "</tr>\n"
 "\n"
@@ -2284,7 +2284,7 @@ msgstr ""
 "\n"
 "<tr>\n"
 "<td>(seq (cue s1) (cue s2))</td>\n"
-"<td>創建一個聲音序列，使聲音s2緊接著在s1之後。</td>\n"
+"<td>建立一個聲音序列，使聲音s2緊接著在s1之後。</td>\n"
 "</tr>\n"
 "\n"
 "<tr>\n"
@@ -2400,7 +2400,7 @@ msgid ""
 "\n"
 "<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how Nyquist works.</p>"
 msgstr ""
-"<p>用Nyquist為Audacity建立外掛程式，只需新建一個擴充套件名為\".ny\"的文字檔案，並在裡面寫入若干Nyquist代碼，加入一些標明外掛程式類型的註釋，然後把該文件放到Audacity程式的<code>plug-ins</code>目錄就好了。下面有一個非常簡單的外掛程式例子:</p>\n"
+"<p>用Nyquist為Audacity建立外掛程式，只需新建一個擴充套件名為\".ny\"的文字檔案，並在裡面寫入若干Nyquist代碼，加入一些標明外掛程式類型的註釋，然後把該文件放到Audacity程式的<code>plug-ins</code>資料夾就好了。下面有一個非常簡單的外掛程式範例:</p>\n"
 "\n"
 "<pre>\n"
 "  ;nyquist plug-in\n"
@@ -2421,7 +2421,7 @@ msgstr ""
 "  ;type analyze\n"
 "</pre>\n"
 "\n"
-"<p>它們分別對應可以包含外掛程式的3個選單：產生(Generate)、效果(Effect)，分析(Analyze)。 「製作(generate)」類外掛程式用於從素材中生成新的音訊，「特效(effect)」類外掛程式(\"process\")原地修改現有的音訊，「分析(analyze)」類外掛程式處理音訊但不會修改音訊(儘管它們可能會被允許增加標籤)。</p>\n"
+"<p>它們分別對應可以包含外掛程式的3個選單：產生(Generate)、效果(Effect)，分析(Analyze)。 「產生(generate)」類外掛程式用於從素材中生成新的音訊，「效果(effect)」類外掛程式(\"process\")原地修改現有的音訊，「分析(analyze)」類外掛程式處理音訊但不會修改音訊(儘管它們可能會被允許增加標籤)。</p>\n"
 "\n"
 "<p>對於「效果」類和「分析」類外掛程式而言，Audacity設置的Nyquist環境會將用戶選擇的音訊預設地賦給變數<code>s</code>。  在外掛程式文件裡的表示式將按順序執行，最後一個表示式的傳回值將取代原來的選段。如果最後表示式返回的不是音訊，Audacity會傳回一個錯誤。</p>\n"
 "\n"
@@ -2449,7 +2449,7 @@ msgstr ""
 "  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
 "</pre>\n"
 "\n"
-"<p>如果Audacity發現有\"control\"行，它將開啟對話框提示用戶為外掛程式輸入參數。每個參數含有一個文字框和滾動欄，用戶每輸入一個參數，其值就會儲存在以您在\"control\"行指定的名稱為名的Nyquist變數中。下圖是上例Delay特效在Linux版的Audacity中顯示的對話框:</p>\n"
+"<p>如果Audacity發現有\"control\"行，它將開啟對話框提示用戶為外掛程式輸入參數。每個參數含有一個文字框和滾動欄，用戶每輸入一個參數，其值就會儲存在以您在\"control\"行指定的名稱為名的Nyquist變數中。下圖是上例Delay效果在Linux版的Audacity中顯示的對話框:</p>\n"
 "\n"
 "<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-screenshot\" width=\"414\" height=\"221\"></p>\n"
 "\n"
@@ -2467,9 +2467,9 @@ msgstr ""
 "\t<li>參數的最大值</li>\n"
 "</ol>\n"
 "\n"
-"<h3>返回標籤(label)</h3>\n"
+"<h3>傳回標籤(label)</h3>\n"
 "\n"
-"<p>除了返回音訊，Nyquist外掛程式還可以傳回一組標籤(label)的列表。 所謂標籤列表就是一組(時刻/標籤)對的列表，例如:</p>\n"
+"<p>除了傳回音訊，Nyquist外掛程式還可以傳回一組標籤(label)的列表。 所謂標籤列表就是一組(時刻/標籤)對的列表，例如:</p>\n"
 "\n"
 "<pre>\n"
 "  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
@@ -2479,26 +2479,26 @@ msgstr ""
 "\n"
 "<h3>處理立體聲的音軌</h3>\n"
 "\n"
-"<p>Nyquist將立體聲音軌表示為聲音的數組(而不是列表)。  許多Nyquist函數可以自動處理這些數組，但不是全部的函數都可以。所以有時您可能需要將一個立體聲的數組拆分，或者重新合併為一個。下面是一些較有用的函數:</p>\n"
+"<p>Nyquist將立體聲音軌表示為聲音的陣列(而不是列表)。  許多Nyquist函數可以自動處理這些陣列，但不是全部的函數都可以。所以有時您可能需要將一個立體聲的陣列拆分，或者重新合併為一個。下面是一些較有用的函數:</p>\n"
 "\n"
 "<table class=\"function-list\">\n"
-"<tr><td><code>(arrayp s)</code></td><td>如果<code>s</code>是數組的話返回為true(真)</td></tr>\n"
-"<tr><td><code>(aref s 0)</code></td><td>數組<code>s</code>的第一個元素 - 左通道</td></tr>\n"
-"<tr><td><code>(aref s 1)</code></td><td>數組<code>s</code>的第二個元素 - 右通道</td></tr>\n"
-"<tr><td><code>(setf s (make-array 2))</code></td><td>將<code>s</code>轉換為一個長度為2的新數組</td></tr>\n"
-"<tr><td><code>(setf (aref s 0) left)</code></td><td>使<code>left</code>成為數組<code>s</code>的第一個元素</td></tr>\n"
-"<tr><td><code>(setf (aref s 1) right)</code></td><td>使<code>right</code>成為數組<code>s</code>的第二個元素</td></tr>\n"
+"<tr><td><code>(arrayp s)</code></td><td>如果<code>s</code>是陣列的話返回為true(真)</td></tr>\n"
+"<tr><td><code>(aref s 0)</code></td><td>陣列<code>s</code>的第一個元素 - 左通道</td></tr>\n"
+"<tr><td><code>(aref s 1)</code></td><td>陣列<code>s</code>的第二個元素 - 右通道</td></tr>\n"
+"<tr><td><code>(setf s (make-array 2))</code></td><td>將<code>s</code>轉換為一個長度為2的新陣列</td></tr>\n"
+"<tr><td><code>(setf (aref s 0) left)</code></td><td>使<code>left</code>成為陣列<code>s</code>的第一個元素</td></tr>\n"
+"<tr><td><code>(setf (aref s 1) right)</code></td><td>使<code>right</code>成為陣列<code>s</code>的第二個元素</td></tr>\n"
 "</table>\n"
 "\n"
 "<p>為方便起見，如果您的Nyquist外掛程式的輸入為立體聲，而輸出僅為單聲道，Audacity將自動把輸出同樣複製在左右兩個聲道上。</p>\n"
 "\n"
 "<h3>到此之後下一步可以涉足的地方</h3>\n"
 "\n"
-"<p>Audacity自帶一些外掛程式的樣例，您可以以這些樣例為出發點，試著去查看和修改它們。學習Nyquist的最好方法是去嘗試。如果您在調試過程中遇到麻煩，請考慮下載完全獨立版的Nyquist(見第1部分的鏈結)。</p>\n"
+"<p>Audacity裡包含一些外掛程式的樣例，您可以以這些樣例為出發點，試著去查看和修改它們。學習Nyquist的最好方法是去嘗試。如果您在除錯過程中遇到麻煩，請考慮下載完全獨立版的Nyquist(見第1部分的鏈結)。</p>\n"
 "\n"
 "<p>如果您在使用Nyquist的過程中遇到了麻煩，請<a href=\"../contact/\">聯絡我們</a>。</p>\n"
 "\n"
-"<p>如果您在編寫Nyquist效果外掛程式，並且願意將其與別人共享，或者您願意討論關於用Nyquist製作某種特效的細節，請加入<a href=\"../contact/lists#nyquist\">audacity-nyquist通信論壇</a>。</p>\n"
+"<p>如果您在編寫Nyquist效果外掛程式，並且願意將其與別人共享，或者您願意討論關於用Nyquist製作某種效果的細節，請加入<a href=\"../contact/lists#nyquist\">audacity-nyquist通信論壇</a>。</p>\n"
 "\n"
 "<p>如欲瞭解有關Nyquist工作機制的更多詳情，別忘了參考完整的<a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist參考手冊</a>。 </p>"
 
@@ -2578,7 +2578,7 @@ msgstr ""
 
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
-msgstr "自由且免費的聲音編輯軟體和錄音器"
+msgstr "自由的成音工程軟體"
 
 #: index.php:18
 msgid "for Microsoft Windows"
@@ -2594,7 +2594,7 @@ msgstr "Windows、Mac、或 GNU/Linux 版本"
 
 #: index.php:33
 msgid "The Free, Cross-Platform Sound Editor"
-msgstr "跨平台的免費聲音編輯軟體"
+msgstr "跨平台、自由的成音工程(聲音編輯)軟體"
 
 #: index.php:38
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
