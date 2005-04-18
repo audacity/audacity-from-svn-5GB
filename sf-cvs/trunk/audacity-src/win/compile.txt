@@ -14,18 +14,16 @@ Authors:
 
 ================================================================
 This version is currently accurate for Audacity version 1.3.0.
-Last Updated: February 2, 2005
+Last Updated: April 11, 2005
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
 
-Audacity releases are now built with Visual C++ .NET 2003. 
+Audacity releases are now built with Visual C++ .NET 2003 or 
+Visual C++ 7.x. 
 
 Previous Audacity releases have been built with Visual C++ 6.0, 
-with Service Pack 5.  If you require it, this patch is available from
-Microsoft at
-
-  http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
+with Service Pack 5.  This is no actively longer supported. 
 
 It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked runtime libraries.
