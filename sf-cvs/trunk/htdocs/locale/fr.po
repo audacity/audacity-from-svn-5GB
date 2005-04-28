@@ -1746,7 +1746,7 @@ msgstr ""
 "<p>Pour controler vos enregistrement, ouvrez le controleur de volume, décochez le bouton \"Muet\" de la source (\"Line In\" ou \"Microphone\") et ajustez le niveau.</p>\n"
 "<p>Si ça ne fonctionne toujours pas, activez l'option \"Passage audio logiciel\" dans l'onglet \"E/S audio\" du panneau des préférences.</p>\n"
 "<h3>Mac OS X</h3>\n"
-"<p>Activez l'option \"Passage audio **\" de l'onglet \"E/S audio\" des préférences. Choisissez l'option \"Passage audio matériel\" si elle disponible; dans le contraire, utilisez \"Passage audio logiciel\".</p>"
+"<p>Activez l'option \"Passage audio **\" de l'onglet \"E/S audio\" des préférences. Choisissez l'option \"Passage audio matériel\" si elle disponible; dans le contraire, utilisez \"Passage audio logiciel\".</p>\n"
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
@@ -1818,7 +1818,7 @@ msgstr ""
 "<p>Dans la barre d'outils de mixage de Audacity, choisissez \"Phone out\" ou \"Stereo Mix\" comme source d'acquisition. (Le nom peut différer selon les pilotes de la carte son utilisée.) Quand vous cliquez sur le bouton \"Enregistrer\", Audacity capte tout ce que l'ordinateur envoie aux haut-parleurs.</p>\n"
 "<p>Si ceci ne fonctionne pas, vous pouvez relier la sortie \"Line Out\" à l'entrée \"Line In\" de votre carte son, et sélectionner \"Line In\" comme source.</p>\n"
 "<h3>Mac OS X</h3>\n"
-"<p>Des logiciels comme <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> et <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a> permettent de capturer des flux audio.</p>"
+"<p>Des logiciels comme <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> et <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a> permettent de capturer des flux audio.</p>\n"
 
 #: help/faq.php:155
 msgid "Can I set Audacity to record at a certain time?"
@@ -2111,7 +2111,7 @@ msgstr ""
 " <li>Choisissez \"Inverser\" dans le menu Effets.</li>\n"
 " <li>Dans le menu de piste de chacune, sélectionnez \"Mono\".</li>\n"
 "</ol>\n"
-"<p>Ecoutez le résultat... Avec un peu de chance, la voix a disparu et les instruments n'ont pas été altérés,, comme dans un karaoké. Vous pouvez ensuite exporter le fichier résultant.</p>"
+"<p>Ecoutez le résultat... Avec un peu de chance, la voix a disparu et les instruments n'ont pas été altérés,, comme dans un karaoké. Vous pouvez ensuite exporter le fichier résultant.</p>\n"
 
 #: help/faq.php:284
 msgid "Other frequently asked questions..."
