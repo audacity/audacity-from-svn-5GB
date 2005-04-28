@@ -63,6 +63,7 @@
   <li>Lionel Allorge (fr)</li>
   <li>Olivier Ballestraz (fr)</li>
   <li>Christian Brochec (fr)</li>
+  <li>Fabrice Silva (fr)</li>
   <li>Micil Sheain Mhicil (ga)</li>
   <li>Márton Balázs - <a href="http://documan.sourceforge.net/">documan magyarító oldala</a> (hu)</li>
   <li>Jozsef Herczeg (hu)</li>

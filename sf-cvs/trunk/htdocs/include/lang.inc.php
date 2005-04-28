@@ -22,6 +22,7 @@ $available_locales = array(
   "de" => array("de_DE", "Deutsch"),
   "en" => array("en_US", "English"),
   "es" => array("es_ES", "Espa&ntilde;ol"),
+  "fr" => array("fr_FR", "Français"),
   "it" => array("it_IT", "Italiano"),
   "hu" => array("hu_HU", "Magyar"),
   "nb" => array("nb_NO", "Norsk (Bokm&aring;l)"),
