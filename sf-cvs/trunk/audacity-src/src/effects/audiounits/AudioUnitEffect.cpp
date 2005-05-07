@@ -17,12 +17,11 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 
-#if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-#include <wx/mac/private.h>
-#else
-#include <wx/mac/private.h>
-#include <wx/mac/carbon/uma.h>
+#if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION < 6))
+#error Audio Units support requires wxMac 2.6
 #endif
+
+#include <wx/mac/private.h>
 
 //
 // Forward declarations of GUI classes
@@ -624,62 +623,30 @@ END_EVENT_TABLE()
 AudioUnitGUIControl::~AudioUnitGUIControl()
 {
    // Don't want to dispose of it...
-   m_macControl = NULL;
+   m_peer = NULL;
 }
 
 bool AudioUnitGUIControl::Create(wxWindow *parent, wxWindowID id,
                                  wxPoint pos, wxSize size,
                                  ControlRef controlRef)
 {
- #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-   
-   //
-   // wx 2.4 version
-   //
-   
-   Rect bounds;
-   Str255 title;
-   
-   MacPreControlCreate(parent, id, "", pos, size,
-                       0, wxDefaultValidator, "NativeControl",
-                       &bounds, title);
-   
-   m_macControl = controlRef;
-   
-   Rect outBounds;
-   GetControlBounds((ControlRef)m_macControl, &outBounds);
-   
-   SetSize(outBounds.left, outBounds.top,
-           outBounds.right - outBounds.left,
-           outBounds.bottom - outBounds.top);
-   
-   MacPostControlCreate();
-   
- #else
-
-   //
-   // wx 2.5 version
-   //
-   
    m_macIsUserPane = FALSE ;
    
    if ( !wxControl::Create(parent, id, pos, size,
-                           0, wxDefaultValidator, "NativeControl") )
+                           0, wxDefaultValidator, "AudioUnitControl") )
       return false;
    
-   m_macControl = (wxOpaqueControlRef *)controlRef;
+   m_peer = new wxMacControl(this, controlRef);
    
    Rect outBounds;
-   GetControlBounds((ControlRef)m_macControl, &outBounds);
-   
+   GetControlBounds(controlRef, &outBounds);
+
    pos.x = outBounds.left;
    pos.y = outBounds.top;
    size.x = outBounds.right - outBounds.left;
    size.y = outBounds.bottom - outBounds.top;
    
-   MacPostControlCreate(pos,size);
-   
- #endif
+   MacPostControlCreate(pos, size);
    
    return true;
 }
