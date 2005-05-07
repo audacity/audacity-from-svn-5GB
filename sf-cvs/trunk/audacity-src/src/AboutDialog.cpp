@@ -22,13 +22,6 @@
 
 #include "../images/AudacityLogo.xpm"
 
-#ifdef __WXMSW__
-#define DLOG_HEIGHT 430
-#else
-#define DLOG_HEIGHT 400
-#endif
-
-
 // ----------------------------------------------------------------------------
 // icons
 // ----------------------------------------------------------------------------
@@ -39,8 +32,8 @@ END_EVENT_TABLE()
 IMPLEMENT_CLASS(AboutDialog, wxDialog)
 
 AboutDialog::AboutDialog(wxWindow * parent)
-:  wxDialog(parent, -1, _("About Audacity..."),
-         wxDefaultPosition, wxSize(400, DLOG_HEIGHT), wxDEFAULT_DIALOG_STYLE)
+   :  wxDialog(parent, -1, _("About Audacity..."),
+               wxDefaultPosition, wxDefaultSize)
 {
    wxString versionStr = wxT(AUDACITY_VERSION_STRING);
 
@@ -245,7 +238,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "</body>"
       "</html>");
    
-   Centre();
    this->SetBackgroundColour(wxColour(255, 255, 255));
 
    wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
@@ -257,19 +249,22 @@ AboutDialog::AboutDialog(wxWindow * parent)
    pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
 
    wxHtmlWindow *html = new wxHtmlWindow(this, -1,
-                                         wxPoint(10, 210),
-                                         wxSize(380, 150), 
-                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
+                                         wxDefaultPosition,
+                                         wxSize(400, 150));
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
 
-   wxButton *ok = new wxButton(this, wxID_OK,
-                               _("Audacious!"),
-                               wxPoint(150, 372),
-                               wxSize(100, 20));
+   wxButton *ok = new wxButton(this, wxID_OK, _("Audacious!"));
    ok->SetDefault();
    ok->SetFocus();
    pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
+
+   this->SetAutoLayout(true);
+   this->SetSizer(pBoxSizer);
+   pBoxSizer->Fit(this);
+   pBoxSizer->SetSizeHints(this);
+
+   this->Centre();
 }
 
 AboutDialog::~AboutDialog()

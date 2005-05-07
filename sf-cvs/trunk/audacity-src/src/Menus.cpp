@@ -184,17 +184,18 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags(wxT("Print"),
                       AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag);   
+   c->AddSeparator();
 
+   // On the Mac, the Preferences item doesn't actually go here...wxMac will pull it out
+   // and put it in the Audacity menu for us based on its ID.
   #ifdef __WXMAC__
-   /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
-   c->AddItem(wxT("Exit"),           _("E&xit"),                          FN(OnExit));
-   c->SetCommandFlags(wxT("Exit"), 0, 0);
+   /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
+   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
   #else
-   c->AddSeparator();
-   /* i18n-hint: On Windows and Linux, the Preferences shortcut should be Ctrl+P or something like that */
+   /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
    c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
+  #endif
 
    // Recent Files and Recent Projects menus
    wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
@@ -207,9 +208,16 @@ void AudacityProject::CreateMenusAndCommands()
    gPrefs->SetPath(wxT(".."));
    c->AddSeparator();
 
+   // On the Mac, the Exit item doesn't actually go here...wxMac will pull it out
+   // and put it in the Audacity menu for us based on its ID.
+  #ifdef __WXMAC__
+   c->AddItem(wxT("Exit"),           _("E&xit"),                          FN(OnExit));
+   c->SetCommandFlags(wxT("Exit"), 0, 0);
+  #else
    c->AddItem(wxT("Exit"),           _("E&xit"),                          FN(OnExit));
    c->SetCommandFlags(wxT("Exit"), 0, 0);
   #endif
+
    c->EndMenu();
 
    //
