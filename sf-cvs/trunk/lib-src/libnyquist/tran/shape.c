@@ -9,9 +9,6 @@
 #include "cext.h"
 #include "shape.h"
 
-void shape_free();
-
-
 typedef struct shape_susp_struct {
     snd_susp_node susp;
     long terminate_cnt;
@@ -165,8 +162,10 @@ void shape_mark(shape_susp_type susp)
     sound_xlmark(susp->sin);
 }
 
+/* Made this static to avoid function name collision on Mac OS X
+   -dmazzoni */
 
-void shape_free(shape_susp_type susp)
+static void shape_free(shape_susp_type susp)
 {
 table_unref(susp->the_table);    sound_unref(susp->sin);
     ffree_generic(susp, sizeof(shape_susp_node), "shape_free");
