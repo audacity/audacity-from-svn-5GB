@@ -1322,8 +1322,9 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
-   SetActiveProject(this);
    mActive = event.GetActive();
+   if (mActive)
+      SetActiveProject(this);
    event.Skip();
 }
 
