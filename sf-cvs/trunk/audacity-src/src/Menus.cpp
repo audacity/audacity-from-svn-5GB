@@ -782,6 +782,9 @@ void AudacityProject::UpdateMenus()
    if (this != GetActiveProject())
       return;
 
+   if (!IsActive())
+      return;
+
 #if 0
    if (gControlToolBarStub) {
       int toolBarCheckSum = GetToolBarChecksum();
