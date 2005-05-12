@@ -273,32 +273,41 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
    c->SetCommandFlags(wxT("SelectAll"),
                       TracksExistFlag, TracksExistFlag);
+
+   c->AddItem(wxT("SetLeftSelection"),_("Left at Playback Position\t["), FN(OnSetLeftSelection));
+   c->AddItem(wxT("SetRightSelection"),_("Right at Playback Position\t]"), FN(OnSetRightSelection));
+   c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
+                      wxT("SetLeftSelection"), wxT("SetRightSelection"), NULL);
+
    c->AddItem(wxT("SelStartCursor"), _("Start to Cursor"),                FN(OnSelectStartCursor));
    c->AddItem(wxT("SelCursorEnd"),   _("Cursor to End"),                  FN(OnSelectCursorEnd));
    c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
                       wxT("SelStartCursor"), wxT("SelCursorEnd"), NULL);
 
    c->EndSubMenu();
+
    c->AddItem(wxT("ZeroCross"),      _("Find Zero Crossings\tZ"),         FN(OnZeroCrossing));
+
+   c->BeginSubMenu(_("Move Cursor..."));
+
+   c->AddItem(wxT("CursSelStart"),   _("to Selection Start"),             FN(OnCursorSelStart));
+   c->AddItem(wxT("CursSelEnd"),     _("to Selection End"),               FN(OnCursorSelEnd));
+   c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
+                      wxT("CursSelStart"), wxT("CursSelEnd"), NULL);
+                      
+   c->AddItem(wxT("CursTrackStart"), _("to Track Start"),                 FN(OnCursorTrackStart));
+   c->AddItem(wxT("CursTrackEnd"),   _("to Track End"),                   FN(OnCursorTrackEnd));
+   c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
+                      wxT("CursTrackStart"), wxT("CursTrackEnd"), NULL);
+
+   c->EndSubMenu();
+
    c->AddSeparator();
    c->AddItem(wxT("SelSave"),        _("Selection Save"),                 FN(OnSelectionSave));
    c->AddItem(wxT("SelRestore"),     _("Selection Restore"),              FN(OnSelectionRestore));
    c->SetCommandFlags(TracksExistFlag, TracksExistFlag,
                       wxT("SelSave"), wxT("SelRestore"), NULL);
    c->AddSeparator();
-
-   c->BeginSubMenu(_("Move Cursor..."));
-
-   c->AddItem(wxT("CursTrackStart"), _("to Track Start"),                 FN(OnCursorTrackStart));
-   c->AddItem(wxT("CursTrackEnd"),   _("to Track End"),                   FN(OnCursorTrackEnd));
-   c->SetCommandFlags(TracksSelectedFlag, TracksSelectedFlag,
-                      wxT("CursTrackStart"), wxT("CursTrackEnd"), NULL);
-   c->AddItem(wxT("CursSelStart"),   _("to Selection Start"),             FN(OnCursorSelStart));
-   c->AddItem(wxT("CursSelEnd"),     _("to Selection End"),               FN(OnCursorSelEnd));
-   c->SetCommandFlags(TimeSelectedFlag, TimeSelectedFlag,
-                      wxT("CursSelStart"), wxT("CursSelEnd"), NULL);
-                      
-   c->EndSubMenu();
 
    c->BeginSubMenu(_("Snap-To..."));
 
@@ -559,9 +568,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SelExtRight"), _("Selection Extend Right\tShift+Right"),   FN(OnSelExtendRight));
    c->AddCommand(wxT("SelCntrLeft"), _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
    c->AddCommand(wxT("SelCntrRight"),_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
-
-   c->AddCommand(wxT("SetLeftSelection"),_("Set Left Selection at playback position\t["), FN(OnSetLeftSelection));
-   c->AddCommand(wxT("SetRightSelection"),_("Set Left Selection at playback position\t]"), FN(OnSetRightSelection));
 
    c->AddCommand(wxT("TrackPan"), _("Change pan on first selected track\tShift+P"),FN(OnTrackPan));
    c->AddCommand(wxT("TrackGain"), _("Change gain on first selected track\tShift+G"),FN(OnTrackGain));
