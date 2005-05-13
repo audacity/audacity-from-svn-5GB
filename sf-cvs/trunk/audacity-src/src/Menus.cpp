@@ -351,7 +351,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem(wxT("UndoHistory"),    _("&History..."),               FN(OnHistory));
-   c->AddItem(wxT("PlotSpectrum"),   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
+   c->AddItem(wxT("PlotSpectrum"),   _("&Plot Spectrum..."),                 FN(OnPlotSpectrum));
    c->SetCommandFlags(wxT("PlotSpectrum"),
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
