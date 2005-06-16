@@ -81,29 +81,19 @@ AboutDialog::AboutDialog(wxWindow * parent)
    informationStr += wxT("<br>\n");
 
    // Current date
-   informationStr += _("Program build date:");
-   informationStr += wxT(" " __DATE__ "<br>\n");
+   informationStr += _("Program build date: ");
+   informationStr += __TDATE__;
+   informationStr += wxT("<br>\n");
 
    wxString par1Str = _(
-     "Audacity is a free program written by a team of volunteer developers "
-     "around the world.  Coordination happens thanks to SourceForge.net, "
-     "an online service that provides free tools to open-source "
-     "software projects.  Audacity is available for Windows 98 and "
-     "newer, Mac OS X, Linux, and other Unix-like operating systems.  "
-     "Older versions of Audacity are available for Mac OS 9.");
+     "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9.");
 
    #if 0 // Not beta anymore
    wxString par2Str = _(
-     "This is a beta version of the program.  It may contain "
-     "bugs and unfinished features.  We depend on your feedback, so "
-     "please visit our website and give us your bug reports and "
-     "feature requests." );
+     "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests." );
    #else
    wxString par2Str = _(
-     "This is a stable, completed release of Audacity.  However, if "
-     "you find a bug or have a suggestion, please contact us.  We "
-     "depend on feedback from users in order to continue to improve "
-     "Audacity.  For more information, visit our website.");
+     "This is a stable, completed release of Audacity. However, if you find a bug or have a suggestion, please contact us. We depend on feedback from users in order to continue to improve Audacity. For more information, visit our website.");
    #endif
 
    wxString translatorCredits;
@@ -120,123 +110,76 @@ AboutDialog::AboutDialog(wxWindow * parent)
    }
    wxString localeStr = wxLocale::GetSystemEncodingName();
 
-   wxString creditStr = wxT(
-      "<html>"
-      "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=") + localeStr + wxT("\"></head>"
-      "<body bgcolor=\"#ffffff\">"
-      "<font size=1>"
-      "<center>"
-      "<h3>Audacity ") + versionStr + wxT("</h3>")
-      + _("A Free Digital Audio Editor") +
-      wxT("</center>"
-      "<p>")
-      + par1Str +
-      wxT("<p>")
-      + par2Str +
-      wxT("<p>"
-      "http://audacity.sourceforge.net/"
-      "<p>"
-      "<center><b>") + _("Information") + wxT("</b></center>"
-      "<p><br>")
-      + informationStr +
-      wxT("<p>"
-      "<center><b>") + _("Credits") + wxT("</b></center>")
+   wxString creditStr = 
+      wxT("<html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=") + 
+         localeStr + 
+         wxT("\"></head>") + 
+      wxT("<body bgcolor=\"#ffffff\"><font size=1><center>") + 
+      wxT("<h3>Audacity ") + versionStr + wxT("</h3>")+ 
+      _("A Free Digital Audio Editor") + 
+      wxT("</center><p>") + par1Str +
+      wxT("<p>") + par2Str +
+      wxT("<p>http://audacity.sourceforge.net/") + 
+      wxT("<p><center><b>") + _("Information") + wxT("</b></center>") + 
+      wxT("<p><br>") + informationStr + 
+      wxT("<p><center><b>") + _("Credits") + wxT("</b></center>")
       + translatorCredits +
-      wxT("<p>"
-      "<table border=0>"
-      "<tr>"
-      "<td>Dominic Mazzoni</td>"
-      "<td>") + _("Project leader and primary programmer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Joshua Haberman</td>"
-      "<td>") + _("Primary developer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Matt Brubeck</td>"
-      "<td>") + _("Primary developer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>James Crook</td>"
-      "<td>") + _("Programmer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Vaughan Johnson</td>"
-      "<td>") + _("Programmer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Markus Meyer</td>"
-      "<td>") + _("Programmer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Shane Mueller</td>"
-      "<td>") + _("Programmer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Tony Oetzmann </td>"
-      "<td>") + _("Documentation Writer") + wxT("</td>"
-      "</tr>"
-      "<tr>"
-      "<td>Harvey Lubin</td>"
-      "<td>") + _("Main Logo") + wxT("</td>"
-      "</tr>"
-      "</table>"
-      "<p>"
-      "<center>"
-      "<b>") + _("Developers:") + wxT("</b>"
-      "<p>"
-      "<br>"
-      "William Bland<br>"
-      "Vince Busam<br>"
-      "Brian Gunlogson<br>"
-      "Greg Mekkes<br>"
-      "Augustus Saunders<br>"
-      "<br>"
-      "<p>"
-      "<center>"
-      "<b>") + _("Other contributors:") + wxT("</b>"
-      "<p>"
-      "<br>"
-      "Dave Beydler<br>"
-      "Jason Cohen<br>"
-      "Roger Dannenberg<br>"
-      "Dave Fancella<br>"
-      "Steve Harris<br>"
-      "Daniel James<br>"
-      "Steve Jolly<br>"
-      "Daniil Kolpakov<br>"
-      "Robert Leidle<br>"
-      "Logan Lewis<br>" 
-      "Tino Meinen<br>"
-      "Abe Milde<br>"
-      "Monty<br>"
-      "Paul Nasca<br>"
-      "Jason Pepas<br>"
-      "Mark Phillips<br>"
-      "Alexandre Prokoudine<br>"
-      "Jonathan Ryshpan<br>"
-      "Juhana Sadeharju<br>"
-      "Patrick Shirkey<br>"
-      "Mark Tomlinson<br>"
-      "David Topper<br>"
-      "Rudy Trubitt<br>"
-      "Tom Woodhams<br>"
-      "Otto Wyss<br>"
-      "<p>"
-      "<b>") + _("Special thanks:") + wxT("</b>"
-      "<p><br>"
-      "The wxWidgets Team<br>"
-      "The Ogg Vorbis Team<br>"
-      "Rob Leslie (libmad)<br>"
-      "Ross Bencina and Phil Burk (PortAudio)<br>"
-      "Erik de Castro Lopo (libsndfile)<br>"
-      "Olli Parviainen (soundtouch)<br>"
-      "Verilogix, Inc.<br>"
-
-      "</center>"
-      "</font>"
-      "</body>"
-      "</html>");
+      wxT("<p><table border=0>") + 
+         wxT("<tr><td>Dominic Mazzoni</td><td>") + 
+            _("Project leader and primary programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Joshua Haberman</td><td>") + 
+            _("Primary developer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Matt Brubeck</td><td>") + 
+            _("Primary developer") + wxT("</td></tr>") + 
+         wxT("<tr><td>James Crook</td><td>") + _("Programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Vaughan Johnson</td><td>") + _("Programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Markus Meyer</td><td>") + _("Programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Shane Mueller</td><td>") + _("Programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Tony Oetzmann</td><td>") + 
+            _("Documentation Writer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Harvey Lubin</td><td>") + _("Main Logo") + wxT("</td></tr>") + 
+      wxT("</table>") + 
+      wxT("<p><center><b>") + _("Developers:") + wxT("</b><p><br>") + 
+         wxT("William Bland<br>") + 
+         wxT("Vince Busam<br>") + 
+         wxT("Brian Gunlogson<br>") + 
+         wxT("Greg Mekkes<br>") + 
+         wxT("Augustus Saunders<br>") + 
+      wxT("<br><p><center><b>") + _("Other contributors:") + wxT("</b><p><br>") + 
+         wxT("Dave Beydler<br>") + 
+         wxT("Jason Cohen<br>") + 
+         wxT("Roger Dannenberg<br>") + 
+         wxT("Dave Fancella<br>") + 
+         wxT("Steve Harris<br>") + 
+         wxT("Daniel James<br>") + 
+         wxT("Steve Jolly<br>") + 
+         wxT("Daniil Kolpakov<br>") + 
+         wxT("Robert Leidle<br>") + 
+         wxT("Logan Lewis<br>") +  
+         wxT("Tino Meinen<br>") + 
+         wxT("Abe Milde<br>") + 
+         wxT("Monty<br>") + 
+         wxT("Paul Nasca<br>") + 
+         wxT("Jason Pepas<br>") + 
+         wxT("Mark Phillips<br>") + 
+         wxT("Alexandre Prokoudine<br>") + 
+         wxT("Jonathan Ryshpan<br>") + 
+         wxT("Juhana Sadeharju<br>") + 
+         wxT("Patrick Shirkey<br>") + 
+         wxT("Mark Tomlinson<br>") + 
+         wxT("David Topper<br>") + 
+         wxT("Rudy Trubitt<br>") + 
+         wxT("Tom Woodhams<br>") + 
+         wxT("Otto Wyss<br>") + 
+      wxT("<p><b>") + _("Special thanks:") + wxT("</b><p><br>") + 
+         wxT("The wxWidgets Team<br>") + 
+         wxT("The Ogg Vorbis Team<br>") + 
+         wxT("Rob Leslie (libmad)<br>") + 
+         wxT("Ross Bencina and Phil Burk (PortAudio)<br>") + 
+         wxT("Erik de Castro Lopo (libsndfile)<br>") + 
+         wxT("Olli Parviainen (soundtouch)<br>") + 
+         wxT("Verilogix, Inc.<br>") + 
+      wxT("</center></font></body></html>");
    
    this->SetBackgroundColour(wxColour(255, 255, 255));
 
