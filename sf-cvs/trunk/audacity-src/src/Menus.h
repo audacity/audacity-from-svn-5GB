@@ -11,6 +11,8 @@
   to Menus.h and Menus.cpp for clarity.
 
 **********************************************************************/
+#ifndef __AUDACITY_MENUS__
+#define __AUDACITY_MENUS__
 
 // These are all member functions of class AudacityProject.
 
@@ -78,7 +80,6 @@ void OnTrackClose();
 
 
         // Selection-Editing Commands
-
 
 void OnCursorLeft();
 void OnCursorRight();
@@ -151,11 +152,13 @@ void OnZoomToggle();
 void OnZoomNormal();
 void OnZoomFit();
 void OnZoomFitV();
+void OnZoomFitV_Calc();
 void OnZoomSel();
 
 void OnExpandAllTracks();
 void OnCollapseAllTracks();
 
+void OnSelectionFormat(int index);
 void OnSnapOn();
 void OnSnapOff();
 
@@ -204,6 +207,7 @@ void OnAddLabelPlaying();
 
         // Effect Menu
 
+bool OnEffect(int type, Effect * f);
 void OnEffect(int type, int index);
 void OnGenerateEffect(int index);
 void OnGeneratePlugin(int index);
@@ -212,6 +216,19 @@ void OnProcessEffect(int index);
 void OnProcessPlugin(int index);
 void OnAnalyzeEffect(int index);
 void OnAnalyzePlugin(int index);
+
+        //lda CleanSpeech Menu
+
+void OnBatch();
+void OnImportCleanSpeechPresets();
+void OnExportCleanSpeechPresets();
+void OnStereoToMono(int index);
+void ResolveEffectIndices(EffectArray *effects);
+wxString BuildCleanFileName(wxString fileName);
+wxUint32 GetTrackFlags();
+
+int  mNormalizeIndex;
+int  mStereoToMonoIndex;
 
         // Help Menu
 
@@ -224,7 +241,7 @@ void OnBenchmark();
        //
 
 void OnSeparator();
-
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

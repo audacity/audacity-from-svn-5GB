@@ -147,8 +147,23 @@ class AudacityProject:public wxFrame,
    void FloatToolBar(ToolBarStub * pStub );
    wxString GetFileName() { return mFileName; }
    bool GetDirty() { return mDirty; }
+   void SetProjectTitle();
+
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
    wxFileHistory *GetRecentFiles() { return mRecentFiles; }
+// audFileHistory *GetRecentProjects() { return mRecentProjects; }
+
+   bool GetTracksFitVerticallyZoomed() { return mTracksFitVerticallyZoomed; } //lda
+   void SetTracksFitVerticallyZoomed(bool flag) { mTracksFitVerticallyZoomed = flag; } //lda
+
+   bool GetShowId3Dialog() { return mShowId3Dialog; } //lda
+   void SetShowId3Dialog(bool flag) { mShowId3Dialog = flag; } //lda
+
+   bool GetCleanSpeechMode() { return mCleanSpeechMode; } //lda
+   void SetCleanSpeechMode(bool flag) { mCleanSpeechMode = flag; } //lda
+
+   bool GetNormalizeOnLoad() { return mNormalizeOnLoad; } //lda
+   void SetNormalizeOnLoad(bool flag) { mNormalizeOnLoad = flag; } //lda
 
 #include "Menus.h"
 
@@ -183,8 +198,11 @@ class AudacityProject:public wxFrame,
 
    void UpdateMenus();
    void UpdatePrefs();
+   void UpdateGuiPrefs();
+   void UpdateBatchPrefs();
    void RedrawProject();
    void SelectNone();
+   void SelectAllIfNone();
    void Zoom(double level);
    void Rewind(bool shift);
    void SkipEnd(bool shift);
@@ -347,6 +365,11 @@ class AudacityProject:public wxFrame,
    int  mAudioIOToken;
 
    bool mIsDeleting;
+   bool mTracksFitVerticallyZoomed;  //lda
+   bool mNormalizeOnLoad;  //lda
+   bool mCleanSpeechMode;  //lda
+   bool mShowId3Dialog; //lda
+   bool mEmptyCanBeDirty;
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;

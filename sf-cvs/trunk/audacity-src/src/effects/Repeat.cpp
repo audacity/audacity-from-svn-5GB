@@ -86,6 +86,12 @@ bool EffectRepeat::PromptUser()
    return true;
 }
 
+bool EffectRepeat::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferInt("Count",repeatCount,1);
+   return true;
+}
+
 bool EffectRepeat::Process()
 {
    TrackListIterator iter(mWaveTracks);

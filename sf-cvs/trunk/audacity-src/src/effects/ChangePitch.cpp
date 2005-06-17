@@ -144,6 +144,12 @@ bool EffectChangePitch::PromptUser()
    return true;
 }
 
+bool EffectChangePitch::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferDouble("Percentage",m_PercentChange,0.0);
+   return true;
+}
+
 bool EffectChangePitch::Process()
 {
    mSoundTouch = new SoundTouch();

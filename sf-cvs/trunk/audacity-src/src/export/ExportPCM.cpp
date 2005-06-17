@@ -138,7 +138,8 @@ bool ExportPCM(AudacityProject *project,
                                   1000,
                                   parent,
                                   wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+                                  wxPD_REMAINING_TIME | 
+                                  wxPD_AUTO_HIDE);
       }
       if (progress) {
          int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /

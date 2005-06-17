@@ -72,6 +72,10 @@ int gMenusDirty = 0;
 
 void InitPreferences()
 {
+//MERGE:
+//Everything now uses Audacity name for preferences.
+//(Audacity and CleanSpeech the same program and use
+//the same preferences file).
 #ifdef AUDACITY_NAME
    wxString appName = wxT(AUDACITY_NAME);
    wxString vendorName = wxT(AUDACITY_NAME);

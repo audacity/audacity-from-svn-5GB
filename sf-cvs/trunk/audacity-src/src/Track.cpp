@@ -113,6 +113,9 @@ TrackListIterator::TrackListIterator(TrackList * val)
 
 Track *TrackListIterator::First()
 {
+   if( l== NULL )
+      return NULL;
+
    cur = l->head;
 
    if (cur)
@@ -238,6 +241,7 @@ void TrackList::AddToHead(Track * t)
       tail = n;
 }
 
+// TODO: Removing a track does not free the track resources.
 void TrackList::Remove(Track * t)
 {
    TrackListNode *p = head;

@@ -78,6 +78,7 @@ public:
 protected:
 
    virtual bool PromptUser();		// invoked by Effect
+   virtual bool TransferParameters( Shuttle & shuttle );
    virtual bool Init();				// invoked by Effect
 
    // invoked by SimplePairedTwoTrack

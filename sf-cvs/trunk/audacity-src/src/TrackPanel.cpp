@@ -57,7 +57,7 @@
   Have deliberately not created new files for the new classes 
   such as AdornedRulerPanel and TrackLabel - yet.
 
-  TODO:
+  TODO: (TrackPanel Refactor)
     - Move menus from current TrackPanel into TrackLabel.
     - Convert TrackLabel from 'flyweight' to heavyweight.
     - Split GuiStereoTrack and GuiWaveTrack out from TrackPanel.
@@ -112,7 +112,7 @@
 //This loads the appropriate set of cursors, depending on platform.
 #include "../images/Cursors.h"
 
-//FIXME: the code below is obsolete
+//FIX-ME: The WXMAC code below is obsolete
 //#if defined(__WXMAC__) && !defined(__UNIX__)
 //#include <Menus.h>
 //#endif
@@ -809,6 +809,7 @@ void TrackPanel::OnTimer()
       MakeParentRedrawScrollbars();
       p->SetAudioIOToken(0);
       p->RedrawProject();
+		//ANSWER-ME: Was DisplaySelection added to solve a repaint problem?        
       DisplaySelection();
    }
 
@@ -1825,7 +1826,6 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    if (mSlideUpDownOnly)
       return;
       
-
    double samplerate = ((WaveTrack *)mCapturedTrack)->GetRate();
 
    double selend = mViewInfo->h +
@@ -2429,6 +2429,8 @@ void TrackPanel::HandleSampleEditing(wxMouseEvent & event)
 // AS: This is for when a given track gets the x.
 void TrackPanel::HandleClosing(wxMouseEvent & event)
 {
+   AudacityProject *p = GetProject(); //lda
+
    Track *t = mCapturedTrack;
    wxRect r = mCapturedRect;
 
@@ -2442,7 +2444,6 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
    else if (event.ButtonUp(1)) {
       mTrackLabel.DrawCloseBox(&dc, r, false);
       if (closeRect.Inside(event.m_x, event.m_y)) {
-         AudacityProject *p = GetProject();
          if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
             RemoveTrack(t);
       }
@@ -2565,15 +2566,12 @@ void TrackPanel::HandleMinimizing(wxMouseEvent & event)
 
 void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 {
-
    LWSlider *slider;
 
    if (pan)
       slider = mTrackLabel.mPans[mCapturedNum];
    else
       slider = mTrackLabel.mGains[mCapturedNum];
-
-
 
    slider->OnMouseEvent(event);
 
@@ -2612,7 +2610,6 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
                              Track * t, wxRect & r, int num)
 {
-
    ReleaseMouse();
    mPopupMenuTarget = t;
    {
@@ -2628,9 +2625,6 @@ void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
       mTrackLabel.DrawTitleBar(&dc, r, t, false);
    }
 }
-
-
-
 
 // AS: This handles when the user clicks on the "Label" area
 //  of a track, ie the part with all the buttons and the drop
@@ -2700,8 +2694,6 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
           MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
    }
-
-   
    // DM: Check Gain and Pan on WaveTracks:
    if (!second && t->GetKind() == Track::Wave) {
       if (GainFunc(t, r, event,
@@ -2714,9 +2706,6 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
                   num-1, event.m_x, event.m_y))
          return;
    }
-
-
-
       // DM: If it's a NoteTrack, it has special controls
       if (!second && t && t->GetKind() == Track::Note) {
          wxRect midiRect;
@@ -2882,14 +2871,21 @@ void TrackPanel::HandleResizeClick( wxMouseEvent & event )
    Track *label = FindTrack(event.m_x, event.m_y, true, true, &rLabel, &num);
 
    if (t && t->GetMinimized())
-      return; // Don't resize when minimized
+   {
+      // Jump out of minimized mode when resizing.
+      // Initial height will be height as a minimized track.
+      t->SetHeight( t->GetHeight());
+      t->SetMinimized(false);
+   }
 
    // If the click is at the bottom of a non-linked track label, we
    // treat it as a normal resize.  If the label is of a linked track,
    // we ignore the click.
 
    if (label && !label->GetLinked())
+   {
       t = label;
+   }
 
    if (!t) 
       return;
@@ -2909,6 +2905,11 @@ void TrackPanel::HandleResizeClick( wxMouseEvent & event )
    //STM:  Determine whether we should rescale one or two tracks
 
    if (mTracks->GetLink(prev) == t) {
+      if(prev->GetMinimized())
+      {
+         prev->SetHeight( prev->GetHeight());
+         prev->SetMinimized(false);
+      }
       // mCapturedTrack is the lower track
       mInitialTrackHeight = t->GetHeight();
       mInitialUpperTrackHeight = prev->GetHeight();
@@ -3100,13 +3101,14 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       break;
    case WXK_PRIOR:
       // BG: Page right
-      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) -
-                                 (mViewInfo->screen / 6));
+		// Up and down are reversed from pre 1.3.0 Audacity versions.
+//lda      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen / 6));
+      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen / 6));
       break;
    case WXK_NEXT:
       // BG: Page left
-      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) +
-                                 (mViewInfo->screen / 6));
+//lda      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen / 6));
+      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen / 6));
       break;
    case WXK_RIGHT:
       // BG: Scroll right
@@ -3200,6 +3202,7 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    case IsClosing:
       HandleClosing(event);
+      mMouseCapture = IsUncaptured; // JKC: Do we need this??
       break;
    case IsMuting:
       HandleMutingSoloing(event, false);
@@ -4296,7 +4299,8 @@ Track * TrackPanel::GetFirstSelectedTrack()
 
    TrackListIterator iter(mTracks);
  
-   for (Track * t = iter.First();t!=NULL;t=iter.Next())
+   Track * t;
+   for ( t = iter.First();t!=NULL;t=iter.Next())
       {
          //Find the first selected track
          if(t->GetSelected())
@@ -4306,7 +4310,7 @@ Track * TrackPanel::GetFirstSelectedTrack()
 
       }
    //if nothing is selected, return the first track
-   Track * t = iter.First();
+   t = iter.First();
 
    if(t)
       return t;
@@ -4434,7 +4438,7 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
    Refresh(false);
 }
 
-/// AS: Merge two tracks into one steroe track ??
+/// AS: Merge two tracks into one stereo track ??
 void TrackPanel::OnMergeStereo(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
@@ -4904,7 +4908,6 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
          
          if ( t == target)
             {
-               
                r.y -= kTopInset;
                if (label) 
                   {
@@ -4913,9 +4916,6 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
                      r.y += kTopInset;
                      r.height -= kTopInset;
                   }
-               
-               
-               
                return r;
             }
 
@@ -5185,7 +5185,6 @@ void TrackLabel::DrawMinimize(wxDC * dc, const wxRect r, Track * t, bool down, b
 
 void TrackLabel::MakeMoreSliders()
 {
-
    wxRect r(0, 0, 1000, 1000);
    wxRect gainRect;
    wxRect panRect;

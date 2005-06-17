@@ -86,7 +86,7 @@ wxString EffectAvcCompressor::GetEffectDescription() {
 
    // Note: This is useful only after values have been set. 
 
-   // FIXME: Compile error (cannot pass wxString to Format).
+   // FIX-ME: Compile error (cannot pass wxString to Format).
    //return wxString::Format(_("Applied effect: %s"),
    //                        this->GetEffectDescription());
 
@@ -148,6 +148,13 @@ bool EffectAvcCompressor::PromptUser()
 
    delete [] nTransform;
 
+   return true;
+}
+
+bool EffectAvcCompressor::TransferParameters( Shuttle & shuttle )
+{ 
+   wxASSERT( false );// Not yet implemented.
+//   shuttle.TransferInt("",,0);
    return true;
 }
 

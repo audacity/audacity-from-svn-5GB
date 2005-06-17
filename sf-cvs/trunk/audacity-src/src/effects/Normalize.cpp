@@ -9,11 +9,14 @@
 
 **********************************************************************/
 
+#include <math.h>
+
 #include "Normalize.h"
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
-
-#include <math.h>
+#include "../Prefs.h"
+#include "../Project.h"
+#include "../Shuttle.h"
 
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -26,8 +29,44 @@
 
 EffectNormalize::EffectNormalize()
 {
+   Init();
+}
+
+static double gFrameSum; //lda odd ... having this as member var crashed on exit
+
+bool EffectNormalize::Init()
+{
    mGain = true;
    mDC = true;
+   return true;
+}
+
+bool EffectNormalize::TransferParameters( Shuttle & shuttle )
+{
+   shuttle.TransferBool( "ApplyGain", mGain, true );
+   shuttle.TransferBool( "RemoveDcOffset", mDC, true );
+   return true;
+}
+
+bool EffectNormalize::CheckWhetherSkipEffect()
+{
+   bool rc = ((mGain == false) && (mDC == false));
+   return rc;
+}
+
+void EffectNormalize::End()
+{
+	bool bValidate;
+	gPrefs->Read(wxT("/Validate/Enabled"), &bValidate, false );
+	if( bValidate )
+	{
+      int checkOffset = abs((int)(mOffset * 1000.0));
+      gPrefs->Write(wxT("/Validate/Norm_Offset"), checkOffset);
+      int checkMultiplier = abs((int)(mMult * 1000.0));
+      gPrefs->Write(wxT("/Validate/Norm_Multiplier"), checkMultiplier);
+      int checkFrameSum = (int)gFrameSum;
+      gPrefs->Write(wxT("/Validate/Norm_FrameSum"), checkFrameSum);
+	}
 }
 
 bool EffectNormalize::PromptUser()
@@ -98,6 +137,7 @@ bool EffectNormalize::Process()
 bool EffectNormalize::ProcessOne(WaveTrack * track,
                                   longSampleCount start, longSampleCount end)
 {
+   bool rc = true;
    
    longSampleCount s;
    //Get the length of the buffer (as double). len is
@@ -150,16 +190,17 @@ bool EffectNormalize::ProcessOne(WaveTrack * track,
          //Update the Progress meter
 			if (TrackProgress(mCurTrackNum, 
 									((double)(pass)*0.5) + // Approximate each pass as half.
-										((double)(s - start) / (len*2))))
-            return false;
+                           ((double)(s - start) / (len*2)))) {
+            rc = false; //lda .. break, not return, so that buffer is deleted
+            break;
+         }
       }
    }
-
    //Clean up the buffer
    delete[] buffer;
 
-   //Return true because the effect processing succeeded.
-   return true;
+   //Return true because the effect processing succeeded ... unless cancelled
+   return rc;
 }
 
 void EffectNormalize::StartAnalysis()
@@ -200,7 +241,9 @@ void EffectNormalize::StartProcessing()
          extent = fabs(mMin + mOffset);
 
       if (extent > 0) {
+//MERGE: -3 Db is usual.  We need to make the normalize-volume an option.
          mMult = ((sqrt(2.0)/2) / extent);
+//       mMult = (0.9 / extent);  //lda
       }
    }
 }
@@ -209,8 +252,11 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 {
    int i;
 
-   for(i=0; i<len; i++)
-      buffer[i] = (buffer[i] + mOffset) * mMult;
+   for(i=0; i<len; i++) {
+      float adjFrame = (buffer[i] + mOffset) * mMult;
+      buffer[i] = adjFrame;
+      gFrameSum += abs(adjFrame);  //lda: validation.
+   }
 }
 
 //----------------------------------------------------------------------------
@@ -236,19 +282,22 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
    mainSizer->Add(new wxStaticText(this, -1,
-                                   _("Normalize by Dominic Mazzoni"),
+                                   _("Normalize by Dominic Mazzoni\n"
+//                                   "(Leave both unchecked to bypass this effect)\n"
+												),
                                    wxDefaultPosition, wxDefaultSize,
                                    wxALIGN_CENTRE),
                   0, wxALIGN_CENTRE|wxALL, 5);
    
    mDCCheckBox = new wxCheckBox(this, -1,
                                   _("Remove any DC offset (center on 0 vertically)"));
-   mDCCheckBox->SetValue(true);
+   mDCCheckBox->SetValue(mDC);
    mainSizer->Add(mDCCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
    mGainCheckBox = new wxCheckBox(this, -1,
                                   _("Normalize maximum amplitude to -3 dB"));
-   mGainCheckBox->SetValue(true);
+//	   _("Normalize maximum amplitude to 90% (about -1 dB)"));
+   mGainCheckBox->SetValue(mGain);
    mainSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);

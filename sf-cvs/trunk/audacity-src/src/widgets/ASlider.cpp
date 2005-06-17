@@ -527,13 +527,11 @@ void LWSlider::Init(wxWindow * parent,
 
 LWSlider::~LWSlider()
 {
-
    delete mBitmap;
    delete mSelBitmap;
    delete mThumbBitmap;
    delete mSelThumbBitmap;
    delete mPopWin;
-
 }
 
 void LWSlider::SetId(wxWindowID id)
@@ -757,7 +755,6 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
       mParent->ProcessEvent(*e);
       delete e;
    }
-   
 }
 
 int LWSlider::ValueToPosition(float val)
@@ -869,7 +866,6 @@ void ASlider::OnPaint(wxPaintEvent &event)
 
 void ASlider::OnMouseEvent(wxMouseEvent &event)
 {
-
    mLWSlider->OnMouseEvent(event);
 }
 

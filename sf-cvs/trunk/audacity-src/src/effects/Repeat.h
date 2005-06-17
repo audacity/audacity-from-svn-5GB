@@ -40,6 +40,7 @@ class EffectRepeat:public Effect {
    virtual wxString GetEffectDescription(); 
 
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    
    virtual bool Process();
 

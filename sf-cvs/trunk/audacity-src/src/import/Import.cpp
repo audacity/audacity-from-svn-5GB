@@ -88,6 +88,10 @@ int Importer::Import(wxString fName,
             "Try ripping it to a native audio format that Audacity can import.");
       return 0;
    }
+//MERGE a test exception.
+   if (extension.IsSameAs("ThrowExceptionOnImport", false)) { //lda
+      throw("Exercise Import exception");
+   }
    // see if any of the plugins expect this extension and if so give
    // that plugin first dibs
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
@@ -130,7 +134,8 @@ int Importer::Import(wxString fName,
       {
          mInFile->SetProgressCallback(progressCallback, userData);
          numTracks = 0;
-         if( mInFile->Import(trackFactory, tracks, &numTracks) == true )
+			//FIX-ME: Sometimes crashes on this line (import).
+         if( mInFile->Import(trackFactory, tracks, &numTracks) == true )  //lda crashes on this line
          {
             if (numTracks > 0) {
                // success!

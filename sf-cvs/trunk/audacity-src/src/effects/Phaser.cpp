@@ -88,6 +88,16 @@ bool EffectPhaser::PromptUser()
    return true;
 }
 
+bool EffectPhaser::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferInt("Stages",stages,2);
+   shuttle.TransferInt("Wet",drywet,128);
+   shuttle.TransferFloat("Freq",freq,0.4f);
+   shuttle.TransferInt("Depth",depth,100);
+   shuttle.TransferFloat("Feedback",fb,0.0f);
+   return true;
+}
+
 bool EffectPhaser::NewTrackSimpleMono()
 {
    for (int j = 0; j < stages; j++)

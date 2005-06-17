@@ -38,15 +38,6 @@ class wxButton;
 //
 #define STEP_CONTINUOUS 0.0f
 
-
-
-
-
-
-
-
-
-
 //
 // Lightweight slider - i.e. a slider that doesn't appear in
 // its own window, but rather draws itself inside an existing

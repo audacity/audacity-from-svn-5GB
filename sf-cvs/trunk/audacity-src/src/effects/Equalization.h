@@ -48,6 +48,7 @@ public:
    }
    
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    
    virtual bool Process();
 
@@ -69,7 +70,7 @@ private:
 
 public:
    enum curveType {
-     acoustic,
+     flat, amradio, acoustic,
      nab, lp, aes, deccaffrrmicro, deccaffrr78, riaa,
      col78, deccaffrrlp, emi78, rcavictor1938, rcavictor1947,
      nCurveTypes

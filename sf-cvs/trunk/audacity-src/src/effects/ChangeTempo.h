@@ -45,6 +45,7 @@ class EffectChangeTempo:public EffectSoundTouch {
    virtual bool Init();
 
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    virtual bool Process();
   
  private:

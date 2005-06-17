@@ -85,6 +85,11 @@ bool EffectChangeTempo::PromptUser()
    return true;
 }
 
+bool EffectChangeTempo::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferDouble("Percentage",m_PercentChange,0.0);
+   return true;
+}
 
 bool EffectChangeTempo::Process()
 {

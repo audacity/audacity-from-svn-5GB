@@ -46,6 +46,7 @@ class EffectPhaser:public EffectSimpleMono {
    virtual wxString GetEffectDescription(); 
 
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
 
  protected:
    virtual bool NewTrackSimpleMono();

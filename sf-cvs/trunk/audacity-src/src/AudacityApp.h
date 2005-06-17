@@ -35,6 +35,12 @@ class AudacityApp:public wxApp {
    virtual bool OnInit(void);
    virtual int OnExit(void);
 
+//LDA - Until we have a better way to save/restore binary data.
+   float* GetCleanSpeechNoiseGate() { return ms_CleanSpeechNoiseGate; }
+   int    GetCleanSpeechNoiseGateExpectedCount() { return ms_CleanSpeechNoiseGateExpectedCount; }
+   void   SetCleanSpeechNoiseGate(float* pNG) { ms_CleanSpeechNoiseGate = pNG; }
+   void   SetCleanSpeechNoiseGateExpectedCount(int count) { ms_CleanSpeechNoiseGateExpectedCount = count; }
+
    virtual int FilterEvent(wxEvent& event);
 
    int OnAllKeys(wxKeyEvent& event);
@@ -47,11 +53,13 @@ class AudacityApp:public wxApp {
    void OnMenuOpen(wxCommandEvent & event);
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
+   void OnKeyEvent(wxKeyEvent & event );
    
    ToolBarStub * LoadToolBar( const wxString Name, bool bDefault, 
       wxWindow * pParent, enum ToolBarType tbt );
    // Most Recently Used File support (for all platforms).
    void OnMRUFile(wxCommandEvent &event);
+// void OnMRUProject(wxCommandEvent &event);
    // Backend for above - returns true for success, false for failure
    bool MRUOpen(wxString fileName);
 
@@ -96,6 +104,10 @@ class AudacityApp:public wxApp {
 
    bool InitTempDir();
    bool CreateSingleInstanceChecker(wxString dir);
+
+//LDA - Until we have a better way to save/restore binary data.
+   float* ms_CleanSpeechNoiseGate;
+   int    ms_CleanSpeechNoiseGateExpectedCount;
 
  public:
     DECLARE_EVENT_TABLE()

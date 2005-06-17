@@ -45,6 +45,9 @@ OBJS = \
 	AboutDialog.o \
 	AudacityApp.o \
 	AudioIO.o \
+	BatchCommanDialog.o \
+	BatchCommands.o \
+	BatchProcessDialog.o \
 	Benchmark.o \
 	ControlToolBar.o \
 	Envelope.o \
@@ -70,8 +73,10 @@ OBJS = \
 	Resample.o \
 	RingBuffer.o \
 	SelectionBar.o \
+	Shuttle.o \
 	Spectrum.o \
 	Tags.o \
+	TimeTrack.o \
 	Track.o \
 	TrackArtist.o \
 	TrackPanel.o \
@@ -81,7 +86,6 @@ OBJS = \
 	VoiceKey.o \
 	WaveClip.o \
 	WaveTrack.o \
-	TimeTrack.o \
 	commands/CommandManager.o \
 	commands/Keyboard.o \
 	effects/Effect.o \
@@ -91,15 +95,18 @@ OBJS = \
 	effects/LoadEffects.o \
 	effects/Amplify.o \
 	effects/BassBoost.o \
+	effects/ChangeLength.o \
 	effects/ChangePitch.o \
 	effects/ChangeSpeed.o \
 	effects/ChangeTempo.o \
+	effects/ClickRemoval.o \
 	effects/Compressor.o \
 	effects/Echo.o \
 	effects/Equalization.o \
 	effects/Fade.o \
 	effects/Filter.o \
 	effects/Invert.o \
+	effects/Leveller.o
 	effects/Noise.o \
 	effects/NoiseRemoval.o \
 	effects/Normalize.o \
@@ -107,7 +114,10 @@ OBJS = \
 	effects/Repeat.o \
 	effects/Reverse.o \
 	effects/Silence.o \
+	effects/SpikeCleaner.o \
+	effects/StereoToMono.o \
 	effects/ToneGen.o \
+	effects/TruncSilence.o \
 	effects/Wahwah.o \
 	export/Export.o \
 	export/ExportMultiple.o \
@@ -124,14 +134,15 @@ OBJS = \
 	import/ImportPCM.o \
 	import/ImportRaw.o \
 	import/RawAudioGuess.o \
-	prefs/PrefsDialog.o \
 	prefs/AudioIOPrefs.o \
-	prefs/QualityPrefs.o \
-	prefs/FileFormatPrefs.o \
+	prefs/BatchPrefs.o \
 	prefs/DirectoriesPrefs.o \
+	prefs/FileFormatPrefs.o \
 	prefs/GUIPrefs.o \
 	prefs/KeyConfigPrefs.o \
 	prefs/MousePrefs.o \
+	prefs/PrefsDialog.o \
+	prefs/QualityPrefs.o \
 	prefs/SpectrumPrefs.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \

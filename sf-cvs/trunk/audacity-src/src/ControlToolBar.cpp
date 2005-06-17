@@ -66,6 +66,7 @@ enum {
    ID_STOP_BUTTON,
    ID_FF_BUTTON,
    ID_REW_BUTTON,
+   ID_BATCH_BUTTON,
 
    ID_FIRST_TOOL = ID_SELECT,
    ID_LAST_TOOL = ID_MULTI
@@ -88,7 +89,11 @@ const wxChar * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select
 };
 
 
+#define BUTTON_COUNT  7   //lda
 const int BUTTON_WIDTH = 50;
+const int EXTRA_WIDTH_FOR_CLEANSPEECH = 60;
+const int DEFAULT_TOTAL_WIDTH = ((BUTTON_WIDTH * BUTTON_COUNT) + 60);
+const int IMAGE_OFFSET = 0;//previously was 16, when images weren't centred in buttons.
 
 //static
 AudacityProject *ControlToolBar::mBusyProject = NULL;
@@ -108,6 +113,8 @@ BEGIN_EVENT_TABLE(ControlToolBar, wxWindow)
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnStop)
    EVT_COMMAND(ID_RECORD_BUTTON,
          wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRecord)
+   EVT_COMMAND(ID_BATCH_BUTTON,
+         wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnBatch)
    EVT_COMMAND(ID_REW_BUTTON,
             wxEVT_COMMAND_BUTTON_CLICKED, ControlToolBar::OnRewind)
    EVT_COMMAND(ID_FF_BUTTON,
@@ -118,7 +125,7 @@ END_EVENT_TABLE()
 
 //Standard constructor
 ControlToolBar::ControlToolBar(wxWindow * parent):
-ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55),gControlToolBarStub)
+ToolBar(parent, -1, wxPoint(1, 1), wxSize(DEFAULT_TOTAL_WIDTH, 55), gControlToolBarStub)   //lda
 {
    InitializeControlToolBar();
 }
@@ -127,7 +134,7 @@ ToolBar(parent, -1, wxPoint(1, 1), wxSize(420, 55),gControlToolBarStub)
 ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
                                const wxPoint & pos,
                                const wxSize & size):
-   ToolBar(parent, id, pos, size,gControlToolBarStub)
+   ToolBar(parent, id, pos, size, gControlToolBarStub)
 {
    InitializeControlToolBar();
 }
@@ -137,7 +144,7 @@ ControlToolBar::ControlToolBar(wxWindow * parent, wxWindowID id,
 // and creating the buttons.
 void ControlToolBar::InitializeControlToolBar()
 {
-   mIdealSize = wxSize(420, 55);
+   mIdealSize = wxSize(DEFAULT_TOTAL_WIDTH, 55);  //lda
    mTitle = _("Audacity Control Toolbar");
    SetLabel(_("Control"));
 
@@ -298,7 +305,7 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
                                     foreground, disabled, alpha, wxWindowID(id),
                                     wxPoint(mxButtonPos,buttonTop), processdownevents,
-                                    wxSize(48, 48), 0, 0);
+                                    wxSize(48, 48), IMAGE_OFFSET, IMAGE_OFFSET);
    mxButtonPos += BUTTON_WIDTH;
    return r;
 }
@@ -411,7 +418,7 @@ void ControlToolBar::MakeButtons()
 #endif
 
    /* Buttons */
-   int buttonOrder[6];
+   int buttonOrder[BUTTON_COUNT];
    mxButtonPos = 95;
    
    gPrefs->Read(wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true);
@@ -424,6 +431,7 @@ void ControlToolBar::MakeButtons()
       buttonOrder[3] = ID_REW_BUTTON;
       buttonOrder[4] = ID_FF_BUTTON;
       buttonOrder[5] = ID_RECORD_BUTTON;
+      buttonOrder[6] = ID_BATCH_BUTTON;
    } else
    {
       buttonOrder[0] = ID_REW_BUTTON;
@@ -432,9 +440,10 @@ void ControlToolBar::MakeButtons()
       buttonOrder[3] = ID_PAUSE_BUTTON;
       buttonOrder[4] = ID_STOP_BUTTON;
       buttonOrder[5] = ID_FF_BUTTON;
+      buttonOrder[6] = ID_BATCH_BUTTON;
    }
    
-   for (int iButton = 0; iButton < 6; iButton++)
+   for (int iButton = 0; iButton < BUTTON_COUNT; iButton++)
    {
       switch (buttonOrder[iButton])
       {
@@ -460,6 +469,15 @@ void ControlToolBar::MakeButtons()
          mRecord = MakeButton((char const **) Record,
                               (char const **) RecordDisabled,
                               (char const **) RecordAlpha, ID_RECORD_BUTTON,
+                              false);
+         break;
+      
+      case ID_BATCH_BUTTON:
+         mxButtonPos += 10; // space before CleanSpeech button
+         
+         mCleanSpeech = MakeButton((char const **) CleanSpeech,
+                              (char const **) CleanSpeechDisabled,
+                              (char const **) CleanSpeechAlpha, ID_BATCH_BUTTON,
                               false);
          break;
       
@@ -496,6 +514,7 @@ void ControlToolBar::MakeButtons()
    // TODO: Should we disable translation of these names?
    mRewind->SetLabel(_("Start"));
    mPlay->SetLabel(_("Play"));
+   mCleanSpeech->SetLabel(_("Clean Speech"));
    mRecord->SetLabel(_("Record"));
    mPause->SetLabel(_("Pause"));
    mStop->SetLabel(_("Stop"));
@@ -505,6 +524,7 @@ void ControlToolBar::MakeButtons()
          mRewind->SetToolTip(_("Skip to Start"));
          mPlay->SetToolTip(_("Play (Shift for loop-play)"));
          mRecord->SetToolTip(_("Record"));
+         mCleanSpeech->SetToolTip(_("Clean Speech"));
          mPause->SetToolTip(_("Pause"));
          mStop->SetToolTip(_("Stop"));
          mFF->SetToolTip(_("Skip to End"));
@@ -542,6 +562,7 @@ ControlToolBar::~ControlToolBar()
    delete mRewind;
    delete mPlay;
    delete mStop;
+   delete mCleanSpeech;
    delete mRecord;
    delete mFF;
    delete mPause;
@@ -608,6 +629,13 @@ int ControlToolBar::GetCurrentTool()
    return mCurrentTool;
 }
 
+void ControlToolBar::ShowCleanSpeechButton( bool bShow )
+{
+   mIdealSize = 
+      wxSize( DEFAULT_TOTAL_WIDTH + ( bShow ? EXTRA_WIDTH_FOR_CLEANSPEECH :0), 55 );
+   SetSize(mIdealSize );
+}
+
 /// Sets the currently active tool
 /// @param tool - The index of the tool to be used.
 /// @param show - should we update the button display?
@@ -623,6 +651,7 @@ void ControlToolBar::SetCurrentTool(int tool, bool show)
       if (show)
          mTool[mCurrentTool]->PushDown();
    }
+	//JKC: ANSWER-ME: Why is this RedrawAllProjects() line required?
    RedrawAllProjects();
 }
 
@@ -643,6 +672,7 @@ void ControlToolBar::SetStop(bool down)
    else {
       mStop->PopUp();
       mStop->Disable();
+      mCleanSpeech->Enable();
       mRecord->Enable();
       mPlay->Enable();
       if(!mAlwaysEnablePause)
@@ -670,6 +700,7 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
    
    mStop->Enable();
    mRewind->Disable();
+   mCleanSpeech->Disable();
    mRecord->Disable();
    mFF->Disable();
    mPause->Enable();
@@ -822,22 +853,51 @@ void ControlToolBar::StopPlaying()
    mBusyProject = NULL;
 }
 
+void ControlToolBar::OnBatch(wxCommandEvent &evt)
+{
+   AudacityProject *proj = GetActiveProject();
+   proj->OnBatch();
+
+   mPlay->Enable();
+   mStop->Enable();
+   mRewind->Enable();
+   mFF->Enable();
+   mPause->Disable();
+   mCleanSpeech->Enable();
+   mCleanSpeech->PopUp();
+}
+
 void ControlToolBar::OnRecord(wxCommandEvent &evt)
 {
    if (gAudioIO->IsBusy()) {
       mRecord->PopUp();
       return;
    }
-
+   AudacityProject *p = GetActiveProject();
+	if( p && p->GetCleanSpeechMode() )
+	{
+      size_t numProjects = gAudacityProjects.Count();
+      bool tracks = (p && !p->GetTracks()->IsEmpty());
+      if (tracks || (numProjects > 1)) {
+         wxMessageBox(_("CleanSpeech only allows recording mono track.\n"
+                        "Recording not possible when more than one window open."),
+                        _("Recording not permitted"),
+                        wxOK | wxICON_INFORMATION,
+                        this);
+         mRecord->PopUp();
+         mRecord->Disable();
+         return;
+      }
+	}
    mPlay->Disable();
    mStop->Enable();
    mRewind->Disable();
    mFF->Disable();
    mPause->Enable();
+   mCleanSpeech->Enable();
 
    mRecord->PushDown();
 
-   AudacityProject *p = GetActiveProject();
    if (p) {
       TrackList *t = p->GetTracks();
       double t0 = p->GetSel0();
@@ -867,8 +927,6 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          newTrack->SetHeight(initialheight /  recordingChannels);
          if( recordingChannels == 2 )
          {
-            
-            
             if( c == 0 )
             {
                newTrack->SetChannel(Track::LeftChannel);
@@ -1037,10 +1095,13 @@ void ControlToolBar::OnPaint(wxPaintEvent & evt)
 
 void ControlToolBar::EnableDisableButtons()
 {
+//TIDY-ME: Button logic could be neater.
    AudacityProject *p = GetActiveProject();
-
+   size_t numProjects = gAudacityProjects.Count();
    bool tracks = (p && !p->GetTracks()->IsEmpty());
+   bool cleaningSpeech = mCleanSpeech->IsDown();
    bool busy = gAudioIO->IsBusy();
+   bool recording = mRecord->IsDown();
 
 #if 0
    if (tracks) {
@@ -1050,9 +1111,14 @@ void ControlToolBar::EnableDisableButtons()
 #endif
 
    //mPlay->SetEnabled(tracks && !busy);
-   mPlay->SetEnabled(tracks && !mRecord->IsDown());
-
-   mStop->SetEnabled(busy);
+   mPlay->SetEnabled(tracks && !recording && !cleaningSpeech);
+   bool canRecord = !tracks;
+   canRecord &= !cleaningSpeech;
+   canRecord &= !busy;
+   canRecord &= ((numProjects == 0) || ((numProjects == 1) && !tracks));
+   mRecord->SetEnabled(canRecord);
+   mCleanSpeech->SetEnabled(!busy && !recording);
+   mStop->SetEnabled(busy && !cleaningSpeech);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
 }

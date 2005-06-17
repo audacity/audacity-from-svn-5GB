@@ -20,6 +20,7 @@ class wxFrame;
 class wxProgressDialog;
 
 #include "../WaveTrack.h"
+#include "../Shuttle.h"
 
 class Effect;
 
@@ -27,6 +28,13 @@ WX_DEFINE_ARRAY(Effect *, EffectArray);
 
 #define PLUGIN_EFFECT   0x0001
 #define BUILTIN_EFFECT  0x0002
+// ADVANCED_EFFECT was introduced for Lynn Allan's 'CleanSpeech'
+// it allows the list of effects to be filtered to exclude
+// the advanced effects.
+#define ADVANCED_EFFECT 0x0004
+// HIDDEN_EFFECT allows an item to be excluded from the effects
+// menu in both CleanSpeech and in normal builds.
+#define HIDDEN_EFFECT   0x0008
 
 #define INSERT_EFFECT   0x0010
 #define PROCESS_EFFECT  0x0020
@@ -37,6 +45,14 @@ WX_DEFINE_ARRAY(Effect *, EffectArray);
 // parameteres.
 #define CONFIGURED_EFFECT 0x8000
 
+//CLEAN-ME: Rogue value to skip unwanted effects in a chain.
+//lda: SKIP_EFFECT_MILLISECOND is a rogue value, used where a millisecond
+//time is required to indicate "Don't do this effect".
+//It is used in SpikeCleaner and TruncSilence.
+//MERGE: Maybe we can remove this now that we have configurable batch
+//and so can just drop the steps we don't want?
+#define SKIP_EFFECT_MILLISECOND 99999
+
 class Effect {
 
  //
@@ -46,7 +62,7 @@ class Effect {
  // them by index number, usually when the user selects one from a menu.
  //
  public:
-   static void RegisterEffect(Effect *f);
+   static void RegisterEffect(Effect *f, int AdditionalFlags=0);
    static void UnregisterEffects();
    static Effect *GetEffect(int ID);
    static int GetNumEffects();
@@ -89,8 +105,17 @@ class Effect {
    // It will be either a built-in or a plug-in effect, and it
    // will be one of Insert, Process, or Analyze.
    virtual int GetEffectFlags() {
-      // Default - covers most built-in effects.
-      return BUILTIN_EFFECT | PROCESS_EFFECT;
+      // Default of BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT (set in constructor) - 
+      // covers most built-in effects.
+      return mFlags;
+   }
+   virtual bool TransferParameters( Shuttle & shuttle ){
+      return true;
+   }
+
+   void SetEffectFlags( int NewFlags )
+   {
+      mFlags = NewFlags;
    }
 
    // The Effect class fully implements the Preview method for you.
@@ -116,13 +141,11 @@ class Effect {
     static int LastIndex;
     static Effect * pLastEffect;
  public:
-    static void SetLastEffect(int type, int index, Effect * pEffect){
+    static void SetLastEffect(int type, Effect * pEffect){
        LastType=type;
-       LastIndex=index;
        pLastEffect = pEffect;
     }
     static int GetLastEffectType(){ return LastType;}
-    static int GetLastEffectIndex(){ return LastIndex;}
     static Effect * GetLastEffect(){ return pLastEffect;}
 
  //
@@ -153,6 +176,12 @@ class Effect {
    virtual bool PromptUser() {
       return true;
    }
+   // Check whether effect should be skipped
+   // Typically this is only useful in automation, for example
+   // detecting that zero noise reduction is to be done,
+   // or that normalisation is being done without Dc bias shift 
+   // or amplitude modification
+   virtual bool CheckWhetherSkipEffect() { return false; }
       
    // Actually do the effect here.
    virtual bool Process() = 0;
@@ -209,6 +238,7 @@ class Effect {
  //
  protected:
    static double sDefaultGenerateLen;
+   int mFlags;
  
  //
  // private methods
@@ -233,6 +263,7 @@ class Effect {
    static int sNumEffects;
    
    wxProgressDialog *mProgress;
+   friend class BatchCommands;// so can call PromptUser.
 
 };
 

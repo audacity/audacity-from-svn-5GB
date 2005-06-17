@@ -65,6 +65,12 @@ bool EffectAmplify::Init()
 
 }
 
+bool EffectAmplify::TransferParameters( Shuttle & shuttle )
+{
+   shuttle.TransferFloat( "Ratio", ratio, 0.9f );
+   return true;
+}
+
 bool EffectAmplify::PromptUser()
 {
    AmplifyDialog dlog(this, mParent, -1, _("Amplify"));

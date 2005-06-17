@@ -16,21 +16,28 @@
 #include "Amplify.h"
 // #include "AvcCompressor.h"
 #include "BassBoost.h"
+#include "ChangeLength.h"
 #include "ChangeSpeed.h"
+#include "ClickRemoval.h"
 #include "Compressor.h"
 #include "Echo.h"
 #include "Equalization.h"
 #include "Fade.h"
 #include "Filter.h"
 #include "Invert.h"
+#include "Leveller.h"
 #include "Noise.h"
 #include "NoiseRemoval.h"
 #include "Normalize.h"
 #include "Phaser.h"
+//#include "PopClick.h"
 #include "Repeat.h"
 #include "Reverse.h"
 #include "Silence.h"
+#include "SpikeCleaner.h"
+#include "StereoToMono.h"
 #include "ToneGen.h"
+#include "TruncSilence.h"
 #include "Wahwah.h"
 
 #ifdef USE_SOUNDTOUCH
@@ -77,24 +84,35 @@ void LoadEffects()
    //Commented out now that the Compressor effect works better
    //Effect::RegisterEffect(new EffectAvcCompressor());
 
+   const int SIMPLE_EFFECT = BUILTIN_EFFECT | PROCESS_EFFECT;
+   // In this list, designating an effect as 'SIMPLE_EFFECT' just means
+   // that it should be included in even the most basic of menus.
+   // This was introduced for CleanSpeech mode.
    Effect::RegisterEffect(new EffectBassBoost());
+   Effect::RegisterEffect(new EffectChangeLength());
    Effect::RegisterEffect(new EffectChangeSpeed());
 	#ifdef USE_SOUNDTOUCH
 		Effect::RegisterEffect(new EffectChangePitch());
 		Effect::RegisterEffect(new EffectChangeTempo());
 	#endif
+   Effect::RegisterEffect(new EffectClickRemoval(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
    Effect::RegisterEffect(new EffectEqualization());
-   Effect::RegisterEffect(new EffectFadeIn());
-   Effect::RegisterEffect(new EffectFadeOut());
+   Effect::RegisterEffect(new EffectFadeIn(), SIMPLE_EFFECT);
+   Effect::RegisterEffect(new EffectFadeOut(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectFilter());
    Effect::RegisterEffect(new EffectInvert());
-   Effect::RegisterEffect(new EffectNoiseRemoval());
-   Effect::RegisterEffect(new EffectNormalize());
+   Effect::RegisterEffect(new EffectLeveller(), SIMPLE_EFFECT);
+   Effect::RegisterEffect(new EffectNoiseRemoval(), SIMPLE_EFFECT);
+   Effect::RegisterEffect(new EffectNormalize(), SIMPLE_EFFECT);
+//   Effect::RegisterEffect(new EffectPopClickRemoval());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
+   Effect::RegisterEffect(new EffectSpikeCleaner(), SIMPLE_EFFECT); 
+   Effect::RegisterEffect(new EffectStereoToMono(), HIDDEN_EFFECT);// NOT in normal effects list.
+   Effect::RegisterEffect(new EffectTruncSilence(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectWahwah());
 
    // Analyze menu

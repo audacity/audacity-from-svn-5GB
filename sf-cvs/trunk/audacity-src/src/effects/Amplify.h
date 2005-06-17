@@ -56,6 +56,7 @@ class EffectAmplify:public EffectSimpleMono {
    virtual bool Init();
 
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    
  protected:
    virtual bool ProcessSimpleMono(float *buffer, sampleCount len);

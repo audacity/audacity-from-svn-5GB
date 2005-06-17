@@ -87,6 +87,7 @@ DirManager::DirManager()
       //create a temporary null log to capture the log dialog
       //that wxGetDiskSpace creates.  It gets destroyed when
       //it goes out of context.
+		//JKC: Please explain why.
       wxLogNull logNo;
       if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
          if (freeSpace < 1048576) {
@@ -261,6 +262,10 @@ void DirManager::CleanTempDir(bool startup)
       return;
 
    if (startup) {
+//lda
+      int warn = gPrefs->Read(wxT("/GUI/WarnAboutTempFiles"), true);
+      int action = wxYES;
+      if (warn==1) {
       wxString prompt =
          _("Audacity found temporary files that were not deleted or saved\n"
            "the last time you used Audacity.\n\n"
@@ -272,7 +277,7 @@ void DirManager::CleanTempDir(bool startup)
                                 wxT("Warning"),
                                 wxYES_NO | wxICON_EXCLAMATION,
                                 NULL);
-      
+      }
       if (action != wxYES) {
          dontDeleteTempFiles = true;
          return;
@@ -347,7 +352,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
                                  _("Saving project data files"),
                                  1000,
                                  NULL,
-                                 wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+                                 wxPD_REMAINING_TIME | 
+                                 wxPD_AUTO_HIDE);
       
       if (progress)
          progress->Update(int ((count * 1000.0) / total));

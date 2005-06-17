@@ -32,6 +32,7 @@
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
+#include "BatchPrefs.h"
 #include "KeyConfigPrefs.h"
 #include "QualityPrefs.h"
 #include "SpectrumPrefs.h"
@@ -88,6 +89,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
    mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
    mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
+   mCategories->AddPage(new BatchPrefs(mCategories), _("Batch"));
    mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Keyboard"));
    mCategories->AddPage(new MousePrefs(mCategories), _("Mouse"));
 

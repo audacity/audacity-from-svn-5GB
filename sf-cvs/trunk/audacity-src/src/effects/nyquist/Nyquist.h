@@ -65,10 +65,6 @@ public:
       return mAction;
    }
    
-   virtual int GetEffectFlags() {
-      return mFlags;
-   }
-
    virtual bool PromptUser();
    
    virtual bool Process();
@@ -105,7 +101,6 @@ private:
    wxString         mName;
    wxString         mAction;
    wxString         mInfo;
-   int              mFlags;
    bool             mDebug;
    wxString         mDebugOutput;
 

@@ -78,6 +78,16 @@ bool EffectWahwah::PromptUser()
    return true;
 }
 
+bool EffectWahwah::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferFloat("Freq",freq,1.5f);
+   shuttle.TransferFloat("Phase",startphase,0.0f);
+   shuttle.TransferFloat("Depth",depth,0.7f);
+   shuttle.TransferFloat("Resonance",res,2.5f);
+   shuttle.TransferFloat("Offset",freqofs,0.3f);
+   return true;
+}
+
 bool EffectWahwah::NewTrackSimpleMono()
 {
    lfoskip = freq * 2 * M_PI / mCurRate;
