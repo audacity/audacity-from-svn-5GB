@@ -84,8 +84,6 @@ public:
    ~TrackLabel();
 
    int GetTitleWidth() const { return 100; }
-
-   
 private:
    void MakeMoreSliders();
    void EnsureSufficientSliders(int index);
@@ -316,10 +314,6 @@ class TrackPanel:public wxPanel {
    int GetVRulerWidth() const { return 36;}
    int GetVRulerOffset() const { return GetTitleOffset() + mTrackLabel.GetTitleWidth();}
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
-
-
-
-   //This cycles between tracks, determining which track is selected in a semi-clever way.
 
 private:
    void DrawRuler(wxDC * dc, bool text = true);

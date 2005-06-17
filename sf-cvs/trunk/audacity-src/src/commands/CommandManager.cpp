@@ -20,12 +20,12 @@
 #include <wx/log.h>
 
 #include "../Prefs.h"
+#include "../Project.h"
 
 #include "CommandManager.h"
 
 #include "Keyboard.h"
-
-#include "../Internat.h"
+#include "../effects/Effect.h"
 
 // On wxGTK, there may be many many many plugins, but the menus don't automatically
 // allow for scrolling, so we build sub-menus.  If the menu gets longer than
@@ -514,14 +514,13 @@ void CommandManager::Modify(wxString name, wxString newLabel)
    }
 }
 
-///Call this when a menu event is received.
-///If it matches a command, it will call the appropriate
-///CommandManagerListener function.  If you pass any flags,
+
+/// HandleCommandEntry() takes a CommandListEntry and executes it
+/// returning true iff successful.  If you pass any flags,
 ///the command won't be executed unless the flags are compatible
 ///with the command's flags.
-bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
+bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags, wxUint32 mask)
 {
-   CommandListEntry *entry = mCommandIDHash[id];
    if (!entry)
       return false;
 
@@ -538,31 +537,65 @@ bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
    return true;
 }
 
+///Call this when a menu event is received.
+///If it matches a command, it will call the appropriate
+///CommandManagerListener function.  If you pass any flags,
+///the command won't be executed unless the flags are compatible
+///with the command's flags.
+bool CommandManager::HandleMenuID(int id, wxUint32 flags, wxUint32 mask)
+{
+   CommandListEntry *entry = mCommandIDHash[id];
+   return HandleCommandEntry( entry, flags, mask );
+}
+
 ///Call this when a key event is received.
 ///If it matches a command, it will call the appropriate
 ///CommandManagerListener function.  If you pass any flags,
 ///the command won't be executed unless the flags are compatible
 ///with the command's flags.
-
 bool CommandManager::HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask)
 {
    wxString keyStr = KeyEventToKeyString(evt);
 	CommandListEntry *entry = mCommandKeyHash[keyStr];
+   return HandleCommandEntry( entry, flags, mask );
+}
 
-   if (!entry)
+/// HandleTextualCommand() allows us a limitted version of script/batch
+/// behavior, since we can get from a string command name to the actual
+/// code to run.
+bool CommandManager::HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint32 mask)
+{
+   unsigned int i;
+
+   // Linear search for now...
+   for(i=0; i<mCommandList.GetCount(); i++) {
+      if (!mCommandList[i]->multi)
+      {
+         if( Str.IsSameAs( mCommandList[i]->name ))
+         {
+            return HandleCommandEntry( mCommandList[i], flags, mask);
+   }
+      }
+   }
+   // Not one of the singleton commands.
+   // We could/should try all the list-style commands.
+   // instead we only try the effects.
+   EffectArray *effects;
+   AudacityProject * proj;
+   proj = GetActiveProject();
+   if( !proj )
       return false;
 
-   wxUint32 combinedMask = (mask & entry->mask);
-   if (combinedMask) {
-      bool allowed = ((flags & combinedMask) ==
-                      (entry->flags & combinedMask));
-      if (!allowed)
-         return true;
+   int effectFlags = ALL_EFFECTS | CONFIGURED_EFFECT;
+   effects = Effect::GetEffects(effectFlags);
+   for(i=0; i<effects->GetCount(); i++) {
+      wxString effectName = (*effects)[i]->GetEffectName();
+      if( Str.IsSameAs( effectName ))
+      {
+         return proj->OnEffect( effectFlags, (*effects)[i] ); 
+      }
    }
-
-   (*(entry->callback))(entry->index);
-
-   return true;
+   return false;
 }
 
 void CommandManager::GetAllCommandNames(wxArrayString &names,

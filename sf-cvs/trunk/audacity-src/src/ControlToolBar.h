@@ -76,6 +76,7 @@ class ControlToolBar:public ToolBar {
    void OnRewind(wxCommandEvent &evt);
    void OnPlay(wxCommandEvent &evt);
    void OnStop(wxCommandEvent &evt);
+   void OnBatch(wxCommandEvent &evt);
    void OnRecord(wxCommandEvent &evt);
    void OnFF(wxCommandEvent &evt);
    void OnPause(wxCommandEvent &evt);
@@ -115,6 +116,7 @@ class ControlToolBar:public ToolBar {
 
    void SetVUMeters(AudacityProject *p);
    virtual void PlaceButton(int i, wxWindow *pWind);
+   void ShowCleanSpeechButton( bool bShow );
 
  private:
 
@@ -134,6 +136,7 @@ class ControlToolBar:public ToolBar {
 
    AButton *mRewind;
    AButton *mPlay;
+   AButton *mCleanSpeech;
    AButton *mRecord;
    AButton *mPause;
    AButton *mStop;

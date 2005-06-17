@@ -36,7 +36,11 @@ public:
    }
    
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
 
+   virtual bool Init();
+   virtual void End();
+   virtual bool CheckWhetherSkipEffect();
    virtual bool Process();
    
  private:

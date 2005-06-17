@@ -31,6 +31,13 @@ bool EffectPopClickRemoval::PromptUser()
    return true;
 }
 
+bool EffectPopClickRemoval::TransferParameters( Shuttle & shuttle )
+{ 
+   //TODO: pop-click values.
+//   shuttle.TransferInt("",,0);
+   return true;
+}
+
 bool EffectPopClickRemoval::Process()
 {
    TrackListIterator iter(mWaveTracks);

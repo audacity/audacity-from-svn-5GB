@@ -1347,12 +1347,15 @@ bool ExportMP3(AudacityProject *project,
    }
    
    /* Put ID3 tags at beginning of file */
-   
+   /*lda Check ShowId3Dialog flag for CleanSpeech */
+   bool showId3Dialog = project->GetShowId3Dialog();
    Tags *tags = project->GetTags();
-   if (tags->IsEmpty()) {
+   bool emptyTags = tags->IsEmpty();
+   if (showId3Dialog && emptyTags) {
       if (!tags->ShowEditDialog(project,
-                                _("Edit the ID3 tags for the MP3 file")))
+			_("Edit the ID3 tags for the MP3 file"))) {
          return false;  // used selected "cancel"
+   }
    }
 
    char *id3buffer = NULL;
@@ -1414,22 +1417,23 @@ bool ExportMP3(AudacityProject *project,
 
       if (!progress && wxGetElapsedTime(false) > 500) {
 
-         wxString message;
+         wxString title;
+         wxFileName newFileName(fName);
+         wxString justName = newFileName.GetName();
 
          if (selectionOnly)
-            message =
-                wxString::Format(_("Exporting the selected audio as an mp3"));
-         else
-            message =
-                wxString::Format(_("Exporting the entire project as an mp3"));
-
+            title = wxString::Format(_("Exporting selected audio at %d kbps"), bitrate);
+         else {
+            title = wxString::Format(_("Exporting entire file at %d kbps"), bitrate);
+         }
          progress =
-             new wxProgressDialog(_("Export"),
-                                  message,
+             new wxProgressDialog(title,
+                                  justName,
                                   1000,
                                   parent,
                                   wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+                                  wxPD_REMAINING_TIME | 
+                                  wxPD_AUTO_HIDE);
       }
 
       if (progress) {
@@ -1437,7 +1441,6 @@ bool ExportMP3(AudacityProject *project,
                                           (t1-t0)));
          cancelling = !progress->Update(progressvalue);
       }
-
    }
 
    delete mixer;

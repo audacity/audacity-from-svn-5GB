@@ -17,6 +17,7 @@
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
+#include "../Project.h"  //lda
 
 #include <wx/defs.h>
 #include <wx/checkbox.h>
@@ -313,15 +314,14 @@ void GUIPrefs::AllCheckBoxActions()
    CheckBoxAction( _("Quit Audacity upon closing last window"),
       wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
    CheckBoxAction(
-      _("Enable dragging of left and right selection edges"),
+      _("Dragging of left and right selection edges"),
       wxT("/GUI/AdjustSelectionEdges"), true);
    CheckBoxAction(
-      _("Enable ergonomic order of audio I/O buttons"),
+      _("Ergonomic order of audio I/O buttons"),
       wxT("/GUI/ErgonomicTransportButtons"), true);
-   CheckBoxAction(
-      _("Enable display of cut lines"),
-      wxT("/GUI/EnableCutLines"), false);
 
+//lda
+   CheckBoxAction(_("Tracks fit vertically zoomed"), "/GUI/TracksFitVerticallyZoomed", false );
    mCurrentCheckBoxContainer=1;
 
    CheckBoxAction( _("Enable Edit Toolbar"),
@@ -332,6 +332,12 @@ void GUIPrefs::AllCheckBoxActions()
       wxT("/GUI/EnableMeterToolBar"),true, MeterToolBarID );
    CheckBoxAction( _("Enable Transcription Toolbar"),
       wxT("/GUI/EnableTranscriptionToolBar"),false, TranscriptionToolBarID );
+	CheckBoxAction(
+      _("Enable cut lines"),
+      "/GUI/EnableCutLines", false);
+   CheckBoxAction(
+		_("Show warnings about temp files"), 
+		"/GUI/WarnAboutTempFiles", true );
    
 // Don't yet allow normal users to disable the main mix window.
 //   CheckBoxAction(
@@ -399,6 +405,11 @@ bool GUIPrefs::Apply()
       gPrefs->Write(wxT("/Locale/Language"), mLangCodes[localeIndex]);
 
    AllRadioButtonActions();
+   unsigned int j;
+   for(j = 0; j < gAudacityProjects.GetCount(); j++)
+   {
+      gAudacityProjects[j]->UpdateGuiPrefs();
+   }
    return true;
 }
 

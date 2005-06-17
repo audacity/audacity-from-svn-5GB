@@ -50,6 +50,17 @@ const float EffectEqualization::curvex[] =
 const float EffectEqualization::curvey[][nCurvePoints] =
    {
       {
+	// flat 
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+      },
+      {
+	// amradio 
+//  30   31   50   63   70   100  125  200  250  300  400  500  600  700  800  900  1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 16000.
+	-20.,-20.,-20.,-20.,-20.,-20.,-16.,-12., -8., -4., 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4., -8.,-12.,-16.,-20.0,-20.,-20.,-20.,-20., -20., -20.0
+      },
+      {
 	// acoustic (see p 52)
 	-20.0, -20.0, -20.0,   5.0,   4.4,   3.3,   2.5,   1.7,   0.0,   0.0,
 	0.0,     0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,  -1.5,  -2.5,
@@ -127,6 +138,8 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 
 const wxChar * EffectEqualization::curveNames[] =
   {
+	 wxT("flat"),
+    wxT("amradio"),
     wxT("acoustic"),
     wxT("NAB"),
     wxT("Columbia LP"),
@@ -175,6 +188,12 @@ bool EffectEqualization::PromptUser()
    return true;
 }
 
+bool EffectEqualization::TransferParameters( Shuttle & shuttle )
+{ 
+   //TODO: Lots of parameters...
+//   shuttle.TransferInt("",,0);
+   return true;
+}
 
 bool EffectEqualization::Process()
 {

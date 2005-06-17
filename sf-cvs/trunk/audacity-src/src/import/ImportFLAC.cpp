@@ -234,7 +234,7 @@ wxString FLACImportFileHandle::GetFileDescription()
 
 int FLACImportFileHandle::GetFileUncompressedBytes()
 {
-   // TODO
+   // TODO: Get Uncompressed byte count.
    return 0;
 }
 

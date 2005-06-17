@@ -120,9 +120,12 @@ wxString ExportCommon(AudacityProject *project,
       *t1 = latestEnd;
 
    if (numSelected == 0 && selectionOnly) {
-      wxMessageBox(_("No tracks are selected!\n"
-                     "Choose Export... to export all tracks."));
-      return wxT("");
+      wxMessageBox(_("No tracks are selected! Use Ctrl-A (Select All)\n"
+                     "Choose Export... to export all tracks."),
+                     _("Unable to export"),
+                     wxOK | wxICON_INFORMATION);
+
+      return "";
    }
    
    /* Detemine if exported file will be stereo or mono,
@@ -158,6 +161,10 @@ wxString ExportCommon(AudacityProject *project,
    wxString maskString;
    wxString endOfPathSep;
 
+//MERGE exercise exception
+   if (defaultName == "ThrowExceptionOnExport") {  //lda
+      throw("Exercise exception");
+   }
    if (defaultExtension.Left(1) == wxT("."))
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
@@ -309,6 +316,8 @@ bool Export(AudacityProject *project,
    int      format;
    bool     stereo;
    
+	try {  //lda
+
    format = ReadExportFormatPref();
                          
    formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
@@ -329,6 +338,13 @@ bool Export(AudacityProject *project,
 
    return success;
 }
+   catch(...) {
+      wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
+                   (const char *)project->GetName()), _("Error exporting file or project"),
+                   wxOK | wxCENTRE);
+      return false;
+   }
+}
 
 bool ExportLossy(AudacityProject *project,
                  bool selectionOnly, double t0, double t1)
@@ -339,6 +355,7 @@ bool ExportLossy(AudacityProject *project,
    bool     success = false;
    wxString format = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
 
+	try { //lda
    if( format == wxT("MP3") ) {
       fName = ExportCommon(project, wxT("MP3"), wxT(".mp3"),
                            selectionOnly, &t0, &t1, &stereo,
@@ -386,6 +403,13 @@ bool ExportLossy(AudacityProject *project,
       ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
 
    return success;
+}
+   catch(...) {
+      wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
+                   (const char *)project->GetName()), _("Error exporting file or project"),
+                   wxOK | wxCENTRE);
+      return false;
+   }
 }
 
 

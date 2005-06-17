@@ -46,6 +46,7 @@ class EffectChangePitch:public EffectSoundTouch {
 	virtual void DeduceFrequencies(); 
 
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    virtual bool Process();
    
  private:

@@ -87,6 +87,13 @@ bool EffectBassBoost::PromptUser()
    return true;
 }
 
+bool EffectBassBoost::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferFloat("Boost",dB_boost,0.0);
+   shuttle.TransferFloat("Freq",frequency,0.0);
+   return true;
+}
+
 bool EffectBassBoost::ProcessSimpleMono(float *buffer, sampleCount len)
 {
    /* initialise the filter */

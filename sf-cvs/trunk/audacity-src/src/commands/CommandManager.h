@@ -145,10 +145,10 @@ class CommandManager: public XMLTagHandler
    //
    // Executing commands
    //
-
+   bool HandleCommandEntry(CommandListEntry * entry, wxUint32 flags, wxUint32 mask);
    bool HandleMenuID(int id, wxUint32 flags, wxUint32 mask);
-
    bool HandleKey(wxKeyEvent &evt, wxUint32 flags, wxUint32 mask);
+   bool HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint32 mask);
 
    //
    // Accessing

@@ -88,7 +88,8 @@ void MeterToolBar::OnSize(wxSizeEvent & evt)
    else if (width > height) {
       // Two horizontal, side-by-side
       mPlayMeter->SetSize(0, 0, width/2 - 3, height);
-      mRecordMeter->SetSize(width/2-2, 0, width/2 - 3, height);
+//lda      mRecordMeter->SetSize(width/2-2, 0, width/2 - 3, height);
+      mRecordMeter->SetSize(width/2 - 6, 0, width/2 - 6, height);
       mPlayMeter->SetStyle(Meter::HorizontalStereo);
       mRecordMeter->SetStyle(Meter::HorizontalStereo);
    }

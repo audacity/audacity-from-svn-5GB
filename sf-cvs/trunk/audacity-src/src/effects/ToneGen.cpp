@@ -70,6 +70,12 @@ bool EffectToneGen::PromptUser()
    return true;
 }
 
+bool EffectToneGen::TransferParameters( Shuttle & shuttle )
+{  
+//   shuttle.TransferInt("",,0);
+   return true;
+}
+
 bool EffectToneGen::MakeTone(float *buffer, sampleCount len)
 {
    double throwaway = 0;        //passed to modf but never used

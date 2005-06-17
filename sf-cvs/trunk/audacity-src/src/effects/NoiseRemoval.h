@@ -36,17 +36,23 @@ public:
    }
    
    virtual wxString GetEffectAction() {
-      if (doProfile)
+      if (mDoProfile)
          return wxString(_("Creating Noise Profile"));
       else
          return wxString(_("Removing Noise"));
    }
    
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    
+   virtual bool Init();
+   virtual bool CheckWhetherSkipEffect();
    virtual bool Process();
    
 private:
+   void CleanSpeechMayReadNoisegate();
+   void CleanSpeechMayWriteNoiseGate();
+
    bool ProcessOne(int count, WaveTrack * track,
                    longSampleCount start, sampleCount len);
 
@@ -58,15 +64,15 @@ private:
    Envelope *mEnvelope;
 
    int       windowSize;
-   float    *noiseGate;
+   float    *mNoiseGate;
    float    *sum;
    float    *sumsq;
    float    *smoothing;
    int      *profileCount;
-   bool      doProfile;
-   bool      hasProfile;
    
-   int       level;
+   bool      mDoProfile;
+   bool      mHasProfile;
+   int       mLevel;
 
 friend class NoiseRemovalDialog;
 };
@@ -103,6 +109,8 @@ private:
 	EffectNoiseRemoval * m_pEffect;
 
 public:
+//TIDY-ME: Is mLevel needed in the dialog??
+   int  mLevel;
    wxButton * m_pButton_GetProfile;
    wxSlider * m_pSlider;
    wxButton * m_pButton_Preview;

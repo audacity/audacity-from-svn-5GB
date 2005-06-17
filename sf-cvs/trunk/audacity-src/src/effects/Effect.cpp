@@ -35,10 +35,12 @@ int Effect::LastType=0;
 int Effect::LastIndex=0;
 Effect * Effect::pLastEffect=NULL;
 
-void Effect::RegisterEffect(Effect *f)
+void Effect::RegisterEffect(Effect *f, int NewFlags)
 {
    f->mID = sNumEffects;
    sNumEffects++;
+   if( NewFlags != 0)
+      f->SetEffectFlags( NewFlags );
 
    // Insert the effect into the list in alphabetical order
    // A linear search is good enough as long as there are
@@ -99,6 +101,9 @@ Effect::Effect()
 {
    mWaveTracks = NULL;
    mProgress = NULL;
+   // Can change effect flags later (this is the new way)
+   // OR using the old way, over-ride GetEffectFlags().
+   mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT ;
 }
 
 bool Effect::DoEffect(wxWindow *parent, int flags,
@@ -133,13 +138,15 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
       if (!PromptUser())
          return false;
    }
-      
    wxBusyCursor busy;
    wxYield();
    wxStartTimer();
 
-   bool returnVal = Process();
-
+   bool returnVal = true;
+   bool skipFlag = CheckWhetherSkipEffect();
+   if (skipFlag == false) {
+      returnVal = Process();
+   }
    End();
    
    if (mProgress) {
@@ -167,7 +174,8 @@ bool Effect::TotalProgress(double frac)
                               1000,
                               mParent,
                               wxPD_CAN_ABORT |
-                              wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+                              wxPD_REMAINING_TIME | 
+                              wxPD_AUTO_HIDE);
    }
    
    bool cancelling = false;

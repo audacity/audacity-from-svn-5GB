@@ -25,6 +25,8 @@
   track of...
 
 **********************************************************************/
+#ifndef __AUDACITY_PREFS__
+#define __AUDACITY_PREFS__
 
 #include <wx/config.h>
 
@@ -37,6 +39,16 @@ extern int gMenusDirty;
 
 int ReadExportFormatPref();
 void WriteExportFormatPref(int format);
+
+const wxString gDbChoices[] = {"-20db", "-25db", "-30db", 
+                               "-35db", "-40db", "-45db", 
+                               "-50db", "-55db", "-60db",
+                               "-65db", "-70db", "-75db", 
+                               "-80db", "Off-Skip"};
+//                              -20db    -25db    -30db    -35db    -40db    -45db    -50db    -55db    -60db    -65db     -70db     -75db     -80db    Off
+const double gDb2Signal[] = { 0.10000, 0.05620, 0.03160, 0.01780, 0.01000, 0.00562, 0.00316, 0.00178, 0.00100, 0.000562, 0.000316, 0.000178, 0.0001000, 0.0 };
+const int    gNumDbChoices = 14;
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

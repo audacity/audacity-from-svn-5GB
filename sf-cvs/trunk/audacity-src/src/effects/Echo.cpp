@@ -55,6 +55,13 @@ bool EffectEcho::PromptUser()
    return true;
 }
 
+bool EffectEcho::TransferParameters( Shuttle & shuttle )
+{  
+   shuttle.TransferFloat("Delay",delay,1.0);
+   shuttle.TransferFloat("Decay",decay,0.5);
+   return true;
+}
+
 bool EffectEcho::Process()
 {
    TrackListIterator iter(mWaveTracks);

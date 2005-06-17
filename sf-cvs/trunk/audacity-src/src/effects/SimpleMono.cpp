@@ -69,7 +69,6 @@ bool EffectSimpleMono::Process()
 bool EffectSimpleMono::ProcessOne(WaveTrack * track,
                                   longSampleCount start, longSampleCount end)
 {
-   
    longSampleCount s;
    //Get the length of the buffer (as double). len is
    //used simple to calculate a progress meter, so it is easier

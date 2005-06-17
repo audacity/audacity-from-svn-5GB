@@ -220,7 +220,7 @@ EffectNyquist::EffectNyquist(wxString fName)
       mInteractive = true;
       mCmd = wxT("");
       mName = _("Nyquist Prompt...");
-      mFlags = PROCESS_EFFECT | BUILTIN_EFFECT;
+      mFlags = PROCESS_EFFECT | BUILTIN_EFFECT | ADVANCED_EFFECT;
       return;
    }
 

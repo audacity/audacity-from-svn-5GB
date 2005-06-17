@@ -94,6 +94,7 @@
 #include "PlatformCompatibility.h"
 #include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 #include "Experimental.h"
+#include "export/Export.h"
 
 
 using std::cout;
@@ -368,7 +369,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTotalToolBarHeight(0),
      mDraggingToolBar(NoneID),
      mAudioIOToken(-1),
-     mIsDeleting(false)
+     mIsDeleting(false),
+     mTracksFitVerticallyZoomed(false),  //lda
+     mCleanSpeechMode(false),            //lda
+     mShowId3Dialog(false)              //lda
 {
    mStatusBar = CreateStatusBar();
 
@@ -412,11 +416,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
 
-   // Some GUI prefs
-   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo.bUpdateSpectrogram,
-                true);
-   gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo.bUpdateTrackIndicator, true);
-
+   UpdatePrefs();
    // Some extra information
    mViewInfo.bIsPlaying = false;
    mViewInfo.bRedrawWaveform = false;
@@ -648,6 +648,8 @@ AudacityProject::~AudacityProject()
 
    delete mRecentFiles;
    mRecentFiles = NULL;
+//   delete mRecentProjects;
+//   mRecentProjects = NULL;
 
    // MM: Tell the DirManager it can now delete itself
    // if it finds it is no longer needed. If it is still
@@ -693,10 +695,32 @@ AudacityProject::~AudacityProject()
 #endif
 }
 
+void AudacityProject::UpdateGuiPrefs()
+{
+   gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo.bUpdateSpectrogram, true);
+   gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo.bUpdateTrackIndicator, true);
+   gPrefs->Read(wxT("/GUI/TracksFitVerticallyZoomed"), &mTracksFitVerticallyZoomed, false);
+}
+
+void AudacityProject::UpdateBatchPrefs()
+{
+   gPrefs->Read(wxT("/Batch/EmptyCanBeDirty"), &mEmptyCanBeDirty, false );
+   gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
+   gPrefs->Read(wxT("/Batch/ShowId3Dialog"), &mShowId3Dialog, false);
+   gPrefs->Read(wxT("/Batch/NormalizeOnLoad"),&mNormalizeOnLoad, false);
+}
+
 void AudacityProject::UpdatePrefs()
 {
-   mTrackPanel->UpdatePrefs();
-   mSelectionBar->UpdateRates();
+   UpdateGuiPrefs();
+   UpdateBatchPrefs();
+   SetProjectTitle( );
+
+   if( mTrackPanel )
+      mTrackPanel->UpdatePrefs();
+// TODO: Do we need to update the new status bar after a prefs change?
+//   if( mStatus )
+//      mStatus->UpdateRates();
 }
 
 void AudacityProject::RedrawProject()
@@ -757,6 +781,16 @@ wxString AudacityProject::GetName()
       name = name.Mid(0, len - 4);
 
    return name;
+}
+
+void AudacityProject::SetProjectTitle()
+{
+   wxString name = GetName();
+   if( name.IsEmpty() )
+   {
+      name = mCleanSpeechMode ? "Audacity CleanSpeech" : "Audacity";
+   }
+   SetTitle( name );
 }
 
 void AudacityProject::AS_SetRate(double rate)
@@ -1448,6 +1482,7 @@ void AudacityProject::LayoutToolBars()
 {
    //Get the size of the current project window
    int width, height;
+   GetControlToolBar()->ShowCleanSpeechButton( mCleanSpeechMode );
    GetSize(&width, &height);
    mTotalToolBarHeight = extraSpace;
 
@@ -1742,16 +1777,26 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       this->RedrawProject();
    }
 
-   if (mUndoManager.UnsavedChanges()) {
-      int result = wxMessageBox(_("Save changes before closing?"),
-                                _("Save changes?"),
-                                wxYES_NO | wxCANCEL | wxICON_QUESTION,
-                                this);
+	// These two lines test for an 'empty' project.
+   // of course it could still have a history at this stage.
+   TrackListIterator iter2(mTracks);
+	bool bHasTracks = (iter2.First() != NULL);
 
-      if (result == wxCANCEL || (result == wxYES && !Save())) {
-         event.Veto();
-         return;
-      }
+	// We may not bother to prompt the user to save, if the 
+   // project is now empty.
+	if( mEmptyCanBeDirty || bHasTracks )
+	{
+      if (mUndoManager.UnsavedChanges()) {
+         int result = wxMessageBox(_("Save changes before closing?"),
+                                   _("Save changes?"),
+                                   wxYES_NO | wxCANCEL | wxICON_QUESTION,
+                                   this);
+
+         if (result == wxCANCEL || (result == wxYES && !Save())) {
+            event.Veto();
+            return;
+         }
+		}
    }
 
    //BG: Process messages before we destroy the window
@@ -1764,9 +1809,18 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 {
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
                                 FROMFILENAME(::wxGetCwd()));
-
+   // Beware, some compilers let you access mCleanSpeechMode
+   // here, even though it is not valid for a static method call,
+   // so we must go via prefs.
+   bool bCleanSpeechMode;
+   gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &bCleanSpeechMode, false );
    wxFileDialog dlog(NULL, _("Select one or more audio files..."),
                      path, wxT(""),
+	bCleanSpeechMode ? 
+                     _("Music files (*.wav;*.mp3)|*.wav;*.mp3|"
+                       "WAV files (*.wav)|*.wav|"
+                       "MP3 files (*.mp3)|*.mp3")
+     :
                      _("All files (*.*)|*.*|"
                        "Audacity projects (*.aup)|*.aup|"
                        "WAV files (*.wav)|*.wav|"
@@ -1834,6 +1888,7 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
+try {   //lda
    // On Win32, we may be given a short (DOS-compatible) file name on rare
    // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
    // convert these to long file name first.
@@ -1892,7 +1947,7 @@ void AudacityProject::OpenFile(wxString fileName)
    ///
 
    mFileName = fileName;
-   SetTitle(GetName());
+   SetProjectTitle();
 
    XMLFileReader xmlFile;
 
@@ -1932,7 +1987,7 @@ void AudacityProject::OpenFile(wxString fileName)
          mTracks->Clear(true);
          
          mFileName = wxT("");
-         SetTitle(wxT("Audacity"));
+         SetProjectTitle();
          mTrackPanel->Refresh(true);
 
       }else if (status & FSCKstatus_CHANGED){
@@ -1955,12 +2010,18 @@ void AudacityProject::OpenFile(wxString fileName)
       mTracks->Clear(true);
 
       mFileName = wxT("");
-      SetTitle(wxT("Audacity"));
+      SetProjectTitle();
 
       wxMessageBox(xmlFile.GetErrorStr(),
                    _("Error opening project"),
                    wxOK | wxCENTRE, this);
    }
+}
+catch(...) { //lda
+   wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
+                (const char *)fileName), _("Error opening file or project"),
+                wxOK | wxCENTRE, this);
+}
 }
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
@@ -2103,6 +2164,19 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 {
    if (!fromSaveAs && mDirManager->GetProjectName() == wxT(""))
       return SaveAs();
+
+   //TIDY-ME: CleanSpeechMode could be split into a number of prefs?
+   // For example, this could be a preference to only work
+   // with wav files.
+   //
+   // CleanSpeechMode tries hard to ignore project files
+   // and just work with .Wav, so does an export on a save.
+   if( mCleanSpeechMode )
+   {
+      double endTime = mTracks->GetEndTime();
+      bool flag = ::Export(this, false, 0.0, endTime);
+      return flag;
+   }
 
    //
    // Always save a backup of the original project file
@@ -2312,7 +2386,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
    if (initiallyEmpty && mDirManager->GetProjectName() == wxT("")) {
       wxString name = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast(wxT('.'));
       mFileName =::wxPathOnly(fileName) + wxFILE_SEP_PATH + name + wxT(".aup");
-      SetTitle(GetName());
+      SetProjectTitle();
    }
 
    HandleResize();   
@@ -2364,14 +2438,33 @@ void AudacityProject::Import(wxString fileName)
    }
 
    AddImportedTracks(fileName, newTracks, numTracks);
+
+   int mode = gPrefs->Read(wxT("/Batch/NormalizeOnLoad"), 0L);
+   if (mode == 1) {
+      //TODO: All we want is a SelectAll()
+      SelectNone();
+      SelectAllIfNone();
+      OnEffect(ALL_EFFECTS | CONFIGURED_EFFECT, mNormalizeIndex ); // gNormalize);
+   }
 }
 
 bool AudacityProject::SaveAs()
 {
    wxString path = wxPathOnly(mFileName);
-   wxString fName = GetName().Len()? GetName() + wxT(".aup") : wxString(wxT(""));
+   wxString fName;
+	wxString ext = mCleanSpeechMode ? wxT(".wav") : wxT(".aup");
 
-   ShowWarningDialog(this, wxT("FirstProjectSave"),
+	fName = GetName().Len()? GetName() + ext : wxString("");
+	if( mCleanSpeechMode )
+	{
+	   fName = wxFileSelector(_("Save Speech As:"),
+                          path, fName, "",
+                          _("Windows PCM Audio file *.wav)|*.wav"),  //lda
+                          wxSAVE | wxOVERWRITE_PROMPT, this);
+	}
+	else
+	{
+ 	  ShowWarningDialog(this, wxT("FirstProjectSave"),
                      _("Audacity project files (.aup) let you save "
                        "everything you're working on exactly as it\n"
                        "appears on the screen, but most other programs "
@@ -2379,11 +2472,11 @@ bool AudacityProject::SaveAs()
                        "When you want to save a file that can be opened "
                        "by other programs, select one of the\n"
                        "Export commands."));
-
-   fName = wxFileSelector(_("Save Project As:"),
+ 	  fName = wxFileSelector(_("Save Project As:"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),
                           wxSAVE | wxOVERWRITE_PROMPT, this);
+	}
 
    if (fName == wxT(""))
       return false;
@@ -2392,8 +2485,8 @@ bool AudacityProject::SaveAs()
    if (len > 4 && fName.Mid(len - 4) == wxT(".aup"))
       fName = fName.Mid(0, len - 4);
 
-   mFileName = fName + wxT(".aup");
-   SetTitle(GetName());
+   mFileName = fName + ext;
+   SetProjectTitle();
 
    bool success = Save(false, true);
 
@@ -2437,6 +2530,10 @@ void AudacityProject::PushState(wxString desc,
 {
    TrackList *l = new TrackList(mTracks);
 
+	//ANSWER-ME: What's the zoom-fit calc for?  
+   if (GetTracksFitVerticallyZoomed() == true) {
+      OnZoomFitV_Calc();
+   }
    mUndoManager.PushState(l, mViewInfo.sel0, mViewInfo.sel1,
                           desc, shortDesc, consolidate);
    delete l;

@@ -230,6 +230,7 @@ typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 #endif
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
+   EVT_CHAR(AudacityApp::OnKeyEvent)
 #ifdef __WXMAC__
    EVT_MENU(wxID_NEW, AudacityApp::OnMenuNew)
    EVT_MENU(wxID_OPEN, AudacityApp::OnMenuOpen)
@@ -239,6 +240,7 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
 #endif
    // Recent file event handlers.  
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
+// EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
 END_EVENT_TABLE()
 
 ToolBarStub * AudacityApp::LoadToolBar( const wxString Name, bool bDefault, 
@@ -330,6 +332,25 @@ void AudacityApp::OnMRUFile(wxCommandEvent& event) {
       gPrefs->SetPath(wxT(".."));
    }
 }
+
+#if 0
+//FIX-ME: Was this OnMRUProject lost in an edit??  Should we have it back?
+void AudacityApp::OnMRUProject(wxCommandEvent& event) {
+   AudacityProject *proj = GetActiveProject();
+
+   int n = event.GetId() - 6050;//FIX-ME: Use correct ID name.
+   wxString fileName = proj->GetRecentProjects()->GetHistoryFile(n);
+
+   bool opened = MRUOpen(fileName);
+   if(!opened) {
+      proj->GetRecentProjects()->RemoveFileFromHistory(n);
+      gPrefs->SetPath("/RecentProjects");
+      proj->GetRecentProjects()->Save(*gPrefs);
+      gPrefs->SetPath("..");
+   }
+}
+#endif
+
 
 // The `main program' equivalent, creating the windows and returning the
 // main frame
@@ -445,6 +466,16 @@ bool AudacityApp::OnInit()
    if (lang == wxT(""))
       lang = ChooseLanguage(NULL);
 
+#ifdef NOT_RQD
+//TIDY-ME: (CleanSpeech) Language prompt??
+// The prompt for language only happens ONCE on a system.
+// I don't think we should disable it JKC
+   wxString lang = gPrefs->Read(wxT("/Locale/Language"), "en");  //lda
+
+// Pop up a dialog the first time the program is run
+//lda   if (lang == "")
+//lda      lang = ChooseLanguage(NULL);
+#endif
    gPrefs->Write(wxT("/Locale/Language"), lang);
 
    if (lang != wxT("en")) {
@@ -848,15 +879,21 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
    }
 }
 
+void AudacityApp::OnKeyEvent(wxKeyEvent & event )
+{
+   event.Skip();
+}
+
+
 //BG: Filters all events before they are processed
 int AudacityApp::FilterEvent(wxEvent& event)
 {
+   return -1;
    //Send key events to the commands code
    if(event.GetEventType() == wxEVT_KEY_DOWN ||
       event.GetEventType() == wxEVT_KEY_UP)
       return (this->*((SPECIALKEYEVENT) (&AudacityApp::OnAllKeys)))
          ((wxKeyEvent&)event);
-
    return -1;
 }
 

@@ -34,6 +34,7 @@ public:
    }
    
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
    
    virtual bool Process();
    

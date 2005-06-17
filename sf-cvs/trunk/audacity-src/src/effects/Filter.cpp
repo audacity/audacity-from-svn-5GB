@@ -71,6 +71,13 @@ bool EffectFilter::PromptUser()
    return true;
 }
 
+bool EffectFilter::TransferParameters( Shuttle & shuttle )
+{ 
+   //TODO: lots of parameters.
+//   shuttle.TransferInt("",,0);
+   return true;
+}
+
 void EffectFilter::Preview()
 {
    for(int i=0; i<=windowSize/2; i++) {

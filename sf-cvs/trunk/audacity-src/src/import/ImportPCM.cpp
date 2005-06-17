@@ -489,7 +489,8 @@ bool ImportPCM(wxWindow * parent,
                                   1000,
                                   parent,
                                   wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
+                                  wxPD_REMAINING_TIME | 
+                                  wxPD_AUTO_HIDE);
       }
       if (progress) {
          int progressvalue = (framescompleted > fileTotalFrames) ?
