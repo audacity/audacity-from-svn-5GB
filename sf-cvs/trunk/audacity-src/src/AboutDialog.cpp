@@ -88,7 +88,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
    wxString par1Str = _(
      "Audacity is a free program written by a team of volunteer developers around the world. Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects. Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems. Older versions of Audacity are available for Mac OS 9.");
 
-   #if 0 // Not beta anymore
+   #if 1 // Not beta anymore
    wxString par2Str = _(
      "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests." );
    #else
@@ -135,6 +135,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
          wxT("<tr><td>Vaughan Johnson</td><td>") + _("Programmer") + wxT("</td></tr>") + 
          wxT("<tr><td>Markus Meyer</td><td>") + _("Programmer") + wxT("</td></tr>") + 
          wxT("<tr><td>Shane Mueller</td><td>") + _("Programmer") + wxT("</td></tr>") + 
+         wxT("<tr><td>Lynn Allan</td><td>") + _("Programmer (CleanSpeech)") + wxT("</td></tr>") + 
          wxT("<tr><td>Tony Oetzmann</td><td>") + 
             _("Documentation Writer") + wxT("</td></tr>") + 
          wxT("<tr><td>Harvey Lubin</td><td>") + _("Main Logo") + wxT("</td></tr>") + 
@@ -193,7 +194,8 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxHtmlWindow *html = new wxHtmlWindow(this, -1,
                                          wxDefaultPosition,
-                                         wxSize(400, 150));
+                                         wxSize(400, 150),
+                                         wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
 
