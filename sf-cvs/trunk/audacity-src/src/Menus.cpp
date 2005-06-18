@@ -3522,8 +3522,8 @@ void AudacityProject::OnBatch()
         "AU files (*.au)|*.au|"
         "MP3 files (*.mp3)|*.mp3|"
         "Ogg Vorbis files (*.ogg)|*.ogg|"
-        "FLAC files (*.flac)|*.flac|"
-//      "List of Files (*.lof)|*.lof"
+        "FLAC files (*.flac)|*.flac"
+//      "|List of Files (*.lof)|*.lof"
        );
 
    wxFileDialog dlog(NULL, prompt,
