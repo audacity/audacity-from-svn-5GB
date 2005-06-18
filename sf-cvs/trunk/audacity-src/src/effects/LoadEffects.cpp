@@ -89,13 +89,13 @@ void LoadEffects()
    // that it should be included in even the most basic of menus.
    // This was introduced for CleanSpeech mode.
    Effect::RegisterEffect(new EffectBassBoost());
-   Effect::RegisterEffect(new EffectChangeLength());
+//   Effect::RegisterEffect(new EffectChangeLength());
    Effect::RegisterEffect(new EffectChangeSpeed());
 	#ifdef USE_SOUNDTOUCH
 		Effect::RegisterEffect(new EffectChangePitch());
 		Effect::RegisterEffect(new EffectChangeTempo());
 	#endif
-   Effect::RegisterEffect(new EffectClickRemoval(), SIMPLE_EFFECT);
+   Effect::RegisterEffect(new EffectClickRemoval(), SIMPLE_EFFECT | HIDDEN_EFFECT);
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
    Effect::RegisterEffect(new EffectEqualization());
@@ -110,7 +110,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
-   Effect::RegisterEffect(new EffectSpikeCleaner(), SIMPLE_EFFECT); 
+   Effect::RegisterEffect(new EffectSpikeCleaner(), SIMPLE_EFFECT | HIDDEN_EFFECT); 
    Effect::RegisterEffect(new EffectStereoToMono(), HIDDEN_EFFECT);// NOT in normal effects list.
    Effect::RegisterEffect(new EffectTruncSilence(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectWahwah());
