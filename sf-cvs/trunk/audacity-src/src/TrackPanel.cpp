@@ -3236,6 +3236,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 
 bool TrackPanel::HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event)
 {
+   // FIX-ME: Disable this and return true when CutLines aren't showing?
+   // (Don't use gPerfs-> for the fix as registry access is slow).
+
    if (mMouseCapture == IsOverCutLine)
    {
       if (!mCapturedCutLineRect.Inside(event.m_x, event.m_y))
@@ -3250,7 +3253,8 @@ bool TrackPanel::HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseE
          // When user presses left button on cut line, expand the line again
          track->ExpandCutLine(mCapturedCutLine);
          WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
-         linked->ExpandCutLine(mCapturedCutLine);
+         if( linked )  // Do other channel too, (only if stereo).
+            linked->ExpandCutLine(mCapturedCutLine);
          Refresh(false);
       }
 
@@ -3259,7 +3263,8 @@ bool TrackPanel::HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseE
          Refresh(false);
          track->RemoveCutLine(mCapturedCutLine);
          WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
-         linked->RemoveCutLine(mCapturedCutLine);
+         if( linked ) 
+            linked->RemoveCutLine(mCapturedCutLine);
          Refresh(false);
       }
 
