@@ -4,9 +4,8 @@
 
   BatchCommandDialog.cpp
 
-  Brian Gunlogson
-  Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 #include <wx/defs.h>
@@ -41,8 +40,7 @@ BEGIN_EVENT_TABLE(BatchCommandDialog, wxDialog)
    EVT_LIST_ITEM_SELECTED(CommandsListID,  BatchCommandDialog::OnItemSelected)
 END_EVENT_TABLE();
 
-BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id,
-                                     unsigned int format):
+BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
    wxDialog(parent, id,
             _("Select Command"),
             wxDefaultPosition, wxSize(250,200), wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
@@ -79,7 +77,6 @@ BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id,
    mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
 
    int i;
-   int selection=0;
 
    mChoices = new wxListCtrl( this, CommandsListID ,
       wxDefaultPosition, wxDefaultSize,

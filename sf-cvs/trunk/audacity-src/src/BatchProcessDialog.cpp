@@ -4,9 +4,8 @@
 
   BatchProcessDialog.cpp
 
-  Brian Gunlogson
-  Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 #include <wx/defs.h>
@@ -62,8 +61,6 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
                      wxDefaultPosition, wxDefaultSize, 0);
 
    mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
-
-   int selection=0;
 
    mList = new wxListCtrl(this, FileListID, wxDefaultPosition, wxSize(350, 180),
                           wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER  /* | wxLC_EDIT_LABELS */);

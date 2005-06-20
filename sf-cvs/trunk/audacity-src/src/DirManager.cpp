@@ -273,7 +273,7 @@ void DirManager::CleanTempDir(bool startup)
            "to delete them, you can recover them manually.\n\n"
            "Delete temporary files?");
       
-      int action = wxMessageBox(prompt,
+      action = wxMessageBox(prompt,
                                 wxT("Warning"),
                                 wxYES_NO | wxICON_EXCLAMATION,
                                 NULL);
@@ -735,7 +735,7 @@ wxFileName DirManager::MakeBlockFileName()
          }else break;
       }
    }
-
+   // FIX-ME: Might we get here without midkey having been set?
    BalanceFileAdd(midkey);
    return ret;
 }

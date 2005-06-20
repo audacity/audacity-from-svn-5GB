@@ -4,8 +4,8 @@
 
   BatchCommandDialog.h
 
-  Brian Gunlogson
-  Joshua Haberman
+  Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
@@ -38,8 +38,7 @@ class wxButton;
 class BatchCommandDialog:public wxDialog {
  public:
    // constructors and destructors
-   BatchCommandDialog(wxWindow * parent, wxWindowID id,
-                     unsigned int format);
+   BatchCommandDialog(wxWindow * parent, wxWindowID id);
  public:
 	void SetCommandAndParams( const wxString &Command, const wxString & Params);
 	void OnEditParams(wxCommandEvent &event);

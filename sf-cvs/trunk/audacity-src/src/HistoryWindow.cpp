@@ -142,7 +142,7 @@ void HistoryWindow::UpdateDisplay()
                                               mManager->GetCurrentState() - 1));
 
    mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);
-   if ((mManager->GetCurrentState() - 1) < mDiscardNum->GetValue()) 
+   if ((mManager->GetCurrentState() - 1) < (int)mDiscardNum->GetValue()) 
       mDiscardNum->SetValue(mManager->GetCurrentState() - 1);
 
    mDiscard->Enable(mManager->GetCurrentState() > 1);
