@@ -89,7 +89,7 @@ BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id,
    wxASSERT( mChoices );
    for(i=0;i<99;i++)
    {
-      mChoices->InsertItem( i, wxString::Format("Item%02i",i));
+      mChoices->InsertItem( i, wxString::Format(wxT("Item%02i"),i));
    }
    PopulateCommandList();
 
@@ -131,7 +131,7 @@ void BatchCommandDialog::PopulateCommandList()
 int BatchCommandDialog::GetSelectedItem()
 {
    int i;
-   mSelectedCommand = "";
+   mSelectedCommand = wxT("");
    for(i=0;i<mChoices->GetItemCount();i++)
    {
       if( mChoices->GetItemState( i, wxLIST_STATE_FOCUSED) != 0)

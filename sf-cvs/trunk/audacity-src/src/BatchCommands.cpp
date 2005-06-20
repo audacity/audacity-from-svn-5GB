@@ -33,13 +33,13 @@
 enum eCommandType { CtEffect, CtMenu, CtSpecial };
 
 wxString SpecialCommands[] = {
-   "No Action",
-   "Import",
-   "Save Hq Master1",
-   "Save Hq Master2",
-   "Stereo To Mono",
-   "ExportMp3",
-   "ExportWav"
+   wxT("No Action"),
+   wxT("Import"),
+   wxT("Save Hq Master1"),
+   wxT("Save Hq Master2"),
+   wxT("Stereo To Mono"),
+   wxT("ExportMp3"),
+   wxT("ExportWav")
 };
 
 
@@ -52,11 +52,11 @@ void BatchCommands::SaveChain()
 {
    int i;
    wxString PrefName;
-   gPrefs->DeleteGroup( "Batch/Chain" );
+   gPrefs->DeleteGroup( wxT("Batch/Chain") );
    for(i=0;i<(int)mCommandChain.GetCount();i++)
    {
-      PrefName = wxString::Format( "/Batch/Chain/Command%02i", i);
-      gPrefs->Write(PrefName, mCommandChain[i] + ":" + mParamsChain[i]);
+      PrefName = wxString::Format( wxT("/Batch/Chain/Command%02i"), i);
+      gPrefs->Write(PrefName, mCommandChain[i] + wxT(":") + mParamsChain[i]);
    }
 }
 
@@ -71,11 +71,11 @@ void BatchCommands::ReadChain()
    wxString Value;
    for(i=0;i<maxCommands;i++)
    {
-      PrefName = wxString::Format( "/Batch/Chain/Command%02i", i);
-      Value = gPrefs->Read(PrefName, "");
+      PrefName = wxString::Format( wxT("/Batch/Chain/Command%02i"), i);
+      Value = gPrefs->Read(PrefName, wxT(""));
       if( Value.IsEmpty() )
          return;
-      splitAt = Value.Find( ':' );
+      splitAt = Value.Find( wxT(':') );
       if( splitAt < 0 )
          return;
       mCommandChain.Add( Value.Mid( 0,splitAt ));
@@ -86,26 +86,26 @@ void BatchCommands::ReadChain()
 void BatchCommands::SetCleanSpeechChain()
 {
    ResetChain();
-   AddToChain( "Import" );
-   AddToChain( "Stereo To Mono" );
-   AddToChain( "Normalize" );
-   AddToChain( "Save Hq Master1" );
-   AddToChain( "Click Removal" );
-   AddToChain( "Noise Removal" );
-   AddToChain( "Spike Cleaner" );
-   AddToChain( "Truncate Silence" );
-   AddToChain( "Leveller" );
-   AddToChain( "Normalize" );
-   AddToChain( "Save Hq Master2" );
-   AddToChain( "ExportMp3" );
+   AddToChain( wxT("Import") );
+   AddToChain( wxT("Stereo To Mono") );
+   AddToChain( wxT("Normalize") );
+   AddToChain( wxT("Save Hq Master1") );
+   AddToChain( wxT("Click Removal") );
+   AddToChain( wxT("Noise Removal") );
+   AddToChain( wxT("Spike Cleaner") );
+   AddToChain( wxT("Truncate Silence") );
+   AddToChain( wxT("Leveller") );
+   AddToChain( wxT("Normalize") );
+   AddToChain( wxT("Save Hq Master2") );
+   AddToChain( wxT("ExportMp3") );
 }
 
 void BatchCommands::SetWavToMp3Chain()
 {
    ResetChain();
-   AddToChain( "Import" );
-   AddToChain( "Normalize" );
-   AddToChain( "ExportMp3" );
+   AddToChain( wxT("Import") );
+   AddToChain( wxT("Normalize") );
+   AddToChain( wxT("ExportMp3") );
 }
 
 // Gets all commands that are valid for this mode.
@@ -133,7 +133,7 @@ wxArrayString BatchCommands::GetAllCommands()
    effects = Effect::GetEffects(PROCESS_EFFECT | BUILTIN_EFFECT | additionalEffects);
    for(i=0; i<effects->GetCount(); i++) {
       command=(*effects)[i]->GetEffectName();
-      command.Replace( "...", "");
+      command.Replace( wxT("..."), wxT(""));
       commands.Add( command);
    }
    delete effects;
@@ -160,7 +160,7 @@ Effect * BatchCommands::GetEffectFromCommandName(wxString inCommand)
    for(i=0; i<effects->GetCount(); i++) {
       f = (*effects)[i];
       command=f->GetEffectName();
-      command.Replace( "...", "");
+      command.Replace( wxT("..."), wxT(""));
       if( command.IsSameAs( inCommand ))
       {  
          delete effects;
@@ -176,12 +176,12 @@ wxString BatchCommands::GetCurrentParamsFor(wxString command)
    Effect * f;
    f=GetEffectFromCommandName( command );
    if( f==NULL )
-      return "";// effect not found.
+      return wxT("");// effect not found.
    ShuttleCli shuttle;
    shuttle.mbStoreInClient=false;
    f->TransferParameters( shuttle );
    if( shuttle.mParams.IsEmpty() )
-      return "";// effect had no parameters.
+      return wxT("");// effect had no parameters.
 
    return shuttle.mParams;
 }
@@ -206,13 +206,13 @@ double BatchCommands::GetEndTime()
    AudacityProject *project = GetActiveProject();
    if( project == NULL )
    {
-      wxMessageBox( "No project and no Audio to process!" );
+      wxMessageBox( wxT("No project and no Audio to process!") );
       return -1.0;
    }
    TrackList * tracks = project->GetTracks();
    if( tracks == NULL )
    {
-      wxMessageBox( "No tracks to process!" );
+      wxMessageBox( wxT("No tracks to process!") );
       return -1.0;
    }
 
@@ -265,42 +265,42 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
    // We have a command index, but we don't use it!
    // TODO: Make this special-batch-command code use the menu item code....
    // FIX-ME: No error reporting on write file failure in batch mode.
-   if( command == "No Action"){
+   if( command == wxT("No Action")){
       return true;
-   } else if (command == "Import" ){
+   } else if (command == wxT("Import") ){
       project->OnRemoveTracks();
       project->Import(mFileName);
       project->OnSelectAll();
       return true;
-   } else if (command == "Save Hq Master1"){
-      filename.Replace("cleaned/", "cleaned/MasterBefore_", false);
+   } else if (command == wxT("Save Hq Master1")){
+      filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterBefore_"), false);
       return WriteMp3File( filename, 128 );
-   } else if (command == "Save Hq Master2"){
-      filename.Replace("cleaned/", "cleaned/MasterAfter_", false);
+   } else if (command == wxT("Save Hq Master2")){
+      filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterAfter_"), false);
       return WriteMp3File ( filename, 128 );
-   } else if (command == "Stereo To Mono"){
+   } else if (command == wxT("Stereo To Mono")){
       // StereoToMono is an effect masquerading as a menu item.
       Effect * f=GetEffectFromCommandName( _("Stereo To Mono") );
       if( f!=NULL )
          return ApplyEffectCommand( f, command, params );
-      wxMessageBox( "StereoToMono Effect not found");
+      wxMessageBox( wxT("StereoToMono Effect not found") );
       return false;
-   } else if (command == "ExportMp3"){
+   } else if (command == wxT("ExportMp3") ){
       return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
-   } else if (command == "ExportWav"){
-      filename.Replace(".mp3", ".wav", false);
+   } else if (command == wxT("ExportWav") ){
+      filename.Replace(wxT(".mp3"), wxT(".wav"), false);
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
       return ::ExportPCM(project, false, filename, false, 0.0, endTime);
-   } else if (command == "ExportOgg"){
-      filename.Replace(".mp3", ".ogg", false);
+   } else if (command == wxT("ExportOgg")){
+      filename.Replace(wxT(".mp3"), wxT(".ogg"), false);
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
       return ::ExportOGG(project, false, filename, false, 0.0, endTime);
    } 
-   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command));
+   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command) );
    return false;
 }
 
@@ -426,7 +426,7 @@ wxString BatchCommands::GetChainWarnings()
    {
       return _("No batch command chain defined.");
    }
-   return "";
+   return wxT("");
 }
 
 
@@ -435,12 +435,12 @@ wxString BatchCommands::GetChainWarnings()
 bool BatchCommands::ReportAndSkip(const wxString command, const wxString params)
 {
    int bDebug;
-   gPrefs->Read("/Batch/Debug", &bDebug, false);
+   gPrefs->Read(wxT("/Batch/Debug"), &bDebug, false);
    if( bDebug == 0 )
       return false;
 
    //TODO: Add a cancel button to these, and add the logic so that we can abort.
-   if( params != "" )
+   if( params != wxT("") )
    {
       wxMessageBox( wxString::Format(_("Apply %s with parameter(s)\n\n%s"),command, params),
          _("Test Mode"));

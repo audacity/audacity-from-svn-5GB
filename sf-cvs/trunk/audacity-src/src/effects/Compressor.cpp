@@ -69,13 +69,13 @@ bool EffectCompressor::PromptUser()
 }
 bool EffectCompressor::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferBool(  "UseGain",mUseGain,true);
-   shuttle.TransferDouble("Floor",mFloor,0.001);
-   shuttle.TransferDouble("AttackTime",mAttackTime,0.2);
-   shuttle.TransferDouble("DecayTime",mDecayTime,1.0);
-   shuttle.TransferDouble("Ratio",mRatio,2.0);
-   shuttle.TransferDouble("Threshold",mThresholdDB,-12.0);
-   shuttle.TransferDouble("GainDB",mGainDB,0.0);
+   shuttle.TransferBool(  wxT("UseGain"),mUseGain,true);
+   shuttle.TransferDouble(wxT("Floor"),mFloor,0.001);
+   shuttle.TransferDouble(wxT("AttackTime"),mAttackTime,0.2);
+   shuttle.TransferDouble(wxT("DecayTime"),mDecayTime,1.0);
+   shuttle.TransferDouble(wxT("Ratio"),mRatio,2.0);
+   shuttle.TransferDouble(wxT("Threshold"),mThresholdDB,-12.0);
+   shuttle.TransferDouble(wxT("GainDB"),mGainDB,0.0);
 // mCircle = NULL;
 //	mLevelCircle = NULL;
    return true;

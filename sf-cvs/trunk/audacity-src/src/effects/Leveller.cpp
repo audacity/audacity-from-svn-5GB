@@ -29,7 +29,7 @@ EffectLeveller::EffectLeveller()
 }
 
 #define NUM_PASSES_CHOICES 6
-static wxString numPasses[] = { "None-Skip", "Light", "Moderate", "Heavy", "Heavier", "Heaviest" };
+static wxString numPasses[] = { wxT("None-Skip"), wxT("Light"), wxT("Moderate"), wxT("Heavy"), wxT("Heavier"), wxT("Heaviest") };
 static double gFrameSum; // odd ... having this as member var crashed on exit
 
 bool EffectLeveller::Init()
@@ -135,8 +135,8 @@ bool EffectLeveller::PromptUser()
 
 bool EffectLeveller::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum("Db",mLevellerDbChoiceIndex,gNumDbChoices,gDbChoices);
-   shuttle.TransferInt("Passes",mLevellerNumPasses,1);
+   shuttle.TransferEnum(wxT("Db"),mLevellerDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferInt(wxT("Passes"),mLevellerNumPasses,1);
    return true;
 }
 

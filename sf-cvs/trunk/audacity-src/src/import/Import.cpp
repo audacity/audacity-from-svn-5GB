@@ -89,7 +89,7 @@ int Importer::Import(wxString fName,
       return 0;
    }
 //MERGE a test exception.
-   if (extension.IsSameAs("ThrowExceptionOnImport", false)) { //lda
+   if (extension.IsSameAs(wxT("ThrowExceptionOnImport"), false)) { //lda
       throw("Exercise Import exception");
    }
    // see if any of the plugins expect this extension and if so give

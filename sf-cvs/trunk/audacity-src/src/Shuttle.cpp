@@ -50,12 +50,12 @@ bool Shuttle::TransferBool( const wxString & Name, bool & bValue, const bool & b
       if( ExchangeWithMaster( Name ))
       {
          if( !mValueString.IsEmpty() )
-            bValue = (mValueString[0]=='y');
+            bValue = mValueString.GetChar(0) == wxT('y');
       }
    }  
    else
    {
-      mValueString = (bValue==0) ? "no":"yes";
+      mValueString = (bValue==0) ? wxT("no"):wxT("yes");
       return ExchangeWithMaster( Name );
    }
    return true;
@@ -69,12 +69,12 @@ bool Shuttle::TransferFloat( const wxString & Name, float & fValue, const float 
       if( ExchangeWithMaster( Name ))
       {
          if( !mValueString.IsEmpty() )
-            fValue = atof( mValueString );
+            fValue = wxAtof( mValueString );
       }
    }  
    else
    {
-      mValueString = wxString::Format("%f",fValue);
+      mValueString = wxString::Format(wxT("%f"),fValue);
       return ExchangeWithMaster( Name );
    }
    return true;
@@ -88,13 +88,13 @@ bool Shuttle::TransferDouble( const wxString & Name, double & dValue, const doub
       if( ExchangeWithMaster( Name ))
       {
          if( !mValueString.IsEmpty() )
-            dValue = atof( mValueString );
+            dValue = wxAtof( mValueString );
       }
    }  
    else
    {
       //%f is format string for double 
-      mValueString = wxString::Format("%f",dValue);
+      mValueString = wxString::Format(wxT("%f"),dValue);
       return ExchangeWithMaster( Name );
    }
    return true;
@@ -107,12 +107,12 @@ bool Shuttle::TransferInt( const wxString & Name, int & iValue, const int & iDef
       iValue = iDefault;
       if( ExchangeWithMaster( Name ))
       {
-         iValue = atoi( mValueString );
+         iValue = wxAtoi( mValueString );
       }
    }  
    else
    {
-      mValueString = wxString::Format("%i",iValue);
+      mValueString = wxString::Format(wxT("%i"),iValue);
       return ExchangeWithMaster( Name );
    }
    return true;
@@ -125,13 +125,13 @@ bool Shuttle::TransferLongLong( const wxString & Name, wxLongLong_t & iValue, co
       iValue = iDefault;
       if( ExchangeWithMaster( Name ))
       {
-         iValue = atoi( mValueString );
+         iValue = wxAtoi( mValueString );
       }
    }  
    else
    {
       //TODO: fixup for long long values.
-      mValueString = wxString::Format("%d",iValue);
+      mValueString = wxString::Format(wxT("%d"),iValue);
       return ExchangeWithMaster( Name );
    }
    return true;
@@ -184,20 +184,20 @@ bool ShuttleCli::ExchangeWithMaster(const wxString & Name)
 {
    if( !mbStoreInClient )
    {
-      mParams +=" ";
+      mParams += wxT(" ");
       mParams +=Name;
-      mParams +="=";
+      mParams += wxT("=");
       mParams +=mValueString;
    }
    else
    {
       int i;
-      i=mParams.Find( " "+Name+"=" );
+      i=mParams.Find( wxT(" ")+Name+wxT("=") );
       if( i>=0 )
       {
          int j=i+2+Name.Length();
          i=j;
-         while( j<(int)mParams.Length() && mParams[j] != ' ')
+         while( j<(int)mParams.Length() && mParams.GetChar(j) != wxT(' ') )
             j++;
          mValueString = mParams.Mid(i,j-i);
          return true;

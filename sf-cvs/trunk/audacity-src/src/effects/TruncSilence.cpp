@@ -74,8 +74,8 @@ bool EffectTruncSilence::PromptUser()
 
 bool EffectTruncSilence::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum("Db",mTruncDbChoiceIndex,gNumDbChoices,gDbChoices);
-   shuttle.TransferLongLong("Duration",mTruncLongestAllowedSilentMs,200);
+   shuttle.TransferEnum(wxT("Db"),mTruncDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferLongLong(wxT("Duration"),mTruncLongestAllowedSilentMs,200);
    return true;
 }
 
@@ -217,7 +217,7 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    
    wxString truncLongestAllowedSilentMsStr;
-   truncLongestAllowedSilentMsStr.Printf("%d", mTruncLongestAllowedSilentMs);
+   truncLongestAllowedSilentMsStr.Printf(wxT("%d"), mTruncLongestAllowedSilentMs);
    mTruncLongestAllowedSilentMsText = new wxTextCtrl(this, ID_LONGEST_SILENCE_TEXT, 
                      truncLongestAllowedSilentMsStr, wxDefaultPosition,
                      wxSize(60, -1), 0,
@@ -254,7 +254,7 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
 
 bool TruncSilenceDialog::TransferDataToWindow()
 {
-   mTruncLongestAllowedSilentMsText->SetValue(wxString::Format("%d", mTruncLongestAllowedSilentMs));
+   mTruncLongestAllowedSilentMsText->SetValue(wxString::Format(wxT("%d"), mTruncLongestAllowedSilentMs));
    mTruncDbSilenceThresholdChoice->SetSelection(mTruncDbChoiceIndex);
 
    return true;

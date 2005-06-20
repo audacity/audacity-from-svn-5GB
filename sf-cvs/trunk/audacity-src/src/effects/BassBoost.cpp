@@ -89,8 +89,8 @@ bool EffectBassBoost::PromptUser()
 
 bool EffectBassBoost::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferFloat("Boost",dB_boost,0.0);
-   shuttle.TransferFloat("Freq",frequency,0.0);
+   shuttle.TransferFloat(wxT("Boost"),dB_boost,0.0);
+   shuttle.TransferFloat(wxT("Freq"),frequency,0.0);
    return true;
 }
 

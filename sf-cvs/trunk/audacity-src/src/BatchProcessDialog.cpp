@@ -48,7 +48,7 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
    AudacityProject * p = GetActiveProject();
    if( p->GetCleanSpeechMode() )
    {
-      SetTitle( "CleanSpeech Batch Processing" );
+      SetTitle( _("CleanSpeech Batch Processing") );
    }
    mBatchCommands = new BatchCommands;
    mBatchCommands->ReadChain();

@@ -40,11 +40,11 @@ extern int gMenusDirty;
 int ReadExportFormatPref();
 void WriteExportFormatPref(int format);
 
-const wxString gDbChoices[] = {"-20db", "-25db", "-30db", 
-                               "-35db", "-40db", "-45db", 
-                               "-50db", "-55db", "-60db",
-                               "-65db", "-70db", "-75db", 
-                               "-80db", "Off-Skip"};
+const wxString gDbChoices[] = {wxT("-20db"), wxT("-25db"), wxT("-30db"), 
+                               wxT("-35db"), wxT("-40db"), wxT("-45db"), 
+                               wxT("-50db"), wxT("-55db"), wxT("-60db"),
+                               wxT("-65db"), wxT("-70db"), wxT("-75db"), 
+                               wxT("-80db"), wxT("Off-Skip")};
 //                              -20db    -25db    -30db    -35db    -40db    -45db    -50db    -55db    -60db    -65db     -70db     -75db     -80db    Off
 const double gDb2Signal[] = { 0.10000, 0.05620, 0.03160, 0.01780, 0.01000, 0.00562, 0.00316, 0.00178, 0.00100, 0.000562, 0.000316, 0.000178, 0.0001000, 0.0 };
 const int    gNumDbChoices = 14;

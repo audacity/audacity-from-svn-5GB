@@ -69,8 +69,8 @@ bool EffectStereoToMono::Process()
       }
    }
    if (validStereo == false) {
-      wxMessageBox("Sorry, This effect can only be performed on stereo tracks where "
-                  "the individual channels of the track match.");
+      wxMessageBox(_("Sorry, This effect can only be performed on stereo tracks where "
+                  "the individual channels of the track match."));
       return false;
    }
    float  curLeftFrame;
