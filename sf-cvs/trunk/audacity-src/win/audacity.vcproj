@@ -244,6 +244,24 @@
 				RelativePath="..\src\AudioIO.h">
 			</File>
 			<File
+				RelativePath="..\src\BatchCommandDialog.cpp">
+			</File>
+			<File
+				RelativePath="..\src\BatchCommandDialog.h">
+			</File>
+			<File
+				RelativePath="..\src\BatchCommands.cpp">
+			</File>
+			<File
+				RelativePath="..\src\BatchCommands.h">
+			</File>
+			<File
+				RelativePath="..\src\BatchProcessDialog.cpp">
+			</File>
+			<File
+				RelativePath="..\src\BatchProcessDialog.h">
+			</File>
+			<File
 				RelativePath="..\src\Benchmark.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -976,6 +994,12 @@
 				RelativePath="..\src\Sequence.h">
 			</File>
 			<File
+				RelativePath="..\src\Shuttle.cpp">
+			</File>
+			<File
+				RelativePath="..\src\Shuttle.h">
+			</File>
+			<File
 				RelativePath="..\src\Spectrum.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1357,6 +1381,12 @@
 				RelativePath="..\src\effects\ChangeTempo.h">
 			</File>
 			<File
+				RelativePath="..\src\effects\ClickRemoval.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\ClickRemoval.h">
+			</File>
+			<File
 				RelativePath="..\src\effects\Compressor.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1509,6 +1539,12 @@
 			</File>
 			<File
 				RelativePath="..\src\effects\Invert.h">
+			</File>
+			<File
+				RelativePath="..\src\effects\Leveller.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\Leveller.h">
 			</File>
 			<File
 				RelativePath="..\src\effects\LoadEffects.cpp">
@@ -1747,6 +1783,18 @@
 				RelativePath="..\src\effects\SoundTouchEffect.h">
 			</File>
 			<File
+				RelativePath="..\src\effects\SpikeCleaner.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\SpikeCleaner.h">
+			</File>
+			<File
+				RelativePath="..\src\effects\StereoToMono.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\StereoToMono.h">
+			</File>
+			<File
 				RelativePath="..\src\effects\ToneGen.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1767,6 +1815,12 @@
 			</File>
 			<File
 				RelativePath="..\src\effects\ToneGen.h">
+			</File>
+			<File
+				RelativePath="..\src\effects\TruncSilence.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\TruncSilence.h">
 			</File>
 			<File
 				RelativePath="..\src\effects\Wahwah.cpp">
@@ -2179,6 +2233,12 @@
 			</File>
 			<File
 				RelativePath="..\src\prefs\AudioIOPrefs.h">
+			</File>
+			<File
+				RelativePath="..\src\prefs\BatchPrefs.cpp">
+			</File>
+			<File
+				RelativePath="..\src\prefs\BatchPrefs.h">
 			</File>
 			<File
 				RelativePath="..\src\prefs\DirectoriesPrefs.cpp">
