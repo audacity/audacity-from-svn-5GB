@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\$(ConfigurationName)"
+			IntermediateDirectory=".\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -29,10 +29,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Release/allegro.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				PrecompiledHeaderFile=".\$(ConfigurationName)/allegro.pch"
+				AssemblerListingLocation=".\$(ConfigurationName)/"
+				ObjectFile=".\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
@@ -64,8 +64,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory=".\$(ConfigurationName)"
+			IntermediateDirectory=".\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -77,10 +77,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Debug/allegro.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
+				PrecompiledHeaderFile=".\$(ConfigurationName)/allegro.pch"
+				AssemblerListingLocation=".\$(ConfigurationName)/"
+				ObjectFile=".\$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"/>

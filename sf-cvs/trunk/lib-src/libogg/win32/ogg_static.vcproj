@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Static_Release"
-			IntermediateDirectory=".\Static_Release"
+			OutputDirectory=".\Static_$(ConfigurationName)"
+			IntermediateDirectory=".\Static_$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -30,10 +30,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Static_Release/ogg_static.pch"
-				AssemblerListingLocation=".\Static_Release/"
-				ObjectFile=".\Static_Release/"
-				ProgramDataBaseFileName=".\Static_Release/"
+				PrecompiledHeaderFile=".\Static_$(ConfigurationName)/ogg_static.pch"
+				AssemblerListingLocation=".\Static_$(ConfigurationName)/"
+				ObjectFile=".\Static_$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\Static_$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				CompileAs="0"/>
@@ -41,7 +41,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Static_Release\ogg_static.lib"
+				OutputFile=".\Static_$(ConfigurationName)\ogg_static.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -66,8 +66,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Static_Debug"
-			IntermediateDirectory=".\Static_Debug"
+			OutputDirectory=".\Static_$(ConfigurationName)"
+			IntermediateDirectory=".\Static_$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -80,10 +80,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Static_Debug/ogg_static.pch"
-				AssemblerListingLocation=".\Static_Debug/"
-				ObjectFile=".\Static_Debug/"
-				ProgramDataBaseFileName=".\Static_Debug/"
+				PrecompiledHeaderFile=".\Static_$(ConfigurationName)/ogg_static.pch"
+				AssemblerListingLocation=".\Static_$(ConfigurationName)/"
+				ObjectFile=".\Static_$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\Static_$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -92,7 +92,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Static_Debug\ogg_static_d.lib"
+				OutputFile=".\Static_$(ConfigurationName)\ogg_static_d.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
