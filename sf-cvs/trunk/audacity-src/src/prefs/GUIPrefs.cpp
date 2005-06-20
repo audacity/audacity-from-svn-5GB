@@ -179,7 +179,7 @@ void GUIPrefs::CheckBoxAction(
    bool bDefault,
    int mWindowID)
 {
-   bool bValue;
+   bool bValue=false;
    bool bIsInListBox;
 
 // TODO:  What should we do if on a Mac?
