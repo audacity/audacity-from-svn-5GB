@@ -4,9 +4,8 @@
 
   BatchPrefs.cpp
 
-  Brian Gunlogson
-  Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
@@ -154,7 +153,7 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,   wxT(""),              wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   wxT(""),         wxLIST_FORMAT_LEFT );
    mList->InsertColumn(ItemNumberColumn,    _("No"),   wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command"),    wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ParamsColumn,  _("Parameters"), wxLIST_FORMAT_LEFT );
@@ -241,7 +240,7 @@ void BatchPrefs::OnItemSelected(wxListEvent &event)
 
    wxString command, params;
 
-   BatchCommandDialog Dlg( this, -1, -1);
+   BatchCommandDialog Dlg( this, -1);
 
    wxListItem info;
    info.SetId( itemNo );
@@ -290,7 +289,7 @@ void BatchPrefs::CheckBoxAction(
    bool bDefault,
    int mWindowID)
 {
-   bool bValue;
+   bool bValue = false;
    bool bIsInListBox;
 
 // TODO:  What should we do if on a Mac?
@@ -372,14 +371,6 @@ void BatchPrefs::AddItem( wxString const & Action, wxString const & Params)
 /// them.
 void BatchPrefs::AllCheckBoxActions()
 {
-   // Code duplication warning: this default is repeated in Project.cpp
-   // in the destructor.  -DMM
-   #ifdef __WXMAC__
-      const bool bQuitOnCloseDefault = false;
-   #else
-      const bool bQuitOnCloseDefault = true;
-   #endif
-   // End code duplication warning
    mCurrentCheckBox=-1;
    mCheckBoxCounters[0]=-1;
    mCheckBoxCounters[1]=-1;
@@ -393,7 +384,7 @@ void BatchPrefs::AllCheckBoxActions()
    mCurrentCheckBoxContainer=1;
 
    CheckBoxAction(_("Show Mp3-ID3 Dialog"), wxT("/Batch/ShowId3Dialog"), false);
-// CheckBoxAction(_("Show Confirmation for 'delete orphans'"), "/Batch/ShowDeleteConfirmation", true);
+// CheckBoxAction(_("Show Confirmation for 'delete orphans'"), wxT("/Batch/ShowDeleteConfirmation"), true);
 
 // Commented out code might be useful as a first step if we want an immediate response to 
 // switching in and out of CleanSpeech mode.

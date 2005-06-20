@@ -23,9 +23,9 @@ static int gValidateSpikeFramesRemoved;  // odd ... crashes on exit if member va
 bool EffectSpikeCleaner::Init()
 {
    mSpikeMaxDurationMs = gPrefs->Read(wxT("/CsPresets/SpikeMaxDurationMs"), SKIP_EFFECT_MILLISECOND);
-   mSpikeDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/SpikeDbChoiceIndex"), (gNumDbChoices - 1));
-   if ((mSpikeDbChoiceIndex < 0) || (mSpikeDbChoiceIndex >= gNumDbChoices)) {  // corrupted Prefs?
-      mSpikeDbChoiceIndex = gNumDbChoices - 1;  // Off-Skip
+   mSpikeDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/SpikeDbChoiceIndex"), (Enums::NumDbChoices - 1));
+   if ((mSpikeDbChoiceIndex < 0) || (mSpikeDbChoiceIndex >= Enums::NumDbChoices)) {  // corrupted Prefs?
+      mSpikeDbChoiceIndex = Enums::NumDbChoices - 1;  // Off-Skip
       gPrefs->Write(wxT("/CsPresets/SpikeDbChoiceIndex"), mSpikeDbChoiceIndex);
       mSpikeMaxDurationMs = SKIP_EFFECT_MILLISECOND;
       gPrefs->Write(wxT("/CsPresets/SpikeMaxDurationMs"), (int)mSpikeMaxDurationMs);
@@ -37,7 +37,7 @@ bool EffectSpikeCleaner::Init()
 
 bool EffectSpikeCleaner::CheckWhetherSkipEffect()
 {
-   bool rc = ((mSpikeDbChoiceIndex >= (gNumDbChoices - 1))
+   bool rc = ((mSpikeDbChoiceIndex >= (Enums::NumDbChoices - 1))
    ||  (mSpikeMaxDurationMs >= SKIP_EFFECT_MILLISECOND));
    return rc;
 }
@@ -71,7 +71,7 @@ bool EffectSpikeCleaner::PromptUser()
 
 bool EffectSpikeCleaner::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum(wxT("Db"),mSpikeDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferEnum(wxT("Db"),mSpikeDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
    shuttle.TransferInt(wxT("Duration"),mSpikeMaxDurationMs,10);
    return true;
 }
@@ -90,7 +90,7 @@ bool EffectSpikeCleaner::ProcessSimpleMono(float *buffer, sampleCount len)
    double    curRate = track->GetRate();
    int       spikeMaxDurationSamples = int((curRate / 1000.0) * double(mSpikeMaxDurationMs));
    int       maxInnerSilentFrameCount = spikeMaxDurationSamples / 10;
-   double    spikeDbSilenceThreshold = gDb2Signal[mSpikeDbChoiceIndex];
+   double    spikeDbSilenceThreshold = Enums::Db2Signal[mSpikeDbChoiceIndex];
 
    for (int i = 0; i < len; ++i) {
       curFrame = buffer[i];
@@ -163,8 +163,8 @@ SpikeCleanerDialog::SpikeCleanerDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mSpikeDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-                                   wxDefaultPosition, wxSize(64, -1), gNumDbChoices,
-                                   gDbChoices);
+      wxDefaultPosition, wxSize(64, -1), Enums::NumDbChoices,
+      Enums::GetDbChoices());
    hSizer->Add(mSpikeDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
    hSizer = new wxBoxSizer(wxHORIZONTAL);

@@ -4,8 +4,8 @@
 
   BatchPrefs.h
 
-  Brian Gunlogson
-  Joshua Haberman
+  Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
