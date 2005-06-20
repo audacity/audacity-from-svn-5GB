@@ -115,7 +115,8 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
    bool flag = noiseGateFile.IsOpened();
    if (flag == true) {
       int expectedCount = (windowSize / 2) * sizeof(float);
-      int count = noiseGateFile.Write(mNoiseGate, expectedCount);
+      // FIX-ME: Should we check return value on Write?
+      noiseGateFile.Write(mNoiseGate, expectedCount);
       noiseGateFile.Close();
    }
 }

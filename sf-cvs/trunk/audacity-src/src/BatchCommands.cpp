@@ -4,9 +4,8 @@
 
   BatchCommands.cpp
 
-  Brian Gunlogson
-  Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
@@ -32,6 +31,8 @@
 //    - Specials (which we deal with specially here)
 enum eCommandType { CtEffect, CtMenu, CtSpecial };
 
+// TIDY-ME: Not currently translated, 
+// but there are issues to address if we do.  
 wxString SpecialCommands[] = {
    wxT("No Action"),
    wxT("Import"),
@@ -83,19 +84,26 @@ void BatchCommands::ReadChain()
    }
 }
 
+
+
 void BatchCommands::SetCleanSpeechChain()
 {
    ResetChain();
+
+// TIDY-ME: Effects change their name with localisation.
+// Commands (at least currently) don't.  Messy.
+
+/* i18n-hint: Effect name translations must agree with those used elsewhere, or batch won't find them */
    AddToChain( wxT("Import") );
-   AddToChain( wxT("Stereo To Mono") );
-   AddToChain( wxT("Normalize") );
+   AddToChain(   _("Stereo To Mono") );
+   AddToChain(   _("Normalize") );
    AddToChain( wxT("Save Hq Master1") );
-   AddToChain( wxT("Click Removal") );
-   AddToChain( wxT("Noise Removal") );
-   AddToChain( wxT("Spike Cleaner") );
-   AddToChain( wxT("Truncate Silence") );
-   AddToChain( wxT("Leveller") );
-   AddToChain( wxT("Normalize") );
+   AddToChain(   _("Click Removal") );
+   AddToChain(   _("Noise Removal") );
+   AddToChain(   _("Spike Cleaner") );
+   AddToChain(   _("Truncate Silence") );
+   AddToChain(   _("Leveller") );
+   AddToChain(   _("Normalize") );
    AddToChain( wxT("Save Hq Master2") );
    AddToChain( wxT("ExportMp3") );
 }
@@ -104,7 +112,7 @@ void BatchCommands::SetWavToMp3Chain()
 {
    ResetChain();
    AddToChain( wxT("Import") );
-   AddToChain( wxT("Normalize") );
+   AddToChain(   _("Normalize") );
    AddToChain( wxT("ExportMp3") );
 }
 
@@ -206,13 +214,13 @@ double BatchCommands::GetEndTime()
    AudacityProject *project = GetActiveProject();
    if( project == NULL )
    {
-      wxMessageBox( wxT("No project and no Audio to process!") );
+      wxMessageBox( _("No project and no Audio to process!") );
       return -1.0;
    }
    TrackList * tracks = project->GetTracks();
    if( tracks == NULL )
    {
-      wxMessageBox( wxT("No tracks to process!") );
+      wxMessageBox( _("No tracks to process!") );
       return -1.0;
    }
 
@@ -283,7 +291,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       Effect * f=GetEffectFromCommandName( _("Stereo To Mono") );
       if( f!=NULL )
          return ApplyEffectCommand( f, command, params );
-      wxMessageBox( wxT("StereoToMono Effect not found") );
+      wxMessageBox( _("Stereo To Mono Effect not found"));
       return false;
    } else if (command == wxT("ExportMp3") ){
       return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
@@ -300,7 +308,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
          return false;
       return ::ExportOGG(project, false, filename, false, 0.0, endTime);
    } 
-   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command) );
+   wxMessageBox( wxString::Format(_("Command %s not implemented yet"),command.c_str()) );
    return false;
 }
 
@@ -316,7 +324,7 @@ bool BatchCommands::SetCurrentParametersFor( Effect * f, const wxString command,
       {
          wxMessageBox(
             wxString::Format(
-            _("Could not set parameters of effect %s\n to %s."), command,params ));
+            _("Could not set parameters of effect %s\n to %s."), command.c_str(),params.c_str() ));
          return false;
       }
    }
@@ -370,7 +378,7 @@ bool BatchCommands::ApplyCommand(const wxString command, const wxString params)
 //   return ApplyMenuCommand( command, params );
    wxMessageBox(
       wxString::Format(
-      _("Your batch command of %s was not recognised."), command ));
+      _("Your batch command of %s was not recognised."), command.c_str() ));
    return false;
 }
 
@@ -442,12 +450,12 @@ bool BatchCommands::ReportAndSkip(const wxString command, const wxString params)
    //TODO: Add a cancel button to these, and add the logic so that we can abort.
    if( params != wxT("") )
    {
-      wxMessageBox( wxString::Format(_("Apply %s with parameter(s)\n\n%s"),command, params),
+      wxMessageBox( wxString::Format(_("Apply %s with parameter(s)\n\n%s"),command.c_str(), params.c_str()),
          _("Test Mode"));
    }
    else
    {
-      wxMessageBox( wxString::Format(_("Apply %s"),command),
+      wxMessageBox( wxString::Format(_("Apply %s"),command.c_str()),
          _("Test Mode"));
    }
    return true;

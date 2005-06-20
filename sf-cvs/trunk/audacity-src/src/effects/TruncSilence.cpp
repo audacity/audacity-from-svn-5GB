@@ -29,8 +29,8 @@ bool EffectTruncSilence::Init()
       gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (int)mTruncLongestAllowedSilentMs);
    }
    mTruncDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/TruncDbChoiceIndex"), 4L);
-   if ((mTruncDbChoiceIndex < 0) || (mTruncDbChoiceIndex >= gNumDbChoices)) {  // corrupted Prefs?
-      mTruncDbChoiceIndex = gNumDbChoices - 1;  // Off-Skip
+   if ((mTruncDbChoiceIndex < 0) || (mTruncDbChoiceIndex >= Enums::NumDbChoices)) {  // corrupted Prefs?
+      mTruncDbChoiceIndex = Enums::NumDbChoices - 1;  // Off-Skip
       gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
       mTruncLongestAllowedSilentMs = SKIP_EFFECT_MILLISECOND;
       gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (int)mTruncLongestAllowedSilentMs);
@@ -40,7 +40,7 @@ bool EffectTruncSilence::Init()
 
 bool EffectTruncSilence::CheckWhetherSkipEffect()
 {
-   bool rc = ((mTruncDbChoiceIndex >= (gNumDbChoices - 1))
+   bool rc = ((mTruncDbChoiceIndex >= (Enums::NumDbChoices - 1))
           ||  (mTruncLongestAllowedSilentMs >= SKIP_EFFECT_MILLISECOND));
    return rc;
 }
@@ -74,7 +74,7 @@ bool EffectTruncSilence::PromptUser()
 
 bool EffectTruncSilence::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum(wxT("Db"),mTruncDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferEnum(wxT("Db"),mTruncDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
    shuttle.TransferLongLong(wxT("Duration"),mTruncLongestAllowedSilentMs,200);
    return true;
 }
@@ -101,7 +101,7 @@ bool EffectTruncSilence::ProcessOne()
    double curRate = mTrack->GetRate();
    int    quarterSecondFrames = (int)((curRate * QUARTER_SECOND_MS)/ 1000.0);
    int    truncLongestAllowedSilentSamples = int((mTruncLongestAllowedSilentMs * curRate) / 1000.0);
-   double truncDbSilenceThreshold = gDb2Signal[mTruncDbChoiceIndex];
+   double truncDbSilenceThreshold = Enums::Db2Signal[mTruncDbChoiceIndex];
    bool   ignoringFrames = false;
 
    double selectionEnd = mT1;
@@ -111,7 +111,7 @@ bool EffectTruncSilence::ProcessOne()
    sampleCount selectionStartSampleCount = selectionStartLongSampleCount;
    sampleCount selectionEndSampleCount = selectionEndLongSampleCount;
 
-   sampleCount totalSampleCount = selectionEndSampleCount - selectionStartSampleCount;
+//   sampleCount totalSampleCount = selectionEndSampleCount - selectionStartSampleCount;
 //   sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 16;   // bigger buffer reduces 'reset'
    sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 8;   // bigger buffer reduces 'reset'
 //   sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 1;
@@ -135,7 +135,7 @@ bool EffectTruncSilence::ProcessOne()
       if ((index + idealBlockLen) > selectionEndSampleCount) {
          limit = selectionEndSampleCount - index; 
       }
-      double seconds = index / curRate;
+//      double seconds = index / curRate;
       for (sampleCount i = 0; i < limit; ++i) {
          index++;
          curFrame = buffer[i];
@@ -150,7 +150,7 @@ bool EffectTruncSilence::ProcessOne()
          }
          else {
             if (ignoringFrames == true) {
-               float* pb = &buffer[truncIndex]; 
+//               float* pb = &buffer[truncIndex]; 
                sampleCount curOffset = i - rampInFrames;
                truncIndex -= rampInFrames; // backup into ignored frames
                wxASSERT((truncIndex < idealBlockLen) && (curOffset > 0) && ((curOffset + rampInFrames) < idealBlockLen));
@@ -230,8 +230,7 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mTruncDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-                                   wxDefaultPosition, wxSize(64, -1), gNumDbChoices,
-                                   gDbChoices);
+      wxDefaultPosition, wxSize(64, -1), Enums::NumDbChoices,Enums::GetDbChoices());
    hSizer->Add(mTruncDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE | wxALL, 5);
    hSizer = new wxBoxSizer(wxHORIZONTAL);

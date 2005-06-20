@@ -3558,15 +3558,16 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
       int minute = now.GetMinute();
       int second = now.GetSecond();
       justName = wxString::Format(wxT("%d-%s-%02d-%02d-%02d-%02d"), 
-           year, monthName, dom, hour, minute, second);
+           year, monthName.c_str(), dom, hour, minute, second);
 //      SetName(cleanedFileName);
 //      bool isStereo;
 //      double endTime = project->mTracks->GetEndTime();
 //      double startTime = 0.0;
       OnSelectAll();
       pathName = gPrefs->Read(wxT("/DefaultOpenPath"), FROMFILENAME(::wxGetCwd()));
-      ::wxMessageBox(wxString::Format(_("Export recording to %s\n/cleaned/%s.mp3"), pathName, justName),
-                                      _("Export recording"),
+      ::wxMessageBox(wxString::Format(_("Export recording to %s\n/cleaned/%s.mp3"), 
+         pathName.c_str(), justName.c_str()),
+         _("Export recording"),
                   wxOK | wxCENTRE);
       pathName += wxT("/");
    }

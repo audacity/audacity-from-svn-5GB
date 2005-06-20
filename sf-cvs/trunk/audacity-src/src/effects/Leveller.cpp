@@ -40,11 +40,11 @@ bool EffectLeveller::Init()
       gPrefs->Write(wxT("/CsPresets/LevellerNumPasses"), 0);
    }
    mLevellerDbChoiceIndex = gPrefs->Read(wxT("/CsPresets/LevellerDbChoiceIndex"), 10L);
-   if ((mLevellerDbChoiceIndex < 0) || (mLevellerDbChoiceIndex >= gNumDbChoices)) {  // corrupted Prefs?
-      mLevellerDbChoiceIndex = (gNumDbChoices - 1);  //Off-skip
+   if ((mLevellerDbChoiceIndex < 0) || (mLevellerDbChoiceIndex >= Enums::NumDbChoices)) {  // corrupted Prefs?
+      mLevellerDbChoiceIndex = (Enums::NumDbChoices - 1);  //Off-skip
       gPrefs->Write(wxT("/CsPresets/LevellerDbChoiceIndex"), mLevellerDbChoiceIndex);
    }
-   mLevellerDbSilenceThreshold = gDb2Signal[mLevellerDbChoiceIndex];
+   mLevellerDbSilenceThreshold = Enums::Db2Signal[mLevellerDbChoiceIndex];
 
    CalcLevellerFactors();
    
@@ -53,7 +53,7 @@ bool EffectLeveller::Init()
 
 bool EffectLeveller::CheckWhetherSkipEffect()
 {
-   bool rc = ((mLevellerDbChoiceIndex >= (gNumDbChoices - 1)) || (mLevellerNumPasses == 0));
+   bool rc = ((mLevellerDbChoiceIndex >= (Enums::NumDbChoices - 1)) || (mLevellerNumPasses == 0));
    return rc;
 }
 
@@ -124,7 +124,7 @@ bool EffectLeveller::PromptUser()
    }
    mLevellerNumPasses = dlog.mLevellerNumPasses;
    mLevellerDbChoiceIndex = dlog.mLevellerDbChoiceIndex;
-   mLevellerDbSilenceThreshold = gDb2Signal[mLevellerDbChoiceIndex];
+   mLevellerDbSilenceThreshold = Enums::Db2Signal[mLevellerDbChoiceIndex];
    gPrefs->Write(wxT("/CsPresets/LevellerDbChoiceIndex"), mLevellerDbChoiceIndex);
    gPrefs->Write(wxT("/CsPresets/LevellerNumPasses"), mLevellerNumPasses);
 
@@ -135,7 +135,7 @@ bool EffectLeveller::PromptUser()
 
 bool EffectLeveller::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum(wxT("Db"),mLevellerDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferEnum(wxT("Db"),mLevellerDbChoiceIndex,Enums::NumDbChoices,Enums::GetDbChoices());
    shuttle.TransferInt(wxT("Passes"),mLevellerNumPasses,1);
    return true;
 }
@@ -239,8 +239,8 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mLevellerDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-                                       wxDefaultPosition, wxSize(64, -1), gNumDbChoices,
-                                       gDbChoices);
+      wxDefaultPosition, wxSize(64, -1), Enums::NumDbChoices,
+                                       Enums::GetDbChoices());
    hSizer->Add(mLevellerDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
    group->Add(hSizer, 0, wxALIGN_CENTRE|wxALL, 5 );
    mainSizer->Add(group, 0, wxALIGN_CENTRE | wxALL, 5);
