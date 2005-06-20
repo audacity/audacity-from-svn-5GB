@@ -24,7 +24,9 @@ EffectChangeLength::EffectChangeLength() : mUserPrompted(false)
 bool EffectChangeLength::Init()
 {
    mFromLength = mT1 - mT0;;	
-   bool flag = gPrefs->Read(wxT("/CsPresets/ChangeLengthTo"), &mToLength, mFromLength);
+   //bool flag = gPrefs->Read(wxT("/CsPresets/ChangeLengthTo"), &mToLength, mFromLength);
+   //TODO: Presets ONLY if enabled in preferences. (and remove Cs prefix)
+   gPrefs->Read(wxT("/CsPresets/ChangeLengthTo"), &mToLength, mFromLength);
 
    return true;
 }
@@ -60,7 +62,7 @@ bool EffectChangeLength::PromptUser()
 }
 bool EffectChangeLength::TransferParameters( Shuttle & shuttle )
 {  
-// shuttle.TransferInt("",,0);
+// shuttle.TransferInt(_(""),,0);
    return true;
 }
 
@@ -197,7 +199,7 @@ bool ChangeLengthDialog::TransferDataToWindow()
       mToLength = mFromLength * 0.90;
       percentChange = -10.0;
    }
-   m_pTextCtrl_ToRange->SetValue(wxString::Format(wxT("%.1f to %.1f"), 
+   m_pTextCtrl_ToRange->SetValue(wxString::Format(_("%.1f to %.1f"), 
           ((mFromLength * 0.90) / 60.0), ((mFromLength * 1.10) / 60.0)));
    m_pTextCtrl_PercentChange->SetValue(wxString::Format(wxT("%.1f"), percentChange));
    m_pTextCtrl_ToLength->SetValue(wxString::Format(wxT("%.1f"), (mToLength / 60.0)));
