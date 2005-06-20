@@ -84,11 +84,11 @@ void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
       return;
    
    // Try to open the file.
-   wxString filename = FILENAME("noisegate.nrp");
+   wxString filename = FILENAME(wxT("noisegate.nrp"));
    // if file doesn't exist, return quietly.
    if( !wxFile::Exists( filename ))
       return;
-	wxFFile   noiseGateFile(filename, "rb");
+	wxFFile   noiseGateFile((const wxChar*)filename, (const wxChar*)wxT("rb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag != true)
       return;
@@ -111,7 +111,7 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
 	AudacityProject * project = GetActiveProject();
 	if( !project || !project->GetCleanSpeechMode() )
       return;
-   wxFFile   noiseGateFile(FILENAME("noisegate.nrp"), "wb");
+   wxFFile   noiseGateFile((const wxChar*)FILENAME(wxT("noisegate.nrp")), (const wxChar*)wxT("wb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag == true) {
       int expectedCount = (windowSize / 2) * sizeof(float);
@@ -171,7 +171,7 @@ bool EffectNoiseRemoval::PromptUser()
    
 bool EffectNoiseRemoval::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferInt("Level",mLevel,1);
+   shuttle.TransferInt(wxT("Level"),mLevel,1);
    return true;
 }
 
@@ -197,7 +197,7 @@ bool EffectNoiseRemoval::Process()
 	   // If we still don't have a profile we have a problem.
       if( !mHasProfile)
       {
-         wxMessageBox( "Attempt to run Noise Removal without a noise profile\n." );
+         wxMessageBox( _("Attempt to run Noise Removal without a noise profile\n.") );
          return false;
       }
 	}

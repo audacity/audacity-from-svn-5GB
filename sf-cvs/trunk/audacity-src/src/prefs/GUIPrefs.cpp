@@ -321,7 +321,7 @@ void GUIPrefs::AllCheckBoxActions()
       wxT("/GUI/ErgonomicTransportButtons"), true);
 
 //lda
-   CheckBoxAction(_("Tracks fit vertically zoomed"), "/GUI/TracksFitVerticallyZoomed", false );
+   CheckBoxAction(_("Tracks fit vertically zoomed"), wxT("/GUI/TracksFitVerticallyZoomed"), false );
    mCurrentCheckBoxContainer=1;
 
    CheckBoxAction( _("Enable Edit Toolbar"),
@@ -334,10 +334,10 @@ void GUIPrefs::AllCheckBoxActions()
       wxT("/GUI/EnableTranscriptionToolBar"),false, TranscriptionToolBarID );
 	CheckBoxAction(
       _("Enable cut lines"),
-      "/GUI/EnableCutLines", false);
+      wxT("/GUI/EnableCutLines"), false);
    CheckBoxAction(
 		_("Show warnings about temp files"), 
-		"/GUI/WarnAboutTempFiles", true );
+		wxT("/GUI/WarnAboutTempFiles"), true );
    
 // Don't yet allow normal users to disable the main mix window.
 //   CheckBoxAction(

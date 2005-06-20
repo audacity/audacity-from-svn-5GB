@@ -20,6 +20,11 @@
 #include <wx/longlong.h>
 #include <wx/thread.h>
 
+//
+// Tolerance for merging wave tracks (in seconds)
+//
+#define WAVETRACK_MERGE_POINT_TOLERANCE 0.01
+
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
 class Envelope;
@@ -45,7 +50,24 @@ class WaveTrack: public Track {
    friend class TrackFactory;
 
  public:
+ 
+   enum LocationType {
+      locationCutLine = 1,
+      locationMergePoint
+   };
 
+   struct Location {
+      // Position of track location
+      double pos;
+      
+      // Type of track location
+      LocationType typ;
+      
+      // Only for typ==locationMergePoint
+      int clipidx1; // first clip (left one)
+      int clipidx2; // second clip (right one)
+   };
+      
    virtual ~WaveTrack();
    virtual double GetOffset();
    virtual void SetOffset (double o);
@@ -211,18 +233,23 @@ class WaveTrack: public Track {
    // in this cliplist and add it to the cliplist of the
    // other clip. No fancy additional stuff is done.
    void MoveClipToTrack(int clipIndex, WaveTrack* dest);
+   
+   // Merge two clips, that is append data from clip2 to clip1,
+   // then remove clip2 from track.
+   // clipidx1 and clipidx2 are indices into the clip list.
+   bool MergeClips(int clipidx1, int clipidx2);
 
    // Set/get rectangle that this WaveClip fills on screen. This is
    // called by TrackArtist while actually drawing the tracks and clips.
    void SetDisplayRect(const wxRect& r) { mDisplayRect = r; }
    void GetDisplayRect(wxRect* r) { *r = mDisplayRect; }
 
-   // Cache cut lines for later speedy access
-   void UpdateCutLinesCache();
+   // Cache special locations (e.g. cut lines) for later speedy access
+   void UpdateLocationsCache();
 
-   // Get number of cached cut lines
-   int GetNumCachedCutLines() { return mDisplayNumCutLines; }
-   double GetCachedCutLine(int index) { return mDisplayCutLines[index]; }
+   // Get number of cached locations
+   int GetNumCachedLocations() { return mDisplayNumLocations; }
+   Location GetCachedLocation(int index) { return mDisplayLocations[index]; }
 
    // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
    bool ExpandCutLine(double cutLinePosition);
@@ -274,9 +301,9 @@ class WaveTrack: public Track {
    float         mDisplayMin;
    float         mDisplayMax;
    int           mDisplay; // type of display, from WaveTrackDisplay enum
-   int           mDisplayNumCutLines;
-   int           mDisplayNumCutLinesAllocated;
-   double*       mDisplayCutLines;
+   int           mDisplayNumLocations;
+   int           mDisplayNumLocationsAllocated;
+   Location*       mDisplayLocations;
 
    //
    // Protected methods

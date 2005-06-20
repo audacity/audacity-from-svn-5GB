@@ -68,7 +68,7 @@ bool EffectChangeSpeed::PromptUser()
 }
 bool EffectChangeSpeed::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferDouble("Percentage",m_PercentChange,0.0);
+   shuttle.TransferDouble(wxT("Percentage"),m_PercentChange,0.0);
    return true;
 }
 

@@ -63,9 +63,9 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    SetName(_("Audio Track"));
    mDisplayMin = -1.0;
    mDisplayMax = 1.0;
-   mDisplayNumCutLines = 0;
-   mDisplayCutLines = NULL;
-   mDisplayNumCutLinesAllocated = 0;
+   mDisplayNumLocations = 0;
+   mDisplayLocations = NULL;
+   mDisplayNumLocationsAllocated = 0;
 }
 
 WaveTrack::WaveTrack(WaveTrack &orig):
@@ -91,9 +91,9 @@ void WaveTrack::Init(const WaveTrack &orig)
    mDisplay = orig.mDisplay;
    mDisplayMin = orig.mDisplayMin;
    mDisplayMax = orig.mDisplayMax;
-   mDisplayNumCutLines = 0;
-   mDisplayCutLines = NULL;
-   mDisplayNumCutLinesAllocated = 0;
+   mDisplayNumLocations = 0;
+   mDisplayLocations = NULL;
+   mDisplayNumLocationsAllocated = 0;
 }
 
 void WaveTrack::Merge(const Track &orig)
@@ -108,8 +108,8 @@ WaveTrack::~WaveTrack()
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
       delete it->GetData();
    mClips.Clear();
-   if (mDisplayCutLines)
-      delete mDisplayCutLines;
+   if (mDisplayLocations)
+      delete mDisplayLocations;
 }
 
 double WaveTrack::GetOffset()
@@ -1083,36 +1083,63 @@ bool WaveTrack::SplitAt(double t)
    return true;
 }
 
-void WaveTrack::UpdateCutLinesCache()
+void WaveTrack::UpdateLocationsCache()
 {
-   WaveClipList::Node* it;
-   mDisplayNumCutLines = 0;
+   WaveClipList::Node *it, *jt;
+   
+   mDisplayNumLocations = 0;
 
    for (it=GetClipIterator(); it; it=it->GetNext())
-      mDisplayNumCutLines += it->GetData()->GetCutLines()->GetCount();
+   {
+      WaveClip* clip = it->GetData();
+      
+      mDisplayNumLocations += clip->GetCutLines()->GetCount();
+      
+      for (jt=GetClipIterator(); jt; jt=jt->GetNext())
+      {
+         WaveClip* clip2 = jt->GetData();
+         if (clip != clip2 && fabs(clip->GetEndTime()-clip2->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE)
+            mDisplayNumLocations++;
+      }
+   }
 
-   if (mDisplayNumCutLines == 0)
+   if (mDisplayNumLocations == 0)
       return;
 
-   if (mDisplayNumCutLines > mDisplayNumCutLinesAllocated)
+   if (mDisplayNumLocations > mDisplayNumLocationsAllocated)
    {
       // Only realloc, if we need more space than before. Otherwise
       // just use block from before.
-      if (mDisplayCutLines)
-         delete mDisplayCutLines;
-      mDisplayCutLines = new double[mDisplayNumCutLines];
-      mDisplayNumCutLinesAllocated = mDisplayNumCutLines;
+      if (mDisplayLocations)
+         delete mDisplayLocations;
+      mDisplayLocations = new Location[mDisplayNumLocations];
+      mDisplayNumLocationsAllocated = mDisplayNumLocations;
    }
 
    int curpos = 0;
 
    for (it=GetClipIterator(); it; it=it->GetNext())
    {
-      WaveClipList* cutlines = it->GetData()->GetCutLines();
-      for (WaveClipList::Node* jt = cutlines->GetFirst(); jt; jt=jt->GetNext())
+      WaveClip* clip = it->GetData();
+      WaveClipList* cutlines = clip->GetCutLines();
+      for (jt = cutlines->GetFirst(); jt; jt=jt->GetNext())
       {
-         mDisplayCutLines[curpos] = jt->GetData()->GetOffset() + it->GetData()->GetOffset();
+         mDisplayLocations[curpos].typ = locationCutLine;
+         mDisplayLocations[curpos].pos = jt->GetData()->GetOffset() + it->GetData()->GetOffset();
          curpos++;
+      }
+
+      for (jt=GetClipIterator(); jt; jt=jt->GetNext())
+      {
+         WaveClip* clip2 = jt->GetData();
+         if (clip != clip2 && fabs(clip->GetEndTime()-clip2->GetStartTime()) < WAVETRACK_MERGE_POINT_TOLERANCE)
+         {
+            mDisplayLocations[curpos].typ = locationMergePoint;
+            mDisplayLocations[curpos].pos = clip->GetEndTime();
+            mDisplayLocations[curpos].clipidx1 = mClips.IndexOf(clip);
+            mDisplayLocations[curpos].clipidx2 = mClips.IndexOf(clip2);
+            curpos++;
+         }
       }
    }
 }
@@ -1134,6 +1161,22 @@ bool WaveTrack::RemoveCutLine(double cutLinePosition)
          return true;
 
    return false;
+}
+
+bool WaveTrack::MergeClips(int clipidx1, int clipidx2)
+{
+   WaveClip* clip1 = GetClipByIndex(clipidx1);
+   WaveClip* clip2 = GetClipByIndex(clipidx2);
+   
+   // Append data from second clip to first clip
+   if (!clip1->Paste(clip1->GetEndTime(), clip2))
+      return false;
+
+   // Delete second clip
+   mClips.DeleteObject(clip2);
+   delete clip2;
+   
+   return true;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

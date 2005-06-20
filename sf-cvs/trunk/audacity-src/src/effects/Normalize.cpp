@@ -43,8 +43,8 @@ bool EffectNormalize::Init()
 
 bool EffectNormalize::TransferParameters( Shuttle & shuttle )
 {
-   shuttle.TransferBool( "ApplyGain", mGain, true );
-   shuttle.TransferBool( "RemoveDcOffset", mDC, true );
+   shuttle.TransferBool( wxT("ApplyGain"), mGain, true );
+   shuttle.TransferBool( wxT("RemoveDcOffset"), mDC, true );
    return true;
 }
 

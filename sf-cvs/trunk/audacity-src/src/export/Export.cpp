@@ -125,7 +125,7 @@ wxString ExportCommon(AudacityProject *project,
                      _("Unable to export"),
                      wxOK | wxICON_INFORMATION);
 
-      return "";
+      return wxT("");
    }
    
    /* Detemine if exported file will be stereo or mono,
@@ -162,7 +162,7 @@ wxString ExportCommon(AudacityProject *project,
    wxString endOfPathSep;
 
 //MERGE exercise exception
-   if (defaultName == "ThrowExceptionOnExport") {  //lda
+   if (defaultName == wxT("ThrowExceptionOnExport")) {  //lda
       throw("Exercise exception");
    }
    if (defaultExtension.Left(1) == wxT("."))
@@ -340,7 +340,7 @@ bool Export(AudacityProject *project,
 }
    catch(...) {
       wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
-                   (const char *)project->GetName()), _("Error exporting file or project"),
+                   (const wxChar *)project->GetName()), _("Error exporting file or project"),
                    wxOK | wxCENTRE);
       return false;
    }
@@ -406,7 +406,7 @@ bool ExportLossy(AudacityProject *project,
 }
    catch(...) {
       wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
-                   (const char *)project->GetName()), _("Error exporting file or project"),
+                   (const wxChar *)project->GetName()), _("Error exporting file or project"),
                    wxOK | wxCENTRE);
       return false;
    }

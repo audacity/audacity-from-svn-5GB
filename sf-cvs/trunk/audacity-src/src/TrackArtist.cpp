@@ -877,32 +877,30 @@ void TrackArtist::DrawWaveform(WaveTrack *track,
    dc.SetBrush(blankBrush);
    dc.DrawRectangle(r);
 
-
-
-
    for (WaveClipList::Node* it=track->GetClipIterator(); it; it=it->GetNext())
       DrawClipWaveform(track, it->GetData(), dc, r, viewInfo, drawEnvelope, drawSamples,
                        drawSliders, dB, muted);
 
-   if (gPrefs->Read(wxT("/GUI/EnableCutLines"), (long)0))
+   // Update cache for locations, e.g. cutlines and merge points
+   track->UpdateLocationsCache();
+   
+   for (int i=0; i<track->GetNumCachedLocations(); i++)
    {
-      track->UpdateCutLinesCache();
-
-      for (int i=0; i<track->GetNumCachedCutLines(); i++)
+      WaveTrack::Location loc = track->GetCachedLocation(i);
+      double x = (loc.pos - viewInfo->h) * viewInfo->zoom;
+      if (x >= 0 && x < r.width)
       {
-         double x = (track->GetCachedCutLine(i) - viewInfo->h) * viewInfo->zoom;
-         if (x >= 0 && x < r.width)
-         {
-            dc.SetPen(*wxGREY_PEN);
-            dc.DrawLine((int) (r.x + x-1), r.y, (int) (r.x + x-1), r.y+r.height);
+         dc.SetPen(*wxGREY_PEN);
+         dc.DrawLine((int) (r.x + x-1), r.y, (int) (r.x + x-1), r.y+r.height);
+         if (loc.typ == WaveTrack::locationCutLine)
             dc.SetPen(*wxRED_PEN);
-            dc.DrawLine((int) (r.x + x), r.y, (int) (r.x + x), r.y+r.height);
-            dc.SetPen(*wxGREY_PEN);
-            dc.DrawLine((int) (r.x + x+1), r.y, (int) (r.x + x+1), r.y+r.height);
-         }
+         else
+            dc.SetPen(*wxBLACK_PEN);
+         dc.DrawLine((int) (r.x + x), r.y, (int) (r.x + x), r.y+r.height);
+         dc.SetPen(*wxGREY_PEN);
+         dc.DrawLine((int) (r.x + x+1), r.y, (int) (r.x + x+1), r.y+r.height);
       }
    }
-
 }
 
 void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,

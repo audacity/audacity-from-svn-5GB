@@ -80,11 +80,11 @@ bool EffectWahwah::PromptUser()
 
 bool EffectWahwah::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferFloat("Freq",freq,1.5f);
-   shuttle.TransferFloat("Phase",startphase,0.0f);
-   shuttle.TransferFloat("Depth",depth,0.7f);
-   shuttle.TransferFloat("Resonance",res,2.5f);
-   shuttle.TransferFloat("Offset",freqofs,0.3f);
+   shuttle.TransferFloat(wxT("Freq"),freq,1.5f);
+   shuttle.TransferFloat(wxT("Phase"),startphase,0.0f);
+   shuttle.TransferFloat(wxT("Depth"),depth,0.7f);
+   shuttle.TransferFloat(wxT("Resonance"),res,2.5f);
+   shuttle.TransferFloat(wxT("Offset"),freqofs,0.3f);
    return true;
 }
 

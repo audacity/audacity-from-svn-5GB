@@ -788,7 +788,7 @@ void AudacityProject::SetProjectTitle()
    wxString name = GetName();
    if( name.IsEmpty() )
    {
-      name = mCleanSpeechMode ? "Audacity CleanSpeech" : "Audacity";
+      name = mCleanSpeechMode ? wxT("Audacity CleanSpeech") : wxT("Audacity");
    }
    SetTitle( name );
 }
@@ -2019,7 +2019,7 @@ try {   //lda
 }
 catch(...) { //lda
    wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
-                (const char *)fileName), _("Error opening file or project"),
+                (const wxChar*)fileName), _("Error opening file or project"),
                 wxOK | wxCENTRE, this);
 }
 }
@@ -2454,11 +2454,11 @@ bool AudacityProject::SaveAs()
    wxString fName;
 	wxString ext = mCleanSpeechMode ? wxT(".wav") : wxT(".aup");
 
-	fName = GetName().Len()? GetName() + ext : wxString("");
+	fName = GetName().Len()? GetName() + ext : wxString(wxT(""));
 	if( mCleanSpeechMode )
 	{
 	   fName = wxFileSelector(_("Save Speech As:"),
-                          path, fName, "",
+                          path, fName, wxT(""),
                           _("Windows PCM Audio file *.wav)|*.wav"),  //lda
                           wxSAVE | wxOVERWRITE_PROMPT, this);
 	}

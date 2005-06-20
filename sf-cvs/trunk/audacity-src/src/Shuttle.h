@@ -17,6 +17,8 @@ class Shuttle {
  public:
    // constructors and destructors
    Shuttle();
+   virtual ~Shuttle() {}
+      
  public:
    bool mbStoreInClient;
    wxString mValueString;
@@ -38,7 +40,8 @@ class ShuttleCli : public Shuttle
 {
 public:
    wxString mParams;
-   ShuttleCli(){ mParams = "" ;}
+   ShuttleCli(){ mParams = wxT("") ;}
+   virtual ~ShuttleCli() {}
    virtual bool ExchangeWithMaster(const wxString & Name);
 };
 

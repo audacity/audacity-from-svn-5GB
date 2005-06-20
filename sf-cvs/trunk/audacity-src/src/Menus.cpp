@@ -690,10 +690,10 @@ void AudacityProject::ResolveEffectIndices(EffectArray *effects)
 {
    for (unsigned int i = 0; i < effects->GetCount(); i++) {
       wxString effectName = (*effects)[i]->GetEffectName();
-      if (effectName == "Normalize...") {
+      if (effectName == wxT("Normalize...")) {
          mNormalizeIndex = i;
       }
-      else if (effectName == "Stereo To Mono") {
+      else if (effectName == wxT("Stereo To Mono")) {
          mStereoToMonoIndex = i;
       }
    }
@@ -3327,11 +3327,11 @@ void AudacityProject::OnExportCleanSpeechPresets()
    wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), FROMFILENAME(::wxGetCwd()));
    wxString nameOnly;
    wxString extension;
-   wxString defaultName = "DefaultPresets";
+   wxString defaultName = wxT("DefaultPresets");
    wxString fName;
    wxString maskString;
    wxString endOfPathSep;
-   wxString defaultExtension = "csp";
+   wxString defaultExtension = wxT("csp");
    maskString.Printf(wxT("CleanSpeech Preset files (*.csp)|.csp files (*.csp)"));
 
    bool fileOkay;
@@ -3339,7 +3339,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
    do {
       fileOkay = true;
 
-      fName = "*.csp";
+      fName = wxT("*.csp");
       fName = wxFileSelector(_("Save CleanSpeech Preset File As:"),
                              path,
                              fName,       // default file name
@@ -3356,7 +3356,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
          continue;
       }
       ::wxSplitPath(fName, &path, &nameOnly, &extension);
-      wxFFile presetsFile(FILENAME(fName), "wb");
+      wxFFile presetsFile((const wxChar*)FILENAME(fName), (const wxChar*)"wb");
       bool flag = presetsFile.IsOpened();
       if (flag == true) {
          int preset[PRESET_COUNT];
@@ -3382,7 +3382,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
          double noiseGateSum = 0.0;
          int lenNoiseGate = expectedCount / sizeof(float);
          for (int i = 0; i < lenNoiseGate; ++i) {
-            noiseGateSum += abs(pNoiseGate[i]);
+            noiseGateSum += fabs(pNoiseGate[i]);
          }
          int noiseCheckSum = abs((int)noiseGateSum);
          preset[13] = noiseCheckSum;
@@ -3409,11 +3409,11 @@ void AudacityProject::OnImportCleanSpeechPresets()
    wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), FROMFILENAME(::wxGetCwd()));
    wxString nameOnly;
    wxString extension;
-   wxString defaultName = "DefaultPresets";
+   wxString defaultName = wxT("DefaultPresets");
    wxString fName;
    wxString maskString;
    wxString endOfPathSep;
-   wxString defaultExtension = "csp";
+   wxString defaultExtension = wxT("csp");
    maskString.Printf(wxT("CleanSpeech Preset files (*.csp)|.csp files (*.csp)"));
 
    bool fileOkay;
@@ -3421,7 +3421,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
    do {
       fileOkay = true;
 
-      fName = "*.csp";
+      fName = wxT("*.csp");
       fName = wxFileSelector(_("Open CleanSpeech Preset File:"),
                              path,
                              fName,       // default file name
@@ -3432,7 +3432,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
       if (fName.empty()) { // if cancel selected
          return;
       }
-      wxFFile presetsFile(FILENAME(fName), "rb");
+      wxFFile presetsFile((const wxChar*)fName, wxT("rb"));
       bool flag = presetsFile.IsOpened();
       if (flag == true) {
          int preset[PRESET_COUNT];
@@ -3466,7 +3466,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
          double noiseGateSum = 0.0;
          int lenNoiseGate = expectedCount / sizeof(float);
          for (int i = 0; i < lenNoiseGate; ++i) {
-            noiseGateSum += abs(pNoiseGate[i]);
+            noiseGateSum += fabs(pNoiseGate[i]);
          }
          preset[13] = abs((int)noiseGateSum);
 
@@ -3548,7 +3548,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
    wxString justName = newFileName.GetName();
    wxString pathName = newFileName.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 
-   if (justName == "") {
+   if (justName == wxT("")) {
       wxDateTime now = wxDateTime::Now();
       int year = now.GetYear();
       wxDateTime::Month month = now.GetMonth();
@@ -3568,21 +3568,21 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
       ::wxMessageBox(wxString::Format(_("Export recording to %s\n/cleaned/%s.mp3"), pathName, justName),
                                       _("Export recording"),
                   wxOK | wxCENTRE);
-      pathName += "/";
+      pathName += wxT("/");
    }
    wxString cleanedName = pathName;
-   cleanedName += "cleaned";
+   cleanedName += wxT("cleaned");
    bool flag  = ::wxFileName::FileExists(cleanedName);
    if (flag == true) {
       ::wxMessageBox(_("Cannot create directory 'cleaned'. \n"
                        "File already exists that is not a directory"));
-      return "";
+      return wxT("");
    }
    ::wxFileName::Mkdir(cleanedName, 0777, wxPATH_MKDIR_FULL); // make sure it exists
 
-   cleanedName += "/";
+   cleanedName += wxT("/");
    cleanedName += justName;
-   cleanedName += ".mp3";
+   cleanedName += wxT(".mp3");
    mRecentFiles->AddFileToHistory(cleanedName);
 
    return cleanedName;

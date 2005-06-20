@@ -18,6 +18,7 @@
 //Stm:  The following included because of the sampleCount struct.
 #include "Sequence.h"  
 #include "WaveClip.h"
+#include "WaveTrack.h"
   
 class wxMenu;
 class wxRect;
@@ -176,7 +177,7 @@ class TrackPanel:public wxPanel {
 
    bool IsUnsafe();
    bool HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMouseEvent & event);
-   bool HandleCutLinesMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
+   bool HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
    void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);
    void RemoveStaleCursors(wxRegionIterator * upd);
@@ -381,8 +382,8 @@ private:
 
    Track *mCapturedTrack;
    int mCapturedClip; // -1 means none (i.e. the whole track)
-   double mCapturedCutLine;
-   wxRect mCapturedCutLineRect;
+   WaveTrack::Location mCapturedTrackLocation;
+   wxRect mCapturedTrackLocationRect;
    wxRect mCapturedRect;
    int mCapturedNum;
 

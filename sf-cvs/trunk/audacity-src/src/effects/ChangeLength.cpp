@@ -186,7 +186,7 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
 
 bool ChangeLengthDialog::TransferDataToWindow()
 {
-   m_pTextCtrl_FromLength->SetValue(wxString::Format("%.1f", (mFromLength / 60.0)));
+   m_pTextCtrl_FromLength->SetValue(wxString::Format(wxT("%.1f"), (mFromLength / 60.0)));
 
    double percentChange = ((mToLength - mFromLength) / mFromLength) * 100.0;
    if (percentChange > 10.0) {
@@ -197,10 +197,10 @@ bool ChangeLengthDialog::TransferDataToWindow()
       mToLength = mFromLength * 0.90;
       percentChange = -10.0;
    }
-   m_pTextCtrl_ToRange->SetValue(wxString::Format("%.1f to %.1f", 
+   m_pTextCtrl_ToRange->SetValue(wxString::Format(wxT("%.1f to %.1f"), 
           ((mFromLength * 0.90) / 60.0), ((mFromLength * 1.10) / 60.0)));
-   m_pTextCtrl_PercentChange->SetValue(wxString::Format("%.1f", percentChange));
-   m_pTextCtrl_ToLength->SetValue(wxString::Format("%.1f", (mToLength / 60.0)));
+   m_pTextCtrl_PercentChange->SetValue(wxString::Format(wxT("%.1f"), percentChange));
+   m_pTextCtrl_ToLength->SetValue(wxString::Format(wxT("%.1f"), (mToLength / 60.0)));
    return true;
 }
 

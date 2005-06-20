@@ -88,7 +88,7 @@ bool EffectRepeat::PromptUser()
 
 bool EffectRepeat::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferInt("Count",repeatCount,1);
+   shuttle.TransferInt(wxT("Count"),repeatCount,1);
    return true;
 }
 

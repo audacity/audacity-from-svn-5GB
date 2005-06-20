@@ -71,8 +71,8 @@ bool EffectSpikeCleaner::PromptUser()
 
 bool EffectSpikeCleaner::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferEnum("Db",mSpikeDbChoiceIndex,gNumDbChoices,gDbChoices);
-   shuttle.TransferInt("Duration",mSpikeMaxDurationMs,10);
+   shuttle.TransferEnum(wxT("Db"),mSpikeDbChoiceIndex,gNumDbChoices,gDbChoices);
+   shuttle.TransferInt(wxT("Duration"),mSpikeMaxDurationMs,10);
    return true;
 }
 
@@ -150,7 +150,7 @@ SpikeCleanerDialog::SpikeCleanerDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxString spikeMaxDurationMsStr;
-   spikeMaxDurationMsStr.Printf("%d", mSpikeMaxDurationMs);
+   spikeMaxDurationMsStr.Printf(wxT("%d"), mSpikeMaxDurationMs);
    mSpikeMaxDurationMsText = new wxTextCtrl(this, ID_SPIKE_CLEANER_TEXT,
                      spikeMaxDurationMsStr, wxDefaultPosition,
                      wxSize(60, -1), 0,
@@ -187,7 +187,7 @@ SpikeCleanerDialog::SpikeCleanerDialog(wxWindow *parent, wxWindowID id,
 
 bool SpikeCleanerDialog::TransferDataToWindow()
 {
-   mSpikeMaxDurationMsText->SetValue(wxString::Format("%d", mSpikeMaxDurationMs));
+   mSpikeMaxDurationMsText->SetValue(wxString::Format(wxT("%d"), mSpikeMaxDurationMs));
    mSpikeDbSilenceThresholdChoice->SetSelection(mSpikeDbChoiceIndex);
 
    return true;

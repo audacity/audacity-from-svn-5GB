@@ -113,8 +113,8 @@ bool EffectClickRemoval::PromptUser()
 }
 bool EffectClickRemoval::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferInt("Threshold",mThresholdLevel,0);
-   shuttle.TransferInt("Width",mClickWidth,0);
+   shuttle.TransferInt(wxT("Threshold"),mThresholdLevel,0);
+   shuttle.TransferInt(wxT("Width"),mClickWidth,0);
    return true;
 }
 

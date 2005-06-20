@@ -154,7 +154,7 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,   "",              wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   wxT(""),              wxLIST_FORMAT_LEFT );
    mList->InsertColumn(ItemNumberColumn,    _("No"),   wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command"),    wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ParamsColumn,  _("Parameters"), wxLIST_FORMAT_LEFT );
@@ -196,7 +196,7 @@ void BatchPrefs::PopulateList()
       params  =mBatchCommands.mParamsChain[i];
       AddItem( command, params );
    }
-   AddItem( _("- END -"), "");
+   AddItem( _("- END -"), wxT(""));
    mList->Refresh(false);
 }
 
@@ -355,8 +355,8 @@ void BatchPrefs::CheckBoxAction(
 void BatchPrefs::AddItem( wxString const & Action, wxString const & Params)
 {
    int i=mList->GetItemCount();
-   mList->InsertItem( i, "" );
-   mList->SetItem( i, ItemNumberColumn, wxString::Format(" %02i",i+1) );
+   mList->InsertItem( i, wxT("") );
+   mList->SetItem( i, ItemNumberColumn, wxString::Format(wxT(" %02i"),i+1) );
    mList->SetItem( i, ActionColumn, Action );
    mList->SetItem( i, ParamsColumn, Params );
 }
@@ -385,14 +385,14 @@ void BatchPrefs::AllCheckBoxActions()
    mCheckBoxCounters[1]=-1;
    mCurrentCheckBoxContainer=0;
 
-   CheckBoxAction(_("Batch debug mode"),  "/Batch/Debug", false);
-   CheckBoxAction(_("Normalize on load"), "/Batch/NormalizeOnLoad", false );
-   CheckBoxAction(_("Prompt to save, even if empty"),    "/Batch/EmptyCanBeDirty", false );
-   CheckBoxAction(_("CleanSpeech Mode (Customize GUI)"), "/Batch/CleanSpeechMode", false);
+   CheckBoxAction(_("Batch debug mode"),  wxT("/Batch/Debug"), false);
+   CheckBoxAction(_("Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
+   CheckBoxAction(_("Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
+   CheckBoxAction(_("CleanSpeech Mode (Customize GUI)"), wxT("/Batch/CleanSpeechMode"), false);
 
    mCurrentCheckBoxContainer=1;
 
-   CheckBoxAction(_("Show Mp3-ID3 Dialog"), "/Batch/ShowId3Dialog", false);
+   CheckBoxAction(_("Show Mp3-ID3 Dialog"), wxT("/Batch/ShowId3Dialog"), false);
 // CheckBoxAction(_("Show Confirmation for 'delete orphans'"), "/Batch/ShowDeleteConfirmation", true);
 
 // Commented out code might be useful as a first step if we want an immediate response to 
@@ -434,7 +434,7 @@ void BatchPrefs::SetItem(int itemNo, const wxString command, const wxString para
    // which can be used to delete an entry.
 
    // special case - deleting an item.
-   if( command.IsSameAs("No Action"))
+   if( command.IsSameAs(wxT("No Action")))
    {
       //Attempt to delete the 'rogue' entry at the end.
       if( (itemNo+1) >= mList->GetItemCount() )
@@ -454,7 +454,7 @@ void BatchPrefs::SetItem(int itemNo, const wxString command, const wxString para
    if( (itemNo+1) >= mList->GetItemCount() )
    {
       // Add new rogue
-      AddItem( _("- END -"),"");
+      AddItem( _("- END -"),wxT(""));
       mBatchCommands.mCommandChain.Add( command );
       mBatchCommands.mParamsChain.Add( params );
    }

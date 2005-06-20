@@ -57,8 +57,8 @@ bool EffectEcho::PromptUser()
 
 bool EffectEcho::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferFloat("Delay",delay,1.0);
-   shuttle.TransferFloat("Decay",decay,0.5);
+   shuttle.TransferFloat(wxT("Delay"),delay,1.0);
+   shuttle.TransferFloat(wxT("Decay"),decay,0.5);
    return true;
 }
 

@@ -45,7 +45,7 @@ OBJS = \
 	AboutDialog.o \
 	AudacityApp.o \
 	AudioIO.o \
-	BatchCommanDialog.o \
+	BatchCommandDialog.o \
 	BatchCommands.o \
 	BatchProcessDialog.o \
 	Benchmark.o \
@@ -106,7 +106,7 @@ OBJS = \
 	effects/Fade.o \
 	effects/Filter.o \
 	effects/Invert.o \
-	effects/Leveller.o
+	effects/Leveller.o \
 	effects/Noise.o \
 	effects/NoiseRemoval.o \
 	effects/Normalize.o \

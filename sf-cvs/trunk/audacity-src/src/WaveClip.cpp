@@ -764,7 +764,7 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
 
    if (!newClip->CreateFromCopy(clip_t0, clip_t1, this))
       return false;
-   newClip->Offset(clip_t0-mOffset);
+   newClip->SetOffset(clip_t0-mOffset);
 
    // Sort out cutlines that belong to the new cutline
    WaveClipList::Node* nextIt = (WaveClipList::Node*)-1;

@@ -90,11 +90,11 @@ bool EffectPhaser::PromptUser()
 
 bool EffectPhaser::TransferParameters( Shuttle & shuttle )
 {  
-   shuttle.TransferInt("Stages",stages,2);
-   shuttle.TransferInt("Wet",drywet,128);
-   shuttle.TransferFloat("Freq",freq,0.4f);
-   shuttle.TransferInt("Depth",depth,100);
-   shuttle.TransferFloat("Feedback",fb,0.0f);
+   shuttle.TransferInt(wxT("Stages"),stages,2);
+   shuttle.TransferInt(wxT("Wet"),drywet,128);
+   shuttle.TransferFloat(wxT("Freq"),freq,0.4f);
+   shuttle.TransferInt(wxT("Depth"),depth,100);
+   shuttle.TransferFloat(wxT("Feedback"),fb,0.0f);
    return true;
 }
 
