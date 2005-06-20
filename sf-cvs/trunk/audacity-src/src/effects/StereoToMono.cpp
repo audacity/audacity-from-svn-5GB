@@ -48,7 +48,7 @@ bool EffectStereoToMono::Process()
    if ( mLeftTrack == 0 ) {
       return false;		// we need an existing track
    }
-   int channelLeftNum = mLeftTrack->GetChannel();
+   //int channelLeftNum = mLeftTrack->GetChannel();
 
    mLeftTrackEnd = mLeftTrack->GetEndTime();
    mLeftTrackLen = mLeftTrack->TimeToLongSamples(mLeftTrackEnd); 
@@ -57,7 +57,7 @@ bool EffectStereoToMono::Process()
    if (mLeftTrack->GetLinked()) {
       mnTracks = 2;
       mRightTrack = (WaveTrack*)(iter.Next());
-      int channelRightNum = mRightTrack->GetChannel();
+      //int channelRightNum = mRightTrack->GetChannel();
       mRightTrackEnd = mRightTrack->GetEndTime();
       mRightTrackLen = mRightTrack->TimeToLongSamples(mRightTrackEnd); 
       double rightRate = mRightTrack->GetRate();
