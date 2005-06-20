@@ -476,7 +476,7 @@ void ControlToolBar::MakeButtons()
          mxButtonPos += 10; // space before CleanSpeech button
          
          mCleanSpeech = MakeButton((char const **) CleanSpeech,
-                              (char const **) CleanSpeechDisabled,
+                               (char const **) CleanSpeechDisabled,
                               (char const **) CleanSpeechAlpha, ID_BATCH_BUTTON,
                               false);
          break;
