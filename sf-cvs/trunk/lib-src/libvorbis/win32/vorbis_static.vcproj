@@ -12,8 +12,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Vorbis_Static_Release"
-			IntermediateDirectory=".\Vorbis_Static_Release"
+			OutputDirectory=".\Vorbis_Static_$(ConfigurationName)"
+			IntermediateDirectory=".\Vorbis_Static_$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -30,10 +30,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Vorbis_Static_Release/vorbis_static.pch"
-				AssemblerListingLocation=".\Vorbis_Static_Release/"
-				ObjectFile=".\Vorbis_Static_Release/"
-				ProgramDataBaseFileName=".\Vorbis_Static_Release/"
+				PrecompiledHeaderFile=".\Vorbis_Static_$(ConfigurationName)/vorbis_static.pch"
+				AssemblerListingLocation=".\Vorbis_Static_$(ConfigurationName)/"
+				ObjectFile=".\Vorbis_Static_$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\Vorbis_Static_$(ConfigurationName)/"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
@@ -42,7 +42,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Vorbis_Static_Release\vorbis_static.lib"
+				OutputFile=".\Vorbis_Static_$(ConfigurationName)\vorbis_static.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -67,8 +67,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Vorbis_Static_Debug"
-			IntermediateDirectory=".\Vorbis_Static_Debug"
+			OutputDirectory=".\Vorbis_Static_$(ConfigurationName)"
+			IntermediateDirectory=".\Vorbis_Static_$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -81,10 +81,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderFile=".\Vorbis_Static_Debug/vorbis_static.pch"
-				AssemblerListingLocation=".\Vorbis_Static_Debug/"
-				ObjectFile=".\Vorbis_Static_Debug/"
-				ProgramDataBaseFileName=".\Vorbis_Static_Debug/"
+				PrecompiledHeaderFile=".\Vorbis_Static_$(ConfigurationName)/vorbis_static.pch"
+				AssemblerListingLocation=".\Vorbis_Static_$(ConfigurationName)/"
+				ObjectFile=".\Vorbis_Static_$(ConfigurationName)/"
+				ProgramDataBaseFileName=".\Vorbis_Static_$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -93,7 +93,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Vorbis_Static_Debug\vorbis_static_d.lib"
+				OutputFile=".\Vorbis_Static_$(ConfigurationName)\vorbis_static_d.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
