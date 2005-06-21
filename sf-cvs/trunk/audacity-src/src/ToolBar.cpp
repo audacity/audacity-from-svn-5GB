@@ -28,10 +28,12 @@
 #include <wx/intl.h>
 #include <wx/settings.h>
 #include <wx/button.h>
+
+
 #endif  /*  */
 
-
 #include <wx/image.h>
+
 
 #include "Audacity.h"
 #include "widgets/AButton.h"
@@ -43,6 +45,10 @@
 #include "MixerToolBar.h"
 #include "TranscriptionToolBar.h"
 #include "Project.h"
+
+
+//Default toolbar images
+#include  "../images/ToolBarButtons.h"
 
 #define TOOLBAR_CLOSE_BUTTON 10001
 
@@ -82,7 +88,7 @@ public:
    DECLARE_EVENT_TABLE()
       ;
 private:
-   wxButton * mDockButton;
+   AButton * mDockButton;
    
 };
 
@@ -484,7 +490,37 @@ ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
 
    mToolBar = ToolBar::MakeToolBar(this, tbt);
    mToolBar->Move(20,0);
-   mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,wxT(">|<"),wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
+   
+   //mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,">|<",wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
+
+   wxImage * up,* down, *over, *bad;
+
+   if(mToolBar->GetSize().y > 50)
+      {
+         up   = new wxImage(wxBitmap(DockUp).ConvertToImage());
+         down = new wxImage(wxBitmap(DockDown).ConvertToImage());
+         over = new wxImage(wxBitmap(DockOver).ConvertToImage());
+         bad  = new wxImage(wxBitmap(DockUp).ConvertToImage());
+         
+      }
+   else
+      {
+         up   = new wxImage(wxBitmap(DockUpShort).ConvertToImage());
+         down = new wxImage(wxBitmap(DockDownShort).ConvertToImage());
+         over = new wxImage(wxBitmap(DockOverShort).ConvertToImage());
+         bad  = new wxImage(wxBitmap(DockUpShort).ConvertToImage());
+      }
+
+   mDockButton =
+      new AButton(this, TOOLBAR_CLOSE_BUTTON, wxPoint(-1,-1),
+                  wxSize(up->GetWidth(),up->GetHeight()),
+                  up, over, down, bad,
+                  false);
+   //delete up;
+   //delete down;
+   //delete over;
+
+
    mDockButton->SetToolTip(_("Dock Toolbar"));
 
    SetTitle(mToolBar->GetTitle());
@@ -522,6 +558,7 @@ void ToolBarMiniFrame::OnMouseEvent(wxMouseEvent& evt)
 /// This hides the floating toolbar, effectively 'hiding' the window
 void ToolBarMiniFrame::OnClose() 
 {
+   mDockButton->Toggle();
    AudacityProject * p = GetActiveProject();
    ToolBarStub * tbs = ToolBarFrame::GetToolBar()->GetToolBarStub();
    p->FloatToolBar(tbs);
@@ -534,6 +571,7 @@ void ToolBarMiniFrame::OnCloseButton(wxCommandEvent & WXUNUSED(event))
 
 void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
 {
+   
    OnClose();
 } 
 
