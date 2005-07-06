@@ -402,9 +402,8 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
    wxControl *item;
 
    item = new wxStaticText(this, -1,
-                     _("(Not all combinations of headers\n"
-                       "and encodings are possible.)"),
-                     wxDefaultPosition, wxDefaultSize, 0);
+                           _("(Not all combinations of headers\nand encodings are possible.)"),
+                           wxDefaultPosition, wxDefaultSize, 0);
 
    mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
 

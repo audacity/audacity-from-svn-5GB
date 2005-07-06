@@ -10,7 +10,7 @@
 
 #include <wx/defs.h>
 #include <wx/msgdlg.h>
-#include <wx/file.h>
+#include <wx/ffile.h>
 #include <wx/intl.h>
 
 #include "../Internat.h"
@@ -25,9 +25,9 @@
 
 bool ImportMIDI(wxString fName, NoteTrack * dest)
 {
-   FILE *mf = fopen(FILENAME(fName).fn_str(), "rb");
+   wxFFile mf(FILENAME(fName).fn_str(), wxT("rb"));
 
-   if (!mf || ferror(mf)) {
+   if (!mf.IsOpened()) {
       wxMessageBox( _("Could not open file: ") + fName);
       return false;
    }
@@ -37,9 +37,9 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
 
       // Import Allegro file (Roger Dannenberg)
 
-      Allegro_reader reader(mf);
+      Allegro_reader reader(mf.fp());
       reader.parse();
-      fclose(mf);
+      mf.Close();
       
       if (reader.seq.notes.len == 0) {
          // TODO: is there a better way to see if an error occurred?
@@ -67,9 +67,9 @@ bool ImportMIDI(wxString fName, NoteTrack * dest)
 
       Allegro_midifile_reader *reader = new Allegro_midifile_reader();
       
-      reader->initialize(mf);
+      reader->initialize(mf.fp());
       
-      fclose(mf);
+      mf.Close();
       
       if (reader->seq->notes.len == 0) {
          // TODO: is there a better way to see if an error occurred?

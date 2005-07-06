@@ -1036,11 +1036,7 @@ void Meter::OnPreferences(wxCommandEvent &evt)
 {
    long refreshRate = 0;
    if (-1 <  (refreshRate = ::wxGetNumberFromUser
-              (_(
-                 "This determines how often the meter is refreshed.\n"
-                 "If you have a slower PC you may want to select a\n"
-                 "lower refresh rate (30 per second or lower), so that\n"
-                 "audio qualtiy is not affected by the meter display."),
+              (_("This determines how often the meter is refreshed.\nIf you have a slower PC you may want to select a\nlower refresh rate (30 per second or lower), so that\naudio qualtiy is not affected by the meter display."),
                _("Meter refresh rate per second [1-100]: "),
                _("Meter Perferences"),
                mMeterRefreshRate, 1, 100)))

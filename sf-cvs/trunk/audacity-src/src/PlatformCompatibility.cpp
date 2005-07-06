@@ -48,7 +48,7 @@ wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
          // enough, because the user may have NameNumericTail turned off.
          wxString pathToFind = longFileName + s;
          WIN32_FIND_DATA findData;
-         HANDLE findHandle = FindFirstFile((const char*)pathToFind, &findData);
+         HANDLE findHandle = FindFirstFile(pathToFind.fn_str(), &findData);
 
          if (findHandle != INVALID_HANDLE_VALUE)
          {
@@ -61,7 +61,7 @@ wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
       // backslashes. It could e.g. be a network name, too!
       longFileName += s;
       if (end != -1)
-         longFileName += "\\";
+         longFileName += wxT("\\");
    }
 
    return longFileName;

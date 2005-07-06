@@ -82,7 +82,14 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
    SNDFILE *file;
 
    memset(&info, 0, sizeof(info));
-   file = sf_open(FILENAME(filename).fn_str(), SFM_READ, &info);
+
+   #ifdef _UNICODE
+      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      file = sf_open(FILENAME(filename).mb_str(), SFM_READ, &info);
+   #else // ANSI
+      file = sf_open(FILENAME(filename).fn_str(), SFM_READ, &info);
+   #endif // Unicode/ANSI
+
    if (!file) {
       // TODO: Handle error
       //char str[1000];

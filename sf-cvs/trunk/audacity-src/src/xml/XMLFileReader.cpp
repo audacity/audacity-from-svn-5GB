@@ -9,6 +9,7 @@
 **********************************************************************/
 
 #include <wx/defs.h>
+#include <wx/ffile.h>
 #include <wx/intl.h>
 
 #include <string.h>
@@ -38,8 +39,8 @@ XMLFileReader::~XMLFileReader()
 bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
                           const wxString &fname)
 {
-   FILE *fp = fopen(FILENAME(fname).fn_str(), "rb");
-   if (!fp || ferror(fp)) {
+   wxFFile theXMLFile(FILENAME(fname).fn_str(), wxT("rb"));
+   if (!theXMLFile.IsOpened()) {
       wxString errStr;
       mErrorStr.Printf(_("Could not open file: \"%s\""), fname.c_str());
       return false;
@@ -52,18 +53,18 @@ bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
    char buffer[16384];
    int done = 0;
    do {
-      size_t len = fread(buffer, 1, bufferSize, fp);
+      size_t len = fread(buffer, 1, bufferSize, theXMLFile.fp());
       done = (len < bufferSize);
       if (!XML_Parse(mParser, buffer, len, done)) {
          mErrorStr.Printf(_("Error: %hs at line %d"),
 			  XML_ErrorString(XML_GetErrorCode(mParser)),
 			  XML_GetCurrentLineNumber(mParser));
-         fclose(fp);
+         theXMLFile.Close();
          return false;
       }
    } while (!done);
 
-   fclose(fp);
+   theXMLFile.Close();
 
    // Even though there were no parse errors, we only succeed if
    // the first-level handler actually got called, and didn't

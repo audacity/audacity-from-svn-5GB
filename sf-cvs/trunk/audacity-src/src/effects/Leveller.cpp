@@ -204,11 +204,7 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
 
    wxStaticBoxSizer *group = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Degree of Leveling")), wxVERTICAL);;
    item = new wxStaticText(this, -1,
-                           _("You want to preclude the listener feeling the need to increase\n"
-                             "the volume during soft sections and decreasing during loud parts.\n"
-                             "Some distortion can result from excessive leveling, so try to minimize\n"
-                             "this with good equipment, recording technique, the speaker not\n"
-                             "using too much dynamic range, and perhaps 'working the mic'."),
+                           _("You want to preclude the listener feeling the need to increase\nthe volume during soft sections and decreasing during loud parts.\nSome distortion can result from excessive leveling, so try to minimize\nthis with good equipment, recording technique, the speaker not\nusing too much dynamic range, and perhaps 'working the mic'."),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -226,11 +222,7 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
    group = new wxStaticBoxSizer(new wxStaticBox(this, -1,
                                                 _("Noise Threshold (Hiss/Hum/Ambient Noise)")), wxVERTICAL);
    item = new wxStaticText(this, -1,
-                           _("Below the Noise Threshold, the Signal Strength is reduced.\n"
-                             "Above this Threshold, the Signal Strength is equalized so that\n"
-                             "soft parts are made louder and loud parts are made softer.\n\n"
-                             "Generally, recordings with low noise can use lower settings. so\n"
-                             "good equipment, technique, and NoiseRemoval help out a LOT."),
+                           _("Below the Noise Threshold, the Signal Strength is reduced.\nAbove this Threshold, the Signal Strength is equalized so that\nsoft parts are made louder and loud parts are made softer.\n\nGenerally, recordings with low noise can use lower settings. so\ngood equipment, technique, and NoiseRemoval help out a LOT."),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 

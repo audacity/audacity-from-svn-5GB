@@ -739,8 +739,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          wxString peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
          const wxChar *xp = xpitch.c_str();
          const wxChar *pp = peakpitch.c_str();
-         info.Printf(_("Cursor: %d Hz (%s) = %d dB    "
-                       "Peak: %d Hz (%s)"),
+         info.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"),
                      int (xPos + 0.5),
                      xp, int (value + 0.5), int (bestpeak + 0.5), pp);
       } else if (xPos > 0.0 && bestpeak > 0.0) {
@@ -748,8 +747,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          wxString peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
          const wxChar *xp = xpitch.c_str();
          const wxChar *pp = peakpitch.c_str();
-         info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    "
-                       "Peak: %.4f sec (%d Hz) (%s)"),
+         info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"),
                      xPos,
                      int (1.0 / xPos + 0.5),
                      xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp);

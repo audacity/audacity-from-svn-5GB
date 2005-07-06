@@ -263,7 +263,12 @@ bool EffectNyquist::SetXlispPath()
       }
    }
 
-   set_xlisp_path(mXlispPath.fn_str());
+   #ifdef _UNICODE
+      /* set_xlisp_path doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      set_xlisp_path(mXlispPath.mb_str());
+   #else // ANSI
+      set_xlisp_path(mXlispPath.fn_str());
+   #endif // Unicode/ANSI
 
    fname = mXlispPath + wxFILE_SEP_PATH + wxT("nyinit.lsp");
    return ::wxFileExists(FILENAME(fname));
@@ -365,8 +370,8 @@ bool EffectNyquist::Process()
 
             mCurTrack[1] = (WaveTrack *)iter.Next();
             if (mCurTrack[1]->GetRate() != mCurTrack[0]->GetRate()) {
-               wxMessageBox(_("Sorry, cannot apply effect on stereo tracks "
-                            "where the tracks don't match."), wxT("Nyquist"),
+               wxMessageBox(_("Sorry, cannot apply effect on stereo tracks where the tracks don't match."), 
+                            wxT("Nyquist"),
                             wxOK | wxCENTRE, mParent);
                return false;
             }

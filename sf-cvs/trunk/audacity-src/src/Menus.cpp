@@ -2804,14 +2804,7 @@ void AudacityProject::OnImport()
    
    wxFileDialog dlog(this, _("Select one or more audio files..."),
                      path, wxT(""),
-                     _("All files (*.*)|*.*|"
-                       "WAV files (*.wav)|*.wav|"
-                       "AIFF files (*.aif)|*.aif|"
-                       "AU files (*.au)|*.au|"
-                       "MP3 files (*.mp3)|*.mp3|"
-                       "Ogg Vorbis files (*.ogg)|*.ogg|"
-		       "FLAC files (*.flac)|*.flac|"
-                       "List of Files (*.lof)|*.lof"),
+                     _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|.AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
                      wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
@@ -2843,7 +2836,7 @@ void AudacityProject::OnImportLabels()
                       path,     // Path
                       wxT(""),       // Name
                       wxT(".txt"),   // Extension
-                      _("Text files (*.txt)|*.txt|" "All files (*.*)|*.*"),
+                      _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
                       0,        // Flags
                       this);    // Parent
 
@@ -2884,9 +2877,7 @@ void AudacityProject::OnImportMIDI()
                                       path,     // Path
                                       wxT(""),       // Name
                                       wxT(""),       // Extension
-                                      _("All files (*.*)|*.*|"
-                                        "MIDI files (*.mid)|*.mid|"
-                                        "Allegro files (*.gro)|*.gro"),
+                                      _("All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"),
                                       0,        // Flags
                                       this);    // Parent
 
@@ -3439,8 +3430,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
          int lenPreset = sizeof(preset);
          int count = presetsFile.Read(preset, lenPreset);
          if (preset[0] != PRESET_FORMAT) {
-            wxMessageBox(wxString::Format(_("Preset may be invalid or corrupted.\n"
-                                            "Expected format %d ... found %d"), PRESET_FORMAT, preset[0]),
+            wxMessageBox(wxString::Format(_("Preset may be invalid or corrupted.\nExpected format %d ... found %d"), PRESET_FORMAT, preset[0]),
                          _("Error opening preset"),
                          wxOK | wxCENTRE | wxICON_WARNING, this);
             return;
@@ -3514,15 +3504,8 @@ void AudacityProject::OnBatch()
       _("Select vocal file(s) for batch CleanSpeech Chain...") :
       _("Select file(s) for batch processing...");
    wxString fileSelector = mCleanSpeechMode ? 
-      _("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|"
-      "WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
-      _("All files (*.*)|*.*|"
-        "WAV files (*.wav)|*.wav|"
-        "AIFF files (*.aif)|*.aif|"
-        "AU files (*.au)|*.au|"
-        "MP3 files (*.mp3)|*.mp3|"
-        "Ogg Vorbis files (*.ogg)|*.ogg|"
-        "FLAC files (*.flac)|*.flac"
+      _("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
+      _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
 //      "|List of Files (*.lof)|*.lof"
        );
 
@@ -3575,8 +3558,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
    cleanedName += wxT("cleaned");
    bool flag  = ::wxFileName::FileExists(cleanedName);
    if (flag == true) {
-      ::wxMessageBox(_("Cannot create directory 'cleaned'. \n"
-                       "File already exists that is not a directory"));
+      ::wxMessageBox(_("Cannot create directory 'cleaned'. \nFile already exists that is not a directory"));
       return wxT("");
    }
    ::wxFileName::Mkdir(cleanedName, 0777, wxPATH_MKDIR_FULL); // make sure it exists

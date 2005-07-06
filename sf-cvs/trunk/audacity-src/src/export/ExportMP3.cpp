@@ -134,9 +134,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          if (baseName.CmpNoCase(GetLibraryName())) {
          
             wxString question;
-            question.Printf(_("Audacity was expecting a library named \"%s\".  "
-                              "Are you sure you want to attempt to export MP3 "
-                              "files using \"%s\"?"),
+            question.Printf(_("Audacity was expecting a library named \"%s\". Are you sure you want to attempt to export MP3 files using \"%s\"?"),
                             GetLibraryName().c_str(),
                             baseName.c_str());
 
@@ -1119,11 +1117,7 @@ public:
    wxString GetLibraryMessage()
    {
       /* i18n-hint: This message is used on Windows. */
-      return _("Audacity does not export MP3 files directly, but instead uses the\n"
-             "freely available LAME library to handle MP3 file encoding.  You must\n"
-             "obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,"
-             "and then locate this file for Audacity.  You only need to do this once.\n\n"
-             "Would you like to locate lame_enc.dll now?");
+      return _("Audacity does not export MP3 files directly, but instead uses the\nfreely available LAME library to handle MP3 file encoding.  You must\nobtain lame_enc.dll separately, by downloading the LAME MP3 encoder,and then locate this file for Audacity.  You only need to do this once.\n\nWould you like to locate lame_enc.dll now?");
    }
 
 
@@ -1145,11 +1139,11 @@ public:
       else
          return false;
 
-      beInitStream = (BEINITSTREAM)lame_enc_lib.GetSymbol("beInitStream");
-      beEncodeChunk = (BEENCODECHUNK)lame_enc_lib.GetSymbol("beEncodeChunk");
-      beDeinitStream = (BEDEINITSTREAM)lame_enc_lib.GetSymbol("beDeinitStream");
-      beCloseStream = (BECLOSESTREAM)lame_enc_lib.GetSymbol("beCloseStream");
-      beVersion = (BEVERSION)lame_enc_lib.GetSymbol("beVersion");
+      beInitStream = (BEINITSTREAM)lame_enc_lib.GetSymbol(wxT("beInitStream"));
+      beEncodeChunk = (BEENCODECHUNK)lame_enc_lib.GetSymbol(wxT("beEncodeChunk"));
+      beDeinitStream = (BEDEINITSTREAM)lame_enc_lib.GetSymbol(wxT("beDeinitStream"));
+      beCloseStream = (BECLOSESTREAM)lame_enc_lib.GetSymbol(wxT("beCloseStream"));
+      beVersion = (BEVERSION)lame_enc_lib.GetSymbol(wxT("beVersion"));
 
       if(!beInitStream ||
          !beEncodeChunk ||
@@ -1340,7 +1334,7 @@ bool ExportMP3(AudacityProject *project,
    
    /* Open file for writing */
 
-   wxFFile outFile(fopen(FILENAME(fName).fn_str(), "wb"));
+   wxFFile outFile(FILENAME(fName).fn_str(), wxT("wb"));
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;

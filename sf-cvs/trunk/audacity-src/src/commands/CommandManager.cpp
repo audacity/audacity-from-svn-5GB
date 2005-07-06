@@ -671,8 +671,7 @@ bool CommandManager::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 void CommandManager::HandleXMLEndTag(const wxChar *tag)
 {
    if (!wxStrcmp(tag, wxT("audacitykeyboard"))) {
-      wxMessageBox(wxString::Format(_("Loaded %d "
-                                      "keyboard shortcuts\n"),
+      wxMessageBox(wxString::Format(_("Loaded %d keyboard shortcuts\n"),
                                     mXMLKeysRead),
                    _("Loading keyboard shortcuts"),
                    wxOK | wxCENTRE);

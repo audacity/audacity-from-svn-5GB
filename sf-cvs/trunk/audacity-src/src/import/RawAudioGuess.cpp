@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include <wx/defs.h>
+#include <wx/ffile.h>
 
 #include "../Internat.h"
 #include "RawAudioGuess.h"
@@ -1059,7 +1060,10 @@ int RawAudioGuess(const wxString &in_fname,
    *out_offset = 0;
    *out_channels = 1;
 
-   inf = fopen(FILENAME(in_fname).fn_str(), "rb");
+   wxFFile in_wxFFile(FILENAME(in_fname).fn_str(), wxT("wb"));
+   if (!in_wxFFile.IsOpened())
+      return false;
+   inf = in_wxFFile.fp();
 
    if (!inf) {
      #if RAW_GUESS_DEBUG

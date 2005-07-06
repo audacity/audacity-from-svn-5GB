@@ -74,7 +74,13 @@ bool ExportPCM(AudacityProject *project,
       return false;
    }
 
-   sf = sf_open(FILENAME(fName).fn_str(), SFM_WRITE, &info);
+   #ifdef _UNICODE
+      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      sf = sf_open(FILENAME(fName).mb_str(), SFM_WRITE, &info);
+   #else // ANSI
+      sf = sf_open(FILENAME(fName).fn_str(), SFM_WRITE, &info);
+   #endif // Unicode/ANSI
+
    if (!sf) {
       wxMessageBox(wxString::Format(_("Cannot export audio to %s"),
                                     fName.c_str()));

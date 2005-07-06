@@ -520,12 +520,7 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
 	if( bCleanSpeechMode )
 	{
       item = new wxStaticText(this, -1,
-         _("Entire recording should have been Normalized prior to this step.\n\n"
-           "For noisy speech, find the best tradeoff for quieting the gaps between phrases and\n"
-           "not causing the voice to sound distorted. For good audio with low noise, a setting\n"
-           "more to the left should work well. Leveling and TruncateSilence work better with\n"
-           "more of the noise removed, even if the voice ends up sounding somewhat distorted.\n"
-           "Your objective is that the softly spoken words can be heard more clearly."),
+         _("Entire recording should have been Normalized prior to this step.\n\nFor noisy speech, find the best tradeoff for quieting the gaps between phrases and\nnot causing the voice to sound distorted. For good audio with low noise, a setting\nmore to the left should work well. Leveling and TruncateSilence work better with\nmore of the noise removed, even if the voice ends up sounding somewhat distorted.\nYour objective is that the softly spoken words can be heard more clearly."),
            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
       	  mainSizer->Add(item, 0, wxALIGN_LEFT|wxALL, 15);
 	}
@@ -537,13 +532,9 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
 		), wxVERTICAL);
 
    item = new wxStaticText(this, -1,
-	bCleanSpeechMode ?
-      _("Listen carefully to section with some speech and some silence to check before/after.\n"
-        "Select a few seconds of just noise ('thinner' part of wave pattern usually between\n"
-        "spoken phrases or during pauses) so Audacity knows what to filter out, then click")
-	:  _("Select a few seconds of just noise\n"
-                             "so Audacity knows what to filter out, then\n"
-                             "click Get Noise Profile:"),
+                           bCleanSpeechMode ?
+                              _("Listen carefully to section with some speech and some silence to check before/after.\nSelect a few seconds of just noise ('thinner' part of wave pattern usually between\nspoken phrases or during pauses) so Audacity knows what to filter out, then click")
+                              :  _("Select a few seconds of just noise\nso Audacity knows what to filter out, then\nclick Get Noise Profile:"),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
 
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
@@ -561,13 +552,9 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
 			:  _("Step 2")), wxVERTICAL);
 
    item = new wxStaticText(this, -1,
-	bCleanSpeechMode ?
-      _("Select what part of the audio you want filtered (Ctrl-A = All), chose how much noise\n"
-        "you want filtered out with Slider below, and then click 'OK' to remove noise.\n"
-        "Find best setting with Ctrl-Z to Undo, Select All, and change Slider position.")
-   :	_("Select all of the audio you want filtered,\n"
-                             "choose how much noise you want filtered out,\n"
-        "and then click 'OK' to remove noise.\n"),
+	                        bCleanSpeechMode ?
+                                 _("Select what part of the audio you want filtered (Ctrl-A = All), chose how much noise\nyou want filtered out with Slider below, and then click 'OK' to remove noise.\nFind best setting with Ctrl-Z to Undo, Select All, and change Slider position.")
+                              :	_("Select all of the audio you want filtered,\nchoose how much noise you want filtered out,\nand then click 'OK' to remove noise.\n"),
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 

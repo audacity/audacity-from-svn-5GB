@@ -120,8 +120,7 @@ wxString ExportCommon(AudacityProject *project,
       *t1 = latestEnd;
 
    if (numSelected == 0 && selectionOnly) {
-      wxMessageBox(_("No tracks are selected! Use Ctrl-A (Select All)\n"
-                     "Choose Export... to export all tracks."),
+      wxMessageBox(_("No tracks are selected! Use Ctrl-A (Select All)\nChoose Export... to export all tracks."),
                      _("Unable to export"),
                      wxOK | wxICON_INFORMATION);
 
@@ -141,13 +140,11 @@ wxString ExportCommon(AudacityProject *project,
    if (numLeft > 1 || numRight > 1)
       if (stereo) {
          ShowWarningDialog(project, wxT("MixStereo"),
-                           _("Your tracks will be mixed down to two "
-                             "stereo channels in the exported file."));
+                           _("Your tracks will be mixed down to two stereo channels in the exported file."));
       }
       else {
          ShowWarningDialog(project, wxT("MixMono"),
-                           _("Your tracks will be mixed down to a "
-                             "single mono channel in the exported file."));
+                           _("Your tracks will be mixed down to a single mono channel in the exported file."));
       }
 
    /* Prepare and display the filename selection dialog */
@@ -243,11 +240,7 @@ wxString ExportCommon(AudacityProject *project,
          #endif
 
          wxString prompt;
-         prompt.Printf(_("You are about to save a %s file with the name %s.\n"
-                       "Normally these files end in %s, and some programs "
-                       "will not open files with nonstandard extensions.\n"
-                       "Are you sure you want to save the file "
-                       "under this name?"),
+         prompt.Printf(_("You are about to save a %s file with the name %s.\nNormally these files end in %s, and some programs will not open files with nonstandard extensions.\nAre you sure you want to save the file under this name?"),
                        format.c_str(),
                        (wxT("\"")+nameOnly+wxT(".")+extension+wxT("\"")).c_str(),
                        (wxT("\".")+defaultExtension+wxT("\"")).c_str());

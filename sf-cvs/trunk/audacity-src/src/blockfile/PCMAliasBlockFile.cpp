@@ -60,8 +60,15 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
    if(mSilentAliasLog)silence= new wxLogNull();
 
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).fn_str(), 
-                       SFM_READ, &info);
+
+   #ifdef _UNICODE
+      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).mb_str(), 
+                        SFM_READ, &info);
+   #else // ANSI
+      SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).fn_str(), 
+                        SFM_READ, &info);
+   #endif // Unicode/ANSI
    
    if (!sf){
       

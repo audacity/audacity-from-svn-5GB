@@ -53,7 +53,7 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
    //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
-   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "wb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("wb"));
 
    if( !file.IsOpened() ){
       // Can't do anything else.
@@ -148,7 +148,7 @@ SimpleBlockFile::~SimpleBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool SimpleBlockFile::ReadSummary(void *data)
 {
-   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "rb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("rb"));
 
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
@@ -193,7 +193,13 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    if(mSilentLog)silence= new wxLogNull();
    
    memset(&info, 0, sizeof(info));
-   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
+
+   #ifdef _UNICODE
+      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).mb_str(), SFM_READ, &info);
+   #else // ANSI
+      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
+   #endif // Unicode/ANSI
 
    if (!sf){
       
@@ -310,7 +316,7 @@ int SimpleBlockFile::GetSpaceUsage()
 }
 
 void SimpleBlockFile::Recover(){
-   wxFFile file(fopen(FILENAME(mFileName.GetFullPath()).fn_str(), "wb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("wb"));
    int i;
 
    if( !file.IsOpened() ){
