@@ -212,8 +212,7 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   statText = new wxStaticText(this, -1, _("Max Silent Duration (milliseconds): \n"
-                                           "(99999 or greater is off)"));
+   statText = new wxStaticText(this, -1, _("Max Silent Duration (milliseconds): \n(99999 or greater is off)"));
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
    
    wxString truncLongestAllowedSilentMsStr;

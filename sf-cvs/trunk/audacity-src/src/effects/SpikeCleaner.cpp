@@ -145,8 +145,7 @@ SpikeCleanerDialog::SpikeCleanerDialog(wxWindow *parent, wxWindowID id,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   statText = new wxStaticText(this, -1, _("Max Spike Duration (milliseconds): \n"
-                                           "(99999 or greater is off)"));
+   statText = new wxStaticText(this, -1, _("Max Spike Duration (milliseconds): \n(99999 or greater is off)"));
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxString spikeMaxDurationMsStr;

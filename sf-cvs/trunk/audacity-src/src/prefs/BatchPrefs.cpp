@@ -118,11 +118,10 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
          new wxStaticBox(this, -1, _("Batch Options")),
             wxVERTICAL);
 
-   wxStaticText * item = new wxStaticText(this, -1,
-                     _("Batch mode is an\n experimental feature.\n\n"
-                       "Please read the release\n notes for known limitations"
-                       ),
-                     wxDefaultPosition, wxDefaultSize, 0);
+   wxStaticText * item = 
+      new wxStaticText(this, -1,
+                        _("Batch mode is an\n experimental feature.\n\nPlease read the release\n notes for known limitations"),
+                        wxDefaultPosition, wxDefaultSize, 0);
 
    batchOptionsSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
    wxButton * btnCleanSpeech = new wxButton( this, CleanSpeechButtonID,

@@ -19,6 +19,7 @@
 #include <string.h>
 
 #include <wx/defs.h>
+#include <wx/ffile.h>
 #include <wx/filefn.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
@@ -290,10 +291,10 @@ bool ConvertLegacyProjectFile(wxFileName filename)
 
    wxString name = filename.GetFullPath();
 
-   outf = fopen(FILENAME(name).fn_str(), "wb");
-   if (!outf)
+   wxFFile out_wxFFile(FILENAME(name).fn_str(), wxT("wb"));
+   if (!out_wxFFile.IsOpened())
       return false;
-
+   outf = out_wxFFile.fp();
    fprintf(outf, "<?xml version='1.0'?>\n");
 
    renamer.SetNewFile(outf);

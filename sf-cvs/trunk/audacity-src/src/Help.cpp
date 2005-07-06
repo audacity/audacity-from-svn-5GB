@@ -47,8 +47,10 @@ void InitHelp(wxWindow * parent)
 
       if (helpFiles.GetCount() > 0)
          defaultLoc = helpFiles[0];
-      else
-         defaultLoc = wxT(INSTALL_PREFIX "/share/audacity/audacity-1.2-help.htb");
+	  else {
+         defaultLoc = wxT(INSTALL_PREFIX);
+         defaultLoc += wxT("/share/audacity/audacity-1.2-help.htb");
+	  }
 
       wxString helpFilePath =
           gPrefs->Read(wxT("/Help/HelpFilePath1.2"), defaultLoc);

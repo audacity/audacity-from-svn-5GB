@@ -92,9 +92,7 @@ DirManager::DirManager()
       if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
          if (freeSpace < 1048576) {
             ShowWarningDialog(NULL, wxT("DiskSpaceWarning"),
-                              _("Warning: there is very little free disk space left on this "
-                                "volume. Please select another temporary directory in your "
-                                "preferences."));
+                              _("Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences."));
          }
       }
    }
@@ -267,11 +265,7 @@ void DirManager::CleanTempDir(bool startup)
       int action = wxYES;
       if (warn==1) {
       wxString prompt =
-         _("Audacity found temporary files that were not deleted or saved\n"
-           "the last time you used Audacity.\n\n"
-           "Audacity can't recover them automatically, but if you choose not\n"
-           "to delete them, you can recover them manually.\n\n"
-           "Delete temporary files?");
+         _("Audacity found temporary files that were not deleted or saved\nthe last time you used Audacity.\n\nAudacity can't recover them automatically, but if you choose not\nto delete them, you can recover them manually.\n\nDelete temporary files?");
       
       action = wxMessageBox(prompt,
                                 wxT("Warning"),
@@ -1194,9 +1188,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!orphanList.IsEmpty()){
 
       wxString promptA =
-         _("Project check found %d orphaned blockfile[s]. These files are\n"
-           "unused and probably left over from a crash or some other bug.\n"
-           "They should be deleted to avoid disk contention.");
+         _("Project check found %d orphaned blockfile[s]. These files are\nunused and probably left over from a crash or some other bug.\nThey should be deleted to avoid disk contention.");
       wxString prompt;
       
       prompt.Printf(promptA,orphanList.GetCount());
@@ -1226,12 +1218,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingAliasList.empty()){
 
       wxString promptA =
-         _("Project check detected %d input file[s] being used in place\n"
-           "('alias files') are now missing.  There is no way for Audacity\n"
-           "to recover these files automatically; you may choose to\n"
-           "permanently fill in silence for the missing files, temporarily\n"
-           "fill in silence for this session only, or close the project now\n"
-           "and try to restore the missing files by hand.");
+         _("Project check detected %d input file[s] being used in place\n('alias files') are now missing.  There is no way for Audacity\nto recover these files automatically; you may choose to\npermanently fill in silence for the missing files, temporarily\nfill in silence for this session only, or close the project now\nand try to restore the missing files by hand.");
       wxString prompt;
       
       prompt.Printf(promptA,missingAliasFiles.size());
@@ -1269,9 +1256,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingSummaryList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing summary file[s] (.auf).\n"
-           "Audacity can fully regenerate these summary files from the\n"
-           "original audio data in the project.");
+         _("Project check detected %d missing summary file[s] (.auf).\nAudacity can fully regenerate these summary files from the\noriginal audio data in the project.");
       wxString prompt;
       
       prompt.Printf(promptA,missingSummaryList.size());
@@ -1302,13 +1287,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingDataList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing audio data blockfile[s] (.au), \n"
-           "probably due to a bug, system crash or accidental deletion.\n"
-           "There is no way for Audacity to recover this lost data\n"
-           "automatically; you may choose to permanently fill in silence\n"
-           "for the missing data, temporarily fill in silence for this\n"
-           "session only, or close the project now and try to restore the\n"
-           "missing data by hand.");
+         _("Project check detected %d missing audio data blockfile[s] (.au), \nprobably due to a bug, system crash or accidental deletion.\nThere is no way for Audacity to recover this lost data\nautomatically; you may choose to permanently fill in silence\nfor the missing data, temporarily fill in silence for this\nsession only, or close the project now and try to restore the\nmissing data by hand.");
       wxString prompt;
       
       prompt.Printf(promptA,missingDataList.size());

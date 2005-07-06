@@ -1106,14 +1106,12 @@ void TrackPanel::SetCursorAndTipWhenInLabel( Track * t,
 {
    if (event.m_x >= GetVRulerOffset() &&
       t->GetKind() == Track::Wave) {
-      *ppTip = _("Click to vertically zoom in, Shift-click to zoom out, "
-         "Drag to create a particular zoom region.");
+      *ppTip = _("Click to vertically zoom in, Shift-click to zoom out, Drag to create a particular zoom region.");
       SetCursor(event.ShiftDown()? *mZoomOutCursor : *mZoomInCursor);
    }
    else {
       // Set a status message if over a label
-      *ppTip = _("Drag the label vertically to change the "
-         "order of the tracks.");
+      *ppTip = _("Drag the label vertically to change the order of the tracks.");
       SetCursor(*mArrowCursor);
    }
 }
@@ -1133,8 +1131,7 @@ void TrackPanel::SetCursorAndTipWhenInVResizeArea( Track * label,
       // cursor are still needed.
       if (label) 
          return;
-      *ppTip = _("Click and drag to adjust relative size "
-              "of stereo tracks.");
+      *ppTip = _("Click and drag to adjust relative size of stereo tracks.");
       SetCursor(*mResizeCursor);
    } else {
       *ppTip = _("Click and drag to resize the track.");
@@ -4644,8 +4641,7 @@ void TrackPanel::OnRateOther(wxCommandEvent &event)
    double theRate;
    do {
       wxString rateStr =
-          wxGetTextFromUser(_("Enter a sample rate in Hz (per second) "
-                              "between 1 and 100000:"),
+          wxGetTextFromUser(_("Enter a sample rate in Hz (per second) between 1 and 100000:"),
                             _("Set Rate"), defaultStr);
 
       // AS: Exit if they type in nothing.

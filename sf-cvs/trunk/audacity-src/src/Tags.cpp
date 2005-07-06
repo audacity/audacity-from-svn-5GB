@@ -274,8 +274,15 @@ void Tags::ImportID3(wxString fileName)
 {
 #ifdef USE_LIBID3TAG 
 
-   struct id3_file *fp = id3_file_open(FILENAME(fileName).fn_str(),
-                                       ID3_FILE_MODE_READONLY);
+   #ifdef _UNICODE
+      /* id3_file_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      struct id3_file *fp = id3_file_open(FILENAME(fileName).mb_str(),
+                                          ID3_FILE_MODE_READONLY);
+   #else // ANSI
+      struct id3_file *fp = id3_file_open(FILENAME(fileName).fn_str(),
+                                          ID3_FILE_MODE_READONLY);
+   #endif // Unicode/ANSI
+
    if (!fp) return;
 
    struct id3_tag *tp = id3_file_tag(fp);

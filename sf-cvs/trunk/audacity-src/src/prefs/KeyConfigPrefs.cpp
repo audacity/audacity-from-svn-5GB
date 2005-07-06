@@ -10,6 +10,7 @@
 **********************************************************************/
 
 #include <wx/defs.h>
+#include <wx/ffile.h>
 #include <wx/statbox.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -168,16 +169,17 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    path = wxPathOnly(fName);
    gPrefs->Write(wxT("/DefaultExportPath"), path);
 
-   FILE *fp = fopen(FILENAME(fName).fn_str(), "wb");
-   if (!fp || ferror(fp)) {
+   wxFFile prefFile(FILENAME(fName).fn_str(), wxT("wb"));
+
+   if (!prefFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + fName,
                    _("Error saving keyboard shortcuts"),
                    wxOK | wxCENTRE, this);
       return;
    }
 
-   mManager->WriteXML(0, fp);
-   fclose(fp);
+   mManager->WriteXML(0, prefFile.fp());
+   prefFile.Close();
 }
 
 void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
@@ -189,8 +191,7 @@ void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
                                       path,     // Path
                                       wxT(""),       // Name
                                       wxT(""),       // Extension
-                                      _("XML files (*.xml)|*.xml|"
-                                        "All files (*.*)|*.*"),
+                                      _("XML files (*.xml)|*.xml|All files (*.*)|*.*"),
                                       0,        // Flags
                                       this);    // Parent
 

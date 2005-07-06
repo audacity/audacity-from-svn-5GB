@@ -66,7 +66,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                                info->format);
 
    wxLogNull *silence=0;
-   wxFFile summaryFile(fopen(fileName.GetFullPath().fn_str(), "rb"));
+   wxFFile summaryFile(fileName.GetFullPath().fn_str(), wxT("rb"));
    int read;
    if(Silent)silence= new wxLogNull();
 
@@ -147,7 +147,7 @@ LegacyBlockFile::~LegacyBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool LegacyBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile(fopen(mFileName.GetFullPath().fn_str(), "rb"));
+   wxFFile summaryFile(mFileName.GetFullPath().fn_str(), wxT("rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 
@@ -202,7 +202,13 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
+   #ifdef _UNICODE
+      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
+      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).mb_str(), SFM_READ, &info);
+   #else // ANSI
+      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
+   #endif // Unicode/ANSI
+
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 

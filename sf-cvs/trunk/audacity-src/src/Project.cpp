@@ -1816,20 +1816,10 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
    gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &bCleanSpeechMode, false );
    wxFileDialog dlog(NULL, _("Select one or more audio files..."),
                      path, wxT(""),
-	bCleanSpeechMode ? 
-                     _("Music files (*.wav;*.mp3)|*.wav;*.mp3|"
-                       "WAV files (*.wav)|*.wav|"
-                       "MP3 files (*.mp3)|*.mp3")
-     :
-                     _("All files (*.*)|*.*|"
-                       "Audacity projects (*.aup)|*.aup|"
-                       "WAV files (*.wav)|*.wav|"
-                       "AIFF files (*.aif)|*.aif|"
-                       "AU files (*.au)|*.au|"
-                       "MP3 files (*.mp3)|*.mp3|"
-                       "Ogg Vorbis files (*.ogg)|*.ogg|"
-		       "FLAC files (*.flac)|*.flac|"
-                       "List of Files (*.lof)|*.lof"),
+	                  bCleanSpeechMode ? 
+                        _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
+                     :
+                        _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
                      wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
@@ -1908,7 +1898,7 @@ try {   //lda
       return;
    }
 
-   wxFFile *ff = new wxFFile(fopen(FILENAME(fileName).fn_str(), "r"));
+   wxFFile *ff = new wxFFile(FILENAME(fileName).fn_str(), wxT("r"));
    if (!ff->IsOpened()) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
@@ -2238,9 +2228,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
       
       if (!success) {
-         wxMessageBox(wxString::Format(_("Could not save project.  "
-                                         "Perhaps %s is not writeable,\n"
-                                         "or the disk is full."),
+         wxMessageBox(wxString::Format(_("Could not save project. Perhaps %s is not writeable,\nor the disk is full."),
                                        project.c_str()),
                       _("Error saving project"),
                       wxOK | wxCENTRE, this);
@@ -2251,8 +2239,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
    }
 
-   FILE *fp = fopen(FILENAME(mFileName).fn_str(), "wb");
-   if (!fp || ferror(fp)) {
+   wxFFile saveFile(FILENAME(mFileName).fn_str(), wxT("wb"));
+   if (!saveFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName,
                    _("Error saving project"),
                    wxOK | wxCENTRE, this);
@@ -2263,10 +2251,10 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       return false;
    }
 
-   fprintf(fp, "<?xml version=\"1.0\"?>\n");
-   WriteXML(0, fp);
+   fprintf(saveFile.fp(), "<?xml version=\"1.0\"?>\n");
+   WriteXML(0, saveFile.fp());
 
-   fclose(fp);
+   saveFile.Close();
 
 #ifdef __WXMAC__
    FSSpec spec;
@@ -2465,13 +2453,7 @@ bool AudacityProject::SaveAs()
 	else
 	{
  	  ShowWarningDialog(this, wxT("FirstProjectSave"),
-                     _("Audacity project files (.aup) let you save "
-                       "everything you're working on exactly as it\n"
-                       "appears on the screen, but most other programs "
-                       "can't open Audacity project files.\n\n"
-                       "When you want to save a file that can be opened "
-                       "by other programs, select one of the\n"
-                       "Export commands."));
+                     _("Audacity project files (.aup) let you save everything you're working on exactly as it\nappears on the screen, but most other programs can't open Audacity project files.\n\nWhen you want to save a file that can be opened by other programs, select one of the\nExport commands."));
  	  fName = wxFileSelector(_("Save Project As:"),
                           path, fName, wxT(""),
                           _("Audacity projects (*.aup)|*.aup"),

@@ -155,9 +155,9 @@ bool LadspaEffect::Init()
          
          if (((WaveTrack *)left)->GetRate() !=
              ((WaveTrack *)right)->GetRate()) {
-            wxMessageBox(_("Sorry, Plug-in Effects cannot be performed "
-                           "on stereo tracks where the individual "
-                           "channels of the track do not match."));
+            wxMessageBox(_("Sorry, Plug-in Effects cannot be performed \
+                            on stereo tracks where the individual \
+                            channels of the track do not match."));
             return false;
          }
       }

@@ -83,9 +83,7 @@ int Importer::Import(wxString fName,
    wxString extension = fName.AfterLast(wxT('.'));
    if (extension.IsSameAs(wxT("cda"), false)) {
       errorMessage = wxT("\"") + fName + wxT("\"") + 
-         _(" is an audio CD file. \n"
-            "Audacity does not open this type of file.\n"
-            "Try ripping it to a native audio format that Audacity can import.");
+         _(" is an audio CD file. \nAudacity does not open this type of file.\nTry ripping it to a native audio format that Audacity can import.");
       return 0;
    }
 //MERGE a test exception.
@@ -164,8 +162,7 @@ int Importer::Import(wxString fName,
       UnusableImportPlugin *unusableImportPlugin = unusableImporterNode->GetData();
       if( unusableImportPlugin->SupportsExtension(extension) )
       {
-         errorMessage.Printf(_("This version of Audacity was not "
-                               "compiled with %s support."),
+         errorMessage.Printf(_("This version of Audacity was not compiled with %s support."),
                              unusableImportPlugin->
                              GetPluginFormatDescription().c_str());
          return 0;
@@ -174,10 +171,7 @@ int Importer::Import(wxString fName,
    }
 
    // we were not able to recognize the file type
-   errorMessage = _("Audacity did not recognize the type "
-                    "of this file.\n"
-                    "If it is uncompressed, try importing it "
-                    "using \"Import Raw\"" );
+   errorMessage = _("Audacity did not recognize the type of this file.\nIf it is uncompressed, try importing it using \"Import Raw\"" );
    return 0;
 }
 

@@ -359,8 +359,7 @@ void LOFImportFileHandle::lofOpenFiles(wxString* ln)
                if (targetfile.AfterLast(wxT('.')).IsSameAs(wxT("mid"), false) ||
                    targetfile.AfterLast(wxT('.')).IsSameAs(wxT("midi"), false))
                {
-                  wxMessageBox(_("MIDI tracks cannot be offset individually, "
-                                 "only audio files may be."),
+                  wxMessageBox(_("MIDI tracks cannot be offset individually, only audio files can be."),
                                _("LOF Error"), wxOK | wxCENTRE, gParentWindow);
                }
                else

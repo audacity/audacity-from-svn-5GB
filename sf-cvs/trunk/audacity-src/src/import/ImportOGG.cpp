@@ -105,7 +105,7 @@ wxString OggImportPlugin::GetPluginFormatDescription()
 ImportFileHandle *OggImportPlugin::Open(wxString filename)
 {
    OggVorbis_File *vorbisFile = new OggVorbis_File;
-   wxFFile *file = new wxFFile(fopen(FILENAME(filename).fn_str(), "rb"));
+   wxFFile *file = new wxFFile(FILENAME(filename).fn_str(), wxT("rb"));
 
    if (!file->IsOpened()) {
       // No need for a message box, it's done automatically (but how?)

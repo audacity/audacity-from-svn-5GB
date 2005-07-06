@@ -264,10 +264,7 @@ wxString getMpgExePath()
    if (mMpgExePath==wxT("") || !::wxFileExists(FILENAME(mMpgExePath))) {
          
       int action = wxMessageBox(
-         _("Audacity needs to know the location of the TOMPG.EXE program.\n"
-         "Please download and save the freely available file in any convenient\n"
-         "location such as the Plug-Ins subdir of Audacity and let Audacity\n"
-         "know about this path.  Would you like to help Audacity locate the file now?"),
+         _("Audacity needs to know the location of the TOMPG.EXE program.\nPlease download and save the freely available file in any convenient\nlocation such as the Plug-Ins subdir of Audacity and let Audacity\nknow about this path.  Would you like to help Audacity locate the file now?"),
           _("Export needs TOMPG.EXE PATH"),
           wxYES_NO | wxICON_EXCLAMATION,
           0);
@@ -360,7 +357,14 @@ static bool DoExport(AudacityProject *project,
             wxLogStatus(_T("command '%s' terminated with exit code %d."),
                tompgCmd.c_str(), code);
 
-            remove (tmpWavOuput.fn_str()); //delete the tmp wav file
+            #ifdef _UNICODE
+               /* remove doesn't handle fn_Str() in Unicode build.  
+                  May or may not actually work. */
+               remove(tmpWavOuput.mb_str()); //delete the tmp wav file
+            #else // ANSI
+               remove(tmpWavOuput.fn_str()); //delete the tmp wav file
+            #endif // Unicode/ANSI
+
             wxEndBusyCursor();
 
             return (code!=0);
@@ -579,12 +583,7 @@ bool ExportMultiple(AudacityProject *project)
    int numLabels = CountNumLabels(tracks);
 
    if (numTracks < 2 && numLabels < 1) {
-      ::wxMessageBox(_("If you have more than one Audio Track, you can export "
-                       "each track as a separate file,\n"
-                       "or if you have a Label Track, you can export a new "
-                       "file for each label.\n\n"
-                       "This project does not have multiple tracks or a "
-                       "Label Track, so you cannot export multiple files."),
+      ::wxMessageBox(_("If you have more than one Audio Track, you can export each track as a separate file,\nor if you have a Label Track, you can export a new file for each label.\n\nThis project does not have multiple tracks or a Label Track, so you cannot export multiple files."),
                      _("Can't export multiple files"),
                      wxOK | wxCENTRE, project);
       return false;
@@ -613,8 +612,7 @@ bool ExportMultiple(AudacityProject *project)
          tags->AllowEditTitle(false);
          tags->AllowEditTrackNumber(false);
          bool rval = tags->ShowEditDialog(project,
-                                          _("Edit the ID3 tags "
-                                            "for all MP3 files"));
+                                          _("Edit the ID3 tags for all MP3 files"));
          tags->AllowEditTitle(true);
          tags->AllowEditTrackNumber(true);
          if (!rval) {

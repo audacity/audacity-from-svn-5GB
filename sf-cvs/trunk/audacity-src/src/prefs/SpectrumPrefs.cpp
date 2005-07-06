@@ -159,8 +159,7 @@ bool SpectrumPrefs::Apply()
       return false;
    }
    if (maxFreq < 100 || maxFreq > 100000) {
-      wxMessageBox(_("Maximum frequency must be in the range "
-                     "100 Hz - 100,000 Hz"));
+      wxMessageBox(_("Maximum frequency must be in the range 100 Hz - 100,000 Hz"));
       return false;
    }
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);

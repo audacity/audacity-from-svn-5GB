@@ -132,8 +132,10 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
 
 void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 {
-   wxDirDialog dlog(this, _("Choose a location to place the "
-                            "temporary directory"), gPrefs->Read(wxT("/Directories/TempDir"), wxGetApp().defaultTempDir));
+   wxDirDialog dlog(this, 
+                     _("Choose a location to place the temporary directory"), 
+                     gPrefs->Read(wxT("/Directories/TempDir"), 
+                     wxGetApp().defaultTempDir));
    dlog.ShowModal();
    if (dlog.GetPath() != wxT("")) {
       wxFileName tmpDirPath;
@@ -211,8 +213,7 @@ bool DirectoriesPrefs::Apply()
 
    if (mTempDir != mOldTempDir)
       wxMessageBox(
-            _("Changes to temporary directory will not take effect "
-              "until Audacity is restarted"),
+            _("Changes to temporary directory will not take effect until Audacity is restarted"),
             wxT("Temp Directory Update"), wxOK|wxCENTRE|wxICON_INFORMATION);
 
    return true;

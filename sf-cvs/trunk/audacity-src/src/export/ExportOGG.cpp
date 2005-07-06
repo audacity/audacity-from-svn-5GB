@@ -49,7 +49,7 @@ bool ExportOGG(AudacityProject *project,
    bool      cancelling = false;
    int       eos = 0;
 
-   wxFFile outFile(fopen(FILENAME(fName).fn_str(), "wb"));
+   wxFFile outFile(FILENAME(fName).fn_str(), wxT("wb"));
 
    if(!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
