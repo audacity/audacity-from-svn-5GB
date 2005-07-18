@@ -262,8 +262,11 @@ AudioIOPrefs::~AudioIOPrefs()
 
 bool AudioIOPrefs::Apply()
 {
-   mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
-   mRecDevice = mRecNames[mRecChoice->GetSelection()];
+   if (mPlayChoice->GetCount() > 0)
+      mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
+
+   if (mRecChoice->GetCount() > 0)
+      mRecDevice = mRecNames[mRecChoice->GetSelection()];
 
    long recordChannels = mChannelsChoice->GetSelection()+1;
    bool duplex = mDuplex->GetValue();
