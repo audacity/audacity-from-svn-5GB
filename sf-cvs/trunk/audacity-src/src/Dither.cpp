@@ -4,6 +4,7 @@
 
   Dither.cpp
 
+  Steve Harris
   Markus Meyer
  
   See Dither.h for details

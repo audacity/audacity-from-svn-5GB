@@ -2,10 +2,11 @@
 
   Audacity: A Digital Audio Editor
 
+  Steve Harris
   Markus Meyer
 
-  This class implements various functions for dithering. The actual
-  dithering code was inspired greatly by the one in the Ardour project.
+  This class implements various functions for dithering and is derived
+  from the dither code in the Ardour project, written by Steve Harris.
 
   Dithering is only done if it really is necessary. Otherwise (e.g.
   when the source and destination format of the samples is the same),
