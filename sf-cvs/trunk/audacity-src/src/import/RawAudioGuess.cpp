@@ -1060,7 +1060,7 @@ int RawAudioGuess(const wxString &in_fname,
    *out_offset = 0;
    *out_channels = 1;
 
-   wxFFile in_wxFFile(FILENAME(in_fname).fn_str(), wxT("wb"));
+   wxFFile in_wxFFile(FILENAME(in_fname).fn_str(), wxT("rb"));
    if (!in_wxFFile.IsOpened())
       return false;
    inf = in_wxFFile.fp();
@@ -1099,7 +1099,7 @@ int RawAudioGuess(const wxString &in_fname,
       fread(rawData[test], 1, dataSize, inf);
    }
 
-   fclose(inf);
+   in_wxFFile.Close();
 
    /*
     * The floating-point tests will only return a valid format
