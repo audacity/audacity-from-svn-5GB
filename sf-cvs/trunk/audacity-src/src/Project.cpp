@@ -1878,7 +1878,6 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 
 void AudacityProject::OpenFile(wxString fileName)
 {
-try {   //lda
    // On Win32, we may be given a short (DOS-compatible) file name on rare
    // occassions (e.g. stuff like "C:\PROGRA~1\AUDACI~1\PROJEC~1.AUP"). We
    // convert these to long file name first.
@@ -1898,14 +1897,22 @@ try {   //lda
       return;
    }
 
-   wxFFile *ff = new wxFFile(FILENAME(fileName).fn_str(), wxT("r"));
+   wxFFile *ff = new wxFFile(FILENAME(fileName).c_str(), wxT("r"));
    if (!ff->IsOpened()) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
                    wxOK | wxCENTRE, this);
    }
    char buf[16];
-   ff->Read(buf, 15);
+   int numRead = ff->Read(buf, 15);
+   if (numRead != 15) {
+      wxMessageBox(wxString::Format(_("File may be invalid or corrupted: \n%s"), 
+                   (const wxChar*)fileName), _("Error opening file or project"),
+                   wxOK | wxCENTRE, this);
+     ff->Close();
+     delete ff;
+     return;
+   }
    buf[15] = 0;
    ff->Close();
    delete ff;
@@ -2006,12 +2013,6 @@ try {   //lda
                    _("Error opening project"),
                    wxOK | wxCENTRE, this);
    }
-}
-catch(...) { //lda
-   wxMessageBox(wxString::Format(_("File may be invalid or corrupted: %s"), 
-                (const wxChar*)fileName), _("Error opening file or project"),
-                wxOK | wxCENTRE, this);
-}
 }
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
@@ -2239,7 +2240,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       }
    }
 
-   wxFFile saveFile(FILENAME(mFileName).fn_str(), wxT("wb"));
+   wxFFile saveFile(FILENAME(mFileName).c_str(), wxT("wb"));
    if (!saveFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName,
                    _("Error saving project"),

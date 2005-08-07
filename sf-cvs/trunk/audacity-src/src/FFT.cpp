@@ -114,7 +114,7 @@ void FFT(int NumSamples,
    int BlockSize, BlockEnd;
 
    double angle_numerator = 2.0 * M_PI;
-   float tr, ti;                /* temp real, temp imaginary */
+   double tr, ti;                /* temp real, temp imaginary */
 
    if (!IsPowerOfTwo(NumSamples)) {
       fprintf(stderr, "%d is not a power of two\n", NumSamples);
@@ -148,12 +148,12 @@ void FFT(int NumSamples,
 
       double delta_angle = angle_numerator / (double) BlockSize;
 
-      float sm2 = sin(-2 * delta_angle);
-      float sm1 = sin(-delta_angle);
-      float cm2 = cos(-2 * delta_angle);
-      float cm1 = cos(-delta_angle);
-      float w = 2 * cm1;
-      float ar0, ar1, ar2, ai0, ai1, ai2;
+      double sm2 = sin(-2 * delta_angle);
+      double sm1 = sin(-delta_angle);
+      double cm2 = cos(-2 * delta_angle);
+      double cm1 = cos(-delta_angle);
+      double w = 2 * cm1;
+      double ar0, ar1, ar2, ai0, ai1, ai2;
 
       for (i = 0; i < NumSamples; i += BlockSize) {
          ar2 = cm2;

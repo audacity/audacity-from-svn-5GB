@@ -56,7 +56,7 @@ bool EffectCompressor::PromptUser()
 
    dlog.CentreOnParent();
    dlog.ShowModal();
-   
+
    if (!dlog.GetReturnCode())
       return false;
 
@@ -68,7 +68,7 @@ bool EffectCompressor::PromptUser()
    return true;
 }
 bool EffectCompressor::TransferParameters( Shuttle & shuttle )
-{  
+{
    shuttle.TransferBool(  wxT("UseGain"),mUseGain,true);
    shuttle.TransferDouble(wxT("Floor"),mFloor,0.001);
    shuttle.TransferDouble(wxT("AttackTime"),mAttackTime,0.2);
@@ -98,11 +98,11 @@ bool EffectCompressor::NewTrackSimpleMono()
    mCirclePos = 0;
    mRMSSum = 0.0;
 
-   mGainDB = ((mThresholdDB*-0.7) * (1 - 1/mRatio));
+   mGainDB = mThresholdDB * (1/mRatio - 1);
    if (mGainDB < 0)
       mGainDB = 0;
 
-   mThreshold = pow(10.0, mThresholdDB/10); // factor of 10 because it's power
+   mThreshold = pow(10.0, mThresholdDB/20); // factor of 20 because it's power
 
    if (mUseGain)
       mGain = pow(10.0, mGainDB/20); // factor of 20 because it's amplitude
@@ -155,7 +155,7 @@ float EffectCompressor::AvgCircle(float value)
    mRMSSum += mCircle[mCirclePos];
    level = sqrt(mRMSSum/mCircleSize);
    mLevelCircle[mCirclePos] = level;
-   mCirclePos = (mCirclePos+1)%mCircleSize;   
+   mCirclePos = (mCirclePos+1)%mCircleSize;
 
 #if 0 // Peak instead of RMS
    int j;
@@ -180,7 +180,7 @@ void EffectCompressor::Follow(float x, double *outEnv, int maxBack)
     the AVG function. The purpose of this function is to
     generate a smooth envelope that is generally not less
     than the input signal. In other words, we want to "ride"
-    the peaks of the signal with a smooth function. The 
+    the peaks of the signal with a smooth function. The
     algorithm is as follows: keep a current output value
     (called the "value"). The value is allowed to increase
     by at most rise_factor and decrease by at most fall_factor.
@@ -197,11 +197,11 @@ void EffectCompressor::Follow(float x, double *outEnv, int maxBack)
     the previously computed values. There is only a limited buffer
     in which we can work backwards, so if the new envelope does not
     intersect the old one, then make yet another pass, this time
-    from the oldest buffered value forward, increasing on each 
-    sample by rise_factor to produce a maximal envelope. This will 
+    from the oldest buffered value forward, increasing on each
+    sample by rise_factor to produce a maximal envelope. This will
     still be less than the input.
-    
-    The value has a lower limit of floor to make sure value has a 
+
+    The value has a lower limit of floor to make sure value has a
     reasonable positive value from which to begin an attack.
    */
 
@@ -236,7 +236,7 @@ void EffectCompressor::Follow(float x, double *outEnv, int maxBack)
          else {
             ok = true;
             break;
-         }   
+         }
       }
 
       if (!ok && backtrack>1 && (*ptr < temp)) {
@@ -260,7 +260,7 @@ float EffectCompressor::DoCompression(float value, double env)
    float out;
 
    if (env > mThreshold)
-      mult = mGain * pow(mThreshold/env, 1.0/mRatio);
+      mult = mGain * pow(mThreshold/env, 1.0-1.0/mRatio);
    else
       mult = mGain;
 
@@ -299,7 +299,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 
    int width, height;
    GetSize(&width, &height);
- 
+
    if (!mBitmap || mWidth!=width || mHeight!=height) {
       if (mBitmap)
          delete mBitmap;
@@ -311,7 +311,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
 
    wxColour bkgnd = GetBackgroundColour();
    wxBrush bkgndBrush(bkgnd, wxSOLID);
-  
+
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
@@ -344,7 +344,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    mEnvRect.y = 3;
    mEnvRect.height = mHeight - 26;
 
-   double rangeDB = 36;
+   double rangeDB = 60;
 
    int kneeX = (int)rint((rangeDB+threshold)*mEnvRect.width/rangeDB);
    int kneeY = (int)rint((rangeDB+threshold)*mEnvRect.height/rangeDB);
@@ -448,7 +448,7 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
    mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + wxT("XXX dB"));
    gridSizer->Add(mThresholdText, 0, wxALIGN_LEFT|wxALL, 5);
 
-   mThresholdSlider = new wxSlider(this, ThresholdID, -8, -36, -1,
+   mThresholdSlider = new wxSlider(this, ThresholdID, -8, -60, -1,
                                    wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mThresholdSlider, 1, wxEXPAND|wxALL, 5);
 
@@ -471,7 +471,7 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    mGainCheckBox = new wxCheckBox(this, -1, _("Apply Gain after compressing"));
-   mGainCheckBox->SetValue(true);
+   mGainCheckBox->SetValue(false);
    hSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -496,7 +496,7 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
    SetSizer(mainSizer);
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
-   
+
    SetSizeHints(400, 300, 20000, 20000);
    SetSize(400, 400);
 }
@@ -531,12 +531,12 @@ bool CompressorDialog::TransferDataFromWindow()
    if (mRatioSlider->GetValue()%2 == 0)
       mRatioText->SetLabel(wxString::Format(_("Ratio: %.0f:1"), ratio));
    else
-      mRatioText->SetLabel(wxString::Format(_("Ratio: %.1f:1"), ratio));      
+      mRatioText->SetLabel(wxString::Format(_("Ratio: %.1f:1"), ratio));
 
    mAttackText->SetLabel(wxString::Format(_("Attack Time: %.1f secs"), attack));
 
    mPanel->Refresh(false);
-   
+
    return true;
 }
 

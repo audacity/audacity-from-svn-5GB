@@ -16,7 +16,7 @@
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
-#include "../Project.h"  //lda
+#include "../Project.h"
 #include "../BatchCommandDialog.h"
 
 #include <wx/defs.h>
@@ -378,7 +378,7 @@ void BatchPrefs::AllCheckBoxActions()
    CheckBoxAction(_("Batch debug mode"),  wxT("/Batch/Debug"), false);
    CheckBoxAction(_("Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
    CheckBoxAction(_("Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
-   CheckBoxAction(_("CleanSpeech Mode (Customize GUI)"), wxT("/Batch/CleanSpeechMode"), false);
+   CheckBoxAction(_("CleanSpeech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
 
    mCurrentCheckBoxContainer=1;
 

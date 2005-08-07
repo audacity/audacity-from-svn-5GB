@@ -107,7 +107,7 @@ wxString DirectoriesPrefs::FormatSize(wxLongLong size)
    wxString sizeStr;
 
    /* wxLongLong contains no built-in conversion to double */
-   double dSize = size.GetHi() * pow(2, 32);  // 2 ^ 32
+   double dSize = size.GetHi() * pow(2.0, 32);  // 2 ^ 32
    dSize += size.GetLo();
 
    if (size == -1L)

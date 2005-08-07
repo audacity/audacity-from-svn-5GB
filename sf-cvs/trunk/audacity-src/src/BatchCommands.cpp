@@ -98,13 +98,10 @@ void BatchCommands::SetCleanSpeechChain()
    AddToChain(   _("Stereo To Mono") );
    AddToChain(   _("Normalize") );
    AddToChain( wxT("Save Hq Master1") );
-   AddToChain(   _("Click Removal") );
    AddToChain(   _("Noise Removal") );
-   AddToChain(   _("Spike Cleaner") );
    AddToChain(   _("Truncate Silence") );
    AddToChain(   _("Leveller") );
    AddToChain(   _("Normalize") );
-   AddToChain( wxT("Save Hq Master2") );
    AddToChain( wxT("ExportMp3") );
 }
 

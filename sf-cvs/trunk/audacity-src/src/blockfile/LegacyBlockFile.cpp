@@ -66,7 +66,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                                info->format);
 
    wxLogNull *silence=0;
-   wxFFile summaryFile(fileName.GetFullPath().fn_str(), wxT("rb"));
+   wxFFile summaryFile(fileName.GetFullPath().c_str(), wxT("rb"));
    int read;
    if(Silent)silence= new wxLogNull();
 
@@ -147,7 +147,7 @@ LegacyBlockFile::~LegacyBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool LegacyBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile(mFileName.GetFullPath().fn_str(), wxT("rb"));
+   wxFFile summaryFile(mFileName.GetFullPath().c_str(), wxT("rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 

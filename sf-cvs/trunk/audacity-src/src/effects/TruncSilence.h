@@ -5,6 +5,12 @@
   TruncSilence.h
 
   Lynn Allan (from DM's Normalize)
+  //ToDo ... put BlendFrames in Effects, Project, or other class
+  //ToDo ... Use ZeroCrossing logic to improve blend
+  //ToDo ... BlendFrames on "fade-out"
+  //ToDo ... BlendFrameCount is a user-selectable parameter
+  //ToDo ... Detect transient signals that are too short to interrupt the TruncatableSilence
+  //ToDo ... Extend from mono-only to stereo or n-channels
 
 **********************************************************************/
 
@@ -37,11 +43,15 @@ public:
  private:
    bool ProcessOne();
 
+   //ToDo ... put BlendFrames in Effects, Project, or other class
+   void BlendFrames(float* buffer, int leftIndex, int rightIndex, int blendFrameCount);
+
  private:
    int             mTruncDbChoiceIndex;
    WaveTrack       *mTrack;
    longSampleCount mTruncLongestAllowedSilentMs;
    bool            mUserPrompted;
+   sampleCount     mBlendFrameCount;
 
 friend class TruncSilenceDialog;
 };
@@ -61,6 +71,7 @@ public:
 
    int  mTruncLongestAllowedSilentMs;
    int  mTruncDbChoiceIndex;
+   int  mBlendFrameCount;
 
 private:
    wxTextCtrl *mTruncLongestAllowedSilentMsText;

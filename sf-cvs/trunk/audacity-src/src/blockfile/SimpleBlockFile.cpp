@@ -53,7 +53,7 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
    //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
-   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("wb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("wb"));
 
    if( !file.IsOpened() ){
       // Can't do anything else.
@@ -148,7 +148,7 @@ SimpleBlockFile::~SimpleBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool SimpleBlockFile::ReadSummary(void *data)
 {
-   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("rb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("rb"));
 
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
@@ -316,7 +316,7 @@ int SimpleBlockFile::GetSpaceUsage()
 }
 
 void SimpleBlockFile::Recover(){
-   wxFFile file(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("wb"));
+   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("wb"));
    int i;
 
    if( !file.IsOpened() ){
