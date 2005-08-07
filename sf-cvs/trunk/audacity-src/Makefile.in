@@ -7,6 +7,8 @@ DATADIR= @datadir@
 MANDIR= @mandir@
 ZIP = @ZIP@
 AUDACITY_NAME = @AUDACITY_NAME@
+EXTRAINSTALLTARGETS= @EXTRAINSTALLTARGETS@
+EXTRAUNINSTALLTARGETS= @EXTRAUNINSTALLTARGETS@
 
 .PHONY: all
 all: audacity help/audacity.1.gz audacity-1.2-help.htb
@@ -22,7 +24,7 @@ src/libaudacity.a:
 	$(MAKE) -C src libaudacity.a
 
 .PHONY: install
-install: audacity
+install: audacity $(EXTRAINSTALLTARGETS)
 	# install the binary
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 755 audacity $(DESTDIR)$(BINDIR)/$(AUDACITY_NAME)
@@ -52,13 +54,29 @@ install: audacity
 	# install locales
 	$(MAKE) -C locale install
 
-uninstall:
+.PHONY: install-extra-data
+install-extra-data:
+	# install desktop file
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/applications
+	$(INSTALL) -m 644 src/audacity.desktop $(DESTDIR)$(DATADIR)/applications
+
+	# install MIME information
+	$(INSTALL) -d $(DESTDIR)$(DATADIR)/mime/packages
+	$(INSTALL) -m 644 src/audacity.xml $(DESTDIR)$(DATADIR)/mime/packages
+
+uninstall: $(EXTRAUNINSTALLTARGETS)
 	rm -rf $(BINDIR)/$(AUDACITY_NAME)
 	rm -rf $(DATADIR)/doc/$(AUDACITY_NAME)
 	rm -rf $(DATADIR)/$(AUDACITY_NAME)
 	rm -rf $(MANDIR)/man1/$(AUDACITY_NAME).1.gz
 
 	$(MAKE) -C locale uninstall
+
+
+.PHONY: uninstall-extra-data
+uninstall-extra-data:
+	rm -f $(DESTDIR)$(DATADIR)/applications/audacity.desktop
+	rm -f $(DESTDIR)$(DATADIR)/mime/packages/audacity.xml
 
 help/audacity.1.gz:
 	# gzipping the file this way prevents audacity.1 from getting deleted

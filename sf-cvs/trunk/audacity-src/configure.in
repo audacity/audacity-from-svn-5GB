@@ -51,6 +51,8 @@ dnl extra variables
 AC_SUBST(BUILDLIBS)
 AC_SUBST(EXTRAOBJS)
 AC_SUBST(EXTRATARGETS)
+AC_SUBST(EXTRAINSTALLTARGETS)
+AC_SUBST(EXTRAUNINSTALLTARGETS)
 AC_SUBST(OPTOBJS)
 AC_SUBST(CDEPEND)
 AC_SUBST(PRECOMP_CFLAGS)
@@ -316,6 +318,8 @@ case "${host_os}" in
       if [[ "$use_audiounits" = "auto" ]] ; then
          use_audiounits="yes"
       fi
+      EXTRAINSTALLTARGETS=""
+      EXTRAUNINSTALLTARGETS=""
 
       ;;      
 
@@ -328,12 +332,16 @@ case "${host_os}" in
       AC_DEFINE(_FILE_OFFSET_BITS,32,[Placeholder for large file support])
     
       AFTERBUILD=""
+      EXTRAINSTALLTARGETS=""
+      EXTRAUNINSTALLTARGETS=""
       ;;
 
    *)
       dnl Unix OSS configuration
       CONFIGHEADER="configunix.h"
       AFTERBUILD=""
+      EXTRAINSTALLTARGETS="install-extra-data"
+      EXTRAUNINSTALLTARGETS="uninstall-extra-data"
 esac
 
 dnl PortAudio configuration
