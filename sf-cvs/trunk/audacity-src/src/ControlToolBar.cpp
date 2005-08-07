@@ -1109,12 +1109,17 @@ void ControlToolBar::EnableDisableButtons()
 
    //mPlay->SetEnabled(tracks && !busy);
    mPlay->SetEnabled(tracks && !recording && !cleaningSpeech);
-   bool canRecord = !tracks;
-   canRecord &= !cleaningSpeech;
-   canRecord &= !busy;
-   canRecord &= ((numProjects == 0) || ((numProjects == 1) && !tracks));
-   mRecord->SetEnabled(canRecord);
-   mCleanSpeech->SetEnabled(!busy && !recording);
+   
+   if (GetActiveProject() && GetActiveProject()->GetCleanSpeechMode())
+   {
+       bool canRecord = !tracks;
+        canRecord &= !cleaningSpeech;
+       canRecord &= !busy;
+       canRecord &= ((numProjects == 0) || ((numProjects == 1) && !tracks));
+       mRecord->SetEnabled(canRecord);
+       mCleanSpeech->SetEnabled(!busy && !recording);
+   }
+   
    mStop->SetEnabled(busy && !cleaningSpeech);
    mRewind->SetEnabled(tracks && !busy);
    mFF->SetEnabled(tracks && !busy);
