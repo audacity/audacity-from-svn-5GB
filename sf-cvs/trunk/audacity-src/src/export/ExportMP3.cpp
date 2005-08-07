@@ -1334,7 +1334,7 @@ bool ExportMP3(AudacityProject *project,
    
    /* Open file for writing */
 
-   wxFFile outFile(FILENAME(fName).fn_str(), wxT("wb"));
+   wxFFile outFile(FILENAME(fName).c_str(), wxT("wb"));
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;

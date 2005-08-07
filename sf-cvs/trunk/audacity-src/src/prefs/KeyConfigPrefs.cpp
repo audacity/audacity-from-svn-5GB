@@ -169,7 +169,7 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    path = wxPathOnly(fName);
    gPrefs->Write(wxT("/DefaultExportPath"), path);
 
-   wxFFile prefFile(FILENAME(fName).fn_str(), wxT("wb"));
+   wxFFile prefFile(FILENAME(fName).c_str(), wxT("wb"));
 
    if (!prefFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + fName,

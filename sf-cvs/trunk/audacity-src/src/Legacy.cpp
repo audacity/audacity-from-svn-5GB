@@ -291,7 +291,7 @@ bool ConvertLegacyProjectFile(wxFileName filename)
 
    wxString name = filename.GetFullPath();
 
-   wxFFile out_wxFFile(FILENAME(name).fn_str(), wxT("wb"));
+   wxFFile out_wxFFile(FILENAME(name).c_str(), wxT("wb"));
    if (!out_wxFFile.IsOpened())
       return false;
    outf = out_wxFFile.fp();

@@ -28,6 +28,7 @@ public:
    }
    virtual bool Init();
    virtual void End();
+   virtual bool CheckWhetherSkipEffect();
  protected:
     virtual bool Process();
 

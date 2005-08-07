@@ -3092,8 +3092,12 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          return;
       }
    }
-
+   
    switch (event.GetKeyCode()) {
+   case WXK_DELETE:
+   case WXK_BACK:
+      GetProject()->Clear();
+      break;
    case WXK_SPACE:
       mListener->TP_OnPlayKey();
       break;

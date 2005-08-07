@@ -16,9 +16,7 @@
 #include "Amplify.h"
 // #include "AvcCompressor.h"
 #include "BassBoost.h"
-#include "ChangeLength.h"
 #include "ChangeSpeed.h"
-#include "ClickRemoval.h"
 #include "Compressor.h"
 #include "Echo.h"
 #include "Equalization.h"
@@ -30,11 +28,9 @@
 #include "NoiseRemoval.h"
 #include "Normalize.h"
 #include "Phaser.h"
-//#include "PopClick.h"
 #include "Repeat.h"
 #include "Reverse.h"
 #include "Silence.h"
-#include "SpikeCleaner.h"
 #include "StereoToMono.h"
 #include "ToneGen.h"
 #include "TruncSilence.h"
@@ -89,13 +85,11 @@ void LoadEffects()
    // that it should be included in even the most basic of menus.
    // This was introduced for CleanSpeech mode.
    Effect::RegisterEffect(new EffectBassBoost());
-//   Effect::RegisterEffect(new EffectChangeLength());
    Effect::RegisterEffect(new EffectChangeSpeed());
 	#ifdef USE_SOUNDTOUCH
 		Effect::RegisterEffect(new EffectChangePitch());
 		Effect::RegisterEffect(new EffectChangeTempo());
 	#endif
-   Effect::RegisterEffect(new EffectClickRemoval(), SIMPLE_EFFECT | HIDDEN_EFFECT);
    Effect::RegisterEffect(new EffectCompressor());
    Effect::RegisterEffect(new EffectEcho());
    Effect::RegisterEffect(new EffectEqualization());
@@ -106,11 +100,9 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectLeveller(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectNoiseRemoval(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectNormalize(), SIMPLE_EFFECT);
-//   Effect::RegisterEffect(new EffectPopClickRemoval());
    Effect::RegisterEffect(new EffectPhaser());
    Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
-   Effect::RegisterEffect(new EffectSpikeCleaner(), SIMPLE_EFFECT | HIDDEN_EFFECT); 
    Effect::RegisterEffect(new EffectStereoToMono(), HIDDEN_EFFECT);// NOT in normal effects list.
    Effect::RegisterEffect(new EffectTruncSilence(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectWahwah());

@@ -25,7 +25,7 @@
 
 bool ImportMIDI(wxString fName, NoteTrack * dest)
 {
-   wxFFile mf(FILENAME(fName).fn_str(), wxT("rb"));
+   wxFFile mf(FILENAME(fName).c_str(), wxT("rb"));
 
    if (!mf.IsOpened()) {
       wxMessageBox( _("Could not open file: ") + fName);

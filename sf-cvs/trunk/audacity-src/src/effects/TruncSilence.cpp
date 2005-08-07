@@ -5,7 +5,10 @@
   TruncSilence.cpp
 
   Lynn Allan (from DM's Normalize)
-  Note: Only works on complete mono track for now
+  ToDo: Only works on complete mono track for now
+  ToDo: mBlendFrameCount only retrieved from prefs ... not using dialog
+        Only way to change (for windows) is thru registry
+        The values should be figured dynamically ... too many frames could be invalid
 
 **********************************************************************/
 
@@ -34,6 +37,20 @@ bool EffectTruncSilence::Init()
       gPrefs->Write(wxT("/CsPresets/TruncDbChoiceIndex"), mTruncDbChoiceIndex);
       mTruncLongestAllowedSilentMs = SKIP_EFFECT_MILLISECOND;
       gPrefs->Write(wxT("/CsPresets/TruncLongestAllowedSilentMs"), (int)mTruncLongestAllowedSilentMs);
+   }
+   mBlendFrameCount = gPrefs->Read(wxT("/CsPresets/BlendFrameCount"), 100L);
+   if ((mBlendFrameCount < 0) || (mBlendFrameCount >= 5000)) {  // corrupted Prefs?
+      mBlendFrameCount = 100;
+      gPrefs->Write(wxT("/CsPresets/BlendFrameCount"), 100);
+   }
+   TrackListIterator iter(mWaveTracks);
+   mTrack = (WaveTrack *) iter.First();
+   if (mTrack != 0) {
+      int numTracks = GetNumWaveTracks();
+      if (numTracks != 1) {
+          wxMessageBox(_("Sorry. Truncate Silence only valid with mono track"));
+          return false;
+      }
    }
    return true;
 }
@@ -81,9 +98,6 @@ bool EffectTruncSilence::TransferParameters( Shuttle & shuttle )
 
 bool EffectTruncSilence::Process()
 {
-   TrackListIterator iter(mWaveTracks);
-   mTrack = (WaveTrack *) iter.First();
-
    ProcessOne();
 
    mUserPrompted = false;
@@ -111,10 +125,7 @@ bool EffectTruncSilence::ProcessOne()
    sampleCount selectionStartSampleCount = selectionStartLongSampleCount;
    sampleCount selectionEndSampleCount = selectionEndLongSampleCount;
 
-//   sampleCount totalSampleCount = selectionEndSampleCount - selectionStartSampleCount;
-//   sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 16;   // bigger buffer reduces 'reset'
    sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 8;   // bigger buffer reduces 'reset'
-//   sampleCount idealBlockLen = mTrack->GetMaxBlockSize() * 1;
    sampleCount index = selectionStartSampleCount;
    sampleCount indexAtLoopStart = index;
    sampleCount outTrackOffset = selectionStartSampleCount;
@@ -135,7 +146,6 @@ bool EffectTruncSilence::ProcessOne()
       if ((index + idealBlockLen) > selectionEndSampleCount) {
          limit = selectionEndSampleCount - index; 
       }
-//      double seconds = index / curRate;
       for (sampleCount i = 0; i < limit; ++i) {
          index++;
          curFrame = buffer[i];
@@ -150,7 +160,6 @@ bool EffectTruncSilence::ProcessOne()
          }
          else {
             if (ignoringFrames == true) {
-//               float* pb = &buffer[truncIndex]; 
                sampleCount curOffset = i - rampInFrames;
                truncIndex -= rampInFrames; // backup into ignored frames
                wxASSERT((truncIndex < idealBlockLen) && (curOffset > 0) && ((curOffset + rampInFrames) < idealBlockLen));
@@ -158,6 +167,9 @@ bool EffectTruncSilence::ProcessOne()
                   buffer[truncIndex] = buffer[curOffset + fr];
                   truncIndex++;
                }
+               BlendFrames(buffer, mBlendFrameCount,
+                          ((truncIndex - rampInFrames) - mBlendFrameCount), 
+                          ((i - rampInFrames) - mBlendFrameCount));
             }
             consecutiveSilentFrames = 0;
             ignoringFrames = false;
@@ -188,6 +200,21 @@ bool EffectTruncSilence::ProcessOne()
    gPrefs->Write(wxT("/Validate/TruncSamplesCleared"), samplesCleared);
    delete [] buffer;
    return true;
+}
+
+void EffectTruncSilence::BlendFrames(float* buffer, int blendFrameCount, int leftIndex, int rightIndex)
+{
+   float* bufOutput = &buffer[leftIndex];
+   float* bufBefore = &buffer[leftIndex];
+   float* bufAfter  = &buffer[rightIndex];
+   double beforeFactor = 1.0;
+   double afterFactor  = 0.0;
+   double adjFactor = 1.0 / (double)blendFrameCount;
+   for (int j = 0; j < blendFrameCount; ++j) {
+	  bufOutput[j] = (float)((bufBefore[j] * beforeFactor) + (bufAfter[j] * afterFactor));
+	  beforeFactor -= adjFactor;
+	  afterFactor  += adjFactor;
+   }
 }
 
 //----------------------------------------------------------------------------

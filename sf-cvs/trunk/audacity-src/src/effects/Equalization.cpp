@@ -50,13 +50,13 @@ const float EffectEqualization::curvex[] =
 const float EffectEqualization::curvey[][nCurvePoints] =
    {
       {
-	// flat 
+	// flat
 	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 	0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
    0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
       },
       {
-	// amradio 
+	// amradio
 //  30   31   50   63   70   100  125  200  250  300  400  500  600  700  800  900  1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 16000.
 	-20.,-20.,-20.,-20.,-20.,-20.,-16.,-12., -8., -4., 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4., -8.,-12.,-16.,-20.0,-20.,-20.,-20.,-20., -20., -20.0
       },
@@ -98,7 +98,7 @@ const float EffectEqualization::curvey[][nCurvePoints] =
       },
       {
 	// RIAA
-	18.6,   18.5,  17.0,  16.0,  15.3,  13.1,  11.8,   8.2,   7.9,   5.5, 
+	18.6,   18.5,  17.0,  16.0,  15.3,  13.1,  11.8,   8.2,   7.9,   5.5,
 	3.8,     2.7,   2.0,   1.2,   1.0,   0.5,   0.0,  -2.6,  -4.8,  -6.6,
 	-8.2,   -9.6, -10.9, -11.9, -12.9, -13.6, -17.2, -18.0
       },
@@ -153,8 +153,8 @@ const wxChar * EffectEqualization::curveNames[] =
     wxT("RCA Victor 1938"),
     wxT("RCA Victor 1947")
   };
-    
-   
+
+
 
 EffectEqualization::EffectEqualization()
 {
@@ -164,7 +164,7 @@ EffectEqualization::EffectEqualization()
 
 EffectEqualization::~EffectEqualization()
 {
-   if(mFilterFunc) 
+   if(mFilterFunc)
       delete[] mFilterFunc;
    mFilterFunc = NULL;
 }
@@ -181,7 +181,7 @@ bool EffectEqualization::PromptUser()
 
    dlog.CentreOnParent();
    dlog.ShowModal();
-   
+
    if (!dlog.GetReturnCode())
       return false;
 
@@ -189,7 +189,7 @@ bool EffectEqualization::PromptUser()
 }
 
 bool EffectEqualization::TransferParameters( Shuttle & shuttle )
-{ 
+{
    //TODO: Lots of parameters...
 //   shuttle.TransferInt("",,0);
    return true;
@@ -230,73 +230,69 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
    sampleCount idealBlockLen = t->GetMaxBlockSize() * 4;
    if (idealBlockLen % windowSize != 0)
       idealBlockLen += (windowSize - (idealBlockLen % windowSize));
-   
+
    float *buffer = new float[idealBlockLen];
-   
+
    float *window1 = new float[windowSize];
    float *window2 = new float[windowSize];
    float *thisWindow = window1;
    float *lastWindow = window2;
-   
+
    sampleCount originalLen = len;
-   
+
    int i;
    for(i=0; i<windowSize; i++)
       lastWindow[i] = 0;
 
    TrackProgress(count, 0.);
-   
+
    while(len) {
       sampleCount block = idealBlockLen;
       if (block > len)
          block = len;
-      
+
       t->Get((samplePtr)buffer, floatSample, s, block);
 
       int j;
 
-      for(j=0; j<windowSize/2; j++)
-	 lastWindow[j] = 0.;
-      for(j=0; j<windowSize/2; j++)
-	 lastWindow[windowSize/2+j] = buffer[j];
-
-      Filter(windowSize, lastWindow);
-      
-      for(i=0; i<block; i+=windowSize/2) {
+/* Martyn Shaw set this code back like Filter.cpp
+as the 'lastWindow' was not getting set correctly and one more
+window was being taken from the current block than it should have been */
+      for(i=0; i<(block-windowSize/2); i+=windowSize/2) {
          int wcopy = windowSize;
          if (i + wcopy > block)
             wcopy = block - i;
-         
+
          for(j=0; j<wcopy; j++)
             thisWindow[j] = buffer[i+j];
          for(j=wcopy; j<windowSize; j++)
             thisWindow[j] = 0.;
-         
+
          Filter(windowSize, thisWindow);
-         
+
          for(j=0; j<windowSize/2; j++)
             buffer[i+j] = thisWindow[j] + lastWindow[windowSize/2 + j];
-         
+
          float *tempP = thisWindow;
          thisWindow = lastWindow;
          lastWindow = tempP;
       }
-      
+
       if (len > block && len > windowSize/2)
 	 block -= windowSize/2;
-      
+
       t->Set((samplePtr)buffer, floatSample, s, block);
-      
+
       len -= block;
       s += block;
-      
+
       TrackProgress(count, (s-start)/(double)originalLen);
    }
 
    delete[] buffer;
    delete[] window1;
    delete[] window2;
-   
+
    return true;
 }
 
@@ -307,7 +303,7 @@ void EffectEqualization::Filter(sampleCount len,
    float *ini = new float[len];
    float *outr = new float[len];
    float *outi = new float[len];
-   
+
    int i;
    for(i=0; i<len; i++)
       inr[i] = buffer[i];
@@ -315,15 +311,15 @@ void EffectEqualization::Filter(sampleCount len,
    // Apply window and FFT
    WindowFunc(3, len, inr); // Hanning window
    FFT(len, false, inr, NULL, outr, outi);
-   
+
    // Apply filter
    int half = len/2;
    for(i=0; i<=half; i++) {
       int j = len - i;
-      
+
       outr[i] = outr[i]*mFilterFunc[i];
       outi[i] = outi[i]*mFilterFunc[i];
-      
+
       if (i!=0 && i!=len/2) {
          outr[j] = outr[j]*mFilterFunc[i];
          outi[j] = outi[j]*mFilterFunc[i];
@@ -332,7 +328,7 @@ void EffectEqualization::Filter(sampleCount len,
 
    // Inverse FFT and normalization
    FFT(len, true, outr, outi, inr, ini);
-   
+
    for(i=0; i<len; i++)
       buffer[i] = float(inr[i]);
 
@@ -376,7 +372,7 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
 
 EqualizationPanel::~EqualizationPanel()
 {
-   if(mBitmap) 
+   if(mBitmap)
       delete mBitmap;
    mBitmap = NULL;
 }
@@ -388,7 +384,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    int width, height;
    GetSize(&width, &height);
- 
+
    if (!mBitmap || mWidth!=width || mHeight!=height) {
       if (mBitmap)
          delete mBitmap;
@@ -400,7 +396,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    wxColour bkgnd = GetBackgroundColour();
    wxBrush bkgndBrush(bkgnd, wxSOLID);
-  
+
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
@@ -454,7 +450,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
                         x, mEnvRect.y + y);
       }
       xlast = x;
-      ylast = y;      
+      ylast = y;
    }
    delete[] values;
 
@@ -524,7 +520,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
 	EVT_BUTTON(ID_BUTTON_PREVIEW, EqualizationDialog::OnPreview)
 END_EVENT_TABLE()
 
-EqualizationDialog::EqualizationDialog(EffectEqualization * effect, 
+EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 					double loFreq, double hiFreq,
 					float *filterFunc,
 					long windowSize,
@@ -544,7 +540,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    MakeEqualizationDialog(loFreq, hiFreq,
 			  mEnvelope,
 			  &mPanel,
-			  this); 
+			  this);
 
    mLoFreq = loFreq;
    mHiFreq = hiFreq;
@@ -572,7 +568,7 @@ bool EqualizationDialog::TransferDataFromWindow()
    double delta = mHiFreq / ((double)(mWindowSize/2.));
    double val0 = 30.*((mEnvelope->GetValue(0.0))-0.5);
    double val1 = 30.*((mEnvelope->GetValue(1.0))-0.5);
-     
+
    mFilterFunc[0] = val0;
    double freq = delta;
 
@@ -588,7 +584,7 @@ bool EqualizationDialog::TransferDataFromWindow()
       else {
 	 mFilterFunc[i] = 30.*((mEnvelope->GetValue(when))-0.5);
       }
-      freq += delta; 
+      freq += delta;
    }
 
    for(i=0;i<mWindowSize/2;i++) {
@@ -628,7 +624,7 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
         delete mEnvelope;
      mEnvelope = NULL;
      mPanel = NULL;
-   
+
      EndModal(true);
    }
    else {
@@ -669,7 +665,7 @@ void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
    for(i=0;i<EffectEqualization::nCurvePoints;i++) {
       when = (log10(EffectEqualization::curvex[i]) - loLog)/denom;
       value = (EffectEqualization::curvey[currentCurve][i]/60.) + 0.5;
-      if(when < 1) 
+      if(when < 1)
 	 env->Insert(when, value);
       else
 	 break;
@@ -682,7 +678,7 @@ void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
 
 
 wxSizer * MakeEqualizationDialog(
-				 double loFreq, double hiFreq, 
+				 double loFreq, double hiFreq,
 				 Envelope *env,
 				 EqualizationPanel **pan,
 				 wxWindow *parent, bool call_fit,
@@ -690,13 +686,13 @@ wxSizer * MakeEqualizationDialog(
 {
    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-	wxStaticText *item1 = 
+	wxStaticText *item1 =
 		new wxStaticText(parent, -1,
-							  _("Equalization, by Mitch Golden && Vaughan Johnson"), 
+							  _("Equalization, by Mitch Golden && Vaughan Johnson"),
 							  wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
 	item0->Add( item1, 0, wxALIGN_CENTRE|wxALL, 4 );
 
-   (*pan) = new EqualizationPanel( loFreq, hiFreq, 
+   (*pan) = new EqualizationPanel( loFreq, hiFreq,
 				   env,
 				   parent, ID_FILTERPANEL,
 				   wxDefaultPosition, wxSize(100,80) );
@@ -717,7 +713,7 @@ wxSizer * MakeEqualizationDialog(
                        wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item4b, 0, wxALIGN_CENTRE|wxRIGHT, 4);
 
-   item0->Add( item3, 0, wxALIGN_CENTER | wxALL, 0); 
+   item0->Add( item3, 0, wxALIGN_CENTER | wxALL, 0);
 
 
 	// predefined curves
@@ -747,8 +743,8 @@ wxSizer * MakeEqualizationDialog(
 	// Preview, OK, & Cancel buttons
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
-   wxButton * pButton_Preview = 
-		new wxButton(parent, ID_BUTTON_PREVIEW, 
+   wxButton * pButton_Preview =
+		new wxButton(parent, ID_BUTTON_PREVIEW,
 							_("Preview"), //v Should be m_pEffect->GetPreviewName());
 							wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_LEFT | wxALL, 4);
@@ -756,11 +752,11 @@ wxSizer * MakeEqualizationDialog(
    pBoxSizer_OK->Add(80, 4); // horizontal spacer
 
    wxButton * pButton_Cancel =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), 
+       new wxButton(parent, wxID_CANCEL, _("Cancel"),
 							wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_RIGHT | wxALL, 4);
 
-   wxButton * pButton_OK = 
+   wxButton * pButton_OK =
 		new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pButton_OK->SetFocus();

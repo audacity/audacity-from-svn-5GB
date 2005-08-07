@@ -495,7 +495,7 @@ void AliasBlockFile::WriteSummary()
    // I would much rather have this code as part of the constructor, but
    // I can't call virtual functions from the constructor.  So we just
    // need to ensure that every derived class calls this in *its* constructor
-   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("wb"));
+   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()).c_str(), wxT("wb"));
 
    if( !summaryFile.IsOpened() ){
       // Never silence the Log w.r.t write errors; they always count
@@ -529,7 +529,7 @@ AliasBlockFile::~AliasBlockFile()
 ///              be at least mSummaryInfo.totalSummaryBytes long.
 bool AliasBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()).fn_str(), wxT("rb"));
+   wxFFile summaryFile(FILENAME(mFileName.GetFullPath()).c_str(), wxT("rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 

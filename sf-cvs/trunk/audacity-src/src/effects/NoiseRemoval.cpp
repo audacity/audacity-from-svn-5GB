@@ -79,10 +79,15 @@ EffectNoiseRemoval::~EffectNoiseRemoval()
 void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
 {
    int halfWindowSize = windowSize / 2;
+
+//lda-131a always try to get noisegate.nrp if in CleanSpeechMode and it exists
 	AudacityProject * project = GetActiveProject();
-	if( !project || !project->GetCleanSpeechMode() )
-      return;
-   
+   if (project == NULL) {
+      int mode = gPrefs->Read(wxT("/Batch/CleanSpeechMode"), 0L);
+      if (mode == 0) {
+         return;
+      }
+   }
    // Try to open the file.
    wxString filename = FILENAME(wxT("noisegate.nrp"));
    // if file doesn't exist, return quietly.
@@ -124,7 +129,11 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
 #define MAX_NOISE_LEVEL  30
 bool EffectNoiseRemoval::Init()
 {
-	mLevel = 1;//set a low level of noise removal as the default.
+   mLevel = gPrefs->Read(wxT("/CsPresets/Noise_Level"), 3L);
+   if ((mLevel < 0) || (mLevel > MAX_NOISE_LEVEL)) {  // corrupted Prefs?
+      mLevel = 0;  //Off-skip
+      gPrefs->Write(wxT("/CsPresets/Noise_Level"), mLevel);
+   }
    return true;
 }
 
@@ -165,6 +174,7 @@ bool EffectNoiseRemoval::PromptUser()
       return false;
    }
    mLevel = dlog.m_pSlider->GetValue();
+   gPrefs->Write(wxT("/CsPresets/Noise_Level"), mLevel);  //lda-131a make persistent
 
    mDoProfile = (dlog.GetReturnCode() == 1);
    return true;
@@ -235,7 +245,7 @@ bool EffectNoiseRemoval::Process()
       }
 		CleanSpeechMayWriteNoiseGate();
       mHasProfile = true;
-      mDoProfile = false;  //lda
+      mDoProfile = false;
    }
    return true;
 }
@@ -245,9 +255,7 @@ bool EffectNoiseRemoval::ProcessOne(int count, WaveTrack * track,
 {
    bool retCode = true;
    sampleCount s = 0;
-//ANSWER-ME: Why the smaller block size (/2) for CleanSpeech mode??
    sampleCount idealBlockLen = track->GetMaxBlockSize() * 4;
-//   sampleCount idealBlockLen = track->GetMaxBlockSize() / 2;
 
    if (idealBlockLen % windowSize != 0)
       idealBlockLen += (windowSize - (idealBlockLen % windowSize));
@@ -558,12 +566,12 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
                            wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   m_pSlider = new wxSlider(this, -1, mLevel, 1, MAX_NOISE_LEVEL,  
+   m_pSlider = new wxSlider(this, -1, mLevel, 0, MAX_NOISE_LEVEL,    //lda-131a mLevel=0 indicates skip
 										wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
    group->Add(m_pSlider, 1, wxEXPAND|wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxTOP, 5 );
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
-   item = new wxStaticText(this, -1, _("Less"));
+   item = new wxStaticText(this, -1, _("None"));
    hSizer->Add(item, 0, wxALIGN_CENTRE|wxLEFT | wxRIGHT | wxBOTTOM, 5 );   
    hSizer->Add(10, 10, 1, wxALIGN_CENTRE | wxLEFT | wxRIGHT | wxBOTTOM, 5);
 	if( bCleanSpeechMode )

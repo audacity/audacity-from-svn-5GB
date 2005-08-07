@@ -37,6 +37,23 @@ void EffectStereoToMono::End()
 {
 }
 
+//TODO: There are a lot of places where a track is being checked
+//      to see if it is stereo. Consolidate these
+bool EffectStereoToMono::CheckWhetherSkipEffect()
+{
+   TrackListIterator iter(mTracks);
+   mLeftTrack = (WaveTrack*)(iter.First());
+   if ( mLeftTrack == 0 ) {
+      return true;  // we need an existing track .. this is actually an error that will be caught later
+   }
+   int channelLeftNum = mLeftTrack->GetChannel();
+
+   if (mLeftTrack->GetLinked()) {
+      return false;
+   }
+   return true;  // already mono
+}
+
 bool EffectStereoToMono::Process()
 {
    mnTracks = 1;
