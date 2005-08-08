@@ -524,7 +524,9 @@ bool EffectNyquist::ProcessOne()
    }
    
    cmd += mCmd;
-
+   
+   wxMessageBox(cmd);
+   
    int i;
 	for (i = 0; i < mCurNumChannels; i++)
 		mCurBuffer[i] = NULL;
@@ -542,6 +544,7 @@ bool EffectNyquist::ProcessOne()
       wxMessageBox(wxString(nyx_get_string(), wxConvISO8859_1), wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return true;
    }
 
@@ -551,6 +554,7 @@ bool EffectNyquist::ProcessOne()
       wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return true;
    }
 
@@ -560,6 +564,7 @@ bool EffectNyquist::ProcessOne()
       wxMessageBox(str, wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return true;
    }
 
@@ -591,6 +596,7 @@ bool EffectNyquist::ProcessOne()
       }
 
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return true;
    }
 
@@ -598,6 +604,7 @@ bool EffectNyquist::ProcessOne()
       wxMessageBox(_("Nyquist did not return audio.\n"), wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return false;
    }
    
@@ -609,6 +616,7 @@ bool EffectNyquist::ProcessOne()
                    wxT("Nyquist"),
                    wxOK | wxCENTRE, mParent);
       nyx_cleanup();
+      setlocale(LC_NUMERIC, "");
       return false;
    }
 

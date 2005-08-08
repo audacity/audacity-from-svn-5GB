@@ -58,6 +58,9 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
+#undef USE_AUDIO_UNITS
+
 /* Define if LADSPA plug-ins are enabled */
 #undef USE_LADSPA
 
@@ -90,9 +93,6 @@
 
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
-
-/* Define if Audio Unit plug-ins are enabled (Mac OS X only) */
-#undef USE_AUDIO_UNITS
 
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS

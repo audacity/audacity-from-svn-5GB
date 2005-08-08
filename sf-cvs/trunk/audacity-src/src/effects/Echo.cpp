@@ -275,11 +275,11 @@ bool EchoDialog::TransferDataToWindow()
 
 	wxString str;
 	if (m_pTextCtrl_Delay) {
-		str.Printf(wxT("%f"), delay);
+		str.Printf(wxT("%g"), delay);
 		m_pTextCtrl_Delay->SetValue(str);
 	}
 	if (m_pTextCtrl_Decay) {
-		str.Printf(wxT("%f"), decay);
+		str.Printf(wxT("%g"), decay);
 		m_pTextCtrl_Decay->SetValue(str);
 	}
 
