@@ -299,12 +299,20 @@ void Tags::ImportID3(wxString fileName)
    if ((s = GetID3FieldStr(tp, ID3_FRAME_TRACK)).ToLong(&l))
       mTrackNum = l;
 
+   mID3V2 = ( tp->options & ID3_TAG_OPTION_ID3V1 ) ? false : true;
+   
    s = GetID3FieldStr(tp, ID3_FRAME_GENRE);
 
-   int numGenres = GetNumGenres();
-   for(int i=0; i<numGenres; i++)
-      if (0 == s.CmpNoCase(GetGenreNum(i)))
-         mGenre = i;
+   if( mID3V2 ) {
+      int numGenres = GetNumGenres();
+      for(int i=0; i<numGenres; i++)
+         if (0 == s.CmpNoCase(GetGenreNum(i)))
+            mGenre = i;
+   }
+   else {
+      if( s.ToLong( &l ) )
+         mGenre = l;
+   }
 
    id3_file_close(fp);
 #endif // ifdef USE_LIBID3TAG 
