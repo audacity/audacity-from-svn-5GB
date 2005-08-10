@@ -172,11 +172,10 @@ wxDialog(parent, id, title, position, size, style)
 
    pBoxSizer_Dialog->Add(item6, 0, wxALIGN_CENTER | wxALL, 5);
 
-	// "Don't allow clipping" checkbox
+	// "Allow clipping" checkbox
    wxCheckBox *item8b = new wxCheckBox(this, ID_CLIP_CHECKBOX,
-													_("Don't allow clipping"),
+													_("Allow clipping"),
 													wxDefaultPosition, wxDefaultSize, 0);
-   item8b->SetValue(true);
 
    pBoxSizer_Dialog->Add(item8b, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -367,7 +366,7 @@ void AmplifyDialog::OnClipCheckBox(wxCommandEvent & event)
 
 void AmplifyDialog::CheckClip()
 {
-   if (GetClipCheckBox()->GetValue() == true) {
+   if (!GetClipCheckBox()->GetValue()) {
       GetOK()->Enable(ratio * peak <= 1.0);
    }
    else {
