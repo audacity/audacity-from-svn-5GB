@@ -19,6 +19,7 @@ $cookie_days = 90;
 // List of available languages.
 $available_locales = array(
   // Language code => Full locale name, Human-readable name.
+  "cs" => array("cs_CZ", "Česky"),
   "de" => array("de_DE", "Deutsch"),
   "en" => array("en_US", "English"),
   "es" => array("es_ES", "Espa&ntilde;ol"),
