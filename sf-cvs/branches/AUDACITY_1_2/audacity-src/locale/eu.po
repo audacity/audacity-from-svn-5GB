@@ -72,7 +72,7 @@ msgstr "&Audacity-ri buruz..."
 
 #: ../src/Menus.cpp:258
 msgid "&All\tCtrl+A"
-msgstr "&Dena\tKtrl+A"
+msgstr "&Dena\tCtrl+A"
 
 #: ../src/Menus.cpp:460
 msgid "&Analyze"
@@ -80,15 +80,15 @@ msgstr "&Analizatu"
 
 #: ../src/Menus.cpp:142
 msgid "&Close\tCtrl+W"
-msgstr "&Itxi\tKtrl+W"
+msgstr "&Itxi\tCtrl+W"
 
 #: ../src/Menus.cpp:242
 msgid "&Copy\tCtrl+C"
-msgstr "&Kopiatu\tKtrl+C"
+msgstr "&Kopiatu\tCtrl+C"
 
 #: ../src/Menus.cpp:249
 msgid "&Delete\tCtrl+K"
-msgstr "&Ezabatu\tKtrl+K"
+msgstr "&Ezabatu\tCtrl+K"
 
 #: ../src/Menus.cpp:216
 msgid "&Edit"
@@ -114,7 +114,7 @@ msgstr "&Fitxategia"
 
 #: ../src/Menus.cpp:316
 msgid "&Fit in Window\tCtrl+F"
-msgstr "&Doitu leihoari\tKtrl+F"
+msgstr "&Doitu leihoari\tCtrl+F"
 
 #: ../src/Menus.cpp:407
 msgid "&Generate"
@@ -131,11 +131,11 @@ msgstr "&Historia..."
 
 #: ../src/Menus.cpp:347
 msgid "&Import Audio...\tCtrl+I"
-msgstr "&Inportatu audioa...\tKtrl+I"
+msgstr "&Inportatu audioa...\tCtrl+I"
 
 #: ../src/Menus.cpp:138
 msgid "&New\tCtrl+N"
-msgstr "&Berria\tKtrl+N"
+msgstr "&Berria\tCtrl+N"
 
 #: ../src/Menus.cpp:485
 msgid "&Online Help..."
@@ -143,11 +143,11 @@ msgstr "&Lineako laguntza..."
 
 #: ../src/Menus.cpp:140
 msgid "&Open...\tCtrl+O"
-msgstr "&Ireki...\tKtrl+O"
+msgstr "&Ireki...\tCtrl+O"
 
 #: ../src/Menus.cpp:243
 msgid "&Paste\tCtrl+V"
-msgstr "&Itsatsi\tKtrl+V"
+msgstr "&Itsatsi\tCtrl+V"
 
 #: ../src/Menus.cpp:327
 msgid "&Plot Spectrum"
@@ -155,7 +155,7 @@ msgstr "&Espektro-ikuspegia"
 
 #: ../src/Menus.cpp:199 ../src/Menus.cpp:205
 msgid "&Preferences...\tCtrl+P"
-msgstr "&Hobespenak...\tKtrl+P"
+msgstr "&Hobespenak...\tCtrl+P"
 
 #: ../src/Menus.cpp:345
 msgid "&Project"
@@ -180,19 +180,19 @@ msgstr "&Exekutatu Benchmark..."
 
 #: ../src/Menus.cpp:143
 msgid "&Save Project\tCtrl+S"
-msgstr "&Gorde proiektua\tKtrl+S"
+msgstr "&Gorde proiektua\tCtrl+S"
 
 #: ../src/Menus.cpp:250
 msgid "&Silence\tCtrl+L"
-msgstr "&Isildu\tKtrl+L"
+msgstr "&Isildu\tCtrl+L"
 
 #: ../src/Menus.cpp:247
 msgid "&Trim\tCtrl+T"
-msgstr "&Ezabatu gainerakoa\tKtrl+T"
+msgstr "&Ezabatu gainerakoa\tCtrl+T"
 
 #: ../src/Menus.cpp:220
 msgid "&Undo\tCtrl+Z"
-msgstr "&Desegin\tKtrl+Z"
+msgstr "&Desegin\tCtrl+Z"
 
 #: ../src/Menus.cpp:578
 #, c-format
@@ -205,7 +205,7 @@ msgstr "&Ikusi"
 
 #: ../src/Menus.cpp:318
 msgid "&Zoom to Selection\tCtrl+E"
-msgstr "&Zooma hautapenera\tKtrl+E"
+msgstr "&Zooma hautapenera\tCtrl+E"
 
 #: ../src/TrackPanel.cpp:4083
 msgid "'left' channel"
@@ -289,11 +289,11 @@ msgstr "Ekintza"
 
 #: ../src/Menus.cpp:398
 msgid "Add Label At Playback Position\tCtrl+M"
-msgstr "Gehitu etiketa erreproduzio-posizioari\tKtrl+M"
+msgstr "Gehitu etiketa erreproduzio-posizioari\tCtrl+M"
 
 #: ../src/Menus.cpp:397
 msgid "Add Label At Selection\tCtrl+B"
-msgstr "Gehitu etiketa hautapenari\tKtrl+B"
+msgstr "Gehitu etiketa hautapenari\tCtrl+B"
 
 #: ../src/Menus.cpp:3037
 msgid "Added label"
@@ -1264,7 +1264,7 @@ msgstr "Ktrl-Gurpila-Biratu"
 
 #: ../src/Menus.cpp:241
 msgid "Cu&t\tCtrl+X"
-msgstr "Eba&ki\tKtrl+X"
+msgstr "Eba&ki\tCtrl+X"
 
 #: ../src/FreqWindow.cpp:131
 msgid "Cuberoot Autocorrelation"
@@ -1412,7 +1412,7 @@ msgstr "Ebaki eta jarri arbelean"
 
 #: ../src/Menus.cpp:253
 msgid "D&uplicate\tCtrl+D"
-msgstr "Bi&koiztu\tKtrl+D"
+msgstr "Bi&koiztu\tCtrl+D"
 
 #: ../src/effects/Phaser.cpp:476
 msgid "DRY"
@@ -1934,7 +1934,7 @@ msgstr "Primer nombre del archivo:"
 
 #: ../src/Menus.cpp:317
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Doitu &bertikalki\tKtrl+Maius+F"
+msgstr "Doitu &bertikalki\tCtrl+Maius+F"
 
 #: ../src/EditToolBar.cpp:176
 msgid "Fit project in window"
@@ -3191,11 +3191,11 @@ msgstr "Errepikatu"
 #: ../src/Menus.cpp:1197
 #, c-format
 msgid "Repeat %s\tCtrl+R"
-msgstr "Errepikatu %s\tKtrl+R"
+msgstr "Errepikatu %s\tCtrl+R"
 
 #: ../src/Menus.cpp:434
 msgid "Repeat Last Effect\tCtrl+R"
-msgstr "Errepikatu azken efektua\tKtrl+R"
+msgstr "Errepikatu azken efektua\tCtrl+R"
 
 #: ../src/effects/Repeat.cpp:222
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
@@ -3375,11 +3375,11 @@ msgstr "Hautatu..."
 
 #: ../src/Menus.cpp:547
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Murriztu hautapena ezkerrera\tKtrl+Maius+Eskuina"
+msgstr "Murriztu hautapena ezkerrera\tCtrl+Maius+Eskuina"
 
 #: ../src/Menus.cpp:548
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Murriztu hautapena eskuinera\tKtrl+Maius+Ezkerra"
+msgstr "Murriztu hautapena eskuinera\tCtrl+Maius+Ezkerra"
 
 #: ../src/Menus.cpp:545
 msgid "Selection Extend Left\tShift+Left"
@@ -4198,15 +4198,15 @@ msgstr "Zooma"
 
 #: ../src/Menus.cpp:313
 msgid "Zoom &In\tCtrl+1"
-msgstr "Handiagotu &zooma\tKtrl+1"
+msgstr "Handiagotu &zooma\tCtrl+1"
 
 #: ../src/Menus.cpp:314
 msgid "Zoom &Normal\tCtrl+2"
-msgstr "Zoom &normala\tKtrl+2"
+msgstr "Zoom &normala\tCtrl+2"
 
 #: ../src/Menus.cpp:315
 msgid "Zoom &Out\tCtrl+3"
-msgstr "Txikiagotu zoo&ma\tKtrl+3"
+msgstr "Txikiagotu zoo&ma\tCtrl+3"
 
 #: ../src/EditToolBar.cpp:164
 msgid "Zoom In"
