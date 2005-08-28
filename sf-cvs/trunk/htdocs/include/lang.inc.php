@@ -21,6 +21,7 @@ $available_locales = array(
   // Language code => Full locale name, Human-readable name.
   "cs" => array("cs_CZ", "Česky"),
   "de" => array("de_DE", "Deutsch"),
+  "el" => array("el_GR", "Ελληνικά"),
   "en" => array("en_US", "English"),
   "es" => array("es_ES", "Espa&ntilde;ol"),
   "fr" => array("fr_FR", "Français"),
