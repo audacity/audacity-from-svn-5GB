@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2005-04-15 20:14+0800\n"
+"PO-Revision-Date: 2005-04-21 11:58+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -108,7 +108,7 @@ msgstr "檔案(&F)"
 
 #: ../src/Menus.cpp:316
 msgid "&Fit in Window\tCtrl+F"
-msgstr "依視窗長度調整檢視(&F)\tCtrl+F"
+msgstr "成音工程適合視窗大小(&F)\tCtrl+F"
 
 #: ../src/Menus.cpp:407
 msgid "&Generate"
@@ -201,7 +201,7 @@ msgstr "檢視(&V)"
 
 #: ../src/Menus.cpp:318
 msgid "&Zoom to Selection\tCtrl+E"
-msgstr "縮放選取的區域符合視窗(&Z)\tCtrl+E"
+msgstr "縮放選取範圍符合視窗(&Z)\tCtrl+E"
 
 #: ../src/TrackPanel.cpp:4083
 msgid "'left' channel"
@@ -2655,7 +2655,7 @@ msgstr "沒有選取足夠的數據。"
 
 #: ../src/NoteTrack.cpp:30
 msgid "Note Track"
-msgstr "注解音軌"
+msgstr "MIDI 註解音軌"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
@@ -3379,7 +3379,7 @@ msgstr "移至結束點\tShift+End"
 
 #: ../src/Menus.cpp:530
 msgid "Selection to Start\tShift+Home"
-msgstr "移至起點\tShift+Home"
+msgstr "移至起始點\tShift+Home"
 
 #: ../src/FormatSelection.cpp:415
 #, c-format
@@ -3491,7 +3491,7 @@ msgstr "設定範圍..."
 #: ../src/TrackPanel.cpp:848
 #: ../src/TrackPanel.cpp:4294
 msgid "Set Rate"
-msgstr "設定取樣率"
+msgstr "設定取樣頻率"
 
 #: ../src/TrackPanel.cpp:846
 msgid "Set Sample Format"
@@ -3760,7 +3760,7 @@ msgstr ""
 msgid "This is a stable, completed release of Audacity.  However, if you find a bug or have a suggestion, please contact us.  We depend on feedback from users in order to continue to improve Audacity.  For more information, visit our website."
 msgstr ""
 "此Audacity是一個穩定的完整版。如果您發現錯誤或有什麼建\n"
-"議，請與我們聯繫。我們需要來自用戶的回饋，以改進Audacity\n"
+"議，請與我們聯繫。我們需要來自使用者的回饋，以改進Audacity\n"
 "軟體。詳情請瀏覽我們的網站。\n"
 "\n"
 "對於正體中文有問題的話，請回報給\n"

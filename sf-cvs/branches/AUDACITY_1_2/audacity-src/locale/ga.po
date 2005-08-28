@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Gaelainn 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2005-04-11 12:41-0000\n"
+"PO-Revision-Date: 2005-05-15 19:43-0000\n"
 "Last-Translator: Mícheál Mac Lochlainn <micilsheainmhicil@eircom.net>\n"
 "Language-Team: Acadamh na hOllscolaíochta Gaeilge <micilsheainmhicil@eircom.net>\n"
 "MIME-Version: 1.0\n"
@@ -2613,15 +2613,15 @@ msgstr ""
 
 #: ../src/effects/NoiseRemoval.cpp:69
 msgid "Noise Removal"
-msgstr "Aisbhaint Fhothraim"
+msgstr "Asbhaint Fhothraim"
 
 #: ../src/effects/NoiseRemoval.cpp:403
 msgid "Noise Removal by Dominic Mazzoni"
-msgstr "Aisbhaint Fhothraim le Dominic Mazzoni"
+msgstr "Asbhaint Fhothraim le Dominic Mazzoni"
 
 #: ../src/effects/NoiseRemoval.h:38
 msgid "Noise Removal..."
-msgstr "Aisbhaint Fothraim..."
+msgstr "Asbhaint Fothraim..."
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:435
 #: ../src/effects/ladspa/LadspaEffect.cpp:443
@@ -2949,7 +2949,7 @@ msgstr "Breiseáin 1 go %i"
 
 #: ../src/effects/PopClick.h:29
 msgid "Pop and Click Removal..."
-msgstr "Aisbhaint Phlab is Chnag..."
+msgstr "Asbhaint Phlab is Chnag..."
 
 #: ../src/effects/Equalization.cpp:703
 msgid "Predefined:"
@@ -3130,12 +3130,12 @@ msgstr "Bain amach taobhrianadh SD ar bith (lárnaigh ar 0 go hingearach)"
 
 #: ../src/Menus.cpp:3071
 msgid "Removed audio track(s)"
-msgstr "Rian(ta) arna (n-)aisbhaint"
+msgstr "Rian(ta) arna (n-)asbhaint"
 
 #: ../src/TrackPanel.cpp:2703
 #, c-format
 msgid "Removed track '%s.'"
-msgstr "Rian '%s.' arna aisbhaint"
+msgstr "Rian '%s.' arna asbhaint"
 
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
@@ -3848,7 +3848,7 @@ msgstr "Uimhir Riain:"
 
 #: ../src/TrackPanel.cpp:2705
 msgid "Track Remove"
-msgstr "Aisbhaint Riain"
+msgstr "Asbhaint Riain"
 
 #: ../src/export/ExportMultiple.cpp:628
 msgid "Tracks"
