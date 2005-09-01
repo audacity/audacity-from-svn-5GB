@@ -596,7 +596,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
-   c->AddItem(wxT("Help"),           _("&Online Help..."),             FN(OnHelp));
+   c->AddItem(wxT("Help"),           _("&Contents..."),             FN(OnHelp));
    c->AddSeparator();   
 	if( mCleanSpeechMode )
    	c->AddItem(wxT("About"),          _("&About Audacity CleanSpeech..."), FN(OnAbout));
