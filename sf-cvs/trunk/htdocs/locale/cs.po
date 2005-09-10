@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Audacity website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-01 19:18-0700\n"
-"PO-Revision-Date: 2005-08-09 09:11+0100\n"
+"PO-Revision-Date: 2005-09-08 08:16+0100\n"
 "Last-Translator: Ales Tosovsky <tosovsky@wo.cz>\n"
 "Language-Team: Czech <tosovsky@wo.cz>\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Obrázky"
 
 #: about/screenshots.php:15
 msgid "Click any screenshot for a larger version."
-msgstr "Po kliknutí na obrázek se zobrazí větší verze."
+msgstr "Po kliknutí na obrázek se zobrazí jeho větší verze."
 
 #: about/screenshots.php:17
 msgid "Audacity running on Linux"
@@ -128,7 +128,7 @@ msgid ""
 "</ul>"
 msgstr ""
 "<h3>Nahrávání</h3>\n"
-"<p>Audacity může nahrávat \"živý\" zvuk z mikrofonu, či mixéru, digitalizovat nahrávky z páskových kazet, vinylových desek nebo minidisků. Pomocí některých zvukových karet lze zachytávat také streamované audio z internetu.</p>\n"
+"<p>Audacity může nahrávat \"živý\" zvuk z mikrofonu, či jiného vnějšího zdroje, digitalizovat nahrávky z páskových kazet, vinylových desek nebo minidisků. Pomocí některých zvukových karet lze zachytávat také streamované audio z internetu.</p>\n"
 "<ul>\n"
 "  <li>Nahrávání z mikrofonu, linkového vstupu nebo jiných zdrojů.</li>\n"
 "  <li>Přihrávání ke stávajícím stopám, vytváření vícestopých nahrávek.</li>\n"
@@ -154,7 +154,7 @@ msgstr ""
 "<p>Importujte zvukové soubory, libovolně je upravte a kombinujte s jinými soubory nebo novými nahrávkami. Vyexportujte svoje nahrávky v několika zavedených formátech.</p>\n"
 "<ul>\n"
 "  <li>Import a export souborů WAV, AIFF, AU, a <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
-"  <li>Import MPEG audio (včetně souborů MP2 and MP3) pomocí knihovny <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Import MPEG audio (včetně souborů MP2 a MP3) pomocí knihovny <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
 "  <li>Export do MP3 pomocí volitelné enkódovací knihovny LAME.</li>\n"
 "  <li>Ukládání WAV nebo AIFF souborů vhodných pro vypalování na CD.</li>\n"
 "  <li>Import a export všech souborových formátů, které podporuje knihovna <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
@@ -176,8 +176,8 @@ msgid ""
 msgstr ""
 "<h3>Editace</h3>\n"
 "<ul>\n"
-"  <li>Jednoduché úpravy pomocí nástrojů Výjmout, Kopírovat, Vložit a Smazat.</li>\n"
-"  <li>Neomezený počet vrácení operací Zpět (i Znovu) umožňuje vrátit se o jakýkoliv počet kroků.</li>\n"
+"  <li>Jednoduché úpravy pomocí nástrojů Vyjmout, Kopírovat, Vložit a Smazat.</li>\n"
+"  <li>Neomezený počet vrácení i znovuprovedení operací pomocí funkcí Zpět a Znovu umožňuje vrátit se o jakýkoliv počet kroků.</li>\n"
 "  <li>Velmi rychlá editace i značně velkých souborů.</li>\n"
 "  <li>Editace a míchání neomezeného počtu stop.</li>\n"
 "  <li>S využitím nástroje Kreslení lze určit vlastní vzorkovací body.</li>\n"
@@ -233,7 +233,7 @@ msgstr ""
 "  <li>Nahrávání a úpravy na vzorcích v kvalitě 16-bit, 24-bit, a 32-bit (floating point).</li>\n"
 "  <li>Nahrávání do 96 KHz.</li>\n"
 "  <li>Vzorkovací frekvence a formáty jsou převáděny s použitím vysoce kvalitního převzorkování a ditheringu.</li>\n"
-"  <li>Při míchání stop s různou vzorkovací frekvencí nebo v různých formátech, Audacity provede převod automaticky v reálném čase.</li>\n"
+"  <li>Při míchání stop s různou vzorkovací frekvencí nebo v různých formátech Audacity provede převod automaticky v reálném čase.</li>\n"
 "</ul>"
 
 #: about/features.php:71
@@ -359,7 +359,7 @@ msgid ""
 "\n"
 "<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
 msgstr ""
-"<p>Audacity je volně dostupný (free) software. Lze ho volně rozšiřovat nebo měnit v souladu s licencí <a href=\"http://gnu.cz/article/licence/\">GNU General Public License</a> vydanou Free Software Foundation a to ve verzi 2, nebo (podle vaší vlastní volby) jakékoliv pozdější.</p>\n"
+"<p>Audacity je volně dostupný (free) software. Lze ho volně rozšiřovat nebo měnit v souladu s licencí <a href=\"http://gnu.cz/article/licence/\">GNU General Public License</a> vydanou Free Software Foundation, a to ve verzi 2, nebo (podle vaší vlastní volby) jakékoliv pozdější.</p>\n"
 "\n"
 "<p>Tato licence vás opravňuje měnit, kopírovat, rozšiřovat a prodávat Audacity, dokud bude vámi distribuovaný kód dostupný pod GPL. Jestliže k tomu máte nějaké otázky <a href=\"../contact/\">kontaktujte nás</a>.\n"
 "\n"
@@ -487,7 +487,7 @@ msgid ""
 "<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us know that you like it.  It makes us happy to know that people enjoy it.  Also feel free to send comments and suggestions.  We're always improving Audacity, and we value your input.</p>"
 msgstr ""
 "<h3>Pošlete pozdrav!</h3>\n"
-"<p>Jestli (si) užíváte Audacity, <a href=\"../contact/\">napište nám</a> a dejte nám vědět, jak se vám líbí. Těší nás poznávat lidi, kterým jsme prospěli. Nebojte se také poslat komentáře nebo doporučení. Audacity stále zlepšujeme a ceníme si vašich postřehů.<br/> (Poznámka překladatele: pište pište, ale samozřejmě anglicky.)</p>"
+"<p>Jestli (si) užíváte Audacity, <a href=\"../contact/\">napište nám</a> a dejte nám vědět, jak se vám líbí. Těší nás poznávat lidi, kterým jsme prospěli. Nebojte se také poslat komentáře nebo doporučení. Audacity stále zlepšujeme a ceníme si vašich postřehů.<br/> (Poznámka překladatele: pište, pište, ale samozřejmě anglicky.)</p>"
 
 #. i18n-hint:  Note that the wiki is in English.  If you want, you can create
 #. a page in your language on the wiki, and link to it instead.
@@ -512,8 +512,8 @@ msgid ""
 "<h3>Be a Beta Tester</h3>\n"
 "<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
 msgstr ""
-"<h3>Staňte se Betatesterem</h3>\n"
-"<p>Mimo nejnovější stabilní verzi je často k dispozici i beta verze. Tyto verze obvykle obsahují nové vlastnosti, které ještě nebyly otestovány. Když chcete pomoci, stáhněte si tuto verzi Audacity a vyzkoušejte ji. Dejte nám vědět, co se vám líbí a nelíbí a napište, co si myslíte, že by se dalo zlepšit. Napište nám, pokud naleznete nějaké <em>regrese</em> - věci, které předtím fungovali, ale v nové verzi nejdou.</p>"
+"<h3>Staňte se Beta-testerem</h3>\n"
+"<p>Mimo nejnovější stabilní verzi je často k dispozici i beta verze. Tyto verze obvykle obsahují nové vlastnosti, které ještě nebyly otestovány. Když chcete pomoci, stáhněte si tuto verzi Audacity a vyzkoušejte ji. Dejte nám vědět, co se vám líbí a nelíbí a napište, co si myslíte, že by se dalo zlepšit. Napište nám, pokud naleznete nějaké <em>regrese</em> - věci, které předtím fungovaly, ale v nové verzi nejdou.</p>"
 
 #: community/donate.php:10
 msgid "Make a Donation"
@@ -521,7 +521,7 @@ msgstr "Poskytněte dar"
 
 #: community/donate.php:16
 msgid "Audacity is developed by volunteers, working in our spare time. It is not shareware, and we do not expect to make any money from it.  However, by donating money you can help us pay for bandwidth and web hosting, development tools, and audio hardware&mdash;things that help us provide Audacity for free and continue to make it better."
-msgstr "Audacity je vyvíjena dobrovolníky, kteří pracují ve svém volném čase. Není to shareware a nepředpokládáme, že na ní vyděláme peníze. Darováním peněz nám však můžete pomoci zaplatit internetové připojení a web hosting, vývojářšké  nástroje a audio hardware &mdash; věci, které nám umožňují poskytovat Audacity volně a zdarma a pokračovat v jejím zlepšování."
+msgstr "Audacity je vyvíjena dobrovolníky, kteří pracují ve svém volném čase. Není to shareware a nepředpokládáme, že na ní vyděláme peníze. Darováním peněz nám však můžete pomoci zaplatit internetové připojení a web hosting, vývojářské  nástroje a audio hardware &mdash; věci, které nám umožňují poskytovat Audacity volně a zdarma a pokračovat v jejím zlepšování."
 
 #: community/donate.php:18
 msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
@@ -545,7 +545,7 @@ msgstr "Jestliže upřednostňujete odeslání osobního šeku nebo nějakou jin
 
 #: community/donate.php:38
 msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
-msgstr "Vítáme také nabídky firem, které by se zajímali o <a href=\"http://audacityteam.org/sponsor.php\">sponzorování vývoje Audacity</a>."
+msgstr "Vítáme také nabídky firem, které by se zajímaly o <a href=\"http://audacityteam.org/sponsor.php\">sponzorování vývoje Audacity</a>."
 
 #: community/translation.php:16
 msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
@@ -842,7 +842,7 @@ msgstr "Linux/Unix"
 
 #: download/index.php:28
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
-msgstr "Může te si také <a href=\"buy\">zakoupit</a> kopii Audacity na CD."
+msgstr "Můžete si také <a href=\"buy\">zakoupit</a> kopii Audacity na CD."
 
 #: download/index.php:30
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
@@ -1006,7 +1006,7 @@ msgstr "Audacity 1.0 vyžaduje Mac OS 9.0 nebo novější."
 
 #: download/linux.php:15
 msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
-msgstr "Nejednodušší cesta k instalaci volně dostupného zvukového editoru Audacity na Linuxu (a dalších Unix-like systémech) je stáhnout balíček sestavený na systému, který používáte:"
+msgstr "Nejjednodušší cesta k instalaci volně dostupného zvukového editoru Audacity na Linuxu (a dalších Unix-like systémech) je stáhnout balíček sestavený na systému, který používáte:"
 
 #: download/linux.php:30
 msgid "Linux and Unix users may also compile Audacity from <a href=\"source\">source code</a>."
@@ -1063,7 +1063,7 @@ msgstr ""
 "  <li><p>Opravena chyba zpomalení celého programu při použití nástroje Obálka.</p></li>\n"
 "<li><p>Kliknutí myši za současného stisku klávesy Shift na tlačítku Umlčet (mute) nebo Solo nyní znovu zapne zvuk, nebo odstraní solo na všech ostatních stopách.</p></li>\n"
 "  <li><p>Pluginy Nyquist nyní na vstupu přijímají řetězce. Do dialogů Nyquistových efektů bylo také přidáno tlačítko \"Debug\", které umožňuje zobrazit veškeré výstupy Nyquistu, což pomůže při ladění.</p></li>\n"
-"  <li><p>Pokud je v projektu odkaz na zvukový soubor který neexistuje, Audacity přehrává ticho. Předtím někdy docházelo k přehrání poslední použité stopy.</p></li>\n"
+"  <li><p>Pokud je v projektu odkaz na zvukový soubor, který neexistuje, Audacity přehrává ticho. Předtím někdy docházelo k přehrání poslední použité stopy.</p></li>\n"
 "  <li><p>Při přerušení vstupu nebo výstupu se VU ukazatele vždy vynulují.</p></li>\n"
 "  <li><p>Nové a aktualizované překlady: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
 "</ul>"
@@ -1082,7 +1082,7 @@ msgstr "VST Enabler"
 
 #: download/common.inc.php:11
 msgid "Allows Audacity to load VST plug-ins."
-msgstr "Umožňuje Audacity používat VST plug-iny."
+msgstr "Umožňuje Audacity používat VST pluginy."
 
 #: download/common.inc.php:12
 #: main.inc.php:35
@@ -1095,7 +1095,7 @@ msgstr "Stažení doplňujících efektů a filtrů."
 
 #: download/plugins.php:9
 msgid "Plug-In Effects"
-msgstr "Efektové plug-iny."
+msgstr "Efektové pluginy."
 
 #: download/plugins.php:14
 msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
@@ -1115,7 +1115,7 @@ msgstr "Nyquist pluginy"
 
 #: download/plugins.php:20
 msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
-msgstr "V Audacity je vestavěna podpora pro multiplatformní efekty Nyquist. Můžete si stáhnout doplňující <a href=\"nyquistplugins\">Nyquist plug-iny</a>, nebo si napsat vlastní s využitím <a href=\"../help/nyquist\">programovacího jazyku Nyquist</a>."
+msgstr "V Audacity je vestavěna podpora pro multiplatformní efekty Nyquist. Můžete si stáhnout doplňující <a href=\"nyquistplugins\">Nyquist pluginy</a>, nebo si napsat vlastní s využitím <a href=\"../help/nyquist\">programovacího jazyku Nyquist</a>."
 
 #: download/plugins.php:22
 msgid "VST Plug-Ins"
@@ -1123,16 +1123,16 @@ msgstr "VST Plug-iny"
 
 #: download/plugins.php:23
 msgid "Audacity can load VST effects (for Mac OS or Windows) using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">other plug-in sites</a>.</p>"
-msgstr "Audacity může pracovat s VST efekty (na Mac OS nebo Windows) s použitím volitelného <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enableru</a>. VST efekty najdete na <a href=\"http://www.kvraudio.com/\">KVR Audio</a> a <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">jiných plug-inových stránkách</a>.</p>"
+msgstr "Audacity může pracovat s VST efekty (na Mac OS nebo Windows) s použitím volitelného <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enableru</a>. VST efekty najdete na <a href=\"http://www.kvraudio.com/\">KVR Audio</a> a <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">jiných pluginových stránkách</a>.</p>"
 
 #: download/nyquistplugins.php:10
 msgid "Download Nyquist Plug-Ins"
-msgstr "Stáhnout Nyquist plug-iny"
+msgstr "Stáhnout Nyquist pluginy"
 
 #. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
 #: download/nyquistplugins.php:15
 msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
-msgstr "<p>Toto jsou doplňkové efektové pluginy pro zvukový editor Audacity. Jsou napsány v <a href=\"../help/nyquist\">programovacím jazyku Nyquist</a>. Návod k instalaci je na <a href=\"plugins\">stránce o plug-inech</a>.</p>"
+msgstr "<p>Toto jsou doplňkové efektové pluginy pro zvukový editor Audacity. Jsou napsány v <a href=\"../help/nyquist\">programovacím jazyku Nyquist</a>. Návod k instalaci je na <a href=\"plugins\">stránce o pluginech</a>.</p>"
 
 #: help/index.php:9
 msgid "Documentation and Support"
@@ -1167,7 +1167,7 @@ msgstr "Další zdroje"
 #: help/index.php:28
 #: help/documentation.php:33
 msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
-msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> obsahuje tipy, triky, dokumentaci  a umožňuje provádět libovolné změny a doplnění komukoliv."
+msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> obsahuje tipy, triky, dokumentaci a umožňuje komukoliv provádět libovolné změny a doplnění."
 
 #: help/main.inc.php:11
 #: main.inc.php:39
@@ -1325,7 +1325,7 @@ msgstr ""
 
 #: help/faq.php:80
 msgid "How do I install VST plug-ins?"
-msgstr "Jak nainstalovat VST plug-iny?"
+msgstr "Jak nainstalovat VST pluginy?"
 
 #: help/faq.php:81
 #, php-format
@@ -1339,14 +1339,14 @@ msgid ""
 msgstr ""
 "<ol>\n"
 "<li><p>Nejprve si stáhněte a rozbalte <a href=\"%s\">VST Enabler</a>.</li>\n"
-"<li><p>Rozbalený VST Enabler spolu s VST pluginy uložte do podadresáře “Plug-ins” v instalačním adresáři Audacity. (Na Mac OS X je to většinou v adresáři Applications, na windows v Program Files.)</li>\n"
+"<li><p>Rozbalený VST Enabler spolu s VST pluginy uložte do podadresáře “Plug-ins” v instalačním adresáři Audacity. (Na Mac OS X je to většinou v adresáři Applications, na Windows v Program Files.)</li>\n"
 "<li><p>Při dalším spuštění Audacity se vaše VST efekty objeví na konci menu “Efekty”.</li>\n"
 "</ol>\n"
 "<p>Podívejte se také na: <a href=\"faq?s=install&amp;i=vst-bugs\">Proč některé VST pluginy vypadají divně, nebo nefungují?</a></p>"
 
 #: help/faq.php:89
 msgid "Why do some VST plug-ins look wrong, or not work?"
-msgstr "Proč některé VST plug-iny vypadají divně, nebo nefungují?"
+msgstr "Proč některé VST pluginy vypadají divně, nebo nefungují?"
 
 #: help/faq.php:90
 msgid ""
@@ -1395,11 +1395,11 @@ msgid ""
 "<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
 msgstr ""
 "<p>Nejprve Audacity nastavte pro <a href=\"faq?s=recording&amp;i=stereo\">nahrávání ve stereu</a>.</p>\n"
-"<p>Zasuňte jeden konec stereokabelu do zdířky “Linkový výstup (Line Out)” nebo “Sluchátka (Headphone)” na vašem přehrávači kazet, minidisců nebo jiném stereo systému. Druhý konec zasuňte do zdířky “Linkový vstup (Line In)” na počítači. Jestli takový kabel nemáte, dá se koupit v obchodu s elektronikou.</p>\n"
+"<p>Zasuňte jeden konec stereo kabelu do zdířky “Linkový výstup (Line Out)” nebo “Sluchátka (Headphone)” na vašem přehrávači kazet, minidisců nebo jiném stereo systému. Druhý konec zasuňte do zdířky “Linkový vstup (Line In)” na počítači. Jestli takový kabel nemáte, dá se koupit v obchodu s elektronikou.</p>\n"
 "<p>Jako nahrávací vstup na liště Audacity zvolte “Linkový vstup (Line In)” a stiskněte tlačítko pro nahrávání. Jakmile Audacity začne nahrávat, zapněte přehrávání kazety nebo disku. Až bude nahrána celá skladba, stiskněte tlačítko Stop.</p>\n"
 "<p>Poznámky:</p>\n"
 "<ul>\n"
-"\t<li><p>Nepřipojujte externí stereo zařízení do zdířky “Mikrofon (Microphone)” na počítači. Ta je určena pro nízkoúrovňové signály. Místo tho použijte “Linkový vstup (Line In)”.</p></li>\n"
+"\t<li><p>Nepřipojujte externí stereo zařízení do zdířky “Mikrofon (Microphone)” na počítači. Ta je určena pro nízkoúrovňové signály. Místo toho použijte “Linkový vstup (Line In)”.</p></li>\n"
 "\t<li><p>Gramofon nepřipojujte přímo k počítači. Signál z gramofonu je zkreslený a musí být nejdříve upraven pomocí předzesilovače nebo nějakého přijímače s “phono” vstupem.</p></li>\n"
 "</ul>\n"
 "<p>Podívejte se také na: <a href=\"faq?s=files&amp;i=split\">Jak rozdělit dlouhou nahrávku do několika souborů</a>.</p>"
@@ -1436,7 +1436,7 @@ msgstr ""
 
 #: help/faq.php:130
 msgid "Can I play a track while recording a new one on top of it?"
-msgstr "Dá se přhrávat stopa a přitom nahrávat další?"
+msgstr "Dá se přehrávat stopa a přitom nahrávat další?"
 
 #: help/faq.php:131
 msgid ""
@@ -1542,11 +1542,11 @@ msgstr "Audacity mi spadla! Dají se neuložená data obnovit?"
 #. the wiki for now.
 #: help/faq.php:184
 msgid "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>"
-msgstr "<p>Svůj projekt můžete být schopni obnovit pomocí <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Podívejte se prosím na stránku <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Oprava pádu</a>, kde najdete víc informací .</p>"
+msgstr "<p>Svůj projekt můžete obnovit pomocí <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Podívejte se prosím na stránku <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Oprava pádu</a>, kde najdete víc informací.</p>"
 
 #: help/faq.php:187
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
-msgstr "Dokáže Audacity importovat souborové formáty WMA, AAC, FLAC, a podobné?"
+msgstr "Dokáže Audacity importovat souborové formáty WMA, AAC, FLAC a podobné?"
 
 #: help/faq.php:188
 msgid ""
@@ -1787,7 +1787,7 @@ msgstr "Programování v Nyquistu"
 #: help/nyquist3.php:10
 #: help/nyquist3.php:19
 msgid "Creating Nyquist Plug-ins"
-msgstr "Tvorba Nyquist plug-inů"
+msgstr "Tvorba Nyquist pluginů"
 
 #: help/nyquist.php:22
 msgid ""
@@ -2241,7 +2241,7 @@ msgid ""
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
 msgstr ""
 "<p>Audacity 1.2.3 je nová stabilní verze. Opravuje chybu, která se objevuje v souvislosti s dlouhými nahrávkami na některých windowsových systémech a také chybu, která zapříčiňuje náhodné padání na Mac OS X. Obsahuje také několik aktualizací v překladech do jiných jazyků, opravy dalších chyb a malá zlepšení.</p>\n"
-"<p>Celý seznam změn a znýmých problémů v této verzi najdete v <a href=\"/download/release-notes\">Poznámkách k vydání</a>.</p>"
+"<p>Celý seznam změn a známých problémů v této verzi najdete v <a href=\"/download/release-notes\">Poznámkách k vydání</a>.</p>"
 
 #: index.php:9
 msgid "Free Audio Editor and Recorder"
@@ -2310,7 +2310,7 @@ msgstr "Koupit CD"
 
 #: main.inc.php:41
 msgid "FAQ"
-msgstr "FAQ"
+msgstr "FAQ - často kladené otázky"
 
 #: main.inc.php:58
 msgid "Donate"
