@@ -23,7 +23,7 @@
 
 // Don't change this unless the file format changes
 // in an irrevocable way
-#define AUDACITY_FILE_FORMAT_VERSION "1.1.0"
+#define AUDACITY_FILE_FORMAT_VERSION "1.3.0"
 
 class wxWindow;
 class ToolBarStub;
