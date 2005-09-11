@@ -65,6 +65,10 @@ class ImportRawDialog:public wxDialog {
    wxTextCtrl *mPercentText;
    wxTextCtrl *mRateText;
 
+   int         mNumEncodings;
+   int        *mEncodingSubtype;
+   wxString   *mEncodingString;
+
    DECLARE_EVENT_TABLE()
 };
 
@@ -283,20 +287,37 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
 
    // Encoding Choice
 
-   wxString *encodingStrings = new wxString[sf_num_encodings()];
+   mNumEncodings = 0;
+   mEncodingSubtype = new int[sf_num_encodings()];
+   mEncodingString = new wxString[sf_num_encodings()];
+
    selection = 0;
    for(i=0; i<sf_num_encodings(); i++) {
-      encodingStrings[i] = sf_encoding_index_name(i);
-      if ((mEncoding & SF_FORMAT_SUBMASK) == (int)sf_encoding_index_to_subtype(i))
-         selection = i;
+      SF_INFO info;
+      memset(&info, 0, sizeof(SF_INFO));
+
+      int subtype = (int)sf_encoding_index_to_subtype(i);
+      info.format = SF_FORMAT_RAW + SF_ENDIAN_LITTLE + subtype;
+      info.channels = 1;
+      info.samplerate = 44100;
+
+      if (sf_format_check(&info)) {
+         mEncodingSubtype[mNumEncodings] = subtype;
+         mEncodingString[mNumEncodings] = sf_encoding_index_name(i);;
+
+         if ((mEncoding & SF_FORMAT_SUBMASK) == subtype)
+            selection = mNumEncodings;
+
+         mNumEncodings++;
+      }
    }
+
    mEncodingChoice = 
       new wxChoice(this, ChoiceID,
                    wxDefaultPosition, wxDefaultSize,
-                   sf_num_encodings(), encodingStrings);
+                   mNumEncodings, mEncodingString);
    mEncodingChoice->SetSelection(selection);
    vSizer->Add(mEncodingChoice, 0, wxALIGN_LEFT | wxALL, 5);
-   delete[] encodingStrings;
 
    // Endian choice
 
@@ -428,13 +449,15 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
 
 ImportRawDialog::~ImportRawDialog()
 {
+   delete[] mEncodingSubtype;
+   delete[] mEncodingString;
 }
 
 void ImportRawDialog::OnOK(wxCommandEvent & WXUNUSED(event))
 {
    long l;
    
-   mEncoding = sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
+   mEncoding = mEncodingSubtype[mEncodingChoice->GetSelection()];
    mEncoding += (mEndianChoice->GetSelection() * 0x10000000);
    mChannels = mChannelChoice->GetSelection() + 1;
    mOffsetText->GetValue().ToLong(&l);
@@ -473,7 +496,7 @@ void ImportRawDialog::OnChoice(wxCommandEvent & WXUNUSED(event))
 
    memset(&info, 0, sizeof(SF_INFO));
 
-   mEncoding = sf_encoding_index_to_subtype(mEncodingChoice->GetSelection());
+   mEncoding = mEncodingSubtype[mEncodingChoice->GetSelection()];
    mEncoding += (mEndianChoice->GetSelection() * 0x10000000);
 
    info.format = mEncoding | SF_FORMAT_RAW;
