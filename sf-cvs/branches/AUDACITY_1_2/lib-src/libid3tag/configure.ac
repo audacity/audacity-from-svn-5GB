@@ -17,7 +17,7 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with this program; if not, write to the Free Software
 dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 dnl
-AC_REVISION([$Id: configure.ac,v 1.2.2.1 2003-09-29 17:03:20 dmazzoni Exp $])dnl
+AC_REVISION([$Id: configure.ac,v 1.2.2.2 2005-09-11 20:51:14 dmazzoni Exp $])dnl
 
 dnl Process this file with autoconf to produce a configure script.
 
@@ -29,6 +29,8 @@ AC_CONFIG_SRCDIR([id3tag.h])
 AM_INIT_AUTOMAKE
 
 AM_CONFIG_HEADER([config.h])
+
+AM_MAINTAINER_MODE
 
 dnl System type.
 
