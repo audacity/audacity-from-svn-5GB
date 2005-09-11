@@ -9,6 +9,8 @@ AC_CANONICAL_TARGET([])
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(src/config.h)
 
+AM_MAINTAINER_MODE
+
 #------------------------------------------------------------------------------------
 # Rules for library version information:
 #
