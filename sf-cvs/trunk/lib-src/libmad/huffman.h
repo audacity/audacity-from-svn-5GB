@@ -1,6 +1,6 @@
 /*
  * libmad - MPEG audio decoder library
- * Copyright (C) 2000-2001 Robert Leslie
+ * Copyright (C) 2000-2004 Underbit Technologies, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * $Id: huffman.h,v 1.3 2001-10-20 21:50:32 dmazzoni Exp $
+ * $Id: huffman.h,v 1.4 2005-09-12 07:01:30 dmazzoni Exp $
  */
 
 # ifndef LIBMAD_HUFFMAN_H
