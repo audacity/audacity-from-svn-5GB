@@ -270,7 +270,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
    wxButton *ok = new wxButton(this, wxID_OK,
                                _("Audacious!"),
                                wxPoint(150, 372),
-                               wxSize(100, 20));
+                               wxSize(100, -1));
    ok->SetDefault();
    ok->SetFocus();
    pBoxSizer->Add(ok, 0, wxALIGN_CENTER | wxALL, 8);
