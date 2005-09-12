@@ -16,6 +16,7 @@
 #include <wx/object.h> // tooltip.h needs this but doesn't include it.
 #include <wx/window.h> // tooltip.h needs this but doesn't include it.
 #include <wx/tooltip.h>
+#include <wx/dcclient.h>
 
 #include "MeterToolBar.h"
 
