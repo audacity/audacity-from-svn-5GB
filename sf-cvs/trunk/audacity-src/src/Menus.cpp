@@ -2817,6 +2817,8 @@ void AudacityProject::OnImport()
 
    dlog.GetPaths(selectedFiles);
 
+   selectedFiles.Sort();
+
    for(ff=0; ff<selectedFiles.GetCount(); ff++) {
       wxString fileName = selectedFiles[ff];
 
@@ -3519,6 +3521,9 @@ void AudacityProject::OnBatch()
 
    wxArrayString selectedFiles;
    dlog.GetPaths(selectedFiles);
+
+   selectedFiles.Sort();
+
    batchProcessDlg.PopulateList( selectedFiles );
    // ShowModal() gives a progress screen and also applies the chain.
    batchProcessDlg.ShowModal();
