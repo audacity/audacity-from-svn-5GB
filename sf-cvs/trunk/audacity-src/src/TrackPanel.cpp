@@ -1669,14 +1669,18 @@ void TrackPanel::ForwardEventToWaveTrackEnvelope(wxMouseEvent & event)
       WaveTrack *link = (WaveTrack *) mTracks->GetLink(mCapturedTrack);
       if (link) {
          Envelope *e2 = link->GetEnvelopeAtX(event.GetX());
-         wxRect envRect = mCapturedRect;
-         envRect.y++;
-         envRect.height -= 2;
-         float zoomMin, zoomMax;
-         pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
-         needUpdate |= e2->MouseEvent(event, envRect,
-                                      mViewInfo->h, mViewInfo->zoom, dB,
-                                      zoomMin, zoomMax);
+         // There isn't necessarily an envelope there; no guarantee a
+         // linked track has the same WaveClip structure...
+         if (e2) {
+            wxRect envRect = mCapturedRect;
+            envRect.y++;
+            envRect.height -= 2;
+            float zoomMin, zoomMax;
+            pwavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
+            needUpdate |= e2->MouseEvent(event, envRect,
+                                         mViewInfo->h, mViewInfo->zoom, dB,
+                                         zoomMin, zoomMax);
+         }
       }
    }
    if (needUpdate) {

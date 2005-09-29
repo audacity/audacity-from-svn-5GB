@@ -118,6 +118,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                              bool drawSliders)
 {
    wxRect trackRect = r;
+   wxRect stereoTrackRect;
 
    TrackListIterator iter(tracks);
    Track *t;
@@ -151,8 +152,31 @@ void TrackArtist::DrawTracks(TrackList * tracks,
 
       trackRect.height = t->GetHeight();
 
-      if (trackRect.y < (clip.y + clip.height) &&
-          trackRect.y + trackRect.height > clip.y) {
+      stereoTrackRect = trackRect;
+
+      // For various reasons, the code will break if we display one
+      // of a stereo pair of tracks but not the other - for example,
+      // if you try to edit the envelope of one track when its linked
+      // pair is off the screen, then it won't be able to edit the
+      // offscreen envelope.  So we compute the rect of the track and
+      // its linked partner, and see if any part of that rect is on-screen.
+      // If so, we draw both.  Otherwise, we can safely draw neither.
+
+      Track *link = tracks->GetLink(t);
+      if (link) {
+         if (t->GetLinked()) {
+            // If we're the first track
+            stereoTrackRect.height += link->GetHeight();
+         }
+         else {
+            // We're the second of two
+            stereoTrackRect.y -= link->GetHeight();
+            stereoTrackRect.height += link->GetHeight();
+         }
+      }
+
+      if (stereoTrackRect.y < (clip.y + clip.height) &&
+          stereoTrackRect.y + stereoTrackRect.height > clip.y) {
 
          wxRect rr = trackRect;
          rr.x += mInsetLeft;
