@@ -16,6 +16,7 @@
 #include <wx/frame.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
+#include <wx/settings.h>
 
 #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION < 6))
 #error Audio Units support requires wxMac 2.6
