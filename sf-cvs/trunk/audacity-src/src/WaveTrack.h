@@ -121,7 +121,15 @@ class WaveTrack: public Track {
    virtual bool CutAndAddCutLine(double t0, double t1, Track **dest);
    virtual bool ClearAndAddCutLine(double t0, double t1);
 
-   bool ClearWithCutLines(double t0, double t1, bool addCutLines);
+   virtual bool SplitCut   (double t0, double t1, Track **dest);
+   virtual bool SplitDelete(double t0, double t1);
+   virtual bool Join       (double t0, double t1);
+
+   bool HandleClear(double t0, double t1,
+                    bool addCutLines, bool split);
+
+   // Returns true if there are no WaveClips in that region
+   bool IsEmpty(double t0, double t1);
 
    /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,

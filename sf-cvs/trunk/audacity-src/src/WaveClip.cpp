@@ -729,6 +729,23 @@ bool WaveClip::Paste(double t0, WaveClip* other)
    return false;
 }
 
+bool WaveClip::InsertSilence(double t, double len)
+{
+   longSampleCount s0;
+   TimeToSamplesClip(t, &s0);
+   sampleCount slen = (sampleCount)floor(len * mRate + 0.5);
+   
+   if (!GetSequence()->InsertSilence(s0, slen))
+   {
+      wxASSERT(false);
+      return false;
+   }
+   GetEnvelope()->InsertSpace(t, len);
+   MarkChanged();
+   
+   return true;
+}
+
 bool WaveClip::Clear(double t0, double t1)
 {
    longSampleCount s0, s1;

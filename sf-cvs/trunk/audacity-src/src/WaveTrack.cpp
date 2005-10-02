@@ -209,6 +209,30 @@ bool WaveTrack::ConvertToSampleFormat(sampleFormat format)
    return true;
 }
 
+bool WaveTrack::IsEmpty(double t0, double t1)
+{
+   WaveClipList::Node* it;
+
+   //printf("Searching for overlap in %.6f...%.6f\n", t0, t1);
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();
+
+      if (clip->GetStartTime() < t1-(1.0/mRate) &&
+          clip->GetEndTime()-(1.0/mRate) > t0) {
+         //printf("Overlapping clip: %.6f...%.6f\n",
+         //       clip->GetStartTime(),
+         //       clip->GetEndTime());
+         // We found a clip that overlaps this region
+         return false;
+      }
+   }
+   //printf("No overlap found\n");
+
+   // Otherwise, no clips overlap this region
+   return true;
+}
+
 bool WaveTrack::Cut(double t0, double t1, Track **dest)
 {
    if (t1 < t0)
@@ -218,6 +242,17 @@ bool WaveTrack::Cut(double t0, double t1, Track **dest)
    if (!Copy(t0, t1, dest))
       return false;
    return Clear(t0, t1);
+}
+
+bool WaveTrack::SplitCut(double t0, double t1, Track **dest)
+{
+   if (t1 < t0)
+      return false;
+
+   // SplitCut is the same as 'Copy', then 'SplitDelete'
+   if (!Copy(t0, t1, dest))
+      return false;
+   return SplitDelete(t0, t1);
 }
 
 bool WaveTrack::CutAndAddCutLine(double t0, double t1, Track **dest)
@@ -333,19 +368,25 @@ bool WaveTrack::Paste(double t0, Track *src)
 
    //printf("paste: we have at least one clip\n");
 
-   // Make room for the pasted data
+   double insertDuration = other->GetEndTime();
    WaveClipList::Node* it;
 
-   double insertDuration = other->GetEndTime();
+   //printf("Check if we need to make room for the pasted data\n");
+   
+   // Make room for the pasted data, unless the space being pasted in is empty of
+   // any clips
+   if (!IsEmpty(t0, t0+insertDuration-1.0/mRate)) {
 
-   for (it=GetClipIterator(); it; it=it->GetNext())
-   {
-      WaveClip* clip = it->GetData();
+      for (it=GetClipIterator(); it; it=it->GetNext())
+      {
+         WaveClip* clip = it->GetData();
 
-      //printf("paste: ofsetting already existing clip %i by %f seconds\n", (int)clip, insertDuration);
+         //printf("paste: offsetting already existing clip %i by %f seconds\n",
+         //(int)clip, insertDuration);
 
-      if (clip->GetStartTime() > t0)
-         clip->Offset(insertDuration);
+         if (clip->GetStartTime() > t0-(1.0/mRate))
+            clip->Offset(insertDuration);
+      }
    }
 
    if (other->GetNumClips() == 1)
@@ -359,8 +400,15 @@ bool WaveTrack::Paste(double t0, Track *src)
       {
          WaveClip *clip = it->GetData();
 
-         if (t0+src->GetEndTime() >= clip->GetStartTime() && t0 <= clip->GetEndTime())
+         // The 1.0/mRate is the time for one sample - kind of a fudge factor,
+         // because an overlap of less than a sample shoudl not trigger
+         // traditional behaviour.
+
+         if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
+             t0 < clip->GetEndTime() - 1.0/mRate)
          {
+            //printf("t0=%.6f: inside clip is %.6f ... %.6f\n",
+            //       t0, clip->GetStartTime(), clip->GetEndTime());
             insideClip = clip;
             break;
          }
@@ -369,7 +417,7 @@ bool WaveTrack::Paste(double t0, Track *src)
       if (insideClip)
       {
          // Exhibit traditional behaviour
-         // printf("paste: traditional behaviour\n");
+         //printf("paste: traditional behaviour\n");
          return insideClip->Paste(t0, other->GetClipByIndex(0));
       }
 
@@ -377,7 +425,7 @@ bool WaveTrack::Paste(double t0, Track *src)
    }
 
    // Insert new clips
-   // printf("paste: multi clip mode!\n");
+   //printf("paste: multi clip mode!\n");
    
    for (it=other->GetClipIterator(); it; it=it->GetNext())
    {
@@ -393,21 +441,34 @@ bool WaveTrack::Paste(double t0, Track *src)
 
 bool WaveTrack::Clear(double t0, double t1)
 {
-   return ClearWithCutLines(t0, t1, false);
+   bool addCutLines = false;
+   bool split = false;
+   return HandleClear(t0, t1, addCutLines, split);
 }
 
 bool WaveTrack::ClearAndAddCutLine(double t0, double t1)
 {
-   return ClearWithCutLines(t0, t1, true);
+   bool addCutLines = true;
+   bool split = false;
+   return HandleClear(t0, t1, addCutLines, split);
 }
 
-bool WaveTrack::ClearWithCutLines(double t0, double t1, bool addCutLines)
+bool WaveTrack::SplitDelete(double t0, double t1)
+{
+   bool addCutLines = false;
+   bool split = true;
+   return HandleClear(t0, t1, addCutLines, split);
+}
+
+bool WaveTrack::HandleClear(double t0, double t1,
+                            bool addCutLines, bool split)
 {
    if (t1 < t0)
       return false;
 
    WaveClipList::Node* it;
    WaveClipList clipsToDelete;
+   WaveClipList clipsToAdd;
 
    for (it=GetClipIterator(); it; it=it->GetNext())
    {
@@ -427,14 +488,45 @@ bool WaveTrack::ClearWithCutLines(double t0, double t1, bool addCutLines)
                return false;
          } else
          {
-            if (!clip->Clear(t0,t1))
-               return false;
+            if (split) {
+               // Three cases:
+
+               if (t0 <= clip->GetStartTime()) {
+                  // Delete from the left edge
+                  clip->Clear(clip->GetStartTime(), t1);
+                  clip->Offset(t1-clip->GetStartTime());
+               } else
+               if (t1 >= clip->GetEndTime()) {
+                  // Delete to right edge
+                  clip->Clear(t0, clip->GetEndTime());
+               } else
+               {
+                  // Delete in the middle of the clip...we actually create two
+                  // new clips out of the left and right halves...
+
+                  WaveClip *left = new WaveClip(*clip);
+                  left->Clear(t0, clip->GetEndTime());
+                  clipsToAdd.Append(left);
+
+                  WaveClip *right = new WaveClip(*clip);
+                  right->Clear(clip->GetStartTime(), t1);
+                  right->Offset(t1-clip->GetStartTime());
+                  clipsToAdd.Append(right);
+
+                  clipsToDelete.Append(clip);
+               }
+            }
+            else {
+               if (!clip->Clear(t0,t1))
+                  return false;
+            }
          }
       } else
       if (clip->GetStartTime() >= t1)
       {
-         // Clip is "behind" the region -- offset it
-         clip->Offset(-(t1-t0));
+         // Clip is "behind" the region -- offset it unless we're splitting
+         if (!split)
+            clip->Offset(-(t1-t0));
       }
    }
 
@@ -442,6 +534,11 @@ bool WaveTrack::ClearWithCutLines(double t0, double t1, bool addCutLines)
    {
       mClips.DeleteObject(it->GetData());
       delete it->GetData();
+   }
+
+   for (it=clipsToAdd.GetFirst(); it; it=it->GetNext())
+   {
+      mClips.Append(it->GetData());
    }
 
    return true;
@@ -499,13 +596,7 @@ bool WaveTrack::InsertSilence(double t, double len)
    {
       // Special case if there is no clip yet
       WaveClip* clip = CreateClip();
-      bool result = clip->GetSequence()->InsertSilence(0, (sampleCount)floor(len * mRate + 0.5));
-      if (result)
-      {
-         clip->GetEnvelope()->InsertSpace(0, len);
-         clip->MarkChanged();
-      }
-      return result;
+      return clip->InsertSilence(0, len);
    }
 
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
@@ -515,18 +606,61 @@ bool WaveTrack::InsertSilence(double t, double len)
          clip->Offset(len);
       else if (clip->GetEndTime() > t)
       {
-         longSampleCount s0;
-         clip->TimeToSamplesClip(t, &s0);
-         sampleCount slen = (sampleCount)floor(len * mRate + 0.5);
-         
-         if (!clip->GetSequence()->InsertSilence(s0, slen))
-         {
-            wxASSERT(false);
-            return false;
-         }
-         clip->GetEnvelope()->InsertSpace(t, len);
-         clip->MarkChanged();
+         return clip->InsertSilence(t, len);
       }
+   }
+
+   return true;
+}
+
+bool WaveTrack::Join(double t0, double t1)
+{
+   // Merge all WaveClips overlapping selection into one
+
+   WaveClipList::Node* it;
+   WaveClipList clipsToDelete;
+   WaveClip *newClip;
+
+   for (it=GetClipIterator(); it; it=it->GetNext())
+   {
+      WaveClip *clip = it->GetData();   
+
+      if (clip->GetStartTime() < t1-(1.0/mRate) &&
+          clip->GetEndTime()-(1.0/mRate) > t0) {
+
+         // Put in sorted order
+         int i;
+         for(i=0; i<clipsToDelete.GetCount(); i++)
+            if (clipsToDelete[i]->GetStartTime() > clip->GetStartTime())
+               break;
+         //printf("Insert clip %.6f at position %d\n", clip->GetStartTime(), i);
+         clipsToDelete.Insert(i, clip);
+      }
+   }
+
+   newClip = CreateClip();
+   double t = clipsToDelete[0]->GetOffset();
+   newClip->SetOffset(t);
+   for(it=clipsToDelete.GetFirst(); it; it=it->GetNext()) 
+   {
+      WaveClip *clip = it->GetData();
+
+      //printf("t=%.6f adding clip (offset %.6f, %.6f ... %.6f)\n",
+      //       t, clip->GetOffset(), clip->GetStartTime(), clip->GetEndTime());
+
+      if (clip->GetOffset() - t > (1.0 / mRate)) {
+         double addedSilence = (clip->GetOffset() - t);
+         //printf("Adding %.6f seconds of silence\n");
+         newClip->InsertSilence(t, addedSilence);
+         t += addedSilence;
+      }
+
+      //printf("Pasting at %.6f\n", t);
+      newClip->Paste(t, clip);
+      t = newClip->GetEndTime();      
+
+      mClips.DeleteObject(clip);
+      delete clip;
    }
 
    return true;

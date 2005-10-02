@@ -104,6 +104,10 @@ public:
    // Paste data from other clip
    bool Paste(double t0, WaveClip* other);
 
+   // Insert silence - note that this is an efficient operation for
+   // large amounts of silence
+   bool InsertSilence(double t, double len);
+
    // Get access to cut lines list
    WaveClipList* GetCutLines() { return &mCutLines; }
 

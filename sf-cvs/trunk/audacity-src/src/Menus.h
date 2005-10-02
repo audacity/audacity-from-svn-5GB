@@ -21,6 +21,7 @@ void CommandManagerListCallback(void *fptr, int index);
 
 void CreateMenusAndCommands();
 
+void CreateRecentFilesMenu(CommandManager *c);
 void ModifyExportMenus();
 void ModifyUndoMenus();
 //void ModifyToolbarMenus();
@@ -128,16 +129,19 @@ void OnRedo();
 void OnHistory();
 
 void OnCut();
+void OnSplitCut();
 void OnCopy();
 void OnPaste();
 void OnPasteOver();
 void OnTrim();
 
 void OnDelete();
+void OnSplitDelete();
 void OnSilence();
 
 void OnSplit();
 void OnSplitLabels();
+void OnJoin();
 void OnDuplicate();
 
 void OnSelectAll();
