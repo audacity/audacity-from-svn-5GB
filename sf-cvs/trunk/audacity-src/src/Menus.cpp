@@ -150,6 +150,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags(wxT("New"), 0, 0);
    c->AddItem(wxT("Open"),           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags(wxT("Open"), 0, 0);
+
+   #ifdef __WXMAC__
+   CreateRecentFilesMenu(c);
+   #endif
+
    c->AddItem(wxT("Close"),          _("&Close\tCtrl+W"),                 FN(OnClose));
 	if( !mCleanSpeechMode )
 	{
@@ -243,23 +248,9 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
   #endif
 
-   // Recent Files and Recent Projects menus
-   wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
-   c->EndSubMenu();
-   // TODO - read the number of files to store in history from preferences
-   mRecentFiles = new wxFileHistory();
-   mRecentFiles->UseMenu(pm);
-   gPrefs->SetPath(wxT("/RecentFiles"));
-   mRecentFiles->Load(*gPrefs);
-   gPrefs->SetPath(wxT(".."));
-//   pm = c->BeginSubMenu(_("Recent Pro&jects..."));
-//   c->EndSubMenu();
-//   mRecentProjects = new audFileHistory(6, 6050);
-//   mRecentProjects->UseMenu(pm);
-//	  gPrefs->SetPath(wxT("/RecentProjects");
-//   mRecentProjects->Load(*gPrefs);
-//   gPrefs->SetPath(wxT("..");
-   c->AddSeparator();
+   #ifndef __WXMAC__
+   CreateRecentFilesMenu(c);
+   #endif
 
    // On the Mac, the Exit item doesn't actually go here...wxMac will pull it out
    // and put it in the Audacity menu for us based on its ID.
@@ -302,6 +293,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem(wxT("Cut"),            _("Cu&t\tCtrl+X"),                   FN(OnCut));
+   c->AddItem(wxT("SplitCut"),       _("Split Cut\tCtrl+Alt+X"),          FN(OnSplitCut));
    c->AddItem(wxT("Copy"),           _("&Copy\tCtrl+C"),                  FN(OnCopy)); 
    c->AddItem(wxT("Paste"),          _("&Paste\tCtrl+V"),                 FN(OnPaste));
    c->SetCommandFlags(wxT("Paste"),
@@ -310,12 +302,15 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Trim"),           _("&Trim\tCtrl+T"),                  FN(OnTrim));
    c->AddSeparator();
    c->AddItem(wxT("Delete"),         _("&Delete\tCtrl+K"),                FN(OnDelete));
+   c->AddItem(wxT("SplitDelete"),    _("Split Delete\tCtrl+Alt+K"),       FN(OnSplitDelete));
    c->AddItem(wxT("Silence"),        _("&Silence\tCtrl+L"),               FN(OnSilence));
    c->AddSeparator();
    c->AddItem(wxT("Split"),          _("Spl&it"),                         FN(OnSplit));
    c->SetCommandFlags(wxT("Split"),
       AudioIONotBusyFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
+
+   c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
    
    c->AddItem(wxT("Duplicate"),      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
 
@@ -675,6 +670,37 @@ void AudacityProject::CreateMenusAndCommands()
 
    mSel0save = 0;
    mSel1save = 0;
+}
+
+void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
+{
+   // Recent Files and Recent Projects menus
+   
+   #ifdef __WXMAC__
+      /* i18n-hint: This is the name of the menu item on Mac OS X only */
+      wxMenu* pm = c->BeginSubMenu(_("Open Recent"));
+   #else
+      /* i18n-hint: This is the name of the menu item on Windows and Linux */
+      wxMenu* pm = c->BeginSubMenu(_("Recent &Files..."));
+   #endif
+
+   c->EndSubMenu();
+   // TODO - read the number of files to store in history from preferences
+   mRecentFiles = new wxFileHistory();
+   mRecentFiles->UseMenu(pm);
+   gPrefs->SetPath(wxT("/RecentFiles"));
+   mRecentFiles->Load(*gPrefs);
+   gPrefs->SetPath(wxT(".."));
+
+   //   pm = c->BeginSubMenu(_("Recent Pro&jects..."));
+   //   c->EndSubMenu();
+   //   mRecentProjects = new audFileHistory(6, 6050);
+   //   mRecentProjects->UseMenu(pm);
+   //	  gPrefs->SetPath(wxT("/RecentProjects");
+   //   mRecentProjects->Load(*gPrefs);
+   //   gPrefs->SetPath(wxT("..");
+
+   c->AddSeparator();
 }
 
 // TIDY-ME: Replace indices by function pointers.
@@ -1896,6 +1922,10 @@ void AudacityProject::OnCut()
    Track *n = iter.First();
    Track *dest;
 
+   // This doesn't handle cutting labels, it handles
+   // cutting the _text_ inside of labels, i.e. if you're
+   // in the middle of editing the label text and select "Cut".
+
    while (n) {
       if (n->GetSelected()) {
          if (n->GetKind() == Track::Label) {
@@ -1908,7 +1938,6 @@ void AudacityProject::OnCut()
       n = iter.Next();
    }
    
-
    ClearClipboard();
    n = iter.First();
    while (n) {
@@ -1946,6 +1975,46 @@ void AudacityProject::OnCut()
    mTrackPanel->Refresh(false);
 }
 
+
+void AudacityProject::OnSplitCut()
+{
+   TrackListIterator iter(mTracks);
+   Track *n = iter.First();
+   Track *dest;
+
+   ClearClipboard();
+   n = iter.First();
+   while (n) {
+      if (n->GetSelected()) {
+         dest = NULL;
+         if (n->GetKind() == Track::Wave)
+         {
+            ((WaveTrack*)n)->SplitCut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         } else
+         {
+            n->Cut(mViewInfo.sel0, mViewInfo.sel1, &dest);
+         }
+         if (dest) {
+            dest->SetChannel(n->GetChannel());
+            dest->SetLinked(n->GetLinked());
+            dest->SetName(n->GetName());
+            if (n->GetKind() == Track::Wave) {
+               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
+            }
+            msClipboard->Add(dest);
+         }
+      }
+      n = iter.Next();
+   }
+
+   msClipLen = (mViewInfo.sel1 - mViewInfo.sel0);
+   msClipProject = this;
+
+   PushState(_("Split-cut to the clipboard"), _("Split Cut"));
+
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
 
 
 void AudacityProject::OnCopy()
@@ -2083,12 +2152,10 @@ void AudacityProject::OnPaste()
 
    // Otherwise, paste into the selected tracks.
 
-   if (mViewInfo.sel0 != mViewInfo.sel1)
-      Clear();
-
-   wxASSERT(mViewInfo.sel0 == mViewInfo.sel1);
-
-   double tsel = mViewInfo.sel0;
+   // This old logic is no longer necessary now that we have WaveClips:
+   //
+   double t0 = mViewInfo.sel0;
+   double t1 = mViewInfo.sel1;
 
    TrackListIterator iter(mTracks);
    TrackListIterator clipIter(msClipboard);
@@ -2101,7 +2168,17 @@ void AudacityProject::OnPaste()
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Lock();
 
-         n->Paste(tsel, c);
+         if (n->GetKind() == Track::Wave) {
+            //printf("Checking to see if we need to pre-clear the track\n");
+            if (!((WaveTrack *) n)->IsEmpty(t0, t1)) {
+               ((WaveTrack *) n)->Clear(t0, t1);
+            }
+         }
+         else {
+            ((WaveTrack *) n)->Clear(t0, t1);
+         }
+         
+         n->Paste(t0, c);
 
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Unlock();
@@ -2114,8 +2191,8 @@ void AudacityProject::OnPaste()
 
    // TODO: What if we clicked past the end of the track?
 
-   mViewInfo.sel0 = tsel;
-   mViewInfo.sel1 = tsel + msClipLen;
+   mViewInfo.sel0 = t0;
+   mViewInfo.sel1 = t0 + msClipLen;
 
    PushState(_("Pasted from the clipboard"), _("Paste"));
 
@@ -2160,11 +2237,60 @@ void AudacityProject::OnTrim()
    PushState(_("Trim file to selection"), _("Trim"));
 }
 
-
-
 void AudacityProject::OnDelete()
 {
    Clear();
+}
+
+void AudacityProject::OnSplitDelete()
+{
+   TrackListIterator iter(mTracks);
+
+   Track *n = iter.First();
+
+   while (n) {
+      if (n->GetSelected()) {
+         if (n->GetKind() == Track::Wave)
+         {
+            ((WaveTrack*)n)->SplitDelete(mViewInfo.sel0, mViewInfo.sel1);
+         }
+         else {
+            n->Silence(mViewInfo.sel0, mViewInfo.sel1);
+         }
+      }
+      n = iter.Next();
+   }
+
+   PushState(wxString::Format(_("Split-deleted %.2f seconds at t=%.2f"),
+                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel0),
+             _("Split Delete"));
+   FixScrollbars();
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnJoin()
+{
+   TrackListIterator iter(mTracks);
+
+   Track *n = iter.First();
+
+   while (n) {
+      if (n->GetSelected()) {
+         if (n->GetKind() == Track::Wave)
+         {
+            ((WaveTrack*)n)->Join(mViewInfo.sel0, mViewInfo.sel1);
+         }
+      }
+      n = iter.Next();
+   }
+
+   PushState(wxString::Format(_("Joined %.2f seconds at t=%.2f"),
+                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel0),
+             _("Join"));
+   FixScrollbars();
+   mTrackPanel->Refresh(false);   
 }
 
 void AudacityProject::OnSilence()
