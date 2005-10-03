@@ -83,6 +83,7 @@ OBJS = \
 	TranscriptionToolBar.o \
 	ToolBar.o \
 	UndoManager.o \
+	UploadDialog.o \
 	VoiceKey.o \
 	WaveClip.o \
 	WaveTrack.o \

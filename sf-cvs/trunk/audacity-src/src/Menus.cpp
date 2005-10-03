@@ -46,6 +46,7 @@
 #include "FreqWindow.h"
 #include "Prefs.h"
 #include "Printing.h"
+#include "UploadDialog.h"
 #include "NoteTrack.h"
 #include "Tags.h"
 #include "Mix.h"
@@ -222,6 +223,9 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("BatchProcess"),     _("Process Batch..."),   FN(OnBatch));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
    }
+
+   c->AddSeparator();
+   c->AddItem("Upload File",      _("&Upload File..."),            FN(OnUpload));
 
    if( !mCleanSpeechMode )
 	{
@@ -1730,6 +1734,15 @@ void AudacityProject::OnSaveAs()
 void AudacityProject::OnExit()
 {
    QuitAudacity();
+}
+
+void AudacityProject::OnUpload()
+{
+   //if (mTags->ShowEditDialog(this, _("Edit ID3 Tags (for MP3 exporting)")))
+   //   PushState(_("Edit ID3 tags"), _("Edit ID3 Tags"));
+
+   UploadDialog dlog(this);
+   dlog.ShowModal();
 }
 
 void AudacityProject::OnExportLabels()
