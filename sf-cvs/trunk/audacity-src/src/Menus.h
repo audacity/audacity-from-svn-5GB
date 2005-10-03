@@ -115,6 +115,8 @@ void OnExportMultiple();
 
 void OnExportLabels();
 
+void OnUpload();
+
 void OnPreferences();
 
 void OnPageSetup();
