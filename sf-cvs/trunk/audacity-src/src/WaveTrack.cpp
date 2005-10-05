@@ -1106,8 +1106,11 @@ WaveClip* WaveTrack::CreateClip()
 
 WaveClip* WaveTrack::GetLastOrCreateClip()
 {
-   if (mClips.IsEmpty())
-      return CreateClip();
+   if (mClips.IsEmpty()) {
+      WaveClip *clip = CreateClip();
+      clip->SetOffset(mOffset);
+      return clip;
+   }
    else
       return mClips.GetLast()->GetData();
 }
