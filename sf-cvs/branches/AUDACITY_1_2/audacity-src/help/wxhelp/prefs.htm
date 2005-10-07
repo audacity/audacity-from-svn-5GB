@@ -16,31 +16,28 @@
 <li><b>Playback Device</b> - Use this control to select the device
     that will be used for playback / audio output.  This is usually
     only applicable if your computer has more than one sound card.
-    <p>
+    <p></li>
 
 <li><b>Recording Device</b> - Select the devce that will be used
     for recording / audio input.  Note that many devices have
     multiple <i>sources</i> such as Microphone and Line in - to
     select the input source you will need to use the 
-    <a href="toolbar_mixer.htm">Mixer Toolbar</a>.
-    <p>
+    <a href="toolbar_mixer.htm">Mixer Toolbar</a>.<br><p>
     For finer control over audio I/O, open your system's Sound
     control panel or the control panel that came with your
     sound card.
-    <p>
-
+    <p></li>
 <li><b>Recording Channels</b> - Use this to select the number of
     channels to record simultaneously.  Select 1 for mono and
     2 for stereo.  Audacity will support recording more simultaneous
     channels, but note that most sound cards only support stereo, and
     even if your sound card supports more than 2 inputs, you need a
     fast computer and a large, fast hard disk to record many channels
-    for a long time.
-    <p>
+    for a long time.<p>
     Mono recording is not the same on all computers or sound cards.
     Sometimes recording mono only records the left channel, and sometimes
     it mixes the left and right channels.
-    <p>
+    <p></li>
 
 <li><b>Play other tracks while recording new one</b> - 
     When this box is checked, Audacity will play existing tracks
@@ -55,12 +52,20 @@
     minimize it even more.  To fix it, you will need to grab the
     <a href="toolbar_control.htm">Time Shift</a> tool and slide one
     of the tracks around until it sounds right.
-    <p>
-    Note that this is not the same as <b>playthrough</b>, which means
-    having the computer play the track that you are currently recording,
-    as you are recording it.  You may be able to enable this using your
-    operating system's Mixer or Sound control panel, but Audacity
-    does not have an option to turn on Playthrough directly.
+    <p></li>
+    <li><b>Hardware Playthrough</b> (Mac Only) - plays the audio you are
+    recording straight back out to your headphones or speakers so you can
+    hear it. This option is done in harware, so it is fast and doesn't
+    consume resources. However, it is only possibly if input and output
+    are on the same sound device.
+    <br/>PC users can do the same thing in their volume control
+    settings, turning up the relevant audio input.<p></li>
+    <li><b>Software Playthrough</b> - Does the same thing as hardware
+    playthrough, but in software. This means that the audio you hear may be
+    slightly delayed relative to the input, and activating this option
+    will use some more system resources. However, it works on all systems, 
+    even if you are recording from one device and playing back through
+    another.<p></li>
 </ul>
 
 <font color="#000099">
@@ -185,7 +190,7 @@ This dialog lets you adjust some of the settings for these spectrograms.
 <ul>
 <li><b>FFT Size</b> - The size of the Fast Fourier Transform (FFT)
     affects how much vertical (frequency) detail you see.  Larger
-    FFT sizes give you more bass resolution and less temporal
+    FFT sizes give you more bass resolution and less temporal (timing)
     resolution, and they are slower.
 
 <li><b>Grayscale</b> - Select this for gray spectrograms instead of

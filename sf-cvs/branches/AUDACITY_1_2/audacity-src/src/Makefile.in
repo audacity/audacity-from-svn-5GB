@@ -82,6 +82,7 @@ OBJS = \
 	$(OBJDIR)/commands/Keyboard.o \
 	$(OBJDIR)/effects/Effect.o \
 	$(OBJDIR)/effects/SimpleMono.o \
+	$(OBJDIR)/effects/TwoPassSimpleMono.o \
 	$(OBJDIR)/effects/SimplePairedTwoTrack.o \
 	$(OBJDIR)/effects/SoundTouchEffect.o \
 	$(OBJDIR)/effects/LoadEffects.o \
@@ -90,6 +91,7 @@ OBJS = \
 	$(OBJDIR)/effects/ChangePitch.o \
 	$(OBJDIR)/effects/ChangeSpeed.o \
 	$(OBJDIR)/effects/ChangeTempo.o \
+	$(OBJDIR)/effects/ClickRemoval.o \
 	$(OBJDIR)/effects/Compressor.o \
 	$(OBJDIR)/effects/Echo.o \
 	$(OBJDIR)/effects/Equalization.o \

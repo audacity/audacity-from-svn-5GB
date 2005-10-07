@@ -41,7 +41,7 @@ class EffectBassBoost:public EffectSimpleMono {
    EffectBassBoost();
 
    virtual wxString GetEffectName() {
-      return wxString(_("BassBoost..."));
+      return wxString(_("Bass Boost..."));
    }
    
    virtual wxString GetEffectAction() {

@@ -22,11 +22,11 @@ class wxString;
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/intl.h>
-#include "SimpleMono.h"
+#include "TwoPassSimpleMono.h"
 
 class WaveTrack;
 
-class EffectCompressor: public EffectSimpleMono {
+class EffectCompressor: public EffectTwoPassSimpleMono {
    
 public:
    
@@ -41,13 +41,17 @@ public:
    }
    
    virtual bool PromptUser();
-   
+
  protected:
    virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+   int       pass;			//MJS
+   double    mMax;			//MJS
 
  private:
 
    bool NewTrackSimpleMono();
+   bool InitFirstPass();
+   bool InitSecondPass();
 
    float AvgCircle(float x);
    void Follow(float x, double *outEnv, int maxBack);
@@ -56,10 +60,9 @@ public:
    double    mAttackTime;
    double    mThresholdDB;
    double    mRatio;
-   bool      mUseGain;
+   bool      mNormalize;	//MJS
    
    double    mDecayTime;
-   double    mGainDB;
    double    mAttackFactor;
    double    mDecayFactor;
    double    mFloor;
