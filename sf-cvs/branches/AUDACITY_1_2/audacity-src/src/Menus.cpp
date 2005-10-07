@@ -203,18 +203,16 @@ void AudacityProject::CreateMenusAndCommands()
    // not including these menus at all.  In wx 2.5 and higher, we
    // include them, but wxMac automatically moves them to the appropriate
    // place.
+   // Moved Preferences to Edit Menu 02/09/05 Richard Ash.
 
 #ifdef __WXMAC__
  #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
    // Leave these menus out entirely...
  #else
-   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
    c->SetCommandFlags("Exit", 0, 0);
  #endif
 #else
-   c->AddSeparator();
-   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
    c->AddSeparator();
 
    c->AddItem("Exit",           _("E&xit"),                          FN(OnExit));
@@ -315,10 +313,33 @@ void AudacityProject::CreateMenusAndCommands()
    wxString dummy3 = _("Turn Grid Snap On");
    wxString dummy4 = _("Turn Grid Snap Off");
 
+   // On Mac OS X, Preferences and Quit are in the application menu,
+   // not the File menu.  In wx 2.4 and lower, we handle this by
+   // not including these menus at all.  In wx 2.5 and higher, we
+   // include them, but wxMac automatically moves them to the appropriate
+   // place.
+   // Moved Preferences from File Menu 02/09/05 Richard Ash.
+
+#ifdef __WXMAC__
+ #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
+   // Leave these menus out entirely...
+ #else
+   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   c->SetCommandFlags("Preferences", AudioIONotBusyFlag, AudioIONotBusyFlag);
+
+ #endif
+#else
+   c->AddSeparator();
+   c->AddItem("Preferences",    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+   c->SetCommandFlags("Preferences", AudioIONotBusyFlag, AudioIONotBusyFlag);
+   /* enabled whenever transport isn't running */
+  #endif
+
+   
    c->EndMenu();
 
    //
-   // Edit Menu
+   // View Menu
    //
 
    c->BeginMenu(_("&View"));
@@ -341,10 +362,6 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem("UndoHistory",    _("&History..."),               FN(OnHistory));
-   c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
-   c->SetCommandFlags("PlotSpectrum",
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
    c->AddSeparator();
    c->AddItem("FloatControlTB", _("Float Control Toolbar"),          FN(OnFloatControlToolBar));
    c->AddItem("FloatEditTB",    _("Float Edit Toolbar"),             FN(OnFloatEditToolBar));
@@ -475,7 +492,14 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    c->BeginMenu(_("&Analyze"));
+	/* plot spectrum moved from view */
+   c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
+   c->SetCommandFlags("PlotSpectrum",
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
 
+   c->AddSeparator();
+	
    effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
    if(effects->GetCount()){
       names.Clear();
@@ -499,7 +523,8 @@ void AudacityProject::CreateMenusAndCommands()
    /* i18n-hint: The name of the Help menu */
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
-   c->AddItem("Help",           _("&Online Help..."),             FN(OnHelp));
+   c->AddItem("Help",           _("&Contents..."),             FN(OnHelp));
+   /* i18n-hint: The option to read the installed help file */
    c->AddSeparator();   
    c->AddItem("About",          _("&About Audacity..."),          FN(OnAbout));
 

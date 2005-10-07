@@ -100,26 +100,25 @@ commands instead.</p>
 <p class=a>For more information on the project file format,
 see <a href="fileformats.html#aup">the file formats page</a>.</p>
 
-
-
-	</td>
-	<td valign=top width="50%">
-
-
-
 <a name="export"></a>
 <p class=menuref_item>Export As WAV...</p>
 <p class=a>Exports the current Audacity project as a standard audio file format such as
-<a href="fileformats.html#wav">WAV</a>&nbsp;&nbsp;or&nbsp;&nbsp;<a href="fileformats.html#aiff">AIFF</a>.</p>
+<a href="fileformats.html#wav">WAV</a>&nbsp;or&nbsp;<a href="fileformats.html#aiff">AIFF</a>.</p>
 <p class=a>You can change the format of exported files in the
 <a href="prefs.html">Preferences</a> dialog.</p>
 
-<p class=a>If there are multiple tracks of the same channel in your project,
+<p class=a>If there are multiple tracks in your project,
 they will be automatically mixed in the exported data.  For more
 information about mixing, see <a href="menu_project.html#quickmix">Quick Mix</a>.</p>
 
 <p class=a>To export only a single track or part of a track,
 use <a href="#exportsel">Export Selection</a>.</p>
+
+
+<!-- end of first column -->
+	</td>
+	<td valign=top width="50%">
+		<!-- start of second column -->
 
 <a name="exportsel"></a>
 <p class=menuref_item>Export Selection As WAV...</p>
@@ -150,11 +149,11 @@ a separate file.  See <a href="exportmp3.html">Exporting MP3 Files</a>.</p>
 <p class=a>Exports the current Audacity project as an Ogg Vorbis file.
 
 <p class=a>To export only a single track or part of track,
-use <a href="#exportselmp3">Export Selection as Ogg</a>.</p>
+use <a href="#exportselogg">Export Selection as Ogg</a>.</p>
 
 <a name="exportselogg"></a>
 <p class=menuref_item>Export Selection As OGG...</p>
-<p class=a>This is the same as <a href="#exportmp3">Export As OGG</a>, but it only
+<p class=a>This is the same as <a href="#exportogg">Export As OGG</a>, but it only
 exports the part of the project that is selected.  This is very
 useful if you want to save a small clip from part of a track as
 a separate file.
@@ -168,6 +167,13 @@ and export the annotation to be later processed by another program.</p>
 <p class=a>To import these labels into a different project later, use the
 <a href="menu_project.html#importlabels">Import Labels</a> command.</p>
 
+<a name="exportmultiple"></a>
+<p class=menuref_item>Export Multiple...</p>
+<a class=a>This allows you to do multiple exports from audacity with one command
+	based either on multiple tracks in the project or labels in a single
+	audio track. It's great for splitting up long recordings into CD tracks
+	<!-- need to add link to instructions to here --></p>
+
 <a name="prefs"></a>
 <p class=menuref_item>Preferences</p>
 <p class=a>Opens a dialog window that lets you configure Audacity.
@@ -177,7 +183,8 @@ the section on <a href="prefs.html">Audacity Preferences</a>.</p>
 <a name="exit"></a>
 <p class=menuref_item>Exit/Quit</p>
 <p class=a>Closes all project windows and exits Audacity.
-It will ask you if you want to save changes to your project.  It is not necessary for
+It will ask you if you want to save changes to your project. 
+It is not necessary for
 you to save changes if you just exported your file as WAV or MP3 and
 you are finished working with it.  On the other hand, if you are
 working on a mix and plan to continue where you left off, saving an

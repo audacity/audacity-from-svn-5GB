@@ -66,7 +66,7 @@ bool EffectBassBoost::NewTrackSimpleMono()
 
 bool EffectBassBoost::PromptUser()
 {
-   BassBoostDialog dlog(this, mParent, -1, _("BassBoost"));
+   BassBoostDialog dlog(this, mParent, -1, _("Bass Boost"));
    dlog.freq = frequency;
    dlog.boost = dB_boost;
    dlog.TransferDataToWindow();
@@ -276,7 +276,7 @@ wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
 
    wxStaticText *item1 =
        new wxStaticText(parent, -1,
-                        _("BassBoost by Nasca Octavian Paul"),
+                        _("Bass Boost by Nasca Octavian Paul"),
                         wxDefaultPosition, wxDefaultSize, 0);
    item0->Add(item1, 0, wxALIGN_CENTRE | wxALL, 5);
 

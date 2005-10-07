@@ -14,11 +14,14 @@
 <br><p>
 
 The Meter Toolbar is used for monitoring the input and output audio
-levels.  Typically it is used to make sure that the average volume
-is as loud as possible (for maximum fidelity) without clipping.
+levels.  Typically it is used to make sure that the loudest volume
+is as loud as possible (for maximum fidelity) without clipping or 
+distorting it.
 The output (playback) meter is the green one, on the left pictured
 above, and the input (recording) meter is in red, on the right.
-
+<br>
+It toolbar provides a visual indication of the current audio levels going
+in and out of audacity.
 <p>
 
 If you float the Meter Toolbar, either by dragging it out of the toolbar
@@ -36,19 +39,26 @@ you start recording.
 
 <p>
 
-Each meter shows several characteristics of the audio level at once.
-For stereo, the top bar shows the left channel, and the bottom bar shows
-the right channel.  The brightest part of the bar shows the average audio
-level.  The darker part of the bar shows the peak audio level.  The
-peak-hold line to the right of this shows the maximum audio level achieved
-in the last 3 seconds.  Finally, the clipping indicators on the far right of
-each meter will light up if clipping is detected (meaning that the audio
-was too loud and will sound distorted).  If clipping is detected when you
-are recording, you should stop, lower the volume of your input source, and
-start recording again from the start.
-
+Each meter shows several characteristics of the audio level at once:
+<ul>
+	<li>The right hand end of the meter corresponds to the point at
+	which the audio will be clipped, and the left hand end is silence</li>
+	<li>For stereo, the top bar shows the left channel, and the bottom
+	bar shows the right channel.</li>
+	<li>The brightest part of the bar shows the average audio
+	level (related to the loudness) and the darker part of the 
+	bar shows the peak audio level.</li>
+	<li>The peak-hold line to the right of this shows the maximum
+	audio level achieved in the last 3 seconds.</li>
+	<li>Finally, the clipping indicators on the far right of
+	each meter will light up if clipping is detected (meaning that
+	the audio was too loud and will sound distorted).</li></ul>
 <p>
-
+If clipping is detected when you are recording, you should stop, lower
+the volume of your input source, and start recording again from the start.
+If the output meter clips then you need to make some or all of your tracks
+quieter using the track <a href="track_audio.htm">gain control</a>.
+<br>
 If the level of the input (recording) source is too high, you can try
 to lower the input level using the <a href="toolbar_mixer.htm">Mixer
 Toolbar</a>, but if this doesn't work, you should try to lower the volume
@@ -65,8 +75,6 @@ case for you, you can disable the Meter Toolbar in the Interface tab of
 the <a href="prefs.htm">Preferences</a> dialog.
 
 <p>
-
-
 </body>
 </html>
 
