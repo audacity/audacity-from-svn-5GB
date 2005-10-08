@@ -455,7 +455,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //
 
    mSelectionBar = new SelectionBar(this, 0,  wxDefaultPosition, wxDefaultSize,
-                         mRate, this);
+                                    mRate, this);
    int statusWidth, statusHeight;
    mSelectionBar->GetSize(&statusWidth, &statusHeight);
    mSelectionBar->Move(0, top + height - statusHeight);

@@ -109,6 +109,10 @@
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 
+#include <wx/arrimpl.cpp>
+
+WX_DEFINE_OBJARRAY(TrackClipArray);
+
 //This loads the appropriate set of cursors, depending on platform.
 #include "../images/Cursors.h"
 
@@ -1369,15 +1373,32 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
       MakeParentModifyState();
       
    } else if (event.ButtonDClick(1) && !event.ShiftDown()) {
-      if (!mCapturedTrack)
-         return;
+      if (!mCapturedTrack) {
+         wxRect r;
+         int num;
+         mCapturedTrack =
+            FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+      }
 
       // Deselect all other tracks and select this one.
       SelectNone();
       
       mTracks->Select(mCapturedTrack);
+
+      // Default behavior: select whole track
       mViewInfo->sel0 = mCapturedTrack->GetOffset();
       mViewInfo->sel1 = mCapturedTrack->GetEndTime();
+
+      // Special case: if we're over a clip in a WaveTrack,
+      // select just that clip
+      if (mCapturedTrack->GetKind() == Track::Wave) {
+         WaveTrack *w = (WaveTrack *)mCapturedTrack;
+         WaveClip *selectedClip = w->GetClipAtX(event.m_x);
+         if (selectedClip) {
+            mViewInfo->sel0 = selectedClip->GetOffset();
+            mViewInfo->sel1 = selectedClip->GetEndTime();      
+         }
+      }
 
       Refresh(false);
       SetCapturedTrack( NULL );
@@ -1762,11 +1783,71 @@ void TrackPanel::StartSlide(wxMouseEvent & event, double &totalOffset,
    if (vt->GetKind() == Track::Wave && !event.ShiftDown() && !multiToolModeActive)
    {
       WaveTrack* wt = (WaveTrack*)vt;
-      mCapturedClip = wt->GetClipIndex(wt->GetClipAtX(event.m_x));
-      if (mCapturedClip == -1)
+      mCapturedClip = wt->GetClipAtX(event.m_x);
+      if (mCapturedClip == NULL)
          return;
+
+      // The captured clip is the focus, but we need to create a list
+      // of all clips that have to move, also...
+      
+      mCapturedClipArray.Clear();
+
+      double clickTime = 
+         PositionToTime(event.m_x, GetLeftOffset());
+      bool clickedInSelection =
+         (wt->GetSelected() &&
+          clickTime >= mViewInfo->sel0 &&
+          clickTime < mViewInfo->sel1);
+
+      if (clickedInSelection) {
+         // Loop through every clip and include it if it overlaps the
+         // selection.  This will get mCapturedClip (and its stereo pair)
+         // automatically
+
+         mCapturedClipIsSelection = true;
+
+         TrackListIterator iter(mTracks);
+         Track *t = iter.First();
+         while (t) {
+            if (t->GetSelected() && t->GetKind() == Track::Wave) {
+               WaveTrack *wt = (WaveTrack *)t;
+               WaveClipList::Node* it;
+               for(it=wt->GetClipIterator(); it; it=it->GetNext()) {
+                  WaveClip *clip = it->GetData();
+                  double clip0 = clip->GetStartTime();
+                  double clip1 = clip->GetEndTime();
+
+                  if (clip0 <= mViewInfo->sel1 &&
+                      clip1 >= mViewInfo->sel0) {
+                     mCapturedClipArray.Add(TrackClip(wt, clip));
+                  }
+               }               
+            }
+            t = iter.Next();
+         }
+      }
+      else {
+         // Only add mCapturedClip, and possibly its stereo partner,
+         // to the list of clips to move.
+
+         mCapturedClipIsSelection = false;
+
+         mCapturedClipArray.Add(TrackClip(wt, mCapturedClip));
+
+         Track *partner = mTracks->GetLink(wt);
+         if (partner && partner->GetKind()==Track::Wave) {
+            WaveClip *clip = ((WaveTrack *)partner)->GetClipAtX(event.m_x);
+            if (clip) {
+               mCapturedClipArray.Add(TrackClip((WaveTrack *)partner,
+                                                   clip));
+            }
+         }
+      }
+
+
    } else {
-      mCapturedClip = -1;
+      mCapturedClip = NULL;
+      mCapturedClipArray.Clear();
    }
    
    mSlideUpDownOnly = event.ControlDown();
@@ -1807,24 +1888,23 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
 
    //If the mouse is over a track that isn't the captured track,
    //drag the clip to the mousetrack
-   if (mCapturedClip >= 0 && mouseTrack && mouseTrack != mCapturedTrack)
+   if (mCapturedClip && mouseTrack && mouseTrack != mCapturedTrack &&
+       !mCapturedClipIsSelection)
    {
       // Make sure we always have the first linked track of a stereo track
       if (!mouseTrack->GetLinked() && mTracks->GetLink(mouseTrack))
          mouseTrack = (WaveTrack*)mTracks->GetLink(mouseTrack);
 
       // Move clip to new track
-      int newClipIndex = MoveClipToTrack(mCapturedClip, (WaveTrack*)mCapturedTrack, mouseTrack);
-      if (newClipIndex != -1)
-      {
-         mCapturedClip = newClipIndex;
+      if (MoveClipToTrack(mCapturedClip,
+                          (WaveTrack*)mCapturedTrack, mouseTrack)) {
          mCapturedTrack = mouseTrack;
       }
 
       Refresh(false);
    }
 
-   // Implement sliding within the track
+   // Implement sliding within the track(s)
    if (mSlideUpDownOnly)
       return;
       
@@ -1842,35 +1922,42 @@ void TrackPanel::DoSlide(wxMouseEvent & event, double &totalOffset)
    if (selend != mSelStart) {
       double amount = rint(samplerate * (selend - mSelStart)) / samplerate;
 
-      if (mCapturedClip >= 0)
+      if (mCapturedClip)
       {
-         double allowedAmount;
-         WaveClip* clip = ((WaveTrack*)mCapturedTrack)->GetClipByIndex(mCapturedClip);
-         if (((WaveTrack*)mCapturedTrack)->CanOffsetClip(clip, amount, &allowedAmount))
-            clip->Offset(amount);
-         else if (allowedAmount != 0) {
-            amount = allowedAmount;
-            clip->Offset(amount);
-         } 
-         else {
-            return;
+         double maxAllowed = amount;
+         double allowed;
+
+         unsigned int i;
+         for(i=0; i<mCapturedClipArray.GetCount(); i++) {
+            WaveTrack *track = mCapturedClipArray[i].track;
+            WaveClip *clip = mCapturedClipArray[i].clip;
+
+            if (track->CanOffsetClip(clip, maxAllowed, &allowed)) {
+               maxAllowed = allowed;
+            }
+            else
+               maxAllowed = 0.0;
          }
-      } else
-         mCapturedTrack->Offset(amount);
 
-      totalOffset += amount;
+         if (maxAllowed != 0.0) {
+            unsigned int i;
+            for(i=0; i<mCapturedClipArray.GetCount(); i++) {
+               mCapturedClipArray[i].clip->Offset(maxAllowed);
+            }
+         }
 
-      Track *link = mTracks->GetLink(mCapturedTrack);
-      if (link)
-      {
-         if (mCapturedClip >= 0) {
-            // Get linked clip
-            WaveClip* linkclip = ((WaveTrack*)link)->GetClipByIndex(mCapturedClip);
-            linkclip->Offset(amount);
-         } else  {
-            link->Offset(amount);
+         if (mCapturedClipIsSelection) {
+            // Slide the selection, too
+            mViewInfo->sel0 += maxAllowed;
+            mViewInfo->sel1 += maxAllowed;
          }
       }
+      else {
+         // For non wavetracks...
+         mCapturedTrack->Offset(amount);
+      }
+
+      totalOffset += amount;
       Refresh(false);
    }
    mSelStart = selend;
@@ -3474,8 +3561,8 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
       return;
    }
 
-   //Determine if user clicked on a label track.  If so, use MouseDown handler for 
-   //the label track.
+   //Determine if user clicked on a label track.
+   //If so, use MouseDown handler for the label track.
    int num;
    Track *pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
    
@@ -4968,8 +5055,12 @@ void TrackPanel::DisplaySelection()
    mListener->TP_DisplaySelection();
 }
 
-int TrackPanel::MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst)
+bool TrackPanel::MoveClipToTrack(WaveClip *clip,
+                                 WaveTrack* src, WaveTrack* dst)
 {
+   WaveClip *clip2 = NULL;
+   WaveTrack *src2 = NULL;
+
    // Make sure we have the first track of two stereo tracks
    // with both source and destination
    if (!src->GetLinked() && mTracks->GetLink(src))
@@ -4977,21 +5068,36 @@ int TrackPanel::MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst)
    if (!dst->GetLinked() && mTracks->GetLink(dst))
       dst = (WaveTrack*)mTracks->GetLink(dst);
 
+   if (mCapturedClipArray.GetCount() == 2) {
+      if (mCapturedClipArray[0].clip == clip) {
+         src2 = mCapturedClipArray[1].track;
+         clip2 = mCapturedClipArray[1].clip;
+      }
+      else {
+         src2 = mCapturedClipArray[0].track;
+         clip2 = mCapturedClipArray[0].clip;
+      }
+   }
+
    // Get the second track of two stereo tracks
-   WaveTrack* src2 = (WaveTrack*)mTracks->GetLink(src);
    WaveTrack* dst2 = (WaveTrack*)mTracks->GetLink(dst);
 
    if ((src2 && !dst2) || (dst2 && !src2))
-      return -1; // cannot move stereo- to mono track or other way around
+      return false; // cannot move stereo- to mono track or other way around
 
-   if (!dst->CanInsertClip(src->GetClipByIndex(clipIndex)))
-      return -1;
+   if (!dst->CanInsertClip(clip))
+      return false;
 
-   src->MoveClipToTrack(clipIndex, dst);
+   if (clip2) {
+      if (!dst2->CanInsertClip(clip2))
+         return false;
+   }
+
+   src->MoveClipToTrack(clip, dst);
    if (src2)
-      src2->MoveClipToTrack(clipIndex, dst2);
+      src2->MoveClipToTrack(clip2, dst2);
 
-   return dst->GetNumClips() - 1;
+   return true;
 }
 
 /**********************************************************************

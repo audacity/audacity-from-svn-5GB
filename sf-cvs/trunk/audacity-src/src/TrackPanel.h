@@ -47,6 +47,16 @@ struct tpBitmap
 WX_DEFINE_ARRAY(tpBitmap *, tpBitmapArray);
 WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 
+class TrackClip
+{
+ public:
+   TrackClip(WaveTrack *t, WaveClip *c) { track = t; clip = c; }
+   WaveTrack *track;
+   WaveClip *clip;
+};
+
+WX_DECLARE_OBJARRAY(TrackClip, TrackClipArray);
+
 class TrackPanelListener {
  public:
    virtual void TP_DisplaySelection() = 0;
@@ -342,7 +352,7 @@ private:
    
    wxString TrackSubText(Track *t);
 
-   int MoveClipToTrack(int clipIndex, WaveTrack* src, WaveTrack* dst);
+   bool MoveClipToTrack(WaveClip *clip, WaveTrack* src, WaveTrack* dst);
 
    TrackLabel mTrackLabel;
 
@@ -381,7 +391,9 @@ private:
    double mSelStart;
 
    Track *mCapturedTrack;
-   int mCapturedClip; // -1 means none (i.e. the whole track)
+   WaveClip *mCapturedClip;
+   TrackClipArray mCapturedClipArray;
+   bool mCapturedClipIsSelection;
    WaveTrack::Location mCapturedTrackLocation;
    wxRect mCapturedTrackLocationRect;
    wxRect mCapturedRect;

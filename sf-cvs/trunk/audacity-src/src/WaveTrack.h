@@ -204,7 +204,8 @@ class WaveTrack: public Track {
    longSampleCount TimeToLongSamples(double t0);
 
    // Get access to the clips in the tracks. This is used by
-   // track artists and subject to be removed.
+   // track artists and also by TrackPanel when sliding...it would
+   // be cleaner if this could be removed, though...
    WaveClipList::Node* GetClipIterator() { return mClips.GetFirst(); }
 
    // Create new clip and add it to this track. Returns a pointer
@@ -241,6 +242,7 @@ class WaveTrack: public Track {
    // in this cliplist and add it to the cliplist of the
    // other clip. No fancy additional stuff is done.
    void MoveClipToTrack(int clipIndex, WaveTrack* dest);
+   void MoveClipToTrack(WaveClip *clip, WaveTrack* dest);
    
    // Merge two clips, that is append data from clip2 to clip1,
    // then remove clip2 from track.

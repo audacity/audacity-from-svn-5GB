@@ -189,7 +189,7 @@ void OnImportRaw();
 
 void OnEditID3();
 
-void OnQuickMix();
+void OnMixAndRender();
 
 void OnSelectionSave();
 void OnSelectionRestore();

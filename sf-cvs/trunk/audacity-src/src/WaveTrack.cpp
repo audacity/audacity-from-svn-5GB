@@ -1138,6 +1138,17 @@ void WaveTrack::MoveClipToTrack(int clipIndex, WaveTrack* dest)
    dest->mClips.Append(clip);
 }
 
+void WaveTrack::MoveClipToTrack(WaveClip *clip, WaveTrack* dest)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext()) {
+      if (it->GetData() == clip) {
+         WaveClip* clip = it->GetData();
+         mClips.DeleteNode(it);
+         dest->mClips.Append(clip);
+      }
+   }
+}
+
 bool WaveTrack::CanOffsetClip(WaveClip* clip, double amount, double *allowedAmount /* = NULL */)
 {
    if (allowedAmount)
