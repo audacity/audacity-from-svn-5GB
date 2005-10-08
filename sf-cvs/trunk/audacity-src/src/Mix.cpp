@@ -27,11 +27,18 @@
 #include "Prefs.h"
 #include "Resample.h"
 
-bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
-              double rate, sampleFormat format,
-              double startTime, double endTime,
-              WaveTrack **newLeft, WaveTrack **newRight)
+bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
+                  double rate, sampleFormat format,
+                  double startTime, double endTime,
+                  WaveTrack **newLeft, WaveTrack **newRight)
 {
+   // This function was formerly known as "Quick Mix".  It takes one or
+   // more tracks as input; of all tracks that are selected, it mixes
+   // them together, applying any envelopes, amplitude gain, panning,
+   // and real-time effects in the process.  The resulting pair of
+   // tracks (stereo) are "rendered" and have no effects, gain, panning,
+   // or envelopes.
+
    WaveTrack **waveArray;
    Track *t;
    int numWaves = 0;
@@ -122,7 +129,8 @@ bool QuickMix(TrackList *tracks, TrackFactory *trackFactory,
 
       if (!progress && wxGetElapsedTime(false) > 500) {
          progress =
-            new wxProgressDialog(_("Quick Mix"), _("Mixing tracks"), 1000);
+            new wxProgressDialog(_("Mix and Render"),
+                                 _("Mixing and rendering tracks"), 1000);
       }
       if (progress) {
          int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));

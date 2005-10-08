@@ -469,8 +469,8 @@ void TimeTextCtrl::CreateControls()
       text = new wxTextCtrl(this, AnyTextCtrlID, wxT(""),
                             wxDefaultPosition, wxSize(width, -1),
                             wxTE_RIGHT);
-      if (mWholeFields[i].digits > 0)
-         text->SetMaxLength(mWholeFields[i].digits);
+      //if (mWholeFields[i].digits > 0)
+      //   text->SetMaxLength(mWholeFields[i].digits);
       mainSizer->Add(text, 0, wxALL, 0);
       mWholeFields[i].textCtrl = text;
 
@@ -490,8 +490,8 @@ void TimeTextCtrl::CreateControls()
       text = new wxTextCtrl(this, AnyTextCtrlID, wxT(""),
                             wxDefaultPosition, wxSize(width, -1),
                             wxTE_RIGHT);
-      if (mFracFields[i].digits > 0)
-         text->SetMaxLength(mFracFields[i].digits);
+      //if (mFracFields[i].digits > 0)
+      //   text->SetMaxLength(mFracFields[i].digits);
       mainSizer->Add(text, 0, wxALL, 0);
       mFracFields[i].textCtrl = text;
 
@@ -569,8 +569,9 @@ void TimeTextCtrl::ControlsToValue()
 void TimeTextCtrl::OnText(wxCommandEvent &event)
 {
    // Don't trigger an event if we were the ones who modified the text
-   if (mModifyingText)
+   if (mModifyingText) {
       return;
+   }
 
    double oldValue = mTimeValue;
 

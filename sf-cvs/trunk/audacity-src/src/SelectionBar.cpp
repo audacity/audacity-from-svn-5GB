@@ -17,6 +17,7 @@
 
 #include "AudioIO.h"
 #include "AColor.h"
+#include "Prefs.h"
 
 #include "widgets/TimeTextCtrl.h"
 
@@ -59,13 +60,14 @@ BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
-                 const wxPoint & pos,
-                 const wxSize & size,
-                 double rate,
-                 SelectionBarListener * listener):
+                           const wxPoint & pos,
+                           const wxSize & size,
+                           double rate,
+                           SelectionBarListener * listener):
    wxPanel(parent, id, pos,  size),
    mListener(listener), mRate(rate),
-   mStart(0.0), mEnd(0.0), mAudio(0.0)
+   mStart(0.0), mEnd(0.0), mAudio(0.0),
+   mModifyingSelection(false)
 {
    // This will be inherited by all children:
    SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL));
@@ -92,13 +94,18 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mainSizer->Add(20, 10);
 
+   bool showSelectionLength = false;
+   gPrefs->Read(wxT("/ShowSelectionLength"), &showSelectionLength);
+   
    hSizer = new wxBoxSizer(wxHORIZONTAL);
    mRightEndButton = new wxRadioButton(this, OnEndRadioID, _("End:"),
                                        wxDefaultPosition, wxDefaultSize,
                                        wxRB_GROUP);
+   mRightEndButton->SetValue(!showSelectionLength);
    hSizer->Add(mRightEndButton,
                1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
    mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length:"));
+   mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
                1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
    mainSizer->Add(hSizer, 0, wxALL, 1);
@@ -118,9 +125,11 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    //
 
    mRateBox = new wxComboBox(this, OnRateID,
-                             wxString::Format(wxT("%d"), (int)mRate),
+                             "",
                              wxDefaultPosition, wxSize(80, -1));
    UpdateRates();
+   mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
+
    mainSizer->Add(mRateBox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
                                    wxLI_VERTICAL),
@@ -237,7 +246,9 @@ void SelectionBar::ModifySelection()
    else
       mEnd = mStart + right;
 
+   mModifyingSelection = true;
    mListener->AS_ModifySelection(mStart, mEnd);
+   mModifyingSelection = false;
 }
 
 void SelectionBar::OnLeftTime(wxCommandEvent &evt)
@@ -252,11 +263,15 @@ void SelectionBar::OnRightTime(wxCommandEvent &evt)
 
 void SelectionBar::OnLengthRadio(wxCommandEvent &evt)
 {
+   gPrefs->Write(wxT("/ShowSelectionLength"), true);
+
    ValuesToControls();
 }
 
 void SelectionBar::OnEndRadio(wxCommandEvent &evt)
 {
+   gPrefs->Write(wxT("/ShowSelectionLength"), false);
+
    ValuesToControls();
 }
 
@@ -301,6 +316,13 @@ void SelectionBar::ValuesToControls()
 
 void SelectionBar::SetTimes(double start, double end, double audio)
 {
+   if (mModifyingSelection) {
+      // This event is directly a result of the user typing a change,
+      // so we ignore it - otherwise every time they type it changes the
+      // field out from under them!
+      return;
+   }
+
    mStart = start;
    mEnd = end;
    mAudio = audio;

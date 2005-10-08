@@ -278,8 +278,8 @@ void Effect::Preview()
    if (t1 <= t0)
       return;
 
-   if (!::QuickMix(mWaveTracks, mFactory, rate, floatSample, t0, t1,
-                   &mixLeft, &mixRight))
+   if (!::MixAndRender(mWaveTracks, mFactory, rate, floatSample, t0, t1,
+                       &mixLeft, &mixRight))
       return;
 
    // Apply effect

@@ -448,8 +448,8 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("Stereo To Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
-      c->AddItem(wxT("QuickMix"),       _("&Quick Mix"),                     FN(OnQuickMix));
-      c->SetCommandFlags(wxT("QuickMix"),
+      c->AddItem(wxT("MixAndRender"),       _("Mix and Render"),             FN(OnMixAndRender));
+      c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
       c->AddSeparator();
@@ -3095,21 +3095,31 @@ void AudacityProject::OnEditID3()
       PushState(_("Edit ID3 tags"), _("Edit ID3 Tags"));
 }
 
-void AudacityProject::OnQuickMix()
+void AudacityProject::OnMixAndRender()
 {
    WaveTrack *newLeft = NULL;
    WaveTrack *newRight = NULL;
 
-   if (::QuickMix(mTracks, mTrackFactory, mRate, mDefaultFormat, 0.0, 0.0,
-                  &newLeft, &newRight)) {
+   if (::MixAndRender(mTracks, mTrackFactory, mRate, mDefaultFormat, 0.0, 0.0,
+                      &newLeft, &newRight)) {
 
-      // Remove originals
+      // Remove originals, get stats on what tracks were mixed
 
       TrackListIterator iter(mTracks);
       Track *t = iter.First();
+      int selectedCount = 0;
+      wxString firstName;
 
       while (t) {
          if (t->GetSelected()) {
+            if (selectedCount==0)
+               firstName = t->GetName();
+
+            // Add one to the count if it's an unlinked track, or if it's the first
+            // in a stereo pair
+            if (t->GetLinked() || !mTracks->GetLink(t))
+                selectedCount++;
+
             delete t;
             t = iter.RemoveCurrent();
          }
@@ -3123,7 +3133,29 @@ void AudacityProject::OnQuickMix()
       if (newRight)
          mTracks->Add(newRight);
 
-      PushState(_("Quick mix"), _("Quick mix"));
+      // If we're just rendering (not mixing), keep the track name the same
+      if (selectedCount==1) {
+         newLeft->SetName(firstName);
+         if (newRight)
+            newRight->SetName(firstName);
+      }
+
+      // Smart history/undo message
+      if (selectedCount==1) {
+         wxString msg;
+         msg.Printf(_("Rendered all audio in track '%s'"), firstName.c_str());
+         PushState(msg, _("Render"));
+      }
+      else {
+         wxString msg;
+         if (newRight)
+            msg.Printf(_("Mixed and rendered %d tracks into one new stereo track"),
+                       selectedCount);
+         else
+            msg.Printf(_("Mixed and rendered %d tracks into one new mono track"),
+                       selectedCount);
+         PushState(msg, _("Mix and Render"));
+      }
 
       FixScrollbars();
       mTrackPanel->Refresh(false);
