@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_TRACK_PANEL__
 #define __AUDACITY_TRACK_PANEL__
 
+#include <wx/dynarray.h>
 #include <wx/timer.h>
 #include <wx/window.h>
 #include <wx/panel.h>
@@ -50,8 +51,8 @@ WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 class TrackClip
 {
  public:
-   TrackClip(WaveTrack *t, WaveClip *c) { track = t; clip = c; }
-   WaveTrack *track;
+   TrackClip(Track *t, WaveClip *c) { track = t; clip = c; }
+   Track *track;
    WaveClip *clip;
 };
 
@@ -229,8 +230,8 @@ class TrackPanel:public wxPanel {
 
    // AS: Track sliding handlers
    void HandleSlide(wxMouseEvent & event);
-   void StartSlide(wxMouseEvent &event, double& totalOffset, wxString& name);
-   void DoSlide(wxMouseEvent &event, double& totalOffset);
+   void StartSlide(wxMouseEvent &event);
+   void DoSlide(wxMouseEvent &event);
 
    // AS: Handle zooming into tracks
    void HandleZoom(wxMouseEvent & event);
@@ -398,6 +399,24 @@ private:
    wxRect mCapturedTrackLocationRect;
    wxRect mCapturedRect;
    int mCapturedNum;
+
+   // When sliding horizontally, the moving clip may automatically
+   // snap to the beginning and ending of other clips, or to label
+   // starts and stops.  When you start sliding, SlideSnapFromPoints
+   // gets populated with the start and stop times of selected clips,
+   // and SlideSnapToPoints gets populated with the start and stop times
+   // of other clips.  In both cases, times that are within 3 pixels
+   // of another at the same zoom level are eliminated; you can't snap
+   // when there are two things arbitrarily close at that zoom level.
+   wxBaseArrayDouble mSlideSnapFromPoints;
+   wxBaseArrayDouble mSlideSnapToPoints;
+   wxArrayInt mSlideSnapLinePixels;
+
+   // The amount that clips are sliding horizontally; this allows
+   // us to undo the slide and then slide it by another amount
+   double mHSlideAmount;
+
+   bool mDidSlideVertically;
 
    bool mRedrawAfterStop;
 
