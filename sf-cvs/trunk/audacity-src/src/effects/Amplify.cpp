@@ -75,7 +75,10 @@ bool EffectAmplify::PromptUser()
 {
    AmplifyDialog dlog(this, mParent, -1, _("Amplify"));
    dlog.peak = peak;
-   dlog.ratio = 1.0 / peak;
+   if (peak > 0.0)
+      dlog.ratio = 1.0 / peak;
+   else
+      dlog.ratio = 1.0;
    dlog.TransferDataToWindow();
    dlog.CenterOnParent();
    dlog.ShowModal();
@@ -118,11 +121,11 @@ BEGIN_EVENT_TABLE(AmplifyDialog, wxDialog)
 END_EVENT_TABLE()
 
 AmplifyDialog::AmplifyDialog(EffectAmplify * effect, 
-									  wxWindow * parent, wxWindowID id, 
-									  const wxString & title, 
-									  const wxPoint & position, const wxSize & size, 
-									  long style):
-wxDialog(parent, id, title, position, size, style)
+                             wxWindow * parent, wxWindowID id, 
+                             const wxString & title, 
+                             const wxPoint & position, const wxSize & size, 
+                             long style):
+   wxDialog(parent, id, title, position, size, style)
 {
    mLoopDetect = false;
 	m_pEffect = effect;
@@ -135,85 +138,78 @@ wxDialog(parent, id, title, position, size, style)
    wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
 
    pStaticText = new wxStaticText(this, -1,
-												_("Amplify by Dominic Mazzoni"),
-												wxDefaultPosition, wxDefaultSize, 0);
+                                  _("Amplify by Dominic Mazzoni"),
+                                  wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 10);
 
-	// Amplification text control
+   // Amplification text control
    wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
 
    pStaticText = new wxStaticText(this, -1, _("Amplification (dB):"),
-												wxDefaultPosition, wxDefaultSize, 0);
+                                  wxDefaultPosition, wxDefaultSize, 0);
    item2->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    wxTextCtrl * item4 = new wxTextCtrl(this, ID_AMP_TEXT, wxT(""), 
-													wxDefaultPosition, wxSize(60, -1), 
-													0, wxTextValidator(wxFILTER_NUMERIC));
+                                       wxDefaultPosition, wxSize(60, -1), 
+                                       0, wxTextValidator(wxFILTER_NUMERIC));
    item2->Add(item4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
    pBoxSizer_Dialog->Add(item2, 0, wxALIGN_CENTER | wxALL, 5);
-
-	// slider
+   
+   // slider
    wxSlider *item5 =
        new wxSlider(this, ID_AMP_SLIDER, 0, AMP_MIN, AMP_MAX,
                     wxDefaultPosition, wxSize(100, -1), wxSL_HORIZONTAL);
    pBoxSizer_Dialog->Add(item5, 1, wxGROW | wxALIGN_CENTER | wxALL, 5);
 
-	// New Peak Amplitude text control
+   // New Peak Amplitude text control
    wxBoxSizer *item6 = new wxBoxSizer(wxHORIZONTAL);
    
    pStaticText = new wxStaticText(this, -1, _("New Peak Amplitude (dB):"),
-												wxDefaultPosition, wxDefaultSize, 0);
+                                  wxDefaultPosition, wxDefaultSize, 0);
    item6->Add(pStaticText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
+   
    wxTextCtrl *item8 = new wxTextCtrl(this, ID_PEAK_TEXT, wxT(""), 
-													wxDefaultPosition, wxSize(60, -1), 0);
+                                      wxDefaultPosition, wxSize(60, -1), 0);
    item6->Add(item8, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
+   
    pBoxSizer_Dialog->Add(item6, 0, wxALIGN_CENTER | wxALL, 5);
-
-	// "Allow clipping" checkbox
+   
+   // "Allow clipping" checkbox
    wxCheckBox *item8b = new wxCheckBox(this, ID_CLIP_CHECKBOX,
-													_("Allow clipping"),
-													wxDefaultPosition, wxDefaultSize, 0);
-
+                                       _("Allow clipping"),
+                                       wxDefaultPosition, wxDefaultSize, 0);
+   
    pBoxSizer_Dialog->Add(item8b, 0, wxALIGN_CENTER | wxALL, 5);
 
 
-	// Preview, OK, & Cancel buttons
+   // Preview, OK, & Cancel buttons
    pBoxSizer_Dialog->Add(0, 10, 0); // spacer
 
    wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
+      new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
    pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
    pBoxSizer_OK->Add(25, 8); // horizontal spacer
-
+   
    wxButton *item11 =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
+      new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+                   wxDefaultSize, 0);
    pBoxSizer_OK->Add(item11, 0, wxALIGN_CENTER | wxALL, 5);
-
+   
    wxButton *item10 =
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
+      new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    item10->SetDefault();
    item10->SetFocus();
    pBoxSizer_OK->Add(item10, 0, wxALIGN_CENTER | wxALL, 5);
-
+   
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 5);
-
-	// These bools are from the old MakeAmplifyDialog, now merged into this constructor.
-	bool call_fit = true;
-	bool set_sizer = true;
-   if (set_sizer) {
-      this->SetAutoLayout(TRUE);
-      this->SetSizer(pBoxSizer_Dialog);
-      if (call_fit) {
-         pBoxSizer_Dialog->Fit(this);
-         pBoxSizer_Dialog->SetSizeHints(this);
-      }
-   }
+   
+   SetAutoLayout(TRUE);
+   SetSizer(pBoxSizer_Dialog);
+   pBoxSizer_Dialog->Fit(this);
+   pBoxSizer_Dialog->SetSizeHints(this);
 }
 
 bool AmplifyDialog::Validate()
