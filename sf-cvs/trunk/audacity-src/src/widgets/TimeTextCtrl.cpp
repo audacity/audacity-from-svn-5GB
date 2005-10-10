@@ -145,7 +145,7 @@ struct BuiltinFormatString {
    const wxChar *formatStr;
 };
 
-const int kNumBuiltinFormatStrings = 7;
+const int kNumBuiltinFormatStrings = 8;
 
 BuiltinFormatString BuiltinFormatStrings[kNumBuiltinFormatStrings] =
    {{_("mm:ss"),
@@ -160,6 +160,8 @@ BuiltinFormatString BuiltinFormatStrings[kNumBuiltinFormatStrings] =
      _("*h060m060s+.75 frames")},
     {_("seconds"),
      _("*,01000,01000.01000 seconds")},
+    {_("samples"),
+     _("*,01000,01000,01000samples|#")},
     {_("NTSC frames"),
      _("*,01000,01000.01000 NTSC frames|29.97002997")}};
 
@@ -280,7 +282,11 @@ void TimeTextCtrl::ParseFormatString()
 
       if (format[i] == '|') {
          wxString remainder = format.Right(format.Length() - i - 1);
-         remainder.ToDouble(&mScalingFactor);
+
+         if (remainder == "#")
+            mScalingFactor = mSampleRate;
+         else
+            remainder.ToDouble(&mScalingFactor);
          i = format.Length()-1; // force break out of loop
          if (delimStr != wxT(""))
             handleDelim = true;
@@ -510,8 +516,9 @@ void TimeTextCtrl::CreateControls()
 void TimeTextCtrl::ValueToControls()
 {
    long sel0, sel1;
-   int t_int = int(mTimeValue);
-   double t_frac = (mTimeValue - t_int);
+   double theValue = mTimeValue * mScalingFactor;
+   int t_int = int(theValue);
+   double t_frac = (theValue - t_int);
    wxString str;
    unsigned int i;
 
@@ -562,6 +569,8 @@ void TimeTextCtrl::ControlsToValue()
       mFracFields[i].str.ToLong(&val);
       t += (val / (double)mFracFields[i].base);
    }
+
+   t /= mScalingFactor;
 
    mTimeValue = t;
 }
