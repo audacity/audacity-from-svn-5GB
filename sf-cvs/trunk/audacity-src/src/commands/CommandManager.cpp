@@ -460,15 +460,21 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
 
    if (!entry->menu)
       return;
-
+      
    entry->menu->Enable(entry->id, enabled);
    if (entry->multi) {
       int i;
       int ID = entry->id;
-
+      
       for(i=1; i<entry->count; i++) {
          ID = NextIdentifier(ID);
-         entry->menu->Enable(ID, enabled);            
+         wxMenuItem *item = entry->menu->FindItem(ID);
+         if (item) {
+            item->Enable(enabled);
+         } else {
+            wxLogDebug(wxT("Warning: Menu entry with id %i in %s not found"),
+                ID, (const wxChar*)entry->name);
+         }
       }
    }
 }

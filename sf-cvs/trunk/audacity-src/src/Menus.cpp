@@ -225,7 +225,7 @@ void AudacityProject::CreateMenusAndCommands()
    }
 
    c->AddSeparator();
-   c->AddItem("Upload File",      _("&Upload File..."),            FN(OnUpload));
+   c->AddItem(wxT("Upload File"),      _("&Upload File..."),            FN(OnUpload));
 
    if( !mCleanSpeechMode )
 	{
