@@ -11,7 +11,7 @@
   done.
 
 **********************************************************************/
-#include <fstream.h>
+#include <fstream>
 #include <math.h>
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
@@ -93,19 +93,19 @@ UploadDialog::UploadDialog(wxWindow * parent)
     ftpList = new wxArrayString();
 
     icons = new wxImageList(16, 16, false, 2);
-    wxIcon *folderIcon = new wxIcon("folder.ico", wxBITMAP_TYPE_ICO, 16, 16);
-    wxIcon *fileIcon = new wxIcon("file.ico", wxBITMAP_TYPE_ICO, 16, 16);
-    wxIcon *mp3Icon = new wxIcon("mp3.ico", wxBITMAP_TYPE_ICO, 16, 16);
-    wxIcon *upIcon = new wxIcon("up.ico", wxBITMAP_TYPE_ICO, 16, 16);
+    wxIcon *folderIcon = new wxIcon(wxT("folder.ico"), wxBITMAP_TYPE_ICO, 16, 16);
+    wxIcon *fileIcon = new wxIcon(wxT("file.ico"), wxBITMAP_TYPE_ICO, 16, 16);
+    wxIcon *mp3Icon = new wxIcon(wxT("mp3.ico"), wxBITMAP_TYPE_ICO, 16, 16);
+    wxIcon *upIcon = new wxIcon(wxT("up.ico"), wxBITMAP_TYPE_ICO, 16, 16);
     icons->Add(*folderIcon);
     icons->Add(*fileIcon);
     icons->Add(*mp3Icon);
     icons->Add(*upIcon);
     
     wxFlexGridSizer *topSizer = new wxFlexGridSizer(2, 1);  
-    wxStaticBoxSizer *connectionBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, "FTP Connection", wxDefaultPosition, wxDefaultSize, 0, ""), wxVERTICAL);   
-    wxStaticBoxSizer *fileBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, "File Manager", wxDefaultPosition, wxDefaultSize, 0, ""), wxVERTICAL);
-    wxStaticBoxSizer *siteBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, "Site Manager", wxDefaultPosition, wxDefaultSize, 0, ""), wxVERTICAL);
+    wxStaticBoxSizer *connectionBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("FTP Connection"), wxDefaultPosition, wxDefaultSize, 0, wxT("")), wxVERTICAL);   
+    wxStaticBoxSizer *fileBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("File Manager"), wxDefaultPosition, wxDefaultSize, 0, wxT("")), wxVERTICAL);
+    wxStaticBoxSizer *siteBox = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Site Manager"), wxDefaultPosition, wxDefaultSize, 0, wxT("")), wxVERTICAL);
 
     wxFlexGridSizer *connectionSizer = new wxFlexGridSizer(2, 4);
     wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
@@ -113,40 +113,40 @@ UploadDialog::UploadDialog(wxWindow * parent)
     wxBoxSizer *fileButtonSizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *siteButtonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-    txtFtpName = new wxTextCtrl(this, wxID_FTPNAME, "", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
-    txtFtpHost = new wxTextCtrl(this, wxID_FTPHOST, "", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
-    txtFtpUser = new wxTextCtrl(this, wxID_FTPUSER, "", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
-    txtFtpPass = new wxTextCtrl(this, wxID_FTPPASS, "", wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, "");
-    btnConnect = new wxButton(this, wxID_CONNECT, "Connect", wxDefaultPosition, wxDefaultSize);
-    btnDisconnect = new wxButton(this, wxID_DISCONNECT, "Disconnect", wxDefaultPosition, wxDefaultSize);
+    txtFtpName = new wxTextCtrl(this, wxID_FTPNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
+    txtFtpHost = new wxTextCtrl(this, wxID_FTPHOST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
+    txtFtpUser = new wxTextCtrl(this, wxID_FTPUSER, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
+    txtFtpPass = new wxTextCtrl(this, wxID_FTPPASS, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, wxT(""));
+    btnConnect = new wxButton(this, wxID_CONNECT, _("Connect"), wxDefaultPosition, wxDefaultSize);
+    btnDisconnect = new wxButton(this, wxID_DISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize);
     btnDisconnect->Enable(false);
 
-    btnUploadFile = new wxButton(this, wxID_UPLOAD_FILE, "Upload File", wxDefaultPosition, wxDefaultSize);
+    btnUploadFile = new wxButton(this, wxID_UPLOAD_FILE, _("Upload File"), wxDefaultPosition, wxDefaultSize);
     btnUploadFile->Enable(false);
-    btnUploadDir = new wxButton(this, wxID_UPLOAD_DIR, "Upload Folder", wxDefaultPosition, wxDefaultSize);
+    btnUploadDir = new wxButton(this, wxID_UPLOAD_DIR, _("Upload Folder"), wxDefaultPosition, wxDefaultSize);
     btnUploadDir->Enable(false);
-    btnCreateDir = new wxButton(this, wxID_CREATEDIR, "New Folder", wxDefaultPosition, wxDefaultSize);
+    btnCreateDir = new wxButton(this, wxID_CREATEDIR, _("New Folder"), wxDefaultPosition, wxDefaultSize);
     btnCreateDir->Enable(false);
 
-    btnDelSite = new wxButton(this, wxID_DELSITE, "Remove Site", wxDefaultPosition, wxDefaultSize);
+    btnDelSite = new wxButton(this, wxID_DELSITE, _("Remove Site"), wxDefaultPosition, wxDefaultSize);
 
-    fileManager = new wxListView(this, wxID_FILEMANAGER, wxDefaultPosition, wxSize(350, 350), wxLC_REPORT, wxDefaultValidator, "");
+    fileManager = new wxListView(this, wxID_FILEMANAGER, wxDefaultPosition, wxSize(350, 350), wxLC_REPORT, wxDefaultValidator, wxT(""));
     fileManager->AssignImageList(icons, wxIMAGE_LIST_SMALL);
     fileManager->Show(false);
-    fileManager->InsertColumn(0, _T("name"));
-    fileManager->InsertColumn(1, _T("size (bytes)"));
-    fileManager->InsertColumn(2, _T("permissions"));
+    fileManager->InsertColumn(0, _("name"));
+    fileManager->InsertColumn(1, _("size (bytes)"));
+    fileManager->InsertColumn(2, _("permissions"));
 
-    siteList = new wxListView(this, wxID_SITELIST, wxDefaultPosition, wxSize(200, 215), wxLC_REPORT | wxLC_NO_HEADER, wxDefaultValidator, "");
-    siteList->InsertColumn(0, "");
+    siteList = new wxListView(this, wxID_SITELIST, wxDefaultPosition, wxSize(200, 215), wxLC_REPORT | wxLC_NO_HEADER, wxDefaultValidator, wxT(""));
+    siteList->InsertColumn(0, wxT(""));
 
-    connectionSizer->Add(new wxStaticText(this, -1, "Name:", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, ""));
+    connectionSizer->Add(new wxStaticText(this, -1, _("Name:"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, wxT("")));
     connectionSizer->Add(txtFtpName);
-    connectionSizer->Add(new wxStaticText(this, -1, "Host:", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, ""));
+    connectionSizer->Add(new wxStaticText(this, -1, _("Host:"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, wxT("")));
     connectionSizer->Add(txtFtpHost);
-    connectionSizer->Add(new wxStaticText(this, -1, "Username:", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, ""));
+    connectionSizer->Add(new wxStaticText(this, -1, _("Username:"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, wxT("")));
     connectionSizer->Add(txtFtpUser);
-    connectionSizer->Add(new wxStaticText(this, -1, "Password:", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, ""));
+    connectionSizer->Add(new wxStaticText(this, -1, _("Password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT, wxT("")));
     connectionSizer->Add(txtFtpPass);
     connectionSizer->Add(btnConnect, 0, wxALIGN_LEFT | wxALL, 5);
     connectionSizer->Add(btnDisconnect, 0, wxALIGN_LEFT | wxALL, 5);
@@ -192,7 +192,7 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
 
     wxString system;
 
-    SetTitle("Connecting...");
+    SetTitle(_("Connecting..."));
     SetCursor(wxCURSOR_WAIT);
 
     //int connectionExists = -1;
@@ -205,16 +205,17 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
     {
 
         // check which system ftp is running on
-        ftp->SendCommand("SYST");
+        ftp->SendCommand(wxT("SYST"));
         system = ftp->GetLastResult();
         system = system.Lower();
 
         //wxMessageBox(system, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
 
-        if (system.Find("unix")==-1 && system.Find("windows")==-1)
+        if (system.Find(wxT("unix"))==-1 && system.Find(wxT("windows"))==-1)
         {
-              
-            wxMessageBox("Unknown ftp server: "+system+"\n\nOnly unix based and windows systems are supported/tested at this time.", _T("Error"), wxOK | wxICON_INFORMATION, this);
+            wxString msg;
+            msg.Printf(_("Unknown FTP Server type: %s\n\nOnly Unix based and Windows systems are supported/tested at this time."), (const wxChar*)system);
+            wxMessageBox(msg, _("Error"), wxOK | wxICON_INFORMATION, this);
         }
 
         btnConnect->Enable(false);
@@ -232,8 +233,8 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
         txtFtpUser->Enable(false);
         txtFtpPass->Enable(false);
 
-        if (txtFtpName->GetValue().Trim() == "")
-            txtFtpName->SetValue("New Site");
+        if (txtFtpName->GetValue().Trim() == wxT(""))
+            txtFtpName->SetValue(_("New Site"));
 
         // save login into to connections file
         if (SaveFtpSite(txtFtpName->GetValue(), txtFtpHost->GetValue(), txtFtpUser->GetValue(), txtFtpPass->GetValue()))
@@ -243,7 +244,7 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
             siteList->SetItemData(tmp, 0);
         }
 
-        SetTitle("Connected to: "+txtFtpHost->GetValue());
+        SetTitle(_("Connected to: ") + txtFtpHost->GetValue());
     
         RefreshFiles();
         
@@ -251,7 +252,7 @@ void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
 
     else
     {
-        wxMessageBox("connection cannot be established", _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
+        wxMessageBox(_("Connection cannot be established"), _("FTP Status"), wxOK | wxICON_INFORMATION, this);
         delete ftp;
     }
 
@@ -280,7 +281,7 @@ void UploadDialog::OnDisconnect(wxCommandEvent & WXUNUSED(event))
     txtFtpUser->Enable(true);
     txtFtpPass->Enable(true);
 
-    SetTitle("No connection");
+    SetTitle(_("No Connection"));
     fileManager->Show(false);
 
     LoadFtpSiteList();
@@ -296,9 +297,9 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
 
     abort = false;
 
-    wxFileDialog *open = new wxFileDialog(this, "Choose file(s) to upload",
-                                          ::wxGetCwd(), "",
-                                          "All files (*.*)|*.*",
+    wxFileDialog *open = new wxFileDialog(this, _("Choose file(s) to upload"),
+                                          ::wxGetCwd(), wxT(""),
+                                          _("All files (*.*)|*.*"),
                                           wxOPEN | wxMULTIPLE); 
     
     if (open->ShowModal()==wxID_OK)
@@ -313,9 +314,9 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
             if (!abort)
             {
                 // remove path from filename
-                int index = files.Item(count).Find('\\', true);
+                int index = files.Item(count).Find(wxT('\\'), true);
                 wxString name = files.Item(count).Mid(index+1, files.Item(count).Length() - index);
-                wxString path = ftp->Pwd()+"/"+name.MakeLower();
+                wxString path = ftp->Pwd()+wxT("/")+name.MakeLower();
             
 
                 // upload the file
@@ -333,7 +334,7 @@ void UploadDialog::OnUploadFile(wxCommandEvent & WXUNUSED(event))
 void UploadDialog::OnUploadDir(wxCommandEvent & WXUNUSED(event))
 {
 
-    wxDirDialog *open = new wxDirDialog(this, "Choose folder to upload", ""); 
+    wxDirDialog *open = new wxDirDialog(this, _("Choose folder to upload"), wxT("")); 
     int result = open->ShowModal();
 
     abort = false;
@@ -341,7 +342,7 @@ void UploadDialog::OnUploadDir(wxCommandEvent & WXUNUSED(event))
     if (result ==  wxID_OK)
     {
         SetCursor(wxCURSOR_WAIT);
-        UploadDir(open->GetPath(), "");
+        UploadDir(open->GetPath(), wxT(""));
         SetCursor(wxCURSOR_ARROW);
     }
 }
@@ -352,11 +353,11 @@ void UploadDialog::OnListRightClick(wxListEvent &event)
     listIndex = event.m_itemIndex;
 
     wxMenu *menu = new wxMenu();
-    wxMenuItem *del = new wxMenuItem(menu, wxID_POPUP_DELETE, "Delete", "Delete file(s) from server");
-    wxMenuItem *rn  = new wxMenuItem(menu, wxID_POPUP_RENAME, "Rename", "Rename file");
-    wxMenuItem *dl  = new wxMenuItem(menu, wxID_POPUP_DOWNLOAD, "Download", "Download this file(s) to your computer");
+    wxMenuItem *del = new wxMenuItem(menu, wxID_POPUP_DELETE, _("Delete"), _("Delete file(s) from server)"));
+    wxMenuItem *rn  = new wxMenuItem(menu, wxID_POPUP_RENAME, _("Rename"), _("Rename file"));
+    wxMenuItem *dl  = new wxMenuItem(menu, wxID_POPUP_DOWNLOAD, _("Download"), _("Download this file(s) to your computer"));
 
-    wxMenuItem *sep  = new wxMenuItem(menu, -1, "", "");
+    wxMenuItem *sep  = new wxMenuItem(menu, -1, wxT(""), wxT(""));
 
     menu->Insert(0, dl);
     menu->Insert(1, sep);
@@ -409,7 +410,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
         if (fileManager->GetSelectedItemCount() > 1)
         {
 
-            int result = wxMessageBox("Delete selected items?", _T("Confirm"), wxYES_NO, NULL);
+            int result = wxMessageBox(_("Delete selected items?"), _("Confirm"), wxYES_NO, NULL);
 
             if (result == wxYES)
             {
@@ -433,12 +434,12 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                 unsigned int count;
                 for (count = 0; count < selectList->GetCount(); count++)
                 {
-                    if (selectList->Item(count) != "..")
+                    if (selectList->Item(count) != wxT(".."))
                     {
                         // if directory
-                        if (selectPerm->Item(count).GetChar(0) == 'd')
+                        if (selectPerm->Item(count).GetChar(0) == wxT('d'))
                         {
-                            progress = new wxProgressDialog("Deleting...", "", 100, this);
+                            progress = new wxProgressDialog(_("Deleting..."), wxT(""), 100, this);
                             progress->SetCursor(wxCURSOR_ARROWWAIT);
 
                             deleteFileList = new wxArrayString();
@@ -473,10 +474,10 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
         {
 
             wxString confirm;
-            confirm.Printf("Delete %s?",
+            confirm.Printf(_("Delete %s?"),
                            displayNames->Item(listIndex).c_str());
             
-            int result = wxMessageBox(confirm, _T("Confirm"), wxYES_NO, NULL);
+            int result = wxMessageBox(confirm, _("Confirm"), wxYES_NO, NULL);
 
             if (result == wxYES)
             {
@@ -486,7 +487,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                     if (displayPerm->Item(listIndex).GetChar(0) == 'd')
                     {
                         // create progress bar
-                        progress = new wxProgressDialog("Delete", "", 100, this);
+                        progress = new wxProgressDialog(_("Delete"), wxT(""), 100, this);
                         progress->SetCursor(wxCURSOR_ARROWWAIT);
 
                         deleteFileList = new wxArrayString();
@@ -516,16 +517,16 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
 
     if (event.GetId() == wxID_POPUP_RENAME)
     {
-        wxString result = wxGetTextFromUser("Please type the new file/folder name:", "Rename", fileManager->GetItemText(listIndex), this);
+        wxString result = wxGetTextFromUser(_("Please enter the new file/folder name:"), _("Rename"), fileManager->GetItemText(listIndex), this);
 
-        if (result != "")
+        if (result != wxT(""))
         {
-            result.Replace(" ", "_", true);
+            result.Replace(wxT(" "), wxT("_"), true);
 
             if (ftp->Rename(fileManager->GetItemText(listIndex).MakeLower(), result))
                 RefreshFiles();
             else
-                wxMessageBox("Error renaming file, check permissions.", _T("FTP Status"), wxOK, NULL);
+                wxMessageBox(_("Error renaming file, check permissions."), _("FTP Status"), wxOK, NULL);
         }
     }
 
@@ -540,29 +541,29 @@ void UploadDialog::GetDeleteList (wxString src)
         
         for (count = 0; count < displayNames->GetCount(); count++)
         {
-            if (displayPerm->Item(count).GetChar(0) == 'd')
+            if (displayPerm->Item(count).GetChar(0) == wxT('d'))
             {
                 GetDeleteList(displayNames->Item(count));
             }
             else
             {
-                if (displayNames->Item(count) != "..")
+                if (displayNames->Item(count) != wxT(".."))
                 {
-                    deleteFileList->Add(ftp->Pwd()+"/"+displayNames->Item(count));
+                    deleteFileList->Add(ftp->Pwd()+wxT("/")+displayNames->Item(count));
                 }
             }
 
             if (progress)
             {
                 int percent = (int)(((float)count / (float)displayNames->GetCount())*100.0);
-                progress->Update(percent, "Preparing to delete");
+                progress->Update(percent, _("Preparing to delete"));
             }           
 
         }
 
         deleteDirList->Add(ftp->Pwd());
 
-        ftp->ChDir("..");
+        ftp->ChDir(wxT(".."));
         GetDirContents();
 
 }
@@ -577,7 +578,7 @@ void UploadDialog::RemoveItems(wxArrayString *files, wxArrayString *dirs)
         ftp->RmFile(files->Item(count));
         
         percent = (int)(((float)count / (float)files->GetCount())*100.0);
-        progress->Update(percent, "Deleting files");
+        progress->Update(percent, _("Deleting files"));
     }
     
     for (count = 0; count < dirs->GetCount(); count++)
@@ -585,7 +586,7 @@ void UploadDialog::RemoveItems(wxArrayString *files, wxArrayString *dirs)
         ftp->RmDir(dirs->Item(count));
 
         percent = (int)(((float)count / (float)dirs->GetCount())*100.0);
-        progress->Update(percent, "Deleting directories");
+        progress->Update(percent, _("Deleting directories"));
 
     }
 
@@ -622,7 +623,7 @@ void UploadDialog::GetDirContents (void)
             wxArrayString *info = new wxArrayString();
             ExtractListData(filename, info);    
     
-            if (info->Item(3) == "yes") 
+            if (info->Item(3) == wxT("yes")) 
             {
                 dirnameList->Add(info->Item(0));
                 dirpermList->Add(info->Item(1));
@@ -640,7 +641,7 @@ void UploadDialog::GetDirContents (void)
             wxArrayString *info = new wxArrayString();
             ExtractListData(filename, info);
             
-            if (info->Item(3) == "no")  
+            if (info->Item(3) == wxT("no"))  
             {
                 filenameList->Add(info->Item(0));
                 filepermList->Add(info->Item(1));
@@ -649,9 +650,9 @@ void UploadDialog::GetDirContents (void)
             
         }
 
-        dirnameList->Insert("..", 0);
-        dirpermList->Insert("up", 0);
-        dirsizeList->Insert("-", 0);
+        dirnameList->Insert(wxT(".."), 0);
+        dirpermList->Insert(wxT("up"), 0);
+        dirsizeList->Insert(wxT("-"), 0);
 
 
         // add directories and files
@@ -673,7 +674,7 @@ void UploadDialog::GetDirContents (void)
         }
     }
     else
-        wxMessageBox("Unable to retrieve directory contents.", _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
+        wxMessageBox(_("Unable to retrieve directory contents."), _("FTP Status"), wxOK | wxICON_INFORMATION, this);
 
 
 }
@@ -703,9 +704,9 @@ void UploadDialog::RefreshFiles(void)
 
         for (count = 0; count < displayNames->GetCount(); count++)
         {
-            if (displayPerm->Item(count)[0] == 'd' || displayNames->Item(count) == "..")
+            if (displayPerm->Item(count)[0] == wxT('d') || displayNames->Item(count) == wxT(".."))
             {
-                if (displayNames->Item(count) == "..")
+                if (displayNames->Item(count) == wxT(".."))
                     tmp = fileManager->InsertItem(count, displayNames->Item(count), 3);
                 else
                     tmp = fileManager->InsertItem(count, displayNames->Item(count), 0);
@@ -713,7 +714,7 @@ void UploadDialog::RefreshFiles(void)
             }
             else
             {
-                if (displayNames->Item(count).Mid(displayNames->Item(count).Length()-4, 4) == ".mp3")
+                if (displayNames->Item(count).Mid(displayNames->Item(count).Length()-4, 4) == wxT(".mp3"))
                     tmp = fileManager->InsertItem(count, displayNames->Item(count), 2);
                 else
                     tmp = fileManager->InsertItem(count, displayNames->Item(count), 1);
@@ -723,8 +724,8 @@ void UploadDialog::RefreshFiles(void)
             fileManager->SetItemData(tmp, count);
 
             // filesize
-            if (displayPerm->Item(count)[0] == 'd' || displayNames->Item(count) == "..")
-                fileManager->SetItem(count, 1, "-");
+            if (displayPerm->Item(count)[0] == wxT('d') || displayNames->Item(count) == wxT(".."))
+                fileManager->SetItem(count, 1, wxT("-"));
             else
                 fileManager->SetItem(count, 1, displaySizes->Item(count));
 
@@ -747,7 +748,7 @@ void UploadDialog::ExtractListData (wxString string, wxArrayString *results)
     wxString permissions;
     wxString name;
     wxString size;
-    wxString isDir = "no";
+    wxString isDir = wxT("no");
 
     // trim string
     string.Trim();
@@ -802,10 +803,10 @@ void UploadDialog::ExtractListData (wxString string, wxArrayString *results)
     string.Trim();
     string.Trim(false);
 
-    if (permissions[0] == 'd')
-        isDir = "yes";
+    if (permissions[0] == wxT('d'))
+        isDir = wxT("yes");
     else
-        isDir = "no";
+        isDir = wxT("no");
 
     results->Add(name);
     results->Add(permissions);
@@ -830,7 +831,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
 
         if ( !in )
         {
-                wxLogError("Coudln't get file: "+src);
+                wxLogError(_("Could not get file: ")+src);
         }
         else
         {
@@ -842,7 +843,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
             else
                 chunk = new char[size];
 
-            progress = new wxProgressDialog("Download Progress", "", 100, this, wxPD_CAN_ABORT);
+            progress = new wxProgressDialog(_("Download Progress"), wxT(""), 100, this, wxPD_CAN_ABORT);
             progress->SetCursor(wxCURSOR_ARROWWAIT);    
 
             // create output file
@@ -918,7 +919,6 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
 
 void UploadDialog::UploadFile(wxString src, wxString dest)
 {
-
     wxFileInputStream *in_stream;
     size_t size;
     char *chunk;
@@ -926,39 +926,32 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
     int count;
 
     in_stream = new wxFileInputStream(src);
-    if (!in_stream)
-    {
+
+    size = in_stream->GetLength();
         
-    }
+    if (size > CHUNKSIZE)
+        chunk = new char[CHUNKSIZE];
     else
-    {
+        chunk = new char[size];
 
-        size = in_stream->GetLength();
+    // create progress bar
+    progress = new wxProgressDialog(_("Upload Progress"), wxT(""), 100, this, wxPD_CAN_ABORT);
+    progress->SetCursor(wxCURSOR_ARROWWAIT);
+
+    // find number of iterations needed
+    if (size > CHUNKSIZE)
+        iterations = size / CHUNKSIZE;
+    else
+        iterations = 1;
         
-        if (size > CHUNKSIZE)
-            chunk = new char[CHUNKSIZE];
-        else
-            chunk = new char[size];
-
-        // create progress bar
-        progress = new wxProgressDialog("Upload Progress", "", 100, this, wxPD_CAN_ABORT);
-        progress->SetCursor(wxCURSOR_ARROWWAIT);
-
-        // find number of iterations needed
-        if (size > CHUNKSIZE)
-            iterations = size / CHUNKSIZE;
-        else
-            iterations = 1;
+    // create output file on server
+    dest.Replace(wxT(" "), wxT("_"), true);
+    dest = dest.MakeLower();
         
-        // create output file on server
-        dest.Replace(" ", "_", true);
-        dest = dest.MakeLower();
-        
-        wxOutputStream *out_stream = ftp->GetOutputStream(dest);    
+    wxOutputStream *out_stream = ftp->GetOutputStream(dest);    
 
-        if (size > 0)
+    if (size > 0)
         {
-
             for (count = 0; count < iterations; count++)
             {
                 if (size > CHUNKSIZE)
@@ -1001,17 +994,15 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
 
         }
 
-        delete [] chunk;
-        delete in_stream;
-        delete out_stream;
+    delete [] chunk;
+    delete in_stream;
+    delete out_stream;
 
-        // if abortled, delete incomplete file
-        if (abort)
-            ftp->RmFile(dest);
+    // if aborted, delete incomplete file
+    if (abort)
+        ftp->RmFile(dest);
 
-        progress->Destroy();
-    }
-
+    progress->Destroy();
 }
 
 void UploadDialog::UploadDir (wxString src, wxString dest)
@@ -1027,22 +1018,22 @@ void UploadDialog::UploadDir (wxString src, wxString dest)
     unsigned int count, count2;
 
     // get list of directories
-    dir->GetAllFiles(src, files, "", wxDIR_FILES | wxDIR_DIRS);
+    dir->GetAllFiles(src, files, wxT(""), wxDIR_FILES | wxDIR_DIRS);
 
     // extract directories from filenames
     for (count = files->GetCount()-1; count > 0; count--)
     {
 
         // remove filename
-        index = files->Item(count).Find('\\', true);
+        index = files->Item(count).Find(wxT('\\'), true);
         name = files->Item(count).Mid(0, index);
 
         // remove root dir
-        index = name.Find('\\');
+        index = name.Find(wxT('\\'));
         name = name.Mid(index, name.Length() - index);
         
         // replace '\' with '/'
-        name.Replace("\\", "/", true);
+        name.Replace(wxT("\\"), wxT("/"), true);
         name = name.MakeLower();
 
         unique = true;
@@ -1072,10 +1063,10 @@ void UploadDialog::UploadDir (wxString src, wxString dest)
     {
         if (!abort)
         {
-            index = files->Item(count).Find('\\');
+            index = files->Item(count).Find(wxT('\\'));
             name = files->Item(count).Mid(index, files->Item(count).Length() - index);
 
-            name.Replace("\\", "/", true);
+            name.Replace(wxT("\\"), wxT("/"), true);
             name = ftp->Pwd()+name;
             
             UploadFile(files->Item(count), name);
@@ -1087,17 +1078,14 @@ void UploadDialog::UploadDir (wxString src, wxString dest)
 
 void UploadDialog::DownloadDir (wxString src, wxString dest)
 {
-
-
-
     if (!abort)
     {
     wxString dirName;
 
-    if (dest.Last() == '\\')
+    if (dest.Last() == wxT('\\'))
         dirName = dest+src;
     else
-        dirName = dest+"\\"+src;
+        dirName = dest+wxT("\\")+src;
 
     // create directory on users computer
     if (!wxDirExists(dirName))
@@ -1117,9 +1105,9 @@ void UploadDialog::DownloadDir (wxString src, wxString dest)
                 bool isDir = false;
                 wxString destName;
 
-                if (displayNames->Item(count) != "..")
+                if (displayNames->Item(count) != wxT(".."))
                 {
-                    if (displayPerm->Item(count).GetChar(0) == 'd')
+                    if (displayPerm->Item(count).GetChar(0) == wxT('d'))
                         isDir = true;
 
                     //destName = dirName+"\\"+displayNames->Item(count);
@@ -1130,12 +1118,12 @@ void UploadDialog::DownloadDir (wxString src, wxString dest)
         }
 
         // switch back to parent
-        ftp->ChDir("..");
+        ftp->ChDir(wxT(".."));
         GetDirContents();
 
     }
     else
-        wxMessageBox("Cannot copy folder: "+src, _T("Error"), wxOK, NULL);
+        wxMessageBox(_("Cannot copy folder: ")+src, _("Error"), wxOK, NULL);
 
     }
 
@@ -1157,7 +1145,7 @@ void UploadDialog::DownloadItem (wxString &src, wxString &dest,
 
         else
         {
-            wxDirDialog *saveDir = new wxDirDialog(this, "Download Folder", "");
+            wxDirDialog *saveDir = new wxDirDialog(this, _("Download Folder"), wxT(""));
             int result = saveDir->ShowModal();
 
             if (result == wxID_OK)
@@ -1171,13 +1159,13 @@ void UploadDialog::DownloadItem (wxString &src, wxString &dest,
         // just save to dest argument
         if (multi)
         {
-            DownloadFile(src, dest+"\\"+src);
+            DownloadFile(src, dest+wxT("\\")+src);
         }
         else
         {
-            wxFileDialog *saveFile = new wxFileDialog(this, "Download File",
-                                                      "", src,
-                                                      "All Files (*.*)|*.*", wxSAVE);
+            wxFileDialog *saveFile = new wxFileDialog(this, _("Download File"),
+                                                      wxT(""), src,
+                                                      _("All Files (*.*)|*.*"), wxSAVE);
             int result = saveFile->ShowModal();
     
             if (result == wxID_OK)
@@ -1194,7 +1182,7 @@ void UploadDialog::DownloadItem (wxString &src, bool dir)
     if (dir)
     {
         
-        wxDirDialog *saveDir = new wxDirDialog(this, "Download Folder", "");
+        wxDirDialog *saveDir = new wxDirDialog(this, _("Download Folder"), wxT(""));
         int result = saveDir->ShowModal();
 
         if (result == wxID_OK)
@@ -1204,7 +1192,7 @@ void UploadDialog::DownloadItem (wxString &src, bool dir)
     else
     {
 
-        wxFileDialog *saveFile = new wxFileDialog(this, "Download File", "", src, "All Files (*.*)|*.*", wxSAVE);
+        wxFileDialog *saveFile = new wxFileDialog(this, _("Download File"), wxT(""), src, _("All Files (*.*)|*.*"), wxSAVE);
         int result = saveFile->ShowModal();
     
         if (result == wxID_OK)
@@ -1219,7 +1207,7 @@ void UploadDialog::DownloadMultipleItems (void)
     long item = -1;
 
     // get save directory
-    wxDirDialog *saveDir = new wxDirDialog(this, "Download Files", "");
+    wxDirDialog *saveDir = new wxDirDialog(this, _("Download Files"), wxT(""));
     saveDir->ShowModal();
 
     // download selected items
@@ -1227,15 +1215,15 @@ void UploadDialog::DownloadMultipleItems (void)
     while (item != -1)
     {
         // if directory
-        if (displayPerm->Item(item).GetChar(0) == 'd')
+        if (displayPerm->Item(item).GetChar(0) == wxT('d'))
         {
             //DownloadItem(fileManager->GetItemText(listIndex), saveDir->GetPath(), true, true);    
-            DownloadDir(displayNames->Item(item), saveDir->GetPath()+"\\");
+            DownloadDir(displayNames->Item(item), saveDir->GetPath()+wxT("\\"));
     
         }
         else
         {
-            DownloadFile(displayNames->Item(item), saveDir->GetPath()+"\\"+displayNames->Item(item));
+            DownloadFile(displayNames->Item(item), saveDir->GetPath()+wxT("\\")+displayNames->Item(item));
         }
 
         // get next item
@@ -1248,11 +1236,11 @@ void UploadDialog::DownloadMultipleItems (void)
 void UploadDialog::OnCreateDir(wxCommandEvent &event)
 {
 
-    wxString result = wxGetTextFromUser("Please type the new folder name:", "New Folder", "", this);
+    wxString result = wxGetTextFromUser(_("Please enter new folder name:"), _("New Folder"), wxT(""), this);
 
-    if (result != "")
+    if (result != wxT(""))
     {
-        result.Replace(" ", "_", true);
+        result.Replace(wxT(" "), wxT("_"), true);
 
         if (ftp->MkDir(result.MakeLower()))
             RefreshFiles();
@@ -1266,10 +1254,11 @@ void UploadDialog::OnNewSite (wxCommandEvent &event)
     int index;
     long tmp;
     wxListItem listItem;
+    wxString newSite = _("New Site");
     
     index = siteList->GetItemCount();
 
-    tmp = siteList->InsertItem(index, "New Site", 0);
+    tmp = siteList->InsertItem(index, newSite, 0);
     siteList->SetItemData(tmp, 0);
 
     // make sure all items are deselected
@@ -1279,7 +1268,7 @@ void UploadDialog::OnNewSite (wxCommandEvent &event)
     // select added item
     siteList->SetItemState(tmp, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 
-    txtFtpName->SetValue("New Site");
+    txtFtpName->SetValue(newSite);
 
     ftpIndex = tmp;
 }
@@ -1292,7 +1281,7 @@ void UploadDialog::OnDeleteSite (wxCommandEvent &event)
 //  debug.Printf("%d", index);
 //  wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
     
-    wxTextFile *file = new wxTextFile("connections.ini");
+    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
 
     if (file->Exists())
     {
@@ -1340,7 +1329,7 @@ void UploadDialog::OnSelectSite (wxListEvent &event)
 bool UploadDialog::SaveFtpSite(wxString name, wxString host, wxString user, wxString pass)
 {
 
-    wxTextFile *file = new wxTextFile("connections.ini");
+    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
 
     if (file->Exists())
         file->Open();
@@ -1405,8 +1394,8 @@ bool UploadDialog::SaveFtpSite(wxString name, wxString host, wxString user, wxSt
 
 void UploadDialog::LoadFtpSiteList (void)
 {
-    wxTextFile *file = new wxTextFile("connections.ini");
-    int count;
+    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
+    unsigned int count;
 
     if (file->Exists())
     {
