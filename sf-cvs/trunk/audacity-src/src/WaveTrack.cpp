@@ -919,7 +919,7 @@ bool WaveTrack::GetMinMax(float *min, float *max,
       if (t1 >= clip->GetStartTime() && t0 <= clip->GetEndTime())
       {
          float clipmin, clipmax;
-         if (it->GetData()->GetMinMax(&clipmin, &clipmax, t0, t1-t0))
+         if (it->GetData()->GetMinMax(&clipmin, &clipmax, t0, t1))
          {
             if (clipmin < *min)
                *min = clipmin;
@@ -1149,11 +1149,12 @@ void WaveTrack::MoveClipToTrack(WaveClip *clip, WaveTrack* dest)
    }
 }
 
-bool WaveTrack::CanOffsetClip(WaveClip* clip, double amount, double *allowedAmount /* = NULL */)
+bool WaveTrack::CanOffsetClip(WaveClip* clip, double amount,
+                              double *allowedAmount /* = NULL */)
 {
    if (allowedAmount)
       *allowedAmount = amount;
-   
+
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {
       WaveClip* c = it->GetData();
@@ -1184,10 +1185,14 @@ bool WaveTrack::CanOffsetClip(WaveClip* clip, double amount, double *allowedAmou
       if (*allowedAmount == amount)
          return true;
 
-      // Check if the new calculated amount would not violate any other constraint
-      if (!CanOffsetClip(clip, *allowedAmount, NULL))
+      // Check if the new calculated amount would not violate
+      // any other constraint
+      if (!CanOffsetClip(clip, *allowedAmount, NULL)) {
          *allowedAmount = 0; // play safe and don't allow anything
-      return false;
+         return false;
+      }
+      else
+         return true;
    } else
       return true;
 }
