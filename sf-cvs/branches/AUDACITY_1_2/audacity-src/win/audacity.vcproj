@@ -1284,6 +1284,12 @@
 				RelativePath="..\src\effects\ChangeTempo.h">
 			</File>
 			<File
+				RelativePath="..\src\effects\ClickRemoval.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\ClickRemoval.h">
+			</File>
+			<File
 				RelativePath="..\src\effects\Compressor.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1694,6 +1700,12 @@
 			</File>
 			<File
 				RelativePath="..\src\effects\ToneGen.h">
+			</File>
+			<File
+				RelativePath="..\src\effects\TwoPassSimpleMono.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\TwoPassSimpleMono.h">
 			</File>
 			<File
 				RelativePath="..\src\effects\Wahwah.cpp">
