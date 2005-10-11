@@ -11,7 +11,7 @@ Authors:
 
 ================================================================
 This version is currently accurate for Audacity version 1.3.0.
-Last Updated: July 6, 2005
+Last Updated: October 11, 2005
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
@@ -45,7 +45,9 @@ Similar to the Linux kernel, wxWidgets is available as
 stable and development branches.  
 
 Audacity now requires wxWidgets 2.6.0 or greater for 
-Microsoft Windows, available at "http://www.wxwidgets.org/".
+Microsoft Windows, available at "http://www.wxwidgets.org/". 
+The release version of Audacity 1.3.0 is built with 
+wxWidgets 2.6.2.
 
 
 ------------------------
@@ -57,18 +59,18 @@ build it. Audacity requires different build settings than
 are shipped with the wxWidgets projects, to use the 
 multithreaded statically-linked runtime libraries instead 
 of the multithreaded DLL runtime libraries. However, 
-wxWidgets 2.6.0 does not ship with MSVC7 solution and project 
+wxWidgets 2.6.2 does not ship with MSVC7 solution and project 
 files, only MSVC6, so Audacity supplies MSVC7 versions. 
 All you need to do is copy them to the right place and use 
 them to build wxWidgets -- no need to edit the wxWidgets 
 versions.
 
 1. Copy all the files from "audacity\win\wxWidgets_additions" 
-   to "C:\wxWidgets-2.6.0\build\msw" (or the corresponding 
+   to "C:\wxWidgets-2.6.2\build\msw" (or the corresponding 
    location if you installed wxWidgets someplace other than 
    the default). 
 
-2. Open "C:\wxWidgets-2.6.0\build\msw\wx.sln" and build the 
+2. Open "C:\wxWidgets-2.6.2\build\msw\wx.sln" and build the 
    Debug and Release configurations for all the wxWidgets 
    projects.
 
@@ -93,9 +95,9 @@ MSVC++ STEP 4:  Set wxWidgets location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWidgets.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWidgets-2.6.0\include")
-    2.  Resource Directory (e.g., "C:\wxWidgets-2.6.0\include")
-    3.  Library Directory (e.g., "C:\wxWidgets-2.6.0\lib")
+    1.  Include Directory (e.g., "C:\wxWidgets-2.6.2\include")
+    2.  Resource Directory (e.g., "C:\wxWidgets-2.6.2\include")
+    3.  Library Directory (e.g., "C:\wxWidgets-2.6.2\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
@@ -104,14 +106,14 @@ environment variable WXWIN, set to the top-level directory
 where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWidgets-2.6.0
+   set WXWIN=C:\wxWidgets-2.6.2
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
 
    $(WXWIN)\include
 
-that get interpreted as, e.g., "C:\wxWidgets-2.6.0\include".
+that get interpreted as, e.g., "C:\wxWidgets-2.6.2\include".
 
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
