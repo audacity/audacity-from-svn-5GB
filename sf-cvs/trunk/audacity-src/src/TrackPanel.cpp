@@ -5130,7 +5130,6 @@ bool TrackPanel::MoveClipToTrack(WaveClip *clip,
    // Make sure we have the first track of two stereo tracks
    // with both source and destination
    if (!src->GetLinked() && mTracks->GetLink(src)) {
-      printf("Swapping source\n");
       src = (WaveTrack*)mTracks->GetLink(src);
       if (mCapturedClipArray.GetCount() == 2) {
          if (mCapturedClipArray[0].clip == clip)
