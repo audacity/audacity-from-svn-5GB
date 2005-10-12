@@ -1176,9 +1176,7 @@ int DirManager::ProjectFSCK(bool forceerror)
       !missingDataList.empty() ||
       !missingSummaryList.empty()){
 
-      wxLogWarning(wxT("Project check found inconsistencies inspecting the ")
-                   wxT("loaded project data; click 'Details' for a complete ")
-                   wxT("list of errors, or 'OK' to proceed to more options."));
+      wxLogWarning(wxT("Project check found inconsistencies inspecting the loaded project data;\nclick 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
       
       wxLog::GetActiveTarget()->Flush(); // Flush is both modal
       // (desired) and will clear the log (desired)
