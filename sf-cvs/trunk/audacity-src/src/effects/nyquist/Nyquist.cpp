@@ -305,8 +305,10 @@ bool EffectNyquist::PromptUser()
       mFileModified = mFileName.GetModificationTime();
    }
 
-   if (mControls.GetCount() == 0)
+   if (mControls.GetCount() == 0) {
+      mDebug = false;
       return true;
+   }
 
    for(unsigned int i=0; i<mControls.GetCount(); i++) {
       NyqControl *ctrl = &mControls[i];
