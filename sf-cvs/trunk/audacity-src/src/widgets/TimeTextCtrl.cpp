@@ -283,7 +283,7 @@ void TimeTextCtrl::ParseFormatString()
       if (format[i] == '|') {
          wxString remainder = format.Right(format.Length() - i - 1);
 
-         if (remainder == "#")
+         if (remainder == wxT("#"))
             mScalingFactor = mSampleRate;
          else
             remainder.ToDouble(&mScalingFactor);
@@ -294,7 +294,7 @@ void TimeTextCtrl::ParseFormatString()
             handleNum = true;
       }
       else if ((format[i] >= '0' && format[i] <='9') ||
-          format[i] == '*' || format[i] == '#') {
+          format[i] == wxT('*') || format[i] == wxT('#')) {
          numStr += format[i];
          if (delimStr != wxT(""))
             handleDelim = true;
