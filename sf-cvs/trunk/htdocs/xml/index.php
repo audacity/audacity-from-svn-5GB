@@ -19,7 +19,7 @@
 </p>
 
 <p>
-<?="More documentation on the Audacity project file format is forthcoming.")?>
+<?=_("More documentation on the Audacity project file format is forthcoming.")?>
 </p>
 
 <?php
