@@ -5,6 +5,7 @@
   DirManager.cpp
 
   Dominic Mazzoni
+  Monty
 
 **********************************************************************/
 
@@ -92,7 +93,10 @@ DirManager::DirManager()
       if (wxGetDiskSpace(globaltemp, NULL, &freeSpace)) {
          if (freeSpace < 1048576) {
             ShowWarningDialog(NULL, wxT("DiskSpaceWarning"),
-                              _("Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences."));
+                              _("Warning: there is very little free "
+                                "disk space left on this volume.\n"
+                                "Please select another temporary "
+                                "directory in your preferences."));
          }
       }
    }
@@ -126,7 +130,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                   wxString dirspec,
                                   int files_p,int dirs_p,
                                   int progress_count,int progress_bias,
-                                  wxChar *prompt, wxProgressDialog **progress){
+                                  const wxChar *prompt, wxProgressDialog **progress){
 
    int count=0;
    bool cont;
@@ -183,7 +187,8 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
                                        wxStringList *flist, 
                                        wxString dirspec,
                                        int files_p,int dirs_p,
-                                       int progress_count,wxChar *prompt){
+                                       int progress_count,
+                                       const wxChar *prompt){
 
    wxProgressDialog *progress = NULL;
    wxStartTimer();
@@ -210,7 +215,8 @@ static int rm_dash_rf_enumerate(wxString dirpath,
 
 
 static void rm_dash_rf_execute(wxStringList fnameList, 
-                               int count, int files_p, int dirs_p, wxChar *prompt){
+                               int count, int files_p, int dirs_p,
+                               const wxChar *prompt){
 
    wxChar **array = fnameList.ListToArray();   
    wxProgressDialog *progress = NULL;
@@ -265,7 +271,11 @@ void DirManager::CleanTempDir(bool startup)
       int action = wxYES;
       if (warn==1) {
       wxString prompt =
-         _("Audacity found temporary files that were not deleted or saved\nthe last time you used Audacity.\n\nAudacity can't recover them automatically, but if you choose not\nto delete them, you can recover them manually.\n\nDelete temporary files?");
+         _("Audacity found temporary files that were not deleted or saved\n"
+           "the last time you used Audacity.\n\n"
+           "Audacity can't recover them automatically, but if you choose not\n"
+           "to delete them, you can recover them manually.\n\n"
+           "Delete temporary files?");
       
       action = wxMessageBox(prompt,
                                 wxT("Warning"),
@@ -278,7 +288,7 @@ void DirManager::CleanTempDir(bool startup)
       }
    }
 
-   rm_dash_rf_execute(fnameList,count,1,1,wxT("Cleaning up temporary files"));
+   rm_dash_rf_execute(fnameList,count,1,1,_("Cleaning up temporary files"));
 }
 
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
@@ -406,7 +416,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       count+=rm_dash_rf_enumerate(cleanupLoc2,&dirlist,wxEmptyString,0,1);
       
       if(count)
-         rm_dash_rf_execute(dirlist,count,0,1,wxT("Cleaning up cache directories"));
+         rm_dash_rf_execute(dirlist,count,0,1,_("Cleaning up cache directories"));
    }
    return true;
 }
@@ -483,9 +493,9 @@ bool DirManager::AssignFile(wxFileName &fileName,
          wxString collision;
          checkit.GetFirst(&collision,filespec);
          
-         wxLogWarning(wxT("Audacity found an orphaned blockfile %s!\n") 
-                      wxT("Please consider saving and reloading the project ")
-                      wxT("to perform a complete project check.\n"),
+         wxLogWarning(_("Audacity found an orphaned blockfile %s!\n"
+                        "Please consider saving and reloading the project "
+                        "to perform a complete project check.\n"),
                       collision.c_str());
          
          return FALSE;
@@ -1086,7 +1096,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    // this function is finally a misnomer
    rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
                                &fnameList,wxEmptyString,1,0,blockcount,
-                               wxT("Inspecting project file data..."));
+                               _("Inspecting project file data..."));
    
    // enumerate orphaned blockfiles
    BlockHash diskFileHash;
@@ -1099,7 +1109,7 @@ int DirManager::ProjectFSCK(bool forceerror)
       if(blockFileHash.find(basename) == blockFileHash.end()){
          // the blockfile on disk is orphaned
          orphanList.Add(fullname.GetFullPath());
-         wxLogWarning(wxT("Orphaned blockfile: (%s)"),
+         wxLogWarning(_("Orphaned blockfile: (%s)"),
                       fullname.GetFullPath().c_str());
       }
       node=node->GetNext();
@@ -1124,7 +1134,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    i=missingAliasFiles.begin();
    while(i != missingAliasFiles.end()) {
       wxString key=i->first;
-      wxLogWarning(wxT("Missing alias file: (%s)"),key.c_str());
+      wxLogWarning(_("Missing alias file: (%s)"),key.c_str());
       i++;
    }
 
@@ -1143,7 +1153,7 @@ int DirManager::ProjectFSCK(bool forceerror)
          file.SetExt(wxT("auf"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingSummaryList[key]=b;
-            wxLogWarning(wxT("Missing summary file: (%s.auf)"),
+            wxLogWarning(_("Missing summary file: (%s.auf)"),
                          key.c_str());
          }
       }
@@ -1162,7 +1172,7 @@ int DirManager::ProjectFSCK(bool forceerror)
          file.SetExt(wxT("au"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingDataList[key]=b;
-            wxLogWarning(wxT("Missing data file: (%s.au)"),
+            wxLogWarning(_("Missing data file: (%s.au)"),
                          key.c_str());
          }
       }
@@ -1176,7 +1186,8 @@ int DirManager::ProjectFSCK(bool forceerror)
       !missingDataList.empty() ||
       !missingSummaryList.empty()){
 
-      wxLogWarning(wxT("Project check found inconsistencies inspecting the loaded project data;\nclick 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
+      wxLogWarning(_("Project check found inconsistencies inspecting the loaded project data;\n"
+                     "click 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
       
       wxLog::GetActiveTarget()->Flush(); // Flush is both modal
       // (desired) and will clear the log (desired)
@@ -1191,11 +1202,11 @@ int DirManager::ProjectFSCK(bool forceerror)
       
       prompt.Printf(promptA,orphanList.GetCount());
       
-      wxChar *buttons[]={wxT("Delete orphaned files [safe and recommended]"),
-                       wxT("Continue without deleting; silently work around the extra files"),
-                       wxT("Close project immediately with no changes"),NULL};
+      const wxChar *buttons[]={_("Delete orphaned files [safe and recommended]"),
+                               _("Continue without deleting; silently work around the extra files"),
+                               _("Close project immediately with no changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   wxT("Warning"),
+                                   _("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1216,16 +1227,21 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingAliasList.empty()){
 
       wxString promptA =
-         _("Project check detected %d input file[s] being used in place\n('alias files') are now missing.  There is no way for Audacity\nto recover these files automatically; you may choose to\npermanently fill in silence for the missing files, temporarily\nfill in silence for this session only, or close the project now\nand try to restore the missing files by hand.");
+         _("Project check detected %d input file[s] being used in place\n"
+           "('alias files') are now missing.  There is no way for Audacity\n"
+           "to recover these files automatically; you may choose to\n"
+           "permanently fill in silence for the missing files, temporarily\n"
+           "fill in silence for this session only, or close the project now\n"
+           "and try to restore the missing files by hand.");
       wxString prompt;
       
       prompt.Printf(promptA,missingAliasFiles.size());
       
-      wxChar *buttons[]={wxT("Replace missing data with silence [permanent upon save]"),
-                       wxT("Temporarily replace missing files with silence [this session only]"),
-                       wxT("Close project immediately with no further changes"),NULL};
+      const wxChar *buttons[]={_("Replace missing data with silence [permanent upon save]"),
+                               _("Temporarily replace missing files with silence [this session only]"),
+                               _("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   wxT("Warning"),
+                                   _("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1254,16 +1270,18 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingSummaryList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing summary file[s] (.auf).\nAudacity can fully regenerate these summary files from the\noriginal audio data in the project.");
+         _("Project check detected %d missing summary file[s] (.auf).\n"
+           "Audacity can fully regenerate these summary files from the\n"
+           "original audio data in the project.");
       wxString prompt;
       
       prompt.Printf(promptA,missingSummaryList.size());
       
-      wxChar *buttons[]={wxT("Regenerate summary files [safe and recommended]"),
-                       wxT("Fill in silence for missing display data [this session only]"),
-                       wxT("Close project immediately with no further changes"),NULL};
+      const wxChar *buttons[]={_("Regenerate summary files [safe and recommended]"),
+                               _("Fill in silence for missing display data [this session only]"),
+                               _("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   wxT("Warning"),
+                                   _("Warning"),
                                    buttons);
 
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1285,16 +1303,22 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingDataList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing audio data blockfile[s] (.au), \nprobably due to a bug, system crash or accidental deletion.\nThere is no way for Audacity to recover this lost data\nautomatically; you may choose to permanently fill in silence\nfor the missing data, temporarily fill in silence for this\nsession only, or close the project now and try to restore the\nmissing data by hand.");
+         _("Project check detected %d missing audio data blockfile[s] (.au), \n"
+           "probably due to a bug, system crash or accidental deletion.\n"
+           "There is no way for Audacity to recover this lost data\n"
+           "automatically; you may choose to permanently fill in silence\n"
+           "for the missing data, temporarily fill in silence for this\n"
+           "session only, or close the project now and try to restore the\n"
+           "missing data by hand.");
       wxString prompt;
       
       prompt.Printf(promptA,missingDataList.size());
       
-      wxChar *buttons[]={wxT("Replace missing data with silence [permanent immediately]"),
-                       wxT("Temporarily replace missing data with silence [this session only]"),
-                       wxT("Close project immediately with no further changes"),NULL};
+      const wxChar *buttons[]={_("Replace missing data with silence [permanent immediately]"),
+                               _("Temporarily replace missing data with silence [this session only]"),
+                               _("Close project immediately with no further changes"),NULL};
       int action = ShowMultiDialog(prompt,
-                                   wxT("Warning"),
+                                   _("Warning"),
                                    buttons);
       
       if(action==2)return (ret | FSCKstatus_CLOSEREQ);
@@ -1317,7 +1341,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    fnameList.Clear();
    rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
                                &fnameList,wxEmptyString,0,1,blockcount,
-                               wxT("Cleaning up unused directories in project data..."));
+                               _("Cleaning up unused directories in project data..."));
    rm_dash_rf_execute(fnameList,0,0,1,0);
 
 

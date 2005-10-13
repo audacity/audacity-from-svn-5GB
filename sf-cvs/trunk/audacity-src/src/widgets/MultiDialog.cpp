@@ -26,7 +26,7 @@ public:
    // constructors and destructors
    MultiDialog(wxString prompt,
                wxString title,
-               wxChar **buttons);
+               const wxChar **buttons);
    
 private:
    void OnOK( wxCommandEvent &event );
@@ -42,7 +42,7 @@ END_EVENT_TABLE()
    
 MultiDialog::MultiDialog(wxString prompt,
                          wxString title,
-                         wxChar **buttons):
+                         const wxChar **buttons):
    wxDialog(NULL, (wxWindowID)-1, (wxString)_("title"))
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -96,7 +96,7 @@ void MultiDialog::OnOK(wxCommandEvent &event)
 
 int ShowMultiDialog(wxString prompt,
                     wxString title,
-                    wxChar **buttons)
+                    const wxChar **buttons)
 {
    MultiDialog dlog(prompt,title,buttons);
    dlog.CentreOnParent();
