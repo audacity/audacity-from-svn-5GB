@@ -527,7 +527,7 @@ bool EffectNyquist::ProcessOne()
    
    cmd += mCmd;
    
-   wxMessageBox(cmd);
+   //wxMessageBox(cmd);
    
    int i;
 	for (i = 0; i < mCurNumChannels; i++)
