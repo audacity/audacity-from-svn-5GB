@@ -277,6 +277,10 @@ Changes in 1.2.4:
   * The "View History" window can now discard old undo levels to save disk
     space on Windows.  (This previously worked only on Linux and Mac.)
 
+  * Opening a project file saved by a later version of Audacity displays
+    an intelligent error message.  Also, trying to import a project file
+    (instead of open it) displays an intelligent error message.
+
   * Audacity now compiles in Visual C++ .NET 2003.
 
   * Other minor bug fixes.
