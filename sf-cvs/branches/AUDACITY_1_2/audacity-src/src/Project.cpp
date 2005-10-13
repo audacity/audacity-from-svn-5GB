@@ -1909,10 +1909,9 @@ void AudacityProject::OpenFile(wxString fileName)
 
 bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
 {
-   if (strcmp(tag, "audacityproject"))
-      return false;
-
    int requiredTags = 0;
+   wxString fileVersion = "";
+   wxString audacityVersion = "";
 
    // loop through attrs, which is a null-terminated list of
    // attribute-value pairs
@@ -1922,6 +1921,16 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
 
       if (!value)
          break;
+
+      if (!strcmp(attr, "version")) {
+         fileVersion = value;
+         requiredTags++;
+      }
+
+      if (!strcmp(attr, "audacityversion")) {
+         audacityVersion = value;
+         requiredTags++;
+      }
 
       if (!strcmp(attr, "projname")) {
          wxString projName = value;
@@ -1963,10 +1972,34 @@ bool AudacityProject::HandleXMLTag(const char *tag, const char **attrs)
       }
    } // while
 
-   if (requiredTags >= 1)
-      return true;
-   else
+   if (requiredTags < 3)
       return false;
+
+   // Specifically detect newer versions of Audacity - there are two
+   // clues - the file version, and the tag changing from
+   // "audacityproject" to "project" (but with a namespace).
+   if (fileVersion.Length() != 5 || // expecting '1.1.0', for example
+       fileVersion > AUDACITY_FILE_FORMAT_VERSION ||
+       !strcmp(tag, "project")) {
+      wxString msg;
+      msg.Printf(_("This file was saved using Audacity %s.\n"
+                   "You are using Audacity %s - you need to upgrade to\n"
+                   "a newer version to open this file."),
+                 audacityVersion.c_str(),
+                 AUDACITY_VERSION_STRING);
+      wxMessageBox(msg,
+                   _("Can't open project file"),
+                   wxOK | wxCENTRE, this);
+      return false;
+   }
+
+   // If the outer tag isn't audacityproject, then who knows what kind
+   // of file we have?
+   if (strcmp(tag, "audacityproject"))
+      return false;
+
+   // Otherwise, all tests passed.  Open the file!
+   return true;
 }
 
 XMLTagHandler *AudacityProject::HandleXMLChild(const char *tag)
@@ -2264,6 +2297,22 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
 void AudacityProject::Import(wxString fileName)
 {
+   // Special case for project files.
+   if (fileName.Length() > 4 &&
+       fileName.Right(4)==".aup") {
+      wxString msg;
+      msg.Printf(_("The file you selected is an Audacity Project file.\n\n"
+                   "Only audio files, not project files, can be imported\n"
+                   "into an existing project.  To open a project file,\n"
+                   "select Open from the File menu.\n"),
+                 _("Can't import project file"),
+                 wxOK | wxCENTRE, this);
+      wxMessageBox(msg,
+                   _("Can't import project file"),
+                   wxOK | wxCENTRE, this);
+      return;
+   }
+
    Track **newTracks;
    int numTracks;
    wxString errorMessage;
