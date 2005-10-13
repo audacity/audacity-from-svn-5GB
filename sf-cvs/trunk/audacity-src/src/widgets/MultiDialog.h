@@ -19,7 +19,7 @@
 /// window
 int ShowMultiDialog(wxString prompt,
                     wxString title,
-                    wxChar **buttons);
+                    const wxChar **buttons);
 
 #endif // __AUDACITY_MULTIDIALOG__
 
