@@ -2017,9 +2017,8 @@ void AudacityProject::OpenFile(wxString fileName)
 
 bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (wxStrcmp(tag, wxT("audacityproject")))
-      return false;
-
+   wxString fileVersion;
+   wxString audacityVersion;
    int requiredTags = 0;
 
    // loop through attrs, which is a null-terminated list of
@@ -2030,6 +2029,16 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
       if (!value)
          break;
+
+      if (!wxStrcmp(attr, "version")) {
+         fileVersion = value;
+         requiredTags++;
+      }
+
+      if (!wxStrcmp(attr, "audacityversion")) {
+         audacityVersion = value;
+         requiredTags++;
+      }
 
       if (!wxStrcmp(attr, wxT("projname"))) {
          wxString projName = value;
@@ -2071,10 +2080,52 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       }
    } // while
 
-   if (requiredTags >= 1)
-      return true;
-   else
+   // Specifically detect newer versions of Audacity
+   if (fileVersion.Length() != 5 || // expecting '1.1.0', for example
+       fileVersion > AUDACITY_FILE_FORMAT_VERSION) {
+      wxString msg;
+      msg.Printf(_("This file was saved using Audacity %s.\n"
+                   "You are using Audacity %s - you need to upgrade to\n"
+                   "a newer version to open this file."),
+                 audacityVersion.c_str(),
+                 AUDACITY_VERSION_STRING);
+      wxMessageBox(msg,
+                   _("Can't open project file"),
+                   wxOK | wxICON_EXCLAMATION | wxCENTRE, this);
       return false;
+   }
+
+   // Specifically detect older versions of Audacity
+   if (fileVersion < AUDACITY_FILE_FORMAT_VERSION) {
+      wxString msg;
+      msg.Printf(_("This file was saved by Audacity %s and the format\n"
+                   "has changed.  This version of Audacity can try to\n"
+                   "open it, but there may be problems.  You should back up\n"
+                   "your project first, to be safe.\n\n"
+                   "Would you like to open this file right now anyway?"),
+                 audacityVersion.c_str());
+      int action;
+      action = wxMessageBox(msg,
+                            _("Opening old project file"),
+                            wxYES_NO | wxICON_EXCLAMATION | wxCENTRE,
+                            this);
+      if (action == wxNO)
+         return false;
+   }
+
+   if (wxStrcmp(tag, wxT("audacityproject")) &&
+       wxStrcmp(tag, wxT("project"))) {
+      // If the tag name is not one of these two (the new name is
+      // "project" with an Audacity namespace, but we don't detect
+      // the namespace yet), then we don't know what the error is
+      return false;
+   }
+
+   if (requiredTags < 3)
+      return false;
+
+   // All other tests passed, so we succeed
+   return true;
 }
 
 XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
@@ -2123,7 +2174,8 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
-   fprintf(fp, "<audacityproject ");
+   fprintf(fp, "<project ");
+   fprintf(fp, "xmlns=\"http://audacity.sourceforge.net/xml/\" ");
    fprintf(fp, "projname=\"%s\" ", (const char *)XMLEsc(projName).mb_str());
    fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
    fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
@@ -2147,7 +2199,7 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
-   fprintf(fp, "</audacityproject>\n");
+   fprintf(fp, "</project>\n");
 }
 
 bool AudacityProject::Save(bool overwrite /* = true */ ,
@@ -2252,7 +2304,22 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       return false;
    }
 
-   fprintf(saveFile.fp(), "<?xml version=\"1.0\"?>\n");
+   fprintf(saveFile.fp(), "<?xml ");
+   fprintf(saveFile.fp(), "version=\"1.0\" ");
+   fprintf(saveFile.fp(), "standalone=\"no\" ");
+   fprintf(saveFile.fp(), "?>\n");
+
+   wxString dtdName = wxT("-//audacityproject-1.3.0//DTD//EN");
+   wxString dtdURI =
+      wxT("http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd");
+
+   fprintf(saveFile.fp(), "<!DOCTYPE ");
+   fprintf(saveFile.fp(), "project ");
+   fprintf(saveFile.fp(), "PUBLIC ");
+   fprintf(saveFile.fp(), "\"%s\" ", dtdName.c_str());
+   fprintf(saveFile.fp(), "\"%s\" ", dtdURI.c_str());
+   fprintf(saveFile.fp(), ">\n");
+
    WriteXML(0, saveFile.fp());
 
    saveFile.Close();
