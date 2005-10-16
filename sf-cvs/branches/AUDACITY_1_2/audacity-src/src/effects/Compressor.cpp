@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
 
+  Martyn Shaw made it inherit from EffectTwoPassSimpleMono 10/2005.
   Steve Jolly made it inherit from EffectSimpleMono.
   GUI added and implementation improved by Dominic Mazzoni, 5/11/2003.
 
@@ -94,8 +95,12 @@ bool EffectCompressor::InitFirstPass()
 }
 bool EffectCompressor::InitSecondPass()
 {
-   pass=1;
-   return true;
+	if(mNormalize){
+		pass=1;
+		return true;
+	}
+	else	//Normalising not selected - avoid second pass
+		return false;
 }
 bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len)
 {
@@ -122,11 +127,8 @@ bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len)
 		delete[] follow;
    }
    else {	//pass!=0, should be 1 here
-		if(mNormalize)	//MJS apply normalisation
-		{
-			for (i = 0; i < len; i++) {
-				buffer[i] /= mMax;
-			}
+		for (i = 0; i < len; i++) {
+			buffer[i] /= mMax;
 		}
    }
 
@@ -461,7 +463,7 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   mGainCheckBox = new wxCheckBox(this, -1, _("Apply Normalization (to 0dB) after compressing"));
+   mGainCheckBox = new wxCheckBox(this, -1, _("Normalize to 0dB after compressing"));
    mGainCheckBox->SetValue(true);
    hSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
