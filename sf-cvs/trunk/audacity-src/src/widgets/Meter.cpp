@@ -24,7 +24,9 @@
 #include <wx/menu.h>
 #include <wx/settings.h>
 #include <wx/textdlg.h>
+#include <wx/numdlg.h>
 #include <wx/tooltip.h>
+#include <wx/msgdlg.h>
 
 #include <math.h>
 
@@ -164,7 +166,7 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    int i;
 
     wxColour backgroundColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
     mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
 
    mMeterRefreshRate = gPrefs->Read(wxT("/Meter/MeterRefreshRate"), 30);
@@ -292,6 +294,8 @@ void Meter::OnSize(wxSizeEvent &evt)
    delete mBitmap;
    mBitmap = NULL;
    GetClientSize(&mWidth, &mHeight);
+
+//::wxMessageBox(wxString::Format(" mHeight=%d, mWidth=%d", mHeight,mWidth));
    mLayoutValid = false;
 }
 

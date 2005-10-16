@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
 
+  Martyn Shaw made it inherit from EffectTwoPassSimpleMono 10/2005.
   Steve Jolly made it inherit from EffectSimpleMono.
   GUI added and implementation improved by Dominic Mazzoni, 5/11/2003.
 

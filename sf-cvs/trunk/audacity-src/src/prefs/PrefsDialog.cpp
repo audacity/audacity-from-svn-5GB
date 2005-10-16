@@ -77,10 +77,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
                                 ,wxNB_LEFT
 #endif
                                 );
-   wxNotebookSizer *catSizer = new wxNotebookSizer(mCategories);
-
-
-   topSizer->Add(catSizer, 1, wxGROW | wxALL, 0);
+   topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
    mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));

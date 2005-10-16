@@ -184,7 +184,7 @@ void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, con
 void TranscriptionToolBar::MakeButtons()
 {
    wxColour newColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour baseColour = wxColour(204, 204, 204);
    
    wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());

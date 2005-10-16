@@ -86,6 +86,7 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
+#include <wx/numdlg.h>
 #include <wx/choicdlg.h>
 #include <wx/textctrl.h>
 #include <wx/intl.h>

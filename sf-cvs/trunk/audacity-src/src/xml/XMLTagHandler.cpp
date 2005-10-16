@@ -18,6 +18,7 @@
 #include "../Internat.h"
 
 #include <wx/defs.h>
+#include <wx/arrstr.h>
 
 // See http://www.w3.org/TR/REC-xml for reference
 wxString XMLTagHandler::XMLEsc(wxString s)
