@@ -88,6 +88,8 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    LangHash localLanguageName;
    LangHash reverseHash;
 
+   // MM: Use only ASCII characters here to avoid problems with
+   //     charset conversion on Linux platforms
    localLanguageName["ar"] = "Arabic";
    localLanguageName["bg"] = "Balgarski";
    localLanguageName["ca"] = "Catalan";
@@ -95,10 +97,10 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["de"] = "Deutsch";
    localLanguageName["el"] = "Ellinika";
    localLanguageName["en"] = "English";
-   localLanguageName["es"] = "Español";
+   localLanguageName["es"] = "Espanol";
    localLanguageName["eu"] = "Euskara";
    localLanguageName["fi"] = "Suomi";
-   localLanguageName["fr"] = "Français";
+   localLanguageName["fr"] = "Francais";
    localLanguageName["ga"] = "Gaeilge";
    localLanguageName["it"] = "Italiano";
    localLanguageName["ja"] = "Nihongo";
@@ -107,7 +109,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["nl"] = "Nederlands";
    localLanguageName["nb"] = "Norsk";
    localLanguageName["pl"] = "Polski";
-   localLanguageName["pt"] = "Português";
+   localLanguageName["pt"] = "Portugues";
    localLanguageName["ru"] = "Russky";
    localLanguageName["sl"] = "Slovenscina";
    localLanguageName["sv"] = "Svenska";
