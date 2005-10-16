@@ -870,7 +870,6 @@ void AudacityApp::OnKeyEvent(wxKeyEvent & event )
 //BG: Filters all events before they are processed
 int AudacityApp::FilterEvent(wxEvent& event)
 {
-   return -1;
    //Send key events to the commands code
    if(event.GetEventType() == wxEVT_KEY_DOWN ||
       event.GetEventType() == wxEVT_KEY_UP)
@@ -885,6 +884,8 @@ int AudacityApp::FilterEvent(wxEvent& event)
 //BG: return TRUE to signify that the event has been processed, but do not allow anything else to process this event
 //BG: return FALSE to signigy that the event has not been processed and should not be processed
 //BG: do not call event.skip, I do not know what would happen
+
+
 int AudacityApp::OnAllKeys(wxKeyEvent& event)
 {
    AudacityProject *audacityPrj = GetActiveProject();
