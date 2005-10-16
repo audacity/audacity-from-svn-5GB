@@ -266,6 +266,64 @@ bool WaveTrack::CutAndAddCutLine(double t0, double t1, Track **dest)
    return ClearAndAddCutLine(t0, t1);
 }
 
+
+
+//Trim trims within a clip, rather than trimming everything.
+//If a bound is outside a clip, it trims everything.
+bool WaveTrack::Trim (double t0, double t1)
+{
+   bool inside0 = false;
+   bool inside1 = false;
+   //Keeps track of the offset of the first clip greater than
+   // the left selection t0.
+   double firstGreaterOffset = -1;
+   double initOffset = GetOffset();
+
+   WaveClipList::Node * it;
+   for(it = GetClipIterator(); it; it = it->GetNext())
+      {
+            
+         WaveClip * clip = it->GetData();
+
+         //Find the first clip greater than the offset.
+         //If we end up clipping the entire track, this is useful.
+         if(firstGreaterOffset < 0 && 
+            clip->GetStartTime() >= t0)
+            firstGreaterOffset = clip->GetStartTime();
+
+         if(t1 > clip->GetStartTime() && t1 < clip->GetEndTime())
+            {
+               clip->Clear(t1,clip->GetEndTime());
+               inside1 = true;
+            }
+
+         if(t0 > clip->GetStartTime() && t0 < clip->GetEndTime())
+            {
+               clip->Clear(clip->GetStartTime(),t0);
+               clip->SetOffset(t0);
+               inside0 = true;
+            }
+      }
+
+   //if inside0 is false, then the left selector was between
+   //clips, so delete everything to its left.
+   if(false == inside1)
+      {
+         Clear(t1,GetEndTime());
+      }
+
+   if(false == inside0)
+      {
+         Clear(0,t0);
+         //Reset the track offset to be at the point of the first remaining clip. 
+         SetOffset(firstGreaterOffset );
+      }
+   
+}
+
+
+
+
 bool WaveTrack::Copy(double t0, double t1, Track **dest)
 {
    *dest = NULL;
