@@ -205,7 +205,7 @@ bool Effect::TrackProgressRestart()	//used by TwoPassSimpleMono. MJS.
    }
 
    mProgress = new wxProgressDialog(GetEffectName(),
-                              GetEffectAction()+"stage two...",
+                              GetEffectAction()+wxT(" (2)"),
                               1000,
                               mParent,
                               wxPD_CAN_ABORT |
