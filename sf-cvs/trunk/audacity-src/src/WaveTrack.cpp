@@ -293,13 +293,15 @@ bool WaveTrack::Trim (double t0, double t1)
 
          if(t1 > clip->GetStartTime() && t1 < clip->GetEndTime())
             {
-               clip->Clear(t1,clip->GetEndTime());
+               if (!clip->Clear(t1,clip->GetEndTime()))
+                  return false;
                inside1 = true;
             }
 
          if(t0 > clip->GetStartTime() && t0 < clip->GetEndTime())
             {
-               clip->Clear(clip->GetStartTime(),t0);
+               if (!clip->Clear(clip->GetStartTime(),t0))
+                  return false;
                clip->SetOffset(t0);
                inside0 = true;
             }
@@ -309,16 +311,19 @@ bool WaveTrack::Trim (double t0, double t1)
    //clips, so delete everything to its left.
    if(false == inside1)
       {
-         Clear(t1,GetEndTime());
+         if (!Clear(t1,GetEndTime()))
+            return false;
       }
 
    if(false == inside0)
       {
-         Clear(0,t0);
+         if (!Clear(0,t0))
+            return false;
          //Reset the track offset to be at the point of the first remaining clip. 
          SetOffset(firstGreaterOffset );
       }
    
+   return true;
 }
 
 
