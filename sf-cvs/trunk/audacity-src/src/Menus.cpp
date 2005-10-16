@@ -2235,12 +2235,7 @@ void AudacityProject::OnTrim()
    while (n) {
       if (n->GetSelected()) {
          //Delete the section before the left selector
-         n->Clear(n->GetOffset(), mViewInfo.sel0);
-         if (mViewInfo.sel0 > n->GetOffset())
-            n->SetOffset(mViewInfo.sel0);
-
-         //Delete the section after the right selector
-         n->Clear(mViewInfo.sel1, n->GetEndTime());
+        ((WaveTrack*)n)->Trim(mViewInfo.sel0, mViewInfo.sel1);
       }
       n = iter.Next();
    }
@@ -3521,7 +3516,9 @@ void AudacityProject::OnExportCleanSpeechPresets()
       }
       ::wxSplitPath(fName, &path, &nameOnly, &extension);
       wxFFile presetsFile((const wxChar*)FILENAME(fName), (const wxChar*)"wb");
+
       bool flag = presetsFile.IsOpened();
+
       if (flag == true) {
          int preset[PRESET_COUNT];
          preset[0]  = PRESET_FORMAT;
@@ -3718,6 +3715,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
       int second = now.GetSecond();
       justName = wxString::Format(wxT("%d-%s-%02d-%02d-%02d-%02d"), 
            year, monthName.c_str(), dom, hour, minute, second);
+
 //      SetName(cleanedFileName);
 //      bool isStereo;
 //      double endTime = project->mTracks->GetEndTime();
