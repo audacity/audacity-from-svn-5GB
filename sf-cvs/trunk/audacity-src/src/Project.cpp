@@ -2030,12 +2030,12 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       if (!value)
          break;
 
-      if (!wxStrcmp(attr, "version")) {
+      if (!wxStrcmp(attr, wxT("version"))) {
          fileVersion = value;
          requiredTags++;
       }
 
-      if (!wxStrcmp(attr, "audacityversion")) {
+      if (!wxStrcmp(attr, wxT("audacityversion"))) {
          audacityVersion = value;
          requiredTags++;
       }
@@ -2082,13 +2082,13 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
    // Specifically detect newer versions of Audacity
    if (fileVersion.Length() != 5 || // expecting '1.1.0', for example
-       fileVersion > AUDACITY_FILE_FORMAT_VERSION) {
+       fileVersion > wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
       msg.Printf(_("This file was saved using Audacity %s.\n"
                    "You are using Audacity %s - you need to upgrade to\n"
                    "a newer version to open this file."),
                  audacityVersion.c_str(),
-                 AUDACITY_VERSION_STRING);
+                 wxT(AUDACITY_VERSION_STRING));
       wxMessageBox(msg,
                    _("Can't open project file"),
                    wxOK | wxICON_EXCLAMATION | wxCENTRE, this);
@@ -2096,7 +2096,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    }
 
    // Specifically detect older versions of Audacity
-   if (fileVersion < AUDACITY_FILE_FORMAT_VERSION) {
+   if (fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
       msg.Printf(_("This file was saved by Audacity %s and the format\n"
                    "has changed.  This version of Audacity can try to\n"
@@ -2316,8 +2316,8 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    fprintf(saveFile.fp(), "<!DOCTYPE ");
    fprintf(saveFile.fp(), "project ");
    fprintf(saveFile.fp(), "PUBLIC ");
-   fprintf(saveFile.fp(), "\"%s\" ", dtdName.c_str());
-   fprintf(saveFile.fp(), "\"%s\" ", dtdURI.c_str());
+   fprintf(saveFile.fp(), "\"%s\" ", (const char*)dtdName.mb_str());
+   fprintf(saveFile.fp(), "\"%s\" ", (const char*)dtdURI.mb_str());
    fprintf(saveFile.fp(), ">\n");
 
    WriteXML(0, saveFile.fp());

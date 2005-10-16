@@ -229,6 +229,9 @@ class Effect {
    // (when doing stereo groups at a time)
    bool TrackGroupProgress(int whichGroup, double frac);
 
+   // Restart the progress bar, used for the second pass of a two-pass effect
+   bool TrackProgressRestart(void);
+
    int GetNumWaveTracks() { return mNumTracks; }
 
  //

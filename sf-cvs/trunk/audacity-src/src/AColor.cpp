@@ -136,10 +136,10 @@ void AColor::Init()
       return;
 
    wxColour light =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);
-   wxColour med = wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DHIGHLIGHT);
+   wxColour med = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour dark =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW);
 
    envelopePen.SetColour(110, 110, 220);
    WideEnvelopePen.SetColour(110, 110, 220);

@@ -88,14 +88,16 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    LangHash localLanguageName;
    LangHash reverseHash;
 
+   // MM: Use only ASCII characters here to avoid unnecessary
+   //     problems with charset conversions on Linux systems
    localLanguageName[wxT("bg")] = wxT("Balgarski");
    localLanguageName[wxT("ca")] = wxT("Catalan");
    localLanguageName[wxT("da")] = wxT("Dansk");
    localLanguageName[wxT("de")] = wxT("Deutsch");
    localLanguageName[wxT("en")] = wxT("English");
-   localLanguageName[wxT("es")] = wxT("Español");
+   localLanguageName[wxT("es")] = wxT("Espanol");
    localLanguageName[wxT("fi")] = wxT("Suomi");
-   localLanguageName[wxT("fr")] = wxT("Français");
+   localLanguageName[wxT("fr")] = wxT("Francais");
    localLanguageName[wxT("it")] = wxT("Italiano");
    localLanguageName[wxT("ja")] = wxT("Nihongo");
    localLanguageName[wxT("hu")] = wxT("Magyar");
@@ -103,7 +105,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName[wxT("nl")] = wxT("Nederlands");
    localLanguageName[wxT("nb")] = wxT("Norsk");
    localLanguageName[wxT("pl")] = wxT("Polski");
-   localLanguageName[wxT("pt")] = wxT("Português");
+   localLanguageName[wxT("pt")] = wxT("Portugues");
    localLanguageName[wxT("ru")] = wxT("Russky");
    localLanguageName[wxT("sl")] = wxT("Slovenscina");
    localLanguageName[wxT("sv")] = wxT("Svenska");

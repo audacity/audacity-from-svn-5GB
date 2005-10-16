@@ -151,7 +151,7 @@ void ControlToolBar::InitializeControlToolBar()
    mType = ControlToolBarID;
 
    wxColour backgroundColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
    //Read the following wxASSERTs as documentating a design decision
@@ -235,7 +235,7 @@ wxImage *ControlToolBar::MakeToolImage(wxImage * tool,
    wxImage *background = bkgndOriginal;
 #else
    wxColour backgroundColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour baseColour;
    unsigned char *data = upOriginal->GetData();
    baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
@@ -405,7 +405,7 @@ void ControlToolBar::MakeButtons()
    wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton).ConvertToImage());
 
    wxColour newColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
 
 #ifdef USE_AQUA_THEME
    upPattern = upOriginal;

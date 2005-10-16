@@ -255,7 +255,7 @@ ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
    mTitle = wxT("Audacity Toolbar");
 
    wxColour backgroundColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
 
    mBackgroundBrush.SetColour(backgroundColour);
    mBackgroundPen.SetColour(backgroundColour);

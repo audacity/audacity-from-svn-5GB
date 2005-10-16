@@ -110,7 +110,7 @@ void MixerToolBar::InitializeMixerToolBar()
    #endif
 
    wxColour backgroundColour =
-       wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
+       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
    wxImage *speaker = new wxImage(wxBitmap(Speaker).ConvertToImage());
