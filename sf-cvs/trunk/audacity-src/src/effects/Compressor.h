@@ -13,20 +13,20 @@
 
 class wxString;
 
-#include "SimpleMono.h"
-
 #include <wx/defs.h>
-#include <wx/dialog.h>
-#include <wx/intl.h>
-#include <wx/panel.h>
+#include <wx/bitmap.h>
+#include <wx/button.h>
+#include <wx/checkbox.h>
 #include <wx/slider.h>
-
-class wxCheckBox;
-class wxStaticText;
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/intl.h>
+#include "TwoPassSimpleMono.h"
 
 class WaveTrack;
 
-class EffectCompressor: public EffectSimpleMono {
+class EffectCompressor: public EffectTwoPassSimpleMono {
    
 public:
    
@@ -41,14 +41,16 @@ public:
    }
    
    virtual bool PromptUser();
-   virtual bool TransferParameters( Shuttle & shuttle );
-   
+
  protected:
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
+   virtual bool ProcessPass1(float *buffer, sampleCount len);
+   virtual bool ProcessPass2(float *buffer, sampleCount len);
 
  private:
 
-   bool NewTrackSimpleMono();
+   virtual bool NewTrackPass1();
+   virtual bool InitPass1();
+   virtual bool InitPass2();
 
    float AvgCircle(float x);
    void Follow(float x, double *outEnv, int maxBack);
@@ -57,10 +59,9 @@ public:
    double    mAttackTime;
    double    mThresholdDB;
    double    mRatio;
-   bool      mUseGain;
+   bool      mNormalize;	//MJS
    
    double    mDecayTime;
-   double    mGainDB;
    double    mAttackFactor;
    double    mDecayFactor;
    double    mFloor;
@@ -72,6 +73,8 @@ public:
    double   *mCircle;
    double   *mLevelCircle;
    double    mLastLevel;
+
+   double    mMax;			//MJS
 
    friend class CompressorDialog;
 };
@@ -144,16 +147,4 @@ private:
 };
 
 #endif
-
-
-// Indentation settings for Vim and Emacs and unique identifier for Arch, a
-// version control system. Please do not modify past this point.
-//
-// Local Variables:
-// c-basic-offset: 3
-// indent-tabs-mode: nil
-// End:
-//
-// vim: et sts=3 sw=3
-// arch-tag: 44dae2d6-58a3-4893-aa9d-c441e0d9890e
 

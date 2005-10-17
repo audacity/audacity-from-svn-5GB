@@ -14,34 +14,26 @@
 
 #include <math.h>
 
-#include "Compressor.h"
+#include <wx/msgdlg.h>
+#include <wx/textdlg.h>
+#include <wx/brush.h>
+#include <wx/image.h>
+#include <wx/dcmemory.h>
 
+#include "Compressor.h"
 #include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 #include "../AColor.h"
 
-#include <wx/bitmap.h>
-#include <wx/brush.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/dcmemory.h>
-#include <wx/image.h>
-#include <wx/msgdlg.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/textdlg.h>
-#include <wx/sizer.h>
-
 EffectCompressor::EffectCompressor()
 {
-   mUseGain = true;
+   mNormalize = true;
    mFloor = 0.001;
    mAttackTime = 0.2;      // seconds
    mDecayTime = 1.0;       // seconds
    mRatio = 2.0;           // positive number > 1.0
    mThresholdDB = -12.0;
-   mGainDB = 0.0;
    mCircle = NULL;
 	mLevelCircle = NULL;
 }
@@ -52,7 +44,7 @@ bool EffectCompressor::PromptUser()
    dlog.threshold = mThresholdDB;
    dlog.ratio = mRatio;
    dlog.attack = mAttackTime;
-   dlog.useGain = mUseGain;
+   dlog.useGain = mNormalize;
    dlog.TransferDataToWindow();
 
    dlog.CentreOnParent();
@@ -64,25 +56,12 @@ bool EffectCompressor::PromptUser()
    mThresholdDB = dlog.threshold;
    mRatio = dlog.ratio;
    mAttackTime = dlog.attack;
-   mUseGain = dlog.useGain;
+   mNormalize = dlog.useGain;
 
    return true;
 }
-bool EffectCompressor::TransferParameters( Shuttle & shuttle )
-{
-   shuttle.TransferBool(  wxT("UseGain"),mUseGain,true);
-   shuttle.TransferDouble(wxT("Floor"),mFloor,0.001);
-   shuttle.TransferDouble(wxT("AttackTime"),mAttackTime,0.2);
-   shuttle.TransferDouble(wxT("DecayTime"),mDecayTime,1.0);
-   shuttle.TransferDouble(wxT("Ratio"),mRatio,2.0);
-   shuttle.TransferDouble(wxT("Threshold"),mThresholdDB,-12.0);
-   shuttle.TransferDouble(wxT("GainDB"),mGainDB,0.0);
-// mCircle = NULL;
-//	mLevelCircle = NULL;
-   return true;
-}
 
-bool EffectCompressor::NewTrackSimpleMono()
+bool EffectCompressor::NewTrackPass1()
 {
    if (mCircle)
       delete[] mCircle;
@@ -99,16 +78,7 @@ bool EffectCompressor::NewTrackSimpleMono()
    mCirclePos = 0;
    mRMSSum = 0.0;
 
-   mGainDB = mThresholdDB * (1/mRatio - 1);
-   if (mGainDB < 0)
-      mGainDB = 0;
-
    mThreshold = pow(10.0, mThresholdDB/20); // factor of 20 because it's power
-
-   if (mUseGain)
-      mGain = pow(10.0, mGainDB/20); // factor of 20 because it's amplitude
-   else
-      mGain = 1.0;
 
    mAttackFactor = exp(-log(mFloor) / (mCurRate * mAttackTime + 0.5));
    mDecayFactor = exp(log(mFloor) / (mCurRate * mDecayTime + 0.5));
@@ -117,32 +87,55 @@ bool EffectCompressor::NewTrackSimpleMono()
 
    return true;
 }
-
-bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len)
+bool EffectCompressor::InitPass1()
+{
+   mMax=0.0;
+   if (!mNormalize)
+       DisableSecondPass();
+   return true;
+}
+bool EffectCompressor::InitPass2()
+{
+    // Actually, this should not even be called, because we call
+    // DisableSecondPass() before, if mNormalize is false.
+    return mNormalize;
+}
+bool EffectCompressor::ProcessPass1(float *buffer, sampleCount len)
 {
    double *follow = new double[len];
    int i;
+   
+    // This makes sure that the initial value is well-chosen
+	if (mLastLevel == 0.0) {
+		int preSeed = mCircleSize;
+		if (preSeed > len)
+			preSeed = len;
+		for(i=0; i<preSeed; i++)
+			AvgCircle(buffer[i]);
+	}
 
-   // This makes sure that the initial value is well-chosen
-   if (mLastLevel == 0.0) {
-      int preSeed = mCircleSize;
-      if (preSeed > len)
-         preSeed = len;
-      for(i=0; i<preSeed; i++)
-         AvgCircle(buffer[i]);
-   }
+	for (i = 0; i < len; i++) {
+		Follow(buffer[i], &follow[i], i);
+	}
 
-   for (i = 0; i < len; i++) {
-      Follow(buffer[i], &follow[i], i);
-   }
+	for (i = 0; i < len; i++) {
+		buffer[i] = DoCompression(buffer[i], follow[i]);
+	}
 
-   for (i = 0; i < len; i++) {
-      buffer[i] = DoCompression(buffer[i], follow[i]);
-   }
+	delete[] follow;
 
-   delete[] follow;
+    return true;
+}
 
-   return true;
+bool EffectCompressor::ProcessPass2(float *buffer, sampleCount len)
+{
+    if (mMax != 0)
+    {
+    	for (int i = 0; i < len; i++)
+    		buffer[i] /= mMax;
+    }
+		
+	return true;
 }
 
 float EffectCompressor::AvgCircle(float value)
@@ -261,9 +254,9 @@ float EffectCompressor::DoCompression(float value, double env)
    float out;
 
    if (env > mThreshold)
-      mult = mGain * pow(mThreshold/env, 1.0-1.0/mRatio);
+      mult = pow(mThreshold/env, 1.0-1.0/mRatio);
    else
-      mult = mGain;
+      mult = 1.0;
 
    out = value * mult;
 
@@ -272,6 +265,8 @@ float EffectCompressor::DoCompression(float value, double env)
 
    if (out < -1.0)
       out = -1.0;
+
+   mMax=mMax<fabs(out)?fabs(out):mMax;
 
    return out;
 }
@@ -387,7 +382,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    vRuler.SetOrientation(wxVERTICAL);
    vRuler.SetRange(0, -rangeDB);
    vRuler.SetFormat(Ruler::LinearDBFormat);
-   vRuler.SetUnits(wxT("dB"));
+   vRuler.SetUnits(_("dB"));
    vRuler.Draw(memDC);
 
    Ruler hRuler;
@@ -395,7 +390,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    hRuler.SetOrientation(wxHORIZONTAL);
    hRuler.SetRange(-rangeDB, 0);
    hRuler.SetFormat(Ruler::LinearDBFormat);
-   hRuler.SetUnits(wxT("dB"));
+   hRuler.SetUnits(_("dB"));
    hRuler.SetFlip(true);
    hRuler.Draw(memDC);
 
@@ -471,8 +466,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   mGainCheckBox = new wxCheckBox(this, -1, _("Apply Gain after compressing"));
-   mGainCheckBox->SetValue(false);
+   mGainCheckBox = new wxCheckBox(this, -1, _("Normalize to 0dB after compressing"));
+   mGainCheckBox->SetValue(true);
    hSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -498,8 +493,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
 
-   SetSizeHints(400, 300, 20000, 20000);
-   SetSize(400, 400);
+   SetSizeHints(500, 300, 20000, 20000);
+   SetSize(500, 400);
 }
 
 bool CompressorDialog::TransferDataToWindow()
@@ -561,19 +556,19 @@ void CompressorDialog::OnPreview(wxCommandEvent &event)
    double    oldAttackTime = mEffect->mAttackTime;
    double    oldThresholdDB = mEffect->mThresholdDB;
    double    oldRatio = mEffect->mRatio;
-   bool      oldUseGain = mEffect->mUseGain;
+   bool      oldUseGain = mEffect->mNormalize;
 
    mEffect->mAttackTime = attack;
    mEffect->mThresholdDB = threshold;
    mEffect->mRatio = ratio;
-   mEffect->mUseGain = useGain;
+   mEffect->mNormalize = useGain;
 
    mEffect->Preview();
 
    mEffect->mAttackTime = oldAttackTime;
    mEffect->mThresholdDB = oldThresholdDB;
    mEffect->mRatio = oldRatio;
-   mEffect->mUseGain = oldUseGain;
+   mEffect->mNormalize = oldUseGain;
 }
 
 void CompressorDialog::OnCancel(wxCommandEvent &event)
@@ -585,15 +580,3 @@ void CompressorDialog::OnSlider(wxCommandEvent &event)
 {
    TransferDataFromWindow();
 }
-
-// Indentation settings for Vim and Emacs and unique identifier for Arch, a
-// version control system. Please do not modify past this point.
-//
-// Local Variables:
-// c-basic-offset: 3
-// indent-tabs-mode: nil
-// End:
-//
-// vim: et sts=3 sw=3
-// arch-tag: c3712394-d2e6-48eb-8f0e-96baaca1e341
-
