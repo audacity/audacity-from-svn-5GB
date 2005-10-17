@@ -119,6 +119,7 @@ OBJS = \
 	effects/StereoToMono.o \
 	effects/ToneGen.o \
 	effects/TruncSilence.o \
+	effects/TwoPassSimpleMono.o \
 	effects/Wahwah.o \
 	export/Export.o \
 	export/ExportMultiple.o \

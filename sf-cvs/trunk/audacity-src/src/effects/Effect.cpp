@@ -197,21 +197,6 @@ bool Effect::TrackGroupProgress(int whichGroup, double frac)
 {
    return TotalProgress((whichGroup+frac)/mNumGroups);
 }
-bool Effect::TrackProgressRestart()	//used by TwoPassSimpleMono. MJS.
-{
-   if (mProgress) {
-      delete mProgress;
-      mProgress = NULL;
-   }
-
-   mProgress = new wxProgressDialog(GetEffectName(),
-                              GetEffectAction()+wxT(" (2)"),
-                              1000,
-                              mParent,
-                              wxPD_CAN_ABORT |
-                              wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-   return true;
-}
 void Effect::CountWaveTracks()
 {
    mNumTracks = 0;
