@@ -43,15 +43,14 @@ public:
    virtual bool PromptUser();
 
  protected:
-   virtual bool ProcessSimpleMono(float *buffer, sampleCount len);
-   int       pass;			//MJS
-   double    mMax;			//MJS
+   virtual bool ProcessPass1(float *buffer, sampleCount len);
+   virtual bool ProcessPass2(float *buffer, sampleCount len);
 
  private:
 
-   bool NewTrackSimpleMono();
-   bool InitFirstPass();
-   bool InitSecondPass();
+   virtual bool NewTrackPass1();
+   virtual bool InitPass1();
+   virtual bool InitPass2();
 
    float AvgCircle(float x);
    void Follow(float x, double *outEnv, int maxBack);
@@ -74,6 +73,8 @@ public:
    double   *mCircle;
    double   *mLevelCircle;
    double    mLastLevel;
+
+   double    mMax;			//MJS
 
    friend class CompressorDialog;
 };

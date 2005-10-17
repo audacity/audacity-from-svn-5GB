@@ -61,7 +61,7 @@ bool EffectCompressor::PromptUser()
    return true;
 }
 
-bool EffectCompressor::NewTrackSimpleMono()
+bool EffectCompressor::NewTrackPass1()
 {
    if (mCircle)
       delete[] mCircle;
@@ -87,52 +87,55 @@ bool EffectCompressor::NewTrackSimpleMono()
 
    return true;
 }
-bool EffectCompressor::InitFirstPass()
+bool EffectCompressor::InitPass1()
 {
-   pass=0;
    mMax=0.0;
+   if (!mNormalize)
+       DisableSecondPass();
    return true;
 }
-bool EffectCompressor::InitSecondPass()
+bool EffectCompressor::InitPass2()
 {
-	if(mNormalize){
-		pass=1;
-		return true;
-	}
-	else	//Normalising not selected - avoid second pass
-		return false;
+    // Actually, this should not even be called, because we call
+    // DisableSecondPass() before, if mNormalize is false.
+    return mNormalize;
 }
-bool EffectCompressor::ProcessSimpleMono(float *buffer, sampleCount len)
+bool EffectCompressor::ProcessPass1(float *buffer, sampleCount len)
 {
    double *follow = new double[len];
    int i;
-   if(pass==0) {
-		// This makes sure that the initial value is well-chosen
-		if (mLastLevel == 0.0) {
-			int preSeed = mCircleSize;
-			if (preSeed > len)
-				preSeed = len;
-			for(i=0; i<preSeed; i++)
-				AvgCircle(buffer[i]);
-		}
+   
+    // This makes sure that the initial value is well-chosen
+	if (mLastLevel == 0.0) {
+		int preSeed = mCircleSize;
+		if (preSeed > len)
+			preSeed = len;
+		for(i=0; i<preSeed; i++)
+			AvgCircle(buffer[i]);
+	}
 
-		for (i = 0; i < len; i++) {
-			Follow(buffer[i], &follow[i], i);
-		}
+	for (i = 0; i < len; i++) {
+		Follow(buffer[i], &follow[i], i);
+	}
 
-		for (i = 0; i < len; i++) {
-			buffer[i] = DoCompression(buffer[i], follow[i]);
-		}
+	for (i = 0; i < len; i++) {
+		buffer[i] = DoCompression(buffer[i], follow[i]);
+	}
 
-		delete[] follow;
-   }
-   else {	//pass!=0, should be 1 here
-		for (i = 0; i < len; i++) {
-			buffer[i] /= mMax;
-		}
-   }
+	delete[] follow;
 
-   return true;
+    return true;
+}
+
+bool EffectCompressor::ProcessPass2(float *buffer, sampleCount len)
+{
+    if (mMax != 0)
+    {
+    	for (int i = 0; i < len; i++)
+    		buffer[i] /= mMax;
+    }
+		
+	return true;
 }
 
 float EffectCompressor::AvgCircle(float value)
@@ -379,7 +382,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    vRuler.SetOrientation(wxVERTICAL);
    vRuler.SetRange(0, -rangeDB);
    vRuler.SetFormat(Ruler::LinearDBFormat);
-   vRuler.SetUnits("dB");
+   vRuler.SetUnits(_("dB"));
    vRuler.Draw(memDC);
 
    Ruler hRuler;
@@ -387,7 +390,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    hRuler.SetOrientation(wxHORIZONTAL);
    hRuler.SetRange(-rangeDB, 0);
    hRuler.SetFormat(Ruler::LinearDBFormat);
-   hRuler.SetUnits("dB");
+   hRuler.SetUnits(_("dB"));
    hRuler.SetFlip(true);
    hRuler.Draw(memDC);
 
@@ -438,21 +441,21 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
 
    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
 
-   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + "XXX dB");
+   mThresholdText = new wxStaticText(this, -1, wxString(_("Threshold: ")) + wxT("XXX dB"));
    gridSizer->Add(mThresholdText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mThresholdSlider = new wxSlider(this, ThresholdID, -8, -60, -1,
                                    wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mThresholdSlider, 1, wxEXPAND|wxALL, 5);
 
-   mRatioText = new wxStaticText(this, -1, wxString(_("Ratio: ")) + "XXXX:1");
+   mRatioText = new wxStaticText(this, -1, wxString(_("Ratio: ")) + wxT("XXXX:1"));
    gridSizer->Add(mRatioText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mRatioSlider = new wxSlider(this, RatioID, 4, 3, 20,
                                wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
    gridSizer->Add(mRatioSlider, 1, wxEXPAND|wxALL, 5);
 
-   mAttackText = new wxStaticText(this, -1, wxString(_("Attack Time: ")) + "XXXX secs");
+   mAttackText = new wxStaticText(this, -1, wxString(_("Attack Time: ")) + wxT("XXXX secs"));
    gridSizer->Add(mAttackText, 0, wxALIGN_LEFT|wxALL, 5);
 
    mAttackSlider = new wxSlider(this, AttackID, 2, 1, 10,
@@ -490,8 +493,8 @@ CompressorDialog::CompressorDialog(EffectCompressor *effect,
    mainSizer->Fit(this);
    mainSizer->SetSizeHints(this);
 
-   SetSizeHints(400, 300, 20000, 20000);
-   SetSize(400, 400);
+   SetSizeHints(500, 300, 20000, 20000);
+   SetSize(500, 400);
 }
 
 bool CompressorDialog::TransferDataToWindow()
