@@ -137,7 +137,7 @@ void *BlockFile::CalcSummary(samplePtr buffer, sampleCount len,
                              sampleFormat format)
 {
    static char *fullSummary = 0;
-   if(fullSummary)delete fullSummary;
+   if(fullSummary)delete[] fullSummary;
    fullSummary = new char[mSummaryInfo.totalSummaryBytes];
 
    memcpy(fullSummary, headerTag, headerTagLen);
