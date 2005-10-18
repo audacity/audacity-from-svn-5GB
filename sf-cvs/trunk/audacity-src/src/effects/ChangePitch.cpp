@@ -830,7 +830,7 @@ void ChangePitchDialog::Update_Text_PercentChange()
 {
 	if (m_pTextCtrl_PercentChange) {
 		wxString str;
-		str.Printf(wxT("%.1f"), m_PercentChange);
+		str.Printf(wxT("%.3f"), m_PercentChange);
 		m_pTextCtrl_PercentChange->SetValue(str);
 	}
 }
