@@ -482,7 +482,7 @@ void CommandManager::Enable(CommandListEntry *entry, bool enabled)
 void CommandManager::Enable(wxString name, bool enabled)
 {
    CommandListEntry *entry = mCommandNameHash[name];
-   if (!entry && entry->menu) {
+   if (!entry || !entry->menu) {
       //printf("WARNING: Unknown command enabled: '%s'\n", (const char *)name.mb_str());
       return;
    }
