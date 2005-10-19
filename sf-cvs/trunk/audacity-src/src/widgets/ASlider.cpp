@@ -179,8 +179,8 @@ BEGIN_EVENT_TABLE(SliderDialog, wxDialog)
    EVT_BUTTON(wxID_CANCEL,SliderDialog::OnCancel)
 END_EVENT_TABLE()
    ;
-#define SLIDER_DIALOG_WIDTH 200
-#define SLIDER_DIALOG_HEIGHT 90
+#define SLIDER_DIALOG_WIDTH 205
+#define SLIDER_DIALOG_HEIGHT 100
 SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                            const wxString & title, 
                            wxPoint position,
