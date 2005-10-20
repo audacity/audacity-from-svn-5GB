@@ -2482,6 +2482,12 @@
 				RelativePath="..\src\effects\TruncSilence.h">
 			</File>
 			<File
+				RelativePath="..\src\effects\TwoPassSimpleMono.cpp">
+			</File>
+			<File
+				RelativePath="..\src\effects\TwoPassSimpleMono.h">
+			</File>
+			<File
 				RelativePath="..\src\effects\Wahwah.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
