@@ -806,6 +806,11 @@ void AudacityProject::AS_ModifySelection(double &start, double &end)
    ModifyState();
 }
 
+void AudacityProject::AS_GiveFocus(bool bForward)
+{
+    mTrackPanel->TakeFocus(bForward);
+}
+
 void AudacityProject::FinishAutoScroll()
 {
    // Set a flag so we don't have to generate two update events
@@ -2962,6 +2967,11 @@ void AudacityProject::TP_HasMouse()
 void AudacityProject::TP_HandleResize()
 {
    HandleResize();
+}
+
+void AudacityProject::TP_GiveFocus(bool bForward)
+{
+   mSelectionBar->TakeFocus(bForward);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

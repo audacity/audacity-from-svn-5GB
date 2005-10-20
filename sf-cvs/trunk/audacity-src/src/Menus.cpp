@@ -654,7 +654,8 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
 
-   c->AddCommand(wxT("CycleTracks"), _("Cycle Between Tracks\tTab"), FN(OnCycleTracks));
+   c->AddCommand(wxT("PrevTrack"),   _("Move to Previous Track\tUp"),  FN(OnPrevTrack));
+   c->AddCommand(wxT("NextTrack"),   _("Move to Next Track\tDown"),    FN(OnNextTrack));
    c->AddCommand(wxT("CursorLeft"),  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"), _("Cursor Right\tRight"),         FN(OnCursorRight));
    c->AddCommand(wxT("SelExtLeft"),  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
@@ -663,7 +664,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SelCntrRight"),_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
 
    c->AddCommand(wxT("TrackPan"), _("Change pan on first selected track\tShift+P"),FN(OnTrackPan));
+   c->AddCommand(wxT("TrackPanLeft"), _("Pan left on first selected track\tAlt+Shift+Left"),FN(OnTrackPanLeft));
+   c->AddCommand(wxT("TrackPanRight"), _("Pan right on first selected track\tAlt+Shift+Right"),FN(OnTrackPanRight));
    c->AddCommand(wxT("TrackGain"), _("Change gain on first selected track\tShift+G"),FN(OnTrackGain));
+   c->AddCommand(wxT("TrackGainInc"), _("Increase gain on first selected track\tAlt+Shift+Up"),FN(OnTrackGainInc));
+   c->AddCommand(wxT("TrackGainDec"), _("Decrease gain on first selected track\tAlt+Shift+Down"),FN(OnTrackGainDec));
    c->AddCommand(wxT("TrackMenu"),_("Open menu on first selected track\tShift+M"),FN(OnTrackMenu));
    c->AddCommand(wxT("TrackMute"),_("Mute/Unmute first selected track\tShift+U"),FN(OnTrackMute));
    c->AddCommand(wxT("TrackSolo"),_("Solo/Unsolo first selected track\tShift+S"),FN(OnTrackSolo));
@@ -1254,9 +1259,15 @@ void AudacityProject::OnSelToEnd()
    SkipEnd(true);
 }
 
-void AudacityProject::OnCycleTracks()
+void AudacityProject::OnPrevTrack()
 {
-   mTrackPanel->OnCycleTracks();
+   mTrackPanel->OnPrevTrack();
+   
+}
+
+void AudacityProject::OnNextTrack()
+{
+   mTrackPanel->OnNextTrack();
    
 }
 
@@ -1454,9 +1465,29 @@ void AudacityProject::OnTrackPan()
    mTrackPanel->OnTrackPan(mTrackPanel->GetFirstSelectedTrack());
 }
 
+void AudacityProject::OnTrackPanLeft()
+{
+   mTrackPanel->OnTrackPanLeft(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackPanRight()
+{
+   mTrackPanel->OnTrackPanRight(mTrackPanel->GetFirstSelectedTrack());
+}
+
 void AudacityProject::OnTrackGain()
 {
    mTrackPanel->OnTrackGain(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackGainInc()
+{
+   mTrackPanel->OnTrackGainInc(mTrackPanel->GetFirstSelectedTrack());
+}
+
+void AudacityProject::OnTrackGainDec()
+{
+   mTrackPanel->OnTrackGainDec(mTrackPanel->GetFirstSelectedTrack());
 }
 
 void AudacityProject::OnTrackMenu()

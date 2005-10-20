@@ -215,6 +215,7 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
     EVT_CHAR(TrackPanel::OnKeyEvent)
     EVT_PAINT(TrackPanel::OnPaint)
+    EVT_CONTEXT_MENU(TrackPanel::OnContextMenu)
     EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
     EVT_MENU(OnSetFontID, TrackPanel::OnSetFont)
     EVT_MENU(OnSetTimeTrackRangeID, TrackPanel::OnSetTimeTrackRange)
@@ -2761,6 +2762,11 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
    this->Refresh(false);
 }
 
+void TrackPanel::OnContextMenu(wxContextMenuEvent & event)
+{
+   OnTrackMenu(GetFirstSelectedTrack());
+}
+
 // AS: This function gets called when a user clicks on the
 //  title of a track, dropping down the menu.
 void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
@@ -3312,6 +3318,9 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       }
       mListener->TP_ScrollWindow(mTracks->GetEndTime());
       break;
+   case WXK_TAB:
+      mListener->TP_GiveFocus(!event.ShiftDown());
+      break;
    }
    event.Skip();
 }
@@ -3348,8 +3357,10 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       mTimer.Start(50, FALSE);
    }
 
-   if (event.ButtonDown())
+   if (event.ButtonDown()) {
+      SetFocus();
       CaptureMouse();
+   }
    else if (event.ButtonUp()) {
       if (HasCapture())
          ReleaseMouse();
@@ -3391,6 +3402,15 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    default: //includes case of IsUncaptured
       HandleTrackSpecificMouseEvent(event);
       break;
+   }
+
+   if (event.ButtonDown()) {
+      wxRect r;
+      int num;
+
+      Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+      if (t)
+         EnsureVisible(t);
    }
 }
 
@@ -4203,10 +4223,75 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
    }
 }
 
-/// This cycles between tracks--selecting 
-/// a single track based on what is currently selected.
+/// The following 2 functions move to the previous and next tracks,
+/// selecting after movement.
 ///
-void TrackPanel::OnCycleTracks()
+void TrackPanel::OnPrevTrack()
+{
+
+   Track * firstSelected = NULL;
+   Track * prevSelected = NULL;
+   Track * link = NULL;
+   firstSelected = GetFirstSelectedTrack();
+
+   if(firstSelected)
+      {
+         
+         link = mTracks->GetLink(firstSelected);
+         
+         if(link)
+         {
+            //Determine whether first selected is the first 
+            //or second stereo track.
+            if(mTracks->GetPrev(firstSelected) == link)
+               {
+                  firstSelected = link;
+               }
+         }
+         
+         //get the previous track.
+         prevSelected = mTracks->GetPrev(firstSelected);
+      }
+
+
+   //If there is nothing chosen as 'prevselected', choose the first track.
+   if(!prevSelected)
+      {
+         //Nothing is selected, so choose the very last track.
+         TrackListIterator iter = TrackListIterator(mTracks);
+         firstSelected = iter.First();
+		 do
+            {
+               prevSelected = firstSelected;
+		    }
+		 while( (firstSelected = iter.Next()) );
+      }
+
+
+   //Get rid of all selections
+   SelectNone();
+
+   
+   //Now, select the track, if it exists
+   if( prevSelected)
+      {
+         EnsureVisible(prevSelected);
+         prevSelected->SetSelected(true);
+
+         //If the newly selected track is also stereo,
+         //also select it
+         link = mTracks->GetLink(prevSelected);
+
+         if(link)
+            {
+               link->SetSelected(true);
+            }
+      }
+
+   Refresh(false);
+}
+
+void TrackPanel::OnNextTrack()
 {
 
    Track * firstSelected = NULL;
@@ -4250,16 +4335,17 @@ void TrackPanel::OnCycleTracks()
    //Now, select the track, if it exists
    if( nextSelected)
       {
+         EnsureVisible(nextSelected);
          nextSelected->SetSelected(true);
       
-      }
-
    //If the newly selected track is also stereo,
    //also select it
    link = mTracks->GetLink(nextSelected);
+
    if(link)
       {
          link->SetSelected(true);
+      }
       }
 
    Refresh(false);
@@ -4267,7 +4353,6 @@ void TrackPanel::OnCycleTracks()
 
 
 //The following functions operate controls on specified tracks,
-
 //This will pop up the track panning dialog for specified track
 void TrackPanel::OnTrackPan(Track * t)
 {
@@ -4284,9 +4369,52 @@ void TrackPanel::OnTrackPan(Track * t)
          slider = mTrackLabel.mPans[tracknum-1];
          slider->OnMouseEvent(evt);
       }
-   float newValue = slider->Get();
 
-   WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+
+   SetTrackPan(t, slider);
+}
+
+void TrackPanel::OnTrackPanLeft(Track * t)
+{
+   
+   if(!t) return;
+
+   LWSlider * slider = NULL;
+   
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mPans[tracknum-1];
+		 slider->Decrease( 1 );
+      }
+
+   SetTrackPan(t, slider);
+}
+
+void TrackPanel::OnTrackPanRight(Track * t)
+{
+   
+   if(!t) return;
+
+   LWSlider * slider = NULL;
+   
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mPans[tracknum-1];
+		 slider->Increase( 1 );
+      }
+
+   SetTrackPan(t, slider);
+}
+
+void TrackPanel::SetTrackPan(Track * t, LWSlider * s)
+{
+   float newValue = s->Get();
+
+   WaveTrack *link = (WaveTrack *)mTracks->GetLink(t);
    ((WaveTrack*)t)->SetPan(newValue);
    if (link)
       link->SetPan(newValue);
@@ -4311,9 +4439,47 @@ void TrackPanel::OnTrackGain(Track * t)
          slider->OnMouseEvent(evt);
       }
 
-   float newValue = slider->Get();
+   SetTrackGain(t, slider);
+}
 
-   WaveTrack *link = (WaveTrack *)mTracks->GetLink(mCapturedTrack);
+void TrackPanel::OnTrackGainInc(Track * t)
+{
+   if(!t) return;
+
+   LWSlider * slider = NULL;
+
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mGains[tracknum-1];
+		 slider->Increase( 1 );
+	  }
+
+   SetTrackGain(t, slider);
+}
+
+void TrackPanel::OnTrackGainDec(Track * t)
+{
+   if(!t) return;
+   LWSlider * slider = NULL;
+
+   //Find out which track we are on.
+   int tracknum = FindTrackNum(t);
+   if(tracknum)
+      {
+         slider = mTrackLabel.mGains[tracknum-1];
+		 slider->Decrease( 1 );
+	  }
+
+   SetTrackGain(t, slider);
+}
+
+void TrackPanel::SetTrackGain(Track * t, LWSlider * s)
+{
+   float newValue = s->Get();
+
+   WaveTrack *link = (WaveTrack *)mTracks->GetLink(t);
    ((WaveTrack*)t)->SetGain(newValue);
    if (link)
       link->SetGain(newValue);
@@ -4505,7 +4671,36 @@ Track * TrackPanel::GetFirstSelectedTrack()
       return NULL;
 }
 
+void TrackPanel::EnsureVisible(Track * t)
+{
+   TrackListIterator iter(mTracks);
+   Track *it;
+   Track *nt;
+   int i = 0;
+   int y = 0;
+   int s;
 
+   for (it = iter.First(); it; it = iter.Next())
+   {
+      s = y;
+      y += it->GetHeight();
+
+      if (it->GetLinked())
+      {
+         nt = iter.Next();
+         y += nt->GetHeight();
+      }
+
+      if ((it == t) || (nt == t))
+      {
+			mListener->TP_ScrollUpDown(-mViewInfo->vpos);
+			mListener->TP_ScrollUpDown(s / mViewInfo->scrollStep);
+         break;
+      }
+   }
+
+   Refresh(false);
+}
 
 void TrackPanel::DrawRuler( wxDC * dc, bool text )
 {
@@ -5183,6 +5378,11 @@ bool TrackPanel::MoveClipToTrack(WaveClip *clip,
    }
 
    return true;
+}
+
+void TrackPanel::TakeFocus(bool bForward)
+{
+	SetFocus();
 }
 
 /**********************************************************************

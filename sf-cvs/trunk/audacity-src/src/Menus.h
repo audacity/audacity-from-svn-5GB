@@ -69,11 +69,16 @@ void OnPlayToSelection();
 void OnPlayLooped();
 
 //Commands for affecting selection
-void OnCycleTracks();
+void OnPrevTrack();
+void OnNextTrack();
 
 
 void OnTrackPan();
+void OnTrackPanLeft();
+void OnTrackPanRight();
 void OnTrackGain();
+void OnTrackGainInc();
+void OnTrackGainDec();
 void OnTrackMenu();
 void OnTrackMute();
 void OnTrackSolo();
