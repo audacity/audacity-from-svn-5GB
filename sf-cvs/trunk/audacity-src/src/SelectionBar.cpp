@@ -207,10 +207,21 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mainSizer->SetSizeHints(this);
 
    mMainSizer = mainSizer;
+
+   //
+   // Intercept focus events to include track panel in tab nagivation
+   // (really should get real deal working...)
+   //
+   mRightEndButton->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
+   mRightLengthButton->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
+   mFormatChoice->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnKillFocus));
 }
 
 SelectionBar::~SelectionBar()
 {
+   mRightEndButton->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
+   mRightLengthButton->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
+   mFormatChoice->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnKillFocus));
 }
 
 bool SelectionBar::HasAnyFocus()
@@ -377,6 +388,46 @@ void SelectionBar::UpdateRates()
    mRateBox->SetValue(oldValue);
 }
 
+
+void SelectionBar::OnSetFocus(wxFocusEvent &evt)
+{
+   SelectionBar *sb = (SelectionBar *)((wxWindow *)evt.GetEventObject())->GetParent();
+   wxWindow *n = evt.GetWindow();
+
+   if (n == sb->mFormatChoice)
+   {
+      sb->mListener->AS_GiveFocus(false);
+   }
+
+   evt.Skip(true);
+}
+
+void SelectionBar::OnKillFocus(wxFocusEvent &evt)
+{
+   SelectionBar *sb = (SelectionBar *)((wxWindow *)evt.GetEventObject())->GetParent();
+   wxWindow *n = evt.GetWindow();
+
+   if ((n == sb->mRightEndButton) || (n == sb->mRightLengthButton))
+   {
+      sb->mListener->AS_GiveFocus(true);
+   }
+
+   evt.Skip(true);
+}
+
+void SelectionBar::TakeFocus(bool bForward)
+{
+   if (bForward)
+   {
+      SetFocus();
+   }
+   else
+   {
+      mFormatChoice->SetFocus();
+   }
+  
+   return;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -75,6 +75,7 @@ class TrackPanelListener {
    virtual void TP_ScrollUpDown(int delta) = 0;
    virtual void TP_HasMouse() = 0;
    virtual void TP_HandleResize() = 0;
+   virtual void TP_GiveFocus(bool bForward) = 0;
 };
 
 
@@ -150,6 +151,8 @@ class TrackPanel:public wxPanel {
    void OnMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
 
+   void OnContextMenu(wxContextMenuEvent & event);
+
    double GetMostRecentXPos();
 
    void OnTimer();
@@ -173,16 +176,23 @@ class TrackPanel:public wxPanel {
    void HandleShiftKey(bool down);
    AudacityProject * GetProject() const;
 
-
-   void OnCycleTracks();
+   void OnPrevTrack();
+   void OnNextTrack();
    void OnTrackPan(Track * t);
+   void OnTrackPanLeft(Track * t);
+   void OnTrackPanRight(Track * t);
    void OnTrackGain(Track * t);
+   void OnTrackGainDec(Track * t);
+   void OnTrackGainInc(Track * t);
    void OnTrackMenu(Track * t);
    void OnTrackMute(Track * t, bool shiftdown);
    void OnTrackSolo(Track * t, bool shiftdown);
    void OnTrackClose(Track * t);
    Track * GetFirstSelectedTrack();
 
+   void EnsureVisible(Track * t);
+
+   void TakeFocus(bool bForward);
 
  private:
 
@@ -311,6 +321,8 @@ class TrackPanel:public wxPanel {
    void OnCopySelectedText(wxCommandEvent &event);
    void OnPasteSelectedText(wxCommandEvent &event);
 
+   void SetTrackPan(Track * t, LWSlider * s);
+   void SetTrackGain(Track * t, LWSlider * s);
 
    void RemoveTrack(Track * toRemove);
 

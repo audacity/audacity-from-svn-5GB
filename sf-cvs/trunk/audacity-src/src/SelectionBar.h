@@ -25,6 +25,7 @@ class SelectionBarListener {
  public:
    virtual void AS_SetRate(double rate) = 0;
    virtual void AS_ModifySelection(double &start, double &end) = 0;
+   virtual void AS_GiveFocus(bool bForward) = 0;
 };
 
 class SelectionBar : public wxPanel {
@@ -47,6 +48,8 @@ class SelectionBar : public wxPanel {
    // has changed.
    void UpdateRates();
 
+   void TakeFocus(bool bForward);
+
  private:
 
    void ValuesToControls();
@@ -59,6 +62,9 @@ class SelectionBar : public wxPanel {
    void OnLengthRadio(wxCommandEvent &evt);
 
    void OnRate(wxCommandEvent & event);
+
+   void OnSetFocus(wxFocusEvent &evt);
+   void OnKillFocus(wxFocusEvent &evt);
 
    void ModifySelection();
 

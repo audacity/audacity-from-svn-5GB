@@ -813,6 +813,36 @@ void LWSlider::Set(float value)
    Refresh();
 }
 
+void LWSlider::Increase(int steps)
+{
+   if(mIsDragging)
+      return;
+
+   mCurrentValue += (steps * mStepValue);
+
+   if (mCurrentValue < mMinValue)
+      mCurrentValue = mMinValue;
+   if (mCurrentValue > mMaxValue)
+      mCurrentValue = mMaxValue;
+
+   Refresh();
+}
+
+void LWSlider::Decrease(int steps)
+{
+   if(mIsDragging)
+      return;
+
+   mCurrentValue -= (steps * mStepValue);
+
+   if (mCurrentValue < mMinValue)
+      mCurrentValue = mMinValue;
+   if (mCurrentValue > mMaxValue)
+      mCurrentValue = mMaxValue;
+
+   Refresh();
+}
+
 void LWSlider::Refresh()
 {
    if (mHW)
@@ -882,6 +912,16 @@ float ASlider::Get()
 void ASlider::Set(float value)
 {
    mLWSlider->Set(value);
+}
+
+void ASlider::Increase(int steps)
+{
+   mLWSlider->Increase(steps);
+}
+
+void ASlider::Decrease(int steps)
+{
+   mLWSlider->Decrease(steps);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -90,6 +90,9 @@ class LWSlider
    float Get();
    void Set(float value);
 
+   void Increase(int steps);
+   void Decrease(int steps);
+
    void Move(const wxPoint &newpos);
 
    void OnPaint(wxDC &dc, bool selected);
@@ -169,6 +172,9 @@ class ASlider :public wxWindow
    
    float Get();
    void Set(float value);
+
+   void Increase(int steps);
+   void Decrease(int steps);
 
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
