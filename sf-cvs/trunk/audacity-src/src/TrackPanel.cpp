@@ -65,6 +65,7 @@
 *********************************************************************/
  
 
+
 #include "Audacity.h"
 #include "TrackPanel.h"
 
@@ -116,6 +117,9 @@ WX_DEFINE_OBJARRAY(TrackClipArray);
 
 //This loads the appropriate set of cursors, depending on platform.
 #include "../images/Cursors.h"
+#include <iostream>
+
+
 
 //FIX-ME: The WXMAC code below is obsolete
 //#if defined(__WXMAC__) && !defined(__UNIX__)
@@ -978,10 +982,11 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    // Mac OS X automatically double-buffers the screen for you,
    // so our bitmap is unneccessary
 
-   #if DEBUG_DRAW_TIMING
+#if DEBUG_DRAW_TIMING
    struct timeval t1, t2;
    gettimeofday(&t1, NULL);
-   #endif
+   std::cout << "."<< std::flush;
+#endif
 
    dc.BeginDrawing();
 
@@ -1000,6 +1005,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    wxPrintf(wxT("Total: %.3f\n"), 
           (t2.tv_sec + t2.tv_usec*0.000001) - 
           (t1.tv_sec + t1.tv_usec*0.000001));
+   std::cout << "."<< std::flush;
    #endif
 
 #else
@@ -3245,7 +3251,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
    // more than one LabelTrack
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Label && t->GetSelected() && ((LabelTrack*)t)->getKeyOn()) {
-         ((LabelTrack *) t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1,
+         ((LabelTrack *) t)->KeyEvent(&(mViewInfo->sel0), &(mViewInfo->sel1),
                                       event);
          
          Refresh(false);
@@ -3404,7 +3410,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    }
 
-   if (event.ButtonDown()) {
+   //EnsureVisible should be called after the up-click.
+   if (event.ButtonUp()) {
       wxRect r;
       int num;
 
@@ -3412,6 +3419,8 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       if (t)
          EnsureVisible(t);
    }
+
+
 }
 
 bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event)
@@ -4674,31 +4683,49 @@ Track * TrackPanel::GetFirstSelectedTrack()
 void TrackPanel::EnsureVisible(Track * t)
 {
    TrackListIterator iter(mTracks);
-   Track *it;
-   Track *nt;
-   int i = 0;
-   int y = 0;
-   int s;
+   Track *it = NULL;
+   Track *nt = NULL;
+   //int i = 0;
+
+
+   int trackTop = 0;
+   int trackHeight =0;
 
    for (it = iter.First(); it; it = iter.Next())
    {
-      s = y;
-      y += it->GetHeight();
+      trackTop += trackHeight;
+      trackHeight =  it->GetHeight();
 
+
+      //find the second track if this is stereo
       if (it->GetLinked())
-      {
-         nt = iter.Next();
-         y += nt->GetHeight();
-      }
+         {
+            nt = iter.Next();
+            trackHeight += nt->GetHeight();
+         }
+      else
+         {
+            nt = it;
+         }
 
+
+      //We have found the track we want to ensure is visible.
       if ((it == t) || (nt == t))
-      {
-			mListener->TP_ScrollUpDown(-mViewInfo->vpos);
-			mListener->TP_ScrollUpDown(s / mViewInfo->scrollStep);
-         break;
-      }
-   }
+         {
+            
+            //Get the size of the trackpanel.
+            int width, height;
+            GetSize(&width, &height);
 
+            // Debugging line: //std::cout << trackTop << " " << mViewInfo->vpos << " " << trackHeight << " " << height << std::endl;
+            if( trackTop < mViewInfo->vpos || trackTop + trackHeight > mViewInfo->vpos + height)
+               {   
+                  mListener->TP_ScrollUpDown(-mViewInfo->vpos);
+                  mListener->TP_ScrollUpDown(trackTop / mViewInfo->scrollStep);
+                  break;
+               }
+         }
+   }
    Refresh(false);
 }
 
