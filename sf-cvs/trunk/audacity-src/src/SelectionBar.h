@@ -23,6 +23,8 @@ class TimeTextCtrl;
 
 class SelectionBarListener {
  public:
+   SelectionBarListener(){};
+   virtual ~SelectionBarListener(){};
    virtual void AS_SetRate(double rate) = 0;
    virtual void AS_ModifySelection(double &start, double &end) = 0;
    virtual void AS_GiveFocus(bool bForward) = 0;

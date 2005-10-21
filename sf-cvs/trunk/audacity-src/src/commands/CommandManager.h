@@ -47,6 +47,8 @@
 class CommandFunctor
 {
 public:
+   CommandFunctor(){};
+   virtual ~CommandFunctor(){};
    virtual void operator()(int index = 0) = 0;
 };
 

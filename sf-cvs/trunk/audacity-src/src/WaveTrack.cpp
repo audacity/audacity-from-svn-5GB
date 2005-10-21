@@ -277,7 +277,6 @@ bool WaveTrack::Trim (double t0, double t1)
    //Keeps track of the offset of the first clip greater than
    // the left selection t0.
    double firstGreaterOffset = -1;
-   double initOffset = GetOffset();
 
    WaveClipList::Node * it;
    for(it = GetClipIterator(); it; it = it->GetNext())
