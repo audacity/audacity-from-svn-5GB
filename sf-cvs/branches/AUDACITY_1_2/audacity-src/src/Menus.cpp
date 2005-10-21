@@ -496,10 +496,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem("PlotSpectrum",   _("&Plot Spectrum"),                 FN(OnPlotSpectrum));
    c->SetCommandFlags("PlotSpectrum",
                       AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
-
-   c->AddSeparator();
-	
+                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);	
    effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
    if(effects->GetCount()){
       names.Clear();
