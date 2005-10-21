@@ -59,7 +59,11 @@ class TrackClip
 WX_DECLARE_OBJARRAY(TrackClip, TrackClipArray);
 
 class TrackPanelListener {
+
  public:
+   TrackPanelListener(){};
+   virtual ~TrackPanelListener(){};
+
    virtual void TP_DisplaySelection() = 0;
    virtual void TP_DisplayStatusMessage(wxString msg) = 0;
    virtual int TP_GetCurrentTool() = 0;

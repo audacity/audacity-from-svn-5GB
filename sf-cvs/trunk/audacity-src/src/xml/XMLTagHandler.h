@@ -20,7 +20,8 @@
 
 class XMLTagHandler {
  public:
-
+   XMLTagHandler(){};
+   virtual ~XMLTagHandler(){};
    //
    // Methods to override
    //
