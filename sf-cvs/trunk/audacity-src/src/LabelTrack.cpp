@@ -1176,7 +1176,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
 /// KeyEvent is called for every keypress when over the label track.
 /// TODO: Modify so that it can pass unused characters on to 
 /// higher levels of the interface.
-void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
+void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event)
 { 
 #ifdef __WXMAC__
  #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
@@ -1286,6 +1286,8 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          break;
 
       case WXK_RETURN:
+
+
       case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == wxT("")) {
             delete mLabels[mSelIndex];
@@ -1305,6 +1307,9 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
          }
          
          mCurrentCursorPos = mLabels[mSelIndex]->title.Length();
+         //Set the selection region to be equal to the selection bounds of the tabbed-to label.
+         newSel0 = mLabels[mSelIndex]->t;
+         newSel1 = mLabels[mSelIndex]->t1;
          break;
       
       default:
@@ -1350,8 +1355,8 @@ void LabelTrack::KeyEvent(double sel0, double sel1, wxKeyEvent & event)
       // Create new label
       wxString rightPart;
       LabelStruct *l = new LabelStruct();
-      l->t = sel0;
-      l->t1 = sel1;
+      l->t =  newSel0;
+      l->t1 = newSel1;
       l->title += wxChar(keyCode);
       mCurrentCursorPos = 1;
       mInitialCursorPos = mCurrentCursorPos;
