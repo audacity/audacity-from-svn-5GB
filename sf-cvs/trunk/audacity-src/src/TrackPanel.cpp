@@ -3251,7 +3251,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
    // more than one LabelTrack
    for (Track * t = iter.First(); t; t = iter.Next()) {
       if (t->GetKind() == Track::Label && t->GetSelected() && ((LabelTrack*)t)->getKeyOn()) {
-         ((LabelTrack *) t)->KeyEvent(&(mViewInfo->sel0), &(mViewInfo->sel1),
+         ((LabelTrack *) t)->KeyEvent((mViewInfo->sel0), (mViewInfo->sel1),
                                       event);
          
          Refresh(false);
