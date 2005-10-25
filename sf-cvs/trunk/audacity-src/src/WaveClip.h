@@ -8,6 +8,7 @@
 #include <wx/gdicmn.h>
 #include <wx/longlong.h>
 #include <wx/list.h>
+#include <wx/msgdlg.h>
 
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
@@ -21,9 +22,20 @@ WX_DECLARE_LIST(WaveClip, WaveClipList);
 
 class WaveClip: public XMLTagHandler
 {
+private:
+   WaveClip(WaveClip& orig) {
+      wxMessageBox(_("Fatal error - please report to audacity-devel@lists.sourceforge.net\n"));
+   }
+
 public:
+   // typical constructor
    WaveClip(DirManager *projDirManager, sampleFormat format, int rate);
-   WaveClip(WaveClip& orig);
+
+   // essentially a copy constructor - but you must pass in the
+   // current project's DirManager, because we might be copying
+   // from one project to another
+   WaveClip(WaveClip& orig, DirManager *projDirManager);
+
    virtual ~WaveClip();
 
    void ConvertToSampleFormat(sampleFormat format);

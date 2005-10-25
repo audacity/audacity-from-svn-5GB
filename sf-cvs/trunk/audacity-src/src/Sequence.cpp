@@ -51,9 +51,13 @@ Sequence::Sequence(DirManager * projDirManager, sampleFormat format)
    mErrorOpening = false;
 }
 
-Sequence::Sequence(const Sequence &orig)
+Sequence::Sequence(const Sequence &orig, DirManager *projDirManager)
 {
-   mDirManager = orig.mDirManager;
+   // essentially a copy constructor - but you must pass in the
+   // current project's DirManager, because we might be copying
+   // from one project to another
+
+   mDirManager = projDirManager;
    mDirManager->Ref();
    mNumSamples = 0;
    mSampleFormat = orig.mSampleFormat;

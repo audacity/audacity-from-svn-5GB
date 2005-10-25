@@ -91,11 +91,15 @@ WaveClip::WaveClip(DirManager *projDirManager, sampleFormat format, int rate)
    mDirty = 0;
 }
 
-WaveClip::WaveClip(WaveClip& orig)
+WaveClip::WaveClip(WaveClip& orig, DirManager *projDirManager)
 {
+   // essentially a copy constructor - but you must pass in the
+   // current project's DirManager, because we might be copying
+   // from one project to another
+
    mOffset = orig.mOffset;
    mRate = orig.mRate;
-   mSequence = new Sequence(*orig.mSequence);
+   mSequence = new Sequence(*orig.mSequence, projDirManager);
    mEnvelope = new Envelope();
    mEnvelope->Paste(0.0, orig.mEnvelope);
    mEnvelope->SetOffset(orig.GetOffset());
@@ -104,7 +108,7 @@ WaveClip::WaveClip(WaveClip& orig)
    mSpecCache = new SpecCache(1, 1, false);
 
    for (WaveClipList::Node* it=orig.mCutLines.GetFirst(); it; it=it->GetNext())
-      mCutLines.Append(new WaveClip(*it->GetData()));
+      mCutLines.Append(new WaveClip(*it->GetData(), projDirManager));
 
    mAppendBuffer = NULL;
    mAppendBufferLen = 0;
@@ -719,7 +723,8 @@ bool WaveClip::Paste(double t0, WaveClip* other)
       for (WaveClipList::Node* it=other->mCutLines.GetFirst(); it; it=it->GetNext())
       {
          WaveClip* cutline = it->GetData();
-         WaveClip* newCutLine = new WaveClip(*cutline);
+         WaveClip* newCutLine = new WaveClip(*cutline,
+                                             mSequence->GetDirManager());
          newCutLine->Offset(t0);
          mCutLines.Append(newCutLine);
       }
@@ -771,7 +776,7 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
    if (t0 > GetEndTime() || t1 < GetStartTime())
       return true; // time out of bounds
 
-   WaveClip *newClip = new WaveClip(*this);
+   WaveClip *newClip = new WaveClip(*this, mSequence->GetDirManager());
    double clip_t0 = t0;
    double clip_t1 = t1;
    if (clip_t0 < GetStartTime())
