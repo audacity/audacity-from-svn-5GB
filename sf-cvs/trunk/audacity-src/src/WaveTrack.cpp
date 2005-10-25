@@ -76,7 +76,7 @@ WaveTrack::WaveTrack(WaveTrack &orig):
    Init(orig);
 
    for (WaveClipList::Node *node = orig.mClips.GetFirst(); node; node = node->GetNext())
-      mClips.Append(new WaveClip(*node->GetData()));
+      mClips.Append(new WaveClip(*node->GetData(), mDirManager));
 }
 
 // Copy the track metadata but not the contents.
@@ -350,7 +350,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          // Whole clip is in copy region
          //printf("copy: clip %i is in copy region\n", (int)clip);
          
-         WaveClip *newClip = new WaveClip(*clip);
+         WaveClip *newClip = new WaveClip(*clip, mDirManager);
          newClip->RemoveAllCutLines();
          newClip->Offset(-t0);
          newTrack->mClips.Append(newClip);
@@ -360,7 +360,7 @@ bool WaveTrack::Copy(double t0, double t1, Track **dest)
          // Clip is affected by command
          //printf("copy: clip %i is affected by command\n", (int)clip);
          
-         WaveClip *newClip = new WaveClip(*clip);
+         WaveClip *newClip = new WaveClip(*clip, mDirManager);
          newClip->RemoveAllCutLines();
          double clip_t0 = t0;
          double clip_t1 = t1;
@@ -493,7 +493,7 @@ bool WaveTrack::Paste(double t0, Track *src)
    {
       WaveClip* clip = it->GetData();
 
-      WaveClip* newClip = new WaveClip(*clip);
+      WaveClip* newClip = new WaveClip(*clip, mDirManager);
       newClip->Offset(t0);
       newClip->MarkChanged();
       mClips.Append(newClip);
@@ -566,11 +566,11 @@ bool WaveTrack::HandleClear(double t0, double t1,
                   // Delete in the middle of the clip...we actually create two
                   // new clips out of the left and right halves...
 
-                  WaveClip *left = new WaveClip(*clip);
+                  WaveClip *left = new WaveClip(*clip, mDirManager);
                   left->Clear(t0, clip->GetEndTime());
                   clipsToAdd.Append(left);
 
-                  WaveClip *right = new WaveClip(*clip);
+                  WaveClip *right = new WaveClip(*clip, mDirManager);
                   right->Clear(clip->GetStartTime(), t1);
                   right->Offset(t1-clip->GetStartTime());
                   clipsToAdd.Append(right);
@@ -1278,7 +1278,7 @@ bool WaveTrack::SplitAt(double t)
       WaveClip* c = it->GetData();
       if (t > c->GetStartTime() && t < c->GetEndTime())
       {
-         WaveClip* newClip = new WaveClip(*c);
+         WaveClip* newClip = new WaveClip(*c, mDirManager);
          if (!c->Clear(t, c->GetEndTime()))
          {
             delete newClip;

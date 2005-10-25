@@ -39,9 +39,16 @@ class Sequence: public XMLTagHandler {
    //
 
    Sequence(DirManager * projDirManager, sampleFormat format);
-   Sequence(const Sequence &orig);
+
+   // The copy constructor and duplicate operators take a
+   // DirManager as a parameter, because you might be copying
+   // from one project to another...
+   Sequence(const Sequence &orig, DirManager *projDirManager);
+   Sequence *Duplicate(DirManager *projDirManager) const {
+      return new Sequence(*this, projDirManager);
+   }
+
    virtual ~Sequence();
-   Sequence *Duplicate() const {return new Sequence(*this);}
 
    //
    // Editing
