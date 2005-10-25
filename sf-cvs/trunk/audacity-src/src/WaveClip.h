@@ -1,6 +1,7 @@
 #ifndef __AUDACITY_WAVECLIP__
 #define __AUDACITY_WAVECLIP__
 
+#include "Audacity.h"
 #include "SampleFormat.h"
 #include "Sequence.h"
 #include "xml/XMLTagHandler.h"
@@ -23,8 +24,9 @@ WX_DECLARE_LIST(WaveClip, WaveClipList);
 class WaveClip: public XMLTagHandler
 {
 private:
-   WaveClip(WaveClip& orig) {
-      wxMessageBox(_("Fatal error - please report to audacity-devel@lists.sourceforge.net\n"));
+   WaveClip(WaveClip& orig)
+   {
+      wxMessageBox(wxT("Fatal error - please report to audacity-devel@lists.sourceforge.net\n"));
    }
 
 public:

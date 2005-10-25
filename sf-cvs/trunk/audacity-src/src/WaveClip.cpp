@@ -10,7 +10,6 @@
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(WaveClipList);
 
-
 class WaveCache {
 public:
    WaveCache(int cacheLen)

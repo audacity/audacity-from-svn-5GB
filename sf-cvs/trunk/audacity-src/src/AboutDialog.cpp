@@ -20,7 +20,72 @@
 #include "AboutDialog.h"
 #include "Audacity.h"
 
+#include <wx/listimpl.cpp>
+WX_DEFINE_LIST(AboutDialogCreditItemsList);
+
 #include "../images/AudacityLogo.xpm"
+
+void AboutDialog::CreateCreditsList()
+{
+   AddCredit(wxT("Dominic Mazzoni"), roleProjectLeader);
+   AddCredit(wxT("Matt Brubeck"), roleLeadDeveloper);
+   AddCredit(wxT("James Crook"), roleLeadDeveloper);
+   AddCredit(wxT("Vaughan Johnson"), roleLeadDeveloper);
+   AddCredit(wxT("Markus Meyer"), roleLeadDeveloper);
+   
+   AddCredit(wxT("Joshua Haberman"), roleDeveloper);
+   AddCredit(wxT("Monty Montgomery"), roleDeveloper);
+   AddCredit(wxT("Shane Mueller"), roleDeveloper);
+   
+   AddCredit(wxT("Lynn Allan (CleanSpeech)"), roleContributor);
+   AddCredit(wxT("William Bland"), roleContributor);
+   AddCredit(wxT("Roger Dannenberg"), roleContributor);
+   AddCredit(wxT("Brian Gunlogson"), roleContributor);
+   AddCredit(wxT("Harvey Lubin"), roleContributor);
+   AddCredit(wxT("Grek Mekkes"), roleContributor);
+   AddCredit(wxT("Abe Milde"), roleContributor);
+   AddCredit(wxT("Paul Nasca"), roleContributor);
+   AddCredit(wxT("Tony Oetzmann"), roleContributor);
+   AddCredit(wxT("Augustus Saunders"), roleContributor);
+   AddCredit(wxT("Martyn Shaw"), roleContributor);
+   AddCredit(wxT("Mike Underwood"), roleContributor);
+   AddCredit(wxT("Tom Woodhams"), roleContributor);
+   AddCredit(wxT("Wing Yu"), roleContributor);
+   
+   AddCredit(wxT("expat"), roleLibrary);
+   AddCredit(wxT("FLAC"), roleLibrary);
+   AddCredit(wxT("LAME"), roleLibrary);
+   AddCredit(wxT("libmad"), roleLibrary);
+   AddCredit(wxT("libsndfile"), roleLibrary);
+   AddCredit(wxT("Nyquist"), roleLibrary);
+   AddCredit(wxT("Ogg Vorbis"), roleLibrary);
+   AddCredit(wxT("PortAudio"), roleLibrary);
+   AddCredit(wxT("Resample"), roleLibrary);
+   AddCredit(wxT("SoundTouch"), roleLibrary);
+   AddCredit(wxT("wxWidgets"), roleLibrary);
+
+   AddCredit(wxT("Richard Ash"), roleThanks);
+   AddCredit(wxT("Dave Beydler"), roleThanks);
+   AddCredit(wxT("Jason Cohen"), roleThanks);
+   AddCredit(wxT("Dave Fancella"), roleThanks);
+   AddCredit(wxT("Steve Harris"), roleThanks);
+   AddCredit(wxT("Daniel James"), roleThanks);
+   AddCredit(wxT("Daniil Kolpakov"), roleThanks);
+   AddCredit(wxT("Robert Leidle"), roleThanks);
+   AddCredit(wxT("Logan Lewis"), roleThanks);
+   AddCredit(wxT("David Luff"), roleThanks);
+   AddCredit(wxT("Jason Pepas"), roleThanks);
+   AddCredit(wxT("Mark Phillips"), roleThanks);
+   AddCredit(wxT("Jonathan Ryshpan"), roleThanks);
+   AddCredit(wxT("Patrick Shirkey"), roleThanks);
+   AddCredit(wxT("David R. Sky"), roleThanks);
+   AddCredit(wxT("Tuomas Suutari"), roleThanks);
+   AddCredit(wxT("Mark Tomlinson"), roleThanks);
+   AddCredit(wxT("David Topper"), roleThanks);
+   AddCredit(wxT("Rudy Trubitt"), roleThanks);
+   AddCredit(wxT("StreetIQ.com"), roleThanks);
+   AddCredit(wxT("Verilogix, Inc."), roleThanks);
+}
 
 // ----------------------------------------------------------------------------
 // icons
@@ -36,9 +101,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
                wxDefaultPosition, wxDefaultSize)
 {
    wxString versionStr = wxT(AUDACITY_VERSION_STRING);
-
    wxString informationStr;
 
+   creditItems.DeleteContents(true); // switchon automatic deletion of list items
+   CreateCreditsList();
+   
    #ifdef USE_LIBMAD
    informationStr += _("MP3 importing enabled");
    #else
@@ -124,62 +191,18 @@ AboutDialog::AboutDialog(wxWindow * parent)
       wxT("<p><br>") + informationStr + 
       wxT("<p><center><b>") + _("Credits") + wxT("</b></center>")
       + translatorCredits +
-      wxT("<p><table border=0>") + 
-         wxT("<tr><td>Dominic Mazzoni</td><td>") + 
-            _("Project leader and primary programmer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Joshua Haberman</td><td>") + 
-            _("Primary developer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Matt Brubeck</td><td>") + 
-            _("Primary developer") + wxT("</td></tr>") + 
-         wxT("<tr><td>James Crook</td><td>") + _("Programmer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Vaughan Johnson</td><td>") + _("Programmer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Markus Meyer</td><td>") + _("Programmer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Shane Mueller</td><td>") + _("Programmer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Lynn Allan</td><td>") + _("Programmer (CleanSpeech)") + wxT("</td></tr>") + 
-         wxT("<tr><td>Tony Oetzmann</td><td>") + 
-            _("Documentation Writer") + wxT("</td></tr>") + 
-         wxT("<tr><td>Harvey Lubin</td><td>") + _("Main Logo") + wxT("</td></tr>") + 
-      wxT("</table>") + 
-      wxT("<p><center><b>") + _("Developers:") + wxT("</b><p><br>") + 
-         wxT("William Bland<br>") + 
-         wxT("Vince Busam<br>") + 
-         wxT("Brian Gunlogson<br>") + 
-         wxT("Greg Mekkes<br>") + 
-         wxT("Augustus Saunders<br>") + 
-      wxT("<br><p><center><b>") + _("Other contributors:") + wxT("</b><p><br>") + 
-         wxT("Dave Beydler<br>") + 
-         wxT("Jason Cohen<br>") + 
-         wxT("Roger Dannenberg<br>") + 
-         wxT("Dave Fancella<br>") + 
-         wxT("Steve Harris<br>") + 
-         wxT("Daniel James<br>") + 
-         wxT("Steve Jolly<br>") + 
-         wxT("Daniil Kolpakov<br>") + 
-         wxT("Robert Leidle<br>") + 
-         wxT("Logan Lewis<br>") +  
-         wxT("Tino Meinen<br>") + 
-         wxT("Abe Milde<br>") + 
-         wxT("Monty<br>") + 
-         wxT("Paul Nasca<br>") + 
-         wxT("Jason Pepas<br>") + 
-         wxT("Mark Phillips<br>") + 
-         wxT("Alexandre Prokoudine<br>") + 
-         wxT("Jonathan Ryshpan<br>") + 
-         wxT("Juhana Sadeharju<br>") + 
-         wxT("Patrick Shirkey<br>") + 
-         wxT("Mark Tomlinson<br>") + 
-         wxT("David Topper<br>") + 
-         wxT("Rudy Trubitt<br>") + 
-         wxT("Tom Woodhams<br>") + 
-         wxT("Otto Wyss<br>") + 
+      wxT("<p><center><table border=0>") + 
+      GetCreditsByRole(roleProjectLeader) +
+      GetCreditsByRole(roleLeadDeveloper) +
+      wxT("</table></center>") +
+      wxT("<p><center><b>") + _("Developers:") + wxT("</b><p><br>") +
+      GetCreditsByRole(roleDeveloper) +
+      wxT("<br><p><center><b>") + _("Contributors:") + wxT("</b><p><br>") +
+      GetCreditsByRole(roleContributor) +
+      wxT("<br><p><center><b>") + _("Audacity is based on code from the following projects:") + wxT("</b><p><br>") +
+      GetCreditsByRole(roleLibrary) +
       wxT("<p><b>") + _("Special thanks:") + wxT("</b><p><br>") + 
-         wxT("The wxWidgets Team<br>") + 
-         wxT("The Ogg Vorbis Team<br>") + 
-         wxT("Rob Leslie (libmad)<br>") + 
-         wxT("Ross Bencina and Phil Burk (PortAudio)<br>") + 
-         wxT("Erik de Castro Lopo (libsndfile)<br>") + 
-         wxT("Olli Parviainen (soundtouch)<br>") + 
-         wxT("Verilogix, Inc.<br>") + 
+      GetCreditsByRole(roleThanks) +
       wxT("</center></font></body></html>");
    
    this->SetBackgroundColour(wxColour(255, 255, 255));
@@ -194,7 +217,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxHtmlWindow *html = new wxHtmlWindow(this, -1,
                                          wxDefaultPosition,
-                                         wxSize(400, 150),
+                                         wxSize(600, 300),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
@@ -210,6 +233,44 @@ AboutDialog::AboutDialog(wxWindow * parent)
    pBoxSizer->SetSizeHints(this);
 
    this->Centre();
+}
+
+void AboutDialog::AddCredit(const wxString& description, Role role)
+{
+   AboutDialogCreditItem* item = new AboutDialogCreditItem();
+   item->description = description;
+   item->role = role;
+   creditItems.Append(item);
+}
+
+wxString AboutDialog::GetCreditsByRole(AboutDialog::Role role)
+{
+   wxString s;
+   
+   for (AboutDialogCreditItemsList::Node* p=creditItems.GetFirst(); p; p = p->GetNext())
+   {
+      AboutDialogCreditItem* item = p->GetData();
+      if (item->role == role)
+      {
+         if (item->role == roleProjectLeader || item->role == roleLeadDeveloper || item->role == roleDeveloper)
+            s += wxT("<tr><td>");
+            
+         s += item->description;
+         
+         if (item->role == roleProjectLeader)
+            s += wxString(wxT("</td><td>")) + _("Project leader and primary programmer") + wxT("</td></tr>");
+         else if (item->role == roleLeadDeveloper)
+            s += wxString(wxT("</td><td>")) + _("Lead Developer") + wxT("</td></tr>");
+         else
+            s += wxT("<br>");
+      }
+   }
+   
+   // Strip last <br>, if any
+   if (s.Right(4) == wxT("<br>"))
+      s = s.Left(s.Length() - 4);
+
+   return s;
 }
 
 AboutDialog::~AboutDialog()
