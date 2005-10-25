@@ -17,6 +17,13 @@ class wxBoxSizer;
 class wxStaticBitmap;
 class wxBitmap;
 
+struct AboutDialogCreditItem {
+   wxString description;
+   int role;
+};
+
+WX_DECLARE_LIST(AboutDialogCreditItem, AboutDialogCreditItemsList);
+
 class AboutDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(AboutDialog)
 
@@ -31,6 +38,22 @@ class AboutDialog:public wxDialog {
    wxBitmap *logo;
 
     DECLARE_EVENT_TABLE()
+    
+ private:
+   enum Role {
+      roleProjectLeader,
+      roleLeadDeveloper,
+      roleDeveloper,
+      roleContributor,
+      roleLibrary,
+      roleThanks
+   };
+   
+   AboutDialogCreditItemsList creditItems;
+
+   void CreateCreditsList();
+   void AddCredit(const wxString& description, Role role);
+   wxString GetCreditsByRole(AboutDialog::Role role);
 };
 
 #endif
