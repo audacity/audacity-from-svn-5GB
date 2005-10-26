@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -25,12 +25,7 @@
 #include "util.h"
 
 #define	SHORT_BUFFER_LEN	2048
-#define	LONG_BUFFER_LEN		((1<<16)-20)
-
-#define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
-
-#define MIN(a,b)		(((a) < (b)) ? (a) : (b))
-#define MAX(a,b)		(((a) > (b)) ? (a) : (b))
+#define	LONG_BUFFER_LEN		((1 << 16) - 20)
 
 static void stream_test (int converter, double ratio) ;
 static void term_test (int converter, double ratio) ;
@@ -40,21 +35,23 @@ static int	next_block_length (int reset) ;
 int
 main (void)
 {	static double src_ratios [] =
-	{	0.999900, 1.000100, 0.789012, 1.200000, 0.333333, 3.100000, 
+	{	0.999900, 1.000100, 0.789012, 1.200000, 0.333333, 3.100000,
 		0.125000, 8.000000, 0.099900, 9.990000, 0.100000, 10.00000
 	} ;
 
-	int 	k ;
+	int k ;
 
 	/* Force output of the Electric Fence banner message. */
 	force_efence_banner () ;
 
 	puts ("\n    Zero Order Hold interpolator:") ;
+
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		term_test (SRC_ZERO_ORDER_HOLD, src_ratios [k]) ;
 	puts ("") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		stream_test (SRC_ZERO_ORDER_HOLD, src_ratios [k]) ;
+
 
 	puts ("\n    Linear interpolator:") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
@@ -63,8 +60,8 @@ main (void)
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		stream_test (SRC_LINEAR, src_ratios [k]) ;
 
-	puts ("\n    Sinc interpolator:") ;
 
+	puts ("\n    Sinc interpolator:") ;
 	for (k = 0 ; k < ARRAY_LEN (src_ratios) ; k++)
 		term_test (SRC_SINC_FASTEST, src_ratios [k]) ;
 	puts ("") ;
@@ -118,22 +115,23 @@ term_test (int converter, double src_ratio)
 		exit (1) ;
 		} ;
 
-	terminate = (int) ceil ((src_ratio >= 1.0) ? src_ratio : 1.0 / src_ratio) ;
+	terminate = (int) ceil ((src_ratio >= 1.0) ? 1 : 1.0 / src_ratio) ;
 
-	if (fabs (src_data.output_frames_gen - src_ratio * input_len) > terminate)
-	{	printf ("\n\nLine %d : bad output data length %ld should be %d.\n", __LINE__,
-					src_data.output_frames_gen, (int) floor (src_ratio * input_len)) ;
-		printf ("\tsrc_ratio      : %.4f\n", src_ratio) ;
-		printf ("\tinput_max_len  : %d\n\toutput_max_len : %d\n\n", input_len, output_len) ;
+	if (fabs (src_ratio * input_len - src_data.output_frames_gen) > terminate)
+	{	printf ("\n\nLine %d : Bad output frame count.\n\n", __LINE__) ;
+		printf ("\tterminate             : %d\n", terminate) ;
+		printf ("\tsrc_ratio             : %.4f\n", src_ratio) ;
+		printf ("\tinput_len             : %d\n"
+				"\tinput_len * src_ratio : %f\n", input_len, input_len * src_ratio) ;
+		printf ("\toutput_frames_gen     : %ld\n\n", src_data.output_frames_gen) ;
 		exit (1) ;
 		} ;
 
-	if (abs (src_data.input_frames_used - input_len) > terminate)
+	if (src_data.input_frames_used != input_len)
 	{	printf ("\n\nLine %d : input_frames_used should be %d, is %ld.\n\n",
 					 __LINE__, input_len, src_data.input_frames_used) ;
 		printf ("\tsrc_ratio  : %.4f\n", src_ratio) ;
-		printf ("\tinput_len  : %d\n\tinput_used : %ld\n", input_len, src_data.input_frames_used) ;
-		printf ("\toutput_len : %d\n\toutput_gen : %ld\n\n", output_len, src_data.output_frames_gen) ;
+		printf ("\tinput_len  : %d\n\tinput_used : %ld\n\n", input_len, src_data.input_frames_used) ;
 		exit (1) ;
 		} ;
 
@@ -154,7 +152,7 @@ stream_test (int converter, double src_ratio)
 
 	printf ("\tstream_test      (SRC ratio = %7.4f) .......... ", src_ratio) ;
 	fflush (stdout) ;
-	
+
 /* Erik */
 for (k = 0 ; k < LONG_BUFFER_LEN ; k++) input [k] = k * 1.0 ;
 
@@ -187,7 +185,7 @@ for (k = 0 ; k < LONG_BUFFER_LEN ; k++) input [k] = k * 1.0 ;
 	src_data.end_of_input = 0 ; /* Set this later. */
 
 	src_data.data_in = input ;
-	
+
 	src_data.src_ratio = src_ratio ;
 
 	src_data.data_out = output ;
@@ -223,7 +221,7 @@ for (k = 0 ; k < LONG_BUFFER_LEN ; k++) input [k] = k * 1.0 ;
 			printf ("  src_data.output_frames_gen : %ld\n\n", src_data.output_frames_gen) ;
 			exit (1) ;
 			} ;
-		
+
 		if (src_data.input_frames_used < 0)
 		{	printf ("\n\nLine %d : input_frames_used (%ld) < 0\n\n", __LINE__, src_data.input_frames_used) ;
 			exit (1) ;
@@ -238,7 +236,7 @@ for (k = 0 ; k < LONG_BUFFER_LEN ; k++) input [k] = k * 1.0 ;
 		current_out += src_data.output_frames_gen ;
 
 		if (current_in > input_len + terminate)
-		{	printf ("\n\nLine %d : current_in (%d) > input_len (%d + %d)\n\n", __LINE__, current_in, input_len,  terminate) ;
+		{	printf ("\n\nLine %d : current_in (%d) > input_len (%d + %d)\n\n", __LINE__, current_in, input_len, terminate) ;
 			exit (1) ;
 			} ;
 
@@ -292,10 +290,10 @@ static int
 next_block_length (int reset)
 {	static int block_lengths [] = /* Should be an odd length. */
 	{	/*-2, 500, 5, 400, 10, 300, 20, 200, 50, 100, 70 -*/
-		5, 400, 10, 300, 20, 200, 50, 100, 70 
+		5, 400, 10, 300, 20, 200, 50, 100, 70
 		} ;
-	static int block_len_index  = 0;
-	
+	static int block_len_index = 0 ;
+
 	if (reset)
 		block_len_index = 0 ;
 	else
@@ -303,4 +301,12 @@ next_block_length (int reset)
 
 	return block_lengths [block_len_index] ;
 } /* next_block_length */
-			
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 03cb1e3c-5177-41b1-83c1-460b33733742
+*/
+

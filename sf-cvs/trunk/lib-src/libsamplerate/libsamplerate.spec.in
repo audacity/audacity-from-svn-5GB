@@ -4,29 +4,29 @@
 %define release 1
 %define prefix  /usr
 
-Summary: A library to handle various audio file formats.
+Summary: A library to do sample rate conversion for audio.
 Name: %{name}
 Version: %{version}
 Release: %{release}
 Prefix: %{prefix}
 Copyright: LGPL
 Group: Libraries/Sound
-Source: http://www.zip.com.au/~erikd/libsndfile/libsndfile-%{version}.tar.gz
-URL: http://www.zip.com.au/~erikd/libsndfile/
+Source: http://www.mega-nerd.com/SRC/libsamplerate-%{version}.tar.gz
+URL: http://www.mega-nerd.com/SRC/
 BuildRoot: /var/tmp/%{name}-%{version}
 
 %description
-libsndfile is a C library for reading and writing sound files such as
-AIFF, AU and WAV files through one standard interface. It can currently
-read/write 8, 16, 24 and 32-bit PCM files as well as 32-bit floating
-point WAV files and a number of compressed formats.
+libsamplerate is a C library capable of arbitrary and time varying
+conversions; from downsampling by a factor of 12 to upsampling by the
+same factor. The conversion ratio can also vary with time for speeding
+up and slowing down effects.
 
 %package devel
-Summary: Libraries, includes, etc to develop libsndfile applications
+Summary: Libraries, includes, etc to develop libsamplerate applications
 Group: Libraries
 
 %description devel
-Libraries, include files, etc you can use to develop libsndfile applications.
+Libraries, include files, etc you can use to develop libsamplerate applications.
 
 %prep
 %setup
@@ -45,16 +45,14 @@ if [ -d $RPM_BUILD_ROOT ]; then rm -rf $RPM_BUILD_ROOT; fi
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog INSTALL NEWS README TODO doc
-%prefix/lib/libsndfile.so.*
+%doc AUTHORS COPYING ChangeLog INSTALL NEWS README doc
+%prefix/lib/libsamplerate.so.*
 
 %files devel
 %defattr(-,root,root)
-%{prefix}/lib/libsndfile.a
-%{prefix}/lib/libsndfile.la
-%{prefix}/lib/libsndfile.so
-%{prefix}/include/sndfile.h
+%{prefix}/lib/libsamplerate.a
+%{prefix}/lib/libsamplerate.la
+%{prefix}/lib/libsamplerate.so
+%{prefix}/include/samplerate.h
+%{prefix}/lib/pkgconfig/samplerate.pc
 
-%changelog
-* Thu Jul 6 2000 Josh Green <jgreen@users.sourceforge.net>
-- Created libsndfile.spec.in

@@ -17,6 +17,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -34,7 +35,7 @@
 #define	BUFFER_LEN		(2048)
 
 #define MAKE_MAGIC(a,b,c,d,e,f,g,h)		\
-			((a)+((b)<<1)+((c)<<2)+((d)<<3)+((e)<<4)+((f)<<5)+((g)<<6)+((h)<<7))
+			((a) + ((b) << 1) + ((c) << 2) + ((d) << 3) + ((e) << 4) + ((f) << 5) + ((g) << 6) + ((h) << 7))
 
 /*------------------------------------------------------------------------------
 **	Linux/OSS functions for playing a sound.
@@ -46,7 +47,7 @@
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
 
-#define	LINUX_MAGIC		MAKE_MAGIC('L','i','n','u','x','O','S','S')
+#define	LINUX_MAGIC		MAKE_MAGIC ('L', 'i', 'n', 'u', 'x', 'O', 'S', 'S')
 
 typedef struct
 {	int magic ;
@@ -61,7 +62,7 @@ static void linux_close (AUDIO_OUT *audio_out) ;
 
 static AUDIO_OUT *
 linux_open (int channels, int samplerate)
-{	LINUX_AUDIO_OUT  *linux_out ;
+{	LINUX_AUDIO_OUT	*linux_out ;
 	int stereo, temp, error ;
 
 	if ((linux_out = malloc (sizeof (LINUX_AUDIO_OUT))) == NULL)
@@ -69,19 +70,19 @@ linux_open (int channels, int samplerate)
 		exit (1) ;
 		} ;
 
-	linux_out->magic    = LINUX_MAGIC ;
+	linux_out->magic	= LINUX_MAGIC ;
 	linux_out->channels = channels ;
 
 	if ((linux_out->fd = open ("/dev/dsp", O_WRONLY, 0)) == -1)
-	{	perror("linux_open : open ") ;
+	{	perror ("linux_open : open ") ;
 		exit (1) ;
 		} ;
 
 	stereo = 0 ;
 	if (ioctl (linux_out->fd, SNDCTL_DSP_STEREO, &stereo) == -1)
 	{ 	/* Fatal error */
-		perror("linux_open : stereo ") ;
-		exit (1);
+		perror ("linux_open : stereo ") ;
+		exit (1) ;
 		} ;
 
 	if (ioctl (linux_out->fd, SNDCTL_DSP_RESET, 0))
@@ -171,7 +172,7 @@ linux_close (AUDIO_OUT *audio_out)
 #include <Carbon.h>
 #include <CoreAudio/AudioHardware.h>
 
-#define	MACOSX_MAGIC		MAKE_MAGIC('M','a','c',' ','O','S',' ','X')
+#define	MACOSX_MAGIC	MAKE_MAGIC ('M', 'a', 'c', ' ', 'O', 'S', ' ', 'X')
 
 typedef struct
 {	int magic ;
@@ -211,7 +212,7 @@ macosx_open (int channels, int samplerate)
 		exit (1) ;
 		} ;
 
-	macosx_out->magic    = MACOSX_MAGIC ;
+	macosx_out->magic = MACOSX_MAGIC ;
 	macosx_out->channels = channels ;
 	macosx_out->samplerate = samplerate ;
 
@@ -349,7 +350,7 @@ macosx_audio_out_callback (AudioDeviceID device, const AudioTimeStamp* current_t
 		return 42 ;
 		} ;
 
-	size = data_out->mBuffers[0].mDataByteSize ;
+	size = data_out->mBuffers [0].mDataByteSize ;
 	sample_count = size / sizeof (float) / macosx_out->channels ;
 
 	buffer = (float*) data_out->mBuffers [0].mData ;
@@ -382,7 +383,7 @@ macosx_audio_out_callback (AudioDeviceID device, const AudioTimeStamp* current_t
 #include <mmreg.h>
 
 #define	WIN32_BUFFER_LEN	(1<<15)
-#define	WIN32_MAGIC			MAKE_MAGIC('W','i','n','3','2','s','u','x')
+#define	WIN32_MAGIC			MAKE_MAGIC ('W', 'i', 'n', '3', '2', 's', 'u', 'x')
 
 typedef struct
 {	int 			magic ;
@@ -423,7 +424,7 @@ win32_open (int channels, int samplerate)
 		exit (1) ;
 		} ;
 
-	win32_out->magic    = WIN32_MAGIC ;
+	win32_out->magic	= WIN32_MAGIC ;
 	win32_out->channels = channels ;
 
 	win32_out->current = 0 ;
@@ -481,14 +482,14 @@ win32_play (get_audio_callback_t callback, AUDIO_OUT *audio_out, void *callback_
 
 	/* Prepare the WAVEHDRs */
 	if ((error = waveOutPrepareHeader (win32_out->hwave, &(win32_out->whdr [0]), sizeof (WAVEHDR))))
-	{	printf("waveOutPrepareHeader [0] failed : %08X\n", error) ;
+	{	printf ("waveOutPrepareHeader [0] failed : %08X\n", error) ;
 		waveOutClose (win32_out->hwave) ;
 		return ;
 		} ;
 
 	if ((error = waveOutPrepareHeader (win32_out->hwave, &(win32_out->whdr [1]), sizeof (WAVEHDR))))
-	{	printf("waveOutPrepareHeader [1] failed : %08X\n", error) ;
-		waveOutUnprepareHeader (win32_out->hwave, &(win32_out->whdr [0]), sizeof(WAVEHDR)) ;
+	{	printf ("waveOutPrepareHeader [1] failed : %08X\n", error) ;
+		waveOutUnprepareHeader (win32_out->hwave, &(win32_out->whdr [0]), sizeof (WAVEHDR)) ;
 		waveOutClose (win32_out->hwave) ;
 		return ;
 		} ;
@@ -502,10 +503,10 @@ win32_play (get_audio_callback_t callback, AUDIO_OUT *audio_out, void *callback_
 	/* Wait for playback to finish. The callback notifies us when all
 	** wave data has been played.
 	*/
-	WaitForSingleObject (win32_out->Event, INFINITE);
+	WaitForSingleObject (win32_out->Event, INFINITE) ;
 
 	waveOutPause (win32_out->hwave) ;
-	waveOutReset (win32_out->hwave);
+	waveOutReset (win32_out->hwave) ;
 
 	waveOutUnprepareHeader (win32_out->hwave, &(win32_out->whdr [0]), sizeof (WAVEHDR)) ;
 	waveOutUnprepareHeader (win32_out->hwave, &(win32_out->whdr [1]), sizeof (WAVEHDR)) ;
@@ -601,7 +602,7 @@ win32_audio_out_callback (HWAVEOUT hwave, UINT msg, DWORD data, DWORD param1, DW
 #include <sys/ioctl.h>
 #include <sys/audioio.h>
 
-#define	SOLARIS_MAGIC		MAKE_MAGIC('S','o','l','a','r','i','s',' ')
+#define	SOLARIS_MAGIC	MAKE_MAGIC ('S', 'o', 'l', 'a', 'r', 'i', 's', ' ')
 
 typedef struct
 {	int magic ;
@@ -817,4 +818,12 @@ audio_close (AUDIO_OUT *audio_out)
 } /* audio_close */
 
 #endif /* HAVE_SNDFILE */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 46fb3b80-7460-44ec-99b3-c893fa320b86
+*/
 

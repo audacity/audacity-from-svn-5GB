@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
 #include "float_cast.h"
 #include "common.h"
 
-#define	SINC_MAGIC_MARKER	MAKE_MAGIC(' ','s','i','n','c',' ')
+#define	SINC_MAGIC_MARKER	MAKE_MAGIC (' ', 's', 'i', 'n', 'c', ' ')
 
-#define	ARRAY_LEN(x)    	((int) (sizeof (x) / sizeof ((x) [0])))
+#define	ARRAY_LEN(x)		((int) (sizeof (x) / sizeof ((x) [0])))
 
 /*========================================================================================
 **	Macros for handling the index into the array for the filter.
@@ -71,7 +71,7 @@ typedef struct
 
 	int		channels ;
 	long	in_count, in_used ;
-	long    out_count, out_gen ;
+	long	out_count, out_gen ;
 
 	int		coeff_half_len, index_inc ;
 	int		has_diffs ;
@@ -82,9 +82,10 @@ typedef struct
 	coeff_t const	*coeffs ;
 
 	int		b_current, b_end, b_real_end, b_len ;
-	float	*pdata ;
 	float	buffer [1] ;
 } SINC_FILTER ;
+
+static int sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data) ;
 
 static double calc_output (SINC_FILTER *filter, increment_t increment, increment_t start_filter_index, int ch) ;
 
@@ -132,13 +133,13 @@ sinc_get_description (int src_enum)
 {
 	switch (src_enum)
 	{	case SRC_SINC_BEST_QUALITY :
-			return "Band limitied sinc interpolation, best quality, 97dB SNR, 96% BW." ;
+			return "Band limited sinc interpolation, best quality, 97dB SNR, 96% BW." ;
 
 		case SRC_SINC_MEDIUM_QUALITY :
-			return "Band limitied sinc interpolation, medium quality, 97dB SNR, 90% BW." ;
+			return "Band limited sinc interpolation, medium quality, 97dB SNR, 90% BW." ;
 
 		case SRC_SINC_FASTEST :
-			return "Band limitied sinc interpolation, fastest, 97dB SNR, 80% BW." ;
+			return "Band limited sinc interpolation, fastest, 97dB SNR, 80% BW." ;
 		} ;
 
 	return NULL ;
@@ -147,7 +148,7 @@ sinc_get_description (int src_enum)
 int
 sinc_set_converter (SRC_PRIVATE *psrc, int src_enum)
 {	SINC_FILTER *filter, temp_filter ;
-	int count ;
+	int count, bits ;
 
 	/* Quick sanity check. */
 	if (SHIFT_BITS >= sizeof (increment_t) * 8 - 1)
@@ -172,26 +173,26 @@ sinc_set_converter (SRC_PRIVATE *psrc, int src_enum)
 	switch (src_enum)
 	{	case SRC_SINC_BEST_QUALITY :
 				temp_filter.coeffs = high_qual_coeffs ;
-				temp_filter.coeff_half_len = (sizeof (high_qual_coeffs) / sizeof (coeff_t)) - 1 ;
+				temp_filter.coeff_half_len = ARRAY_LEN (high_qual_coeffs) - 1 ;
 				temp_filter.index_inc = 128 ;
 				temp_filter.has_diffs = SRC_FALSE ;
-				temp_filter.coeff_len = sizeof (high_qual_coeffs) / sizeof (coeff_t) ;
+				temp_filter.coeff_len = ARRAY_LEN (high_qual_coeffs) ;
 				break ;
 
 		case SRC_SINC_MEDIUM_QUALITY :
 				temp_filter.coeffs = mid_qual_coeffs ;
-				temp_filter.coeff_half_len = (sizeof (mid_qual_coeffs) / sizeof (coeff_t)) - 1 ;
+				temp_filter.coeff_half_len = ARRAY_LEN (mid_qual_coeffs) - 1 ;
 				temp_filter.index_inc = 128 ;
 				temp_filter.has_diffs = SRC_FALSE ;
-				temp_filter.coeff_len = sizeof (mid_qual_coeffs) / sizeof (coeff_t) ;
+				temp_filter.coeff_len = ARRAY_LEN (mid_qual_coeffs) ;
 				break ;
 
 		case SRC_SINC_FASTEST :
 				temp_filter.coeffs = fastest_coeffs ;
-				temp_filter.coeff_half_len = (sizeof (fastest_coeffs) / sizeof (coeff_t)) - 1 ;
+				temp_filter.coeff_half_len = ARRAY_LEN (fastest_coeffs) - 1 ;
 				temp_filter.index_inc = 128 ;
 				temp_filter.has_diffs = SRC_FALSE ;
-				temp_filter.coeff_len = sizeof (fastest_coeffs) / sizeof (coeff_t) ;
+				temp_filter.coeff_len = ARRAY_LEN (fastest_coeffs) ;
 				break ;
 
 		default :
@@ -203,7 +204,7 @@ sinc_set_converter (SRC_PRIVATE *psrc, int src_enum)
 	** a better way. Need to look at prepare_data () at the same time.
 	*/
 
-	temp_filter.b_len = 1000 + 2 * lrint (ceil (temp_filter.coeff_len / (temp_filter.index_inc * 1.0) * SRC_MAX_RATIO)) ;
+	temp_filter.b_len = 1000 + 2 * lrint (0.5 + temp_filter.coeff_len / (temp_filter.index_inc * 1.0) * SRC_MAX_RATIO) ;
 	temp_filter.b_len *= temp_filter.channels ;
 
 	if ((filter = calloc (1, sizeof (SINC_FILTER) + sizeof (filter->buffer [0]) * (temp_filter.b_len + temp_filter.channels))) == NULL)
@@ -216,9 +217,11 @@ sinc_set_converter (SRC_PRIVATE *psrc, int src_enum)
 
 	sinc_reset (psrc) ;
 
-	count = (filter->coeff_half_len * INT_TO_FP (1)) / FP_ONE ;
+	count = filter->coeff_half_len ;
+	for (bits = 0 ; (1 << bits) < count ; bits++)
+		count |= (1 << bits) ;
 
-	if (abs (count - filter->coeff_half_len) >= 1)
+	if (bits + SHIFT_BITS - 1 >= (int) (sizeof (increment_t) * 8))
 		return SRC_ERR_FILTER_LEN ;
 
 	return SRC_ERR_NO_ERROR ;
@@ -247,12 +250,12 @@ sinc_reset (SRC_PRIVATE *psrc)
 **	Beware all ye who dare pass this point. There be dragons here.
 */
 
-int
+static int
 sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data)
 {	SINC_FILTER *filter ;
-	double		input_index, src_ratio, count, float_increment ;
+	double		input_index, src_ratio, count, float_increment, terminate, rem ;
 	increment_t	increment, start_filter_index ;
-	int			half_filter_chan_len, samples_in_hand, terminate, ch ;
+	int			half_filter_chan_len, samples_in_hand, ch ;
 
 	if (psrc->private_data == NULL)
 		return SRC_ERR_NO_PRIVATE ;
@@ -267,33 +270,24 @@ sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data)
 	filter->out_count = data->output_frames * filter->channels ;
 	filter->in_used = filter->out_gen = 0 ;
 
-	/* Special case for when last_ratio has not been set. */
-	if (psrc->last_ratio < (1.0 / SRC_MAX_RATIO))
-		psrc->last_ratio = data->src_ratio ;
-
 	src_ratio = psrc->last_ratio ;
 
 	/* Check the sample rate ratio wrt the buffer len. */
 	count = (filter->coeff_half_len + 2.0) / filter->index_inc ;
 	if (MIN (psrc->last_ratio, data->src_ratio) < 1.0)
 		count /= MIN (psrc->last_ratio, data->src_ratio) ;
-	count = lrint (ceil (count)) ;
 
 	/* Maximum coefficientson either side of center point. */
 	half_filter_chan_len = filter->channels * (lrint (count) + 1) ;
 
 	input_index = psrc->last_position ;
-	if (input_index >= 1.0)
-	{	filter->b_current = (filter->b_current + filter->channels * lrint (floor (input_index))) % filter->b_len ;
-		input_index -= floor (input_index) ;
-		} ;
-
 	float_increment = filter->index_inc ;
 
-	filter->b_current = (filter->b_current + filter->channels * lrint (floor (input_index))) % filter->b_len ;
-	input_index -= floor (input_index) ;
+	rem = fmod (input_index, 1.0) ;
+	filter->b_current = (filter->b_current + filter->channels * lrint (input_index - rem)) % filter->b_len ;
+	input_index = rem ;
 
-	terminate = (src_ratio > 1.0) ? 1 : (int) ceil (1.0 / src_ratio) ;
+	terminate = 1.0 / src_ratio + 1e-20 ;
 
 	/* Main processing loop. */
 	while (filter->out_gen < filter->out_count)
@@ -310,9 +304,10 @@ sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data)
 			} ;
 
 		/* This is the termination condition. */
-		if (filter->b_real_end >= 0 && filter->b_current < filter->b_real_end + terminate &&
-				filter->b_current + terminate > filter->b_real_end)
-			break ;
+		if (filter->b_real_end >= 0)
+		{	if (filter->b_current + input_index + terminate >= filter->b_real_end)
+				break ;
+			} ;
 
 		if (fabs (psrc->last_ratio - data->src_ratio) > 1e-10)
 			src_ratio = psrc->last_ratio + filter->out_gen * (data->src_ratio - psrc->last_ratio) / (filter->out_count - 1) ;
@@ -333,9 +328,10 @@ sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data)
 
 		/* Figure out the next index. */
 		input_index += 1.0 / src_ratio ;
+		rem = fmod (input_index, 1.0) ;
 
-		filter->b_current = (filter->b_current + filter->channels * lrint (floor (input_index))) % filter->b_len ;
-		input_index -= floor (input_index) ;
+		filter->b_current = (filter->b_current + filter->channels * lrint (input_index - rem)) % filter->b_len ;
+		input_index = rem ;
 		} ;
 
 	psrc->last_position = input_index ;
@@ -393,13 +389,13 @@ prepare_data (SINC_FILTER *filter, SRC_DATA *data, int half_filter_chan_len)
 	filter->b_end += len ;
 	filter->in_used += len ;
 
-	if (filter->in_used == filter->in_count && 
+	if (filter->in_used == filter->in_count &&
 			filter->b_end - filter->b_current < 2 * half_filter_chan_len && data->end_of_input)
 	{	/* Handle the case where all data in the current buffer has been
 		** consumed and this is the last buffer.
 		*/
 
-		if (filter->b_len - filter->b_end < half_filter_chan_len)
+		if (filter->b_len - filter->b_end < half_filter_chan_len + 5)
 		{	/* If necessary, move data down to the start of the buffer. */
 			len = filter->b_end - filter->b_current ;
 			memmove (filter->buffer, filter->buffer + filter->b_current - half_filter_chan_len,
@@ -410,7 +406,7 @@ prepare_data (SINC_FILTER *filter, SRC_DATA *data, int half_filter_chan_len)
 			} ;
 
 		filter->b_real_end = filter->b_end ;
-		len = half_filter_chan_len ;
+		len = half_filter_chan_len + 5 ;
 
 		memset (filter->buffer + filter->b_end, 0, len * sizeof (filter->buffer [0])) ;
 		filter->b_end += len ;
@@ -471,4 +467,12 @@ calc_output (SINC_FILTER *filter, increment_t increment, increment_t start_filte
 
 	return (left + right) ;
 } /* calc_output */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: db8efe06-2fbd-487e-be8f-bfc01e68c19f
+*/
 

@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
@@ -38,7 +39,7 @@
 
 #define	MIN(a,b)		((a) < (b) ? (a) : (b))
 
-#define	MAGIC_NUMBER	((int) ('S'<<16)+('R'<<8)+('C'))
+#define	MAGIC_NUMBER	((int) ('S' << 16) + ('R' << 8) + ('C'))
 
 #ifndef	M_PI
 #define	M_PI			3.14159265358979323846264338
@@ -80,7 +81,7 @@ main (int argc, char *argv [])
 		progname = cptr + 1 ;
 
 	printf ("\n"
-	    "  %s\n"
+		"  %s\n"
 		"\n"
 		"  This is a demo program which plays the given file at a slowly \n"
 		"  varying speed. Lots of fun with drum loops and full mixes.\n"
@@ -267,9 +268,9 @@ main (void)
 {	puts (
 		"\n"
 		"****************************************************************\n"
-		"  This example program was compiled without libsndfile \n"
-		"  (http://www.zip.com.au/~erikd/libsndfile/).\n"
-		"  It is therefore completely broken and non-functional.\n"
+		" This example program was compiled without libsndfile \n"
+		" (http://www.zip.com.au/~erikd/libsndfile/).\n"
+		" It is therefore completely broken and non-functional.\n"
 		"****************************************************************\n"
 		"\n"
 		) ;
@@ -278,3 +279,12 @@ main (void)
 } /* main */
 
 #endif
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 598a9e5d-b4cd-4c16-9cce-1dc5808a804c
+*/
+

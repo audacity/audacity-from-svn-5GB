@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <time.h>
-#include <sys/times.h>
-
 #include "config.h"
 
-#if (HAVE_LIBFFTW && HAVE_LIBRFFTW && HAVE_SNDFILE)
+#if (HAVE_FFTW3 && HAVE_SNDFILE && HAVE_SYS_TIMES_H)
+
+#include <time.h>
+#include <sys/times.h>
 
 #include <sndfile.h>
 #include <math.h>
@@ -38,7 +38,6 @@
 
 #define	MAX_FREQS		4
 #define	BUFFER_LEN		40000
-#define ARRAY_LEN(x)	((int) ((sizeof (x)) / (sizeof ((x) [0]))))
 
 #define SAFE_STRNCAT(dest,src,len)								\
 		{	int safe_strncat_count ;							\
@@ -60,7 +59,7 @@ typedef struct
 typedef struct
 {	const char	*progname ;
 	const char	*version_cmd ;
-	const char  *version_start ;
+	const char	*version_start ;
 	const char	*convert_cmd ;
 
 	char		version [256] ;
@@ -99,7 +98,7 @@ main (int argc, char *argv [])
 			},
 
 		/*-
-		{	/+* 
+		{	/+*
 			** The Shibatch converter doesn't work for all combinations of
 			** source and destination sample rates. Therefore it can't be
 			** included in this test.
@@ -114,7 +113,7 @@ main (int argc, char *argv [])
 
 		/*-
 		{	/+*
-			** The resample program is not able to match the bandwidth and SNR 
+			** The resample program is not able to match the bandwidth and SNR
 			** specs or sndfile-resample and hence will not be tested.
 			*+/
 			"resample",
@@ -123,8 +122,8 @@ main (int argc, char *argv [])
 			"resample -to %d source.wav destination.wav",
 			"", /+* Version string retrived later. *+/
 			SF_FORMAT_WAV | SF_FORMAT_FLOAT
-			},-*/		
-			
+			},-*/
+
 		/*-
 		{	"mplayer",
 			"mplayer -v 2>&1",
@@ -133,7 +132,7 @@ main (int argc, char *argv [])
 			"", /+* Version string retrived later. *+/
 			SF_FORMAT_WAV | SF_FORMAT_PCM_32
 			},-*/
-		
+
 		} ; /* resample_progs */
 
 	char	*progname ;
@@ -192,9 +191,9 @@ usage_exit (char *progname, RESAMPLE_PROG *prog, int count)
 		printf ("    %d : %s\n", k, prog [k].progname) ;
 
 	puts ("\n"
-		"  Obviously to test a given program you have to have it available on\n"
-		"  your system. See http://www.mega-nerd.com/SRC/quality.html for\n"
-		"  the download location of these programs.\n") ;
+		" Obviously to test a given program you have to have it available on\n"
+		" your system. See http://www.mega-nerd.com/SRC/quality.html for\n"
+		" the download location of these programs.\n") ;
 
 	exit (1) ;
 } /* usage_exit */
@@ -235,7 +234,7 @@ get_version_string (RESAMPLE_PROG *prog)
 		return ;
 
 	while ((cptr = fgets (prog->version, sizeof (prog->version), file)) != NULL)
-	{	
+	{
 		if (strstr (cptr, prog->version_start) != NULL)
 			break ;
 
@@ -347,13 +346,13 @@ measure_snr (RESAMPLE_PROG *prog, int *output_samples, int verbose)
 	*output_samples = 0 ;
 
 	for (k = 0 ; k < ARRAY_LEN (snr_test) ; k++)
-	{	unlink ("source.wav") ;
-		unlink ("destination.wav") ;
+	{	remove ("source.wav") ;
+		remove ("destination.wav") ;
 
 		if (verbose)
 			printf ("       SNR test #%d : ", k) ;
 		fflush (stdout) ;
-		generate_source_wav ("source.wav", snr_test[k].freqs, snr_test[k].freq_count, prog->format) ;
+		generate_source_wav ("source.wav", snr_test [k].freqs, snr_test [k].freq_count, prog->format) ;
 
 		snprintf (command, sizeof (command), prog->convert_cmd, snr_test [k].output_samplerate) ;
 		SAFE_STRNCAT (command, " >/dev/null", sizeof (command)) ;
@@ -425,7 +424,7 @@ find_attenuation (double freq, RESAMPLE_PROG *prog, int verbose)
 
 	generate_source_wav ("source.wav", &freq, 1, prog->format) ;
 
-	unlink (filename) ;
+	remove (filename) ;
 
 	snprintf (command, sizeof (command), prog->convert_cmd, 88189) ;
 	SAFE_STRNCAT (command, " >/dev/null", sizeof (command)) ;
@@ -483,7 +482,7 @@ static void
 measure_program (RESAMPLE_PROG *prog, int verbose)
 {	double	snr, bandwidth, conversion_rate ;
 	int		output_samples ;
-	struct	tms  time_data ;
+	struct	tms	time_data ;
 	time_t	time_now ;
 
 	printf ("\n  Machine : %s\n", get_machine_details ()) ;
@@ -523,13 +522,22 @@ int
 main (void)
 {	puts ("\n"
 		"****************************************************************\n"
-		"  This program has been compiled without :\n"
-		"    1) FFTW (http://www.fftw.org/).\n"
-		"    2) libsndfile (http://www.zip.com.au/~erikd/libsndfile/).\n"
-		"  Without these two libraries there is not much it can do.\n"
+		" This program has been compiled without :\n"
+		"	1) FFTW (http://www.fftw.org/).\n"
+		"	2) libsndfile (http://www.zip.com.au/~erikd/libsndfile/).\n"
+		" Without these two libraries there is not much it can do.\n"
 		"****************************************************************\n") ;
 
 	return 0 ;
 } /* main */
 
-#endif /* (HAVE_LIBFFTW && HAVE_LIBRFFTW && HAVE_SNDFILE) */
+#endif /* (HAVE_FFTW3 && HAVE_SNDFILE) */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: df0ffa9a-fc60-4dad-a481-7be2845f1390
+*/
+

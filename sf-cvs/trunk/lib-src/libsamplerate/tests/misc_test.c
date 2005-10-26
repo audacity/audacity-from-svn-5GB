@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@
 
 #include "util.h"
 
-#define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
-
-static void name_test (int converter) ;
+static void name_test (void) ;
 static void error_test (void) ;
 static void src_ratio_test (void) ;
 
@@ -41,7 +39,7 @@ main (void)
 	printf ("    version : %s\n\n", src_get_version ()) ;
 
 	/* Current max converter is SRC_LINEAR. */
-	name_test (SRC_LINEAR) ;
+	name_test () ;
 
 	error_test () ;
 
@@ -51,14 +49,19 @@ main (void)
 } /* main */
 
 static void
-name_test (int converter)
-{	int k ;
+name_test (void)
+{	const char	*name ;
+	int	k = 0 ;
 
 	puts ("    name_test :") ;
 
-	for (k = 0 ; k <= converter ; k++)
-	{	printf ("\tName %d : %s\n", k, src_get_name (k)) ;
+	while (1)
+	{	name = src_get_name (k) ;
+		if (name == NULL)
+			break ;
+		printf ("\tName %d : %s\n", k, name) ;
 		printf ("\tDesc %d : %s\n", k, src_get_description (k)) ;
+		k ++ ;
 		} ;
 
 	puts ("") ;
@@ -75,19 +78,19 @@ typedef struct
 } RATIO_TEST ;
 
 static RATIO_TEST ratio_test [] =
-{	{	1.0 / 12.1,	0 },
-	{	1.0 / 12.0, 1 },
-	{	1.0,		1 },
-	{	12.0, 		1 },
-	{	12.1,		0 },
-	{	-1.0,		0 }
+{	{	1.0 / 256.1,	0 },
+	{	1.0 / 256.0,	1 },
+	{	1.0,			1 },
+	{	256.0, 			1 },
+	{	256.1,			0 },
+	{	-1.0,			0 }
 } ;
 
 static void
 src_ratio_test (void)
 {	int k ;
 
-	puts ("    src_ratio_test (SRC ratio must be in range [1/12, 12]):" ) ;
+	puts ("    src_ratio_test (SRC ratio must be in range [1/256, 256]):" ) ;
 
 
 	for (k = 0 ; k < ARRAY_LEN (ratio_test) ; k++)
@@ -135,3 +138,11 @@ error_test (void)
 
 	return ;
 } /* error_test */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 36c2bc7a-7c01-4e8e-8467-75af592e61d7
+*/
+
