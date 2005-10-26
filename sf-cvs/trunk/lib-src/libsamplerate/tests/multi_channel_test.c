@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -18,18 +18,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 #include <samplerate.h>
 
 #include "util.h"
+#include "calc_snr.h"
 #include "config.h"
 
-#define	BUFFER_LEN		(1<<16)
+#define	BUFFER_LEN		(1<<15)
+#define	BLOCK_LEN		(12)
 
-#define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
-
-static void multi_channel_test (int converter, int channel_count) ;
+static void simple_test (int converter, int channel_count, double target_snr) ;
+static void process_test (int converter, int channel_count, double target_snr) ;
+static void callback_test (int converter, int channel_count, double target_snr) ;
 
 int
 main (void)
@@ -38,22 +41,37 @@ main (void)
 	force_efence_banner () ;
 
 	puts ("\n    Zero Order Hold interpolator :") ;
-	multi_channel_test (SRC_ZERO_ORDER_HOLD, 1) ;
-	multi_channel_test (SRC_ZERO_ORDER_HOLD, 2) ;
-	multi_channel_test (SRC_ZERO_ORDER_HOLD, 3) ;
-	multi_channel_test (SRC_ZERO_ORDER_HOLD, 7) ;
+	simple_test		(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
+	process_test	(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
+	callback_test	(SRC_ZERO_ORDER_HOLD, 1, 45.0) ;
+	simple_test		(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
+	process_test	(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
+	callback_test	(SRC_ZERO_ORDER_HOLD, 2, 44.0) ;
+	simple_test		(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
+	process_test	(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
+	callback_test	(SRC_ZERO_ORDER_HOLD, 3, 44.0) ;
 
 	puts ("\n    Linear interpolator :") ;
-	multi_channel_test (SRC_LINEAR, 1) ;
-	multi_channel_test (SRC_LINEAR, 2) ;
-	multi_channel_test (SRC_LINEAR, 3) ;
-	multi_channel_test (SRC_LINEAR, 7) ;
+	simple_test		(SRC_LINEAR, 1, 92.0) ;
+	process_test	(SRC_LINEAR, 1, 92.0) ;
+	callback_test	(SRC_LINEAR, 1, 92.0) ;
+	simple_test		(SRC_LINEAR, 2, 90.0) ;
+	process_test	(SRC_LINEAR, 2, 90.0) ;
+	callback_test	(SRC_LINEAR, 2, 90.0) ;
+	simple_test		(SRC_LINEAR, 3, 88.0) ;
+	process_test	(SRC_LINEAR, 3, 88.0) ;
+	callback_test	(SRC_LINEAR, 3, 88.0) ;
 
 	puts ("\n    Sinc interpolator :") ;
-	multi_channel_test (SRC_SINC_FASTEST, 1) ;
-	multi_channel_test (SRC_SINC_FASTEST, 2) ;
-	multi_channel_test (SRC_SINC_FASTEST, 3) ;
-	multi_channel_test (SRC_SINC_FASTEST, 7) ;
+	simple_test		(SRC_SINC_FASTEST, 1, 100.0) ;
+	process_test	(SRC_SINC_FASTEST, 1, 100.0) ;
+	callback_test	(SRC_SINC_FASTEST, 1, 100.0) ;
+	simple_test		(SRC_SINC_FASTEST, 2, 100.0) ;
+	process_test	(SRC_SINC_FASTEST, 2, 100.0) ;
+	callback_test	(SRC_SINC_FASTEST, 2, 100.0) ;
+	simple_test		(SRC_SINC_FASTEST, 3, 100.0) ;
+	process_test	(SRC_SINC_FASTEST, 3, 100.0) ;
+	callback_test	(SRC_SINC_FASTEST, 3, 100.0) ;
 
 	puts ("") ;
 
@@ -63,31 +81,45 @@ main (void)
 /*==============================================================================
 */
 
-#define	CHANNEL_FUNC(x)	(2.0 / ((x) + 1) - 1.0)
+static float input_serial		[BUFFER_LEN] ;
+static float input_interleaved	[BUFFER_LEN] ;
+static float output_interleaved	[BUFFER_LEN] ;
+static float output_serial		[BUFFER_LEN] ;
 
 static void
-multi_channel_test (int converter, int channel_count)
-{	static float input [BUFFER_LEN], output [BUFFER_LEN] ;
+simple_test (int converter, int channel_count, double target_snr)
+{	SRC_DATA	src_data ;
 
-	SRC_DATA	src_data ;
+	double	freq, snr ;
+	int		ch, error, frames ;
 
-	int ch, k, error, ignore ;
-
-	printf ("\tmulti_channel_test (%d channels) ................. ", channel_count) ;
+	printf ("\t%-22s (%d channel%c) ............. ", "simple_test", channel_count, channel_count > 1 ? 's' : ' ') ;
 	fflush (stdout) ;
 
-	/* Choose a converstion ratio < 1.0. */
+	memset (input_serial, 0, sizeof (input_serial)) ;
+	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
+	memset (output_interleaved, 0, sizeof (output_interleaved)) ;
+	memset (output_serial, 0, sizeof (output_serial)) ;
+
+	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+
+	/* Calculate channel_count separate windowed sine waves. */
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
+		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+		} ;
+
+	/* Interleave the data in preparation for SRC. */
+	interleave_data (input_serial, input_interleaved, frames, channel_count) ;
+
+	/* Choose a converstion ratio <= 1.0. */
 	src_data.src_ratio = 0.95 ;
 
-	src_data.data_in = input ;
-	src_data.input_frames = BUFFER_LEN / channel_count ;
+	src_data.data_in = input_interleaved ;
+	src_data.input_frames = frames ;
 
-	for (k = 0 ; k < src_data.input_frames ; k++)
-		for (ch = 0 ; ch < channel_count ; ch++)
-			src_data.data_in [channel_count * k + ch] = CHANNEL_FUNC (ch) ;
-
-	src_data.data_out = output ;
-	src_data.output_frames = BUFFER_LEN / channel_count ;
+	src_data.data_out = output_interleaved ;
+	src_data.output_frames = frames ;
 
 	if ((error = src_simple (&src_data, converter, channel_count)))
 	{	printf ("\n\nLine %d : %s\n\n", __LINE__, src_strerror (error)) ;
@@ -103,22 +135,239 @@ multi_channel_test (int converter, int channel_count)
 		exit (1) ;
 		} ;
 
-	ignore = src_data.output_frames_gen / 4 ;
+	/* De-interleave data so SNR can be calculated for each channel. */
+	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
 
-	for (k = ignore ; k < src_data.output_frames_gen - ignore ; k++)
-		for (ch = 0 ; ch < channel_count ; ch++)
-			if (fabs (src_data.data_out [channel_count * k + ch] - CHANNEL_FUNC (ch)) > 1.5e-5)
-			{	printf ("\n\nLine %d    %5d : %f -> %f   (%f difference)\n", __LINE__, k - ignore,
-						CHANNEL_FUNC (ch), src_data.data_out [channel_count * k + ch],
-						fabs (src_data.data_out [channel_count * k + ch] - CHANNEL_FUNC (ch))) ;
-				save_oct_data ("multi_channel_test.dat", src_data.data_in, src_data.input_frames,
-							src_data.data_out, src_data.output_frames_gen) ;
-				exit (1) ;
-				} ;
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+		if (snr < target_snr)
+		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
+			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
+			exit (1) ;
+			} ;
+		} ;
 
 	puts ("ok") ;
 
 	return ;
-} /* multi_channel_test */
+} /* simple_test */
 
+/*==============================================================================
+*/
+
+static void
+process_test (int converter, int channel_count, double target_snr)
+{	SRC_STATE	*src_state ;
+	SRC_DATA	src_data ;
+
+	double	freq, snr ;
+	int		ch, error, frames, current_in, current_out ;
+
+	printf ("\t%-22s (%d channel%c) ............. ", "process_test", channel_count, channel_count > 1 ? 's' : ' ') ;
+	fflush (stdout) ;
+
+	memset (input_serial, 0, sizeof (input_serial)) ;
+	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
+	memset (output_interleaved, 0, sizeof (output_interleaved)) ;
+	memset (output_serial, 0, sizeof (output_serial)) ;
+
+	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+
+	/* Calculate channel_count separate windowed sine waves. */
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
+		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+		} ;
+
+	/* Interleave the data in preparation for SRC. */
+	interleave_data (input_serial, input_interleaved, frames, channel_count) ;
+
+	/* Perform sample rate conversion. */
+	if ((src_state = src_new (converter, channel_count, &error)) == NULL)
+	{	printf ("\n\nLine %d : src_new() failed : %s\n\n", __LINE__, src_strerror (error)) ;
+		exit (1) ;
+		} ;
+
+	src_data.end_of_input = 0 ; /* Set this later. */
+
+	/* Choose a converstion ratio < 1.0. */
+	src_data.src_ratio = 0.95 ;
+
+	src_data.data_in = input_interleaved ;
+	src_data.data_out = output_interleaved ;
+
+	current_in = current_out = 0 ;
+
+	while (1)
+	{	src_data.input_frames	= MAX (MIN (BLOCK_LEN, frames - current_in), 0) ;
+		src_data.output_frames	= MAX (MIN (BLOCK_LEN, frames - current_out), 0) ;
+
+		if ((error = src_process (src_state, &src_data)))
+		{	printf ("\n\nLine %d : %s\n\n", __LINE__, src_strerror (error)) ;
+			exit (1) ;
+			} ;
+
+		if (src_data.end_of_input && src_data.output_frames_gen == 0)
+			break ;
+
+		current_in	+= src_data.input_frames_used ;
+		current_out += src_data.output_frames_gen ;
+
+		src_data.data_in	+= src_data.input_frames_used * channel_count ;
+		src_data.data_out	+= src_data.output_frames_gen * channel_count ;
+
+		src_data.end_of_input = (current_in >= frames) ? 1 : 0 ;
+		} ;
+
+	src_state = src_delete (src_state) ;
+
+	if (fabs (current_out - src_data.src_ratio * current_in) > 2)
+	{	printf ("\n\nLine %d : bad output data length %d should be %d.\n", __LINE__,
+					current_out, (int) floor (src_data.src_ratio * current_in)) ;
+		printf ("\tsrc_ratio  : %.4f\n", src_data.src_ratio) ;
+		printf ("\tinput_len  : %d\n", frames) ;
+		printf ("\toutput_len : %d\n\n", current_out) ;
+		exit (1) ;
+		} ;
+
+	/* De-interleave data so SNR can be calculated for each channel. */
+	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
+
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+		if (snr < target_snr)
+		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
+			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	puts ("ok") ;
+
+	return ;
+} /* process_test */
+
+/*==============================================================================
+*/
+
+typedef struct
+{	int channels ;
+	long total_frames ;
+	long current_frame ;
+	float *data ;
+} TEST_CB_DATA ;
+
+static long
+test_callback_func (void *cb_data, float **data)
+{	TEST_CB_DATA *pcb_data ;
+
+	long frames ;
+
+	if ((pcb_data = cb_data) == NULL)
+		return 0 ;
+
+	if (data == NULL)
+		return 0 ;
+
+	*data = pcb_data->data + (pcb_data->current_frame * pcb_data->channels) ;
+
+	if (pcb_data->total_frames - pcb_data->current_frame < BLOCK_LEN)
+		frames = pcb_data->total_frames - pcb_data->current_frame ;
+	else
+		frames = BLOCK_LEN ;
+
+	pcb_data->current_frame += frames ;
+
+	return frames ;
+} /* test_callback_func */
+
+static void
+callback_test (int converter, int channel_count, double target_snr)
+{	TEST_CB_DATA test_callback_data ;
+	SRC_STATE	*src_state = NULL ;
+
+	double	freq, snr, src_ratio ;
+	int		ch, error, frames, read_total, read_count ;
+
+	printf ("\t%-22s (%d channel%c) ............. ", "callback_test", channel_count, channel_count > 1 ? 's' : ' ') ;
+	fflush (stdout) ;
+
+	memset (input_serial, 0, sizeof (input_serial)) ;
+	memset (input_interleaved, 0, sizeof (input_interleaved)) ;
+	memset (output_interleaved, 0, sizeof (output_interleaved)) ;
+	memset (output_serial, 0, sizeof (output_serial)) ;
+	memset (&test_callback_data, 0, sizeof (test_callback_data)) ;
+
+	frames = MIN (ARRAY_LEN (input_serial) / channel_count, 1 << 16) ;
+
+	/* Calculate channel_count separate windowed sine waves. */
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	freq = (200.0 + 33.333333333 * ch) / 44100.0 ;
+		gen_windowed_sines (input_serial + ch * frames, frames, &freq, 1) ;
+		} ;
+
+	/* Interleave the data in preparation for SRC. */
+	interleave_data (input_serial, input_interleaved, frames, channel_count) ;
+
+	/* Perform sample rate conversion. */
+	src_ratio = 0.95 ;
+	test_callback_data.channels = channel_count ;
+	test_callback_data.total_frames = frames ;
+	test_callback_data.current_frame = 0 ;
+	test_callback_data.data = input_interleaved ;
+
+	if ((src_state = src_callback_new (test_callback_func, converter, channel_count, &error, &test_callback_data)) == NULL)
+	{	printf ("\n\nLine %d : %s\n\n", __LINE__, src_strerror (error)) ;
+		exit (1) ;
+		} ;
+
+	read_total = 0 ;
+	while (read_total < frames)
+	{	read_count = src_callback_read (src_state, src_ratio, frames - read_total, output_interleaved + read_total * channel_count) ;
+
+		if (read_count <= 0)
+			break ;
+
+		read_total += read_count ;
+		} ;
+
+	if ((error = src_error (src_state)) != 0)
+	{	printf ("\n\nLine %d : %s\n\n", __LINE__, src_strerror (error)) ;
+		exit (1) ;
+		} ;
+
+	src_state = src_delete (src_state) ;
+
+	if (fabs (read_total - src_ratio * frames) > 2)
+	{	printf ("\n\nLine %d : bad output data length %d should be %d.\n", __LINE__,
+					read_total, (int) floor (src_ratio * frames)) ;
+		printf ("\tsrc_ratio  : %.4f\n", src_ratio) ;
+		printf ("\tinput_len  : %d\n", frames) ;
+		printf ("\toutput_len : %d\n\n", read_total) ;
+		exit (1) ;
+		} ;
+
+	/* De-interleave data so SNR can be calculated for each channel. */
+	deinterleave_data (output_interleaved, output_serial, frames, channel_count) ;
+
+	for (ch = 0 ; ch < channel_count ; ch++)
+	{	snr = calculate_snr (output_serial + ch * frames, frames) ;
+		if (snr < target_snr)
+		{	printf ("\n\nLine %d: channel %d snr %f should be %f\n", __LINE__, ch, snr, target_snr) ;
+			save_oct_float ("output.dat", input_serial, channel_count * frames, output_serial, channel_count * frames) ;
+			exit (1) ;
+			} ;
+		} ;
+
+	puts ("ok") ;
+
+	return ;
+} /* callback_test */
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 48c58d36-baed-4f24-89f1-027a939b240a
+*/
 

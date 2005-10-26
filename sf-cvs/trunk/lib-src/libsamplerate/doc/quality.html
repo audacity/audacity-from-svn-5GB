@@ -6,20 +6,20 @@
 	Secret Rabbit Code (aka libsamplerate)
 	</TITLE>
 	<META NAME="Author"      CONTENT="Erik de Castro Lopo (erikd AT mega-nerd DOT com)">
-    <META NAME="Version"     CONTENT="libsamplerate-0.0.14">
+    <META NAME="Version"     CONTENT="libsamplerate-0.1.2">
 	<META NAME="Description" CONTENT="The Secret Rabbit Code Home Page">
-	<META NAME="Keywords"    CONTENT="libsamplerate sound audio dsp Linux">
+	<META NAME="Keywords"    CONTENT="libsamplerate sound resample audio dsp Linux">
 	<LINK REL=StyleSheet HREF="SRC.css" TYPE="text/css" MEDIA="all">
 </HEAD>
 
 <BODY TEXT="#FFFFFF" BGCOLOR="#000000" LINK="#FB1465" VLINK="#FB1465" ALINK="#FB1465">
-
+<!-- pepper -->
 <CENTER>
 	<IMG SRC="SRC.png" HEIGHT=100 WIDTH=760 ALT="SRC.png">
 </CENTER>
-
+<!-- pepper -->
 <BR>
-
+<!-- pepper -->
 <TABLE ALIGN="center" WIDTH="98%">
 <TR>
 <TD VALIGN="top">
@@ -32,13 +32,17 @@
 	<A HREF="download.html">Download</A><BR>
 	<A HREF="quality.html">Quality</A><BR>
 	<A HREF="api.html">API</A><BR>
+	<A HREF="bugs.html">Bug Reporting</A><BR>
 	<A HREF="win32.html">On Win32</A><BR>
+	<A HREF="faq.html">FAQ</A><BR>
 	<A HREF="lists.html">Mailing Lists</A><BR>
 	<A HREF="ChangeLog">ChangeLog</A><BR>
 <BR>
 <DIV CLASS="block">
 Author :<BR>Erik de Castro Lopo
+<!-- pepper -->
 <BR><BR>
+<!-- pepper -->
 
 </DIV>
 	<IMG SRC=
@@ -47,7 +51,9 @@ Author :<BR>Erik de Castro Lopo
 </DIV>
 
 </TD>
+<!-- pepper -->
 <!-- ######################################################################## -->
+<!-- pepper -->
 <TD VALIGN="top">
 <DIV CLASS="block">
 
@@ -89,9 +95,9 @@ Author :<BR>Erik de Castro Lopo
 			Resample</A>
 		by Julius O Smiths which seems to have been the first high quality converter 
 		available as source code.
-	<LI><A HREF="http://www.tsp.ece.mcgill.ca/Docs/Software/">ResampAudio</A> 
+	<LI><A HREF="http://www.tsp.ece.mcgill.ca/MMSP/Documents/Software/AFsp/ResampAudio.html">ResampAudio</A> 
 		which is part of 
-		<A HREF="http://www.tsp.ece.mcgill.ca/Docs/Software/AFsp/AFsp.html">
+		<A HREF="http://www.tsp.ece.mcgill.ca/MMSP/Documents/Software/AFsp/AFsp.html">
 			Audio File Programs and Routines</A>
 		by Peter Kabal.
 	<LI><A HREF="http://home.sprynet.com/~cbagwell/sox.html">SoX</A> which is maintained
@@ -102,13 +108,15 @@ Author :<BR>Erik de Castro Lopo
 		frequency domain sample rate converter.
 		Unfortunately, this converter does not handle arbitrary conversion ratios and
 		hence could not be properly compared to the other converters.
+	<LI><A HREF="http://sr-convert.sourceforge.net/">sr-convert</A> is another
+		converter which does not handle arbitrary conversion ratios.
 </UL>
 
 <P>
-It should be noted that all of the converters above other than Shibatch are based on the
-algorithm by <A HREF="http://www-ccrma.stanford.edu/~jos/resample/"> Julius O. Smith</A>
-which emulates the conversion of the digital signal to an analogue one and then sampling 
-the analogue signal at the new sample rate.
+It should be noted that the first three converters above are based on the algorithm
+by <A HREF="http://www-ccrma.stanford.edu/~jos/resample/"> Julius O. Smith</A>
+which emulates the conversion of the digital signal to an analogue one and then
+sampling the analogue signal at the new sample rate.
 </P>
 
 <!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -168,3 +176,12 @@ the analogue signal at the new sample rate.
 
 </BODY>
 </HTML>
+
+<!--
+  Do not edit or modify anything in this comment block.
+  The arch-tag line is a file identity tag for the GNU Arch 
+  revision control system.
+ 
+  arch-tag: 1cd07ec3-2507-48f9-955f-6b9b0d4bb3d0
+-->
+

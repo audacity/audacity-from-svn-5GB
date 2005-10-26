@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 #include <samplerate.h>
@@ -25,8 +26,6 @@
 #include "util.h"
 
 #define	BUFFER_LEN		2048
-
-#define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
 
 static void simple_test (int converter, double ratio) ;
 
@@ -118,4 +117,12 @@ simple_test (int converter, double src_ratio)
 
 	return ;
 } /* simple_test */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: d60f8f5f-154b-4541-958e-e1062140e085
+*/
 

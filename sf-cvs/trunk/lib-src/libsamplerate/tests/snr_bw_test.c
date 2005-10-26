@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
 #include "config.h"
 
-#if (HAVE_LIBFFTW && HAVE_LIBRFFTW)
+#if (HAVE_FFTW3)
 
 #include <samplerate.h>
 
@@ -39,8 +39,6 @@
 #ifndef	M_PI
 #define	M_PI			3.14159265358979323846264338
 #endif
-
-#define	ARRAY_LEN(x)	((int) (sizeof (x) / sizeof ((x) [0])))
 
 enum
 {	BOOLEAN_FALSE	= 0,
@@ -62,7 +60,7 @@ typedef struct
 {	int			converter ;
 	int			tests ;
 	int			do_bandwidth_test ;
-	SINGLE_TEST	test_data [8] ;
+	SINGLE_TEST	test_data [10] ;
 } CONVERTER_TEST ;
 
 static double snr_test (SINGLE_TEST *snr_test_data, int number, int converter, int verbose, double *conversion_rate) ;
@@ -74,11 +72,12 @@ main (int argc, char *argv [])
 {	CONVERTER_TEST snr_test_data [] =
 	{
 		{	SRC_ZERO_ORDER_HOLD,
-			7,
+			8,
 			BOOLEAN_FALSE,
-			{	{	1,	{ 0.01111111111 },		3.0,		1,	 36.0,	1.0 },
+			{	{	1,	{ 0.01111111111 },		3.0,		1,	 29.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.6,		1,	 37.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.3,		1,	 37.0,	1.0 },
+				{	1,	{ 0.01111111111 },		1.0,		1,	150.0,	1.0 },
 				{	1,	{ 0.01111111111 },		1.001,		1,	 38.0,	1.0 },
 				{	2,	{ 0.011111, 0.324 },	1.9999,		2,	 14.0,	1.0 },
 				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	 32.0,	1.0 },
@@ -87,24 +86,26 @@ main (int argc, char *argv [])
 			},
 
 		{	SRC_LINEAR,
-			7,
+			8,
 			BOOLEAN_FALSE,
 			{	{	1,	{ 0.01111111111 },		3.0,		1,	 73.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.6,		1,	 74.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.3,		1,	 74.0,	1.0 },
+				{	1,	{ 0.01111111111 },		1.0,		1,	150.0,	1.0 },
 				{	1,	{ 0.01111111111 },		1.001,		1,	 77.0,	1.0 },
 				{	2,	{ 0.011111, 0.324 },	1.9999,		2,	 97.0,	0.94 },
-				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	 60.0,	0.95 },
+				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	 60.0,	0.96 },
 				{	1,	{ 0.3511111111 },		1.33,		1,	 22.0,	0.99 }
 				}
 			},
 
 		{	SRC_SINC_FASTEST,
-			8,
+			9,
 			BOOLEAN_TRUE,
 			{	{	1,	{ 0.01111111111 },		3.0,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.6,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.3,		1,	100.0,	1.0 },
+				{	1,	{ 0.01111111111 },		1.0,		1,	150.0,	1.0 },
 				{	1,	{ 0.01111111111 },		1.001,		1,	100.0,	1.0 },
 				{	2,	{ 0.011111, 0.324 },	1.9999,		2,	 97.0,	1.0 },
 				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	100.0,	0.5 },
@@ -114,11 +115,12 @@ main (int argc, char *argv [])
 			},
 
 		{	SRC_SINC_MEDIUM_QUALITY,
-			8,
+			9,
 			BOOLEAN_TRUE,
 			{	{	1,	{ 0.01111111111 },		3.0,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.6,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.3,		1,	100.0,	1.0 },
+				{	1,	{ 0.01111111111 },		1.0,		1,	149.0,	1.0 },
 				{	1,	{ 0.01111111111 },		1.001,		1,	100.0,	1.0 },
 				{	2,	{ 0.011111, 0.324 },	1.9999,		2,	 97.0,	1.0 },
 				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	100.0,	0.5 },
@@ -128,11 +130,12 @@ main (int argc, char *argv [])
 			},
 
 		{	SRC_SINC_BEST_QUALITY,
-			8,
+			9,
 			BOOLEAN_TRUE,
 			{	{	1,	{ 0.01111111111 },		3.0,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.6,		1,	100.0,	1.0 },
 				{	1,	{ 0.01111111111 },		0.3,		1,	100.0,	1.0 },
+				{	1,	{ 0.01111111111 },		1.0,		1,	154.0,	1.0 },
 				{	1,	{ 0.01111111111 },		1.001,		1,	100.0,	1.0 },
 				{	2,	{ 0.011111, 0.324 },	1.9999,		2,	 97.0,	1.0 },
 				{	2,	{ 0.012345, 0.457 },	0.456789,	1,	100.0,	0.5 },
@@ -290,7 +293,7 @@ snr_test (SINGLE_TEST *test_data, int number, int converter, int verbose, double
 
 	if (fabs (output_peak - test_data->peak_value) > 0.01)
 	{	printf ("\n\nLine %d : output peak (%6.4f) should be %6.4f\n\n", __LINE__, output_peak, test_data->peak_value) ;
-		save_oct_data ("snr_test.dat", data, BUFFER_LEN, output, output_len) ;
+		save_oct_float ("snr_test.dat", data, BUFFER_LEN, output, output_len) ;
 		exit (1) ;
 		} ;
 
@@ -299,7 +302,7 @@ snr_test (SINGLE_TEST *test_data, int number, int converter, int verbose, double
 
 	if (snr < 0.0)
 	{	/* An error occurred. */
-		save_oct_data ("snr_test.dat", data, BUFFER_LEN, output, src_data.output_frames_gen) ;
+		save_oct_float ("snr_test.dat", data, BUFFER_LEN, output, src_data.output_frames_gen) ;
 		exit (1) ;
 		} ;
 
@@ -402,7 +405,7 @@ bandwidth_test (int converter, int verbose)
 	return 200.0 * freq ;
 } /* bandwidth_test */
 
-#else /* (HAVE_LIBFFTW && HAVE_LIBRFFTW) == 0 */
+#else /* (HAVE_FFTW3) == 0 */
 
 /* Alternative main function when librfftw is not available. */
 
@@ -410,12 +413,12 @@ int
 main (void)
 {	puts ("\n"
 		"****************************************************************\n"
-		"  This test cannot be run without FFTW (http://www.fftw.org/).\n"
-		"  Both the real and the complex versions of the library are\n"
-		"  required.");
+		" This test cannot be run without FFTW (http://www.fftw.org/).\n"
+		" Both the real and the complex versions of the library are\n"
+		" required.") ;
 
 #if (defined (WIN32) || defined (_WIN32))
-	puts ("  It it not known whether FFTW compiles and runs on Win32.") ;
+	puts (" It it not known whether FFTW compiles and runs on Win32.") ;
 #endif
 	puts ("****************************************************************\n") ;
 
@@ -423,3 +426,12 @@ main (void)
 } /* main */
 
 #endif
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: c31544f5-637f-4640-953b-1f3f71de11b6
+*/
+

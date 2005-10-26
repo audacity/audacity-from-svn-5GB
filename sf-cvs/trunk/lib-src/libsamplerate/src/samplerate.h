@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,6 +16,11 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 */
 
+/*
+** API documentation is available here:
+**     http://www.mega-nerd.com/SRC/api.html
+*/
+
 #ifndef SAMPLERATE_H
 #define SAMPLERATE_H
 
@@ -23,8 +28,11 @@
 extern "C" {
 #endif	/* __cplusplus */
 
-typedef void SRC_STATE ;
 
+/* Opaque data type SRC_STATE. */
+typedef struct SRC_STATE_tag SRC_STATE ;
+
+/* SRC_DATA is used to pass data to src_simple() and src_process(). */
 typedef struct
 {	float	*data_in, *data_out ;
 
@@ -36,18 +44,41 @@ typedef struct
 	double	src_ratio ;
 } SRC_DATA ;
 
-/*
-**	Simple interface for performing a single conversion from input buffer to
-** output buffer at a fixed conversion ratio.
-*/
-int src_simple (SRC_DATA *data, int converter_type, int channels) ;
+/* SRC_CB_DATA is used with callback based API. */
+typedef struct
+{	long	frames ;
+	float	*data_in ;
+} SRC_CB_DATA ;
 
 /*
-**	Initialisation function : return an anonymous pointer to the internal state
-**	of the converter. Choose a converter from the enums below.
+** User supplied callback function type for use with src_callback_new()
+** and src_callback_read(). First parameter is the same pointer that was
+** passed into src_callback_new(). Second parameter is pointer to a
+** pointer. The user supplied callback function must modify *data to
+** point to the start of the user supplied float array. The user supplied
+** function must return the number of frames that **data points to.
+*/
+
+typedef long (*src_callback_t) (void *cb_data, float **data) ;
+
+/*
+**	Standard initialisation function : return an anonymous pointer to the
+**	internal state of the converter. Choose a converter from the enums below.
+**	Error returned in *error.
 */
 
 SRC_STATE* src_new (int converter_type, int channels, int *error) ;
+
+/*
+**	Initilisation for callback based API : return an anonymous pointer to the
+**	internal state of the converter. Choose a converter from the enums below.
+**	The cb_data pointer can point to any data or be set to NULL. Whatever the
+**	value, when processing, user supplied function "func" gets called with
+**	cb_data as first parameter.
+*/
+
+SRC_STATE* src_callback_new (src_callback_t func, int converter_type, int channels,
+				int *error, void* cb_data) ;
 
 /*
 **	Cleanup all internal allocations.
@@ -55,6 +86,28 @@ SRC_STATE* src_new (int converter_type, int channels, int *error) ;
 */
 
 SRC_STATE* src_delete (SRC_STATE *state) ;
+
+/*
+**	Standard processing function.
+**	Returns non zero on error.
+*/
+
+int src_process (SRC_STATE *state, SRC_DATA *data) ;
+
+/*
+**	Callback based processing function. Read up to frames worth of data from
+**	the converter int *data and return frames read or -1 on error.
+*/
+long src_callback_read (SRC_STATE *state, double src_ratio, long frames, float *data) ;
+
+/*
+**	Simple interface for performing a single conversion from input buffer to
+**	output buffer at a fixed conversion ratio.
+**	Simple interface does not require initialisation as it can only operate on
+**	a single buffer worth of audio.
+*/
+
+int src_simple (SRC_DATA *data, int converter_type, int channels) ;
 
 /*
 ** This library contains a number of different sample rate converters,
@@ -68,13 +121,6 @@ SRC_STATE* src_delete (SRC_STATE *state) ;
 const char *src_get_name (int converter_type) ;
 const char *src_get_description (int converter_type) ;
 const char *src_get_version (void) ;
-
-/*
-**	Processing function.
-**	Returns non zero on error.
-*/
-
-int src_process (SRC_STATE *state, SRC_DATA *data) ;
 
 /*
 **	Set a new SRC ratio. This allows step responses
@@ -125,9 +171,26 @@ enum
 	SRC_LINEAR					= 4
 } ;
 
+/*
+** Extra helper functions for converting from short to float and
+** back again.
+*/
+
+void src_short_to_float_array (const short *in, float *out, int len) ;
+void src_float_to_short_array (const float *in, short *out, int len) ;
+
 
 #ifdef __cplusplus
 }		/* extern "C" */
 #endif	/* __cplusplus */
 
 #endif	/* SAMPLERATE_H */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch
+** revision control system.
+**
+** arch-tag: 5421ef3e-c898-4ec3-8671-ea03d943ee00
+*/
+

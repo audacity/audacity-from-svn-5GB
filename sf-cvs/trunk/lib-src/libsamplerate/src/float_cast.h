@@ -1,6 +1,6 @@
 /*
 ** Copyright (C) 2001-2003 Erik de Castro Lopo <erikd@mega-nerd.com>
-**  
+**
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
@@ -51,7 +51,7 @@
 **	the config.h file.
 */
 
-#define  HAVE_LRINT_REPLACEMENT 0
+#define		HAVE_LRINT_REPLACEMENT	0
 
 #if (HAVE_LRINT && HAVE_LRINTF)
 
@@ -73,8 +73,8 @@
 
 #elif (defined (WIN32) || defined (_WIN32))
 
-	#undef   HAVE_LRINT_REPLACEMENT
-	#define  HAVE_LRINT_REPLACEMENT 1
+	#undef		HAVE_LRINT_REPLACEMENT
+	#define		HAVE_LRINT_REPLACEMENT	1
 	#include	<math.h>
 
 	/*
@@ -84,7 +84,7 @@
 
 	__inline long int
 	lrint (double flt)
-	{	int intgr;
+	{	int intgr ;
 
 		_asm
 		{	fld flt
@@ -96,7 +96,7 @@
 
 	__inline long int
 	lrintf (float flt)
-	{	int intgr;
+	{	int intgr ;
 
 		_asm
 		{	fld flt
@@ -110,24 +110,24 @@
 
 	/* This MacOS 9 solution was provided by Stephane Letz */
 
-	#undef   HAVE_LRINT_REPLACEMENT
-	#define  HAVE_LRINT_REPLACEMENT 1
-	#include   <math.h>
+	#undef		HAVE_LRINT_REPLACEMENT
+	#define		HAVE_LRINT_REPLACEMENT	1
+	#include	<math.h>
 
 	#undef	lrint
 	#undef	lrintf
 
-	#define	lrint   double2int
-	#define	lrintf  float2int
+	#define	lrint	double2int
+	#define	lrintf	float2int
 
 	inline int
 	float2int (register float in)
 	{	long res [2] ;
 
 		asm
-		{	fctiw	in,in
-		  	stfd	 in,res
-	  	}
+		{	fctiw	in, in
+			stfd	 in, res
+		}
 		return res [1] ;
 	} /* float2int */
 
@@ -136,9 +136,9 @@
 	{	long res [2] ;
 
 		asm
-		{	fctiw	in,in
-			stfd	 in,res
-	  	}
+		{	fctiw	in, in
+			stfd	 in, res
+		}
 		return res [1] ;
 	} /* double2int */
 
@@ -146,9 +146,9 @@
 
 	/* For Apple MacOSX. */
 
-	#undef   HAVE_LRINT_REPLACEMENT
-	#define  HAVE_LRINT_REPLACEMENT 1
-	#include   <math.h>
+	#undef		HAVE_LRINT_REPLACEMENT
+	#define		HAVE_LRINT_REPLACEMENT	1
+	#include	<math.h>
 
 	#undef lrint
 	#undef lrintf
@@ -162,7 +162,7 @@
 
 		__asm__ __volatile__
 		(	"fctiw	%1, %1\n\t"
-		  	"stfd	%1, %0"
+			"stfd	%1, %0"
 			: "=m" (res)	/* Output */
 			: "f" (in)		/* Input */
 			: "memory"
@@ -177,7 +177,7 @@
 
 		__asm__ __volatile__
 		(	"fctiw	%1, %1\n\t"
-		  	"stfd	%1, %0"
+			"stfd	%1, %0"
 			: "=m" (res)	/* Output */
 			: "f" (in)		/* Input */
 			: "memory"
@@ -194,10 +194,18 @@
 
 	#include	<math.h>
 
-	#define	lrint(dbl)		((int) (dbl))
-	#define	lrintf(flt)		((int) (flt))
+	#define	lrint(dbl)		((long) (dbl))
+	#define	lrintf(flt)		((long) (flt))
 
 #endif
 
 
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 25418b9e-cfe8-4145-a3b3-a92388dd37c5
+*/
 

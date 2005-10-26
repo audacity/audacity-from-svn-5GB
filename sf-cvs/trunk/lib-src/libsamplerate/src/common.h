@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002,2003 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -22,24 +22,27 @@
 #ifdef HAVE_STDINT_H
 #include <stdint.h>
 #elif (SIZEOF_INT == 4)
-typedef  int  int32_t ;
+typedef	int		int32_t ;
 #elif (SIZEOF_LONG == 4)
-typedef  long  int32_t ;
+typedef	long	int32_t ;
 #endif
 
-#define	SRC_MAX_RATIO			12
+#define	SRC_MAX_RATIO			256
 #define	SRC_MIN_RATIO_DIFF		(1e-20)
 
 #define	MAX(a,b)	(((a) > (b)) ? (a) : (b))
 #define	MIN(a,b)	(((a) < (b)) ? (a) : (b))
 
-#define	MAKE_MAGIC(a,b,c,d,e,f)	((a)+((b)<<4)+((c)<<8)+((d)<<12)+((e)<<16)+((f)<<20))
+#define	MAKE_MAGIC(a,b,c,d,e,f)	((a) + ((b) << 4) + ((c) << 8) + ((d) << 12) + ((e) << 16) + ((f) << 20))
 
 #include "samplerate.h"
 
 enum
 {	SRC_FALSE	= 0,
-	SRC_TRUE	= 1
+	SRC_TRUE	= 1,
+
+	SRC_MODE_PROCESS	= 555,
+	SRC_MODE_CALLBACK	= 556
 } ;
 
 enum
@@ -61,6 +64,9 @@ enum
 	SRC_ERR_BAD_PRIV_PTR,
 	SRC_ERR_BAD_SINC_STATE,
 	SRC_ERR_DATA_OVERLAP,
+	SRC_ERR_BAD_CALLBACK,
+	SRC_ERR_BAD_MODE,
+	SRC_ERR_NULL_CALLBACK,
 
 	/* This must be the last error number. */
 	SRC_ERR_MAX_ERROR
@@ -69,37 +75,50 @@ enum
 typedef struct SRC_PRIVATE_tag
 {	double	last_ratio, last_position ;
 
+	int		error ;
+	int		channels ;
+
+	/* SRC_MODE_PROCESS or SRC_MODE_CALLBACK */
+	int		mode ;
+
+	/* Pointer to data to converter specific data. */
 	void	*private_data ;
 
 	int		(*process) (struct SRC_PRIVATE_tag *psrc, SRC_DATA *data) ;
 	void	(*reset) (struct SRC_PRIVATE_tag *psrc) ;
 
-	int		error ;
-	int		channels ;
+	/* Data specific to SRC_MODE_CALLBACK. */
+	src_callback_t	callback_func ;
+	void			*user_callback_data ;
+	long			saved_frames ;
+	float			*saved_data ;
 } SRC_PRIVATE ;
 
 /* In src_sinc.c */
-int sinc_process (SRC_PRIVATE *psrc, SRC_DATA *data) ;
-
 const char* sinc_get_name (int src_enum) ;
 const char* sinc_get_description (int src_enum) ;
 
 int sinc_set_converter (SRC_PRIVATE *psrc, int src_enum) ;
 
 /* In src_linear.c */
-int linear_process (SRC_PRIVATE *psrc, SRC_DATA *data) ;
-
 const char* linear_get_name (int src_enum) ;
 const char* linear_get_description (int src_enum) ;
 
 int linear_set_converter (SRC_PRIVATE *psrc, int src_enum) ;
 
 /* In src_zoh.c */
-int zoh_process (SRC_PRIVATE *psrc, SRC_DATA *data) ;
-
 const char* zoh_get_name (int src_enum) ;
 const char* zoh_get_description (int src_enum) ;
 
 int zoh_set_converter (SRC_PRIVATE *psrc, int src_enum) ;
 
-#endif  /* COMMON_H_INCLUDED */
+#endif	/* COMMON_H_INCLUDED */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The arch-tag line is a file identity tag for the GNU Arch 
+** revision control system.
+**
+** arch-tag: 737d46dc-a2f8-4025-bb88-fc8915c69085
+*/
+
