@@ -134,7 +134,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
 
    dnl see if libsamplerate is installed on the system
 
-   PKG_CHECK_MODULES(SAMPLERATE, samplerate >= 0.15.0,
+   PKG_CHECK_MODULES(SAMPLERATE, samplerate >= 0.1.2,
                      samplerate_available_system="yes",
                      samplerate_available_system="no")
 
