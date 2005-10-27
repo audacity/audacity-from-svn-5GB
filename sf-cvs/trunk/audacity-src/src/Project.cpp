@@ -2089,9 +2089,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    if (fileVersion.Length() != 5 || // expecting '1.1.0', for example
        fileVersion > wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
-      msg.Printf(_("This file was saved using Audacity %s.\n\
-                   You are using Audacity %s - you need to upgrade to\n\
-                   a newer version to open this file."),
+      msg.Printf(_("This file was saved using Audacity %s.\nYou are using Audacity %s - you need to upgrade to\na newer version to open this file."),
                  audacityVersion.c_str(),
                  wxT(AUDACITY_VERSION_STRING));
       wxMessageBox(msg,
@@ -2103,11 +2101,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
    // Specifically detect older versions of Audacity
    if (fileVersion < wxT(AUDACITY_FILE_FORMAT_VERSION)) {
       wxString msg;
-      msg.Printf(_("This file was saved by Audacity %s and the format\n\
-                   has changed.  This version of Audacity can try to\n\
-                   open it, but there may be problems.  You should back up\n\
-                   your project first, to be safe.\n\n\
-                   Would you like to open this file right now anyway?"),
+      msg.Printf(_("This file was saved by Audacity %s and the format\nhas changed.  This version of Audacity can try to\nopen it, but there may be problems.  You should back up\nyour project first, to be safe.\n\nWould you like to open this file right now anyway?"),
                  audacityVersion.c_str());
       int action;
       action = wxMessageBox(msg,
