@@ -32,7 +32,7 @@ class EffectSilence:public Effect {
    }
 
    virtual wxString GetEffectName() {
-      return wxString(_("Silence"));
+      return wxString(_("Silence..."));
    }
 
    virtual wxString GetEffectAction() {
