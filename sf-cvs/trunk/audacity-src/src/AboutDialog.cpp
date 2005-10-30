@@ -217,7 +217,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxHtmlWindow *html = new wxHtmlWindow(this, -1,
                                          wxDefaultPosition,
-                                         wxSize(600, 300),
+                                         wxSize(480, 240),
                                          wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER);
    html->SetPage(creditStr);
    pBoxSizer->Add(html, 0, wxALIGN_CENTER | wxALL, 8);
