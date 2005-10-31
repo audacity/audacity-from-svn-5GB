@@ -1,16 +1,16 @@
-# translation of eu3.po to 
 # translation of audacity.po to Basque
 # translation of audacity-zuzenduta.po to Basque
 # Hizkuntza Politikarako Sailburuordetza <hps@ej-gv.es>, 2005.
 # Hizkuntza Politikarako Sailburuordetza <hizkpol@ej-gv.es>, 2005.
+# Iñaki Larrañaga Murgoitio  <dooteo@euskalgnu.org>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: eu3\n"
+"Project-Id-Version: audacity-eu3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-14 09:03+0200\n"
-"PO-Revision-Date: 2005-05-13 12:13+0200\n"
-"Last-Translator: \n"
-"Language-Team:  <eu@li.org>\n"
+"POT-Creation-Date: 2005-10-21 01:19-0700\n"
+"PO-Revision-Date: 2005-10-25 17:10+0200\n"
+"Last-Translator:  Iñaki Larrañaga Murgoitio  <dooteo@euskalgnu.org>\n"
+"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,12 +24,17 @@ msgid ""
 " \n"
 "Select threshold (lower is more sensitive)"
 msgstr ""
+"\n"
+" \n"
+"Hautatu muga (baxuagoa = sentikorragoa)"
 
 #: ../src/effects/ClickRemoval.cpp:333
 msgid ""
 "\n"
 "Max spike width (higher is more sensitive)"
 msgstr ""
+"\n"
+"Soinu-gailurraren altuera (altuagoa = sentikorragoa)"
 
 #: ../src/widgets/AButton.cpp:181
 msgid " (disabled)"
@@ -46,7 +51,6 @@ msgstr ""
 "Saiatu Audacity-k inporta dezakeen jatorrizko audio-formatu batera erauzten."
 
 #. i18n-hint: This refers to a "window function", used in the
-#. Frequency analyze dialog box.
 #: ../src/FreqWindow.cpp:167
 msgid " window"
 msgstr " leihoa"
@@ -73,6 +77,9 @@ msgid ""
 "\n"
 "It has been removed from the history list."
 msgstr ""
+"%s ez da existitzen eta ezin da ireki.\n"
+"\n"
+"Historiaren zerrendatik ezabatu egin da."
 
 #: ../src/AudacityApp.cpp:304 ../src/Project.cpp:1770
 #, c-format
@@ -80,12 +87,10 @@ msgid "%s is already open in another window."
 msgstr "%s irekita dago beste leiho batean."
 
 #. i18n-hint: This is the pattern for filenames that are created
-#. when a file needs to be backed up to a different name.  For
-#. example, mysong would become mysong-old1, mysong-old2, etc.
 #: ../src/DirManager.cpp:627
 #, c-format
 msgid "%s-old%d"
-msgstr "%s-old%d"
+msgstr "%s-zaharra%d"
 
 #: ../src/Menus.cpp:529
 msgid "&About Audacity..."
@@ -93,7 +98,7 @@ msgstr "&Audacity-ri buruz..."
 
 #: ../src/Menus.cpp:269
 msgid "&All\tCtrl+A"
-msgstr "&Dena\tCtrl+A"
+msgstr "&Dena\tKtrl+A"
 
 #: ../src/Menus.cpp:494
 msgid "&Analyze"
@@ -101,20 +106,19 @@ msgstr "&Analizatu"
 
 #: ../src/Menus.cpp:145
 msgid "&Close\tCtrl+W"
-msgstr "&Itxi\tCtrl+W"
+msgstr "&Itxi\tKtrl+W"
 
 #: ../src/Menus.cpp:526
-#, fuzzy
 msgid "&Contents..."
-msgstr "Tonua..."
+msgstr "&Edukia..."
 
 #: ../src/Menus.cpp:253
 msgid "&Copy\tCtrl+C"
-msgstr "&Kopiatu\tCtrl+C"
+msgstr "&Kopiatu\tKtrl+C"
 
 #: ../src/Menus.cpp:260
 msgid "&Delete\tCtrl+K"
-msgstr "&Ezabatu\tCtrl+K"
+msgstr "&Ezabatu\tKtrl+K"
 
 #: ../src/Menus.cpp:227
 msgid "&Edit"
@@ -140,7 +144,7 @@ msgstr "&Fitxategia"
 
 #: ../src/Menus.cpp:354
 msgid "&Fit in Window\tCtrl+F"
-msgstr "&Doitu leihoari\tCtrl+F"
+msgstr "&Doitu leihoari\tKtrl+F"
 
 #: ../src/Menus.cpp:441
 msgid "&Generate"
@@ -157,19 +161,19 @@ msgstr "&Historia..."
 
 #: ../src/Menus.cpp:381
 msgid "&Import Audio...\tCtrl+I"
-msgstr "&Inportatu audioa...\tCtrl+I"
+msgstr "&Inportatu audioa...\tKtrl+I"
 
 #: ../src/Menus.cpp:141
 msgid "&New\tCtrl+N"
-msgstr "&Berria\tCtrl+N"
+msgstr "&Berria\tKtrl+N"
 
 #: ../src/Menus.cpp:143
 msgid "&Open...\tCtrl+O"
-msgstr "&Ireki...\tCtrl+O"
+msgstr "&Ireki...\tKtrl+O"
 
 #: ../src/Menus.cpp:254
 msgid "&Paste\tCtrl+V"
-msgstr "&Itsatsi\tCtrl+V"
+msgstr "&Itsatsi\tKtrl+V"
 
 #: ../src/Menus.cpp:496
 msgid "&Plot Spectrum"
@@ -177,7 +181,7 @@ msgstr "&Espektro-ikuspegia"
 
 #: ../src/Menus.cpp:327 ../src/Menus.cpp:333
 msgid "&Preferences...\tCtrl+P"
-msgstr "&Hobespenak...\tCtrl+P"
+msgstr "&Hobespenak...\tKtrl+P"
 
 #: ../src/Menus.cpp:379
 msgid "&Project"
@@ -202,19 +206,19 @@ msgstr "&Exekutatu Benchmark..."
 
 #: ../src/Menus.cpp:146
 msgid "&Save Project\tCtrl+S"
-msgstr "&Gorde proiektua\tCtrl+S"
+msgstr "&Gorde proiektua\tKtrl+S"
 
 #: ../src/Menus.cpp:261
 msgid "&Silence\tCtrl+L"
-msgstr "&Isildu\tCtrl+L"
+msgstr "&Isildu\tKtrl+L"
 
 #: ../src/Menus.cpp:258
 msgid "&Trim\tCtrl+T"
-msgstr "&Ezabatu gainerakoa\tCtrl+T"
+msgstr "&Ezabatu gainerakoa\tKtrl+T"
 
 #: ../src/Menus.cpp:231
 msgid "&Undo\tCtrl+Z"
-msgstr "&Desegin\tCtrl+Z"
+msgstr "&Desegin\tKtrl+Z"
 
 #: ../src/Menus.cpp:620
 #, c-format
@@ -227,7 +231,7 @@ msgstr "&Ikusi"
 
 #: ../src/Menus.cpp:356
 msgid "&Zoom to Selection\tCtrl+E"
-msgstr "&Zooma hautapenera\tCtrl+E"
+msgstr "&Zooma hautapenera\tKtrl+E"
 
 #: ../src/TrackPanel.cpp:4106
 msgid "'left' channel"
@@ -311,11 +315,11 @@ msgstr "Ekintza"
 
 #: ../src/Menus.cpp:432
 msgid "Add Label At Playback Position\tCtrl+M"
-msgstr "Gehitu etiketa erreproduzio-posizioari\tCtrl+M"
+msgstr "Gehitu etiketa erreproduzio-posizioari\tKtrl+M"
 
 #: ../src/Menus.cpp:431
 msgid "Add Label At Selection\tCtrl+B"
-msgstr "Gehitu etiketa hautapenari\tCtrl+B"
+msgstr "Gehitu etiketa hautapenari\tKtrl+B"
 
 #: ../src/Menus.cpp:3088
 msgid "Added label"
@@ -437,8 +441,7 @@ msgstr ""
 "Fitxategi-zerrenda (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2676
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Fitxategi guztiak (*.*)|*.*|MIDI fitxategiak (*.mid)|*.mid|Allegro "
 "fitxategiak (*.gro)|*.gro"
@@ -454,9 +457,8 @@ msgstr ""
 "Vorbis fitxategiak (*.ogg)|*.ogg|Fitxategi-zerrenda (*.lof)|*.lof"
 
 #: ../src/effects/Amplify.cpp:164
-#, fuzzy
 msgid "Allow clipping"
-msgstr "Ez onartu moztea"
+msgstr "Onartu moztea"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
@@ -542,8 +544,7 @@ msgstr ""
 #: ../src/effects/Echo.cpp:33
 #, c-format
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
-msgstr ""
-"Aplikatutako efektua: %s atzerapena = %f segundo, hondatze-faktorea = %f"
+msgstr "Aplikatutako efektua: %s atzerapena = %f segundo, hondatze-faktorea = %f"
 
 #: ../src/effects/BassBoost.cpp:36
 #, c-format
@@ -560,28 +561,23 @@ msgstr ""
 "sakonera = %.0f%%, erresonantzia= %.1f, maiztasunaren desplazamendua = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:33
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, "
 "%.6lf seconds"
 msgstr ""
 "Aplikatutako efektua: sortu %s %s uhina, maiztasuna = %.2f Hz, anplitudea = "
-"%.2f"
+"%.2f, %.6lf segundo"
 
 #: ../src/effects/Silence.h:42
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "Aplikatutako efektua: Sortu Isildu"
+msgstr "Aplikatutako efektua: Sortu Isildu, %.6lf segundo"
 
 #: ../src/effects/Noise.h:31
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate White Noise, %.6lf seconds"
-msgstr "Aplikatutako efektua: Sortu zarata zuria"
-
-#: ../src/effects/Compressor.cpp:464
-#, fuzzy
-msgid "Apply Normalization (to 0dB) after compressing"
-msgstr "Aplikatu irabazia konprimitu ondoren"
+msgstr "Aplikatutako efektua: Sortu zarata zuria, %.6lf segundo"
 
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
@@ -611,11 +607,11 @@ msgstr "Artista"
 msgid "Artist:"
 msgstr "Artista:"
 
-#: ../src/effects/Compressor.cpp:453
+#: ../src/effects/Compressor.cpp:458
 msgid "Attack Time: "
 msgstr "Eraso-denbora: "
 
-#: ../src/effects/Compressor.cpp:527
+#: ../src/effects/Compressor.cpp:532
 #, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Eraso-denbora: %.1f s"
@@ -670,9 +666,6 @@ msgstr ""
 "erabiliz"
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
-#. message must be <= 255 characters.  Be brief.
-#. i18n-hint: This message is used on Mac OS 9.  This particular
-#. message must be <= 255 characters.  Be brief.
 #: ../src/export/ExportMP3.cpp:560 ../src/export/ExportMP3.cpp:874
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
@@ -823,12 +816,11 @@ msgid ""
 "\n"
 "Do you still want to start Audacity?"
 msgstr ""
-"Audacity no ha podido bloquear el directorio de archivos temporales.\n"
-"Esta carpeta puede estar siendo utilizada por otra copia de Audacity.\n"
-"Ejecutar dos copias simultaneas de Audacity puede provocar prdida de datos o "
-"bloquear el sistema.\n"
+"Audacity-k ezin izan du aldi baterako direktorio blokeatu.\n"
+"Audacity-ren beste kopia batek karpeta hau erabil dezake.\n"
+"Audacity-ren bi kopia aldi berean exekutatzeak datuen galera ekar dezake edo sistema blokeatu.\n"
 "\n"
-"An quiere ejecutar Audacity?"
+"Audacity exekutatzea nahi duzu?"
 
 #: ../src/Project.cpp:1842
 msgid ""
@@ -867,17 +859,14 @@ msgid "Autoscroll while playing"
 msgstr "Automatikoki korritu erreproduzitu bitartean"
 
 #: ../src/effects/BassBoost.cpp:69
-#, fuzzy
 msgid "Bass Boost"
 msgstr "Nabarmendu baxuak"
 
 #: ../src/effects/BassBoost.cpp:279
-#, fuzzy
 msgid "Bass Boost by Nasca Octavian Paul"
 msgstr "Nabarmendu baxuak Nasca Octavian Paul-en eskutik"
 
 #: ../src/effects/BassBoost.h:44
-#, fuzzy
 msgid "Bass Boost..."
 msgstr "Nabarmendu baxuak..."
 
@@ -890,7 +879,6 @@ msgid "Benchmark"
 msgstr "Benchmark"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
 msgstr "Big-endian"
@@ -924,12 +912,10 @@ msgid "Can't export multiple files"
 msgstr "Ezin da hainbat fitxategitara esportatu"
 
 #: ../src/Project.cpp:2308 ../src/Project.cpp:2311
-#, fuzzy
 msgid "Can't import project file"
-msgstr "Ezin da hainbat fitxategitara esportatu"
+msgstr "Ezin da proiektuaren fitxategia inportatu"
 
 #: ../src/Project.cpp:1991
-#, fuzzy
 msgid "Can't open project file"
 msgstr "Ezin da proiektuaren fitxategia ireki"
 
@@ -937,15 +923,15 @@ msgstr "Ezin da proiektuaren fitxategia ireki"
 msgid "Can't process replacing"
 msgstr "Ezin da ordezkatzea prozesatu"
 
-#: ../src/Tags.cpp:716 ../src/effects/VST/VSTEffect.cpp:95
-#: ../src/effects/VST/VSTEffect.cpp:453 ../src/effects/Amplify.cpp:182
+#: ../src/Tags.cpp:716 ../src/effects/Amplify.cpp:182
 #: ../src/effects/AvcCompressor.cpp:710 ../src/effects/BassBoost.cpp:327
 #: ../src/effects/ChangePitch.cpp:389 ../src/effects/ChangeSpeed.cpp:375
-#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:476
+#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:481
 #: ../src/effects/Echo.cpp:238 ../src/effects/Equalization.cpp:726
 #: ../src/effects/Filter.cpp:479 ../src/effects/Normalize.cpp:255
 #: ../src/effects/Phaser.cpp:571 ../src/effects/Repeat.cpp:248
 #: ../src/effects/Silence.cpp:140 ../src/effects/ToneGen.cpp:320
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
 #: ../src/effects/Wahwah.cpp:558 ../src/effects/ladspa/LadspaEffect.cpp:495
 #: ../src/effects/nyquist/Nyquist.cpp:730
 #: ../src/effects/nyquist/Nyquist.cpp:877 ../src/export/ExportMultiple.cpp:696
@@ -965,20 +951,17 @@ msgstr "Ezin da audioa %s(e)ra esportatu"
 
 #: ../src/effects/PopClick.cpp:63
 msgid "Cannot remove a pop or click at the very beginning of a track."
-msgstr ""
-"No se puede eliminar un \"pop\" o un \"click\" al principio de la pista."
+msgstr "Ezin da \"klaskarik\" edo \"txinpartarik\" kendu pistaren hasieran."
 
 #: ../src/effects/PopClick.cpp:58
 msgid "Cannot remove a pop or click longer than one second."
-msgstr "No se puede eliminar un \"pop\"o un \"click\" mayor que un segundo."
+msgstr "Ezin da segundo bat baino luzeagoa den txinpartik edo klaskarik kendu."
 
 #: ../src/widgets/ASlider.cpp:484
 msgid "Center"
 msgstr "Erdia"
 
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
 msgstr "Cepstrum"
@@ -1048,8 +1031,7 @@ msgid "Change upper speed limit (%) to:"
 msgstr "Aldatu goiko abiadura-muga (%) hona:"
 
 #: ../src/effects/AvcCompressor.cpp:398
-msgid ""
-"Change window size must be less than or equal to Adjustment window size."
+msgid "Change window size must be less than or equal to Adjustment window size."
 msgstr ""
 "Leiho-tamainaren aldaketak leiho-tamainaren doiketaren berdina edo handiagoa "
 "izan behar du."
@@ -1107,7 +1089,7 @@ msgstr "Aukeratu Audacity-k erabili beharreko hizkuntza:"
 
 #: ../src/TrackPanel.cpp:4453
 msgid "Choose a font for Label Tracks"
-msgstr "Seleccione un tipo de letra para las etiquetas de pista"
+msgstr "Aukeratu letra-tipoa pistaren etiketetan erabiltzeko"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:135
 msgid "Choose a location to place the temporary directory"
@@ -1131,17 +1113,16 @@ msgid "Clear"
 msgstr "Garbitu"
 
 #: ../src/effects/ClickRemoval.h:42
-#, fuzzy
 msgid "Click Removal..."
 msgstr "Kendu zarata..."
 
 #: ../src/effects/ClickRemoval.cpp:67
 msgid "Click and Pop Removal"
-msgstr ""
+msgstr "Zarata eta txinpartak kentzea"
 
 #: ../src/effects/ClickRemoval.cpp:317
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr ""
+msgstr "Zarata eta txinpartak kentzea, egilea Craig DeForest"
 
 #: ../src/TrackPanel.cpp:1616
 msgid "Click and drag to adjust relative size of stereo tracks."
@@ -1177,8 +1158,7 @@ msgstr "Egin klik eta arrastatu audioa hautatzeko"
 
 #: ../src/ControlToolBar.cpp:80
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
-msgstr ""
-"Egin klik zooma handitzeko, egin klik Maius tekla sakatuta zooma txikitzeko"
+msgstr "Egin klik zooma handitzeko, egin klik Maius tekla sakatuta zooma txikitzeko"
 
 #: ../src/TrackPanel.cpp:1513
 msgid ""
@@ -1189,7 +1169,7 @@ msgstr ""
 "txikitzeko, arrastatu zoomaren eskualde jakin bat sortzeko."
 
 #: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
-#: ../src/effects/NoiseRemoval.cpp:463 ../src/effects/ClickRemoval.cpp:371
+#: ../src/effects/ClickRemoval.cpp:371 ../src/effects/NoiseRemoval.cpp:463
 msgid "Close"
 msgstr "Itxi"
 
@@ -1206,9 +1186,7 @@ msgid "Command-line exporting is only supported on UNIX"
 msgstr "UNIXen bakarrik onartzen da komando-lerroak esportatzea"
 
 #. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
 #: ../src/AudacityApp.cpp:610 ../src/AudacityApp.cpp:680
-#, c-format
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -1328,7 +1306,7 @@ msgstr "Ktrl-Gurpila-Biratu"
 
 #: ../src/Menus.cpp:252
 msgid "Cu&t\tCtrl+X"
-msgstr "Eba&ki\tCtrl+X"
+msgstr "Eba&ki\tKtrl+X"
 
 #: ../src/FreqWindow.cpp:131
 msgid "Cuberoot Autocorrelation"
@@ -1391,16 +1369,14 @@ msgstr ""
 
 #: ../src/FormatSelection.cpp:387
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
 msgstr ""
 "Kurtsorea: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 f/s (%.3lf PAL "
 "fotograma)   %s"
 
 #: ../src/FormatSelection.cpp:309
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
 msgstr ""
 "Kurtsorea: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 f/s (%.3lf film-"
 "fotograma)   %s"
@@ -1422,7 +1398,7 @@ msgid ""
 "Samples]"
 msgstr ""
 "Kurtsorea: %i+%04i CDDA sektoreak+byteak (2352 byte sektoreko)   "
-"[Atxikilaginei]"
+"[Atxiki laginei]"
 
 #: ../src/FormatSelection.cpp:783
 #, c-format
@@ -1478,7 +1454,7 @@ msgstr "Ebaki eta jarri arbelean"
 
 #: ../src/Menus.cpp:264
 msgid "D&uplicate\tCtrl+D"
-msgstr "Bi&koiztu\tCtrl+D"
+msgstr "Bi&koiztu\tKtrl+D"
 
 #: ../src/effects/Phaser.cpp:476
 msgid "DRY"
@@ -1487,7 +1463,7 @@ msgstr "LEHORRA"
 #: ../src/effects/nyquist/Nyquist.cpp:733
 #: ../src/effects/nyquist/Nyquist.cpp:880
 msgid "Debug"
-msgstr ""
+msgstr "Arazketa"
 
 #: ../src/effects/Echo.cpp:211
 msgid "Decay factor:"
@@ -1502,7 +1478,6 @@ msgid "Default Sample Rate:"
 msgstr "Lagintze-maiztasun lehenetsia:"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:308
 msgid "Default endianness"
 msgstr "Endianness lehenetsia"
@@ -1632,11 +1607,11 @@ msgstr "Bikoiztu"
 msgid "Duplicated"
 msgstr "Bikoiztuta"
 
-#: ../src/effects/Compressor.cpp:42
+#: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
 msgstr "Tarte dinamikoaren konpresorea"
 
-#: ../src/effects/Compressor.cpp:428
+#: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "Tarte dinamikoaren konpresorea Dominic Mazzoni-ren eskutik"
 
@@ -1749,7 +1724,7 @@ msgid "Equalization..."
 msgstr "Ekualizatzea..."
 
 #: ../src/ControlToolBar.cpp:723 ../src/ControlToolBar.cpp:884
-#: ../src/effects/Effect.cpp:332 ../src/prefs/DirectoriesPrefs.cpp:204
+#: ../src/effects/Effect.cpp:331 ../src/prefs/DirectoriesPrefs.cpp:204
 msgid "Error"
 msgstr "Errorea"
 
@@ -1807,7 +1782,7 @@ msgstr ""
 "Errorea soinu-gailua irekitzean. Egiaztatu sarrerako gailuaren ezarpenak eta "
 "proiektuaren lagintze-maiztasuna."
 
-#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:330
+#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:329
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -1857,9 +1832,8 @@ msgid "Export As Ogg Vorbis..."
 msgstr "Esportatu Ogg Vorbis gisa..."
 
 #: ../src/Menus.cpp:164
-#, fuzzy
 msgid "Export As..."
-msgstr "Esportatu..."
+msgstr "Esportatu honela..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:159
 msgid "Export Keyboard Shortcuts As:"
@@ -1887,9 +1861,8 @@ msgid "Export Selection As Ogg Vorbis..."
 msgstr "Esportatu hautapena Ogg Vorbis gisa..."
 
 #: ../src/Menus.cpp:165
-#, fuzzy
 msgid "Export Selection As..."
-msgstr "Esportatu hautapena MP3 gisa..."
+msgstr "Esportatu hautapena honela..."
 
 #: ../src/FreqWindow.cpp:998
 msgid "Export Spectral Data As:"
@@ -1995,7 +1968,7 @@ msgstr "Fitxategi-formatuak"
 
 #: ../src/export/ExportMultiple.cpp:660
 msgid "File name prefix:"
-msgstr "Perfijo del nombre del archivo:"
+msgstr "Artxiboaren aurrizkia:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:190
 msgid "Find Library"
@@ -2007,11 +1980,11 @@ msgstr "Bilatu zeroak\tZ"
 
 #: ../src/export/ExportMultiple.cpp:629
 msgid "First file name:"
-msgstr "Primer nombre del archivo:"
+msgstr "Artxiboaren lehen izena:"
 
 #: ../src/Menus.cpp:355
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Doitu &bertikalki\tCtrl+Maius+F"
+msgstr "Doitu &bertikalki\tKtrl+Maius+F"
 
 #: ../src/EditToolBar.cpp:176
 msgid "Fit project in window"
@@ -2079,14 +2052,12 @@ msgid "Gain"
 msgstr "Irabazia"
 
 #: ../src/effects/Noise.cpp:35
-#, fuzzy
 msgid "Generate Noise"
-msgstr "Sortu tonua"
+msgstr "Sortu zarata"
 
 #: ../src/effects/Silence.cpp:31
-#, fuzzy
 msgid "Generate Silence"
-msgstr "Isiltasuna sortzen"
+msgstr "Sortu isiltasuna"
 
 #: ../src/effects/ToneGen.cpp:325
 msgid "Generate Tone"
@@ -2147,7 +2118,6 @@ msgid "Horizontal Stereo"
 msgstr "stereo horizontal"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: ../src/import/ImportRaw.cpp:378
 msgid "Hz"
 msgstr "Hz"
@@ -2177,13 +2147,10 @@ msgid ""
 "This project does not have multiple tracks or a Label Track, so you cannot "
 "export multiple files."
 msgstr ""
-"Si tiene ms de una pista de audio puede exportar cada pista en un archivo "
-"independiente,\n"
-"o si tiene una pista de etiquetas puede exportar a un fichero independiente "
-"por cada etiqueta.\n"
+"Audioko pista bat baino gehiago edukiz gero pista bakoitza fitxategi bereizietara esporta ditzakezu,\n"
+"edo pistaren etiketa edukiz gero etiketa bakoitzeko fitxategi bereizi berrietara esporta ditzakezu.\n"
 "\n"
-"Este proyecto no tiene pistas mltiples ni pista de etiquetsa, as que no "
-"puede exportar a archivos independientes."
+"Proiektu honek ez duenez hainbat pistarik edo pistaren etiketarik, ezin da hainbat fitxategi bereizietara esportatu."
 
 #: ../src/Project.cpp:2236 ../src/Project.cpp:2283
 #: ../src/import/ImportPCM.cpp:403 ../src/import/ImportPCM.cpp:488
@@ -2242,7 +2209,7 @@ msgstr "%s fitxategia inportatzen..."
 
 #: ../src/export/ExportMultiple.cpp:623
 msgid "Include audio before first label"
-msgstr "Incluir audio antes de la primera etiqueta"
+msgstr "Txertatu audioa lehen etiketaren aurretik"
 
 #: ../src/AboutDialog.cpp:150
 msgid "Information"
@@ -2258,7 +2225,7 @@ msgstr "Sarrerako bolumena"
 
 #: ../src/MeterToolBar.cpp:67
 msgid "Input level meter - click to monitor input"
-msgstr "Nivel de entrada- haga clic para visualizar la entrada"
+msgstr "Sarrerako maila - egin klik sarrera monitorizatzeko"
 
 #: ../src/prefs/PrefsDialog.cpp:89
 msgid "Interface"
@@ -2308,7 +2275,6 @@ msgid "Keyboard"
 msgstr "Teklatua"
 
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #: ../src/widgets/ASlider.cpp:329 ../src/widgets/Meter.cpp:165
 msgid "L"
 msgstr "L"
@@ -2399,15 +2365,14 @@ msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Ezkerra=Handitu, Eskuina=Txikitu, Erdia=Normala"
 
 #: ../src/effects/Silence.cpp:127 ../src/effects/ToneGen.cpp:306
-#, fuzzy
 msgid "Length (seconds)"
-msgstr "Luzera (segundo):   hemendik:"
+msgstr "Luzera (segundo)"
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
 msgstr "Luzera (segundo):   hemendik:"
 
-#: ../src/effects/NoiseRemoval.cpp:441 ../src/effects/ClickRemoval.cpp:349
+#: ../src/effects/ClickRemoval.cpp:349 ../src/effects/NoiseRemoval.cpp:441
 msgid "Less"
 msgstr "Gutxiago"
 
@@ -2449,7 +2414,6 @@ msgid "List of Files in basic text format"
 msgstr "Testu-formatu basikoko fitxategien zerrenda"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:302
 msgid "Little-endian"
 msgstr "Little-endian"
@@ -2589,7 +2553,7 @@ msgstr "Monoa"
 msgid "Mono, "
 msgstr "Monoa, "
 
-#: ../src/effects/NoiseRemoval.cpp:444 ../src/effects/ClickRemoval.cpp:352
+#: ../src/effects/ClickRemoval.cpp:352 ../src/effects/NoiseRemoval.cpp:444
 msgid "More"
 msgstr "Gehiago"
 
@@ -2651,13 +2615,11 @@ msgstr "Tresna anitzeko modua"
 
 #: ../src/TrackPanel.cpp:1541
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr ""
-"Tresna anitzeko modua: Cmd-, saguaren eta teklatuaren lehenespenetarako"
+msgstr "Tresna anitzeko modua: Cmd-, saguaren eta teklatuaren lehenespenetarako"
 
 #: ../src/TrackPanel.cpp:1543
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr ""
-"Tresna anitzeko modua: Ktrl-P saguaren eta teklatuaren lehenespenetarako"
+msgstr "Tresna anitzeko modua: Ktrl-P saguaren eta teklatuaren lehenespenetarako"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Mute"
@@ -2733,7 +2695,6 @@ msgid "Next Tool\tD"
 msgstr "Hurrengo tresna\tD"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
 msgstr "Endianness gabe"
@@ -2780,13 +2741,17 @@ msgstr "Normalizatu Dominic Mazzoni-ren eskutik"
 msgid "Normalize maximum amplitude to -3 dB"
 msgstr "Normalizatu gehienezko anplitudea -3 dBera"
 
+#: ../src/effects/Compressor.cpp:469
+msgid "Normalize to 0dB after compressing"
+msgstr "Normalizatu 0dB-ra konprimitu ondoren"
+
 #: ../src/effects/Normalize.h:34
 msgid "Normalize..."
 msgstr "Normalizatu..."
 
 #: ../src/effects/Normalize.h:38
 msgid "Normalizing..."
-msgstr "Normalizatzen..."
+msgstr "Normalizatzea..."
 
 #: ../src/export/ExportMP3.cpp:1335
 msgid "Not a valid or supported MP3 encoding library!"
@@ -2806,8 +2771,7 @@ msgstr "Ohar-pista"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr ""
-"Oharra: Cmd+Q sakatzean irten egingo da. Beste tekla guztiak baliozkoak dira."
+msgstr "Oharra: Cmd+Q sakatzean irten egingo da. Beste tekla guztiak baliozkoak dira."
 
 #: ../src/Menus.cpp:1655
 msgid "Nothing to redo"
@@ -2823,17 +2787,15 @@ msgstr "Errepikapen-kopurua: "
 
 #: ../src/export/ExportMultiple.cpp:655
 msgid "Numbering consecutively"
-msgstr "Numerando consecutivamente"
+msgstr "Jarraian zenbatzea"
 
 #: ../src/effects/nyquist/Nyquist.cpp:397
-#, fuzzy
 msgid "Nyquist"
-msgstr "Nyquist-en gonbita"
+msgstr "Nyquist"
 
 #: ../src/effects/nyquist/Nyquist.cpp:398
-#, fuzzy
 msgid "Nyquist Output: "
-msgstr "Nyquist-en gonbita"
+msgstr "Nyquist-en irteera:"
 
 #: ../src/effects/nyquist/Nyquist.cpp:281
 msgid "Nyquist Prompt"
@@ -2869,16 +2831,15 @@ msgstr "OGG esportazioa konfiguratzea"
 msgid "OGG Quality:"
 msgstr "OGG kalitatea:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721 ../src/effects/Amplify.cpp:187
+#: ../src/effects/AvcCompressor.cpp:716 ../src/effects/BassBoost.cpp:332
+#: ../src/effects/ChangePitch.cpp:393 ../src/effects/ChangeSpeed.cpp:379
+#: ../src/effects/ChangeTempo.cpp:284 ../src/effects/Compressor.cpp:484
+#: ../src/effects/Echo.cpp:242 ../src/effects/Equalization.cpp:731
+#: ../src/effects/Filter.cpp:482 ../src/effects/Normalize.cpp:258
+#: ../src/effects/Phaser.cpp:576 ../src/effects/Repeat.cpp:251
 #: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:187 ../src/effects/AvcCompressor.cpp:716
-#: ../src/effects/BassBoost.cpp:332 ../src/effects/ChangePitch.cpp:393
-#: ../src/effects/ChangeSpeed.cpp:379 ../src/effects/ChangeTempo.cpp:284
-#: ../src/effects/Compressor.cpp:479 ../src/effects/Echo.cpp:242
-#: ../src/effects/Equalization.cpp:731 ../src/effects/Filter.cpp:482
-#: ../src/effects/Normalize.cpp:258 ../src/effects/Phaser.cpp:576
-#: ../src/effects/Repeat.cpp:251 ../src/effects/Wahwah.cpp:563
-#: ../src/effects/ladspa/LadspaEffect.cpp:498
+#: ../src/effects/Wahwah.cpp:563 ../src/effects/ladspa/LadspaEffect.cpp:498
 #: ../src/effects/nyquist/Nyquist.cpp:736
 #: ../src/effects/nyquist/Nyquist.cpp:883
 #: ../src/effects/nyquist/Nyquist.cpp:949 ../src/prefs/FileFormatPrefs.cpp:471
@@ -2958,7 +2919,7 @@ msgstr "Irteerako metro-maila"
 
 #: ../src/export/ExportMultiple.cpp:677
 msgid "Overwrite existing files"
-msgstr "Sobreescribir archivos existentes"
+msgstr "Gainidatzi lehendik dauden fitxategiak"
 
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:32
@@ -2966,7 +2927,6 @@ msgid "PAL frames 25 fps"
 msgstr "PAL fotogramak 25 f/s"
 
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
 msgstr "PAL h:mm:ss:ff 25 f/s"
@@ -3097,7 +3057,7 @@ msgstr "Kendu zarata..."
 msgid "Predefined:"
 msgstr "Aurrez definituta:"
 
-#: ../src/effects/Effect.cpp:247 ../src/effects/Equalization.cpp:719
+#: ../src/effects/Effect.cpp:246 ../src/effects/Equalization.cpp:719
 #: ../src/effects/Phaser.cpp:566 ../src/effects/Wahwah.cpp:553
 msgid "Preview"
 msgstr "Aurrebista"
@@ -3156,7 +3116,6 @@ msgid "Quit Audacity upon closing last window"
 msgstr "Irten Audacity-tik azken leihoa ixtean"
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #: ../src/widgets/ASlider.cpp:332 ../src/widgets/Meter.cpp:167
 msgid "R"
 msgstr "R"
@@ -3165,22 +3124,21 @@ msgstr "R"
 msgid "Rate Change"
 msgstr "Abiadura-aldaketa"
 
-#: ../src/effects/Compressor.cpp:446
+#: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
 msgstr "Ratioa: "
 
-#: ../src/effects/Compressor.cpp:523
+#: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "Ratioa: %.0f:1"
 
-#: ../src/effects/Compressor.cpp:525
+#: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "Ratioa: %.1f:1"
 
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
 #: ../src/Project.cpp:2228
 msgid "Raw"
 msgstr "Formaturik gabe"
@@ -3199,7 +3157,7 @@ msgstr "Denbora errealeko lagintze-maiztasunaren bihurgailua:"
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr ""
+msgstr "Azken &fitxategiak..."
 
 #: ../src/ControlToolBar.cpp:469 ../src/Project.cpp:1707
 #: ../src/TrackPanel.cpp:1208
@@ -3267,9 +3225,8 @@ msgid "Remove any DC offset (center on 0 vertically)"
 msgstr "Kendu DC desplazamenduak (zentratu zeron bertikalki)"
 
 #: ../src/effects/ClickRemoval.cpp:363
-#, fuzzy
 msgid "Remove clicks"
-msgstr "Ke&ndu pistak"
+msgstr "Kendu klaska"
 
 #: ../src/Menus.cpp:3122
 msgid "Removed audio track(s)"
@@ -3282,12 +3239,11 @@ msgstr "Kendutako pista: '%s.'"
 
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
-msgstr "Zarata kentzen"
+msgstr "Klaskak kentzen"
 
 #: ../src/effects/ClickRemoval.h:46
-#, fuzzy
 msgid "Removing clicks and pops..."
-msgstr "Nahi ez den zarata kentzen"
+msgstr "Klaskak eta txinpartak kentzea..."
 
 #: ../src/effects/PopClick.h:33
 msgid "Removing unwanted noise"
@@ -3310,15 +3266,15 @@ msgstr "Errepikatu"
 #: ../src/Menus.cpp:1248
 #, c-format
 msgid "Repeat %s\tCtrl+R"
-msgstr "Errepikatu %s\tCtrl+R"
+msgstr "Errepikatu %s\tKtrl+R"
 
 #: ../src/Menus.cpp:468
 msgid "Repeat Last Effect\tCtrl+R"
-msgstr "Errepikatu azken efektua\tCtrl+R"
+msgstr "Errepikatu azken efektua\tKtrl+R"
 
 #: ../src/effects/Repeat.cpp:222
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
-msgstr "Errepikatu Dominic Mazzoni && Vaughan Johnson-en eskutik"
+msgstr "Errepikatu Dominic Mazzoni eta Vaughan Johnson-en eskutik"
 
 #: ../src/effects/Repeat.h:34
 msgid "Repeat..."
@@ -3494,11 +3450,11 @@ msgstr "Hautatu..."
 
 #: ../src/Menus.cpp:589
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr "Murriztu hautapena ezkerrera\tCtrl+Maius+Eskuina"
+msgstr "Murriztu hautapena ezkerrera\tKtrl+Maius+Eskuina"
 
 #: ../src/Menus.cpp:590
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr "Murriztu hautapena eskuinera\tCtrl+Maius+Ezkerra"
+msgstr "Murriztu hautapena eskuinera\tKtrl+Maius+Ezkerra"
 
 #: ../src/Menus.cpp:587
 msgid "Selection Extend Left\tShift+Left"
@@ -3597,13 +3553,11 @@ msgstr ""
 msgid ""
 "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %"
 "s"
-msgstr ""
-"Hautapena: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f h:min:s)   %s"
+msgstr "Hautapena: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f h:min:s)   %s"
 
 #: ../src/FormatSelection.cpp:787
 #, c-format
-msgid ""
-"Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
+msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
 msgstr ""
 "Hautapena: %i+%04i - %i+%04i (%i+%04i CDDA sektoreak+byteak)   [Atxiki "
 "laginei]"
@@ -3638,10 +3592,8 @@ msgstr "Hautapena: %i:%09.6f - %i:%09.6f (%i:%09.6f min:s)   %s"
 
 #: ../src/FormatSelection.cpp:676
 #, c-format
-msgid ""
-"Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
-msgstr ""
-"Hautapena: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:s)   [Atxiki laginei]"
+msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
+msgstr "Hautapena: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:s)   [Atxiki laginei]"
 
 #: ../src/FormatSelection.cpp:188
 #, c-format
@@ -3700,9 +3652,8 @@ msgid "Set range to '%d' - '%d'"
 msgstr "Ezarri bitartea: '%d' - '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:323
-#, fuzzy
 msgid "Settings"
-msgstr "Efektuaren ezarpenak"
+msgstr "Ezarpenak"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
@@ -3802,10 +3753,8 @@ msgstr ""
 "indibidualak bat ez badatoz."
 
 #: ../src/effects/nyquist/Nyquist.cpp:370
-msgid ""
-"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
-msgstr ""
-"Barkatu, ezin da efektua pista estereotan aplikatu pistak bat ez badatoz."
+msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgstr "Barkatu, ezin da efektua pista estereotan aplikatu pistak bat ez badatoz."
 
 #: ../src/export/Export.cpp:185
 msgid "Sorry, pathnames longer than 256 characters not supported."
@@ -3841,7 +3790,7 @@ msgstr "Zatitu etiketetan"
 
 #: ../src/export/ExportMultiple.cpp:612
 msgid "Split files based on:"
-msgstr "Unir archivos basados en:"
+msgstr "Zatitu fitxategiak (honakoan oinarrituak):"
 
 #: ../src/TrackPanel.cpp:4131
 #, c-format
@@ -3882,7 +3831,7 @@ msgstr "2. urratsa"
 
 #: ../src/TrackPanel.cpp:4087
 msgid "Stereo, "
-msgstr "Stereoa, "
+msgstr "Estereoa, "
 
 #: ../src/ControlToolBar.cpp:471
 msgid "Stop"
@@ -3895,7 +3844,7 @@ msgstr "Gelditu\tS"
 #: ../src/export/ExportMultiple.cpp:366 ../src/export/ExportMultiple.cpp:472
 #, c-format
 msgid "Successfully exported %d files."
-msgstr "Se han importado correctamente %d archivos."
+msgstr "%d fitxategi ongi inportatu dira."
 
 #: ../src/prefs/DirectoriesPrefs.cpp:52
 msgid "Temp. Directory"
@@ -3912,10 +3861,10 @@ msgid ""
 "To enable them again, open the Preferences dialog and click on the Interface "
 "tab."
 msgstr ""
-"El \"VU meters\" se va a deshabilitar. \n"
+"\"VU neurgailua\"desgaitu egingo da.\n"
 "\n"
-"Para habilitarlo de nuevo abra el cuadro de dilogo Preferencias y haga clic "
-"en la pestaa \"Interface\"."
+"Berriro gaitzeko, ireki Hobespenak elkarrizketa-koadroa eta egin klik "
+"\"Interfazea\" izeneko fitxan."
 
 #: ../src/Project.cpp:2304
 msgid ""
@@ -3925,6 +3874,11 @@ msgid ""
 "into an existing project.  To open a project file,\n"
 "select Open from the File menu.\n"
 msgstr ""
+"Hautatutako fitxategia Audacity Project motakoa da.\n"
+"\n"
+"Adio motako fitxategiak soilik inporta daiteke proiektu batera, \n"
+"proiektuetako fitxategiak ez dira inportatzen. Proiektu bateko \n"
+"fitxategia irekitzeko Fitxategia menutik hautatu Ireki\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
@@ -3947,8 +3901,7 @@ msgstr ""
 "prozesuan hainbat proiektu batera irekitzeko.\n"
 
 #: ../src/Menus.cpp:3041
-msgid ""
-"The version of Audacity you are using does not support multiple time tracks."
+msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
 "Erabiltzen ari zaren Audacity-ren bertsioak ez ditu denbora-pista bat baino "
 "gehiago onartzen."
@@ -3959,7 +3912,7 @@ msgstr "Ez dago etiketa-pistarik esportatzeko."
 
 #: ../src/Menus.cpp:1617
 msgid "There was a problem printing."
-msgstr "Hubo un problema imprimiendo."
+msgstr "Arazo bat gertatu da inprimatzean."
 
 #: ../src/AudioIO.cpp:166
 msgid "There was an error initializing the audio i/o layer.\n"
@@ -3972,6 +3925,9 @@ msgid ""
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"Fitxategia Audacity %s erabiliz gorde zen.\n"
+"Audacity %s erabiltzen ari zara. Fitxategi hau irekitzeko\n"
+"Audacity bertsio-berritu behar duzu."
 
 #: ../src/AboutDialog.cpp:108
 msgid ""
@@ -4000,11 +3956,11 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Audacity-ren bertsio hau ez da %s euskarriarekin konpilatu."
 
-#: ../src/effects/Compressor.cpp:439
+#: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
 msgstr "Atalasea: "
 
-#: ../src/effects/Compressor.cpp:520
+#: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "Atalasea: %d dB"
@@ -4275,8 +4231,6 @@ msgid "When importing uncompressed audio files into Audacity"
 msgstr "Konprimitu gabeko audio-fitxategiak Audacity-ra inportatzean"
 
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
@@ -4334,16 +4288,12 @@ msgstr ""
 "\n"
 
 #: ../src/export/Export.cpp:147
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr ""
-"Zure pistak kanal mono bakarrean nahasiko dira esportatutako fitxategian."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
+msgstr "Zure pistak kanal mono bakarrean nahasiko dira esportatutako fitxategian."
 
 #: ../src/export/Export.cpp:142
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr ""
-"Zure pistak bi kanal estereotan nahasiko dira esportatutako fitxategian."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
+msgstr "Zure pistak bi kanal estereotan nahasiko dira esportatutako fitxategian."
 
 #: ../src/prefs/MousePrefs.cpp:92 ../src/prefs/MousePrefs.cpp:93
 #: ../src/prefs/MousePrefs.cpp:94 ../src/prefs/MousePrefs.cpp:95
@@ -4352,15 +4302,15 @@ msgstr "Zooma"
 
 #: ../src/Menus.cpp:347
 msgid "Zoom &In\tCtrl+1"
-msgstr "Handiagotu &zooma\tCtrl+1"
+msgstr "Handiagotu &zooma\tKtrl+1"
 
 #: ../src/Menus.cpp:350
 msgid "Zoom &Normal\tCtrl+2"
-msgstr "Zoom &normala\tCtrl+2"
+msgstr "Zoom &normala\tKtrl+2"
 
 #: ../src/Menus.cpp:351
 msgid "Zoom &Out\tCtrl+3"
-msgstr "Txikiagotu zoo&ma\tCtrl+3"
+msgstr "Txikiagotu zoo&ma\tKtrl+3"
 
 #: ../src/EditToolBar.cpp:164
 msgid "Zoom In"
@@ -4410,30 +4360,28 @@ msgstr "['Atxiki honi' aktibatuta]"
 
 #: ../src/effects/Echo.cpp:182
 msgid "by Dominic Mazzoni && Vaughan Johnson"
-msgstr "Dominic Mazzoni && Vaughan Johnson-en eskutik"
+msgstr "Dominic Mazzoni eta Vaughan Johnson-en eskutik"
 
 #: ../src/effects/ChangePitch.cpp:247 ../src/effects/ChangeSpeed.cpp:287
 #: ../src/effects/ChangeTempo.cpp:164
 msgid "by Vaughan Johnson && Dominic Mazzoni"
-msgstr "Vaughan Johnson && Dominic Mazzoni-ren eskutik"
+msgstr "Vaughan Johnson eta Dominic Mazzoni-ren eskutik"
 
 #: ../src/import/ImportRaw.cpp:354
 msgid "bytes"
 msgstr "byteak"
 
 #. i18n-hint: fps is "frames per second",
-#. cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
 msgstr "CDDA min:s:fotogramaak 75 f/s"
 
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
-#. A "sector" is a technical term - don't translate unless you're sure
-#. you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
 msgstr "CDDA sektoreak+byteak (atxiki laginei)"
 
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
 #: ../src/widgets/Meter.cpp:293
 msgid "dB"
 msgstr "dB"
@@ -4448,7 +4396,6 @@ msgid "film frames 24 fps"
 msgstr "film-fotogramak 24 f/s"
 
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
 msgstr "film h:mm:ss:ff 24 f/s"
@@ -4478,9 +4425,6 @@ msgid "min:sec+samples (snap to samples)"
 msgstr "min:s+laginak (atxiki laginei)"
 
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: ../src/effects/ChangeSpeed.cpp:338
 msgid "n/a"
 msgstr "e/e"
@@ -4532,16 +4476,13 @@ msgid "to Track Start"
 msgstr "pistaren hasierara"
 
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
 #: ../src/AboutDialog.cpp:127 ../src/AboutDialog.cpp:129
 msgid "translator_credits"
 msgstr ""
 "Hizkuntza Politikarako Sailburuordetza\n"
-"(<hizkpol@ej-gv.es>)"
+"(<hizkpol@ej-gv.es>)\n"
+"Iñaki Larrañaga Murgoitio\n"
+"<dooteo@euskalgnu.org>"
 
 #: ../src/TrackPanel.cpp:4387 ../src/effects/ChangePitch.cpp:277
 msgid "up"
@@ -4555,8 +4496,3 @@ msgstr "SampleRate erabiliz (Erik de Castro Lopo)"
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "SoundTouch erabiliz (Olli Parviainen)"
 
-#~ msgid "&Online Help..."
-#~ msgstr "&Lineako laguntza..."
-
-#~ msgid "Mix Output"
-#~ msgstr "Nahasi irteera"
