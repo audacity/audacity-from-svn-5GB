@@ -243,14 +243,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    // On the Mac, the Preferences item doesn't actually go here...wxMac will pull it out
    // and put it in the Audacity menu for us based on its ID.
-  #ifdef __WXMAC__
-   /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
-  #else
-   /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
-   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
-   c->AddSeparator();
-  #endif
+   // Moved Preferences to Edit Menu 02/09/05 Richard Ash.
 
    #ifndef __WXMAC__
    CreateRecentFilesMenu(c);
@@ -388,6 +381,17 @@ void AudacityProject::CreateMenusAndCommands()
    wxString dummy3 = _("Turn Grid Snap On");
    wxString dummy4 = _("Turn Grid Snap Off");
 
+   // Moved Preferences from File Menu 02/09/05 Richard Ash.
+  #ifdef __WXMAC__
+   /* i18n-hint: Mac OS X Preferences shortcut should be Ctrl+, */
+   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+,"),        FN(OnPreferences));
+  #else
+   /* i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P */
+   c->AddSeparator();
+   c->AddItem(wxT("Preferences"),    _("&Preferences...\tCtrl+P"),        FN(OnPreferences));
+  #endif
+   c->SetCommandFlags(wxT("Preferences"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+
    c->EndMenu();
 
    //
@@ -418,10 +422,6 @@ void AudacityProject::CreateMenusAndCommands()
 //
 //   c->AddSeparator();
    c->AddItem(wxT("UndoHistory"),    _("&History..."),               FN(OnHistory));
-   c->AddItem(wxT("PlotSpectrum"),   _("&Plot Spectrum..."),                 FN(OnPlotSpectrum));
-   c->SetCommandFlags(wxT("PlotSpectrum"),
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
-                      AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
    c->AddSeparator();
    c->AddItem(wxT("FloatMeterTB"),   _("Float Meter Toolbar"),            FN(OnFloatMeterToolBar));
    c->SetCommandFlags(wxT("FloatMeterTB"), AudioIONotBusyFlag, AudioIONotBusyFlag);
@@ -561,6 +561,11 @@ void AudacityProject::CreateMenusAndCommands()
       delete effects;
       c->EndMenu();
       c->BeginMenu(_("&Analyze"));
+ 	   /* plot spectrum moved from view */
+      c->AddItem(wxT("PlotSpectrum"), _("&Plot Spectrum..."), FN(OnPlotSpectrum));
+      c->SetCommandFlags(wxT("PlotSpectrum"),
+                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag,
+                           AudioIONotBusyFlag | WaveTracksSelectedFlag | TimeSelectedFlag);
       
       effects = Effect::GetEffects(ANALYZE_EFFECT | BUILTIN_EFFECT);
       if(effects->GetCount()){
