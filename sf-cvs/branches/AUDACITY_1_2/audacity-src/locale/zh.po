@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Simplified Chinese Translation Project for Audacity "
-"v1.2.3\n"
+"v1.2.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-14 09:03+0200\n"
-"PO-Revision-Date: 2005-01-04 15:00+0800\n"
+"POT-Creation-Date: 2005-10-21 01:19-0700\n"
+"PO-Revision-Date: 2005-11-04 17:55+0800\n"
 "Last-Translator: Liu Xiaoxi <liouxiao@hotmail.com>\n"
 "Language-Team: Simplified Chinese Translation Team. <liouxiao@hotmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,17 @@ msgid ""
 " \n"
 "Select threshold (lower is more sensitive)"
 msgstr ""
+"\n"
+" \n"
+"选择阈值(越低越灵敏)"
 
 #: ../src/effects/ClickRemoval.cpp:333
 msgid ""
 "\n"
 "Max spike width (higher is more sensitive)"
 msgstr ""
+"\n"
+"最大峰值宽度(越高越灵敏)"
 
 #: ../src/widgets/AButton.cpp:181
 msgid " (disabled)"
@@ -66,6 +71,9 @@ msgid ""
 "\n"
 "It has been removed from the history list."
 msgstr ""
+"%s不存在，无法打开。\n"
+"\n"
+"将从历史列表中去除。"
 
 #: ../src/AudacityApp.cpp:304 ../src/Project.cpp:1770
 #, c-format
@@ -97,9 +105,8 @@ msgid "&Close\tCtrl+W"
 msgstr "关闭(&C)\tCtrl+W"
 
 #: ../src/Menus.cpp:526
-#, fuzzy
 msgid "&Contents..."
-msgstr "单音调..."
+msgstr "内容(&C)..."
 
 #: ../src/Menus.cpp:253
 msgid "&Copy\tCtrl+C"
@@ -443,9 +450,8 @@ msgstr ""
 "au|MP3文件(*.mp3)|*.mp3|Ogg Vorbis文件(*.ogg)|*.ogg|文件列表(*.lof)|*.lof"
 
 #: ../src/effects/Amplify.cpp:164
-#, fuzzy
 msgid "Allow clipping"
-msgstr "不允许剪辑"
+msgstr "允许剪辑"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
@@ -548,26 +554,23 @@ msgstr ""
 "频率偏移 = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:33
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, "
 "%.6lf seconds"
-msgstr "应用效果: 产生 %s %s 波形, 频率 = %.2f Hz, 振幅 = %.2f"
+msgstr ""
+"应用效果: 产生 %s %s 波形, 频率 = %.2f Hz, 振幅 = %.2f, "
+"%.6lf 秒"
 
 #: ../src/effects/Silence.h:42
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "应用效果: 生成静音"
+msgstr "应用效果: 生成静音, %.6lf 秒"
 
 #: ../src/effects/Noise.h:31
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate White Noise, %.6lf seconds"
-msgstr "应用效果: 生成白噪声"
-
-#: ../src/effects/Compressor.cpp:464
-#, fuzzy
-msgid "Apply Normalization (to 0dB) after compressing"
-msgstr "压缩后应用增益"
+msgstr "应用效果: 生成白噪声, %.6lf 秒"
 
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
@@ -839,17 +842,14 @@ msgid "Autoscroll while playing"
 msgstr "在播放中自动翻卷"
 
 #: ../src/effects/BassBoost.cpp:69
-#, fuzzy
 msgid "Bass Boost"
 msgstr "低音增强"
 
 #: ../src/effects/BassBoost.cpp:279
-#, fuzzy
 msgid "Bass Boost by Nasca Octavian Paul"
 msgstr "低音增强(Nasca Octavian Paul提供)"
 
 #: ../src/effects/BassBoost.h:44
-#, fuzzy
 msgid "Bass Boost..."
 msgstr "低音增强..."
 
@@ -896,28 +896,26 @@ msgid "Can't export multiple files"
 msgstr "无法导出多个文件"
 
 #: ../src/Project.cpp:2308 ../src/Project.cpp:2311
-#, fuzzy
 msgid "Can't import project file"
-msgstr "无法导出多个文件"
+msgstr "无法导入档案文件"
 
 #: ../src/Project.cpp:1991
-#, fuzzy
 msgid "Can't open project file"
-msgstr "不能打开档案文件。"
+msgstr "不能打开档案文件"
 
 #: ../src/effects/VST/VSTEffect.cpp:196
 msgid "Can't process replacing"
 msgstr "不能进行替换操作"
 
-#: ../src/Tags.cpp:716 ../src/effects/VST/VSTEffect.cpp:95
-#: ../src/effects/VST/VSTEffect.cpp:453 ../src/effects/Amplify.cpp:182
+#: ../src/Tags.cpp:716 ../src/effects/Amplify.cpp:182
 #: ../src/effects/AvcCompressor.cpp:710 ../src/effects/BassBoost.cpp:327
 #: ../src/effects/ChangePitch.cpp:389 ../src/effects/ChangeSpeed.cpp:375
-#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:476
+#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:481
 #: ../src/effects/Echo.cpp:238 ../src/effects/Equalization.cpp:726
 #: ../src/effects/Filter.cpp:479 ../src/effects/Normalize.cpp:255
 #: ../src/effects/Phaser.cpp:571 ../src/effects/Repeat.cpp:248
 #: ../src/effects/Silence.cpp:140 ../src/effects/ToneGen.cpp:320
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
 #: ../src/effects/Wahwah.cpp:558 ../src/effects/ladspa/LadspaEffect.cpp:495
 #: ../src/effects/nyquist/Nyquist.cpp:730
 #: ../src/effects/nyquist/Nyquist.cpp:877 ../src/export/ExportMultiple.cpp:696
@@ -1098,17 +1096,16 @@ msgid "Clear"
 msgstr "清除"
 
 #: ../src/effects/ClickRemoval.h:42
-#, fuzzy
 msgid "Click Removal..."
-msgstr "消除噼啪声或嘀哒声..."
+msgstr "消除嘀哒声..."
 
 #: ../src/effects/ClickRemoval.cpp:67
 msgid "Click and Pop Removal"
-msgstr ""
+msgstr "嘀哒声及噼啪声消除"
 
 #: ../src/effects/ClickRemoval.cpp:317
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr ""
+msgstr "嘀哒声及噼啪声消除(由Craig DeForest提供)"
 
 #: ../src/TrackPanel.cpp:1616
 msgid "Click and drag to adjust relative size of stereo tracks."
@@ -1153,7 +1150,7 @@ msgid ""
 msgstr "单击在垂直方向放大，按住Shift键单击缩小，拖曳创建一个特定的缩放区域。"
 
 #: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
-#: ../src/effects/NoiseRemoval.cpp:463 ../src/effects/ClickRemoval.cpp:371
+#: ../src/effects/ClickRemoval.cpp:371 ../src/effects/NoiseRemoval.cpp:463
 msgid "Close"
 msgstr "关闭"
 
@@ -1585,11 +1582,11 @@ msgstr "复制"
 msgid "Duplicated"
 msgstr "已复制"
 
-#: ../src/effects/Compressor.cpp:42
+#: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
 msgstr "动态范围压缩器"
 
-#: ../src/effects/Compressor.cpp:428
+#: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "动态范围压缩器(Dominic Mazzoni提供)"
 
@@ -1758,7 +1755,7 @@ msgid ""
 "the project sample rate."
 msgstr "打开声音设备出错。请检查输入设备的设置及采样率。"
 
-#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:330
+#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:329
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -2024,12 +2021,10 @@ msgid "Gain"
 msgstr "增益"
 
 #: ../src/effects/Noise.cpp:35
-#, fuzzy
 msgid "Generate Noise"
-msgstr "生成单音调"
+msgstr "生成噪声"
 
 #: ../src/effects/Silence.cpp:31
-#, fuzzy
 msgid "Generate Silence"
 msgstr "产生静音"
 
@@ -2339,15 +2334,14 @@ msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "鼠标左键=放大, 右键=缩小, 中键=正常"
 
 #: ../src/effects/Silence.cpp:127 ../src/effects/ToneGen.cpp:306
-#, fuzzy
 msgid "Length (seconds)"
-msgstr "长度 (秒):  从"
+msgstr "长度 (秒)"
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
 msgstr "长度 (秒):  从"
 
-#: ../src/effects/NoiseRemoval.cpp:441 ../src/effects/ClickRemoval.cpp:349
+#: ../src/effects/ClickRemoval.cpp:349 ../src/effects/NoiseRemoval.cpp:441
 msgid "Less"
 msgstr "以下"
 
@@ -2525,7 +2519,7 @@ msgstr "单声道"
 msgid "Mono, "
 msgstr "单声道,"
 
-#: ../src/effects/NoiseRemoval.cpp:444 ../src/effects/ClickRemoval.cpp:352
+#: ../src/effects/ClickRemoval.cpp:352 ../src/effects/NoiseRemoval.cpp:444
 msgid "More"
 msgstr "更多"
 
@@ -2714,6 +2708,10 @@ msgstr "归一化(Dominic Mazzoni提供)"
 msgid "Normalize maximum amplitude to -3 dB"
 msgstr "最大振幅归一化至-3 dB。"
 
+#: ../src/effects/Compressor.cpp:469
+msgid "Normalize to 0dB after compressing"
+msgstr "压缩后归一化至0dB"
+
 #: ../src/effects/Normalize.h:34
 msgid "Normalize..."
 msgstr "归一化..."
@@ -2800,16 +2798,15 @@ msgstr "OGG导出设置"
 msgid "OGG Quality:"
 msgstr "OGG的质量:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721 ../src/effects/Amplify.cpp:187
+#: ../src/effects/AvcCompressor.cpp:716 ../src/effects/BassBoost.cpp:332
+#: ../src/effects/ChangePitch.cpp:393 ../src/effects/ChangeSpeed.cpp:379
+#: ../src/effects/ChangeTempo.cpp:284 ../src/effects/Compressor.cpp:484
+#: ../src/effects/Echo.cpp:242 ../src/effects/Equalization.cpp:731
+#: ../src/effects/Filter.cpp:482 ../src/effects/Normalize.cpp:258
+#: ../src/effects/Phaser.cpp:576 ../src/effects/Repeat.cpp:251
 #: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:187 ../src/effects/AvcCompressor.cpp:716
-#: ../src/effects/BassBoost.cpp:332 ../src/effects/ChangePitch.cpp:393
-#: ../src/effects/ChangeSpeed.cpp:379 ../src/effects/ChangeTempo.cpp:284
-#: ../src/effects/Compressor.cpp:479 ../src/effects/Echo.cpp:242
-#: ../src/effects/Equalization.cpp:731 ../src/effects/Filter.cpp:482
-#: ../src/effects/Normalize.cpp:258 ../src/effects/Phaser.cpp:576
-#: ../src/effects/Repeat.cpp:251 ../src/effects/Wahwah.cpp:563
-#: ../src/effects/ladspa/LadspaEffect.cpp:498
+#: ../src/effects/Wahwah.cpp:563 ../src/effects/ladspa/LadspaEffect.cpp:498
 #: ../src/effects/nyquist/Nyquist.cpp:736
 #: ../src/effects/nyquist/Nyquist.cpp:883
 #: ../src/effects/nyquist/Nyquist.cpp:949 ../src/prefs/FileFormatPrefs.cpp:471
@@ -3025,7 +3022,7 @@ msgstr "消除噼啪声或嘀哒声..."
 msgid "Predefined:"
 msgstr "预设定:"
 
-#: ../src/effects/Effect.cpp:247 ../src/effects/Equalization.cpp:719
+#: ../src/effects/Effect.cpp:246 ../src/effects/Equalization.cpp:719
 #: ../src/effects/Phaser.cpp:566 ../src/effects/Wahwah.cpp:553
 msgid "Preview"
 msgstr "试听"
@@ -3093,16 +3090,16 @@ msgstr "右"
 msgid "Rate Change"
 msgstr "改变采样率"
 
-#: ../src/effects/Compressor.cpp:446
+#: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
 msgstr "比率:"
 
-#: ../src/effects/Compressor.cpp:523
+#: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "比率: %.0f:1"
 
-#: ../src/effects/Compressor.cpp:525
+#: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "比率: %.1f:1"
@@ -3127,7 +3124,7 @@ msgstr "实时采样率转换器:"
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr ""
+msgstr "最近的文件(&F)..."
 
 #: ../src/ControlToolBar.cpp:469 ../src/Project.cpp:1707
 #: ../src/TrackPanel.cpp:1208
@@ -3184,7 +3181,7 @@ msgstr "删除轨道(&v)"
 
 #: ../src/effects/NoiseRemoval.cpp:455
 msgid "Remove Noise"
-msgstr "消除噪音"
+msgstr "消除噪声"
 
 #: ../src/Menus.cpp:3122
 msgid "Remove Track"
@@ -3195,9 +3192,8 @@ msgid "Remove any DC offset (center on 0 vertically)"
 msgstr "消除直流偏移(垂直以0为中心)"
 
 #: ../src/effects/ClickRemoval.cpp:363
-#, fuzzy
 msgid "Remove clicks"
-msgstr "删除轨道(&v)"
+msgstr "消除嘀哒声"
 
 #: ../src/Menus.cpp:3122
 msgid "Removed audio track(s)"
@@ -3210,16 +3206,15 @@ msgstr "删除音轨'%s'"
 
 #: ../src/effects/NoiseRemoval.h:45
 msgid "Removing Noise"
-msgstr "消除噪音"
+msgstr "消除噪声"
 
 #: ../src/effects/ClickRemoval.h:46
-#, fuzzy
 msgid "Removing clicks and pops..."
-msgstr "消除不希望出现的噪音"
+msgstr "消除嘀哒声和噼啪声..."
 
 #: ../src/effects/PopClick.h:33
 msgid "Removing unwanted noise"
-msgstr "消除不希望出现的噪音"
+msgstr "消除不希望出现的噪声"
 
 #: ../src/TrackPanel.cpp:4420
 #, c-format
@@ -3402,7 +3397,7 @@ msgid ""
 msgstr ""
 "将需要过滤的音频全部选定，\n"
 "再选择噪声滤除的程度，\n"
-"然后点击\"消除噪音\"\n"
+"然后点击\"消除噪声\"\n"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:188
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
@@ -3623,9 +3618,8 @@ msgid "Set range to '%d' - '%d'"
 msgstr "将范围设定为 '%d' - '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:323
-#, fuzzy
 msgid "Settings"
-msgstr "效果设定"
+msgstr "设定"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
@@ -3838,10 +3832,14 @@ msgid ""
 "into an existing project.  To open a project file,\n"
 "select Open from the File menu.\n"
 msgstr ""
+"您所选择的文件为Audacity档案文件。\n"
+"\n"
+"只有音频文件可以被导入档案中。如需要打开档案文件，\n"
+"请使用“文件”菜单里的“打开”项。\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
-msgstr "最大频率值必须是整数。"
+msgstr "最大频率值必须是整数"
 
 #: ../src/AudacityApp.cpp:841
 msgid ""
@@ -3883,6 +3881,9 @@ msgid ""
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"此文件使用Audacity %s保存。\n"
+"您目前使用的是Audacity %s - 需要升级至\n"
+"新版本才能打开该文件。"
 
 #: ../src/AboutDialog.cpp:108
 msgid ""
@@ -3910,11 +3911,11 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "此版本的Audacity在编译时没有附带针对%s的支持。"
 
-#: ../src/effects/Compressor.cpp:439
+#: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
 msgstr "阈值:"
 
-#: ../src/effects/Compressor.cpp:520
+#: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "阈值: %d dB"
@@ -4333,6 +4334,7 @@ msgstr "cdda 分:秒:帧 75 fps"
 msgid "cdda sectors+bytes (snap to samples)"
 msgstr "cdda 扇区+字节 (吸附到采样点)"
 
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
 #: ../src/widgets/Meter.cpp:293
 msgid "dB"
 msgstr "dB"
@@ -4474,3 +4476,9 @@ msgstr "使用SoundTouch(Olli Parviainen提供)"
 
 #~ msgid "Float Window"
 #~ msgstr "浮动窗口"
+
+#: ../src/effects/Compressor.cpp:464
+#~ msgid "Apply Normalization (to 0dB) after compressing"
+#~ msgstr "压缩后应用归一化(至0dB)"
+
+
