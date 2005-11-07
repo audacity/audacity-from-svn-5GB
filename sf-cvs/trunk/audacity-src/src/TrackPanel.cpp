@@ -4776,14 +4776,22 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
 
 void TrackPanel::DrawShadow(Track * /* t */ , wxDC * dc, const wxRect r)
 {
-   // shadow
-   AColor::Dark(dc, true);
+   AColor::Dark(dc, false);
    // bottom
-   dc->DrawLine(r.x + 1, r.y + r.height - 1, r.x + r.width,
-                r.y + r.height - 1);
+   dc->DrawLine(r.x + 0, r.y + r.height - 1,
+                r.x + 1, r.y + r.height - 1);
    // right
-   dc->DrawLine(r.x + r.width - 1, r.y + 1, r.x + r.width - 1,
-                r.y + r.height);
+   dc->DrawLine(r.x + r.width - 1, r.y + 0,
+                r.x + r.width - 1, r.y + 1);   
+
+   // shadow
+   dc->SetPen(*wxBLACK_PEN);
+   // bottom
+   dc->DrawLine(r.x + 1,       r.y + r.height - 1,
+                r.x + r.width, r.y + r.height - 1);
+   // right
+   dc->DrawLine(r.x + r.width - 1, r.y + 1,
+                r.x + r.width - 1, r.y + r.height);
 }
 
 /// AS: Returns the string to be displayed in the track label
