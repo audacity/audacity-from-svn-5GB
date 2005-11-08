@@ -93,6 +93,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["ar"] = "Arabic";
    localLanguageName["bg"] = "Balgarski";
    localLanguageName["ca"] = "Catalan";
+   localLanguageName["cs"] = "Czech";
    localLanguageName["da"] = "Dansk";
    localLanguageName["de"] = "Deutsch";
    localLanguageName["el"] = "Ellinika";
@@ -104,6 +105,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["ga"] = "Gaeilge";
    localLanguageName["it"] = "Italiano";
    localLanguageName["ja"] = "Nihongo";
+   localLanguageName["lt"] = "Lithuanian";
    localLanguageName["hu"] = "Magyar";
    localLanguageName["mk"] = "Makedonski";
    localLanguageName["nl"] = "Nederlands";
@@ -115,7 +117,8 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["sv"] = "Svenska";
    localLanguageName["uk"] = "Ukrainska";
    localLanguageName["zh"] = "Chinese (Simplified)";
-   localLanguageName["zh"] = "Chinese (Traditional)";
+   localLanguageName["zh_TW"] = "Chinese (Taiwan)";
+   localLanguageName["zh-TW"] = "Chinese (Taiwan)";
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxGetApp().AddUniquePathToPathList(wxString::Format("%s/share/locale",
