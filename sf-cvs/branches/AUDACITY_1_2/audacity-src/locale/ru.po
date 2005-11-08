@@ -1,23 +1,25 @@
-# translation of new_ru.po to 
+# translation of new_ru.po to
 # translation of new_ru.po to Russian
 # translation of ru.po to Russian
 # Russian translation of Audacity 1.1.
-# Copyright (C) 2002,2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2002,2003, 2004, 2005 Free Software Foundation, Inc.
 # Alexandre Prokoudine <avp@altlinux.ru>, 2002.#: ../src/ToolBar.cpp:419.
 # Alexandre Prokoudine <avp@altlinux.ru>, 2003, 2004.
 # Alexandre Prokoudine <techwriter@land.ru>, 2004.
+# Alexandre Prokoudine <alexandre.prokoudine@gmail.com>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: new_ru\n"
+"Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-14 09:03+0200\n"
-"PO-Revision-Date: 2004-08-13 03:03+0400\n"
-"Last-Translator: Alexandre Prokoudine <techwriter@land.ru>\n"
+"POT-Creation-Date: 2005-10-21 01:19-0700\n"
+"PO-Revision-Date: 2005-11-01 11:46+0300\n"
+"Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=KOI8-R\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.10.2\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/effects/ClickRemoval.cpp:326
 msgid ""
@@ -25,12 +27,17 @@ msgid ""
 " \n"
 "Select threshold (lower is more sensitive)"
 msgstr ""
+"\n"
+" \n"
+"ВЫберите порог (чем ниже, тем чувствительнее)"
 
 #: ../src/effects/ClickRemoval.cpp:333
 msgid ""
 "\n"
 "Max spike width (higher is more sensitive)"
 msgstr ""
+"\n"
+"Макс. ширина зубца (чем больше, тем чувствительнее)"
 
 #: ../src/widgets/AButton.cpp:181
 msgid " (disabled)"
@@ -48,7 +55,6 @@ msgstr ""
 "формат которого понятен Audacity."
 
 #. i18n-hint: This refers to a "window function", used in the
-#. Frequency analyze dialog box.
 #: ../src/FreqWindow.cpp:167
 msgid " window"
 msgstr " window"
@@ -75,6 +81,9 @@ msgid ""
 "\n"
 "It has been removed from the history list."
 msgstr ""
+"%s не существует и не может быть открыт.\n"
+"\n"
+"Этот файл удалён из списка открывавшихся ранее."
 
 #: ../src/AudacityApp.cpp:304 ../src/Project.cpp:1770
 #, c-format
@@ -82,8 +91,6 @@ msgid "%s is already open in another window."
 msgstr "%s уже открыт в другом окне."
 
 #. i18n-hint: This is the pattern for filenames that are created
-#. when a file needs to be backed up to a different name.  For
-#. example, mysong would become mysong-old1, mysong-old2, etc.
 #: ../src/DirManager.cpp:627
 #, c-format
 msgid "%s-old%d"
@@ -106,9 +113,8 @@ msgid "&Close\tCtrl+W"
 msgstr "&Закрыть\tCtrl+W"
 
 #: ../src/Menus.cpp:526
-#, fuzzy
 msgid "&Contents..."
-msgstr "Создать волну..."
+msgstr "&Содержание..."
 
 #: ../src/Menus.cpp:253
 msgid "&Copy\tCtrl+C"
@@ -439,8 +445,7 @@ msgstr ""
 "ogg|Список файлов (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2676
-msgid ""
-"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Все файлы (*.*)|*.*| Файлы в формате MIDI (*.mid)|*.mid| Файлы в формате "
 "Allegro (*.gro)|*.gro"
@@ -456,9 +461,8 @@ msgstr ""
 "Список файлов (*.lof)|*.lof"
 
 #: ../src/effects/Amplify.cpp:164
-#, fuzzy
 msgid "Allow clipping"
-msgstr "Не разрешать срезание сигнала"
+msgstr "Разрешить срезание сигнала"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
@@ -561,28 +565,23 @@ msgstr ""
 "%.0f%%, резонанс = %.1f, смещение частоты = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:33
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, "
 "%.6lf seconds"
 msgstr ""
-"Применён эффект: Создать волну формы \"%s %s\" с частотой %.2f Гц и "
-"амплитудой %.2f"
+"Применён эффект: создать %s %s волну, частота = %.2f Гц, амплитуда = %.2f, "
+"%.6lf секунд"
 
 #: ../src/effects/Silence.h:42
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "Применён эффект: Создать тишину"
+msgstr "Применён эффект: создать тишину, %.6lf секунд"
 
 #: ../src/effects/Noise.h:31
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate White Noise, %.6lf seconds"
-msgstr "Применён эффект: Создать белый шум"
-
-#: ../src/effects/Compressor.cpp:464
-#, fuzzy
-msgid "Apply Normalization (to 0dB) after compressing"
-msgstr "Применить громкость после компрессии"
+msgstr "Применён эффект: создать белый шум, %.6lf секунд"
 
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
@@ -612,11 +611,11 @@ msgstr "Исполнитель"
 msgid "Artist:"
 msgstr "Исполнитель:"
 
-#: ../src/effects/Compressor.cpp:453
+#: ../src/effects/Compressor.cpp:458
 msgid "Attack Time: "
 msgstr "Время атаки: "
 
-#: ../src/effects/Compressor.cpp:527
+#: ../src/effects/Compressor.cpp:532
 #, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Время атаки: %.1f сек"
@@ -670,9 +669,6 @@ msgstr ""
 "Если это несжатый файл, попробуйте импортировать его как raw-файл."
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
-#. message must be <= 255 characters.  Be brief.
-#. i18n-hint: This message is used on Mac OS 9.  This particular
-#. message must be <= 255 characters.  Be brief.
 #: ../src/export/ExportMP3.cpp:560 ../src/export/ExportMP3.cpp:874
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
@@ -870,19 +866,16 @@ msgid "Autoscroll while playing"
 msgstr "Автопрокрутка при воспроизведении"
 
 #: ../src/effects/BassBoost.cpp:69
-#, fuzzy
 msgid "Bass Boost"
-msgstr "Усиление басовых частот..."
+msgstr "Усиление басовых частот"
 
 #: ../src/effects/BassBoost.cpp:279
-#, fuzzy
 msgid "Bass Boost by Nasca Octavian Paul"
-msgstr "Усиление басовых частот - Наска Октавиан Пол"
+msgstr "Усиление басовых частот - Nasca Octavian Paul"
 
 #: ../src/effects/BassBoost.h:44
-#, fuzzy
 msgid "Bass Boost..."
-msgstr "Усиление басовых частот..."
+msgstr "Усилить басовые частоты..."
 
 #: ../src/effects/ChangeTempo.cpp:211
 msgid "Beats per Minute (BPM):   from"
@@ -893,7 +886,6 @@ msgid "Benchmark"
 msgstr "Тест производительности"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
 msgstr "\"Тупоконечник\""
@@ -927,12 +919,10 @@ msgid "Can't export multiple files"
 msgstr "Невозможно экспортировать раздельные файлы"
 
 #: ../src/Project.cpp:2308 ../src/Project.cpp:2311
-#, fuzzy
 msgid "Can't import project file"
-msgstr "Невозможно экспортировать раздельные файлы"
+msgstr "Невозможно импортировать файл проекта"
 
 #: ../src/Project.cpp:1991
-#, fuzzy
 msgid "Can't open project file"
 msgstr "Невозможно открыть файл проекта"
 
@@ -940,15 +930,15 @@ msgstr "Невозможно открыть файл проекта"
 msgid "Can't process replacing"
 msgstr "Не удаётся произвести замену"
 
-#: ../src/Tags.cpp:716 ../src/effects/VST/VSTEffect.cpp:95
-#: ../src/effects/VST/VSTEffect.cpp:453 ../src/effects/Amplify.cpp:182
+#: ../src/Tags.cpp:716 ../src/effects/Amplify.cpp:182
 #: ../src/effects/AvcCompressor.cpp:710 ../src/effects/BassBoost.cpp:327
 #: ../src/effects/ChangePitch.cpp:389 ../src/effects/ChangeSpeed.cpp:375
-#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:476
+#: ../src/effects/ChangeTempo.cpp:280 ../src/effects/Compressor.cpp:481
 #: ../src/effects/Echo.cpp:238 ../src/effects/Equalization.cpp:726
 #: ../src/effects/Filter.cpp:479 ../src/effects/Normalize.cpp:255
 #: ../src/effects/Phaser.cpp:571 ../src/effects/Repeat.cpp:248
 #: ../src/effects/Silence.cpp:140 ../src/effects/ToneGen.cpp:320
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
 #: ../src/effects/Wahwah.cpp:558 ../src/effects/ladspa/LadspaEffect.cpp:495
 #: ../src/effects/nyquist/Nyquist.cpp:730
 #: ../src/effects/nyquist/Nyquist.cpp:877 ../src/export/ExportMultiple.cpp:696
@@ -983,8 +973,6 @@ msgid "Center"
 msgstr "центр"
 
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
 msgstr "Cepstrum"
@@ -1054,8 +1042,7 @@ msgid "Change upper speed limit (%) to:"
 msgstr "Изменить верхний предел скорости (%) на:"
 
 #: ../src/effects/AvcCompressor.cpp:398
-msgid ""
-"Change window size must be less than or equal to Adjustment window size."
+msgid "Change window size must be less than or equal to Adjustment window size."
 msgstr ""
 "Значение в окне изменения должно быть меньше\n"
 "или равно значению в окне подстройки."
@@ -1137,22 +1124,20 @@ msgid "Clear"
 msgstr "Очистить"
 
 #: ../src/effects/ClickRemoval.h:42
-#, fuzzy
 msgid "Click Removal..."
-msgstr "Удаление щелчков и треска..."
+msgstr "Удалить щелчки и треск..."
 
 #: ../src/effects/ClickRemoval.cpp:67
 msgid "Click and Pop Removal"
-msgstr ""
+msgstr "Удаление щелчков и треска"
 
 #: ../src/effects/ClickRemoval.cpp:317
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr ""
+msgstr "Модуль \"Удаление щелчков и треска\" - Craig DeForest"
 
 #: ../src/TrackPanel.cpp:1616
 msgid "Click and drag to adjust relative size of stereo tracks."
-msgstr ""
-"Щёлкните и перетащите для регуляции относительного размера стереодорожек"
+msgstr "Щёлкните и перетащите для регуляции относительного размера стереодорожек"
 
 #: ../src/ControlToolBar.cpp:77
 msgid "Click and drag to edit the amplitude envelope"
@@ -1196,7 +1181,7 @@ msgstr ""
 "масштабирования."
 
 #: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
-#: ../src/effects/NoiseRemoval.cpp:463 ../src/effects/ClickRemoval.cpp:371
+#: ../src/effects/ClickRemoval.cpp:371 ../src/effects/NoiseRemoval.cpp:463
 msgid "Close"
 msgstr "Закрыть"
 
@@ -1213,9 +1198,7 @@ msgid "Command-line exporting is only supported on UNIX"
 msgstr "Экспорт через командную строку доступен только в UNIX"
 
 #. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
 #: ../src/AudacityApp.cpp:610 ../src/AudacityApp.cpp:680
-#, c-format
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -1398,15 +1381,12 @@ msgstr ""
 
 #: ../src/FormatSelection.cpp:387
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
-msgstr ""
-"Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %s"
+msgstr "Курсор: %1i:%02i:%02i:%06.3lf PAL ч:мм:сс:кк 25 fps (%.3lf кадров PAL)   %s"
 
 #: ../src/FormatSelection.cpp:309
 #, c-format
-msgid ""
-"Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
+msgid "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film frames)   %s"
 msgstr ""
 "Курсор: %1i:%02i:%02i:%06.3lf film ч:мм:сс:кк 24 кадров/c (%.3lf кадров "
 "фильма)   %s"
@@ -1493,7 +1473,7 @@ msgstr "До обработки"
 #: ../src/effects/nyquist/Nyquist.cpp:733
 #: ../src/effects/nyquist/Nyquist.cpp:880
 msgid "Debug"
-msgstr ""
+msgstr "Отладка"
 
 #: ../src/effects/Echo.cpp:211
 msgid "Decay factor:"
@@ -1508,7 +1488,6 @@ msgid "Default Sample Rate:"
 msgstr "Частота дискретизации по умолчанию:"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:308
 msgid "Default endianness"
 msgstr "Стандартный байтовый порядок"
@@ -1610,8 +1589,7 @@ msgstr "Октавой ниже"
 
 #: ../src/TrackPanel.cpp:1519
 msgid "Drag the label vertically to change the order of the tracks."
-msgstr ""
-"Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
+msgstr "Перетащите эту дорожку вверх/вниз для смены порядка представления дорожек."
 
 #: ../src/ControlToolBar.cpp:82
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
@@ -1629,8 +1607,7 @@ msgstr "Изменение огибающей\tF3"
 
 #: ../src/TrackPanel.cpp:2364
 msgid "Draw currently only works with waveforms."
-msgstr ""
-"Этот инструмент работает пока только с волновым представлением сигнала."
+msgstr "Этот инструмент работает пока только с волновым представлением сигнала."
 
 #: ../src/Menus.cpp:1962
 msgid "Duplicate"
@@ -1640,11 +1617,11 @@ msgstr "Продублировать"
 msgid "Duplicated"
 msgstr "Продублированный"
 
-#: ../src/effects/Compressor.cpp:42
+#: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
 msgstr "Компрессор динамического диапазона"
 
-#: ../src/effects/Compressor.cpp:428
+#: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "Компрессор динамического диапазона - Доминик Маццони"
 
@@ -1757,7 +1734,7 @@ msgid "Equalization..."
 msgstr "Эквалайзер..."
 
 #: ../src/ControlToolBar.cpp:723 ../src/ControlToolBar.cpp:884
-#: ../src/effects/Effect.cpp:332 ../src/prefs/DirectoriesPrefs.cpp:204
+#: ../src/effects/Effect.cpp:331 ../src/prefs/DirectoriesPrefs.cpp:204
 msgid "Error"
 msgstr "Ошибка"
 
@@ -1817,7 +1794,7 @@ msgstr ""
 "Произошла ошибка при открытии звукового устройства.\n"
 "Проверьте настройки устройства и частоту дискретизации проекта."
 
-#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:330
+#: ../src/ControlToolBar.cpp:721 ../src/effects/Effect.cpp:329
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -1865,9 +1842,8 @@ msgid "Export As Ogg Vorbis..."
 msgstr "Экспортировать в Ogg Vorbis..."
 
 #: ../src/Menus.cpp:164
-#, fuzzy
 msgid "Export As..."
-msgstr "Экспорт..."
+msgstr "Экспортировать как..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:159
 msgid "Export Keyboard Shortcuts As:"
@@ -1895,9 +1871,8 @@ msgid "Export Selection As Ogg Vorbis..."
 msgstr "Экспортировать выделенное как Ogg Vorbis..."
 
 #: ../src/Menus.cpp:165
-#, fuzzy
 msgid "Export Selection As..."
-msgstr "Экспортировать выделенное как MP3..."
+msgstr "Экспортировать выделенное как..."
 
 #: ../src/FreqWindow.cpp:998
 msgid "Export Spectral Data As:"
@@ -2087,14 +2062,12 @@ msgid "Gain"
 msgstr "Громкость"
 
 #: ../src/effects/Noise.cpp:35
-#, fuzzy
 msgid "Generate Noise"
-msgstr "Создать волну"
+msgstr "Создание шума"
 
 #: ../src/effects/Silence.cpp:31
-#, fuzzy
 msgid "Generate Silence"
-msgstr "Создаётся тишина"
+msgstr "Создание тишины"
 
 #: ../src/effects/ToneGen.cpp:325
 msgid "Generate Tone"
@@ -2155,7 +2128,6 @@ msgid "Horizontal Stereo"
 msgstr "Горизонтально"
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: ../src/import/ImportRaw.cpp:378
 msgid "Hz"
 msgstr "Гц"
@@ -2315,7 +2287,6 @@ msgid "Keyboard"
 msgstr "Клавиатура"
 
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Left, in VU Meter
 #: ../src/widgets/ASlider.cpp:329 ../src/widgets/Meter.cpp:165
 msgid "L"
 msgstr "Л"
@@ -2406,15 +2377,14 @@ msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Левая=Приблизить, Правая=Отдалить, Средняя=Обычный вид"
 
 #: ../src/effects/Silence.cpp:127 ../src/effects/ToneGen.cpp:306
-#, fuzzy
 msgid "Length (seconds)"
-msgstr "Продолжительность (сек):   от"
+msgstr "Продолжительность (сек)"
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
 msgstr "Продолжительность (сек):   от"
 
-#: ../src/effects/NoiseRemoval.cpp:441 ../src/effects/ClickRemoval.cpp:349
+#: ../src/effects/ClickRemoval.cpp:349 ../src/effects/NoiseRemoval.cpp:441
 msgid "Less"
 msgstr "Меньше"
 
@@ -2456,7 +2426,6 @@ msgid "List of Files in basic text format"
 msgstr "Список файлов в обычном текстовом формате"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:302
 msgid "Little-endian"
 msgstr "\"Остроконечник\""
@@ -2492,8 +2461,7 @@ msgstr "Предел понижения скорости"
 
 #: ../src/import/ImportLOF.cpp:362
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr ""
-"MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
+msgstr "MIDI-дорожки не могут быть отделены друг от друга - только звуковые файлы."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2595,7 +2563,7 @@ msgstr "Моно"
 msgid "Mono, "
 msgstr "Моно, "
 
-#: ../src/effects/NoiseRemoval.cpp:444 ../src/effects/ClickRemoval.cpp:352
+#: ../src/effects/ClickRemoval.cpp:352 ../src/effects/NoiseRemoval.cpp:444
 msgid "More"
 msgstr "Больше"
 
@@ -2657,13 +2625,11 @@ msgstr "Многоинструментальный режим"
 
 #: ../src/TrackPanel.cpp:1541
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr ""
-"Многоинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
+msgstr "Многоинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/TrackPanel.cpp:1543
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr ""
-"Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
+msgstr "Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Mute"
@@ -2739,7 +2705,6 @@ msgid "Next Tool\tD"
 msgstr "Следующий инструмент\tD"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
 msgstr "Без учёта байтового порядка"
@@ -2785,6 +2750,10 @@ msgstr "Нормализация - Доминик Маццони"
 #: ../src/effects/Normalize.cpp:244
 msgid "Normalize maximum amplitude to -3 dB"
 msgstr "Нормализовать максимальную амплитуду до -3 Дб"
+
+#: ../src/effects/Compressor.cpp:469
+msgid "Normalize to 0dB after compressing"
+msgstr "Нормализовать до 0 Дб после компрессии"
 
 #: ../src/effects/Normalize.h:34
 msgid "Normalize..."
@@ -2833,14 +2802,12 @@ msgid "Numbering consecutively"
 msgstr "Последовательное нумерование"
 
 #: ../src/effects/nyquist/Nyquist.cpp:397
-#, fuzzy
 msgid "Nyquist"
-msgstr "Запрос Nyquist"
+msgstr "Nyquist"
 
 #: ../src/effects/nyquist/Nyquist.cpp:398
-#, fuzzy
 msgid "Nyquist Output: "
-msgstr "Запрос Nyquist"
+msgstr "Вывод Nyquist: "
 
 #: ../src/effects/nyquist/Nyquist.cpp:281
 msgid "Nyquist Prompt"
@@ -2876,16 +2843,15 @@ msgstr " Настройка экспорта в Ogg"
 msgid "OGG Quality:"
 msgstr "Качество Ogg:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:721 ../src/effects/Amplify.cpp:187
+#: ../src/effects/AvcCompressor.cpp:716 ../src/effects/BassBoost.cpp:332
+#: ../src/effects/ChangePitch.cpp:393 ../src/effects/ChangeSpeed.cpp:379
+#: ../src/effects/ChangeTempo.cpp:284 ../src/effects/Compressor.cpp:484
+#: ../src/effects/Echo.cpp:242 ../src/effects/Equalization.cpp:731
+#: ../src/effects/Filter.cpp:482 ../src/effects/Normalize.cpp:258
+#: ../src/effects/Phaser.cpp:576 ../src/effects/Repeat.cpp:251
 #: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:187 ../src/effects/AvcCompressor.cpp:716
-#: ../src/effects/BassBoost.cpp:332 ../src/effects/ChangePitch.cpp:393
-#: ../src/effects/ChangeSpeed.cpp:379 ../src/effects/ChangeTempo.cpp:284
-#: ../src/effects/Compressor.cpp:479 ../src/effects/Echo.cpp:242
-#: ../src/effects/Equalization.cpp:731 ../src/effects/Filter.cpp:482
-#: ../src/effects/Normalize.cpp:258 ../src/effects/Phaser.cpp:576
-#: ../src/effects/Repeat.cpp:251 ../src/effects/Wahwah.cpp:563
-#: ../src/effects/ladspa/LadspaEffect.cpp:498
+#: ../src/effects/Wahwah.cpp:563 ../src/effects/ladspa/LadspaEffect.cpp:498
 #: ../src/effects/nyquist/Nyquist.cpp:736
 #: ../src/effects/nyquist/Nyquist.cpp:883
 #: ../src/effects/nyquist/Nyquist.cpp:949 ../src/prefs/FileFormatPrefs.cpp:471
@@ -2972,7 +2938,6 @@ msgid "PAL frames 25 fps"
 msgstr "PAL-кадров при 25 fps"
 
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
 msgstr "PAL ч:мм:сс:кк при 25 fps"
@@ -3103,7 +3068,7 @@ msgstr "Удаление щелчков и треска..."
 msgid "Predefined:"
 msgstr "Готовые настройки:"
 
-#: ../src/effects/Effect.cpp:247 ../src/effects/Equalization.cpp:719
+#: ../src/effects/Effect.cpp:246 ../src/effects/Equalization.cpp:719
 #: ../src/effects/Phaser.cpp:566 ../src/effects/Wahwah.cpp:553
 msgid "Preview"
 msgstr "Прослушать"
@@ -3162,7 +3127,6 @@ msgid "Quit Audacity upon closing last window"
 msgstr "Выходить из Audacity при закрытии последнего окна"
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Right, in VU Meter
 #: ../src/widgets/ASlider.cpp:332 ../src/widgets/Meter.cpp:167
 msgid "R"
 msgstr "П"
@@ -3171,22 +3135,21 @@ msgstr "П"
 msgid "Rate Change"
 msgstr "Изменить частоту"
 
-#: ../src/effects/Compressor.cpp:446
+#: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
 msgstr "Коэфф.:"
 
-#: ../src/effects/Compressor.cpp:523
+#: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "Коэфф.: %.0f:1"
 
-#: ../src/effects/Compressor.cpp:525
+#: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "Коэфф.: %.1f:1"
 
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
 #: ../src/Project.cpp:2228
 msgid "Raw"
 msgstr "Raw"
@@ -3207,7 +3170,7 @@ msgstr ""
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr ""
+msgstr "Н&едавние файлы..."
 
 #: ../src/ControlToolBar.cpp:469 ../src/Project.cpp:1707
 #: ../src/TrackPanel.cpp:1208
@@ -3275,9 +3238,8 @@ msgid "Remove any DC offset (center on 0 vertically)"
 msgstr "Удалить любое отклонение от оси (центр в нулевой точке по вертикали)"
 
 #: ../src/effects/ClickRemoval.cpp:363
-#, fuzzy
 msgid "Remove clicks"
-msgstr "&Удалить дорожки"
+msgstr "Удалить щелчки"
 
 #: ../src/Menus.cpp:3122
 msgid "Removed audio track(s)"
@@ -3293,9 +3255,8 @@ msgid "Removing Noise"
 msgstr "Производится удаление шума"
 
 #: ../src/effects/ClickRemoval.h:46
-#, fuzzy
 msgid "Removing clicks and pops..."
-msgstr "Производится удаление шума"
+msgstr "Производится удаление щелчков и треска..."
 
 #: ../src/effects/PopClick.h:33
 msgid "Removing unwanted noise"
@@ -3605,13 +3566,11 @@ msgstr ""
 msgid ""
 "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:sec)   %"
 "s"
-msgstr ""
-"Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
+msgstr "Выделение: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f ч:мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:787
 #, c-format
-msgid ""
-"Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
+msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i+%04i - %i+%04i (%i+%04i cdda секторов+байт)   [привязка по "
 "сэмплам]"
@@ -3644,8 +3603,7 @@ msgstr "Выделение: %i:%09.6f - %i:%09.6f (%i:%09.6f мин:сек)   %s"
 
 #: ../src/FormatSelection.cpp:676
 #, c-format
-msgid ""
-"Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
+msgid "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To Samples]"
 msgstr ""
 "Выделение: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf мин:сек)   [привязка по "
 "сэмплам]"
@@ -3707,9 +3665,8 @@ msgid "Set range to '%d' - '%d'"
 msgstr "Установить предел как %d'' - '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:323
-#, fuzzy
 msgid "Settings"
-msgstr "Установки эффекта"
+msgstr "Настройки"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
@@ -3809,8 +3766,7 @@ msgstr ""
 "несовпадающими индивидуальными дорожками."
 
 #: ../src/effects/nyquist/Nyquist.cpp:370
-msgid ""
-"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgid "Sorry, cannot apply effect on stereo tracks where the tracks don't match."
 msgstr ""
 "Извините, но эффект невозможно применить к стереодорожкам\n"
 "с несовпадающими индивидуальными дорожками"
@@ -3932,6 +3888,11 @@ msgid ""
 "into an existing project.  To open a project file,\n"
 "select Open from the File menu.\n"
 msgstr ""
+"ВЫбранный файл является файлом проекта Audacity.\n"
+"\n"
+"Только звуковые файлы могут быть импортированы\n"
+"в текущий проект.  Для открытия файла проекта \n"
+"используйте команду \"Открыть\" в меню \"Файл\".\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
@@ -3955,8 +3916,7 @@ msgstr ""
 "данные в нескольких проектах.\n"
 
 #: ../src/Menus.cpp:3041
-msgid ""
-"The version of Audacity you are using does not support multiple time tracks."
+msgid "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
 "Загруженная версия Audacity не может использовать\n"
 "несколько дорожек времени в одном проекте."
@@ -3980,6 +3940,9 @@ msgid ""
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"Этот файл был сохранён в Audacity %s.\n"
+"Если вы исопльзуете Audacity %s, вам необходимо \n"
+"обновиться до новой версии, чтобы открыть этот файл."
 
 #: ../src/AboutDialog.cpp:108
 msgid ""
@@ -4009,11 +3972,11 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Эта версия Audacity была скомпилирована без поддержки %s."
 
-#: ../src/effects/Compressor.cpp:439
+#: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
 msgstr "Порог: "
 
-#: ../src/effects/Compressor.cpp:520
+#: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "Порог: %d Дб"
@@ -4284,8 +4247,6 @@ msgid "When importing uncompressed audio files into Audacity"
 msgstr " При импорте несжатых звуковых файлов в Audacity  "
 
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
@@ -4345,13 +4306,11 @@ msgstr ""
 "\n"
 
 #: ../src/export/Export.cpp:147
-msgid ""
-"Your tracks will be mixed down to a single mono channel in the exported file."
+msgid "Your tracks will be mixed down to a single mono channel in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в один моноканал"
 
 #: ../src/export/Export.cpp:142
-msgid ""
-"Your tracks will be mixed down to two stereo channels in the exported file."
+msgid "Your tracks will be mixed down to two stereo channels in the exported file."
 msgstr "В экспортируемом файле дорожки будут сведены в два стереоканала"
 
 #: ../src/prefs/MousePrefs.cpp:92 ../src/prefs/MousePrefs.cpp:93
@@ -4431,7 +4390,6 @@ msgid "bytes"
 msgstr "байтов"
 
 #. i18n-hint: fps is "frames per second",
-#. cdda is "Compact Disc Digital Audio - don't translate
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
 msgstr "cdda мин:сек:кадров при 75 fps"
@@ -4440,12 +4398,11 @@ msgstr "cdda мин:сек:кадров при 75 fps"
 #  A "sector" is a technical term - don't translate unless you're sure
 #  you know the correct term.
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
-#. A "sector" is a technical term - don't translate unless you're sure
-#. you know the correct term.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
 msgstr "cdda секторов+байтов (привязка по сэмплам)"
 
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
 #: ../src/widgets/Meter.cpp:293
 msgid "dB"
 msgstr "Дб"
@@ -4460,7 +4417,6 @@ msgid "film frames 24 fps"
 msgstr "кинокадров при 24 fps"
 
 #. i18n-hint: fps is "frames per second",
-#. and the other letters are for hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:30
 msgid "film h:mm:ss:ff 24 fps"
 msgstr "фильм ч:мм:сс:кк при 24 fps"
@@ -4494,9 +4450,6 @@ msgstr "мин:сек+сэмплы (привязка по сэмплам)"
 #  applicable" (in other words,
 #  unimportant, not relevant).
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: ../src/effects/ChangeSpeed.cpp:338
 msgid "n/a"
 msgstr "не указано"
@@ -4548,11 +4501,6 @@ msgid "to Track Start"
 msgstr "к началу дорожки"
 
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
 #: ../src/AboutDialog.cpp:127 ../src/AboutDialog.cpp:129
 msgid "translator_credits"
 msgstr "Russian translation by Alexandre Prokoudine"
@@ -4569,14 +4517,3 @@ msgstr "с использованием библиотеки SampleRate (Erik de Castro Lopo)"
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "с использованием SoundTouch (Olli Parviainen)"
 
-#~ msgid "&Online Help..."
-#~ msgstr "&Помощь..."
-
-#~ msgid "Mix Output"
-#~ msgstr "Вывод микшированного сигнала"
-
-#~ msgid "Algorithms, MIDI & Audio I/O programming"
-#~ msgstr "Алгоритмы, программирование MIDI и Audio I/O"
-
-#~ msgid "Effects programmer"
-#~ msgstr "Программирование эффектов"
