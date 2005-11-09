@@ -28,7 +28,6 @@ Contributors:
    Paul Nasca
    Tony Oetzmann
    Augustus Saunders  
-   Mike Underwood
    Tom Woodhams
 
 The Audacity Logo:
@@ -279,6 +278,10 @@ Changes in 1.2.4:
 
   * The "View History" window can now discard old undo levels to save disk
     space on Windows.  (This previously worked only on Linux and Mac.)
+
+  * "Preferences" command is now in Edit menu.
+
+  * "Plot Spectrum" command is now in Analyze menu.
 
   * Opening a project file saved by a later version of Audacity displays
     an intelligent error message.  Also, trying to import a project file
