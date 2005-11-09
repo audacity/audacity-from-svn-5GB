@@ -88,10 +88,10 @@ Source: "..\win\Release\Plug-Ins\delay.ny"; DestDir: "{app}\Plug-Ins"; Flags: ig
 Source: "..\win\Release\Plug-Ins\GVerb.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\Hard Limiter.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
-Source: "..\win\Release\Plug-Ins\highpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\lowpass.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\pluck.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\sc4.dll"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
+Source: "..\win\Release\Plug-Ins\SilenceMarker.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 Source: "..\win\Release\Plug-Ins\tremolo.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 ; redundant:     Source: "..\win\Release\Plug-Ins\undcbias.ny"; DestDir: "{app}\Plug-Ins"; Flags: ignoreversion
 
