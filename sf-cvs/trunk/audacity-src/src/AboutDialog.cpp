@@ -38,10 +38,10 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Shane Mueller"), roleDeveloper);
    
    AddCredit(wxT("Lynn Allan (CleanSpeech)"), roleContributor);
-   AddCredit(wxT("William Bland"), roleContributor);
+   AddCredit(wxT("William Bland (Time Tracks)"), roleContributor);
    AddCredit(wxT("Roger Dannenberg"), roleContributor);
    AddCredit(wxT("Brian Gunlogson"), roleContributor);
-   AddCredit(wxT("Harvey Lubin"), roleContributor);
+   AddCredit(wxT("Harvey Lubin (Audacity logo)"), roleContributor);
    AddCredit(wxT("Grek Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);
