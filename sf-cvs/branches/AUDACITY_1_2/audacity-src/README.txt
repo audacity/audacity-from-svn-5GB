@@ -8,65 +8,68 @@ WWW:   http://audacity.sourceforge.net/
 Email: audacity-help@lists.sourceforge.net
 
 Lead Developers:
+   Dominic Mazzoni (project leader)
+   Matt Brubeck
+   James Crook
+   Vaughan Johnson
+   Markus Meyer
 
-  Matt Brubeck
-  Joshua Haberman
-  Dominic Mazzoni (project leader)
+Developers:
+   Joshua Haberman
+   Monty Montgomery
+   Shane Mueller
 
-Active Developers:
-  James Crook
-  Vaughan Johnson
-  Markus Meyer
-  Shane Mueller
-  Tony Oetzmann
-
-Developers
-  William Bland
-  Vince Busam
-  Brian Gunlogson
-  Greg Mekkes
-  Augustus Saunders  
-
-Other Contributors:
-  Dave Beydler
-  Jason Cohen
-  Roger Dannenberg
-  Dave Fancella
-  Steve Harris
-  Daniel James
-  Steve Jolly
-  Daniil Kolpakov
-  Robert Leidle
-  Logan Lewis
-  Abe Milde
-  Monty
-  Paul Nasca
-  Jason Pepas
-  Mark Phillips
-  Alexandre Prokoudine
-  Jonathan Ryshpan
-  Juhana Sadeharju
-  Patrick Shirkey
-  Mark Tomlinson
-  David Topper
-  Rudy Trubitt
-  Tom Woodhams
-  Otto Wyss
-
+Contributors:
+   William Bland (Time Tracks)
+   Roger Dannenberg
+   Brian Gunlogson
+   Greg Mekkes
+   Abe Milde
+   Paul Nasca
+   Tony Oetzmann
+   Augustus Saunders  
+   Mike Underwood
+   Tom Woodhams
 
 The Audacity Logo:
+   Harvey Lubin
+   http://www.agrapha.com/
 
-  Harvey Lubin
-  http://www.agrapha.com/
+Audacity is based on code from the following projects::
+   expat
+   FLAC
+   LAME
+   libmad
+   libsndfile
+   Nyquist
+   Ogg Vorbis
+   PortAudio
+   Resample
+   SoundTouch
+   wxWidgets
 
 Special Thanks:
-
-  The wxWidgets Team
-  The Ogg Vorbis Team
-  Rob Leslie (libmad)
-  Ross Bencina and Phil Burk (PortAudio)
-  Erik de Castro Lopo (libsndfile)
-  Verilogix, Inc.
+   Richard Ash
+   Dave Beydler
+   Jason Cohen
+   Dave Fancella
+   Steve Harris
+   Daniel James
+   Daniil Kolpakov
+   Robert Leidle
+   Logan Lewis
+   David Luff
+   Jason Pepas
+   Mark Phillips
+   Jonathan Ryshpan
+   Patrick Shirkey
+   David R. Sky
+   Tuomas Suutari
+   Mark Tomlinson
+   David Topper
+   Rudy Trubitt
+   StreetIQ.com
+   Verilogix, Inc.
 
 -------------------------------------------------------------
 
