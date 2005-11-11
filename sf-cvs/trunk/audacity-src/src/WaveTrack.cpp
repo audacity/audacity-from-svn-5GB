@@ -1326,7 +1326,7 @@ void WaveTrack::UpdateLocationsCache()
       // Only realloc, if we need more space than before. Otherwise
       // just use block from before.
       if (mDisplayLocations)
-         delete mDisplayLocations;
+         delete[] mDisplayLocations;
       mDisplayLocations = new Location[mDisplayNumLocations];
       mDisplayNumLocationsAllocated = mDisplayNumLocations;
    }

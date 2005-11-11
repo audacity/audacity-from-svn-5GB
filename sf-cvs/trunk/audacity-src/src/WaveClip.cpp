@@ -774,8 +774,10 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
 {
    if (t0 > GetEndTime() || t1 < GetStartTime())
       return true; // time out of bounds
-
-   WaveClip *newClip = new WaveClip(*this, mSequence->GetDirManager());
+      
+   WaveClip *newClip = new WaveClip(mSequence->GetDirManager(),
+                                    mSequence->GetSampleFormat(),
+                                    mRate);
    double clip_t0 = t0;
    double clip_t1 = t1;
    if (clip_t0 < GetStartTime())
