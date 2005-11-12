@@ -483,7 +483,8 @@ private:
       IsGainSliding,
       IsPanSliding,
       IsMinimizing,
-      IsOverCutLine
+      IsOverCutLine,
+      WasOverCutLine
    };
 
    enum MouseCaptureEnum mMouseCapture;

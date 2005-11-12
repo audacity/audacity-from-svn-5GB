@@ -126,11 +126,14 @@ public:
    WaveClipList* GetCutLines() { return &mCutLines; }
 
    // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
-   bool ExpandCutLine(double cutLinePosition);
+   bool ExpandCutLine(double cutLinePosition, double* cutlineStart = NULL, double* cutlineEnd = NULL);
 
    // Remove cut line, without expanding the audio in it
    bool RemoveCutLine(double cutLinePosition);
    void RemoveAllCutLines();
+   
+   // Offset cutlines right to time 't0' by time amount 'len'
+   void OffsetCutLines(double t0, double len);
 
    //
    // XMLTagHandler callback methods for loading and saving

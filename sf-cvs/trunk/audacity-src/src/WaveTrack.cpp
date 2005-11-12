@@ -463,7 +463,7 @@ bool WaveTrack::Paste(double t0, Track *src)
          WaveClip *clip = it->GetData();
 
          // The 1.0/mRate is the time for one sample - kind of a fudge factor,
-         // because an overlap of less than a sample shoudl not trigger
+         // because an overlap of less than a sample should not trigger
          // traditional behaviour.
 
          if (t0+src->GetEndTime()-1.0/mRate > clip->GetStartTime() &&
@@ -1360,11 +1360,13 @@ void WaveTrack::UpdateLocationsCache()
 }
 
 // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
-bool WaveTrack::ExpandCutLine(double cutLinePosition)
+bool WaveTrack::ExpandCutLine(double cutLinePosition, double* cutlineStart, double* cutlineEnd)
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
-      if (it->GetData()->ExpandCutLine(cutLinePosition))
+   {
+      if (it->GetData()->ExpandCutLine(cutLinePosition, cutlineStart, cutlineEnd))
          return true;
+   }
 
    return false;
 }

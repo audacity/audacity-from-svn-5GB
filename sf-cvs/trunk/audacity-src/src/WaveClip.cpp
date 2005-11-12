@@ -717,16 +717,18 @@ bool WaveClip::Paste(double t0, WaveClip* other)
    {
       MarkChanged();
       mEnvelope->Paste(t0, other->mEnvelope);
-
-      // Also, paste cut lines
+      OffsetCutLines(t0, other->GetEndTime()-other->GetStartTime());
+      
+      // Paste cut lines contained in pasted clip
       for (WaveClipList::Node* it=other->mCutLines.GetFirst(); it; it=it->GetNext())
       {
          WaveClip* cutline = it->GetData();
          WaveClip* newCutLine = new WaveClip(*cutline,
                                              mSequence->GetDirManager());
-         newCutLine->Offset(t0);
+         newCutLine->Offset(t0 - mOffset);
          mCutLines.Append(newCutLine);
       }
+      
       return true;
    }
 
@@ -744,6 +746,7 @@ bool WaveClip::InsertSilence(double t, double len)
       wxASSERT(false);
       return false;
    }
+   OffsetCutLines(t, len);
    GetEnvelope()->InsertSpace(t, len);
    MarkChanged();
    
@@ -799,7 +802,7 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
       double cutlinePosition = mOffset + clip->GetOffset();
       if (cutlinePosition >= t0 && cutlinePosition <= t1)
       {
-         clip->SetOffset(cutlinePosition - newClip->GetOffset());
+         clip->SetOffset(cutlinePosition - newClip->GetOffset() - mOffset);
          newClip->mCutLines.Append(clip);
          mCutLines.DeleteNode(it);
       } else
@@ -819,14 +822,19 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
    return false;
 }
 
-bool WaveClip::ExpandCutLine(double cutLinePosition)
+bool WaveClip::ExpandCutLine(double cutLinePosition, double* cutlineStart, double* cutlineEnd)
 {
    for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
    {
       WaveClip* cutline = it->GetData();
       if (fabs(mOffset + cutline->GetOffset() - cutLinePosition) < 0.0001)
       {
-         Paste(mOffset+cutline->GetOffset(), cutline);
+         if (cutlineStart)
+            *cutlineStart = mOffset+cutline->GetStartTime();
+         if (cutlineEnd)
+            *cutlineEnd = mOffset+cutline->GetEndTime();
+         if (!Paste(mOffset+cutline->GetOffset(), cutline))
+            return false;
          delete cutline;
          mCutLines.DeleteNode(it);
          return true;
@@ -858,5 +866,15 @@ void WaveClip::RemoveAllCutLines()
       WaveClipList::Node* head = mCutLines.GetFirst();
       delete head->GetData();
       mCutLines.DeleteNode(head);
+   }
+}
+
+void WaveClip::OffsetCutLines(double t0, double len)
+{
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+   {
+      WaveClip* cutLine = it->GetData();
+      if (mOffset + cutLine->GetOffset() >= t0)
+         cutLine->Offset(len);
    }
 }
