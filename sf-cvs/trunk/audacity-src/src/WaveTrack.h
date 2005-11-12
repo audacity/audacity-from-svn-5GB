@@ -265,7 +265,7 @@ class WaveTrack: public Track {
    Location GetCachedLocation(int index) { return mDisplayLocations[index]; }
 
    // Expand cut line (that is, re-insert audio, then delete audio saved in cut line)
-   bool ExpandCutLine(double cutLinePosition);
+   bool ExpandCutLine(double cutLinePosition, double* cutlineStart = NULL, double* cutlineEnd = NULL);
 
    // Remove cut line, without expanding the audio in it
    bool RemoveCutLine(double cutLinePosition);

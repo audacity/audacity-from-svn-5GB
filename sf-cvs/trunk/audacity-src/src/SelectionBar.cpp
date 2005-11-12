@@ -127,8 +127,8 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRateBox = new wxComboBox(this, OnRateID,
                              wxT(""),
                              wxDefaultPosition, wxSize(80, -1));
-   UpdateRates();
    mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
+   UpdateRates(); // Must be done _after_ setting value on mRateBox!
 
    mainSizer->Add(mRateBox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,

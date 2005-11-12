@@ -3428,6 +3428,16 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
    // FIX-ME: Disable this and return true when CutLines aren't showing?
    // (Don't use gPerfs-> for the fix as registry access is slow).
 
+   if (mMouseCapture == WasOverCutLine)
+   {
+      // Needed to avoid select events right after IsOverCutLine event on button up
+      if (event.ButtonUp()) {
+         mMouseCapture = IsUncaptured;
+         return false;
+      }
+      return true;
+   }
+   
    if (mMouseCapture == IsOverCutLine)
    {
       if (!mCapturedTrackLocationRect.Inside(event.m_x, event.m_y))
@@ -3444,11 +3454,18 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          if (mCapturedTrackLocation.typ == WaveTrack::locationCutLine)
          {
             // When user presses left button on cut line, expand the line again
-            track->ExpandCutLine(mCapturedTrackLocation.pos);
-            WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
-            if (linked)
-               linked->ExpandCutLine(mCapturedTrackLocation.pos);
-            handled = true;
+            double cutlineStart = 0, cutlineEnd = 0;
+            if (track->ExpandCutLine(mCapturedTrackLocation.pos, &cutlineStart, &cutlineEnd))
+            {
+               WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
+               if (linked)
+                  linked->ExpandCutLine(mCapturedTrackLocation.pos);
+               mViewInfo->sel0 = cutlineStart;
+               mViewInfo->sel1 = cutlineEnd;
+               DisplaySelection();
+               MakeParentPushState(_("Expanded Cut Line"), _("Expand"), false );
+               handled = true;
+            }
          } else if (mCapturedTrackLocation.typ == WaveTrack::locationMergePoint)
          {
             track->MergeClips(mCapturedTrackLocation.clipidx1, mCapturedTrackLocation.clipidx2);
@@ -3466,15 +3483,16 @@ bool TrackPanel::HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxM
          WaveTrack* linked = (WaveTrack*)mTracks->GetLink(track);
          if (linked)
             linked->RemoveCutLine(mCapturedTrackLocation.pos);
+         MakeParentPushState(_("Removed Cut Line"), _("Remove"), false );
          handled = true;
       }
       
       if (handled)
       {
          SetCapturedTrack( NULL );
-         SetCursorByActivity();
+         mMouseCapture = WasOverCutLine; 
          Refresh(false);
-         return false;
+         return true;
       }
 
       return true;
@@ -3668,7 +3686,8 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    if (pTrack && (pTrack->GetKind() == Track::Wave) && 
-       (mMouseCapture == IsUncaptured || mMouseCapture == IsOverCutLine))
+       (mMouseCapture == IsUncaptured || mMouseCapture == IsOverCutLine ||
+        mMouseCapture == WasOverCutLine))
    {
       if (HandleTrackLocationMouseEvent( (WaveTrack *) pTrack, r, event ))
          return;
