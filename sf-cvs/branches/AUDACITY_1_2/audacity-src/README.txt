@@ -276,6 +276,8 @@ Changes in 1.2.4:
   * Dragging sound files into the Audacity window now works on Mac OS X
     and Linux, as well as Windows.  (Before, it worked only on Windows.)
 
+  * Better support for certain audio devices on Mac OS X 10.4 "Tiger"
+
   * The "View History" window can now discard old undo levels to save disk
     space on Windows.  (This previously worked only on Linux and Mac.)
 
