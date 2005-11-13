@@ -83,7 +83,112 @@ wxString GetSystemLanguageCode()
 
 void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
 {
+   wxArrayString tempNames;
+   wxArrayString tempCodes;
+   LangHash localLanguageName;
+   LangHash reverseHash;
+   LangHash tempHash;
 
+   // MM: Use only ASCII characters here to avoid problems with
+   //     charset conversion on Linux platforms
+   localLanguageName[wxT("ar")] = wxT("Arabic");
+   localLanguageName[wxT("bg")] = wxT("Balgarski");
+   localLanguageName[wxT("ca")] = wxT("Catalan");
+   localLanguageName[wxT("cs")] = wxT("Czech");
+   localLanguageName[wxT("da")] = wxT("Dansk");
+   localLanguageName[wxT("de")] = wxT("Deutsch");
+   localLanguageName[wxT("el")] = wxT("Ellinika");
+   localLanguageName[wxT("en")] = wxT("English");
+   localLanguageName[wxT("es")] = wxT("Espanol");
+   localLanguageName[wxT("eu")] = wxT("Euskara");
+   localLanguageName[wxT("fi")] = wxT("Suomi");
+   localLanguageName[wxT("fr")] = wxT("Francais");
+   localLanguageName[wxT("ga")] = wxT("Gaeilge");
+   localLanguageName[wxT("it")] = wxT("Italiano");
+   localLanguageName[wxT("ja")] = wxT("Nihongo");
+   localLanguageName[wxT("lt")] = wxT("Lietuviu");
+   localLanguageName[wxT("hu")] = wxT("Magyar");
+   localLanguageName[wxT("mk")] = wxT("Makedonski");
+   localLanguageName[wxT("nl")] = wxT("Nederlands");
+   localLanguageName[wxT("nb")] = wxT("Norsk");
+   localLanguageName[wxT("pl")] = wxT("Polski");
+   localLanguageName[wxT("pt")] = wxT("Portugues");
+   localLanguageName[wxT("ru")] = wxT("Russky");
+   localLanguageName[wxT("sl")] = wxT("Slovenscina");
+   localLanguageName[wxT("sv")] = wxT("Svenska");
+   localLanguageName[wxT("uk")] = wxT("Ukrainska");
+   localLanguageName[wxT("zh")] = wxT("Chinese (Simplified)");
+   localLanguageName[wxT("zh_TW")] = wxT("Chinese (Traditional)");
+
+   wxArrayString audacityPathList = wxGetApp().audacityPathList;
+   wxGetApp().AddUniquePathToPathList(wxString::Format(wxT("%s/share/locale"),
+                                                       INSTALL_PREFIX),
+                                      audacityPathList);
+   int i;
+   for(i=wxLANGUAGE_UNKNOWN; i<wxLANGUAGE_USER_DEFINED;i++) {
+      const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
+
+      if (!info)
+         continue;
+
+      wxString fullCode = info->CanonicalName;
+      wxString code = fullCode.Left(2);
+      wxString name = info->Description;
+
+      // Logic: Languages codes are sometimes hierarchical, with a
+      // general language code and then a subheading.  For example,
+      // zh_TW for Traditional Chinese and zh_CN for Simplified
+      // Chinese - but just zh for Chinese in general.  First we look
+      // for the full code, like zh_TW.  If that doesn't exist, we
+      // look for a code corresponding to the first two letters.
+      // Note that if the language for a fullCode exists but we only
+      // have a name for the short code, we will use the short code's
+      // name but associate it with the full code.  This allows someone
+      // to drop in a new language and still get reasonable behavior.
+
+      if (fullCode.Length() < 2)
+         continue;
+
+      if (localLanguageName[code] != wxT("")) {
+         name = localLanguageName[code];
+      }
+      if (localLanguageName[fullCode] != wxT("")) {
+         name = localLanguageName[fullCode];
+      }
+
+      if (TranslationExists(audacityPathList, fullCode)) {
+         code = fullCode;
+      }
+
+      if (tempHash[code] != wxT(""))
+         continue;
+
+      if (TranslationExists(audacityPathList, code) || code==wxT("en")) {
+         tempCodes.Add(code);
+         tempNames.Add(name);
+         tempHash[code] = name;
+
+         /* for debugging
+         printf(wxT("code=%s name=%s fullCode=%s name=%s -> %s\n"),
+                code.c_str(), localLanguageName[code].c_str(),
+                fullCode.c_str(), localLanguageName[fullCode].c_str(),
+                name.c_str());
+         */
+      }
+   }
+
+   // Sort
+
+   unsigned int j;
+   for(j=0; j<tempNames.GetCount(); j++)
+      reverseHash[tempNames[j]] = tempCodes[j];
+
+   tempNames.Sort();
+
+   for(j=0; j<tempNames.GetCount(); j++) {
+      langNames.Add(tempNames[j]);
+      langCodes.Add(reverseHash[tempNames[j]]);
+   }
 }
 
 
