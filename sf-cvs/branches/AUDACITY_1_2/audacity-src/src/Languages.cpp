@@ -87,6 +87,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    wxArrayString tempCodes;
    LangHash localLanguageName;
    LangHash reverseHash;
+   LangHash tempHash;
 
    // MM: Use only ASCII characters here to avoid problems with
    //     charset conversion on Linux platforms
@@ -117,15 +118,12 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["sv"] = "Svenska";
    localLanguageName["uk"] = "Ukrainska";
    localLanguageName["zh"] = "Chinese (Simplified)";
-   localLanguageName["zh_TW"] = "Chinese (Taiwan)";
-   localLanguageName["zh-TW"] = "Chinese (Taiwan)";
+   localLanguageName["zh_TW"] = "Chinese (Traditional)";
 
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxGetApp().AddUniquePathToPathList(wxString::Format("%s/share/locale",
                                                        INSTALL_PREFIX),
                                       audacityPathList);
-   wxString lastCode = "";
-
    int i;
    for(i=wxLANGUAGE_UNKNOWN; i<wxLANGUAGE_USER_DEFINED;i++) {
       const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
@@ -136,39 +134,47 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
       wxString fullCode = info->CanonicalName;
       wxString code = fullCode.Left(2);
       wxString name = info->Description;
-      bool found = false;
 
-      if (localLanguageName[fullCode] != "") {
-         name = localLanguageName[fullCode];
-      }
-      if (localLanguageName[code] != "") {
-         name = localLanguageName[code];
-      }
+      // Logic: Languages codes are sometimes hierarchical, with a
+      // general language code and then a subheading.  For example,
+      // zh_TW for Traditional Chinese and zh_CN for Simplified
+      // Chinese - but just zh for Chinese in general.  First we look
+      // for the full code, like zh_TW.  If that doesn't exist, we
+      // look for a code corresponding to the first two letters.
+      // Note that if the language for a fullCode exists but we only
+      // have a name for the short code, we will use the short code's
+      // name but associate it with the full code.  This allows someone
+      // to drop in a new language and still get reasonable behavior.
 
       if (fullCode.Length() < 2)
          continue;
 
+      if (localLanguageName[code] != "") {
+         name = localLanguageName[code];
+      }
+      if (localLanguageName[fullCode] != "") {
+         name = localLanguageName[fullCode];
+      }
+
       if (TranslationExists(audacityPathList, fullCode)) {
-         tempCodes.Add(fullCode);
+         code = fullCode;
+      }
+
+      if (tempHash[code] != "")
+         continue;
+
+      if (TranslationExists(audacityPathList, code) || code=="en") {
+         tempCodes.Add(code);
          tempNames.Add(name);
-         found = true;
+         tempHash[code] = name;
+
+         /* for debugging
+         printf("code=%s name=%s fullCode=%s name=%s -> %s\n",
+                code.c_str(), localLanguageName[code].c_str(),
+                fullCode.c_str(), localLanguageName[fullCode].c_str(),
+                name.c_str());
+         */
       }
-
-      if (code != lastCode) {
-         if (TranslationExists(audacityPathList, code)) {
-            tempCodes.Add(code);
-            tempNames.Add(name);
-            found = true;
-         }
-
-         if (code == "en" && !found) {
-            tempCodes.Add(code);
-            tempNames.Add(name);
-            found = true;
-         }
-      }
-
-      lastCode = code;
    }
 
    // Sort
