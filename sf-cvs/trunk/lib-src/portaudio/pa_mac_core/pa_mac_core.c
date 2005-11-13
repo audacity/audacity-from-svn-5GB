@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.10 2005-10-25 06:56:47 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.11 2005-11-13 00:06:17 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -538,10 +538,15 @@ static int PaOSX_ScanDevices( Boolean isInput )
 */
 static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDeviceIndex, Boolean isInput )
 {
+    AudioStreamBasicDescription *allStreamFormats;
+    AudioStreamBasicDescription formatDesc;
     OSStatus         err;
     UInt32           outSize;
-    AudioStreamBasicDescription formatDesc;
+    Boolean          outWritable;
     AudioDeviceID    devID;
+    int              numStreamFormats;
+    int              maxChannels;
+    int              i;
     PaDeviceInfo    *deviceInfo = &hostDeviceInfo->paInfo;
 
     deviceInfo->structVersion = 1;
@@ -553,6 +558,7 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
 
     devID = sCoreDeviceIDs[ coreDeviceIndex ];
     hostDeviceInfo->audioDeviceID = devID;
+    DBUG(("PaOSX_QueryDeviceInfo: name = %s\n", PaOSX_DeviceNameFromID( devID, isInput )));
     DBUG(("PaOSX_QueryDeviceInfo: coreDeviceIndex = %d, devID = %d, isInput = %d\n",
         coreDeviceIndex, devID, isInput ));
         
@@ -562,8 +568,7 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     // This just may not be an appropriate device for input or output so leave quietly.
     if( (err != noErr)  || (formatDesc.mChannelsPerFrame == 0) ) goto error;
     
-    DBUG(("PaOSX_QueryDeviceInfo: mFormatID = 0x%x\n", formatDesc.mFormatID));
-    DBUG(("PaOSX_QueryDeviceInfo: kAudioFormatLinearPCM = 0x%x\n", kAudioFormatLinearPCM));
+    DBUG(("PaOSX_QueryDeviceInfo: mFormatID = %4s\n", &formatDesc.mFormatID));
     DBUG(("PaOSX_QueryDeviceInfo: mFormatFlags = 0x%x\n", formatDesc.mFormatFlags));
     DBUG(("PaOSX_QueryDeviceInfo: kLinearPCMFormatFlagIsFloat = 0x%x\n", kLinearPCMFormatFlagIsFloat));
 
@@ -571,7 +576,38 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
     // device, if it isn't in this format, we will change it at that point.
     deviceInfo->nativeSampleFormats = paFloat32;
 
-    // Determine maximum number of channels supported.
+    // Determine maximum number of channels supported by looping through
+    // all possible supported stream formats
+
+    outSize = 0;
+    err = AudioDeviceGetPropertyInfo( devID, 0, isInput,
+                                      kAudioDevicePropertyStreamFormats,
+                                      &outSize, &outWritable );
+    
+    allStreamFormats = (AudioStreamBasicDescription *)malloc(outSize);
+    numStreamFormats = outSize / sizeof(AudioStreamBasicDescription);
+    err = AudioDeviceGetProperty( devID, 0, isInput,
+                                  kAudioDevicePropertyStreamFormats,
+                                  &outSize, allStreamFormats);
+    
+    DBUG(("%d supported formats!\n", numStreamFormats));
+    maxChannels = 0;
+    for(i=0; i<numStreamFormats; i++) {
+        DBUG(("Format %d: formatID=%4s flags=0x%x channels=%d rate=%.0f\n",
+              i,
+              &allStreamFormats[i].mFormatID,
+              allStreamFormats[i].mFormatFlags,
+              allStreamFormats[i].mChannelsPerFrame,
+              allStreamFormats[i].mSampleRate));
+        
+        if (allStreamFormats[i].mChannelsPerFrame > maxChannels)
+            maxChannels = allStreamFormats[i].mChannelsPerFrame;
+    }
+    
+    free(allStreamFormats);
+
+
+    #if 0
     memset( &formatDesc, 0, sizeof(formatDesc));
     formatDesc.mChannelsPerFrame = 256; // FIXME - what about device with > 256 channels
     formatDesc.mFormatID = kAudioFormatLinearPCM;
@@ -579,7 +615,6 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
        kAudioFormatFlagIsFloat |
        kAudioFormatFlagIsBigEndian |
        kAudioFormatFlagIsPacked;
-
     outSize = sizeof(formatDesc);
     err = AudioDeviceGetProperty( devID, 0,
         isInput, kAudioDevicePropertyStreamFormatMatch, &outSize, &formatDesc);
@@ -589,19 +624,22 @@ static int PaOSX_QueryDeviceInfo( PaHostDeviceInfo *hostDeviceInfo, int coreDevi
         sSavedHostError = err;
         return paHostError;
     }
+    #endif
 
     if( isInput )
     {
-        deviceInfo->maxInputChannels = formatDesc.mChannelsPerFrame;
+        deviceInfo->maxInputChannels = maxChannels;
     }
     else
     {
-        deviceInfo->maxOutputChannels = formatDesc.mChannelsPerFrame;
+        deviceInfo->maxOutputChannels = maxChannels;
     }
 
     // Get the device name
     deviceInfo->name = PaOSX_DeviceNameFromID( devID, isInput );
     return 1;
+
+    DBUG(("\n"));
 
 error:
     return 0;
@@ -1644,6 +1682,9 @@ static PaError PaOSX_OpenInputDevice( internalPortAudioStream   *past )
 
     if( past->past_NumInputChannels > hostDeviceInfo->paInfo.maxInputChannels )
     {
+        DBUG(("Too many channels!  requested: %d  max: %d\n",
+              past->past_NumInputChannels,
+              hostDeviceInfo->paInfo.maxInputChannels));
         return paInvalidChannelCount; /* Too many channels! */
     }
     pahsc->input.numChannels = past->past_NumInputChannels;
@@ -1684,6 +1725,9 @@ static PaError PaOSX_OpenOutputDevice( internalPortAudioStream *past )
     // Validate number of channels.
     if( past->past_NumOutputChannels > hostDeviceInfo->paInfo.maxOutputChannels )
     {
+        DBUG(("Too many channels!  requested: %d  max: %d\n",
+              past->past_NumOutputChannels,
+              hostDeviceInfo->paInfo.maxOutputChannels));
         return paInvalidChannelCount; /* Too many channels! */
     }
     pahsc->output.numChannels = past->past_NumOutputChannels;
