@@ -2,6 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
+; compiler-related directives
+OutputBaseFilename=audacity-win-1.2.4
+SolidCompression=yes
+
+; installer-related directives
 AppName=Audacity
 AppVerName=Audacity 1.2.4
 AppPublisherURL=http://audacity.sourceforge.net
@@ -9,12 +14,14 @@ AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
 ChangesAssociations=yes
 DefaultDirName={pf}\Audacity
+; Always warn if dir exists, because we'll overwrite previous Audacity.
+DirExistsWarning=yes
 DisableProgramGroupPage=yes
 UninstallDisplayIcon="{app}\audacity.exe"
 LicenseFile=..\LICENSE.txt
 InfoBeforeFile=..\README.txt
-; uncomment the following line if you want your installation to run on NT 3.51 too.
-; MinVersion=4,3.51
+; min versions: Win95, NT 4.0
+MinVersion=4.0,4.0
 
 [Tasks]
 Name: desktopicon; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4
