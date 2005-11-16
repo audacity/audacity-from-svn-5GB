@@ -634,6 +634,8 @@ void ControlToolBar::ShowCleanSpeechButton( bool bShow )
    mIdealSize = 
       wxSize( DEFAULT_TOTAL_WIDTH + ( bShow ? EXTRA_WIDTH_FOR_CLEANSPEECH :0), 55 );
    SetSize(mIdealSize );
+   mCleanSpeech->SetEnabled(bShow);
+   mCleanSpeech->Show(bShow);
 }
 
 /// Sets the currently active tool
