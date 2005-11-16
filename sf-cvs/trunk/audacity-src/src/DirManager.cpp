@@ -263,16 +263,16 @@ void DirManager::CleanTempDir(bool startup)
       return;
 
    if (startup) {
-//lda
+//lda ... CleanSpeech not that concerned about temp files ... allow end-users to ignore this warning
       int warn = gPrefs->Read(wxT("/GUI/WarnAboutTempFiles"), true);
       int action = wxYES;
-      if (warn==1) {
-      wxString prompt = _("Audacity found temporary files that were not deleted or saved \nthe last time you used Audacity. \n\nAudacity can't recover them automatically, but if you choose not \nto delete them, you can recover them manually. \n\n\Delete temporary files?");
+      if (warn == 1) {
+         wxString prompt = _("Audacity found temporary files that were not deleted or saved \nthe last time you used Audacity. \n\nAudacity can't recover them automatically, but if you choose not \nto delete them, you can recover them manually. \n\nDelete temporary files?");
       
-      action = wxMessageBox(prompt,
-                                wxT("Warning"),
-                                wxYES_NO | wxICON_EXCLAMATION,
-                                NULL);
+         action = wxMessageBox(prompt,
+                               wxT("Warning"),
+                               wxYES_NO | wxICON_EXCLAMATION,
+                               NULL);
       }
       if (action != wxYES) {
          dontDeleteTempFiles = true;
@@ -304,7 +304,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    wxString cleanupLoc2=projFull;
 
    if (create) {
-      if (!wxPathExists(FILENAME(projFull)))
+      if (!wxDirExists(FILENAME(projFull)))
          if (!wxMkdir(FILENAME(projFull)))
             return false;
 
@@ -314,7 +314,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
 
    } else {
       #ifndef __WXMAC__
-      if (!wxPathExists(FILENAME(projFull)))
+      if (!wxDirExists(FILENAME(projFull)))
          return false;
       #endif
    }

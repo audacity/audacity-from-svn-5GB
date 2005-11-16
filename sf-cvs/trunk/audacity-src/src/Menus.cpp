@@ -3519,28 +3519,28 @@ void AudacityProject::OnAddLabelPlaying()
 #define PRESET_COUNT  14
 void AudacityProject::OnExportCleanSpeechPresets()
 {
-   wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), FROMFILENAME(::wxGetCwd()));
-   wxString nameOnly;
-   wxString extension;
-   wxString defaultName = wxT("DefaultPresets");
-   wxString fName;
-   wxString maskString;
-   wxString endOfPathSep;
-   wxString defaultExtension = wxT("csp");
-   maskString.Printf(wxT("CleanSpeech Preset files (*.csp)|.csp files (*.csp)"));
+   wxString cwd = FROMFILENAME(::wxGetCwd());
+   #ifdef __WXMSW__
+   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   #else
+   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   #endif
+   wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), presetsDefaultLoc);
 
+   wxString nameOnly;
+   wxString fName;
+   wxString extension = wxT(".csp");
    bool fileOkay;
 
    do {
       fileOkay = true;
 
-      fName = wxT("*.csp");
       fName = wxFileSelector(_("Save CleanSpeech Preset File As:"),
-                             path,
-                             fName,       // default file name
-                             defaultExtension,
-                             maskString,
-                             wxSAVE | wxOVERWRITE_PROMPT);
+                        path,
+                        _("*.csp"),       // default file extension
+                        extension,
+						_("CleanSpeech Presets (*.csp)|*.csp"),
+                        wxSAVE | wxOVERWRITE_PROMPT);
 
       if (fName.empty()) { // if cancel selected
          return;
@@ -3603,27 +3603,26 @@ void AudacityProject::OnExportCleanSpeechPresets()
 
 void AudacityProject::OnImportCleanSpeechPresets()
 {
-   wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), FROMFILENAME(::wxGetCwd()));
-   wxString nameOnly;
-   wxString extension;
-   wxString defaultName = wxT("DefaultPresets");
-   wxString fName;
-   wxString maskString;
-   wxString endOfPathSep;
-   wxString defaultExtension = wxT("csp");
-   maskString.Printf(wxT("CleanSpeech Preset files (*.csp)|.csp files (*.csp)"));
+   wxString cwd = FROMFILENAME(::wxGetCwd());
+   #ifdef __WXMSW__
+   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   #else
+   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   #endif
 
+   wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), presetsDefaultLoc);
+   wxString extension = wxT(".csp");
+   wxString fName;
    bool fileOkay;
 
    do {
       fileOkay = true;
 
-      fName = wxT("*.csp");
       fName = wxFileSelector(_("Open CleanSpeech Preset File:"),
                              path,
-                             fName,       // default file name
-                             defaultExtension,
-                             maskString,
+                             _("*.csp"),       // default file name
+                             extension,
+                             _("CleanSpeech Presets (*.csp)|*.csp"),
                              wxOPEN);
 
       if (fName.empty()) { // if cancel selected
