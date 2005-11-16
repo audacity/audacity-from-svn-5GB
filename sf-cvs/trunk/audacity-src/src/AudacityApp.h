@@ -36,10 +36,10 @@ class AudacityApp:public wxApp {
    virtual int OnExit(void);
 
 //LDA - Until we have a better way to save/restore binary data.
-   float* GetCleanSpeechNoiseGate() { return ms_CleanSpeechNoiseGate; }
-   int    GetCleanSpeechNoiseGateExpectedCount() { return ms_CleanSpeechNoiseGateExpectedCount; }
-   void   SetCleanSpeechNoiseGate(float* pNG) { ms_CleanSpeechNoiseGate = pNG; }
-   void   SetCleanSpeechNoiseGateExpectedCount(int count) { ms_CleanSpeechNoiseGateExpectedCount = count; }
+   float* GetCleanSpeechNoiseGate() { return mCleanSpeechNoiseGate; }
+   int    GetCleanSpeechNoiseGateExpectedCount() { return mCleanSpeechNoiseGateExpectedCount; }
+   void   SetCleanSpeechNoiseGate(float* pNG) { mCleanSpeechNoiseGate = pNG; }
+   void   SetCleanSpeechNoiseGateExpectedCount(int count) { mCleanSpeechNoiseGateExpectedCount = count; }
 
    virtual int FilterEvent(wxEvent& event);
 
@@ -106,13 +106,19 @@ class AudacityApp:public wxApp {
    bool CreateSingleInstanceChecker(wxString dir);
 
 //LDA - Until we have a better way to save/restore binary data.
+//      ToDo: ... look into how wxConfig works.
+//      ToDo: NoiseGate is an array of 1024 floats that is the "persistent result" 
+//            of Step-1 of NoiseRemoval. Not sure if different size if 
+//            other than 256 FFT size???
+   float* mCleanSpeechNoiseGate;
+   int    mCleanSpeechNoiseGateExpectedCount;
    bool InitCleanSpeech();
-   float* ms_CleanSpeechNoiseGate;
-   int    ms_CleanSpeechNoiseGateExpectedCount;
 
-//LDA - Keep track of where Presets are stored
-   wxString mAppHomeDir; //lda
-   wxString mPresetsDir; //lda
+//LDA - Keep track of where Presets are stored ... for app, not just project
+//      ... ToDo: flawed for Linux/unix with restricted end-user privilege
+//      ....      depends on whether [AudacityDir]\presets can be written
+   wxString mAppHomeDir;
+   wxString mPresetsDir;
 
  public:
     DECLARE_EVENT_TABLE()

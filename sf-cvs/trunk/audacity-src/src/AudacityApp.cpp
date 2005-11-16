@@ -377,8 +377,7 @@ bool AudacityApp::OnInit()
    //
 
    wxString home = wxGetHomeDir();
-   mAppHomeDir = home; //lda
-//   mPresetsDir = gPrefs->Read("/Directories/PresetsDir", mAppHomeDir);
+   mAppHomeDir = home;
 
    // On Unix systems, the default temp dir is in /tmp.
    // Search path (in this order):
