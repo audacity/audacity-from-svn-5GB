@@ -1383,31 +1383,39 @@ bool AudacityProject::IsActive()
 
 /// FlowLayout places toolbars and returns the number of the first unplaced toolbar.
 /// This function calls itself recursively to fill-in space if possible.
+///  @param cnt - number of toolbars.
+///  @param boxen - array of wxRects where size adjustments will be done.
+///  @param i - the index of the first toolbar to place.
 ///  @param i - the index of the first toolbar to place.
 ///  @param x - top left x of region to place toolbars in.
 ///  @param y - top left y of region to place toolbars in.
 ///  @param width  - width  of region to palce toolbars in.
 ///  @param height - height of region to palce toolbars in.
-int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
+int AudacityProject::FlowLayout( int cnt, wxRect boxen[], int i, int x, int y, int width, int height )
 {
    int lastToolBarInRow;
 
-//   wxLogDebug(wxT("FlowLayout( i=%i, x=%i, y=%i, width=%i, height=%i"),i,x,y,width,height );
-   while( true) {
-
+   while( true )
+   {
       wxSize s;
+      wxPoint p;
       bool bFinishedSection;
       // IF no more toolbars, THEN finished.
-      if( i >= (int)mToolBarArray.GetCount() )
-         bFinishedSection=true;
+      if( i >= cnt )
+      {
+         bFinishedSection = true;
+      }
       // ELSE IF not enough space, THEN finished.
-      else {
-         s = mToolBarArray[i]->GetIdealSize();
-         bFinishedSection = ( (s.GetWidth()+ grabberWidth) > width) || ( s.GetHeight() > height);
+      else
+      {
+         s = mToolBarArray[ i ]->GetIdealSize();
+         bFinishedSection = ( ( s.GetWidth()+ grabberWidth ) > width ) ||
+                              ( s.GetHeight() > height );
       }
 
       //IF finished, THEN (may adjust last toolbar size) and return.
-      if( bFinishedSection ) {
+      if( bFinishedSection )
+      {
          // ---- Start-height-adjustment
          // JKC: The next bit of logic adjust toolbar height and is purest HACKery.
          // The problem is we don't want the darker gray background to show,
@@ -1419,49 +1427,62 @@ int AudacityProject::FlowLayout( int i, int x, int y, int width, int height )
          // and there is unused height in that section.
          // One crazy 'feature' of the code here is that the same toolbar
          // may get its height adjusted more than once.
-         if((x>0) && ( i>0 )){
-            int barX, barY;
-            int barWidth, barHeight;
-            mToolBarArray[i-1]->GetPosition( &barX, &barY );
-            mToolBarArray[i-1]->GetSize( &barWidth, &barHeight );
-            mToolBarArray[i-1]->SetSize( barWidth,  barHeight + height +extraSpace);
-//            wxLogDebug(wxT("a: At %i,%i for %i Toolbar %i has adjusted height %i"), x,y,barY, i-1, barHeight + height+extraSpace );
+         if( ( x > 0 ) && ( i > 0 ) )
+         {
+            int barH = boxen[ i - 1 ].GetHeight() + height + extraSpace;
+
+            boxen[ i - 1 ].SetHeight( barH );
+
             // This adjusts the height of the preceding toolbar as well, provided it has the same y position.
-            if( i>1 ){
-               int bar2X, bar2Y;
-               mToolBarArray[i-2]->GetPosition( &bar2X, &bar2Y );
-               if( bar2Y == barY ){
-                  int dummy;
-                  mToolBarArray[i-2]->GetIdealSize( &barWidth, &dummy );
-                  mToolBarArray[i-2]->SetSize( barWidth,  barHeight + height+extraSpace);
-//                  wxLogDebug(wxT("b: At %i,%i for %i Toolbar %i has adjusted height %i"), x,y,bar2Y, i-2, barHeight + height + extraSpace );
+            if( i > 1 )
+            {
+               if( boxen[ i - 2 ].GetTop() == boxen[ i - 1 ].GetTop() )
+               {
+                  boxen[ i - 2 ].SetWidth( mToolBarArray[ i - 2 ]->GetIdealSize().GetWidth() );
+                  boxen[ i - 2 ].SetHeight( barH );
                }
             }
          }
+
          // ---- End-height-adjustment
          return i; //return the index of the first unplaced toolbar.
       }
 
       // Thank goodness, there is room for the toolbar!
       // So, place this tool bar.
-      mToolBarArray[i]->SetSize(x+grabberWidth,y,s.GetWidth(),s.GetHeight());
+      boxen[ i ].SetX( x + grabberWidth );
+      boxen[ i ].SetY( y );
+      boxen[ i ].SetSize( s );
+
       // Move on to next toolbar and attempt to place it in the space to the right 
       // of the one just placed.
       lastToolBarInRow = i;
-      i++;
+
       // Here comes a recursive call, doing layout in a smaller region to the right.
-      i = FlowLayout( i, x+grabberWidth+s.GetWidth(), y, 
-            width - (grabberWidth+s.GetWidth()), s.GetHeight());
+      i = FlowLayout( cnt,
+                      boxen,
+                      i + 1,
+                      x + grabberWidth + s.GetWidth(),
+                      y, 
+                      width - ( grabberWidth + s.GetWidth() ),
+                      s.GetHeight() );
+
       // Adjust the width of the last toolbar in each row to take up the remaining area.
-      if( i==(lastToolBarInRow+1)){
-         mToolBarArray[lastToolBarInRow]->SetSize(x+grabberWidth,y,width-grabberWidth, s.GetHeight());
+      if( i == ( lastToolBarInRow + 1 ) )
+      {
+         boxen[ lastToolBarInRow ].SetX( x + grabberWidth );
+         boxen[ lastToolBarInRow ].SetY( y );
+         boxen[ lastToolBarInRow ].SetWidth( width - grabberWidth );
+         boxen[ lastToolBarInRow ].SetHeight( s.GetHeight() );
       }
 
-      y+=s.GetHeight()+extraSpace;
-      height-=s.GetHeight()+extraSpace;
+      y += s.GetHeight() + extraSpace;
+      height -= s.GetHeight() + extraSpace;
+
       // mTotalToolBarHeight will end up with the next free y position.
       mTotalToolBarHeight = y;
    }
+
    return i;
 }
 
@@ -1488,20 +1509,40 @@ void AudacityProject::LayoutToolBars()
    //Get the size of the current project window
    int width, height;
    GetControlToolBar()->ShowCleanSpeechButton( mCleanSpeechMode );
-   GetSize(&width, &height);
+   GetSize( &width, &height );
    mTotalToolBarHeight = extraSpace;
 
-// wxLogDebug(wxT("Toolbar Layout...") );
    // Start from coordinate (0,extraspace) to avoid drawing over the 
    // extra line under the menu bar in windoze.
-   int nPlaced=FlowLayout( 0, 0, extraSpace, width, height );
+   int i;
+   int cnt = mToolBarArray.GetCount();
+   wxRect *boxen = new wxRect[ cnt ];
 
-   // FlowLayout will fail if any of the toolbars is too wide 
+   // Gather the initial rectangle coordinates
+   for (i = 0; i < cnt; i++)
+   {
+      boxen[ i ] = mToolBarArray[ i ]->GetRect();
+   }
+
+   // FlowLayout will fail if any of the toolbars are too wide 
    // for the window.
    // IF we couldn't place all toolbars using flow layout, 
    // THEN use BoxLayout.
-   if( nPlaced < (int)mToolBarArray.GetCount())
+   if( FlowLayout( cnt, boxen, 0, 0, extraSpace, width, height ) == cnt )
+   {
+      for (i = 0; i < cnt; i++)
+      {
+         mToolBarArray[ i ]->SetSize( boxen[ i ].GetX(),
+                                      boxen[ i ].GetY(),
+                                      boxen[ i ].GetWidth(),
+                                      boxen[ i ].GetHeight() );
+      }
+   }
+   else
+   {
       BoxLayout( width );
+   }
+
 }
 
 void AudacityProject::LayoutProject()

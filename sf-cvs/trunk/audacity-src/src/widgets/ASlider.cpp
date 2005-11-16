@@ -28,6 +28,7 @@
 #include <wx/sizer.h>
 #include <wx/button.h>
 #include <wx/statline.h>
+#include <wx/sizer.h>
 
 
 #if defined(__WXMSW__) && !defined(__CYGWIN__)
@@ -169,59 +170,53 @@ void TipPanel::OnPaint(wxPaintEvent& event)
 ///
 ///SliderDialog
 ///
-
+#define ID_SLIDER 10000
 BEGIN_EVENT_TABLE(SliderDialog, wxDialog)
-   EVT_MOUSE_EVENTS(SliderDialog::OnMouseEvent)
+   EVT_COMMAND(ID_SLIDER,wxEVT_COMMAND_SLIDER_UPDATED,SliderDialog::OnSlider)
    EVT_TEXT_ENTER(SLIDER_DIALOG_TEXTCTRL,SliderDialog::OnEnter)
    EVT_TEXT(SLIDER_DIALOG_TEXTCTRL,SliderDialog::OnKeyEvent)
-   EVT_PAINT(SliderDialog::OnPaint)
-   EVT_BUTTON(wxID_OK,SliderDialog::OnOK)
-   EVT_BUTTON(wxID_CANCEL,SliderDialog::OnCancel)
 END_EVENT_TABLE()
    ;
-#define SLIDER_DIALOG_WIDTH 205
-#define SLIDER_DIALOG_HEIGHT 100
+
 SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                            const wxString & title, 
                            wxPoint position,
                            wxSize size,
                            int style, 
                            float value):
-   wxDialog(NULL,id,title, position,wxSize(SLIDER_DIALOG_WIDTH, SLIDER_DIALOG_HEIGHT))
+   wxDialog(NULL,id,title,position)
 {
-   
    wxBeginBusyCursor();
-   wxString * dummy = new wxString(wxString::Format(wxT("%2.2f"),value));
 
-   //Keep track of the height
-   int h = 1;
+   //Use a vertical sizer
+   wxBoxSizer * vs = new wxBoxSizer(wxVERTICAL);
+   
    //Add the text
-
-   int w = 0;
-   w =  (SLIDER_DIALOG_WIDTH - size.GetWidth())/2;
+   wxString * dummy = new wxString(wxString::Format(wxT("%2.2f"),value));
    mTextCtrl = new wxTextCtrl(this,SLIDER_DIALOG_TEXTCTRL,*dummy,
-                              wxPoint(w,h),
-                              size,
+                              wxDefaultPosition,
+                              wxDefaultSize,
                               wxTE_PROCESS_ENTER, 
                               wxTextValidator(wxFILTER_NUMERIC,dummy));
+   vs->Add(mTextCtrl,0,wxEXPAND|wxALL,5);
 
-   h+= size.GetHeight()+1;
-
-  //Add a slider 
-   mSlider = new LWSlider(this, title,wxPoint(w,h),size,style);
-   mSlider->Set(value);
-   mSlider->SetId(id);
+   //Add a slider 
+   mSlider = new ASlider(this,ID_SLIDER,title,wxDefaultPosition,size,style);
+   vs->Add(mSlider,wxEXPAND|wxLEFT|wxRIGHT, 5 );
    
-   mLastSliderPos = value;
-
-   h+= size.GetHeight()+1;
-
-   //create buttons 
-   mOK =     new  wxButton(this, wxID_OK,_("OK"),         wxPoint(10,h),wxSize(80,20),wxCLIP_SIBLINGS);
-   mCancel = new  wxButton(this, wxID_CANCEL,_("Cancel"), wxPoint(110,h),wxSize(80,20),wxCLIP_SIBLINGS);
+   //Create buttons 
+   vs->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL),0,wxEXPAND|wxALL,5);
       
+   //lay it out
+   SetAutoLayout(true);
+   SetSizer(vs);
+   vs->SetSizeHints(this);
+   vs->Fit(this);
+
+   mTextCtrl->SetSelection(-1,-1);
    mTextCtrl->SetFocus();
-   mIsTextEditing = false;
+   mSlider->Set(value);
+
    wxEndBusyCursor();
 }
 
@@ -229,39 +224,14 @@ SliderDialog::~SliderDialog()
 {
    delete mSlider;
    delete mTextCtrl;
-   delete mOK;
-   delete mCancel;
 }
 
 
-void SliderDialog::OnPaint(wxPaintEvent & event)
+void SliderDialog::OnSlider(wxCommandEvent & event)
 {
-   wxPaintDC dc(this);
-   mSlider->OnPaint(dc, false);
-}
+   mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
 
-
-void SliderDialog::OnMouseEvent(wxMouseEvent & event)
-{
-   
-   //Kill any double-clicks right away, to avoid recursive dialogs.
-   if (event.ButtonDClick(1))
-      return;
-
-
-   //Forward dragging and buttondown events tothe slider
-   if(event.Dragging() 
-      || event.ButtonDown(1) 
-      || event.ButtonUp(1)
-      || (event.m_wheelRotation != 0)
-      )
-   {
-      mSlider->OnMouseEvent(event);
-      //update the text control accordingly.
-      mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
-   }
-   wxPaintEvent dummy;
-   OnPaint(dummy);
+   event.Skip(false);
 }
 
 
@@ -272,10 +242,8 @@ void SliderDialog::OnKeyEvent(wxCommandEvent & event)
 }
 
 
-
 void SliderDialog::OnEnter(wxCommandEvent & event)
 {
-
    wxString text = mTextCtrl->GetValue();
    //Convert to a double
    double val=0;
@@ -287,24 +255,9 @@ void SliderDialog::OnEnter(wxCommandEvent & event)
    //Set the text value to the slider's
    mTextCtrl->SetValue(wxString::Format(wxT("%2.2f"),mSlider->Get()));
 
-   wxPaintEvent dummy;
-   //repaint
-   OnPaint(dummy);
-
-   mOK->SetFocus();
-   mIsTextEditing = false;
-
+   OnOK(event);
 }
 
-
-void SliderDialog::OnOK(wxCommandEvent & evt)
-{
-   EndModal(wxID_OK);
-}
-void SliderDialog::OnCancel(wxCommandEvent & evt)
-{
-   EndModal(wxID_CANCEL);
-}
 
 float SliderDialog:: Get()
 {
@@ -684,12 +637,13 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    if (event.ButtonDClick())
       {
          //On a double-click, we should pop up a dialog.
-         SliderDialog * dialog = new SliderDialog(mParent, -1,
-                                                  mName,
-                                                  wxPoint(event.m_x,event.m_y),
-                                                  wxSize(mWidth,mHeight),
-                                                  mStyle,
-                                                  Get());
+         SliderDialog * dialog = 
+            new SliderDialog(mParent, -1,
+                                      mName,
+                                      mParent->ClientToScreen(wxPoint(event.m_x,event.m_y)),
+                                      wxSize(mWidth,mHeight),
+                                      mStyle,
+                                      Get());
 
 
          if(dialog->ShowModal() == wxID_OK)
