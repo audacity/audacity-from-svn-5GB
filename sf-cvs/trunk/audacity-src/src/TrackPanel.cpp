@@ -1386,6 +1386,8 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          int num;
          mCapturedTrack =
             FindTrack(event.m_x, event.m_y, false, false, &r, &num);
+         if (!mCapturedTrack)
+            return;
       }
 
       // Deselect all other tracks and select this one.
@@ -2318,7 +2320,8 @@ void TrackPanel::HandleSampleEditingClick( wxMouseEvent & event )
    if( !IsSampleEditingPossible( event ) )
    {
       mDrawingTrack = NULL;
-      ReleaseMouse();
+      if( HasCapture() )
+         ReleaseMouse();
       return;
    }
 

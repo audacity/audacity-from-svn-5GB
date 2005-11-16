@@ -911,12 +911,14 @@ void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 
 #else
+   DrawBackground(dc, width, height);
 
-   dc.SetBrush(mBackgroundBrush);
-   dc.SetPen(mBackgroundPen);
-   dc.DrawRectangle(0, 0, width, height);
+   //LLL: Replaced with DrawBackground() to fix some coloring problems
+   //dc.SetBrush(mBackgroundBrush);
+   //dc.SetPen(mBackgroundPen);
+   //dc.DrawRectangle(0, 0, width, height);
 
-   dc.SetPen(*wxBLACK_PEN);
+   //dc.SetPen(*wxBLACK_PEN);
 
 #endif
 }

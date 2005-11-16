@@ -251,7 +251,7 @@ class AudacityProject:public wxFrame,
 
  private:
    void DecorateToolBar( wxPaintDC & dc, int iToolBar );
-   int FlowLayout( int i, int x, int y, int width, int height );
+   int FlowLayout( int cnt, wxRect boxen[], int i, int x, int y, int width, int height );
    void BoxLayout( int width );
    int GetGrabberFromEvent(wxMouseEvent & event);
  public:

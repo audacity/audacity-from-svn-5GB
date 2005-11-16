@@ -207,23 +207,15 @@ class SliderDialog: public wxDialog
                 float value);
    ~SliderDialog();
    
-   void OnMouseEvent(wxMouseEvent &event);
-   void OnPaint(wxPaintEvent &event);
+   void OnSlider(wxCommandEvent &event);
    void OnKeyEvent(wxCommandEvent &event);
    void OnEnter(wxCommandEvent & event);
-   void OnOK(wxCommandEvent & evt);
-   void OnCancel(wxCommandEvent & evt);
    float Get();
    
  private:
    
-   bool mIsTextEditing;  //are we editing the the text right now?
-   float mLastSliderPos; 
-   
-   LWSlider * mSlider;
+   ASlider * mSlider;
    wxTextCtrl * mTextCtrl;
-   wxButton * mOK;
-   wxButton * mCancel;
      
  public:
    DECLARE_EVENT_TABLE()
