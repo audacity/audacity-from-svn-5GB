@@ -377,6 +377,8 @@ bool AudacityApp::OnInit()
    //
 
    wxString home = wxGetHomeDir();
+   mAppHomeDir = home; //lda
+//   mPresetsDir = gPrefs->Read("/Directories/PresetsDir", mAppHomeDir);
 
    // On Unix systems, the default temp dir is in /tmp.
    // Search path (in this order):
@@ -508,6 +510,8 @@ bool AudacityApp::OnInit()
    }
 
    // More initialization
+   InitCleanSpeech();
+
    InitDitherers();
    InitAudioIO();
 
@@ -703,6 +707,58 @@ bool AudacityApp::OnInit()
    return TRUE;
 }
 
+bool AudacityApp::InitCleanSpeech()
+{
+   wxString cwd = FROMFILENAME(::wxGetCwd());
+   wxString presetsFromPrefs = gPrefs->Read(wxT("/Directories/PresetsDir"), wxT(""));
+   wxString presets = wxT("");
+
+   #ifdef __WXGTK__
+   if (presetsFromPrefs.GetChar(0) != wxT('/'))
+      presetsFromPrefs = wxT("");
+   #endif
+
+   #ifdef __WXMSW__
+   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   #else
+   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   #endif
+
+   // Stop wxWindows from printing its own error messages (not used ... does this really do anything?)
+   wxLogNull logNo;
+
+   // Try temp dir that was stored in prefs first
+   if (presetsFromPrefs != wxT("")) {
+      if (wxDirExists(FILENAME(presetsFromPrefs)))
+         presets = presetsFromPrefs;
+      else if (wxMkdir(FILENAME(presetsFromPrefs)))
+         presets = presetsFromPrefs;
+   }
+
+   // If that didn't work, try the default location
+   if ((presets == wxT("")) && (presetsDefaultLoc != wxT(""))) {
+      if (wxDirExists(FILENAME(presetsDefaultLoc)))
+         presets = presetsDefaultLoc;
+      else if (wxMkdir(FILENAME(presetsDefaultLoc)))
+         presets = presetsDefaultLoc;
+   }
+
+   if (presets == wxT("")) {
+      // Failed
+      wxMessageBox(_("Audacity could not find a place to store\n.csp CleanSpeech preset files\nAudacity is now going to exit. \nInstallation may be corrupt."));
+      return false;
+   }
+
+   // The permissions don't always seem to be set on
+   // some platforms.  Hopefully this fixes it...
+   #ifdef __UNIX__
+   chmod(FILENAME(presets).fn_str(), 0755);
+   #endif
+
+   gPrefs->Write(wxT("/Directories/PresetsDir"), presets);
+   return true;
+}
+
 bool AudacityApp::InitTempDir()
 {
    // We need to find a temp directory location.
@@ -724,7 +780,7 @@ bool AudacityApp::InitTempDir()
    // Try temp dir that was stored in prefs first
 
    if (tempFromPrefs != wxT("")) {
-      if (wxPathExists(FILENAME(tempFromPrefs)))
+      if (wxDirExists(FILENAME(tempFromPrefs)))
          temp = tempFromPrefs;
       else if (wxMkdir(FILENAME(tempFromPrefs)))
          temp = tempFromPrefs;
@@ -733,7 +789,7 @@ bool AudacityApp::InitTempDir()
    // If that didn't work, try the default location
 
    if (temp==wxT("") && tempDefaultLoc != wxT("")) {
-      if (wxPathExists(FILENAME(tempDefaultLoc)))
+      if (wxDirExists(FILENAME(tempDefaultLoc)))
          temp = tempDefaultLoc;
       else if (wxMkdir(FILENAME(tempDefaultLoc)))
          temp = tempDefaultLoc;

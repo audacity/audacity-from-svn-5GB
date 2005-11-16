@@ -106,8 +106,13 @@ class AudacityApp:public wxApp {
    bool CreateSingleInstanceChecker(wxString dir);
 
 //LDA - Until we have a better way to save/restore binary data.
+   bool InitCleanSpeech();
    float* ms_CleanSpeechNoiseGate;
    int    ms_CleanSpeechNoiseGateExpectedCount;
+
+//LDA - Keep track of where Presets are stored
+   wxString mAppHomeDir; //lda
+   wxString mPresetsDir; //lda
 
  public:
     DECLARE_EVENT_TABLE()
