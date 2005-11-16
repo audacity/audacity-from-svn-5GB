@@ -273,6 +273,13 @@ void TranscriptionToolBar::MakeButtons()
 
    mSensitivitySlider->Set(.5);
 
+   delete upImage;
+   delete downImage;
+   delete hiliteImage;
+   delete upOriginal;
+   delete downOriginal;
+   delete hiliteOriginal;
+
 }
   
 
