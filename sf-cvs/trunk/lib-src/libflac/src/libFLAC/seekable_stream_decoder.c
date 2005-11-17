@@ -449,7 +449,7 @@ FLAC__SeekableStreamDecoderState FLAC__seekable_stream_decoder_get_state(const F
 	return decoder->protected_->state;
 }
 
-FLAC__SeekableStreamDecoderState FLAC__seekable_stream_decoder_get_stream_decoder_state(const FLAC__SeekableStreamDecoder *decoder)
+FLAC__StreamDecoderState FLAC__seekable_stream_decoder_get_stream_decoder_state(const FLAC__SeekableStreamDecoder *decoder)
 {
 	FLAC__ASSERT(0 != decoder);
 	FLAC__ASSERT(0 != decoder->private_);
