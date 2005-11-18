@@ -33,7 +33,7 @@
 
 <?php printf(_('<h3 id="bugzilla">Bugzilla</h3>
 <p>The Audacity developers use <a href="%s/">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
-<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href="../contact/">send us e-mail</a> instead.  Thank you!</p>'), $buzilla_url, $bugzilla_url)?>
+<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href="../contact/">send us e-mail</a> instead.  Thank you!</p>'), $bugzilla_url, $bugzilla_url)?>
 
 <?php
   include "../include/footer.inc.php";
