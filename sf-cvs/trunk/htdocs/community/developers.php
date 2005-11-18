@@ -8,6 +8,8 @@
   $pageId = "developers";
   $pageTitle = _("Developers");
   include "../include/header.inc.php";
+
+  $bugzilla_url = "http://limpet.net/audacity/bugzilla";
 ?>
 
 <h2><?=$pageTitle?></h2>
@@ -29,9 +31,9 @@
 <p>For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.</p>
 <p>See the source code page for <a href="../download/source#instructions">compilation instructions</a>.</p>')?>
 
-<?=_('<h3 id="bugzilla">Bugzilla</h3>
-<p>The Audacity developers use <a href="http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
-<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href="../contact/">send us e-mail</a> instead.  Thank you!</p>')?>
+<?php printf(_('<h3 id="bugzilla">Bugzilla</h3>
+<p>The Audacity developers use <a href="%s/">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href="%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">open bugs</a> if you are looking for something to work on.</p>
+<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href="../contact/">send us e-mail</a> instead.  Thank you!</p>'), $buzilla_url, $bugzilla_url)?>
 
 <?php
   include "../include/footer.inc.php";
