@@ -248,7 +248,7 @@ ToolBar * ToolBarStub::GetToolBar()
 /// to instantiate the initial parameters of the toolbar.
 ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
       wxSize & size, ToolBarStub * tbs) : 
-   wxWindow(parent, id, pos, size),
+   wxWindow(parent, id, pos, size, wxFULL_REPAINT_ON_RESIZE),
    mToolBarStub(tbs)
 {
    //Set some default values that should be overridden
