@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-10-21 01:19-0700\n"
-"PO-Revision-Date: 2005-11-01 11:46+0300\n"
+"PO-Revision-Date: 2005-11-20 17:47+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -106,7 +106,7 @@ msgstr "&Всё\tCtrl+A"
 
 #: ../src/Menus.cpp:494
 msgid "&Analyze"
-msgstr "Анализ (&A)"
+msgstr "&Анализ"
 
 #: ../src/Menus.cpp:145
 msgid "&Close\tCtrl+W"
@@ -126,7 +126,7 @@ msgstr "&Удалить\tCtrl+K"
 
 #: ../src/Menus.cpp:227
 msgid "&Edit"
-msgstr "Правка (&E)"
+msgstr "&Правка"
 
 #: ../src/Menus.cpp:386
 msgid "&Edit ID3 Tags..."
@@ -144,7 +144,7 @@ msgstr "&Экспортировать выделенное как %s..."
 
 #: ../src/Menus.cpp:139
 msgid "&File"
-msgstr "Файл (&F)"
+msgstr "&Файл"
 
 #: ../src/Menus.cpp:354
 msgid "&Fit in Window\tCtrl+F"
@@ -152,12 +152,12 @@ msgstr "&Уместить в окне\tCtrl+F"
 
 #: ../src/Menus.cpp:441
 msgid "&Generate"
-msgstr "Создание (&G)"
+msgstr "Соз&дание"
 
 #. i18n-hint: The name of the Help menu
 #: ../src/Menus.cpp:524 ../src/Menus.cpp:540
 msgid "&Help"
-msgstr "&?"
+msgstr "&Справка"
 
 #: ../src/Menus.cpp:364
 msgid "&History..."
@@ -189,7 +189,7 @@ msgstr "&Настроить...\tCtrl+P"
 
 #: ../src/Menus.cpp:379
 msgid "&Project"
-msgstr "Проект (&P)"
+msgstr "Пр&оект"
 
 #: ../src/Menus.cpp:388
 msgid "&Quick Mix"
@@ -231,7 +231,7 @@ msgstr "&Отменить операцию \"%s\""
 
 #: ../src/Menus.cpp:345
 msgid "&View"
-msgstr "Вид (&V)"
+msgstr "&Вид"
 
 #: ../src/Menus.cpp:356
 msgid "&Zoom to Selection\tCtrl+E"
@@ -1659,7 +1659,7 @@ msgstr "Правка ID3-тегов для MP3-файла"
 
 #: ../src/Menus.cpp:464
 msgid "Effe&ct"
-msgstr "Эффекты (&T)"
+msgstr "Эффек&ты"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:452
 msgid "Effect Settings"
