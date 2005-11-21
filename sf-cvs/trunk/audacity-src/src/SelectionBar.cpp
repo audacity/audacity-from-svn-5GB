@@ -131,23 +131,36 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    UpdateRates(); // Must be done _after_ setting value on mRateBox!
 
    mainSizer->Add(mRateBox, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
+
+#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
+   mainSizer->Add( 1, 1 );
+#else
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
                                    wxLI_VERTICAL),
                   0, wxEXPAND | wxALL, 1);
+#endif
 
    mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, 44100.0);
    mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
+#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
+   mainSizer->Add( 1, 1 );
+#else
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
                                    wxLI_VERTICAL),
                   0, wxEXPAND | wxALL, 1);
+#endif
 
    mRightTime = new TimeTextCtrl(this, OnRightTimeID, format, 0.0, 44100.0);
    mainSizer->Add(mRightTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
+#if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
+   mainSizer->Add( 1, 1 );
+#else
    mainSizer->Add(new wxStaticLine(this, -1, wxDefaultPosition, wxDefaultSize,
                                    wxLI_VERTICAL),
                   0, wxEXPAND | wxALL, 1);
+#endif
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, 44100.0);
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
