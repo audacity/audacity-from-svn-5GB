@@ -3537,9 +3537,9 @@ void AudacityProject::OnExportCleanSpeechPresets()
 
       fName = wxFileSelector(_("Save CleanSpeech Preset File As:"),
                         path,
-                        _("*.csp"),       // default file extension
+                        wxT("*.csp"),       // default file extension
                         extension,
-						_("CleanSpeech Presets (*.csp)|*.csp"),
+                        _("CleanSpeech Presets (*.csp)|*.csp"),
                         wxSAVE | wxOVERWRITE_PROMPT);
 
       if (fName.empty()) { // if cancel selected

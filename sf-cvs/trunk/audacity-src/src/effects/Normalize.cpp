@@ -36,8 +36,10 @@ static double gFrameSum; //lda odd ... having this as member var crashed on exit
 
 bool EffectNormalize::Init()
 {
-   mGain = true;
-   mDC = true;
+   int boolProxy = gPrefs->Read(wxT("/CsPresets/Norm_AmpDbGain"), 1);
+   mGain = (boolProxy == 1);
+   boolProxy = gPrefs->Read(wxT("/CsPresets/Norm_RemoveDcOffset"), 1);
+   mDC = (boolProxy == 1);
    return true;
 }
 
@@ -84,6 +86,8 @@ bool EffectNormalize::PromptUser()
 
    mGain = dlog.mGain;
    mDC = dlog.mDC;
+   gPrefs->Write(wxT("/CsPresets/Norm_AmpDbGain"), mGain);
+   gPrefs->Write(wxT("/CsPresets/Norm_RemoveDcOffset"), mDC);
 
    return true;
 }
