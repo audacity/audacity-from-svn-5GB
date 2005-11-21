@@ -239,7 +239,7 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
 
    bool rc;
    long prevBitRate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
-   gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), 128);
+   gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
    rc = ::ExportMP3(project, false, Name, false, 0.0, endTime);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), prevBitRate);
    return rc;
@@ -279,10 +279,10 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       return true;
    } else if (command == wxT("Save Hq Master1")){
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterBefore_"), false);
-      return WriteMp3File( filename, 128 );
+      return WriteMp3File( filename, 56 );
    } else if (command == wxT("Save Hq Master2")){
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterAfter_"), false);
-      return WriteMp3File ( filename, 128 );
+      return WriteMp3File ( filename, 56 );
    } else if (command == wxT("Stereo To Mono")){
       // StereoToMono is an effect masquerading as a menu item.
       Effect * f=GetEffectFromCommandName( _("Stereo To Mono") );
