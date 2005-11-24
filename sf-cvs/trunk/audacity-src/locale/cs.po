@@ -6,23 +6,28 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-17 00:36+0200\n"
-"PO-Revision-Date: 2004-02-16 11:23+0100\n"
+"POT-Creation-Date: 2005-11-24 13:02-0800\n"
+"PO-Revision-Date: 2005-10-21 14:39+0100\n"
 "Last-Translator: Ales Tosovsky <tosovsky@wo.cz>\n"
 "Language-Team: czech team <tosovsky@wo.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 
 #: ../src/effects/ClickRemoval.cpp:379
+#, fuzzy
 msgid ""
 "\n"
 "\n"
 "Max spike width (higher is more sensitive)"
 msgstr ""
+"\n"
+"Maximální šířka špičky (větší je citlivější)"
 
-#: ../src/Menus.cpp:3668
+#: ../src/Menus.cpp:3703
 msgid ""
 "\n"
 "\n"
@@ -30,10 +35,14 @@ msgid ""
 msgstr ""
 
 #: ../src/effects/ClickRemoval.cpp:358
+#, fuzzy
 msgid ""
 "\n"
 "Select threshold (lower is more sensitive)"
 msgstr ""
+"\n"
+" \n"
+"Nastavit práh (nižší je citlivější)"
 
 #: ../src/widgets/AButton.cpp:181
 msgid " (disabled)"
@@ -53,7 +62,6 @@ msgstr ""
 #  i18n-hint: This refers to a "window function", used in the
 #  Frequency analyze dialog box.
 #. i18n-hint: This refers to a "window function", used in the
-#. Frequency analyze dialog box.
 #: ../src/FreqWindow.cpp:167
 msgid " window"
 msgstr " okno"
@@ -85,8 +93,11 @@ msgid ""
 "\n"
 "It has been removed from the history list."
 msgstr ""
+"%s neexistuje, proto nemůže být otevřen.\n"
+"\n"
+"Záznam byl odstraněn ze seznamu historie."
 
-#: ../src/AudacityApp.cpp:279 ../src/Project.cpp:1845
+#: ../src/AudacityApp.cpp:279 ../src/Project.cpp:1891
 #, c-format
 msgid "%s is already open in another window."
 msgstr "%s je už otevřen v jiném okně."
@@ -95,23 +106,21 @@ msgstr "%s je už otevřen v jiném okně."
 #  when a file needs to be backed up to a different name.  For
 #  example, mysong would become mysong-old1, mysong-old2, etc.
 #. i18n-hint: This is the pattern for filenames that are created
-#. when a file needs to be backed up to a different name.  For
-#. example, mysong would become mysong-old1, mysong-old2, etc.
-#: ../src/DirManager.cpp:978
+#: ../src/DirManager.cpp:968
 #, c-format
 msgid "%s-old%d"
 msgstr "%s-puv%d"
 
-#: ../src/Menus.cpp:601
+#: ../src/Menus.cpp:606
 #, fuzzy
 msgid "&About Audacity CleanSpeech..."
 msgstr "O programu &Audacity..."
 
-#: ../src/Menus.cpp:603
+#: ../src/Menus.cpp:608
 msgid "&About Audacity..."
 msgstr "O programu &Audacity..."
 
-#: ../src/Menus.cpp:335
+#: ../src/Menus.cpp:328
 msgid "&All\tCtrl+A"
 msgstr "Vš&e\tCtrl+A"
 
@@ -123,37 +132,36 @@ msgstr "&Analyzovat"
 msgid "&Close\tCtrl+W"
 msgstr "&Zavřít\tCtrl+W"
 
-#: ../src/Menus.cpp:411
+#: ../src/Menus.cpp:415
 msgid "&Collapse All Tracks\tCtrl+Shift+C"
 msgstr ""
 
-#: ../src/Menus.cpp:598
-#, fuzzy
+#: ../src/Menus.cpp:603
 msgid "&Contents..."
-msgstr "Tón..."
+msgstr "&Obsah..."
 
-#: ../src/Menus.cpp:301
+#: ../src/Menus.cpp:294
 msgid "&Copy\tCtrl+C"
 msgstr "&Kopírovat\tCtrl+C"
 
-#: ../src/Menus.cpp:308
+#: ../src/Menus.cpp:301
 msgid "&Delete\tCtrl+K"
 msgstr "&Smazat\tCtrl+K"
 
-#: ../src/Menus.cpp:274
+#: ../src/Menus.cpp:267
 msgid "&Edit"
 msgstr "Úpr&avy"
 
-#: ../src/Menus.cpp:329 ../src/Menus.cpp:443
+#: ../src/Menus.cpp:322 ../src/Menus.cpp:443
 msgid "&Edit ID3 Tags..."
 msgstr "&Editovat ID3 tagy..."
 
-#: ../src/Menus.cpp:738
+#: ../src/Menus.cpp:748
 #, c-format
 msgid "&Export As %s..."
 msgstr "&Exportovat jako %s..."
 
-#: ../src/Menus.cpp:741
+#: ../src/Menus.cpp:751
 #, c-format
 msgid "&Export Selection As %s..."
 msgstr "&Exportovat výběr jako %s..."
@@ -162,7 +170,7 @@ msgstr "&Exportovat výběr jako %s..."
 msgid "&File"
 msgstr "&Soubor"
 
-#: ../src/Menus.cpp:406
+#: ../src/Menus.cpp:410
 msgid "&Fit in Window\tCtrl+F"
 msgstr "&Přizpůsobit oknu\tCtrl+F"
 
@@ -170,11 +178,11 @@ msgstr "&Přizpůsobit oknu\tCtrl+F"
 msgid "&Generate"
 msgstr "&Generovat"
 
-#: ../src/Menus.cpp:593 ../src/Menus.cpp:596
+#: ../src/Menus.cpp:598 ../src/Menus.cpp:601
 msgid "&Help"
 msgstr "&Nápověda"
 
-#: ../src/Menus.cpp:420
+#: ../src/Menus.cpp:424
 msgid "&History..."
 msgstr "&Historie"
 
@@ -182,10 +190,10 @@ msgstr "&Historie"
 msgid "&Import Audio...\tCtrl+I"
 msgstr "&Importovat zvuk...\tCtrl+I"
 
-#: ../src/Menus.cpp:317
+#: ../src/Menus.cpp:310
 #, fuzzy
 msgid "&Join\tCtrl+J"
-msgstr "&Zpět\tCtrl+Z"
+msgstr "&Kopírovat\tCtrl+C"
 
 #: ../src/Menus.cpp:150
 msgid "&New\tCtrl+N"
@@ -195,41 +203,39 @@ msgstr "&Nový\tCtrl+N"
 msgid "&Open...\tCtrl+O"
 msgstr "&Otevřít...\tCtrl+O"
 
-#: ../src/Menus.cpp:302
+#: ../src/Menus.cpp:295
 msgid "&Paste\tCtrl+V"
 msgstr "&Vložit\tCtrl+V"
 
-#: ../src/Menus.cpp:421
+#: ../src/Menus.cpp:565
 #, fuzzy
 msgid "&Plot Spectrum..."
 msgstr "Vykreslit s&pektrum"
 
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
-#: ../src/AudacityApp.cpp:529 ../src/Menus.cpp:248
+#: ../src/AudacityApp.cpp:532 ../src/Menus.cpp:387
 #, fuzzy
 msgid "&Preferences...\tCtrl+,"
-msgstr "&Nastavení...\tCtrl+P"
+msgstr "N&astavení...\tCtrl+P"
 
-#. i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P
-#: ../src/Menus.cpp:251
+#: ../src/Menus.cpp:391
 msgid "&Preferences...\tCtrl+P"
-msgstr "&Nastavení...\tCtrl+P"
+msgstr "N&astavení...\tCtrl+P"
 
 #: ../src/Menus.cpp:436
 msgid "&Project"
 msgstr "&Projekt"
 
-#: ../src/Menus.cpp:286
+#: ../src/Menus.cpp:279
 msgid "&Redo"
 msgstr "&Znovu"
 
-#: ../src/Menus.cpp:766
+#: ../src/Menus.cpp:776
 #, c-format
 msgid "&Redo %s"
 msgstr "&Znovu %s"
 
-#: ../src/Menus.cpp:609
+#: ../src/Menus.cpp:614
 msgid "&Run Benchmark..."
 msgstr "Spustit benchma&rk..."
 
@@ -237,19 +243,19 @@ msgstr "Spustit benchma&rk..."
 msgid "&Save Project\tCtrl+S"
 msgstr "&Uložit projekt\tCtrl+S"
 
-#: ../src/Menus.cpp:310
+#: ../src/Menus.cpp:303
 msgid "&Silence\tCtrl+L"
 msgstr "&Ticho\tCtrl+L"
 
-#: ../src/Menus.cpp:306
+#: ../src/Menus.cpp:299
 msgid "&Trim\tCtrl+T"
 msgstr "Oříznou&t\tCtrl+T"
 
-#: ../src/Menus.cpp:278
+#: ../src/Menus.cpp:271
 msgid "&Undo\tCtrl+Z"
 msgstr "&Zpět\tCtrl+Z"
 
-#: ../src/Menus.cpp:753
+#: ../src/Menus.cpp:763
 #, c-format
 msgid "&Undo %s"
 msgstr "&Zpět %s"
@@ -258,23 +264,23 @@ msgstr "&Zpět %s"
 msgid "&Upload File..."
 msgstr ""
 
-#: ../src/Menus.cpp:397
+#: ../src/Menus.cpp:401
 msgid "&View"
 msgstr "&Zobrazit"
 
-#: ../src/Menus.cpp:408
+#: ../src/Menus.cpp:412
 msgid "&Zoom to Selection\tCtrl+E"
 msgstr "&Zvětšit podle výběru\tCtrl+E"
 
-#: ../src/TrackPanel.cpp:4594
+#: ../src/TrackPanel.cpp:4847
 msgid "'left' channel"
 msgstr "Levý kanál"
 
-#: ../src/TrackPanel.cpp:4595
+#: ../src/TrackPanel.cpp:4848
 msgid "'mono'"
 msgstr "mono"
 
-#: ../src/TrackPanel.cpp:4594
+#: ../src/TrackPanel.cpp:4847
 msgid "'right' channel"
 msgstr "Pravý kanál"
 
@@ -300,6 +306,10 @@ msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:152
 msgid "*,01000m060.01000s"
+msgstr ""
+
+#: ../src/Menus.cpp:3623
+msgid "*.csp"
 msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:154
@@ -332,7 +342,7 @@ msgstr "-145 dB (PCM rozsah 24 bitových vzorků)"
 
 #: ../src/prefs/GUIPrefs.cpp:383
 msgid "-36 dB (shallow range for high-amplitude editing)"
-msgstr ""
+msgstr "-36 dB (mělký rozsah pro vysokofrekvenční editaci)"
 
 #: ../src/prefs/GUIPrefs.cpp:385
 msgid "-48 dB (PCM range of 8 bit samples)"
@@ -380,11 +390,11 @@ msgstr "64 - nejširší pásmo"
 msgid "90% to 110%"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:119
+#: ../src/AboutDialog.cpp:186
 msgid "A Free Digital Audio Editor"
 msgstr "Svobodný editor digitálního zvuku"
 
-#: ../src/AboutDialog.cpp:35
+#: ../src/AboutDialog.cpp:100
 msgid "About Audacity..."
 msgstr "O programu Audacity..."
 
@@ -403,9 +413,8 @@ msgid "Add Label"
 msgstr "Vložený popis"
 
 #: ../src/Menus.cpp:495
-#, fuzzy
 msgid "Add Label At Playback Position\tCtrl+M"
-msgstr "Vložit popisku k výběru\tCtrl+B"
+msgstr "Vložit popis na pozici přehrávání\tCtrl+B"
 
 #: ../src/Menus.cpp:494
 msgid "Add Label At Selection\tCtrl+B"
@@ -416,7 +425,7 @@ msgstr "Vložit popisku k výběru\tCtrl+B"
 msgid "Add label at selection"
 msgstr "Vložit popisku k výběru\tCtrl+B"
 
-#: ../src/Menus.cpp:3459
+#: ../src/Menus.cpp:3495
 msgid "Added label"
 msgstr "Vložený popis"
 
@@ -440,19 +449,19 @@ msgstr ""
 msgid "Adjust right selection to previous onset"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4293
+#: ../src/TrackPanel.cpp:4453
 #, fuzzy
 msgid "Adjusted Pan"
 msgstr "Upravená obálka."
 
-#: ../src/TrackPanel.cpp:1624
+#: ../src/TrackPanel.cpp:1634
 msgid "Adjusted envelope."
 msgstr "Upravená obálka."
 
-#: ../src/TrackPanel.cpp:4320
+#: ../src/TrackPanel.cpp:4518
 #, fuzzy
 msgid "Adjusted gain"
-msgstr "Okno pro nastavení:"
+msgstr "Upravená obálka."
 
 #: ../src/effects/AvcCompressor.cpp:588
 msgid "Adjustment Delay:"
@@ -474,7 +483,7 @@ msgstr "Album:"
 msgid "Album:"
 msgstr "Album:"
 
-#: ../src/Menus.cpp:3323
+#: ../src/Menus.cpp:3359
 msgid "Align"
 msgstr "Zarovnat"
 
@@ -518,35 +527,35 @@ msgstr "Zarovnat na konec &výběru"
 msgid "Align with Selection &Start"
 msgstr "Zarovnat na &začátek výběru"
 
-#: ../src/Menus.cpp:3290
+#: ../src/Menus.cpp:3326
 msgid "Aligned"
 msgstr "Zarovnáno"
 
-#: ../src/Menus.cpp:3266
+#: ../src/Menus.cpp:3302
 msgid "Aligned cursor"
 msgstr "Zarovnán kurzor"
 
-#: ../src/Menus.cpp:3278
+#: ../src/Menus.cpp:3314
 msgid "Aligned end with cursor"
 msgstr "Zarovnán konec na kurzor"
 
-#: ../src/Menus.cpp:3286
+#: ../src/Menus.cpp:3322
 msgid "Aligned end with selection end"
 msgstr "Zarovnán konec na konec výběru"
 
-#: ../src/Menus.cpp:3282
+#: ../src/Menus.cpp:3318
 msgid "Aligned end with selection start"
 msgstr "Zarovnán konec na začátek výběru"
 
-#: ../src/Menus.cpp:3274
+#: ../src/Menus.cpp:3310
 msgid "Aligned with selection end"
 msgstr "Zarovnáno na konec výběru"
 
-#: ../src/Menus.cpp:3270
+#: ../src/Menus.cpp:3306
 msgid "Aligned with selection start"
 msgstr "Zarovnáno na začátek výběru"
 
-#: ../src/Menus.cpp:3262
+#: ../src/Menus.cpp:3298
 msgid "Aligned with zero"
 msgstr "Zarovnáno na nulu"
 
@@ -555,7 +564,7 @@ msgstr "Zarovnáno na nulu"
 msgid "All Files (*.*)|*.*"
 msgstr "Všechny soubory (*)|*"
 
-#: ../src/Menus.cpp:3051
+#: ../src/Menus.cpp:3087
 msgid "All files (*)|*"
 msgstr "Všechny soubory (*)|*"
 
@@ -564,7 +573,7 @@ msgstr "Všechny soubory (*)|*"
 msgid "All files (*.*)|*.*"
 msgstr "Všechny soubory (*)|*"
 
-#: ../src/Project.cpp:1822
+#: ../src/Project.cpp:1868
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
@@ -576,14 +585,14 @@ msgstr ""
 "wav)|*.wav|AIFF soubory (*.aif)|*.aif|AU soubory (*.au)|*.au|MP3 soubory (*."
 "mp3)|*.mp3|Ogg Vorbis soubory (*.ogg)|*.ogg|Seznam souborů (*.lof)|*.lof"
 
-#: ../src/Menus.cpp:3016
+#: ../src/Menus.cpp:3052
 msgid ""
 "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Všechny soubory (*.*)|*.*|MIDI soubory (*.mid)|*.mid|Allegro soubory (*.gro)|"
 "*.gro"
 
-#: ../src/Menus.cpp:2941
+#: ../src/Menus.cpp:2977
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|.AIFF files (*.aif)|*.aif|AU "
@@ -594,7 +603,7 @@ msgstr ""
 "aif|AU soubory (*.au)|*.au|MP3 soubory (*.mp3)|*.mp3|Ogg Vorbis soubory (*."
 "ogg)|*.ogg|Seznam souborů (*.lof)|*.lof"
 
-#: ../src/Menus.cpp:3678
+#: ../src/Menus.cpp:3713
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
@@ -606,9 +615,8 @@ msgstr ""
 "ogg)|*.ogg|Seznam souborů (*.lof)|*.lof"
 
 #: ../src/effects/Amplify.cpp:180
-#, fuzzy
 msgid "Allow clipping"
-msgstr "Nepovolit clipping"
+msgstr "Povolit clipping"
 
 #: ../src/effects/ChangeLength.cpp:138
 msgid "Allowed Range: "
@@ -707,27 +715,28 @@ msgstr ""
 "%.0f%%, resonance = %.1f, frekvenční offset = %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:40
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, "
 "%.6lf seconds"
 msgstr ""
-"Použitý efekt: Generovat %s %s wave, frekvence = %.2f Hz, amplituda = %.2f"
+"Použitý efekt: Generovat %s %s wave, frekvence = %.2f Hz, amplituda = %.2f, "
+"%.6lf sekund"
 
 #: ../src/effects/Silence.h:44
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "Použitý efekt: Generovat ticho"
+msgstr "Použitý efekt: Generovat ticho, %.6lf sekund"
 
 #: ../src/effects/Noise.h:31
-#, fuzzy, c-format
+#, c-format
 msgid "Applied effect: Generate White Noise, %.6lf seconds"
-msgstr "Použitý efekt: Generovat bílý šum"
+msgstr "Použitý efekt: Generovat bílý šum, %.6lf sekund"
 
 #: ../src/BatchCommands.cpp:455
 #, fuzzy, c-format
 msgid "Apply %s"
-msgstr "Aplikuji Phaser"
+msgstr "Aplikuji Fázor (Phaser)"
 
 #: ../src/BatchCommands.cpp:450
 #, c-format
@@ -737,10 +746,6 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/effects/Compressor.cpp:473
-msgid "Apply Gain after compressing"
-msgstr "Použít Gain po kompresi"
-
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
 msgstr "Aplikuji kompresi dynamického rozsahu..."
@@ -748,7 +753,7 @@ msgstr "Aplikuji kompresi dynamického rozsahu..."
 #: ../src/effects/Leveller.h:32
 #, fuzzy
 msgid "Applying Leveller..."
-msgstr "Aplikuji Phaser"
+msgstr "Aplikuji Fázor (Phaser)"
 
 #: ../src/effects/nyquist/Nyquist.cpp:215
 msgid "Applying Nyquist Effect..."
@@ -756,12 +761,11 @@ msgstr "Aplikuji Nyquist efekt..."
 
 #: ../src/effects/Phaser.h:42
 msgid "Applying Phaser"
-msgstr "Aplikuji Phaser"
+msgstr "Aplikuji Fázor (Phaser)"
 
 #: ../src/effects/SpikeCleaner.h:31
-#, fuzzy
 msgid "Applying Spike Cleaner..."
-msgstr "Aplikuji Phaser"
+msgstr ""
 
 #: ../src/effects/StereoToMono.h:27
 msgid "Applying Stereo To Mono"
@@ -783,11 +787,11 @@ msgstr "Interpret:"
 msgid "Artist:"
 msgstr "Interpret:"
 
-#: ../src/effects/Compressor.cpp:462
+#: ../src/effects/Compressor.cpp:458
 msgid "Attack Time: "
 msgstr "Délka náběhu:"
 
-#: ../src/effects/Compressor.cpp:536
+#: ../src/effects/Compressor.cpp:532
 #, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Čas náběhu: %.1f secs"
@@ -798,7 +802,7 @@ msgid ""
 "."
 msgstr ""
 
-#: ../src/AboutDialog.cpp:202
+#: ../src/AboutDialog.cpp:225
 msgid "Audacious!"
 msgstr "Hezky!"
 
@@ -820,9 +824,8 @@ msgid "Audacity First Run"
 msgstr "První spuštění Audacity"
 
 #: ../src/MeterToolBar.cpp:53
-#, fuzzy
 msgid "Audacity Meter Toolbar"
-msgstr "Audacity mixovací panel"
+msgstr "Audacity panel ukazatelů"
 
 #: ../src/MixerToolBar.cpp:101
 msgid "Audacity Mixer Toolbar"
@@ -832,21 +835,29 @@ msgstr "Audacity mixovací panel"
 msgid "Audacity Preferences"
 msgstr "Nastavení Audacity"
 
-#: ../src/AudacityApp.cpp:1065
+#: ../src/AudacityApp.cpp:1120
 msgid "Audacity Project Files"
 msgstr "Projektové soubory Audacity"
 
 #: ../src/prefs/GUIPrefs.cpp:360
 #, fuzzy
 msgid "Audacity Tester"
-msgstr "Nastavení Audacity"
+msgstr "Audacity panel ukazatelů"
 
 #: ../src/TranscriptionToolBar.cpp:109
 #, fuzzy
 msgid "Audacity Transcription Toolbar"
 msgstr "Audacity editační panel"
 
-#: ../src/AudacityApp.cpp:744
+#: ../src/AudacityApp.cpp:747
+msgid ""
+"Audacity could not find a place to store\n"
+".csp CleanSpeech preset files\n"
+"Audacity is now going to exit. \n"
+"Installation may be corrupt."
+msgstr ""
+
+#: ../src/AudacityApp.cpp:799
 msgid ""
 "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
@@ -863,9 +874,6 @@ msgstr ""
 "Pokud není komprimovaný, zkuste ho importovat s použitím \"Importovat Raw\""
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
-#. message must be <= 255 characters.  Be brief.
-#. i18n-hint: This message is used on Mac OS 9.  This particular
-#. message must be <= 255 characters.  Be brief.
 #: ../src/export/ExportMP3.cpp:558 ../src/export/ExportMP3.cpp:872
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
@@ -915,21 +923,22 @@ msgstr ""
 "\n"
 "Chcete nyní najít knihovnu LAME?"
 
-#: ../src/DirManager.cpp:496
+#: ../src/DirManager.cpp:488
 #, c-format
 msgid ""
-"Audacity found an orphaned blockfile %s!\n"
+"Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete "
 "project check.\n"
 msgstr ""
 
-#: ../src/DirManager.cpp:274
+#: ../src/DirManager.cpp:270
+#, fuzzy
 msgid ""
-"Audacity found temporary files that were not deleted or saved\n"
-"the last time you used Audacity.\n"
+"Audacity found temporary files that were not deleted or saved \n"
+"the last time you used Audacity. \n"
 "\n"
-"Audacity can't recover them automatically, but if you choose not\n"
-"to delete them, you can recover them manually.\n"
+"Audacity can't recover them automatically, but if you choose not \n"
+"to delete them, you can recover them manually. \n"
 "\n"
 "Delete temporary files?"
 msgstr ""
@@ -941,7 +950,7 @@ msgstr ""
 "\n"
 "Smazat dočasné soubory?"
 
-#: ../src/AboutDialog.cpp:89
+#: ../src/AboutDialog.cpp:156
 #, fuzzy
 msgid ""
 "Audacity is a free program written by a team of volunteer developers around "
@@ -957,11 +966,15 @@ msgstr ""
 "ostatními Unix-like operačními systémy. Starší verze Audacity lze používat "
 "na Mac OS 9."
 
-#: ../src/AudacityApp.cpp:804
+#: ../src/AudacityApp.cpp:859
 msgid "Audacity is already running"
 msgstr "Audacity je již spuštěno"
 
-#: ../src/AudacityApp.cpp:750
+#: ../src/AboutDialog.cpp:202
+msgid "Audacity is based on code from the following projects:"
+msgstr ""
+
+#: ../src/AudacityApp.cpp:805
 #, fuzzy
 msgid ""
 "Audacity is now going to exit. Please launch Audacity again to use the new "
@@ -978,7 +991,7 @@ msgid ""
 "know about this path.  Would you like to help Audacity locate the file now?"
 msgstr ""
 
-#: ../src/AudacityApp.cpp:1064
+#: ../src/AudacityApp.cpp:1119
 msgid ""
 "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
@@ -990,7 +1003,7 @@ msgstr ""
 "\n"
 "Provést asociaci, aby je bylo možno otevírat dvojkliknutím?"
 
-#: ../src/Project.cpp:2524
+#: ../src/Project.cpp:2564
 msgid ""
 "Audacity project files (.aup) let you save everything you're working on "
 "exactly as it\n"
@@ -1010,7 +1023,7 @@ msgstr ""
 "jeden\n"
 "z exportních příkazů."
 
-#: ../src/Project.cpp:2527
+#: ../src/Project.cpp:2567
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Audacity projekty (*.aup)|*.aup"
 
@@ -1023,7 +1036,7 @@ msgstr ""
 "Audacity očekává knihovnu pojmenovanou \"%s\".  Jste si jisti, že chcete "
 "exportovat do MP3 pomocí \"%s\"?"
 
-#: ../src/AudacityApp.cpp:789
+#: ../src/AudacityApp.cpp:844
 msgid ""
 "Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
@@ -1032,8 +1045,14 @@ msgid ""
 "\n"
 "Do you still want to start Audacity?"
 msgstr ""
+"Audacity nemůže zamknout adresář s dočasnými soubory.\n"
+"Adresář je možná používán jinou kopií Audacity.\n"
+"Současný běh dvou kopií Audacity může způsobit\n"
+"ztrátu dat, nebo shození vašeho systému.\n"
+"\n"
+"Chcete i přesto spustit Audacity?"
 
-#: ../src/Project.cpp:1926
+#: ../src/Project.cpp:1972
 msgid ""
 "Audacity was unable to convert an Audacity 1.0 project to the new project "
 "format."
@@ -1041,7 +1060,7 @@ msgstr ""
 "Audacity nedokázalo převést projekt z Audacity 1.0 do nového formátu "
 "projektu."
 
-#: ../src/prefs/PrefsDialog.cpp:86
+#: ../src/prefs/PrefsDialog.cpp:83
 msgid "Audio I/O"
 msgstr "Audio vstup/výstup (I/O)"
 
@@ -1082,25 +1101,27 @@ msgid "Autoscroll while playing"
 msgstr "Automaticky posouvat během přehrávání"
 
 #: ../src/effects/BassBoost.cpp:74
+#, fuzzy
 msgid "BassBoost"
-msgstr "Zdůraznění basů (BassBoost)"
+msgstr "Zdůraznění basů (Bass Boost)"
 
 #: ../src/effects/BassBoost.cpp:291
+#, fuzzy
 msgid "BassBoost by Nasca Octavian Paul"
 msgstr "Zdůraznění basů od Nasca Octavian Paul"
 
 #: ../src/effects/BassBoost.h:42
+#, fuzzy
 msgid "BassBoost..."
-msgstr "Zdůraznění basů.."
+msgstr "Zdůraznění basů..."
 
-#: ../src/prefs/PrefsDialog.cpp:92
+#: ../src/prefs/PrefsDialog.cpp:89
 msgid "Batch"
 msgstr ""
 
 #: ../src/prefs/BatchPrefs.cpp:118
-#, fuzzy
 msgid "Batch Options"
-msgstr "Tlačítka"
+msgstr ""
 
 #: ../src/BatchProcessDialog.cpp:43
 #, fuzzy
@@ -1128,7 +1149,7 @@ msgstr ""
 msgid "Beats per Minute (BPM):   from"
 msgstr "Úderů za minutu (BPM):     Od"
 
-#: ../src/prefs/GUIPrefs.cpp:36 ../src/prefs/BatchPrefs.cpp:68
+#: ../src/prefs/BatchPrefs.cpp:68 ../src/prefs/GUIPrefs.cpp:36
 msgid "Behaviors"
 msgstr ""
 
@@ -1149,7 +1170,6 @@ msgstr "Benchmark"
 #  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:333
 msgid "Big-endian"
 msgstr "Big-endian"
@@ -1183,47 +1203,44 @@ msgstr ""
 msgid "Calibration Results\n"
 msgstr ""
 
-#: ../src/Menus.cpp:772
+#: ../src/Menus.cpp:782
 msgid "Can't Redo"
 msgstr "Nelze opakovat"
 
-#: ../src/Menus.cpp:759
+#: ../src/Menus.cpp:769
 msgid "Can't Undo"
 msgstr "Nelze vrátit"
 
 #: ../src/export/ExportMultiple.cpp:587
-#, fuzzy
 msgid "Can't export multiple files"
-msgstr "Audio nelze exportovat do %s"
+msgstr "Vícenásobný export nelze provést"
 
-#: ../src/Project.cpp:2093
-#, fuzzy
+#: ../src/Project.cpp:2137
 msgid "Can't open project file"
-msgstr "Není možné otevřít soubor projektu."
+msgstr "Není možné otevřít soubor projektu"
 
 #: ../src/effects/VST/VSTEffect.cpp:196
 msgid "Can't process replacing"
 msgstr "Nemohu provést záměnu"
 
-#: ../src/Tags.cpp:735 ../src/effects/VST/VSTEffect.cpp:95
-#: ../src/effects/VST/VSTEffect.cpp:453 ../src/effects/Amplify.cpp:197
+#: ../src/BatchCommandDialog.cpp:98 ../src/BatchProcessDialog.cpp:82
+#: ../src/Tags.cpp:735 ../src/effects/Amplify.cpp:197
 #: ../src/effects/AvcCompressor.cpp:717 ../src/effects/BassBoost.cpp:339
-#: ../src/effects/ChangePitch.cpp:395 ../src/effects/ChangeSpeed.cpp:382
-#: ../src/effects/ChangeTempo.cpp:288 ../src/effects/Compressor.cpp:485
+#: ../src/effects/ChangeLength.cpp:173 ../src/effects/ChangePitch.cpp:395
+#: ../src/effects/ChangeSpeed.cpp:382 ../src/effects/ChangeTempo.cpp:288
+#: ../src/effects/ClickRemoval.cpp:419 ../src/effects/Compressor.cpp:481
 #: ../src/effects/Echo.cpp:249 ../src/effects/Equalization.cpp:755
-#: ../src/effects/Filter.cpp:490 ../src/effects/NoiseRemoval.cpp:597
-#: ../src/effects/Normalize.cpp:310 ../src/effects/Phaser.cpp:587
-#: ../src/effects/Repeat.cpp:259 ../src/effects/Silence.cpp:140
-#: ../src/effects/ToneGen.cpp:333 ../src/effects/Wahwah.cpp:573
-#: ../src/effects/ladspa/LadspaEffect.cpp:496
+#: ../src/effects/Filter.cpp:490 ../src/effects/Leveller.cpp:241
+#: ../src/effects/NoiseRemoval.cpp:597 ../src/effects/Normalize.cpp:314
+#: ../src/effects/Phaser.cpp:587 ../src/effects/Repeat.cpp:259
+#: ../src/effects/Silence.cpp:140 ../src/effects/SpikeCleaner.cpp:171
+#: ../src/effects/ToneGen.cpp:333 ../src/effects/TruncSilence.cpp:264
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
+#: ../src/effects/Wahwah.cpp:573 ../src/effects/ladspa/LadspaEffect.cpp:496
 #: ../src/effects/nyquist/Nyquist.cpp:745
-#: ../src/effects/nyquist/Nyquist.cpp:891 ../src/effects/ChangeLength.cpp:173
-#: ../src/effects/ClickRemoval.cpp:419 ../src/effects/Leveller.cpp:241
-#: ../src/effects/SpikeCleaner.cpp:171 ../src/effects/TruncSilence.cpp:264
-#: ../src/export/ExportMultiple.cpp:815 ../src/import/ImportRaw.cpp:433
-#: ../src/prefs/FileFormatPrefs.cpp:465 ../src/prefs/PrefsDialog.cpp:112
-#: ../src/widgets/ASlider.cpp:221 ../src/BatchCommandDialog.cpp:98
-#: ../src/BatchProcessDialog.cpp:82
+#: ../src/effects/nyquist/Nyquist.cpp:891 ../src/export/ExportMultiple.cpp:815
+#: ../src/import/ImportRaw.cpp:433 ../src/prefs/FileFormatPrefs.cpp:465
+#: ../src/prefs/PrefsDialog.cpp:109
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -1232,7 +1249,7 @@ msgstr "Zrušit"
 msgid "Cannot copy folder: "
 msgstr "Nelze otevřít soubor:"
 
-#: ../src/Menus.cpp:3735
+#: ../src/Menus.cpp:3770
 msgid ""
 "Cannot create directory 'cleaned'. \n"
 "File already exists that is not a directory"
@@ -1249,19 +1266,17 @@ msgstr "Audio nelze exportovat do %s"
 
 #: ../src/effects/PopClick.cpp:70
 msgid "Cannot remove a pop or click at the very beginning of a track."
-msgstr ""
+msgstr "Praskání na úplném začátku stopy nelze odstranit."
 
 #: ../src/effects/PopClick.cpp:65
 msgid "Cannot remove a pop or click longer than one second."
-msgstr ""
+msgstr "Praskání delší než jedna vteřina nelze odstranit."
 
-#: ../src/widgets/ASlider.cpp:647
+#: ../src/widgets/ASlider.cpp:600
 msgid "Center"
 msgstr "Střed"
 
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
 msgstr "Cepstrum"
@@ -1335,23 +1350,23 @@ msgstr "Změnit tempo bez změny ladění"
 msgid "Change Tempo..."
 msgstr "Změnit tempo..."
 
-#: ../src/Menus.cpp:666
+#: ../src/Menus.cpp:674
 msgid "Change gain on first selected track\tShift+G"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4835
+#: ../src/TrackPanel.cpp:5088
 msgid "Change lower speed limit (%) to:"
 msgstr "Změnit dolní limit rychlosti  (%) na:"
 
-#: ../src/Menus.cpp:665
+#: ../src/Menus.cpp:671
 msgid "Change pan on first selected track\tShift+P"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4900
+#: ../src/TrackPanel.cpp:5153
 msgid "Change track name to:"
 msgstr "Přejmenovat stopu na:"
 
-#: ../src/TrackPanel.cpp:4842
+#: ../src/TrackPanel.cpp:5095
 msgid "Change upper speed limit (%) to:"
 msgstr "Změnit horní limit rychlosti  (%) na:"
 
@@ -1361,12 +1376,12 @@ msgid ""
 msgstr ""
 "Změna velikosti okna musí být menší nebo rovná velikosti nastavovacího okna."
 
-#: ../src/TrackPanel.cpp:4677
+#: ../src/TrackPanel.cpp:4930
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Změněno '%s' na %d Hz"
 
-#: ../src/TrackPanel.cpp:4604 ../src/TrackPanel.cpp:4713
+#: ../src/TrackPanel.cpp:4857 ../src/TrackPanel.cpp:4966
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Změněno '%s' na %s"
@@ -1394,7 +1409,7 @@ msgstr "Měním rychlost"
 msgid "Changing Tempo"
 msgstr "Měním tempo"
 
-#: ../src/DirManager.cpp:1010
+#: ../src/DirManager.cpp:1000
 #, c-format
 msgid "Changing block %s\n"
 msgstr "Měním blok%s\n"
@@ -1403,7 +1418,7 @@ msgstr "Měním blok%s\n"
 msgid "Changing volume"
 msgstr "Měním hlasitost"
 
-#: ../src/TrackPanel.cpp:4609
+#: ../src/TrackPanel.cpp:4862
 msgid "Channel"
 msgstr "Kanál"
 
@@ -1415,18 +1430,17 @@ msgstr "Kanály:"
 msgid "Choose Language for Audacity to use:"
 msgstr "Zvolte jazyk pro Audacity:"
 
-#: ../src/TrackPanel.cpp:4961
+#: ../src/TrackPanel.cpp:5214
 msgid "Choose a font for Label Tracks"
-msgstr ""
+msgstr "Zvolte font pro popisové stopy"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:136
 msgid "Choose a location to place the temporary directory"
 msgstr "Zvolte umístění pro dočasný adresář"
 
 #: ../src/export/ExportMultiple.cpp:901
-#, fuzzy
 msgid "Choose a location to save the exported files"
-msgstr "Zvolte umístění pro dočasný adresář"
+msgstr "Zvolte umístění pro exportované soubory"
 
 #: ../src/UploadDialog.cpp:452
 msgid "Choose file(s) to upload"
@@ -1443,7 +1457,7 @@ msgstr "Vloženo ze schránky"
 
 #: ../src/export/ExportMultiple.cpp:700 ../src/prefs/DirectoriesPrefs.cpp:82
 msgid "Choose..."
-msgstr "Zvolit.."
+msgstr "Zvolit..."
 
 #: ../src/ControlToolBar.cpp:517 ../src/ControlToolBar.cpp:527
 #, fuzzy
@@ -1466,23 +1480,27 @@ msgstr ""
 msgid "CleanSpeech Mode (Customized GUI)"
 msgstr ""
 
-#: ../src/ControlToolBar.cpp:881
+#: ../src/Menus.cpp:3542 ../src/Menus.cpp:3625
+msgid "CleanSpeech Presets (*.csp)|*.csp"
+msgstr ""
+
+#: ../src/ControlToolBar.cpp:883
 msgid ""
 "CleanSpeech only allows recording mono track.\n"
 "Recording not possible when more than one window open."
 msgstr ""
 
-#: ../src/DirManager.cpp:419
+#: ../src/DirManager.cpp:411
 #, fuzzy
 msgid "Cleaning up cache directories"
 msgstr "Odstraňování dočasných souborů..."
 
-#: ../src/DirManager.cpp:291
+#: ../src/DirManager.cpp:283
 #, fuzzy
 msgid "Cleaning up temporary files"
 msgstr "Odstraňování dočasných souborů..."
 
-#: ../src/DirManager.cpp:1344
+#: ../src/DirManager.cpp:1320
 msgid "Cleaning up unused directories in project data..."
 msgstr ""
 
@@ -1492,19 +1510,18 @@ msgid "Clear"
 msgstr "Smazat"
 
 #: ../src/effects/ClickRemoval.h:42
-#, fuzzy
 msgid "Click Removal..."
-msgstr "Odstranění šumu..."
+msgstr "Odstranění praskání..."
 
 #: ../src/effects/ClickRemoval.cpp:93
 msgid "Click and Pop Removal"
-msgstr ""
+msgstr "Odstranění šumu a praskání"
 
 #: ../src/effects/ClickRemoval.cpp:349
 msgid "Click and Pop Removal by Craig DeForest"
-msgstr ""
+msgstr "Odstranění šumu a praskání od Craiga DeForesta"
 
-#: ../src/TrackPanel.cpp:1138
+#: ../src/TrackPanel.cpp:1146
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "Kliknutím a tahem myší nastavíte relativní velikost stereo stop."
 
@@ -1520,15 +1537,15 @@ msgstr "Kliknutím a tahem myší editujte vzorky"
 msgid "Click and drag to move a track in time"
 msgstr "Kliknutím a tahem myší umístěte stopy na čas"
 
-#: ../src/TrackPanel.cpp:1214
+#: ../src/TrackPanel.cpp:1222
 msgid "Click and drag to move left selection boundary."
 msgstr "Kliknutím a tahem myší nastavte hranici výběru"
 
-#: ../src/TrackPanel.cpp:1219
+#: ../src/TrackPanel.cpp:1227
 msgid "Click and drag to move right selection boundary."
 msgstr "Kliknutím a tahem myší změňte pravou hranici výběru."
 
-#: ../src/TrackPanel.cpp:1141
+#: ../src/TrackPanel.cpp:1149
 msgid "Click and drag to resize the track."
 msgstr "Kliknutím a tahem myší změňte velikost stopy."
 
@@ -1540,35 +1557,34 @@ msgstr "Kliknutím a tahem myší označíte audio"
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Klikněte pro zvětšení, Shift+kliknutí pro zmenšení"
 
-#: ../src/TrackPanel.cpp:1113
+#: ../src/TrackPanel.cpp:1121
 msgid ""
 "Click to vertically zoom in, Shift-click to zoom out, Drag to create a "
 "particular zoom region."
 msgstr "Kliknutím zvětšíte vertikálně, kliknutím se shiftem zmenšíte..."
 
 #: ../src/prefs/GUIPrefs.cpp:351
-#, fuzzy
 msgid "Clips"
-msgstr "Zavřít"
+msgstr ""
 
 #: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
 msgid "Close"
 msgstr "Zavřít"
 
-#: ../src/Menus.cpp:670
+#: ../src/Menus.cpp:680
 msgid "Close first selected track\tShift+C"
 msgstr ""
 
-#: ../src/DirManager.cpp:1207
+#: ../src/DirManager.cpp:1196
 msgid "Close project immediately with no changes"
 msgstr ""
 
-#: ../src/DirManager.cpp:1242 ../src/DirManager.cpp:1282
-#: ../src/DirManager.cpp:1319
+#: ../src/DirManager.cpp:1226 ../src/DirManager.cpp:1264
+#: ../src/DirManager.cpp:1295
 msgid "Close project immediately with no further changes"
 msgstr ""
 
-#: ../src/prefs/KeyConfigPrefs.cpp:79 ../src/prefs/BatchPrefs.cpp:157
+#: ../src/prefs/BatchPrefs.cpp:157 ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Command"
 msgstr "Příkaz"
 
@@ -1586,8 +1602,7 @@ msgid "Command-line exporting is only supported on UNIX"
 msgstr "Export pomocí řádkových příkazů je podporován jen v UNIXu"
 
 #. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
-#: ../src/AudacityApp.cpp:588 ../src/AudacityApp.cpp:652
+#: ../src/AudacityApp.cpp:591 ../src/AudacityApp.cpp:655
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -1639,15 +1654,20 @@ msgstr ""
 #: ../src/UploadDialog.cpp:347
 #, fuzzy
 msgid "Connecting..."
-msgstr "Tón..."
+msgstr "&Obsah..."
 
 #: ../src/UploadDialog.cpp:407
 msgid "Connection cannot be established"
 msgstr ""
 
-#: ../src/DirManager.cpp:1206
+#: ../src/DirManager.cpp:1195
 msgid "Continue without deleting; silently work around the extra files"
 msgstr ""
+
+#: ../src/AboutDialog.cpp:200
+#, fuzzy
+msgid "Contributors:"
+msgstr "Další přispěvatelé:"
 
 #: ../src/ControlToolBar.cpp:149
 #, fuzzy
@@ -1663,7 +1683,7 @@ msgstr ""
 "Zkonvertován soubor projektu z Audacity 1.0 do nového formátu.\n"
 "Starý soubor byl uložen jako '%s'."
 
-#: ../src/EditToolBar.cpp:148 ../src/TrackPanel.cpp:426
+#: ../src/EditToolBar.cpp:148 ../src/TrackPanel.cpp:432
 msgid "Copy"
 msgstr "Kopírovat"
 
@@ -1676,7 +1696,7 @@ msgstr "Nelze otevřít soubor:"
 msgid "Could not open MP3 encoding library!"
 msgstr "Nelze otevřít knihovnu pro převod do MP3!"
 
-#: ../src/Menus.cpp:2987 ../src/Project.cpp:1894 ../src/Project.cpp:1902
+#: ../src/Menus.cpp:3023 ../src/Project.cpp:1940 ../src/Project.cpp:1948
 #: ../src/import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr "Nelze otevřít soubor:"
@@ -1686,7 +1706,7 @@ msgstr "Nelze otevřít soubor:"
 msgid "Could not open file: \"%s\""
 msgstr "Nelze otevřít soubor: \"%s\""
 
-#: ../src/Project.cpp:2284
+#: ../src/Project.cpp:2324
 #, fuzzy, c-format
 msgid ""
 "Could not save project. Perhaps %s is not writeable,\n"
@@ -1702,7 +1722,7 @@ msgid ""
 " to %s."
 msgstr ""
 
-#: ../src/Project.cpp:2049
+#: ../src/Project.cpp:2095
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
 msgstr "Nemohu najít složku s daty projektu: \"%s\""
@@ -1711,28 +1731,28 @@ msgstr "Nemohu najít složku s daty projektu: \"%s\""
 msgid "Couldn't open the Audacity Help file."
 msgstr "Nelze otevřít soubor s nápovědou k Audacity."
 
-#: ../src/FreqWindow.cpp:1012 ../src/Menus.cpp:1804 ../src/Project.cpp:2297
+#: ../src/FreqWindow.cpp:1012 ../src/Menus.cpp:1840 ../src/Project.cpp:2337
 #: ../src/prefs/KeyConfigPrefs.cpp:175
 msgid "Couldn't write to file: "
 msgstr "Nelze zapisovat do souboru:"
 
-#: ../src/Menus.cpp:3347
+#: ../src/Menus.cpp:3383
 msgid "Created new audio track"
 msgstr "Nová audio stopa vytvořena"
 
-#: ../src/Menus.cpp:3387
+#: ../src/Menus.cpp:3423
 msgid "Created new label track"
 msgstr "Vytvořit novou popisovou (Label) stopu"
 
-#: ../src/Project.cpp:2564
+#: ../src/Project.cpp:2604
 msgid "Created new project"
-msgstr "Vytvořený nový projekt"
+msgstr "Nový projekt vytvořen"
 
-#: ../src/Menus.cpp:3371
+#: ../src/Menus.cpp:3407
 msgid "Created new stereo audio track"
 msgstr "Nová stereo audio stopa vytvořena"
 
-#: ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3459
 msgid "Created new time track"
 msgstr "Nově vytvořená časová stopa"
 
@@ -1740,7 +1760,7 @@ msgstr "Nově vytvořená časová stopa"
 msgid "Creating Noise Profile"
 msgstr "Vytvářím profil šumu"
 
-#: ../src/AboutDialog.cpp:125
+#: ../src/AboutDialog.cpp:192
 msgid "Credits"
 msgstr "Credits - zúčastnění lidé"
 
@@ -1752,7 +1772,7 @@ msgstr "Ctrl-Tažení levým myšítkem"
 msgid "Ctrl-Wheel-Rotate"
 msgstr "Ctrl-Rotace-Kolečka"
 
-#: ../src/Menus.cpp:299
+#: ../src/Menus.cpp:292
 msgid "Cu&t\tCtrl+X"
 msgstr "Vyjmou&t\tCtrl+X"
 
@@ -1764,15 +1784,15 @@ msgstr "Cuberoot autokorelace"
 msgid "Current Length (minutes): "
 msgstr ""
 
-#: ../src/Menus.cpp:658
+#: ../src/Menus.cpp:664
 msgid "Cursor Left\tLeft"
 msgstr "Kurzor doleva\tLeft"
 
-#: ../src/Menus.cpp:659
+#: ../src/Menus.cpp:665
 msgid "Cursor Right\tRight"
 msgstr "Kurzor doleva\tšipka vlevo"
 
-#: ../src/Menus.cpp:345
+#: ../src/Menus.cpp:338
 msgid "Cursor to End"
 msgstr "Kurzor na konec stopy"
 
@@ -1786,19 +1806,15 @@ msgstr "Kurzor: %.4f sec (%d Hz) (%s) = %f,    Špička: %.4f sec (%d Hz) (%s)"
 msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"
 msgstr "Kurzor: %d Hz (%s) = %d dB    Špička: %d Hz (%s)"
 
-#: ../src/EditToolBar.cpp:146 ../src/Menus.cpp:1985 ../src/TrackPanel.cpp:425
+#: ../src/EditToolBar.cpp:146 ../src/Menus.cpp:2021 ../src/TrackPanel.cpp:431
 msgid "Cut"
 msgstr "Vyjmout"
 
-#: ../src/Menus.cpp:1985
+#: ../src/Menus.cpp:2021
 msgid "Cut to the clipboard"
 msgstr "Vyjmout a vložit do schránky"
 
-#: ../src/Menus.cpp:657
-msgid "Cycle Between Tracks\tTab"
-msgstr ""
-
-#: ../src/Menus.cpp:319
+#: ../src/Menus.cpp:312
 msgid "D&uplicate\tCtrl+D"
 msgstr "D&uplikovat\tCtrl+D"
 
@@ -1809,11 +1825,15 @@ msgstr "DRY"
 #: ../src/effects/nyquist/Nyquist.cpp:748
 #: ../src/effects/nyquist/Nyquist.cpp:894
 msgid "Debug"
-msgstr ""
+msgstr "Ladění"
 
 #: ../src/effects/Echo.cpp:222
 msgid "Decay factor:"
 msgstr "Faktor dozvuku (decay):"
+
+#: ../src/Menus.cpp:676
+msgid "Decrease gain on first selected track\tAlt+Shift+Down"
+msgstr ""
 
 #: ../src/prefs/QualityPrefs.cpp:125
 msgid "Default Sample Format:"
@@ -1826,7 +1846,6 @@ msgstr "Výchozí rychlost vzorkování:"
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:336
 msgid "Default endianness"
 msgstr "Standardní endianness"
@@ -1847,7 +1866,7 @@ msgstr ""
 msgid "Delay time (seconds):"
 msgstr "Čas zpoždění (vteřiny):"
 
-#: ../src/Project.cpp:2684 ../src/UploadDialog.cpp:508
+#: ../src/Project.cpp:2724 ../src/UploadDialog.cpp:508
 #: ../src/UploadDialog.cpp:642
 msgid "Delete"
 msgstr "Smazat"
@@ -1861,7 +1880,7 @@ msgstr "Smazat"
 msgid "Delete file(s) from server)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1205
+#: ../src/DirManager.cpp:1194
 msgid "Delete orphaned files [safe and recommended]"
 msgstr ""
 
@@ -1869,15 +1888,15 @@ msgstr ""
 msgid "Delete selected items?"
 msgstr ""
 
-#: ../src/Menus.cpp:646
+#: ../src/Menus.cpp:651
 msgid "DeleteKey\tBackspace"
 msgstr "KlávesaMazání\tBackspace"
 
-#: ../src/Menus.cpp:651
+#: ../src/Menus.cpp:656
 msgid "DeleteKey2\tDelete"
 msgstr "KlávesaMazání\tDelete"
 
-#: ../src/Project.cpp:2681
+#: ../src/Project.cpp:2721
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Vymazáno %.2f vteřin at t=%.2f"
@@ -1890,7 +1909,7 @@ msgstr "Adresáře"
 #: ../src/UploadDialog.cpp:733
 #, fuzzy
 msgid "Deleting files"
-msgstr "Generuji ticho"
+msgstr "Přepsat existující soubory"
 
 #: ../src/UploadDialog.cpp:594
 #, fuzzy
@@ -1909,10 +1928,9 @@ msgstr "Hloubka:"
 msgid "Desired Length (minutes): "
 msgstr ""
 
-#: ../src/AboutDialog.cpp:143
-#, fuzzy
+#: ../src/AboutDialog.cpp:198
 msgid "Developers:"
-msgstr "Obálka"
+msgstr "Vývojáři:"
 
 #: ../src/prefs/AudioIOPrefs.cpp:144 ../src/prefs/AudioIOPrefs.cpp:219
 msgid "Device:"
@@ -1931,7 +1949,7 @@ msgstr ""
 msgid "Direction Changes (Low Threshold)"
 msgstr ""
 
-#: ../src/prefs/PrefsDialog.cpp:90 ../src/prefs/PrefsDialog.cpp:213
+#: ../src/prefs/PrefsDialog.cpp:87 ../src/prefs/PrefsDialog.cpp:210
 msgid "Directories"
 msgstr "Adresáře"
 
@@ -1945,9 +1963,10 @@ msgstr "Adresář %s neexistuje. Vytvořit?"
 msgid "Directory %s is not writable"
 msgstr "Do adresáře %s nelze zapisovat"
 
-#: ../src/widgets/Meter.cpp:321
+#: ../src/widgets/Meter.cpp:325
+#, fuzzy
 msgid "Disable Meter"
-msgstr ""
+msgstr "Vypnout"
 
 #: ../src/HistoryWindow.cpp:90
 msgid "Discard"
@@ -1961,22 +1980,22 @@ msgstr "Zahodit data pro obnovení (undo)"
 msgid "Disconnect"
 msgstr ""
 
-#: ../src/Project.cpp:2864
+#: ../src/Project.cpp:2904
 #, fuzzy, c-format
 msgid "Disk space remains for recording %d hours and %d minutes."
 msgstr "Zbývající čas nahrávání: %d hodin a %d minut"
 
-#: ../src/Project.cpp:2870
-#, fuzzy, c-format
+#: ../src/Project.cpp:2910
+#, c-format
 msgid "Disk space remains for recording %d minutes."
-msgstr "Zbývající čas nahrávání: %d minut"
+msgstr ""
 
-#: ../src/Project.cpp:2873
-#, fuzzy, c-format
+#: ../src/Project.cpp:2913
+#, c-format
 msgid "Disk space remains for recording %d seconds."
-msgstr "Zbývající čas nahrávání: %d sekund"
+msgstr ""
 
-#: ../src/Project.cpp:2867
+#: ../src/Project.cpp:2907
 #, fuzzy, c-format
 msgid "Disk space remains for recording 1 hour and %d minutes."
 msgstr "Zbývající čas nahrávání: 1 hodina a %d minut"
@@ -1985,20 +2004,19 @@ msgstr "Zbývající čas nahrávání: 1 hodina a %d minut"
 msgid "Display"
 msgstr ""
 
-#: ../src/Menus.cpp:916
+#: ../src/Menus.cpp:926
 msgid "Dock Control Toolbar"
 msgstr "Zaparkovat ovládací panel"
 
-#: ../src/Menus.cpp:921
+#: ../src/Menus.cpp:931
 msgid "Dock Edit Toolbar"
 msgstr "Zaparkovat editační panel"
 
-#: ../src/Menus.cpp:931
-#, fuzzy
+#: ../src/Menus.cpp:941
 msgid "Dock Meter Toolbar"
-msgstr "Zaparkovat panel mixéru"
+msgstr "Zaparkovat panel ukazatelů"
 
-#: ../src/Menus.cpp:926
+#: ../src/Menus.cpp:936
 msgid "Dock Mixer Toolbar"
 msgstr "Zaparkovat panel mixéru"
 
@@ -2007,20 +2025,16 @@ msgstr "Zaparkovat panel mixéru"
 msgid "Dock Toolbar"
 msgstr "Zaparkovat editační panel"
 
-#: ../src/Menus.cpp:936
+#: ../src/Menus.cpp:946
 #, fuzzy
 msgid "Dock Transcription Toolbar"
 msgstr "Zaparkovat editační panel"
-
-#: ../src/AboutDialog.cpp:140
-msgid "Documentation Writer"
-msgstr "Tvorba dokumentace"
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
 msgstr "Nezobrazovat znovu toto varování"
 
-#: ../src/TrackPanel.cpp:406
+#: ../src/TrackPanel.cpp:412
 msgid "Down Octave"
 msgstr "O oktávu níž"
 
@@ -2049,15 +2063,15 @@ msgstr "Postup"
 msgid "Download this file(s) to your computer"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1175
+#: ../src/TrackPanel.cpp:1183
 msgid "Drag label boundary"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1174
+#: ../src/TrackPanel.cpp:1182
 msgid "Drag one or more label boundaries"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1118
+#: ../src/TrackPanel.cpp:1126
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "Pořadí stop změníte tažením popisku (label) myší vertikálně."
 
@@ -2076,11 +2090,11 @@ msgstr "Zapnout tažení levého a pravého okraje výběru"
 msgid "Draw Tool"
 msgstr "Kreslení"
 
-#: ../src/Menus.cpp:622
+#: ../src/Menus.cpp:627
 msgid "Draw Tool\tF3"
 msgstr "Kreslení\tF3"
 
-#: ../src/TrackPanel.cpp:2279
+#: ../src/TrackPanel.cpp:2289
 #, fuzzy
 msgid "Draw currently only works with linear-view waveforms."
 msgstr "Kreslení momentálně funguje pouze u waveformů."
@@ -2090,27 +2104,27 @@ msgstr "Kreslení momentálně funguje pouze u waveformů."
 msgid "DrawTool"
 msgstr "Kreslení"
 
-#: ../src/Menus.cpp:2354
+#: ../src/Menus.cpp:2390
 msgid "Duplicate"
 msgstr "Duplikovat"
 
-#: ../src/Menus.cpp:2354
+#: ../src/Menus.cpp:2390
 msgid "Duplicated"
 msgstr "Duplikováno"
 
-#: ../src/effects/Compressor.cpp:50
+#: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
 msgstr "Kompresor dynamického rozsahu"
 
-#: ../src/effects/Compressor.cpp:437
+#: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "Kompresor dynamického rozsahu od Dominica Mazzoniho"
 
-#: ../src/Menus.cpp:262 ../src/Menus.cpp:265
+#: ../src/Menus.cpp:255 ../src/Menus.cpp:258
 msgid "E&xit"
 msgstr "&Konec"
 
-#: ../src/Menus.cpp:412
+#: ../src/Menus.cpp:416
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr ""
 
@@ -2127,28 +2141,25 @@ msgstr "Echo..."
 msgid "Edit"
 msgstr "Úpr&avy"
 
-#: ../src/Menus.cpp:3090
-#, fuzzy
+#: ../src/Menus.cpp:3126
 msgid "Edit ID3 Tags"
-msgstr "&Editovat ID3 tagy..."
+msgstr "Editovat ID3 tagy"
 
-#: ../src/Menus.cpp:3089
+#: ../src/Menus.cpp:3125
 msgid "Edit ID3 Tags (for MP3 exporting)"
 msgstr "Editovat ID3 tagy (pro export do MP3)"
 
-#: ../src/Menus.cpp:3090
-#, fuzzy
+#: ../src/Menus.cpp:3126
 msgid "Edit ID3 tags"
-msgstr "&Editovat ID3 tagy..."
+msgstr "Editovat ID3 tagy"
 
 #: ../src/BatchCommandDialog.cpp:62
 msgid "Edit Parameters"
 msgstr ""
 
 #: ../src/export/ExportMultiple.cpp:615
-#, fuzzy
 msgid "Edit the ID3 tags for all MP3 files"
-msgstr "Editovat ID3 tagy MP3 souboru"
+msgstr "Editovat ID3 tagy všech MP3 souborů"
 
 #: ../src/export/ExportMP3.cpp:1350
 msgid "Edit the ID3 tags for the MP3 file"
@@ -2163,9 +2174,8 @@ msgid "Effect Settings"
 msgstr "Nastavení efektu"
 
 #: ../src/prefs/GUIPrefs.cpp:354
-#, fuzzy
 msgid "Effects Graph"
-msgstr "Programátor efektů"
+msgstr ""
 
 #: ../src/prefs/BatchPrefs.cpp:134
 msgid "Empty Chain"
@@ -2175,15 +2185,14 @@ msgstr ""
 msgid "Enable Edit Toolbar"
 msgstr "Povolit panel pro editaci"
 
-#: ../src/widgets/Meter.cpp:319
+#: ../src/widgets/Meter.cpp:323
 #, fuzzy
 msgid "Enable Meter"
-msgstr "Není možno určit"
+msgstr "Povolit panel ukazatelů"
 
 #: ../src/prefs/GUIPrefs.cpp:331
-#, fuzzy
 msgid "Enable Meter Toolbar"
-msgstr "Povolit panel mixéru"
+msgstr "Povolit panel ukazatelů"
 
 #: ../src/prefs/GUIPrefs.cpp:329
 msgid "Enable Mixer Toolbar"
@@ -2208,9 +2217,8 @@ msgid "Encoding: "
 msgstr "Enkóduji:"
 
 #: ../src/ControlToolBar.cpp:521
-#, fuzzy
 msgid "End"
-msgstr "Povoleno"
+msgstr ""
 
 #: ../src/SelectionBar.cpp:101
 msgid "End:"
@@ -2233,7 +2241,7 @@ msgstr "Vylepšená autokorelace"
 msgid "Enter Nyquist Command: "
 msgstr "Vložit Nyquist příkaz: "
 
-#: ../src/TrackPanel.cpp:4805
+#: ../src/TrackPanel.cpp:5058
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Vložte rychlost v Hz (vzorků za vteřinu) v rozmezí 1 a 100000:"
 
@@ -2252,7 +2260,7 @@ msgid ""
 "Your objective is that the softly spoken words can be heard more clearly."
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1625 ../src/prefs/MousePrefs.cpp:102
+#: ../src/TrackPanel.cpp:1635 ../src/prefs/MousePrefs.cpp:102
 msgid "Envelope"
 msgstr "Obálka"
 
@@ -2260,7 +2268,7 @@ msgstr "Obálka"
 msgid "Envelope Tool"
 msgstr "Obálka"
 
-#: ../src/Menus.cpp:621
+#: ../src/Menus.cpp:626
 msgid "Envelope Tool\tF2"
 msgstr "Obálka\tF2"
 
@@ -2290,9 +2298,9 @@ msgstr ""
 msgid "Ergonomic order of audio I/O buttons"
 msgstr "Povolit ergonomické uspořádání tlačítek Audio I/O"
 
-#: ../src/ControlToolBar.cpp:773 ../src/ControlToolBar.cpp:963
-#: ../src/effects/Effect.cpp:341 ../src/prefs/DirectoriesPrefs.cpp:206
+#: ../src/ControlToolBar.cpp:775 ../src/ControlToolBar.cpp:965
 #: ../src/UploadDialog.cpp:370 ../src/UploadDialog.cpp:1278
+#: ../src/effects/Effect.cpp:340 ../src/prefs/DirectoriesPrefs.cpp:206
 msgid "Error"
 msgstr "Chyba"
 
@@ -2310,7 +2318,7 @@ msgstr "Chyba při inicializaci zvuku"
 msgid "Error exporting file or project"
 msgstr "Chyba při otevírání projektu"
 
-#: ../src/Project.cpp:2477
+#: ../src/Project.cpp:2517
 msgid "Error importing"
 msgstr "Chyba importu"
 
@@ -2318,27 +2326,26 @@ msgstr "Chyba importu"
 msgid "Error loading keyboard shortcuts"
 msgstr "Chyba při načítání klávesových zkratek"
 
-#: ../src/AudacityApp.cpp:791
-#, fuzzy
+#: ../src/AudacityApp.cpp:846
 msgid "Error locking temporary folder"
-msgstr "Chyba při načítání klávesových zkratek"
+msgstr "Chyba při zamykání dočasného adresáře"
 
-#: ../src/Project.cpp:1895 ../src/Project.cpp:1903
+#: ../src/Project.cpp:1941 ../src/Project.cpp:1949
 msgid "Error opening file"
 msgstr "Chyba při načítání souboru."
 
-#: ../src/Project.cpp:1910
+#: ../src/Project.cpp:1956
 #, fuzzy
 msgid "Error opening file or project"
 msgstr "Chyba při otevírání projektu"
 
-#: ../src/Menus.cpp:3604
+#: ../src/Menus.cpp:3639
 #, fuzzy
 msgid "Error opening preset"
 msgstr "Chyba při otevírání projektu"
 
-#: ../src/AudacityApp.cpp:281 ../src/Project.cpp:1847 ../src/Project.cpp:1927
-#: ../src/Project.cpp:2013 ../src/Project.cpp:2051
+#: ../src/AudacityApp.cpp:281 ../src/Project.cpp:1893 ../src/Project.cpp:1973
+#: ../src/Project.cpp:2059 ../src/Project.cpp:2097
 msgid "Error opening project"
 msgstr "Chyba při otevírání projektu"
 
@@ -2358,11 +2365,11 @@ msgstr ""
 msgid "Error saving keyboard shortcuts"
 msgstr "Chyba při ukládání klávesových zkratek"
 
-#: ../src/Project.cpp:2286 ../src/Project.cpp:2298
+#: ../src/Project.cpp:2326 ../src/Project.cpp:2338
 msgid "Error saving project"
 msgstr "Chyba při ukládání projektu"
 
-#: ../src/ControlToolBar.cpp:962
+#: ../src/ControlToolBar.cpp:964
 msgid ""
 "Error while opening sound device. Please check the input device settings and "
 "the project sample rate."
@@ -2370,7 +2377,7 @@ msgstr ""
 "Chyba při otevírání zvukového zařízení. Prosím zkontrolujte nastavení "
 "vstupního zařízení a vzorkovací frekvenci projektu."
 
-#: ../src/ControlToolBar.cpp:772 ../src/effects/Effect.cpp:340
+#: ../src/ControlToolBar.cpp:774 ../src/effects/Effect.cpp:339
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -2387,11 +2394,19 @@ msgstr "Chyba:"
 msgid "Error: %hs at line %d"
 msgstr "Chyba: %s na řádce %d"
 
-#: ../src/DirManager.cpp:964
+#: ../src/DirManager.cpp:954
 msgid "Error: is directory write-protected or disk full?"
 msgstr "Chyba: je adresář chráněn proti zápisu nebo plný disk?"
 
-#: ../src/Sequence.cpp:784
+#: ../src/TrackPanel.cpp:3469
+msgid "Expand"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3469
+msgid "Expanded Cut Line"
+msgstr ""
+
+#: ../src/Sequence.cpp:788
 #, c-format
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Očekávám načtení %d vzorků, obdrženo %d vzorků.\n"
@@ -2406,9 +2421,8 @@ msgid "Export &Labels..."
 msgstr "Exportovat &popisy (Labels)..."
 
 #: ../src/Menus.cpp:190
-#, fuzzy
 msgid "Export &Multiple..."
-msgstr "Exportovat &popisy (Labels)..."
+msgstr "Exportovat &více souborů..."
 
 #: ../src/Menus.cpp:173
 msgid "Export As MP3..."
@@ -2419,20 +2433,19 @@ msgid "Export As Ogg Vorbis..."
 msgstr "Exportovat jako Ogg Vorbis..."
 
 #: ../src/Menus.cpp:170
-#, fuzzy
 msgid "Export As..."
-msgstr "Exportovat.."
+msgstr "Exportovat jako..."
 
 #: ../src/Menus.cpp:212
 #, fuzzy
 msgid "Export CleanSpeech Presets..."
-msgstr "&Exportovat výběr jako %s..."
+msgstr "Exportovat výběr jako..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:160
 msgid "Export Keyboard Shortcuts As:"
 msgstr "Exportovat klávesové zkratky jako:"
 
-#: ../src/Menus.cpp:1769
+#: ../src/Menus.cpp:1805
 msgid "Export Labels As:"
 msgstr "Exportovat popisy (Labels) jako:"
 
@@ -2442,9 +2455,8 @@ msgstr "Exportovat MP3"
 
 #: ../src/export/ExportMultiple.cpp:464 ../src/export/ExportMultiple.cpp:573
 #: ../src/export/ExportMultiple.cpp:656
-#, fuzzy
 msgid "Export Multiple"
-msgstr "Exportovat MP3"
+msgstr "Výcenásobný export"
 
 #: ../src/Menus.cpp:174
 msgid "Export Selection As MP3..."
@@ -2455,34 +2467,31 @@ msgid "Export Selection As Ogg Vorbis..."
 msgstr "Exportovat výběr jako Ogg Vorbis..."
 
 #: ../src/Menus.cpp:171
-#, fuzzy
 msgid "Export Selection As..."
-msgstr "Exportovat výběr jako Mp3..."
+msgstr "Exportovat výběr jako..."
 
 #: ../src/FreqWindow.cpp:996
 msgid "Export Spectral Data As:"
 msgstr "Exportovat spektrální data jako:"
 
 #: ../src/export/ExportMultiple.cpp:670
-#, fuzzy
 msgid "Export format:"
-msgstr "Nekomprimovaný exportní formát"
+msgstr "Formát exportu:"
 
 #: ../src/export/ExportMultiple.cpp:694
-#, fuzzy
 msgid "Export location:"
-msgstr "Umístění:"
+msgstr "Umístění exportu:"
 
 #: ../src/export/ExportMultiple.cpp:268
 msgid "Export needs TOMPG.EXE PATH"
 msgstr ""
 
-#: ../src/Menus.cpp:3727
+#: ../src/Menus.cpp:3762
 #, fuzzy
 msgid "Export recording"
 msgstr "Nahrávání"
 
-#: ../src/Menus.cpp:3725
+#: ../src/Menus.cpp:3760
 #, c-format
 msgid ""
 "Export recording to %s\n"
@@ -2580,7 +2589,7 @@ msgstr "Vytvářím efekt do ztracena (fading out)"
 
 #: ../src/Resample.cpp:48
 msgid "Fast Sinc Interpolation"
-msgstr ""
+msgstr "Fast Sinc Interpolace"
 
 #: ../src/effects/Phaser.cpp:561
 msgid "Feedback (%):"
@@ -2595,15 +2604,16 @@ msgstr "&Soubor"
 msgid "File Format"
 msgstr "Formát souboru"
 
-#: ../src/prefs/PrefsDialog.cpp:88
+#: ../src/prefs/PrefsDialog.cpp:85
 msgid "File Formats"
 msgstr "Formáty souborů"
 
 #: ../src/UploadDialog.cpp:259
+#, fuzzy
 msgid "File Manager"
-msgstr ""
+msgstr "Předpona jména souboru:"
 
-#: ../src/Project.cpp:1909
+#: ../src/Project.cpp:1955
 #, c-format
 msgid ""
 "File may be invalid or corrupted: \n"
@@ -2617,9 +2627,9 @@ msgstr ""
 
 #: ../src/export/ExportMultiple.cpp:779
 msgid "File name prefix:"
-msgstr ""
+msgstr "Předpona jména souboru:"
 
-#: ../src/DirManager.cpp:1281
+#: ../src/DirManager.cpp:1263
 msgid "Fill in silence for missing display data [this session only]"
 msgstr ""
 
@@ -2627,17 +2637,17 @@ msgstr ""
 msgid "Find Library"
 msgstr "Najít knihovnu"
 
-#: ../src/Menus.cpp:351
+#: ../src/Menus.cpp:344
 msgid "Find Zero Crossings\tZ"
 msgstr "Najít průsečíky s nulou\tZ"
 
 #: ../src/export/ExportMultiple.cpp:748
 msgid "First file name:"
-msgstr ""
+msgstr "První jméno souboru:"
 
-#: ../src/Menus.cpp:407
+#: ../src/Menus.cpp:411
 msgid "Fit &Vertically\tCtrl+Shift+F"
-msgstr "Vyplnit &vertikálně\tCtrl+Shift+F"
+msgstr "Přizpůsobit šíř&ce okna\tCtrl+Shift+F"
 
 #: ../src/EditToolBar.cpp:174
 #, fuzzy
@@ -2657,38 +2667,36 @@ msgstr "Přizpůsobit projekt velikosti okna"
 msgid "Fit selection in window"
 msgstr "Přizpůsobit výběr velikosti okna"
 
-#: ../src/Menus.cpp:917
+#: ../src/Menus.cpp:927
 msgid "Float Control Toolbar"
 msgstr "Plovoucí ovládací panel"
 
-#: ../src/Menus.cpp:922
+#: ../src/Menus.cpp:932
 msgid "Float Edit Toolbar"
 msgstr "Plovoucí panel editace"
 
-#: ../src/Menus.cpp:426 ../src/Menus.cpp:932
-#, fuzzy
+#: ../src/Menus.cpp:426 ../src/Menus.cpp:942
 msgid "Float Meter Toolbar"
-msgstr "Plovoucí panel mixéru"
+msgstr "Plovoucí panel ukazatelů"
 
-#: ../src/Menus.cpp:927
+#: ../src/Menus.cpp:937
 msgid "Float Mixer Toolbar"
 msgstr "Plovoucí panel mixéru"
 
-#: ../src/Menus.cpp:937
+#: ../src/Menus.cpp:947
 #, fuzzy
 msgid "Float Transcription Toolbar"
 msgstr "Plovoucí panel editace"
 
-#: ../src/TrackPanel.cpp:411
-#, fuzzy
+#: ../src/TrackPanel.cpp:417
 msgid "Font..."
-msgstr "Tón..."
+msgstr "Font..."
 
 #: ../src/export/ExportMultiple.cpp:715
 msgid "Force Mono"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4717
+#: ../src/TrackPanel.cpp:4970
 msgid "Format Change"
 msgstr "Změna formátu"
 
@@ -2721,18 +2729,16 @@ msgid "Frequency Analysis"
 msgstr "Frekvenční analýza"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: ../src/TrackPanel.cpp:2755 ../src/TrackPanel.cpp:4320
-#: ../src/TrackPanel.cpp:5419
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4518
+#: ../src/TrackPanel.cpp:5677
 msgid "Gain"
 msgstr "Hlasitost"
 
 #: ../src/effects/Noise.cpp:35
-#, fuzzy
 msgid "Generate Noise"
-msgstr "Generovat tón"
+msgstr "Generovat šum"
 
 #: ../src/effects/Silence.cpp:31
-#, fuzzy
 msgid "Generate Silence"
 msgstr "Generuji ticho"
 
@@ -2769,9 +2775,8 @@ msgid "HTML Help Books (*.htb)|*.htb"
 msgstr "HTML knihy s nápovědou (*.htb)|*.htb"
 
 #: ../src/prefs/AudioIOPrefs.cpp:290
-#, fuzzy
 msgid "Hardware Playthrough (Play new track while recording it)"
-msgstr "Během nahrávání nové stopy přehrávat ostatní."
+msgstr "Hardware Playthrough (Během nahrávání novou stopu zároveň přehrávat.)"
 
 #: ../src/prefs/FileFormatPrefs.cpp:414
 msgid "Header: "
@@ -2789,9 +2794,9 @@ msgstr "Vysoce kvalitní konvertor vzorkovací rychlosti:"
 msgid "High-quality sample rate converter:"
 msgstr "Vysoce kvalitní konvertor vzorkovací rychlosti:"
 
-#: ../src/widgets/Meter.cpp:330
+#: ../src/widgets/Meter.cpp:334
 msgid "Horizontal Stereo"
-msgstr ""
+msgstr "Horizontální stereo"
 
 #: ../src/UploadDialog.cpp:297
 msgid "Host:"
@@ -2800,18 +2805,17 @@ msgstr ""
 #  i18n-hint: This is the abbreviation for "Hertz", or
 #  cycles per second.
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: ../src/import/ImportRaw.cpp:406
 msgid "Hz"
 msgstr "Hz"
 
-#: ../src/AboutDialog.cpp:59
+#: ../src/AboutDialog.cpp:126
 msgid "ID3 tag exporting disabled"
-msgstr "Exportování ID3 tagu je zakázáno"
+msgstr "Export ID3 tagu je zakázá"
 
-#: ../src/AboutDialog.cpp:57
+#: ../src/AboutDialog.cpp:124
 msgid "ID3 tag exporting enabled"
-msgstr "Exportování ID3 tagu je povoleno"
+msgstr "Export ID3 tagu je povolen"
 
 #: ../src/Tags.cpp:626
 msgid "ID3v1 (more compatible)"
@@ -2830,8 +2834,15 @@ msgid ""
 "This project does not have multiple tracks or a Label Track, so you cannot "
 "export multiple files."
 msgstr ""
+"Jestliže máte více než jednu zvukovou stopu, můžete exportovat každou do "
+"zvláštního souboru.\n"
+"Jestliže máte popisovou stopu, můžete vyexportovat nový soubor pro každý "
+"popis.\n"
+"\n"
+"Tento projekt neobsahuje více stop ani popisovou stopu, takže vícenásobný "
+"export nelze použít."
 
-#: ../src/Project.cpp:2389 ../src/Project.cpp:2436
+#: ../src/Project.cpp:2429 ../src/Project.cpp:2476
 #: ../src/import/ImportPCM.cpp:410 ../src/import/ImportPCM.cpp:495
 #: ../src/import/ImportRaw.cpp:436
 msgid "Import"
@@ -2853,11 +2864,11 @@ msgstr "Importovat Raw &Data..."
 msgid "Import CleanSpeech Presets..."
 msgstr ""
 
-#: ../src/Menus.cpp:3001
+#: ../src/Menus.cpp:3037
 msgid "Import Labels"
 msgstr "Importovat popisy (Labels)..."
 
-#: ../src/Menus.cpp:3034
+#: ../src/Menus.cpp:3070
 msgid "Import MIDI"
 msgstr "Importovat &MIDI..."
 
@@ -2865,22 +2876,22 @@ msgstr "Importovat &MIDI..."
 msgid "Import Raw Data"
 msgstr "Importovat Raw data"
 
-#: ../src/Project.cpp:2435
+#: ../src/Project.cpp:2475
 #, c-format
 msgid "Imported '%s'"
 msgstr "Importováno '%s'"
 
-#: ../src/Menus.cpp:3032
+#: ../src/Menus.cpp:3068
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "Importováno MIDI z '%s'"
 
-#: ../src/Menus.cpp:3000
+#: ../src/Menus.cpp:3036
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "Importované popisy (labels) z '%s'"
 
-#: ../src/Project.cpp:2386
+#: ../src/Project.cpp:2426
 #, c-format
 msgid "Importing %s File..."
 msgstr "Importuji %s soubor..."
@@ -2892,9 +2903,13 @@ msgstr "Importuji %s soubor..."
 
 #: ../src/export/ExportMultiple.cpp:742
 msgid "Include audio before first label"
+msgstr "Před první popis vložit zvukový záznam"
+
+#: ../src/Menus.cpp:675
+msgid "Increase gain on first selected track\tAlt+Shift+Up"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:123 ../src/effects/ChangeLength.cpp:120
+#: ../src/AboutDialog.cpp:190 ../src/effects/ChangeLength.cpp:120
 msgid "Information"
 msgstr "Informace"
 
@@ -2908,14 +2923,14 @@ msgstr "Vstupní hlasitost"
 
 #: ../src/MeterToolBar.cpp:68
 msgid "Input level meter - click to monitor input"
-msgstr ""
+msgstr "Ukazatel úrovně vstupu - klikněte, pokud chcete monitorovat vstup."
 
-#: ../src/DirManager.cpp:1099
+#: ../src/DirManager.cpp:1089
 #, fuzzy
 msgid "Inspecting project file data..."
-msgstr "Není možné otevřít soubor projektu."
+msgstr "Není možné otevřít soubor projektu"
 
-#: ../src/prefs/PrefsDialog.cpp:91
+#: ../src/prefs/PrefsDialog.cpp:88
 msgid "Interface"
 msgstr "Rozhraní (Interface)"
 
@@ -2932,7 +2947,7 @@ msgstr "Chybná Vorbis bitstream hlavička"
 msgid "Invalid duration in LOF file."
 msgstr "Chybná délka LOF souboru."
 
-#: ../src/TrackPanel.cpp:4815
+#: ../src/TrackPanel.cpp:5068
 msgid "Invalid rate."
 msgstr "Chybná rychlost."
 
@@ -2956,11 +2971,11 @@ msgstr "Invertovat"
 msgid "Inverting"
 msgstr "Invertuji"
 
-#: ../src/Menus.cpp:2299
+#: ../src/Menus.cpp:2335
 msgid "Join"
 msgstr ""
 
-#: ../src/Menus.cpp:2296
+#: ../src/Menus.cpp:2332
 #, fuzzy, c-format
 msgid "Joined %.2f seconds at t=%.2f"
 msgstr "Vymazáno %.2f vteřin at t=%.2f"
@@ -2969,22 +2984,21 @@ msgstr "Vymazáno %.2f vteřin at t=%.2f"
 msgid "Key Combination"
 msgstr "Kombinace kláves"
 
-#: ../src/prefs/PrefsDialog.cpp:93
+#: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
 msgstr "Klávesnice"
 
 #  i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Left, in VU Meter
-#: ../src/widgets/ASlider.cpp:491 ../src/widgets/Meter.cpp:185
+#: ../src/widgets/ASlider.cpp:444 ../src/widgets/Meter.cpp:187
 msgid "L"
 msgstr "L"
 
-#: ../src/AboutDialog.cpp:66
+#: ../src/AboutDialog.cpp:133
 msgid "LADSPA plug-in support disabled"
 msgstr "Podpora pro LADSPA plug-in je zakázána"
 
-#: ../src/AboutDialog.cpp:64
+#: ../src/AboutDialog.cpp:131
 msgid "LADSPA plug-in support enabled"
 msgstr "Podpora pro LADSPA plug-in je povolena"
 
@@ -3002,12 +3016,12 @@ msgstr "LFO Startovní fáze (deg.):"
 msgid "LOF Error"
 msgstr "LOF chyba"
 
-#: ../src/Menus.cpp:3459 ../src/SelectionBar.cpp:190
-#: ../src/SelectionBar.cpp:194 ../src/SelectionBar.cpp:198
+#: ../src/Menus.cpp:3495 ../src/SelectionBar.cpp:203
+#: ../src/SelectionBar.cpp:207 ../src/SelectionBar.cpp:211
 msgid "Label"
 msgstr "Popiska"
 
-#: ../src/TrackPanel.cpp:3246
+#: ../src/TrackPanel.cpp:3262
 msgid "Label Edit"
 msgstr "Úprava popisky"
 
@@ -3015,15 +3029,13 @@ msgstr "Úprava popisky"
 msgid "Label Track"
 msgstr "Popisová (Label) stopa"
 
-#: ../src/TrackPanel.cpp:4962
-#, fuzzy
+#: ../src/TrackPanel.cpp:5215
 msgid "Label Track Font"
-msgstr "Popisová (Label) stopa"
+msgstr "Font pro popisy"
 
 #: ../src/export/ExportMultiple.cpp:734
-#, fuzzy
 msgid "Labels"
-msgstr "Popiska"
+msgstr "Popisky"
 
 #: ../src/FreqWindow.cpp:1023
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
@@ -3038,11 +3050,16 @@ msgstr "Jazyk:"
 msgid "Language:"
 msgstr "Jazyk:"
 
-#: ../src/widgets/ASlider.cpp:651
+#: ../src/AboutDialog.cpp:263
+#, fuzzy
+msgid "Lead Developer"
+msgstr "Vývojáři:"
+
+#: ../src/widgets/ASlider.cpp:604
 msgid "Left"
 msgstr "Levý"
 
-#: ../src/TrackPanel.cpp:390
+#: ../src/TrackPanel.cpp:396
 msgid "Left Channel"
 msgstr "Levý kanál"
 
@@ -3054,11 +3071,12 @@ msgstr "Stisknutí levého myšítka"
 msgid "Left Drag"
 msgstr "Tažení levým myšítkem"
 
-#: ../src/Menus.cpp:339
+#: ../src/Menus.cpp:332
+#, fuzzy
 msgid "Left at Playback Position\t["
-msgstr ""
+msgstr "Vložit popis na pozici přehrávání\tCtrl+B"
 
-#: ../src/TrackPanel.cpp:4580
+#: ../src/TrackPanel.cpp:4833
 msgid "Left, "
 msgstr "Levý,"
 
@@ -3086,9 +3104,8 @@ msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
 msgstr "Levé=zvětšit, Pravé=zmenšit,Střední=normální velikost"
 
 #: ../src/effects/Silence.cpp:127 ../src/effects/ToneGen.cpp:319
-#, fuzzy
 msgid "Length (seconds)"
-msgstr "Délka (sekundy):     od"
+msgstr "Délka (sekundy)"
 
 #: ../src/effects/ChangeTempo.cpp:249
 msgid "Length (seconds):   from"
@@ -3099,18 +3116,18 @@ msgstr "Délka (sekundy):     od"
 msgid "Length:"
 msgstr "Hloubka:"
 
-#: ../src/effects/Leveller.cpp:114 ../src/BatchCommands.cpp:103
+#: ../src/BatchCommands.cpp:103 ../src/effects/Leveller.cpp:114
+#, fuzzy
 msgid "Leveller"
-msgstr ""
+msgstr "Vývojáři:"
 
 #: ../src/effects/Leveller.cpp:199
 msgid "Leveller by Lynn Allan"
 msgstr ""
 
 #: ../src/effects/Leveller.h:28
-#, fuzzy
 msgid "Leveller..."
-msgstr "Označit..."
+msgstr ""
 
 #: ../src/HistoryWindow.cpp:81
 msgid "Levels to discard: "
@@ -3120,7 +3137,7 @@ msgstr "Úrovně k vymazání:"
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
 msgstr "Libresample od Dominica Mazzoniho a Julia Smithe"
 
-#: ../src/AboutDialog.cpp:71
+#: ../src/AboutDialog.cpp:138
 msgid "Libresample support enabled"
 msgstr "Podpora pro Libresample je povolena"
 
@@ -3133,14 +3150,13 @@ msgstr "Libsamplerate od Erika de Castra Lopa"
 msgid "Libsamplerate error: %d\n"
 msgstr "Chyba Libsamplerate: %d\n"
 
-#: ../src/AboutDialog.cpp:73
+#: ../src/AboutDialog.cpp:140
 msgid "Libsamplerate support enabled"
 msgstr "Podpora pro Libsamplerate je povolena"
 
-#: ../src/widgets/Meter.cpp:339
-#, fuzzy
+#: ../src/widgets/Meter.cpp:343
 msgid "Linear"
-msgstr "Rok:"
+msgstr "Lineární"
 
 #: ../src/FreqWindow.cpp:177
 msgid "Linear frequency"
@@ -3161,7 +3177,6 @@ msgid ""
 msgstr ""
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:330
 msgid "Little-endian"
 msgstr "Little-endian"
@@ -3191,7 +3206,7 @@ msgstr "Umístění:"
 msgid "Log frequency"
 msgstr "Log frekvence"
 
-#: ../src/TrackPanel.cpp:4836 ../src/TrackPanel.cpp:4837
+#: ../src/TrackPanel.cpp:5089 ../src/TrackPanel.cpp:5090
 msgid "Lower speed limit"
 msgstr "Dolní limit rychlosti"
 
@@ -3217,22 +3232,18 @@ msgstr "Verze MP3 knihovny:"
 msgid "MP3 exporting plugin not found"
 msgstr "Plugin pro export do MP3 nebyl nalezen"
 
-#: ../src/AboutDialog.cpp:45
+#: ../src/AboutDialog.cpp:112
 msgid "MP3 importing disabled"
 msgstr "Import z MP3 zakázán"
 
-#: ../src/AboutDialog.cpp:43
+#: ../src/AboutDialog.cpp:110
 msgid "MP3 importing enabled"
 msgstr "Import z MP3 povolen"
 
-#: ../src/TrackPanel.cpp:4639
+#: ../src/TrackPanel.cpp:4892
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "Vytvořit '%s' stereo stopu"
-
-#: ../src/AboutDialog.cpp:141
-msgid "Main Logo"
-msgstr "Hlavní logo"
 
 #: ../src/Project.cpp:489
 msgid "Main Mix"
@@ -3245,13 +3256,13 @@ msgstr ""
 #: ../src/TranscriptionToolBar.cpp:243
 #, fuzzy
 msgid "Make Labels"
-msgstr "Upravená popiska"
+msgstr "Popisky"
 
-#: ../src/TrackPanel.cpp:4642
+#: ../src/TrackPanel.cpp:4895
 msgid "Make Stereo"
 msgstr "Vytvořit stereo"
 
-#: ../src/TrackPanel.cpp:392
+#: ../src/TrackPanel.cpp:398
 msgid "Make Stereo Track"
 msgstr "Vytvořit stereo stopu"
 
@@ -3297,8 +3308,8 @@ msgstr "Maximální délka atributu '%s' je %d znaky. Data byla zkrácena."
 msgid "Media read error"
 msgstr "Chyba při čtení média"
 
-#: ../src/effects/NoiseRemoval.cpp:579 ../src/effects/ClickRemoval.cpp:369
-#: ../src/effects/ClickRemoval.cpp:398
+#: ../src/effects/ClickRemoval.cpp:369 ../src/effects/ClickRemoval.cpp:398
+#: ../src/effects/NoiseRemoval.cpp:579
 msgid "Medium"
 msgstr ""
 
@@ -3307,12 +3318,12 @@ msgstr ""
 msgid "Meter"
 msgstr "Střed"
 
-#: ../src/widgets/Meter.cpp:1041
+#: ../src/widgets/Meter.cpp:1045
 #, fuzzy
 msgid "Meter Perferences"
 msgstr "Nastavení Audacity"
 
-#: ../src/widgets/Meter.cpp:1040
+#: ../src/widgets/Meter.cpp:1044
 msgid "Meter refresh rate per second [1-100]: "
 msgstr ""
 
@@ -3328,17 +3339,17 @@ msgstr "Minimální změna okna:"
 msgid "Minimum of dB mode display range"
 msgstr ""
 
-#: ../src/DirManager.cpp:1137
+#: ../src/DirManager.cpp:1127
 #, c-format
 msgid "Missing alias file: (%s)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1175
+#: ../src/DirManager.cpp:1165
 #, c-format
 msgid "Missing data file: (%s.au)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1156
+#: ../src/DirManager.cpp:1146
 #, c-format
 msgid "Missing summary file: (%s.auf)"
 msgstr ""
@@ -3347,16 +3358,16 @@ msgstr ""
 msgid "Mix"
 msgstr "Mixér"
 
-#: ../src/Menus.cpp:451 ../src/Menus.cpp:3152 ../src/Mix.cpp:132
+#: ../src/Menus.cpp:451 ../src/Menus.cpp:3188 ../src/Mix.cpp:132
 msgid "Mix and Render"
 msgstr ""
 
-#: ../src/Menus.cpp:3150
+#: ../src/Menus.cpp:3186
 #, c-format
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr ""
 
-#: ../src/Menus.cpp:3147
+#: ../src/Menus.cpp:3183
 #, c-format
 msgid "Mixed and rendered %d tracks into one new stereo track"
 msgstr ""
@@ -3371,15 +3382,15 @@ msgstr "Mixér"
 msgid "Mixing and rendering tracks"
 msgstr "Mixuji stopy"
 
-#: ../src/TrackPanel.cpp:3245
+#: ../src/TrackPanel.cpp:3261
 msgid "Modified Label"
 msgstr "Upravená popiska"
 
-#: ../src/TrackPanel.cpp:389
+#: ../src/TrackPanel.cpp:395
 msgid "Mono"
 msgstr "Mono"
 
-#: ../src/TrackPanel.cpp:4578
+#: ../src/TrackPanel.cpp:4831
 msgid "Mono, "
 msgstr "Mono, "
 
@@ -3387,7 +3398,7 @@ msgstr "Mono, "
 msgid "More"
 msgstr "Více"
 
-#: ../src/prefs/PrefsDialog.cpp:94
+#: ../src/prefs/PrefsDialog.cpp:91
 msgid "Mouse"
 msgstr "Myš"
 
@@ -3395,21 +3406,21 @@ msgstr "Myš"
 msgid "Mouse Bindings (default values, not configurable)"
 msgstr "Přiřazení myši (standardní hodnoty, nelze upravovat)"
 
-#: ../src/Menus.cpp:353
+#: ../src/Menus.cpp:346
 msgid "Move Cursor..."
 msgstr "Přesunout kurzor..."
 
-#: ../src/TrackPanel.cpp:4873
+#: ../src/TrackPanel.cpp:5126
 msgid "Move Track"
 msgstr "Přesunout stopu"
 
-#: ../src/TrackPanel.cpp:382 ../src/TrackPanel.cpp:403
-#: ../src/TrackPanel.cpp:414 ../src/TrackPanel.cpp:420
+#: ../src/TrackPanel.cpp:388 ../src/TrackPanel.cpp:409
+#: ../src/TrackPanel.cpp:420 ../src/TrackPanel.cpp:426
 msgid "Move Track Down"
 msgstr "Přesunout stopu dolů"
 
-#: ../src/TrackPanel.cpp:381 ../src/TrackPanel.cpp:402
-#: ../src/TrackPanel.cpp:413 ../src/TrackPanel.cpp:419
+#: ../src/TrackPanel.cpp:387 ../src/TrackPanel.cpp:408
+#: ../src/TrackPanel.cpp:419 ../src/TrackPanel.cpp:425
 msgid "Move Track Up"
 msgstr "Přesunout stopu nahoru"
 
@@ -3417,26 +3428,36 @@ msgstr "Přesunout stopu nahoru"
 msgid "Move clip up/down between tracks"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4867
+#: ../src/Menus.cpp:663
+#, fuzzy
+msgid "Move to Next Track\tDown"
+msgstr "Přesunout stopu dolů"
+
+#: ../src/Menus.cpp:662
+#, fuzzy
+msgid "Move to Previous Track\tUp"
+msgstr "Přesunout stopu nahoru"
+
+#: ../src/TrackPanel.cpp:5120
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Přesunuto '%s' %s"
 
-#: ../src/TrackPanel.cpp:2554
+#: ../src/TrackPanel.cpp:2565
 msgid "Moved Sample"
 msgstr "Přesunutý vzorek"
 
-#: ../src/TrackPanel.cpp:1752
+#: ../src/TrackPanel.cpp:1762
 msgid "Moved clip to another track"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:2754
+#: ../src/TrackPanel.cpp:2765
 msgid "Moved gain slider"
-msgstr ""
+msgstr "Změna nastavení citlivosti (gain)"
 
-#: ../src/TrackPanel.cpp:2754
+#: ../src/TrackPanel.cpp:2765
 msgid "Moved pan slider"
-msgstr ""
+msgstr "Změna nastavení panorama (pan)"
 
 #: ../src/prefs/BatchPrefs.cpp:131
 msgid "Mp3 Conversion Chain"
@@ -3447,7 +3468,7 @@ msgstr ""
 msgid "Multi"
 msgstr "Multi"
 
-#: ../src/Menus.cpp:625
+#: ../src/Menus.cpp:630
 msgid "Multi Tool\tF6"
 msgstr "Vícenástrojový režim\tF6"
 
@@ -3456,12 +3477,12 @@ msgid "Multi-Tool Mode"
 msgstr "Vícenástrojový režim"
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: ../src/TrackPanel.cpp:1191
+#: ../src/TrackPanel.cpp:1199
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr "Vícenástrojový režim: Cmd-, pro nastavení myši a klávesnice"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: ../src/TrackPanel.cpp:1194
+#: ../src/TrackPanel.cpp:1202
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "Vícenástrojový režim: Ctrl-P vyvolá předvolby myši a klávesnice"
 
@@ -3470,36 +3491,35 @@ msgstr "Vícenástrojový režim: Ctrl-P vyvolá předvolby myši a klávesnice"
 msgid "MultiTool"
 msgstr "Vícenástrojový režim\tF6"
 
-#: ../src/Project.cpp:1820
+#: ../src/Project.cpp:1866
 msgid ""
 "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:5354
+#: ../src/TrackPanel.cpp:5612
 msgid "Mute"
 msgstr "Umlčet"
 
-#: ../src/Menus.cpp:668
+#: ../src/Menus.cpp:678
 msgid "Mute/Unmute first selected track\tShift+U"
 msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:165
 #, fuzzy
 msgid "NTSC frames"
-msgstr "NTSC rámce 29.97 rps"
+msgstr "NTSC snímky 29.97 rps"
 
-#: ../src/TrackPanel.cpp:4907
+#: ../src/TrackPanel.cpp:5160
 msgid "Name Change"
-msgstr "Pojmenovat Změnu"
+msgstr "Pojmenovat změnu"
 
 #: ../src/export/ExportMultiple.cpp:765
-#, fuzzy
 msgid "Name files:"
-msgstr "Přejmenovaný soubor: %s\n"
+msgstr "Soubory se jmény:"
 
-#: ../src/TrackPanel.cpp:379 ../src/TrackPanel.cpp:400
-#: ../src/TrackPanel.cpp:409 ../src/TrackPanel.cpp:417
+#: ../src/TrackPanel.cpp:385 ../src/TrackPanel.cpp:406
+#: ../src/TrackPanel.cpp:415 ../src/TrackPanel.cpp:423
 msgid "Name..."
 msgstr "Jméno..."
 
@@ -3510,7 +3530,7 @@ msgstr "Jméno..."
 
 #: ../src/Menus.cpp:456
 msgid "New &Audio Track"
-msgstr "Nová &audio stopa"
+msgstr "Nová &zvuková stopa"
 
 #: ../src/Menus.cpp:457
 msgid "New &Stereo Track"
@@ -3541,8 +3561,8 @@ msgstr ""
 msgid "New Temporary Directory"
 msgstr "Nový dočasný adresář"
 
-#: ../src/Menus.cpp:3347 ../src/Menus.cpp:3371 ../src/Menus.cpp:3387
-#: ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3383 ../src/Menus.cpp:3407 ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3459
 msgid "New Track"
 msgstr "Nová stopa"
 
@@ -3554,7 +3574,7 @@ msgstr "Nová hodnota"
 msgid "New selection length: "
 msgstr "Nová délka výběru:"
 
-#: ../src/Menus.cpp:627
+#: ../src/Menus.cpp:632
 msgid "Next Tool\tD"
 msgstr "Další nástroj\tD"
 
@@ -3574,7 +3594,6 @@ msgstr ""
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:327
 msgid "No endianness"
 msgstr "Bez endianness"
@@ -3583,9 +3602,9 @@ msgstr "Bez endianness"
 msgid "No project and no Audio to process!"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:75
+#: ../src/AboutDialog.cpp:142
 msgid "No resampling support enabled"
-msgstr ""
+msgstr "Není povolena žádná podpora převzorkování"
 
 #: ../src/export/Export.cpp:123
 #, fuzzy
@@ -3600,7 +3619,7 @@ msgstr ""
 msgid "No tracks to process!"
 msgstr ""
 
-#: ../src/effects/NoiseRemoval.cpp:148 ../src/BatchCommands.cpp:101
+#: ../src/BatchCommands.cpp:101 ../src/effects/NoiseRemoval.cpp:148
 msgid "Noise Removal"
 msgstr "Odstranění šumu"
 
@@ -3623,17 +3642,17 @@ msgstr ""
 msgid "None"
 msgstr "Nic"
 
-#: ../src/effects/Normalize.cpp:74 ../src/BatchCommands.cpp:99
-#: ../src/BatchCommands.cpp:104 ../src/BatchCommands.cpp:112
+#: ../src/BatchCommands.cpp:99 ../src/BatchCommands.cpp:104
+#: ../src/BatchCommands.cpp:112 ../src/effects/Normalize.cpp:76
 msgid "Normalize"
 msgstr "Normalizovat"
 
-#: ../src/effects/Normalize.cpp:285
+#: ../src/effects/Normalize.cpp:289
 #, fuzzy
 msgid "Normalize by Dominic Mazzoni\n"
 msgstr "Normalizace od Dominica Mazzoniho"
 
-#: ../src/effects/Normalize.cpp:298
+#: ../src/effects/Normalize.cpp:302
 msgid "Normalize maximum amplitude to -3 dB"
 msgstr "Normalizovat s maximální amplitudou na -3 dB"
 
@@ -3641,6 +3660,10 @@ msgstr "Normalizovat s maximální amplitudou na -3 dB"
 #, fuzzy
 msgid "Normalize on load"
 msgstr "Normalizovat"
+
+#: ../src/effects/Compressor.cpp:469
+msgid "Normalize to 0dB after compressing"
+msgstr "Po kompresi normalizovat na 0 dB"
 
 #: ../src/effects/Normalize.h:31
 msgid "Normalize..."
@@ -3670,11 +3693,11 @@ msgstr "Notová stopa"
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
 msgstr "Poznámka: Stisknutí Cmd+Q ukončí. Všechny ostatní klávesy jsou platné."
 
-#: ../src/Menus.cpp:1905
+#: ../src/Menus.cpp:1941
 msgid "Nothing to redo"
 msgstr "Žádná akce k obnovení"
 
-#: ../src/Menus.cpp:1886
+#: ../src/Menus.cpp:1922
 msgid "Nothing to undo"
 msgstr "Žádná akce k obnovení"
 
@@ -3684,22 +3707,20 @@ msgstr "Počet opakování:"
 
 #: ../src/export/ExportMultiple.cpp:774
 msgid "Numbering consecutively"
-msgstr ""
+msgstr "Postupné číslování"
 
 #: ../src/effects/nyquist/Nyquist.cpp:402
-#, fuzzy
 msgid "Nyquist"
-msgstr "Příkazový řádek Nyquistu"
+msgstr " Nyquist"
 
 #: ../src/prefs/GUIPrefs.cpp:357
 #, fuzzy
 msgid "Nyquist Debugger"
-msgstr "Příkazový řádek Nyquistu"
+msgstr " Nyquist"
 
 #: ../src/effects/nyquist/Nyquist.cpp:403
-#, fuzzy
 msgid "Nyquist Output: "
-msgstr "Příkazový řádek Nyquistu"
+msgstr "Výstup Nyquistu:"
 
 #: ../src/effects/nyquist/Nyquist.cpp:284
 msgid "Nyquist Prompt"
@@ -3735,24 +3756,23 @@ msgstr "Nastavení exportu do OGG"
 msgid "OGG Quality:"
 msgstr "OGG kvalita:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:740
-#: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:202 ../src/effects/AvcCompressor.cpp:723
-#: ../src/effects/BassBoost.cpp:344 ../src/effects/ChangePitch.cpp:399
+#: ../src/BatchCommandDialog.cpp:103 ../src/BatchProcessDialog.cpp:87
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:740 ../src/effects/Amplify.cpp:202
+#: ../src/effects/AvcCompressor.cpp:723 ../src/effects/BassBoost.cpp:344
+#: ../src/effects/ChangeLength.cpp:176 ../src/effects/ChangePitch.cpp:399
 #: ../src/effects/ChangeSpeed.cpp:386 ../src/effects/ChangeTempo.cpp:292
-#: ../src/effects/Compressor.cpp:488 ../src/effects/Echo.cpp:253
+#: ../src/effects/Compressor.cpp:484 ../src/effects/Echo.cpp:253
 #: ../src/effects/Equalization.cpp:760 ../src/effects/Filter.cpp:493
-#: ../src/effects/NoiseRemoval.cpp:602 ../src/effects/Normalize.cpp:313
-#: ../src/effects/Phaser.cpp:592 ../src/effects/Repeat.cpp:262
-#: ../src/effects/Wahwah.cpp:578 ../src/effects/ladspa/LadspaEffect.cpp:499
+#: ../src/effects/Leveller.cpp:244 ../src/effects/NoiseRemoval.cpp:602
+#: ../src/effects/Normalize.cpp:317 ../src/effects/Phaser.cpp:592
+#: ../src/effects/Repeat.cpp:262 ../src/effects/SpikeCleaner.cpp:174
+#: ../src/effects/TruncSilence.cpp:267 ../src/effects/VST/VSTEffect.cpp:98
+#: ../src/effects/VST/VSTEffect.cpp:455 ../src/effects/Wahwah.cpp:578
+#: ../src/effects/ladspa/LadspaEffect.cpp:499
 #: ../src/effects/nyquist/Nyquist.cpp:751
 #: ../src/effects/nyquist/Nyquist.cpp:897
-#: ../src/effects/nyquist/Nyquist.cpp:963 ../src/effects/ChangeLength.cpp:176
-#: ../src/effects/Leveller.cpp:244 ../src/effects/SpikeCleaner.cpp:174
-#: ../src/effects/TruncSilence.cpp:267 ../src/prefs/FileFormatPrefs.cpp:470
-#: ../src/prefs/PrefsDialog.cpp:103 ../src/widgets/ASlider.cpp:220
-#: ../src/widgets/Warning.cpp:56 ../src/BatchCommandDialog.cpp:103
-#: ../src/BatchProcessDialog.cpp:87
+#: ../src/effects/nyquist/Nyquist.cpp:963 ../src/prefs/FileFormatPrefs.cpp:470
+#: ../src/prefs/PrefsDialog.cpp:100 ../src/widgets/Warning.cpp:56
 msgid "OK"
 msgstr "OK"
 
@@ -3760,11 +3780,11 @@ msgstr "OK"
 msgid "Off"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:52
+#: ../src/AboutDialog.cpp:119
 msgid "Ogg Vorbis importing disabled"
 msgstr "Import z Ogg Vorbis je zakázán"
 
-#: ../src/AboutDialog.cpp:50
+#: ../src/AboutDialog.cpp:117
 msgid "Ogg Vorbis importing enabled"
 msgstr "Import z Ogg Vorbis je povolen"
 
@@ -3796,16 +3816,16 @@ msgstr ""
 "Pouze libmp3lame.so|libmp3lame.so|Soubory primárně sdílených objektů (*.so)|"
 "*.so|Rozšířené knihovny (*.so*)|*.so*|Všechny soubory (*)|*"
 
-#: ../src/Menus.cpp:3586
+#: ../src/Menus.cpp:3621
 msgid "Open CleanSpeech Preset File:"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
-#: ../src/Menus.cpp:685
+#: ../src/Menus.cpp:695
 msgid "Open Recent"
 msgstr ""
 
-#: ../src/Menus.cpp:667
+#: ../src/Menus.cpp:677
 msgid "Open menu on first selected track\tShift+M"
 msgstr ""
 
@@ -3813,30 +3833,26 @@ msgstr ""
 msgid "Opening Audacity Project"
 msgstr "Otevírám Audacity projekt"
 
-#: ../src/Project.cpp:2109
+#: ../src/Project.cpp:2149
 #, fuzzy
 msgid "Opening old project file"
-msgstr "Otevírám Audacity projekt"
+msgstr "Není možné otevřít soubor projektu"
 
 #: ../src/effects/AvcCompressor.cpp:664
 msgid "Original Value"
 msgstr "Původní hodnota"
 
-#: ../src/DirManager.cpp:1112
+#: ../src/DirManager.cpp:1102
 #, c-format
 msgid "Orphaned blockfile: (%s)"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:149
-msgid "Other contributors:"
-msgstr "Další přispěvatelé:"
-
-#: ../src/TrackPanel.cpp:371 ../src/prefs/FileFormatPrefs.cpp:105
+#: ../src/TrackPanel.cpp:377 ../src/prefs/FileFormatPrefs.cpp:105
 #: ../src/prefs/QualityPrefs.cpp:103
 msgid "Other..."
 msgstr "Další..."
 
-#: ../src/Project.cpp:2876
+#: ../src/Project.cpp:2916
 msgid "Out of disk space"
 msgstr "Nedostatek místa na disku"
 
@@ -3849,25 +3865,31 @@ msgid "Output Volume"
 msgstr "Výstupní hlasitost"
 
 #: ../src/MeterToolBar.cpp:67
-#, fuzzy
 msgid "Output level meter"
-msgstr "Měřič výstupu"
+msgstr "Ukazatel úrovně výstupu"
 
 #: ../src/export/ExportMultiple.cpp:796
 msgid "Overwrite existing files"
-msgstr ""
+msgstr "Přepsat existující soubory"
 
 #: ../src/Menus.cpp:233
-#, fuzzy
 msgid "Page Setup..."
-msgstr "Změnit rychlost..."
+msgstr "Formát stránky..."
 
 #  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: ../src/TrackPanel.cpp:2755 ../src/TrackPanel.cpp:4293
-#: ../src/TrackPanel.cpp:5426
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4453
+#: ../src/TrackPanel.cpp:5684
 msgid "Pan"
 msgstr "Vyvážení"
+
+#: ../src/Menus.cpp:672
+msgid "Pan left on first selected track\tAlt+Shift+Left"
+msgstr ""
+
+#: ../src/Menus.cpp:673
+msgid "Pan right on first selected track\tAlt+Shift+Right"
+msgstr ""
 
 #: ../src/prefs/BatchPrefs.cpp:158
 #, fuzzy
@@ -3883,12 +3905,12 @@ msgstr "Parametry pro VST plug-in"
 msgid "Password:"
 msgstr ""
 
-#: ../src/EditToolBar.cpp:150 ../src/Menus.cpp:2158 ../src/Menus.cpp:2210
-#: ../src/TrackPanel.cpp:427
+#: ../src/EditToolBar.cpp:150 ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
+#: ../src/TrackPanel.cpp:433
 msgid "Paste"
 msgstr "Vložit"
 
-#: ../src/Menus.cpp:2158 ../src/Menus.cpp:2210
+#: ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
 msgid "Pasted from the clipboard"
 msgstr "Vloženo ze schránky"
 
@@ -3896,7 +3918,7 @@ msgstr "Vloženo ze schránky"
 msgid "Pause"
 msgstr "Pozastavit (Pause)"
 
-#: ../src/Menus.cpp:632
+#: ../src/Menus.cpp:637
 msgid "Pause\tP"
 msgstr "Zastavit (Pause)\tP"
 
@@ -3905,8 +3927,8 @@ msgstr "Zastavit (Pause)\tP"
 msgid "Pencil"
 msgstr "Tužka"
 
-#: ../src/effects/ChangePitch.cpp:359 ../src/effects/ChangeSpeed.cpp:312
-#: ../src/effects/ChangeTempo.cpp:190 ../src/effects/ChangeLength.cpp:157
+#: ../src/effects/ChangeLength.cpp:157 ../src/effects/ChangePitch.cpp:359
+#: ../src/effects/ChangeSpeed.cpp:312 ../src/effects/ChangeTempo.cpp:190
 msgid "Percent Change:"
 msgstr "Procento změny:"
 
@@ -3944,7 +3966,7 @@ msgstr "Fázor od Nasca Octavian Paul"
 msgid "Phaser..."
 msgstr "Fázor (Phaser)..."
 
-#: ../src/TrackPanel.cpp:387
+#: ../src/TrackPanel.cpp:393
 msgid "Pitch (EAC)"
 msgstr "Výška tónu (EAC)"
 
@@ -3961,19 +3983,19 @@ msgstr "Přehrávání"
 msgid "Play (Shift for loop-play)"
 msgstr "Přehrát (shift pro přehrání ve smyčce)"
 
-#: ../src/Menus.cpp:637
+#: ../src/Menus.cpp:642
 msgid "Play Looped\tL"
 msgstr "Přehrát ve smyčce\tL"
 
-#: ../src/Menus.cpp:638
+#: ../src/Menus.cpp:643
 msgid "Play Looped\tShift+Spacebar"
 msgstr "Hrát ve smyčce\tShift+Spacebar"
 
-#: ../src/Menus.cpp:635
+#: ../src/Menus.cpp:640
 msgid "Play One Second\t1"
 msgstr "Přehrát jednu sekundu\t1"
 
-#: ../src/Menus.cpp:636
+#: ../src/Menus.cpp:641
 msgid "Play To Selection\tB"
 msgstr "Přehrát do výběru\tB"
 
@@ -3989,7 +4011,7 @@ msgstr "Během nahrávání nové stopy přehrávat ostatní."
 msgid "Play-at-speed"
 msgstr ""
 
-#: ../src/Menus.cpp:630
+#: ../src/Menus.cpp:635
 msgid "Play/Stop\tSpacebar"
 msgstr "Přehrát/Zastavit\tMezerník"
 
@@ -4006,11 +4028,11 @@ msgstr "Přehrávání"
 msgid "Playthrough"
 msgstr ""
 
-#: ../src/Menus.cpp:1392 ../src/Menus.cpp:1429
+#: ../src/Menus.cpp:1408 ../src/Menus.cpp:1445
 msgid "Please Enter time"
 msgstr ""
 
-#: ../src/Menus.cpp:3651
+#: ../src/Menus.cpp:3686
 msgid "Please close all Audacity projects first."
 msgstr ""
 
@@ -4022,7 +4044,7 @@ msgstr ""
 msgid "Please enter the new file/folder name:"
 msgstr ""
 
-#: ../src/Menus.cpp:3656
+#: ../src/Menus.cpp:3691
 msgid "Please save and close the current project first."
 msgstr ""
 
@@ -4037,18 +4059,17 @@ msgid "Plugins 1 to %i"
 msgstr "Moduly 1 - %i"
 
 #: ../src/effects/PopClick.h:29
-#, fuzzy
 msgid "Pop and Click Removal..."
-msgstr "Odstranění šumu..."
+msgstr "Odstranění praskání..."
 
 #: ../src/effects/Equalization.cpp:729
 msgid "Predefined:"
 msgstr "Předdefinováno:"
 
-#: ../src/widgets/Meter.cpp:348
+#: ../src/widgets/Meter.cpp:352
 #, fuzzy
 msgid "Preferences..."
-msgstr "&Nastavení...\tCtrl+P"
+msgstr "N&astavení...\tCtrl+P"
 
 #: ../src/effects/NoiseRemoval.cpp:538
 msgid "Preparation Steps"
@@ -4058,40 +4079,35 @@ msgstr ""
 msgid "Preparing to delete"
 msgstr ""
 
-#: ../src/Menus.cpp:3603
+#: ../src/Menus.cpp:3638
 #, c-format
 msgid ""
 "Preset may be invalid or corrupted.\n"
 "Expected format %d ... found %d"
 msgstr ""
 
-#: ../src/effects/Effect.cpp:258 ../src/effects/Equalization.cpp:748
+#: ../src/effects/Effect.cpp:257 ../src/effects/Equalization.cpp:748
 #: ../src/effects/Phaser.cpp:582 ../src/effects/Wahwah.cpp:568
 msgid "Preview"
 msgstr "Zkusit"
 
-#: ../src/Menus.cpp:628
+#: ../src/Menus.cpp:633
 msgid "Previous Tool\tA"
 msgstr "Předchozí nástroj\tA"
 
-#: ../src/AboutDialog.cpp:131 ../src/AboutDialog.cpp:133
-msgid "Primary developer"
-msgstr "Primární vývojář"
-
 #: ../src/Printing.cpp:182
-#, fuzzy
 msgid "Print"
-msgstr "doprava"
+msgstr "Tisk"
 
 #: ../src/Menus.cpp:234
 msgid "Print..."
-msgstr ""
+msgstr "Tisk..."
 
-#: ../src/Menus.cpp:3559
+#: ../src/Menus.cpp:3595
 msgid "Problem encountered exporting presets."
 msgstr ""
 
-#: ../src/Menus.cpp:3636
+#: ../src/Menus.cpp:3671
 msgid "Problem encountered importing presets."
 msgstr ""
 
@@ -4099,22 +4115,13 @@ msgstr ""
 msgid "Process Batch..."
 msgstr ""
 
-#: ../src/AboutDialog.cpp:84
+#: ../src/AboutDialog.cpp:151
 #, fuzzy
 msgid "Program build date: "
 msgstr "Datum buildu (sestavení) programu:"
 
-#: ../src/AboutDialog.cpp:134 ../src/AboutDialog.cpp:135
-#: ../src/AboutDialog.cpp:136 ../src/AboutDialog.cpp:137
-msgid "Programmer"
-msgstr "Programátor"
-
-#: ../src/AboutDialog.cpp:138
-msgid "Programmer (CleanSpeech)"
-msgstr ""
-
-#: ../src/DirManager.cpp:154 ../src/DirManager.cpp:236
-#: ../src/DirManager.cpp:355
+#: ../src/DirManager.cpp:151 ../src/DirManager.cpp:233
+#: ../src/DirManager.cpp:347
 msgid "Progress"
 msgstr "Postup"
 
@@ -4123,7 +4130,7 @@ msgstr "Postup"
 msgid "Project Rate (Hz):"
 msgstr " Vzorkování:"
 
-#: ../src/DirManager.cpp:1230
+#: ../src/DirManager.cpp:1219
 #, c-format
 msgid ""
 "Project check detected %d input file[s] being used in place\n"
@@ -4134,7 +4141,7 @@ msgid ""
 "and try to restore the missing files by hand."
 msgstr ""
 
-#: ../src/DirManager.cpp:1306
+#: ../src/DirManager.cpp:1288
 #, c-format
 msgid ""
 "Project check detected %d missing audio data blockfile[s] (.au), \n"
@@ -4146,7 +4153,7 @@ msgid ""
 "missing data by hand."
 msgstr ""
 
-#: ../src/DirManager.cpp:1273
+#: ../src/DirManager.cpp:1257
 #, c-format
 msgid ""
 "Project check detected %d missing summary file[s] (.auf).\n"
@@ -4154,7 +4161,7 @@ msgid ""
 "original audio data in the project."
 msgstr ""
 
-#: ../src/DirManager.cpp:1200
+#: ../src/DirManager.cpp:1189
 #, c-format
 msgid ""
 "Project check found %d orphaned blockfile[s]. These files are\n"
@@ -4162,18 +4169,18 @@ msgid ""
 "They should be deleted to avoid disk contention."
 msgstr ""
 
-#: ../src/DirManager.cpp:1189
+#: ../src/DirManager.cpp:1179
 msgid ""
 "Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more "
 "options."
 msgstr ""
 
-#: ../src/Project.cpp:2003
+#: ../src/Project.cpp:2049
 msgid "Project checker repaired file"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:129
+#: ../src/AboutDialog.cpp:261
 msgid "Project leader and primary programmer"
 msgstr "Vedoucí projektu a hlavní programátor"
 
@@ -4181,7 +4188,7 @@ msgstr "Vedoucí projektu a hlavní programátor"
 msgid "Prompt to save, even if empty"
 msgstr ""
 
-#: ../src/prefs/PrefsDialog.cpp:87
+#: ../src/prefs/PrefsDialog.cpp:84
 msgid "Quality"
 msgstr "Kvalita"
 
@@ -4190,25 +4197,24 @@ msgid "Quit Audacity upon closing last window"
 msgstr "Ukončit Audacity při zavření posledního okna"
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Right, in VU Meter
-#: ../src/widgets/ASlider.cpp:494 ../src/widgets/Meter.cpp:187
+#: ../src/widgets/ASlider.cpp:447 ../src/widgets/Meter.cpp:189
 msgid "R"
 msgstr "P"
 
-#: ../src/TrackPanel.cpp:4679
+#: ../src/TrackPanel.cpp:4932
 msgid "Rate Change"
 msgstr "Změna rychlosti"
 
-#: ../src/effects/Compressor.cpp:455
+#: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
 msgstr "Poměr:"
 
-#: ../src/effects/Compressor.cpp:532
+#: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "Poměr: %.0f:1"
 
-#: ../src/effects/Compressor.cpp:534
+#: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "Poměr: %.1f:1"
@@ -4216,8 +4222,7 @@ msgstr "Poměr: %.1f:1"
 #  i18n-hint: This refers to files that are opened directly
 #  without looking at the file header.  Same as "Import Raw"
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
-#: ../src/Project.cpp:2381
+#: ../src/Project.cpp:2421
 msgid "Raw"
 msgstr "Neformátovaná data"
 
@@ -4239,20 +4244,20 @@ msgid "Recalculate"
 msgstr "Obdélníkový"
 
 #. i18n-hint: This is the name of the menu item on Windows and Linux
-#: ../src/Menus.cpp:688
+#: ../src/Menus.cpp:698
 msgid "Recent &Files..."
-msgstr ""
+msgstr "Poslední &soubory..."
 
 #: ../src/ControlToolBar.cpp:518 ../src/ControlToolBar.cpp:526
-#: ../src/Project.cpp:1772 ../src/TrackPanel.cpp:810
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
 msgid "Record"
 msgstr "Nahrávat"
 
-#: ../src/Menus.cpp:633
+#: ../src/Menus.cpp:638
 msgid "Record\tR"
 msgstr "Nahrávat\tR"
 
-#: ../src/Project.cpp:1772 ../src/TrackPanel.cpp:810
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
 msgid "Recorded Audio"
 msgstr "Nahraný zvuk"
 
@@ -4260,7 +4265,7 @@ msgstr "Nahraný zvuk"
 msgid "Recording"
 msgstr "Nahrávání"
 
-#: ../src/ControlToolBar.cpp:882
+#: ../src/ControlToolBar.cpp:884
 msgid "Recording not permitted"
 msgstr ""
 
@@ -4276,7 +4281,7 @@ msgstr "Obdélníkový"
 msgid "Redo"
 msgstr "Znovu"
 
-#: ../src/DirManager.cpp:1280
+#: ../src/DirManager.cpp:1262
 msgid "Regenerate summary files [safe and recommended]"
 msgstr ""
 
@@ -4284,29 +4289,38 @@ msgstr ""
 msgid "Remo&ve Tracks"
 msgstr "&Odstranit stopu(y)"
 
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Remove"
+msgstr "Odstranit šum"
+
 #: ../src/UploadDialog.cpp:283
 #, fuzzy
 msgid "Remove Site"
 msgstr "Odstranit šum"
 
-#: ../src/Menus.cpp:3762
+#: ../src/Menus.cpp:3797
 msgid "Remove Track"
 msgstr "&Odstranit stopu(y)"
 
-#: ../src/effects/Normalize.cpp:293
+#: ../src/effects/Normalize.cpp:297
 msgid "Remove any DC offset (center on 0 vertically)"
 msgstr "Odstranit jakýkoliv DC posun (vycentrovat na 0 vertikálně)"
 
 #: ../src/effects/ClickRemoval.cpp:412
-#, fuzzy
 msgid "Remove clicks"
-msgstr "&Odstranit stopu(y)"
+msgstr "Odstranit praskání"
 
-#: ../src/Menus.cpp:3762
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Removed Cut Line"
+msgstr "Odstranit šum"
+
+#: ../src/Menus.cpp:3797
 msgid "Removed audio track(s)"
 msgstr "Odstraněné audio stopy"
 
-#: ../src/TrackPanel.cpp:2641
+#: ../src/TrackPanel.cpp:2652
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "Odstraněné stopy '%s.'"
@@ -4317,12 +4331,11 @@ msgstr "Odstraňuji šum"
 
 #: ../src/effects/ClickRemoval.h:46
 msgid "Removing clicks and pops..."
-msgstr ""
+msgstr "Odstraňuji praskot a šum..."
 
 #: ../src/effects/PopClick.h:33
-#, fuzzy
 msgid "Removing unwanted noise"
-msgstr "Odstraňuji šum"
+msgstr "Odstraňuji nežádoucí šum"
 
 #: ../src/UploadDialog.cpp:509 ../src/UploadDialog.cpp:672
 #, fuzzy
@@ -4334,27 +4347,27 @@ msgstr "Rezonance:"
 msgid "Rename file"
 msgstr "Přejmenovaný soubor: %s\n"
 
-#: ../src/TrackPanel.cpp:4904
+#: ../src/TrackPanel.cpp:5157
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "Přejmenováno '%s' na '%s'"
 
-#: ../src/DirManager.cpp:994
+#: ../src/DirManager.cpp:984
 #, c-format
 msgid "Renamed file: %s\n"
 msgstr "Přejmenovaný soubor: %s\n"
 
-#: ../src/Menus.cpp:3142
+#: ../src/Menus.cpp:3178
 #, fuzzy
 msgid "Render"
 msgstr "Střed"
 
-#: ../src/Menus.cpp:3141
+#: ../src/Menus.cpp:3177
 #, fuzzy, c-format
 msgid "Rendered all audio in track '%s'"
 msgstr "Odstraněné audio stopy"
 
-#: ../src/Project.cpp:2003
+#: ../src/Project.cpp:2049
 #, fuzzy
 msgid "Repair"
 msgstr "Opakovat"
@@ -4363,7 +4376,7 @@ msgstr "Opakovat"
 msgid "Repeat"
 msgstr "Opakovat"
 
-#: ../src/Menus.cpp:1641
+#: ../src/Menus.cpp:1677
 #, c-format
 msgid "Repeat %s\tCtrl+R"
 msgstr "Opakovat %s\tCtrl+R"
@@ -4385,11 +4398,11 @@ msgstr "Opakovat..."
 msgid "Repeated %d times"
 msgstr "Opakovat %d-krát"
 
-#: ../src/DirManager.cpp:1317
+#: ../src/DirManager.cpp:1293
 msgid "Replace missing data with silence [permanent immediately]"
 msgstr ""
 
-#: ../src/DirManager.cpp:1240
+#: ../src/DirManager.cpp:1224
 msgid "Replace missing data with silence [permanent upon save]"
 msgstr ""
 
@@ -4413,11 +4426,11 @@ msgstr "Obrátit (Reverse)"
 msgid "Reversing"
 msgstr "Reverzuji"
 
-#: ../src/widgets/ASlider.cpp:654
+#: ../src/widgets/ASlider.cpp:607
 msgid "Right"
 msgstr "Pravý"
 
-#: ../src/TrackPanel.cpp:391
+#: ../src/TrackPanel.cpp:397
 msgid "Right Channel"
 msgstr "Pravý kanál"
 
@@ -4429,11 +4442,12 @@ msgstr "Stisknutí pravého myšítka"
 msgid "Right Drag"
 msgstr "Tažení pravým myšítkem"
 
-#: ../src/Menus.cpp:340
+#: ../src/Menus.cpp:333
+#, fuzzy
 msgid "Right at Playback Position\t]"
-msgstr ""
+msgstr "Vložit popis na pozici přehrávání\tCtrl+B"
 
-#: ../src/TrackPanel.cpp:4582
+#: ../src/TrackPanel.cpp:4835
 msgid "Right, "
 msgstr "Pravý,"
 
@@ -4454,7 +4468,7 @@ msgstr ""
 msgid "Right-to-On"
 msgstr "Pravý"
 
-#: ../src/TrackPanel.cpp:2555
+#: ../src/TrackPanel.cpp:2566
 msgid "Sample Edit"
 msgstr "Editace vzorku"
 
@@ -4472,7 +4486,7 @@ msgstr "Zesiluji"
 msgid "Save %s File As:"
 msgstr "Uložit soubor %s jako:"
 
-#: ../src/Menus.cpp:3502
+#: ../src/Menus.cpp:3538
 #, fuzzy
 msgid "Save CleanSpeech Preset File As:"
 msgstr "Uložit soubor %s jako:"
@@ -4481,20 +4495,20 @@ msgstr "Uložit soubor %s jako:"
 msgid "Save Project &As..."
 msgstr "Uložit projekt &jako..."
 
-#: ../src/Project.cpp:2525
+#: ../src/Project.cpp:2565
 msgid "Save Project As:"
 msgstr "Uložit projekt jako:"
 
-#: ../src/Project.cpp:2516
+#: ../src/Project.cpp:2556
 #, fuzzy
 msgid "Save Speech As:"
 msgstr "Uložit projekt jako:"
 
-#: ../src/Project.cpp:1790
+#: ../src/Project.cpp:1836
 msgid "Save changes before closing?"
 msgstr "Uložit změny před uzavřením?"
 
-#: ../src/Project.cpp:1791
+#: ../src/Project.cpp:1837
 msgid "Save changes?"
 msgstr "Uložit změny?"
 
@@ -4502,14 +4516,15 @@ msgstr "Uložit změny?"
 msgid "Save..."
 msgstr "Uložit..."
 
-#: ../src/Project.cpp:2353
+#: ../src/Project.cpp:2393
 #, c-format
 msgid "Saved %s"
 msgstr "Uloženo %s"
 
-#: ../src/DirManager.cpp:356
+#: ../src/DirManager.cpp:348
+#, fuzzy
 msgid "Saving project data files"
-msgstr ""
+msgstr "Není možné otevřít soubor projektu"
 
 #: ../src/effects/ToneGen.cpp:57
 msgid "Sawtooth"
@@ -4537,7 +4552,7 @@ msgstr "Označit"
 msgid "Select Command"
 msgstr "Příkaz"
 
-#: ../src/Menus.cpp:3012
+#: ../src/Menus.cpp:3048
 msgid "Select a MIDI file..."
 msgstr "Zvolit MIDI soubor..."
 
@@ -4551,7 +4566,7 @@ msgstr ""
 "aby Audacity poznala co odfiltrovat,\n"
 "potom klikněte na \"Získat profil šumu\"."
 
-#: ../src/Menus.cpp:2971
+#: ../src/Menus.cpp:3007
 msgid "Select a text file containing labels..."
 msgstr "Zvolte textový soubor s popisy (labels)..."
 
@@ -4570,15 +4585,15 @@ msgstr ""
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
 msgstr "Zvolte XML soubor obsahující klávesové zkratky pro Audacity..."
 
-#: ../src/Menus.cpp:3047
+#: ../src/Menus.cpp:3083
 msgid "Select any uncompressed audio file..."
 msgstr "Zvolte nějaký nekomprimovaný audio soubor..."
 
-#: ../src/Menus.cpp:3675
+#: ../src/Menus.cpp:3710
 msgid "Select file(s) for batch processing..."
 msgstr ""
 
-#: ../src/Menus.cpp:2939 ../src/Project.cpp:1817
+#: ../src/Menus.cpp:2975 ../src/Project.cpp:1863
 msgid "Select one or more audio files..."
 msgstr "Zvolte jeden či více zvukových souborů..."
 
@@ -4590,7 +4605,7 @@ msgstr ""
 msgid "Select region of sound around cursor"
 msgstr ""
 
-#: ../src/Menus.cpp:3674
+#: ../src/Menus.cpp:3709
 msgid "Select vocal file(s) for batch CleanSpeech Chain..."
 msgstr ""
 
@@ -4611,38 +4626,38 @@ msgstr ""
 #: ../src/TranscriptionToolBar.cpp:239
 #, fuzzy
 msgid "Select-Silence"
-msgstr "Ticho"
+msgstr "Generuji ticho"
 
 #: ../src/TranscriptionToolBar.cpp:235
 #, fuzzy
 msgid "Select-Sound"
 msgstr "Označit"
 
-#: ../src/Menus.cpp:334
+#: ../src/Menus.cpp:327
 msgid "Select..."
 msgstr "Označit..."
 
-#: ../src/Menus.cpp:662
+#: ../src/Menus.cpp:668
 msgid "Selection Contract Left\tCtrl+Shift+Right"
 msgstr "Zmenšení výběru zleva\tCtrl+Shift+Šipka doprava"
 
-#: ../src/Menus.cpp:663
+#: ../src/Menus.cpp:669
 msgid "Selection Contract Right\tCtrl+Shift+Left"
 msgstr "Zmenšení výběru zprava\tCtrl+Shift+Šipka doleva"
 
-#: ../src/Menus.cpp:660
+#: ../src/Menus.cpp:666
 msgid "Selection Extend Left\tShift+Left"
 msgstr "Rozšíření výběru doleva\tShitf+Šipka doleva"
 
-#: ../src/Menus.cpp:661
+#: ../src/Menus.cpp:667
 msgid "Selection Extend Right\tShift+Right"
 msgstr "Rozšíření výběru doprava\tShift+Šipka doprava"
 
-#: ../src/Menus.cpp:369
+#: ../src/Menus.cpp:362
 msgid "Selection Restore"
 msgstr "Obnovení výběru"
 
-#: ../src/Menus.cpp:368
+#: ../src/Menus.cpp:361
 msgid "Selection Save"
 msgstr "Uložení výběru"
 
@@ -4655,7 +4670,7 @@ msgstr "na začátek výběru"
 msgid "Selection Tool"
 msgstr "Výběr"
 
-#: ../src/Menus.cpp:620
+#: ../src/Menus.cpp:625
 msgid "Selection Tool\tF1"
 msgstr "Výběr\tF1"
 
@@ -4664,11 +4679,11 @@ msgstr "Výběr\tF1"
 msgid "Selection is too small to use voice key."
 msgstr ""
 
-#: ../src/Menus.cpp:644
+#: ../src/Menus.cpp:649
 msgid "Selection to End\tShift+End"
 msgstr "Označit do konce\tShift+End"
 
-#: ../src/Menus.cpp:643
+#: ../src/Menus.cpp:648
 msgid "Selection to Start\tShift+Home"
 msgstr "Rozšíření výběru na začátek\tShift+Home"
 
@@ -4679,7 +4694,7 @@ msgstr "Výběr"
 
 #: ../src/effects/ChangePitch.cpp:305
 msgid "Semitones (half-steps):"
-msgstr "Půltóny"
+msgstr "Půltóny:"
 
 #: ../src/TranscriptionToolBar.cpp:255
 msgid "Sensitivity"
@@ -4689,29 +4704,29 @@ msgstr ""
 msgid "Set"
 msgstr "Nastavit"
 
-#: ../src/Menus.cpp:1391
+#: ../src/Menus.cpp:1407
 #, fuzzy
 msgid "Set Left Selection Bound"
 msgstr "Nastavit bod výběru"
 
-#: ../src/TrackPanel.cpp:4855
+#: ../src/TrackPanel.cpp:5108
 msgid "Set Range"
 msgstr "Nastavit rozsah"
 
-#: ../src/TrackPanel.cpp:422
+#: ../src/TrackPanel.cpp:428
 msgid "Set Range..."
 msgstr "Nastavit rozsah..."
 
-#: ../src/TrackPanel.cpp:397 ../src/TrackPanel.cpp:4806
+#: ../src/TrackPanel.cpp:403 ../src/TrackPanel.cpp:5059
 msgid "Set Rate"
 msgstr "Nastavit frekvenci"
 
-#: ../src/Menus.cpp:1429
+#: ../src/Menus.cpp:1445
 #, fuzzy
 msgid "Set Right Selection Bound"
 msgstr "Nastavit bod výběru"
 
-#: ../src/TrackPanel.cpp:395
+#: ../src/TrackPanel.cpp:401
 msgid "Set Sample Format"
 msgstr "Nastavit formát vzorkování"
 
@@ -4723,15 +4738,14 @@ msgstr "Nastavit bod výběru"
 msgid "Set Selection Range"
 msgstr "Nastavit rozsah výběru"
 
-#: ../src/TrackPanel.cpp:4852
+#: ../src/TrackPanel.cpp:5105
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "Nastavte rozsah na '%d' - '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:355
-#, fuzzy
 msgid "Settings"
-msgstr "Nastavení efektu"
+msgstr "Nastavení"
 
 #: ../src/prefs/QualityPrefs.cpp:170
 msgid "Shaped"
@@ -4746,7 +4760,7 @@ msgstr "Shift-Levé myšítko"
 msgid "Shift-Left-Drag"
 msgstr "Ctrl-Tažení levým myšítkem"
 
-#: ../src/prefs/GUIPrefs.cpp:37 ../src/prefs/BatchPrefs.cpp:69
+#: ../src/prefs/BatchPrefs.cpp:69 ../src/prefs/GUIPrefs.cpp:37
 msgid "Show / Hide"
 msgstr ""
 
@@ -4755,9 +4769,8 @@ msgid "Show Mp3-ID3 Dialog"
 msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:339
-#, fuzzy
 msgid "Show warnings about temp files"
-msgstr "Odstraňování dočasných souborů..."
+msgstr ""
 
 #: ../src/VoiceKey.cpp:826
 #, c-format
@@ -4772,8 +4785,7 @@ msgstr ""
 msgid "Sign Changes (Low Threshold)"
 msgstr ""
 
-#: ../src/EditToolBar.cpp:154 ../src/Menus.cpp:2320
-#: ../src/effects/Silence.h:35
+#: ../src/EditToolBar.cpp:154 ../src/Menus.cpp:2356
 msgid "Silence"
 msgstr "Ticho"
 
@@ -4781,7 +4793,12 @@ msgstr "Ticho"
 msgid "Silence selection"
 msgstr "Nahradit výběr tichem"
 
-#: ../src/Menus.cpp:2318
+#: ../src/effects/Silence.h:35
+#, fuzzy
+msgid "Silence..."
+msgstr "Ticho"
+
+#: ../src/Menus.cpp:2354
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Ztlumeny zvolené stopy na %.2f sekund od %.2f"
@@ -4803,7 +4820,7 @@ msgstr "Velikost"
 msgid "Skip to End"
 msgstr "Přeskočit na konec"
 
-#: ../src/Menus.cpp:641
+#: ../src/Menus.cpp:646
 msgid "Skip to End\tEnd"
 msgstr "Přeskočit na konec\tEnd"
 
@@ -4811,7 +4828,7 @@ msgstr "Přeskočit na konec\tEnd"
 msgid "Skip to Start"
 msgstr "Přeskočit na začátek"
 
-#: ../src/Menus.cpp:640
+#: ../src/Menus.cpp:645
 msgid "Skip to Start\tHome"
 msgstr "Přeskočit na začátek\tHome"
 
@@ -4820,30 +4837,31 @@ msgid "Smooth at Sample"
 msgstr "Zaoblit na vzorku"
 
 #  i18n-hint: Set snap-to mode on or off
+#  i18n-hint: Set snap-to mode on or off
 #. i18n-hint: Set snap-to mode on or off
-#: ../src/Menus.cpp:379
+#: ../src/Menus.cpp:372
 msgid "Snap Off"
-msgstr "Nepřilínat"
+msgstr "Vypnout přilínání"
 
+#  i18n-hint: Set snap-to mode on or off
 #. i18n-hint: Set snap-to mode on or off
-#: ../src/Menus.cpp:377
+#: ../src/Menus.cpp:370
 msgid "Snap On"
-msgstr "Přilínat"
+msgstr "Zapnout přilínání"
 
-#: ../src/Menus.cpp:374
+#: ../src/Menus.cpp:367
 msgid "Snap-To..."
-msgstr "Přilínat k..."
+msgstr "Přilínání..."
 
 #: ../src/prefs/AudioIOPrefs.cpp:296
-#, fuzzy
 msgid "Software Playthrough (Play new track while recording it)"
-msgstr "Během nahrávání nové stopy přehrávat ostatní."
+msgstr "Software Playthrough (Během nahrávání novou stopu zároveň přehrávat.)"
 
-#: ../src/TrackPanel.cpp:5354
+#: ../src/TrackPanel.cpp:5612
 msgid "Solo"
 msgstr "Solo"
 
-#: ../src/Menus.cpp:669
+#: ../src/Menus.cpp:679
 msgid "Solo/Unsolo first selected track\tShift+S"
 msgstr ""
 
@@ -4888,7 +4906,7 @@ msgstr ""
 "Omlouvám se, ale efekt nemůže být aplikován na stereo stopy, u kterých  "
 "nesouhlasí individuální kanály."
 
-#: ../src/Menus.cpp:3513 ../src/export/Export.cpp:188
+#: ../src/Menus.cpp:3549 ../src/export/Export.cpp:188
 msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "Omlouvám se, ale názvy cest delší než 256 znaků nejsou podporovány."
 
@@ -4896,22 +4914,21 @@ msgstr "Omlouvám se, ale názvy cest delší než 256 znaků nejsou podporován
 msgid "Sorry. Truncate Silence only valid with mono track"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:175
+#: ../src/AboutDialog.cpp:204
 msgid "Special thanks:"
 msgstr "Zvláštní poděkování:"
 
-#: ../src/prefs/PrefsDialog.cpp:89
+#: ../src/prefs/PrefsDialog.cpp:86
 msgid "Spectrograms"
 msgstr "Spektrogramy"
 
-#: ../src/FreqWindow.cpp:129 ../src/TrackPanel.cpp:386
+#: ../src/FreqWindow.cpp:129 ../src/TrackPanel.cpp:392
 msgid "Spectrum"
 msgstr "Spektrum"
 
 #: ../src/effects/SpikeCleaner.cpp:52
-#, fuzzy
 msgid "Spike Cleaner"
-msgstr "Ticho"
+msgstr ""
 
 #: ../src/effects/SpikeCleaner.h:27
 #, fuzzy
@@ -4922,57 +4939,57 @@ msgstr "Nastavit rozsah..."
 msgid "SpikeCleaner by Lynn Allan"
 msgstr ""
 
-#: ../src/Menus.cpp:312
+#: ../src/Menus.cpp:305
 msgid "Spl&it"
 msgstr "Rozděli&t"
 
-#: ../src/Menus.cpp:2380 ../src/TrackPanel.cpp:4622
+#: ../src/Menus.cpp:2416 ../src/TrackPanel.cpp:4875
 msgid "Split"
 msgstr "Rozdělit"
 
-#: ../src/Menus.cpp:2026
+#: ../src/Menus.cpp:2062
 #, fuzzy
 msgid "Split Cut"
 msgstr "Rozdělit"
 
-#: ../src/Menus.cpp:300
+#: ../src/Menus.cpp:293
 #, fuzzy
 msgid "Split Cut\tCtrl+Alt+X"
 msgstr "Vyjmou&t\tCtrl+X"
 
-#: ../src/Menus.cpp:2275
+#: ../src/Menus.cpp:2311
 #, fuzzy
 msgid "Split Delete"
 msgstr "Smazat"
 
-#: ../src/Menus.cpp:309
+#: ../src/Menus.cpp:302
 #, fuzzy
 msgid "Split Delete\tCtrl+Alt+K"
 msgstr "&Smazat\tCtrl+K"
 
-#: ../src/TrackPanel.cpp:393
+#: ../src/TrackPanel.cpp:399
 msgid "Split Stereo Track"
 msgstr "Rozdělit stereo stopu"
 
-#: ../src/Menus.cpp:2513
+#: ../src/Menus.cpp:2549
 msgid "Split at labels"
 msgstr "Rozdělit na popisech (labels)"
 
 #: ../src/export/ExportMultiple.cpp:731
 msgid "Split files based on:"
-msgstr ""
+msgstr "Rozdělit soubory na základě:"
 
-#: ../src/TrackPanel.cpp:4619
+#: ../src/TrackPanel.cpp:4872
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Rozdělit stereostopu  '%s'"
 
-#: ../src/Menus.cpp:2026
+#: ../src/Menus.cpp:2062
 #, fuzzy
 msgid "Split-cut to the clipboard"
 msgstr "Vyjmout a vložit do schránky"
 
-#: ../src/Menus.cpp:2272
+#: ../src/Menus.cpp:2308
 #, fuzzy, c-format
 msgid "Split-deleted %.2f seconds at t=%.2f"
 msgstr "Vymazáno %.2f vteřin at t=%.2f"
@@ -4998,15 +5015,16 @@ msgstr "Standardní vinyl RPM: od"
 msgid "Start"
 msgstr "Nastavit frekvenci"
 
-#: ../src/widgets/Meter.cpp:326
+#: ../src/widgets/Meter.cpp:330
+#, fuzzy
 msgid "Start Monitoring"
-msgstr ""
+msgstr "Monitorovat vstup"
 
 #: ../src/import/ImportRaw.cpp:376
 msgid "Start offset:"
 msgstr "Počáteční posuv:"
 
-#: ../src/Menus.cpp:344
+#: ../src/Menus.cpp:337
 msgid "Start to Cursor"
 msgstr "Nastavit začátek na kurzor"
 
@@ -5018,8 +5036,8 @@ msgstr "Krok 1"
 msgid "Step 2"
 msgstr "Krok 2"
 
-#: ../src/Menus.cpp:325 ../src/Menus.cpp:447 ../src/effects/StereoToMono.h:23
 #: ../src/BatchCommands.cpp:98 ../src/BatchCommands.cpp:288
+#: ../src/Menus.cpp:318 ../src/Menus.cpp:447 ../src/effects/StereoToMono.h:23
 #, fuzzy
 msgid "Stereo To Mono"
 msgstr "Stereo, "
@@ -5028,7 +5046,7 @@ msgstr "Stereo, "
 msgid "Stereo To Mono Effect not found"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4575
+#: ../src/TrackPanel.cpp:4828
 msgid "Stereo, "
 msgstr "Stereo, "
 
@@ -5036,28 +5054,29 @@ msgstr "Stereo, "
 msgid "Stop"
 msgstr "Stop"
 
-#: ../src/Menus.cpp:631
+#: ../src/Menus.cpp:636
 msgid "Stop\tS"
 msgstr "Stop\tS"
 
-#: ../src/widgets/Meter.cpp:324
+#: ../src/widgets/Meter.cpp:328
+#, fuzzy
 msgid "Stop Monitoring"
-msgstr ""
+msgstr "Monitorovat vstup"
 
 #: ../src/export/ExportMultiple.cpp:463 ../src/export/ExportMultiple.cpp:571
 #, c-format
 msgid "Successfully exported %d files."
-msgstr ""
+msgstr "%d souborů úspěšně exportováno."
 
 #: ../src/prefs/DirectoriesPrefs.cpp:52
 msgid "Temp. Directory"
 msgstr "Dočasný adresář"
 
-#: ../src/DirManager.cpp:1318
+#: ../src/DirManager.cpp:1294
 msgid "Temporarily replace missing data with silence [this session only]"
 msgstr ""
 
-#: ../src/DirManager.cpp:1241
+#: ../src/DirManager.cpp:1225
 msgid "Temporarily replace missing files with silence [this session only]"
 msgstr ""
 
@@ -5065,7 +5084,7 @@ msgstr ""
 msgid "Test Mode"
 msgstr ""
 
-#: ../src/Menus.cpp:2975
+#: ../src/Menus.cpp:3011
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*"
 
@@ -5073,7 +5092,7 @@ msgstr "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*"
 msgid "The maximum frequency must be an integer"
 msgstr "Maximální frekvence musí být integer"
 
-#: ../src/AudacityApp.cpp:803
+#: ../src/AudacityApp.cpp:858
 msgid ""
 "The system has detected that another copy of Audacity is running.\n"
 "Running two copies of Audacity simultaneously may lead to\n"
@@ -5082,25 +5101,25 @@ msgid ""
 "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
 msgstr ""
-"Systém zjistil, že Audacity je již spuštěno. Spuštění dvou Audacity "
+"Systém zjistil, že Audacity je již spuštěna. Spuštění dvou Audacity "
 "najednou\n"
 "může mít za následek ztrátu dat nebo způsobit pád systému.\n"
 "\n"
-"Jestli chcete otevřít více projektů najednou, použijte příkazy \n"
+"Pokud chcete otevřít více projektů najednou, použijte příkazy \n"
 "Nový nebo Otevřít.\n"
 
-#: ../src/Menus.cpp:3412
+#: ../src/Menus.cpp:3448
 msgid ""
 "The version of Audacity you are using does not support multiple time tracks."
 msgstr "Verze Audacity, kterou používáte nepodporuje více časových stop."
 
-#: ../src/Menus.cpp:1763
+#: ../src/Menus.cpp:1799
 msgid "There are no label tracks to export."
 msgstr "Žádné popisové stopy k exportu."
 
 #: ../src/Printing.cpp:181
 msgid "There was a problem printing."
-msgstr ""
+msgstr "Vyskytly se problémy s tiskem."
 
 #: ../src/AudioIO.cpp:174
 msgid "There was an error initializing the audio i/o layer.\n"
@@ -5116,7 +5135,7 @@ msgstr "Práh:"
 msgid "Theshold for silence: "
 msgstr "Práh:"
 
-#: ../src/widgets/Meter.cpp:1039
+#: ../src/widgets/Meter.cpp:1043
 msgid ""
 "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
@@ -5124,7 +5143,7 @@ msgid ""
 "audio qualtiy is not affected by the meter display."
 msgstr ""
 
-#: ../src/Project.cpp:2101
+#: ../src/Project.cpp:2145
 #, c-format
 msgid ""
 "This file was saved by Audacity %s and the format\n"
@@ -5135,15 +5154,18 @@ msgid ""
 "Would you like to open this file right now anyway?"
 msgstr ""
 
-#: ../src/Project.cpp:2087
+#: ../src/Project.cpp:2133
 #, c-format
 msgid ""
 "This file was saved using Audacity %s.\n"
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"Soubor byl uložen Audacity %s.\n"
+"Vy používáte %s - jestliže tento soubor chcete\n"
+"otevřít, musíte přejít na novější verzi programu."
 
-#: ../src/AboutDialog.cpp:93
+#: ../src/AboutDialog.cpp:160
 msgid ""
 "This is a beta version of the program.  It may contain bugs and unfinished "
 "features.  We depend on your feedback, so please visit our website and give "
@@ -5154,7 +5176,7 @@ msgstr ""
 "navštivte naši webovou stránku a nahlaste nám chyby a napište žádosti o "
 "vlastnosti, které by měly být v budoucích verzích."
 
-#: ../src/AboutDialog.cpp:96
+#: ../src/AboutDialog.cpp:163
 #, fuzzy
 msgid ""
 "This is a stable, completed release of Audacity. However, if you find a bug "
@@ -5172,16 +5194,16 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Tato verze Audacity nebyla kompilována s podporou %s."
 
-#: ../src/effects/Compressor.cpp:448
+#: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
 msgstr "Práh:"
 
-#: ../src/effects/Compressor.cpp:529
+#: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "Práh: %d dB"
 
-#: ../src/TrackPanel.cpp:1761
+#: ../src/TrackPanel.cpp:1771
 msgid "Time Shift"
 msgstr "Časový posuv"
 
@@ -5189,7 +5211,7 @@ msgstr "Časový posuv"
 msgid "Time Shift Tool"
 msgstr "Časový posuv"
 
-#: ../src/Menus.cpp:624
+#: ../src/Menus.cpp:629
 msgid "Time Shift Tool\tF5"
 msgstr "Časový posuv\tF5"
 
@@ -5205,7 +5227,7 @@ msgstr ""
 msgid "Time shift clip or move up/down between tracks"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1757
+#: ../src/TrackPanel.cpp:1767
 #, fuzzy, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "Časově posunutá stopa '%s' %s %.02f sekund."
@@ -5228,7 +5250,7 @@ msgstr "Titul:"
 msgid "Title:"
 msgstr "Titul:"
 
-#: ../src/Menus.cpp:2789
+#: ../src/Menus.cpp:2825
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr ""
 "Aby mohlo být vykresleno spektrum, musí mít všechny stopy stejnou vzorkovací "
@@ -5242,7 +5264,7 @@ msgstr "Tónový generátor"
 msgid "Tone..."
 msgstr "Tón..."
 
-#: ../src/Menus.cpp:2815
+#: ../src/Menus.cpp:2851
 #, c-format
 msgid ""
 "Too much audio was selected.  Only the first %.1f seconds of audio will be "
@@ -5255,7 +5277,7 @@ msgstr ""
 msgid "Tool"
 msgstr "Nástroj"
 
-#: ../src/TrackPanel.cpp:4901
+#: ../src/TrackPanel.cpp:5154
 msgid "Track Name"
 msgstr "Jméno stopy"
 
@@ -5263,14 +5285,13 @@ msgstr "Jméno stopy"
 msgid "Track Number:"
 msgstr "Číslo stopy:"
 
-#: ../src/TrackPanel.cpp:2643
+#: ../src/TrackPanel.cpp:2654
 msgid "Track Remove"
 msgstr "Odstranit stopu"
 
 #: ../src/export/ExportMultiple.cpp:755
-#, fuzzy
 msgid "Tracks"
-msgstr "Nová stopa"
+msgstr "Stopy"
 
 #: ../src/effects/Repeat.cpp:62
 msgid "Tracks are too long to repeat the selection."
@@ -5288,11 +5309,11 @@ msgstr ""
 msgid "Triangle"
 msgstr "Trojúhelník"
 
-#: ../src/EditToolBar.cpp:152 ../src/Menus.cpp:2245
+#: ../src/EditToolBar.cpp:152 ../src/Menus.cpp:2281
 msgid "Trim"
 msgstr "&Zkrátit (Trim)"
 
-#: ../src/Menus.cpp:2245
+#: ../src/Menus.cpp:2281
 msgid "Trim file to selection"
 msgstr "Zkrátit soubor na výběr"
 
@@ -5300,7 +5321,7 @@ msgstr "Zkrátit soubor na výběr"
 msgid "Trim outside selection"
 msgstr "Odstranit všechno kolem výběru"
 
-#: ../src/effects/TruncSilence.cpp:71 ../src/BatchCommands.cpp:102
+#: ../src/BatchCommands.cpp:102 ../src/effects/TruncSilence.cpp:71
 #, fuzzy
 msgid "Truncate Silence"
 msgstr "Generuji ticho"
@@ -5310,27 +5331,28 @@ msgid "Truncate Silence by Lynn Allan"
 msgstr ""
 
 #: ../src/effects/TruncSilence.h:29
+#, fuzzy
 msgid "Truncate Silence..."
-msgstr ""
+msgstr "Generuji ticho"
 
 #: ../src/effects/TruncSilence.h:33
 #, fuzzy
 msgid "Truncating Silence..."
 msgstr "Generuji ticho"
 
-#: ../src/Menus.cpp:389
+#: ../src/Menus.cpp:382
 msgid "Turn Grid Snap Off"
-msgstr "Nepřilínat ke mřížce"
+msgstr "Nepřilínat k mřížce"
 
-#: ../src/Menus.cpp:388
+#: ../src/Menus.cpp:381
 msgid "Turn Grid Snap On"
-msgstr "Přilínat ke mřížce"
+msgstr "Přilínat k mřížce"
 
-#: ../src/Menus.cpp:387
+#: ../src/Menus.cpp:380
 msgid "Turn Snap-To Off"
 msgstr "Nepřilínat"
 
-#: ../src/Menus.cpp:386
+#: ../src/Menus.cpp:379
 msgid "Turn Snap-To On"
 msgstr "Přilínat"
 
@@ -5338,12 +5360,12 @@ msgstr "Přilínat"
 msgid "Unable to determine"
 msgstr "Není možno určit"
 
-#: ../src/Menus.cpp:3560 ../src/export/Export.cpp:124
+#: ../src/Menus.cpp:3596 ../src/export/Export.cpp:124
 #, fuzzy
 msgid "Unable to export"
 msgstr "Není možno určit"
 
-#: ../src/Menus.cpp:3637
+#: ../src/Menus.cpp:3672
 #, fuzzy
 msgid "Unable to import"
 msgstr "Rozsah k načtení:"
@@ -5370,16 +5392,16 @@ msgstr "Zpět"
 
 #: ../src/HistoryWindow.cpp:44
 msgid "Undo History"
-msgstr "Historie akcí (undo)"
+msgstr "Historie změn (undo)"
 
 #: ../src/HistoryWindow.cpp:73
 msgid "Undo Levels Available (lots and lots)"
-msgstr "Akce k vrácení (spousta a spousta)"
+msgstr "Změny k vrácení (spousta)"
 
 #: ../src/HistoryWindow.cpp:141
 #, c-format
 msgid "Undo Levels Available: %d"
-msgstr "Akce k vrácení: %d"
+msgstr "Změny k vrácení: %d"
 
 #: ../src/UploadDialog.cpp:369
 #, c-format
@@ -5389,12 +5411,12 @@ msgid ""
 "Only Unix based and Windows systems are supported/tested at this time."
 msgstr ""
 
-#: ../src/AudacityApp.cpp:613 ../src/AudacityApp.cpp:683
+#: ../src/AudacityApp.cpp:616 ../src/AudacityApp.cpp:686
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Neznámá volba řádkového příkazu: %s\n"
 
-#: ../src/TrackPanel.cpp:405
+#: ../src/TrackPanel.cpp:411
 msgid "Up Octave"
 msgstr "O oktávu výš"
 
@@ -5415,7 +5437,7 @@ msgstr ""
 msgid "Upload Progress"
 msgstr "Postup"
 
-#: ../src/TrackPanel.cpp:4843 ../src/TrackPanel.cpp:4844
+#: ../src/TrackPanel.cpp:5096 ../src/TrackPanel.cpp:5097
 msgid "Upper speed limit"
 msgstr "Horní limit rychlosti"
 
@@ -5428,11 +5450,10 @@ msgid "Username:"
 msgstr ""
 
 #: ../src/export/ExportMultiple.cpp:768
-#, fuzzy
 msgid "Using Label/Track Name"
-msgstr "Jméno stopy"
+msgstr "Použít popisu/jméno stopy"
 
-#: ../src/AudacityApp.cpp:598 ../src/AudacityApp.cpp:668
+#: ../src/AudacityApp.cpp:601 ../src/AudacityApp.cpp:671
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "Používám velikost bloku %ld\n"
@@ -5455,12 +5476,11 @@ msgstr "Hodnota musí být od %d do %d."
 msgid "Values in columns must be in ascending order."
 msgstr "Hodnoty v kolonkách musí být ve vzestupném pořadí."
 
-#: ../src/widgets/Meter.cpp:331
-#, fuzzy
+#: ../src/widgets/Meter.cpp:335
 msgid "Vertical Stereo"
-msgstr "Vytvořit stereo"
+msgstr "Vertikální Stereo"
 
-#: ../src/Menus.cpp:3677
+#: ../src/Menus.cpp:3712
 msgid ""
 "Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
@@ -5498,8 +5518,8 @@ msgstr "Kvákadlo (Wahwah) od Nasca Octavian Paul"
 msgid "Wahwah..."
 msgstr "Kvákadlo (Wahwah)..."
 
-#: ../src/DirManager.cpp:1209 ../src/DirManager.cpp:1244
-#: ../src/DirManager.cpp:1284 ../src/DirManager.cpp:1321
+#: ../src/DirManager.cpp:1198 ../src/DirManager.cpp:1228
+#: ../src/DirManager.cpp:1266 ../src/DirManager.cpp:1297
 #: ../src/widgets/Warning.cpp:45
 msgid "Warning"
 msgstr "Varování"
@@ -5513,11 +5533,11 @@ msgstr ""
 "Varování: na tomto svazku je velmi málo diskového prostoru. Prosím zvolte v "
 "nastavení jiný dočasný adresář."
 
-#: ../src/TrackPanel.cpp:384
+#: ../src/TrackPanel.cpp:390
 msgid "Waveform"
 msgstr "Křivka"
 
-#: ../src/TrackPanel.cpp:385
+#: ../src/TrackPanel.cpp:391
 msgid "Waveform (dB)"
 msgstr "Křivka (dB)"
 
@@ -5534,8 +5554,6 @@ msgid "When importing uncompressed audio files into Audacity"
 msgstr "Při importu nekomprimovaných audio souborů do Audacity"
 
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
@@ -5553,7 +5571,7 @@ msgstr ""
 msgid "White Noise"
 msgstr "Bílý šum"
 
-#: ../src/Project.cpp:2518
+#: ../src/Project.cpp:2558
 msgid "Windows PCM Audio file *.wav)|*.wav"
 msgstr ""
 
@@ -5579,17 +5597,17 @@ msgid ""
 msgstr ""
 "Chystáte se uložit soubor %s pod jménem %s.\n"
 "Obvykle názvy těchto souborů končí na %s a některé programy neumí otevřít "
-"soubory s nestandardními příponami.Opravdu chcete uložit tento soubor pod "
-"tímto jménem?"
+"soubory s nestandardními příponami.\n"
+"Opravdu chcete uložit tento soubor pod tímto jménem?"
 
-#: ../src/TrackPanel.cpp:2291
+#: ../src/TrackPanel.cpp:2301
 msgid ""
 "You are not zoomed in enough. Zoom in until you can see the individual "
 "samples."
 msgstr ""
 "Nemáte dostatečné zvětšení. Přibližte se, až uvidíte jednotlivé vzorky."
 
-#: ../src/Menus.cpp:1612
+#: ../src/Menus.cpp:1648
 msgid "You must select a track first."
 msgstr "Nejdříve musíte zvolit stopu."
 
@@ -5618,29 +5636,27 @@ msgstr ""
 #: ../src/export/Export.cpp:147
 msgid ""
 "Your tracks will be mixed down to a single mono channel in the exported file."
-msgstr ""
-"Vaše stopy budou v exportovaném souboru přemixovány na jeden mono kanál."
+msgstr "Stopy budou v exportovaném souboru přemixovány na jeden mono kanál."
 
 #: ../src/export/Export.cpp:143
 msgid ""
 "Your tracks will be mixed down to two stereo channels in the exported file."
-msgstr ""
-"Vaše stopy budou v exportovaném souboru přemixovány do dvou stereo kanálů."
+msgstr "Stopy budou v exportovaném souboru přemixovány do dvou stereo kanálů."
 
 #: ../src/prefs/MousePrefs.cpp:93 ../src/prefs/MousePrefs.cpp:94
 #: ../src/prefs/MousePrefs.cpp:95 ../src/prefs/MousePrefs.cpp:96
 msgid "Zoom"
 msgstr "Zvětšit"
 
-#: ../src/Menus.cpp:399
+#: ../src/Menus.cpp:403
 msgid "Zoom &In\tCtrl+1"
 msgstr "Z&většit\tCtrl+1"
 
-#: ../src/Menus.cpp:402
+#: ../src/Menus.cpp:406
 msgid "Zoom &Normal\tCtrl+2"
 msgstr "&Normální velikost\tCtrl+2"
 
-#: ../src/Menus.cpp:403
+#: ../src/Menus.cpp:407
 msgid "Zoom &Out\tCtrl+3"
 msgstr "Z&menšit\tCtrl+3"
 
@@ -5660,7 +5676,7 @@ msgstr "Prohození zvětšení"
 msgid "Zoom Tool"
 msgstr "Lupa"
 
-#: ../src/Menus.cpp:623
+#: ../src/Menus.cpp:628
 msgid "Zoom Tool\tF4"
 msgstr "Lupa\tF4"
 
@@ -5699,11 +5715,12 @@ msgstr "od Vaughan Johnson && Dominic Mazzoni"
 msgid "bytes"
 msgstr "bytů"
 
-#: ../src/widgets/Meter.cpp:340
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
+#: ../src/widgets/Meter.cpp:344
 msgid "dB"
-msgstr ""
+msgstr "dB"
 
-#: ../src/TrackPanel.cpp:4872 ../src/effects/ChangePitch.cpp:283
+#: ../src/TrackPanel.cpp:5125 ../src/effects/ChangePitch.cpp:283
 msgid "down"
 msgstr "dolů"
 
@@ -5725,11 +5742,11 @@ msgstr ""
 msgid "hh:mm:ss + samples"
 msgstr "min:sek (přilnout ke vzorkům)"
 
-#: ../src/Menus.cpp:1767
+#: ../src/Menus.cpp:1803
 msgid "labels.txt"
 msgstr "labels.txt"
 
-#: ../src/TrackPanel.cpp:1756
+#: ../src/TrackPanel.cpp:1766
 msgid "left"
 msgstr "doleva"
 
@@ -5738,9 +5755,6 @@ msgid "mm:ss"
 msgstr ""
 
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: ../src/effects/ChangeSpeed.cpp:345
 msgid "n/a"
 msgstr "nemá význam"
@@ -5753,7 +5767,7 @@ msgstr ""
 msgid "permissions"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1756
+#: ../src/TrackPanel.cpp:1766
 msgid "right"
 msgstr "doprava"
 
@@ -5805,19 +5819,19 @@ msgstr "Titul:"
 msgid "to"
 msgstr "na"
 
-#: ../src/Menus.cpp:356
+#: ../src/Menus.cpp:349
 msgid "to Selection End"
 msgstr "na konec výběru"
 
-#: ../src/Menus.cpp:355
+#: ../src/Menus.cpp:348
 msgid "to Selection Start"
 msgstr "na začátek výběru"
 
-#: ../src/Menus.cpp:361
+#: ../src/Menus.cpp:354
 msgid "to Track End"
 msgstr "na konec stopy"
 
-#: ../src/Menus.cpp:360
+#: ../src/Menus.cpp:353
 msgid "to Track Start"
 msgstr "na začátek stopy"
 
@@ -5826,16 +5840,11 @@ msgstr "na začátek stopy"
 #  your own name(s) to the credits.
 #  For example:  "English translation by Dominic Mazzoni."
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
-#: ../src/AboutDialog.cpp:106 ../src/AboutDialog.cpp:108
+#: ../src/AboutDialog.cpp:173 ../src/AboutDialog.cpp:175
 msgid "translator_credits"
 msgstr "Český překlad: Aleš Tošovský, Dominik Joe Pantůček, Vladimír Krupka"
 
-#: ../src/TrackPanel.cpp:4871 ../src/effects/ChangePitch.cpp:283
+#: ../src/TrackPanel.cpp:5124 ../src/effects/ChangePitch.cpp:283
 msgid "up"
 msgstr "nahoru"
 
@@ -5847,14 +5856,8 @@ msgstr "pomocí SampleRate od Erik de Castro Lopo"
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "pomocí SoundTouch od Olli Parviainen"
 
-#~ msgid "&Online Help..."
-#~ msgstr "Nápověda &on-line..."
-
 #~ msgid "&Quick Mix"
 #~ msgstr "&Rychle smíchat"
-
-#~ msgid "Algorithms, MIDI & Audio I/O programming"
-#~ msgstr "Algoritmus, MIDI & Audio I/O programming"
 
 #~ msgid ""
 #~ "An error occurred while opening the project file.\n"
@@ -5863,14 +5866,17 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ "Nastala chyba při otevírání souboru projektu.\n"
 #~ "Část záznamu nebyla možná nahrána."
 
+#~ msgid "Can't import project file"
+#~ msgstr "Import projektového souboru nelze provést"
+
 #~ msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
-#~ msgstr "Kurzor: %.3lf NTSC rámce (29.97 fps)   %s"
+#~ msgstr "Kurzor: %.3lf NTSC snímky (29.97 fps)   %s"
 
 #~ msgid "Cursor: %.3lf PAL frames (25 fps)   %s"
-#~ msgstr "Kurzor: %.3lf PAL rámce (25 fps)   %s"
+#~ msgstr "Kurzor: %.3lf PAL snímky (25 fps)   %s"
 
 #~ msgid "Cursor: %.3lf film frames (24 fps)   %s"
-#~ msgstr "Kurzor: %.3lf film rámce (24 fps)   %s"
+#~ msgstr "Kurzor: %.3lf filmových snímků (24 fps)   %s"
 
 #~ msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
 #~ msgstr "Kurzor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
@@ -5880,27 +5886,28 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ "frames)   %s"
 #~ msgstr ""
 #~ "Kurzor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC "
-#~ "rámců)   %s"
+#~ "snímků)   %s"
 
 #~ msgid ""
 #~ "Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC "
 #~ "frames)   %s"
 #~ msgstr ""
 #~ "Kurzor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC "
-#~ "rámců)   %s"
+#~ "snímků)   %s"
 
 #~ msgid ""
 #~ "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %"
 #~ "s"
 #~ msgstr ""
-#~ "Kursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL rámců)   %s"
+#~ "Kursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL snímků)   %"
+#~ "s"
 
 #~ msgid ""
 #~ "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film "
 #~ "frames)   %s"
 #~ msgstr ""
 #~ "Kursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 rps (%.3lf filmových "
-#~ "rámců)   %s"
+#~ "snímků)   %s"
 
 #~ msgid "Cursor: %1i:%02i:%09.6f hr:min:sec   %s"
 #~ msgstr "Kurzor: %1i:%02i:%09.6f hr:min:sec   %s"
@@ -5940,22 +5947,25 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ msgid "Cursor: %li samples   [Snap-To Samples]"
 #~ msgstr "Kurzor: %li vzorků (Přilnout ke vzorkům)"
 
+#~ msgid "Documentation Writer"
+#~ msgstr "Tvorba dokumentace"
+
 #~ msgid "Enter a rate in Hz (samples per second):"
 #~ msgstr "Vložte rychlost v Hz (vzorků za vteřinu):"
 
 #~ msgid "Less"
 #~ msgstr "Méně"
 
-#~ msgid "Mix Output"
-#~ msgstr "Mixovaný výstup"
+#~ msgid "Main Logo"
+#~ msgstr "Hlavní logo"
 
 #  i18n-hint: hours, minutes, seconds, frames
 #  i18n-hint: hours, minutes, seconds, frames
 #~ msgid "NTSC drop-frame h:mm:ss:ff"
-#~ msgstr "NTSC přeskakovatelný rámec h:mm:ss:rr"
+#~ msgstr "NTSC přeskakovatelný snímek h:mm:ss:rr"
 
 #~ msgid "NTSC non-drop-frame h:mm:ss:ff"
-#~ msgstr "NTSC nepřeskakovatelný rámec h:mm:ss:rr"
+#~ msgstr "NTSC nepřeskakovatelný snímek h:mm:ss:rr"
 
 #  i18n-hint: fps is "frames per second"
 #~ msgid "PAL frames 25 fps"
@@ -5966,55 +5976,67 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ msgid "PAL h:mm:ss:ff 25 fps"
 #~ msgstr "PAL h:mm:ss:rr 25 rps"
 
+#~ msgid "Primary developer"
+#~ msgstr "Primární vývojář"
+
+#~ msgid "Programmer"
+#~ msgstr "Programátor"
+
 #~ msgid "Quick Mix"
 #~ msgstr "Rychle smíchat"
 
 #~ msgid "Quick mix"
 #~ msgstr "Rychle smíchat"
 
+#~ msgid "Recording time remaining: %d minutes"
+#~ msgstr "Zbývající čas nahrávání: %d minut"
+
+#~ msgid "Recording time remaining: %d seconds"
+#~ msgstr "Zbývající čas nahrávání: %d sekund"
+
 #~ msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
-#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
+#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf NTSC snímků)   %s"
 
 #~ msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
-#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf PAL frames)   %s"
+#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf PAL snímků)   %s"
 
 #~ msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
-#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf film frames)   %s"
+#~ msgstr "Výběr: %.3lf - %.3lf (%.3lf filmových snímků)   %s"
 
 #~ msgid ""
 #~ "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda "
 #~ "min:sec:frames)   %s"
 #~ msgstr ""
 #~ "Výběr: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda min:"
-#~ "sec:frames)   %s"
+#~ "sek:snímky)   %s"
 
 #~ msgid ""
 #~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
 #~ "06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
 #~ msgstr ""
 #~ "Výběr: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
-#~ "06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC rámců)   %s"
+#~ "06.3lf NTSC přeskakovaný snímek h:mm:ss:ff) (%.3lf NTSC snímků)   %s"
 
 #~ msgid ""
 #~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
 #~ "06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
 #~ msgstr ""
 #~ "Výběr: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
-#~ "06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC rámců)   %s"
+#~ "06.3lf NTSC nepřeskakovatelný-snímek h:mm:ss:ff) (%.3lf NTSC snímků)   %s"
 
 #~ msgid ""
 #~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
 #~ "06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"
 #~ msgstr ""
 #~ "Výběr: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
-#~ "06.3lf PAL h:mm:ss:ff) (%.3lf PAL rámců)   %s"
+#~ "06.3lf PAL h:mm:ss:ff) (%.3lf PAL snímků)   %s"
 
 #~ msgid ""
 #~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
 #~ "06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"
 #~ msgstr ""
 #~ "Výběr: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
-#~ "06.3lf film h:mm:ss:ff) (%.3lf filmových rámců)   %s"
+#~ "06.3lf film h:mm:ss:ff) (%.3lf filmových snímků)   %s"
 
 #~ msgid ""
 #~ "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:"
@@ -6028,7 +6050,7 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ "Samples]"
 #~ msgstr ""
 #~ "Výběr: %i+%04i - %i+%04i (%i+%04i cdda sektorů+bytů)   [Přilnout ke "
-#~ "vzorkům)"
+#~ "vzorkům]"
 
 #~ msgid ""
 #~ "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To "
@@ -6038,14 +6060,14 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ "vzorkům) Změňte vzorkovací frekvenci projektu na 44100 pro cdda"
 
 #~ msgid "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [Snap-To Samples]"
-#~ msgstr "Výběr: %i+%i - %i+%i (%i+%i sec+vzorků)  (Přilnout ke vzorkům)"
+#~ msgstr "Výběr: %i+%i - %i+%i (%i+%i sec+vzorků)  [Přilnout ke vzorkům]"
 
 #~ msgid ""
 #~ "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [Snap-"
 #~ "To Samples]"
 #~ msgstr ""
-#~ "Výběr: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+vzorky)   (Přilnout ke "
-#~ "vzorkům)"
+#~ "Výběr: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+vzorky)   [Přilnout ke "
+#~ "vzorkům]"
 
 #~ msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
 #~ msgstr "Výběr: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
@@ -6061,13 +6083,37 @@ msgstr "pomocí SoundTouch od Olli Parviainen"
 #~ msgstr "Výběr: %lf - %lf (%lf sec)   %s"
 
 #~ msgid "Selection: %lf - %lf (%lf sec)   [Snap-To Samples]"
-#~ msgstr "Výběr: %lf - %lf (%lf sec)   (Přilnout ke vzorkům)"
+#~ msgstr "Výběr: %lf - %lf (%lf sec)   [Přilnout ke vzorkům]"
 
 #~ msgid "Selection: %li - %li (%li samples)   [Snap-To Samples]"
-#~ msgstr "Výběr: %li - %li (%li vzorků)   (Přilnout ke vzorkům)"
+#~ msgstr "Výběr: %li - %li (%li vzorků)   [Přilnout ke vzorkům]"
 
 #~ msgid "Set Selection Format"
 #~ msgstr "Nastavit formát výběru"
+
+#~ msgid ""
+#~ "The VU meters will now be disabled.\n"
+#~ "\n"
+#~ "To enable them again, open the Preferences dialog and click on the "
+#~ "Interface tab."
+#~ msgstr ""
+#~ "VU ukazatele budou vypnuty.\n"
+#~ "\n"
+#~ "Pokud je budete chtít znovu zapnout, použijte dialog Nastavení\n"
+#~ " a klikněte na Rozhraní (Interface)."
+
+#~ msgid ""
+#~ "The file you selected is an Audacity Project file.\n"
+#~ "\n"
+#~ "Only audio files, not project files, can be imported\n"
+#~ "into an existing project.  To open a project file,\n"
+#~ "select Open from the File menu.\n"
+#~ msgstr ""
+#~ "Zvolený soubor je projekt Audacity.\n"
+#~ "\n"
+#~ "Do existujícího projektu však mohou být importovány\n"
+#~ "jen zvukové soubory. Jestliže chcete otevřít projektový\n"
+#~ "soubor, zvolte Otevřít z menu Soubor.\n"
 
 #~ msgid "Time shift sequence"
 #~ msgstr "Časový posun sekvence"

@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: audacity_mk\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-17 00:36+0200\n"
+"POT-Creation-Date: 2005-11-24 13:02-0800\n"
 "PO-Revision-Date: 2003-06-23 11:40+0200\n"
 "Last-Translator: Ilija Iliev <strumjan@mol.net.mk>\n"
 "Language-Team: macedonian <mk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.1\n"
 
 #: ../src/effects/ClickRemoval.cpp:379
@@ -24,7 +24,7 @@ msgid ""
 "Max spike width (higher is more sensitive)"
 msgstr ""
 
-#: ../src/Menus.cpp:3668
+#: ../src/Menus.cpp:3703
 msgid ""
 "\n"
 "\n"
@@ -49,7 +49,6 @@ msgid ""
 msgstr ""
 
 #. i18n-hint: This refers to a "window function", used in the
-#. Frequency analyze dialog box.
 #: ../src/FreqWindow.cpp:167
 msgid " window"
 msgstr "прозорец"
@@ -82,29 +81,27 @@ msgid ""
 "It has been removed from the history list."
 msgstr ""
 
-#: ../src/AudacityApp.cpp:279 ../src/Project.cpp:1845
+#: ../src/AudacityApp.cpp:279 ../src/Project.cpp:1891
 #, fuzzy, c-format
 msgid "%s is already open in another window."
 msgstr "Тој проект е веќе отворен во друг прозорец."
 
 #. i18n-hint: This is the pattern for filenames that are created
-#. when a file needs to be backed up to a different name.  For
-#. example, mysong would become mysong-old1, mysong-old2, etc.
-#: ../src/DirManager.cpp:978
+#: ../src/DirManager.cpp:968
 #, c-format
 msgid "%s-old%d"
 msgstr ""
 
-#: ../src/Menus.cpp:601
+#: ../src/Menus.cpp:606
 #, fuzzy
 msgid "&About Audacity CleanSpeech..."
 msgstr "З&а Audacity..."
 
-#: ../src/Menus.cpp:603
+#: ../src/Menus.cpp:608
 msgid "&About Audacity..."
 msgstr "З&а Audacity..."
 
-#: ../src/Menus.cpp:335
+#: ../src/Menus.cpp:328
 #, fuzzy
 msgid "&All\tCtrl+A"
 msgstr "Означи &се\tCtrl+A"
@@ -117,37 +114,37 @@ msgstr "&Анализа"
 msgid "&Close\tCtrl+W"
 msgstr "&Затвори\tCtrl+W"
 
-#: ../src/Menus.cpp:411
+#: ../src/Menus.cpp:415
 msgid "&Collapse All Tracks\tCtrl+Shift+C"
 msgstr ""
 
-#: ../src/Menus.cpp:598
+#: ../src/Menus.cpp:603
 #, fuzzy
 msgid "&Contents..."
 msgstr "Тон..."
 
-#: ../src/Menus.cpp:301
+#: ../src/Menus.cpp:294
 msgid "&Copy\tCtrl+C"
 msgstr "&Копирај\tCtrl+C"
 
-#: ../src/Menus.cpp:308
+#: ../src/Menus.cpp:301
 msgid "&Delete\tCtrl+K"
 msgstr "&Бриши\tCtrl+K"
 
-#: ../src/Menus.cpp:274
+#: ../src/Menus.cpp:267
 msgid "&Edit"
 msgstr "&Уреди"
 
-#: ../src/Menus.cpp:329 ../src/Menus.cpp:443
+#: ../src/Menus.cpp:322 ../src/Menus.cpp:443
 msgid "&Edit ID3 Tags..."
 msgstr "Ур&еди ID3 тагови..."
 
-#: ../src/Menus.cpp:738
+#: ../src/Menus.cpp:748
 #, fuzzy, c-format
 msgid "&Export As %s..."
 msgstr "&Експорт како %s..."
 
-#: ../src/Menus.cpp:741
+#: ../src/Menus.cpp:751
 #, fuzzy, c-format
 msgid "&Export Selection As %s..."
 msgstr "&Експорт селекција како %s..."
@@ -156,7 +153,7 @@ msgstr "&Експорт селекција како %s..."
 msgid "&File"
 msgstr "&Датотека"
 
-#: ../src/Menus.cpp:406
+#: ../src/Menus.cpp:410
 msgid "&Fit in Window\tCtrl+F"
 msgstr "&Во прозорец\tCtrl+F"
 
@@ -164,11 +161,11 @@ msgstr "&Во прозорец\tCtrl+F"
 msgid "&Generate"
 msgstr "&Генерирај"
 
-#: ../src/Menus.cpp:593 ../src/Menus.cpp:596
+#: ../src/Menus.cpp:598 ../src/Menus.cpp:601
 msgid "&Help"
 msgstr "&Помош"
 
-#: ../src/Menus.cpp:420
+#: ../src/Menus.cpp:424
 msgid "&History..."
 msgstr "&Историја"
 
@@ -176,10 +173,10 @@ msgstr "&Историја"
 msgid "&Import Audio...\tCtrl+I"
 msgstr "&Внеси аудио...\tCtrl+I"
 
-#: ../src/Menus.cpp:317
+#: ../src/Menus.cpp:310
 #, fuzzy
 msgid "&Join\tCtrl+J"
-msgstr "&Врати\tCtrl+Z"
+msgstr "&Копирај\tCtrl+C"
 
 #: ../src/Menus.cpp:150
 msgid "&New\tCtrl+N"
@@ -189,24 +186,22 @@ msgstr "&Нов\tCtrl+N"
 msgid "&Open...\tCtrl+O"
 msgstr "&Отвори...\tCtrl+O"
 
-#: ../src/Menus.cpp:302
+#: ../src/Menus.cpp:295
 msgid "&Paste\tCtrl+V"
 msgstr "&Залепи\tCtrl+V"
 
-#: ../src/Menus.cpp:421
+#: ../src/Menus.cpp:565
 #, fuzzy
 msgid "&Plot Spectrum..."
 msgstr "&Цртај спектар"
 
 #. i18n-hint: Mac OS X shortcut should be Ctrl+,
-#. i18n-hint: Mac OS X Preferences shortcut should be Ctrl+,
-#: ../src/AudacityApp.cpp:529 ../src/Menus.cpp:248
+#: ../src/AudacityApp.cpp:532 ../src/Menus.cpp:387
 #, fuzzy
 msgid "&Preferences...\tCtrl+,"
 msgstr "&Поставки\tCtrl+P"
 
-#. i18n-hint: On Windows and Linux, the Preferences shortcut is usually Ctrl+P
-#: ../src/Menus.cpp:251
+#: ../src/Menus.cpp:391
 msgid "&Preferences...\tCtrl+P"
 msgstr "&Поставки\tCtrl+P"
 
@@ -214,17 +209,17 @@ msgstr "&Поставки\tCtrl+P"
 msgid "&Project"
 msgstr "&Проект"
 
-#: ../src/Menus.cpp:286
+#: ../src/Menus.cpp:279
 #, fuzzy
 msgid "&Redo"
 msgstr "Врати"
 
-#: ../src/Menus.cpp:766
+#: ../src/Menus.cpp:776
 #, c-format
 msgid "&Redo %s"
 msgstr "&Врати %s"
 
-#: ../src/Menus.cpp:609
+#: ../src/Menus.cpp:614
 msgid "&Run Benchmark..."
 msgstr "Почни &брзинар..."
 
@@ -232,19 +227,19 @@ msgstr "Почни &брзинар..."
 msgid "&Save Project\tCtrl+S"
 msgstr "&Сними проект\tCtrl+S"
 
-#: ../src/Menus.cpp:310
+#: ../src/Menus.cpp:303
 msgid "&Silence\tCtrl+L"
 msgstr "&Тишина\tCtrl+L"
 
-#: ../src/Menus.cpp:306
+#: ../src/Menus.cpp:299
 msgid "&Trim\tCtrl+T"
 msgstr "&Трим\tCtrl+T"
 
-#: ../src/Menus.cpp:278
+#: ../src/Menus.cpp:271
 msgid "&Undo\tCtrl+Z"
 msgstr "&Врати\tCtrl+Z"
 
-#: ../src/Menus.cpp:753
+#: ../src/Menus.cpp:763
 #, c-format
 msgid "&Undo %s"
 msgstr "&Врати %s"
@@ -253,25 +248,25 @@ msgstr "&Врати %s"
 msgid "&Upload File..."
 msgstr ""
 
-#: ../src/Menus.cpp:397
+#: ../src/Menus.cpp:401
 msgid "&View"
 msgstr "&Поглед"
 
-#: ../src/Menus.cpp:408
+#: ../src/Menus.cpp:412
 msgid "&Zoom to Selection\tCtrl+E"
 msgstr "Зум во &селекција\tCtrl+E"
 
-#: ../src/TrackPanel.cpp:4594
+#: ../src/TrackPanel.cpp:4847
 #, fuzzy
 msgid "'left' channel"
 msgstr "Лев канал"
 
-#: ../src/TrackPanel.cpp:4595
+#: ../src/TrackPanel.cpp:4848
 #, fuzzy
 msgid "'mono'"
 msgstr "Моно"
 
-#: ../src/TrackPanel.cpp:4594
+#: ../src/TrackPanel.cpp:4847
 #, fuzzy
 msgid "'right' channel"
 msgstr "Десен канал"
@@ -298,6 +293,10 @@ msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:152
 msgid "*,01000m060.01000s"
+msgstr ""
+
+#: ../src/Menus.cpp:3623
+msgid "*.csp"
 msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:154
@@ -379,12 +378,12 @@ msgstr ""
 msgid "90% to 110%"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:119
+#: ../src/AboutDialog.cpp:186
 #, fuzzy
 msgid "A Free Digital Audio Editor"
 msgstr "Нов дигитален аудио едитор"
 
-#: ../src/AboutDialog.cpp:35
+#: ../src/AboutDialog.cpp:100
 msgid "About Audacity..."
 msgstr "За Audacity..."
 
@@ -416,7 +415,7 @@ msgstr "Дај наслов на селекција\tCtrl+B"
 msgid "Add label at selection"
 msgstr "Дај наслов на селекција\tCtrl+B"
 
-#: ../src/Menus.cpp:3459
+#: ../src/Menus.cpp:3495
 msgid "Added label"
 msgstr "Даден наслов"
 
@@ -440,19 +439,19 @@ msgstr ""
 msgid "Adjust right selection to previous onset"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4293
+#: ../src/TrackPanel.cpp:4453
 #, fuzzy
 msgid "Adjusted Pan"
 msgstr "Наместена крива."
 
-#: ../src/TrackPanel.cpp:1624
+#: ../src/TrackPanel.cpp:1634
 msgid "Adjusted envelope."
 msgstr "Наместена крива."
 
-#: ../src/TrackPanel.cpp:4320
+#: ../src/TrackPanel.cpp:4518
 #, fuzzy
 msgid "Adjusted gain"
-msgstr "Намести прозорец:"
+msgstr "Наместена крива."
 
 #: ../src/effects/AvcCompressor.cpp:588
 msgid "Adjustment Delay:"
@@ -475,7 +474,7 @@ msgstr "Албум:"
 msgid "Album:"
 msgstr "Албум:"
 
-#: ../src/Menus.cpp:3323
+#: ../src/Menus.cpp:3359
 #, fuzzy
 msgid "Align"
 msgstr "Порамнето"
@@ -521,35 +520,35 @@ msgstr "Порамни со &крај на селекцијата"
 msgid "Align with Selection &Start"
 msgstr "Порамни со п&очеток на селекцијата"
 
-#: ../src/Menus.cpp:3290
+#: ../src/Menus.cpp:3326
 msgid "Aligned"
 msgstr "Порамнето"
 
-#: ../src/Menus.cpp:3266
+#: ../src/Menus.cpp:3302
 msgid "Aligned cursor"
 msgstr "Порамнет покажувач"
 
-#: ../src/Menus.cpp:3278
+#: ../src/Menus.cpp:3314
 msgid "Aligned end with cursor"
 msgstr "Порамнет крај со покажувач"
 
-#: ../src/Menus.cpp:3286
+#: ../src/Menus.cpp:3322
 msgid "Aligned end with selection end"
 msgstr "Порамнет крај со крај на селекција"
 
-#: ../src/Menus.cpp:3282
+#: ../src/Menus.cpp:3318
 msgid "Aligned end with selection start"
 msgstr "Порамнет крај со почеток на селекција"
 
-#: ../src/Menus.cpp:3274
+#: ../src/Menus.cpp:3310
 msgid "Aligned with selection end"
 msgstr "Порамнето со крај на селекција"
 
-#: ../src/Menus.cpp:3270
+#: ../src/Menus.cpp:3306
 msgid "Aligned with selection start"
 msgstr "Порамнето со почеток на селекција"
 
-#: ../src/Menus.cpp:3262
+#: ../src/Menus.cpp:3298
 msgid "Aligned with zero"
 msgstr "Порамнето со нула"
 
@@ -558,16 +557,17 @@ msgstr "Порамнето со нула"
 msgid "All Files (*.*)|*.*"
 msgstr "Сите видови (*.*)|*.*"
 
-#: ../src/Menus.cpp:3051
+#: ../src/Menus.cpp:3087
 #, fuzzy
 msgid "All files (*)|*"
 msgstr "Сите видови (*.*)|*.*"
 
 #: ../src/UploadDialog.cpp:454
+#, fuzzy
 msgid "All files (*.*)|*.*"
 msgstr "Сите видови (*.*)|*.*"
 
-#: ../src/Project.cpp:1822
+#: ../src/Project.cpp:1868
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
@@ -579,14 +579,14 @@ msgstr ""
 "wav|AIFF датотеки (*.aif)|*.aif|AU датотеки (*.au)|*.au|MP3 датотеки (*.mp3)|"
 "*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|List of Files (*.lof)|*.lof"
 
-#: ../src/Menus.cpp:3016
+#: ../src/Menus.cpp:3052
 msgid ""
 "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
 msgstr ""
 "Сите видови (*.*)|*.*|MIDI датотеки (*.mid)|*.mid|Allegro датотеки (*.gro)|*."
 "gro"
 
-#: ../src/Menus.cpp:2941
+#: ../src/Menus.cpp:2977
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|.AIFF files (*.aif)|*.aif|AU "
@@ -597,7 +597,7 @@ msgstr ""
 "AU датотеки (*.au)|*.au|MP3 датотеки (*.mp3)|*.mp3|Ogg Vorbis датотеки (*."
 "ogg)|*.ogg| Листа на датотеки (*.lof)|*.lof"
 
-#: ../src/Menus.cpp:3678
+#: ../src/Menus.cpp:3713
 #, fuzzy
 msgid ""
 "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
@@ -740,10 +740,6 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/effects/Compressor.cpp:473
-msgid "Apply Gain after compressing"
-msgstr "Примени засилување по компресијата"
-
 #: ../src/effects/Compressor.h:40
 msgid "Applying Dynamic Range Compression..."
 msgstr "Применета динамичка компресија"
@@ -762,9 +758,8 @@ msgid "Applying Phaser"
 msgstr "Применет фазер"
 
 #: ../src/effects/SpikeCleaner.h:31
-#, fuzzy
 msgid "Applying Spike Cleaner..."
-msgstr "Применет фазер"
+msgstr ""
 
 #: ../src/effects/StereoToMono.h:27
 msgid "Applying Stereo To Mono"
@@ -787,11 +782,11 @@ msgstr "Исполнител:"
 msgid "Artist:"
 msgstr "Исполнител:"
 
-#: ../src/effects/Compressor.cpp:462
+#: ../src/effects/Compressor.cpp:458
 msgid "Attack Time: "
 msgstr "Ударно време: "
 
-#: ../src/effects/Compressor.cpp:536
+#: ../src/effects/Compressor.cpp:532
 #, c-format
 msgid "Attack Time: %.1f secs"
 msgstr "Ударно време: %.1f сек"
@@ -802,7 +797,7 @@ msgid ""
 "."
 msgstr ""
 
-#: ../src/AboutDialog.cpp:202
+#: ../src/AboutDialog.cpp:225
 msgid "Audacious!"
 msgstr "Аudacious!"
 
@@ -836,7 +831,7 @@ msgstr "Аudacity микс алатки"
 msgid "Audacity Preferences"
 msgstr "Аudacity поставки"
 
-#: ../src/AudacityApp.cpp:1065
+#: ../src/AudacityApp.cpp:1120
 #, fuzzy
 msgid "Audacity Project Files"
 msgstr "Аudacity поставки"
@@ -844,14 +839,22 @@ msgstr "Аudacity поставки"
 #: ../src/prefs/GUIPrefs.cpp:360
 #, fuzzy
 msgid "Audacity Tester"
-msgstr "Аudacity поставки"
+msgstr "Аudacity микс алатки"
 
 #: ../src/TranscriptionToolBar.cpp:109
 #, fuzzy
 msgid "Audacity Transcription Toolbar"
 msgstr "Аudacity уреди алатки"
 
-#: ../src/AudacityApp.cpp:744
+#: ../src/AudacityApp.cpp:747
+msgid ""
+"Audacity could not find a place to store\n"
+".csp CleanSpeech preset files\n"
+"Audacity is now going to exit. \n"
+"Installation may be corrupt."
+msgstr ""
+
+#: ../src/AudacityApp.cpp:799
 msgid ""
 "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
@@ -868,9 +871,6 @@ msgstr ""
 "Ако е незбиен, пробајте да го внесете со \"Внеси Raw\""
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
-#. message must be <= 255 characters.  Be brief.
-#. i18n-hint: This message is used on Mac OS 9.  This particular
-#. message must be <= 255 characters.  Be brief.
 #: ../src/export/ExportMP3.cpp:558 ../src/export/ExportMP3.cpp:872
 msgid ""
 "Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
@@ -920,26 +920,26 @@ msgstr ""
 "\n"
 "Сакате ли да ја лоцирате libmp3lame.so сега?"
 
-#: ../src/DirManager.cpp:496
+#: ../src/DirManager.cpp:488
 #, c-format
 msgid ""
-"Audacity found an orphaned blockfile %s!\n"
+"Audacity found an orphaned blockfile %s! \n"
 "Please consider saving and reloading the project to perform a complete "
 "project check.\n"
 msgstr ""
 
-#: ../src/DirManager.cpp:274
+#: ../src/DirManager.cpp:270
 msgid ""
-"Audacity found temporary files that were not deleted or saved\n"
-"the last time you used Audacity.\n"
+"Audacity found temporary files that were not deleted or saved \n"
+"the last time you used Audacity. \n"
 "\n"
-"Audacity can't recover them automatically, but if you choose not\n"
-"to delete them, you can recover them manually.\n"
+"Audacity can't recover them automatically, but if you choose not \n"
+"to delete them, you can recover them manually. \n"
 "\n"
 "Delete temporary files?"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:89
+#: ../src/AboutDialog.cpp:156
 #, fuzzy
 msgid ""
 "Audacity is a free program written by a team of volunteer developers around "
@@ -953,12 +953,16 @@ msgstr ""
 "wxWindows алатките и е достапен за Windows, MacOS 9 и X, Linux, идруги Unix-"
 "оидни системи."
 
-#: ../src/AudacityApp.cpp:804
+#: ../src/AudacityApp.cpp:859
 #, fuzzy
 msgid "Audacity is already running"
 msgstr "Аudacity прва употреба"
 
-#: ../src/AudacityApp.cpp:750
+#: ../src/AboutDialog.cpp:202
+msgid "Audacity is based on code from the following projects:"
+msgstr ""
+
+#: ../src/AudacityApp.cpp:805
 #, fuzzy
 msgid ""
 "Audacity is now going to exit. Please launch Audacity again to use the new "
@@ -975,7 +979,7 @@ msgid ""
 "know about this path.  Would you like to help Audacity locate the file now?"
 msgstr ""
 
-#: ../src/AudacityApp.cpp:1064
+#: ../src/AudacityApp.cpp:1119
 msgid ""
 "Audacity project (.AUP) files are not currently \n"
 "associated with Audacity. \n"
@@ -983,7 +987,7 @@ msgid ""
 "Associate them, so they open on double-click?"
 msgstr ""
 
-#: ../src/Project.cpp:2524
+#: ../src/Project.cpp:2564
 msgid ""
 "Audacity project files (.aup) let you save everything you're working on "
 "exactly as it\n"
@@ -995,7 +999,7 @@ msgid ""
 "Export commands."
 msgstr ""
 
-#: ../src/Project.cpp:2527
+#: ../src/Project.cpp:2567
 msgid "Audacity projects (*.aup)|*.aup"
 msgstr "Аudacity проекти (*.aup)|*.aup"
 
@@ -1008,7 +1012,7 @@ msgstr ""
 "Audacity очекува библиотека именувана \"%s\".  Сигурно ли сакате да "
 "експортирате MP3 користејќи \"%s\"?"
 
-#: ../src/AudacityApp.cpp:789
+#: ../src/AudacityApp.cpp:844
 msgid ""
 "Audacity was not able to lock the temporary files directory.\n"
 "This folder may be in use by another copy of Audacity.\n"
@@ -1018,13 +1022,13 @@ msgid ""
 "Do you still want to start Audacity?"
 msgstr ""
 
-#: ../src/Project.cpp:1926
+#: ../src/Project.cpp:1972
 msgid ""
 "Audacity was unable to convert an Audacity 1.0 project to the new project "
 "format."
 msgstr "Audacity не може да конвертира Audacity 1.0 проект во новиотформат."
 
-#: ../src/prefs/PrefsDialog.cpp:86
+#: ../src/prefs/PrefsDialog.cpp:83
 msgid "Audio I/O"
 msgstr "Аудио В/И"
 
@@ -1065,25 +1069,27 @@ msgid "Autoscroll while playing"
 msgstr "Автоврт при свирење"
 
 #: ../src/effects/BassBoost.cpp:74
+#, fuzzy
 msgid "BassBoost"
 msgstr "Истакнување басови"
 
 #: ../src/effects/BassBoost.cpp:291
+#, fuzzy
 msgid "BassBoost by Nasca Octavian Paul"
 msgstr "Истакнување басови од Nasca Octavian Paul"
 
 #: ../src/effects/BassBoost.h:42
+#, fuzzy
 msgid "BassBoost..."
 msgstr "Истакнување басови..."
 
-#: ../src/prefs/PrefsDialog.cpp:92
+#: ../src/prefs/PrefsDialog.cpp:89
 msgid "Batch"
 msgstr ""
 
 #: ../src/prefs/BatchPrefs.cpp:118
-#, fuzzy
 msgid "Batch Options"
-msgstr "Копчиња"
+msgstr ""
 
 #: ../src/BatchProcessDialog.cpp:43
 msgid "Batch Processing"
@@ -1110,7 +1116,7 @@ msgstr ""
 msgid "Beats per Minute (BPM):   from"
 msgstr "Битови по минута (BPM):     Од"
 
-#: ../src/prefs/GUIPrefs.cpp:36 ../src/prefs/BatchPrefs.cpp:68
+#: ../src/prefs/BatchPrefs.cpp:68 ../src/prefs/GUIPrefs.cpp:36
 msgid "Behaviors"
 msgstr ""
 
@@ -1129,7 +1135,6 @@ msgid "Benchmark"
 msgstr "Брзинар"
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:333
 msgid "Big-endian"
 msgstr "Големи краеви"
@@ -1163,11 +1168,11 @@ msgstr ""
 msgid "Calibration Results\n"
 msgstr ""
 
-#: ../src/Menus.cpp:772
+#: ../src/Menus.cpp:782
 msgid "Can't Redo"
 msgstr "Неможно Повтори"
 
-#: ../src/Menus.cpp:759
+#: ../src/Menus.cpp:769
 msgid "Can't Undo"
 msgstr "Неможно Врати"
 
@@ -1176,7 +1181,7 @@ msgstr "Неможно Врати"
 msgid "Can't export multiple files"
 msgstr "Неможно да експортирам на %s"
 
-#: ../src/Project.cpp:2093
+#: ../src/Project.cpp:2137
 #, fuzzy
 msgid "Can't open project file"
 msgstr "Неможно да се отвори проектот."
@@ -1185,25 +1190,24 @@ msgstr "Неможно да се отвори проектот."
 msgid "Can't process replacing"
 msgstr ""
 
-#: ../src/Tags.cpp:735 ../src/effects/VST/VSTEffect.cpp:95
-#: ../src/effects/VST/VSTEffect.cpp:453 ../src/effects/Amplify.cpp:197
+#: ../src/BatchCommandDialog.cpp:98 ../src/BatchProcessDialog.cpp:82
+#: ../src/Tags.cpp:735 ../src/effects/Amplify.cpp:197
 #: ../src/effects/AvcCompressor.cpp:717 ../src/effects/BassBoost.cpp:339
-#: ../src/effects/ChangePitch.cpp:395 ../src/effects/ChangeSpeed.cpp:382
-#: ../src/effects/ChangeTempo.cpp:288 ../src/effects/Compressor.cpp:485
+#: ../src/effects/ChangeLength.cpp:173 ../src/effects/ChangePitch.cpp:395
+#: ../src/effects/ChangeSpeed.cpp:382 ../src/effects/ChangeTempo.cpp:288
+#: ../src/effects/ClickRemoval.cpp:419 ../src/effects/Compressor.cpp:481
 #: ../src/effects/Echo.cpp:249 ../src/effects/Equalization.cpp:755
-#: ../src/effects/Filter.cpp:490 ../src/effects/NoiseRemoval.cpp:597
-#: ../src/effects/Normalize.cpp:310 ../src/effects/Phaser.cpp:587
-#: ../src/effects/Repeat.cpp:259 ../src/effects/Silence.cpp:140
-#: ../src/effects/ToneGen.cpp:333 ../src/effects/Wahwah.cpp:573
-#: ../src/effects/ladspa/LadspaEffect.cpp:496
+#: ../src/effects/Filter.cpp:490 ../src/effects/Leveller.cpp:241
+#: ../src/effects/NoiseRemoval.cpp:597 ../src/effects/Normalize.cpp:314
+#: ../src/effects/Phaser.cpp:587 ../src/effects/Repeat.cpp:259
+#: ../src/effects/Silence.cpp:140 ../src/effects/SpikeCleaner.cpp:171
+#: ../src/effects/ToneGen.cpp:333 ../src/effects/TruncSilence.cpp:264
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
+#: ../src/effects/Wahwah.cpp:573 ../src/effects/ladspa/LadspaEffect.cpp:496
 #: ../src/effects/nyquist/Nyquist.cpp:745
-#: ../src/effects/nyquist/Nyquist.cpp:891 ../src/effects/ChangeLength.cpp:173
-#: ../src/effects/ClickRemoval.cpp:419 ../src/effects/Leveller.cpp:241
-#: ../src/effects/SpikeCleaner.cpp:171 ../src/effects/TruncSilence.cpp:264
-#: ../src/export/ExportMultiple.cpp:815 ../src/import/ImportRaw.cpp:433
-#: ../src/prefs/FileFormatPrefs.cpp:465 ../src/prefs/PrefsDialog.cpp:112
-#: ../src/widgets/ASlider.cpp:221 ../src/BatchCommandDialog.cpp:98
-#: ../src/BatchProcessDialog.cpp:82
+#: ../src/effects/nyquist/Nyquist.cpp:891 ../src/export/ExportMultiple.cpp:815
+#: ../src/import/ImportRaw.cpp:433 ../src/prefs/FileFormatPrefs.cpp:465
+#: ../src/prefs/PrefsDialog.cpp:109
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -1212,7 +1216,7 @@ msgstr "Откажи"
 msgid "Cannot copy folder: "
 msgstr "Неможно да ја отворам датотеката: "
 
-#: ../src/Menus.cpp:3735
+#: ../src/Menus.cpp:3770
 msgid ""
 "Cannot create directory 'cleaned'. \n"
 "File already exists that is not a directory"
@@ -1235,13 +1239,11 @@ msgstr ""
 msgid "Cannot remove a pop or click longer than one second."
 msgstr ""
 
-#: ../src/widgets/ASlider.cpp:647
+#: ../src/widgets/ASlider.cpp:600
 msgid "Center"
 msgstr "Центар"
 
 #. i18n-hint: This is a technical term, derived from the word
-#. "spectrum".  Do not translate it unless you are sure you
-#. know the correct technical word in your language.
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
 msgstr "Cepstrum"
@@ -1315,23 +1317,23 @@ msgstr "Смени темпо без менување висина"
 msgid "Change Tempo..."
 msgstr "Смени темпо..."
 
-#: ../src/Menus.cpp:666
+#: ../src/Menus.cpp:674
 msgid "Change gain on first selected track\tShift+G"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4835
+#: ../src/TrackPanel.cpp:5088
 msgid "Change lower speed limit (%) to:"
 msgstr "Смени го долното нивото на брзина за (%) :"
 
-#: ../src/Menus.cpp:665
+#: ../src/Menus.cpp:671
 msgid "Change pan on first selected track\tShift+P"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4900
+#: ../src/TrackPanel.cpp:5153
 msgid "Change track name to:"
 msgstr "Смени го името на нумерата во:"
 
-#: ../src/TrackPanel.cpp:4842
+#: ../src/TrackPanel.cpp:5095
 msgid "Change upper speed limit (%) to:"
 msgstr "Смени го горното ниво на брзина за (%) :"
 
@@ -1342,12 +1344,12 @@ msgstr ""
 "Променетата големина на прозорецот мора да биде помала или иста со "
 "наместената големина на прозорец."
 
-#: ../src/TrackPanel.cpp:4677
+#: ../src/TrackPanel.cpp:4930
 #, c-format
 msgid "Changed '%s' to %d Hz"
 msgstr "Сменето '%s' во %d Hz"
 
-#: ../src/TrackPanel.cpp:4604 ../src/TrackPanel.cpp:4713
+#: ../src/TrackPanel.cpp:4857 ../src/TrackPanel.cpp:4966
 #, c-format
 msgid "Changed '%s' to %s"
 msgstr "Сменето '%s' во %s"
@@ -1377,7 +1379,7 @@ msgstr "Менување брзина"
 msgid "Changing Tempo"
 msgstr "Менување темпо"
 
-#: ../src/DirManager.cpp:1010
+#: ../src/DirManager.cpp:1000
 #, fuzzy, c-format
 msgid "Changing block %s\n"
 msgstr "Менување висина"
@@ -1386,7 +1388,7 @@ msgstr "Менување висина"
 msgid "Changing volume"
 msgstr "Менување јачина"
 
-#: ../src/TrackPanel.cpp:4609
+#: ../src/TrackPanel.cpp:4862
 #, fuzzy
 msgid "Channel"
 msgstr "Канали:"
@@ -1399,7 +1401,7 @@ msgstr "Канали:"
 msgid "Choose Language for Audacity to use:"
 msgstr "Одбери јазик кој Audacity ќе го користи:"
 
-#: ../src/TrackPanel.cpp:4961
+#: ../src/TrackPanel.cpp:5214
 msgid "Choose a font for Label Tracks"
 msgstr ""
 
@@ -1450,23 +1452,27 @@ msgstr ""
 msgid "CleanSpeech Mode (Customized GUI)"
 msgstr ""
 
-#: ../src/ControlToolBar.cpp:881
+#: ../src/Menus.cpp:3542 ../src/Menus.cpp:3625
+msgid "CleanSpeech Presets (*.csp)|*.csp"
+msgstr ""
+
+#: ../src/ControlToolBar.cpp:883
 msgid ""
 "CleanSpeech only allows recording mono track.\n"
 "Recording not possible when more than one window open."
 msgstr ""
 
-#: ../src/DirManager.cpp:419
+#: ../src/DirManager.cpp:411
 #, fuzzy
 msgid "Cleaning up cache directories"
 msgstr "Отстрани ги привремените записи..."
 
-#: ../src/DirManager.cpp:291
+#: ../src/DirManager.cpp:283
 #, fuzzy
 msgid "Cleaning up temporary files"
 msgstr "Отстрани ги привремените записи..."
 
-#: ../src/DirManager.cpp:1344
+#: ../src/DirManager.cpp:1320
 msgid "Cleaning up unused directories in project data..."
 msgstr ""
 
@@ -1488,7 +1494,7 @@ msgstr ""
 msgid "Click and Pop Removal by Craig DeForest"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1138
+#: ../src/TrackPanel.cpp:1146
 msgid "Click and drag to adjust relative size of stereo tracks."
 msgstr "Кликни и пушти за да наместиш релативна големина на стерео нумерите."
 
@@ -1504,15 +1510,15 @@ msgstr "Кликни и пушти за уредување семплови"
 msgid "Click and drag to move a track in time"
 msgstr "Кликни и пушти за движење на нумерата временски"
 
-#: ../src/TrackPanel.cpp:1214
+#: ../src/TrackPanel.cpp:1222
 msgid "Click and drag to move left selection boundary."
 msgstr "Кликни и пушти за движење на левата селекциска рамка"
 
-#: ../src/TrackPanel.cpp:1219
+#: ../src/TrackPanel.cpp:1227
 msgid "Click and drag to move right selection boundary."
 msgstr "Кликни и пушти за движење на десната селекциска рамка"
 
-#: ../src/TrackPanel.cpp:1141
+#: ../src/TrackPanel.cpp:1149
 msgid "Click and drag to resize the track."
 msgstr "Кликни и пушти за предименизионирање на нумерата."
 
@@ -1524,35 +1530,34 @@ msgstr "Кликни и пушти за аудио селекција"
 msgid "Click to Zoom In, Shift-Click to Zoom Out"
 msgstr "Кликни за Зум во, Shift-клик за Зум од"
 
-#: ../src/TrackPanel.cpp:1113
+#: ../src/TrackPanel.cpp:1121
 msgid ""
 "Click to vertically zoom in, Shift-click to zoom out, Drag to create a "
 "particular zoom region."
 msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:351
-#, fuzzy
 msgid "Clips"
-msgstr "Затвори"
+msgstr ""
 
 #: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
 msgid "Close"
 msgstr "Затвори"
 
-#: ../src/Menus.cpp:670
+#: ../src/Menus.cpp:680
 msgid "Close first selected track\tShift+C"
 msgstr ""
 
-#: ../src/DirManager.cpp:1207
+#: ../src/DirManager.cpp:1196
 msgid "Close project immediately with no changes"
 msgstr ""
 
-#: ../src/DirManager.cpp:1242 ../src/DirManager.cpp:1282
-#: ../src/DirManager.cpp:1319
+#: ../src/DirManager.cpp:1226 ../src/DirManager.cpp:1264
+#: ../src/DirManager.cpp:1295
 msgid "Close project immediately with no further changes"
 msgstr ""
 
-#: ../src/prefs/KeyConfigPrefs.cpp:79 ../src/prefs/BatchPrefs.cpp:157
+#: ../src/prefs/BatchPrefs.cpp:157 ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Command"
 msgstr "Команда"
 
@@ -1570,8 +1575,7 @@ msgid "Command-line exporting is only supported on UNIX"
 msgstr "Експортирање од командна линија е можно само во UNIX"
 
 #. i18n-hint: '-help', '-test' and
-#. '-blocksize' need to stay in English.
-#: ../src/AudacityApp.cpp:588 ../src/AudacityApp.cpp:652
+#: ../src/AudacityApp.cpp:591 ../src/AudacityApp.cpp:655
 msgid ""
 "Command-line options supported:\n"
 "  -help (this message)\n"
@@ -1630,9 +1634,14 @@ msgstr "Тон..."
 msgid "Connection cannot be established"
 msgstr ""
 
-#: ../src/DirManager.cpp:1206
+#: ../src/DirManager.cpp:1195
 msgid "Continue without deleting; silently work around the extra files"
 msgstr ""
+
+#: ../src/AboutDialog.cpp:200
+#, fuzzy
+msgid "Contributors:"
+msgstr "Останати придонесџии:"
 
 #: ../src/ControlToolBar.cpp:149
 #, fuzzy
@@ -1648,7 +1657,7 @@ msgstr ""
 "Конвертиран 1.0 проект во нов формат.\n"
 "Старата датотека ќе биде снимена како '%s'"
 
-#: ../src/EditToolBar.cpp:148 ../src/TrackPanel.cpp:426
+#: ../src/EditToolBar.cpp:148 ../src/TrackPanel.cpp:432
 msgid "Copy"
 msgstr "Копирај"
 
@@ -1661,7 +1670,7 @@ msgstr "Неможно да ја отворам датотеката: "
 msgid "Could not open MP3 encoding library!"
 msgstr "Неможно да отворам библиотека за MP3 енкодирање!"
 
-#: ../src/Menus.cpp:2987 ../src/Project.cpp:1894 ../src/Project.cpp:1902
+#: ../src/Menus.cpp:3023 ../src/Project.cpp:1940 ../src/Project.cpp:1948
 #: ../src/import/ImportMIDI.cpp:31
 msgid "Could not open file: "
 msgstr "Неможно да ја отворам датотеката: "
@@ -1671,7 +1680,7 @@ msgstr "Неможно да ја отворам датотеката: "
 msgid "Could not open file: \"%s\""
 msgstr "Неможно да ја отворам датотеката: \"%s\""
 
-#: ../src/Project.cpp:2284
+#: ../src/Project.cpp:2324
 #, fuzzy, c-format
 msgid ""
 "Could not save project. Perhaps %s is not writeable,\n"
@@ -1687,7 +1696,7 @@ msgid ""
 " to %s."
 msgstr ""
 
-#: ../src/Project.cpp:2049
+#: ../src/Project.cpp:2095
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
 msgstr "Неможно да го најдам именикот за проекти: \"%s\""
@@ -1696,28 +1705,28 @@ msgstr "Неможно да го најдам именикот за проект
 msgid "Couldn't open the Audacity Help file."
 msgstr "Неможно да ја отворам Audacity помошта."
 
-#: ../src/FreqWindow.cpp:1012 ../src/Menus.cpp:1804 ../src/Project.cpp:2297
+#: ../src/FreqWindow.cpp:1012 ../src/Menus.cpp:1840 ../src/Project.cpp:2337
 #: ../src/prefs/KeyConfigPrefs.cpp:175
 msgid "Couldn't write to file: "
 msgstr "Неможно да запишам во датотеката:"
 
-#: ../src/Menus.cpp:3347
+#: ../src/Menus.cpp:3383
 msgid "Created new audio track"
 msgstr "Создадена нова аудио нумера"
 
-#: ../src/Menus.cpp:3387
+#: ../src/Menus.cpp:3423
 msgid "Created new label track"
 msgstr "Создаден нов наслов на нумера"
 
-#: ../src/Project.cpp:2564
+#: ../src/Project.cpp:2604
 msgid "Created new project"
 msgstr "Создаден нов проект"
 
-#: ../src/Menus.cpp:3371
+#: ../src/Menus.cpp:3407
 msgid "Created new stereo audio track"
 msgstr "Создадена нова стерео аудио нумера"
 
-#: ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3459
 msgid "Created new time track"
 msgstr "Создадена нова временска нумера"
 
@@ -1725,7 +1734,7 @@ msgstr "Создадена нова временска нумера"
 msgid "Creating Noise Profile"
 msgstr "Создаден Профил на шум"
 
-#: ../src/AboutDialog.cpp:125
+#: ../src/AboutDialog.cpp:192
 msgid "Credits"
 msgstr "Кредити"
 
@@ -1737,7 +1746,7 @@ msgstr "Ctrl-Лево влечење"
 msgid "Ctrl-Wheel-Rotate"
 msgstr "Ctrl-Вртливо увце"
 
-#: ../src/Menus.cpp:299
+#: ../src/Menus.cpp:292
 msgid "Cu&t\tCtrl+X"
 msgstr "С&ечи\tCtrl+X"
 
@@ -1749,15 +1758,15 @@ msgstr "Cuberoot автосооднос"
 msgid "Current Length (minutes): "
 msgstr ""
 
-#: ../src/Menus.cpp:658
+#: ../src/Menus.cpp:664
 msgid "Cursor Left\tLeft"
 msgstr "Покажувач лево\tЛево"
 
-#: ../src/Menus.cpp:659
+#: ../src/Menus.cpp:665
 msgid "Cursor Right\tRight"
 msgstr "Покажувач десно\tДесно"
 
-#: ../src/Menus.cpp:345
+#: ../src/Menus.cpp:338
 #, fuzzy
 msgid "Cursor to End"
 msgstr "Покажувач на крај од нумерата"
@@ -1772,19 +1781,15 @@ msgstr "Покажувач: %.4f сек (%d Hz) (%s) = %f,    Врв: %.4f се�
 msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"
 msgstr "Покажувач: %d Hz (%s) = %d dB    Врв: %d Hz (%s)"
 
-#: ../src/EditToolBar.cpp:146 ../src/Menus.cpp:1985 ../src/TrackPanel.cpp:425
+#: ../src/EditToolBar.cpp:146 ../src/Menus.cpp:2021 ../src/TrackPanel.cpp:431
 msgid "Cut"
 msgstr "Сечи"
 
-#: ../src/Menus.cpp:1985
+#: ../src/Menus.cpp:2021
 msgid "Cut to the clipboard"
 msgstr "Сечи во амбар"
 
-#: ../src/Menus.cpp:657
-msgid "Cycle Between Tracks\tTab"
-msgstr ""
-
-#: ../src/Menus.cpp:319
+#: ../src/Menus.cpp:312
 msgid "D&uplicate\tCtrl+D"
 msgstr "&Удвои\tCtrl+D"
 
@@ -1802,6 +1807,10 @@ msgstr ""
 msgid "Decay factor:"
 msgstr "Внеси decay фактор: "
 
+#: ../src/Menus.cpp:676
+msgid "Decrease gain on first selected track\tAlt+Shift+Down"
+msgstr ""
+
 #: ../src/prefs/QualityPrefs.cpp:125
 msgid "Default Sample Format:"
 msgstr "Стандарден формат на семпл:"
@@ -1811,7 +1820,6 @@ msgid "Default Sample Rate:"
 msgstr "Стандардна рата на семпл:"
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:336
 msgid "Default endianness"
 msgstr "Стандардни краеви"
@@ -1833,22 +1841,22 @@ msgstr ""
 msgid "Delay time (seconds):"
 msgstr "Време на доцнење (сек.):"
 
-#: ../src/Project.cpp:2684 ../src/UploadDialog.cpp:508
+#: ../src/Project.cpp:2724 ../src/UploadDialog.cpp:508
 #: ../src/UploadDialog.cpp:642
 #, fuzzy
 msgid "Delete"
 msgstr "Означи"
 
 #: ../src/UploadDialog.cpp:629
-#, c-format
+#, fuzzy, c-format
 msgid "Delete %s?"
-msgstr ""
+msgstr "Означи"
 
 #: ../src/UploadDialog.cpp:508
 msgid "Delete file(s) from server)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1205
+#: ../src/DirManager.cpp:1194
 msgid "Delete orphaned files [safe and recommended]"
 msgstr ""
 
@@ -1856,17 +1864,17 @@ msgstr ""
 msgid "Delete selected items?"
 msgstr ""
 
-#: ../src/Menus.cpp:646
+#: ../src/Menus.cpp:651
 #, fuzzy
 msgid "DeleteKey\tBackspace"
 msgstr "Delete копче\tБриши"
 
-#: ../src/Menus.cpp:651
+#: ../src/Menus.cpp:656
 #, fuzzy
 msgid "DeleteKey2\tDelete"
 msgstr "Delete копче\tБриши"
 
-#: ../src/Project.cpp:2681
+#: ../src/Project.cpp:2721
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
 msgstr "Избришани %.2f секунди од t=%.2f"
@@ -1884,7 +1892,7 @@ msgstr "Генератор на тишина"
 #: ../src/UploadDialog.cpp:594
 #, fuzzy
 msgid "Deleting..."
-msgstr "Порамни..."
+msgstr "Означи"
 
 #: ../src/effects/Wahwah.cpp:515
 msgid "Depth (%):"
@@ -1898,7 +1906,7 @@ msgstr "Длабина:"
 msgid "Desired Length (minutes): "
 msgstr ""
 
-#: ../src/AboutDialog.cpp:143
+#: ../src/AboutDialog.cpp:198
 #, fuzzy
 msgid "Developers:"
 msgstr "Крива"
@@ -1920,7 +1928,7 @@ msgstr ""
 msgid "Direction Changes (Low Threshold)"
 msgstr ""
 
-#: ../src/prefs/PrefsDialog.cpp:90 ../src/prefs/PrefsDialog.cpp:213
+#: ../src/prefs/PrefsDialog.cpp:87 ../src/prefs/PrefsDialog.cpp:210
 msgid "Directories"
 msgstr "Именици"
 
@@ -1934,9 +1942,10 @@ msgstr "Именикот %s не постои. Да го создадам?"
 msgid "Directory %s is not writable"
 msgstr "Именикот %s не е снимлив"
 
-#: ../src/widgets/Meter.cpp:321
+#: ../src/widgets/Meter.cpp:325
+#, fuzzy
 msgid "Disable Meter"
-msgstr ""
+msgstr " (откажана)"
 
 #: ../src/HistoryWindow.cpp:90
 msgid "Discard"
@@ -1950,22 +1959,22 @@ msgstr "Отфрли ги Врати податоците"
 msgid "Disconnect"
 msgstr ""
 
-#: ../src/Project.cpp:2864
+#: ../src/Project.cpp:2904
 #, fuzzy, c-format
 msgid "Disk space remains for recording %d hours and %d minutes."
 msgstr "Останато време за снимање: %d саати и  %d минути"
 
-#: ../src/Project.cpp:2870
-#, fuzzy, c-format
+#: ../src/Project.cpp:2910
+#, c-format
 msgid "Disk space remains for recording %d minutes."
-msgstr "Останато време за снимање: %d минути"
+msgstr ""
 
-#: ../src/Project.cpp:2873
-#, fuzzy, c-format
+#: ../src/Project.cpp:2913
+#, c-format
 msgid "Disk space remains for recording %d seconds."
-msgstr "Останато време за снимање: %d секунди"
+msgstr ""
 
-#: ../src/Project.cpp:2867
+#: ../src/Project.cpp:2907
 #, fuzzy, c-format
 msgid "Disk space remains for recording 1 hour and %d minutes."
 msgstr "Останато време за снимање: 1 час и %d минути"
@@ -1974,20 +1983,20 @@ msgstr "Останато време за снимање: 1 час и %d мину
 msgid "Display"
 msgstr ""
 
-#: ../src/Menus.cpp:916
+#: ../src/Menus.cpp:926
 msgid "Dock Control Toolbar"
 msgstr "Закачи контролни алатки"
 
-#: ../src/Menus.cpp:921
+#: ../src/Menus.cpp:931
 msgid "Dock Edit Toolbar"
 msgstr "Закачи уреди алатки"
 
-#: ../src/Menus.cpp:931
+#: ../src/Menus.cpp:941
 #, fuzzy
 msgid "Dock Meter Toolbar"
 msgstr "Закачи микс алатки"
 
-#: ../src/Menus.cpp:926
+#: ../src/Menus.cpp:936
 msgid "Dock Mixer Toolbar"
 msgstr "Закачи микс алатки"
 
@@ -1996,20 +2005,16 @@ msgstr "Закачи микс алатки"
 msgid "Dock Toolbar"
 msgstr "Закачи уреди алатки"
 
-#: ../src/Menus.cpp:936
+#: ../src/Menus.cpp:946
 #, fuzzy
 msgid "Dock Transcription Toolbar"
 msgstr "Закачи уреди алатки"
-
-#: ../src/AboutDialog.cpp:140
-msgid "Documentation Writer"
-msgstr "Пишувач на документација"
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:406
+#: ../src/TrackPanel.cpp:412
 msgid "Down Octave"
 msgstr "Октава удолу"
 
@@ -2038,15 +2043,15 @@ msgstr "Прогрес"
 msgid "Download this file(s) to your computer"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1175
+#: ../src/TrackPanel.cpp:1183
 msgid "Drag label boundary"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1174
+#: ../src/TrackPanel.cpp:1182
 msgid "Drag one or more label boundaries"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1118
+#: ../src/TrackPanel.cpp:1126
 msgid "Drag the label vertically to change the order of the tracks."
 msgstr "Влечи го насловот вертикално за да го смениш редоследот на нумерите."
 
@@ -2063,12 +2068,12 @@ msgstr "Порамнет крај со крај на селекција"
 msgid "Draw Tool"
 msgstr "Цртачки алатки"
 
-#: ../src/Menus.cpp:622
+#: ../src/Menus.cpp:627
 #, fuzzy
 msgid "Draw Tool\tF3"
 msgstr "Цртачки алатки"
 
-#: ../src/TrackPanel.cpp:2279
+#: ../src/TrackPanel.cpp:2289
 msgid "Draw currently only works with linear-view waveforms."
 msgstr ""
 
@@ -2077,28 +2082,28 @@ msgstr ""
 msgid "DrawTool"
 msgstr "Цртачки алатки"
 
-#: ../src/Menus.cpp:2354
+#: ../src/Menus.cpp:2390
 #, fuzzy
 msgid "Duplicate"
 msgstr "Удвоено"
 
-#: ../src/Menus.cpp:2354
+#: ../src/Menus.cpp:2390
 msgid "Duplicated"
 msgstr "Удвоено"
 
-#: ../src/effects/Compressor.cpp:50
+#: ../src/effects/Compressor.cpp:43
 msgid "Dynamic Range Compressor"
 msgstr "Динамичен компресор"
 
-#: ../src/effects/Compressor.cpp:437
+#: ../src/effects/Compressor.cpp:433
 msgid "Dynamic Range Compressor by Dominic Mazzoni"
 msgstr "Динамичен компресор од Dominic Mazzoni"
 
-#: ../src/Menus.cpp:262 ../src/Menus.cpp:265
+#: ../src/Menus.cpp:255 ../src/Menus.cpp:258
 msgid "E&xit"
 msgstr "Кра&ј"
 
-#: ../src/Menus.cpp:412
+#: ../src/Menus.cpp:416
 msgid "E&xpand All Tracks\tCtrl+Shift+X"
 msgstr ""
 
@@ -2115,16 +2120,16 @@ msgstr "Ехо..."
 msgid "Edit"
 msgstr "&Уреди"
 
-#: ../src/Menus.cpp:3090
+#: ../src/Menus.cpp:3126
 #, fuzzy
 msgid "Edit ID3 Tags"
 msgstr "Ур&еди ID3 тагови..."
 
-#: ../src/Menus.cpp:3089
+#: ../src/Menus.cpp:3125
 msgid "Edit ID3 Tags (for MP3 exporting)"
 msgstr "Уреди ID3 тагови (за MP3 експорт)"
 
-#: ../src/Menus.cpp:3090
+#: ../src/Menus.cpp:3126
 #, fuzzy
 msgid "Edit ID3 tags"
 msgstr "Ур&еди ID3 тагови..."
@@ -2165,10 +2170,10 @@ msgstr ""
 msgid "Enable Edit Toolbar"
 msgstr "Вклучи уреди алатки"
 
-#: ../src/widgets/Meter.cpp:319
+#: ../src/widgets/Meter.cpp:323
 #, fuzzy
 msgid "Enable Meter"
-msgstr "Неможно да се пронајде"
+msgstr "Вклучи микс алатки"
 
 #: ../src/prefs/GUIPrefs.cpp:331
 #, fuzzy
@@ -2198,9 +2203,8 @@ msgid "Encoding: "
 msgstr "Енкодирање:"
 
 #: ../src/ControlToolBar.cpp:521
-#, fuzzy
 msgid "End"
-msgstr "Вклучено"
+msgstr ""
 
 #: ../src/SelectionBar.cpp:101
 msgid "End:"
@@ -2223,7 +2227,7 @@ msgstr "Проширен автосооднос"
 msgid "Enter Nyquist Command: "
 msgstr "Внеси Nyquist команда: "
 
-#: ../src/TrackPanel.cpp:4805
+#: ../src/TrackPanel.cpp:5058
 msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
 msgstr "Внеси рата во Hz (по секунда) меѓу 1 и 100000:"
 
@@ -2242,7 +2246,7 @@ msgid ""
 "Your objective is that the softly spoken words can be heard more clearly."
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1625 ../src/prefs/MousePrefs.cpp:102
+#: ../src/TrackPanel.cpp:1635 ../src/prefs/MousePrefs.cpp:102
 msgid "Envelope"
 msgstr "Крива"
 
@@ -2250,7 +2254,7 @@ msgstr "Крива"
 msgid "Envelope Tool"
 msgstr "Крива алатки"
 
-#: ../src/Menus.cpp:621
+#: ../src/Menus.cpp:626
 #, fuzzy
 msgid "Envelope Tool\tF2"
 msgstr "Крива алатки"
@@ -2280,9 +2284,9 @@ msgstr ""
 msgid "Ergonomic order of audio I/O buttons"
 msgstr ""
 
-#: ../src/ControlToolBar.cpp:773 ../src/ControlToolBar.cpp:963
-#: ../src/effects/Effect.cpp:341 ../src/prefs/DirectoriesPrefs.cpp:206
+#: ../src/ControlToolBar.cpp:775 ../src/ControlToolBar.cpp:965
 #: ../src/UploadDialog.cpp:370 ../src/UploadDialog.cpp:1278
+#: ../src/effects/Effect.cpp:340 ../src/prefs/DirectoriesPrefs.cpp:206
 msgid "Error"
 msgstr "Грешка"
 
@@ -2300,7 +2304,7 @@ msgstr ""
 msgid "Error exporting file or project"
 msgstr "Грешка при отворање проект"
 
-#: ../src/Project.cpp:2477
+#: ../src/Project.cpp:2517
 msgid "Error importing"
 msgstr "Грешка при внес"
 
@@ -2308,27 +2312,27 @@ msgstr "Грешка при внес"
 msgid "Error loading keyboard shortcuts"
 msgstr "Грешка при внес на кратенка"
 
-#: ../src/AudacityApp.cpp:791
+#: ../src/AudacityApp.cpp:846
 #, fuzzy
 msgid "Error locking temporary folder"
 msgstr "Грешка при внес на кратенка"
 
-#: ../src/Project.cpp:1895 ../src/Project.cpp:1903
+#: ../src/Project.cpp:1941 ../src/Project.cpp:1949
 msgid "Error opening file"
 msgstr "Грешка при вчитување датотека."
 
-#: ../src/Project.cpp:1910
+#: ../src/Project.cpp:1956
 #, fuzzy
 msgid "Error opening file or project"
 msgstr "Грешка при отворање проект"
 
-#: ../src/Menus.cpp:3604
+#: ../src/Menus.cpp:3639
 #, fuzzy
 msgid "Error opening preset"
 msgstr "Грешка при отворање проект"
 
-#: ../src/AudacityApp.cpp:281 ../src/Project.cpp:1847 ../src/Project.cpp:1927
-#: ../src/Project.cpp:2013 ../src/Project.cpp:2051
+#: ../src/AudacityApp.cpp:281 ../src/Project.cpp:1893 ../src/Project.cpp:1973
+#: ../src/Project.cpp:2059 ../src/Project.cpp:2097
 msgid "Error opening project"
 msgstr "Грешка при отворање проект"
 
@@ -2348,11 +2352,11 @@ msgstr ""
 msgid "Error saving keyboard shortcuts"
 msgstr "Грешка при снимање кратенка"
 
-#: ../src/Project.cpp:2286 ../src/Project.cpp:2298
+#: ../src/Project.cpp:2326 ../src/Project.cpp:2338
 msgid "Error saving project"
 msgstr "Грешка при снимање проект"
 
-#: ../src/ControlToolBar.cpp:962
+#: ../src/ControlToolBar.cpp:964
 #, fuzzy
 msgid ""
 "Error while opening sound device. Please check the input device settings and "
@@ -2361,7 +2365,7 @@ msgstr ""
 "Грешка при пуштање звук. Молам проверете ги поставките за излезен уред и за "
 "проект рата."
 
-#: ../src/ControlToolBar.cpp:772 ../src/effects/Effect.cpp:340
+#: ../src/ControlToolBar.cpp:774 ../src/effects/Effect.cpp:339
 msgid ""
 "Error while opening sound device. Please check the output device settings "
 "and the project sample rate."
@@ -2379,11 +2383,19 @@ msgstr "Грешка"
 msgid "Error: %hs at line %d"
 msgstr "Грешка: %s во линија %d"
 
-#: ../src/DirManager.cpp:964
+#: ../src/DirManager.cpp:954
 msgid "Error: is directory write-protected or disk full?"
 msgstr ""
 
-#: ../src/Sequence.cpp:784
+#: ../src/TrackPanel.cpp:3469
+msgid "Expand"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3469
+msgid "Expanded Cut Line"
+msgstr ""
+
+#: ../src/Sequence.cpp:788
 #, c-format
 msgid "Expected to read %d samples, got %d samples.\n"
 msgstr "Очекувам да вчитам %d семплови, а добивам %d семплови.\n"
@@ -2426,7 +2438,7 @@ msgstr "&Експорт селекција како %s..."
 msgid "Export Keyboard Shortcuts As:"
 msgstr "Експорт кратенки како:"
 
-#: ../src/Menus.cpp:1769
+#: ../src/Menus.cpp:1805
 msgid "Export Labels As:"
 msgstr "Експорт наслов како:"
 
@@ -2473,12 +2485,12 @@ msgstr "Локација:"
 msgid "Export needs TOMPG.EXE PATH"
 msgstr ""
 
-#: ../src/Menus.cpp:3727
+#: ../src/Menus.cpp:3762
 #, fuzzy
 msgid "Export recording"
 msgstr "Снимање"
 
-#: ../src/Menus.cpp:3725
+#: ../src/Menus.cpp:3760
 #, c-format
 msgid ""
 "Export recording to %s\n"
@@ -2593,7 +2605,7 @@ msgstr "&Датотека"
 msgid "File Format"
 msgstr "Формат на датотека"
 
-#: ../src/prefs/PrefsDialog.cpp:88
+#: ../src/prefs/PrefsDialog.cpp:85
 msgid "File Formats"
 msgstr "Формати на датотека"
 
@@ -2601,7 +2613,7 @@ msgstr "Формати на датотека"
 msgid "File Manager"
 msgstr ""
 
-#: ../src/Project.cpp:1909
+#: ../src/Project.cpp:1955
 #, c-format
 msgid ""
 "File may be invalid or corrupted: \n"
@@ -2617,7 +2629,7 @@ msgstr ""
 msgid "File name prefix:"
 msgstr ""
 
-#: ../src/DirManager.cpp:1281
+#: ../src/DirManager.cpp:1263
 msgid "Fill in silence for missing display data [this session only]"
 msgstr ""
 
@@ -2625,7 +2637,7 @@ msgstr ""
 msgid "Find Library"
 msgstr "Барај библиотека"
 
-#: ../src/Menus.cpp:351
+#: ../src/Menus.cpp:344
 msgid "Find Zero Crossings\tZ"
 msgstr ""
 
@@ -2633,7 +2645,7 @@ msgstr ""
 msgid "First file name:"
 msgstr ""
 
-#: ../src/Menus.cpp:407
+#: ../src/Menus.cpp:411
 msgid "Fit &Vertically\tCtrl+Shift+F"
 msgstr ""
 
@@ -2645,7 +2657,7 @@ msgstr "&Проект"
 #: ../src/EditToolBar.cpp:172
 #, fuzzy
 msgid "Fit Selection"
-msgstr "Постави формат на селекција"
+msgstr "Покажувач на крај од селекцијата"
 
 #: ../src/EditToolBar.cpp:174
 #, fuzzy
@@ -2656,29 +2668,29 @@ msgstr "Собери цел проект во прозорец"
 msgid "Fit selection in window"
 msgstr "Собери селекција во прозорец"
 
-#: ../src/Menus.cpp:917
+#: ../src/Menus.cpp:927
 msgid "Float Control Toolbar"
 msgstr "Лебдечки контролни алатки"
 
-#: ../src/Menus.cpp:922
+#: ../src/Menus.cpp:932
 msgid "Float Edit Toolbar"
 msgstr "Лебдечки уреди алатки"
 
-#: ../src/Menus.cpp:426 ../src/Menus.cpp:932
+#: ../src/Menus.cpp:426 ../src/Menus.cpp:942
 #, fuzzy
 msgid "Float Meter Toolbar"
 msgstr "Лебдечки микс алатки"
 
-#: ../src/Menus.cpp:927
+#: ../src/Menus.cpp:937
 msgid "Float Mixer Toolbar"
 msgstr "Лебдечки микс алатки"
 
-#: ../src/Menus.cpp:937
+#: ../src/Menus.cpp:947
 #, fuzzy
 msgid "Float Transcription Toolbar"
 msgstr "Лебдечки уреди алатки"
 
-#: ../src/TrackPanel.cpp:411
+#: ../src/TrackPanel.cpp:417
 #, fuzzy
 msgid "Font..."
 msgstr "Тон..."
@@ -2687,7 +2699,7 @@ msgstr "Тон..."
 msgid "Force Mono"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4717
+#: ../src/TrackPanel.cpp:4970
 #, fuzzy
 msgid "Format Change"
 msgstr "Процент на промени:"
@@ -2721,8 +2733,8 @@ msgid "Frequency Analysis"
 msgstr "Анализа на фрекфенции"
 
 #. i18n-hint: Title of the Gain slider, used to adjust the volume
-#: ../src/TrackPanel.cpp:2755 ../src/TrackPanel.cpp:4320
-#: ../src/TrackPanel.cpp:5419
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4518
+#: ../src/TrackPanel.cpp:5677
 msgid "Gain"
 msgstr "Засилување"
 
@@ -2790,7 +2802,7 @@ msgstr "Висококвалитетен делач:"
 msgid "High-quality sample rate converter:"
 msgstr "Висококвалитетен конвертор на рати:"
 
-#: ../src/widgets/Meter.cpp:330
+#: ../src/widgets/Meter.cpp:334
 msgid "Horizontal Stereo"
 msgstr ""
 
@@ -2799,16 +2811,15 @@ msgid "Host:"
 msgstr ""
 
 #. i18n-hint: This is the abbreviation for "Hertz", or
-#. cycles per second.
 #: ../src/import/ImportRaw.cpp:406
 msgid "Hz"
 msgstr "Hz"
 
-#: ../src/AboutDialog.cpp:59
+#: ../src/AboutDialog.cpp:126
 msgid "ID3 tag exporting disabled"
 msgstr "Експортирање ID3 таг исклучено"
 
-#: ../src/AboutDialog.cpp:57
+#: ../src/AboutDialog.cpp:124
 msgid "ID3 tag exporting enabled"
 msgstr "Експортирање ID3 таг вклучено"
 
@@ -2830,7 +2841,7 @@ msgid ""
 "export multiple files."
 msgstr ""
 
-#: ../src/Project.cpp:2389 ../src/Project.cpp:2436
+#: ../src/Project.cpp:2429 ../src/Project.cpp:2476
 #: ../src/import/ImportPCM.cpp:410 ../src/import/ImportPCM.cpp:495
 #: ../src/import/ImportRaw.cpp:436
 msgid "Import"
@@ -2852,12 +2863,12 @@ msgstr "Внеси Raw &датотека..."
 msgid "Import CleanSpeech Presets..."
 msgstr ""
 
-#: ../src/Menus.cpp:3001
+#: ../src/Menus.cpp:3037
 #, fuzzy
 msgid "Import Labels"
 msgstr "Внеси нас&лови..."
 
-#: ../src/Menus.cpp:3034
+#: ../src/Menus.cpp:3070
 #, fuzzy
 msgid "Import MIDI"
 msgstr "Внеси &MIDI..."
@@ -2866,22 +2877,22 @@ msgstr "Внеси &MIDI..."
 msgid "Import Raw Data"
 msgstr "Внеси Raw датотека"
 
-#: ../src/Project.cpp:2435
+#: ../src/Project.cpp:2475
 #, c-format
 msgid "Imported '%s'"
 msgstr "Внесено '%s'"
 
-#: ../src/Menus.cpp:3032
+#: ../src/Menus.cpp:3068
 #, c-format
 msgid "Imported MIDI from '%s'"
 msgstr "Внесено MIDI од '%s'"
 
-#: ../src/Menus.cpp:3000
+#: ../src/Menus.cpp:3036
 #, c-format
 msgid "Imported labels from '%s'"
 msgstr "Внесени наслови од '%s'"
 
-#: ../src/Project.cpp:2386
+#: ../src/Project.cpp:2426
 #, c-format
 msgid "Importing %s File..."
 msgstr "Внесувам %s датотека..."
@@ -2895,7 +2906,11 @@ msgstr "Внесувам %s датотека..."
 msgid "Include audio before first label"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:123 ../src/effects/ChangeLength.cpp:120
+#: ../src/Menus.cpp:675
+msgid "Increase gain on first selected track\tAlt+Shift+Up"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:190 ../src/effects/ChangeLength.cpp:120
 msgid "Information"
 msgstr "Информација"
 
@@ -2911,12 +2926,12 @@ msgstr ""
 msgid "Input level meter - click to monitor input"
 msgstr ""
 
-#: ../src/DirManager.cpp:1099
+#: ../src/DirManager.cpp:1089
 #, fuzzy
 msgid "Inspecting project file data..."
 msgstr "Неможно да се отвори проектот."
 
-#: ../src/prefs/PrefsDialog.cpp:91
+#: ../src/prefs/PrefsDialog.cpp:88
 msgid "Interface"
 msgstr "Интерфејс"
 
@@ -2933,7 +2948,7 @@ msgstr "Невалидно Vorbis bitstream заглавие"
 msgid "Invalid duration in LOF file."
 msgstr "Невалидна ставка во LOF датотеката."
 
-#: ../src/TrackPanel.cpp:4815
+#: ../src/TrackPanel.cpp:5068
 msgid "Invalid rate."
 msgstr "Невалидна рата."
 
@@ -2955,11 +2970,11 @@ msgstr "Вртено"
 msgid "Inverting"
 msgstr "Вртење"
 
-#: ../src/Menus.cpp:2299
+#: ../src/Menus.cpp:2335
 msgid "Join"
 msgstr ""
 
-#: ../src/Menus.cpp:2296
+#: ../src/Menus.cpp:2332
 #, fuzzy, c-format
 msgid "Joined %.2f seconds at t=%.2f"
 msgstr "Избришани %.2f секунди од t=%.2f"
@@ -2968,22 +2983,21 @@ msgstr "Избришани %.2f секунди од t=%.2f"
 msgid "Key Combination"
 msgstr "Комбинација на типки"
 
-#: ../src/prefs/PrefsDialog.cpp:93
+#: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
 msgstr "Клавијатура"
 
 #. i18n-hint: One-letter abbreviation for Left, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Left, in VU Meter
-#: ../src/widgets/ASlider.cpp:491 ../src/widgets/Meter.cpp:185
+#: ../src/widgets/ASlider.cpp:444 ../src/widgets/Meter.cpp:187
 msgid "L"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:66
+#: ../src/AboutDialog.cpp:133
 #, fuzzy
 msgid "LADSPA plug-in support disabled"
 msgstr "Подршката на LADSPA додавки исклучена"
 
-#: ../src/AboutDialog.cpp:64
+#: ../src/AboutDialog.cpp:131
 #, fuzzy
 msgid "LADSPA plug-in support enabled"
 msgstr "Подршката на LADSPA додавки вклучена"
@@ -3002,13 +3016,13 @@ msgstr "LFO почетна фаза (степени):"
 msgid "LOF Error"
 msgstr "LOF грешка"
 
-#: ../src/Menus.cpp:3459 ../src/SelectionBar.cpp:190
-#: ../src/SelectionBar.cpp:194 ../src/SelectionBar.cpp:198
+#: ../src/Menus.cpp:3495 ../src/SelectionBar.cpp:203
+#: ../src/SelectionBar.cpp:207 ../src/SelectionBar.cpp:211
 #, fuzzy
 msgid "Label"
 msgstr "Наслови нумера"
 
-#: ../src/TrackPanel.cpp:3246
+#: ../src/TrackPanel.cpp:3262
 msgid "Label Edit"
 msgstr ""
 
@@ -3016,7 +3030,7 @@ msgstr ""
 msgid "Label Track"
 msgstr "Наслови нумера"
 
-#: ../src/TrackPanel.cpp:4962
+#: ../src/TrackPanel.cpp:5215
 #, fuzzy
 msgid "Label Track Font"
 msgstr "Наслови нумера"
@@ -3024,7 +3038,7 @@ msgstr "Наслови нумера"
 #: ../src/export/ExportMultiple.cpp:734
 #, fuzzy
 msgid "Labels"
-msgstr "labels.txt"
+msgstr "Наслови нумера"
 
 #: ../src/FreqWindow.cpp:1023
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
@@ -3039,11 +3053,16 @@ msgstr "Јазик:"
 msgid "Language:"
 msgstr "Јазик:"
 
-#: ../src/widgets/ASlider.cpp:651
+#: ../src/AboutDialog.cpp:263
+#, fuzzy
+msgid "Lead Developer"
+msgstr "Крива"
+
+#: ../src/widgets/ASlider.cpp:604
 msgid "Left"
 msgstr "Лев"
 
-#: ../src/TrackPanel.cpp:390
+#: ../src/TrackPanel.cpp:396
 msgid "Left Channel"
 msgstr "Лев канал"
 
@@ -3055,11 +3074,12 @@ msgstr "Лев клик"
 msgid "Left Drag"
 msgstr "Лево влечење"
 
-#: ../src/Menus.cpp:339
+#: ../src/Menus.cpp:332
+#, fuzzy
 msgid "Left at Playback Position\t["
-msgstr ""
+msgstr "Дај наслов на селекција\tCtrl+B"
 
-#: ../src/TrackPanel.cpp:4580
+#: ../src/TrackPanel.cpp:4833
 msgid "Left, "
 msgstr "Лев,"
 
@@ -3100,9 +3120,10 @@ msgstr "Должина (секунди):     од"
 msgid "Length:"
 msgstr "Длабина:"
 
-#: ../src/effects/Leveller.cpp:114 ../src/BatchCommands.cpp:103
+#: ../src/BatchCommands.cpp:103 ../src/effects/Leveller.cpp:114
+#, fuzzy
 msgid "Leveller"
-msgstr ""
+msgstr "Крива"
 
 #: ../src/effects/Leveller.cpp:199
 msgid "Leveller by Lynn Allan"
@@ -3121,7 +3142,7 @@ msgstr "Нивоа за откажување:"
 msgid "Libresample by Dominic Mazzoni and Julius Smith"
 msgstr "Засилувач од Dominic Mazzoni"
 
-#: ../src/AboutDialog.cpp:71
+#: ../src/AboutDialog.cpp:138
 #, fuzzy
 msgid "Libresample support enabled"
 msgstr "Подршката на LADSPA додавки вклучена"
@@ -3136,15 +3157,15 @@ msgstr "Рата на семпл, од Erik de Castro Lopo"
 msgid "Libsamplerate error: %d\n"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:73
+#: ../src/AboutDialog.cpp:140
 #, fuzzy
 msgid "Libsamplerate support enabled"
 msgstr "Подршката на LADSPA додавки вклучена"
 
-#: ../src/widgets/Meter.cpp:339
+#: ../src/widgets/Meter.cpp:343
 #, fuzzy
 msgid "Linear"
-msgstr "Светло"
+msgstr "Година:"
 
 #: ../src/FreqWindow.cpp:177
 msgid "Linear frequency"
@@ -3165,7 +3186,6 @@ msgid ""
 msgstr ""
 
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:330
 msgid "Little-endian"
 msgstr "Мали краеви"
@@ -3196,7 +3216,7 @@ msgstr "Локација:"
 msgid "Log frequency"
 msgstr "Log фрекфенција"
 
-#: ../src/TrackPanel.cpp:4836 ../src/TrackPanel.cpp:4837
+#: ../src/TrackPanel.cpp:5089 ../src/TrackPanel.cpp:5090
 msgid "Lower speed limit"
 msgstr "Граничник за најмала брзина"
 
@@ -3222,22 +3242,18 @@ msgstr "Верзија на MP3 библиотека:"
 msgid "MP3 exporting plugin not found"
 msgstr "MP3 експорт додавка не е пронајдена"
 
-#: ../src/AboutDialog.cpp:45
+#: ../src/AboutDialog.cpp:112
 msgid "MP3 importing disabled"
 msgstr "MP3 внес исклучен"
 
-#: ../src/AboutDialog.cpp:43
+#: ../src/AboutDialog.cpp:110
 msgid "MP3 importing enabled"
 msgstr "MP3 внес вклучен"
 
-#: ../src/TrackPanel.cpp:4639
+#: ../src/TrackPanel.cpp:4892
 #, c-format
 msgid "Made '%s' a stereo track"
 msgstr "Направи од '%s' стерео нумера"
-
-#: ../src/AboutDialog.cpp:141
-msgid "Main Logo"
-msgstr "Главно лого"
 
 #: ../src/Project.cpp:489
 msgid "Main Mix"
@@ -3248,15 +3264,16 @@ msgid "Main Mix (as a tree)"
 msgstr ""
 
 #: ../src/TranscriptionToolBar.cpp:243
+#, fuzzy
 msgid "Make Labels"
-msgstr ""
+msgstr "Наслови нумера"
 
-#: ../src/TrackPanel.cpp:4642
+#: ../src/TrackPanel.cpp:4895
 #, fuzzy
 msgid "Make Stereo"
 msgstr "Направи стерео нумера"
 
-#: ../src/TrackPanel.cpp:392
+#: ../src/TrackPanel.cpp:398
 msgid "Make Stereo Track"
 msgstr "Направи стерео нумера"
 
@@ -3303,8 +3320,8 @@ msgstr ""
 msgid "Media read error"
 msgstr "Нечитлив медиум"
 
-#: ../src/effects/NoiseRemoval.cpp:579 ../src/effects/ClickRemoval.cpp:369
-#: ../src/effects/ClickRemoval.cpp:398
+#: ../src/effects/ClickRemoval.cpp:369 ../src/effects/ClickRemoval.cpp:398
+#: ../src/effects/NoiseRemoval.cpp:579
 msgid "Medium"
 msgstr ""
 
@@ -3313,12 +3330,12 @@ msgstr ""
 msgid "Meter"
 msgstr "Центар"
 
-#: ../src/widgets/Meter.cpp:1041
+#: ../src/widgets/Meter.cpp:1045
 #, fuzzy
 msgid "Meter Perferences"
 msgstr "Аudacity поставки"
 
-#: ../src/widgets/Meter.cpp:1040
+#: ../src/widgets/Meter.cpp:1044
 msgid "Meter refresh rate per second [1-100]: "
 msgstr ""
 
@@ -3334,17 +3351,17 @@ msgstr "Минимум измени по прозорец:"
 msgid "Minimum of dB mode display range"
 msgstr ""
 
-#: ../src/DirManager.cpp:1137
+#: ../src/DirManager.cpp:1127
 #, c-format
 msgid "Missing alias file: (%s)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1175
+#: ../src/DirManager.cpp:1165
 #, c-format
 msgid "Missing data file: (%s.au)"
 msgstr ""
 
-#: ../src/DirManager.cpp:1156
+#: ../src/DirManager.cpp:1146
 #, c-format
 msgid "Missing summary file: (%s.auf)"
 msgstr ""
@@ -3353,16 +3370,16 @@ msgstr ""
 msgid "Mix"
 msgstr "Микс"
 
-#: ../src/Menus.cpp:451 ../src/Menus.cpp:3152 ../src/Mix.cpp:132
+#: ../src/Menus.cpp:451 ../src/Menus.cpp:3188 ../src/Mix.cpp:132
 msgid "Mix and Render"
 msgstr ""
 
-#: ../src/Menus.cpp:3150
+#: ../src/Menus.cpp:3186
 #, c-format
 msgid "Mixed and rendered %d tracks into one new mono track"
 msgstr ""
 
-#: ../src/Menus.cpp:3147
+#: ../src/Menus.cpp:3183
 #, c-format
 msgid "Mixed and rendered %d tracks into one new stereo track"
 msgstr ""
@@ -3377,16 +3394,16 @@ msgstr "Микс"
 msgid "Mixing and rendering tracks"
 msgstr "Микс на нумери"
 
-#: ../src/TrackPanel.cpp:3245
+#: ../src/TrackPanel.cpp:3261
 #, fuzzy
 msgid "Modified Label"
 msgstr "Даден наслов"
 
-#: ../src/TrackPanel.cpp:389
+#: ../src/TrackPanel.cpp:395
 msgid "Mono"
 msgstr "Моно"
 
-#: ../src/TrackPanel.cpp:4578
+#: ../src/TrackPanel.cpp:4831
 msgid "Mono, "
 msgstr "Моно, "
 
@@ -3394,7 +3411,7 @@ msgstr "Моно, "
 msgid "More"
 msgstr "Повеќе"
 
-#: ../src/prefs/PrefsDialog.cpp:94
+#: ../src/prefs/PrefsDialog.cpp:91
 msgid "Mouse"
 msgstr "Глушец"
 
@@ -3402,23 +3419,23 @@ msgstr "Глушец"
 msgid "Mouse Bindings (default values, not configurable)"
 msgstr "Глувчево фаќање (стандард, непоставливо)"
 
-#: ../src/Menus.cpp:353
+#: ../src/Menus.cpp:346
 #, fuzzy
 msgid "Move Cursor..."
 msgstr "Порамни и мрдни покажувач"
 
-#: ../src/TrackPanel.cpp:4873
+#: ../src/TrackPanel.cpp:5126
 #, fuzzy
 msgid "Move Track"
 msgstr "Мрдни нумера угоре"
 
-#: ../src/TrackPanel.cpp:382 ../src/TrackPanel.cpp:403
-#: ../src/TrackPanel.cpp:414 ../src/TrackPanel.cpp:420
+#: ../src/TrackPanel.cpp:388 ../src/TrackPanel.cpp:409
+#: ../src/TrackPanel.cpp:420 ../src/TrackPanel.cpp:426
 msgid "Move Track Down"
 msgstr "Мрдни нумера удолу"
 
-#: ../src/TrackPanel.cpp:381 ../src/TrackPanel.cpp:402
-#: ../src/TrackPanel.cpp:413 ../src/TrackPanel.cpp:419
+#: ../src/TrackPanel.cpp:387 ../src/TrackPanel.cpp:408
+#: ../src/TrackPanel.cpp:419 ../src/TrackPanel.cpp:425
 msgid "Move Track Up"
 msgstr "Мрдни нумера угоре"
 
@@ -3426,25 +3443,35 @@ msgstr "Мрдни нумера угоре"
 msgid "Move clip up/down between tracks"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4867
+#: ../src/Menus.cpp:663
+#, fuzzy
+msgid "Move to Next Track\tDown"
+msgstr "Мрдни нумера удолу"
+
+#: ../src/Menus.cpp:662
+#, fuzzy
+msgid "Move to Previous Track\tUp"
+msgstr "Мрдни нумера угоре"
+
+#: ../src/TrackPanel.cpp:5120
 #, c-format
 msgid "Moved '%s' %s"
 msgstr "Мрднато '%s' %s"
 
-#: ../src/TrackPanel.cpp:2554
+#: ../src/TrackPanel.cpp:2565
 msgid "Moved Sample"
 msgstr "Мрднат семпл"
 
-#: ../src/TrackPanel.cpp:1752
+#: ../src/TrackPanel.cpp:1762
 msgid "Moved clip to another track"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:2754
+#: ../src/TrackPanel.cpp:2765
 #, fuzzy
 msgid "Moved gain slider"
 msgstr "Мрднат семпл"
 
-#: ../src/TrackPanel.cpp:2754
+#: ../src/TrackPanel.cpp:2765
 #, fuzzy
 msgid "Moved pan slider"
 msgstr "Мрднат семпл"
@@ -3458,7 +3485,7 @@ msgstr ""
 msgid "Multi"
 msgstr "Мулти"
 
-#: ../src/Menus.cpp:625
+#: ../src/Menus.cpp:630
 #, fuzzy
 msgid "Multi Tool\tF6"
 msgstr "Мулти алатки"
@@ -3468,13 +3495,13 @@ msgid "Multi-Tool Mode"
 msgstr "Мулти алатки"
 
 #. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
-#: ../src/TrackPanel.cpp:1191
+#: ../src/TrackPanel.cpp:1199
 #, fuzzy
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
 msgstr "Мулти алатки: Ctrl-P за глувче и клавијатурни поставки"
 
 #. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
-#: ../src/TrackPanel.cpp:1194
+#: ../src/TrackPanel.cpp:1202
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "Мулти алатки: Ctrl-P за глувче и клавијатурни поставки"
 
@@ -3483,17 +3510,17 @@ msgstr "Мулти алатки: Ctrl-P за глувче и клавијату�
 msgid "MultiTool"
 msgstr "Мулти алатки"
 
-#: ../src/Project.cpp:1820
+#: ../src/Project.cpp:1866
 msgid ""
 "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:5354
+#: ../src/TrackPanel.cpp:5612
 msgid "Mute"
 msgstr "Онеми"
 
-#: ../src/Menus.cpp:668
+#: ../src/Menus.cpp:678
 msgid "Mute/Unmute first selected track\tShift+U"
 msgstr ""
 
@@ -3502,7 +3529,7 @@ msgstr ""
 msgid "NTSC frames"
 msgstr "NTSC фрејмови 29.97 fps"
 
-#: ../src/TrackPanel.cpp:4907
+#: ../src/TrackPanel.cpp:5160
 #, fuzzy
 msgid "Name Change"
 msgstr "Да снимам промени?"
@@ -3511,8 +3538,8 @@ msgstr "Да снимам промени?"
 msgid "Name files:"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:379 ../src/TrackPanel.cpp:400
-#: ../src/TrackPanel.cpp:409 ../src/TrackPanel.cpp:417
+#: ../src/TrackPanel.cpp:385 ../src/TrackPanel.cpp:406
+#: ../src/TrackPanel.cpp:415 ../src/TrackPanel.cpp:423
 msgid "Name..."
 msgstr "Име..."
 
@@ -3554,8 +3581,8 @@ msgstr ""
 msgid "New Temporary Directory"
 msgstr "Нов привремен именик"
 
-#: ../src/Menus.cpp:3347 ../src/Menus.cpp:3371 ../src/Menus.cpp:3387
-#: ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3383 ../src/Menus.cpp:3407 ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3459
 #, fuzzy
 msgid "New Track"
 msgstr "Обележи нумера"
@@ -3569,7 +3596,7 @@ msgstr "Нова вредност"
 msgid "New selection length: "
 msgstr "Постави формат на селекција"
 
-#: ../src/Menus.cpp:627
+#: ../src/Menus.cpp:632
 msgid "Next Tool\tD"
 msgstr ""
 
@@ -3587,7 +3614,6 @@ msgid "No batch command chain defined."
 msgstr ""
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
-#. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:327
 msgid "No endianness"
 msgstr "Без краеви"
@@ -3596,7 +3622,7 @@ msgstr "Без краеви"
 msgid "No project and no Audio to process!"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:75
+#: ../src/AboutDialog.cpp:142
 #, fuzzy
 msgid "No resampling support enabled"
 msgstr "Подршката на LADSPA додавки вклучена"
@@ -3614,7 +3640,7 @@ msgstr ""
 msgid "No tracks to process!"
 msgstr ""
 
-#: ../src/effects/NoiseRemoval.cpp:148 ../src/BatchCommands.cpp:101
+#: ../src/BatchCommands.cpp:101 ../src/effects/NoiseRemoval.cpp:148
 msgid "Noise Removal"
 msgstr "Отстранувач на шум"
 
@@ -3637,23 +3663,29 @@ msgstr ""
 msgid "None"
 msgstr "Ништо"
 
-#: ../src/effects/Normalize.cpp:74 ../src/BatchCommands.cpp:99
-#: ../src/BatchCommands.cpp:104 ../src/BatchCommands.cpp:112
+#: ../src/BatchCommands.cpp:99 ../src/BatchCommands.cpp:104
+#: ../src/BatchCommands.cpp:112 ../src/effects/Normalize.cpp:76
 msgid "Normalize"
 msgstr ""
 
-#: ../src/effects/Normalize.cpp:285
+#: ../src/effects/Normalize.cpp:289
 #, fuzzy
 msgid "Normalize by Dominic Mazzoni\n"
 msgstr "Засилувач од Dominic Mazzoni"
 
-#: ../src/effects/Normalize.cpp:298
+#: ../src/effects/Normalize.cpp:302
 msgid "Normalize maximum amplitude to -3 dB"
 msgstr ""
 
 #: ../src/prefs/BatchPrefs.cpp:379
+#, fuzzy
 msgid "Normalize on load"
-msgstr ""
+msgstr "Засилувач од Dominic Mazzoni"
+
+#: ../src/effects/Compressor.cpp:469
+#, fuzzy
+msgid "Normalize to 0dB after compressing"
+msgstr "Примени засилување по компресијата"
 
 #: ../src/effects/Normalize.h:31
 #, fuzzy
@@ -3685,11 +3717,11 @@ msgstr "Обележи нумера"
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
 msgstr ""
 
-#: ../src/Menus.cpp:1905
+#: ../src/Menus.cpp:1941
 msgid "Nothing to redo"
 msgstr "Ништо за повтори"
 
-#: ../src/Menus.cpp:1886
+#: ../src/Menus.cpp:1922
 msgid "Nothing to undo"
 msgstr "Ништо за врати"
 
@@ -3751,24 +3783,23 @@ msgstr "OGG експорт поставки"
 msgid "OGG Quality:"
 msgstr "OGG квалитет:"
 
-#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:740
-#: ../src/effects/VST/VSTEffect.cpp:98 ../src/effects/VST/VSTEffect.cpp:455
-#: ../src/effects/Amplify.cpp:202 ../src/effects/AvcCompressor.cpp:723
-#: ../src/effects/BassBoost.cpp:344 ../src/effects/ChangePitch.cpp:399
+#: ../src/BatchCommandDialog.cpp:103 ../src/BatchProcessDialog.cpp:87
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:740 ../src/effects/Amplify.cpp:202
+#: ../src/effects/AvcCompressor.cpp:723 ../src/effects/BassBoost.cpp:344
+#: ../src/effects/ChangeLength.cpp:176 ../src/effects/ChangePitch.cpp:399
 #: ../src/effects/ChangeSpeed.cpp:386 ../src/effects/ChangeTempo.cpp:292
-#: ../src/effects/Compressor.cpp:488 ../src/effects/Echo.cpp:253
+#: ../src/effects/Compressor.cpp:484 ../src/effects/Echo.cpp:253
 #: ../src/effects/Equalization.cpp:760 ../src/effects/Filter.cpp:493
-#: ../src/effects/NoiseRemoval.cpp:602 ../src/effects/Normalize.cpp:313
-#: ../src/effects/Phaser.cpp:592 ../src/effects/Repeat.cpp:262
-#: ../src/effects/Wahwah.cpp:578 ../src/effects/ladspa/LadspaEffect.cpp:499
+#: ../src/effects/Leveller.cpp:244 ../src/effects/NoiseRemoval.cpp:602
+#: ../src/effects/Normalize.cpp:317 ../src/effects/Phaser.cpp:592
+#: ../src/effects/Repeat.cpp:262 ../src/effects/SpikeCleaner.cpp:174
+#: ../src/effects/TruncSilence.cpp:267 ../src/effects/VST/VSTEffect.cpp:98
+#: ../src/effects/VST/VSTEffect.cpp:455 ../src/effects/Wahwah.cpp:578
+#: ../src/effects/ladspa/LadspaEffect.cpp:499
 #: ../src/effects/nyquist/Nyquist.cpp:751
 #: ../src/effects/nyquist/Nyquist.cpp:897
-#: ../src/effects/nyquist/Nyquist.cpp:963 ../src/effects/ChangeLength.cpp:176
-#: ../src/effects/Leveller.cpp:244 ../src/effects/SpikeCleaner.cpp:174
-#: ../src/effects/TruncSilence.cpp:267 ../src/prefs/FileFormatPrefs.cpp:470
-#: ../src/prefs/PrefsDialog.cpp:103 ../src/widgets/ASlider.cpp:220
-#: ../src/widgets/Warning.cpp:56 ../src/BatchCommandDialog.cpp:103
-#: ../src/BatchProcessDialog.cpp:87
+#: ../src/effects/nyquist/Nyquist.cpp:963 ../src/prefs/FileFormatPrefs.cpp:470
+#: ../src/prefs/PrefsDialog.cpp:100 ../src/widgets/Warning.cpp:56
 msgid "OK"
 msgstr "OK"
 
@@ -3776,11 +3807,11 @@ msgstr "OK"
 msgid "Off"
 msgstr "Исклучи"
 
-#: ../src/AboutDialog.cpp:52
+#: ../src/AboutDialog.cpp:119
 msgid "Ogg Vorbis importing disabled"
 msgstr "Ogg Vorbis внес исклучен"
 
-#: ../src/AboutDialog.cpp:50
+#: ../src/AboutDialog.cpp:117
 msgid "Ogg Vorbis importing enabled"
 msgstr "Ogg Vorbis внес вклучен"
 
@@ -3812,16 +3843,16 @@ msgstr ""
 "Само libmp3lame.so|libmp3lame.so|примарно деливи објекти (*.so)|*.so|"
 "зајакнати библиотеки (*.so*)|*.so*|сите датотеки (*)|*"
 
-#: ../src/Menus.cpp:3586
+#: ../src/Menus.cpp:3621
 msgid "Open CleanSpeech Preset File:"
 msgstr ""
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
-#: ../src/Menus.cpp:685
+#: ../src/Menus.cpp:695
 msgid "Open Recent"
 msgstr ""
 
-#: ../src/Menus.cpp:667
+#: ../src/Menus.cpp:677
 msgid "Open menu on first selected track\tShift+M"
 msgstr ""
 
@@ -3829,30 +3860,26 @@ msgstr ""
 msgid "Opening Audacity Project"
 msgstr "Отворам Audacity проект"
 
-#: ../src/Project.cpp:2109
+#: ../src/Project.cpp:2149
 #, fuzzy
 msgid "Opening old project file"
-msgstr "Отворам Audacity проект"
+msgstr "Неможно да се отвори проектот."
 
 #: ../src/effects/AvcCompressor.cpp:664
 msgid "Original Value"
 msgstr "Оригинална вредност"
 
-#: ../src/DirManager.cpp:1112
+#: ../src/DirManager.cpp:1102
 #, c-format
 msgid "Orphaned blockfile: (%s)"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:149
-msgid "Other contributors:"
-msgstr "Останати придонесџии:"
-
-#: ../src/TrackPanel.cpp:371 ../src/prefs/FileFormatPrefs.cpp:105
+#: ../src/TrackPanel.cpp:377 ../src/prefs/FileFormatPrefs.cpp:105
 #: ../src/prefs/QualityPrefs.cpp:103
 msgid "Other..."
 msgstr "Друго..."
 
-#: ../src/Project.cpp:2876
+#: ../src/Project.cpp:2916
 msgid "Out of disk space"
 msgstr "Над диск просторот"
 
@@ -3878,15 +3905,22 @@ msgid "Page Setup..."
 msgstr "Смени брзина..."
 
 #. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#: ../src/TrackPanel.cpp:2755 ../src/TrackPanel.cpp:4293
-#: ../src/TrackPanel.cpp:5426
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4453
+#: ../src/TrackPanel.cpp:5684
 msgid "Pan"
 msgstr "Панорама"
 
+#: ../src/Menus.cpp:672
+msgid "Pan left on first selected track\tAlt+Shift+Left"
+msgstr ""
+
+#: ../src/Menus.cpp:673
+msgid "Pan right on first selected track\tAlt+Shift+Right"
+msgstr ""
+
 #: ../src/prefs/BatchPrefs.cpp:158
-#, fuzzy
 msgid "Parameters"
-msgstr "Програмер"
+msgstr ""
 
 #: ../src/BatchCommandDialog.cpp:66
 msgid "Parameters:"
@@ -3896,12 +3930,12 @@ msgstr ""
 msgid "Password:"
 msgstr ""
 
-#: ../src/EditToolBar.cpp:150 ../src/Menus.cpp:2158 ../src/Menus.cpp:2210
-#: ../src/TrackPanel.cpp:427
+#: ../src/EditToolBar.cpp:150 ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
+#: ../src/TrackPanel.cpp:433
 msgid "Paste"
 msgstr "Залепи"
 
-#: ../src/Menus.cpp:2158 ../src/Menus.cpp:2210
+#: ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
 msgid "Pasted from the clipboard"
 msgstr "Залепено од амбар"
 
@@ -3909,7 +3943,7 @@ msgstr "Залепено од амбар"
 msgid "Pause"
 msgstr "Пауза"
 
-#: ../src/Menus.cpp:632
+#: ../src/Menus.cpp:637
 msgid "Pause\tP"
 msgstr "Пауза\tP"
 
@@ -3918,8 +3952,8 @@ msgstr "Пауза\tP"
 msgid "Pencil"
 msgstr "Молив"
 
-#: ../src/effects/ChangePitch.cpp:359 ../src/effects/ChangeSpeed.cpp:312
-#: ../src/effects/ChangeTempo.cpp:190 ../src/effects/ChangeLength.cpp:157
+#: ../src/effects/ChangeLength.cpp:157 ../src/effects/ChangePitch.cpp:359
+#: ../src/effects/ChangeSpeed.cpp:312 ../src/effects/ChangeTempo.cpp:190
 msgid "Percent Change:"
 msgstr "Процент на промени:"
 
@@ -3958,7 +3992,7 @@ msgstr "Фазер од Nasca Octavian Paul"
 msgid "Phaser..."
 msgstr "Фазер..."
 
-#: ../src/TrackPanel.cpp:387
+#: ../src/TrackPanel.cpp:393
 msgid "Pitch (EAC)"
 msgstr "Висина (EAC)"
 
@@ -3974,20 +4008,20 @@ msgstr "Свири"
 msgid "Play (Shift for loop-play)"
 msgstr ""
 
-#: ../src/Menus.cpp:637
+#: ../src/Menus.cpp:642
 msgid "Play Looped\tL"
 msgstr ""
 
-#: ../src/Menus.cpp:638
+#: ../src/Menus.cpp:643
 #, fuzzy
 msgid "Play Looped\tShift+Spacebar"
 msgstr "Свири/Стоп\tПразно место"
 
-#: ../src/Menus.cpp:635
+#: ../src/Menus.cpp:640
 msgid "Play One Second\t1"
 msgstr "Свири една секунда\t1"
 
-#: ../src/Menus.cpp:636
+#: ../src/Menus.cpp:641
 #, fuzzy
 msgid "Play To Selection\tB"
 msgstr "Свири една секунда\t1"
@@ -4004,7 +4038,7 @@ msgstr "Свири други нумери додека снимаш нова"
 msgid "Play-at-speed"
 msgstr ""
 
-#: ../src/Menus.cpp:630
+#: ../src/Menus.cpp:635
 msgid "Play/Stop\tSpacebar"
 msgstr "Свири/Стоп\tПразно место"
 
@@ -4021,25 +4055,24 @@ msgstr "Плејбек"
 msgid "Playthrough"
 msgstr ""
 
-#: ../src/Menus.cpp:1392 ../src/Menus.cpp:1429
+#: ../src/Menus.cpp:1408 ../src/Menus.cpp:1445
 msgid "Please Enter time"
 msgstr ""
 
-#: ../src/Menus.cpp:3651
+#: ../src/Menus.cpp:3686
 msgid "Please close all Audacity projects first."
 msgstr ""
 
 #: ../src/UploadDialog.cpp:1391
-#, fuzzy
 msgid "Please enter new folder name:"
-msgstr "Ве молам внесете позитивен број за време на доцнење:"
+msgstr ""
 
 #: ../src/UploadDialog.cpp:672
 #, fuzzy
 msgid "Please enter the new file/folder name:"
 msgstr "Ве молам внесете позитивен број за време на доцнење:"
 
-#: ../src/Menus.cpp:3656
+#: ../src/Menus.cpp:3691
 msgid "Please save and close the current project first."
 msgstr ""
 
@@ -4062,7 +4095,7 @@ msgstr "Отстранувач на шум..."
 msgid "Predefined:"
 msgstr "Зададено:"
 
-#: ../src/widgets/Meter.cpp:348
+#: ../src/widgets/Meter.cpp:352
 #, fuzzy
 msgid "Preferences..."
 msgstr "&Поставки\tCtrl+P"
@@ -4075,25 +4108,21 @@ msgstr ""
 msgid "Preparing to delete"
 msgstr ""
 
-#: ../src/Menus.cpp:3603
+#: ../src/Menus.cpp:3638
 #, c-format
 msgid ""
 "Preset may be invalid or corrupted.\n"
 "Expected format %d ... found %d"
 msgstr ""
 
-#: ../src/effects/Effect.cpp:258 ../src/effects/Equalization.cpp:748
+#: ../src/effects/Effect.cpp:257 ../src/effects/Equalization.cpp:748
 #: ../src/effects/Phaser.cpp:582 ../src/effects/Wahwah.cpp:568
 msgid "Preview"
 msgstr "Првоглед"
 
-#: ../src/Menus.cpp:628
+#: ../src/Menus.cpp:633
 msgid "Previous Tool\tA"
 msgstr ""
-
-#: ../src/AboutDialog.cpp:131 ../src/AboutDialog.cpp:133
-msgid "Primary developer"
-msgstr "Главен развивач"
 
 #: ../src/Printing.cpp:182
 #, fuzzy
@@ -4105,11 +4134,11 @@ msgstr "десно"
 msgid "Print..."
 msgstr "Подготовка...\n"
 
-#: ../src/Menus.cpp:3559
+#: ../src/Menus.cpp:3595
 msgid "Problem encountered exporting presets."
 msgstr ""
 
-#: ../src/Menus.cpp:3636
+#: ../src/Menus.cpp:3671
 msgid "Problem encountered importing presets."
 msgstr ""
 
@@ -4117,22 +4146,13 @@ msgstr ""
 msgid "Process Batch..."
 msgstr ""
 
-#: ../src/AboutDialog.cpp:84
+#: ../src/AboutDialog.cpp:151
 #, fuzzy
 msgid "Program build date: "
 msgstr "Дата на програмата:"
 
-#: ../src/AboutDialog.cpp:134 ../src/AboutDialog.cpp:135
-#: ../src/AboutDialog.cpp:136 ../src/AboutDialog.cpp:137
-msgid "Programmer"
-msgstr "Програмер"
-
-#: ../src/AboutDialog.cpp:138
-msgid "Programmer (CleanSpeech)"
-msgstr ""
-
-#: ../src/DirManager.cpp:154 ../src/DirManager.cpp:236
-#: ../src/DirManager.cpp:355
+#: ../src/DirManager.cpp:151 ../src/DirManager.cpp:233
+#: ../src/DirManager.cpp:347
 msgid "Progress"
 msgstr "Прогрес"
 
@@ -4141,7 +4161,7 @@ msgstr "Прогрес"
 msgid "Project Rate (Hz):"
 msgstr "Проект рата:"
 
-#: ../src/DirManager.cpp:1230
+#: ../src/DirManager.cpp:1219
 #, c-format
 msgid ""
 "Project check detected %d input file[s] being used in place\n"
@@ -4152,7 +4172,7 @@ msgid ""
 "and try to restore the missing files by hand."
 msgstr ""
 
-#: ../src/DirManager.cpp:1306
+#: ../src/DirManager.cpp:1288
 #, c-format
 msgid ""
 "Project check detected %d missing audio data blockfile[s] (.au), \n"
@@ -4164,7 +4184,7 @@ msgid ""
 "missing data by hand."
 msgstr ""
 
-#: ../src/DirManager.cpp:1273
+#: ../src/DirManager.cpp:1257
 #, c-format
 msgid ""
 "Project check detected %d missing summary file[s] (.auf).\n"
@@ -4172,7 +4192,7 @@ msgid ""
 "original audio data in the project."
 msgstr ""
 
-#: ../src/DirManager.cpp:1200
+#: ../src/DirManager.cpp:1189
 #, c-format
 msgid ""
 "Project check found %d orphaned blockfile[s]. These files are\n"
@@ -4180,18 +4200,18 @@ msgid ""
 "They should be deleted to avoid disk contention."
 msgstr ""
 
-#: ../src/DirManager.cpp:1189
+#: ../src/DirManager.cpp:1179
 msgid ""
 "Project check found inconsistencies inspecting the loaded project data;\n"
 "click 'Details' for a complete list of errors, or 'OK' to proceed to more "
 "options."
 msgstr ""
 
-#: ../src/Project.cpp:2003
+#: ../src/Project.cpp:2049
 msgid "Project checker repaired file"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:129
+#: ../src/AboutDialog.cpp:261
 msgid "Project leader and primary programmer"
 msgstr "Водач на проектот и главен програмер"
 
@@ -4199,7 +4219,7 @@ msgstr "Водач на проектот и главен програмер"
 msgid "Prompt to save, even if empty"
 msgstr ""
 
-#: ../src/prefs/PrefsDialog.cpp:87
+#: ../src/prefs/PrefsDialog.cpp:84
 msgid "Quality"
 msgstr "Квалитет"
 
@@ -4208,33 +4228,31 @@ msgid "Quit Audacity upon closing last window"
 msgstr ""
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
-#. i18n-hint: One-letter abbreviation for Right, in VU Meter
-#: ../src/widgets/ASlider.cpp:494 ../src/widgets/Meter.cpp:187
+#: ../src/widgets/ASlider.cpp:447 ../src/widgets/Meter.cpp:189
 msgid "R"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4679
+#: ../src/TrackPanel.cpp:4932
 #, fuzzy
 msgid "Rate Change"
 msgstr "Да снимам промени?"
 
-#: ../src/effects/Compressor.cpp:455
+#: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
 msgstr "Размер: "
 
-#: ../src/effects/Compressor.cpp:532
+#: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
 msgstr "Размер: %.0f:1"
 
-#: ../src/effects/Compressor.cpp:534
+#: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
 msgstr "Размер: %.1f:1"
 
 #. i18n-hint: This refers to files that are opened directly
-#. without looking at the file header.  Same as "Import Raw"
-#: ../src/Project.cpp:2381
+#: ../src/Project.cpp:2421
 msgid "Raw"
 msgstr "Raw"
 
@@ -4256,20 +4274,20 @@ msgid "Recalculate"
 msgstr "Правоаголно"
 
 #. i18n-hint: This is the name of the menu item on Windows and Linux
-#: ../src/Menus.cpp:688
+#: ../src/Menus.cpp:698
 msgid "Recent &Files..."
 msgstr ""
 
 #: ../src/ControlToolBar.cpp:518 ../src/ControlToolBar.cpp:526
-#: ../src/Project.cpp:1772 ../src/TrackPanel.cpp:810
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
 msgid "Record"
 msgstr "Снимај"
 
-#: ../src/Menus.cpp:633
+#: ../src/Menus.cpp:638
 msgid "Record\tR"
 msgstr "Снимај\tR"
 
-#: ../src/Project.cpp:1772 ../src/TrackPanel.cpp:810
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
 #, fuzzy
 msgid "Recorded Audio"
 msgstr "Снимање"
@@ -4278,7 +4296,7 @@ msgstr "Снимање"
 msgid "Recording"
 msgstr "Снимање"
 
-#: ../src/ControlToolBar.cpp:882
+#: ../src/ControlToolBar.cpp:884
 msgid "Recording not permitted"
 msgstr ""
 
@@ -4294,7 +4312,7 @@ msgstr "Правоаголно"
 msgid "Redo"
 msgstr "Врати"
 
-#: ../src/DirManager.cpp:1280
+#: ../src/DirManager.cpp:1262
 msgid "Regenerate summary files [safe and recommended]"
 msgstr ""
 
@@ -4302,17 +4320,22 @@ msgstr ""
 msgid "Remo&ve Tracks"
 msgstr "&Тргни нумери"
 
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Remove"
+msgstr "Отстрани шум"
+
 #: ../src/UploadDialog.cpp:283
 #, fuzzy
 msgid "Remove Site"
 msgstr "Отстрани шум"
 
-#: ../src/Menus.cpp:3762
+#: ../src/Menus.cpp:3797
 #, fuzzy
 msgid "Remove Track"
 msgstr "&Тргни нумери"
 
-#: ../src/effects/Normalize.cpp:293
+#: ../src/effects/Normalize.cpp:297
 msgid "Remove any DC offset (center on 0 vertically)"
 msgstr ""
 
@@ -4321,11 +4344,16 @@ msgstr ""
 msgid "Remove clicks"
 msgstr "&Тргни нумери"
 
-#: ../src/Menus.cpp:3762
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Removed Cut Line"
+msgstr "Отстрани шум"
+
+#: ../src/Menus.cpp:3797
 msgid "Removed audio track(s)"
 msgstr "Отстрани аудио нумера/и"
 
-#: ../src/TrackPanel.cpp:2641
+#: ../src/TrackPanel.cpp:2652
 #, c-format
 msgid "Removed track '%s.'"
 msgstr "Отстранета нумерата '%s.'"
@@ -4335,8 +4363,9 @@ msgid "Removing Noise"
 msgstr "Отстранување шум"
 
 #: ../src/effects/ClickRemoval.h:46
+#, fuzzy
 msgid "Removing clicks and pops..."
-msgstr ""
+msgstr "Отстранување шум"
 
 #: ../src/effects/PopClick.h:33
 #, fuzzy
@@ -4353,27 +4382,27 @@ msgstr "Резонанца:"
 msgid "Rename file"
 msgstr "Отстрани шум"
 
-#: ../src/TrackPanel.cpp:4904
+#: ../src/TrackPanel.cpp:5157
 #, c-format
 msgid "Renamed '%s' to '%s'"
 msgstr "Преименувана '%s' во '%s'"
 
-#: ../src/DirManager.cpp:994
+#: ../src/DirManager.cpp:984
 #, c-format
 msgid "Renamed file: %s\n"
 msgstr ""
 
-#: ../src/Menus.cpp:3142
+#: ../src/Menus.cpp:3178
 #, fuzzy
 msgid "Render"
 msgstr "Центар"
 
-#: ../src/Menus.cpp:3141
+#: ../src/Menus.cpp:3177
 #, fuzzy, c-format
 msgid "Rendered all audio in track '%s'"
 msgstr "Отстрани аудио нумера/и"
 
-#: ../src/Project.cpp:2003
+#: ../src/Project.cpp:2049
 msgid "Repair"
 msgstr ""
 
@@ -4381,7 +4410,7 @@ msgstr ""
 msgid "Repeat"
 msgstr ""
 
-#: ../src/Menus.cpp:1641
+#: ../src/Menus.cpp:1677
 #, fuzzy, c-format
 msgid "Repeat %s\tCtrl+R"
 msgstr "&Врати\tCtrl+R"
@@ -4403,11 +4432,11 @@ msgstr ""
 msgid "Repeated %d times"
 msgstr ""
 
-#: ../src/DirManager.cpp:1317
+#: ../src/DirManager.cpp:1293
 msgid "Replace missing data with silence [permanent immediately]"
 msgstr ""
 
-#: ../src/DirManager.cpp:1240
+#: ../src/DirManager.cpp:1224
 msgid "Replace missing data with silence [permanent upon save]"
 msgstr ""
 
@@ -4432,11 +4461,11 @@ msgstr "Обратно"
 msgid "Reversing"
 msgstr "Обраќање"
 
-#: ../src/widgets/ASlider.cpp:654
+#: ../src/widgets/ASlider.cpp:607
 msgid "Right"
 msgstr "Десен"
 
-#: ../src/TrackPanel.cpp:391
+#: ../src/TrackPanel.cpp:397
 msgid "Right Channel"
 msgstr "Десен канал"
 
@@ -4448,11 +4477,12 @@ msgstr "Десен клик"
 msgid "Right Drag"
 msgstr "Десно влечење"
 
-#: ../src/Menus.cpp:340
+#: ../src/Menus.cpp:333
+#, fuzzy
 msgid "Right at Playback Position\t]"
-msgstr ""
+msgstr "Дај наслов на селекција\tCtrl+B"
 
-#: ../src/TrackPanel.cpp:4582
+#: ../src/TrackPanel.cpp:4835
 msgid "Right, "
 msgstr "Десен, "
 
@@ -4473,7 +4503,7 @@ msgstr ""
 msgid "Right-to-On"
 msgstr "Десен"
 
-#: ../src/TrackPanel.cpp:2555
+#: ../src/TrackPanel.cpp:2566
 #, fuzzy
 msgid "Sample Edit"
 msgstr "Рата на семпл:"
@@ -4492,7 +4522,7 @@ msgstr "Засилување"
 msgid "Save %s File As:"
 msgstr "Зачувај ја датотеката %s како:"
 
-#: ../src/Menus.cpp:3502
+#: ../src/Menus.cpp:3538
 #, fuzzy
 msgid "Save CleanSpeech Preset File As:"
 msgstr "Зачувај ја датотеката %s како:"
@@ -4501,20 +4531,20 @@ msgstr "Зачувај ја датотеката %s како:"
 msgid "Save Project &As..."
 msgstr "Зачувај го проектот к&ако..."
 
-#: ../src/Project.cpp:2525
+#: ../src/Project.cpp:2565
 msgid "Save Project As:"
 msgstr "Сними го проектот како:"
 
-#: ../src/Project.cpp:2516
+#: ../src/Project.cpp:2556
 #, fuzzy
 msgid "Save Speech As:"
 msgstr "Сними го проектот како:"
 
-#: ../src/Project.cpp:1790
+#: ../src/Project.cpp:1836
 msgid "Save changes before closing?"
 msgstr "Да снимам измени пред затворање?"
 
-#: ../src/Project.cpp:1791
+#: ../src/Project.cpp:1837
 msgid "Save changes?"
 msgstr "Да снимам промени?"
 
@@ -4522,14 +4552,15 @@ msgstr "Да снимам промени?"
 msgid "Save..."
 msgstr "Зачувај..."
 
-#: ../src/Project.cpp:2353
+#: ../src/Project.cpp:2393
 #, c-format
 msgid "Saved %s"
 msgstr "Снимено %s"
 
-#: ../src/DirManager.cpp:356
+#: ../src/DirManager.cpp:348
+#, fuzzy
 msgid "Saving project data files"
-msgstr ""
+msgstr "Неможно да се отвори проектот."
 
 #: ../src/effects/ToneGen.cpp:57
 msgid "Sawtooth"
@@ -4557,7 +4588,7 @@ msgstr "Означи"
 msgid "Select Command"
 msgstr "Команда"
 
-#: ../src/Menus.cpp:3012
+#: ../src/Menus.cpp:3048
 msgid "Select a MIDI file..."
 msgstr "Означи MIDI датотека..."
 
@@ -4571,7 +4602,7 @@ msgstr ""
 "за Audacity да знае што да филтрира, потоа\n"
 "одберете Земи профил на шум:"
 
-#: ../src/Menus.cpp:2971
+#: ../src/Menus.cpp:3007
 msgid "Select a text file containing labels..."
 msgstr "Означи текст датотека што содржи наслови..."
 
@@ -4590,15 +4621,15 @@ msgstr ""
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
 msgstr "Селектирајте XML датотека која содржи Audacity кратенки..."
 
-#: ../src/Menus.cpp:3047
+#: ../src/Menus.cpp:3083
 msgid "Select any uncompressed audio file..."
 msgstr "Одберете која било некомпресирана аудио датотека..."
 
-#: ../src/Menus.cpp:3675
+#: ../src/Menus.cpp:3710
 msgid "Select file(s) for batch processing..."
 msgstr ""
 
-#: ../src/Menus.cpp:2939 ../src/Project.cpp:1817
+#: ../src/Menus.cpp:2975 ../src/Project.cpp:1863
 #, fuzzy
 msgid "Select one or more audio files..."
 msgstr "Одберете аудио фајл..."
@@ -4611,7 +4642,7 @@ msgstr ""
 msgid "Select region of sound around cursor"
 msgstr ""
 
-#: ../src/Menus.cpp:3674
+#: ../src/Menus.cpp:3709
 msgid "Select vocal file(s) for batch CleanSpeech Chain..."
 msgstr ""
 
@@ -4632,40 +4663,40 @@ msgstr ""
 #: ../src/TranscriptionToolBar.cpp:239
 #, fuzzy
 msgid "Select-Silence"
-msgstr "Тишина"
+msgstr "Генератор на тишина"
 
 #: ../src/TranscriptionToolBar.cpp:235
 #, fuzzy
 msgid "Select-Sound"
 msgstr "Означи"
 
-#: ../src/Menus.cpp:334
+#: ../src/Menus.cpp:327
 #, fuzzy
 msgid "Select..."
 msgstr "Означи"
 
-#: ../src/Menus.cpp:662
+#: ../src/Menus.cpp:668
 msgid "Selection Contract Left\tCtrl+Shift+Right"
 msgstr "Селекција збиј лево\tCtrl+Shift+Right"
 
-#: ../src/Menus.cpp:663
+#: ../src/Menus.cpp:669
 msgid "Selection Contract Right\tCtrl+Shift+Left"
 msgstr "Селекција збиј десно\tCtrl+Shift+Left"
 
-#: ../src/Menus.cpp:660
+#: ../src/Menus.cpp:666
 msgid "Selection Extend Left\tShift+Left"
 msgstr "Селекција извлечи лево\tShift+Left"
 
-#: ../src/Menus.cpp:661
+#: ../src/Menus.cpp:667
 msgid "Selection Extend Right\tShift+Right"
 msgstr "Селекција извлечи десно\tShift+Right"
 
-#: ../src/Menus.cpp:369
+#: ../src/Menus.cpp:362
 #, fuzzy
 msgid "Selection Restore"
 msgstr "Покажувач или селекција обновени"
 
-#: ../src/Menus.cpp:368
+#: ../src/Menus.cpp:361
 #, fuzzy
 msgid "Selection Save"
 msgstr "Покажувач или селекција снимени"
@@ -4679,7 +4710,7 @@ msgstr "Покажувач на почеток на селекцијата"
 msgid "Selection Tool"
 msgstr "Изборни алатки"
 
-#: ../src/Menus.cpp:620
+#: ../src/Menus.cpp:625
 #, fuzzy
 msgid "Selection Tool\tF1"
 msgstr "Изборни алатки"
@@ -4689,11 +4720,11 @@ msgstr "Изборни алатки"
 msgid "Selection is too small to use voice key."
 msgstr ""
 
-#: ../src/Menus.cpp:644
+#: ../src/Menus.cpp:649
 msgid "Selection to End\tShift+End"
 msgstr "Селекција на крај\tShift+End"
 
-#: ../src/Menus.cpp:643
+#: ../src/Menus.cpp:648
 msgid "Selection to Start\tShift+Home"
 msgstr "Селекција на почеток\tShift+Home"
 
@@ -4714,30 +4745,30 @@ msgstr ""
 msgid "Set"
 msgstr "Постави"
 
-#: ../src/Menus.cpp:1391
+#: ../src/Menus.cpp:1407
 #, fuzzy
 msgid "Set Left Selection Bound"
 msgstr "Постави формат на селекција"
 
-#: ../src/TrackPanel.cpp:4855
+#: ../src/TrackPanel.cpp:5108
 #, fuzzy
 msgid "Set Range"
 msgstr "Постави од-до..."
 
-#: ../src/TrackPanel.cpp:422
+#: ../src/TrackPanel.cpp:428
 msgid "Set Range..."
 msgstr "Постави од-до..."
 
-#: ../src/TrackPanel.cpp:397 ../src/TrackPanel.cpp:4806
+#: ../src/TrackPanel.cpp:403 ../src/TrackPanel.cpp:5059
 msgid "Set Rate"
 msgstr "Постави рата"
 
-#: ../src/Menus.cpp:1429
+#: ../src/Menus.cpp:1445
 #, fuzzy
 msgid "Set Right Selection Bound"
 msgstr "Постави формат на селекција"
 
-#: ../src/TrackPanel.cpp:395
+#: ../src/TrackPanel.cpp:401
 msgid "Set Sample Format"
 msgstr "Постави формат на семпл"
 
@@ -4749,14 +4780,15 @@ msgstr "Постави формат на селекција"
 msgid "Set Selection Range"
 msgstr "Постави регион на селекција"
 
-#: ../src/TrackPanel.cpp:4852
+#: ../src/TrackPanel.cpp:5105
 #, c-format
 msgid "Set range to '%d' - '%d'"
 msgstr "Постави од '%d' до '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:355
+#, fuzzy
 msgid "Settings"
-msgstr ""
+msgstr "Ladspa ефект поставки"
 
 #: ../src/prefs/QualityPrefs.cpp:170
 msgid "Shaped"
@@ -4771,7 +4803,7 @@ msgstr "Shift-лев клик"
 msgid "Shift-Left-Drag"
 msgstr "Ctrl-Лево влечење"
 
-#: ../src/prefs/GUIPrefs.cpp:37 ../src/prefs/BatchPrefs.cpp:69
+#: ../src/prefs/BatchPrefs.cpp:69 ../src/prefs/GUIPrefs.cpp:37
 msgid "Show / Hide"
 msgstr ""
 
@@ -4780,9 +4812,8 @@ msgid "Show Mp3-ID3 Dialog"
 msgstr ""
 
 #: ../src/prefs/GUIPrefs.cpp:339
-#, fuzzy
 msgid "Show warnings about temp files"
-msgstr "Информирај детално за секој блок од датотеката"
+msgstr ""
 
 #: ../src/VoiceKey.cpp:826
 #, c-format
@@ -4797,8 +4828,7 @@ msgstr ""
 msgid "Sign Changes (Low Threshold)"
 msgstr ""
 
-#: ../src/EditToolBar.cpp:154 ../src/Menus.cpp:2320
-#: ../src/effects/Silence.h:35
+#: ../src/EditToolBar.cpp:154 ../src/Menus.cpp:2356
 msgid "Silence"
 msgstr "Тишина"
 
@@ -4806,7 +4836,12 @@ msgstr "Тишина"
 msgid "Silence selection"
 msgstr "Тивка селекција"
 
-#: ../src/Menus.cpp:2318
+#: ../src/effects/Silence.h:35
+#, fuzzy
+msgid "Silence..."
+msgstr "Тишина"
+
+#: ../src/Menus.cpp:2354
 #, c-format
 msgid "Silenced selected tracks for %.2f seconds at %.2f"
 msgstr "Стивни ја селекцијата за %.2f секунди од %.2f"
@@ -4816,8 +4851,9 @@ msgid "Sine"
 msgstr "Светло"
 
 #: ../src/UploadDialog.cpp:260
+#, fuzzy
 msgid "Site Manager"
-msgstr ""
+msgstr "Постави од-до..."
 
 #: ../src/HistoryWindow.cpp:59
 msgid "Size"
@@ -4827,7 +4863,7 @@ msgstr "Големина"
 msgid "Skip to End"
 msgstr "Скокни до крај"
 
-#: ../src/Menus.cpp:641
+#: ../src/Menus.cpp:646
 msgid "Skip to End\tEnd"
 msgstr "Скокни до крај\tEnd"
 
@@ -4835,7 +4871,7 @@ msgstr "Скокни до крај\tEnd"
 msgid "Skip to Start"
 msgstr "Скокни до почеток"
 
-#: ../src/Menus.cpp:640
+#: ../src/Menus.cpp:645
 msgid "Skip to Start\tHome"
 msgstr "Скокни до почеток\tHome"
 
@@ -4844,16 +4880,16 @@ msgid "Smooth at Sample"
 msgstr "Мудро до семпл"
 
 #. i18n-hint: Set snap-to mode on or off
-#: ../src/Menus.cpp:379
+#: ../src/Menus.cpp:372
 msgid "Snap Off"
 msgstr ""
 
 #. i18n-hint: Set snap-to mode on or off
-#: ../src/Menus.cpp:377
+#: ../src/Menus.cpp:370
 msgid "Snap On"
 msgstr ""
 
-#: ../src/Menus.cpp:374
+#: ../src/Menus.cpp:367
 msgid "Snap-To..."
 msgstr ""
 
@@ -4862,11 +4898,11 @@ msgstr ""
 msgid "Software Playthrough (Play new track while recording it)"
 msgstr "Свири други нумери додека снимаш нова"
 
-#: ../src/TrackPanel.cpp:5354
+#: ../src/TrackPanel.cpp:5612
 msgid "Solo"
 msgstr "Соло"
 
-#: ../src/Menus.cpp:669
+#: ../src/Menus.cpp:679
 msgid "Solo/Unsolo first selected track\tShift+S"
 msgstr ""
 
@@ -4913,7 +4949,7 @@ msgstr ""
 "Прости, Ladspa ефектите не може да биде применет на стерео нумери каде "
 "каналите од нумерите не соодветствуваат."
 
-#: ../src/Menus.cpp:3513 ../src/export/Export.cpp:188
+#: ../src/Menus.cpp:3549 ../src/export/Export.cpp:188
 msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "Прости, имиња на патеки подолги од 256 знаци не се поддржани."
 
@@ -4921,22 +4957,21 @@ msgstr "Прости, имиња на патеки подолги од 256 зн�
 msgid "Sorry. Truncate Silence only valid with mono track"
 msgstr ""
 
-#: ../src/AboutDialog.cpp:175
+#: ../src/AboutDialog.cpp:204
 msgid "Special thanks:"
 msgstr "Посебна благодарност:"
 
-#: ../src/prefs/PrefsDialog.cpp:89
+#: ../src/prefs/PrefsDialog.cpp:86
 msgid "Spectrograms"
 msgstr "Спектрограм"
 
-#: ../src/FreqWindow.cpp:129 ../src/TrackPanel.cpp:386
+#: ../src/FreqWindow.cpp:129 ../src/TrackPanel.cpp:392
 msgid "Spectrum"
 msgstr "Спектар"
 
 #: ../src/effects/SpikeCleaner.cpp:52
-#, fuzzy
 msgid "Spike Cleaner"
-msgstr "Тишина"
+msgstr ""
 
 #: ../src/effects/SpikeCleaner.h:27
 #, fuzzy
@@ -4947,39 +4982,40 @@ msgstr "Постави од-до..."
 msgid "SpikeCleaner by Lynn Allan"
 msgstr ""
 
-#: ../src/Menus.cpp:312
+#: ../src/Menus.cpp:305
 #, fuzzy
 msgid "Spl&it"
 msgstr "Подели"
 
-#: ../src/Menus.cpp:2380 ../src/TrackPanel.cpp:4622
+#: ../src/Menus.cpp:2416 ../src/TrackPanel.cpp:4875
 msgid "Split"
 msgstr "Подели"
 
-#: ../src/Menus.cpp:2026
+#: ../src/Menus.cpp:2062
 #, fuzzy
 msgid "Split Cut"
 msgstr "Подели"
 
-#: ../src/Menus.cpp:300
+#: ../src/Menus.cpp:293
 #, fuzzy
 msgid "Split Cut\tCtrl+Alt+X"
 msgstr "Подел&и\tCtrl+Y"
 
-#: ../src/Menus.cpp:2275
+#: ../src/Menus.cpp:2311
+#, fuzzy
 msgid "Split Delete"
-msgstr ""
+msgstr "Означи"
 
-#: ../src/Menus.cpp:309
+#: ../src/Menus.cpp:302
 #, fuzzy
 msgid "Split Delete\tCtrl+Alt+K"
 msgstr "&Бриши\tCtrl+K"
 
-#: ../src/TrackPanel.cpp:393
+#: ../src/TrackPanel.cpp:399
 msgid "Split Stereo Track"
 msgstr "Подели стерео нумера"
 
-#: ../src/Menus.cpp:2513
+#: ../src/Menus.cpp:2549
 msgid "Split at labels"
 msgstr "Подели на наслови"
 
@@ -4987,17 +5023,17 @@ msgstr "Подели на наслови"
 msgid "Split files based on:"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4619
+#: ../src/TrackPanel.cpp:4872
 #, c-format
 msgid "Split stereo track '%s'"
 msgstr "Подели ја стерео нумерата '%s'"
 
-#: ../src/Menus.cpp:2026
+#: ../src/Menus.cpp:2062
 #, fuzzy
 msgid "Split-cut to the clipboard"
 msgstr "Сечи во амбар"
 
-#: ../src/Menus.cpp:2272
+#: ../src/Menus.cpp:2308
 #, fuzzy, c-format
 msgid "Split-deleted %.2f seconds at t=%.2f"
 msgstr "Избришани %.2f секунди од t=%.2f"
@@ -5023,7 +5059,7 @@ msgstr "Стандарден Винил RPM:   од"
 msgid "Start"
 msgstr "Постави рата"
 
-#: ../src/widgets/Meter.cpp:326
+#: ../src/widgets/Meter.cpp:330
 msgid "Start Monitoring"
 msgstr ""
 
@@ -5031,7 +5067,7 @@ msgstr ""
 msgid "Start offset:"
 msgstr "Почетно поместување:"
 
-#: ../src/Menus.cpp:344
+#: ../src/Menus.cpp:337
 #, fuzzy
 msgid "Start to Cursor"
 msgstr "Означи старт од покажувач"
@@ -5044,8 +5080,8 @@ msgstr "Чекор 1"
 msgid "Step 2"
 msgstr "Чекор 2"
 
-#: ../src/Menus.cpp:325 ../src/Menus.cpp:447 ../src/effects/StereoToMono.h:23
 #: ../src/BatchCommands.cpp:98 ../src/BatchCommands.cpp:288
+#: ../src/Menus.cpp:318 ../src/Menus.cpp:447 ../src/effects/StereoToMono.h:23
 #, fuzzy
 msgid "Stereo To Mono"
 msgstr "Стерео, "
@@ -5054,7 +5090,7 @@ msgstr "Стерео, "
 msgid "Stereo To Mono Effect not found"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4575
+#: ../src/TrackPanel.cpp:4828
 msgid "Stereo, "
 msgstr "Стерео, "
 
@@ -5062,11 +5098,11 @@ msgstr "Стерео, "
 msgid "Stop"
 msgstr "Стоп"
 
-#: ../src/Menus.cpp:631
+#: ../src/Menus.cpp:636
 msgid "Stop\tS"
 msgstr "Стоп\tS"
 
-#: ../src/widgets/Meter.cpp:324
+#: ../src/widgets/Meter.cpp:328
 msgid "Stop Monitoring"
 msgstr ""
 
@@ -5079,11 +5115,11 @@ msgstr ""
 msgid "Temp. Directory"
 msgstr "Привремен именик"
 
-#: ../src/DirManager.cpp:1318
+#: ../src/DirManager.cpp:1294
 msgid "Temporarily replace missing data with silence [this session only]"
 msgstr ""
 
-#: ../src/DirManager.cpp:1241
+#: ../src/DirManager.cpp:1225
 msgid "Temporarily replace missing files with silence [this session only]"
 msgstr ""
 
@@ -5091,7 +5127,7 @@ msgstr ""
 msgid "Test Mode"
 msgstr ""
 
-#: ../src/Menus.cpp:2975
+#: ../src/Menus.cpp:3011
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
 msgstr "Текст датотеки (*.txt)|*.txt|сите датотеки (*.*)|*.*"
 
@@ -5099,7 +5135,7 @@ msgstr "Текст датотеки (*.txt)|*.txt|сите датотеки (*.*
 msgid "The maximum frequency must be an integer"
 msgstr "Максималната фрекфенција мора да биде делива"
 
-#: ../src/AudacityApp.cpp:803
+#: ../src/AudacityApp.cpp:858
 msgid ""
 "The system has detected that another copy of Audacity is running.\n"
 "Running two copies of Audacity simultaneously may lead to\n"
@@ -5109,13 +5145,13 @@ msgid ""
 "process to open multiple projects simultaneously.\n"
 msgstr ""
 
-#: ../src/Menus.cpp:3412
+#: ../src/Menus.cpp:3448
 msgid ""
 "The version of Audacity you are using does not support multiple time tracks."
 msgstr ""
 "Верзијата на Audacity што ја користите не поддржува повеќе временски нумери."
 
-#: ../src/Menus.cpp:1763
+#: ../src/Menus.cpp:1799
 msgid "There are no label tracks to export."
 msgstr "Нема наслови за експортирање."
 
@@ -5137,7 +5173,7 @@ msgstr "Богатство:"
 msgid "Theshold for silence: "
 msgstr "Богатство:"
 
-#: ../src/widgets/Meter.cpp:1039
+#: ../src/widgets/Meter.cpp:1043
 msgid ""
 "This determines how often the meter is refreshed.\n"
 "If you have a slower PC you may want to select a\n"
@@ -5145,7 +5181,7 @@ msgid ""
 "audio qualtiy is not affected by the meter display."
 msgstr ""
 
-#: ../src/Project.cpp:2101
+#: ../src/Project.cpp:2145
 #, c-format
 msgid ""
 "This file was saved by Audacity %s and the format\n"
@@ -5156,7 +5192,7 @@ msgid ""
 "Would you like to open this file right now anyway?"
 msgstr ""
 
-#: ../src/Project.cpp:2087
+#: ../src/Project.cpp:2133
 #, c-format
 msgid ""
 "This file was saved using Audacity %s.\n"
@@ -5164,7 +5200,7 @@ msgid ""
 "a newer version to open this file."
 msgstr ""
 
-#: ../src/AboutDialog.cpp:93
+#: ../src/AboutDialog.cpp:160
 msgid ""
 "This is a beta version of the program.  It may contain bugs and unfinished "
 "features.  We depend on your feedback, so please visit our website and give "
@@ -5174,7 +5210,7 @@ msgstr ""
 "надеваме на ваши реакции, затоа посетете ја нашата веб страна и дајте ни "
 "извештај за бубачките и бараните можности."
 
-#: ../src/AboutDialog.cpp:96
+#: ../src/AboutDialog.cpp:163
 msgid ""
 "This is a stable, completed release of Audacity. However, if you find a bug "
 "or have a suggestion, please contact us. We depend on feedback from users in "
@@ -5187,16 +5223,16 @@ msgstr ""
 msgid "This version of Audacity was not compiled with %s support."
 msgstr "Оваа верзија на Audacity не е преведена со %s подршка."
 
-#: ../src/effects/Compressor.cpp:448
+#: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
 msgstr "Богатство:"
 
-#: ../src/effects/Compressor.cpp:529
+#: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
 msgstr "Богатство: %d dB"
 
-#: ../src/TrackPanel.cpp:1761
+#: ../src/TrackPanel.cpp:1771
 #, fuzzy
 msgid "Time Shift"
 msgstr "Временска алатка"
@@ -5205,7 +5241,7 @@ msgstr "Временска алатка"
 msgid "Time Shift Tool"
 msgstr "Временска алатка"
 
-#: ../src/Menus.cpp:624
+#: ../src/Menus.cpp:629
 #, fuzzy
 msgid "Time Shift Tool\tF5"
 msgstr "Временска алатка"
@@ -5222,7 +5258,7 @@ msgstr ""
 msgid "Time shift clip or move up/down between tracks"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1757
+#: ../src/TrackPanel.cpp:1767
 #, fuzzy, c-format
 msgid "Time shifted tracks/clips %s %.02f seconds"
 msgstr "Лизни нумера '%s' %s %.02f секунди"
@@ -5246,7 +5282,7 @@ msgstr "Име:"
 msgid "Title:"
 msgstr "Име:"
 
-#: ../src/Menus.cpp:2789
+#: ../src/Menus.cpp:2825
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
 msgstr "За цртање на спектар сите селектирани нумери треба да се со иста рата."
 
@@ -5258,7 +5294,7 @@ msgstr "Тон генератор"
 msgid "Tone..."
 msgstr "Тон..."
 
-#: ../src/Menus.cpp:2815
+#: ../src/Menus.cpp:2851
 #, c-format
 msgid ""
 "Too much audio was selected.  Only the first %.1f seconds of audio will be "
@@ -5271,7 +5307,7 @@ msgstr ""
 msgid "Tool"
 msgstr "Алатки"
 
-#: ../src/TrackPanel.cpp:4901
+#: ../src/TrackPanel.cpp:5154
 msgid "Track Name"
 msgstr "Име на нумера"
 
@@ -5279,7 +5315,7 @@ msgstr "Име на нумера"
 msgid "Track Number:"
 msgstr "Број на нумера:"
 
-#: ../src/TrackPanel.cpp:2643
+#: ../src/TrackPanel.cpp:2654
 #, fuzzy
 msgid "Track Remove"
 msgstr "Име на нумера"
@@ -5305,11 +5341,11 @@ msgstr ""
 msgid "Triangle"
 msgstr "Триаголник"
 
-#: ../src/EditToolBar.cpp:152 ../src/Menus.cpp:2245
+#: ../src/EditToolBar.cpp:152 ../src/Menus.cpp:2281
 msgid "Trim"
 msgstr ""
 
-#: ../src/Menus.cpp:2245
+#: ../src/Menus.cpp:2281
 msgid "Trim file to selection"
 msgstr "Отсечи ја селекцијата"
 
@@ -5318,7 +5354,7 @@ msgstr "Отсечи ја селекцијата"
 msgid "Trim outside selection"
 msgstr "Отсечи се вон селекцијата"
 
-#: ../src/effects/TruncSilence.cpp:71 ../src/BatchCommands.cpp:102
+#: ../src/BatchCommands.cpp:102 ../src/effects/TruncSilence.cpp:71
 #, fuzzy
 msgid "Truncate Silence"
 msgstr "Генератор на тишина"
@@ -5328,27 +5364,28 @@ msgid "Truncate Silence by Lynn Allan"
 msgstr ""
 
 #: ../src/effects/TruncSilence.h:29
+#, fuzzy
 msgid "Truncate Silence..."
-msgstr ""
+msgstr "Генератор на тишина"
 
 #: ../src/effects/TruncSilence.h:33
 #, fuzzy
 msgid "Truncating Silence..."
 msgstr "Генератор на тишина"
 
-#: ../src/Menus.cpp:389
+#: ../src/Menus.cpp:382
 msgid "Turn Grid Snap Off"
 msgstr ""
 
-#: ../src/Menus.cpp:388
+#: ../src/Menus.cpp:381
 msgid "Turn Grid Snap On"
 msgstr ""
 
-#: ../src/Menus.cpp:387
+#: ../src/Menus.cpp:380
 msgid "Turn Snap-To Off"
 msgstr ""
 
-#: ../src/Menus.cpp:386
+#: ../src/Menus.cpp:379
 msgid "Turn Snap-To On"
 msgstr ""
 
@@ -5356,12 +5393,12 @@ msgstr ""
 msgid "Unable to determine"
 msgstr "Неможно да се пронајде"
 
-#: ../src/Menus.cpp:3560 ../src/export/Export.cpp:124
+#: ../src/Menus.cpp:3596 ../src/export/Export.cpp:124
 #, fuzzy
 msgid "Unable to export"
 msgstr "Неможно да се пронајде"
 
-#: ../src/Menus.cpp:3637
+#: ../src/Menus.cpp:3672
 #, fuzzy
 msgid "Unable to import"
 msgstr "Подготви за внес:"
@@ -5407,12 +5444,12 @@ msgid ""
 "Only Unix based and Windows systems are supported/tested at this time."
 msgstr ""
 
-#: ../src/AudacityApp.cpp:613 ../src/AudacityApp.cpp:683
+#: ../src/AudacityApp.cpp:616 ../src/AudacityApp.cpp:686
 #, c-format
 msgid "Unknown command line option: %s\n"
 msgstr "Непозната команднолинијска опција: %s\n"
 
-#: ../src/TrackPanel.cpp:405
+#: ../src/TrackPanel.cpp:411
 msgid "Up Octave"
 msgstr "Октава угоре"
 
@@ -5433,7 +5470,7 @@ msgstr ""
 msgid "Upload Progress"
 msgstr "Прогрес"
 
-#: ../src/TrackPanel.cpp:4843 ../src/TrackPanel.cpp:4844
+#: ../src/TrackPanel.cpp:5096 ../src/TrackPanel.cpp:5097
 msgid "Upper speed limit"
 msgstr "Горна брзинска граница"
 
@@ -5450,7 +5487,7 @@ msgstr ""
 msgid "Using Label/Track Name"
 msgstr "Име на нумера"
 
-#: ../src/AudacityApp.cpp:598 ../src/AudacityApp.cpp:668
+#: ../src/AudacityApp.cpp:601 ../src/AudacityApp.cpp:671
 #, c-format
 msgid "Using block size of %ld\n"
 msgstr "Користи блок големина од %ld\n"
@@ -5473,11 +5510,12 @@ msgstr "Вредноста мора да е од %d до %d."
 msgid "Values in columns must be in ascending order."
 msgstr "Вредностите мора да се по растечки редослед."
 
-#: ../src/widgets/Meter.cpp:331
+#: ../src/widgets/Meter.cpp:335
+#, fuzzy
 msgid "Vertical Stereo"
-msgstr ""
+msgstr "Направи стерео нумера"
 
-#: ../src/Menus.cpp:3677
+#: ../src/Menus.cpp:3712
 msgid ""
 "Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
@@ -5515,8 +5553,8 @@ msgstr "Wahwah од Nasca Octavian Paul"
 msgid "Wahwah..."
 msgstr "Wahwah..."
 
-#: ../src/DirManager.cpp:1209 ../src/DirManager.cpp:1244
-#: ../src/DirManager.cpp:1284 ../src/DirManager.cpp:1321
+#: ../src/DirManager.cpp:1198 ../src/DirManager.cpp:1228
+#: ../src/DirManager.cpp:1266 ../src/DirManager.cpp:1297
 #: ../src/widgets/Warning.cpp:45
 msgid "Warning"
 msgstr ""
@@ -5530,11 +5568,11 @@ msgstr ""
 "ВНИМАНИЕ: многу малку простор има на дискот. Ве молам одберете друг "
 "привремен именик во вашите Поставките."
 
-#: ../src/TrackPanel.cpp:384
+#: ../src/TrackPanel.cpp:390
 msgid "Waveform"
 msgstr "Брановидна форма"
 
-#: ../src/TrackPanel.cpp:385
+#: ../src/TrackPanel.cpp:391
 msgid "Waveform (dB)"
 msgstr "Брановидна форма (dB)"
 
@@ -5551,8 +5589,6 @@ msgid "When importing uncompressed audio files into Audacity"
 msgstr "При внес на некомпресирани аудио датотеки во  Audacity"
 
 #. i18n-hint: It's asking for the location of a file, for
-#. example, "Where is lame_enc.dll?" - you could translate
-#. "Where would I find the file %s" instead if you want.
 #: ../src/export/ExportMP3.cpp:113
 #, c-format
 msgid "Where is %s?"
@@ -5571,7 +5607,7 @@ msgstr ""
 msgid "White Noise"
 msgstr "Чист шум"
 
-#: ../src/Project.cpp:2518
+#: ../src/Project.cpp:2558
 msgid "Windows PCM Audio file *.wav)|*.wav"
 msgstr ""
 
@@ -5597,13 +5633,13 @@ msgid ""
 "Are you sure you want to save the file under this name?"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:2291
+#: ../src/TrackPanel.cpp:2301
 msgid ""
 "You are not zoomed in enough. Zoom in until you can see the individual "
 "samples."
 msgstr ""
 
-#: ../src/Menus.cpp:1612
+#: ../src/Menus.cpp:1648
 msgid "You must select a track first."
 msgstr "Морате прво да означите нумера."
 
@@ -5644,15 +5680,15 @@ msgstr "Вашите нумери ќе бидат споени во два ст�
 msgid "Zoom"
 msgstr "Зум"
 
-#: ../src/Menus.cpp:399
+#: ../src/Menus.cpp:403
 msgid "Zoom &In\tCtrl+1"
 msgstr "Зум &во\tCtrl+1"
 
-#: ../src/Menus.cpp:402
+#: ../src/Menus.cpp:406
 msgid "Zoom &Normal\tCtrl+2"
 msgstr "Зум &нормален\tCtrl+2"
 
-#: ../src/Menus.cpp:403
+#: ../src/Menus.cpp:407
 msgid "Zoom &Out\tCtrl+3"
 msgstr "Зум &од\tCtrl+3"
 
@@ -5673,7 +5709,7 @@ msgstr "Зум алатка"
 msgid "Zoom Tool"
 msgstr "Зум алатка"
 
-#: ../src/Menus.cpp:623
+#: ../src/Menus.cpp:628
 #, fuzzy
 msgid "Zoom Tool\tF4"
 msgstr "Зум алатка"
@@ -5713,11 +5749,12 @@ msgstr "од Vaughan Johnson && Dominic Mazzoni"
 msgid "bytes"
 msgstr "бајти"
 
-#: ../src/widgets/Meter.cpp:340
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
+#: ../src/widgets/Meter.cpp:344
 msgid "dB"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4872 ../src/effects/ChangePitch.cpp:283
+#: ../src/TrackPanel.cpp:5125 ../src/effects/ChangePitch.cpp:283
 msgid "down"
 msgstr "долу"
 
@@ -5739,11 +5776,11 @@ msgstr ""
 msgid "hh:mm:ss + samples"
 msgstr "мин:сек (лепни до семпл)"
 
-#: ../src/Menus.cpp:1767
+#: ../src/Menus.cpp:1803
 msgid "labels.txt"
 msgstr "labels.txt"
 
-#: ../src/TrackPanel.cpp:1756
+#: ../src/TrackPanel.cpp:1766
 msgid "left"
 msgstr "лево"
 
@@ -5752,9 +5789,6 @@ msgid "mm:ss"
 msgstr ""
 
 #. i18n-hint: n/a is an English
-#. abbreviation meaning "not
-#. applicable" (in other words,
-#. unimportant, not relevant).
 #: ../src/effects/ChangeSpeed.cpp:345
 msgid "n/a"
 msgstr "n/a"
@@ -5767,7 +5801,7 @@ msgstr ""
 msgid "permissions"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:1756
+#: ../src/TrackPanel.cpp:1766
 msgid "right"
 msgstr "десно"
 
@@ -5819,37 +5853,32 @@ msgstr "Име:"
 msgid "to"
 msgstr "до"
 
-#: ../src/Menus.cpp:356
+#: ../src/Menus.cpp:349
 #, fuzzy
 msgid "to Selection End"
 msgstr "Покажувач на крај од селекцијата"
 
-#: ../src/Menus.cpp:355
+#: ../src/Menus.cpp:348
 #, fuzzy
 msgid "to Selection Start"
 msgstr "Покажувач на почеток на селекцијата"
 
-#: ../src/Menus.cpp:361
+#: ../src/Menus.cpp:354
 #, fuzzy
 msgid "to Track End"
 msgstr "Покажувач на крај од нумерата"
 
-#: ../src/Menus.cpp:360
+#: ../src/Menus.cpp:353
 #, fuzzy
 msgid "to Track Start"
 msgstr "Покажувач на почеток од нумерата"
 
 #. i18n-hint: The translation of "translator_credits" will appear
-#. in the credits in the About Audacity window.  Use this to add
-#. your own name(s) to the credits.
-#.
-#. For example:  "English translation by Dominic Mazzoni."
-#.
-#: ../src/AboutDialog.cpp:106 ../src/AboutDialog.cpp:108
+#: ../src/AboutDialog.cpp:173 ../src/AboutDialog.cpp:175
 msgid "translator_credits"
 msgstr ""
 
-#: ../src/TrackPanel.cpp:4871 ../src/effects/ChangePitch.cpp:283
+#: ../src/TrackPanel.cpp:5124 ../src/effects/ChangePitch.cpp:283
 msgid "up"
 msgstr "горе"
 
@@ -5861,65 +5890,8 @@ msgstr "Рата на семпл, од Erik de Castro Lopo"
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "Звучен допир, од Olli Parviainen"
 
-#~ msgid "      Tracks: %d\n"
-#~ msgstr "      Нумери: %d\n"
-
-#~ msgid "  Mix length: %f sec\n"
-#~ msgstr "Должина на микс:%f сек\n"
-
-#~ msgid " Huge!  "
-#~ msgstr "Многу!"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "%.1f"
-#~ msgstr "%.1f"
-
-#~ msgid "&Online Help..."
-#~ msgstr "П&омош..."
-
 #~ msgid "&Quick Mix"
 #~ msgstr "&Брз микс"
-
-#~ msgid "33 1/3"
-#~ msgstr "33 1/3"
-
-#~ msgid "45"
-#~ msgstr "45"
-
-#~ msgid "78"
-#~ msgstr "78"
-
-#~ msgid ""
-#~ "Above values are in samples.\n"
-#~ "Adjustment Window defines number of \n"
-#~ "samples in moving average.\n"
-#~ "Change window defines minimum time \n"
-#~ "between volume changes.\n"
-#~ "Minimum % change of volume adjustment \n"
-#~ "before making a volume change.\n"
-#~ "Grid at right determines how much to amplify \n"
-#~ "each volume level.\n"
-#~ "For more information see: \n"
-#~ "http://www.busam.com/skyland/iavc\n"
-#~ "7/21/02: WAV and MP3 files both work."
-#~ msgstr ""
-#~ "Следните вредности се за семплови.\n"
-#~ "Намести прозорец дефинира број од \n"
-#~ "семплови во подвижниот дел.\n"
-#~ "Смени прозорец дефинира минимум време \n"
-#~ "меѓу промена на јачина.\n"
-#~ "Минимум % местење на јачина \n"
-#~ "пред да се направи промена на јачина.\n"
-#~ "Мрежата од десно кажува колку да се \n"
-#~ "засили секое ниво на јачина.\n"
-#~ "За повеќе информации види: \n"
-#~ "http://www.busam.com/skyland/iavc\n"
-#~ "7/21/02: И WAV и MP3 нумери работат."
-
-#~ msgid "Algorithms, MIDI & Audio I/O programming"
-#~ msgstr "Алгоритми, MIDI и аудио В/И програмирање"
 
 #~ msgid ""
 #~ "An error occurred while opening the project file.\n"
@@ -5928,39 +5900,9 @@ msgstr "Звучен допир, од Olli Parviainen"
 #~ "Се појави грешка при отворање на проектот.\n"
 #~ "Некои делови можеби ќе бидат оштетени."
 
-#~ msgid "Applied effect: %s change window = %d samples"
-#~ msgstr "Применет ефект: %s променет прозорец = %d семпл"
-
-#~ msgid "Aqua Graphics (MacOS)"
-#~ msgstr "Аква график (MacOS)"
-
-#~ msgid ""
-#~ "At 44100 Hz, 16-bits per sample, the estimated number of\n"
-#~ "simultaneous tracks that could be played at once: %.1f\n"
-#~ msgstr ""
-#~ "На 44100 Hz, 16-битно, приближен број на \n"
-#~ "симултани нумери кои можат да бидат свирени одеднаш: %.1f\n"
-
-#~ msgid "Bad: block %d sample %d\n"
-#~ msgstr "Оштетен: блок %d семпл %d\n"
-
-#~ msgid "Block size should be in the range 1 - 1024 KB."
-#~ msgstr "Големината на блокот треба да е меѓу 1 и 1024 KB."
-
-#~ msgid "Changed '%s' to %s display"
-#~ msgstr "Сменето '%s' во %s приказ"
-
-#~ msgid "Changed Selection Region"
-#~ msgstr "Сменет регион на селекција"
-
-#~ msgid "Changed track gain"
-#~ msgstr "Смени засилување на нумерата"
-
-#~ msgid "Changed track panning"
-#~ msgstr "Смени панорама на нумерата"
-
-#~ msgid "Checking file pointer leaks:\n"
-#~ msgstr "Проверка на покажувачот:\n"
+#, fuzzy
+#~ msgid "Can't import project file"
+#~ msgstr "Неможно да експортирам на %s"
 
 #~ msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
 #~ msgstr "Покажувач: %.3lf NTSC фрејмови (29.97 fps)   %s"
@@ -6040,71 +5982,17 @@ msgstr "Звучен допир, од Olli Parviainen"
 #~ msgid "Cursor: %li samples   [Snap-To Samples]"
 #~ msgstr "Покажувач: %li семплови   [Лепни до семпл]"
 
-#~ msgid "Cut (%d, %d) failed.\n"
-#~ msgstr "Сечи (%d, %d) не успеа.\n"
-
-#~ msgid "Cut: %d - %d \n"
-#~ msgstr "Сечи: %d - %d \n"
-
-#~ msgid "Disk # blocks: \n"
-#~ msgstr "Диск # блокови: \n"
-
-#~ msgid "Disk Block Size (KB):"
-#~ msgstr "Големина на диск блок (KB):"
-
-#~ msgid "Doing correctness check...\n"
-#~ msgstr "Вршам проверка на корекции...\n"
-
-#~ msgid "Elapsed time: %f sec\n"
-#~ msgstr "Останато време: %f сек\n"
+#~ msgid "Documentation Writer"
+#~ msgstr "Пишувач на документација"
 
 #~ msgid "Enter a rate in Hz (samples per second):"
 #~ msgstr "Внеси рата во Hz (семплови во секунда):"
 
-#~ msgid "Errors in %d/%d blocks\n"
-#~ msgstr "Грешка во %d/%d блоковите\n"
-
-#~ msgid "Expected len %d, track len %d.\n"
-#~ msgstr "Очекувам должина %d, а нумерата е долга %d.\n"
-
-#~ msgid "Export Benchmark Data As:"
-#~ msgstr "Експорт податоци од брзинар како:"
-
-#~ msgid "Introduction"
-#~ msgstr "Вовед"
-
 #~ msgid "Less"
 #~ msgstr "Помалку"
 
-#~ msgid "Max number of tracks to mix in real time: %f\n"
-#~ msgstr "Макс. број на нумери за миксање во реално време: %f\n"
-
-#~ msgid ""
-#~ "Maximum length of attribute 'Album' is 30 characters. Data was truncated."
-#~ msgstr ""
-#~ "Макс. должината на атрибутот 'Албум' е 30 знаци. Датотеката е деформирана."
-
-#~ msgid ""
-#~ "Maximum length of attribute 'Artist' is 30 characters. Data was truncated."
-#~ msgstr ""
-#~ "Макс. должината на атрибутот 'Исполнител' е 30 знаци. Датотеката е "
-#~ "деформирана."
-
-#~ msgid ""
-#~ "Maximum length of attribute 'Comments' is 30 characters. Data was "
-#~ "truncated."
-#~ msgstr ""
-#~ "Макс. должината на атрибутот 'Коментари' е 30 знаци. Датотеката е "
-#~ "деформирана."
-
-#~ msgid ""
-#~ "Maximum length of attribute 'Title' is 30 characters. Data was truncated."
-#~ msgstr ""
-#~ "Макс. должината на атрибутот 'Наслов' е 30 знаци. Датотеката е "
-#~ "деформирана."
-
-#~ msgid "Mix Output"
-#~ msgstr "Микс излез"
+#~ msgid "Main Logo"
+#~ msgstr "Главно лого"
 
 #~ msgid "NTSC drop-frame h:mm:ss:ff"
 #~ msgstr "NTSC drop-frame h:mm:ss:ff"
@@ -6112,42 +6000,17 @@ msgstr "Звучен допир, од Olli Parviainen"
 #~ msgid "NTSC non-drop-frame h:mm:ss:ff"
 #~ msgstr "NTSC non-drop-frame h:mm:ss:ff"
 
-#~ msgid "Not SPECIFIED YET!"
-#~ msgstr "Уште неспецифицирано!"
-
-#~ msgid "Not Yet Implemented"
-#~ msgstr "Уште неимплементирано!"
-
-#~ msgid "Number of edits should be in the range 1 - 10000."
-#~ msgstr "Бројот на уредувања треба да е меѓу 1 и 10000."
-
-#~ msgid "On"
-#~ msgstr "Вклучи"
-
-#~ msgid ""
-#~ "Only window, file, or # may begin each line in an LOF file.\n"
-#~ "Ignoring line..."
-#~ msgstr ""
-#~ "Само прозорец, датотека, или # се почетни во LOF датотека.\n"
-#~ "Игнорирана линија..."
-
 #~ msgid "PAL frames 25 fps"
 #~ msgstr "PAL фрејмови 25 fps"
 
 #~ msgid "PAL h:mm:ss:ff 25 fps"
 #~ msgstr "PAL h:mm:ss:ff 25 fps"
 
-#~ msgid "Passed correctness check!\n"
-#~ msgstr "Одговара тестот на корекции!\n"
+#~ msgid "Primary developer"
+#~ msgstr "Главен развивач"
 
-#~ msgid "Paste: %d\n"
-#~ msgstr "Залепи: %d\n"
-
-#~ msgid "Performing %d edits...\n"
-#~ msgstr "Подготвувам %d за уредување...\n"
-
-#~ msgid "Please enter a positive number for the decay factor: "
-#~ msgstr "Ве молам внесете позитивен број за decay фактор: "
+#~ msgid "Programmer"
+#~ msgstr "Програмер"
 
 #~ msgid "Quick Mix"
 #~ msgstr "Брз микс"
@@ -6155,26 +6018,11 @@ msgstr "Звучен допир, од Olli Parviainen"
 #~ msgid "Quick mix"
 #~ msgstr "Брз микс"
 
-#~ msgid "Random Seed :"
-#~ msgstr "Случајна брзина:"
+#~ msgid "Recording time remaining: %d minutes"
+#~ msgstr "Останато време за снимање: %d минути"
 
-#~ msgid "Reading data again...\n"
-#~ msgstr "Вчитувам повторно...\n"
-
-#~ msgid "Run"
-#~ msgstr "Почни"
-
-#~ msgid "Sample rate conversion method"
-#~ msgstr "Метод на конверзија на рата"
-
-#~ msgid "Save"
-#~ msgstr "Зачувај"
-
-#~ msgid "Scroll Left or Right"
-#~ msgstr "Врти лево или десно"
-
-#~ msgid "Select Cursor to End"
-#~ msgstr "Означи покажувач на крај"
+#~ msgid "Recording time remaining: %d seconds"
+#~ msgstr "Останато време за снимање: %d секунди"
 
 #~ msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
 #~ msgstr "Селекција: %.3lf - %.3lf (%.3lf NTSC фрејмови)   %s"
@@ -6269,53 +6117,11 @@ msgstr "Звучен допир, од Olli Parviainen"
 #~ msgid "Selection: %li - %li (%li samples)   [Snap-To Samples]"
 #~ msgstr "Селекција: %li - %li (%li семпл)   [Лепни до семпл]"
 
-#~ msgid "Selection: invalid iformat value (%i) in FormatSelection.cpp"
-#~ msgstr "Селекција: невалиден iформат (%i) во FormatSelection.cpp"
-
-#~ msgid "Set Converter..."
-#~ msgstr "Постави го конвертор..."
-
 #~ msgid "Set Selection Format"
 #~ msgstr "Постави формат на селекција"
 
-#~ msgid "Set Snap-to mode"
-#~ msgstr "Постави Лепни до"
-
-#~ msgid "Show detailed info about each editing operation"
-#~ msgstr "Детално информирај за секоја уреди операција"
-
-#~ msgid "TEST FAILED!!!\n"
-#~ msgstr "НЕУСПЕШЕН ТЕСТ!!!\n"
-
-#~ msgid "Test Data Size (MB):"
-#~ msgstr "Тест на големина (MB):"
-
-#~ msgid "Test data size should be in the range 1 - 2000 MB."
-#~ msgstr "Тестната големина треба да биде меѓу 1 и 2000 MB."
-
 #~ msgid "Time shift sequence"
 #~ msgstr "Временска секвенца"
-
-#~ msgid "Time to check all data (2): %ld ms\n"
-#~ msgstr "Време за проверка на сите податоци (2): %ld мс\n"
-
-#~ msgid "Time to check all data: %ld ms\n"
-#~ msgstr "Време за проверка на сите податоци: %ld мс\n"
-
-#~ msgid "Time to perform %d edits: %ld ms\n"
-#~ msgstr "Време за подготовка на %d уредувањата: %ld мс\n"
-
-#~ msgid "Track # blocks: %d\n"
-#~ msgstr "Блок # : %d од нумерата\n"
-
-#~ msgid "Trial %d\n"
-#~ msgstr "Пробно %d\n"
-
-#~ msgid "Using %d blocks of %d samples each, for a total of %.1f MB.\n"
-#~ msgstr "Користи %d блокови од %d семплот, за вкупно %.1f MB.\n"
-
-#~ msgid "benchmark.txt"
-#~ msgstr "benchmark.txt"
 
 #~ msgid "cdda min:sec:frames 75 fps"
 #~ msgstr "cdda мин:сек:фрејмови 75 fps"
@@ -6346,3 +6152,251 @@ msgstr "Звучен допир, од Olli Parviainen"
 
 #~ msgid "sec+samples (snap to samples)"
 #~ msgstr "сек+семпл (лепни до семпл)"
+
+#~ msgid "&Online Help..."
+#~ msgstr "П&омош..."
+
+#~ msgid "Mix Output"
+#~ msgstr "Микс излез"
+
+#~ msgid "Algorithms, MIDI & Audio I/O programming"
+#~ msgstr "Алгоритми, MIDI и аудио В/И програмирање"
+
+#~ msgid "      Tracks: %d\n"
+#~ msgstr "      Нумери: %d\n"
+
+#~ msgid "  Mix length: %f sec\n"
+#~ msgstr "Должина на микс:%f сек\n"
+
+#~ msgid " Huge!  "
+#~ msgstr "Многу!"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "%.1f"
+#~ msgstr "%.1f"
+
+#~ msgid "33 1/3"
+#~ msgstr "33 1/3"
+
+#~ msgid "45"
+#~ msgstr "45"
+
+#~ msgid "78"
+#~ msgstr "78"
+
+#~ msgid ""
+#~ "Above values are in samples.\n"
+#~ "Adjustment Window defines number of \n"
+#~ "samples in moving average.\n"
+#~ "Change window defines minimum time \n"
+#~ "between volume changes.\n"
+#~ "Minimum % change of volume adjustment \n"
+#~ "before making a volume change.\n"
+#~ "Grid at right determines how much to amplify \n"
+#~ "each volume level.\n"
+#~ "For more information see: \n"
+#~ "http://www.busam.com/skyland/iavc\n"
+#~ "7/21/02: WAV and MP3 files both work."
+#~ msgstr ""
+#~ "Следните вредности се за семплови.\n"
+#~ "Намести прозорец дефинира број од \n"
+#~ "семплови во подвижниот дел.\n"
+#~ "Смени прозорец дефинира минимум време \n"
+#~ "меѓу промена на јачина.\n"
+#~ "Минимум % местење на јачина \n"
+#~ "пред да се направи промена на јачина.\n"
+#~ "Мрежата од десно кажува колку да се \n"
+#~ "засили секое ниво на јачина.\n"
+#~ "За повеќе информации види: \n"
+#~ "http://www.busam.com/skyland/iavc\n"
+#~ "7/21/02: И WAV и MP3 нумери работат."
+
+#~ msgid "Applied effect: %s change window = %d samples"
+#~ msgstr "Применет ефект: %s променет прозорец = %d семпл"
+
+#~ msgid "Aqua Graphics (MacOS)"
+#~ msgstr "Аква график (MacOS)"
+
+#~ msgid ""
+#~ "At 44100 Hz, 16-bits per sample, the estimated number of\n"
+#~ "simultaneous tracks that could be played at once: %.1f\n"
+#~ msgstr ""
+#~ "На 44100 Hz, 16-битно, приближен број на \n"
+#~ "симултани нумери кои можат да бидат свирени одеднаш: %.1f\n"
+
+#~ msgid "Bad: block %d sample %d\n"
+#~ msgstr "Оштетен: блок %d семпл %d\n"
+
+#~ msgid "Block size should be in the range 1 - 1024 KB."
+#~ msgstr "Големината на блокот треба да е меѓу 1 и 1024 KB."
+
+#~ msgid "Changed '%s' to %s display"
+#~ msgstr "Сменето '%s' во %s приказ"
+
+#~ msgid "Changed Selection Region"
+#~ msgstr "Сменет регион на селекција"
+
+#~ msgid "Changed track gain"
+#~ msgstr "Смени засилување на нумерата"
+
+#~ msgid "Changed track panning"
+#~ msgstr "Смени панорама на нумерата"
+
+#~ msgid "Checking file pointer leaks:\n"
+#~ msgstr "Проверка на покажувачот:\n"
+
+#~ msgid "Cut (%d, %d) failed.\n"
+#~ msgstr "Сечи (%d, %d) не успеа.\n"
+
+#~ msgid "Cut: %d - %d \n"
+#~ msgstr "Сечи: %d - %d \n"
+
+#~ msgid "Disk # blocks: \n"
+#~ msgstr "Диск # блокови: \n"
+
+#~ msgid "Disk Block Size (KB):"
+#~ msgstr "Големина на диск блок (KB):"
+
+#~ msgid "Doing correctness check...\n"
+#~ msgstr "Вршам проверка на корекции...\n"
+
+#~ msgid "Elapsed time: %f sec\n"
+#~ msgstr "Останато време: %f сек\n"
+
+#~ msgid "Errors in %d/%d blocks\n"
+#~ msgstr "Грешка во %d/%d блоковите\n"
+
+#~ msgid "Expected len %d, track len %d.\n"
+#~ msgstr "Очекувам должина %d, а нумерата е долга %d.\n"
+
+#~ msgid "Export Benchmark Data As:"
+#~ msgstr "Експорт податоци од брзинар како:"
+
+#~ msgid "Introduction"
+#~ msgstr "Вовед"
+
+#~ msgid "Max number of tracks to mix in real time: %f\n"
+#~ msgstr "Макс. број на нумери за миксање во реално време: %f\n"
+
+#~ msgid ""
+#~ "Maximum length of attribute 'Album' is 30 characters. Data was truncated."
+#~ msgstr ""
+#~ "Макс. должината на атрибутот 'Албум' е 30 знаци. Датотеката е деформирана."
+
+#~ msgid ""
+#~ "Maximum length of attribute 'Artist' is 30 characters. Data was truncated."
+#~ msgstr ""
+#~ "Макс. должината на атрибутот 'Исполнител' е 30 знаци. Датотеката е "
+#~ "деформирана."
+
+#~ msgid ""
+#~ "Maximum length of attribute 'Comments' is 30 characters. Data was "
+#~ "truncated."
+#~ msgstr ""
+#~ "Макс. должината на атрибутот 'Коментари' е 30 знаци. Датотеката е "
+#~ "деформирана."
+
+#~ msgid ""
+#~ "Maximum length of attribute 'Title' is 30 characters. Data was truncated."
+#~ msgstr ""
+#~ "Макс. должината на атрибутот 'Наслов' е 30 знаци. Датотеката е "
+#~ "деформирана."
+
+#~ msgid "Not SPECIFIED YET!"
+#~ msgstr "Уште неспецифицирано!"
+
+#~ msgid "Not Yet Implemented"
+#~ msgstr "Уште неимплементирано!"
+
+#~ msgid "Number of edits should be in the range 1 - 10000."
+#~ msgstr "Бројот на уредувања треба да е меѓу 1 и 10000."
+
+#~ msgid "On"
+#~ msgstr "Вклучи"
+
+#~ msgid ""
+#~ "Only window, file, or # may begin each line in an LOF file.\n"
+#~ "Ignoring line..."
+#~ msgstr ""
+#~ "Само прозорец, датотека, или # се почетни во LOF датотека.\n"
+#~ "Игнорирана линија..."
+
+#~ msgid "Passed correctness check!\n"
+#~ msgstr "Одговара тестот на корекции!\n"
+
+#~ msgid "Paste: %d\n"
+#~ msgstr "Залепи: %d\n"
+
+#~ msgid "Performing %d edits...\n"
+#~ msgstr "Подготвувам %d за уредување...\n"
+
+#~ msgid "Please enter a positive number for the decay factor: "
+#~ msgstr "Ве молам внесете позитивен број за decay фактор: "
+
+#~ msgid "Random Seed :"
+#~ msgstr "Случајна брзина:"
+
+#~ msgid "Reading data again...\n"
+#~ msgstr "Вчитувам повторно...\n"
+
+#~ msgid "Run"
+#~ msgstr "Почни"
+
+#~ msgid "Sample rate conversion method"
+#~ msgstr "Метод на конверзија на рата"
+
+#~ msgid "Save"
+#~ msgstr "Зачувај"
+
+#~ msgid "Scroll Left or Right"
+#~ msgstr "Врти лево или десно"
+
+#~ msgid "Select Cursor to End"
+#~ msgstr "Означи покажувач на крај"
+
+#~ msgid "Selection: invalid iformat value (%i) in FormatSelection.cpp"
+#~ msgstr "Селекција: невалиден iформат (%i) во FormatSelection.cpp"
+
+#~ msgid "Set Converter..."
+#~ msgstr "Постави го конвертор..."
+
+#~ msgid "Set Snap-to mode"
+#~ msgstr "Постави Лепни до"
+
+#~ msgid "Show detailed info about each block file"
+#~ msgstr "Информирај детално за секој блок од датотеката"
+
+#~ msgid "Show detailed info about each editing operation"
+#~ msgstr "Детално информирај за секоја уреди операција"
+
+#~ msgid "TEST FAILED!!!\n"
+#~ msgstr "НЕУСПЕШЕН ТЕСТ!!!\n"
+
+#~ msgid "Test Data Size (MB):"
+#~ msgstr "Тест на големина (MB):"
+
+#~ msgid "Test data size should be in the range 1 - 2000 MB."
+#~ msgstr "Тестната големина треба да биде меѓу 1 и 2000 MB."
+
+#~ msgid "Time to check all data (2): %ld ms\n"
+#~ msgstr "Време за проверка на сите податоци (2): %ld мс\n"
+
+#~ msgid "Time to check all data: %ld ms\n"
+#~ msgstr "Време за проверка на сите податоци: %ld мс\n"
+
+#~ msgid "Time to perform %d edits: %ld ms\n"
+#~ msgstr "Време за подготовка на %d уредувањата: %ld мс\n"
+
+#~ msgid "Track # blocks: %d\n"
+#~ msgstr "Блок # : %d од нумерата\n"
+
+#~ msgid "Trial %d\n"
+#~ msgstr "Пробно %d\n"
+
+#~ msgid "Using %d blocks of %d samples each, for a total of %.1f MB.\n"
+#~ msgstr "Користи %d блокови од %d семплот, за вкупно %.1f MB.\n"
+
+#~ msgid "benchmark.txt"
+#~ msgstr "benchmark.txt"
