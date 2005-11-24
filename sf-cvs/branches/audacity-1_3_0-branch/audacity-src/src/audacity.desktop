@@ -1,0 +1,22 @@
+﻿[Desktop Entry]
+Encoding=UTF-8
+
+Name=Audacity Sound Editor
+Name[de]=Audacity Audio-Editor
+Name[ru]=Редактор звуковых файлов Audacity
+GenericName=Sound Editor
+GenericName[de]=Audio-Editor
+GenericName[ru]=Редактор звуковых файлов
+Comment=Record and edit audio files
+Comment[de]=Audio-Dateien aufnehmen und bearbeiten
+Comment[ru]=Запись и редактирование звуковых файлов
+
+Icon=/usr/share/audacity/audacity.xpm
+
+Type=Application
+Categories=Application;AudioVideo;Audio;Multimedia;
+
+Exec=audacity
+StartupNotify=false
+Terminal=false
+MimeType=application/ogg;audio/basic;audio/mpeg;audio/x-aiff;audio/x-mp3;audio/x-wav;application/x-audacity-project;
