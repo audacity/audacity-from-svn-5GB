@@ -402,12 +402,21 @@ bool BatchCommands::ApplyBatchToNamedFile(const wxString & filename)
 {
    mFileName = filename;
    unsigned int i;
+
+   mAbort = false;
+
    for(i=0;i<mCommandChain.GetCount();i++)
    {
-      if(!ApplyCommandInBatchMode( mCommandChain[i], mParamsChain[i]))
+      if(!ApplyCommandInBatchMode( mCommandChain[i], mParamsChain[i]) || mAbort)
          return false;
    }
    return true;
+}
+
+// AbortBatch() allows a premature terminatation of a batch.
+void BatchCommands::AbortBatch()
+{
+   mAbort = true;
 }
 
 void BatchCommands::AddToChain(const wxString &command)

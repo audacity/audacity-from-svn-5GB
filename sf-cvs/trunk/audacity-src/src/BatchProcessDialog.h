@@ -56,6 +56,8 @@ class BatchProcessDialog:public wxDialog {
    wxListCtrl *mList;
    BatchCommands * mBatchCommands;
 
+   bool mAbort;
+
    DECLARE_EVENT_TABLE()
 };
 

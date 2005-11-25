@@ -46,12 +46,14 @@ class BatchCommands {
 	void ResetChain();
 	void AddToChain( const wxString & command );
    bool ApplyBatchToNamedFile( const wxString & filename );
+   void AbortBatch();
 	void ReadChain();
 	void SaveChain();
 	void SetWavToMp3Chain();
 	void SetCleanSpeechChain();
    wxArrayString mCommandChain;
    wxArrayString mParamsChain;
+   bool mAbort;
 };
 
 
