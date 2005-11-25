@@ -52,6 +52,8 @@ enum {
 
 FreqWindow *gFreqWindow = NULL;
 
+// These specify the minimum plot window width
+
 #define FREQ_WINDOW_WIDTH 480
 #define FREQ_WINDOW_HEIGHT 330
 
@@ -73,7 +75,6 @@ void InitFreqWindow(wxWindow * parent)
 BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
     EVT_CLOSE(FreqWindow::OnCloseWindow)
     EVT_SIZE(FreqWindow::OnSize)
-    EVT_PAINT(FreqWindow::OnPaint)
     EVT_BUTTON(FreqCloseButtonID, FreqWindow::OnCloseButton)
     EVT_BUTTON(FreqExportButtonID, FreqWindow::OnExport)
     EVT_CHOICE(FreqAlgChoiceID, FreqWindow::OnAlgChoice)
@@ -85,7 +86,7 @@ END_EVENT_TABLE()
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
                            const wxPoint & pos):
-  wxFrame(parent, id, title, pos, wxSize(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT)),
+  wxFrame(parent, id, title, pos),
   mData(NULL), mProcessed(NULL), mBitmap(NULL)
 {
    mMouseX = 0;
@@ -94,37 +95,11 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mCrossCursor = new wxCursor(wxCURSOR_CROSS);
 
-   mFreqPlot = new FreqPlot(this, 0,
-                            wxPoint(0, 0), wxSize(FREQ_WINDOW_WIDTH, 250));
-
-   mUpdateRect.x = 0;
-   mUpdateRect.y = 0;
-   mUpdateRect.width = FREQ_WINDOW_WIDTH;
-   mUpdateRect.height = 250;
-
-   mPlotRect.x = 10;
-   mPlotRect.y = 10;
-   mPlotRect.width = 460;
-   mPlotRect.height = 215;
-
    mLeftMargin = 40;
    mBottomMargin = 20;
 
-   mInfoRect.x = 10;
-   mInfoRect.y = 230;
-   mInfoRect.width = 460;
-   mInfoRect.height = 15;
-
-   mExportButton = new wxButton(this, FreqExportButtonID,
-                                _("Export..."),
-                                wxPoint(390, 260), wxSize(70, 20));
-
-   mCloseButton = new wxButton(this, FreqCloseButtonID,
-                               _("Close"), wxPoint(390, 290), wxSize(70, 20));
-#ifndef TARGET_CARBON
-   mCloseButton->SetDefault();
-   mCloseButton->SetFocus();
-#endif
+   mFreqPlot = new FreqPlot(this, 0,
+                            wxDefaultPosition, wxDefaultSize);
 
    wxString algChoiceStrings[5] = { _("Spectrum"),
       _("Standard Autocorrelation"),
@@ -137,8 +112,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    };
 
    mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
-                             wxPoint(10, 260),
-                             wxSize(200, 20), 4, algChoiceStrings);
+                             wxDefaultPosition, wxDefaultSize,
+                             4, algChoiceStrings);
 
    mAlgChoice->SetSelection(0);
 
@@ -153,8 +128,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    };
 
    mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
-                              wxPoint(220, 260),
-                              wxSize(160, 20), 8, sizeChoiceStrings);
+                              wxDefaultPosition, wxDefaultSize,
+                              8, sizeChoiceStrings);
 
    mSizeChoice->SetSelection(2);
 
@@ -168,8 +143,8 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    }
 
    mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
-                              wxPoint(10, 290),
-                              wxSize(200, 20), f, funcChoiceStrings);
+                              wxDefaultPosition, wxDefaultSize,
+                              f, funcChoiceStrings);
 
    mFuncChoice->SetSelection(3);
    delete[]funcChoiceStrings;
@@ -179,12 +154,64 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    };
 
    mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
-                              wxPoint(220, 290),
-                              wxSize(160, 20), 2, axisChoiceStrings);
+                              wxDefaultPosition, wxDefaultSize,
+                              2, axisChoiceStrings);
 
    mAxisChoice->SetSelection(0);
 
    mLogAxis = false;
+
+   mExportButton = new wxButton(this, FreqExportButtonID,
+                                _("Export..."));
+
+   mCloseButton = new wxButton(this, FreqCloseButtonID,
+                               _("Close"));
+
+#ifndef TARGET_CARBON
+   mCloseButton->SetDefault();
+   mCloseButton->SetFocus();
+#endif
+
+   // Set minimum sizes
+
+   mFreqPlot->SetMinSize( wxSize( FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT ) );
+
+   wxRect r( 0, 0, 0, 0 );
+
+   r.Union( mAlgChoice->GetRect() );
+   r.Union( mSizeChoice->GetRect() );
+   r.Union( mFuncChoice->GetRect() );
+   r.Union( mAxisChoice->GetRect() );
+
+   mAlgChoice->SetMinSize( r.GetSize() );
+   mSizeChoice->SetMinSize( r.GetSize() );
+   mFuncChoice->SetMinSize( r.GetSize() );
+   mAxisChoice->SetMinSize( r.GetSize() );
+
+   // Add everything to the sizers
+
+   wxBoxSizer *vs = new wxBoxSizer( wxVERTICAL );
+   wxBoxSizer *hs;
+
+   vs->Add( mFreqPlot, 1, wxEXPAND | wxALL, 5 );
+
+   hs = new wxBoxSizer( wxHORIZONTAL );
+   hs->Add( mAlgChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( mSizeChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( 1, 1, 1 );
+   hs->Add( mExportButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 3 );
+   vs->Add( hs, 0, wxEXPAND | wxBOTTOM, 5 );
+
+   hs = new wxBoxSizer( wxHORIZONTAL );
+   hs->Add( mFuncChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( mAxisChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( 1, 1, 1 );
+   hs->Add( mCloseButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 3 );
+   vs->Add( hs, 0, wxEXPAND | wxBOTTOM, 5 );
+
+   SetAutoLayout( true );
+   SetSizerAndFit( vs );
+   Layout();
 
   #ifdef __WXMAC__
    mBackgroundBrush.SetColour(wxColour(255, 255, 255));
@@ -195,9 +222,6 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mBackgroundPen.SetColour(wxColour(204, 204, 204));
    SetBackgroundColour(wxColour(204, 204, 204));
   #endif
-
-   // Min size, max size
-   SetSizeHints(FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT, 20000, 20000);
 }
 
 FreqWindow::~FreqWindow()
@@ -217,51 +241,36 @@ FreqWindow::~FreqWindow()
 
 void FreqWindow::OnSize(wxSizeEvent & event)
 {
-   int width, height;
-   GetClientSize(&width, &height);
-
-   // Original size was 440 x 330
+   Layout();
 
    mUpdateRect.x = 0;
    mUpdateRect.y = 0;
-   mUpdateRect.width = width;
-   mUpdateRect.height = height - 80;
+   mUpdateRect.SetSize( mFreqPlot->GetSize() );
 
-   mFreqPlot->SetSize(0, 0, width, height - 80);
+   mInfoRect = mUpdateRect;
+   mInfoRect.width -= 1;                     // -1 for AColor::Bevel()
+   mInfoRect.y = mInfoRect.GetBottom() - mInfoHeight;
+   mInfoRect.height -= ( mInfoRect.y + 1 );  // +1 for AColor::Bevel()
 
-   mPlotRect.x = 10;
-   mPlotRect.y = 10;
-   mPlotRect.width = width - 20;
-   mPlotRect.height = height - 115;
-
-   mLeftMargin = 40;
-   mBottomMargin = 20;
-
-   mInfoRect.x = 10;
-   mInfoRect.y = height - 100;
-   mInfoRect.width = width - 20;
-   mInfoRect.height = 15;
-
-   mExportButton->SetSize(width - 90, height - 70, 70, 20);
-   mCloseButton->SetSize(width - 90, height - 40, 70, 20);
-
-   mAlgChoice->SetSize(10, height - 70, 160, 20);
-   mSizeChoice->SetSize(180, height - 70, 160, 20);
-   mFuncChoice->SetSize(10, height - 40, 160, 20);
-   mAxisChoice->SetSize(180, height - 40, 160, 20);
+   mPlotRect = mUpdateRect;
+   mPlotRect.height = mInfoRect.y - 5;
 
    if (mBitmap)
+   {
       delete mBitmap;
-   mBitmap = NULL;
+      mBitmap = NULL;
+   }
 
 #ifdef __WXMAC__
    Refresh(true);
+#else
+   mFreqPlot->Refresh( false );
 #endif
 }
 
 void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
 {
-   if (event.Moving() && event.m_x != mMouseX) {
+   if (event.Moving() && (event.m_x != mMouseX || event.m_y != mMouseY)) {
       mMouseX = event.m_x;
       mMouseY = event.m_y;
 
@@ -421,19 +430,6 @@ float FreqWindow::GetProcessedValue(float freq0, float freq1)
    return value;
 }
 
-void FreqWindow::OnPaint(wxPaintEvent & evt)
-{
-   int width, height;
-   GetSize(&width, &height);
-
-   wxPaintDC dc(this);
-
-   dc.SetBrush(mBackgroundBrush);
-   dc.SetPen(mBackgroundPen);
-   dc.DrawRectangle(0, mUpdateRect.height,
-                    width, height - mUpdateRect.height);
-}
-
 void FreqWindow::PlotPaint(wxPaintEvent & evt)
 {
    wxPaintDC dc(mFreqPlot);
@@ -471,12 +467,6 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    int i;
 
-#ifdef __WXMSW__
-   const int fontSize = 8;
-#else
-   const int fontSize = 10;
-#endif
-
    wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    memDC.SetFont(freqWindowFont);
 
@@ -495,7 +485,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
          // Pure blue axis line
          memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-         memDC.DrawLine(mInfoRect.x, y, r.x, y);
+         memDC.DrawLine(mPlotRect.x, y, r.x, y);
 
          if (i != (int) mYMin) {
             wxString label = wxString::Format(wxT("%d dB"), i);
@@ -539,7 +529,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
             // Pure blue axis line
             memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-            memDC.DrawLine(mInfoRect.x, r.y + y, r.x, r.y + y);
+            memDC.DrawLine(mPlotRect.x, r.y + y, r.x, r.y + y);
          }
       }
    }
@@ -697,26 +687,14 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       memDC.SetPen(wxPen(wxColour(160,160,160), 1, wxSOLID));
       memDC.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
    }
-   // Outline the graph
 
+   // Outline the graph
    memDC.SetPen(*wxBLACK_PEN);
    memDC.SetBrush(*wxTRANSPARENT_BRUSH);
    memDC.DrawRectangle(r);
 
    // Draw the bevel around the info rect
-
-   AColor::Dark(&memDC, false);
-   memDC.DrawLine(mInfoRect.x, mInfoRect.y,
-                  mInfoRect.x + mInfoRect.width, mInfoRect.y);
-   memDC.DrawLine(mInfoRect.x, mInfoRect.y,
-                  mInfoRect.x, mInfoRect.y + mInfoRect.height);
-   AColor::Light(&memDC, false);
-   memDC.DrawLine(mInfoRect.x, mInfoRect.y + mInfoRect.height,
-                  mInfoRect.x + mInfoRect.width,
-                  mInfoRect.y + mInfoRect.height);
-   memDC.DrawLine(mInfoRect.x + mInfoRect.width, mInfoRect.y,
-                  mInfoRect.x + mInfoRect.width,
-                  mInfoRect.y + mInfoRect.height);
+   AColor::Bevel( memDC, false, mInfoRect );
 
    // If the mouse cursor is pointing inside the graph, print out info about the
    // cursor location
@@ -985,6 +963,52 @@ void FreqWindow::Recalc()
    delete[]in2;
    delete[]out;
    delete[]out2;
+
+   // This rest of this really doesn't belong here, but this routine
+   // is called in all the right places and the sizes are based on
+   // the calculations performed.  So, it's just convenient.
+
+   // Recalculate the margin sizes
+
+   wxMemoryDC memDC;
+   wxString label;
+
+   wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+   memDC.SetFont(freqWindowFont);
+
+   wxRect mr( 0, 0, 0, 0 );
+   wxRect lr( 0, 0, 0, 0 );
+   if(alg == 0)
+   {
+      label = wxString::Format(wxT("%d dB"), (int)mYMin);
+      memDC.GetTextExtent(label, &lr.width, &lr.height);
+      mr.Union(lr);
+
+      label = wxString::Format(wxT("%d dB"), (int)mYMax);
+      memDC.GetTextExtent(label, &lr.width, &lr.height);
+      mr.Union(lr);
+   }
+   else
+   {
+      label.Printf(fabs(mYMin) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMin);
+      memDC.GetTextExtent(label, &lr.width, &lr.height);
+      mr.Union(lr);
+ 
+      label.Printf(fabs(mYMax) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMax);
+      memDC.GetTextExtent(label, &lr.width, &lr.height);
+      mr.Union(lr);
+   }
+   mLeftMargin = mr.width + 2;
+   mBottomMargin = mr.height + 2;
+
+   // This looks fairly silly, but it was done to keep the string
+   // the same as the one actually used.  No additional translation
+   // required.
+   wxChar *p = PitchName_Absolute(440.0);
+   label.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"),
+                  0, p, 0, 0, p);
+   memDC.GetTextExtent(label, &lr.width, &lr.height);
+   mInfoHeight = lr.height + 4; // +4 to allow for top and bottoms margins
 
    mFreqPlot->Refresh(false);
 }

@@ -56,8 +56,6 @@ class FreqWindow:public wxFrame {
    void PlotMouseEvent(wxMouseEvent & event);
    void PlotPaint(wxPaintEvent & event);
 
-   void OnPaint(wxPaintEvent & event);
-
    void OnCloseWindow(wxCloseEvent & event);
    void OnCloseButton(wxCommandEvent & event);
    void OnSize(wxSizeEvent & event);
@@ -71,7 +69,13 @@ class FreqWindow:public wxFrame {
 
  private:
 
-    FreqPlot * mFreqPlot;
+#ifdef __WXMSW__
+   static const int fontSize = 8;
+#else
+   static const int fontSize = 10;
+#endif
+
+   FreqPlot * mFreqPlot;
 
    wxBrush mBackgroundBrush;
    wxPen mBackgroundPen;
@@ -92,6 +96,7 @@ class FreqWindow:public wxFrame {
 
    int mLeftMargin;
    int mBottomMargin;
+   int mInfoHeight;
 
    double mRate;
    int mDataLen;
