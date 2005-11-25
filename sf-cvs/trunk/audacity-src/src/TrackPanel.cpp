@@ -3382,7 +3382,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    case IsClosing:
       HandleClosing(event);
-      mMouseCapture = IsUncaptured; // JKC: Do we need this??
+      // LLL: Removed...doesn't allow close button to popup when mouse
+      //      button is held down and pointer leaves close button
+      // mMouseCapture = IsUncaptured; // JKC: Do we need this??
       break;
    case IsMuting:
       HandleMutingSoloing(event, false);
