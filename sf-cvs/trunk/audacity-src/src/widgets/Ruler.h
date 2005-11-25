@@ -116,6 +116,11 @@ class Ruler {
    void OfflimitsPixels(int start, int end);
 
    //
+   // Calculates and returns the maximum size required by the ruler
+   //
+   void GetMaxSize(wxCoord *width, wxCoord *height);
+
+   //
    // Drawing
    //
 
@@ -135,6 +140,7 @@ class Ruler {
 
 
  private:
+   int          mMaxWidth, mMaxHeight;
    int          mLeft, mTop, mRight, mBottom;
    int          mLength;
    wxDC        *mDC;
