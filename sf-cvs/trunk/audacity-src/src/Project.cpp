@@ -1543,6 +1543,7 @@ void AudacityProject::LayoutToolBars()
       BoxLayout( width );
    }
 
+   delete [] boxen;
 }
 
 void AudacityProject::LayoutProject()
