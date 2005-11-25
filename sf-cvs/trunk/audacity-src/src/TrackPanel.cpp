@@ -107,6 +107,8 @@
 #include "WaveTrack.h"
 #include "TimeTrack.h"
 #include "Experimental.h"
+#include "MeterToolBar.h"
+
 
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
@@ -1408,12 +1410,20 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
             mViewInfo->sel0 = selectedClip->GetOffset();
             mViewInfo->sel1 = selectedClip->GetEndTime();      
          }
+         //Also, capture this track for dragging until we up-click.
+         mCapturedClipArray.Add(TrackClip(w, selectedClip));
+         mMouseCapture = IsSliding;
+
+         Refresh(false);
+         StartSlide(event);
+         goto done;
       }
 
       Refresh(false);
       SetCapturedTrack( NULL );
       MakeParentModifyState();
    } 
+ done:
    SelectionHandleDrag(event);
 }
 
@@ -1438,6 +1448,47 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
       return;
    }
 
+
+   // A control-click will set just the indicator to the clicked spot,
+   // and turn playback on.  
+   else if(event.ControlDown())
+      {
+         AudacityProject *p = GetActiveProject();
+         if (p) {
+            
+            double clicktime = PositionToTime(event.m_x, GetLeftOffset());
+            double endtime = clicktime < mViewInfo->sel1? mViewInfo->sel1: mViewInfo->total ;
+
+         //Behavior should differ depending upon whether we are
+         //currently in playback mode or not.
+
+         bool busy = gAudioIO->IsBusy();
+         if(!busy)
+            {
+               //If we aren't currently playing back, start playing back at 
+               //the clicked point
+               ControlToolBar * ctb = p->GetControlToolBar();
+               ctb->SetPlay(true);
+               ctb->PlayPlayRegion(clicktime, endtime,false) ;
+                  
+            }
+            else
+            {
+               //If we are playing back, stop and move playback
+               //to the clicked point.
+               //This unpauses paused audio as well.  The right thing to do might be to
+               //leave it paused but move the point.  This would probably
+               //require a new method in ControlToolBar: SetPause();
+               ControlToolBar * ctb = p->GetControlToolBar();
+               ctb->StopPlaying();
+               ctb->PlayPlayRegion(clicktime,endtime,false) ;
+            }
+       
+         }
+
+         return;        
+      }  
+   
    //Make sure you are within the selected track
    if (pTrack && pTrack->GetSelected()) {
       int leftSel = TimeToPosition(mViewInfo->sel0, r.x);
@@ -1502,7 +1553,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
       return;
 
    // Also fuhggeddaboudit if we're not dragging and not autoscrolling.
-   if (!event.Dragging() && !mAutoScrolling) 
+   if ((!event.Dragging() && !mAutoScrolling)  || event.ControlDown())
       return;
 
    wxRect r      = mCapturedRect;
@@ -1882,13 +1933,13 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
 // samples functionality based on sample rate. 
 void TrackPanel::DoSlide(wxMouseEvent & event)
 {
-   int i;
+   unsigned int i;
 
    // find which track the mouse is currently in (mouseTrack) -
    // this may not be the same as the one we started in...
    WaveTrackArray tracks = mTracks->GetWaveTrackArray(false);
    WaveTrack* mouseTrack = NULL;
-   for (i=0; i<(int)tracks.GetCount(); i++)
+   for (i=0; i<tracks.GetCount(); i++)
    {
       WaveTrack* track = tracks.Item(i);
       wxRect r;

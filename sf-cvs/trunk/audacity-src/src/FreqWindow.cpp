@@ -13,6 +13,8 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
+
+
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
@@ -27,6 +29,7 @@
 #include <wx/file.h>
 #include <wx/filedlg.h>
 #include <wx/intl.h>
+#include <wx/sizer.h>
 #endif
 
 #include <wx/textfile.h>
@@ -213,15 +216,15 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    SetSizerAndFit( vs );
    Layout();
 
-  #ifdef __WXMAC__
+#ifdef __WXMAC__
    mBackgroundBrush.SetColour(wxColour(255, 255, 255));
    mBackgroundPen.SetColour(wxColour(255, 255, 255));
    SetBackgroundColour(wxColour(255, 255, 255));
-  #else
+#else
    mBackgroundBrush.SetColour(wxColour(204, 204, 204));
    mBackgroundPen.SetColour(wxColour(204, 204, 204));
    SetBackgroundColour(wxColour(204, 204, 204));
-  #endif
+#endif
 }
 
 FreqWindow::~FreqWindow()
