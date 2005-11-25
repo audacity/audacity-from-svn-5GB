@@ -124,22 +124,21 @@ void BatchProcessDialog::OnChoice(wxCommandEvent & event)
 
 void BatchProcessDialog::OnOk(wxCommandEvent & event)
 {
+   mOK->Enable(false);
    DoProcessing();
    EndModal(true);
 }
 
 void BatchProcessDialog::OnCancel(wxCommandEvent & event)
 {
-   EndModal(false);
+   mCancel->Enable(false);
+
+   mAbort = true;
+   mBatchCommands->AbortBatch();
 }
 
 void BatchProcessDialog::DoProcessing()
 {
-   //IMPROVE-ME: (Cancel in Batch mode)
-   // A little YUCK, you can only cancel a batch process by
-   // cancelling one of its in-progress actions.
-   // So we disable the cancel button.
-   mCancel->Enable(false);
    int i;
    wxString Temp;
    for(i=0;i<mList->GetItemCount();i++)
@@ -150,7 +149,7 @@ void BatchProcessDialog::DoProcessing()
          mList->SetItemImage( i-1,0,0);
       }
       mList->SetItemImage( i, 1,1);
-      if( !ProcessOne( mList->GetItemText( i )) )
+      if( !ProcessOne( mList->GetItemText( i )) || mAbort )
          return;
    }
 }
