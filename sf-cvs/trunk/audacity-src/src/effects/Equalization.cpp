@@ -15,8 +15,10 @@
 **********************************************************************/
 
 #include "Equalization.h"
+#include "../Audacity.h"
 #include "../Envelope.h"
 #include "../FFT.h"
+#include "../Project.h"
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 
@@ -174,7 +176,12 @@ bool EffectEqualization::PromptUser()
 {
    TrackListIterator iter(mWaveTracks);
    WaveTrack *t = (WaveTrack *) iter.First();
-   float hiFreq = ((float)(t->GetRate())/2.);
+   float hiFreq;
+   if (t)
+      hiFreq = ((float)(t->GetRate())/2.);
+   else
+      hiFreq = ((float)(GetActiveProject()->GetRate())/2.);
+
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFunc, windowSize,
 			   mParent, -1, _("Equalization"));
