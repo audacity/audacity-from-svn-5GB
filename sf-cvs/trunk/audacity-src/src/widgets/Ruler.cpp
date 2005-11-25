@@ -14,10 +14,12 @@
 #include <math.h>
 
 #include <wx/dcscreen.h>
+#include <wx/dcmemory.h>
 
 #include "../Internat.h"
 #include "Ruler.h"
 
+#define max(a,b)  ( (a<b)?b:a )
 
 //
 // Ruler
@@ -545,10 +547,14 @@ void Ruler::Tick(int pos, double d, bool major)
       if (strPos + strW >= mLength)
          strPos = mLength - strW;
       strLeft = mLeft + strPos;
-      if (mFlip)
+      if (mFlip) {
          strTop = mTop + 4;
-      else
+         mMaxHeight = max( mMaxHeight, 4 + strH );
+      }
+      else {
          strTop = mBottom - strH - 6;
+         mMaxHeight = max( mMaxHeight, strH + 6 );
+      }
    }
    else {
       strLen = strH;
@@ -558,10 +564,14 @@ void Ruler::Tick(int pos, double d, bool major)
       if (strPos + strH >= mLength)
          strPos = mLength - strH;
       strTop = mTop + strPos;
-      if (mFlip)
+      if (mFlip) {
          strLeft = mLeft + 5;
-      else
+         mMaxWidth = max( mMaxWidth, 5 + strW );
+      }
+      else {
          strLeft = mRight - strW - 6;
+         mMaxWidth = max( mMaxWidth, strW + 6 );
+      }
    }
 
    // See if any of the pixels we need to draw this
@@ -609,6 +619,15 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 
    int i;
    int j;
+
+   if (mOrientation == wxHORIZONTAL) {
+      mMaxWidth = mLength;
+      mMaxHeight = 0;
+   }
+   else {
+      mMaxWidth = 0;
+      mMaxHeight = mLength;
+   }
 
    mNumMajor = 0;
    mMajorLabels = new Label[mLength+1];
@@ -836,7 +855,23 @@ void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
    }
 }
 
+void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
+{
 
+   if (!mValid) {
+      wxMemoryDC tmpDC;
+      wxBitmap tmpBM(1, 1);
+      tmpDC.SelectObject(tmpBM);
+      mDC = &tmpDC;
+      Update( NULL, 0, 0 );
+   }
+
+   if (width)
+      *width = mMaxWidth;
+
+   if (height)
+      *height = mMaxHeight;
+}
 
 
 //

@@ -305,6 +305,32 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
       mBitmap = new wxBitmap(mWidth, mHeight);
    }
 
+   double rangeDB = 60;
+
+   // Ruler
+   int w = 0;
+   int h = 0;
+
+   Ruler vRuler;
+   vRuler.SetBounds(0, 0, mWidth, mHeight);
+   vRuler.SetOrientation(wxVERTICAL);
+   vRuler.SetRange(0, -rangeDB);
+   vRuler.SetFormat(Ruler::LinearDBFormat);
+   vRuler.SetUnits(_("dB"));
+   vRuler.GetMaxSize(&w, NULL);
+   
+   Ruler hRuler;
+   hRuler.SetBounds(0, 0, mWidth, mHeight);
+   hRuler.SetOrientation(wxHORIZONTAL);
+   hRuler.SetRange(-rangeDB, 0);
+   hRuler.SetFormat(Ruler::LinearDBFormat);
+   hRuler.SetUnits(_("dB"));
+   hRuler.SetFlip(true);
+   hRuler.GetMaxSize(NULL, &h);
+
+   vRuler.SetBounds(0, 0, w, mHeight - h);
+   hRuler.SetBounds(w, mHeight - h, mWidth, h);
+
    wxColour bkgnd = GetBackgroundColour();
    wxBrush bkgndBrush(bkgnd, wxSOLID);
 
@@ -314,33 +340,29 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    wxRect bkgndRect;
    bkgndRect.x = 0;
    bkgndRect.y = 0;
-   bkgndRect.width = 40;
+   bkgndRect.width = w;
    bkgndRect.height = mHeight;
    memDC.SetBrush(bkgndBrush);
    memDC.SetPen(*wxTRANSPARENT_PEN);
    memDC.DrawRectangle(bkgndRect);
 
-   bkgndRect.y = mHeight - 20;
+   bkgndRect.y = mHeight - h;
    bkgndRect.width = mWidth;
-   bkgndRect.height = 20;
+   bkgndRect.height = h;
    memDC.DrawRectangle(bkgndRect);
 
    wxRect border;
-   border.x = 40;
+   border.x = w;
    border.y = 0;
-   border.width = mWidth;
-   border.height = mHeight - 20;
+   border.width = mWidth - w;
+   border.height = mHeight - h + 1;
 
    memDC.SetBrush(*wxWHITE_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   mEnvRect.x = 44;
-   mEnvRect.width = mWidth - 50;
-   mEnvRect.y = 3;
-   mEnvRect.height = mHeight - 26;
-
-   double rangeDB = 60;
+   mEnvRect = border;
+   mEnvRect.Deflate( 2, 2 );
 
    int kneeX = (int)rint((rangeDB+threshold)*mEnvRect.width/rangeDB);
    int kneeY = (int)rint((rangeDB+threshold)*mEnvRect.height/rangeDB);
@@ -375,23 +397,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   // Ruler
-
-   Ruler vRuler;
-   vRuler.SetBounds(0, 0, 40, mHeight-21);
-   vRuler.SetOrientation(wxVERTICAL);
-   vRuler.SetRange(0, -rangeDB);
-   vRuler.SetFormat(Ruler::LinearDBFormat);
-   vRuler.SetUnits(_("dB"));
    vRuler.Draw(memDC);
-
-   Ruler hRuler;
-   hRuler.SetBounds(41, mHeight-20, mWidth, mHeight);
-   hRuler.SetOrientation(wxHORIZONTAL);
-   hRuler.SetRange(-rangeDB, 0);
-   hRuler.SetFormat(Ruler::LinearDBFormat);
-   hRuler.SetUnits(_("dB"));
-   hRuler.SetFlip(true);
    hRuler.Draw(memDC);
 
    dc.Blit(0, 0, mWidth, mHeight,
@@ -538,6 +544,7 @@ bool CompressorDialog::TransferDataFromWindow()
 
 void CompressorDialog::OnSize(wxSizeEvent &event)
 {
+   mPanel->Refresh( false );
    event.Skip();
 }
 

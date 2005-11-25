@@ -115,7 +115,7 @@ public:
                      wxWindow *parent, wxWindowID id, const wxString &title,
                      const wxPoint& pos = wxDefaultPosition,
                      const wxSize& size = wxDefaultSize,
-                     long style = wxDEFAULT_DIALOG_STYLE );
+                     long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 
    double threshold;
    double ratio;
