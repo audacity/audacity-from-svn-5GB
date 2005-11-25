@@ -214,7 +214,7 @@ BEGIN_EVENT_TABLE(UploadDialog, wxDialog)
    EVT_BUTTON(wxID_UPLOAD_FILE, UploadDialog::OnUploadFile)
    EVT_BUTTON(wxID_UPLOAD_DIR, UploadDialog::OnUploadDir)
    EVT_BUTTON(wxID_CREATEDIR, UploadDialog::OnCreateDir)
-   EVT_BUTTON(wxID_OK, UploadDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL, UploadDialog::OnCancel)
    EVT_BUTTON(wxID_CONNECT, UploadDialog::OnConnect)
    EVT_BUTTON(wxID_DISCONNECT, UploadDialog::OnDisconnect)
 
@@ -264,6 +264,8 @@ UploadDialog::UploadDialog(wxWindow * parent)
     wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer *fileButtonSizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *siteButtonSizer = new wxBoxSizer(wxHORIZONTAL);
+    
+    wxStdDialogButtonSizer *stdButtonSizer = new wxStdDialogButtonSizer();
 
     txtFtpName = new wxTextCtrl(this, wxID_FTPNAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
     txtFtpHost = new wxTextCtrl(this, wxID_FTPHOST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
@@ -306,6 +308,9 @@ UploadDialog::UploadDialog(wxWindow * parent)
     connectionBox->Add(connectionSizer, 0, wxALIGN_CENTER);
     connectionBox->Add(200, 0);
 
+    stdButtonSizer->AddButton(new wxButton(this, wxID_CANCEL, _("Cancel")));
+    stdButtonSizer->Realize();
+
     fileButtonSizer->Add(btnUploadFile, 0, wxALL, 5);
     fileButtonSizer->Add(btnUploadDir, 0, wxALL, 5);
     fileButtonSizer->Add(btnCreateDir, 0, wxALL, 5);
@@ -323,6 +328,7 @@ UploadDialog::UploadDialog(wxWindow * parent)
     leftSizer->Add(connectionBox);
     leftSizer->Add(siteBox, 0, wxTOP, 10);
     rightSizer->Add(fileBox);
+    rightSizer->Add(stdButtonSizer, 0, wxALIGN_RIGHT | wxALIGN_BOTTOM | wxALL, 5 );
 
     topSizer->Add(leftSizer, 0, wxALL, 10);
     topSizer->Add(rightSizer, 0, wxTOP | wxBOTTOM | wxRIGHT, 10);
@@ -337,6 +343,11 @@ UploadDialog::UploadDialog(wxWindow * parent)
 UploadDialog::~UploadDialog()
 {
     
+}
+
+void UploadDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
+{
+   EndModal(0);
 }
 
 void UploadDialog::OnConnect(wxCommandEvent & WXUNUSED(event))
