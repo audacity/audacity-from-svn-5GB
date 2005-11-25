@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.3.0 (beta)
+Version 1.3.1 (beta)
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -269,6 +269,10 @@ Known issues/problems:
     but not the 1.1.x beta installations.
 
 -------------------------------------------------------------
+
+Changes in 1.3.1:
+
+   
 
 Changes in 1.3.0:
 
