@@ -260,6 +260,30 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
       mBitmap = new wxBitmap(mWidth, mHeight);
    }
 
+   // Ruler
+   int w;
+   int h;
+
+   Ruler dbRuler;
+   dbRuler.SetBounds(0, 0, mWidth, mHeight);
+   dbRuler.SetOrientation(wxVERTICAL);
+   dbRuler.SetRange(12, -12);
+   dbRuler.SetFormat(Ruler::LinearDBFormat);
+   dbRuler.SetUnits(wxT("dB"));
+   dbRuler.GetMaxSize(&w, NULL);
+
+   Ruler freqRuler;
+   freqRuler.SetBounds(0, 0, mWidth, mHeight);
+   freqRuler.SetOrientation(wxHORIZONTAL);
+   freqRuler.SetRange(0.0, 22050.0);
+   freqRuler.SetFormat(Ruler::IntFormat);
+   freqRuler.SetUnits(wxT("Hz"));
+   freqRuler.SetFlip(true);
+   freqRuler.GetMaxSize(NULL, &h);
+
+   dbRuler.SetBounds(0, 0, w, mHeight - h);
+   freqRuler.SetBounds(w, mHeight - h, mWidth, h);
+
    wxColour bkgnd = GetBackgroundColour();
    wxBrush bkgndBrush(bkgnd, wxSOLID);
   
@@ -269,31 +293,29 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    wxRect bkgndRect;
    bkgndRect.x = 0;
    bkgndRect.y = 0;
-   bkgndRect.width = 40;
+   bkgndRect.width = w;
    bkgndRect.height = mHeight;
    memDC.SetBrush(bkgndBrush);
    memDC.SetPen(*wxTRANSPARENT_PEN);
    memDC.DrawRectangle(bkgndRect);
 
-   bkgndRect.y = mHeight - 20;
+   bkgndRect.y = mHeight - h;
    bkgndRect.width = mWidth;
-   bkgndRect.height = 20;
+   bkgndRect.height = h;
    memDC.DrawRectangle(bkgndRect);
 
    wxRect border;
-   border.x = 40;
+   border.x = w;
    border.y = 0;
-   border.width = mWidth;
-   border.height = mHeight - 20;
+   border.width = mWidth - w;
+   border.height = mHeight - h + 1;
 
    memDC.SetBrush(*wxWHITE_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   mEnvRect.x = 44;
-   mEnvRect.width = mWidth - 50;
-   mEnvRect.y = 3;
-   mEnvRect.height = mHeight - 26;
+   mEnvRect = border;
+   mEnvRect.Deflate( 2, 2 );
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
@@ -330,23 +352,7 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawRectangle(border);
 
-   // Ruler
-
-   Ruler dbRuler;
-   dbRuler.SetBounds(0, 0, 40, mHeight-21);
-   dbRuler.SetOrientation(wxVERTICAL);
-   dbRuler.SetRange(12, -12);
-   dbRuler.SetFormat(Ruler::LinearDBFormat);
-   dbRuler.SetUnits(wxT("dB"));
    dbRuler.Draw(memDC);
-
-   Ruler freqRuler;
-   freqRuler.SetBounds(41, mHeight-20, mWidth, mHeight);
-   freqRuler.SetOrientation(wxHORIZONTAL);
-   freqRuler.SetRange(0.0, 22050.0);
-   freqRuler.SetFormat(Ruler::IntFormat);
-   freqRuler.SetUnits(wxT("Hz"));
-   freqRuler.SetFlip(true);
    freqRuler.Draw(memDC);
 
    dc.Blit(0, 0, mWidth, mHeight,
@@ -436,6 +442,8 @@ void FilterDialog::OnClear( wxCommandEvent &event )
 
 void FilterDialog::OnSize(wxSizeEvent &event)
 {
+   FilterPanel *panel = ((FilterPanel *) FindWindow(ID_FILTERPANEL));
+   panel->Refresh(false);
    event.Skip();
 }
 
