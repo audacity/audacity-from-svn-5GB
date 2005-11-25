@@ -1097,22 +1097,30 @@ void ControlToolBar::EnableDisableButtons()
 //TIDY-ME: Button logic could be neater.
    AudacityProject *p = GetActiveProject();
    size_t numProjects = gAudacityProjects.Count();
-   bool tracks = (p && !p->GetTracks()->IsEmpty());
+   bool tracks = false;
    bool cleaningSpeech = mCleanSpeech->IsDown();
    bool busy = gAudioIO->IsBusy();
    bool recording = mRecord->IsDown();
 
-#if 0
-   if (tracks) {
-      if (!busy)
-         mPlay->Enable();
-   } else mPlay->Disable();
-#endif
+   // Only interested in audio type tracks
+   if( p )
+   {
+      TrackListIterator iter( p->GetTracks() );
+
+      for( Track *t = iter.First(); t; t = iter.Next() )
+      {
+         if( t->GetKind() == Track::Wave )
+         {
+            tracks = true;
+            break;
+         }
+      }
+   }
 
    //mPlay->SetEnabled(tracks && !busy);
    mPlay->SetEnabled(tracks && !recording && !cleaningSpeech);
    
-   if (GetActiveProject() && GetActiveProject()->GetCleanSpeechMode())
+   if (p && GetActiveProject()->GetCleanSpeechMode())
    {
        bool canRecord = !tracks;
         canRecord &= !cleaningSpeech;
