@@ -192,6 +192,7 @@ class Envelope : public XMLTagHandler {
    double mInitialVal;
    bool mUpper;
    bool mIsDeleting;
+   int mButton;
 
    bool mDB;
    bool mDirty;
