@@ -51,6 +51,8 @@ Envelope::Envelope()
 
    mPen.SetColour(110, 110, 220);
    mBrush.SetColour(110, 110, 220);
+
+   mButton = wxMOUSE_BTN_NONE;
 }
 
 Envelope::~Envelope()
@@ -296,7 +298,8 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    bool upper;
    int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
    upper = (event.m_y - r.y < ctr);
-   
+
+   mButton = event.GetButton();
    int clip_y = event.m_y - r.y;
    if(clip_y < 0) clip_y = 0;
    if(clip_y > r.height) clip_y = r.height;
@@ -498,6 +501,7 @@ bool Envelope::HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
       mEnv.RemoveAt(mDragPoint);
    }
    mDragPoint = -1;
+   mButton = wxMOUSE_BTN_NONE;
    return true;
 }
 
@@ -508,7 +512,7 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
                           float zoomMin, float zoomMax)
 {
 
-   if (event.ButtonDown())
+   if (event.ButtonDown() && mButton == wxMOUSE_BTN_NONE)
       return HandleMouseButtonDown( event, r, h, pps,dB,
                                     zoomMin, zoomMax);
 
@@ -516,7 +520,7 @@ bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
       return HandleDragging( event, r, h, pps,dB,
                              zoomMin, zoomMax);
 
-   if (event.ButtonUp()) 
+   if (event.ButtonUp() && event.GetButton() == mButton)
       return HandleMouseButtonUp( event, r, h, pps, dB,
                                   zoomMin, zoomMax);
 
