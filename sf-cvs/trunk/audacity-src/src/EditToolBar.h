@@ -69,18 +69,15 @@ enum {
 class EditToolBar:public ToolBar {
  public:
    EditToolBar() {};
-   EditToolBar(wxWindow * parent, wxWindowID id,
-               const wxPoint & pos, const wxSize & size);
    EditToolBar(wxWindow * parent);
    virtual ~ EditToolBar();
-   void InitializeEditToolBar();
-
-   virtual void OnPaint(wxPaintEvent & event);
-   virtual void OnKeyEvent(wxKeyEvent & event);
-   virtual void EnableDisableButtons();
 
    void OnButton(wxCommandEvent &event);
-   virtual void PlaceButton(int i, wxWindow *pWind);
+
+   void Populate();
+   void Repaint( wxPaintDC *dc ) {};
+   void EnableDisableButtons();
+
 
  private:
    void AddButton(const char **fg, const char **disabled, const char **alpha,

@@ -77,11 +77,12 @@ OBJS = \
 	Spectrum.o \
 	Tags.o \
 	TimeTrack.o \
+	ToolBar.o \
+	ToolsToolBar.o \
 	Track.o \
 	TrackArtist.o \
 	TrackPanel.o \
 	TranscriptionToolBar.o \
-	ToolBar.o \
 	UndoManager.o \
 	UploadDialog.o \
 	VoiceKey.o \

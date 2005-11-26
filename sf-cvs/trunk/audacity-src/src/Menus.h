@@ -24,9 +24,8 @@ void CreateMenusAndCommands();
 void CreateRecentFilesMenu(CommandManager *c);
 void ModifyExportMenus();
 void ModifyUndoMenus();
-//void ModifyToolbarMenus();
+void ModifyToolbarMenus();
 
-//int GetToolBarChecksum();
 wxUint32 GetUpdateFlags();
 
 double NearestZeroCrossing(double t0);
@@ -175,14 +174,12 @@ void OnSnapOff();
 
 void OnPlotSpectrum();
 
-void OnFloatControlToolBar();
-void OnLoadEditToolBar();
-void OnFloatEditToolBar();
-void OnLoadMixerToolBar();
-void OnFloatMixerToolBar();
-void OnLoadMeterToolBar();
-void OnFloatMeterToolBar();
-void OnFloatTranscriptionToolBar();
+void OnShowControlToolBar();
+void OnShowEditToolBar();
+void OnShowMeterToolBar();
+void OnShowMixerToolBar();
+void OnShowToolsToolBar();
+void OnShowTranscriptionToolBar();
 
 
         // Project Menu

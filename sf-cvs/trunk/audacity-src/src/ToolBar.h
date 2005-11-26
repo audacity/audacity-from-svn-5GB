@@ -35,69 +35,79 @@
 #include <wx/pen.h>
 #include <wx/minifram.h>
 #include <wx/object.h>
-
-class ToolBarStub;
-class ToolBarFrame;
+#include <wx/sizer.h>
+#include <wx/dcclient.h>
+#include <wx/window.h>
+#include <wx/panel.h>
+#include <wx/dynarray.h>
 
 class wxImage;
 class wxSize;
 class wxPoint;
-class wxButton;
+
+class ControlToolBar;
+class EditToolBar;
+class MeterToolBar;
+class MixerToolBar;
+class ToolsToolBar;
+class TranscriptionToolBar;
 
 class AButton;
-class AudacityProject;
 
-#if defined(__WXMAC__)
-   #define TOOLBAR_HEIGHT_OFFSET 0
-#elif defined(__WXMSW__)
-   #define TOOLBAR_HEIGHT_OFFSET 22
-#else // wxGTK, wxX11, wxMOTIF
-   #define TOOLBAR_HEIGHT_OFFSET 22
-#endif
-
-enum ToolBarType {
-   NoneID,
-   ControlToolBarID,
-   MixerToolBarID,
-   EditToolBarID,
-   MeterToolBarID,
-   TranscriptionToolBarID
+enum
+{
+   NoBarID = -1,
+   ControlBarID,
+   ToolsBarID,
+   MixerBarID,
+   MeterBarID,
+   TranscriptionBarID,
+   EditBarID,
+   ToolBarCount
 };
+
+////////////////////////////////////////////////////////////
+/// Custom events
+////////////////////////////////////////////////////////////
+
+DECLARE_EVENT_TYPE(EVT_TOOLBAR_UPDATED, -1);
+DECLARE_EVENT_TYPE(EVT_TOOLBAR_BEGINDRAG, -1);
+DECLARE_EVENT_TYPE(EVT_TOOLBAR_ENDDRAG, -1);
 
 ////////////////////////////////////////////////////////////
 /// class ToolBar
 ////////////////////////////////////////////////////////////
 
-class ToolBar:public wxWindow {
- public:
-   ToolBar() {};
-   ToolBar(wxWindow * parent);
-   ToolBar(wxWindow * parent, wxWindowID id,
-           const wxPoint & pos, const wxSize & size, ToolBarStub * tbs);
-   
-   // This function makes a toolbar of a specific type.
-   static ToolBar * MakeToolBar( wxWindow *parent, enum ToolBarType tbt );
-
+class ToolBar:
+   public wxPanel
+{
+public:
+   ToolBar();
    virtual ~ToolBar();
-   virtual int GetHeight() {return GetSize().y;};
-   virtual wxString GetTitle(){return mTitle;  };
-   enum ToolBarType GetType() {return mType;};
-   virtual void OnKeyEvent(wxKeyEvent & event) = 0;
-   virtual void OnPaint(wxPaintEvent & event) = 0;
-   wxSize GetIdealSize() {
-      return mIdealSize;
-   };
-   void GetIdealSize(int *width, int *height) 
-      {
-         *width = mIdealSize.x;
-         *height = mIdealSize.y;
-      }
 
-   virtual void PlaceButton( int i, wxWindow * pWind);
+   wxString GetTitle();
+
+   wxString GetLabel();
+
+   int GetType();
+
+   bool IsResizeable();
+
+   bool IsVisible();
+
+   bool IsDocked();
+
+   void SetDocked( bool dock );
+
    virtual void EnableDisableButtons() = 0;
-   ToolBarStub * GetToolBarStub(){return mToolBarStub;};
 
- protected:
+protected:
+
+   void InitToolBar( wxWindow *parent,
+                     int type,
+                     const wxString &title,
+                     const wxString &label,
+                     bool resizable = false );
 
    virtual AButton * MakeButton(wxImage * up,
                                 wxImage * down,
@@ -109,66 +119,129 @@ class ToolBar:public wxWindow {
                                 wxPoint placement, 
                                 bool processdownevents,
                                 wxSize size,
-                                int xoff, int yoff);
+                                int xoff,
+                                int yoff);
 
    void SetButton(bool down, AButton* button);
 
-   void DrawBackground(wxDC &dc, int width, int height);
+   wxBoxSizer *GetSizer();
 
-   wxBrush mBackgroundBrush;
-   wxPen mBackgroundPen;
+   void Add( wxWindow *window,
+             int proportion = 0,
+             int flag = wxALIGN_TOP, //wxALIGN_CENTER_VERTICAL,
+             int border = 0,
+             wxObject* userData = NULL );
+
+   void Add( wxSizer *sizer,
+             int proportion = 0,
+             int flag = 0,
+             int border = 0,
+             wxObject* userData = NULL );
+
+   void Add( int width,
+             int height,
+             int proportion = 0,
+             int flag = 0,
+             int border = 0,
+             wxObject* userData = NULL );
+
+   void AddSpacer( int size = 14 );
+   void AddStretchSpacer( int prop = 1 );
+
+   void Detach( wxWindow *window );
+   void Detach( wxSizer *sizer );
+
+   void Updated();
+   void Capture();
+
+   virtual void Populate() = 0;
+   virtual void Repaint( wxPaintDC *dc ) = 0;
+
+   void OnMouseEvent( wxMouseEvent & event );
+   void OnPaint( wxPaintEvent & event );
+
    wxBitmap *mBackgroundBitmap;
    int mBackgroundWidth;
    int mBackgroundHeight;
 
-   enum ToolBarType mType;
-   ToolBarStub * mToolBarStub;
-   wxString mTitle;
+   bool mDocked;
+   bool mVisible;
+   bool mResizeable;
 
-   //These keep track of how big the tool bar "should" be.
-   wxSize mIdealSize;
-   int mxButtonPos;
-   int myButtonPos;
-   bool mbSpaceBelow;
+   DECLARE_EVENT_TABLE()
+
+private:
+   void Init( wxWindow *parent, int type, const wxString &title, const wxString &label );
+
+   wxWindow *mParent;
+   wxWindow *mGrabber;
+   wxBoxSizer *mVSizer;
+   wxBoxSizer *mHSizer;
+
+   wxString mTitle;
+   wxString mLabel;
+   int mType;
 };
 
-
-
 ////////////////////////////////////////////////////////////
-/// class ToolBarStub
+/// class ToolBarDock
 ////////////////////////////////////////////////////////////
 
-class ToolBarStub {
+class ToolBarDock:
+   public wxPanel
+{
 
- public:
-   ToolBarStub(wxWindow * Parent, enum ToolBarType tbt);
-   ~ToolBarStub();
+public:
+   ToolBarDock( wxWindow * Parent );
+   ~ToolBarDock();
 
-   //These methods load/unload/float/unfloat the children
-   //toolbars from EVERY window.
-   void LoadAll();
-   void UnloadAll();
-   void Iconize(bool bIconize);
-   void ShowWindowedToolBar(wxPoint * where = NULL);
-   void HideWindowedToolBar();
-   bool IsToolBarLoaded(AudacityProject *);
-   bool GetWindowedStatus() {return mWindowedStatus; };
-   bool GetLoadedStatus() { return mLoadedStatus;  };
-   void SetLoadedStatus(bool status) { mLoadedStatus = status; };
-   void SetWindowedStatus(bool status){ mWindowedStatus = status;};
-   enum ToolBarType GetType() { return mType;  };
-   int GetHeight() {return mSize.y;};
-   ToolBar *GetToolBar();
+   void LayoutToolBars();
 
- protected:
-   ToolBarFrame * mToolBarFrame;
-   wxWindow *mFrameParent;
-   enum ToolBarType mType;
+   bool IsDocked( int type );
+
+   bool IsVisible( int type );
+
+   void ShowHide( int type );
+
+   ToolBar *GetToolBar( int type );
+
+   ControlToolBar *GetControlToolBar();
+   EditToolBar *GetEditToolBar();
+   MeterToolBar *GetMeterToolBar();
+   MixerToolBar *GetMixerToolBar();
+   ToolsToolBar *GetToolsToolBar();
+   TranscriptionToolBar *GetTranscriptionToolBar();
+
+public:
+   DECLARE_EVENT_TABLE()
+
+protected:
+   void OnBeginDrag( wxCommandEvent &event );
+   void OnEndDrag( wxCommandEvent &event );
+   void OnToolBarUpdate( wxCommandEvent &event );
+   void OnPaint( wxPaintEvent &event );
+
+private:
+   void ReadConfig();
+   void WriteConfig();
+
+   int FlowLayout( int cnt,
+                   wxRect boxen[],
+                   wxRect ideal[],
+                   int i,
+                   int x,
+                   int y,
+                   int width,
+                   int height );
+   void SetDocked( int wxWindowID, wxPoint & wpos, wxPoint & mpos );
+   void Updated();
+
+   int mTotalToolBarHeight;
+   wxWindow *mParent;
    wxString mTitle;
-   wxSize mSize;                //Intended size of toolbar
-   bool mWindowedStatus;        //Whether the toolbar is floating or embedded
-   bool mLoadedStatus;          //Whether the toolbar is loaded (visible) or not
 
+   wxArrayPtrVoid mDockedBars;
+   ToolBar *mBars[ ToolBarCount ];
 };
 
 #endif

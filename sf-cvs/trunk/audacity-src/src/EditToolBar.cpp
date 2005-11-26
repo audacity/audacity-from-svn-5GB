@@ -27,17 +27,17 @@
 #include <wx/dcclient.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
+#include <wx/tooltip.h>
 #endif
 
 #include <wx/image.h>
-#include <wx/tooltip.h>
 
-#include "widgets/AButton.h"
-#include "widgets/ASlider.h"
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "Project.h"
 #include "UndoManager.h"
+#include "widgets/AButton.h"
+#include "widgets/ASlider.h"
 
 #include "../images/EditButtons.h"
 
@@ -48,77 +48,50 @@ const int SEPARATOR_WIDTH = 14;
 /// Methods for EditToolBar
 ////////////////////////////////////////////////////////////
 
-BEGIN_EVENT_TABLE(EditToolBar, wxWindow)
-   EVT_PAINT(EditToolBar::OnPaint)
-   EVT_CHAR(EditToolBar::OnKeyEvent)
-
-   EVT_COMMAND_RANGE(ETBCutID, ETBCutID + ETBNumButtons-1,
-         wxEVT_COMMAND_BUTTON_CLICKED, EditToolBar::OnButton)
+BEGIN_EVENT_TABLE( EditToolBar, ToolBar )
+   EVT_COMMAND_RANGE( ETBCutID,
+                      ETBCutID + ETBNumButtons - 1,
+                      wxEVT_COMMAND_BUTTON_CLICKED,
+                      EditToolBar::OnButton )
 END_EVENT_TABLE()
 
 //Standard contructor
-EditToolBar::EditToolBar(wxWindow * parent)
-   : ToolBar(parent, -1, wxPoint(1, 1), wxSize(377, 27),gEditToolBarStub)
+EditToolBar::EditToolBar(wxWindow * parent):
+   ToolBar()
 {
-   InitializeEditToolBar();
-}
-
-//Another constructor
-EditToolBar::EditToolBar(wxWindow * parent, wxWindowID id,
-                         const wxPoint & pos, const wxSize & size)
-   : ToolBar(parent, id, pos, size,gEditToolBarStub)
-{
-   InitializeEditToolBar();
-}
-
-
-// This sets up the EditToolBar, initializing all the important values
-// and creating the buttons.
-void EditToolBar::InitializeEditToolBar()
-{
-   mIdealSize = wxSize(377, 27);
-   mTitle = _("Audacity Edit Toolbar");
-   SetLabel(_("Edit"));
-   mType = EditToolBarID;
-
-   MakeButtons();
+   InitToolBar( parent,
+                EditBarID,
+                _("Audacity Edit Toolbar"),
+                _("Edit") );
 }
 
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
-
 void EditToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
                             int id, const wxChar *tooltip, const wxChar *label)
 {
 
-   // Windows (TM) has a little extra room for some reason, so the top of the
-   // buttons should be a little lower.
-   int buttonTop = 0;
-#ifdef __WXMSW__
-   buttonTop=0;
-#endif
-
-   mButtons[id] = ToolBar::MakeButton(
+   mButtons[id] = MakeButton(
                      upImage, downImage, hiliteImage, fg,
                      disabled, alpha,
-                     wxWindowID(id), wxPoint(mxButtonPos, buttonTop),
+                     wxWindowID(id),
+                     wxDefaultPosition,
                      false /*No edit buttons should process down events.*/,
                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
    #if wxUSE_TOOLTIPS // Not available in wxX11
    mButtons[id]->SetToolTip(tooltip);
    #endif
    mButtons[id]->SetLabel( label );
-
-   mxButtonPos += BUTTON_WIDTH+1;
+   Add( mButtons[id] );
 }
 
 void EditToolBar::AddSeparator()
 {
-   mxButtonPos += SEPARATOR_WIDTH+1;
+   AddSpacer();
 }
 
-void EditToolBar::MakeButtons()
+void EditToolBar::Populate()
 {
    wxColour newColour =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
@@ -140,22 +113,22 @@ void EditToolBar::MakeButtons()
 
    /* Buttons */
 
-   mxButtonPos = 0;
-
    AddButton(Cut, CutDisabled, CutAlpha, ETBCutID,
-             _("Cut"),_("Cut"));
+             _("Cut"), _("Cut"));
    AddButton(Copy, CopyDisabled, CopyAlpha, ETBCopyID,
-             _("Copy"),_("Copy"));
+             _("Copy"), _("Copy"));
    AddButton(Paste, PasteDisabled, PasteAlpha, ETBPasteID,
-             _("Paste"),_("Paste"));
+             _("Paste"), _("Paste"));
    AddButton(Trim, TrimDisabled, TrimAlpha, ETBTrimID,
              _("Trim outside selection"),_("Trim"));
    AddButton(Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
              _("Silence selection"),_("Silence"));
-
    AddSeparator();
-   AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID, _("Undo"), _("Undo"));
-   AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID, _("Redo"), _("Redo"));
+
+   AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID,
+             _("Undo"), _("Undo"));
+   AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID,
+             _("Redo"), _("Redo"));
    AddSeparator();
 
    AddButton(ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID,
@@ -184,9 +157,6 @@ void EditToolBar::MakeButtons()
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
 
-   mIdealSize = wxSize(mxButtonPos+3, 27);
-   SetSize(mIdealSize );
-
    delete upImage;
    delete downImage;
    delete hiliteImage;
@@ -199,11 +169,6 @@ EditToolBar::~EditToolBar()
 {
    for (int i=0; i<ETBNumButtons; i++)
       delete mButtons[i];
-}
-
-void EditToolBar::OnKeyEvent(wxKeyEvent & event)
-{
-   event.Skip();
 }
 
 void EditToolBar::OnButton(wxCommandEvent &event)
@@ -260,18 +225,6 @@ void EditToolBar::OnButton(wxCommandEvent &event)
    SetButton(false, mButtons[id]);
 }
 
-void EditToolBar::OnPaint(wxPaintEvent & evt)
-{
-   wxPaintDC dc(this);
-
-   int width, height;
-   GetSize(&width, &height);
-
-   DrawBackground(dc, width, height);
-
-   dc.SetPen(*wxBLACK_PEN);
-}
-
 void EditToolBar::EnableDisableButtons()
 {
    AudacityProject *p = GetActiveProject();
@@ -309,26 +262,6 @@ void EditToolBar::EnableDisableButtons()
 
    mButtons[ETBPasteID]->SetEnabled(p->Clipboard());
 }
-
-void EditToolBar::PlaceButton(int i, wxWindow *pWind)
-{
-   wxSize Size;
-   if( i==0 )
-   {
-      mxButtonPos = 0;
-   }
-   if( (i==4) || (i==6))
-   {
-      mxButtonPos +=10;
-   }
-   Size = pWind->GetSize();
-   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
-   mxButtonPos+=Size.GetX()+1;
-
-   mIdealSize = wxSize(mxButtonPos+3, 27);
-   SetSize(mIdealSize );
-}
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

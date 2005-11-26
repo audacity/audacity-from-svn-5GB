@@ -26,8 +26,6 @@ class wxChoice;
 class MixerToolBar:public ToolBar {
  public:
    MixerToolBar() {};
-   MixerToolBar(wxWindow * parent, wxWindowID id,
-                const wxPoint & pos, const wxSize & size);
    MixerToolBar(wxWindow * parent);
    virtual ~ MixerToolBar();
 
@@ -35,10 +33,9 @@ class MixerToolBar:public ToolBar {
    void UpdateControls();
    void SetMixer(wxCommandEvent &event);
 
-   virtual void OnPaint(wxPaintEvent & event);
-   virtual void OnKeyEvent(wxKeyEvent & event);
-   virtual void EnableDisableButtons();
-   virtual void PlaceButton(int i, wxWindow *pWind);
+   virtual void Populate();
+   virtual void Repaint( wxPaintDC *dc ) {};
+   virtual void EnableDisableButtons() {};
 
    void OnSlider(wxCommandEvent & event);
 
@@ -56,8 +53,6 @@ class MixerToolBar:public ToolBar {
 
    DECLARE_EVENT_TABLE()
 };
-
-MixerToolBar *GetCurrentMixerToolBar();
 
 #endif
 

@@ -96,6 +96,7 @@
 #include "AColor.h"
 #include "AudioIO.h"
 #include "ControlToolBar.h"
+#include "ToolsToolBar.h"
 #include "Envelope.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
@@ -343,7 +344,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mMouseCapture = IsUncaptured;
    mSlideUpDownOnly = false;
    mLabelTrackStartXPos=-1;
-
+ 
    gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges, true);
 
    mRedrawAfterStop = false;
@@ -1323,17 +1324,17 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
 
    if( tip==NULL )
    {
-      ControlToolBar * ctb = mListener->TP_GetControlToolBar();
-      if( ctb == NULL )
+      ToolsToolBar * ttb = mListener->TP_GetToolsToolBar();
+      if( ttb == NULL )
          return;
       // JKC: DetermineToolToUse is called whenever the mouse 
       // moves.  I had some worries about calling it when in 
       // multimode as it then has to hit-test all 'objects' in
       // the track panel, but performance seems fine in 
       // practice (on a P500).
-      int tool = DetermineToolToUse( ctb, event );
+      int tool = DetermineToolToUse( ttb, event );
 
-      tip = ctb->GetMessageForTool( tool );
+      tip = ttb->GetMessageForTool( tool );
 
       // We don't include the select tool in 
       // SetCursorAndTipByTool() because it's more complex than
@@ -1344,7 +1345,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       }
       else
       {
-         bool bMultiToolMode = ctb->GetMultiToolDown();
+         bool bMultiToolMode = ttb->GetMultiToolDown();
          SetCursorAndTipWhenSelectTool( t, event, r, bMultiToolMode, &tip );
       }
    }
@@ -1836,8 +1837,8 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
    if (!vt) 
       return;
 
-   ControlToolBar * ctb = mListener->TP_GetControlToolBar();
-   bool multiToolModeActive = (ctb && ctb->GetMultiToolDown());
+   ToolsToolBar * ttb = mListener->TP_GetToolsToolBar();
+   bool multiToolModeActive = (ttb && ttb->GetMultiToolDown());
 
    if (vt->GetKind() == Track::Wave && !event.ShiftDown() &&
        !multiToolModeActive)
@@ -3749,11 +3750,11 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
          return;
    }
 
-   ControlToolBar * pCtb = mListener->TP_GetControlToolBar();
-   if( pCtb == NULL )
+   ToolsToolBar * pTtb = mListener->TP_GetToolsToolBar();
+   if( pTtb == NULL )
       return;
 
-   int toolToUse = DetermineToolToUse(pCtb, event);
+   int toolToUse = DetermineToolToUse(pTtb, event);
 
    switch (toolToUse) {
    case selectTool:
@@ -3793,12 +3794,12 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
 /// determine what object we are hovering over and hence what tool to use.
 /// @param pCtb - A pointer to the control tool bar
 /// @param event - Mouse event, with info about position and what mouse buttons are down.
-int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
+int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
 {
-   int currentTool = pCtb->GetCurrentTool();
+   int currentTool = pTtb->GetCurrentTool();
 
    // Unless in Multimode keep using the current tool.
-   if( !pCtb->GetMultiToolDown() )
+   if( !pTtb->GetMultiToolDown() )
       return currentTool;
 
    // We NEVER change tools whilst we are dragging.
@@ -3845,7 +3846,7 @@ int TrackPanel::DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event)
 
    //Use the false argument since in multimode we don't 
    //want the button indicating which tool is in use to be updated.
-   pCtb->SetCurrentTool( currentTool, false );
+   pTtb->SetCurrentTool( currentTool, false );
    return currentTool;
 }
 
@@ -4098,14 +4099,14 @@ void TrackPanel::DrawTracks(wxDC * dc)
    tracksRect.x += GetLabelWidth();
    tracksRect.width -= GetLabelWidth();
 
-   ControlToolBar *pCtb = mListener->TP_GetControlToolBar();
+   ToolsToolBar *pTtb = mListener->TP_GetToolsToolBar();
    //No control tool bar?  All bets are off.  Could happen as the application closes.
-   if( pCtb == NULL )
+   if( pTtb == NULL )
       return;
 
-   bool bMultiToolDown = pCtb->GetMultiToolDown();
-   bool envelopeFlag   = pCtb->GetEnvelopeToolDown() || bMultiToolDown;
-   bool samplesFlag    = pCtb->GetDrawToolDown() || bMultiToolDown;
+   bool bMultiToolDown = pTtb->GetMultiToolDown();
+   bool envelopeFlag   = pTtb->GetEnvelopeToolDown() || bMultiToolDown;
+   bool samplesFlag    = pTtb->GetDrawToolDown() || bMultiToolDown;
    bool sliderFlag     = bMultiToolDown;
 
    // The track artist actually draws the stuff inside each track

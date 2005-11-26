@@ -169,22 +169,27 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mFormatChoice = NULL;
 
+   wxString *choices = new wxString[TimeTextCtrl::GetNumBuiltins()];
+   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
+      choices[i] = TimeTextCtrl::GetBuiltinName(i);
+
   #if FORMAT_CHOICE_IS_COMBO_BOX
    wxComboBox *box = new wxComboBox(this, OnFormatChoiceID, wxT(""),
-                                    wxDefaultPosition, wxSize(250, -1));
+                                    wxDefaultPosition, wxDefaultSize,
+                                    TimeTextCtrl::GetNumBuiltins(),
+                                    choices);
    box->SetWindowStyle(wxCB_READONLY);
-   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-      box->Append(TimeTextCtrl::GetBuiltinName(i));
    box->SetValue(TimeTextCtrl::GetBuiltinName(1));
    mFormatChoice = box;
   #else
    wxChoice *choice = new wxChoice(this, OnFormatChoiceID, 
-                                   wxDefaultPosition, wxSize(250, -1));
-   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-      choice->Append(TimeTextCtrl::GetBuiltinName(i));
+                                    wxDefaultPosition, wxDefaultSize,
+                                    TimeTextCtrl::GetNumBuiltins(),
+                                    choices);
    choice->SetSelection(1);
    mFormatChoice = choice;   
   #endif
+   delete [] choices;
 
    mainSizer->Add(mFormatChoice, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 

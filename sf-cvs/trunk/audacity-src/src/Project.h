@@ -24,9 +24,7 @@
 #include "DirManager.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
-#include "ToolBar.h"
 #include "TrackPanel.h"
-
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "xml/XMLTagHandler.h"
@@ -51,12 +49,17 @@ class wxScrollBar;
 class wxProgressDialog;
 class wxPanel;
 
+class ToolBarDock;
 class Toolbar;
+class ControlToolBar;
+class EditToolBar;
+class MeterToolBar;
+class MixerToolBar;
+class ToolsToolBar;
+class TranscriptionToolBar;
+
 class TrackList;
 class Tags;
-class ControlToolBar;
-class MixerToolBar;
-class MeterToolBar;
 class HistoryWindow;
 class Importer;
 
@@ -75,7 +78,6 @@ WX_DEFINE_ARRAY(AudacityProject *, AProjectArray);
 extern AProjectArray gAudacityProjects;
 
 
-WX_DEFINE_ARRAY(ToolBar *, ToolBarArray);
 WX_DEFINE_ARRAY(wxMenu *, MenuArray);
 
 enum PlayMode {
@@ -142,9 +144,6 @@ class AudacityProject:public wxFrame,
    bool SaveAs();
    void Clear();
 
-   ToolBarStub ** ppToolBarStubOfToolBarType( enum ToolBarType t );
-   void LoadToolBar(ToolBarStub ** ppStub, enum ToolBarType t);
-   void FloatToolBar(ToolBarStub * pStub );
    wxString GetFileName() { return mFileName; }
    bool GetDirty() { return mDirty; }
    void SetProjectTitle();
@@ -186,7 +185,7 @@ class AudacityProject:public wxFrame,
    void OnScroll(wxScrollEvent & event);
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
-
+   void OnToolBarUpdate(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);
    bool HandleKeyUp(wxKeyEvent & event);
 
@@ -236,24 +235,18 @@ class AudacityProject:public wxFrame,
    virtual void TP_ScrollUpDown(int delta);
    virtual void TP_HandleResize();
    virtual ControlToolBar * TP_GetControlToolBar();
+   virtual ToolsToolBar * TP_GetToolsToolBar();
    virtual void TP_GiveFocus(bool bForward);
 
    // ToolBar
 
-   void LoadToolBar(enum ToolBarType, bool bCreateStubIfRqd);
-   void UnloadToolBar(enum ToolBarType);
    ControlToolBar *GetControlToolBar();
-   MixerToolBar *GetMixerToolBar();
+   EditToolBar *GetEditToolBar();
    MeterToolBar *GetMeterToolBar();
-   bool IsToolBarLoaded(enum ToolBarType);
-   void LayoutToolBars();
-   void LayoutProject();
+   MixerToolBar *GetMixerToolBar();
+   ToolsToolBar *GetToolsToolBar();
+   TranscriptionToolBar *GetTranscriptionToolBar();
 
- private:
-   void DecorateToolBar( wxPaintDC & dc, int iToolBar );
-   int FlowLayout( int cnt, wxRect boxen[], int i, int x, int y, int width, int height );
-   void BoxLayout( int width );
-   int GetGrabberFromEvent(wxMouseEvent & event);
  public:
 
 
@@ -360,10 +353,9 @@ class AudacityProject:public wxFrame,
    wxLongLong mLastSelectionAdjustment;
 
  public:
-   ToolBarArray mToolBarArray;
+   ToolBarDock *mToolBarDock;
+
  private:
-   int mTotalToolBarHeight;
-   enum ToolBarType mDraggingToolBar;
    int  mAudioIOToken;
 
    bool mIsDeleting;

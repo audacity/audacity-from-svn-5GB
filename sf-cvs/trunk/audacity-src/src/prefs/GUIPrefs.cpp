@@ -13,7 +13,6 @@
 #include "GUIPrefs.h"
 
 #include "../Audacity.h"
-#include "../EditToolBar.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
@@ -136,39 +135,6 @@ wxCheckBox * GUIPrefs::CreateCheckBox(const wxString Description, const bool Sta
    return pCheckBox;
 }
 
-// Originally for toolbars, this function will
-// either remove a window or add it, if there is 
-// a change.
-void GUIPrefs::ShowOrHideWindow( int ID, bool bShow )
-{
-   if( ID==-1 )
-      return;
-   //Ooops similar code exists in ppToolBarStubOfToolBarType()
-   //TODO: Use that function instead.
-   ToolBarStub ** ppStub = NULL;
-   switch( ID )
-   {
-   default:      wxASSERT( false );      break;
-   case EditToolBarID:     ppStub = &gEditToolBarStub;     break;
-   case MixerToolBarID:    ppStub = &gMixerToolBarStub;    break;
-   case MeterToolBarID:    ppStub = &gMeterToolBarStub;    break;
-   case TranscriptionToolBarID: ppStub = &gTranscriptionToolBarStub; break;
-   }
-
-// Now create or delete the relevant window.
-   if(*ppStub && !bShow) {
-      (*ppStub)->UnloadAll();    //Unload all toolbars of this type.
-      delete *ppStub;
-      *ppStub = NULL;
-   }
-   else if(!*ppStub && bShow)
-   {  
-      // The ID determines what type of stub is created.
-      *ppStub = new ToolBarStub(gParentWindow, (enum ToolBarType)ID);
-      (*ppStub)->LoadAll();
-   }
-}
-
 // Function that deals with one checkbox, either creating it or
 // using its value to update gPrefs and the GUI.
 // The function is made more complex by coping with 
@@ -238,10 +204,6 @@ void GUIPrefs::CheckBoxAction(
 #endif
       }
       gPrefs->Write(SettingName,bValue);
-      if( mWindowID != NoneID )
-      {
-         ShowOrHideWindow( mWindowID, bValue );
-      }
    }
 }
 
@@ -324,14 +286,6 @@ void GUIPrefs::AllCheckBoxActions()
    CheckBoxAction(_("Tracks fit vertically zoomed"), wxT("/GUI/TracksFitVerticallyZoomed"), false );
    mCurrentCheckBoxContainer=1;
 
-   CheckBoxAction( _("Enable Edit Toolbar"),
-      wxT("/GUI/EnableEditToolBar"), true, EditToolBarID );
-   CheckBoxAction( _("Enable Mixer Toolbar"),
-      wxT("/GUI/EnableMixerToolBar"),true, MixerToolBarID );
-   CheckBoxAction( _("Enable Meter Toolbar"),
-      wxT("/GUI/EnableMeterToolBar"),true, MeterToolBarID );
-   CheckBoxAction( _("Enable Transcription Toolbar"),
-      wxT("/GUI/EnableTranscriptionToolBar"),false, TranscriptionToolBarID );
 	CheckBoxAction(
       _("Enable cut lines"),
       wxT("/GUI/EnableCutLines"), false);

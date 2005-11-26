@@ -17,10 +17,8 @@
 #include "SampleFormat.h"
 #include "WaveTrack.h"
 #include "TimeTrack.h"
-#include "ControlToolBar.h"
 #include "Resample.h"
 
-class ControlToolBar;
 class DirManager;
 
 bool MixAndRender(TrackList * tracks, TrackFactory *factory,

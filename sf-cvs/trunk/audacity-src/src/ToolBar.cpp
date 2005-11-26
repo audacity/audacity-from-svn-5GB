@@ -25,296 +25,1144 @@
 #include <wx/brush.h>
 #include <wx/dcclient.h>
 #include <wx/dcmemory.h>
+#include <wx/gdicmn.h>
 #include <wx/intl.h>
 #include <wx/settings.h>
 #include <wx/button.h>
-
-
+#include <wx/window.h>
+#include <wx/list.h>
 #endif  /*  */
 
 #include <wx/image.h>
 
-
 #include "Audacity.h"
+#include "AColor.h"
+#include "Prefs.h"
+#include "Project.h"
+#include "ImageManipulation.h"
 #include "widgets/AButton.h"
-#include "widgets/ASlider.h"
+
 #include "ControlToolBar.h"
+#include "ToolsToolBar.h"
 #include "EditToolBar.h"
 #include "MeterToolBar.h"
-#include "ImageManipulation.h"
 #include "MixerToolBar.h"
 #include "TranscriptionToolBar.h"
-#include "Project.h"
 
+// Custom events
 
-//Default toolbar images
-#include  "../images/ToolBarButtons.h"
-
-#define TOOLBAR_CLOSE_BUTTON 10001
+DEFINE_EVENT_TYPE(EVT_TOOLBAR_UPDATED)
+DEFINE_EVENT_TYPE(EVT_TOOLBAR_BEGINDRAG)
+DEFINE_EVENT_TYPE(EVT_TOOLBAR_ENDDRAG)
 
 ////////////////////////////////////////////////////////////
-/// class ToolBarFrame
+/// Grabber Class
 ////////////////////////////////////////////////////////////
 
-class ToolBarFrame {
- public:
-   virtual ~ToolBarFrame() {}
+class GrabberPosition
+{
+public:
+   GrabberPosition() {}
+   virtual ~GrabberPosition() {};
 
-   ToolBar *GetToolBar() {
-      return mToolBar;
-   };
-
-   virtual void DoShow(bool visible = true) = 0;
-   virtual void DoMove(wxPoint where) = 0;
-
-
- protected:
-   ToolBar *mToolBar;
-   
+   wxPoint Window;
+   wxPoint Mouse;
 };
 
-class ToolBarMiniFrame:public wxMiniFrame, public ToolBarFrame {
+class Grabber:
+   public wxWindow
+{
+
 public:
-   ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt);
-   virtual ~ToolBarMiniFrame();
+   Grabber( wxWindow *parent, wxWindowID id );
+   virtual ~Grabber();
    
-   void OnClose();
-   void OnCloseButton(wxCommandEvent & event);
-   void OnCloseWindow(wxCloseEvent & event);
-   virtual void DoShow(bool visible);
-   virtual void DoMove(wxPoint where);
-   virtual void OnMouseEvent(wxMouseEvent& evt);
-public:
-   DECLARE_EVENT_TABLE()
-      ;
+protected:
+   void OnLeftDown( wxMouseEvent & event );
+   void OnLeftUp( wxMouseEvent & event );
+   void OnMotion( wxMouseEvent & event );
+   void OnPaint( wxPaintEvent & event );
+
+   DECLARE_EVENT_TABLE();
+
 private:
-   AButton * mDockButton;
-   
-};
+   void Grabber::DrawGrabber( wxDC & dc );
+   void SendEvent( wxEventType type, int x, int y );
 
-class ToolBarFullFrame:public wxFrame, public ToolBarFrame {
- public:
-   ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt);
-   virtual ~ToolBarFullFrame();
-   
-   void OnCloseWindow(wxCloseEvent & event);
-   void OnSize(wxSizeEvent & event);
-   virtual void DoShow(bool visible);
-   virtual void DoMove(wxPoint where);
-    
- public:
-   DECLARE_EVENT_TABLE()
+   bool mUp;
+   wxPoint mHotspot;
+   wxGenericDragImage *mDrag;
 };
 
 ////////////////////////////////////////////////////////////
-/// Methods for ToolBarStub
+/// Methods for Grabber
 ////////////////////////////////////////////////////////////
 
+BEGIN_EVENT_TABLE( Grabber, wxWindow )
+   EVT_LEFT_DOWN( Grabber::OnLeftDown )
+   EVT_LEFT_UP( Grabber::OnLeftUp )
+   EVT_MOTION( Grabber::OnMotion )
+   EVT_PAINT( Grabber::OnPaint )
+END_EVENT_TABLE()  
 
-/// ToolBarStub Constructer. Requires a ToolBarType.
-ToolBarStub::ToolBarStub(wxWindow * Parent, enum ToolBarType tbt) 
+// Specifies how wide the grabber will be
+#define grabberWidth 13
+
+//
+// Contructor
+//
+Grabber::Grabber( wxWindow * parent, wxWindowID id ):
+   wxWindow( parent,
+             id,
+             wxDefaultPosition,
+             wxSize( grabberWidth, 27 ),
+             wxFULL_REPAINT_ON_RESIZE )
 {
-   // Don't create the frame until the first time we need it
-   mToolBarFrame = NULL;
-   mFrameParent = Parent;
-
-   mType = tbt;
-   mWindowedStatus = false;
-   mLoadedStatus = true;
-
-   mTitle = wxT("");
-} 
-
-
-/// ToolBarStub destructer
-ToolBarStub::~ToolBarStub() 
-{
-   if (mToolBarFrame) {
-      delete mToolBarFrame;
-      mToolBarFrame = NULL;
-   }
+   mUp = true;
+   mDrag = NULL;
 }
 
-
-/// This will add a new toolbar to all project windows, 
-/// even if one of that type already exists.
-void ToolBarStub::LoadAll() 
+//
+// Destructor
+//
+Grabber::~Grabber()
 {
-   const bool CREATE_STUB_IF_REQUIRED=true;
-   wxUpdateUIEvent evt;
-   
-   //Add the toolbar to each Window 
-   int len = gAudacityProjects.GetCount();
-   for (int i = 0; i < len; i++) {
-      gAudacityProjects[i]->LoadToolBar(mType, CREATE_STUB_IF_REQUIRED );
-      //Add the new toolbar to the ToolBarArray and redraw screen
-      gAudacityProjects[i]->HandleResize();
-      gAudacityProjects[i]->Refresh();
-      gAudacityProjects[i]->OnUpdateMenus(evt);
-   }
-} 
+}
 
-
-/// This will unload the toolbar from all windows
-/// If more than one toolbar of this type exists in a window, this
-/// will unload them all
-void ToolBarStub::UnloadAll() 
+//
+// Queue a drag event
+//
+void Grabber::SendEvent( wxEventType type, int x, int y )
 {
-   wxUpdateUIEvent evt;
-   int len = gAudacityProjects.GetCount();
-   for (int i = 0; i < len; i++)
+   wxCommandEvent e( type, GetId() );
+
+   // Convert coordinates to screen space
+   ClientToScreen( mHotspot );
+   ClientToScreen( &x, &y );
+
+   // Create and populate the position info
+   GrabberPosition *p = new GrabberPosition();
+   p->Mouse = wxPoint( x, y );
+   p->Window = wxPoint( x - mHotspot.x, y - mHotspot.y );
+   e.SetClientData( (void *) p );
+
+   // Queue the event
+   GetParent()->GetEventHandler()->AddPendingEvent( e );
+}
+
+//
+// Draw the grabber
+//
+void Grabber::DrawGrabber( wxDC & dc )
+{
+   wxSize sz = GetSize();
+   wxRect r;
+   unsigned int j;
+   int h;
+
+   // Dimensions of the grabber
+   r.x = 0;
+   r.y = 0;
+   r.width = sz.GetWidth() - 1;
+   r.height = sz.GetHeight() - 1;
+
+#ifndef __WXMAC__
+
+   AColor::Medium( &dc, false );   // filled rectangle.
+   dc.DrawRectangle( r );
+   AColor::Bevel( dc, mUp, r );
+
+#endif
+
+   // Draw the normal image
+   if( mUp )
+      AColor::Dark( &dc, false );
+   else
+      AColor::Medium( &dc, true );
+
+   h = sz.GetHeight();
+   for( j = 4; j < grabberWidth - 3; j += 4 )
    {
-      gAudacityProjects[i]->UnloadToolBar(mType);
-      gAudacityProjects[i]->OnUpdateMenus(evt);
+      dc.DrawLine( j,     4,     j,     h - 3 );
+      dc.DrawLine( j + 1, 4,     j + 1, h - 3 );
+      dc.DrawLine( j - 1, h - 4, j + 2, h - 4 );
    }
+
+   // Draw the pushed image
+   if( mUp )
+      AColor::Medium( &dc, true );
+   else
+      AColor::Dark( &dc, false );
+
+   for( j = 3; j < grabberWidth - 3; j += 4 )
+   {
+      dc.DrawLine( j,     3,     j + 3, 3     );
+      dc.DrawLine( j,     3,     j,     h - 4 );
+      dc.DrawLine( j + 1, 3,     j + 1, h - 4 );
+   }
+}
+
+//
+// Handle left button down events
+//
+void Grabber::OnLeftDown( wxMouseEvent & event )
+{
+   // Button should be drawn pushed
+   mUp = false;
+
+   // Only do something if not already dragging
+   // (Protects against missed mouse events)
+   if( !mDrag )
+   {
+      // Redraw the button
+      wxClientDC cdc( this );
+      DrawGrabber( cdc );
+
+      // Hotspot is relative to our top/left corner
+      mHotspot = wxPoint( event.GetX(), event.GetY() ) - GetPosition();
+      
+      // Get the containing toolbar dimensions
+      wxSize sz = GetParent()->GetMinSize();
+      int width = sz.GetWidth();
+      int height = sz.GetHeight();
+
+      // Make the new bitmap a bit bigger
+      wxBitmap bitmap( width + 2, height + 2 );
+
+      // Create the DC
+      wxMemoryDC memDC;
+      memDC.SelectObject( bitmap );
+
+      // Draw a black box on perimeter
+      memDC.SetPen( *wxBLACK_PEN );
+      memDC.DrawRectangle( 0, 0, width + 2, height + 2 );
+
+      // Copy an image of the toolbar into the box
+      wxClientDC pdc( GetParent() );
+      memDC.Blit( 1, 1, width, height, &pdc, 1, 0 );
+
+      // Start dragging
+      mDrag = new wxGenericDragImage( bitmap );
+      mDrag->BeginDrag( mHotspot, this , true );
+      mDrag->Move( mHotspot );
+      mDrag->Show();
+
+      // Notify parent
+      SendEvent( EVT_TOOLBAR_BEGINDRAG, event.GetX(), event.GetY() );
+   }
+}
+
+//
+// Handle left button down events
+//
+void Grabber::OnLeftUp( wxMouseEvent & event )
+{
+   mUp = true;
+
+   // Only process if currently dragging
+   // (Protects against missed mouse events)
+   if( mDrag )
+   {
+      // Stop dragging and cleanup
+      mDrag->Hide();
+      mDrag->EndDrag();
+      delete mDrag;
+      mDrag = NULL;
+
+      // Notify parent
+      SendEvent( EVT_TOOLBAR_ENDDRAG, event.GetX(), event.GetY() );
+   }
+}
+
+//
+// Handle mouse movement events
+//
+void Grabber::OnMotion( wxMouseEvent & event )
+{
+   // Only use it if we're dragging
+   if( event.Dragging() && mDrag )
+   {
+      // Move the image to the new location
+      mDrag->Move( wxPoint( event.GetX() - 1, event.GetY() - 1 ) );
+   }
+}
+
+//
+// Handle the paint events
+//
+void Grabber::OnPaint( wxPaintEvent & event )
+{
+   wxPaintDC dc( this );
+
+   // Redraw the grabber
+   DrawGrabber( dc );
+}
+
+////////////////////////////////////////////////////////////
+/// Methods for ToolBarDock
+////////////////////////////////////////////////////////////
+
+BEGIN_EVENT_TABLE( ToolBarDock, wxPanel )
+   EVT_PAINT( ToolBarDock::OnPaint )
+   EVT_COMMAND( wxID_ANY, EVT_TOOLBAR_UPDATED,   ToolBarDock::OnToolBarUpdate )
+   EVT_COMMAND( wxID_ANY, EVT_TOOLBAR_BEGINDRAG, ToolBarDock::OnBeginDrag )
+   EVT_COMMAND( wxID_ANY, EVT_TOOLBAR_ENDDRAG,   ToolBarDock::OnEndDrag )
+END_EVENT_TABLE()  
+
+//
+// Amount of space between toolbars
+//
+#define toolbarGap 1
+
+//
+// Contructor
+//
+ToolBarDock::ToolBarDock( wxWindow *parent ):
+   wxPanel( parent, wxID_ANY, wxPoint( 0, 0 ), parent->GetSize() )
+{
+   SetName( wxT( "ToolBarDock" ) );
+
+   // Use for testing spacing
+   // SetOwnBackgroundColour( wxColour( 255, 0, 0 ) );
+
+   // Create all of the toolbars
+   mBars[ ControlBarID ]       = new ControlToolBar( this );
+   mBars[ EditBarID ]          = new EditToolBar( this );
+   mBars[ MeterBarID ]         = new MeterToolBar( this );
+   mBars[ MixerBarID ]         = new MixerToolBar( this );
+   mBars[ ToolsBarID ]         = new ToolsToolBar( this );
+   mBars[ TranscriptionBarID ] = new TranscriptionToolBar( this );
+
+   // Process the toolbar config settings
+   ReadConfig();
 } 
 
-
-/// This will make the floating ToolBarFrame appear at the specified location
-void ToolBarStub::ShowWindowedToolBar(wxPoint * where /* = NULL */ ) 
+//
+// Read the toolbar states
+//
+void ToolBarDock::ReadConfig()
 {
-   if (!mWindowedStatus) {
-      
-      if (!mToolBarFrame) {
-         //Create a frame with a toolbar of type tbt inside it
-         if (mType == MeterToolBarID)
-            mToolBarFrame = new ToolBarFullFrame(mFrameParent, mType);
-         else
-            mToolBarFrame = new ToolBarMiniFrame(mFrameParent, mType);
-         
-         //Get the newly-created toolbar to get some info from it.
-         ToolBar * tempTB = mToolBarFrame->GetToolBar();
-         
-         mTitle = tempTB->GetTitle();
-         mSize = tempTB->GetSize();
-      }
+   wxString oldpath = gPrefs->GetPath();
+   bool dock, show;
+   int order[ ToolBarCount ];
+   int x, y;
+   int ord, ndx;
 
-      //Move the frame to the mouse position
-      if (where) {
-         mToolBarFrame->DoMove(*where);
-      }
-      
-      //Show the new window
-      mToolBarFrame->DoShow();
+   // Invalidate all order entries
+   for( ndx = 0; ndx < ToolBarCount; ndx++ )
+   {
+      order[ ndx ] = NoBarID;
    }
 
-   mWindowedStatus = true;
-}
+   // Change to the bar root
+   gPrefs->SetPath( wxT("/GUI/ToolBars") );
 
+   // Load and apply settings for each bar
+   for( ndx = 0; ndx < ToolBarCount; ndx++ )
+   {
+      // Change to the bar subkey
+      gPrefs->SetPath( mBars[ ndx ]->GetLabel() );
 
-/// This will make the floating ToolBarFrame disappear (but it will still exist).
-void ToolBarStub::HideWindowedToolBar() 
-{
-   if (mWindowedStatus) {
-      if (mToolBarFrame)
-         mToolBarFrame->DoShow(false);
-      mWindowedStatus = false;
-   }
-}
+      // Read in all the settings
+      gPrefs->Read( wxT("Dock"), &dock, true );
+      gPrefs->Read( wxT("Show"), &show, true );
+      gPrefs->Read( wxT("X"), &x, -1 );
+      gPrefs->Read( wxT("Y"), &y, -1 );
+      gPrefs->Read( wxT("Order"), &ord, NoBarID );
 
-// To Iconize a windowed toolbar we just hide it,
-// To de-Iconize a windowed toolbar we just show it. 
-void ToolBarStub::Iconize(bool bIconize) 
-{
-   if (mWindowedStatus && mToolBarFrame) {
-      if( bIconize )
-         mToolBarFrame->DoShow(false);
+      // Docked or floating?
+      if( dock )
+      {
+         // Only want bars that will be shown
+         if( show )
+         {
+            // Is order within range?
+            if( ( ord >= 0 ) && ( ord < ToolBarCount ) )
+            {
+               // Remember it
+               order[ ord ] = ndx;
+            }
+            else
+            {
+               // Add it (will wind up being at the end)
+               mDockedBars.Add( mBars[ ndx ] );
+            }
+         }
+
+         // Show/hide the bar
+         mBars[ ndx ]->Show( show );
+      }
       else
-         mToolBarFrame->DoShow(true);
+      {
+         // Set window position (validate these somehow????)
+         wxPoint wpos( x, y );
+
+         // Must temporarily add the bar as SetDocked() will blindly
+         // remove it.
+         //
+         // LLL: I'd rather do it this way than and a check in SetDocked()
+         //      since that could hide processing errors by skipping the
+         //      removal when it should have been able to remove it.
+         mDockedBars.Add( mBars[ ndx ] );
+
+         // Bars are initially docked, so calling SetDocked() will
+         // toggle the bar to floating.
+         SetDocked( ndx, wpos, wpos );
+
+         // Show/hide the bar
+         mBars[ ndx ]->GetParent()->Show( show );
+      }
+
+      // Change back to the bar root
+      gPrefs->SetPath( wxT("..") );
+   }
+
+   // Add all of the docked and visible bars in sorted order
+   for( ndx = ToolBarCount - 1; ndx >= 0; ndx-- )
+   {
+      // Only process valid entries
+      if( order[ ndx ] != NoBarID )
+      {
+         // Add the bar to the end of the array
+         mDockedBars.Insert( mBars[ order[ ndx ] ], 0 );
+      }
+   }
+
+   // Restore original config path
+   gPrefs->SetPath( oldpath );
+}
+
+//
+// Save the toolbar states
+//
+void ToolBarDock::WriteConfig()
+{
+   wxString oldpath = gPrefs->GetPath();
+   int ndx;
+
+   // Change to the bar root
+   gPrefs->SetPath( wxT("/GUI/ToolBars") );
+
+   // Save state of each bar
+   for( ndx = 0; ndx < ToolBarCount; ndx++ )
+   {
+      // Change to the bar subkey
+      gPrefs->SetPath( mBars[ ndx ]->GetLabel() );
+
+      // Save
+      gPrefs->Write( wxT("Dock"), mBars[ ndx ]->IsDocked() );
+      gPrefs->Write( wxT("Order"), mDockedBars.Index( mBars[ ndx ] ) );
+      gPrefs->Write( wxT("Show"), IsVisible( ndx ) );
+      if( mBars[ ndx ]->IsDocked() )
+      {
+         gPrefs->Write( wxT("X"), -1 );
+         gPrefs->Write( wxT("Y"), -1 );
+      }
+      else
+      {
+         wxPoint p = ClientToScreen(mBars[ ndx ]->GetParent()->GetPosition() );
+         gPrefs->Write( wxT("X"), p.x );
+         gPrefs->Write( wxT("Y"), p.y );
+      }
+
+      // Change back to the bar root
+      gPrefs->SetPath( wxT(".." ) );
+   }
+
+   // Restore original config path
+   gPrefs->SetPath( oldpath );
+}
+
+//
+// Destructer
+//
+ToolBarDock::~ToolBarDock()
+{
+   // Save the toolbar states
+   WriteConfig();
+}
+
+//
+// Return a pointer to the specified toolbar
+//
+ToolBar *ToolBarDock::GetToolBar( int type )
+{
+   return mBars[ type ];
+}
+
+//
+// Return a pointer to the Control toolbar
+//
+ControlToolBar *ToolBarDock::GetControlToolBar()
+{
+   return (ControlToolBar *) mBars[ ControlBarID ];
+}
+
+//
+// Return a pointer to the Edit toolbar
+//
+EditToolBar *ToolBarDock::GetEditToolBar()
+{
+   return (EditToolBar *) mBars[ EditBarID ];
+}
+
+//
+// Return a pointer to the Meter toolbar
+//
+MeterToolBar *ToolBarDock::GetMeterToolBar()
+{
+   return (MeterToolBar *) mBars[ MeterBarID ];
+}
+
+//
+// Return a pointer to the Mixer toolbar
+//
+MixerToolBar *ToolBarDock::GetMixerToolBar()
+{
+   return (MixerToolBar *) mBars[ MixerBarID ];
+}
+
+//
+// Return a pointer to the Tools toolbar
+//
+ToolsToolBar *ToolBarDock::GetToolsToolBar()
+{
+   return (ToolsToolBar *) mBars[ ToolsBarID ];
+}
+
+//
+// Return a pointer to the Transcription toolbar
+//
+TranscriptionToolBar *ToolBarDock::GetTranscriptionToolBar()
+{
+   return (TranscriptionToolBar *) mBars[ TranscriptionBarID ];
+}
+
+//
+// Layout the toolbars
+//
+void ToolBarDock::LayoutToolBars()
+{
+   // Get the number of docked toolbars and take a quick exit
+   // if we don't have any
+   int cnt = mDockedBars.GetCount();
+   if( cnt == 0 )
+   {
+      // Set the size of the dock window
+      SetMinSize( wxSize( -1, toolbarGap ) );
+      return;
+   }
+
+   wxRect stack[ ToolBarCount + 1 ];
+   wxPoint cpos, lpos;
+   ToolBar *lt = NULL;
+   int ndx, stkcnt = 0;
+
+   // Get size of our parent since we haven't been sized yet
+   int width, height;
+   GetParent()->GetClientSize( &width, &height );
+   width -= toolbarGap;
+   height -= toolbarGap;
+
+   // Set initial stack entry to maximum size
+   stack[ 0 ].SetX( toolbarGap );
+   stack[ 0 ].SetY( toolbarGap );
+   stack[ 0 ].SetWidth( width );
+   stack[ 0 ].SetHeight( height );
+
+   // Process all docked and visible toolbars
+   for( ndx = 0; ndx < cnt; ndx++ )
+   {
+      // Cache toolbar pointer
+      ToolBar *ct = (ToolBar *)mDockedBars[ ndx ];
+
+      // Get and cache the toolbar sizes
+      wxSize sz = ct->GetMinSize();
+      int tw = sz.GetWidth() + toolbarGap;
+      int th = sz.GetHeight() + toolbarGap;
+
+      // Will this one fit in remaining horizontal space?
+      if( ( tw > stack[ stkcnt ].GetWidth() ) ||
+          ( th > stack[ stkcnt ].GetHeight() ) ) 
+      {
+         // Destack entries until one is found in which this bar
+         // will fit or until we run out of stacked entries
+         while( stkcnt > 0 )
+         {
+            stkcnt--;
+
+            // Get out if it will fit
+            if( ( tw <= stack[ stkcnt ].GetWidth() ) &&
+                ( th <= stack[ stkcnt ].GetHeight() ) )
+            {
+               break;
+            }
+         }
+      }
+
+      // The current stack entry position is where the bar
+      // will be placed.
+      cpos = stack[ stkcnt ].GetPosition();
+
+      // We'll be using at least a portion of this stack entry, so
+      // adjust the location and size.  It is possible that these
+      // will become zero if this entry and the toolbar have the
+      // same height.  This is what we want as it will be destacked
+      // in the next iteration.
+      stack[ stkcnt ].SetY(      stack[ stkcnt ].GetY()      + th );
+      stack[ stkcnt ].SetHeight( stack[ stkcnt ].GetHeight() - th );
+
+      // Calc the next possible horizontal location.
+		int x = cpos.x + tw;
+
+      // Add a new stack entry
+      stkcnt++;
+      stack[ stkcnt ].SetX( x );
+		stack[ stkcnt ].SetY( cpos.y );
+		stack[ stkcnt ].SetWidth( width - x );
+		stack[ stkcnt ].SetHeight( th );
+
+      // Position the previous toolbar
+      if( ndx > 0 )
+      {
+         if( lpos.y != cpos.y )
+         {
+            // Place/stretch the last toolbar in the row
+            lt->SetSize( lpos.x, lpos.y, width - lpos.x, lt->GetMinSize().GetHeight() );
+         }
+         else
+         {
+            // Place the unstretched toolbar
+            lt->SetSize( lpos.x, lpos.y, cpos.x - lpos.x - toolbarGap, lt->GetMinSize().GetHeight() );
+         }
+      }
+
+      // Place and stretch the final toolbar
+      if( ndx == cnt - 1 )
+      {
+         ct->SetSize( cpos.x, cpos.y, width - cpos.x, sz.GetHeight() );
+      }
+
+      // Remember for next iteration
+      lt = ct;
+      lpos = cpos;
+   }
+
+   // Set the final size of the dock window
+   SetMinSize( wxSize( -1, stack[ 0 ].GetY() ) );
+}
+
+//
+// Toggle the docked/floating state of the specified toolbar
+//
+void ToolBarDock::SetDocked( wxWindowID id, wxPoint & wpos, wxPoint & mpos )
+{
+   ToolBar *t = mBars[ id ];
+   wxWindow *parent;
+
+   // Handle a floating bar
+   if( !t->IsDocked() )
+   {
+      // Convert location to client space
+      wxPoint p = ScreenToClient( mpos );
+
+      // Search for a docked bar over which this bar was dropped
+      int ndx, cnt = mDockedBars.GetCount();
+      for( ndx = 0; ndx < cnt; ndx++ )
+      {
+         // Does the location fall within this bar?
+         wxRect r = ( (ToolBar *) mDockedBars[ ndx ] )->GetRect();
+         if( r.Inside( p ) )
+         {
+            break;
+         }
+      }
+
+      // Insert bar into the docked bars array
+      mDockedBars.Insert( t, ndx  );
+
+      // Get the floater window
+      parent = t->GetParent();
+
+      // Move the toolbar from the floater window to the toolbar dock
+      t->Reparent( this );
+
+      // Tell the toolbar about the change
+      t->SetDocked( true );
+
+      // Close/destroy the floater window
+      parent->Close( true );
+   }
+   else
+   {
+      // Remove the bar from the docked bars array
+      mDockedBars.Remove( t );
+
+      // Create the floater window
+      parent = new wxFrame( this,
+                            wxID_ANY,
+                            t->GetTitle(),
+                            wxDefaultPosition,
+                            wxDefaultSize,
+                            wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT |
+                            ( t->IsResizeable()? wxRESIZE_BORDER : 0 ),
+                            t->GetLabel() );
+
+      // Move the toolbar from the toolbar dock to the floater window
+      t->Reparent( parent );
+
+      // Tell the toolbar about the change
+      t->SetDocked( false );
+
+      // Resize the floater client size to the toolbars minimum size
+      parent->SetClientSize( t->GetMinSize() );
+
+      // Make sure resizable floaters don't get any smaller than initial size
+      if( t->IsResizeable() )
+      {
+         parent->SetSizeHints( parent->GetSize() );
+      }
+
+      // Offset floater window by given x/y cooridnates
+      wxRect r( wpos.x, wpos.y, 0, 0 );
+      r.Offset( parent->GetPosition() - parent->ClientToScreen( t->GetPosition() ) );
+      parent->Move( r.GetPosition() );
+
+      // Finally show the floater
+      parent->Show();
+   }
+
+   // Notify parent of changes
+   Updated();
+}
+
+//
+// Return docked state of specified toolbar
+//
+bool ToolBarDock::IsDocked( int type )
+{
+   return mBars[ type ]->IsDocked();
+}
+
+//
+// Returns the visibility of the specified toolbar
+//
+bool ToolBarDock::IsVisible( int type )
+{
+   ToolBar *t = mBars[ type ];
+
+   // Is toolbar floating?
+   if( !t->IsDocked() )
+   {
+      // Must return state of floater window
+      return t->GetParent()->IsShown();
+   }
+
+   // Return state of docked toolbar
+   return t->IsShown();
+}
+
+//
+// Toggles the visible/hidden state of a toolbar
+//
+void ToolBarDock::ShowHide( int type )
+{
+   ToolBar *t = mBars[ type ];
+
+   // Handle a docked toolbar
+   if( t->IsDocked() )
+   {
+      // Maintain the docked array
+      if( t->IsShown() )
+      {
+         mDockedBars.Remove( t );
+      }
+      else
+      {
+         mDockedBars.Add( t );
+      }
+
+      // Make it (dis)appear
+      t->Show( !t->IsShown() );
+
+      // Update the layout
+      LayoutToolBars();
+
+      // Notify parent of change
+      Updated();
+   }
+   else
+   {
+      // Make a floater (dis)appear
+      t->GetParent()->Show( !t->GetParent()->IsShown() );
    }
 }
 
-
-/// This finds out if a ToolBar of this type is loaded in
-/// a given project window
-bool ToolBarStub::IsToolBarLoaded(AudacityProject * p) 
+//
+// Queues an EVT_TOOLBAR_UPDATED command event to notify any
+// interest parties of an updated toolbar or dock layout
+//
+void ToolBarDock::Updated()
 {
-   return p->IsToolBarLoaded(mType);
+   // Queue an update event
+   wxCommandEvent e( EVT_TOOLBAR_UPDATED, GetId() );
+   GetParent()->GetEventHandler()->AddPendingEvent( e );
 }
 
-
-/// This will return a pointer to the ToolBar inside the member ToolBarFrame
-ToolBar * ToolBarStub::GetToolBar() 
+//
+// Handle EVT_TOOLBAR_BEGINDRAG events
+//
+void ToolBarDock::OnBeginDrag( wxCommandEvent &event )
 {
-   return mToolBarFrame ? mToolBarFrame->GetToolBar() : NULL;
+   // The idea here is to prevent other drawing while dragging
+   // since it "corrupts" our drag image.
+   //
+   // Under Windows and OSX Freeze()/Thaw() be used, but
+   // GTK doesn't appear to support them so don't do anything
+   // for now.
+   //
+   // Freeze();
+
+   // We don't use the position info, but we must free it
+   delete (GrabberPosition *) event.GetClientData();
+
+   // No need to propagate any further
+   event.Skip( true );
 }
 
+//
+// Handle EVT_TOOLBAR_ENDDRAG events
+//
+void ToolBarDock::OnEndDrag( wxCommandEvent &event )
+{
+   GrabberPosition *p = (GrabberPosition *) event.GetClientData();
+
+   // Go do the docking/floating
+   SetDocked( event.GetId(), p->Window, p->Mouse );
+
+   // See comments in OnBeginDraw()
+   // Thaw();
+
+   // Free the position info
+   delete p;
+
+   // No need to propagate any further
+   event.Skip( true );
+}
+
+// 
+// Handle toolbar updates
+//
+void ToolBarDock::OnToolBarUpdate( wxCommandEvent &event )
+{
+   ToolBar *t = mBars[ event.GetId() ];
+
+   // Resize floater window to exactly contain toolbar
+   if( !t->IsDocked() )
+   {
+      t->GetParent()->SetClientSize( t->GetMinSize() );
+   }
+
+   // Update the layout
+   LayoutToolBars();
+
+   // Allow it to propagate to our parent
+   event.Skip();
+}
+
+//
+// Repaint toolbar gap lines
+//
+void ToolBarDock::OnPaint( wxPaintEvent &event )
+{
+   wxPaintDC dc( this );
+
+   // Set the gap color
+   AColor::Dark( &dc, false );
+
+   // Draw the initial horizontal and vertical gaps
+   wxSize sz = GetClientSize();
+   dc.DrawLine( 0, 0, sz.GetWidth(), 0 );
+   dc.DrawLine( 0, 0, 0, sz.GetHeight() );
+
+   // Draw the gap between each bar
+   int ndx, cnt = mDockedBars.GetCount();
+   for( ndx = 0; ndx < cnt; ndx++ )
+   {
+      wxRect r = ( (ToolBar *)mDockedBars[ ndx ] )->GetRect();
+      dc.DrawLine( r.GetLeft(),
+                   r.GetBottom() + 1,
+                   sz.GetWidth(),
+                   r.GetBottom() + 1 );
+
+      dc.DrawLine( r.GetRight() + 1,
+                   r.GetTop(),
+                   r.GetRight() + 1,
+                   r.GetBottom() + 1 );
+   }
+}
 
 ////////////////////////////////////////////////////////////
 /// Methods for ToolBar
 ////////////////////////////////////////////////////////////
 
-/// Constructor for ToolBar. Should be used by children toolbars
-/// to instantiate the initial parameters of the toolbar.
-ToolBar::ToolBar(wxWindow * parent, wxWindowID id, const wxPoint & pos, const
-      wxSize & size, ToolBarStub * tbs) : 
-   wxWindow(parent, id, pos, size, wxFULL_REPAINT_ON_RESIZE),
-   mToolBarStub(tbs)
+BEGIN_EVENT_TABLE( ToolBar, wxPanel )
+   EVT_PAINT( ToolBar::OnPaint )
+END_EVENT_TABLE()  
+
+//
+// Constructor
+//
+ToolBar::ToolBar():
+   wxPanel()
 {
-   //Set some default values that should be overridden
-   mTitle = wxT("Audacity Toolbar");
-
-   wxColour backgroundColour =
-      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-
-   mBackgroundBrush.SetColour(backgroundColour);
-   mBackgroundPen.SetColour(backgroundColour);
+   // Initialize everything
+   mParent = NULL;
+   mDocked = true;
+   mResizeable = false;
+   mType = NoBarID;
+   mTitle.Clear();
+   mLabel.Clear();
 
    mBackgroundBitmap = NULL;
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
-
-   mIdealSize = wxSize(300, size.y);
-} 
-
-
-//  Alternate constructor for Toolbar.  Should probably not be used,  
-//  except to create a dummy ToolBar.
-/*
-ToolBar::ToolBar(wxWindow * parent):wxWindow(parent, -1, wxPoint(1, 1),
-              wxSize(300, 20),ToolBarStub * tbs) 
-{
-   //Set some default values that should be overridden
-   mTitle = wxT("Audacity Toolbar");
-
-   wxColour backgroundColour =
-      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-
-   mBackgroundBrush.SetColour(backgroundColour);
-   mBackgroundPen.SetColour(backgroundColour);
-   mIdealSize = wxSize(300, 20);
-} 
-
-*/
-
-ToolBar::~ToolBar()
-{
-   if (mBackgroundBitmap)
-      delete mBackgroundBitmap;
-
 }
 
+//
+// Destructor
+//
+ToolBar::~ToolBar()
+{
+}
 
+//
+// Returns the toolbar title
+//
+wxString ToolBar::GetTitle()
+{
+   return mTitle;
+}
 
-   ///This is a generic function that will make a button, given
-   ///generic button images.
-   ///  Parameters:
-   ///
-   /// up:           An image of the blank button in its "up" state
-   /// down:         An image of the blank button in its "down" state
-   /// hilite        An image of the blank button with the hilite halo
-   /// foreground:   A color bitmap of the icon on the button when its
-   ///                 enabled--Can be a solid field.
-   /// disabledfg:   A color bitmap of the icon when its disabled--can be a solid field.
-   /// alpha:        A greyscale mask that determines how much of the
-   ///                 foreground shows through
-   /// id            Button ID
-   /// placement     Location on the toolbar
-   /// processdownevents      boolean that determine whether the button will process events
-   ///                        if it is in the down position (and pop up when clicked in the down position)
-   /// xadjust       x-offset to adjust the icon pixmaps from, wrt a centered icon on background image
-   /// yadjust       y-offset to adjust the icon pixmaps from, wrt a centered icon on background image
-AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
+//
+// Returns the toolbar label
+//
+wxString ToolBar::GetLabel()
+{
+   return mLabel;
+}
+
+//
+// Returns the toolbar type
+//
+int ToolBar::GetType()
+{
+   return mType;
+}
+
+//
+// Returns whether the toolbar is resizeable or not
+//
+bool ToolBar::IsResizeable()
+{
+   return mResizeable;
+}
+
+//
+// Returns the dock state of the toolbar
+//
+bool ToolBar::IsDocked()
+{
+   return mDocked;
+}
+
+//
+// Initialize the toolbar
+//
+void ToolBar::InitToolBar( wxWindow *parent,
+                           int type,
+                           const wxString &title,
+                           const wxString &label,
+                           bool resizeable )
+{
+   // Save parameters
+   mParent = parent;
+   mType = type;
+   mTitle = title;
+   mLabel = label;
+   mResizeable = resizeable;
+
+   // Create the window and label it
+   Create( mParent,
+           type,
+           wxDefaultPosition,
+           wxDefaultSize,
+           wxNO_BORDER | wxTAB_TRAVERSAL | wxCLIP_CHILDREN | wxFULL_REPAINT_ON_RESIZE,
+           mTitle );
+   SetLabel( mLabel );
+
+   // Use a box sizer for laying out controls
+   mHSizer = new wxBoxSizer( wxHORIZONTAL );
+
+   // Create the grabber and add it to the sizer
+   mGrabber = new Grabber( this, mType );
+   mHSizer->Add( mGrabber, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP | wxRIGHT, 1 );
+
+   // Default to docked
+   SetDocked( true );
+
+   // Go add all the rest of the gadgets
+   Populate();
+
+   // Layout and show
+   SetAutoLayout( true );
+   SetSizerAndFit( mHSizer );
+   Layout();
+   Show();
+}
+
+//
+// Toggle the docked/floating state
+//
+void ToolBar::SetDocked( bool dock )
+{
+   // Remember it
+   mDocked = dock;
+
+   // Change the tooltip of the the grabber
+   if( dock )
+   {
+#if wxUSE_TOOLTIPS
+      mGrabber->SetToolTip( _("Float Toolbar") );
+#endif
+   }
+   else
+   {
+#if wxUSE_TOOLTIPS
+      mGrabber->SetToolTip( _("Dock Toolbar") );
+#endif
+   }
+}
+
+//
+// Notify parent of changes
+//
+void ToolBar::Updated()
+{
+   wxCommandEvent e( EVT_TOOLBAR_UPDATED, GetId() );
+   mParent->GetEventHandler()->AddPendingEvent( e );
+}
+
+//
+// Returns a pointer to the main sizer
+//
+wxBoxSizer *ToolBar::GetSizer()
+{
+   return mHSizer;
+}
+
+//
+// Add a window to the main sizer
+//
+void ToolBar::Add( wxWindow *window,
+                   int proportion,
+                   int flag,
+                   int border,
+                   wxObject* userData )
+{
+   mHSizer->Add( window,
+                 proportion,
+                 flag,
+                 border,
+                 userData );
+}
+
+//
+// Add a child sizer to the main sizer
+//
+void ToolBar::Add( wxSizer *sizer,
+                   int proportion,
+                   int flag,
+                   int border,
+                   wxObject* userData )
+{
+   mHSizer->Add( sizer,
+                 proportion,
+                 flag,
+                 border,
+                 userData );
+}
+
+//
+// Add some space to the main sizer
+//
+void ToolBar::Add( int width,
+                   int height,
+                   int proportion,
+                   int flag,
+                   int border,
+                   wxObject* userData )
+{
+   mHSizer->Add( width,
+                 height,
+                 proportion,
+                 flag,
+                 border,
+                 userData );
+}
+
+//
+// Adds a spacer to the main sizer
+//
+void ToolBar::AddSpacer( int size )
+{
+   mHSizer->AddSpacer( size );
+}
+
+//
+// Adds a strechable spacer to the main sizer
+//
+void ToolBar::AddStretchSpacer( int prop )
+{
+   mHSizer->AddStretchSpacer( prop );
+}
+
+//
+// Detach a window from the main sizer
+//
+void ToolBar::Detach( wxWindow *window )
+{
+   mHSizer->Detach( window );
+}
+
+//
+// Detach a child sizer from the main sizer
+//
+void ToolBar::Detach( wxSizer *sizer )
+{
+   mHSizer->Detach( sizer );
+}
+
+///This is a generic function that will make a button, given
+///generic button images.
+///  Parameters:
+///
+/// up:           An image of the blank button in its "up" state
+/// down:         An image of the blank button in its "down" state
+/// hilite        An image of the blank button with the hilite halo
+/// foreground:   A color bitmap of the icon on the button when its
+///                 enabled--Can be a solid field.
+/// disabledfg:   A color bitmap of the icon when its disabled--can be a solid field.
+/// alpha:        A greyscale mask that determines how much of the
+///                 foreground shows through
+/// id            Button ID
+/// placement     Location on the toolbar
+/// processdownevents      boolean that determine whether the button will process events
+///                        if it is in the down position (and pop up when clicked in the down position)
+/// xadjust       x-offset to adjust the icon pixmaps from, wrt a centered icon on background image
+/// yadjust       y-offset to adjust the icon pixmaps from, wrt a centered icon on background image
+AButton * ToolBar::MakeButton(wxImage * up,
+                              wxImage * down,
                               wxImage * hilite,
                               const char **foreground,
                               const char **disabledfg,
@@ -323,30 +1171,20 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
                               bool processdownevents, wxSize size,
                               int xadjust, int yadjust) 
 {
-
-
-
-
-
-   
-
    wxImage * color 			= new wxImage(wxBitmap(foreground).ConvertToImage());
    wxImage * color_disabled = new wxImage(wxBitmap(disabledfg).ConvertToImage());
    wxImage * mask 			= new wxImage(wxBitmap(alpha).ConvertToImage());
 
-
-
-
    //Some images need to be centered on the button.  We calculate the centered values here, and then
    //adjust by xoff/yoff, for maximum control.
  
-   int xoff = (size.GetWidth() - color->GetWidth())/2 + xadjust;
-   int yoff = (size.GetHeight() - color->GetHeight())/2 + yadjust;
+   int xoff = (size.GetWidth() - color->GetWidth())/2;
+   int yoff = (size.GetHeight() - color->GetHeight())/2;
    
-   wxImage * up2 			= OverlayImage(up, color, mask, xoff, yoff);
-   wxImage * hilite2 		= OverlayImage(hilite, color, mask, xoff, yoff);
-   wxImage * down2 			= OverlayImage(down, color, mask, xoff + 1, yoff + 1);
-   wxImage * disable2 		= OverlayImage(up, color_disabled, mask, xoff, yoff);
+   wxImage * up2        = OverlayImage(up, color, mask, xoff, yoff);
+   wxImage * hilite2    = OverlayImage(hilite, color, mask, xoff, yoff);
+   wxImage * down2      = OverlayImage(down, color, mask, xoff + 1, yoff + 1);
+   wxImage * disable2   = OverlayImage(up, color_disabled, mask, xoff, yoff);
 
    AButton * button =
       new AButton(this, id, placement, size, up2, hilite2, down2,
@@ -363,19 +1201,30 @@ AButton * ToolBar::MakeButton(wxImage * up, wxImage * down,
    return button;
 }
 
-///This changes the state a button (from up to down or vice versa)
-void ToolBar::SetButton(bool down, AButton * button) 
+//
+// This changes the state a button (from up to down or vice versa)
+//
+void ToolBar::SetButton( bool down, AButton * button )
 {
-   if (down)
+   if( down )
+   {
       button->PushDown();
+   }
    else
+   {
       button->PopUp();
+   }
 }
 
-
-/// This draws the background of a toolbar
-void ToolBar::DrawBackground(wxDC &dc, int width, int height)
+//
+// This draws the background of a toolbar
+//
+void ToolBar::OnPaint( wxPaintEvent & evt )
 {
+   wxPaintDC dc( (wxWindow *) evt.GetEventObject() );
+
+   int width, height;
+   GetSize(&width, &height);
 
 #ifdef USE_AQUA_THEME
 
@@ -393,249 +1242,12 @@ void ToolBar::DrawBackground(wxDC &dc, int width, int height)
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 
-#if 0
-   height = mIdealSize.GetHeight();
-
-   dc.SetPen(*wxBLACK_PEN);
-   dc.DrawLine(27, 0, 27, height - 1);
-   dc.DrawLine(55, 0, 55, height - 1);
-   dc.DrawLine(83, 0, 83, 27);
-   dc.DrawLine(0, 27, 83, 27);
-#endif
 #else
 
-   dc.SetBrush(mBackgroundBrush);
-   dc.SetPen(mBackgroundPen);
-
-   height = mIdealSize.GetHeight();
-   dc.DrawRectangle(0, 0, width, height);
-
-#if 0
-   // JKC: This code draws a grid of lines around the first few
-   // buttons on the toolbar.
-   // TODO: Do we want this at all?  
-   // If so this should be moved to ControlToolbar.
-   // Having it here means that it is also drawn in EditToolBar,
-   // which we probably don't want.  (same for the Mac 
-   // version in other half of #ifdef).
-
-   dc.SetPen(*wxBLACK_PEN);
-   dc.DrawLine(27, 0, 27, height - 1);
-   dc.DrawLine(55, 0, 55, height - 1);
-   dc.DrawLine(83, 0, 83, height - 1);
-   dc.DrawLine(0, 27, 83, 27);
-#endif
 #endif
 
-
-}
-
-// Static function.
-ToolBar * ToolBar::MakeToolBar(wxWindow *parent, enum ToolBarType tbt)
-{
-   ToolBar *tb = NULL;
-   
-   switch (tbt) {
-   case ControlToolBarID:
-      tb = new ControlToolBar(parent);
-      break;
-   case MixerToolBarID:
-      tb = new MixerToolBar(parent);
-      break;
-   case EditToolBarID:
-      tb = new EditToolBar(parent);
-      break;
-   case MeterToolBarID:
-      tb = new MeterToolBar(parent);
-      break;
-   case TranscriptionToolBarID:
-      tb  = new TranscriptionToolBar(parent);
-      break;
-   case NoneID:
-   default:
-         break;
-   }
-
-   return tb;
-}
-
-// Virtual function.
-// Leaves buttons positioned as-is unless
-// a derived toolbar over-rides it.
-void ToolBar::PlaceButton(int i, wxWindow *pWind)
-{
-
-}
-
-
-////////////////////////////////////////////////////////////
-/// Methods for ToolBarMiniFrame and ToolBarFullFrame
-////////////////////////////////////////////////////////////
-    
-BEGIN_EVENT_TABLE(ToolBarMiniFrame, wxMiniFrame) 
-   EVT_CLOSE(ToolBarMiniFrame::OnCloseWindow)
-   EVT_MOUSE_EVENTS(ToolBarMiniFrame::OnMouseEvent)
-   EVT_BUTTON(TOOLBAR_CLOSE_BUTTON, ToolBarMiniFrame::OnCloseButton)
-END_EVENT_TABLE()  
-
-///Constructor for a ToolBarMiniFrame. You give it a type and
-///It will create a toolbar of that type inside the frame.
-ToolBarMiniFrame::ToolBarMiniFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxMiniFrame(gParentWindow, -1, wxT(""), wxPoint(1, 1),
-                 wxSize(20, 20),
-                 wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
-                 | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
-{
-
-
-   mToolBar = ToolBar::MakeToolBar(this, tbt);
-   mToolBar->Move(20,0);
-   
-   //mDockButton = new wxButton(this,TOOLBAR_CLOSE_BUTTON,">|<",wxPoint(0,0),wxSize(15,mToolBar->GetHeight()));
-
-   wxImage * up,* down, *over, *bad;
-
-   if(mToolBar->GetSize().y > 50)
-      {
-         up   = new wxImage(wxBitmap(DockUp).ConvertToImage());
-         down = new wxImage(wxBitmap(DockDown).ConvertToImage());
-         over = new wxImage(wxBitmap(DockOver).ConvertToImage());
-         bad  = new wxImage(wxBitmap(DockUp).ConvertToImage());
-         
-      }
-   else
-      {
-         up   = new wxImage(wxBitmap(DockUpShort).ConvertToImage());
-         down = new wxImage(wxBitmap(DockDownShort).ConvertToImage());
-         over = new wxImage(wxBitmap(DockOverShort).ConvertToImage());
-         bad  = new wxImage(wxBitmap(DockUpShort).ConvertToImage());
-      }
-
-   mDockButton =
-      new AButton(this, TOOLBAR_CLOSE_BUTTON, wxPoint(-1,-1),
-                  wxSize(up->GetWidth(),up->GetHeight()),
-                  up, over, down, bad,
-                  false);
-   //delete up;
-   //delete down;
-   //delete over;
-
-
-   mDockButton->SetToolTip(_("Dock Toolbar"));
-
-   SetTitle(mToolBar->GetTitle());
-   SetSize(wxSize(mToolBar->GetSize().x + 20,
-                  mToolBar->GetSize().y + TOOLBAR_HEIGHT_OFFSET));
-}
-
-ToolBarMiniFrame::~ToolBarMiniFrame() 
-{
-   delete mToolBar;
-   delete mDockButton;
-}
-
-
-void ToolBarMiniFrame::OnMouseEvent(wxMouseEvent& evt)
-{
-
-   //The following is prototype code for allowing a double-click
-   //close the toolbar.  Commented out in lieu of a close button
-   //that is being tested.
-
-#if 0
-     if(evt.ButtonDClick(1))
-      {
-         AudacityProject * p  = GetActiveProject();
-         ToolBar* tb = ToolBarFrame::GetToolBar();
-         ToolBarStub *tbs= tb->GetToolBarStub();
-         p->FloatToolBar(tbs);
-      }
-#endif
-}
-
-
-
-/// This hides the floating toolbar, effectively 'hiding' the window
-void ToolBarMiniFrame::OnClose() 
-{
-   mDockButton->Toggle();
-   AudacityProject * p = GetActiveProject();
-   ToolBarStub * tbs = ToolBarFrame::GetToolBar()->GetToolBarStub();
-   p->FloatToolBar(tbs);
-} 
-
-void ToolBarMiniFrame::OnCloseButton(wxCommandEvent & WXUNUSED(event)) 
-{
-   OnClose();
-} 
-
-void ToolBarMiniFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
-{
-   
-   OnClose();
-} 
-
-void ToolBarMiniFrame::DoShow(bool visible)
-{
-   Show(visible);
-}
-
-void ToolBarMiniFrame::DoMove(wxPoint where)
-{
-   Move(where);
-}
-
-
-    
-BEGIN_EVENT_TABLE(ToolBarFullFrame, wxFrame) 
-   EVT_CLOSE(ToolBarFullFrame::OnCloseWindow)
-   EVT_SIZE(ToolBarFullFrame::OnSize)
-END_EVENT_TABLE()  
-
-///Constructor for a ToolBarFullFrame. You give it a type and
-///It will create a toolbar of that type inside the frame.
-ToolBarFullFrame::ToolBarFullFrame(wxWindow * parent, enum ToolBarType tbt)
-   : wxFrame(gParentWindow, -1, wxT(""), wxPoint(1, 1),
-             wxSize(20, 20),
-             wxSTAY_ON_TOP | wxMINIMIZE_BOX | wxCAPTION
-             | wxRESIZE_BORDER
-             | ((parent == NULL)?0x0:wxFRAME_FLOAT_ON_PARENT))
-{
-   mToolBar = ToolBar::MakeToolBar(this, tbt);
-   SetTitle(mToolBar->GetTitle());
-
-   // This is a hack for now
-   if (tbt == MeterToolBarID)
-      SetSize(300, 150);
-   else
-      SetSize(wxSize(mToolBar->GetSize().x,
-                     mToolBar->GetSize().y));
-}
-
-ToolBarFullFrame::~ToolBarFullFrame() 
-{
-   delete mToolBar;
-}
-
-/// This hides the floating toolbar, effectively 'hiding' the window
-void ToolBarFullFrame::OnCloseWindow(wxCloseEvent & WXUNUSED(event)) 
-{
-   this->Hide();
-} 
-
-void ToolBarFullFrame::OnSize(wxSizeEvent & event)
-{
-   mToolBar->SetSize(GetClientSize());
-}
-
-void ToolBarFullFrame::DoShow(bool visible)
-{
-   Show(visible);
-}
-
-void ToolBarFullFrame::DoMove(wxPoint where)
-{
-   Move(where);
+   // Go repaint the rest
+   Repaint( &dc );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

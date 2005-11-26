@@ -40,6 +40,7 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
                  bool processdownevents):
    wxWindow(parent, id, pos, size)
 {
+   mParent = parent;
    mWasShiftDown = false;
    mButtonIsDown = false;
    mButtonState = AButtonUp;
@@ -73,6 +74,7 @@ AButton::AButton(wxWindow * parent, wxWindowID id,
                  bool processdownevents):
    wxWindow(parent, id, pos, size)
 {
+   mParent = parent;
    mWasShiftDown = false;
    mButtonIsDown = false;
    mButtonState = AButtonUp;

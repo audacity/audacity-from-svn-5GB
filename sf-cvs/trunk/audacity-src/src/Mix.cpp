@@ -23,7 +23,6 @@
 #include "WaveTrack.h"
 #include "DirManager.h"
 #include "Envelope.h"
-#include "ControlToolBar.h"
 #include "Prefs.h"
 #include "Resample.h"
 

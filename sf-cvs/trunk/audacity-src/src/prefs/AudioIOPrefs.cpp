@@ -33,7 +33,6 @@
 #include "../Prefs.h"
 #include "../AudioIO.h"
 #include "../Project.h"
-#include "../MixerToolBar.h"
 #include "AudioIOPrefs.h"
 
 #include "portaudio.h"
@@ -346,12 +345,6 @@ bool AudioIOPrefs::Apply()
 #if USE_PORTMIXER
    if (gAudioIO)
       gAudioIO->HandleDeviceChange();
-
-   for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
-     {
-       if(gAudacityProjects[i]->GetMixerToolBar())
-	 gAudacityProjects[i]->GetMixerToolBar()->UpdateControls();
-     }
 #endif // USE_PORTMIXER
 
    return true;

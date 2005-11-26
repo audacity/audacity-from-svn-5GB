@@ -12,7 +12,6 @@
 #include "BatchPrefs.h"
 
 #include "../Audacity.h"
-#include "../EditToolBar.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
@@ -393,7 +392,7 @@ void BatchPrefs::AllCheckBoxActions()
    int mode;
    AudacityProject *proj = GetActiveProject();
    mode = gPrefs->Read(wxT("/Batch/CleanSpeechMode"), 1L);
-   proj->SetCleanSpeechMode(mode == 1);
+   proj->GetControlToolBar()->SetCleanSpeechMode(mode == 1);
 #endif
 };
 
@@ -405,7 +404,6 @@ bool BatchPrefs::Apply()
    for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
       gAudacityProjects[j]->UpdateBatchPrefs();
-      gAudacityProjects[j]->LayoutToolBars(); // Just to add/remove the CleanSpeech button.
    }
    mBatchCommands.SaveChain();
    return true;
