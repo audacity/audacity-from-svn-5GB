@@ -14,13 +14,21 @@
   // i18n-hint: If there are any special resources for Audacity users in your
   // language (forums, documentation, mailing lists...), you can add links to
   // them here.
+
+  echo '<p>';
+  echo '<b>';
+  echo _('New!');
+  echo '  ';
+  echo _('Have questions?  Post them to the <a href="http://audacityteam.org/forum/">Audacity Forum</a>.');
+  echo '</p>';
+
   echo _('<p>If you have a question, check the list of <a href="faq">Frequently Asked Questions</a>.</p>
 <p>For instructions and help using Audacity, see:</p>
 <ul>
   <li><a href="documentation">Documentation</a> - Read the user’s manual and quick reference.</li>
   <li><a href="tutorials">Tutorials</a> - Step by step articles teach you how to use Audacity.</li>
 </ul>
-<p>If your question isn’t answered here, please <a href="../contact/">contact us</a>.</p>');
+<p>If your question isn’t answered here, please post to the <a href="http://audacityteam.org/forum/">Audacity Forum</a> or <a href="../contact/">contact us</a>.</p>');
 ?>
 
 <h3><?=_('Other Resources')?></h3>
