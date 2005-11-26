@@ -1,0 +1,56 @@
+* sequencer1b.ny: Audio Sample Sequencer 1.b
+<p>
+Improved over sequencer 1.a: simplified code makes this a version
+1 plug-in. Sequences mono and stereo audio already loaded into
+Audacity, whether a note, vocal sound, series of notes and/or vocal
+sounds, etc.  
+<p>
+Select all audio first, then click on Audio Sample Sequencer 1.b
+from the effects menu.
+<p>
+Variables:
+<p>
+tempo (steady, in beats per minute);
+<p>
+beats per measure (one to sixteen). This plug-in "assumes" that one
+sequence of notes is one measure;
+<p>
+sequences to generate: how many of these sequences do you want to
+generate (from one to a thousand);
+<p>
+16 pairs of tone shift and volume level (tone shift is measured in
+semitones - 0 means no tone shift, negative numbers indicate tone
+drop, positive numbers indicate tone increase; volume level 1.0
+means regular volume, 0.0 means you do not hear a note generated
+for that beat. volume can range from 0.0 to 1.0.)
+<p>
+When you have a tone loaded into Audacity, you can create a major
+scale of 8 notes by 1. selecting desired tempo; 2. selecting 8
+beats per measure; 3. selecting how many sets
+(sequences) of these 8 notes you want to generate (default is 16). 
+These would be the settings for the 8 tone shift edit fields:
+<p>
+0, 2, 4, 5, 7, 9, 11, 12.
+<p>
+If you start with a C note, the above settings will generate a C
+major scale. If your starting note is a B flat note, the above will
+create a B flat major scale.
+<p>
+Rhythms can also be created by playing with the volume edit fields.
+For example, in a series of eighth notes, notes which fall on only
+the first, fourth and seventh beats can be made by making beats per
+measure 8, and making volume on #2, 3, 5, 6 and 8 to 0.0.
+<p>
+It is possible to generate a short sequence using this plug-in,
+then apply it again to that new audio with different settings.
+<p>
+Copy sequencer1b.ny into your Audacity plug-ins folder. The next
+time you open Audacity, you'll find audio Sample Sequencer 1.b in
+the effects menu.
+<p>
+Written by David R. Sky December 17, 2004<br>
+Released under terms of the GNU Public License<br>
+<a href="http://www.opensource.org/licenses/gpl-license.php">
+http://www.opensource.org/licenses/gpl-license.php</a>
+<p>
+

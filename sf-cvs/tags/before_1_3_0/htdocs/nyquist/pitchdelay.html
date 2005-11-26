@@ -1,0 +1,24 @@
+* Delay with Pitch Shift
+<p>
+A delay plug-in except each delay is pitch shifted. Standard delay
+variables: decay (in db), delay time (in seconds), and number of
+delays. Also includes amount of pitch shift (from 0.1 to 10.0) and
+selection of whether the pitch is to be multiplied (0) or divided
+(1) by the shift number.
+<p>
+* tonedelay.ny: Delay with Tone Shift
+<p>
+Similar to pitchshift.ny except you can define in semitones how
+much each delay is to be pitch shifted. A shift of 1 semitone means
+each delay is increased in pitch by 1 semitone, a shift of -1 means
+a decrease of 1 semitone. Includes whole semitones plus semitone
+cents (hundredths of a semitone).
+<p>
+Warning! Both plug-ins are best applied to relatively short
+duration audio, or few number of delays for longer audio. Otherwise
+Audacity will be working a _long_ time. Same thing seems to happen
+if there is already pitch shifting within the audio. (This all may
+be simply my computer, which runs at 233MHz.)
+<p>
+Written by David R. Sky
+<p>

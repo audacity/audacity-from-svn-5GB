@@ -1,0 +1,2701 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: audacity web site\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2005-10-29 11:17+0200\n"
+"Last-Translator: \n"
+"Language-Team: greek <audacity-translation@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Greek\n"
+"X-Poedit-Country: GREECE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: about/main.inc.php:11
+#: about/index.php:9
+#: help/faq.php:23
+msgid "About Audacity"
+msgstr "Σχετικά με το Audacity"
+
+#: about/index.php:14
+msgid ""
+"<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</p>\n"
+"\n"
+"<ul>\n"
+"  <li>Record live audio.</li>\n"
+"  <li>Convert tapes and records into digital recordings or CDs.</li>\n"
+"  <li>Edit Ogg Vorbis, MP3, and WAV sound files.</li>\n"
+"  <li>Cut, copy, splice, and mix sounds together.</li>\n"
+"  <li>Change the speed or pitch of a recording.</li>\n"
+"  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
+"</ul>"
+msgstr ""
+
+#. i18n-hint: Μπορείς να change the link addresses below, if there is a
+#: about/index.php:33
+msgid ""
+"<h3>About Free Software</h3>\n"
+"\n"
+"<p>Audacity is free software, developed by a group of volunteers and distributed under the <a href=\"license\">GNU General Public License (GPL)</a>.</p>\n"
+"\n"
+"<p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"\n"
+"<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
+msgstr ""
+"<h3>Σχετικά με το Ελεύθερο Λογισμικό</h3>\n"
+"\n"
+"<p>Το Audacity είναι ένα ελεύθερο πρόγραμμα, που έχει δημιουργηθεί από μία ομάδα εθελοντών και διανέμεται υπό την <a href=\"license\">GNU General Public License (GPL)(GNU Γενική Δημόσια Άδεια)</a>.</p>\n"
+"\n"
+"<p>Το Ελεύθερο Λογισμικό δεν είναι απλά δωρεάν (όπως «δωρεάν ποτό»).  Είναι <b>Ελεύθερο </b> (όπως “ελευθερία του λόγου”).  Το Ελεύθερο Λογισμικό σου δίνει τη δυνατότητα να χρησιμοποιήσεις ένα πρόγραμμα, να μελετήσεις το πώς λειτουργεί, να το βελτιώσεις και να το μοιραστείς με άλλους.  Για περισσότερες πληροφορίες, μπορείς να επισκεφτείς το <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
+"\n"
+"<p>Προγράμματα όπως το Audacity αποκαλούνται και <b>λογισμικό ανοιχτού κώδικα</b>, γιατί ο πηγαίος κώδικάς τους είναι διαθέσιμος στον καθένα για να το μελετήσει ή να τον χρησιμοποιήσει.  Υπάρχουν χιλιάδες άλλα ελεύθερα και ανοιχτού κώδικα προγράμματα, περιλαμβανομένου του περιηγητή διαδικτύου <a href=\"http://www.mozilla.org/\">Mozilla</a>, της σουίτας γραφείου<a href=\"http://www.openoffice.org/\">OpenOffice.org</a>, και πλήρη <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">λειτουργικών συστημάτων βασισμένων στο Linux</a>.</p>"
+
+#: about/screenshots.php:9
+#: index.php:36
+#: main.inc.php:21
+msgid "Screenshots"
+msgstr "Φωτογραφικά στιγμιότυπα "
+
+#: about/screenshots.php:15
+msgid "Click any screenshot for a larger version."
+msgstr "Κάνε κλικ σε κάποιο στιγμιότυπο για μεγαλύτερη εκδοχή"
+
+#: about/screenshots.php:17
+msgid "Audacity running on Linux"
+msgstr "Το Audacity λειτουργώντας σε Linux"
+
+#: about/screenshots.php:19
+msgid "Audacity running on Windows"
+msgstr "Το Audacity λειτουργώντας σε Windows"
+
+#: about/screenshots.php:21
+msgid "Audacity running on Mac OS X"
+msgstr "Το Audacity λειτουργώντας σε Mac OS X"
+
+#: about/screenshots.php:23
+msgid "Noise Removal effect"
+msgstr "Εφέ Απομάκρυνσης Θορύβου"
+
+#: about/screenshots.php:25
+msgid "Change Pitch effect"
+msgstr "Εφέ Αλλαγής Τόνου"
+
+#: about/screenshots.php:27
+msgid "Change Tempo effect"
+msgstr "Εφέ Αλλαγής Ρυθμού"
+
+#: about/screenshots.php:29
+msgid "Recording with Audacity"
+msgstr "Ηχογραφώντας με το Audacity"
+
+#: about/features.php:9
+#: main.inc.php:20
+msgid "Features"
+msgstr "Χαρακτηριστικά"
+
+#: about/features.php:13
+msgid "This is a list of features in Audacity, the free audio editor.  For more information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
+msgstr "Αυτή είναι μία λίστα με τα χαρακτηριστικά του Audacity, το ελεύθερο πρόγραμμα επεξεργασίας audio. Για περισσότερες πληροφορίες στο πώς να τα χρησιμοποιήσεις, πήγαινε στη <a href=\"../help/\">σελίδα βοήθειας</a>."
+
+#: about/features.php:15
+msgid ""
+"<h3>Recording</h3>\n"
+"<p>Audacity can record live audio through a microphone or mixer, or digitize recordings from cassette tapes, vinyl records, or minidiscs.  With some sound cards, it can also capture streaming audio.</p>\n"
+"<ul>\n"
+"  <li>Record from microphone, line input, or other sources.</li>\n"
+"  <li>Dub over existing tracks to create multi-track recordings.</li>\n"
+"  <li>Record up to 16 channels at once (requires multi-channel hardware).</li>\n"
+"  <li>Level meters can monitor volume levels before, during, and after recording.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Ηχογράφηση</h3>\n"
+"<p>Το Audacity μπορεί να ηχογραφήσει ζωντανό ήχο από μικρόφωνο ή μίκτη, ή να ψηφοποιήσει ηχογραφήσεις από κασσέτες, δίσκους βινυλίου, ή μίνιντισκ.  Με κάποιες κάρτες ήχου, μπορεί επίσης να συλλάβει ρέων(streaming) audio.</p>\n"
+"<ul>\n"
+"  <li>Ηχογράφηση από  μικρόφωνο, είσοδο γραμμής (line), ή άλλες πηγές.</li>\n"
+"  <li>Να αποβάλλεις υπάρχοντα κανάλια για να δημιουργήσεις πολυκάναλες ηχογραφήσεις.</li>\n"
+"  <li>Ηχογράφηση μέχρι και 16 καναλιών ταυτόχρονα  (απαιτείται πολυκάναλη συσκευή).</li>\n"
+"  <li>Μετρητές έντασης μπορούν να παρακολουθούν τη στάθμη εγγραφής πριν,κατά τη διάρκεια και μετά την ηχογράφηση.</li>\n"
+"</ul>"
+
+#: about/features.php:25
+msgid ""
+"<h3>Import and Export</h3>\n"
+"<p>Import sound files, edit them, and combine them with other files or new recordings.  Export your recordings in several common file formats.</p>\n"
+"<ul>\n"
+"  <li>Import and export WAV, AIFF, AU, and <a href=\"http://vorbis.com\">Ogg Vorbis</a> files.</li>\n"
+"  <li>Import MPEG audio (including MP2 and MP3 files) with <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Export MP3s with the optional LAME encoder library.</li>\n"
+"  <li>Create WAV or AIFF files suitable for burning to CD.</li>\n"
+"  <li>Import and export all file formats supported by <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
+"  <li>Open raw (headerless) audio files using the “Import Raw” command.</li>\n"
+"  <li><strong>Note:</strong>  Audacity does not currently support WMA, AAC, or most other proprietary or restricted file formats.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Εισαγωγή και Εξαγωγή</h3>\n"
+"<p>Εισήγαγε αρχεία ήχου, κάνε επεξεργασία αυτών, και συνδύασέ τα με άλλα αρχεία ή νέες ηχογραφήσεις.  Κάνε εξαγωγή των ηχογραφήσεων σε διάφορους ευρύτατα διαδεδομένους τύπους αρχείων.</p>\n"
+"<ul>\n"
+"  <li>Εισήγαγε και κάνε εξαγωγή WAV, AIFF, AU, και <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
+"  <li>Εισήγαγε MPEG audio (περιλαμβάνει MP2 και MP3 αρχεία) με <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
+"  <li>Κάνε εξαγωγή MP3 με τον προαιρετικό κωδικοποιητή LAME library.</li>\n"
+"  <li>Δημιούργησε WAV ή AIFF αρχεία κατάλληλα για εγγραφή σε CD.</li>\n"
+"  <li>Εισήγαγε και κάνε εξαγωγή όλων των τύπων αρχείων που υποστηρίζονται από <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
+"  <li>Άνοιξε  ανεπεξέργαστα (χωρίς κεφαλίδα) audio αρχεία χρησιμοποιώντας την “Εισαγωγή Ανεπεξέργαστων Δεδομένων” εντολή.</li>\n"
+"  <li><strong>Σημείωση:</strong>  το Audacity προσωρινά δεν υποστηρίζει  WMA, AAC, ή τους περισσότερους άλλους ιδιόκτητους ή υπό περιορισμό τύπους αρχείων.</li>\n"
+"</ul>"
+
+#: about/features.php:37
+msgid ""
+"<h3>Editing</h3>\n"
+"<ul>\n"
+"  <li>Easy editing with Cut, Copy, Paste, and Delete.</li>\n"
+"  <li>Use unlimited Undo (and Redo) to go back any number of steps.</li>\n"
+"  <li>Very fast editing of large files.</li>\n"
+"  <li>Edit and mix an unlimited number of tracks.</li>\n"
+"  <li>Use the Drawing tool to alter individual sample points.</li>\n"
+"  <li>Fade the volume up or down smoothly with the Envelope tool.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Επεξεργασία</h3>\n"
+"<ul>\n"
+"  <li>Εύκολη επεξεργασία με  Αποκοπή, Αντιγραφή, Επικόλληση, και Διαγραφή.</li>\n"
+"  <li>Χρησιμοποίησε απεριόριστα Αναίρεση (και Επαναφορά) για να πας πίσω σε οποιοδήποτε  αριθμό από βήματα.</li>\n"
+"  <li>Πολύ γρήγορη επεξεργασία μεγάλων αρχείων.</li>\n"
+"  <li>Επεξεργασία και μίξη σε απεριόριστο αριθμό από κανάλια.</li>\n"
+"  <li>Χρησιμοποίησε το Εργαλείο Σχεδίασης για να μεταβάλλεις ξεχωριστά σημεία δείγματος.</li>\n"
+"  <li>Άλλαξε την ένταση ομαλά προς τα επάνω ή κάτω με το Εργαλείο Πορείας Έντασης.</li>\n"
+"</ul>"
+
+#: about/features.php:47
+msgid ""
+"<h3>Effects</h3>\n"
+"<ul>\n"
+"  <li>Change the pitch without altering the tempo, or vice-versa.</li>\n"
+"  <li>Remove static, hiss, hum, or other constant background noises.</li>\n"
+"  <li>Alter frequencies with Equalization, FFT Filter, and Bass Boost effects.</li>\n"
+"  <li>Adjust volumes with Compressor, Amplify, and Normalize effects.\n"
+"  <li>Other built-in effects include:\n"
+"    <ul>\n"
+"      <li>Echo</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Wahwah</li>\n"
+"      <li>Reverse</li>\n"
+"    </ul>\n"
+"  </li>\n"
+"</ul>"
+msgstr ""
+"<h3>Εφέ</h3>\n"
+"<ul>\n"
+"  <li>Άλλαξε τον τόνο χωρίς να αλλάξεις τον ρυθμό, ή το αντίθετο.</li>\n"
+"  <li>Απομάκρυνε στατικό, σφύριγμα, βούισμα, ή άλλους επίμονους  θορύβους που υπάρχουν στο βάθος.</li>\n"
+"  <li>Μετάβαλε συχνότητες με τα εφέ Ισοστάθμιση, FFT Φίλτρο, και Ενίσχυση Χαμηλών Συχνοτήτων.</li>\n"
+"  <li>Προσάρμοσε τις εντάσεις με τα εφέ Συμπιεστής, Ενίσχυση, και Κανονικοποίηση.\n"
+"  <li>Άλλα ενσωματωμένα εφέ είναι:\n"
+"    <ul>\n"
+"      <li>Ηχώ</li>\n"
+"      <li>Phaser</li>\n"
+"      <li>Wahwah</li>\n"
+"      <li>Αναστροφή</li>\n"
+"    </ul>\n"
+"  </li>\n"
+"</ul>"
+
+#: about/features.php:63
+msgid ""
+"<h3>Sound Quality</h3>\n"
+"<ul>\n"
+"  <li>Record and edit 16-bit, 24-bit, and 32-bit (floating point) samples.</li>\n"
+"  <li>Record at up to 96 KHz.</li>\n"
+"  <li>Sample rates and formats are converted using high-quality resampling and dithering.</li>\n"
+"  <li>Mix tracks with different sample rates or formats, and Audacity will convert them automatically in realtime.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Ποιότητα Ήχου</h3>\n"
+"<ul>\n"
+"  <li>Ηχογράφηση και επεξεργασία 16-bit, 24-bit, και 32-bit (floating point) δειγμάτων.</li>\n"
+"  <li>Ηχογράφηση  μέχρι τα 96 KHz.</li>\n"
+"  <li>Ρυθμοί δειγματοληψίας και μορφές αρχείων μετατρέπονται χρησιμοποιώντας υψηλής ποιότητας επαναδειγματοληψία και dithering.</li>\n"
+"  <li>Κάνε μίξη καναλιών με διαφορετικούς ρυθμούς δειγματοληψίας ή τύπους αρχείων, και το Audacity θα τα μετατρέψει αυτόματα σε πραγματικό χρόνο.</li>\n"
+"</ul>"
+
+#: about/features.php:71
+msgid ""
+"<h3>Plug-Ins</h3>\n"
+"<ul>\n"
+"  <li>Add new effects with <a href=\"http://www.ladspa.org/\">LADSPA plugins</a>.</li>\n"
+"  <li>Audacity includes some sample plugins by <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Load VST plugins for Windows and Mac, with the optional <a href=\"http://audacityteam.org/vst/\">VST Enabler</a>.</li>\n"
+"  <li>Write new effects with the built-in <a href=\"../help/nyquist\">Nyquist</a> programming language.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Ενθέματα(Plug-Ins)</h3>\n"
+"<ul>\n"
+"  <li>Πρόσθεσε νέα εφέ με <a href=\"http://www.ladspa.org/\">ενθέματα LADSPA (plugins)</a>.</li>\n"
+"  <li>Το Audacity περιλαμβάνει μερικά δείγματα ενθεμάτων από τον <a href=\"http://plugin.org.uk/\">Steve Harris</a>.</li>\n"
+"  <li>Φόρτωσε ενθέματα VST (plugins) για Windows και Mac, με τον προαιρετικό <a href=\"http://audacityteam.org/vst/\">Ενεργοποιητή VST</a>.</li>\n"
+"  <li>Γράψε νέα εφέ με την ενσωματωμένη <a href=\"../help/nyquist\">Nyquist</a> γλώσσα προγραμματισμού.</li>\n"
+"</ul>"
+
+#: about/features.php:79
+msgid ""
+"<h3>Analysis</h3>\n"
+"<ul>\n"
+"  <li>Spectrogram mode for visualizing frequencies.</li>\n"
+"  <li>“Plot Spectrum” command for detailed frequency analysis.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Ανάλυση</h3>\n"
+"<ul>\n"
+"  <li>Κατάσταση φασματογραφήματος για οπτικοποίηση των συχνοτήτων.</li>\n"
+"  <li>“Ανάλυση Συχνότητας” εντολή για λεπτομερής ανάλυση συχνότητας.</li>\n"
+"</ul>"
+
+#: about/features.php:85
+msgid ""
+"<h3>Free and Cross-Platform</h3>\n"
+"<ul>\n"
+"  <li>Licensed under the <a href=\"license\">GNU General Public License (GPL)</a>.</li>\n"
+"  <li>Runs on Mac OS X, Windows, and GNU/Linux.</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Ελεύθερο και Ανεξαρτήτως-Πλατφόρμας</h3>\n"
+"<ul>\n"
+"  <li>Αδειοδότηση υπό τη <a href=\"license\">Γενική Δημόσια Άδεια GNU (GPL)</a>.</li>\n"
+"  <li>Τρέχει σε Mac OS X, Windows, και GNU/Linux.</li>\n"
+"</ul>"
+
+#: about/credits.php:10
+#: main.inc.php:24
+msgid "Credits"
+msgstr "Εύσημα"
+
+#: about/credits.php:15
+msgid ""
+"These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  \n"
+"</p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>."
+msgstr ""
+"Αυτοί είναι κάποιοι από τους ανθρώπους που έχουν <a href=\"../community/\">συνεισφέρει</a> στο ελεύθερο πρόγραμμα επεξεργασίας audio Audacity.</p>  \n"
+"</p>Εάν έχεις ερωτήσεις ή στοιχεία υποστήριξης σχετικά με το Audacity, μπορείς να δεις τη <a href=\"../contact/\">σελίδα επικοινωνίας</a>."
+
+#: about/credits.php:18
+msgid "Lead Developers"
+msgstr "Κύριοι Συντελεστές"
+
+#: about/credits.php:21
+msgid "Dominic is the project leader and original author of Audacity."
+msgstr "Ο Dominic είναι ο υπεύθυνος εγχειρήματος και ο αρχικός προγραμματιστής  του Audacity."
+
+#: about/credits.php:28
+msgid "Active Developers"
+msgstr "Ενεργοί Συντελεστές"
+
+#: about/credits.php:35
+msgid "Contributors"
+msgstr "Έχουν συμβάλει"
+
+#: about/credits.php:49
+#: community/index.php:21
+#: community/translation.php:10
+#: main.inc.php:56
+msgid "Translators"
+msgstr "Μεταφραστές"
+
+#: about/credits.php:89
+msgid "Libraries"
+msgstr "Συλλογές"
+
+#: about/credits.php:90
+msgid "Audacity is based on code from the following projects:"
+msgstr "Το Audacity βασίζεται σε κώδικες από τις ακόλουθες παραγωγές:"
+
+#: about/credits.php:104
+msgid "Thanks"
+msgstr "Ευχαριστίες"
+
+#: about/credits.php:105
+msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
+msgstr "Υπάρχουν πολλοί άλλοι που θα θέλαμε να ευχαριστήσουμε. Πολλοί από αυτούς έχουν συμβάλει με κώδικα,στοιχεία,υποστήριξη,χρήματα,χρόνο, ή άλλους τρόπους στην παραγωγή. Άλλοι απλά έχουν δημιουργήσει εργαλεία που έκαναν δυνατή αυτή την προσπάθεια."
+
+#: about/credits.php:127
+msgid "(Let us know if we're forgetting anyone!)"
+msgstr "(Ενημέρωσέ μας αν έχουμε ξεχάσει κάποιον!)"
+
+#: about/license.php:9
+#: main.inc.php:23
+msgid "License"
+msgstr "Άδεια"
+
+#. i18n-hint:  These gnu.org web pages are available in several languages.
+#: about/license.php:25
+msgid ""
+"<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
+"\n"
+"<p>This license gives you the permission to modify, copy, distribute, and sell Audacity, as long as the code you distribute is available under the GPL.  If you have questions, please <a href=\"../contact/\">contact us</a>.\n"
+"\n"
+"<p>See also: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Frequently Asked Questions about the GNU GPL</a>.</p>"
+msgstr ""
+"<p>Το Audacity είναι ένα ελεύθερο πρόγραμμα, μπορείς να το αναδιανείμεις ή να το μετατρέψεις υπό τους όρους της <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">Γενικής Δημόσειας Άδειας GNU</a> όπως έχει δημοσιευτεί από το Free Software Foundation, είται της έκδοσης 2 της Άδειας, ή (κατά επιλογή σου) κάποιας μεταγενέστερης έκδοσης.</p>\n"
+"\n"
+"<p>Αυτή η άδεια σου επιτρέπει να μετατρέψεις, αντιγράψεις, διανείμεις, και πουλήσεις το Audacity, εφ΄όσων ο κωδικός που διανέμεις είναι διαθέσιμος υπό την GPL.  Αν έχεις ερωτήσεις, παρακαλώ <a href=\"../contact/\">επικοινώνησε μαζί μας </a>.\n"
+"\n"
+"<p>Δες επίσης: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Συχνές Ερωτήσεις σχετικά με την GNU GPL</a>.</p>"
+
+#: about/news.php:21
+#: index.php:64
+msgid "More news items..."
+msgstr "Επιπλέον νέα..."
+
+#: about/news.php:25
+#: main.inc.php:22
+msgid "News"
+msgstr "Νέα"
+
+#: about/links.php:9
+#: main.inc.php:25
+msgid "Links"
+msgstr "Σύνδεσμοι"
+
+#: about/links.php:14
+msgid "Other Things Named “Audacity” (not related to us)"
+msgstr "Άλλα Πράγματα Που Ονομάζονται \"Audacity\" (δεν σχετίζονται με εμάς)"
+
+#: about/links.php:16
+msgid "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital voice recorder for Palm OS and Treo handheld computers"
+msgstr "<a href=\"http://www.audiost.com/advr.htm\">Το Audacity DVR</a> είναι ένας ψηφιακός ηχογράφος φωνής για Palm OS και Treo υπολογιστές χειρός"
+
+#: about/links.php:17
+msgid "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company for construction industry professionals."
+msgstr "<a href=\"http://www.audacity.org\">Το Audacity.org</a> είναι μία εταιρία έρευνας για επαγγελματίες της βιομηχανίας κατασκευών."
+
+#: about/links.php:18
+msgid "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a street-rock band from Finland."
+msgstr "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> είναι μία ροκ μπάντα του δρόμου από την  Finland."
+
+#: about/links.php:19
+#, fuzzy
+msgid "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom enterprise and departmental Windows applications."
+msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom enterprise και departmental Windows applications."
+
+#: about/links.php:22
+msgid "Other Audio Software"
+msgstr "Άλλα Προγράμματα Audio"
+
+#: about/links.php:23
+msgid "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux."
+msgstr "<a href=\"http://ardour.org/\">Ardour</a> είναι ένα ισχυρό πρόγραμμα επεξεργασίας ψηφιακού ήχου που λειτουργεί σε GNU/Linux."
+
+#: about/links.php:24
+msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for Microsoft Windows."
+msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> είναι ένας δωρεάν CD ripper για Microsoft Windows."
+
+#: about/links.php:25
+msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
+msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> είναι ένα δωρεάν εργαλείο για σύλληψη και καθαρισμό ηχογραφήσεων από δίσκους βινυλίου"
+
+#: about/links.php:26
+msgid "More free software at SourceForge.net:"
+msgstr "Και άλλα δωρεάν προγράμματα στο SourceForge.net:"
+
+#: about/links.php:28
+msgid "Audio Editors"
+msgstr "Επεξεργαστές Audio"
+
+#: about/links.php:29
+msgid "Audio Capture/Recording"
+msgstr "Σύλληψη/Ηχογράφηση Audio"
+
+#: about/links.php:30
+msgid "Audio Analysis"
+msgstr "Ανάλυση Audio"
+
+#: community/main.inc.php:11
+#: community/index.php:9
+#: main.inc.php:53
+msgid "Get Involved"
+msgstr "Εθελοντική Συμμετοχή"
+
+#: community/index.php:15
+msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
+msgstr "Το Audacity είναι ένα ελεύθερο πρόγραμμα,που έχει αναπτυχθεί από εθελοντές. Εδώ μπορείς να δεις πως μπορείς να βοηθήσεις στο εγχείρημα Audacity"
+
+#: community/index.php:18
+#: main.inc.php:55
+msgid "Users"
+msgstr "Χρήστες"
+
+#: community/index.php:19
+msgid "Give us feedback, report bugs, and become part of the Audacity user community."
+msgstr "Στείλε μας ενημερώσεις, αναφορές σφαλμάτων , και γίνε μέλος της κοινότητας χρηστών του Audacity."
+
+#: community/index.php:22
+msgid "If you are fluent in both English and another language, you can help translate the Audacity software and web site.  We also need people to help provide support for Audacity in different languages."
+msgstr "Αν γνωρίζεις καλά Αγγλικά και κάποια άλλη γλώσσα, μπορείς να βοηθήσεις στη μετάφραση του προγράμματος Audacity και του διαδικτυακού  τόπου.  Επίσης χρειαζόμαστε ανθρώπους που θα βοηθήσουν στη παροχή υποστήριξης για το Audacity σε διαφορετικές γλώσσες."
+
+#: community/index.php:24
+#: community/developers.php:9
+#: main.inc.php:57
+msgid "Developers"
+msgstr "Συντελεστές"
+
+#: community/index.php:25
+msgid "If you are a C++ programmer, you can join the development team and help us improve Audacity.  We welcome documentation and other contributions too."
+msgstr "Αν είσαι προγραμματιστής σε C++, μπορείς να συνδράμεις την ομάδα ανάπτυξης και να μας βοηθήσεις να βελτιώσουμε το Audacity.  Είναι ευπρόσδεκτα επίσης έγγραφα υποστήριξης και άλλες συνεισφορές ."
+
+#: community/index.php:28
+msgid ""
+"You may also <a href=\"donate\">donate money</a> to support Audacity\n"
+"development."
+msgstr ""
+"Μπορείς επίσης <a href=\"donate\">να δωρίσεις χρήματα</a> ώστε να υποστηρίξεις\n"
+" την ανάπτυξη του Audacity"
+
+#: community/users.php:10
+msgid "User Community"
+msgstr "Κοινότητα Χρηστών"
+
+#: community/users.php:15
+msgid "Audacity was written by volunteers in their spare time.  If you appreciate Audacity and would like to help out, here are some ideas:"
+msgstr "Το Audacity έχει δημιουργηθεί από εθελοντές στον ελεύθερό τους χρόνο.  Αν εκτιμάς το  Audacity και θα ήθελες να βοηθήσεις , εδώ μπορείς να δεις πώς:"
+
+#: community/users.php:18
+msgid ""
+"<h3>Say Hello!</h3>\n"
+"<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us know that you like it.  It makes us happy to know that people enjoy it.  Also feel free to send comments and suggestions.  We're always improving Audacity, and we value your input.</p>"
+msgstr ""
+"<h3>Say Hello!</h3>\n"
+"<p>Αν σου αρέσει το Audacity, <a href=\"../contact/\">επικοινώνησε μαζί μας</a> και ενημέρωσέ μας.  Μας ευχαριστεί να γνωρίζουμε ότι ανθρώποι το προτιμούν.  Επίσης μην διστάσεις να στείλεις σχόλια και προτάσεις.  Συνεχώς βελτιώνουμε το  Audacity, και εκτιμούμε την προσφορά σου.</p>"
+
+#. i18n-hint:  Note that the wiki is in English.  If you want, you can create
+#: community/users.php:24
+#, fuzzy
+msgid ""
+"<h3>Join the User Community</h3>\n"
+"<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users mailing list</a> to share tips, questions, and feedback with other Audacity users and developers.</p> <p>Visit the <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, a community resource where users can add or edit information about Audacity.</p>"
+msgstr ""
+"<h3>Πάρε μέρος στην Κοινότητα Χρηστών</h3>\n"
+"<p>Γίνε συνδρομητής στην <a href=\"../contact/lists#users\">λίστα αλληλογραφίας των audacity-users</a> για να μοιραστείς ιδέες, ερωτήσεις, και στοιχεία υποστήριξης με άλλους χρήστες και δημιουργούς του Audacity .</p> <p>Visit the <a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a>, a community resource όπου χρήστες μπορούν να προσθέσουν ή να επεξεργαστούν πληροφορίες σχετικά με το Audacity.</p>"
+
+#: community/users.php:28
+msgid ""
+"<h3>Report bugs</h3>\n"
+"<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</p>"
+msgstr ""
+"<h3>Αναφορά σφαλμάτων</h3>\n"
+"<p>Αν βρεις ένα σφάλμα στο Audacity, <a href=\"../contact/\">ενημέρωσέ μας</a>.</p>"
+
+#: community/users.php:31
+#, fuzzy
+msgid ""
+"<h3>Be a Beta Tester</h3>\n"
+"<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
+msgstr ""
+"<h3>Be a Beta Tester</h3>\n"
+"<p>Επιπρόσθετα to the latest σταθερής έκδοσης  του Audacity, we often have δοκιμαστικές εκδόσεις διαθέσιμες.  Αυτές οι εκδόσεις συνήθως contain νέα features that haven't been tested yet.  Αν θέλεις to βοηθήσεις out, μεταφόρτωσε this έκδοση  του Audacity και play με it.  Ενημέρωσέ μας what you like και don't like, και tell us how you think it should be improved.  Tell us αν βρεις any <em>regressions</em> - things that used to work όμως don't work anymore.</p>"
+
+#: community/donate.php:10
+msgid "Make a Donation"
+msgstr "Δημιουργία Δωρεάς"
+
+#: community/donate.php:16
+msgid "Audacity is developed by volunteers, working in our spare time. It is not shareware, and we do not expect to make any money from it.  However, by donating money you can help us pay for bandwidth and web hosting, development tools, and audio hardware&mdash;things that help us provide Audacity for free and continue to make it better."
+msgstr "Το Audacity έχει αναπτυχθεί από εθελοντές, που εργάζονται στον ελεύθερο χρόνο τους. Δεν είναι shareware, και δεν περιμένουμε να βγάλουμε χρήματα από αυτό.  Παρ' όλα αυτά, δωρίζοντας χρήματα μπορείς να μας βοηθήσεις να πληρώσουμε για εύρος ζώνης και φιλοξενία ιστοσελίδων, εργαλεία ανάπτυξης, και audio συσκευές&mdash;πράγματα που μας βοηθούν να παρέχουμε το Audacity δωρεάν και να συνεχίζουμε την βελτίωσή του."
+
+#: community/donate.php:18
+msgid "For a special gift if you donate US$20 or more, see our <a href=\"http://audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
+msgstr "Για ένα ιδιαίτερο δώρο στην περίπτωση που δωρίσεις US$20 ή περισσότερα, δες την <a href=\"http://audacityteam.org/tshirt.php\">προσφορά για T-shirt του Audacity  </a>."
+
+#: community/donate.php:20
+msgid "We currently accept money via the Amazon Honor System. Use your credit card and make a payment as small as US$1.00, or up to US$50.00:"
+msgstr "Για την ώρα δεχόμαστε χρήματα μέσω του  Amazon Honor System. Χρησιμοποίησε την πιστωτική σου κάρτα και στείλε χρήματα από  US$1.00 μέχρι US$50.00:"
+
+#: community/donate.php:30
+msgid "We also accept PayPal payments through the SourceForge donation system:"
+msgstr "Επίσης δεχόμαστε PayPal πληρωμές μέσω του συστήματος δωρεών του SourceForge:"
+
+#: community/donate.php:33
+msgid "Donate via PayPal"
+msgstr "Δωρεά μέσω PayPal"
+
+#: community/donate.php:36
+msgid "If you prefer to send a personal check or another form of payment, please visit the <a href=\"../about/credits\">credits</a> page and contact one of the lead developers."
+msgstr "Αν προτιμάς να στείλεις ένα προσωπικό τσεκ ή κάποιας άλλης μορφής πληρωμή, παρακαλώ δες την ιστοσελίδα<a href=\"../about/credits\">Εύσημα</a> και επικοινώνησε με έναν από τους κύριους δημιουργούς."
+
+#: community/donate.php:38
+msgid "We would also like to hear from any companies or groups interested in <a href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity development</a>."
+msgstr "Θα θέλαμε επίσης να επικοινωνήσουν μαζί μας εταιρείες ή ομάδες που ενδιαφέρονται να<a href=\"http://audacityteam.org/sponsor.php\">χρηματοδοτήσουν την ανάπτυξη του Audacity </a>."
+
+#: community/translation.php:16
+msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
+msgstr "Μια ομάδα από εθελοντές μεταφράζει τον ελεύθερο επεξεργαστή ήχου Audacity σε διάφορες γλώσσες.  Αν θα ήθελες να βοηθήσεις, παρακαλώ πάρε μέρος στη <a href=\"../contact/lists#translation\">audacity-μετάφραση λίστα αλληλογραφίας</a> και σύστησε τον εαυτό σου."
+
+#: community/translation.php:18
+msgid "Resources for Translators"
+msgstr "Πόροι για Μεταφραστές"
+
+#: community/translation.php:20
+msgid "Mailing list and archives"
+msgstr "Λίστα Αλληλογραφίας και αρχεία"
+
+#: community/translation.php:21
+msgid "Latest audacity.pot file"
+msgstr "Πιο πρόσφατο αρχείο audacity.pot"
+
+#: community/translation.php:22
+msgid "Latest audacity_website.pot file"
+msgstr "Πιο πρόσφατο αρχείο audacity_website.pot"
+
+#: community/translation.php:23
+msgid "wxWidgets i18n"
+msgstr "wxWidgets i18n"
+
+#. i18n-hint: These instructions are for translators only, so you may
+#: community/translation.php:29
+#, fuzzy, php-format
+msgid ""
+"<h3>Translation Instructions</h3>\n"
+"\n"
+"<p>To start a new translation, download POT file above.  Rename it \"audacity.po\" before you begin translating.  To edit an existing translation, download the PO file for your language:</p>\n"
+"<ul>\n"
+"  <li><a href=\"%s\">Audacity translations</a></li>\n"
+"  <li><a href=\"%s\">Audacity web site translations</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>These programs can create and edit PO files:</p>\n"
+"<ul>\n"
+"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> for Windows and Unix.</li>\n"
+"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> for KDE.</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>\n"
+"</ul>\n"
+"\n"
+"<p>Send completed PO files to Matt Brubeck, <a href=\"mailto:mbrubeck@cs.hmc.edu\">mbrubeck@cs.hmc.edu</a>.</p>\n"
+"\n"
+"<h3>Notes</h3>\n"
+"\n"
+"<ul>\n"
+"  <li><p>In poEdit, make sure to set the \"charset\" option correctly.  Otherwise, poEdit will not save any translations with non-English characters.</p>\n"
+"  <li><p>Strings like <b>\"&amp;File\"</b> and <b>\"New &amp;Audio Track\"</b> are menu items.  The letter after the \"&amp;\" symbol is used as a keyboard shortcut.</p>\n"
+"  <li><p><b>\"Import Audio...\\tCtrl+i\"</b> is also a menu item.  The \\t stands for a tab character, which separates the menu text from the keyboard command.</p>\n"
+"  <li><p>You will find many strings like <b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become \"There were 4 buffer underruns, last near 3.01 seconds.\" If you change the order of the the %% markers in a string, add \"1$\" after the percent sign that used to be first, \"2$\" after the percent sign that used to be second, and so on.  For example:</p>\n"
+"  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
+"</ul>"
+msgstr ""
+"<h3>Οδηγίες Μετάφρασης</h3>\n"
+"\n"
+"<p>Για να ξεκινήσεις μία νέα μετάφραση, μεταφόρτωσε το παραπάνω POT αρχείο.  Μετονόμασέ το σε \"audacity.po\" πριν ξεκινήσεις την μετάφραση.  Για να επεξεργαστείς μία υπάρχουσα μετάφραση, μεταφόρτωσε το PO αρχείο για τη δική σου γλώσσα:</p>\n"
+"<ul>\n"
+"  <li><a href=\"%s\">Audacity μεταφράσεις</a></li>\n"
+"  <li><a href=\"%s\">Audacity μεταφράσεις διαδικτυακού τόπου</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>Αυτά τα προγράμματα μπορούν να δημιουργείσουν και να επεξεργαστούν PO αρχεία:</p>\n"
+"<ul>\n"
+"  <li><a href=\"http://poedit.sourceforge.net/\">poEdit</a> για Windows και Unix.</li>\n"
+"  <li><a href=\"http://i18n.kde.org/tools/kbabel/\">KBabel</a> για KDE.</li>\n"
+"  <li><a href=\"http://www.gnu.org/software/gettext/\">GNU gettext</a> είναι προεπιλεγμένο  στα περισσότερα Unix συστήματα.  Περιλαμβάνει PO τρόπο λειτουργείας για τον επεξεργαστή κειμένου Emacs .</li>\n"
+"</ul>\n"
+"\n"
+"<p>Στείλε ολοκληρομένα PO αρχεία στο Matt Brubeck, <a href=\"mailto:mbrubeck@cs.hmc.edu\">mbrubeck@cs.hmc.edu</a>.</p>\n"
+"\n"
+"<h3>Σημειώσεις</h3>\n"
+"\n"
+"<ul>\n"
+"  <li><p>Στο poEdit, φρόντισε να ρυθμίσεις την επιλογή  \"charset\" σωστά.  Διαφορετικά, το poEdit δεν θα αποθηκεύσει καμία μετάφραση με μη αγγλικούς χαρακτήρες.</p>\n"
+"  <li><p>Στίχοι όπως <b>\"&amp;File\"</b> και <b>\"New &amp;Audio Track\"</b> είναι στοιχεία του μενού.  Το γράμμα μετά το\"&amp;\" σύμβολο χρησιμοποιείται για συντομεύσεις πληκτρολογίου.</p>\n"
+"  <li><p><b>\"Εισαγωγή Audio...\\tCtrl+i\"</b> είναι also a menu item.  The \\t stκαιs για a tab character, which separates the menu text από the keyboard commκαι.</p>\n"
+"  <li><p>You will find many strings όπως <b>\"There were %%d buffer underruns, last near %%lf seconds.\"</b>  The %% signs mark places όπου αριθμοί ή names will be inserted στο the string.  Για example, this string might become \"There were 4 buffer underruns, last near 3.01 seconds.\" If you αλλάξεις the order από the the %% markers in a string, add \"1$\" after the percent sign that used to be first, \"2$\" after the percent sign that used to be second, και so on.  Για example:</p>\n"
+"  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last από %%1$d.\"</b></p></blockquote>\n"
+"</ul>"
+
+#: community/developers.php:15
+#: contact/main.inc.php:13
+#: contact/lists.php:9
+#: main.inc.php:49
+msgid "Mailing Lists"
+msgstr "Λίστες Αλληλογραφίας"
+
+#: community/developers.php:16
+msgid "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
+msgstr "Πάρε μέρος στη <a href=\"../contact/lists#devel\">audacity-devel</a> λίστα αλληλογραφίας για να συζητήσεις την τωρινή και την μελλοντική ανάπτυξη, ή για βοήθεια πάνω στο χτίσιμο και την μετατροπή του πηγαίου κώδικα του Audacity."
+
+#: community/developers.php:18
+#, fuzzy
+msgid ""
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>You can get the latest development code from our CVS repository.</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/\">Browse the Audacity source code online.</a></p></li>\n"
+"\n"
+"  <li><p>Use this command to check out the latest Audacity 1.2 (stable) source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>Or use this command to check out the latest Audacity 1.3 (unstable) source code from CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>For more information, read the <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
+"<p>See the source code page for <a href=\"../download/source#instructions\">compilation instructions</a>.</p>"
+msgstr ""
+"<h3 id=\"cvs\">CVS</h3>\n"
+"<p>Μπορείς να λάβεις τον τελευταίο κωδικό ανάπτυξης από την CVS αποθήκη μας.</p>\n"
+"<ul>\n"
+"  <li><p><a href=\"http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/\">Ξεφύλλισε τον πηγαίο κώδικα του Audacity online.</a></p></li>\n"
+"\n"
+"  <li><p>Χρησιμοποίησε αυτή την εντολή για να δεις το τελυταίο πηγαίο κώδικα Audacity 1.2 (σταθερό) από CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>\n"
+"\n"
+"  <li><p>Ή χρησιμοποίησε αυτή την εντολή για να δεις το τελυταίο πηγαίο κώδικα Audacity 1.3 (ασταθής) από CVS:</p>\n"
+"  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>\n"
+"</ul>\n"
+"<p>Για περισσότερες πληροφορίες, διάβασε τις<a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS οδηγίες</a>.</p>\n"
+"<p>Δες την ιστοσελίδα του πηγαίου κώδικα για <a href=\"../download/source#instructions\">compilation οδηγίες</a>.</p>"
+
+#: community/developers.php:32
+#, fuzzy
+msgid ""
+"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
+"<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open bugs</a> if you are looking for something to work on.</p>\n"
+"<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href=\"../contact/\">send us e-mail</a> instead.  Thank you!</p>"
+msgstr ""
+"<h3 id=\"bugzilla\">Bugzilla</h3>\n"
+"<p>The Audacity δημιουργοί χρησιμοποιούν <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed σφαλμάτων.  Check the λίστααπό <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open σφάλματα</a> Αν looking για something to work on.</p>\n"
+"<p><strong>Σημείωση:</strong> This Bugzilla είναι για development χρήση only.  Αν είσαι a user reporting νέα σφάλματα, παρακαλώ <a href=\"../contact/\">send us e-mail</a> instead.  Thank you!</p>"
+
+#: contact/main.inc.php:11
+#: contact/index.php:9
+#: main.inc.php:47
+msgid "Contact Us"
+msgstr "Επικοινωνία"
+
+#: contact/main.inc.php:14
+#: contact/privacy.php:10
+#: main.inc.php:50
+msgid "Privacy Policy"
+msgstr "Πολιτική Εχεμύθειας"
+
+#. i18n-hint:  Please add a note that we can answer ερωτήσεις to
+#: contact/index.php:19
+msgid ""
+"<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
+"(This is a public mailing list.  For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>\n"
+"\n"
+"<p><b>When you report a bug or problem, please:</b></p>\n"
+"<ol>\n"
+"  <li>Before you contact us, check the <a href=\"../help/faq\">Frequently Asked Questions</a>.</li>\n"
+"  <li>Tell us what version of Audacity and which operating system you are using.</li>\n"
+"  <li>Include details of what you are trying to do, and any error messages or other problems you experience.</li>\n"
+"</ol>"
+msgstr ""
+"<p>Αν έχεις ερωτήσεις ή σχόλια για τους δημιουργούς του  Audacity, στείλε μας ένα e-mail στο: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
+"(Αυτή είναι μία δημόσια λίστα αλληλογραφίας.  Για λεπτομέρειες, δες την <a href=\"../contact/privacy\">πολιτική εχεμύθειας</a>.)</p>\n"
+"\n"
+"<p><b>Όταν αναφέρεις ένα σφάλμα ή πρόβλημα, παρακαλώ:</b></p>\n"
+"<ol>\n"
+"  <li>Πριν επικοινωνήσεις μαζί μας, δες τις <a href=\"../help/faq\">Συχνές Ερωτήσεις</a>.</li>\n"
+"  <li>Πες μας ποια έκδοση του Audacity και ποιο λειτουργικό σύστημα χρησιμοποιείς.</li>\n"
+"  <li>Πρόσθεσε λεπτομέρειες του τι προσπαθείς να κάνεις, και οποιαδήποτε μηνύματα λάθους ή άλλα προβλήματα αντιμετωπίζεις.</li>\n"
+"</ol>"
+
+#: contact/index.php:29
+msgid ""
+"<h3>Discussion Lists</h3>\n"
+"<p>To discuss Audacity with other users and developers, join our <a href=\"../contact/lists\">mailing lists</a>.</p>"
+msgstr ""
+"<h3>Λίστες Συζητήσεων</h3>\n"
+"<p>Για να συζητήσεις για το Audacity με άλλους χρήστες και δημιουργούς, πάρε μέρος στις <a href=\"../contact/lists\">λίστες αλληλογραφίας</a>.</p>"
+
+#: contact/privacy.php:21
+msgid "Announcement List Policy"
+msgstr "Πολιτική Λίστας Ανακοινώσεων"
+
+#: contact/privacy.php:23
+msgid ""
+"<p>You can subscribe to our announcement list by entering your address in the form on the <a href=\"../\">Audacity home page</a>.  We will use this list only to send you brief announcements of new Audacity releases.  We will never share the addresses on this list with anyone.</p>\n"
+"<p>To <b>unsubscribe</b> from the list at any time, enter your address in the form on our <a href=\"../\">home page</a> and press the \"Remove\" button.  If you have any problems or questions, please contact <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+"<p>Μπορείς να γίνεις συνδρομητής στην λίστα ανακοινώσεων εισάγοντας την διεύθυνσή σου στη φόρμα της<a href=\"../\">αρχικής ιστοσελίδας του Audacity</a>.  Θα χρησιμοποιήσουμε αυτή τη λίστα μόνο για να σου στέλνουμε σύντομες ανακοινώσεις από νέες εκδόσεις του Audacity.  Ποτέ δεν θα μοιραστούμε τις διευθύνσεις αυτής της λίστας με κανένα.</p>\n"
+"<p>Για να <b>ακυρώσεις τη συνδρομή σου</b> από αυτή τη λίστα οποιαδήποτε στιγμή, εισήγαγε τη διεύθυνσή σου στη φόρμα στην <a href=\"../\">αρχική ιστοσελίδα</a> και επέλεξε το κουμπί  \"Απομάκρυνση\" .  Αν έχεις κάποια προβλήματα ή ερωτήσεις, παρακαλώ επικοινώνησε με<a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+
+#: contact/privacy.php:26
+msgid "Mailing List Policy"
+msgstr "Πολιτική της Λίστας Ηλεκτρονικού Ταχυδρομείου"
+
+#: contact/privacy.php:28
+msgid ""
+"<p>(This applies to audacity-help, audacity-users, and other <a href=\"../contact/lists\">discussion lists</a>.)</p>\n"
+"<p>These are public mailing lists.  When you send a message to any of these addresses, including <a href=\"../contact/\">audacity-help</a>, it will be forwarded to dozens of people, including Audacity developers and others.  SourceForge and other web sites may publish archives of these lists.  <b>Your email address will normally be removed from published archives for your privacy, and the Audacity developers will not share your address with anyone or add it to any lists.</b>  However, we can't prevent other subscribers from seeing or publishing your messages.</p>\n"
+"<p>If you have any questions about this policy or are not comfortable writing to a public mailing list, send a private e-mail to the lead Audacity developer at: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+msgstr ""
+"<p>(Αυτά αφορούν την audacity-βοήθεια, audacity-users, και άλλες <a href=\"../contact/lists\">λίστες συζήτησης</a>.)</p>\n"
+"<p>Αυτές είναι δημόσιες λίστες αλληλογραφίας.  Όταν στέλνεις ένα μήνυμα σε μια από αυτές τις διευθύνσεις,περιλαμβανομένων <a href=\"../contact/\">audacity-βοήθεια</a>, αυτό προωθείται σε δεκάδες ανθρώπους , περιλαμβανομένων των δημιουργών του  Audacity και άλλων.  Το SourceForge και άλλοι διαδικτυακοί τόποι μπορεί να δημοσιοποιήσουν αρχεία από αυτές τις λίστες.  <b>Η διεύθυνση του e-mail σου κανονικά θα πρέπει να απομακρυνθεί από τα δημοσιευμένα αρχεία για την προστασία της ιδιωτικής σου ζωής, και οι δημιουργοί του Audacity δεν θα μοιραστούν τη διεύθυνσή σου με κανένα και ούτε θα την προσθέσουν σε κάποια λίστα.</b>  Παρ' όλα αυτά, δεν μπορούμε να εμποδίσουμε άλλους συνδρομητές από το να δουν ή να δημοσιεύσουν τα μηνύματά σου.</p>\n"
+"<p>Αν έχεις κάποιες ερωτήσεις σχετικά με αυτή την πολιτική ή δεν νιώθεις άνετα να γράψεις σε μια δημόσια λίστα αλληλογραφίας, στείλε ένα ιδιωτικό μύνημα στον κύριο συντελεστή στο: <a href=\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
+
+#: contact/lists.php:12
+msgid "You must subscribe to send messages to this list."
+msgstr "Πρέπει να γίνεις συνδρομητής για να στείλεις μηνύματα σε αυτή τη λίστα"
+
+#. i18n-hint: The "%s" will be replaced by the name of a mailing list.
+#: contact/lists.php:14
+#, php-format
+msgid "%s archives and subscription information"
+msgstr "%s αρχεία και πληροφορίες συνδρομής"
+
+#. i18n-hint: Please add a note that these lists are in English.  If there are
+#: contact/lists.php:20
+msgid ""
+"These mailing lists are for discussion of the Audacity audio editor.  </p>\n"
+"<p>Note: These are public mailing lists.  For details, see our <a href=\"privacy\">privacy policy</a>."
+msgstr ""
+"Αυτές οι λίστες αλληλογραφίας είναι για συζήτηση πάνω στον επεξεργαστή audio Audacity .  </p>\n"
+"<p>Σημείωση: Αυτές είναι δημόσιες λίστες αλληλογραφίας.  Για λεπτομέρειες, δες την <a href=\"privacy\">πολιτική εχεμύθειας</a>."
+
+#: contact/lists.php:27
+msgid "Discuss Audacity with other users and developers."
+msgstr "Συζήτηση για το Audacity με άλλους χρήστες και δημιουργούς"
+
+#: contact/lists.php:33
+msgid "For translators localizing the Audacity software and web site."
+msgstr "Για μεταφραστές του προγράμματος και του διαδικτυακού τόπου του Audacity "
+
+#: contact/lists.php:39
+msgid "For developers working with the Audacity source code and documentation."
+msgstr "Για δημιουργούς που εργάζονται για τον πηγαίο κώδικα και την υποστήριξη του Audacity"
+
+#: contact/lists.php:45
+msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
+msgstr "Μοιράσου ερωτήσεις και ιδέες στον προγραμματισμό των <a href=\"../help/nyquist\">ενθεμάτων(plug-ins) Nyquist</a>."
+
+#: contact/lists.php:51
+msgid "Developers can subscribe to this mailing list to receive automatic updates from <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+msgstr "Οι δημιουργοί μπορούν να γίνουν συνδρομητές σε αυτή τη λίστα αλληλογραφίας και να λαμβάνουν αυτόματες ενημερώσεις από τον <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+
+#: contact/lists.php:57
+msgid "Send a message to this list if you have questions or comments for the Audacity developers.  You do not need to subscribe to this list to send a message."
+msgstr "Στείλε ένα μήνυμα σε αυτή τη λίστα αν έχεις ερωτήσεις ή σχόλια για τους δημιουργούς του Audacity. Δεν χρειάζεται να γίνεις συνδρομητής σε αυτή τη λίστα για να στείλεις ένα μήνυμα."
+
+#: copyright.php:8
+msgid "Web Site Copyright and Trademark"
+msgstr "Πνευματικά Δικαιώματα και Σήμα Κατατεθέν του Διαδικτυακού Τόπου"
+
+#. i18n-hint: The Creative Commons web page below is available in several
+#: copyright.php:22
+#, php-format
+msgid "This web site is Copyright &copy; %s members of the Audacity development team.  Except where otherwise noted, all text and images on this site are licensed under the <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, version 2.0</a>.  You may modify, copy, distribute, and display this material, but you must give credit to the original authors.  Please see the license for details."
+msgstr "Αυτός ο διαδικτυακός τόπος είναι Copyright &copy; %s των μελών της ομάδα ανάπτυξης του  Audacity.  Εκτός από όπου σημειώνεται διαφορετικά, όλα τα κείμενα  και οι εικόνες σε αυτό τον διαδικτυακό  τόπο είναι αδειοδότημένα υπό την <a href=\"http://creativecommons.org/licenses/by/2.0/\">Creative Commons Attribution License, έκδοση 2.0</a>.  Μπορείς να μετατρέψεις, αντιγράψεις, διανείμεις, και παρουσιάσεις αυτό το υλικό, όμως πρέπει να αποδώσεις αναγνώριση στους αρχικούς συγγραφείς .  Παρακαλώ δες την άδεια για λεπτομέρειες."
+
+#: copyright.php:24
+msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
+msgstr "\"Audacity\" είναι σήμα κατατεθέν του Dominic Mazzoni.  Το λογότυπο του Google είναι σήμα κατατεθέν του Google, Inc."
+
+#: download/index.php:9
+#: download/main.inc.php:11
+#: main.inc.php:28
+msgid "Download"
+msgstr "Μεταφόρτωση (κατέβασμα)"
+
+#: download/index.php:15
+msgid "Select your operating system to download the latest version of the free Audacity sound editor."
+msgstr "Επέλεξε το λειτουργικό σύστημα για να μεταφορτώσεις την τελευταία έκδοση του ελεύθερου επεξεργαστή ήχου Audacity."
+
+#: download/index.php:19
+#: download/windows.php:10
+#: main.inc.php:30
+msgid "Windows"
+msgstr "Windows"
+
+#: download/index.php:22
+msgid "Mac OS 9 or X"
+msgstr "Mac OS 9 ή X"
+
+#: download/index.php:25
+#: download/linux.php:9
+#: main.inc.php:32
+msgid "Linux/Unix"
+msgstr "Linux/Unix"
+
+#: download/index.php:28
+msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
+msgstr "Μπορείς επίσης να <a href=\"buy\">αγοράσεις</a> ένα αντίγραφο  του Audacity σε CD."
+
+#: download/index.php:30
+msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
+msgstr "Αν επιθυμείς να χτίσεις το Audacity μόνος σου, μεταφόρτωσε τον <a href=\"source\">πηγαίο κώδικα</a>."
+
+#: download/index.php:32
+msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
+msgstr "Μπορείς να μετατρέψεις, διανείμεις, και πουλήσεις το Audacity υπό την <a href=\"../about/license\">GNU GPL</a>."
+
+#: download/windows.php:16
+#: download/source.php:16
+#: download/mac.php:17
+msgid "Recommended Download"
+msgstr "Προτεινόμενη Μεταφόρτωση"
+
+#: download/windows.php:18
+#, php-format
+msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe αρχείο, %.1lf MB) - Η τελευταία έκδοση του ελεύθερου επεξεργαστή ήχου Audacity."
+
+#: download/windows.php:21
+#: download/source.php:22
+#: download/mac.php:26
+msgid "Optional Downloads"
+msgstr "Προαιρετικά Αρχεία για Μεταφόρτωση"
+
+# i18n-hint:  If this string is translated, it will appear above the λίστα of
+# optional downloads on the "downloads/windows" page.  If there are extra
+# files available in your language, add them here.  Otherwise, do not
+# translate this string.  (Or make the translation identical to the
+# original string.)
+#. i18n-hint:  If this string is translated, it will appear above the list of
+#: download/windows.php:28
+#: download/windows.php:29
+#, fuzzy
+msgid "localized_downloads_windows"
+msgstr "localized_downloads_windows"
+
+#: download/windows.php:34
+#, fuzzy, php-format
+msgid ""
+"<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
+"  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead."
+msgstr ""
+"<a href=\"%s\">Audacity %s zip αρχείο</a> (%.1lf MB)\n"
+"  - If μπορείς να run the installer επειδή είσαι in a computer lab ή άλλοι restricted environment, μεταφόρτωσε και unzip this αρχείο instead."
+
+#: download/windows.php:39
+#: download/mac.php:31
+msgid "System Requirements"
+msgstr "Απαιτήσεις Συστήματος"
+
+#: download/windows.php:41
+msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
+msgstr "Windows 98, ME, 2000, XP, ή μεταγενέστερα.  (Λυπούμαστε, το Audacity δεν υποστηρίζεται σε Windows 95 ή NT 4.0.)"
+
+#: download/windows.php:42
+#: download/mac.php:35
+msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
+msgstr "Το Audacity τρέχει καλύτερα με τουλάχιστον 64 MB RAM και 300 MHz επεξεργαστή."
+
+#: download/source.php:10
+#: main.inc.php:33
+msgid "Source Code"
+msgstr "Πηγαίος Κώδικας"
+
+#: download/source.php:19
+#, php-format
+msgid "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
+msgstr "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
+
+#: download/source.php:24
+msgid "You can also get the latest development code from <a href=\"../community/developers#cvs\">CVS</a>."
+msgstr "Μπορείς επίσης να λάβεις τον νεότερο κωδικό ανάπτυξης από <a href=\"../community/developers#cvs\">CVS</a>."
+
+#: download/source.php:25
+#: download/common.inc.php:13
+#, php-format
+msgid "If you have trouble with your download, or need an older version of Audacity, try our <a href=\"%s\">alternate download links</a>."
+msgstr "Αν έχεις προβλήματα με την μεταφόρτωση, ή χρειάζεσαι μία παλαιότερη έκδοση  του Audacity, δοκίμασε τους <a href=\"%s\"εναλλακτικούς συνδέσμους μεταφορτώσεων </a>."
+
+#: download/source.php:28
+msgid "How to Build Audacity"
+msgstr "Πώς να χτίσεις το Audacity"
+
+#: download/source.php:30
+msgid "Dependencies"
+msgstr "Εξαρτήσεις"
+
+#: download/source.php:31
+#, fuzzy
+msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)"
+msgstr "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>χωρίς</em> the gtk2 ή unicode options.  (Future εκδόσεις  του Audacity will support newer wxWidgets και GTK libraries.)"
+
+#: download/source.php:32
+#, fuzzy
+msgid "You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS."
+msgstr "Μπορείς να επίσης choose to εγκαταστήσεις the ακόλουθες <b>optional libraries</b>, ή get them by checking out Audacity από CVS."
+
+#: download/source.php:38
+#, fuzzy
+msgid "If you install libraries using a package management system like Apt or RPM, make sure to install the \"dev\" (development) packages for each library."
+msgstr "If you εγκαταστήσεις libraries χρησιμοποιώντας a package management system όπως Apt ή RPM, make sure to εγκαταστήσεις the \"dev\" (development) packages γιαeach library."
+
+#: download/source.php:40
+msgid "Compilation"
+msgstr "Σύνταξη"
+
+#: download/source.php:41
+msgid "To build Audacity, run the following command in the Audacity source directory:"
+msgstr "Για να φτιάξεις το Audacity, εκτέλεσε την ακόλουθη εντολή στον πηγαίο φάκελο του Audacity :"
+
+#: download/source.php:47
+#, fuzzy
+msgid "You can type <kbd>./configure --help</kbd> to see a list of compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to install it."
+msgstr "Μπορείς να type <kbd>./configure --help</kbd> to δεις a λίστα από compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to εγκαταστήσεις it."
+
+#: download/source.php:49
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+#: download/source.php:50
+msgid "For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory."
+msgstr "Για επιπλέον πληροφορίες σχετικά με το χτίσιμο του  Audacity σε Windows ή Mac OS X, δες τα αρχεία <b>win/compile.txt</b> και <b>mac/compile.txt</b> στο φάκελο του πηγαίου κώδικα του Audacity."
+
+#: download/buy.php:9
+msgid "Purchase Audacity on CD"
+msgstr "Αγορά του Audacity σε CD"
+
+#: download/buy.php:13
+msgid "Audacity is free to download, but vendors are also free to sell copies of the program, thanks to the <a href=\"../about/license\">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below."
+msgstr "Το Audacity είναι ελεύθερο προς μεταφόρτωση, όμως μεταπωλητές είναι επίσης ελεύθεροι να πουλάνε αντίγραφα του προγράμματος, χάρη στη <a href=\"../about/license\">Γενική Δημόσια Άδεια GNU</a>.  Αν θέλεις ένα αντίγραφο  του Audacity σε CD-ROM, σου προτείνουμε να αγοράσεις ένα από τους μεταπωλητές που αναφέρονται παρακάτω."
+
+#: download/buy.php:15
+#, fuzzy
+msgid ""
+"<h3>TheOpenCD (Windows)</h3>\n"
+"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
+msgstr ""
+"<h3>TheOpenCD (Windows)</h3>\n"
+"  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> είναι μία συλλογή από υψηλής ποιότητας ελεύθερα προγράμματα για Microsoft Windows, περιλαμβανομένου του Audacity.  Μπορείς να <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">αγοράσεις ένα αντίγραφο του TheOpenCD</a> από διαφορετικούς μεταπωλητές.</p>"
+
+#: download/mac.php:10
+msgid "Mac OS 9 / X"
+msgstr "Mac OS 9 / X"
+
+#: download/mac.php:19
+#, php-format
+msgid "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
+msgstr "Για Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg αρχείο, %.1lf MB) - Η τελευταία έκδοση του ελεύθερου επεξεργαστή ήχου Audacity."
+
+#: download/mac.php:22
+#, php-format
+msgid "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
+msgstr "Για Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit αρχείο, %.1lf MB)"
+
+#: download/mac.php:23
+msgid "(Unfortunately, we no longer have the resources to provide new versions of Audacity for Mac OS 9.)"
+msgstr "(Δυστυχώς, δεν έχουμε πλέον τους πόρους για να παράγουμε νέες εκδόσεις  του Audacity για Mac OS 9.)"
+
+#: download/mac.php:33
+msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
+msgstr "Το Audacity 1.2 απαιτεί Mac OS X 10.1 ή μεταγενέστερο."
+
+#: download/mac.php:34
+msgid "Audacity 1.0 requires Mac OS 9.0 or later."
+msgstr "Το Audacity 1.0 απαιτεί Mac OS 9.0 ή μεταγενέστερο."
+
+#: download/linux.php:15
+msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
+msgstr "Ο ευκολότερος τρόπος να εγκαταστήσεις τον ελεύθερο επεξεργαστή ήχου Audacity σε GNU/Linux (και άλλα Unix-like συστήματα) είναι να μεταφορτώσεις (κατεβάσεις) ένα πακέτο φτιαγμένο για το δικό σου λειτουργικό σύστημα:"
+
+#: download/linux.php:30
+msgid "Linux and Unix users may also compile Audacity from <a href=\"source\">source code</a>."
+msgstr "Linux και Unix χρήστες μπορούν επίσης να συντάξουν το Audacity από τον <a href=\"source\">πηγαίο κώδικα</a>."
+
+#: download/release-notes.php:9
+#: main.inc.php:34
+msgid "Release Notes"
+msgstr "Σημειώσεις Έκδοσης"
+
+#: download/release-notes.php:16
+msgid "Known Problems"
+msgstr "Γνωστά Προβλήματα"
+
+#: download/release-notes.php:17
+#, php-format
+msgid "The following are known bugs or problems in Audacity %s:"
+msgstr "Τα ακόλουθα είναι γνωστά σφάλματα ή προβλήματα στο Audacity %s:"
+
+#: download/release-notes.php:19
+msgid "Audacity can import and display MIDI files, but cannot play or edit them."
+msgstr "Το Audacity μπορεί να εισαγάγει και να εμφανίσει MIDI αρχεία, όμως δεν μπορεί να τα αναπαράγει ή να τα επεξεργαστεί."
+
+#: download/release-notes.php:20
+msgid "Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo."
+msgstr "Linux:  Ηχογράφηση σε πλήρη διπλή λειτουργία (αναπαραγωγή καναλιών που υπάρχουν ήδη ενώ ηχογραφείται άλλο) σε κάποια συστήματα κάνει τις mono ηχογραφήσεις να ακούγονται παραμορφωμένες ή σε χαμηλό τόνο.  Για να αποφύγεις αυτό το πρόβλημα, ρύθμισε το Audacity ώστε να ηχογραφεί σε stereo."
+
+#: download/release-notes.php:21
+msgid "MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems."
+msgstr "MacOS X: Το Audacity δεν μπορεί να εργαστεί με αρχεία ή φακέλους που περιέχονται σε φακέλους με μη αγγλικούς χαρακτήρες (accents, σύμβολα, κλπ) iστα ονόματά τους.  Αρχεία με accented χαρακτήρες λειτουργούν, και Audacity projects με accented χαρακτήρες λειτουργούν.  Μονάχα φάκελοι με accented χαρακτήρες στα ονόματά τους δημιουργούν προβλήματα."
+
+#: download/release-notes.php:24
+#, fuzzy
+msgid ""
+"<h3>Changes in Audacity 1.2.3</h3>\n"
+"<ul>\n"
+"  <li><p>Windows: Fixed a bug that caused recording to stop or display incorrectly after about 50 minutes, on some Windows systems.  (This was partly fixed in Audacity 1.2.2, but still didn't work on some systems.)</p></li>\n"
+"  <li><p>Mac OS X: Fixed a major bug that caused Audacity to crash at seemingly-random times on Mac systems, especially during playback or recording.</p></li>\n"
+"  <li><p>The Change Pitch and Change Tempo effects have been upgraded to use a new version of the SoundTouch library by Olli Parviainen, with better speed and higher quality.</p></li>\n"
+"  <li><p>libsndfile has been upgraded to version 1.0.11.  Audacity can now import Sound Designer II (SDII) files.</p></li>\n"
+"  <li><p>Fixed a bug that caused the program to run slowly when using the Envelope tool.</p></li>\n"
+"<li><p>Shift-clicking on a mute or solo button now un-mutes (or un-solos) all other tracks.</p></li>\n"
+"  <li><p>Nyquist plug-ins can now accept strings as input.  Also, a \"Debug\" button has been added to Nyquist effect dialogs, which allows you to see all of the output produced by Nyquist, for aid in debugging.</p></li>\n"
+"  <li><p>When the audio file referenced (\"aliased\") by an Audacity project is missing, Audacity will now always play silence.  Before, Audacity would sometimes repeat the most recent audio that was played previously.</p></li>\n"
+"  <li><p>VU Meters will now always reset when audio I/O has stopped.</p></li>\n"
+"  <li><p>New or updated translations: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
+"</ul>"
+msgstr ""
+"<h3>Αλλαγές στο Audacity 1.2.3</h3>\n"
+"<ul>\n"
+"  <li><p>Windows: Fixed a bug that caused ηχογράφηση to stop ή display incorrectly after about 50 minutes, on some Windows systems.  (This was partly fixed στο Audacity 1.2.2, όμως still didn't work on some systems.)</p></li>\n"
+"  <li><p>Mac OS X: Fixed a major bug that caused Audacity to crash at seemingly-random times on Mac systems, especially during playback ή ηχογράφησης.</p></li>\n"
+"  <li><p>Τα εφέ Αλλαγή Τόνου και Αλλαγή Ρυθμού  have been upgraded to χρησιμοποιούν a νέα έκδοση του SoundTouch library by Olli Parviainen, με better speed και higher quality.</p></li>\n"
+"  <li><p>libsndfile has been upgraded to έκδοση 1.0.11.  Audacity can now εισαγάγει Sound Designer II (SDII) αρχεία.</p></li>\n"
+"  <li><p>Fixed a bug that caused the πρόγραμμα to run slowly όταν χρησιμοποιείς the Εργαλείο πορείας έντασης.</p></li>\n"
+"<li><p>Shift-clicking on a mute ή solo button now un-mutes (or un-solos) all άλλα κανάλια.</p></li>\n"
+"  <li><p>ενθέματα (plug-ins) Nyquist can now δεχτεί strings as input.  Επίσης, a \"Debug\" button has been added to Nyquist effect dialogs, which allows you to δείς all από the output produced by Nyquist, για aid in debugging.</p></li>\n"
+"  <li><p>Όταν the audio αρχείο referenced (\"aliased\") by an Audacity project is missing, Audacity will now always play silence.  Παλαιότερα, Audacity would sometimes repeat the πιο recent audio that was played previously.</p></li>\n"
+"  <li><p>VU Meters will now always reset όταν audio I/O έχει stopped.</p></li>\n"
+"  <li><p>New ή updated μεταφράσεις: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
+"</ul>"
+
+#: download/common.inc.php:10
+msgid "LAME MP3 encoder"
+msgstr "Κωδικοποιητής MP3 LAME"
+
+#: download/common.inc.php:10
+msgid "Allows Audacity to export MP3 files."
+msgstr "Επιτρέπει στο Audacity να εξάγει αρχεία MP3."
+
+#: download/common.inc.php:11
+msgid "VST Enabler"
+msgstr "Ενεργοποιητής VST"
+
+#: download/common.inc.php:11
+msgid "Allows Audacity to load VST plug-ins."
+msgstr "Επιτρέπει στο Audacity να φορτώνει ενθέματα(plug-ins) VST."
+
+#: download/common.inc.php:12
+#: main.inc.php:35
+msgid "Plug-Ins"
+msgstr "Ενθέματα (plug-ins)"
+
+#: download/common.inc.php:12
+msgid "Download additional effects and filters."
+msgstr "Μεταφόρτωση επιπλέον εφέ και φίλτρων"
+
+#: download/plugins.php:9
+msgid "Plug-In Effects"
+msgstr "Ενθέματα(plug-ins) Εφέ"
+
+#: download/plugins.php:14
+#, fuzzy
+msgid "You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under \"Program Files.\"  On Mac OS X, it is usually under \"Applications.\""
+msgstr "Μπορείς να μεταφορτώσεις και εγκαταστήσεις ενθέματα (plug-ins) to add extra εφέ to Audacity.  ενθέματα (plug-ins) appear at the bottom του \"Effect\" menu.  To εγκαταστήσεις νέα ενθέματα (plug-ins), place them in the <b>Ενθέματα(Plug-Ins)</b> φάκελο inside the Audacity εγκατάστασης φάκελο.  On Windows υπολογιστές, this βρίσκεται συνήθως under \"Program Files.\"  On Mac OS X, it βρίσκεται συνήθως under \"Applications.\""
+
+#: download/plugins.php:16
+msgid "LADSPA Plug-Ins"
+msgstr "Ενθέματα(plug-ins) LADSPA "
+
+#: download/plugins.php:17
+msgid "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href=\"http://www.ladspa.org/\">LADSPA web site</a>.</p>"
+msgstr "Το Audacity έχει  ενσωματωμένη υποστήριξη για ενθέματα (plug-ins) LADSPA.  Αυτά τα ενθέματα (plug-ins) είναι κυρίως φτιαγμένα για Linux, όμως κάποια είναι διαθέσιμα και για άλλα λειτουργικά συστήματα.  Το Audacity παρέχεται με δείγματα εφέ LADSPA για Mac και Windows.  Για επιπλέον πληροφορίες και μεταφορτώσεις, δες τον<a href=\"http://www.ladspa.org/\">διαδικτυακό  τόπο του LADSPA</a>.</p>"
+
+#: download/plugins.php:19
+msgid "Nyquist Plug-Ins"
+msgstr "Ενθέματα(plug-ins) Nyquist"
+
+#: download/plugins.php:20
+msgid "Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or create your own using the <a href=\"../help/nyquist\">Nyquist programming language</a>"
+msgstr "Το Audacity έχει ενσωματωμένη υποστήριξη για εφέ Nyquist Ανεξαρτήτως-Πλατφόρμας.  Μπορείς να μεταφορτώσεις επιπλέον <a href=\"nyquistplugins\">ενθέματα (plug-ins) Nyquist</a>, ή να δημιουργήσεις τα δικά σου χρησιμοποιώντας την <a href=\"../help/nyquist\">γλώσσα προγραμματισμού Nyquist</a>"
+
+#: download/plugins.php:22
+msgid "VST Plug-Ins"
+msgstr "Ενθέματα(plug-ins) VST"
+
+#: download/plugins.php:23
+msgid "Audacity can load VST effects (for Mac OS or Windows) using the optional <a href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can find VST effects at <a href=\"http://www.kvraudio.com/\">KVR Audio</a> and <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">other plug-in sites</a>.</p>"
+msgstr "Το Audacity μπορεί να φορτώσει VST εφέ (για Mac OS ή Windows) χρησιμοποιώντας τον προαιρετικο <a href=\"../help/faq?s=install&amp;i=vst-enabler\">Ενεργοποιητή VST</a>.  Μπορείς να βρεις VST εφέ στο <a href=\"http://www.kvraudio.com/\">KVR Audio</a> και σε <a href=\"http://dmoz.org/Computers/Multimedia/Music_and_Audio/Software/Plug-ins/\">άλλους διαδικτυακούς τόπους με ενθέματα (plug-ins)</a>.</p>"
+
+#: download/nyquistplugins.php:10
+msgid "Download Nyquist Plug-Ins"
+msgstr "Μεταφόρτωση των ενθεμάτων(plug-ins) Nyquist"
+
+# Χ
+#. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
+#: download/nyquistplugins.php:15
+msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
+msgstr "<p>Αυτά είναι προαιρετικά ενθέματα (plug-ins) με εφέ για τον επεξεργαστή ήχου Audacity.  Είναι γραμμένα στη <a href=\"../help/nyquist\">γλώσσα προγραμματισμού Nyquist </a>.  Για οδηγίες εγκατάστασης, δες την κύρια <a href=\"plugins\">ιστοσελίδα ενθεμάτων (plug-ins)</a>.</p>"
+
+#: help/index.php:9
+msgid "Documentation and Support"
+msgstr "Υποστήριξη"
+
+#. i18n-hint: If there are any special resources for Audacity users in your
+#: help/index.php:17
+msgid ""
+"<p>If you have a question, check the list of <a href=\"faq\">Frequently Asked Questions</a>.</p>\n"
+"<p>For instructions and help using Audacity, see:</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">Documentation</a> - Read the user’s manual and quick reference.</li>\n"
+"  <li><a href=\"tutorials\">Tutorials</a> - Step by step articles teach you how to use Audacity.</li>\n"
+"</ul>\n"
+"<p>If your question isn’t answered here, please <a href=\"../contact/\">contact us</a>.</p>"
+msgstr ""
+"<p>Αν έχεις κάποια ερώτηση, έλεγξε την λίστα με τις <a href=\"faq\">Συχνές Ερωτήσεις</a>.</p>\n"
+"<p>Για οδηγίες και βοήθεια στη χρήση του Audacity, δες:</p>\n"
+"<ul>\n"
+"  <li><a href=\"documentation\">Υποστήριξη</a> - Διάβασε το εγχειρίδιο χρήσης και γρήγορης αναφοράς.</li>\n"
+"  <li><a href=\"tutorials\">Βιβλίο Εκμάθησης</a> - βήμα προς βήμα άρθρα σου δείχνουν πώς να χρησιμοποιείς το Audacity.</li>\n"
+"</ul>\n"
+"<p>Αν η ερώτησή σου δεν απαντιέται εδώ, παρακαλώ <a href=\"../contact/\">επικοινώνησε μαζί μας</a>.</p>"
+
+#: help/index.php:26
+#: help/documentation.php:31
+msgid "Other Resources"
+msgstr "Άλλοι Πόροι"
+
+#: help/index.php:28
+#: help/documentation.php:33
+msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
+msgstr "<a href=\"http://audacityteam.org/wiki/\">Το Audacity Wiki</a> περιέχει ιδέες, κόλπα και υποστήριξη που μπορεί ο καθένας να επεξεργαστεί."
+
+#: help/main.inc.php:11
+#: main.inc.php:39
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: help/documentation.php:9
+#: main.inc.php:42
+msgid "Documentation"
+msgstr "Υποστήριξη"
+
+#. i18n-hint:  Please add a note that the manuals below are in English.  If
+#: help/documentation.php:16
+msgid "This page contains manuals and user’s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
+msgstr "Αυτή η ιστοσελίδα περιέχει εγχειρίδια χρήσης και οδηγούς χρηστών για τον ελεύθερο επεξεργαστή ήχου Audacity.  Για επιπλέον  βοήθεια, δες τις <a href=\"faq\">Συχνές Ερωτήσεις</a> και <a href=\"tutorials\">Βιβλίο Εκμάθησης</a>."
+
+#: help/documentation.php:19
+msgid "Quick Reference Guide"
+msgstr "Οδηγός Γρήγορης Αναφοράς"
+
+#: help/documentation.php:21
+msgid "Read the Audacity reference online."
+msgstr "Διάβασε την αναφορά του Audacity στο διαδίκτυο."
+
+#: help/documentation.php:21
+msgid "(You can also access this reference though the \"Help\" menu in the Audacity program.)"
+msgstr "(Μπορείς επίσης να έχεις πρόσβαση σε αυτή την αναφορά μέσω της \"Βοήθειας\" στο μενού του προγράμματος Audacity.)"
+
+#: help/documentation.php:22
+msgid "Printable version of the Audacity reference."
+msgstr "Εκτυπώσιμη έκδοση του Οδηγού Γρήγορης Αναφοράς του Audacity ."
+
+#: help/documentation.php:25
+msgid "Audacity User’s Manual"
+msgstr "Εγχειρίδιο χρήσης του Audacity"
+
+#: help/documentation.php:27
+msgid "Read the Audacity manual online."
+msgstr "Διάβασε το εγχειρίδιο χρήσης του Audacity στο διαδίκτυο."
+
+#: help/documentation.php:28
+msgid "Download the Audacity manual."
+msgstr "Μεταφόρτωσε (κατέβασε) το εγχειρίδιο χρήσης του Audacity "
+
+#: help/documentation.php:28
+msgid "(To use the downloaded manual, unzip it and then open the \"index.html\" file.)"
+msgstr "(Για να χρησιμοποιήσεις το μεταφορτωμένο εγχειρίδιο χρήσης, αποσυμπίεσέ το  και μετά άνοιξε το  \"index.html\" αρχείο.)"
+
+#: help/faq.php:26
+msgid "Is Audacity really free?  Why?"
+msgstr "Είναι το Audacity δωρεάν; Γιατί;"
+
+#: help/faq.php:27
+#, fuzzy
+msgid ""
+"<p>Yes, Audacity is <a href=\"../about/\">completely free, open source software</a>.  You are free to use this program for personal or commercial purposes.  You are also free to give it away, sell it, or modify it for your own use, under the terms of the <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>The authors of Audacity decided to release it under the GPL for many reasons. Some of us do it out of generosity. Some of us do it for moral reasons, because we feel that all software should be free; others believe that there is a place for both free and proprietary software.</p>\n"
+"<p>One reason Audacity is free is so that it will be more popular and useful.  Yet another reason is to encourage collaboration. Because of Audacity's free license, dozens of people around the world have contributed code, bug fixes, documentation, and graphics.</p>"
+msgstr ""
+"<p>Ναι, το Audacity είναι <a href=\"../about/\">completely free, ανοιχτού κώδικα λογισμικό</a>.  Είσαι free to χρησιμοποιείς this πρόγραμμα για personal ή commercial purposes.  Είσαι επίσης free to give it away, sell it, ή μετατρέψεις it για your own use, υπό τους όρους της <a href=\"../about/license\">Γενικής Δημόσιας Άδειας GNU</a>.</p>\n"
+"<p>The authors  του Audacity decided to release it υπό την GPL για many reasons. Some από us do it out of generosity. Some από us do it για moral reasons, επειδή we feel that all λογισμικό should be free; άλλοι believe that there is a place για both free και proprietary λογισμικό.</p>\n"
+"<p>One reason το Audacity είναι free είναι so that it will be more popular και useful.  Yet another reason είναι to encourage collaboration. Εξαιτίας of Audacity's free άδεια, dozens από people around the world have contributed κωδικό, σφαλμάτων fixes, υποστήριξη, και graphics.</p>"
+
+#: help/faq.php:32
+msgid "Does Audacity contain any spyware or adware?"
+msgstr "Το Audacity περιέχει spyware ή adware?"
+
+#: help/faq.php:33
+#, fuzzy
+msgid "<p>No.  Audacity does not include any spyware or adware.  Audacity is <a href=\"../about/\">completely free and open source</a>.  It is developed by a not-for-profit volunteer group, and the source code is available for anyone to study or use.</p>"
+msgstr "<p>No.  Το Audacity δεν include any spyware ή adware.  Το Audacity είναι <a href=\"../about/\">completely free και ανοιχτού κώδικα</a>.  It έχει αναπτυχθεί by a not-for-profit volunteer group, και the πηγαίος κώδικας είναι διαθέσιμος για anyone to study ή use.</p>"
+
+#: help/faq.php:36
+msgid "May I distribute copies of Audacity?"
+msgstr "Μπορώ να διανείμω αντίγραφα του Audacity;"
+
+#: help/faq.php:37
+#, fuzzy
+msgid "<p>You can redistribute Audacity under the GNU General Public License, which gives you permission to modify, copy, and sell the program as long as you keep the same license and make the source code available.  For details, see our <a href=\"../about/license\">license information</a>.</p>"
+msgstr "<p>Μπορείς να αναδιανείμεις Audacity υπό την Γενική Δημόσια Άδεια GNU, which gives you permission to μετατρέψεις, αντιγράψεις, και sell the πρόγραμμα εφ΄όσων you keep the same άδεια και make the πηγαίο κώδικα διαθέσιμο.  Για λεπτομέρειες, δες our <a href=\"../about/license\">Άδειας πληροφορίες</a>.</p>"
+
+#: help/faq.php:40
+msgid "Someone is selling Audacity on eBay.  Is this legal?"
+msgstr "Κάποιος πουλάει το Audacity στο eBay.  Είναι αυτό νόμιμο;"
+
+#: help/faq.php:41
+#, fuzzy
+msgid ""
+"<p>It is legal to sell Audacity, as long as the seller makes the program and source code available under the <a href=\"../about/license\">GNU General Public License</a>.</p>\n"
+"<p>Some vendors try to trick customers by selling the software under a different name.  If you bought a product and later found out it was Audacity, we encourage you to <b>ask for a refund or file a complaint</b> if you feel you did not get a fair deal.  We ask vendors to give proper credit to the Audacity project, and allow users to make an informed choice.</p>\n"
+"<p><b>If you want to buy Audacity on CD</b>, please check out the vendors listed on our <a href=\"../download/buy\">purchase page</a>.</p>"
+msgstr ""
+"<p>It Είναι legal to sell Audacity, εφ΄όσων ο πωλητής παρέχει το πρόγραμμα και τον πηγαίο κώδικα  υπό την <a href=\"../about/license\">Γενική Δημόσια Άδεια GNU</a>.</p>\n"
+"<p>Some μεταπωλητές try to trick customers by selling the λογισμικό under a διαφορετικό name.  If you bought a product και later found out it was Audacity, we encourage you to <b>ask για a refund ή αρχείο a complaint</b> if you feel you did not get a fair deal.  We ask μεταπωλητές to give proper credit to the Audacity project, και allow χρήστες to make an informed choice.</p>\n"
+"<p><b>Αν θέλεις to buy Audacity on CD</b>, παρακαλώ check out the μεταπωλητές listed on our <a href=\"../download/buy\">purchase ιστοσελίδα</a>.</p>"
+
+#: help/faq.php:46
+msgid "Does Audacity work with screen-reader programs for blind users?"
+msgstr "Δουλεύει το Audacity με προγράμματα ανάγνωσης οθόνης για τυφλούς χρήστες ;"
+
+#. i18n-hint: The link below is in English.
+#: help/faq.php:48
+#, fuzzy
+msgid "<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
+msgstr "<p>Το Audacity δουλεύει με τα περισσότερα προγράμματα ανάγνωσης οθόνης, όμως some  του Audacity’s features είναι difficult ή impossible to χρησιμοποιείς χωρίς a mouse.  Εργαζόμαστε on improving the program’s accessibility και keyboard shortcuts.  Για more πληροφορίες, δες <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity για Blind Χρήστες</a>.</p>"
+
+#: help/faq.php:51
+msgid "What does “time remaining” mean?  Does Audacity expire?"
+msgstr "Τί σημαίνει «εναπομείναντας χρόνος»;  Έχει το Audacity ημερομηνία λήξης;"
+
+#: help/faq.php:52
+#, fuzzy
+msgid "<p>Audacity does not expire.  During recording, it displays how long you can record before running out of space on your computer’s hard drive.  To record for a longer time, delete old files or save your project on a larger disk.</p>"
+msgstr "<p>Το Audacity δεν expire.  During ηχογράφηση, it displays how long you μπορείς να ηχογραφήσεις πριν running out of space on your computer’s hard drive.  Για να ηχογραφήσεις για a longer time, διέγραψε old αρχεία ή αποθηκεύσε your project on a larger disk.</p>"
+
+#: help/faq.php:57
+msgid "Installation and Plug-Ins"
+msgstr "Εγκατάσταση και Ενθέματα(plug-ins)"
+
+#: help/faq.php:60
+msgid "How do I download and install the LAME MP3 encoder?"
+msgstr "Πώς κατεβάζω και εγκαθιστώ τον LAME MP3 κωδικοποιητή;"
+
+#: help/faq.php:61
+#, fuzzy, php-format
+msgid ""
+"<p>Because of software patents, we cannot distribute MP3 encoding software ourselves.  Follow these instructions to use the free LAME encoder to export MP3 files with Audacity.\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME download page</a>.</li>\n"
+"  <li>Click on any link from the list of identical \"%s\" links.</li>\n"
+"  <li>When you have finished downloading LAME, unzip it and save the file <b>lame_enc.dll</b> anywhere on your computer.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where lame_enc.dll is saved.</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9 or X</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME download page</a>.</li>\n"
+"  <li>Download the version of LameLib for your operating system.</li>\n"
+"  <li>When you have finished downloading, use Stuffit Expander to extract the files.  (This may happen automatically.)</li>\n"
+"  <li>Save the file called \"LameLib\" anywhere on your computer.</li>\n"
+"  <li>The first time you use the \"Export as MP3\" command, Audacity will ask you where LameLib is saved.</li>\n"
+"</ol>"
+msgstr ""
+"<p>Εξαιτίας της λογισμικού patents, εμείς δεν μπορούμε να διανείμουμε MP3 encoding λογισμικό ourselves.  Ακολούθησε αυτές τις οδηγίες to χρησιμοποιήσεις the free κωδικοποιητής LAME to εξαγάγεις MP3 αρχεία με Audacity.\n"
+"<h3>Windows</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME μεταφόρτωσης ιστοσελίδα</a>.</li>\n"
+"  <li>Click on any link από the λίστα από identical \"%s\" σύνδεσμους.</li>\n"
+"  <li>όταν you have finished μεταφόρτωση ing LAME, unzip it και αποθηκεύσε the αρχείο <b>lame_enc.dll</b> anywhere on your computer.</li>\n"
+"  <li>The first time you χρησιμοποιήσεις the \"Εξαγωγή as MP3\" εντολή, Audacity will ask you πού lame_enc.dll είναι αποθηκευμένο.</li>\n"
+"</ol>\n"
+"<h3>Mac OS 9 ή X</h3>\n"
+"<ol>\n"
+"  <li>Go to the <a href=\"%s\">LAME μεταφόρτωσης ιστοσελίδα</a>.</li>\n"
+"  <li>Μεταφόρτωσε the έκδοση του LameLib για your λειτουργικό σύστημα.</li>\n"
+"  <li>όταν you have finished μεταφόρτωσηi ng, χρησιμοποίησε Stuffit Expander to extract the αρχεία.  (This may happen αυτόματα.)</li>\n"
+"  <li>Ααποθήκευσε the αρχείο called \"LameLib\" anywhere on your computer.</li>\n"
+"  <li>The first time you χρησιμοποιήσεις the \"Εξαγωγή as MP3\" εντολή, Audacity will ask you πού LameLib είναι αποθηκευμένο.</li>\n"
+"</ol>"
+
+#: help/faq.php:80
+msgid "How do I install VST plug-ins?"
+msgstr "Πώς εγκαθιστώ τα VST ενθέματα (plug-ins) ;"
+
+#: help/faq.php:81
+#, fuzzy, php-format
+msgid ""
+"<ol>\n"
+"<li><p>First, download and unzip the <a href=\"%s\">VST Enabler</a>.</li>\n"
+"<li><p>Place the unzipped VST Enabler, along with your VST plug-ins, into the “Plug-ins” folder in the Audacity installation folder.  (On Mac OS X, this is usually in the Applications folder.  On Windows, it is usually under Program Files.)</li>\n"
+"<li><p>The next time you start Audacity, your VST effects will appear at the bottom of the “Effect” menu.</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=install&amp;i=vst-bugs\">Why do some VST plug-ins look wrong, or not work?</a></p>"
+msgstr ""
+"<ol>\n"
+"<li><p>First, μεταφόρτωσε και unzip the <a href=\"%s\">Ενεργοποιητή VST</a>.</li>\n"
+"<li><p>Place the unzipped Ενεργοποιητή VST, along με your ενθέματα (plug-ins) VST, στο the “Plug-ins” φάκελο in the Audacity εγκατάστασης φάκελο.  (On Mac OS X, this βρίσκεται συνήθως in the Applications φάκελο.  On Windows, it βρίσκεται συνήθως under Program Files.)</li>\n"
+"<li><p>The next time you start Audacity, your εφέ VST will appear at the bottom του “Effect” menu.</li>\n"
+"</ol>\n"
+"<p>Δες επίσης: <a href=\"faq?s=install&amp;i=vst-bugs\">Γιατί do some ενθέματα (plug-ins) VST look wrong, ή not work?</a></p>"
+
+#: help/faq.php:89
+msgid "Why do some VST plug-ins look wrong, or not work?"
+msgstr "Γιατί κάποια ενθέματα (plug-ins) VST δείχνουν λάθος ή δεν λειτουργούν;"
+
+#: help/faq.php:90
+#, fuzzy
+msgid ""
+"<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not yet able to display custom interfaces for plug-ins.  Instead, it uses generic controls for all VST plug-ins.  Because of this, many plug-ins will look or act differently than they do in other programs.</p>\n"
+"<p>Other VST plug-ins may not work at all, because of bugs in the VST Enabler.  You can <a href\"../contact/\">contact us</a> to report plug-ins that do not work.</p>  \n"
+"<p>Audacity also does not support VST instrument (VSTi) plug-ins.</p>"
+msgstr ""
+"<p>Ο <a href=\"faq?s=install&amp;i=vst-enabler\">Ενεργοποιητής VST</a> δεν yet able to display custom interfaces για ενθέματα (plug-ins).  Instead, it uses generic controls για all ενθέματα (plug-ins) VST.  Εξαιτίας of this, many ενθέματα (plug-ins) will look ή act διαφορετικά than they do in άλλα προγράμματα.</p>\n"
+"<p>Άλλα ενθέματα (plug-ins) VST may not work at all, εξαιτίας of σφαλμάτων in the Ενεργοποιητή VST.  Μπορείς να <a href\"../contact/\">contact us</a> to αναφέρεις ενθέματα (plug-ins) that do not work.</p>  \n"
+"<p>Audacity Επίσης does not support VST instrument (VSTi) ενθέματα (plug-ins).</p>"
+
+#: help/faq.php:95
+msgid "What should I do if I have problems downloading or installing Audacity?"
+msgstr "Τι θα πρέπει να κάνω αν αντιμετωπίζω προβλήματα στη μεταφόρτωση ή στην εγκατάσταση του Audacity?"
+
+#: help/faq.php:96
+#, fuzzy
+msgid "<p>If you can't download Audacity, or if the downloaded setup file is corrupt, try downloading it from our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
+msgstr "<p>If δεν μπορείς να  μεταφορτώσεις Audacity, ή if the μεταφορτωμένο ed setup αρχείο έχει corrupt, try μεταφορτώσεις ing it από our <a href=\"http://sourceforge.net/project/showfiles.php?group_id=6235\">alternate servers</a>.</p>"
+
+#: help/faq.php:101
+msgid "Recording"
+msgstr "Ηχογράφηση"
+
+#: help/faq.php:104
+msgid "How can I record in stereo?"
+msgstr "Πώς μπορώ να ηχογραφήσω σε στέρεο;"
+
+#: help/faq.php:105
+#, fuzzy
+msgid "<p>To record in stereo, open the Audacity preferences.  In the “Audio I/O” section, change the number of recording channels from 1 (mono) to 2 (stereo).</p>"
+msgstr "<p>Για να ηχογραφήσεις  σε  stereo, open the Audacity preferences.  In the “Audio I/O” section, άλλαξε the αριθμό του ηχογράφησης channels από 1 (mono) to 2 (stereo).</p>"
+
+#: help/faq.php:108
+msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
+msgstr "Πώς ηχογραφώ από δίσκους βινυλίου, κασέτες, ή μίνιντισκ;"
+
+#: help/faq.php:109
+#, fuzzy
+msgid ""
+"<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\">record in stereo</a>.</p>\n"
+"<p>Next, plug one end of a stereo cable into the “Line Out” or “Headphone” connector on your tape deck, minidisc player, or stereo system.  Plug the other end into your computer’s “Line In” connector.  If you do not have a cable that fits both of these connectors, you can find one at an electronics store.</p>\n"
+"<p>Choose “Line In” as the input source on the Audacity toolbar, and press the Record button.  While Audacity is recording, start playing your tape or disc.  When you have captured the entire recording, press the Stop button.</p>\n"
+"<p>Notes:</p>\n"
+"<ul>\n"
+"\t<li><p>Do not plug stereo equipment into your computer’s “Microphone” port, which is designed for low-powered (“mic-level”) signals only.   Use the “Line In” port instead.</p></li>\n"
+"\t<li><p>Do not connect a turntable directly to your computer.  The signal from a turntable is distorted; it must be corrected by passing it through a phono pre-amp or a receiver with a “phono” input.</p></li>\n"
+"</ul>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=split\">How to split a long recording into multiple files</a>.</p>"
+msgstr ""
+"<p>First, set Audacity to <a href=\"faq?s=recording&amp;i=stereo\"> ηχογραφεί σε stereo</a>.</p>\n"
+"<p>Next, plug one end of a stereo cable into the “Line Out” ή “Headphone” connector on your tape deck, minidisc player, ή stereo system.  Plug the άλλη end into your computer’s “Line In” connector.  If you do not have a cable that fits both of αυτούς τους connectors, μπορείς να find one at an electronics store.</p>\n"
+"<p>Choose “Line In” as the input source on the Γραμμή Εργαλείων του Audacity, και press the Record button.  While Audacity ηχογραφεί, start playing your tape ή disc.  Όταν you have captured the entire ηχογράφηση, press the Stop button.</p>\n"
+"<p>Σημειώσεις:</p>\n"
+"<ul>\n"
+"\t<li><p>Do not plug stereo equipment into your computer’s “Microphone” port, which έχει designed για low-powered (“mic-level”) signals only.   Χρησιμοποίησε the “Line In” port instead.</p></li>\n"
+"\t<li><p>Do not connect a turntable directly to your computer.  The signal από a turntable is distorted; it must be corrected by passing it through a phono pre-amp ή a receiver με a “phono” input.</p></li>\n"
+"</ul>\n"
+"<p>Δες επίσης: <a href=\"faq?s=files&amp;i=split\">How to split a long ηχογράφηση into multiple αρχεία</a>.</p>"
+
+#: help/faq.php:118
+#: help/faq.php:177
+#: help/faq.php:226
+msgid "See also:"
+msgstr "Δες επίσης:"
+
+#: help/faq.php:118
+#: help/faq.php:202
+#: help/faq.php:226
+msgid "How do I save my recording on an audio CD?"
+msgstr "Πώς αποθηκεύσω την ηχογράφησή μου σε  audio CD;"
+
+#: help/faq.php:121
+msgid "Why can’t I hear what I’m recording?"
+msgstr "Γιατί δεν μπορώ να ακούσω αυτό που ηχογραφώ;"
+
+#: help/faq.php:122
+#, fuzzy
+msgid ""
+"<h3>Windows and Linux</h3>\n"
+"<p>To monitor your recording, open your computer's volume control panel.  Turn up the playback volume and turn off the “mute” checkbox for your recording source (usually “microphone” or “line in”).</p>\n"
+"<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section, turn on the “Software Playthrough” option.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” is best if it is available.  If it does not work, you can choose “Software Playthrough” instead.</p>\n"
+msgstr ""
+"<h3>Windows και Linux</h3>\n"
+"<p>To monitor your ηχογράφηση, open your computer's volume control panel.  Turn up the playback volume και turn off the “mute” checkbox για your ηχογράφησης source (συνήθως “microphone” ή “line in”).</p>\n"
+"<p>If this does not work, open the Audacity preferences.  In the “Audio I/O” section, turn on the “Software Playthrough” option.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Open the Audacity preferences.  In the “Audio I/O” section, turn on the “playthrough” option.  “Hardware Playthrough” είναι best if it είναι διαθέσιμο.  If it does not work, μπορείς να choose “Software Playthrough” instead.</p>\n"
+
+#: help/faq.php:130
+msgid "Can I play a track while recording a new one on top of it?"
+msgstr "Μπορώ να αναπαράγω ένα κανάλι ενώ συγχρόνως ηχογραφώ ένα νέο;"
+
+#: help/faq.php:131
+#, fuzzy
+msgid ""
+"<p>This is called multi-track recording.  It makes it possible to record harmonies with yourself, or add new instruments or vocals to an existing recording.  To do this in Audacity, follow these instructions:</p>\n"
+"<ol>\n"
+"  <li>Import or record the first track.</li>\n"
+"  <li>Open the “Audio I/O” section of the Audacity preferences, and check the box labeled <b>Play other tracks while recording new one.</b></li>\n"
+"  <li>Close the preferences and press the <b>Record</b> button.</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=recording&amp;i=sync\">Why isn't my new track in sync with the previous ones?</a></p>"
+msgstr ""
+"<p>This is called πολυκάναλη ηχογράφηση.  It makes it possible to  ηχογραφεί harmonies με yourself, ή add νέα instruments ή vocals to an existing ηχογράφηση.  To do this στο Audacity, ακολούθησε αυτές τις οδηγίες:</p>\n"
+"<ol>\n"
+"  <li>Εισήγαγε ή ηχογράφησε the first κανάλι.</li>\n"
+"  <li>Open the “Audio I/O” section των Audacity preferences, και check the box labeled <b>Play άλλο κανάλια while ηχογραφώ νέο one.</b></li>\n"
+"  <li>Close the preferences και press the <b>Record</b> button.</li>\n"
+"</ol>\n"
+"<p>Δες επίσης: <a href=\"faq?s=recording&amp;i=sync\">Γιατί isn't my νέο κανάλι σε sync με the previous ones?</a></p>"
+
+#: help/faq.php:140
+msgid "Why isn’t my new track in sync with the previous ones?"
+msgstr "Γιατί δεν είναι το νέο κανάλι σε συγχρονισμό με το προηγούμενο;"
+
+#: help/faq.php:141
+#, fuzzy
+msgid ""
+"<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
+"<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
+msgstr ""
+"<p>Όταν you make a <a href=\"faq?s=recording&amp;i=multi-track\">πολυκάναλη ηχογράφηση</a>, δημιουργείται an unpredictable delay between playback και ηχογράφηση.  Audacity tries to correct για this αυτόματα, όμως this doesn't yet work on all υπολογιστές.</p>\n"
+"<p>If a νέο κανάλι δεν synchronized with the άλλα, μπορείς να zoom in και χρησιμοποιήσεις the Εργαλείο Χρονικής Μετακίνησης to drag it to the correct location.</p>"
+
+#: help/faq.php:145
+msgid "Can Audacity record RealAudio or other streaming audio?"
+msgstr "Μπορεί το Audacity  να ηχογραφήσει RealAudio ή άλλο ρέων(streaming) audio?"
+
+#: help/faq.php:146
+#, fuzzy
+msgid ""
+"<h3>Windows and Linux</h3>\n"
+"<p>With most Windows and Linux audio devices, it is possible to record whatever sound the computer is currently playing, including internet radio streams.</p>\n"
+"<p>In the drop-down menu on Audacity's mixer toolbar, choose “Wave Out” or “Stereo Mix” as the input source.  (The exact name may be different, depending on your computer's sound drivers.)  When you press the Record button, Audacity will capture whatever sound is playing on your computer's speakers.</p>\n"
+"<p>If this doesn't work on your computer, you can instead use a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, and use Audacity to record from Line In.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Mac OS X users can capture streaming audio using a program like <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
+msgstr ""
+"<h3>Windows και Linux</h3>\n"
+"<p>με τις περισσότερες Windows και Linux audio devices, it είναι possible to  ηχογραφήσει whatever ήχο the computer is currently playing, περιλαμβανομένων internet radio streams.</p>\n"
+"<p>In the drop-down menu on Γραμμή Εργαλείων Μίκτη του Audacity, choose “Wave Out” ή “Stereo Μίξη” as the input source.  (The exact name may be διαφορετικό, depending on your computer's ήχου drivers.)  Όταν you press the Record button, Audacity will capture whatever ήχο is playing on your computer's speakers.</p>\n"
+"<p>If this doesn't work on your computer, μπορείς να instead χρησιμοποιήσεις a cable to connect your computer's “Line Out” (speaker) port to its “Line In” port, και χρησιμοποίησε Audacity to  ηχογραφείς από Line In.</p>\n"
+"<h3>Mac OS X</h3>\n"
+"<p>Mac OS X χρήστες can capture ρέων(streaming) audio χρησιμοποιώντας ένα πρόγραμμα όπως <a href=\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> ή <a href=\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
+
+#: help/faq.php:155
+msgid "Can I set Audacity to record at a certain time?"
+msgstr "Μπορώ να ρυθμίσω το Audacity να ηχογραφήσει σε συγκεκριμένη ώρα;"
+
+#: help/faq.php:156
+#, fuzzy
+msgid ""
+"<p>Sorry, Audacity does not yet support scheduled recording.  We may add this feature to a future version of the program.</p>\n"
+"<p>You can make Audacity <b>stop</b> recording after a certain time limit, by following these steps:</p>\n"
+"<ol>\n"
+"  <li>Turn on “Play existing tracks while recording” in the “Audio I/O” section of the preferences.</li>\n"
+"  <li>Choose “New Audio Track” from the Project menu.</li>\n"
+"  <li>Zoom out if necessary, then click and drag to select the amount of time you want to record.</li>\n"
+"  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
+"</ol>"
+msgstr ""
+"<p>Sorry, το Audacity δεν yet support scheduled ηχογράφηση.  We may add this feature to a future έκδοση του program.</p>\n"
+"<p>Μπορείς να make Audacity <b>stop</b> ηχογραφεί after a certain time limit, by ακολουθώντας αυτά τα βήματα:</p>\n"
+"<ol>\n"
+"  <li>Turn on “Play existing καναλιών while ηχογράφηση” in the “Audio I/O” section των preferences.</li>\n"
+"  <li>Choose “New Audio Κανάλι” από the Project menu.</li>\n"
+"  <li>Zoom out if necessary, then click και drag to select the amount of time you want to  ηχογραφήσεις.</li>\n"
+"  <li>Start ηχογράφησης.  Audacity will stop ηχογραφεί αυτόματα όταν it reaches the end της selected area.</li>\n"
+"</ol>"
+
+#: help/faq.php:168
+msgid "Opening and Saving Files"
+msgstr "Άνοιγμα και Αποθήκευση Αρχείων"
+
+#: help/faq.php:171
+#: help/faq.php:177
+msgid "How do I open an Audacity project (AUP file) in another program?"
+msgstr "Πώς ανοίγω ένα Audacity project (AUP αρχείο) με ένα άλλο πρόγραμμα;"
+
+#: help/faq.php:172
+#, fuzzy
+msgid "<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>"
+msgstr "<p>Audacity project Αρχεία αποθηκεύονται in a special format that only Audacity can open.  To open your project in another πρόγραμμα ή burn it to CD, πρέπει να open the “project.aup” αρχείο στο Audacity, και χρησιμοποίησε the Export εντολές (in the Αρχείο menu) to αποθηκεύσεις it in a standard format όπως WAV ή AIFF.</p>"
+
+#: help/faq.php:175
+msgid "Why does Audacity create a folder full of .au files when I save a project?"
+msgstr "Γιατί το Audacity δημιουργεί ένα φάκελο γεμάτο από .au αρχεία όταν αποθηκεύω μία εργασία;"
+
+#: help/faq.php:176
+#, fuzzy
+msgid "<p>Audacity breaks long tracks into small pieces so it can edit them more efficiently.  When you save a project, Audacity stores all of the pieces in a folder with a name like “project_data.”</p>  <p>You do not need to open these files yourself.  Audacity will load them automatically when you open the “project.aup” file, which is saved in the same location as the “data” folder.</p>"
+msgstr "<p>Audacity breaks long κανάλια σε small pieces so it can επεξεργαστεί them more efficiently.  Όταν you αποθηκεύεις a project, Audacity stores all του the pieces in a φάκελο με a name όπως “project_data.”</p>  <p>You do not need to open αυτά τα αρχεία yourself.  Audacity will load them αυτόματα όταν you open the “project.aup” αρχείο, which είναι αποθηκευμένο in the same location as the “data” φάκελο.</p>"
+
+#: help/faq.php:180
+msgid "Audacity crashed!  Can I recover any unsaved data?"
+msgstr "Το Audacity καταρέει!  Μπορώ να ανακτήσω κάποια μη αποθηκευμένα δεδομένα;"
+
+#. i18n-hint: Sorry, these links are in English only.  If you would
+#: help/faq.php:184
+#, fuzzy
+msgid "<p>You may be able to recover your project automatically with the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Please see the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> page for more information.</p>"
+msgstr "<p>Μπορείς να be able to recover your project αυτόματα με the <a href=\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  Παρακαλώ δες the <a href=\"http://audacityteam.org/wiki/index.pl?CrashRecovery\">Crash Recovery</a> ιστοσελίδα για more πληροφορίες.</p>"
+
+#: help/faq.php:187
+msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
+msgstr "Μπορεί το Audacity να εισαγάγει τύπους αρχείων όπως WMA, AAC, FLAC, κλπ ;"
+
+#: help/faq.php:188
+#, fuzzy
+msgid ""
+"<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, or most other proprietary formats.  Because of licensing and patent restrictions, we are not allowed to add these formats to Audacity.  Future versions of Audacity might be able to support these formats using codecs installed in your operating system.</p>\n"
+"<p>Some open formats are not yet supported by Audacity, including <b>Ogg Speex</b> and <b>FLAC</b>.  We hope to support these formats in future versions of Audacity.</p>\n"
+"<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>"
+msgstr ""
+"<p>Audacity <b>δεν μπορεί να</b> εισαγάγει ή εξαγάγει αρχεία in <b>WMA, AAC, RealAudio, Shorten (SHN)</b>, ή τους περισσότερους άλλους proprietary τύπους αρχείων.  Εξαιτίας των licensing και patent restrictions, we are not allowed to add these τύπους αρχείων to Audacity.  Future εκδόσεις  του Audacity might be able to support these τύπους αρχείων χρησιμοποιώντας codecs installed in your λειτουργικό σύστημα.</p>\n"
+"<p>Some open τύποι αρχείων are not yet supported by Audacity, περιλαμβανομένων των <b>Ogg Speex</b> και <b>FLAC</b>.  We hope to support these τύπους αρχείων in future εκδόσεις του Audacity.</p>\n"
+"<p>Για λίστα από supported τύπους αρχείων, δες the <a href=\"../about/features\">feature list</a>.</p>\n"
+"<p>Δες επίσης: <a href=\"faq?s=files&amp;i=midi\">Γιατί can't I play MIDI αρχεία?</a></p>"
+
+#: help/faq.php:194
+msgid "Why can’t I play MIDI files?"
+msgstr "Γιατί δεν μπορώ να παίξω αρχεία MIDI;"
+
+#: help/faq.php:195
+#, fuzzy
+msgid "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only display them visually (for comparison with recorded sounds).  We might add MIDI editing to a future version of Audacity, but for now Audacity is focused on sampled audio (like WAV files).</p>"
+msgstr "<p>Sorry, Audacity δεν μπορεί να play, edit, ή convert MIDI αρχεία.  It can only display them visually (για comparison με ηχογραφημένους ήχους).  We might add MIDI επεξεργασία to a future έκδοση του Audacity, όμως για την ώρα το Audacity έχει focused on sampled audio (όπως WAV αρχεία).</p>"
+
+#: help/faq.php:198
+msgid "How do I import a track from an audio CD?"
+msgstr "Πώς εισάγω ένα μουσικό κομμάτι από ένα audio CD;"
+
+#: help/faq.php:199
+#, fuzzy
+msgid "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>"
+msgstr "<p>Audacity δεν μπορεί να εισαγάγει a κανάλι directly από an audio CD.  Πρέπει να χρησιμοποιείσεις a separate πρόγραμμα όπως <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ή <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD κανάλια σε a format that Audacity can read, όπως WAV ή AIFF.</p>"
+
+#: help/faq.php:203
+#, fuzzy
+msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
+msgstr "After making a ηχογράφηση ή επεξεργασία a αρχείο στο Audacity, ακολούθησε αυτά τα βήματα to αποθηκεύεις your work on an audio CD:"
+
+#: help/faq.php:204
+#, fuzzy
+msgid ""
+"<ol>\n"
+"  <li>Use the “Export as WAV” or “Export as AIFF” command to save your Audacity recording in a sound file.</li>\n"
+"  <li>Use any CD-recording software (iTunes or Nero, for example) to burn this file to a CD.</li>\n"
+"</ol>\n"
+"<p>To make a disc you can play in normal CD players, make sure to create a “music” or “audio” CD (not a “data” CD).  Use CD-R discs, because some players cannot read CD-RW.</p>\n"
+"<p>Some CD software will burn only 16-bit, 44.1KHz stereo sound files.  If your CD recording software won't open your sound file, export the file again after choosing the following settings in Audacity:</p>\n"
+"<ol>\n"
+"  <li>At the bottom of the Audacity window, set the Project Rate to 44100 Hz.</li>\n"
+"  <li>In the File Formats preferences, choose WAV (16-bit...) or AIFF (16-bit...).</li>\n"
+"  <li>If your project does not already contain a stereo track, choose “New Stereo Track” from the Project menu.  (This will make Audacity export your recording as a stereo file.)</li>\n"
+"</ol>\n"
+"<p>See also: <a href=\"faq?s=files&amp;i=split\">How can I split a long recording into multiple tracks?</a></p>"
+msgstr ""
+"<ol>\n"
+"  <li>Χρησιμοποίησε the “Εξαγωγή as WAV” ή “Εξαγωγή as AIFF” εντολή to αποθηκεύεις your Audacity ηχογράφηση in a ήχου αρχείο.</li>\n"
+"  <li>Χρησιμοποίησε any CD- ηχογράφησης πρόγραμμα (iTunes ή Nero, για παράδειγμα) to burn this αρχείο to a CD.</li>\n"
+"</ol>\n"
+"<p>To make a disc μπορείς να play in normal CD players, make sure to δημιουργήσεις a “music” ή “audio” CD (not a “data” CD).  Χρησιμοποίησε CD-R discs, επειδή some players δεν μπορούν να read CD-RW.</p>\n"
+"<p>Some CD πρόγραμμα will burn only 16-bit, 44.1KHz stereo αρχεία ήχου.  If your CD ηχογράφησης πρόγραμμα won't open your ήχου αρχείο, κάνε εξαγωγή the αρχείο again after choosing the ακόλουθες settings στο Audacity:</p>\n"
+"<ol>\n"
+"  <li>At the bottom του Audacity window, set the Project Rate to 44100 Hz.</li>\n"
+"  <li>In the Τύποι Αρχείων preferences, choose WAV (16-bit...) ή AIFF (16-bit...).</li>\n"
+"  <li>If your project does not already contain a stereo κανάλι, choose “New Stereo Κανάλι” από the Project menu.  (This will make Audacity εξαγάγει your ηχογράφηση as a stereo αρχείο.)</li>\n"
+"</ol>\n"
+"<p>Δες επίσης: <a href=\"faq?s=files&amp;i=split\">Πώς μπορώ να split a long ηχογράφηση σε multiple κανάλια?</a></p>"
+
+#: help/faq.php:218
+msgid "How can I split a long recording into multiple files or CD tracks?"
+msgstr "Πώς  μπορώ να τεμαχίσω μία μακράς διαρκείας ηχογράφηση σε πολλαπλά αρχεία ή CD κανάλια?"
+
+#: help/faq.php:219
+#, fuzzy
+msgid ""
+"<p>Follow these steps to create a separate file for each song or segment of a long recording.  This is particularly useful if you are creating a CD, since each file will appear as a separate track on the CD.</p>\n"
+"<ol>\n"
+"  <li>Click to place the cursor at the start of the first song.</li>\n"
+"  <li>Choose “Add Label at Selection” from the Project menu.  If you wish, you can type the name of the song.</li>\n"
+"  <li>Repeat steps 1 and 2 for each song.</li>\n"
+"  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
+"</ol>"
+msgstr ""
+"<p>Ακολούθησε αυτά τα βήματα to δημιουργήσεις a separate αρχείο για each song ή segment of a long ηχογράφησης.  This είναι particularly useful Αν creating a CD, since each αρχείο will appear as a separate κανάλι on the CD.</p>\n"
+"<ol>\n"
+"  <li>Click to place the cursor at the start του first song.</li>\n"
+"  <li>Choose “Add Label at Selection” από the Project menu.  If you wish, μπορείς να type the name του song.</li>\n"
+"  <li>Repeat βήματα 1 και 2 για each song.</li>\n"
+"  <li>Όταν έχεις τελειώσει, choose “Εξαγωγή Multiple” από the Αρχείο menu.  Όταν you click the “Εξαγωγή” button, Audacity will αποθηκεύσει each song as a separate αρχείο, χρησιμοποιώντας the format και location you choose.</li>\n"
+"</ol>"
+
+#: help/faq.php:231
+msgid "Editing"
+msgstr "Επεξεργασία"
+
+#: help/faq.php:234
+msgid "Why can’t I use the effects or other menu items?"
+msgstr "Γιατί δεν μπορώ να χρησιμοποιήσω τα εφέ ή άλλα στοιχεία του μενού;"
+
+#: help/faq.php:235
+#, fuzzy
+msgid "<p>Some menu items are grayed out or disabled until they are ready for use.  Before choosing an effect, you must select the audio that you want to change.  To select audio, click and drag with the Selection tool to highlight it, or choose the “Select All” command from the Edit menu.</p>"
+msgstr "<p>Some menu items are grayed out ή disabled until they είναι ready για use.  Πριν choosing an effect, πρέπει να select the audio that you want to αλλάξεις.  To select audio, click και drag με the Εργαλείο Επιλογής to highlight it, ή choose the “Select All” εντολή από the Επεξεργασία menu.</p>"
+
+#: help/faq.php:238
+msgid "How do I combine two files into one longer file?"
+msgstr "Πώς συνδυάζω δύο αρχεία σε ένα μεγαλύτερης διάρκειας αρχείο?"
+
+#: help/faq.php:239
+#, fuzzy
+msgid ""
+"<p>Follow these steps to splice two files together:</p>\n"
+"<ol>\n"
+"  <li>Import both files into Audacity.</li>\n"
+"  <li>Select the second one by clicking on its label (the area around the mute/solo buttons).</li>\n"
+"  <li>Choose “Cut” from the Edit menu.</li>\n"
+"  <li>Place the cursor by clicking in the first track, after the end of the audio.</li>\n"
+"  <li>Choose “Paste” from the Edit menu.</li>\n"
+"</ol>\n"
+"<p>You can press the Play button to hear the result, and use the Export commands (in the File menu) to save it as a sound file.</p>"
+msgstr ""
+"<p>Ακολούθησε αυτά τα βήματα to splice δύο αρχεία together:</p>\n"
+"<ol>\n"
+"  <li>Εισήγαγε both αρχεία στο Audacity.</li>\n"
+"  <li>Select the second one by clicking on its label (the area around the mute/solo buttons).</li>\n"
+"  <li>Choose “Cut” από the Επεξεργασία menu.</li>\n"
+"  <li>Place the cursor by clicking in the first κανάλι, after the end του audio.</li>\n"
+"  <li>Choose “Επικόλληση” από the Επεξεργασία menu.</li>\n"
+"</ol>\n"
+"<p>Μπορείς να press the Play button to hear the result, και χρησιμοποίησε the Εξαγωγή εντολές (in the Αρχείο menu) to αποθηκεύσεις it as a ήχου αρχείο.</p>"
+
+#: help/faq.php:250
+msgid "How do I mix two tracks together?"
+msgstr "Πώς κάνω μίξη σε δύο κανάλια μαζί;"
+
+#: help/faq.php:251
+#, fuzzy
+msgid "<p>To mix two files, just import both of them into Audacity.  They will appear in separate tracks, and will be mixed together when you press the Play button.  You can use the Time Shift tool to move them around so that they start at different times, or use the other editing commands to alter either of the tracks.</p>"
+msgstr "<p>To μίξη δύο αρχεία, just εισήγαγε both από them στο Audacity.  They will appear in separate κανάλια, και will be μίξη together όταν you press the Play button.  Μπορείς να χρησιμοποιήσεις the Εργαλείο Χρονικής Μετακίνησης to move them around so that they start at διαφορετικό times, ή χρησιμοποίησε the άλλες επεξεργασία εντολές to alter either από τα κανάλια.</p>"
+
+#: help/faq.php:254
+msgid "Can I remove the vocals from a recording to make a Karaoke track?"
+msgstr "Μπορώ να αφαιρέσω τα φωνητικά από μία ηχογράφηση για να δημιουργήσω ένα  Karaoke κανάλι;"
+
+#: help/faq.php:255
+#, fuzzy
+msgid ""
+"<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals are exactly the same on both stereo channels, you can remove them by “subtracting” one channel from the other.  This works for many studio recordings, where the vocal track is mixed exactly in the center.</p>\n"
+"<p>To do this in Audacity:</p>\n"
+"<ol>\n"
+"  <li>Import your stereo file into Audacity.</li>\n"
+"  <li>Open the track menu (click the arrow next to the track title), and choose “Split Stereo Track.”</li>\n"
+"  <li>Select the lower track (the right channel) by clicking it in the area around the mute/solo buttons.</li>\n"
+"  <li>Choose “Invert” from the Effects menu.</li>\n"
+"  <li>Using the track menus, change each track to “Mono.”</li>\n"
+"</ol>\n"
+"<p>Press the Play button to hear the results.  If you are lucky, the voice will be gone but most of the other instruments will be unaffected, just like a karaoke track.  You can use the Export commands in the File menu to save the results.</p>\n"
+msgstr ""
+"<p>This είναι possible <b>only για certain stereo κανάλια</b>.  Όταν the vocals είναι exactly the same on both stereo channels, μπορείς να remove them by “subtracting” one channel από the άλλα.  This λειτουργεί για many studio ηχογραφήσεις, όπου the vocal κανάλι έχει μιξαριστεί exactly in the center.</p>\n"
+"<p>To do this στο Audacity:</p>\n"
+"<ol>\n"
+"  <li>Εισήγαγε your stereo αρχείο στο Audacity.</li>\n"
+"  <li>Open the καναλιού menu (click the arrow next to the καναλιού title), και choose “Split Stereo Track.”</li>\n"
+"  <li>Select the lower κανάλι (the right channel) by clicking it in the area around the mute/solo buttons.</li>\n"
+"  <li>Choose “Invert” από the Εφέ menu.</li>\n"
+"  <li>Χρησιμοποιώντας the καναλιών menus, άλλαξε each κανάλι to “Mono.”</li>\n"
+"</ol>\n"
+"<p>Press the Play button to hear the results.  Αν είσαι lucky, the voice will be gone όμως τα περισσότερα από τα άλλα instruments will be unaffected, just like a karaoke κανάλι.  Μπορείς να χρησιμοποιήσεις the Export εντολές in the Αρχείο menu to αποθηκεύσεις the results.</p>\n"
+
+#: help/faq.php:284
+msgid "Other frequently asked questions..."
+msgstr "Άλλες συχνές ερωτήσεις..."
+
+#: help/faq.php:288
+msgid "Frequently Asked Questions"
+msgstr "Συχνές Ερωτήσεις (FAG)"
+
+#: help/faq.php:292
+msgid "These are some of the most common questions about Audacity.  If your question isn’t answered here, see the <a href=\"documentation\">documentation</a>, or <a href=\"../contact/\">contact us</a> for help."
+msgstr "Αυτές είναι κάποιες από τις πιο συχνές ερωτήσεις σχετικά με το Audacity.  Αν δεν βρίσκεις απάντηση στην ερώτησή σου εδώ, δες την<a href=\"documentation\">Υποστήριξη</a>, ή την <a href=\"../contact/\">Επικοινωνία</a> για βοήθεια."
+
+#: help/tutorials.php:9
+#: main.inc.php:43
+msgid "Tutorials"
+msgstr "Βιβλίο Εκμάθησης"
+
+#. i18n-hint:  Please add a note that the links on this page are in English.
+#: help/tutorials.php:16
+#, fuzzy
+msgid "These articles give step-by-step instructions for common tasks using the free Audacity sound editor."
+msgstr "Αυτά τα articles give βήμα προς βήμα οδηγίες για common tasks χρησιμοποιώντας the ελεύθερο επεξεργαστή ήχου Audacity."
+
+#. i18n-hint:  If this string is translated, it will appear above the list of
+#: help/tutorials.php:22
+#: help/tutorials.php:23
+#, fuzzy
+msgid "localized_tutorials"
+msgstr "localized_tutorials"
+
+#: help/tutorials.php:27
+msgid "Audacity 1.2 Tutorial by Dan Eliot"
+msgstr "Βιβλίο Εκμάθησης του Audacity 1.2 από τον Dan Eliot"
+
+#: help/tutorials.php:27
+#, fuzzy
+msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
+msgstr "Learn how to open και επεξεργαστείς a WAV αρχείο, και αποθηκεύσεις the result in an MP3."
+
+#: help/tutorials.php:28
+#, fuzzy
+msgid "Multi-Track Recording Tutorial from AGNULA"
+msgstr "Πολυκάναλη Ηχογράφηση Tutorial από AGNULA"
+
+#: help/tutorials.php:28
+msgid "Make a simple multi-track recording."
+msgstr "Δημιούργησε μία απλή πολυκάναλη ηχογράφηση."
+
+#: help/tutorials.php:29
+msgid "Audacity Tutorial by Daniel James"
+msgstr "Βιβλίο Εκμάθησης του Audacity από τον Daniel James"
+
+#: help/tutorials.php:29
+msgid "Shows how to mix a multi-track project.  Includes sample sound files."
+msgstr "Δείχνει πως να κάνεις μίξη σε πολυκάναλη εργασία.  Περιλαμβάνει δείγματα αρχείων ήχου."
+
+#: help/tutorials.php:32
+msgid "For additional help, see the <a href=\"documentation\">Audacity documentation</a>."
+msgstr "Για επιπλέον βοήθεια, δες την <a href=\"documentation\">υποστήριξη του Audacity</a>."
+
+#: help/nyquist.php:10
+#: main.inc.php:44
+msgid "Nyquist"
+msgstr "Nyquist"
+
+#: help/nyquist.php:17
+#: help/nyquist2.php:17
+#: help/nyquist3.php:17
+msgid "Introduction to Nyquist and Lisp Programming"
+msgstr "Εισαγωγή στον Προγραμματισμό Nyquist και Lisp "
+
+#: help/nyquist.php:18
+#: help/nyquist2.php:10
+#: help/nyquist2.php:18
+#: help/nyquist3.php:18
+msgid "Programming in Nyquist"
+msgstr "Προγραμματισμός σε Nyquist"
+
+#: help/nyquist.php:19
+#: help/nyquist2.php:19
+#: help/nyquist3.php:10
+#: help/nyquist3.php:19
+msgid "Creating Nyquist Plug-ins"
+msgstr "Δημιουργεία ενθεμάτων(plug-ins) Nyquist"
+
+#: help/nyquist.php:22
+#, fuzzy
+msgid ""
+"<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist programming language to write your own plug-in effects for Audacity.  Unlike VST and LADSPA plug-ins, Nyquist plug-ins can be written using an ordinary text editor and don't need to be compiled.</p>\n"
+"\n"
+"<p>Nyquist was written by <a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a> and was intended to be used as a complete programming language for audio synthesis and analysis, with support for MIDI, audio recording and playback, file I/O, object-oriented programming, profiling, debugging, and more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions and use them to process audio data.   Audacity doesn't include any support for debugging Nyquist code, so if you are trying to write a complicated plug-in, you may find it easier to get the full version of Nyquist and develop there, then turn it into an Audacity plug-in.  Nyquist is available from the Carnegie Mellon University Computer Music Project:</p>\n"
+"<ul>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU Computer Music Project Software</a> - download the full Nyquist here</a></li>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Complete Nyquist Reference Manual at CMU</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>Note that you don't need to download Nyquist in order to write simple plug-ins to use with Audacity.  All of the instructions you need are below.</p>\n"
+"\n"
+"<h3>Lisp</h3>\n"
+"\n"
+"<p>Nyquist is based on Lisp.  If you have programmed in Lisp before, you can skim this section or go directly to the <a href=\"nyquist2\">next page</a>.  Otherwise, here's an extremely brief introduction to Lisp:</p>\n"
+"\n"
+"<p>In Lisp (and therefore Nyquist), everything is an S-Expression, which is just a list of tokens (words) separated by whitespace and enclosed in parentheses.  The name of the function is always the first token in an S-Expression, and all of the other tokens are arguments to this function.  Here's a simple example:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>Let's break down this example.  The outermost S-expression has three members.  The first one, <code>setf</code>, is the name of the function (it stands for set-field).  <code>setf</code> is used to assign a value to a variable.  (There are other similar functions, like <code>set</code> and <code>setq</code>, but <code>setf</code> is the most powerful, so it's the one we'll use in our examples.) After <code>setf</code> comes <code>area</code>, which is the name of the variable we're going to set.  Next comes the value to assign to this variable, which in this case is another S-expression.</p>\n"
+"\n"
+"<p>Lisp doesn't have any special operators for Math functions - they're all functions like everything else, using <i>prefix</i> notation, where the name of the function (or operator) come before its arguments.  So instead of 3*7 for the product of 3 and 7, in Lisp you would write (* 3 7).  In Nyquist, the <code>expt</code> (exponent) function raises its first argument to the power of the second argument.  Therefore <code>(* 3.14159 (expt radius 2))</code> means 3.14159 times the square of <code>radius</code>, or the formula for the area of a circle.</p>\n"
+"\n"
+"<p>Rather than typing in this full expression every time, let's define a function for the area of the circle, that we can call every time we need it:</p>\n"
+"\n"
+"<pre>\n"
+"  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>The <code>defun</code> function is used to define a new function.  The first argument is the name of the function, in this case <code>circlearea</code>.  The second argument is a list of arguments to the function to be defined - this is one of the few cases where you have an S-expression that is not interpreted as a function call.  Finally the last expression is the value of the function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (circlearea r))\n"
+"</pre>\n"
+"\n"
+"<p>An S-expression is just a representation of a list.  Lisp uses lists to represent just about everything (the name LISP comes from LISt Processing language), so it's helpful to know how to manipulate lists.  Let's start by assigning a list of numbers to a variable.  You can't quite do this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
+"</pre>\n"
+"\n"
+"<p>The reason this doesn't work is that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it otherwise.  Since there's no function named \"1\" that takes arguments <code>(2 3 4 5)</code>, this will generate an error.  To tell lisp that you want to treat an S-expression literally, and not to evaluate it as a function, you <i>quote</i> it.  In Nyquist, you can quote a list by putting a single quotation mark before it, like this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist '(1 2 3 4 5))\n"
+"</pre>\n"
+"\n"
+"<p>Nyquist also provides a <code>list</code> function that you can use to construct lists - this is useful if some of the elements of the list are functions:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (list 1 2 3 4 (sqrt 25)))\n"
+"</pre>\n"
+"\n"
+"<p>To get things off of a list, you can use the <code>first</code> and <code>rest</code> functions.  (Traditionally, these were called <code>car</code> and <code>cdr</code>, respectively, but <code>first</code> and <code>rest</code> are much easier to remember.  Both sets of names are supported in Nyquist.)  The output of <code>(first mylist)</code> is 1, and the output of <code>(rest mylist)</code> is the list <code>(2 3 4 5)</code>.  So the second element of the list is <code>(first (rest mylist))</code>.</p>\n"
+"\n"
+"<h3>Lisp function reference</h3>\n"
+"\n"
+"<p>Here's a list of some of the basic lisp functions you might need.  For a complete list of Lisp / Nyquist functions, see the <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a>.</p>\n"
+"\n"
+"<p><b>Note: Symbols in Nyquist(like variable names and function names) are not case sensitive.  They are converted to uppercase internally.</b></p>\n"
+"\n"
+"<h4>Math functions</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(+ a b)</code></td><td>addition</td></tr>\n"
+"<tr><td><code>(- a b)</code></td><td>subtraction</td></tr>\n"
+"<tr><td><code>(* a b)</code></td><td>multiplication</td></tr>\n"
+"<tr><td><code>(/ a b)</code></td><td>division</td></tr>\n"
+"<tr><td><code>(truncate a b)</code></td><td>round down to integer (floor)</td></tr>\n"
+"<tr><td><code>(float a b)</code></td><td>integer to floating-point</td></tr>\n"
+"<tr><td><code>(rem a b c ...)</code></td><td>remainder</td></tr>\n"
+"<tr><td><code>(min a b c ...)</code></td><td>minimum</td></tr>\n"
+"<tr><td><code>(max a b c ...)</code></td><td>maximum </td></tr>\n"
+"<tr><td><code>(abs a)</code></td><td>absolute value</td></tr>\n"
+"<tr><td><code>(random n)</code></td><td>random integer between 1 and n-1</td></tr>\n"
+"<tr><td><code>(sin a b)</code></td><td>sine</td></tr>\n"
+"<tr><td><code>(cos a b)</code></td><td>cosine</td></tr>\n"
+"<tr><td><code>(tan a b)</code></td><td>tangent</td></tr>\n"
+"<tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>\n"
+"<tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>\n"
+"<tr><td><code>(< a b)</code></td><td>test for a less than b</td></tr>\n"
+"<tr><td><code>(<= a b)</code></td><td>test for a less than or equal to b</td></tr>\n"
+"<tr><td><code>(> a b)</code></td><td>test for a greater than b</td></tr>\n"
+"<tr><td><code>(>= a b)</code></td><td>test for a greater than or equal to b</td></tr>\n"
+"<tr><td><code>(= a b)</code></td><td>test for equality</td></tr>\n"
+"<tr><td><code>(/= a b)</code></td><td>test for inequality</td></tr>\n"
+"</table>\n"
+"<h4>List functions</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(first l)</code></td><td>first element of a list (car)</td></tr>\n"
+"<tr><td><code>(rest l)</code></td><td>rest of the list (cdr)</td></tr>\n"
+"<tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>\n"
+"<tr><td><code>(list a b ...)</code></td><td>construct a list</td></tr>\n"
+"<tr><td><code>(append l1 l2)</code></td><td>append two lists</td></tr>\n"
+"<tr><td><code>(length l)</code></td><td>length of a list</td></tr>\n"
+"<tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>\n"
+"</table>\n"
+"\n"
+"<h4>Control</h4>\n"
+"<table class=\"function-list\" summary=\"List of functions and explanations\">\n"
+"<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr is true, evaluates expr1, otherwise evaluates expr2</td></tr> \n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist2\">Next: Programming in Nyquist</a></h3>"
+msgstr ""
+"<p>Beginning με έκδοση 1.1.1, Audacity allows you to χρησιμοποιείς the Nyquist προγραμματισμού γλώσσα to write your own ενθέματα (plug-in)με εφέ για Audacity.  Unlike ενθέματα (plug-ins) VST και LADSPA , τα ενθέματα (plug-ins) Nyquist can be written χρησιμοποιώντας an ordinary text editor και don't need to be compiled.</p>\n"
+"\n"
+"<p>Nyquist was written by <a href=\"http://www-2.cs.cmu.edu/~rbd/\">Roger B. Dannenberg</a> και was intended to be used as a complete προγραμματισμού γλώσσα για audio synthesis και ανάλυση, με support για MIDI, audio ηχογράφηση και playback, αρχείο I/O, object-oriented προγραμματισμό, profiling, debugging, και more.  Audacity uses only a subset of Nyquist's functionality, allowing you to take simple Nyquist functions και χρησιμοποιήσεις them to process audio data.   Audacity doesn't include any support για debugging Nyquist code, so Αν trying to write a complicated plug-in, μπορεί να find it easier to get the full έκδοση of Nyquist και develop there, then turn it σε an Audacity plug-in.  Nyquist είναι διαθέσιμο από the Carnegie Mellon University Computer Music Project:</p>\n"
+"<ul>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~music/music.software.html\">CMU Computer Music Project Software</a> - μεταφόρτωσε the full Nyquist here</a></li>\n"
+"\t<li><a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Πλήρες Εγχειρίδια Αναφοράς του Nyquist at CMU</a></li>\n"
+"</ul>\n"
+"\n"
+"<p>Note that you don't need to μεταφορτώσεις Nyquist in order to write simple ενθέματα (plug-ins) to χρησιμοποιήσεις με Audacity.  All of the οδηγίες you need βρίσκονται below.</p>\n"
+"\n"
+"<h3>Lisp</h3>\n"
+"\n"
+"<p>Nyquist is based on Lisp.  Αν έχεις programmed in Lisp before, μπορείς να skim this section ή go directly to the <a href=\"nyquist2\">next ιστοσελίδα</a>.  Διαφορετικά, here's an extremely brief introduction to Lisp:</p>\n"
+"\n"
+"<p>In Lisp (and therefore Nyquist), everything είναι an S-Expression, which είναι just a λίστα of tokens (words) separated by whitespace και enclosed in parentheses.  The name της function είναι always the first token in an S-Expression, και all από τα άλλα tokens είναι arguments to this function.  Here's a simple παράδειγμα:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>Let's break down this παράδειγμα.  The outermost S-expression έχει three members.  The first one, <code>setf</code>, είναι the name της function (it stands γιαset-field).  <code>setf</code> is used to assign a value to a variable.  (Υπάρχουν άλλες similar functions, όπως <code>set</code> και <code>setq</code>, όμως<code>setf</code> είναι the πιο powerful, so it's the one we'll χρησιμοποιήσουμε in our παραδείγματα.) After <code>setf</code> comes <code>area</code>, which είναι the name της variable we're going to set.  Next comes the value to assign to this variable, which in this case είναι another S-expression.</p>\n"
+"\n"
+"<p>Lisp doesn't have any special operators για Math functions - they're all functions όπως everything else, χρησιμοποιώντας <i>prefix</i> notation, where the name της function (ή operator) come before its arguments.  So instead of 3*7 για the product of 3 και 7, in Lisp you would write (* 3 7).  In Nyquist, the <code>expt</code> (exponent) function raises its first argument to the power του second argument.  Therefore <code>(* 3.14159 (expt radius 2))</code> means 3.14159 times the square of <code>radius</code>, ή the formula για the area of a circle.</p>\n"
+"\n"
+"<p>Rather than typing in this full expression every time, let's define a function για the area του circle, that we can call every time we need it:</p>\n"
+"\n"
+"<pre>\n"
+"  (defun circlearea (radius) (* 3.14159 (expt radius 2)))\n"
+"</pre>\n"
+"\n"
+"<p>The <code>defun</code> function is used to define a νέα function.  The first argument είναι the name της function, in this case <code>circlearea</code>.  The second argument είναι μία λίστα of arguments to the function to be defined - this είναι one από τις few cases where you have an S-expression that δεν interpreted as a function call.  Finally the last expression είναι the value της function.  Now if we want to compute the area of a circle of radius <code>r</code>, we just need to compute:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf area (circlearea r))\n"
+"</pre>\n"
+"\n"
+"<p>An S-expression είναι just a representation of a list.  Lisp uses λίστες to represent just about everything (the name LISP comes από LISt Processing language), so it's helpful to know how to manipulate λίστες.  Let's start by assigning a λίστα of αριθμούς to a variable.  Δεν μπορείς να  quite do this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (1 2 3 4 5))  <font color=#cc0000><--  error!</font>\n"
+"</pre>\n"
+"\n"
+"<p>The reason this doesn't work είναι that whenever Nyquist sees an S-expression, it tries to evaluate it as a function unless you tell it διαφορετικά.  Since there's no function named \"1\" that takes arguments <code>(2 3 4 5)</code>, this will generate an error.  To tell lisp that you want to treat an S-expression literally, και not to evaluate it as a function, you <i>quote</i> it.  In Nyquist, μπορείς να quote a list by putting a single quotation mark before it, όπως this:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist '(1 2 3 4 5))\n"
+"</pre>\n"
+"\n"
+"<p>Nyquist επίσης provides a <code>list</code> function that μπορείς να χρησιμοποιήσεις to construct λίστες - this είναι useful if some από τα elements της list είναι functions:</p>\n"
+"\n"
+"<pre>\n"
+"  (setf mylist (λίστα1 2 3 4 (sqrt 25)))\n"
+"</pre>\n"
+"\n"
+"<p>To get things off of a list, μπορείς να χρησιμοποιήσεις the <code>first</code> και <code>rest</code> functions.  (Traditionally, these were called <code>car</code> και <code>cdr</code>, respectively, όμως<code>first</code> και <code>rest</code> είναι much easier to remember.  Both sets of names are supported in Nyquist.)  The output of <code>(first mylist)</code> είναι 1, και the output of <code>(rest mylist)</code> είναι the λίστα<code>(2 3 4 5)</code>.  So the second element της λίστας is <code>(first (rest mylist))</code>.</p>\n"
+"\n"
+"<h3>Lisp function reference</h3>\n"
+"\n"
+"<p>Here's a λίστα of some από τις basic lisp functions you might need.  Για a complete λίστα of Lisp / Nyquist functions, see the <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Εγχειρίδια Αναφοράς του Nyquist</a>.</p>\n"
+"\n"
+"<p><b>Σημείωση: Symbols in Nyquist(όπως variable names και function names) are not case sensitive.  They μετατρέπονται to uppercase internally.</b></p>\n"
+"\n"
+"<h4>Math functions</h4>\n"
+"<table class=\"function-list\" summary=\"Λίστα από λειτουργίες και explanations\">\n"
+"<tr><td><code>(+ a b)</code></td><td>addition</td></tr>\n"
+"<tr><td><code>(- a b)</code></td><td>subtraction</td></tr>\n"
+"<tr><td><code>(* a b)</code></td><td>multiplication</td></tr>\n"
+"<tr><td><code>(/ a b)</code></td><td>division</td></tr>\n"
+"<tr><td><code>(truncate a b)</code></td><td>round down to integer (floor)</td></tr>\n"
+"<tr><td><code>(float a b)</code></td><td>integer to floating-point</td></tr>\n"
+"<tr><td><code>(rem a b c ...)</code></td><td>remainder</td></tr>\n"
+"<tr><td><code>(min a b c ...)</code></td><td>minimum</td></tr>\n"
+"<tr><td><code>(max a b c ...)</code></td><td>maximum </td></tr>\n"
+"<tr><td><code>(abs a)</code></td><td>absolute value</td></tr>\n"
+"<tr><td><code>(random n)</code></td><td>random integer between 1 και n-1</td></tr>\n"
+"<tr><td><code>(sin a b)</code></td><td>sine</td></tr>\n"
+"<tr><td><code>(cos a b)</code></td><td>cosine</td></tr>\n"
+"<tr><td><code>(tan a b)</code></td><td>tangent</td></tr>\n"
+"<tr><td><code>(expt a b)</code></td><td>exponent (a to the power of b)</td></tr>\n"
+"<tr><td><code>(sqrt a b)</code></td><td>square root</td></tr>\n"
+"<tr><td><code>(< a b)</code></td><td>test για a less than b</td></tr>\n"
+"<tr><td><code>(<= a b)</code></td><td>test για a less than ή equal to b</td></tr>\n"
+"<tr><td><code>(> a b)</code></td><td>test για a greater than b</td></tr>\n"
+"<tr><td><code>(>= a b)</code></td><td>test για a greater than ή equal to b</td></tr>\n"
+"<tr><td><code>(= a b)</code></td><td>test για equality</td></tr>\n"
+"<tr><td><code>(/= a b)</code></td><td>test για inequality</td></tr>\n"
+"</table>\n"
+"<h4>List functions</h4>\n"
+"<table class=\"function-list\" summary=\"Λίστα από λειτουργίες και επεξηγήσεις\">\n"
+"<tr><td><code>(first l)</code></td><td>first element of a λίστας (car)</td></tr>\n"
+"<tr><td><code>(rest l)</code></td><td>rest της λίστας (cdr)</td></tr>\n"
+"<tr><td><code>(reverse l)</code></td><td>reverse a list</td></tr>\n"
+"<tr><td><code>(list a b ...)</code></td><td>construct a list</td></tr>\n"
+"<tr><td><code>(append l1 l2)</code></td><td>append δύο λίστες</td></tr>\n"
+"<tr><td><code>(length l)</code></td><td>length of a list</td></tr>\n"
+"<tr><td><code>(maplist function l)</code></td><td>apply a function to every element in a list</td></tr>\n"
+"</table>\n"
+"\n"
+"<h4>Control</h4>\n"
+"<table class=\"function-list\" summary=\"Λίστα από λειτουργίες και επεξηγήσεις\">\n"
+"<tr><td><code>(if expr expr1 expr2)</code></td><td>if expr είναι true, evaluates expr1, διαφορετικά evaluates expr2</td></tr> \n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist2\">Next: Προγραμματισμός in Nyquist</a></h3>"
+
+#: help/nyquist2.php:22
+#, fuzzy
+msgid ""
+"<p>What makes Nyquist distinct from Lisp is that it is designed to work with sound, and has lots of built-in primitives and functions that synthesize, analyze, and manipulate sounds.  Within Audacity, this makes it relatively easy to build complicated effects out of Nyquist's palette of built-in functions.</p>\n"
+"\n"
+"<p>In Nyquist, a variable can hold a sound just as easily as it can hold a number or a string.  There are a lot of functions provided that allow you to stretch, distort, and combine sounds very efficiently.  It is even possible to \"rip apart\" a sound and access its individual samples, but that's beyond the scope of this tutorial.</p>\n"
+"\n"
+"<p>To try out a Nyquist expression in Audacity, you can use \"Nyquist Prompt\" in the Effect menu.  Whatever audio you have selected will be in the variable <code>s</code>, and the selection will be replaced with the result of the Nyquist expression you enter.  In Part 3, you will learn how to create a plug-in effect using Nyquist.</p>\n"
+"\n"
+"<h3>Synthesizing</h3>\n"
+"\n"
+"<p>The following functions all create new sounds.  You can use them to create \"generate\" plug-in effects, or you can combine these synthesized sounds with selected audio to produce interesting effects.</p>\n"
+"\n"
+"<table class=\"function-list\" class=\"function-list\">\n"
+"<tr>\n"
+"<td>(noise)</td>\n"
+"<td>Generates white noise</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(const value [duration])</td>\n"
+"<td>Generates a constant (silent) signal</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sine pitch [duration])</td>\n"
+"<td>Generates a sine wave at an indicated pitch and duration.<br>\n"
+"    The pitch is a MIDI note number, with 60 for middle C.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hzosc hz)</td>\n"
+"<td>Generates a sine wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-saw hz)</td>\n"
+"<td>Generates a sawtooth wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-tri hz)</td>\n"
+"<td>Generates a triangle wave at a particular frequency in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-pulse hz bias)</td>\n"
+"<td>Generates a square pulse with variable width at the indicated\n"
+"    frequency (in Hertz). The bias parameter controls the pulse width \n"
+"    and should be between -1 and +1, giving a pulse width from 0%\n"
+"    (always at -1) to 100% (always at +1). When bias is zero,\n"
+"    a square wave is generated.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(pluck pitch)</td>\n"
+"<td>Generates a sound at the given pitch created using a\n"
+"    modified Karplus-Strong plucked string algorithm.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<p>\n"
+"<b>Envelopes</b>\n"
+"</p>\n"
+"\n"
+"<p>Nyquist has support for envelopes.  By applying an envelope to a sound, you can control the overall shape of its amplitude.  One of the easiest ways to construct an envelope is with the <code>env</code> function, which takes 7 parameters that are commonly used for shaping synthesized musical notes: attack time, decay time, release time, attack level, decay level, sustain level, and overall duration.  See the figure below:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
+"\n"
+"<p>To apply an envelope to a sound, just use the <code>mult</code> function.  So if <code>s</code> is a sound, then this is the sound with a simple envelope applied to it:</p>\n"
+"\n"
+"<pre>\n"
+"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
+"</pre>\n"
+"\n"
+"<p>One of the most general type of envelope is a piece-wise linear function, which can be constructed with the <code>pwl</code> function.  The pwl function takes a list of parameters which denote (time, value) pairs. There is an implicit initial (time, value) pair of (0, 0), and an implicit final value of 0. There should always be an odd number of parameters, since the final time is not implicit.  For example:</p>\n"
+"\n"
+"<pre>\n"
+"  ; symmetric rise to 0.7 (at time 1) and fall back to 0 (at time 2):\n"
+"  (pwl 1.0 0.7 2.0)\n"
+"</pre>\n"
+"\n"
+"<h3>Combining sounds</h3>\n"
+"\n"
+"<p>Besides multiplying two sounds with the <code>mult</code> function, you can add two sounds (or envelopes) with the <code>add</code> function.</p>\n"
+"\n"
+"<h3>Filters</h3>\n"
+"\n"
+"<p>Nyquist comes with a number of common filters built-in.  Here are some of the more common ones:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(lp sound cutoff)</td>\n"
+"<td>Low-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hp sound cutoff)</td>\n"
+"<td>High-pass filter (first-order Butterworth). Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(comb sound hz decay)</td>\n"
+"<td>Applies a comb filter to sound, which emphasizes\n"
+"    (resonates at) frequencies that are multiples of a hz.\n"
+"</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(alpass sound decay hz)</td>\n"
+"<td>All-pass filter, creating a delay effect without the resonances\n"
+"    of a comb filter.  </td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(notch2 sound hz)</td>\n"
+"<td>Second-order notch filter centered at a frequency of hz.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3>Transforming and combining sounds</h3>\n"
+"\n"
+"<p>It is beyond the scope of this introductory tutorial to explain all of the ways that a sound can be transformed in Nyquist.  These functions do not modify sounds directly, but instead modify the Nyquist <em>environment</em>.  In order for these changes to affect sounds, you must use the <code>cue</code> function.</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(stretch factor (cue sound))</td>\n"
+"<td>Changes the length of the sound being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(scale factor (cue sound))</td>\n"
+"<td>Scales the amplitude of the sound being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(loud dB (cue sound))</td>\n"
+"<td>Increases or decreases the volume of the sound being cued by the<br>\n"
+"    given number of decibels.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(at t (cue sound))</td>\n"
+"<td>Starts the given sound at a particular time in seconds.<br>\n"
+"    This can't be used to add silence at the beginning or end,<br>\n"
+"    but it can be used when combining two or more sounds.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(seq (cue s1) (cue s2))</td>\n"
+"<td>Creates a sequence of sound s1 followed by sound s2.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sim (cue s1) (cue s2))</td>\n"
+"<td>Combines two sounds so that they are played simultaneously.\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist3\">Next: Creating Nyquist Plug-Ins</a></h3>"
+msgstr ""
+"<p>What makes Nyquist distinct από Lisp είναι that it έχει designed to work με ήχο, και έχει lots από ενσωματωμένα primitives και functions that synthesize, analyze, και manipulate ήχους.  Within Audacity, this makes it relatively εύκολα to build complicated εφέ out τις Nyquist's palette από ενσωματωμένες functions.</p>\n"
+"\n"
+"<p>In Nyquist, a variable can hold a ήχο just as easily as it can hold a αριθμό ή a string.  Υπάρχουν a lot από functions provided that allow you to stretch, distort, και συνδυάσεις ήχους very efficiently.  Είναι even possible to \"rip apart\" a ήχο και access its individual δείγματα, όμως that's beyond the scope of this tutorial.</p>\n"
+"\n"
+"<p>To try out a Nyquist expression στο Audacity, μπορείς να χρησιμοποιήσεις \"Nyquist Prompt\" in the Effect menu.  Whatever audio you have selected will be in the variable <code>s</code>, και the selection will be replaced με the result of the Nyquist expression you enter.  In Part 3, you will learn how to δημιουργήσεις a ένθεμα (plug-in)με εφέ using Nyquist.</p>\n"
+"\n"
+"<h3>Synthesizing</h3>\n"
+"\n"
+"<p>The ακόλουθες functions all δημιουργούν νέους ήχους.  Μπορείς να τις χρησιμοποιήσεις για να δημιουργήσεις  \"generate\" ένα ένθεμα (plug-in) με εφέ, ή μπορείς να συνδυάσεις αυτούς τους synthesized ήχους με selected audio to produce interesting εφέ.</p>\n"
+"\n"
+"<table class=\"function-list\" class=\"function-list\">\n"
+"<tr>\n"
+"<td>(θόρυβος)</td>\n"
+"<td>Generates white θόρυβος</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(const value [duration])</td>\n"
+"<td>Generates a constant (silent) signal</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sine pitch [duration])</td>\n"
+"<td>Generates a sine wave at an indicated τόνος και duration.<br>\n"
+"    The τόνος είναι ένας MIDI note number, με 60 για middle C.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hzosc hz)</td>\n"
+"<td>Generates a sine wave at a particular συχνότητα in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-saw hz)</td>\n"
+"<td>Generates a sawtooth wave at a particular συχνότητα in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-tri hz)</td>\n"
+"<td>Generates a triangle wave at a particular συχνότητα in Hz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(osc-pulse hz bias)</td>\n"
+"<td>Generates a square pulse με variable width at the indicated\n"
+"    συχνότητα (in Hertz). The bias parameter controls the pulse width \n"
+"    και should be between -1 και +1, giving a pulse width από 0%\n"
+"    (always at -1) to 100% (always at +1). Όταν bias είναι zero,\n"
+"    a square wave is generated.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(pluck pitch)</td>\n"
+"<td>Generates a ήχο at the given τόνο δημιουργείται χρησιμοποιώντας a\n"
+"    modified Karplus-Strong plucked string algorithm.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<p>\n"
+"<b>Envelopes</b>\n"
+"</p>\n"
+"\n"
+"<p>Nyquist έχει support για envelopes.  By applying an envelope to a ήχο, μπορείς να control the overall shape του its amplitude.  One από τους easiest ways to construct an envelope είναι με the <code>env</code> function, which takes 7 parameters that are commonly used για shaping synthesized musical notes: attack time, decay time, release time, attack level, decay level, sustain level, και overall duration.  See the figure below:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist envelope diagram.\" src=\"../images/nyquist-envelope\" width=\"467\" height=\"200\"></p>\n"
+"\n"
+"<p>To apply an envelope to a ήχο, just χρησιμοποίησε the <code>mult</code> function.  So if <code>s</code> είναι ένας ήχος, then this είναι the ήχος με a simple envelope applied to it:</p>\n"
+"\n"
+"<pre>\n"
+"  (mult s (env 0.1 0.1 0.2 1.0 0.5 0.3 1.0))\n"
+"</pre>\n"
+"\n"
+"<p>One από τους πιο general type από envelope είναι μία piece-wise linear function, which can be constructed με the <code>pwl</code> function.  The pwl function takes a λίστα από parameters which denote (time, value) pairs. There is an implicit initial (time, value) pair από (0, 0), και an implicit final value του 0. There should always be an odd αριθμό από parameters, since the final time δεν implicit.  Για παράδειγμα:</p>\n"
+"\n"
+"<pre>\n"
+"  ; symmetric rise to 0.7 (at time 1) και fall back to 0 (at time 2):\n"
+"  (pwl 1.0 0.7 2.0)\n"
+"</pre>\n"
+"\n"
+"<h3>Combining ήχων</h3>\n"
+"\n"
+"<p>Besides multiplying δύο ήχους με the <code>mult</code> function, μπορείς να add δύο ήχους (ή envelopes) με the <code>add</code> function.</p>\n"
+"\n"
+"<h3>Filters</h3>\n"
+"\n"
+"<p>Nyquist comes με a αριθμό από common filters ενσωματωμένα.  Here είναι some από τους more common ones:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(lp ήχου cutoff)</td>\n"
+"<td>Low-pass filter (first-order Butterworth). Cutoff may be a float ή a signal (για time-varying filtering) και expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(hp ήχου cutoff)</td>\n"
+"<td>High-pass filter (first-order Butterworth). Cutoff may be a float ή a signal (για time-varying filtering) και expresses hertz.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(comb ήχου hz decay)</td>\n"
+"<td>Applies a comb filter to ήχο, which emphasizes\n"
+"    (resonates at) συχνότητες that είναι multiples από a hz.\n"
+"</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(alpass ήχου decay hz)</td>\n"
+"<td>All-pass filter, creating a delay effect χωρίς the resonances\n"
+"    of a comb filter.  </td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(notch2 ήχου hz)</td>\n"
+"<td>Second-order notch filter centered at a συχνότητα από hz.</td>\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3>Transforming και combining ήχων</h3>\n"
+"\n"
+"<p>It Είναι beyond the scope of this introductory tutorial to explain all από τους ways that a ήχος can be transformed in Nyquist.  Αυτές οι functions do not μετατρέψεις ήχους directly, όμως instead μετατρέψεις the Nyquist <em>environment</em>.  In order για αυτές οι αλλαγές to affect ήχους, πρέπει να χρησιμοποιήσεις the <code>cue</code> function.</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"\n"
+"<tr>\n"
+"<td>(stretch factor (cue ήχος))</td>\n"
+"<td>Άλλαξες the length του ήχου being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(scale factor (cue ήχος))</td>\n"
+"<td>Scales the amplitude του ήχο being cued by the given factor.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(loud dB (cue ήχος))</td>\n"
+"<td>Increases ή decreases the volume του ήχου being cued by the<br>\n"
+"    given αριθμό από decibels.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(at t (cue ήχος))</td>\n"
+"<td>Starts the given ήχο at a particular time in seconds.<br>\n"
+"    This can't be used to add silence at the beginning ή end,<br>\n"
+"    όμως it can be used όταν combining δύο ή more ήχους.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(seq (cue s1) (cue s2))</td>\n"
+"<td>Δημιουργεί a sequence of ήχο s1 followed by sound s2.</td>\n"
+"</tr>\n"
+"\n"
+"<tr>\n"
+"<td>(sim (cue s1) (cue s2))</td>\n"
+"<td>Συνδυάζεις δύο ήχους so that they are played simultaneously.\n"
+"</tr>\n"
+"\n"
+"</table>\n"
+"\n"
+"<h3><a href=\"nyquist3\">Next: Creating Ενθέματα(Plug-Ins) Nyquist </a></h3>"
+
+#: help/nyquist3.php:22
+#, fuzzy
+msgid ""
+"<p>Creating a plug-in for Audacity using Nyquist is as simple as creating a text file with the extension \".ny\" with some Nyquist code, adding a few comments to indicate the type of plug-in, and placing the file in Audacity's <code>plug-ins</code> directory.  Here's a very simple plug-in as an example:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Fade In\"\n"
+"  ;action \"Fading In...\"\n"
+"  (mult (ramp) s)\n"
+"</pre>\n"
+"\n"
+"<p>The first two lines of a Nyquist plug-in must be exactly as in the example above, or Audacity will not load it.  (The version number is to support future expansions of the plug-in format.) The next line is the type of plug-in, which is discussed below.  Then comes the name of the plug-in, which is what is displayed in the menu bar, and then the \"action\", which is what Audacity displays while it is busy processing the plug-in.  There are other optional lines that may follow.  Any line that does not begin with a semicolon (;) is assumed to contain Nyquist code and will be executed.</p>\n"
+"\n"
+"<p>Audacity has support for three types of plug-ins that can be written in Nyquist:</p>\n"
+"\n"
+"<pre>\n"
+"  ;type generate\n"
+"  ;type process\n"
+"  ;type analyze\n"
+"</pre>\n"
+"\n"
+"<p>These correspond to the three menus that can contain plug-ins: Generate, Effect, and Analyze.  Generate plug-ins are expected to generate new audio from scratch, Effect plug-ins (\"process\") modify existing audio in-place, and Analyze plug-ins process audio but do not modify it (though they are allowed to add labels).</p>\n"
+"\n"
+"<p>For Effect and Analyze plug-ins, Audacity sets up the Nyquist environment so that the audio the user has selected is in the variable <code>s</code>.  All of the expressions in the plug-in file are executed in order, and the return value of the last expression is substituted for the selection in Audacity.  If the last expression does not return audio, Audacity returns an error.</p>\n"
+"\n"
+"<h3>Parameter dialogs</h3>\n"
+"\n"
+"<p>Audacity has limited support for plug-ins showing a dialog to get parameters from the user.  Here is an example of a plug-in that opens a dialog:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;version 1\n"
+"  ;type process\n"
+"  ;name \"Delay...\"\n"
+"  ;action \"Performing Delay Effect...\"\n"
+"  ;info \"Demo effect for Nyquist by Roger Dannenberg.\\n"
+"This effect \n"
+"     creates a fixed number of echos.\"  ; (should be all on one line)\n"
+"  ;control decay \"Decay amount\" int \"dB\" 6 0 24\n"
+"  ;control delay \"Delay time\" real \"seconds\" 0.5 0.0 5.0\n"
+"  ;control count \"Number of echos\" int \"times\" 5 1 30\n"
+"\n"
+"  (defun delays (s decay delay count)\n"
+"    (if (= count 0) (cue s)\n"
+"\t   (sim (cue s)\n"
+"        (loud decay (at delay (delays s decay delay (- count 1)))))))\n"
+"  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
+"</pre>\n"
+"\n"
+"<p>If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user for certain parameters to the plug-in.  Each parameter consists of a text box and a slider, and after the user has entered each one, the final value will be stored in a Nyquist variable with a name that you specify on the \"control\" line.  Here's what the dialog for the Delay effect shown above looks like in Audacity for Linux:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-screenshot\" width=\"414\" height=\"221\"></p>\n"
+"\n"
+"<p>Note that the \"info\" line is displayed at the top of the dialog, and that the \"\\n"
+"\" becomes a newline.  The parameters to the \"control\" line affect the appearance and limitations of the parameter.  Each \"control\" line must consist of exactly the following 8 elements, in order:</p>\n"
+"\n"
+"<ol>\n"
+"\t<li>The word \"control\"</li>\n"
+"\t<li>The name of the control - this is the name of the Nyquist variable that will get set when the user manipulates the dialog.</li>\n"
+"\t<li>The label to the left of the control</li>\n"
+"\t<li>The type of value: either <code>int</code> (integer) or <code>real</code>.</li>\n"
+"\t<li>The label to the right of the value (usually the units like \"Hz\" or \"dB\").</li>\n"
+"\t<li>The default/initial value of the parameter</li>\n"
+"\t<li>The minimum value of the parameter</li>\n"
+"\t<li>The maximum value of the parameter</li>\n"
+"</ol>\n"
+"\n"
+"<h3>Returning labels</h3>\n"
+"\n"
+"<p>Instead of returning audio, a Nyquist plug-in can instead return a list of labels.  A list of labels is simply a list of time/label pairs, for example:</p>\n"
+"\n"
+"<pre>\n"
+"  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
+"</pre>\n"
+"\n"
+"<p>When a plug-in returns a list of exactly this form, Audacity will create a new label track and add the labels at those positions.  This style of plug-in is usually of type \"analyze\".</p>\n"
+"\n"
+"<h3>Processing stereo tracks</h3>\n"
+"\n"
+"<p>Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"<tr><td><code>(arrayp s)</code></td><td>returns true if <code>s</code> is an array</td></tr>\n"
+"<tr><td><code>(aref s 0)</code></td><td>the first element in array <code>s</code> - the left channel</td></tr>\n"
+"<tr><td><code>(aref s 1)</code></td><td>the second element in array <code>s</code> - the right channel</td></tr>\n"
+"<tr><td><code>(setf s (make-array 2))</code></td><td>makes <code>s</code> into a new array of length 2</td></tr>\n"
+"<tr><td><code>(setf (aref s 0) left)</code></td><td>makes <code>left</code> the first element of array <code>s</code></td></tr>\n"
+"<tr><td><code>(setf (aref s 1) right)</code></td><td>makes <code>right</code> the second element of array <code>s</code></td></tr>\n"
+"</table>\n"
+"\n"
+"<p>As a convenience, if the input to your Nyquist plug-in is stereo, but you only output a single (mono) sound, Audacity will automatically copy it to both the left and right channels.</p>\n"
+"\n"
+"<h3>Where to go from here</h3>\n"
+"\n"
+"<p>Audacity comes with some sample plug-ins that you can examine or modify as a starting point.  The best way to learn Nyquist is to try it.  If you're having trouble debugging, consider downloading the standalone version of Nyquist (see the link in Part 1).</p>\n"
+"\n"
+"<p>If you're having trouble getting Nyquist to work at all, please <a href=\"../contact/\">contact us</a>.</p>\n"
+"\n"
+"<p>If you are working on Nyquist plug-in effects and would like to share them with others, or if you would like to discuss general details of how to achieve certain effects in Nyquist, please join the <a href=\"../contact/lists#nyquist\">audacity-nyquist mailing list</a>.</p>\n"
+"\n"
+"<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how Nyquist works.</p>"
+msgstr ""
+"<p>Creating a plug-in για Audacity χρησιμοποιώντας Nyquist είναι as simple as creating a text αρχείο με the extension \".ny\" με some Nyquist code, adding a few σχόλια to indicate the type του plug-in, και placing the αρχείο στο Audacity's <code>ενθεμάτων (plug-ins)</code> directory.  Here's a very simple plug-in as an παράδειγμα:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;έκδοση 1\n"
+"  ;type process\n"
+"  ;name \"Fade In\"\n"
+"  ;action \"Fading In...\"\n"
+"  (mult (ramp) s)\n"
+"</pre>\n"
+"\n"
+"<p>The first δύο lines of a Nyquist ενθέματος  (plug-in) must be exactly as in the παράδειγμα above, ή Audacity will not load it.  (The έκδοσης αριθμό είναι to support future expansions της ενθέματος  (plug-in) format.) The next line είναι the type του plug-in, which is discussed below.  Then comes the name του plug-in, which είναι what is displayed in the menu bar, και then the \"action\", which είναι what Audacity displays while it είναι busy processing the plug-in.  Υπάρχουν άλλες προαιρετικές lines that may follow.  Any line that does not begin με a semicolon (;) is assumed to contain Nyquist κωδικό και will be executed.</p>\n"
+"\n"
+"<p>Audacity έχει support για three types ενθεμάτων (plug-ins) that can be written in Nyquist:</p>\n"
+"\n"
+"<pre>\n"
+"  ;type generate\n"
+"  ;type process\n"
+"  ;type analyze\n"
+"</pre>\n"
+"\n"
+"<p>Αυτά correspond to the three menus that can contain ενθέματα (plug-ins): Generate, Effect, και Analyze.  Generate ενθέματα (plug-ins) are expected to generate νέο audio από scratch, Effect ενθέματα (plug-ins) (\"process\") μετατρέπουν existing audio in-place, και Analyze ενθέματα (plug-ins) process audio όμως do not μετατρέπουν it (though they are allowed to add labels).</p>\n"
+"\n"
+"<p>Για Effect και Analyze ενθέματα (plug-ins), Audacity sets up the Nyquist environment so that the audio the user έχει selected βρίσκεται in the variable <code>s</code>.  All από τις expressions in the ενθέματος  (plug-in) αρχείο are executed in order, και the return value της last expression is substituted για the selection στο Audacity.  If the last expression does not return audio, Audacity returns an error.</p>\n"
+"\n"
+"<h3>Parameter dialogs</h3>\n"
+"\n"
+"<p>Audacity έχει limited support για ενθέματα (plug-ins) showing a dialog to get parameters από the user.  Here είναι an παράδειγμα από a ένθεμα (plug-in)that opens a dialog:</p>\n"
+"\n"
+"<pre>\n"
+"  ;nyquist plug-in\n"
+"  ;έκδοση 1\n"
+"  ;type process\n"
+"  ;name \"Delay...\"\n"
+"  ;action \"Performing Delay Effect...\"\n"
+"  ;info \"Demo effect για Nyquist by Roger Dannenberg.\\n"
+"This effect \n"
+"     δημιουργείς a fixed αριθμό από επαναλήψεις.\"  ; (should be all on one line)\n"
+"  ;control decay \"Decay amount\" int \"dB\" 6 0 24\n"
+"  ;control delay \"Delay time\" real \"seconds\" 0.5 0.0 5.0\n"
+"  ;control count \"Αριθμός  από επαναλήψεις\" int \"times\" 5 1 30\n"
+"\n"
+"  (defun delays (s decay delay count)\n"
+"    (if (= count 0) (cue s)\n"
+"\t   (sim (cue s)\n"
+"        (loud decay (at delay (delays s decay delay (- count 1)))))))\n"
+"  (stretch-abs 1 (delays s (- 0 decay) delay count))\n"
+"</pre>\n"
+"\n"
+"<p>If Audacity finds at least one \"control\" line, it will open a dialog to prompt the user για certain parameters to the plug-in.  Each parameter consists από a text box και a slider, και after the user έχει entered each one, the final value will be stored in a Nyquist variable με a name that you specify on the \"control\" line.  Here's what the dialog για the Delay effect shown above looks like στο Audacity για Linux:</p>\n"
+"\n"
+"<p><img alt=\"Nyquist plugin screenshot\" src=\"../images/nyquist-plugin-screenshot\" width=\"414\" height=\"221\"></p>\n"
+"\n"
+"<p>Note that the \"info\" line is displayed at the top του dialog, και that the \"\\n"
+"\" becomes a newline.  The parameters to the \"control\" line affect the appearance και limitations των parameter.  Each \"control\" line must consist από exactly the ακόλουθα 8 elements, in order:</p>\n"
+"\n"
+"<ol>\n"
+"\t<li>The word \"control\"</li>\n"
+"\t<li>The name του control - this είναι the name της Nyquist variable that will get set όταν the user manipulates the dialog.</li>\n"
+"\t<li>The label to the left του control</li>\n"
+"\t<li>The type της value: either <code>int</code> (integer) ή <code>real</code>.</li>\n"
+"\t<li>The label to the right της value (συνήθως the units όπως \"Hz\" ή \"dB\").</li>\n"
+"\t<li>The default/initial value των parameter</li>\n"
+"\t<li>The minimum value των parameter</li>\n"
+"\t<li>The maximum value των parameter</li>\n"
+"</ol>\n"
+"\n"
+"<h3>Returning labels</h3>\n"
+"\n"
+"<p>Instead of returning audio, a Nyquist ένθεμα (plug-in)can instead return a λίστα από labels.  A λίστα από labels είναι simply a λίστα of time/label pairs, για παράδειγμα:</p>\n"
+"\n"
+"<pre>\n"
+"  ((0.0 \"start\") (30.0 \"middle\") (60.0 \"end\"))\n"
+"</pre>\n"
+"\n"
+"<p>Όταν a ένθεμα (plug-in) returns a λίστα από exactly this form, Audacity will δημιουργήσει a νέα label track και add the labels at those positions.  This style του ενθέματος  (plug-in) είναι συνήθως του type \"analyze\".</p>\n"
+"\n"
+"<h3>Processing stereo καναλιών</h3>\n"
+"\n"
+"<p>Nyquist represents stereo κανάλια as an array από ήχους (not a list).  Many Nyquist functions αυτόματα work με αυτά τα arrays, όμωςnot all, so sometimes μπορεί να find it necessary to split up a stereo array, ή reassemble one.  Here είναι some useful functions:</p>\n"
+"\n"
+"<table class=\"function-list\">\n"
+"<tr><td><code>(arrayp s)</code></td><td>returns true if <code>s</code> είναι an array</td></tr>\n"
+"<tr><td><code>(aref s 0)</code></td><td>the first element in array <code>s</code> - the left channel</td></tr>\n"
+"<tr><td><code>(aref s 1)</code></td><td>the second element in array <code>s</code> - the right channel</td></tr>\n"
+"<tr><td><code>(setf s (make-array 2))</code></td><td>makes <code>s</code> σε a νέο array of length 2</td></tr>\n"
+"<tr><td><code>(setf (aref s 0) left)</code></td><td>makes <code>left</code> the first element του array <code>s</code></td></tr>\n"
+"<tr><td><code>(setf (aref s 1) right)</code></td><td>makes <code>right</code> the second element του array <code>s</code></td></tr>\n"
+"</table>\n"
+"\n"
+"<p>As a convenience, if the input to your Nyquist ενθέματος  (plug-in) είναι stereo, όμως you only output a single (mono) ήχο, Audacity will αυτόματα αντιγράψει it to both the left και right channels.</p>\n"
+"\n"
+"<h3>Πού to go από here</h3>\n"
+"\n"
+"<p>Audacity comes με some sample ενθέματα (plug-ins) that μπορείς να examine ή μετατρέπουν as a starting point.  The best way to learn Nyquist είναι to try it.  If you're having trouble debugging, consider downloading the standalone έκδοση του Nyquist (δες the link in Part 1).</p>\n"
+"\n"
+"<p>If you're having trouble getting Nyquist to work at all, παρακαλώ <a href=\"../contact/\">contact us</a>.</p>\n"
+"\n"
+"<p>Αν working on Nyquist ένθεμα (plug-in) με εφέ και θα ήθελες να to share them με άλλους, ή αν θα ήθελες να discuss general λεπτομέρειες of how to achieve certain εφέ in Nyquist, παρακαλώ πάρε μέρος στη <a href=\"../contact/lists#nyquist\">audacity-nyquist λίστα αλληλογραφίας</a>.</p>\n"
+"\n"
+"<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Εγχειρίδια Αναφοράς του Nyquist</a> για more λεπτομέρειες of how Nyquist λειτουργεί.</p>"
+
+#: include/header.inc.php:11
+msgid "Audacity"
+msgstr "Audacity"
+
+#: include/header.inc.php:16
+msgid "Jump to page content"
+msgstr "Μετάβαση στα περιεχόμενα της ιστοσελίδας"
+
+#: include/header.inc.php:19
+msgid "Powered by Google"
+msgstr "Ενίσχυση από το Google"
+
+#: include/header.inc.php:24
+msgid "Search this site"
+msgstr "Αναζήτηση σε αυτό το διαδικτυακό  τόπο"
+
+#: include/header.inc.php:28
+msgid "Audacity: Free Sound Editor and Recording Software"
+msgstr "Audacity: Ελεύθερος Επεξεργαστής Ήχου και Πρόγραμμα Ηχογράφησης"
+
+#: include/header.inc.php:40
+msgid "Site Navigation"
+msgstr "Πλοήγηση Διαδικτυακού Τόπου"
+
+#: include/footer.inc.php:11
+msgid "Page Footer"
+msgstr "Υποσέλιδο"
+
+#: include/footer.inc.php:13
+msgid "Privacy"
+msgstr "Πολιτική Εχεμύθειας"
+
+#: include/footer.inc.php:14
+msgid "Copyright"
+msgstr "Πνευματικά Δικαιώματα"
+
+#: include/footer.inc.php:15
+#: site-map.php:8
+msgid "Site Map"
+msgstr "Χάρτης Διαδικτυακού Τόπου"
+
+#: include/footer.inc.php:17
+#, fuzzy
+msgid "Creative Commons Attribution license"
+msgstr "Creative Commons Attribution license"
+
+#: include/footer.inc.php:17
+#, fuzzy
+msgid "Creative Commons: Some rights reserved."
+msgstr "Creative Commons: Some rights reserved."
+
+#: include/footer.inc.php:18
+msgid "Development hosted by SourceForge"
+msgstr "Το όλο εγχείρημα φιλοξενείται από το SourceForge"
+
+#: include/footer.inc.php:19
+msgid "View this page in a different language"
+msgstr "Δες αυτή την ιστοσελίδα σε διαφορετική γλώσσα"
+
+#. i18n-hint: Controls how dates are formatted.
+#: include/news.inc.php:24
+msgid "%B %d, %Y"
+msgstr "%B %d, %Y"
+
+#: include/news.inc.php:41
+msgid "Audacity 1.2.3 Released"
+msgstr "Έκδοση του Audacity 1.2.3"
+
+#: include/news.inc.php:42
+msgid ""
+"<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
+"<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
+msgstr ""
+"<p>Το Audacity 1.2.3 είναι μία νέα σταθερή έκδοση του Audacity. Αυτή η έκδοση διορθώνει ένα σφάλμα που παρεμβάλλονταν σε μακράς διαρκείας   ηχογραφήσεις σε κάποια συστήματα Windows, και ένα άλλο σφάλμα που προκαλούσε τυχαίες καταρεύσεις σε Mac OS X. Περιλαμβάνει επίσης αρκετές ανανεωμένες μεταφράσεις, και άλλες διορθώσεις σφαλμάτων και μικρές βελτιώσεις.</p>\n"
+"<p>Δες τις <a href=\"/download/release-notes\">Σημειώσεις Έκδοσης</a> για μία πλήρη λίστα από αλλαγές και γνωστά προβλήματα σε αυτή την έκδοση.</p>"
+
+#: index.php:9
+msgid "Free Audio Editor and Recorder"
+msgstr "Ελεύθερος Επεξεργαστής και Ηχογράφος Ήχου "
+
+#: index.php:18
+msgid "for Microsoft Windows"
+msgstr "για Microsoft Windows"
+
+#: index.php:23
+msgid "for Mac OS 9 or X"
+msgstr "για Mac OS 9 ή X"
+
+#: index.php:28
+msgid "For Windows, Mac, or GNU/Linux"
+msgstr "Για Windows, Mac, ή GNU/Linux"
+
+#: index.php:33
+msgid "The Free, Cross-Platform Sound Editor"
+msgstr "Ο Ελεύθερος,Ανεξαρτήτως-Πλατφόρμας Επεξεργαστής Ήχου"
+
+#: index.php:38
+msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "Το Audacity είναι ένα ανοιχτού κώδικα πρόγραμμα για την ηχογράφηση και την επεξεργασία ήχων.  Είναι διαθέσιμο για  Mac OS X, Microsoft Windows, GNU/Linux, και άλλα λειτουργικά προγράμματα.  <a href=\"about/\">Μάθε περισσότερα για το Audacity...</a>"
+
+#: index.php:42
+#, php-format
+msgid "Download Audacity %s"
+msgstr "Μεταφόρτωση(κατέβασμα) του Audacity %s"
+
+#: index.php:46
+msgid "Other downloads"
+msgstr "Άλλα αρχεία για κατέβασμα"
+
+#: index.php:68
+msgid "Get Notified of New Versions"
+msgstr "Να ενημερώνεσαι για Νέα Έκδοση"
+
+#: index.php:80
+msgid "Email address"
+msgstr "Ηλεκτρονική διεύθυνση"
+
+#: index.php:81
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: index.php:82
+msgid "Remove"
+msgstr "Απομάκρυνση"
+
+#: main.inc.php:17
+msgid "Home"
+msgstr "Αρχή"
+
+#: main.inc.php:18
+msgid "About"
+msgstr "Σχετικά με..."
+
+#: main.inc.php:31
+msgid "Mac"
+msgstr "Mac"
+
+#: main.inc.php:36
+msgid "Buy a CD"
+msgstr "Αγορά CD"
+
+#: main.inc.php:41
+msgid "FAQ"
+msgstr "FAQ(Συχνές Ερωτήσεις)"
+
+#: main.inc.php:58
+msgid "Donate"
+msgstr "Δωρεές"
+
+#: 404.php:9
+msgid "Page Not Found"
+msgstr "Η Ιστοσελίδα Δεν Βρέθηκε"
+
+#: 404.php:14
+msgid "Sorry, the page you are looking for was not found.  Please try the <a href=\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
+msgstr "Δυστυχώς, η ιστοσελίδα που έψαχνες δεν βρέθηκε.  Παρακαλώ δες την <a href=\"/\">αρχική σελίδα του Audacity</a> ή τον <a href=\"/site-map\">χάρτη του διαδικτυακού τόπου</a>."
+

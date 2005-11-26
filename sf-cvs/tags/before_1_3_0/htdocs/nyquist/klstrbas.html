@@ -1,0 +1,36 @@
+klstrbas.ny<br>
+Author Steven Jones   02 October 2004<br>
+This software released under the terms of the GNU public license
+<p>
+KLSTRBAS (for "cluster bass") generates several signals with a fixed frequency
+ratio between them.  Apparently early Roland drum machines created
+cymbal sound in part by combining multiple square waves with non-integral
+frequency ratios. The combined signal was then high passed filtered to
+produce a very dense cluster of high frequency harmonics. The genesis of
+KLSTRBAS was a failed attempt to create cymbal sounds  using this technique. 
+<p>
+Parameters:
+<p><pre>
+key	- MIDI key number 
+decay	- Decay time in whole seconds
+fdecay  - Fractional decay time in 1/100 second
+density - The number of component waveforms is 4 times the density
+          Higher densities produce a deeper flange effect but can
+          also cause the sound to go out of tune.
+detune  - Effects the relative frequencies. See below
+flange  - Effects relative frequencies. See below
+tab     - Wave form used as a basic component.
+          0=sine, 1=tri, 2=square, 3=saw
+          The wave tables are not band limited so aliasing may result
+	  if either key or n are too high.
+</pre>
+<p>
+The frequency of each component is determined by the key number, the detune
+and flange parameters. Specifically the nth component has a frequency of
+p * (1 + d/100 + g)^n  where
+p is the fundamental frequency determined by the key number
+d is the detune amount 0 <= d <= 99 and g is derived by the flange parameter. 
+g = 1/(10^(4-f)) for flange value f
+<p>
+KLSTRBAS can also produce synth kick drum sounds by setting decay time to a
+fraction of a second.

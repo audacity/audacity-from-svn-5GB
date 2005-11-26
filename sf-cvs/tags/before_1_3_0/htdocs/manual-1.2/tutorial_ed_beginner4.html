@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+        <title>Editing for Beginners - Splitting and Submixes</title>
+	<link rel=stylesheet type="text/css" href="audacity.css"></head>
+<body>
+<!--top table-->
+<DIV align=center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="tutorials.html">Back to the Tutorial Page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+<table width="95%" border=0 cellspacing=0 cellpadding=0>
+  <tr><td colspan=2 width="100%" align=center>
+	<a class=top_r href="tutorial_ed_beginner1.html">Introduction</a>
+	<a class=top_y href="tutorial_ed_beginner2.html">Cut,Copy&amp;Paste</a>
+	<a class=top_b href="tutorial_ed_beginner3.html">Silence, Duplicate and Split</a>
+	<a class=top_g href="tutorial_ed_beginner4.html">Splitting and Submixes</a>
+    </td>
+  </tr>
+</table>
+</DIV>
+
+<center>
+<h2 align=center><span class=ss><B>II.Editing for Beginners</B></span><br><span class=sf>Part 4&nbsp;-&nbsp;&nbsp;</span>Splitting and Submixes<span class=sf>&nbsp;&nbsp;-&nbsp;Part 4</span></h2>
+</center>
+
+
+<P class=qg>Moving bits of an Audio track</P>
+
+<P class=a>
+In all projects you'll be pushing your audio around at some point. Otherwise, what are you doing here ?
+</P>
+
+<P class=a>
+There are techniques, easily achievable with Audacity, to cover almost any kind shifting you'd want to do. In our example, we have a small sentence of speech, where the speaker made a pause after the first word. We'd like to eliminate that pause.
+</P>
+
+<P class=a>
+The part after the pause is selected
+</P>
+
+<center><img border=0 src="images/ed_beginners_shift_1.png" width="427" height="139" alt="Shifting audio - the situation"><br><B>Select</B></center>
+
+<br>
+
+<P class=a>
+Then the <a href="menu_edit.html#split">split function</a> is used to pop the selected audio to a new track
+</P>
+
+<center><img border=0 src="images/ed_beginners_shift_2.png" width="429" height="260" alt="Shifting audio - first split"><br><B>Split</B></center>
+
+<br>
+
+<P class=a>
+<a href="toolbar.html#timeshift">The Time Shift Tool</a> <a href="toolbar.html#timeshift"><img border=0 width="28" height="28" src="images/tool_timeshift.png" align=middle></a> is selected and the audio on the lower track is moved left.
+</P>
+
+<center><img border=0 src="images/ed_beginners_shift_3.png" width="429" height="259" alt="Shifting audio - shifted audio and audio marked for fading"><br><B>Move Audio and select for fading</B></center>
+
+<br>
+
+<table><tr>
+    <td valign=top width="50%">
+	<P class=a>
+	Now, it's a good idea to listen to the two tracks individually for breathing sounds for example.
+	</P>
+	<P class=a>
+	Use the solo button of the tracks for this. Then listen them both in the mix. Again, you can use the solo buttons for this.
+	</P>
+	<P class=a>
+	If you have a lot of other tracks playing at the same time, press the solo buttons on both tracks. There should be no over lapping or cut-off breathing sounds.
+	</P>
+	<P class=a>
+	When you're satisfied, fade out the last two thirds of the overlapping upper part of the track, and fade in the first two thirds of the lower overlapping audio.
+	</P>
+    </td>
+    <td valign=top width="50%">
+	<P class=a>
+	Two thirds, and not the whole overlapping audio, are chosen to keep the level of audio constant. If the whole overlapping parts were faded, you would get a level drop of 3dB in the middle of those fades.
+	</P>
+	<P class=a>
+	You can check this out by taking a piece of music, duplicating it, and then fading the tracks, one fading out, the second fading in. In the middle of those fades, the level of the mix will drop audibly. Do a fade over last two thirds for the fade out and first two thirds for the fade in, and you probably won't notice any change in level.
+	</P>
+	<P class=a>
+	Two thirds is a guideline, but not the law, so you may have to experiment a little.
+	</p>
+    </td>
+</tr></table>
+
+
+<P class=qg>Mixing it back together again</P>
+
+<P class=a>
+<B>!!!Remember!!!</B>
+</P>
+<P class=a>
+The final mix is done with the <a href="menu_file.html">Export as WAV</a> function in the
+<a href="menu_file.html">File Menu</a>. Here we'll be looking at creating submixes with the <a href="menu_project.html#quickmix">Quick Mix</a> function.
+</P>
+
+<P class=a>
+You've done a lot of edits and now have dozens of little tracks with little bits and pieces here and there. It might look like this:
+</P>
+
+<center><img border=0 src="images/bits_pieces.png" width="406" height="181" alt="Bits and Pieces of Audio"><br><B>Bits and Pieces spread all over the screen<br>First four tracks selected for quick mixing</B></center>
+
+<P class=a>
+We can use the <a href="menu_project.html#quickmix">Quick Mix</a> function in the <a href="menu_project.html">Project menu</a>
+to bring down the number of tracks. However, you don't need to mix everything in to one new track.
+</P>
+<P class=a>
+Select the tracks you want to mix together by <span class=keybshc_s>SHIFT+click</span> 'ing on the track panels.
+In the graphics above, the first four tracks are selected.
+</P>
+<P class=a>
+Then select <a href="menu_project.html#quickmix">Quick Mix</a>. In this example I have quick mixed everything down to two tracks :
+</P>
+
+<center><img border=0 src="images/bits_pieces-quickmixed.png" width="413" height="131" alt="Bits and Pieces, quick mixed down to two tracks"><br><B>Bits and Pieces, quick mixed down to two tracks</B></center>
+
+<P class=a>
+And thus, two <B>submixes</B> were created. Remember though, that
+we did this for convenience of not having to organize a large number or tracks.
+</P>
+
+<P class=a>
+If you still want to shift bits around later on, you should make sure that the parts being mixed
+to a track <b>do not overlap</b>, so you can split it away and edit it again later.
+</P>
+
+<br>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="index.html">Back to the main page</a></td>
+    <td width="50%" align=center><a class="ss" href="tutorials.html">Back to the Tutorial Page</a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+</body>
+</html>

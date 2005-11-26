@@ -1,0 +1,64 @@
+* turntablewarp-ms.ny: Turntable Warping (mono/stereo) <br>
+(version 2 plug-in)
+<p>
+Improved over the previous turntablewarp.ny plug-in - you can warp
+both mono and stereo audio. 
+<p>
+You can simulate unplugging your turntable while it's playing,
+plugging it in, and related effects. A version 2 Nyquist plug-in
+which works on Audacity 1.2.3 and later.
+<p>
+Variables with explanations:
+<p>
+"step" indicates how many semitones above or below pitch of
+original audio (1 step = 1 semitone, 12 steps = 1 octave, etc.);
+<p>
+"amplitude" indicates volume level (in percent).
+<p>
+There are 5 values you can change:
+<p>
+1. start step (default 0): how many semitones above or below
+original audio at start of selection;
+<p>
+2. start amplitude (default 100%): volume at start of selection;
+<p>
+3. change time (default 50%): point in time of original selection
+at which warping values can change between first and second part of
+selection. This point has an internal step value of 0 semitones
+change, and internal volume of 100%;
+<p>
+4. end step (default -12 semitones, 1 octave drop): at end of
+warped selection, how many semitones audio has been warped;
+<p>
+5. end volume (default 40%): volume at end of warped audio.
+<p>
+Applying this plug-in with the default settings results in the
+audio starting to slow down halfway through the original selection,
+and dropping to 40% of original volume. Like unplugging a turntable
+while it's playing.
+<p>
+Since the "change time" is internally set at step 0 semitones and
+volume 100%, different warping effects can be created, depending on
+the start and end step and volume values: 
+<p>
+slowing down then speeding up;<br>
+speeding up then slowing down;<br>
+speeding up to a particular step value then remaining at that
+value;<br>
+slowly speeding up then quickly speeding up;<br>
+etc.
+<p>
+Thanks to Roger B. Dannenberg for the warp tutorial on which this
+plug-in is based. Thanks Sebastien Chopin for the request for the
+stereo version of this plug-in.
+<p>
+Copy turntablewarp-ms.ny into the Audacity plug-ins folder. next
+time you (re)start Audacity, Turntable Warping (mono/stereo) (V2)
+will appear in the effects menu.
+<p>
+Written by David R. Sky December 26, 2004<br>
+Released under terms of the GNU Public license<br>
+<a href="http://www.opensource.org/licenses/gpl-license.php">
+http://www.opensource.org/licenses/gpl-license.php</a>
+<p>
+
