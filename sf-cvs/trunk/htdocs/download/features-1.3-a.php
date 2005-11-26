@@ -5,17 +5,15 @@
  * http://creativecommons.org/licenses/by/2.0/
  */
   require_once "main.inc.php";
-  $pageId = "features-1.3";
+  $pageId = "features-1.3-a";
   $pageTitle = _("New features in Audacity 1.3");
   include "../include/header.inc.php";
   include "../latest/versions.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
+<?php include "betawarning.inc.php" ?>
 
-<h3><?=_("Beta warning")?></h3>
-<p><?=_("Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine.  When this branch of Audacity is finished, it will be released as version 1.4, which will be stable and complete.")?></p>
-<p><?=_("Audacity 1.3.0 is currently only available in English.  Future Audacity 1.3 releases will be translated into many other languages.")?></p>
 <h3><?=_("New features")?></h3>
 <p><?=_("The new features in Audacity 1.3 have been grouped into the following six major categories.  Click on the links below for more information.")?></p>
 
