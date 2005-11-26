@@ -21,8 +21,8 @@
   echo _('<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href="mailto:audacity-help@lists.sourceforge.net">audacity-help@lists.sourceforge.net</a>.
 (This is a public mailing list.  For details, see our <a href="../contact/privacy">privacy policy</a>.)</p>
 
-If you just have a general question about how to use Audacity, please use
-the <a href="http://audacityteam.org/forum/">Audacity Forum</a> instead.
+<p>If you just have a general question about how to use Audacity, please use
+the <a href="http://audacityteam.org/forum/">Audacity Forum</a> instead.</p>
 
 <p><b>When you report a bug or problem, please:</b></p>
 <ol>
