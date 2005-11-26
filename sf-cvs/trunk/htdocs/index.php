@@ -23,7 +23,7 @@
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
-    $download_desc = _("for Mac OS 9 or X");
+    $download_desc = _("for Mac OS X");
     $download_page = "mac";
 
     include "beta/versions.inc.php";
