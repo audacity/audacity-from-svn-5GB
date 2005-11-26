@@ -20,6 +20,7 @@
   echo _('New!');
   echo '  ';
   echo _('Have questions?  Post them to the <a href="http://audacityteam.org/forum/">Audacity Forum</a>.');
+  echo '</b>';
   echo '</p>';
 
   echo _('<p>If you have a question, check the list of <a href="faq">Frequently Asked Questions</a>.</p>
