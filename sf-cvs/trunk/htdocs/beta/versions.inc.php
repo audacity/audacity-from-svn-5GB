@@ -1,14 +1,20 @@
 <?php
+// The main version number, when we don't distinguish between platforms
+define('beta_version', '1.3.0');
+
 // Note: Sizes are in MB.
+define('beta_macosx_version', '1.3.0');
 define('macosx_version', '1.3.0');
 define('macosx_size',    3.4);
 
+define('beta_win_exe_version', '1.3.0');
 define('win_exe_version', '1.3.0');
 define('win_exe_size',    2.5);
 
 define('win_zip_version', '1.3.0');
 define('win_zip_size',    2.5);
 
+define('beta_src_version', '1.3.0');
 define('src_version', '1.3.0');
 define('src_size',    5.0);
 define('src_suffix',  '.tar.gz');

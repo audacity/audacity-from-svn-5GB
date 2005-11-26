@@ -13,6 +13,9 @@ localization_setup();
 $sitePath = ".";
 $sectionId = "none";
 
+// marker indicating a menu item should be indented
+$ind = "\t";
+
 $siteNavItems = array(
   array(_("Home"), "", 0),
   array(_("About"), "about/", 
@@ -27,11 +30,18 @@ $siteNavItems = array(
   ),
   array(_("Download"), "download/",
     array(
-      array(_("Windows"), "windows"),
-      array(_("Mac"), "mac"),
-      array(_("Linux/Unix"), "linux"),
-      array(_("Source Code"), "source"),
-      array(_("Release Notes"), "release-notes"),
+      array(_("Stable").": 1.2.4", ""),
+      array($ind._("Windows"), "windows"),
+      array($ind._("Mac"), "mac"),
+      array($ind._("Linux/Unix"), "linux"),
+      array($ind._("Source Code"), "source"),
+      array($ind._("Release Notes"), "release-notes"),
+      array(_("Beta").": 1.3.0", ""),
+      array($ind._("New Features in 1.3"), "features-1.3-a"),
+      array($ind._("Windows"), "beta_windows"),
+      array($ind._("Mac"), "beta_mac"),
+      array($ind._("Linux/Unix"), "beta_linux"),
+      array($ind._("Source Code"), "beta_source"),
       array(_("Plug-Ins"), "plugins"),
       array(_("Buy a CD"), "buy"),
     )

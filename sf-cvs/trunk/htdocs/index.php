@@ -17,16 +17,25 @@
     $download_version = win_exe_version;
     $download_desc = _("for Microsoft Windows");
     $download_page = "windows";
+
+    include "beta/versions.inc.php";
+    $beta_version = beta_win_exe_version;
   }
   else if ($download == "mac") {
     $download_version = macosx_version;
     $download_desc = _("for Mac OS 9 or X");
     $download_page = "mac";
+
+    include "beta/versions.inc.php";
+    $beta_version = beta_macosx_version;
   }
   else {
     $download_version = src_version;
     $download_desc = _("For Windows, Mac, or GNU/Linux");
     $download_page = "";
+
+    include "beta/versions.inc.php";
+    $beta_version = beta_src_version;
   }
 ?>
 <div id="about">
@@ -39,13 +48,23 @@
 </div>
 
 <div id="download">
+  <div id="download_sub">
   <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $download_version)?></a></h3>
   <p><?=$download_desc?></p>
+  </div>
+  <div id="download_sub">
+  <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
+  <p><?=$download_desc?></p>
+  </div>
+
   <?php
     if ($download_page) {
+      echo '<div id="download_sub">';
       echo '<p><a href="download/">'._("Other downloads").'</a></p>';
+      echo '</div>';
     }
   ?>
+
 </div>
 
 <div id="news">
