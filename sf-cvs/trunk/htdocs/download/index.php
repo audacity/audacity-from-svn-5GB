@@ -30,7 +30,7 @@
       <?=_("Windows")?></a></h3>
   
       <h3><a href="mac"><img alt="" src="../images/mac.png">
-      <?=_("Mac OS 9 or X")?></a></h3>
+      <?=_("Mac OS X")?></a></h3>
   
       <h3><a href="linux"><img alt="" src="../images/unix.png">
       <?=_("Linux/Unix")?></a></h3>
@@ -46,7 +46,7 @@
       <?=_("Windows")?></a></h3>
   
       <h3><a href="beta_mac"><img alt="" src="../images/mac.png">
-      <?=_("Mac OS 9 or X")?></a></h3>
+      <?=_("Mac OS X")?></a></h3>
   
       <h3><a href="beta_linux"><img alt="" src="../images/unix.png">
       <?=_("Linux/Unix")?></a></h3>
