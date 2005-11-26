@@ -32,7 +32,7 @@
 <ul>
   <li><?=_("Audacity 1.2 requires Mac OS X 10.1 or later.")?></li>
   <li><?=_("Audacity 1.0 requires Mac OS 9.0 or later.")?></li>
-  <li><?=_("Audacity runs best with at least 64 MB RAM and 300 MHz processor.")?></li>
+  <li><?=_("Audacity runs best with at least 64 MB RAM and a 300 MHz processor.")?></li>
 </ul>
 
 
