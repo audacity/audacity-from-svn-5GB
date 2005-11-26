@@ -54,9 +54,6 @@
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
 
-class ToolBar;
-class ControlToolBar;
-
 #ifdef __WXGTK__
 void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
 {
@@ -76,21 +73,6 @@ void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
 
 wxFrame *gParentFrame = NULL;
 wxWindow *gParentWindow = NULL;
-ToolBarStub *gControlToolBarStub = NULL;
-ToolBarStub *gMixerToolBarStub = NULL;
-ToolBarStub *gEditToolBarStub = NULL;
-ToolBarStub *gMeterToolBarStub = NULL;
-ToolBarStub *gTranscriptionToolBarStub = NULL;
-
-//This array holds pointers to the toolbar stub pointers..
-ToolBarStub **gToolBarStubArray[ nToolBars ]=
-{
-   &gControlToolBarStub,
-   &gMixerToolBarStub,
-   &gEditToolBarStub,
-   &gMeterToolBarStub,
-   &gTranscriptionToolBarStub
-};
 
 bool gIsQuitting = false;
 
@@ -155,16 +137,6 @@ void QuitAudacity(bool bForce)
 
    gFreqWindow = NULL;
    gParentFrame = NULL;
-
-   // Delete all the toolbars...
-   for(int i=0;i<nToolBars;i++)
-   {
-      if( *gToolBarStubArray[i] )
-      {
-         delete *gToolBarStubArray[i];
-         *gToolBarStubArray[i]=NULL;
-      }
-   }
 
    //Delete the clipboard
    AudacityProject::DeleteClipboard();
@@ -242,20 +214,6 @@ BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, AudacityApp::OnMRUFile)
 // EVT_MENU_RANGE(6050, 6060, AudacityApp::OnMRUProject)
 END_EVENT_TABLE()
-
-ToolBarStub * AudacityApp::LoadToolBar( const wxString Name, bool bDefault, 
-   wxWindow * pParent, enum ToolBarType tbt )
-{
-   bool bLoadToolBar=bDefault;
-   if( !Name.IsEmpty() )
-   {
-      gPrefs->Read(Name, &bLoadToolBar, bDefault);
-   }
-   if(bLoadToolBar)
-      return  new ToolBarStub(pParent, tbt);
-   
-   return NULL;
-}
 
 // Backend for OnMRUFile and OnMRUProject
 bool AudacityApp::MRUOpen(wxString fileName) {
@@ -543,32 +501,6 @@ bool AudacityApp::OnInit()
 #endif
 
    SetExitOnFrameDelete(true);
-
-
-   ///////////////////////////////////////////////////////////////////
-   //////////////////////////////////////////////////////////////////
-   //Initiate pointers to toolbars here, and create 
-   //the toolbars that should be loaded at startup.
-
-   gControlToolBarStub = 
-      LoadToolBar( wxT(""),true,
-      gParentWindow,ControlToolBarID);
-   gMixerToolBarStub = 
-      LoadToolBar( wxT("/GUI/EnableMixerToolBar"),true,
-      gParentWindow,MixerToolBarID);
-   gMeterToolBarStub = 
-      LoadToolBar( wxT("/GUI/EnableMeterToolBar"),true,
-      gParentWindow,MeterToolBarID);
-   gEditToolBarStub = 
-      LoadToolBar( wxT("/GUI/EnableEditToolBar"),true,
-      gParentWindow,EditToolBarID);
-   gTranscriptionToolBarStub = 
-      LoadToolBar( wxT("/GUI/EnableTranscriptionToolBar"),false,
-      gParentWindow,TranscriptionToolBarID);
-
-   /// ToolBar Initiation Complete.
-   ////////////////////////////////////////////////////////////////
-   ////////////////////////////////////////////////////////////////
 
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
    SetTopWindow(project);

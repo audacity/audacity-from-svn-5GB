@@ -34,6 +34,7 @@ class Ruler;
 class AdornedRulerPanel;
 class LWSlider;
 class ControlToolBar; //Needed because state of controls can affect what gets drawn.
+class ToolsToolBar; //Needed because state of controls can affect what gets drawn.
 class AudacityProject;
 
 struct ViewInfo;
@@ -67,6 +68,7 @@ class TrackPanelListener {
    virtual void TP_DisplaySelection() = 0;
    virtual void TP_DisplayStatusMessage(wxString msg) = 0;
    virtual int TP_GetCurrentTool() = 0;
+   virtual ToolsToolBar * TP_GetToolsToolBar() = 0;
    virtual ControlToolBar * TP_GetControlToolBar() = 0;
    virtual void TP_OnPlayKey() = 0;
    virtual void TP_PushState(wxString shortDesc, wxString longDesc,
@@ -212,7 +214,7 @@ class TrackPanel:public wxPanel {
    void RemoveStaleIndicators(wxRegionIterator * upd);
 
    // Working out where to dispatch the event to.
-   int DetermineToolToUse( ControlToolBar * pCtb, wxMouseEvent & event);
+   int DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event);
    bool HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event);
    bool HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event);
    bool HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event);

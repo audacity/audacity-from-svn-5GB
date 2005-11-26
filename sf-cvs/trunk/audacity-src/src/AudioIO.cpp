@@ -52,10 +52,6 @@
 
 #include "widgets/Meter.h"
 
-#if USE_PORTMIXER
-#include "MixerToolBar.h"
-#endif
-
 AudioIO *gAudioIO;
 
 // static

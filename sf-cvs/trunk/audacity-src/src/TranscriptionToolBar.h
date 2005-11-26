@@ -58,7 +58,6 @@ class TranscriptionToolBar:public ToolBar {
    virtual ~ TranscriptionToolBar();
    
 
-   virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
 
    virtual void OnPlaySpeed(wxCommandEvent & event);
@@ -76,19 +75,18 @@ class TranscriptionToolBar:public ToolBar {
    virtual void OnSensitivitySlider(wxCommandEvent& evt);
 
    virtual void EnableDisableButtons();
-   virtual void PlaceButton(int i, wxWindow *pWind);
+   virtual void Populate();
+   virtual void Repaint( wxPaintDC *dc );
 
    virtual void SetKeyType(wxCommandEvent & event);
  private:
    void InitializeTranscriptionToolBar();
    void AddButton(const char **fg, const char **disabled, const char **alpha,
                   int id, const wxChar *tooltip, const wxChar *label);
-   void MakeButtons();
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
    void SetButton(bool newstate, AButton* button); 
    
    AButton * mButtons[TTBNumButtons];
-   int mxButtonPos;
    wxImage *upImage;
    wxImage *downImage;
    wxImage *hiliteImage;

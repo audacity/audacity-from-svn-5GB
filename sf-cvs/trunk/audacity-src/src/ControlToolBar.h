@@ -30,45 +30,25 @@
 #include "ToolBar.h"
 
 class AButton;
-class ASlider;
 class ControlToolBar;
 class ToolBar;
-class ToolBarFrame;
 class AudacityProject;
+class wxGridBagSizer;
 
 class wxImage;
 class wxSize;
 class wxPoint;
 
-// Code duplication warning: these apparently need to be in the
-// same order as the enum in ControlToolBar.cpp
-
-enum {
-   selectTool,
-   envelopeTool,
-   drawTool,
-   zoomTool,
-   slideTool,
-   multiTool,
-   numTools
-};
-
-
-
-
 class ControlToolBar:public ToolBar {
+
  public:
    ControlToolBar() {};
-   ControlToolBar(wxWindow * parent, wxWindowID id,
-                  const wxPoint & pos, const wxSize & size);
    ControlToolBar(wxWindow * parent);
-   virtual ~ ControlToolBar();
+   virtual ~ControlToolBar();
 
    void UpdatePrefs();
 
-   virtual void OnPaint(wxPaintEvent & event);
    virtual void OnKeyEvent(wxKeyEvent & event);
-   void OnTool(wxCommandEvent & evt);
 
    // msmeyer: These are public, but it's far better to
    // call the "real" interface functions like PlayCurrentRegion() and
@@ -85,7 +65,6 @@ class ControlToolBar:public ToolBar {
    void SetPlay(bool down);
    void SetStop(bool down);
    void SetRecord(bool down);
-   void SetCurrentTool(int tool, bool show);
 
    // Play currently selected region, or if nothing selected,
    // play from current cursor.
@@ -97,46 +76,43 @@ class ControlToolBar:public ToolBar {
    // Stop playing
    void StopPlaying();
 
-   //These interrogate the state of the buttons or controls.
-   float GetSoundVol();
-   int GetCurrentTool();
-   bool GetSelectToolDown();
-   bool GetZoomToolDown();
-   bool GetEnvelopeToolDown();
-   bool GetSlideToolDown();
-   bool GetDrawToolDown();
-   bool GetMultiToolDown();
-
-   const wxChar * GetMessageForTool( int ToolNumber );
-
+   void Populate();
+   virtual void Repaint( wxPaintDC *dc );
    virtual void EnableDisableButtons();
 
    void OnShiftDown(wxKeyEvent & event);
    void OnShiftUp(wxKeyEvent & event);
 
    void SetVUMeters(AudacityProject *p);
-   virtual void PlaceButton(int i, wxWindow *pWind);
-   void ShowCleanSpeechButton( bool bShow );
 
+   DECLARE_EVENT_TABLE()
+   ;
  private:
 
-   void InitializeControlToolBar();
-   void RegenerateToolsTooltips();
-
-   wxImage *MakeToolImage(wxImage * tool, wxImage * mask, int style);
-   AButton *MakeTool(const char **tool, const char **alpha,
-                     wxWindowID id, int left, int top);
    AButton *MakeButton(char const **foreground, char const **disabled,
-                       char const **alpha, int id, bool processdownevents);
+                       char const **alpha, int id, bool processdownevents,
+                       const wxChar *label, const wxChar *tip);
 
    void MakeLoopImage();
 
-   void MakeButtons();
-   AButton *mTool[numTools];
+   void ArrangeButtons();
+
+   enum
+   {
+      ID_PLAY_BUTTON,
+      ID_RECORD_BUTTON,
+      ID_PAUSE_BUTTON,
+      ID_STOP_BUTTON,
+      ID_FF_BUTTON,
+      ID_REW_BUTTON,
+      ID_BATCH_BUTTON,
+
+      BUTTON_COUNT
+   };
 
    AButton *mRewind;
    AButton *mPlay;
-   AButton *mCleanSpeech;
+   AButton *mBatch;
    AButton *mRecord;
    AButton *mPause;
    AButton *mStop;
@@ -144,26 +120,23 @@ class ControlToolBar:public ToolBar {
 
    static AudacityProject *mBusyProject;
 
-   ASlider *mVolume;
-   int mCurrentTool;
-
-   wxBitmap *mDivBitmap;
-   wxBitmap *mMuteBitmap;
-   wxBitmap *mLoudBitmap;
-
    wxImage *upPattern;
    wxImage *downPattern;
    wxImage *hilitePattern;
 
-   //Maybe button state values shouldn't be duplicated in this toolbar?
+   // Maybe button state values shouldn't be duplicated in this toolbar?
    bool mPaused;         //Play or record is paused or not paused?
    bool mAlwaysEnablePause;
    
    // Activate ergonomic order for transport buttons
    bool mErgonomicTransportButtons;
-   int mnBigButtons;
 
-   DECLARE_EVENT_TABLE()
+   // Show/hide cleanspeech button
+   bool mCleanSpeechMode;
+
+      wxBoxSizer *mBatchGroup;
+   wxBoxSizer *mSizer;
+
 };
 
 #endif

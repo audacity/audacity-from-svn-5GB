@@ -55,7 +55,6 @@ public:
 
 private:
    wxCheckBox * CreateCheckBox( const wxString Description, const bool State);
-   void ShowOrHideWindow( int ID, bool bShow );
    void CheckBoxAction(const wxString mDescription, const wxString mSettingName,
       bool bDefault, int mWindowID=0); //0 should be NoneID.
    void RadioButtonAction( const wxString Description, int iValue);

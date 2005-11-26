@@ -99,6 +99,7 @@ class AButton:public wxWindow {
 
    wxBitmap *mBitmap[4];
    wxBitmap *mAltBitmap[4];
+   wxWindow *mParent;
 
  public:
 

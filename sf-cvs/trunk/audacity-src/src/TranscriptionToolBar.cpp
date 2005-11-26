@@ -57,8 +57,7 @@ using std::endl;
 ///////////////////////////////////////////
  
 
-BEGIN_EVENT_TABLE(TranscriptionToolBar, wxWindow)
-   EVT_PAINT(TranscriptionToolBar::OnPaint)
+BEGIN_EVENT_TABLE(TranscriptionToolBar, ToolBar)
    EVT_CHAR(TranscriptionToolBar::OnKeyEvent)
    EVT_COMMAND_RANGE(TTB_PlaySpeed, TTB_PlaySpeed,
                      wxEVT_COMMAND_BUTTON_CLICKED, TranscriptionToolBar::OnPlaySpeed)
@@ -89,30 +88,13 @@ END_EVENT_TABLE()
 
 ////Standard Constructor
 TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
-      ToolBar(parent, -1, wxPoint(1,1), wxSize(377,27),gTranscriptionToolBarStub)
+   ToolBar()
 {
-   InitializeTranscriptionToolBar();
-}
+   InitToolBar( parent,
+                TranscriptionBarID,
+                _("Audacity Transcription Toolbar"),
+                _("Transcription") );
 
-//Full-service Constructor
-TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent, wxWindowID id,
-					   const wxPoint & pos,
-					   const wxSize & size):
-   ToolBar(parent, id, pos, size,gTranscriptionToolBarStub)
-{
-
-   InitializeTranscriptionToolBar();
-}
-
-void TranscriptionToolBar::InitializeTranscriptionToolBar()
-{
-   mTitle = _("Audacity Transcription Toolbar");
-   SetLabel(_("Transcription"));
-   mType = TranscriptionToolBarID;
-   
-   mIdealSize = wxSize(550, 27);
-   
-   
    vk = new VoiceKey();
    mBackgroundBrush.SetColour(wxColour(204, 204, 204));
    mBackgroundPen.SetColour(wxColour(204, 204, 204));
@@ -120,8 +102,6 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    mBackgroundBitmap = NULL;
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
- 
-   MakeButtons();
  
    mButtons[TTB_StartOn]->Disable();
    mButtons[TTB_StartOff]->Disable();
@@ -149,7 +129,6 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
    //Process a dummy event to set up the slider
    wxCommandEvent dummy;
    OnSpeedSlider(dummy);
-
 }
 
 
@@ -160,28 +139,22 @@ void TranscriptionToolBar::InitializeTranscriptionToolBar()
 void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
 				     int id, const wxChar *tooltip, const wxChar *label)
 {
-   // Windows (TM) has a little extra room for some reason, so the top of the
-   // buttons should be a little lower.
-   int buttonTop = 0;
-#ifdef __WXMSW__
-   buttonTop=0;
-#endif
    //The image needs to be centered in the button--not all icons are (e.g., the playback button).
-
    mButtons[id] = ToolBar::MakeButton(
-                                      upImage, downImage, hiliteImage, fg,
-                                      disabled, alpha,
-                                      wxWindowID(id), wxPoint(mxButtonPos, buttonTop),
+                                      upImage, downImage, hiliteImage,
+                                      fg, disabled, alpha,
+                                      wxWindowID(id),
+                                      wxDefaultPosition,
                                       false /*No buttons should process down events.*/,
                                       wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
 #if wxUSE_TOOLTIPS // Not available in wxX11
    mButtons[id]->SetToolTip(tooltip);
 #endif
    mButtons[id]->SetLabel( label );
-   mxButtonPos += BUTTON_WIDTH+1;
+   Add( mButtons[id], 0, wxALIGN_CENTER );
 }
 
-void TranscriptionToolBar::MakeButtons()
+void TranscriptionToolBar::Populate()
 {
    wxColour newColour =
       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
@@ -202,19 +175,21 @@ void TranscriptionToolBar::MakeButtons()
    hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
 
 
-   mxButtonPos = 0;
    AddButton(Play,     PlayDisabled,   PlayAlpha,   TTB_PlaySpeed,
       _("Play at selected speed"),
       _("Play-at-speed"));
    
    //Add a slider that controls the speed of playback.
    const int SliderWidth=100;
-   mPlaySpeedSlider = new ASlider(this,TTB_PlaySpeedSlider,  _("Playback Speed"), 
-                                  wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),
+   mPlaySpeedSlider = new ASlider(this,
+                                  TTB_PlaySpeedSlider,
+                                  _("Playback Speed"), 
+                                  wxDefaultPosition,
+                                  wxSize(SliderWidth,27),
                                   SPEED_SLIDER);
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
-   mxButtonPos +=  SliderWidth;
+   Add( mPlaySpeedSlider, 0, wxALIGN_CENTER );
 
    
    AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,
@@ -249,37 +224,39 @@ void TranscriptionToolBar::MakeButtons()
       _("Calibrate voicekey"),
       _("Calibrate"));
  
-   mSensitivitySlider = new ASlider(this, TTB_SensitivitySlider, _("Adjust Sensitivity"),
-                                    wxPoint(mxButtonPos,0),wxSize(SliderWidth,28),SPEED_SLIDER);
-  
+   mSensitivitySlider = new ASlider(this,
+                                    TTB_SensitivitySlider,
+                                    _("Adjust Sensitivity"),
+                                    wxDefaultPosition,
+                                    wxSize(SliderWidth,27),
+                                    SPEED_SLIDER);
+   mSensitivitySlider->Set(.5);
    mSensitivitySlider->SetLabel(_("Sensitivity"));
-   mxButtonPos +=  SliderWidth;
+   Add( mSensitivitySlider, 0, wxALIGN_CENTER );
 
+   wxString choices[] =
+   {
+      _("Energy"),
+      _("Sign Changes (Low Threshold)"),
+      _("Sign Changes (High Threshold)"),
+      _("Direction Changes (Low Threshold)"),
+      _("Direction Changes (High Threshold)")
+   };
    
    mKeyTypeChoice = new wxChoice(this, TTB_KeyType,
-                                 wxPoint(mxButtonPos, 2),
-                                 wxSize(120, 27));
-
-   mKeyTypeChoice->Append(_("Energy"));
-   mKeyTypeChoice->Append(_("Sign Changes (Low Threshold)"));
-   mKeyTypeChoice->Append(_("Sign Changes (High Threshold)"));
-   mKeyTypeChoice->Append(_("Direction Changes (Low Threshold)"));
-   mKeyTypeChoice->Append(_("Direction Changes (High Threshold)"));
+                                 wxDefaultPosition,
+                                 wxDefaultSize,
+                                 5,
+                                 choices );
    mKeyTypeChoice->SetSelection(0);
-   mxButtonPos += 120;
-
-   mIdealSize = wxSize(mxButtonPos+3, 27);
-   SetSize(mIdealSize );
-
-   mSensitivitySlider->Set(.5);
-
-   delete upImage;
-   delete downImage;
-   delete hiliteImage;
-   delete upOriginal;
-   delete downOriginal;
-   delete hiliteOriginal;
-
+   Add( mKeyTypeChoice, 0, wxALIGN_CENTER );
+ 
+      delete upImage; 
+      delete downImage; 
+      delete hiliteImage; 
+      delete upOriginal; 
+      delete downOriginal; 
+      delete hiliteOriginal; 
 }
   
 
@@ -881,10 +858,8 @@ double TranscriptionToolBar::GetSensitivity()
    return (double)mSensitivity;
 }
 
-void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
+void TranscriptionToolBar::Repaint( wxPaintDC *dc )
 {
-   wxPaintDC dc(this);
-
    int width, height;
    GetSize(&width, &height);
 
@@ -916,17 +891,6 @@ void TranscriptionToolBar::OnPaint(wxPaintEvent & evt)
    memDC.SelectObject(*mBackgroundBitmap);
 
    dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
-
-#else
-   DrawBackground(dc, width, height);
-
-   //LLL: Replaced with DrawBackground() to fix some coloring problems
-   //dc.SetBrush(mBackgroundBrush);
-   //dc.SetPen(mBackgroundPen);
-   //dc.DrawRectangle(0, 0, width, height);
-
-   //dc.SetPen(*wxBLACK_PEN);
-
 #endif
 }
 
@@ -950,20 +914,6 @@ void TranscriptionToolBar::EnableDisableButtons()
    selection &= (p->GetSel0() < p->GetSel1());
 
    mButtons[TTB_Calibrate]->SetEnabled(selection);
-}
-
-void TranscriptionToolBar::PlaceButton(int i, wxWindow *pWind)
-{
-   wxSize Size;
-   if( i==0 )
-   {
-      mxButtonPos = 0;
-   }
-   Size = pWind->GetSize();
-   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
-   mxButtonPos+=Size.GetX()+1;
-   mIdealSize = wxSize(mxButtonPos+3, 27);
-   SetSize(mIdealSize );
 }
 
 void TranscriptionToolBar::SetKeyType(wxCommandEvent & event)

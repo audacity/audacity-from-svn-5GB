@@ -28,6 +28,7 @@
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/settings.h>
+#include <wx/statbmp.h>
 #endif
 
 #include <wx/image.h>
@@ -47,16 +48,6 @@
 
 #include "../images/MixerImages.h"
 
-MixerToolBar *GetCurrentMixerToolBar()
-{
-   AudacityProject *project = GetActiveProject();
-
-   if (project)
-      return project->GetMixerToolBar();
-   else
-      return NULL;
-}
-
 ////////////////////////////////////////////////////////////
 /// Methods for MixerToolBar
 ////////////////////////////////////////////////////////////
@@ -69,7 +60,7 @@ enum {
 };
 
 
-BEGIN_EVENT_TABLE(MixerToolBar, wxWindow)
+BEGIN_EVENT_TABLE(MixerToolBar, ToolBar)
    EVT_PAINT(MixerToolBar::OnPaint)
    EVT_SLIDER(OutputVolumeID, MixerToolBar::SetMixer)
    EVT_SLIDER(InputVolumeID, MixerToolBar::SetMixer)
@@ -78,37 +69,33 @@ END_EVENT_TABLE()
 
 //Standard contructor
 MixerToolBar::MixerToolBar(wxWindow * parent):
-   ToolBar(parent, -1, wxPoint(1, 1), wxSize(500, 27),gMixerToolBarStub)
+   ToolBar()
 {
-   InitializeMixerToolBar();
+   InitToolBar( parent,
+                MixerBarID,
+                _("Audacity Mixer Toolbar"),
+                _("Mixer") );
 }
 
-//Another constructor
-MixerToolBar::MixerToolBar(wxWindow * parent, wxWindowID id,
-                           const wxPoint & pos,
-                           const wxSize & size):
-   ToolBar(parent, id,pos, size,gMixerToolBarStub)
+MixerToolBar::~MixerToolBar()
 {
-   InitializeMixerToolBar();
+   delete mPlayBitmap;
+   delete mRecordBitmap;
+   delete mInputSlider;
+   delete mOutputSlider;
+   if (mInputSourceChoice)
+      delete mInputSourceChoice;
 }
 
-
-// This sets up the MixerToolBar, initializing all the important values
-// and creating the buttons.
-void MixerToolBar::InitializeMixerToolBar()
+void MixerToolBar::RecreateTipWindows()
 {
-   mIdealSize = wxSize(500, 27);
-   mTitle = _("Audacity Mixer Toolbar");
-   SetLabel(_("Mixer"));
-   mType = MixerToolBarID;
-   int offset;
+   // Hack to make sure they appear on top of other windows
+   mInputSlider->RecreateTipWin();
+   mOutputSlider->RecreateTipWin();
+}
 
-   #ifdef USE_AQUA_THEME
-   offset = 0;
-   #else
-   offset = 1;
-   #endif
-
+void MixerToolBar::Populate()
+{
    wxColour backgroundColour =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
@@ -133,32 +120,48 @@ void MixerToolBar::InitializeMixerToolBar()
    delete micAlpha;
    delete micFinal;
 
+   Add( new wxStaticBitmap( this,
+                            wxID_ANY, 
+                            *mPlayBitmap ), 0, wxALIGN_CENTER );
+
    mOutputSlider = new ASlider(this, OutputVolumeID, _("Output Volume"),
-                               wxPoint(30, offset), wxSize(130, 25));
+                               wxDefaultPosition, wxSize(130, 25));
+   mOutputSlider->SetLabel( wxT("Slider-Output") );
+   Add( mOutputSlider, 0, wxALIGN_CENTER );
+
+   Add( new wxStaticBitmap( this,
+                            wxID_ANY, 
+                            *mRecordBitmap ), 0, wxALIGN_CENTER );
 
    mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
-                              wxPoint(210, offset), wxSize(130, 25));
-
-   mOutputSlider->SetLabel( wxT("Slider-Output") );
+                              wxDefaultPosition, wxSize(130, 25));
    mInputSlider->SetLabel( wxT("Slider-Input") );
+   Add( mInputSlider, 0, wxALIGN_CENTER );
 
    mInputSourceChoice = NULL;
 
-   #if USE_PORTMIXER
+#if USE_PORTMIXER
    unsigned int    j;
    int leftPosition = 355;
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
+   wxString *choices = new wxString[ inputSources.GetCount() ];
+   for( j = 0; j < inputSources.GetCount(); j++ )
+   {
+      choices[ j ] = inputSources[ j ];
+   }
+
    mInputSourceChoice = new wxChoice(this, InputSourceID,
-                                     wxPoint(leftPosition, 2),
-                                     wxSize(-1, 23));
-   for(j = 0; j < inputSources.GetCount(); j++)
-      mInputSourceChoice->Append(inputSources[j]);
+                                     wxDefaultPosition,
+                                     wxDefaultSize,
+                                     j,
+                                     choices );
+   delete [] choices;
+   Add( mInputSourceChoice, 0, wxALIGN_CENTER );
+
    if (inputSources.GetCount() == 0)
       mInputSourceChoice->Enable(false);
-      
-
 
    // Set choice control to default value
    float inputVolume;
@@ -168,24 +171,8 @@ void MixerToolBar::InitializeMixerToolBar()
    mInputSourceChoice->SetSelection(inputSource);
 
    UpdateControls();
-   #endif
-}
 
-MixerToolBar::~MixerToolBar()
-{
-   delete mPlayBitmap;
-   delete mRecordBitmap;
-   delete mInputSlider;
-   delete mOutputSlider;
-   if (mInputSourceChoice)
-      delete mInputSourceChoice;
-}
-
-void MixerToolBar::RecreateTipWindows()
-{
-   // Hack to make sure they appear on top of other windows
-   mInputSlider->RecreateTipWin();
-   mOutputSlider->RecreateTipWin();
+#endif
 }
 
 void MixerToolBar::UpdateControls()
@@ -215,48 +202,6 @@ void MixerToolBar::SetMixer(wxCommandEvent &event)
 
    gAudioIO->SetMixer(inputSource, inputVolume, outputVolume);
 #endif // USE_PORTMIXER
-}
-
-void MixerToolBar::OnPaint(wxPaintEvent & evt)
-{
-   wxPaintDC dc(this);
-   int width, height;
-   GetSize(&width, &height);
-
-   DrawBackground(dc, width, height); 
-
-#ifndef USE_AQUA_THEME
-   // Reduce width by 3 to visually separate from next 
-   // Grab bar
-   wxRect BevelRect( 0,0,width-3,height-1);
-   AColor::Bevel( dc, true, BevelRect );
-#endif
-
-   dc.DrawBitmap(*mPlayBitmap, 1, 1);
-   dc.DrawBitmap(*mRecordBitmap, 181, 1);
-}
-
-void MixerToolBar::OnKeyEvent(wxKeyEvent & event)
-{
-   event.Skip();
-}
-
-void MixerToolBar::EnableDisableButtons()
-{
-}
-
-void MixerToolBar::PlaceButton(int i, wxWindow *pWind)
-{
-   wxSize Size;
-   if( i==0 )
-   {
-      mxButtonPos = 0;
-   }
-   Size = pWind->GetSize();
-   pWind->SetSize( mxButtonPos, 0, Size.GetX(), Size.GetY());
-   mxButtonPos+=Size.GetX()+1;
-   mIdealSize = wxSize(mxButtonPos+3, 27);
-   SetSize(mIdealSize );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
