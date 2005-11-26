@@ -1,0 +1,78 @@
+* chimesdelay.ny: Chimes Delay
+(Version 2 plug-in, works in Audacity 1.2.3 and later)
+<p>
+1. Adds random delay to your audio. You can specify the maximum
+delay of the random delays (default 10 seconds, maximum 120
+seconds) and how many random delays within that max delay time
+(default 20 delays, maximum 100).
+<p>
+2. Using the minimum volume field, you can specify the lowest
+random volume that each random delay can have (default is 50
+percent, range between 0 and 100 percent).
+<p>
+3. This plug-in also randomly changes the pitch of each random
+delay. You can specify a note list (which is where the name 'Chimes
+Delay' comes from). the following is the default note list:
+<p>
+-24 -12 -5 0 4 7 12 14 19
+<p>
+Each number indicates how many semitones your audio could be pitch
+shifted (along with matching tempo shift). For example, 0 indicates
+no pitch shift, 12 indicates rise of 12 semitones (one octave), -5
+indicates drop of 5 semitones (like going from C down to G below
+that C note).
+<p>
+If the audio you have loaded into Audacity is C3, the above note
+list would produce the following notes randomly:
+<p>
+C1 C2 G2 C3 E3 G3 C4 D4 G4
+<p>
+A distinctly major-sounding scale.
+<p>
+If you have a note list specified, this plug-in will randomly
+choose from that list of notes for pitch and tempo shifting of each
+random delay.
+<p>
+4. However, you can delete this note list, in which case a list of
+notes will be generated between a lower and upper number. The
+default values of these two numbers are -12 semitones (decrease of
+1 octave) and +24 semitones (increase of 2 octaves), respectively. 
+<p>
+5. If your audio is in stereo, each random delay with random volume
+and random pitch change will also be randomly panned anywhere
+between left and right. (It is best that your audio is first panned
+to center before applying Chimes Delay.)
+<p>
+6. Additional notes:
+<p>
+Adding a bit of regular delay and/or other effects before applying
+Chimes Delay results in a richer sound.
+<p>
+If you want a particular note (from the note list) to be repeated
+more often, you can enter it more than once in the list.
+<p>
+If you simply want your audio randomly delayed with no multiple
+pitch changes, either enter just one number into the note list, or
+enter the same number into the min and max notes fields.
+<p>
+If you want no random amplitude changes, make the amplitude field
+100 percent.
+<p>
+It is possible that total length of your resulting audio will be
+max delay _plus_ duration of your original audio. This may be still
+longer if the final delay(s) is/are decreased in pitch (resulting
+in a reduced tempo).
+<p>
+If your original audio is non-musical, chimesdelay.ny will not make
+it musical.
+<p>
+Many thanks to Steven Jones! - his cool 'Harmonic Noise' generator
+plug-in is the source for Nyquist code to handle a string-input
+note list. Thanks Steven for additional list help as well.
+<p>
+Written by David R. Sky, January 30, 2005<br>
+Released under terms of the GNU Public License<br>
+<a href="http://www.opensource.org/licenses/gpl-license.php">
+http://www.opensource.org/licenses/gpl-license.php</a>
+<p>
+

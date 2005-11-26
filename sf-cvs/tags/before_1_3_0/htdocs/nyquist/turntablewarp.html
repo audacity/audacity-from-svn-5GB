@@ -1,0 +1,56 @@
+* turntablewarp.ny: Turntable Warping (version 2 plug-in)
+<p>
+You can simulate unplugging your turntable while it's playing,
+plugging it in, and related effects. At this point only works on
+mono audio. A version 2 Nyquist plug-in which works on Audacity
+1.2.3 and later.
+<p>
+Variables with explanations:
+<p>
+&quot;step&quot; indicates how many semitones above or below pitch
+of original audio (6 steps = half an octave, 12 steps = 1 octave,
+etc.);
+<p>
+&quot;amplitude&quot; indicates volume level (in percent).
+<p>
+There are 5 values you can change:
+<p>
+1. start step (default 0): how many semitones above or below
+original audio at start of selection;
+<p>
+2. start amplitude (default 100%): volume at start of selection;
+<p>
+3. change time (default 50%): point in time of original selection
+at which warping values can change between first and second part of
+selection. This point has an internal step value of 0 and internal
+volume of 100%;
+<p>
+4. end step (default -12): at end of warped selection, how many
+semitones audio has been warped;
+<p>
+5. end volume (default 40%): volume at end of warped audio.
+<p>
+Applying this plug-in with the default settings results in the
+audio starting to slow down halfway through the original selection,
+and dropping to 40% of original volume. Like unplugging a turntable
+while it's playing.
+<p>
+Since the &quot;change time&quot; is internally set at step 0 and
+volume 100%, different warping effects can be created, depending on
+the start and end step and volume values: 
+<p>
+slowing down then speeding up;
+speeding up then slowing down;
+speeding up then remaining normal;
+slowly speeding up then quickly speeding up;
+etc.
+<p>
+Thanks to Roger B. Dannenberg for the warp tutorial on which this
+plug-in is based. 
+<p>
+Written by David R. Sky December 13, 2004<br>
+Released under terms of the GNU Public License<br>
+<a href="http://www.opensource.org/licenses/gpl-license.php ">
+http://www.opensource.org/licenses/gpl-license.php</a>
+<p>
+
