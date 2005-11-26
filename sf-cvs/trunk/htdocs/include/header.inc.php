@@ -1,5 +1,6 @@
 <?php
 /*
+ * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
@@ -72,11 +73,48 @@
         foreach ($sectionNavItems as $navItem) {
           $name = $navItem[0];
           $path = $navItem[1];
-          if ($pageId == $path) {
-            ?><li class="selected"><?=$name?></li><?php
+          $indented = "";
+          $heading = "";
+          $selected = "";
+          if (substr($name, 0, 1)=="\t") {
+            $name = substr($name, 1);
+            $indented = 1;
+          }
+
+          if ($path == "") {
+            $heading = 1;
+            $selected = 1;
+          }
+          else if ($pageId == $path) {
+            $selected = 1;
+          }
+
+          if ($selected) {
+            if ($heading) {
+              $li_class = "class=\"heading\"";
+	    }
+            else if ($indented) {
+              $li_class = "class=\"indented_selected\"";
+            }
+            else {
+              $li_class = "class=\"selected\"";
+            }
+
           }
           else {
-            ?><li><a href="<?=$sectionPath?>/<?=$path?>"><?=$name?></a></li><?php
+            if ($indented) {
+              $li_class = "class=\"indented\"";
+            }
+            else {
+              $li_class = "";
+            }
+          }
+
+          if ($selected) {
+            ?><li <?=$li_class?>><?=$indent?><?=$name?></li><?php
+          }
+          else {
+            ?><li <?=$li_class?>><a href="<?=$sectionPath?>/<?=$path?>"><?=$name?></a></li><?php
           }
         }
       ?>

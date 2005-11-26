@@ -89,6 +89,17 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 	background:#eef;
 	font-weight:bold;
 }
+#subnav .indented_selected {
+        padding-left:2em;
+	background:#eef;
+	font-weight:bold;
+}
+#subnav .indented {
+        padding-left:2em;
+}
+#subnav .heading {
+        font-weight: bold;
+}
 #subnav :link, #subnav :visited {
 	display:block;
 	margin:-.25em; padding:.25em;
@@ -109,12 +120,20 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 }
 
 #download {
-	background:#ffa;
 	border:2px solid #339;
-	margin:2em; padding:0 1em;
+	background:#ffa;
 	width:40%;
+        margin:0;
 }
-#download h3 { margin:.75em 0 0 0; }
+#download h3 { margin:.5em 0 0 0; }
+
+#download p { margin:.5em 0 0.5em 0; }
+
+#download_sub {
+        border:2px solid;
+	border-color:#ffe #bb9 #aa8 #ffe;
+	padding:0 1em;
+}
 
 #screenshot {
 	float:right;
@@ -126,6 +145,45 @@ h4 { font-size:1em; margin:1em 0 .5em 0; }
 	min-width:250px;
 }
 .screenshot img { display:block; }
+.logo { text-align:center; }
+
 .downloads h3 { margin:1em; }
 .downloads img { position:relative; /* safari fix */ }
-.logo { text-align:center; }
+
+.download_container {
+}
+
+.under_downloads {
+  float: left;
+  margin-top: 1em;
+}
+
+.downloads {
+  width: 48%;
+  border: 2px solid;
+  border-color: #009;
+}
+
+#stable_downloads {
+  float: left;
+}
+
+#beta_downloads {
+  float: left;
+  margin-left: 1em;
+}
+
+.downloads_header {
+  text-align: center;
+  background: #eee;
+  border: 1px solid;
+  border-color:  #fff #fff #00c #fff;
+}
+
+.downloads_header h3 {
+  margin: 0;
+}
+
+.downloads_header p {
+  margin: 0;
+}
