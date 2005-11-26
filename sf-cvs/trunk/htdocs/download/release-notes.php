@@ -27,7 +27,7 @@
 <li>The File menu now includes a list of recent files.
 
 </li>
-<li>The "Generate Silence" effect now prompts for a length.
+<li>The \"Generate Silence\" effect now prompts for a length.
 
 </li>
 <li>Audacity is now built with Vorbis 1.1, which features better encoding
@@ -38,17 +38,17 @@
     and Linux, as well as Windows.  (Before, it worked only on Windows.)
 
 </li>
-<li>Better support for certain audio devices on Mac OS X 10.4 "Tiger"
+<li>Better support for certain audio devices on Mac OS X 10.4 \"Tiger\"
 
 </li>
-<li>The "View History" window can now discard old undo levels to save disk
+<li>The \"View History\" window can now discard old undo levels to save disk
     space on Windows.  (This previously worked only on Linux and Mac.)
 
 </li>
-<li>"Preferences" command is now in Edit menu.
+<li>\"Preferences\" command is now in Edit menu.
 
 </li>
-<li>"Plot Spectrum" command is now in Analyze menu.
+<li>\"Plot Spectrum\" command is now in Analyze menu.
 
 </li>
 <li>Opening a project file saved by a later version of Audacity displays
