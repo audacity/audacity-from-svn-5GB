@@ -86,10 +86,14 @@ int Importer::Import(wxString fName,
          _(" is an audio CD file. \nAudacity does not open this type of file.\nTry ripping it to a native audio format that Audacity can import.");
       return 0;
    }
-//MERGE a test exception.
+
+   #if 0 // Shouldn't be here.  -dmazzoni
+   //MERGE a test exception.
    if (extension.IsSameAs(wxT("ThrowExceptionOnImport"), false)) { //lda
       throw("Exercise Import exception");
    }
+   #endif
+
    // see if any of the plugins expect this extension and if so give
    // that plugin first dibs
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
