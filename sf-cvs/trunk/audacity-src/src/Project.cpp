@@ -733,11 +733,8 @@ void AudacityProject::UpdatePrefs()
 //   if( mStatus )
 //      mStatus->UpdateRates();
 
-   /* Step 3: Make audio sub-system re-read preferences */
-   for( unsigned int i = 0; i < gAudacityProjects.GetCount(); i++ )
-   {
+   if( GetMixerToolBar() )
       GetMixerToolBar()->UpdateControls();
-   }
 }
 
 void AudacityProject::RedrawProject()
