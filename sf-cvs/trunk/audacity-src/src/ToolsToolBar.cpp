@@ -166,7 +166,7 @@ AButton *ToolsToolBar::MakeTool(const char **tool, const char **alpha,
        new AButton(this, id, wxDefaultPosition, wxSize(27, 27),
                    up, hilite, down, dis, false);
    button->SetLabel( label );
-   Add( button );
+   mToolSizer->Add( button );
 
    delete ctr;
    delete mask;
@@ -219,6 +219,9 @@ void ToolsToolBar::RegenerateToolsTooltips()
 
 void ToolsToolBar::Populate()
 {
+   mToolSizer = new wxGridSizer( 2, 3, 1, 1 );
+   Add( mToolSizer );
+
    /* Tools */
 
    mTool[ selectTool   ] = MakeTool( IBeam, IBeamAlpha, selectTool, _("SelectionTool") );
