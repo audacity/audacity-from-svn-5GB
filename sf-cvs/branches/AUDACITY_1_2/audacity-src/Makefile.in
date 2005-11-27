@@ -98,6 +98,8 @@ distclean: clean
 	$(MAKE) -C tests distclean
 
 	rm -f Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile
+	rm -f src/.depend
+	find . -name '.#*' | xargs rm -f
 	rm -f locale/Makefile src/configunix.h
 	rm -f config.log config.status config.cache
 
