@@ -2,8 +2,3 @@ Contents file=audacity.hhc
 Index file=audacity.hhk
 Title=Audacity Help
 Default topic=contents.htm
-
-arch-tag: 74e8aec1-f3bf-45fb-a700-6bbd1d98d826
-
-(according to the wxHelp docs, this file "may contain additional lines [beyond
-the first four] which are ignored)
