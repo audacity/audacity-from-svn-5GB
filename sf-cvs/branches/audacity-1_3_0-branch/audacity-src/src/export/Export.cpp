@@ -158,10 +158,13 @@ wxString ExportCommon(AudacityProject *project,
    wxString maskString;
    wxString endOfPathSep;
 
-//MERGE exercise exception
+   #if 0 // dmazzoni
+   //MERGE exercise exception
    if (defaultName == wxT("ThrowExceptionOnExport")) {  //lda
       throw("Exercise exception");
    }
+   #endif
+
    if (defaultExtension.Left(1) == wxT("."))
       defaultExtension =
          defaultExtension.Right(defaultExtension.Length()-1);
