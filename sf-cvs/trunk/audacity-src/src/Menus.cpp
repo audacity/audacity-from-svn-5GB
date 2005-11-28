@@ -172,13 +172,28 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | UnsavedChangesFlag);
    c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
 	}
+
    c->AddSeparator();
 
-   c->AddItem(wxT("Export"),         _("Export As..."),                   FN(OnExportMix));
-   c->AddItem(wxT("ExportSel"),      _("Export Selection As..."),         FN(OnExportSelection));
+   c->AddItem(wxT("EditID3"),        _("Edit &ID3 Tags..."),              FN(OnEditID3));
+   c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+
+   if( !mCleanSpeechMode )
+	{
    c->AddSeparator();
-   c->AddItem(wxT("ExportMP3"),      _("Export As MP3..."),               FN(OnExportMP3Mix));
-   c->AddItem(wxT("ExportMP3Sel"),   _("Export Selection As MP3..."),     FN(OnExportMP3Selection));
+
+   c->BeginSubMenu(_("&Export As..."));
+   c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
+   c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
+   c->AddItem(wxT("ExportOgg"),      _("Ogg &Vorbis..."),        FN(OnExportOggMix));
+   c->EndSubMenu();
+
+   c->BeginSubMenu(_("Expo&rt Selection As..."));
+   c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
+   c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
+   c->AddItem(wxT("ExportOggSel"),   _("Ogg &Vorbis..."), FN(OnExportOggSelection));
+   c->EndSubMenu();
+
    // Enable Export commands only when there are tracks
    c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag,
@@ -188,10 +203,6 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                       wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
 
-   if( !mCleanSpeechMode )
-	{
-   c->AddItem(wxT("ExportOgg"),      _("Export As Ogg Vorbis..."),        FN(OnExportOggMix));
-   c->AddItem(wxT("ExportOggSel"),   _("Export Selection As Ogg Vorbis..."), FN(OnExportOggSelection));
    c->AddSeparator();
    c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
    c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
@@ -213,11 +224,34 @@ void AudacityProject::CreateMenusAndCommands()
    }
 
    c->AddSeparator();
+
 	if( mCleanSpeechMode )
 	{
-      c->AddItem(wxT("BatchProcess"),     _("CleanSpeech Chain..."),   FN(OnBatch));
-      c->AddItem(wxT("ExportCcSettings"), _("Export CleanSpeech Presets..."),   FN(OnExportCleanSpeechPresets));
-      c->AddItem(wxT("ImportCcSettings"), _("Import CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
+
+	c->BeginSubMenu(_("&Export As..."));
+	c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
+	c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
+	c->EndSubMenu();
+
+	c->BeginSubMenu(_("Expo&rt Selection As..."));
+	c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
+	c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
+	c->EndSubMenu();
+
+	// Enable Export commands only when there are tracks
+	c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+	                   AudioIONotBusyFlag | TracksExistFlag,
+	                   wxT("Export"), wxT("ExportMP3"), NULL);
+	// Enable Export Selection commands only when there's a selection
+	c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+	                   AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+	                   wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
+
+      c->AddSeparator();
+
+      c->AddItem(wxT("BatchProcess"),     _("CleanSpeech C&hain..."),   FN(OnBatch));
+      c->AddItem(wxT("ExportCcSettings"), _("Export CleanSpeech &Presets..."),   FN(OnExportCleanSpeechPresets));
+      c->AddItem(wxT("ImportCcSettings"), _("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 #ifdef __WXDEBUG__
 	   gPrefs->Write(wxT("/Validate/DebugBuild"), "Y");
@@ -227,7 +261,7 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    else
    {
-      c->AddItem(wxT("BatchProcess"),     _("Process Batch..."),   FN(OnBatch));
+      c->AddItem(wxT("BatchProcess"),     _("Process &Batch..."),   FN(OnBatch));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
    }
 
@@ -238,7 +272,7 @@ void AudacityProject::CreateMenusAndCommands()
 	{
    c->AddSeparator();
    c->AddItem(wxT("PageSetup"),   _("Page Setup..."),              FN(OnPageSetup));
-   c->AddItem(wxT("Print"),       _("Print..."),                   FN(OnPrint));
+   c->AddItem(wxT("Print"),       _("&Print..."),                   FN(OnPrint));
    c->SetCommandFlags(wxT("PageSetup"),
                       AudioIONotBusyFlag | TracksExistFlag,
                       AudioIONotBusyFlag | TracksExistFlag);
@@ -259,10 +293,10 @@ void AudacityProject::CreateMenusAndCommands()
    // On the Mac, the Exit item doesn't actually go here...wxMac will pull it out
    // and put it in the Audacity menu for us based on its ID.
   #ifdef __WXMAC__
-   c->AddItem(wxT("Exit"),           _("E&xit"),                          FN(OnExit));
+   c->AddItem(wxT("Exit"),           _("E&xit\tCtrl+Q"),                          FN(OnExit));
    c->SetCommandFlags(wxT("Exit"), 0, 0);
   #else
-   c->AddItem(wxT("Exit"),           _("E&xit"),                          FN(OnExit));
+   c->AddItem(wxT("Exit"),           _("E&xit\tCtrl+Q"),                          FN(OnExit));
    c->SetCommandFlags(wxT("Exit"), 0, 0);
   #endif
    c->EndMenu();
@@ -326,8 +360,6 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("Stereo To Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
-      c->AddItem(wxT("EditID3"),        _("&Edit ID3 Tags..."),              FN(OnEditID3));
-      c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 	}
    c->AddSeparator();
 
@@ -446,14 +478,12 @@ void AudacityProject::CreateMenusAndCommands()
    //
 	if( !mCleanSpeechMode )
 	{
-      c->BeginMenu(_("&Project"));
+      c->BeginMenu(_("&Tracks"));
       c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
       c->AddItem(wxT("ImportAudio"),    _("&Import Audio...\tCtrl+I"),       FN(OnImport));
       c->AddItem(wxT("ImportLabels"),   _("Import &Labels..."),              FN(OnImportLabels));
       c->AddItem(wxT("ImportMIDI"),     _("Import &MIDI..."),                FN(OnImportMIDI));
       c->AddItem(wxT("ImportRaw"),      _("Import &Raw Data..."),            FN(OnImportRaw));
-      c->AddSeparator();
-      c->AddItem(wxT("EditID3"),        _("&Edit ID3 Tags..."),              FN(OnEditID3));
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
@@ -757,10 +787,10 @@ void AudacityProject::ModifyExportMenus()
    wxString pcmFormat = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
 
    mCommandManager.Modify(wxT("Export"),
-                          wxString::Format(_("&Export As %s..."),
+                          wxString::Format(_("&%s..."),
                                            pcmFormat.c_str()));
    mCommandManager.Modify(wxT("ExportSel"),
-                          wxString::Format(_("&Export Selection As %s..."),
+                          wxString::Format(_("&%s..."),
                                            pcmFormat.c_str()));
 }
 
