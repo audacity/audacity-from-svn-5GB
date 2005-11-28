@@ -24,7 +24,7 @@ class EffectNoise:public Effect {
    EffectNoise() {}
 
    virtual wxString GetEffectName() {
-      return wxString(_("White Noise"));
+      return wxString(_("&White Noise"));
    }
 
    virtual wxString GetEffectDescription() { 

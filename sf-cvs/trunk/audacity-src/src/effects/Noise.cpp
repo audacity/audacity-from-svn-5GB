@@ -32,7 +32,7 @@ bool EffectNoise::PromptUser()
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   GenerateDialog dlog(mParent, -1, _("Generate Noise"));
+   GenerateDialog dlog(mParent, -1, _("White Noise Generator"));
    dlog.length = length;
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
