@@ -271,18 +271,18 @@ UploadDialog::UploadDialog(wxWindow * parent)
     txtFtpHost = new wxTextCtrl(this, wxID_FTPHOST, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
     txtFtpUser = new wxTextCtrl(this, wxID_FTPUSER, wxT(""), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, wxT(""));
     txtFtpPass = new wxTextCtrl(this, wxID_FTPPASS, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD, wxDefaultValidator, wxT(""));
-    btnConnect = new wxButton(this, wxID_CONNECT, _("Connect"), wxDefaultPosition, wxDefaultSize);
-    btnDisconnect = new wxButton(this, wxID_DISCONNECT, _("Disconnect"), wxDefaultPosition, wxDefaultSize);
+    btnConnect = new wxButton(this, wxID_CONNECT, _("&Connect"), wxDefaultPosition, wxDefaultSize);
+    btnDisconnect = new wxButton(this, wxID_DISCONNECT, _("&Disconnect"), wxDefaultPosition, wxDefaultSize);
     btnDisconnect->Enable(false);
 
-    btnUploadFile = new wxButton(this, wxID_UPLOAD_FILE, _("Upload File"), wxDefaultPosition, wxDefaultSize);
+    btnUploadFile = new wxButton(this, wxID_UPLOAD_FILE, _("Upload &File"), wxDefaultPosition, wxDefaultSize);
     btnUploadFile->Enable(false);
-    btnUploadDir = new wxButton(this, wxID_UPLOAD_DIR, _("Upload Folder"), wxDefaultPosition, wxDefaultSize);
+    btnUploadDir = new wxButton(this, wxID_UPLOAD_DIR, _("Upload F&older"), wxDefaultPosition, wxDefaultSize);
     btnUploadDir->Enable(false);
-    btnCreateDir = new wxButton(this, wxID_CREATEDIR, _("New Folder"), wxDefaultPosition, wxDefaultSize);
+    btnCreateDir = new wxButton(this, wxID_CREATEDIR, _("N&ew Folder"), wxDefaultPosition, wxDefaultSize);
     btnCreateDir->Enable(false);
 
-    btnDelSite = new wxButton(this, wxID_DELSITE, _("Remove Site"), wxDefaultPosition, wxDefaultSize);
+    btnDelSite = new wxButton(this, wxID_DELSITE, _("&Remove Site"), wxDefaultPosition, wxDefaultSize);
 
     fileManager = new wxListView(this, wxID_FILEMANAGER, wxDefaultPosition, wxSize(350, 350), wxLC_REPORT, wxDefaultValidator, wxT(""));
     fileManager->AssignImageList(icons, wxIMAGE_LIST_SMALL);
