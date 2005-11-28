@@ -36,7 +36,7 @@ class EffectToneGen:public Effect {
    EffectToneGen();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Tone..."));
+      return wxString(_("&Tone..."));
    }
 
    virtual wxString GetEffectAction() {

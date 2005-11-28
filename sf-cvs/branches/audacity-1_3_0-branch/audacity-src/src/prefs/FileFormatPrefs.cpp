@@ -69,14 +69,14 @@ PrefsPanel(parent)
          wxVERTICAL );
 
       mCopyOrEdit[0] = new wxRadioButton(
-         this, -1, _("Make a copy of the file before editing (safer)"),
+         this, -1, _("&Make a copy of the file before editing (safer)"),
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
          wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
 
       mCopyOrEdit[1] = new wxRadioButton(
-         this, -1, _("Read directly from the original file (faster)"),
+         this, -1, _("&Read directly from the original file (faster)"),
          wxDefaultPosition, wxDefaultSize, 0 );
 
 	  mCopyOrEdit[0]->SetValue(false);
@@ -187,7 +187,7 @@ PrefsPanel(parent)
             wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
          
          mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON,
-               _("Find Library"));
+               _("&Find Library"));
          
          mp3InfoSizer->Add(mMP3FindButton, 0,
                            wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
