@@ -28,7 +28,7 @@ bool EffectSilence::PromptUser()
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   GenerateDialog dlog(mParent, -1, _("Generate Silence"));
+   GenerateDialog dlog(mParent, -1, _("Silence Generator"));
    dlog.length = length;
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
@@ -142,7 +142,7 @@ wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool ca
    item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item12 =
-       new wxButton(parent, wxID_OK, action, wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("&Generate Silence"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item12->SetDefault();
    item12->SetFocus();
