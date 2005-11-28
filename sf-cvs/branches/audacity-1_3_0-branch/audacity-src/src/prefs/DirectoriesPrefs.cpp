@@ -49,7 +49,7 @@ PrefsPanel(parent)
    topSizer = new wxBoxSizer( wxVERTICAL );
 
    wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Temp. Directory")), wxVERTICAL );
+      new wxStaticBox(this, -1, _("Temporary files directory")), wxVERTICAL );
 
    wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
 
