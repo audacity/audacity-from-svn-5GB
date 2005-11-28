@@ -280,19 +280,19 @@ PrefsPanel(parent)
 
    wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Playthrough")), wxVERTICAL);
    mDuplex = new wxCheckBox(this, -1,
-                            _("Play other tracks while recording new one"));
+                            _("&Play other tracks while recording new one"));
    mDuplex->SetValue(duplex);
    staticSizer->Add(mDuplex, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
    #ifdef __MACOSX__
    mPlaythrough = new wxCheckBox(this, -1,
-                                 _("Hardware Playthrough (Play new track while recording it)"));
+                                 _("&Hardware Playthrough (Play new track while recording it)"));
    mPlaythrough->SetValue(playthrough);
    staticSizer->Add(mPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
    #endif
 
    mSWPlaythrough = new wxCheckBox(this, -1,
-                                 _("Software Playthrough (Play new track while recording it)"));
+                                 _("&Software Playthrough (Play new track while recording it)"));
    mSWPlaythrough->SetValue(swplaythrough);
    staticSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
    topSizer->Add(staticSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
