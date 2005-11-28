@@ -96,8 +96,8 @@ PrefsPanel(parent)
       this, CurrentComboID, wxT(""),
       wxDefaultPosition, wxSize(115, -1), 0 );
 
-   wxButton *pSetButton = new wxButton(this, SetButtonID, _("Set"));
-   wxButton *pClearButton = new wxButton(this, ClearButtonID, _("Clear"));
+   wxButton *pSetButton = new wxButton(this, SetButtonID, _("S&et"));
+   wxButton *pClearButton = new wxButton(this, ClearButtonID, _("&Clear"));
 
    wxBoxSizer * pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
 
@@ -121,11 +121,11 @@ PrefsPanel(parent)
    #endif
 
    wxButton *pDefaultsButton =
-      new wxButton(this, AssignDefaultsButtonID, _("Defaults"));
+      new wxButton(this, AssignDefaultsButtonID, _("&Defaults"));
    wxButton *pSaveButton =
-      new wxButton(this, SaveButtonID, _("Save..."));
+      new wxButton(this, SaveButtonID, _("&Save..."));
    wxButton *pLoadButton =
-      new wxButton(this, LoadButtonID, _("Load..."));
+      new wxButton(this, LoadButtonID, _("&Load..."));
 
    pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
    pComboLabelSizer->Add( pDefaultsButton, 0,

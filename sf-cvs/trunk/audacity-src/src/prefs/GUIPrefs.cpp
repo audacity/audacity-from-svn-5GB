@@ -267,27 +267,27 @@ void GUIPrefs::AllCheckBoxActions()
    mCheckBoxCounters[1]=-1;
    mCurrentCheckBoxContainer=0;
 
-   CheckBoxAction( _("Autoscroll while playing"),
+   CheckBoxAction( _("&Autoscroll while playing"),
       wxT("/GUI/AutoScroll"), true);
-   CheckBoxAction( _("Always allow pausing"),
+   CheckBoxAction( _("Al&ways allow pausing"),
       wxT("/GUI/AlwaysEnablePause"), true);
-   CheckBoxAction( _("Update spectrogram while playing"),
+   CheckBoxAction( _("&Update spectrogram while playing"),
       wxT("/GUI/UpdateSpectrogram"), true);
-   CheckBoxAction( _("Quit Audacity upon closing last window"),
+   CheckBoxAction( _("&Quit Audacity upon closing last window"),
       wxT("/GUI/QuitOnClose"), bQuitOnCloseDefault );
    CheckBoxAction(
-      _("Dragging of left and right selection edges"),
+      _("&Dragging of left and right selection edges"),
       wxT("/GUI/AdjustSelectionEdges"), true);
    CheckBoxAction(
-      _("Ergonomic order of audio I/O buttons"),
+      _("&Ergonomic order of audio I/O buttons"),
       wxT("/GUI/ErgonomicTransportButtons"), true);
 
 //lda
-   CheckBoxAction(_("Tracks fit vertically zoomed"), wxT("/GUI/TracksFitVerticallyZoomed"), false );
+   CheckBoxAction(_("Tracks &fit vertically zoomed"), wxT("/GUI/TracksFitVerticallyZoomed"), false );
    mCurrentCheckBoxContainer=1;
 
 	CheckBoxAction(
-      _("Enable cut lines"),
+      _("Enable cut &lines"),
       wxT("/GUI/EnableCutLines"), false);
    CheckBoxAction(
 		_("Show warnings about temp files"), 

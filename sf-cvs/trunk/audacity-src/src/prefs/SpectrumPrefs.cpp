@@ -99,7 +99,7 @@ PrefsPanel(parent)
          new wxStaticBox(this, -1, _("Display")),
          wxVERTICAL);
 
-      mGrayscale  = new wxCheckBox(this, -1, _("Grayscale"));
+      mGrayscale  = new wxCheckBox(this, -1, _("&Grayscale"));
       displaySizer->Add(mGrayscale, 0,
          wxGROW|wxALL, RADIO_BUTTON_BORDER );
       

@@ -119,18 +119,18 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
 
    wxStaticText * item = 
       new wxStaticText(this, -1,
-                        _("Batch mode is an\n experimental feature.\n\nPlease read the release\n notes for known limitations"),
+                        _("Batch mode is an\nexperimental feature.\n\nPlease read the release\nnotes for known limitations"),
                         wxDefaultPosition, wxDefaultSize, 0);
 
    batchOptionsSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
    wxButton * btnCleanSpeech = new wxButton( this, CleanSpeechButtonID,
-      _("CleanSpeech Chain"), wxDefaultPosition, wxDefaultSize, 0);
+      _("&CleanSpeech Chain"), wxDefaultPosition, wxDefaultSize, 0);
 
    wxButton * btnMp3 = new wxButton( this, Mp3ButtonID,
-      _("Mp3 Conversion Chain"), wxDefaultPosition, wxDefaultSize, 0);
+      _("&Mp3 Conversion Chain"), wxDefaultPosition, wxDefaultSize, 0);
 
    wxButton * btnEmpty = new wxButton( this, EmptyChainButtonID,
-      _("Empty Chain"), wxDefaultPosition, wxDefaultSize, 0);
+      _("&Empty Chain"), wxDefaultPosition, wxDefaultSize, 0);
 
    batchOptionsSizer->Add(btnCleanSpeech, 0, wxALIGN_CENTER | wxALL, 5);
    batchOptionsSizer->Add(btnMp3, 0, wxALIGN_CENTER | wxALL, 5);
@@ -374,14 +374,14 @@ void BatchPrefs::AllCheckBoxActions()
    mCheckBoxCounters[1]=-1;
    mCurrentCheckBoxContainer=0;
 
-   CheckBoxAction(_("Batch debug mode"),  wxT("/Batch/Debug"), false);
-   CheckBoxAction(_("Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
-   CheckBoxAction(_("Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
-   CheckBoxAction(_("CleanSpeech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
+   CheckBoxAction(_("&Batch debug mode"),  wxT("/Batch/Debug"), false);
+   CheckBoxAction(_("&Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
+   CheckBoxAction(_("&Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
+   CheckBoxAction(_("Clean&Speech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
 
    mCurrentCheckBoxContainer=1;
 
-   CheckBoxAction(_("Show Mp3-ID3 Dialog"), wxT("/Batch/ShowId3Dialog"), false);
+   CheckBoxAction(_("S&how Mp3-ID3 Dialog"), wxT("/Batch/ShowId3Dialog"), false);
 // CheckBoxAction(_("Show Confirmation for 'delete orphans'"), wxT("/Batch/ShowDeleteConfirmation"), true);
 
 // Commented out code might be useful as a first step if we want an immediate response to 
