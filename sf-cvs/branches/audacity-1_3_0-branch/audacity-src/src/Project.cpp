@@ -1033,7 +1033,7 @@ void AudacityProject::HandleResize()
 
    int statusWidth, statusHeight;
    mSelectionBar->GetSize(&statusWidth, &statusHeight);
-   mSelectionBar->Move(0, top + height - statusHeight);
+   mSelectionBar->SetSize(0, top + height - statusHeight, width, -1);
    height -= statusHeight;
 
    mMainPanel->SetSize( left,top, width,height);
