@@ -32,7 +32,7 @@
 <h3 id="instructions"><?=_("How to Build Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.3 needs wxGTK 2.6.')?></p>
+<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.3 needs wxGTK 2.6.1 (or higher).')?></p>
 <p><?=_("You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS.")?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
