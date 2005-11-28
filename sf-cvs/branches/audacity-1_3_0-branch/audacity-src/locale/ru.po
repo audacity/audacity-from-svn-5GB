@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-22 11:25+0300\n"
-"PO-Revision-Date: 2005-11-27 14:23+0300\n"
+"PO-Revision-Date: 2005-11-28 08:14+0300\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3080,9 +3080,8 @@ msgid "Left Drag"
 msgstr "Перетаскивание левой кнопкой мышки"
 
 #: ../src/Menus.cpp:332
-#, fuzzy
 msgid "Left at Playback Position\t["
-msgstr "Добавить заметку в позицию воспроизведения\tCtrl+M"
+msgstr "Слева от позиции воспроизведения\t["
 
 #: ../src/TrackPanel.cpp:4833
 msgid "Left, "
@@ -3186,7 +3185,7 @@ msgstr ""
 #. know the correct technical word.
 #: ../src/import/ImportRaw.cpp:330
 msgid "Little-endian"
-msgstr "\"Остроконечник\""
+msgstr "«Остроконечник»"
 
 #: ../src/effects/Equalization.cpp:706
 msgid "Load Predefined Curve"
@@ -4451,9 +4450,8 @@ msgid "Right Drag"
 msgstr "Перетаскивание правой кнопкой мышки"
 
 #: ../src/Menus.cpp:333
-#, fuzzy
 msgid "Right at Playback Position\t]"
-msgstr "Добавить заметку в позицию воспроизведения\tCtrl+M"
+msgstr "Справа от позиции воспроизведения\t]"
 
 #: ../src/TrackPanel.cpp:4835
 msgid "Right, "
@@ -4472,9 +4470,8 @@ msgid "Right-to-Off"
 msgstr ""
 
 #: ../src/TranscriptionToolBar.cpp:231
-#, fuzzy
 msgid "Right-to-On"
-msgstr "справа"
+msgstr ""
 
 #: ../src/TrackPanel.cpp:2566
 msgid "Sample Edit"
@@ -4485,9 +4482,8 @@ msgid "Sample rate:"
 msgstr "Частота дискретизации:"
 
 #: ../src/prefs/QualityPrefs.cpp:85
-#, fuzzy
 msgid "Sampling"
-msgstr "Производится усиление сигнала"
+msgstr ""
 
 #: ../src/export/Export.cpp:178
 #, c-format
@@ -4507,9 +4503,8 @@ msgid "Save Project As:"
 msgstr "Сохранить проект как:"
 
 #: ../src/Project.cpp:2556
-#, fuzzy
 msgid "Save Speech As:"
-msgstr "Сохранить проект как:"
+msgstr "Сохранить речь как:"
 
 #: ../src/Project.cpp:1836
 msgid "Save changes before closing?"
@@ -4554,9 +4549,8 @@ msgid "Select"
 msgstr "Выделить"
 
 #: ../src/BatchCommandDialog.cpp:45
-#, fuzzy
 msgid "Select Command"
-msgstr "Выделить"
+msgstr "Выберите команду"
 
 #: ../src/Menus.cpp:3048
 msgid "Select a MIDI file..."
@@ -4881,13 +4875,12 @@ msgstr ""
 "несовпадающими индивидуальными каналами."
 
 #: ../src/effects/StereoToMono.cpp:89
-#, fuzzy
 msgid ""
 "Sorry, This effect can only be performed on stereo tracks where the "
 "individual channels of the track match."
 msgstr ""
-"Извините, но VST-эффекты не могут применяться к стереодорожкам с "
-"несовпадающими индивидуальными дорожками."
+"Извините, но этот эффект может применяться только к стереодорожкам, "
+"каналы которых совпадают."
 
 #: ../src/effects/VST/VSTEffect.cpp:180
 msgid ""
@@ -4945,19 +4938,19 @@ msgstr "Разделить"
 
 #: ../src/Menus.cpp:2062
 msgid "Split Cut"
-msgstr "Вырезать с разделением"
+msgstr "Разделить вырезанием"
 
 #: ../src/Menus.cpp:293
 msgid "Split Cut\tCtrl+Alt+X"
-msgstr "Вырезать с разделением\tCtrl+Alt+X"
+msgstr "Разделить в&ырезанием\tCtrl+Alt+X"
 
 #: ../src/Menus.cpp:2311
 msgid "Split Delete"
-msgstr "Удалить с разделением"
+msgstr "Разделить удалением"
 
 #: ../src/Menus.cpp:302
 msgid "Split Delete\tCtrl+Alt+K"
-msgstr "Удалить с &разделением\tCtrl+K"
+msgstr "Разделить &удалением\tCtrl+K"
 
 #: ../src/TrackPanel.cpp:399
 msgid "Split Stereo Track"
@@ -4977,9 +4970,8 @@ msgid "Split stereo track '%s'"
 msgstr "Разделить стереодорожку '%s.'"
 
 #: ../src/Menus.cpp:2062
-#, fuzzy
 msgid "Split-cut to the clipboard"
-msgstr "Вырезать в буфер"
+msgstr "Разделено вырезанием в буфер обмена"
 
 #: ../src/Menus.cpp:2308
 #, fuzzy, c-format
@@ -5033,7 +5025,7 @@ msgstr "Стерео в моно"
 
 #: ../src/BatchCommands.cpp:291
 msgid "Stereo To Mono Effect not found"
-msgstr ""
+msgstr "Эффект «Стерео в моно» не найден"
 
 #: ../src/TrackPanel.cpp:4828
 msgid "Stereo, "
@@ -5070,7 +5062,7 @@ msgstr ""
 
 #: ../src/BatchCommands.cpp:451 ../src/BatchCommands.cpp:456
 msgid "Test Mode"
-msgstr ""
+msgstr "Тестовый режим"
 
 #: ../src/Menus.cpp:3011
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -5319,9 +5311,8 @@ msgid "Truncate Silence..."
 msgstr "Вырезать тихие участки..."
 
 #: ../src/effects/TruncSilence.h:33
-#, fuzzy
 msgid "Truncating Silence..."
-msgstr "Создаётся тишина"
+msgstr "Вырезается тишина..."
 
 #: ../src/Menus.cpp:382
 msgid "Turn Grid Snap Off"
@@ -5344,14 +5335,12 @@ msgid "Unable to determine"
 msgstr "Невозможно определить"
 
 #: ../src/Menus.cpp:3596 ../src/export/Export.cpp:124
-#, fuzzy
 msgid "Unable to export"
-msgstr "Невозможно определить"
+msgstr "Невозможно экспортировать"
 
 #: ../src/Menus.cpp:3672
-#, fuzzy
 msgid "Unable to import"
-msgstr "Сколько импортировать:"
+msgstr "Невозможно импортировать"
 
 #: ../src/xml/XMLFileReader.cpp:75
 msgid "Unable to open project file."
@@ -5363,7 +5352,7 @@ msgstr "Невозможно открыть конечный файл для з�
 
 #: ../src/UploadDialog.cpp:829
 msgid "Unable to retrieve directory contents."
-msgstr ""
+msgstr "Невозможно получить содержимое каталога"
 
 #: ../src/prefs/FileFormatPrefs.cpp:93
 msgid "Uncompressed Export Format"
@@ -5393,6 +5382,9 @@ msgid ""
 "\n"
 "Only Unix based and Windows systems are supported/tested at this time."
 msgstr ""
+"Неизвестный тип FTP-сервера: %s\n"
+"\n"
+"Пока что поддерживаются и протестированы серверы только на основе Unix и Windows."
 
 #: ../src/AudacityApp.cpp:616 ../src/AudacityApp.cpp:686
 #, c-format
@@ -5467,6 +5459,8 @@ msgid ""
 "Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
 msgstr ""
+"Записи голоса (*.wav;*.mp3)|*.wav;*.mp3|Файлы WAV (*.wav)|*.wav|"
+"Файлы MP3 (*.mp3)|*.mp3"
 
 #: ../src/import/ImportOGG.cpp:130
 msgid "Vorbis version mismatch"
@@ -5507,7 +5501,6 @@ msgid "Warning"
 msgstr "Предупреждение"
 
 #: ../src/DirManager.cpp:96
-#, fuzzy
 msgid ""
 "Warning: there is very little free disk space left on this volume.\n"
 "Please select another temporary directory in your preferences."
@@ -5557,7 +5550,7 @@ msgstr "Создать белый шум"
 
 #: ../src/Project.cpp:2558
 msgid "Windows PCM Audio file *.wav)|*.wav"
-msgstr ""
+msgstr "Файлы Windows PCM Audio *.wav)|*.wav"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:194
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
@@ -5780,9 +5773,8 @@ msgid "samples"
 msgstr "сэмплы"
 
 #: ../src/widgets/TimeTextCtrl.cpp:161
-#, fuzzy
 msgid "seconds"
-msgstr "%d секунд"
+msgstr "секунд"
 
 #: ../src/UploadDialog.cpp:289
 msgid "size (bytes)"
