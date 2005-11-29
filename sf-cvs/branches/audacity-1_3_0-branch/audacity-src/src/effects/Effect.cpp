@@ -254,7 +254,7 @@ long TrapLong(long x, long min, long max)
 
 wxString Effect::GetPreviewName()
 {
-   return _("Pre&view");
+   return _("Preview");
 }
 
 void Effect::Preview()
