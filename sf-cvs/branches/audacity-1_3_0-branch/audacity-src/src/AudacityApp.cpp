@@ -82,6 +82,8 @@ ToolBarStub *gEditToolBarStub = NULL;
 ToolBarStub *gMeterToolBarStub = NULL;
 ToolBarStub *gTranscriptionToolBarStub = NULL;
 
+bool gInited = false;
+
 //This array holds pointers to the toolbar stub pointers..
 ToolBarStub **gToolBarStubArray[ nToolBars ]=
 {
@@ -189,6 +191,9 @@ IMPLEMENT_APP(AudacityApp)
 // in response of an open-document apple event
 void AudacityApp::MacOpenFile(const wxString &fileName)
 {
+   if (!gInited)
+      return false;
+
    AudacityProject *project = GetActiveProject();
    if (project == NULL || !project->GetTracks()->IsEmpty()) {
       project = CreateNewAudacityProject(gParentWindow);
@@ -199,6 +204,9 @@ void AudacityApp::MacOpenFile(const wxString &fileName)
 // in response of a print-document apple event
 void AudacityApp::MacPrintFile(const wxString &fileName)
 {
+   if (!gInited)
+      return false;
+
    AudacityProject *project = GetActiveProject();
    if (project == NULL || !project->GetTracks()->IsEmpty()) {
       project = CreateNewAudacityProject(gParentWindow);
@@ -209,6 +217,9 @@ void AudacityApp::MacPrintFile(const wxString &fileName)
 // in response of a open-application apple event
 void AudacityApp::MacNewFile()
 {
+   if (!gInited)
+      return false;
+
    // This method should only be used on the Mac platform
    // when no project windows are open.
  
@@ -702,6 +713,8 @@ bool AudacityApp::OnInit()
       }                         // for option...
    }                            // if (argc>1)
    #endif // Cygwin command-line parser
+
+   gInited = true;
 
    return TRUE;
 }
