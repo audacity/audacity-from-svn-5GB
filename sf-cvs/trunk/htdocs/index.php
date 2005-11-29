@@ -17,6 +17,7 @@
     $download_version = win_exe_version;
     $download_desc = _("for Microsoft Windows");
     $download_page = "windows";
+    $beta_download_page = "beta_windows";
 
     include "beta/versions.inc.php";
     $beta_version = beta_win_exe_version;
@@ -25,6 +26,7 @@
     $download_version = macosx_version;
     $download_desc = _("for Mac OS X");
     $download_page = "mac";
+    $beta_download_page = "beta_mac";
 
     include "beta/versions.inc.php";
     $beta_version = beta_macosx_version;
@@ -33,6 +35,7 @@
     $download_version = src_version;
     $download_desc = _("For Windows, Mac, or GNU/Linux");
     $download_page = "";
+    $beta_download_page = "";
 
     include "beta/versions.inc.php";
     $beta_version = beta_src_version;
@@ -53,7 +56,7 @@
   <p><?=$download_desc?></p>
   </div>
   <div id="download_sub">
-  <h3><a href="download/<?=$download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
+  <h3><a href="download/<?=$beta_download_page?>"><?php printf(_("Download Audacity %s"), $beta_version)?></a> (<?=_("Beta")?>)</h3>
   <p><?=$download_desc?></p>
   </div>
 
