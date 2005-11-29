@@ -64,7 +64,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                            const wxSize & size,
                            double rate,
                            SelectionBarListener * listener):
-   wxPanel(parent, id, pos,  size),
+   wxPanel(parent, id, pos,  size, wxFULL_REPAINT_ON_RESIZE),
    mListener(listener), mRate(rate),
    mStart(0.0), mEnd(0.0), mAudio(0.0),
    mModifyingSelection(false)
@@ -221,8 +221,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    
    SetAutoLayout(true);
    SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   Layout();
 
    mMainSizer = mainSizer;
 
@@ -327,8 +326,8 @@ void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
    mRightTime->SetFormatString(formatString);
    mAudioTime->SetFormatString(formatString);
 
-   mMainSizer->Fit(this);
-   mMainSizer->SetSizeHints(this);
+   Layout();
+   Refresh(false);
 }
 
 void SelectionBar::ValuesToControls()

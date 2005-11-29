@@ -508,9 +508,8 @@ void TimeTextCtrl::CreateControls()
    }
 
    SetAutoLayout(true);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   SetSizerAndFit(mainSizer);
+   Layout();
 }
 
 void TimeTextCtrl::ValueToControls()
