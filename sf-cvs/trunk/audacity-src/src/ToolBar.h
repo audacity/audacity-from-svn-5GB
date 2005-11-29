@@ -59,10 +59,10 @@ enum
    NoBarID = -1,
    ControlBarID,
    ToolsBarID,
-   MixerBarID,
    MeterBarID,
-   TranscriptionBarID,
+   MixerBarID,
    EditBarID,
+   TranscriptionBarID,
    ToolBarCount
 };
 
@@ -233,7 +233,9 @@ private:
                    int y,
                    int width,
                    int height );
-   void SetDocked( int wxWindowID, wxPoint & wpos, wxPoint & mpos );
+   void SetDocked( int wxWindowID, wxPoint & position, wxPoint & offset );
+   void Dock( ToolBar *t, int before );
+   wxWindow *Float( ToolBar *t, wxPoint & pos );
    void Updated();
 
    int mTotalToolBarHeight;

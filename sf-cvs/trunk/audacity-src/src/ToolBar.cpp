@@ -65,8 +65,8 @@ public:
    GrabberPosition() {}
    virtual ~GrabberPosition() {};
 
-   wxPoint Window;
-   wxPoint Mouse;
+   wxPoint position;
+   wxPoint offset;
 };
 
 class Grabber:
@@ -81,6 +81,8 @@ protected:
    void OnLeftDown( wxMouseEvent & event );
    void OnLeftUp( wxMouseEvent & event );
    void OnMotion( wxMouseEvent & event );
+   void OnEnter( wxMouseEvent & event );
+   void OnLeave( wxMouseEvent & event );
    void OnPaint( wxPaintEvent & event );
 
    DECLARE_EVENT_TABLE();
@@ -90,6 +92,7 @@ private:
    void SendEvent( wxEventType type, int x, int y );
 
    bool mUp;
+   bool mOver;
    wxPoint mHotspot;
    wxGenericDragImage *mDrag;
 };
@@ -99,6 +102,8 @@ private:
 ////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE( Grabber, wxWindow )
+   EVT_ENTER_WINDOW( Grabber::OnEnter )
+   EVT_LEAVE_WINDOW( Grabber::OnLeave )
    EVT_LEFT_DOWN( Grabber::OnLeftDown )
    EVT_LEFT_UP( Grabber::OnLeftUp )
    EVT_MOTION( Grabber::OnMotion )
@@ -106,7 +111,7 @@ BEGIN_EVENT_TABLE( Grabber, wxWindow )
 END_EVENT_TABLE()  
 
 // Specifies how wide the grabber will be
-#define grabberWidth 13
+#define grabberWidth 10
 
 //
 // Contructor
@@ -119,6 +124,7 @@ Grabber::Grabber( wxWindow * parent, wxWindowID id ):
              wxFULL_REPAINT_ON_RESIZE )
 {
    mUp = true;
+   mOver = false;
    mDrag = NULL;
 }
 
@@ -142,8 +148,9 @@ void Grabber::SendEvent( wxEventType type, int x, int y )
 
    // Create and populate the position info
    GrabberPosition *p = new GrabberPosition();
-   p->Mouse = wxPoint( x, y );
-   p->Window = wxPoint( x - mHotspot.x, y - mHotspot.y );
+   p->position.x = x;
+   p->position.y = y;
+   p->offset     = mHotspot;
    e.SetClientData( (void *) p );
 
    // Queue the event
@@ -155,50 +162,64 @@ void Grabber::SendEvent( wxEventType type, int x, int y )
 //
 void Grabber::DrawGrabber( wxDC & dc )
 {
-   wxSize sz = GetSize();
-   wxRect r;
-   unsigned int j;
-   int h;
+   wxRect r = GetRect();
+   int y, left, right, top, bottom;
 
-   // Dimensions of the grabber
-   r.x = 0;
-   r.y = 0;
-   r.width = sz.GetWidth() - 1;
-   r.height = sz.GetHeight() - 1;
+   // Paint the background
+   if( mOver )
+   {
+      AColor::Medium( &dc, true );
+      dc.DrawRectangle( r );
+   }
+   else
+   {
+      ClearBackground();
+   }
 
 #ifndef __WXMAC__
 
-   AColor::Medium( &dc, false );   // filled rectangle.
-   dc.DrawRectangle( r );
+   // Add a box
+   r.width -= 1;
+   r.height -= 1;
    AColor::Bevel( dc, mUp, r );
+   r.width += 1;
+   r.height += 1;
 
 #endif
 
-   // Draw the normal image
-   if( mUp )
-      AColor::Dark( &dc, false );
-   else
-      AColor::Medium( &dc, true );
-
-   h = sz.GetHeight();
-   for( j = 4; j < grabberWidth - 3; j += 4 )
+   // Calculate the bump rectangle
+   r.Deflate( 3, 3 );
+   if( ( r.GetHeight() % 4 ) < 2 )
    {
-      dc.DrawLine( j,     4,     j,     h - 3 );
-      dc.DrawLine( j + 1, 4,     j + 1, h - 3 );
-      dc.DrawLine( j - 1, h - 4, j + 2, h - 4 );
+      r.Offset( 0, 1 );
    }
 
-   // Draw the pushed image
+   // Cache
+   left = r.GetLeft();
+   right = r.GetRight() + 1;  //+1 for DrawLine()'s lack of not plotting last pixel
+   top = r.GetTop();
+   bottom = r.GetBottom();
+
+   // Draw the raised bumps
    if( mUp )
-      AColor::Medium( &dc, true );
+      AColor::Light( &dc, false );
    else
       AColor::Dark( &dc, false );
 
-   for( j = 3; j < grabberWidth - 3; j += 4 )
+   for( y = top; y < bottom; y += 4 )
    {
-      dc.DrawLine( j,     3,     j + 3, 3     );
-      dc.DrawLine( j,     3,     j,     h - 4 );
-      dc.DrawLine( j + 1, 3,     j + 1, h - 4 );
+      dc.DrawLine( left, y, right, y );
+   }
+
+   // Draw the pushed bumps
+   if( mUp )
+      AColor::Dark( &dc, false );
+   else
+      AColor::Light( &dc, false );
+
+   for( y = top + 1; y <= bottom; y += 4 )
+   {
+      dc.DrawLine( left, y, right, y );
    }
 }
 
@@ -288,6 +309,24 @@ void Grabber::OnMotion( wxMouseEvent & event )
 }
 
 //
+// Handle mouse enter events
+//
+void Grabber::OnEnter( wxMouseEvent & event )
+{
+   mOver = true;
+   Refresh( false );
+}
+
+//
+// Handle mouse leave events
+//
+void Grabber::OnLeave( wxMouseEvent & event )
+{
+   mOver = false;
+   Refresh( false );
+}
+
+//
 // Handle the paint events
 //
 void Grabber::OnPaint( wxPaintEvent & event )
@@ -326,11 +365,11 @@ ToolBarDock::ToolBarDock( wxWindow *parent ):
    // SetOwnBackgroundColour( wxColour( 255, 0, 0 ) );
 
    // Create all of the toolbars
-   mBars[ ControlBarID ]       = new ControlToolBar( this );
-   mBars[ EditBarID ]          = new EditToolBar( this );
-   mBars[ MeterBarID ]         = new MeterToolBar( this );
-   mBars[ MixerBarID ]         = new MixerToolBar( this );
    mBars[ ToolsBarID ]         = new ToolsToolBar( this );
+   mBars[ ControlBarID ]       = new ControlToolBar( this );
+   mBars[ MeterBarID ]         = new MeterToolBar( this );
+   mBars[ EditBarID ]          = new EditToolBar( this );
+   mBars[ MixerBarID ]         = new MixerToolBar( this );
    mBars[ TranscriptionBarID ] = new TranscriptionToolBar( this );
 
    // Process the toolbar config settings
@@ -384,7 +423,7 @@ void ToolBarDock::ReadConfig()
             }
             else
             {
-               // Add it (will wind up being at the end)
+               // Add it (will wind after the rest)
                mDockedBars.Add( mBars[ ndx ] );
             }
          }
@@ -395,22 +434,18 @@ void ToolBarDock::ReadConfig()
       else
       {
          // Set window position (validate these somehow????)
-         wxPoint wpos( x, y );
+         wxPoint pos( x, y );
 
-         // Must temporarily add the bar as SetDocked() will blindly
-         // remove it.
+         // Must temporarily add the bar as Float() will blindly
+         // remove it and an assertion would be triggered.
          //
-         // LLL: I'd rather do it this way than and a check in SetDocked()
+         // LLL: I'd rather do it this way than add a check in Float()
          //      since that could hide processing errors by skipping the
          //      removal when it should have been able to remove it.
          mDockedBars.Add( mBars[ ndx ] );
 
-         // Bars are initially docked, so calling SetDocked() will
-         // toggle the bar to floating.
-         SetDocked( ndx, wpos, wpos );
-
-         // Show/hide the bar
-         mBars[ ndx ]->GetParent()->Show( show );
+         // Set the bar afloat and show/hide it
+         Float( mBars[ ndx ], pos )->Show( show );
       }
 
       // Change back to the bar root
@@ -460,7 +495,7 @@ void ToolBarDock::WriteConfig()
       }
       else
       {
-         wxPoint p = ClientToScreen(mBars[ ndx ]->GetParent()->GetPosition() );
+         wxPoint p = mBars[ ndx ]->GetParent()->GetPosition();
          gPrefs->Write( wxT("X"), p.x );
          gPrefs->Write( wxT("Y"), p.y );
       }
@@ -650,21 +685,23 @@ void ToolBarDock::LayoutToolBars()
 
    // Set the final size of the dock window
    SetMinSize( wxSize( -1, stack[ 0 ].GetY() ) );
+
+   // Clean things up
+   Refresh( false );
 }
 
 //
 // Toggle the docked/floating state of the specified toolbar
 //
-void ToolBarDock::SetDocked( wxWindowID id, wxPoint & wpos, wxPoint & mpos )
+void ToolBarDock::SetDocked( wxWindowID id, wxPoint & pos, wxPoint & off )
 {
    ToolBar *t = mBars[ id ];
-   wxWindow *parent;
 
    // Handle a floating bar
    if( !t->IsDocked() )
    {
       // Convert location to client space
-      wxPoint p = ScreenToClient( mpos );
+      wxPoint p = ScreenToClient( pos );
 
       // Search for a docked bar over which this bar was dropped
       int ndx, cnt = mDockedBars.GetCount();
@@ -678,62 +715,138 @@ void ToolBarDock::SetDocked( wxWindowID id, wxPoint & wpos, wxPoint & mpos )
          }
       }
 
-      // Insert bar into the docked bars array
-      mDockedBars.Insert( t, ndx  );
-
-      // Get the floater window
-      parent = t->GetParent();
-
-      // Move the toolbar from the floater window to the toolbar dock
-      t->Reparent( this );
-
-      // Tell the toolbar about the change
-      t->SetDocked( true );
-
-      // Close/destroy the floater window
-      parent->Close( true );
+      // Move it to the dock
+      Dock( t, ndx );
    }
    else
    {
-      // Remove the bar from the docked bars array
-      mDockedBars.Remove( t );
+      wxWindow *parent;
 
-      // Create the floater window
-      parent = new wxFrame( this,
-                            wxID_ANY,
-                            t->GetTitle(),
-                            wxDefaultPosition,
-                            wxDefaultSize,
-                            wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT |
-                            ( t->IsResizeable()? wxRESIZE_BORDER : 0 ),
-                            t->GetLabel() );
+      parent = Float( t, pos );
 
-      // Move the toolbar from the toolbar dock to the floater window
-      t->Reparent( parent );
+      // LLL:  If this hackery is not desired, just remove it and
+      //       the top/left corner of the floater window will be
+      //       positioned at the location where the mouse button
+      //       was released.
 
-      // Tell the toolbar about the change
-      t->SetDocked( false );
+      // We need to get the difference between the screen position
+      // of the toolbar and the screen position of the floater window.
+      // This will provide us with the amount of space used by any
+      // decorations the floater window is using.
+      //
+      // We use that info and the hotspot info passed to us to move
+      // the floater window so that the mouse pointer will be
+      // directly over the spot it was on in the drag image.
 
-      // Resize the floater client size to the toolbars minimum size
-      parent->SetClientSize( t->GetMinSize() );
+      // Show and refresh the window before calculating the offsets
+      // otherwise GTK will return zeros for the coordinates.
+      parent->Show();
+      parent->Refresh();
+#if 0
+      // LLL: Since this didn't work under wxGTK 2.6.2, I've just
+      //      disabled it.
 
-      // Make sure resizable floaters don't get any smaller than initial size
-      if( t->IsResizeable() )
+      // Refresh the positions of both of the windows and convert
+      // the toolbar coordinates to screen space.
+      wxPoint ppos = parent->GetPosition();
+      wxPoint tpos = parent->ClientToScreen( t->GetPosition() );
+
+      // GTK does not return consistent window positions.  (At least
+      // I couldn't get it to.)  Sometimes it would return the actual
+      // screen position of the toolbar and other times it would only
+      // return the offset of the toolbar within the parent window
+      // in screen space.  We can use either, but we have to include
+      // this check to deal with both cases.
+      //
+      // Unfortunately, this doesn't work for resizeable windows. :-(
+      if( tpos.x > ppos.x && tpos.y > ppos.y )
       {
-         parent->SetSizeHints( parent->GetSize() );
+         tpos.x -= ppos.x;
+         tpos.y -= ppos.y;
       }
 
-      // Offset floater window by given x/y cooridnates
-      wxRect r( wpos.x, wpos.y, 0, 0 );
-      r.Offset( parent->GetPosition() - parent->ClientToScreen( t->GetPosition() ) );
-      parent->Move( r.GetPosition() );
-
-      // Finally show the floater
-      parent->Show();
+      // Finally, after all the hackage, move the floater to
+      // it's final location.
+      parent->Move( ppos.x - tpos.x - off.x, ppos.y - tpos.y - off.y );
+#endif
    }
 
    // Notify parent of changes
    Updated();
+}
+
+//
+// Toggle the docked/floating state of the specified toolbar
+//
+void ToolBarDock::Dock( ToolBar *t, int before )
+{
+   wxWindow *parent;
+
+   // Insert bar into the docked bars array
+   mDockedBars.Insert( t, before );
+
+   // Get the floater window
+   parent = t->GetParent();
+
+   // Move the toolbar from the floater window to the toolbar dock
+   t->Reparent( this );
+
+   // Tell the toolbar about the change
+   t->SetDocked( true );
+
+   // Close/destroy the floater window
+   parent->Close( true );
+}
+
+//
+// Toggle the docked/floating state of the specified toolbar
+//
+wxWindow *ToolBarDock::Float( ToolBar *t, wxPoint & pos )
+{
+   wxWindow *parent;
+
+   // Remove the bar from the docked bars array
+   mDockedBars.Remove( t );
+
+   // Create the floater window
+   int flags = wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT;
+   if( t->IsResizeable() )
+   {
+      parent = new wxFrame( this,
+                            wxID_ANY,
+                            t->GetTitle(),
+                            pos,
+                            wxDefaultSize,
+                            flags | wxRESIZE_BORDER,
+                            t->GetLabel() );
+   }
+   else
+   {
+      parent = new wxMiniFrame( this,
+                                wxID_ANY,
+                                t->GetTitle(),
+                                pos,
+                                wxDefaultSize,
+                                flags,
+                                t->GetLabel() );
+   }
+
+   // Move the toolbar from the toolbar dock to the floater window
+   t->Reparent( parent );
+
+   // Tell the toolbar about the change
+   t->SetDocked( false );
+
+   // Resize the floater client size to the toolbars minimum size
+   parent->SetClientSize( t->GetMinSize() );
+
+   // Make sure resizable floaters don't get any smaller than initial size
+   if( t->IsResizeable() )
+   {
+      parent->SetSizeHints( parent->GetSize() );
+   }
+
+   return parent;
 }
 
 //
@@ -838,7 +951,7 @@ void ToolBarDock::OnEndDrag( wxCommandEvent &event )
    GrabberPosition *p = (GrabberPosition *) event.GetClientData();
 
    // Go do the docking/floating
-   SetDocked( event.GetId(), p->Window, p->Mouse );
+   SetDocked( event.GetId(), p->position, p->offset );
 
    // See comments in OnBeginDraw()
    // Thaw();
