@@ -124,6 +124,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    wxGetApp().AddUniquePathToPathList(wxString::Format(wxT("%s/share/locale"),
                                                        INSTALL_PREFIX),
                                       audacityPathList);
+
    int i;
    for(i=wxLANGUAGE_UNKNOWN; i<wxLANGUAGE_USER_DEFINED;i++) {
       const wxLanguageInfo *info = wxLocale::GetLanguageInfo(i);
