@@ -13,7 +13,7 @@
 
 <h2><?=$pageTitle?></h2>
 
-<p><?=_('The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href="source">source code</a>.')?></p>
+<p><?=_('The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href="beta_source">source code</a>.')?></p>
 
 <?php
   include "../include/footer.inc.php";
