@@ -54,6 +54,7 @@ class UploadDialog:public wxDialog {
    UploadDialog(wxWindow * parent);
    virtual ~ UploadDialog();
 
+   void OnCancel(wxCommandEvent & event);
    void OnConnect(wxCommandEvent & event);
    void OnDisconnect(wxCommandEvent & event);
    void OnUploadFile(wxCommandEvent & event);
