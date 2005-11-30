@@ -981,7 +981,7 @@ msgstr ""
 
 #: download/beta_linux.php:16
 msgid "The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href=\"source\">source code</a>."
-msgstr "Die Beta Version von Audacity ist noch nicht auf allen Distributionen verfügbar. Eventuell möchten Sie Audacity selbstständig aus dem <a href=\"source\">source code</a> kompilieren."
+msgstr "Die Beta-Version von Audacity ist noch nicht auf allen Distributionen verfügbar. Eventuell möchten Sie Audacity selbstständig aus dem <a href=\"beta_source\">source code</a> kompilieren."
 
 #: download/beta_mac.php:11
 #: download/mac.php:10
