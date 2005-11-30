@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-01-08 09:59-0800\n"
-"PO-Revision-Date: 2005-11-26 16:21+0100\n"
+"PO-Revision-Date: 2005-11-29 20:10+0100\n"
 "Last-Translator: Karsten Zeller <pennywize@gmx.de>\n"
 "Language-Team: Pennywize <pennywize@gmx.de>\n"
 "MIME-Version: 1.0\n"
@@ -279,7 +279,6 @@ msgstr ""
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
-#. Also check the translations of this web page:
 #: about/index.php:33
 msgid ""
 "<h3>About Free Software</h3>\n"
@@ -304,7 +303,6 @@ msgid "License"
 msgstr "Lizenz"
 
 #. i18n-hint:  These gnu.org web pages are available in several languages.
-#. See the bottom of each page for versions in other languages.
 #: about/license.php:25
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL\">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p>\n"
@@ -573,7 +571,7 @@ msgstr "Releaseinformationen"
 
 #: main.inc.php:40
 msgid "New Features in 1.3"
-msgstr "Neue "
+msgstr "Neue Funktionen"
 
 #: main.inc.php:45
 #: download/common.inc.php:12
@@ -876,10 +874,9 @@ msgid ""
 "<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
 msgstr ""
 "<h3>Beta Tester</h3>\n"
-"<p>Zu den stabilen versionn von Audacity, haben wir natürlich auch öfters Weiterentwicklungen. Diese Versionen haben meist mehr und neue Möglichkeiten, die bisher nicht getestet wurden . Wenn Sie uns helfen wollen, laden Sie diese Versionen herunter und testen Sie diese. Lassen Sie uns wissen, was Ihnen gefällt und was nicht. Lassen Sie uns ebenfalls wissen, falls etwas <b>nicht mehr funktioniert</b> - etwas das vorher funktioniert hat.</p>"
+"<p>Zu den stabilen Versionen von Audacity, haben wir natürlich auch öfters Weiterentwicklungen. Diese Versionen haben meist mehr und neue Funktionen, die bisher zum Teil nicht getestet wurden . Wenn Sie uns helfen wollen, laden Sie diese Versionen herunter und testen Sie diese. Lassen Sie uns wissen, was Ihnen gefällt und was nicht. Lassen Sie uns ebenfalls wissen, falls etwas <b>nicht mehr funktioniert</b> - etwas das vorher funktioniert hat.</p>"
 
 #. i18n-hint:  Please add a note that we can answer questions to
-#. French, German, and Russian!
 #: contact/index.php:21
 msgid ""
 "<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
@@ -1014,7 +1011,7 @@ msgstr "Empfohlene Downloadmöglichkeit"
 #: download-old/beta_mac.php:24
 #, php-format
 msgid "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
-msgstr "Für Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - Die letzte Version des freien Audioeditors - Audacity"
+msgstr "Für Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - Die neuste Version des freien Audioeditors "
 
 #: download/beta_mac.php:28
 #: download/beta_source.php:26
@@ -1156,7 +1153,6 @@ msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The late
 msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die letzte Version des freien Audioeditors - Audacity"
 
 #. i18n-hint:  If this string is translated, it will appear above the list of
-#. original string.)
 #: download/beta_windows.php:32
 #: download/beta_windows.php:33
 #: download/windows.php:28
@@ -1166,7 +1162,7 @@ msgstr "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - Die let
 #: download-old/beta_windows.php:32
 #: download-old/beta_windows.php:33
 msgid "localized_downloads_windows"
-msgstr "<p><ul><li><a href=\"../de/docs/audacity-1.2-help.htb\">Deutsche Online Hilfe</a> - Das hier geladene deutsche Onlinehilfe muss ins Stammverzeichnis von Audacity kopiert werden. Beim nächsten Start von Audacity ist die Hilfe dann komplett in deutsch. Nähere Informationen hierzu gibt es im <a href=\"http://audacity.fuchsi.de\">deutschen Audacityforum</a>.</li></ul></p>"
+msgstr "<p><ul><li><a href=\"http://audacity.fuchsi.de/download/edgar/help/audacity-1.2.4-help/contents.htm\">Deutsche Online Hilfe</a> - Hier findest du Online eine komplette Übersicht über die Version 1.2.4 in deutscher Sprache. Nähere Informationen hierzu gibt es im <a href=\"http://audacity.fuchsi.de\">deutschen Audacityforum</a>.</li></ul></p>"
 
 #: download/beta_windows.php:38
 #: download/windows.php:34
@@ -1197,7 +1193,7 @@ msgstr "Audacity funktioniert am besten mit 64 MB Ram und einem 300 MHz Prozesso
 #: download/betafeatures.inc.php:9
 #: download-old/betafeatures.inc.php:9
 msgid "Click here to read about new features in Audacity 1.3."
-msgstr "Klicken Sie hier um die neuen Möglichkeiten in Audacity 1.3 kennenzulernen"
+msgstr "Klicken Sie hier um die neuen Funktionen in Audacity 1.3 kennenzulernen"
 
 #: download/betawarning.inc.php:9
 #: download-old/betawarning.inc.php:9
@@ -1207,7 +1203,7 @@ msgstr "Beta Warnung"
 #: download/betawarning.inc.php:10
 #: download-old/betawarning.inc.php:10
 msgid "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine."
-msgstr "Audacity 1.3 ist eine unstabile, beta Version von Audacity. Nutzer die eine stabile Version benötigen, sollten Audacity 1.2 nutzen. Audacity 1.3 hat hunderte neue Funktionen, aber einige davon sind noch nicht fertig oder verwirren, manchmal stürtzt das Programm ab und eventuell verlieren Sie Daten. Sie können Audacity 1.2 und Audacity 1.3 parallel auf einem Rechner installieren."
+msgstr "Audacity 1.3 ist eine Beta Version von Audacity. Diese kann instabil sein, d.h. auch während der Bearbeitung bei Nutzung einer Funktion abstürzen, was zu Datenverlusten führen kann. Desweiteren sind bereits Funktionen eingebaut, die aber eventuell noch verbesserungswürdig sind oder schlichtweg noch nicht endgültig programmiert.Nutzer die eine stabile, ausgereifte Version benötigen, sollten Audacity 1.2.4 nutzen. Sie können Audacity 1.2 und Audacity 1.3 parallel auf einem Rechner installieren."
 
 #: download/betawarning.inc.php:11
 #: download-old/betawarning.inc.php:11
@@ -1265,12 +1261,12 @@ msgstr "Download zusätzlicher Effekte und Filter."
 #: download-old/features-1.3-b.php:49
 #: download-old/features-1.3-g.php:67
 msgid "New features in Audacity 1.3"
-msgstr "Neue Möglichkeiten in Audacity 1.3"
+msgstr "Neue Funktionen in Audacity 1.3"
 
 #: download/features-1.3-a.php:17
 #: download-old/features-1.3-a.php:17
 msgid "New features"
-msgstr "Neue Möglichkeiten"
+msgstr "Neue Funktionen"
 
 #: download/features-1.3-a.php:18
 #: download-old/features-1.3-a.php:18
@@ -1282,7 +1278,7 @@ msgstr "Die neuen Funktionen von Audacity 1.3 können in folgende sechs Kategori
 #: download-old/features-1.3-a.php:21
 #: download-old/features-1.3-c.php:259
 msgid "Collapse/Expand Tracks"
-msgstr "Zusammen / Auseinanderziehen von Audiospuren"
+msgstr "Zusammen / Auseinanderfalten von Tonspuren"
 
 #: download/features-1.3-a.php:22
 #: download/features-1.3-b.php:56
@@ -1291,7 +1287,7 @@ msgstr "Zusammen / Auseinanderziehen von Audiospuren"
 #: download-old/features-1.3-b.php:56
 #: download-old/features-1.3-d.php:62
 msgid "Multiple clips per track"
-msgstr "Verschiedenen Lieder in einer Audiospur"
+msgstr "Mehrere Tonstücke in einer Tonspur"
 
 #: download/features-1.3-a.php:23
 #: download/features-1.3-c.php:266
@@ -1300,7 +1296,7 @@ msgstr "Verschiedenen Lieder in einer Audiospur"
 #: download-old/features-1.3-c.php:266
 #: download-old/features-1.3-e.php:67
 msgid "Selection Bar"
-msgstr "Auswahl"
+msgstr "Statusleiste"
 
 #: download/features-1.3-a.php:24
 #: download/features-1.3-d.php:69
@@ -1330,7 +1326,7 @@ msgstr "Andere Möglichkeiten"
 #: download/features-1.3-b.php:9
 #: download-old/features-1.3-b.php:9
 msgid "Audacity 1.3: Collapse/Expand Tracks"
-msgstr "Audacity 1.3: Zusammenziehen/Expandieren "
+msgstr "Audacity 1.3: Zusammen / Auseinanderfalten "
 
 #: download/features-1.3-b.php:16
 #: download-old/features-1.3-b.php:16
@@ -1340,7 +1336,7 @@ msgstr "In Audacity 1.3 hat jede Tonspur ein kleines Dreieck im Spurkopf, dessen
 #: download/features-1.3-b.php:21
 #: download-old/features-1.3-b.php:21
 msgid "Before clicking on the collapse button for the top track"
-msgstr "Bevor man auf den \"Verkleinern Knop\" gedrückt hat, für die obere Tonspur"
+msgstr "Bevor man auf den \"Verkleinern Knopf\" gedrückt hat, für die obere Tonspur"
 
 #: download/features-1.3-b.php:27
 #: download-old/features-1.3-b.php:27
@@ -1428,7 +1424,7 @@ msgstr "Einfügen eines Stückes aus einer anderen Tonspur"
 #: download/features-1.3-c.php:110
 #: download-old/features-1.3-c.php:110
 msgid "These commands, and other editing commands, are described in detail below.  Alternatively, click on the item in the menu to the left to jump directly to that command."
-msgstr "Diese Befehle und andere Menüpunkte werden im Deteail weiter unten beschrieben. Desweiteren hat edgar aus dem deutschen Audacity Forum dies ebenfalls konkret beschrieben und zwar <a href=\"http://audacity.fuchsi.de/download/edgar/radio/radioschnitt/radioschnitt.html\">hier</a>"
+msgstr "Diese Befehle und andere Menüpunkte werden im Deteail weiter unten beschrieben. Desweiteren hat Edgar aus dem deutschen Audacity Forum dies ebenfalls konkret beschrieben und zwar <b><a href=\"http://audacity.fuchsi.de/download/edgar/radio/radioschnitt/radioschnitt.html\">hier</a></b>"
 
 #: download/features-1.3-c.php:112
 #: download-old/features-1.3-c.php:112
@@ -1447,7 +1443,7 @@ msgstr "Verschieben von Dateistücken zwischen Audiospuren"
 #: download-old/features-1.3-c.php:116
 #: download-old/features-1.3-c.php:238
 msgid "Moving multiple clips at once"
-msgstr "Verschieben verschiedene Tonstücke gleichzeitig"
+msgstr "Verschieben von mehrerer Tonstücke gleichzeitig"
 
 #: download/features-1.3-c.php:122
 #: download-old/features-1.3-c.php:122
@@ -1467,7 +1463,7 @@ msgstr "Teilen und Schneiden"
 #: download/features-1.3-c.php:132
 #: download-old/features-1.3-c.php:132
 msgid "Removes the selected audio and puts it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
-msgstr "Entfernt "
+msgstr "Entfernt die Auswahl und fügt es in die Zwischenablage ein. Die restlichen Stücke des Liedes werden nicht verschoben und sind nun separate Teile die individuell verschoben und geändert werden können. "
 
 #: download/features-1.3-c.php:140
 #: download-old/features-1.3-c.php:140
@@ -1547,7 +1543,7 @@ msgstr "Fügt in eine existierende Tonspur ein"
 #: download/features-1.3-c.php:205
 #: download-old/features-1.3-c.php:205
 msgid "When you select Paste and the cursor is inside a clip, the audio gets inserted into the middle of the clip and the following audio is shifted to the right to make room"
-msgstr "Wenn Sie \"Einfügen\" auswählen und der Cursor ist innerhalb einer Tonspur wird das ganze in der Mitte der Tonspur eingefügt und der rest der alten Tonspur nach rechts verschoben um Platz zu machen"
+msgstr "Wenn Sie \"Einfügen\" auswählen und der Cursor ist innerhalb einer Tonspur wird das ganze in der Mitte der Tonspur eingefügt und der Rest der alten Tonspur nach rechts verschoben um Platz zu machen"
 
 #: download/features-1.3-c.php:211
 #: download-old/features-1.3-c.php:211
@@ -1582,12 +1578,12 @@ msgstr "Um mehrere Bereiche gleichzeitig zu verschieben, wählen Sie bitte alle 
 #: download/features-1.3-d.php:9
 #: download-old/features-1.3-d.php:9
 msgid "Audacity 1.3: Selection Bar"
-msgstr "Audacity 1.3: Auswahlleiste"
+msgstr "Audacity 1.3: Statusleiste"
 
 #: download/features-1.3-d.php:19
 #: download-old/features-1.3-d.php:19
 msgid "The selection bar"
-msgstr "Die Auswahlleiste"
+msgstr "Die Statusleiste"
 
 #: download/features-1.3-d.php:23
 #: download-old/features-1.3-d.php:23
@@ -1617,12 +1613,12 @@ msgstr "Verschiedene Anzeigeformate innerhalb der Auswahlleiste"
 #: download/features-1.3-e.php:9
 #: download-old/features-1.3-e.php:9
 msgid "Audacity 1.3: Improved Label Tracks"
-msgstr "Audacity 1.3: Verbesserter Textinformationen"
+msgstr "Audacity 1.3: Verbesserte Textinformationen"
 
 #: download/features-1.3-e.php:16
 #: download-old/features-1.3-e.php:16
 msgid "Label Tracks are Audacity's way for you to create markings and annotations within your project.  In Audacity 1.3, Label Tracks are much improved, with support for overlapping labels, and support for modifying both the left and right edge of the label region just by clicking and dragging."
-msgstr "Text\"Labels\" sind Audacitys Weg um Auswahlen und Informationen innerhalb eines Projektes zu speichern. In Audacity 1.3 wurden die Textlabels weiterentwickelt, mit der Unterstützung für überlappende Textinformationen, sowie der Möglichkeit die textinformationen in der Größe zu verändern."
+msgstr "Textmarken sind Audacitys Weg um Auswahlen und Informationen innerhalb eines Projektes zu speichern. In Audacity 1.3 wurden die Textlabels weiterentwickelt, mit der Unterstützung für überlappende Textinformationen, sowie der Möglichkeit die Textinformationen in der Größe zu verändern."
 
 #: download/features-1.3-e.php:21
 #: download-old/features-1.3-e.php:21
@@ -1632,7 +1628,7 @@ msgstr "Um einen Textkopf zu erzeugen, markieren Sie einen Bereich"
 #: download/features-1.3-e.php:27
 #: download-old/features-1.3-e.php:27
 msgid "Select 'Add Label At Selection' from the Project menu."
-msgstr "Wählen Sie 'Add Label At Selection' aus dem Projektmenü."
+msgstr "Wählen Sie 'Text an Markierung hinzufügen' aus dem Projektmenü."
 
 #: download/features-1.3-e.php:33
 #: download-old/features-1.3-e.php:33
@@ -1652,7 +1648,7 @@ msgstr "Später können Sie die Auswahl jederzeit wiederherstellen, klicken Sie 
 #: download/features-1.3-e.php:51
 #: download-old/features-1.3-e.php:51
 msgid "After you click, the label region becomes the current selection, allowing you to perform an operation on other tracks in the area within the label."
-msgstr "Nachdem Sie geklickt haben, wird die gegenwärtige Auswahl zum textlabel, dieses erlaubt in weitere Bearbeitungen auf Tonspuren im Bereich des Labels. "
+msgstr "Nachdem Sie geklickt haben, wird die gegenwärtige Auswahl zum Textlabel, dieses erlaubt in weitere Bearbeitungen auf Tonspuren im Bereich des Labels. "
 
 #: download/features-1.3-f.php:9
 #: download-old/features-1.3-f.php:9
@@ -1662,7 +1658,7 @@ msgstr "Audacity 1.3: Quicktime und Audio auf Mac OS X"
 #: download/features-1.3-f.php:16
 #: download-old/features-1.3-f.php:16
 msgid "On Mac OS X, Audacity can now import and audio file supported by Apple's QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  Unfortunately encrypted audio files (such as those from the iTunes Music Store) cannot be imported directly into Audacity - Apple does not allow this to be done easily because it would be too easy to circumvent the encryption this way."
-msgstr "Auf Mac OS X kann Audacity nun Audiodaten aus Apple`s Quicktime Format einlesen. Dies beinhaltet auch .MOV und .MP4(AAC) Dateien. Dies betrifft keine verschlüsselten Dateien in diesen Formaten (zum Beispiel aus dem iTunes Musik Store), da man sonst die Verschlüsselung zu leicht außer Kraft setzen kann, was Appel nicht erlaubt."
+msgstr "Auf Mac OS X kann Audacity nun Audiodaten aus Apple`s Quicktime Format einlesen. Dies beinhaltet auch .MOV und .MP4(AAC) Dateien. Dies betrifft keine verschlüsselten Dateien in diesen Formaten (zum Beispiel aus dem iTunes Musik Store), da man sonst die Verschlüsselung zu leicht außer Kraft setzen kann, was Apple nicht erlaubt."
 
 #: download/features-1.3-f.php:18
 #: download-old/features-1.3-f.php:18
@@ -1672,7 +1668,7 @@ msgstr "Ebenfalls auf Mac OS X unterstützt Audacity nun Audio Unit Plugins. Aud
 #: download/features-1.3-g.php:9
 #: download-old/features-1.3-g.php:9
 msgid "Audacity 1.3: Other features"
-msgstr "Audacity 1.3: Andere Möglichkeiten"
+msgstr "Audacity 1.3: Andere Funktionen"
 
 #: download/features-1.3-g.php:16
 #: download-old/features-1.3-g.php:16
@@ -1692,7 +1688,7 @@ msgstr "Integritätsprüfung, wenn ein Projekt geöffnet wird"
 #: download/features-1.3-g.php:22
 #: download-old/features-1.3-g.php:22
 msgid "When you open an Audacity project in version 1.3, it checks to make sure that all data files are present."
-msgstr "Wenn Sie ein projekt in Audacity 1.3 öffnen, wird geprüft, ob alle Daten noch da sind"
+msgstr "Wenn Sie ein Projekt in Audacity 1.3 öffnen, wird geprüft, ob alle Daten noch da sind"
 
 #: download/features-1.3-g.php:24
 #: download-old/features-1.3-g.php:24
@@ -1727,12 +1723,12 @@ msgstr "Vorherige Versionen von Audacity basierten auf wxWidgets 2.4. Diese Änd
 #: download/features-1.3-g.php:36
 #: download-old/features-1.3-g.php:36
 msgid "Batch / CleanSpeech"
-msgstr "Batch / Saubere Sprache"
+msgstr "Stapelverarbeitung / Clean Speech"
 
 #: download/features-1.3-g.php:38
 #: download-old/features-1.3-g.php:38
 msgid "Audacity has a new feature that allows you to process a bunch of files, for example normalizing and converting to MP3.  The CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Batch tab of the Preferences dialog."
-msgstr "Audacity hat eine neue Funktion um mehrere Datein direkt und in \"einem Rutsch\" zu verarbeiten (Batch), zum Beispiel zu normalisieren und in MP3 umzuwandeln. Der \"Saubere Sprache\" Modus ist ein vereinfachtes Menü um einige Standardänderungen an Sprachaufnahmen durchzuführen. Diese Bereiche können finden Sie im \"Batch\"-Reiter des Einstellungsdialogs. "
+msgstr "Audacity hat eine neue Funktion um mehrere Dateien direkt und in \"einem Rutsch\" zu verarbeiten (Batch), zum Beispiel zu normalisieren und in MP3 umzuwandeln. Der \"Clean Speech\" Modus ist ein vereinfachtes Menü um einige Standardänderungen an Sprachaufnahmen durchzuführen. Diese Bereiche finden Sie im \"Batch\"-Reiter des Einstellungsdialogs. "
 
 #: download/features-1.3-g.php:40
 #: download-old/features-1.3-g.php:40
@@ -1958,7 +1954,7 @@ msgstr ""
 "    und Linux.  (Bisher war es nur in Windows möglich.)\n"
 "\n"
 "</li>\n"
-"<li>Bessere Support für verschiedene Audiogeräte auf Mac OS X 10.4 \"Tiger\"\n"
+"<li>Besserer Support für verschiedene Audiogeräte auf Mac OS X 10.4 \"Tiger\"\n"
 "\n"
 "</li>\n"
 "<li>Im  \"Historien-Fenster\" kann man nun alte \"Wiederherstellungspunkte\" löschen um Platz zu sparen\n"
@@ -3438,11 +3434,11 @@ msgid ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
 "</p>"
 msgstr ""
-"<p>Audacity 1.2.4 ist die neue stabile Version von Audacity.  Die neue Version enthält einige Fehlerkorrekturen und kleinere Verbesserungen. Diese Version wird für alle Nutzer empfohlen.  Audacity 1.3.0 ist eine BETA Version, die hunderte von <a href=\"/download/features-1.3-a\">neuen Möglichkeiten</a>, aber diese Version ist nicht stabil und noch unfertig. Nur erfahrenen Nutzer sollten diese Version benutzen. Sie können beide Versionen parallel installieren.</p>\n"
-"<p>Beachten Sie die <a href=\"/download/release-notes\">1.2.4 Hinweise</a> für eine komplette Liste der Änderungen, sowie für die Hinweise auf bekannte Probleme in Audacity 1.2.4. oder schauen Sie sich die  <a href=\"/download/features-1.3-a\">Neuen Möglichkeiten in 1.3</a> an, um Information über die neue BETA Version zu erhalten.</p>\n"
-"<p>Finally, the best way to get help with Audacity is now the new\n"
-"<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
-"</p>"
+"<p>Audacity 1.2.4 ist die neue stabile Version von Audacity.  Die neue Version enthält einige Fehlerkorrekturen und kleinere Verbesserungen. Diese Version wird für alle Nutzer empfohlen.  Audacity 1.3.0 ist eine BETA Version, die hunderte von <a href=\"/download/features-1.3-a\">neuen Funktionen</a> hat. Diese Version ist jedoch noch nicht stabil und noch unfertig. Nur erfahrene Nutzer sollten diese Version benutzen. Sie können beide Versionen parallel installieren.</p>\n"
+"<p>Beachten Sie die <a href=\"/download/release-notes\">Hinweise</a> für eine komplette Liste der Änderungen, sowie für die bekannten Probleme in Audacity 1.2.4. oder schauen Sie sich die  <a href=\"/download/features-1.3-a\">neuen Funktionen </a> in der Version 1.3 an, um Information über die neue BETA Version zu erhalten.</p>\n"
+"<p>Sollten Sie weitere Hilfe benötigen, kommen Sie ins \n"
+"<a href=\"http://audacity.fuchsi.de/\">Audacity Forum</a>.\n"
+"</p><p>Eine komplette Hilfe, sowie diverse Beschreibungen und weitere Hilfe in deutscher Sprache finden Sie <b><a href=\"http://audacity.fuchsi.de/download/edgar/help/audacity-1.2.4-help/contents.htm\">hier</a>.</p></b>"
 
 #: include/news.inc.php:52
 msgid "Audacity 1.2.3 Released"
