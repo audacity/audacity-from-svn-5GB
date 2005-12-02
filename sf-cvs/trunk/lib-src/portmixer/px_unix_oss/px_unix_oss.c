@@ -35,8 +35,10 @@
  *
  */
 
-#ifdef __linux__
+#if defined(__linux__)
 #include <linux/soundcard.h>
+#elif defined(__FreeBSD__)
+#include <sys/soundcard.h>
 #else
 #include <machine/soundcard.h> /* JH20010905 */
 #endif
