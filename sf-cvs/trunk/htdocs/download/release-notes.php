@@ -22,6 +22,11 @@
   <li><p><?=_("MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems.")?></p></li>
 </ul>
 
+<?=_("<h3>Changes in Audacity 1.2.4b</h3>
+<ul>
+<li>A serious problem with the French translation was corrected.
+</ul>")?>
+
 <?=_("<h3>Changes in Audacity 1.2.4</h3>
 <ul>
 <li>The File menu now includes a list of recent files.
