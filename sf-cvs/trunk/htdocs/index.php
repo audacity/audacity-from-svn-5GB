@@ -96,7 +96,7 @@
   <input type="hidden" name="alreadyonurl" value="http://audacity.sourceforge.net/list/alreadyon.php">
   <input type="hidden" name="notonurl" value="http://audacity.sourceforge.net/list/noton.php">
   <input type="hidden" name="invalidurl" value="http://audacity.sourceforge.net/list/invalid.php">
-  <input type="hidden" name="domain" value="spaghetticode.org">
+  <input type="hidden" name="domain" value="audacityteam.org">
   <input type="hidden" name="emailit" value="1">
 
   <label for="address"><?=_("Email address")?></label>: <input name="address" id="address" class="text">
