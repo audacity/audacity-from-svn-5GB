@@ -1489,6 +1489,8 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 
          return;        
       }  
+   bool busy = gAudioIO->IsBusy();
+   if(busy) return;     
    
    //Make sure you are within the selected track
    if (pTrack && pTrack->GetSelected()) {
@@ -1537,6 +1539,9 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
 /// AS: Reset our selection markers.
 void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
 {
+   bool busy = gAudioIO->IsBusy();
+   if(busy) return;     
+
    mSelStart = mViewInfo->h + ((mouseXCoordinate - trackLeftEdge)
                                / mViewInfo->zoom);
    mViewInfo->sel0 = mSelStart;
@@ -1548,6 +1553,9 @@ void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
 ///  handle it here.
 void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 {
+   bool busy = gAudioIO->IsBusy();
+   if(busy) return;     
+
    // AS: If we're not in the process of selecting (set in
    //  the SelectionHandleClick above), fuhggeddaboudit.
    if ( mMouseCapture!=IsSelecting)
@@ -1626,6 +1634,9 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
 /// Extend the existing selection
 void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 {
+   bool busy = gAudioIO->IsBusy();
+   if(busy) return;     
+
    double selend = PositionToTime(mouseXCoordinate, trackLeftEdge);
 
    // Edit the selection boundary nearest the mouse click.
@@ -2958,12 +2969,13 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       Refresh(false);
       return;
    }
-
-   SelectNone();
-   mTracks->Select(t);
-   mViewInfo->sel0 = t->GetOffset();
-   mViewInfo->sel1 = t->GetEndTime();
-
+   if(!unsafe)
+      {
+         SelectNone();
+         mTracks->Select(t);
+         mViewInfo->sel0 = t->GetOffset();
+         mViewInfo->sel1 = t->GetEndTime();
+      }
    Refresh(false);  
    if (!unsafe)
       MakeParentModifyState();
