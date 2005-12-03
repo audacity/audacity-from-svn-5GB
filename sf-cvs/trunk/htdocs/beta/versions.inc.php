@@ -7,8 +7,8 @@ define('beta_macosx_version', '1.3.0b');
 define('macosx_version', '1.3.0b');
 define('macosx_size',    4.0);
 
-define('beta_win_exe_version', '1.3.0');
-define('win_exe_version', '1.3.0');
+define('beta_win_exe_version', '1.3.0b');
+define('win_exe_version', '1.3.0b');
 define('win_exe_size',    2.5);
 
 define('win_zip_version', '1.3.0b');
