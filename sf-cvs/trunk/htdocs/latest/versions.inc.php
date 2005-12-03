@@ -8,7 +8,7 @@ define('mac_classic_size',    1.5);
 define('macosx_version', '1.2.4b');
 define('macosx_size',    3.4);
 
-define('win_exe_version', '1.2.4');
+define('win_exe_version', '1.2.4b');
 define('win_exe_size',    2.5);
 define('win_zip_version', '1.2.4b');
 define('win_zip_size',    3.2);
