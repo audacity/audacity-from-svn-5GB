@@ -22,7 +22,7 @@
 <h3><?=_("Other Audio Software")?></h3>
 <p><?=_('<a href="http://ardour.org/">Ardour</a> is a powerful digital audio workstation that runs on GNU/Linux.')?></p>
 <p><?=_('<a href="http://cdexos.sourceforge.net/">CDex</a> is a free CD ripper for Microsoft Windows.')?></p>
-<p><?=_('<a href="http://panic.et.tudelft.nl/~costar/gramofile/">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records.')?></p>
+<p><?=_('<a href="http://www.opensourcepartners.nl/~costar/gramofile/">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records.')?></p>
 <p><?=_('More free software at SourceForge.net:')?></p>
 <ul>
   <li><a href="http://sourceforge.net/softwaremap/trove_list.php?form_cat=120"><?=_("Audio Editors")?></a>
