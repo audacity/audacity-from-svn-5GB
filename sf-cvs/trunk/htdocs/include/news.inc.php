@@ -35,6 +35,9 @@ function add_news_item($dateStr, $id, $title, $body) {
 function most_recent_news_item() {
 }
 
+// Add news items below in reverse-chronological order
+// (most recent first).
+
 add_news_item(
   "November 28, 2005",
 	"1.2.4-release",

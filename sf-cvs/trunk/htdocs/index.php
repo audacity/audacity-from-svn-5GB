@@ -73,16 +73,13 @@
 <div id="news">
   <?php
     global $news_items;
-    foreach ($news_items as $item) {
-      $dateStr = $item->dateStr();
-      ?>
-      <div class="newsitem">
-        <h3><?="$dateStr: $item->title"?></h3>
-        <?=$item->body?>
-      </div>
-      <?php
-    }
+    $item = array_shift($news_items);
+    $dateStr = $item->dateStr();
   ?>
+  <div class="newsitem">
+    <h3><?="$dateStr: $item->title"?></h3>
+    <?=$item->body?>
+  </div>
   <h4><a href="about/news"><?=_("More news items...")?></a></h4>
 </div>
 
