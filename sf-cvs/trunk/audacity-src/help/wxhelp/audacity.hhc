@@ -37,6 +37,11 @@ Contents
 			<param name="Local" value="toolbar_meter.htm">
 			</object>
 
+                <li><object type="text/sitemap">
+                        <param name="Name" value="Transcription Toolbar">
+                        <param name="Local" value="toolbar_transcr.htm">
+                        </object>
+
       </ul>
 
 	<li><object type="text/sitemap">
