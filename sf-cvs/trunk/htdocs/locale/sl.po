@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website - 1.0\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2005-11-29 22:48+0100\n"
+"PO-Revision-Date: 2005-12-12 11:17+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <info@lugos.si>\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr ""
 "<p>Programi kot je Audacity imenujemo tudi <b>programska oprema odprte kode</b>, saj je njihova izvorna koda na voljo vsem, da jo study ali uporabljajo.  Na tisoče drugih odprtokodnih in brezplačnih programov je na voljo, vključno s spletnim brskalnikom <a href=\"http://www.mozilla.org/\">Mozillo</a>, pisarniškim paketom <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> in celotnimi <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">operacijskimi sistemi na temelju Linux-a</a>.</p>"
 
 #: about/screenshots.php:9
-#: index.php:45
+#: index.php:48
 #: main.inc.php:24
 msgid "Screenshots"
 msgstr "Zaslonski zajemi"
@@ -416,8 +416,8 @@ msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper f
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> je zastonj CD ripper za okolje Microsoft Windows."
 
 #: about/links.php:25
-msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
-msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> je brezplačno orodje za zajem in čiščenje posnetkov z vinilnih plošč."
+msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
+msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> je brezplačno orodje za zajem in čiščenje posnetkov z vinilnih plošč."
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
@@ -630,7 +630,7 @@ msgstr ""
 "  <li><p>Nizi, kot so <b>\"&amp;Datoteka\"</b> in <b>\"Nova &amp;zvočna sled\"</b> so menijske izbire.  Črka po simbolu \"&amp;\" je uporabljena kot bližnjica za ta ukaz.</p>\n"
 "  <li><p><b>\"Uvozi zvoke ...\\tCtrl+i\"</b> je tudi menijska izbira.  Oznaka \\t predstavlja tabulatorsko tipko, ki loči besedilo menijske izbire od ukaza tipkovnice.</p>\n"
 "  <li><p>Našli boste veliko nizov oblike <b>\"Bilo je %%d prekoračitev medpomnilnika, zadnji skoraj %%lf sekund.\"</b>  Oznake %% označujejo mesta, kjer bodo v niz vstavljene številke ali imena.  Ta niz bo lahko videti npr. takole: \"Bilo je 4 prekoračitev medpomnilnika, zadnja skoraj 3.01 sekund.\" Če v nizu spreminjate vrstni red označb %%, dodajte \"1$\" po znaku za odstotek, ki je bil prej prvi, \"2$\" za znakom za odstotek, ki je bil prej drugi in tako naprej.  Primer:</p>\n"
-"  <blockquote><p><b>\"Prekoračitev medpomnilnik za skoraj %%2$lf sekund je bila zadnja od %%1$d-ih.\"</b></p></blockquote>\n"
+"  <blockquote><p><b>\"Prekoračitev medpomnilnika za skoraj %%2$lf sekund je bila zadnja od %%1$d-ih.\"</b></p></blockquote>\n"
 "</ul>"
 
 #: community/developers.php:17
@@ -882,7 +882,7 @@ msgid "Linux/Unix"
 msgstr "Linux/Unix"
 
 #: download/index.php:41
-#: index.php:56
+#: index.php:59
 #: main.inc.php:39
 msgid "Beta"
 msgstr "Beta"
@@ -1124,6 +1124,18 @@ msgid "MacOS X: Audacity cannot work with files or folders that are contained in
 msgstr "MacOS X: Audacity ne deluje z datotekami ali mapami, ki se nahajajo v mapah z ne-angleškimi znaki (naglasi, šumniki, simboli itn.) v imenih.  Datoteke s posebnimi znaki delujejo in tudi projekti Audacity s posebnimi znaki v imenu delujejo.  Le mape s posebnimi znaki v imenu povzročajo težave."
 
 #: download/release-notes.php:25
+msgid ""
+"<h3>Changes in Audacity 1.2.4b</h3>\n"
+"<ul>\n"
+"<li>A serious problem with the French translation was corrected.\n"
+"</ul>"
+msgstr ""
+"<h3>Spremembe v Audacity 1.2.4b</h3>\n"
+"<ul>\n"
+"<li>Odpravljena je resna težava s francoskim prevodom.\n"
+"</ul>"
+
+#: download/release-notes.php:30
 msgid ""
 "<h3>Changes in Audacity 1.2.4</h3>\n"
 "<ul>\n"
@@ -3285,11 +3297,11 @@ msgstr "Oglejte si to stran v drugem jeziku"
 msgid "%B %d, %Y"
 msgstr "%d.%m.%Y"
 
-#: include/news.inc.php:41
+#: include/news.inc.php:44
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Izšla sta Audacity 1.2.4 in 1.3.0"
 
-#: include/news.inc.php:42
+#: include/news.inc.php:45
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -3303,11 +3315,11 @@ msgstr ""
 "<a href=\"http://audacityteam.org/forum/\">forum Audacity</a>.\n"
 "</p>"
 
-#: include/news.inc.php:52
+#: include/news.inc.php:55
 msgid "Audacity 1.2.3 Released"
 msgstr "Na voljo je Audacity 1.2.3"
 
-#: include/news.inc.php:53
+#: include/news.inc.php:56
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -3323,29 +3335,29 @@ msgstr "Brezplačni urejevalnik in snemalnik zvoka"
 msgid "for Microsoft Windows"
 msgstr "za Microsoft Windows"
 
-#: index.php:26
+#: index.php:27
 msgid "for Mac OS X"
 msgstr "za Mac OS X"
 
-#: index.php:34
+#: index.php:36
 msgid "For Windows, Mac, or GNU/Linux"
 msgstr "Za okolja Windows, Mac ali GNU/Linux"
 
-#: index.php:42
+#: index.php:45
 msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Brezplačni večplatformni urejevalnik zvoka"
 
-#: index.php:47
+#: index.php:50
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
 msgstr "Audacity je brezplačna odprtokodna aplikacija za snemanje in urejanje zvoka.  Na voljo je za Mac OS X, Microsoft Windows, GNU/Linux in druge operacijske sisteme.  <a href=\"about/\">Spoznajte več o Audacity ...</a>"
 
-#: index.php:52
-#: index.php:56
+#: index.php:55
+#: index.php:59
 #, php-format
 msgid "Download Audacity %s"
 msgstr "Prenesi Audacity %s"
 
-#: index.php:63
+#: index.php:66
 msgid "Other downloads"
 msgstr "Drugi prenosi"
 
