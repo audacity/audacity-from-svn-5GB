@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simplified Chinese Translation Project for Audacity website\n"
 "Report-Msgid-Bugs-To: Audacity Translation mail-list <audacity-translation@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2005-11-29 03:16-0800\n"
-"PO-Revision-Date: 2005-12-01 23:52+0800\n"
+"POT-Creation-Date: 2005-12-03 15:34-0800\n"
+"PO-Revision-Date: 2005-12-16 15:21+0800\n"
 "Last-Translator: Liu Xiao Xi <liouxiao@hotmail.com>\n"
 "Language-Team: Simplified Chinese Translation Team. <liouxiao@hotmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgid ""
 "  <li>And more! See the complete <a href=\"features\">list of features</a>.</li>\n"
 "</ul>"
 msgstr ""
-"<p>Audacity是一款免费的、易于使用的音频编辑器和录音器，可运行在Windows、Mac OS X、GNU/Linux及其它操作系统上。您可将Audacity用于:</p>\n"
+"<p>Audacity是一款易于使用的音频编辑器和录音器，它是自由软件(开放源码)，可运行在Windows、Mac OS X、GNU/Linux及其它操作系统上。您可将Audacity用于:</p>\n"
 "\n"
 "<ul>\n"
 "  <li>现场录音。</li>\n"
@@ -58,7 +58,7 @@ msgid ""
 "\n"
 "<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
 msgstr ""
-"<h3>关于自由(Free，免费)软件</h3>\n"
+"<h3>关于自由(Free)软件</h3>\n"
 "\n"
 "<p>Audacity是自由软件，由一组志愿者开发，并在<a href=\"license\">GNU General Public License (GPL)</a>的许可下发布。</p>\n"
 "\n"
@@ -67,7 +67,7 @@ msgstr ""
 "<p>类似Audacity的软件也被称为<b>开放源码软件</b>，因为其源码可以为任何人学习和使用。目前有数千种开放源码软件，包括<a href=\"http://www.mozilla.org/\">Mozilla</a>浏览器(<a href=\"http://www.mozcn.org/\">简体中文社区</a>)、<a href=\"http://www.openoffice.org/\">OpenOffice.org</a>办公套件(<a href=\"http://zh.openoffice.org/index_gb.html\">简体中文版首页</a>)，以及<a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">基于Linux的操作系统</a>。</p>"
 
 #: about/screenshots.php:9
-#: index.php:45
+#: index.php:48
 #: main.inc.php:24
 msgid "Screenshots"
 msgstr "屏幕截图"
@@ -410,12 +410,12 @@ msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper f
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> 是一款免费的运行在Microsoft Windows系统上的CD音轨转录工具。"
 
 #: about/links.php:25
-msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
-msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a>是一个免费的用于捕获及清除唱片录音的工具。"
+msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
+msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a>是一个免费的用于捕获及清除唱片录音的工具。"
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
-msgstr "在SourceForge.net上的更多免费软件:"
+msgstr "在SourceForge.net上的更多自由软件:"
 
 #: about/links.php:28
 msgid "Audio Editors"
@@ -437,7 +437,7 @@ msgstr "参与"
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
-msgstr "Audacity是由志愿者开发的免费软件。参与Audacity项目的方式如下:"
+msgstr "Audacity是由志愿者开发的自由软件。参与Audacity项目的方式如下:"
 
 #: community/index.php:18
 #: main.inc.php:65
@@ -476,7 +476,7 @@ msgstr "用户社区"
 
 #: community/users.php:15
 msgid "Audacity was written by volunteers in their spare time.  If you appreciate Audacity and would like to help out, here are some ideas:"
-msgstr "Audacity是由志愿者在业余时间开发的免费软件。如果您欣赏它并愿意出一份力，这里有一些主意："
+msgstr "Audacity是由志愿者在业余时间开发的自由软件。如果您欣赏它并愿意出一份力，这里有一些主意："
 
 #: community/users.php:18
 msgid ""
@@ -715,13 +715,13 @@ msgstr ""
 "(这是一个公开的邮件列表。详情请见我们的<a href=\"../contact/privacy\">隐私权政策</a>。)</p>\n"
 "\n"
 "<p>如果您只是对于Audacity软件的使用不清楚，请先访问\n"
-"the <a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>。</p>\n"
+"<a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>。</p>\n"
 "\n"
 "<p><b>当您要报告错误或问题时，请：</b></p>\n"
 "<ol>\n"
-"  <li>在您联系我们之前，核查一下<a href=\"../help/faq\">常见问题解答</a>。</li>\n"
+"  <li>在您联系我们之前，先查看一下<a href=\"../help/faq\">常见问题解答</a>。</li>\n"
 "  <li>告诉我们您使用是哪个版本的Audacity以及您的操作系统。</li>\n"
-"  <li>包含您试图做什么、所有的错误信息及您遇到的其它问题等等有关的详细资料。</li>\n"
+"  <li>附上描述您试图做什么操作、所有的错误信息及您遇到的其它问题等的详细资料。</li>\n"
 "</ol>\n"
 "<p><b>注意：</b></p>\n"
 "<p>在audacity-help列表上，Audacity的开发者只能用英语回答疑问，所以请您最好用英语描述您的问题。</p>"
@@ -786,11 +786,11 @@ msgstr "和其他用户及开发者讨论Audacity。"
 
 #: contact/lists.php:33
 msgid "For translators localizing the Audacity software and web site."
-msgstr "为翻译者讨论Audacity软件和网站的本地化提供便利。"
+msgstr "翻译人员可在此讨论Audacity软件和网站的本地化。"
 
 #: contact/lists.php:39
 msgid "For developers working with the Audacity source code and documentation."
-msgstr "为开发者讨论Audacity的源码和文档提供便利。"
+msgstr "开发人员可在此讨论Audacity的源码和文档。"
 
 #: contact/lists.php:45
 msgid "Share questions and tips about programming <a href=\"../help/nyquist\">Nyquist plug-ins</a>."
@@ -881,7 +881,7 @@ msgid "Linux/Unix"
 msgstr "Linux/Unix"
 
 #: download/index.php:41
-#: index.php:56
+#: index.php:59
 #: main.inc.php:39
 msgid "Beta"
 msgstr "测试版"
@@ -946,14 +946,14 @@ msgid ""
 "  - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead."
 msgstr ""
 "<a href=\"%s\">Audacity %s zip文件</a> (%.1lf MB)\n"
-" - 如果您在计算机实验室或受限的场所而无法运行安装程序，则请下载并解压此文件。"
+" - 如果您在实验室、网吧或受限的场所而无法运行安装程序，则请下载并解压此文件。"
 
 #: download/windows.php:39
 #: download/mac.php:31
 #: download/beta_mac.php:33
 #: download/beta_windows.php:43
 msgid "System Requirements"
-msgstr "系统需求"
+msgstr "系统配置要求"
 
 #: download/windows.php:41
 #: download/beta_windows.php:45
@@ -1053,7 +1053,7 @@ msgid ""
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a>收集了许多运行在Microsoft Windows上的高品质免费软件，包括Audacity。您能从几个不同的代理商那里<a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">购买TheOpenCD的拷贝</a>。</p>"
+"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a>收集了许多运行在Microsoft Windows上的高品质自由软件，包括Audacity。您能从几个不同的代理商那里<a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">购买TheOpenCD的拷贝</a>。</p>"
 
 #: download/mac.php:10
 #: download/beta_mac.php:11
@@ -1123,6 +1123,18 @@ msgid "MacOS X: Audacity cannot work with files or folders that are contained in
 msgstr "MacOS X: Audacity不能处理被包含在名称含有非英文字母(如重音标志、符号等)的文件夹里的文件或文件夹。含有重音字符的文件及Audacity工程都可以正常工作；只有名称里含有重音字符的文件夹会引起问题。"
 
 #: download/release-notes.php:25
+msgid ""
+"<h3>Changes in Audacity 1.2.4b</h3>\n"
+"<ul>\n"
+"<li>A serious problem with the French translation was corrected.\n"
+"</ul>"
+msgstr ""
+"<h3>Audacity 1.2.4b中的改动部分</h3>\n"
+"<ul>\n"
+"<li>修正了一些与法语翻译有关的问题。\n"
+"</ul>"
+
+#: download/release-notes.php:30
 msgid ""
 "<h3>Changes in Audacity 1.2.4</h3>\n"
 "<ul>\n"
@@ -1389,7 +1401,7 @@ msgstr "在选中\"查看\"菜单的'折叠全部音轨'项之后"
 #: download/features-1.3-f.php:32
 #: download/features-1.3-g.php:57
 msgid "Back: "
-msgstr "后退: "
+msgstr "上一页: "
 
 #: download/features-1.3-b.php:55
 #: download/test/features-1.3-b.php:55
@@ -1402,16 +1414,16 @@ msgstr "后退: "
 #: download/features-1.3-e.php:73
 #: download/features-1.3-f.php:39
 msgid "Next: "
-msgstr "下一个: "
+msgstr "下一页: "
 
 #: download/test/features-1.3-a.php:16
 #: download/betawarning.inc.php:9
 msgid "Beta warning"
-msgstr "测试版警告"
+msgstr "测试版注意事项"
 
 #: download/test/features-1.3-a.php:17
 msgid "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine.  When this branch of Audacity is finished, it will be released as version 1.4, which will be stable and complete."
-msgstr "Audacity 1.3是还不稳定的测试版。如需完全稳定的版本，请使用Audacity 1.2版。Audacity 1.3有数百项新特性，但一些特性还未完成或不明确，容易导致程序崩溃，从而丢失数据。您可以在一台电脑上同时安装Audacity 1.2和1.3。当现阶段的测试版最终完成时，它会作为Audacity 1.4版正式发布，1.4版将是稳定的完整版。"
+msgstr "Audacity 1.3是还不稳定的测试版。如需完全稳定的版本，请使用Audacity 1.2版。Audacity 1.3有数百项新特性，但一些特性还未完成或不明确，容易导致程序崩溃以及数据丢失。您可以在一台电脑上同时安装Audacity 1.2和1.3。当现阶段的测试版最终完成时，它会作为Audacity 1.4版正式发布，1.4版将是稳定的完整版。"
 
 #: download/test/features-1.3-a.php:18
 msgid "Audacity 1.3.0 is currently only available in English.  Future Audacity 1.3 releases will be translated into many other languages."
@@ -1484,7 +1496,7 @@ msgstr "在音轨之间移动剪辑"
 #: download/features-1.3-c.php:116
 #: download/features-1.3-c.php:238
 msgid "Moving multiple clips at once"
-msgstr "立即移动多段剪辑"
+msgstr "单次移动多段剪辑"
 
 #: download/test/features-1.3-c.php:122
 #: download/features-1.3-c.php:122
@@ -1727,7 +1739,7 @@ msgstr "录音记录工具栏"
 
 #: download/test/features-1.3-g.php:22
 msgid "Upload (?)"
-msgstr "上载 (?)"
+msgstr "上传 (?)"
 
 #: download/test/features-1.3-g.php:24
 msgid "Batch"
@@ -1745,7 +1757,7 @@ msgstr "清晰话音"
 #: download/test/features-1.3-g.php:52
 #: download/features-1.3-g.php:66
 msgid "Top: "
-msgstr "顶部: "
+msgstr "上一层: "
 
 #: download/features-1.3-f.php:16
 msgid "On Mac OS X, Audacity can now import any audio file supported by Apple's QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  Unfortunately encrypted audio files (such as those from the iTunes Music Store) cannot be imported directly into Audacity - Apple does not allow this to be done easily because it would be too easy to circumvent the encryption this way."
@@ -1765,11 +1777,11 @@ msgstr "一个新的工具栏，用于在标签栏新建录音记录文本。它
 
 #: download/features-1.3-g.php:28
 msgid "Upload via FTP"
-msgstr "通过FTP上载"
+msgstr "通过FTP上传"
 
 #: download/features-1.3-g.php:30
 msgid "Audacity 1.3 has an experimental new dialog for uploading files to a server via FTP.  Currently it is just a simple FTP client; in the future we will integrate this feature into Audacity more so you can publish a project directly to a site as a Podcast, for example."
-msgstr "Audacity 1.3还有一个实验性的新对话框，用于向FTP服务器上载文件。目前它还只是一个简单的FTP客户端；未来我们将会使这个特性与Audacity集成得更紧密，比如，您将可以直接将一个工程文件发布到诸如Podcast这样的网站。"
+msgstr "Audacity 1.3还有一个实验性的新对话框，用于向FTP服务器上传文件。目前它还只是一个简单的FTP客户端；未来我们将会使这个特性与Audacity集成得更紧密，比如，您将可以直接将一个工程文件发布到诸如Podcast这样的网站。"
 
 #: download/features-1.3-g.php:32
 msgid "Based on wxWidgets 2.6"
@@ -1789,7 +1801,7 @@ msgstr "Audacity有一个新特性，即允许您一次性处理一批文件，�
 
 #: download/features-1.3-g.php:42
 msgid "When this feature is enabled (in the Interface tab of the Preferences), cutting audio in the middle of a clip does not remove it permanently - at any time in the future, just click on the cut line to restore it."
-msgstr "当这个特性开启时(在'参数设定'的\"界面\"栏中)，在剪辑中部剪切音频的操作将是可恢复的删除 - 将来的任何时间，只要点击剪切线就可以恢复被剪切的部分。"
+msgstr "当这个特性开启时(在'参数设定'的\"界面\"栏中)，在剪辑中剪切音频将是可恢复的操作 - 在被剪切的地方会有一根剪切线，之后用户只要点击它就可以恢复被剪切的部分。"
 
 #: download/beta_linux.php:16
 msgid "The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href=\"beta_source\">source code</a>."
@@ -1813,7 +1825,7 @@ msgstr "Audacity 1.3是还不稳定的测试版。如需完全稳定的版本，
 
 #: download/betawarning.inc.php:11
 msgid "Audacity 1.3 is available in many languages, but most translations are incomplete.  Words and phrases which have not been translated yet will appear in English."
-msgstr "Audacity 1.3支持多语言，但大多数翻译还没有完成，还未翻译的字词将显示为英文。"
+msgstr "Audacity 1.3支持多语言，但大多数翻译还没有完成，还未翻译的字句将用英文显示。"
 
 #: help/index.php:9
 msgid "Documentation and Support"
@@ -1821,11 +1833,11 @@ msgstr "文档和支持"
 
 #: help/index.php:20
 msgid "New!"
-msgstr "新！"
+msgstr "新消息！"
 
 #: help/index.php:22
 msgid "Have questions?  Post them to the <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>."
-msgstr "有疑问？请到<a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>发贴求助。"
+msgstr "有问题要问吗？请到<a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>发贴求助。"
 
 #: help/index.php:26
 msgid ""
@@ -1841,7 +1853,7 @@ msgstr ""
 "<p>关于Audacity使用方面的指南和帮助，见：</p>\n"
 "<ul>\n"
 "  <li><a href=\"documentation\">文档</a> - 阅读用户手册及快速参考。</li>\n"
-"  <li><a href=\"tutorials\">教程</a> - 进阶(step by step)文章教您如何使用Audacity。</li>\n"
+"  <li><a href=\"tutorials\">教程</a> - 入门详解(step by step)文章教您如何使用Audacity。</li>\n"
 "</ul>\n"
 "<p>如果您的疑问在此处没有解答，请到<a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>发贴求助，或者<a href=\"../contact/\">联系我们</a>。</p>"
 
@@ -2944,12 +2956,12 @@ msgstr ""
 "\n"
 "<tr>\n"
 "<td>(lp sound cutoff)</td>\n"
-"<td>低通滤波器(一阶Butterworth)。Cutoff may be a float or a signal (for time-varying filtering) and expresses hertz.</td>\n"
+"<td>低通滤波器(一阶Butterworth[巴特沃思]滤波)。cutoff表示截止频率(单位Hz)，可以为一个浮点数，也可以是一个信号(对于时变滤波而言)。</td>\n"
 "</tr>\n"
 "\n"
 "<tr>\n"
 "<td>(hp sound cutoff)</td>\n"
-"<td>High-pass filter (first-order Butterworth). cutoff表示截止频率(单位Hz)，可以为一个浮点数，也可以是一个信号(对于时变滤波而言)。</td>\n"
+"<td>高通滤波器(一阶Butterworth[巴特沃思]滤波)。cutoff表示截止频率(单位Hz)，可以为一个浮点数，也可以是一个信号(对于时变滤波而言)。</td>\n"
 "</tr>\n"
 "\n"
 "<tr>\n"
@@ -3008,7 +3020,7 @@ msgstr ""
 "\n"
 "<tr>\n"
 "<td>(sim (cue s1) (cue s2))</td>\n"
-"<td>合并两段声音，使之能同步第播放。\n"
+"<td>合并两段声音，使之能同步地播放。\n"
 "</tr>\n"
 "\n"
 "</table>\n"
@@ -3140,7 +3152,7 @@ msgstr ""
 "  ;type analyze\n"
 "</pre>\n"
 "\n"
-"<p>它们分别对应可以包含插件的3个菜单: 制作(Generate)、特效(Effect)，分析(Analyze)。 “制作(generate)”类插件用于从素材中生成新的音频，“特效(effect)”类插件(\"process\")原地修改现有的音频，“分析(analyze)”类插件处理音频但不会修改其数据(尽管它们可能会被允许增加标签)。</p>\n"
+"<p>它们分别对应可以包含插件的3个菜单: 制作(Generate)、特效(Effect)、分析(Analyze)。 “制作(generate)”类插件用于从素材中生成新的音频，“特效(effect)”类插件(\"process\")原地修改现有的音频，“分析(analyze)”类插件处理音频但不会修改其数据(尽管它们可能会被允许增加标签)。</p>\n"
 "\n"
 "<p>对于“特效”类和“分析”类插件而言，Audacity设置的Nyquist环境会将用户选择的音频默认地赋给变量<code>s</code>。  在插件文件里的表达式将按顺序执行，最后一个表达式的返回值将取代原来的选段。如果最后表达式返回的不是音频，Audacity会返回一个错误。</p>\n"
 "\n"
@@ -3284,11 +3296,11 @@ msgstr "浏览此页的其它语言版本"
 msgid "%B %d, %Y"
 msgstr "%Y年%m月%d日"
 
-#: include/news.inc.php:41
+#: include/news.inc.php:44
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.2.4 及 1.3.0 发布"
 
-#: include/news.inc.php:42
+#: include/news.inc.php:45
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
@@ -3296,17 +3308,17 @@ msgid ""
 "<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
 "</p>"
 msgstr ""
-"<p>Audacity 1.2.4是新的Audacity稳定版本。它包含一些错误修正及一些小的改进，我们推荐用户使用这个版本。 Audacity 1.3.0是测试版，包含数百个<a href=\"/download/features-1.3-a\">新特性</a>，但这个版本还没有完成，不太稳定，只推荐高级用户使用它。 您可以同时安装Audacity 1.2 和 1.3版。</p>\n"
+"<p>Audacity 1.2.4是新的稳定版本。它修正了一些错误，并有一些小的改进，我们推荐用户使用这个版本。 Audacity 1.3.0是测试版，包含数百个<a href=\"/download/features-1.3-a\">新特性</a>，不过这个版本还没有最终完成，不太稳定，只建议高级用户使用它。 您可以同时安装Audacity 1.2 和 1.3。</p>\n"
 "<p>Audacity 1.2.4版的变动及已知问题的完整列表请参见<a href=\"/download/release-notes\">1.2.4发行注记</a>，关于最新测试版的信息见<a href=\"/download/features-1.3-a\">1.3版的新特性</a>。</p>\n"
-"<p>最后要说的是，现在获得有关Audacity帮助信息的最好途径是\n"
-"新建的<a href=\"http://audacityteam.org/forum/\">Audacity论坛</a>。\n"
+"<p>最后，告诉大家一个获取Audacity帮助信息的最好途径，那就是\n"
+"新建的<a href=\"http://audacityteam.org/forum/\">Audacity论坛(英)</a>。\n"
 "</p>"
 
-#: include/news.inc.php:52
+#: include/news.inc.php:55
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 发布"
 
-#: include/news.inc.php:53
+#: include/news.inc.php:56
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -3322,29 +3334,29 @@ msgstr "自由且免费的音频编辑器和录音器"
 msgid "for Microsoft Windows"
 msgstr "Microsoft Windows 版"
 
-#: index.php:26
+#: index.php:27
 msgid "for Mac OS 9 or X"
 msgstr "Mac OS 9或X 版"
 
-#: index.php:34
+#: index.php:36
 msgid "For Windows, Mac, or GNU/Linux"
 msgstr "Windows, Mac, 或 GNU/Linux 版本"
 
-#: index.php:42
+#: index.php:45
 msgid "The Free, Cross-Platform Sound Editor"
 msgstr "跨平台的免费声音编辑器"
 
-#: index.php:47
+#: index.php:50
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
 msgstr "Audacity是一款用于录音和编辑声音的、免费的开放源码软件。它可以运行于Mac OS X、Microsoft Windows、GNU/Linux和其它操作系统。<a href=\"about/\">更多关于Audacity的信息...</a>"
 
-#: index.php:52
-#: index.php:56
+#: index.php:55
+#: index.php:59
 #, php-format
 msgid "Download Audacity %s"
 msgstr "下载Audacity %s"
 
-#: index.php:63
+#: index.php:66
 msgid "Other downloads"
 msgstr "其它下载"
 
@@ -3366,7 +3378,7 @@ msgstr "删除"
 
 #: main.inc.php:20
 msgid "Home"
-msgstr "主页"
+msgstr "首页"
 
 #: main.inc.php:21
 msgid "About"
