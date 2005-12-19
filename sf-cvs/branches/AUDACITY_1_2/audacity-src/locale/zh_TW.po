@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-TW\n"
 "POT-Creation-Date: 2004-08-10 20:54-0700\n"
-"PO-Revision-Date: 2005-10-22 23:29+0800\n"
+"PO-Revision-Date: 2005-12-11 00:47+0800\n"
 "Last-Translator: \n"
 "Language-Team: Taiwan <milo@ms52.url.com.tw>\n"
 "MIME-Version: 1.0\n"
@@ -214,7 +214,7 @@ msgstr "靜音(&S)\tCtrl+L"
 
 #: ../src/Menus.cpp:258
 msgid "&Trim\tCtrl+T"
-msgstr "剪輯&[Trim(留下所選區域)]\tCtrl+T"
+msgstr "修剪&[Trim(留下所選區域)]\tCtrl+T"
 
 #: ../src/Menus.cpp:231
 msgid "&Undo\tCtrl+Z"
@@ -303,7 +303,7 @@ msgstr "64 - 最寬帶"
 
 #: ../src/AboutDialog.cpp:141
 msgid "A Free Digital Audio Editor"
-msgstr "一個自由的數位聲音檔案編輯軟體"
+msgstr "一個自由的數位成音工程軟體"
 
 #: ../src/AboutDialog.cpp:46
 msgid "About Audacity..."
@@ -2002,7 +2002,7 @@ msgstr "產生基音"
 
 #: ../src/effects/Silence.cpp:31
 msgid "Generate Silence"
-msgstr "產生靜音中"
+msgstr "產生靜音"
 
 #: ../src/effects/ToneGen.cpp:325
 msgid "Generate Tone"
@@ -3143,7 +3143,7 @@ msgstr "即時取樣頻率轉換器："
 
 #: ../src/Menus.cpp:154
 msgid "Recent &Files..."
-msgstr "最近使用的檔案&Files..."
+msgstr "最近使用的檔案(&F)..."
 
 #: ../src/ControlToolBar.cpp:469
 #: ../src/Project.cpp:1707
@@ -3847,7 +3847,7 @@ msgid ""
 "process to open multiple projects simultaneously.\n"
 msgstr ""
 "另一個Audacity正在執行。\n"
-"同時運行兩個Audacity可能會導致\n"
+"同時執行兩個Audacity可能會導致\n"
 "資料遺失或系統當機。請不要做這種嘗試。\n"
 "\n"
 "在目前執行的Audacity裡用\"開啟新檔\"或\"開啟\"命令\n"
@@ -4447,3 +4447,4 @@ msgstr "使用SampleRate(Erik de Castro Lopo提供)"
 #: ../src/effects/ChangeTempo.cpp:169
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "使用SoundTouch(Olli Parviainen提供)"
+
