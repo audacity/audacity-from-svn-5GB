@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Audacity website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-01 19:18-0700\n"
-"PO-Revision-Date: 2005-09-08 08:16+0100\n"
+"PO-Revision-Date: 2005-12-08 12:59+0100\n"
 "Last-Translator: Ales Tosovsky <tosovsky@wo.cz>\n"
 "Language-Team: Czech <tosovsky@wo.cz>\n"
 "MIME-Version: 1.0\n"
@@ -70,8 +70,8 @@ msgstr ""
 "<p>Programy podobné Audacity jsou často nazývány <b>open source software</b> (programy s otevřeným kódem), protože jejich zdrojové kódy jsou komukoliv k dispozici ke studiu i používání. Existují tisíce dalších open-source programů, včetně např. internetového prohlížeče <a href=\"http://www.mozilla.org/\">Mozilla</a>, kancelářského balíku <a href=\"http://www.openoffice.org/\">OpenOffice.org</a>, nebo celých <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">linuxových operačních systémů</a>.</p>"
 
 #: about/screenshots.php:9
-#: index.php:36
-#: main.inc.php:21
+#: index.php:48
+#: main.inc.php:24
 msgid "Screenshots"
 msgstr "Obrázky"
 
@@ -108,7 +108,7 @@ msgid "Recording with Audacity"
 msgstr "Nahrávání s Audacity"
 
 #: about/features.php:9
-#: main.inc.php:20
+#: main.inc.php:23
 msgid "Features"
 msgstr "Vlastnosti"
 
@@ -283,7 +283,7 @@ msgstr ""
 "</ul>"
 
 #: about/credits.php:10
-#: main.inc.php:24
+#: main.inc.php:27
 msgid "Credits"
 msgstr "Lidé, technologie, poděkování"
 
@@ -314,7 +314,7 @@ msgstr "Přispěvatelé"
 #: about/credits.php:49
 #: community/index.php:21
 #: community/translation.php:10
-#: main.inc.php:56
+#: main.inc.php:66
 msgid "Translators"
 msgstr "Překladatelé"
 
@@ -339,7 +339,7 @@ msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Dejte nám vědět, jestli jsme na někoho zapomněli!)"
 
 #: about/license.php:9
-#: main.inc.php:23
+#: main.inc.php:26
 msgid "License"
 msgstr "Licence"
 
@@ -366,17 +366,17 @@ msgstr ""
 "<p>Podívejte se také na: <a href=\"http://www.gnu.org/licenses/gpl-faq.cs.html\">Často kladené otázky o GNU GPL</a>.</p>"
 
 #: about/news.php:21
-#: index.php:64
+#: index.php:83
 msgid "More news items..."
 msgstr "Další novinky..."
 
 #: about/news.php:25
-#: main.inc.php:22
+#: main.inc.php:25
 msgid "News"
 msgstr "Novinky"
 
 #: about/links.php:9
-#: main.inc.php:25
+#: main.inc.php:28
 msgid "Links"
 msgstr "Odkazy"
 
@@ -413,8 +413,8 @@ msgid "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper f
 msgstr "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> je volně dostupný CD ripper pro Microsoft Windows."
 
 #: about/links.php:25
-msgid "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
-msgstr "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> je volně dostupný nástroj pro nahrávání a čištění nahrávek z vinylových desek."
+msgid "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a> is a free tool for capturing and cleaning recordings from vinyl records."
+msgstr "<a href=\"http://www.opensourcepartners.nl/~costar/gramofile/\">GramoFile</a>je volně dostupný nástroj pro nahrávání a čištění nahrávek z vinylových desek."
 
 #: about/links.php:26
 msgid "More free software at SourceForge.net:"
@@ -434,7 +434,7 @@ msgstr "Zvuková analýza"
 
 #: community/main.inc.php:11
 #: community/index.php:9
-#: main.inc.php:53
+#: main.inc.php:63
 msgid "Get Involved"
 msgstr "Zapojte se"
 
@@ -443,7 +443,7 @@ msgid "Audacity is free software, developed by volunteers.  Here's how you can c
 msgstr "Audacity je volně dostupný software vyvíjený dobrovolníky. Zde je popsáno, jak můžete projektu přispět:"
 
 #: community/index.php:18
-#: main.inc.php:55
+#: main.inc.php:65
 msgid "Users"
 msgstr "Uživatelé"
 
@@ -457,7 +457,7 @@ msgstr "Jestliže máte dobré znalosti angličtiny, můžete pomoci s překlade
 
 #: community/index.php:24
 #: community/developers.php:9
-#: main.inc.php:57
+#: main.inc.php:67
 msgid "Developers"
 msgstr "Vývojáři"
 
@@ -630,18 +630,18 @@ msgstr ""
 "  <blockquote><p><b>\"The buffer underrun near %%2$lf seconds was the last of %%1$d.\"</b></p></blockquote>\n"
 "</ul>"
 
-#: community/developers.php:15
+#: community/developers.php:17
 #: contact/main.inc.php:13
 #: contact/lists.php:9
-#: main.inc.php:49
+#: main.inc.php:59
 msgid "Mailing Lists"
 msgstr "E-mailové konference"
 
-#: community/developers.php:16
+#: community/developers.php:18
 msgid "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list to discuss current and future development, or to get help building and modifying the Audacity source code."
 msgstr "Přihlaste se do e-mailové konference <a href=\"../contact/lists#devel\">audacity-devel</a>, kde můžete diskutovat o současném a budoucím vývoji, nebo získat pomoc s tvorbou a změnami ve zdrojovém kódu Audacity."
 
-#: community/developers.php:18
+#: community/developers.php:20
 msgid ""
 "<h3 id=\"cvs\">CVS</h3>\n"
 "<p>You can get the latest development code from our CVS repository.</p>\n"
@@ -671,35 +671,41 @@ msgstr ""
 "<p>Další informace získáte na stránce <a href=\"http://sourceforge.net/cvs/?group_id=6235\">SourceForge CVS instructions</a>.</p>\n"
 "<p>Podívejte se také na <a href=\"../download/source#instructions\">pokyny pro kompilaci</a> na stránce o zdrojovém kódu.</p>"
 
-#: community/developers.php:32
+#: community/developers.php:34
+#, php-format
 msgid ""
 "<h3 id=\"bugzilla\">Bugzilla</h3>\n"
-"<p>The Audacity developers use <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open bugs</a> if you are looking for something to work on.</p>\n"
+"<p>The Audacity developers use <a href=\"%s/\">Bugzilla</a> to keep track of confirmed bugs.  Check the list of <a href=\"%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open bugs</a> if you are looking for something to work on.</p>\n"
 "<p><strong>Note:</strong> This Bugzilla is for development use only.  If you are a user reporting new bugs, please <a href=\"../contact/\">send us e-mail</a> instead.  Thank you!</p>"
 msgstr ""
 "<h3 id=\"bugzilla\">Bugzilla</h3>\n"
-"<p>Vývojáři Audacity používají k udržování přehledu o nahlášených chybách <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/index.cgi\">Bugzillu</a>. Jestliže vám něco nefunguje, podívejte se na <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">přehled chyb, na kterých se pracuje</a>.</p>\n"
+"<p>Vývojáři Audacity používají k udržování přehledu o nahlášených chybách <a href=\"%s/\">Bugzillu</a>. Jestliže vám něco nefunguje, podívejte se na  <a href=\"%s/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">přehled chyb, na kterých se pracuje</a>.</p>\n"
 "<p><strong>Poznámka:</strong> Vkládání do Bugzilly je přístupné jen vývojářům. Jestliže jste uživatel a chcete nahlásit chybu, prosíme <a href=\"../contact/\">pošlete nám e-mail</a>.  Děkujeme!</p>"
 
 #: contact/main.inc.php:11
 #: contact/index.php:9
-#: main.inc.php:47
+#: main.inc.php:57
 msgid "Contact Us"
 msgstr "Kontaktujte nás"
 
 #: contact/main.inc.php:14
 #: contact/privacy.php:10
-#: main.inc.php:50
+#: main.inc.php:60
 msgid "Privacy Policy"
 msgstr "Ochrana soukromí"
 
 #. i18n-hint:  Please add a note that we can answer questions to
 #. audacity-help in English only.  If there is an Audacity forum or mailing
 #. list in your language, you may add a link to it below.
-#: contact/index.php:19
+#. Note that the Audacity Forum has sections specially for Spanish,
+#. French, German, and Russian!
+#: contact/index.php:21
 msgid ""
 "<p>If you have questions or comments for the Audacity developers, e-mail us at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a>.\n"
 "(This is a public mailing list.  For details, see our <a href=\"../contact/privacy\">privacy policy</a>.)</p>\n"
+"\n"
+"<p>If you just have a general question about how to use Audacity, please use\n"
+"the <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a> instead.</p>\n"
 "\n"
 "<p><b>When you report a bug or problem, please:</b></p>\n"
 "<ol>\n"
@@ -711,6 +717,9 @@ msgstr ""
 "<p>Pokud máte dotazy nebo připomínky pro vývojáře Audacity, pošlete nám e-mail na adresu: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-help@lists.sourceforge.net</a> (anglicky).\n"
 "(Jedná se o veřejnou e-mailovou konferenci. Podrobnosti najdete v informacích o <a href=\"../contact/privacy\">ochraně soukromí</a>.)</p>\n"
 "\n"
+"<p>Jestliže máte nějakou všeobecnou otázku týkající se použití Audacity, použijte prosím\n"
+" raději <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.</p>\n"
+"\n"
 "<p><b>Jestliže chcete nahlásit chybu nebo potíže s programem, udělejte prosím následující:</b></p>\n"
 "<ol>\n"
 "  <li>Než se na nás obrátíte, podívejte se na <a href=\"../help/faq\">často kladené otázky</a>.</li>\n"
@@ -718,7 +727,7 @@ msgstr ""
 "  <li>Nezapomeňte připsat, co jste chtěli udělat, chybová hlášení, která jste obdrželi a jakékoliv další související problémy, které jste zaznamenali.</li>\n"
 "</ol>"
 
-#: contact/index.php:29
+#: contact/index.php:34
 msgid ""
 "<h3>Discussion Lists</h3>\n"
 "<p>To discuss Audacity with other users and developers, join our <a href=\"../contact/lists\">mailing lists</a>.</p>"
@@ -760,7 +769,7 @@ msgstr "Abyste mohli posílat zprávy do konference, musíte se přihlásit k je
 #: contact/lists.php:14
 #, php-format
 msgid "%s archives and subscription information"
-msgstr "%s archivů a přihlašovacích informací"
+msgstr "%s archivy a přihlašovací informace"
 
 #. i18n-hint: Please add a note that these lists are in English.  If there are
 #. Audacity mailing lists or forums in your language, please link to them here.
@@ -814,51 +823,94 @@ msgstr "&copy; %s práva k těmto stránkám jsou ve vlastnictví členů vývoj
 msgid "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a trademark of Google, Inc."
 msgstr "\"Audacity\" je obchodní známka Dominica Mazzoniho. Logo Google je obchodní známka Google, Inc."
 
+#: xml/index.php:9
+#: xml/main.inc.php:11
+msgid "File Formats"
+msgstr "Souborové formáty"
+
+#: xml/index.php:15
+msgid "Audacity uses an open XML file format to encourage interoperability.  Beginning with version 1.3.0, we are publishing the following DTD to aid those who want to develop software that reads and writes Audacity project files:"
+msgstr "K dosažení interoperability Audacity používá otevřený souborový formát XML. Počínaje verzí 1.3.0 zveřejňujeme následující DTD, abychom umožnili vývoj softwaru, který dokáže číst a zapisovat projektové soubory Audacity:"
+
+#: xml/index.php:22
+msgid "More documentation on the Audacity project file format is forthcoming."
+msgstr "Další dokumentace k souborovému formátu Audacity se připravuje."
+
 #: download/index.php:9
 #: download/main.inc.php:11
-#: main.inc.php:28
+#: main.inc.php:31
 msgid "Download"
 msgstr "Stáhnout"
 
-#: download/index.php:15
+#: download/index.php:20
 msgid "Select your operating system to download the latest version of the free Audacity sound editor."
 msgstr "Zvolte si poslední verzi volně dostupného zvukového editoru Audacity podle svého operačního systému."
 
-#: download/index.php:19
+#: download/index.php:25
+#: main.inc.php:33
+msgid "Stable"
+msgstr "Stabilní"
+
+#: download/index.php:26
+msgid "For all users"
+msgstr "Pro všechny uživatele"
+
+#: download/index.php:30
+#: download/index.php:46
 #: download/windows.php:10
-#: main.inc.php:30
+#: download/beta_windows.php:11
+#: main.inc.php:34
+#: main.inc.php:41
 msgid "Windows"
 msgstr "Windows"
 
-#: download/index.php:22
-msgid "Mac OS 9 or X"
-msgstr "Mac OS 9 nebo X"
+#: download/index.php:33
+#: download/index.php:49
+msgid "Mac OS X"
+msgstr "Mac OS X"
 
-#: download/index.php:25
+#: download/index.php:36
+#: download/index.php:52
 #: download/linux.php:9
-#: main.inc.php:32
+#: download/beta_linux.php:10
+#: main.inc.php:36
+#: main.inc.php:43
 msgid "Linux/Unix"
 msgstr "Linux/Unix"
 
-#: download/index.php:28
+#: download/index.php:41
+#: index.php:59
+#: main.inc.php:39
+msgid "Beta"
+msgstr "Beta (zkušební)"
+
+#: download/index.php:42
+msgid "For advanced users"
+msgstr "Pro zkušené uživatele"
+
+#: download/index.php:57
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
 msgstr "Můžete si také <a href=\"buy\">zakoupit</a> kopii Audacity na CD."
 
-#: download/index.php:30
+#: download/index.php:59
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
 msgstr "Pokud si chcete Audacity zkompilovat sami, stáhněte si <a href=\"source\">zdrojové kódy</a>."
 
-#: download/index.php:32
+#: download/index.php:61
 msgid "You may modify, distribute, and sell Audacity under the <a href=\"../about/license\">GNU GPL</a>."
 msgstr "Audacity můžete měnit, rozšiřovat a prodávat v souladu s <a href=\"../about/license\">licencí GNU GPL</a>."
 
 #: download/windows.php:16
 #: download/source.php:16
 #: download/mac.php:17
+#: download/beta_mac.php:22
+#: download/beta_source.php:20
+#: download/beta_windows.php:20
 msgid "Recommended Download"
 msgstr "Doporučeno ke stažení"
 
 #: download/windows.php:18
+#: download/beta_windows.php:22
 #, php-format
 msgid "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor."
 msgstr "<a href=\"%s\">Instalátor Audacity %s</a> (.exe soubor, %.1lf MB) - Poslední verze volně dostupného zvukového editoru Audacity."
@@ -866,6 +918,9 @@ msgstr "<a href=\"%s\">Instalátor Audacity %s</a> (.exe soubor, %.1lf MB) - Pos
 #: download/windows.php:21
 #: download/source.php:22
 #: download/mac.php:26
+#: download/beta_mac.php:28
+#: download/beta_source.php:26
+#: download/beta_windows.php:25
 msgid "Optional Downloads"
 msgstr "Volitelně ke stažení"
 
@@ -876,10 +931,13 @@ msgstr "Volitelně ke stažení"
 #. original string.)
 #: download/windows.php:28
 #: download/windows.php:29
+#: download/beta_windows.php:32
+#: download/beta_windows.php:33
 msgid "localized_downloads_windows"
 msgstr "localized_downloads_windows"
 
 #: download/windows.php:34
+#: download/beta_windows.php:38
 #, php-format
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
@@ -890,43 +948,53 @@ msgstr ""
 
 #: download/windows.php:39
 #: download/mac.php:31
+#: download/beta_mac.php:33
+#: download/beta_windows.php:43
 msgid "System Requirements"
 msgstr "Systémové požadavky"
 
 #: download/windows.php:41
+#: download/beta_windows.php:45
 msgid "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on Windows 95 or NT 4.0.)"
 msgstr "Windows 98, ME, 2000, XP, nebo novější.  (Omlouváme se, ale Audacity nepodporuje Windows 95 nebo NT 4.0.)"
 
 #: download/windows.php:42
-#: download/mac.php:35
+#: download/beta_windows.php:46
 msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
 msgstr "K bezproblémovému provozu Audacity potřebujete alespoň 64 MB RAM a procesor 300 MHz."
 
 #: download/source.php:10
-#: main.inc.php:33
+#: download/beta_source.php:11
+#: main.inc.php:37
+#: main.inc.php:44
 msgid "Source Code"
 msgstr "Zdrojový kód"
 
 #: download/source.php:19
+#: download/beta_source.php:23
 #, php-format
 msgid "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
 msgstr "<a href=\"%s\">Tarball se zdrojovým kódem Audacity %s</a> (%.1lf MB)"
 
 #: download/source.php:24
+#: download/beta_source.php:28
 msgid "You can also get the latest development code from <a href=\"../community/developers#cvs\">CVS</a>."
 msgstr "Nejnovější vývojový kód můžete stáhnout také z <a href=\"../community/developers#cvs\">CVS</a>."
 
 #: download/source.php:25
 #: download/common.inc.php:13
+#: download/beta_source.php:29
 #, php-format
 msgid "If you have trouble with your download, or need an older version of Audacity, try our <a href=\"%s\">alternate download links</a>."
 msgstr "Jestliže máte potíže se stahováním nebo potřebujete starší verzi Audacity, zkuste <a href=\"%s\">alternativní odkazy</a>."
 
 #: download/source.php:28
+#: download/beta_source.php:32
 msgid "How to Build Audacity"
 msgstr "Jak přeložit Audacity"
 
 #: download/source.php:30
+#: download/beta_source.php:34
 msgid "Dependencies"
 msgstr "Závislosti"
 
@@ -935,30 +1003,37 @@ msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required
 msgstr "Knihovna <a href=\"http://wxwidgets.org\">wxWidgets</a> je <b>nezbytná</b>.  Audacity 1.2 vyžaduje wxGTK 2.4, kompilovanou <em>bez</em> volby gtk2 nebo unicode.  (Budoucí verze Audacity budou podporovat novější knihovny wxWidgets a GTK.)"
 
 #: download/source.php:32
+#: download/beta_source.php:36
 msgid "You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS."
 msgstr "Můžete také zvolit instalaci následujících <b>volitelných knihoven</b>, nebo si je opatřit z CVS."
 
 #: download/source.php:38
+#: download/beta_source.php:42
 msgid "If you install libraries using a package management system like Apt or RPM, make sure to install the \"dev\" (development) packages for each library."
 msgstr "Jestliže instalujete knihovny prostřednictvím balíčkovacích systémů, jako jsou Apt, nebo RPM, ujistěte se, že máte i \"dev\" (development) balíčky ke každé instalované knihovně."
 
 #: download/source.php:40
+#: download/beta_source.php:44
 msgid "Compilation"
 msgstr "Kompilace"
 
 #: download/source.php:41
+#: download/beta_source.php:45
 msgid "To build Audacity, run the following command in the Audacity source directory:"
 msgstr "Překlad Audacity provedete spuštěním následujících příkazů v adresáři se zdrojovým kódem:"
 
 #: download/source.php:47
+#: download/beta_source.php:51
 msgid "You can type <kbd>./configure --help</kbd> to see a list of compilation options.  After Audacity is compiled, run <kbd>make install</kbd> as root to install it."
 msgstr "Když zadáte <kbd>./configure --help</kbd>, uvidíte seznam kompilačních voleb. Po skončení kompilace nainstalujte jako root příkazem <kbd>make install</kbd>."
 
 #: download/source.php:49
+#: download/beta_source.php:53
 msgid "Notes"
 msgstr "Poznámky"
 
 #: download/source.php:50
+#: download/beta_source.php:54
 msgid "For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory."
 msgstr "Další informace o překladu Audacity na Windows nebo Mac OS X se podívejte do souborů <b>win/compile.txt</b> a <b>mac/compile.txt</b> v adresáři se zdrojovým kódem."
 
@@ -979,10 +1054,12 @@ msgstr ""
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> je sbírka kvalitního volně dostupného software pro Microsoft Windows, včetně Audacity.  Kopii TheOpenCD <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">můžete objednat</a> od různých distributorů.</p>"
 
 #: download/mac.php:10
+#: download/beta_mac.php:11
 msgid "Mac OS 9 / X"
 msgstr "Mac OS 9 / X"
 
 #: download/mac.php:19
+#: download/beta_mac.php:24
 #, php-format
 msgid "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor."
 msgstr "Pro Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg soubor, %.1lf MB) - Nejnovější verze volně dostupného zvukového editoru Audacity."
@@ -1004,6 +1081,11 @@ msgstr "Audacity 1.2 vyžaduje Mac OS X 10.1 nebo novější."
 msgid "Audacity 1.0 requires Mac OS 9.0 or later."
 msgstr "Audacity 1.0 vyžaduje Mac OS 9.0 nebo novější."
 
+#: download/mac.php:35
+#: download/beta_mac.php:36
+msgid "Audacity runs best with at least 64 MB RAM and a 300 MHz processor."
+msgstr "K bezproblémovému provozu Audacity potřebujete alespoň 64 MB RAM a procesor 300 MHz."
+
 #: download/linux.php:15
 msgid "The easiest way to install the free Audacity audio editor on GNU/Linux (and other Unix-like systems) is to download a package built for your operating system:"
 msgstr "Nejjednodušší cesta k instalaci volně dostupného zvukového editoru Audacity na Linuxu (a dalších Unix-like systémech) je stáhnout balíček sestavený na systému, který používáte:"
@@ -1012,60 +1094,136 @@ msgstr "Nejjednodušší cesta k instalaci volně dostupného zvukového editoru
 msgid "Linux and Unix users may also compile Audacity from <a href=\"source\">source code</a>."
 msgstr "Uživatelé Linuxu a Unixu mohou také kompilovat přímo ze <a href=\"source\">zdrojového kódu</a>."
 
-#: download/release-notes.php:9
-#: main.inc.php:34
+#: download/release-notes.php:10
+#: main.inc.php:38
 msgid "Release Notes"
 msgstr "Poznámky k vydání"
 
-#: download/release-notes.php:16
+#: download/release-notes.php:17
 msgid "Known Problems"
 msgstr "Známé problémy"
 
-#: download/release-notes.php:17
+#: download/release-notes.php:18
 #, php-format
 msgid "The following are known bugs or problems in Audacity %s:"
 msgstr "Seznam známých chyb a problémů v Audacity %s:"
 
-#: download/release-notes.php:19
+#: download/release-notes.php:20
 msgid "Audacity can import and display MIDI files, but cannot play or edit them."
 msgstr "Audacity dokáže importovat a zobrazit MIDI soubory, ale nelze je přehrávat nebo měnit."
 
-#: download/release-notes.php:20
+#: download/release-notes.php:21
 msgid "Linux:  Recording in full duplex (playing existing tracks while recording) on some systems causes mono recordings to sound distorted or low-pitched.  To work around this problem, set Audacity to record in stereo."
 msgstr "Linux: Nahrávání v režimu full duplex (přehrávání existující stopy, zatímco se jiná nahrává) může na některých systémech zapříčinit zkreslení nebo zpomalení zvuku mono nahrávek. Problém se dá obejít nastavením nahrávání ve stereu."
 
-#: download/release-notes.php:21
+#: download/release-notes.php:22
 msgid "MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems."
 msgstr "MacOS X: Audacity nemůže pracovat se soubory nebo podadresáři, které jsou v adresářích obsahujících v názvu neanglické znaky (čárky, háčky, symboly, atd.). Soubory ani projekty s těmito znaky nevadí. Problém je pouze v názvech adresářů."
 
-#: download/release-notes.php:24
+#: download/release-notes.php:25
 msgid ""
-"<h3>Changes in Audacity 1.2.3</h3>\n"
+"<h3>Changes in Audacity 1.2.4b</h3>\n"
 "<ul>\n"
-"  <li><p>Windows: Fixed a bug that caused recording to stop or display incorrectly after about 50 minutes, on some Windows systems.  (This was partly fixed in Audacity 1.2.2, but still didn't work on some systems.)</p></li>\n"
-"  <li><p>Mac OS X: Fixed a major bug that caused Audacity to crash at seemingly-random times on Mac systems, especially during playback or recording.</p></li>\n"
-"  <li><p>The Change Pitch and Change Tempo effects have been upgraded to use a new version of the SoundTouch library by Olli Parviainen, with better speed and higher quality.</p></li>\n"
-"  <li><p>libsndfile has been upgraded to version 1.0.11.  Audacity can now import Sound Designer II (SDII) files.</p></li>\n"
-"  <li><p>Fixed a bug that caused the program to run slowly when using the Envelope tool.</p></li>\n"
-"<li><p>Shift-clicking on a mute or solo button now un-mutes (or un-solos) all other tracks.</p></li>\n"
-"  <li><p>Nyquist plug-ins can now accept strings as input.  Also, a \"Debug\" button has been added to Nyquist effect dialogs, which allows you to see all of the output produced by Nyquist, for aid in debugging.</p></li>\n"
-"  <li><p>When the audio file referenced (\"aliased\") by an Audacity project is missing, Audacity will now always play silence.  Before, Audacity would sometimes repeat the most recent audio that was played previously.</p></li>\n"
-"  <li><p>VU Meters will now always reset when audio I/O has stopped.</p></li>\n"
-"  <li><p>New or updated translations: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
+"<li>A serious problem with the French translation was corrected.\n"
 "</ul>"
 msgstr ""
-"<h3>Změny v Audacity 1.2.3</h3>\n"
+"<h3>Změny v Audacity 1.2.4b</h3>\n"
 "<ul>\n"
-"  <li><p>Windows: Opravena chyba, která se na některých windowsových systémech projevovala samovolným zastavením nahrávání pro 50 minutách. (Částečně bylo opraveno už v Audacity 1.2.2, ale na některých systémech to stejně nefungovalo.)</p></li>\n"
-"  <li><p>Mac OS X: Opravena závažná chyba, v důsledku které Audacity na Macu zdánlivě náhodně padala během nahrávání i přehrávání.</p></li>\n"
-"  <li><p>Efekty Změna ladění a Změna rychlosti byly aktualizovány a nyní používají novou verzi knihovny SoundTouch od Olliho Parviainena, která je rychlejší a kvalitnější.</p></li>\n"
-"  <li><p>libsndfile byla aktualizována na verzi 1.0.11.  Audacity nyní může importovat soubory Sound Designer II (SDII).</p></li>\n"
-"  <li><p>Opravena chyba zpomalení celého programu při použití nástroje Obálka.</p></li>\n"
-"<li><p>Kliknutí myši za současného stisku klávesy Shift na tlačítku Umlčet (mute) nebo Solo nyní znovu zapne zvuk, nebo odstraní solo na všech ostatních stopách.</p></li>\n"
-"  <li><p>Pluginy Nyquist nyní na vstupu přijímají řetězce. Do dialogů Nyquistových efektů bylo také přidáno tlačítko \"Debug\", které umožňuje zobrazit veškeré výstupy Nyquistu, což pomůže při ladění.</p></li>\n"
-"  <li><p>Pokud je v projektu odkaz na zvukový soubor, který neexistuje, Audacity přehrává ticho. Předtím někdy docházelo k přehrání poslední použité stopy.</p></li>\n"
-"  <li><p>Při přerušení vstupu nebo výstupu se VU ukazatele vždy vynulují.</p></li>\n"
-"  <li><p>Nové a aktualizované překlady: Italian (it), Hungarian (hu), Ukrainian (uk), Spanish (es). Polish (pl), Simplified Chinese (zh), Norsk-Bokmal (nb), French (fr), Russian (ru).</p></li>\n"
+"<li>Závažný problém s francouzským překladem byl odstraněn.\n"
+"</ul>"
+
+#: download/release-notes.php:30
+msgid ""
+"<h3>Changes in Audacity 1.2.4</h3>\n"
+"<ul>\n"
+"<li>The File menu now includes a list of recent files.\n"
+"\n"
+"</li>\n"
+"<li>The \"Generate Silence\" effect now prompts for a length.\n"
+"\n"
+"</li>\n"
+"<li>Audacity is now built with Vorbis 1.1, which features better encoding\n"
+"    quality and file compression.\n"
+"\n"
+"</li>\n"
+"<li>Dragging sound files into the Audacity window now works on Mac OS X\n"
+"    and Linux, as well as Windows.  (Before, it worked only on Windows.)\n"
+"\n"
+"</li>\n"
+"<li>Better support for certain audio devices on Mac OS X 10.4 \"Tiger\"\n"
+"\n"
+"</li>\n"
+"<li>The \"View History\" window can now discard old undo levels to save disk\n"
+"    space on Windows.  (This previously worked only on Linux and Mac.)\n"
+"\n"
+"</li>\n"
+"<li>\"Preferences\" command is now in Edit menu.\n"
+"\n"
+"</li>\n"
+"<li>\"Plot Spectrum\" command is now in Analyze menu.\n"
+"\n"
+"</li>\n"
+"<li>Opening a project file saved by a later version of Audacity displays\n"
+"    an intelligent error message.  Also, trying to import a project file\n"
+"    (instead of open it) displays an intelligent error message.\n"
+"\n"
+"</li>\n"
+"<li>Audacity now compiles in Visual C++ .NET 2003.\n"
+"\n"
+"</li>\n"
+"<li>Other minor bug fixes.\n"
+"\n"
+"</li>\n"
+"<li>New or updated translations: Arabic (ar), Czech (cs), Finnish (fi),\n"
+"    Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl),\n"
+"    Simplified Chinese (zh_CN), Traditional Chinese (zh_TW).\n"
+"</li>\n"
+"</ul>"
+msgstr ""
+"<h3>Změny v Audacity 1.2.4</h3>\n"
+"<ul>\n"
+"<li>Menou Soubor nyní obsahuje seznam posledně otevřených.\n"
+"\n"
+"</li>\n"
+"<li>Efekt \"Generovat ticho\" (Generate Silence) se nově ptá na délku.\n"
+"\n"
+"</li>\n"
+"<li>Audacity je nyní sestavována s Vorbis 1.1, což přináší lepší kvalitu enkódování\n"
+" a kompresi souboru.\n"
+"\n"
+"</li>\n"
+"<li>V Mac OS X a Linuxu funguje přetahování souborů na okno Audacity\n"
+"    stejně jako ve Windows. (Předtím to šlo jen ve Windows.)\n"
+"\n"
+"</li>\n"
+"<li>Vylepšená podpora pro určitá zvuková zařízení v Mac OS X 10.4 \"Tiger\"\n"
+"\n"
+"</li>\n"
+"<li>V okně \"Zobrazit historii\" (View History) lze smazat staré úrovně pro vrácení, aby se ušetřilo místo\n"
+"    na disku i ve Windows. (To předtím šlo jen v Linuxu a Mac.)\n"
+"\n"
+"</li>\n"
+"<li>Příkaz \"Nastavení\" (Preferences) je nyní v menu Úpravy (Edit).\n"
+"\n"
+"</li>\n"
+"<li>Příkaz \"Vykreslit spektrum\" (Plot Spectrum) je nyní v menu Analyzovat.\n"
+"\n"
+"</li>\n"
+"<li>Při pokusu o otevření souboru uloženého pozdější verzí Audacity\n"
+"    je zobrazena inteligentní chybová zpráva. Totéž se stane při pokusu\n"
+"    o import.\n"
+"\n"
+"</li>\n"
+"<li>Audacity lze nyní zkompilovat ve Visual C++ .NET 2003.\n"
+"\n"
+"</li>\n"
+"<li>Další malé opravy.\n"
+"\n"
+"</li>\n"
+"<li>Nové, nebo upravené překlady: Arabic (ar), Czech (cs), Finnish (fi),\n"
+"    Hungarian (hu), Japanese (ja), Norwegian (nb), Slovenian (sl),\n"
+"    Simplified Chinese (zh_CN), Traditional Chinese (zh_TW).\n"
+"</li>\n"
 "</ul>"
 
 #: download/common.inc.php:10
@@ -1085,7 +1243,7 @@ msgid "Allows Audacity to load VST plug-ins."
 msgstr "Umožňuje Audacity používat VST pluginy."
 
 #: download/common.inc.php:12
-#: main.inc.php:35
+#: main.inc.php:45
 msgid "Plug-Ins"
 msgstr "Pluginy (zásuvné moduly)"
 
@@ -1134,14 +1292,552 @@ msgstr "Stáhnout Nyquist pluginy"
 msgid "<p>These are optional plug-in effects for the Audacity sound editor.  They are written in the <a href=\"../help/nyquist\">Nyquist programming language</a>.  For installation instructions, see the main <a href=\"plugins\">plug-ins page</a>.</p>"
 msgstr "<p>Toto jsou doplňkové efektové pluginy pro zvukový editor Audacity. Jsou napsány v <a href=\"../help/nyquist\">programovacím jazyku Nyquist</a>. Návod k instalaci je na <a href=\"plugins\">stránce o pluginech</a>.</p>"
 
+#: download/features-1.3-a.php:9
+#: download/features-1.3-b.php:49
+#: download/test/features-1.3-a.php:9
+#: download/test/features-1.3-b.php:49
+#: download/test/features-1.3-g.php:53
+#: download/features-1.3-g.php:67
+msgid "New features in Audacity 1.3"
+msgstr "Nové vlastnosti  Audacity 1.3"
+
+#: download/features-1.3-a.php:17
+#: download/test/features-1.3-a.php:19
+msgid "New features"
+msgstr "Nové vlastnosti"
+
+#: download/features-1.3-a.php:18
+#: download/test/features-1.3-a.php:20
+msgid "The new features in Audacity 1.3 have been grouped into the following six major categories.  Click on the links below for more information."
+msgstr "Nové vlastnosti Audacity 1.3 byly shrnuty do následujících šesti hlavních kategorií. Další informace získáte, když kliknete na následující odkazy."
+
+#: download/features-1.3-a.php:21
+#: download/test/features-1.3-a.php:23
+#: download/test/features-1.3-c.php:259
+#: download/features-1.3-c.php:259
+msgid "Collapse/Expand Tracks"
+msgstr "Zvukové stopy lze zabalit"
+
+#: download/features-1.3-a.php:22
+#: download/features-1.3-b.php:56
+#: download/test/features-1.3-a.php:24
+#: download/test/features-1.3-b.php:56
+#: download/test/features-1.3-d.php:62
+#: download/features-1.3-d.php:62
+msgid "Multiple clips per track"
+msgstr "Vícenásobné rozdělení v rámci jedné stopy"
+
+#: download/features-1.3-a.php:23
+#: download/test/features-1.3-a.php:25
+#: download/test/features-1.3-c.php:266
+#: download/test/features-1.3-e.php:67
+#: download/features-1.3-c.php:266
+#: download/features-1.3-e.php:67
+msgid "Selection Bar"
+msgstr "Výběrová lišta"
+
+#: download/features-1.3-a.php:24
+#: download/test/features-1.3-a.php:26
+#: download/test/features-1.3-d.php:69
+#: download/test/features-1.3-f.php:33
+#: download/features-1.3-d.php:69
+#: download/features-1.3-f.php:33
+msgid "Improved Label Tracks"
+msgstr "Vylepšené popisové stopy"
+
+#: download/features-1.3-a.php:25
+#: download/test/features-1.3-a.php:27
+#: download/test/features-1.3-e.php:74
+#: download/test/features-1.3-g.php:44
+#: download/features-1.3-e.php:74
+#: download/features-1.3-g.php:58
+msgid "QuickTime and Audio Units on Mac OS X"
+msgstr "Na Mac OS X lze použít QuickTime a Audio Units"
+
+#: download/features-1.3-a.php:26
+#: download/test/features-1.3-a.php:28
+#: download/test/features-1.3-f.php:40
+#: download/features-1.3-f.php:40
+msgid "Other features"
+msgstr "Další vlastnosti"
+
+#: download/features-1.3-b.php:9
+#: download/test/features-1.3-b.php:9
+msgid "Audacity 1.3: Collapse/Expand Tracks"
+msgstr "Audacity 1.3: Zabalování zvukových stop"
+
+#: download/features-1.3-b.php:16
+#: download/test/features-1.3-b.php:16
+msgid "In Audacity 1.3, every track has an upward-pointing triangle at the bottom of the label area on the left side of the track.  Click it once to collapse the track to a very small size, and click it again to expand it back to its previous size.  Note that as in previous versions, you can resize a track by clicking anywhere along the bottom edge and dragging up or down."
+msgstr ""
+
+#: download/features-1.3-b.php:21
+#: download/test/features-1.3-b.php:21
+msgid "Before clicking on the collapse button for the top track"
+msgstr ""
+
+#: download/features-1.3-b.php:27
+#: download/test/features-1.3-b.php:27
+msgid "After clicking on the collapse button"
+msgstr ""
+
+#: download/features-1.3-b.php:33
+#: download/test/features-1.3-b.php:33
+msgid "After selecting 'Collapse All Tracks' from the View menu"
+msgstr ""
+
+#: download/features-1.3-b.php:48
+#: download/test/features-1.3-b.php:48
+#: download/test/features-1.3-c.php:258
+#: download/test/features-1.3-d.php:61
+#: download/test/features-1.3-e.php:66
+#: download/test/features-1.3-f.php:32
+#: download/test/features-1.3-g.php:43
+#: download/features-1.3-c.php:258
+#: download/features-1.3-d.php:61
+#: download/features-1.3-e.php:66
+#: download/features-1.3-f.php:32
+#: download/features-1.3-g.php:57
+msgid "Back: "
+msgstr "Zpět:"
+
+#: download/features-1.3-b.php:55
+#: download/test/features-1.3-b.php:55
+#: download/test/features-1.3-c.php:265
+#: download/test/features-1.3-d.php:68
+#: download/test/features-1.3-e.php:73
+#: download/test/features-1.3-f.php:39
+#: download/features-1.3-c.php:265
+#: download/features-1.3-d.php:68
+#: download/features-1.3-e.php:73
+#: download/features-1.3-f.php:39
+msgid "Next: "
+msgstr "Další:"
+
+#: download/test/features-1.3-a.php:16
+#: download/betawarning.inc.php:9
+msgid "Beta warning"
+msgstr "Varování: toto je BETA verze"
+
+#: download/test/features-1.3-a.php:17
+msgid "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine.  When this branch of Audacity is finished, it will be released as version 1.4, which will be stable and complete."
+msgstr "Audacity 1.3 je nestabilní beta verze. Uživatelé, kteří požadují zcela stabilní dokončený program by měli použít Audacity 1.2. Audacity 1.3 obsahuje stovky nových vlastností, ale některé z nich mohou být nedokončené nebo prozatím chybně napsané. Je mnohem vyšší riziko spadnutí programu i ztráty dat. Obě verze, 1.2 i 1.3, mohou být nainstalovány na stejném počítači. Jakmile bude tato vývojová větev Audacity dokončena, bude uvolněna jako verze 1.4, která už bude stabilní a úplná."
+
+#: download/test/features-1.3-a.php:18
+msgid "Audacity 1.3.0 is currently only available in English.  Future Audacity 1.3 releases will be translated into many other languages."
+msgstr "Audacity 1.3.0 je v současné době k dispozici jen v angličtině. Budoucí verze budou přeloženy do mnoha dalších jazyků."
+
+#: download/test/features-1.3-c.php:9
+#: download/features-1.3-c.php:9
+msgid "Audacity 1.3: Multiple clips per track"
+msgstr "Audacity 1.3: Rozdělení zvukové stopy na více částí"
+
+#: download/test/features-1.3-c.php:16
+#: download/features-1.3-c.php:16
+msgid "In Audacity 1.2, there is one audio 'clip' per track.  There is no easy way to time-shift part of a track without moving the rest.  In Audacity 1.3, you can split a single track into multiple clips.  You can move these clips around between different tracks, making it easy to construct complex compositions out of hundreds of smaller audio samples."
+msgstr ""
+
+#: download/test/features-1.3-c.php:98
+#: download/features-1.3-c.php:98
+msgid "The commands you will need to create and work with audio clips are found in the Edit menu.  Some of these commands have the same name as in Audacity 1.2, but their behavior has either changed or has been extended to support new functionality."
+msgstr ""
+
+#: download/test/features-1.3-c.php:100
+#: download/features-1.3-c.php:100
+msgid "There are five ways to end up with multiple clips in a single track:"
+msgstr ""
+
+#: download/test/features-1.3-c.php:103
+#: download/features-1.3-c.php:103
+msgid "Split in the middle of an existing clip."
+msgstr ""
+
+#: download/test/features-1.3-c.php:104
+#: download/features-1.3-c.php:104
+msgid "Split Cut in the middle of an existing clip."
+msgstr ""
+
+#: download/test/features-1.3-c.php:105
+#: download/features-1.3-c.php:105
+msgid "Split Delete in the middle of an existing clip."
+msgstr ""
+
+#: download/test/features-1.3-c.php:106
+#: download/features-1.3-c.php:106
+msgid "Paste into an empty portion of an existing track."
+msgstr ""
+
+#: download/test/features-1.3-c.php:107
+#: download/features-1.3-c.php:107
+msgid "Drag a clip from a different track."
+msgstr ""
+
+#: download/test/features-1.3-c.php:110
+#: download/features-1.3-c.php:110
+msgid "These commands, and other editing commands, are described in detail below.  Alternatively, click on the item in the menu to the left to jump directly to that command."
+msgstr ""
+
+#: download/test/features-1.3-c.php:112
+#: download/features-1.3-c.php:112
+msgid "Other topics:"
+msgstr "Další témata:"
+
+#: download/test/features-1.3-c.php:115
+#: download/test/features-1.3-c.php:229
+#: download/features-1.3-c.php:115
+#: download/features-1.3-c.php:229
+msgid "Moving clips between tracks"
+msgstr ""
+
+#: download/test/features-1.3-c.php:116
+#: download/test/features-1.3-c.php:238
+#: download/features-1.3-c.php:116
+#: download/features-1.3-c.php:238
+msgid "Moving multiple clips at once"
+msgstr ""
+
+#: download/test/features-1.3-c.php:122
+#: download/features-1.3-c.php:122
+msgid "Cut"
+msgstr "Výjmout"
+
+#: download/test/features-1.3-c.php:123
+#: download/features-1.3-c.php:123
+msgid "Removes the selected audio and puts it on the clipboard, and shifts the following audio to the left."
+msgstr ""
+
+#: download/test/features-1.3-c.php:131
+#: download/features-1.3-c.php:131
+msgid "Split Cut"
+msgstr ""
+
+#: download/test/features-1.3-c.php:132
+#: download/features-1.3-c.php:132
+msgid "Removes the selected audio and puts it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
+msgstr ""
+
+#: download/test/features-1.3-c.php:140
+#: download/features-1.3-c.php:140
+msgid "Copy"
+msgstr "Kopírovat"
+
+#: download/test/features-1.3-c.php:141
+#: download/features-1.3-c.php:141
+msgid "Copies the selected audio to the clipboard."
+msgstr ""
+
+#: download/test/features-1.3-c.php:149
+#: download/features-1.3-c.php:149
+msgid "Trim"
+msgstr ""
+
+#: download/test/features-1.3-c.php:150
+#: download/features-1.3-c.php:150
+msgid "Removes all audio from the current clip except the selected part.  Does not affect other clips in the same track."
+msgstr ""
+
+#: download/test/features-1.3-c.php:158
+#: download/features-1.3-c.php:158
+msgid "Delete"
+msgstr "Smazat"
+
+#: download/test/features-1.3-c.php:159
+#: download/features-1.3-c.php:159
+msgid "Removes the selected audio without placing it on the clipboard, and shifts following audio to the left."
+msgstr ""
+
+#: download/test/features-1.3-c.php:167
+#: download/features-1.3-c.php:167
+msgid "Split Delete"
+msgstr ""
+
+#: download/test/features-1.3-c.php:168
+#: download/features-1.3-c.php:168
+msgid "Removes the selected audio without placing it on the clipboard, but does not shift the following audio.  The preceding and following audio are now separate clips that can be moved independently."
+msgstr ""
+
+#: download/test/features-1.3-c.php:176
+#: download/features-1.3-c.php:176
+msgid "Silence"
+msgstr "Ticho"
+
+#: download/test/features-1.3-c.php:177
+#: download/features-1.3-c.php:177
+msgid "Replaces the selection with silence"
+msgstr "Nahradí výběr tichem"
+
+#: download/test/features-1.3-c.php:185
+#: download/features-1.3-c.php:185
+msgid "Split"
+msgstr "Rozdělit"
+
+#: download/test/features-1.3-c.php:186
+#: download/features-1.3-c.php:186
+msgid "Splits the current clip into up to three clips at the selection boundaries.  The audio before, within, and after the selection can now all be shifted independently"
+msgstr ""
+
+#: download/test/features-1.3-c.php:195
+#: download/features-1.3-c.php:195
+msgid "Duplicate"
+msgstr "Duplikovat"
+
+#: download/test/features-1.3-c.php:196
+#: download/features-1.3-c.php:196
+msgid "Creates a new track containing only the current selection as a new clip"
+msgstr ""
+
+#: download/test/features-1.3-c.php:204
+#: download/features-1.3-c.php:204
+msgid "Paste - into an existing clip"
+msgstr ""
+
+#: download/test/features-1.3-c.php:205
+#: download/features-1.3-c.php:205
+msgid "When you select Paste and the cursor is inside a clip, the audio gets inserted into the middle of the clip and the following audio is shifted to the right to make room"
+msgstr ""
+
+#: download/test/features-1.3-c.php:211
+#: download/features-1.3-c.php:211
+msgid "Paste - into the empty part of a track"
+msgstr ""
+
+#: download/test/features-1.3-c.php:212
+#: download/features-1.3-c.php:212
+msgid "When you select Paste and the cursor is outside a clip, and there is enough room for the audio on the clipboard, the audio on the clipboard is inserted without any other clips being shifted over"
+msgstr ""
+
+#: download/test/features-1.3-c.php:220
+#: download/features-1.3-c.php:220
+msgid "Join"
+msgstr ""
+
+#: download/test/features-1.3-c.php:221
+#: download/features-1.3-c.php:221
+msgid "If you select a region that overlaps one or more clips, they are all joined into one large clip.  Regions in-between clips are treated as silence."
+msgstr ""
+
+#: download/test/features-1.3-c.php:230
+#: download/features-1.3-c.php:230
+msgid "The time-shift tool can now be used to move a single clip between tracks.  Just click and drag."
+msgstr ""
+
+#: download/test/features-1.3-c.php:239
+#: download/features-1.3-c.php:239
+msgid "To time-shift multiple clips at once, select all of the clips you want to move using the normal selection tool, then use the time-shift tool to click and drag.  If you click within the selection, all selected clips will move together.  If you click outside the selection, only the clip under the mouse cursor will move."
+msgstr ""
+
+#: download/test/features-1.3-d.php:9
+#: download/features-1.3-d.php:9
+msgid "Audacity 1.3: Selection Bar"
+msgstr "Audacity 1.3: Výběrová lišta"
+
+#: download/test/features-1.3-d.php:19
+#: download/features-1.3-d.php:19
+msgid "The selection bar"
+msgstr ""
+
+#: download/test/features-1.3-d.php:23
+#: download/features-1.3-d.php:23
+msgid "In Audacity 1.2, the current selection is contained in a status bar at the bottom of the window.  In Audacity 1.3, this is replaced by a fully functional Selection Bar, which displays and controls the current selection (your choice of Start and End, or Start and Length), and the current audio position.  The selection bar is fully editable - just click in any field and type to change the current selection precisely.  In addition, many formatting options allow you to view times in different units, such as samples, CD frames, or NTSC video frames."
+msgstr ""
+
+#: download/test/features-1.3-d.php:29
+#: download/features-1.3-d.php:29
+msgid "The project sample rate control on the selection bar"
+msgstr ""
+
+#: download/test/features-1.3-d.php:35
+#: download/features-1.3-d.php:35
+msgid "The current selection on the selection bar"
+msgstr ""
+
+#: download/test/features-1.3-d.php:41
+#: download/features-1.3-d.php:41
+msgid "The audio position on the selection bar"
+msgstr ""
+
+#: download/test/features-1.3-d.php:47
+#: download/features-1.3-d.php:47
+msgid "Different time formats supported by the selection bar"
+msgstr ""
+
+#: download/test/features-1.3-e.php:9
+#: download/features-1.3-e.php:9
+msgid "Audacity 1.3: Improved Label Tracks"
+msgstr "Audacity 1.3: Vylepšené popisové stopy"
+
+#: download/test/features-1.3-e.php:16
+#: download/features-1.3-e.php:16
+msgid "Label Tracks are Audacity's way for you to create markings and annotations within your project.  In Audacity 1.3, Label Tracks are much improved, with support for overlapping labels, and support for modifying both the left and right edge of the label region just by clicking and dragging."
+msgstr ""
+
+#: download/test/features-1.3-e.php:21
+#: download/features-1.3-e.php:21
+msgid "To create a label, start by selecting some audio."
+msgstr ""
+
+#: download/test/features-1.3-e.php:27
+#: download/features-1.3-e.php:27
+msgid "Select 'Add Label At Selection' from the Project menu."
+msgstr ""
+
+#: download/test/features-1.3-e.php:33
+#: download/features-1.3-e.php:33
+msgid "Type some text into the label."
+msgstr ""
+
+#: download/test/features-1.3-e.php:39
+#: download/features-1.3-e.php:39
+msgid "Click and drag the handles to resize the label."
+msgstr ""
+
+#: download/test/features-1.3-e.php:45
+#: download/features-1.3-e.php:45
+msgid "Later, you can retrieve the selection - just click inside the label."
+msgstr ""
+
+#: download/test/features-1.3-e.php:51
+#: download/features-1.3-e.php:51
+msgid "After you click, the label region becomes the current selection, allowing you to perform an operation on other tracks in the area within the label."
+msgstr ""
+
+#: download/test/features-1.3-f.php:9
+#: download/features-1.3-f.php:9
+msgid "Audacity 1.3: QuickTime and Audio Units on Mac OS X"
+msgstr ""
+
+#: download/test/features-1.3-f.php:16
+msgid "On Mac OS X, Audacity can now import and audio file supported by Apple's QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  Unfortunately encrypted audio files (such as those from the iTunes Music Store) cannot be imported directly into Audacity - Apple does not allow this to be done easily because it would be too easy to circumvent the encryption this way."
+msgstr ""
+
+#: download/test/features-1.3-f.php:18
+#: download/features-1.3-f.php:18
+msgid "Also on Mac OS X, Audacity now supports Audio Unit plug-ins.  Audacity searches for Audio Units in the usual location, in the system or user's Library folder."
+msgstr ""
+
+#: download/test/features-1.3-g.php:9
+#: download/features-1.3-g.php:9
+msgid "Audacity 1.3: Other features"
+msgstr "Audacity 1.3: další vlastnosti"
+
+#: download/test/features-1.3-g.php:16
+#: download/features-1.3-g.php:16
+msgid "Better performance with large projects"
+msgstr "Lepší výkon při práci s velkými projekty"
+
+#: download/test/features-1.3-g.php:18
+#: download/features-1.3-g.php:20
+msgid "Project integrity check on open"
+msgstr "Kontrola integrity projektu při otevírání"
+
+#: download/test/features-1.3-g.php:20
+#: download/features-1.3-g.php:24
+msgid "Transcription toolbar"
+msgstr "Transkripční lišta"
+
+#: download/test/features-1.3-g.php:22
+msgid "Upload (?)"
+msgstr ""
+
+#: download/test/features-1.3-g.php:24
+msgid "Batch"
+msgstr ""
+
+#: download/test/features-1.3-g.php:26
+#: download/features-1.3-g.php:40
+msgid "Cut lines"
+msgstr ""
+
+#: download/test/features-1.3-g.php:28
+msgid "CleanSpeech"
+msgstr ""
+
+#: download/test/features-1.3-g.php:52
+#: download/features-1.3-g.php:66
+msgid "Top: "
+msgstr ""
+
+#: download/features-1.3-f.php:16
+msgid "On Mac OS X, Audacity can now import any audio file supported by Apple's QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  Unfortunately encrypted audio files (such as those from the iTunes Music Store) cannot be imported directly into Audacity - Apple does not allow this to be done easily because it would be too easy to circumvent the encryption this way."
+msgstr ""
+
+#: download/features-1.3-g.php:18
+msgid "As before, Audacity stores projects using a directory full of small files.  Audacity 1.3 now uses a hierarchical directory structure that results in better performance on large projects (tens of hours worth of audio across many tracks)."
+msgstr ""
+
+#: download/features-1.3-g.php:22
+msgid "When you open an Audacity project in version 1.3, it checks to make sure that all data files are present."
+msgstr "Pokud otevíráte projekt Audacity ve verzi 1.3, zkotroluje se, jestli jsou k dispozici všechny datové soubory."
+
+#: download/features-1.3-g.php:26
+msgid "A new toolbar for creating transcriptions of speech in Label Tracks.  Includes features that enable you to change the playback speed, create labels automatically based on onsets, and more.  To enable this feature, go to the Interface tab of the Preferences."
+msgstr ""
+
+#: download/features-1.3-g.php:28
+msgid "Upload via FTP"
+msgstr "Nahrávání na vzdálený server prostřednictvím FTP"
+
+#: download/features-1.3-g.php:30
+msgid "Audacity 1.3 has an experimental new dialog for uploading files to a server via FTP.  Currently it is just a simple FTP client; in the future we will integrate this feature into Audacity more so you can publish a project directly to a site as a Podcast, for example."
+msgstr ""
+
+#: download/features-1.3-g.php:32
+msgid "Based on wxWidgets 2.6"
+msgstr "Založeno na wxWidgets 2.6"
+
+#: download/features-1.3-g.php:34
+msgid "Previous versions of Audacity were based on wxWidgets 2.4.  This change brings support for GTK2 widgets on Unix and better Unicode support on all platforms, plus many other minor enhancements under the hood."
+msgstr ""
+
+#: download/features-1.3-g.php:36
+msgid "Batch / CleanSpeech"
+msgstr "Dávkové zpracování / Čištění nahrávek hlasu"
+
+#: download/features-1.3-g.php:38
+msgid "Audacity has a new feature that allows you to process a bunch of files, for example normalizing and converting to MP3.  The CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Batch tab of the Preferences dialog."
+msgstr ""
+
+#: download/features-1.3-g.php:42
+msgid "When this feature is enabled (in the Interface tab of the Preferences), cutting audio in the middle of a clip does not remove it permanently - at any time in the future, just click on the cut line to restore it."
+msgstr ""
+
+#: download/beta_linux.php:16
+msgid "The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href=\"beta_source\">source code</a>."
+msgstr ""
+
+#: download/beta_mac.php:35
+msgid "Audacity 1.3 requires Mac OS X 10.3 or later."
+msgstr "Audacity 1.3 vyžaduje Mac OS X 10.3 nebo novější."
+
+#: download/beta_source.php:35
+msgid "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</b>.  Audacity 1.3 needs wxGTK 2.6.1 (or higher)."
+msgstr "Knihovna <a href=\"http://wxwidgets.org\">wxWidgets</a> je <b>nezbytná</b>.  Audacity 1.3 vyžaduje wxGTK 2.6.1 (nebo vyšší)."
+
+#: download/betafeatures.inc.php:9
+msgid "Click here to read about new features in Audacity 1.3."
+msgstr "Více o nových vlastnostech Audacity 1.3. najdete zde."
+
+#: download/betawarning.inc.php:10
+msgid "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine."
+msgstr "Audacity 1.3 je nestabilní beta verze. Uživatelé, kteří požadují zcela stabilní dokončený program by měli použít Audacity 1.2. Audacity 1.3 obsahuje stovky nových vlastností, ale některé z nich mohou být nedokončené nebo prozatím chybně napsané. Je mnohem vyšší riziko spadnutí programu i ztráty dat. Obě verze, 1.2 i 1.3, mohou být nainstalovány na stejném počítači."
+
+#: download/betawarning.inc.php:11
+msgid "Audacity 1.3 is available in many languages, but most translations are incomplete.  Words and phrases which have not been translated yet will appear in English."
+msgstr "Audacity 1.3 je k dispozici v mnoha jazykových verzích, ale mnoho z nich je prozatím nekompletních. Nepřeložená slova a fráze se zobrazují v angličtině."
+
 #: help/index.php:9
 msgid "Documentation and Support"
 msgstr "Dokumentace a podpora"
 
-#. i18n-hint: If there are any special resources for Audacity users in your
-#. language (forums, documentation, mailing lists...), you can add links to
-#. them here.
-#: help/index.php:17
+#: help/index.php:20
+msgid "New!"
+msgstr "Nové!"
+
+#: help/index.php:22
+msgid "Have questions?  Post them to the <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>."
+msgstr "Máte otázky? Pošlete je do konference <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>."
+
+#: help/index.php:26
 msgid ""
 "<p>If you have a question, check the list of <a href=\"faq\">Frequently Asked Questions</a>.</p>\n"
 "<p>For instructions and help using Audacity, see:</p>\n"
@@ -1149,7 +1845,7 @@ msgid ""
 "  <li><a href=\"documentation\">Documentation</a> - Read the user’s manual and quick reference.</li>\n"
 "  <li><a href=\"tutorials\">Tutorials</a> - Step by step articles teach you how to use Audacity.</li>\n"
 "</ul>\n"
-"<p>If your question isn’t answered here, please <a href=\"../contact/\">contact us</a>.</p>"
+"<p>If your question isn’t answered here, please post to the <a href=\"http://audacityteam.org/forum/\">Audacity Forum</a> or <a href=\"../contact/\">contact us</a>.</p>"
 msgstr ""
 "<p>V případě dotazů se podívejte na <a href=\"faq\">často kladené otázky</a>.</p>\n"
 "<p>Pokyny a nápověda k Audacity:</p>\n"
@@ -1157,25 +1853,25 @@ msgstr ""
 "  <li><a href=\"documentation\">Dokumentace</a> - Přečtěte si uživatelskou a referenční příručku.</li>\n"
 "  <li><a href=\"tutorials\">Podrobné návody</a> - Krok za krokem jak používat Audacity.</li>\n"
 "</ul>\n"
-"<p>Když ani tak nenajdete odpověď, prosíme <a href=\"../contact/\">kontaktujte nás</a> (anglicky).</p>"
+"<p>Když ani tak nenajdete odpověď, prosíme napište do <a href=\"http://audacityteam.org/forum/\">fóra Audacity</a> nebo <a href=\"../contact/\">nás kontaktujte</a> (anglicky).</p>"
 
-#: help/index.php:26
+#: help/index.php:35
 #: help/documentation.php:31
 msgid "Other Resources"
 msgstr "Další zdroje"
 
-#: help/index.php:28
+#: help/index.php:37
 #: help/documentation.php:33
 msgid "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains tips, tricks, and documentation that anyone can edit."
 msgstr "<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> obsahuje tipy, triky, dokumentaci a umožňuje komukoliv provádět libovolné změny a doplnění."
 
 #: help/main.inc.php:11
-#: main.inc.php:39
+#: main.inc.php:49
 msgid "Help"
 msgstr "Nápověda"
 
 #: help/documentation.php:9
-#: main.inc.php:42
+#: main.inc.php:52
 msgid "Documentation"
 msgstr "Dokumentace"
 
@@ -1717,7 +2413,7 @@ msgid "These are some of the most common questions about Audacity.  If your ques
 msgstr "Zde jsou zodpovězeny některé z nejčastějších otázek. Jestliže mezi nimi nenajdete tu svou, podívejte se do <a href=\"documentation\">dokumentace</a>, nebo <a href=\"../contact/\">nám napište</a>."
 
 #: help/tutorials.php:9
-#: main.inc.php:43
+#: main.inc.php:53
 msgid "Tutorials"
 msgstr "Návody"
 
@@ -1765,7 +2461,7 @@ msgid "For additional help, see the <a href=\"documentation\">Audacity documenta
 msgstr "Doplňující informace najdete v <a href=\"documentation\">dokumentaci k Audacity</a>."
 
 #: help/nyquist.php:10
-#: main.inc.php:44
+#: main.inc.php:54
 msgid "Nyquist"
 msgstr "Nyquist"
 
@@ -2168,27 +2864,27 @@ msgid ""
 "<p>Don't forget to consult the full <a href=\"http://www-2.cs.cmu.edu/~rbd/doc/nyquist/root.html\">Nyquist Reference Manual</a> for more details of how Nyquist works.</p>"
 msgstr ""
 
-#: include/header.inc.php:11
+#: include/header.inc.php:12
 msgid "Audacity"
 msgstr "Audacity"
 
-#: include/header.inc.php:16
+#: include/header.inc.php:17
 msgid "Jump to page content"
 msgstr "Přejít na obsah stránky"
 
-#: include/header.inc.php:19
+#: include/header.inc.php:20
 msgid "Powered by Google"
 msgstr "Powered by Google"
 
-#: include/header.inc.php:24
+#: include/header.inc.php:25
 msgid "Search this site"
 msgstr "Prohledávat tyto stránky"
 
-#: include/header.inc.php:28
+#: include/header.inc.php:29
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: volně dostupný zvukový editor a rekordér"
 
-#: include/header.inc.php:40
+#: include/header.inc.php:41
 msgid "Site Navigation"
 msgstr "Navigace"
 
@@ -2229,13 +2925,31 @@ msgstr "Zobrazit tuto stránku v jiném jazyce"
 #. See http://www.php.net/manual/function.strftime.php for details.
 #: include/news.inc.php:24
 msgid "%B %d, %Y"
-msgstr "%d %B %Y"
+msgstr "%d. %B %Y"
 
-#: include/news.inc.php:41
+#: include/news.inc.php:44
+msgid "Audacity 1.2.4 and 1.3.0 Released"
+msgstr "Audacity 1.2.4 a 1.3.0 uvolněna"
+
+#: include/news.inc.php:45
+msgid ""
+"<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple of bug fixes and minor improvements and is recommended for all users.  Audacity 1.3.0 is a beta release that contains hundreds of <a href=\"/download/features-1.3-a\">new features</a>, but this version is unfinished and unstable, and is recommended primarily for advanced users.  You can install both Audacity 1.2 and 1.3 simultaneously.</p>\n"
+"<p>See the <a href=\"/download/release-notes\">1.2.4 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.4, or see <a href=\"/download/features-1.3-a\">New Features in 1.3</a> for information about the new beta version.</p>\n"
+"<p>Finally, the best way to get help with Audacity is now the new\n"
+"<a href=\"http://audacityteam.org/forum/\">Audacity Forum</a>.\n"
+"</p>"
+msgstr ""
+"<p>Audacity 1.2.4 je nová stabilní verze. Obsahuje několik oprav a menších vylepšení a je doporučena všem uživatelům. Audacity 1.3.0 je beta verze, která obsahuje stovky <a href=\"/download/features-1.3-a\">nových vlastností</a>, ale je dosud nedokončená a nestabilní. Proto je přednostně určena zkušeným uživatelům. Obě verze mohou být instalovány na stejném počítači.</p>\n"
+"<p>Úplný seznam změn najdete v <a href=\"/download/release-notes\">poznámkách k vydání 1.2.4</a> nebo v  <a href=\"/download/features-1.3-a\">popisu nových vlastností ve verzi 1.3</a>.</p>\n"
+"<p>Pomoc jako vždy najdete také v \n"
+"<a href=\"http://audacityteam.org/forum/\">diskusním fóru Audacity</a>.\n"
+"</p>"
+
+#: include/news.inc.php:55
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 uvolněna"
 
-#: include/news.inc.php:42
+#: include/news.inc.php:56
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>\n"
 "<p>See the <a href=\"/download/release-notes\">Release Notes</a> for a complete list of changes and known problems in this version.</p>"
@@ -2251,68 +2965,74 @@ msgstr "Volně dostupný zvukový editor a rekordér"
 msgid "for Microsoft Windows"
 msgstr "pro Microsoft Windows"
 
-#: index.php:23
-msgid "for Mac OS 9 or X"
-msgstr "pro Mac OS 9 nebo X"
+#: index.php:27
+msgid "for Mac OS X"
+msgstr "pro Mac OS X"
 
-#: index.php:28
+#: index.php:36
 msgid "For Windows, Mac, or GNU/Linux"
 msgstr "Pro Windows, Mac, nebo GNU/Linux"
 
-#: index.php:33
+#: index.php:45
 msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Volně dostupný, multiplatformní zvukový editor"
 
-#: index.php:38
+#: index.php:50
 msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
 msgstr "Audacity je volně dostupný software s otevřeným kódem pro nahrávání a editaci zvuku. Je k dispozici pro Mac OS X, Microsoft Windows, GNU/Linux a další operační systémy. <a href=\"about/\">Více o Audacity...</a>"
 
-#: index.php:42
+#: index.php:55
+#: index.php:59
 #, php-format
 msgid "Download Audacity %s"
 msgstr "Stáhnout Audacity %s"
 
-#: index.php:46
+#: index.php:66
 msgid "Other downloads"
-msgstr "Další stahování"
+msgstr "Více ke stažení"
 
-#: index.php:68
+#: index.php:87
 msgid "Get Notified of New Versions"
 msgstr "Odebírat zprávy o nových verzích"
 
-#: index.php:80
+#: index.php:99
 msgid "Email address"
 msgstr "E-mailová adresa"
 
-#: index.php:81
+#: index.php:100
 msgid "Add"
 msgstr "Vložit"
 
-#: index.php:82
+#: index.php:101
 msgid "Remove"
 msgstr "Odstranit"
 
-#: main.inc.php:17
+#: main.inc.php:20
 msgid "Home"
 msgstr "Úvod"
 
-#: main.inc.php:18
+#: main.inc.php:21
 msgid "About"
 msgstr "O programu"
 
-#: main.inc.php:31
+#: main.inc.php:35
+#: main.inc.php:42
 msgid "Mac"
 msgstr "Mac"
 
-#: main.inc.php:36
+#: main.inc.php:40
+msgid "New Features in 1.3"
+msgstr "Nové vlastnosti verze 1.3"
+
+#: main.inc.php:46
 msgid "Buy a CD"
 msgstr "Koupit CD"
 
-#: main.inc.php:41
+#: main.inc.php:51
 msgid "FAQ"
 msgstr "FAQ - často kladené otázky"
 
-#: main.inc.php:58
+#: main.inc.php:68
 msgid "Donate"
 msgstr "Darovat"
 
