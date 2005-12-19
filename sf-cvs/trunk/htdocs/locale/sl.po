@@ -6,15 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity Website - 1.0\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2005-12-12 11:17+0100\n"
+"PO-Revision-Date: 2005-12-18 10:01+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
-"Language-Team: Slovenian <info@lugos.si>\n"
+"Language-Team: Martin Srebotnjak, LUGOS <info@lugos.si>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
 
 #: about/main.inc.php:11
 #: about/index.php:9
@@ -39,11 +40,11 @@ msgstr ""
 "\n"
 "<ul>\n"
 "  <li>snemate zvok v živo,</li>\n"
-"  <li>prenesete kasete in plošče v digitalne posnetke ali zgoščenke,</li>\n"
+"  <li>prenesete kasete in plošče v digitalne posnetke ali na CD,</li>\n"
 "  <li>urejate zvočne datoteke Ogg Vorbis, MP3 in WAV,</li>\n"
 "  <li>izrezujete, kopirate, režete in mešate zvoke,</li>\n"
 "  <li>spreminjate hitrost ali višino tona posnetka,</li>\n"
-"  <li>... in še več! Poglejte si popoln <a href=\"features\">seznam zmožnosti</a>.</p>\n"
+"  <li>... in še več! Poglejte si popoln <a href=\"features\">seznam sposobnosti</a>.</p>\n"
 "</ul>"
 
 #. i18n-hint: You may change the link addresses below, if there is a
@@ -70,7 +71,7 @@ msgstr ""
 "\n"
 "<p><firstterm>Brezplačna programska oprema</firstterm> ni le brezplačna (kot “brezplačno pivo˝).  Je <b>svobodna kot v svobodi</b> (kot svoboda govora).  Prosta programska oprema ponuja svobodo uporabe programa, proučevanja njegovega delovanja, izboljševanja in deljenja z drugimi.  Za več informacij obiščite <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
 "\n"
-"<p>Programi kot je Audacity imenujemo tudi <b>programska oprema odprte kode</b>, saj je njihova izvorna koda na voljo vsem, da jo study ali uporabljajo.  Na tisoče drugih odprtokodnih in brezplačnih programov je na voljo, vključno s spletnim brskalnikom <a href=\"http://www.mozilla.org/\">Mozillo</a>, pisarniškim paketom <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> in celotnimi <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">operacijskimi sistemi na temelju Linux-a</a>.</p>"
+"<p>Programe, kakršen je Audacity, imenujemo tudi <b>programska oprema odprte kode</b>, saj je njihova izvorna koda na voljo vsem za študij ali uporabo.  Na voljo je na tisoče drugih odprtokodnih in brezplačnih programov, vključno s spletnim brskalnikom <a href=\"http://www.mozilla.org/\">Mozillo</a>, pisarniškim paketom <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> in celotnimi <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">operacijskimi sistemi na temelju Linuxa</a>.</p>"
 
 #: about/screenshots.php:9
 #: index.php:48
@@ -113,11 +114,11 @@ msgstr "Snemanje z Audacity"
 #: about/features.php:9
 #: main.inc.php:23
 msgid "Features"
-msgstr "Zmožnosti"
+msgstr "Sposobnosti"
 
 #: about/features.php:13
 msgid "This is a list of features in Audacity, the free audio editor.  For more information on how to use these features, go to the <a href=\"../help/\">help pages</a>."
-msgstr "To je seznam zmožnosti aplikacije Audacity, prostega urejevalnika zvoka.  Za več informacij, kako uproabljati te zmožnosti, pojdite na <a href=\"../help/\">strani pomoči</a>."
+msgstr "To je seznam sposobnosti aplikacije Audacity, prostega urejevalnika zvoka.  Za več informacij, kako uprorabljati te sposobnosti, obiščite <a href=\"../help/\">strani pomoči</a>."
 
 #: about/features.php:15
 msgid ""
@@ -159,7 +160,7 @@ msgstr ""
 "  <li>Uvozite in izvozite datoteke WAV, AIFF, AU in <a href=\"http://vorbis.com\">Ogg Vorbis</a>.</li>\n"
 "  <li>Uvozite zvok MPEG (vključno z datotekami MP2 in MP3) z <a href=\"http://www.underbit.com/products/mad/\">libmad</a>.</li>\n"
 "  <li>Izvozite MP3-je z opcijsko kodirno knjižnico LAME.</li>\n"
-"  <li>Ustvarite datoteke WAV ali AIFF, primerne za pečenje zgoščenk.</li>\n"
+"  <li>Ustvarite datoteke WAV ali AIFF, primerne za pečenje CD-jev.</li>\n"
 "  <li>Uvozite in izvozite vse zapise datotek, ki jih podpira <a href=\"http://www.mega-nerd.com/libsndfile/\">libsndfile</a>.</li>\n"
 "  <li>Odprite zvočne datoteke raw (brez headerja) z uporabo ukaza “Uvozi Raw”.</li>\n"
 "  <li><strong>Opomba:</strong>  Audacity trenutno ne podpira WMA, AAC ali večine drugih lastniških ali glede pravic omejenih datotečnih zapisov.</li>\n"
@@ -439,7 +440,7 @@ msgstr "Analiza zvoka"
 #: community/index.php:9
 #: main.inc.php:63
 msgid "Get Involved"
-msgstr "Postanite vpleteni"
+msgstr "Sodelujte"
 
 #: community/index.php:15
 msgid "Audacity is free software, developed by volunteers.  Here's how you can contribute to the Audacity project:"
@@ -516,7 +517,7 @@ msgid ""
 "<p>In addition to the latest stable version of Audacity, we often have beta versions available.  These versions usually contain new features that haven't been tested yet.  If you want to help out, download this version of Audacity and play with it.  Let us know what you like and don't like, and tell us how you think it should be improved.  Tell us if you find any <em>regressions</em> - things that used to work but don't work anymore.</p>"
 msgstr ""
 "<h3>Postanite beta preizkuševalec</h3>\n"
-"<p>Poleg zadnje stabilne različice Audacity imamo pogosto na voljo beta različice.  Te različice pogosto vsebujejo nove zmogljivosti, ki še niso bile preizkušenosti.  Če želite pomagati, prenesite takšno različico Audacity in se poigrajte z njo.  Sporočite nam, kaj vam je všeč in kaj ne, pa tudi, kako mislite, da bi izdelek lahko bilo izboljšali.  Povejte nam, če najdete kakršne koli <em>regresije</em> - tisto, kar je prej delovalo, pa ne deluje več.</p>"
+"<p>Poleg zadnje stabilne različice Audacity imamo pogosto na voljo beta različice.  Te različice pogosto vsebujejo nove sposobnosti, ki še niso bile preizkušene.  Če želite pomagati, prenesite takšno različico Audacity in se poigrajte z njo.  Sporočite nam, kaj vam je všeč in kaj ne, pa tudi, kako mislite, da bi izdelek lahko izboljšali.  Povejte nam, če najdete kakršne koli <em>regresije</em> - tisto, kar je prej delovalo, pa ne deluje več.</p>"
 
 #: community/donate.php:10
 msgid "Make a Donation"
@@ -723,7 +724,7 @@ msgstr ""
 "<p>Če imate zgolj splošno vprašanje o uporabi Audacity, prosimo, raje uporabite\n"
 "<a href=\"http://audacityteam.org/forum/\">forum Audacity</a>.</p>\n"
 "\n"
-"<p><b>Ko sporočate hrošča ali težavo, prosimo da:</b></p>\n"
+"<p><b>Ko sporočate hrošča ali težavo, prosimo, da:</b></p>\n"
 "<ol>\n"
 "  <li>preden nam pišete, preverite <a href=\"../help/faq\">pogosto zastavljena vprašanja - FAQ</a>.</li>\n"
 "  <li>nam poveste, katero različico Audacity in kateri operacijski sistem uporabljate.</li>\n"
@@ -893,7 +894,7 @@ msgstr "Za napredne uporabnike"
 
 #: download/index.php:57
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
-msgstr "Kopijo Audacity lahko tudi <a href=\"buy\">kupite</a> na zgoščenki."
+msgstr "Izvod Audacity lahko tudi <a href=\"buy\">kupite</a> na plošči CD."
 
 #: download/index.php:59
 msgid "If you wish to compile Audacity yourself, download the <a href=\"source\">source code</a>."
@@ -1042,11 +1043,11 @@ msgstr "Za dodatne informacije o prevajanju Audacity v okoljih Windows ali Mac O
 
 #: download/buy.php:9
 msgid "Purchase Audacity on CD"
-msgstr "Kupite Audacity na zgoščenki"
+msgstr "Kupite Audacity na CD"
 
 #: download/buy.php:13
 msgid "Audacity is free to download, but vendors are also free to sell copies of the program, thanks to the <a href=\"../about/license\">GNU General Public License</a>.  If you want a copy of Audacity on CD-ROM, we encourage you to buy from a vendor listed below."
-msgstr "Audacity lahko preneste brezplačno, pa tudi prodajalci lahko brezplačno prodajajo kopije programa, zahvaljujoč <a href=\"../about/license\">splošni javni licenci GNU</a>.  Če želite kopijo programa Audacity na zgoščenki, jo lahko naročite pri spodaj navedenih prodajalcih."
+msgstr "Audacity lahko preneste brezplačno, pa tudi prodajalci lahko brezplačno prodajajo izvode programa, zahvaljujoč <a href=\"../about/license\">splošni javni licenci GNU</a>.  Če želite izvod programa Audacity na CD, ga lahko naročite pri spodaj navedenih prodajalcih."
 
 #: download/buy.php:15
 msgid ""
@@ -1054,7 +1055,7 @@ msgid ""
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of high-quality free software for Microsoft Windows, including Audacity.  You can <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">purchase a copy of TheOpenCD</a> from several different vendors.</p>"
 msgstr ""
 "<h3>TheOpenCD (Windows)</h3>\n"
-"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> je zbirka visoko kvalitetnih brezplačnih programov za Microsoft Windows, vključno z Audacity.  <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">Kopijo TheOpenCD lahko kupite</a> pri več različnih prodajalcih.</p>"
+"  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> je zbirka visoko kvalitetnih brezplačnih programov za Microsoft Windows, vključno z Audacity.  <a href=\"http://www.theopencd.org/index.php?option=com_static&staticfile=purchase.html\">Izvod TheOpenCD lahko kupite</a> pri več različnih prodajalcih.</p>"
 
 #: download/mac.php:10
 #: download/beta_mac.php:11
@@ -1312,7 +1313,7 @@ msgstr "Nove sposobnosti"
 #: download/features-1.3-a.php:18
 #: download/test/features-1.3-a.php:20
 msgid "The new features in Audacity 1.3 have been grouped into the following six major categories.  Click on the links below for more information."
-msgstr "Nove sposobnosti v Audacity 1.3 smo postavili v naslednjih šest večjih skupin.  Za več informacij kliknite na spodnje povezave."
+msgstr "Nove sposobnosti v Audacity 1.3 smo pokupčkali v naslednjih šest večjih skupin.  Za več informacij kliknite na spodnje povezave."
 
 #: download/features-1.3-a.php:21
 #: download/test/features-1.3-a.php:23
@@ -1424,7 +1425,7 @@ msgstr "Opozorilo"
 
 #: download/test/features-1.3-a.php:17
 msgid "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a completely stable, finished program should be using Audacity 1.2.  Audacity 1.3 has hundreds of new features, but some features may be incomplete or confusing, it is more likely to crash, and you are more likely to lose data.  You can install both Audacity 1.2 and 1.3 on the same machine.  When this branch of Audacity is finished, it will be released as version 1.4, which will be stable and complete."
-msgstr "Audacity 1.3 je nestabilna beta različica aplikacije Audacity.  Uporabniki, ki želijo povsem stabilen, dokončan program, naj uporabljajo Audacity 1.2.  Audacity 1.3 ima na stotine novih sposobnosti, vendar nekatere še niso popolne ali so morda nejasne, zato je več verjetnosti za sesutje in morebitno izgubo podatkov.  Na isti računalnik lahko namestite obe različici, Audacity 1.2 in 1.3.  Ko bo ta veja Audacity zaključena, bo izdana kot različica 1.4, ki bo stabilna in dokončana."
+msgstr "Audacity 1.3 je nestabilna beta različica aplikacije Audacity.  Uporabniki, ki želijo povsem stabilen in dokončan program, naj uporabljajo Audacity 1.2.  Audacity 1.3 ima na stotine novih sposobnosti, vendar nekatere še niso popolne ali so morda nejasne, zato je več verjetnosti za sesutje in morebitno izgubo podatkov.  Na isti računalnik lahko namestite obe različici, Audacity 1.2 in 1.3.  Ko bo ta veja Audacity zaključena, bo izdana kot različica 1.4, ki bo stabilna in dokončana."
 
 #: download/test/features-1.3-a.php:18
 msgid "Audacity 1.3.0 is currently only available in English.  Future Audacity 1.3 releases will be translated into many other languages."
@@ -1782,7 +1783,7 @@ msgstr "Prenos prek FTP"
 
 #: download/features-1.3-g.php:30
 msgid "Audacity 1.3 has an experimental new dialog for uploading files to a server via FTP.  Currently it is just a simple FTP client; in the future we will integrate this feature into Audacity more so you can publish a project directly to a site as a Podcast, for example."
-msgstr "Audacity 1.3 ima novo eksperimentalno pogovorno okno za prenos datotek na strežnik prek FTP.  Trenutno je samo enostaven odjemalec FTP; v bodoče bomo to sposobnost bolj vključili v Audacity, tako da lahko projekt objavite neposredno na strežnik, kot je na primer Podcast."
+msgstr "Audacity 1.3 ima novo eksperimentalno pogovorno okno za prenos datotek na strežnik prek FTP.  Trenutno je samo enostaven odjemalec FTP; v bodoče bomo to sposobnost v večji meri vključili v Audacity, tako da lahko projekt objavite neposredno na strežnik, kot je na primer Podcast."
 
 #: download/features-1.3-g.php:32
 msgid "Based on wxWidgets 2.6"
@@ -1798,11 +1799,11 @@ msgstr "Paketno delo / PočistiGovor"
 
 #: download/features-1.3-g.php:38
 msgid "Audacity has a new feature that allows you to process a bunch of files, for example normalizing and converting to MP3.  The CleanSpeech mode provides a simplified interface for some standard adjustments typically made on speech recordings.  You can access these features in the Batch tab of the Preferences dialog."
-msgstr "Audacity ima novo sposobnost, ki omogoča procesiranje večjega števila datotek, npr. normalizacijo in pretvorbo v MP3.  Način PočistiGovor ponuja poenostavljen vmesnik za nekatere običajne prilagoditve za posnetke govora.  Do teh sposobnosti lahko dostopate prek zavihka Paketno delo v pogovornem oknu Nastavitve."
+msgstr "Audacity ima novo sposobnost procesiranja večjega števila datotek, npr. normalizacijo in pretvorbo v MP3.  Način PočistiGovor ponuja poenostavljen vmesnik za nekatere običajne prilagoditve za posnetke govora.  Do teh sposobnosti lahko dostopate prek zavihka Paketno delo v pogovornem oknu Nastavitve."
 
 #: download/features-1.3-g.php:42
 msgid "When this feature is enabled (in the Interface tab of the Preferences), cutting audio in the middle of a clip does not remove it permanently - at any time in the future, just click on the cut line to restore it."
-msgstr "Ko je aktivirana ta sposobnost (v zavihku Vmesnik v Nastavitvah), rezanje zvoka na sredi posnetka ne odstrani le-tega za vedno - kadar koli lahko kliknete na črto reza in ga povrnete nazaj."
+msgstr "Ko je aktivirana ta sposobnost (v zavihku Vmesnik v Nastavitvah), rezanje zvoka na sredi posnetka le-tega ne odstrani za vedno - kadar koli lahko kliknete na črto reza in ga povrnete nazaj."
 
 #: download/beta_linux.php:16
 msgid "The beta version of Audacity has not been packaged for very many distributions yet.  You probably want to compile Audacity from <a href=\"beta_source\">source code</a>."
@@ -1958,7 +1959,7 @@ msgid ""
 msgstr ""
 "<p>Prodajati Audacity je zakonito, dokler prodajalec ponuja program in izvorno kodo pod <a href=\"../about/license\">splošno javno licenco GNU</a>.</p>\n"
 "<p>Nekateri prodajalci poskušajo prelisičiti potrošnike s prodajo programske opreme pod drugim imenom.  Če ste kupili izdelek in kasneje ugotovili, da gre za Audacity, vas spodbujamo, da <b>zahtevate povračilo ali vložite pritožbo</b>, če menite, da niste bili pošteno obravnavani.  Prodajalce prosimo, da projektu Audacity priznajo ustrezne zasluge in uporabnikom dovolijo opraviti izbiro na osnovi vseh informacij.</p>\n"
-"<p><b>Če želite kupiti Audacity na zgoščenki</b>, si prosim poglejte prodajalce, navedene na naši <a href=\"../download/buy\">prodajni strani</a>.</p>"
+"<p><b>Če želite kupiti Audacity na plošči CD</b>, si prosim poglejte prodajalce, navedene na naši <a href=\"../download/buy\">prodajni strani</a>.</p>"
 
 #: help/faq.php:46
 msgid "Does Audacity work with screen-reader programs for blind users?"
@@ -1967,7 +1968,7 @@ msgstr "Deluje Audacity z zaslonskimi bralnimi programi za slepe in slabovidne u
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
 msgid "<p>Audacity works with most screen-reader programs, but some of Audacity’s features are difficult or impossible to use without a mouse.  We are working on improving the program’s accessibility and keyboard shortcuts.  For more information, see <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity for Blind Users</a>.</p>"
-msgstr "<p>Audacity deluje z večino programov za screen-reader, vendar je nekatere zmožnosti Audacity težko ali nemogoče uporabljati brez miške.  Delamo na tem, da bi izboljšali dostopnost programa in bližnjice za tipkovnico.  Za več informacij si oglejte <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity za slepe in slabovidne uporabnike</a>.</p>"
+msgstr "<p>Audacity deluje z večino programov zaslonskih bralnikov, vendar je nekatere sposobnosti Audacity težko ali nemogoče uporabljati brez miške.  Delamo na tem, da bi izboljšali dostopnost programa in bližnjice za tipkovnico.  Za več informacij si oglejte <a href=\"http://audacityteam.org/wiki/index.pl?AudacityForBlindUsers\">Audacity za slepe in slabovidne uporabnike</a>.</p>"
 
 #: help/faq.php:51
 msgid "What does “time remaining” mean?  Does Audacity expire?"
@@ -2113,7 +2114,7 @@ msgstr "Poglejte tudi:"
 #: help/faq.php:202
 #: help/faq.php:226
 msgid "How do I save my recording on an audio CD?"
-msgstr "Kako shranim svoj posnetek na zvočno zgoščenko?"
+msgstr "Kako shranim svoj posnetek na zvočni CD?"
 
 #: help/faq.php:121
 msgid "Why can’t I hear what I’m recording?"
@@ -2202,7 +2203,7 @@ msgid ""
 "  <li>Start recording.  Audacity will stop recording automatically when it reaches the end of the selected area.</li>\n"
 "</ol>"
 msgstr ""
-"<p>Oprostite, Audacity še ne podpira scheduled snemanja.  To sposobnost bomo morda dodali v bodočih različicah programa.</p>\n"
+"<p>Oprostite, Audacity še ne podpira snemanja po urniku.  To sposobnost bomo morda dodali v bodočih različicah programa.</p>\n"
 "<p>Audacity lahko nastavite, da <b>prekine</b> snemanje po določenem času, če sledite tem korakom:</p>\n"
 "<ol>\n"
 "  <li>Vklopite možnost “Predvajaj obstoječe sledi med snemanjem” v razdelku “Zvočni V/I” nastavitev.</li>\n"
@@ -2222,7 +2223,7 @@ msgstr "Kako odprem projekt Audacity (datoteka AUP) v drugem programu?"
 
 #: help/faq.php:172
 msgid "<p>Audacity project files are saved in a special format that only Audacity can open.  To open your project in another program or burn it to CD, you must open the “project.aup” file in Audacity, and use the Export commands (in the File menu) to save it in a standard format like WAV or AIFF.</p>"
-msgstr "<p>Projektne datoteke Audacity so shranjene v posebnem zapisu, ki ga lahko odpirate le v Audacity.  Za odiranje projekta v drugi aplikaciji ali izdelavo zgoščenke morate odpreti datoteko “projekt.aup” v Audacity in uporabiti ukaze Izvozi (v meniju Datoteka), da projekt shranite v standardnem zapisu za nadaljno obdelavo, kot sta WAV ali AIFF.</p>"
+msgstr "<p>Projektne datoteke Audacity so shranjene v posebnem zapisu, ki ga lahko odpirate le v Audacity.  Za odiranje projekta v drugi aplikaciji ali izdelavo CD morate odpreti datoteko “projekt.aup” v Audacity in uporabiti ukaze Izvozi (v meniju Datoteka), da projekt shranite v standardnem zapisu za nadaljnjo obdelavo, kot sta WAV ali AIFF.</p>"
 
 #: help/faq.php:175
 msgid "Why does Audacity create a folder full of .au files when I save a project?"
@@ -2254,9 +2255,9 @@ msgid ""
 "<p>For a list of supported formats, see the <a href=\"../about/features\">feature list</a>.</p>\n"
 "<p>See also: <a href=\"faq?s=files&amp;i=midi\">Why can't I play MIDI files?</a></p>"
 msgstr ""
-"<p>Audacity <b>ne more</b> uvažati ali izvažati datotek v zapisih <b>WMA, AAC, RealAudio, Shorten (SHN)</b> ali večini drugih lastninskih zapisov.  Zaradi licenciranja in patentnih omejitev ne smemo teh formatov dodajati Audacity.  Bodoče razlilčice Audacity bodo morda podpirale te zapise z uporabo kodekov, nameščenih v vašem operacijskem sistemu.</p>\n"
-"<p>Nekateri odprti zapisi še niso podprti v Audacity, vključno z zapisoma <b>Ogg Speex</b> in <b>FLAC</b>.  Upamo, da bomo te zapise podprli v bodočih različicah Audacity.</p>\n"
-"<p>Za seznam podprtih zapisov si oglejte <a href=\"../about/features\">seznam zmožnosti</a>.</p>\n"
+"<p>Audacity <b>ne more</b> uvažati ali izvažati datotek v zapisih <b>WMA, AAC, RealAudio, Shorten (SHN)</b> ali večini drugih lastniških zapisov.  Zaradi licenciranja in patentnih omejitev teh formatov ne smemo dodajati Audacity.  Bodoče razlilčice Audacity bodo morda podpirale te zapise z uporabo kodekov, nameščenih v vašem operacijskem sistemu.</p>\n"
+"<p>Nekateri odprti zapisi v Audacity še niso podprti, vključno z zapisoma <b>Ogg Speex</b> in <b>FLAC</b>.  Upamo, da bomo te zapise podprli v bodočih različicah Audacity.</p>\n"
+"<p>Za seznam podprtih zapisov si oglejte <a href=\"../about/features\">seznam sposobnosti</a>.</p>\n"
 "<p>Poglejte tudi: <a href=\"faq?s=files&amp;i=midi\">Zakaj ne morem predvajati datotek MIDI?</a></p>"
 
 #: help/faq.php:194
@@ -2269,11 +2270,11 @@ msgstr "<p>Oprostite, v Audacity ne morete predvajati, urejati ali pretvarjati d
 
 #: help/faq.php:198
 msgid "How do I import a track from an audio CD?"
-msgstr "Kako uvozim sled z zvočne zgoščenke?"
+msgstr "Kako uvozim sled z zvočnega CD?"
 
 #: help/faq.php:199
 msgid "<p>Audacity cannot import a track directly from an audio CD.  You must use a separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or <a href=\"http://www.apple.com/itunes/\">iTunes</a> to extract CD tracks into a format that Audacity can read, like WAV or AIFF.</p>"
-msgstr "<p>Audacity ne more uvoziti posnetka neposredno z zvočne zgoščenke.  Uporabiti morate ločen program kot sta <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ali <a href=\"http://www.apple.com/itunes/\">iTunes</a>, da bi lahko izluščili posnetke z zgoščenke v obliko, ki jo zna brati Audacity, kot npr. WAV ali AIFF.</p>"
+msgstr "<p>Audacity ne more uvoziti posnetka neposredno z zvočnega CD. Uporabiti morate ločen program kot sta <a href=\"http://cdexos.sourceforge.net/\">CDex</a> ali <a href=\"http://www.apple.com/itunes/\">iTunes</a>, da bi lahko izluščili posnetke s CD v obliko, ki jo zna brati Audacity, kot npr. WAV ali AIFF.</p>"
 
 #: help/faq.php:203
 msgid "After making a recording or editing a file in Audacity, follow these steps to save your work on an audio CD:"
@@ -2296,10 +2297,10 @@ msgid ""
 msgstr ""
 "<ol>\n"
 "  <li>Za shranjevanje posnetka Audacity v zvočno datoteko uporabite ukaz “Izvozi kot WAV” ali “Izvozi kot AIFF”.</li>\n"
-"  <li>Za peko te datoteke na zgoščenko uporabite kateri koli program za snemanje zgoščenk (na primer iTunes ali Nero) .</li>\n"
+"  <li>Za peko te datoteke na CD uporabite kateri koli program za snemanje CD-jev (na primer iTunes ali Nero) .</li>\n"
 "</ol>\n"
-"<p>Za izdelo glasbene zgoščenke, ki jo predvaja vsak predvajalnik, zagotovite, da ustvarjate “glasbeno” ali “zvočno” zgoščenko (ne “podatkovni” CD).  Uporabite diske CD-R, saj nekateri predvajalniki ne zmorejo brati CD-RW.</p>\n"
-"<p>Nekatera programska oprema lahko peče le 16-bitne, 44.1KHz stereo zvočne datoteke.  Če vaša programska oprema za snemanje zgoščenk ne odpre zvočnih datotek, ponovno izvozite datoteko po izbiranju naslednjih nastavitev v Audacity:</p>\n"
+"<p>Za izdelo glasbenega CD, ki ga predvaja vsak predvajalnik, zagotovite, da ustvarjate “glasbeni” ali “zvočni” CD (ne “podatkovni” CD).  Uporabite diske CD-R, saj nekateri predvajalniki ne zmorejo brati CD-RW.</p>\n"
+"<p>Nekatera programska oprema lahko peče le 16-bitne, 44.1KHz stereo zvočne datoteke.  Če vaša programska oprema za snemanje CD ne odpre zvočnih datotek, ponovno izvozite datoteko po izbiranju naslednjih nastavitev v Audacity:</p>\n"
 "<ol>\n"
 "  <li>Na dnu okna Audacity nastavite frekvenco projekta na 44100 Hz.</li>\n"
 "  <li>V nastavitvah oblik datotečnih zapisov izberite WAV (16-bitno...) ali AIFF (16-bitno...).</li>\n"
@@ -2309,7 +2310,7 @@ msgstr ""
 
 #: help/faq.php:218
 msgid "How can I split a long recording into multiple files or CD tracks?"
-msgstr "Kako lahko razdelim dolg posnetek na več datotek ali sledi zgoščenke?"
+msgstr "Kako lahko razdelim dolg posnetek na več datotek ali sledi CD?"
 
 #: help/faq.php:219
 msgid ""
@@ -2321,7 +2322,7 @@ msgid ""
 "  <li>When you are finished, choose “Export Multiple” from the File menu.  When you click the “Export” button, Audacity will save each song as a separate file, using the format and location you choose.</li>\n"
 "</ol>"
 msgstr ""
-"<p>Sledite tem korakom za ustvarjanje ločene datoteke za vsako pesem ali segment daljšega posnetka.  To je še posebej uporabno, če ustvarjate glasbeno zgoščenko, saj bo vsaka datoteka posamezna pesem na zgoščenki.</p>\n"
+"<p>Sledite tem korakom za ustvarjanje ločene datoteke za vsako pesem ali segment daljšega posnetka.  To je še posebej uporabno, če ustvarjate glasbeni CD, saj bo vsaka datoteka posamezna pesem.</p>\n"
 "<ol>\n"
 "  <li>S klikom postavite kazalko na začetek prve pesmi.</li>\n"
 "  <li>Izberite “Dodaj naslov izbiri” iz menija Projekt.  Če želite lahko vtipkate ime pesmi.</li>\n"
@@ -3396,7 +3397,7 @@ msgstr "Nove sposobnosti v 1.3"
 
 #: main.inc.php:46
 msgid "Buy a CD"
-msgstr "Nakup zgoščenke"
+msgstr "Nakup CD"
 
 #: main.inc.php:51
 msgid "FAQ"
