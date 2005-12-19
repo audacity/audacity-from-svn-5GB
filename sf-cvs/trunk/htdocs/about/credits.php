@@ -73,6 +73,7 @@
   <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Tino Meinen (nl)</li>
   <li>Tomasz Bandura (pl)</li>
+  <li>Marek Mularczyk (pl)</li>
   <li>Sebastian Pacholski (pl)</li>
   <li>Cleber Tavano (pt_BR)</li>
   <li>Yuri Ilyin (ru)</li>
