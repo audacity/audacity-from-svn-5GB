@@ -108,6 +108,18 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
                1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
+   #if defined(__WXMSW__)
+      // Refer to Microsoft KB article 261192 for an explanation as
+      // to why this is needed.  We've only experienced it under Win2k
+      // so it's probably been fixed.  But, it doesn't hurt to have this
+      // in for all versions.
+      wxRadioButton* dummyButton = 
+         new wxRadioButton(this, wxID_ANY, _("hidden"),
+                           wxDefaultPosition, wxDefaultSize,
+                           wxRB_GROUP);
+      dummyButton->Disable();
+      dummyButton->Hide();
+   #endif
    mainSizer->Add(hSizer, 0, wxALL, 1);
 
    mainSizer->Add(20, 10);
