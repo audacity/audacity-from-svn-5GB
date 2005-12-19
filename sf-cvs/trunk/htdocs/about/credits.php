@@ -65,6 +65,7 @@
   <li>Christian Brochec (fr)</li>
   <li>Fabrice Silva (fr)</li>
   <li>Micil Sheain Mhicil (ga)</li>
+  <li>Xose Anton (gl)</li>
   <li>Márton Balázs - <a href="http://documan.sourceforge.net/">documan magyarító oldala</a> (hu)</li>
   <li>Jozsef Herczeg (hu)</li>
   <li>Aldo Boccacci (it)</li>
