@@ -6,35 +6,46 @@
 /*      on Windows, Linux and MacOS X.					*/
 /*----------------------------------------------------------------------*/
 
-A,A:Visited,
-A:Active,A:Hover {	font-family : Verdana,Arial,Helvetica,Sanserif;        }
-A:Hover		 {	color: Red;
+div.c1 {text-align: center}
+
+a,a:Visited,
+a:Active,a:Hover {	font-family : Verdana,Arial,Helvetica,Sanserif;        }
+a:Hover		 {	color: Red;
 			text-decoration : none;
 	                background-color : #EEEE80;}
-A:link,A:visited {	color : #EE0000;}
+a:link,a:visited {	color : #EE0000;}
 
-H1,H2,H3,H4        {    font-family : Verdana,Arial,Helvetica,Sanserif; }
+h1,h2,h3,h4        {    font-family : Verdana,Arial,Helvetica,Sanserif; }
 
-H1                {     font-size : 32px; font-weight : normal; }		/*24pt;*/
-H2                {     font-size : 24px; font-weight : normal; }	/*18pt;*/
+h1                {     font-size : 32px; font-weight : normal; }		/*24pt;*/
+h2                {     font-size : 24px; font-weight : normal; }	/*18pt;*/
 H3                {     font-size : 16px; }				/*12pt;*/
-H4                {     font-size : 13px; }				/*10pt;*/
+h4                {     font-size : 13px; }				/*10pt;*/
 
 
-BODY,P            {	font-family : Verdana,Arial,Helvetica,Sanserif;
+body,p            {	font-family : Verdana,Arial,Helvetica,Sanserif;
                         font-style : normal;
                         font-weight : normal;
                         color : Black;			}
 
-BODY,.linknobg   {      background-color : White;	}
+body,.linknobg   {      background-color : White;	}
 
 .linknobg        {      text-decoration : none;	}
 
-P, .sf, UL, LI, OL, TD, .linknobg
+HR.menu {
+	noshade:noshade;
+	color:yellow;
+	height:4px;
+	text-align:left;
+	border:1px
+	solid red;
+	}
+
+p, .sf, ul, li, ol, td, .linknobg
                  {      font-size : 13px; /*10pt;95%;*/ 	}
 
 
-A.sf             {      font-weight : bold;		}
+a.sf             {      font-weight : bold;		}
 
 
 .negative        {      color : Red;			}
