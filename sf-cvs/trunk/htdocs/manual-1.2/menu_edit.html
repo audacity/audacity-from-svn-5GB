@@ -40,7 +40,7 @@
 <center>
   <table width="100%"><tr>
     <td valign=top width="50%">
-
+	<!-- First Section First Column starts -->
 
 <a name="undo"></a>
 <p class=menuref_item>Undo</p>
@@ -64,14 +64,14 @@ Only one "thing" can be on the clipboard at a time, but it may
 contain multiple tracks.</p>
 
 
+
+	<!-- S1C1 ends -->
+	</td>
+	<td valign=top width="50%">
+	<!-- First section second column starts -->
 <a name="copy"></a>
 <p class=menuref_item>Copy</p>
 <p class=a>Copies the selected audio data to the clipboard without removing it from the project.</p>
-
-
-	</td>
-	<td valign=top width="50%">
-
 
 <a name="paste"></a>
 <p class=menuref_item>Paste</p>
@@ -85,6 +85,22 @@ is currently selected, if any.</p>
 <p class=a>Deletes everything but the selection.</P>
 
 
+
+<!-- a name="insertsilence"></a>
+<p class=menuref_item>Insert Silence...</p>
+<p class=a>Prompts for a dialog indicating the number of seconds of silence
+to insert, then inserts that amount of silence at the current
+selection cursor position in the project, replacing whatever audio
+data is currently selected, if any.</p -->
+
+<!-- S1C2 ends -->
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr> 
+    <!--  the blue separator -->
+    <tr>
+      <td valign=top>
+	      <!-- Second section first column starts -->
 <a name="delete"></a>
 <p class=menuref_item>Delete</p>
 <p class=a>Removes the audio data that is currently selected without
@@ -95,21 +111,9 @@ copying it to the clipboard.</p>
 <p class=a>Erases the audio data currently selected, replacing it with
 silence instead of removing it completely.</p>
 
-<!-- a name="insertsilence"></a>
-<p class=menuref_item>Insert Silence...</p>
-<p class=a>Prompts for a dialog indicating the number of seconds of silence
-to insert, then inserts that amount of silence at the current
-selection cursor position in the project, replacing whatever audio
-data is currently selected, if any.</p -->
-
-
-	</td>
-    </tr>
-    <tr><td colspan=2 class=top_b>&nbsp;</td></tr>
-
-    <tr>
-      <td valign=top>
-
+	<!-- S2c1 ends -->
+	</td><td >
+	<!-- second section second column starts -->
 <a name="split"></a>
 <p class=menuref_item>Split</p>
 <p class=a>Moves the selected region into its own track or tracks, replacing
@@ -124,28 +128,59 @@ tracks.  See the figure below:</p>
 
 <center><img border=0 src="images/duplicate.png" width="320" height="80" alt="Duplicate function illustration"></center>
 
-    </td>
+		    <!-- S2C2 ends -->
+    </td></tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr> 
+    <!--  the blue separator -->
+
+    <tr>
     <td valign=top>
-
-<a name="splitatlabels"></a>
-<p class=menuref_item>Split at Labels</p>
-<p class=a>Uses the split function to give you separate tracks for every label. The source track remains unchanged.</p>
-<p class=a>Select the label track(click on the track panel), then select the track you wish to split by
- <span class=keybshc_s>SHIFT+click</span>'ing on its track panel. Now activate the <i>Split by Labels</i> function.</p>
-<p class=a>The result is that for each label, a new track will be created that contains a duplicate of the material up to the next label or the end of the track, whichever comes first.</p>
-
-<a name="selectall"></a>
-<p class=menuref_item>Select All</p>
+	<!-- section 3 column 1 starts -->
+	<a name="selectall"></a>
+	<p class=menuref_item>Select... &gt;  All</p>
 <p class=a>Selects all of the audio in all of the tracks.</p>
 
 <a name="selectstarttocursor"></a>
-<p class=menuref_item>Select Start to Cursor</p>
+<p class=menuref_item>Select... &gt;  Start to Cursor</p>
 <p class=a>Selects all the audio from the start of the timeline to the current cursor.</p>
 
 <a name="selectcursortoend"></a>
-<p class=menuref_item>Select Cursor to End</p>
+<p class=menuref_item>Select... &gt;  Cursor to End</p>
 <p class=a>Selects all the audio from the cursor to the end of project, which is as far as audio exists in the project.</p>
 
+<a name="findzerocross"></a>
+<p class=menuref_item>Find Zero Crossings</p>
+<p class=a>Moves the cursor or the edges of the selection to the nearest point 
+where the audio waveform passes though zero. Use this to help achieve 
+click-free cuts in audio, as the two ends of the cut will exactly line up.</p>
+
+<!-- S3C1 ends -->
+        </td>
+    
+	<td valign=top>
+		<!-- Section 3 Column 2 starts -->
+	<a name="cursororselectionsave"></a>
+<p class=menuref_item>Selection Save</p>
+<p class=a>Saves the current selection and position. This function only saves
+the selection boundaries, but not the actual audio data.</p>
+
+<a name="cursororselectionrestore"></a>
+<p class=menuref_item>Selection Restore</p>
+<p class=a>Restores the selection to the project. You need to have an existing
+selection for this to work.</p>
+
+<a name="movecursor"></a>
+<p class=menuref_item>Move Cursor...</p>
+<p class=a>These commands provide quick and accurate ways to manoeuvre the
+cursor around the project to the start and end of tracks and selections.</p>
+
+<a name="snapto"></a>
+<p class=menuref_item>Snap-To...</p>
+<p class=a>Turns snapping of the cursor to a grid of time values on or off.
+When off, your cursor can be positioned on any sample in the audio file.
+When on, it is restricted to certain points in time, determined by the time
+format in use. This is useful if your project must follow an external timecode
+exactly.</p>
 
     </td>
   </tr>
