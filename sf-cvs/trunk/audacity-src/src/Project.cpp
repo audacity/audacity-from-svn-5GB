@@ -491,11 +491,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                 &mViewInfo,
                                 this);
 
-#if defined __WXMAC__ 
-   width++;
-   height++;
-#endif
-
    mHsbar = new wxScrollBar(pPage,
                             HSBarID,
                             wxDefaultPosition,

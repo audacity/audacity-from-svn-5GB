@@ -166,15 +166,8 @@ void Grabber::DrawGrabber( wxDC & dc )
    int y, left, right, top, bottom;
 
    // Paint the background
-   if( mOver )
-   {
-      AColor::Medium( &dc, true );
-      dc.DrawRectangle( r );
-   }
-   else
-   {
-      ClearBackground();
-   }
+   AColor::Medium( &dc, mOver );
+   dc.DrawRectangle( r );
 
 #ifndef __WXMAC__
 

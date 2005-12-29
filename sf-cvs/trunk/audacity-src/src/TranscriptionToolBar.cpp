@@ -890,7 +890,7 @@ void TranscriptionToolBar::Repaint( wxPaintDC *dc )
    wxMemoryDC memDC;
    memDC.SelectObject(*mBackgroundBitmap);
 
-   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+   dc->Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
 #endif
 }
 
