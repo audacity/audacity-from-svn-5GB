@@ -27,7 +27,7 @@
 <h1 align=center>Pop-Down Menu</h1>
 
 <table cellpadding=4><tr>
- <td valign=top><img border=0 src="images/track_panel_open.png" width="151" height="305" alt="Track Pop-Down Menu" align="middle"></td>
+ <td valign=top><img border=0 src="images/track_panel_open.png" width="160" alt="Track Pop-Down Menu" align="middle"></td>
  <td valign=top>
   <table>
    <tr>
@@ -44,15 +44,23 @@
 
    <tr>
      <td class=menuref_item align=right valign=top>Waveform</td>
-     <td>Traditional display of audio material. It displays the amplitude of the audio over time. It is the default display mode.</td>
+     <td>Traditional display of audio material. It displays the
+	     amplitude of the audio over time. This is the default display mode.</td>
    </tr>
+   <tr>
+     <td class=menuref_item align=right valign=top>Waveform (dB)</td>
+     <td>Like Waveform, but logarithmic instead of linear vertical units
+	     . It displays the amplitude in dB of the audio over time.</td>
+   </tr>
+
    <tr>
      <td class=menuref_item align=right valign=top>Spectrum</td>
      <td>Displays the frequency spectrum of the audio over time.</td>
    </tr>
    <tr>
-     <td class=menuref_item align=right valign=top>Pitch(EAC)</td>
-     <td>Tries to detect the pitch of the current audio and displays that information over time.</td>
+     <td class=menuref_item align=right valign=top>Pitch (EAC)</td>
+     <td>Tries to detect the pitch of the current audio and displays
+	     that information over time.</td>
    </tr>
 
    <tr><td><hr></td><td><hr class=menu></td></tr>
@@ -82,26 +90,30 @@
 
    <tr>
      <td class=menuref_item align=right valign=top>Set&nbsp;Sample&nbsp;Format</td>
-     <td>
-         Pick the sample format for this track. The result is that all newly written data
-         is written in this format, no matter what format the original material was in. Newly written
-         data can be output by effect and generator plugins for example.
+     <td>Pick the sample format for this track. The result is that all newly
+	     written data is written in this format, no matter what format the
+	     original material was in. Newly written data can be produced by
+	     effects and generator plugins for example.
      </td>
    </tr>
    <tr><td><hr></td><td><hr class=menu></td></tr>
    <tr>
      <td class=menuref_item align=right valign=top>Set&nbsp;Rate</td>
-     <td>Set the sample rate of this track. Upon import, the track sample rate is set to that of the imported material.
-         A resampling feature is planned, so sounds of different sample rates can be combined in to one project. Right
-         now, if the audio sample rate is different to the project sample rate, you have to resample the audio before
-         importing it, so it plays at the correct speed in Audacity.</td>
+     <td>Set the sample rate of this track. Upon import, the track sample
+	rate is set to that of the imported material.
+	On playback or exporting the audio will be re-sampled to the
+	project rate on the fly. This option can be useful to change the
+	speed and pitch of audio, or if the sample rate of the source
+	was wrong.
+     </td>
    </tr>
   </table>
  </td>
 </tr></table>
 <center>
 <br>
-<a class="ss" href="screen_track.html">Back to the Track page</a>
+<!-- <a class="ss" href="screen.html">Back to the Stuff On Screen page</a> -->
+<a class=ss href="index.html">Back to the main page</a>
 </center>
 <br>
 </body>

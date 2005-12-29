@@ -93,10 +93,10 @@ whereas ID3v1 tags go at the end.  Having the title and author
 first means that someone downloading an MP3 you created will
 know that information before they've finished downloading the 
 song.</p>
-
+<!-- end of first column -->
 	</td>
 	<td valign=top width="50%">
-
+		<!-- start of second column -->
 
 
 <a name="quickmix"></a>
@@ -110,10 +110,10 @@ the right channel, or both (mono).
 For example, if you have
 four tracks:
 <ul>
-  <li> Track 1: left channel
-  <li> Track 2: left channel
-  <li> Track 3: right channel
-  <li> Track 4: mono channel
+	<li> Track 1: left channel</li>
+	<li> Track 2: left channel</li>
+	<li> Track 3: right channel</li>
+	<li> Track 4: mono channel</li>
 </ul>
 </p>
 <p class=a>and you select them all and perform a Quick Mix, you will end up
@@ -127,9 +127,8 @@ with two tracks: the first will contain a mix of tracks 1, 2, and 4
 
 <p class=a>Note that if you try to mix two very loud tracks together, you may
 get clipping (it will sound like pops, clicks, and noise).  To avoid
-this, you should first use the Amplify... command to reduce the amplitude
-of all of your tracks.  A future version of Audacity will do automatic
-gain control and calculate the optimal amplitude for you.</p>
+this, you should use the track gain controls to reduce the amplitude
+of all of your tracks.</p>
 
 
 <a name="newaudiotrack"></a>
@@ -139,13 +138,23 @@ since importing, recording, and mixing automatically create new tracks
 as needed.  But you can use this to cut or copy data from an existing
 track and paste it into a blank track.</p>
 
+<a name="newstereotrack"></a>
+<p class=menuref_item>New Stereo Track</p>
+<p class=a>Creates a stereo version of the new audio track above. You may need
+this if you start with a load of mono tracks and want to export a stereo mix.</p>
 
 <a name="newlabeltrack"></a>
 <p class=menuref_item>New Label Track</p>
 <p class=a>This creates a new Label track, which can be very useful for
 textual annotation.  See the discussion on 
-<a name="tracks_label.html">Label tracks</a> for more information
+<a href="tracks_label.html">Label tracks</a> for more information
 on how to use label tracks.</p>
+
+<a name="newtimetrack"></a>
+<p class=menuref_item>New Time Track</p>
+<p class=a>Creates a special track that can be used to speed up and slow down
+playback over the course of the project. This affects all tracks in the 
+project.</p>
 
 <a name="remove"></a>
 <p class=menuref_item>Remove Track(s)</p>
@@ -156,85 +165,32 @@ To cut out only part of the audio in a track, use
 <a href="menu_file.html#delete">Delete</a> or 
 <a href="menu_file.html#silence">Silence</a>.</p>
 
-	</td>
-    </tr>
-
-    <tr><td colspan=2>&nbsp;<br><hr width="70%"></td></tr>
-
-    <tr>
-        <td valign=top>
-<a name="cursororselectionsave"></a>
-<p class=menuref_item>Cursor or Selection Save</p>
-<p class=a>Saves the current cursor position. If a selection has been made, it also saves that. This function only saves
-the cursor position and selection boundaries, but not the actual audio data.</p>
-
-<a name="cursororselectionrestore"></a>
-<p class=menuref_item>Cursor or Selection Restore</p>
-<p class=a>Restores the cursor position and selection.</p>
-
-        </td>
-        <td valign=top>
-
-<a name="cursortotrackstart"></a>
-<p class=menuref_item>Cursor to Track Start</p>
-<p class=a>Places the cursor at the beginning of the current track's audio.</P>
-
-<a name="cursortotrackend"></a>
-<p class=menuref_item>Cursor to Track End</p>
-<p class=a>Places the cursor at the end of the current track's audio.</P>
-
-<a name="cursortoselectionstart"></a>
-<p class=menuref_item>Cursor to Selection Start</p>
-<p class=a>Places the cursor at the beginning of the current selection.</P>
-
-<a name="cursortoselectionend"></a>
-<p class=menuref_item>Cursor to Selection End</p>
-<p class=a>Places the cursor at the end of the current selection.</P>
 
 	</td>
     </tr>
-    <tr><td colspan=2>&nbsp;<br><hr width="70%"></td></tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr> 
+    <!--  the blue separator -->
     <tr>
         <td colspan=2>
 
 <a name=align></a>
-<center><p class=menuref_item><font size="+1">-&gt; <U>Align</U> &lt;- functions</font></p></center>
+<center><p class=menuref_item><font size="+1">Align functions</font></p></center>
 <p class=a>All the align functions work on whole tracks or groups of tracks, NOT on selections, even if they
 span across multiple tracks. Please read the
-<a href="tutorial_align_1.html">tutorial on how to use the align functions</a>. You will also find some creative uses and solutions to common problems there.</p>
-
-        </td>
+<a href="tutorial_align_1.html">tutorial on how to use the align functions</a>. 
+You will also find some creative uses and solutions to common problems there.
+<br>These functions operate on each track individually. If more than one track
+is selected, these functions do not preserve their position to one another.
+</td>
     </tr>
+
     <tr>
-        <td valign=top>
-
-<a name="aligntogether"></a>
-<p class=menuref_item>Align Tracks Together</p>
-<p class=a>If you select multiple tracks, this command adjusts their time offset
-so that they start at the same time.  It adjusts their starting time
-to the average of all of the tracks' original starting times.
-To adjust the time offset of one track, use the 
-<a href="toolbar.html#timeshift">Time Shift</a> tool.</p>
-
-         </td>
          <td valign=top>
-
-<a name="alignzero"></a>
+		 <a name="alignzero"></a>
 <p class=menuref_item>Align with Zero</p>
-<p class=a>If you select multiple tracks, this command resets their time offset
-to zero. To adjust the time offset of one track, use the 
-<a href="toolbar.html">Time Shift</a> tool.</p>
+<p class=a>Aligns the start of any selected tracks to the start of the
+project.</P>
 
-         </td>
-    </tr>
-
-
-    <tr><td colspan=2><center><br><hr width="50%"><br>These functions operate on each track individually.<br>
-         If more than one track is selected, these functions do not preserve their position to one another.</center></td>
-    </tr>
-
-    <tr>
-         <td valign=top>
 
 <a name="aligncursor"></a>
 <p class=menuref_item>Align with Cursor</p>
@@ -263,46 +219,52 @@ to zero. To adjust the time offset of one track, use the
 <p class=menuref_item>Align End with Selection End</p>
 <p class=a>Aligns the end of any selected tracks to the end of the current selection</P>
 
-         </td>
-    </tr>
+<a name="aligntogether"></a>
+<p class=menuref_item>Align Tracks Together</p>
+<p class=a>If you select multiple tracks, this command adjusts their time offset
+so that they start at the same time.  It adjusts their starting time
+to the average of all of the tracks' original starting times.
+To adjust the time offset of one track, use the 
+<a href="toolbar.html#timeshift">Time Shift</a> tool.</p>
 
-
-    <tr><td colspan=2><center><br><hr width="50%"><br><B>Groups</B> refer to more than two selected tracks,<br>
-         which get shifted as if they were one track. This preserves their position to one another.</center></td>
-    </tr>
-
-    <tr>
-         <td valign=top>
-
-<a name="aligngroupcursor"></a>
-<p class=menuref_item>Align Group with Cursor</p>
-<p class=a>Aligns the start of any group of selected tracks to the cursor position.</P>
-
-<a name="aligngroupselectionstart"></a>
-<p class=menuref_item>Align Group with Selection Start</p>
-<p class=a>Aligns the start of any group of selected tracks to the start of the current selection</P>
-
-<a name="aligngroupselectionend"></a>
-<p class=menuref_item>Align Group with Selection End</p>
-<p class=a>Aligns the start of any group of selected tracks to the end of the current selection</P>
 
          </td>
-         <td valign=top>
+ </tr>
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr> 
+    <!--  the blue separator -->
 
-<a name="aligngroupendcursor"></a>
-<p class=menuref_item>Align Group End with Cursor</p>
-<p class=a>Aligns the end of any group of selected tracks to the cursor position.</P>
+    <tr><td colspan=2>
+		    <a name="alignmovecursor"></a>
+		    <p class=menuref_item>Align and Move Cursor</p>
+		    <p class=a>These commands work just like the align commands
+		    with the <a href="menu_edit.html#movecursor">move cursor</a>
+		    command immediately following it.</p>
 
-<a name="aligngroupendselectionstart"></a>
-<p class=menuref_item>Align Group End with Selection Start</p>
-<p class=a>Aligns the end of any group of selected tracks to the start of the current selection</P>
+    </td></tr>
+    
+    <tr><td colspan=2 class=top_b>&nbsp;</td></tr> 
+    <!--  the blue separator -->
 
-<a name="aligngroupendselectionend"></a>
-<p class=menuref_item>Align Group End with Selection End</p>
-<p class=a>Aligns the end of any group of selected tracks to the end of the current selection</P>
+    
+    <tr><td>
+	<a name="newlabel"></a>
+	<p class=menuref_item>Add Label at Selection</p>
+<p class=a>This menu item lets you create a new label at the current selection.
+You can title the label by typing with the keyboard and then hitting "Enter"
+when you're done.  The label saves your current selection - so when you click
+on the label later it will return the selection to the state it was in when
+you created the label.
+See the discussion on 
+<a href="tracks_label.html">Label Tracks</a> for more information
+on how to use label tracks.</p></td>
+<!-- end of column -->
 
-         </td>
-    </tr>
+<td>
+	<!-- start of column -->
+	<a name="newlabel"></a>
+	<p class=menuref_item>Add Label at Selection</p>
+	<p class=a>Like <a href="#newlabel">Add Label at Selection</a> but
+	the label is added at the current position during playback. </p>
 
 </table>
 </center>
