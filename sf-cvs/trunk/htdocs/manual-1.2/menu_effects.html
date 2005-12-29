@@ -39,8 +39,9 @@
 
 <p class=a>
 Audacity includes many built-in effects and also lets you use
-plug-in effects (VST plug-ins) in the MacOS and Windows
-versions. You can download many free VST plugins at <a href="http://www.databaseaudio.co.uk">http://www.databaseaudio.co.uk</a>.
+a wide range of plug-in effects. You can download many free plugins for 
+Audacity at <a href="http://audacity.sourceforge.net/download/plugins">
+our Website</a>.
 Loads of information is also available at <a href="http://www.kvr-vst.com">http://www.kvr-vst.com</a>.</p>
 
 
@@ -56,7 +57,7 @@ There are four classes of effects and they are all <a href="effects_basics.html"
 <span class=bg_b><a href="#internal">Internal Effects</a></span>,
 <span class=bg_o><a href="#vstfx">VST Effect Plugins</a></span>(Windows/Mac only),
 <span class=bg_g><a href="#nyquistfx">Nyquist Effects</a></span> and
-<span class=bg_r><a href="#ladspafx">LADSPA Effects</a></span>(Linux only).
+<span class=bg_r><a href="#ladspafx">LADSPA Effects</a></span>
 </td></tr></table></center>
 
 <a name="internal"></a>
@@ -96,10 +97,8 @@ quickly.</p>
 <p class=a>The Echo effect is very simple and is not intended to be used
 in place of a Reverb effect, which simulates the sound of a
 room, concert hall, stage, or other natural environment.
-Audacity for MacOS and Windows comes with FreeVerb, a free VST
-Reverb plug-in.  See <a href="#freeverb">FreeVerb</a>, below,
-for more information.</p>
-
+Audacity for MacOS and Windows comes with Gverb, a free LASPA
+Reverb plug-in.
 <p class=a>Note that if you set the decay value to 1.0, you can use Echo
 to create loops that repeat as long as you want any never
 change volume.</p>
@@ -113,11 +112,10 @@ fade, use the <a href="toolbar.html#envelope">envelope tool</a>.</p>
 fade, use the <a href="toolbar.html#envelope">envelope tool</a>.</p>
 
 <p class=menuref_item>FFT Filter...</p>
-<p class=a>This effect is fully functional but the dialog box is unfortunately
-still under construction.  You can still use it, but there are no
-axes to tell you which frequencies are which, or how much gain you're
-applying.</p>
-<p class=a>This is the most general type of filter.  If you're careful, you
+<p class=a>This is the most general type of filter. You define a curve that
+shows how much louder or quieter each frequency in the signal should be made.
+<br/>
+If you're careful, you
 can use it to highlight exactly the frequencies you want.
 However, doing an FFT filter is more likely to result in
 artifacts, especially if the filter you draw is not smooth.</p>
@@ -207,8 +205,11 @@ the speakers.</p>
 <a name=vstfx></a>
 <H2 align=center class=bg_o>VST Plug-ins</H2>
 <p class=a>To use a VST plug-in effect, put the effect in the directory (folder)
-called "VST", which should be in the same directory where Audacity
-resides.  If there is no directory called VST, create one.  The next
+called "Plug-Ins", which should be in the same directory where Audacity
+resides.  If there is no directory, create one.
+You will also need to download and unzip the 
+<a href="http://audacityteam.org/vst/">VST Enabler</a> to the same directory.
+The next
 time you launch Audacity, any plug-ins you added will appear in the
 Effect menu.</p>
 
@@ -290,19 +291,20 @@ highpass filter filters out the low frequencies.</p>
 <a name=nyquistfx></a>
 <H2 align=center class=bg_g>Nyquist Plugins</H2>
 <p class=a>To use a Nyquist effect, put the effect in the directory (folder)
-called "nyquist", which should be in the same directory where Audacity
-resides.  Upon installation, some nyquist scripts are included, so you needn't worry
-about creating this directory.  The next time you launch Audacity, any plug-ins you
-added will appear in the Effect menu.</p>
+called "Plug-Ins", which should be in the same directory where Audacity
+resides.  Upon installation, some nyquist scripts are included, so you needn't
+worry about creating this directory.  The next time you launch Audacity,
+any plug-ins you added will appear in the Effect, Generate or Analyse menus.</p>
 <!-- a name="nyquist1"></a>
 <p class=menuref_item>Freeverb2...</p -->
 
 
 <a name=ladspafx></a>
 <H2 align=center class=bg_r>LADSPA Plugins</H2>
-<p class=a>
-&nbsp;
-</p>
+<p class=a>These started out a a plugin format for Linux, but can now be used
+on Windows and OS X as well. There are lots of free plugins available, and
+no enabler is needed. More information can be found
+<a href="http://www.ladspa.org/">on the web</a>.</p>
 
 
 <center>
