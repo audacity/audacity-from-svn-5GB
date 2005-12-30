@@ -145,25 +145,40 @@ struct BuiltinFormatString {
    const wxChar *formatStr;
 };
 
-const int kNumBuiltinFormatStrings = 8;
+const int kNumBuiltinFormatStrings = 16;
+/* need to increment this when adding new formats */
 
 BuiltinFormatString BuiltinFormatStrings[kNumBuiltinFormatStrings] =
    {{_("mm:ss"),
      _("*,01000m060.01000s")},
+    {_("seconds"),
+     _("*.01000 seconds")},
     {_("hh:mm:ss + milliseconds"),
      _("*h060m060.01000s")},
     {_("hh:mm:ss + samples"),
      _("*h060m060s+.#samples")},
+    {_("samples"),
+     _("*01000samples|#")},
     {_("hh:mm:ss + film frames (24 fps)"),
      _("*h060m060s+.24 frames")},
+    {_("film frames (24 fps)"),
+     _("* frames |24")},
+    {_("hh:mm:ss + NTSC drop frames (29.97 fps)"),
+     _("*h060m060s+.2997 frames")},
+    {_("NTSC drop frames (29.97 fps)"),
+     _("* frames|29.97002997")},
+    {_("hh:mm:ss + NTSC non-drop frames (30 fps)"),
+     _("*h060m060s+.3 frames")},
+    {_("NTSC non-drop frames (30 fps)"),
+     _("* frames|30")},
+    {_("hh:mm:ss + PAL frames (25 fps)"),
+     _("*h060m060s+.25 frames")},
+    {_("PAL frames (25 fps)"),
+     _("* frames|25")},
     {_("hh:mm:ss + CDDA frames (75 fps)"),
      _("*h060m060s+.75 frames")},
-    {_("seconds"),
-     _("*,01000,01000.01000 seconds")},
-    {_("samples"),
-     _("*,01000,01000,01000samples|#")},
-    {_("NTSC frames"),
-     _("*,01000,01000.01000 NTSC frames|29.97002997")}};
+    {_("CDDA frames (75 fps)"),
+     _("* frames |75")}};
 
 class TimeField {
 public:
