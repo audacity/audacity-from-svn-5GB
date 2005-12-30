@@ -257,7 +257,7 @@ bool AmplifyDialog::TransferDataFromWindow()
       ratio = pow(10.0,TrapDouble(r*10, AMP_MIN, AMP_MAX)/200.0);
    }
 
-   noclip = GetClipCheckBox()->GetValue();
+   noclip = !GetClipCheckBox()->GetValue();
 
    return TRUE;
 }
@@ -340,7 +340,7 @@ void AmplifyDialog::OnAmpSlider(wxCommandEvent & event)
    double dB2 = (GetAmpSlider()->GetValue()-1) / 10.0;
    double ratio2 = pow(10.0,TrapDouble(dB2, AMP_MIN, AMP_MAX)/20.0);
 
-   if (GetClipCheckBox()->GetValue() &&
+   if (!GetClipCheckBox()->GetValue() &&
        ratio * peak > 1.0 &&
        ratio2 * peak < 1.0)
       ratio = 1.0 / peak;
@@ -362,7 +362,7 @@ void AmplifyDialog::OnClipCheckBox(wxCommandEvent & event)
 
 void AmplifyDialog::CheckClip()
 {
-   if (!GetClipCheckBox()->GetValue()) {
+   if (!GetClipCheckBox()->GetValue() == true) {
       GetOK()->Enable(ratio * peak <= 1.0);
    }
    else {
@@ -393,7 +393,7 @@ void AmplifyDialog::OnOk(wxCommandEvent & event)
 {
    TransferDataFromWindow();
    
-   if (GetClipCheckBox()->GetValue() == true) {
+   if (GetClipCheckBox()->GetValue() == false) {
      if (ratio * peak > 1.0)
         ratio = 1.0 / peak;
    }
