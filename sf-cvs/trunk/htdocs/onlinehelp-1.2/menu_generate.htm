@@ -9,13 +9,17 @@
 <font color="#000099">
 <h1>Generate Menu</h1>
 </font>
-
-If you choose an item from the Generate menu when nothing is
-selected, a new track is created and filled with 30 seconds
-of whatever type of audio you requested.
+<p>If you choose an item from the Generate menu when there are no tracks 
+in a project, a new track is created. Otherwise, the current track is used.
 <br><p>
 If a track is selected and the cursor is placed in a single place
-in the track, 30 seconds of audio are inserted at the cursor position.
+in the track audio is inserted at the cursor position. The default duration 
+is 30 seconds.
+
+The audio created will replace the any selection, otherwise it is inserted into
+the track, shifting up later parts of the track.
+</p>
+
 <br><p>
 If a region of audio is selected, audio is inserted at the left
 edge of the selection, and the length of the inserted audio is equal
