@@ -36,7 +36,7 @@
 
 <p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href="http://www.fsf.org/">Free Software Foundation</a>.</p>
 
-<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.org/">Mozilla</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite, and entire <a title="Ubuntu Linux" href="http://www.ubuntulinux.org/">Linux-based operating systems</a>.</p>');
+<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href="http://www.mozilla.com/">Mozilla</a> web browser, the <a href="http://www.openoffice.org/">OpenOffice.org</a> office suite, and entire <a title="Ubuntu Linux" href="http://www.ubuntulinux.org/">Linux-based operating systems</a>.</p>');
 
   include "../include/footer.inc.php";
 ?>
