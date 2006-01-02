@@ -147,10 +147,7 @@ struct BuiltinFormatString {
    const wxChar *formatStr;
 };
 
-const int kNumBuiltinFormatStrings = 16;
-/* need to increment this when adding new formats */
-
-BuiltinFormatString BuiltinFormatStrings[kNumBuiltinFormatStrings] =
+BuiltinFormatString BuiltinFormatStrings[] =
    {{_("mm:ss"),
      _("*,01000m060.01000s")},
     {_("seconds"),
@@ -181,6 +178,10 @@ BuiltinFormatString BuiltinFormatStrings[kNumBuiltinFormatStrings] =
      _("*h060m060s+.75 frames")},
     {_("CDDA frames (75 fps)"),
      _("* frames |75")}};
+
+const int kNumBuiltinFormatStrings =
+   sizeof(BuiltinFormatStrings) /
+   sizeof(BuiltinFormatStrings[0]);
 
 class TimeField {
 public:
