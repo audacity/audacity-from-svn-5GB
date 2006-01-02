@@ -121,6 +121,7 @@ enum {
 BEGIN_EVENT_TABLE(Meter, wxPanel)
    EVT_TIMER(OnMeterUpdateID, Meter::OnMeterUpdate)
    EVT_MOUSE_EVENTS(Meter::OnMouse)
+   EVT_ERASE_BACKGROUND(Meter::OnErase)
    EVT_PAINT(Meter::OnPaint)
    EVT_SIZE(Meter::OnSize)
    EVT_MENU(OnDisableMeterID, Meter::OnDisableMeter)
@@ -160,7 +161,6 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mNumBars(0),
    mLayoutValid(false),
    mBitmap(NULL),
-   mBackgroundBitmap(NULL),
    mIcon(NULL)
 {
    int i;
@@ -176,8 +176,6 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    else {
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
    }
-
-//   CreateIcon(2);
 
    wxColour origColour(204, 204, 204);
    mPeakPeakPen = wxPen(wxColour(102, 102, 255), 1, wxSOLID);
@@ -233,43 +231,43 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
 void Meter::CreateIcon(int aquaOffset)
 {
-   wxColour backgroundColour =  mBkgndBrush.GetColour();
-//      wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DFACE);
-//   mBkgndBrush = wxBrush(backgroundColour, wxSOLID);
-   wxImage *image, *alpha;
-
    if (mIcon) {
       delete mIcon;
       mIcon = NULL;
    }
 
-   if (mIsInput) {
-      image = new wxImage(wxBitmap(Mic).ConvertToImage());
-      alpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
+   const char **icon;
+   const char **alpha;
+
+   if(mIsInput)
+   {
+      icon = Mic;
+      alpha = MicAlpha;
    }
-   else {
-      image = new wxImage(wxBitmap(Speaker).ConvertToImage());
-      alpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
+   else
+   {
+      icon = Speaker;
+      alpha = SpeakerAlpha;
    }
 
-   wxImage *bkgnd = CreateSysBackground(25, 25, aquaOffset,
-					backgroundColour);
-   wxImage *final = OverlayImage(bkgnd, image, alpha, 0, 0);
-   mIcon = new wxBitmap(final);
-
-   delete image;
-   delete alpha;
-   delete bkgnd;
-   delete final;
+   mIcon = new wxBitmap( icon );
+   mIcon->SetMask( new wxMask( wxBitmap( alpha ), *wxBLACK ) );
 }
 
 Meter::~Meter()
 {
+   // LLL:  This prevents a crash during termination if monitoring
+   //       is active.
+   if (gAudioIO->IsMonitoring())
+      gAudioIO->StopStream();
    delete mIcon;
    if (mBitmap)
       delete mBitmap;
-   if (mBackgroundBitmap)
-     delete mBackgroundBitmap;
+}
+
+void Meter::OnErase(wxEraseEvent &evt)
+{
+   // Ignore it to prevent flashing
 }
 
 void Meter::OnPaint(wxPaintEvent &evt)
@@ -579,26 +577,12 @@ void Meter::HandleLayout()
    int barw, barh;
    int i;
 
-#ifdef USE_AQUA_THEME
-   if (!mBackgroundBitmap ||
-       mBackgroundBitmap->GetWidth() != mWidth ||
-       mBackgroundBitmap->GetWidth() != mHeight) {
-     if (mBackgroundBitmap)
-       delete mBackgroundBitmap;
-
-     wxImage *image = CreateAquaBackground(mWidth, mHeight, 0);
-     mBackgroundBitmap = new wxBitmap(image);
-     delete image;
-   }
-#endif
-
    mRuler.SetFlip(true);
    mRuler.SetLabelEdges(true);
 
    switch(mStyle) {
    default:
       wxPrintf(wxT("Style not handled yet!\n"));
-   case Disable:
       break;
    case VerticalStereo:
       mMenuRect = wxRect(mWidth - menuWidth - 5, mHeight - menuHeight - 2,
@@ -746,15 +730,13 @@ void Meter::HandlePaint(wxDC &dc)
    if (!mLayoutValid)
       HandleLayout();
 
-#ifdef USE_AQUA_THEME
-   dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
-#else
+#ifndef USE_AQUA_THEME
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBkgndBrush);
    dc.DrawRectangle(0, 0, mWidth, mHeight);
 #endif
 
-   dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y);
+   dc.DrawBitmap(*mIcon, mIconPos.x, mIconPos.y, true);
 
    // Draws a beveled button and a down pointing triangle.
    // The style and sizing matches the ones in the title 
@@ -945,7 +927,6 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
       mBkgndBrush = mSavedBkgndBrush;
       mLightPen = mSavedLightPen;
 
-      SetStyle(mSavedStyle);
       mMeterDisabled = false;
       }
    else
@@ -968,9 +949,6 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
       mLayoutValid = false;
       Refresh(false);
 
-
-      mSavedStyle = mStyle;
-      SetStyle(Disable);
       mMeterDisabled = true;
       }
    if (mIsInput)

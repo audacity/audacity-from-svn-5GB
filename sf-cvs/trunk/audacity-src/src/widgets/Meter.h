@@ -84,7 +84,6 @@ class Meter : public wxPanel
    // These should be kept in the same order as they appear
    // in the menu
    enum Style {
-      Disable = 0,
       HorizontalStereo,
       VerticalStereo,
       VerticalMulti,
@@ -109,6 +108,7 @@ class Meter : public wxPanel
    // Event handlers
    //
 
+   void OnErase(wxEraseEvent &evt);
    void OnPaint(wxPaintEvent &evt);
    void OnSize(wxSizeEvent &evt);
    void OnMouse(wxMouseEvent &evt);
@@ -171,7 +171,6 @@ class Meter : public wxPanel
    bool      mLayoutValid;
 
    wxBitmap *mBitmap;
-   wxBitmap *mBackgroundBitmap;
    wxRect    mMenuRect;
    wxPoint   mIconPos;
    wxPoint   mLeftTextPos;
