@@ -46,8 +46,8 @@ class TrackArtist {
    ~TrackArtist();
 
    void DrawTracks(TrackList * tracks,
-                   wxDC & dc, wxRect & r,
-                   wxRect & clip, ViewInfo * viewInfo, 
+                   wxDC & dc, wxRegion & reg,
+                   wxRect & r, wxRect & clip, ViewInfo * viewInfo, 
                    bool drawEnvelope,bool drawSamples,bool drawSliders);
 
    void DrawVRuler(Track * t, wxDC * dc, wxRect & r);

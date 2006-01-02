@@ -108,7 +108,9 @@ void TrackArtist::SetInset(int left, int top, int right, int bottom)
 }
 
 void TrackArtist::DrawTracks(TrackList * tracks,
-                             wxDC & dc, wxRect & r,
+                             wxDC & dc,
+                             wxRegion & reg,
+                             wxRect & r,
                              wxRect & clip,
                              ViewInfo * viewInfo,
                              bool drawEnvelope,
@@ -174,7 +176,8 @@ void TrackArtist::DrawTracks(TrackList * tracks,
       }
 
       if (stereoTrackRect.y < (clip.y + clip.height) &&
-          stereoTrackRect.y + stereoTrackRect.height > clip.y) {
+          stereoTrackRect.y + stereoTrackRect.height > clip.y
+          && reg.Contains( stereoTrackRect )) {
 
          wxRect rr = trackRect;
          rr.x += mInsetLeft;
