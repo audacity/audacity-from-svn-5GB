@@ -124,8 +124,11 @@ Track *TrackListIterator::First()
       return NULL;
 }
 
-Track *TrackListIterator::Next()
+Track *TrackListIterator::Next( bool SkipLinked )
 {
+   if (SkipLinked && cur && cur->t->GetLinked())
+      cur = cur->next;
+
    if (cur)
       cur = cur->next;
 
@@ -314,12 +317,14 @@ Track *TrackList::GetLink(Track * t) const
    return NULL;
 }
 
-Track *TrackList::GetNext(Track * t) const
+Track *TrackList::GetNext(Track * t, bool linked ) const
 {
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         if (p->next)
+         if (linked && t->GetLinked() && p->next)
+            p = p->next;
+         if (p && p->next)
             return p->next->t;
          else
             return NULL;
@@ -329,12 +334,14 @@ Track *TrackList::GetNext(Track * t) const
    return NULL;
 }
 
-Track *TrackList::GetPrev(Track * t) const
+Track *TrackList::GetPrev(Track * t, bool linked ) const
 {
    TrackListNode *p = head;
    while (p) {
       if (p->t == t) {
-         if (p->prev)
+         if (linked && p->prev && p->prev->prev && p->prev->prev->t->GetLinked())
+            p = p->prev;
+         if (p && p->prev)
             return p->prev->t;
          else
             return NULL;

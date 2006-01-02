@@ -1887,6 +1887,7 @@ void AudacityProject::OnUndo()
    TrackList *l = mUndoManager.Undo(&mViewInfo.sel0, &mViewInfo.sel1);
    PopState(l);
 
+   mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
    FixScrollbars();
    mTrackPanel->Refresh(false);
 
@@ -2739,7 +2740,7 @@ void AudacityProject::OnZoomSel()
    if (mViewInfo.sel1 <= mViewInfo.sel0)
       return;
 
-   Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0)),
+   Zoom(mViewInfo.zoom * mViewInfo.screen / (mViewInfo.sel1 - mViewInfo.sel0));
    TP_ScrollWindow(mViewInfo.sel0);
 }
 
@@ -2968,6 +2969,7 @@ void AudacityProject::OnImportMIDI()
                    _("Import MIDI"));
 
          FixScrollbars();
+         mTrackPanel->EnsureVisible(newTrack);
          mTrackPanel->Refresh(false);
       }
    }
@@ -3281,6 +3283,7 @@ void AudacityProject::OnNewWaveTrack()
    PushState(_("Created new audio track"), _("New Track"));
 
    FixScrollbars();
+   mTrackPanel->EnsureVisible(t);
    mTrackPanel->Refresh(false);
 }
 
@@ -3305,6 +3308,7 @@ void AudacityProject::OnNewStereoTrack()
    PushState(_("Created new stereo audio track"), _("New Track"));
    
    FixScrollbars();
+   mTrackPanel->EnsureVisible(t);
    mTrackPanel->Refresh(false);
 }
 
@@ -3321,6 +3325,7 @@ void AudacityProject::OnNewLabelTrack()
    PushState(_("Created new label track"), _("New Track"));
 
    FixScrollbars();
+   mTrackPanel->EnsureVisible(t);
    mTrackPanel->Refresh(false);
 }
 
@@ -3363,6 +3368,7 @@ void AudacityProject::OnNewTimeTrack()
          */
          
          FixScrollbars();
+         mTrackPanel->EnsureVisible(t);
          mTrackPanel->Refresh(false);
       }
 }
@@ -3393,6 +3399,7 @@ int AudacityProject::DoAddLabel(double left, double right)
    PushState(_("Added label"), _("Label"));
 
    FixScrollbars();
+   mTrackPanel->EnsureVisible((Track *)lt);
    mTrackPanel->Refresh(false);
    return index;
 }
@@ -3682,15 +3689,37 @@ void AudacityProject::OnRemoveTracks()
 {
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
+   Track *f = NULL;
+   Track *l = NULL;
 
    while (t) {
       if (t->GetSelected()) {
+         if (!f)
+            f = l;         // Capture the track preceeding the first removed track
          delete t;
          t = iter.RemoveCurrent();
       }
-      else
+      else {
+         l = t;
          t = iter.Next();
+      }
    }
+
+   // All tracks but the last were removed...try to use the last track
+   if (!f)
+      f = l;
+
+   // Try to use the first track after the removal or, if none,
+   // the track preceeding the removal
+   if (f) {
+      t = mTracks->GetNext(f, true);
+      if (t)
+         f = t;
+   }
+
+   // If we actually have something left, then make sure it's seen
+   if (f)
+      mTrackPanel->EnsureVisible(f);
 
    PushState(_("Removed audio track(s)"), _("Remove Track"));
 

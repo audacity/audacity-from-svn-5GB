@@ -1961,6 +1961,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
    OnZoomFit();
 
+   mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
    mTrackPanel->Refresh(false);
 
    if (initiallyEmpty && mDirManager->GetProjectName() == wxT("")) {
