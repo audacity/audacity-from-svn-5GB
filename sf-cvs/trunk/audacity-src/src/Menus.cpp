@@ -2230,7 +2230,7 @@ void AudacityProject::OnTrim()
    Track *n = iter.First();
 
    while (n) {
-      if (n->GetSelected()) {
+      if ((n->GetKind() == Track::Wave) && n->GetSelected()) {
          //Delete the section before the left selector
         ((WaveTrack*)n)->Trim(mViewInfo.sel0, mViewInfo.sel1);
       }
