@@ -191,6 +191,7 @@ class RulerPanel : public wxPanel {
 
    ~RulerPanel();
 
+   void OnErase(wxEraseEvent &evt);
    void OnPaint(wxPaintEvent &evt);
    void OnSize(wxSizeEvent &evt);
 
@@ -207,38 +208,57 @@ private:
 // Once TrackPanel uses wxSizers, we will derive it from some 
 // wxWindow and the GetSize and SetSize functions
 // will then be wxWindows functions instead.
-//class AdornedRulerPanel : public RulerPanel {
-class AdornedRulerPanel 
+class AdornedRulerPanel : public wxPanel
 {
- public:
-//   AdornedRulerPanel(wxWindow* parent, wxWindowID id,
-//              const wxPoint& pos = wxDefaultPosition,
-//              const wxSize& size = wxDefaultSize);
+public:
+   AdornedRulerPanel(wxWindow* parent,
+                     wxWindowID id,
+                     const wxPoint& pos = wxDefaultPosition,
+                     const wxSize& size = wxDefaultSize,
+                     ViewInfo *viewinfo = NULL);
 
-    AdornedRulerPanel();
    ~AdornedRulerPanel();
 
 public:
-   void DrawAdornedRuler(wxDC * dc, ViewInfo * pViewInfo, 
-      bool text, bool indicator, bool bRecording);
-   static int GetRulerHeight() { return 22;}
-   void SetSize( const wxRect & r );
-   void GetSize( int * width, int * height );
-   void SetLeftOffset( int offset ){ leftOffset = offset;}
-   double indicatorPos;
+   static int GetRulerHeight() { return 22; }
+   void SetLeftOffset(int offset){ mLeftOffset = offset; }
+
+   void DrawCursor(wxCoord x);
+   void DrawIndicator(bool rec, double pos);
+   void DrawSelection();
+   void ClearIndicator();
 
 public:
-   Ruler  ruler;
 
 private:
-   wxRect mRect;
-   ViewInfo * mViewInfo;
-   int leftOffset;  // Number of pixels before we hit the 'zero position'.
-   int GetLeftOffset() { return leftOffset;}
-   void DrawBorder(wxDC * dc, wxRect & r);
-   void DrawSelection(wxDC * dc,  const wxRect r);
-   void DrawMarks(wxDC * dc, const wxRect r, bool /*text */ );
-   void DrawIndicator(wxDC * dc, bool bRecording);
+   void OnErase(wxEraseEvent &evt);
+   void OnPaint(wxPaintEvent &evt);
+   void OnSize(wxSizeEvent &evt);
+
+   void DoDraw(wxDC *dc);
+
+   void DoDrawBorder(wxDC * dc);
+   void DoDrawMarks(wxDC * dc, bool /*text */ );
+   void DoDrawCursor(wxDC * dc, wxCoord x);
+   void DoDrawSelection(wxDC * dc);
+   void DoDrawIndicator(wxDC * dc);
+
+   Ruler  ruler;
+   ViewInfo *mViewInfo;
+
+   wxBitmap *mBuffer;
+
+   wxRect mOuter;
+   wxRect mInner;
+
+   int mLeftOffset;  // Number of pixels before we hit the 'zero position'.
+
+   int mLastCurX;
+
+   int mIndType;     // -1 = No indicator, 0 = Play, 1 = Record
+   double mIndPos;
+
+   DECLARE_EVENT_TABLE()
 };
 
 #endif //define __AUDACITY_RULER__
