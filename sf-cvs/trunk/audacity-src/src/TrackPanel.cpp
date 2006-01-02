@@ -1,3 +1,4 @@
+
 /**********************************************************************
 
   Audacity: A Digital Audio Editor
@@ -80,6 +81,7 @@
 #endif
 
 #include <wx/dcclient.h>
+#include <wx/dcbuffer.h>
 #include <wx/dcmemory.h>
 #include <wx/font.h>
 #include <wx/fontenum.h>
@@ -223,6 +225,8 @@ enum {
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
     EVT_CHAR(TrackPanel::OnKeyEvent)
+    EVT_SIZE(TrackPanel::OnSize)
+    EVT_ERASE_BACKGROUND(TrackPanel::OnErase)
     EVT_PAINT(TrackPanel::OnPaint)
     EVT_SET_FOCUS(TrackPanel::OnSetFocus)
     EVT_KILL_FOCUS(TrackPanel::OnKillFocus)
@@ -341,7 +345,11 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mTracks(tracks),
      mViewInfo(viewInfo),
      mRuler(ruler),
+#if !defined(__WXMAC__)
      mBitmap(NULL),
+#endif
+     mBacking(NULL),
+     mRefreshBacking(false),
      mAutoScrolling(false)
 #ifndef __WXGTK__   //Get rid if this pragma for gtk
 #pragma warning( default: 4355 )
@@ -459,10 +467,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mTimer.parent = this;
    mTimer.Start(50, FALSE);
 
-   //Initialize the indicator playing state, so that
-   //we know that no drawing line needs to be erased.
-   mPlayIndicatorExists=false;
-
    //Initialize a member variable pointing to the current
    //drawing track.
    mDrawingTrack =NULL;
@@ -482,8 +486,13 @@ TrackPanel::~TrackPanel()
 {
    mTimer.Stop();
 
+#if !defined(__WXMAC__)
    if (mBitmap)
       delete mBitmap;
+#endif
+
+   if (mBacking)
+      delete mBacking;
 
    delete mTrackArtist;
 
@@ -510,15 +519,6 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
    delete mLabelTrackLabelMenu;
    delete mTimeTrackMenu;
-
-   while(!mScreenAtIndicator.IsEmpty())
-   {
-      delete mScreenAtIndicator[0]->bitmap;
-      tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
-      mScreenAtIndicator.RemoveAt(0);
-      delete tmpDeletedTpBitmap;
-   }
-   mScreenAtIndicator.Clear();
 
    while(!mPreviousCursorData.IsEmpty())
    {
@@ -649,40 +649,6 @@ void TrackPanel::RemoveStaleCursors(wxRegionIterator * upd)
          else
          {
             i++; //skip over this cursor
-         }
-      }
-      (*upd)++; //move to next update region
-   }
-   upd->Reset(); //reset the iterator to point to the first update region
-}
-
-/// Replaces indicators with whatever was on screen before the 
-/// indiocators were drawn.
-void TrackPanel::RemoveStaleIndicators(wxRegionIterator * upd)
-{
-   while((*upd).HaveRects())
-   {
-      wxRect rect;
-      rect = (*upd).GetRect(); //convert the region to a rectangle
-
-      //Does the rectangle intersect with the indicator?
-      //If it does, remove it
-      size_t i = 0;
-      while(i < mScreenAtIndicator.GetCount())
-      {
-         wxRect indicatorRect(mScreenAtIndicator[i]->x, mScreenAtIndicator[i]->y, mScreenAtIndicator[i]->bitmap->GetWidth(), mScreenAtIndicator[i]->bitmap->GetHeight());
-
-         if(rect.Intersects(indicatorRect))
-         {
-            //delete this indicator
-            delete mScreenAtIndicator[i]->bitmap;
-            tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[i];
-            mScreenAtIndicator.RemoveAt(i);
-            delete tmpDeletedTpBitmap;
-         }
-         else
-         {
-            i++; //skip over this indicator
          }
       }
       (*upd)++; //move to next update region
@@ -860,6 +826,10 @@ void TrackPanel::OnTimer()
             trackRect.y = 0;
             trackRect.width -= GetLeftOffset();
             Refresh(false, &trackRect);
+
+            // Must tell OnPaint() to recreate the backing bitmap
+            // since we've not done a full refresh.
+            mRefreshBacking = true;
          }
          
          if ((mTimeCount % 40) == 0) {
@@ -918,7 +888,11 @@ void TrackPanel::ScrollDuringDrag()
 /// The indicator is a small triangle, red for record, green for play.
 void TrackPanel::UpdateIndicator(wxDC * dc)
 {
+   // The stream time can be < 0 if the audio is currently stopped
    double indicator = gAudioIO->GetStreamTime();
+
+   AudacityProject *p = GetProject();
+   bool audioActive = gAudioIO->IsStreamActive(p->GetAudioIOToken());
    bool onScreen = between_inclusive(mViewInfo->h, indicator,
                                      mViewInfo->h + mViewInfo->screen);
 
@@ -927,29 +901,45 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
 
    // BG: Scroll screen if option is set
    // msmeyer: But only if not playing looped or in one-second mode
-   AudacityProject *p = GetProject();
    if (mViewInfo->bUpdateTrackIndicator &&
        p->mLastPlayMode != loopedPlay &&
        p->mLastPlayMode != oneSecondPlay && 
-       gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
+       audioActive &&
        indicator>=0 && !onScreen && !gAudioIO->IsPaused())
+   {
       mListener->TP_ScrollWindow(indicator);
+      MakeParentRedrawScrollbars();
+   }
 
-   if (!mIndicatorShowing && !onScreen) 
+   if( !mIndicatorShowing && !onScreen )
       return;
-   
-   mIndicatorShowing = (onScreen &&
-                        gAudioIO->IsStreamActive(p->GetAudioIOToken()));
+
+   mIndicatorShowing = (onScreen && audioActive);
+   if( !mIndicatorShowing || indicator < 0 )
+   {
+      if( !mLastIndicator.IsEmpty() )
+      {
+         CleanupIndicators();
+      }
+      mRuler->ClearIndicator();
+      return;
+   }
 
    bool bIsClientDC = false;
    if(!dc)
    {
       bIsClientDC = true;
       dc = new wxClientDC(this);
+
+      // Remove old indicators.
+      if( !mLastIndicator.IsEmpty() )
+      {
+         CleanupIndicators();
+      }
    }
  
-   //Draw the line across all tracks specifying where play is
-   DrawTrackIndicator(dc);
+   // Draw the line across all tracks
+   DrawTrackIndicator(dc, indicator);
 
    if(bIsClientDC)
    {
@@ -961,71 +951,108 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
    mRuler->DrawIndicator( rec, indicator );
 }
 
+/// LL: OnSize() is called when the panel is resized
+void TrackPanel::OnSize(wxSizeEvent & /* event */)
+{
+   int width, height;
+   GetSize(&width, &height);
+
+   // Mac doesn't need a buffered DC
+#if !defined(__WXMAC__)
+   if (mBitmap)
+      delete mBitmap;
+
+   mBitmap = new wxBitmap(width, height);
+#endif
+
+   // (Re)allocate the backing bitmap
+   if (mBacking)
+      delete mBacking;
+
+   mBacking = new wxBitmap(width, height);
+
+   // Refresh the entire area.  Really only need to refresh when
+   // expanding...is it worth the trouble?
+   Refresh(false);
+}
+
+/// LL: OnErase( ) is called during the normal course of 
+///  completing an erase operation.
+void TrackPanel::OnErase(wxEraseEvent & /* event */)
+{
+   // Ignore it for now.  This reduces flashing when dragging windows
+   // over track area while playing or recording.
+   //
+   // However, if artifacts or the like are discovered later, then
+   // we could blit the backing bitmap here.
+}
+
 /// AS: OnPaint( ) is called during the normal course of 
 ///  completing a repaint operation.
 void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 {
-   wxPaintDC dc(this);
-
-   wxRegionIterator upd(GetUpdateRegion()); // get the update rect list
-   
-#ifdef __WXMAC__
-
-   // Mac OS X automatically double-buffers the screen for you,
-   // so our bitmap is unneccessary
-
 #if DEBUG_DRAW_TIMING
-   struct timeval t1, t2;
-   gettimeofday(&t1, NULL);
-   std::cout << "."<< std::flush;
+   wxStopWatch sw;
 #endif
 
+   // Retrieve the windows update list and bounding rectangle
+   wxRegion rgn = GetUpdateRegion();
+   wxRect box = rgn.GetBox();
+   wxRegionIterator upd(rgn); // get the update rect list
+
+   // Mac OS X automatically double-buffers the screen for you.
+#ifdef __WXMAC__
+   wxPaintDC dc(this);
+#else
+   wxBufferedPaintDC dc(this, *mBitmap);
+#endif
+
+   // Supposed to be good-to-do under Windows
    dc.BeginDrawing();
 
-   DrawTracks(&dc);
-   RemoveStaleIndicators(&upd);
-   //UpdateIndicator(&dc);
-   RemoveStaleCursors(&upd);
+   // Recreate the backing bitmap if we have a full refresh
+   // (See TrackPanel::Refresh())
+   if( mRefreshBacking )
+   {
+      // Reset (should a mutex be used???)
+      mRefreshBacking = false;
+
+      // Redraw
+      DrawTracks(&dc);
+
+      // Save the backing bitmap
+      wxMemoryDC mdc;
+      mdc.SelectObject( *mBacking );
+      mdc.Blit( 0, 0, mBacking->GetWidth(), mBacking->GetHeight(), &dc, 0, 0 );
+      mdc.SelectObject( wxNullBitmap );
+   }
+   else
+   {
+      // Copy full, possibly clipped, bounding rectange
+      wxMemoryDC mdc;
+      mdc.SelectObject( *mBacking );
+      dc.Blit( box.x, box.y, box.width, box.height, &mdc, box.x, box.y );
+      mdc.SelectObject( wxNullBitmap );
+   } 
+
+   // Tell the ruler to refresh.  This is done here to make the ruler
+   // display selection highlighting.  It could be made smarter by
+   // only refreshing if the selection changed AND it really should be
+   // done outside of the paint event.
+   mRuler->Refresh( false );
+
+   // Update the indicator in case it was damaged.
+   UpdateIndicator(&dc);
+
    if( mViewInfo->sel0 == mViewInfo->sel1)
       DrawCursors(&dc);
 
+   // Supposed to be good-to-do under Windows
    dc.EndDrawing();
-   
-   #if DEBUG_DRAW_TIMING
-   gettimeofday(&t2, NULL);
-   wxPrintf(wxT("Total: %.3f\n"), 
-          (t2.tv_sec + t2.tv_usec*0.000001) - 
-          (t1.tv_sec + t1.tv_usec*0.000001));
-   std::cout << "."<< std::flush;
-   #endif
 
-#else
-
-   int width, height;
-   GetSize(&width, &height);
-   if (width != mPrevWidth || height != mPrevHeight || !mBitmap) {
-      mPrevWidth = width;
-      mPrevHeight = height;
-
-      if (mBitmap)
-         delete mBitmap;
-
-      mBitmap = new wxBitmap(width, height);
-   }
-
-   wxMemoryDC memDC;
-
-   memDC.SelectObject(*mBitmap);
-
-   DrawTracks(&memDC);
-   RemoveStaleIndicators(&upd);
-   //UpdateIndicator(&memDC);
-   RemoveStaleCursors(&upd);
-
-   if(mViewInfo->sel0 == mViewInfo->sel1)
-      DrawCursors(&memDC);
-
-   dc.Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
+#if DEBUG_DRAW_TIMING
+   sw.Pause();
+   wxLogDebug(wxT("Total: %d milliseconds"), sw.Time() );
 #endif
 }
 
@@ -1629,6 +1656,7 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 
    mViewInfo->sel0 = wxMin(mSelStart, selend);
    mViewInfo->sel1 = wxMax(mSelStart, selend);
+   Refresh(false);
    mRuler->DrawSelection();
 }
 
@@ -3999,75 +4027,53 @@ bool TrackPanel::HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event)
    return false;
 }
 
-/// This draws the play indicator as a vertical line on each of the tracks
-void TrackPanel::DrawTrackIndicator(wxDC * dc)
+void TrackPanel::CleanupIndicators()
 {
-   // Draw indicator
-   double ind = gAudioIO->GetStreamTime();
-   int indp = 0;
-   wxMemoryDC tmpDrawDC;
+   RefreshRect( mLastIndicator, false );
+   mLastIndicator = wxRect(0,0,0,0);
+}
 
-   //Erase the indicator
-   while(!mScreenAtIndicator.IsEmpty())
+/// This draws the play indicator as a vertical line on each of the tracks
+void TrackPanel::DrawTrackIndicator(wxDC * dc, double ind)
+{
+   // Don't draw if the indicator would be out of bounds
+   if ((ind < mViewInfo->h) || (ind > (mViewInfo->h + mViewInfo->screen)))
    {
-      tmpDrawDC.SelectObject(*mScreenAtIndicator[0]->bitmap);
-      dc->Blit(mScreenAtIndicator[0]->x, mScreenAtIndicator[0]->y, mScreenAtIndicator[0]->bitmap->GetWidth(), mScreenAtIndicator[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
-      tmpDrawDC.SelectObject(wxNullBitmap);
-      delete mScreenAtIndicator[0]->bitmap;
-      tpBitmap *tmpDeletedTpBitmap = mScreenAtIndicator[0];
-      mScreenAtIndicator.RemoveAt(0);
-      delete tmpDeletedTpBitmap;
+      return;
    }
-   mScreenAtIndicator.Clear();
 
-   if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
-      indp = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
+   // Set play/record color
+   AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() ? false : true));
+      
+   // Get the size of the trackpanel region, so we know where to redraw
+   wxRect panelarea = GetRect();
 
-      AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() ? false : true));
-         
-      //Get the size of the trackpanel region, so we know where to redraw
-      int width, height;
-      GetSize(&width, &height);   
+   // Draw cursor in all visible tracks
+   TrackListIterator iter(mTracks);
 
-      int x = indp;
-      int y = -mViewInfo->vpos;
+   // Iterate through each track
+   int x = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
+   int y = -mViewInfo->vpos;
+   for (Track * t = iter.First(); t; t = iter.Next())
+   {
+      int height = t->GetHeight();
+      wxCoord top = y + kTopInset + 1;
+      wxCoord bottom = y + height - 2;
+      wxRect trackarea(x, top, 1, bottom-top);
 
-      if (x >= GetLeftOffset())
+      // Only want non-Label tracks that are visible 
+      if ((panelarea.Intersects(trackarea)) &&
+          (t->GetKind() != Track::Label))
       {
-         // Draw cursor in all selected tracks
-         TrackListIterator iter(mTracks);
+         // Draw the new indicator in its correct location
+         dc->DrawLine(x, top, x, bottom);
 
-         // Iterate through each track
-         for (Track * t = iter.First(); t; t = iter.Next())
-         {
-            int height = t->GetHeight();
-            if ( t->GetKind() != Track::Label)
-            {
-               wxCoord top = y + kTopInset + 1;
-               wxCoord bottom = y + height - 2;
-
-               //Save bitmaps of the areas that we are going to overwrite
-               wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
-               tmpDrawDC.SelectObject(*tmpBitmap);
-
-               //Copy the part of the screen into the bitmap, using the memory DC
-               tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
-               tmpDrawDC.SelectObject(wxNullBitmap);
-
-               //Add the bitmap to the array
-               tpBitmap *tmpTpBitmap = new tpBitmap;
-               tmpTpBitmap->x = x;
-               tmpTpBitmap->y = top;
-               tmpTpBitmap->bitmap = tmpBitmap;
-               mScreenAtIndicator.Add(tmpTpBitmap);
-
-               //Draw the new indicator in its correct location
-               dc->DrawLine(x, top, x, bottom);
-            }
-            //Increment y so you draw on the proper track
-            y += height;
-         }
+         // Add indicator to redraw rect
+         mLastIndicator.Union( wxRect( x, 0, 1, panelarea.GetHeight() ));
       }
+
+      // Increment y so you draw on the proper track
+      y += height;
    }
 }
 
@@ -4084,7 +4090,20 @@ double TrackPanel::GetMostRecentXPos()
 void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
                          const wxRect *rect /* = NULL */)
 {
-   mPlayIndicatorExists = false;
+
+   // Tell OnPaint() to refresh the backing bitmap.
+   //
+   // Originally I had the check within the OnPaint() routine and it
+   // was working fine.  That was until I found that, even though a full
+   // refresh was requested, Windows only set the onscreen portion of a
+   // window as damaged.
+   //
+   // So, if any part of the trackpanel was off the screen, full refreshes
+   // didn't work and the display get all mucked up.
+   if( !rect || ( *rect == GetRect() ) )
+   {
+      mRefreshBacking = true;
+   }
    wxWindow::Refresh(eraseBackground, rect);
    DisplaySelection();
 }

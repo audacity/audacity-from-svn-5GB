@@ -1227,8 +1227,8 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 
    //This makes the TrackPanel refresh properly, so that
    //it doesn't leave a little trail of indicator cursors
-#ifndef __WXMAC__
-   mTrackPanel->Refresh(false);
+#if !defined(__WXMAC__)
+   mTrackPanel->CleanupIndicators();
 #endif
 }
 
