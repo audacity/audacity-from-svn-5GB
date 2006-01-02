@@ -3774,7 +3774,7 @@ void AudacityProject::OnCollapseAllTracks()
    }
 
    ModifyState();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 void AudacityProject::OnExpandAllTracks()
@@ -3789,7 +3789,7 @@ void AudacityProject::OnExpandAllTracks()
    }
 
    ModifyState();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
