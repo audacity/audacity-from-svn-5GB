@@ -24,6 +24,7 @@ class AColor {
  public:
    static void Init();
 
+   static void DrawFocus(wxDC & dc, wxRect & r);
    static void Bevel(wxDC & dc, bool up, wxRect & r);
 
    static void Light(wxDC * dc, bool selected);

@@ -39,6 +39,7 @@
 #include "AudacityApp.h"
 
 #include "AboutDialog.h"
+#include "AColor.h"
 #include "AudioIO.h"
 #include "Benchmark.h"
 #include "DirManager.h"
@@ -334,6 +335,7 @@ bool AudacityApp::OnInit()
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
 
+   AColor::Init();
    InitPreferences();
 
 	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
