@@ -284,9 +284,6 @@ class TrackPanel:public wxPanel {
    // MM: Handle mouse wheel rotation
    void HandleWheelRotation(wxMouseEvent & event);
 
-   void DoPopupMenu(wxMouseEvent &event, wxRect& titleRect, 
-		    Track* t, wxRect &r, int num);
-
    // Handle resizing.
    void HandleResizeClick(wxMouseEvent & event);
    void HandleResizeDrag(wxMouseEvent & event);
@@ -297,11 +294,14 @@ class TrackPanel:public wxPanel {
    void HandleRearrange(wxMouseEvent & event);
    void CalculateRearrangingThresholds(wxMouseEvent & event);
    void HandleClosing(wxMouseEvent & event);
+   void HandlePopping(wxMouseEvent & event);
    void HandleMutingSoloing(wxMouseEvent & event, bool solo);
    void HandleMinimizing(wxMouseEvent & event);
    void HandleSliders(wxMouseEvent &event, bool pan);
    bool MuteSoloFunc(Track *t, wxRect r, int x, int f, bool solo);
    bool MinimizeFunc(Track *t, wxRect r, int x, int f);
+   bool CloseFunc(Track * t, wxRect r, int x, int y);
+   bool PopupFunc(Track * t, wxRect r, int x, int y);
    bool GainFunc(Track * t, wxRect r, wxMouseEvent &event,
                  int index, int x, int y);
    bool PanFunc(Track * t, wxRect r, wxMouseEvent &event,
@@ -498,7 +498,8 @@ private:
       IsPanSliding,
       IsMinimizing,
       IsOverCutLine,
-      WasOverCutLine
+      WasOverCutLine,
+      IsPopping
    };
 
    enum MouseCaptureEnum mMouseCapture;
