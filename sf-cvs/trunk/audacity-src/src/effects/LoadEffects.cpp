@@ -8,8 +8,9 @@
 
 **********************************************************************/
 
-#include "LoadEffects.h"
 #include "../Audacity.h"
+
+#include "LoadEffects.h"
 
 #include "Effect.h"
 
