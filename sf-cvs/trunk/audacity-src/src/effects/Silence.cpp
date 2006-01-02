@@ -142,7 +142,7 @@ wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool ca
    item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("&Generate Silence"), wxDefaultPosition,
+       new wxButton(parent, wxID_OK, _("&Generate"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item12->SetDefault();
    item12->SetFocus();
