@@ -69,8 +69,6 @@ const int notePos[12] = { 1, 6, 11, 16, 21,
 
 TrackArtist::TrackArtist()
 {
-   AColor::Init();
-
    mInsetLeft   = 0;
    mInsetTop    = 0;
    mInsetRight  = 0;
