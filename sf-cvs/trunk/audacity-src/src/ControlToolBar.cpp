@@ -212,7 +212,7 @@ void ControlToolBar::Populate()
    mBatch = MakeButton((char const **) CleanSpeech,
                        (char const **) CleanSpeechDisabled,
                        (char const **) CleanSpeechAlpha,
-                       ID_RECORD_BUTTON,
+                       ID_BATCH_BUTTON,
                        false,
                        _("Clean Speech"),
                        _("Clean Speech"));
