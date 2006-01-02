@@ -333,7 +333,11 @@ void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
    if (index == TimeTextCtrl::GetNumBuiltins())
       return;
    #else
+   #if wxCHECK_VERSION(2, 6, 2)
    int index = ((wxChoice *)mFormatChoice)->GetCurrentSelection();
+   #else
+   int index = ((wxChoice *)mFormatChoice)->GetSelection();
+   #endif
    #endif
 
    wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
