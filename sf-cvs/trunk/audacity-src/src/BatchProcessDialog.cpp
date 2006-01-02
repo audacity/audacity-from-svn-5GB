@@ -43,6 +43,7 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
             _("Batch Processing"),
             wxPoint(20,20), wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
+   mAbort = false;
 
    AudacityProject * p = GetActiveProject();
    if( p->GetCleanSpeechMode() )
@@ -131,6 +132,13 @@ void BatchProcessDialog::OnOk(wxCommandEvent & event)
 
 void BatchProcessDialog::OnCancel(wxCommandEvent & event)
 {
+   // Can happen if user clicks Cancel before clicking Ok
+   if( mOK->IsEnabled() )
+   {
+      EndModal(false);
+      return;
+   }
+
    mCancel->Enable(false);
 
    mAbort = true;
