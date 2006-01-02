@@ -12,9 +12,10 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "NoiseRemoval.h"
 
-#include "../Audacity.h"
 #include "../Envelope.h"
 #include "../FFT.h"
 #include "../WaveTrack.h"

@@ -13,6 +13,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Phaser.h"
 
 #include "../WaveTrack.h"

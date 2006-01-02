@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/button.h>

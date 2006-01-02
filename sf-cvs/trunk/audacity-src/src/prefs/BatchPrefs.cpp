@@ -9,9 +9,10 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "BatchPrefs.h"
 
-#include "../Audacity.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
@@ -72,6 +73,9 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
    int i;
+
+   SetLabel(_("Batch"));         // Provide visual label
+   SetName(_("Batch"));          // Provide audible label
 
    topSizer = new wxBoxSizer( wxVERTICAL );
    // CheckSizer is a sizer that holds the left and right sizers.

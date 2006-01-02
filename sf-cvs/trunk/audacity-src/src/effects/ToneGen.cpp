@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "ToneGen.h"
 #include "../WaveTrack.h"
 

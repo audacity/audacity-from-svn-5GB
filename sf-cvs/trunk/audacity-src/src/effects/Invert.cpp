@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Invert.h"
 
 bool EffectInvert::ProcessSimpleMono(float *buffer, sampleCount len)

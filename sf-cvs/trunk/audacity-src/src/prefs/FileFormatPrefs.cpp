@@ -9,6 +9,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/statbox.h>
 #include <wx/sizer.h>
@@ -39,6 +41,9 @@ END_EVENT_TABLE()
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(_("File Formats"));         // Provide visual label
+   SetName(_("File Formats"));          // Provide audible label
+
    mAudacity = GetActiveProject();
 
    /* Read existing config... */

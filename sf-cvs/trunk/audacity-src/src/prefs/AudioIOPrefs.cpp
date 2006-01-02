@@ -16,6 +16,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -48,6 +50,9 @@ END_EVENT_TABLE()
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(wxT("Audio I/O"));         // Provide visual label
+   SetName(wxT("Audio I/O"));          // Provide audible label
+
    /* read prefs all at once, then set up the dialog */
    gPrefs->SetPath(wxT("/AudioIO"));
    mPlayDevice = gPrefs->Read(wxT("PlaybackDevice"), wxT(""));
@@ -128,11 +133,6 @@ PrefsPanel(parent)
       }
    }
       
-   mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numDevices, playLabels);
-   mPlayChoice->SetSelection(playIndex);
-   if(playLabels) delete [] playLabels;
-
    // declare three box sizers for static text
    wxBoxSizer *textSizer[3];
    
@@ -146,6 +146,11 @@ PrefsPanel(parent)
    fileSizer[0]->Add(
       textSizer[0], 0, 
       wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
+                              numDevices, playLabels);
+   mPlayChoice->SetSelection(playIndex);
+   if(playLabels) delete [] playLabels;
 
    fileSizer[0]->Add(mPlayChoice, 1, 
       wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);

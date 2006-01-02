@@ -19,6 +19,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
@@ -26,7 +28,6 @@
 #include <wx/html/helpctrl.h>
 #include <wx/intl.h>
 
-#include "Audacity.h"
 #include "AudacityApp.h"
 #include "Help.h"
 #include "Internat.h"

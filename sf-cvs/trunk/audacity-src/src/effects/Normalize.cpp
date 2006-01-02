@@ -9,10 +9,11 @@
 
 **********************************************************************/
 
+#include "../Audacity.h" // for rint from configwin.h
+
 #include <math.h>
 
 #include "Normalize.h"
-#include "../Audacity.h" // for rint from configwin.h
 #include "../WaveTrack.h"
 #include "../Prefs.h"
 #include "../Project.h"

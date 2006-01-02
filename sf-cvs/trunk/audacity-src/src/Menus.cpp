@@ -129,7 +129,10 @@ enum {
    RedoAvailableFlag      = 0x00000400,
    ZoomInAvailableFlag    = 0x00000800,
    ZoomOutAvailableFlag   = 0x00001000,
-   StereoRequiredFlag     = 0x00002000   //lda
+   StereoRequiredFlag     = 0x00002000,  //lda
+   ToolBarDockHasFocus    = 0x00004000,  //lll
+   TrackPanelHasFocus     = 0x00008000,  //lll
+   SelectionBarHasFocus   = 0x00010000   //lll
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -665,6 +668,10 @@ void AudacityProject::CreateMenusAndCommands()
    SetMenuBar(menubar);
 
    c->SetDefaultFlags(0, 0);
+   c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"), FN(PrevFrame));
+   c->AddCommand(wxT("NextFrame"),   _("Cycle foward through Dock, Track View, and Selection Bar\tCtrl+F6"), FN(NextFrame));
+
+   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
    c->AddCommand(wxT("SelectTool"),  _("Selection Tool\tF1"),          FN(OnSelectTool));
    c->AddCommand(wxT("EnvelopeTool"),_("Envelope Tool\tF2"),           FN(OnEnvelopeTool));
    c->AddCommand(wxT("DrawTool"),    _("Draw Tool\tF3"),               FN(OnDrawTool));
@@ -701,26 +708,27 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
+   c->AddCommand(wxT("PrevTrack"),     _("Move to Previous Track\tUp"),                      FN(OnCursorUp));
+   c->AddCommand(wxT("NextTrack"),     _("Move to Next Track\tDown"),                        FN(OnCursorDown));
+   c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
+   c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
+   c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left"),               FN(OnSelExtendLeft));
+   c->AddCommand(wxT("SelExtRight"),   _("Selection Extend Right\tShift+Right"),             FN(OnSelExtendRight));
+   c->AddCommand(wxT("SelExtUp"),      _("Selection Extend Top\tShift+Up"),                  FN(OnSelExtendUp));
+   c->AddCommand(wxT("SelExtDown"),    _("Selection Extend Bottom\tShift+Down"),             FN(OnSelExtendDown));
+   c->AddCommand(wxT("SelCntrLeft"),   _("Selection Contract Left\tCtrl+Shift+Right"),       FN(OnSelContractLeft));
+   c->AddCommand(wxT("SelCntrRight"),  _("Selection Contract Right\tCtrl+Shift+Left"),       FN(OnSelContractRight));
 
-   c->AddCommand(wxT("PrevTrack"),   _("Move to Previous Track\tUp"),  FN(OnPrevTrack));
-   c->AddCommand(wxT("NextTrack"),   _("Move to Next Track\tDown"),    FN(OnNextTrack));
-   c->AddCommand(wxT("CursorLeft"),  _("Cursor Left\tLeft"),           FN(OnCursorLeft));
-   c->AddCommand(wxT("CursorRight"), _("Cursor Right\tRight"),         FN(OnCursorRight));
-   c->AddCommand(wxT("SelExtLeft"),  _("Selection Extend Left\tShift+Left"),     FN(OnSelExtendLeft));
-   c->AddCommand(wxT("SelExtRight"), _("Selection Extend Right\tShift+Right"),   FN(OnSelExtendRight));
-   c->AddCommand(wxT("SelCntrLeft"), _("Selection Contract Left\tCtrl+Shift+Right"),   FN(OnSelContractLeft));
-   c->AddCommand(wxT("SelCntrRight"),_("Selection Contract Right\tCtrl+Shift+Left"), FN(OnSelContractRight));
-
-   c->AddCommand(wxT("TrackPan"), _("Change pan on first selected track\tShift+P"),FN(OnTrackPan));
-   c->AddCommand(wxT("TrackPanLeft"), _("Pan left on first selected track\tAlt+Shift+Left"),FN(OnTrackPanLeft));
-   c->AddCommand(wxT("TrackPanRight"), _("Pan right on first selected track\tAlt+Shift+Right"),FN(OnTrackPanRight));
-   c->AddCommand(wxT("TrackGain"), _("Change gain on first selected track\tShift+G"),FN(OnTrackGain));
-   c->AddCommand(wxT("TrackGainInc"), _("Increase gain on first selected track\tAlt+Shift+Up"),FN(OnTrackGainInc));
-   c->AddCommand(wxT("TrackGainDec"), _("Decrease gain on first selected track\tAlt+Shift+Down"),FN(OnTrackGainDec));
-   c->AddCommand(wxT("TrackMenu"),_("Open menu on first selected track\tShift+M"),FN(OnTrackMenu));
-   c->AddCommand(wxT("TrackMute"),_("Mute/Unmute first selected track\tShift+U"),FN(OnTrackMute));
-   c->AddCommand(wxT("TrackSolo"),_("Solo/Unsolo first selected track\tShift+S"),FN(OnTrackSolo));
-   c->AddCommand(wxT("TrackClose"),_("Close first selected track\tShift+C"),FN(OnTrackClose));
+   c->AddCommand(wxT("TrackPan"),      _("Change pan on focused track\tShift+P"),            FN(OnTrackPan));
+   c->AddCommand(wxT("TrackPanLeft"),  _("Pan left on focused track\tAlt+Shift+Left"),       FN(OnTrackPanLeft));
+   c->AddCommand(wxT("TrackPanRight"), _("Pan right on focused track\tAlt+Shift+Right"),     FN(OnTrackPanRight));
+   c->AddCommand(wxT("TrackGain"),     _("Change gain on focused track\tShift+G"),           FN(OnTrackGain));
+   c->AddCommand(wxT("TrackGainInc"),  _("Increase gain on focused track\tAlt+Shift+Up"),    FN(OnTrackGainInc));
+   c->AddCommand(wxT("TrackGainDec"),  _("Decrease gain on focused track\tAlt+Shift+Down"),  FN(OnTrackGainDec));
+   c->AddCommand(wxT("TrackMenu"),     _("Open menu on focused track\tShift+M"),             FN(OnTrackMenu));
+   c->AddCommand(wxT("TrackMute"),     _("Mute/Unmute focused track\tShift+U"),              FN(OnTrackMute));
+   c->AddCommand(wxT("TrackSolo"),     _("Solo/Unsolo focused track\tShift+S"),              FN(OnTrackSolo));
+   c->AddCommand(wxT("TrackClose"),    _("Close focused track\tShift+C"),                    FN(OnTrackClose));
 
    mLastFlags = 0;
 
@@ -839,6 +847,33 @@ void AudacityProject::RebuildMenuBar()
    CreateMenusAndCommands();
 }
 
+int AudacityProject::GetFocusedFrame()
+{
+   wxWindow *w = FindFocus();
+
+   while( w )
+   {
+      if( w == mToolBarDock )
+      {
+         return ToolBarDockHasFocus;
+      }
+
+      if( w == mTrackPanel )
+      {
+         return TrackPanelHasFocus;
+      }
+
+      if( w == mSelectionBar )
+      {
+         return SelectionBarHasFocus;
+      }
+
+      w = w->GetParent();
+   }
+
+   return 0;
+}
+
 wxUint32 AudacityProject::GetUpdateFlags()
 {
    // This method determines all of the flags that determine whether
@@ -892,6 +927,8 @@ wxUint32 AudacityProject::GetUpdateFlags()
 
    if (GetZoom() > gMinZoom && (flags & TracksExistFlag))
       flags |= ZoomOutAvailableFlag;
+
+   flags |= GetFocusedFrame();
 
    return flags;
 }
@@ -1225,130 +1262,55 @@ void AudacityProject::OnSelToEnd()
    SkipEnd(true);
 }
 
-void AudacityProject::OnPrevTrack()
+void AudacityProject::OnCursorUp()
 {
    mTrackPanel->OnPrevTrack();
-   
 }
 
-void AudacityProject::OnNextTrack()
+void AudacityProject::OnCursorDown()
 {
    mTrackPanel->OnNextTrack();
-   
 }
 
 void AudacityProject::OnCursorLeft()
 {
-
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-   if (mViewInfo.sel0 == mViewInfo.sel1) {
-      mViewInfo.sel0 -= multiplier/mViewInfo.zoom;
-      mViewInfo.sel1 -= multiplier/mViewInfo.zoom;
-      if (mViewInfo.sel0 < 0.0)
-         mViewInfo.sel0 = 0.0;
-      if (mViewInfo.sel1 < 0.0)
-         mViewInfo.sel1 = 0.0;
-   }
-   else
-      mViewInfo.sel1 = mViewInfo.sel0;
-
-   mTrackPanel->Refresh(false);   
+   mTrackPanel->OnCursorLeft( false, false );
 }
 
 void AudacityProject::OnCursorRight()
 {
-
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-
-   if (mViewInfo.sel0 == mViewInfo.sel1) {
-      mViewInfo.sel0 += multiplier/mViewInfo.zoom;
-      mViewInfo.sel1 += multiplier/mViewInfo.zoom;
-   }
-   else
-      mViewInfo.sel0 = mViewInfo.sel1;
-
-   mTrackPanel->Refresh(false);   
+   mTrackPanel->OnCursorRight( false, false );
 }
 
 void AudacityProject::OnSelExtendLeft()
 {
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-
-   mViewInfo.sel0 -= multiplier/mViewInfo.zoom;
-   if (mViewInfo.sel0 < 0.0)
-      mViewInfo.sel0 = 0.0;
-   mTrackPanel->Refresh(false);
+   mTrackPanel->OnCursorLeft( true, false );
 }
 
 void AudacityProject::OnSelExtendRight()
 {
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-   mViewInfo.sel1 += multiplier/mViewInfo.zoom;
-   mTrackPanel->Refresh(false);
+   mTrackPanel->OnCursorRight( true, false );
 }
 
 void AudacityProject::OnSelContractLeft()
 {
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-
-   mViewInfo.sel0 += multiplier/mViewInfo.zoom;
-   if (mViewInfo.sel0 > mViewInfo.sel1)
-      mViewInfo.sel0 = mViewInfo.sel1;
-   mTrackPanel->Refresh(false);
+   mTrackPanel->OnCursorRight( true, true );
 }
 
 void AudacityProject::OnSelContractRight()
 {
-   //if the last adjustment was very recent, we are
-   //holding the key down and should move faster.
-   wxLongLong curtime = ::wxGetLocalTimeMillis();
-   int multiplier =1;
-   if(curtime - mLastSelectionAdjustment < 50)
-      multiplier=4;
-   mLastSelectionAdjustment = curtime;
-
-
-   mViewInfo.sel1 -= multiplier/mViewInfo.zoom;
-   if (mViewInfo.sel1 < mViewInfo.sel0)
-      mViewInfo.sel1 = mViewInfo.sel0;
-   mTrackPanel->Refresh(false);
+   mTrackPanel->OnCursorLeft( true, true );
 }
 
+void AudacityProject::OnSelExtendUp()
+{
+   mTrackPanel->OnPrevTrack( true );
+}
+
+void AudacityProject::OnSelExtendDown()
+{
+   mTrackPanel->OnNextTrack( true );
+}
 
 //this pops up a dialog which allows the left selection to be set.
 //If playing/recording is happening, it sets the left selection at
@@ -1426,54 +1388,91 @@ void AudacityProject::OnSetRightSelection()
    
 }
 
+void AudacityProject::NextFrame()
+{
+   switch( GetFocusedFrame() )
+   {
+      case ToolBarDockHasFocus:
+         mTrackPanel->SetFocus();
+      break;
+
+      case TrackPanelHasFocus:
+         mSelectionBar->SetFocus();
+      break;
+
+      case SelectionBarHasFocus:
+         mToolBarDock->SetFocus();
+      break;
+   }
+}
+
+void AudacityProject::PrevFrame()
+{
+   switch( GetFocusedFrame() )
+   {
+      case ToolBarDockHasFocus:
+         mSelectionBar->SetFocus();
+      break;
+
+      case TrackPanelHasFocus:
+         mToolBarDock->SetFocus();
+      break;
+
+      case SelectionBarHasFocus:
+         mTrackPanel->SetFocus();
+      break;
+   }
+}
+
 void AudacityProject::OnTrackPan()
 {
-   mTrackPanel->OnTrackPan(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackPan();
 }
 
 void AudacityProject::OnTrackPanLeft()
 {
-   mTrackPanel->OnTrackPanLeft(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackPanLeft();
 }
 
 void AudacityProject::OnTrackPanRight()
 {
-   mTrackPanel->OnTrackPanRight(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackPanRight();
 }
 
 void AudacityProject::OnTrackGain()
 {
-   mTrackPanel->OnTrackGain(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackGain();
 }
 
 void AudacityProject::OnTrackGainInc()
 {
-   mTrackPanel->OnTrackGainInc(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackGainInc();
 }
 
 void AudacityProject::OnTrackGainDec()
 {
-   mTrackPanel->OnTrackGainDec(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackGainDec();
 }
 
 void AudacityProject::OnTrackMenu()
 {
-   mTrackPanel->OnTrackMenu(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackMenu();
 }
 
 void AudacityProject::OnTrackMute()
 {
-   mTrackPanel->OnTrackMute(mTrackPanel->GetFirstSelectedTrack(),false);
-}
-void AudacityProject::OnTrackSolo()
-{
-   mTrackPanel->OnTrackSolo(mTrackPanel->GetFirstSelectedTrack(),false);
-}
-void AudacityProject::OnTrackClose()
-{
-   mTrackPanel->OnTrackClose(mTrackPanel->GetFirstSelectedTrack());
+   mTrackPanel->OnTrackMute(false);
 }
 
+void AudacityProject::OnTrackSolo()
+{
+   mTrackPanel->OnTrackSolo(false);
+}
+
+void AudacityProject::OnTrackClose()
+{
+   mTrackPanel->OnTrackClose();
+}
 
 
 double AudacityProject::NearestZeroCrossing(double t0)

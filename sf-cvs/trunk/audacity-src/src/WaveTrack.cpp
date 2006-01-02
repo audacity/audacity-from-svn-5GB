@@ -60,7 +60,8 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    mRate = (int) rate;
    mGain = 1.0;
    mPan = 0.0;
-   SetName(_("Audio Track"));
+   SetDefaultName(_("Audio Track"));
+   SetName(GetDefaultName());
    mDisplayMin = -1.0;
    mDisplayMax = 1.0;
    mDisplayNumLocations = 0;
@@ -87,6 +88,7 @@ void WaveTrack::Init(const WaveTrack &orig)
    mRate = orig.mRate;
    mGain = orig.mGain;
    mPan = orig.mPan;
+   SetDefaultName(orig.GetDefaultName());
    SetName(orig.GetName());
    mDisplay = orig.mDisplay;
    mDisplayMin = orig.mDisplayMin;

@@ -18,6 +18,9 @@
   is the binary data side of the transfer.
 
 **********************************************************************/
+
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -30,8 +33,6 @@
 #include <wx/radiobut.h>
 #include <wx/button.h>
 
-
-#include "Audacity.h"
 #include "Project.h"
 #include "Shuttle.h"
 #include "commands/CommandManager.h"

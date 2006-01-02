@@ -64,7 +64,6 @@ pascal OSErr FSpGetFullPath(const FSSpec * spec,
                             short *fullPathLength, Handle * fullPath);
 #endif
 
-#include "Audacity.h"
 #include "Prefs.h"
 
 wxConfig *gPrefs = NULL;

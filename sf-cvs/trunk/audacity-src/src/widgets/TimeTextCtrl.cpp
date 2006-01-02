@@ -118,6 +118,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "TimeTextCtrl.h"
 
 #include <math.h>

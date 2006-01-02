@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/choice.h>

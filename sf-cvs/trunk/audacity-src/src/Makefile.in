@@ -82,6 +82,7 @@ OBJS = \
 	Track.o \
 	TrackArtist.o \
 	TrackPanel.o \
+	TrackPanelAx.o \
 	TranscriptionToolBar.o \
 	UndoManager.o \
 	UploadDialog.o \

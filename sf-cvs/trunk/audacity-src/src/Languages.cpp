@@ -23,13 +23,14 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/hashmap.h>
 #include <wx/intl.h>
 
 #include "Languages.h"
 
-#include "Audacity.h"
 #include "AudacityApp.h"
 
 WX_DECLARE_STRING_HASH_MAP(wxString, LangHash);

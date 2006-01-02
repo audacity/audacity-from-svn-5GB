@@ -535,7 +535,7 @@ bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags
       bool allowed = ((flags & combinedMask) ==
                       (entry->flags & combinedMask));
       if (!allowed)
-         return true;
+         return false;
    }
    
    (*(entry->callback))(entry->index);

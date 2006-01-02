@@ -35,7 +35,8 @@ TimeTrack::TimeTrack(DirManager *projDirManager):
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Flatten(0.5);
    mEnvelope->Mirror(false);
-   SetName(_("Time Track"));
+   SetDefaultName(_("Time Track"));
+   SetName(GetDefaultName());
 
    mRuler = new Ruler();
    mRuler->SetLabelEdges(false);
@@ -67,6 +68,7 @@ TimeTrack::TimeTrack(TimeTrack &orig):
 void TimeTrack::Init(const TimeTrack &orig)
 {
    Track::Init(orig);
+   SetDefaultName(orig.GetDefaultName());
    SetName(orig.GetName());
 }
 

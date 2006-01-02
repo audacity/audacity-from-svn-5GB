@@ -55,6 +55,10 @@
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
 
+const char *overrideTextCtrlNameStr = wxT("");
+const char *overrideChoiceNameStr = wxT("");
+const char *overrideComboBoxNameStr = wxT("");
+
 #ifdef __WXGTK__
 void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
 {

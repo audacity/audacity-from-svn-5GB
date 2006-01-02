@@ -8,6 +8,8 @@
   James Crook
 
 **********************************************************************/
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -22,7 +24,6 @@
 #include <wx/imaglist.h>
 #include <wx/msgdlg.h>
 
-#include "Audacity.h"
 #include "Project.h"
 #include "BatchProcessDialog.h"
 #include "commands/CommandManager.h"
@@ -65,6 +66,7 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
 
    mList = new wxListCtrl(this, FileListID, wxDefaultPosition, wxSize(350, 180),
                           wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER  /* | wxLC_EDIT_LABELS */);
+   mList->SetName(_("Audio files to be processed"));
    mList->SetSizeHints(350, 180);
 
    wxImageList *imageList = new wxImageList(9, 16);

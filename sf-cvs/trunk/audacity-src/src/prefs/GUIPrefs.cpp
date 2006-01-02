@@ -10,9 +10,10 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "GUIPrefs.h"
 
-#include "../Audacity.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
@@ -32,14 +33,17 @@
 // Titles for the lists of check boxes.
 const wxString Titles[NUM_CHECKBOX_CONTAINERS] =
 {
-   _("Behaviors"),  // e.g. 'Pause Always Allowed'.
-   _("Show / Hide") // e.g. show/hide a toolbar or a tabbed window.
+   _("Behaviors"),      // e.g. 'Pause Always Allowed'.
+   _("Show / Hide"),    // e.g. show/hide a toolbar or a tabbed window.
 };
 
 GUIPrefs::GUIPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
    int i;
+
+   SetLabel(_("Interface"));         // Provide visual label
+   SetName(_("Interface"));          // Provide audible label
 
    topSizer = new wxBoxSizer( wxVERTICAL );
    // CheckSizer is a sizer that holds the left and right sizers.
@@ -284,6 +288,9 @@ void GUIPrefs::AllCheckBoxActions()
 
 //lda
    CheckBoxAction(_("Tracks &fit vertically zoomed"), wxT("/GUI/TracksFitVerticallyZoomed"), false );
+   CheckBoxAction(_("&Circular track keyboard navigation"), wxT("/GUI/CircularTrackNavigation"), false );
+   CheckBoxAction(_("&Present track number to accessibility aid"), wxT("/GUI/PresentTrackNumber"), true );
+
    mCurrentCheckBoxContainer=1;
 
 	CheckBoxAction(

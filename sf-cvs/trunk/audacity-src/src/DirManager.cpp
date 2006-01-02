@@ -9,6 +9,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/dir.h>
@@ -32,7 +34,6 @@
 // seed random number generator
 #include <time.h>
 
-#include "Audacity.h"
 #include "AudacityApp.h"
 #include "BlockFile.h"
 #include "blockfile/LegacyBlockFile.h"

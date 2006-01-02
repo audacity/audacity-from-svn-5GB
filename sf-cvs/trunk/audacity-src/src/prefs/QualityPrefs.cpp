@@ -8,9 +8,10 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "QualityPrefs.h"
 
-#include "../Audacity.h"
 #include "../AudioIO.h"
 #include "../Dither.h"
 #include "../Prefs.h"
@@ -50,6 +51,10 @@ QualityPrefs::QualityPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    int i;
+
+   SetLabel(_("Quality"));         // Provide visual label
+   SetName(_("Quality"));          // Provide audible label
+
    // XXX: This should use a previously changed, but not yet saved
    //      sound card setting from the "I/O" preferences tab.
    wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();

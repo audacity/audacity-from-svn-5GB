@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Fade.h"
 #include "../WaveTrack.h"
 

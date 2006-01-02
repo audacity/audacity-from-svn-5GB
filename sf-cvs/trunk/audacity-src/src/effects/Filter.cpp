@@ -15,6 +15,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Filter.h"
 #include "../Envelope.h"
 #include "../FFT.h"

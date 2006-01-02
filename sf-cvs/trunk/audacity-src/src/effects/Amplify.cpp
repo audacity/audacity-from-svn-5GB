@@ -13,6 +13,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "Amplify.h"
 
 #include "../WaveTrack.h"

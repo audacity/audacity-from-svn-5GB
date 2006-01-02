@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "MixerToolBar.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -34,7 +36,6 @@
 #include <wx/image.h>
 #include <wx/tooltip.h>
 
-#include "Audacity.h"
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "widgets/ASlider.h"
@@ -143,6 +144,7 @@ void MixerToolBar::Populate()
                                      wxDefaultSize,
                                      j,
                                      choices );
+   mInputSourceChoice->SetName(_("Input Source"));
    delete [] choices;
    Add( mInputSourceChoice, 0, wxALIGN_CENTER );
 

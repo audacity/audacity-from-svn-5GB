@@ -11,6 +11,8 @@
 
 **********************************************************************/  
 
+#include "Audacity.h"
+
 #include "ToolBar.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".

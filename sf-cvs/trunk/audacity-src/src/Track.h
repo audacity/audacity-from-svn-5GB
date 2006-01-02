@@ -33,6 +33,7 @@ class Track: public XMLTagHandler {
  protected:
    int        mHeight;
    wxString   mName;
+   wxString   mDefaultName;
 
    bool       mSelected;
 
@@ -90,6 +91,8 @@ class Track: public XMLTagHandler {
 
    wxString GetName() const { return mName; }
    void SetName( wxString n ) { mName = n; }
+   wxString GetDefaultName() const { return mDefaultName; }
+   void SetDefaultName( wxString n ) { mDefaultName = n; }
 
    bool GetSelected() const { return mSelected; }
    bool GetMute    () const { return mMute;     }
