@@ -62,7 +62,7 @@ class TrackList;
 class Tags;
 class HistoryWindow;
 class Importer;
-class AdornedRuler;
+class AdornedRulerPanel;
 
 class AudacityProject;
 
