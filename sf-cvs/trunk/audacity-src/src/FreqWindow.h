@@ -13,9 +13,13 @@
 
 #include <wx/brush.h>
 #include <wx/frame.h>
+#include <wx/panel.h>
+#include <wx/dialog.h>
 #include <wx/gdicmn.h>
 #include <wx/pen.h>
+#include <wx/font.h>
 
+class wxStatusBar;
 class wxButton;
 class wxChoice;
 
@@ -44,7 +48,7 @@ class FreqPlot:public wxWindow {
     DECLARE_EVENT_TABLE()
 };
 
-class FreqWindow:public wxFrame {
+class FreqWindow:public wxDialog {
  public:
    FreqWindow(wxWindow * parent, wxWindowID id,
               const wxString & title, const wxPoint & pos);
@@ -66,6 +70,7 @@ class FreqWindow:public wxFrame {
    void OnExport(wxCommandEvent & event);
 
    void Recalc();
+   void DrawPlot();
 
  private:
 
@@ -75,10 +80,11 @@ class FreqWindow:public wxFrame {
    static const int fontSize = 10;
 #endif
 
-   FreqPlot * mFreqPlot;
+   wxStatusBar *mInfo;
 
-   wxBrush mBackgroundBrush;
-   wxPen mBackgroundPen;
+   FreqPlot *mFreqPlot;
+
+   wxFont mFreqFont;
 
    wxCursor *mArrowCursor;
    wxCursor *mCrossCursor;

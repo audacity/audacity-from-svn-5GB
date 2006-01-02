@@ -30,6 +30,8 @@
 #include <wx/filedlg.h>
 #include <wx/intl.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/statusbr.h>
 #endif
 
 #include <wx/textfile.h>
@@ -75,7 +77,7 @@ void InitFreqWindow(wxWindow * parent)
 
 // FreqWindow
 
-BEGIN_EVENT_TABLE(FreqWindow, wxFrame)
+BEGIN_EVENT_TABLE(FreqWindow, wxDialog)
     EVT_CLOSE(FreqWindow::OnCloseWindow)
     EVT_SIZE(FreqWindow::OnSize)
     EVT_BUTTON(FreqCloseButtonID, FreqWindow::OnCloseButton)
@@ -89,12 +91,14 @@ END_EVENT_TABLE()
 FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
                            const wxString & title,
                            const wxPoint & pos):
-  wxFrame(parent, id, title, pos),
+  wxDialog(parent, id, title, pos, wxDefaultSize,
+     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ),
   mData(NULL), mProcessed(NULL), mBitmap(NULL)
 {
    mMouseX = 0;
    mMouseY = 0;
 
+   mFreqFont = wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mArrowCursor = new wxCursor(wxCURSOR_ARROW);
    mCrossCursor = new wxCursor(wxCURSOR_CROSS);
 
@@ -114,6 +118,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       _("Cepstrum")
    };
 
+   wxStaticText *algLabel = new wxStaticText(this, wxID_ANY, _("Algorithm:"));
    mAlgChoice = new wxChoice(this, FreqAlgChoiceID,
                              wxDefaultPosition, wxDefaultSize,
                              4, algChoiceStrings);
@@ -130,6 +135,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       wxT("16384")
    };
 
+   wxStaticText *sizeLabel = new wxStaticText(this, wxID_ANY, _("Size:"));
    mSizeChoice = new wxChoice(this, FreqSizeChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               8, sizeChoiceStrings);
@@ -145,6 +151,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       funcChoiceStrings[i] = WindowFuncName(i) + wxString(_(" window"));
    }
 
+   wxStaticText *funcLabel = new wxStaticText(this, wxID_ANY, _("Function:"));
    mFuncChoice = new wxChoice(this, FreqFuncChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               f, funcChoiceStrings);
@@ -156,6 +163,7 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
       _("Log frequency")
    };
 
+   wxStaticText *axisLabel = new wxStaticText(this, wxID_ANY, _("Axis:"));
    mAxisChoice = new wxChoice(this, FreqAxisChoiceID,
                               wxDefaultPosition, wxDefaultSize,
                               2, axisChoiceStrings);
@@ -175,22 +183,47 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    mCloseButton->SetFocus();
 #endif
 
+   mInfo = new wxStatusBar(this, wxID_ANY, wxST_SIZEGRIP);
+
    // Set minimum sizes
 
    mFreqPlot->SetMinSize( wxSize( FREQ_WINDOW_WIDTH, FREQ_WINDOW_HEIGHT ) );
 
    wxRect r( 0, 0, 0, 0 );
 
-   r.Union( mAlgChoice->GetRect() );
-   r.Union( mSizeChoice->GetRect() );
-   r.Union( mFuncChoice->GetRect() );
-   r.Union( mAxisChoice->GetRect() );
+   r.Union( algLabel->GetRect() );
+   r.Union( funcLabel->GetRect() );
+   algLabel->SetMinSize( r.GetSize() );
+   funcLabel->SetMinSize( r.GetSize() );
 
+   r = wxRect( 0, 0, 0, 0 );
+
+   r.Union( mAlgChoice->GetRect() );
+   r.Union( mFuncChoice->GetRect() );
    mAlgChoice->SetMinSize( r.GetSize() );
-   mSizeChoice->SetMinSize( r.GetSize() );
    mFuncChoice->SetMinSize( r.GetSize() );
+
+   r = wxRect( 0, 0, 0, 0 );
+
+   r.Union( sizeLabel->GetRect() );
+   r.Union( axisLabel->GetRect() );
+   sizeLabel->SetMinSize( r.GetSize() );
+   axisLabel->SetMinSize( r.GetSize() );
+
+   r = wxRect( 0, 0, 0, 0 );
+
+   r.Union( mSizeChoice->GetRect() );
+   r.Union( mAxisChoice->GetRect() );
+   mSizeChoice->SetMinSize( r.GetSize() );
    mAxisChoice->SetMinSize( r.GetSize() );
 
+   r = wxRect( 0, 0, 0, 0 );
+
+   r.Union( mExportButton->GetRect() );
+   r.Union( mCloseButton->GetRect() );
+   mExportButton->SetMinSize( r.GetSize() );
+   mCloseButton->SetMinSize( r.GetSize() );
+   
    // Add everything to the sizers
 
    wxBoxSizer *vs = new wxBoxSizer( wxVERTICAL );
@@ -198,33 +231,31 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
 
    vs->Add( mFreqPlot, 1, wxEXPAND | wxALL, 5 );
 
+   vs->Add( 1, 5, 0 );
+
    hs = new wxBoxSizer( wxHORIZONTAL );
+   hs->Add( algLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( mAlgChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( sizeLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( mSizeChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
-   hs->Add( 1, 1, 1 );
-   hs->Add( mExportButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 3 );
-   vs->Add( hs, 0, wxEXPAND | wxBOTTOM, 5 );
+   hs->Add( 10, 1, 0 );
+   hs->Add( mExportButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
+   vs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
 
    hs = new wxBoxSizer( wxHORIZONTAL );
+   hs->Add( funcLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( mFuncChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
+   hs->Add( axisLabel, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
    hs->Add( mAxisChoice, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 5 );
-   hs->Add( 1, 1, 1 );
-   hs->Add( mCloseButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 3 );
-   vs->Add( hs, 0, wxEXPAND | wxBOTTOM, 5 );
+   hs->Add( 10, 1, 0 );
+   hs->Add( mCloseButton, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxLEFT | wxRIGHT, 5 );
+   vs->Add( hs, 0, wxALIGN_CENTER_HORIZONTAL | wxLEFT | wxRIGHT | wxBOTTOM, 5 );
 
-   SetAutoLayout( true );
+   vs->Add( mInfo, 0, wxEXPAND | wxBOTTOM, 0 );
+
+   SetAutoLayout( false );
    SetSizerAndFit( vs );
    Layout();
-
-#ifdef __WXMAC__
-   mBackgroundBrush.SetColour(wxColour(255, 255, 255));
-   mBackgroundPen.SetColour(wxColour(255, 255, 255));
-   SetBackgroundColour(wxColour(255, 255, 255));
-#else
-   mBackgroundBrush.SetColour(wxColour(204, 204, 204));
-   mBackgroundPen.SetColour(wxColour(204, 204, 204));
-   SetBackgroundColour(wxColour(204, 204, 204));
-#endif
 }
 
 FreqWindow::~FreqWindow()
@@ -258,195 +289,28 @@ void FreqWindow::OnSize(wxSizeEvent & event)
    mPlotRect = mUpdateRect;
    mPlotRect.height = mInfoRect.y - 5;
 
+   DrawPlot();
+
+#if defined(__WXMSW__)
+   Refresh(true);
+#endif
+}
+
+void FreqWindow::DrawPlot()
+{
    if (mBitmap)
    {
       delete mBitmap;
       mBitmap = NULL;
    }
 
-#ifdef __WXMAC__
-   Refresh(true);
-#else
-   mFreqPlot->Refresh( false );
-#endif
-}
-
-void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
-{
-   if (event.Moving() && (event.m_x != mMouseX || event.m_y != mMouseY)) {
-      mMouseX = event.m_x;
-      mMouseY = event.m_y;
-
-      wxRect r = mPlotRect;
-      r.x += mLeftMargin;
-      r.width -= mLeftMargin;
-      r.height -= mBottomMargin;
-
-      if (r.Inside(mMouseX, mMouseY))
-         mFreqPlot->SetCursor(*mCrossCursor);
-      else
-         mFreqPlot->SetCursor(*mArrowCursor);
-
-      mFreqPlot->Refresh(false);
-   }
-}
-
-void FreqWindow::OnAlgChoice(wxCommandEvent & event)
-{
-   // Log-frequency axis works for spectrum plots only.
-   if (mAlgChoice->GetSelection() == 0) {
-      mAxisChoice->Enable(true);
-      mLogAxis = (mAxisChoice->GetSelection())?true:false;
-   }
-   else {
-      mAxisChoice->Disable();
-      mLogAxis = false;
-   }
-   Recalc();
-}
-
-void FreqWindow::OnSizeChoice(wxCommandEvent & event)
-{
-   Recalc();
-}
-
-void FreqWindow::OnFuncChoice(wxCommandEvent & event)
-{
-   Recalc();
-}
-
-void FreqWindow::OnAxisChoice(wxCommandEvent & event)
-{
-   mLogAxis = (mAxisChoice->GetSelection())?true:false;
-
-   mFreqPlot->Refresh(false);
-}
-
-// If f(0)=y0, f(1)=y1, f(2)=y2, and f(3)=y3, this function finds
-// the degree-three polynomial which best fits these points and
-// returns the value of this polynomial at a value x.  Usually
-// 0 < x < 3
-
-/* Declare Static functions */
-static float CubicInterpolate(float y0, float y1, float y2, float y3, float x);
-static float CubicMaximize(float y0, float y1, float y2, float y3);
-
-float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
-{
-   float a, b, c, d;
-
-   a = y0 / -6.0 + y1 / 2.0 - y2 / 2.0 + y3 / 6.0;
-   b = y0 - 5.0 * y1 / 2.0 + 2.0 * y2 - y3 / 2.0;
-   c = -11.0 * y0 / 6.0 + 3.0 * y1 - 3.0 * y2 / 2.0 + y3 / 3.0;
-   d = y0;
-
-   float xx = x * x;
-   float xxx = xx * x;
-
-   return (a * xxx + b * xx + c * x + d);
-}
-
-float CubicMaximize(float y0, float y1, float y2, float y3)
-{
-   // Find coefficients of cubic
-
-   float a, b, c, d;
-
-   a = y0 / -6.0 + y1 / 2.0 - y2 / 2.0 + y3 / 6.0;
-   b = y0 - 5.0 * y1 / 2.0 + 2.0 * y2 - y3 / 2.0;
-   c = -11.0 * y0 / 6.0 + 3.0 * y1 - 3.0 * y2 / 2.0 + y3 / 3.0;
-   d = y0;
-
-   // Take derivative
-
-   float da, db, dc;
-
-   da = 3 * a;
-   db = 2 * b;
-   dc = c;
-
-   // Find zeroes of derivative using quadratic equation
-
-   float discriminant = db * db - 4 * da * dc;
-   if (discriminant < 0.0)
-      return float(-1.0);              // error
-
-   float x1 = (-db + sqrt(discriminant)) / (2 * da);
-   float x2 = (-db - sqrt(discriminant)) / (2 * da);
-
-   // The one which corresponds to a local _maximum_ in the
-   // cubic is the one we want - the one with a negative
-   // second derivative
-
-   float dda = 2 * da;
-   float ddb = db;
-
-   if (dda * x1 + ddb < 0)
-      return x1;
-   else
-      return x2;
-}
-
-float FreqWindow::GetProcessedValue(float freq0, float freq1)
-{
-   int alg = mAlgChoice->GetSelection();
-
-   float bin0, bin1, binwidth;
-
-   if (alg == 0) {
-      bin0 = freq0 * mWindowSize / mRate;
-      bin1 = freq1 * mWindowSize / mRate;
-   } else {
-      bin0 = freq0 * mRate;
-      bin1 = freq1 * mRate;
-   }
-   binwidth = bin1 - bin0;
-
-   float value = float(0.0);
-
-   if (binwidth < 1.0) {
-      float binmid = (bin0 + bin1) / 2.0;
-      int ibin = int (binmid) - 1;
-      if (ibin < 1)
-         ibin = 1;
-      if (ibin >= mProcessedSize - 3)
-         ibin = mProcessedSize - 4;
-
-      value = CubicInterpolate(mProcessed[ibin],
-                               mProcessed[ibin + 1],
-                               mProcessed[ibin + 2],
-                               mProcessed[ibin + 3], binmid - ibin);
-
-   } else {
-      if (int (bin1) > int (bin0))
-         value += mProcessed[int (bin0)] * (int (bin0) + 1 - bin0);
-      bin0 = 1 + int (bin0);
-      while (bin0 < int (bin1)) {
-         value += mProcessed[int (bin0)];
-         bin0 += 1.0;
-      }
-      value += mProcessed[int (bin1)] * (bin1 - int (bin1));
-
-      value /= binwidth;
-   }
-
-   return value;
-}
-
-void FreqWindow::PlotPaint(wxPaintEvent & evt)
-{
-   wxPaintDC dc(mFreqPlot);
-
-   if (!mBitmap)
-      mBitmap = new wxBitmap(mUpdateRect.width, mUpdateRect.height);
+   mBitmap = new wxBitmap(mUpdateRect.width, mUpdateRect.height);
 
    wxMemoryDC memDC;
-
    memDC.SelectObject(*mBitmap);
 
-   memDC.SetBrush(mBackgroundBrush);
-   memDC.SetPen(mBackgroundPen);
-   memDC.DrawRectangle(0, 0, mUpdateRect.width, mUpdateRect.height);
+   memDC.SetBackground(wxBrush(wxColour(254, 254, 254)));
+   memDC.Clear();
 
    wxRect r = mPlotRect;
    r.x += mLeftMargin;
@@ -470,8 +334,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    int i;
 
-   wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   memDC.SetFont(freqWindowFont);
+   memDC.SetFont(mFreqFont);
 
    // Draw y axis and gridlines
 
@@ -642,6 +505,224 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
          xPos += xStep;
    }
 
+   // Outline the graph
+   memDC.SetPen(*wxBLACK_PEN);
+   memDC.SetBrush(*wxTRANSPARENT_BRUSH);
+   memDC.DrawRectangle(r);
+
+   memDC.SelectObject( wxNullBitmap );
+
+   mBitmap->SetMask( new wxMask( *mBitmap, wxColour(254, 254, 254) ) );
+
+}
+
+
+void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
+{
+   if (event.Moving() && (event.m_x != mMouseX || event.m_y != mMouseY)) {
+      mMouseX = event.m_x;
+      mMouseY = event.m_y;
+
+      wxRect r = mPlotRect;
+      r.x += mLeftMargin;
+      r.width -= mLeftMargin;
+      r.height -= mBottomMargin;
+
+      if (r.Inside(mMouseX, mMouseY))
+         mFreqPlot->SetCursor(*mCrossCursor);
+      else
+         mFreqPlot->SetCursor(*mArrowCursor);
+
+      mFreqPlot->Refresh(false);
+   }
+}
+
+void FreqWindow::OnAlgChoice(wxCommandEvent & event)
+{
+   // Log-frequency axis works for spectrum plots only.
+   if (mAlgChoice->GetSelection() == 0) {
+      mAxisChoice->Enable(true);
+      mLogAxis = (mAxisChoice->GetSelection())?true:false;
+   }
+   else {
+      mAxisChoice->Disable();
+      mLogAxis = false;
+   }
+   Recalc();
+}
+
+void FreqWindow::OnSizeChoice(wxCommandEvent & event)
+{
+   Recalc();
+}
+
+void FreqWindow::OnFuncChoice(wxCommandEvent & event)
+{
+   Recalc();
+}
+
+void FreqWindow::OnAxisChoice(wxCommandEvent & event)
+{
+   mLogAxis = (mAxisChoice->GetSelection())?true:false;
+
+   DrawPlot();
+   mFreqPlot->Refresh(true);
+}
+
+// If f(0)=y0, f(1)=y1, f(2)=y2, and f(3)=y3, this function finds
+// the degree-three polynomial which best fits these points and
+// returns the value of this polynomial at a value x.  Usually
+// 0 < x < 3
+
+/* Declare Static functions */
+static float CubicInterpolate(float y0, float y1, float y2, float y3, float x);
+static float CubicMaximize(float y0, float y1, float y2, float y3);
+
+float CubicInterpolate(float y0, float y1, float y2, float y3, float x)
+{
+   float a, b, c, d;
+
+   a = y0 / -6.0 + y1 / 2.0 - y2 / 2.0 + y3 / 6.0;
+   b = y0 - 5.0 * y1 / 2.0 + 2.0 * y2 - y3 / 2.0;
+   c = -11.0 * y0 / 6.0 + 3.0 * y1 - 3.0 * y2 / 2.0 + y3 / 3.0;
+   d = y0;
+
+   float xx = x * x;
+   float xxx = xx * x;
+
+   return (a * xxx + b * xx + c * x + d);
+}
+
+float CubicMaximize(float y0, float y1, float y2, float y3)
+{
+   // Find coefficients of cubic
+
+   float a, b, c, d;
+
+   a = y0 / -6.0 + y1 / 2.0 - y2 / 2.0 + y3 / 6.0;
+   b = y0 - 5.0 * y1 / 2.0 + 2.0 * y2 - y3 / 2.0;
+   c = -11.0 * y0 / 6.0 + 3.0 * y1 - 3.0 * y2 / 2.0 + y3 / 3.0;
+   d = y0;
+
+   // Take derivative
+
+   float da, db, dc;
+
+   da = 3 * a;
+   db = 2 * b;
+   dc = c;
+
+   // Find zeroes of derivative using quadratic equation
+
+   float discriminant = db * db - 4 * da * dc;
+   if (discriminant < 0.0)
+      return float(-1.0);              // error
+
+   float x1 = (-db + sqrt(discriminant)) / (2 * da);
+   float x2 = (-db - sqrt(discriminant)) / (2 * da);
+
+   // The one which corresponds to a local _maximum_ in the
+   // cubic is the one we want - the one with a negative
+   // second derivative
+
+   float dda = 2 * da;
+   float ddb = db;
+
+   if (dda * x1 + ddb < 0)
+      return x1;
+   else
+      return x2;
+}
+
+float FreqWindow::GetProcessedValue(float freq0, float freq1)
+{
+   int alg = mAlgChoice->GetSelection();
+
+   float bin0, bin1, binwidth;
+
+   if (alg == 0) {
+      bin0 = freq0 * mWindowSize / mRate;
+      bin1 = freq1 * mWindowSize / mRate;
+   } else {
+      bin0 = freq0 * mRate;
+      bin1 = freq1 * mRate;
+   }
+   binwidth = bin1 - bin0;
+
+   float value = float(0.0);
+
+   if (binwidth < 1.0) {
+      float binmid = (bin0 + bin1) / 2.0;
+      int ibin = int (binmid) - 1;
+      if (ibin < 1)
+         ibin = 1;
+      if (ibin >= mProcessedSize - 3)
+         ibin = mProcessedSize - 4;
+
+      value = CubicInterpolate(mProcessed[ibin],
+                               mProcessed[ibin + 1],
+                               mProcessed[ibin + 2],
+                               mProcessed[ibin + 3], binmid - ibin);
+
+   } else {
+      if (int (bin1) > int (bin0))
+         value += mProcessed[int (bin0)] * (int (bin0) + 1 - bin0);
+      bin0 = 1 + int (bin0);
+      while (bin0 < int (bin1)) {
+         value += mProcessed[int (bin0)];
+         bin0 += 1.0;
+      }
+      value += mProcessed[int (bin1)] * (bin1 - int (bin1));
+
+      value /= binwidth;
+   }
+
+   return value;
+}
+
+void FreqWindow::PlotPaint(wxPaintEvent & evt)
+{
+   wxPaintDC dc( (wxWindow *) evt.GetEventObject() );
+
+   dc.DrawBitmap( *mBitmap, 0, 0, true );
+
+   int alg = mAlgChoice->GetSelection();
+
+   dc.SetFont(mFreqFont);
+
+   // Draw the info rect
+   wxDCClipper *dcc = new wxDCClipper( dc, mInfoRect );
+   dc.Clear();
+   delete dcc;
+   AColor::Bevel( dc, false, mInfoRect );
+
+   wxRect r = mPlotRect;
+   r.x += mLeftMargin;
+   r.width -= mLeftMargin;
+   r.height -= mBottomMargin;
+
+   int width = r.width - 2;
+
+   float xMin, xMax, xPos, xRatio, xLast, xStep;
+
+   if (alg == 0) {
+      xMin = mRate / mWindowSize;
+      xMax = mRate / 2;
+      xRatio = xMax / xMin;
+      xPos = xMin;
+      xLast = xPos / 2.0;
+      if (mLogAxis)
+         xStep = pow(2.0f, (log(xRatio) / log(2.0f)) / width);
+      else
+         xStep = (xMax - xMin) / width;
+   } else {
+      xMin = 0;
+      xMax = mProcessedSize / mRate;
+      xPos = xMin;
+      xLast = xPos / 2.0;
+      xStep = (xMax - xMin) / width;
+   }
+
    // Find the peak nearest the cursor and plot it
 
    float bestpeak = float(0.0);
@@ -685,24 +766,13 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       if (mLogAxis)
          px = int (log(bestpeak / xMin) / log(xStep));
       else
-      px = int ((bestpeak - xMin) * width / (xMax - xMin));
+         px = int ((bestpeak - xMin) * width / (xMax - xMin));
 
-      memDC.SetPen(wxPen(wxColour(160,160,160), 1, wxSOLID));
-      memDC.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
-   }
+      dc.SetPen(wxPen(wxColour(160,160,160), 1, wxSOLID));
+      dc.DrawLine(r.x + 1 + px, r.y, r.x + 1 + px, r.y + r.height);
 
-   // Outline the graph
-   memDC.SetPen(*wxBLACK_PEN);
-   memDC.SetBrush(*wxTRANSPARENT_BRUSH);
-   memDC.DrawRectangle(r);
+       // print out info about the cursor location
 
-   // Draw the bevel around the info rect
-   AColor::Bevel( memDC, false, mInfoRect );
-
-   // If the mouse cursor is pointing inside the graph, print out info about the
-   // cursor location
-
-   if (r.Inside(mMouseX, mMouseY)) {
       float value;
 
       if (mLogAxis) {
@@ -714,31 +784,37 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
       }
 
       wxString info;
+      wxString xpitch;
+      wxString peakpitch;
+      const wxChar *xp;
+      const wxChar *pp;
 
       if (alg == 0) {
-         wxString xpitch = PitchName_Absolute(Freq2Pitch(xPos));
-         wxString peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
-         const wxChar *xp = xpitch.c_str();
-         const wxChar *pp = peakpitch.c_str();
+         xpitch = PitchName_Absolute(Freq2Pitch(xPos));
+         peakpitch = PitchName_Absolute(Freq2Pitch(bestpeak));
+         xp = xpitch.c_str();
+         pp = peakpitch.c_str();
          info.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"),
                      int (xPos + 0.5),
                      xp, int (value + 0.5), int (bestpeak + 0.5), pp);
       } else if (xPos > 0.0 && bestpeak > 0.0) {
-         wxString xpitch = PitchName_Absolute(Freq2Pitch(1.0 / xPos));
-         wxString peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
-         const wxChar *xp = xpitch.c_str();
-         const wxChar *pp = peakpitch.c_str();
+         xpitch = PitchName_Absolute(Freq2Pitch(1.0 / xPos));
+         peakpitch = PitchName_Absolute(Freq2Pitch(1.0 / bestpeak));
+         xp = xpitch.c_str();
+         pp = peakpitch.c_str();
          info.Printf(_("Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"),
                      xPos,
                      int (1.0 / xPos + 0.5),
                      xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp);
       }
 
-      memDC.DrawText(info, mInfoRect.x + 2, mInfoRect.y + 2);
+      dc.DrawText(info, mInfoRect.x + 2, mInfoRect.y + 2);
    }
 
-   dc.Blit(0, 0, mUpdateRect.width, mUpdateRect.height,
-           &memDC, 0, 0, wxCOPY, FALSE);
+   // Outline the graph
+   dc.SetPen(*wxBLACK_PEN);
+   dc.SetBrush(*wxTRANSPARENT_BRUSH);
+   dc.DrawRectangle(r);
 }
 
 void FreqWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
@@ -761,6 +837,8 @@ void FreqWindow::Plot(int len, float *data, double rate)
    for (int i = 0; i < len; i++)
       mData[i] = data[i];
    Recalc();
+   wxSizeEvent dummy;
+   OnSize( dummy );
 }
 
 void FreqWindow::Recalc()
@@ -770,7 +848,7 @@ void FreqWindow::Recalc()
    mProcessed = NULL;
 
    if (!mData) {
-      mFreqPlot->Refresh(false);
+      mFreqPlot->Refresh(true);
       return;
    }
 
@@ -781,14 +859,14 @@ void FreqWindow::Recalc()
 
    if (!(windowSize >= 32 && windowSize <= 65536 &&
          alg >= 0 && alg <= 3 && windowFunc >= 0 && windowFunc <= 3)) {
-      mFreqPlot->Refresh(false);
+      mFreqPlot->Refresh(true);
       return;
    }
 
    mWindowSize = windowSize;
 
    if (mDataLen < mWindowSize) {
-      mFreqPlot->Refresh(false);
+      mFreqPlot->Refresh(true);
       return;
    }
 
@@ -972,35 +1050,28 @@ void FreqWindow::Recalc()
    // the calculations performed.  So, it's just convenient.
 
    // Recalculate the margin sizes
+   wxString lo;
+   wxString hi;
 
-   wxMemoryDC memDC;
-   wxString label;
-
-   wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   memDC.SetFont(freqWindowFont);
-
-   wxRect mr( 0, 0, 0, 0 );
-   wxRect lr( 0, 0, 0, 0 );
    if(alg == 0)
    {
-      label = wxString::Format(wxT("%d dB"), (int)mYMin);
-      memDC.GetTextExtent(label, &lr.width, &lr.height);
-      mr.Union(lr);
-
-      label = wxString::Format(wxT("%d dB"), (int)mYMax);
-      memDC.GetTextExtent(label, &lr.width, &lr.height);
-      mr.Union(lr);
+      lo = wxString::Format(wxT("%d dB"), (int)mYMin);
+      hi = wxString::Format(wxT("%d dB"), (int)mYMax);
    }
    else
    {
-      label.Printf(fabs(mYMin) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMin);
-      memDC.GetTextExtent(label, &lr.width, &lr.height);
-      mr.Union(lr);
- 
-      label.Printf(fabs(mYMax) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMax);
-      memDC.GetTextExtent(label, &lr.width, &lr.height);
-      mr.Union(lr);
+      lo.Printf(fabs(mYMin) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMin);
+      hi.Printf(fabs(mYMax) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMax);
    }
+
+   wxRect mr( 0, 0, 0, 0 );
+   wxRect lr( 0, 0, 0, 0 );
+
+   GetTextExtent(lo, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
+   mr.Union(lr);
+   GetTextExtent(hi, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
+   mr.Union(lr);
+
    mLeftMargin = mr.width + 2;
    mBottomMargin = mr.height + 2;
 
@@ -1008,12 +1079,12 @@ void FreqWindow::Recalc()
    // the same as the one actually used.  No additional translation
    // required.
    wxChar *p = PitchName_Absolute(440.0);
-   label.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"),
-                  0, p, 0, 0, p);
-   memDC.GetTextExtent(label, &lr.width, &lr.height);
+   lo.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"), 0, p, 0, 0, p);
+   GetTextExtent(lo, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
    mInfoHeight = lr.height + 4; // +4 to allow for top and bottoms margins
 
-   mFreqPlot->Refresh(false);
+   DrawPlot();
+   mFreqPlot->Refresh(true);
 }
 
 void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
