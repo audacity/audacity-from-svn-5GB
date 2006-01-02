@@ -16,6 +16,14 @@
 #include <wx/defs.h>
 #include <wx/window.h>
 #include <wx/dialog.h>
+#include <wx/panel.h>
+
+#if wxUSE_ACCESSIBILITY
+#if defined(__WXMSW__)
+#include <oleacc.h>
+#endif
+#include <wx/access.h>
+#endif
 
 class wxBitmap;
 class wxImage;
@@ -47,6 +55,7 @@ class wxButton;
 class LWSlider
 {
    friend class ASlider;
+   friend class ASliderAx;
 
  public:
 
@@ -60,7 +69,8 @@ class LWSlider
        float stepValue,
        bool canUseShift,
        int style,
-       bool heavyweight=false
+       bool heavyweight=false,
+       bool popup=true
        );
     
    // Construct predefined slider
@@ -69,7 +79,8 @@ class LWSlider
             const wxPoint &pos,
             const wxSize &size,
             int style,
-            bool heavyweight=false);
+            bool heavyweight=false,
+            bool popup=true);
 
    void Init(wxWindow * parent,
       wxString name,
@@ -80,14 +91,16 @@ class LWSlider
       float stepValue,
       bool canUseShift,
       int style,
-      bool heavyweight=false
+      bool heavyweight=false,
+      bool popup=true
    );
 
    virtual ~LWSlider();
 
+   wxWindowID GetId();
    void SetId(wxWindowID id);
 
-   float Get();
+   float Get( bool convert = true );
    void Set(float value);
 
    void Increase(int steps);
@@ -96,16 +109,25 @@ class LWSlider
    void Move(const wxPoint &newpos);
 
    void OnPaint(wxDC &dc, bool selected);
-   void OnMouseEvent(wxMouseEvent &event);
+   void OnSize(wxSizeEvent & event);
+   void OnMouseEvent(wxMouseEvent & event);
+   void OnKeyEvent(wxKeyEvent & event);
    void Refresh();
 
    void RecreateTipWin();
+
+   bool ShowDialog();
 
  private:
 
    void FormatPopWin();
    void SetPopWinPosition();
    void CreatePopWin();
+   void Draw();
+
+   bool DoShowDialog(wxPoint pos);
+
+   void SendUpdate( float newValue );
 
    int ValueToPosition(float val);
    float PositionToValue(int xPos, bool shiftDown);
@@ -115,6 +137,7 @@ class LWSlider
    int mStyle;
 
    bool mHW; // is it really heavyweight (in a window)
+   bool mPopup; // should display dialog on double click
 
    int mLeft;
    int mTop;
@@ -157,32 +180,42 @@ class LWSlider
 
 };
 
-class ASlider :public wxWindow
+class ASlider :public wxPanel
 {
+   friend class ASliderAx;
+
  public:
-   ASlider(wxWindow * parent, wxWindowID id,
-           wxString name,
-           const wxPoint & pos,
-           const wxSize & size);
-   ASlider(wxWindow * parent, wxWindowID id,
-           wxString name, const wxPoint & pos, 
-           const wxSize & size,
-           int style);
+   ASlider( wxWindow * parent,
+            wxWindowID id,
+            wxString name,
+            const wxPoint & pos, 
+            const wxSize & size,
+            int style = FRAC_SLIDER,
+            bool popup = true );
    virtual ~ASlider();
    
-   float Get();
+   float Get( bool convert = true );
    void Set(float value);
 
    void Increase(int steps);
    void Decrease(int steps);
 
+   void OnErase(wxEraseEvent & event);
    void OnPaint(wxPaintEvent & event);
+   void OnSize(wxSizeEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
+   void OnKeyEvent(wxKeyEvent &event);
+   void OnSlider(wxCommandEvent &event);
+   void OnSetFocus(wxFocusEvent & event);
+   void OnKillFocus(wxFocusEvent & event);
 
    void RecreateTipWin();
 
  private:
    LWSlider *mLWSlider;
+   bool mSliderIsFocused;
+
+   int mStyle;
 
  public:
     DECLARE_EVENT_TABLE()
@@ -221,6 +254,77 @@ class SliderDialog: public wxDialog
    DECLARE_EVENT_TABLE()
 };
 
+
+#if wxUSE_ACCESSIBILITY
+
+class ASliderAx: public wxWindowAccessible
+{
+public:
+   ASliderAx(wxWindow * window);
+
+   virtual ~ ASliderAx();
+
+   // Retrieves the address of an IDispatch interface for the specified child.
+   // All objects must support this property.
+   virtual wxAccStatus GetChild( int childId, wxAccessible** child );
+
+   // Gets the number of children.
+   virtual wxAccStatus GetChildCount(int* childCount);
+
+   // Gets the default action for this object (0) or > 0 (the action for a child).
+   // Return wxACC_OK even if there is no action. actionName is the action, or the empty
+   // string if there is no action.
+   // The retrieved string describes the action that is performed on an object,
+   // not what the object does as a result. For example, a toolbar button that prints
+   // a document has a default action of "Press" rather than "Prints the current document."
+   virtual wxAccStatus GetDefaultAction( int childId, wxString *actionName );
+
+   // Returns the description for this object or a child.
+   virtual wxAccStatus GetDescription( int childId, wxString *description );
+
+   // Gets the window with the keyboard focus.
+   // If childId is 0 and child is NULL, no object in
+   // this subhierarchy has the focus.
+   // If this object has the focus, child should be 'this'.
+   virtual wxAccStatus GetFocus( int *childId, wxAccessible **child );
+
+   // Returns help text for this object or a child, similar to tooltip text.
+   virtual wxAccStatus GetHelpText( int childId, wxString *helpText );
+
+   // Returns the keyboard shortcut for this object or child.
+   // Return e.g. ALT+K
+   virtual wxAccStatus GetKeyboardShortcut( int childId, wxString *shortcut );
+
+   // Returns the rectangle for this object (id = 0) or a child element (id > 0).
+   // rect is in screen coordinates.
+   virtual wxAccStatus GetLocation( wxRect& rect, int elementId );
+
+   // Gets the name of the specified object.
+   virtual wxAccStatus GetName( int childId, wxString *name );
+
+   // Returns a role constant.
+   virtual wxAccStatus GetRole( int childId, wxAccRole *role );
+
+   // Gets a variant representing the selected children
+   // of this object.
+   // Acceptable values:
+   // - a null variant (IsNull() returns TRUE)
+   // - a list variant (GetType() == wxT("list"))
+   // - an integer representing the selected child element,
+   //   or 0 if this object is selected (GetType() == wxT("long"))
+   // - a "void*" pointer to a wxAccessible child object
+   virtual wxAccStatus GetSelections( wxVariant *selections );
+
+   // Returns a state constant.
+   virtual wxAccStatus GetState(int childId, long* state);
+
+   // Returns a localized string representing the value for the object
+   // or child.
+   virtual wxAccStatus GetValue(int childId, wxString* strValue);
+
+};
+
+#endif // wxUSE_ACCESSIBILITY
 
 #endif
 
