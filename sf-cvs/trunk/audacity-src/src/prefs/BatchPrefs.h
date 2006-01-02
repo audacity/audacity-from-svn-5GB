@@ -70,6 +70,8 @@ private:
    void OnSetChainMp3(wxCommandEvent &event);
    void OnSetChainCleanSpeech(wxCommandEvent &event);
    void OnSetChainEmpty(wxCommandEvent &event);
+   void OnLoad(wxCommandEvent &event);
+   void OnSave(wxCommandEvent &event);
 // These private member variables are used in
 // creating lists of checkboxes.
    wxCheckBox *mCheckBoxes[MAX_BATCH_CHECKBOXES]; // CheckBoxes not contained in a ListBox.

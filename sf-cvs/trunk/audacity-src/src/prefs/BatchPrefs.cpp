@@ -44,8 +44,8 @@ BEGIN_EVENT_TABLE(BatchPrefs, wxPanel)
 //   EVT_BUTTON(AssignDefaultsButtonID, BatchPrefs::OnDefaults)
 //   EVT_BUTTON(SetButtonID, BatchPrefs::OnSet)
 //   EVT_BUTTON(ClearButtonID, BatchPrefs::OnClear)
-//   EVT_BUTTON(SaveButtonID, BatchPrefs::OnSave)
-//   EVT_BUTTON(LoadButtonID, BatchPrefs::OnLoad)
+   EVT_BUTTON(SaveButtonID, BatchPrefs::OnSave)
+   EVT_BUTTON(LoadButtonID, BatchPrefs::OnLoad)
    EVT_LIST_ITEM_ACTIVATED(CommandsListID, BatchPrefs::OnItemSelected)
    EVT_LIST_BEGIN_DRAG(CommandsListID, BatchPrefs::OnDrag)  // The user has started dragging an item with the left mouse button. The event handler must call wxTreeEvent::Allow() for the drag operation to continue.  
    EVT_BUTTON(CleanSpeechButtonID, BatchPrefs::OnSetChainCleanSpeech)
@@ -132,14 +132,19 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
    wxButton * btnEmpty = new wxButton( this, EmptyChainButtonID,
       _("&Empty Chain"), wxDefaultPosition, wxDefaultSize, 0);
 
+   wxButton * btnLoad = new wxButton( this, LoadButtonID, _("&Load Chain") );
+   wxButton * btnSave = new wxButton( this, SaveButtonID, _("&Save Chain") );
+
    batchOptionsSizer->Add(btnCleanSpeech, 0, wxALIGN_CENTER | wxALL, 5);
    batchOptionsSizer->Add(btnMp3, 0, wxALIGN_CENTER | wxALL, 5);
    batchOptionsSizer->Add(btnEmpty, 0, wxALIGN_CENTER | wxALL, 5);
+   batchOptionsSizer->Add(btnLoad, 0, wxALIGN_CENTER | wxALL, 5);
+   batchOptionsSizer->Add(btnSave, 0, wxALIGN_CENTER | wxALL, 5);
    batchControlSizer->Add( batchOptionsSizer, 1, wxGROW|wxALL, 1);
  
    wxStaticBoxSizer *batchSequenceSizer =
       new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Batch Sequence (Double-Click to edit)")),
+         new wxStaticBox(this, -1, _("Batch Sequence (Double-Click or press SPACE to edit)")),
             wxVERTICAL);
 
    mList = new wxListCtrl( this, CommandsListID ,
@@ -212,6 +217,18 @@ void BatchPrefs::OnSetChainCleanSpeech(wxCommandEvent &event)
 void BatchPrefs::OnSetChainEmpty(wxCommandEvent &event)
 {
    mBatchCommands.ResetChain();
+   PopulateList();
+}
+
+void BatchPrefs::OnLoad(wxCommandEvent &event)
+{
+   mBatchCommands.LoadChain( this );
+   PopulateList();
+}
+
+void BatchPrefs::OnSave(wxCommandEvent &event)
+{
+   mBatchCommands.SaveChain( this );
    PopulateList();
 }
 
@@ -377,7 +394,7 @@ void BatchPrefs::AllCheckBoxActions()
    CheckBoxAction(_("&Batch debug mode"),  wxT("/Batch/Debug"), false);
    CheckBoxAction(_("&Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
    CheckBoxAction(_("&Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
-   CheckBoxAction(_("Clean&Speech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
+   CheckBoxAction(_("Cl&eanSpeech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
 
    mCurrentCheckBoxContainer=1;
 
@@ -405,7 +422,7 @@ bool BatchPrefs::Apply()
    {
       gAudacityProjects[j]->UpdateBatchPrefs();
    }
-   mBatchCommands.SaveChain();
+   mBatchCommands.WriteChain();
    return true;
 }
 
