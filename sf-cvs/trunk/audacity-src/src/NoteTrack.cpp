@@ -27,7 +27,8 @@ NoteTrack *TrackFactory::NewNoteTrack()
 NoteTrack::NoteTrack(DirManager * projDirManager):
 Track(projDirManager)
 {
-   SetName(_("Note Track"));
+   SetDefaultName(_("Note Track"));
+   SetName(GetDefaultName());
 
    mSeq = NULL;
    mLen = 0.0;

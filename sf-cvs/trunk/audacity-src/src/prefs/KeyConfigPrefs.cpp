@@ -9,6 +9,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/ffile.h>
 #include <wx/statbox.h>
@@ -55,6 +57,9 @@ END_EVENT_TABLE()
 KeyConfigPrefs::KeyConfigPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(_("Keyboard"));         // Provide visual label
+   SetName(_("Keyboard"));          // Provide audible label
+
    AudacityProject *project = GetActiveProject();
    if (!project)
       return;
@@ -236,9 +241,14 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
       return;
    }
    
-   wxString key = mManager->GetKeyFromName(mNames[mCommandSelected]);
+   wxListItem item;
+   item.m_col = KeyComboColumn;
+   item.m_mask = wxLIST_MASK_TEXT;
+   item.SetId( mCommandSelected );
+   mList->GetItem(item);
+
    mCurrentComboText->Clear();
-   mCurrentComboText->AppendText(key);
+   mCurrentComboText->AppendText(item.m_text);
    // JKC: July-2004
    // Under Windows 98 setting the focus to the combo box whilst
    // we are still processing an OnItemSelected event can lead

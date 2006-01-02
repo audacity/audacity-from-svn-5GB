@@ -56,6 +56,7 @@ Track::Track(const Track &orig)
 // Copy all the track properties except the actual contents
 void Track::Init(const Track &orig)
 {
+   mDefaultName = orig.mDefaultName;
    mName = orig.mName;
 
    if (mDirManager != orig.mDirManager)

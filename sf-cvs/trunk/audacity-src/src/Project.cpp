@@ -815,11 +815,6 @@ void AudacityProject::AS_ModifySelection(double &start, double &end)
    ModifyState();
 }
 
-void AudacityProject::AS_GiveFocus(bool bForward)
-{
-    mTrackPanel->TakeFocus(bForward);
-}
-
 void AudacityProject::FinishAutoScroll()
 {
    // Set a flag so we don't have to generate two update events
@@ -1126,38 +1121,12 @@ void AudacityProject::OnScroll(wxScrollEvent & event)
    SetActiveProject(this);
 
    if (!mAutoScrolling) {
-
       mTrackPanel->Refresh(false);
-#ifdef __WXMAC__
- #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-      mTrackPanel->MacUpdateImmediately();
- #endif
-#endif
    }
 }
 
 bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 {
-   // Let text controls in the SelectionBar bar (selection bar)
-   // have dibs on the key, if they have the focus...
-
-   if (mSelectionBar->HasAnyFocus()) {
-      if (event.GetKeyCode() == WXK_TAB ||
-          event.GetKeyCode() == WXK_BACK ||
-          event.GetKeyCode() == WXK_DELETE ||
-          (event.GetKeyCode() >= '0' &&
-           event.GetKeyCode() <= '9') ||
-          (event.GetKeyCode() >= WXK_NUMPAD0 &&
-           event.GetKeyCode() <= WXK_NUMPAD9) ||
-          (event.GetKeyCode() >= WXK_LEFT &&
-           event.GetKeyCode() <= WXK_DOWN)) {
-         // Letting SelectionBar handle it
-         return false;
-      }
-
-      // SelectionBar has focus, but doesn't need this particular key
-   }
-
    // Allow the Play button to change to a Loop button,
    // and the zoom cursor to change to a zoom out cursor
    if (event.GetKeyCode() == WXK_SHIFT) {
@@ -1175,6 +1144,7 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
 
 // Label Track can now accept Ctrl-Char combinations, e.g. Ctrl-C
 //   if (!event.ControlDown()) {
+#if 0
    {
       TrackListIterator iter(mTracks);
       Track *t = iter.First();
@@ -1184,7 +1154,7 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
          t = iter.Next();
       }   
    }
-   
+#endif
    return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
 }
 
@@ -1499,6 +1469,7 @@ void AudacityProject::OpenFile(wxString fileName)
       }
 
       InitialState();
+      mTrackPanel->SetFocusedTrack(iter.First());
       HandleResize();
       mTrackPanel->Refresh(false);
       mTrackPanel->Update(); // force any repaint to happen now,
@@ -2468,11 +2439,6 @@ void AudacityProject::TP_HasMouse()
 void AudacityProject::TP_HandleResize()
 {
    HandleResize();
-}
-
-void AudacityProject::TP_GiveFocus(bool bForward)
-{
-   mSelectionBar->TakeFocus(bForward);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

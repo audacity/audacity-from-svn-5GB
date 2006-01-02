@@ -11,6 +11,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "ControlToolBar.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -106,8 +108,10 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
    AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
                                     foreground, disabled, alpha, wxWindowID(id),
                                     wxDefaultPosition, processdownevents,
-                                    wxSize(48, 48), 0, 0 );
+                                    wxSize(upPattern->GetWidth(), upPattern->GetHeight()),
+                                    0, 0 );
    r->SetLabel(label);
+   r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
 
 #if wxUSE_TOOLTIPS
    r->SetToolTip(tip);

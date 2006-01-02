@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
@@ -20,7 +22,6 @@
 #include <wx/notebook.h>
 #include <wx/sizer.h>
 
-#include "../Audacity.h"
 #include "../Project.h"
 
 #include "../Prefs.h"
@@ -80,15 +81,17 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
-   mCategories->AddPage(new AudioIOPrefs(mCategories), _("Audio I/O"));
-   mCategories->AddPage(new QualityPrefs(mCategories), _("Quality"));
-   mCategories->AddPage(new FileFormatPrefs(mCategories), _("File Formats"));
-   mCategories->AddPage(new SpectrumPrefs(mCategories), _("Spectrograms"));
-   mCategories->AddPage(new DirectoriesPrefs(mCategories), _("Directories"));
-   mCategories->AddPage(new GUIPrefs(mCategories), _("Interface"));
-   mCategories->AddPage(new BatchPrefs(mCategories), _("Batch"));
-   mCategories->AddPage(new KeyConfigPrefs(mCategories), _("Keyboard"));
-   mCategories->AddPage(new MousePrefs(mCategories), _("Mouse"));
+   wxWindow *w;
+
+   w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName());
+   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName());
+   w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName());
+   w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName());
+   w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName());
+   w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName());
+   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName());
+   w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName());
+   w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName());
 
    long selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
    if (selected < 0 || selected >= mCategories->GetPageCount())

@@ -26,6 +26,7 @@ void ModifyExportMenus();
 void ModifyUndoMenus();
 void ModifyToolbarMenus();
 
+int GetFocusedFrame();
 wxUint32 GetUpdateFlags();
 
 double NearestZeroCrossing(double t0);
@@ -67,10 +68,7 @@ void OnPlayOneSecond();
 void OnPlayToSelection();
 void OnPlayLooped();
 
-//Commands for affecting selection
-void OnPrevTrack();
-void OnNextTrack();
-
+        //
 
 void OnTrackPan();
 void OnTrackPanLeft();
@@ -86,10 +84,14 @@ void OnTrackClose();
 
         // Selection-Editing Commands
 
+void OnCursorUp();
+void OnCursorDown();
 void OnCursorLeft();
 void OnCursorRight();
 void OnSelExtendLeft();
 void OnSelExtendRight();
+void OnSelExtendUp();
+void OnSelExtendDown();
 void OnSelContractLeft();
 void OnSelContractRight();
 
@@ -249,6 +251,12 @@ void OnBenchmark();
        //
 
 void OnSeparator();
+
+      // Keyboard navigation
+
+void PrevFrame();
+void NextFrame();
+
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

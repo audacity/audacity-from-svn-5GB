@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <math.h>
 
 #include <wx/defs.h>
@@ -43,6 +45,9 @@ END_EVENT_TABLE()
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(_("Directories"));         // Provide visual label
+   SetName(_("Directories"));          // Provide audible label
+
    mTempDir = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
    mOldTempDir = mTempDir;
 
@@ -53,29 +58,29 @@ PrefsPanel(parent)
 
    wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
 
-   mTempDirLabel = new wxStaticText(
-      this, -1, _("Location:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT );
-
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
 
    wxLongLong freeSpace;
    wxGetDiskSpace(mTempDir, NULL, &freeSpace);
 
-   /* Order is important here: mFreeSpace must be allocated before
-      mTempDirText, so that the handler doesn't try to operate on
-      mFreeSpace before it exists! */
-   mFreeSpace = new wxStaticText(
-      this, -1, FormatSize(freeSpace),
-      wxDefaultPosition, wxDefaultSize, 0 );
+   mTempDirLabel = new wxStaticText(
+      this, -1, _("Location:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT );
 
    mTempDirText = NULL;
    mTempDirText = new wxTextCtrl(
       this, TempDirID, mTempDir,
       wxDefaultPosition, wxSize(160, -1), 0 );
 
+   /* Order is important here: mFreeSpace must be allocated before
+      mTempDirText, so that the handler doesn't try to operate on
+      mFreeSpace before it exists! */
    mFreeSpaceLabel = new wxStaticText(
       this, -1, _("Free Space:"),
+      wxDefaultPosition, wxDefaultSize, 0 );
+
+   mFreeSpace = new wxStaticText(
+      this, -1, FormatSize(freeSpace),
       wxDefaultPosition, wxDefaultSize, 0 );
 
    wxButton *chooseButton =

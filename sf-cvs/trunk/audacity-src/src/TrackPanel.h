@@ -37,6 +37,8 @@ class ControlToolBar; //Needed because state of controls can affect what gets dr
 class ToolsToolBar; //Needed because state of controls can affect what gets drawn.
 class AudacityProject;
 
+class TrackPanelAx;
+
 struct ViewInfo;
 
 struct tpBitmap
@@ -81,7 +83,6 @@ class TrackPanelListener {
    virtual void TP_ScrollUpDown(int delta) = 0;
    virtual void TP_HasMouse() = 0;
    virtual void TP_HandleResize() = 0;
-   virtual void TP_GiveFocus(bool bForward) = 0;
 };
 
 
@@ -157,6 +158,9 @@ class TrackPanel:public wxPanel {
    void OnMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
 
+   void OnSetFocus(wxFocusEvent & event);
+   void OnKillFocus(wxFocusEvent & event);
+
    void OnContextMenu(wxContextMenuEvent & event);
 
    double GetMostRecentXPos();
@@ -182,23 +186,29 @@ class TrackPanel:public wxPanel {
    void HandleShiftKey(bool down);
    AudacityProject * GetProject() const;
 
-   void OnPrevTrack();
-   void OnNextTrack();
-   void OnTrackPan(Track * t);
-   void OnTrackPanLeft(Track * t);
-   void OnTrackPanRight(Track * t);
-   void OnTrackGain(Track * t);
-   void OnTrackGainDec(Track * t);
-   void OnTrackGainInc(Track * t);
-   void OnTrackMenu(Track * t);
-   void OnTrackMute(Track * t, bool shiftdown);
-   void OnTrackSolo(Track * t, bool shiftdown);
-   void OnTrackClose(Track * t);
+   void OnPrevTrack(bool select = false);
+   void OnNextTrack(bool select = false);
+
+   void OnCursorLeft(bool shift, bool ctrl);
+   void OnCursorRight(bool shift, bool ctrl);
+   void ScrollIntoView(double pos);
+
+   void OnTrackPan();
+   void OnTrackPanLeft();
+   void OnTrackPanRight();
+   void OnTrackGain();
+   void OnTrackGainDec();
+   void OnTrackGainInc();
+   void OnTrackMenu(Track *t = NULL);
+   void OnTrackMute(bool shiftdown, Track *t = NULL);
+   void OnTrackSolo(bool shiftdown, Track *t = NULL);
+   void OnTrackClose();
    Track * GetFirstSelectedTrack();
 
    void EnsureVisible(Track * t);
 
-   void TakeFocus(bool bForward);
+   Track *GetFocusedTrack();
+   void SetFocusedTrack(Track *t);
 
  private:
 
@@ -407,6 +417,8 @@ private:
    int mPrevWidth;
    int mPrevHeight;
 
+   wxLongLong mLastSelectionAdjustment;
+
    double mSelStart;
 
    Track *mCapturedTrack;
@@ -494,6 +506,8 @@ private:
 
    bool mAdjustSelectionEdges;
    bool mSlideUpDownOnly;
+   bool mCircularTrackNavigation;
+   bool mPresentTrackNumber;
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?
@@ -527,6 +541,10 @@ private:
    wxMenu *mLabelTrackLabelMenu;
 
    Track *mPopupMenuTarget;
+
+   friend class TrackPanelAx;
+
+   TrackPanelAx *mAx;
 
  public:
 

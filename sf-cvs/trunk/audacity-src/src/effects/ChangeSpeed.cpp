@@ -10,9 +10,10 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "ChangeSpeed.h"
 
-#include "../Audacity.h" // for USE_LIBSAMPLERATE
 #include "../Envelope.h"
 #include "../Prefs.h"
 

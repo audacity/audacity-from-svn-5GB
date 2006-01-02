@@ -11,6 +11,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "EditToolBar.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -37,7 +39,6 @@
 #include "Project.h"
 #include "UndoManager.h"
 #include "widgets/AButton.h"
-#include "widgets/ASlider.h"
 
 #include "../images/EditButtons.h"
 

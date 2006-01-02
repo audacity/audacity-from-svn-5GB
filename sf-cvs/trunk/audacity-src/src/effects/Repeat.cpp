@@ -9,8 +9,9 @@
 
 **********************************************************************/
 
-#include "Repeat.h"
 #include "../Audacity.h"
+
+#include "Repeat.h"
 #include "../WaveTrack.h"
 
 #include <wx/button.h>

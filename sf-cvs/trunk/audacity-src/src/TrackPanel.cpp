@@ -111,6 +111,8 @@
 #include "MeterToolBar.h"
 
 
+#include "TrackPanelAx.h"
+  
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 
@@ -222,6 +224,8 @@ BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
     EVT_CHAR(TrackPanel::OnKeyEvent)
     EVT_PAINT(TrackPanel::OnPaint)
+    EVT_SET_FOCUS(TrackPanel::OnSetFocus)
+    EVT_KILL_FOCUS(TrackPanel::OnKillFocus)
     EVT_CONTEXT_MENU(TrackPanel::OnContextMenu)
     EVT_MENU(OnSetNameID, TrackPanel::OnSetName)
     EVT_MENU(OnSetFontID, TrackPanel::OnSetFont)
@@ -341,11 +345,19 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 #pragma warning( default: 4355 )
 #endif
 {
+   SetLabel(wxT("Track Panel"));
+   SetName(wxT("Track Panel"));
+
+   mAx = new TrackPanelAx( this );
+#if wxUSE_ACCESSIBILITY
+   SetAccessible( mAx );
+#endif
    mMouseCapture = IsUncaptured;
    mSlideUpDownOnly = false;
    mLabelTrackStartXPos=-1;
- 
-   gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges, true);
+   mCircularTrackNavigation = false;
+
+   UpdatePrefs();
 
    mRedrawAfterStop = false;
    mIndicatorShowing = false;
@@ -461,6 +473,9 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mZoomEnd = -1;
    mPrevWidth = -1;
    mPrevHeight = -1;
+
+   //Initialize the last selection adjustment time.
+   mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
 }
 
 TrackPanel::~TrackPanel()
@@ -519,10 +534,15 @@ TrackPanel::~TrackPanel()
 void TrackPanel::UpdatePrefs()
 {
    gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo->bUpdateTrackIndicator,
-                true);
+               true);
    gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo->bUpdateSpectrogram,
-                true);
-   gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges, true);
+               true);
+   gPrefs->Read(wxT("/GUI/AdjustSelectionEdges"), &mAdjustSelectionEdges,
+               true);
+   gPrefs->Read(wxT("/GUI/CircularTrackNavigation"), &mCircularTrackNavigation,
+               false);
+   gPrefs->Read(wxT("/GUI/PresentTrackNumber"), &mPresentTrackNumber,
+               true);
 }
 
 void TrackPanel::SetStop(bool bStopped)
@@ -745,7 +765,7 @@ void TrackPanel::DrawCursors(wxDC * dc)
                int warpedX = GetLeftOffset() + int (t0 * mViewInfo->zoom);
                dc->DrawLine(warpedX, y + kTopInset + 1, warpedX, y + height - 2);
             }
-         else if (t->GetSelected())// && t->GetKind() != Track::Label)
+         else if (t->GetSelected() || mAx->IsFocused(t))
          {
             wxCoord top = y + kTopInset + 1;
             wxCoord bottom = y + height - 2;
@@ -2696,11 +2716,18 @@ void TrackPanel::HandleClosing(wxMouseEvent & event)
 void TrackPanel::RemoveTrack(Track * toRemove)
 {
    TrackListIterator iter(mTracks);
+   Track *t;
+
+   // Reassign focus to either the next or, if unavailable, the previous track
+   t = mTracks->GetNext(toRemove, true);
+   if (t == NULL)
+      t = mTracks->GetPrev( toRemove, true );
+   SetFocusedTrack(t);  // No need to worry about a possible NULL track pointer
 
    Track *partner = mTracks->GetLink(toRemove);
    wxString name;
 
-   Track *t = iter.First();
+   t = iter.First();
    while (t) {
       if (t == toRemove || t == partner) {
          name = t->GetName();
@@ -2747,9 +2774,9 @@ void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
             {
                if(solo)
                   
-                  OnTrackSolo(t,event.ShiftDown());
+                  OnTrackSolo(event.ShiftDown(),t);
                else
-                  OnTrackMute(t,event.ShiftDown());
+                  OnTrackMute(event.ShiftDown(),t);
             }  
          SetCapturedTrack( NULL );
          // mTrackLabel.DrawMuteSolo(&dc, r, t, false, solo);
@@ -3390,8 +3417,11 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
       }
       mListener->TP_ScrollWindow(mTracks->GetEndTime());
       break;
-   case WXK_TAB:
-      mListener->TP_GiveFocus(!event.ShiftDown());
+   case WXK_DOWN:
+//      OnNextTrack();
+      break;
+   case WXK_UP:
+//      OnPrevTrack();
       break;
    }
    event.Skip();
@@ -3445,9 +3475,6 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
       break;
    case IsClosing:
       HandleClosing(event);
-      // LLL: Removed...doesn't allow close button to popup when mouse
-      //      button is held down and pointer leaves close button
-      // mMouseCapture = IsUncaptured; // JKC: Do we need this??
       break;
    case IsMuting:
       HandleMutingSoloing(event, false);
@@ -4322,188 +4349,375 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
 /// The following 2 functions move to the previous and next tracks,
 /// selecting after movement.
 ///
-void TrackPanel::OnPrevTrack()
+void TrackPanel::OnPrevTrack( bool select )
 {
+   Track *t;
+   Track *p;
 
-   Track * firstSelected = NULL;
-   Track * prevSelected = NULL;
-   Track * link = NULL;
-   firstSelected = GetFirstSelectedTrack();
+   // Get currently focused track...bail if there isn't one.
+   t = GetFocusedTrack();
+   if( t == NULL )
+   {
+      return;
+   }
 
-   if(firstSelected)
+   // Get previous track
+   p = mTracks->GetPrev( t, true );
+
+   // On first track...complain and stay on it
+   if( p == NULL )
+   {
+      wxBell();
+
+      // We're done if linear track navigation desired
+      if( !mCircularTrackNavigation )
       {
-         
-         link = mTracks->GetLink(firstSelected);
-         
-         if(link)
-         {
-            //Determine whether first selected is the first 
-            //or second stereo track.
-            if(mTracks->GetPrev(firstSelected) == link)
-               {
-                  firstSelected = link;
-               }
-         }
-         
-         //get the previous track.
-         prevSelected = mTracks->GetPrev(firstSelected);
+         return;
       }
 
-
-   //If there is nothing chosen as 'prevselected', choose the first track.
-   if(!prevSelected)
+      // Wrap to the last track
+      TrackListIterator iter( mTracks );
+      for( Track *d = iter.First(); d; d = iter.Next( true ) )
       {
-         //Nothing is selected, so choose the very last track.
-         TrackListIterator iter = TrackListIterator(mTracks);
-         firstSelected = iter.First();
-		 do
-            {
-               prevSelected = firstSelected;
-		    }
-		 while( (firstSelected = iter.Next()) );
+         p = d;
       }
-
-
-   //Get rid of all selections
-   SelectNone();
-
+   }
    
-   //Now, select the track, if it exists
-   if( prevSelected)
-      {
-         EnsureVisible(prevSelected);
-         prevSelected->SetSelected(true);
+   // Make sure it's in view
+   EnsureVisible( p );
 
-         //If the newly selected track is also stereo,
-         //also select it
-         link = mTracks->GetLink(prevSelected);
+   // Not selecting...we're done
+   if( !select )
+   {
+      mViewInfo->sel0 = mViewInfo->sel1;
+      SelectNone();
+      return;
+   }
 
-         if(link)
-            {
-               link->SetSelected(true);
-            }
-      }
+   // Must be working our way up from bottom to starting track...deselect it
+   if( p->GetSelected() )
+   {
+      mTracks->Select( t, false );
+      return;
+   }
 
-   Refresh(false);
+   // Default to full selection if not already selected
+   if( mViewInfo->sel0 == mViewInfo->sel1 )
+   {
+      mViewInfo->sel0 = mTracks->GetMinOffset();
+      mViewInfo->sel1 = mTracks->GetEndTime();
+      mTracks->Select( t );
+      EnsureVisible( t );
+      return;
+   }
+
+   // Select the new track
+   mTracks->Select( p, true );
+
+   return;
 }
 
-void TrackPanel::OnNextTrack()
+void TrackPanel::OnNextTrack( bool select )
 {
+   Track *t;
+   Track *n;
 
-   Track * firstSelected = NULL;
-   Track * nextSelected = NULL;
-   Track * link = NULL;
-   firstSelected = GetFirstSelectedTrack();
+   // Get currently focused track...bail if there isn't one.
+   t = GetFocusedTrack();
+   if( t == NULL )
+   {
+      return;
+   }
 
-   if(firstSelected)
+   // Get next track
+   n = mTracks->GetNext( t, true );
+
+   // On last track...complain and stay on it
+   if( n == NULL )
+   {
+      wxBell();
+
+      // We're done if linear track navigation desired
+      if( !mCircularTrackNavigation )
       {
-         
-         link = mTracks->GetLink(firstSelected);
-         
-         if(link)
-         {
-            //Determine whether first selected is the first 
-            //or second stereo track.
-            if(mTracks->GetNext(firstSelected) == link)
-               {
-                  firstSelected = link;
-               }
-         }
-         
-         //get the next track.
-         nextSelected = mTracks->GetNext(firstSelected);
+         return;
       }
 
-
-   //If there is nothing chosen as 'nextselected', choose the first track.
-   if(!nextSelected)
-      {
-         //Nothing is selected, so choose the very first track.
-         TrackListIterator iter = TrackListIterator(mTracks);
-         nextSelected = iter.First();
-      }
-
-
-   //Get rid of all selections
-   SelectNone();
-
+      // Wrap to the first track
+      TrackListIterator iter( mTracks );
+      n = iter.First();
+   }
    
-   //Now, select the track, if it exists
-   if( nextSelected)
-      {
-         EnsureVisible(nextSelected);
-         nextSelected->SetSelected(true);
-      
-   //If the newly selected track is also stereo,
-   //also select it
-   link = mTracks->GetLink(nextSelected);
+   // Make sure it's in view
+   EnsureVisible( n );
 
-   if(link)
-      {
-         link->SetSelected(true);
-      }
-      }
+   // Not selecting...we're done
+   if( !select )
+   {
+      mViewInfo->sel0 = mViewInfo->sel1;
+      SelectNone();
+      return;
+   }
 
-   Refresh(false);
+   // Must be working our way up from bottom to starting track
+   if( n->GetSelected() )
+   {
+      mTracks->Select( t, false );
+      return;
+   }
+
+   // Default to full selection if not already selected
+   if( mViewInfo->sel0 == mViewInfo->sel1 )
+   {
+      mViewInfo->sel0 = mTracks->GetMinOffset();
+      mViewInfo->sel1 = mTracks->GetEndTime();
+      mTracks->Select( t );
+      EnsureVisible( t );
+      return;
+   }
+
+   // Select the new track
+   mTracks->Select( n, true );
+
+   return;
 }
 
+// Make sure selection edge is in view                                       
+void TrackPanel::ScrollIntoView(double pos)
+{
+   int w, h;
+   GetTracksUsableArea( &w, &h );
+
+   if( ( pos < mViewInfo->h ) ||
+       ( pos > mViewInfo->h + ( ( w - 1 ) / mViewInfo->zoom ) ) )
+   {
+      mListener->TP_ScrollWindow( pos - ( ( w / 2 ) / mViewInfo->zoom ) );
+   }
+}
+
+void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
+{
+   Track *t;
+
+   // If the last adjustment was very recent, we are
+   // holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier = 1;
+   if( curtime - mLastSelectionAdjustment < 50 )
+   {
+      multiplier = 4;
+   }
+   mLastSelectionAdjustment = curtime;
+
+   // Get currently focused track...bail if there isn't one.
+   t = GetFocusedTrack();
+   if( t == NULL )
+   {
+      return;
+   }
+
+   // Contract selection from the right to the left
+   if( shift && ctrl )
+   {
+      // Ensure currently focused track is selected.
+      // (Possible if mouse and keyboard are used together)
+      if( !t->GetSelected() )
+      {
+         mTracks->Select( t );
+      }
+
+      // Reduce and constrain (counter-intuitive)
+      mViewInfo->sel1 -= multiplier / mViewInfo->zoom;
+      if( mViewInfo->sel1 < mViewInfo->sel0 )
+      {
+         mViewInfo->sel1 = mViewInfo->sel0;
+      }
+
+      // Make sure it's visible
+      ScrollIntoView( mViewInfo->sel1 );
+   }
+   // Extend selection toward the left
+   else if( shift )
+   {
+      // Ensure currently focused track is selected.
+      // (Possible if mouse and keyboard are used together)
+      if( !t->GetSelected() )
+      {
+         mTracks->Select( t );
+      }
+
+      // Expand and constrain
+      mViewInfo->sel0 -= multiplier / mViewInfo->zoom;
+      if( mViewInfo->sel0 < 0.0 )
+      {
+         mViewInfo->sel0 = 0.0;
+      }
+
+      // Make sure it's visible
+      ScrollIntoView( mViewInfo->sel0 );
+   }
+   // Move the cursor toward the left
+   else
+   {
+      // Clear all selections
+      SelectNone();
+ 
+      // Already in cursor mode?
+      if( mViewInfo->sel0 == mViewInfo->sel1 )
+      {
+         // Move and constrain
+         mViewInfo->sel0 -= multiplier / mViewInfo->zoom;
+         if( mViewInfo->sel0 < 0.0 )
+         {
+            mViewInfo->sel0 = 0.0;
+         }
+      }
+      mViewInfo->sel1 = mViewInfo->sel0;
+
+      // Make sure it's visible
+      ScrollIntoView( mViewInfo->sel0 );
+   }
+
+   // Make it happen
+   Refresh( false );
+}
+
+void TrackPanel::OnCursorRight( bool shift, bool ctrl )
+{
+   Track *t;
+
+   // If the last adjustment was very recent, we are
+   // holding the key down and should move faster.
+   wxLongLong curtime = ::wxGetLocalTimeMillis();
+   int multiplier = 1;
+   if( curtime - mLastSelectionAdjustment < 50 )
+   {
+      multiplier = 4;
+   }
+   mLastSelectionAdjustment = curtime;
+
+   // Get currently focused track...bail if there isn't one.
+   t = GetFocusedTrack();
+   if( t == NULL )
+   {
+      return;
+   }
+
+   // Contract selection from the left to the right
+   if( shift && ctrl )
+   {
+      // Ensure currently focused track is selected.
+      // (Possible if mouse and keyboard are used together)
+      if( !t->GetSelected() )
+      {
+         mTracks->Select( t );
+      }
+
+      // Reduce and constrain (counter-intuitive)
+      mViewInfo->sel0 += multiplier / mViewInfo->zoom;
+      if( mViewInfo->sel0 > mViewInfo->sel1 )
+      {
+         mViewInfo->sel0 = mViewInfo->sel1;
+      }
+
+      // Make sure new position is in view
+      ScrollIntoView( mViewInfo->sel0 );
+   }
+   // Extend selection toward the right
+   else if( shift )
+   {
+      // Ensure currently focused track is selected.
+      // (Possible if mouse and keyboard are used together)
+      if( !t->GetSelected() )
+      {
+         mTracks->Select( t );
+      }
+
+      // Expand and constrain
+      mViewInfo->sel1 += multiplier/mViewInfo->zoom;
+      double end = mTracks->GetEndTime();
+      if( mViewInfo->sel1 > end )
+      {
+         mViewInfo->sel1 = end;
+      }
+
+      // Make sure new position is in view
+      ScrollIntoView( mViewInfo->sel1 );
+   }
+   // Move the cursor toward the right
+   else
+   {
+      // Clear all selections
+      SelectNone();
+ 
+      // Already in cursor mode?
+      if (mViewInfo->sel0 == mViewInfo->sel1)
+      {
+         // Move and constrain
+         mViewInfo->sel1 += multiplier / mViewInfo->zoom;
+         double end = mTracks->GetEndTime();
+         if( mViewInfo->sel1 > end )
+         {
+            mViewInfo->sel1 = end;
+         }
+      }
+      mViewInfo->sel0 = mViewInfo->sel1;
+
+      // Make sure new position is in view
+      ScrollIntoView( mViewInfo->sel1 );
+   }
+
+   // Make it happen
+   Refresh( false );
+}
 
 //The following functions operate controls on specified tracks,
 //This will pop up the track panning dialog for specified track
-void TrackPanel::OnTrackPan(Track * t)
+void TrackPanel::OnTrackPan()
 {
-   
-   if(!t) return;
-   //Make a dummy mouse event
-   wxMouseEvent evt = wxMouseEvent(wxEVT_LEFT_DCLICK);
-   LWSlider * slider = NULL;
-   
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
+
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mPans[tracknum-1];
-         slider->OnMouseEvent(evt);
+         LWSlider *slider = mTrackLabel.mPans[tracknum-1];
+         if( slider->ShowDialog() )
+         {
+            SetTrackPan(t, slider);
+         }
       }
-
-
-   SetTrackPan(t, slider);
 }
 
-void TrackPanel::OnTrackPanLeft(Track * t)
+void TrackPanel::OnTrackPanLeft()
 {
-   
-   if(!t) return;
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
 
-   LWSlider * slider = NULL;
-   
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mPans[tracknum-1];
-		 slider->Decrease( 1 );
+         LWSlider *slider = mTrackLabel.mPans[tracknum-1];
+         slider->Decrease( 1 );
+         SetTrackPan(t, slider);
       }
-
-   SetTrackPan(t, slider);
 }
 
-void TrackPanel::OnTrackPanRight(Track * t)
+void TrackPanel::OnTrackPanRight()
 {
-   
-   if(!t) return;
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
 
-   LWSlider * slider = NULL;
-   
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mPans[tracknum-1];
-		 slider->Increase( 1 );
+         LWSlider *slider = mTrackLabel.mPans[tracknum-1];
+         slider->Increase( 1 );
+         SetTrackPan(t, slider);
       }
-
-   SetTrackPan(t, slider);
 }
 
 void TrackPanel::SetTrackPan(Track * t, LWSlider * s)
@@ -4521,54 +4735,51 @@ void TrackPanel::SetTrackPan(Track * t, LWSlider * s)
 }
 
 //This will pop up the track gain dialog for specified track
-void TrackPanel::OnTrackGain(Track * t)
+void TrackPanel::OnTrackGain()
 {
-   if(!t) return;
-   wxMouseEvent evt = wxMouseEvent(wxEVT_LEFT_DCLICK);
-   LWSlider * slider = NULL;
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mGains[tracknum-1];
-         slider->OnMouseEvent(evt);
+         LWSlider *slider = mTrackLabel.mGains[tracknum-1];
+         if( slider->ShowDialog() )
+         {
+            SetTrackPan(t, slider);
+         }
       }
-
-   SetTrackGain(t, slider);
 }
 
-void TrackPanel::OnTrackGainInc(Track * t)
+void TrackPanel::OnTrackGainInc()
 {
-   if(!t) return;
-
-   LWSlider * slider = NULL;
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mGains[tracknum-1];
-		 slider->Increase( 1 );
-	  }
-
-   SetTrackGain(t, slider);
+         LWSlider *slider = mTrackLabel.mGains[tracknum-1];
+         slider->Increase( 1 );
+         SetTrackGain(t, slider);
+      }
 }
 
-void TrackPanel::OnTrackGainDec(Track * t)
+void TrackPanel::OnTrackGainDec()
 {
-   if(!t) return;
-   LWSlider * slider = NULL;
+   Track *t = GetFocusedTrack();
+   if(!t || (t->GetKind() != Track::Wave)) return;
 
    //Find out which track we are on.
    int tracknum = FindTrackNum(t);
    if(tracknum)
       {
-         slider = mTrackLabel.mGains[tracknum-1];
-		 slider->Decrease( 1 );
-	  }
-
-   SetTrackGain(t, slider);
+         LWSlider *slider = mTrackLabel.mGains[tracknum-1];
+         slider->Decrease( 1 );
+         SetTrackGain(t, slider);
+      }
 }
 
 void TrackPanel::SetTrackGain(Track * t, LWSlider * s)
@@ -4585,150 +4796,166 @@ void TrackPanel::SetTrackGain(Track * t, LWSlider * s)
    Refresh(false);
 }
 
-void TrackPanel::OnTrackMenu(Track * t)
+void TrackPanel::OnTrackMenu(Track *t)
 {
-   if(t) 
-      {
-         mPopupMenuTarget = t;
+   if(!t) {
+      t = GetFocusedTrack();
+      if(!t) return;
+   }
 
-         bool canMakeStereo = false;
-         Track *next = mTracks->GetNext(t);
-         
-         wxMenu *theMenu = NULL;
-         if (t->GetKind() == Track::Time)
-            theMenu = mTimeTrackMenu;
-         
-         if (t->GetKind() == Track::Wave) {
-            theMenu = mWaveTrackMenu;
-            if (next && !t->GetLinked() && !next->GetLinked()
-                && t->GetKind() == Track::Wave
-                && next->GetKind() == Track::Wave)
-               canMakeStereo = true;
-            
-            theMenu->Enable(OnMergeStereoID, canMakeStereo);
-            theMenu->Enable(OnSplitStereoID, t->GetLinked());
-            theMenu->Enable(OnChannelMonoID, !t->GetLinked());
-            theMenu->Enable(OnChannelLeftID, !t->GetLinked());
-            theMenu->Enable(OnChannelRightID, !t->GetLinked());
-            
-            int display = ((WaveTrack *) t)->GetDisplay();
-            
-            theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
-            theMenu->Enable(OnWaveformDBID,
-                            display != WaveTrack::WaveformDBDisplay);
-            theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
-            theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
-            
-            WaveTrack * track = (WaveTrack *)t;
-            SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
-            SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
-         }
-         
-         if (t->GetKind() == Track::Note)
-            theMenu = mNoteTrackMenu;
-         
-         if (t->GetKind() == Track::Label)
-            theMenu = mLabelTrackMenu;
-         
-         if (theMenu) {
-            theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
-            theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
-            
+   mPopupMenuTarget = t;
+
+   bool canMakeStereo = false;
+   Track *next = mTracks->GetNext(t);
+   
+   wxMenu *theMenu = NULL;
+   if (t->GetKind() == Track::Time)
+      theMenu = mTimeTrackMenu;
+   
+   if (t->GetKind() == Track::Wave) {
+      theMenu = mWaveTrackMenu;
+      if (next && !t->GetLinked() && !next->GetLinked()
+            && t->GetKind() == Track::Wave
+            && next->GetKind() == Track::Wave)
+         canMakeStereo = true;
+      
+      theMenu->Enable(OnMergeStereoID, canMakeStereo);
+      theMenu->Enable(OnSplitStereoID, t->GetLinked());
+      theMenu->Enable(OnChannelMonoID, !t->GetLinked());
+      theMenu->Enable(OnChannelLeftID, !t->GetLinked());
+      theMenu->Enable(OnChannelRightID, !t->GetLinked());
+      
+      int display = ((WaveTrack *) t)->GetDisplay();
+      
+      theMenu->Enable(OnWaveformID, display != WaveTrack::WaveformDisplay);
+      theMenu->Enable(OnWaveformDBID,
+                        display != WaveTrack::WaveformDBDisplay);
+      theMenu->Enable(OnSpectrumID, display != WaveTrack::SpectrumDisplay);
+      theMenu->Enable(OnPitchID, display != WaveTrack::PitchDisplay);
+      
+      WaveTrack * track = (WaveTrack *)t;
+      SetMenuCheck(*mRateMenu, IdOfRate((int) track->GetRate()));
+      SetMenuCheck(*mFormatMenu, IdOfFormat(track->GetSampleFormat()));
+   }
+   
+   if (t->GetKind() == Track::Note)
+      theMenu = mNoteTrackMenu;
+   
+   if (t->GetKind() == Track::Label)
+      theMenu = mLabelTrackMenu;
+   
+   if (theMenu) {
+      theMenu->Enable(OnMoveUpID, mTracks->CanMoveUp(t));
+      theMenu->Enable(OnMoveDownID, mTracks->CanMoveDown(t));
+      
 #ifdef __WXMAC__
-            ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
-            ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mRateMenu->GetHMenu(), -1);
+      ::InsertMenu((MenuRef) mFormatMenu->GetHMenu(), -1);
 #endif
 
-            //We need to find the location of the menu rectangle.
-            wxRect r = FindTrackRect(t,true);
-            wxRect titleRect;
-            mTrackLabel.GetTitleBarRect(r,titleRect);
+      //We need to find the location of the menu rectangle.
+      wxRect r = FindTrackRect(t,true);
+      wxRect titleRect;
+      mTrackLabel.GetTitleBarRect(r,titleRect);
 
-            PopupMenu(theMenu, titleRect.x + 1,
-                      titleRect.y + titleRect.height + 1);
-            
+      PopupMenu(theMenu, titleRect.x + 1,
+                  titleRect.y + titleRect.height + 1);
+      
 #ifdef __WXMAC__
-            ::DeleteMenu(mFormatMenu->MacGetMenuId());
-            ::DeleteMenu(mRateMenu->MacGetMenuId());
+      ::DeleteMenu(mFormatMenu->MacGetMenuId());
+      ::DeleteMenu(mRateMenu->MacGetMenuId());
 #endif
-         }
-         
-         
-      }
+   }
+
    SetCapturedTrack(NULL);
+
    Refresh(false);
 }
 
-void TrackPanel::OnTrackMute(Track * t, bool shiftDown)
+void TrackPanel::OnTrackMute(bool shiftDown, Track *t)
 {
-   if(t)
-      {         
-         if (shiftDown) 
-            {
-               // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
-               TrackListIterator iter(mTracks);
-               Track *i = iter.First();
-               while (i) {
-                  if (i == t) {
-                     i->SetMute(true);
-                  }
-                  else {
-                     i->SetMute(false);
-                  }
-                  i = iter.Next();
-               }
+   if(!t) {
+      t = GetFocusedTrack();
+      if(!t) return;
+   }
+
+   if (shiftDown) 
+      {
+         // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         while (i) {
+            if (i == t) {
+               i->SetMute(true);
             }
-         else {
-            // Normal click just toggles this track.
-               t->SetMute(!t->GetMute());
+            else {
+               i->SetMute(false);
+            }
+            i = iter.Next();
          }
       }
+   else {
+      // Normal click just toggles this track.
+      t->SetMute(!t->GetMute());
+   }
 
    Refresh(false);
 }
 
 
-void TrackPanel::OnTrackSolo(Track * t, bool shiftDown)
+void TrackPanel::OnTrackSolo(bool shiftDown, Track *t)
 {
-   if(t)
-      {         
-         if (shiftDown) 
-            {
-               // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
-               TrackListIterator iter(mTracks);
-               Track *i = iter.First();
-               while (i) {
-                  if (i == t) {
-                     i->SetSolo(true);
+   if(!t) {
+      t = GetFocusedTrack();
+      if(!t) return;
+   }
 
-                  }
-                  else {
-                     i->SetSolo(false);
-                     
-                  }
-                  i = iter.Next();
-               }
+   if (shiftDown) 
+      {
+         // Shift-click mutes/solos this track and unmutes/unsolos other tracks.
+         TrackListIterator iter(mTracks);
+         Track *i = iter.First();
+         while (i) {
+            if (i == t) {
+               i->SetSolo(true);
+
             }
-         else {
-            // Normal click just toggles this track.
-
-               t->SetSolo(!t->GetSolo());
+            else {
+               i->SetSolo(false);
+               
+            }
+            i = iter.Next();
          }
       }
+   else {
+      // Normal click just toggles this track.
+
+      t->SetSolo(!t->GetSolo());
+   }
+
    Refresh(false);
 
 }
 
-void TrackPanel::OnTrackClose(Track * t)
+void TrackPanel::OnTrackClose()
 {
+   Track *t = GetFocusedTrack();
+   if(!t) return;
 
-   AudacityProject *p = GetProject();
-   if (!gAudioIO->IsStreamActive(p->GetAudioIOToken()))
-      RemoveTrack(t);
+   if( gAudioIO->IsStreamActive( GetProject()->GetAudioIOToken() ) )
+   {
+      mListener->TP_DisplayStatusMessage( _( "Can't delete track with active audio" ) );
+      wxBell();
+      return;
+   }
+
+   RemoveTrack( t );
 
    SetCapturedTrack( NULL );
+
    // BG: There are no more tracks on screen
-   if (mTracks->IsEmpty()) {
+   if( mTracks->IsEmpty() )
+   {
       //BG: Set zoom to normal
       mViewInfo->zoom = 44100.0 / 512.0;
 
@@ -4737,9 +4964,10 @@ void TrackPanel::OnTrackClose(Track * t)
       mViewInfo->sel1 = 0.0;
       
       mListener->TP_RedrawScrollbars();
-      mListener->TP_DisplayStatusMessage(wxT(""));        //STM: Clear message if all tracks are removed
+      mListener->TP_DisplayStatusMessage( wxT( "" ) ); //STM: Clear message if all tracks are removed
    }
-   Refresh(false);
+
+   Refresh( false );
 }
 
 
@@ -4774,6 +5002,7 @@ void TrackPanel::EnsureVisible(Track * t)
    Track *nt = NULL;
    //int i = 0;
 
+   SetFocusedTrack(t);
 
    int trackTop = 0;
    int trackHeight =0;
@@ -5502,9 +5731,25 @@ bool TrackPanel::MoveClipToTrack(WaveClip *clip,
    return true;
 }
 
-void TrackPanel::TakeFocus(bool bForward)
+Track *TrackPanel::GetFocusedTrack()
 {
-	SetFocus();
+   return mAx->GetFocus();
+}
+
+void TrackPanel::SetFocusedTrack( Track *t )
+{
+   mAx->SetFocus( t );
+}
+
+void TrackPanel::OnSetFocus(wxFocusEvent & event)
+{
+   SetFocusedTrack( GetFocusedTrack() );
+   Refresh( false );
+}
+
+void TrackPanel::OnKillFocus(wxFocusEvent & event)
+{
+   Refresh( false);
 }
 
 /**********************************************************************

@@ -13,6 +13,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "BassBoost.h"
 #include "../WaveTrack.h"
 

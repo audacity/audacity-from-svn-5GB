@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/intl.h>
 #include <wx/dc.h>
@@ -17,8 +19,8 @@
 #include <wx/event.h>
 #include <wx/dcclient.h> // wxPaintDC
 #include <wx/gbsizer.h>
+
 #include "MeterToolBar.h"
-#include "Audacity.h"
 #include "widgets/Meter.h"
 #include <wx/log.h>
 
@@ -63,6 +65,7 @@ void MeterToolBar::Populate()
                            false,
                            wxDefaultPosition,
                            wxSize( 99, 55 ) );
+   mPlayMeter->SetName( wxT("Play Meter"));
    mPlayMeter->SetLabel( wxT("Meter-Play"));
    mSizer->Add( mPlayMeter, wxGBPosition( 0, 0 ), wxDefaultSpan, wxEXPAND );
 
@@ -71,6 +74,7 @@ void MeterToolBar::Populate()
                              true,
                              wxDefaultPosition,
                              wxSize( 99, 55 ) );
+   mPlayMeter->SetName( wxT("Record Meter"));
    mRecordMeter->SetLabel( wxT("Meter-Record") );
    mSizer->Add( mRecordMeter, wxGBPosition( 0, 1 ), wxDefaultSpan, wxEXPAND );
 

@@ -26,6 +26,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -57,6 +59,9 @@ END_EVENT_TABLE()
 MousePrefs::MousePrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(_("Mouse"));         // Provide visual label
+   SetName(_("Mouse"));          // Provide audible label
+
    /* read prefs all at once, then set up the dialog */
    // There aren't any configurable preferences yet.
    gPrefs->SetPath(wxT("/Mouse"));

@@ -27,7 +27,6 @@ class SelectionBarListener {
    virtual ~SelectionBarListener(){};
    virtual void AS_SetRate(double rate) = 0;
    virtual void AS_ModifySelection(double &start, double &end) = 0;
-   virtual void AS_GiveFocus(bool bForward) = 0;
 };
 
 class SelectionBar : public wxPanel {
@@ -39,8 +38,6 @@ class SelectionBar : public wxPanel {
 
    virtual ~ SelectionBar();
 
-   bool HasAnyFocus();
-
    void SetTimes(double start, double end, double audio);
    void SetField(const wxChar *msg, int fieldNum);
    void SetRate(double rate);
@@ -49,8 +46,6 @@ class SelectionBar : public wxPanel {
    // in the "rate" menu, f.e. if sound card selection
    // has changed.
    void UpdateRates();
-
-   void TakeFocus(bool bForward);
 
  private:
 
@@ -65,8 +60,11 @@ class SelectionBar : public wxPanel {
 
    void OnRate(wxCommandEvent & event);
 
-   void OnSetFocus(wxFocusEvent &evt);
-   void OnKillFocus(wxFocusEvent &evt);
+   void OnSize(wxSizeEvent &evt);
+
+#if defined(__WXGTK__)
+   void OnKeyDown(wxKeyEvent &evt);
+#endif
 
    void ModifySelection();
 

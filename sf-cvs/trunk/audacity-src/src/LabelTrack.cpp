@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <stdio.h>
 
 #include <wx/brush.h>
@@ -59,7 +61,8 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    mIsAdjustingLabel(false)
 {
    InitColours();
-   SetName(_("Label Track"));
+   SetDefaultName(_("Label Track"));
+   SetName(GetDefaultName());
 
    ResetFont();
 

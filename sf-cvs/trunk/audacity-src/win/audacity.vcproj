@@ -1605,6 +1605,12 @@
 				RelativePath="..\src\TrackPanel.h">
 			</File>
 			<File
+				RelativePath="..\src\TrackPanelAx.cpp">
+			</File>
+			<File
+				RelativePath="..\src\TrackPanelAx.h">
+			</File>
+			<File
 				RelativePath="..\src\TranscriptionToolBar.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">

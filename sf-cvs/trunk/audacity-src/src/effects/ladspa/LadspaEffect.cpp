@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "ladspa.h"
 
 #include <wx/wxprec.h>

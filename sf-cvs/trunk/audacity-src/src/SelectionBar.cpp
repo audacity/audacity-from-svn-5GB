@@ -13,6 +13,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "SelectionBar.h"
 
 #include "AudioIO.h"
@@ -45,6 +47,7 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
+   EVT_SIZE(SelectionBar::OnSize)
    EVT_TEXT(OnLeftTimeID, SelectionBar::OnLeftTime)
    EVT_TEXT(OnRightTimeID, SelectionBar::OnRightTime)
    EVT_RADIOBUTTON(OnLengthRadioID, SelectionBar::OnLengthRadio)
@@ -64,11 +67,14 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                            const wxSize & size,
                            double rate,
                            SelectionBarListener * listener):
-   wxPanel(parent, id, pos,  size, wxFULL_REPAINT_ON_RESIZE),
+   wxPanel(parent, id, pos,  size, wxTAB_TRAVERSAL | wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE ),
    mListener(listener), mRate(rate),
    mStart(0.0), mEnd(0.0), mAudio(0.0),
    mModifyingSelection(false)
 {
+   SetLabel(wxT("Selection Bar"));
+   SetName(wxT("Selection Bar"));
+
    // This will be inherited by all children:
    SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL));
 
@@ -98,13 +104,13 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    gPrefs->Read(wxT("/ShowSelectionLength"), &showSelectionLength);
    
    hSizer = new wxBoxSizer(wxHORIZONTAL);
-   mRightEndButton = new wxRadioButton(this, OnEndRadioID, _("End:"),
+   mRightEndButton = new wxRadioButton(this, OnEndRadioID, _("End"),
                                        wxDefaultPosition, wxDefaultSize,
                                        wxRB_GROUP);
    mRightEndButton->SetValue(!showSelectionLength);
    hSizer->Add(mRightEndButton,
                1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
-   mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length:"));
+   mRightLengthButton = new wxRadioButton(this, OnLengthRadioID, _("Length"));
    mRightLengthButton->SetValue(showSelectionLength);
    hSizer->Add(mRightLengthButton,
                1, wxALL | wxALIGN_CENTER_VERTICAL, 0);
@@ -139,6 +145,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRateBox = new wxComboBox(this, OnRateID,
                              wxT(""),
                              wxDefaultPosition, wxSize(80, -1));
+   mRateBox->SetName(_("Project Rate (Hz):"));
    mRateBox->SetValue(wxString::Format(wxT("%d"), (int)mRate));
    UpdateRates(); // Must be done _after_ setting value on mRateBox!
 
@@ -153,6 +160,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 #endif
 
    mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, 44100.0);
+   mLeftTime->SetName(_("Selection Start:"));
    mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -164,6 +172,9 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 #endif
 
    mRightTime = new TimeTextCtrl(this, OnRightTimeID, format, 0.0, 44100.0);
+   mRightTime->SetName(wxString(_("Selection ")) + (showSelectionLength ?
+                                                   _("Length") :
+                                                   _("End")));
    mainSizer->Add(mRightTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -175,6 +186,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 #endif
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, 44100.0);
+   mAudioTime->SetName(_("Audio Position:"));
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
    mainSizer->Add(20, 10);
@@ -190,6 +202,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                                     wxDefaultPosition, wxDefaultSize,
                                     TimeTextCtrl::GetNumBuiltins(),
                                     choices);
+   box->SetName(_("Time Format"));
    box->SetWindowStyle(wxCB_READONLY);
    box->SetValue(TimeTextCtrl::GetBuiltinName(1));
    mFormatChoice = box;
@@ -198,6 +211,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                                     wxDefaultPosition, wxDefaultSize,
                                     TimeTextCtrl::GetNumBuiltins(),
                                     choices);
+   choice->SetName(_("Time Format"));
    choice->SetSelection(1);
    mFormatChoice = choice;   
   #endif
@@ -237,43 +251,33 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mMainSizer = mainSizer;
 
-   //
-   // Intercept focus events to include track panel in tab nagivation
-   // (really should get real deal working...)
-   //
-   mRightEndButton->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
-   mRightLengthButton->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
-   mFormatChoice->Connect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnKillFocus));
+
+#if defined(__WXGTK__)
+   // Under GTK the radio buttons cause tabbing to have "end-points" which prevents
+   // the focus from wrapping to the beginning of the tab order when at the end.
+   // (To see the problem, comment these lines and the ones in the destructor)
+   mRightEndButton->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mRightLengthButton->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mRateBox->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mFormatChoice->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+#endif
 }
 
 SelectionBar::~SelectionBar()
 {
-   mRightEndButton->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
-   mRightLengthButton->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnSetFocus));
-   mFormatChoice->Disconnect( wxEVT_KILL_FOCUS, wxFocusEventHandler(SelectionBar::OnKillFocus));
+#if defined(__WXGTK__)
+   mRightEndButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mRightLengthButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mRateBox->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+   mFormatChoice->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+#endif
 }
 
-bool SelectionBar::HasAnyFocus()
+void SelectionBar::OnSize(wxSizeEvent &evt)
 {
-   wxWindow *focus = FindFocus();
-   
-   if (focus == this ||
-       focus == mRightEndButton ||
-       focus == mRightLengthButton ||
-       focus == mFormatChoice ||
-       focus == mRateBox)
-      return true;
+   Refresh( true );
 
-   if (mLeftTime->HasAnyFocus())
-      return true;
-
-   if (mRightTime->HasAnyFocus())
-      return true;
-
-   if (mAudioTime->HasAnyFocus())
-      return true;
-
-   return false;
+   evt.Skip();
 }
 
 void SelectionBar::ModifySelection()
@@ -329,7 +333,7 @@ void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
    if (index == TimeTextCtrl::GetNumBuiltins())
       return;
    #else
-   int index = ((wxChoice *)mFormatChoice)->GetSelection();
+   int index = ((wxChoice *)mFormatChoice)->GetCurrentSelection();
    #endif
 
    wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
@@ -417,46 +421,66 @@ void SelectionBar::UpdateRates()
    mRateBox->SetValue(oldValue);
 }
 
-
-void SelectionBar::OnSetFocus(wxFocusEvent &evt)
+#if defined(__WXGTK__)
+void SelectionBar::OnKeyDown(wxKeyEvent &evt)
 {
    SelectionBar *sb = (SelectionBar *)((wxWindow *)evt.GetEventObject())->GetParent();
-   wxWindow *n = evt.GetWindow();
+   wxWindowID id = evt.GetId();
+   bool shift = evt.ShiftDown();
 
-   if (n == sb->mFormatChoice)
+   switch( evt.GetKeyCode() )
    {
-      sb->mListener->AS_GiveFocus(false);
+      case WXK_TAB:
+         if( shift )
+         {
+            if( id == OnLengthRadioID )
+            {
+               sb->mFormatChoice->SetFocus();
+            }
+            else if( id == OnRateID )
+            {
+               if( sb->mRightEndButton->GetValue() )
+               {
+                  sb->mRightEndButton->SetFocus();
+               }
+            }
+         }
+         else
+         {
+            if( id == OnEndRadioID )
+            {
+               sb->mRateBox->SetFocus();
+            }
+            else if( id == OnFormatChoiceID )
+            {
+               if( sb->mRightLengthButton->GetValue() )
+               {
+                  sb->mRightLengthButton->SetFocus();
+               }
+            }
+         }
+      break;
+
+      case WXK_LEFT:
+      case WXK_RIGHT:
+         if( id == OnEndRadioID )
+         {
+            // LLL: The SetFocus MUST follow the SetValue...don't know why
+            sb->mRightLengthButton->SetValue( true );
+            sb->mRightLengthButton->SetFocus();
+         }
+         else if( id == OnLengthRadioID )
+         {
+            // LLL: The SetFocus MUST follow the SetValue...don't know why
+            sb->mRightEndButton->SetValue( true );
+            sb->mRightEndButton->SetFocus();
+         }
+      break;
    }
 
-   evt.Skip(true);
+   evt.Skip( true );
 }
-
-void SelectionBar::OnKillFocus(wxFocusEvent &evt)
-{
-   SelectionBar *sb = (SelectionBar *)((wxWindow *)evt.GetEventObject())->GetParent();
-   wxWindow *n = evt.GetWindow();
-
-   if ((n == sb->mRightEndButton) || (n == sb->mRightLengthButton))
-   {
-      sb->mListener->AS_GiveFocus(true);
-   }
-
-   evt.Skip(true);
-}
-
-void SelectionBar::TakeFocus(bool bForward)
-{
-   if (bForward)
-   {
-      SetFocus();
-   }
-   else
-   {
-      mFormatChoice->SetFocus();
-   }
-  
-   return;
-}
+#endif // defined(__WXGTK__)
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

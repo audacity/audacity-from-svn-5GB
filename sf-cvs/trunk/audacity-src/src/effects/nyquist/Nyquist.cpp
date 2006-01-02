@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../../Audacity.h"
+
 #include <math.h>
 #include <locale.h>
 
@@ -18,7 +20,6 @@
 #include <wx/textdlg.h>
 #include <wx/textfile.h>
 
-#include "../../Audacity.h"
 #include "../../AudacityApp.h"
 #include "../../LabelTrack.h"
 #include "../../Internat.h"

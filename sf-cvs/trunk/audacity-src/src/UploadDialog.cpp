@@ -11,6 +11,9 @@
   done.
 
 **********************************************************************/
+
+#include "Audacity.h"
+
 #include <fstream>
 #include <math.h>
 #include <wx/dialog.h>
@@ -36,7 +39,6 @@
 #endif
 
 #include "UploadDialog.h"
-#include "Audacity.h"
 
 //#include "../images/AudacityLogo.xpm"
 

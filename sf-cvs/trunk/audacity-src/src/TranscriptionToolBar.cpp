@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "TranscriptionToolBar.h"
 
 #include "widgets/AButton.h"
@@ -248,6 +250,7 @@ void TranscriptionToolBar::Populate()
                                  wxDefaultSize,
                                  5,
                                  choices );
+   mKeyTypeChoice->SetName(_("Key type"));
    mKeyTypeChoice->SetSelection(0);
    Add( mKeyTypeChoice, 0, wxALIGN_CENTER );
  

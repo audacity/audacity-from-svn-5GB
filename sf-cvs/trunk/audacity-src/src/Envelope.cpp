@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "Envelope.h"
 
 #include <math.h>

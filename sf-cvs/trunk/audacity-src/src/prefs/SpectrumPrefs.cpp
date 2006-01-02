@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/colordlg.h>
@@ -51,6 +53,9 @@ wxString stringFFTSizes[numFFTSizes] = {
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
+   SetLabel(_("Spectrograms"));         // Provide visual label
+   SetName(_("Spectrograms"));          // Provide audible label
+
    int fftSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256L);
    bool isGrayscale = false;
    gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);

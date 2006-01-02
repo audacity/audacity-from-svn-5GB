@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include "FreqWindow.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".

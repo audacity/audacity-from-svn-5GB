@@ -13,6 +13,9 @@
   doing the second pass over all selected tracks.
 
 **********************************************************************/
+
+#include "../Audacity.h"
+
 #include "TwoPassSimpleMono.h"
 
 bool EffectTwoPassSimpleMono::Process()

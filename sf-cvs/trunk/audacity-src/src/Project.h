@@ -236,7 +236,6 @@ class AudacityProject:public wxFrame,
    virtual void TP_HandleResize();
    virtual ControlToolBar * TP_GetControlToolBar();
    virtual ToolsToolBar * TP_GetToolsToolBar();
-   virtual void TP_GiveFocus(bool bForward);
 
    // ToolBar
 
@@ -254,7 +253,6 @@ class AudacityProject:public wxFrame,
 
    virtual void AS_SetRate(double rate);
    virtual void AS_ModifySelection(double &start, double &end);
-   virtual void AS_GiveFocus(bool bForward);
 
    void SetStateTo(unsigned int n);
 

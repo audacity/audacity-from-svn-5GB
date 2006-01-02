@@ -8,6 +8,8 @@
   James Crook
 
 **********************************************************************/
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -22,7 +24,6 @@
 #include <wx/string.h>
 
 
-#include "Audacity.h"
 #include "Project.h"
 #include "BatchCommandDialog.h"
 #include "commands/CommandManager.h"

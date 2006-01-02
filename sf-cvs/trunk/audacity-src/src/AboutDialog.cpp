@@ -9,6 +9,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/dialog.h>
 #include <wx/html/htmlwin.h>
 #include <wx/button.h>
@@ -18,7 +20,6 @@
 #include <wx/intl.h>
 
 #include "AboutDialog.h"
-#include "Audacity.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(AboutDialogCreditItemsList);

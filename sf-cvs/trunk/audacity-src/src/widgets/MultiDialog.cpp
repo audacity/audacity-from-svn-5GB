@@ -8,6 +8,8 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include "MultiDialog.h"
 
 #include <wx/button.h>
