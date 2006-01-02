@@ -225,10 +225,10 @@ void ToolsToolBar::Populate()
    /* Tools */
 
    mTool[ selectTool   ] = MakeTool( IBeam, IBeamAlpha, selectTool, _("SelectionTool") );
-   mTool[ zoomTool     ] = MakeTool( Zoom, ZoomAlpha, zoomTool, _("ZoomTool") );
    mTool[ envelopeTool ] = MakeTool( Envelope, EnvelopeAlpha, envelopeTool, _("TimeShiftTool") );
-   mTool[ slideTool    ] = MakeTool( TimeShift, TimeShiftAlpha, slideTool, _("SlideTool") );
    mTool[ drawTool     ] = MakeTool( Draw, DrawAlpha, drawTool, _("DrawTool") );
+   mTool[ zoomTool     ] = MakeTool( Zoom, ZoomAlpha, zoomTool, _("ZoomTool") );
+   mTool[ slideTool    ] = MakeTool( TimeShift, TimeShiftAlpha, slideTool, _("SlideTool") );
    mTool[ multiTool    ] = MakeTool( Multi, MultiAlpha, multiTool, _("MultiTool") );
 
 #if wxUSE_TOOLTIPS
