@@ -519,15 +519,6 @@ TrackPanel::~TrackPanel()
    delete mLabelTrackMenu;
    delete mLabelTrackLabelMenu;
    delete mTimeTrackMenu;
-
-   while(!mPreviousCursorData.IsEmpty())
-   {
-      delete mPreviousCursorData[0]->bitmap;
-      tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[0];
-      mPreviousCursorData.RemoveAt(0);
-      delete tmpDeletedTpBitmap;
-   }
-   mPreviousCursorData.Clear();
 }
 
 void TrackPanel::UpdatePrefs()
@@ -621,41 +612,6 @@ AudacityProject * TrackPanel::GetProject() const
    return (AudacityProject*)pWind;
 }
 
-/// Replaces cursor with whatever was on screen before the 
-/// cursors were drawn.
-/// TODO: Merge with RemoveStaleIndicators().
-void TrackPanel::RemoveStaleCursors(wxRegionIterator * upd)
-{
-   while((*upd).HaveRects())
-   {
-      wxRect rect;
-      rect = (*upd).GetRect(); //convert the region to a rectangle
-
-      //Does the rectangle intersect with the cursor?
-      //If it does, remove it
-      size_t i = 0;
-      while(i < mPreviousCursorData.GetCount())
-      {
-         wxRect cursorRect(mPreviousCursorData[i]->x, mPreviousCursorData[i]->y, mPreviousCursorData[i]->bitmap->GetWidth(), mPreviousCursorData[i]->bitmap->GetHeight());
-
-         if(rect.Intersects(cursorRect))
-         {
-            //delete this cursor
-            delete mPreviousCursorData[i]->bitmap;
-            tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[i];
-            mPreviousCursorData.RemoveAt(i);
-            delete tmpDeletedTpBitmap;
-         }
-         else
-         {
-            i++; //skip over this cursor
-         }
-      }
-      (*upd)++; //move to next update region
-   }
-   upd->Reset(); //reset the iterator to point to the first update region
-}
-
 /// AS: This function draws the cursor things, both in the
 ///  ruler as seen at the top of the screen, but also in each of the
 ///  selected tracks.
@@ -674,21 +630,7 @@ void TrackPanel::DrawCursors(wxDC * dc)
       dc = new wxClientDC(this);
    }
 
-   wxMemoryDC tmpDrawDC;
    AColor::CursorColor(dc);
-
-   //Erase old cursor
-   while(!mPreviousCursorData.IsEmpty())
-   {
-      tmpDrawDC.SelectObject(*mPreviousCursorData[0]->bitmap);
-      dc->Blit(mPreviousCursorData[0]->x, mPreviousCursorData[0]->y, mPreviousCursorData[0]->bitmap->GetWidth(), mPreviousCursorData[0]->bitmap->GetHeight(), &tmpDrawDC, 0, 0);
-      tmpDrawDC.SelectObject(wxNullBitmap);
-      delete mPreviousCursorData[0]->bitmap;
-      tpBitmap *tmpDeletedTpBitmap = mPreviousCursorData[0];
-      mPreviousCursorData.RemoveAt(0);
-      delete tmpDeletedTpBitmap;
-   }
-   mPreviousCursorData.Clear();
 
    int x = GetLeftOffset() +
        int ((mViewInfo->sel0 - mViewInfo->h) * mViewInfo->zoom);
@@ -709,28 +651,19 @@ void TrackPanel::DrawCursors(wxDC * dc)
                double t0 = tt->warp( mViewInfo->sel0 - mViewInfo->h );
                int warpedX = GetLeftOffset() + int (t0 * mViewInfo->zoom);
                dc->DrawLine(warpedX, y + kTopInset + 1, warpedX, y + height - 2);
+
+               // Add cursor to damage rect
+               mDamageRect.Union( wxRect( warpedX, 0, 1, GetRect().GetHeight() ));
             }
          else if (t->GetSelected() || mAx->IsFocused(t))
          {
             wxCoord top = y + kTopInset + 1;
             wxCoord bottom = y + height - 2;
 
-            //Save bitmaps of the areas that we are going to overwrite
-            wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
-            tmpDrawDC.SelectObject(*tmpBitmap);
-
-            //Copy the part of the screen into the bitmap, using the memory DC
-            tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
-            tmpDrawDC.SelectObject(wxNullBitmap);
-
-            //Add the bitmap to the array
-            tpBitmap *tmpTpBitmap = new tpBitmap;
-            tmpTpBitmap->x = x;
-            tmpTpBitmap->y = top;
-            tmpTpBitmap->bitmap = tmpBitmap;
-            mPreviousCursorData.Add(tmpTpBitmap);
-
             dc->DrawLine(x, top, x, bottom); // <-- The whole point of this routine.
+
+            // Add cursor to damage rect
+            mDamageRect.Union( wxRect( x, 0, 1, GetRect().GetHeight() ));
          }
          y += height;
       }
@@ -917,7 +850,7 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
    mIndicatorShowing = (onScreen && audioActive);
    if( !mIndicatorShowing || indicator < 0 )
    {
-      if( !mLastIndicator.IsEmpty() )
+      if( !mDamageRect.IsEmpty() )
       {
          CleanupIndicators();
       }
@@ -932,7 +865,7 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
       dc = new wxClientDC(this);
 
       // Remove old indicators.
-      if( !mLastIndicator.IsEmpty() )
+      if( !mDamageRect.IsEmpty() )
       {
          CleanupIndicators();
       }
@@ -4027,8 +3960,8 @@ bool TrackPanel::HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event)
 
 void TrackPanel::CleanupIndicators()
 {
-   RefreshRect( mLastIndicator, false );
-   mLastIndicator = wxRect(0,0,0,0);
+   RefreshRect( mDamageRect, false );
+   mDamageRect = wxRect(0,0,0,0);
 }
 
 /// This draws the play indicator as a vertical line on each of the tracks
@@ -4067,7 +4000,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc, double ind)
          dc->DrawLine(x, top, x, bottom);
 
          // Add indicator to redraw rect
-         mLastIndicator.Union( wxRect( x, 0, 1, panelarea.GetHeight() ));
+         mDamageRect.Union( wxRect( x, 0, 1, panelarea.GetHeight() ));
       }
 
       // Increment y so you draw on the proper track

@@ -222,7 +222,6 @@ class TrackPanel:public wxPanel {
    bool HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
    void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawCursors(wxDC * dc = NULL);
-   void RemoveStaleCursors(wxRegionIterator * upd);
 
    void ScrollDuringDrag();
    void UpdateIndicator(wxDC * dc = NULL);
@@ -405,11 +404,9 @@ private:
    } mTimer;
    
 
-   //This stores the parts of the screen that get overwritten by the indicator
-   wxRect mLastIndicator;
-   wxRegion mIndicators;
-   
-   tpBitmapArray mPreviousCursorData;
+   // This stores the parts of the screen that get overwritten by the indicator
+   // and cursor
+   wxRect mDamageRect;
 
    int mTimeCount;
 
