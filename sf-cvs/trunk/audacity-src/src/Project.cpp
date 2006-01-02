@@ -561,9 +561,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 #endif
    mIconized = false;
 
-   // Min size, max size
-   SetSizeHints(250, 200, 20000, 20000);
-
    // Create tags object
    mTags = new Tags();
 
