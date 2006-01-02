@@ -2335,19 +2335,15 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 /// Determines if we can edit samples in a wave track.
 /// Also pops up warning messages in certain cases where we can't.
 ///  @return true if we can edit the samples, false otherwise.
-bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event )
+bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event, Track * t )
 {
-   //If the mouse isn't over a track, exit the function and don't do anything
-   if(mDrawingTrack == NULL) 
+   //Exit if it's not a WaveTrack
+   if(t->GetKind() != Track::Wave)
       return false;
    
-   //Also exit if it's not a WaveTrack
-   if(mDrawingTrack->GetKind() != Track::Wave)
-      return false;
-   
-   // Get out of here if we shouldn't be drawing right now:
-   // If we aren't displaying the waveform, Display a message dialog
-   if(((WaveTrack *)mDrawingTrack)->GetDisplay() != WaveTrack::WaveformDisplay)
+   //Get out of here if we shouldn't be drawing right now:
+   //If we aren't displaying the waveform, Display a message dialog
+   if(((WaveTrack *)t)->GetDisplay() != WaveTrack::WaveformDisplay)
    {
       wxMessageBox(_("Draw currently only works with linear-view waveforms."), wxT("Notice"));
       return false;
@@ -2355,7 +2351,7 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event )
    
    //Get rate in order to calculate the critical zoom threshold
    //Find out the zoom level
-   double rate = ((WaveTrack *)mDrawingTrack)->GetRate();
+   double rate = ((WaveTrack *)t)->GetRate();
    bool showPoints = (mViewInfo->zoom / rate > 3.0);
 
    //If we aren't zoomed in far enough, show a message dialog.
@@ -2374,19 +2370,22 @@ void TrackPanel::HandleSampleEditingClick( wxMouseEvent & event )
    //declare a rectangle to determine clicking position
    wxRect r;
    int dummy;
-   
-   //Get the track the mouse is over, and save it away for future events
-   //TODO: Should mCapturedTrack take the place of mDrawingTrack??
-   mDrawingTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
-   mDrawingTrackTop=r.y;
+   Track *t;
 
-   if( !IsSampleEditingPossible( event ) )
+   //Get the track the mouse is over, and save it away for future events
+   mDrawingTrack = NULL;
+   t = FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
+   
+   if( !IsSampleEditingPossible( event, t ) )
    {
-      mDrawingTrack = NULL;
       if( HasCapture() )
          ReleaseMouse();
       return;
    }
+
+   //TODO: Should mCapturedTrack take the place of mDrawingTrack??
+   mDrawingTrack = t;
+   mDrawingTrackTop=r.y;
 
    //If we are still around, we are drawing in earnest.  Set some member data structures up:
    //First, calculate the starting sample.  To get this, we need the time
@@ -2646,9 +2645,9 @@ void TrackPanel::HandleSampleEditing(wxMouseEvent & event)
 {
    if (event.ButtonDown(1) ) {
       HandleSampleEditingClick( event);
-   } else if (event.Dragging()) {
+   } else if (mDrawingTrack && event.Dragging()) {
       HandleSampleEditingDrag( event );
-   }  else if(event.ButtonUp()) {
+   }  else if(mDrawingTrack && event.ButtonUp()) {
       HandleSampleEditingButtonUp( event );
    }
 }

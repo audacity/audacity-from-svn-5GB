@@ -264,7 +264,7 @@ class TrackPanel:public wxPanel {
    void HandleVZoomButtonUp(wxMouseEvent & event);
 
    // Handle sample editing using the 'draw' tool.
-   bool IsSampleEditingPossible( wxMouseEvent & event );
+   bool IsSampleEditingPossible( wxMouseEvent & event, Track * t );
    void HandleSampleEditing(wxMouseEvent & event);
    void HandleSampleEditingClick( wxMouseEvent & event );
    void HandleSampleEditingDrag( wxMouseEvent & event );
