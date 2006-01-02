@@ -508,6 +508,7 @@ private:
    bool mSlideUpDownOnly;
    bool mCircularTrackNavigation;
    bool mPresentTrackNumber;
+   float mdBr;
 
    // JH: if the user is dragging a track, at what y
    //   coordinate should the dragging track move up or down?

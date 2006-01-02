@@ -532,6 +532,7 @@ TrackPanel::~TrackPanel()
 
 void TrackPanel::UpdatePrefs()
 {
+   mdBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    gPrefs->Read(wxT("/GUI/AutoScroll"), &mViewInfo->bUpdateTrackIndicator,
                true);
    gPrefs->Read(wxT("/GUI/UpdateSpectrogram"), &mViewInfo->bUpdateSpectrogram,
@@ -3873,15 +3874,14 @@ bool TrackPanel::HitTestEnvelope(Track *track, wxRect &r, wxMouseEvent & event)
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
 
    // Get y position of envelope point.
-   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    int yValue = GetWaveYPosNew( envValue,
       zoomMin, zoomMax,      
-      r.height, dB, true, dBr, false ) + r.y;
+      r.height, dB, true, mdBr, false ) + r.y;
 
    // Get y position of center line
    int ctr = GetWaveYPosNew( 0.0,
       zoomMin, zoomMax,      
-      r.height, dB, true, dBr, false ) + r.y;
+      r.height, dB, true, mdBr, false ) + r.y;
   
    // Get y distance of mouse from center line (in pixels).
    int yMouse = abs(ctr - event.m_y);
@@ -3942,7 +3942,6 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
    float zoomMin, zoomMax;
 
    wavetrack->GetDisplayBounds(&zoomMin, &zoomMax);
-   float dBr = gPrefs->Read(wxT("/GUI/EnvdBRange"), ENV_DB_RANGE);
    
    double envValue = 1.0;
    Envelope* env = wavetrack->GetEnvelopeAtX(event.GetX());
@@ -3951,7 +3950,7 @@ bool TrackPanel::HitTestSamples(Track *track, wxRect &r, wxMouseEvent & event)
 
    int yValue = GetWaveYPosNew( oneSample * envValue, 
       zoomMin, zoomMax,      
-      r.height, dB, true, dBr, false) + r.y;   
+      r.height, dB, true, mdBr, false) + r.y;   
 
    // Get y position of mouse (in pixels)
    int yMouse = event.m_y;
