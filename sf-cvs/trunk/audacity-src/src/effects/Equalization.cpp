@@ -734,9 +734,9 @@ void EqualizationDialog::SaveCurves()
    //       creates a normal file as "$HOME/.audacity", while the former
    //       expects the ".audacity" portion to be a directory.
 #if !defined( __WXMSW__ )
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + "-data", "EQCurves.xml" );
+   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + wxT("-data"), wxT("EQCurves.xml") );
 #else
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir(), "EQCurves.xml" );
+   wxFileName fn( wxStandardPaths::Get().GetUserDataDir(), wxT("EQCurves.xml") );
 #endif
 
    // If the directory doesn't exist...

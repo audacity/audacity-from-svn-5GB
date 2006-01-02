@@ -54,14 +54,17 @@
 //
 // 4)  Include "Audacity.h" in the source file creating the control
 //
+#if wxUSE_ACCESSIBILITY
+#include <wx/defs.h>
+
 #define wxTextCtrlNameStr overrideTextCtrlNameStr
-extern const char *overrideTextCtrlNameStr;
+extern const wxChar *overrideTextCtrlNameStr;
 
 #define wxChoiceNameStr overrideChoiceNameStr
-extern const char *overrideChoiceNameStr;
+extern const wxChar *overrideChoiceNameStr;
 
 #define wxComboBoxNameStr overrideComboBoxNameStr
-extern const char *overrideComboBoxNameStr;
-
+extern const wxChar *overrideComboBoxNameStr;
+#endif
 // arch-tag: dcb2defc-1c07-4bae-a9ca-c5377cb470e4
 
