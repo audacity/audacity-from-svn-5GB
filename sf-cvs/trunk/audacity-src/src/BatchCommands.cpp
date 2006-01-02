@@ -9,15 +9,19 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <wx/defs.h>
 #include <wx/msgdlg.h>
+#include <wx/filedlg.h>
+#include <wx/textfile.h>
 
-#include "Audacity.h"
 #include "Project.h"
 #include "BatchCommands.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "../images/Arrow.xpm"
+#include "Internat.h"
 #include "../Prefs.h"
 #include "Shuttle.h"
 #include "../export/ExportMP3.h"
@@ -49,7 +53,7 @@ BatchCommands::BatchCommands()
    ResetChain();
 }
 
-void BatchCommands::SaveChain()
+void BatchCommands::WriteChain()
 {
    int i;
    wxString PrefName;
@@ -82,6 +86,141 @@ void BatchCommands::ReadChain()
       mCommandChain.Add( Value.Mid( 0,splitAt ));
       mParamsChain.Add( Value.Mid( splitAt+1));
    }
+}
+
+void BatchCommands::LoadChain( wxWindow *parent )
+{
+   // Get the initial path
+   wxString pName = gPrefs->Read( wxT("/Batch/DefaultChainPath"),
+                                  FROMFILENAME( ::wxGetCwd() ) );
+
+   // Prompt user for a file name
+   wxString fName = wxFileSelector( _("Select a command chain file..."),
+                                    pName,         // Path
+                                    wxT(""),       // Name
+                                    wxT(""),       // Extension
+                                    _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                                    0,             // Flags
+                                    parent);       // Parent
+
+   // Nothing to do
+   if( !fName )
+      return;
+
+   // Convert name
+   fName = FROMFILENAME( fName );
+
+   // Remember path
+   gPrefs->Write( wxT("/Batch/DefaultChainPath"), wxPathOnly( fName ) );
+
+   // Remember last filename
+   gPrefs->Write( wxT("/Batch/LastFile"), fName );
+
+   // Set the file name
+   wxTextFile tf( fName );
+
+   // Open and check
+   tf.Open();
+   if( !tf.IsOpened() )
+   {
+      // wxTextFile will display any errors
+      return;
+   }
+
+   // Clear any previous chain
+   ResetChain();
+
+   // Load commands from the file
+   int i;
+   int lines = tf.GetLineCount();
+   int splitAt;
+   wxString cmd;
+   wxString parm;
+   for( i = 0; i < lines; i++ )
+   {
+      // Find the command name terminator...ingore line if not found
+      splitAt = tf[ i ].Find( wxT(':') );
+      if( splitAt < 0 )
+         continue;
+
+      // Parse and clean
+      cmd = tf[ i ].Left( splitAt ).Trim( false ).Trim( true );
+      parm = tf[ i ].Mid( splitAt + 1 ).Trim( false ).Trim( true );
+
+      // Add to lists
+      mCommandChain.Add( cmd );
+      mParamsChain.Add( parm );
+   }
+
+   // Done with the file
+   tf.Close();
+}
+
+void BatchCommands::SaveChain( wxWindow *parent )
+{
+   // Get the initial path
+   wxString pName = gPrefs->Read( wxT("/DefaultExportPath"),
+                                  FROMFILENAME( ::wxGetCwd() ) );
+
+   // Get last used filename
+   wxString fName = gPrefs->Read( wxT("/Batch/LastFile"),
+                                  FILENAME( wxT("Chain.txt") ) );
+
+   // Prompt user for a file name
+   fName = wxFileSelector( _("Save command chain As:"),
+                           NULL,                         // Path
+                           fName,                        // Name
+                           wxT("txt"),                   // Extension
+                           _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                           wxSAVE | wxOVERWRITE_PROMPT,  // Flags
+                           parent );                     // Parent
+
+   // Nothing to do
+   if( !fName )
+      return;
+
+   // Convert name
+   fName = FROMFILENAME( fName );
+
+   // Remember path
+   gPrefs->Write( wxT("/DefaultChainPath"), wxPathOnly( fName ) );
+
+   // Remember last filename
+   gPrefs->Write( wxT("/Batch/LastFile"), fName );
+
+   // Set the file name
+   wxTextFile tf( fName );
+
+   // (Possibly) create new file
+   if( !tf.Exists() )
+   {
+      tf.Create();
+   }
+
+   // Open and check
+   tf.Open();
+   if( !tf.IsOpened() )
+   {
+      // wxTextFile will display any errors
+      return;
+   }
+
+   // Start with a clean slate
+   tf.Clear();
+
+   // Copy over the commands
+   int i;
+   int lines = mCommandChain.GetCount();
+   for( i = 0; i < lines; i++ )
+   {
+      tf.AddLine( mCommandChain[i] + wxT(":") + mParamsChain[ i ] );
+   }
+
+   // Write the chain
+   tf.Write();
+
+   // Done with the file
+   tf.Close();
 }
 
 

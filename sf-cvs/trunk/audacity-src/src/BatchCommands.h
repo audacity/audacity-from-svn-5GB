@@ -48,7 +48,9 @@ class BatchCommands {
    bool ApplyBatchToNamedFile( const wxString & filename );
    void AbortBatch();
 	void ReadChain();
-	void SaveChain();
+	void WriteChain();
+	void LoadChain( wxWindow * parent );
+	void SaveChain( wxWindow * parent );
 	void SetWavToMp3Chain();
 	void SetCleanSpeechChain();
    wxArrayString mCommandChain;
