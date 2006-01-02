@@ -4105,18 +4105,14 @@ void TrackPanel::DrawTracks(wxDC * dc)
    tracksRect.width -= GetLabelWidth();
 
    ToolsToolBar *pTtb = mListener->TP_GetToolsToolBar();
-   //No control tool bar?  All bets are off.  Could happen as the application closes.
-   if( pTtb == NULL )
-      return;
-
    bool bMultiToolDown = pTtb->GetMultiToolDown();
    bool envelopeFlag   = pTtb->GetEnvelopeToolDown() || bMultiToolDown;
    bool samplesFlag    = pTtb->GetDrawToolDown() || bMultiToolDown;
    bool sliderFlag     = bMultiToolDown;
 
    // The track artist actually draws the stuff inside each track
-   mTrackArtist->DrawTracks(mTracks, *dc, tracksRect,
-                            clip, mViewInfo, 
+   mTrackArtist->DrawTracks(mTracks, *dc, GetUpdateRegion(),
+                            tracksRect, clip, mViewInfo, 
                             envelopeFlag, samplesFlag, sliderFlag);
 
    DrawEverythingElse(dc, panelRect, clip);
