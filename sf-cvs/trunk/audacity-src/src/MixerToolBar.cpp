@@ -100,25 +100,8 @@ void MixerToolBar::Populate()
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
-   wxImage *speaker = new wxImage(wxBitmap(Speaker).ConvertToImage());
-   wxImage *speakerAlpha = new wxImage(wxBitmap(SpeakerAlpha).ConvertToImage());
-   wxImage *bkgnd = CreateSysBackground(25, 25, 1,
-                                        backgroundColour);
-   wxImage *speakerFinal = OverlayImage(bkgnd, speaker, speakerAlpha, 0, 0);
-   wxImage *mic = new wxImage(wxBitmap(Mic).ConvertToImage());
-   wxImage *micAlpha = new wxImage(wxBitmap(MicAlpha).ConvertToImage());
-   wxImage *micFinal = OverlayImage(bkgnd, mic, micAlpha, 0, 0);
-
-   mPlayBitmap = new wxBitmap(speakerFinal);
-   mRecordBitmap = new wxBitmap(micFinal);
-
-   delete speaker;
-   delete speakerAlpha;
-   delete bkgnd;
-   delete speakerFinal;
-   delete mic;
-   delete micAlpha;
-   delete micFinal;
+   mPlayBitmap = new wxBitmap( Speaker );
+   mPlayBitmap->SetMask( new wxMask( wxBitmap( SpeakerAlpha ), *wxBLACK ) );
 
    Add( new wxStaticBitmap( this,
                             wxID_ANY, 
@@ -128,6 +111,9 @@ void MixerToolBar::Populate()
                                wxDefaultPosition, wxSize(130, 25));
    mOutputSlider->SetLabel( wxT("Slider-Output") );
    Add( mOutputSlider, 0, wxALIGN_CENTER );
+
+   mRecordBitmap = new wxBitmap( Mic );
+   mRecordBitmap->SetMask( new wxMask( wxBitmap( MicAlpha ), *wxBLACK ) );
 
    Add( new wxStaticBitmap( this,
                             wxID_ANY, 
