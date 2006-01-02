@@ -158,7 +158,7 @@ class TrackListIterator {
   
   // Iterate functions
   Track *First();
-  Track *Next();
+  Track *Next(bool SkipLinked = false);
   Track *RemoveCurrent();     // returns next
   
  private:
@@ -199,8 +199,8 @@ class TrackList {
   // Otherwise return null.
   Track *GetLink(Track * t) const;
   
-  Track *GetPrev(Track * t) const;
-  Track *GetNext(Track * t) const;
+  Track *GetPrev(Track * t, bool linked = false) const;
+  Track *GetNext(Track * t, bool linked = false) const;
   
   bool CanMoveUp(Track * t) const;
   bool CanMoveDown(Track * t) const;
