@@ -34,7 +34,7 @@ class MixerToolBar:public ToolBar {
    void SetMixer(wxCommandEvent &event);
 
    virtual void Populate();
-   virtual void Repaint( wxPaintDC *dc ) {};
+   virtual void Repaint( wxDC *dc ) {};
    virtual void EnableDisableButtons() {};
 
    void OnSlider(wxCommandEvent & event);

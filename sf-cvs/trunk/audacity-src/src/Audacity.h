@@ -29,8 +29,6 @@ class wxWindow;
 
 extern wxWindow *gParentWindow;
 
-#define nToolBars 6
-
 void QuitAudacity(bool bForce);
 void QuitAudacity();
 

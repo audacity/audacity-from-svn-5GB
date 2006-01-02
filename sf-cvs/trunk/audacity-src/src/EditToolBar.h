@@ -75,7 +75,7 @@ class EditToolBar:public ToolBar {
    void OnButton(wxCommandEvent &event);
 
    void Populate();
-   void Repaint( wxPaintDC *dc ) {};
+   void Repaint( wxDC *dc ) {};
    void EnableDisableButtons();
 
 

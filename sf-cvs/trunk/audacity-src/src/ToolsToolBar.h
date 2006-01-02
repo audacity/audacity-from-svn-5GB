@@ -77,9 +77,9 @@ class ToolsToolBar:public ToolBar {
 
    const wxChar * GetMessageForTool( int ToolNumber );
 
-   virtual void EnableDisableButtons();
    void Populate();
-   virtual void Repaint( wxPaintDC *dc );
+   virtual void Repaint( wxDC *dc )  {};
+   virtual void EnableDisableButtons() {};
 
    DECLARE_EVENT_TABLE()
    ;
