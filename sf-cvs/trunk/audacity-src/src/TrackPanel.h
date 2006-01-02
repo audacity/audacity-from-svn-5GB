@@ -156,6 +156,8 @@ class TrackPanel:public wxPanel {
 
    void UpdatePrefs();
 
+   void OnSize(wxSizeEvent & event);
+   void OnErase(wxEraseEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void OnKeyEvent(wxKeyEvent & event);
@@ -179,6 +181,8 @@ class TrackPanel:public wxPanel {
 
    virtual void Refresh(bool eraseBackground = TRUE,
                         const wxRect *rect = (const wxRect *) NULL);
+   void CleanupIndicators();
+
    void DisplaySelection();
 
    void SetSelectionFormat(int iformat);
@@ -222,7 +226,6 @@ class TrackPanel:public wxPanel {
 
    void ScrollDuringDrag();
    void UpdateIndicator(wxDC * dc = NULL);
-   void RemoveStaleIndicators(wxRegionIterator * upd);
 
    // Working out where to dispatch the event to.
    int DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event);
@@ -357,7 +360,7 @@ class TrackPanel:public wxPanel {
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
 private:
-   void DrawTrackIndicator(wxDC *dc);
+   void DrawTrackIndicator(wxDC *dc, double ind);
 
    void DrawTracks(wxDC * dc);
 
@@ -403,17 +406,18 @@ private:
    
 
    //This stores the parts of the screen that get overwritten by the indicator
-   tpBitmapArray mScreenAtIndicator;
+   wxRect mLastIndicator;
+   wxRegion mIndicators;
    
-   // This indicates whether the last indicator drawing
-   // existed, so that we can draw over it to erase it
-   bool mPlayIndicatorExists;
-
    tpBitmapArray mPreviousCursorData;
 
    int mTimeCount;
 
+#if !defined(__WXMAC__)
    wxBitmap *mBitmap;
+#endif
+   wxBitmap *mBacking;
+   bool mRefreshBacking;
    int mPrevWidth;
    int mPrevHeight;
 
