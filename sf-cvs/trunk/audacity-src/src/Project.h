@@ -62,6 +62,7 @@ class TrackList;
 class Tags;
 class HistoryWindow;
 class Importer;
+class AdornedRuler;
 
 class AudacityProject;
 
@@ -127,6 +128,7 @@ class AudacityProject:public wxFrame,
    wxString GetName();
    DirManager *GetDirManager();
    TrackFactory *GetTrackFactory();
+   AdornedRulerPanel *GetRulerPanel();
    Tags *GetTags();
    int GetAudioIOToken();
    void SetAudioIOToken(int token);
@@ -335,6 +337,7 @@ class AudacityProject:public wxFrame,
 
    wxGenericDragImage *mDrag;
 
+   AdornedRulerPanel *mRuler;
    TrackPanel *mTrackPanel;
    TrackFactory *mTrackFactory;
    Importer *mImporter;

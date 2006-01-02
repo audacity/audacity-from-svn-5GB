@@ -148,7 +148,9 @@ class TrackPanel:public wxPanel {
               const wxPoint & pos,
               const wxSize & size,
               TrackList * tracks,
-              ViewInfo * viewInfo, TrackPanelListener * listener);
+              ViewInfo * viewInfo,
+              TrackPanelListener * listener,
+              AdornedRulerPanel * ruler );
 
    virtual ~ TrackPanel();
 
@@ -167,7 +169,6 @@ class TrackPanel:public wxPanel {
 
    void OnTimer();
 
-   int GetRulerHeight();
    int GetLeftOffset() const { return GetLabelWidth() + 1;}
 
    void GetTracksUsableArea(int *width, int *height) const;
@@ -356,7 +357,6 @@ class TrackPanel:public wxPanel {
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
 private:
-   void DrawRuler(wxDC * dc, bool text = true);
    void DrawTrackIndicator(wxDC *dc);
 
    void DrawTracks(wxDC * dc);

@@ -333,12 +333,14 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
                        const wxSize & size,
                        TrackList * tracks,
                        ViewInfo * viewInfo,
-                       TrackPanelListener * listener)
-   : wxPanel(parent, id, pos, size, wxWANTS_CHARS),
+                       TrackPanelListener * listener,
+                       AdornedRulerPanel * ruler)
+   : wxPanel(parent, id, pos, size, wxWANTS_CHARS | wxNO_BORDER),
      mTrackLabel(this),
      mListener(listener),
      mTracks(tracks),
      mViewInfo(viewInfo),
+     mRuler(ruler),
      mBitmap(NULL),
      mAutoScrolling(false)
 #ifndef __WXGTK__   //Get rid if this pragma for gtk
@@ -453,8 +455,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mCapturedTrack = NULL;
    mPopupMenuTarget = NULL;
 
-   mRuler = new AdornedRulerPanel();
-
    mTimeCount = 0;
    mTimer.parent = this;
    mTimer.Start(50, FALSE);
@@ -486,7 +486,6 @@ TrackPanel::~TrackPanel()
       delete mBitmap;
 
    delete mTrackArtist;
-   delete mRuler;
 
    delete mArrowCursor;
    delete mPencilCursor;
@@ -727,31 +726,10 @@ void TrackPanel::DrawCursors(wxDC * dc)
    int x = GetLeftOffset() +
        int ((mViewInfo->sel0 - mViewInfo->h) * mViewInfo->zoom);
 
-   int y = -mViewInfo->vpos + GetRulerHeight();
+   int y = -mViewInfo->vpos;
 
    // AS: Ah, no, this is where we draw the blinky thing in the ruler.
-   {
-      wxCoord top = 1;
-      wxCoord bottom = GetRulerHeight() - 2;
-
-      //Save bitmaps of the areas that we are going to overwrite
-      wxBitmap *tmpBitmap = new wxBitmap(1, bottom-top);
-      tmpDrawDC.SelectObject(*tmpBitmap);
-
-      //Copy the part of the screen into the bitmap, using the memory DC
-      tmpDrawDC.Blit(0, 0, tmpBitmap->GetWidth(), tmpBitmap->GetHeight(), dc, x, top);
-      tmpDrawDC.SelectObject(wxNullBitmap);
-
-      //Add the bitmap to the array
-      tpBitmap *tmpTpBitmap = new tpBitmap;
-      tmpTpBitmap->x = x;
-      tmpTpBitmap->y = top;
-      tmpTpBitmap->bitmap = tmpBitmap;
-      mPreviousCursorData.Add(tmpTpBitmap);
-
-      // Draw cursor in ruler
-      dc->DrawLine(x, top, x, bottom);
-   }
+   mRuler->DrawCursor( x );
 
    if (x >= GetLeftOffset()) {
       // Draw cursor in all selected tracks
@@ -962,10 +940,6 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
    mIndicatorShowing = (onScreen &&
                         gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
-   int width, height;
-   GetSize(&width, &height);
-   height = GetRulerHeight();
-
    bool bIsClientDC = false;
    if(!dc)
    {
@@ -976,20 +950,14 @@ void TrackPanel::UpdateIndicator(wxDC * dc)
    //Draw the line across all tracks specifying where play is
    DrawTrackIndicator(dc);
 
-   wxMemoryDC memDC;
-   wxBitmap rulerBitmap;
-   rulerBitmap.Create(width, height);
-
-   memDC.SelectObject(rulerBitmap);
-
-   DrawRuler(&memDC, true);
-   dc->Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
-
    if(bIsClientDC)
    {
       delete dc;
       dc = NULL;
    }
+
+   bool rec = gAudioIO->GetNumCaptureChannels() ? false : true;
+   mRuler->DrawIndicator( rec, indicator );
 }
 
 /// AS: OnPaint( ) is called during the normal course of 
@@ -1014,7 +982,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    dc.BeginDrawing();
 
    DrawTracks(&dc);
-   DrawRuler(&dc);
    RemoveStaleIndicators(&upd);
    //UpdateIndicator(&dc);
    RemoveStaleCursors(&upd);
@@ -1050,7 +1017,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    memDC.SelectObject(*mBitmap);
 
    DrawTracks(&memDC);
-   DrawRuler(&memDC);
    RemoveStaleIndicators(&upd);
    //UpdateIndicator(&memDC);
    RemoveStaleCursors(&upd);
@@ -1627,18 +1593,11 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
       }
    }
 
-   // Refresh the ruler.
-   wxRect RulerRect;
-   mRuler->GetSize(&RulerRect.width, &RulerRect.height);
-   RulerRect.x=0;
-   RulerRect.y=0;
-   Refresh(false, &RulerRect);
-
    // Refresh the tracks, excluding the TrackLabel as 
    // this gives a small speed improvement.
    wxRect trackRect;
    GetSize( &trackRect.width, &trackRect.height);
-   trackRect.y = RulerRect.height;
+   trackRect.y = 0;
    trackRect.x = GetLeftOffset(); 
    trackRect.width -= GetLeftOffset();
    Refresh(false, &trackRect);
@@ -1669,6 +1628,7 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 
    mViewInfo->sel0 = wxMin(mSelStart, selend);
    mViewInfo->sel1 = wxMax(mSelStart, selend);
+   mRuler->DrawSelection();
 }
 
 /// DM: Converts a position (mouse X coordinate) to 
@@ -4054,7 +4014,7 @@ void TrackPanel::DrawTrackIndicator(wxDC * dc)
       GetSize(&width, &height);   
 
       int x = indp;
-      int y = -mViewInfo->vpos + GetRulerHeight();
+      int y = -mViewInfo->vpos;
 
       if (x >= GetLeftOffset())
       {
@@ -4101,11 +4061,6 @@ double TrackPanel::GetMostRecentXPos()
       (mMouseMostRecentX - GetLabelWidth()) / mViewInfo->zoom;
 }
 
-int TrackPanel::GetRulerHeight()
-{ 
-   return AdornedRulerPanel::GetRulerHeight();
-}
-
 /// This function overrides Refresh() of wxWindow so that the 
 /// boolean play indicator can be set to false, so that an old play indicator that is
 /// no longer there won't get  XORed (to erase it), thus redrawing it on the 
@@ -4128,10 +4083,6 @@ void TrackPanel::DrawTracks(wxDC * dc)
 
    wxRect panelRect = clip;
    panelRect.y = -mViewInfo->vpos;
-
-   // Make room for ruler
-   panelRect.y += GetRulerHeight();
-   panelRect.height -= GetRulerHeight();
 
    wxRect tracksRect = panelRect;
    tracksRect.x += GetLabelWidth();
@@ -5045,27 +4996,6 @@ void TrackPanel::EnsureVisible(Track * t)
    Refresh(false);
 }
 
-void TrackPanel::DrawRuler( wxDC * dc, bool text )
-{
-   AudacityProject *p = GetProject();
-   bool bIndicators = gAudioIO->IsStreamActive(p->GetAudioIOToken());
-   mRuler->indicatorPos = bIndicators ? gAudioIO->GetStreamTime() : 0.0;
-
-   wxRect r;
-   GetSize( &r.width, &r.height );
-   r.x = 0;
-   r.y = 0;
-   r.height = GetRulerHeight() - 1;
-   mRuler->SetSize( r );
-   mRuler->SetLeftOffset( GetLeftOffset() );
-
-      
-   bool bRecording = (gAudioIO->GetNumCaptureChannels() ? false : true);
-
-   mRuler->DrawAdornedRuler( dc, mViewInfo, text, bIndicators, bRecording );
-}
-
-
 void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                                         const wxRect r, const int vrul,
                                         const int labelw)
@@ -5535,7 +5465,6 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
    wxRect r;
    r.x = 0;
    r.y = -mViewInfo->vpos;
-   r.y += GetRulerHeight();
    r.y += kTopInset;
    GetSize(&r.width, &r.height);
 
@@ -5619,7 +5548,6 @@ wxRect TrackPanel::FindTrackRect(Track * target, bool label)
    wxRect r;
    r.x = 0;
    r.y = -mViewInfo->vpos;
-   r.y += GetRulerHeight();
    r.y += kTopInset;
    GetSize(&r.width, &r.height);
 

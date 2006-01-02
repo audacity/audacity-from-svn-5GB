@@ -60,6 +60,7 @@
 #include <wx/textfile.h>
 #include <wx/menu.h>
 #include <wx/progdlg.h>
+#include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 
 #include "Project.h"
 
@@ -90,10 +91,10 @@
 #include "DirManager.h"
 #include "effects/Effect.h"
 #include "prefs/PrefsDialog.h"
+#include "widgets/Ruler.h"
 #include "widgets/Warning.h"
 #include "xml/XMLFileReader.h"
 #include "PlatformCompatibility.h"
-#include <wx/arrimpl.cpp>       // this allows for creation of wxObjArray
 #include "Experimental.h"
 #include "export/Export.h"
 
@@ -420,11 +421,20 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    CreateMenusAndCommands();
 
-   // Create the Control Toolbar (if we're not using a windowed toolbar)
-   // The control toolbar should be automatically loaded--other toolbars
-   // are optional.
-   mToolBarDock = new ToolBarDock( this );
+   // LLL:  Read this!!!
+   //
+   // Until the time (and cpu) required to refresh the track panel is
+   // reduced, leave the following window creations in the order specified.
+   // This will place the refresh of the track panel last, allowing all
+   // the others to get done quickly.
+   //
+   // Near as I can tell, this is only a problem under Windows.
+   //
 
+   //
+   // Create the ToolBarDock
+   //
+   mToolBarDock = new ToolBarDock( this );
    mToolBarDock->LayoutToolBars();
 
    // Fix the sliders on the mixer toolbar so that the tip windows
@@ -437,9 +447,17 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 #endif 
 
    //
+   // Create the horizontal ruler
+   //
+   mRuler = new AdornedRulerPanel( this,
+                                   wxID_ANY,
+                                   wxDefaultPosition,
+                                   wxSize( -1, AdornedRulerPanel::GetRulerHeight() ),
+                                   &mViewInfo );
+
+   //
    // Create the selection bar
    //
-
    mSelectionBar = new SelectionBar(this,
                                     wxID_ANY, 
                                     wxDefaultPosition,
@@ -467,26 +485,19 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mMainPanel = new wxPanel(this, -1, 
       wxDefaultPosition, 
       wxDefaultSize,
-      wxTAB_TRAVERSAL | wxCLIP_CHILDREN | wxNO_BORDER);
+      wxNO_BORDER);
    mMainPanel->SetSizer( new wxBoxSizer(wxVERTICAL) );
    pPage = mMainPanel;
 #endif
 
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );
    bs->Add( mToolBarDock, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
+   bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
    bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
    bs->Add( mSelectionBar, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
    SetAutoLayout( true );
    SetSizer( bs );
    bs->Layout();
-
-   mTrackPanel = new TrackPanel(pPage,
-                                TrackPanelID,
-                                wxDefaultPosition,
-                                wxDefaultSize,
-                                mTracks,
-                                &mViewInfo,
-                                this);
 
    mHsbar = new wxScrollBar(pPage,
                             HSBarID,
@@ -499,6 +510,14 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                             wxDefaultSize,
                             wxSB_VERTICAL);
 
+   mTrackPanel = new TrackPanel(pPage,
+                                TrackPanelID,
+                                wxDefaultPosition,
+                                wxDefaultSize,
+                                mTracks,
+                                &mViewInfo,
+                                this,
+                                mRuler);
 
    bs = (wxBoxSizer *) pPage->GetSizer();
 
@@ -511,15 +530,15 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    // Track panel
    hs->Add( mTrackPanel, 1, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
 
-   // Right scrollbar
+   // Vertical grouping
    vs = new wxBoxSizer( wxVERTICAL );
-   vs->Add( 0, mTrackPanel->GetRulerHeight() );
+
+   // Vertical scroll bar
    vs->Add( mVsbar, 1, wxEXPAND | wxALIGN_RIGHT | wxALIGN_TOP );
    hs->Add( vs, 0, wxEXPAND | wxALIGN_RIGHT | wxALIGN_TOP );
    bs->Add( hs, 1, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
 
    // Bottom horizontal grouping
-
    hs = new wxBoxSizer( wxHORIZONTAL );
 
    // Bottom scrollbar
@@ -545,6 +564,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    InitialState();
    FixScrollbars();
+   mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() );
 
    //
    // Set the Icon
@@ -757,6 +777,11 @@ DirManager *AudacityProject::GetDirManager()
 TrackFactory *AudacityProject::GetTrackFactory()
 {
    return mTrackFactory;
+}
+
+AdornedRulerPanel *AudacityProject::GetRulerPanel()
+{
+   return mRuler;
 }
 
 int AudacityProject::GetAudioIOToken()

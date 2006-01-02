@@ -11,12 +11,16 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"
+
 #include <math.h>
 
 #include <wx/dcscreen.h>
 #include <wx/dcmemory.h>
+#include <wx/dcbuffer.h>
 
 #include "../Internat.h"
+#include "../Project.h"
 #include "Ruler.h"
 
 #define max(a,b)  ( (a<b)?b:a )
@@ -756,7 +760,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       for(i=loDecade; i<hiDecade; i++) {
          for(j=2; j<=9; j++) {
             val = decade * j;
-            if(val > mMin && val < mMax) {
+            if(val >= mMin && val < mMax) {
                pos = (int)(((log10(val) - loLog)*scale)+0.5);
                Tick(pos, val, false);
             }
@@ -925,156 +929,255 @@ void RulerPanel::OnSize(wxSizeEvent &evt)
   out of the widgets subdirectory into its own source file.
 
 **********************************************************************/
-//#include <math.h>
-//#include <wx/dcscreen.h>
-//#include "Ruler.h"
 
 #include "../ViewInfo.h"
 #include "../AColor.h"
 
-#if 0
-AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent, wxWindowID id,
-              const wxPoint& pos,
-              const wxSize& size ) :
-   RulerPanel( parent, id, pos, size )
+BEGIN_EVENT_TABLE(AdornedRulerPanel, wxPanel)
+    EVT_ERASE_BACKGROUND(AdornedRulerPanel::OnErase)
+    EVT_PAINT(AdornedRulerPanel::OnPaint)
+    EVT_SIZE(AdornedRulerPanel::OnSize)
+END_EVENT_TABLE()
+
+AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
+                                     wxWindowID id,
+                                     const wxPoint& pos,
+                                     const wxSize& size,
+                                     ViewInfo *viewinfo):
+   wxPanel( parent, id, pos, size )
 {
-   ruler.SetLabelEdges(false);
-   ruler.SetFormat(Ruler::TimeFormat);
+   SetLabel( wxT("Vertical Ruler") );
+   SetName( wxT("Vertical Ruler") );
 
+   mBuffer = new wxBitmap( 1, 1 );
+   mViewInfo = viewinfo;
+
+   mOuter = GetClientRect();
+
+   mInner = mOuter;
+   mInner.x += 1;          // +1 for left bevel
+   mInner.y += 1;          // +1 for top bevel
+   mInner.width -= 2;      // -2 for left and right bevels
+   mInner.height -= 3;     // -3 for top and bottom bevels and bottom line
+
+   ruler.SetBounds( mInner.GetLeft(),
+                    mInner.GetTop(),
+                    mInner.GetRight(),
+                    mInner.GetBottom() );
+   ruler.SetLabelEdges( false );
+   ruler.SetFormat( Ruler::TimeFormat );
 }
-#endif
-
-AdornedRulerPanel::AdornedRulerPanel()
-{
-   ruler.SetLabelEdges(false);
-   ruler.SetFormat(Ruler::TimeFormat);
-}
-
 
 AdornedRulerPanel::~AdornedRulerPanel()
 {
+   delete mBuffer;
 }
 
-void AdornedRulerPanel::SetSize( const wxRect & r )
+void AdornedRulerPanel::OnErase(wxEraseEvent &evt)
 {
-   mRect = r;
+   // Ignore it to prevent flashing
 }
 
-void AdornedRulerPanel::GetSize( int * width, int * height )
+void AdornedRulerPanel::OnPaint(wxPaintEvent &evt)
 {
-   *width = mRect.width;
-   *height= mRect.height;
+#if defined(__WXMAC__)
+   wxPaintDC dc( this );
+#else
+   wxBufferedPaintDC dc( this );
+#endif
+
+   DoDraw( &dc );
 }
 
-
-void AdornedRulerPanel::DrawAdornedRuler(
-   wxDC * dc, ViewInfo * pViewInfo, bool text, bool indicator, bool bRecording)
+void AdornedRulerPanel::OnSize(wxSizeEvent &evt)
 {
-   wxRect r;
+   mOuter = GetClientRect();
 
-   mViewInfo = pViewInfo;
+   mInner = mOuter;
+   mInner.x += 1;          // +1 for left bevel
+   mInner.y += 1;          // +1 for top bevel
+   mInner.width -= 2;      // -2 for left and right bevels
+   mInner.height -= 3;     // -3 for top and bottom bevels and bottom line
 
-   GetSize(&r.width, &r.height);
-   r.x = 0;
-   r.y = 0;
+   ruler.SetBounds( mInner.GetLeft(),
+                    mInner.GetTop(),
+                    mInner.GetRight(),
+                    mInner.GetBottom() );
 
-   DrawBorder(dc, r);
+   if( mBuffer )
+   {
+      delete mBuffer;
+   }
 
-   if (pViewInfo->sel0 < pViewInfo->sel1)
-      DrawSelection(dc, r);
+   mBuffer = new wxBitmap( mOuter.GetWidth(), mOuter.GetHeight() );
 
-   if( indicator )
-      DrawIndicator(dc, bRecording);
-
-   DrawMarks(dc, r, text);
-
+   Refresh( false );
 }
 
-void AdornedRulerPanel::DrawBorder(wxDC * dc, wxRect & r)
+void AdornedRulerPanel::DoDraw(wxDC *dc)
+{
+   DoDrawBorder( dc );
+
+   if( mViewInfo->sel0 < mViewInfo->sel1 )
+   {
+      DoDrawSelection( dc );
+   }
+
+   if( mIndType >= 0 )
+   {
+      DoDrawIndicator( dc );
+   }
+
+   DoDrawMarks( dc, true );
+
+   if( mViewInfo->sel0 == mViewInfo->sel1 )
+   {
+      DoDrawCursor( dc, mLastCurX );
+   }
+}
+
+void AdornedRulerPanel::DoDrawBorder(wxDC * dc)
 {
    // Draw AdornedRulerPanel border
-   AColor::Medium(dc, false);
-   dc->DrawRectangle(r);
+   AColor::Medium( dc, false );
+   dc->DrawRectangle( mInner );
 
-   r.width--;
-   r.height--;
-   AColor::Bevel(*dc, true, r);
+   wxRect r = mOuter;
+   r.width -= 1;                 // -1 for bevel
+   r.height -= 2;                // -2 for bevel and for bottom line
+   AColor::Bevel( *dc, true, r );
 
-   dc->SetPen(*wxBLACK_PEN);
-   dc->DrawLine(r.x, r.y + r.height + 1, r.x + r.width + 1,
-                r.y + r.height + 1);
+   dc->SetPen( *wxBLACK_PEN );
+   dc->DrawLine( mOuter.x,
+                 mOuter.y + mOuter.height - 1,
+                 mOuter.x + mOuter.width,
+                 mOuter.y + mOuter.height - 1 );
 }
 
-void AdornedRulerPanel::DrawSelection(wxDC * dc, const wxRect r)
+void AdornedRulerPanel::DoDrawMarks(wxDC * dc, bool /*text */ )
+{
+   double min = mViewInfo->h - mLeftOffset / mViewInfo->zoom;
+   double max = min + mInner.width / mViewInfo->zoom;
+
+   ruler.SetRange( min, max );
+   ruler.Draw( *dc );
+}
+
+void AdornedRulerPanel::DrawCursor(wxCoord x)
+{
+   mLastCurX = x;
+
+#if defined(__WXMAC__)
+   wxClientDC dc( this );
+#else
+   wxClientDC cdc( this );
+   wxBufferedDC dc( &cdc, *mBuffer );
+#endif
+
+   DoDraw( &dc );
+}
+
+void AdornedRulerPanel::DoDrawCursor(wxDC *dc, wxCoord x)
+{
+   // Draw cursor in ruler
+   dc->DrawLine( mLastCurX, 1, mLastCurX, mInner.height );
+}
+
+void AdornedRulerPanel::DrawSelection()
+{
+#if defined(__WXMAC__)
+   wxClientDC dc( this );
+#else
+   wxClientDC cdc( this );
+   wxBufferedDC dc( &cdc, *mBuffer );
+#endif
+
+   DoDraw( &dc );
+}
+
+void AdornedRulerPanel::DoDrawSelection(wxDC * dc)
 {
    // Draw selection
-   double sel0 = mViewInfo->sel0 - mViewInfo->h +
-       GetLeftOffset() / mViewInfo->zoom;
-   double sel1 = mViewInfo->sel1 - mViewInfo->h +
-       GetLeftOffset() / mViewInfo->zoom;
+   double zoom = mViewInfo->zoom;
+   double sel0 = mViewInfo->sel0 - mViewInfo->h + mLeftOffset / zoom;
+   double sel1 = mViewInfo->sel1 - mViewInfo->h + mLeftOffset / zoom;
 
-   if (sel0 < 0.0)
+   if( sel0 < 0.0 )
       sel0 = 0.0;
-   if (sel1 > (r.width / mViewInfo->zoom))
-      sel1 = r.width / mViewInfo->zoom;
 
-   int p0 = int (sel0 * mViewInfo->zoom + 0.5);
-   int p1 = int (sel1 * mViewInfo->zoom + 0.5);
+   if( sel1 > ( mInner.width / zoom ) )
+      sel1 = mInner.width / zoom;
 
-   wxBrush selectedBrush;
-   selectedBrush.SetColour(148, 148, 170);
-   wxPen selectedPen;
-   selectedPen.SetColour(148, 148, 170);
-   dc->SetBrush(selectedBrush);
-   dc->SetPen(selectedPen);
+   int p0 = int ( sel0 * zoom + 0.5 );
+   int p1 = int ( sel1 * zoom + 0.5 );
 
-   wxRect sr;
-   sr.x = p0;
-   sr.y = 1;
-   sr.width = p1 - p0 - 1;
-   sr.height = GetRulerHeight() - 3;
-   dc->DrawRectangle(sr);
-}
+   wxColour c( 148, 148, 170 );
+   dc->SetBrush( wxBrush( c ) );
+   dc->SetPen( wxPen( c ) );
 
-void AdornedRulerPanel::DrawMarks(wxDC * dc, const wxRect r, bool /*text */ )
-{
-   ruler.SetBounds(r.x, r.y, r.x + r.width - 1, r.y + r.height - 1);
-   double min = mViewInfo->h - GetLeftOffset() / mViewInfo->zoom;
-   double max = min + r.width / mViewInfo->zoom;
-   ruler.SetRange(min, max);
-
-   ruler.Draw(*dc);
+   wxRect r;
+   r.x = p0;
+   r.y = 1;
+   r.width = p1 - p0 - 1;
+   r.height = mInner.height;
+   dc->DrawRectangle( r );
 }
 
 //
 //This draws the little triangular indicator on the 
 //AdornedRulerPanel.
 //
-void AdornedRulerPanel::DrawIndicator(wxDC * dc, bool bRecording)
+void AdornedRulerPanel::ClearIndicator()
 {
-   // Draw indicator
-   double ind = indicatorPos; 
+   mIndType = -1;
 
-   if (ind >= mViewInfo->h && ind <= (mViewInfo->h + mViewInfo->screen)) {
-      int indp =
-          GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
+#if defined(__WXMAC__)
+   wxClientDC dc( this );
+#else
+   wxClientDC cdc( this );
+   wxBufferedDC dc( &cdc, *mBuffer );
+#endif
 
-      AColor::IndicatorColor(dc, bRecording );
-//      dc->SetPen(*wxTRANSPARENT_PEN);
-//      dc->SetBrush(*wxBLACK_BRUSH);
+   DoDraw( &dc );
+}
 
-      int indsize = 6;
+void AdornedRulerPanel::DrawIndicator(bool rec, double pos)
+{
+   mIndType = ( rec ? 1 : 0 );
+   mIndPos = pos;
 
-      wxPoint tri[3];
-      tri[0].x = indp;
-      tri[0].y = (indsize * 3)/2 + 1;
-      tri[1].x = indp - indsize;
-      tri[1].y = 1;
-      tri[2].x = indp + indsize;
-      tri[2].y = 1;
+#if defined(__WXMAC__)
+   wxClientDC dc( this );
+#else
+   wxClientDC cdc( this );
+   wxBufferedDC dc( &cdc, *mBuffer );
+#endif
 
-      dc->DrawPolygon(3, tri);
+   DoDraw( &dc );
+}
+
+void AdornedRulerPanel::DoDrawIndicator(wxDC * dc)
+{
+   if( ( mIndType < 0 ) ||
+       ( mIndPos < mViewInfo->h ) ||
+       ( mIndPos > ( mViewInfo->h + mViewInfo->screen ) ) )
+   {
+      return;
    }
+
+   int indsize = 6;
+   int x = mLeftOffset + int ( ( mIndPos - mViewInfo->h ) * mViewInfo->zoom );
+
+   wxPoint tri[ 3 ];
+   tri[ 0 ].x = x - indsize;
+   tri[ 0 ].y = 1;
+   tri[ 1 ].x = x + indsize;
+   tri[ 1 ].y = 1;
+   tri[ 2 ].x = x;
+   tri[ 2 ].y = ( indsize * 3 ) / 2 + 1;
+
+   AColor::IndicatorColor( dc, ( mIndType ? true : false ) );
+   dc->DrawPolygon( 3, tri );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
