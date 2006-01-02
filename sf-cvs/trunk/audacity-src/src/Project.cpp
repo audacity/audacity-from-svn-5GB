@@ -1031,6 +1031,22 @@ void AudacityProject::HandleResize()
    Layout();
 
    FixScrollbars();
+
+   mSelectionBar->Refresh( false );
+
+   // Retrieve size of this projects window
+   wxSize mainsz = GetSize();
+
+   // Retrieve position of the track panel to use as the size of the top
+   // third of the window
+   wxPoint tppos = ClientToScreen( mTrackPanel->GetParent()->GetPosition() );
+
+   // Retrieve position of selection bar to use as the size of the bottom
+   // third of the window
+   wxPoint sbpos = ClientToScreen( mSelectionBar->GetPosition() );
+
+   // The "+ 50" is the minimum height of the TrackPanel
+   SetSizeHints( 250, ( mainsz.y - sbpos.y ) + tppos.y + 50, 20000, 20000 );
 }
 
 
