@@ -995,11 +995,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    wxStopWatch sw;
 #endif
 
-   // Retrieve the windows update list and bounding rectangle
-   wxRegion rgn = GetUpdateRegion();
-   wxRect box = rgn.GetBox();
-   wxRegionIterator upd(rgn); // get the update rect list
-
    // Mac OS X automatically double-buffers the screen for you.
 #ifdef __WXMAC__
    wxPaintDC dc(this);
@@ -1028,7 +1023,10 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    }
    else
    {
-      // Copy full, possibly clipped, bounding rectange
+      // Retrieve the damage rectangle
+      wxRect box = GetUpdateRegion().GetBox();
+
+      // Copy full, possibly clipped, damage rectange
       wxMemoryDC mdc;
       mdc.SelectObject( *mBacking );
       dc.Blit( box.x, box.y, box.width, box.height, &mdc, box.x, box.y );
