@@ -366,7 +366,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
-     mLastSelectionAdjustment(0),
      mToolBarDock(NULL),
      mAudioIOToken(-1),
      mIsDeleting(false),
@@ -447,8 +446,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                     wxDefaultSize,
                                     mRate,
                                     this);
-   //Initialize the last selection adjustment time.
-   mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
 
    //
    // Create the TrackPanel and the scrollbars
