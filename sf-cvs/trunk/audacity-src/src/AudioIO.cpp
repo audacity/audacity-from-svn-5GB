@@ -29,6 +29,8 @@
 
 **********************************************************************/
 
+#include "Audacity.h"
+
 #include <math.h>
 #include <stdlib.h>
 
@@ -42,7 +44,7 @@
 #include <wx/timer.h>
 #include <wx/intl.h>
 
-
+#include "AudacityApp.h"
 #include "AudioIO.h"
 #include "WaveTrack.h"
 #include "Mix.h"
@@ -328,6 +330,9 @@ void AudioIO::HandleDeviceChange()
    for(j=0; j<Pa_CountDevices(); j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
 
+      if(!info)
+         continue;
+
       if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
          playDeviceNum = j;
 
@@ -447,6 +452,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          for( int i = 0; i < Pa_GetDeviceCount(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+            if(!info)
+               continue;
+
             if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackParameters->device = i;
          }
@@ -479,6 +488,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          for( int i = 0; i < Pa_GetDeviceCount(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+            if(!info)
+               continue;
+
             if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
                captureParameters->device = i;
          }
@@ -535,6 +548,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          for( int i = 0; i < Pa_CountDevices(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+            if(!info)
+               continue;
+
             if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackDevice = i;
          }
@@ -553,6 +570,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
          for( int i = 0; i < Pa_CountDevices(); i++)
          {
             const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+            if(!info)
+               continue;
+
             if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
                captureDevice = i;
          }
@@ -953,7 +974,8 @@ void AudioIO::StopStream()
 
       while( mAudioThreadShouldCallFillBuffersOnce == true )
       {
-         wxYield();
+         // LLL:  Experienced recursive yield here...once.
+         wxGetApp().Yield( true );
          wxMilliSleep( 50 );
       }
 
@@ -1192,6 +1214,9 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    for (i = 0; i < Pa_CountDevices(); i++) {
 #endif
       const PaDeviceInfo* info = Pa_GetDeviceInfo(i);
+
+      if(!info)
+         continue;
 
       if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
          playInfo = info;
