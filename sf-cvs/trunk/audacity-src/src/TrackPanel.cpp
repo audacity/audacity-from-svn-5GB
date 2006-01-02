@@ -2707,6 +2707,36 @@ void TrackPanel::RemoveTrack(Track * toRemove)
    Refresh(false);
 }
 
+void TrackPanel::HandlePopping(wxMouseEvent & event)
+{
+   Track *t = mCapturedTrack;
+   wxRect r = mCapturedRect;
+
+   if( t==NULL ){
+      SetCapturedTrack( NULL );
+      return;
+   }
+
+   wxRect titleRect;
+   mTrackLabel.GetTitleBarRect(r, titleRect);
+
+   wxClientDC dc(this);
+
+   if (event.Dragging()) {
+      mTrackLabel.DrawTitleBar(&dc, r, t, titleRect.Inside(event.m_x, event.m_y));
+   }
+   else if (event.ButtonUp(1)) {
+      if (titleRect.Inside(event.m_x, event.m_y))
+      {
+         OnTrackMenu(t);
+      }
+
+      SetCapturedTrack( NULL );
+
+      mTrackLabel.DrawTitleBar(&dc, r, t, false);
+   }
+}
+
 // AS: Handle when the mute or solo button is pressed for some track.
 void TrackPanel::HandleMutingSoloing(wxMouseEvent & event, bool solo)
 {
@@ -2823,28 +2853,7 @@ void TrackPanel::HandleSliders(wxMouseEvent &event, bool pan)
 
 void TrackPanel::OnContextMenu(wxContextMenuEvent & event)
 {
-   OnTrackMenu(GetFirstSelectedTrack());
-}
-
-// AS: This function gets called when a user clicks on the
-//  title of a track, dropping down the menu.
-void TrackPanel::DoPopupMenu(wxMouseEvent & event, wxRect & titleRect,
-                             Track * t, wxRect & r, int num)
-{
-   ReleaseMouse();
-   mPopupMenuTarget = t;
-   {
-      wxClientDC dc(this);
-      mTrackLabel.DrawTitleBar(&dc, r, t, true);
-   }
- 
-   OnTrackMenu(t);
-
-   Track *t2 = FindTrack(event.m_x, event.m_y, true, true, &r, &num);
-   if (t2 == t) {
-      wxClientDC dc(this);
-      mTrackLabel.DrawTitleBar(&dc, r, t, false);
-   }
+   OnTrackMenu();
 }
 
 // AS: This handles when the user clicks on the "Label" area
@@ -2873,72 +2882,48 @@ void TrackPanel::HandleLabelClick(wxMouseEvent & event)
       return;
    }
 
-   bool second = false;
-   if (!t->GetLinked() && mTracks->GetLink(t))
-      second = true;
-
-   wxRect closeRect;
-   mTrackLabel.GetCloseBoxRect(r, closeRect);
-
-   // AS: If they clicked on the x (ie, close button) on this
-   //  track, then we capture the mouse and display the x
-   //  as depressed.  Somewhere else, when the mouse is released,
-   //  we'll see if we're still supposed to close the track.
-   if (!second && closeRect.Inside(event.m_x, event.m_y)) {
-      wxClientDC dc(this);
-      mTrackLabel.DrawCloseBox(&dc, r, true);
-      mMouseCapture = IsClosing;
-      mCapturedTrack = t;
-      mCapturedRect = r;
+   // LL: Check close box
+   if (CloseFunc(t, r, event.m_x, event.m_y))
       return;
-   }
 
-   wxRect titleRect;
-   mTrackLabel.GetTitleBarRect(r, titleRect);
-
-   // AS: If the clicked on the title area, show the popup menu.
-   if (!second && titleRect.Inside(event.m_x, event.m_y)) {
-      DoPopupMenu(event, titleRect, t, r, num);
+   // LL: Check title bar for popup
+   if (PopupFunc(t, r, event.m_x, event.m_y))
       return;
-   }
 
    // MM: Check minimize buttons on WaveTracks. Must be before
    //     solo/mute buttons, sliders etc.
-   if (!second) {
-      if (MinimizeFunc(t, r, event.m_x, event.m_y))
-         return;
-   }
+   if (MinimizeFunc(t, r, event.m_x, event.m_y))
+      return;
 
-   // DM: Check Mute and Solo buttons on WaveTracks:
-   if (!second && t->GetKind() == Track::Wave) {
+   if (t->GetKind() == Track::Wave)
+   {
+      // DM: Check Mute and Solo buttons on WaveTracks:
       if (MuteSoloFunc(t, r, event.m_x, event.m_y, false) ||
-          MuteSoloFunc(t, r, event.m_x, event.m_y, true))
+         MuteSoloFunc(t, r, event.m_x, event.m_y, true))
          return;
-   }
-   // DM: Check Gain and Pan on WaveTracks:
-   if (!second && t->GetKind() == Track::Wave) {
+
       if (GainFunc(t, r, event,
-                   num-1, event.m_x, event.m_y))
+                  num-1, event.m_x, event.m_y))
          return;
-   }
-   // DM: Check Gain and Pan on WaveTracks:
-   if (!second && t->GetKind() == Track::Wave) {
+
       if (PanFunc(t, r, event,
                   num-1, event.m_x, event.m_y))
          return;
    }
-      // DM: If it's a NoteTrack, it has special controls
-      if (!second && t && t->GetKind() == Track::Note) {
-         wxRect midiRect;
-         mTrackLabel.GetTrackControlsRect(r, midiRect);
-         if (midiRect.Inside(event.m_x, event.m_y)) {
-            ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
-                                          event.RightDown()
-                                          || event.RightDClick());
-            Refresh(false);
-            return;
-         }
+   // DM: If it's a NoteTrack, it has special controls
+   else if (t->GetKind() == Track::Note)
+   {
+      wxRect midiRect;
+      mTrackLabel.GetTrackControlsRect(r, midiRect);
+      if (midiRect.Inside(event.m_x, event.m_y)) {
+         ((NoteTrack *) t)->LabelClick(midiRect, event.m_x, event.m_y,
+                                       event.RightDown()
+                                       || event.RightDClick());
+         Refresh(false);
+         return;
       }
+   }
+
    // DM: If they weren't clicking on a particular part of a track label,
    //  deselect other tracks and select this one.
 
@@ -3075,6 +3060,37 @@ bool TrackPanel::MinimizeFunc(Track * t, wxRect r, int x, int y)
    mCapturedRect = r;
 
    mTrackLabel.DrawMinimize(&dc, r, t, true, t->GetMinimized());
+   return true;
+}
+
+bool TrackPanel::CloseFunc(Track * t, wxRect r, int x, int y)
+{
+   wxRect closeRect;
+   mTrackLabel.GetCloseBoxRect(r, closeRect);
+
+   if (!closeRect.Inside(x, y))
+      return false;
+
+   wxClientDC dc(this);
+   SetCapturedTrack( t, IsClosing );
+   mCapturedRect = r;
+
+   mTrackLabel.DrawCloseBox(&dc, r, true);
+   return true;
+}
+
+bool TrackPanel::PopupFunc(Track * t, wxRect r, int x, int y)
+{
+   wxRect titleRect;
+   mTrackLabel.GetTitleBarRect(r, titleRect);
+   if (!titleRect.Inside(x, y)) 
+      return false;
+
+   wxClientDC dc(this);
+   SetCapturedTrack( t, IsPopping );
+   mCapturedRect = r;
+
+   mTrackLabel.DrawTitleBar(&dc, r, t, true);
    return true;
 }
 
@@ -3437,6 +3453,9 @@ void TrackPanel::OnMouseEvent(wxMouseEvent & event)
    case IsClosing:
       HandleClosing(event);
       break;
+   case IsPopping:
+      HandlePopping(event);
+      break;
    case IsMuting:
       HandleMutingSoloing(event, false);
       break;
@@ -3696,16 +3715,17 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
 ///  from the other OnMouseEvent code.
 void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
 {
+   Track * pTrack;
    wxRect r;
    wxRect rLabel;
-   int dummy;
+   int num;
 
    AudacityProject *p = GetProject();
    bool unsafe = (p->GetAudioIOToken()>0 &&
                   gAudioIO->IsStreamActive(p->GetAudioIOToken()));
 
-   FindTrack(event.m_x, event.m_y, false, false, &r, &dummy);
-   FindTrack(event.m_x, event.m_y, true, true, &rLabel, &dummy);
+   FindTrack(event.m_x, event.m_y, true, true, &rLabel, &num);
+   pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
    //call HandleResize if I'm over the border area 
    if (event.ButtonDown(1) &&
@@ -3732,9 +3752,6 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
 
    //Determine if user clicked on a label track.
    //If so, use MouseDown handler for the label track.
-   int num;
-   Track *pTrack = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
-   
    if (pTrack && (pTrack->GetKind() == Track::Label)) 
    {
       if(HandleLabelTrackMouseEvent( (LabelTrack *) pTrack, r, event ))
@@ -4234,8 +4251,8 @@ void TrackPanel::DrawOutside(Track * t, wxDC * dc, const wxRect rec,
    DrawShadow(t, dc, r);
 
    r.width = mTrackLabel.GetTitleWidth();
-   mTrackLabel.DrawCloseBox(dc, r, false);
-   mTrackLabel.DrawTitleBar(dc, r, t, false);
+   mTrackLabel.DrawCloseBox(dc, r, (mMouseCapture==IsClosing));
+   mTrackLabel.DrawTitleBar(dc, r, t, (mMouseCapture==IsPopping));
 
    mTrackLabel.DrawMinimize(dc, r, t, (mMouseCapture==IsMinimizing), t->GetMinimized());
 
@@ -5770,12 +5787,16 @@ void TrackLabel::DrawBackground(wxDC * dc, const wxRect r, bool bSelected,
 
 void TrackLabel::GetTrackControlsRect(const wxRect r, wxRect & dest) const
 {
-   dest = r;
-   dest.width = GetTitleWidth();
-   dest.x += 4 + kLeftInset;
-   dest.width -= (8 + kLeftInset);
-   dest.y += 18 + kTopInset;
-   dest.height -= (24 + kTopInset);
+   wxRect top;
+   wxRect bot;
+
+   GetTitleBarRect(r, top);
+   GetMinimizeRect(r, bot, false);
+
+   dest.x = r.x;
+   dest.width = GetTitleWidth() - dest.x;
+   dest.y = top.GetBottom() + 2;
+   dest.height = bot.GetTop() - top.GetBottom() - 2;
 }
 
 void TrackLabel::DrawCloseBox(wxDC * dc, const wxRect r, bool down)
@@ -5801,7 +5822,6 @@ void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
    wxRect bev;
    GetTitleBarRect(r, bev);
    bev.Inflate(-1, -1);
-   AColor::Bevel(*dc, true, bev);
 
    // Draw title text
    SetLabelFont(dc);
@@ -5813,6 +5833,12 @@ void TrackLabel::DrawTitleBar(wxDC * dc, const wxRect r, Track * t,
       titleStr = titleStr.Left(titleStr.Length() - 1);
       dc->GetTextExtent(titleStr, &textWidth, &textHeight);
    }
+   // wxGTK leaves little scraps (antialiasing?) of the
+   // characters if they are repeatedly drawn.  This
+   // happens when holding down mouse button and moving
+   // in and out of the title bar.  So clear it first.
+   AColor::Medium(dc, t->GetSelected());
+   dc->DrawRectangle(bev);
    dc->DrawText(titleStr, r.x + 19, r.y + 2);
 
    // Pop-up triangle
@@ -5850,7 +5876,7 @@ void TrackLabel::DrawMuteSolo(wxDC * dc, const wxRect r, Track * t,
 
    SetLabelFont(dc);
    dc->GetTextExtent(str, &textWidth, &textHeight);
-   dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y + 2);
+   dc->DrawText(str, bev.x + (bev.width - textWidth) / 2, bev.y);
 
    AColor::Bevel(*dc, (solo?t->GetSolo():t->GetMute()) == down, bev);
 
