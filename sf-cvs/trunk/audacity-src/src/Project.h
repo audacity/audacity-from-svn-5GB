@@ -348,8 +348,6 @@ class AudacityProject:public wxFrame,
    HistoryWindow *mHistoryWindow;
 
 
-   wxLongLong mLastSelectionAdjustment;
-
  public:
    ToolBarDock *mToolBarDock;
 
