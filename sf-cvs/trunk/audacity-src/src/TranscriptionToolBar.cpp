@@ -861,42 +861,6 @@ double TranscriptionToolBar::GetSensitivity()
    return (double)mSensitivity;
 }
 
-void TranscriptionToolBar::Repaint( wxPaintDC *dc )
-{
-   int width, height;
-   GetSize(&width, &height);
-
-#if defined(__WXMAC__)          // && defined(TARGET_CARBON)
-
-   if (mBackgroundWidth < width) {
-      if (mBackgroundBitmap)
-         delete mBackgroundBitmap;
-
-      mBackgroundBitmap = new wxBitmap(width, height);
-
-      wxMemoryDC memDC;
-      memDC.SelectObject(*mBackgroundBitmap);
-
-      int y;
-      memDC.SetPen(wxPen(wxColour(231, 231, 231), 1, wxSOLID));
-      for (y = 0; y < height; y += 4)
-         memDC.DrawLine(0, y, width, y);
-      memDC.SetPen(wxPen(wxColour(239, 239, 239), 1, wxSOLID));
-      for (y = 1; y < height; y += 2)
-         memDC.DrawLine(0, y, width, y);
-      memDC.SetPen(wxPen(wxColour(255, 255, 255), 1, wxSOLID));
-      for (y = 2; y < height; y += 4)
-         memDC.DrawLine(0, y, width, y);
-
-   }
-
-   wxMemoryDC memDC;
-   memDC.SelectObject(*mBackgroundBitmap);
-
-   dc->Blit(0, 0, width, height, &memDC, 0, 0, wxCOPY, FALSE);
-#endif
-}
-
 void TranscriptionToolBar::OnSensitivitySlider(wxCommandEvent & event)
 {
    mSensitivity = (mSensitivitySlider->Get());

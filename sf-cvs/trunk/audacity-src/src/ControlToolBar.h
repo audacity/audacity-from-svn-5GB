@@ -77,7 +77,7 @@ class ControlToolBar:public ToolBar {
    void StopPlaying();
 
    void Populate();
-   virtual void Repaint( wxPaintDC *dc );
+   virtual void Repaint( wxDC *dc );
    virtual void EnableDisableButtons();
 
    void OnShiftDown(wxKeyEvent & event);

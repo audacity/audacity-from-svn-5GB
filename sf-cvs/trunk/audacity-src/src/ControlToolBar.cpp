@@ -339,7 +339,7 @@ void ControlToolBar::ArrangeButtons()
    SetMinSize( GetSizer()->GetMinSize() );
 }
 
-void ControlToolBar::Repaint( wxPaintDC *dc )
+void ControlToolBar::Repaint( wxDC *dc )
 {
 #ifndef USE_AQUA_THEME
    wxSize s = mSizer->GetSize();

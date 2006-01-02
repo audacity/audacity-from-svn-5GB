@@ -40,6 +40,7 @@
 #include <wx/window.h>
 #include <wx/panel.h>
 #include <wx/dynarray.h>
+#include <wx/timer.h>
 
 class wxImage;
 class wxSize;
@@ -53,6 +54,7 @@ class ToolsToolBar;
 class TranscriptionToolBar;
 
 class AButton;
+class Grabber;
 
 enum
 {
@@ -72,7 +74,6 @@ enum
 
 DECLARE_EVENT_TYPE(EVT_TOOLBAR_UPDATED, -1);
 DECLARE_EVENT_TYPE(EVT_TOOLBAR_BEGINDRAG, -1);
-DECLARE_EVENT_TYPE(EVT_TOOLBAR_ENDDRAG, -1);
 
 ////////////////////////////////////////////////////////////
 /// class ToolBar
@@ -98,6 +99,8 @@ public:
    bool IsDocked();
 
    void SetDocked( bool dock );
+   
+   void ShowMarker( bool state );
 
    virtual void EnableDisableButtons() = 0;
 
@@ -155,9 +158,11 @@ protected:
    void Capture();
 
    virtual void Populate() = 0;
-   virtual void Repaint( wxPaintDC *dc ) = 0;
+   virtual void Repaint( wxDC *dc ) = 0;
 
    void OnMouseEvent( wxMouseEvent & event );
+   void OnSize( wxSizeEvent & event );
+   void OnErase( wxEraseEvent & event );
    void OnPaint( wxPaintEvent & event );
 
    wxBitmap *mBackgroundBitmap;
@@ -174,7 +179,7 @@ private:
    void Init( wxWindow *parent, int type, const wxString &title, const wxString &label );
 
    wxWindow *mParent;
-   wxWindow *mGrabber;
+   Grabber *mGrabber;
    wxBoxSizer *mVSizer;
    wxBoxSizer *mHSizer;
 
@@ -216,10 +221,13 @@ public:
    DECLARE_EVENT_TABLE()
 
 protected:
-   void OnBeginDrag( wxCommandEvent &event );
-   void OnEndDrag( wxCommandEvent &event );
-   void OnToolBarUpdate( wxCommandEvent &event );
-   void OnPaint( wxPaintEvent &event );
+   void OnErase( wxEraseEvent & event );
+   void OnSize( wxSizeEvent & event );
+   void OnTimer( wxTimerEvent & event );
+   void OnMouse( wxMouseEvent & event );
+   void OnBeginDrag( wxCommandEvent & event );
+   void OnToolBarUpdate( wxCommandEvent & event );
+   void OnPaint( wxPaintEvent & event );
 
 private:
    void ReadConfig();
@@ -233,7 +241,7 @@ private:
                    int y,
                    int width,
                    int height );
-   void SetDocked( int wxWindowID, wxPoint & position, wxPoint & offset );
+   void SetDocked( int id, wxPoint & position );
    void Dock( ToolBar *t, int before );
    wxWindow *Float( ToolBar *t, wxPoint & pos );
    void Updated();
@@ -241,6 +249,17 @@ private:
    int mTotalToolBarHeight;
    wxWindow *mParent;
    wxString mTitle;
+
+   ToolBar *mOver;
+   wxWindow *mDragParent;
+   wxWindow *mDrag;
+   ToolBar *mDragBar;
+   wxPoint mLastPos;
+   wxTimer mWatchdog;
+
+#if defined(__WXMAC__)
+   bool mTransition;
+#endif
 
    wxArrayPtrVoid mDockedBars;
    ToolBar *mBars[ ToolBarCount ];

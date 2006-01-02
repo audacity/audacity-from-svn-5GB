@@ -74,9 +74,9 @@ class TranscriptionToolBar:public ToolBar {
    virtual double GetSensitivity();
    virtual void OnSensitivitySlider(wxCommandEvent& evt);
 
-   virtual void EnableDisableButtons();
    virtual void Populate();
-   virtual void Repaint( wxPaintDC *dc );
+   virtual void Repaint( wxDC *dc ) {};
+   virtual void EnableDisableButtons();
 
    virtual void SetKeyType(wxCommandEvent & event);
  private:

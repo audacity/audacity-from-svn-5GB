@@ -26,7 +26,7 @@ public:
    virtual ~ MeterToolBar();
 
    virtual void Populate();
-   virtual void Repaint( wxPaintDC *dc ) {};
+   virtual void Repaint( wxDC *dc ) {};
    virtual void EnableDisableButtons() {};
 
    void GetMeters(Meter **playMeter, Meter **recordMeter)
