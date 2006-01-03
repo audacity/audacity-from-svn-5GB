@@ -1382,7 +1382,7 @@ void AudacityProject::OnSetRightSelection()
          delete dialog;
       }
 
-   if(mViewInfo.sel0 >  mViewInfo.sel0)
+   if(mViewInfo.sel0 >  mViewInfo.sel1)
       mViewInfo.sel0 = mViewInfo.sel1;
    mTrackPanel->Refresh(false);
    
