@@ -26,6 +26,10 @@
 
 #include "Nyquist.h"
 
+#ifndef nyx_returns_start_and_end_time
+#error You need to update lib-src/libnyquist
+#endif
+
 #include <locale.h>
 
 #include <wx/arrimpl.cpp>
@@ -590,12 +594,12 @@ bool EffectNyquist::ProcessOne()
       }
 
       for(l=0; l<numLabels; l++) {
-         double t;
+         double t0, t1;
          const char *str;
 
-         nyx_get_label(l, &t, &str);
+         nyx_get_label(l, &t0, &t1, &str);
 
-         ltrack->AddLabel(t + mT0, t + mT0, LAT1CTOWX(str));
+         ltrack->AddLabel(t0 + mT0, t1 + mT0, LAT1CTOWX(str));
       }
 
       nyx_cleanup();
