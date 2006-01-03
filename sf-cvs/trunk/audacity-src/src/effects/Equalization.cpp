@@ -1090,7 +1090,11 @@ void EqualizationDialog::EnvelopeUpdated()
    mEnvelope->GetPoints( when, value, numPoints );
 
    // Clear the custom curve
+   #if wxCHECK_VERSION(2, 6, 2)
    int curve = mCurve->GetCurrentSelection();
+   #else
+   int curve = mCurve->GetSelection();
+   #endif
    mCurves[ curve ].points.Clear();
 
    // Yea sure...like I know what these do.  :-)
@@ -1298,7 +1302,11 @@ void EqualizationDialog::OnSlider(wxCommandEvent &event)
 void EqualizationDialog::OnCurve(wxCommandEvent &event)
 {
    // Select new curve
+   #if wxCHECK_VERSION(2, 6, 2)
    setCurve( mEnvelope, mCurve->GetCurrentSelection() );
+   #else
+   setCurve( mEnvelope, mCurve->GetSelection() );
+   #endif
 }
 
 //
