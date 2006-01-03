@@ -262,20 +262,38 @@ int is_labels(LVAL expr)
    /* make sure that we have a list whose first element is a
       list of the form (time "label") */
 
+   LVAL label;
+   LVAL first;
+   LVAL second;
+   LVAL third;
+
    if (!consp(expr))
       return 0;
 
-   if (!consp(car(expr)))
+   label = car(expr);
+
+   if (!consp(label))
       return 0;
 
-   if (!(floatp(car(car(expr))) || fixp(car(car(expr)))))
+   first = car(label);
+   if (!(floatp(first) || fixp(first)))
       return 0;
 
-   if (!consp(cdr(car(expr))))
+   if (!consp(cdr(label)))
       return 0;
 
-   if (!(stringp(car(cdr(car(expr))))))
-      return 0;
+   second = car(cdr(label));
+
+   if (floatp(second) || fixp(second)) {
+      if (!consp(cdr(cdr(label))))
+         return 0;
+      third = car(cdr(cdr(label)));
+      if (!(stringp(third)))
+         return 0;
+   }
+   else
+      if (!(stringp(second)))
+         return 0;
 
    /* If this is the end of the list, we're done */
 
@@ -506,11 +524,15 @@ int nyx_get_num_labels()
 }
 
 void nyx_get_label(int index,
-                   double *time,
+                   double *start_time,
+                   double *end_time,
                    const char **label)
 {
    LVAL s = nyx_result;
-   LVAL t_expr;
+   LVAL label_expr;
+   LVAL t0_expr;
+   LVAL t1_expr;
+   LVAL str_expr;
 
    if (nyx_get_type(nyx_result) != nyx_labels)
       return;
@@ -523,12 +545,29 @@ void nyx_get_label(int index,
       s = cdr(s);
    }
 
-   t_expr = car(car(s));
-   if (floatp(t_expr))
-      *time = getflonum(t_expr);
-   else if (fixp(t_expr))
-      *time = (double)getfixnum(t_expr);
-   *label = (const char *)getstring(car(cdr(car(s))));
+   /* We either have (t0 "label") or (t0 t1 "label") */
+
+   label_expr = car(s);
+   t0_expr = car(label_expr);
+   t1_expr = car(cdr(label_expr));
+   if (stringp(t1_expr)) {
+      str_expr = t1_expr;
+      t1_expr = t0_expr;
+   }
+   else
+      str_expr = car(cdr(cdr(label_expr)));
+
+   if (floatp(t0_expr))
+      *start_time = getflonum(t0_expr);
+   else if (fixp(t0_expr))
+      *start_time = (double)getfixnum(t0_expr);
+
+   if (floatp(t1_expr))
+      *end_time = getflonum(t1_expr);
+   else if (fixp(t1_expr))
+      *end_time = (double)getfixnum(t1_expr);
+
+   *label = (const char *)getstring(str_expr);
 }
 
 const char *nyx_get_error_str()
