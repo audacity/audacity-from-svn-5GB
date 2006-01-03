@@ -251,7 +251,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mMainSizer = mainSizer;
 
-
+#if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    // Under GTK the radio buttons cause tabbing to have "end-points" which prevents
    // the focus from wrapping to the beginning of the tab order when at the end.
@@ -261,15 +261,18 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRateBox->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mFormatChoice->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
 #endif
+#endif
 }
 
 SelectionBar::~SelectionBar()
 {
+#if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    mRightEndButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mRightLengthButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mRateBox->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mFormatChoice->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+#endif
 #endif
 }
 
