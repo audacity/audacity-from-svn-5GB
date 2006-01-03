@@ -16,6 +16,8 @@ extern "C"
 {
 #endif /* __cplusplus */
 
+   #define nyx_returns_start_and_end_time 1
+
    typedef enum {
       nyx_error,
       nyx_audio,
@@ -58,7 +60,8 @@ extern "C"
 
    int         nyx_get_num_labels();
    void        nyx_get_label(int index,
-                             double *time,
+                             double *start_time,
+                             double *end_time,
                              const char **label);
 
    const char *nyx_get_error_str();
