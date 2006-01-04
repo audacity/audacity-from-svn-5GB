@@ -364,8 +364,41 @@ double BatchCommands::GetEndTime()
    return endTime;
 }
 
-bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
+bool BatchCommands::IsMono()
 {
+   AudacityProject *project = GetActiveProject();
+   if( project == NULL )
+   {
+      wxMessageBox( _("No project and no Audio to process!") );
+      return -1.0;
+   }
+
+   TrackList * tracks = project->GetTracks();
+   if( tracks == NULL )
+   {
+      wxMessageBox( _("No tracks to process!") );
+      return -1.0;
+   }
+
+   TrackListIterator iter(tracks);
+   Track *t = iter.First();
+   bool mono = true;
+   while (t) {
+      if (t->GetLinked() != NULL) {
+         mono = false;
+         break;
+      }
+      t = iter.Next();
+   }
+
+   return mono;
+}
+
+bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
+{  //check if current project is mono or stereo
+   bool Mp3Stereo = true;
+   if (IsMono()) {Mp3Stereo = false;};
+
    double endTime = GetEndTime();
    if( endTime <= 0.0f )
       return false;
@@ -373,15 +406,15 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
    if( bitrate <=0 )
    {
       // 'No' bitrate given, use the current default.
-      // Use mMp3Stereo to control if export is to a stereo or mono file
-      return ::ExportMP3(project, mMp3Stereo, Name, false, 0.0, endTime);
+      // Use Mp3Stereo to control if export is to a stereo or mono file
+      return ::ExportMP3(project, Mp3Stereo, Name, false, 0.0, endTime);
    }
 
    bool rc;
    long prevBitRate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
-   // Use mMp3Stereo to control if export is to a stereo or mono file
-   rc = ::ExportMP3(project, mMp3Stereo, Name, false, 0.0, endTime);
+   // Use Mp3Stereo to control if export is to a stereo or mono file
+   rc = ::ExportMP3(project, Mp3Stereo, Name, false, 0.0, endTime);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), prevBitRate);
    return rc;
 }
@@ -432,7 +465,6 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       wxMessageBox( _("Stereo To Mono Effect not found"));
       return false;
    } else if (command == wxT("ExportMp3") ){
-      mMp3Stereo = !(params == wxT("Mono=yes")); //Should be created in a proper editor
       return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
    } else if (command == wxT("ExportWav") ){
       filename.Replace(wxT(".mp3"), wxT(".wav"), false);

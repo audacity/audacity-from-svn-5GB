@@ -33,6 +33,7 @@ class BatchCommands {
    // Utility functions for the special commands.
    bool WriteMp3File( const wxString Name, int bitrate );
    double GetEndTime();
+   bool IsMono();
 
 // These commands do not depend on the command list.
 	static bool PromptForParamsFor( wxString command );
@@ -57,8 +58,6 @@ class BatchCommands {
    wxArrayString mParamsChain;
    bool mAbort;
 
-// Use mMp3Stereo to control if export is to a stereo or mono file
-   bool mMp3Stereo;
 };
 
 
