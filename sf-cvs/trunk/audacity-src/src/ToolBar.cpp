@@ -780,7 +780,7 @@ wxWindow *ToolBarDock::Float( ToolBar *t, wxPoint & pos )
    mDockedBars.Remove( t );
 
    // Create the floater window
-   int flags = wxCAPTION | wxFRAME_FLOAT_ON_PARENT;
+   int flags = wxCAPTION | wxFRAME_NO_TASKBAR | wxFRAME_FLOAT_ON_PARENT;
    if( t->IsResizeable() )
    {
       sz = t->GetSize();
