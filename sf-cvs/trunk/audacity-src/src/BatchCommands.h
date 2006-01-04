@@ -56,6 +56,9 @@ class BatchCommands {
    wxArrayString mCommandChain;
    wxArrayString mParamsChain;
    bool mAbort;
+
+// Use mMp3Stereo to control if export is to a stereo or mono file
+   bool mMp3Stereo;
 };
 
 

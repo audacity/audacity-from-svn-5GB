@@ -373,13 +373,15 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
    if( bitrate <=0 )
    {
       // 'No' bitrate given, use the current default.
-      return ::ExportMP3(project, false, Name, false, 0.0, endTime);
+      // Use mMp3Stereo to control if export is to a stereo or mono file
+      return ::ExportMP3(project, mMp3Stereo, Name, false, 0.0, endTime);
    }
 
    bool rc;
    long prevBitRate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
-   rc = ::ExportMP3(project, false, Name, false, 0.0, endTime);
+   // Use mMp3Stereo to control if export is to a stereo or mono file
+   rc = ::ExportMP3(project, mMp3Stereo, Name, false, 0.0, endTime);
    gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), prevBitRate);
    return rc;
 }
@@ -430,6 +432,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       wxMessageBox( _("Stereo To Mono Effect not found"));
       return false;
    } else if (command == wxT("ExportMp3") ){
+      mMp3Stereo = !(params == wxT("Mono=yes")); //Should be created in a proper editor
       return WriteMp3File ( filename, 0 ); // 0 bitrate means use default/current
    } else if (command == wxT("ExportWav") ){
       filename.Replace(wxT(".mp3"), wxT(".wav"), false);
