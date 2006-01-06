@@ -54,9 +54,9 @@
 //
 // 4)  Include "Audacity.h" in the source file creating the control
 //
-#if wxUSE_ACCESSIBILITY
 #include <wx/defs.h>
 
+#if wxUSE_ACCESSIBILITY
 #define wxTextCtrlNameStr overrideTextCtrlNameStr
 extern const wxChar *overrideTextCtrlNameStr;
 
