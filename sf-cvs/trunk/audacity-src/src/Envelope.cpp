@@ -10,8 +10,6 @@
 
 **********************************************************************/
 
-#include "Audacity.h"
-
 #include "Envelope.h"
 
 #include <math.h>
@@ -270,7 +268,7 @@ void Envelope::WriteXML(int depth, FILE *fp)
 
 
 float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
-                              float zoomMin, float zoomMax ){
+                              float zoomMin, float zoomMax, float eMin ){
    float v;
 
    v = zoomMax - (y/(float)height) * (zoomMax - zoomMin);
@@ -284,8 +282,8 @@ float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
    if (dB)
       v = fromDB(v);
 
-   if ((upper && v < 0) || (!upper && v > 0))
-      v = 0;
+   if ((upper && v < eMin) || (!upper && v > 0))
+      v = eMin;
    else
    if (!upper)
       v = -v;
@@ -295,15 +293,17 @@ float Envelope::ValueOfPixel( int y, int height, bool upper, bool dB,
 
 bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
                                      double h, double pps, bool dB,
-                                     float zoomMin, float zoomMax)
+                                     float zoomMin, float zoomMax, float eMin, float eMax)
 {
    bool upper;
    int ctr = (int)(r.height * zoomMax / (zoomMax - zoomMin));
    upper = (event.m_y - r.y < ctr);
+   if(zoomMin == eMin)
+	   upper = true;
 
    mButton = event.GetButton();
    int clip_y = event.m_y - r.y;
-   if(clip_y < 0) clip_y = 0;
+   if(clip_y < 0) clip_y = 0;	//keeps point in rect r, even if mouse isn't
    if(clip_y > r.height) clip_y = r.height;
    
    mIsDeleting = false;
@@ -319,7 +319,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
    //   wxLogDebug(wxT("Y:%i Height:%i Offset:%i"), y, height, mContourOffset );
    
    int len = mEnv.Count();
-   for (int i = 0; i < len; i++) {
+   for (int i = 0; i < len; i++) {	//search for control point nearest click
       if (mEnv[i]->t >= tleft && mEnv[i]->t <= tright) {
          
          int x = int ((mEnv[i]->t + mOffset - h) * pps) + r.x;
@@ -392,13 +392,12 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
       }
       
       double newVal = ValueOfPixel(clip_y, r.height, upper, dB,
-                                   zoomMin, zoomMax);
+                                   zoomMin, zoomMax, eMin);
       
       //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
-      float MaxAmplify = 2.0;
-      
-      if (newVal > MaxAmplify)
-         newVal = MaxAmplify;
+
+	  if(newVal > eMax)
+		  newVal = eMax;
       
       mDragPoint = Insert(when, newVal);
       mDirty = true;
@@ -417,7 +416,7 @@ bool Envelope::HandleMouseButtonDown(wxMouseEvent & event, wxRect & r,
 
 bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
                                double h, double pps, bool dB,
-                               float zoomMin, float zoomMax )
+                               float zoomMin, float zoomMax, float eMin, float eMax)
 {
    int clip_y = event.m_y - r.y;
    if(clip_y < 0) clip_y = 0;
@@ -462,13 +461,12 @@ bool Envelope::HandleDragging( wxMouseEvent & event, wxRect & r,
 
 
    double newVal = ValueOfPixel(clip_y, r.height, mUpper, dB,
-                                zoomMin, zoomMax);   
+                                zoomMin, zoomMax, eMin);   
 
    //float MaxAmplify = ( mContourOffset ) ? 1.4 : 1.0;
-   float MaxAmplify = 2.0;
 
-   if (newVal > MaxAmplify)
-      newVal = MaxAmplify;
+   if(newVal > eMax)
+	   newVal = eMax;
 
    // We no longer tolerate multiple envelope points at the same t.
    // epsilon is less than the time offset of a single sample
@@ -511,16 +509,16 @@ bool Envelope::HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
 // Returns true if parent needs to be redrawn
 bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
                           double h, double pps, bool dB,
-                          float zoomMin, float zoomMax)
+                          float zoomMin, float zoomMax, float eMin, float eMax)
 {
 
    if (event.ButtonDown() && mButton == wxMOUSE_BTN_NONE)
       return HandleMouseButtonDown( event, r, h, pps,dB,
-                                    zoomMin, zoomMax);
+                                    zoomMin, zoomMax, eMin, eMax);
 
    if (event.Dragging() && mDragPoint >= 0) 
       return HandleDragging( event, r, h, pps,dB,
-                             zoomMin, zoomMax);
+                             zoomMin, zoomMax, eMin, eMax);
 
    if (event.ButtonUp() && event.GetButton() == mButton)
       return HandleMouseButtonUp( event, r, h, pps, dB,

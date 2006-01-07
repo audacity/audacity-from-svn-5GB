@@ -108,14 +108,14 @@ class Envelope : public XMLTagHandler {
 
    bool MouseEvent(wxMouseEvent & event, wxRect & r,
                    double h, double pps, bool dB,
-                   float zoomMin=-1.0, float zoomMax=1.0);
+                   float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
 
    bool HandleMouseButtonDown( wxMouseEvent & event, wxRect & r,
                                double h, double pps, bool dB,
-                               float zoomMin=-1.0, float zoomMax=1.0);
+                               float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
    bool HandleDragging( wxMouseEvent & event, wxRect & r,
                         double h, double pps, bool dB,
-                        float zoomMin=-1.0, float zoomMax=1.0);
+                        float zoomMin=-1.0, float zoomMax=1.0, float eMin=0., float eMax=2.);
    bool HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
                              double h, double pps, bool dB,
                              float zoomMin=-1.0, float zoomMax=1.0);
@@ -208,7 +208,7 @@ class Envelope : public XMLTagHandler {
    void resetIntegralMemoizer() { lastIntegral_t0=0; lastIntegral_t1=0; lastIntegral_result=0; }
 
    float ValueOfPixel( int y, int height, bool upper, bool dB,
-                       float zoomMin, float zoomMax );
+                       float zoomMin, float zoomMax, float eMin=-10000. );
 };
 
 #endif
