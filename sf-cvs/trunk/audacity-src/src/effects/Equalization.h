@@ -11,6 +11,7 @@
 
 #ifndef __AUDACITY_EFFECT_EQUALIZATION__
 #define __AUDACITY_EFFECT_EQUALIZATION__
+#define NUMBER_OF_BANDS 31
 
 #include <wx/button.h>
 #include <wx/panel.h>
@@ -64,23 +65,23 @@ public:
 WX_DECLARE_OBJARRAY( EQCurve, EQCurveArray );
 
 class EffectEqualization: public Effect {
-   
+
 public:
-   
+
    EffectEqualization();
    virtual ~EffectEqualization();
-   
+
    virtual wxString GetEffectName() {
       return wxString(_("Equalization..."));
    }
-   
+
    virtual wxString GetEffectAction() {
       return wxString(_("Performing Equalization"));
    }
-   
+
    virtual bool PromptUser();
    virtual bool TransferParameters( Shuttle & shuttle );
-   
+
    virtual bool Process();
 
    // Number of samples in an FFT window
@@ -89,14 +90,14 @@ public:
    // Low frequency of the FFT.  20Hz is the
    // low range of human hearing
    enum {loFreqI=20};
-   
+
 private:
    bool ProcessOne(int count, WaveTrack * t,
                    sampleCount start, sampleCount len);
 
    void Filter(sampleCount len,
                float *buffer);
-   
+
    float *mFilterFuncR;
    float *mFilterFuncI;
    int mM;	//MJS
@@ -126,7 +127,8 @@ public:
    EqualizationPanel( double loFreq, double hiFreq,
 		      Envelope *env,
 		      EqualizationDialog *parent,
-            float *filterFuncR, float *filterFuncI, long windowSize, int *M, wxWindowID id, 
+		      float *filterFuncR, float *filterFuncI, long windowSize,
+			  int *M, float *dBMin, float *dBMax, wxWindowID id,
 		      const wxPoint& pos = wxDefaultPosition,
 		      const wxSize& size = wxDefaultSize);
    ~EqualizationPanel();
@@ -145,6 +147,8 @@ private:
    long mWindowSize;
    float *mFilterFuncR;
    float *mFilterFuncI;
+   float *mdBMax;
+   float *mdBMin;
    int *mM;	//MJS
 
    double mLoFreq;
@@ -174,13 +178,14 @@ public:
 								const wxPoint& pos = wxDefaultPosition,
 								const wxSize& size = wxDefaultSize,
 								long style = wxDEFAULT_DIALOG_STYLE );
-   
+
    // WDR: method declarations for EqualizationDialog
    virtual bool Validate();
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
 
    void EnvelopeUpdated();
+   static const float thirdOct[];
 
 private:
    void MakeEqualizationDialog();
@@ -190,8 +195,9 @@ private:
    void SaveCurves();
    void Select(int sel);
    void setCurve(Envelope *env, int currentCurve);
+   void graphicEQ(Envelope *env);
 
-   // XMLTagHandler callback methods for loading and saving
+// XMLTagHandler callback methods for loading and saving
    bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    XMLTagHandler *HandleXMLChild(const wxChar *tag);
    void WriteXML(int depth, FILE *fp);
@@ -203,17 +209,23 @@ private:
    {
       ID_FILTERPANEL = 10000,
       ID_LENGTH,
+	  ID_DBMAX,
+	  ID_DBMIN,
       ID_CURVE,
       ID_SAVEAS,
       ID_DELETE,
       ID_CLEAR,
-      ID_PREVIEW
+      ID_PREVIEW,
+	  ID_SLIDER
    };
-   
+
 private:
    // WDR: handler declarations for EqualizationDialog
    void OnSize( wxSizeEvent &event );
    void OnSlider( wxCommandEvent &event );
+   void OnSliderM( wxCommandEvent &event );
+   void OnSliderDBMAX( wxCommandEvent &event );
+   void OnSliderDBMIN( wxCommandEvent &event );
    void OnCurve( wxCommandEvent &event );
    void OnSaveAs( wxCommandEvent &event );
    void OnDelete( wxCommandEvent &event );
@@ -221,7 +233,7 @@ private:
    void OnPreview(wxCommandEvent &event);
    void OnOk( wxCommandEvent &event );
    void OnCancel( wxCommandEvent &event );
-   
+
 private:
 	EffectEqualization * m_pEffect;
 
@@ -230,8 +242,11 @@ private:
    float *mFilterFuncR;
    float *mFilterFuncI;
    long mWindowSize;
+   float mdBMin;
+   float mdBMax;
    int *mM;	//MJS
    bool mDirty;
+   wxSlider * m_sliders[NUMBER_OF_BANDS];
 
    EqualizationPanel *mPanel;
    Envelope *mEnvelope;
@@ -240,12 +255,16 @@ private:
    wxButton *mDelete;
    wxButton *mSaveAs;
    wxStaticText *mMText;
+   wxStaticText *octText;
    wxSlider *mMSlider;
+   wxSlider *mdBMaxSlider;
+   wxSlider *mdBMinSlider;
 
    EQCurveArray mCurves;
 
 private:
    DECLARE_EVENT_TABLE()
+
 };
 
 #endif
