@@ -12,6 +12,11 @@
 
   Clone of the FFT Filter effect, see documentation there.
 
+  Martyn Shaw made it do FIR filters using the overlap-add method, with
+  variable filter length.
+  Also added the animated 'response' curve.
+  Also added the graphic EQ.
+
 **********************************************************************/
 
 #include "Equalization.h"
@@ -51,7 +56,7 @@ const float EqualizationDialog::thirdOct[] =
   {
     20., 25., 31., 40., 50., 63., 80., 100., 125., 160., 200.,
 	250., 315., 400., 500., 630., 800., 1000., 1250., 1600., 2000.,
-	2500., 3150., 4000., 5000., 6300., 8000., 10000., 12500., 16000., 20000., 
+	2500., 3150., 4000., 5000., 6300., 8000., 10000., 12500., 16000., 20000.,
   };
 
 const float EffectEqualization::curvex[] =
@@ -161,7 +166,7 @@ const float EffectEqualization::curvey[][nCurvePoints] =
 
 const wxChar * EffectEqualization::curveNames[] =
   {
-	 wxT("flat"),
+    wxT("flat"),
     wxT("amradio"),
     wxT("acoustic"),
     wxT("NAB"),
@@ -210,7 +215,7 @@ bool EffectEqualization::PromptUser()
 
 
    EqualizationDialog dlog(this, ((double)loFreqI), hiFreq, mFilterFuncR, mFilterFuncI, windowSize, &mM,
-			   mParent, -1, _("Equalization"));
+            mParent, -1, _("Equalization"));
 
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -290,15 +295,15 @@ bool EffectEqualization::ProcessOne(int count, WaveTrack * t,
 
       int j;
 
-	  for(i=0; i<block; i+=L) {	//go through block in lumps of length L
+      for(i=0; i<block; i+=L) {	//go through block in lumps of length L
          int wcopy = L;
          if (i + wcopy > block)	//if last lump would exceed block
             wcopy = block - i;	//shorten it
          for(j=0; j<wcopy; j++)
             thisWindow[j] = buffer[i+j];	//copy the L (or remaining) samples
-		 for(j=wcopy; j<windowSize; j++) {
+         for(j=wcopy; j<windowSize; j++) {
             thisWindow[j] = 0;	//this includes the padding
-		 }
+         }
 
          Filter(windowSize, thisWindow);
 
@@ -379,7 +384,7 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
 				      Envelope *env,
 				      EqualizationDialog *parent,
 				      float *filterFuncR, float *filterFuncI, long windowSize,
-					  int *M, float *dBMin, float *dBMax, wxWindowID id,
+				      int *M, float *dBMin, float *dBMax, wxWindowID id,
 				      const wxPoint& pos,
 				      const wxSize& size):
    wxPanel(parent, id, pos, size)
@@ -509,56 +514,69 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    for(int i=0; i<mEnvRect.width; i++) {
       x = mEnvRect.x + i;
       y = (int)(mEnvRect.height*((*mdBMax-values[i])/(*mdBMax-*mdBMin)));
-	  if( y > mEnvRect.height) {
-	     y = mEnvRect.height;
+      if( y > mEnvRect.height) {
+         y = mEnvRect.height;
          off = true;
-	  }
-	  else {
-	     off = false;
-		 off1 = false;
-	  }
+      }
+      else {
+         off = false;
+         off1 = false;
+      }
       if ( (i != 0) & (!off1) ) {
          memDC.DrawLine(xlast, ylast,
                         x, mEnvRect.y + y);
       }
-	  off1 = off;
+      off1 = off;
       xlast = x;
       ylast = mEnvRect.y + y;
    }
    delete[] values;
 
    //Now draw the actual response that you will get -MJS
+   //mFilterFunc has a linear scale, window has a log one so we have to fiddle about
    mParent->TransferDataFromWindow();	//to calculate the actual response
    memDC.SetPen(wxPen(wxColour(0, 255, 0), 1, wxSOLID));
    double scale = (double)mEnvRect.height/(*mdBMax-*mdBMin);	//pixels per dB
    double yF;	//gain at this freq
+   double delta = mHiFreq/(((double)mWindowSize/2.));	//size of each freq bin
    double loLog = log10(mLoFreq);
    double stepLog = (log10(mHiFreq) - loLog)/((double)mEnvRect.width-1.);
    double freq;	//actual freq corresponding to x position
+   int n;	//index to mFreqFunc
    float *outr = new float[mWindowSize];
    float *outi = new float[mWindowSize];
    FFT(mWindowSize,true,mFilterFuncR,mFilterFuncI,outr,outi);	//work out FIR response
    for(int i=0; i<mEnvRect.width; i++) {
       x = mEnvRect.x + i;
-	  freq = M_PI*pow(10., loLog + i*stepLog)/mHiFreq;
-	  yF = 0.;
-      for(int j=0;j<(*mM-1)/2;j++) {
-	     yF += 2. * outr[j] * cos(freq*((*mM-1)/2-j));
+      if( (pow(10., loLog + (i+1)*stepLog)-pow(10., loLog + i*stepLog)) < delta) { //not enough resolution in FFT
+         freq = M_PI*pow(10., loLog + i*stepLog)/mHiFreq;	//radians, normalized
+         yF = 0.;
+         for(int j=0;j<(*mM-1)/2;j++) {
+            yF += 2. * outr[j] * cos(freq*((*mM-1)/2-j));
+         }
+         yF += outr[(*mM-1)/2];
+         yF = fabs(yF);
+         if(yF!=0.)
+            yF = 20.0*log10(yF);	//20 here as an amplitude
+         else
+            yF = *mdBMin;
       }
-	  yF += outr[(*mM-1)/2];
-	  yF = fabs(yF);
-	  if(yF!=0.)
-	     yF = 20.0*log10(yF);
-	  else
-		  yF = *mdBMin;
-	  if(yF < *mdBMin)
-	     yF = *mdBMin;
-	  yF = center-scale*yF;
-	  if(yF>mEnvRect.height)
-		  yF = mEnvRect.height;
-	  if(yF<0.)
-		  yF=0.;
-	  y = (int)(yF+0.5);
+      else {	//use FFT, it has enough resolution
+         freq = pow(10., loLog + i*stepLog);	//Hz
+         n = (int)freq/delta;
+         if(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2)!=0.)
+            yF = 10.0*log10(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2));	//10 here as a power
+         else
+            yF = *mdBMin;
+      }
+      if(yF < *mdBMin)
+         yF = *mdBMin;
+      yF = center-scale*yF;
+      if(yF>mEnvRect.height)
+         yF = mEnvRect.height;
+      if(yF<0.)
+         yF=0.;
+      y = (int)(yF+0.5);
 
       if (i != 0) {
          memDC.DrawLine(xlast, ylast,
@@ -647,7 +665,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 					long style):
    wxDialog( parent, id, title, position, size, style | wxRESIZE_BORDER )
 {
-	m_pEffect = effect;
+   m_pEffect = effect;
 
    mEnvelope = new Envelope();
    mEnvelope->SetInterpolateDB(false);
@@ -810,7 +828,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    mdBMin = -30.;
    wxBoxSizer *szrV;
    wxBoxSizer *szrH;
-   wxBoxSizer *szrGEQ;
+   wxFlexGridSizer *szrG;
    wxBoxSizer *szr1;
    wxBoxSizer *szr2;
    wxStaticText *txt;
@@ -824,7 +842,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    // -------------------------------------------------------------------
    txt = new wxStaticText(this, wxID_ANY,
                           _("Equalization, by Martyn Shaw && Mitch Golden"));
-	szrV->Add( txt, 0, wxALIGN_CENTRE|wxALL, 4 );
+   szrV->Add( txt, 0, wxALIGN_CENTRE|wxALL, 4 );
 
    // -------------------------------------------------------------------
    // ROW 2: EQ panel and sliders for vertical scale
@@ -876,7 +894,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrH = new wxBoxSizer( wxHORIZONTAL );
 
    txt = new wxStaticText( this, wxID_ANY, _("Select curve:") );
-	szrH->Add( txt, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
+   szrH->Add( txt, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxLEFT, 4 );
 
    // Create the choice sizer (helps in recreating choice control)
    mCurveSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -901,7 +919,7 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 0 );
 
    // -------------------------------------------------------------------
-	// ROW 5: Preview, OK, & Cancel buttons
+   // ROW 5: Preview, OK, & Cancel buttons
    // -------------------------------------------------------------------
    szrH = new wxBoxSizer(wxHORIZONTAL);
 
@@ -921,29 +939,31 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 4 );
 
    // -------------------------------------------------------------------
-	// ROW 6: Graphic EQ
+   // ROW 6: Graphic EQ
    // -------------------------------------------------------------------
-   szrGEQ = new wxBoxSizer(wxHORIZONTAL);
+   szrG = new wxFlexGridSizer( NUMBER_OF_BANDS, 0, 0 );
+   szrG->SetFlexibleDirection( wxVERTICAL );
    for (int i = 0; i < NUMBER_OF_BANDS; ++i) {
-      wxBoxSizer *faderSizer = new wxBoxSizer(wxVERTICAL);
       wxString label;
-	  if( thirdOct[i] < 1000.)
+      if( thirdOct[i] < 1000.)
          label.Printf( wxT("%d"), (int)thirdOct[i] );
-	  else
-	     if( thirdOct[i]/1000 == (int)(thirdOct[i]/1000.) )
+      else
+         if( thirdOct[i]/1000 == (int)(thirdOct[i]/1000.) )
             label.Printf( wxT("%.0fk"), thirdOct[i]/1000. );
-		 else
+         else
             label.Printf( wxT("%dk%.0f"), (int)(thirdOct[i]/1000.),
 			              (thirdOct[i]/1000.-(int)(thirdOct[i]/1000.))*10.);
       octText = new wxStaticText(this, wxID_ANY, label);
-      faderSizer->Add( octText, 0, wxALIGN_CENTER, 4 );
-      m_sliders[i] = new wxSlider(this, ID_SLIDER + i, 0, -20, +20,
-			               wxDefaultPosition, wxSize(21, -1), wxSL_VERTICAL|wxSL_INVERSE);
-      faderSizer->Add(m_sliders[i]);
-      szrGEQ->Add(faderSizer);
-	}
+      szrG->Add( octText, 0, wxALIGN_CENTER );
+   }
 
-   szrV->Add( szrGEQ, 0, wxALIGN_CENTER | wxALL );
+   for (int i = 0; i < NUMBER_OF_BANDS; ++i) {
+      m_sliders[i] = new wxSlider(this, ID_SLIDER + i, 0, -20, +20,
+			               wxDefaultPosition, wxSize(20, 124), wxSL_VERTICAL|wxSL_INVERSE);
+      szrG->Add( m_sliders[i], 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 2);
+   }
+
+   szrV->Add( szrG, 0, wxALIGN_CENTER | wxALL, 4 );
 
    SetSizerAndFit( szrV );
    Layout();
@@ -1039,7 +1059,7 @@ bool EqualizationDialog::TransferDataFromWindow()
    mFilterFuncR[0] = (float)(pow(10., mFilterFuncR[0]/20.));
    for(i=1;i<mWindowSize/2;i++) {
       mFilterFuncR[i] = (float)(pow(10., mFilterFuncR[i]/20.));
-	  mFilterFuncR[mWindowSize-i]=mFilterFuncR[i];	//Fill entire array
+      mFilterFuncR[mWindowSize-i]=mFilterFuncR[i];	//Fill entire array
    }
    mFilterFuncR[i] = (float)(pow(10., mFilterFuncR[i]/20.));	//do last one
 
@@ -1050,30 +1070,30 @@ bool EqualizationDialog::TransferDataFromWindow()
 
    int M = *mM;
 
-   for(i=0;i<=(M-1)/2;i++) {	//Windowing
+   for(i=0;i<=(M-1)/2;i++) {	//Windowing - could give a choice, fixed for now - MJS
 //	   double mult=0.54-0.46*cos(2*M_PI*(i+(M-1)/2.0)/(M-1));	//Hamming
-	   double mult=0.42-0.5*cos(2*M_PI*(i+(M-1)/2.0)/(M-1))+.08*cos(4*M_PI*(i+(M-1)/2.0)/(M-1));	//Blackman
-	   outr[i]*=mult;
-	   if(i!=0){
-		outr[mWindowSize-i]*=mult;
-	   }
+      double mult=0.42-0.5*cos(2*M_PI*(i+(M-1)/2.0)/(M-1))+.08*cos(4*M_PI*(i+(M-1)/2.0)/(M-1));	//Blackman
+      outr[i]*=mult;
+      if(i!=0){
+         outr[mWindowSize-i]*=mult;
+      }
    }
    for(;i<=mWindowSize/2;i++) {	//Padding
-	   outr[i]=0;
-	   outr[mWindowSize-i]=0;
+      outr[i]=0;
+      outr[mWindowSize-i]=0;
    }
    float *tempr = new float[M];
    for(i=0;i<(M-1)/2;i++) {	//shift so that padding on right
-	   tempr[(M-1)/2+i]=outr[i];
-	   tempr[i]=outr[mWindowSize-(M-1)/2+i];
+      tempr[(M-1)/2+i]=outr[i];
+      tempr[i]=outr[mWindowSize-(M-1)/2+i];
    }
    tempr[(M-1)/2+i]=outr[i];
 
    for(i=0;i<M;i++) {	//and copy useful values back
-	   outr[i]=tempr[i];
+      outr[i]=tempr[i];
    }
    for(i=M;i<mWindowSize;i++) {	//rest is padding
-	   outr[i]=0.;
+      outr[i]=0.;
    }
 
    FFT(mWindowSize,false,outr,NULL,mFilterFuncR,mFilterFuncI);	//Back to the frequency domain so we can use it
@@ -1350,7 +1370,7 @@ void EqualizationDialog::graphicEQ(Envelope *env)
    double loLog = log10(mLoFreq);
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
-   int width = 181;
+   int width = 181;	//why this number? - MJS
 
    double stepLog = (log10(mHiFreq) - loLog)/((double)width-1.);
    double freq;	//actual freq corresponding to x position
@@ -1359,30 +1379,30 @@ void EqualizationDialog::graphicEQ(Envelope *env)
    env->Flatten(0.5);
    env->SetTrackLen(1.0);
 
-   for(int i=0; i<width; i++) {	//go across the graph 4 px at a time (width of env pt)
-	  freq = pow(10., loLog + i*stepLog);	//actual freq for this pixel
-	  if(freq > thirdOct[30])
-	     break;
+   for(int i=0; i<width; i++) {
+      freq = pow(10., loLog + i*stepLog);	//actual freq for this pixel
+      if(freq > thirdOct[30])
+         break;
       double when = (log10(freq) - loLog)/denom;	//scaled to env
-	  for(int j=0;j<31;j++) {	//search for lower slider
-		  if(thirdOct[j] > freq ) {
-			  minF = j-1;
-			  break;
-		  }
-	  }
-	  for(int j=30;j>=0;j--) {	//search for upper slider
-		  if(thirdOct[j] < freq ) {
-			  maxF = j+1;
-			  break;
-		  }
-	  }
+         for(int j=0;j<31;j++) {	//search for lower slider
+            if(thirdOct[j] > freq ) {
+               minF = j-1;
+               break;
+         }
+      }
+      for(int j=30;j>=0;j--) {	//search for upper slider
+         if(thirdOct[j] < freq ) {
+            maxF = j+1;
+            break;
+         }
+      }
       double span = (log10(thirdOct[maxF]) - log10(thirdOct[minF]))/denom;
-	  double dist = (log10(thirdOct[maxF]) - log10(freq))/denom;
-	  value = m_sliders[minF]->GetValue()*(1. + cos(M_PI*(span-dist)/span))/2. +
-		             m_sliders[maxF]->GetValue()*(1. + cos(M_PI*dist/span))/2.;
+      double dist = (log10(thirdOct[maxF]) - log10(freq))/denom;
+      value = m_sliders[minF]->GetValue()*(1. + cos(M_PI*(span-dist)/span))/2. +
+              m_sliders[maxF]->GetValue()*(1. + cos(M_PI*dist/span))/2.;
       if(i==0)
-	     env->Move( 0., value );
-	  env->Insert( when, value );
+         env->Move( 0., value );
+      env->Insert( when, value );
    }
    env->Move( 1., value );
    mPanel->Refresh( false );
@@ -1568,8 +1588,8 @@ void EqualizationDialog::OnSize(wxSizeEvent &event)
 void EqualizationDialog::OnPreview(wxCommandEvent &event)
 {
    TransferDataFromWindow();
-	m_pEffect->Preview();
-	//v Restore previous values?
+   m_pEffect->Preview();
+   //v Restore previous values?
 }
 
 void EqualizationDialog::OnCancel(wxCommandEvent &event)
