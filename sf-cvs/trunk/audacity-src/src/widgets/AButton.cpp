@@ -32,7 +32,6 @@
 BEGIN_EVENT_TABLE(AButton, wxWindow)
    EVT_MOUSE_EVENTS(AButton::OnMouseEvent)
    EVT_KEY_DOWN(AButton::OnKeyDown)
-   EVT_KEY_UP(AButton::OnKeyUp)
    EVT_SET_FOCUS(AButton::OnSetFocus)
    EVT_KILL_FOCUS(AButton::OnKillFocus)
    EVT_PAINT(AButton::OnPaint)
@@ -359,39 +358,6 @@ void AButton::OnKeyDown(wxKeyEvent & event)
       case WXK_RETURN:
          mWasShiftDown = event.ShiftDown();
          Click();
-      break;
-
-      case WXK_SPACE:
-         if( !mIsClicking )
-         {
-            mIsClicking = true;
-            Toggle();
-         }
-      break;
-
-      default:
-         if( mIsClicking )
-         {
-            Toggle();
-         }
-      break;
-   }
-
-   event.Skip();
-}
-
-void AButton::OnKeyUp(wxKeyEvent & event)
-{
-   switch( event.GetKeyCode() )
-   {
-      case WXK_SPACE:
-         if( IsDown() && !mProcessDownEvents )
-         {
-            PopUp();
-         }
-         mWasShiftDown = event.ShiftDown();
-         Click();
-         mIsClicking = false;
       break;
    }
 

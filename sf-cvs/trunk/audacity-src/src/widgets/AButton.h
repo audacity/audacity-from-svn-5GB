@@ -79,6 +79,9 @@ class AButton: public wxWindow {
    virtual void OnPaint(wxPaintEvent & event);
    virtual void OnSize(wxSizeEvent & event);
    virtual void OnMouseEvent(wxMouseEvent & event);
+   virtual void OnKeyDown(wxKeyEvent & event);
+   virtual void OnSetFocus(wxFocusEvent & event);
+   virtual void OnKillFocus(wxFocusEvent & event);
 
    virtual bool WasShiftDown(); // returns true if shift was held down
                                 // the last time the button was clicked
@@ -95,11 +98,6 @@ class AButton: public wxWindow {
    };
 
    AButtonState GetState(){ return mButtonState; }
-
-   virtual void OnKeyDown(wxKeyEvent & event);
-   virtual void OnKeyUp(wxKeyEvent & event);
-   virtual void OnSetFocus(wxFocusEvent & event);
-   virtual void OnKillFocus(wxFocusEvent & event);
 
  private:
 
