@@ -347,8 +347,11 @@ UploadDialog::~UploadDialog()
     
 }
 
-void UploadDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
+void UploadDialog::OnCancel(wxCommandEvent & event)
 {
+   if (ftp)
+      OnDisconnect(event);
+
    EndModal(0);
 }
 
@@ -1115,7 +1118,13 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
         
     wxOutputStream *out_stream = ftp->GetOutputStream(dest);    
 
-    if (size > 0)
+    if (out_stream == NULL)
+    {
+       wxMessageBox(ftp->GetLastResult());
+    }
+    else
+    {
+        if (size > 0)
         {
             for (count = 0; count < iterations; count++)
             {
@@ -1158,10 +1167,11 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
             }
 
         }
+        delete out_stream;
+    }
 
     delete [] chunk;
     delete in_stream;
-    delete out_stream;
 
     // if aborted, delete incomplete file
     if (abort)
@@ -1409,6 +1419,8 @@ void UploadDialog::OnCreateDir(wxCommandEvent &event)
 
         if (ftp->MkDir(result.MakeLower()))
             RefreshFiles();
+        else
+           wxMessageBox(ftp->GetLastResult());
     }
 
 }
