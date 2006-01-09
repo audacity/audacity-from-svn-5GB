@@ -4660,7 +4660,7 @@ void TrackPanel::OnTrackGain()
          LWSlider *slider = mTrackLabel.mGains[tracknum-1];
          if( slider->ShowDialog() )
          {
-            SetTrackPan(t, slider);
+            SetTrackGain(t, slider);
          }
       }
 }
