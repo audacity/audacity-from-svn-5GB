@@ -723,7 +723,6 @@ wxSizer *AvcCompressorDialog::MakeAvcCompressorDialog(wxWindow * parent, bool ca
        new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
 	button->SetDefault();
-	button->SetFocus();
 	boxSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
 	mainSizer->Add(boxSizer, 0, wxALIGN_CENTRE | wxALL, 5);

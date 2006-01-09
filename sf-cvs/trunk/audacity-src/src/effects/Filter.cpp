@@ -502,7 +502,6 @@ wxSizer *FilterDialog::MakeFilterDialog( wxWindow *parent,
 
    wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
    item5->SetDefault();
-   item5->SetFocus();
    item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );

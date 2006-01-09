@@ -175,7 +175,6 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
 
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
-   ok->SetFocus();
    pBoxSizer_Controls->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    pBoxSizer_Dialog->Add(pBoxSizer_Controls, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);

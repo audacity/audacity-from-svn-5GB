@@ -95,7 +95,6 @@ bool EffectClickRemoval::PromptUser()
    dlog.m_pSlider_width->SetValue(mClickWidth);
    //   dlog.m_pSlider_sep->SetValue(sep);
    dlog.m_pButton_RemoveClicks->SetDefault();
-   dlog.m_pButton_RemoveClicks->SetFocus();
 
    dlog.CentreOnParent();
    dlog.ShowModal();

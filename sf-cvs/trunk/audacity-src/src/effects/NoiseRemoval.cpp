@@ -162,7 +162,6 @@ bool EffectNoiseRemoval::PromptUser()
    if (mHasProfile || bAllowTwiddleSettings ) {
       dlog.m_pButton_Preview->Enable(mWaveTracks != NULL);
 		dlog.m_pButton_RemoveNoise->SetDefault();
-		dlog.m_pButton_RemoveNoise->SetFocus();
 	} else {
       dlog.m_pSlider->Enable(false);
       dlog.m_pButton_Preview->Enable(false);

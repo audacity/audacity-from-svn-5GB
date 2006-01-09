@@ -346,7 +346,6 @@ wxSizer *BassBoostDialog::MakeBassBoostDialog(wxWindow * parent, bool call_fit,
        new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item10->SetDefault();
-   item10->SetFocus();
    item9->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);

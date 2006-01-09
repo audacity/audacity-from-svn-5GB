@@ -268,7 +268,6 @@ TruncSilenceDialog::TruncSilenceDialog(wxWindow *parent, wxWindowID id, const wx
 
    wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
-   ok->SetFocus();
    hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 
    mainSizer->Add(hSizer, 0, wxALIGN_CENTRE|wxALIGN_CENTER_VERTICAL|wxALL, 5);
