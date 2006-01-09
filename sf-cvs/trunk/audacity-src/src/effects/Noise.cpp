@@ -33,6 +33,8 @@ bool EffectNoise::PromptUser()
 {
    if (mT1 > mT0)
       length = mT1 - mT0;
+   else
+	   length = sDefaultGenerateLen;
 
    GenerateDialog dlog(mParent, -1, _("White Noise Generator"));
    dlog.length = length;
