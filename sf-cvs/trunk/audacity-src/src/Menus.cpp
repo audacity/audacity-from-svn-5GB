@@ -671,7 +671,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"), FN(PrevFrame));
    c->AddCommand(wxT("NextFrame"),   _("Cycle foward through Dock, Track View, and Selection Bar\tCtrl+F6"), FN(NextFrame));
 
-   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
+//   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
    c->AddCommand(wxT("SelectTool"),  _("Selection Tool\tF1"),          FN(OnSelectTool));
    c->AddCommand(wxT("EnvelopeTool"),_("Envelope Tool\tF2"),           FN(OnEnvelopeTool));
    c->AddCommand(wxT("DrawTool"),    _("Draw Tool\tF3"),               FN(OnDrawTool));
