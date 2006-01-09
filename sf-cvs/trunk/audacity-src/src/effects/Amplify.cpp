@@ -203,7 +203,6 @@ AmplifyDialog::AmplifyDialog(EffectAmplify * effect,
    wxButton *item10 =
       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    item10->SetDefault();
-   item10->SetFocus();
    pBoxSizer_OK->Add(item10, 0, wxALIGN_CENTER | wxALL, 5);
    
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 5);

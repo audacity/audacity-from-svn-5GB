@@ -933,7 +933,6 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    btn = new wxButton(this, wxID_OK, _("OK"));
    btn->SetDefault();
-   btn->SetFocus();
    szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
    szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 4 );

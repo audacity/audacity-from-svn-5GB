@@ -291,7 +291,6 @@ ChangeTempoDialog::ChangeTempoDialog(EffectChangeTempo * effect,
    wxButton * pButton_OK =
        new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
    pButton_OK->SetDefault();
-   pButton_OK->SetFocus();
    pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 
    pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);

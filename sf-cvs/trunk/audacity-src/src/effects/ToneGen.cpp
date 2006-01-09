@@ -340,7 +340,6 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
        new wxButton(parent, wxID_OK, _("&Generate Tone"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item12->SetDefault();
-   item12->SetFocus();
    item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);

@@ -580,7 +580,6 @@ wxSizer *CreateWahwahDialog(wxWindow * parent, bool call_fit,
        new wxButton(parent, wxID_OK, _("OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    item24->SetDefault();
-   item24->SetFocus();
    item23->Add(item24, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item23, 0, wxALIGN_CENTRE | wxALL, 5);

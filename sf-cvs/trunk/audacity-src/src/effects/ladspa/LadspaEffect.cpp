@@ -500,7 +500,6 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 
    button = new wxButton(this, wxID_OK, _("OK"));
    button->SetDefault();
-   button->SetFocus();
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
