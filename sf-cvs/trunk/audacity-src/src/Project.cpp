@@ -1041,10 +1041,10 @@ void AudacityProject::HandleResize()
    if (!mTrackPanel) 
       return;
 
+   FixScrollbars();
+
    mToolBarDock->LayoutToolBars();
    Layout();
-
-   FixScrollbars();
 
    mSelectionBar->Refresh( false );
 
@@ -1224,12 +1224,6 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
       return;
 
    wxPaintDC dc(this);
-
-   //This makes the TrackPanel refresh properly, so that
-   //it doesn't leave a little trail of indicator cursors
-#if !defined(__WXMAC__)
-   mTrackPanel->CleanupIndicators();
-#endif
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
@@ -2197,8 +2191,8 @@ void AudacityProject::Clear()
                               mViewInfo.sel0 - mViewInfo.sel1,
                               mViewInfo.sel0),
              _("Delete"));
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+
+   RedrawProject();
 }
 
 void AudacityProject::SelectNone()

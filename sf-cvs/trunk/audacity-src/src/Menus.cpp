@@ -1887,8 +1887,8 @@ void AudacityProject::OnUndo()
    PopState(l);
 
    mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+
+   RedrawProject();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
@@ -1906,8 +1906,7 @@ void AudacityProject::OnRedo()
    TrackList *l = mUndoManager.Redo(&mViewInfo.sel0, &mViewInfo.sel1);
    PopState(l);
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 
    if (mHistoryWindow)
       mHistoryWindow->UpdateDisplay();
@@ -1981,8 +1980,7 @@ void AudacityProject::OnCut()
 
    PushState(_("Cut to the clipboard"), _("Cut"));
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 
@@ -2022,8 +2020,7 @@ void AudacityProject::OnSplitCut()
 
    PushState(_("Split-cut to the clipboard"), _("Split Cut"));
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 
@@ -2154,8 +2151,7 @@ void AudacityProject::OnPaste()
       
       PushState(_("Pasted from the clipboard"), _("Paste"));
       
-      FixScrollbars();
-      mTrackPanel->Refresh(false);
+      RedrawProject();
 
       return;
    }
@@ -2206,8 +2202,7 @@ void AudacityProject::OnPaste()
 
    PushState(_("Pasted from the clipboard"), _("Paste"));
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 void AudacityProject::OnPasteOver()
@@ -2237,9 +2232,9 @@ void AudacityProject::OnTrim()
       n = iter.Next();
    }
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
    PushState(_("Trim file to selection"), _("Trim"));
+
+   RedrawProject();
 }
 
 void AudacityProject::OnDelete()
@@ -2270,8 +2265,8 @@ void AudacityProject::OnSplitDelete()
                               mViewInfo.sel0 - mViewInfo.sel1,
                               mViewInfo.sel0),
              _("Split Delete"));
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+
+   RedrawProject();
 }
 
 void AudacityProject::OnJoin()
@@ -2294,8 +2289,8 @@ void AudacityProject::OnJoin()
                               mViewInfo.sel0 - mViewInfo.sel1,
                               mViewInfo.sel0),
              _("Join"));
-   FixScrollbars();
-   mTrackPanel->Refresh(false);   
+
+   RedrawProject();
 }
 
 void AudacityProject::OnSilence()
@@ -2350,8 +2345,7 @@ void AudacityProject::OnDuplicate()
 
    PushState(_("Duplicated"), _("Duplicate"));
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 void AudacityProject::OnSplit()
@@ -2509,8 +2503,7 @@ void AudacityProject::OnSplitLabels()
 
    PushState(_("Split at labels"), _("Split at labels"));
 
-   FixScrollbars();
-   mTrackPanel->Refresh(false);
+   RedrawProject();
 }
 
 void AudacityProject::OnSelectAll()
@@ -2934,8 +2927,7 @@ void AudacityProject::OnImportLabels()
                 Format(_("Imported labels from '%s'"), fileName.c_str()),
                 _("Import Labels"));
 
-      FixScrollbars();
-      mTrackPanel->Refresh(false);
+      RedrawProject();
    }
 }
 
@@ -2967,9 +2959,8 @@ void AudacityProject::OnImportMIDI()
                                     fileName.c_str()),
                    _("Import MIDI"));
 
-         FixScrollbars();
+         RedrawProject();
          mTrackPanel->EnsureVisible(newTrack);
-         mTrackPanel->Refresh(false);
       }
    }
 }
@@ -3087,8 +3078,7 @@ void AudacityProject::OnMixAndRender()
          PushState(msg, _("Mix and Render"));
       }
 
-      FixScrollbars();
-      mTrackPanel->Refresh(false);
+      RedrawProject();
    }
 }
 
@@ -3281,9 +3271,8 @@ void AudacityProject::OnNewWaveTrack()
 
    PushState(_("Created new audio track"), _("New Track"));
 
-   FixScrollbars();
+   RedrawProject();
    mTrackPanel->EnsureVisible(t);
-   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnNewStereoTrack()
@@ -3306,9 +3295,8 @@ void AudacityProject::OnNewStereoTrack()
    
    PushState(_("Created new stereo audio track"), _("New Track"));
    
-   FixScrollbars();
+   RedrawProject();
    mTrackPanel->EnsureVisible(t);
-   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnNewLabelTrack()
@@ -3323,9 +3311,8 @@ void AudacityProject::OnNewLabelTrack()
 
    PushState(_("Created new label track"), _("New Track"));
 
-   FixScrollbars();
+   RedrawProject();
    mTrackPanel->EnsureVisible(t);
-   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnNewTimeTrack()
@@ -3366,9 +3353,8 @@ void AudacityProject::OnNewTimeTrack()
             tr->SetTimeTrack( t );
          */
          
-         FixScrollbars();
+         RedrawProject();
          mTrackPanel->EnsureVisible(t);
-         mTrackPanel->Refresh(false);
       }
 }
 
@@ -3397,9 +3383,9 @@ int AudacityProject::DoAddLabel(double left, double right)
 
    PushState(_("Added label"), _("Label"));
 
-   FixScrollbars();
+   RedrawProject();
    mTrackPanel->EnsureVisible((Track *)lt);
-   mTrackPanel->Refresh(false);
+
    return index;
 }
 

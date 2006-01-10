@@ -346,7 +346,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mViewInfo(viewInfo),
      mRuler(ruler),
 #if !defined(__WXMAC__)
-     mBitmap(NULL),
+     mBuffer(NULL),
 #endif
      mBacking(NULL),
      mRefreshBacking(false),
@@ -480,6 +480,9 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 
    //Initialize the last selection adjustment time.
    mLastSelectionAdjustment = ::wxGetLocalTimeMillis();
+
+   mLastCursor = -1;
+   mLastIndicator = -1;
 }
 
 TrackPanel::~TrackPanel()
@@ -487,8 +490,8 @@ TrackPanel::~TrackPanel()
    mTimer.Stop();
 
 #if !defined(__WXMAC__)
-   if (mBitmap)
-      delete mBitmap;
+   if (mBuffer)
+      delete mBuffer;
 #endif
 
    if (mBacking)
@@ -612,70 +615,6 @@ AudacityProject * TrackPanel::GetProject() const
    return (AudacityProject*)pWind;
 }
 
-/// AS: This function draws the cursor things, both in the
-///  ruler as seen at the top of the screen, but also in each of the
-///  selected tracks.
-/// These are the 'vertical lines' through waves and ruler.
-/// The main complexity comes from storing/restoring what was
-/// previously there in bitmpas so as to make moving the cursor quick.
-void TrackPanel::DrawCursors(wxDC * dc)
-{
-   // The difference between a wxClientDC and a wxPaintDC
-   // is that the wxClientDC is used outside of a paint loop,
-   // whereas the wxPaintDC is used inside a paint loop
-   bool bIsClientDC = false;
-   if(!dc)
-   {
-      bIsClientDC = true;
-      dc = new wxClientDC(this);
-   }
-
-   AColor::CursorColor(dc);
-
-   int x = GetLeftOffset() +
-       int ((mViewInfo->sel0 - mViewInfo->h) * mViewInfo->zoom);
-
-   int y = -mViewInfo->vpos;
-
-   // AS: Ah, no, this is where we draw the blinky thing in the ruler.
-   mRuler->DrawCursor( x );
-
-   if (x >= GetLeftOffset()) {
-      // Draw cursor in all selected tracks
-      TrackListIterator iter(mTracks);
-      for (Track * t = iter.First(); t; t = iter.Next()) {
-         int height = t->GetHeight();
-         if (t->GetSelected() && t->GetKind() == Track::Time)
-            {
-               TimeTrack *tt = (TimeTrack*)t;
-               double t0 = tt->warp( mViewInfo->sel0 - mViewInfo->h );
-               int warpedX = GetLeftOffset() + int (t0 * mViewInfo->zoom);
-               dc->DrawLine(warpedX, y + kTopInset + 1, warpedX, y + height - 2);
-
-               // Add cursor to damage rect
-               mDamageRect.Union( wxRect( warpedX, 0, 1, GetRect().GetHeight() ));
-            }
-         else if (t->GetSelected() || mAx->IsFocused(t))
-         {
-            wxCoord top = y + kTopInset + 1;
-            wxCoord bottom = y + height - 2;
-
-            dc->DrawLine(x, top, x, bottom); // <-- The whole point of this routine.
-
-            // Add cursor to damage rect
-            mDamageRect.Union( wxRect( x, 0, 1, GetRect().GetHeight() ));
-         }
-         y += height;
-      }
-   }
-
-   if(bIsClientDC)
-   {
-      delete dc;
-      dc = NULL;
-   }
-}
-
 /// AS: This gets called on our wx timer events.
 void TrackPanel::OnTimer()
 {
@@ -716,6 +655,7 @@ void TrackPanel::OnTimer()
          }
          MakeParentPushState(_("Recorded Audio"), _("Record"));
       }
+      mRedrawAfterStop = false;
 
       MakeParentRedrawScrollbars();
       p->SetAudioIOToken(0);
@@ -729,15 +669,7 @@ void TrackPanel::OnTimer()
    if (!gAudioIO->IsPaused() &&
        (mIndicatorShowing || gAudioIO->IsStreamActive(p->GetAudioIOToken())))
    {
-      UpdateIndicator();
-   }
-
-   // AS: Um, I get the feeling we want to redraw the cursors
-   //  every 10 timer ticks or something...
-   if ((mTimeCount % 10) == 0 &&
-       !mTracks->IsEmpty() && mViewInfo->sel0 == mViewInfo->sel1 
-       && (mMouseCapture != IsSelecting)) {
-      DrawCursors();
+      DrawIndicator();
    }
 
    if(gAudioIO->IsStreamActive(p->GetAudioIOToken()) &&
@@ -746,11 +678,17 @@ void TrackPanel::OnTimer()
       // Periodically update the display while recording
       
       if (!mRedrawAfterStop) {
-         Refresh(false);
          mRedrawAfterStop = true;
+         MakeParentRedrawScrollbars();
+         mListener->TP_ScrollUpDown( 99999999 );
+         Refresh( false );
       }
       else {
          if ((mTimeCount % 5) == 0) {
+            // Must tell OnPaint() to recreate the backing bitmap
+            // since we've not done a full refresh.
+            mRefreshBacking = true;
+
             // Refresh only the waveform area, not the labels
             // (This actually speeds up redrawing!)
             wxRect trackRect;
@@ -759,14 +697,6 @@ void TrackPanel::OnTimer()
             trackRect.y = 0;
             trackRect.width -= GetLeftOffset();
             Refresh(false, &trackRect);
-
-            // Must tell OnPaint() to recreate the backing bitmap
-            // since we've not done a full refresh.
-            mRefreshBacking = true;
-         }
-         
-         if ((mTimeCount % 40) == 0) {
-            MakeParentRedrawScrollbars();
          }
       }
    }
@@ -819,69 +749,179 @@ void TrackPanel::ScrollDuringDrag()
 ///  we create a memory DC and tell the ruler to draw itself there,
 ///  and then just blit that to the screen.
 /// The indicator is a small triangle, red for record, green for play.
-void TrackPanel::UpdateIndicator(wxDC * dc)
+void TrackPanel::DrawIndicator()
 {
+   wxClientDC dc( this );
+   bool onScreen;
+   int x;
+
+   if( mLastIndicator != -1 )
+   {
+      onScreen = between_inclusive( mViewInfo->h,
+                                    mLastIndicator,
+                                    mViewInfo->h + mViewInfo->screen );
+      if( onScreen )
+      {
+         x = GetLeftOffset() + int ( ( mLastIndicator - mViewInfo->h) * mViewInfo->zoom );
+
+         wxMemoryDC mdc;
+         mdc.SelectObject( *mBacking );
+         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mdc, x, 0 );
+         mdc.SelectObject( wxNullBitmap );
+      }
+
+      // Nothing's every perfect...
+      //
+      // Redraw the cursor since we may have just wiped it out
+      if( mLastCursor == mLastIndicator )
+      {
+         DrawCursor();
+      }
+
+      mLastIndicator = -1;
+   }
+
    // The stream time can be < 0 if the audio is currently stopped
-   double indicator = gAudioIO->GetStreamTime();
+   double pos = gAudioIO->GetStreamTime();
 
    AudacityProject *p = GetProject();
-   bool audioActive = gAudioIO->IsStreamActive(p->GetAudioIOToken());
-   bool onScreen = between_inclusive(mViewInfo->h, indicator,
-                                     mViewInfo->h + mViewInfo->screen);
+   bool audioActive = ( gAudioIO->IsStreamActive( p->GetAudioIOToken() ) != 0 );
+   onScreen = between_inclusive( mViewInfo->h,
+                                 pos,
+                                 mViewInfo->h + mViewInfo->screen );
 
    // This displays the audio time, too...
    DisplaySelection();
 
    // BG: Scroll screen if option is set
    // msmeyer: But only if not playing looped or in one-second mode
-   if (mViewInfo->bUpdateTrackIndicator &&
+   if( mViewInfo->bUpdateTrackIndicator &&
        p->mLastPlayMode != loopedPlay &&
        p->mLastPlayMode != oneSecondPlay && 
        audioActive &&
-       indicator>=0 && !onScreen && !gAudioIO->IsPaused())
+       pos >= 0 &&
+       !onScreen &&
+       !gAudioIO->IsPaused() )
    {
-      mListener->TP_ScrollWindow(indicator);
+      mListener->TP_ScrollWindow( pos );
       MakeParentRedrawScrollbars();
    }
 
-   if( !mIndicatorShowing && !onScreen )
-      return;
+   mIndicatorShowing = ( onScreen && audioActive );
 
-   mIndicatorShowing = (onScreen && audioActive);
-   if( !mIndicatorShowing || indicator < 0 )
-   {
-      if( !mDamageRect.IsEmpty() )
-      {
-         CleanupIndicators();
-      }
-      mRuler->ClearIndicator();
-      return;
-   }
+   // Remember it
+   mLastIndicator = pos;
 
-   bool bIsClientDC = false;
-   if(!dc)
-   {
-      bIsClientDC = true;
-      dc = new wxClientDC(this);
+   // Get the size of the trackpanel region, so we know where to redraw
+   wxRect panelarea = GetRect();
+   panelarea.x = GetLeftOffset();
 
-      // Remove old indicators.
-      if( !mDamageRect.IsEmpty() )
-      {
-         CleanupIndicators();
-      }
-   }
- 
-   // Draw the line across all tracks
-   DrawTrackIndicator(dc, indicator);
-
-   if(bIsClientDC)
-   {
-      delete dc;
-      dc = NULL;
-   }
-
+   // Set play/record color
    bool rec = gAudioIO->GetNumCaptureChannels() ? false : true;
-   mRuler->DrawIndicator( rec, indicator );
+   AColor::IndicatorColor( &dc, rec );
+      
+   // Draw cursor in all visible tracks
+   TrackListIterator iter( mTracks );
+
+   // Iterate through each track
+   x = GetLeftOffset() + int ( ( pos - mViewInfo->h ) * mViewInfo->zoom );
+   int y = -mViewInfo->vpos;
+   Track *t;
+   for( t = iter.First(); t; t = iter.Next() )
+   {
+      int height = t->GetHeight();
+      wxCoord top = y + kTopInset + 1;
+      wxCoord bottom = y + height - 2;
+      wxRect trackarea( x, top, 1, bottom - top );
+
+      // Only want non-Label tracks that are visible 
+      if( ( panelarea.Intersects( trackarea ) ) &&
+          ( t->GetKind() != Track::Label ) )
+      {
+         // Draw the new indicator in its new location
+         dc.DrawLine( x, top, x, bottom );
+      }
+
+      // Increment y so you draw on the proper track
+      y += height;
+   }
+
+   mRuler->DrawIndicator( pos, rec );
+}
+
+/// AS: This function draws the cursor things, both in the
+///  ruler as seen at the top of the screen, but also in each of the
+///  selected tracks.
+/// These are the 'vertical lines' through waves and ruler.
+void TrackPanel::DrawCursor()
+{
+   wxClientDC dc( this );
+   bool onScreen;
+   int x;
+
+   if( mLastCursor != -1 )
+   {
+      onScreen = between_inclusive( mViewInfo->h,
+                                    mLastCursor,
+                                    mViewInfo->h + mViewInfo->screen );
+      if( onScreen )
+      {
+         x = GetLeftOffset() + int ( ( mLastCursor - mViewInfo->h) * mViewInfo->zoom );
+
+         wxMemoryDC mdc;
+         mdc.SelectObject( *mBacking );
+         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mdc, x, 0 );
+         mdc.SelectObject( wxNullBitmap );
+      }
+
+      mLastCursor = -1;
+   }
+
+   mLastCursor = mViewInfo->sel0;
+
+   onScreen = between_inclusive( mViewInfo->h,
+                                 mLastCursor,
+                                 mViewInfo->h + mViewInfo->screen );
+
+   if( !onScreen )
+   {
+      return;
+   }
+
+   AColor::CursorColor( &dc );
+
+   x = GetLeftOffset() +
+       int ( ( mLastCursor - mViewInfo->h ) * mViewInfo->zoom );
+   int y = -mViewInfo->vpos;
+
+   // Draw cursor in all selected tracks
+   TrackListIterator iter(mTracks);
+   Track *t;
+   for( t = iter.First(); t; t = iter.Next() )
+   {
+      int height = t->GetHeight();
+      wxCoord top = y + kTopInset + 1;
+      wxCoord bottom = y + height - 2;
+
+      if( t->GetSelected() && t->GetKind() == Track::Time )
+      {
+         TimeTrack *tt = (TimeTrack *) t;
+         double t0 = tt->warp( mLastCursor - mViewInfo->h );
+         int warpedX = GetLeftOffset() + int ( t0 * mViewInfo->zoom );
+         dc.DrawLine( warpedX, top, warpedX, bottom );
+      }
+      else if( t->GetSelected() || mAx->IsFocused( t ) )
+      {
+         dc.DrawLine( x, top, x, bottom ); // <-- The whole point of this routine.
+      }
+
+      y += height;
+   }
+
+   // AS: Ah, no, this is where we draw the blinky thing in the ruler.
+   mRuler->DrawCursor( mLastCursor );
+
+   DisplaySelection();
 }
 
 /// LL: OnSize() is called when the panel is resized
@@ -892,10 +932,10 @@ void TrackPanel::OnSize(wxSizeEvent & /* event */)
 
    // Mac doesn't need a buffered DC
 #if !defined(__WXMAC__)
-   if (mBitmap)
-      delete mBitmap;
+   if (mBuffer)
+      delete mBuffer;
 
-   mBitmap = new wxBitmap(width, height);
+   mBuffer = new wxBitmap(width, height);
 #endif
 
    // (Re)allocate the backing bitmap
@@ -930,13 +970,13 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
 
    // Mac OS X automatically double-buffers the screen for you.
 #ifdef __WXMAC__
-   wxPaintDC dc(this);
+   wxDC *dc = new wxPaintDC( this );
 #else
-   wxBufferedPaintDC dc(this, *mBitmap);
+   wxDC *dc = new wxBufferedPaintDC( this, *mBuffer );
 #endif
 
    // Supposed to be good-to-do under Windows
-   dc.BeginDrawing();
+   dc->BeginDrawing();
 
    // Recreate the backing bitmap if we have a full refresh
    // (See TrackPanel::Refresh())
@@ -946,12 +986,12 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
       mRefreshBacking = false;
 
       // Redraw
-      DrawTracks(&dc);
+      DrawTracks( dc );
 
       // Save the backing bitmap
       wxMemoryDC mdc;
       mdc.SelectObject( *mBacking );
-      mdc.Blit( 0, 0, mBacking->GetWidth(), mBacking->GetHeight(), &dc, 0, 0 );
+      mdc.Blit( 0, 0, mBacking->GetWidth(), mBacking->GetHeight(), dc, 0, 0 );
       mdc.SelectObject( wxNullBitmap );
    }
    else
@@ -962,7 +1002,7 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
       // Copy full, possibly clipped, damage rectange
       wxMemoryDC mdc;
       mdc.SelectObject( *mBacking );
-      dc.Blit( box.x, box.y, box.width, box.height, &mdc, box.x, box.y );
+      dc->Blit( box.x, box.y, box.width, box.height, &mdc, box.x, box.y );
       mdc.SelectObject( wxNullBitmap );
    } 
 
@@ -972,14 +1012,18 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    // done outside of the paint event.
    mRuler->Refresh( false );
 
-   // Update the indicator in case it was damaged.
-   UpdateIndicator(&dc);
-
-   if( mViewInfo->sel0 == mViewInfo->sel1)
-      DrawCursors(&dc);
-
    // Supposed to be good-to-do under Windows
-   dc.EndDrawing();
+   dc->EndDrawing();
+
+   // Done with the clipped DC
+   delete dc;
+
+   // Update the indicator in case it was damaged.
+   DrawIndicator();
+
+   // Draw the cursor
+   if( mViewInfo->sel0 == mViewInfo->sel1)
+      DrawCursor();
 
 #if DEBUG_DRAW_TIMING
    sw.Pause();
@@ -1320,8 +1364,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          SelectionHandleClick(event, t, r, num);
       else
          SelectNone();
-
-      Refresh(false);
+//      Refresh(false);
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       SetCapturedTrack( NULL );
@@ -3958,56 +4001,6 @@ bool TrackPanel::HitTestSlide(Track *track, wxRect &r, wxMouseEvent & event)
    return false;
 }
 
-void TrackPanel::CleanupIndicators()
-{
-   RefreshRect( mDamageRect, false );
-   mDamageRect = wxRect(0,0,0,0);
-}
-
-/// This draws the play indicator as a vertical line on each of the tracks
-void TrackPanel::DrawTrackIndicator(wxDC * dc, double ind)
-{
-   // Don't draw if the indicator would be out of bounds
-   if ((ind < mViewInfo->h) || (ind > (mViewInfo->h + mViewInfo->screen)))
-   {
-      return;
-   }
-
-   // Set play/record color
-   AColor::IndicatorColor(dc, (gAudioIO->GetNumCaptureChannels() ? false : true));
-      
-   // Get the size of the trackpanel region, so we know where to redraw
-   wxRect panelarea = GetRect();
-
-   // Draw cursor in all visible tracks
-   TrackListIterator iter(mTracks);
-
-   // Iterate through each track
-   int x = GetLeftOffset() + int ((ind - mViewInfo->h) * mViewInfo->zoom);
-   int y = -mViewInfo->vpos;
-   for (Track * t = iter.First(); t; t = iter.Next())
-   {
-      int height = t->GetHeight();
-      wxCoord top = y + kTopInset + 1;
-      wxCoord bottom = y + height - 2;
-      wxRect trackarea(x, top, 1, bottom-top);
-
-      // Only want non-Label tracks that are visible 
-      if ((panelarea.Intersects(trackarea)) &&
-          (t->GetKind() != Track::Label))
-      {
-         // Draw the new indicator in its correct location
-         dc->DrawLine(x, top, x, bottom);
-
-         // Add indicator to redraw rect
-         mDamageRect.Union( wxRect( x, 0, 1, panelarea.GetHeight() ));
-      }
-
-      // Increment y so you draw on the proper track
-      y += height;
-   }
-}
-
 double TrackPanel::GetMostRecentXPos()
 {
    return mViewInfo->h +
@@ -4030,7 +4023,7 @@ void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
    // window as damaged.
    //
    // So, if any part of the trackpanel was off the screen, full refreshes
-   // didn't work and the display get all mucked up.
+   // didn't work and the display got corrupted.
    if( !rect || ( *rect == GetRect() ) )
    {
       mRefreshBacking = true;
@@ -4345,7 +4338,7 @@ void TrackPanel::OnNextTrack( bool select )
    // Get next track
    n = mTracks->GetNext( t, true );
 
-   // On last track...complain and stay on it
+   // On last track...complain and stay on it if not circling the wagons
    if( n == NULL )
    {
       wxBell();
@@ -4448,6 +4441,9 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
 
       // Make sure it's visible
       ScrollIntoView( mViewInfo->sel1 );
+
+      // Make it happen
+      Refresh( false );
    }
    // Extend selection toward the left
    else if( shift )
@@ -4468,6 +4464,9 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
 
       // Make sure it's visible
       ScrollIntoView( mViewInfo->sel0 );
+
+      // Make it happen
+      Refresh( false );
    }
    // Move the cursor toward the left
    else
@@ -4489,10 +4488,10 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
 
       // Make sure it's visible
       ScrollIntoView( mViewInfo->sel0 );
-   }
 
-   // Make it happen
-   Refresh( false );
+      // Move the visual cursor
+      DrawCursor();
+   }
 }
 
 void TrackPanel::OnCursorRight( bool shift, bool ctrl )
@@ -4535,6 +4534,9 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
 
       // Make sure new position is in view
       ScrollIntoView( mViewInfo->sel0 );
+
+      // Make it happen
+      Refresh( false );
    }
    // Extend selection toward the right
    else if( shift )
@@ -4556,6 +4558,9 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
 
       // Make sure new position is in view
       ScrollIntoView( mViewInfo->sel1 );
+
+      // Make it happen
+      Refresh( false );
    }
    // Move the cursor toward the right
    else
@@ -4578,10 +4583,10 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
 
       // Make sure new position is in view
       ScrollIntoView( mViewInfo->sel1 );
-   }
 
-   // Make it happen
-   Refresh( false );
+      // Move the visual cursor
+      DrawCursor();
+   }
 }
 
 //The following functions operate controls on specified tracks,
