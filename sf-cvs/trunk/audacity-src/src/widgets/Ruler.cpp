@@ -1032,7 +1032,7 @@ void AdornedRulerPanel::DoDraw(wxDC *dc)
 
    if( mViewInfo->sel0 == mViewInfo->sel1 )
    {
-      DoDrawCursor( dc, mLastCurX );
+      DoDrawCursor( dc );
    }
 }
 
@@ -1061,26 +1061,6 @@ void AdornedRulerPanel::DoDrawMarks(wxDC * dc, bool /*text */ )
 
    ruler.SetRange( min, max );
    ruler.Draw( *dc );
-}
-
-void AdornedRulerPanel::DrawCursor(wxCoord x)
-{
-   mLastCurX = x;
-
-#if defined(__WXMAC__)
-   wxClientDC dc( this );
-#else
-   wxClientDC cdc( this );
-   wxBufferedDC dc( &cdc, *mBuffer );
-#endif
-
-   DoDraw( &dc );
-}
-
-void AdornedRulerPanel::DoDrawCursor(wxDC *dc, wxCoord x)
-{
-   // Draw cursor in ruler
-   dc->DrawLine( mLastCurX, 1, mLastCurX, mInner.height );
 }
 
 void AdornedRulerPanel::DrawSelection()
@@ -1123,6 +1103,28 @@ void AdornedRulerPanel::DoDrawSelection(wxDC * dc)
    dc->DrawRectangle( r );
 }
 
+void AdornedRulerPanel::DrawCursor(double pos)
+{
+   mCurPos = pos;
+
+#if defined(__WXMAC__)
+   wxClientDC dc( this );
+#else
+   wxClientDC cdc( this );
+   wxBufferedDC dc( &cdc, *mBuffer );
+#endif
+
+   DoDraw( &dc );
+}
+
+void AdornedRulerPanel::DoDrawCursor(wxDC *dc)
+{
+   int x = mLeftOffset + int ( ( mCurPos - mViewInfo->h ) * mViewInfo->zoom );
+
+   // Draw cursor in ruler
+   dc->DrawLine( x, 1, x, mInner.height );
+}
+
 //
 //This draws the little triangular indicator on the 
 //AdornedRulerPanel.
@@ -1141,10 +1143,16 @@ void AdornedRulerPanel::ClearIndicator()
    DoDraw( &dc );
 }
 
-void AdornedRulerPanel::DrawIndicator(bool rec, double pos)
+void AdornedRulerPanel::DrawIndicator( double pos, bool rec )
 {
-   mIndType = ( rec ? 1 : 0 );
    mIndPos = pos;
+   if( mIndPos < 0 )
+   {
+      ClearIndicator();
+      return;
+   }
+
+   mIndType = ( rec ? 1 : 0 );
 
 #if defined(__WXMAC__)
    wxClientDC dc( this );
@@ -1158,9 +1166,7 @@ void AdornedRulerPanel::DrawIndicator(bool rec, double pos)
 
 void AdornedRulerPanel::DoDrawIndicator(wxDC * dc)
 {
-   if( ( mIndType < 0 ) ||
-       ( mIndPos < mViewInfo->h ) ||
-       ( mIndPos > ( mViewInfo->h + mViewInfo->screen ) ) )
+   if( mIndType < 0 )
    {
       return;
    }

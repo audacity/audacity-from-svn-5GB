@@ -223,8 +223,8 @@ public:
    static int GetRulerHeight() { return 22; }
    void SetLeftOffset(int offset){ mLeftOffset = offset; }
 
-   void DrawCursor(wxCoord x);
-   void DrawIndicator(bool rec, double pos);
+   void DrawCursor(double pos);
+   void DrawIndicator(double pos, bool rec);
    void DrawSelection();
    void ClearIndicator();
 
@@ -239,7 +239,7 @@ private:
 
    void DoDrawBorder(wxDC * dc);
    void DoDrawMarks(wxDC * dc, bool /*text */ );
-   void DoDrawCursor(wxDC * dc, wxCoord x);
+   void DoDrawCursor(wxDC * dc);
    void DoDrawSelection(wxDC * dc);
    void DoDrawIndicator(wxDC * dc);
 
@@ -253,7 +253,7 @@ private:
 
    int mLeftOffset;  // Number of pixels before we hit the 'zero position'.
 
-   int mLastCurX;
+   double mCurPos;
 
    int mIndType;     // -1 = No indicator, 0 = Play, 1 = Record
    double mIndPos;

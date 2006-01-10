@@ -181,7 +181,6 @@ class TrackPanel:public wxPanel {
 
    virtual void Refresh(bool eraseBackground = TRUE,
                         const wxRect *rect = (const wxRect *) NULL);
-   void CleanupIndicators();
 
    void DisplaySelection();
 
@@ -221,10 +220,10 @@ class TrackPanel:public wxPanel {
    bool HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMouseEvent & event);
    bool HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
    void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
-   void DrawCursors(wxDC * dc = NULL);
+   void DrawIndicator();
+   void DrawCursor();
 
    void ScrollDuringDrag();
-   void UpdateIndicator(wxDC * dc = NULL);
 
    // Working out where to dispatch the event to.
    int DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event);
@@ -359,8 +358,6 @@ class TrackPanel:public wxPanel {
    int GetLabelWidth() const { return mTrackLabel.GetTitleWidth() + GetVRulerWidth();}
 
 private:
-   void DrawTrackIndicator(wxDC *dc, double ind);
-
    void DrawTracks(wxDC * dc);
 
    void DrawEverythingElse(wxDC *dc, const wxRect panelRect, const wxRect clip);
@@ -406,12 +403,13 @@ private:
 
    // This stores the parts of the screen that get overwritten by the indicator
    // and cursor
-   wxRect mDamageRect;
+   double mLastIndicator;
+   double mLastCursor;
 
    int mTimeCount;
 
 #if !defined(__WXMAC__)
-   wxBitmap *mBitmap;
+   wxBitmap *mBuffer;
 #endif
    wxBitmap *mBacking;
    bool mRefreshBacking;
