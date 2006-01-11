@@ -7,7 +7,7 @@
   Mitch Golden
   Vaughan Johnson (Preview)
 
-**********************************************************************/
+***********************************************************************/
 
 #ifndef __AUDACITY_EFFECT_EQUALIZATION__
 #define __AUDACITY_EFFECT_EQUALIZATION__
