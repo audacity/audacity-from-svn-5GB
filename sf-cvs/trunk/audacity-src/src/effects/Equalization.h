@@ -20,12 +20,14 @@
 #include <wx/intl.h>
 #include <wx/stattext.h>
 #include <wx/slider.h>
+#include <wx/sizer.h>
 
 // Declare window functions
 
 class wxString;
 class wxBoxSizer;
 class wxChoice;
+class wxRadioButton;
 
 #include "Effect.h"
 #include "../xml/XMLTagHandler.h"
@@ -104,7 +106,7 @@ private:
 
 public:
    enum curveType {
-     flat, amradio, acoustic,
+     amradio, acoustic,
      nab, lp, aes, deccaffrrmicro, deccaffrr78, riaa,
      col78, deccaffrrlp, emi78, rcavictor1938, rcavictor1947,
      custom,
@@ -186,6 +188,7 @@ public:
 
    void EnvelopeUpdated();
    static const float thirdOct[];
+   wxRadioButton *mFaderOrDraw[2];
 
 private:
    void MakeEqualizationDialog();
@@ -195,6 +198,7 @@ private:
    void SaveCurves();
    void Select(int sel);
    void setCurve(Envelope *env, int currentCurve);
+   void setCurve(Envelope *env);
    void graphicEQ(Envelope *env);
 
 // XMLTagHandler callback methods for loading and saving
@@ -216,7 +220,9 @@ private:
       ID_DELETE,
       ID_CLEAR,
       ID_PREVIEW,
-	  ID_SLIDER
+	  ID_SLIDER,
+	  drawRadioID,
+	  sliderRadioID
    };
 
 private:
@@ -226,6 +232,8 @@ private:
    void OnSliderM( wxCommandEvent &event );
    void OnSliderDBMAX( wxCommandEvent &event );
    void OnSliderDBMIN( wxCommandEvent &event );
+   void OnDrawRadio(wxCommandEvent &event );
+   void OnSliderRadio(wxCommandEvent &event );
    void OnCurve( wxCommandEvent &event );
    void OnSaveAs( wxCommandEvent &event );
    void OnDelete( wxCommandEvent &event );
@@ -259,6 +267,9 @@ private:
    wxSlider *mMSlider;
    wxSlider *mdBMaxSlider;
    wxSlider *mdBMinSlider;
+   wxBoxSizer *szrC;
+   wxFlexGridSizer *szrG;
+   wxBoxSizer *szrV;
 
    EQCurveArray mCurves;
 
