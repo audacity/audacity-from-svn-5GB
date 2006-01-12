@@ -4483,14 +4483,22 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
          {
             mViewInfo->sel0 = 0.0;
          }
+         mViewInfo->sel1 = mViewInfo->sel0;
+
+         // Move the visual cursor
+         DrawCursor();
       }
-      mViewInfo->sel1 = mViewInfo->sel0;
+      else
+      {
+         // Transition to cursor mode
+         mViewInfo->sel1 = mViewInfo->sel0;
+
+         // Make it happen
+         Refresh( false );
+      }
 
       // Make sure it's visible
       ScrollIntoView( mViewInfo->sel0 );
-
-      // Move the visual cursor
-      DrawCursor();
    }
 }
 
@@ -4578,14 +4586,22 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
          {
             mViewInfo->sel1 = end;
          }
+         mViewInfo->sel0 = mViewInfo->sel1;
+
+         // Move the visual cursor
+         DrawCursor();
       }
-      mViewInfo->sel0 = mViewInfo->sel1;
+      else
+      {
+         // Transition to cursor mode
+         mViewInfo->sel0 = mViewInfo->sel1;
+
+         // Make it happen
+         Refresh( false );
+      }
 
       // Make sure new position is in view
       ScrollIntoView( mViewInfo->sel1 );
-
-      // Move the visual cursor
-      DrawCursor();
    }
 }
 
