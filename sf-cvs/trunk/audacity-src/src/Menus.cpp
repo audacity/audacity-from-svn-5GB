@@ -2722,8 +2722,7 @@ void AudacityProject::OnZoomFitV()
    OnZoomFitV_Calc();
 
    mVsbar->SetThumbPosition(0);
-   FixScrollbars();
-   Refresh(false);
+   RedrawProject();
    ModifyState();
 }
 
