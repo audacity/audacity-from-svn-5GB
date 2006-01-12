@@ -492,7 +492,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    // Pure blue x-axis line
    memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-   int center = mEnvRect.height * *mdBMax/(*mdBMax-*mdBMin);
+   int center = (int) (mEnvRect.height * *mdBMax/(*mdBMax-*mdBMin) + .5);
    memDC.DrawLine(mEnvRect.x, mEnvRect.y + center,
                   mEnvRect.x + mEnvRect.width, mEnvRect.y + center);
 
@@ -556,7 +556,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
       }
       else {	//use FFT, it has enough resolution
          freq = pow(10., loLog + i*stepLog);	//Hz
-         n = (int)freq/delta;
+         n = (int)(freq/delta + .5);
          if(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2)!=0.)
             yF = 10.0*log10(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2));	//10 here as a power
          else
@@ -685,7 +685,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    double denom = hiLog - loLog;
    for (int i = 0; i < NUMBER_OF_BANDS; ++i) {
       float value = mEnvelope->GetValue((log10(thirdOct[i])-loLog)/denom);
-      m_sliders[i]->SetValue(value);
+      m_sliders[i]->SetValue((int)(value + .5));
    }
    graphicEQ(mEnvelope);
 }
@@ -702,7 +702,7 @@ void EqualizationDialog::LoadCurves()
    //       creates a normal file as "$HOME/.audacity", while the former
    //       expects the ".audacity" portion to be a directory.
 #if !defined( __WXMSW__ )
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + "-data", "EQCurves.xml" );
+   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + wxT("-data"), "EQCurves.xml" );
 #else
    wxFileName fn( wxStandardPaths::Get().GetUserDataDir(), wxT("EQCurves.xml") );
 #endif
@@ -781,7 +781,7 @@ void EqualizationDialog::SaveCurves()
    //       creates a normal file as "$HOME/.audacity", while the former
    //       expects the ".audacity" portion to be a directory.
 #if !defined( __WXMSW__ )
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + "-data", "EQCurves.xml" );
+   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + wxT("-data"), "EQCurves.xml" );
 #else
    wxFileName fn( wxStandardPaths::Get().GetUserDataDir(), wxT("EQCurves.xml") );
 #endif
@@ -1349,7 +1349,7 @@ void EqualizationDialog::WriteXML(int depth, FILE *fp)
       // Start a new curve
       fprintf( fp,
                "\t<curve name='%s'>\n",
-               mCurves[ curve ].Name.mb_str() );
+               (const char *)mCurves[ curve ].Name.mb_str() );
 
       // Write all points
       int numPoints = mCurves[ curve ].points.GetCount();
@@ -1363,8 +1363,8 @@ void EqualizationDialog::WriteXML(int depth, FILE *fp)
          // Write new point
          fprintf( fp,
                   "\t\t<point f='%s' d='%s'/>\n",
-                  freq.mb_str(),
-                  db.mb_str() );
+                  (const char *)freq.mb_str(),
+                  (const char *)db.mb_str() );
       }
 
       // Terminate curve
@@ -1444,7 +1444,7 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    double denom = hiLog - loLog;
    for (int i = 0; i < NUMBER_OF_BANDS; ++i) {
       float value = mEnvelope->GetValue((log10(thirdOct[i])-loLog)/denom);
-      m_sliders[i]->SetValue(value);
+      m_sliders[i]->SetValue((int)(value + .5));
    }
    szrV->Show(szrC,false);
    szrV->Show(szrG,true);
