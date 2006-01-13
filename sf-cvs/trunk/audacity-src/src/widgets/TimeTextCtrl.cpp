@@ -655,7 +655,7 @@ void TimeTextCtrl::ComputeTextExtents()
    int yBorder = 2;
    #endif
 
-   wxChar str[11];
+   wxChar str[12];
    wxTextCtrl *text;
    wxCoord width=0, height=0;
    unsigned int i;
