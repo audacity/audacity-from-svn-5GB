@@ -1577,7 +1577,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       if (!wxStrcmp(attr, wxT("sel1")))
          Internat::CompatibleToDouble(value, &mViewInfo.sel1);
 
-      long longVpos;
+      long longVpos = 0;
       if (!wxStrcmp(attr, wxT("vpos")))
          wxString(value).ToLong(&longVpos);
       mViewInfo.vpos = longVpos;
