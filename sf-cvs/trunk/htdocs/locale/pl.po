@@ -1,3 +1,4 @@
+# translation of audacity_website.po to
 # translation of audacity_website.po to polish
 # translation of audacity_website.po to Polski
 # This file is distributed under the same license as the PACKAGE package.
@@ -5,96 +6,115 @@
 # Tomasz Bańdura <to.mek@wp.pl>, 2005.
 # Marek Mularczyk <marer13@wp.pl>, 2005.
 #
-
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: audacity_website\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-26 00:38-0800\n"
-"PO-Revision-Date: 2005-11-27 23:15+0100\n"
+"PO-Revision-Date: 2005-12-24 22:19+0000\n"
 "Marek Mularczyk <marer13@wp.pl>\n"
-"Language-Team: polish <en@li.org>\n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Marek\n"
+"X-Generator: KBabel 1.10.2\n"
 
 #: about/credits.php:10 main.inc.php:27
+#, fuzzy
 msgid "Credits"
 msgstr "Podziękowania"
 
 #: about/credits.php:15
+#, fuzzy
 msgid ""
 "These are some of the people who have <a href=\"../community/\">contributed</"
 "a> to the free Audacity audio editor.</p>  \n"
 "</p>If you have questions or feedback about Audacity, please see the <a href="
 "\"../contact/\">contact page</a>."
-msgstr "Są ludzie, którzy <a href=\"../community/\">włączyli się</"
+msgstr ""
+"Są ludzie, którzy <a href=\"../community/\">włączyli się</"
 "a> do darmowego edytora audio Audacity.</p>  \n"
 "</p>Jeśli masz pytania lub uwagi dotyczące Audacity, proszę zobacz na <a href="
 "\"../contact/\">stronę kontaktową</a>."
 
 #: about/credits.php:18
+#, fuzzy
 msgid "Lead Developers"
 msgstr "Główni deweloperzy"
 
 #: about/credits.php:21
+#, fuzzy
 msgid "Dominic is the project leader and original author of Audacity."
 msgstr "Dominic jest liderem projektu i autorem Audacity"
 
 #: about/credits.php:28
+#, fuzzy
 msgid "Active Developers"
 msgstr "Aktywni deweloperzy"
 
 #: about/credits.php:35
+#, fuzzy
 msgid "Contributors"
 msgstr "Współpracownicy"
 
 #: about/credits.php:49 main.inc.php:66 community/index.php:21
 #: community/translation.php:10
+#, fuzzy
 msgid "Translators"
 msgstr "Tłumacze"
 
 #: about/credits.php:89
+#, fuzzy
 msgid "Libraries"
 msgstr "Biblioteki"
 
 #: about/credits.php:90
+#, fuzzy
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity jest oparte na kodzie z poniższych projektów"
 
 #: about/credits.php:104
+#, fuzzy
 msgid "Thanks"
 msgstr "Podziękowania"
 
 #: about/credits.php:105
+#, fuzzy
 msgid ""
 "There are many other people and organizations we would like to thank. Many "
 "of these have contributed code, patches, feedback, money, time, or other "
 "things to the project.  Others simply produce tools that made this whole "
 "thing possible."
-msgstr "Jest wiele innych osób i organizacji, którym pragnęlibyśmy podziękować. Wielu "
+msgstr ""
+"Jest wiele innych osób i organizacji, którym pragnęlibyśmy podziękować. Wielu "
 "spośród nich ma wkład w projekt poprzez kod, łaty, komentarze, pieniądze, czas "
 "lub inne rzeczy. Inni tworzą narzędzia, które sprawiły, że to wszystko stało się "
 "możliwe."
 
 #: about/credits.php:127
+#, fuzzy
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(Daj nam znać, jeśli o kimś zapomnieliśmy!)"
 
 #: about/features.php:9 main.inc.php:23
+#, fuzzy
 msgid "Features"
 msgstr "Właściwości"
 
 #: about/features.php:13
+#, fuzzy
 msgid ""
 "This is a list of features in Audacity, the free audio editor.  For more "
 "information on how to use these features, go to the <a href=\"../help/"
 "\">help pages</a>."
-msgstr "To jest lista właściwości Audacity, darmowego edytora audio. Aby "
+msgstr ""
+"To jest lista właściwości Audacity, darmowego edytora audio. Aby "
 "uzyskać więcej informacji o tym, jak ich używać, idź do <a href=\"../help/"
-"\">stron pomocy</a>." 
+"\">stron pomocy</a>."
 
 #: about/features.php:15
+#, fuzzy
 msgid ""
 "<h3>Recording</h3>\n"
 "<p>Audacity can record live audio through a microphone or mixer, or digitize "
@@ -123,6 +143,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:25
+#, fuzzy
 msgid ""
 "<h3>Import and Export</h3>\n"
 "<p>Import sound files, edit them, and combine them with other files or new "
@@ -161,6 +182,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:37
+#, fuzzy
 msgid ""
 "<h3>Editing</h3>\n"
 "<ul>\n"
@@ -183,8 +205,8 @@ msgstr ""
 "do obwiedni.</li>\n"
 "</ul>"
 
-
 #: about/features.php:47
+#, fuzzy
 msgid ""
 "<h3>Effects</h3>\n"
 "<ul>\n"
@@ -223,6 +245,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:63
+#, fuzzy
 msgid ""
 "<h3>Sound Quality</h3>\n"
 "<ul>\n"
@@ -247,6 +270,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:71
+#, fuzzy
 msgid ""
 "<h3>Plug-Ins</h3>\n"
 "<ul>\n"
@@ -274,6 +298,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:79
+#, fuzzy
 msgid ""
 "<h3>Analysis</h3>\n"
 "<ul>\n"
@@ -289,6 +314,7 @@ msgstr ""
 "</ul>"
 
 #: about/features.php:85
+#, fuzzy
 msgid ""
 "<h3>Free and Cross-Platform</h3>\n"
 "<ul>\n"
@@ -305,10 +331,12 @@ msgstr ""
 "</ul>"
 
 #: about/index.php:9 about/main.inc.php:11 help/faq.php:23
+#, fuzzy
 msgid "About Audacity"
 msgstr "O Audacity"
 
 #: about/index.php:14
+#, fuzzy
 msgid ""
 "<p>Audacity is a free, easy-to-use audio editor and recorder for Windows, "
 "Mac OS X, GNU/Linux, and other operating systems.  You can use Audacity to:</"
@@ -348,6 +376,7 @@ msgstr ""
 #. Also check the translations of this web page:
 #. http://www.fsf.org/philosophy/free-sw.html
 #: about/index.php:33
+#, fuzzy
 msgid ""
 "<h3>About Free Software</h3>\n"
 "\n"
@@ -377,6 +406,7 @@ msgstr ""
 "<p>Darmowe oprogramowanie (Free software) nie oznacza dokładnie brak kosztów (jak na przykład \"free beer\").  TODO"
 
 #: about/license.php:9 main.inc.php:26
+#, fuzzy
 msgid "License"
 msgstr "Licencja"
 
@@ -389,6 +419,7 @@ msgstr "Licencja"
 #. See the bottom of each page for versions in other languages.
 #.
 #: about/license.php:25
+#, fuzzy
 msgid ""
 "<p>Audacity is free software; you can redistribute it and/or modify it under "
 "the terms of the <a href=\"http://www.gnu.org/licenses/licenses.html#GPL"
@@ -408,26 +439,31 @@ msgstr ""
 "<p> Zobacz również: <a href=\"http://www.gnu.org/licenses/gpl-faq.html\">Często zadawane pytania o GNU GPL</a>.</p>"
 
 #: about/links.php:9 main.inc.php:28
+#, fuzzy
 msgid "Links"
 msgstr "Linki"
 
 #: about/links.php:14
+#, fuzzy
 msgid "Other Things Named âAudacityâ (not related to us)"
 msgstr "Inne rzeczy o nazwie “Audacity” (nie związane z nami)"
 
 #: about/links.php:16
+#, fuzzy
 msgid ""
 "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> is a digital "
 "voice recorder for Palm OS and Treo handheld computers"
 msgstr "<a href=\"http://www.audiost.com/advr.htm\">Audacity DVR</a> jest cyfrowym rejstratorem mowy dla systemu Palm OS i komputerów ręcznych (\"handheld\")Treo."
 
 #: about/links.php:17
+#, fuzzy
 msgid ""
 "<a href=\"http://www.audacity.org\">Audacity.org</a> is a research company "
 "for construction industry professionals."
 msgstr "<a href=\"http://www.audacity.org\">Audacity.org</a> jest firmą badawczą dla ludzi pracujących w przemyśle."
 
 #: about/links.php:18
+#, fuzzy
 msgid ""
 "<a href=\"http://kotinetti.suomi.net/jakke/audacity/\">Audacity</a> is a "
 "street-rock band from Finland."
@@ -436,23 +472,26 @@ msgstr ""
 "street-rock'ową grupą z Finlandii."
 
 #: about/links.php:19
+#, fuzzy
 msgid ""
 "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> builds custom "
 "enterprise and departmental Windows applications."
 msgstr "<a href=\"http://www.audacity.com/\">Audacity, Inc.</a> tworzy aplikacje przemysłowe dla platformy Windows"
 
 #: about/links.php:22
+#, fuzzy
 msgid "Other Audio Software"
 msgstr "Inne oprogramowanie audio"
 
 #: about/links.php:23
+#, fuzzy
 msgid ""
 "<a href=\"http://ardour.org/\">Ardour</a> is a powerful digital audio "
 "workstation that runs on GNU/Linux."
 msgstr "<a href=\"http://ardour.org/\">Ardour</a> jest pokaźną maszyną do dźwięku cyfrowego, działającą na GNU/Linux'ie."
 
-
 #: about/links.php:24
+#, fuzzy
 msgid ""
 "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> is a free CD ripper for "
 "Microsoft Windows."
@@ -460,8 +499,8 @@ msgstr ""
 "<a href=\"http://cdexos.sourceforge.net/\">CDex</a> jest darmowym CD ripperem "
 "dla systemów Microsoft Windows."
 
-
 #: about/links.php:25
+#, fuzzy
 msgid ""
 "<a href=\"http://panic.et.tudelft.nl/~costar/gramofile/\">GramoFile</a> is a "
 "free tool for capturing and cleaning recordings from vinyl records."
@@ -470,70 +509,87 @@ msgstr ""
 "darmowym narzędziem do zgrywania i czyszczenia nagrań z płyt winylowych."
 
 #: about/links.php:26
+#, fuzzy
 msgid "More free software at SourceForge.net:"
 msgstr "Więcej darmowych programów na stronie SourceForge.net"
 
 #: about/links.php:28
+#, fuzzy
 msgid "Audio Editors"
 msgstr "Edytory audio"
 
 #: about/links.php:29
+#, fuzzy
 msgid "Audio Capture/Recording"
 msgstr "Przechwytywanie/nagrywanie audio"
 
 #: about/links.php:30
+#, fuzzy
 msgid "Audio Analysis"
 msgstr "Analiza dźwięku"
 
 #: about/news.php:21 index.php:83
+#, fuzzy
 msgid "More news items..."
 msgstr "Więcej nowości"
 
 #: about/news.php:25 main.inc.php:25
+#, fuzzy
 msgid "News"
 msgstr "Nowości"
 
 #: about/screenshots.php:9 index.php:45 main.inc.php:24
+#, fuzzy
 msgid "Screenshots"
 msgstr "Zrzuty ekranu"
 
 #: about/screenshots.php:15
+#, fuzzy
 msgid "Click any screenshot for a larger version."
 msgstr "Kliknij na obrazku żeby zobaczyć powiększenie."
 
 #: about/screenshots.php:17
+#, fuzzy
 msgid "Audacity running on Linux"
 msgstr "Audacity uruchomione pod Linuxem"
 
 #: about/screenshots.php:19
+#, fuzzy
 msgid "Audacity running on Windows"
 msgstr "Audacity uruchomione pod Windowsem"
 
 #: about/screenshots.php:21
+#, fuzzy
 msgid "Audacity running on Mac OS X"
 msgstr "Audacity uruchomione pod systemem Mac OS X"
 
 #: about/screenshots.php:23
+#, fuzzy
 msgid "Noise Removal effect"
 msgstr "Efekt usuwania zakłóceń"
 
 #: about/screenshots.php:25
+#, fuzzy
 msgid "Change Pitch effect"
 msgstr "Efekt zmiany wysokości"
 
 #: about/screenshots.php:27
+#, fuzzy
 msgid "Change Tempo effect"
 msgstr "Efekt zmiany tempa"
 
 #: about/screenshots.php:29
+#, fuzzy
 msgid "Recording with Audacity"
 msgstr "Nagrywanie z użyciem Audacity"
 
 #: 404.php:9
+#, fuzzy
 msgid "Page Not Found"
 msgstr "Nie znaleziono strony"
 
 #: 404.php:14
+#, fuzzy
 msgid ""
 "Sorry, the page you are looking for was not found.  Please try the <a href="
 "\"/\">Audacity home page</a> or the <a href=\"/site-map\">site map</a>."
@@ -542,6 +598,7 @@ msgstr ""
 "\"/\">Strony domowej Audacity</a> lub <a href=\"/site-map\">mapy strony</a>."
 
 #: copyright.php:8
+#, fuzzy
 msgid "Web Site Copyright and Trademark"
 msgstr "Prawa autorskie i znak handlowy strony"
 
@@ -552,6 +609,7 @@ msgstr "Prawa autorskie i znak handlowy strony"
 #. if you wish.
 #: copyright.php:22
 #, php-format
+#, fuzzy
 msgid ""
 "This web site is Copyright &copy; %s members of the Audacity development "
 "team.  Except where otherwise noted, all text and images on this site are "
@@ -564,6 +622,7 @@ msgstr ""
 "\">Creative Commons Attribution Licencja, Wersja 2.0</a>. Możesz modyfikować, kopiować, dystrybuować i pokazywać ten materiał, ale musisz podać oryginalnych autorów. Zobacz szczegóły w licencji."
 
 #: copyright.php:24
+#, fuzzy
 msgid ""
 "\"Audacity\" is a trademark of Dominic Mazzoni.  The Google logo is a "
 "trademark of Google, Inc."
@@ -572,76 +631,93 @@ msgstr ""
 "znakiem handlowym Google, Inc."
 
 #: index.php:9
+#, fuzzy
 msgid "Free Audio Editor and Recorder"
 msgstr "Darmowy edytor i rekorder audio"
 
 #: index.php:18
+#, fuzzy
 msgid "for Microsoft Windows"
 msgstr "dla systemu Microsoft Windows"
 
 #: index.php:26
+#, fuzzy
 msgid "for Mac OS X"
 msgstr "dla systemu Mac OS X"
 
 #: index.php:34
+#, fuzzy
 msgid "For Windows, Mac, or GNU/Linux"
 msgstr "dla systemów Windows, Mac i GNU/Linux"
 
 #: index.php:42
+#, fuzzy
 msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Darmowy wieloplatformowy edytor dźwięku"
 
 #: index.php:47
+#, fuzzy
 msgid ""
 "Audacity is free, open source software for recording and editing sounds.  It "
 "is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating "
 "systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity jest darmowym programem open source do nagrywania i edycji dźwięku. Jest dostępny dla systemów Mac OS X, Microsoft Windows, GNU/Linux i innych.  < href=\"about/\">Dowiedz się więcej o Audacity...</a>"
+msgstr "Audacity jest darmowym programem open source do nagrywania i edycji dźwięku. Jest dostępny dla systemów Mac OS X, Microsoft Windows, GNU/Linux i innych."
 
 #: index.php:52 index.php:56
 #, php-format
+#, fuzzy
 msgid "Download Audacity %s"
 msgstr "Pobierz Audacity %s"
 
 #: index.php:56 main.inc.php:39 download/index.php:41
 #: download-old/index.php:41
+#, fuzzy
 msgid "Beta"
 msgstr "Beta"
 
 #: index.php:63
+#, fuzzy
 msgid "Other downloads"
 msgstr "Inne pobrania"
 
 #: index.php:87
+#, fuzzy
 msgid "Get Notified of New Versions"
 msgstr "Otrzymuj informacje o nowych wersjach"
 
 #: index.php:99
+#, fuzzy
 msgid "Email address"
 msgstr "Adres email"
 
 #: index.php:100
+#, fuzzy
 msgid "Add"
 msgstr "Dodaj"
 
 #: index.php:101
+#, fuzzy
 msgid "Remove"
 msgstr "Usuń"
 
 #: main.inc.php:20
+#, fuzzy
 msgid "Home"
 msgstr "Strona startowa"
 
 #: main.inc.php:21
+#, fuzzy
 msgid "About"
 msgstr "O programie"
 
 #: main.inc.php:31 download/index.php:9 download/main.inc.php:11
 #: download-old/index.php:9 download-old/main.inc.php:11
+#, fuzzy
 msgid "Download"
 msgstr "Pobierz"
 
 #: main.inc.php:33 download/index.php:25 download-old/index.php:25
+#, fuzzy
 msgid "Stable"
 msgstr "Stabilny"
 
@@ -649,10 +725,12 @@ msgstr "Stabilny"
 #: download/index.php:30 download/index.php:46 download/windows.php:10
 #: download-old/index.php:30 download-old/index.php:46
 #: download-old/windows.php:10 download-old/beta_windows.php:11
+#, fuzzy
 msgid "Windows"
 msgstr "Windows"
 
 #: main.inc.php:35 main.inc.php:42
+#, fuzzy
 msgid "Mac"
 msgstr "Mac"
 
@@ -660,86 +738,106 @@ msgstr "Mac"
 #: download/index.php:36 download/index.php:52 download/linux.php:9
 #: download-old/index.php:36 download-old/index.php:52
 #: download-old/linux.php:9 download-old/beta_linux.php:10
+#, fuzzy
 msgid "Linux/Unix"
 msgstr "Linux/Unix"
 
 #: main.inc.php:37 main.inc.php:44 download/beta_source.php:11
 #: download/source.php:10 download-old/source.php:10
 #: download-old/beta_source.php:11
+#, fuzzy
 msgid "Source Code"
 msgstr "Kod źródłowy"
 
 #: main.inc.php:38 download/release-notes.php:10
 #: download-old/release-notes.php:9
+#, fuzzy
 msgid "Release Notes"
 msgstr "Informacje o wydaniu"
 
 #: main.inc.php:40
+#, fuzzy
 msgid "New Features in 1.3"
 msgstr "Nowe funkcje w wersji 1.3"
 
 #: main.inc.php:45 download/common.inc.php:12 download-old/common.inc.php:12
+#, fuzzy
 msgid "Plug-Ins"
 msgstr "Wtyczki"
 
 #: main.inc.php:46
+#, fuzzy
 msgid "Buy a CD"
 msgstr "Kup płytę"
 
 #: main.inc.php:49 help/main.inc.php:11
+#, fuzzy
 msgid "Help"
 msgstr "Pomoc"
 
 #: main.inc.php:51
+#, fuzzy
 msgid "FAQ"
 msgstr "Pytania"
 
 #: main.inc.php:52 help/documentation.php:9
+#, fuzzy
 msgid "Documentation"
 msgstr "Dokumentacja"
 
 #: main.inc.php:53 help/tutorials.php:9
+#, fuzzy
 msgid "Tutorials"
 msgstr "Tutoriale"
 
 #: main.inc.php:54 help/nyquist.php:10
+#, fuzzy
 msgid "Nyquist"
 msgstr "Nyquist"
 
 #: main.inc.php:57 contact/index.php:9 contact/main.inc.php:11
+#, fuzzy
 msgid "Contact Us"
 msgstr "Skontaktuj się z nami"
 
 #: main.inc.php:59 community/developers.php:17 contact/lists.php:9
 #: contact/main.inc.php:13
+#, fuzzy
 msgid "Mailing Lists"
 msgstr "Listy mejlowe"
 
 #: main.inc.php:60 contact/main.inc.php:14 contact/privacy.php:10
+#, fuzzy
 msgid "Privacy Policy"
 msgstr "Ochrona prywatności"
 
 #: main.inc.php:63 community/index.php:9 community/main.inc.php:11
+#, fuzzy
 msgid "Get Involved"
 msgstr "Przyłącz się"
 
 #: main.inc.php:65 community/index.php:18
+#, fuzzy
 msgid "Users"
 msgstr "Użytkownicy"
 
 #: main.inc.php:67 community/developers.php:9 community/index.php:24
+#, fuzzy
 msgid "Developers"
 msgstr "Programiści"
 
 #: main.inc.php:68
+#, fuzzy
 msgid "Donate"
 msgstr "Dotuj"
 
 #: site-map.php:8 include/footer.inc.php:15
+#, fuzzy
 msgid "Site Map"
 msgstr "Mapa strony"
 
 #: community/developers.php:18
+#, fuzzy
 msgid ""
 "Join the <a href=\"../contact/lists#devel\">audacity-devel</a> mailing list "
 "to discuss current and future development, or to get help building and "
@@ -747,6 +845,7 @@ msgid ""
 msgstr "Przyłącz się do <a href=\"../contact/list#devel\">deweloperskiej</a> listy mailowej aby wziąć udział w dyskusji o bierzącym i przyszłym rozwoju lub aby uzyskać pomoc w budowaniu i modyfikacji kodu źródłowego Audacity."
 
 #: community/developers.php:20
+#, fuzzy
 msgid ""
 "<h3 id=\"cvs\">CVS</h3>\n"
 "<p>You can get the latest development code from our CVS repository.</p>\n"
@@ -792,6 +891,7 @@ msgstr ""
 
 #: community/developers.php:34
 #, php-format
+#, fuzzy
 msgid ""
 "<h3 id=\"bugzilla\">Bugzilla</h3>\n"
 "<p>The Audacity developers use <a href=\"%s/\">Bugzilla</a> to keep track of "
@@ -804,16 +904,18 @@ msgid ""
 msgstr ""
 "<h3 id=\"bugzilla\">Bugzilla</h3>\n"
 "<p>Twórcy Audacity używają <a href=\"http://audacity.sourceforge.net/cgi-"
-"bin/bugzilla/index.cgi\">Bugzilla</a> aby być na bierząco z lukami/błędami. "
+"bin/bugzilla/index.cgi\">Bugzilla</a> aby być na bieżąco z lukami/błędami. "
 "Sprawdź listę błędów <a href=\"http://audacity.sourceforge.net/cgi-bin/bugzilla/"
 "buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED\">open </a>jeśli szukasz czegoś, nad czym mógłbyś pracować.</p>\n"
 "<p><strong> Uwaga:</strong> Bugzilla jest tylko do użytku dla projektantów. Jeśli jesteś użytkownikiem powiadamiającym o błędach, proszę<a href=\"../contact/\">wyślij nam e-mail</a>. Dziękujemy!</p>"
 
 #: community/donate.php:10
+#, fuzzy
 msgid "Make a Donation"
 msgstr "Wesprzyj finansowo"
 
 #: community/donate.php:16
+#, fuzzy
 msgid ""
 "Audacity is developed by volunteers, working in our spare time. It is not "
 "shareware, and we do not expect to make any money from it.  However, by "
@@ -822,8 +924,8 @@ msgid ""
 "Audacity for free and continue to make it better."
 msgstr "Audacity jest rozwijane przez wolontariuszy pracujących w wolnym czasie. Nie jest to płatne i nie oczekujemy żadnych korzyści finansowych. Jakkolwiek, wspierając nas finansowo możesz pomóc nam opłacić łącze internetowe, narzędzia deweloperskie oraz sprzęt audio&mdash;rzeczy, które pomagają nam dostarczać Audacity bezpłatnie oraz kontynuować ulepszanie go."
 
-
 #: community/donate.php:18
+#, fuzzy
 msgid ""
 "For a special gift if you donate US$20 or more, see our <a href=\"http://"
 "audacityteam.org/tshirt.php\">Audacity T-shirt offer</a>."
@@ -832,20 +934,24 @@ msgstr ""
 "audacityteam.org/tshirt.php\">ofertę koszulki Audacity</a>."
 
 #: community/donate.php:20
+#, fuzzy
 msgid ""
 "We currently accept money via the Amazon Honor System. Use your credit card "
 "and make a payment as small as US$1.00, or up to US$50.00:"
 msgstr "Aktualnie akceptujemy pieniądze poprzez system Amazon Honor. Użyj swojej karty kredytowej i zapłać zaledwie 1 dolara ameryk. lub do 50 dolarów ameryk."
 
 #: community/donate.php:30
+#, fuzzy
 msgid "We also accept PayPal payments through the SourceForge donation system:"
 msgstr "Akceptujemy również płatności PayPal poprzez system dofinansowywania SourceForge"
 
 #: community/donate.php:33
+#, fuzzy
 msgid "Donate via PayPal"
 msgstr "Dofinansuj poprzez PayPal"
 
 #: community/donate.php:36
+#, fuzzy
 msgid ""
 "If you prefer to send a personal check or another form of payment, please "
 "visit the <a href=\"../about/credits\">credits</a> page and contact one of "
@@ -853,26 +959,31 @@ msgid ""
 msgstr "Jeśli wolisz przesłać czek imienny lub dokonać innej formy płatności, odwiedź stronę <a href=\"../about/credits\">credits</a> i skontaktuj się z jednym z głównych projektantów."
 
 #: community/donate.php:38
+#, fuzzy
 msgid ""
 "We would also like to hear from any companies or groups interested in <a "
 "href=\"http://audacityteam.org/sponsor.php\">sponsoring Audacity "
 "development</a>."
-msgstr "Pragnęlibyśmy również usłyszeć od firm lub innych grup zainteresowanych<a "
+msgstr ""
+"Pragnęlibyśmy również usłyszeć od firm lub innych grup zainteresowanych<a "
 "href=\"http://audacityteam.org/sponsor.php\"> sponsorowaniem rozwoju Audacity</a>."
 
 #: community/index.php:15
+#, fuzzy
 msgid ""
 "Audacity is free software, developed by volunteers.  Here's how you can "
 "contribute to the Audacity project:"
 msgstr "Audacity jest bezpłatnym programem rozwijanym przez wolontariuszy. Tu możesz dowiedzieć się, jak wziąć udział w projekcie."
 
 #: community/index.php:19
+#, fuzzy
 msgid ""
 "Give us feedback, report bugs, and become part of the Audacity user "
 "community."
 msgstr "Oceń naszą pracę, wskaż błędy i zostań częścią środowiska użytkowników Audacity"
 
 #: community/index.php:22
+#, fuzzy
 msgid ""
 "If you are fluent in both English and another language, you can help "
 "translate the Audacity software and web site.  We also need people to help "
@@ -880,18 +991,21 @@ msgid ""
 msgstr "Jeżeli doskonale posługujesz się językami angielskim i innym, możesz pomóc w tłumaczeniu programu Audacity oraz strony internetowej. Potrzebujemy także ludzi do pomocy przy wsparciu Audacity w różnych językach."
 
 #: community/index.php:25
+#, fuzzy
 msgid ""
 "If you are a C++ programmer, you can join the development team and help us "
 "improve Audacity.  We welcome documentation and other contributions too."
 msgstr "Jeżeli programujesz w C++, możesz dołączyć do grupy deweloperskiej i wspomóc nas w polepszaniu Audacity.  Dokumentacja i wszelkiego rodzaju współudział mile widziane."
 
 #: community/index.php:28
+#, fuzzy
 msgid ""
 "You may also <a href=\"donate\">donate money</a> to support Audacity\n"
 "development."
 msgstr "Możesz również <a href=\"donate\">ofiarować pieniądze</a>, aby wesprzeć rozwój Audacity"
 
 #: community/translation.php:16
+#, fuzzy
 msgid ""
 "A group of volunteers is translating the free Audacity sound editor into "
 "several languages.  If you would like to help, please join the <a href=\"../"
@@ -902,22 +1016,27 @@ msgstr ""
 "contact/lists#translation\">grupy mail'owej tłumaczenia</a> i przedstaw się."
 
 #: community/translation.php:18
+#, fuzzy
 msgid "Resources for Translators"
 msgstr "Zasoby dla tłumaczy"
 
 #: community/translation.php:20
+#, fuzzy
 msgid "Mailing list and archives"
 msgstr "Listy mejlowe i archiwa"
 
 #: community/translation.php:21
+#, fuzzy
 msgid "Latest audacity.pot file"
 msgstr "Najnowszy plik audacity.pot"
 
 #: community/translation.php:22
+#, fuzzy
 msgid "Latest audacity_website.pot file"
 msgstr "Najnowszy plik audacity_website.pot"
 
 #: community/translation.php:23
+#, fuzzy
 msgid "wxWidgets i18n"
 msgstr "wxWidgets i18n"
 
@@ -925,6 +1044,7 @@ msgstr "wxWidgets i18n"
 #. leave them untranslated if you like.
 #: community/translation.php:29
 #, php-format
+#, fuzzy
 msgid ""
 "<h3>Translation Instructions</h3>\n"
 "\n"
@@ -1010,16 +1130,19 @@ msgstr ""
 "</ul>"
 
 #: community/users.php:10
+#, fuzzy
 msgid "User Community"
 msgstr "Społeczność użytkowników"
 
 #: community/users.php:15
+#, fuzzy
 msgid ""
 "Audacity was written by volunteers in their spare time.  If you appreciate "
 "Audacity and would like to help out, here are some ideas:"
 msgstr "Audacity zostało napisane przez wolontariuszy w wolnym czasie. Jeśli doceniasz Audacity i chciałbyś pomóc, oto kilka pomysłów:"
 
 #: community/users.php:18
+#, fuzzy
 msgid ""
 "<h3>Say Hello!</h3>\n"
 "<p>If you enjoy Audacity, <a href=\"../contact/\">write to us</a> and let us "
@@ -1033,6 +1156,7 @@ msgstr ""
 #. i18n-hint:  Note that the wiki is in English.  If you want, you can create
 #. a page in your language on the wiki, and link to it instead.
 #: community/users.php:24
+#, fuzzy
 msgid ""
 "<h3>Join the User Community</h3>\n"
 "<p>Subscribe to the <a href=\"../contact/lists#users\">audacity-users "
@@ -1045,6 +1169,7 @@ msgstr ""
 "<p>Zapisz się do <a href=\"../contact/lists#users\">lista mejlowa użytkowników audacity</a> aby współdzielić uwagi, pytania i oceny z innymi użytkownikami i programistami.</p> <p>Odwiedź<a href=\"http://audacityteam.org/wiki/\">Audacity Wiki</a> miejsce, gdzie użytkownicy mogą dodawać lub edytować informacje o Audacity.</p>"
 
 #: community/users.php:28
+#, fuzzy
 msgid ""
 "<h3>Report bugs</h3>\n"
 "<p>If you find a bug in Audacity, <a href=\"../contact/\">let us know</a>.</"
@@ -1054,6 +1179,7 @@ msgstr ""
 "<p>Jeżeli znalazłeś błąd w Audacity, <a href=\"../contact/\">niech się o tym dowiemy</a>.</p>"
 
 #: community/users.php:31
+#, fuzzy
 msgid ""
 "<h3>Be a Beta Tester</h3>\n"
 "<p>In addition to the latest stable version of Audacity, we often have beta "
@@ -1072,6 +1198,7 @@ msgstr ""
 #. Note that the Audacity Forum has sections specially for Spanish,
 #. French, German, and Russian!
 #: contact/index.php:21
+#, fuzzy
 msgid ""
 "<p>If you have questions or comments for the Audacity developers, e-mail us "
 "at: <a href=\"mailto:audacity-help@lists.sourceforge.net\">audacity-"
@@ -1108,6 +1235,7 @@ msgstr ""
 "</ol>"
 
 #: contact/index.php:34
+#, fuzzy
 msgid ""
 "<h3>Discussion Lists</h3>\n"
 "<p>To discuss Audacity with other users and developers, join our <a href="
@@ -1118,18 +1246,21 @@ msgstr ""
 "\"../contact/lists\">list mail'owej</a>.</p>"
 
 #: contact/lists.php:12
+#, fuzzy
 msgid "You must subscribe to send messages to this list."
 msgstr "Musisz subskrybować listę aby wysyłać do niej wiadomości."
 
 #. i18n-hint: The "%s" will be replaced by the name of a mailing list.
 #: contact/lists.php:14
 #, php-format
+#, fuzzy
 msgid "%s archives and subscription information"
 msgstr "%s archiwa i informacja dla subskrybujących"
 
 #. i18n-hint: Please add a note that these lists are in English.  If there are
 #. Audacity mailing lists or forums in your language, please link to them here.
 #: contact/lists.php:20
+#, fuzzy
 msgid ""
 "These mailing lists are for discussion of the Audacity audio editor.  </p>\n"
 "<p>Note: These are public mailing lists.  For details, see our <a href="
@@ -1140,18 +1271,22 @@ msgstr ""
 "\"privacy\">ochronę prywatności</a>."
 
 #: contact/lists.php:27
+#, fuzzy
 msgid "Discuss Audacity with other users and developers."
 msgstr "Podyskutuj o Audacity z innymi użykownikami i programistami"
 
 #: contact/lists.php:33
+#, fuzzy
 msgid "For translators localizing the Audacity software and web site."
 msgstr "Dla tłumaczy lokalizujących oprogramowanie Audacity i stronę internetową"
 
 #: contact/lists.php:39
+#, fuzzy
 msgid "For developers working with the Audacity source code and documentation."
 msgstr "Dla programistów pracujących nad kodem źródłowym i dokumentacją"
 
 #: contact/lists.php:45
+#, fuzzy
 msgid ""
 "Share questions and tips about programming <a href=\"../help/nyquist"
 "\">Nyquist plug-ins</a>."
@@ -1160,13 +1295,14 @@ msgstr ""
 "\">Wtyczki Nyquist</a>."
 
 #: contact/lists.php:51
+#, fuzzy
 msgid ""
 "Developers can subscribe to this mailing list to receive automatic updates "
 "from <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
-msgstr ""
-"Programiści mogą subskrybować tą listę, aby automatycznie otrzymywać uaktualnienia z <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
+msgstr "Programiści mogą subskrybować tą listę, aby automatycznie otrzymywać uaktualnienia z <a href=\"../community/developers#bugzilla\">Bugzilla</a>."
 
 #: contact/lists.php:57
+#, fuzzy
 msgid ""
 "Send a message to this list if you have questions or comments for the "
 "Audacity developers.  You do not need to subscribe to this list to send a "
@@ -1174,10 +1310,12 @@ msgid ""
 msgstr "Wyślij wiadomość na tą listę, jeśli masz pytania lub komentarze dla programistów Audacity. Nie musisz subskrybować tej listy, aby wysłać wiadomość."
 
 #: contact/privacy.php:21
+#, fuzzy
 msgid "Announcement List Policy"
 msgstr "Lista z ogłoszeniami"
 
 #: contact/privacy.php:23
+#, fuzzy
 msgid ""
 "<p>You can subscribe to our announcement list by entering your address in "
 "the form on the <a href=\"../\">Audacity home page</a>.  We will use this "
@@ -1193,10 +1331,12 @@ msgstr ""
 "\"mailto:dominic@audacityteam.org\">dominic@audacityteam.org</a>.</p>"
 
 #: contact/privacy.php:26
+#, fuzzy
 msgid "Mailing List Policy"
 msgstr "Lista mejlowa"
 
 #: contact/privacy.php:28
+#, fuzzy
 msgid ""
 "<p>(This applies to audacity-help, audacity-users, and other <a href=\"../"
 "contact/lists\">discussion lists</a>.)</p>\n"
@@ -1222,6 +1362,7 @@ msgstr ""
 "\">dominic@audacityteam.org</a>.</p>"
 
 #: download/beta_linux.php:16
+#, fuzzy
 msgid ""
 "The beta version of Audacity has not been packaged for very many "
 "distributions yet.  You probably want to compile Audacity from <a href="
@@ -1232,6 +1373,7 @@ msgstr ""
 
 #: download/beta_mac.php:11 download/mac.php:10 download-old/mac.php:10
 #: download-old/beta_mac.php:11
+#, fuzzy
 msgid "Mac OS 9 / X"
 msgstr "Mac OS 9 / X"
 
@@ -1240,12 +1382,14 @@ msgstr "Mac OS 9 / X"
 #: download/windows.php:16 download-old/mac.php:17 download-old/source.php:16
 #: download-old/windows.php:16 download-old/beta_windows.php:20
 #: download-old/beta_mac.php:22 download-old/beta_source.php:20
+#, fuzzy
 msgid "Recommended Download"
 msgstr "Zalecane pobrania"
 
 #: download/beta_mac.php:24 download/mac.php:19 download-old/mac.php:19
 #: download-old/beta_mac.php:24
 #, php-format
+#, fuzzy
 msgid ""
 "For Mac OS X: <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - The "
 "latest version of the free Audacity audio editor."
@@ -1258,59 +1402,71 @@ msgstr ""
 #: download/windows.php:21 download-old/mac.php:26 download-old/source.php:22
 #: download-old/windows.php:21 download-old/beta_windows.php:25
 #: download-old/beta_mac.php:28 download-old/beta_source.php:26
+#, fuzzy
 msgid "Optional Downloads"
 msgstr "Opcjonalne pobrania"
 
 #: download/beta_mac.php:33 download/beta_windows.php:43 download/mac.php:31
 #: download/windows.php:39 download-old/mac.php:31 download-old/windows.php:39
 #: download-old/beta_windows.php:43 download-old/beta_mac.php:33
+#, fuzzy
 msgid "System Requirements"
 msgstr "Wymagania systemowe"
 
 #: download/beta_mac.php:35 download-old/beta_mac.php:35
+#, fuzzy
 msgid "Audacity 1.3 requires Mac OS X 10.3 or later."
 msgstr "Audacity 1.3 wymaga systemu Mac OS X 10.3 lub późniejszej"
 
 #: download/beta_mac.php:36 download/mac.php:35 download-old/mac.php:35
 #: download-old/beta_mac.php:36
+#, fuzzy
 msgid "Audacity runs best with at least 64 MB RAM and a 300 MHz processor."
 msgstr "Audacity pracuje najlepiej na minimum 64 MB pamięci RAM i 300 MHz procesorze"
 
 #: download/beta_source.php:23 download/source.php:19
 #: download-old/source.php:19 download-old/beta_source.php:23
 #, php-format
+#, fuzzy
 msgid "<a href=\"%s\">Audacity %s source tarball</a> (%.1lf MB)"
 msgstr "<a href=\"%s\">Audacity %s pakiet źródłowy</a> (%.1lf MB)"
 
 #: download/beta_source.php:28 download/source.php:24
 #: download-old/source.php:24 download-old/beta_source.php:28
+#, fuzzy
 msgid ""
 "You can also get the latest development code from <a href=\"../community/"
 "developers#cvs\">CVS</a>."
-msgstr "Możesz równieź otrzymać najnowszy kod rozwojowy z <a href=\"../community/"
+msgstr ""
+"Możesz równieź otrzymać najnowszy kod rozwojowy z <a href=\"../community/"
 "developers#cvs\">CVS</a>."
 
 #: download/beta_source.php:29 download/common.inc.php:13
 #: download/source.php:25 download-old/common.inc.php:13
 #: download-old/source.php:25 download-old/beta_source.php:29
 #, php-format
+#, fuzzy
 msgid ""
 "If you have trouble with your download, or need an older version of "
 "Audacity, try our <a href=\"%s\">alternate download links</a>."
-msgstr "Jeśli masz problemy z pobieraniem plików lub potrzebujesz starszej "
+msgstr ""
+"Jeśli masz problemy z pobieraniem plików lub potrzebujesz starszej "
 "wersji Audacity, wypróbuj nasze <a href=\"%s\">alternatywne linki pobrania</a>."
 
 #: download/beta_source.php:32 download/source.php:28
 #: download-old/source.php:28 download-old/beta_source.php:32
+#, fuzzy
 msgid "How to Build Audacity"
 msgstr "Jak zbudować Audacity"
 
 #: download/beta_source.php:34 download/source.php:30
 #: download-old/source.php:30 download-old/beta_source.php:34
+#, fuzzy
 msgid "Dependencies"
 msgstr "Zależności"
 
 #: download/beta_source.php:35 download-old/beta_source.php:35
+#, fuzzy
 msgid ""
 "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</"
 "b>.  Audacity 1.3 needs wxGTK 2.6."
@@ -1320,6 +1476,7 @@ msgstr ""
 
 #: download/beta_source.php:36 download/source.php:32
 #: download-old/source.php:32 download-old/beta_source.php:36
+#, fuzzy
 msgid ""
 "You may also choose to install the following <b>optional libraries</b>, or "
 "get them by checking out Audacity from CVS."
@@ -1327,19 +1484,21 @@ msgstr "Możesz również zainstalować podane <b> opcjonalne biblioteki </b> lu
 
 #: download/beta_source.php:42 download/source.php:38
 #: download-old/source.php:38 download-old/beta_source.php:42
+#, fuzzy
 msgid ""
 "If you install libraries using a package management system like Apt or RPM, "
 "make sure to install the \"dev\" (development) packages for each library."
 msgstr "Jeśli instalujesz biblioteki używając systemu zarządzającego pakietami jak Apt lub Rpm, sprawdź, czy instalujesz pakiety \"dev\" dla każdej biblioteki."
 
-
 #: download/beta_source.php:44 download/source.php:40
 #: download-old/source.php:40 download-old/beta_source.php:44
+#, fuzzy
 msgid "Compilation"
 msgstr "Kompilacja"
 
 #: download/beta_source.php:45 download/source.php:41
 #: download-old/source.php:41 download-old/beta_source.php:45
+#, fuzzy
 msgid ""
 "To build Audacity, run the following command in the Audacity source "
 "directory:"
@@ -1347,6 +1506,7 @@ msgstr "Aby zbudować Audacity wpisz podaną komendę w katalogu Audacity:"
 
 #: download/beta_source.php:51 download/source.php:47
 #: download-old/source.php:47 download-old/beta_source.php:51
+#, fuzzy
 msgid ""
 "You can type <kbd>./configure --help</kbd> to see a list of compilation "
 "options.  After Audacity is compiled, run <kbd>make install</kbd> as root to "
@@ -1355,11 +1515,13 @@ msgstr "Możesz wpisać <kbd> ./configure --help</kbd>, aby zobaczyć listę mo�
 
 #: download/beta_source.php:53 download/source.php:49
 #: download-old/source.php:49 download-old/beta_source.php:53
+#, fuzzy
 msgid "Notes"
 msgstr "Notatki"
 
 #: download/beta_source.php:54 download/source.php:50
 #: download-old/source.php:50 download-old/beta_source.php:54
+#, fuzzy
 msgid ""
 "For additional information about building Audacity on Windows or Mac OS X, "
 "see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the "
@@ -1369,6 +1531,7 @@ msgstr "Aby uzyskać dodatkowe wiadomości dotyczące instalacji Audacity na sys
 #: download/beta_windows.php:22 download/windows.php:18
 #: download-old/windows.php:18 download-old/beta_windows.php:22
 #, php-format
+#, fuzzy
 msgid ""
 "<a href=\"%s\">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest "
 "version of the free Audacity audio editor."
@@ -1385,12 +1548,14 @@ msgstr ""
 #: download/windows.php:28 download/windows.php:29 download-old/windows.php:28
 #: download-old/windows.php:29 download-old/beta_windows.php:32
 #: download-old/beta_windows.php:33
+#, fuzzy
 msgid "localized_downloads_windows"
 msgstr "zlokalizowane_pliki_do_pobrania_dla_środowiska_windows"
 
 #: download/beta_windows.php:38 download/windows.php:34
 #: download-old/windows.php:34 download-old/beta_windows.php:38
 #, php-format
+#, fuzzy
 msgid ""
 "<a href=\"%s\">Audacity %s zip file</a> (%.1lf MB)\n"
 "  - If you canât run the installer because you are in a computer lab or "
@@ -1402,6 +1567,7 @@ msgstr ""
 
 #: download/beta_windows.php:45 download/windows.php:41
 #: download-old/windows.php:41 download-old/beta_windows.php:45
+#, fuzzy
 msgid ""
 "Windows 98, ME, 2000, XP, or later.  (Sorry, Audacity is not supported on "
 "Windows 95 or NT 4.0.)"
@@ -1411,18 +1577,22 @@ msgstr ""
 
 #: download/beta_windows.php:46 download/windows.php:42
 #: download-old/windows.php:42 download-old/beta_windows.php:46
+#, fuzzy
 msgid "Audacity runs best with at least 64 MB RAM and 300 MHz processor."
 msgstr "Audacity pracuje najlepiej na minimum 64 MB pamięci RAM i 300 MHz procesorze"
 
 #: download/betafeatures.inc.php:9 download-old/betafeatures.inc.php:9
+#, fuzzy
 msgid "Click here to read about new features in Audacity 1.3."
 msgstr "Kliknij tutaj, aby przeczytać o najnowszych funkcjach Audacity 1.3."
 
 #: download/betawarning.inc.php:9 download-old/betawarning.inc.php:9
+#, fuzzy
 msgid "Beta warning"
 msgstr "Ostrzeżenie Beta"
 
 #: download/betawarning.inc.php:10 download-old/betawarning.inc.php:10
+#, fuzzy
 msgid ""
 "Audacity 1.3 is an unstable, beta version of Audacity.  Users who want a "
 "completely stable, finished program should be using Audacity 1.2.  Audacity "
@@ -1437,6 +1607,7 @@ msgstr ""
 "maszynie."
 
 #: download/betawarning.inc.php:11 download-old/betawarning.inc.php:11
+#, fuzzy
 msgid ""
 "Audacity 1.3 is available in many languages, but most translations are "
 "incomplete.  Words and phrases which have not been translated yet will "
@@ -1447,10 +1618,12 @@ msgstr ""
 "pojawią się w języku angielskim."
 
 #: download/buy.php:9 download-old/buy.php:9
+#, fuzzy
 msgid "Purchase Audacity on CD"
 msgstr "Zakup Audacity na płycie cd"
 
 #: download/buy.php:13 download-old/buy.php:13
+#, fuzzy
 msgid ""
 "Audacity is free to download, but vendors are also free to sell copies of "
 "the program, thanks to the <a href=\"../about/license\">GNU General Public "
@@ -1463,6 +1636,7 @@ msgstr ""
 "od jednego ze sprzedawców z listy podanej poniżej."
 
 #: download/buy.php:15 download-old/buy.php:15
+#, fuzzy
 msgid ""
 "<h3>TheOpenCD (Windows)</h3>\n"
 "  <p><a href=\"http://www.theopencd.org/\">TheOpenCD</a> is a collection of "
@@ -1475,36 +1649,44 @@ msgstr ""
 "  <p><a href=\"http://theopencd.sunsite.dk/\">TheOpenCD</a> jest kolekcją wysokiej jakości darmowego oprogramowania dla MIcrosoft Windows włączając w to Audacity. Możesz <a href=\"http://theopencd.sunsite.dk/wheretobuy.php\">kupić kopię TheOpenCD</a> od wielu sprzedawców.</p>"
 
 #: download/common.inc.php:10 download-old/common.inc.php:10
+#, fuzzy
 msgid "LAME MP3 encoder"
 msgstr "Enkoder MP3 LAME"
 
 #: download/common.inc.php:10 download-old/common.inc.php:10
+#, fuzzy
 msgid "Allows Audacity to export MP3 files."
 msgstr "Pozwala Audacity na eksport plików MP3"
 
 #: download/common.inc.php:11 download-old/common.inc.php:11
+#, fuzzy
 msgid "VST Enabler"
 msgstr "Funkcja VST"
 
 #: download/common.inc.php:11 download-old/common.inc.php:11
+#, fuzzy
 msgid "Allows Audacity to load VST plug-ins."
 msgstr "Pozwala Audacity na ładowanie wtyczek VST"
 
 #: download/common.inc.php:12 download-old/common.inc.php:12
+#, fuzzy
 msgid "Download additional effects and filters."
 msgstr "Pobierz dodatkowe efekty i filtry"
 
 #: download/features-1.3-a.php:9 download/features-1.3-b.php:49
 #: download/features-1.3-g.php:67 download-old/features-1.3-a.php:9
 #: download-old/features-1.3-b.php:49 download-old/features-1.3-g.php:67
+#, fuzzy
 msgid "New features in Audacity 1.3"
 msgstr "Nowe funkcje w Audacity 1.3"
 
 #: download/features-1.3-a.php:17 download-old/features-1.3-a.php:17
+#, fuzzy
 msgid "New features"
 msgstr "Nowe funkcje"
 
 #: download/features-1.3-a.php:18 download-old/features-1.3-a.php:18
+#, fuzzy
 msgid ""
 "The new features in Audacity 1.3 have been grouped into the following six "
 "major categories.  Click on the links below for more information."
@@ -1514,43 +1696,51 @@ msgstr ""
 
 #: download/features-1.3-a.php:21 download/features-1.3-c.php:259
 #: download-old/features-1.3-a.php:21 download-old/features-1.3-c.php:259
+#, fuzzy
 msgid "Collapse/Expand Tracks"
 msgstr "Zawęź/Rozszerz ścieżki"
 
 #: download/features-1.3-a.php:22 download/features-1.3-b.php:56
 #: download/features-1.3-d.php:62 download-old/features-1.3-a.php:22
 #: download-old/features-1.3-b.php:56 download-old/features-1.3-d.php:62
+#, fuzzy
 msgid "Multiple clips per track"
 msgstr "Wiele klipów w jednej ścieżce"
 
 #: download/features-1.3-a.php:23 download/features-1.3-c.php:266
 #: download/features-1.3-e.php:67 download-old/features-1.3-a.php:23
 #: download-old/features-1.3-c.php:266 download-old/features-1.3-e.php:67
+#, fuzzy
 msgid "Selection Bar"
 msgstr "Pasek selekcji"
 
 #: download/features-1.3-a.php:24 download/features-1.3-d.php:69
 #: download/features-1.3-f.php:33 download-old/features-1.3-a.php:24
 #: download-old/features-1.3-d.php:69 download-old/features-1.3-f.php:33
+#, fuzzy
 msgid "Improved Label Tracks"
 msgstr "Udoskonalone etykiety ścieżek"
 
 #: download/features-1.3-a.php:25 download/features-1.3-e.php:74
 #: download/features-1.3-g.php:58 download-old/features-1.3-a.php:25
 #: download-old/features-1.3-e.php:74 download-old/features-1.3-g.php:58
+#, fuzzy
 msgid "QuickTime and Audio Units on Mac OS X"
 msgstr "Elementy audio i QuickTime na platformie Mac OS X"
 
 #: download/features-1.3-a.php:26 download/features-1.3-f.php:40
 #: download-old/features-1.3-a.php:26 download-old/features-1.3-f.php:40
+#, fuzzy
 msgid "Other features"
 msgstr "Inne funkcje"
 
 #: download/features-1.3-b.php:9 download-old/features-1.3-b.php:9
+#, fuzzy
 msgid "Audacity 1.3: Collapse/Expand Tracks"
 msgstr "Audacity 1.3: Zwęź/Rozszerz ścieżki"
 
 #: download/features-1.3-b.php:16 download-old/features-1.3-b.php:16
+#, fuzzy
 msgid ""
 "In Audacity 1.3, every track has an upward-pointing triangle at the bottom "
 "of the label area on the left side of the track.  Click it once to collapse "
@@ -1565,14 +1755,17 @@ msgstr ""
 "krawędzi i przeniesienie do góry lub do dołu."
 
 #: download/features-1.3-b.php:21 download-old/features-1.3-b.php:21
+#, fuzzy
 msgid "Before clicking on the collapse button for the top track"
 msgstr "Przed kliknięciem na przycisku minimalizacji dla górnej ścieżki"
 
 #: download/features-1.3-b.php:27 download-old/features-1.3-b.php:27
+#, fuzzy
 msgid "After clicking on the collapse button"
 msgstr "Po kliknięciu na przycisku minimalizacji"
 
 #: download/features-1.3-b.php:33 download-old/features-1.3-b.php:33
+#, fuzzy
 msgid "After selecting 'Collapse All Tracks' from the View menu"
 msgstr "Po wybraniu 'Minimalizuj wszystkie ścieżki' z menu Widok"
 
@@ -1582,6 +1775,7 @@ msgstr "Po wybraniu 'Minimalizuj wszystkie ścieżki' z menu Widok"
 #: download-old/features-1.3-b.php:48 download-old/features-1.3-c.php:258
 #: download-old/features-1.3-d.php:61 download-old/features-1.3-e.php:66
 #: download-old/features-1.3-f.php:32 download-old/features-1.3-g.php:57
+#, fuzzy
 msgid "Back: "
 msgstr "Do tyłu"
 
@@ -1590,14 +1784,17 @@ msgstr "Do tyłu"
 #: download/features-1.3-f.php:39 download-old/features-1.3-b.php:55
 #: download-old/features-1.3-c.php:265 download-old/features-1.3-d.php:68
 #: download-old/features-1.3-e.php:73 download-old/features-1.3-f.php:39
+#, fuzzy
 msgid "Next: "
 msgstr "Następny: "
 
 #: download/features-1.3-c.php:9 download-old/features-1.3-c.php:9
+#, fuzzy
 msgid "Audacity 1.3: Multiple clips per track"
 msgstr "Audacity 1.3: Wielokrotne klipy w ścieżce"
 
 #: download/features-1.3-c.php:16 download-old/features-1.3-c.php:16
+#, fuzzy
 msgid ""
 "In Audacity 1.2, there is one audio 'clip' per track.  There is no easy way "
 "to time-shift part of a track without moving the rest.  In Audacity 1.3, you "
@@ -1612,6 +1809,7 @@ msgstr ""
 "próbek dźwiękowych"
 
 #: download/features-1.3-c.php:98 download-old/features-1.3-c.php:98
+#, fuzzy
 msgid ""
 "The commands you will need to create and work with audio clips are found in "
 "the Edit menu.  Some of these commands have the same name as in Audacity "
@@ -1624,57 +1822,70 @@ msgstr ""
 "nową funkcjonalnośc"
 
 #: download/features-1.3-c.php:100 download-old/features-1.3-c.php:100
+#, fuzzy
 msgid "There are five ways to end up with multiple clips in a single track:"
 msgstr "Jest pięć sposobów, aby skończyć z wieloma klipami w pojedyńczej ścieżce:"
 
 #: download/features-1.3-c.php:103 download-old/features-1.3-c.php:103
+#, fuzzy
 msgid "Split in the middle of an existing clip."
 msgstr "Rozdziel w połowie istniejącego klipu."
 
 #: download/features-1.3-c.php:104 download-old/features-1.3-c.php:104
+#, fuzzy
 msgid "Split Cut in the middle of an existing clip."
 msgstr "Rozdziel używając funkcji Wytnij w połowie istniejącego klipu."
 
 #: download/features-1.3-c.php:105 download-old/features-1.3-c.php:105
+#, fuzzy
 msgid "Split Delete in the middle of an existing clip."
 msgstr "Rozdziel używając funkcji Usuń w połowie istniejącego klipu."
 
 #: download/features-1.3-c.php:106 download-old/features-1.3-c.php:106
+#, fuzzy
 msgid "Paste into an empty portion of an existing track."
 msgstr "Wklej w wolne miejsce na istniejącej ścieżce"
 
 #: download/features-1.3-c.php:107 download-old/features-1.3-c.php:107
+#, fuzzy
 msgid "Drag a clip from a different track."
 msgstr "Przenieś klip z innej ścieżki"
 
 #: download/features-1.3-c.php:110 download-old/features-1.3-c.php:110
+#, fuzzy
 msgid ""
 "These commands, and other editing commands, are described in detail below.  "
 "Alternatively, click on the item in the menu to the left to jump directly to "
 "that command."
-msgstr "Te i inne polecenia edytujące są dokładnie opisane poniżej. "
+msgstr ""
+"Te i inne polecenia edytujące są dokładnie opisane poniżej. "
 "Ewentualnie kliknij na element w menu po lewej, aby przejść bezpośrednio do "
 "tego polecenia."
 
 #: download/features-1.3-c.php:112 download-old/features-1.3-c.php:112
+#, fuzzy
 msgid "Other topics:"
 msgstr "Inne tematy:"
 
 #: download/features-1.3-c.php:115 download/features-1.3-c.php:229
 #: download-old/features-1.3-c.php:115 download-old/features-1.3-c.php:229
+#, fuzzy
 msgid "Moving clips between tracks"
 msgstr "Przenoszenie klipów pomiędzy ścieżkami"
 
 #: download/features-1.3-c.php:116 download/features-1.3-c.php:238
 #: download-old/features-1.3-c.php:116 download-old/features-1.3-c.php:238
+#, fuzzy
 msgid "Moving multiple clips at once"
 msgstr "Przenoszenie wielu klipów jednocześnie"
 
 #: download/features-1.3-c.php:122 download-old/features-1.3-c.php:122
+#, fuzzy
 msgid "Cut"
 msgstr "Wytnij"
 
 #: download/features-1.3-c.php:123 download-old/features-1.3-c.php:123
+#, fuzzy
 msgid ""
 "Removes the selected audio and puts it on the clipboard, and shifts the "
 "following audio to the left."
@@ -1683,10 +1894,12 @@ msgstr ""
 "dźwięk w lewo."
 
 #: download/features-1.3-c.php:131 download-old/features-1.3-c.php:131
+#, fuzzy
 msgid "Split Cut"
 msgstr "Rozdziel używając Wytnij"
 
 #: download/features-1.3-c.php:132 download-old/features-1.3-c.php:132
+#, fuzzy
 msgid ""
 "Removes the selected audio and puts it on the clipboard, but does not shift "
 "the following audio.  The preceding and following audio are now separate "
@@ -1697,18 +1910,22 @@ msgstr ""
 "niezależnie przenosić."
 
 #: download/features-1.3-c.php:140 download-old/features-1.3-c.php:140
+#, fuzzy
 msgid "Copy"
 msgstr "Kopiuj"
 
 #: download/features-1.3-c.php:141 download-old/features-1.3-c.php:141
+#, fuzzy
 msgid "Copies the selected audio to the clipboard."
 msgstr "Kopiuje zaznaczony dźwięk do schowka."
 
 #: download/features-1.3-c.php:149 download-old/features-1.3-c.php:149
+#, fuzzy
 msgid "Trim"
 msgstr "Przytnij"
 
 #: download/features-1.3-c.php:150 download-old/features-1.3-c.php:150
+#, fuzzy
 msgid ""
 "Removes all audio from the current clip except the selected part.  Does not "
 "affect other clips in the same track."
@@ -1717,10 +1934,12 @@ msgstr ""
 "na inne klipy w tej samej ścieżce."
 
 #: download/features-1.3-c.php:158 download-old/features-1.3-c.php:158
+#, fuzzy
 msgid "Delete"
 msgstr "Usuń"
 
 #: download/features-1.3-c.php:159 download-old/features-1.3-c.php:159
+#, fuzzy
 msgid ""
 "Removes the selected audio without placing it on the clipboard, and shifts "
 "following audio to the left."
@@ -1729,10 +1948,12 @@ msgstr ""
 "następny dźwięk w lewo."
 
 #: download/features-1.3-c.php:167 download-old/features-1.3-c.php:167
+#, fuzzy
 msgid "Split Delete"
 msgstr "Rozdziel używając Usuń"
 
 #: download/features-1.3-c.php:168 download-old/features-1.3-c.php:168
+#, fuzzy
 msgid ""
 "Removes the selected audio without placing it on the clipboard, but does not "
 "shift the following audio.  The preceding and following audio are now "
@@ -1743,18 +1964,22 @@ msgstr ""
 "które można przenosić niezależnie."
 
 #: download/features-1.3-c.php:176 download-old/features-1.3-c.php:176
+#, fuzzy
 msgid "Silence"
 msgstr "Cisza"
 
 #: download/features-1.3-c.php:177 download-old/features-1.3-c.php:177
+#, fuzzy
 msgid "Replaces the selection with silence"
 msgstr "Usuwa zaznacznie bez ciszy"
 
 #: download/features-1.3-c.php:185 download-old/features-1.3-c.php:185
+#, fuzzy
 msgid "Split"
 msgstr "Rozdziel"
 
 #: download/features-1.3-c.php:186 download-old/features-1.3-c.php:186
+#, fuzzy
 msgid ""
 "Splits the current clip into up to three clips at the selection boundaries.  "
 "The audio before, within, and after the selection can now all be shifted "
@@ -1764,18 +1989,22 @@ msgstr ""
 "Dźwięk przed, pomiędzy i po selekcji może być teraz przenoszony niezależnie"
 
 #: download/features-1.3-c.php:195 download-old/features-1.3-c.php:195
+#, fuzzy
 msgid "Duplicate"
 msgstr "Zduplikuj"
 
 #: download/features-1.3-c.php:196 download-old/features-1.3-c.php:196
+#, fuzzy
 msgid "Creates a new track containing only the current selection as a new clip"
 msgstr "Tworzy nową ścieżkę zawierającą tylko aktualną selekcję jako nowy klip"
 
 #: download/features-1.3-c.php:204 download-old/features-1.3-c.php:204
+#, fuzzy
 msgid "Paste - into an existing clip"
 msgstr "Wklej - do istniejącego klipu"
 
 #: download/features-1.3-c.php:205 download-old/features-1.3-c.php:205
+#, fuzzy
 msgid ""
 "When you select Paste and the cursor is inside a clip, the audio gets "
 "inserted into the middle of the clip and the following audio is shifted to "
@@ -1785,10 +2014,12 @@ msgstr ""
 "do środka klipu, a następny dźwięk jest przesunięty w prawo, aby zrobić miejsce"
 
 #: download/features-1.3-c.php:211 download-old/features-1.3-c.php:211
+#, fuzzy
 msgid "Paste - into the empty part of a track"
 msgstr "Wklej - w pustą część ścieżki"
 
 #: download/features-1.3-c.php:212 download-old/features-1.3-c.php:212
+#, fuzzy
 msgid ""
 "When you select Paste and the cursor is outside a clip, and there is enough "
 "room for the audio on the clipboard, the audio on the clipboard is inserted "
@@ -1799,10 +2030,12 @@ msgstr ""
 "innych klipów"
 
 #: download/features-1.3-c.php:220 download-old/features-1.3-c.php:220
+#, fuzzy
 msgid "Join"
 msgstr "Połącz"
 
 #: download/features-1.3-c.php:221 download-old/features-1.3-c.php:221
+#, fuzzy
 msgid ""
 "If you select a region that overlaps one or more clips, they are all joined "
 "into one large clip.  Regions in-between clips are treated as silence."
@@ -1811,6 +2044,7 @@ msgstr ""
 "połączone w jeden duży klip. Regiony pomiędzy klipami są traktowane jako cisza."
 
 #: download/features-1.3-c.php:230 download-old/features-1.3-c.php:230
+#, fuzzy
 msgid ""
 "The time-shift tool can now be used to move a single clip between tracks.  "
 "Just click and drag."
@@ -1820,6 +2054,7 @@ msgstr ""
 "Po prostu kliknij i przenieś."
 
 #: download/features-1.3-c.php:239 download-old/features-1.3-c.php:239
+#, fuzzy
 msgid ""
 "To time-shift multiple clips at once, select all of the clips you want to "
 "move using the normal selection tool, then use the time-shift tool to click "
@@ -1834,14 +2069,17 @@ msgstr ""
 "Jeśli klikniesz poza zaznaczeniem, tylko klip pod kursorem myszy zostanie przeniesiony."
 
 #: download/features-1.3-d.php:9 download-old/features-1.3-d.php:9
+#, fuzzy
 msgid "Audacity 1.3: Selection Bar"
 msgstr "Audacity 1.3: Pasek selekcji"
 
 #: download/features-1.3-d.php:19 download-old/features-1.3-d.php:19
+#, fuzzy
 msgid "The selection bar"
 msgstr "Pasek selekcji"
 
 #: download/features-1.3-d.php:23 download-old/features-1.3-d.php:23
+#, fuzzy
 msgid ""
 "In Audacity 1.2, the current selection is contained in a status bar at the "
 "bottom of the window.  In Audacity 1.3, this is replaced by a fully "
@@ -1862,26 +2100,32 @@ msgstr ""
 "wideo NTSC."
 
 #: download/features-1.3-d.php:29 download-old/features-1.3-d.php:29
+#, fuzzy
 msgid "The project sample rate control on the selection bar"
 msgstr "Kontrola próbkowania projektu na pasku selekcji"
 
 #: download/features-1.3-d.php:35 download-old/features-1.3-d.php:35
+#, fuzzy
 msgid "The current selection on the selection bar"
 msgstr "Aktualne zaznacznenie na pasku selekcji"
 
 #: download/features-1.3-d.php:41 download-old/features-1.3-d.php:41
+#, fuzzy
 msgid "The audio position on the selection bar"
 msgstr "Pozycja dźwięku na pasku selekcji"
 
 #: download/features-1.3-d.php:47 download-old/features-1.3-d.php:47
+#, fuzzy
 msgid "Different time formats supported by the selection bar"
 msgstr "Różne formaty czasu wspierane przez pasek selekcji"
 
 #: download/features-1.3-e.php:9 download-old/features-1.3-e.php:9
+#, fuzzy
 msgid "Audacity 1.3: Improved Label Tracks"
 msgstr "Audacity 1.3: Ulepszone ścieżki etykiet"
 
 #: download/features-1.3-e.php:16 download-old/features-1.3-e.php:16
+#, fuzzy
 msgid ""
 "Label Tracks are Audacity's way for you to create markings and annotations "
 "within your project.  In Audacity 1.3, Label Tracks are much improved, with "
@@ -1895,25 +2139,30 @@ msgstr ""
 
 #: download/features-1.3-e.php:21 download-old/features-1.3-e.php:21
 msgid "To create a label, start by selecting some audio."
-msgstr "Aby stworzyć etykietę zacznij od zaznaczniea jakiegoś dźwięku."
+msgstr "Aby stworzyć etykietę zacznij od zaznaczenia jakiegoś dźwięku."
 
 #: download/features-1.3-e.php:27 download-old/features-1.3-e.php:27
+#, fuzzy
 msgid "Select 'Add Label At Selection' from the Project menu."
 msgstr "Wybierz 'Dodaj etykietę w selekcji' z menu Projekt"
 
 #: download/features-1.3-e.php:33 download-old/features-1.3-e.php:33
+#, fuzzy
 msgid "Type some text into the label."
 msgstr "Wprowadź jakiś tekst do etykiety."
 
 #: download/features-1.3-e.php:39 download-old/features-1.3-e.php:39
+#, fuzzy
 msgid "Click and drag the handles to resize the label."
 msgstr "Kliknij i przenieś uchwyty, aby zmienić rozmiar etykiety."
 
 #: download/features-1.3-e.php:45 download-old/features-1.3-e.php:45
+#, fuzzy
 msgid "Later, you can retrieve the selection - just click inside the label."
 msgstr "Później możesz odzyskać zaznaczenie - po prostu kliknij wewnątrz etykiety."
 
 #: download/features-1.3-e.php:51 download-old/features-1.3-e.php:51
+#, fuzzy
 msgid ""
 "After you click, the label region becomes the current selection, allowing "
 "you to perform an operation on other tracks in the area within the label."
@@ -1922,10 +2171,12 @@ msgstr ""
 "ci na przeprowadzenie operacji na innych ścieżkach w ramach etykiety."
 
 #: download/features-1.3-f.php:9 download-old/features-1.3-f.php:9
+#, fuzzy
 msgid "Audacity 1.3: QuickTime and Audio Units on Mac OS X"
 msgstr "Audacity 1.3: ELementy dźwięku i QuickTime w systemie Mac OS X"
 
 #: download/features-1.3-f.php:16 download-old/features-1.3-f.php:16
+#, fuzzy
 msgid ""
 "On Mac OS X, Audacity can now import and audio file supported by Apple's "
 "QuickTime technology.  This includes .MOV and .MP4 (AAC) files.  "
@@ -1941,6 +2192,7 @@ msgstr ""
 "ponieważ można by było łatwo ominąć kodowanie w ten sposób."
 
 #: download/features-1.3-f.php:18 download-old/features-1.3-f.php:18
+#, fuzzy
 msgid ""
 "Also on Mac OS X, Audacity now supports Audio Unit plug-ins.  Audacity "
 "searches for Audio Units in the usual location, in the system or user's "
@@ -1951,14 +2203,17 @@ msgstr ""
 "systemowym lub użytkownika."
 
 #: download/features-1.3-g.php:9 download-old/features-1.3-g.php:9
+#, fuzzy
 msgid "Audacity 1.3: Other features"
 msgstr "Audacity 1.3: Inne funkcje"
 
 #: download/features-1.3-g.php:16 download-old/features-1.3-g.php:16
+#, fuzzy
 msgid "Better performance with large projects"
 msgstr "Lepsze działanie z dużymi projektami"
 
 #: download/features-1.3-g.php:18 download-old/features-1.3-g.php:18
+#, fuzzy
 msgid ""
 "As before, Audacity stores projects using a directory full of small files.  "
 "Audacity 1.3 now uses a hierarchical directory structure that results in "
@@ -1971,10 +2226,12 @@ msgstr ""
 "godzin dźwięku na wielu ścieżkach)."
 
 #: download/features-1.3-g.php:20 download-old/features-1.3-g.php:20
+#, fuzzy
 msgid "Project integrity check on open"
 msgstr "Sprawdzanie integracji projektu na otwarciu"
 
 #: download/features-1.3-g.php:22 download-old/features-1.3-g.php:22
+#, fuzzy
 msgid ""
 "When you open an Audacity project in version 1.3, it checks to make sure "
 "that all data files are present."
@@ -1983,10 +2240,12 @@ msgstr ""
 "są obecne"
 
 #: download/features-1.3-g.php:24 download-old/features-1.3-g.php:24
+#, fuzzy
 msgid "Transcription toolbar"
 msgstr "Pasek transkrypcji"
 
 #: download/features-1.3-g.php:26 download-old/features-1.3-g.php:26
+#, fuzzy
 msgid ""
 "A new toolbar for creating transcriptions of speech in Label Tracks.  "
 "Includes features that enable you to change the playback speed, create "
@@ -1999,10 +2258,12 @@ msgstr ""
 "idź do zakładki Interfejs w Preferencje."
 
 #: download/features-1.3-g.php:28 download-old/features-1.3-g.php:28
+#, fuzzy
 msgid "Upload via FTP"
 msgstr "Załaduj przez FTP"
 
 #: download/features-1.3-g.php:30 download-old/features-1.3-g.php:30
+#, fuzzy
 msgid ""
 "Audacity 1.3 has an experimental new dialog for uploading files to a server "
 "via FTP.  Currently it is just a simple FTP client; in the future we will "
@@ -2015,10 +2276,12 @@ msgstr ""
 "bezpośrednio w internecie jako Podcast na przykład."
 
 #: download/features-1.3-g.php:32 download-old/features-1.3-g.php:32
+#, fuzzy
 msgid "Based on wxWidgets 2.6"
 msgstr "Oparte na wxWidgets 2.6"
 
 #: download/features-1.3-g.php:34 download-old/features-1.3-g.php:34
+#, fuzzy
 msgid ""
 "Previous versions of Audacity were based on wxWidgets 2.4.  This change "
 "brings support for GTK2 widgets on Unix and better Unicode support on all "
@@ -2029,10 +2292,12 @@ msgstr ""
 "wszystkich platformach, poza tym wiele innych ulepszeń wewnątrz."
 
 #: download/features-1.3-g.php:36 download-old/features-1.3-g.php:36
+#, fuzzy
 msgid "Batch / CleanSpeech"
 msgstr "Partia / PrzejrzystaMowa"
 
 #: download/features-1.3-g.php:38 download-old/features-1.3-g.php:38
+#, fuzzy
 msgid ""
 "Audacity has a new feature that allows you to process a bunch of files, for "
 "example normalizing and converting to MP3.  The CleanSpeech mode provides a "
@@ -2046,10 +2311,12 @@ msgstr ""
 "znajduje się w zakładce Partia w oknie Preferencje."
 
 #: download/features-1.3-g.php:40 download-old/features-1.3-g.php:40
+#, fuzzy
 msgid "Cut lines"
 msgstr "Wytnij linie"
 
 #: download/features-1.3-g.php:42 download-old/features-1.3-g.php:42
+#, fuzzy
 msgid ""
 "When this feature is enabled (in the Interface tab of the Preferences), "
 "cutting audio in the middle of a clip does not remove it permanently - at "
@@ -2060,10 +2327,12 @@ msgstr ""
 "po prostu kliknij na linię cięcia, aby to odzyskać."
 
 #: download/features-1.3-g.php:66 download-old/features-1.3-g.php:66
+#, fuzzy
 msgid "Top: "
 msgstr "Góra: "
 
 #: download/index.php:20 download-old/index.php:20
+#, fuzzy
 msgid ""
 "Select your operating system to download the latest version of the free "
 "Audacity sound editor."
@@ -2072,22 +2341,27 @@ msgstr ""
 "edytora dźwięku Audacity."
 
 #: download/index.php:26 download-old/index.php:26
+#, fuzzy
 msgid "For all users"
 msgstr "Dla wszystkich użytkowników"
 
 #: download/index.php:33 download/index.php:49
+#, fuzzy
 msgid "Mac OS X"
 msgstr "Mac OS X"
 
 #: download/index.php:42 download-old/index.php:42
+#, fuzzy
 msgid "For advanced users"
 msgstr "Dla zaawansowanych użytkowników"
 
 #: download/index.php:57 download-old/index.php:57
+#, fuzzy
 msgid "You can also <a href=\"buy\">purchase</a> a copy of Audacity on CD."
 msgstr "Możesz również <a href=\"buy\">zakupić</a> kopię Audacity na płycie CD."
 
 #: download/index.php:59 download-old/index.php:59
+#, fuzzy
 msgid ""
 "If you wish to compile Audacity yourself, download the <a href=\"source"
 "\">source code</a>."
@@ -2096,6 +2370,7 @@ msgstr ""
 "\">plik źródłowy</a>."
 
 #: download/index.php:61 download-old/index.php:61
+#, fuzzy
 msgid ""
 "You may modify, distribute, and sell Audacity under the <a href=\"../about/"
 "license\">GNU GPL</a>."
@@ -2105,6 +2380,7 @@ msgstr ""
 
 #: download/linux.php:15 download-old/linux.php:15
 #: download-old/beta_linux.php:16
+#, fuzzy
 msgid ""
 "The easiest way to install the free Audacity audio editor on GNU/Linux (and "
 "other Unix-like systems) is to download a package built for your operating "
@@ -2116,6 +2392,7 @@ msgstr ""
 
 #: download/linux.php:30 download-old/linux.php:30
 #: download-old/beta_linux.php:31
+#, fuzzy
 msgid ""
 "Linux and Unix users may also compile Audacity from <a href=\"source"
 "\">source code</a>."
@@ -2125,10 +2402,12 @@ msgstr ""
 
 #: download/mac.php:22 download-old/mac.php:22
 #, php-format
+#, fuzzy
 msgid "For Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
 msgstr "Dla systemu Mac OS 9: <a href=\"%s\">Audacity %s</a> (.sit file, %.1lf MB)"
 
 #: download/mac.php:23 download-old/mac.php:23
+#, fuzzy
 msgid ""
 "(Unfortunately, we no longer have the resources to provide new versions of "
 "Audacity for Mac OS 9.)"
@@ -2137,19 +2416,23 @@ msgstr ""
 "dla systemu Mac OS 9.)"
 
 #: download/mac.php:33 download-old/mac.php:33
+#, fuzzy
 msgid "Audacity 1.2 requires Mac OS X 10.1 or later."
 msgstr "Audacity 1.2 wymaga systemu Mac OS X 10.1 lub późniejszego"
 
 #: download/mac.php:34 download-old/mac.php:34
+#, fuzzy
 msgid "Audacity 1.0 requires Mac OS 9.0 or later."
 msgstr "Audacity 1.0 wymaga systemu Mac OS 9.0 lub późniejszego."
 
 #: download/nyquistplugins.php:10 download-old/nyquistplugins.php:10
+#, fuzzy
 msgid "Download Nyquist Plug-Ins"
 msgstr "Pobierz wtyczki Nyquist"
 
 #. i18n-hint: Sorry, the actual plug-in descriptions are not translatable yet.
 #: download/nyquistplugins.php:15 download-old/nyquistplugins.php:15
+#, fuzzy
 msgid ""
 "<p>These are optional plug-in effects for the Audacity sound editor.  They "
 "are written in the <a href=\"../help/nyquist\">Nyquist programming language</"
@@ -2162,10 +2445,12 @@ msgstr ""
 "wtyczek</a>.</p>"
 
 #: download/plugins.php:9 download-old/plugins.php:9
+#, fuzzy
 msgid "Plug-In Effects"
 msgstr "Wtyczki z efektami"
 
 #: download/plugins.php:14 download-old/plugins.php:14
+#, fuzzy
 msgid ""
 "You can download and install plug-ins to add extra effects to Audacity.  "
 "Plug-ins appear at the bottom of the \"Effect\" menu.  To install new plug-"
@@ -2180,10 +2465,12 @@ msgstr ""
 "Na Mac OS X jest to zazwyczaj pod \"Aplikacje.\""
 
 #: download/plugins.php:16 download-old/plugins.php:16
+#, fuzzy
 msgid "LADSPA Plug-Ins"
 msgstr "Wtyczki LADSPA"
 
 #: download/plugins.php:17 download-old/plugins.php:17
+#, fuzzy
 msgid ""
 "Audacity has built-in support for LADSPA plug-ins.  These plug-ins are "
 "mostly built for Linux, but some are available for other operating systems "
@@ -2198,10 +2485,12 @@ msgstr ""
 "\">Strona internetowa LADSPA</a>.</p>"
 
 #: download/plugins.php:19 download-old/plugins.php:19
+#, fuzzy
 msgid "Nyquist Plug-Ins"
 msgstr "Wtyczki Nyquist"
 
 #: download/plugins.php:20 download-old/plugins.php:20
+#, fuzzy
 msgid ""
 "Audacity has built-in support for cross-platform Nyquist effects.  You can "
 "download additional <a href=\"nyquistplugins\">Nyquist plug-ins</a>, or "
@@ -2214,10 +2503,12 @@ msgstr ""
 "Nyquist</a>"
 
 #: download/plugins.php:22 download-old/plugins.php:22
+#, fuzzy
 msgid "VST Plug-Ins"
 msgstr "Wtyczki VST"
 
 #: download/plugins.php:23 download-old/plugins.php:23
+#, fuzzy
 msgid ""
 "Audacity can load VST effects (for Mac OS or Windows) using the optional <a "
 "href=\"../help/faq?s=install&amp;i=vst-enabler\">VST Enabler</a>.  You can "
@@ -2232,22 +2523,25 @@ msgstr ""
 "ins/\">innych stronach z wtyczkami</a>.</p>"
 
 #: download/release-notes.php:17 download-old/release-notes.php:16
+#, fuzzy
 msgid "Known Problems"
 msgstr "Znane problemy"
 
 #: download/release-notes.php:18 download-old/release-notes.php:17
 #, php-format
+#, fuzzy
 msgid "The following are known bugs or problems in Audacity %s:"
 msgstr "Oto znane problemy i błedy w Audacity %s:"
 
 #: download/release-notes.php:20 download-old/release-notes.php:19
-msgid ""
-"Audacity can import and display MIDI files, but cannot play or edit them."
+#, fuzzy
+msgid "Audacity can import and display MIDI files, but cannot play or edit them."
 msgstr ""
 "Audacity może importować i wyświetlać pliki MIDI, ale nie potrafi ich "
 "odtwarzać ani edytować."
 
 #: download/release-notes.php:21 download-old/release-notes.php:20
+#, fuzzy
 msgid ""
 "Linux:  Recording in full duplex (playing existing tracks while recording) "
 "on some systems causes mono recordings to sound distorted or low-pitched.  "
@@ -2259,6 +2553,7 @@ msgstr ""
 "Audacity, aby nagrywało w stereo."
 
 #: download/release-notes.php:22 download-old/release-notes.php:21
+#, fuzzy
 msgid ""
 "MacOS X: Audacity cannot work with files or folders that are contained "
 "inside folders with non-English characters (accents, symbols, etc.) in their "
@@ -2271,6 +2566,7 @@ msgstr ""
 "foldery ze znakami akcentowymi w ich nazwach sprawiają kłopoty."
 
 #: download/release-notes.php:25
+#, fuzzy
 msgid ""
 "<h3>Changes in Audacity 1.2.4</h3>\n"
 "<ul>\n"
@@ -2366,6 +2662,7 @@ msgstr ""
 "</ul>"
 
 #: download/source.php:31 download-old/source.php:31
+#, fuzzy
 msgid ""
 "The <a href=\"http://wxwidgets.org\">wxWidgets</a> library is <b>required</"
 "b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or "
@@ -2380,6 +2677,7 @@ msgstr ""
 #. i18n-hint:  Please add a note that the manuals below are in English.  If
 #. there is documentation available in your language, link to it here.
 #: help/documentation.php:16
+#, fuzzy
 msgid ""
 "This page contains manuals and userâs guides for the free Audacity sound "
 "editor.  For additional help, see the <a href=\"faq\">Frequently Asked "
@@ -2390,48 +2688,56 @@ msgstr ""
 "zadawane pytania</a> i <a href=\"tutorials\">Tutoriale</a>."
 
 #: help/documentation.php:19
+#, fuzzy
 msgid "Quick Reference Guide"
 msgstr "Przewodnik szybkiej pomocy"
 
 #: help/documentation.php:21
+#, fuzzy
 msgid "Read the Audacity reference online."
 msgstr "Przeczytaj odnośniki do Audacity w internecie"
 
 #: help/documentation.php:21
+#, fuzzy
 msgid ""
 "(You can also access this reference though the \"Help\" menu in the Audacity "
 "program.)"
-msgstr ""
-"(Możesz również zajrzeć do odnośników w menu \"Pomoc\" w Audacity "
+msgstr "(Możesz również zajrzeć do odnośników w menu \"Pomoc\" w Audacity "
 
 #: help/documentation.php:22
+#, fuzzy
 msgid "Printable version of the Audacity reference."
 msgstr "Wersja odnośników Audacity do druku"
 
 #: help/documentation.php:25
+#, fuzzy
 msgid "Audacity Userâs Manual"
 msgstr "Podręcznik użytkownika Audacity"
 
 #: help/documentation.php:27
+#, fuzzy
 msgid "Read the Audacity manual online."
 msgstr "Przeczytaj podręcznik Audacity w internecie"
 
 #: help/documentation.php:28
+#, fuzzy
 msgid "Download the Audacity manual."
 msgstr "Pobierz manual Audacity"
 
 #: help/documentation.php:28
+#, fuzzy
 msgid ""
 "(To use the downloaded manual, unzip it and then open the \"index.html\" "
 "file.)"
-msgstr ""
-"(Aby używać pobranego manuala rozpakuj go i otwórz plik \"index.html\" "
+msgstr "(Aby używać pobranego manuala rozpakuj go i otwórz plik \"index.html\" "
 
 #: help/documentation.php:31 help/index.php:35
+#, fuzzy
 msgid "Other Resources"
 msgstr "Inne źródła"
 
 #: help/documentation.php:33 help/index.php:37
+#, fuzzy
 msgid ""
 "<a href=\"http://audacityteam.org/wiki/\">The Audacity Wiki</a> contains "
 "tips, tricks, and documentation that anyone can edit."
@@ -2440,10 +2746,12 @@ msgstr ""
 "porady, triki i dokumentację, którą każdy może edytować."
 
 #: help/faq.php:26
+#, fuzzy
 msgid "Is Audacity really free?  Why?"
 msgstr "Czy Audacity jest naprawdę darmowe?  Dlaczego?"
 
 #: help/faq.php:27
+#, fuzzy
 msgid ""
 "<p>Yes, Audacity is <a href=\"../about/\">completely free, open source "
 "software</a>.  You are free to use this program for personal or commercial "
@@ -2474,10 +2782,12 @@ msgstr ""
 "kodu, naprawianie błędów, dokumentację i grafikę.</p>"
 
 #: help/faq.php:32
+#, fuzzy
 msgid "Does Audacity contain any spyware or adware?"
 msgstr "Czy Audacity zawiera jakieś spyware lub adware?"
 
 #: help/faq.php:33
+#, fuzzy
 msgid ""
 "<p>No.  Audacity does not include any spyware or adware.  Audacity is <a "
 "href=\"../about/\">completely free and open source</a>.  It is developed by "
@@ -2490,10 +2800,12 @@ msgstr ""
 "</p>"
 
 #: help/faq.php:36
+#, fuzzy
 msgid "May I distribute copies of Audacity?"
 msgstr "Czy mogę rozpowszechniać Audacity?"
 
 #: help/faq.php:37
+#, fuzzy
 msgid ""
 "<p>You can redistribute Audacity under the GNU General Public License, which "
 "gives you permission to modify, copy, and sell the program as long as you "
@@ -2506,10 +2818,12 @@ msgstr ""
 "zajrzyj na naszą <a href=\"../about/license\">informację o licencji</a>.</p>"
 
 #: help/faq.php:40
+#, fuzzy
 msgid "Someone is selling Audacity on eBay.  Is this legal?"
 msgstr "Ktoś sprzedaje Audacity na eBay-u. Czy jest to legalne?"
 
 #: help/faq.php:41
+#, fuzzy
 msgid ""
 "<p>It is legal to sell Audacity, as long as the seller makes the program and "
 "source code available under the <a href=\"../about/license\">GNU General "
@@ -2534,11 +2848,13 @@ msgstr ""
 "naszej <a href=\"../download/buy\">stronie zakupów</a>.</p>"
 
 #: help/faq.php:46
+#, fuzzy
 msgid "Does Audacity work with screen-reader programs for blind users?"
 msgstr "Czy Audacity działa z programami zczytującymi z ekranu dla niewidomych?"
 
 #. i18n-hint: The link below is in English.
 #: help/faq.php:48
+#, fuzzy
 msgid ""
 "<p>Audacity works with most screen-reader programs, but some of Audacityâs "
 "features are difficult or impossible to use without a mouse.  We are working "
@@ -2554,9 +2870,10 @@ msgstr ""
 
 #: help/faq.php:51
 msgid "What does âtime remainingâ mean?  Does Audacity expire?"
-msgstr "Co znaczy âpozostający czasâ ? Czy Audacity ma określony czas działania?"
+msgstr "Co znaczy pozostający czas ? Czy Audacity ma określony czas działania?"
 
 #: help/faq.php:52
+#, fuzzy
 msgid ""
 "<p>Audacity does not expire.  During recording, it displays how long you can "
 "record before running out of space on your computerâs hard drive.  To record "
@@ -2569,15 +2886,18 @@ msgstr ""
 "p>"
 
 #: help/faq.php:57
+#, fuzzy
 msgid "Installation and Plug-Ins"
 msgstr "Instalacja i wtyczki"
 
 #: help/faq.php:60
+#, fuzzy
 msgid "How do I download and install the LAME MP3 encoder?"
 msgstr "Jak pobrać i zainstalować program odkodowujący LAME MP3?"
 
 #: help/faq.php:61
 #, php-format
+#, fuzzy
 msgid ""
 "<p>Because of software patents, we cannot distribute MP3 encoding software "
 "ourselves.  Follow these instructions to use the free LAME encoder to export "
@@ -2626,6 +2946,7 @@ msgstr ""
 "</ol>"
 
 #: help/faq.php:80
+#, fuzzy
 msgid "How do I install VST plug-ins?"
 msgstr "Jak zainstalować wtyczki VST?"
 
@@ -2647,21 +2968,22 @@ msgstr ""
 "<ol>\n"
 "<li><p>Najpierw pobierz i rozpakuj <a href=\"%s\">VST Enabler</a>.</li>\n"
 "<li><p>Umieść rozpakowany VST Enabler razem z wtyczkami VST w "
-" âWtyczkiâ katalogu w folderze instalacyjnym Audacity.  (Na Mac OS X, "
+" katalogu Wtyczki w folderze instalacyjnym Audacity.  (Na Mac OS X, "
 "znajduje się to zazwyczaj w folderze Aplikacje.  Na Windows, znajduje się zazwyczaj "
 "w Programy.)</li>\n"
 "<li><p>Gdy drugi raz uruchomisz Audacitytwoje efekty VST pojawią się u dołu "
-"menu âEfektyâ .</li>\n"
+"menu Efekty .</li>\n"
 "</ol>\n"
 "<p>Zobacz również: <a href=\"faq?s=install&amp;i=vst-bugs\">Dlaczego niektóre wtyczki "
 "VST wyglądają źle lub nie działają?</a></p>"
 
-
 #: help/faq.php:89
+#, fuzzy
 msgid "Why do some VST plug-ins look wrong, or not work?"
 msgstr "Dlaczego niektóre wtyczki VST wyglądają źle lub nie działają?"
 
 #: help/faq.php:90
+#, fuzzy
 msgid ""
 "<p>The <a href=\"faq?s=install&amp;i=vst-enabler\">VST Enabler</a> is not "
 "yet able to display custom interfaces for plug-ins.  Instead, it uses "
@@ -2681,12 +3003,13 @@ msgstr ""
 "wtyczki, które nie działają.</p>  \n"
 "<p>Audacity nie wspiera również wtyczek instrumentu VST (VSTi). </p>"
 
-
 #: help/faq.php:95
+#, fuzzy
 msgid "What should I do if I have problems downloading or installing Audacity?"
 msgstr "Co powinienem zrobić, jeśli mam problemy z pobieraniem lub instalacją Audacity?"
 
 #: help/faq.php:96
+#, fuzzy
 msgid ""
 "<p>If you can't download Audacity, or if the downloaded setup file is "
 "corrupt, try downloading it from our <a href=\"http://sourceforge.net/"
@@ -2697,10 +3020,12 @@ msgstr ""
 "project/showfiles.php?group_id=6235\">alternatywnych serwerów</a>.</p>"
 
 #: help/faq.php:101
+#, fuzzy
 msgid "Recording"
 msgstr "Nagrywanie"
 
 #: help/faq.php:104
+#, fuzzy
 msgid "How can I record in stereo?"
 msgstr "Jak mogę nagrywać w stereo?"
 
@@ -2710,10 +3035,11 @@ msgid ""
 "section, change the number of recording channels from 1 (mono) to 2 (stereo)."
 "</p>"
 msgstr ""
-"<p>Aby nagrywać w stereo, otwórz okno Preferencje. W sekcji âAudio I/Oâ "
+"<p>Aby nagrywać w stereo, otwórz okno Preferencje. W sekcji Audio I/O "
 "zmień liczbę kanałów nagrywania z 1 (mono) na 2 (stereo). </p> "
 
 #: help/faq.php:108
+#, fuzzy
 msgid "How do I record from vinyl records, cassette tapes, or minidiscs?"
 msgstr "Jak nagrywać z płyt winylowych, kaset magnetofonowych i minidysków?"
 
@@ -2744,36 +3070,39 @@ msgid ""
 msgstr ""
 "<p>Najpierw ustaw Audacity na <a href=\"faq?s=recording&amp;i=stereo\">nagrywanie "
 "w stereo</a>.</p>\n"
-"<p>Następnie włóż jedną z końcówek kabla stereo do âWyjścia liniowegoâ lub âsłuchawkowegoâ "
+"<p>Następnie włóż jedną z końcówek kabla stereo do Wyjścia liniowego lub słuchawkowego "
 "w twoim magnetofonie, odtwarzaczu minidysków lub wieży stereo. Włóż drugą "
-"końcówkę do âs âWejścia liniowegoâ w twoim komputerze.  Jeśli nie masz odpowiedniego "
+"końcówkę do Wejścia liniowego w twoim komputerze.  Jeśli nie masz odpowiedniego "
 "kabla, który pasowałby do obu wejść, możesz go kupić w każdym sklepie "
 "elektronicznym.</p>\n"
-"<p>Wybierz âWejścieâ jako źródło dźwięku na pasku Audacity i naciśnij "
+"<p>Wybierz Wejście jako źródło dźwięku na pasku Audacity i naciśnij "
 "guzik nagrywania.  Podczas, gdy Audacity nagrywa, zacznij odtwarzać taśmę "
 "lub płytę. Po dokonaniu całego nagrania naciśnij guzik Stop.</"
 "p>\n"
 "<p>Notatki:</p>\n"
 "<ul>\n"
-"\t<li><p>Nie podłączaj wieży stereo do wejściaâs âMikrofonowegoâ "
-"w komputerze, które jest przeznaczone dla sygnałów o (âniskimâ) poziomie. Używaj "
-" âWejściaâ zamiast tego.</p></li>\n"
+"\t<li><p>Nie podłączaj wieży stereo do wejścia Mikrofonowego "
+"w komputerze, które jest przeznaczone dla sygnałów o (niskim) poziomie. Używaj "
+" Wejścia zamiast tego.</p></li>\n"
 "\t<li><p>Nie podłączaj adaptera bezpośrednio do komputera.  Sygnał "
 "z adaptera jest zniekształcony; musi być korygowany przez przedwzmacniacz lub "
-"wzmacniacz z âwejściem phonoâ .</p></li>\n"
+"wzmacniacz z wejściem phono .</p></li>\n"
 "</ul>\n"
 "<p>Zobacz również: <a href=\"faq?s=files&amp;i=split\">Jak podzielić długie "
 "nagranie w wiele plików</a>.</p>"
 
 #: help/faq.php:118 help/faq.php:177 help/faq.php:226
+#, fuzzy
 msgid "See also:"
 msgstr "Zobacz również:"
 
 #: help/faq.php:118 help/faq.php:202 help/faq.php:226
+#, fuzzy
 msgid "How do I save my recording on an audio CD?"
 msgstr "Jak zapisać nagranie na płycie audio?"
 
 #: help/faq.php:121
+#, fuzzy
 msgid "Why canât I hear what Iâm recording?"
 msgstr "Dlaczego nie słyszę, co nagrywam?"
 
@@ -2792,16 +3121,17 @@ msgid ""
 msgstr ""
 "<h3>Windows i Linux</h3>\n"
 "<p>Aby monitorować nagrywanie otwórz panel sterowania dźwiękiem.  "
-"Podwyższ głośność odtwarzania i wyłącz âWyciszâ okno dla twojego "
-"źródła nagrywania (zazwyczaj âmikrofonâ lub âwejścieâ).</p>\n"
-"<p>Jeśli to nie zadziała, otwórz okno preferencji. W âWe/Wy Audioâ "
-"włącz âoprogramowanie do odtwarzaniaâ .</p>\n"
+"Podwyższ głośność odtwarzania i wyłącz Wycisza okno dla twojego "
+"źródła nagrywania (zazwyczaj mikrofon lub wejście).</p>\n"
+"<p>Jeśli to nie zadziała, otwórz okno preferencji. We/Wy Audio "
+"włącz oprogramowanie do odtwarzania .</p>\n"
 "<h3>Mac OS X</h3>\n"
-"<p>Otwórz okno preferencji.  W sekcji âWe/Wy Audioâ , włącz opcję "
-"âOdtwarzaniaâ .  âOdtwarzanie sprzętoweâ jest najlepsze, jeśli jest osiągalne.  "
-"Jeśli nie działa, możesz wybrać âOdtwarzanieâ .</p>\n"
+"<p>Otwórz okno preferencji.  W sekcji We/Wy Audio , włącz opcję "
+"Odtwarzania .  Odtwarzanie sprzętowe jest najlepsze, jeśli jest osiągalne.  "
+"Jeśli nie działa, możesz wybrać Odtwarzanie .</p>\n"
 
 #: help/faq.php:130
+#, fuzzy
 msgid "Can I play a track while recording a new one on top of it?"
 msgstr "Czy mogę odtwarzać utwór podczas nagrywania innego?"
 
@@ -2824,7 +3154,7 @@ msgstr ""
 "Aby dokonać tego w Audacity, wykonaj poniższe kroki:</p>\n"
 "<ol>\n"
 "  <li>Zimportuj lub nagraj pierwszą ścieżkę.</li>\n"
-"  <li>Otwórz âWe/Wy Audioâ w oknie preferencji i sprawdź zaznaczenie "
+"  <li>Otwórz We/Wy Audio w oknie preferencji i sprawdź zaznaczenie "
 " <b>Odtwarzaj inne ścieżki podczas nagrywania nowej.</b></li>\n"
 "  <li>Zamknij preferencje i naciśnij guzik <b>Nagrywaj</b> .</li>\n"
 "</ol>\n"
@@ -2832,10 +3162,12 @@ msgstr ""
 "ścieżka nie jest zsynchronizowana z poprzednimi?</a></p>"
 
 #: help/faq.php:140
+#, fuzzy
 msgid "Why isnât my new track in sync with the previous ones?"
 msgstr "Dlaczego moja nowa ścieżka nie jest zsynchronizowana z poprzednimi?"
 
 #: help/faq.php:141
+#, fuzzy
 msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track "
 "recording</a>, there is an unpredictable delay between playback and "
@@ -2852,6 +3184,7 @@ msgstr ""
 "i użyć narzędzia Przemieszczania w czasie, aby przenieśc ją do odpowiedniego miejsca.</p>"
 
 #: help/faq.php:145
+#, fuzzy
 msgid "Can Audacity record RealAudio or other streaming audio?"
 msgstr "Czy Audacity może nagrywać RealAudio lub inne strumienie dźwiękowe?"
 
@@ -2874,11 +3207,10 @@ msgid ""
 "\"http://www.rogueamoeba.com/audiohijack/\">Audio Hijack</a> or <a href="
 "\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 msgstr ""
-
 "<h3>Windows i Linux</h3>\n"
 "<p>W większości przypadków można nagrywać jakikolwiek dźwięk jest aktualnie odtwarzany  "
 "przez komputer, wliczając w to strumienie z radia internetowego. "
-"<p>W opuszczalnym menu na pasku miksowania Audacity wybierz âWyjście faloweâ lub "
+"<p>W opuszczalnym menu na pasku miksowania Audacity wybierz Wyjście falowe lub "
 "âMiks Stereoâ jako źródło dźwięku.  (Nazwa może być różna w zależności od sterowników "
 "dźwięku, jakich używasz.) Gdy naciśniesz przycisk Nagrywaj, Audacity zgra dźwięk  "
 "aktualnie odtwarzany przez twój komputer. \n"
@@ -2891,10 +3223,12 @@ msgstr ""
 "\"http://www.ambrosiasw.com/utilities/wiretap/\">Wiretap Pro</a>.</p>\n"
 
 #: help/faq.php:155
+#, fuzzy
 msgid "Can I set Audacity to record at a certain time?"
 msgstr "Czy mogę ustawić Audacity, aby nagrywało o konkretnej godzinie?"
 
 #: help/faq.php:156
+#, fuzzy
 msgid ""
 "<p>Sorry, Audacity does not yet support scheduled recording.  We may add "
 "this feature to a future version of the program.</p>\n"
@@ -2925,14 +3259,17 @@ msgstr ""
 "</ol>"
 
 #: help/faq.php:168
+#, fuzzy
 msgid "Opening and Saving Files"
 msgstr "Otwieranie i zapisywanie plików"
 
 #: help/faq.php:171 help/faq.php:177
+#, fuzzy
 msgid "How do I open an Audacity project (AUP file) in another program?"
 msgstr "Jak otworzyć projekt Audacity (plik AUP) w innym programie? "
 
 #: help/faq.php:172
+#, fuzzy
 msgid ""
 "<p>Audacity project files are saved in a special format that only Audacity "
 "can open.  To open your project in another program or burn it to CD, you "
@@ -2945,12 +3282,12 @@ msgstr ""
 "polecenia Eksportuj (w menu Plik), aby zapisać go w standardowym formacie jak WAV lub AIFF.</p>"
 
 #: help/faq.php:175
-msgid ""
-"Why does Audacity create a folder full of .au files when I save a project?"
-msgstr ""
-"Dlaczego Audacity tworzy folder pełen plików .au, gdy zapisuję projekt?"
+#, fuzzy
+msgid "Why does Audacity create a folder full of .au files when I save a project?"
+msgstr "Dlaczego Audacity tworzy folder pełen plików .au, gdy zapisuję projekt?"
 
 #: help/faq.php:176
+#, fuzzy
 msgid ""
 "<p>Audacity breaks long tracks into small pieces so it can edit them more "
 "efficiently.  When you save a project, Audacity stores all of the pieces in "
@@ -2966,6 +3303,7 @@ msgstr ""
 " zapisany w tym samym miejscu, co folder âdaneâ .</p>"
 
 #: help/faq.php:180
+#, fuzzy
 msgid "Audacity crashed!  Can I recover any unsaved data?"
 msgstr "Audacity się zawiesiło! Czy mogę odzyskać niezapisane dane?"
 
@@ -2973,6 +3311,7 @@ msgstr "Audacity się zawiesiło! Czy mogę odzyskać niezapisane dane?"
 #. like to make more information available, please create a page on
 #. the wiki for now.
 #: help/faq.php:184
+#, fuzzy
 msgid ""
 "<p>You may be able to recover your project automatically with the <a href="
 "\"http://www.mesw.de/audacity/recovery/\">Audacity Recovery Utility</a>.  "
@@ -2985,10 +3324,12 @@ msgstr ""
 "\">Crash Recovery</a> , aby uzyskać więcej informacji.</p>"
 
 #: help/faq.php:187
+#, fuzzy
 msgid "Can Audacity import file formats like WMA, AAC, FLAC, etc.?"
 msgstr "Czy Audacity może importować formaty plików takich jak WMA, AAC, FLAC"
 
 #: help/faq.php:188
+#, fuzzy
 msgid ""
 "<p>Audacity <b>cannot</b> import or export files in <b>WMA, AAC, RealAudio, "
 "Shorten (SHN)</b>, or most other proprietary formats.  Because of licensing "
@@ -3017,10 +3358,12 @@ msgstr ""
 "</a></p>"
 
 #: help/faq.php:194
+#, fuzzy
 msgid "Why canât I play MIDI files?"
 msgstr "Dlaczego nie mogę odtwarzać plików MIDI?"
 
 #: help/faq.php:195
+#, fuzzy
 msgid ""
 "<p>Sorry, Audacity cannot play, edit, or convert MIDI files.  It can only "
 "display them visually (for comparison with recorded sounds).  We might add "
@@ -3033,10 +3376,12 @@ msgstr ""
 "próbkowaniu dźwięku (jak pliki WAV).</p>"
 
 #: help/faq.php:198
+#, fuzzy
 msgid "How do I import a track from an audio CD?"
 msgstr "Jak zimportować ścieżkę z płyty audio?"
 
 #: help/faq.php:199
+#, fuzzy
 msgid ""
 "<p>Audacity cannot import a track directly from an audio CD.  You must use a "
 "separate program like <a href=\"http://cdexos.sourceforge.net/\">CDex</a> or "
@@ -3049,6 +3394,7 @@ msgstr ""
 "do formatu, który Audacity może czytać, jak WAV lub AIFF.</p>"
 
 #: help/faq.php:203
+#, fuzzy
 msgid ""
 "After making a recording or editing a file in Audacity, follow these steps "
 "to save your work on an audio CD:"
@@ -3057,6 +3403,7 @@ msgstr ""
 "aby zapisać twoją pracę na płycie audio:"
 
 #: help/faq.php:204
+#, fuzzy
 msgid ""
 "<ol>\n"
 "  <li>Use the âExport as WAVâ or âExport as AIFFâ command to save your "
@@ -3107,10 +3454,12 @@ msgstr ""
 "nagranie w wiele ścieżek?</a></p>"
 
 #: help/faq.php:218
+#, fuzzy
 msgid "How can I split a long recording into multiple files or CD tracks?"
 msgstr "Jak mogę rozdzielić długie nagranie w wiele plików lub ścieżek?"
 
 #: help/faq.php:219
+#, fuzzy
 msgid ""
 "<p>Follow these steps to create a separate file for each song or segment of "
 "a long recording.  This is particularly useful if you are creating a CD, "
@@ -3139,14 +3488,17 @@ msgstr ""
 "</ol>"
 
 #: help/faq.php:231
+#, fuzzy
 msgid "Editing"
 msgstr "Edytowanie"
 
 #: help/faq.php:234
+#, fuzzy
 msgid "Why canât I use the effects or other menu items?"
 msgstr "Dlaczego nie mogę używać efektów lub innych elementów menu?"
 
 #: help/faq.php:235
+#, fuzzy
 msgid ""
 "<p>Some menu items are grayed out or disabled until they are ready for use.  "
 "Before choosing an effect, you must select the audio that you want to "
@@ -3159,10 +3511,12 @@ msgstr ""
 "lub wybierz âWybierz wszystkoâ z menu Edycja.</p>"
 
 #: help/faq.php:238
+#, fuzzy
 msgid "How do I combine two files into one longer file?"
 msgstr "Jak połączyć dwa pliki w jeden długi?"
 
 #: help/faq.php:239
+#, fuzzy
 msgid ""
 "<p>Follow these steps to splice two files together:</p>\n"
 "<ol>\n"
@@ -3191,10 +3545,12 @@ msgstr ""
 "( w menu Plik), aby zapisać jako plik dźwiękowy.</p>"
 
 #: help/faq.php:250
+#, fuzzy
 msgid "How do I mix two tracks together?"
 msgstr "Jak połączyć dwa utwory razem?"
 
 #: help/faq.php:251
+#, fuzzy
 msgid ""
 "<p>To mix two files, just import both of them into Audacity.  They will "
 "appear in separate tracks, and will be mixed together when you press the "
@@ -3209,10 +3565,12 @@ msgstr ""
 "ścieżek.</p>"
 
 #: help/faq.php:254
+#, fuzzy
 msgid "Can I remove the vocals from a recording to make a Karaoke track?"
 msgstr "Czy mogę usunąć wokal z nagrania, aby stworzyć ścieżkę Karaoke?"
 
 #: help/faq.php:255
+#, fuzzy
 msgid ""
 "<p>This is possible <b>only for certain stereo tracks</b>.  When the vocals "
 "are exactly the same on both stereo channels, you can remove them by "
@@ -3235,32 +3593,35 @@ msgid ""
 msgstr ""
 "<p>Jest to możliwe <b>tylko dla niektórych ścieżek stereo</b>.  Gdy wokale są "
 "dokładnie takie same na obu kanałach, możesz je usunąć poprzez "
-"ârozdzielenieâ jednego kanału od drugiego.  Działa to w wielu przypadkach "
+"rozdzielenie jednego kanału od drugiego.  Działa to w wielu przypadkach "
 "nagrań w studio, gdzie wokal jest umieszczany dokładnie w środku.</p>\n"
 "<p>Aby tego dokonać w Audacity:</p>\n"
 "<ol>\n"
 "  <li>Zimportuj plik stereo do Audacity.</li>\n"
 "  <li>Otwórz menu ścieżki (kliknij na strzałce obok tytułu ścieżki), i wybierz "
-" âRozdziel Ścieżki Stereo.â</li>\n"
+" Rozdziel Ścieżki Stereo.</li>\n"
 "  <li>Zaznacz dolną ścieżkę (prawy kanał) klikając w obszarze naokoło "
 "przycisków Wycisz/Solo.</li>\n"
-"  <li>Wybierz âOdwróćâ z menu Efekty.</li>\n"
-"  <li>Używając menu ścieżki zmień każdą ścieżkę w âMono.â</li>\n"
+"  <li>Wybierz Odwróć z menu Efekty.</li>\n"
+"  <li>Używając menu ścieżki zmień każdą ścieżkę w Mono.</li>\n"
 "</ol>\n""
-<p>Naciśnij przycisk Odtwarzaj, aby usłyszeć rezultat. Jeśli masz szczęście, wokal "
+"<p>Naciśnij przycisk Odtwarzaj, aby usłyszeć rezultat. Jeśli masz szczęście, wokal "
 "zniknie lecz większość instrumentów pozostanie nienaruszona jak "
 "ścieżka karaoke.  Możesz użyć polecenia Eksportuj z menu Plik, aby zapisać "
 "rezultaty.</p>\n"
 
 #: help/faq.php:284
+#, fuzzy
 msgid "Other frequently asked questions..."
 msgstr "Inne często zadawane pytania..."
 
 #: help/faq.php:288
+#, fuzzy
 msgid "Frequently Asked Questions"
 msgstr "Często zadawane pytania"
 
 #: help/faq.php:292
+#, fuzzy
 msgid ""
 "These are some of the most common questions about Audacity.  If your "
 "question isnât answered here, see the <a href=\"documentation"
@@ -3271,14 +3632,17 @@ msgstr ""
 "\">dokumentacji</a>, lub <a href=\"../contact/\">skontaktuj się z nami</a>, aby uzyskać pomoc."
 
 #: help/index.php:9
+#, fuzzy
 msgid "Documentation and Support"
 msgstr "Dokumentacja i wsparcie"
 
 #: help/index.php:20
+#, fuzzy
 msgid "New!"
 msgstr "Nowe!"
 
 #: help/index.php:22
+#, fuzzy
 msgid ""
 "Have questions?  Post them to the <a href=\"http://audacityteam.org/forum/"
 "\">Audacity Forum</a>."
@@ -3287,6 +3651,7 @@ msgstr ""
 "\">Forum Audacity</a>."
 
 #: help/index.php:26
+#, fuzzy
 msgid ""
 "<p>If you have a question, check the list of <a href=\"faq\">Frequently "
 "Asked Questions</a>.</p>\n"
@@ -3315,20 +3680,24 @@ msgstr ""
 "\">skontaktuj się z nami</a>.</p>"
 
 #: help/nyquist.php:17 help/nyquist2.php:17 help/nyquist3.php:17
+#, fuzzy
 msgid "Introduction to Nyquist and Lisp Programming"
 msgstr "Wprowadzenie do programowania w Nyquist i Lisp"
 
 #: help/nyquist.php:18 help/nyquist2.php:10 help/nyquist2.php:18
 #: help/nyquist3.php:18
+#, fuzzy
 msgid "Programming in Nyquist"
 msgstr "Programowanie w Nyquist"
 
 #: help/nyquist.php:19 help/nyquist2.php:19 help/nyquist3.php:10
 #: help/nyquist3.php:19
+#, fuzzy
 msgid "Creating Nyquist Plug-ins"
 msgstr "Tworzenie wtyczek Nyquist"
 
 #: help/nyquist.php:22
+#, fuzzy
 msgid ""
 "<p>Beginning with version 1.1.1, Audacity allows you to use the Nyquist "
 "programming language to write your own plug-in effects for Audacity.  Unlike "
@@ -3701,6 +4070,7 @@ msgstr ""
 "<h3><a href=\"nyquist2\">Następne: Programowanie w Nyquist</a></h3>"
 
 #: help/nyquist2.php:22
+#, fuzzy
 msgid ""
 "<p>What makes Nyquist distinct from Lisp is that it is designed to work with "
 "sound, and has lots of built-in primitives and functions that synthesize, "
@@ -4098,6 +4468,7 @@ msgstr ""
 "<h3><a href=\"nyquist3\">Następne: Tworzenie wtyczek Nyquist</a></h3>"
 
 #: help/nyquist3.php:22
+#, fuzzy
 msgid ""
 "<p>Creating a plug-in for Audacity using Nyquist is as simple as creating a "
 "text file with the extension \".ny\" with some Nyquist code, adding a few "
@@ -4420,6 +4791,7 @@ msgstr ""
 #. i18n-hint:  Please add a note that the links on this page are in English.
 #. If there are tutorials in your language, link to them here.
 #: help/tutorials.php:16
+#, fuzzy
 msgid ""
 "These articles give step-by-step instructions for common tasks using the "
 "free Audacity sound editor."
@@ -4432,34 +4804,42 @@ msgstr ""
 #. available in your language, add them here.  Otherwise, do not translate
 #. this string.  (Or make the translation identical to the original string.)
 #: help/tutorials.php:22 help/tutorials.php:23
+#, fuzzy
 msgid "localized_tutorials"
 msgstr "Zlokalizowane tutoriale"
 
 #: help/tutorials.php:27
+#, fuzzy
 msgid "Audacity 1.2 Tutorial by Dan Eliot"
 msgstr "Tutorial Audacity 1.2 autorstwa Dana Eliota"
 
 #: help/tutorials.php:27
+#, fuzzy
 msgid "Learn how to open and edit a WAV file, and save the result in an MP3."
 msgstr "Naucz się, jak otwierać i edytować pliki WAV oraz jak zapisywac rezultaty w MP3"
 
 #: help/tutorials.php:28
+#, fuzzy
 msgid "Multi-Track Recording Tutorial from AGNULA"
 msgstr "Tutorial wielościeżkowego nagrywania od AGNULA"
 
 #: help/tutorials.php:28
+#, fuzzy
 msgid "Make a simple multi-track recording."
 msgstr "Stwórz proste, wielościeżkowe nagranie"
 
 #: help/tutorials.php:29
+#, fuzzy
 msgid "Audacity Tutorial by Daniel James"
 msgstr "Tutorial Audacity autorstwa Daniela Jamesa"
 
 #: help/tutorials.php:29
+#, fuzzy
 msgid "Shows how to mix a multi-track project.  Includes sample sound files."
 msgstr "Pokazujem, jak miksować wielościeżkowe projekty. Zawiera próbki dźwięku."
 
 #: help/tutorials.php:32
+#, fuzzy
 msgid ""
 "For additional help, see the <a href=\"documentation\">Audacity "
 "documentation</a>."
@@ -4468,68 +4848,84 @@ msgstr ""
 "</a>."
 
 #: include/footer.inc.php:11
+#, fuzzy
 msgid "Page Footer"
 msgstr "Strony"
 
 #: include/footer.inc.php:13
+#, fuzzy
 msgid "Privacy"
 msgstr "Prywatność"
 
 #: include/footer.inc.php:14
+#, fuzzy
 msgid "Copyright"
 msgstr "Prawa autorskie"
 
 #: include/footer.inc.php:17
+#, fuzzy
 msgid "Creative Commons Attribution license"
 msgstr "Licencja"
 
 #: include/footer.inc.php:17
+#, fuzzy
 msgid "Creative Commons: Some rights reserved."
 msgstr "Prawa autorskie zastrzeżone"
 
 #: include/footer.inc.php:18
+#, fuzzy
 msgid "Development hosted by SourceForge"
 msgstr "Rozwój SourceForge"
 
 #: include/footer.inc.php:19
+#, fuzzy
 msgid "View this page in a different language"
 msgstr "Zobacz tą stronę w innym języku"
 
 #: include/header.inc.php:12
+#, fuzzy
 msgid "Audacity"
 msgstr "Audacity"
 
 #: include/header.inc.php:17
+#, fuzzy
 msgid "Jump to page content"
 msgstr "Przejdź do zawartości strony"
 
 #: include/header.inc.php:20
+#, fuzzy
 msgid "Powered by Google"
 msgstr "Wspierane przez Google"
 
 #: include/header.inc.php:25
+#, fuzzy
 msgid "Search this site"
 msgstr "Przeszukaj tą stronę"
 
 #: include/header.inc.php:29
+#, fuzzy
 msgid "Audacity: Free Sound Editor and Recording Software"
 msgstr "Audacity: Darmowy edytor dźwięku i oprogramowanie do nagrywania"
 
 #: include/header.inc.php:41
+#, fuzzy
 msgid "Site Navigation"
 msgstr "Nawigacja strony"
 
 #. i18n-hint: Controls how dates are formatted.
 #. See http://www.php.net/manual/function.strftime.php for details.
 #: include/news.inc.php:24
+#, fuzzy
 msgid "%B %d, %Y"
 msgstr "%B %d, %Y"
 
 #: include/news.inc.php:41
+#, fuzzy
 msgid "Audacity 1.2.4 and 1.3.0 Released"
 msgstr "Audacity 1.2.4 i 1.3.0 wydane"
 
 #: include/news.inc.php:42
+#, fuzzy
 msgid ""
 "<p>Audacity 1.2.4 is a new stable version of Audacity.  It includes a couple "
 "of bug fixes and minor improvements and is recommended for all users.  "
@@ -4560,10 +4956,12 @@ msgstr ""
 "</p>"
 
 #: include/news.inc.php:52
+#, fuzzy
 msgid "Audacity 1.2.3 Released"
 msgstr "Audacity 1.2.3 wydane"
 
 #: include/news.inc.php:53
+#, fuzzy
 msgid ""
 "<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a "
 "bug that interfered with long recordings on some Windows systems, and "
@@ -4580,10 +4978,12 @@ msgstr ""
 "zmian i znanych problemów w tej wersji.</p>"
 
 #: xml/index.php:9 xml/main.inc.php:11
+#, fuzzy
 msgid "File Formats"
 msgstr "Formaty plików"
 
 #: xml/index.php:15
+#, fuzzy
 msgid ""
 "Audacity uses an open XML file format to encourage interoperability.  "
 "Beginning with version 1.3.0, we are publishing the following DTD to aid "
@@ -4596,14 +4996,17 @@ msgstr ""
 ":"
 
 #: xml/index.php:22
+#, fuzzy
 msgid "More documentation on the Audacity project file format is forthcoming."
 msgstr "Więcej dokumentacji na temat formatu plików projektów Audacity zbliża się."
 
 #: download-old/index.php:33 download-old/index.php:49
+#, fuzzy
 msgid "Mac OS 9 or X"
 msgstr "Mac OS 9 lub X"
 
 #: download-old/release-notes.php:24
+#, fuzzy
 msgid ""
 "<h3>Changes in Audacity 1.2.3</h3>\n"
 "<ul>\n"
@@ -4666,3 +5069,4 @@ msgstr ""
 "Ukraińskie (uk), Hiszpańskie (es). Polskie (pl), Uproszczone Chińskie (zh), Norweskie-"
 "Bokmal (nb), Francuskie (fr), Rosyjskie (ru).</p></li>\n"
 "</ul>"
+
