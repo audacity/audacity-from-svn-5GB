@@ -1006,12 +1006,6 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
       mdc.SelectObject( wxNullBitmap );
    } 
 
-   // Tell the ruler to refresh.  This is done here to make the ruler
-   // display selection highlighting.  It could be made smarter by
-   // only refreshing if the selection changed AND it really should be
-   // done outside of the paint event.
-   mRuler->Refresh( false );
-
    // Supposed to be good-to-do under Windows
    dc->EndDrawing();
 
@@ -1364,7 +1358,6 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          SelectionHandleClick(event, t, r, num);
       else
          SelectNone();
-//      Refresh(false);
       
    } else if (event.ButtonUp(1) || event.ButtonUp(3)) {
       SetCapturedTrack( NULL );
@@ -1433,7 +1426,6 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
    if (event.ShiftDown()) {
       // If the shift button is down, extend the current selection.
       ExtendSelection(event.m_x, r.x);
-      DisplaySelection();
       return;
    }
 
@@ -1579,9 +1571,6 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
    if(abs( SelStart-x) < minimumSizedSelection)
        return;
 
-   ExtendSelection(x, r.x);
-   DisplaySelection();
-
    // Handle which tracks are selected
    int num2;
    if (0 != FindTrack(x, y, false, false, NULL, &num2)) {
@@ -1595,14 +1584,7 @@ void TrackPanel::SelectionHandleDrag(wxMouseEvent & event)
       }
    }
 
-   // Refresh the tracks, excluding the TrackLabel as 
-   // this gives a small speed improvement.
-   wxRect trackRect;
-   GetSize( &trackRect.width, &trackRect.height);
-   trackRect.y = 0;
-   trackRect.x = GetLeftOffset(); 
-   trackRect.width -= GetLeftOffset();
-   Refresh(false, &trackRect);
+   ExtendSelection(x, r.x);
 
 #ifdef __WXMAC__
 #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
@@ -1630,8 +1612,16 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 
    mViewInfo->sel0 = wxMin(mSelStart, selend);
    mViewInfo->sel1 = wxMax(mSelStart, selend);
+
+   // Full refresh since the label area may need to indicate
+   // newly selected tracks.
    Refresh(false);
+
+   // Make sure the ruler follows suit.
    mRuler->DrawSelection();
+
+   // As well as the SelectionBar.
+   DisplaySelection();
 }
 
 /// DM: Converts a position (mouse X coordinate) to 
