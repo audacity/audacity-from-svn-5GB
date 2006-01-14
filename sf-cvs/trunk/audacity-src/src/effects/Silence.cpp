@@ -52,9 +52,10 @@ bool EffectSilence::Process()
    TrackListIterator iter(mTracks);
    Track *track = iter.First();
    while (track) {
-      if (track->GetSelected())
+      if (track->GetSelected()) {
          track->Clear(mT0, mT1);
          track->InsertSilence(mT0, length);
+      }
       
       //Iterate to the next track
       track = iter.Next();
