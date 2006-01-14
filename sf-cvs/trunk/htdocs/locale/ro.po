@@ -179,6 +179,7 @@ msgstr ""
 "  <li>Editare foarte rapida a fisierelor mari</li>\n"
 "  <li>Editeaza si mixeaza un numar nelimitat de piese.</li>\n"
 "  <li>Foloseste unealta de desenare pentru a introduce manual punctele</li>\n"
+"</ul>"
 
 #: about/features.php:47
 msgid ""
