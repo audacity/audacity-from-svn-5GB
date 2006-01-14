@@ -77,6 +77,7 @@
   <li>Marek Mularczyk (pl)</li>
   <li>Sebastian Pacholski (pl)</li>
   <li>Cleber Tavano (pt_BR)</li>
+  <li>Manuel Ciosici (ro)</li>
   <li>Yuri Ilyin (ru)</li>
   <li>Alexandre Prokoudine (ru)</li>
   <li>Rok Hecl (sl)</li>
