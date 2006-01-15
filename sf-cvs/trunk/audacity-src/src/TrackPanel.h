@@ -15,12 +15,13 @@
 #include <wx/timer.h>
 #include <wx/window.h>
 #include <wx/panel.h>
+#include <wx/dcmemory.h>
 
 //Stm:  The following included because of the sampleCount struct.
 #include "Sequence.h"  
 #include "WaveClip.h"
 #include "WaveTrack.h"
-  
+
 class wxMenu;
 class wxRect;
 
@@ -181,6 +182,7 @@ class TrackPanel:public wxPanel {
 
    virtual void Refresh(bool eraseBackground = TRUE,
                         const wxRect *rect = (const wxRect *) NULL);
+   void RefreshTrack(Track *trk, bool refreshbacking = false);
 
    void DisplaySelection();
 
@@ -221,7 +223,9 @@ class TrackPanel:public wxPanel {
    bool HandleTrackLocationMouseEvent(WaveTrack * track, wxRect &r, wxMouseEvent &event);
    void HandleTrackSpecificMouseEvent(wxMouseEvent & event);
    void DrawIndicator();
+   void DoDrawIndicator(wxDC & dc);
    void DrawCursor();
+   void DoDrawCursor(wxDC & dc);
 
    void ScrollDuringDrag();
 
@@ -408,9 +412,7 @@ private:
 
    int mTimeCount;
 
-#if !defined(__WXMAC__)
-   wxBitmap *mBuffer;
-#endif
+   wxMemoryDC mBackingDC;
    wxBitmap *mBacking;
    bool mRefreshBacking;
    int mPrevWidth;

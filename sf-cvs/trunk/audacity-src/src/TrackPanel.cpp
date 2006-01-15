@@ -345,9 +345,6 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
      mTracks(tracks),
      mViewInfo(viewInfo),
      mRuler(ruler),
-#if !defined(__WXMAC__)
-     mBuffer(NULL),
-#endif
      mBacking(NULL),
      mRefreshBacking(false),
      mAutoScrolling(false)
@@ -489,13 +486,11 @@ TrackPanel::~TrackPanel()
 {
    mTimer.Stop();
 
-#if !defined(__WXMAC__)
-   if (mBuffer)
-      delete mBuffer;
-#endif
-
    if (mBacking)
+   {
+      mBackingDC.SelectObject( wxNullBitmap );
       delete mBacking;
+   }
 
    delete mTrackArtist;
 
@@ -752,6 +747,12 @@ void TrackPanel::ScrollDuringDrag()
 void TrackPanel::DrawIndicator()
 {
    wxClientDC dc( this );
+   DoDrawIndicator( dc );
+}
+
+/// Second level DrawIndicator()
+void TrackPanel::DoDrawIndicator(wxDC & dc)
+{
    bool onScreen;
    int x;
 
@@ -764,10 +765,7 @@ void TrackPanel::DrawIndicator()
       {
          x = GetLeftOffset() + int ( ( mLastIndicator - mViewInfo->h) * mViewInfo->zoom );
 
-         wxMemoryDC mdc;
-         mdc.SelectObject( *mBacking );
-         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mdc, x, 0 );
-         mdc.SelectObject( wxNullBitmap );
+         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mBackingDC, x, 0 );
       }
 
       // Nothing's every perfect...
@@ -775,7 +773,7 @@ void TrackPanel::DrawIndicator()
       // Redraw the cursor since we may have just wiped it out
       if( mLastCursor == mLastIndicator )
       {
-         DrawCursor();
+         DoDrawCursor( dc );
       }
 
       mLastIndicator = -1;
@@ -856,6 +854,12 @@ void TrackPanel::DrawIndicator()
 void TrackPanel::DrawCursor()
 {
    wxClientDC dc( this );
+   DoDrawCursor( dc );
+}
+
+/// Second level DrawCursor()
+void TrackPanel::DoDrawCursor(wxDC & dc)
+{
    bool onScreen;
    int x;
 
@@ -868,10 +872,7 @@ void TrackPanel::DrawCursor()
       {
          x = GetLeftOffset() + int ( ( mLastCursor - mViewInfo->h) * mViewInfo->zoom );
 
-         wxMemoryDC mdc;
-         mdc.SelectObject( *mBacking );
-         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mdc, x, 0 );
-         mdc.SelectObject( wxNullBitmap );
+         dc.Blit( x, 0, 1, mBacking->GetHeight(), &mBackingDC, x, 0 );
       }
 
       mLastCursor = -1;
@@ -928,25 +929,21 @@ void TrackPanel::DrawCursor()
 void TrackPanel::OnSize(wxSizeEvent & /* event */)
 {
    int width, height;
-   GetSize(&width, &height);
-
-   // Mac doesn't need a buffered DC
-#if !defined(__WXMAC__)
-   if (mBuffer)
-      delete mBuffer;
-
-   mBuffer = new wxBitmap(width, height);
-#endif
+   GetSize( &width, &height );
 
    // (Re)allocate the backing bitmap
-   if (mBacking)
+   if( mBacking )
+   {
+      mBackingDC.SelectObject( wxNullBitmap );
       delete mBacking;
+   }
 
-   mBacking = new wxBitmap(width, height);
+   mBacking = new wxBitmap( width, height );
+   mBackingDC.SelectObject( *mBacking );
 
    // Refresh the entire area.  Really only need to refresh when
    // expanding...is it worth the trouble?
-   Refresh(false);
+   Refresh( false );
 }
 
 /// LL: OnErase( ) is called during the normal course of 
@@ -968,42 +965,33 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    wxStopWatch sw;
 #endif
 
-   // Mac OS X automatically double-buffers the screen for you.
-#ifdef __WXMAC__
+   // Construct the paint DC on the heap so that it may be deleted
+   // early
    wxDC *dc = new wxPaintDC( this );
-#else
-   wxDC *dc = new wxBufferedPaintDC( this, *mBuffer );
-#endif
 
    // Supposed to be good-to-do under Windows
    dc->BeginDrawing();
 
+   // Retrieve the damage rectangle
+   wxRect box = GetUpdateRegion().GetBox();
+
    // Recreate the backing bitmap if we have a full refresh
    // (See TrackPanel::Refresh())
-   if( mRefreshBacking )
+   if( mRefreshBacking || ( box == GetRect() ) )
    {
       // Reset (should a mutex be used???)
       mRefreshBacking = false;
 
-      // Redraw
-      DrawTracks( dc );
+      // Redraw the backing bitmap
+      DrawTracks( &mBackingDC );
 
-      // Save the backing bitmap
-      wxMemoryDC mdc;
-      mdc.SelectObject( *mBacking );
-      mdc.Blit( 0, 0, mBacking->GetWidth(), mBacking->GetHeight(), dc, 0, 0 );
-      mdc.SelectObject( wxNullBitmap );
+      // Copy it to the display
+      dc->Blit( 0, 0, mBacking->GetWidth(), mBacking->GetHeight(), &mBackingDC, 0, 0 );
    }
    else
    {
-      // Retrieve the damage rectangle
-      wxRect box = GetUpdateRegion().GetBox();
-
       // Copy full, possibly clipped, damage rectange
-      wxMemoryDC mdc;
-      mdc.SelectObject( *mBacking );
-      dc->Blit( box.x, box.y, box.width, box.height, &mdc, box.x, box.y );
-      mdc.SelectObject( wxNullBitmap );
+      dc->Blit( box.x, box.y, box.width, box.height, &mBackingDC, box.x, box.y );
    } 
 
    // Supposed to be good-to-do under Windows
@@ -1012,12 +1000,15 @@ void TrackPanel::OnPaint(wxPaintEvent & /* event */)
    // Done with the clipped DC
    delete dc;
 
+   // Drawing now goes directly to the client area
+   wxClientDC cdc( this );
+
    // Update the indicator in case it was damaged.
-   DrawIndicator();
+   DoDrawIndicator( cdc );
 
    // Draw the cursor
    if( mViewInfo->sel0 == mViewInfo->sel1)
-      DrawCursor();
+      DoDrawCursor( cdc );
 
 #if DEBUG_DRAW_TIMING
    sw.Pause();
@@ -1155,9 +1146,7 @@ void TrackPanel::SetCursorAndTipWhenInLabelTrack( LabelTrack * pLT,
    if( edge != pLT->mOldEdge )
    {
       pLT->mOldEdge = edge;
-      //TODO: Avoid full repaint.
-      //We should just repaint the rectangle containing the drag-handle.
-      Refresh(false);
+      RefreshTrack( pLT, true );
    }
    // IF edge!=0 THEN we've set the cursor and we're done.
    // signal this by setting the tip.
@@ -3316,7 +3305,7 @@ void TrackPanel::OnKeyEvent(wxKeyEvent & event)
          ((LabelTrack *) t)->KeyEvent((mViewInfo->sel0), (mViewInfo->sel1),
                                       event);
          
-         Refresh(false);
+         RefreshTrack(t, true);
          MakeParentPushState(_("Modified Label"),
                              _("Label Edit"),
                              true /* consolidate */);
@@ -3997,6 +3986,34 @@ double TrackPanel::GetMostRecentXPos()
       (mMouseMostRecentX - GetLabelWidth()) / mViewInfo->zoom;
 }
 
+void TrackPanel::RefreshTrack(Track *trk, bool refreshbacking)
+{
+   int y = -mViewInfo->vpos;
+   TrackListIterator iter(mTracks);
+   Track *t;
+   for( t = iter.First(); t; t = iter.Next() )
+   {
+      int h = t->GetHeight();
+
+      if( t == trk )
+      {
+         int x = GetLeftOffset();
+         int w = GetRect().GetWidth() - x;
+         wxRect trackarea( x, y + kTopInset + 1, w, h - 2 );
+
+         if( refreshbacking )
+         {
+            mRefreshBacking = true;
+         }
+         Refresh( false, &trackarea );
+         break;
+      }
+
+      y += h;
+   }
+}
+
+
 /// This function overrides Refresh() of wxWindow so that the 
 /// boolean play indicator can be set to false, so that an old play indicator that is
 /// no longer there won't get  XORed (to erase it), thus redrawing it on the 
@@ -4004,7 +4021,6 @@ double TrackPanel::GetMostRecentXPos()
 void TrackPanel::Refresh(bool eraseBackground /* = TRUE */,
                          const wxRect *rect /* = NULL */)
 {
-
    // Tell OnPaint() to refresh the backing bitmap.
    //
    // Originally I had the check within the OnPaint() routine and it
