@@ -370,14 +370,14 @@ bool BatchCommands::IsMono()
    if( project == NULL )
    {
       wxMessageBox( _("No project and no Audio to process!") );
-      return -1.0;
+      return false;
    }
 
    TrackList * tracks = project->GetTracks();
    if( tracks == NULL )
    {
       wxMessageBox( _("No tracks to process!") );
-      return -1.0;
+      return false;
    }
 
    TrackListIterator iter(tracks);
