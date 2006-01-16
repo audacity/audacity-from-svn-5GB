@@ -326,10 +326,14 @@ static bool DoExport(AudacityProject *project,
       return ExportMP3(project, stereo, fullPath,
                        selectionOnly, t0, t1); }
    case 2: {
+#ifdef USE_LIBVORBIS
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, wxT(".ogg"));
       return ExportOGG(project, stereo, fullPath,
                        selectionOnly, t0, t1);
+#else
+      return false;
+#endif
    }
    case 3: {//tompg.  First make wav files, then call tompg.exe to convert
       wxString mp3OutputFile = MakeFullPath(overwrite,dir, name, wxT(".mp3"));

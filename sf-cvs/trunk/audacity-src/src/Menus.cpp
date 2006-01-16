@@ -188,13 +188,25 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginSubMenu(_("&Export As..."));
    c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
    c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
+#ifdef USE_LIBVORBIS
    c->AddItem(wxT("ExportOgg"),      _("Ogg &Vorbis..."),        FN(OnExportOggMix));
+   // Enable Export commands only when there are tracks
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("ExportOgg"), NULL);
+#endif
    c->EndSubMenu();
 
    c->BeginSubMenu(_("Expo&rt Selection As..."));
    c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
    c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
+#ifdef USE_LIBVORBIS
    c->AddItem(wxT("ExportOggSel"),   _("Ogg &Vorbis..."), FN(OnExportOggSelection));
+   // Enable Export Selection commands only when there's a selection
+   c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         wxT("ExportOggSel"), NULL);
+#endif
    c->EndSubMenu();
 
    // Enable Export commands only when there are tracks
@@ -209,14 +221,6 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
    c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
-   // Enable Export commands only when there are tracks
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
-                         wxT("ExportOgg"), NULL);
-   // Enable Export Selection commands only when there's a selection
-   c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                         wxT("ExportOggSel"), NULL);
 
    c->SetCommandFlags(wxT("ExportLabels"),
                       AudioIONotBusyFlag | LabelTracksExistFlag,
