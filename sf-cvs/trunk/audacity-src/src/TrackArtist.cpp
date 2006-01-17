@@ -1136,9 +1136,9 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    #endif
 
    if (showIndividualSamples)
-      DrawIndividualSamples(dc, mid, track, t0, pps, h,
-                            zoomMin, zoomMax, 
-                            dB, drawSamples, showPoints, muted);
+      DrawIndividualClipSamples(dc, mid, clip, t0, pps, h,
+                                zoomMin, zoomMax, 
+                                dB, drawSamples, showPoints, muted);
 
    if (drawEnvelope) {
       dc.SetPen(AColor::envelopePen);
