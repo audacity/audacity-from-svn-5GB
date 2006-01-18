@@ -36,7 +36,8 @@
 				ProgramDataBaseFileName=".\$(ConfigurationName)/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				CompileAs="0"/>
+				CompileAs="0"
+				DisableSpecificWarnings="4996"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -86,7 +87,8 @@
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+				DisableSpecificWarnings="4996"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -136,7 +138,8 @@
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
-				CompileAs="0"/>
+				CompileAs="0"
+				DisableSpecificWarnings="4996"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
