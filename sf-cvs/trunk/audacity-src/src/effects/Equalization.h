@@ -87,7 +87,7 @@ public:
    virtual bool Process();
 
    // Number of samples in an FFT window
-   enum {windowSize=16384};	//MJS - work out the optimum for this at run time?  Have a dialog box for it?
+   enum {windowSize=16384};   //MJS - work out the optimum for this at run time?  Have a dialog box for it?
 
    // Low frequency of the FFT.  20Hz is the
    // low range of human hearing
@@ -102,14 +102,15 @@ private:
 
    float *mFilterFuncR;
    float *mFilterFuncI;
-   int mM;	//MJS
+   int mM;
+   float mdBMax;
+   float mdBMin;
 
 public:
    enum curveType {
      amradio, acoustic,
      nab, lp, aes, deccaffrrmicro, deccaffrr78, riaa,
      col78, deccaffrrlp, emi78, rcavictor1938, rcavictor1947,
-     custom,
      nCurveTypes
    };
 
@@ -127,17 +128,21 @@ class EqualizationPanel: public wxPanel
 {
 public:
    EqualizationPanel( double loFreq, double hiFreq,
-		      Envelope *env,
-		      EqualizationDialog *parent,
-		      float *filterFuncR, float *filterFuncI, long windowSize,
-			  int *M, float *dBMin, float *dBMax, wxWindowID id,
-		      const wxPoint& pos = wxDefaultPosition,
-		      const wxSize& size = wxDefaultSize);
+               Envelope *env,
+               EqualizationDialog *parent,
+               float *filterFuncR, float *filterFuncI, long windowSize,
+               wxWindowID id,
+               const wxPoint& pos = wxDefaultPosition,
+               const wxSize& size = wxDefaultSize);
    ~EqualizationPanel();
 
    void OnMouseEvent(wxMouseEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnSize (wxSizeEvent & event);
+
+   int M;
+   float dBMax;
+   float dBMin;
 
 private:
 
@@ -149,9 +154,6 @@ private:
    long mWindowSize;
    float *mFilterFuncR;
    float *mFilterFuncI;
-   float *mdBMax;
-   float *mdBMin;
-   int *mM;	//MJS
 
    double mLoFreq;
    double mHiFreq;
@@ -173,22 +175,26 @@ class EqualizationDialog: public wxDialog, public XMLTagHandler
 public:
    // constructors and destructors
    EqualizationDialog(EffectEqualization * effect,
-								double loFreq, double hiFreq,
-								float *filterFuncR, float *filterFuncI, long windowSize, int *mM,
-								wxWindow *parent, wxWindowID id,
-								const wxString &title,
-								const wxPoint& pos = wxDefaultPosition,
-								const wxSize& size = wxDefaultSize,
-								long style = wxDEFAULT_DIALOG_STYLE );
+               double loFreq, double hiFreq,
+               float *filterFuncR, float *filterFuncI, long windowSize,
+               wxWindow *parent, wxWindowID id,
+               const wxString &title,
+               const wxPoint& pos = wxDefaultPosition,
+               const wxSize& size = wxDefaultSize,
+               long style = wxDEFAULT_DIALOG_STYLE );
 
    // WDR: method declarations for EqualizationDialog
    virtual bool Validate();
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
+   virtual bool EqualizationDialog::CalcFilter();
 
    void EnvelopeUpdated();
    static const float thirdOct[];
    wxRadioButton *mFaderOrDraw[2];
+   int M;
+   float dBMin;
+   float dBMax;
 
 private:
    void MakeEqualizationDialog();
@@ -213,16 +219,16 @@ private:
    {
       ID_FILTERPANEL = 10000,
       ID_LENGTH,
-	  ID_DBMAX,
-	  ID_DBMIN,
+      ID_DBMAX,
+      ID_DBMIN,
       ID_CURVE,
       ID_SAVEAS,
       ID_DELETE,
       ID_CLEAR,
       ID_PREVIEW,
-	  ID_SLIDER,
-	  drawRadioID,
-	  sliderRadioID
+      ID_SLIDER,
+      drawRadioID,
+      sliderRadioID
    };
 
 private:
@@ -243,16 +249,13 @@ private:
    void OnCancel( wxCommandEvent &event );
 
 private:
-	EffectEqualization * m_pEffect;
+   EffectEqualization * m_pEffect;
 
    double mLoFreq;
    double mHiFreq;
    float *mFilterFuncR;
    float *mFilterFuncI;
    long mWindowSize;
-   float mdBMin;
-   float mdBMax;
-   int *mM;	//MJS
    bool mDirty;
    wxSlider * m_sliders[NUMBER_OF_BANDS];
 
@@ -264,9 +267,9 @@ private:
    wxButton *mSaveAs;
    wxStaticText *mMText;
    wxStaticText *octText;
-   wxSlider *mMSlider;
-   wxSlider *mdBMaxSlider;
-   wxSlider *mdBMinSlider;
+   wxSlider *MSlider;
+   wxSlider *dBMinSlider;
+   wxSlider *dBMaxSlider;
    wxBoxSizer *szrC;
    wxFlexGridSizer *szrG;
    wxBoxSizer *szrV;
