@@ -163,6 +163,9 @@ class Envelope : public XMLTagHandler {
    // Returns 0 if point moved, -1 if not found.
    int Move(double when, double value);
 
+   // delete a point by it's position in array
+   void Envelope::Delete(int point);
+
    // Return number of points
    int GetNumberOfPoints() const;
 

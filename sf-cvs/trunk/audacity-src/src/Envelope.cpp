@@ -505,6 +505,11 @@ bool Envelope::HandleMouseButtonUp( wxMouseEvent & event, wxRect & r,
    return true;
 }
 
+void Envelope::Delete( int point )
+{
+   delete mEnv[point];
+   mEnv.RemoveAt(point);
+}
 
 // Returns true if parent needs to be redrawn
 bool Envelope::MouseEvent(wxMouseEvent & event, wxRect & r,
