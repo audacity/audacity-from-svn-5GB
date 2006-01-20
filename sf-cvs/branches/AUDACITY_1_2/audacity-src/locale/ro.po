@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Romanian Translation for Audacity 0.0.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2005-12-31 23:59+0200\n"
+"PO-Revision-Date: 2006-01-15 16:13+0200\n"
 "Last-Translator: Manuel Ciosici <manuelciosici@yahoo.com>\n"
 "Language-Team: Manuel R. Ciosici <manuelciosici@yahoo.com>\n"
 "MIME-Version: 1.0\n"
@@ -109,14 +109,13 @@ msgstr "&Copiere\tCtrl+C"
 msgid "&Delete\tCtrl+K"
 msgstr "&Ştergere\tCtrl+K"
 
-# Testez comentariu
 #: ../src/Menus.cpp:227
 msgid "&Edit"
 msgstr "&Editare"
 
 #: ../src/Menus.cpp:386
 msgid "&Edit ID3 Tags..."
-msgstr "&Editează Tagurile ID3"
+msgstr "&Editează Tagurile ID3..."
 
 #: ../src/Menus.cpp:605
 #, c-format
@@ -194,7 +193,7 @@ msgstr "&Refă %s"
 
 #: ../src/Menus.cpp:533
 msgid "&Run Benchmark..."
-msgstr "&Executa Test"
+msgstr "&Execută Test"
 
 #: ../src/Menus.cpp:146
 msgid "&Save Project\tCtrl+S"
@@ -227,7 +226,7 @@ msgstr "&Măreşte selecţia\tCtrl+E"
 
 #: ../src/TrackPanel.cpp:4106
 msgid "'left' channel"
-msgstr "canalul 'stânga'"
+msgstr "canalul 'stâng'"
 
 #: ../src/TrackPanel.cpp:4107
 msgid "'mono'"
@@ -235,17 +234,19 @@ msgstr "'mono'"
 
 #: ../src/TrackPanel.cpp:4106
 msgid "'right' channel"
-msgstr "canalul 'dreapta'"
+msgstr "canalul 'drept'"
 
 #: ../src/prefs/FileFormatPrefs.cpp:405
 msgid ""
 "(Not all combinations of headers\n"
 "and encodings are possible.)"
 msgstr ""
+"(Nu toate combinaţiile de antete\n"
+"şi codări sunt posibile.)"
 
 #: ../src/prefs/GUIPrefs.cpp:171
 msgid "-120 dB (approximate limit of human hearing)"
-msgstr "-120 dB (apozimativ limita urechii umane)"
+msgstr "-120 dB (apozimativ limita auzului uman)"
 
 #: ../src/prefs/GUIPrefs.cpp:178
 msgid "-145 dB (PCM range of 24 bit samples)"
@@ -285,11 +286,11 @@ msgstr "256 - implicit"
 
 #: ../src/prefs/SpectrumPrefs.cpp:44
 msgid "4096 - most narrowband"
-msgstr "4096 - latime de banda ingusta"
+msgstr "4096 - laţimea de bandă cea mai îngustă"
 
 #: ../src/prefs/SpectrumPrefs.cpp:38
 msgid "64 - most wideband"
-msgstr "64 - cea mai mare latime de banda"
+msgstr "64 - cea mai mare lăţime de bandă"
 
 #: ../src/AboutDialog.cpp:141
 msgid "A Free Digital Audio Editor"
@@ -305,15 +306,15 @@ msgstr "Acţiune"
 
 #: ../src/Menus.cpp:432
 msgid "Add Label At Playback Position\tCtrl+M"
-msgstr ""
+msgstr "Adaugă etichetă la pozitia de redare\tCtrl+M"
 
 #: ../src/Menus.cpp:431
 msgid "Add Label At Selection\tCtrl+B"
-msgstr "Adauga eticheta la selectie\tCtrl+B"
+msgstr "Adaugă etichetă la selecţie\tCtrl+B"
 
 #: ../src/Menus.cpp:3088
 msgid "Added label"
-msgstr "Eticheta adaugata"
+msgstr "Etichetă adaugată"
 
 #: ../src/TrackPanel.cpp:1904
 msgid "Adjusted envelope."
@@ -421,15 +422,15 @@ msgstr "Toate Fişierele (*)|*"
 
 #: ../src/Project.cpp:1740
 msgid "All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|List of Files (*.lof)|*.lof"
-msgstr "Toate Fisierele (*.*)|*.*|Proiecte Audacity (*.aup)|*.aup|Fisiere WAV (*.wav)|*.wav|Fisiere AIFF (*.aif)|*.aif|Fisiere AU (*.au)|*.au|Fisiere MP3 (*.mp3)|*.mp3|Fisiere Ogg Vorbis (*.ogg)|*.ogg|Liste de Fisiere (*.lof)|*.lof"
+msgstr "Toate Fişierele (*.*)|*.*|Proiecte Audacity (*.aup)|*.aup|Fişiere WAV (*.wav)|*.wav|Fişiere AIFF (*.aif)|*.aif|Fişiere AU (*.au)|*.au|Fişiere MP3 (*.mp3)|*.mp3|Fişiere Ogg Vorbis (*.ogg)|*.ogg|Liste de Fişiere (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2676
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
-msgstr "Toate Fisierele (*.*)|*.*|Fisiere MIDI (*.mid)|*.mid|Fisiere Allegro (*.gro)|*.gro"
+msgstr "Toate Fişierele (*.*)|*.*|Fişiere MIDI (*.mid)|*.mid|Fisiere Allegro (*.gro)|*.gro"
 
 #: ../src/Menus.cpp:2597
 msgid "All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|List of Files (*.lof)|*.lof"
-msgstr "Toate Fisierele (*.*)|*.*|Fisiere WAV (*.wav)|*.wav|Fisirere AIFF (*.aif)|*.aif|Fisiere AU (*.au)|*.au|fisiere MP3 (*.mp3)|*.mp3|Fisiere Ogg Vorbis (*.ogg)|*.ogg|Liste de Fisiere (*.lof)|*.lof"
+msgstr "Toate Fişierele (*.*)|*.*|Fişiere WAV (*.wav)|*.wav|Fişirere AIFF (*.aif)|*.aif|Fişiere AU (*.au)|*.au|Fişiere MP3 (*.mp3)|*.mp3|Fişiere Ogg Vorbis (*.ogg)|*.ogg|Liste de Fişiere (*.lof)|*.lof"
 
 #: ../src/effects/Amplify.cpp:164
 msgid "Allow clipping"
@@ -437,15 +438,15 @@ msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Alt-Left-Click"
-msgstr "Alt-Stanga-Click"
+msgstr "Alt-Stânga-Click"
 
 #: ../src/prefs/GUIPrefs.cpp:71
 msgid "Always allow pausing"
-msgstr "Intotdeauna permite pauza"
+msgstr "Permite întotdeauna pauze"
 
 #: ../src/import/ImportRaw.cpp:359
 msgid "Amount to import:"
-msgstr ""
+msgstr "Cantitate de importat:"
 
 #: ../src/effects/Amplify.cpp:132
 msgid "Amplification (dB):"
@@ -480,8 +481,8 @@ msgid ""
 "An error occurred while opening the project file.\n"
 "Some audio may not have been retrieved."
 msgstr ""
-"A fost intalnita o eroare la deschiderea proiectului.\n"
-"Unele bucati se poate sa nu fi fost importate."
+"A fost întalnită o eroare la deschiderea proiectului.\n"
+"Este posibil ca unele bucăţi să nu fi fost importate."
 
 #: ../src/prefs/MousePrefs.cpp:110
 #: ../src/prefs/MousePrefs.cpp:111
@@ -491,7 +492,7 @@ msgstr "Orice"
 #: ../src/effects/Effect.h:84
 #, c-format
 msgid "Applied effect: %s"
-msgstr "Efect aplicat: %s"
+msgstr "Efect aplicat în proporţie de: %s"
 
 #: ../src/effects/Amplify.cpp:34
 #, c-format
@@ -566,7 +567,7 @@ msgstr "Eşti sigur că vrei să salvezi acest fişier ca şi \""
 
 #: ../src/Tags.cpp:445
 msgid "Artist"
-msgstr "Artist:"
+msgstr "Artist"
 
 #: ../src/Tags.cpp:631
 msgid "Artist:"
@@ -603,11 +604,11 @@ msgstr ""
 
 #: ../src/MixerToolBar.cpp:101
 msgid "Audacity Mixer Toolbar"
-msgstr ""
+msgstr "Bara de mixer Audacity"
 
 #: ../src/prefs/PrefsDialog.cpp:52
 msgid "Audacity Preferences"
-msgstr "Setari Audacity"
+msgstr "Setări Audacity"
 
 #: ../src/AudacityApp.cpp:1100
 msgid "Audacity Project Files"
@@ -618,16 +619,16 @@ msgid ""
 "Audacity could not find a place to store temporary files.\n"
 "Please enter an appropriate directory in the preferences dialog."
 msgstr ""
-"Audacity nu a putut gasi un loc unde sa depoziteze fisierele temporare.\n"
-"Va rog introduceti calea la preferinte (setari)."
+"Audacity nu a putut găsi un loc unde să depoziteze fişierele temporare.\n"
+"Vă rog introduceţi calea la preferinţe (setări)."
 
 #: ../src/import/Import.cpp:170
 msgid ""
 "Audacity did not recognize the type of this file.\n"
 "If it is uncompressed, try importing it using \"Import Raw\""
 msgstr ""
-"Audacity nu a putut recunoaste acest tip de fisier.\n"
-" Daca este necomprimat, incercati sa il importati folosind functia \"Importeaza RAW\"."
+"Audacity nu a putut recunoaşte acest tip de fişier.\n"
+" Dacă este necomprimat, încercati să îl importaţi folosind comanda \"Importează RAW\"."
 
 #. i18n-hint: This message is used on Mac OS X.  This particular
 #: ../src/export/ExportMP3.cpp:560
@@ -637,7 +638,7 @@ msgid ""
 "\n"
 "Would you like to locate LameLib now?"
 msgstr ""
-"Audacity nu exportă fişiere MP3 în mod direct, în schimb foloseşte LAMA, o librărie de codare separată. Vezi documentaţia pentru mai multe informaţii.\n"
+"Audacity nu exportă fişiere MP3 în mod direct, în schimb foloseşte LAME, o librărie de codare separată. Vezi documentaţia pentru mai multe informaţii.\n"
 "\n"
 "Vrei sa localizezi librăria LameLib acum?"
 
@@ -670,7 +671,7 @@ msgstr ""
 "Audacity nu suportă fişierele MP3 direct, în schimb foloseşte \n"
 "librăria gratuită LAME pentru a lucra cu acest tip de fişiere. Trebuie\n"
 "să obţii libmp3lame.so separat ori prin download ori\n"
-"o construieşti din surse şi o localizezi pentru Audacity. Trebuie\n"
+"o construieşti din codul sursă şi o localizezi pentru Audacity. Trebuie\n"
 " să faci această operaţie doar o singură data.\n"
 "\n"
 "Doreşti să localizezi fişierul libmp3lame.so acum?"
@@ -688,14 +689,14 @@ msgstr ""
 "Audacity a găsit fişiere temporare care nu au fost şterse sau salvate\n"
 "ultima oară când ai folosit Audacity.\n"
 "\n"
-"Audacity nu le poate recupera automat, dar dacă să alegeţi să nu\n"
+"Audacity nu le poate recupera automat, dar dacă alegeţi să nu\n"
 " le ştergeţi le veţi putea recupera manual.\n"
 "\n"
 "Să şterg fişierele temporare?"
 
 #: ../src/AboutDialog.cpp:99
 msgid "Audacity is a free program written by a team of volunteer developers around the world.  Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects.  Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems.  Older versions of Audacity are available for Mac OS 9."
-msgstr "Audacity este un program gratuit scris de o echipă de dezvoltatori voluntari. Coordonarea are loc mulţumită SourceForge.net, un serviciu online care oferă unelte gratuite pentru proiectele open source. Audacity este disponibil pentru Windows 98 şi mai nou, Mac OS X, Linux şi alte sisteme de operare bazate pe Unix. Versiuni mai vechi ale programului Audacity sunt disponibile şi pentru Mac OS 9."
+msgstr "Audacity este un program gratuit scris de o echipă de dezvoltatori voluntari. Coordonarea are loc mulţumită SourceForge.net, un serviciu online care oferă unelte gratuite pentru proiectele open source. Audacity este disponibil pentru Windows 98 şi versiunile mai noi, Mac OS X, Linux şi alte sisteme de operare bazate pe Unix. Versiunile mai vechi ale programului Audacity sunt disponibile şi pentru Mac OS 9."
 
 #: ../src/AudacityApp.cpp:846
 msgid "Audacity is already running"
@@ -715,7 +716,7 @@ msgstr ""
 "Fişierele proiect Audacity (.AUP) nu sunt\n"
 " asociate cu Audacity în acest moment.\n"
 "\n"
-"Să le asociez, astfel se vor deschide la dublu click?"
+"Să le asociez, astfel încât să se deschidă la dublu click?"
 
 #: ../src/Project.cpp:2368
 msgid ""
@@ -725,7 +726,7 @@ msgid ""
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
 msgstr ""
-"Fişierele proiect Audacity (.aup) te lasă sa salvezi tot ceea ce lucrai\n"
+"Fişierele proiect Audacity (.aup) te lasă sa salvezi tot ceea ce lucrezi\n"
 " exact cum apare pe ecran, dar cele mai multe programe nu pot opera cu fişiere proiect Audacity.\n"
 "\n"
 "Când doreşti să salvezi un fişier astfel încât să poată fi deschis şi de alte programe atunci selectează una dintre\n"
@@ -749,6 +750,12 @@ msgid ""
 "\n"
 "Do you still want to start Audacity?"
 msgstr ""
+"Audacity nu a putut să blocheze directorul fişierelor temporare.\n"
+" Acest director poate fi folosit de o altă copie a Audacity.\n"
+" Rularea a două copii a Audacity simultan poate cauza\n"
+"pierderi de date sau poate provoca prăbuşirea unor sisteme.\n"
+"\n"
+"Încă doriţi să porniţi Audacity?"
 
 #: ../src/Project.cpp:1842
 msgid "Audacity was unable to convert an Audacity 1.0 project to the new project format."
@@ -937,7 +944,7 @@ msgstr "Schimbă viteza"
 
 #: ../src/effects/ChangeSpeed.cpp:282
 msgid "Change Speed, affecting both Tempo and Pitch"
-msgstr ""
+msgstr "Schimbă viteza afectând atât Tempoul cât şi Înălţimea"
 
 #: ../src/effects/ChangeSpeed.h:37
 msgid "Change Speed..."
@@ -957,7 +964,7 @@ msgstr "Ajusteaza Tempoul..."
 
 #: ../src/TrackPanel.cpp:4351
 msgid "Change lower speed limit (%) to:"
-msgstr ""
+msgstr "Schimbă valoarea vitezei minime (%) la:"
 
 #: ../src/TrackPanel.cpp:4416
 msgid "Change track name to:"
@@ -965,7 +972,7 @@ msgstr "Schimbă numele piesei în:"
 
 #: ../src/TrackPanel.cpp:4358
 msgid "Change upper speed limit (%) to:"
-msgstr ""
+msgstr "Schimbă valoarea vitezei maxime (%) la:"
 
 #: ../src/effects/AvcCompressor.cpp:398
 msgid "Change window size must be less than or equal to Adjustment window size."
@@ -974,13 +981,13 @@ msgstr ""
 #: ../src/TrackPanel.cpp:4189
 #, c-format
 msgid "Changed '%s' to %d Hz"
-msgstr ""
+msgstr "A fost schimbat din '%s' în %d Hz"
 
 #: ../src/TrackPanel.cpp:4116
 #: ../src/TrackPanel.cpp:4225
 #, c-format
 msgid "Changed '%s' to %s"
-msgstr ""
+msgstr "A fost schimbat din '%s' în %s "
 
 #: ../src/prefs/DirectoriesPrefs.cpp:214
 msgid "Changes to temporary directory will not take effect until Audacity is restarted"
@@ -1072,15 +1079,15 @@ msgstr ""
 
 #: ../src/ControlToolBar.cpp:86
 msgid "Click and drag to move a track in time"
-msgstr ""
+msgstr "Click and Drag pentru a muta o piesă în timp"
 
 #: ../src/TrackPanel.cpp:1574
 msgid "Click and drag to move left selection boundary."
-msgstr ""
+msgstr "Click and drag pentru a modifica limita stângă a selecţiei"
 
 #: ../src/TrackPanel.cpp:1579
 msgid "Click and drag to move right selection boundary."
-msgstr ""
+msgstr "Click and drag pentru a modifica limita dreaptă a selecţiei."
 
 #: ../src/TrackPanel.cpp:1621
 msgid "Click and drag to resize the track."
@@ -1115,7 +1122,7 @@ msgstr ""
 
 #: ../src/export/Export.cpp:382
 msgid "Command-line exporting is only supported on UNIX"
-msgstr ""
+msgstr "Exportarea în lie de comandă este suportată doar pe sistemele UNIX"
 
 #. i18n-hint: '-help', '-test' and
 #: ../src/AudacityApp.cpp:610
@@ -1406,16 +1413,16 @@ msgstr "Şterge"
 
 #: ../src/Menus.cpp:575
 msgid "DeleteKey\tBackspace"
-msgstr ""
+msgstr "Tasta de ştergere\tBackspace"
 
 #: ../src/Menus.cpp:580
 msgid "DeleteKey2\tDelete"
-msgstr ""
+msgstr "Tasta de ştergere2\tDelete"
 
 #: ../src/Project.cpp:2527
 #, c-format
 msgid "Deleted %.2f seconds at t=%.2f"
-msgstr ""
+msgstr "Au fost şterse %.2f secunde la t=%.2f"
 
 #: ../src/effects/Wahwah.cpp:500
 msgid "Depth (%):"
@@ -1442,12 +1449,12 @@ msgstr "Directoare"
 #: ../src/prefs/DirectoriesPrefs.cpp:181
 #, c-format
 msgid "Directory %s does not exist. Create it?"
-msgstr ""
+msgstr "Directorul %s nu există. Doriţi să îl creaţi?"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:202
 #, c-format
 msgid "Directory %s is not writable"
-msgstr ""
+msgstr "În directorul %s nu se poate scrie"
 
 #: ../src/widgets/Meter.cpp:305
 msgid "Disable"
@@ -1479,7 +1486,7 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:188
 msgid "Documentation Writer"
-msgstr ""
+msgstr "Scriitorul documentaţiei"
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
@@ -1593,7 +1600,7 @@ msgstr "Activat"
 
 #: ../src/prefs/FileFormatPrefs.cpp:438
 msgid "Encoding: "
-msgstr ""
+msgstr "Codare:"
 
 #: ../src/FreqWindow.cpp:132
 msgid "Enhanced Autocorrelation"
@@ -1601,7 +1608,7 @@ msgstr ""
 
 #: ../src/effects/nyquist/Nyquist.cpp:282
 msgid "Enter Nyquist Command: "
-msgstr ""
+msgstr "Introdu comanda Nyquist:"
 
 #: ../src/AStatus.cpp:351
 msgid "Enter a rate in Hz (samples per second):"
@@ -1803,7 +1810,7 @@ msgstr "Exportă tot proiectul ca şi Ogg Vorbis"
 #: ../src/export/ExportPCM.cpp:132
 #, c-format
 msgid "Exporting the entire project as a %s file"
-msgstr ""
+msgstr "Se exportă întregul proiect ca şi fişier %s"
 
 #: ../src/export/ExportMP3.cpp:1424
 msgid "Exporting the entire project as an mp3"
@@ -1811,24 +1818,24 @@ msgstr "Exportă tot preoiectul ca şi MP3"
 
 #: ../src/export/ExportCL.cpp:146
 msgid "Exporting the entire project using command-line encoder"
-msgstr ""
+msgstr "Se exportă întregul fişier folosind un encoder linie de comandă"
 
 #: ../src/export/ExportOGG.cpp:191
 msgid "Exporting the selected audio as Ogg Vorbis"
-msgstr ""
+msgstr "Se exportă sunetele selectate ca şi Ogg Vorbis"
 
 #: ../src/export/ExportPCM.cpp:127
 #, c-format
 msgid "Exporting the selected audio as a %s file"
-msgstr ""
+msgstr "Se exportă sunetele selectate ca şi fişier %s"
 
 #: ../src/export/ExportMP3.cpp:1421
 msgid "Exporting the selected audio as an mp3"
-msgstr ""
+msgstr "Se exportă sunetele selectate ca fişier mp3"
 
 #: ../src/export/ExportCL.cpp:144
 msgid "Exporting the selected audio using command-line encoder"
-msgstr ""
+msgstr "Se exportă sunetele selectate folosind un encoder linie de comandă"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Extend Selection Range"
@@ -2014,7 +2021,7 @@ msgstr "Cărţi de ajutor HTML (*.htb)|*.htb"
 
 #: ../src/prefs/AudioIOPrefs.cpp:238
 msgid "Hardware Playthrough (Play new track while recording it)"
-msgstr ""
+msgstr "Hardware playthrough (redă o piesă nouă în timp ce o înregistrezi)"
 
 #: ../src/prefs/FileFormatPrefs.cpp:415
 msgid "Header: "
@@ -2415,7 +2422,7 @@ msgstr "Fă Stereo"
 
 #: ../src/TrackPanel.cpp:843
 msgid "Make Stereo Track"
-msgstr ""
+msgstr "Creează o piesă stereo"
 
 #: ../src/prefs/FileFormatPrefs.cpp:72
 msgid "Make a copy of the file before editing (safer)"
@@ -3791,6 +3798,10 @@ msgid ""
 "into an existing project.  To open a project file,\n"
 "select Open from the File menu.\n"
 msgstr ""
+"Fişierul pe care l-aţi selectat este un proiect Audacity.\n"
+"\n"
+"Doar fişierele audio, nu şi proiectele, pot fi importate într-un proiect existent. Pentru a deschide un fişier proiect,\n"
+"selectaţi Deschide din meniul Fişier.\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
@@ -3805,6 +3816,12 @@ msgid ""
 "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
 msgstr ""
+"Sistemul a detectat o altă copie a Audacity care rulează.\n"
+"Rularea a două copii a Audacity simultan poate duce la\n"
+"pierderi de date sau prăbuşiri ale sistemului, deci nu este permis.\n"
+"\n"
+"Foloseşte comenzile Nou sau Deschide în programul Audacity care rulează\n"
+"pentru a procesa simultan mai multe proiecte.\n"
 
 #: ../src/Menus.cpp:3041
 msgid "The version of Audacity you are using does not support multiple time tracks."
@@ -4225,7 +4242,7 @@ msgstr "Măreşte sau Micşorează"
 
 #: ../src/prefs/MousePrefs.cpp:94
 msgid "Zoom out one step"
-msgstr ""
+msgstr "Micşorează un pas"
 
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:113
@@ -4275,7 +4292,7 @@ msgstr "jos"
 #. i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:27
 msgid "film frames 24 fps"
-msgstr ""
+msgstr "cadre de film 24 fps (cadre pe secundă)"
 
 #. i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:30
