@@ -384,7 +384,7 @@ bool BatchCommands::IsMono()
    Track *t = iter.First();
    bool mono = true;
    while (t) {
-      if (t->GetLinked() != NULL) {
+      if (t->GetLinked()) {
          mono = false;
          break;
       }
