@@ -499,7 +499,7 @@ bool AudacityApp::OnInit()
    // be visible, but when all other windows are closed, this menu bar should
    // become visible.
 
-   gParentFrame = new wxFrame(NULL, -1, wxT("invisible"), wxPoint(5000, 5000), wxSize(100, 100));
+   gParentFrame = new wxFrame(NULL, -1, wxT("invisible"), wxPoint(5000, 5000), wxSize(100, 100), wxFRAME_TOOL_WINDOW);
 
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
