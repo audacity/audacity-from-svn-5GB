@@ -214,10 +214,6 @@ void AudacityApp::MacReopenApp()
 
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
-#ifndef wxID_PREFERENCES
-#define wxID_PREFERENCES 1
-#endif
-
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
    EVT_CHAR(AudacityApp::OnKeyEvent)
 #ifdef __WXMAC__
@@ -504,6 +500,7 @@ bool AudacityApp::OnInit()
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
    fileMenu->Append(wxID_OPEN, wxT("&Open...\tCtrl+O"));
+   fileMenu->Append(wxID_ABOUT, _("&About Audacity..."));
    /* i18n-hint: Mac OS X shortcut should be Ctrl+, */
    fileMenu->Append(wxID_PREFERENCES, _("&Preferences...\tCtrl+,"));
 
@@ -968,8 +965,8 @@ void AudacityApp::OnMenuAbout(wxCommandEvent & event)
    // this happens, and enable the same code to be present on
    // all platforms.
    if(gAudacityProjects.GetCount() == 0) {
-   AboutDialog dlog(NULL);
-   dlog.ShowModal();
+      AboutDialog dlog(NULL);
+      dlog.ShowModal();
    }
    else
       event.Skip();
