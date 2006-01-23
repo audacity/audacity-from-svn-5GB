@@ -332,6 +332,9 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
+    EVT_MENU_OPEN(AudacityProject::OnMenuEvent)
+    EVT_MENU_CLOSE(AudacityProject::OnMenuEvent)
+    EVT_MENU(wxID_ANY, AudacityProject::OnMenu)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
     EVT_PAINT(AudacityProject::OnPaint)
     EVT_CLOSE(AudacityProject::OnCloseWindow)
@@ -1156,24 +1159,11 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
       mTrackPanel->HandleShiftKey(true);
    }
 
-   // If there is a selected label track and the event did not
-   // involve the control key, the label track gets dibs.
-   // By returning "false", that says that we want someone else
-   // to have a crack at it.
+   return false;
+}
 
-// Label Track can now accept Ctrl-Char combinations, e.g. Ctrl-C
-//   if (!event.ControlDown()) {
-#if 0
-   {
-      TrackListIterator iter(mTracks);
-      Track *t = iter.First();
-      while (t) {
-         if (t->GetKind() == Track::Label && t->GetSelected())
-            return false;
-         t = iter.Next();
-      }   
-   }
-#endif
+bool AudacityProject::HandleChar(wxKeyEvent & event)
+{
    return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
 }
 
@@ -1192,15 +1182,26 @@ bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
    return false;
 }
 
-bool AudacityProject::ProcessEvent(wxEvent & event)
+void AudacityProject::OnMenuEvent(wxMenuEvent & event)
 {
-   if (event.GetEventType() == wxEVT_COMMAND_MENU_SELECTED) {
-      if (mCommandManager.HandleMenuID(event.GetId(),
-                                       GetUpdateFlags(), 0xFFFFFFFF))
-         return true;
+   if (event.GetEventType() == wxEVT_MENU_OPEN) {
+      mCommandManager.HandleMenuOpen(event);
    }
+   else if (event.GetEventType() == wxEVT_MENU_CLOSE) {
+      mCommandManager.HandleMenuClose(event);
+   }
+}
 
-   return wxFrame::ProcessEvent(event);
+void AudacityProject::OnMenu(wxCommandEvent & event)
+{
+   bool handled = mCommandManager.HandleMenuID(event.GetId(),
+                                               GetUpdateFlags(),
+                                               0xFFFFFFFF);
+
+   if (handled)
+      event.Skip(true);
+   else
+      event.Skip(false);
 }
 
 //TODO: This function is still kinda hackish, clean up

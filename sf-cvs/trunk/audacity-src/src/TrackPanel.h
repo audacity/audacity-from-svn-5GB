@@ -161,7 +161,7 @@ class TrackPanel:public wxPanel {
    void OnErase(wxEraseEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
-   void OnKeyEvent(wxKeyEvent & event);
+   void OnChar(wxKeyEvent & event);
 
    void OnSetFocus(wxFocusEvent & event);
    void OnKillFocus(wxFocusEvent & event);

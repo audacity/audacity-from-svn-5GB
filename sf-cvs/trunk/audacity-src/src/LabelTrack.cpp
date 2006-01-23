@@ -14,12 +14,12 @@
 
 #include <stdio.h>
 
+#include <wx/bitmap.h>
 #include <wx/brush.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 #include <wx/dc.h>
 #include <wx/event.h>
-#include <wx/icon.h>
 #include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/pen.h>
@@ -41,7 +41,7 @@ bool LabelTrack::mbGlyphsReady=false;
 // or all boundaries at the same timecode depending on whether you 
 // click the centre (for all) or the arrow part (for one).
 // Currently we have twelve variants but we're only using six.
-wxIcon LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
+wxBitmap LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
 int LabelTrack::mIconHeight;
 int LabelTrack::mIconWidth;
 int LabelTrack::mTextHeight;
@@ -396,11 +396,11 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRig
    const int yStart=y-LabelTrack::mIconHeight/2;
 
    if((x  >= r.x) && (x  <= (r.x+r.width)))
-      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[GlyphLeft], x-xHalfWidth,yStart );
+      dc.DrawBitmap(LabelTrack::mBoundaryGlyphs[GlyphLeft], x-xHalfWidth,yStart, true);
    // The extra test here suppresses right hand markers when they overlap
    // the left hand marker (e.g. zoomed out) or are to the left.
    if((x1 >= r.x) && (x1 <= (r.x+r.width)) && (x1>x+LabelTrack::mIconWidth))
-      dc.DrawIcon( LabelTrack::mBoundaryGlyphs[GlyphRight], x1-xHalfWidth,yStart );
+      dc.DrawBitmap(LabelTrack::mBoundaryGlyphs[GlyphRight], x1-xHalfWidth,yStart, true);
 }
 
 /// Draw the text of the label and also draw
@@ -490,7 +490,10 @@ void LabelStruct::DrawHighlight( wxDC & dc, int xPos1, int xPos2, int charHeight
    curPen.SetColour(wxString(wxT("BLUE")));
    wxBrush curBrush = dc.GetBrush();
    curBrush.SetColour(wxString(wxT("BLUE")));
-   dc.DrawRectangle(xPos1, y-charHeight/2, (int) (xPos2-xPos1+0.5), charHeight);
+   if (xPos1 < xPos2)
+      dc.DrawRectangle(xPos1-1, y-charHeight/2, xPos2-xPos1+1, charHeight);
+   else
+      dc.DrawRectangle(xPos2-1, y-charHeight/2, xPos1-xPos2+1, charHeight);
 }
 
 void LabelStruct::getXPos( wxDC & dc, int * xPos1, int cursorPos) 
@@ -673,7 +676,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
       const int CursorWidth=2;
       if (mDrawCursor) {
          currentPen.SetWidth(CursorWidth);
-         dc.DrawLine(xPos, mLabels[i]->y - mFontHeight/2, xPos, mLabels[i]->y + mFontHeight/2);
+         dc.DrawLine(xPos-1, mLabels[i]->y - mFontHeight/2 + 1, xPos-1, mLabels[i]->y + mFontHeight/2);
          currentPen.SetWidth(1);
       }
    }
@@ -833,6 +836,7 @@ bool LabelTrack::CopySelectedText()
 
 /// Paste the text on the clipboard to text box
 ///  @return true if mouse is clicked in text box, false otherwise
+/// LL: Allows pasting non-printables...should that be changed?
 bool LabelTrack::PasteSelectedText() 
 {
    if (mSelIndex == -1)
@@ -1169,28 +1173,25 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
    }
 }
 
-#ifdef __WXMAC__
- #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-  // HACK: Workaround wxMac <=2.4 bug
-  bool gMacRepeat = false;
- #endif
-#endif
-
 /// KeyEvent is called for every keypress when over the label track.
 /// TODO: Modify so that it can pass unused characters on to 
 /// higher levels of the interface.
-void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event)
-{ 
-#ifdef __WXMAC__
- #if ((wxMAJOR_VERSION == 2) && (wxMINOR_VERSION <= 4))
-  // HACK: Workaround wxMac <=2.4 bug
-   gMacRepeat = !gMacRepeat;
-   if (gMacRepeat)
-      return;
- #endif
-#endif
+bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event)
+{
+   // Ignore modified characters (this does not include shifted ones)
+   if (event.HasModifiers() || event.CmdDown()) {
+      event.Skip();
+      return false;
+   }
 
-   long keyCode = event.GetKeyCode();
+   // Only track true changes to the label
+   bool updated = false;
+
+   // Assume the key will be handled
+   int handled = true;
+
+   // Cache the keycode
+   int keyCode = event.GetKeyCode();
 
    if (mSelIndex >= 0) {
       switch (keyCode) {
@@ -1224,6 +1225,7 @@ void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
                mCurrentCursorPos = 1;
             }
             mInitialCursorPos = mCurrentCursorPos;
+            updated = true;
          }
          break;
 
@@ -1255,6 +1257,7 @@ void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
                mCurrentCursorPos = 1;
             }
             mInitialCursorPos = mCurrentCursorPos;
+            updated = true;
          }
          break;
 
@@ -1340,7 +1343,10 @@ void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
             //moving cursor position forward
             mCurrentCursorPos++;
             mInitialCursorPos = mCurrentCursorPos;
+            updated = true;
          }
+         else
+            handled = false;
          break;
       }
    } 
@@ -1352,6 +1358,7 @@ void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
       // as our first character.
       // TODO: (Possibly) pass the unused characters on to other keycode
       // handlers, 
+      handled = false;
    }
    else
    {
@@ -1373,7 +1380,17 @@ void LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
       mLabels.Insert(l, pos);
       
       mSelIndex = pos;
+      updated = true;
    }
+
+   // Allow event to continue to wxApp if we didn't handle it
+   if (!handled)
+      event.Skip();
+
+   // Make sure the caret is visible
+   mDrawCursor = true;
+
+   return updated;
 }
 
 void LabelTrack::RemoveSelectedText() 
@@ -1893,12 +1910,7 @@ void LabelTrack::CreateCustomGlyphs()
    if( mbGlyphsReady )
       return;
 
-// KLUDGE!  Color #C0C0C0 is transparent for icons in wxWindows 2.4.0
-// Might not be that way in future, in which case we might need to
-// explicitly create a mask for the bitmap dependent on the colors before
-// creating the icon.
-
-// We're about to tweak the basic color spec to get 12 variations.
+   // We're about to tweak the basic color spec to get 12 variations.
    for( iConfig=0;iConfig<NUM_GLYPH_CONFIGS;iConfig++)
    {
       for( iHighlight=0;iHighlight<NUM_GLYPH_HIGHLIGHTS;iHighlight++)
@@ -1915,7 +1927,9 @@ void LabelTrack::CreateCustomGlyphs()
          if( iConfig==0) { XmpBmp[3]="3 c #C0C0C0"; XmpBmp[5]="5 c #C0C0C0"; }
          if( iConfig==1) { XmpBmp[4]="4 c #C0C0C0"; XmpBmp[7]="7 c #C0C0C0"; }
          // Create the icon from the tweaked spec.
-         mBoundaryGlyphs[index] = wxIcon(XmpBmp);
+         mBoundaryGlyphs[index] = wxBitmap(XmpBmp);
+         // Create the mask
+         mBoundaryGlyphs[index].SetMask(new wxMask(mBoundaryGlyphs[index], wxColour(192, 192, 192)));
       }
    }
 

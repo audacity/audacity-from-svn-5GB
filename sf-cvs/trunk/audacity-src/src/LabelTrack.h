@@ -141,7 +141,7 @@ class LabelTrack:public Track {
    void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
-   void KeyEvent(double & sel0, double & sel1, wxKeyEvent & event);
+   bool KeyEvent(double & sel0, double & sel1, wxKeyEvent & event);
 
    void Import(wxTextFile & f);
    void Export(wxTextFile & f);
@@ -187,7 +187,7 @@ class LabelTrack:public Track {
    static int mIconWidth;
    static int mTextHeight;
    static bool mbGlyphsReady;
-   static wxIcon mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS];
+   static wxBitmap mBoundaryGlyphs[NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS];
 
    int xUsed[MAX_NUM_ROWS];
 
