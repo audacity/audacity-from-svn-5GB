@@ -46,6 +46,7 @@ CommandManager::CommandManager():
    mCurrentID(0),
    mHiddenID(0),
    mCurrentMenu(NULL),
+   mOpenMenu(NULL),
    mDefaultFlags(0),
    mDefaultMask(0)
 {
@@ -280,7 +281,6 @@ void CommandManager::AddItem(wxString name, wxString label,
    
    if (shortcut) {
       dummy = dummy + wxT("\t") + mCommandIDHash[ID]->key;
-      newLabel = newLabel + wxT("\t") + mCommandIDHash[ID]->key;
    }
 
    CurrentMenu()->Append(ID, dummy);
@@ -520,7 +520,102 @@ void CommandManager::Modify(wxString name, wxString newLabel)
    }
 }
 
+void CommandManager::HandleMenuOpen(wxMenuEvent &evt)
+{
+   // Ensure we have a menu and that it's a top-level menu.
+   wxMenu *m = evt.GetMenu();
+   if (!m || m->GetParent())
+      return;
 
+   // Windows does not send a CLOSE event if you move from one 
+   // top-level menu to another, so simulate it.
+   if (mOpenMenu) {
+      wxMenuEvent dummy;
+      HandleMenuClose(dummy);
+   }
+
+   // Remember this menu
+   mOpenMenu = m;
+
+   // Turn on the accelerators
+   ToggleAccels(m, true);
+
+   return;
+}
+
+void CommandManager::HandleMenuClose(wxMenuEvent &evt)
+{
+   // This can happen when if the Windows system menu is used   
+   if (mOpenMenu == NULL)
+      return;
+
+   // GetMenu() under Windows will always return NULL.  And on other
+   // platforms we must ensure we are a top-level menu.
+   wxMenu *m = evt.GetMenu();
+   if (m && m->GetParent())
+      return;
+
+   // Turn off the accelerators
+   ToggleAccels(mOpenMenu, false);
+
+   // Forget about it
+   mOpenMenu = NULL;
+
+   return;
+}
+ 
+void CommandManager::ToggleAccels(wxMenu *m, bool show)
+{
+   // Add the top-level menu to the stack;
+   wxArrayPtrVoid stack;
+   stack.Add(m);
+
+   // Process all sub-menus in this tree
+   while (!stack.IsEmpty()) {
+
+      // Pop the bottom entry
+      m = (wxMenu *) stack.Item(0);
+      stack.RemoveAt(0);
+
+      // Retrieve menuitem info for this menu
+      wxMenuItemList mil = m->GetMenuItems();
+      int iCnt = m->GetMenuItemCount();
+      int iNdx;
+
+      // Iterate all menuitems at this level
+      for (iNdx = 0; iNdx < iCnt; iNdx++) {
+
+         // Retrieve the menuitem
+         wxMenuItem *mi = mil.Item(iNdx)->GetData();
+         if (!mi)
+            continue;
+
+         // Stack the menu if this item represents a submenu
+         if (mi->IsSubMenu()) {
+            stack.Add(mi->GetSubMenu());
+            continue;
+         }
+
+         // Retrieve the command entry for this item
+         CommandListEntry *entry = mCommandIDHash[mi->GetId()];
+         if (!entry)
+            continue;
+
+         // Rebuild the label based on whether the accelerator should
+         // be shown.
+         wxString label = entry->label.BeforeFirst(wxT('\t'));
+         if (show && !entry->key.IsEmpty()) {
+            label = label + wxT("\t") + entry->key;
+         }
+
+         // Set the new label
+         mi->SetText( label );
+      }
+   }
+
+   return;
+}
+ 
 /// HandleCommandEntry() takes a CommandListEntry and executes it
 /// returning true iff successful.  If you pass any flags,
 ///the command won't be executed unless the flags are compatible
@@ -537,7 +632,7 @@ bool CommandManager::HandleCommandEntry(CommandListEntry * entry, wxUint32 flags
       if (!allowed)
          return false;
    }
-   
+
    (*(entry->callback))(entry->index);
 
    return true;
@@ -580,7 +675,7 @@ bool CommandManager::HandleTextualCommand(wxString & Str, wxUint32 flags, wxUint
          if( Str.IsSameAs( mCommandList[i]->name ))
          {
             return HandleCommandEntry( mCommandList[i], flags, mask);
-   }
+         }
       }
    }
    // Not one of the singleton commands.

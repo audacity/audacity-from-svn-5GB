@@ -145,6 +145,12 @@ class CommandManager: public XMLTagHandler
    void Modify(wxString name, wxString newLabel);
 
    //
+   // Displaying menus
+   //
+   void HandleMenuOpen(wxMenuEvent &evt);
+   void HandleMenuClose(wxMenuEvent &evt);
+
+   //
    // Executing commands
    //
    bool HandleCommandEntry(CommandListEntry * entry, wxUint32 flags, wxUint32 mask);
@@ -186,6 +192,8 @@ class CommandManager: public XMLTagHandler
 
    wxString GetKey(wxString label);
 
+   void ToggleAccels(wxMenu *m, bool show);
+
 private:
    MenuBarList  mMenuBarList;
    SubMenuList  mSubMenuList;
@@ -197,6 +205,7 @@ private:
    int mHiddenID;
    int mXMLKeysRead;
    wxMenu * mCurrentMenu;
+   wxMenu * mOpenMenu;
 
    wxUint32 mDefaultFlags;
    wxUint32 mDefaultMask;

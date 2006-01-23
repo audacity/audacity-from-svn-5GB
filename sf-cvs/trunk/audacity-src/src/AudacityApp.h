@@ -39,10 +39,6 @@ class AudacityApp:public wxApp {
    void   SetCleanSpeechNoiseGate(float* pNG) { mCleanSpeechNoiseGate = pNG; }
    void   SetCleanSpeechNoiseGateExpectedCount(int count) { mCleanSpeechNoiseGateExpectedCount = count; }
 
-   virtual int FilterEvent(wxEvent& event);
-
-   int OnAllKeys(wxKeyEvent& event);
-
    // These are currently only used on Mac OS, where it's
    // possible to have a menu bar but no windows open.  It doesn't
    // hurt any other platforms, though.
@@ -51,8 +47,11 @@ class AudacityApp:public wxApp {
    void OnMenuOpen(wxCommandEvent & event);
    void OnMenuPreferences(wxCommandEvent & event);
    void OnMenuExit(wxCommandEvent & event);
-   void OnKeyEvent(wxKeyEvent & event );
-   
+
+   void OnKeyDown(wxKeyEvent & event);
+   void OnChar(wxKeyEvent & event);
+   void OnKeyUp(wxKeyEvent & event);
+
    // Most Recently Used File support (for all platforms).
    void OnMRUFile(wxCommandEvent &event);
 // void OnMRUProject(wxCommandEvent &event);
@@ -94,6 +93,9 @@ class AudacityApp:public wxApp {
                                    wxArrayString &results);
 
  private:
+
+   wxKeyEvent mLastKeyDown;
+    
    wxLocale *mLocale;
 
    wxSingleInstanceChecker *mChecker;

@@ -215,7 +215,9 @@ void AudacityApp::MacReopenApp()
 typedef int (AudacityApp::*SPECIALKEYEVENT)(wxKeyEvent&);
 
 BEGIN_EVENT_TABLE(AudacityApp, wxApp)
-   EVT_CHAR(AudacityApp::OnKeyEvent)
+   EVT_KEY_DOWN(AudacityApp::OnKeyDown)
+   EVT_CHAR(AudacityApp::OnChar)
+   EVT_KEY_UP(AudacityApp::OnKeyUp)
 #ifdef __WXMAC__
    EVT_MENU(wxID_NEW, AudacityApp::OnMenuNew)
    EVT_MENU(wxID_OPEN, AudacityApp::OnMenuOpen)
@@ -495,7 +497,7 @@ bool AudacityApp::OnInit()
    // be visible, but when all other windows are closed, this menu bar should
    // become visible.
 
-   gParentFrame = new wxFrame(NULL, -1, wxT("invisible"), wxPoint(5000, 5000), wxSize(100, 100), wxFRAME_TOOL_WINDOW);
+   gParentFrame = new wxFrame(NULL, -1, wxT("invisible"), wxPoint(5000, 5000), wxSize(100, 100), wxFRAME_NO_TASKBAR);
 
    wxMenu *fileMenu = new wxMenu();
    fileMenu->Append(wxID_NEW, wxT("&New\tCtrl+N"));
@@ -865,56 +867,50 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
    }
 }
 
-void AudacityApp::OnKeyEvent(wxKeyEvent & event )
+void AudacityApp::OnKeyDown(wxKeyEvent & event)
 {
-   event.Skip();
+   // Remember it
+   mLastKeyDown = event;
+
+   // Not handled
+   event.Skip(true);
+
+   // Make sure this event is destined for a project window
+   AudacityProject *prj = GetActiveProject();
+   if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
+      return;
+
+   if (prj->HandleKeyDown(event))
+      event.Skip(false);
 }
 
-
-//BG: Filters all events before they are processed
-int AudacityApp::FilterEvent(wxEvent& event)
+void AudacityApp::OnChar(wxKeyEvent & event)
 {
-   //Send key events to the commands code
-   if(event.GetEventType() == wxEVT_KEY_DOWN ||
-      event.GetEventType() == wxEVT_KEY_UP)
-      return (this->*((SPECIALKEYEVENT) (&AudacityApp::OnAllKeys)))
-         ((wxKeyEvent&)event);
-   return -1;
+   // Default to being handled
+   event.Skip(true);
+
+   // Make sure this event is destined for a project window
+   AudacityProject *prj = GetActiveProject();
+   if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
+      return;
+
+   if (prj->HandleChar(mLastKeyDown))
+      event.Skip(false);
 }
 
-//BG: THIS IS NOT A NORMAL KEY CALLBACK
-//BG: it gets called before everything else
-//BG: return -1 to allow other things to process keydown events
-//BG: return TRUE to signify that the event has been processed, but do not allow anything else to process this event
-//BG: return FALSE to signigy that the event has not been processed and should not be processed
-//BG: do not call event.skip, I do not know what would happen
-
-
-int AudacityApp::OnAllKeys(wxKeyEvent& event)
+void AudacityApp::OnKeyUp(wxKeyEvent & event)
 {
-   AudacityProject *audacityPrj = GetActiveProject();
+   // Not handled
+   event.Skip(true);
 
-   if (!audacityPrj) {
-      return -1;
-   }
+   // Make sure this event is destined for a project window
+   AudacityProject *prj = GetActiveProject();
+   if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
+      return;
 
-   if(audacityPrj->IsActive())
-   {
-      if (event.GetEventType() == wxEVT_KEY_DOWN) {
-         if (audacityPrj->HandleKeyDown(event))
-            return true;
-      }
-      if (event.GetEventType() == wxEVT_KEY_UP) {
-         if (audacityPrj->HandleKeyUp(event))
-            return true;
-      }
-   }
-
-   return -1;
+   if (prj->HandleKeyUp(event))
+      event.Skip(false);
 }
-
-
-
 
 int AudacityApp::OnExit()
 {

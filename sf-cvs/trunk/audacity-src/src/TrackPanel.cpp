@@ -224,7 +224,7 @@ enum {
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
-    EVT_CHAR(TrackPanel::OnKeyEvent)
+    EVT_CHAR(TrackPanel::OnChar)
     EVT_SIZE(TrackPanel::OnSize)
     EVT_ERASE_BACKGROUND(TrackPanel::OnErase)
     EVT_PAINT(TrackPanel::OnPaint)
@@ -3286,103 +3286,26 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
    }
 }
 
-// AS: Handle key presses by the user.  Notably, play and stop when the
-//  user presses the spacebar.  Also, LabelTracks can be typed into.
-void TrackPanel::OnKeyEvent(wxKeyEvent & event)
+// Allow typing into LabelTracks.
+void TrackPanel::OnChar(wxKeyEvent & event)
 {
-   if (event.ControlDown() || event.AltDown()) {
+   // Only deal with LabelTracks
+   Track *t = GetFocusedTrack();
+   if (!t || t->GetKind() != Track::Label) {
       event.Skip();
       return;
    }
 
-   TrackListIterator iter(mTracks);
+   // Pass keystroke to labeltrack's handler and add to history if any
+   // updates were done
+   if (((LabelTrack *)t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event))
+      MakeParentPushState(_("Modified Label"),
+                          _("Label Edit"),
+                          true /* consolidate */);
 
-   // Send keyboard input to the first selected LabelTrack
-   // There currently isn't a way to efficiently work with
-   // more than one LabelTrack
-   for (Track * t = iter.First(); t; t = iter.Next()) {
-      if (t->GetKind() == Track::Label && t->GetSelected() && ((LabelTrack*)t)->getKeyOn()) {
-         ((LabelTrack *) t)->KeyEvent((mViewInfo->sel0), (mViewInfo->sel1),
-                                      event);
-         
-         RefreshTrack(t, true);
-         MakeParentPushState(_("Modified Label"),
-                             _("Label Edit"),
-                             true /* consolidate */);
-         event.Skip();
-         return;
-      }
-   }
-   
-   switch (event.GetKeyCode()) {
-   case WXK_DELETE:
-   case WXK_BACK:
-      GetProject()->Clear();
-      break;
-   case WXK_SPACE:
-      mListener->TP_OnPlayKey();
-      break;
-   case WXK_PRIOR:
-      // BG: Page right
-		// Up and down are reversed from pre 1.3.0 Audacity versions.
-//lda      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen / 6));
-      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen / 6));
-      break;
-   case WXK_NEXT:
-      // BG: Page left
-//lda      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) + (mViewInfo->screen / 6));
-      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) - (mViewInfo->screen / 6));
-      break;
-   case WXK_RIGHT:
-      // BG: Scroll right
-      mListener->TP_ScrollWindow((mViewInfo->h + mViewInfo->screen) -
-                                 (mViewInfo->screen * .95));
-      break;
-   case WXK_LEFT:
-      // BG: Scroll left
-      mListener->TP_ScrollWindow((mViewInfo->h - mViewInfo->screen) +
-                                 (mViewInfo->screen * .95));
-      break;
-   case WXK_HOME:
-      // BG: Skip to beginning
-      // JS: Changed so that the selection is not changed
-      //     without modifiers
-      if (event.ShiftDown()) {
-         // move first selection edge to start
-         // direction of the selection is preserved
-         // if sel0 == sel1, sel0 comes first
-         if (mViewInfo->sel0 <= mViewInfo->sel1) {
-            mViewInfo->sel0 = mTracks->GetStartTime();
-         } else {
-            mViewInfo->sel1 = mTracks->GetStartTime();
-         }
-      }
-      mListener->TP_ScrollWindow(mTracks->GetStartTime());
-      break;
-   case WXK_END:
-      // BG: Skip to end
-      // JS: Changed so that the selection is not changed
-      //     without modifiers
-      if (event.ShiftDown()) {
-         // move last selection edge to end
-         // direction of the selection is preserved
-         // if sel0 == sel1, sel0 comes first
-         if (mViewInfo->sel0 <= mViewInfo->sel1) {
-            mViewInfo->sel1 = mTracks->GetEndTime();
-         } else {
-            mViewInfo->sel0 = mTracks->GetEndTime();
-         }
-      }
-      mListener->TP_ScrollWindow(mTracks->GetEndTime());
-      break;
-   case WXK_DOWN:
-//      OnNextTrack();
-      break;
-   case WXK_UP:
-//      OnPrevTrack();
-      break;
-   }
-   event.Skip();
+   // Refresh track display if the keystroke was handled
+   if (!event.GetSkipped())
+      RefreshTrack(t, true);
 }
 
 // AS: This handles just generic mouse events.  Then, based

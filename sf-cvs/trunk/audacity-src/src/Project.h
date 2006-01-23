@@ -176,7 +176,8 @@ class AudacityProject:public wxFrame,
 
    // Message Handlers
 
-   virtual bool ProcessEvent(wxEvent & event);
+   void OnMenuEvent(wxMenuEvent & event);
+   void OnMenu(wxCommandEvent & event);
    void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
@@ -189,6 +190,7 @@ class AudacityProject:public wxFrame,
    void OnTimer(wxTimerEvent & event);
    void OnToolBarUpdate(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);
+   bool HandleChar(wxKeyEvent & event);
    bool HandleKeyUp(wxKeyEvent & event);
 
    void HandleResize();
