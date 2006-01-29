@@ -234,7 +234,7 @@ UploadDialog::UploadDialog(wxWindow * parent)
 :  wxDialog(parent, -1, _("Audacity FTP"),
          wxDefaultPosition, wxSize(640, 480), wxDEFAULT_DIALOG_STYLE | wxWANTS_CHARS)
 {
-
+    ftp = NULL;
     dirnameList = new wxArrayString();
     dirpermList = new wxArrayString();
     dirsizeList = new wxArrayString();
