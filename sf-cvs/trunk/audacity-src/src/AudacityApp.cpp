@@ -106,11 +106,6 @@ void QuitAudacity(bool bForce)
 
    gIsQuitting = true;
 
-   if(bForce)
-   {
-      wxMessageBox(_("WARNING: You may be prompted to save your work. Clicking cancel will have the same effect as clicking no."));
-   }
-
    // Try to close each open window.  If the user hits Cancel
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
@@ -118,27 +113,28 @@ void QuitAudacity(bool bForce)
    SaveWindowSize();
 
    // BG: Are there any projects open?
-   if(!gAudacityProjects.IsEmpty())
+   if (!gAudacityProjects.IsEmpty())
    {
       size_t len = gAudacityProjects.Count();
-      for (size_t i = 0; i < len; i++) {
-         if(bForce)
+      for (size_t i = 0; i < len; i++)
+      {
+         if (bForce)
          {
             gAudacityProjects[i]->Close(true);
          }
          else
          {
-	   if (!gAudacityProjects[i]->Close()){
-	       gIsQuitting = false;
+            if (!gAudacityProjects[i]->Close())
+            {
+               gIsQuitting = false;
                return;
+            }
          }
       }
    }
-   }
-
+   
    if (gFreqWindow)
       gFreqWindow->Destroy();
-
 
    if (gParentFrame)
       gParentFrame->Destroy();
@@ -151,7 +147,7 @@ void QuitAudacity(bool bForce)
 
    QuitHelp();
 
-   if(bForce)
+   if (bForce)
    {
       wxExit();
    }
