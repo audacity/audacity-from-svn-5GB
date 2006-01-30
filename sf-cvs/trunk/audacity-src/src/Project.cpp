@@ -182,6 +182,8 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
    AudacityProject *p = new AudacityProject(parentWindow, -1,
                                             wxPoint(wndRect.x, wndRect.y), wxSize(wndRect.width, wndRect.height));
 
+   gAudacityProjects.Add(p);
+   
    if(bMaximized)
       p->Maximize(true);
 
@@ -591,8 +593,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mImporter = new Importer;
    mImportingRaw = false;
 
-   gAudacityProjects.Add(this);
-
    wxString msg = wxString::Format(wxT("Welcome to Audacity version %s"),
                                    wxT(AUDACITY_VERSION_STRING));
    mStatusBar->SetStatusText(msg);
@@ -675,39 +675,6 @@ AudacityProject::~AudacityProject()
    // and will destroy itself later.
    mDirManager->Deref();
 
-   gAudacityProjects.Remove(this);
-
-
-   if (gActiveProject == this) {
-      // Find a new active project
-      if (gAudacityProjects.Count() > 0) {
-         gActiveProject = gAudacityProjects[0];
-      }
-      else {
-         gActiveProject = NULL;
-      }
-   }
-
-   if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
-      bool quitOnClose;
-      #ifdef __WXMAC__
-      bool defaultQuitOnClose = false;
-      #else
-      bool defaultQuitOnClose = true;
-      #endif
-
-      gPrefs->Read(wxT("/GUI/QuitOnClose"), &quitOnClose, defaultQuitOnClose);
-
-      if (quitOnClose)
-         QuitAudacity();
-      else {
-         #ifdef __WXMAC__
-         wxGetApp().SetTopWindow(gParentFrame);
-         #else
-         CreateNewAudacityProject(gParentWindow);
-         #endif
-      }
-   }
 #ifdef EXPERIMENTAL_VOCAL_STUDIO
    ButtonWindow::ClearStripesAndButtons();
 #endif
@@ -1298,8 +1265,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
 	// We may not bother to prompt the user to save, if the 
    // project is now empty.
-	if( mEmptyCanBeDirty || bHasTracks )
-	{
+	if (event.CanVeto() && (mEmptyCanBeDirty || bHasTracks)) {
       if (mUndoManager.UnsavedChanges()) {
          int result = wxMessageBox(_("Save changes before closing?"),
                                    _("Save changes?"),
@@ -1311,6 +1277,44 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
             return;
          }
 		}
+   }
+
+   // LL:  Moved here from destructor since the object isn't necessarily deleted
+   // right away (Destroy() can queue the deletion) and, during QuitAudacity(), a
+   // check is made for active projects.  If left in the destructor, there
+   // is a chance that the project will not have been removed from the list
+   // and it will be "closed" twice.
+   gAudacityProjects.Remove(this);
+
+   if (gActiveProject == this) {
+      // Find a new active project
+      if (gAudacityProjects.Count() > 0) {
+         gActiveProject = gAudacityProjects[0];
+      }
+      else {
+         gActiveProject = NULL;
+      }
+   }
+   
+   if (gAudacityProjects.IsEmpty() && !gIsQuitting) {
+      bool quitOnClose;
+#ifdef __WXMAC__
+      bool defaultQuitOnClose = false;
+#else
+      bool defaultQuitOnClose = true;
+#endif
+      
+      gPrefs->Read(wxT("/GUI/QuitOnClose"), &quitOnClose, defaultQuitOnClose);
+      
+      if (quitOnClose)
+         QuitAudacity();
+      else {
+#ifdef __WXMAC__
+         wxGetApp().SetTopWindow(gParentFrame);
+#else
+         CreateNewAudacityProject(gParentWindow);
+#endif
+      }
    }
 
    //BG: Process messages before we destroy the window
