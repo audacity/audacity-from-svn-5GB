@@ -119,6 +119,7 @@ clean:
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
 	-$(MAKE) -C soundtouch clean
+	-rm -rf @LOCAL_LIBS@
 
 distclean:
 	-$(MAKE) -C allegro distclean
@@ -138,6 +139,7 @@ distclean:
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C soundtouch distclean
+	-rm -f @LOCAL_LIBS@
 
 .PHONY: allegro-recursive expat-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
