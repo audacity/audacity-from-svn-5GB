@@ -116,6 +116,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["pt"] = "Portugues";
    localLanguageName["ro"] = "Romana";
    localLanguageName["ru"] = "Russky";
+   localLanguageName["sk"] = "Slovensky";
    localLanguageName["sl"] = "Slovenscina";
    localLanguageName["sv"] = "Svenska";
    localLanguageName["uk"] = "Ukrainska";
