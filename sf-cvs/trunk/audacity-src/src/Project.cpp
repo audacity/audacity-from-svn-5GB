@@ -176,6 +176,13 @@ AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
    bool bMaximized;
    wxRect wndRect;
+
+#if defined(__WXMAC__)
+   if (gParentFrame->IsShown()) {
+      gParentFrame->Hide();
+   }
+#endif
+   
    GetNextWindowPlacement(&wndRect, &bMaximized);
 
    //Create and show a new project
@@ -1310,6 +1317,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          QuitAudacity();
       else {
 #ifdef __WXMAC__
+         gParentFrame->Show();
          wxGetApp().SetTopWindow(gParentFrame);
 #else
          CreateNewAudacityProject(gParentWindow);
