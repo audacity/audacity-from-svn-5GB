@@ -711,6 +711,7 @@
 		17CBAE43098B84E300575C58 /* xlsym.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BF52098B654400216F16 /* xlsym.c */; };
 		17CBAE44098B84E300575C58 /* xlsys.c in Sources */ = {isa = PBXBuildFile; fileRef = 17C8BF54098B654400216F16 /* xlsys.c */; };
 		17CBAE4A098B85CD00575C58 /* libnyquist.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 176A1A5B098B7B8D00DC73B4 /* libnyquist.a */; };
+		17FC86F40994637C0061DC94 /* compile.txt in Resources */ = {isa = PBXBuildFile; fileRef = 17FC86F30994637C0061DC94 /* compile.txt */; };
 		17FDBCFE098BFF4E00BCEF32 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 170731F30988D6AA008541CC /* config.h */; };
 		17FDBCFF098BFF4E00BCEF32 /* config_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F20988D6AB008541CC /* config_types.h */; };
 		17FDBD00098BFF4E00BCEF32 /* ogg.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F80988D6AB008541CC /* ogg.h */; };
@@ -1133,7 +1134,7 @@
 		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		178CF4FF0989541C0056CE58 /* configmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = configmac.h; path = mac/configmac.h; sourceTree = "<group>"; };
-		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1790AFC709883BFD008A330A /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AboutDialog.cpp; sourceTree = "<group>"; };
 		1790AFC809883BFD008A330A /* AboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AboutDialog.h; sourceTree = "<group>"; };
 		1790AFC909883BFD008A330A /* AColor.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AColor.cpp; sourceTree = "<group>"; };
@@ -1687,6 +1688,7 @@
 		17C8BF50098B654400216F16 /* xlsubr.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsubr.c; sourceTree = "<group>"; };
 		17C8BF52098B654400216F16 /* xlsym.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsym.c; sourceTree = "<group>"; };
 		17C8BF54098B654400216F16 /* xlsys.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsys.c; sourceTree = "<group>"; };
+		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2299,6 +2301,7 @@
 			isa = PBXGroup;
 			children = (
 				174F73C8098D516D009CD6E0 /* Resources */,
+				17FC86F30994637C0061DC94 /* compile.txt */,
 				178CF4FF0989541C0056CE58 /* configmac.h */,
 				174F73D7098D51AA009CD6E0 /* Info.plist */,
 			);
@@ -3854,6 +3857,7 @@
 				174F73D5098D516D009CD6E0 /* AudacityProject.icns in Resources */,
 				174F73D6098D516D009CD6E0 /* AudacityWAV.icns in Resources */,
 				174F73D8098D51AA009CD6E0 /* Info.plist in Resources */,
+				17FC86F40994637C0061DC94 /* compile.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3883,7 +3887,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static --disable-shared --without-ladspa $CONFIG_FLAGS\nexit $?\n";
+			shellScript = "if [ -z \"$WX_CONFIG\" ]\nthen\n   echo \"WX_CONFIG environment variable not set...aborting\"\n   exit 1\nfi\n\ncd $TOPLEVEL\nsh configure --enable-static=$CONFIG_STATIC --enable-unicode=$CONFIG_UNICODE $CONFIG_FLAGS\nexit $?\n";
 		};
 		17073FEB0988E6C9008541CC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4583,36 +4587,36 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		17072E8A0988BD58008541CC /* Debug */ = {
+		17072E8A0988BD58008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		17073EEA0988DC02008541CC /* Debug */ = {
+		17073EEA0988DC02008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		17073F580988E07F008541CC /* Debug */ = {
+		17073F580988E07F008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		17073F8A0988E15A008541CC /* Debug */ = {
+		17073F8A0988E15A008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		17073FDE0988E584008541CC /* Debug */ = {
+		17073FDE0988E584008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4621,56 +4625,56 @@
 				);
 				PRODUCT_NAME = mad;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		170740060988EA90008541CC /* Debug */ = {
+		170740060988EA90008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		170740170988EBB0008541CC /* Debug */ = {
+		170740170988EBB0008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		1707406C0988EEC0008541CC /* Debug */ = {
+		1707406C0988EEC0008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
 				PRODUCT_NAME = sndfile;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		1707408E0988F1FC008541CC /* Debug */ = {
+		1707408E0988F1FC008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
 				PRODUCT_NAME = soundtouch;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		1707409B0988F30D008541CC /* Debug */ = {
+		1707409B0988F30D008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portmixer;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		170740A80988F431008541CC /* Debug */ = {
+		170740A80988F431008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portaudio;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		170741170988F83B008541CC /* Debug */ = {
+		170741170988F83B008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4681,16 +4685,16 @@
 				PRODUCT_NAME = vorbis;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		170741460988FDD2008541CC /* Debug */ = {
+		170741460988FDD2008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		176A1B66098B7BDC00DC73B4 /* Debug */ = {
+		176A1B66098B7BDC00DC73B4 /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4699,11 +4703,14 @@
 				);
 				PRODUCT_NAME = nyquist;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		1790ABE509883346008A330A /* Debug */ = {
+		1790ABE509883346008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = yes;
+				CONFIG_UNICODE = no;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -4719,9 +4726,9 @@
 				WX_PREFIX = /usr/local;
 				ZERO_LINK = YES;
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		1790AFB509883B6E008A330A /* Debug */ = {
+		1790AFB509883B6E008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Info.plist;
@@ -4741,38 +4748,38 @@
 				PRODUCT_NAME = Audacity;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
 			};
-			name = Debug;
+			name = "Debug Static";
 		};
-		17CAEB7A098C926000337968 /* Release */ = {
+		17CAEB7A098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB7B098C926000337968 /* Release */ = {
+		17CAEB7B098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB7C098C926000337968 /* Release */ = {
+		17CAEB7C098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB7D098C926000337968 /* Release */ = {
+		17CAEB7D098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB7E098C926000337968 /* Release */ = {
+		17CAEB7E098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4781,16 +4788,16 @@
 				);
 				PRODUCT_NAME = mad;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB7F098C926000337968 /* Release */ = {
+		17CAEB7F098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB80098C926000337968 /* Release */ = {
+		17CAEB80098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4799,33 +4806,33 @@
 				);
 				PRODUCT_NAME = nyquist;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB81098C926000337968 /* Release */ = {
+		17CAEB81098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB82098C926000337968 /* Release */ = {
+		17CAEB82098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB83098C926000337968 /* Release */ = {
+		17CAEB83098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
 				PRODUCT_NAME = sndfile;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB84098C926000337968 /* Release */ = {
+		17CAEB84098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4836,32 +4843,32 @@
 				PRODUCT_NAME = vorbis;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB85098C926000337968 /* Release */ = {
+		17CAEB85098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portaudio;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB86098C926000337968 /* Release */ = {
+		17CAEB86098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portmixer;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB87098C926000337968 /* Release */ = {
+		17CAEB87098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
 				PRODUCT_NAME = soundtouch;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB88098C926000337968 /* Release */ = {
+		17CAEB88098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Info.plist;
@@ -4881,11 +4888,14 @@
 				PRODUCT_NAME = Audacity;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEB89098C926000337968 /* Release */ = {
+		17CAEB89098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = yes;
+				CONFIG_UNICODE = no;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -4899,38 +4909,38 @@
 				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System  -lwx_mac_xrc-2.6 -lwx_mac_qa-2.6 -lwx_mac_html-2.6 -lwx_mac_adv-2.6 -lwx_mac_core-2.6 -lwx_base_carbon_xml-2.6 -lwx_base_carbon_net-2.6 -lwx_base_carbon-2.6 -framework WebKit -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6 -lz -lpthread -liconv";
 				WX_PREFIX = /usr/local;
 			};
-			name = Release;
+			name = "Release Static";
 		};
-		17CAEBA7098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBA7098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = Untitled;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBA8098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBA8098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = allegro;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBA9098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBA9098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = expat;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAA098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAA098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = id3tag;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAB098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAB098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4939,16 +4949,16 @@
 				);
 				PRODUCT_NAME = mad;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAC098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAC098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = intgen;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAD098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAD098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4957,33 +4967,33 @@
 				);
 				PRODUCT_NAME = nyquist;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAE098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAE098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = ogg;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBAF098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBAF098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				PRODUCT_NAME = resample;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB0098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB0098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
 				PRODUCT_NAME = sndfile;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB1098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB1098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4994,32 +5004,32 @@
 				PRODUCT_NAME = vorbis;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB2098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB2098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portaudio;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB3098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB3098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = portmixer;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB4098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB4098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				OTHER_CFLAGS = "-fcheck-new";
 				PRODUCT_NAME = soundtouch;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB5098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB5098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = Info.plist;
@@ -5039,13 +5049,15 @@
 				PRODUCT_NAME = Audacity;
 				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
-		17CAEBB6098C9B8E00337968 /* Debug Unicode */ = {
+		17CAEBB6098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = yes;
+				CONFIG_UNICODE = yes;
 				DEAD_CODE_STRIPPING = YES;
-				EXTRA_CONFIG = "--enable-unicode";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5060,7 +5072,7 @@
 				WX_PREFIX = /usr/local;
 				ZERO_LINK = YES;
 			};
-			name = "Debug Unicode";
+			name = "Debug Static Unicode";
 		};
 /* End XCBuildConfiguration section */
 
@@ -5068,162 +5080,162 @@
 		17072E890988BD58008541CC /* Build configuration list for PBXAggregateTarget "Configure" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17072E8A0988BD58008541CC /* Debug */,
-				17CAEBA7098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7A098C926000337968 /* Release */,
+				17072E8A0988BD58008541CC /* Debug Static */,
+				17CAEBA7098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7A098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		17073EE90988DC02008541CC /* Build configuration list for PBXNativeTarget "allegro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073EEA0988DC02008541CC /* Debug */,
-				17CAEBA8098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7B098C926000337968 /* Release */,
+				17073EEA0988DC02008541CC /* Debug Static */,
+				17CAEBA8098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7B098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		17073F570988E07F008541CC /* Build configuration list for PBXNativeTarget "expat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073F580988E07F008541CC /* Debug */,
-				17CAEBA9098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7C098C926000337968 /* Release */,
+				17073F580988E07F008541CC /* Debug Static */,
+				17CAEBA9098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7C098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		17073F890988E15A008541CC /* Build configuration list for PBXNativeTarget "libid3tag" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073F8A0988E15A008541CC /* Debug */,
-				17CAEBAA098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7D098C926000337968 /* Release */,
+				17073F8A0988E15A008541CC /* Debug Static */,
+				17CAEBAA098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7D098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		17073FDD0988E584008541CC /* Build configuration list for PBXNativeTarget "libmad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17073FDE0988E584008541CC /* Debug */,
-				17CAEBAB098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7E098C926000337968 /* Release */,
+				17073FDE0988E584008541CC /* Debug Static */,
+				17CAEBAB098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7E098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		170740050988EA90008541CC /* Build configuration list for PBXNativeTarget "libogg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170740060988EA90008541CC /* Debug */,
-				17CAEBAE098C9B8E00337968 /* Debug Unicode */,
-				17CAEB81098C926000337968 /* Release */,
+				170740060988EA90008541CC /* Debug Static */,
+				17CAEBAE098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB81098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		170740160988EBB0008541CC /* Build configuration list for PBXNativeTarget "libresample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170740170988EBB0008541CC /* Debug */,
-				17CAEBAF098C9B8E00337968 /* Debug Unicode */,
-				17CAEB82098C926000337968 /* Release */,
+				170740170988EBB0008541CC /* Debug Static */,
+				17CAEBAF098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB82098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		1707406B0988EEC0008541CC /* Build configuration list for PBXNativeTarget "libsndfile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707406C0988EEC0008541CC /* Debug */,
-				17CAEBB0098C9B8E00337968 /* Debug Unicode */,
-				17CAEB83098C926000337968 /* Release */,
+				1707406C0988EEC0008541CC /* Debug Static */,
+				17CAEBB0098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB83098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		1707408D0988F1FC008541CC /* Build configuration list for PBXNativeTarget "soundtouch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707408E0988F1FC008541CC /* Debug */,
-				17CAEBB4098C9B8E00337968 /* Debug Unicode */,
-				17CAEB87098C926000337968 /* Release */,
+				1707408E0988F1FC008541CC /* Debug Static */,
+				17CAEBB4098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB87098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		1707409A0988F30D008541CC /* Build configuration list for PBXNativeTarget "portmixer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1707409B0988F30D008541CC /* Debug */,
-				17CAEBB3098C9B8E00337968 /* Debug Unicode */,
-				17CAEB86098C926000337968 /* Release */,
+				1707409B0988F30D008541CC /* Debug Static */,
+				17CAEBB3098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB86098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		170740A70988F431008541CC /* Build configuration list for PBXNativeTarget "portaudio" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170740A80988F431008541CC /* Debug */,
-				17CAEBB2098C9B8E00337968 /* Debug Unicode */,
-				17CAEB85098C926000337968 /* Release */,
+				170740A80988F431008541CC /* Debug Static */,
+				17CAEBB2098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB85098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		170741160988F83B008541CC /* Build configuration list for PBXNativeTarget "libvorbis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170741170988F83B008541CC /* Debug */,
-				17CAEBB1098C9B8E00337968 /* Debug Unicode */,
-				17CAEB84098C926000337968 /* Release */,
+				170741170988F83B008541CC /* Debug Static */,
+				17CAEBB1098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB84098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		170741450988FDD2008541CC /* Build configuration list for PBXNativeTarget "intgen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				170741460988FDD2008541CC /* Debug */,
-				17CAEBAC098C9B8E00337968 /* Debug Unicode */,
-				17CAEB7F098C926000337968 /* Release */,
+				170741460988FDD2008541CC /* Debug Static */,
+				17CAEBAC098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB7F098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		176A1B65098B7BDC00DC73B4 /* Build configuration list for PBXNativeTarget "libnyquist" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				176A1B66098B7BDC00DC73B4 /* Debug */,
-				17CAEBAD098C9B8E00337968 /* Debug Unicode */,
-				17CAEB80098C926000337968 /* Release */,
+				176A1B66098B7BDC00DC73B4 /* Debug Static */,
+				17CAEBAD098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB80098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1790ABE509883346008A330A /* Debug */,
-				17CAEBB6098C9B8E00337968 /* Debug Unicode */,
-				17CAEB89098C926000337968 /* Release */,
+				1790ABE509883346008A330A /* Debug Static */,
+				17CAEBB6098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB89098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 		1790AFB409883B6E008A330A /* Build configuration list for PBXNativeTarget "Audacity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1790AFB509883B6E008A330A /* Debug */,
-				17CAEBB5098C9B8E00337968 /* Debug Unicode */,
-				17CAEB88098C926000337968 /* Release */,
+				1790AFB509883B6E008A330A /* Debug Static */,
+				17CAEBB5098C9B8E00337968 /* Debug Static Unicode */,
+				17CAEB88098C926000337968 /* Release Static */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = "Debug Static";
 		};
 /* End XCConfigurationList section */
 	};
