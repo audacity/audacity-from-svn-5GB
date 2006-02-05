@@ -507,10 +507,9 @@ bool AudacityApp::OnInit()
 
    gParentFrame->SetMenuBar(menuBar);
 
-   gParentFrame->Show();
+   gParentFrame->Hide();
 
    SetTopWindow(gParentFrame);
-
 #endif
 
    SetExitOnFrameDelete(true);
@@ -520,9 +519,8 @@ bool AudacityApp::OnInit()
 
    delete temporarywindow;
 
-   // Can't handle command-line args on Mac OS X yet...
-   // Cygwin command-line parser below...
-   #if !defined(__MACOSX__) && !defined(__CYGWIN__)
+#if !defined(__CYGWIN__)
+
    // Parse command-line arguments
    if (argc > 1) {
       for (int option = 1; option < argc; option++) {
@@ -567,10 +565,10 @@ bool AudacityApp::OnInit()
 
       }                         // for option...
    }                            // if (argc>1)
-   #endif // not Mac OS X
+
+#else
 	
    // Cygwin command line parser (by Dave Fancella)
-   #if defined(__CYGWIN__)
    if (argc > 1) {
       int optionstart = 1;
       bool startAtOffset = false;
@@ -646,7 +644,8 @@ bool AudacityApp::OnInit()
 
       }                         // for option...
    }                            // if (argc>1)
-   #endif // Cygwin command-line parser
+
+#endif // Cygwin command-line parser
 
    gInited = true;
 
