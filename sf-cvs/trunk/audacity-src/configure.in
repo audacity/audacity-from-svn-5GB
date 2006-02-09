@@ -313,11 +313,11 @@ if [[ "$WX_CONFIG" = "no" ]] ; then
 fi
 
 LIBS="$LIBS `$WX_CONFIG --static=$static_preference --unicode=$unicode_preference --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --static=$static_preference --unicode=$unicode_preference --cxxflags`"
 
 dnl Check that the wx version is 2.6.x
 
-wx_version=`${WX_CONFIG} --version`
+wx_version=`${WX_CONFIG} --static=$static_preference --unicode=$unicode_preference --version`
 
 AC_MSG_NOTICE([Checking that the installed version of wxWidgets is 2.6.x])
 
@@ -327,7 +327,12 @@ case "${wx_version}" in
     ;;
   *)
 
-  AC_MSG_ERROR([Uh-oh, you're using wxWidgets ${wx_version}.  Only version 2.6.x is supported.  Download the latest version from http://wxwidgets.org and check to see what version is installed using the command: wx-config --version])
+  AC_MSG_ERROR([Uh-oh, you're using wxWidgets ${wx_version}.
+Only wxWidgets version 2.6.x is supported. Check to see, what version is
+installed using the command wx-config --version. If necessary, either install
+the package for your distribution or download the latest version of wxWidgets
+from http://wxwidgets.org. If you have a Unicode version of wxWidgets 2.6.x
+installed, try to call ./configure with the parameter --enable-unicode])
 esac
 
 AC_CANONICAL_HOST
