@@ -727,9 +727,9 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mPlayLooped = playLooped;
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
-   mLastStableIndicator = NO_STABLE_INDICATOR;
 
 #ifndef USE_PORTAUDIO_V19
+   mLastStableIndicator = NO_STABLE_INDICATOR;
    mPausedSeconds = 0;
 #endif
 
