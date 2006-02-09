@@ -54,6 +54,8 @@
 
 #include "widgets/Meter.h"
 
+#define NO_STABLE_INDICATOR -1000000000
+
 AudioIO *gAudioIO;
 
 // static
@@ -675,7 +677,9 @@ void AudioIO::StartMonitoring(double sampleRate)
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
                          TimeTrack *timeTrack, double sampleRate,
-                         double t0, double t1, bool playLooped /* = false */)
+                         double t0, double t1, bool playLooped /* = false */,
+                         double cutPreviewGapStart /* = 0.0 */,
+                         double cutPreviewGapLen /* = 0.0 */)
 {
    if( IsBusy() )
       return 0;
@@ -721,6 +725,9 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPlayLooped = playLooped;
+   mCutPreviewGapStart = cutPreviewGapStart;
+   mCutPreviewGapLen = cutPreviewGapLen;
+   mLastStableIndicator = NO_STABLE_INDICATOR;
 
 #ifndef USE_PORTAUDIO_V19
    mPausedSeconds = 0;
@@ -1118,6 +1125,10 @@ double AudioIO::NormalizeStreamTime(double absoluteTime) const
    // the current stream time, and this query is not always accurate.
    // Sometimes it's a little behind or ahead, and so this function
    // makes sure that at least we clip it to the selection.
+   //
+   // msmeyer: There is also the possibility that we are using "cut preview"
+   //          mode. In this case, we should jump over a defined "gap" in the
+   //          audio.
 
    // msmeyer: Just to be sure, the returned stream time should
    //          never be smaller than the actual start time.
@@ -1134,6 +1145,14 @@ double AudioIO::NormalizeStreamTime(double absoluteTime) const
    else {
       if (absoluteTime > mT1)
          absoluteTime = mT1;
+   }
+   
+   if (mCutPreviewGapLen > 0)
+   {
+      // msmeyer: We're in cut preview mode, so if we are on the right
+      // side of the gap, we jump over it.
+      if (absoluteTime > mCutPreviewGapStart)
+         absoluteTime += mCutPreviewGapLen;
    }
       
    return absoluteTime;
@@ -1173,7 +1192,8 @@ double AudioIO::GetStreamTime()
 
    // Pa_StreamTime can sometimes return wacky results, so we
    // try to filter those out...
-   if (fabs(indicator - mLastIndicator) > 0.1) {
+   if (mLastStableIndicator != NO_STABLE_INDICATOR &&
+       fabs(indicator - mLastIndicator) > 0.1) {
       mLastIndicator = indicator;
       return NormalizeStreamTime(mLastStableIndicator);
    }

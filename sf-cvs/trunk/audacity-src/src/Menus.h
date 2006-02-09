@@ -67,6 +67,7 @@ void OnPlayStop();
 void OnPlayOneSecond();
 void OnPlayToSelection();
 void OnPlayLooped();
+void OnPlayCutPreview();
 
         //
 

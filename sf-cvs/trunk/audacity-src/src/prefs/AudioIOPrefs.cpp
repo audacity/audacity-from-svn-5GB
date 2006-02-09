@@ -36,6 +36,7 @@
 #include "../AudioIO.h"
 #include "../Project.h"
 #include "AudioIOPrefs.h"
+#include "../Internat.h"
 
 #include "portaudio.h"
 
@@ -70,6 +71,10 @@ PrefsPanel(parent)
 
    bool swplaythrough;
    gPrefs->Read(wxT("SWPlaythrough"), &swplaythrough, false);
+   
+   double cutPreviewBeforeLen, cutPreviewAfterLen;
+   gPrefs->Read(wxT("CutPreviewBeforeLen"), &cutPreviewBeforeLen, 1.0);
+   gPrefs->Read(wxT("CutPreviewAfterLen"), &cutPreviewAfterLen, 1.0);
 
    gPrefs->SetPath(wxT("/"));
 
@@ -271,7 +276,7 @@ PrefsPanel(parent)
       if (r != maxIndex) 
          textSizer[r]->SetMinSize( maxMinSize );
    }
-
+   
    // add flexgrid sizer to static sizer
    playbackSizer->Add(fileSizer[0], 0,
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
@@ -281,7 +286,6 @@ PrefsPanel(parent)
    // add static sizer to top sizer
    topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
    topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-
 
    wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Playthrough")), wxVERTICAL);
    mDuplex = new wxCheckBox(this, -1,
@@ -304,6 +308,52 @@ PrefsPanel(parent)
 
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+
+   // msmeyer: Create CutPreview options
+   wxString cutPreviewBeforeLenString, cutPreviewAfterLenString;
+   cutPreviewBeforeLenString.Printf(wxT("%g"), cutPreviewBeforeLen);
+   cutPreviewAfterLenString.Printf(wxT("%g"), cutPreviewAfterLen);
+   mCutPreviewBeforeLen = new wxTextCtrl(this, -1, cutPreviewBeforeLenString);
+   mCutPreviewAfterLen = new wxTextCtrl(this, -1, cutPreviewAfterLenString);
+
+   wxFlexGridSizer* cutPreviewFlexSizer = new wxFlexGridSizer(2, 3,
+      GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
+      _("Amount of audio to play before cut region:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT), 1,
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(mCutPreviewBeforeLen, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
+      _("seconds"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
+      _("Amount of audio to play after cut region:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT), 1,
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(mCutPreviewAfterLen, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
+      _("seconds"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+
+   wxStaticBoxSizer *cutPreviewSizer =
+      new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, _("Cut Preview")),
+            wxVERTICAL);
+
+   cutPreviewSizer->Add(cutPreviewFlexSizer, 0,
+      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+   topSizer->Add(cutPreviewSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    outSizer->Fit(this);
@@ -328,7 +378,7 @@ bool AudioIOPrefs::Apply()
    long recordChannels = mChannelsChoice->GetSelection()+1;
    bool duplex = mDuplex->GetValue();
 
-   /* Step 2: Write to gPrefs */
+   // Step 2: Write to gPrefs
    gPrefs->SetPath(wxT("/AudioIO"));
 
    gPrefs->Write(wxT("PlaybackDevice"), mPlayDevice);
@@ -343,9 +393,14 @@ bool AudioIOPrefs::Apply()
 
    gPrefs->Write(wxT("SWPlaythrough"), mSWPlaythrough->GetValue());
 
+   gPrefs->Write(wxT("CutPreviewBeforeLen"),
+       Internat::CompatibleToDouble(mCutPreviewBeforeLen->GetValue()));
+   gPrefs->Write(wxT("CutPreviewAfterLen"),
+       Internat::CompatibleToDouble(mCutPreviewAfterLen->GetValue()));
+
    gPrefs->SetPath(wxT("/"));
 
-   /* Step 3: Make audio sub-system re-read preferences */
+   // Step 3: Make audio sub-system re-read preferences
 
 #if USE_PORTMIXER
    if (gAudioIO)

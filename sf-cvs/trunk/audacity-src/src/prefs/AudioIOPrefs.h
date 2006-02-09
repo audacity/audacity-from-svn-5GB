@@ -42,6 +42,9 @@ class AudioIOPrefs:public PrefsPanel {
 
    wxString *mPlayNames;
    wxString *mRecNames;
+   
+   wxTextCtrl *mCutPreviewBeforeLen;
+   wxTextCtrl *mCutPreviewAfterLen;
 
  public:
     DECLARE_EVENT_TABLE()
