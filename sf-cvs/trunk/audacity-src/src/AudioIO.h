@@ -51,7 +51,9 @@ class AudioIO {
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
                    TimeTrack *timeTrack, double sampleRate,
-                   double t0, double t1, bool playLooped = false);
+                   double t0, double t1, bool playLooped = false,
+                   double cutPreviewGapStart = 0.0,
+                   double cutPreviewGapLen = 0.0);
 
    void StopStream();
 
@@ -205,6 +207,8 @@ private:
    float               mMixerInputVol;
 
    bool                mPlayLooped;
+   double              mCutPreviewGapStart;
+   double              mCutPreviewGapLen;
 
    friend class AudioThread;
 

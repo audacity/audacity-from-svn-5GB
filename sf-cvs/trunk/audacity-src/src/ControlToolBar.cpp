@@ -73,6 +73,7 @@ ControlToolBar::ControlToolBar( wxWindow * parent ):
 {
    mPaused = false;
    mSizer = new wxBoxSizer( wxHORIZONTAL );
+   mCutPreviewTracks = NULL;
 
    gPrefs->Read( wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true );
    gPrefs->Read( wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false );
@@ -429,12 +430,16 @@ void ControlToolBar::SetRecord(bool down)
 }
 
 void ControlToolBar::PlayPlayRegion(double t0, double t1,
-                                    bool looped /* = false */)
+                                    bool looped /* = false */,
+                                    bool cutpreview /* = false */)
 {
    if (gAudioIO->IsBusy()) {
       mPlay->PopUp();
       return;
    }
+   
+   if (cutpreview && t0==t1)
+      return; /* msmeyer: makes no sense */
    
    mStop->Enable();
    mRewind->Disable();
@@ -492,13 +497,26 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             t1 = minofmaxs;
          }
       }
-
+      
       bool success = false;
       if (t1 > t0) {
-         int token =
-            gAudioIO->StartStream(t->GetWaveTrackArray(false),
+         int token;
+         if (cutpreview) {
+            double beforeLen, afterLen;
+            gPrefs->Read(wxT("/AudioIO/CutPreviewBeforeLen"), &beforeLen, 1.0);
+            gPrefs->Read(wxT("/AudioIO/CutPreviewAfterLen"), &afterLen, 1.0);
+            double tcp0 = t0-beforeLen;
+            double tcp1 = (t1+afterLen) - (t1-t0);
+            SetupCutPreviewTracks(tcp0, t0, t1, tcp1);
+            token = gAudioIO->StartStream(
+                mCutPreviewTracks->GetWaveTrackArray(false),
+                WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, false,
+                t0, t1-t0);
+         } else {
+            token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                   WaveTrackArray(), t->GetTimeTrack(),
                                   p->GetRate(), t0, t1, looped);
+         }
          if (token != 0) {
             success = true;
             p->SetAudioIOToken(token);
@@ -531,7 +549,8 @@ void ControlToolBar::SetVUMeters(AudacityProject *p)
    }
 }
 
-void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
+void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
+                                       bool cutpreview /* = false */)
 {
    mPlay->SetAlternate(looped);
 
@@ -542,7 +561,7 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */)
          p->mLastPlayMode = loopedPlay;
       else
          p->mLastPlayMode = normalPlay;
-      PlayPlayRegion(p->GetSel0(), p->GetSel1(), looped);
+      PlayPlayRegion(p->GetSel0(), p->GetSel1(), looped, cutpreview);
    }
 }
 
@@ -586,10 +605,12 @@ void ControlToolBar::OnShiftUp(wxKeyEvent & event)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
-   if(mPlay->WasShiftDown())
-      PlayCurrentRegion(true);
+   if(mPlay->WasControlDown())
+      PlayCurrentRegion(false, true); /* play with cut preview */
+   else if(mPlay->WasShiftDown())
+      PlayCurrentRegion(true); /* play looped */
    else
-      PlayCurrentRegion(false);
+      PlayCurrentRegion(false); /* play normal */
 }
 
 void ControlToolBar::OnStop(wxCommandEvent &evt)
@@ -610,6 +631,8 @@ void ControlToolBar::StopPlaying()
    mPaused=false;
    //Make sure you tell gAudioIO to unpause
    gAudioIO->SetPaused(mPaused);
+   
+   ClearCutPreviewTracks();
 
    mBusyProject = NULL;
 }
@@ -635,8 +658,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       return;
    }
    AudacityProject *p = GetActiveProject();
-	if( p && p->GetCleanSpeechMode() )
-	{
+        if( p && p->GetCleanSpeechMode() )
+        {
       size_t numProjects = gAudacityProjects.Count();
       bool tracks = (p && !p->GetTracks()->IsEmpty());
       if (tracks || (numProjects > 1)) {
@@ -648,7 +671,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
          mRecord->Disable();
          return;
       }
-	}
+        }
    mPlay->Disable();
    mStop->Enable();
    mRewind->Disable();
@@ -768,6 +791,54 @@ void ControlToolBar::OnFF(wxCommandEvent &evt)
 
    if (p) {
       p->SkipEnd(mFF->WasShiftDown());
+   }
+}
+
+void ControlToolBar::SetupCutPreviewTracks(double playStart, double cutStart,
+                                           double cutEnd, double playEnd)
+{
+   ClearCutPreviewTracks();
+   AudacityProject *p = GetActiveProject();
+   if (p) {
+      // Find first selected track (stereo or mono) and duplicate it
+      Track *track1 = NULL, *track2 = NULL;
+      TrackListIterator it(p->GetTracks());
+      for (Track *t = it.First(); t; t = it.Next())
+      {
+         if (t->GetKind() == Track::Wave && t->GetSelected())
+         {
+            track1 = t;
+            track2 = p->GetTracks()->GetLink(track1);
+            break;
+         }
+      }
+      
+      if (track1)
+      {
+         // Duplicate and change tracks
+         track1 = track1->Duplicate();
+         track1->Clear(cutStart, cutEnd);
+         if (track2)
+         {
+            track2 = track2->Duplicate();
+            track2->Clear(cutStart, cutEnd);
+         }
+            
+         mCutPreviewTracks = new TrackList();
+         mCutPreviewTracks->Add(track1);
+         if (track2)
+            mCutPreviewTracks->Add(track2);
+      }
+   }
+}
+
+void ControlToolBar::ClearCutPreviewTracks()
+{
+   if (mCutPreviewTracks)
+   {
+      mCutPreviewTracks->Clear(true); /* delete track contents too */
+      delete mCutPreviewTracks;
+      mCutPreviewTracks = NULL;
    }
 }
 

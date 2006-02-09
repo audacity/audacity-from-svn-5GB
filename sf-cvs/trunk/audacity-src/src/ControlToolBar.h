@@ -34,6 +34,7 @@ class ControlToolBar;
 class ToolBar;
 class AudacityProject;
 class wxGridBagSizer;
+class TrackList;
 
 class wxImage;
 class wxSize;
@@ -68,10 +69,12 @@ class ControlToolBar:public ToolBar {
 
    // Play currently selected region, or if nothing selected,
    // play from current cursor.
-   void PlayCurrentRegion(bool looped = false);
+   void PlayCurrentRegion(bool looped = false, bool cutpreview = false);
 
    // Play the region [t0,t1]
-   void PlayPlayRegion(double t0, double t1, bool looped = false);
+   void PlayPlayRegion(double t0, double t1,
+                       bool looped = false,
+                       bool cutpreview = false);
 
    // Stop playing
    void StopPlaying();
@@ -96,6 +99,10 @@ class ControlToolBar:public ToolBar {
    void MakeLoopImage();
 
    void ArrangeButtons();
+   
+   void SetupCutPreviewTracks(double playStart, double cutStart,
+                             double cutEnd, double playEnd);
+   void ClearCutPreviewTracks();
 
    enum
    {
@@ -134,9 +141,10 @@ class ControlToolBar:public ToolBar {
    // Show/hide cleanspeech button
    bool mCleanSpeechMode;
 
-      wxBoxSizer *mBatchGroup;
+   wxBoxSizer *mBatchGroup;
    wxBoxSizer *mSizer;
 
+   TrackList* mCutPreviewTracks;
 };
 
 #endif

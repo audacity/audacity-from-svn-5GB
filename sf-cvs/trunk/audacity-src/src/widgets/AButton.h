@@ -85,6 +85,8 @@ class AButton: public wxWindow {
 
    virtual bool WasShiftDown(); // returns true if shift was held down
                                 // the last time the button was clicked
+   virtual bool WasControlDown(); // returns true if control was held down
+                                  // the last time the button was clicked
    bool IsDown(){ return mButtonIsDown;}
    void SetButtonToggles( bool toggler ){ mProcessDownEvents = toggler;}
    void Toggle(){ mButtonIsDown ? PopUp() : PushDown();}
@@ -117,6 +119,7 @@ class AButton: public wxWindow {
    bool mAlternate;
 
    bool mWasShiftDown;
+   bool mWasControlDown;
 
    bool mButtonIsFocused;
    bool mButtonIsDown;

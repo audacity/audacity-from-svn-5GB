@@ -112,6 +112,7 @@ void AButton::Init(wxWindow * parent,
 
    mParent = parent;
    mWasShiftDown = false;
+   mWasControlDown = false;
    mButtonIsDown = false;
    mButtonState = AButtonUp;
    mIsClicking = false;
@@ -280,6 +281,7 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
             }
 
          mWasShiftDown = event.ShiftDown();
+         mWasControlDown = event.ControlDown();
 
          //Create an event for the parent window to process.
          wxCommandEvent *e =
@@ -357,6 +359,7 @@ void AButton::OnKeyDown(wxKeyEvent & event)
    {
       case WXK_RETURN:
          mWasShiftDown = event.ShiftDown();
+         mWasControlDown = event.ControlDown();
          Click();
       break;
    }
@@ -379,6 +382,11 @@ void AButton::OnKillFocus(wxFocusEvent & event)
 bool AButton::WasShiftDown()
 {
    return mWasShiftDown;
+}
+
+bool AButton::WasControlDown()
+{
+   return mWasControlDown;
 }
 
 void AButton::Enable()
