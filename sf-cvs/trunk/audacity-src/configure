@@ -1033,7 +1033,7 @@ esac
     else
       echo "$as_me: WARNING: no configuration information is in $ac_dir" >&2
     fi
-    cd $ac_popdir
+    cd "$ac_popdir"
   done
 fi
 
@@ -1951,8 +1951,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2010,8 +2009,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2127,8 +2125,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2182,8 +2179,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2228,8 +2224,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2273,8 +2268,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2765,8 +2759,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2824,8 +2817,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2896,8 +2888,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2941,8 +2932,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3437,8 +3427,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3608,8 +3597,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3700,8 +3688,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3763,8 +3750,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4017,8 +4003,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4080,8 +4065,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4361,8 +4345,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4424,8 +4407,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4746,9 +4728,6 @@ echo "$as_me:$LINENO: checking for SNDFILE" >&5
 echo $ECHO_N "checking for SNDFILE... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_CFLAGS"; then
-        pkg_cv_SNDFILE_CFLAGS="$SNDFILE_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
@@ -4759,14 +4738,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_LIBS"; then
-        pkg_cv_SNDFILE_LIBS="$SNDFILE_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
@@ -4777,27 +4752,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-        else
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-        fi
+	SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$SNDFILE_PKG_ERRORS" >&5
+	echo "$SNDFILE_PKG_ERRORS" 1>&5
 
 	sndfile_available_system="no"
 elif test $pkg_failed = untried; then
@@ -4922,8 +4884,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4985,8 +4946,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -5182,9 +5142,6 @@ echo "$as_me:$LINENO: checking for SAMPLERATE" >&5
 echo $ECHO_N "checking for SAMPLERATE... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_CFLAGS"; then
-        pkg_cv_SAMPLERATE_CFLAGS="$SAMPLERATE_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
   ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
@@ -5195,14 +5152,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_LIBS"; then
-        pkg_cv_SAMPLERATE_LIBS="$SAMPLERATE_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
   ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
@@ -5213,27 +5166,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        else
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        fi
+	SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$SAMPLERATE_PKG_ERRORS" >&5
+	echo "$SAMPLERATE_PKG_ERRORS" 1>&5
 
 	samplerate_available_system="no"
 elif test $pkg_failed = untried; then
@@ -5782,10 +5722,10 @@ echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-c
 fi
 
 LIBS="$LIBS `$WX_CONFIG --static=$static_preference --unicode=$unicode_preference --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --static=$static_preference --unicode=$unicode_preference --cxxflags`"
 
 
-wx_version=`${WX_CONFIG} --version`
+wx_version=`${WX_CONFIG} --static=$static_preference --unicode=$unicode_preference --version`
 
 { echo "$as_me:$LINENO: Checking that the installed version of wxWidgets is 2.6.x" >&5
 echo "$as_me: Checking that the installed version of wxWidgets is 2.6.x" >&6;}
@@ -5796,8 +5736,18 @@ case "${wx_version}" in
     ;;
   *)
 
-  { { echo "$as_me:$LINENO: error: Uh-oh, you're using wxWidgets ${wx_version}.  Only version 2.6.x is supported.  Download the latest version from http://wxwidgets.org and check to see what version is installed using the command: wx-config --version" >&5
-echo "$as_me: error: Uh-oh, you're using wxWidgets ${wx_version}.  Only version 2.6.x is supported.  Download the latest version from http://wxwidgets.org and check to see what version is installed using the command: wx-config --version" >&2;}
+  { { echo "$as_me:$LINENO: error: Uh-oh, you're using wxWidgets ${wx_version}.
+Only wxWidgets version 2.6.x is supported. Check to see, what version is
+installed using the command wx-config --version. If necessary, either install
+the package for your distribution or download the latest version of wxWidgets
+from http://wxwidgets.org. If you have a Unicode version of wxWidgets 2.6.x
+installed, try to call ./configure with the parameter --enable-unicode" >&5
+echo "$as_me: error: Uh-oh, you're using wxWidgets ${wx_version}.
+Only wxWidgets version 2.6.x is supported. Check to see, what version is
+installed using the command wx-config --version. If necessary, either install
+the package for your distribution or download the latest version of wxWidgets
+from http://wxwidgets.org. If you have a Unicode version of wxWidgets 2.6.x
+installed, try to call ./configure with the parameter --enable-unicode" >&2;}
    { (exit 1); exit 1; }; }
 esac
 
@@ -5963,8 +5913,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -6004,9 +5953,6 @@ echo "$as_me:$LINENO: checking for JACK" >&5
 echo $ECHO_N "checking for JACK... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_CFLAGS"; then
-        pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
@@ -6017,14 +5963,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_LIBS"; then
-        pkg_cv_JACK_LIBS="$JACK_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
@@ -6035,27 +5977,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "jack"`
-        else
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
-        fi
+	JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$JACK_PKG_ERRORS" >&5
+	echo "$JACK_PKG_ERRORS" 1>&5
 
 	have_jack=no
 elif test $pkg_failed = untried; then
@@ -6149,8 +6078,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -6215,8 +6143,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -6371,8 +6298,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -6435,8 +6361,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7320,11 +7245,6 @@ esac
   *) ac_INSTALL=$ac_top_builddir$INSTALL ;;
   esac
 
-  if test x"$ac_file" != x-; then
-    { echo "$as_me:$LINENO: creating $ac_file" >&5
-echo "$as_me: creating $ac_file" >&6;}
-    rm -f "$ac_file"
-  fi
   # Let's still pretend it is `configure' which instantiates (i.e., don't
   # use $as_me), people would be surprised to read:
   #    /* config.h.  Generated by config.status.  */
@@ -7363,6 +7283,12 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
 	 fi;;
       esac
     done` || { (exit 1); exit 1; }
+
+  if test x"$ac_file" != x-; then
+    { echo "$as_me:$LINENO: creating $ac_file" >&5
+echo "$as_me: creating $ac_file" >&6;}
+    rm -f "$ac_file"
+  fi
 _ACEOF
 cat >>$CONFIG_STATUS <<_ACEOF
   sed "$ac_vpsub
@@ -7818,7 +7744,7 @@ echo "$as_me: error: $ac_sub_configure failed for $ac_dir" >&2;}
    { (exit 1); exit 1; }; }
     fi
 
-    cd $ac_popdir
+    cd "$ac_popdir"
   done
 fi
 
