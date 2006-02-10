@@ -1134,7 +1134,7 @@
 		174F73D7098D51AA009CD6E0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = Info.plist; path = mac/Info.plist; sourceTree = "<group>"; };
 		176A1A5B098B7B8D00DC73B4 /* libnyquist.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnyquist.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		178CF4FF0989541C0056CE58 /* configmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = configmac.h; path = mac/configmac.h; sourceTree = "<group>"; };
-		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1790AFC709883BFD008A330A /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AboutDialog.cpp; sourceTree = "<group>"; };
 		1790AFC809883BFD008A330A /* AboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AboutDialog.h; sourceTree = "<group>"; };
 		1790AFC909883BFD008A330A /* AColor.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AColor.cpp; sourceTree = "<group>"; };
@@ -4746,7 +4746,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Debug Static";
 		};
@@ -4886,7 +4886,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Release Static";
 		};
@@ -5047,7 +5047,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/**";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Debug Static Unicode";
 		};
