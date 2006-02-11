@@ -1122,7 +1122,9 @@ void AdornedRulerPanel::DoDrawCursor(wxDC *dc)
    int x = mLeftOffset + int ( ( mCurPos - mViewInfo->h ) * mViewInfo->zoom );
 
    // Draw cursor in ruler
+   dc->SetLogicalFunction(wxINVERT);
    dc->DrawLine( x, 1, x, mInner.height );
+   dc->SetLogicalFunction(wxCOPY);
 }
 
 //
