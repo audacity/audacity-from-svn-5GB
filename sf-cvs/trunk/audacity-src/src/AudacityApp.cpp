@@ -1022,8 +1022,10 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
 
    if(gAudacityProjects.GetCount() == 0)
       QuitAudacity();
-   else
-      event.Skip();
+   
+   // LL:  Veto quit if projects are still open.  This can happen
+   //      if the user selected Cancel in a Save dialog.
+   event.Skip(gAudacityProjects.GetCount() == 0);
    
 }
 
