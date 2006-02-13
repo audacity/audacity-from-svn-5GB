@@ -158,30 +158,7 @@ subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = src/libOggFLAC/Makefile \
-	src/libOggFLAC/include/Makefile \
-	src/libOggFLAC/include/private/Makefile \
-	src/libOggFLAC/include/protected/Makefile \
-	src/libOggFLAC++/Makefile src/metaflac/Makefile \
-	src/monkeys_audio_utilities/Makefile \
-	src/monkeys_audio_utilities/flac_mac/Makefile \
-	src/monkeys_audio_utilities/flac_ren/Makefile \
-	src/plugin_common/Makefile src/plugin_winamp2/Makefile \
-	src/plugin_winamp2/include/Makefile \
-	src/plugin_winamp2/include/winamp2/Makefile \
-	src/plugin_xmms/Makefile src/share/Makefile \
-	src/share/getopt/Makefile src/share/grabbag/Makefile \
-	src/share/replaygain_analysis/Makefile \
-	src/share/replaygain_synthesis/Makefile \
-	src/share/replaygain_synthesis/include/Makefile \
-	src/share/replaygain_synthesis/include/private/Makefile \
-	src/share/utf8/Makefile src/test_grabbag/Makefile \
-	src/test_grabbag/cuesheet/Makefile src/test_libFLAC/Makefile \
-	src/test_libFLAC++/Makefile src/test_libOggFLAC/Makefile \
-	src/test_libOggFLAC++/Makefile src/test_seeking/Makefile \
-	src/test_streams/Makefile doc/Makefile doc/html/Makefile \
-	doc/html/images/Makefile doc/html/ru/Makefile man/Makefile \
-	test/Makefile test/cuesheets/Makefile
+CONFIG_CLEAN_FILES =
 DIST_SOURCES =
 
 RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
@@ -229,80 +206,6 @@ $(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(top_srcdir)/configure.in $(ACLOC
 
 distclean-hdr:
 	-rm -f config.h stamp-h1
-src/libOggFLAC/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/libOggFLAC/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/libOggFLAC/include/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/libOggFLAC/include/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/libOggFLAC/include/private/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/libOggFLAC/include/private/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/libOggFLAC/include/protected/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/libOggFLAC/include/protected/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/libOggFLAC++/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/libOggFLAC++/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/metaflac/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/metaflac/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/monkeys_audio_utilities/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/monkeys_audio_utilities/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/monkeys_audio_utilities/flac_mac/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/monkeys_audio_utilities/flac_mac/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/monkeys_audio_utilities/flac_ren/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/monkeys_audio_utilities/flac_ren/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/plugin_common/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/plugin_common/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/plugin_winamp2/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/plugin_winamp2/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/plugin_winamp2/include/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/plugin_winamp2/include/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/plugin_winamp2/include/winamp2/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/plugin_winamp2/include/winamp2/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/plugin_xmms/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/plugin_xmms/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/getopt/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/getopt/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/grabbag/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/grabbag/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/replaygain_analysis/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/replaygain_analysis/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/replaygain_synthesis/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/replaygain_synthesis/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/replaygain_synthesis/include/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/replaygain_synthesis/include/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/replaygain_synthesis/include/private/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/replaygain_synthesis/include/private/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/share/utf8/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/share/utf8/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_grabbag/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_grabbag/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_grabbag/cuesheet/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_grabbag/cuesheet/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_libFLAC/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_libFLAC/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_libFLAC++/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_libFLAC++/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_libOggFLAC/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_libOggFLAC/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_libOggFLAC++/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_libOggFLAC++/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_seeking/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_seeking/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-src/test_streams/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/test_streams/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-doc/Makefile: $(top_builddir)/config.status $(top_srcdir)/doc/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-doc/html/Makefile: $(top_builddir)/config.status $(top_srcdir)/doc/html/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-doc/html/images/Makefile: $(top_builddir)/config.status $(top_srcdir)/doc/html/images/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-doc/html/ru/Makefile: $(top_builddir)/config.status $(top_srcdir)/doc/html/ru/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-man/Makefile: $(top_builddir)/config.status $(top_srcdir)/man/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-test/Makefile: $(top_builddir)/config.status $(top_srcdir)/test/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-test/cuesheets/Makefile: $(top_builddir)/config.status $(top_srcdir)/test/cuesheets/Makefile.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -425,7 +328,6 @@ distcleancheck_listfiles = find . -type f -print
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/doc $(distdir)/doc/html $(distdir)/doc/html/images $(distdir)/doc/html/ru $(distdir)/man $(distdir)/src/libOggFLAC $(distdir)/src/libOggFLAC++ $(distdir)/src/libOggFLAC/include $(distdir)/src/libOggFLAC/include/private $(distdir)/src/libOggFLAC/include/protected $(distdir)/src/metaflac $(distdir)/src/monkeys_audio_utilities $(distdir)/src/monkeys_audio_utilities/flac_mac $(distdir)/src/monkeys_audio_utilities/flac_ren $(distdir)/src/plugin_common $(distdir)/src/plugin_winamp2 $(distdir)/src/plugin_winamp2/include $(distdir)/src/plugin_winamp2/include/winamp2 $(distdir)/src/plugin_xmms $(distdir)/src/share $(distdir)/src/share/getopt $(distdir)/src/share/grabbag $(distdir)/src/share/replaygain_analysis $(distdir)/src/share/replaygain_synthesis $(distdir)/src/share/replaygain_synthesis/include $(distdir)/src/share/replaygain_synthesis/include/private $(distdir)/src/share/utf8 $(distdir)/src/test_grabbag $(distdir)/src/test_grabbag/cuesheet $(distdir)/src/test_libFLAC $(distdir)/src/test_libFLAC++ $(distdir)/src/test_libOggFLAC $(distdir)/src/test_libOggFLAC++ $(distdir)/src/test_seeking $(distdir)/src/test_streams $(distdir)/test $(distdir)/test/cuesheets
 	@list='$(DISTFILES)'; for file in $$list; do \
 	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \

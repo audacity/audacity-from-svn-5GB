@@ -144,19 +144,6 @@ flac_SOURCES = \
 	utils.h \
 	vorbiscomment.h
 
-
-flac_LDADD = \
-	$(NEED_OGGFLAC_LIB) \
-	$(top_builddir)/src/share/grabbag/libgrabbag.la \
-	$(top_builddir)/src/share/getopt/libgetopt.a \
-	$(top_builddir)/src/share/replaygain_analysis/libreplaygain_analysis.la \
-	$(top_builddir)/src/share/replaygain_synthesis/libreplaygain_synthesis.la \
-	$(top_builddir)/src/share/utf8/libutf8.la \
-	$(top_builddir)/src/libFLAC/libFLAC.la \
-	@OGG_LIBS@ \
-	@LIBICONV@ \
-	-lm
-
 subdir = src/flac
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -168,21 +155,8 @@ am_flac_OBJECTS = analyze.$(OBJEXT) decode.$(OBJEXT) encode.$(OBJEXT) \
 	main.$(OBJEXT) local_string_utils.$(OBJEXT) utils.$(OBJEXT) \
 	vorbiscomment.$(OBJEXT)
 flac_OBJECTS = $(am_flac_OBJECTS)
-@FLaC__HAS_OGG_TRUE@flac_DEPENDENCIES = \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/libOggFLAC/libOggFLAC.la \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/share/grabbag/libgrabbag.la \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/share/getopt/libgetopt.a \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/share/replaygain_analysis/libreplaygain_analysis.la \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/share/replaygain_synthesis/libreplaygain_synthesis.la \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/share/utf8/libutf8.la \
-@FLaC__HAS_OGG_TRUE@	$(top_builddir)/src/libFLAC/libFLAC.la
-@FLaC__HAS_OGG_FALSE@flac_DEPENDENCIES = \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/share/grabbag/libgrabbag.la \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/share/getopt/libgetopt.a \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/share/replaygain_analysis/libreplaygain_analysis.la \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/share/replaygain_synthesis/libreplaygain_synthesis.la \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/share/utf8/libutf8.la \
-@FLaC__HAS_OGG_FALSE@	$(top_builddir)/src/libFLAC/libFLAC.la
+flac_LDADD = $(LDADD)
+flac_DEPENDENCIES =
 flac_LDFLAGS =
 
 DEFS = @DEFS@
@@ -439,6 +413,18 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am
 	mostlyclean-libtool tags uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-info-am
 
+
+#flac_LDADD = \
+#	$(NEED_OGGFLAC_LIB) \
+#	$(top_builddir)/src/share/grabbag/libgrabbag.la \
+#	$(top_builddir)/src/share/getopt/libgetopt.a \
+#	$(top_builddir)/src/share/replaygain_analysis/libreplaygain_analysis.la \
+#	$(top_builddir)/src/share/replaygain_synthesis/libreplaygain_synthesis.la \
+#	$(top_builddir)/src/share/utf8/libutf8.la \
+#	$(top_builddir)/src/libFLAC/libFLAC.la \
+#	@OGG_LIBS@ \
+#	@LIBICONV@ \
+#	-lm
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
