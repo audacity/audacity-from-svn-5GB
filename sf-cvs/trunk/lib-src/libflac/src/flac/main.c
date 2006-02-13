@@ -1,5 +1,5 @@
 /* flac - Command-line FLAC encoder/decoder
- * Copyright (C) 2000,2001,2002  Josh Coalson
+ * Copyright (C) 2000,2001,2002,2003,2004,2005  Josh Coalson
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +22,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #if !defined _MSC_VER && !defined __MINGW32__
 /* unlink is in stdio.h in VC++ */
 #include <unistd.h> /* for unlink() */
@@ -29,10 +35,12 @@
 #define strcasecmp stricmp
 #endif
 #include "FLAC/all.h"
+#include "share/grabbag.h"
 #include "analyze.h"
 #include "decode.h"
 #include "encode.h"
-#include "file.h"
+#include "local_string_utils.h" /* for flac__strlcat() and flac__strlcpy() */
+#include "utils.h"
 #include "vorbiscomment.h"
 
 #if 0
@@ -59,118 +67,128 @@ static void show_help();
 static void show_explain();
 static void format_mistake(const char *infilename, const char *wrong, const char *right);
 
-static int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bool is_last_file);
-static int decode_file(const char *infilename, const char *forced_outfilename);
+static int encode_file(const char *infilename, FLAC__bool is_first_file, FLAC__bool is_last_file);
+static int decode_file(const char *infilename);
+
+static const char *get_encoded_outfilename(const char *infilename);
+static const char *get_decoded_outfilename(const char *infilename);
+static const char *get_outfilename(const char *infilename, const char *suffix);
 
 static void die(const char *message);
 static char *local_strdup(const char *source);
 
 
 /*
- * FLAC__share__getopt format struct; note that for long options with no
+ * share__getopt format struct; note that for long options with no
  * short option equivalent we just set the 'val' field to 0.
  */
-static struct FLAC__share__option long_options_[] = {
+static struct share__option long_options_[] = {
 	/*
 	 * general options
 	 */
-	{ "help", 0, 0, 'h' },
-	{ "explain", 0, 0, 'H' },
-	{ "version", 0, 0, 'v' },
-	{ "decode", 0, 0, 'd' },
-	{ "analyze", 0, 0, 'a' },
-	{ "test", 0, 0, 't' },
-	{ "stdout", 0, 0, 'c' },
-	{ "silent", 0, 0, 's' },
-	{ "delete-input-file", 0, 0, 0 },
-	{ "output-prefix", 1, 0, 0 },
-	{ "output-name", 1, 0, 'o' },
-	{ "skip", 1, 0, 0 },
+	{ "help"             , share__no_argument, 0, 'h' },
+	{ "explain"          , share__no_argument, 0, 'H' },
+	{ "version"          , share__no_argument, 0, 'v' },
+	{ "decode"           , share__no_argument, 0, 'd' },
+	{ "analyze"          , share__no_argument, 0, 'a' },
+	{ "test"             , share__no_argument, 0, 't' },
+	{ "stdout"           , share__no_argument, 0, 'c' },
+	{ "silent"           , share__no_argument, 0, 's' },
+	{ "totally-silent"   , share__no_argument, 0, 0 },
+	{ "force"            , share__no_argument, 0, 'f' },
+	{ "delete-input-file", share__no_argument, 0, 0 },
+	{ "output-prefix"    , share__required_argument, 0, 0 },
+	{ "output-name"      , share__required_argument, 0, 'o' },
+	{ "skip"             , share__required_argument, 0, 0 },
+	{ "until"            , share__required_argument, 0, 0 },
 
 	/*
 	 * decoding options
 	 */
-	{ "decode-through-errors", 0, 0, 'F' },
+	{ "decode-through-errors", share__no_argument, 0, 'F' },
+	{ "cue"                  , share__required_argument, 0, 0 },
+	{ "apply-replaygain-which-is-not-lossless", share__optional_argument, 0, 0 }, /* undocumented */
 
 	/*
 	 * encoding options
 	 */
-	{ "tag", 1, 0, 'T' },
-	{ "compression-level-0", 0, 0, '0' },
-	{ "compression-level-1", 0, 0, '1' },
-	{ "compression-level-2", 0, 0, '2' },
-	{ "compression-level-3", 0, 0, '3' },
-	{ "compression-level-4", 0, 0, '4' },
-	{ "compression-level-5", 0, 0, '5' },
-	{ "compression-level-6", 0, 0, '6' },
-	{ "compression-level-7", 0, 0, '7' },
-	{ "compression-level-8", 0, 0, '8' },
-	{ "compression-level-9", 0, 0, '9' },
-	{ "best", 0, 0, '8' },
-	{ "fast", 0, 0, '0' },
-	{ "super-secret-impractical-compression-level", 0, 0, 0 },
-	{ "verify", 0, 0, 'V' },
-	{ "force-raw-format", 0, 0, 0 },
-	{ "lax", 0, 0, 0 },
-	{ "sector-align", 0, 0, 0 },
-	{ "seekpoint", 1, 0, 'S' },
-	{ "padding", 1, 0, 'P' },
+	{ "cuesheet"                  , share__required_argument, 0, 0 },
+	{ "no-cued-seekpoints"        , share__no_argument, 0, 0 },
+	{ "tag"                       , share__required_argument, 0, 'T' },
+	{ "compression-level-0"       , share__no_argument, 0, '0' },
+	{ "compression-level-1"       , share__no_argument, 0, '1' },
+	{ "compression-level-2"       , share__no_argument, 0, '2' },
+	{ "compression-level-3"       , share__no_argument, 0, '3' },
+	{ "compression-level-4"       , share__no_argument, 0, '4' },
+	{ "compression-level-5"       , share__no_argument, 0, '5' },
+	{ "compression-level-6"       , share__no_argument, 0, '6' },
+	{ "compression-level-7"       , share__no_argument, 0, '7' },
+	{ "compression-level-8"       , share__no_argument, 0, '8' },
+	{ "compression-level-9"       , share__no_argument, 0, '9' },
+	{ "best"                      , share__no_argument, 0, '8' },
+	{ "fast"                      , share__no_argument, 0, '0' },
+	{ "super-secret-totally-impractical-compression-level", share__no_argument, 0, 0 },
+	{ "verify"                    , share__no_argument, 0, 'V' },
+	{ "force-aiff-format"         , share__no_argument, 0, 0 },
+	{ "force-raw-format"          , share__no_argument, 0, 0 },
+	{ "lax"                       , share__no_argument, 0, 0 },
+	{ "replay-gain"               , share__no_argument, 0, 0 },
+	{ "sector-align"              , share__no_argument, 0, 0 },
+	{ "seekpoint"                 , share__required_argument, 0, 'S' },
+	{ "padding"                   , share__required_argument, 0, 'P' },
 #ifdef FLAC__HAS_OGG
-	{ "ogg", 0, 0, 0 },
-	{ "serial-number", 1, 0, 0 },
+	{ "ogg"                       , share__no_argument, 0, 0 },
+	{ "serial-number"             , share__required_argument, 0, 0 },
 #endif
-	{ "blocksize", 1, 0, 'b' },
-	{ "exhaustive-model-search", 0, 0, 'e' },
-#if 0
-	/* @@@ deprecated: */
-	{ "escape-coding", 0, 0, 'E' },
-#endif
-	{ "max-lpc-order", 1, 0, 'l' },
-	{ "mid-side", 0, 0, 'm' },
-	{ "adaptive-mid-side", 0, 0, 'M' },
-	{ "qlp-coeff-precision-search", 0, 0, 'p' },
-	{ "qlp-coeff-precision", 1, 0, 'q' },
-	{ "rice-partition-order", 1, 0, 'r' },
-#if 0
-	/* @@@ deprecated: */
-	{ "rice-parameter-search-distance", 1, 0, 'R' },
-#endif
-	{ "endian", 1, 0, 0 },
-	{ "channels", 1, 0, 0 },
-	{ "bps", 1, 0, 0 },
-	{ "sample-rate", 1, 0, 0 },
-	{ "sign", 1, 0, 0 },
+	{ "blocksize"                 , share__required_argument, 0, 'b' },
+	{ "exhaustive-model-search"   , share__no_argument, 0, 'e' },
+	{ "max-lpc-order"             , share__required_argument, 0, 'l' },
+	{ "mid-side"                  , share__no_argument, 0, 'm' },
+	{ "adaptive-mid-side"         , share__no_argument, 0, 'M' },
+	{ "qlp-coeff-precision-search", share__no_argument, 0, 'p' },
+	{ "qlp-coeff-precision"       , share__required_argument, 0, 'q' },
+	{ "rice-partition-order"      , share__required_argument, 0, 'r' },
+	{ "endian"                    , share__required_argument, 0, 0 },
+	{ "channels"                  , share__required_argument, 0, 0 },
+	{ "bps"                       , share__required_argument, 0, 0 },
+	{ "sample-rate"               , share__required_argument, 0, 0 },
+	{ "sign"                      , share__required_argument, 0, 0 },
+	{ "input-size"                , share__required_argument, 0, 0 },
 
 	/*
 	 * analysis options
 	 */
-	{ "residual-gnu-plot", 0, 0, 0 },
-	{ "residual-text", 0, 0, 0 },
+	{ "residual-gnuplot", share__no_argument, 0, 0 },
+	{ "residual-text", share__no_argument, 0, 0 },
 
 	/*
 	 * negatives
 	 */
-	{ "no-decode-through-errors", 0, 0, 0 },
-	{ "no-silent", 0, 0, 0 },
-	{ "no-seektable", 0, 0, 0 },
-	{ "no-delete-input-file", 0, 0, 0 },
-	{ "no-sector-align", 0, 0, 0 },
-	{ "no-lax", 0, 0, 0 },
+	{ "no-decode-through-errors"  , share__no_argument, 0, 0 },
+	{ "no-silent"                 , share__no_argument, 0, 0 },
+	{ "no-force"                  , share__no_argument, 0, 0 },
+	{ "no-seektable"              , share__no_argument, 0, 0 },
+	{ "no-delete-input-file"      , share__no_argument, 0, 0 },
+	{ "no-replay-gain"            , share__no_argument, 0, 0 },
+	{ "no-sector-align"           , share__no_argument, 0, 0 },
+	{ "no-lax"                    , share__no_argument, 0, 0 },
 #ifdef FLAC__HAS_OGG
-	{ "no-ogg", 0, 0, 0 },
+	{ "no-ogg"                    , share__no_argument, 0, 0 },
 #endif
-	{ "no-exhaustive-model-search", 0, 0, 0 },
-#if 0
-	/* @@@ deprecated: */
-	{ "no-escape-coding", 0, 0, 0 },
-#endif
-	{ "no-mid-side", 0, 0, 0 },
-	{ "no-adaptive-mid-side", 0, 0, 0 },
-	{ "no-qlp-coeff-prec-search", 0, 0, 0 },
-	{ "no-padding", 0, 0, 0 },
-	{ "no-verify", 0, 0, 0 },
-	{ "no-residual-gnuplot", 0, 0, 0 },
-	{ "no-residual-text", 0, 0, 0 },
+	{ "no-exhaustive-model-search", share__no_argument, 0, 0 },
+	{ "no-mid-side"               , share__no_argument, 0, 0 },
+	{ "no-adaptive-mid-side"      , share__no_argument, 0, 0 },
+	{ "no-qlp-coeff-prec-search"  , share__no_argument, 0, 0 },
+	{ "no-padding"                , share__no_argument, 0, 0 },
+	{ "no-verify"                 , share__no_argument, 0, 0 },
+	{ "no-residual-gnuplot"       , share__no_argument, 0, 0 },
+	{ "no-residual-text"          , share__no_argument, 0, 0 },
+	/*
+	 * undocumented debugging options for the test suite
+	 */
+	{ "disable-constant-subframes", share__no_argument, 0, 0 },
+	{ "disable-fixed-subframes"   , share__no_argument, 0, 0 },
+	{ "disable-verbatim-subframes", share__no_argument, 0, 0 },
 
 	{0, 0, 0, 0}
 };
@@ -186,8 +204,9 @@ static struct {
 	FLAC__bool show_version;
 	FLAC__bool mode_decode;
 	FLAC__bool verify;
-	FLAC__bool verbose;
+	FLAC__bool force_file_overwrite;
 	FLAC__bool continue_through_decode_errors;
+	replaygain_synthesis_spec_t replaygain_synthesis_spec;
 	FLAC__bool lax;
 	FLAC__bool test_only;
 	FLAC__bool analyze;
@@ -200,8 +219,10 @@ static struct {
 	FLAC__bool do_escape_coding;
 	FLAC__bool do_qlp_coeff_prec_search;
 	FLAC__bool force_to_stdout;
+	FLAC__bool force_aiff_format;
 	FLAC__bool force_raw_format;
 	FLAC__bool delete_input;
+	FLAC__bool replay_gain;
 	FLAC__bool sector_align;
 	const char *cmdline_forced_outfilename;
 	const char *output_prefix;
@@ -209,23 +230,34 @@ static struct {
 	int padding;
 	unsigned max_lpc_order;
 	unsigned qlp_coeff_precision;
-	FLAC__uint64 skip;
+	const char *skip_specification;
+	const char *until_specification;
+	const char *cue_specification;
 	int format_is_big_endian;
 	int format_is_unsigned_samples;
 	int format_channels;
 	int format_bps;
 	int format_sample_rate;
+	long format_input_size;
 	int blocksize;
 	int min_residual_partition_order;
 	int max_residual_partition_order;
 	int rice_parameter_search_dist;
-	char requested_seek_points[50000]; /* @@@ bad MAGIC NUMBER */
+	char requested_seek_points[50000]; /* bad MAGIC NUMBER but buffer overflow is checked */
 	int num_requested_seek_points; /* -1 => no -S options were given, 0 => -S- was given */
+	const char *cuesheet_filename;
+	FLAC__bool cued_seekpoints;
 
 	unsigned num_files;
 	char **filenames;
 
 	FLAC__StreamMetadata *vorbis_comment;
+
+	struct {
+		FLAC__bool disable_constant_subframes;
+		FLAC__bool disable_fixed_subframes;
+		FLAC__bool disable_verbatim_subframes;
+	} debug;
 } option_values;
 
 
@@ -237,8 +269,6 @@ static FLAC__int32 align_reservoir_0[588], align_reservoir_1[588]; /* for carryi
 static FLAC__int32 *align_reservoir[2] = { align_reservoir_0, align_reservoir_1 };
 static unsigned align_reservoir_samples = 0; /* 0 .. 587 */
 
-static const char *flac_suffix = ".flac", *ogg_suffix = ".ogg";
-
 
 int main(int argc, char *argv[])
 {
@@ -246,7 +276,7 @@ int main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 	if(!init_options()) {
-		fprintf(stderr, "ERROR: allocating memory\n");
+		flac__utils_printf(stderr, 1, "ERROR: allocating memory\n");
 		retval = 1;
 	}
 	else {
@@ -277,7 +307,8 @@ int do_it()
 	}
 	else {
 		if(option_values.num_files == 0) {
-			short_usage();
+			if(flac__utils_verbosity_ >= 1)
+				short_usage();
 			return 0;
 		}
 
@@ -305,13 +336,22 @@ int do_it()
 			if(option_values.rice_parameter_search_dist < 0) {
 				option_values.rice_parameter_search_dist = 0;
 			}
+			if(0 != option_values.cue_specification)
+				return usage_error("ERROR: --cue is not allowed in test mode\n");
 		}
 		else {
 			if(option_values.test_only) {
-				if(option_values.skip > 0)
+				if(0 != option_values.skip_specification)
 					return usage_error("ERROR: --skip is not allowed in test mode\n");
+				if(0 != option_values.until_specification)
+					return usage_error("ERROR: --until is not allowed in test mode\n");
+				if(0 != option_values.cue_specification)
+					return usage_error("ERROR: --cue is not allowed in test mode\n");
 			}
 		}
+
+		if(0 != option_values.cue_specification && (0 != option_values.skip_specification || 0 != option_values.until_specification))
+			return usage_error("ERROR: --cue may not be combined with --skip or --until\n");
 
 		FLAC__ASSERT(option_values.blocksize >= 0 || option_values.mode_decode);
 
@@ -327,6 +367,8 @@ int do_it()
 			if(!FLAC__format_sample_rate_is_valid(option_values.format_sample_rate))
 				return usage_error("ERROR: invalid sample rate '%u', must be > 0 and <= %u\n", option_values.format_sample_rate, FLAC__MAX_SAMPLE_RATE);
 		}
+		if(option_values.force_raw_format && option_values.force_aiff_format)
+			return usage_error("ERROR: only one of --force-raw-format and --force-aiff-format allowed\n");
 		if(option_values.mode_decode) {
 			if(!option_values.force_raw_format) {
 				if(option_values.format_is_big_endian >= 0)
@@ -351,14 +393,40 @@ int do_it()
 		if(option_values.sector_align) {
 			if(option_values.mode_decode)
 				return usage_error("ERROR: --sector-align only allowed for encoding\n");
-			else if(option_values.skip > 0)
+			if(0 != option_values.skip_specification)
 				return usage_error("ERROR: --sector-align not allowed with --skip\n");
-			else if(option_values.format_channels >= 0 && option_values.format_channels != 2)
+			if(0 != option_values.until_specification)
+				return usage_error("ERROR: --sector-align not allowed with --until\n");
+			if(0 != option_values.cue_specification)
+				return usage_error("ERROR: --sector-align not allowed with --cue\n");
+			if(option_values.format_channels >= 0 && option_values.format_channels != 2)
 				return usage_error("ERROR: --sector-align can only be done with stereo input\n");
-			else if(option_values.format_bps >= 0 && option_values.format_bps != 16)
+			if(option_values.format_bps >= 0 && option_values.format_bps != 16)
 				return usage_error("ERROR: --sector-align can only be done with 16-bit samples\n");
-			else if(option_values.format_sample_rate >= 0 && option_values.format_sample_rate != 44100)
+			if(option_values.format_sample_rate >= 0 && option_values.format_sample_rate != 44100)
 				return usage_error("ERROR: --sector-align can only be done with a sample rate of 44100\n");
+		}
+		if(option_values.replay_gain) {
+			if(option_values.force_to_stdout)
+				return usage_error("ERROR: --replay-gain not allowed with -c/--stdout\n");
+			if(option_values.mode_decode)
+				return usage_error("ERROR: --replay-gain only allowed for encoding\n");
+			if(option_values.format_channels > 2)
+				return usage_error("ERROR: --replay-gain can only be done with mono/stereo input\n");
+			if(option_values.format_sample_rate >= 0 && !grabbag__replaygain_is_valid_sample_frequency(option_values.format_sample_rate))
+				return usage_error("ERROR: invalid sample rate used with --replay-gain\n");
+			/*
+			 * We want to reserve padding space for the ReplayGain
+			 * tags that we will set later, to avoid rewriting the
+			 * whole file.
+			 */
+			if(option_values.padding < 0) {
+				flac__utils_printf(stderr, 1, "NOTE: --replay-gain may leave a small PADDING block even with --no-padding\n");
+				option_values.padding = GRABBAG__REPLAYGAIN_MAX_TAG_SPACE_REQUIRED;
+			}
+			else {
+				option_values.padding += GRABBAG__REPLAYGAIN_MAX_TAG_SPACE_REQUIRED;
+			}
 		}
 		if(option_values.num_files > 1 && option_values.cmdline_forced_outfilename) {
 			return usage_error("ERROR: -o/--output-name cannot be used with multiple files\n");
@@ -366,49 +434,47 @@ int do_it()
 		if(option_values.cmdline_forced_outfilename && option_values.output_prefix) {
 			return usage_error("ERROR: --output-prefix conflicts with -o/--output-name\n");
 		}
-	}
-	if(option_values.verbose) {
-		fprintf(stderr, "\n");
-		fprintf(stderr, "flac %s, Copyright (C) 2000,2001,2002 Josh Coalson\n", FLAC__VERSION_STRING);
-		fprintf(stderr, "flac comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are\n");
-		fprintf(stderr, "welcome to redistribute it under certain conditions.  Type `flac' for details.\n\n");
-
-		if(!option_values.mode_decode) {
-			char padopt[16];
-			if(option_values.padding < 0)
-				strcpy(padopt, "-");
-			else
-				sprintf(padopt, " %d", option_values.padding);
-			fprintf(stderr,
-				"options:%s%s"
-#ifdef FLAC__HAS_OGG
-				"%s"
-#endif
-				"%s -P%s -b %u%s -l %u%s%s%s -q %u -r %u,%u%s\n",
-				option_values.delete_input?" --delete-input-file":"",
-				option_values.sector_align?" --sector-align":"",
-				option_values.use_ogg?" --ogg":"",
-				option_values.lax?" --lax":"",
-				padopt,
-				(unsigned)option_values.blocksize,
-				option_values.loose_mid_side?" -M":option_values.do_mid_side?" -m":"",
-				option_values.max_lpc_order,
-				option_values.do_exhaustive_model_search?" -e":"",
-				option_values.do_escape_coding?" -E":"",
-				option_values.do_qlp_coeff_prec_search?" -p":"",
-				option_values.qlp_coeff_precision,
-				(unsigned)option_values.min_residual_partition_order,
-				(unsigned)option_values.max_residual_partition_order,
-				option_values.verify? " -V":""
-			);
+		if(!option_values.mode_decode && 0 != option_values.cuesheet_filename && option_values.num_files > 1) {
+			return usage_error("ERROR: --cuesheet cannot be used when encoding multiple files\n");
 		}
+	}
+
+	flac__utils_printf(stderr, 2, "\n");
+	flac__utils_printf(stderr, 2, "flac %s, Copyright (C) 2000,2001,2002,2003,2004,2005  Josh Coalson\n", FLAC__VERSION_STRING);
+	flac__utils_printf(stderr, 2, "flac comes with ABSOLUTELY NO WARRANTY.  This is free software, and you are\n");
+	flac__utils_printf(stderr, 2, "welcome to redistribute it under certain conditions.  Type `flac' for details.\n\n");
+
+	if(!option_values.mode_decode) {
+		char padopt[16];
+		if(option_values.padding < 0)
+			strcpy(padopt, "-");
+		else
+			sprintf(padopt, " %d", option_values.padding);
+		flac__utils_printf(stderr, 2,
+			"options:%s%s%s%s -P%s -b %u%s -l %u%s%s%s -q %u -r %u,%u%s\n",
+			option_values.delete_input?" --delete-input-file":"",
+			option_values.sector_align?" --sector-align":"",
+			option_values.use_ogg?" --ogg":"",
+			option_values.lax?" --lax":"",
+			padopt,
+			(unsigned)option_values.blocksize,
+			option_values.loose_mid_side?" -M":option_values.do_mid_side?" -m":"",
+			option_values.max_lpc_order,
+			option_values.do_exhaustive_model_search?" -e":"",
+			option_values.do_escape_coding?" -E":"",
+			option_values.do_qlp_coeff_prec_search?" -p":"",
+			option_values.qlp_coeff_precision,
+			(unsigned)option_values.min_residual_partition_order,
+			(unsigned)option_values.max_residual_partition_order,
+			option_values.verify? " -V":""
+		);
 	}
 
 	if(option_values.mode_decode) {
 		FLAC__bool first = true;
 
 		if(option_values.num_files == 0) {
-			retval = decode_file("-", 0);
+			retval = decode_file("-");
 		}
 		else {
 			unsigned i;
@@ -417,7 +483,7 @@ int do_it()
 			for(i = 0, retval = 0; i < option_values.num_files; i++) {
 				if(0 == strcmp(option_values.filenames[i], "-") && !first)
 					continue;
-				retval |= decode_file(option_values.filenames[i], 0);
+				retval |= decode_file(option_values.filenames[i]);
 				first = false;
 			}
 		}
@@ -426,7 +492,7 @@ int do_it()
 		FLAC__bool first = true;
 
 		if(option_values.num_files == 0) {
-			retval = encode_file("-", 0, true);
+			retval = encode_file("-", first, true);
 		}
 		else {
 			unsigned i;
@@ -435,8 +501,29 @@ int do_it()
 			for(i = 0, retval = 0; i < option_values.num_files; i++) {
 				if(0 == strcmp(option_values.filenames[i], "-") && !first)
 					continue;
-				retval |= encode_file(option_values.filenames[i], 0, i == (option_values.num_files-1));
+				retval |= encode_file(option_values.filenames[i], first, i == (option_values.num_files-1));
 				first = false;
+			}
+			if(option_values.replay_gain && retval == 0) {
+				float album_gain, album_peak;
+				grabbag__replaygain_get_album(&album_gain, &album_peak);
+				for(i = 0; i < option_values.num_files; i++) {
+					const char *error, *outfilename = get_encoded_outfilename(option_values.filenames[i]);
+					if(0 == outfilename) {
+						flac__utils_printf(stderr, 1, "ERROR: filename too long: %s", option_values.filenames[i]);
+						return 1;
+					}
+					if(0 == strcmp(option_values.filenames[i], "-")) {
+						FLAC__ASSERT(0);
+						/* double protection */
+						flac__utils_printf(stderr, 1, "internal error\n");
+						return 2;
+					}
+					if(0 != (error = grabbag__replaygain_store_to_file_album(outfilename, album_gain, album_peak, /*preserve_modtime=*/true))) {
+						flac__utils_printf(stderr, 1, "%s: ERROR writing ReplayGain album tags\n", outfilename);
+						retval = 1;
+					}
+				}
 			}
 		}
 	}
@@ -450,8 +537,13 @@ FLAC__bool init_options()
 	option_values.show_explain = false;
 	option_values.mode_decode = false;
 	option_values.verify = false;
-	option_values.verbose = true;
+	option_values.force_file_overwrite = false;
 	option_values.continue_through_decode_errors = false;
+	option_values.replaygain_synthesis_spec.apply = false;
+	option_values.replaygain_synthesis_spec.use_album_gain = true;
+	option_values.replaygain_synthesis_spec.limiter = RGSS_LIMIT__HARD;
+	option_values.replaygain_synthesis_spec.noise_shaping = NOISE_SHAPING_LOW;
+	option_values.replaygain_synthesis_spec.preamp = 0.0;
 	option_values.lax = false;
 	option_values.test_only = false;
 	option_values.analyze = false;
@@ -464,34 +556,45 @@ FLAC__bool init_options()
 	option_values.do_escape_coding = false;
 	option_values.do_qlp_coeff_prec_search = false;
 	option_values.force_to_stdout = false;
+	option_values.force_aiff_format = false;
 	option_values.force_raw_format = false;
 	option_values.delete_input = false;
+	option_values.replay_gain = false;
 	option_values.sector_align = false;
 	option_values.cmdline_forced_outfilename = 0;
 	option_values.output_prefix = 0;
 	option_values.aopts.do_residual_text = false;
 	option_values.aopts.do_residual_gnuplot = false;
-	option_values.padding = -1;
+	option_values.padding = 4096;
 	option_values.max_lpc_order = 8;
 	option_values.qlp_coeff_precision = 0;
-	option_values.skip = 0;
+	option_values.skip_specification = 0;
+	option_values.until_specification = 0;
+	option_values.cue_specification = 0;
 	option_values.format_is_big_endian = -1;
 	option_values.format_is_unsigned_samples = -1;
 	option_values.format_channels = -1;
 	option_values.format_bps = -1;
 	option_values.format_sample_rate = -1;
+	option_values.format_input_size = -1;
 	option_values.blocksize = -1;
 	option_values.min_residual_partition_order = -1;
 	option_values.max_residual_partition_order = -1;
 	option_values.rice_parameter_search_dist = -1;
 	option_values.requested_seek_points[0] = '\0';
 	option_values.num_requested_seek_points = -1;
+	option_values.cuesheet_filename = 0;
+	option_values.cued_seekpoints = true;
 
 	option_values.num_files = 0;
 	option_values.filenames = 0;
 
 	if(0 == (option_values.vorbis_comment = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT)))
 		return false;
+
+	option_values.debug.disable_constant_subframes = false;
+	option_values.debug.disable_fixed_subframes = false;
+	option_values.debug.disable_verbatim_subframes = false;
 
 	return true;
 }
@@ -501,20 +604,19 @@ int parse_options(int argc, char *argv[])
 	int short_option;
 	int option_index = 1;
 	FLAC__bool had_error = false;
-	/*@@@ E and R: are deprecated */
-	const char *short_opts = "0123456789ab:cdeFhHl:mMo:pP:q:r:sS:tT:vV";
+	const char *short_opts = "0123456789ab:cdefFhHl:mMo:pP:q:r:sS:tT:vV";
 
-	while ((short_option = FLAC__share__getopt_long(argc, argv, short_opts, long_options_, &option_index)) != -1) {
+	while ((short_option = share__getopt_long(argc, argv, short_opts, long_options_, &option_index)) != -1) {
 		switch (short_option) {
 			case 0: /* long option with no equivalent short option */
-				had_error |= (parse_option(short_option, long_options_[option_index].name, FLAC__share__optarg) != 0);
+				had_error |= (parse_option(short_option, long_options_[option_index].name, share__optarg) != 0);
 				break;
 			case '?':
 			case ':':
 				had_error = true;
 				break;
 			default: /* short option */
-				had_error |= (parse_option(short_option, 0, FLAC__share__optarg) != 0);
+				had_error |= (parse_option(short_option, 0, share__optarg) != 0);
 				break;
 		}
 	}
@@ -523,16 +625,16 @@ int parse_options(int argc, char *argv[])
 		return 1;
 	}
 
-	FLAC__ASSERT(FLAC__share__optind <= argc);
+	FLAC__ASSERT(share__optind <= argc);
 
-	option_values.num_files = argc - FLAC__share__optind;
+	option_values.num_files = argc - share__optind;
 
 	if(option_values.num_files > 0) {
 		unsigned i = 0;
-		if(0 == (option_values.filenames = malloc(sizeof(char *) * option_values.num_files)))
+		if(0 == (option_values.filenames = (char**)malloc(sizeof(char*) * option_values.num_files)))
 			die("out of memory allocating space for file names list");
-		while(FLAC__share__optind < argc)
-			option_values.filenames[i++] = local_strdup(argv[FLAC__share__optind++]);
+		while(share__optind < argc)
+			option_values.filenames[i++] = local_strdup(argv[share__optind++]);
 	}
 
 	return 0;
@@ -544,7 +646,10 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 
 	if(short_option == 0) {
 		FLAC__ASSERT(0 != long_option);
-		if(0 == strcmp(long_option, "delete-input-file")) {
+		if(0 == strcmp(long_option, "totally-silent")) {
+			flac__utils_verbosity_ = 0;
+		}
+		else if(0 == strcmp(long_option, "delete-input-file")) {
 			option_values.delete_input = true;
 		}
 		else if(0 == strcmp(long_option, "output-prefix")) {
@@ -553,9 +658,54 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 		}
 		else if(0 == strcmp(long_option, "skip")) {
 			FLAC__ASSERT(0 != option_argument);
-			option_values.skip = (FLAC__uint64)atoi(option_argument); /* @@@ takes a pretty damn big file to overflow atoi() here, but it could happen */
+			option_values.skip_specification = option_argument;
 		}
-		else if(0 == strcmp(long_option, "super-secret-impractical-compression-level")) {
+		else if(0 == strcmp(long_option, "until")) {
+			FLAC__ASSERT(0 != option_argument);
+			option_values.until_specification = option_argument;
+		}
+		else if(0 == strcmp(long_option, "input-size")) {
+			FLAC__ASSERT(0 != option_argument);
+			option_values.format_input_size = atol(option_argument);
+		}
+		else if(0 == strcmp(long_option, "cue")) {
+			FLAC__ASSERT(0 != option_argument);
+			option_values.cue_specification = option_argument;
+		}
+		else if(0 == strcmp(long_option, "apply-replaygain-which-is-not-lossless")) {
+			option_values.replaygain_synthesis_spec.apply = true;
+			if (0 != option_argument) {
+				char *p;
+				option_values.replaygain_synthesis_spec.limiter = RGSS_LIMIT__NONE;
+				option_values.replaygain_synthesis_spec.noise_shaping = NOISE_SHAPING_NONE;
+				option_values.replaygain_synthesis_spec.preamp = strtod(option_argument, &p);
+				for ( ; *p; p++) {
+					if (*p == 'a')
+						option_values.replaygain_synthesis_spec.use_album_gain = true;
+					else if (*p == 't')
+						option_values.replaygain_synthesis_spec.use_album_gain = false;
+					else if (*p == 'l')
+						option_values.replaygain_synthesis_spec.limiter = RGSS_LIMIT__PEAK;
+					else if (*p == 'L')
+						option_values.replaygain_synthesis_spec.limiter = RGSS_LIMIT__HARD;
+					else if (*p == 'n' && p[1] >= '0' && p[1] <= '3') {
+						option_values.replaygain_synthesis_spec.noise_shaping = p[1] - '0';
+						p++;
+					}
+					else
+						return usage_error("ERROR: bad specification string \"%s\" for --%s\n", option_argument, long_option);
+				}
+			}
+		}
+		else if(0 == strcmp(long_option, "cuesheet")) {
+			FLAC__ASSERT(0 != option_argument);
+			option_values.cuesheet_filename = option_argument;
+		}
+		else if(0 == strcmp(long_option, "no-cued-seekpoints")) {
+			option_values.cued_seekpoints = false;
+		}
+		else if(0 == strcmp(long_option, "super-secret-totally-impractical-compression-level")) {
+			option_values.lax = true;
 			option_values.do_exhaustive_model_search = true;
 			option_values.do_escape_coding = true;
 			option_values.do_mid_side = true;
@@ -566,11 +716,17 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 			option_values.rice_parameter_search_dist = 0;
 			option_values.max_lpc_order = 32;
 		}
+		else if(0 == strcmp(long_option, "force-aiff-format")) {
+			option_values.force_aiff_format = true;
+		}
 		else if(0 == strcmp(long_option, "force-raw-format")) {
 			option_values.force_raw_format = true;
 		}
 		else if(0 == strcmp(long_option, "lax")) {
 			option_values.lax = true;
+		}
+		else if(0 == strcmp(long_option, "replay-gain")) {
+			option_values.replay_gain = true;
 		}
 		else if(0 == strcmp(long_option, "sector-align")) {
 			option_values.sector_align = true;
@@ -614,7 +770,7 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 			else
 				return usage_error("ERROR: argument to --sign must be \"signed\" or \"unsigned\"\n");
 		}
-		else if(0 == strcmp(long_option, "residual-gnu-plot")) {
+		else if(0 == strcmp(long_option, "residual-gnuplot")) {
 			option_values.aopts.do_residual_gnuplot = true;
 		}
 		else if(0 == strcmp(long_option, "residual-text")) {
@@ -627,7 +783,10 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 			option_values.continue_through_decode_errors = false;
 		}
 		else if(0 == strcmp(long_option, "no-silent")) {
-			option_values.verbose = true;
+			flac__utils_verbosity_ = 2;
+		}
+		else if(0 == strcmp(long_option, "no-force")) {
+			option_values.force_file_overwrite = false;
 		}
 		else if(0 == strcmp(long_option, "no-seektable")) {
 			option_values.num_requested_seek_points = 0;
@@ -635,6 +794,9 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 		}
 		else if(0 == strcmp(long_option, "no-delete-input-file")) {
 			option_values.delete_input = false;
+		}
+		else if(0 == strcmp(long_option, "no-replay-gain")) {
+			option_values.replay_gain = false;
 		}
 		else if(0 == strcmp(long_option, "no-sector-align")) {
 			option_values.sector_align = false;
@@ -650,12 +812,6 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 		else if(0 == strcmp(long_option, "no-exhaustive-model-search")) {
 			option_values.do_exhaustive_model_search = false;
 		}
-#if 0
-		/* @@@ deprecated: */
-		else if(0 == strcmp(long_option, "no-escape-coding")) {
-			option_values.do_escape_coding = false;
-		}
-#endif
 		else if(0 == strcmp(long_option, "no-mid-side")) {
 			option_values.do_mid_side = option_values.loose_mid_side = false;
 		}
@@ -676,6 +832,15 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 		}
 		else if(0 == strcmp(long_option, "no-residual-text")) {
 			option_values.aopts.do_residual_text = false;
+		}
+		else if(0 == strcmp(long_option, "disable-constant-subframes")) {
+			option_values.debug.disable_constant_subframes = true;
+		}
+		else if(0 == strcmp(long_option, "disable-fixed-subframes")) {
+			option_values.debug.disable_fixed_subframes = true;
+		}
+		else if(0 == strcmp(long_option, "disable-verbatim-subframes")) {
+			option_values.debug.disable_verbatim_subframes = true;
 		}
 	}
 	else {
@@ -705,7 +870,10 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 				option_values.force_to_stdout = true;
 				break;
 			case 's':
-				option_values.verbose = false;
+				flac__utils_verbosity_ = 1;
+				break;
+			case 'f':
+				option_values.force_file_overwrite = true;
 				break;
 			case 'o':
 				FLAC__ASSERT(0 != option_argument);
@@ -823,8 +991,13 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 				if(option_values.num_requested_seek_points < 0)
 					option_values.num_requested_seek_points = 0;
 				option_values.num_requested_seek_points++;
-				strcat(option_values.requested_seek_points, option_argument);
-				strcat(option_values.requested_seek_points, "<");
+				if(strlen(option_values.requested_seek_points)+strlen(option_argument)+2 >= sizeof(option_values.requested_seek_points)) {
+					return usage_error("ERROR: too many seekpoints requested\n");
+				}
+				else {
+					strcat(option_values.requested_seek_points, option_argument);
+					strcat(option_values.requested_seek_points, ";");
+				}
 				break;
 			case 'P':
 				FLAC__ASSERT(0 != option_argument);
@@ -886,25 +1059,33 @@ int parse_option(int short_option, const char *long_option, const char *option_a
 
 void free_options()
 {
-	if(0 != option_values.filenames)
+	unsigned i;
+	if(0 != option_values.filenames) {
+		for(i = 0; i < option_values.num_files; i++) {
+			if(0 != option_values.filenames[i])
+				free(option_values.filenames[i]);
+		}
 		free(option_values.filenames);
+	}
 	if(0 != option_values.vorbis_comment)
 		FLAC__metadata_object_delete(option_values.vorbis_comment);
 }
 
 int usage_error(const char *message, ...)
 {
-	va_list args;
+	if(flac__utils_verbosity_ >= 1) {
+		va_list args;
 
-	FLAC__ASSERT(0 != message);
+		FLAC__ASSERT(0 != message);
 
-	va_start(args, message);
+		va_start(args, message);
 
-	(void) vfprintf(stderr, message, args);
+		(void) vfprintf(stderr, message, args);
 
-	va_end(args);
+		va_end(args);
 
-	printf("Type \"flac\" for a usage summary or \"flac --help\" for all options\n");
+		printf("Type \"flac\" for a usage summary or \"flac --help\" for all options\n");
+	}
 
 	return 1;
 }
@@ -918,7 +1099,7 @@ static void usage_header()
 {
 	printf("===============================================================================\n");
 	printf("flac - Command-line FLAC encoder/decoder version %s\n", FLAC__VERSION_STRING);
-	printf("Copyright (C) 2000,2001,2002  Josh Coalson\n");
+	printf("Copyright (C) 2000,2001,2002,2003,2004,2005  Josh Coalson\n");
 	printf("\n");
 	printf("This program is free software; you can redistribute it and/or\n");
 	printf("modify it under the terms of the GNU General Public License\n");
@@ -940,10 +1121,10 @@ static void usage_summary()
 {
 	printf("Usage:\n");
 	printf("\n");
-	printf(" Encoding: flac [-s] [--skip #] [<encoding/format-options>] [INPUTFILE [...]]\n");
-	printf(" Decoding: flac -d [-s] [--skip #] [-F] [<format-options>] [INPUTFILE [...]]\n");
-	printf("  Testing: flac -t [-s] [INPUTFILE [...]]\n");
-	printf("Analyzing: flac -a [-s] [--skip #] [<analysis-options>] [INPUTFILE [...]]\n");
+	printf(" Encoding: flac [<general-options>] [<encoding/format-options>] [INPUTFILE [...]]\n");
+	printf(" Decoding: flac -d [<general-options>] [<format-options>] [FLACFILE [...]]\n");
+	printf("  Testing: flac -t [<general-options>] [FLACFILE [...]]\n");
+	printf("Analyzing: flac -a [<general-options>] [<analysis-options>] [FLACFILE [...]]\n");
 	printf("\n");
 }
 
@@ -970,7 +1151,7 @@ void show_help()
 {
 	usage_header();
 	usage_summary();
-	printf("generic options:\n");
+	printf("general options:\n");
 	printf("  -v, --version                Show the flac version number\n");
 	printf("  -h, --help                   Show this screen\n");
 	printf("  -H, --explain                Show detailed explanation of usage and options\n");
@@ -979,26 +1160,32 @@ void show_help()
 	printf("  -a, --analyze                Same as -d except an analysis file is written\n");
 	printf("  -c, --stdout                 Write output to stdout\n");
 	printf("  -s, --silent                 Do not write runtime encode/decode statistics\n");
+	printf("      --totally-silent         Do not print anything, including errors\n");
+	printf("  -f, --force                  Force overwriting of output files\n");
 	printf("  -o, --output-name=FILENAME   Force the output file name\n");
 	printf("      --output-prefix=STRING   Prepend STRING to output names\n");
 	printf("      --delete-input-file      Deletes after a successful encode/decode\n");
-	printf("      --skip=#                 Skip the first # samples of each input file\n");
+	printf("      --skip={#|mm:ss.ss}      Skip the given initial samples for each input\n");
+	printf("      --until={#|[+|-]mm:ss.ss}  Stop at the given sample for each input file\n");
+#ifdef FLAC__HAS_OGG
+	printf("      --ogg                    Use Ogg as transport layer\n");
+	printf("      --serial-number          Serial number to use for the FLAC stream\n");
+#endif
 	printf("analysis options:\n");
 	printf("      --residual-text          Include residual signal in text output\n");
 	printf("      --residual-gnuplot       Generate gnuplot files of residual distribution\n");
 	printf("decoding options:\n");
 	printf("  -F, --decode-through-errors  Continue decoding through stream errors\n");
+	printf("      --cue=[#.#][-[#.#]]      Set the beginning and ending cuepoints to decode\n");
 	printf("encoding options:\n");
 	printf("  -V, --verify                 Verify a correct encoding\n");
-#ifdef FLAC__HAS_OGG
-	printf("      --ogg                    Use Ogg as transport layer\n");
-	printf("      --serial-number          Serial number to use for the FLAC stream\n");
-#endif
 	printf("      --lax                    Allow encoder to generate non-Subset files\n");
 	printf("      --sector-align           Align multiple files on sector boundaries\n");
-	printf("  -S, --seekpoint={#|X|#x}     Add seek point(s)\n");
-	printf("  -P, --padding=#              Write a PADDING block of length #\n");
+	printf("      --replay-gain            Calculate ReplayGain & store in Vorbis comments\n");
+	printf("      --cuesheet=FILENAME      Import cuesheet and store in CUESHEET block\n");
 	printf("  -T, --tag=FIELD=VALUE        Add a Vorbis comment; may appear multiple times\n");
+	printf("  -S, --seekpoint={#|X|#x|#s}  Add seek point(s)\n");
+	printf("  -P, --padding=#              Write a PADDING block of length #\n");
 	printf("  -0, --compression-level-0, --fast  Synonymous with -l 0 -b 1152 -r 2,2\n");
 	printf("  -1, --compression-level-1          Synonymous with -l 0 -b 1152 -M -r 2,2\n");
 	printf("  -2, --compression-level-2          Synonymous with -l 0 -b 1152 -m -r 3\n");
@@ -1012,33 +1199,23 @@ void show_help()
 	printf("  -m, --mid-side                     Try mid-side coding for each frame\n");
 	printf("  -M, --adaptive-mid-side            Adaptive mid-side coding for all frames\n");
 	printf("  -e, --exhaustive-model-search      Do exhaustive model search (expensive!)\n");
-#if 0
-	/*@@@ deprecated: */
-	printf("  -E, --escape-coding                Do escape coding in the entropy coder\n");
-#endif
 	printf("  -l, --max-lpc-order=#              Max LPC order; 0 => only fixed predictors\n");
 	printf("  -p, --qlp-coeff-precision-search   Exhaustively search LP coeff quantization\n");
 	printf("  -q, --qlp-coeff-precision=#        Specify precision in bits\n");
 	printf("  -r, --rice-partition-order=[#,]#   Set [min,]max residual partition order\n");
-#if 0
-	/*@@@ deprecated: */
-	printf("  -R, -rice-parameter-search-distance=#   Rice parameter search distance\n");
-#endif
 	printf("format options:\n");
 	printf("      --endian={big|little}    Set byte order for samples\n");
 	printf("      --channels=#             Number of channels\n");
 	printf("      --bps=#                  Number of bits per sample\n");
 	printf("      --sample-rate=#          Sample rate in Hz\n");
 	printf("      --sign={signed|unsigned} Sign of samples\n");
+	printf("      --input-size=#           Size of the raw input in bytes\n");
+	printf("      --force-aiff-format      Force decoding to AIFF format\n");
 	printf("      --force-raw-format       Treat input or output as raw samples\n");
 	printf("negative options:\n");
 	printf("      --no-adaptive-mid-side\n");
 	printf("      --no-decode-through-errors\n");
 	printf("      --no-delete-input-file\n");
-#if 0
-/* @@@ deprecated: */
-	printf("      --no-escape-coding\n");
-#endif
 	printf("      --no-exhaustive-model-search\n");
 	printf("      --no-lax\n");
 	printf("      --no-mid-side\n");
@@ -1047,11 +1224,13 @@ void show_help()
 #endif
 	printf("      --no-padding\n");
 	printf("      --no-qlp-coeff-prec-search\n");
+	printf("      --no-replay-gain\n");
 	printf("      --no-residual-gnuplot\n");
 	printf("      --no-residual-text\n");
 	printf("      --no-sector-align\n");
 	printf("      --no-seektable\n");
 	printf("      --no-silent\n");
+	printf("      --no-force\n");
 	printf("      --no-verify\n");
 }
 
@@ -1078,7 +1257,7 @@ void show_explain()
 	printf("apply to all raw files.  You can force AIFF/WAVE files to be treated as raw\n");
 	printf("files using -fr.\n");
 	printf("\n");
-	printf("generic options:\n");
+	printf("general options:\n");
 	printf("  -v, --version                Show the flac version number\n");
 	printf("  -h, --help                   Show basic usage a list of all options\n");
 	printf("  -H, --explain                Show this screen\n");
@@ -1087,6 +1266,10 @@ void show_explain()
 	printf("  -a, --analyze                Same as -d except an analysis file is written\n");
 	printf("  -c, --stdout                 Write output to stdout\n");
 	printf("  -s, --silent                 Do not write runtime encode/decode statistics\n");
+	printf("      --totally-silent         Do not print anything of any kind, including\n");
+	printf("                               warnings or errors.  The exit code will be the\n");
+	printf("                               only way to determine successful completion.\n");
+	printf("  -f, --force                  Force overwriting of output files\n");
 	printf("  -o, --output-name=FILENAME   Force the output file name; usually flac just\n");
 	printf("                               changes the extension.  May only be used when\n");
 	printf("                               encoding a single file.  May not be used in\n");
@@ -1100,8 +1283,35 @@ void show_explain()
 	printf("                               successful encode or decode.  If there was an\n");
 	printf("                               error (including a verify error) the input file\n");
 	printf("                               is left intact.\n");
-	printf("      --skip=#                 Skip the first # samples of each input file; can\n");
-	printf("                               be used both for encoding and decoding\n");
+	printf("      --skip={#|mm:ss.ss}      Skip the first # samples of each input file; can\n");
+	printf("                               be used both for encoding and decoding.  The\n");
+	printf("                               alternative form mm:ss.ss can be used to specify\n");
+	printf("                               minutes, seconds, and fractions of a second.\n");
+	printf("      --until={#|[+|-]mm:ss.ss}  Stop at the given sample number for each input\n");
+	printf("                               file.  The given sample number is not included\n");
+	printf("                               in the decoded output.  The alternative form\n");
+	printf("                               mm:ss.ss can be used to specify minutes,\n");
+	printf("                               seconds, and fractions of a second.  If a `+'\n");
+	printf("                               sign is at the beginning, the --until point is\n");
+	printf("                               relative to the --skip point.  If a `-' sign is\n");
+	printf("                               at the beginning, the --until point is relative\n");
+	printf("                               to end of the audio.\n");
+#ifdef FLAC__HAS_OGG
+	printf("      --ogg                    When encoding, generate Ogg FLAC output instead\n");
+	printf("                               of native FLAC.  Ogg FLAC streams are FLAC\n");
+	printf("                               streams wrapped in an Ogg transport layer.  The\n");
+	printf("                               resulting file should have an '.ogg' extension\n");
+	printf("                               and will still be decodable by flac.  When\n");
+	printf("                               decoding, force the input to be treated as\n");
+	printf("                               Ogg FLAC.  This is useful when piping input\n");
+	printf("                               from stdin or when the filename does not end in\n");
+	printf("                               '.ogg'.\n");
+	printf("      --serial-number          Serial number to use for the FLAC stream.  When\n");
+	printf("                               encoding and no serial number is given, flac\n");
+	printf("                               uses '0'.  When decoding and no number is\n");
+	printf("                               given, flac uses the serial number of the first\n");
+	printf("                               page.\n");
+#endif
 	printf("analysis options:\n");
 	printf("      --residual-text          Include residual signal in text output.  This\n");
 	printf("                               will make the file very big, much larger than\n");
@@ -1116,38 +1326,53 @@ void show_explain()
 	printf("                               decoding to completion.  Note that errors may\n");
 	printf("                               cause the decoded audio to be missing some\n");
 	printf("                               samples or have silent sections.\n");
+	printf("      --cue=[#.#][-[#.#]]      Set the beginning and ending cuepoints to\n");
+	printf("                               decode.  The optional first #.# is the track and\n");
+	printf("                               index point at which decoding will start; the\n");
+	printf("                               default is the beginning of the stream.  The\n");
+	printf("                               optional second #.# is the track and index point\n");
+	printf("                               at which decoding will end; the default is the\n");
+	printf("                               end of the stream.  If the cuepoint does not\n");
+	printf("                               exist, the closest one before it (for the start\n");
+	printf("                               point) or after it (for the end point) will be\n");
+	printf("                               used.  The cuepoints are merely translated into\n");
+	printf("                               sample numbers then used as --skip and --until.\n");
 	printf("encoding options:\n");
 	printf("  -V, --verify                 Verify a correct encoding by decoding the\n");
 	printf("                               output in parallel and comparing to the\n");
 	printf("                               original\n");
-#ifdef FLAC__HAS_OGG
-	printf("      --ogg                    When encoding, generate Ogg-FLAC output instead\n");
-	printf("                               of native-FLAC.  Ogg-FLAC streams are FLAC\n");
-	printf("                               streams wrapped in an Ogg transport layer.  The\n");
-	printf("                               resulting file should have an '.ogg' extension\n");
-	printf("                               and will still be decodable by flac.  When\n");
-	printf("                               decoding, force the input to be treated as\n");
-	printf("                               Ogg-FLAC.  This is useful when piping input\n");
-	printf("                               from stdin or when the filename does not end in\n");
-	printf("                               '.ogg'.\n");
-	printf("      --serial-number          Serial number to use for the FLAC stream.  When\n");
-	printf("                               encoding and no serial number is given, flac\n");
-	printf("                               uses '0'.  When decoding and no number is\n");
-	printf("                               given, flac uses the serial number of the first\n");
-	printf("                               page.\n");
-#endif
 	printf("      --lax                    Allow encoder to generate non-Subset files\n");
 	printf("      --sector-align           Align encoding of multiple CD format WAVE files\n");
 	printf("                               on sector boundaries.\n");
-	printf("  -S, --seekpoint={#|X|#x}     Include a point or points in a SEEKTABLE\n");
+	printf("      --replay-gain            Calculate ReplayGain values and store in Vorbis\n");
+	printf("                               comments.  Title gains/peaks will be computed\n");
+	printf("                               for each file, and an album gain/peak will be\n");
+	printf("                               computed for all files.  All input files must\n");
+	printf("                               have the same resolution, sample rate, and\n");
+	printf("                               number of channels.  The sample rate must be\n");
+	printf("                               one of 8, 11.025, 12, 16, 22.05, 24, 32, 44.1,\n");
+	printf("                               or 48 kHz.  NOTE: this option may also leave a\n");
+	printf("                               few extra bytes in the PADDING block.\n");
+	printf("      --cuesheet=FILENAME      Import the given cuesheet file and store it in\n");
+	printf("                               a CUESHEET metadata block.  This option may only\n");
+	printf("                               be used when encoding a single file.  A\n");
+	printf("                               seekpoint will be added for each index point in\n");
+	printf("                               the cuesheet to the SEEKTABLE unless\n");
+	printf("                               --no-cued-seekpoints is specified.\n");
+	printf("  -T, --tag=FIELD=VALUE        Add a Vorbis comment.  Make sure to quote the\n");
+	printf("                               comment if necessary.  This option may appear\n");
+	printf("                               more than once to add several comments.  NOTE:\n");
+	printf("                               all tags will be added to all encoded files.\n");
+	printf("  -S, --seekpoint={#|X|#x|#s}  Include a point or points in a SEEKTABLE\n");
 	printf("       #  : a specific sample number for a seek point\n");
 	printf("       X  : a placeholder point (always goes at the end of the SEEKTABLE)\n");
 	printf("       #x : # evenly spaced seekpoints, the first being at sample 0\n");
+	printf("       #s : a seekpoint every # seconds; # does not have to be a whole number\n");
 	printf("     You may use many -S options; the resulting SEEKTABLE will be the unique-\n");
 	printf("           ified union of all such values.\n");
-	printf("     With no -S options, flac defaults to '-S 100x'.  Use -S- for no SEEKTABLE.\n");
-	printf("     Note: -S #x will not work if the encoder can't determine the input size\n");
-	printf("           before starting.\n");
+	printf("     With no -S options, flac defaults to '-S 10s'.  Use -S- for no SEEKTABLE.\n");
+	printf("     Note: -S #x and -S #s will not work if the encoder can't determine the\n");
+	printf("           input size before starting.\n");
 	printf("     Note: if you use -S # and # is >= samples in the input, there will be\n");
 	printf("           either no seek point entered (if the input size is determinable\n");
 	printf("           before encoding starts) or a placeholder point (if input size is not\n");
@@ -1163,16 +1388,13 @@ void show_explain()
 	printf("                               be 4 bytes longer than the length given because\n");
 	printf("                               of the 4 metadata block header bytes.  You can\n");
 	printf("                               force no PADDING block at all to be written with\n");
-	printf("                               --no-padding, which is the default.\n");
+	printf("                               --no-padding.  The encoder writes a PADDING\n");
+	printf("                               block of 4096 bytes by default.\n");
 	printf("  -b, --blocksize=#            Specify the blocksize in samples; the default is\n");
 	printf("                               1152 for -l 0, else 4608; must be one of 192,\n");
 	printf("                               576, 1152, 2304, 4608, 256, 512, 1024, 2048,\n");
 	printf("                               4096, 8192, 16384, or 32768 (unless --lax is\n");
 	printf("                               used)\n");
-	printf("  -T, --tag=FIELD=VALUE        Add a Vorbis comment.  Make sure to quote the\n");
-	printf("                               comment if necessary.  This option may appear\n");
-	printf("                               more than once to add several comments.  NOTE:\n");
-	printf("                               all tags will be added to all encoded files.\n");
 	printf("  -0, --compression-level-0, --fast  Synonymous with -l 0 -b 1152 -r 2,2\n");
 	printf("  -1, --compression-level-1          Synonymous with -l 0 -b 1152 -M -r 2,2\n");
 	printf("  -2, --compression-level-2          Synonymous with -l 0 -b 1152 -m -r 3\n");
@@ -1188,15 +1410,6 @@ void show_explain()
 	printf("  -M, --adaptive-mid-side            Adaptive mid-side coding for all frames\n");
 	printf("                                     (stereo only)\n");
 	printf("  -e, --exhaustive-model-search      Do exhaustive model search (expensive!)\n");
-#if 0
-	/*@@@ deprecated: */
-	printf("  -E, --escape-coding                Do escape coding in the entropy coder.\n");
-	printf("                                     This causes the encoder to use an\n");
-	printf("                                     unencoded representation of the residual\n");
-	printf("                                     in a partition if it is smaller.  It\n");
-	printf("                                     increases the runtime and usually results\n");
-	printf("                                     in an improvement of less than 1%.\n");
-#endif
 	printf("  -l, --max-lpc-order=#              Max LPC order; 0 => only fixed predictors\n");
 	printf("  -p, --qlp-coeff-precision-search   Do exhaustive search of LP coefficient\n");
 	printf("                                     quantization (expensive!); overrides -q;\n");
@@ -1209,26 +1422,32 @@ void show_explain()
 	printf("                                     (# is 0..16; min defaults to 0; the\n");
 	printf("                                     default is -r 0; above 4 doesn't usually\n");
 	printf("                                     help much)\n");
-#if 0
-	/*@@@ deprecated: */
-	printf("  -R, -rice-parameter-search-distance=#   Rice parameter search distance\n");
-#endif
 	printf("format options:\n");
 	printf("      --endian={big|little}    Set byte order for samples\n");
 	printf("      --channels=#             Number of channels\n");
 	printf("      --bps=#                  Number of bits per sample\n");
 	printf("      --sample-rate=#          Sample rate in Hz\n");
 	printf("      --sign={signed|unsigned} Sign of samples (the default is signed)\n");
+	printf("      --input-size=#           Size of the raw input in bytes.  If you are\n");
+	printf("                               encoding raw samples from stdin, you must set\n");
+	printf("                               this option in order to be able to use --skip,\n");
+	printf("                               --until, --cue-sheet, or other options that need\n");
+	printf("                               to know the size of the input beforehand.  If\n");
+	printf("                               the size given is greater than what is found in\n");
+	printf("                               the input stream, the encoder will complain\n");
+	printf("                               about an unexpected end-of-file.  If the size\n");
+	printf("                               given is less, samples will be truncated.\n");
+	printf("      --force-aiff-format      Force the decoder to output AIFF format.  This\n");
+	printf("                               option is not needed if the output filename (as\n");
+	printf("                               set by -o) ends with .aif or .aiff; this option\n");
+	printf("                               has no effect when encoding since input AIFF is\n");
+	printf("                               auto-detected.\n");
 	printf("      --force-raw-format       Force input (when encoding) or output (when\n");
 	printf("                               decoding) to be treated as raw samples\n");
 	printf("negative options:\n");
 	printf("      --no-adaptive-mid-side\n");
 	printf("      --no-decode-through-errors\n");
 	printf("      --no-delete-input-file\n");
-#if 0
-/* @@@ deprecated: */
-	printf("      --no-escape-coding\n");
-#endif
 	printf("      --no-exhaustive-model-search\n");
 	printf("      --no-lax\n");
 	printf("      --no-mid-side\n");
@@ -1242,46 +1461,59 @@ void show_explain()
 	printf("      --no-sector-align\n");
 	printf("      --no-seektable\n");
 	printf("      --no-silent\n");
+	printf("      --no-force\n");
 	printf("      --no-verify\n");
 }
 
-void
-format_mistake(const char *infilename, const char *wrong, const char *right)
+void format_mistake(const char *infilename, const char *wrong, const char *right)
 {
-	fprintf(stderr, "WARNING: %s is not a %s file; treating as a %s file\n", infilename, wrong, right);
+	flac__utils_printf(stderr, 1, "WARNING: %s is not a %s file; treating as a %s file\n", infilename, wrong, right);
 }
 
-int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bool is_last_file)
+int encode_file(const char *infilename, FLAC__bool is_first_file, FLAC__bool is_last_file)
 {
 	FILE *encode_infile;
-	char outfilename[4096]; /* @@@ bad MAGIC NUMBER */
-	char *p;
 	FLAC__byte lookahead[12];
 	unsigned lookahead_length = 0;
 	FileFormat fmt= RAW;
 	int retval;
 	long infilesize;
 	encode_options_t common_options;
+	const char *outfilename = get_encoded_outfilename(infilename);
+
+	if(0 == outfilename) {
+		flac__utils_printf(stderr, 1, "ERROR: filename too long: %s", infilename);
+		return 1;
+	}
+
+	/*
+	 * Error if output file already exists (and -f not used).
+	 * Use grabbag__file_get_filesize() as a cheap way to check.
+	 */
+	if(!option_values.test_only && !option_values.force_file_overwrite && grabbag__file_get_filesize(outfilename) != (off_t)(-1)) {
+		flac__utils_printf(stderr, 1, "ERROR: output file %s already exists, use -f to override\n", outfilename);
+		return 1;
+	}
 
 	if(0 == strcmp(infilename, "-")) {
 		infilesize = -1;
-		encode_infile = file__get_binary_stdin();
+		encode_infile = grabbag__file_get_binary_stdin();
 	}
 	else {
-		infilesize = flac__file_get_filesize(infilename);
+		infilesize = grabbag__file_get_filesize(infilename);
 		if(0 == (encode_infile = fopen(infilename, "rb"))) {
-			fprintf(stderr, "ERROR: can't open input file %s\n", infilename);
+			flac__utils_printf(stderr, 1, "ERROR: can't open input file %s\n", infilename);
 			return 1;
 		}
 	}
 
 	if(!option_values.force_raw_format) {
 		/* first set format based on name */
-		if(strlen(infilename) > 3 && 0 == strcasecmp(infilename+(strlen(infilename)-4), ".wav"))
+		if(strlen(infilename) >= 4 && 0 == strcasecmp(infilename+(strlen(infilename)-4), ".wav"))
 			fmt= WAV;
-		else if(strlen(infilename) > 3 && 0 == strcasecmp(infilename+(strlen(infilename)-4), ".aif"))
+		else if(strlen(infilename) >= 4 && 0 == strcasecmp(infilename+(strlen(infilename)-4), ".aif"))
 			fmt= AIF;
-		else if(strlen(infilename) > 4 && 0 == strcasecmp(infilename+(strlen(infilename)-5), ".aiff"))
+		else if(strlen(infilename) >= 5 && 0 == strcasecmp(infilename+(strlen(infilename)-5), ".aiff"))
 			fmt= AIF;
 
 		/* attempt to guess the file type based on the first 12 bytes */
@@ -1291,9 +1523,9 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 			fmt= RAW;
 		}
 		else {
-			if(!strncmp(lookahead, "RIFF", 4) && !strncmp(lookahead+8, "WAVE", 4))
+			if(!strncmp((const char *)lookahead, "RIFF", 4) && !strncmp((const char *)lookahead+8, "WAVE", 4))
 				fmt= WAV;
-			else if(!strncmp(lookahead, "FORM", 4) && !strncmp(lookahead+8, "AIFF", 4))
+			else if(!strncmp((const char *)lookahead, "FORM", 4) && !strncmp((const char *)lookahead+8, "AIFF", 4))
 				fmt= AIF;
 			else {
 				if(fmt != RAW)
@@ -1303,8 +1535,18 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 		}
 	}
 
+	if(option_values.format_input_size >= 0) {
+	   	if (fmt != RAW || infilesize >= 0) {
+			flac__utils_printf(stderr, 1, "ERROR: can only use --input-size when encoding raw samples from stdin\n");
+			return 1;
+		}
+		else {
+			infilesize = option_values.format_input_size;
+		}
+	}
+
 	if(option_values.sector_align && fmt == RAW && infilesize < 0) {
-		fprintf(stderr, "ERROR: can't --sector-align when the input size is unknown\n");
+		flac__utils_printf(stderr, 1, "ERROR: can't --sector-align when the input size is unknown\n");
 		return 1;
 	}
 
@@ -1313,35 +1555,30 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 			return usage_error("ERROR: for encoding a raw file you must specify a value for --endian, --sign, --channels, --bps, and --sample-rate\n");
 	}
 
-	if(encode_infile == stdin || option_values.force_to_stdout)
-		strcpy(outfilename, "-");
-	else {
-		const char *suffix = (option_values.use_ogg? ogg_suffix : flac_suffix);
-		strcpy(outfilename, option_values.output_prefix? option_values.output_prefix : "");
-		strcat(outfilename, infilename);
-		if(0 == (p = strrchr(outfilename, '.')))
-			strcat(outfilename, suffix);
-		else {
-			if(0 == strcmp(p, suffix)) {
-				strcpy(p, "_new");
-				strcat(p, suffix);
-			}
-			else
-				strcpy(p, suffix);
-		}
+	if(encode_infile == stdin || option_values.force_to_stdout) {
+		if(option_values.replay_gain)
+			return usage_error("ERROR: --replay-gain cannot be used when encoding to stdout\n");
 	}
-	if(0 == forced_outfilename)
-		forced_outfilename = outfilename;
-	if(0 != option_values.cmdline_forced_outfilename)
-		forced_outfilename = option_values.cmdline_forced_outfilename;
 
-	common_options.verbose = option_values.verbose;
-	common_options.skip = option_values.skip;
+	if(!flac__utils_parse_skip_until_specification(option_values.skip_specification, &common_options.skip_specification) || common_options.skip_specification.is_relative)
+		return usage_error("ERROR: invalid value for --skip\n");
+
+	if(!flac__utils_parse_skip_until_specification(option_values.until_specification, &common_options.until_specification)) /*@@@ more checks: no + without --skip, no - unless known total_samples_to_{en,de}code */
+		return usage_error("ERROR: invalid value for --until\n");
+	/* if there is no "--until" we want to default to "--until=-0" */
+	if(0 == option_values.until_specification)
+		common_options.until_specification.is_relative = true;
+
 	common_options.verify = option_values.verify;
 #ifdef FLAC__HAS_OGG
 	common_options.use_ogg = option_values.use_ogg;
-	common_options.has_serial_number = option_values.has_serial_number;
-	common_options.serial_number = option_values.serial_number;
+	/* set a random serial number if one has not yet been specified */
+	if(!option_values.has_serial_number) {
+		srand(time(0));
+		option_values.serial_number = rand();
+		option_values.has_serial_number = true;
+	}
+	common_options.serial_number = option_values.serial_number++;
 #endif
 	common_options.lax = option_values.lax;
 	common_options.do_mid_side = option_values.do_mid_side;
@@ -1358,11 +1595,18 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 	common_options.padding = option_values.padding;
 	common_options.requested_seek_points = option_values.requested_seek_points;
 	common_options.num_requested_seek_points = option_values.num_requested_seek_points;
+	common_options.cuesheet_filename = option_values.cuesheet_filename;
+	common_options.cued_seekpoints = option_values.cued_seekpoints;
+	common_options.is_first_file = is_first_file;
 	common_options.is_last_file = is_last_file;
 	common_options.align_reservoir = align_reservoir;
 	common_options.align_reservoir_samples = &align_reservoir_samples;
+	common_options.replay_gain = option_values.replay_gain;
 	common_options.sector_align = option_values.sector_align;
 	common_options.vorbis_comment = option_values.vorbis_comment;
+	common_options.debug.disable_constant_subframes = option_values.debug.disable_constant_subframes;
+	common_options.debug.disable_fixed_subframes = option_values.debug.disable_fixed_subframes;
+	common_options.debug.disable_verbatim_subframes = option_values.debug.disable_verbatim_subframes;
 
 	if(fmt == RAW) {
 		raw_encode_options_t options;
@@ -1374,7 +1618,7 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 		options.bps = option_values.format_bps;
 		options.sample_rate = option_values.format_sample_rate;
 
-		retval = flac__encode_raw(encode_infile, infilesize, infilename, forced_outfilename, lookahead, lookahead_length, options);
+		retval = flac__encode_raw(encode_infile, infilesize, infilename, outfilename, lookahead, lookahead_length, options);
 	}
 	else {
 		wav_encode_options_t options;
@@ -1382,14 +1626,23 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 		options.common = common_options;
 
 		if(fmt == AIF)
-			retval = flac__encode_aif(encode_infile, infilesize, infilename, forced_outfilename, lookahead, lookahead_length, options);
+			retval = flac__encode_aif(encode_infile, infilesize, infilename, outfilename, lookahead, lookahead_length, options);
 		else
-			retval = flac__encode_wav(encode_infile, infilesize, infilename, forced_outfilename, lookahead, lookahead_length, options);
+			retval = flac__encode_wav(encode_infile, infilesize, infilename, outfilename, lookahead, lookahead_length, options);
 	}
 
 	if(retval == 0 && strcmp(infilename, "-")) {
-		if(strcmp(forced_outfilename, "-"))
-			flac__file_copy_metadata(infilename, forced_outfilename);
+		if(strcmp(outfilename, "-")) {
+			if(option_values.replay_gain) {
+				float title_gain, title_peak;
+				const char *error;
+				grabbag__replaygain_get_title(&title_gain, &title_peak);
+				if(0 != (error = grabbag__replaygain_store_to_file_title(outfilename, title_gain, title_peak, /*preserve_modtime=*/true))) {
+					flac__utils_printf(stderr, 1, "%s: ERROR writing ReplayGain title tags\n", outfilename);
+				}
+			}
+			grabbag__file_copy_metadata(infilename, outfilename);
+		}
 		if(option_values.delete_input)
 			unlink(infilename);
 	}
@@ -1397,71 +1650,84 @@ int encode_file(const char *infilename, const char *forced_outfilename, FLAC__bo
 	return retval;
 }
 
-int decode_file(const char *infilename, const char *forced_outfilename)
+int decode_file(const char *infilename)
 {
-	static const char *suffixes[] = { ".wav", ".raw", ".ana" };
-	char outfilename[4096]; /* @@@ bad MAGIC NUMBER */
-	char *p;
 	int retval;
 	FLAC__bool treat_as_ogg = false;
 	decode_options_t common_options;
+	const char *outfilename = get_decoded_outfilename(infilename);
+
+	if(0 == outfilename) {
+		flac__utils_printf(stderr, 1, "ERROR: filename too long: %s", infilename);
+		return 1;
+	}
+
+	/*
+	 * Error if output file already exists (and -f not used).
+	 * Use grabbag__file_get_filesize() as a cheap way to check.
+	 */
+	if(!option_values.test_only && !option_values.force_file_overwrite && grabbag__file_get_filesize(outfilename) != (off_t)(-1)) {
+		flac__utils_printf(stderr, 1, "ERROR: output file %s already exists, use -f to override\n", outfilename);
+		return 1;
+	}
 
 	if(!option_values.test_only && !option_values.analyze) {
 		if(option_values.force_raw_format && (option_values.format_is_big_endian < 0 || option_values.format_is_unsigned_samples < 0))
 			return usage_error("ERROR: for decoding to a raw file you must specify a value for --endian and --sign\n");
 	}
 
-	if(0 == strcmp(infilename, "-") || option_values.force_to_stdout)
-		strcpy(outfilename, "-");
-	else {
-		const char *suffix = suffixes[option_values.analyze? 2 : option_values.force_raw_format? 1 : 0];
-		strcpy(outfilename, option_values.output_prefix? option_values.output_prefix : "");
-		strcat(outfilename, infilename);
-		if(0 == (p = strrchr(outfilename, '.')))
-			strcat(outfilename, suffix);
-		else {
-			if(0 == strcmp(p, suffix)) {
-				strcpy(p, "_new");
-				strcat(p, suffix);
-			}
-			else
-				strcpy(p, suffix);
-		}
-	}
-	if(0 == forced_outfilename)
-		forced_outfilename = outfilename;
-	if(0 != option_values.cmdline_forced_outfilename)
-		forced_outfilename = option_values.cmdline_forced_outfilename;
-
 	if(option_values.use_ogg)
 		treat_as_ogg = true;
-	else if(0 == strcasecmp(infilename+(strlen(infilename)-4), ".ogg"))
+	else if(strlen(infilename) >= 4 && 0 == strcasecmp(infilename+(strlen(infilename)-4), ".ogg"))
 		treat_as_ogg = true;
 	else
 		treat_as_ogg = false;
 
 #ifndef FLAC__HAS_OGG
 	if(treat_as_ogg) {
-		fprintf(stderr, "%s: Ogg support has not been built into this copy of flac\n", infilename);
+		flac__utils_printf(stderr, 1, "%s: Ogg support has not been built into this copy of flac\n", infilename);
 		return 1;
 	}
 #endif
 
-	common_options.verbose = option_values.verbose;
+	if(!flac__utils_parse_skip_until_specification(option_values.skip_specification, &common_options.skip_specification) || common_options.skip_specification.is_relative)
+		return usage_error("ERROR: invalid value for --skip\n");
+
+	if(!flac__utils_parse_skip_until_specification(option_values.until_specification, &common_options.until_specification)) /*@@@ more checks: no + without --skip, no - unless known total_samples_to_{en,de}code */
+		return usage_error("ERROR: invalid value for --until\n");
+	/* if there is no "--until" we want to default to "--until=-0" */
+	if(0 == option_values.until_specification)
+		common_options.until_specification.is_relative = true;
+
+	if(option_values.cue_specification) {
+		if(!flac__utils_parse_cue_specification(option_values.cue_specification, &common_options.cue_specification))
+			return usage_error("ERROR: invalid value for --cue\n");
+		common_options.has_cue_specification = true;
+	}
+	else
+		common_options.has_cue_specification = false;
+
 	common_options.continue_through_decode_errors = option_values.continue_through_decode_errors;
+	common_options.replaygain_synthesis_spec = option_values.replaygain_synthesis_spec;
 #ifdef FLAC__HAS_OGG
 	common_options.is_ogg = treat_as_ogg;
 	common_options.use_first_serial_number = !option_values.has_serial_number;
 	common_options.serial_number = option_values.serial_number;
 #endif
-	common_options.skip = option_values.skip;
 
 	if(!option_values.force_raw_format) {
 		wav_decode_options_t options;
 
 		options.common = common_options;
 
-		retval = flac__decode_wav(infilename, option_values.test_only? 0 : forced_outfilename, option_values.analyze, option_values.aopts, options);
+		if(
+			option_values.force_aiff_format ||
+			(strlen(outfilename) >= 4 && 0 == strcasecmp(outfilename+(strlen(outfilename)-4), ".aif")) ||
+			(strlen(outfilename) >= 5 && 0 == strcasecmp(outfilename+(strlen(outfilename)-5), ".aiff"))
+		)
+			retval = flac__decode_aiff(infilename, option_values.test_only? 0 : outfilename, option_values.analyze, option_values.aopts, options);
+		else
+			retval = flac__decode_wav(infilename, option_values.test_only? 0 : outfilename, option_values.analyze, option_values.aopts, options);
 	}
 	else {
 		raw_decode_options_t options;
@@ -1470,12 +1736,12 @@ int decode_file(const char *infilename, const char *forced_outfilename)
 		options.is_big_endian = option_values.format_is_big_endian;
 		options.is_unsigned_samples = option_values.format_is_unsigned_samples;
 
-		retval = flac__decode_raw(infilename, option_values.test_only? 0 : forced_outfilename, option_values.analyze, option_values.aopts, options);
+		retval = flac__decode_raw(infilename, option_values.test_only? 0 : outfilename, option_values.analyze, option_values.aopts, options);
 	}
 
 	if(retval == 0 && strcmp(infilename, "-")) {
-		if(strcmp(forced_outfilename, "-"))
-			flac__file_copy_metadata(infilename, forced_outfilename);
+		if(strcmp(outfilename, "-"))
+			grabbag__file_copy_metadata(infilename, outfilename);
 		if(option_values.delete_input && !option_values.test_only && !option_values.analyze)
 			unlink(infilename);
 	}
@@ -1483,10 +1749,71 @@ int decode_file(const char *infilename, const char *forced_outfilename)
 	return retval;
 }
 
+const char *get_encoded_outfilename(const char *infilename)
+{
+	const char *suffix = (option_values.use_ogg? ".ogg" : ".flac");
+	return get_outfilename(infilename, suffix);
+}
+
+const char *get_decoded_outfilename(const char *infilename)
+{
+	const char *suffix;
+	if(option_values.analyze) {
+		suffix = ".ana";
+	}
+	else if(option_values.force_raw_format) {
+		suffix = ".raw";
+	}
+	else if(option_values.force_aiff_format) {
+		suffix = ".aiff";
+	}
+	else {
+		suffix = ".wav";
+	}
+	return get_outfilename(infilename, suffix);
+}
+
+const char *get_outfilename(const char *infilename, const char *suffix)
+{
+	if(0 == option_values.cmdline_forced_outfilename) {
+		static char buffer[4096]; /* @@@ bad MAGIC NUMBER */
+
+		if(0 == strcmp(infilename, "-") || option_values.force_to_stdout) {
+			strcpy(buffer, "-");
+		}
+		else {
+			char *p;
+			if (flac__strlcpy(buffer, option_values.output_prefix? option_values.output_prefix : "", sizeof buffer) >= sizeof buffer)
+				return 0;
+			if (flac__strlcat(buffer, infilename, sizeof buffer) >= sizeof buffer)
+				return 0;
+			if(0 == (p = strrchr(buffer, '.'))) {
+				if (flac__strlcat(buffer, suffix, sizeof buffer) >= sizeof buffer)
+					return 0;
+			}
+			else {
+				if(0 == strcmp(p, suffix)) {
+					*p = '\0';
+					if (flac__strlcat(buffer, "_new", sizeof buffer) >= sizeof buffer)
+						return 0;
+				}
+				else {
+					*p = '\0';
+				}
+				if (flac__strlcat(buffer, suffix, sizeof buffer) >= sizeof buffer)
+					return 0;
+			}
+		}
+		return buffer;
+	}
+	else
+		return option_values.cmdline_forced_outfilename;
+}
+
 void die(const char *message)
 {
 	FLAC__ASSERT(0 != message);
-	fprintf(stderr, "ERROR: %s\n", message);
+	flac__utils_printf(stderr, 1, "ERROR: %s\n", message);
 	exit(1);
 }
 

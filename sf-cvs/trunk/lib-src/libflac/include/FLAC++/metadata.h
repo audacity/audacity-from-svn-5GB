@@ -1,24 +1,38 @@
 /* libFLAC++ - Free Lossless Audio Codec library
- * Copyright (C) 2002  Josh Coalson
+ * Copyright (C) 2002,2003,2004,2005  Josh Coalson
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * - Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
+ * - Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the Xiph.org Foundation nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FLACPP__METADATA_H
 #define FLACPP__METADATA_H
+
+#include "export.h"
 
 #include "FLAC/metadata.h"
 
@@ -87,7 +101,7 @@ namespace FLAC {
 
 		/** Base class for all metadata block types.
 		 */
-		class Prototype {
+		class FLACPP_API Prototype {
 		protected:
 			//@{
 			/** Constructs a copy of the given object.  This form
@@ -112,10 +126,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			void operator=(const Prototype &);
-			void operator=(const ::FLAC__StreamMetadata &);
-			void operator=(const ::FLAC__StreamMetadata *);
+			Prototype &operator=(const Prototype &);
+			Prototype &operator=(const ::FLAC__StreamMetadata &);
+			Prototype &operator=(const ::FLAC__StreamMetadata *);
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			Prototype &assign_object(::FLAC__StreamMetadata *object, bool copy);
 
 			/** Deletes the underlying ::FLAC__StreamMetadata object.
 			 */
@@ -183,6 +202,15 @@ namespace FLAC {
 			 *   \code is_valid() \endcode
 			 */
 			void set_is_last(bool);
+
+			/** Returns a pointer to the underlying ::FLAC__StreamMetadata
+			 *  object.  This can be useful for plugging any holes between
+			 *  the C++ and C interfaces.
+			 *
+			 * \assert
+			 *   \code is_valid() \endcode
+			 */
+			inline operator const ::FLAC__StreamMetadata *() const;
 		private:
 			/** Private and undefined so you can't use it. */
 			Prototype();
@@ -192,6 +220,11 @@ namespace FLAC {
 			inline void set_reference(bool x) { is_reference_ = x; }
 		};
 
+#ifdef _MSC_VER
+// warning C4800: 'int' : forcing to bool 'true' or 'false' (performance warning)
+#pragma warning ( disable : 4800 )
+#endif
+
 		inline bool Prototype::operator==(const Prototype &object) const
 		{ return (bool)::FLAC__metadata_object_is_equal(object_, object.object_); }
 
@@ -200,6 +233,11 @@ namespace FLAC {
 
 		inline bool Prototype::operator==(const ::FLAC__StreamMetadata *object) const
 		{ return (bool)::FLAC__metadata_object_is_equal(object_, object); }
+
+#ifdef _MSC_VER
+// @@@ how to re-enable?  the following doesn't work
+// #pragma warning ( enable : 4800 )
+#endif
 
 		inline bool Prototype::operator!=(const Prototype &object) const
 		{ return !operator==(object); }
@@ -213,14 +251,17 @@ namespace FLAC {
 		inline bool Prototype::is_valid() const
 		{ return 0 != object_; }
 
+		inline Prototype::operator const ::FLAC__StreamMetadata *() const
+		{ return object_; }
+
 		/** Create a deep copy of an object and return it. */
-		Prototype *clone(const Prototype *);
+		FLACPP_API Prototype *clone(const Prototype *);
 
 
 		/** STREAMINFO metadata block.
 		 *  See <A HREF="../format.html#metadata_block_streaminfo">format specification</A>.
 		 */
-		class StreamInfo : public Prototype {
+		class FLACPP_API StreamInfo : public Prototype {
 		public:
 			StreamInfo();
 
@@ -242,10 +283,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			inline void operator=(const StreamInfo &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); }
+			inline StreamInfo &operator=(const StreamInfo &object) { Prototype::operator=(object); return *this; }
+			inline StreamInfo &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline StreamInfo &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline StreamInfo &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
 
 			//@{
 			/** Check for equality, performing a deep compare by following pointers. */
@@ -288,7 +334,7 @@ namespace FLAC {
 		/** PADDING metadata block.
 		 *  See <A HREF="../format.html#metadata_block_padding">format specification</A>.
 		 */
-		class Padding : public Prototype {
+		class FLACPP_API Padding : public Prototype {
 		public:
 			Padding();
 
@@ -310,10 +356,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			inline void operator=(const Padding &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); }
+			inline Padding &operator=(const Padding &object) { Prototype::operator=(object); return *this; }
+			inline Padding &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline Padding &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline Padding &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
 
 			//@{
 			/** Check for equality, performing a deep compare by following pointers. */
@@ -335,7 +386,7 @@ namespace FLAC {
 		/** APPLICATION metadata block.
 		 *  See <A HREF="../format.html#metadata_block_application">format specification</A>.
 		 */
-		class Application : public Prototype {
+		class FLACPP_API Application : public Prototype {
 		public:
 			Application();
 			//
@@ -357,10 +408,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			inline void operator=(const Application &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); }
+			inline Application &operator=(const Application &object) { Prototype::operator=(object); return *this; }
+			inline Application &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline Application &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline Application &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
 
 			//@{
 			/** Check for equality, performing a deep compare by following pointers. */
@@ -388,7 +444,7 @@ namespace FLAC {
 		/** SEEKTABLE metadata block.
 		 *  See <A HREF="../format.html#metadata_block_seektable">format specification</A>.
 		 */
-		class SeekTable : public Prototype {
+		class FLACPP_API SeekTable : public Prototype {
 		public:
 			SeekTable();
 
@@ -410,10 +466,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			inline void operator=(const SeekTable &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); }
+			inline SeekTable &operator=(const SeekTable &object) { Prototype::operator=(object); return *this; }
+			inline SeekTable &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline SeekTable &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline SeekTable &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
 
 			//@{
 			/** Check for equality, performing a deep compare by following pointers. */
@@ -448,7 +509,7 @@ namespace FLAC {
 		/** VORBIS_COMMENT metadata block.
 		 *  See <A HREF="../format.html#metadata_block_vorbis_comment">format specification</A>.
 		 */
-		class VorbisComment : public Prototype {
+		class FLACPP_API VorbisComment : public Prototype {
 		public:
 			/** Convenience class for encapsulating Vorbis comment
 			 *  entries.  An entry is a vendor string or a comment
@@ -456,31 +517,42 @@ namespace FLAC {
 			 *  name is undefined; only the field value is relevant.
 			 *
 			 *  A \a field as used in the methods refers to an
-			 *  entire 'NAME=VALUE' string; the string is not null-
-			 *  terminated and a length field is required since the
-			 *  string may contain embedded nulls.
+			 *  entire 'NAME=VALUE' string; for convenience the
+			 *  string is NUL-terminated.  A length field is
+			 *  required in the unlikely event that the value
+			 *  contains contain embedded NULs.
 			 *
 			 *  A \a field_name is what is on the left side of the
 			 *  first '=' in the \a field.  By definition it is ASCII
-			 *  and so is null-terminated and does not require a
+			 *  and so is NUL-terminated and does not require a
 			 *  length to describe it.  \a field_name is undefined
 			 *  for a vendor string entry.
 			 *
 			 *  A \a field_value is what is on the right side of the
 			 *  first '=' in the \a field.  By definition, this may
-			 *  contain embedded nulls and so a \a field_value_length
-			 *  is requires to describe it.
+			 *  contain embedded NULs and so a \a field_value_length
+			 *  is required to describe it.  However in practice,
+			 *  embedded NULs are not known to be used, so it is
+			 *  generally safe to treat field values as NUL-
+			 *  terminated UTF-8 strings.
 			 *
 			 *  Always check is_valid() after the constructor or operator=
-			 *  to make sure memory was properly allocated.
+			 *  to make sure memory was properly allocated and that the
+			 *  Entry conforms to the Vorbis comment specification.
 			 */
-			class Entry {
+			class FLACPP_API Entry {
 			public:
 				Entry();
+
 				Entry(const char *field, unsigned field_length);
+				Entry(const char *field); // assumes \a field is NUL-terminated
+
 				Entry(const char *field_name, const char *field_value, unsigned field_value_length);
+				Entry(const char *field_name, const char *field_value); // assumes \a field_value is NUL-terminated
+
 				Entry(const Entry &entry);
-				void operator=(const Entry &entry);
+
+				Entry &operator=(const Entry &entry);
 
 				virtual ~Entry();
 
@@ -496,8 +568,10 @@ namespace FLAC {
 				const char *get_field_value() const;
 
 				bool set_field(const char *field, unsigned field_length);
+				bool set_field(const char *field); // assumes \a field is NUL-terminated
 				bool set_field_name(const char *field_name);
 				bool set_field_value(const char *field_value, unsigned field_value_length);
+				bool set_field_value(const char *field_value); // assumes \a field_value is NUL-terminated
 			protected:
 				bool is_valid_;
 				::FLAC__StreamMetadata_VorbisComment_Entry entry_;
@@ -512,7 +586,9 @@ namespace FLAC {
 				void clear_field_name();
 				void clear_field_value();
 				void construct(const char *field, unsigned field_length);
+				void construct(const char *field); // assumes \a field is NUL-terminated
 				void construct(const char *field_name, const char *field_value, unsigned field_value_length);
+				void construct(const char *field_name, const char *field_value); // assumes \a field_value is NUL-terminated
 				void compose_field();
 				void parse_field();
 			};
@@ -537,10 +613,15 @@ namespace FLAC {
 
 			//@{
 			/** Assign from another object.  Always performs a deep copy. */
-			inline void operator=(const VorbisComment &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); }
-			inline void operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); }
+			inline VorbisComment &operator=(const VorbisComment &object) { Prototype::operator=(object); return *this; }
+			inline VorbisComment &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline VorbisComment &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
 			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline VorbisComment &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
 
 			//@{
 			/** Check for equality, performing a deep compare by following pointers. */
@@ -557,12 +638,11 @@ namespace FLAC {
 			//@}
 
 			unsigned get_num_comments() const;
-			Entry get_vendor_string() const; // only the Entry's field name should be used
+			const FLAC__byte *get_vendor_string() const; // NUL-terminated UTF-8 string
 			Entry get_comment(unsigned index) const;
 
 			//! See FLAC__metadata_object_vorbiscomment_set_vendor_string()
-			//! \note Only the Entry's field name will be used.
-			bool set_vendor_string(const Entry &entry); // only the Entry's field name will be used
+			bool set_vendor_string(const FLAC__byte *string); // NUL-terminated UTF-8 string
 
 			//! See FLAC__metadata_object_vorbiscomment_set_comment()
 			bool set_comment(unsigned index, const Entry &entry);
@@ -570,8 +650,191 @@ namespace FLAC {
 			//! See FLAC__metadata_object_vorbiscomment_insert_comment()
 			bool insert_comment(unsigned index, const Entry &entry);
 
+			//! See FLAC__metadata_object_vorbiscomment_append_comment()
+			bool append_comment(const Entry &entry);
+
 			//! See FLAC__metadata_object_vorbiscomment_delete_comment()
 			bool delete_comment(unsigned index);
+		};
+
+		/** CUESHEET metadata block.
+		 *  See <A HREF="../format.html#metadata_block_cuesheet">format specification</A>.
+		 */
+		class FLACPP_API CueSheet : public Prototype {
+		public:
+			/** Convenience class for encapsulating a cue sheet
+			 *  track.
+			 *
+			 *  Always check is_valid() after the constructor or operator=
+			 *  to make sure memory was properly allocated.
+			 */
+			class FLACPP_API Track {
+			protected:
+				::FLAC__StreamMetadata_CueSheet_Track *object_;
+			public:
+				Track();
+				Track(const ::FLAC__StreamMetadata_CueSheet_Track *track);
+				Track(const Track &track);
+				Track &operator=(const Track &track);
+
+				virtual ~Track();
+
+				virtual bool is_valid() const;
+
+				inline FLAC__uint64 get_offset() const { return object_->offset; }
+				inline FLAC__byte get_number() const { return object_->number; }
+				inline const char *get_isrc() const { return object_->isrc; }
+				inline unsigned get_type() const { return object_->type; }
+				inline bool get_pre_emphasis() const { return object_->pre_emphasis; }
+
+				inline FLAC__byte get_num_indices() const { return object_->num_indices; }
+				::FLAC__StreamMetadata_CueSheet_Index get_index(unsigned i) const;
+
+				inline const ::FLAC__StreamMetadata_CueSheet_Track *get_track() const { return object_; }
+
+				inline void set_offset(FLAC__uint64 value) { object_->offset = value; }
+				inline void set_number(FLAC__byte value) { object_->number = value; }
+				void set_isrc(const char value[12]);
+				void set_type(unsigned value);
+				inline void set_pre_emphasis(bool value) { object_->pre_emphasis = value? 1 : 0; }
+
+ 				void set_index(unsigned i, const ::FLAC__StreamMetadata_CueSheet_Index &index);
+				//@@@ It's awkward but to insert/delete index points
+				//@@@ you must use the routines in the CueSheet class.
+			};
+
+			CueSheet();
+
+			//@{
+			/** Constructs a copy of the given object.  This form
+			 *  always performs a deep copy.
+			 */
+			inline CueSheet(const CueSheet &object): Prototype(object) { }
+			inline CueSheet(const ::FLAC__StreamMetadata &object): Prototype(object) { }
+			inline CueSheet(const ::FLAC__StreamMetadata *object): Prototype(object) { }
+			//@}
+
+			/** Constructs an object with copy control.  See
+			 *  Prototype(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline CueSheet(::FLAC__StreamMetadata *object, bool copy): Prototype(object, copy) { }
+
+			~CueSheet();
+
+			//@{
+			/** Assign from another object.  Always performs a deep copy. */
+			inline CueSheet &operator=(const CueSheet &object) { Prototype::operator=(object); return *this; }
+			inline CueSheet &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline CueSheet &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
+			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline CueSheet &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
+
+			//@{
+			/** Check for equality, performing a deep compare by following pointers. */
+			inline bool operator==(const CueSheet &object) const { return Prototype::operator==(object); }
+			inline bool operator==(const ::FLAC__StreamMetadata &object) const { return Prototype::operator==(object); }
+			inline bool operator==(const ::FLAC__StreamMetadata *object) const { return Prototype::operator==(object); }
+			//@}
+
+			//@{
+			/** Check for inequality, performing a deep compare by following pointers. */
+			inline bool operator!=(const CueSheet &object) const { return Prototype::operator!=(object); }
+			inline bool operator!=(const ::FLAC__StreamMetadata &object) const { return Prototype::operator!=(object); }
+			inline bool operator!=(const ::FLAC__StreamMetadata *object) const { return Prototype::operator!=(object); }
+			//@}
+
+			const char *get_media_catalog_number() const;
+			FLAC__uint64 get_lead_in() const;
+			bool get_is_cd() const;
+
+			unsigned get_num_tracks() const;
+			Track get_track(unsigned i) const;
+
+			void set_media_catalog_number(const char value[128]);
+			void set_lead_in(FLAC__uint64 value);
+			void set_is_cd(bool value);
+
+			void set_index(unsigned track_num, unsigned index_num, const ::FLAC__StreamMetadata_CueSheet_Index &index);
+
+			//! See FLAC__metadata_object_cuesheet_track_insert_index()
+			bool insert_index(unsigned track_num, unsigned index_num, const ::FLAC__StreamMetadata_CueSheet_Index &index);
+
+			//! See FLAC__metadata_object_cuesheet_track_delete_index()
+			bool delete_index(unsigned track_num, unsigned index_num);
+
+			//! See FLAC__metadata_object_cuesheet_set_track()
+			bool set_track(unsigned i, const Track &track);
+
+			//! See FLAC__metadata_object_cuesheet_insert_track()
+			bool insert_track(unsigned i, const Track &track);
+
+			//! See FLAC__metadata_object_cuesheet_delete_track()
+			bool delete_track(unsigned i);
+
+			//! See FLAC__metadata_object_cuesheet_is_legal()
+			bool is_legal(bool check_cd_da_subset = false, const char **violation = 0) const;
+		};
+
+		/** Opaque metadata block for storing unknown types.
+		 *  This should not be used unless you know what you are doing;
+		 *  it is currently used only internally to support forward
+		 *  compatibility of metadata blocks.
+		 */
+		class FLACPP_API Unknown : public Prototype {
+		public:
+			Unknown();
+			//
+			//@{
+			/** Constructs a copy of the given object.  This form
+			 *  always performs a deep copy.
+			 */
+			inline Unknown(const Unknown &object): Prototype(object) { }
+			inline Unknown(const ::FLAC__StreamMetadata &object): Prototype(object) { }
+			inline Unknown(const ::FLAC__StreamMetadata *object): Prototype(object) { }
+			//@}
+
+			/** Constructs an object with copy control.  See
+			 *  Prototype(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline Unknown(::FLAC__StreamMetadata *object, bool copy): Prototype(object, copy) { }
+
+			~Unknown();
+
+			//@{
+			/** Assign from another object.  Always performs a deep copy. */
+			inline Unknown &operator=(const Unknown &object) { Prototype::operator=(object); return *this; }
+			inline Unknown &operator=(const ::FLAC__StreamMetadata &object) { Prototype::operator=(object); return *this; }
+			inline Unknown &operator=(const ::FLAC__StreamMetadata *object) { Prototype::operator=(object); return *this; }
+			//@}
+
+			/** Assigns an object with copy control.  See
+			 *  Prototype::assign_object(::FLAC__StreamMetadata *object, bool copy).
+			 */
+			inline Unknown &assign(::FLAC__StreamMetadata *object, bool copy) { Prototype::assign_object(object, copy); return *this; }
+
+			//@{
+			/** Check for equality, performing a deep compare by following pointers. */
+			inline bool operator==(const Unknown &object) const { return Prototype::operator==(object); }
+			inline bool operator==(const ::FLAC__StreamMetadata &object) const { return Prototype::operator==(object); }
+			inline bool operator==(const ::FLAC__StreamMetadata *object) const { return Prototype::operator==(object); }
+			//@}
+
+			//@{
+			/** Check for inequality, performing a deep compare by following pointers. */
+			inline bool operator!=(const Unknown &object) const { return Prototype::operator!=(object); }
+			inline bool operator!=(const ::FLAC__StreamMetadata &object) const { return Prototype::operator!=(object); }
+			inline bool operator!=(const ::FLAC__StreamMetadata *object) const { return Prototype::operator!=(object); }
+			//@}
+
+			const FLAC__byte *get_data() const;
+
+			//! This form always copies \a data
+			bool set_data(const FLAC__byte *data, unsigned length);
+			bool set_data(FLAC__byte *data, unsigned length, bool copy);
 		};
 
 		/* \} */
@@ -581,7 +844,7 @@ namespace FLAC {
 		 *  \ingroup flacpp_metadata
 		 *
 		 *  \brief
-		 *  Level 0 metadata iterator.
+		 *  Level 0 metadata iterators.
 		 *
 		 *  See the \link flac_metadata_level0 C layer equivalent \endlink
 		 *  for more.
@@ -590,7 +853,11 @@ namespace FLAC {
 		 */
 
 	 	//! See FLAC__metadata_get_streaminfo().
-		bool get_streaminfo(const char *filename, StreamInfo &streaminfo);
+		FLACPP_API bool get_streaminfo(const char *filename, StreamInfo &streaminfo);
+
+	 	//! See FLAC__metadata_get_tags().
+		FLACPP_API bool get_tags(const char *filename, VorbisComment *&tags);
+		FLACPP_API bool get_tags(const char *filename, VorbisComment &tags);
 
 		/* \} */
 
@@ -627,9 +894,9 @@ namespace FLAC {
 		/** This class is a wrapper around the FLAC__metadata_simple_iterator
 		 *  structures and methods; see ::FLAC__Metadata_SimpleIterator.
 		 */
-		class SimpleIterator {
+		class FLACPP_API SimpleIterator {
 		public:
-			class Status {
+			class FLACPP_API Status {
 			public:
 				inline Status(::FLAC__Metadata_SimpleIteratorStatus status): status_(status) { }
 				inline operator ::FLAC__Metadata_SimpleIteratorStatus() const { return status_; }
@@ -680,19 +947,19 @@ namespace FLAC {
 		 *    - Write changes back to FLAC file with Chain::write()
 		 *    - Destroy the Chain instance
 		 *
-		 *  The ownership of pointers in the C++ layer follows that in
-		 *  the C layer, i.e.
-		 *    - The objects returned by Iterator::get_block() are
-		 *      owned by the iterator and should not be deleted.
-		 *      When you modify the block, you are directly editing
-		 *      what's in the chain and do not need to call
-		 *      Iterator::set_block().  However the changes will not
-		 *      be reflected in the FLAC file until the chain is
-		 *      written with Chain::write().
+		 *  The ownership of pointers in the C++ layer is slightly
+		 *  different than in the C layer, i.e.
+		 *    - The objects returned by Iterator::get_block() are NOT
+		 *      owned by the iterator and should be deleted by the
+		 *      caller when finished, BUT, when you modify the block,
+		 *      it will directly edit what's in the chain and you do
+		 *      not need to call Iterator::set_block().  However the
+		 *      changes will not be reflected in the FLAC file until
+		 *      the chain is written with Chain::write().
 		 *    - When you pass an object to Iterator::set_block(),
 		 *      Iterator::insert_block_before(), or
 		 *      Iterator::insert_block_after(), the iterator takes
-		 *      ownership of the block and it will be deleted with the
+		 *      ownership of the block and it will be deleted by the
 		 *      chain.
 		 *
 		 *  See the \link flac_metadata_level2 C layer equivalent \endlink
@@ -704,9 +971,9 @@ namespace FLAC {
 		/** This class is a wrapper around the FLAC__metadata_chain
 		 *  structures and methods; see ::FLAC__Metadata_Chain.
 		 */
-		class Chain {
+		class FLACPP_API Chain {
 		public:
-			class Status {
+			class FLACPP_API Status {
 			public:
 				inline Status(::FLAC__Metadata_ChainStatus status): status_(status) { }
 				inline operator ::FLAC__Metadata_ChainStatus() const { return status_; }
@@ -724,7 +991,13 @@ namespace FLAC {
 			Status status();
 
 			bool read(const char *filename);
+			bool read(FLAC__IOHandle handle, FLAC__IOCallbacks callbacks);
+
+			bool check_if_tempfile_needed(bool use_padding);
+
 			bool write(bool use_padding = true, bool preserve_file_stats = false);
+			bool write(bool use_padding, ::FLAC__IOHandle handle, ::FLAC__IOCallbacks callbacks);
+			bool write(bool use_padding, ::FLAC__IOHandle handle, ::FLAC__IOCallbacks callbacks, ::FLAC__IOHandle temp_handle, ::FLAC__IOCallbacks temp_callbacks);
 
 			void merge_padding();
 			void sort_padding();
@@ -737,7 +1010,7 @@ namespace FLAC {
 		/** This class is a wrapper around the FLAC__metadata_iterator
 		 *  structures and methods; see ::FLAC__Metadata_Iterator.
 		 */
-		class Iterator {
+		class FLACPP_API Iterator {
 		public:
 			Iterator();
 			virtual ~Iterator();
@@ -763,7 +1036,7 @@ namespace FLAC {
 
 		/* \} */
 
-	};
-};
+	}
+}
 
 #endif

@@ -15,22 +15,34 @@
 @SET_MAKE@
 
 #  libFLAC++ - Free Lossless Audio Codec library
-#  Copyright (C) 2002  Josh Coalson
+#  Copyright (C) 2002,2003,2004,2005  Josh Coalson
 #
-#  This library is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Library General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
 #
-#  This library is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Library General Public License for more details.
+#  - Redistributions of source code must retain the above copyright
+#  notice, this list of conditions and the following disclaimer.
 #
-#  You should have received a copy of the GNU Library General Public
-#  License along with this library; if not, write to the
-#  Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-#  Boston, MA  02111-1307, USA.
+#  - Redistributions in binary form must reproduce the above copyright
+#  notice, this list of conditions and the following disclaimer in the
+#  documentation and/or other materials provided with the distribution.
+#
+#  - Neither the name of the Xiph.org Foundation nor the names of its
+#  contributors may be used to endorse or promote products derived from
+#  this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+#  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+#  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+#  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+#  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+#  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+#  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -84,91 +96,80 @@ EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
+AR = @AR@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
+CCAS = @CCAS@
+CCASFLAGS = @CCASFLAGS@
 CXX = @CXX@
+CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DOCBOOK_TO_MAN = @DOCBOOK_TO_MAN@
+DOXYGEN = @DOXYGEN@
 ECHO = @ECHO@
-FLaC__SIZE16 = @FLaC__SIZE16@
-FLaC__SIZE32 = @FLaC__SIZE32@
-FLaC__SIZE64 = @FLaC__SIZE64@
-FLaC__USIZE16 = @FLaC__USIZE16@
-FLaC__USIZE32 = @FLaC__USIZE32@
-FLaC__USIZE64 = @FLaC__USIZE64@
-HAVE_LIB = @HAVE_LIB@
-ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
-ID3LIB_LIBS = @ID3LIB_LIBS@
+EGREP = @EGREP@
+F77 = @F77@
+GAS = @GAS@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LIB = @LIB@
 LIBICONV = @LIBICONV@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
-LTLIB = @LTLIB@
-LTLIBICONV = @LTLIBICONV@
+MAINT = @MAINT@
 NASM = @NASM@
 OBJDUMP = @OBJDUMP@
 OBJ_FORMAT = @OBJ_FORMAT@
-OGG_CFLAGS = @OGG_CFLAGS@
-OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-SHARE_LIBS = @SHARE_LIBS@
+RC = @RC@
 STRIP = @STRIP@
 VERSION = @VERSION@
-XMMS_CFLAGS = @XMMS_CFLAGS@
-XMMS_CONFIG = @XMMS_CONFIG@
-XMMS_DATA_DIR = @XMMS_DATA_DIR@
-XMMS_EFFECT_PLUGIN_DIR = @XMMS_EFFECT_PLUGIN_DIR@
-XMMS_GENERAL_PLUGIN_DIR = @XMMS_GENERAL_PLUGIN_DIR@
-XMMS_INPUT_PLUGIN_DIR = @XMMS_INPUT_PLUGIN_DIR@
-XMMS_LIBS = @XMMS_LIBS@
-XMMS_OUTPUT_PLUGIN_DIR = @XMMS_OUTPUT_PLUGIN_DIR@
-XMMS_PLUGIN_DIR = @XMMS_PLUGIN_DIR@
-XMMS_VERSION = @XMMS_VERSION@
-XMMS_VISUALIZATION_PLUGIN_DIR = @XMMS_VISUALIZATION_PLUGIN_DIR@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 
 lib_LTLIBRARIES = libFLAC++.la
-CXXFLAGS = @CXXFLAGS@
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = libFLAC++.m4
 
 EXTRA_DIST = \
 	Makefile.lite \
-	Makefile.vc \
+	libFLAC++_dynamic.dsp \
+	libFLAC++_static.dsp \
 	libFLAC++.m4
 
 
-# see 'http://www.gnu.org/software/libtool/manual.html#Versioning' for numbering convention
-libFLAC___la_LDFLAGS = -version-info 2:1:0
+# see 'http://www.gnu.org/software/libtool/manual.html#SEC35' for numbering convention
+libFLAC___la_LDFLAGS = -version-info 5:0:0
+libFLAC___la_LIBADD = ../libFLAC/libFLAC.la
 
 libFLAC___la_SOURCES = \
-	file_decoder.cc \
-	file_encoder.cc \
-	metadata.cc \
-	seekable_stream_decoder.cc \
-	seekable_stream_encoder.cc \
-	stream_decoder.cc \
-	stream_encoder.cc
+	file_decoder.cpp \
+	file_encoder.cpp \
+	metadata.cpp \
+	seekable_stream_decoder.cpp \
+	seekable_stream_encoder.cpp \
+	stream_decoder.cpp \
+	stream_encoder.cpp
 
 subdir = src/libFLAC++
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
-libFLAC___la_LIBADD =
+libFLAC___la_DEPENDENCIES = ../libFLAC/libFLAC.la
 am_libFLAC___la_OBJECTS = file_decoder.lo file_encoder.lo metadata.lo \
 	seekable_stream_decoder.lo seekable_stream_encoder.lo \
 	stream_decoder.lo stream_encoder.lo
 libFLAC___la_OBJECTS = $(am_libFLAC___la_OBJECTS)
 
 DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir)
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
@@ -189,6 +190,7 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
 DIST_SOURCES = $(libFLAC___la_SOURCES)
 DATA = $(m4data_DATA)
 
@@ -198,11 +200,11 @@ SOURCES = $(libFLAC___la_SOURCES)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cc .lo .o .obj
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+.SUFFIXES: .cpp .lo .o .obj
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/libFLAC++/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	  $(AUTOMAKE) --gnu  src/libFLAC++/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 libLTLIBRARIES_INSTALL = $(INSTALL)
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
@@ -252,19 +254,19 @@ distclean-compile:
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
 
-.cc.o:
+.cpp.o:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
-.cc.obj:
+.cpp.obj:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
 
-.cc.lo:
+.cpp.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
