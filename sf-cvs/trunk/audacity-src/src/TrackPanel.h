@@ -190,6 +190,7 @@ class TrackPanel:public wxPanel {
    void SetSnapTo(int snapto);
 
    void HandleShiftKey(bool down);
+   void HandleControlKey(bool down);
    AudacityProject * GetProject() const;
 
    void OnPrevTrack(bool select = false);
@@ -215,6 +216,8 @@ class TrackPanel:public wxPanel {
 
    Track *GetFocusedTrack();
    void SetFocusedTrack(Track *t);
+
+   void HandleCursorForLastMouseEvent();
 
  private:
 
@@ -423,6 +426,7 @@ private:
    double mSelStart;
 
    Track *mCapturedTrack;
+   Envelope *mCapturedEnvelope;
    WaveClip *mCapturedClip;
    TrackClipArray mCapturedClipArray;
    bool mCapturedClipIsSelection;

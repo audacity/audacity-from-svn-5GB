@@ -12,7 +12,6 @@
 **********************************************************************/
 
 #include "Audacity.h"
-
 #include "ToolsToolBar.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -268,7 +267,13 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
    //In multi-mode the current tool is shown by the 
    //cursor icon.  The buttons are not updated.
 
-   if (tool != mCurrentTool) {
+   bool leavingMulticlipMode =
+      GetMultiToolDown() && show && tool != multiTool;
+      
+   if (leavingMulticlipMode)
+      mTool[multiTool]->PopUp();
+      
+   if (tool != mCurrentTool || leavingMulticlipMode) {
       if (show)
          mTool[mCurrentTool]->PopUp();
       mCurrentTool=tool;
@@ -276,7 +281,13 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
          mTool[mCurrentTool]->PushDown();
    }
 	//JKC: ANSWER-ME: Why is this RedrawAllProjects() line required?
-   RedrawAllProjects();
+	//msmeyer: I think it isn't, we leave it out for 1.3.1 (beta), and
+	// we'll see if anyone complains.
+   // RedrawAllProjects();
+
+   //msmeyer: But we instruct the projects to handle the cursor shape again
+   if (show)
+      RefreshCursorForAllProjects();
 }
 
 bool ToolsToolBar::GetSelectToolDown()

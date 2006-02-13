@@ -1042,9 +1042,19 @@ void TrackPanel::MakeParentResize()
 void TrackPanel::HandleShiftKey(bool down)
 {
    mLastMouseEvent.m_shiftDown = down;
-   HandleCursor(mLastMouseEvent);
+   HandleCursorForLastMouseEvent();
 }
 
+void TrackPanel::HandleControlKey(bool down)
+{
+   mLastMouseEvent.m_controlDown = down;
+   HandleCursorForLastMouseEvent();
+}
+
+void TrackPanel::HandleCursorForLastMouseEvent()
+{
+   HandleCursor(mLastMouseEvent);
+}
 
 /// Used to determine whether it is safe or not to perform certain
 /// edits at the moment.
@@ -1383,6 +1393,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
          }
          //Also, capture this track for dragging until we up-click.
          mCapturedClipArray.Add(TrackClip(w, selectedClip));
+                     
          mMouseCapture = IsSliding;
 
          Refresh(false);
@@ -1643,6 +1654,14 @@ void TrackPanel::HandleEnvelope(wxMouseEvent & event)
       if (!mCapturedTrack)
          return;
 
+      if (mCapturedTrack->GetKind() == Track::Wave)
+      {
+         mCapturedEnvelope =
+            ((WaveTrack*)mCapturedTrack)->GetEnvelopeAtX(event.GetX());
+      } else {
+         mCapturedEnvelope = NULL;
+      }
+      
       mCapturedRect = r;
       mCapturedRect.y += kTopInset;
       mCapturedRect.height -= kTopInset;
@@ -1691,7 +1710,7 @@ void TrackPanel::ForwardEventToTimeTrackEnvelope(wxMouseEvent & event)
 void TrackPanel::ForwardEventToWaveTrackEnvelope(wxMouseEvent & event)
 {
    WaveTrack *pwavetrack = (WaveTrack *) mCapturedTrack;
-   Envelope *penvelope = pwavetrack->GetEnvelopeAtX(event.GetX());
+   Envelope *penvelope = mCapturedEnvelope;
 
    // Possibly no-envelope, for example when in spectrum view mode.
    // if so, then bail out.
@@ -1814,7 +1833,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
    bool multiToolModeActive = (ttb && ttb->GetMultiToolDown());
 
    if (vt->GetKind() == Track::Wave && !event.ShiftDown() &&
-       !multiToolModeActive)
+       (event.ControlDown() || !multiToolModeActive))
    {
       WaveTrack* wt = (WaveTrack*)vt;
       mCapturedClip = wt->GetClipAtX(event.m_x);
@@ -1888,7 +1907,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
       mCapturedClipArray.Clear();
    }
    
-   mSlideUpDownOnly = event.ControlDown();
+   mSlideUpDownOnly = event.ControlDown() && !multiToolModeActive;
 
    mCapturedTrack = vt;
    mCapturedRect = r;
@@ -1936,8 +1955,13 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
             mCapturedClipArray[i].track->Offset(-mHSlideAmount);
       }
    }
-   else
+   else {
       mCapturedTrack->Offset(-mHSlideAmount);
+      Track* link = mTracks->GetLink(mCapturedTrack);
+      if (link)
+         link->Offset(-mHSlideAmount);
+   }
+   
    if (mCapturedClipIsSelection) {
       // Slide the selection, too
       mViewInfo->sel0 -= mHSlideAmount;
@@ -2058,6 +2082,9 @@ void TrackPanel::DoSlide(wxMouseEvent & event)
    else {
       // For non wavetracks...
       mCapturedTrack->Offset(mHSlideAmount);
+      Track* link = mTracks->GetLink(mCapturedTrack);
+      if (link)
+         link->Offset(mHSlideAmount);
    }
 
    Refresh(false);
@@ -3756,6 +3783,9 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    // From here on the order in which we hit test determines 
    // which tool takes priority in the rare cases where it
    // could be more than one.
+   } else if (event.ControlDown()){
+      // msmeyer: If control is down, slide single clip
+      currentTool = slideTool;
    } else if( HitTestEnvelope( pTrack, r, event ) ){
       currentTool = envelopeTool;
    } else if( HitTestSlide( pTrack, r, event )){
