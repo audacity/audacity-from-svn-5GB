@@ -45,6 +45,12 @@
 /* Define to 1 if you have the `fdatasync' function. */
 #undef HAVE_FDATASYNC
 
+/* Define to 1 if you have libflac 1.1.1 */
+#undef HAVE_FLAC_1_1_1
+
+/* Define to 1 if you have the <FLAC/all.h> header file. */
+#undef HAVE_FLAC_ALL_H
+
 /* Set to 1 if the compile supports the struct hack. */
 #undef HAVE_FLEXIBLE_ARRAY
 
@@ -116,6 +122,9 @@
 
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
+
+/* Set to 1 if you have libsqlite3. */
+#undef HAVE_SQLITE3
 
 /* Define to 1 if the system has the type `ssize_t'. */
 #undef HAVE_SSIZE_T

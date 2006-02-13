@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@
 
 
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -163,6 +163,24 @@ print_test_name (const char *test, const char *filename)
 
 	fflush (stdout) ;
 } /* print_test_name */
+
+void
+dump_data_to_file (const char *filename, void *data, unsigned int datalen)
+{	FILE *file ;
+
+	if ((file = fopen (filename, "wb")) == NULL)
+	{	printf ("\n\nLine %d : could not open file : %s\n\n", __LINE__, filename) ;
+		exit (1) ;
+		} ;
+
+	if (fwrite (data, 1, datalen, file) != datalen)
+	{	printf ("\n\nLine %d : fwrite failed.\n\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	fclose (file) ;
+
+} /* dump_data_to_file */
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 */
@@ -444,7 +462,7 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int allo
 				exit (1) ;
 		} ;
 
-#if (defined (__CYGWIN__) || defined (WIN32) || defined (_WIN32))
+#if (defined (WIN32) || defined (_WIN32))
 	/* Stupid fscking windows. */
 	oflags |= O_BINARY ;
 #endif
@@ -707,8 +725,10 @@ test_readf_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t fram
 } /* test_readf_double */
 
 
+
+
 void
-test_write_short_or_die (SNDFILE *file, int pass, short *test, sf_count_t items, int line_num)
+test_write_short_or_die (SNDFILE *file, int pass, const short *test, sf_count_t items, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_write_short (file, test, items)) != items)
@@ -726,7 +746,7 @@ test_write_short_or_die (SNDFILE *file, int pass, short *test, sf_count_t items,
 } /* test_write_short */
 
 void
-test_write_int_or_die (SNDFILE *file, int pass, int *test, sf_count_t items, int line_num)
+test_write_int_or_die (SNDFILE *file, int pass, const int *test, sf_count_t items, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_write_int (file, test, items)) != items)
@@ -744,7 +764,7 @@ test_write_int_or_die (SNDFILE *file, int pass, int *test, sf_count_t items, int
 } /* test_write_int */
 
 void
-test_write_float_or_die (SNDFILE *file, int pass, float *test, sf_count_t items, int line_num)
+test_write_float_or_die (SNDFILE *file, int pass, const float *test, sf_count_t items, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_write_float (file, test, items)) != items)
@@ -762,7 +782,7 @@ test_write_float_or_die (SNDFILE *file, int pass, float *test, sf_count_t items,
 } /* test_write_float */
 
 void
-test_write_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t items, int line_num)
+test_write_double_or_die (SNDFILE *file, int pass, const double *test, sf_count_t items, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_write_double (file, test, items)) != items)
@@ -781,7 +801,7 @@ test_write_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t item
 
 
 void
-test_writef_short_or_die (SNDFILE *file, int pass, short *test, sf_count_t frames, int line_num)
+test_writef_short_or_die (SNDFILE *file, int pass, const short *test, sf_count_t frames, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_writef_short (file, test, frames)) != frames)
@@ -799,7 +819,7 @@ test_writef_short_or_die (SNDFILE *file, int pass, short *test, sf_count_t frame
 } /* test_writef_short */
 
 void
-test_writef_int_or_die (SNDFILE *file, int pass, int *test, sf_count_t frames, int line_num)
+test_writef_int_or_die (SNDFILE *file, int pass, const int *test, sf_count_t frames, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_writef_int (file, test, frames)) != frames)
@@ -817,7 +837,7 @@ test_writef_int_or_die (SNDFILE *file, int pass, int *test, sf_count_t frames, i
 } /* test_writef_int */
 
 void
-test_writef_float_or_die (SNDFILE *file, int pass, float *test, sf_count_t frames, int line_num)
+test_writef_float_or_die (SNDFILE *file, int pass, const float *test, sf_count_t frames, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_writef_float (file, test, frames)) != frames)
@@ -835,7 +855,7 @@ test_writef_float_or_die (SNDFILE *file, int pass, float *test, sf_count_t frame
 } /* test_writef_float */
 
 void
-test_writef_double_or_die (SNDFILE *file, int pass, double *test, sf_count_t frames, int line_num)
+test_writef_double_or_die (SNDFILE *file, int pass, const double *test, sf_count_t frames, int line_num)
 {	sf_count_t count ;
 
 	if ((count = sf_writef_double (file, test, frames)) != frames)

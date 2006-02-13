@@ -5,7 +5,8 @@ noinst_PROGRAMS = sfversion floating_point_test write_read_test \
 	peak_chunk_test command_test stdin_test stdout_test stdio_test \
 	pcm_test headerless_test pipe_test benchmark header_test misc_test \
 	raw_test string_test open_fail_test multi_file_test dither_test \
-	scale_clip_test win32_test fix_this aiff_rw_test
+	scale_clip_test win32_test fix_this aiff_rw_test virtual_io_test \
+	locale_test largefile_test
 
 SNDFILEDIR = ../src
 INCLUDES = -I$(srcdir)/$(SNDFILEDIR)
@@ -15,7 +16,6 @@ autogen_sources = write_read_test.tpl write_read_test.def	\
 					pcm_test.tpl pcm_test.def				\
 					header_test.tpl header_test.def			\
 					utils.tpl utils.def						\
-					command_test.tpl command_test.def		\
 					scale_clip_test.tpl scale_clip_test.def	\
 					pipe_test.tpl pipe_test.def				\
 					floating_point_test.tpl floating_point_test.def	\
@@ -37,7 +37,7 @@ lossy_comp_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 fix_this_SOURCES = utils.c fix_this.c
 fix_this_LDADD = $(SNDFILEDIR)/libsndfile.la
 
-error_test_SOURCES = error_test.c
+error_test_SOURCES = error_test.c utils.c
 error_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 ulaw_test_SOURCES = utils.c ulaw_test.c
@@ -51,6 +51,12 @@ aiff_rw_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 command_test_SOURCES = command_test.c utils.c
 command_test_LDADD = $(SNDFILEDIR)/libsndfile.la
+
+locale_test_SOURCES = locale_test.c utils.c
+locale_test_LDADD = $(SNDFILEDIR)/libsndfile.la
+
+largefile_test_SOURCES = largefile_test.c utils.c
+largefile_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 pcm_test_SOURCES = pcm_test.c utils.c
 pcm_test_LDADD = $(SNDFILEDIR)/libsndfile.la
@@ -94,6 +100,9 @@ open_fail_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 multi_file_test_SOURCES = multi_file_test.c utils.c
 multi_file_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
+virtual_io_test_SOURCES = virtual_io_test.c utils.c
+virtual_io_test_LDADD = $(SNDFILEDIR)/libsndfile.la
+
 win32_test_SOURCES = win32_test.c
 win32_test_LDADD = 
 
@@ -125,9 +134,6 @@ header_test.c: header_test.def header_test.tpl
 utils.c: utils.def utils.tpl
 	autogen --writable --source-time utils.def
 
-command_test.c: command_test.def command_test.tpl
-	autogen --writable --source-time command_test.def
-
 scale_clip_test.c: scale_clip_test.def scale_clip_test.tpl
 	autogen --writable --source-time scale_clip_test.def
 
@@ -140,12 +146,15 @@ floating_point_test.c: floating_point_test.def floating_point_test.tpl
 benchmark.c: benchmark.def benchmark.tpl
 	autogen --writable --source-time benchmark.def
 
+genfiles : write_read_test.c pcm_test.c header_test.c utils.c \
+		scale_clip_test.c pipe_test.c floating_point_test.c benchmark.c
+
 #===============================================================================
 
-check: generic-tests wav-tests aiff-tests au-tests raw-tests paf-tests \
-	svx-tests nist-tests ircam-tests voc-tests w64-tests mat4-tests \
+check: generic-tests wav-tests aiff-tests au-tests caf-tests raw-tests \
+	paf-tests svx-tests nist-tests ircam-tests voc-tests w64-tests mat4-tests \
 	mat5-tests pvf-tests xi-tests htk-tests avr-tests sds-tests sd2-tests \
-	stdio-tests
+	flac-tests caf-tests io-tests
 
 generic-tests : error_test ulaw_test alaw_test command_test floating_point_test pcm_test
 	uname -a
@@ -159,9 +168,11 @@ generic-tests : error_test ulaw_test alaw_test command_test floating_point_test 
 	./command_test format
 	./command_test peak
 	./command_test trunc
+	./command_test inst
 	./floating_point_test
 	./scale_clip_test
 	./headerless_test
+	./locale_test
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed common tests."
 	@echo "----------------------------------------------------------------------"
@@ -173,6 +184,7 @@ wav-tests: write_read_test lossy_comp_test peak_chunk_test header_test misc_test
 	./lossy_comp_test wav_ulaw
 	./lossy_comp_test wav_alaw
 	./lossy_comp_test wav_gsm610
+	./lossy_comp_test wav_g721
 	./peak_chunk_test wav
 	./header_test wav
 	./misc_test wav
@@ -201,6 +213,16 @@ aiff-tests: write_read_test lossy_comp_test peak_chunk_test header_test misc_tes
 	@echo "  `./sfversion` passed tests on AIFF files."
 	@echo "----------------------------------------------------------------------"
 
+caf-tests: write_read_test lossy_comp_test header_test misc_test
+	./write_read_test caf
+	./lossy_comp_test caf_ulaw
+	./lossy_comp_test caf_alaw
+	./header_test caf
+	./misc_test caf
+	@echo "----------------------------------------------------------------------"
+	@echo "  `./sfversion` passed tests on CAF files."
+	@echo "----------------------------------------------------------------------"
+
 au-tests: write_read_test lossy_comp_test header_test misc_test
 	./write_read_test au
 	./lossy_comp_test au_ulaw
@@ -218,6 +240,7 @@ raw-tests: write_read_test lossy_comp_test raw_test
 	./write_read_test raw
 	./lossy_comp_test raw_ulaw
 	./lossy_comp_test raw_alaw
+	./lossy_comp_test raw_gsm610
 	./lossy_comp_test vox_adpcm
 	./raw_test
 	@echo "----------------------------------------------------------------------"
@@ -344,13 +367,20 @@ sd2-tests: write_read_test
 	@echo "  `./sfversion` passed tests on SD2 files."
 	@echo "----------------------------------------------------------------------"
 
+flac-tests: write_read_test
+	./write_read_test flac
+	@echo "----------------------------------------------------------------------"
+	@echo "  `./sfversion` passed tests on FLAC files."
+	@echo "----------------------------------------------------------------------"
+
 # Lite remove end
 
-stdio-tests: stdio_test stdin_test stdout_test pipe_test
+io-tests: stdio_test stdin_test stdout_test pipe_test
 	./stdio_test
 	./pipe_test
+	./virtual_io_test
 	@echo "----------------------------------------------------------------------"
-	@echo "  `./sfversion` passed stdio and pipe tests."
+	@echo "  `./sfversion` passed stdio/pipe/vio tests."
 	@echo "----------------------------------------------------------------------"
 
 ## Do not edit or modify anything in this comment block.

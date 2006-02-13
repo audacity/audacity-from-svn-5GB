@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software ; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +25,7 @@
 #include <sys/stat.h>
 #include <math.h>
 
-#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -103,6 +103,16 @@ main (int argc, char *argv [])
 		update_seek_int_test ("header_int.au", SF_FORMAT_AU) ;
 		update_seek_float_test ("header_float.au", SF_FORMAT_AU) ;
 		update_seek_double_test ("header_double.au", SF_FORMAT_AU) ;
+		test_count++ ;
+		} ;
+
+	if (do_all || ! strcmp (argv [1], "caf"))
+	{	update_header_test ("header.caf", SF_FORMAT_CAF) ;
+		update_seek_short_test ("header_short.caf", SF_FORMAT_CAF) ;
+		update_seek_int_test ("header_int.caf", SF_FORMAT_CAF) ;
+		update_seek_float_test ("header_float.caf", SF_FORMAT_CAF) ;
+		update_seek_double_test ("header_double.caf", SF_FORMAT_CAF) ;
+		/* extra_header_test ("extra.caf", SF_FORMAT_CAF) ; */
 		test_count++ ;
 		} ;
 
@@ -592,9 +602,9 @@ extra_header_test (const char *filename, int filetype)
 	frames = ARRAY_LEN (buffer) / sfinfo.channels ;
 
 	/* Test the file with extra header data. */
-	outfile = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, 399) ;
+	outfile = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, 409) ;
 	sf_set_string (outfile, SF_STR_TITLE, filename) ;
-	test_writef_short_or_die (outfile, k, buffer, frames, 401) ;
+	test_writef_short_or_die (outfile, k, buffer, frames, 411) ;
 	sf_set_string (outfile, SF_STR_COPYRIGHT, "(c) 1980 Erik") ;
 	sf_close (outfile) ;
 
@@ -621,7 +631,7 @@ extra_header_test (const char *filename, int filetype)
 	hexdump_file (filename, 0, 100000) ;
 
 	/* Open again for read/write. */
-	outfile = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, 428) ;
+	outfile = test_open_file_or_die (filename, SFM_RDWR, &sfinfo, 438) ;
 
 	/*
 	** In auto header update mode, seeking to the end of the file with
@@ -642,26 +652,26 @@ extra_header_test (const char *filename, int filetype)
 		memset (buffer, 0xA0 + k, sizeof (buffer)) ;
 
 
-		test_seek_or_die (outfile, k * frames, SEEK_SET, k * frames, sfinfo.channels, 449) ;
-		test_seek_or_die (outfile, 0, SEEK_END, k * frames, sfinfo.channels, 450) ;
+		test_seek_or_die (outfile, k * frames, SEEK_SET, k * frames, sfinfo.channels, 459) ;
+		test_seek_or_die (outfile, 0, SEEK_END, k * frames, sfinfo.channels, 460) ;
 
 		/* Open file again and make sure no errors in log buffer. */
 		if (0)
-		{	infile = test_open_file_or_die (filename, SFM_READ, &sfinfo, 454) ;
-			check_log_buffer_or_die (infile, 455) ;
+		{	infile = test_open_file_or_die (filename, SFM_READ, &sfinfo, 464) ;
+			check_log_buffer_or_die (infile, 465) ;
 			sf_close (infile) ;
 			} ;
 
 		if (sfinfo.frames != k * frames)
-		{	printf ("\n\nLine %d : Incorrect sample count (%ld should be %ld)\n", 460, SF_COUNT_TO_LONG (sfinfo.frames), SF_COUNT_TO_LONG (k + frames)) ;
+		{	printf ("\n\nLine %d : Incorrect sample count (%ld should be %ld)\n", 470, SF_COUNT_TO_LONG (sfinfo.frames), SF_COUNT_TO_LONG (k + frames)) ;
 			dump_log_buffer (infile) ;
 			exit (1) ;
 			} ;
 
 		if ((k & 1) == 0)
-			test_write_short_or_die (outfile, k, buffer, sfinfo.channels * frames, 466) ;
+			test_write_short_or_die (outfile, k, buffer, sfinfo.channels * frames, 476) ;
 		else
-			test_writef_short_or_die (outfile, k, buffer, frames, 468) ;
+			test_writef_short_or_die (outfile, k, buffer, frames, 478) ;
 		hexdump_file (filename, 0, 100000) ;
 		} ;
 

@@ -48,7 +48,7 @@
 
 <H2><B>SYNOPSIS</B></H2>
 <P>
-The functions of linbsndfile are defined as follows:
+The functions of libsndfile are defined as follows:
 </P>
 <!-- pepper -->
 <PRE>
@@ -72,6 +72,7 @@ The functions of linbsndfile are defined as follows:
       int         <A HREF="#error">sf_error_str</A>     (SNDFILE *sndfile, char* str, size_t len) ;
 
       int         <A HREF="#close">sf_close</A>         (SNDFILE *sndfile) ;
+      void        <A HREF="#write_sync">sf_write_sync</A>    (SNDFILE *sndfile) ;
 
       sf_count_t  <A HREF="#read">sf_read_short</A>    (SNDFILE *sndfile, short *ptr, sf_count_t items) ;
       sf_count_t  <A HREF="#read">sf_read_int</A>      (SNDFILE *sndfile, int *ptr, sf_count_t items) ;
@@ -143,7 +144,7 @@ The mode parameter for this function can be any one of the following three value
 When opening a file for read, the <b>format</B> field should be set to zero before
 calling sf_open().
 The only exception to this is the case of RAW files where the caller has to set
-the channels and format fields to valid values.
+the samplerate, channels and format fields to valid values.
 All other fields of the structure are filled in by the library.
 </P>
 <!-- pepper -->
@@ -176,6 +177,15 @@ Not all combinations of endian-ness and major and minor file types are valid.
           SF_FORMAT_W64          = 0x0B0000,     /* Sonic Foundry's 64 bit RIFF/WAV */
           SF_FORMAT_MAT4         = 0x0C0000,     /* Matlab (tm) V4.2 / GNU Octave 2.0 */
           SF_FORMAT_MAT5         = 0x0D0000,     /* Matlab (tm) V5.0 / GNU Octave 2.1 */
+          SF_FORMAT_PVF          = 0x0E0000,     /* Portable Voice Format */
+          SF_FORMAT_XI           = 0x0F0000,     /* Fasttracker 2 Extended Instrument */
+          SF_FORMAT_HTK          = 0x100000,     /* HMM Tool Kit format */
+          SF_FORMAT_SDS          = 0x110000,     /* Midi Sample Dump Standard */
+          SF_FORMAT_AVR          = 0x120000,     /* Audio Visual Research */
+          SF_FORMAT_WAVEX        = 0x130000,     /* MS WAVE with WAVEFORMATEX */
+          SF_FORMAT_SD2          = 0x160000,     /* Sound Designer 2 */
+          SF_FORMAT_FLAC         = 0x170000,     /* FLAC lossless file format */
+          SF_FORMAT_CAF          = 0x180000,     /* Core Audio File format */
 
           /* Subtypes from here on. */
 
@@ -205,6 +215,9 @@ Not all combinations of endian-ness and major and minor file types are valid.
           SF_FORMAT_DWVW_16      = 0x0041,       /* 16 bit Delta Width Variable Word encoding. */
           SF_FORMAT_DWVW_24      = 0x0042,       /* 24 bit Delta Width Variable Word encoding. */
           SF_FORMAT_DWVW_N       = 0x0043,       /* N bit Delta Width Variable Word encoding. */
+
+          SF_FORMAT_DPCM_8       = 0x0050,       /* 8 bit differential PCM (XI only) */
+          SF_FORMAT_DPCM_16      = 0x0051,       /* 16 bit differential PCM (XI only) */
 
           /* Endian-ness options. */
 
@@ -375,7 +388,10 @@ The error number may be one of the following:
 <PRE>
         enum
         {   SF_ERR_NO_ERROR             = 0,
-            SF_ERR_UNRECOGNISED_FORMAT  = 1
+            SF_ERR_UNRECOGNISED_FORMAT  = 1,
+            SF_ERR_SYSTEM               = 2,
+            SF_ERR_MALFORMED_FILE       = 3,
+            SF_ERR_UNSUPPORTED_ENCODING = 4
         } ;
 </PRE>
 <!-- pepper -->
@@ -418,7 +434,22 @@ from the library at some later date.
 The close function closes the file, deallocates its internal buffers and returns
 0 on success or an error value otherwise.
 </P>
-<BR><BR>
+<BR>
+
+<A NAME="write_sync"></A>
+<H2><BR><B>Write Sync Function</B></H2>
+
+<PRE>
+      void  sf_write_sync  (SNDFILE *sndfile) ;
+</PRE>
+<!-- pepper -->
+<P>
+If the file is opened SFM_WRITE or SFM_RDWR, call the operating system's function
+to force the writing of all file cache buffers to disk. If the file is opened
+SFM_READ no action is taken.
+</P>
+<BR>
+
 
 <A NAME="read"></A>
 <H2><BR><B>File Read Functions (Items)</B></H2>
@@ -634,10 +665,16 @@ using the <A HREF="command.html">sf_command</A> interface.
 
 <P>
 Reading a file containg floating point data (allowable with WAV, AIFF, AU and other
-file formats) using integer read methods (sf_read_short() or sf_read_int()) is
-discouraged as the library cannot guarantee sensible results. For instance the data
-in the file may have a maximum absolute value &lt; 1.0 which would mean that all sample
-values read from the file will be zero.
+file formats) using integer read methods (sf_read_short() or sf_read_int()) can
+produce unexpected results.
+For instance the data in the file may have a maximum absolute value &lt; 1.0 which
+would mean that all sample values read from the file will be zero.
+In order to read these files correctly using integer read methods, it is recommended
+that you use the
+     <A HREF="command.html">sf_command</A>
+interface a command of
+     <A HREF="command.html#SFC_SET_SCALE_FLOAT_INT_READ">SFC_SET_SCALE_FLOAT_INT_READ
+and a parameter of SF_TRUE to force correct scaling.
 </P>
 <!-- pepper -->
 <HR>
@@ -647,7 +684,7 @@ values read from the file will be zero.
 		<A HREF="http://www.mega-nerd.com/libsndfile/">here</A>.
 </P>
 <P>
-Version : 1.0.11
+Version : 1.0.13
 </P>
 <!-- pepper -->
 <!-- pepper -->

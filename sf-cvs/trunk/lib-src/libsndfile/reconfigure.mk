@@ -22,10 +22,14 @@ else
   ACLOCAL_INC = -I /sw/share/aclocal
 endif
 
+genfiles : config.status
+	(cd src && make genfiles)
+	(cd tests && make genfiles)
+
 config.status: configure src/config.h.in Makefile.in src/Makefile.in tests/Makefile.in
 	./configure --enable-gcc-werror
 
-configure: libtool ltmain.sh
+configure: ltmain.sh
 	autoconf
 
 Makefile.in: Makefile.am	
@@ -37,7 +41,7 @@ src/Makefile.in: src/Makefile.am
 tests/Makefile.in: tests/Makefile.am	
 	automake --copy --add-missing
 
-src/config.h.in: configure libtool
+src/config.h.in: configure
 	autoheader
 
 libtool ltmain.sh: aclocal.m4
@@ -49,6 +53,7 @@ aclocal.m4: acinclude.m4
 
 clean:
 	rm -f libtool ltmain.sh aclocal.m4 Makefile.in src/config.h.in config.cache config.status
+	find . -name .deps -type d -exec rm -rf {} \;
 
 
 # Do not edit or modify anything in this comment block.

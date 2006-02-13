@@ -67,7 +67,14 @@
 /* #undef HAVE_ENDIAN_H */
 
 /* Define to 1 if you have the `fdatasync' function. */
+
 /* #undef HAVE_FDATASYNC */
+
+/* Define to 1 if you have libflac 1.1.1 */
+/* #undef HAVE_FLAC_1_1_1 1 */
+
+/* Define to 1 if you have the <FLAC/all.h> header file. */
+/* #undef HAVE_FLAC_ALL_H 1 */
 
 /* Set to 1 if the compile supports the struct hack. */
 #define HAVE_FLEXIBLE_ARRAY 1
@@ -100,10 +107,13 @@
 /* #undef HAVE_GMTIME_R */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#define HAVE_INTTYPES_H 1
+/* #undef HAVE_INTTYPES_H */
 
 /* Define to 1 if you have the `m' library (-lm). */
 #define HAVE_LIBM 1
+
+/* Define to 1 if you have the <locale.h> header file. */
+/* #undef HAVE_LOCALE_H */
 
 /* Define if you have C99's lrint function. */
 /* #undef HAVE_LRINT */
@@ -138,8 +148,14 @@
 /* Define to 1 if you have the `realloc' function. */
 #define HAVE_REALLOC 1
 
+/* Define to 1 if you have the `setlocale' function. */
+/* #undef HAVE_SETLOCALE */
+
 /* Define to 1 if you have the `snprintf' function. */
 #define HAVE_SNPRINTF 1
+
+/* Set to 1 if you have libsqlite3. */
+/* #undef HAVE_SQLITE3 */
 
 /* Define to 1 if the system has the type `ssize_t'. */
 /* #undef HAVE_SSIZE_T */
@@ -190,13 +206,13 @@
 #define PACKAGE_NAME "libsndfile"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libsndfile 1.0.11"
+#define PACKAGE_STRING "libsndfile 1.0.13"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libsndfile"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.11pre11"
+#define PACKAGE_VERSION "1.0.13"
 
 /* Set to maximum allowed value of sf_count_t type. */
 #define SF_COUNT_MAX 0x7FFFFFFFFFFFFFFFi64
@@ -247,10 +263,13 @@
 #define STDC_HEADERS 1
 
 /* Set to long if unknown. */
-#define TYPEOF_SF_COUNT_T __int64_t
+#define TYPEOF_SF_COUNT_T loff_t
+
+/* Set to 1 to use the native windows API */
+#define USE_WINDOWS_API 1
 
 /* Version number of package */
-#define VERSION "1.0.11"
+#define VERSION "1.0.13"
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */

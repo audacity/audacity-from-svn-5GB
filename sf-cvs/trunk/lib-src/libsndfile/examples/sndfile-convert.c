@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -47,10 +47,13 @@ static OUTPUT_FORMAT_MAP format_map [] =
 	{	"aif",		3,	SF_FORMAT_AIFF	},
 	{	"wav", 		0,	SF_FORMAT_WAV	},
 	{	"au",		0,	SF_FORMAT_AU	},
+	{	"caf",		0,	SF_FORMAT_CAF	},
+	{	"flac",		0,	SF_FORMAT_FLAC	},
 	{	"snd",		0,	SF_FORMAT_AU	},
 	{	"svx",		0,	SF_FORMAT_SVX	},
 	{	"paf",		0,	SF_ENDIAN_BIG | SF_FORMAT_PAF	},
 	{	"fap",		0,	SF_ENDIAN_LITTLE | SF_FORMAT_PAF	},
+	{	"gsm",		0,	SF_FORMAT_RAW	},
 	{	"nist", 	0,	SF_FORMAT_NIST	},
 	{	"ircam",	0,	SF_FORMAT_IRCAM	},
 	{	"sf",		0, 	SF_FORMAT_IRCAM	},
@@ -62,6 +65,8 @@ static OUTPUT_FORMAT_MAP format_map [] =
 	{	"mat",		0, 	SF_FORMAT_MAT4 	},
 	{	"pvf",		0, 	SF_FORMAT_PVF 	},
 	{	"sds",		0, 	SF_FORMAT_SDS 	},
+	{	"sd2",		0, 	SF_FORMAT_SD2 	},
+	{	"vox",		0, 	SF_FORMAT_RAW 	},
 	{	"xi",		0, 	SF_FORMAT_XI 	}
 } ; /* format_map */
 
@@ -81,12 +86,17 @@ guess_output_file_type (char *str, int format)
 	for (k = 0 ; buffer [k] ; k++)
 		buffer [k] = tolower ((buffer [k])) ;
 
+	if (strcmp (buffer, "gsm") == 0)
+		return SF_FORMAT_RAW | SF_FORMAT_GSM610 ;
+
+	if (strcmp (buffer, "vox") == 0)
+		return SF_FORMAT_RAW | SF_FORMAT_VOX_ADPCM ;
+
 	for (k = 0 ; k < (int) (sizeof (format_map) / sizeof (format_map [0])) ; k++)
-	{	if (format_map [k].len > 0 &&
-			strncmp (buffer, format_map [k].ext, format_map [k].len) == 0)
-				return format_map [k].format | format ;
+	{	if (format_map [k].len > 0 && strncmp (buffer, format_map [k].ext, format_map [k].len) == 0)
+			return format_map [k].format | format ;
 		else if (strcmp (buffer, format_map [k].ext) == 0)
-				return format_map [k].format | format ;
+			return format_map [k].format | format ;
 		} ;
 
 	return	0 ;
@@ -247,7 +257,10 @@ main (int argc, char * argv [])
 
 	outfilemajor = sfinfo.format & (SF_FORMAT_TYPEMASK | SF_FORMAT_ENDMASK) ;
 
-	if (outfileminor)
+	if (outfileminor == 0)
+		outfileminor = sfinfo.format & SF_FORMAT_SUBMASK ;
+
+	if (outfileminor != 0)
 		sfinfo.format = outfilemajor | outfileminor ;
 	else
 		sfinfo.format = outfilemajor | (sfinfo.format & SF_FORMAT_SUBMASK) ;
