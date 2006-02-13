@@ -69,6 +69,7 @@ class AudacityProject;
 AudacityProject *CreateNewAudacityProject(wxWindow * parentFrame);
 AudacityProject *GetActiveProject();
 void RedrawAllProjects();
+void RefreshCursorForAllProjects();
 void CloseAllProjects();
 
 void GetDefaultWindowRect(wxRect *defRect);
@@ -204,6 +205,7 @@ class AudacityProject:public wxFrame,
    void UpdateGuiPrefs();
    void UpdateBatchPrefs();
    void RedrawProject();
+   void RefreshCursor();
    void SelectNone();
    void SelectAllIfNone();
    void Zoom(double level);

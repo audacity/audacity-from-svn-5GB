@@ -209,6 +209,13 @@ void RedrawAllProjects()
       gAudacityProjects[i]->RedrawProject();
 }
 
+void RefreshCursorForAllProjects()
+{
+   size_t len = gAudacityProjects.GetCount();
+   for (size_t i = 0; i < len; i++)
+      gAudacityProjects[i]->RefreshCursor();
+}
+
 void CloseAllProjects()
 {
    size_t len = gAudacityProjects.GetCount();
@@ -729,6 +736,10 @@ void AudacityProject::RedrawProject()
    mTrackPanel->Refresh(false);
 }
 
+void AudacityProject::RefreshCursor()
+{
+   mTrackPanel->HandleCursorForLastMouseEvent();
+}
 
 void AudacityProject::SetSel0(double newSel0)
 {
@@ -1133,6 +1144,9 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
       mTrackPanel->HandleShiftKey(true);
    }
 
+   if (event.GetKeyCode() == WXK_CONTROL)
+      mTrackPanel->HandleControlKey(true);
+
    return false;
 }
 
@@ -1152,6 +1166,9 @@ bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
 
       mTrackPanel->HandleShiftKey(false);
    }
+
+   if (event.GetKeyCode() == WXK_CONTROL)
+      mTrackPanel->HandleControlKey(false);
 
    return false;
 }
