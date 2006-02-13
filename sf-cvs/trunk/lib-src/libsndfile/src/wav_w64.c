@@ -1,5 +1,6 @@
 /*
-** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2004-2005 David Viens <davidv@plogue.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -16,20 +17,71 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
+#include	"sfconfig.h"
+
 #include	<stdio.h>
 #include	<string.h>
 #include	<ctype.h>
 #include	<time.h>
 
 #include	"sndfile.h"
-#include	"config.h"
 #include	"sfendian.h"
 #include	"common.h"
 #include	"wav_w64.h"
 
+/*  Known WAVEFORMATEXTENSIBLE GUIDS.  */
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_PCM =
+{	0x00000001, 0x0000, 0x0010, {	0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 }
+} ;
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_MS_ADPCM =
+{	0x00000002, 0x0000, 0x0010, {	0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 }
+} ;
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_IEEE_FLOAT =
+{	0x00000003, 0x0000, 0x0010, {	0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 }
+} ;
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_ALAW =
+{	0x00000006, 0x0000, 0x0010, {	0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 }
+} ;
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_MULAW =
+{	0x00000007, 0x0000, 0x0010, {	0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71 }
+} ;
+
+/*
+** the next two are from
+** http://dream.cs.bath.ac.uk/researchdev/wave-ex/bformat.html
+*/
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_AMBISONIC_B_FORMAT_PCM =
+{	0x00000001, 0x0721, 0x11d3, {	0x86, 0x44, 0xC8, 0xC1, 0xCA, 0x00, 0x00, 0x00 }
+} ;
+
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_AMBISONIC_B_FORMAT_IEEE_FLOAT =
+{	0x00000003, 0x0721, 0x11d3, {	0x86, 0x44, 0xC8, 0xC1, 0xCA, 0x00, 0x00, 0x00 }
+} ;
+
+
+#if 0
+/* maybe interesting one day to read the following through sf_read_raw */
+/* http://www.bath.ac.uk/~masrwd/pvocex/pvocex.html */
+static const EXT_SUBFORMAT MSGUID_SUBTYPE_PVOCEX =
+{	0x8312B9C2, 0x2E6E, 0x11d4, {	0xA8, 0x24, 0xDE, 0x5B, 0x96, 0xC3, 0xAB, 0x21 }
+} ;
+#endif
+
 /*------------------------------------------------------------------------------
  * Private static functions.
  */
+
+static int
+wavex_write_guid_equal (const EXT_SUBFORMAT * first, const EXT_SUBFORMAT * second)
+{	return !memcmp (first, second, sizeof (EXT_SUBFORMAT)) ;
+} /* wavex_write_guid_equal */
+
+
 
 int
 wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
@@ -39,8 +91,6 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 
 	if (structsize < 16)
 		return SFE_WAV_FMT_SHORT ;
-	if (structsize > SIGNED_SIZEOF (WAV_FMT))
-		return SFE_WAV_FMT_TOO_BIG ;
 
 	/* Read the minimal WAV file header here. */
 	bytesread =
@@ -62,11 +112,12 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 		wav_fmt->min.bitwidth = 32 ;
 		wav_fmt->format = WAVE_FORMAT_IEEE_FLOAT ;
 		}
+	else if (wav_fmt->format != WAVE_FORMAT_GSM610 && wav_fmt->min.bitwidth == 0)
+		psf_log_printf (psf, "  Bit Width     : %d (should not be 0)\n", wav_fmt->min.bitwidth) ;
 	else if (wav_fmt->format == WAVE_FORMAT_GSM610 && wav_fmt->min.bitwidth != 0)
 		psf_log_printf (psf, "  Bit Width     : %d (should be 0)\n", wav_fmt->min.bitwidth) ;
 	else
 		psf_log_printf (psf, "  Bit Width     : %d\n", wav_fmt->min.bitwidth) ;
-
 
 	psf->sf.samplerate	= wav_fmt->min.samplerate ;
 	psf->sf.frames 		= 0 ;					/* Correct this when reading data chunk. */
@@ -194,7 +245,7 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 				psf_binheader_readf (psf, "e422", &(wav_fmt->ext.esf.esf_field1), &(wav_fmt->ext.esf.esf_field2),
 						&(wav_fmt->ext.esf.esf_field3)) ;
 
-                /* compare the esf_fields with each known GUID? and print?*/
+				/* compare the esf_fields with each known GUID? and print? */
 				psf_log_printf (psf, "  Subformat\n") ;
 				psf_log_printf (psf, "    esf_field1 : 0x%X\n", wav_fmt->ext.esf.esf_field1) ;
 				psf_log_printf (psf, "    esf_field2 : 0x%X\n", wav_fmt->ext.esf.esf_field2) ;
@@ -206,9 +257,55 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 					} ;
 				psf_log_printf (psf, "\n") ;
 				psf->bytewidth = BITWIDTH2BYTES (wav_fmt->ext.bitwidth) ;
+
+				/* Compare GUIDs for known ones. */
+				if (wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_PCM)
+					|| wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_AMBISONIC_B_FORMAT_PCM))
+				{	psf->sf.format = SF_FORMAT_WAVEX | u_bitwidth_to_subformat (psf->bytewidth * 8) ;
+					psf_log_printf (psf, "    format : pcm\n") ;
+					}
+				else if (wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_MS_ADPCM))
+				{	psf->sf.format = (SF_FORMAT_WAVEX | SF_FORMAT_MS_ADPCM) ;
+					psf_log_printf (psf, "    format : ms adpcm\n") ;
+					}
+				else if (wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_IEEE_FLOAT)
+						|| wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_AMBISONIC_B_FORMAT_PCM))
+				{	psf->sf.format = SF_FORMAT_WAVEX | ((psf->bytewidth == 8) ? SF_FORMAT_DOUBLE : SF_FORMAT_FLOAT) ;
+					psf_log_printf (psf, "    format : IEEE float\n") ;
+					}
+				else if (wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_ALAW))
+				{	psf->sf.format = (SF_FORMAT_WAVEX | SF_FORMAT_ALAW) ;
+					psf_log_printf (psf, "    format : A-law\n") ;
+					}
+				else if (wavex_write_guid_equal (&wav_fmt->ext.esf, &MSGUID_SUBTYPE_MULAW))
+				{	psf->sf.format = (SF_FORMAT_WAVEX | SF_FORMAT_ULAW) ;
+					psf_log_printf (psf, "    format : u-law\n") ;
+					}
+				else
+					return SFE_UNIMPLEMENTED ;
 				break ;
 
-		default : break ;
+		case WAVE_FORMAT_G721_ADPCM :
+				psf_log_printf (psf, "  Bytes/sec     : %d\n", wav_fmt->g72x.bytespersec) ;
+				if (structsize >= 20)
+				{	bytesread += psf_binheader_readf (psf, "e22", &(wav_fmt->g72x.extrabytes), &(wav_fmt->g72x.auxblocksize)) ;
+					if (wav_fmt->g72x.extrabytes == 0)
+						psf_log_printf (psf, "  Extra Bytes   : %d (should be 2)\n", wav_fmt->g72x.extrabytes) ;
+					else
+						psf_log_printf (psf, "  Extra Bytes   : %d\n", wav_fmt->g72x.extrabytes) ;
+						psf_log_printf (psf, "  Aux Blk Size  : %d\n", wav_fmt->g72x.auxblocksize) ;
+					}
+				else if (structsize == 18)
+				{	bytesread += psf_binheader_readf (psf, "e2", &(wav_fmt->g72x.extrabytes)) ;
+					psf_log_printf (psf, "  Extra Bytes   : %d%s\n", wav_fmt->g72x.extrabytes, wav_fmt->g72x.extrabytes != 0 ? " (should be 0)" : "") ;
+					}
+				else
+					psf_log_printf (psf, "*** 'fmt ' chunk should be bigger than this!\n") ;
+				break ;
+
+		default :
+				psf_log_printf (psf, "*** No 'fmt ' chunk dumper for this format!\n") ;
+				break ;
 		} ;
 
 	if (bytesread > structsize)
@@ -222,6 +319,15 @@ wav_w64_read_fmt_chunk (SF_PRIVATE *psf, WAV_FMT *wav_fmt, int structsize)
 
 	return 0 ;
 } /* wav_w64_read_fmt_chunk */
+
+void
+wavex_write_guid (SF_PRIVATE *psf, const EXT_SUBFORMAT * subformat)
+{
+	psf_binheader_writef (psf, "e422b", subformat->esf_field1,
+					subformat->esf_field2, subformat->esf_field3,
+					subformat->esf_field4, 8) ;
+} /* wavex_write_guid */
+
 
 /*==============================================================================
 */

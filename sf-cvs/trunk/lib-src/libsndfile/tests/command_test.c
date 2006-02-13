@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2002 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -40,6 +40,7 @@ static	void	double_norm_test	(const char *filename) ;
 static	void	format_tests		(void) ;
 static	void	calc_peak_test		(int filetype, const char *filename) ;
 static	void	truncate_test		(const char *filename, int filetype) ;
+static	void	instrument_test		(const char *filename, int filetype) ;
 
 /* Force the start of this buffer to be double aligned. Sparc-solaris will
 ** choke if its not.
@@ -50,26 +51,25 @@ static	double	double_data	[BUFFER_LEN] ;
 
 int
 main (int argc, char *argv [])
-{	/*-char	*filename ;-*/
-	int		do_all = 0 ;
+{	int		do_all = 0 ;
 	int		test_count = 0 ;
 
 	if (argc != 2)
 	{	printf ("Usage : %s <test>\n", argv [0]) ;
 		printf ("    Where <test> is one of the following:\n") ;
 		printf ("           ver    - test sf_command (SFC_GETLIB_VERSION)\n") ;
-		/*-printf ("           text  - test adding of text strings\n") ;-*/
-		printf ("           norm  - test floating point normalisation\n") ;
+		printf ("           norm   - test floating point normalisation\n") ;
 		printf ("           format - test format string commands\n") ;
 		printf ("           peak   - test peak calculation\n") ;
 		printf ("           trunc  - test file truncation\n") ;
-		printf ("           all   - perform all tests\n") ;
+		printf ("           inst   - test set/get of SF_INSTRUMENT.\n") ;
+		printf ("           all    - perform all tests\n") ;
 		exit (1) ;
 		} ;
 
 	do_all =! strcmp (argv [1], "all") ;
 
-	if (do_all || ! strcmp (argv [1], "ver"))
+	if (do_all || strcmp (argv [1], "ver") == 0)
 	{	char buffer [128] ;
 		buffer [0] = 0 ;
 		sf_command (NULL, SFC_GET_LIB_VERSION, buffer, sizeof (buffer)) ;
@@ -80,7 +80,7 @@ main (int argc, char *argv [])
 		test_count++ ;
 		} ;
 
-	if (do_all || ! strcmp (argv [1], "norm"))
+	if (do_all || strcmp (argv [1], "norm") == 0)
 	{	/*	Preliminary float/double normalisation tests. More testing
 		**	is done in the program 'floating_point_test'.
 		*/
@@ -89,7 +89,7 @@ main (int argc, char *argv [])
 		test_count++ ;
 		} ;
 
-	if (do_all || ! strcmp (argv [1], "peak"))
+	if (do_all || strcmp (argv [1], "peak") == 0)
 	{	calc_peak_test (SF_ENDIAN_BIG		| SF_FORMAT_RAW, "be-peak.raw") ;
 		calc_peak_test (SF_ENDIAN_LITTLE	| SF_FORMAT_RAW, "le-peak.raw") ;
 		test_count++ ;
@@ -100,9 +100,16 @@ main (int argc, char *argv [])
 		test_count++ ;
 		} ;
 
-	if (do_all || ! strcmp (argv [1], "trunc"))
+	if (do_all || strcmp (argv [1], "trunc") == 0)
 	{	truncate_test ("truncate.raw", SF_FORMAT_RAW | SF_FORMAT_PCM_32) ;
 		truncate_test ("truncate.au" , SF_FORMAT_AU | SF_FORMAT_PCM_16) ;
+		test_count++ ;
+		} ;
+
+	if (do_all || strcmp (argv [1], "inst") == 0)
+	{	instrument_test ("instrument.wav", SF_FORMAT_WAV | SF_FORMAT_PCM_16) ;
+		instrument_test ("instrument.aiff" , SF_FORMAT_AIFF | SF_FORMAT_PCM_24) ;
+		instrument_test ("instrument.xi", SF_FORMAT_XI | SF_FORMAT_DPCM_16) ;
 		test_count++ ;
 		} ;
 
@@ -591,4 +598,123 @@ truncate_test (const char *filename, int filetype)
 	puts ("ok") ;
 } /* truncate_test */
 
+static void
+instrument_test (const char *filename, int filetype)
+{	static SF_INSTRUMENT write_inst =
+	{	2,		/* gain */
+		3, 		/* detune */
+		4, 		/* basenote */
+		5, 6,	/* key low and high */
+		7, 8,	/* velocity low and high */
+		2,		/* loop_count */
+		{	{	801, 2, 3, 0 },
+			{	801, 3, 4, 0 },
+		}
+	} ;
+	SF_INSTRUMENT read_inst ;
+	SNDFILE	 *file ;
+	SF_INFO	 sfinfo ;
 
+	print_test_name ("instrument_test", filename) ;
+
+	sfinfo.samplerate	= 11025 ;
+	sfinfo.format		= filetype ;
+	sfinfo.channels		= 1 ;
+
+	file = test_open_file_or_die (filename, SFM_WRITE, &sfinfo, SF_TRUE, __LINE__) ;
+	test_write_double_or_die (file, 0, double_data, BUFFER_LEN, __LINE__) ;
+	if (sf_command (file, SFC_SET_INSTRUMENT, &write_inst, sizeof (write_inst)) == SF_FALSE)
+	{	printf ("\n\nLine %d : sf_command (SFC_SET_INSTRUMENT) failed.\n\n", __LINE__) ;
+		exit (1) ;
+		} ;
+	sf_close (file) ;
+
+	memset (&read_inst, 0, sizeof (read_inst)) ;
+
+	file = test_open_file_or_die (filename, SFM_READ, &sfinfo, SF_TRUE, __LINE__) ;
+	if (sf_command (file, SFC_GET_INSTRUMENT, &read_inst, sizeof (read_inst)) == SF_FALSE)
+	{	printf ("\n\nLine %d : sf_command (SFC_GET_INSTRUMENT) failed.\n\n", __LINE__) ;
+		exit (1) ;
+		return ;
+		} ;
+	sf_close (file) ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_WAV)
+	{	/*
+		**	For all the fields that WAV doesn't support, modify the
+		**	write_inst struct to hold the default value that the WAV
+		**	module should hold.
+		*/
+		write_inst.detune = 0 ;
+		write_inst.key_lo = write_inst.velocity_lo = 0 ;
+		write_inst.key_hi = write_inst.velocity_hi = 127 ;
+		write_inst.gain = 1 ;
+		} ;
+
+	if ((filetype & SF_FORMAT_TYPEMASK) == SF_FORMAT_XI)
+	{	/*
+		**	For all the fields that XI doesn't support, modify the
+		**	write_inst struct to hold the default value that the XI
+		**	module should hold.
+		*/
+		write_inst.basenote = 0 ;
+		write_inst.detune = 0 ;
+		write_inst.key_lo = write_inst.velocity_lo = 0 ;
+		write_inst.key_hi = write_inst.velocity_hi = 127 ;
+		write_inst.gain = 1 ;
+		} ;
+
+	if (memcmp (&write_inst, &read_inst, sizeof (write_inst)) != 0)
+	{	printf ("\n\nLine %d : instrument comparison failed.\n\n", __LINE__) ;
+		printf ("W  Base Note : %u\n"
+			"   Detune    : %u\n"
+			"   Low  Note : %u\tHigh Note : %u\n"
+			"   Low  Vel. : %u\tHigh Vel. : %u\n"
+			"   Gain      : %d\tCount     : %d\n"
+			"   mode      : %d\n"
+			"   start     : %d\tend       : %d\tcount  :%d\n"
+			"   mode      : %d\n"
+			"   start     : %d\tend       : %d\tcount  :%d\n\n",
+			write_inst.basenote,
+			write_inst.detune,
+			write_inst.key_lo, write_inst.key_hi,
+			write_inst.velocity_lo, write_inst.velocity_hi,
+			write_inst.gain, write_inst.loop_count,
+			write_inst.loops [0].mode, write_inst.loops [0].start,
+			write_inst.loops [0].end, write_inst.loops [0].count,
+			write_inst.loops [1].mode, write_inst.loops [1].start,
+			write_inst.loops [1].end, write_inst.loops [1].count) ;
+		printf ("R  Base Note : %u\n"
+			"   Detune    : %u\n"
+			"   Low  Note : %u\tHigh Note : %u\n"
+			"   Low  Vel. : %u\tHigh Vel. : %u\n"
+			"   Gain      : %d\tCount     : %d\n"
+			"   mode      : %d\n"
+			"   start     : %d\tend       : %d\tcount  :%d\n"
+			"   mode      : %d\n"
+			"   start     : %d\tend       : %d\tcount  :%d\n\n",
+			read_inst.basenote,
+			read_inst.detune,
+			read_inst.key_lo, read_inst.key_hi,
+			read_inst.velocity_lo, read_inst.velocity_hi,
+			read_inst.gain,	read_inst.loop_count,
+			read_inst.loops [0].mode, read_inst.loops [0].start,
+			read_inst.loops [0].end, read_inst.loops [0].count,
+			read_inst.loops [1].mode, read_inst.loops [1].start,
+			read_inst.loops [1].end, read_inst.loops [1].count) ;
+
+		if ((filetype & SF_FORMAT_TYPEMASK) != SF_FORMAT_XI)
+			exit (1) ;
+		} ;
+
+	unlink (filename) ;
+	puts ("ok") ;
+} /* instrument_test */
+
+/*
+** Do not edit or modify anything in this comment block.
+** The following line is a file identity tag for the GNU Arch
+** revision control system.
+**
+** arch-tag: 59e5d452-8dae-45aa-99aa-b78dc0deba1c
+*/
