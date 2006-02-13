@@ -15,22 +15,34 @@
 @SET_MAKE@
 
 #  libFLAC - Free Lossless Audio Codec library
-#  Copyright (C) 2001,2002  Josh Coalson
+#  Copyright (C) 2001,2002,2003,2004,2005  Josh Coalson
 #
-#  This library is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Library General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
 #
-#  This library is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Library General Public License for more details.
+#  - Redistributions of source code must retain the above copyright
+#  notice, this list of conditions and the following disclaimer.
 #
-#  You should have received a copy of the GNU Library General Public
-#  License along with this library; if not, write to the
-#  Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-#  Boston, MA  02111-1307, USA.
+#  - Redistributions in binary form must reproduce the above copyright
+#  notice, this list of conditions and the following disclaimer in the
+#  documentation and/or other materials provided with the distribution.
+#
+#  - Neither the name of the Xiph.org Foundation nor the names of its
+#  contributors may be used to endorse or promote products derived from
+#  this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+#  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+#  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+#  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+#  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+#  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+#  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -84,57 +96,44 @@ EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
+AR = @AR@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
+CCAS = @CCAS@
+CCASFLAGS = @CCASFLAGS@
 CXX = @CXX@
+CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DOCBOOK_TO_MAN = @DOCBOOK_TO_MAN@
+DOXYGEN = @DOXYGEN@
 ECHO = @ECHO@
-FLaC__SIZE16 = @FLaC__SIZE16@
-FLaC__SIZE32 = @FLaC__SIZE32@
-FLaC__SIZE64 = @FLaC__SIZE64@
-FLaC__USIZE16 = @FLaC__USIZE16@
-FLaC__USIZE32 = @FLaC__USIZE32@
-FLaC__USIZE64 = @FLaC__USIZE64@
-HAVE_LIB = @HAVE_LIB@
-ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
-ID3LIB_LIBS = @ID3LIB_LIBS@
+EGREP = @EGREP@
+F77 = @F77@
+GAS = @GAS@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LIB = @LIB@
 LIBICONV = @LIBICONV@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
-LTLIB = @LTLIB@
-LTLIBICONV = @LTLIBICONV@
+MAINT = @MAINT@
 NASM = @NASM@
 OBJDUMP = @OBJDUMP@
 OBJ_FORMAT = @OBJ_FORMAT@
-OGG_CFLAGS = @OGG_CFLAGS@
-OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-SHARE_LIBS = @SHARE_LIBS@
+RC = @RC@
 STRIP = @STRIP@
 VERSION = @VERSION@
-XMMS_CFLAGS = @XMMS_CFLAGS@
-XMMS_CONFIG = @XMMS_CONFIG@
-XMMS_DATA_DIR = @XMMS_DATA_DIR@
-XMMS_EFFECT_PLUGIN_DIR = @XMMS_EFFECT_PLUGIN_DIR@
-XMMS_GENERAL_PLUGIN_DIR = @XMMS_GENERAL_PLUGIN_DIR@
-XMMS_INPUT_PLUGIN_DIR = @XMMS_INPUT_PLUGIN_DIR@
-XMMS_LIBS = @XMMS_LIBS@
-XMMS_OUTPUT_PLUGIN_DIR = @XMMS_OUTPUT_PLUGIN_DIR@
-XMMS_PLUGIN_DIR = @XMMS_PLUGIN_DIR@
-XMMS_VERSION = @XMMS_VERSION@
-XMMS_VISUALIZATION_PLUGIN_DIR = @XMMS_VISUALIZATION_PLUGIN_DIR@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 
 SUFFIXES = .nasm .lo
 
-STRIP_FPIC = sh $(top_srcdir)/strip_fPIC.sh
+STRIP_NON_ASM = sh $(top_srcdir)/strip_non_asm_libtool_args.sh
 
 noinst_LTLIBRARIES = libFLAC-asm.la
 libFLAC_asm_la_SOURCES = \
@@ -145,6 +144,7 @@ libFLAC_asm_la_SOURCES = \
 
 subdir = src/libFLAC/ia32
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 
@@ -154,7 +154,7 @@ am_libFLAC_asm_la_OBJECTS = cpu_asm.lo fixed_asm.lo lpc_asm.lo
 libFLAC_asm_la_OBJECTS = $(am_libFLAC_asm_la_OBJECTS)
 
 DEFS = @DEFS@
-DEFAULT_INCLUDES =  -I. -I$(srcdir)
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
@@ -174,10 +174,10 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .nasm .lo
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/libFLAC/ia32/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	  $(AUTOMAKE) --gnu  src/libFLAC/ia32/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
 clean-noinstLTLIBRARIES:
@@ -350,7 +350,7 @@ uninstall-am: uninstall-info-am
 
 
 .nasm.lo:
-	$(LIBTOOL) --mode=compile $(STRIP_FPIC) $(NASM) -f $(OBJ_FORMAT) -d OBJ_FORMAT_$(OBJ_FORMAT) -i$(srcdir)/ $< -o $@
+	$(LIBTOOL) --tag=CC --mode=compile $(STRIP_NON_ASM) $(NASM) -f $(OBJ_FORMAT) -d OBJ_FORMAT_$(OBJ_FORMAT) -i$(srcdir)/ $< -o $@
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

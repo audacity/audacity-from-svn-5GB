@@ -15,21 +15,24 @@
 @SET_MAKE@
 
 #  FLAC - Free Lossless Audio Codec
-#  Copyright (C) 2001,2002  Josh Coalson
+#  Copyright (C) 2001,2002,2003,2004,2005  Josh Coalson
 #
-#  This program is part of FLAC; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
+#  This file is part the FLAC project.  FLAC is comprised of several
+#  components distributed under difference licenses.  The codec libraries
+#  are distributed under Xiph.Org's BSD-like license (see the file
+#  COPYING.Xiph in this distribution).  All other programs, libraries, and
+#  plugins are distributed under the GPL (see COPYING.GPL).  The documentation
+#  is distributed under the Gnu FDL (see COPYING.FDL).  Each file in the
+#  FLAC distribution contains at the top the terms under which it may be
+#  distributed.
 #
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#  Since this particular file is relevant to all components of FLAC,
+#  it may be distributed under the Xiph.Org license, which is the least
+#  restrictive of those mentioned above.  See the file COPYING.Xiph in this
+#  distribution.
+
+# modified for Audacity to include only the bare minimum required
+# directories...bloat is bad!
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -83,78 +86,52 @@ EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 AMTAR = @AMTAR@
+AR = @AR@
 AS = @AS@
 AWK = @AWK@
 CC = @CC@
+CCAS = @CCAS@
+CCASFLAGS = @CCASFLAGS@
 CXX = @CXX@
+CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DOCBOOK_TO_MAN = @DOCBOOK_TO_MAN@
+DOXYGEN = @DOXYGEN@
 ECHO = @ECHO@
-FLaC__SIZE16 = @FLaC__SIZE16@
-FLaC__SIZE32 = @FLaC__SIZE32@
-FLaC__SIZE64 = @FLaC__SIZE64@
-FLaC__USIZE16 = @FLaC__USIZE16@
-FLaC__USIZE32 = @FLaC__USIZE32@
-FLaC__USIZE64 = @FLaC__USIZE64@
-HAVE_LIB = @HAVE_LIB@
-ID3LIB_CFLAGS = @ID3LIB_CFLAGS@
-ID3LIB_LIBS = @ID3LIB_LIBS@
+EGREP = @EGREP@
+F77 = @F77@
+GAS = @GAS@
+GCJ = @GCJ@
+GCJFLAGS = @GCJFLAGS@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-LIB = @LIB@
 LIBICONV = @LIBICONV@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
-LTLIB = @LTLIB@
-LTLIBICONV = @LTLIBICONV@
+MAINT = @MAINT@
 NASM = @NASM@
 OBJDUMP = @OBJDUMP@
 OBJ_FORMAT = @OBJ_FORMAT@
-OGG_CFLAGS = @OGG_CFLAGS@
-OGG_LIBS = @OGG_LIBS@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
-SHARE_LIBS = @SHARE_LIBS@
+RC = @RC@
 STRIP = @STRIP@
 VERSION = @VERSION@
-XMMS_CFLAGS = @XMMS_CFLAGS@
-XMMS_CONFIG = @XMMS_CONFIG@
-XMMS_DATA_DIR = @XMMS_DATA_DIR@
-XMMS_EFFECT_PLUGIN_DIR = @XMMS_EFFECT_PLUGIN_DIR@
-XMMS_GENERAL_PLUGIN_DIR = @XMMS_GENERAL_PLUGIN_DIR@
-XMMS_INPUT_PLUGIN_DIR = @XMMS_INPUT_PLUGIN_DIR@
-XMMS_LIBS = @XMMS_LIBS@
-XMMS_OUTPUT_PLUGIN_DIR = @XMMS_OUTPUT_PLUGIN_DIR@
-XMMS_PLUGIN_DIR = @XMMS_PLUGIN_DIR@
-XMMS_VERSION = @XMMS_VERSION@
-XMMS_VISUALIZATION_PLUGIN_DIR = @XMMS_VISUALIZATION_PLUGIN_DIR@
 am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 
-@FLaC__HAS_XMMS_TRUE@XMMS_DIRS = plugin_xmms
-
-@FLaC__HAS_OGG_TRUE@OGGFLAC_DIRS = libOggFLAC libOggFLAC++
-@FLaC__HAS_OGG_TRUE@OGGFLAC_TEST_DIRS = test_libOggFLAC test_libOggFLAC++
-
 SUBDIRS = \
 	libFLAC \
-	libFLAC++ \
-	$(OGGFLAC_DIRS) \
-	share \
-	flac \
-	metaflac \
-	monkeys_audio_utilities \
-	plugin_common \
-	$(XMMS_DIRS) \
-	plugin_winamp2 \
-	plugin_winamp3 \
-	test_libFLAC \
-	test_libFLAC++ \
-	$(OGGFLAC_TEST_DIRS) \
-	test_streams
+	libFLAC++
+
+
+EXTRA_DIST = \
+	Makefile.lite
 
 subdir = src
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 DIST_SOURCES =
 
@@ -163,17 +140,14 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = Makefile.am Makefile.in
-DIST_SUBDIRS = libFLAC libFLAC++ libOggFLAC libOggFLAC++ share flac \
-	metaflac monkeys_audio_utilities plugin_common plugin_xmms \
-	plugin_winamp2 plugin_winamp3 test_libFLAC test_libFLAC++ \
-	test_libOggFLAC test_libOggFLAC++ test_streams
+DIST_SUBDIRS = $(SUBDIRS)
 all: all-recursive
 
 .SUFFIXES:
-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  src/Makefile
-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	  $(AUTOMAKE) --gnu  src/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
 mostlyclean-libtool:
@@ -307,7 +281,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	list='$(DIST_SUBDIRS)'; for subdir in $$list; do \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \

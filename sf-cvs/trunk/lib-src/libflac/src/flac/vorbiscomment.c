@@ -1,5 +1,5 @@
 /* flac - Command-line FLAC encoder/decoder
- * Copyright (C) 2002  Josh Coalson
+ * Copyright (C) 2002,2003,2004,2005  Josh Coalson
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #  include <config.h>
 #endif
 
+#include "vorbiscomment.h"
 #include "FLAC/assert.h"
 #include "FLAC/metadata.h"
 #include "share/utf8.h"
@@ -108,10 +109,10 @@ static FLAC__bool set_vc_field(FLAC__StreamMetadata *block, const Argument_VcFie
 	FLAC__ASSERT(0 != needs_write);
 
 	if(raw) {
-		entry.entry = field->field;
+		entry.entry = (FLAC__byte *)field->field;
 	}
 	else if(utf8_encode(field->field, &converted) >= 0) {
-		entry.entry = converted;
+		entry.entry = (FLAC__byte *)converted;
 		needs_free = true;
 	}
 	else {
@@ -119,9 +120,9 @@ static FLAC__bool set_vc_field(FLAC__StreamMetadata *block, const Argument_VcFie
 		return false;
 	}
 
-	entry.length = strlen(entry.entry);
+	entry.length = strlen((const char *)entry.entry);
 
-	if(!FLAC__metadata_object_vorbiscomment_insert_comment(block, block->data.vorbis_comment.num_comments, entry, /*copy=*/true)) {
+	if(!FLAC__metadata_object_vorbiscomment_append_comment(block, entry, /*copy=*/true)) {
 		if(needs_free)
 			free(converted);
 		*violation = "memory allocation failure";

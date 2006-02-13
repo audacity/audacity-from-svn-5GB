@@ -1,34 +1,51 @@
 #  FLAC - Free Lossless Audio Codec
-#  Copyright (C) 2001,2002  Josh Coalson
+#  Copyright (C) 2001,2002,2003,2004,2005  Josh Coalson
 #
-#  This program is part of FLAC; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
+#  This file is part the FLAC project.  FLAC is comprised of several
+#  components distributed under difference licenses.  The codec libraries
+#  are distributed under Xiph.Org's BSD-like license (see the file
+#  COPYING.Xiph in this distribution).  All other programs, libraries, and
+#  plugins are distributed under the GPL (see COPYING.GPL).  The documentation
+#  is distributed under the Gnu FDL (see COPYING.FDL).  Each file in the
+#  FLAC distribution contains at the top the terms under which it may be
+#  distributed.
 #
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+#  Since this particular file is relevant to all components of FLAC,
+#  it may be distributed under the Xiph.Org license, which is the least
+#  restrictive of those mentioned above.  See the file COPYING.Xiph in this
+#  distribution.
+
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# debug/release selection
+#
+
+DEFAULT_BUILD = release
+
+debug    : BUILD = debug
+valgrind : BUILD = debug
+release  : BUILD = release
+
+# override LINKAGE on OS X until we figure out how to get 'cc -static' to work
+ifeq ($(DARWIN_BUILD),yes)
+LINKAGE = 
+else
+debug    : LINKAGE = -static
+valgrind : LINKAGE = -dynamic
+release  : LINKAGE = -static
+endif
+
+all default: $(DEFAULT_BUILD)
 
 #
 # GNU makefile fragment for emulating stuff normally done by configure
 #
 
-VERSION=\"1.0.4\"
+VERSION=\"1.1.2\"
 
-ORDINALS_H = ../../include/FLAC/ordinals.h
+CONFIG_CFLAGS=-DHAVE_INTTYPES_H -DHAVE_ICONV -DHAVE_SOCKLEN_T -DFLAC__HAS_OGG
 
-$(ORDINALS_H): $(ORDINALS_H).in
-	sed \
-		-e "s/@FLaC__SIZE16@/short/g" \
-		-e "s/@FLaC__SIZE32@/int/g" \
-		-e "s/@FLaC__SIZE64@/long long/g" \
-		-e "s/@FLaC__USIZE16@/unsigned short/g" \
-		-e "s/@FLaC__USIZE32@/unsigned int/g" \
-		-e "s/@FLaC__USIZE64@/unsigned long long/g" \
-		$< > $@
+ICONV_INCLUDE_DIR=$(HOME)/local.i18n/include
+ICONV_LIB_DIR=$(HOME)/local.i18n/lib
+
+OGG_INCLUDE_DIR=$(HOME)/local/include
+OGG_LIB_DIR=$(HOME)/local/lib
