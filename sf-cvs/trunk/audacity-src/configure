@@ -3905,7 +3905,7 @@ fi
    if test "x$vorbisenc_h_available" = "xyes" && test "x$ogg_h_available" = "xyes" ; then
       LIBVORBIS_LOCAL_AVAILABLE="yes"
 
-      LIBVORBIS_LOCAL_LIBS="libogg.a libvorbisenc.a libvorbisfile.a libvorbis.a"
+      LIBVORBIS_LOCAL_LIBS="libvorbisenc.a libvorbisfile.a libvorbis.a libogg.a"
 
       LIBVORBIS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libogg/include'
       LIBVORBIS_LOCAL_CXXFLAGS="$LIBVORBIS_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libvorbis/include"
