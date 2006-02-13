@@ -554,16 +554,23 @@ fi
 
 echo "prefix=$prefix";
 
-if [[ "$use_portaudio" = "v19" ]] ; then
-   echo ""
-   echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
-else
-   echo ""
-   echo "Note: portaudio v18 only supports OSS.  If your system supports"
-   echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
-   echo "portaudio v19 is newer and possibly less stable."
-fi
-
+case "${host_os}" in
+  darwin* | rhapsody*)
+    ;;
+  cygwin*)
+    ;;
+  *)
+    if [[ "$use_portaudio" = "v19" ]] ; then
+       echo ""
+       echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
+    else
+       echo ""
+       echo "Note: portaudio v18 only supports OSS.  If your system supports"
+       echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
+       echo "portaudio v19 is newer and possibly less stable."
+    fi
+    ;;
+esac
 
 echo ""
 echo "Run 'configure --help' for an explanation of these options,"

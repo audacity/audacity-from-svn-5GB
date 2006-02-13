@@ -21,7 +21,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
                  nyx_h_found="yes",
                  nyx_h_found="no")
 
-   if test $nyx_h_found = yes ; then
+   if test "x$nyx_h_found" = "xyes" ; then
       LIBNYQUIST_LOCAL_AVAILABLE="yes"
       LIBNYQUIST_LOCAL_LIBS="libnyquist.a"
       LIBNYQUIST_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libnyquist/nyx'
@@ -61,7 +61,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
                  soundtouch_h_found="yes",
                  soundtouch_h_found="no")
 
-   if test $soundtouch_h_found = yes ; then
+   if test "x$soundtouch_h_found" = "xyes" ; then
       LIBSOUNDTOUCH_LOCAL_AVAILABLE="yes"
       LIBSOUNDTOUCH_LOCAL_LIBS="libSoundTouch.a"
       LIBSOUNDTOUCH_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/soundtouch/include'
@@ -103,7 +103,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBRESAMPLE], [
                  resample_h_found="yes",
                  resample_h_found="no")
 
-   if test $resample_h_found = yes ; then
+   if test "x$resample_h_found" = "xyes" ; then
       LIBRESAMPLE_LOCAL_AVAILABLE="yes"
       LIBRESAMPLE_LOCAL_LIBS="libresample.a"
       LIBRESAMPLE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libresample/include'
@@ -138,7 +138,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
                      samplerate_available_system="yes",
                      samplerate_available_system="no")
 
-   if test $samplerate_available_system = yes ; then
+   if test "x$samplerate_available_system" = "xyes" ; then
       LIBSAMPLERATE_SYSTEM_AVAILABLE="yes"
       LIBSAMPLERATE_SYSTEM_LIBS=$SAMPLERATE_LIBS
       LIBSAMPLERATE_SYSTEM_CXXFLAGS=$SAMPLERATE_CFLAGS
@@ -154,7 +154,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSAMPLERATE], [
                  samplerate_h_found="yes",
                  samplerate_h_found="no")
 
-   if test $samplerate_h_found = yes ; then
+   if test "x$samplerate_h_found" = "xyes" ; then
       LIBSAMPLERATE_LOCAL_AVAILABLE="yes"
       LIBSAMPLERATE_LOCAL_LIBS="libsamplerate.a"
       LIBSAMPLERATE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsamplerate/src'
@@ -194,7 +194,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
                    id3tag_h_found="yes",
                    id3tag_h_found="no")
 
-   if test $libid3tag_found = yes && test $id3tag_h_found = yes ; then
+   if test "x$libid3tag_found" = "xyes" && test "x$id3tag_h_found" = "xyes" ; then
       LIBID3TAG_SYSTEM_AVAILABLE="yes"
       LIBID3TAG_SYSTEM_LIBS=-lid3tag
       LIBID3TAG_SYSTEM_CPPSYMBOLS="USE_LIBID3TAG"
@@ -211,7 +211,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBID3TAG], [
                  frame_h_found="no")
 
 
-   if test $frame_h_found = yes ; then
+   if test "x$frame_h_found" = "xyes" ; then
       LIBID3TAG_LOCAL_AVAILABLE="yes"
       LIBID3TAG_LOCAL_LIBS="libid3tag.a"
       LIBID3TAG_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libid3tag'
@@ -241,7 +241,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
                      sndfile_available_system="yes",
                      sndfile_available_system="no")
 
-   if test $sndfile_available_system = yes ; then
+   if test "x$sndfile_available_system" = "xyes" ; then
       LIBSNDFILE_SYSTEM_AVAILABLE="yes"
       LIBSNDFILE_SYSTEM_LIBS=$SNDFILE_LIBS
       LIBSNDFILE_SYSTEM_CXXFLAGS=$SNDFILE_CFLAGS
@@ -257,7 +257,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
                  libsndfile_found="yes",
                  libsndfile_found="no")
 
-   if test $libsndfile_found = yes ; then
+   if test "x$libsndfile_found" = "xyes" ; then
       LIBSNDFILE_LOCAL_AVAILABLE="yes"
       LIBSNDFILE_LOCAL_LIBS="libsndfile.a"
       LIBSNDFILE_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libsndfile/src'
@@ -312,11 +312,11 @@ int main() {
               libmad_newenough="yes",
               libmad_newenough="no")
 
-   if test $mad_h_found = yes && test $libmad_newenough = no ; then
+   if test "x$mad_h_found" = "xyes" && test "x$libmad_newenough" = "xno" ; then
       AC_MSG_WARN([system installation of libmad found, but it is too old.  Upgrade to at least 0.14.2b to use with Audacity])
    fi
 
-   if test $libmad_found = yes && test $mad_h_found = yes && test $libmad_newenough = yes ; then
+   if test "x$libmad_found" = "xyes" && test "x$mad_h_found" = "xyes" && test "x$libmad_newenough" = "xyes" ; then
       LIBMAD_SYSTEM_AVAILABLE="yes"
       LIBMAD_SYSTEM_LIBS="-lmad"
       LIBMAD_SYSTEM_CPPSYMBOLS="USE_LIBMAD"
@@ -331,7 +331,7 @@ int main() {
                  frame_h_found="yes",
                  frame_h_found="no")
 
-   if test $frame_h_found = yes ; then
+   if test "x$frame_h_found" = "xyes" ; then
       LIBMAD_LOCAL_AVAILABLE="yes"
       LIBMAD_LOCAL_LIBS="libmad.a"
       LIBMAD_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libmad'
@@ -373,7 +373,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
                    header_found="yes",
                    header_found="no")
 
-   if test $lib_found = yes && test $header_found = yes ; then
+   if test "x$lib_found" = "xyes" && test "x$header_found" = "xyes" ; then
       LIBVORBIS_SYSTEM_AVAILABLE="yes"
       LIBVORBIS_SYSTEM_LIBS="-lvorbisenc -lvorbisfile -lvorbis -logg"
       LIBVORBIS_SYSTEM_CPPSYMBOLS="USE_LIBVORBIS"
@@ -393,10 +393,10 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBVORBIS], [
                  ogg_h_available="yes",
                  ogg_h_available="no")
 
-   if test $vorbisenc_h_available = yes && test $ogg_h_available="yes" ; then
+   if test "x$vorbisenc_h_available" = "xyes" && test "x$ogg_h_available" = "xyes" ; then
       LIBVORBIS_LOCAL_AVAILABLE="yes"
 
-      LIBVORBIS_LOCAL_LIBS="libvorbisenc.a libvorbisfile.a libvorbis.a libogg.a"
+      LIBVORBIS_LOCAL_LIBS="libogg.a libvorbisenc.a libvorbisfile.a libvorbis.a"
 
       LIBVORBIS_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/libogg/include'
       LIBVORBIS_LOCAL_CXXFLAGS="$LIBVORBIS_LOCAL_CXXFLAGS -I\$(top_srcdir)/lib-src/libvorbis/include"
@@ -435,7 +435,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
                    header_found="yes",
                    header_found="no")
 
-   if test $lib_found = yes && test $header_found = yes ; then
+   if test "x$lib_found" = "xyes" && test "x$header_found" = "xyes" ; then
       LIBFLAC_SYSTEM_AVAILABLE="yes"
       LIBFLAC_SYSTEM_LIBS="-lFLAC++ -lFLAC"
       LIBFLAC_SYSTEM_CPPSYMBOLS="USE_LIBFLAC"
@@ -455,7 +455,7 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBFLAC], [
                  flacpp_h_available="yes",
                  flacpp_h_available="no")
 
-   if test $flac_h_available = yes && test $flacpp_h_available="yes" ; then
+   if test "x$flac_h_available" = "xyes" && test "x$flacpp_h_available" = "xyes" ; then
       LIBFLAC_LOCAL_AVAILABLE="yes"
 
       LIBFLAC_LOCAL_LIBS="libFLAC++.a libFLAC.a"
@@ -497,7 +497,7 @@ AC_DEFUN([AC_C99_FUNC_LRINT],
 #define 	__USE_ISOC9X	1
 #include	<math.h>],
 [	int value = lrint (0.432) ; ], ac_cv_c99_lrint=yes, ac_cv_c99_lrint=no)])
-if test $ac_cv_c99_lrint = yes; then
+if test "x$ac_cv_c99_lrint" = "xyes"; then
   AC_DEFINE(HAVE_LRINT, 1,
             [Define if you have C99's lrint function.])
 fi
@@ -525,7 +525,7 @@ AC_DEFUN([AC_C99_FUNC_LRINTF],
 #define 	__USE_ISOC9X	1
 #include	<math.h>],
 [	int value = lrintf (0.432) ; ], ac_cv_c99_lrintf=yes, ac_cv_c99_lrintf=no)])
-if test $ac_cv_c99_lrintf = yes; then
+if test "x$ac_cv_c99_lrintf" = "xyes"; then
   AC_DEFINE(HAVE_LRINTF, 1,
             [Define if you have C99's lrintf function.])
 fi
