@@ -27,7 +27,7 @@ libogg.a: libogg-recursive
 # libvorbis
 libvorbis-recursive:
 	$(MAKE) -C libvorbis
-libvorbis.a libvorbisfile.a libvorbisenc.a: libvorbis-recursive
+libvorbis.a libvorbisfile.a libvorbisenc.a: libogg.a libvorbis-recursive
 	ln -sf libvorbis/lib/.libs/libvorbis.a libvorbis.a
 	ln -sf libvorbis/lib/.libs/libvorbisfile.a libvorbisfile.a
 	ln -sf libvorbis/lib/.libs/libvorbisenc.a libvorbisenc.a
