@@ -99,6 +99,11 @@ portmixer/px_unix_oss/portmixer.a:
 portmixer/px_mac_core/portmixer.a:
 	$(MAKE) -C portmixer/px_mac_core
 
+# RTAudio
+librtaudio-recursive:
+	$(MAKE) -C rtaudio
+rtaudio/librtaudio.a: librtaudio-recursive
+	ln -sf rtaudio/librtaudio.a .
 
 # Utility rules
 clean:
@@ -118,6 +123,7 @@ clean:
 	-$(MAKE) -C portaudio/pa_mac_core clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
+	-$(MAKE) -C rtaudio clean
 	-$(MAKE) -C soundtouch clean
 	-rm -rf @LOCAL_LIBS@
 
@@ -138,10 +144,11 @@ distclean:
 	-$(MAKE) -C portaudio/pa_mac_core distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
+	-$(MAKE) -C rtaudio distclean
 	-$(MAKE) -C soundtouch distclean
 	-rm -f @LOCAL_LIBS@
 
 .PHONY: allegro-recursive expat-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
-	libresample-recursive libsamplerate-recursive
+	libresample-recursive libsamplerate-recursive librtaudio-recursive
