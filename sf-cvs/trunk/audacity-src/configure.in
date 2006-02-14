@@ -271,6 +271,12 @@ AC_ARG_WITH(portaudio,
    use_portaudio=$withval,
    use_portaudio="v18")
 
+AC_ARG_WITH(rtaudio,
+   [AC_HELP_STRING([--with-rtaudio],
+      [compile with RTAudio instead of PortAudio [default=no]])],
+   use_rtaudio=$withval,
+   use_rtaudio="no")
+
 AC_ARG_WITH(help,
    [AC_HELP_STRING([--with-help],
       [Make the help file "audacity-1.2-help.htb" [default=yes]])],
@@ -436,6 +442,17 @@ else
    esac
 fi
 
+if [[ "$use_rtaudio" = "yes" ]] ; then
+    AC_CONFIG_SUBDIRS([[lib-src/rtaudio]])
+    AC_DEFINE(USE_RTAUDIO, 1,   
+     [Define if RTAudio support should be enabled])
+    CXXFLAGS="-I\$(top_srcdir)/lib-src/rtaudio $CXXFLAGS"
+    CXXFLAGS="\`../lib-src/rtaudio/rtaudio-config --cflags\` $CXXFLAGS"
+    BUILDLIBS="$BUILDLIBS rtaudio/librtaudio.a"
+    EXTRAOBJS="$EXTRAOBJS ../lib-src/librtaudio.a"
+    LIBS = "$LIBS \`../lib-src/rtaudio/rtaudio-config --libs\`"
+fi
+
 if [[ "$use_portmixer" = "yes" ]] ; then
    case "${host_os}" in
       darwin* | rhapsody*)
@@ -539,6 +556,12 @@ for lib in $LIBRARIES ; do
       echo "$lib: disabled"
    fi
 done
+
+if [[ "$use_rtaudio" = "yes" ]] ; then
+   echo "RTAudio: enabled"
+else
+   echo "RTAudio: disabled"        
+fi
 
 if [[ "$use_ladspa" = "yes" ]] ; then
    echo "ladspa: enabled"

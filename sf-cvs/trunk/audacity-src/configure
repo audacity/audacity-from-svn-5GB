@@ -312,6 +312,7 @@ ac_includes_default="\
 
 ac_subdirs_all="$ac_subdirs_all $CONFIG_SUBDIRS"
 ac_subdirs_all="$ac_subdirs_all [lib-src/portaudio-v19]"
+ac_subdirs_all="$ac_subdirs_all [lib-src/rtaudio]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/dlcompat]"
 ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
@@ -888,6 +889,8 @@ Optional Packages:
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v18]
+  --with-rtaudio          compile with RTAudio instead of PortAudio
+                          [default=no]
   --with-help             Make the help file "audacity-1.2-help.htb"
                           [default=yes]
 
@@ -5568,6 +5571,15 @@ else
 fi;
 
 
+# Check whether --with-rtaudio or --without-rtaudio was given.
+if test "${with_rtaudio+set}" = set; then
+  withval="$with_rtaudio"
+  use_rtaudio=$withval
+else
+  use_rtaudio="no"
+fi;
+
+
 # Check whether --with-help or --without-help was given.
 if test "${with_help+set}" = set; then
   withval="$with_help"
@@ -6039,6 +6051,23 @@ else
          EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio/pa_unix_oss/portaudio.a"
          ;;
    esac
+fi
+
+if [ "$use_rtaudio" = "yes" ] ; then
+
+
+subdirs="$subdirs lib-src/rtaudio"
+
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_RTAUDIO 1
+_ACEOF
+
+    CXXFLAGS="-I\$(top_srcdir)/lib-src/rtaudio $CXXFLAGS"
+    CXXFLAGS="\`../lib-src/rtaudio/rtaudio-config --cflags\` $CXXFLAGS"
+    BUILDLIBS="$BUILDLIBS rtaudio/librtaudio.a"
+    EXTRAOBJS="$EXTRAOBJS ../lib-src/librtaudio.a"
+    LIBS = "$LIBS \`../lib-src/rtaudio/rtaudio-config --libs\`"
 fi
 
 if [ "$use_portmixer" = "yes" ] ; then
@@ -7783,6 +7812,12 @@ for lib in $LIBRARIES ; do
       echo "$lib: disabled"
    fi
 done
+
+if [ "$use_rtaudio" = "yes" ] ; then
+   echo "RTAudio: enabled"
+else
+   echo "RTAudio: disabled"
+fi
 
 if [ "$use_ladspa" = "yes" ] ; then
    echo "ladspa: enabled"
