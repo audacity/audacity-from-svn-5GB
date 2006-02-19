@@ -2934,8 +2934,8 @@ msgid "The Free, Cross-Platform Sound Editor"
 msgstr "O editor de áudio livre e fácil de usar!"
 
 #: index.php:50
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "O Audacity é um editor de áudio de código aberto que permite captar, reproduzir e editar sons. Disponível para Microsoft Windows, MacOS X e Linux. <a href=\"about/\">Conheça melhor o Audacity...</a>"
+msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "O Audacity&reg; é um editor de áudio de código aberto que permite captar, reproduzir e editar sons. Disponível para Microsoft Windows, MacOS X e Linux. <a href=\"about/\">Conheça melhor o Audacity...</a>"
 
 #: index.php:55
 #: index.php:59
