@@ -200,9 +200,6 @@ class Envelope : public XMLTagHandler {
    bool mDB;
    bool mDirty;
 
-   wxPen mPen;
-   wxBrush mBrush;
-
    // These are memoizing variables for Integral()
    double lastIntegral_t0;
    double lastIntegral_t1;
