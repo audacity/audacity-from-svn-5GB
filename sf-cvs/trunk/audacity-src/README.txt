@@ -7,6 +7,8 @@ WWW:   http://audacity.sourceforge.net/
 
 Email: audacity-help@lists.sourceforge.net
 
+"Audacity" is a registered trademark of Dominic Mazzoni.
+
 Lead Developers:
    Dominic Mazzoni (project leader)
    Matt Brubeck
@@ -24,6 +26,7 @@ Contributors:
    William Bland (Time Tracks)
    Roger Dannenberg
    Brian Gunlogson
+   Leland Lucius
    Greg Mekkes
    Abe Milde
    Paul Nasca
