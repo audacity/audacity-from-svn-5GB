@@ -1190,9 +1190,9 @@ void AudacityProject::OnMenu(wxCommandEvent & event)
                                                0xFFFFFFFF);
 
    if (handled)
-      event.Skip(true);
-   else
       event.Skip(false);
+   else
+      event.Skip(true);
 }
 
 //TODO: This function is still kinda hackish, clean up
