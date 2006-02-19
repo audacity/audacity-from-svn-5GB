@@ -373,8 +373,8 @@ msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Az ingyenes, több-platformos hangszerkesztő"
 
 #: index.php:38
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Az Audacity ingyenes, nyílt forráskódú szoftver hangok felvételéhez és szerkesztéséhez. Elérhető Mac OS X, Microsoft Windows, GNU/Linux és más operációs rendszerek alatt is. <a href=\"about/\">Tanulj többet az Audacityről...</a>"
+msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "Az Audacity&reg; ingyenes, nyílt forráskódú szoftver hangok felvételéhez és szerkesztéséhez. Elérhető Mac OS X, Microsoft Windows, GNU/Linux és más operációs rendszerek alatt is. <a href=\"about/\">Tanulj többet az Audacityről...</a>"
 
 #: index.php:42
 #, php-format

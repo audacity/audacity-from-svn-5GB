@@ -2639,8 +2639,8 @@ msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Ο Ελεύθερος,Ανεξαρτήτως-Πλατφόρμας Επεξεργαστής Ήχου"
 
 #: index.php:38
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Το Audacity είναι ένα ανοιχτού κώδικα πρόγραμμα για την ηχογράφηση και την επεξεργασία ήχων.  Είναι διαθέσιμο για  Mac OS X, Microsoft Windows, GNU/Linux, και άλλα λειτουργικά προγράμματα.  <a href=\"about/\">Μάθε περισσότερα για το Audacity...</a>"
+msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "Το Audacity&reg; είναι ένα ανοιχτού κώδικα πρόγραμμα για την ηχογράφηση και την επεξεργασία ήχων.  Είναι διαθέσιμο για  Mac OS X, Microsoft Windows, GNU/Linux, και άλλα λειτουργικά προγράμματα.  <a href=\"about/\">Μάθε περισσότερα για το Audacity...</a>"
 
 #: index.php:42
 #, php-format

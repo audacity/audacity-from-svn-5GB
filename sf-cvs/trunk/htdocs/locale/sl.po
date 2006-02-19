@@ -3349,8 +3349,8 @@ msgid "The Free, Cross-Platform Sound Editor"
 msgstr "Brezplačni večplatformni urejevalnik zvoka"
 
 #: index.php:50
-msgid "Audacity is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity je brezplačna odprtokodna aplikacija za snemanje in urejanje zvoka.  Na voljo je za Mac OS X, Microsoft Windows, GNU/Linux in druge operacijske sisteme.  <a href=\"about/\">Spoznajte več o Audacity ...</a>"
+msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
+msgstr "Audacity&reg; je brezplačna odprtokodna aplikacija za snemanje in urejanje zvoka.  Na voljo je za Mac OS X, Microsoft Windows, GNU/Linux in druge operacijske sisteme.  <a href=\"about/\">Spoznajte več o Audacity ...</a>"
 
 #: index.php:55
 #: index.php:59
