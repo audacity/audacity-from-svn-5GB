@@ -1945,6 +1945,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
 
    bool initiallyEmpty = mTracks->IsEmpty();
    double newRate = 0;
+   wxString trackNameBase = fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.');
 
    for (int i = 0; i < numTracks; i++) {
       if (newRate == 0 && newTracks[i]->GetKind() == Track::Wave) {
@@ -1952,7 +1953,10 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       }
       mTracks->Add(newTracks[i]);
       newTracks[i]->SetSelected(true);
-      newTracks[i]->SetName(fileName.AfterLast(wxFILE_SEP_PATH).BeforeLast('.'));
+      if (numTracks > 1)
+         newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
+      else
+         newTracks[i]->SetName(trackNameBase);
    }
 
    delete[]newTracks;
