@@ -128,7 +128,6 @@ class Ruler {
    void Draw(wxDC& dc);
    void Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed);
 
-
  private:
    void Invalidate();
    void Update();
@@ -194,6 +193,9 @@ class RulerPanel : public wxPanel {
    void OnErase(wxEraseEvent &evt);
    void OnPaint(wxPaintEvent &evt);
    void OnSize(wxSizeEvent &evt);
+
+   // We don't need or want to accept focus.
+   bool AcceptsFocus() const { return false; }
 
  public:
 

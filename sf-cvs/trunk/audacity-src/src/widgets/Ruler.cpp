@@ -539,7 +539,6 @@ void Ruler::Tick(int pos, double d, bool major)
    label->text = wxT("");
 
    mDC->SetFont(major? *mMajorFont: *mMinorFont);
-
    l = LabelString(d, major);
    mDC->GetTextExtent(l, &strW, &strH);
 
@@ -553,11 +552,11 @@ void Ruler::Tick(int pos, double d, bool major)
       strLeft = mLeft + strPos;
       if (mFlip) {
          strTop = mTop + 4;
-         mMaxHeight = max( mMaxHeight, 4 + strH );
+         mMaxHeight = max(mMaxHeight, strH + 4);
       }
       else {
          strTop = mBottom - strH - 6;
-         mMaxHeight = max( mMaxHeight, strH + 6 );
+         mMaxHeight = max(mMaxHeight, strH + 6);
       }
    }
    else {
@@ -570,11 +569,11 @@ void Ruler::Tick(int pos, double d, bool major)
       strTop = mTop + strPos;
       if (mFlip) {
          strLeft = mLeft + 5;
-         mMaxWidth = max( mMaxWidth, 5 + strW );
+         mMaxWidth = max(mMaxWidth, strW + 5);
       }
       else {
          strLeft = mRight - strW - 6;
-         mMaxWidth = max( mMaxWidth, strW + 6 );
+         mMaxWidth = max(mMaxWidth, strW + 6);
       }
    }
 
@@ -594,7 +593,6 @@ void Ruler::Tick(int pos, double d, bool major)
 
    // And mark these pixels, plus some surrounding
    // ones (the spacing between labels), as covered
-
    int leftMargin = mSpacing;
    if (strPos < leftMargin)
       leftMargin = strPos;
@@ -883,8 +881,9 @@ void Ruler::GetMaxSize(wxCoord *width, wxCoord *height)
 //
 
 BEGIN_EVENT_TABLE(RulerPanel, wxPanel)
-    EVT_PAINT(RulerPanel::OnPaint)
-    EVT_SIZE(RulerPanel::OnSize)
+   EVT_ERASE_BACKGROUND(RulerPanel::OnErase)
+   EVT_PAINT(RulerPanel::OnPaint)
+   EVT_SIZE(RulerPanel::OnSize)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(RulerPanel, wxPanel)
@@ -897,17 +896,27 @@ RulerPanel::RulerPanel(wxWindow* parent, wxWindowID id,
    int width, height;
    GetClientSize(&width, &height);
 
-   ruler.SetBounds(0, 0, width, height);
+   ruler.SetBounds(0, 0, width-1, height-1);
 }
 
 RulerPanel::~RulerPanel()
 {
 }
 
+void RulerPanel::OnErase(wxEraseEvent &evt)
+{
+   // Ignore it to prevent flashing
+}
+
 void RulerPanel::OnPaint(wxPaintEvent &evt)
 {
    wxPaintDC dc(this);
 
+#if defined(__WXGTK__)
+   dc.SetBackground(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)));
+#endif
+
+   dc.Clear();
    ruler.Draw(dc);
 }
 
@@ -1122,9 +1131,7 @@ void AdornedRulerPanel::DoDrawCursor(wxDC *dc)
    int x = mLeftOffset + int ( ( mCurPos - mViewInfo->h ) * mViewInfo->zoom );
 
    // Draw cursor in ruler
-   dc->SetLogicalFunction(wxINVERT);
    dc->DrawLine( x, 1, x, mInner.height );
-   dc->SetLogicalFunction(wxCOPY);
 }
 
 //
