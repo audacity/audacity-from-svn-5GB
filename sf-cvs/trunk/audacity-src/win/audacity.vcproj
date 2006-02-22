@@ -3604,7 +3604,7 @@
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="FLAC__NO_DLL"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -3614,7 +3614,7 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="FLAC__NO_DLL"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -3624,7 +3624,7 @@
 						Name="VCCLCompilerTool"
 						Optimization="0"
 						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
+						PreprocessorDefinitions="FLAC__NO_DLL"
 					/>
 				</FileConfiguration>
 			</File>
