@@ -45,6 +45,10 @@
 #include <wx/filedlg.h>
 #include <wx/filefn.h>
 #include <wx/stdpaths.h>
+#include <wx/settings.h>
+#if wxUSE_TOOLTIPS
+#include <wx/tooltip.h>
+#endif
 
 #include <math.h>
 
@@ -68,13 +72,17 @@ const float EffectEqualization::curvex[] =
 
 // Don't want to be warned about double->float precision loss here
 // when compiling with MSVC.
+#if defined(__WXMSW__)
 #pragma warning( disable: 4305 )
+#endif
 const float EffectEqualization::curvey[][nCurvePoints] =
 {
    {
    // amradio
-//  30   31   50   63   70   100  125  200  250  300  400  500  600  700  800  900  1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 16000.
-      -20.,-20.,-20.,-20.,-20.,-20.,-16.,-12., -8., -4., 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4., -8.,-12.,-16.,-20.0,-20.,-20.,-20.,-20., -20., -20.0
+//    30   31   50   63   70   100  125  200  250  300  400  500  600  700
+      -20.,-20.,-20.,-20.,-20.,-20.,-16.,-12., -8., -4., 0.0, 0.0, 0.0, 0.0,
+//  800  900  1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 15000 16000.
+         0.0, 0.0, 0.0, -4., -8.,-12.,-16.,-20.0,-20.,-20.,-20.,-20., -20., -20.0
    },
    {
    // acoustic (see p 52)
@@ -149,8 +157,9 @@ const float EffectEqualization::curvey[][nCurvePoints] =
       -8.0,  -10.0, -11.5, -12.0, -12.5, -12.5, -12.5, -12.5
    }
   };
-
+#if defined(__WXMSW__)
 #pragma warning( default: 4305 )
+#endif
 
 const wxChar * EffectEqualization::curveNames[] =
   {
@@ -387,6 +396,9 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
                      wxWindowID id, const wxPoint& pos, const wxSize& size):
    wxPanel(parent, id, pos, size)
 {
+   mOutr = NULL;
+   mOuti = NULL;
+
    mBitmap = NULL;
    mWidth = 0;
    mHeight = 0;
@@ -402,15 +414,31 @@ EqualizationPanel::EqualizationPanel( double loFreq, double hiFreq,
    mEnvelope->Mirror(false);
    mEnvelope->SetTrackLen(1.0);
 
-   SetSizeHints(700, 240);
+   RecalcRequired = true;
 }
-
 
 EqualizationPanel::~EqualizationPanel()
 {
-   if(mBitmap)
+   if (mBitmap)
       delete mBitmap;
-   mBitmap = NULL;
+   if (mOuti)
+      delete [] mOuti;
+   if (mOutr)
+      delete [] mOutr;
+}
+
+void EqualizationPanel::Recalc()
+{
+   if (mOutr)
+      delete [] mOutr;
+   mOutr = new float[mWindowSize];
+
+   if (mOuti)
+      delete [] mOuti;
+   mOuti = new float[mWindowSize];
+
+   mParent->CalcFilter();   //to calculate the actual response
+   FFT(mWindowSize,true,mFilterFuncR,mFilterFuncI,mOutr,mOuti);   //work out FIR response
 }
 
 void EqualizationPanel::OnSize(wxSizeEvent & evt)
@@ -420,9 +448,11 @@ void EqualizationPanel::OnSize(wxSizeEvent & evt)
 
 void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 {
-   wxLogDebug(wxT("OnPaint called"));
    wxPaintDC dc(this);
-
+   if(RecalcRequired) {
+      Recalc();
+      RecalcRequired = false;
+   }
    int width, height;
    GetSize(&width, &height);
 
@@ -436,33 +466,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
       mBitmap = new wxBitmap(mWidth, mHeight);
    }
 
-   // Ruler
-   int w = 0;
-   int h = 0;
-
-   Ruler dbRuler;
-   dbRuler.SetBounds(0, 0, mWidth, mHeight);
-   dbRuler.SetOrientation(wxVERTICAL);
-   dbRuler.SetRange(dBMax, dBMin);
-   dbRuler.SetFormat(Ruler::LinearDBFormat);
-   dbRuler.SetUnits(_("dB"));
-   dbRuler.GetMaxSize(&w, NULL);
-
-   Ruler freqRuler;
-   freqRuler.SetBounds(0, 0, mWidth, mHeight);
-   freqRuler.SetOrientation(wxHORIZONTAL);
-   freqRuler.SetLog(true);
-   freqRuler.SetRange(mLoFreq, mHiFreq);
-   freqRuler.SetFormat(Ruler::IntFormat);
-   freqRuler.SetUnits(_("Hz"));
-   freqRuler.SetFlip(true);
-   freqRuler.GetMaxSize(NULL, &h);
-
-   dbRuler.SetBounds(0, 0, w, mHeight - h);
-   freqRuler.SetBounds(w+2, mHeight - h, mWidth-4, h);
-
-   wxColour bkgnd = GetBackgroundColour();
-   wxBrush bkgndBrush(bkgnd, wxSOLID);
+   wxBrush bkgndBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
 
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
@@ -470,22 +474,20 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    wxRect bkgndRect;
    bkgndRect.x = 0;
    bkgndRect.y = 0;
-   bkgndRect.width = w;
+   bkgndRect.width = mWidth;
    bkgndRect.height = mHeight;
    memDC.SetBrush(bkgndBrush);
    memDC.SetPen(*wxTRANSPARENT_PEN);
    memDC.DrawRectangle(bkgndRect);
 
-   bkgndRect.y = mHeight - h;
-   bkgndRect.width = mWidth;
-   bkgndRect.height = h;
+   bkgndRect.y = mHeight;
    memDC.DrawRectangle(bkgndRect);
 
    wxRect border;
-   border.x = w;
+   border.x = 0;
    border.y = 0;
-   border.width = mWidth - w;
-   border.height = mHeight - h + 1;
+   border.width = mWidth;
+   border.height = mHeight;
 
    memDC.SetBrush(*wxWHITE_BRUSH);
    memDC.SetPen(*wxBLACK_PEN);
@@ -535,7 +537,6 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    //Now draw the actual response that you will get.
    //mFilterFunc has a linear scale, window has a log one so we have to fiddle about
-   mParent->CalcFilter();   //to calculate the actual response
    memDC.SetPen(wxPen(wxColour(0, 255, 0), 1, wxSOLID));
    double scale = (double)mEnvRect.height/(dBMax-dBMin);   //pixels per dB
    double yF;   //gain at this freq
@@ -543,22 +544,21 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    double loLog = log10(mLoFreq);
    double stepLog = (log10(mHiFreq) - loLog)/((double)mEnvRect.width-1.);
    double freq;   //actual freq corresponding to x position
+   int halfM = (M-1)/2;
    int n;   //index to mFreqFunc
-   float *outr = new float[mWindowSize];
-   float *outi = new float[mWindowSize];
-   FFT(mWindowSize,true,mFilterFuncR,mFilterFuncI,outr,outi);   //work out FIR response
    for(int i=0; i<mEnvRect.width; i++)
    {
       x = mEnvRect.x + i;
-      if( (pow(10., loLog + (i+1)*stepLog)-pow(10., loLog + i*stepLog)) < delta)
+      freq = pow(10., loLog + i*stepLog);   //Hz
+      if( (pow(10., loLog + (i+1)*stepLog)-freq) < delta)
       {   //not enough resolution in FFT
-         freq = M_PI*pow(10., loLog + i*stepLog)/mHiFreq;   //radians, normalized
+         freq = M_PI*freq/mHiFreq;   //radians, normalized
          yF = 0.;
-         for(int j=0;j<(M-1)/2;j++)
+         for(int j=0;j<halfM;j++)
          {
-            yF += 2. * outr[j] * cos(freq*((M-1)/2-j));
+            yF += 2. * mOutr[j] * cos(freq*(halfM-j));
          }
-         yF += outr[(M-1)/2];
+         yF += mOutr[halfM];
          yF = fabs(yF);
          if(yF!=0.)
             yF = 20.0*log10(yF);   //20 here as an amplitude
@@ -567,10 +567,9 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
       }
       else
       {   //use FFT, it has enough resolution
-         freq = pow(10., loLog + i*stepLog);   //Hz
          n = (int)(freq/delta + .5);
          if(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2)!=0.)
-            yF = 10.0*log10(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2));   //10 here as a power
+            yF = 10.0*log10(pow(mFilterFuncR[n],2)+pow(mFilterFuncI[n],2));   //10 here, a power
          else
             yF = dBMin;
       }
@@ -590,15 +589,10 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
       xlast = x;
       ylast = mEnvRect.y + y;
    }
-   delete[] outr;
-   delete[] outi;
 
    memDC.SetPen(*wxBLACK_PEN);
    if( mParent->mFaderOrDraw[0]->GetValue() )
       mEnvelope->Draw(memDC, mEnvRect, 0.0, mEnvRect.width, false, dBMin, dBMax);
-
-   dbRuler.Draw(memDC);
-   freqRuler.Draw(memDC);
 
    dc.Blit(0, 0, mWidth, mHeight,
            &memDC, 0, 0, wxCOPY, FALSE);
@@ -615,6 +609,7 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
                              dBMin, dBMax, dBMin, dBMax))
    {
       mParent->EnvelopeUpdated();
+      RecalcRequired = true;
       Refresh(false);
    }
 
@@ -634,6 +629,8 @@ void EqualizationPanel::OnMouseEvent(wxMouseEvent & event)
 
 BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
    EVT_SIZE( EqualizationDialog::OnSize )
+   EVT_PAINT( EqualizationDialog::OnPaint )
+   EVT_ERASE_BACKGROUND( EqualizationDialog::OnErase )
 
    EVT_SLIDER( ID_LENGTH, EqualizationDialog::OnSliderM )
    EVT_SLIDER( ID_DBMAX, EqualizationDialog::OnSliderDBMAX )
@@ -669,6 +666,12 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 {
    m_pEffect = effect;
 
+   M = 4001;
+   dBMin = -30.;
+   dBMax = 30;
+
+   wxToolTip::Enable(true);
+
    mEnvelope = new Envelope();
    mEnvelope->SetInterpolateDB(false);
    mEnvelope->Mirror(false);
@@ -691,6 +694,7 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
 
    // Set initial curve
    setCurve( mEnvelope );
+
 }
 
 //
@@ -826,8 +830,6 @@ void EqualizationDialog::SaveCurves()
 void EqualizationDialog::MakeEqualizationDialog()
 {
    wxBoxSizer *szrH;
-   wxBoxSizer *szr1;
-   wxBoxSizer *szr2;
    wxStaticText *txt;
    wxButton *btn;
 
@@ -844,62 +846,63 @@ void EqualizationDialog::MakeEqualizationDialog()
    // -------------------------------------------------------------------
    // ROW 2: EQ panel and sliders for vertical scale
    // -------------------------------------------------------------------
-   szr1 = new wxBoxSizer( wxHORIZONTAL );
+   szr1 = new wxFlexGridSizer( 4, 0, 0 );
+   szr1->AddGrowableCol( 2, 1 );
+   szr1->AddGrowableRow( 0, 1 );
+   szr1->SetFlexibleDirection( wxBOTH );
+
    szr2 = new wxBoxSizer( wxVERTICAL );
    dBMaxSlider = new wxSlider(this, ID_DBMAX, 30, 0, 60,
-                           wxDefaultPosition, wxSize(-1, -1), wxSL_VERTICAL|wxSL_INVERSE);
-   szr2->Add( dBMaxSlider, 1, wxGROW|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
+                           wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE);
+   szr2->Add( dBMaxSlider, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
    dBMinSlider = new wxSlider(this, ID_DBMIN, -30, -120, -10,
-                           wxDefaultPosition, wxSize(-1, -1), wxSL_VERTICAL|wxSL_INVERSE);
-   szr2->Add( dBMinSlider, 1, wxGROW|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
-   szr1->Add( szr2, 0, wxGROW|wxALIGN_CENTRE|wxALL, 4 );
+                           wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE);
+   szr2->Add( dBMinSlider, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
+   szr1->Add( szr2, 0, wxEXPAND|wxALIGN_CENTRE|wxALL, 4 );
+
+   dBRuler = new RulerPanel(this, wxID_ANY);
+   dBRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
+   dBRuler->ruler.SetOrientation(wxVERTICAL);
+   dBRuler->ruler.SetRange(60.0, -120.0);
+   dBRuler->ruler.SetFormat(Ruler::LinearDBFormat);
+   dBRuler->ruler.SetUnits(_("dB"));
+   dBRuler->ruler.SetLabelEdges(true);
+   int w, h;
+   dBRuler->ruler.GetMaxSize(&w, NULL);
+   dBRuler->SetSize(wxSize(w, 150));  // height needed for wxGTK
+
+   szr1->Add( dBRuler, 0, wxEXPAND|wxALIGN_LEFT|wxALL );
 
    mPanel = new EqualizationPanel( mLoFreq, mHiFreq,
                                    mEnvelope,
                                    this,
                                    mFilterFuncR, mFilterFuncI, mWindowSize,
-                                   ID_FILTERPANEL,
-                                   wxDefaultPosition, wxSize(100,80) );
-   szr1->Add( mPanel, 1, wxEXPAND|wxALIGN_CENTRE|wxALL, 4 );
-   szrV->Add( szr1, 1, wxEXPAND|wxALIGN_CENTER | wxALL, 0 );
-   // -------------------------------------------------------------------
-   // ROW 3a: Graphic or curve drawing?
-   // -------------------------------------------------------------------
-   szrH = new wxBoxSizer( wxHORIZONTAL );
+                                   ID_FILTERPANEL);
+   szr1->Add( mPanel, 1, wxEXPAND|wxALIGN_CENTRE|wxRIGHT, 4);
+   szr3 = new wxBoxSizer( wxVERTICAL );
+   szr1->Add( szr3, 0, wxALIGN_CENTRE|wxRIGHT, 0);   //spacer for last EQ
 
-   mFaderOrDraw[0] = new wxRadioButton(
-         this, drawRadioID, _("Draw curves"),
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-   szrH->Add( mFaderOrDraw[0], 0, wxRIGHT, 10 );
+   /// Next row of wxFlexGridSizer
+   szr1->Add(1, 1); // horizontal spacer
+   szr1->Add(1, 1); // horizontal spacer
 
-   mFaderOrDraw[1] = new wxRadioButton(
-         this, sliderRadioID, _("Graphic EQ"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-   szrH->Add( mFaderOrDraw[1], 0, wxRIGHT, 80 );
+   freqRuler  = new RulerPanel(this, wxID_ANY);
+   freqRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
+   freqRuler->ruler.SetOrientation(wxHORIZONTAL);
+   freqRuler->ruler.SetLog(true);
+   freqRuler->ruler.SetRange(mLoFreq, mHiFreq);
+   freqRuler->ruler.SetFormat(Ruler::IntFormat);
+   freqRuler->ruler.SetUnits(_("Hz"));
+   freqRuler->ruler.SetFlip(true);
+   freqRuler->ruler.SetLabelEdges(true);
+   freqRuler->ruler.GetMaxSize(NULL, &h);
+   freqRuler->SetMinSize(wxSize(-1, h));
+   szr1->Add( freqRuler, 0, wxEXPAND|wxALIGN_LEFT|wxRIGHT, 4 );
 
-   // -------------------------------------------------------------------
-   // ROW 3b: Filter length grouping
-   // -------------------------------------------------------------------
-
-   // length of filter (M) label
-   txt = new wxStaticText(this, wxID_ANY, _("Length of filter:"));
-   szrH->Add( txt, 0, wxGROW|wxLEFT|wxRIGHT );
-
-   // length of filter (M) slider
-   MSlider = new wxSlider(this, ID_LENGTH, (M -1)/2, 10, 4095,
-                           wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
-   szrH->Add( MSlider, 0, wxGROW|wxLEFT|wxRIGHT );
-
-   wxString label;
-   label.Printf( wxT("%d"), M );
-   mMText = new wxStaticText(this, wxID_ANY, label);
-   szrH->Add( mMText, 0, wxGROW|wxLEFT|wxRIGHT );
-
-   // Add the length / graphic / draw grouping
-   szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 4 );
+   szrV->Add( szr1, 1, wxEXPAND|wxALIGN_CENTER|wxALL, 0 );
 
    // -------------------------------------------------------------------
-   // ROW 4: Curve management grouping
+   // ROW 3: Curve management grouping
    // -------------------------------------------------------------------
    szrC = new wxBoxSizer( wxHORIZONTAL );   //szrC is for the curves bits
 
@@ -925,36 +928,65 @@ void EqualizationDialog::MakeEqualizationDialog()
    szrV->Add( szrC, 0, wxALIGN_CENTER | wxALL, 0 );
 
    // -------------------------------------------------------------------
-   // ROW 5: Graphic EQ
+   // ROW 4: Graphic EQ - this gets laid out horizontally in onSize
    // -------------------------------------------------------------------
 
-   szrG = new wxFlexGridSizer( NUMBER_OF_BANDS, 0, 0 );
-   szrG->SetFlexibleDirection( wxVERTICAL );
-   for (int i = 0; i < NUMBER_OF_BANDS; ++i)
+   szrG = new wxBoxSizer( wxHORIZONTAL  );
+   szrG->Add(0, 0, 0); // horizontal spacer, will be used to position LH EQ slider
+   for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
    {
-      wxString label;
-      if( thirdOct[i] < 1000.)
-         label.Printf( wxT("%d"), (int)thirdOct[i] );
-      else
-         if( thirdOct[i]/1000 == (int)(thirdOct[i]/1000.) )
-            label.Printf( wxT("%.0fk"), thirdOct[i]/1000. );
-         else
-            label.Printf( wxT("%.1f"), thirdOct[i]/1000.);
-      octText = new wxStaticText(this, wxID_ANY, label);
-      szrG->Add( octText, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 0 );
-   }
-
-   for (int i = 0; i < NUMBER_OF_BANDS; ++i)
-   {
+      if( i == NUMBER_OF_BANDS )
+         break;
       m_sliders[i] = new wxSlider(this, ID_SLIDER + i, 0, -20, +20,
                         wxDefaultPosition, wxSize(20, 124), wxSL_VERTICAL|
-                        wxSL_INVERSE);
-      szrG->Add( m_sliders[i], 0, wxALIGN_CENTER | wxLEFT | wxRIGHT, 1);
+                         wxSL_INVERSE);
+      szrG->Add( m_sliders[i], 0, wxEXPAND|wxALIGN_CENTER );
+      szrG->Add(0, 0, 0); // horizontal spacer - used to put EQ sliders in correct position
+      m_sliders[i]->Connect(wxEVT_ERASE_BACKGROUND,wxEraseEventHandler(EqualizationDialog::OnErase));
    }
+   szrV->Add( szrG, 0, wxEXPAND|wxALIGN_LEFT|wxALL, 0 );
 
-   szrV->Add( szrG, 0, wxALIGN_CENTER | wxALL, 4 );
+   wxSizerItem *EQslider = szrG->GetItem((size_t)1);
+   wxSize EQsliderSize = EQslider->GetSize();   //size of the sliders
+   szr3->SetMinSize(EQsliderSize.x/2, -1);   //extra gap for last slider
 
    // -------------------------------------------------------------------
+   // ROW 5a: Graphic or curve drawing?
+   // -------------------------------------------------------------------
+   szrH = new wxBoxSizer( wxHORIZONTAL );
+
+   mFaderOrDraw[0] = new wxRadioButton(
+         this, drawRadioID, _("Draw curves"),
+         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+   szrH->Add( mFaderOrDraw[0], 0, wxRIGHT, 10 );
+
+   mFaderOrDraw[1] = new wxRadioButton(
+         this, sliderRadioID, _("Graphic EQ"),
+         wxDefaultPosition, wxDefaultSize, 0 );
+   szrH->Add( mFaderOrDraw[1], 0, wxRIGHT, 80 );
+
+   // -------------------------------------------------------------------
+   // ROW 5b: Filter length grouping
+   // -------------------------------------------------------------------
+
+   // length of filter (M) label
+   txt = new wxStaticText(this, wxID_ANY, _("Length of filter:"));
+   szrH->Add( txt, 0 );
+
+   // length of filter (M) slider
+   MSlider = new wxSlider(this, ID_LENGTH, (M -1)/2, 10, 4095,
+                           wxDefaultPosition, wxSize(200, -1), wxSL_HORIZONTAL);
+   szrH->Add( MSlider, 0, wxEXPAND );
+
+   wxString label;
+   label.Printf( wxT("%d"), M );
+   mMText = new wxStaticText(this, wxID_ANY, label);
+   szrH->Add( mMText, 0 );
+
+   // Add the length / graphic / draw grouping
+   szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 4 );
+
+    // -------------------------------------------------------------------
    // ROW 6: Preview, OK, & Cancel buttons
    // -------------------------------------------------------------------
    szrH = new wxBoxSizer(wxHORIZONTAL);
@@ -971,17 +1003,21 @@ void EqualizationDialog::MakeEqualizationDialog()
    btn->SetDefault();
    szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
-   szrV->Add( szrH, 0, wxALIGN_CENTER | wxALL, 0 );
+   szrV->Add( szrH, 0, wxALIGN_CENTER );
 
    // -------------------------------------------------------------------
    // Display now
    // -------------------------------------------------------------------
-   szrV->Show(szrC,true);
-   szrV->Show(szrG,false);
-   szrV->Layout();
+   SetAutoLayout(false);
+
+   szrV->Show(szrC,false);
+   szrV->Show(szrG,true);
 
    SetSizerAndFit( szrV );
-   Layout();
+   SetSizeHints(GetSize());
+
+   szrV->Show(szrC,true);
+   szrV->Show(szrG,false);
 
    return;
 }
@@ -1036,16 +1072,16 @@ bool EqualizationDialog::Validate()
 //
 bool EqualizationDialog::TransferDataToWindow()
 {
-   mPanel->M = M;
-   MSlider->SetValue((M -1)/2);
-   mPanel->dBMin = dBMin;
-   dBMinSlider->SetValue(dBMin);
-   mPanel->dBMax = dBMax;
-   dBMaxSlider->SetValue(dBMax);
+   MSlider->SetValue((M-1)/2);
+   M = 0;                        // force refresh in TransferDataFromWindow()
 
-   TransferDataFromWindow();
+   dBMinSlider->SetValue((int)dBMin);
+   dBMin = 0;                     // force refresh in TransferDataFromWindow()
 
-   return TRUE;
+   dBMaxSlider->SetValue((int)dBMax);
+   dBMax = 0;                    // force refresh in TransferDataFromWindow()
+
+   return TransferDataFromWindow();
 }
 
 //
@@ -1053,14 +1089,58 @@ bool EqualizationDialog::TransferDataToWindow()
 //
 bool EqualizationDialog::TransferDataFromWindow()
 {   // Read the sliders and send to the panel
-   M = MSlider->GetValue();
-   M = 2*M + 1;   // odd numbers only
-   mMText->SetLabel(wxString::Format(wxT("%d"), M));
-   mPanel->M = M;
-   dBMin = dBMinSlider->GetValue();
-   mPanel->dBMin = dBMin;
-   dBMax = dBMaxSlider->GetValue();
-   mPanel->dBMax = dBMax;
+   wxString tip;
+
+   bool rr = false;
+   int dB = dBMinSlider->GetValue();
+   if (dB != dBMin) {
+      rr = true;
+      dBMin = dB;
+      mPanel->dBMin = dBMin;
+#if wxUSE_TOOLTIPS
+      tip.Printf(_("%ddB"),(int)dBMin);
+      dBMinSlider->SetToolTip(tip);
+#endif
+   }
+
+   dB = dBMaxSlider->GetValue();
+   if (dB != dBMax) {
+      rr = true;
+      dBMax = dB;
+      mPanel->dBMax = dBMax;
+#if wxUSE_TOOLTIPS
+      tip.Printf(_("%ddB"),(int)dBMax);
+      dBMaxSlider->SetToolTip(tip);
+#endif
+   }
+
+   // Refresh ruler if values have changed
+   if (rr) {
+      int w1, w2, h;
+      dBRuler->ruler.GetMaxSize(&w1, &h);
+      dBRuler->ruler.SetRange(dBMax, dBMin);
+      dBRuler->ruler.GetMaxSize(&w2, &h);
+      if( w1 != w2 )   // Reduces flicker
+      {
+         dBRuler->SetSize(wxSize(w2,h));
+         szr1->Layout();
+         LayoutEQSliders();
+         szrG->Layout();
+         freqRuler->Refresh(false);
+      }
+      dBRuler->Refresh(false);
+   }
+
+   int m = 2 * MSlider->GetValue() + 1;   // odd numbers only
+   if (m != M) {
+      M = m;
+      mPanel->M = M;
+      mMText->SetLabel(wxString::Format(wxT("%d"), M));
+#if wxUSE_TOOLTIPS
+      tip.Printf(_("%d"),M);
+      MSlider->SetToolTip(tip);
+#endif
+   }
 
    mPanel->Refresh(false);
 
@@ -1116,7 +1196,8 @@ bool EqualizationDialog::CalcFilter()
    for(i=0;i<=(M-1)/2;i++)
    {   //Windowing - could give a choice, fixed for now - MJS
 //      double mult=0.54-0.46*cos(2*M_PI*(i+(M-1)/2.0)/(M-1));   //Hamming
-      double mult=0.42-0.5*cos(2*M_PI*(i+(M-1)/2.0)/(M-1))+.08*cos(4*M_PI*(i+(M-1)/2.0)/(M-1));   //Blackman
+//Blackman
+      double mult=0.42-0.5*cos(2*M_PI*(i+(M-1)/2.0)/(M-1))+.08*cos(4*M_PI*(i+(M-1)/2.0)/(M-1));
       outr[i]*=mult;
       if(i!=0){
          outr[mWindowSize-i]*=mult;
@@ -1144,7 +1225,8 @@ bool EqualizationDialog::CalcFilter()
       outr[i]=0.;
    }
 
-   FFT(mWindowSize,false,outr,NULL,mFilterFuncR,mFilterFuncI);   //Back to the frequency domain so we can use it
+   //Back to the frequency domain so we can use it
+   FFT(mWindowSize,false,outr,NULL,mFilterFuncR,mFilterFuncI);
 
    delete[] outr;
    delete[] outi;
@@ -1189,7 +1271,7 @@ void EqualizationDialog::setCurve(Envelope *env, int currentCurve)
       value = mCurves[currentCurve].points[nCurvePoints-1].dB;
       env->Move(when, value);
    }
-
+   mPanel->RecalcRequired = true;
    mPanel->Refresh( false );
 }
 void EqualizationDialog::setCurve(Envelope *env)
@@ -1413,8 +1495,56 @@ void EqualizationDialog::WriteXML(int depth, FILE *fp)
 
 void EqualizationDialog::OnSlider(wxCommandEvent &event)
 {
-   WXTYPE e = event.GetEventType();
+   wxSlider *s = (wxSlider *)event.GetEventObject();
    graphicEQ(mEnvelope);
+#if wxUSE_TOOLTIPS
+   for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
+   {
+      if( i == NUMBER_OF_BANDS )
+         break;
+      if( s == m_sliders[i])
+      {
+         wxString tip;
+         if( thirdOct[i] < 1000.)
+            tip.Printf( wxT("%dHz\n%ddB"), (int)thirdOct[i], m_sliders[i]->GetValue() );
+         else
+            tip.Printf( wxT("%gkHz\n%ddB"), thirdOct[i]/1000., m_sliders[i]->GetValue() );
+         s->SetToolTip(tip);
+         break;
+      }
+   }
+#endif
+}
+
+void EqualizationDialog::LayoutEQSliders()
+{
+   //layout the Graphic EQ sizer here
+   wxSize szrGSize = szrG->GetSize();   //total size we have to play with
+   wxSize szr2Size = szr2->GetSize();   //size of the dBMax/Min sliders
+   wxSizerItem *ruler = szr1->GetItem((size_t)1);
+   wxSize rulerSize = ruler->GetSize();   //and the ruler
+   wxSizerItem *EQslider = szrG->GetItem((size_t)1);
+   wxSize EQsliderSize = EQslider->GetSize();   //size of the sliders
+   int start, w, range, so_far;
+   start = szr2Size.x + rulerSize.x + 12;   //inc ruler & mPanel border (4+4 + 4)
+   szrG->SetItemMinSize((size_t)0, start - EQsliderSize.x/2, -1);   //set 1st spacer so that 1st slider aligned with ruler
+   range = szrGSize.x - EQsliderSize.x/2 - start;
+   so_far = start + EQsliderSize.x/2;
+
+   double loLog = log10(mLoFreq);
+   double hiLog = log10(mHiFreq);
+   double denom = hiLog - loLog;
+   for (int i = 1; thirdOct[i] <= mHiFreq; ++i)   //go along the spacers
+   {
+      if( i == NUMBER_OF_BANDS )
+         break;
+      float posn = range*(log10(thirdOct[i])-loLog)/denom;   //centre of this slider, from start
+      w = start + ((int)(posn+.5)) - EQsliderSize.x/2;   //LH edge of slider, from 0
+      w = w - so_far;   //gap needed to put it here
+      szrG->SetItemMinSize((size_t)(i*2), w, -1);   //set spacers so that sliders aligned with ruler
+      so_far += (w + EQsliderSize.x);
+   }
+   RefreshRect(wxRect(szrG->GetPosition(),szrGSize));
 }
 
 void EqualizationDialog::graphicEQ(Envelope *env)
@@ -1422,22 +1552,31 @@ void EqualizationDialog::graphicEQ(Envelope *env)
    double loLog = log10(mLoFreq);
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
-   int width = 181;   //7 points per slider
+   int bandsInUse = 0;
+
+   while(thirdOct[bandsInUse] <= mHiFreq) {
+      bandsInUse++;
+      if(bandsInUse == NUMBER_OF_BANDS)
+         break;
+   }
+
+   int width = (bandsInUse - 1) * 6 + 1;   //7 points per slider
 
    double stepLog = (log10(mHiFreq) - loLog)/((double)width-1.);
    double freq;   //actual freq corresponding to x position
-   double value;
-   int minF,maxF;
+   double value = 0.0;
+   int minF = 0;
+   int maxF = 0;
    env->Flatten(0.);
    env->SetTrackLen(1.0);
 
    for(int i=0; i<width; i++)
    {
       freq = pow(10., loLog + i*stepLog);   //actual freq for this pixel
-      if(freq > thirdOct[30])
+      if(freq > thirdOct[bandsInUse-1])
          break;
       double when = (log10(freq) - loLog)/denom;   //scaled to env
-      for(int j=0;j<31;j++)
+      for(int j=0;j<bandsInUse;j++)
       {   //search for lower slider
          if(thirdOct[j] > freq )
          {
@@ -1445,7 +1584,7 @@ void EqualizationDialog::graphicEQ(Envelope *env)
             break;
          }
       }
-      for(int j=30;j>=0;j--)
+      for(int j=bandsInUse-1;j>=0;j--)
       {   //search for upper slider
          if(thirdOct[j] < freq )
          {
@@ -1462,6 +1601,7 @@ void EqualizationDialog::graphicEQ(Envelope *env)
       env->Insert( when, value );
    }
    env->Move( 1., value );
+   mPanel->RecalcRequired = true;
    mPanel->Refresh( false );
 }
 
@@ -1470,13 +1610,19 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    int numPoints = mEnvelope->GetNumberOfPoints();
    double *when = new double[ numPoints ];
    double *value = new double[ numPoints ];
+   double deltadB = 0.1;
+   double dx, dy, dx1, dy1, err;
    mEnvelope->GetPoints( when, value, numPoints );
    int i, j;
    for(i=0,j=0;j<numPoints-2;i++,j++)
    {
-      if( (value[i]<value[i+1]+.05) && (value[i]>value[i+1]-.05) &&
-          (value[i+1]<value[i+2]+.05) && (value[i+1]>value[i+2]-.05) )
-      {   // within < 0.05 dB?
+      dx = when[i+2] - when[i];
+      dy = value[i+2] - value[i];
+      dx1 = when[i+1] - when[i];
+      dy1 = dy * dx1 / dx;
+      err = fabs(value[i+1] - (value[i] + dy1));
+      if( err < deltadB )
+      {   // within < deltadB dB?
          mEnvelope->Delete(j+1);
          numPoints--;
          j--;
@@ -1486,27 +1632,48 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    Select( (int) mCurves.GetCount()-1 );
    szrV->Show(szrC,true);
    szrV->Show(szrG,false);
-   szrV->Layout();
+   Layout();
 }
+
 void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
 {
    double loLog = log10(mLoFreq);
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
-   for (int i = 0; i < NUMBER_OF_BANDS; ++i)
+   for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
    {   //MJS need s a bit of work - LMS algorithm?
+      if( i == NUMBER_OF_BANDS )
+         break;
       float value = mEnvelope->GetValue((log10(thirdOct[i])-loLog)/denom);
       m_sliders[i]->SetValue((int)floor(value + .5));
+#if wxUSE_TOOLTIPS
+      wxString tip;
+      if( thirdOct[i] < 1000.)
+         tip.Printf( wxT("%dHz\n%ddB"), (int)thirdOct[i], m_sliders[i]->GetValue() );
+      else
+         tip.Printf( wxT("%gkHz\n%ddB"), thirdOct[i]/1000., m_sliders[i]->GetValue() );
+      m_sliders[i]->SetToolTip(tip);
+#endif
    }
    szrV->Show(szrC,false);
    szrV->Show(szrG,true);
-   szrV->Layout();
+   Layout();            // Make all sizers get resized first
+   LayoutEQSliders();   // Then layout sliders
+   Layout();            // And layout again to resize dialog
+
+   wxSize wsz = GetSize();
+   wxSize ssz = szrV->GetSize();
+   if (ssz.x > wsz.x || ssz.y > wsz.y)
+   {
+      Fit();
+   }
    graphicEQ(mEnvelope);
 }
 
 void EqualizationDialog::OnSliderM(wxCommandEvent &event)
 {
    TransferDataFromWindow();
+   mPanel->RecalcRequired = true;
 }
 
 void EqualizationDialog::OnSliderDBMIN(wxCommandEvent &event)
@@ -1673,11 +1840,35 @@ void EqualizationDialog::OnClear(wxCommandEvent &event)
    mEnvelope->Flatten(0.);
    mEnvelope->SetTrackLen(1.0);
    EnvelopeUpdated();
+   mPanel->RecalcRequired = true;
    mPanel->Refresh(false);
+}
+
+void EqualizationDialog::OnErase(wxEraseEvent &event)
+{
+   // Ignore it
+}
+
+void EqualizationDialog::OnPaint(wxPaintEvent &event)
+{
+   wxPaintDC dc(this);
+
+#if defined(__WXGTK__)
+   dc.SetBackground(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)));
+#endif
+
+   dc.Clear();
 }
 
 void EqualizationDialog::OnSize(wxSizeEvent &event)
 {
+   Layout();
+
+   if (mFaderOrDraw[1]->GetValue())
+   {
+      LayoutEQSliders();
+   }
+
    event.Skip();
 }
 
@@ -1704,7 +1895,8 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
 
    if( Validate() )
    {
-      // Update custom curve (so it's there for next time (done in a hurry, may not be the neatest -MJS))
+      // Update custom curve (so it's there for next time)
+      //(done in a hurry, may not be the neatest -MJS)
       int i, j;
       int numPoints = mEnvelope->GetNumberOfPoints();
       double *when = new double[ numPoints ];

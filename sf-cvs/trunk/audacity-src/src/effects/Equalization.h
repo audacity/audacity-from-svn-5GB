@@ -31,6 +31,7 @@ class wxRadioButton;
 
 #include "Effect.h"
 #include "../xml/XMLTagHandler.h"
+#include "../widgets/Ruler.h"
 
 class Envelope;
 class WaveTrack;
@@ -140,9 +141,15 @@ public:
    void OnPaint(wxPaintEvent & event);
    void OnSize (wxSizeEvent & event);
 
+   // We don't need or want to accept focus.
+   bool AcceptsFocus() const { return false; }
+
+   void Recalc();
+
    int M;
    float dBMax;
    float dBMin;
+   bool RecalcRequired;
 
 private:
 
@@ -154,6 +161,8 @@ private:
    long mWindowSize;
    float *mFilterFuncR;
    float *mFilterFuncI;
+   float *mOutr;
+   float *mOuti;
 
    double mLoFreq;
    double mHiFreq;
@@ -206,8 +215,9 @@ private:
    void setCurve(Envelope *env, int currentCurve);
    void setCurve(Envelope *env);
    void graphicEQ(Envelope *env);
+   void LayoutEQSliders();
 
-// XMLTagHandler callback methods for loading and saving
+   // XMLTagHandler callback methods for loading and saving
    bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    XMLTagHandler *HandleXMLChild(const wxChar *tag);
    void WriteXML(int depth, FILE *fp);
@@ -226,14 +236,16 @@ private:
       ID_DELETE,
       ID_CLEAR,
       ID_PREVIEW,
-      ID_SLIDER,
       drawRadioID,
-      sliderRadioID
+      sliderRadioID,
+      ID_SLIDER   // needs to come last
    };
 
 private:
    // WDR: handler declarations for EqualizationDialog
+   void OnPaint( wxPaintEvent &event );
    void OnSize( wxSizeEvent &event );
+   void OnErase( wxEraseEvent &event );
    void OnSlider( wxCommandEvent &event );
    void OnSliderM( wxCommandEvent &event );
    void OnSliderDBMAX( wxCommandEvent &event );
@@ -270,9 +282,15 @@ private:
    wxSlider *MSlider;
    wxSlider *dBMinSlider;
    wxSlider *dBMaxSlider;
+   RulerPanel *dBRuler;
+   RulerPanel *freqRuler;
    wxBoxSizer *szrC;
-   wxFlexGridSizer *szrG;
+   wxBoxSizer *szrG;
    wxBoxSizer *szrV;
+   wxBoxSizer *szr3;
+   wxBoxSizer *szr2;
+   wxFlexGridSizer *szr1;
+   wxSize size;
 
    EQCurveArray mCurves;
 
