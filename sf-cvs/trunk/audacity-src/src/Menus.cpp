@@ -162,7 +162,11 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Open"),           _("&Open...\tCtrl+O"),               FN(OnOpen));
    c->SetCommandFlags(wxT("Open"), 0, 0);
 
-   #ifdef __WXMAC__
+	// On the Mac, the Preferences item doesn't actually go here...wxMac will pull it out
+   // and put it in the Audacity menu for us based on its ID.
+   // Moved Preferences to Edit Menu 02/09/05 Richard Ash.
+
+   #ifndef __WXMSW__
    CreateRecentFilesMenu(c);
    #endif
 
@@ -178,12 +182,22 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->AddItem(wxT("EditID3"),        _("Edit &ID3 Tags..."),              FN(OnEditID3));
+   c->AddItem(wxT("EditID3"),        _("Edit ID3 &Tags..."),              FN(OnEditID3));
    c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    if( !mCleanSpeechMode )
 	{
    c->AddSeparator();
+
+	c->BeginSubMenu(_("&Import..."));
+		c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
+		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+I"),	FN(OnImport));
+		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
+		c->AddItem(wxT("ImportMIDI"),     _("&MIDI..."),							FN(OnImportMIDI));
+		c->AddItem(wxT("ImportRaw"),      _("&Raw Data..."),				FN(OnImportRaw));
+	c->EndSubMenu();
+
+	c->AddSeparator();
 
    c->BeginSubMenu(_("&Export As..."));
    c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
@@ -289,11 +303,8 @@ void AudacityProject::CreateMenusAndCommands()
 	}
 
    c->AddSeparator();
-   // On the Mac, the Preferences item doesn't actually go here...wxMac will pull it out
-   // and put it in the Audacity menu for us based on its ID.
-   // Moved Preferences to Edit Menu 02/09/05 Richard Ash.
 
-   #ifndef __WXMAC__
+	#ifdef __WXMSW__
    CreateRecentFilesMenu(c);
    #endif
 
@@ -487,27 +498,35 @@ void AudacityProject::CreateMenusAndCommands()
 	{
       c->BeginMenu(_("&Tracks"));
       c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
-      c->AddItem(wxT("ImportAudio"),    _("&Import Audio...\tCtrl+I"),       FN(OnImport));
-      c->AddItem(wxT("ImportLabels"),   _("Import &Labels..."),              FN(OnImportLabels));
-      c->AddItem(wxT("ImportMIDI"),     _("Import &MIDI..."),                FN(OnImportMIDI));
-      c->AddItem(wxT("ImportRaw"),      _("Import &Raw Data..."),            FN(OnImportRaw));
+      /*c->BeginSubMenu(_("&Current Track..."));
+		c->EndSubMenu();
+
+      c->AddSeparator();*/
+		
+		c->BeginSubMenu(_("Add &New Track..."));
+			c->AddItem(wxT("NewAudioTrack"),  _("&Audio Track\tShift+Ctrl+N"),               FN(OnNewWaveTrack));
+			c->AddItem(wxT("NewStereoTrack"), _("&Stereo Track"),              FN(OnNewStereoTrack));
+			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
+			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
+		c->EndSubMenu();
+
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
       // It belongs here normally, because it is a kind of mix-down.
-      c->AddItem(wxT("Stereo To Mono"),      _("Stereo To Mono"),            FN(OnStereoToMono));
+      c->AddItem(wxT("Stereo To Mono"),      _("&Stereo To Mono"),            FN(OnStereoToMono));
       c->SetCommandFlags(wxT("Stereo To Mono"),
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag,
          AudioIONotBusyFlag | StereoRequiredFlag | WaveTracksSelectedFlag);
-      c->AddItem(wxT("MixAndRender"),       _("Mix and Render"),             FN(OnMixAndRender));
+      c->AddItem(wxT("MixAndRender"),       _("&Mix and Render"),             FN(OnMixAndRender));
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
       c->AddSeparator();
-      c->AddItem(wxT("NewAudioTrack"),  _("New &Audio Track"),               FN(OnNewWaveTrack));
+     /* c->AddItem(wxT("NewAudioTrack"),  _("New &Audio Track\tShift+Ctrl+N"),               FN(OnNewWaveTrack));
       c->AddItem(wxT("NewStereoTrack"), _("New &Stereo Track"),              FN(OnNewStereoTrack));
       c->AddItem(wxT("NewLabelTrack"),  _("New La&bel Track"),               FN(OnNewLabelTrack));
       c->AddItem(wxT("NewTimeTrack"),   _("New &Time Track"),                FN(OnNewTimeTrack));
-      c->AddSeparator();
+      c->AddSeparator();*/
       c->AddItem(wxT("RemoveTracks"),   _("Remo&ve Tracks"),                 FN(OnRemoveTracks));
       c->SetCommandFlags(wxT("RemoveTracks"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -524,7 +543,7 @@ void AudacityProject::CreateMenusAndCommands()
       alignLabels.Add(_("Align End with Selection End"));
       alignLabels.Add(_("Align Tracks Together"));
    
-      c->BeginSubMenu(_("Align Tracks..."));
+      c->BeginSubMenu(_("&Align Tracks..."));
       c->AddItemList(wxT("Align"), alignLabels, FN(OnAlign));
       c->SetCommandFlags(wxT("Align"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -533,7 +552,7 @@ void AudacityProject::CreateMenusAndCommands()
    
       alignLabels.RemoveAt(7); // Can't align together and move cursor
    
-      c->BeginSubMenu(_("Align and move cursor..."));
+      c->BeginSubMenu(_("Align And Mo&ve Cursor..."));
       c->AddItemList(wxT("AlignMove"), alignLabels, FN(OnAlignMoveSel));
       c->SetCommandFlags(wxT("AlignMove"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -541,8 +560,8 @@ void AudacityProject::CreateMenusAndCommands()
       c->EndSubMenu();
    
       c->AddSeparator();   
-      c->AddItem(wxT("AddLabel"),       _("Add Label At Selection\tCtrl+B"), FN(OnAddLabel));
-      c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
+      c->AddItem(wxT("AddLabel"),       _("Add &Label At Selection\tCtrl+B"), FN(OnAddLabel));
+      c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
       c->EndMenu();
