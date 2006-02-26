@@ -93,6 +93,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    //     charset conversion on Linux platforms
    localLanguageName["ar"] = "Arabic";
    localLanguageName["bg"] = "Balgarski";
+   localLanguageName["bn"] = "Bangla";
    localLanguageName["ca"] = "Catalan";
    localLanguageName["cs"] = "Czech";
    localLanguageName["da"] = "Dansk";
