@@ -70,6 +70,7 @@
   <li>Jozsef Herczeg (hu)</li>
   <li>Aldo Boccacci (it)</li>
   <li>Ohkubo Kohei (ja)</li>
+  <li>Šarūnas Gliebus (lt)</li>
   <li>Ilija Iliev (mk)</li>
   <li><a href="http://folk.uio.no/kevinu">Kevin Brubeck Unhammer</a> (nb)</li>
   <li>Tino Meinen (nl)</li>
@@ -80,6 +81,7 @@
   <li>Manuel Ciosici (ro)</li>
   <li>Yuri Ilyin (ru)</li>
   <li>Alexandre Prokoudine (ru)</li>
+  <li>Joe Yeti (sk)</li>
   <li>Rok Hecl (sl)</li>
   <li>Martin Srebotnjak (sl)</li>
   <li>Lars Carlsson (sv)</li>
