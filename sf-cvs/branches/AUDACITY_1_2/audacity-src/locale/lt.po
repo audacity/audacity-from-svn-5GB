@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Vertimas 1,0\n"
 "POT-Creation-Date: 2004-12-07 20:01-0800\n"
-"PO-Revision-Date: 2005-10-26 22:21+0100\n"
+"PO-Revision-Date: 2006-01-16 17:59+0100\n"
 "Last-Translator: Šarūnas <Sharunas55387@hotmail.com>\n"
 "Language-Team: Sharunas <Sharunas55387@hotmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgid ""
 "\n"
 "It has been removed from the history list."
 msgstr ""
-"%s neegzistuoja ir negali būti atidaryta.\n"
+"%s neegzistuoja ir negali būti atidarytas.\n"
 "\n"
 "Jis buvo pašalintas iš istorijos sąrašo."
 
@@ -128,7 +128,7 @@ msgstr "R&edaguoti"
 
 #: ../src/Menus.cpp:386
 msgid "&Edit ID3 Tags..."
-msgstr "R&edaguot ID3 Priesgas..."
+msgstr "R&edaguoti ID3 Priesagas..."
 
 #: ../src/Menus.cpp:605
 #, c-format
@@ -255,7 +255,7 @@ msgid ""
 "(Not all combinations of headers\n"
 "and encodings are possible.)"
 msgstr ""
-"(Ne visos antraštščių kombinacijos ir\n"
+"(Ne visos antraščių kombinacijos ir\n"
 "dekoderiai galimi.)"
 
 #: ../src/prefs/GUIPrefs.cpp:171
@@ -360,15 +360,15 @@ msgstr "Rikiuoti"
 
 #: ../src/Menus.cpp:409
 msgid "Align End with Cursor"
-msgstr "Rikiuoti Pabaigą prie Pelės"
+msgstr "Perkelti Pabaigą prie Pelės"
 
 #: ../src/Menus.cpp:411
 msgid "Align End with Selection End"
-msgstr "Rikiuoti Pabaigą prie Apibraukimo Galo"
+msgstr "Perkelti Pabaigą prie Apibraukimo Galo"
 
 #: ../src/Menus.cpp:410
 msgid "Align End with Selection Start"
-msgstr "Rikiuoti Pabaigą prie Apibraukimo Pradžios"
+msgstr "Perkelti Pabaigą prie Apibraukimo Pradžios"
 
 #: ../src/Menus.cpp:412
 msgid "Align Tracks Together"
@@ -376,27 +376,27 @@ msgstr "Rikiuoti Takelius Kartu"
 
 #: ../src/Menus.cpp:414
 msgid "Align Tracks..."
-msgstr "Rikiuoti Takelius..."
+msgstr "Surikiuoti Takelius..."
 
 #: ../src/Menus.cpp:423
 msgid "Align and move cursor..."
-msgstr "Rikiuoti ir judinti pelę..."
+msgstr "Rikiuoti perkeliant pelę..."
 
 #: ../src/Menus.cpp:406
 msgid "Align with &Cursor"
-msgstr "Rikiuoti pr&ie Pelės"
+msgstr "Perkelti pr&ie Pelės"
 
 #: ../src/Menus.cpp:405
 msgid "Align with &Zero"
-msgstr "Rikiuoti prie &Nulio"
+msgstr "Perkelti prie &Nulio"
 
 #: ../src/Menus.cpp:408
 msgid "Align with Selection &End"
-msgstr "Rikiuoti pri&e Apibraukimo Pabaigos"
+msgstr "Perkelti pri&e Apibraukimo Pabaigos"
 
 #: ../src/Menus.cpp:407
 msgid "Align with Selection &Start"
-msgstr "Rikiuoti prie Apibraukimo Pradžio&s"
+msgstr "Perkelti prie Apibraukimo Pradžio&s"
 
 #: ../src/Menus.cpp:2920
 msgid "Aligned"
@@ -404,31 +404,31 @@ msgstr "Surikiuota"
 
 #: ../src/Menus.cpp:2896
 msgid "Aligned cursor"
-msgstr "Surikiuota pelė"
+msgstr "Perkelta pelė"
 
 #: ../src/Menus.cpp:2908
 msgid "Aligned end with cursor"
-msgstr "Pabaiga surikiuota su pele"
+msgstr "Pabaigą perkelti prie pelės"
 
 #: ../src/Menus.cpp:2916
 msgid "Aligned end with selection end"
-msgstr "Pabaiga surikiuota su apibraukimo pabaiga"
+msgstr "Pabaiga perkelta prie apibraukimo pabaigos"
 
 #: ../src/Menus.cpp:2912
 msgid "Aligned end with selection start"
-msgstr "Pagaiga surikiuota su apibraukimo pradžia"
+msgstr "Pabaiga perkelta prie apibraukimo pradžios"
 
 #: ../src/Menus.cpp:2904
 msgid "Aligned with selection end"
-msgstr "Surikiuota su apibraukimo pabaiga"
+msgstr "Perkelta prie apibraukimo pabaigos"
 
 #: ../src/Menus.cpp:2900
 msgid "Aligned with selection start"
-msgstr "Surikiuota su apibraukimo pradžia"
+msgstr "Perkelta prie apibraukimo pradžios"
 
 #: ../src/Menus.cpp:2892
 msgid "Aligned with zero"
-msgstr "Surikiuota su nuliu"
+msgstr "Perkelta prie nulio"
 
 #: ../src/Menus.cpp:2713
 msgid "All files (*)|*"
@@ -522,7 +522,7 @@ msgstr "Priimtas efektas: %s %.1f%%"
 #: ../src/effects/ChangePitch.cpp:56
 #, c-format
 msgid "Applied effect: %s %.2f semitones"
-msgstr "Priimtas efektas: %s %.2f semitones"
+msgstr "Priimtas efektas: %s %.2f pustoniai"
 
 #: ../src/effects/Phaser.cpp:47
 #, c-format
@@ -542,7 +542,7 @@ msgstr "Priimtas efektas: %s dažnis = %.0f Hz, pakėlimas = %.0f dB"
 #: ../src/effects/Wahwah.cpp:41
 #, c-format
 msgid "Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%%, resonance = %.1f, frequency offset = %.0f%%"
-msgstr "Priimtas efektas: %s dažnis= %.1f Hz, pradžios fazė = %.0f deg, gylis= %.0f%%, rezonancas= %.1f, dažnio ofsetas= %.0f%%"
+msgstr "Priimtas efektas: %s dažnis= %.1f Hz, pradžios fazė = %.0f deg, gylis= %.0f%%, rezonansas= %.1f, dažnio ofsetas= %.0f%%"
 
 #: ../src/effects/ToneGen.cpp:33
 #, c-format
@@ -610,7 +610,7 @@ msgstr "Audacity Redagavimo įrankinė"
 
 #: ../src/LangChoice.cpp:47
 msgid "Audacity First Run"
-msgstr "Audacity Pirmas paleidimas"
+msgstr "Audacity Pirmasis paleidimas"
 
 #: ../src/MeterToolBar.cpp:55
 msgid "Audacity Meter Toolbar"
@@ -626,7 +626,7 @@ msgstr "Audacity Nuostatos"
 
 #: ../src/AudacityApp.cpp:1100
 msgid "Audacity Project Files"
-msgstr "Audacity Prijekto failai"
+msgstr "Audacity Projekto failai"
 
 #: ../src/AudacityApp.cpp:773
 msgid ""
@@ -671,7 +671,7 @@ msgid ""
 "Would you like to locate lame_enc.dll now?"
 msgstr ""
 "Audacity neeksportuoja MP3 failų tiesiogiai, bet vietoj to naudoja\n"
-"Nemokamą LAME bibliotekąč skirtą MP3 failų kodavimui. Jūs turite įsigyti\n"
+"Nemokamą LAME biblioteką, skirtą MP3 failų kodavimui. Jūs turite įsigyti\n"
 "lame_enc.dll atsirai, parsisiunčiant LAME MP3 koderį ir tada nurodant jį Audacity. Jums tai reiks daryti tik kartą.\n"
 "\n"
 "Ar norite nurodyti lame_enc.dll dabar?"
@@ -690,7 +690,7 @@ msgid ""
 msgstr ""
 "Audacity neeksportuoja MP3 failų tiesiogiai, bet vietoj to naudoja \n"
 "Nemokamą LAME biblioteką MP3 failų dekodavimui. Jūs turite įsigyti\n"
-"libmp3lame.so atskirai, bet kaip ar atsisiunčiant ar sudarant iš kodo, ir tada\n"
+"libmp3lame.so atskirai, bet kaip ar atsisiunčiant ar susikompiluojant iš kodo, ir tada\n"
 "nurodant ją Audacity. Jums tą daryti reiks tik kartą.\n"
 "\n"
 "Ar norite nurodyti libmp3lame.so dabar?"
@@ -714,7 +714,7 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:99
 msgid "Audacity is a free program written by a team of volunteer developers around the world.  Coordination happens thanks to SourceForge.net, an online service that provides free tools to open-source software projects.  Audacity is available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like operating systems.  Older versions of Audacity are available for Mac OS 9."
-msgstr "Audacity  yra nemokama programa parašyta savanorių komandos iš viso pasaulio. Už koordinacijos pagalbą ačiū SourceForge.net, online servisui kuris aprūpina nemokamais įrankiais atviro kodo programinės įrangos projektus. Audacity pritaikytas Windows 98 ir naujasnioms, Mac OS X, Linux ir kitoms Unix šeimos operacinėms sistemoms. Senesnės Audacity versijos pritaikytos Mac OS 9."
+msgstr "Audacity  yra nemokama programa, parašyta savanorių komandos iš viso pasaulio. Už koordinacijos pagalbą ačiū SourceForge.net online servisui, kuris aprūpina nemokamais įrankiais atviro kodo programinės įrangos projektus. Audacity pritaikytas Windows 98 ir naujasnioms, Mac OS X, Linux bei kitoms Unix šeimos operacinėms sistemoms. Senesnės Audacity versijos pritaikytos ir Mac OS 9."
 
 #: ../src/AudacityApp.cpp:846
 msgid "Audacity is already running"
@@ -827,10 +827,10 @@ msgstr "Sistemos bandymas"
 
 #  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #  know the correct technical word.
-#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
-msgstr "Didelis-endian"
+msgstr "Big-endian"
 
 #: ../src/prefs/FileFormatPrefs.cpp:197
 msgid "Bit Rate:"
@@ -1024,7 +1024,7 @@ msgstr "Keičiamas Greitis"
 
 #: ../src/effects/ChangeTempo.h:44
 msgid "Changing Tempo"
-msgstr "Keičiams tempas"
+msgstr "Keičiams Tempas"
 
 #: ../src/DirManager.cpp:660
 #, c-format
@@ -1049,7 +1049,7 @@ msgstr "Pasirinkite Kurią Kalbą Audacity naudoti:"
 
 #: ../src/TrackPanel.cpp:4453
 msgid "Choose a font for Label Tracks"
-msgstr "Pasirinkite raštą Pavadinimų Takeliams"
+msgstr "Pasirinkite šriftą Pavadinimų Takeliams"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:135
 msgid "Choose a location to place the temporary directory"
@@ -1076,7 +1076,7 @@ msgstr "Valyti"
 
 #: ../src/effects/ClickRemoval.h:42
 msgid "Click Removal..."
-msgstr "Trakštelėjimų Pašalintojas..."
+msgstr "Trakštelėjimų Pašalinimas..."
 
 #: ../src/effects/ClickRemoval.cpp:67
 msgid "Click and Pop Removal"
@@ -1092,7 +1092,7 @@ msgstr "Spauskite ir temkite santykiniam stereo takelio dydižiui pakeisti."
 
 #: ../src/ControlToolBar.cpp:77
 msgid "Click and drag to edit the amplitude envelope"
-msgstr "Spausk ir tempk amplitudės redagavimui"
+msgstr "Spausk ir tempk amplitudės koregavimui"
 
 #: ../src/ControlToolBar.cpp:78
 msgid "Click and drag to edit the samples"
@@ -1104,11 +1104,11 @@ msgstr "Temti ir mesti takelių laiko perkėlimui"
 
 #: ../src/TrackPanel.cpp:1574
 msgid "Click and drag to move left selection boundary."
-msgstr "Spauskite ir temkite kairiojo pažymėjimo kraštui tempti."
+msgstr "Spauskite ir temkite kairiojo pažymėjimo kraštui paratęsti."
 
 #: ../src/TrackPanel.cpp:1579
 msgid "Click and drag to move right selection boundary."
-msgstr "Spauskite ir temkite dešiniojo pažymėjimo kraštui tempti."
+msgstr "Spauskite ir temkite dešiniojo pažymėjimo kraštui paratęsti."
 
 #: ../src/TrackPanel.cpp:1621
 msgid "Click and drag to resize the track."
@@ -1319,7 +1319,7 @@ msgstr "Kursorius: %02i:%02i:%06.3lf cdda min:sek:kadrai (75 fps)   %s"
 #: ../src/FormatSelection.cpp:532
 #, c-format
 msgid "Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC frames)   %s"
-msgstr "Kursorius: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC kadrai)   %s"
+msgstr "Kursorius: %1i:%02i:%02i:%06.3lf NTSC drop-kadrai h:mm:ss:ff (%.3lf NTSC kadrai)   %s"
 
 #: ../src/FormatSelection.cpp:590
 #, c-format
@@ -1349,12 +1349,12 @@ msgstr "Kursorius: %d Hz (%s) = %d dB    Aukščiausias: %d Hz (%s)"
 #: ../src/FormatSelection.cpp:780
 #, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]"
-msgstr "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai per sektorių)   [Prikibimas Įjungtas]"
+msgstr "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai sektoriuje)   [Prikibimas Įjungtas]"
 
 #: ../src/FormatSelection.cpp:783
 #, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai per sektorių)   [Prikibimas Įjungtas]   Pakeistas Projekto Dažnis į 44100 dėl cdda"
+msgstr "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai sektoriuje)   [Prikibimas Įjungtas]   Pakeistas Projekto Dažnis į 44100 dėl cdda"
 
 #: ../src/FormatSelection.cpp:745
 #, c-format
@@ -1398,11 +1398,11 @@ msgstr "Iškirpti"
 
 #: ../src/Menus.cpp:1713
 msgid "Cut to the clipboard"
-msgstr "Iškirpti į iškirptinę"
+msgstr "Iškirpti į iškarpinę"
 
 #: ../src/Menus.cpp:264
 msgid "D&uplicate\tCtrl+D"
-msgstr "D&ublikuoti"
+msgstr "D&ublikuoti\tCtrl+D"
 
 #: ../src/effects/Phaser.cpp:476
 msgid "DRY"
@@ -1427,7 +1427,7 @@ msgstr "Įprastas Modelio Dažnis:"
 
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
-#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #: ../src/import/ImportRaw.cpp:308
 msgid "Default endianness"
 msgstr "Įprastas endianness"
@@ -1491,7 +1491,7 @@ msgstr "Vieta yra %s neįrašoma"
 
 #: ../src/widgets/Meter.cpp:305
 msgid "Disable"
-msgstr "Išjunkti"
+msgstr "Išjungti"
 
 #: ../src/HistoryWindow.cpp:89
 msgid "Discard"
@@ -1523,7 +1523,7 @@ msgstr "Parašė Dokumentaciją "
 
 #: ../src/widgets/Warning.cpp:53
 msgid "Don't show this warning again"
-msgstr "Nerodyti šio perspėjimo dar kartą"
+msgstr "Daugiau nerodyti šio perspėjimo"
 
 #: ../src/TrackPanel.cpp:857
 msgid "Down Octave"
@@ -1535,7 +1535,7 @@ msgstr "Galite tampyti už pavadinimų vertikaliai ir taip pakeisti takelių iš
 
 #: ../src/ControlToolBar.cpp:82
 msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
-msgstr "Apibraukite Regiono Priartinimui, Dešinysis Paspaudimas - Patolinimui"
+msgstr "Apibraukite Regiono Priartinimui, Dešinysis-Paspaudimas — Patolinimui"
 
 #: ../src/ControlToolBar.cpp:359
 msgid "Draw Tool"
@@ -1621,7 +1621,7 @@ msgstr "Įjungti Mikserio Įrankinę"
 
 #: ../src/prefs/GUIPrefs.cpp:106
 msgid "Enable dragging of left and right selection edges"
-msgstr "Įjungti galimybę pratesti apibraukimą į kairę ir dešinę"
+msgstr "Įjungti galimybę pratęsti apibraukimą į kairę ir dešinę"
 
 #: ../src/prefs/GUIPrefs.cpp:113
 msgid "Enable ergonomic order of Audio I/O buttons"
@@ -1686,11 +1686,11 @@ msgstr "Klaida"
 #: ../src/export/ExportPCM.cpp:160
 #, c-format
 msgid "Error (file may not have been written): %s"
-msgstr "Klaida (failas gali būti neįsirašęs): %s"
+msgstr "Klaida (failas gali būti neįrašytas): %s"
 
 #: ../src/AudioIO.cpp:173
 msgid "Error Initializing Audio"
-msgstr "Klaida kraunant Audio"
+msgstr "Klaida Kraunant Audio"
 
 #: ../src/Project.cpp:2340
 msgid "Error importing"
@@ -1928,7 +1928,7 @@ msgstr "Failo prefiksas:"
 
 #: ../src/prefs/FileFormatPrefs.cpp:190
 msgid "Find Library"
-msgstr "Nurodyt biblioteką"
+msgstr "Nurodyt Biblioteką"
 
 #: ../src/Menus.cpp:278
 msgid "Find Zero Crossings\tZ"
@@ -1958,7 +1958,7 @@ msgstr "Atskira Kontrolės Įrankinė"
 #: ../src/Menus.cpp:367
 #: ../src/Menus.cpp:745
 msgid "Float Edit Toolbar"
-msgstr "Atskira Redagaavimo Įrankinė"
+msgstr "Atskira Redagavimo Įrankinė"
 
 #: ../src/Menus.cpp:369
 #: ../src/Menus.cpp:775
@@ -1972,7 +1972,7 @@ msgstr "Atskira Mikserio Įrankinė"
 
 #: ../src/TrackPanel.cpp:862
 msgid "Font..."
-msgstr "Raštas..."
+msgstr "Šriftas..."
 
 #: ../src/TrackPanel.cpp:4229
 msgid "Format Change"
@@ -2007,7 +2007,7 @@ msgid "Frequency Analysis"
 msgstr "Dažnio Analizė"
 
 #  i18n-hint: Title of the Gain slider, used to adjust the volume
-#. i18n-hint: Title of the Gain slider, used to adjust the volume
+#  i18n-hint: Title of the Gain slider, used to adjust the volume
 #: ../src/TrackPanel.cpp:2807
 #: ../src/TrackPanel.cpp:4726
 msgid "Gain"
@@ -2047,7 +2047,7 @@ msgstr "Gauti Trukšmo Profilį"
 
 #: ../src/prefs/SpectrumPrefs.cpp:94
 msgid "Grayscale"
-msgstr "Pilkaskalė"
+msgstr "Pilka skalė"
 
 #: ../src/Help.cpp:63
 msgid "HTML Help Books (*.htb)|*.htb"
@@ -2079,14 +2079,14 @@ msgstr "Horizontalus Stereo"
 
 #  i18n-hint: This is the abbreviation for "Hertz", or
 #  cycles per second.
-#. i18n-hint: This is the abbreviation for "Hertz", or
+#  i18n-hint: This is the abbreviation for "Hertz", or
 #: ../src/import/ImportRaw.cpp:378
 msgid "Hz"
 msgstr "Hz"
 
 #: ../src/AboutDialog.cpp:70
 msgid "ID3 tag exporting disabled"
-msgstr "ID3 galūnių eksportavimas išjunktas"
+msgstr "ID3 galūnių eksportavimas išjungtas"
 
 #: ../src/AboutDialog.cpp:68
 msgid "ID3 tag exporting enabled"
@@ -2162,7 +2162,7 @@ msgstr "Importuoti pavadinimai iš '%s'"
 #: ../src/Project.cpp:2233
 #, c-format
 msgid "Importing %s File..."
-msgstr "Importuojamas '%s' Failas"
+msgstr "Importuojamas '%s' Failas..."
 
 #: ../src/import/ImportPCM.cpp:344
 #, c-format
@@ -2202,7 +2202,7 @@ msgid "Invalid Vorbis bitstream header"
 msgstr "Neteisinga Vorbis kodo antraštė"
 
 #  i18n-hint: You do not need to translate "LOF"
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:289
 msgid "Invalid duration in LOF file."
 msgstr "Neteisinga LOF failo trukmė"
@@ -2213,13 +2213,13 @@ msgid "Invalid rate."
 msgstr "Neteisingas dažnis."
 
 #  i18n-hint: You do not need to translate "LOF"
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:383
 msgid "Invalid track offset in LOF file."
 msgstr "Blogas takelio ofsetas LOF faile."
 
 #  i18n-hint: You do not need to translate "LOF"
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:268
 msgid "Invalid window offset in LOF file."
 msgstr "Blogas lango ofsetas LOF faile."
@@ -2238,11 +2238,11 @@ msgstr "Klavišų Kombinacija"
 
 #: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
-msgstr "Klavetūra"
+msgstr "Klaviatūra"
 
 #  i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #  i18n-hint: One-letter abbreviation for Left, in VU Meter
-#. i18n-hint: One-letter abbreviation for Left, in the Pan slider
+#  i18n-hint: One-letter abbreviation for Left, in the Pan slider
 #: ../src/widgets/ASlider.cpp:329
 #: ../src/widgets/Meter.cpp:165
 msgid "L"
@@ -2250,11 +2250,11 @@ msgstr "K"
 
 #: ../src/AboutDialog.cpp:77
 msgid "LADSPA plug-in support disabled"
-msgstr "LADSPA priedo palaikymas išjunktas"
+msgstr "LADSPA priedo palaikymas išjungtas"
 
 #: ../src/AboutDialog.cpp:75
 msgid "LADSPA plug-in support enabled"
-msgstr "LADSPA priedo palaikymas įjunktas"
+msgstr "LADSPA priedo palaikymas įjungtas"
 
 #: ../src/effects/Phaser.cpp:497
 #: ../src/effects/Wahwah.cpp:468
@@ -2264,10 +2264,10 @@ msgstr "LFO Dažnis (Hz):"
 #: ../src/effects/Phaser.cpp:513
 #: ../src/effects/Wahwah.cpp:484
 msgid "LFO Start Phase (deg.):"
-msgstr "LFO Pradžios Frazė (laipsn.):"
+msgstr "LFO Pradžios Fazė (laipsn.):"
 
 #  i18n-hint: You do not need to translate "LOF"
-#. i18n-hint: You do not need to translate "LOF"
+#  i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:270
 #: ../src/import/ImportLOF.cpp:291
 #: ../src/import/ImportLOF.cpp:364
@@ -2395,10 +2395,10 @@ msgstr "Failų sąrašas teksto formatu"
 
 #  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #  know the correct technical word.
-#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #: ../src/import/ImportRaw.cpp:302
 msgid "Little-endian"
-msgstr "Mažai-endian"
+msgstr "Little-endian"
 
 #: ../src/effects/Equalization.cpp:677
 msgid "Load Predefined Curve"
@@ -2415,7 +2415,7 @@ msgstr "Įkelti %d spartieji klavišai\n"
 
 #: ../src/commands/CommandManager.cpp:643
 msgid "Loading keyboard shortcuts"
-msgstr "Kraunami klavetūros spartieji kavišai"
+msgstr "Kraunami klaviatūros spartieji kavišai"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:57
 msgid "Location:"
@@ -2448,11 +2448,11 @@ msgstr "MP3 eksportavimo įskiepis nerastas"
 
 #: ../src/AboutDialog.cpp:56
 msgid "MP3 importing disabled"
-msgstr "MP3 importavimas išjunktas"
+msgstr "MP3 importavimas išjungtas"
 
 #: ../src/AboutDialog.cpp:54
 msgid "MP3 importing enabled"
-msgstr "MP3 importavimas įjunktas"
+msgstr "MP3 importavimas įjungtas"
 
 #: ../src/TrackPanel.cpp:4153
 #, c-format
@@ -2502,7 +2502,7 @@ msgstr "Minimalus pakeitimas %:"
 
 #: ../src/effects/AvcCompressor.cpp:594
 msgid "Minimum Change Window:"
-msgstr "Minimalus lango pakeitimas:"
+msgstr "Minimalus Lango pakeitimas:"
 
 #: ../src/prefs/GUIPrefs.cpp:145
 msgid "Minimum of dB mode display range"
@@ -2515,7 +2515,7 @@ msgstr "Sujungti"
 
 #: ../src/Mix.cpp:125
 msgid "Mixing tracks"
-msgstr "Miksuoju Takelius"
+msgstr "Sujungiu Takelius"
 
 #: ../src/TrackPanel.cpp:3314
 msgid "Modified Label"
@@ -2610,22 +2610,22 @@ msgstr "Multi-Įrankio Režimas: Ctrl-P Pelės ir Klaviatūros nustatymams"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Mute"
-msgstr "Begars"
+msgstr "Begarso"
 
 #  i18n-hint: hours, minutes, seconds, frames
-#. i18n-hint: hours, minutes, seconds, frames
+#  i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:39
 msgid "NTSC drop-frame h:mm:ss:ff"
-msgstr "NTSC drop-kadrai h:mm:ss:ff"
+msgstr "NTSC drop-kadras h:mm:ss:ff"
 
 #  i18n-hint: fps is "frames per second"
-#. i18n-hint: fps is "frames per second"
+#  i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:37
 msgid "NTSC frames 29.97 fps"
 msgstr "NTSC kadrai 29.97 fps"
 
 #  i18n-hint: hours, minutes, seconds, frames
-#. i18n-hint: hours, minutes, seconds, frames
+#  i18n-hint: hours, minutes, seconds, frames
 #: ../src/FormatSelection.cpp:41
 msgid "NTSC non-drop-frame h:mm:ss:ff"
 msgstr "NTSC non-drop-kadras h:mm:ss:ff"
@@ -2687,11 +2687,11 @@ msgstr "Naujas apibraukimo ilgis:"
 
 #: ../src/Menus.cpp:556
 msgid "Next Tool\tD"
-msgstr "Naujas įrankis\tD"
+msgstr "Kitas įrankis\tD"
 
 #  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #  know the correct technical word.
-#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #: ../src/import/ImportRaw.cpp:299
 msgid "No endianness"
 msgstr "Be endianness"
@@ -2804,7 +2804,7 @@ msgstr "Nyquist Komanda..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:594
 msgid "Nyquist did not return audio.\n"
-msgstr "Nyquist Negražino audio.\n"
+msgstr "Nyquist Negrąžino audio.\n"
 
 #: ../src/effects/nyquist/Nyquist.cpp:556
 #, c-format
@@ -2924,14 +2924,14 @@ msgid "Overwrite existing files"
 msgstr "Perrašyti egzistuojančius failus"
 
 #  i18n-hint: fps is "frames per second"
-#. i18n-hint: fps is "frames per second"
+#  i18n-hint: fps is "frames per second"
 #: ../src/FormatSelection.cpp:32
 msgid "PAL frames 25 fps"
 msgstr "PAL kadrai 25 fps"
 
 #  i18n-hint: fps is "frames per second",
 #  and the other letters are for hours, minutes, seconds, frames
-#. i18n-hint: fps is "frames per second",
+#  i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:35
 msgid "PAL h:mm:ss:ff 25 fps"
 msgstr "PAL val:mm:ss:kadrai 25 fps"
@@ -2941,7 +2941,7 @@ msgid "Page Setup..."
 msgstr "Puslapio Nustatymai..."
 
 #  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
-#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
 #: ../src/TrackPanel.cpp:2807
 #: ../src/TrackPanel.cpp:4733
 msgid "Pan"
@@ -3014,7 +3014,7 @@ msgstr "Fazeris..."
 
 #: ../src/TrackPanel.cpp:838
 msgid "Pitch (EAC)"
-msgstr "Tamsus (EAC)"
+msgstr "Nuolydis (EAC)"
 
 #: ../src/effects/ChangePitch.cpp:262
 msgid "Pitch:   from"
@@ -3231,7 +3231,7 @@ msgstr "Stačiakampis"
 
 #: ../src/EditToolBar.cpp:160
 msgid "Redo"
-msgstr "Sugražinti"
+msgstr "Sugrąžinti"
 
 #: ../src/Menus.cpp:398
 msgid "Remo&ve Tracks"
@@ -3296,7 +3296,7 @@ msgstr "Kartoti %s\tCtrl+R"
 
 #: ../src/Menus.cpp:468
 msgid "Repeat Last Effect\tCtrl+R"
-msgstr "Kartoti Praitą Efektą\tCtrl+R"
+msgstr "Kartoti Buvusį Efektą\tCtrl+R"
 
 #: ../src/effects/Repeat.cpp:222
 msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
@@ -3527,7 +3527,7 @@ msgstr "Apibraukta: %.3lf - %.3lf (%.3lf NTSC kadrai)   %s"
 #: ../src/FormatSelection.cpp:337
 #, c-format
 msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
-msgstr "Apibraukimas: %.3lf - %.3lf (%.3lf PAL kadtai)   %s"
+msgstr "Apibraukimas: %.3lf - %.3lf (%.3lf PAL kadrai)   %s"
 
 #: ../src/FormatSelection.cpp:259
 #, c-format
@@ -3572,7 +3572,7 @@ msgstr "Apibraukimas: %i+%04i - %i+%04i (%i+%04i cdda sektoriai+baitai)   [Priki
 #: ../src/FormatSelection.cpp:790
 #, c-format
 msgid "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr "Apibraukimas: %i+%04i - %i+%04i (%i+%04i cdda sektoriai+baitai)   [Priokibimas Įjungtas]   Padeistas Projekto Dažnis į 44100 dėl cdda"
+msgstr "Apibraukimas: %i+%04i - %i+%04i (%i+%04i cdda sektoriai+baitai)   [Prikibimas Įjungtas]   Pakeistas Projekto Dažnis į 44100 dėl cdda"
 
 #: ../src/FormatSelection.cpp:748
 #, c-format
@@ -3704,7 +3704,7 @@ msgstr "Perkelti į Pradžią\tHome"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Smooth at Sample"
-msgstr "Sulieti pavizdį"
+msgstr "Sulieti pavyzdį"
 
 #  i18n-hint: Set snap-to mode on or off
 #. i18n-hint: Set snap-to mode on or off
@@ -3782,7 +3782,7 @@ msgstr "Išskirti pavadinimuose"
 
 #: ../src/export/ExportMultiple.cpp:612
 msgid "Split files based on:"
-msgstr "Išskyrdtyti failus pagal"
+msgstr "Išskirstyti failus pagal"
 
 #: ../src/TrackPanel.cpp:4131
 #, c-format
@@ -3919,7 +3919,7 @@ msgstr ""
 
 #: ../src/AboutDialog.cpp:108
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr "Tai beta versijos programa. Joje gali pasitaikyti klaidų ir nebaigtų funkcijų. Mes laukiame jūsų raportų, taigi prašau apsilankykite mūsų svetainėje ir atibuokite savo raportus ar pageidavimus."
+msgstr "Tai beta versijos programa. Joje gali pasitaikyti klaidų ir nebaigtų funkcijų. Mes laukiame jūsų raportų, taigi prašau apsilankykite mūsų svetainėje ir atiduokite savo raportus ar pageidavimus."
 
 #: ../src/AboutDialog.cpp:114
 msgid "This is a stable, completed release of Audacity.  However, if you find a bug or have a suggestion, please contact us.  We depend on feedback from users in order to continue to improve Audacity.  For more information, visit our website."
@@ -4114,7 +4114,7 @@ msgstr "Naudojantis pavadinimais/Takelio Pavadinimu"
 #: ../src/AudacityApp.cpp:696
 #, c-format
 msgid "Using block size of %ld\n"
-msgstr "Naudojamas bloko dydžiu %ld\n"
+msgstr "Naudojatis bloko dydžiu %ld\n"
 
 #: ../src/effects/VST/VSTEffect.cpp:410
 msgid "VST Plug-in parameters:"
@@ -4239,7 +4239,7 @@ msgstr ""
 
 #: ../src/TrackPanel.cpp:2378
 msgid "You are not zoomed in enough. Zoom in until you can see the individual samples."
-msgstr "Jūs nepakankamai prisiartinote vaizdą. prisartinkite taip, kad matytumėt taškučius."
+msgstr "Jūs nepakankamai prisiartinote vaizdą. Prisartinkite taip, kad matytumėt taškučius."
 
 #: ../src/Menus.cpp:1225
 msgid "You must select a track first."
@@ -4395,7 +4395,7 @@ msgstr "kairėn"
 
 #: ../src/FormatSelection.cpp:23
 msgid "min:sec"
-msgstr "min:sec"
+msgstr "min:sek"
 
 #: ../src/FormatSelection.cpp:46
 msgid "min:sec (snap to samples)"
