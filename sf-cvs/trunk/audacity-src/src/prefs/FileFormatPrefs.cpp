@@ -133,6 +133,25 @@ PrefsPanel(parent)
       defFormatSizer->Add(mFormatText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
 
+      bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+      
+      mDownMix[ 0 ] = new wxRadioButton(
+         this, -1, _("&Always mix all tracks down to Stereo or Mono channel(s)."),
+         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+          
+      defFormatSizer->Add( mDownMix[ 0 ], 0,
+         wxGROW | wxALL, RADIO_BUTTON_BORDER );
+
+      mDownMix[ 1 ] = new wxRadioButton(
+         this, -1, _("&When exporting more than 2 tracks, save each track as a separate channel."),
+         wxDefaultPosition, wxDefaultSize, 0 );
+      
+      defFormatSizer->Add( mDownMix[ 1 ], 0,
+         wxGROW | wxALL, RADIO_BUTTON_BORDER );
+
+      mDownMix[ 0 ]->SetValue( downMix );
+      mDownMix[ 1 ]->SetValue( !downMix );
+
       topSizer->Add(
          defFormatSizer, 0, 
          wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
@@ -315,6 +334,7 @@ bool FileFormatPrefs::Apply()
    int originalExportFormat = ReadExportFormatPref();
 
    WriteExportFormatPref(mFormat);
+   gPrefs->Write( wxT( "/FileFormats/ExportDownMix" ), mDownMix[ 0 ]->GetValue() );
    
    gPrefs->SetPath(wxT("/FileFormats"));
 
