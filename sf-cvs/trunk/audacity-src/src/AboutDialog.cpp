@@ -42,7 +42,9 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("William Bland (Time Tracks)"), roleContributor);
    AddCredit(wxT("Roger Dannenberg"), roleContributor);
    AddCredit(wxT("Brian Gunlogson"), roleContributor);
+   AddCredit(wxT("Arun Kishore"), roleContributor);
    AddCredit(wxT("Harvey Lubin (Audacity logo)"), roleContributor);
+   AddCredit(wxT("Leland Lucius"), roleContributor);
    AddCredit(wxT("Grek Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);

@@ -314,7 +314,7 @@ static bool DoExport(AudacityProject *project,
          sf_header_extension(format & SF_FORMAT_TYPEMASK);
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, extension);
-      return ExportPCM(project, stereo, fullPath,
+      return ExportPCM(project, stereo ? 2 : 1, fullPath,
                        selectionOnly, t0, t1);
    } break;
    case 1: {
@@ -350,7 +350,7 @@ static bool DoExport(AudacityProject *project,
             sf_header_extension(format & SF_FORMAT_TYPEMASK) + wxT("_tmp");
          wxString tmpWavOuput = MakeFullPath(overwrite,
                                        dir, name, extension);
-         if (ExportPCM(project, stereo, tmpWavOuput,
+         if (ExportPCM(project, stereo ? 2 : 1, tmpWavOuput,
                        selectionOnly, t0, t1)){
             //2. convert the wav to mp3 using tompg.exe
             wxString tompgCmd = wxT("\"") + mpgPath + wxT("\" ") + tmpWavOuput + wxT(" ") + mp3OutputFile + mono + wxT(" -B") + mpgBitrateString;

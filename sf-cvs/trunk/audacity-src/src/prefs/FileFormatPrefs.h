@@ -49,6 +49,7 @@ class FileFormatPrefs:public PrefsPanel {
    AudacityProject *mAudacity;
 
    int mFormat;
+   wxRadioButton *mDownMix[2];
 
    void SetMP3VersionText();
    void SetFormatText();

@@ -40,8 +40,8 @@
 static wxString ExportCommon(AudacityProject *project,
                              wxString format, wxString extension,
                              bool selectionOnly, double *t0, double *t1,
-                             bool *isStereo,
-                             wxString &actualName);
+                             int *numChannels,
+                             wxString &actualName, bool downMix = true);
 
 
                       
@@ -57,8 +57,8 @@ static wxString ExportCommon(AudacityProject *project,
 wxString ExportCommon(AudacityProject *project,
                       wxString format, wxString defaultExtension,
                       bool selectionOnly, double *t0, double *t1,
-                      bool *isStereo,
-                      wxString &actualName)
+                      int *numChannels,
+                      wxString &actualName, bool downMix)
 {
    TrackList *tracks = project->GetTracks();
 
@@ -127,25 +127,35 @@ wxString ExportCommon(AudacityProject *project,
       return wxT("");
    }
    
-   /* Detemine if exported file will be stereo or mono,
+   /* Detemine if exported file will be stereo or mono or multichannel,
       and if mixing will occur */
 
-   bool stereo = false;
-   if (numRight > 0 || numLeft > 0)
-      stereo = true;
+   int channels = numSelected;
+   if( downMix || ( channels <= 2 ) )
+   {
+      if (numRight > 0 || numLeft > 0)
+         channels = 2;
+      else
+         channels = 1;
 
-   numRight += numMono;
-   numLeft += numMono;
+      numRight += numMono;
+      numLeft += numMono;
    
-   if (numLeft > 1 || numRight > 1)
-      if (stereo) {
-         ShowWarningDialog(project, wxT("MixStereo"),
-                           _("Your tracks will be mixed down to two stereo channels in the exported file."));
-      }
-      else {
-         ShowWarningDialog(project, wxT("MixMono"),
-                           _("Your tracks will be mixed down to a single mono channel in the exported file."));
-      }
+      if (numLeft > 1 || numRight > 1)
+         if (channels == 2) {
+            ShowWarningDialog(project, wxT("MixStereo"),
+                              _("Your tracks will be mixed down to two stereo channels in the exported file."));
+         }
+         else {
+            ShowWarningDialog(project, wxT("MixMono"),
+                              _("Your tracks will be mixed down to a single mono channel in the exported file."));
+         }
+   }
+   else
+   {
+      ShowWarningDialog(project, wxT("MixMulti"), _("Each of your tracks will be "
+               "saved as separate channels in the exported file."));
+   }
 
    /* Prepare and display the filename selection dialog */
 
@@ -282,7 +292,7 @@ wxString ExportCommon(AudacityProject *project,
 
    gPrefs->Write(wxT("/DefaultExportPath"), path);
 
-   *isStereo = stereo;
+   *numChannels = channels;
 
    /*
     * To be even MORE safe, return a temporary file name based
@@ -310,23 +320,24 @@ bool Export(AudacityProject *project,
    wxString actualName;
    bool     success;
    int      format;
-   bool     stereo;
+   int      numChannels;
    
 	try {  //lda
 
    format = ReadExportFormatPref();
-                         
+
    formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
    extension = wxT(".") + sf_header_extension(format & SF_FORMAT_TYPEMASK);
 
+   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
    fName = ExportCommon(project, formatStr, extension,
-                        selectionOnly, &t0, &t1, &stereo,
-                        actualName);
+                        selectionOnly, &t0, &t1, &numChannels,
+                        actualName, downMix);
 
    if (fName == wxT(""))
       return false;
 
-   success = ::ExportPCM(project, stereo, fName,
+   success = ::ExportPCM(project, numChannels, fName,
                          selectionOnly, t0, t1);
 
    if (success && actualName != fName)
@@ -346,7 +357,7 @@ bool ExportLossy(AudacityProject *project,
                  bool selectionOnly, double t0, double t1)
 {
    wxString fName;
-   bool stereo;
+   int numChannels;
    wxString actualName;
    bool     success = false;
    wxString format = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
@@ -354,25 +365,25 @@ bool ExportLossy(AudacityProject *project,
 	try { //lda
    if( format == wxT("MP3") ) {
       fName = ExportCommon(project, wxT("MP3"), wxT(".mp3"),
-                           selectionOnly, &t0, &t1, &stereo,
+                           selectionOnly, &t0, &t1, &numChannels,
                            actualName);
 
       if (fName == wxT(""))
          return false;
 
-      success = ::ExportMP3(project, stereo, fName,
+      success = ::ExportMP3(project, (numChannels == 2), fName,
                             selectionOnly, t0, t1);
    }
    else if( format == wxT("OGG") ) {
 #ifdef USE_LIBVORBIS
       fName = ExportCommon(project, wxT("OGG"), wxT(".ogg"),
-                           selectionOnly, &t0, &t1, &stereo,
+                           selectionOnly, &t0, &t1, &numChannels,
                            actualName);
 
       if (fName == wxT(""))
          return false;
 
-      success = ::ExportOGG(project, stereo, fName,
+      success = ::ExportOGG(project, (numChannels == 2), fName,
                       selectionOnly, t0, t1);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
@@ -382,13 +393,13 @@ bool ExportLossy(AudacityProject *project,
 #ifdef __WXGTK__
       wxString extension = gPrefs->Read( wxT("/FileFormats/ExternalProgramExportExtension"), wxT("") );
       fName = ExportCommon(project, wxT("External Program"), wxT(".") + extension,
-                           selectionOnly, &t0, &t1, &stereo,
+                           selectionOnly, &t0, &t1, &numChannels,
                            actualName);
 
       if (fName == wxT(""))
          return false;
 
-      success = ::ExportCL(project, stereo, fName,
+      success = ::ExportCL(project, (numChannels == 2), fName,
                            selectionOnly, t0, t1);
 #else
       wxMessageBox(_("Command-line exporting is only supported on UNIX"));

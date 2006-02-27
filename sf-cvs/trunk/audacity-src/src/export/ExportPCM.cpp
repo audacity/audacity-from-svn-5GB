@@ -42,7 +42,7 @@
 #endif
 
 bool ExportPCM(AudacityProject *project,
-               bool stereo, wxString fName,
+               int numChannels, wxString fName,
                bool selectionOnly, double t0, double t1)
 {
    double       rate = project->GetRate();
@@ -60,7 +60,7 @@ bool ExportPCM(AudacityProject *project,
 
    info.samplerate = (unsigned int)(rate + 0.5);
    info.frames = (unsigned int)((t1 - t0)*rate + 0.5);
-   info.channels = stereo? 2: 1;
+   info.channels = numChannels;
    info.format = sf_format;
    info.sections = 1;
    info.seekable = 0;

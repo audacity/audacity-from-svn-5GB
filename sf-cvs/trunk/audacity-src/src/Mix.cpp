@@ -495,21 +495,30 @@ sampleCount Mixer::Process(int maxToProcess)
       for(j=0; j<mNumChannels; j++)
          channelFlags[j] = 0;
 
-      switch(track->GetChannel()) {
-      case Track::MonoChannel:
-      default:
-         for(j=0; j<mNumChannels; j++)
-            channelFlags[j] = 1;
-         break;
-      case Track::LeftChannel:
-         channelFlags[0] = 1;
-         break;
-      case Track::RightChannel:
-         if (mNumChannels >= 2)
-            channelFlags[1] = 1;
+      //for now, ignore left and right when downmixing is not required
+      if( mNumChannels > 2 ) {
+         if( i < mNumChannels )
+            channelFlags[ i ] = 1;
          else
+            channelFlags[ 0 ] = 1; //extra channels mixed to first channel
+      }
+      else {
+         switch(track->GetChannel()) {
+         case Track::MonoChannel:
+         default:
+            for(j=0; j<mNumChannels; j++)
+               channelFlags[j] = 1;
+            break;
+         case Track::LeftChannel:
             channelFlags[0] = 1;
-         break;
+            break;
+         case Track::RightChannel:
+            if (mNumChannels >= 2)
+               channelFlags[1] = 1;
+            else
+               channelFlags[0] = 1;
+            break;
+         }
       }
 
       if (mTimeTrack ||

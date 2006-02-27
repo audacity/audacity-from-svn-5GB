@@ -471,7 +471,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
-      return ::ExportPCM(project, false, filename, false, 0.0, endTime);
+      return ::ExportPCM(project, 1, filename, false, 0.0, endTime);
    } else if (command == wxT("ExportOgg")){
 #ifdef USE_LIBVORBIS
       filename.Replace(wxT(".mp3"), wxT(".ogg"), false);
