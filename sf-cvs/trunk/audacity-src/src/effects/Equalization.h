@@ -12,6 +12,7 @@
 #ifndef __AUDACITY_EFFECT_EQUALIZATION__
 #define __AUDACITY_EFFECT_EQUALIZATION__
 #define NUMBER_OF_BANDS 31
+#define NUM_PTS 180
 
 #include <wx/button.h>
 #include <wx/panel.h>
@@ -199,11 +200,16 @@ public:
    virtual bool EqualizationDialog::CalcFilter();
 
    void EnvelopeUpdated();
-   static const float thirdOct[];
+   static const double thirdOct[];
    wxRadioButton *mFaderOrDraw[2];
+   wxChoice *mInterpChoice;
    int M;
    float dBMin;
    float dBMax;
+   double whens[NUM_PTS];
+   double whensFreq[NUM_PTS];
+   double whenSliders[NUMBER_OF_BANDS+1];
+   int bandsInUse;
 
 private:
    void MakeEqualizationDialog();
@@ -214,7 +220,9 @@ private:
    void Select(int sel);
    void setCurve(Envelope *env, int currentCurve);
    void setCurve(Envelope *env);
-   void graphicEQ(Envelope *env);
+   void GraphicEQ(Envelope *env);
+   void spline(double x[], double y[], int n, double y2[]);
+   double splint(double x[], double y[], int n, double y2[], double xr);
    void LayoutEQSliders();
 
    // XMLTagHandler callback methods for loading and saving
@@ -238,6 +246,7 @@ private:
       ID_PREVIEW,
       drawRadioID,
       sliderRadioID,
+      ID_INTERP,
       ID_SLIDER   // needs to come last
    };
 
@@ -247,11 +256,13 @@ private:
    void OnSize( wxSizeEvent &event );
    void OnErase( wxEraseEvent &event );
    void OnSlider( wxCommandEvent &event );
+   void OnInterp( wxCommandEvent &event );
    void OnSliderM( wxCommandEvent &event );
    void OnSliderDBMAX( wxCommandEvent &event );
    void OnSliderDBMIN( wxCommandEvent &event );
    void OnDrawRadio(wxCommandEvent &event );
    void OnSliderRadio(wxCommandEvent &event );
+   void ErrMin(void);
    void OnCurve( wxCommandEvent &event );
    void OnSaveAs( wxCommandEvent &event );
    void OnDelete( wxCommandEvent &event );
@@ -270,6 +281,8 @@ private:
    long mWindowSize;
    bool mDirty;
    wxSlider * m_sliders[NUMBER_OF_BANDS];
+   int m_sliders_old[NUMBER_OF_BANDS];
+   double m_EQVals[NUMBER_OF_BANDS+1];
 
    EqualizationPanel *mPanel;
    Envelope *mEnvelope;
