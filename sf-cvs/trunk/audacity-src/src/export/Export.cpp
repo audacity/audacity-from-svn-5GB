@@ -153,8 +153,7 @@ wxString ExportCommon(AudacityProject *project,
    }
    else
    {
-      ShowWarningDialog(project, wxT("MixMulti"), _("Each of your tracks will be "
-               "saved as separate channels in the exported file."));
+      ShowWarningDialog(project, wxT("MixMulti"), _("Each of your tracks will be saved as separate channels in the exported file."));
    }
 
    /* Prepare and display the filename selection dialog */

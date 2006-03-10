@@ -202,7 +202,7 @@ FLACImportFileHandle::FLACImportFileHandle(wxString name):
 
 bool FLACImportFileHandle::Init()
 {
-   bool success = mFile->set_filename(mName.fn_str());
+   bool success = mFile->set_filename(mName.mb_str());
    if (!success) {
       return false;
    }
