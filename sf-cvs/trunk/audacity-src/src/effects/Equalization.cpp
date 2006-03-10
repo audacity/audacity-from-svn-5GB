@@ -34,6 +34,7 @@
 #include <wx/msgdlg.h>
 #include <wx/brush.h>
 #include <wx/dcmemory.h>
+#include <wx/event.h>
 #include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/choice.h>
@@ -49,6 +50,7 @@
 #if wxUSE_TOOLTIPS
 #include <wx/tooltip.h>
 #endif
+#include <wx/utils.h>
 
 #include <math.h>
 
@@ -56,7 +58,7 @@
 WX_DEFINE_OBJARRAY( EQPointArray );
 WX_DEFINE_OBJARRAY( EQCurveArray );
 
-const float EqualizationDialog::thirdOct[] =
+const double EqualizationDialog::thirdOct[] =
 {
    20., 25., 31., 40., 50., 63., 80., 100., 125., 160., 200.,
    250., 315., 400., 500., 630., 800., 1000., 1250., 1600., 2000.,
@@ -639,6 +641,7 @@ BEGIN_EVENT_TABLE(EqualizationDialog,wxDialog)
                       ID_SLIDER + NUMBER_OF_BANDS - 1,
                       wxEVT_COMMAND_SLIDER_UPDATED,
                       EqualizationDialog::OnSlider)
+   EVT_CHOICE( ID_INTERP, EqualizationDialog::OnInterp )
 
    EVT_CHOICE( ID_CURVE, EqualizationDialog::OnCurve )
    EVT_BUTTON( ID_SAVEAS, EqualizationDialog::OnSaveAs )
@@ -695,6 +698,17 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    // Set initial curve
    setCurve( mEnvelope );
 
+   bandsInUse = NUMBER_OF_BANDS;
+   double loLog = log10(mLoFreq);
+   double stepLog = (log10(mHiFreq) - loLog)/((double)NUM_PTS-1.);
+   for(int i=0; i<NUM_PTS-1; i++)
+   {
+      whens[i] = (double)i/(NUM_PTS-1.);
+      whensFreq[i] = pow(10., loLog + i*stepLog);   //actual freq for this position
+   }
+   whens[NUM_PTS-1] = 1.;
+   whenSliders[NUMBER_OF_BANDS] = 1.;
+   m_EQVals[NUMBER_OF_BANDS] = 0.;
 }
 
 //
@@ -943,6 +957,8 @@ void EqualizationDialog::MakeEqualizationDialog()
       szrG->Add( m_sliders[i], 0, wxEXPAND|wxALIGN_CENTER );
       szrG->Add(0, 0, 0); // horizontal spacer - used to put EQ sliders in correct position
       m_sliders[i]->Connect(wxEVT_ERASE_BACKGROUND,wxEraseEventHandler(EqualizationDialog::OnErase));
+      m_sliders_old[i] = 0;
+      m_EQVals[i] = 0.;
    }
    szrV->Add( szrG, 0, wxEXPAND|wxALIGN_LEFT|wxALL, 0 );
 
@@ -963,7 +979,16 @@ void EqualizationDialog::MakeEqualizationDialog()
    mFaderOrDraw[1] = new wxRadioButton(
          this, sliderRadioID, _("Graphic EQ"),
          wxDefaultPosition, wxDefaultSize, 0 );
-   szrH->Add( mFaderOrDraw[1], 0, wxRIGHT, 80 );
+   szrH->Add( mFaderOrDraw[1], 0, wxRIGHT, 4 );
+
+   wxString interpChoiceStrings[3] = { _("B-spline"), _("Cosine"), _("Cubic") };
+
+   mInterpChoice = new wxChoice(this, ID_INTERP,
+                             wxDefaultPosition, wxDefaultSize,
+                             3, interpChoiceStrings);
+
+   mInterpChoice->SetSelection(0);
+   szrH->Add( mInterpChoice, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 80 );
 
    // -------------------------------------------------------------------
    // ROW 5b: Filter length grouping
@@ -1496,24 +1521,48 @@ void EqualizationDialog::WriteXML(int depth, FILE *fp)
 void EqualizationDialog::OnSlider(wxCommandEvent &event)
 {
    wxSlider *s = (wxSlider *)event.GetEventObject();
-   graphicEQ(mEnvelope);
-#if wxUSE_TOOLTIPS
    for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
    {
       if( i == NUMBER_OF_BANDS )
          break;
       if( s == m_sliders[i])
       {
+         int posn = m_sliders[i]->GetValue();
+         if( wxGetKeyState(WXK_SHIFT) )
+         {
+            if( posn > m_sliders_old[i] )
+               m_EQVals[i] += (float).1;
+            else
+               if( posn < m_sliders_old[i] )
+                  m_EQVals[i] -= .1f;
+         }
+         else
+            m_EQVals[i] += (posn - m_sliders_old[i]);
+         if( m_EQVals[i] > 20. )
+            m_EQVals[i] = 20.;
+         if( m_EQVals[i] < -20. )
+            m_EQVals[i] = -20.;
+         int newPosn = (int)m_EQVals[i];
+         m_sliders[i]->SetValue( newPosn );
+         m_sliders_old[i] = newPosn;
+#if wxUSE_TOOLTIPS
          wxString tip;
          if( thirdOct[i] < 1000.)
-            tip.Printf( wxT("%dHz\n%ddB"), (int)thirdOct[i], m_sliders[i]->GetValue() );
+            tip.Printf( wxT("%dHz\n%.1fdB"), (int)thirdOct[i], m_EQVals[i] );
          else
-            tip.Printf( wxT("%gkHz\n%ddB"), thirdOct[i]/1000., m_sliders[i]->GetValue() );
+            tip.Printf( wxT("%gkHz\n%.1fdB"), thirdOct[i]/1000., m_EQVals[i] );
          s->SetToolTip(tip);
+#endif
          break;
       }
    }
-#endif
+   GraphicEQ(mEnvelope);
+}
+
+void EqualizationDialog::OnInterp(wxCommandEvent &event)
+{
+   if(mFaderOrDraw[1]->GetValue())
+      GraphicEQ(mEnvelope);
 }
 
 void EqualizationDialog::LayoutEQSliders()
@@ -1547,62 +1596,190 @@ void EqualizationDialog::LayoutEQSliders()
    RefreshRect(wxRect(szrG->GetPosition(),szrGSize));
 }
 
-void EqualizationDialog::graphicEQ(Envelope *env)
+void EqualizationDialog::GraphicEQ(Envelope *env)
 {
    double loLog = log10(mLoFreq);
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
-   int bandsInUse = 0;
 
-   while(thirdOct[bandsInUse] <= mHiFreq) {
-      bandsInUse++;
-      if(bandsInUse == NUMBER_OF_BANDS)
-         break;
-   }
+   int width = NUM_PTS;
 
-   int width = (bandsInUse - 1) * 6 + 1;   //7 points per slider
-
-   double stepLog = (log10(mHiFreq) - loLog)/((double)width-1.);
-   double freq;   //actual freq corresponding to x position
-   double value = 0.0;
-   int minF = 0;
-   int maxF = 0;
+   double value, dist, span, s;
    env->Flatten(0.);
    env->SetTrackLen(1.0);
 
-   for(int i=0; i<width; i++)
+   int n = mInterpChoice->GetSelection();
+   switch( n )
    {
-      freq = pow(10., loLog + i*stepLog);   //actual freq for this pixel
-      if(freq > thirdOct[bandsInUse-1])
+      case 0:  // B-spline
+      {
+         int minF = 0;
+         for(int i=0; i<NUM_PTS; i++)
+         {
+            while( (whenSliders[minF] < whens[i]) & (minF < bandsInUse) )
+               minF++;
+            minF--;
+            if( minF < 0 ) //before first slider
+            {
+               dist = whens[i] - whenSliders[0];
+               span = whenSliders[1] - whenSliders[0];
+               s = dist/span;
+               if( s < -1.5 )
+                  value = 0.;
+               else
+                  if( s < -.5 )
+                     value = m_EQVals[0]*(s + 1.5)*(s + 1.5)/2.;
+                  else
+                     value = m_EQVals[0]*(.75 - s*s) + m_EQVals[1]*(s + .5)*(s + .5)/2.;
+            }
+            else
+            {
+               if( whens[i] > whenSliders[bandsInUse-1] )   //after last fader
+               {
+                  dist = whens[i] - whenSliders[bandsInUse-1];
+                  span = whenSliders[bandsInUse-1] - whenSliders[bandsInUse-2];
+                  s = dist/span;
+                  if( s > 1.5 )
+                     value = 0.;
+                  else
+                     if( s > .5 )
+                        value = m_EQVals[bandsInUse-1]*(s - 1.5)*(s - 1.5)/2.;
+                     else
+                        value = m_EQVals[bandsInUse-1]*(.75 - s*s) +
+                                 m_EQVals[bandsInUse-2]*(s - .5)*(s - .5)/2.;
+               }
+               else  //normal case
+               {
+                  dist = whens[i] - whenSliders[minF];
+                  span = whenSliders[minF+1] - whenSliders[minF];
+                  s = dist/span;
+                  if(s < .5 )
+                  {
+                     value = m_EQVals[minF]*(0.75 - s*s);
+                     if( minF+1 < bandsInUse )
+                        value += m_EQVals[minF+1]*(s+.5)*(s+.5)/2.;
+                     if( minF-1 >= 0 )
+                        value += m_EQVals[minF-1]*(s-.5)*(s-.5)/2.;
+                  }
+                  else
+                  {
+                     value = m_EQVals[minF]*(s-1.5)*(s-1.5)/2.;
+                     if( minF+1 < bandsInUse )
+                        value += m_EQVals[minF+1]*(.75-(1.-s)*(1.-s));
+                     if( minF+2 < bandsInUse )
+                        value += m_EQVals[minF+2]*(s-.5)*(s-.5)/2.;
+                  }
+               }
+            }
+            if(whens[i]==0.)
+               env->Move( 0., value );
+            env->Insert( whens[i], value );
+         }
+         env->Move( 1., value );
          break;
-      double when = (log10(freq) - loLog)/denom;   //scaled to env
-      for(int j=0;j<bandsInUse;j++)
-      {   //search for lower slider
-         if(thirdOct[j] > freq )
-         {
-            minF = j-1;
-            break;
-         }
       }
-      for(int j=bandsInUse-1;j>=0;j--)
-      {   //search for upper slider
-         if(thirdOct[j] < freq )
+
+      case 1:  // Cosine squared
+      {
+         int minF = 0;
+         for(int i=0; i<NUM_PTS; i++)
          {
-            maxF = j+1;
-            break;
+            while( (whenSliders[minF] < whens[i]) & (minF < bandsInUse) )
+               minF++;
+            minF--;
+            if( minF < 0 ) //before first slider
+            {
+               dist = whenSliders[0] - whens[i];
+               span = whenSliders[1] - whenSliders[0];
+               if( dist < span )
+                  value = m_EQVals[0]*(1. + cos(M_PI*dist/span))/2.;
+               else
+                  value = 0.;
+            }
+            else
+            {
+               if( whens[i] > whenSliders[bandsInUse-1] )   //after last fader
+               {
+                  span = whenSliders[bandsInUse-1] - whenSliders[bandsInUse-2];
+                  dist = whens[i] - whenSliders[bandsInUse-1];
+                  if( dist < span )
+                     value = m_EQVals[bandsInUse-1]*(1. + cos(M_PI*dist/span))/2.;
+                  else
+                     value = 0.;
+               }
+               else  //normal case
+               {
+                  span = whenSliders[minF+1] - whenSliders[minF];
+                  dist = whenSliders[minF+1] - whens[i];
+                  value = m_EQVals[minF]*(1. + cos(M_PI*(span-dist)/span))/2. +
+                       m_EQVals[minF+1]*(1. + cos(M_PI*dist/span))/2.;
+               }
+            }
+            if(whens[i]==0.)
+               env->Move( 0., value );
+            env->Insert( whens[i], value );
          }
+         env->Move( 1., value );
+         break;
       }
-      double span = (log10(thirdOct[maxF]) - log10(thirdOct[minF]))/denom;
-      double dist = (log10(thirdOct[maxF]) - log10(freq))/denom;
-      value = m_sliders[minF]->GetValue()*(1. + cos(M_PI*(span-dist)/span))/2. +
-              m_sliders[maxF]->GetValue()*(1. + cos(M_PI*dist/span))/2.;
-      if(i==0)
-         env->Move( 0., value );
-      env->Insert( when, value );
+
+      case 2:  // Cubic Spline
+      {
+         double y2[NUMBER_OF_BANDS];
+         double aa=log10(20.);
+         float aaa=log10(20.);
+         double aaaa=aa-aaa;
+         m_EQVals[bandsInUse] = m_EQVals[bandsInUse-1];
+         spline(whenSliders, m_EQVals, bandsInUse+1, y2);
+         for(double xf=0; xf<1.; xf+=1./NUM_PTS)
+         {
+            env->Insert(xf, splint(whenSliders, m_EQVals, bandsInUse+1, y2, xf));
+         }
+//         env->Move( 1., env->GetValue( ((double)NUM_PTS-1.)/(double)NUM_PTS ) );
+         break;
+      }
    }
-   env->Move( 1., value );
+
    mPanel->RecalcRequired = true;
    mPanel->Refresh( false );
+}
+
+void EqualizationDialog::spline(double x[], double y[], int n, double y2[])
+{
+   int i;
+   double p, sig, u[NUMBER_OF_BANDS];
+
+   y2[0] = 0.;  //
+   u[0] = 0.;   //'natural' boundary conditions
+   for(i=1;i<n-1;i++)
+   {
+      sig = ( x[i] - x[i-1] ) / ( x[i+1] - x[i-1] );
+      p = sig * y2[i-1] + 2.;
+      y2[i] = (sig - 1.)/p;
+      u[i] = ( y[i+1] - y[i] ) / ( x[i+1] - x[i] ) - ( y[i] - y[i-1] ) / ( x[i] - x[i-1] );
+      u[i] = (6.*u[i]/( x[i+1] - x[i-1] ) - sig * u[i-1]) / p;
+   }
+   y2[n-1] = 0.;
+   for(i=n-2;i>=0;i--)
+      y2[i] = y2[i]*y2[i+1] + u[i];
+}
+
+double EqualizationDialog::splint(double x[], double y[], int n, double y2[], double xr)
+{
+   double a, b, h;
+   static double xlast = 0.;   // remember last x value requested
+   static int k = 0;           // and which interval we were in
+
+   if( xr < xlast )
+      k = 0;                   // gone back to start, (or somewhere to the left)
+   xlast = xr;
+   while( (x[k] <= xr) && (k < n-1) )
+      k++;
+   k--;
+   h = x[k+1] - x[k];
+   a = ( x[k+1] - xr )/h;
+   b = (xr - x[k])/h;
+   return( a*y[k]+b*y[k+1]+((a*a*a-a)*y2[k]+(b*b*b-b)*y2[k+1])*h*h/6.);
 }
 
 void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
@@ -1613,19 +1790,27 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    double deltadB = 0.1;
    double dx, dy, dx1, dy1, err;
    mEnvelope->GetPoints( when, value, numPoints );
-   int i, j;
-   for(i=0,j=0;j<numPoints-2;i++,j++)
+   int j;
+   bool flag = true;
+   while (flag)
    {
-      dx = when[i+2] - when[i];
-      dy = value[i+2] - value[i];
-      dx1 = when[i+1] - when[i];
-      dy1 = dy * dx1 / dx;
-      err = fabs(value[i+1] - (value[i] + dy1));
-      if( err < deltadB )
-      {   // within < deltadB dB?
-         mEnvelope->Delete(j+1);
-         numPoints--;
-         j--;
+      flag = false;
+      int numDeleted = 0;
+      mEnvelope->GetPoints( when, value, numPoints );
+      for(j=0;j<numPoints-2;j++)
+      {
+         dx = when[j+2+numDeleted] - when[j+numDeleted];
+         dy = value[j+2+numDeleted] - value[j+numDeleted];
+         dx1 = when[j+numDeleted+1] - when[j+numDeleted];
+         dy1 = dy * dx1 / dx;
+         err = fabs(value[j+numDeleted+1] - (value[j+numDeleted] + dy1));
+         if( err < deltadB )
+         {   // within < deltadB dB?
+            mEnvelope->Delete(j+1);
+            numPoints--;
+            numDeleted++;
+            flag = true;
+         }
       }
    }
    // set 'custom' as the selected curve
@@ -1633,6 +1818,8 @@ void EqualizationDialog::OnDrawRadio(wxCommandEvent &evt)
    szrV->Show(szrC,true);
    szrV->Show(szrG,false);
    Layout();
+   mPanel->RecalcRequired = true;   // it may have changed slightly due to the deletion of points
+   mPanel->Refresh( false );
 }
 
 void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
@@ -1640,18 +1827,37 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    double loLog = log10(mLoFreq);
    double hiLog = log10(mHiFreq);
    double denom = hiLog - loLog;
-   for (int i = 0; thirdOct[i] <= mHiFreq; ++i)
-   {   //MJS need s a bit of work - LMS algorithm?
-      if( i == NUMBER_OF_BANDS )
+
+   bandsInUse = 0;
+   while(thirdOct[bandsInUse] <= mHiFreq) {
+      bandsInUse++;
+      if(bandsInUse == NUMBER_OF_BANDS)
          break;
-      float value = mEnvelope->GetValue((log10(thirdOct[i])-loLog)/denom);
-      m_sliders[i]->SetValue((int)floor(value + .5));
+   }
+
+   for (int i = 0; i<bandsInUse; ++i)
+   {
+      if( thirdOct[i] == mLoFreq )
+         whenSliders[i] = 0.;
+      else
+         whenSliders[i] = (log10(thirdOct[i])-loLog)/denom;
+      m_EQVals[i] = mEnvelope->GetValue(whenSliders[i]);    //set initial values of sliders
+      if( m_EQVals[i] > 20.)
+         m_EQVals[i] = 20.;
+      if( m_EQVals[i] < -20.)
+         m_EQVals[i] = -20.;
+   }
+   ErrMin();                  //move sliders about to minimise error
+   for (int i = 0; i<bandsInUse; ++i)
+   {
+      m_sliders[i]->SetValue((int)(m_EQVals[i]+.5)); //actually set slider positions
+      m_sliders_old[i] = m_sliders[i]->GetValue();
 #if wxUSE_TOOLTIPS
       wxString tip;
       if( thirdOct[i] < 1000.)
-         tip.Printf( wxT("%dHz\n%ddB"), (int)thirdOct[i], m_sliders[i]->GetValue() );
+         tip.Printf( wxT("%dHz\n%.1fdB"), (int)thirdOct[i], m_EQVals[i] );
       else
-         tip.Printf( wxT("%gkHz\n%ddB"), thirdOct[i]/1000., m_sliders[i]->GetValue() );
+         tip.Printf( wxT("%gkHz\n%.1fdB"), thirdOct[i]/1000., m_EQVals[i] );
       m_sliders[i]->SetToolTip(tip);
 #endif
    }
@@ -1667,7 +1873,70 @@ void EqualizationDialog::OnSliderRadio(wxCommandEvent &evt)
    {
       Fit();
    }
-   graphicEQ(mEnvelope);
+   GraphicEQ(mEnvelope);
+}
+
+void EqualizationDialog::ErrMin(void)
+{
+   double vals[NUM_PTS];
+   int i;
+   double error;
+   double oldError;
+   double m_EQValsOld;
+   double correction = 1.6;
+   bool flag;
+   int j=0;
+
+   for(i=0; i < NUM_PTS; i++)
+      vals[i] = mEnvelope->GetValue(whens[i]);
+
+   //   Do error minimisation
+   error = 0.;
+   GraphicEQ(mEnvelope);
+   for(i=0; i < NUM_PTS; i++)   //calc initial error
+   {
+      double err = vals[i] - mEnvelope->GetValue(whens[i]);
+      error += err*err;
+   }
+   oldError = error;
+   while( j < bandsInUse*12 )  //loop over the sliders a number of times
+   {
+      i = j%bandsInUse;       //use this slider
+      if( (j > 0) & (i == 0) )
+      {
+         if( correction > 0 )
+            correction = -correction;     //go down
+         else
+            correction = -correction/2.;  //go up half as much
+      }
+      error = oldError;    //force through 'while' the first time
+      flag = true;
+      while( (error <= oldError) & flag )
+      {
+         oldError = error;
+         m_EQValsOld = m_EQVals[i];
+         m_EQVals[i] += correction;    //move fader value
+         if( m_EQVals[i] > 20. )
+         {
+            m_EQVals[i] = 20.;
+            flag = false;
+         }
+         if( m_EQVals[i] < -20. )
+         {
+            m_EQVals[i] = -20.;
+            flag = false;
+         }
+         GraphicEQ(mEnvelope);         //calculate envelope
+         error = 0.;
+         for(int k=0; k < NUM_PTS; k++)  //calculate error
+         {
+            double err = vals[k] - mEnvelope->GetValue(whens[k]);
+            error += err*err;
+         }
+      }
+      m_EQVals[i] = m_EQValsOld;   //last one didn't work
+      j++;  //try next slider
+   }
 }
 
 void EqualizationDialog::OnSliderM(wxCommandEvent &event)
