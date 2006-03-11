@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Simplified Chinese Translation Project for Audacity website\n"
 "Report-Msgid-Bugs-To: Audacity Translation mail-list <audacity-translation@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2005-12-03 15:34-0800\n"
-"PO-Revision-Date: 2005-12-16 15:21+0800\n"
+"POT-Creation-Date: 2006-02-26 09:55-0800\n"
+"PO-Revision-Date: 2006-03-08 14:00+0800\n"
 "Last-Translator: Liu Xiao Xi <liouxiao@hotmail.com>\n"
 "Language-Team: Simplified Chinese Translation Team. <liouxiao@hotmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgid ""
 "\n"
 "<p>Free software is not just free of cost (like “free beer”).  It is <b>free as in freedom</b> (like “free speech”).  Free software gives you the freedom to use a program, study how it works, improve it, and share it with others.  For more information, visit the <a href=\"http://www.fsf.org/\">Free Software Foundation</a>.</p>\n"
 "\n"
-"<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.org/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
+"<p>Programs like Audacity are also called <b>open source software</b>, because their source code is available for anyone to study or use.  There are thousands of other free and open source programs, including the <a href=\"http://www.mozilla.com/\">Mozilla</a> web browser, the <a href=\"http://www.openoffice.org/\">OpenOffice.org</a> office suite, and entire <a title=\"Ubuntu Linux\" href=\"http://www.ubuntulinux.org/\">Linux-based operating systems</a>.</p>"
 msgstr ""
 "<h3>关于自由(Free)软件</h3>\n"
 "\n"
@@ -315,23 +315,23 @@ msgstr "贡献者"
 msgid "Translators"
 msgstr "翻译人员"
 
-#: about/credits.php:89
+#: about/credits.php:94
 msgid "Libraries"
 msgstr "库"
 
-#: about/credits.php:90
+#: about/credits.php:95
 msgid "Audacity is based on code from the following projects:"
 msgstr "Audacity基于来自以下项目的代码:"
 
-#: about/credits.php:104
+#: about/credits.php:109
 msgid "Thanks"
 msgstr "致谢"
 
-#: about/credits.php:105
+#: about/credits.php:110
 msgid "There are many other people and organizations we would like to thank. Many of these have contributed code, patches, feedback, money, time, or other things to the project.  Others simply produce tools that made this whole thing possible."
 msgstr "我们还要感谢许多其它的人及组织。他们中许多人都为该项目贡献了代码、补丁、反馈、金钱、时间或其它东西。其他人不过制作了工具，以使这一切成为可能。"
 
-#: about/credits.php:127
+#: about/credits.php:132
 msgid "(Let us know if we're forgetting anyone!)"
 msgstr "(如果我们忘记了某人的话请通知我们!)"
 
@@ -546,7 +546,7 @@ msgstr "我们也希望各界有识的公司团体能够有兴趣<a href=\"http:
 
 #: community/translation.php:16
 msgid "A group of volunteers is translating the free Audacity sound editor into several languages.  If you would like to help, please join the <a href=\"../contact/lists#translation\">audacity-translation mailing list</a> and introduce yourself."
-msgstr "一群志愿者在把Audacity音频编辑器软件翻译为不同语言。如果您想参与，请加入<a href=\"../contact/lists#translation\">audacity-translation邮件列表</a>并做个自我介绍。"
+msgstr "热心的志愿者们在把Audacity音频编辑器软件翻译为不同语言。如果您想参与，请加入<a href=\"../contact/lists#translation\">audacity-translation邮件列表</a>并做个自我介绍。"
 
 #: community/translation.php:18
 msgid "Resources for Translators"
@@ -3348,7 +3348,7 @@ msgstr "跨平台的免费声音编辑器"
 
 #: index.php:50
 msgid "Audacity&reg; is free, open source software for recording and editing sounds.  It is available for Mac OS X, Microsoft Windows, GNU/Linux, and other operating systems.  <a href=\"about/\">Learn more about Audacity...</a>"
-msgstr "Audacity是一款用于录音和编辑声音的、免费的开放源码软件。它可以运行于Mac OS X、Microsoft Windows、GNU/Linux和其它操作系统。<a href=\"about/\">更多关于Audacity的信息...</a>"
+msgstr "Audacity&reg;是一款用于录音和编辑声音的、免费的开放源码软件。它可以运行于Mac OS X、Microsoft Windows、GNU/Linux和其它操作系统。<a href=\"about/\">更多关于Audacity的信息...</a>"
 
 #: index.php:55
 #: index.php:59
