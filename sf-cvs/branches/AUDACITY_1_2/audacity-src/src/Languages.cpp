@@ -96,6 +96,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["bn"] = "Bangla";
    localLanguageName["ca"] = "Catalan";
    localLanguageName["cs"] = "Czech";
+   localLanguageName["cy"] = "Cymraeg";
    localLanguageName["da"] = "Dansk";
    localLanguageName["de"] = "Deutsch";
    localLanguageName["el"] = "Ellinika";
@@ -120,6 +121,7 @@ void GetLanguages(wxArrayString &langCodes, wxArrayString &langNames)
    localLanguageName["sk"] = "Slovensky";
    localLanguageName["sl"] = "Slovenscina";
    localLanguageName["sv"] = "Svenska";
+   localLanguageName["tr"] = "Turkce";
    localLanguageName["uk"] = "Ukrainska";
    localLanguageName["zh"] = "Chinese (Simplified)";
    localLanguageName["zh_TW"] = "Chinese (Traditional)";
