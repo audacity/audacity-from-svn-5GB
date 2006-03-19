@@ -418,6 +418,43 @@ bool RtApi :: probeDeviceOpen( int device, StreamMode mode, int channels,
   return FAILURE;
 }
 
+bool RtApi :: isStreamRunning()
+{
+  return stream_.state == STREAM_RUNNING;
+}
+
+void RtApi :: tickStream()
+{
+  // Subclasses which do not provide their own implementation of
+  // getStreamTime should call the inherited tickStream and a simple
+  // version here will be supported.
+
+  stream_.streamTime += (stream_.bufferSize * 1.0 / stream_.sampleRate);
+
+#if defined(HAVE_GETTIMEOFDAY)
+  gettimeofday(&stream_.lastTickTimestamp, NULL);
+#endif
+}
+
+double RtApi :: getStreamTime()
+{
+#if defined(HAVE_GETTIMEOFDAY)
+  // Return a very accurate estimate of the stream time by
+  // adding in the elapsed time since the last tick.
+  struct timeval then;
+  struct timeval now;
+
+  if (stream_.state != RUNNING || stream.streamTime == 0.0)
+    return stream.streamTime;
+  gettimeofday(&now, NULL);
+  then = stream_.lastTickTimestamp;
+  return stream_.streamTime +
+    ((now.tv_sec + 0.000001 * now.tv_usec) -
+     (then.tv_sec + 0.000001 * then.tv_usec));     
+#else
+  return stream_.streamTime;
+#endif
+}
 
 // *************************************************** //
 //
@@ -1377,6 +1414,8 @@ void RtApiOss :: tickStream()
 
   if (stream_.callbackInfo.usingCallback && stopStream)
     this->stopStream();
+
+  RtApi::tickStream();
 }
 
 void RtApiOss :: setStreamCallback(RtAudioCallback callback, void *userData)
@@ -2472,6 +2511,8 @@ void RtApiCore :: callbackEvent( AudioDeviceID deviceId, void *inData, void *out
     pthread_cond_signal(&handle->condition);
 
   MUTEX_UNLOCK(&stream_.mutex);
+
+  RtApi::tickStream();
 }
 
 void RtApiCore :: setStreamCallback(RtAudioCallback callback, void *userData)
@@ -3065,6 +3106,8 @@ void RtApiJack :: tickStream()
   pthread_cond_wait(&handle->condition, &stream_.mutex);
 
   MUTEX_UNLOCK(&stream_.mutex);
+
+  RtApi::tickStream();
 }
 
 void RtApiJack :: callbackEvent( unsigned long nframes )
@@ -4259,6 +4302,8 @@ void RtApiAlsa :: tickStream()
 
   if (stream_.callbackInfo.usingCallback && stopStream)
     this->stopStream();
+
+  RtApi::tickStream();
 }
 
 void RtApiAlsa :: setStreamCallback(RtAudioCallback callback, void *userData)
@@ -5073,6 +5118,8 @@ void RtApiAsio :: tickStream()
   MUTEX_UNLOCK(&stream_.mutex);
   WaitForMultipleObjects(1, &handle->condition, FALSE, INFINITE);
   ResetEvent( handle->condition );
+
+  RtApi::tickStream();
 }
 
 void RtApiAsio :: callbackEvent(long bufferIndex)
@@ -6568,6 +6615,8 @@ void RtApiDs :: tickStream()
 
   if (stream_.callbackInfo.usingCallback && stopStream)
     this->stopStream();
+
+  RtApi::tickStream();
 }
 
 // Definitions for utility functions and callbacks
@@ -7499,6 +7548,8 @@ void RtApiAl :: tickStream()
 
   if (stream_.callbackInfo.usingCallback && stopStream)
     this->stopStream();
+
+  RtApi::tickStream();
 }
 
 void RtApiAl :: setStreamCallback(RtAudioCallback callback, void *userData)
@@ -7637,6 +7688,7 @@ void RtApi :: clearStreamInfo()
   stream_.bufferSize = 0;
   stream_.nBuffers = 0;
   stream_.userFormat = 0;
+  stream_.streamTime = 0.0;
   for ( int i=0; i<2; i++ ) {
     stream_.device[i] = 0;
     stream_.doConvertBuffer[i] = false;
@@ -8201,3 +8253,13 @@ void RtApi :: byteSwapBuffer( char *buffer, int samples, RtAudioFormat format )
     }
   }
 }
+
+// Indentation settings for Vim and Emacs
+//
+// Local Variables:
+// c-basic-offset: 2
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=2 sw=2
+

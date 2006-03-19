@@ -62,6 +62,11 @@
 
 #endif
 
+#if defined(LINUX_ALSA) || defined(LINUX_OSS) || defined(LINUX_JACK) || defined(MACOSX_CORE)
+#include <sys/time.h>
+#define HAVE_GETTIMEOFDAY 1
+#endif
+
 // This global structure type is used to pass callback information
 // between the private RtAudio stream structure and global callback
 // handling functions.
@@ -138,11 +143,13 @@ public:
   int getDeviceCount(void);
   RtAudioDeviceInfo getDeviceInfo( int device );
   char * const getStreamBuffer();
-  virtual void tickStream() = 0;
+  virtual void tickStream();
   virtual void closeStream();
   virtual void startStream() = 0;
   virtual void stopStream() = 0;
   virtual void abortStream() = 0;
+  virtual bool isStreamRunning();
+  virtual double getStreamTime();
 
 protected:
 
@@ -183,6 +190,12 @@ protected:
     RtAudioFormat deviceFormat[2]; // Playback and record, respectively.
     StreamMutex mutex;
     CallbackInfo callbackInfo;
+    double streamTime;      // Number of elapsed seconds since the
+               // stream started 
+
+#if defined(HAVE_GETTIMEOFDAY)
+    struct timeval lastTickTimestamp;
+#endif
 
     RtApiStream()
       :apiHandle(0), userBuffer(0), deviceBuffer(0) {}
@@ -479,6 +492,21 @@ public:
   */
   void abortStream() { rtapi_->abortStream(); };
 
+  //! Returns true is the stream is running, and false if it is stopped.
+  
+  /*!
+    An RtError will be thrown if a driver error occurs or if called
+    when no stream is open.
+  */
+  bool isStreamRunning() { return rtapi_->isStreamRunning(); };
+
+  //! Returns the number of elapsed seconds since the stream was started.
+
+  /*!
+    An RtError will be thrown if a driver error occurs or if called
+    when no stream is open.
+  */
+  double getStreamTime() { return rtapi_->getStreamTime(); };
 
  protected:
 
@@ -712,3 +740,13 @@ public:
 //#define __RTAUDIO_DEBUG__
 
 #endif
+
+// Indentation settings for Vim and Emacs
+//
+// Local Variables:
+// c-basic-offset: 2
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=2 sw=2
+
