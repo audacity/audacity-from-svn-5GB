@@ -94,6 +94,14 @@
 
 <p>When a plug-in returns a list of exactly this form, Audacity will create a new label track and add the labels at those positions.  This style of plug-in is usually of type "analyze".</p>
 
+<p>New!  Beginning with Audacity version 1.3.1, you can now optionally return both a start and an end time, like this:</p>
+
+<pre>
+  ((0.0 25.0 "start") (30.0 45.0 "middle") (60.0 75.0 "end"))
+</pre>
+
+<p>Note that labels are allowed to overlap in Audacity 1.3; the end time of one can be after the start time of the next.</p>
+
 <h3>Processing stereo tracks</h3>
 
 <p>Nyquist represents stereo tracks as an array of sounds (not a list).  Many Nyquist functions automatically work with these arrays, but not all, so sometimes you may find it necessary to split up a stereo array, or reassemble one.  Here are some useful functions:</p>
