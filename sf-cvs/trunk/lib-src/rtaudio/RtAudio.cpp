@@ -2081,17 +2081,24 @@ bool RtApiCore :: probeDeviceOpen( int device, StreamMode mode, int channels,
       return FAILURE;
     }
 
-    // Set the sample rate and data format id.
-    description.mSampleRate = (double) sampleRate;
-    description.mFormatID = kAudioFormatLinearPCM;
-    err = AudioDeviceSetProperty( id, NULL, iChannel, isInput,
-                                  kAudioDevicePropertyStreamFormat,
-                                  dataSize, &description );
-    if (err != noErr) {
-      sprintf( message_, "RtApiCore: OS-X error setting sample rate or data format for device (%s).",
-               devices_[device].name.c_str() );
-      error(RtError::DEBUG_WARNING);
-      return FAILURE;
+    // Only try to change it if the sample rate is not within 1.0 of
+    // the rate we want, or if the format is not Linear PCM.
+    if (fabs(description.mSampleRate - (double)sampleRate) > 1.0 ||
+        description.mFormatID != kAudioFormatLinearPCM) {
+
+      // Set the sample rate and data format id.
+      description.mSampleRate = (double) sampleRate;
+      description.mFormatID = kAudioFormatLinearPCM;
+      
+      err = AudioDeviceSetProperty( id, NULL, iChannel, isInput,
+                                    kAudioDevicePropertyStreamFormat,
+                                    dataSize, &description );
+      if (err != noErr) {
+        sprintf( message_, "RtApiCore: OS-X error setting sample rate or data format for device (%s).",
+                 devices_[device].name.c_str() );
+        error(RtError::DEBUG_WARNING);
+        return FAILURE;
+      }
     }
   }
 
