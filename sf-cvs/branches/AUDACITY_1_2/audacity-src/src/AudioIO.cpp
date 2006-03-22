@@ -29,6 +29,10 @@
 #include <malloc.h>
 #endif
 
+#ifdef __WXMAC__
+extern int PaOSX_Leave_Device_Alone_Mode;
+#endif
+
 #include <wx/log.h>
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>
@@ -339,6 +343,12 @@ void AudioIO::HandleDeviceChange()
    mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
+   // dmazzoni: this is a hack to tell PortAudio to not actually
+   // modify the device settings, but to just open as-is.
+   #ifdef __WXMAC__
+   PaOSX_Leave_Device_Alone_Mode = 1;
+   #endif
+
    PortAudioStream *stream;
    int error;
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
@@ -352,6 +362,10 @@ void AudioIO::HandleDeviceChange()
                             highestSampleRate, 512, 1, paClipOff | paDitherOff,
                             audacityAudioCallback, NULL);
    }
+
+   #ifdef __WXMAC__
+   PaOSX_Leave_Device_Alone_Mode = 0;
+   #endif
 
    if( error )
       return;
