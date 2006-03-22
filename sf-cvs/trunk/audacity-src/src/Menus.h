@@ -151,6 +151,7 @@ void OnSilence();
 void OnSplit();
 void OnSplitLabels();
 void OnJoin();
+void OnDisjoin();
 void OnDuplicate();
 
 void OnSelectAll();

@@ -367,6 +367,7 @@ void AudacityProject::CreateMenusAndCommands()
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
 
    c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
+   c->AddItem(wxT("Disjoin"),        _("&Disjoin"),                       FN(OnDisjoin));
    
    c->AddItem(wxT("Duplicate"),      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
 
@@ -2312,6 +2313,30 @@ void AudacityProject::OnSplitDelete()
                               mViewInfo.sel0 - mViewInfo.sel1,
                               mViewInfo.sel0),
              _("Split Delete"));
+
+   RedrawProject();
+}
+
+void AudacityProject::OnDisjoin()
+{
+   TrackListIterator iter(mTracks);
+
+   Track *n = iter.First();
+
+   while (n) {
+      if (n->GetSelected()) {
+         if (n->GetKind() == Track::Wave)
+         {
+            ((WaveTrack*)n)->Disjoin(mViewInfo.sel0, mViewInfo.sel1);
+         }
+      }
+      n = iter.Next();
+   }
+
+   PushState(wxString::Format(_("Disjoined %.2f seconds at t=%.2f"),
+                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel0),
+             _("Disjoin"));
 
    RedrawProject();
 }

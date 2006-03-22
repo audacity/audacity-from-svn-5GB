@@ -17,7 +17,7 @@ class AudacityProject;
 
 bool ExportOGG(
    AudacityProject *project,
-   bool stereo,
+   int numChannels,
    wxString fName,
    bool selectionOnly,
    double t0, double t1);

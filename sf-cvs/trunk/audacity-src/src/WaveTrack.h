@@ -124,6 +124,7 @@ class WaveTrack: public Track {
    virtual bool SplitCut   (double t0, double t1, Track **dest);
    virtual bool SplitDelete(double t0, double t1);
    virtual bool Join       (double t0, double t1);
+   virtual bool Disjoin    (double t0, double t1);
 
    virtual bool Trim (double t0, double t1);
 

@@ -367,11 +367,7 @@ bool EffectNyquist::Process()
    mDebugOutput = wxT("");
    while (mCurTrack[0]) {
       mCurNumChannels = 1;
-      double trackStart = mCurTrack[0]->GetStartTime();
-      double trackEnd = mCurTrack[0]->GetEndTime();
-      double t0 = mT0 < trackStart? trackStart: mT0;
-      double t1 = mT1 > trackEnd? trackEnd: mT1;
-      if (t1 >= t0) {
+      if (mT1 >= mT0) {
          if (mCurTrack[0]->GetLinked()) {
             mCurNumChannels = 2;
 
@@ -382,11 +378,11 @@ bool EffectNyquist::Process()
                             wxOK | wxCENTRE, mParent);
                return false;
             }
-            mCurStart[1] = mCurTrack[1]->TimeToLongSamples(t0);
+            mCurStart[1] = mCurTrack[1]->TimeToLongSamples(mT0);
          }
 
-         mCurStart[0] = mCurTrack[0]->TimeToLongSamples(t0);
-         longSampleCount end = mCurTrack[0]->TimeToLongSamples(t1);
+         mCurStart[0] = mCurTrack[0]->TimeToLongSamples(mT0);
+         longSampleCount end = mCurTrack[0]->TimeToLongSamples(mT1);
          mCurLen = (sampleCount)(end - mCurStart[0]);
 
          success = ProcessOne();
@@ -502,9 +498,10 @@ bool EffectNyquist::ProcessOne()
    if (mDebug)
       nyx_capture_output(65536);
 
-   nyx_set_input_audio(StaticGetCallback, (void *)this,
-                       mCurNumChannels,
-                       mCurLen, mCurTrack[0]->GetRate());
+   if( !( mFlags & INSERT_EFFECT ) )
+      nyx_set_input_audio(StaticGetCallback, (void *)this,
+                          mCurNumChannels,
+                          mCurLen, mCurTrack[0]->GetRate());
 
    wxString cmd;
 
