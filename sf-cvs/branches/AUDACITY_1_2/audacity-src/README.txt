@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.4
+Version 1.2.5-pre
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -263,6 +263,27 @@ Known issues/problems:
     with accented characters in their names will cause problems.
 
 -------------------------------------------------------------
+
+Changes in 1.2.5:
+
+  * Fixed bug in Generate Silence which caused it to apply to all tracks
+    instead of just the selected ones.
+
+  * Mac OS X: audio device opening code has been rewritten.  First, it
+    is much more conservative about changing device settings; it will
+    not change settings when you open the program or close the
+    preferences dialog anymore, and it will not change the settings when
+    you begin playback/recording if the current settings are adequate.
+    When it does change the settings, it should work much better on
+    devices such as the Griffin iMic, ART USB Phono Plus,
+    and Ion iMX02 USB.
+
+  * Minor updates to help files.
+
+  * New or updated translations: Bulgarian (bg), Galician (gl),
+    Traditional Chinese (zh_TW), Simplified Chinese (zh), Slovenian (sl),
+    Swedish (sv), Bangladeshi (bn), Slovakian (sk), Romanian (ro),
+    Lithuanian (lt), Welsh (cy), and Turkish (tr).
 
 Changes in 1.2.4:
 
