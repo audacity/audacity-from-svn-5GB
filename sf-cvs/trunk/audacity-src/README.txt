@@ -261,6 +261,17 @@ Known issues/problems:
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
 
+  * MacOS X only: Some users find that after running Audacity other media
+    players don't produce any sound or crash. Audacity tries to select the best
+    quality settings your system is capable of, to give the best recordings
+    possible. Some sound drivers also retain these settings as defaults for
+    other applications, which don't know how to cope
+ 
+    To get round this, make sure that your sound device is set up (in the Apple
+    Sound and Midi Setup) to work in stereo, 16bits, with a sample rate of
+    44100Hz or 48000Hz.  See also 
+      http://docs.info.apple.com/article.html?artnum=300832
+
   * Windows only: Audacity is incompatible with some professional
     sound cards and may crash if one of these cards is the default
     when you open Audacity.  As a workaround, make a different
@@ -268,8 +279,8 @@ Known issues/problems:
     us know if this affects you so that we can track down and
     solve the problem.
 
-    Also note that the Windows installer will replace 1.0.0 installations, 
-    but not the 1.1.x beta installations.
+    Also note that the Windows installer will not replace 1.2.x installations,
+    but will install alongside them.
 
 -------------------------------------------------------------
 
