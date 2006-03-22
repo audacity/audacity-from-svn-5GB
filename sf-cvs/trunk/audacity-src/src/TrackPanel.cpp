@@ -2706,6 +2706,9 @@ void TrackPanel::RemoveTrack(Track * toRemove)
          t = iter.Next();
    }
 
+   if( iter.First() == NULL )
+      SetFocusedTrack( NULL );
+
    MakeParentPushState(
       wxString::Format(_("Removed track '%s.'"),
       name.c_str()),

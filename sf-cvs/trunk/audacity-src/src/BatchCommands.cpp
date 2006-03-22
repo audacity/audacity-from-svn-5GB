@@ -478,7 +478,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
-      return ::ExportOGG(project, false, filename, false, 0.0, endTime);
+      return ::ExportOGG(project, 1, filename, false, 0.0, endTime);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
       return false;

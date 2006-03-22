@@ -329,7 +329,7 @@ static bool DoExport(AudacityProject *project,
 #ifdef USE_LIBVORBIS
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, wxT(".ogg"));
-      return ExportOGG(project, stereo, fullPath,
+      return ExportOGG(project, stereo ? 2 : 1, fullPath,
                        selectionOnly, t0, t1);
 #else
       return false;

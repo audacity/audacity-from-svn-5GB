@@ -41,7 +41,7 @@ static wxString ExportCommon(AudacityProject *project,
                              wxString format, wxString extension,
                              bool selectionOnly, double *t0, double *t1,
                              int *numChannels,
-                             wxString &actualName, bool downMix = true);
+                             wxString &actualName, int maxNumChannels = 2);
 
 
                       
@@ -58,7 +58,7 @@ wxString ExportCommon(AudacityProject *project,
                       wxString format, wxString defaultExtension,
                       bool selectionOnly, double *t0, double *t1,
                       int *numChannels,
-                      wxString &actualName, bool downMix)
+                      wxString &actualName, int maxNumChannels)
 {
    TrackList *tracks = project->GetTracks();
 
@@ -130,8 +130,10 @@ wxString ExportCommon(AudacityProject *project,
    /* Detemine if exported file will be stereo or mono or multichannel,
       and if mixing will occur */
 
+   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+   
    int channels = numSelected;
-   if( downMix || ( channels <= 2 ) )
+   if( downMix || ( channels <= 2 ) || ( maxNumChannels < channels ) )
    {
       if (numRight > 0 || numLeft > 0)
          channels = 2;
@@ -328,10 +330,9 @@ bool Export(AudacityProject *project,
    formatStr = sf_header_name(format & SF_FORMAT_TYPEMASK);
    extension = wxT(".") + sf_header_extension(format & SF_FORMAT_TYPEMASK);
 
-   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
    fName = ExportCommon(project, formatStr, extension,
                         selectionOnly, &t0, &t1, &numChannels,
-                        actualName, downMix);
+                        actualName, 256);
 
    if (fName == wxT(""))
       return false;
@@ -377,12 +378,12 @@ bool ExportLossy(AudacityProject *project,
 #ifdef USE_LIBVORBIS
       fName = ExportCommon(project, wxT("OGG"), wxT(".ogg"),
                            selectionOnly, &t0, &t1, &numChannels,
-                           actualName);
+                           actualName, 255);
 
       if (fName == wxT(""))
          return false;
 
-      success = ::ExportOGG(project, (numChannels == 2), fName,
+      success = ::ExportOGG(project, numChannels, fName,
                       selectionOnly, t0, t1);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));

@@ -37,7 +37,7 @@
 #define SAMPLES_PER_RUN 8192
 
 bool ExportOGG(AudacityProject *project,
-               bool stereo, wxString fName,
+               int numChannels, wxString fName,
                bool selectionOnly, double t0, double t1)
 {
    double    rate    = project->GetRate();
@@ -68,7 +68,7 @@ bool ExportOGG(AudacityProject *project,
 
    // Encoding setup
    vorbis_info_init(&info);
-   vorbis_encode_init_vbr(&info, stereo ? 2 : 1, int(rate + 0.5), quality);
+   vorbis_encode_init_vbr(&info, numChannels, int(rate + 0.5), quality);
 
    vorbis_comment_init(&comment);
    // If we wanted to add comments, we would do it here
@@ -122,7 +122,7 @@ bool ExportOGG(AudacityProject *project,
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
                             t0, t1,
-                            stereo? 2: 1, SAMPLES_PER_RUN, false,
+                            numChannels, SAMPLES_PER_RUN, false,
                             rate, floatSample);
 
    while(!cancelling && !eos) {
@@ -135,12 +135,9 @@ bool ExportOGG(AudacityProject *project,
       }
       else {
          
-         float *left = (float *)mixer->GetBuffer(0);
-         memcpy(vorbis_buffer[0], left, sizeof(float)*SAMPLES_PER_RUN);
-
-         if(stereo) {
-            float *right = (float *)mixer->GetBuffer(1);
-            memcpy(vorbis_buffer[1], right, sizeof(float)*SAMPLES_PER_RUN);
+         for( int i = 0; i < numChannels; i++ ) {            
+            float *temp = (float *)mixer->GetBuffer(i);
+            memcpy(vorbis_buffer[i], temp, sizeof(float)*SAMPLES_PER_RUN);
          }
 
          // tell the encoder how many samples we have

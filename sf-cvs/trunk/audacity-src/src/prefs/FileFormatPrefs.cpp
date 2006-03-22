@@ -78,7 +78,7 @@ PrefsPanel(parent)
          wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
           
       copyOrEditSizer->Add( mCopyOrEdit[0], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
 
       mCopyOrEdit[1] = new wxRadioButton(
          this, -1, _("&Read directly from the original file (faster)"),
@@ -88,9 +88,37 @@ PrefsPanel(parent)
 	  mCopyOrEdit[1]->SetValue(false);
    
       copyOrEditSizer->Add( mCopyOrEdit[1], 0,
-         wxGROW|wxLEFT | wxRIGHT, RADIO_BUTTON_BORDER );
+         wxGROW|wxALL, RADIO_BUTTON_BORDER );
 
       topSizer->Add( copyOrEditSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
+   }
+
+   {
+      wxStaticBoxSizer *downMixSizer = new wxStaticBoxSizer(
+         new wxStaticBox(this, -1,
+            _("When exporting more than two tracks")),
+         wxVERTICAL );
+
+      bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+      
+      mDownMix[ 0 ] = new wxRadioButton(
+         this, -1, _("&Always mix all tracks down to Stereo or Mono channel(s)."),
+         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
+          
+      downMixSizer->Add( mDownMix[ 0 ], 0,
+         wxGROW | wxALL, RADIO_BUTTON_BORDER );
+
+      mDownMix[ 1 ] = new wxRadioButton(
+         this, -1, _("&Save each track as a separate channel. ( Only for Multichannel Formats )"),
+         wxDefaultPosition, wxDefaultSize, 0 );
+      
+      downMixSizer->Add( mDownMix[ 1 ], 0,
+         wxGROW | wxALL, RADIO_BUTTON_BORDER );
+
+      mDownMix[ 0 ]->SetValue( downMix );
+      mDownMix[ 1 ]->SetValue( !downMix );
+
+      topSizer->Add( downMixSizer, 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
    }
 
    {
@@ -132,25 +160,6 @@ PrefsPanel(parent)
 
       defFormatSizer->Add(mFormatText, 0,
                           wxALL, GENERIC_CONTROL_BORDER);
-
-      bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
-      
-      mDownMix[ 0 ] = new wxRadioButton(
-         this, -1, _("&Always mix all tracks down to Stereo or Mono channel(s)."),
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-          
-      defFormatSizer->Add( mDownMix[ 0 ], 0,
-         wxGROW | wxALL, RADIO_BUTTON_BORDER );
-
-      mDownMix[ 1 ] = new wxRadioButton(
-         this, -1, _("&When exporting more than 2 tracks, save each track as a separate channel."),
-         wxDefaultPosition, wxDefaultSize, 0 );
-      
-      defFormatSizer->Add( mDownMix[ 1 ], 0,
-         wxGROW | wxALL, RADIO_BUTTON_BORDER );
-
-      mDownMix[ 0 ]->SetValue( downMix );
-      mDownMix[ 1 ]->SetValue( !downMix );
 
       topSizer->Add(
          defFormatSizer, 0, 

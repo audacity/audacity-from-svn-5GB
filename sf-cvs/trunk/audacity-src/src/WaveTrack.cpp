@@ -677,6 +677,93 @@ bool WaveTrack::InsertSilence(double t, double len)
    return true;
 }
 
+bool WaveTrack::Disjoin(double t0, double t1)
+{
+   sampleCount minSamples = TimeToLongSamples( WAVETRACK_MERGE_POINT_TOLERANCE );
+   sampleCount maxAtOnce = 1048576;
+   float *buffer = new float[ maxAtOnce ];
+   typedef struct SEQ_NODE
+   {
+      double start, end;
+      SEQ_NODE *next;
+   }SeqNode;
+   SeqNode *head = NULL;
+
+   wxBusyCursor busy;
+   
+   for( WaveClipList::Node *it = GetClipIterator(); it; it = it->GetNext() )
+   {
+      WaveClip *clip = it->GetData();
+
+      double startTime = clip->GetStartTime();
+      double endTime = clip->GetEndTime();
+
+      if( endTime < t0 || startTime > t1 )
+         continue;
+
+      if( t0 > startTime )
+         startTime = t0;
+      if( t1 < endTime )
+         endTime = t1;
+      
+      longSampleCount seqStart = -1;
+      longSampleCount start, end;
+      clip->TimeToSamplesClip( startTime, &start );
+      clip->TimeToSamplesClip( endTime, &end );
+       
+      longSampleCount len = ( end - start );
+      for( longSampleCount done = 0; done < len; done += maxAtOnce )
+      {
+         sampleCount numSamples = maxAtOnce;
+         if( done + maxAtOnce > len )
+            numSamples = len - done;
+           
+         clip->GetSamples( ( samplePtr )buffer, floatSample, start + done, 
+               numSamples );
+         for( sampleCount i = 0; i < numSamples; i++ )
+         {
+            longSampleCount curSamplePos = start + done + i;
+            if( buffer[ i ] == 0.0 )
+            {
+               if( seqStart == -1 )
+                  seqStart = curSamplePos;
+            }
+            else
+            {
+               if( seqStart != -1 && curSamplePos - seqStart > minSamples )
+               {
+                  if( !head )
+                  {
+                     head = new SeqNode;
+                     head->next = NULL;
+                  }
+                  else
+                  {
+                     SeqNode *temp = new SeqNode;
+                     temp->next = head;
+                     head = temp;
+                  }
+                  head->start = seqStart / GetRate() + clip->GetStartTime();
+                  head->end = ( curSamplePos - 1 ) / GetRate() + clip->GetStartTime();
+               }
+               seqStart = -1;
+            }
+         }
+      }
+   }
+ 
+   while( head )
+   {
+      SplitDelete( head->start, head->end );
+      SeqNode *temp = head;
+      head = head->next;
+      delete temp;
+   }
+   
+   delete[] buffer;
+   return true;
+}
+
 bool WaveTrack::Join(double t0, double t1)
 {
    // Merge all WaveClips overlapping selection into one
