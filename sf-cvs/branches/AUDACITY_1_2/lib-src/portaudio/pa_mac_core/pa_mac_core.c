@@ -1,5 +1,5 @@
 /*
- * $Id: pa_mac_core.c,v 1.9.2.3 2005-11-13 00:05:38 dmazzoni Exp $
+ * $Id: pa_mac_core.c,v 1.9.2.4 2006-03-22 12:03:54 dmazzoni Exp $
  * pa_mac_core.c
  * Implementation of PortAudio for Mac OS X Core Audio
  *
@@ -123,7 +123,7 @@ TODO:
 
 #define PRINT(x) { printf x; fflush(stdout); }
 #define PRINT_ERR( msg, err ) PRINT(( msg ": error = 0x%0lX = '%s'\n", (err), ErrorToString(err)) )
-#define DBUG(x)    /* PRINT(x) */
+#define DBUG(x)    PRINT(x)
 #define DBUGBACK(x) /* if( sMaxBackgroundErrorMessages-- > 0 ) PRINT(x) */
 #define DBUGX(x)
 
@@ -920,10 +920,99 @@ static OSStatus PaOSX_CoreAudioIOCallback (AudioDeviceID  inDevice, const AudioT
     return err;
 }
 
+/** dmazzoni: Returns 1 if the given AudioStreamBasicDescription in
+ * newFormat is strictly better than the one in oldFormat */
+static int PaOSX_IsBetterFormat(AudioStreamBasicDescription *newFormat,
+                                AudioStreamBasicDescription *oldFormat,
+                                double desiredRate, int desiredChannels)
+{
+    /* Never prefer a format that is not linear PCM.  If both are not linear PCM,
+       we simply don't indicate a preference; better to leave the device alone. */
+    if (newFormat->mFormatID != kAudioFormatLinearPCM)
+        return 0;
+
+    /* If the old format wasn't linear PCM but the new one is, it is clearly superior. */
+    if (oldFormat->mFormatID != kAudioFormatLinearPCM &&
+        newFormat->mFormatID == kAudioFormatLinearPCM)
+        return 1;
+
+    /* Next highest priority is channels.  If the old format didn't have enough
+       channels but this one does, it's better.  Having more than requested doesn't
+       matter. */
+    if (oldFormat->mChannelsPerFrame < desiredChannels &&
+        newFormat->mChannelsPerFrame >= desiredChannels)
+        return 1;
+
+    if (newFormat->mChannelsPerFrame < desiredChannels &&
+        oldFormat->mChannelsPerFrame >= desiredChannels)
+        return 0;
+
+    /* Next, prefer any format that's not a crappy 8-bit quality! */
+    if (oldFormat->mBitsPerChannel == 8 &&
+        newFormat->mBitsPerChannel >= 16)
+        return 1;
+
+    if (newFormat->mBitsPerChannel == 8 &&
+        oldFormat->mBitsPerChannel >= 16)
+        return 0;
+
+    /* A sample rate of "0" means that all possible sample rates within a
+       wide range are supported.  This is preferable to any particular rate. */
+    if (newFormat->mSampleRate == 0 &&
+        oldFormat->mSampleRate != 0)
+        return 1;
+
+    if (newFormat->mSampleRate != 0 &&
+        oldFormat->mSampleRate == 0)
+        return 0;
+
+    if (oldFormat->mSampleRate != 0 &&
+        newFormat->mSampleRate != 0) {
+
+        /* If the desired sample rate is smaller than both choices,
+           don't change the current rate unless we can match it exactly.
+           Otherwise, pick the one that's closer. */
+        
+        if (desiredRate < newFormat->mSampleRate &&
+            desiredRate < oldFormat->mSampleRate)
+        {
+            if (fabs(newFormat->mSampleRate - desiredRate) < 1.0 &&
+                fabs(oldFormat->mSampleRate - desiredRate) >= 1.0)
+                return 1;
+        }
+        else
+        {
+            if (fabs(newFormat->mSampleRate - desiredRate) <
+                fabs(oldFormat->mSampleRate - desiredRate))
+                return 1;
+        }
+    }
+
+    /* Finally, prefer the one with the best sample format, i.e. best quality */
+
+    if (newFormat->mBitsPerChannel >
+        oldFormat->mBitsPerChannel)
+        return 1;
+
+    return 0;
+}
+
+static void PaOSX_Debug_Print_Format(int index, AudioStreamBasicDescription *format)
+{
+    DBUG(("Format %2d: %s %2d-bit %d-channel %6.0f Hz\n",
+          index,
+          format->mFormatID == kAudioFormatLinearPCM? "linear PCM" : "non-PCM   ",
+          format->mBitsPerChannel,
+          format->mChannelsPerFrame,
+          format->mSampleRate));
+}
+
+/* Global variable */
+int PaOSX_Leave_Device_Alone_Mode = 0;
+
 /*******************************************************************/
-/** Attempt to set device sample rate.
- * This is not critical because we use an AudioConverter but we may
- * get better fidelity if we can avoid resampling.
+/** Attempt to set the device to the format we want - number of channels,
+ * sample rate, sample format.  Rewritten by Dominic Mazzoni, March 2006.
  *
  * Only set format once because some devices take time to settle.
  * Return flag indicating whether format changed so we know whether to wait
@@ -932,280 +1021,269 @@ static OSStatus PaOSX_CoreAudioIOCallback (AudioDeviceID  inDevice, const AudioT
  * @return negative error, zero if no change, or one if changed successfully.
  */
 static PaError PaOSX_SetFormat( AudioDeviceID devID, Boolean isInput,
-        double desiredRate, int desiredNumChannels )
+                                double desiredRate, int desiredNumChannels )
 {
-    AudioStreamBasicDescription origDesc;
-    AudioStreamBasicDescription formatDesc;
-    AudioStreamID *streams;
+    AudioStreamID *streams = NULL;
+    AudioStreamBasicDescription *formats = NULL;
     PaError  result = 0;
     OSStatus err;
     Boolean  outWritable;
-    UInt32   outSize;
     UInt32   dataSize;
-    UInt32   supportsMixing;
-    Float64  originalRate;
-    int      originalChannels;
+    int      desiredNumChannelsPerStream;
     int      numStreams;
+    int      streamIndex;
     pid_t    hog_pid;
     pid_t    this_pid = getpid();
     int      did_set_hog_mode = 0;
-    int      i;
 
-    /* Get current device format. This is critical because if we pass
-     * zeros for unspecified fields then the iMic device gets switched to a 16 bit
-     * integer format!!! I don't know if this is a Mac bug or not. But it only
-     * started happening when I upgraded from OS X V10.1 to V10.2 (Jaguar).
-     */
-    dataSize = sizeof(formatDesc);
+    /* dmazzoni: this is a hack to allow Audacity to tell PortAudio
+       not to modify the device under certain circumstances, but just
+       to open it as-is.
+    */
+    if (PaOSX_Leave_Device_Alone_Mode) {
+        DBUG(("Opening device as-is.\n"));
+        return 0;
+    }
+
+    /* Get the device's streams */
+
+    err = AudioDeviceGetPropertyInfo( devID, 0, isInput,
+                                      kAudioDevicePropertyStreams, &dataSize, NULL );
+    if ( err != noErr )
+    {
+        PRINT_ERR("PaOSX_SetFormat: Could not get number of streams.", err);
+        sSavedHostError = err;
+        result = paHostError;
+        goto finish;
+    }
+
+    streams = (AudioStreamID *)malloc(dataSize);
+    if ( !streams )
+    {
+        PRINT_ERR("PaOSX_SetFormat: Could not allocate %d bytes for streams.", dataSize);
+        result = paInsufficientMemory;
+        goto finish;
+    }
+
+    numStreams = dataSize / sizeof(AudioStreamID);
+    DBUG(("PaOSX_SetFormat: numStreams=%d.\n", numStreams ));
+
     err = AudioDeviceGetProperty( devID, 0, isInput,
-                                  kAudioDevicePropertyStreamFormat, &dataSize, &formatDesc);
-    if( err != noErr )
+                                  kAudioDevicePropertyStreams, &dataSize, streams );
+    if ( err != noErr )
+    {
+        PRINT_ERR("PaOSX_SetFormat: Could not get streams.", err);
+        sSavedHostError = err;
+        result = paHostError;
+        goto finish;
+    }    
+
+    desiredNumChannelsPerStream = desiredNumChannels / numStreams;
+    if (desiredNumChannelsPerStream < 1)
+        desiredNumChannelsPerStream = 1;
+
+    DBUG(("PaOSX_SetFormat: desiredNumChannelsPerStream=%d.\n", desiredNumChannelsPerStream));
+
+    /* Loop through all of the streams, and for each one, change it if it would
+       result in a better device configuration given what the user wants.  We assume
+       that a better sample format is always better, all other things being equal.
+    */
+
+    for(streamIndex=0; streamIndex<numStreams; streamIndex++)
+    {
+        AudioStreamBasicDescription *bestFormat;
+        AudioStreamBasicDescription currentFormat;
+        int numFormats;
+        int formatIndex;
+        int bestFormatIndex;
+        int ch = 0;
+
+        DBUG(("Stream %d\n", streamIndex));
+
+        /* Get current format */
+
+        dataSize = sizeof(currentFormat);
+        err = AudioStreamGetProperty( streams[streamIndex], ch,
+                                      kAudioStreamPropertyPhysicalFormat, &dataSize,
+                                      &currentFormat);
+        if ( err != noErr )
         {
-            PRINT_ERR("PaOSX_SetFormat: Could not get format.", err);
+            PRINT_ERR("PaOSX_SetFormat: Could not get current physical format of stream %d.", streamIndex);
             sSavedHostError = err;
-            return paHostError;
+            result = paHostError;
+            goto finish;
         }
 
-    origDesc = formatDesc;
-    originalRate = origDesc.mSampleRate;
-    originalChannels = origDesc.mChannelsPerFrame;
-        
-    // Is it already set to the correct format?
-    if( (originalRate != desiredRate) ||
-        (originalChannels != desiredNumChannels) ||
-        (origDesc.mFormatID != kAudioFormatLinearPCM) ||
-        (origDesc.mFormatFlags & kLinearPCMFormatFlagIsFloat)==0 )
+        PaOSX_Debug_Print_Format(-1, &currentFormat);
+
+        /* Get list of all supported formats */
+
+        err = AudioStreamGetPropertyInfo( streams[streamIndex], ch,
+                                          kAudioStreamPropertyPhysicalFormats, &dataSize, NULL );
+        if ( err != noErr )
         {
-            if (originalRate != desiredRate)
-                DBUG(("PaOSX_SetFormat: try to change sample rate to %f.\n", desiredRate ));
+            free(streams);
+            PRINT_ERR("PaOSX_SetFormat: Could not get number of physical formats for stream %d.", streamIndex);
+            sSavedHostError = err;
+            result = paHostError;
+            goto finish;
+        }
+        
+        formats = (AudioStreamBasicDescription *)malloc(dataSize);
+        if ( !formats )
+        {
+            PRINT_ERR("PaOSX_SetFormat: Could not allocate %d bytes for stream formats.", dataSize);
+            result = paInsufficientMemory;
+            goto finish;
+        }
+        
+        err = AudioStreamGetProperty( streams[streamIndex], ch,
+                                      kAudioStreamPropertyPhysicalFormats, &dataSize, formats );
+        if ( err != noErr )
+        {
+            PRINT_ERR("PaOSX_SetFormat: Could not get all physical formats for stream %d.", streamIndex);
+            sSavedHostError = err;
+            result = paHostError;
+            goto finish;
+        }
+    
+        numFormats = dataSize / sizeof(AudioStreamBasicDescription);
 
-            if (originalChannels != desiredNumChannels)
-                DBUG(("PaOSX_SetFormat: try to set number of channels to %d\n", desiredNumChannels));
+        /* Determine which is the 'best' format using a function that compares two stream
+           descriptions and returns which one is better.  We start by assuming that the
+           current stream format is the best, and only choose another format from the list
+           if it strictly exceeds it, given the user's requests.
 
-            if (formatDesc.mFormatID != kAudioFormatLinearPCM)
-                DBUG(("PaOSX_SetFormat: try to set formatID to linear PCM\n"));
+           bestFormat points to the current best, and bestFormatIndex is its index, which
+           is set to -1 if the current format is the best.
+        */
 
-            if ((formatDesc.mFormatFlags & kLinearPCMFormatFlagIsFloat)==0)
-                DBUG(("PaOSX_SetFormat: try to set formatFlags to float32\n"));
+        bestFormatIndex = -1;
+        bestFormat = &currentFormat;
 
-            // First we try to grab hog mode on the device, because otherwise it won't let
-            // us change the format. -dmazzoni
+        for(formatIndex=0; formatIndex<numFormats; formatIndex++)
+        {
+            PaOSX_Debug_Print_Format(formatIndex, &formats[formatIndex]);
 
-            DBUG(("Checking hog mode\n"));
+            if (PaOSX_IsBetterFormat(&formats[formatIndex], bestFormat,
+                                     desiredRate, desiredNumChannelsPerStream))
+            {
+                DBUG(("Format %d is strictly better than format %d\n", formatIndex, bestFormatIndex));
+                bestFormatIndex = formatIndex;
+                bestFormat = &formats[formatIndex];
+            }
+        }
 
-            outSize = sizeof(hog_pid);
-            err = AudioDeviceGetProperty(devID, 0, isInput,
-                                         kAudioDevicePropertyHogMode, &outSize, &hog_pid);
+        if (bestFormatIndex != -1)
+        {
+            /* We found a better format, and we want to try to modify the device! */
 
-            if (!err) {
-                DBUG(("Current status of hog mode: pid=%d this_pid=%d\n", (int)hog_pid, (int)this_pid));
+            /* First try to "hog" the device */
 
-                if (hog_pid != this_pid) {
+            if (!did_set_hog_mode)
+            {
+
+                dataSize = sizeof(hog_pid);
+                err = AudioDeviceGetProperty(devID, 0, isInput,
+                                             kAudioDevicePropertyHogMode, &dataSize, &hog_pid);
+
+                if (!err && hog_pid != this_pid)
+                {
+                    DBUG(("Current status of hog mode: pid=%d this_pid=%d\n", (int)hog_pid, (int)this_pid));
+
                     hog_pid = this_pid;
                     err = AudioDeviceSetProperty( devID, 0, 0, isInput,
                                                   kAudioDevicePropertyHogMode, sizeof(hog_pid), &hog_pid);
-                    if (!err) {
-                        DBUG(("Successfully set hog mode - new pid=%d!\n", (int)hog_pid));
-       
-                        err = AudioDeviceGetProperty(devID, 0, isInput,
-                                                     kAudioDevicePropertyHogMode, &outSize, &hog_pid);
-                        if (!err) {
-                            DBUG(("Checking new status of hog mode: pid=%d this_pid=%d\n",
-                                  (int)hog_pid, (int)this_pid));
-
-                            did_set_hog_mode = 1;
-                        }
+                    if (!err)
+                    {
+                        DBUG(("Successfully set hog mode.\n"));
+                        did_set_hog_mode = 1;
                     }
                 }
             }
 
-            // Get a list of the device's streams
+            /* Whether we hogged it or not, try to set the format. */
 
-            err = AudioDeviceGetPropertyInfo( devID, 0, isInput,
-                                              kAudioDevicePropertyStreams, &outSize, &outWritable );
-        
-            streams = (AudioStreamID *)malloc(outSize);
-        
-            err = AudioDeviceGetProperty( devID, 0, isInput,
-                                          kAudioDevicePropertyStreams, &outSize, streams);
+            /* If the format has a sample rate of 0, that means it will try to accomodate any rate.
+               Set it to the rate we actually want. */
+            if (bestFormat->mSampleRate == 0)
+                bestFormat->mSampleRate = desiredRate;
 
-            // If that was successful, loop through each stream and set its format to
-            // linear PCM float.
+            dataSize = sizeof(AudioStreamBasicDescription);
+            err = AudioStreamSetProperty( streams[streamIndex], NULL, ch,
+                                          kAudioStreamPropertyPhysicalFormat, dataSize,
+                                          bestFormat );
 
-            if (err) {
-                DBUG(("Couldn't get device's streams!  err=%d\n", err));
+            if (err != noErr)
+            {
+                DBUG(("Successfully set format of stream %d.\n", streamIndex));
+                result = 1;
             }
-            else {
-                numStreams = outSize / sizeof(AudioStreamID);
-
-                for(i=0; i<numStreams; i++) {
-                    memset(&formatDesc, 0, sizeof(AudioStreamBasicDescription));
-               
-                    formatDesc.mFormatID = kAudioFormatLinearPCM;
-
-                    outSize = sizeof(AudioStreamBasicDescription);
-                    err = AudioDeviceGetProperty(devID, 0, isInput, kAudioStreamPropertyPhysicalFormatMatch,
-                                                 &outSize, &formatDesc);
-                    DBUG(("Asked for stream physical format match, got "
-                          "err=%d, rate=%1f, formatID=%s, flags=%d channels=%d\n",
-                          err, 
-                          formatDesc.mSampleRate, FourCharCode2Str(formatDesc.mFormatID),
-                          formatDesc.mFormatFlags, formatDesc.mChannelsPerFrame));
-
-                    if (formatDesc.mFormatID != kAudioFormatLinearPCM) {
-                        DBUG(("Couldn't even get linear PCM!\n"));
-                    }
-                    else {
-                        err = AudioDeviceSetProperty( devID, 0, 0,
-                                                      isInput, kAudioStreamPropertyPhysicalFormat,
-                                                      sizeof(formatDesc), &formatDesc);
-
-                        if (err) {
-                            DBUG(("Could not set stream %d to linear PCM: %s (%d)\n",
-                                  i, FourCharCode2Str(err), err));
-                        }
-                        else {
-                            DBUG(("Successfully set stream %d to linear PCM\n", i));
-                        }
-
-                        if (formatDesc.mSampleRate != desiredRate) {
-                            /* Let's also try to get the sample rate to match */
-
-                            double origRate = formatDesc.mSampleRate;
-                            formatDesc.mSampleRate = desiredRate;
-
-                            err = AudioDeviceGetProperty(devID, 0, isInput,
-                                                         kAudioStreamPropertyPhysicalFormatMatch,
-                                                         &outSize, &formatDesc);
-
-                            if (!err && formatDesc.mFormatID == kAudioFormatLinearPCM &&
-                                formatDesc.mSampleRate != origRate) {
-                                err = AudioDeviceSetProperty( devID, 0, 0,
-                                                              isInput, kAudioStreamPropertyPhysicalFormat,
-                                                              sizeof(formatDesc), &formatDesc);
-                                if (!err) {
-                                    DBUG(("We were able to set the sample rate to %.1f, too!\n",
-                                          formatDesc.mSampleRate));
-                                }
-                            }
-                        }
-                    }
-                }
+            else
+            {
+                DBUG(("Unable to set format of stream %d.\n", streamIndex));
             }
 
-            free(streams);
+            /* Try to set the format for the device itself */
 
-            // Find the closest match to the stream format that we want.
+            err = AudioStreamSetProperty( devID, NULL, ch,
+                                          kAudioStreamPropertyPhysicalFormat, dataSize,
+                                          bestFormat );
 
-            memset(&formatDesc, 0, sizeof(AudioStreamBasicDescription));
-        
-            formatDesc.mFormatID = kAudioFormatLinearPCM;
-
-            /*
-              formatDesc.mSampleRate = desiredRate;
-
-              Since we already set the physical format, we'll definitely get the sample rate
-              we wanted if possible.  And if not, then our converter will do the sample rate
-              conversion anyway.  Either way, it doesn't help to ask for the rate we want, and
-              it could hurt (because some devices will switch into a non-linear-PCM mode to
-              give you the rate you want).
-            */
-
-            /*
-              Should this be in here?  I'm not sure...
-	      (Yes, if not many devices will default to mono instead of stereo...)
-	    */
-
-	    formatDesc.mChannelsPerFrame = desiredNumChannels;
-
-            /*
-              These probably don't matter...
-
-              formatDesc.mBytesPerFrame = formatDesc.mChannelsPerFrame * sizeof(float);
-              formatDesc.mBytesPerPacket = formatDesc.mBytesPerFrame * formatDesc.mFramesPerPacket;
-            */
-
-            outSize = sizeof(AudioStreamBasicDescription);
-            err = AudioDeviceGetProperty(devID, 0, isInput, kAudioDevicePropertyStreamFormatMatch,
-                                         &outSize, &formatDesc);
-            DBUG(("Asked for stream format match, got err=%d, rate=%1f, formatID=%s, flags=%d channels=%d\n",
-                  err, 
-                  formatDesc.mSampleRate, FourCharCode2Str(formatDesc.mFormatID),
-                  formatDesc.mFormatFlags, formatDesc.mChannelsPerFrame));
-
-            // It's absolutely necessary that we get linear PCM.  If not,
-            // we must fail.
-
-            if (formatDesc.mFormatID != kAudioFormatLinearPCM) {
-                DBUG(("Couldn't even get any linear PCM format!!!\n"));
-                result = paSampleFormatNotSupported;
+            if (err != noErr)
+            {
+                DBUG(("Successfully set format of device.\n", streamIndex));
+                result = 1;
             }
-            else {
-                if( formatDesc.mSampleRate == origDesc.mSampleRate &&
-                    formatDesc.mChannelsPerFrame == origDesc.mChannelsPerFrame &&
-                    formatDesc.mFormatID == origDesc.mFormatID &&
-                    formatDesc.mFormatFlags == origDesc.mFormatFlags) {
-                    DBUG(("No need to change the device, it's already in an acceptable format\n"));
-                    result = 0;
-                }
-                else {
-                    DBUG(("Changing device format\n"));
-
-                    DBUG(("Orig: rate=%1f, formatID=%s, flags=%d channels=%d\n",
-                          origDesc.mSampleRate, FourCharCode2Str(origDesc.mFormatID),
-                          origDesc.mFormatFlags, origDesc.mChannelsPerFrame));
-                
-                    DBUG((" New: rate=%1f, formatID=%s, flags=%d channels=%d\n",
-                          formatDesc.mSampleRate, FourCharCode2Str(formatDesc.mFormatID),
-                          formatDesc.mFormatFlags, formatDesc.mChannelsPerFrame));
-
-                    err = AudioDeviceSetProperty( devID, 0, 0,
-                                                  isInput, kAudioDevicePropertyStreamFormat,
-                                                  sizeof(formatDesc), &formatDesc);
-                    if (err) {
-                        DBUG(("Error trying to change device format: %d\n", err));
-
-                        if (did_set_hog_mode)
-                            result = paSampleFormatNotSupported;
-                        else
-                            result = paDeviceUnavailable;
-                    }
-                    else {
-                        DBUG(("Success!\n"));
-                        result = 1;
-                    }
-                }
+            else
+            {
+                DBUG(("Unable to set format of device.\n", streamIndex));
             }
-
-            // Try to turn on mixing if possible (lets other programs play
-            // sounds, too)
-        
-            if (result == 1) {
-                supportsMixing = 1;
-                err = AudioDeviceSetProperty( devID, 0, 0, isInput,
-                                              kAudioDevicePropertySupportsMixing, sizeof(UInt32), &supportsMixing);
-
-                if (err) {
-                    DBUG(("Unable to turn on mixing\n"));
-                }
-                else {
-                    DBUG(("Turned on mixing!\n"));
-                }
-            }
-
-            // Release hog mode if necessary
-
-            if (did_set_hog_mode) {
-                DBUG(("Releasing hog mode.\n"));
-
-                hog_pid = -1;
-                err = AudioDeviceSetProperty( devID, 0, 0, isInput, kAudioDevicePropertyHogMode,
-                                              sizeof(hog_pid), &hog_pid);
-
-                if (!err)
-                    DBUG(("Hog release successful.\n"));
-            }
+            
+        } /* If bestFormatIndex != -1 */
+        else
+        {
+            DBUG(("No need to set stream format, existing format is good enough.\n"));
         }
+    } /* for(streamIndex... */
+
+    /* If we changed the settings, try to turn on mixing if possible (lets other programs play
+       sounds, too */
+    
+    if (result == 1)
+    {
+        UInt32 supportsMixing = 1;
+        err = AudioDeviceSetProperty( devID, 0, 0, isInput,
+                                      kAudioDevicePropertySupportsMixing, sizeof(UInt32), &supportsMixing);
+        
+        if (err) {
+            DBUG(("Unable to turn on mixing\n"));
+        }
+        else {
+            DBUG(("Turned on mixing!\n"));
+        }
+    }
+    
+finish:
+
+    if (streams)
+        free(streams);
+    if (formats)
+        free(formats);
+
+    if (did_set_hog_mode)
+    {
+        hog_pid = -1;
+        err = AudioDeviceSetProperty( devID, 0, 0, isInput, kAudioDevicePropertyHogMode,
+                                      sizeof(hog_pid), &hog_pid );
+
+        if (err != noErr) {
+            DBUG(("Error releasing hog mode.\n"));
+        }
+        else {
+            DBUG(("Hog mode released successfully.\n"));
+        }
+    }
     
     return result;
 }
@@ -2189,4 +2267,14 @@ const PaDeviceInfo* Pa_GetDeviceInfo( PaDeviceID id )
     return &sDeviceInfos[id].paInfo;
 }
 
+
+/* Indentation settings for Vim and Emacs
+ *
+ * Local Variables:
+ * c-basic-offset: 4
+ * indent-tabs-mode: nil
+ * End:
+ *
+ * vim: et sts=4 sw=4
+ */
 
