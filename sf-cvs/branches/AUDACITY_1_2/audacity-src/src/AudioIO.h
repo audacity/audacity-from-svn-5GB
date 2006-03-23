@@ -177,6 +177,9 @@ private:
    volatile bool       mInCallbackFinishedState;
 #endif
    bool                mSoftwarePlaythrough;
+#ifdef __WXMAC__
+   bool                mNoModifyDevice;
+#endif
    double              mLastRecordingOffset;
    unsigned int        mNumCaptureChannels;
    unsigned int        mNumPlaybackChannels;

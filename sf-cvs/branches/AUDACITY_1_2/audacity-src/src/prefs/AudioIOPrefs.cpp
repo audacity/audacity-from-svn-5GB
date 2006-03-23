@@ -67,6 +67,11 @@ PrefsPanel(parent)
    bool swplaythrough;
    gPrefs->Read("SWPlaythrough", &swplaythrough, false);
 
+#ifdef __WXMAC__
+   bool noModifyDevice;
+   gPrefs->Read("NoModifyDevice", &noModifyDevice, false);
+#endif
+
    gPrefs->SetPath("/");
 
    topSizer = new wxBoxSizer( wxVERTICAL );
@@ -245,6 +250,13 @@ PrefsPanel(parent)
    mSWPlaythrough->SetValue(swplaythrough);
    topSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, 2);
 
+#ifdef __WXMAC__
+   mNoModifyDevice = new wxCheckBox(this, -1,
+                                    _("Do not modify audio device settings (such as sample rate)"));
+   mNoModifyDevice->SetValue(noModifyDevice);
+   topSizer->Add(mNoModifyDevice, 0, wxGROW|wxALL, 2);
+#endif
+
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
@@ -285,6 +297,10 @@ bool AudioIOPrefs::Apply()
    #endif
 
    gPrefs->Write("SWPlaythrough", mSWPlaythrough->GetValue());
+
+#ifdef __WXMAC__
+   gPrefs->Write("NoModifyDevice", mNoModifyDevice->GetValue());
+#endif
 
    gPrefs->SetPath("/");
 
