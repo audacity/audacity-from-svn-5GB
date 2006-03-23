@@ -34,6 +34,7 @@ class AudioIOPrefs:public PrefsPanel {
 
    wxCheckBox *mPlaythrough; // Hardware playthrough, currently Mac OS X only
    wxCheckBox *mSWPlaythrough;
+   wxCheckBox *mNoModifyDevice; // Mac OS X only
 
    wxChoice *mRecChoice;
    wxChoice *mPlayChoice;

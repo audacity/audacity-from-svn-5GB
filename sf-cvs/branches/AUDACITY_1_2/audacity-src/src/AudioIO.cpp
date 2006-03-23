@@ -575,6 +575,10 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
    mPortStreamV18 = NULL;
 
+   #ifdef __WXMAC__
+   PaOSX_Leave_Device_Alone_Mode = mNoModifyDevice;
+   #endif
+
    mLastPaError = Pa_OpenStream( &mPortStreamV18,
                                  /* capture parameters */
                                  captureDevice,
@@ -646,6 +650,7 @@ void AudioIO::StartMonitoring(double sampleRate)
       gPrefs->Read("/SamplingRate/DefaultProjectSampleFormat", floatSample);
    gPrefs->Read("/AudioIO/RecordChannels", &captureChannels, 1L);
    gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, false);
    int playbackChannels = 0;
 
    if (mSoftwarePlaythrough)
@@ -701,6 +706,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    #endif
 
    gPrefs->Read("/AudioIO/SWPlaythrough", &mSoftwarePlaythrough, false);
+   gPrefs->Read("/AudioIO/NoModifyDevice", &mNoModifyDevice, false);
 
    mInputMeter = NULL;
    mOutputMeter = NULL;
