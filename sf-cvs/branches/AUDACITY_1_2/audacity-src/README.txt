@@ -278,6 +278,9 @@ Changes in 1.2.5:
     devices such as the Griffin iMic, ART USB Phono Plus,
     and Ion iMX02 USB.
 
+  * Mac OS X: added new Audio I/O preference that lets you tell Audacity
+    to never change any audio device settings.
+
   * Minor updates to help files.
 
   * New or updated translations: Bulgarian (bg), Galician (gl),
