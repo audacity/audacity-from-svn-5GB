@@ -81,19 +81,7 @@ int Importer::Import(wxString fName,
    int numTracks = 0;
 
    wxString extension = fName.AfterLast(wxT('.'));
-   if (extension.IsSameAs(wxT("cda"), false)) {
-      errorMessage = wxT("\"") + fName + wxT("\"") + 
-         _(" is an audio CD file. \nAudacity does not open this type of file.\nTry ripping it to a native audio format that Audacity can import.");
-      return 0;
-   }
-
-   #if 0 // Shouldn't be here.  -dmazzoni
-   //MERGE a test exception.
-   if (extension.IsSameAs(wxT("ThrowExceptionOnImport"), false)) { //lda
-      throw("Exercise Import exception");
-   }
-   #endif
-
+   
    // see if any of the plugins expect this extension and if so give
    // that plugin first dibs
    ImportPluginList::Node *importPluginNode = mImportPluginList->GetFirst();
@@ -172,6 +160,46 @@ int Importer::Import(wxString fName,
          return 0;
       }
       unusableImporterNode = unusableImporterNode->GetNext();
+   }
+
+   /* warnings for unsupported data types */
+
+   // if someone has sent us a .cda file, send them away
+   if (extension.IsSameAs(wxT("cda"), false)) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is an audio CD file. \nAudacity does not open this type of file.\nTry ripping it to a native audio format that Audacity can import.");
+      return 0;
+   }
+
+   // playlist type files
+   if ((extension.IsSameAs(wxT("m3u"), false))||(extension.IsSameAs(wxT("ram"), false))||(extension.IsSameAs(wxT("pls"), false))) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is a playlist file.\nAudacity cannot open this file because it only contains links to other files. You may be able to open it in a text editor and download the actual audio files.");
+      return 0;
+   }
+   //WMA files of various forms
+   if ((extension.IsSameAs(wxT("wmv"), false))||(extension.IsSameAs(wxT("wma"), false))||(extension.IsSameAs(wxT("asf"), false))) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is an Windows Media Audio file. \nAudacity cannot open this type of file to due to patent restrictions. You need to convert it to a supported audio format.");
+      return 0;
+   }
+   //AAC files of various forms (probably not encrypted)
+   if ((extension.IsSameAs(wxT("aac"), false))||(extension.IsSameAs(wxT("m4a"), false))||(extension.IsSameAs(wxT("mpa"), false))) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is an Advanced Audio Coding file. \nAudacity cannot open this type of file. You need to convert it to a supported audio format.");
+      return 0;
+   }
+   // encrypted itunes files
+   if ((extension.IsSameAs(wxT("m4p"), false))) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is an encrypted audio file, typically from an online music store. \nAudacity cannot open this type of file due to the encryption. You need to convert it to a supported, unencrypted audio format.");
+      return 0;
+   }
+   // Real files of various sorts
+   if ((extension.IsSameAs(wxT("ra"), false))||(extension.IsSameAs(wxT("rm"), false))||(extension.IsSameAs(wxT("rpm"), false))||(extension.IsSameAs(wxT("rv"), false))) {
+      errorMessage = wxT("\"") + fName + wxT("\"") + 
+         _(" is a RealPlayer media file. \nAudacity cannot open this proprietary format. You need to convert it to a supported audio format.");
+      return 0;
    }
 
    // we were not able to recognize the file type
