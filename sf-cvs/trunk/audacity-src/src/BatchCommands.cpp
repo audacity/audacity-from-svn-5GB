@@ -437,6 +437,13 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
 {
    AudacityProject *project = GetActiveProject();
    wxString filename = project->BuildCleanFileName(mFileName);
+   int numChannels = 1;		//used to switch between mono and stereo export
+   if (IsMono()) {
+	numChannels = 1;	//export in mono
+   } else {
+	numChannels = 2;	//export in stereo
+   }
+
 
    if( ReportAndSkip(command, params))
       return true;
@@ -471,14 +478,14 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
-      return ::ExportPCM(project, !IsMono(), filename, false, 0.0, endTime);
+      return ::ExportPCM(project, numChannels, filename, false, 0.0, endTime);
    } else if (command == wxT("ExportOgg")){
 #ifdef USE_LIBVORBIS
       filename.Replace(wxT(".mp3"), wxT(".ogg"), false);
       double endTime = GetEndTime();
       if( endTime <= 0.0f )
          return false;
-      return ::ExportOGG(project, !IsMono(), filename, false, 0.0, endTime);
+      return ::ExportOGG(project, numChannels, filename, false, 0.0, endTime);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
       return false;
