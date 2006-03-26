@@ -1,6 +1,6 @@
 [+ AutoGen5 template h c +]
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -45,6 +45,8 @@ void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int
 
 void	print_test_name (const char *test, const char *filename) ;
 
+void	dump_data_to_file (const char *filename, void *data, unsigned int datalen) ;
+
 /*
 **	Functions for saving two vectors of data in an ascii text file which
 **	can then be loaded into GNU octave for comparison.
@@ -78,22 +80,28 @@ void 	test_read_write_position_or_die
 void	test_seek_or_die
 			(SNDFILE *file, sf_count_t offset, int whence, sf_count_t new_pos, int channels, int line_num) ;
 
-[+ FOR io_operation +]
+[+ FOR read_op +]
 [+ FOR io_type
 +]void 	test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die
 			(SNDFILE *file, int pass, [+ (get "io_element") +] *test, sf_count_t [+ (get "count_name") +], int line_num) ;
-[+ ENDFOR io_type +][+ ENDFOR io_operation +]
+[+ ENDFOR io_type +][+ ENDFOR read_op +]
+
+[+ FOR write_op +]
+[+ FOR io_type
++]void 	test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die
+			(SNDFILE *file, int pass, const [+ (get "io_element") +] *test, sf_count_t [+ (get "count_name") +], int line_num) ;
+[+ ENDFOR io_type +][+ ENDFOR write_op +]
 
 #endif
 
 [+  ==  c  +]
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
@@ -203,6 +211,24 @@ print_test_name (const char *test, const char *filename)
 
 	fflush (stdout) ;
 } /* print_test_name */
+
+void
+dump_data_to_file (const char *filename, void *data, unsigned int datalen)
+{	FILE *file ;
+
+	if ((file = fopen (filename, "wb")) == NULL)
+	{	printf ("\n\nLine %d : could not open file : %s\n\n", __LINE__, filename) ;
+		exit (1) ;
+		} ;
+
+	if (fwrite (data, 1, datalen, file) != datalen)
+	{	printf ("\n\nLine %d : fwrite failed.\n\n", __LINE__) ;
+		exit (1) ;
+		} ;
+
+	fclose (file) ;
+
+} /* dump_data_to_file */
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 */
@@ -399,7 +425,7 @@ test_open_file_or_die (const char *filename, int mode, SF_INFO *sfinfo, int allo
 				exit (1) ;
 		} ;
 
-#if (defined (__CYGWIN__) || defined (WIN32) || defined (_WIN32))
+#if (defined (WIN32) || defined (_WIN32))
 	/* Stupid fscking windows. */
 	oflags |= O_BINARY ;
 #endif
@@ -514,7 +540,7 @@ test_seek_or_die (SNDFILE *file, sf_count_t offset, int whence, sf_count_t new_p
 
 } /* test_seek_or_die */
 
-[+ FOR io_operation +]
+[+ FOR read_op +]
 [+ FOR io_type +]
 void
 test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die (SNDFILE *file, int pass, [+ (get "io_element") +] *test, sf_count_t [+ (get "count_name") +], int line_num)
@@ -533,7 +559,28 @@ test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die (SNDFILE *file, in
 
 	return ;
 } /* test_[+ (get "op_element") +]_[+ (get "io_element") +] */
-[+ ENDFOR io_type +][+ ENDFOR io_operation +]
+[+ ENDFOR io_type +][+ ENDFOR read_op +]
+
+[+ FOR write_op +]
+[+ FOR io_type +]
+void
+test_[+ (get "op_element") +]_[+ (get "io_element") +]_or_die (SNDFILE *file, int pass, const [+ (get "io_element") +] *test, sf_count_t [+ (get "count_name") +], int line_num)
+{	sf_count_t count ;
+
+	if ((count = sf_[+ (get "op_element") +]_[+ (get "io_element") +] (file, test, [+ (get "count_name") +])) != [+ (get "count_name") +])
+	{	printf ("\n\nLine %d", line_num) ;
+		if (pass > 0)
+			printf (" (pass %d)", pass) ;
+		printf (" : sf_[+ (get "op_element") +]_[+ (get "io_element") +] failed with short [+ (get "op_element") +] (%ld => %ld).\n",
+						SF_COUNT_TO_LONG ([+ (get "count_name") +]), SF_COUNT_TO_LONG (count)) ;
+		fflush (stdout) ;
+		puts (sf_strerror (file)) ;
+		exit (1) ;
+		} ;
+
+	return ;
+} /* test_[+ (get "op_element") +]_[+ (get "io_element") +] */
+[+ ENDFOR io_type +][+ ENDFOR write_op +]
 
 void
 delete_file (int format, const char *filename)

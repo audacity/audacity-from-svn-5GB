@@ -20,7 +20,7 @@
 ** This is a test program which tests reading from and writing to pipes.
 */
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +37,7 @@ main (void)
 
 #else
 
-#ifdef HAVE_UNISTD_H
+#if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 

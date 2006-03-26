@@ -1,6 +1,6 @@
 [+ AutoGen5 template c +]
 /*
-** Copyright (C) 1999-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-#include "config.h"
+#include "sfconfig.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,7 +35,7 @@
 
 #include "float_cast.h"
 
-#define	SAMPLE_RATE			11025
+#define	SAMPLE_RATE			16000
 
 static void	float_scaled_test	(const char *filename, int allow_exit, int replace_float, int filetype, double target_snr) ;
 static void	double_scaled_test	(const char *filename, int allow_exit, int replace_float, int filetype, double target_snr) ;
@@ -106,6 +106,12 @@ main (int argc, char *argv [])
 	float_scaled_test	("pcm_16.sds", allow_exit, SF_FALSE, SF_FORMAT_SDS | SF_FORMAT_PCM_16, -140.0) ;
 	float_scaled_test	("pcm_24.sds", allow_exit, SF_FALSE, SF_FORMAT_SDS | SF_FORMAT_PCM_24, -170.0) ;
 
+#ifdef HAVE_FLAC_ALL_H
+	float_scaled_test	("flac_8.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_S8, -39.0) ;
+	float_scaled_test	("flac_16.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_16, -87.0) ;
+	float_scaled_test	("flac_24.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_24, -138.0) ;
+#endif
+
 	float_scaled_test	("replace_float.raw", allow_exit, SF_TRUE, SF_ENDIAN_LITTLE | SF_FORMAT_RAW | SF_FORMAT_FLOAT, -163.0) ;
 
 	/*==============================================================================
@@ -149,6 +155,12 @@ main (int argc, char *argv [])
 	double_scaled_test	("pcm_s8.sds", allow_exit, SF_FALSE, SF_FORMAT_SDS | SF_FORMAT_PCM_S8, -90.0) ;
 	double_scaled_test	("pcm_16.sds", allow_exit, SF_FALSE, SF_FORMAT_SDS | SF_FORMAT_PCM_16, -140.0) ;
 	double_scaled_test	("pcm_24.sds", allow_exit, SF_FALSE, SF_FORMAT_SDS | SF_FORMAT_PCM_24, -180.0) ;
+
+#ifdef HAVE_FLAC_ALL_H
+	double_scaled_test	("flac_8.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_S8, -39.0) ;
+	double_scaled_test	("flac_16.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_16, -87.0) ;
+	double_scaled_test	("flac_24.flac", allow_exit, SF_FALSE, SF_FORMAT_FLAC | SF_FORMAT_PCM_24, -138.0) ;
+#endif
 
 	double_scaled_test	("replace_double.raw", allow_exit, SF_TRUE, SF_FORMAT_RAW | SF_FORMAT_DOUBLE, -300.0) ;
 

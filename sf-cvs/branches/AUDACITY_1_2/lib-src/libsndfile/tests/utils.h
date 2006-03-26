@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2002-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2002-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -41,6 +41,8 @@ void gen_windowed_sine_double (double *data, int len, double maximum) ;
 void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int line_num) ;
 
 void	print_test_name (const char *test, const char *filename) ;
+
+void	dump_data_to_file (const char *filename, void *data, unsigned int datalen) ;
 
 /*
 **	Functions for saving two vectors of data in an ascii text file which
@@ -95,23 +97,25 @@ void 	test_readf_float_or_die
 void 	test_readf_double_or_die
 			(SNDFILE *file, int pass, double *test, sf_count_t frames, int line_num) ;
 
+
+
 void 	test_write_short_or_die
-			(SNDFILE *file, int pass, short *test, sf_count_t items, int line_num) ;
+			(SNDFILE *file, int pass, const short *test, sf_count_t items, int line_num) ;
 void 	test_write_int_or_die
-			(SNDFILE *file, int pass, int *test, sf_count_t items, int line_num) ;
+			(SNDFILE *file, int pass, const int *test, sf_count_t items, int line_num) ;
 void 	test_write_float_or_die
-			(SNDFILE *file, int pass, float *test, sf_count_t items, int line_num) ;
+			(SNDFILE *file, int pass, const float *test, sf_count_t items, int line_num) ;
 void 	test_write_double_or_die
-			(SNDFILE *file, int pass, double *test, sf_count_t items, int line_num) ;
+			(SNDFILE *file, int pass, const double *test, sf_count_t items, int line_num) ;
 
 void 	test_writef_short_or_die
-			(SNDFILE *file, int pass, short *test, sf_count_t frames, int line_num) ;
+			(SNDFILE *file, int pass, const short *test, sf_count_t frames, int line_num) ;
 void 	test_writef_int_or_die
-			(SNDFILE *file, int pass, int *test, sf_count_t frames, int line_num) ;
+			(SNDFILE *file, int pass, const int *test, sf_count_t frames, int line_num) ;
 void 	test_writef_float_or_die
-			(SNDFILE *file, int pass, float *test, sf_count_t frames, int line_num) ;
+			(SNDFILE *file, int pass, const float *test, sf_count_t frames, int line_num) ;
 void 	test_writef_double_or_die
-			(SNDFILE *file, int pass, double *test, sf_count_t frames, int line_num) ;
+			(SNDFILE *file, int pass, const double *test, sf_count_t frames, int line_num) ;
 
 
 #endif
