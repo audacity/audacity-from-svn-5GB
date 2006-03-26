@@ -1,5 +1,5 @@
 /* flac - Command-line FLAC encoder/decoder
- * Copyright (C) 2000,2001,2002  Josh Coalson
+ * Copyright (C) 2000,2001,2002,2003,2004,2005  Josh Coalson
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,14 +20,18 @@
 #define flac__encode_h
 
 #include "FLAC/metadata.h"
+#include "utils.h"
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 typedef struct {
-	FLAC__bool verbose;
-	FLAC__uint64 skip;
+	utils__SkipUntilSpecification skip_specification;
+	utils__SkipUntilSpecification until_specification;
 	FLAC__bool verify;
 #ifdef FLAC__HAS_OGG
 	FLAC__bool use_ogg;
-	FLAC__bool has_serial_number;
 	long serial_number;
 #endif
 	FLAC__bool lax;
@@ -45,14 +49,24 @@ typedef struct {
 	int padding;
 	char *requested_seek_points;
 	int num_requested_seek_points;
+	const char *cuesheet_filename;
+	FLAC__bool cued_seekpoints;
 
-	/* options related to --sector-align */
+	/* options related to --replay-gain and --sector-align */
+	FLAC__bool is_first_file;
 	FLAC__bool is_last_file;
 	FLAC__int32 **align_reservoir;
 	unsigned *align_reservoir_samples;
+	FLAC__bool replay_gain;
 	FLAC__bool sector_align;
 
 	FLAC__StreamMetadata *vorbis_comment;
+
+	struct {
+		FLAC__bool disable_constant_subframes;
+		FLAC__bool disable_fixed_subframes;
+		FLAC__bool disable_verbatim_subframes;
+	} debug;
 } encode_options_t;
 
 typedef struct {
