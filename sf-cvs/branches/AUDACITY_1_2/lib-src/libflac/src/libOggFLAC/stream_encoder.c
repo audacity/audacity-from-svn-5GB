@@ -1,28 +1,38 @@
 /* libOggFLAC - Free Lossless Audio Codec + Ogg library
- * Copyright (C) 2002  Josh Coalson
+ * Copyright (C) 2002,2003,2004,2005  Josh Coalson
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * - Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
+ * - Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the Xiph.org Foundation nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <stdio.h>
-#include <stdlib.h> /* for malloc() */
-#include <string.h> /* for memcpy() */
-#include "ogg/ogg.h"
+#include <stdlib.h> /* for calloc() */
 #include "FLAC/assert.h"
-#include "OggFLAC/stream_decoder.h"
+#include "OggFLAC/stream_encoder.h"
 #include "protected/stream_encoder.h"
 
 /***********************************************************************
@@ -30,6 +40,11 @@
  * Private class method prototypes
  *
  ***********************************************************************/
+
+/* unpublished debug routines */
+extern FLAC__bool FLAC__stream_encoder_disable_constant_subframes(FLAC__StreamEncoder *encoder, FLAC__bool value);
+extern FLAC__bool FLAC__stream_encoder_disable_fixed_subframes(FLAC__StreamEncoder *encoder, FLAC__bool value);
+extern FLAC__bool FLAC__stream_encoder_disable_verbatim_subframes(FLAC__StreamEncoder *encoder, FLAC__bool value);
 
 static void set_defaults_(OggFLAC__StreamEncoder *encoder);
 static FLAC__StreamEncoderWriteStatus write_callback_(const FLAC__StreamEncoder *encoder, const FLAC__byte buffer[], unsigned bytes, unsigned samples, unsigned current_frame, void *client_data);
@@ -44,15 +59,9 @@ static void metadata_callback_(const FLAC__StreamEncoder *encoder, const FLAC__S
 
 typedef struct OggFLAC__StreamEncoderPrivate {
 	OggFLAC__StreamEncoderWriteCallback write_callback;
+	OggFLAC__StreamEncoderMetadataCallback metadata_callback;
 	void *client_data;
 	FLAC__StreamEncoder *FLAC_stream_encoder;
-	/* internal vars (all the above are class settings) */
-	FLAC__bool is_first_packet;
-	FLAC__uint64 samples_written;
-	struct {
-		ogg_stream_state stream_state;
-		ogg_page page;
-	} ogg;
 } OggFLAC__StreamEncoderPrivate;
 
 
@@ -62,7 +71,7 @@ typedef struct OggFLAC__StreamEncoderPrivate {
  *
  ***********************************************************************/
 
-const char * const OggFLAC__StreamEncoderStateString[] = {
+OggFLAC_API const char * const OggFLAC__StreamEncoderStateString[] = {
 	"OggFLAC__STREAM_ENCODER_OK",
 	"OggFLAC__STREAM_ENCODER_OGG_ERROR",
 	"OggFLAC__STREAM_ENCODER_FLAC_STREAM_ENCODER_ERROR",
@@ -78,30 +87,27 @@ const char * const OggFLAC__StreamEncoderStateString[] = {
  * Class constructor/destructor
  *
  */
-OggFLAC__StreamEncoder *OggFLAC__stream_encoder_new()
+OggFLAC_API OggFLAC__StreamEncoder *OggFLAC__stream_encoder_new()
 {
 	OggFLAC__StreamEncoder *encoder;
 
-	encoder = (OggFLAC__StreamEncoder*)malloc(sizeof(OggFLAC__StreamEncoder));
+	encoder = (OggFLAC__StreamEncoder*)calloc(1, sizeof(OggFLAC__StreamEncoder));
 	if(encoder == 0) {
 		return 0;
 	}
-	memset(encoder, 0, sizeof(OggFLAC__StreamEncoder));
 
-	encoder->protected_ = (OggFLAC__StreamEncoderProtected*)malloc(sizeof(OggFLAC__StreamEncoderProtected));
+	encoder->protected_ = (OggFLAC__StreamEncoderProtected*)calloc(1, sizeof(OggFLAC__StreamEncoderProtected));
 	if(encoder->protected_ == 0) {
 		free(encoder);
 		return 0;
 	}
-	memset(encoder->protected_, 0, sizeof(OggFLAC__StreamEncoderProtected));
 
-	encoder->private_ = (OggFLAC__StreamEncoderPrivate*)malloc(sizeof(OggFLAC__StreamEncoderPrivate));
+	encoder->private_ = (OggFLAC__StreamEncoderPrivate*)calloc(1, sizeof(OggFLAC__StreamEncoderPrivate));
 	if(encoder->private_ == 0) {
 		free(encoder->protected_);
 		free(encoder);
 		return 0;
 	}
-	memset(encoder->private_, 0, sizeof(OggFLAC__StreamEncoderPrivate));
 
 	encoder->private_->FLAC_stream_encoder = FLAC__stream_encoder_new();
 	if(0 == encoder->private_->FLAC_stream_encoder) {
@@ -118,7 +124,7 @@ OggFLAC__StreamEncoder *OggFLAC__stream_encoder_new()
 	return encoder;
 }
 
-void OggFLAC__stream_encoder_delete(OggFLAC__StreamEncoder *encoder)
+OggFLAC_API void OggFLAC__stream_encoder_delete(OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->protected_);
@@ -141,18 +147,18 @@ void OggFLAC__stream_encoder_delete(OggFLAC__StreamEncoder *encoder)
  *
  ***********************************************************************/
 
-OggFLAC__StreamEncoderState OggFLAC__stream_encoder_init(OggFLAC__StreamEncoder *encoder)
+OggFLAC_API OggFLAC__StreamEncoderState OggFLAC__stream_encoder_init(OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 
 	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
 		return encoder->protected_->state = OggFLAC__STREAM_ENCODER_ALREADY_INITIALIZED;
 
-	if(0 == encoder->private_->write_callback)
+	if(0 == encoder->private_->write_callback || 0 == encoder->private_->metadata_callback)
 		return encoder->protected_->state = OggFLAC__STREAM_ENCODER_INVALID_CALLBACK;
 
-	if(ogg_stream_init(&encoder->private_->ogg.stream_state, encoder->protected_->serial_number) != 0)
-		return encoder->protected_->state = OggFLAC__STREAM_ENCODER_OGG_ERROR;
+	if(!OggFLAC__ogg_encoder_aspect_init(&encoder->protected_->ogg_encoder_aspect))
+			return encoder->protected_->state = OggFLAC__STREAM_ENCODER_OGG_ERROR;
 
 	FLAC__stream_encoder_set_write_callback(encoder->private_->FLAC_stream_encoder, write_callback_);
 	FLAC__stream_encoder_set_metadata_callback(encoder->private_->FLAC_stream_encoder, metadata_callback_);
@@ -161,13 +167,10 @@ OggFLAC__StreamEncoderState OggFLAC__stream_encoder_init(OggFLAC__StreamEncoder 
 	if(FLAC__stream_encoder_init(encoder->private_->FLAC_stream_encoder) != FLAC__STREAM_ENCODER_OK)
 		return encoder->protected_->state = OggFLAC__STREAM_ENCODER_FLAC_STREAM_ENCODER_ERROR;
 
-	encoder->private_->is_first_packet = true;
-	encoder->private_->samples_written = 0;
-
 	return encoder->protected_->state = OggFLAC__STREAM_ENCODER_OK;
 }
 
-void OggFLAC__stream_encoder_finish(OggFLAC__StreamEncoder *encoder)
+OggFLAC_API void OggFLAC__stream_encoder_finish(OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -180,14 +183,14 @@ void OggFLAC__stream_encoder_finish(OggFLAC__StreamEncoder *encoder)
 
 	FLAC__stream_encoder_finish(encoder->private_->FLAC_stream_encoder);
 
-	(void)ogg_stream_clear(&encoder->private_->ogg.stream_state);
+	OggFLAC__ogg_encoder_aspect_finish(&encoder->protected_->ogg_encoder_aspect);
 
 	set_defaults_(encoder);
 
 	encoder->protected_->state = OggFLAC__STREAM_ENCODER_UNINITIALIZED;
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_serial_number(OggFLAC__StreamEncoder *encoder, long value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_serial_number(OggFLAC__StreamEncoder *encoder, long value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -195,11 +198,11 @@ FLAC__bool OggFLAC__stream_encoder_set_serial_number(OggFLAC__StreamEncoder *enc
 	FLAC__ASSERT(0 != encoder->private_->FLAC_stream_encoder);
 	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
 		return false;
-	encoder->protected_->serial_number = value;
+	OggFLAC__ogg_encoder_aspect_set_serial_number(&encoder->protected_->ogg_encoder_aspect, value);
 	return true;
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_verify(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_verify(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -210,7 +213,7 @@ FLAC__bool OggFLAC__stream_encoder_set_verify(OggFLAC__StreamEncoder *encoder, F
 	return FLAC__stream_encoder_set_verify(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_streamable_subset(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_streamable_subset(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -221,7 +224,7 @@ FLAC__bool OggFLAC__stream_encoder_set_streamable_subset(OggFLAC__StreamEncoder 
 	return FLAC__stream_encoder_set_streamable_subset(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_do_mid_side_stereo(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_do_mid_side_stereo(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -232,7 +235,7 @@ FLAC__bool OggFLAC__stream_encoder_set_do_mid_side_stereo(OggFLAC__StreamEncoder
 	return FLAC__stream_encoder_set_do_mid_side_stereo(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_loose_mid_side_stereo(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_loose_mid_side_stereo(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -243,7 +246,7 @@ FLAC__bool OggFLAC__stream_encoder_set_loose_mid_side_stereo(OggFLAC__StreamEnco
 	return FLAC__stream_encoder_set_loose_mid_side_stereo(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_channels(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_channels(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -254,7 +257,7 @@ FLAC__bool OggFLAC__stream_encoder_set_channels(OggFLAC__StreamEncoder *encoder,
 	return FLAC__stream_encoder_set_channels(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_bits_per_sample(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_bits_per_sample(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -265,7 +268,7 @@ FLAC__bool OggFLAC__stream_encoder_set_bits_per_sample(OggFLAC__StreamEncoder *e
 	return FLAC__stream_encoder_set_bits_per_sample(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_sample_rate(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_sample_rate(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -276,7 +279,7 @@ FLAC__bool OggFLAC__stream_encoder_set_sample_rate(OggFLAC__StreamEncoder *encod
 	return FLAC__stream_encoder_set_sample_rate(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_blocksize(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_blocksize(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -287,7 +290,7 @@ FLAC__bool OggFLAC__stream_encoder_set_blocksize(OggFLAC__StreamEncoder *encoder
 	return FLAC__stream_encoder_set_blocksize(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_max_lpc_order(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_max_lpc_order(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -298,7 +301,7 @@ FLAC__bool OggFLAC__stream_encoder_set_max_lpc_order(OggFLAC__StreamEncoder *enc
 	return FLAC__stream_encoder_set_max_lpc_order(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_qlp_coeff_precision(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_qlp_coeff_precision(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -309,7 +312,7 @@ FLAC__bool OggFLAC__stream_encoder_set_qlp_coeff_precision(OggFLAC__StreamEncode
 	return FLAC__stream_encoder_set_qlp_coeff_precision(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_do_qlp_coeff_prec_search(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_do_qlp_coeff_prec_search(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -320,7 +323,7 @@ FLAC__bool OggFLAC__stream_encoder_set_do_qlp_coeff_prec_search(OggFLAC__StreamE
 	return FLAC__stream_encoder_set_do_qlp_coeff_prec_search(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_do_escape_coding(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_do_escape_coding(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -331,7 +334,7 @@ FLAC__bool OggFLAC__stream_encoder_set_do_escape_coding(OggFLAC__StreamEncoder *
 	return FLAC__stream_encoder_set_do_escape_coding(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_do_exhaustive_model_search(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_do_exhaustive_model_search(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -342,7 +345,7 @@ FLAC__bool OggFLAC__stream_encoder_set_do_exhaustive_model_search(OggFLAC__Strea
 	return FLAC__stream_encoder_set_do_exhaustive_model_search(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_min_residual_partition_order(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_min_residual_partition_order(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -353,7 +356,7 @@ FLAC__bool OggFLAC__stream_encoder_set_min_residual_partition_order(OggFLAC__Str
 	return FLAC__stream_encoder_set_min_residual_partition_order(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_max_residual_partition_order(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_max_residual_partition_order(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -364,7 +367,7 @@ FLAC__bool OggFLAC__stream_encoder_set_max_residual_partition_order(OggFLAC__Str
 	return FLAC__stream_encoder_set_max_residual_partition_order(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_rice_parameter_search_dist(OggFLAC__StreamEncoder *encoder, unsigned value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_rice_parameter_search_dist(OggFLAC__StreamEncoder *encoder, unsigned value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -375,7 +378,7 @@ FLAC__bool OggFLAC__stream_encoder_set_rice_parameter_search_dist(OggFLAC__Strea
 	return FLAC__stream_encoder_set_rice_parameter_search_dist(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_total_samples_estimate(OggFLAC__StreamEncoder *encoder, FLAC__uint64 value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_total_samples_estimate(OggFLAC__StreamEncoder *encoder, FLAC__uint64 value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -386,7 +389,7 @@ FLAC__bool OggFLAC__stream_encoder_set_total_samples_estimate(OggFLAC__StreamEnc
 	return FLAC__stream_encoder_set_total_samples_estimate(encoder->private_->FLAC_stream_encoder, value);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_metadata(OggFLAC__StreamEncoder *encoder, FLAC__StreamMetadata **metadata, unsigned num_blocks)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_metadata(OggFLAC__StreamEncoder *encoder, FLAC__StreamMetadata **metadata, unsigned num_blocks)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -394,10 +397,25 @@ FLAC__bool OggFLAC__stream_encoder_set_metadata(OggFLAC__StreamEncoder *encoder,
 	FLAC__ASSERT(0 != encoder->private_->FLAC_stream_encoder);
 	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
 		return false;
+	/* reorder metadata if necessary to ensure that any VORBIS_COMMENT is the first, according to the mapping spec */
+	if(0 != metadata && num_blocks > 1) {
+		unsigned i;
+		for(i = 1; i < num_blocks; i++) {
+			if(0 != metadata[i] && metadata[i]->type == FLAC__METADATA_TYPE_VORBIS_COMMENT) {
+				FLAC__StreamMetadata *vc = metadata[i];
+				for( ; i > 0; i--)
+					metadata[i] = metadata[i-1];
+				metadata[0] = vc;
+				break;
+			}
+		}
+	}
+	if(!OggFLAC__ogg_encoder_aspect_set_num_metadata(&encoder->protected_->ogg_encoder_aspect, num_blocks))
+		return false;
 	return FLAC__stream_encoder_set_metadata(encoder->private_->FLAC_stream_encoder, metadata, num_blocks);
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_write_callback(OggFLAC__StreamEncoder *encoder, OggFLAC__StreamEncoderWriteCallback value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_write_callback(OggFLAC__StreamEncoder *encoder, OggFLAC__StreamEncoderWriteCallback value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -409,7 +427,19 @@ FLAC__bool OggFLAC__stream_encoder_set_write_callback(OggFLAC__StreamEncoder *en
 	return true;
 }
 
-FLAC__bool OggFLAC__stream_encoder_set_client_data(OggFLAC__StreamEncoder *encoder, void *value)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_metadata_callback(OggFLAC__StreamEncoder *encoder, OggFLAC__StreamEncoderMetadataCallback value)
+{
+	FLAC__ASSERT(0 != encoder);
+	FLAC__ASSERT(0 != encoder->private_);
+	FLAC__ASSERT(0 != encoder->protected_);
+	FLAC__ASSERT(0 != value);
+	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
+		return false;
+	encoder->private_->metadata_callback = value;
+	return true;
+}
+
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_set_client_data(OggFLAC__StreamEncoder *encoder, void *value)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -420,7 +450,41 @@ FLAC__bool OggFLAC__stream_encoder_set_client_data(OggFLAC__StreamEncoder *encod
 	return true;
 }
 
-OggFLAC__StreamEncoderState OggFLAC__stream_encoder_get_state(const OggFLAC__StreamEncoder *encoder)
+/*
+ * These three functions are not static, but not publically exposed in
+ * include/FLAC/ either.  They are used by the test suite.
+ */
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_disable_constant_subframes(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+{
+	FLAC__ASSERT(0 != encoder);
+	FLAC__ASSERT(0 != encoder->private_);
+	FLAC__ASSERT(0 != encoder->protected_);
+	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
+		return false;
+	return FLAC__stream_encoder_disable_constant_subframes(encoder->private_->FLAC_stream_encoder, value);
+}
+
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_disable_fixed_subframes(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+{
+	FLAC__ASSERT(0 != encoder);
+	FLAC__ASSERT(0 != encoder->private_);
+	FLAC__ASSERT(0 != encoder->protected_);
+	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
+		return false;
+	return FLAC__stream_encoder_disable_fixed_subframes(encoder->private_->FLAC_stream_encoder, value);
+}
+
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_disable_verbatim_subframes(OggFLAC__StreamEncoder *encoder, FLAC__bool value)
+{
+	FLAC__ASSERT(0 != encoder);
+	FLAC__ASSERT(0 != encoder->private_);
+	FLAC__ASSERT(0 != encoder->protected_);
+	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_UNINITIALIZED)
+		return false;
+	return FLAC__stream_encoder_disable_verbatim_subframes(encoder->private_->FLAC_stream_encoder, value);
+}
+
+OggFLAC_API OggFLAC__StreamEncoderState OggFLAC__stream_encoder_get_state(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -428,7 +492,7 @@ OggFLAC__StreamEncoderState OggFLAC__stream_encoder_get_state(const OggFLAC__Str
 	return encoder->protected_->state;
 }
 
-FLAC__StreamEncoderState OggFLAC__stream_encoder_get_FLAC_stream_encoder_state(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__StreamEncoderState OggFLAC__stream_encoder_get_FLAC_stream_encoder_state(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -436,7 +500,7 @@ FLAC__StreamEncoderState OggFLAC__stream_encoder_get_FLAC_stream_encoder_state(c
 	return FLAC__stream_encoder_get_state(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__StreamDecoderState OggFLAC__stream_encoder_get_verify_decoder_state(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__StreamDecoderState OggFLAC__stream_encoder_get_verify_decoder_state(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -444,14 +508,22 @@ FLAC__StreamDecoderState OggFLAC__stream_encoder_get_verify_decoder_state(const 
 	return FLAC__stream_encoder_get_verify_decoder_state(encoder->private_->FLAC_stream_encoder);
 }
 
-void OggFLAC__stream_encoder_get_verify_decoder_error_stats(const OggFLAC__StreamEncoder *encoder, FLAC__uint64 *absolute_sample, unsigned *frame_number, unsigned *channel, unsigned *sample, FLAC__int32 *expected, FLAC__int32 *got)
+OggFLAC_API const char *OggFLAC__stream_encoder_get_resolved_state_string(const OggFLAC__StreamEncoder *encoder)
+{
+	if(encoder->protected_->state != OggFLAC__STREAM_ENCODER_FLAC_STREAM_ENCODER_ERROR)
+		return OggFLAC__StreamEncoderStateString[encoder->protected_->state];
+	else
+		return FLAC__stream_encoder_get_resolved_state_string(encoder->private_->FLAC_stream_encoder);
+}
+
+OggFLAC_API void OggFLAC__stream_encoder_get_verify_decoder_error_stats(const OggFLAC__StreamEncoder *encoder, FLAC__uint64 *absolute_sample, unsigned *frame_number, unsigned *channel, unsigned *sample, FLAC__int32 *expected, FLAC__int32 *got)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
 	FLAC__stream_encoder_get_verify_decoder_error_stats(encoder->private_->FLAC_stream_encoder, absolute_sample, frame_number, channel, sample, expected, got);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_verify(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_verify(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -459,7 +531,7 @@ FLAC__bool OggFLAC__stream_encoder_get_verify(const OggFLAC__StreamEncoder *enco
 	return FLAC__stream_encoder_get_verify(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_streamable_subset(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_streamable_subset(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -467,7 +539,7 @@ FLAC__bool OggFLAC__stream_encoder_get_streamable_subset(const OggFLAC__StreamEn
 	return FLAC__stream_encoder_get_streamable_subset(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_do_mid_side_stereo(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_do_mid_side_stereo(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -475,7 +547,7 @@ FLAC__bool OggFLAC__stream_encoder_get_do_mid_side_stereo(const OggFLAC__StreamE
 	return FLAC__stream_encoder_get_do_mid_side_stereo(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_loose_mid_side_stereo(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_loose_mid_side_stereo(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -483,7 +555,7 @@ FLAC__bool OggFLAC__stream_encoder_get_loose_mid_side_stereo(const OggFLAC__Stre
 	return FLAC__stream_encoder_get_loose_mid_side_stereo(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_channels(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_channels(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -491,7 +563,7 @@ unsigned OggFLAC__stream_encoder_get_channels(const OggFLAC__StreamEncoder *enco
 	return FLAC__stream_encoder_get_channels(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_bits_per_sample(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_bits_per_sample(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -499,7 +571,7 @@ unsigned OggFLAC__stream_encoder_get_bits_per_sample(const OggFLAC__StreamEncode
 	return FLAC__stream_encoder_get_bits_per_sample(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_sample_rate(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_sample_rate(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -507,7 +579,7 @@ unsigned OggFLAC__stream_encoder_get_sample_rate(const OggFLAC__StreamEncoder *e
 	return FLAC__stream_encoder_get_sample_rate(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_blocksize(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_blocksize(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -515,7 +587,7 @@ unsigned OggFLAC__stream_encoder_get_blocksize(const OggFLAC__StreamEncoder *enc
 	return FLAC__stream_encoder_get_blocksize(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_max_lpc_order(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_max_lpc_order(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -523,7 +595,7 @@ unsigned OggFLAC__stream_encoder_get_max_lpc_order(const OggFLAC__StreamEncoder 
 	return FLAC__stream_encoder_get_max_lpc_order(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_qlp_coeff_precision(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_qlp_coeff_precision(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -531,7 +603,7 @@ unsigned OggFLAC__stream_encoder_get_qlp_coeff_precision(const OggFLAC__StreamEn
 	return FLAC__stream_encoder_get_qlp_coeff_precision(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_do_qlp_coeff_prec_search(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_do_qlp_coeff_prec_search(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -539,7 +611,7 @@ FLAC__bool OggFLAC__stream_encoder_get_do_qlp_coeff_prec_search(const OggFLAC__S
 	return FLAC__stream_encoder_get_do_qlp_coeff_prec_search(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_do_escape_coding(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_do_escape_coding(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -547,7 +619,7 @@ FLAC__bool OggFLAC__stream_encoder_get_do_escape_coding(const OggFLAC__StreamEnc
 	return FLAC__stream_encoder_get_do_escape_coding(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_get_do_exhaustive_model_search(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_get_do_exhaustive_model_search(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -555,7 +627,7 @@ FLAC__bool OggFLAC__stream_encoder_get_do_exhaustive_model_search(const OggFLAC_
 	return FLAC__stream_encoder_get_do_exhaustive_model_search(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_min_residual_partition_order(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_min_residual_partition_order(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -563,7 +635,7 @@ unsigned OggFLAC__stream_encoder_get_min_residual_partition_order(const OggFLAC_
 	return FLAC__stream_encoder_get_min_residual_partition_order(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_max_residual_partition_order(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_max_residual_partition_order(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -571,7 +643,7 @@ unsigned OggFLAC__stream_encoder_get_max_residual_partition_order(const OggFLAC_
 	return FLAC__stream_encoder_get_max_residual_partition_order(encoder->private_->FLAC_stream_encoder);
 }
 
-unsigned OggFLAC__stream_encoder_get_rice_parameter_search_dist(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API unsigned OggFLAC__stream_encoder_get_rice_parameter_search_dist(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -579,7 +651,7 @@ unsigned OggFLAC__stream_encoder_get_rice_parameter_search_dist(const OggFLAC__S
 	return FLAC__stream_encoder_get_rice_parameter_search_dist(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__uint64 OggFLAC__stream_encoder_get_total_samples_estimate(const OggFLAC__StreamEncoder *encoder)
+OggFLAC_API FLAC__uint64 OggFLAC__stream_encoder_get_total_samples_estimate(const OggFLAC__StreamEncoder *encoder)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -587,7 +659,7 @@ FLAC__uint64 OggFLAC__stream_encoder_get_total_samples_estimate(const OggFLAC__S
 	return FLAC__stream_encoder_get_total_samples_estimate(encoder->private_->FLAC_stream_encoder);
 }
 
-FLAC__bool OggFLAC__stream_encoder_process(OggFLAC__StreamEncoder *encoder, const FLAC__int32 * const buffer[], unsigned samples)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_process(OggFLAC__StreamEncoder *encoder, const FLAC__int32 * const buffer[], unsigned samples)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -595,7 +667,7 @@ FLAC__bool OggFLAC__stream_encoder_process(OggFLAC__StreamEncoder *encoder, cons
 	return FLAC__stream_encoder_process(encoder->private_->FLAC_stream_encoder, buffer, samples);
 }
 
-FLAC__bool OggFLAC__stream_encoder_process_interleaved(OggFLAC__StreamEncoder *encoder, const FLAC__int32 buffer[], unsigned samples)
+OggFLAC_API FLAC__bool OggFLAC__stream_encoder_process_interleaved(OggFLAC__StreamEncoder *encoder, const FLAC__int32 buffer[], unsigned samples)
 {
 	FLAC__ASSERT(0 != encoder);
 	FLAC__ASSERT(0 != encoder->private_);
@@ -614,58 +686,28 @@ void set_defaults_(OggFLAC__StreamEncoder *encoder)
 	FLAC__ASSERT(0 != encoder);
 
 	encoder->private_->write_callback = 0;
+	encoder->private_->metadata_callback = 0;
 	encoder->private_->client_data = 0;
-	encoder->protected_->serial_number = 0;
+	OggFLAC__ogg_encoder_aspect_set_defaults(&encoder->protected_->ogg_encoder_aspect);
 }
 
 FLAC__StreamEncoderWriteStatus write_callback_(const FLAC__StreamEncoder *unused, const FLAC__byte buffer[], unsigned bytes, unsigned samples, unsigned current_frame, void *client_data)
 {
 	OggFLAC__StreamEncoder *encoder = (OggFLAC__StreamEncoder*)client_data;
-	ogg_packet packet;
 	const FLAC__uint64 total_samples_estimate = FLAC__stream_encoder_get_total_samples_estimate(encoder->private_->FLAC_stream_encoder);
+
+	(void)unused;
 	FLAC__ASSERT(encoder->private_->FLAC_stream_encoder == unused);
 
-	encoder->private_->samples_written += samples;
-
-	memset(&packet, 0, sizeof(packet));
-	packet.packet = (unsigned char *)buffer;
-	packet.granulepos = encoder->private_->samples_written;
-	/* WATCHOUT:
-	 * This depends on the behavior of FLAC__StreamEncoder that 'samples'
-	 * will be 0 for metadata writes.
-	 */
-	packet.packetno = (samples == 0? -1 : (int)current_frame);
-	packet.bytes = bytes;
-
-	if(encoder->private_->is_first_packet) {
-		packet.b_o_s = 1;
-		encoder->private_->is_first_packet = false;
-	}
-
-	if(total_samples_estimate > 0 && total_samples_estimate == encoder->private_->samples_written)
-		packet.e_o_s = 1;
-
-	if(ogg_stream_packetin(&encoder->private_->ogg.stream_state, &packet) != 0)
-		return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
-
-	while(ogg_stream_pageout(&encoder->private_->ogg.stream_state, &encoder->private_->ogg.page) != 0) {
-		if(encoder->private_->write_callback(encoder, encoder->private_->ogg.page.header, encoder->private_->ogg.page.header_len, 0, current_frame, encoder->private_->client_data) != FLAC__STREAM_ENCODER_WRITE_STATUS_OK)
-			return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
-
-		if(encoder->private_->write_callback(encoder, encoder->private_->ogg.page.body, encoder->private_->ogg.page.body_len, 0, current_frame, encoder->private_->client_data) != FLAC__STREAM_ENCODER_WRITE_STATUS_OK)
-			return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
-	}
-
-	return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
+	return OggFLAC__ogg_encoder_aspect_write_callback_wrapper(&encoder->protected_->ogg_encoder_aspect, total_samples_estimate, buffer, bytes, samples, current_frame, (OggFLAC__OggEncoderAspectWriteCallbackProxy)encoder->private_->write_callback, encoder, encoder->private_->client_data);
 }
 
-void metadata_callback_(const FLAC__StreamEncoder *encoder, const FLAC__StreamMetadata *metadata, void *client_data)
+void metadata_callback_(const FLAC__StreamEncoder *unused, const FLAC__StreamMetadata *metadata, void *client_data)
 {
-	/*
-	 * We don't try to go back an update metadata blocks by mucking
-	 * around inside the Ogg layer.  Maybe someday we will care to
-	 * and an OggFLAC__SeekableStreamEncoder and OggFLAC__FileEncoder
-	 * will be possible but it may just never be useful.
-	 */
-	(void)encoder, (void)metadata, (void)client_data;
+	OggFLAC__StreamEncoder *encoder = (OggFLAC__StreamEncoder*)client_data;
+
+	(void)unused;
+	FLAC__ASSERT(encoder->private_->FLAC_stream_encoder == unused);
+
+	encoder->private_->metadata_callback(encoder, metadata, encoder->private_->client_data);
 }

@@ -16,16 +16,16 @@
 <tr><td colspan=2><br><h2>Typedefs</h2></td></tr>
 <tr><td nowrap align=right valign=top>typedef void(*&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a1">FLAC__FileEncoderProgressCallback</a> )(const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, FLAC__uint64 bytes_written, FLAC__uint64 samples_written, unsigned frames_written, unsigned total_frames_estimate, void *client_data)</td></tr>
 <tr><td colspan=2><br><h2>Enumerations</h2></td></tr>
-<tr><td nowrap align=right valign=top>enum &nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a51">FLAC__FileEncoderState</a> { <br>
-&nbsp;&nbsp;<a class="el" href="group__flac__file__encoder.html#a51a2">FLAC__FILE_ENCODER_OK</a> =  0, 
-<a class="el" href="group__flac__file__encoder.html#a51a3">FLAC__FILE_ENCODER_NO_FILENAME</a>, 
-<a class="el" href="group__flac__file__encoder.html#a51a4">FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</a>, 
-<a class="el" href="group__flac__file__encoder.html#a51a5">FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING</a>, 
+<tr><td nowrap align=right valign=top>enum &nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a52">FLAC__FileEncoderState</a> { <br>
+&nbsp;&nbsp;<a class="el" href="group__flac__file__encoder.html#a52a2">FLAC__FILE_ENCODER_OK</a> =  0, 
+<a class="el" href="group__flac__file__encoder.html#a52a3">FLAC__FILE_ENCODER_NO_FILENAME</a>, 
+<a class="el" href="group__flac__file__encoder.html#a52a4">FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</a>, 
+<a class="el" href="group__flac__file__encoder.html#a52a5">FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING</a>, 
 <br>
-&nbsp;&nbsp;<a class="el" href="group__flac__file__encoder.html#a51a6">FLAC__FILE_ENCODER_ERROR_OPENING_FILE</a>, 
-<a class="el" href="group__flac__file__encoder.html#a51a7">FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR</a>, 
-<a class="el" href="group__flac__file__encoder.html#a51a8">FLAC__FILE_ENCODER_ALREADY_INITIALIZED</a>, 
-<a class="el" href="group__flac__file__encoder.html#a51a9">FLAC__FILE_ENCODER_UNINITIALIZED</a>
+&nbsp;&nbsp;<a class="el" href="group__flac__file__encoder.html#a52a6">FLAC__FILE_ENCODER_ERROR_OPENING_FILE</a>, 
+<a class="el" href="group__flac__file__encoder.html#a52a7">FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR</a>, 
+<a class="el" href="group__flac__file__encoder.html#a52a8">FLAC__FILE_ENCODER_ALREADY_INITIALIZED</a>, 
+<a class="el" href="group__flac__file__encoder.html#a52a9">FLAC__FILE_ENCODER_UNINITIALIZED</a>
 <br>
  }</td></tr>
 <tr><td colspan=2><br><h2>Functions</h2></td></tr>
@@ -52,32 +52,33 @@
 <tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a22">FLAC__file_encoder_set_filename</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, const char *value)</td></tr>
 <tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a23">FLAC__file_encoder_set_progress_callback</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, <a class="el" href="group__flac__file__encoder.html#a1">FLAC__FileEncoderProgressCallback</a> value)</td></tr>
 <tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a24">FLAC__file_encoder_set_client_data</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, void *value)</td></tr>
-<tr><td nowrap align=right valign=top><a class="el" href="group__flac__file__encoder.html#a51">FLAC__FileEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a25">FLAC__file_encoder_get_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top><a class="el" href="group__flac__seekable__stream__encoder.html#a52">FLAC__SeekableStreamEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a26">FLAC__file_encoder_get_seekable_stream_encoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top><a class="el" href="group__flac__stream__encoder.html#a51">FLAC__StreamEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a27">FLAC__file_encoder_get_stream_encoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top><a class="el" href="group__flac__stream__decoder.html#a34">FLAC__StreamDecoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a28">FLAC__file_encoder_get_verify_decoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>void&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a29">FLAC__file_encoder_get_verify_decoder_error_stats</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, FLAC__uint64 *absolute_sample, unsigned *frame_number, unsigned *channel, unsigned *sample, FLAC__int32 *expected, FLAC__int32 *got)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a30">FLAC__file_encoder_get_verify</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a31">FLAC__file_encoder_get_streamable_subset</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a32">FLAC__file_encoder_get_do_mid_side_stereo</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a33">FLAC__file_encoder_get_loose_mid_side_stereo</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a34">FLAC__file_encoder_get_channels</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a35">FLAC__file_encoder_get_bits_per_sample</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a36">FLAC__file_encoder_get_sample_rate</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a37">FLAC__file_encoder_get_blocksize</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a38">FLAC__file_encoder_get_max_lpc_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a39">FLAC__file_encoder_get_qlp_coeff_precision</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a40">FLAC__file_encoder_get_do_qlp_coeff_prec_search</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a41">FLAC__file_encoder_get_do_escape_coding</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a42">FLAC__file_encoder_get_do_exhaustive_model_search</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a43">FLAC__file_encoder_get_min_residual_partition_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a44">FLAC__file_encoder_get_max_residual_partition_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a45">FLAC__file_encoder_get_rice_parameter_search_dist</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__uint64&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a46">FLAC__file_encoder_get_total_samples_estimate</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top><a class="el" href="group__flac__file__encoder.html#a51">FLAC__FileEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>void&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_process</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, const FLAC__int32 *const buffer[], unsigned samples)</td></tr>
-<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process_interleaved</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, const FLAC__int32 buffer[], unsigned samples)</td></tr>
+<tr><td nowrap align=right valign=top><a class="el" href="group__flac__file__encoder.html#a52">FLAC__FileEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a25">FLAC__file_encoder_get_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top><a class="el" href="group__flac__seekable__stream__encoder.html#a56">FLAC__SeekableStreamEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a26">FLAC__file_encoder_get_seekable_stream_encoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top><a class="el" href="group__flac__stream__encoder.html#a52">FLAC__StreamEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a27">FLAC__file_encoder_get_stream_encoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top><a class="el" href="group__flac__stream__decoder.html#a36">FLAC__StreamDecoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a28">FLAC__file_encoder_get_verify_decoder_state</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>const char *&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a29">FLAC__file_encoder_get_resolved_state_string</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>void&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a30">FLAC__file_encoder_get_verify_decoder_error_stats</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, FLAC__uint64 *absolute_sample, unsigned *frame_number, unsigned *channel, unsigned *sample, FLAC__int32 *expected, FLAC__int32 *got)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a31">FLAC__file_encoder_get_verify</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a32">FLAC__file_encoder_get_streamable_subset</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a33">FLAC__file_encoder_get_do_mid_side_stereo</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a34">FLAC__file_encoder_get_loose_mid_side_stereo</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a35">FLAC__file_encoder_get_channels</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a36">FLAC__file_encoder_get_bits_per_sample</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a37">FLAC__file_encoder_get_sample_rate</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a38">FLAC__file_encoder_get_blocksize</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a39">FLAC__file_encoder_get_max_lpc_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a40">FLAC__file_encoder_get_qlp_coeff_precision</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a41">FLAC__file_encoder_get_do_qlp_coeff_prec_search</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a42">FLAC__file_encoder_get_do_escape_coding</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a43">FLAC__file_encoder_get_do_exhaustive_model_search</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a44">FLAC__file_encoder_get_min_residual_partition_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a45">FLAC__file_encoder_get_max_residual_partition_order</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>unsigned&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a46">FLAC__file_encoder_get_rice_parameter_search_dist</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__uint64&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_get_total_samples_estimate</a> (const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top><a class="el" href="group__flac__file__encoder.html#a52">FLAC__FileEncoderState</a>&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>void&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, const FLAC__int32 *const buffer[], unsigned samples)</td></tr>
+<tr><td nowrap align=right valign=top>FLAC__bool&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a51">FLAC__file_encoder_process_interleaved</a> (<a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *encoder, const FLAC__int32 buffer[], unsigned samples)</td></tr>
 <tr><td colspan=2><br><h2>Variables</h2></td></tr>
 <tr><td nowrap align=right valign=top>const char *const&nbsp;</td><td valign=bottom><a class="el" href="group__flac__file__encoder.html#a0">FLAC__FileEncoderStateString</a> []</td></tr>
 </table>
@@ -87,16 +88,16 @@ This module contains the functions which implement the file encoder.
 
 <p>
  The basic usage of this encoder is as follows:<ul>
-<li>The program creates an instance of an encoder using <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>().<li>The program overrides the default settings using FLAC__file_encoder_set_*() functions.<li>The program initializes the instance to validate the settings and prepare for encoding using <a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a>().<li>The program calls <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_process</a>() or <a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process_interleaved</a>() to encode data, which subsequently writes data to the output file.<li>The program finishes the encoding with <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a>(), which causes the encoder to encode any data still in its input pipe, rewind and write the STREAMINFO metadata to file, and finally reset the encoder to the uninitialized state.<li>The instance may be used again or deleted with <a class="el" href="group__flac__file__encoder.html#a3">FLAC__file_encoder_delete</a>().</ul>
+<li>The program creates an instance of an encoder using <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>().<li>The program overrides the default settings using FLAC__file_encoder_set_*() functions.<li>The program initializes the instance to validate the settings and prepare for encoding using <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a>().<li>The program calls <a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process</a>() or <a class="el" href="group__flac__file__encoder.html#a51">FLAC__file_encoder_process_interleaved</a>() to encode data, which subsequently writes data to the output file.<li>The program finishes the encoding with <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a>(), which causes the encoder to encode any data still in its input pipe, rewind and write the STREAMINFO metadata to file, and finally reset the encoder to the uninitialized state.<li>The instance may be used again or deleted with <a class="el" href="group__flac__file__encoder.html#a3">FLAC__file_encoder_delete</a>().</ul>
 The file encoder is a wrapper around the <a class="el" href="group__flac__seekable__stream__encoder.html">seekable stream encoder</a> which supplies all callbacks internally; the user need specify only the filename.
 <p>
 Make sure to read the detailed description of the <a class="el" href="group__flac__seekable__stream__encoder.html">seekable stream encoder module</a> since the <a class="el" href="group__flac__stream__encoder.html">stream encoder module</a> since the file encoder inherits much of its behavior from them.
 <p>
 <dl compact><dt><b>
 Note: </b><dd>
- The "set" functions may only be called when the encoder is in the state FLAC__FILE_ENCODER_UNINITIALIZED, i.e. after <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>() or <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a>(), but before <a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a>(). If this is the case they will return <code>true</code>, otherwise <code>false</code>.</dl><dl compact><dt><b>
+ The "set" functions may only be called when the encoder is in the state FLAC__FILE_ENCODER_UNINITIALIZED, i.e. after <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>() or <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a>(), but before <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a>(). If this is the case they will return <code>true</code>, otherwise <code>false</code>.</dl><dl compact><dt><b>
 Note: </b><dd>
- <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a>() resets all settings to the constructor defaults. </dl><hr><h2>Typedef Documentation</h2>
+ <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a>() resets all settings to the constructor defaults. </dl><hr><h2>Typedef Documentation</h2>
 <a name="a1" doxytag="file_encoder.h::FLAC__FileEncoderProgressCallback"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
@@ -136,7 +137,7 @@ The callee's client data set through <a class="el" href="group__flac__file__enco
   </tr>
 </table>
 <hr><h2>Enumeration Type Documentation</h2>
-<a name="a51" doxytag="file_encoder.h::FLAC__FileEncoderState"></a><p>
+<a name="a52" doxytag="file_encoder.h::FLAC__FileEncoderState"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -160,21 +161,21 @@ State values for a <a class="el" href="structFLAC____FileEncoder.html">FLAC__Fil
 The encoder's state can be obtained by calling <a class="el" href="group__flac__file__encoder.html#a25">FLAC__file_encoder_get_state</a>(). <dl compact><dt><b>
 Enumeration values:</b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
-<tr><td valign=top><em><a name="a51a2" doxytag="FLAC__FILE_ENCODER_OK"></a><em>FLAC__FILE_ENCODER_OK</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a2" doxytag="FLAC__FILE_ENCODER_OK"></a><em>FLAC__FILE_ENCODER_OK</em></em>&nbsp;</td><td>
 The encoder is in the normal OK state. </td></tr>
-<tr><td valign=top><em><a name="a51a3" doxytag="FLAC__FILE_ENCODER_NO_FILENAME"></a><em>FLAC__FILE_ENCODER_NO_FILENAME</em></em>&nbsp;</td><td>
-<a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a>() was called without first calling <a class="el" href="group__flac__file__encoder.html#a22">FLAC__file_encoder_set_filename</a>(). </td></tr>
-<tr><td valign=top><em><a name="a51a4" doxytag="FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR"></a><em>FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a3" doxytag="FLAC__FILE_ENCODER_NO_FILENAME"></a><em>FLAC__FILE_ENCODER_NO_FILENAME</em></em>&nbsp;</td><td>
+<a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a>() was called without first calling <a class="el" href="group__flac__file__encoder.html#a22">FLAC__file_encoder_set_filename</a>(). </td></tr>
+<tr><td valign=top><em><a name="a52a4" doxytag="FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR"></a><em>FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</em></em>&nbsp;</td><td>
 An error occurred in the underlying seekable stream encoder; check <a class="el" href="group__flac__file__encoder.html#a26">FLAC__file_encoder_get_seekable_stream_encoder_state</a>(). </td></tr>
-<tr><td valign=top><em><a name="a51a5" doxytag="FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING"></a><em>FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a5" doxytag="FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING"></a><em>FLAC__FILE_ENCODER_FATAL_ERROR_WHILE_WRITING</em></em>&nbsp;</td><td>
 A fatal error occurred while writing to the encoded file. </td></tr>
-<tr><td valign=top><em><a name="a51a6" doxytag="FLAC__FILE_ENCODER_ERROR_OPENING_FILE"></a><em>FLAC__FILE_ENCODER_ERROR_OPENING_FILE</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a6" doxytag="FLAC__FILE_ENCODER_ERROR_OPENING_FILE"></a><em>FLAC__FILE_ENCODER_ERROR_OPENING_FILE</em></em>&nbsp;</td><td>
 An error occurred opening the output file for writing. </td></tr>
-<tr><td valign=top><em><a name="a51a7" doxytag="FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR"></a><em>FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a7" doxytag="FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR"></a><em>FLAC__FILE_ENCODER_MEMORY_ALLOCATION_ERROR</em></em>&nbsp;</td><td>
 Memory allocation failed. </td></tr>
-<tr><td valign=top><em><a name="a51a8" doxytag="FLAC__FILE_ENCODER_ALREADY_INITIALIZED"></a><em>FLAC__FILE_ENCODER_ALREADY_INITIALIZED</em></em>&nbsp;</td><td>
-<a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a>() was called when the encoder was already initialized, usually because <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a>() was not called. </td></tr>
-<tr><td valign=top><em><a name="a51a9" doxytag="FLAC__FILE_ENCODER_UNINITIALIZED"></a><em>FLAC__FILE_ENCODER_UNINITIALIZED</em></em>&nbsp;</td><td>
+<tr><td valign=top><em><a name="a52a8" doxytag="FLAC__FILE_ENCODER_ALREADY_INITIALIZED"></a><em>FLAC__FILE_ENCODER_ALREADY_INITIALIZED</em></em>&nbsp;</td><td>
+<a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a>() was called when the encoder was already initialized, usually because <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a>() was not called. </td></tr>
+<tr><td valign=top><em><a name="a52a9" doxytag="FLAC__FILE_ENCODER_UNINITIALIZED"></a><em>FLAC__FILE_ENCODER_UNINITIALIZED</em></em>&nbsp;</td><td>
 The encoder is in the uninitialized state. </td></tr>
 </table>
 </dl>
@@ -289,7 +290,7 @@ Assertions:</b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a6">FLAC__seekable_stream_encoder_set_verify</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a8">FLAC__seekable_stream_encoder_set_verify</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>true</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -346,7 +347,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a7">FLAC__seekable_stream_encoder_set_streamable_subset</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a9">FLAC__seekable_stream_encoder_set_streamable_subset</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>true</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -403,7 +404,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a8">FLAC__seekable_stream_encoder_set_do_mid_side_stereo</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a10">FLAC__seekable_stream_encoder_set_do_mid_side_stereo</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>false</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -460,7 +461,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a9">FLAC__seekable_stream_encoder_set_loose_mid_side_stereo</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a11">FLAC__seekable_stream_encoder_set_loose_mid_side_stereo</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>false</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -517,7 +518,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a10">FLAC__seekable_stream_encoder_set_channels</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a12">FLAC__seekable_stream_encoder_set_channels</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>2</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -574,7 +575,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a11">FLAC__seekable_stream_encoder_set_bits_per_sample</a>().
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a13">FLAC__seekable_stream_encoder_set_bits_per_sample</a>().
 <p>
 <dl compact><dt><b>
 Warning: </b><dd>
@@ -635,7 +636,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a12">FLAC__seekable_stream_encoder_set_sample_rate</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a14">FLAC__seekable_stream_encoder_set_sample_rate</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>44100</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -692,7 +693,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a13">FLAC__seekable_stream_encoder_set_blocksize</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a15">FLAC__seekable_stream_encoder_set_blocksize</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>1152</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -749,7 +750,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a14">FLAC__seekable_stream_encoder_set_max_lpc_order</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a16">FLAC__seekable_stream_encoder_set_max_lpc_order</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>0</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -806,7 +807,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a15">FLAC__seekable_stream_encoder_set_qlp_coeff_precision</a>().
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a17">FLAC__seekable_stream_encoder_set_qlp_coeff_precision</a>().
 <p>
 <dl compact><dt><b>
 Note: </b><dd>
@@ -867,7 +868,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a16">FLAC__seekable_stream_encoder_set_do_qlp_coeff_prec_search</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a18">FLAC__seekable_stream_encoder_set_do_qlp_coeff_prec_search</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>false</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -924,7 +925,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a17">FLAC__seekable_stream_encoder_set_do_escape_coding</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a19">FLAC__seekable_stream_encoder_set_do_escape_coding</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>false</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -981,7 +982,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a18">FLAC__seekable_stream_encoder_set_do_exhaustive_model_search</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a20">FLAC__seekable_stream_encoder_set_do_exhaustive_model_search</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>false</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1038,7 +1039,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a19">FLAC__seekable_stream_encoder_set_min_residual_partition_order</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a21">FLAC__seekable_stream_encoder_set_min_residual_partition_order</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>0</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1095,7 +1096,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a20">FLAC__seekable_stream_encoder_set_max_residual_partition_order</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a22">FLAC__seekable_stream_encoder_set_max_residual_partition_order</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>0</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1152,7 +1153,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a21">FLAC__seekable_stream_encoder_set_rice_parameter_search_dist</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a23">FLAC__seekable_stream_encoder_set_rice_parameter_search_dist</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>0</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1209,7 +1210,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a22">FLAC__seekable_stream_encoder_set_total_samples_estimate</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a24">FLAC__seekable_stream_encoder_set_total_samples_estimate</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>0</code> </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1272,7 +1273,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a23">FLAC__seekable_stream_encoder_set_metadata</a>().<dl compact><dt><b>
+This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a25">FLAC__seekable_stream_encoder_set_metadata</a>().<dl compact><dt><b>
 Default Value:</b><dd>
  <code>NULL</code>, 0 </dl><dl compact><dt><b>
 Parameters: </b><dd>
@@ -1485,7 +1486,7 @@ Return values: </b><dd>
     <td class="md">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__file__encoder.html#a51">FLAC__FileEncoderState</a> FLAC__file_encoder_get_state </td>
+          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__file__encoder.html#a52">FLAC__FileEncoderState</a> FLAC__file_encoder_get_state </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
@@ -1529,7 +1530,7 @@ The current encoder state. </td></tr>
     <td class="md">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__seekable__stream__encoder.html#a52">FLAC__SeekableStreamEncoderState</a> FLAC__file_encoder_get_seekable_stream_encoder_state </td>
+          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__seekable__stream__encoder.html#a56">FLAC__SeekableStreamEncoderState</a> FLAC__file_encoder_get_seekable_stream_encoder_state </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
@@ -1573,7 +1574,7 @@ The seekable stream encoder state. </td></tr>
     <td class="md">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__stream__encoder.html#a51">FLAC__StreamEncoderState</a> FLAC__file_encoder_get_stream_encoder_state </td>
+          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__stream__encoder.html#a52">FLAC__StreamEncoderState</a> FLAC__file_encoder_get_stream_encoder_state </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
@@ -1617,7 +1618,7 @@ The seekable stream encoder state. </td></tr>
     <td class="md">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__stream__decoder.html#a34">FLAC__StreamDecoderState</a> FLAC__file_encoder_get_verify_decoder_state </td>
+          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__stream__decoder.html#a36">FLAC__StreamDecoderState</a> FLAC__file_encoder_get_verify_decoder_state </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top">const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
@@ -1655,7 +1656,51 @@ The stream encoder state. </td></tr>
 </dl>    </td>
   </tr>
 </table>
-<a name="a29" doxytag="file_encoder.h::FLAC__file_encoder_get_verify_decoder_error_stats"></a><p>
+<a name="a29" doxytag="file_encoder.h::FLAC__file_encoder_get_resolved_state_string"></a><p>
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
+  <tr>
+    <td class="md">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td class="md" nowrap valign="top"> const char* FLAC__file_encoder_get_resolved_state_string </td>
+          <td class="md" valign="top">(&nbsp;</td>
+          <td class="md" nowrap valign="top">const <a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
+          <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
+          <td class="md" valign="top">)&nbsp;</td>
+          <td class="md" nowrap></td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+<table cellspacing=5 cellpadding=0 border=0>
+  <tr>
+    <td>
+      &nbsp;
+    </td>
+    <td>
+
+<p>
+Get the current encoder state as a C string. This version automatically resolves <code>FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</code> by getting the seekable stream encoder's state.<dl compact><dt><b>
+Parameters: </b><dd>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr><td valign=top><em>encoder</em>&nbsp;</td><td>
+A encoder instance to query. </td></tr>
+</table>
+</dl><dl compact><dt><b>
+Assertions:</b><dd>
+ <div class="fragment"><pre>encoder != NULL 
+</pre></div> </dl><dl compact><dt><b>
+Return values: </b><dd>
+<table border=0 cellspacing=2 cellpadding=0>
+<tr><td valign=top><em>const</em>&nbsp;</td><td>
+char * The encoder state as a C string. Do not modify the contents. </td></tr>
+</table>
+</dl>    </td>
+  </tr>
+</table>
+<a name="a30" doxytag="file_encoder.h::FLAC__file_encoder_get_verify_decoder_error_stats"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1720,7 +1765,7 @@ The stream encoder state. </td></tr>
     <td>
 
 <p>
-Get relevant values about the nature of a verify decoder error. Inherited from <a class="el" href="group__flac__seekable__stream__encoder.html#a30">FLAC__seekable_stream_encoder_get_verify_decoder_error_stats</a>(). Useful when the file encoder state is <code>FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</code> and the seekable stream encoder state is <code>FLAC__SEEKABLE_STREAM_ENCODER_STREAM_ENCODER_ERROR</code> and the stream encoder state is <code>FLAC__STREAM_ENCODER_VERIFY_DECODER_ERROR</code>.<dl compact><dt><b>
+Get relevant values about the nature of a verify decoder error. Inherited from <a class="el" href="group__flac__seekable__stream__encoder.html#a34">FLAC__seekable_stream_encoder_get_verify_decoder_error_stats</a>(). Useful when the file encoder state is <code>FLAC__FILE_ENCODER_SEEKABLE_STREAM_ENCODER_ERROR</code> and the seekable stream encoder state is <code>FLAC__SEEKABLE_STREAM_ENCODER_STREAM_ENCODER_ERROR</code> and the stream encoder state is <code>FLAC__STREAM_ENCODER_VERIFY_DECODER_ERROR</code>.<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1744,7 +1789,7 @@ Assertions:</b><dd>
 </pre></div> </dl>    </td>
   </tr>
 </table>
-<a name="a30" doxytag="file_encoder.h::FLAC__file_encoder_get_verify"></a><p>
+<a name="a31" doxytag="file_encoder.h::FLAC__file_encoder_get_verify"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1770,7 +1815,7 @@ Assertions:</b><dd>
     <td>
 
 <p>
-Get the "verify" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a31">FLAC__seekable_stream_encoder_get_verify</a>().<dl compact><dt><b>
+Get the "verify" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a35">FLAC__seekable_stream_encoder_get_verify</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1788,7 +1833,7 @@ See <a class="el" href="group__flac__file__encoder.html#a4">FLAC__file_encoder_s
 </dl>    </td>
   </tr>
 </table>
-<a name="a31" doxytag="file_encoder.h::FLAC__file_encoder_get_streamable_subset"></a><p>
+<a name="a32" doxytag="file_encoder.h::FLAC__file_encoder_get_streamable_subset"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1814,7 +1859,7 @@ See <a class="el" href="group__flac__file__encoder.html#a4">FLAC__file_encoder_s
     <td>
 
 <p>
-Get the "streamable subset" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a32">FLAC__seekable_stream_encoder_get_streamable_subset</a>().<dl compact><dt><b>
+Get the "streamable subset" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a36">FLAC__seekable_stream_encoder_get_streamable_subset</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1832,7 +1877,7 @@ See <a class="el" href="group__flac__file__encoder.html#a5">FLAC__file_encoder_s
 </dl>    </td>
   </tr>
 </table>
-<a name="a32" doxytag="file_encoder.h::FLAC__file_encoder_get_do_mid_side_stereo"></a><p>
+<a name="a33" doxytag="file_encoder.h::FLAC__file_encoder_get_do_mid_side_stereo"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1858,7 +1903,7 @@ See <a class="el" href="group__flac__file__encoder.html#a5">FLAC__file_encoder_s
     <td>
 
 <p>
-Get the "mid/side stereo coding" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a33">FLAC__seekable_stream_encoder_get_do_mid_side_stereo</a>().<dl compact><dt><b>
+Get the "mid/side stereo coding" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a37">FLAC__seekable_stream_encoder_get_do_mid_side_stereo</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1871,12 +1916,12 @@ Assertions:</b><dd>
 Return values: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>FLAC__bool</em>&nbsp;</td><td>
-See <a class="el" href="group__flac__file__encoder.html#a32">FLAC__file_encoder_get_do_mid_side_stereo</a>(). </td></tr>
+See <a class="el" href="group__flac__file__encoder.html#a33">FLAC__file_encoder_get_do_mid_side_stereo</a>(). </td></tr>
 </table>
 </dl>    </td>
   </tr>
 </table>
-<a name="a33" doxytag="file_encoder.h::FLAC__file_encoder_get_loose_mid_side_stereo"></a><p>
+<a name="a34" doxytag="file_encoder.h::FLAC__file_encoder_get_loose_mid_side_stereo"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1902,7 +1947,7 @@ See <a class="el" href="group__flac__file__encoder.html#a32">FLAC__file_encoder_
     <td>
 
 <p>
-Get the "adaptive mid/side switching" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a34">FLAC__seekable_stream_encoder_get_loose_mid_side_stereo</a>().<dl compact><dt><b>
+Get the "adaptive mid/side switching" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a38">FLAC__seekable_stream_encoder_get_loose_mid_side_stereo</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1920,7 +1965,7 @@ See <a class="el" href="group__flac__file__encoder.html#a7">FLAC__file_encoder_s
 </dl>    </td>
   </tr>
 </table>
-<a name="a34" doxytag="file_encoder.h::FLAC__file_encoder_get_channels"></a><p>
+<a name="a35" doxytag="file_encoder.h::FLAC__file_encoder_get_channels"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1946,7 +1991,7 @@ See <a class="el" href="group__flac__file__encoder.html#a7">FLAC__file_encoder_s
     <td>
 
 <p>
-Get the number of input channels being processed. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a35">FLAC__seekable_stream_encoder_get_channels</a>().<dl compact><dt><b>
+Get the number of input channels being processed. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a39">FLAC__seekable_stream_encoder_get_channels</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -1964,7 +2009,7 @@ See <a class="el" href="group__flac__file__encoder.html#a8">FLAC__file_encoder_s
 </dl>    </td>
   </tr>
 </table>
-<a name="a35" doxytag="file_encoder.h::FLAC__file_encoder_get_bits_per_sample"></a><p>
+<a name="a36" doxytag="file_encoder.h::FLAC__file_encoder_get_bits_per_sample"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -1990,7 +2035,7 @@ See <a class="el" href="group__flac__file__encoder.html#a8">FLAC__file_encoder_s
     <td>
 
 <p>
-Get the input sample resolution setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a36">FLAC__seekable_stream_encoder_get_bits_per_sample</a>().<dl compact><dt><b>
+Get the input sample resolution setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a40">FLAC__seekable_stream_encoder_get_bits_per_sample</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2008,7 +2053,7 @@ See <a class="el" href="group__flac__file__encoder.html#a9">FLAC__file_encoder_s
 </dl>    </td>
   </tr>
 </table>
-<a name="a36" doxytag="file_encoder.h::FLAC__file_encoder_get_sample_rate"></a><p>
+<a name="a37" doxytag="file_encoder.h::FLAC__file_encoder_get_sample_rate"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2034,7 +2079,7 @@ See <a class="el" href="group__flac__file__encoder.html#a9">FLAC__file_encoder_s
     <td>
 
 <p>
-Get the input sample rate setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a37">FLAC__seekable_stream_encoder_get_sample_rate</a>().<dl compact><dt><b>
+Get the input sample rate setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a41">FLAC__seekable_stream_encoder_get_sample_rate</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2052,7 +2097,7 @@ See <a class="el" href="group__flac__file__encoder.html#a10">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a37" doxytag="file_encoder.h::FLAC__file_encoder_get_blocksize"></a><p>
+<a name="a38" doxytag="file_encoder.h::FLAC__file_encoder_get_blocksize"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2078,7 +2123,7 @@ See <a class="el" href="group__flac__file__encoder.html#a10">FLAC__file_encoder_
     <td>
 
 <p>
-Get the blocksize setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a38">FLAC__seekable_stream_encoder_get_blocksize</a>().<dl compact><dt><b>
+Get the blocksize setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a42">FLAC__seekable_stream_encoder_get_blocksize</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2096,7 +2141,7 @@ See <a class="el" href="group__flac__file__encoder.html#a11">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a38" doxytag="file_encoder.h::FLAC__file_encoder_get_max_lpc_order"></a><p>
+<a name="a39" doxytag="file_encoder.h::FLAC__file_encoder_get_max_lpc_order"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2122,7 +2167,7 @@ See <a class="el" href="group__flac__file__encoder.html#a11">FLAC__file_encoder_
     <td>
 
 <p>
-Get the maximum LPC order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a39">FLAC__seekable_stream_encoder_get_max_lpc_order</a>().<dl compact><dt><b>
+Get the maximum LPC order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a43">FLAC__seekable_stream_encoder_get_max_lpc_order</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2140,7 +2185,7 @@ See <a class="el" href="group__flac__file__encoder.html#a12">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a39" doxytag="file_encoder.h::FLAC__file_encoder_get_qlp_coeff_precision"></a><p>
+<a name="a40" doxytag="file_encoder.h::FLAC__file_encoder_get_qlp_coeff_precision"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2166,7 +2211,7 @@ See <a class="el" href="group__flac__file__encoder.html#a12">FLAC__file_encoder_
     <td>
 
 <p>
-Get the quantized linear predictor coefficient precision setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a40">FLAC__seekable_stream_encoder_get_qlp_coeff_precision</a>().<dl compact><dt><b>
+Get the quantized linear predictor coefficient precision setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a44">FLAC__seekable_stream_encoder_get_qlp_coeff_precision</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2184,7 +2229,7 @@ See <a class="el" href="group__flac__file__encoder.html#a13">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a40" doxytag="file_encoder.h::FLAC__file_encoder_get_do_qlp_coeff_prec_search"></a><p>
+<a name="a41" doxytag="file_encoder.h::FLAC__file_encoder_get_do_qlp_coeff_prec_search"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2210,7 +2255,7 @@ See <a class="el" href="group__flac__file__encoder.html#a13">FLAC__file_encoder_
     <td>
 
 <p>
-Get the qlp coefficient precision search flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a41">FLAC__seekable_stream_encoder_get_do_qlp_coeff_prec_search</a>().<dl compact><dt><b>
+Get the qlp coefficient precision search flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a45">FLAC__seekable_stream_encoder_get_do_qlp_coeff_prec_search</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2228,7 +2273,7 @@ See <a class="el" href="group__flac__file__encoder.html#a14">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a41" doxytag="file_encoder.h::FLAC__file_encoder_get_do_escape_coding"></a><p>
+<a name="a42" doxytag="file_encoder.h::FLAC__file_encoder_get_do_escape_coding"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2254,7 +2299,7 @@ See <a class="el" href="group__flac__file__encoder.html#a14">FLAC__file_encoder_
     <td>
 
 <p>
-Get the "escape coding" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a42">FLAC__seekable_stream_encoder_get_do_escape_coding</a>().<dl compact><dt><b>
+Get the "escape coding" flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a46">FLAC__seekable_stream_encoder_get_do_escape_coding</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2272,7 +2317,7 @@ See <a class="el" href="group__flac__file__encoder.html#a15">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a42" doxytag="file_encoder.h::FLAC__file_encoder_get_do_exhaustive_model_search"></a><p>
+<a name="a43" doxytag="file_encoder.h::FLAC__file_encoder_get_do_exhaustive_model_search"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2298,7 +2343,7 @@ See <a class="el" href="group__flac__file__encoder.html#a15">FLAC__file_encoder_
     <td>
 
 <p>
-Get the exhaustive model search flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a43">FLAC__seekable_stream_encoder_get_do_exhaustive_model_search</a>().<dl compact><dt><b>
+Get the exhaustive model search flag. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a47">FLAC__seekable_stream_encoder_get_do_exhaustive_model_search</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2316,7 +2361,7 @@ See <a class="el" href="group__flac__file__encoder.html#a16">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a43" doxytag="file_encoder.h::FLAC__file_encoder_get_min_residual_partition_order"></a><p>
+<a name="a44" doxytag="file_encoder.h::FLAC__file_encoder_get_min_residual_partition_order"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2342,7 +2387,7 @@ See <a class="el" href="group__flac__file__encoder.html#a16">FLAC__file_encoder_
     <td>
 
 <p>
-Get the minimum residual partition order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a44">FLAC__seekable_stream_encoder_get_min_residual_partition_order</a>().<dl compact><dt><b>
+Get the minimum residual partition order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a48">FLAC__seekable_stream_encoder_get_min_residual_partition_order</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2360,7 +2405,7 @@ See <a class="el" href="group__flac__file__encoder.html#a17">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a44" doxytag="file_encoder.h::FLAC__file_encoder_get_max_residual_partition_order"></a><p>
+<a name="a45" doxytag="file_encoder.h::FLAC__file_encoder_get_max_residual_partition_order"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2386,7 +2431,7 @@ See <a class="el" href="group__flac__file__encoder.html#a17">FLAC__file_encoder_
     <td>
 
 <p>
-Get maximum residual partition order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a45">FLAC__seekable_stream_encoder_get_max_residual_partition_order</a>().<dl compact><dt><b>
+Get maximum residual partition order setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a49">FLAC__seekable_stream_encoder_get_max_residual_partition_order</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2404,7 +2449,7 @@ See <a class="el" href="group__flac__file__encoder.html#a18">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a45" doxytag="file_encoder.h::FLAC__file_encoder_get_rice_parameter_search_dist"></a><p>
+<a name="a46" doxytag="file_encoder.h::FLAC__file_encoder_get_rice_parameter_search_dist"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2430,7 +2475,7 @@ See <a class="el" href="group__flac__file__encoder.html#a18">FLAC__file_encoder_
     <td>
 
 <p>
-Get the Rice parameter search distance setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a46">FLAC__seekable_stream_encoder_get_rice_parameter_search_dist</a>().<dl compact><dt><b>
+Get the Rice parameter search distance setting. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a50">FLAC__seekable_stream_encoder_get_rice_parameter_search_dist</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2448,7 +2493,7 @@ See <a class="el" href="group__flac__file__encoder.html#a19">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a46" doxytag="file_encoder.h::FLAC__file_encoder_get_total_samples_estimate"></a><p>
+<a name="a47" doxytag="file_encoder.h::FLAC__file_encoder_get_total_samples_estimate"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2474,7 +2519,7 @@ See <a class="el" href="group__flac__file__encoder.html#a19">FLAC__file_encoder_
     <td>
 
 <p>
-Get the previously set estimate of the total samples to be encoded. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a47">FLAC__seekable_stream_encoder_get_total_samples_estimate</a>().<dl compact><dt><b>
+Get the previously set estimate of the total samples to be encoded. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a51">FLAC__seekable_stream_encoder_get_total_samples_estimate</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2492,13 +2537,13 @@ See <a class="el" href="group__flac__file__encoder.html#a20">FLAC__file_encoder_
 </dl>    </td>
   </tr>
 </table>
-<a name="a47" doxytag="file_encoder.h::FLAC__file_encoder_init"></a><p>
+<a name="a48" doxytag="file_encoder.h::FLAC__file_encoder_init"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__file__encoder.html#a51">FLAC__FileEncoderState</a> FLAC__file_encoder_init </td>
+          <td class="md" nowrap valign="top"> <a class="el" href="group__flac__file__encoder.html#a52">FLAC__FileEncoderState</a> FLAC__file_encoder_init </td>
           <td class="md" valign="top">(&nbsp;</td>
           <td class="md" nowrap valign="top"><a class="el" href="structFLAC____FileEncoder.html">FLAC__FileEncoder</a> *&nbsp;</td>
           <td class="mdname1" valign="top" nowrap>&nbsp; <em>encoder</em>          </td>
@@ -2518,7 +2563,7 @@ See <a class="el" href="group__flac__file__encoder.html#a20">FLAC__file_encoder_
     <td>
 
 <p>
-Initialize the encoder instance. Should be called after <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>() and FLAC__file_encoder_set_*() but before <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_process</a>() or <a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process_interleaved</a>(). Will set and return the encoder state, which will be FLAC__FILE_ENCODER_OK if initialization succeeded.<dl compact><dt><b>
+Initialize the encoder instance. Should be called after <a class="el" href="group__flac__file__encoder.html#a2">FLAC__file_encoder_new</a>() and FLAC__file_encoder_set_*() but before <a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process</a>() or <a class="el" href="group__flac__file__encoder.html#a51">FLAC__file_encoder_process_interleaved</a>(). Will set and return the encoder state, which will be FLAC__FILE_ENCODER_OK if initialization succeeded.<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2536,7 +2581,7 @@ Return values: </b><dd>
 </dl>    </td>
   </tr>
 </table>
-<a name="a48" doxytag="file_encoder.h::FLAC__file_encoder_finish"></a><p>
+<a name="a49" doxytag="file_encoder.h::FLAC__file_encoder_finish"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2564,7 +2609,7 @@ Return values: </b><dd>
 <p>
 Finish the encoding process. Flushes the encoding buffer, releases resources, resets the encoder settings to their defaults, and returns the encoder state to FLAC__FILE_ENCODER_UNINITIALIZED.
 <p>
-In the event of a prematurely-terminated encode, it is not strictly necessary to call this immediately before <a class="el" href="group__flac__file__encoder.html#a3">FLAC__file_encoder_delete</a>() but it is good practice to match every <a class="el" href="group__flac__file__encoder.html#a47">FLAC__file_encoder_init</a>() with a <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_finish</a>().<dl compact><dt><b>
+In the event of a prematurely-terminated encode, it is not strictly necessary to call this immediately before <a class="el" href="group__flac__file__encoder.html#a3">FLAC__file_encoder_delete</a>() but it is good practice to match every <a class="el" href="group__flac__file__encoder.html#a48">FLAC__file_encoder_init</a>() with a <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_finish</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2576,7 +2621,7 @@ Assertions:</b><dd>
 </pre></div> </dl>    </td>
   </tr>
 </table>
-<a name="a49" doxytag="file_encoder.h::FLAC__file_encoder_process"></a><p>
+<a name="a50" doxytag="file_encoder.h::FLAC__file_encoder_process"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2617,7 +2662,7 @@ Assertions:</b><dd>
     <td>
 
 <p>
-Submit data for encoding. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a50">FLAC__seekable_stream_encoder_process</a>().<dl compact><dt><b>
+Submit data for encoding. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a54">FLAC__seekable_stream_encoder_process</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2630,7 +2675,7 @@ The number of samples in one channel. </td></tr>
 </dl><dl compact><dt><b>
 Assertions:</b><dd>
  <div class="fragment"><pre>encoder != NULL 
-</pre></div> <div class="fragment"><pre><a class="code" href="file__encoder_8h.html#a25">FLAC__file_encoder_get_state</a>(encoder) == <a class="code" href="file__encoder_8h.html#a51a2">FLAC__FILE_ENCODER_OK</a> 
+</pre></div> <div class="fragment"><pre><a class="code" href="FLAC_2file__encoder_8h.html#a25">FLAC__file_encoder_get_state</a>(encoder) == <a class="code" href="FLAC_2file__encoder_8h.html#a52a2">FLAC__FILE_ENCODER_OK</a> 
 </pre></div> </dl><dl compact><dt><b>
 Return values: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
@@ -2640,7 +2685,7 @@ Return values: </b><dd>
 </dl>    </td>
   </tr>
 </table>
-<a name="a50" doxytag="file_encoder.h::FLAC__file_encoder_process_interleaved"></a><p>
+<a name="a51" doxytag="file_encoder.h::FLAC__file_encoder_process_interleaved"></a><p>
 <table width="100%" cellpadding="2" cellspacing="0" border="0">
   <tr>
     <td class="md">
@@ -2681,7 +2726,7 @@ Return values: </b><dd>
     <td>
 
 <p>
-Submit data for encoding. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a51">FLAC__seekable_stream_encoder_process_interleaved</a>().<dl compact><dt><b>
+Submit data for encoding. This is inherited from <a class="el" href="structFLAC____SeekableStreamEncoder.html">FLAC__SeekableStreamEncoder</a>; see <a class="el" href="group__flac__seekable__stream__encoder.html#a55">FLAC__seekable_stream_encoder_process_interleaved</a>().<dl compact><dt><b>
 Parameters: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
 <tr><td valign=top><em>encoder</em>&nbsp;</td><td>
@@ -2689,12 +2734,12 @@ An initialized encoder instance in the OK state. </td></tr>
 <tr><td valign=top><em>buffer</em>&nbsp;</td><td>
 An array of channel-interleaved data (see above). </td></tr>
 <tr><td valign=top><em>samples</em>&nbsp;</td><td>
-The number of samples in one channel, the same as for <a class="el" href="group__flac__file__encoder.html#a49">FLAC__file_encoder_process</a>(). For example, if encoding two channels, <code>1000</code> <em>samples</em> corresponds to a <em>buffer</em> of 2000 values. </td></tr>
+The number of samples in one channel, the same as for <a class="el" href="group__flac__file__encoder.html#a50">FLAC__file_encoder_process</a>(). For example, if encoding two channels, <code>1000</code> <em>samples</em> corresponds to a <em>buffer</em> of 2000 values. </td></tr>
 </table>
 </dl><dl compact><dt><b>
 Assertions:</b><dd>
  <div class="fragment"><pre>encoder != NULL 
-</pre></div> <div class="fragment"><pre><a class="code" href="file__encoder_8h.html#a25">FLAC__file_encoder_get_state</a>(encoder) == <a class="code" href="file__encoder_8h.html#a51a2">FLAC__FILE_ENCODER_OK</a> 
+</pre></div> <div class="fragment"><pre><a class="code" href="FLAC_2file__encoder_8h.html#a25">FLAC__file_encoder_get_state</a>(encoder) == <a class="code" href="FLAC_2file__encoder_8h.html#a52a2">FLAC__FILE_ENCODER_OK</a> 
 </pre></div> </dl><dl compact><dt><b>
 Return values: </b><dd>
 <table border=0 cellspacing=2 cellpadding=0>
@@ -2729,7 +2774,7 @@ Maps a FLAC__FileEncoderState to a C string.
 Using a FLAC__FileEncoderState as the index to this array will give the string equivalent. The contents should not be modified.     </td>
   </tr>
 </table>
-<hr><address><small>Generated on Tue Sep 24 21:54:28 2002 for FLAC by
+<hr><address><small>Generated on Fri Feb 4 18:39:15 2005 for FLAC by
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.gif" alt="doxygen" align="middle" border=0 
 width=110 height=53></a>1.2.14 written by <a href="mailto:dimitri@stack.nl">Dimitri van Heesch</a>,

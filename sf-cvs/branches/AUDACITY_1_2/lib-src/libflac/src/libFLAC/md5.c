@@ -28,6 +28,10 @@
 
 #include "private/md5.h"
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifndef FLaC__INLINE
 #define FLaC__INLINE
 #endif
@@ -55,7 +59,7 @@ static FLAC__bool is_big_endian_host_;
  */
 FLaC__INLINE
 void
-MD5Transform(FLAC__uint32 buf[4], FLAC__uint32 const in[16])
+FLAC__MD5Transform(FLAC__uint32 buf[4], FLAC__uint32 const in[16])
 {
 	register FLAC__uint32 a, b, c, d;
 
@@ -159,7 +163,7 @@ byteSwap(FLAC__uint32 *buf, unsigned words)
  * initialization constants.
  */
 void
-MD5Init(struct MD5Context *ctx)
+FLAC__MD5Init(struct FLAC__MD5Context *ctx)
 {
 	FLAC__uint32 test = 1;
 
@@ -182,7 +186,7 @@ MD5Init(struct MD5Context *ctx)
  * of bytes.
  */
 void
-MD5Update(struct MD5Context *ctx, md5byte const *buf, unsigned len)
+FLAC__MD5Update(struct FLAC__MD5Context *ctx, md5byte const *buf, unsigned len)
 {
 	FLAC__uint32 t;
 
@@ -200,7 +204,7 @@ MD5Update(struct MD5Context *ctx, md5byte const *buf, unsigned len)
 	/* First chunk is an odd size */
 	memcpy((md5byte *)ctx->in + 64 - t, buf, t);
 	byteSwap(ctx->in, 16);
-	MD5Transform(ctx->buf, ctx->in);
+	FLAC__MD5Transform(ctx->buf, ctx->in);
 	buf += t;
 	len -= t;
 
@@ -208,7 +212,7 @@ MD5Update(struct MD5Context *ctx, md5byte const *buf, unsigned len)
 	while (len >= 64) {
 		memcpy(ctx->in, buf, 64);
 		byteSwap(ctx->in, 16);
-		MD5Transform(ctx->buf, ctx->in);
+		FLAC__MD5Transform(ctx->buf, ctx->in);
 		buf += 64;
 		len -= 64;
 	}
@@ -218,10 +222,10 @@ MD5Update(struct MD5Context *ctx, md5byte const *buf, unsigned len)
 }
 
 /*
- * Convert the incoming audio signal to a byte stream and MD5Update it.
+ * Convert the incoming audio signal to a byte stream and FLAC__MD5Update it.
  */
 FLAC__bool
-FLAC__MD5Accumulate(struct MD5Context *ctx, const FLAC__int32 * const signal[], unsigned channels, unsigned samples, unsigned bytes_per_sample)
+FLAC__MD5Accumulate(struct FLAC__MD5Context *ctx, const FLAC__int32 * const signal[], unsigned channels, unsigned samples, unsigned bytes_per_sample)
 {
 	unsigned channel, sample, a_byte;
 	FLAC__int32 a_word;
@@ -229,10 +233,10 @@ FLAC__MD5Accumulate(struct MD5Context *ctx, const FLAC__int32 * const signal[], 
 	const unsigned bytes_needed = channels * samples * bytes_per_sample;
 
 	if(ctx->capacity < bytes_needed) {
-		FLAC__byte *tmp = realloc(ctx->internal_buf, bytes_needed);
+		FLAC__byte *tmp = (FLAC__byte*)realloc(ctx->internal_buf, bytes_needed);
 		if(0 == tmp) {
 			free(ctx->internal_buf);
-			if(0 == (ctx->internal_buf = malloc(bytes_needed)))
+			if(0 == (ctx->internal_buf = (FLAC__byte*)malloc(bytes_needed)))
 				return false;
 		}
 		ctx->internal_buf = tmp;
@@ -264,7 +268,7 @@ FLAC__MD5Accumulate(struct MD5Context *ctx, const FLAC__int32 * const signal[], 
 		}
 	}
 
-	MD5Update(ctx, ctx->internal_buf, bytes_needed);
+	FLAC__MD5Update(ctx, ctx->internal_buf, bytes_needed);
 
 	return true;
 }
@@ -274,7 +278,7 @@ FLAC__MD5Accumulate(struct MD5Context *ctx, const FLAC__int32 * const signal[], 
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 void
-MD5Final(md5byte digest[16], struct MD5Context *ctx)
+FLAC__MD5Final(md5byte digest[16], struct FLAC__MD5Context *ctx)
 {
 	int count = ctx->bytes[0] & 0x3f;	/* Number of bytes in ctx->in */
 	md5byte *p = (md5byte *)ctx->in + count;
@@ -288,7 +292,7 @@ MD5Final(md5byte digest[16], struct MD5Context *ctx)
 	if (count < 0) {	/* Padding forces an extra block */
 		memset(p, 0, count + 8);
 		byteSwap(ctx->in, 16);
-		MD5Transform(ctx->buf, ctx->in);
+		FLAC__MD5Transform(ctx->buf, ctx->in);
 		p = (md5byte *)ctx->in;
 		count = 56;
 	}
@@ -298,7 +302,7 @@ MD5Final(md5byte digest[16], struct MD5Context *ctx)
 	/* Append length in bits and transform */
 	ctx->in[14] = ctx->bytes[0] << 3;
 	ctx->in[15] = ctx->bytes[1] << 3 | ctx->bytes[0] >> 29;
-	MD5Transform(ctx->buf, ctx->in);
+	FLAC__MD5Transform(ctx->buf, ctx->in);
 
 	byteSwap(ctx->buf, 4);
 	memcpy(digest, ctx->buf, 16);

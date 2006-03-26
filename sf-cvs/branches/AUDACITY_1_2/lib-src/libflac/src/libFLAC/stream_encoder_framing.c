@@ -1,20 +1,32 @@
 /* libFLAC - Free Lossless Audio Codec library
- * Copyright (C) 2000,2001,2002  Josh Coalson
+ * Copyright (C) 2000,2001,2002,2003,2004,2005  Josh Coalson
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * - Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
+ * - Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the Xiph.org Foundation nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <stdio.h>
@@ -33,7 +45,7 @@ static FLAC__bool add_residual_partitioned_rice_(FLAC__BitBuffer *bb, const FLAC
 
 FLAC__bool FLAC__add_metadata_block(const FLAC__StreamMetadata *metadata, FLAC__BitBuffer *bb)
 {
-	unsigned i;
+	unsigned i, j;
 	const unsigned vendor_string_length = (unsigned)strlen(FLAC__VENDOR_STRING);
 
 	if(!FLAC__bitbuffer_write_raw_uint32(bb, metadata->is_last, FLAC__STREAM_METADATA_IS_LAST_LEN))
@@ -47,6 +59,7 @@ FLAC__bool FLAC__add_metadata_block(const FLAC__StreamMetadata *metadata, FLAC__
 	 */
 	i = metadata->length;
 	if(metadata->type == FLAC__METADATA_TYPE_VORBIS_COMMENT) {
+		FLAC__ASSERT(metadata->data.vorbis_comment.vendor_string.length == 0 || 0 != metadata->data.vorbis_comment.vendor_string.entry);
 		i -= metadata->data.vorbis_comment.vendor_string.length;
 		i += vendor_string_length;
 	}
@@ -118,14 +131,59 @@ FLAC__bool FLAC__add_metadata_block(const FLAC__StreamMetadata *metadata, FLAC__
 					return false;
 			}
 			break;
+		case FLAC__METADATA_TYPE_CUESHEET:
+			FLAC__ASSERT(FLAC__STREAM_METADATA_CUESHEET_MEDIA_CATALOG_NUMBER_LEN % 8 == 0);
+			if(!FLAC__bitbuffer_write_byte_block(bb, (const FLAC__byte*)metadata->data.cue_sheet.media_catalog_number, FLAC__STREAM_METADATA_CUESHEET_MEDIA_CATALOG_NUMBER_LEN/8))
+				return false;
+			if(!FLAC__bitbuffer_write_raw_uint64(bb, metadata->data.cue_sheet.lead_in, FLAC__STREAM_METADATA_CUESHEET_LEAD_IN_LEN))
+				return false;
+			if(!FLAC__bitbuffer_write_raw_uint32(bb, metadata->data.cue_sheet.is_cd? 1 : 0, FLAC__STREAM_METADATA_CUESHEET_IS_CD_LEN))
+				return false;
+			if(!FLAC__bitbuffer_write_zeroes(bb, FLAC__STREAM_METADATA_CUESHEET_RESERVED_LEN))
+				return false;
+			if(!FLAC__bitbuffer_write_raw_uint32(bb, metadata->data.cue_sheet.num_tracks, FLAC__STREAM_METADATA_CUESHEET_NUM_TRACKS_LEN))
+				return false;
+			for(i = 0; i < metadata->data.cue_sheet.num_tracks; i++) {
+				const FLAC__StreamMetadata_CueSheet_Track *track = metadata->data.cue_sheet.tracks + i;
+
+				if(!FLAC__bitbuffer_write_raw_uint64(bb, track->offset, FLAC__STREAM_METADATA_CUESHEET_TRACK_OFFSET_LEN))
+					return false;
+				if(!FLAC__bitbuffer_write_raw_uint32(bb, track->number, FLAC__STREAM_METADATA_CUESHEET_TRACK_NUMBER_LEN))
+					return false;
+				FLAC__ASSERT(FLAC__STREAM_METADATA_CUESHEET_TRACK_ISRC_LEN % 8 == 0);
+				if(!FLAC__bitbuffer_write_byte_block(bb, (const FLAC__byte*)track->isrc, FLAC__STREAM_METADATA_CUESHEET_TRACK_ISRC_LEN/8))
+					return false;
+				if(!FLAC__bitbuffer_write_raw_uint32(bb, track->type, FLAC__STREAM_METADATA_CUESHEET_TRACK_TYPE_LEN))
+					return false;
+				if(!FLAC__bitbuffer_write_raw_uint32(bb, track->pre_emphasis, FLAC__STREAM_METADATA_CUESHEET_TRACK_PRE_EMPHASIS_LEN))
+					return false;
+				if(!FLAC__bitbuffer_write_zeroes(bb, FLAC__STREAM_METADATA_CUESHEET_TRACK_RESERVED_LEN))
+					return false;
+				if(!FLAC__bitbuffer_write_raw_uint32(bb, track->num_indices, FLAC__STREAM_METADATA_CUESHEET_TRACK_NUM_INDICES_LEN))
+					return false;
+				for(j = 0; j < track->num_indices; j++) {
+					const FLAC__StreamMetadata_CueSheet_Index *index = track->indices + j;
+
+					if(!FLAC__bitbuffer_write_raw_uint64(bb, index->offset, FLAC__STREAM_METADATA_CUESHEET_INDEX_OFFSET_LEN))
+						return false;
+					if(!FLAC__bitbuffer_write_raw_uint32(bb, index->number, FLAC__STREAM_METADATA_CUESHEET_INDEX_NUMBER_LEN))
+						return false;
+					if(!FLAC__bitbuffer_write_zeroes(bb, FLAC__STREAM_METADATA_CUESHEET_INDEX_RESERVED_LEN))
+						return false;
+				}
+			}
+			break;
 		default:
-			FLAC__ASSERT(0);
+			if(!FLAC__bitbuffer_write_byte_block(bb, metadata->data.unknown.data, metadata->length))
+				return false;
+			break;
 	}
 
+	FLAC__ASSERT(FLAC__bitbuffer_is_byte_aligned(bb));
 	return true;
 }
 
-FLAC__bool FLAC__frame_add_header(const FLAC__FrameHeader *header, FLAC__bool streamable_subset, FLAC__bool is_last_block, FLAC__BitBuffer *bb)
+FLAC__bool FLAC__frame_add_header(const FLAC__FrameHeader *header, FLAC__bool streamable_subset, FLAC__BitBuffer *bb)
 {
 	unsigned u, blocksize_hint, sample_rate_hint;
 
@@ -138,6 +196,8 @@ FLAC__bool FLAC__frame_add_header(const FLAC__FrameHeader *header, FLAC__bool st
 		return false;
 
 	FLAC__ASSERT(header->blocksize > 0 && header->blocksize <= FLAC__MAX_BLOCK_SIZE);
+	/* when this assertion holds true, any legal blocksize can be expressed in the frame header */
+	FLAC__ASSERT(FLAC__MAX_BLOCK_SIZE <= 65535u);
 	blocksize_hint = 0;
 	switch(header->blocksize) {
 		case   192: u = 1; break;
@@ -154,14 +214,14 @@ FLAC__bool FLAC__frame_add_header(const FLAC__FrameHeader *header, FLAC__bool st
 		case 16384: u = 14; break;
 		case 32768: u = 15; break;
 		default:
-			if(streamable_subset || is_last_block) {
-				if(header->blocksize <= 0x100)
-					blocksize_hint = u = 6;
-				else
-					blocksize_hint = u = 7;
+			if(header->blocksize <= 0x100)
+				blocksize_hint = u = 6;
+			else if(header->blocksize <= 0x10000)
+				blocksize_hint = u = 7;
+			else {
+				FLAC__ASSERT(0);
+				return false;
 			}
-			else
-				u = 0;
 			break;
 	}
 	if(!FLAC__bitbuffer_write_raw_uint32(bb, u, FLAC__FRAME_HEADER_BLOCK_SIZE_LEN))
@@ -179,13 +239,15 @@ FLAC__bool FLAC__frame_add_header(const FLAC__FrameHeader *header, FLAC__bool st
 		case 48000: u = 10; break;
 		case 96000: u = 11; break;
 		default:
-			if(streamable_subset) {
-				if(header->sample_rate % 1000 == 0)
-					sample_rate_hint = u = 12;
-				else if(header->sample_rate % 10 == 0)
-					sample_rate_hint = u = 14;
-				else
-					sample_rate_hint = u = 13;
+			if(header->sample_rate <= 255000 && header->sample_rate % 1000 == 0)
+				sample_rate_hint = u = 12;
+			else if(header->sample_rate % 10 == 0)
+				sample_rate_hint = u = 14;
+			else if(header->sample_rate <= 0xffff)
+				sample_rate_hint = u = 13;
+			else if(streamable_subset) {
+				FLAC__ASSERT(0);
+				return false;
 			}
 			else
 				u = 0;

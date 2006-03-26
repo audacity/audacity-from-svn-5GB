@@ -1,3 +1,5 @@
+#ifndef SHARE__UTF8_H
+#define SHARE__UTF8_H
 
 /*
  * Convert a string between UTF-8 and the locale's charset.
@@ -21,3 +23,5 @@ void convert_set_charset(const char *charset);
 
 int utf8_encode(const char *from, char **to);
 int utf8_decode(const char *from, char **to);
+
+#endif
