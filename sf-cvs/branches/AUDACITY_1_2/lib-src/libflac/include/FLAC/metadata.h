@@ -1,25 +1,39 @@
 /* libFLAC - Free Lossless Audio Codec library
- * Copyright (C) 2001,2002  Josh Coalson
+ * Copyright (C) 2001,2002,2003,2004,2005  Josh Coalson
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * - Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
+ * - Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the Xiph.org Foundation nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef FLAC__METADATA_H
 #define FLAC__METADATA_H
 
+#include "export.h"
+#include "callback.h"
 #include "format.h"
 
 /******************************************************************************
@@ -50,7 +64,7 @@
  *  There are three metadata interfaces of increasing complexity:
  *
  *  Level 0:
- *  Read-only access to the STREAMINFO block.
+ *  Read-only access to the STREAMINFO and VORBIS_COMMENT blocks.
  *
  *  Level 1:
  *  Read-write access to all metadata blocks.  This level is write-
@@ -63,8 +77,9 @@
  *  the whole file is read into memory and manipulated before writing
  *  out again.
  *
- *  What do we mean by efficient?  When writing metadata back to a FLAC
- *  file it is possible to grow or shrink the metadata such that the entire
+ *  What do we mean by efficient?  Since FLAC metadata appears at the
+ *  beginning of the file, when writing metadata back to a FLAC file
+ *  it is possible to grow or shrink the metadata such that the entire
  *  file must be rewritten.  However, if the size remains the same during
  *  changes or PADDING blocks are utilized, only the metadata needs to be
  *  overwritten, which is much faster.
@@ -78,6 +93,10 @@
  *
  *  All levels know how to skip over and not disturb an ID3v2 tag at the
  *  front of the file.
+ *
+ *  All levels access files via their filenames.  In addition, level 2
+ *  has additional alternative read and write functions that take an I/O
+ *  handle and callbacks, for times when access by filename is not possible.
  *
  *  In addition to the three interfaces, this module defines functions for
  *  creating and manipulating various metadata objects in memory.  As we see
@@ -104,8 +123,8 @@ extern "C" {
  *  \ingroup flac_metadata
  *
  *  \brief
- *  The level 0 interface consists of a single routine to read the
- *  STREAMINFO block.
+ *  The level 0 interface consists of individual routines to read the
+ *  STREAMINFO and VORBIS_COMMENT blocks, requiring only a filename.
  *
  *  It skips any ID3v2 tag at the head of the file.
  *
@@ -116,16 +135,39 @@ extern "C" {
  *  will skip any ID3v2 tag at the head of the file.
  *
  * \param filename    The path to the FLAC file to read.
- * \param streaminfo  A pointer to space for the STREAMINFO block.
+ * \param streaminfo  A pointer to space for the STREAMINFO block.  Since
+ *                    FLAC__StreamMetadata is a simple structure with no
+ *                    memory allocation involved, you pass the address of
+ *                    an existing structure.  It need not be initialized.
  * \assert
  *    \code filename != NULL \endcode
  *    \code streaminfo != NULL \endcode
  * \retval FLAC__bool
  *    \c true if a valid STREAMINFO block was read from \a filename.  Returns
  *    \c false if there was a memory allocation error, a file decoder error,
- *    or the file contained no STREAMINFO block.
+ *    or the file contained no STREAMINFO block.  (A memory allocation error
+ *    is possible because this function must set up a file decoder.)
  */
-FLAC__bool FLAC__metadata_get_streaminfo(const char *filename, FLAC__StreamMetadata *streaminfo);
+FLAC_API FLAC__bool FLAC__metadata_get_streaminfo(const char *filename, FLAC__StreamMetadata *streaminfo);
+
+/** Read the VORBIS_COMMENT metadata block of the given FLAC file.  This
+ *  function will skip any ID3v2 tag at the head of the file.
+ *
+ * \param filename    The path to the FLAC file to read.
+ * \param tags        The address where the returned pointer will be
+ *                    stored.  The \a tags object must be deleted by
+ *                    the caller using FLAC__metadata_object_delete().
+ * \assert
+ *    \code filename != NULL \endcode
+ *    \code streaminfo != NULL \endcode
+ * \retval FLAC__bool
+ *    \c true if a valid VORBIS_COMMENT block was read from \a filename,
+ *    and \a *tags will be set to the address of the tag structure.
+ *    Returns \c false if there was a memory allocation error, a file
+ *    decoder error, or the file contained no VORBIS_COMMENT block, and
+ *    \a *tags will be set to \c NULL.
+ */
+FLAC_API FLAC__bool FLAC__metadata_get_tags(const char *filename, FLAC__StreamMetadata **tags);
 
 /* \} */
 
@@ -173,7 +215,7 @@ FLAC__bool FLAC__metadata_get_streaminfo(const char *filename, FLAC__StreamMetad
  *
  * \note
  * Do not modify the \a is_last, \a length, or \a type fields of returned
- * FLAC__MetadataType objects.  These are managed automatically.
+ * FLAC__StreamMetadata objects.  These are managed automatically.
  *
  * \note
  * If any of the modification functions
@@ -245,7 +287,7 @@ typedef enum {
  *  Using a FLAC__Metadata_SimpleIteratorStatus as the index to this array
  *  will give the string equivalent.  The contents should not be modified.
  */
-extern const char * const FLAC__Metadata_SimpleIteratorStatusString[];
+extern FLAC_API const char * const FLAC__Metadata_SimpleIteratorStatusString[];
 
 
 /** Create a new iterator instance.
@@ -253,7 +295,7 @@ extern const char * const FLAC__Metadata_SimpleIteratorStatusString[];
  * \retval FLAC__Metadata_SimpleIterator*
  *    \c NULL if there was an error allocating memory, else the new instance.
  */
-FLAC__Metadata_SimpleIterator *FLAC__metadata_simple_iterator_new();
+FLAC_API FLAC__Metadata_SimpleIterator *FLAC__metadata_simple_iterator_new();
 
 /** Free an iterator instance.  Deletes the object pointed to by \a iterator.
  *
@@ -261,7 +303,7 @@ FLAC__Metadata_SimpleIterator *FLAC__metadata_simple_iterator_new();
  * \assert
  *    \code iterator != NULL \endcode
  */
-void FLAC__metadata_simple_iterator_delete(FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API void FLAC__metadata_simple_iterator_delete(FLAC__Metadata_SimpleIterator *iterator);
 
 /** Get the current status of the iterator.  Call this after a function
  *  returns \c false to get the reason for the error.  Also resets the status
@@ -273,7 +315,7 @@ void FLAC__metadata_simple_iterator_delete(FLAC__Metadata_SimpleIterator *iterat
  * \retval FLAC__Metadata_SimpleIteratorStatus
  *    The current status of the iterator.
  */
-FLAC__Metadata_SimpleIteratorStatus FLAC__metadata_simple_iterator_status(FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__Metadata_SimpleIteratorStatus FLAC__metadata_simple_iterator_status(FLAC__Metadata_SimpleIterator *iterator);
 
 /** Initialize the iterator to point to the first metadata block in the
  *  given FLAC file.
@@ -294,7 +336,7 @@ FLAC__Metadata_SimpleIteratorStatus FLAC__metadata_simple_iterator_status(FLAC__
  *    \c false if a memory allocation error occurs, the file can't be
  *    opened, or another error occurs, else \c true.
  */
-FLAC__bool FLAC__metadata_simple_iterator_init(FLAC__Metadata_SimpleIterator *iterator, const char *filename, FLAC__bool read_only, FLAC__bool preserve_file_stats);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_init(FLAC__Metadata_SimpleIterator *iterator, const char *filename, FLAC__bool read_only, FLAC__bool preserve_file_stats);
 
 /** Returns \c true if the FLAC file is writable.  If \c false, calls to
  *  FLAC__metadata_simple_iterator_set_block() and
@@ -306,7 +348,7 @@ FLAC__bool FLAC__metadata_simple_iterator_init(FLAC__Metadata_SimpleIterator *it
  * \retval FLAC__bool
  *    See above.
  */
-FLAC__bool FLAC__metadata_simple_iterator_is_writable(const FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_is_writable(const FLAC__Metadata_SimpleIterator *iterator);
 
 /** Moves the iterator forward one metadata block, returning \c false if
  *  already at the end.
@@ -320,7 +362,7 @@ FLAC__bool FLAC__metadata_simple_iterator_is_writable(const FLAC__Metadata_Simpl
  *    \c false if already at the last metadata block of the chain, else
  *    \c true.
  */
-FLAC__bool FLAC__metadata_simple_iterator_next(FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_next(FLAC__Metadata_SimpleIterator *iterator);
 
 /** Moves the iterator backward one metadata block, returning \c false if
  *  already at the beginning.
@@ -334,7 +376,7 @@ FLAC__bool FLAC__metadata_simple_iterator_next(FLAC__Metadata_SimpleIterator *it
  *    \c false if already at the first metadata block of the chain, else
  *    \c true.
  */
-FLAC__bool FLAC__metadata_simple_iterator_prev(FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_prev(FLAC__Metadata_SimpleIterator *iterator);
 
 /** Get the type of the metadata block at the current position.  This
  *  avoids reading the actual block data which can save time for large
@@ -349,7 +391,7 @@ FLAC__bool FLAC__metadata_simple_iterator_prev(FLAC__Metadata_SimpleIterator *it
  *    The type of the metadata block at the current iterator position.
  */
 
-FLAC__MetadataType FLAC__metadata_simple_iterator_get_block_type(const FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__MetadataType FLAC__metadata_simple_iterator_get_block_type(const FLAC__Metadata_SimpleIterator *iterator);
 
 /** Get the metadata block at the current position.  You can modify the
  *  block but must use FLAC__metadata_simple_iterator_set_block() to
@@ -366,7 +408,7 @@ FLAC__MetadataType FLAC__metadata_simple_iterator_get_block_type(const FLAC__Met
  * \retval FLAC__StreamMetadata*
  *    The current metadata block.
  */
-FLAC__StreamMetadata *FLAC__metadata_simple_iterator_get_block(FLAC__Metadata_SimpleIterator *iterator);
+FLAC_API FLAC__StreamMetadata *FLAC__metadata_simple_iterator_get_block(FLAC__Metadata_SimpleIterator *iterator);
 
 /** Write a block back to the FLAC file.  This function tries to be
  *  as efficient as possible; how the block is actually written is
@@ -422,7 +464,7 @@ FLAC__StreamMetadata *FLAC__metadata_simple_iterator_get_block(FLAC__Metadata_Si
  * \retval FLAC__bool
  *    \c true if successful, else \c false.
  */
-FLAC__bool FLAC__metadata_simple_iterator_set_block(FLAC__Metadata_SimpleIterator *iterator, FLAC__StreamMetadata *block, FLAC__bool use_padding);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_set_block(FLAC__Metadata_SimpleIterator *iterator, FLAC__StreamMetadata *block, FLAC__bool use_padding);
 
 /** This is similar to FLAC__metadata_simple_iterator_set_block()
  *  except that instead of writing over an existing block, it appends
@@ -447,7 +489,7 @@ FLAC__bool FLAC__metadata_simple_iterator_set_block(FLAC__Metadata_SimpleIterato
  * \retval FLAC__bool
  *    \c true if successful, else \c false.
  */
-FLAC__bool FLAC__metadata_simple_iterator_insert_block_after(FLAC__Metadata_SimpleIterator *iterator, FLAC__StreamMetadata *block, FLAC__bool use_padding);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_insert_block_after(FLAC__Metadata_SimpleIterator *iterator, FLAC__StreamMetadata *block, FLAC__bool use_padding);
 
 /** Deletes the block at the current position.  This will cause the
  *  entire FLAC file to be rewritten, unless \a use_padding is \c true,
@@ -466,7 +508,7 @@ FLAC__bool FLAC__metadata_simple_iterator_insert_block_after(FLAC__Metadata_Simp
  * \retval FLAC__bool
  *    \c true if successful, else \c false.
  */
-FLAC__bool FLAC__metadata_simple_iterator_delete_block(FLAC__Metadata_SimpleIterator *iterator, FLAC__bool use_padding);
+FLAC_API FLAC__bool FLAC__metadata_simple_iterator_delete_block(FLAC__Metadata_SimpleIterator *iterator, FLAC__bool use_padding);
 
 /* \} */
 
@@ -511,7 +553,7 @@ FLAC__bool FLAC__metadata_simple_iterator_delete_block(FLAC__Metadata_SimpleIter
  *
  * \note
  * Do not modify the is_last, length, or type fields of returned
- * FLAC__MetadataType objects.  These are managed automatically.
+ * FLAC__StreamMetadata objects.  These are managed automatically.
  *
  * \note
  * The metadata objects returned by FLAC__metadata_iterator_get_block()
@@ -570,8 +612,29 @@ typedef enum {
 	FLAC__METADATA_CHAIN_STATUS_MEMORY_ALLOCATION_ERROR,
 	/**< Memory allocation failed */
 
-	FLAC__METADATA_CHAIN_STATUS_INTERNAL_ERROR
+	FLAC__METADATA_CHAIN_STATUS_INTERNAL_ERROR,
 	/**< The caller violated an assertion or an unexpected error occurred */
+
+	FLAC__METADATA_CHAIN_STATUS_INVALID_CALLBACKS,
+	/**< One or more of the required callbacks was NULL */
+
+	FLAC__METADATA_CHAIN_STATUS_READ_WRITE_MISMATCH,
+	/**< FLAC__metadata_chain_write() was called on a chain read by
+	 *   FLAC__metadata_chain_read_with_callbacks(), or
+	 *   FLAC__metadata_chain_write_with_callbacks() or
+	 *   FLAC__metadata_chain_write_with_callbacks_and_tempfile() was
+	 *   called on a chain read by FLAC__metadata_chain_read().  Matching
+	 *   read/write methods must always be used. */
+
+	FLAC__METADATA_CHAIN_STATUS_WRONG_WRITE_CALL
+	/**< FLAC__metadata_chain_write_with_callbacks() was called when the
+	 *   chain write requires a tempfile; use
+	 *   FLAC__metadata_chain_write_with_callbacks_and_tempfile() instead.
+	 *   Or, FLAC__metadata_chain_write_with_callbacks_and_tempfile() was
+	 *   called when the chain write does not require a tempfile; use
+	 *   FLAC__metadata_chain_write_with_callbacks() instead.
+	 *   Always check FLAC__metadata_chain_check_if_tempfile_needed()
+	 *   before writing via callbacks. */
 
 } FLAC__Metadata_ChainStatus;
 
@@ -580,7 +643,7 @@ typedef enum {
  *  Using a FLAC__Metadata_ChainStatus as the index to this array
  *  will give the string equivalent.  The contents should not be modified.
  */
-extern const char * const FLAC__Metadata_ChainStatusString[];
+extern FLAC_API const char * const FLAC__Metadata_ChainStatusString[];
 
 /*********** FLAC__Metadata_Chain ***********/
 
@@ -589,7 +652,7 @@ extern const char * const FLAC__Metadata_ChainStatusString[];
  * \retval FLAC__Metadata_Chain*
  *    \c NULL if there was an error allocating memory, else the new instance.
  */
-FLAC__Metadata_Chain *FLAC__metadata_chain_new();
+FLAC_API FLAC__Metadata_Chain *FLAC__metadata_chain_new();
 
 /** Free a chain instance.  Deletes the object pointed to by \a chain.
  *
@@ -597,7 +660,7 @@ FLAC__Metadata_Chain *FLAC__metadata_chain_new();
  * \assert
  *    \code chain != NULL \endcode
  */
-void FLAC__metadata_chain_delete(FLAC__Metadata_Chain *chain);
+FLAC_API void FLAC__metadata_chain_delete(FLAC__Metadata_Chain *chain);
 
 /** Get the current status of the chain.  Call this after a function
  *  returns \c false to get the reason for the error.  Also resets the
@@ -609,7 +672,7 @@ void FLAC__metadata_chain_delete(FLAC__Metadata_Chain *chain);
  * \retval FLAC__Metadata_ChainStatus
  *    The current status of the chain.
  */
-FLAC__Metadata_ChainStatus FLAC__metadata_chain_status(FLAC__Metadata_Chain *chain);
+FLAC_API FLAC__Metadata_ChainStatus FLAC__metadata_chain_status(FLAC__Metadata_Chain *chain);
 
 /** Read all metadata from a FLAC file into the chain.
  *
@@ -623,7 +686,57 @@ FLAC__Metadata_ChainStatus FLAC__metadata_chain_status(FLAC__Metadata_Chain *cha
  *    \a filename, else \c false.  On failure, check the status with
  *    FLAC__metadata_chain_status().
  */
-FLAC__bool FLAC__metadata_chain_read(FLAC__Metadata_Chain *chain, const char *filename);
+FLAC_API FLAC__bool FLAC__metadata_chain_read(FLAC__Metadata_Chain *chain, const char *filename);
+
+/** Read all metadata from a FLAC stream into the chain via I/O callbacks.
+ *
+ *  The \a handle need only be open for reading, but must be seekable.
+ *  The equivalent minimum stdio fopen() file mode is \c "r" (or \c "rb"
+ *  for Windows).
+ *
+ * \param chain    A pointer to an existing chain.
+ * \param handle   The I/O handle of the FLAC stream to read.  The
+ *                 handle will NOT be closed after the metadata is read;
+ *                 that is the duty of the caller.
+ * \param callbacks
+ *                 A set of callbacks to use for I/O.  The mandatory
+ *                 callbacks are \a read, \a seek, and \a tell.
+ * \assert
+ *    \code chain != NULL \endcode
+ * \retval FLAC__bool
+ *    \c true if a valid list of metadata blocks was read from
+ *    \a handle, else \c false.  On failure, check the status with
+ *    FLAC__metadata_chain_status().
+ */
+FLAC_API FLAC__bool FLAC__metadata_chain_read_with_callbacks(FLAC__Metadata_Chain *chain, FLAC__IOHandle handle, FLAC__IOCallbacks callbacks);
+
+/** Checks if writing the given chain would require the use of a
+ *  temporary file, or if it could be written in place.
+ *
+ *  Under certain conditions, padding can be utilized so that writing
+ *  edited metadata back to the FLAC file does not require rewriting the
+ *  entire file.  If rewriting is required, then a temporary workfile is
+ *  required.  When writing metadata using callbacks, you must check
+ *  this function to know whether to call
+ *  FLAC__metadata_chain_write_with_callbacks() or
+ *  FLAC__metadata_chain_write_with_callbacks_and_tempfile().  When
+ *  writing with FLAC__metadata_chain_write(), the temporary file is
+ *  handled internally.
+ *
+ * \param chain    A pointer to an existing chain.
+ * \param use_padding
+ *                 Whether or not padding will be allowed to be used
+ *                 during the write.  The value of \a use_padding given
+ *                 here must match the value later passed to
+ *                 FLAC__metadata_chain_write_with_callbacks() or
+ *                 FLAC__metadata_chain_write_with_callbacks_with_tempfile().
+ * \assert
+ *    \code chain != NULL \endcode
+ * \retval FLAC__bool
+ *    \c true if writing the current chain would require a tempfile, or
+ *    \c false if metadata can be written in place.
+ */
+FLAC_API FLAC__bool FLAC__metadata_chain_check_if_tempfile_needed(FLAC__Metadata_Chain *chain, FLAC__bool use_padding);
 
 /** Write all metadata out to the FLAC file.  This function tries to be as
  *  efficient as possible; how the metadata is actually written is shown by
@@ -656,6 +769,9 @@ FLAC__bool FLAC__metadata_chain_read(FLAC__Metadata_Chain *chain, const char *fi
  *  If \a preserve_file_stats is \c true, the owner and modification time will
  *  be preserved even if the FLAC file is written.
  *
+ *  For this write function to be used, the chain must have been read with
+ *  FLAC__metadata_chain_read(), not FLAC__metadata_chain_read_with_callbacks().
+ *
  * \param chain               A pointer to an existing chain.
  * \param use_padding         See above.
  * \param preserve_file_stats See above.
@@ -665,7 +781,86 @@ FLAC__bool FLAC__metadata_chain_read(FLAC__Metadata_Chain *chain, const char *fi
  *    \c true if the write succeeded, else \c false.  On failure,
  *    check the status with FLAC__metadata_chain_status().
  */
-FLAC__bool FLAC__metadata_chain_write(FLAC__Metadata_Chain *chain, FLAC__bool use_padding, FLAC__bool preserve_file_stats);
+FLAC_API FLAC__bool FLAC__metadata_chain_write(FLAC__Metadata_Chain *chain, FLAC__bool use_padding, FLAC__bool preserve_file_stats);
+
+/** Write all metadata out to a FLAC stream via callbacks.
+ *
+ *  (See FLAC__metadata_chain_write() for the details on how padding is
+ *  used to write metadata in place if possible.)
+ *
+ *  The \a handle must be open for updating and be seekable.  The
+ *  equivalent minimum stdio fopen() file mode is \c "r+" (or \c "r+b"
+ *  for Windows).
+ *
+ *  For this write function to be used, the chain must have been read with
+ *  FLAC__metadata_chain_read_with_callbacks(), not FLAC__metadata_chain_read().
+ *  Also, FLAC__metadata_chain_check_if_tempfile_needed() must have returned
+ *  \c false.
+ *
+ * \param chain        A pointer to an existing chain.
+ * \param use_padding  See FLAC__metadata_chain_write()
+ * \param handle       The I/O handle of the FLAC stream to write.  The
+ *                     handle will NOT be closed after the metadata is
+ *                     written; that is the duty of the caller.
+ * \param callbacks    A set of callbacks to use for I/O.  The mandatory
+ *                     callbacks are \a write and \a seek.
+ * \assert
+ *    \code chain != NULL \endcode
+ * \retval FLAC__bool
+ *    \c true if the write succeeded, else \c false.  On failure,
+ *    check the status with FLAC__metadata_chain_status().
+ */
+FLAC_API FLAC__bool FLAC__metadata_chain_write_with_callbacks(FLAC__Metadata_Chain *chain, FLAC__bool use_padding, FLAC__IOHandle handle, FLAC__IOCallbacks callbacks);
+
+/** Write all metadata out to a FLAC stream via callbacks.
+ *
+ *  (See FLAC__metadata_chain_write() for the details on how padding is
+ *  used to write metadata in place if possible.)
+ *
+ *  This version of the write-with-callbacks function must be used when
+ *  FLAC__metadata_chain_check_if_tempfile_needed() returns true.  In
+ *  this function, you must supply an I/O handle corresponding to the
+ *  FLAC file to edit, and a temporary handle to which the new FLAC
+ *  file will be written.  It is the caller's job to move this temporary
+ *  FLAC file on top of the original FLAC file to complete the metadata
+ *  edit.
+ *
+ *  The \a handle must be open for reading and be seekable.  The
+ *  equivalent minimum stdio fopen() file mode is \c "r" (or \c "rb"
+ *  for Windows).
+ *
+ *  The \a temp_handle must be open for writing.  The
+ *  equivalent minimum stdio fopen() file mode is \c "w" (or \c "wb"
+ *  for Windows).  It should be an empty stream, or at least positioned
+ *  at the start-of-file (in which case it is the caller's duty to
+ *  truncate it on return).
+ *
+ *  For this write function to be used, the chain must have been read with
+ *  FLAC__metadata_chain_read_with_callbacks(), not FLAC__metadata_chain_read().
+ *  Also, FLAC__metadata_chain_check_if_tempfile_needed() must have returned
+ *  \c true.
+ *
+ * \param chain        A pointer to an existing chain.
+ * \param use_padding  See FLAC__metadata_chain_write()
+ * \param handle       The I/O handle of the original FLAC stream to read.
+ *                     The handle will NOT be closed after the metadata is
+ *                     written; that is the duty of the caller.
+ * \param callbacks    A set of callbacks to use for I/O on \a handle.
+ *                     The mandatory callbacks are \a read, \a seek, and
+ *                     \a eof.
+ * \param temp_handle  The I/O handle of the FLAC stream to write.  The
+ *                     handle will NOT be closed after the metadata is
+ *                     written; that is the duty of the caller.
+ * \param temp_callbacks
+ *                     A set of callbacks to use for I/O on temp_handle.
+ *                     The only mandatory callback is \a write.
+ * \assert
+ *    \code chain != NULL \endcode
+ * \retval FLAC__bool
+ *    \c true if the write succeeded, else \c false.  On failure,
+ *    check the status with FLAC__metadata_chain_status().
+ */
+FLAC_API FLAC__bool FLAC__metadata_chain_write_with_callbacks_and_tempfile(FLAC__Metadata_Chain *chain, FLAC__bool use_padding, FLAC__IOHandle handle, FLAC__IOCallbacks callbacks, FLAC__IOHandle temp_handle, FLAC__IOCallbacks temp_callbacks);
 
 /** Merge adjacent PADDING blocks into a single block.
  *
@@ -679,7 +874,7 @@ FLAC__bool FLAC__metadata_chain_write(FLAC__Metadata_Chain *chain, FLAC__bool us
  * \assert
  *    \code chain != NULL \endcode
  */
-void FLAC__metadata_chain_merge_padding(FLAC__Metadata_Chain *chain);
+FLAC_API void FLAC__metadata_chain_merge_padding(FLAC__Metadata_Chain *chain);
 
 /** This function will move all PADDING blocks to the end on the metadata,
  *  then merge them into a single block.
@@ -694,7 +889,7 @@ void FLAC__metadata_chain_merge_padding(FLAC__Metadata_Chain *chain);
  * \assert
  *    \code chain != NULL \endcode
  */
-void FLAC__metadata_chain_sort_padding(FLAC__Metadata_Chain *chain);
+FLAC_API void FLAC__metadata_chain_sort_padding(FLAC__Metadata_Chain *chain);
 
 
 /*********** FLAC__Metadata_Iterator ***********/
@@ -704,7 +899,7 @@ void FLAC__metadata_chain_sort_padding(FLAC__Metadata_Chain *chain);
  * \retval FLAC__Metadata_Iterator*
  *    \c NULL if there was an error allocating memory, else the new instance.
  */
-FLAC__Metadata_Iterator *FLAC__metadata_iterator_new();
+FLAC_API FLAC__Metadata_Iterator *FLAC__metadata_iterator_new();
 
 /** Free an iterator instance.  Deletes the object pointed to by \a iterator.
  *
@@ -712,7 +907,7 @@ FLAC__Metadata_Iterator *FLAC__metadata_iterator_new();
  * \assert
  *    \code iterator != NULL \endcode
  */
-void FLAC__metadata_iterator_delete(FLAC__Metadata_Iterator *iterator);
+FLAC_API void FLAC__metadata_iterator_delete(FLAC__Metadata_Iterator *iterator);
 
 /** Initialize the iterator to point to the first metadata block in the
  *  given chain.
@@ -723,7 +918,7 @@ void FLAC__metadata_iterator_delete(FLAC__Metadata_Iterator *iterator);
  *    \code iterator != NULL \endcode
  *    \code chain != NULL \endcode
  */
-void FLAC__metadata_iterator_init(FLAC__Metadata_Iterator *iterator, FLAC__Metadata_Chain *chain);
+FLAC_API void FLAC__metadata_iterator_init(FLAC__Metadata_Iterator *iterator, FLAC__Metadata_Chain *chain);
 
 /** Moves the iterator forward one metadata block, returning \c false if
  *  already at the end.
@@ -737,7 +932,7 @@ void FLAC__metadata_iterator_init(FLAC__Metadata_Iterator *iterator, FLAC__Metad
  *    \c false if already at the last metadata block of the chain, else
  *    \c true.
  */
-FLAC__bool FLAC__metadata_iterator_next(FLAC__Metadata_Iterator *iterator);
+FLAC_API FLAC__bool FLAC__metadata_iterator_next(FLAC__Metadata_Iterator *iterator);
 
 /** Moves the iterator backward one metadata block, returning \c false if
  *  already at the beginning.
@@ -751,7 +946,7 @@ FLAC__bool FLAC__metadata_iterator_next(FLAC__Metadata_Iterator *iterator);
  *    \c false if already at the first metadata block of the chain, else
  *    \c true.
  */
-FLAC__bool FLAC__metadata_iterator_prev(FLAC__Metadata_Iterator *iterator);
+FLAC_API FLAC__bool FLAC__metadata_iterator_prev(FLAC__Metadata_Iterator *iterator);
 
 /** Get the type of the metadata block at the current position.
  *
@@ -763,7 +958,7 @@ FLAC__bool FLAC__metadata_iterator_prev(FLAC__Metadata_Iterator *iterator);
  * \retval FLAC__MetadataType
  *    The type of the metadata block at the current iterator position.
  */
-FLAC__MetadataType FLAC__metadata_iterator_get_block_type(const FLAC__Metadata_Iterator *iterator);
+FLAC_API FLAC__MetadataType FLAC__metadata_iterator_get_block_type(const FLAC__Metadata_Iterator *iterator);
 
 /** Get the metadata block at the current position.  You can modify
  *  the block in place but must write the chain before the changes
@@ -784,7 +979,7 @@ FLAC__MetadataType FLAC__metadata_iterator_get_block_type(const FLAC__Metadata_I
  * \retval FLAC__StreamMetadata*
  *    The current metadata block.
  */
-FLAC__StreamMetadata *FLAC__metadata_iterator_get_block(FLAC__Metadata_Iterator *iterator);
+FLAC_API FLAC__StreamMetadata *FLAC__metadata_iterator_get_block(FLAC__Metadata_Iterator *iterator);
 
 /** Set the metadata block at the current position, replacing the existing
  *  block.  The new block passed in becomes owned by the chain and it will be
@@ -801,7 +996,7 @@ FLAC__StreamMetadata *FLAC__metadata_iterator_get_block(FLAC__Metadata_Iterator 
  *    \c false if the conditions in the above description are not met, or
  *    a memory allocation error occurs, otherwise \c true.
  */
-FLAC__bool FLAC__metadata_iterator_set_block(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
+FLAC_API FLAC__bool FLAC__metadata_iterator_set_block(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
 
 /** Removes the current block from the chain.  If \a replace_with_padding is
  *  \c true, the block will instead be replaced with a padding block of equal
@@ -819,7 +1014,7 @@ FLAC__bool FLAC__metadata_iterator_set_block(FLAC__Metadata_Iterator *iterator, 
  *    \c false if the conditions in the above description are not met,
  *    otherwise \c true.
  */
-FLAC__bool FLAC__metadata_iterator_delete_block(FLAC__Metadata_Iterator *iterator, FLAC__bool replace_with_padding);
+FLAC_API FLAC__bool FLAC__metadata_iterator_delete_block(FLAC__Metadata_Iterator *iterator, FLAC__bool replace_with_padding);
 
 /** Insert a new block before the current block.  You cannot insert a block
  *  before the first STREAMINFO block.  You cannot insert a STREAMINFO block
@@ -838,7 +1033,7 @@ FLAC__bool FLAC__metadata_iterator_delete_block(FLAC__Metadata_Iterator *iterato
  *    \c false if the conditions in the above description are not met, or
  *    a memory allocation error occurs, otherwise \c true.
  */
-FLAC__bool FLAC__metadata_iterator_insert_block_before(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
+FLAC_API FLAC__bool FLAC__metadata_iterator_insert_block_before(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
 
 /** Insert a new block after the current block.  You cannot insert a STREAMINFO
  *  block as there can be only one, the one that already exists at the head when
@@ -856,7 +1051,7 @@ FLAC__bool FLAC__metadata_iterator_insert_block_before(FLAC__Metadata_Iterator *
  *    \c false if the conditions in the above description are not met, or
  *    a memory allocation error occurs, otherwise \c true.
  */
-FLAC__bool FLAC__metadata_iterator_insert_block_after(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
+FLAC_API FLAC__bool FLAC__metadata_iterator_insert_block_after(FLAC__Metadata_Iterator *iterator, FLAC__StreamMetadata *block);
 
 /* \} */
 
@@ -892,6 +1087,17 @@ FLAC__bool FLAC__metadata_iterator_insert_block_after(FLAC__Metadata_Iterator *i
  * FLAC__metadata_object_application_set_data(), you will get an assertion
  * failure.
  *
+ * For convenience the FLAC__metadata_object_vorbiscomment_*() functions
+ * maintain a trailing NUL on each Vorbis comment entry.  This is not counted
+ * toward the length or stored in the stream, but it can make working with plain
+ * comments (those that don't contain embedded-NULs in the value) easier.
+ * Entries passed into these functions have trailing NULs added if missing, and
+ * returned entries are guaranteed to have a trailing NUL.
+ *
+ * The FLAC__metadata_object_vorbiscomment_*() functions that take a Vorbis
+ * comment entry/name/value will first validate that it complies with the Vorbis
+ * comment specification and return false if it does not.
+ *
  * There is no need to recalculate the length field on metadata blocks you
  * have modified.  They will be calculated automatically before they  are
  * written back to a file.
@@ -902,13 +1108,20 @@ FLAC__bool FLAC__metadata_iterator_insert_block_after(FLAC__Metadata_Iterator *i
 
 /** Create a new metadata object instance of the given type.
  *
- *  The object will be "empty"; i.e. values and data pointers will be \c 0.
+ *  The object will be "empty"; i.e. values and data pointers will be \c 0,
+ *  with the exception of FLAC__METADATA_TYPE_VORBIS_COMMENT, which will have
+ *  the vendor string set (but zero comments).
+ *
+ *  Do not pass in a value greater than or equal to
+ *  \a FLAC__METADATA_TYPE_UNDEFINED unless you really know what you're
+ *  doing.
  *
  * \param type  Type of object to create
  * \retval FLAC__StreamMetadata*
- *    \c NULL if there was an error allocating memory, else the new instance.
+ *    \c NULL if there was an error allocating memory or the type code is
+ *    greater than FLAC__MAX_METADATA_TYPE_CODE, else the new instance.
  */
-FLAC__StreamMetadata *FLAC__metadata_object_new(FLAC__MetadataType type);
+FLAC_API FLAC__StreamMetadata *FLAC__metadata_object_new(FLAC__MetadataType type);
 
 /** Create a copy of an existing metadata object.
  *
@@ -922,7 +1135,7 @@ FLAC__StreamMetadata *FLAC__metadata_object_new(FLAC__MetadataType type);
  * \retval FLAC__StreamMetadata*
  *    \c NULL if there was an error allocating memory, else the new instance.
  */
-FLAC__StreamMetadata *FLAC__metadata_object_clone(const FLAC__StreamMetadata *object);
+FLAC_API FLAC__StreamMetadata *FLAC__metadata_object_clone(const FLAC__StreamMetadata *object);
 
 /** Free a metadata object.  Deletes the object pointed to by \a object.
  *
@@ -933,7 +1146,7 @@ FLAC__StreamMetadata *FLAC__metadata_object_clone(const FLAC__StreamMetadata *ob
  * \assert
  *    \code object != NULL \endcode
  */
-void FLAC__metadata_object_delete(FLAC__StreamMetadata *object);
+FLAC_API void FLAC__metadata_object_delete(FLAC__StreamMetadata *object);
 
 /** Compares two metadata objects.
  *
@@ -948,13 +1161,12 @@ void FLAC__metadata_object_delete(FLAC__StreamMetadata *object);
  * \retval FLAC__bool
  *    \c true if objects are identical, else \c false.
  */
-FLAC__bool FLAC__metadata_object_is_equal(const FLAC__StreamMetadata *block1, const FLAC__StreamMetadata *block2);
+FLAC_API FLAC__bool FLAC__metadata_object_is_equal(const FLAC__StreamMetadata *block1, const FLAC__StreamMetadata *block2);
 
 /** Sets the application data of an APPLICATION block.
  *
  *  If \a copy is \c true, a copy of the data is stored; otherwise, the object
- *  takes ownership of the pointer.  Returns \c false if \a copy == \c true
- *  and malloc fails.
+ *  takes ownership of the pointer.
  *
  * \param object  A pointer to an existing APPLICATION object.
  * \param data    A pointer to the data to set.
@@ -966,9 +1178,9 @@ FLAC__bool FLAC__metadata_object_is_equal(const FLAC__StreamMetadata *block1, co
  *    \code (data != NULL && length > 0) ||
  * (data == NULL && length == 0 && copy == false) \endcode
  * \retval FLAC__bool
- *    \c false if \a copy is \c true and malloc fails, else \c true.
+ *    \c false if \a copy is \c true and malloc() fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_application_set_data(FLAC__StreamMetadata *object, FLAC__byte *data, unsigned length, FLAC__bool copy);
+FLAC_API FLAC__bool FLAC__metadata_object_application_set_data(FLAC__StreamMetadata *object, FLAC__byte *data, unsigned length, FLAC__bool copy);
 
 /** Resize the seekpoint array.
  *
@@ -985,7 +1197,7 @@ FLAC__bool FLAC__metadata_object_application_set_data(FLAC__StreamMetadata *obje
  * \retval FLAC__bool
  *    \c false if memory allocation error, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_resize_points(FLAC__StreamMetadata *object, unsigned new_num_points);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_resize_points(FLAC__StreamMetadata *object, unsigned new_num_points);
 
 /** Set a seekpoint in a seektable.
  *
@@ -997,7 +1209,7 @@ FLAC__bool FLAC__metadata_object_seektable_resize_points(FLAC__StreamMetadata *o
  *    \code object->type == FLAC__METADATA_TYPE_SEEKTABLE \endcode
  *    \code object->data.seek_table.num_points > point_num \endcode
  */
-void FLAC__metadata_object_seektable_set_point(FLAC__StreamMetadata *object, unsigned point_num, FLAC__StreamMetadata_SeekPoint point);
+FLAC_API void FLAC__metadata_object_seektable_set_point(FLAC__StreamMetadata *object, unsigned point_num, FLAC__StreamMetadata_SeekPoint point);
 
 /** Insert a seekpoint into a seektable.
  *
@@ -1011,7 +1223,7 @@ void FLAC__metadata_object_seektable_set_point(FLAC__StreamMetadata *object, uns
  * \retval FLAC__bool
  *    \c false if memory allocation error, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_insert_point(FLAC__StreamMetadata *object, unsigned point_num, FLAC__StreamMetadata_SeekPoint point);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_insert_point(FLAC__StreamMetadata *object, unsigned point_num, FLAC__StreamMetadata_SeekPoint point);
 
 /** Delete a seekpoint from a seektable.
  *
@@ -1024,7 +1236,7 @@ FLAC__bool FLAC__metadata_object_seektable_insert_point(FLAC__StreamMetadata *ob
  * \retval FLAC__bool
  *    \c false if memory allocation error, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_delete_point(FLAC__StreamMetadata *object, unsigned point_num);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_delete_point(FLAC__StreamMetadata *object, unsigned point_num);
 
 /** Check a seektable to see if it conforms to the FLAC specification.
  *  See the format specification for limits on the contents of the
@@ -1037,7 +1249,7 @@ FLAC__bool FLAC__metadata_object_seektable_delete_point(FLAC__StreamMetadata *ob
  * \retval FLAC__bool
  *    \c false if seek table is illegal, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_is_legal(const FLAC__StreamMetadata *object);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_is_legal(const FLAC__StreamMetadata *object);
 
 /** Append a number of placeholder points to the end of a seek table.
  *
@@ -1054,7 +1266,7 @@ FLAC__bool FLAC__metadata_object_seektable_is_legal(const FLAC__StreamMetadata *
  * \retval FLAC__bool
  *    \c false if memory allocation fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_template_append_placeholders(FLAC__StreamMetadata *object, unsigned num);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_template_append_placeholders(FLAC__StreamMetadata *object, unsigned num);
 
 /** Append a specific seek point template to the end of a seek table.
  *
@@ -1071,7 +1283,7 @@ FLAC__bool FLAC__metadata_object_seektable_template_append_placeholders(FLAC__St
  * \retval FLAC__bool
  *    \c false if memory allocation fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_template_append_point(FLAC__StreamMetadata *object, FLAC__uint64 sample_number);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_template_append_point(FLAC__StreamMetadata *object, FLAC__uint64 sample_number);
 
 /** Append specific seek point templates to the end of a seek table.
  *
@@ -1089,7 +1301,7 @@ FLAC__bool FLAC__metadata_object_seektable_template_append_point(FLAC__StreamMet
  * \retval FLAC__bool
  *    \c false if memory allocation fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_template_append_points(FLAC__StreamMetadata *object, FLAC__uint64 sample_numbers[], unsigned num);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_template_append_points(FLAC__StreamMetadata *object, FLAC__uint64 sample_numbers[], unsigned num);
 
 /** Append a set of evenly-spaced seek point templates to the end of a
  *  seek table.
@@ -1110,7 +1322,7 @@ FLAC__bool FLAC__metadata_object_seektable_template_append_points(FLAC__StreamMe
  * \retval FLAC__bool
  *    \c false if memory allocation fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_template_append_spaced_points(FLAC__StreamMetadata *object, unsigned num, FLAC__uint64 total_samples);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_template_append_spaced_points(FLAC__StreamMetadata *object, unsigned num, FLAC__uint64 total_samples);
 
 /** Sort a seek table's seek points according to the format specification,
  *  removing duplicates.
@@ -1125,15 +1337,20 @@ FLAC__bool FLAC__metadata_object_seektable_template_append_spaced_points(FLAC__S
  *    \code object != NULL \endcode
  *    \code object->type == FLAC__METADATA_TYPE_SEEKTABLE \endcode
  * \retval FLAC__bool
- *    \c false if realloc fails, else \c true.
+ *    \c false if realloc() fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_seektable_template_sort(FLAC__StreamMetadata *object, FLAC__bool compact);
+FLAC_API FLAC__bool FLAC__metadata_object_seektable_template_sort(FLAC__StreamMetadata *object, FLAC__bool compact);
 
 /** Sets the vendor string in a VORBIS_COMMENT block.
  *
+ *  For convenience, a trailing NUL is added to the entry if it doesn't have
+ *  one already.
+ *
  *  If \a copy is \c true, a copy of the entry is stored; otherwise, the object
- *  takes ownership of the \c entry->entry pointer.  Returns \c false if
- *  \a copy == \c true and malloc fails.
+ *  takes ownership of the \c entry.entry pointer.
+ *
+ *  \note If this function returns \c false, the caller still owns the
+ *  pointer.
  *
  * \param object  A pointer to an existing VORBIS_COMMENT object.
  * \param entry   The entry to set the vendor string to.
@@ -1141,12 +1358,13 @@ FLAC__bool FLAC__metadata_object_seektable_template_sort(FLAC__StreamMetadata *o
  * \assert
  *    \code object != NULL \endcode
  *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
- *    \code (entry->entry != NULL && entry->length > 0) ||
- * (entry->entry == NULL && entry->length == 0 && copy == false) \endcode
+ *    \code (entry.entry != NULL && entry.length > 0) ||
+ * (entry.entry == NULL && entry.length == 0) \endcode
  * \retval FLAC__bool
- *    \c false if \a copy is \c true and malloc fails, else \c true.
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
  */
-FLAC__bool FLAC__metadata_object_vorbiscomment_set_vendor_string(FLAC__StreamMetadata *object, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_set_vendor_string(FLAC__StreamMetadata *object, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
 
 /** Resize the comment array.
  *
@@ -1161,15 +1379,20 @@ FLAC__bool FLAC__metadata_object_vorbiscomment_set_vendor_string(FLAC__StreamMet
  *    \code (object->data.vorbis_comment.comments == NULL && object->data.vorbis_comment.num_comments == 0) ||
  * (object->data.vorbis_comment.comments != NULL && object->data.vorbis_comment.num_comments > 0) \endcode
  * \retval FLAC__bool
- *    \c false if memory allocation error, else \c true.
+ *    \c false if memory allocation fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_vorbiscomment_resize_comments(FLAC__StreamMetadata *object, unsigned new_num_comments);
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_resize_comments(FLAC__StreamMetadata *object, unsigned new_num_comments);
 
 /** Sets a comment in a VORBIS_COMMENT block.
  *
+ *  For convenience, a trailing NUL is added to the entry if it doesn't have
+ *  one already.
+ *
  *  If \a copy is \c true, a copy of the entry is stored; otherwise, the object
- *  takes ownership of the \c entry->entry pointer.  Returns \c false if
- *  \a copy == \c true and malloc fails.
+ *  takes ownership of the \c entry.entry pointer.
+ *
+ *  \note If this function returns \c false, the caller still owns the
+ *  pointer.
  *
  * \param object       A pointer to an existing VORBIS_COMMENT object.
  * \param comment_num  Index into comment array to set.
@@ -1178,18 +1401,25 @@ FLAC__bool FLAC__metadata_object_vorbiscomment_resize_comments(FLAC__StreamMetad
  * \assert
  *    \code object != NULL \endcode
  *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
- *    \code (entry->entry != NULL && entry->length > 0) ||
- * (entry->entry == NULL && entry->length == 0 && copy == false) \endcode
+ *    \code comment_num < object->data.vorbis_comment.num_comments \endcode
+ *    \code (entry.entry != NULL && entry.length > 0) ||
+ * (entry.entry == NULL && entry.length == 0) \endcode
  * \retval FLAC__bool
- *    \c false if \a copy is \c true and malloc fails, else \c true.
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
  */
-FLAC__bool FLAC__metadata_object_vorbiscomment_set_comment(FLAC__StreamMetadata *object, unsigned comment_num, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_set_comment(FLAC__StreamMetadata *object, unsigned comment_num, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
 
 /** Insert a comment in a VORBIS_COMMENT block at the given index.
  *
+ *  For convenience, a trailing NUL is added to the entry if it doesn't have
+ *  one already.
+ *
  *  If \a copy is \c true, a copy of the entry is stored; otherwise, the object
- *  takes ownership of the \c entry->entry pointer.  Returns \c false if
- *  \a copy == \c true and malloc fails.
+ *  takes ownership of the \c entry.entry pointer.
+ *
+ *  \note If this function returns \c false, the caller still owns the
+ *  pointer.
  *
  * \param object       A pointer to an existing VORBIS_COMMENT object.
  * \param comment_num  The index at which to insert the comment.  The comments
@@ -1202,18 +1432,75 @@ FLAC__bool FLAC__metadata_object_vorbiscomment_set_comment(FLAC__StreamMetadata 
  *    \code object != NULL \endcode
  *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
  *    \code object->data.vorbis_comment.num_comments >= comment_num \endcode
- *    \code (entry->entry != NULL && entry->length > 0) ||
- * (entry->entry == NULL && entry->length == 0 && copy == false) \endcode
+ *    \code (entry.entry != NULL && entry.length > 0) ||
+ * (entry.entry == NULL && entry.length == 0 && copy == false) \endcode
  * \retval FLAC__bool
- *    \c false if \a copy is \c true and malloc fails, else \c true.
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
  */
-FLAC__bool FLAC__metadata_object_vorbiscomment_insert_comment(FLAC__StreamMetadata *object, unsigned comment_num, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_insert_comment(FLAC__StreamMetadata *object, unsigned comment_num, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
 
-/** Delete a comment in a VORBIS_COMMENT block at the given index.
+/** Appends a comment to a VORBIS_COMMENT block.
+ *
+ *  For convenience, a trailing NUL is added to the entry if it doesn't have
+ *  one already.
  *
  *  If \a copy is \c true, a copy of the entry is stored; otherwise, the object
- *  takes ownership of the \c entry->entry pointer.  Returns \c false if
- *  \a copy == \c true and malloc fails.
+ *  takes ownership of the \c entry.entry pointer.
+ *
+ *  \note If this function returns \c false, the caller still owns the
+ *  pointer.
+ *
+ * \param object       A pointer to an existing VORBIS_COMMENT object.
+ * \param entry        The comment to insert.
+ * \param copy         See above.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
+ *    \code (entry.entry != NULL && entry.length > 0) ||
+ * (entry.entry == NULL && entry.length == 0 && copy == false) \endcode
+ * \retval FLAC__bool
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_append_comment(FLAC__StreamMetadata *object, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool copy);
+
+/** Replaces comments in a VORBIS_COMMENT block with a new one.
+ *
+ *  For convenience, a trailing NUL is added to the entry if it doesn't have
+ *  one already.
+ *
+ *  Depending on the the value of \a all, either all or just the first comment
+ *  whose field name(s) match the given entry's name will be replaced by the
+ *  given entry.  If no comments match, \a entry will simply be appended.
+ *
+ *  If \a copy is \c true, a copy of the entry is stored; otherwise, the object
+ *  takes ownership of the \c entry.entry pointer.
+ *
+ *  \note If this function returns \c false, the caller still owns the
+ *  pointer.
+ *
+ * \param object       A pointer to an existing VORBIS_COMMENT object.
+ * \param entry        The comment to insert.
+ * \param all          If \c true, all comments whose field name matches
+ *                     \a entry's field name will be removed, and \a entry will
+ *                     be inserted at the position of the first matching
+ *                     comment.  If \c false, only the first comment whose
+ *                     field name matches \a entry's field name will be
+ *                     replaced with \a entry.
+ * \param copy         See above.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
+ *    \code (entry.entry != NULL && entry.length > 0) ||
+ * (entry.entry == NULL && entry.length == 0 && copy == false) \endcode
+ * \retval FLAC__bool
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_replace_comment(FLAC__StreamMetadata *object, FLAC__StreamMetadata_VorbisComment_Entry entry, FLAC__bool all, FLAC__bool copy);
+
+/** Delete a comment in a VORBIS_COMMENT block at the given index.
  *
  * \param object       A pointer to an existing VORBIS_COMMENT object.
  * \param comment_num  The index of the comment to delete.
@@ -1221,12 +1508,346 @@ FLAC__bool FLAC__metadata_object_vorbiscomment_insert_comment(FLAC__StreamMetada
  *    \code object != NULL \endcode
  *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
  *    \code object->data.vorbis_comment.num_comments > comment_num \endcode
- *    \code (entry->entry != NULL && entry->length > 0) ||
- * (entry->entry == NULL && entry->length == 0 && copy == false) \endcode
  * \retval FLAC__bool
- *    \c false if realloc fails, else \c true.
+ *    \c false if realloc() fails, else \c true.
  */
-FLAC__bool FLAC__metadata_object_vorbiscomment_delete_comment(FLAC__StreamMetadata *object, unsigned comment_num);
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_delete_comment(FLAC__StreamMetadata *object, unsigned comment_num);
+
+/** Creates a Vorbis comment entry from NUL-terminated name and value strings.
+ *
+ *  On return, the filled-in \a entry->entry pointer will point to malloc()ed
+ *  memory and shall be owned by the caller.  For convenience the entry will
+ *  have a terminating NUL.
+ *
+ * \param entry              A pointer to a Vorbis comment entry.  The entry's
+ *                           \c entry pointer should not point to allocated
+ *                           memory as it will be overwritten.
+ * \param field_name         The field name in ASCII, \c NUL terminated.
+ * \param field_value        The field value in UTF-8, \c NUL terminated.
+ * \assert
+ *    \code entry != NULL \endcode
+ *    \code field_name != NULL \endcode
+ *    \code field_value != NULL \endcode
+ * \retval FLAC__bool
+ *    \c false if malloc() fails, or if \a field_name or \a field_value does
+ *    not comply with the Vorbis comment specification, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_entry_from_name_value_pair(FLAC__StreamMetadata_VorbisComment_Entry *entry, const char *field_name, const char *field_value);
+
+/** Splits a Vorbis comment entry into NUL-terminated name and value strings.
+ *
+ *  The returned pointers to name and value will be allocated by malloc()
+ *  and shall be owned by the caller.
+ *
+ * \param entry              An existing Vorbis comment entry.
+ * \param field_name         The address of where the returned pointer to the
+ *                           field name will be stored.
+ * \param field_value        The address of where the returned pointer to the
+ *                           field value will be stored.
+ * \assert
+ *    \code (entry.entry != NULL && entry.length > 0) \endcode
+ *    \code memchr(entry.entry, '=', entry.length) != NULL \endcode
+ *    \code field_name != NULL \endcode
+ *    \code field_value != NULL \endcode
+ * \retval FLAC__bool
+ *    \c false if memory allocation fails or \a entry does not comply with the
+ *    Vorbis comment specification, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(const FLAC__StreamMetadata_VorbisComment_Entry entry, char **field_name, char **field_value);
+
+/** Check if the given Vorbis comment entry's field name matches the given
+ *  field name.
+ *
+ * \param entry              An existing Vorbis comment entry.
+ * \param field_name         The field name to check.
+ * \param field_name_length  The length of \a field_name, not including the
+ *                           terminating \c NUL.
+ * \assert
+ *    \code (entry.entry != NULL && entry.length > 0) \endcode
+ * \retval FLAC__bool
+ *    \c true if the field names match, else \c false
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_vorbiscomment_entry_matches(const FLAC__StreamMetadata_VorbisComment_Entry entry, const char *field_name, unsigned field_name_length);
+
+/** Find a Vorbis comment with the given field name.
+ *
+ *  The search begins at entry number \a offset; use an offset of 0 to
+ *  search from the beginning of the comment array.
+ *
+ * \param object      A pointer to an existing VORBIS_COMMENT object.
+ * \param offset      The offset into the comment array from where to start
+ *                    the search.
+ * \param field_name  The field name of the comment to find.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
+ *    \code field_name != NULL \endcode
+ * \retval int
+ *    The offset in the comment array of the first comment whose field
+ *    name matches \a field_name, or \c -1 if no match was found.
+ */
+FLAC_API int FLAC__metadata_object_vorbiscomment_find_entry_from(const FLAC__StreamMetadata *object, unsigned offset, const char *field_name);
+
+/** Remove first Vorbis comment matching the given field name.
+ *
+ * \param object      A pointer to an existing VORBIS_COMMENT object.
+ * \param field_name  The field name of comment to delete.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
+ * \retval int
+ *    \c -1 for memory allocation error, \c 0 for no matching entries,
+ *    \c 1 for one matching entry deleted.
+ */
+FLAC_API int FLAC__metadata_object_vorbiscomment_remove_entry_matching(FLAC__StreamMetadata *object, const char *field_name);
+
+/** Remove all Vorbis comments matching the given field name.
+ *
+ * \param object      A pointer to an existing VORBIS_COMMENT object.
+ * \param field_name  The field name of comments to delete.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_VORBIS_COMMENT \endcode
+ * \retval int
+ *    \c -1 for memory allocation error, \c 0 for no matching entries,
+ *    else the number of matching entries deleted.
+ */
+FLAC_API int FLAC__metadata_object_vorbiscomment_remove_entries_matching(FLAC__StreamMetadata *object, const char *field_name);
+
+/** Create a new CUESHEET track instance.
+ *
+ *  The object will be "empty"; i.e. values and data pointers will be \c 0.
+ *
+ * \retval FLAC__StreamMetadata_CueSheet_Track*
+ *    \c NULL if there was an error allocating memory, else the new instance.
+ */
+FLAC_API FLAC__StreamMetadata_CueSheet_Track *FLAC__metadata_object_cuesheet_track_new();
+
+/** Create a copy of an existing CUESHEET track object.
+ *
+ *  The copy is a "deep" copy, i.e. dynamically allocated data within the
+ *  object is also copied.  The caller takes ownership of the new object and
+ *  is responsible for freeing it with
+ *  FLAC__metadata_object_cuesheet_track_delete().
+ *
+ * \param object  Pointer to object to copy.
+ * \assert
+ *    \code object != NULL \endcode
+ * \retval FLAC__StreamMetadata_CueSheet_Track*
+ *    \c NULL if there was an error allocating memory, else the new instance.
+ */
+FLAC_API FLAC__StreamMetadata_CueSheet_Track *FLAC__metadata_object_cuesheet_track_clone(const FLAC__StreamMetadata_CueSheet_Track *object);
+
+/** Delete a CUESHEET track object
+ *
+ * \param object       A pointer to an existing CUESHEET track object.
+ * \assert
+ *    \code object != NULL \endcode
+ */
+FLAC_API void FLAC__metadata_object_cuesheet_track_delete(FLAC__StreamMetadata_CueSheet_Track *object);
+
+/** Resize a track's index point array.
+ *
+ *  If the size shrinks, elements will truncated; if it grows, new blank
+ *  indices will be added to the end.
+ *
+ * \param object           A pointer to an existing CUESHEET object.
+ * \param track_num        The index of the track to modify.  NOTE: this is not
+ *                         necessarily the same as the track's \a number field.
+ * \param new_num_indices  The desired length of the array; may be \c 0.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks > track_num \endcode
+ *    \code (object->data.cue_sheet.tracks[track_num].indices == NULL && object->data.cue_sheet.tracks[track_num].num_indices == 0) ||
+ * (object->data.cue_sheet.tracks[track_num].indices != NULL && object->data.cue_sheet.tracks[track_num].num_indices > 0) \endcode
+ * \retval FLAC__bool
+ *    \c false if memory allocation error, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_track_resize_indices(FLAC__StreamMetadata *object, unsigned track_num, unsigned new_num_indices);
+
+/** Insert an index point in a CUESHEET track at the given index.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index of the track to modify.  NOTE: this is not
+ *                     necessarily the same as the track's \a number field.
+ * \param index_num    The index into the track's index array at which to
+ *                     insert the index point.  NOTE: this is not necessarily
+ *                     the same as the index point's \a number field.  The
+ *                     indices at and after \a index_num move right one
+ *                     position.  To append an index point to the end, set
+ *                     \a index_num to
+ *                     \c object->data.cue_sheet.tracks[track_num].num_indices .
+ * \param index        The index point to insert.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks > track_num \endcode
+ *    \code object->data.cue_sheet.tracks[track_num].num_indices >= index_num \endcode
+ * \retval FLAC__bool
+ *    \c false if realloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_track_insert_index(FLAC__StreamMetadata *object, unsigned track_num, unsigned index_num, FLAC__StreamMetadata_CueSheet_Index index);
+
+/** Insert a blank index point in a CUESHEET track at the given index.
+ *
+ *  A blank index point is one in which all field values are zero.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index of the track to modify.  NOTE: this is not
+ *                     necessarily the same as the track's \a number field.
+ * \param index_num    The index into the track's index array at which to
+ *                     insert the index point.  NOTE: this is not necessarily
+ *                     the same as the index point's \a number field.  The
+ *                     indices at and after \a index_num move right one
+ *                     position.  To append an index point to the end, set
+ *                     \a index_num to
+ *                     \c object->data.cue_sheet.tracks[track_num].num_indices .
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks > track_num \endcode
+ *    \code object->data.cue_sheet.tracks[track_num].num_indices >= index_num \endcode
+ * \retval FLAC__bool
+ *    \c false if realloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_track_insert_blank_index(FLAC__StreamMetadata *object, unsigned track_num, unsigned index_num);
+
+/** Delete an index point in a CUESHEET track at the given index.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index into the track array of the track to
+ *                     modify.  NOTE: this is not necessarily the same
+ *                     as the track's \a number field.
+ * \param index_num    The index into the track's index array of the index
+ *                     to delete.  NOTE: this is not necessarily the same
+ *                     as the index's \a number field.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks > track_num \endcode
+ *    \code object->data.cue_sheet.tracks[track_num].num_indices > index_num \endcode
+ * \retval FLAC__bool
+ *    \c false if realloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_track_delete_index(FLAC__StreamMetadata *object, unsigned track_num, unsigned index_num);
+
+/** Resize the track array.
+ *
+ *  If the size shrinks, elements will truncated; if it grows, new blank
+ *  tracks will be added to the end.
+ *
+ * \param object            A pointer to an existing CUESHEET object.
+ * \param new_num_tracks    The desired length of the array; may be \c 0.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code (object->data.cue_sheet.tracks == NULL && object->data.cue_sheet.num_tracks == 0) ||
+ * (object->data.cue_sheet.tracks != NULL && object->data.cue_sheet.num_tracks > 0) \endcode
+ * \retval FLAC__bool
+ *    \c false if memory allocation error, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_resize_tracks(FLAC__StreamMetadata *object, unsigned new_num_tracks);
+
+/** Sets a track in a CUESHEET block.
+ *
+ *  If \a copy is \c true, a copy of the track is stored; otherwise, the object
+ *  takes ownership of the \a track pointer.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    Index into track array to set.  NOTE: this is not
+ *                     necessarily the same as the track's \a number field.
+ * \param track        The track to set the track to.  You may safely pass in
+ *                     a const pointer if \a copy is \c true.
+ * \param copy         See above.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code track_num < object->data.cue_sheet.num_tracks \endcode
+ *    \code (track->indices != NULL && track->num_indices > 0) ||
+ * (track->indices == NULL && track->num_indices == 0)
+ * \retval FLAC__bool
+ *    \c false if \a copy is \c true and malloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_set_track(FLAC__StreamMetadata *object, unsigned track_num, FLAC__StreamMetadata_CueSheet_Track *track, FLAC__bool copy);
+
+/** Insert a track in a CUESHEET block at the given index.
+ *
+ *  If \a copy is \c true, a copy of the track is stored; otherwise, the object
+ *  takes ownership of the \a track pointer.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index at which to insert the track.  NOTE: this
+ *                     is not necessarily the same as the track's \a number
+ *                     field.  The tracks at and after \a track_num move right
+ *                     one position.  To append a track to the end, set
+ *                     \a track_num to \c object->data.cue_sheet.num_tracks .
+ * \param track        The track to insert.  You may safely pass in a const
+ *                     pointer if \a copy is \c true.
+ * \param copy         See above.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks >= track_num \endcode
+ * \retval FLAC__bool
+ *    \c false if \a copy is \c true and malloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_insert_track(FLAC__StreamMetadata *object, unsigned track_num, FLAC__StreamMetadata_CueSheet_Track *track, FLAC__bool copy);
+
+/** Insert a blank track in a CUESHEET block at the given index.
+ *
+ *  A blank track is one in which all field values are zero.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index at which to insert the track.  NOTE: this
+ *                     is not necessarily the same as the track's \a number
+ *                     field.  The tracks at and after \a track_num move right
+ *                     one position.  To append a track to the end, set
+ *                     \a track_num to \c object->data.cue_sheet.num_tracks .
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks >= track_num \endcode
+ * \retval FLAC__bool
+ *    \c false if \a copy is \c true and malloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_insert_blank_track(FLAC__StreamMetadata *object, unsigned track_num);
+
+/** Delete a track in a CUESHEET block at the given index.
+ *
+ * \param object       A pointer to an existing CUESHEET object.
+ * \param track_num    The index into the track array of the track to
+ *                     delete.  NOTE: this is not necessarily the same
+ *                     as the track's \a number field.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ *    \code object->data.cue_sheet.num_tracks > track_num \endcode
+ * \retval FLAC__bool
+ *    \c false if realloc() fails, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_delete_track(FLAC__StreamMetadata *object, unsigned track_num);
+
+/** Check a cue sheet to see if it conforms to the FLAC specification.
+ *  See the format specification for limits on the contents of the
+ *  cue sheet.
+ *
+ * \param object     A pointer to an existing CUESHEET object.
+ * \param check_cd_da_subset  If \c true, check CUESHEET against more
+ *                   stringent requirements for a CD-DA (audio) disc.
+ * \param violation  Address of a pointer to a string.  If there is a
+ *                   violation, a pointer to a string explanation of the
+ *                   violation will be returned here. \a violation may be
+ *                   \c NULL if you don't need the returned string.  Do not
+ *                   free the returned string; it will always point to static
+ *                   data.
+ * \assert
+ *    \code object != NULL \endcode
+ *    \code object->type == FLAC__METADATA_TYPE_CUESHEET \endcode
+ * \retval FLAC__bool
+ *    \c false if cue sheet is illegal, else \c true.
+ */
+FLAC_API FLAC__bool FLAC__metadata_object_cuesheet_is_legal(const FLAC__StreamMetadata *object, FLAC__bool check_cd_da_subset, const char **violation);
 
 /* \} */
 

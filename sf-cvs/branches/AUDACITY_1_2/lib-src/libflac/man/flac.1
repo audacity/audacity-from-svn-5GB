@@ -3,27 +3,29 @@
 .\" <http://shell.ipoline.com/~elmert/comp/docbook2X/> 
 .\" Please send any bug reports, improvements, comments, patches, 
 .\" etc. to Steve Cheng <steve@ggi-project.org>.
-.TH "FLAC" "1" "19 September 2002" "" ""
+.TH "FLAC" "1" "02 February 2005" "" ""
 .SH NAME
 flac \- Free Lossless Audio Codec
 .SH SYNOPSIS
 
-\fBflac\fR [ \fB\fIOPTION\fB\fR ] \fB\fIinfile\fB\fR \fB\fI...\fB\fR
+\fBflac\fR [ \fB\fIoptions\fB\fR ] [ \fB\fIinfile.wav\fB\fR | \fB\fIinfile.aiff\fB\fR | \fB\fIinfile.raw\fB\fR | \fB-\fR\fI ...\fR ]
+
+
+\fBflac\fR [ \fB-d\fR | \fB--decode\fR | \fB-t\fR | \fB--test\fR | \fB-a\fR | \fB--analyze\fR ] [ \fB\fIOPTIONS\fB\fR ] [ \fB\fIinfile.flac\fB\fR\fI ...\fR ]
 
 .SH "DESCRIPTION"
 .PP
-This manual page documents briefly the
-\fBflac\fR command.
+\fBflac\fR is a command-line tool for
+encoding, decoding, testing and analyzing FLAC streams.
 .PP
-This manual page was written for the Debian GNU/Linux
-distribution because the original program does not have a
-manual page.  Instead, it has documentation in HTML
-format; see below.
+This manual page was originally written for the Debian GNU/Linux
+distribution because the original program did not have a
+manual page.
 .SH "OPTIONS"
 .PP
 A summary of options is included below.  For a complete
 description, see the HTML documentation.
-.SS "GENERIC OPTIONS"
+.SS "GENERAL OPTIONS"
 .TP
 \fB-v, --version \fR
 Show the flac version number
@@ -42,7 +44,7 @@ Test a flac encoded file (same as -d
 except no decoded file is written)
 .TP
 \fB-a, --analyze \fR
-Analyze a flac encoded file (same as -d
+Analyze a FLAC encoded file (same as -d
 except an analysis file is written)
 .TP
 \fB-c, --stdout \fR
@@ -51,6 +53,17 @@ Write output to stdout
 \fB-s, --silent \fR
 Silent mode (do not write runtime
 encode/decode statistics to stderr)
+.TP
+\fB--totally-silent \fR
+Do not print anything of any kind,
+including warnings or errors.  The exit
+code will be the only way to determine
+successful completion.
+.TP
+\fB-f, --force \fR
+Force overwriting of output files.  By default,
+flac warns that the output file already exists and
+continues to the next file.
 .TP
 \fB-o \fIfilename\fB, --output-name=\fIfilename\fB\fR
 Force the output file name (usually flac just
@@ -71,28 +84,43 @@ successful encode or decode.  If there was an
 error (including a verify error) the input file
 is left intact.
 .TP
-\fB--skip=\fI#\fB\fR
-Skip the specified number of samples at the
-beginning of the input file (can be used for both
-encoding and decoding)
+\fB--skip={\fI#\fB|\fImm:ss.ss\fB}\fR
+Skip over the first number of samples of the input.
+This works for both encoding and decoding, but not
+testing.  The alternative form mm:ss.ss can be used
+to specify minutes, seconds, and fractions of a
+second.
+.TP
+\fB--until={\fI#\fB|[\fI+\fB|\fI-\fB]\fImm:ss.ss\fB}\fR
+Stop at the given sample number for each input file.
+This works for both encoding and decoding, but not testing.
+The given sample number is not included in the decoded
+output.  The alternative form mm:ss.ss can be used to
+specify minutes, seconds, and fractions of a second.  If a
+`+' (plus) sign is at the beginning, the --until point is
+relative to the --skip point.  If a `-' (minus) sign is at
+the beginning, the --until point is relative to end of the
+audio.
 .TP
 \fB--ogg\fR
-When encoding, generate Ogg-FLAC output instead
-of native-FLAC.  Ogg-FLAC streams are FLAC streams
+When encoding, generate Ogg FLAC output instead
+of native FLAC.  Ogg FLAC streams are FLAC streams
 wrapped in an Ogg transport layer.  The resulting
 file should have an '.ogg' extension and will still
 be decodable by flac.
 
 When decoding, force the input to be treated as
-Ogg-FLAC.  This is useful when piping input from
+Ogg FLAC.  This is useful when piping input from
 stdin or when the filename does not end in '.ogg'.
 .TP
 \fB--serial-number=\fI#\fB\fR
-When used with --ogg, specifies the serial
-number to use for the FLAC stream.  When encoding and
-no serial number is given, flac uses '0'.  When
-decoding and no number is given, flac uses the serial
-number of the first page.
+When used with --ogg, specifies the serial number to
+use for the first Ogg FLAC stream, which is then
+incremented for each additional stream.  When encoding and
+no serial number is given, flac uses a random number for
+the first stream, then increments it for each additional
+stream.  When decoding and no number is given, flac uses
+the serial number of the first page.
 .SS "ANALYSIS OPTIONS"
 .TP
 \fB--residual-text \fR
@@ -106,6 +134,20 @@ each file will contain the residual distribution
 of the subframe.  This will create a lot of
 files.
 .SS "DECODING OPTIONS"
+.TP
+\fB--cue=[\fI#.#\fB][-[\fI#.#\fB]]\fR
+Set the beginning and ending cuepoints to decode.
+The optional first #.# is the track and index point at
+which decoding will start; the default is the beginning
+of the stream.  The optional second #.# is the track
+and index point at which decoding will end; the default
+is the end of the stream.  If the cuepoint does not
+exist, the closest one before it (for the start point)
+or after it (for the end point) will be used.  If those
+don't exist, the start of the stream (for the start
+point) or end of the stream (for the end point) will be
+used.  The cuepoints are merely translated into sample
+numbers then used as --skip and --until.
 .TP
 \fB-F, --decode-through-errors \fR
 By default flac stops decoding with an error
@@ -124,24 +166,55 @@ original
 .TP
 \fB--lax\fR
 Allow encoder to generate non-Subset
-files.
+files.  The resulting FLAC file may not be
+streamable or might have trouble being played
+in all players (especially hardware devices),
+so you should only use this option in
+combination with custom encoding options meant
+for archival.
+.TP
+\fB--replay-gain\fR
+Calculate ReplayGain values and store in
+Vorbis comments, similar to vorbisgain.  Title
+gains/peaks will be computed for each input
+file, and an album gain/peak will be computed
+for all files.  All input files must have the
+same resolution, sample rate, and number of
+channels.  Only mono and stereo files are
+allowed, and the sample rate must be one of
+8, 11.025, 12, 16, 22.05, 24, 32, 44.1, or 48
+kHz.  Also note that this option may leave a
+few extra bytes in a PADDING block as the exact
+size of the tags is not known until all files
+are processed.  Note that this option cannot be
+used when encoding to standard output (stdout).
+.TP
+\fB--cuesheet=\fIfilename\fB\fR
+Import the given cuesheet file and store it in a
+CUESHEET metadata block.  This option may only be used
+when encoding a single file.  A seekpoint will be added
+for each index point in the cuesheet to the SEEKTABLE
+unless --no-cued-seekpoints is specified.
 .TP
 \fB--sector-align\fR
 Align encoding of multiple CD format WAVE
 files on sector boundaries.  See the HTML
 documentation for more information.
 .TP
-\fB-S {\fI#\fB|\fIX\fB|\fI#x\fB}, --seekpoint={\fI#\fB|\fIX\fB|\fI#x\fB}\fR
+\fB-S {\fI#\fB|\fIX\fB|\fI#x\fB|\fI#s\fB}, --seekpoint={\fI#\fB|\fIX\fB|\fI#x\fB|\fI#s\fB}\fR
 Include a point or points in a SEEKTABLE.  Using #,
 a seek point at that sample number is added.  Using
 X, a placeholder point is added at the end of a the
 table.  Using #x, # evenly spaced seek points will
-be added, the first being at sample 0.  You may use
+be added, the first being at sample 0.  Using #s, a
+seekpoint will be added every # seconds (# does not
+have to be a whole number; it can be, for example, 9.5,
+meaning a seekpoint every 9.5 seconds).  You may use
 many -S options; the resulting SEEKTABLE will be the
 unique-ified union of all such values.  With no -S
-options, flac defaults to '-S 100x'.  Use -S- for
-no SEEKTABLE.  Note: '-S #x' will not work if the
-encoder can't determine the input size before
+options, flac defaults to '-S 10s'.  Use --no-seektable
+for no SEEKTABLE.  Note: '-S #x' and '-S #s' will not
+work if the encoder can't determine the input size before
 starting.  Note: if you use '-S #' and # is >=
 samples in the input, there will be either no seek
 point entered (if the input size is determinable
@@ -159,7 +232,8 @@ over the PADDING block.  Note that the total length
 of the PADDING block will be 4 bytes longer than
 the length given because of the 4 metadata block
 header bytes.  You can force no PADDING block at
-all to be written with -P-, which is the default.
+all to be written with --no-padding.  The encoder
+writes a PADDING block of 4096 bytes by default.
 .TP
 \fB-T \fIFIELD=VALUE\fB, --tag=\fIFIELD=VALUE\fB\fR
 Add a Vorbis comment.  The comment must adhere
@@ -230,13 +304,6 @@ synonymous with -8.
 Do exhaustive model search
 (expensive!)
 .TP
-\fB-E, --escape-coding\fR
-Do escape coding in the entropy coder.  This
-causes the encoder to use an unencoded representation
-of the residual in a partition if it is smaller.  It
-increases the runtime and usually results in an
-improvement of less than 1%.
-.TP
 \fB-l \fI#\fB, --max-lpc-order=\fI#\fB\fR
 Set the maximum LPC order; 0 means use only the fixed predictors
 .TP
@@ -271,6 +338,22 @@ Set sample rate (in Hz).
 \fB--sign={\fIsigned\fB|\fIunsigned\fB}\fR
 Set the sign of samples (the default is signed).
 .TP
+\fB--input-size=\fI#\fB\fR
+Specify the size of the raw input in bytes.  If you are
+encoding raw samples from stdin, you must set this option
+in order to be able to use --skip, --until, --cue-sheet, or
+other options that need to know the size of the input
+beforehand.  If the size given is greater than what is
+found in the input stream, the encoder will complain about
+an unexpected end-of-file.  If the size given is less,
+samples will be truncated.
+.TP
+\fB--force-aiff-format\fR
+Force the decoder to output AIFF format.  This option
+is not needed if the output filename (as set by -o) ends
+with \fI.aiff\fR.  Also, this option has no
+effect when encoding since input AIFF is auto-detected.
+.TP
 \fB--force-raw-format\fR
 Force input (when encoding) or output (when decoding)
 to be treated as raw samples (even if filename ends
@@ -282,8 +365,6 @@ in \fI.wav\fR).
 \fB--no-decode-through-errors\fR
 .TP
 \fB--no-delete-input-file\fR
-.TP
-\fB--no-escape-coding\fR
 .TP
 \fB--no-exhaustive-model-search\fR
 .TP
@@ -311,6 +392,8 @@ in \fI.wav\fR).
 These flags can be used to invert the sense
 of the corresponding normal option.
 .SH "SEE ALSO"
+.PP
+metaflac(1).
 .PP
 The programs are documented fully by HTML format
 documentation, available in
