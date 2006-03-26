@@ -45,6 +45,12 @@
 /* Define to 1 if you have the `fdatasync' function. */
 #undef HAVE_FDATASYNC
 
+/* Define to 1 if you have libflac 1.1.1 */
+#undef HAVE_FLAC_1_1_1
+
+/* Define to 1 if you have the <FLAC/all.h> header file. */
+#undef HAVE_FLAC_ALL_H
+
 /* Set to 1 if the compile supports the struct hack. */
 #undef HAVE_FLEXIBLE_ARRAY
 
@@ -81,6 +87,9 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
+
 /* Define if you have C99's lrint function. */
 #undef HAVE_LRINT
 
@@ -114,8 +123,14 @@
 /* Define to 1 if you have the `realloc' function. */
 #undef HAVE_REALLOC
 
+/* Define to 1 if you have the `setlocale' function. */
+#undef HAVE_SETLOCALE
+
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
+
+/* Set to 1 if you have libsqlite3. */
+#undef HAVE_SQLITE3
 
 /* Define to 1 if the system has the type `ssize_t'. */
 #undef HAVE_SSIZE_T
@@ -224,6 +239,9 @@
 
 /* Set to long if unknown. */
 #undef TYPEOF_SF_COUNT_T
+
+/* Set to 1 to use the native windows API */
+#undef USE_WINDOWS_API
 
 /* Version number of package */
 #undef VERSION
