@@ -1,5 +1,5 @@
 /* flac - Command-line FLAC encoder/decoder
- * Copyright (C) 2001,2002  Josh Coalson
+ * Copyright (C) 2002,2003,2004,2005  Josh Coalson
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,18 +16,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#ifndef flac__file_h
-#define flac__file_h
+#ifndef flac__local_string_utils_h
+#define flac__local_string_utils_h
 
-#include <sys/types.h> /* for off_t */
-#include <stdio.h> /* for FILE */
+#include <stdlib.h> /* for size_t */
 
-void flac__file_copy_metadata(const char *srcpath, const char *destpath);
-off_t flac__file_get_filesize(const char *srcpath);
-const char *flac__file_get_basename(const char *srcpath);
-
-/* these will forcibly set stdin/stdout to binary mode (for OSes that require it) */
-FILE *file__get_binary_stdin();
-FILE *file__get_binary_stdout();
+size_t flac__strlcpy(char *dst, const char *src, size_t siz);
+size_t flac__strlcat(char *dst, const char *src, size_t siz);
 
 #endif
