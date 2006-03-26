@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ main (void)
 	char buffer [128] ;
 	int format, major_count, subtype_count, m, s ;
 
+	memset (&sfinfo, 0, sizeof (sfinfo)) ;
 	buffer [0] = 0 ;
 	sf_command (NULL, SFC_GET_LIB_VERSION, buffer, sizeof (buffer)) ;
 	if (strlen (buffer) < 1)
