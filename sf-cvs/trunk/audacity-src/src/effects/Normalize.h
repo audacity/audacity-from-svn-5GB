@@ -15,6 +15,7 @@
 #include "Effect.h"
 
 #include <wx/dialog.h>
+#include <wx/textctrl.h>
 
 class wxString;
 class wxCheckBox;
@@ -55,6 +56,7 @@ public:
 
    bool   mGain;
    bool   mDC;
+   double mLevel;
 
    int    mCurTrackNum;
    double mCurRate;
@@ -87,19 +89,23 @@ public:
    
    bool mGain;
    bool mDC;
+   double mLevel;
    
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
    
    void OnPreview(wxCommandEvent &event);
-   void OnOk( wxCommandEvent &event );
-   void OnCancel( wxCommandEvent &event );
-
+   void OnOk(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
+   void OnUpdateUI(wxCommandEvent& evt);
    EffectNormalize *mEffect;
    wxCheckBox *mGainCheckBox;
    wxCheckBox *mDCCheckBox;
+   wxTextCtrl *mLevelTextCtrl;
 
 private:
+   void UpdateUI();
+   
    DECLARE_EVENT_TABLE()
 };
 

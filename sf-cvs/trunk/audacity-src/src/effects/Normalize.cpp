@@ -14,6 +14,7 @@
 #include <math.h>
 
 #include "Normalize.h"
+#include "Internat.h"
 #include "../WaveTrack.h"
 #include "../Prefs.h"
 #include "../Project.h"
@@ -28,6 +29,9 @@
 #include <wx/stattext.h>
 #include <wx/textdlg.h>
 
+#define NORMALIZE_DB_MIN -240
+#define NORMALIZE_DB_MAX 240
+
 EffectNormalize::EffectNormalize()
 {
    Init();
@@ -41,6 +45,7 @@ bool EffectNormalize::Init()
    mGain = (boolProxy == 1);
    boolProxy = gPrefs->Read(wxT("/CsPresets/Norm_RemoveDcOffset"), 1);
    mDC = (boolProxy == 1);
+   gPrefs->Read(wxT("/CsPresets/Norm_Level"), &mLevel, 0.0);
    return true;
 }
 
@@ -48,6 +53,7 @@ bool EffectNormalize::TransferParameters( Shuttle & shuttle )
 {
    shuttle.TransferBool( wxT("ApplyGain"), mGain, true );
    shuttle.TransferBool( wxT("RemoveDcOffset"), mDC, true );
+   shuttle.TransferDouble( wxT("Level"), mLevel, 0.0);
    return true;
 }
 
@@ -77,6 +83,7 @@ bool EffectNormalize::PromptUser()
    NormalizeDialog dlog(this, mParent, -1, _("Normalize"));
    dlog.mGain = mGain;
    dlog.mDC = mDC;
+   dlog.mLevel = mLevel;
    dlog.TransferDataToWindow();
 
    dlog.CentreOnParent();
@@ -87,8 +94,10 @@ bool EffectNormalize::PromptUser()
 
    mGain = dlog.mGain;
    mDC = dlog.mDC;
+   mLevel = dlog.mLevel;
    gPrefs->Write(wxT("/CsPresets/Norm_AmpDbGain"), mGain);
    gPrefs->Write(wxT("/CsPresets/Norm_RemoveDcOffset"), mDC);
+   gPrefs->Write(wxT("/CsPresets/Norm_Level"), mLevel);
 
    return true;
 }
@@ -235,6 +244,10 @@ void EffectNormalize::StartProcessing()
 {
    mMult = 1.0;
    mOffset = 0.0;
+   
+   float ratio = pow(10.0,TrapDouble(-mLevel*10,
+                                     NORMALIZE_DB_MIN,
+                                     NORMALIZE_DB_MAX)/200.0);
 
    if (mDC) {
       mOffset = (float)(-mSum / mCount);
@@ -245,11 +258,8 @@ void EffectNormalize::StartProcessing()
       if (fabs(mMin + mOffset) > extent)
          extent = fabs(mMin + mOffset);
 
-      if (extent > 0) {
-//MERGE: -3 Db is usual.  We need to make the normalize-volume an option.
-         mMult = ((sqrt(2.0)/2) / extent);
-//       mMult = (0.9 / extent);  //lda
-      }
+      if (extent > 0)
+         mMult = ratio / extent;
    }
 }
 
@@ -260,7 +270,7 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
    for(i=0; i<len; i++) {
       float adjFrame = (buffer[i] + mOffset) * mMult;
       buffer[i] = adjFrame;
-      gFrameSum += abs(adjFrame);  //lda: validation.
+      gFrameSum += fabs(adjFrame);  //lda: validation.
    }
 }
 
@@ -269,11 +279,16 @@ void EffectNormalize::ProcessData(float *buffer, sampleCount len)
 //----------------------------------------------------------------------------
 
 #define ID_BUTTON_PREVIEW 10001
+#define ID_NORMALIZE_AMPLITUDE 10002
+#define ID_LEVEL_STATIC_MINUS 10003
+#define ID_LEVEL_STATIC_DB 10004
+#define ID_LEVEL_TEXT 10005
 
 BEGIN_EVENT_TABLE(NormalizeDialog,wxDialog)
    EVT_BUTTON( wxID_OK, NormalizeDialog::OnOk )
    EVT_BUTTON( wxID_CANCEL, NormalizeDialog::OnCancel )
 	EVT_BUTTON(ID_BUTTON_PREVIEW, NormalizeDialog::OnPreview)
+	EVT_CHECKBOX(ID_NORMALIZE_AMPLITUDE, NormalizeDialog::OnUpdateUI)
 END_EVENT_TABLE()
 
 NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
@@ -288,7 +303,6 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
 
    mainSizer->Add(new wxStaticText(this, -1,
                                    _("Normalize by Dominic Mazzoni\n"
-//                                   "(Leave both unchecked to bypass this effect)\n"
 												),
                                    wxDefaultPosition, wxDefaultSize,
                                    wxALIGN_CENTRE),
@@ -299,11 +313,24 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    mDCCheckBox->SetValue(mDC);
    mainSizer->Add(mDCCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
 
-   mGainCheckBox = new wxCheckBox(this, -1,
-                                  _("Normalize maximum amplitude to -3 dB"));
-//	   _("Normalize maximum amplitude to 90% (about -1 dB)"));
+   mGainCheckBox = new wxCheckBox(this, ID_NORMALIZE_AMPLITUDE,
+                                  _("Normalize maximum amplitude to"));
    mGainCheckBox->SetValue(mGain);
    mainSizer->Add(mGainCheckBox, 0, wxALIGN_LEFT|wxALL, 5);
+   
+   wxBoxSizer *levelSizer = new wxBoxSizer(wxHORIZONTAL);
+   levelSizer->AddSpacer(30);
+   mLevelTextCtrl = new wxTextCtrl(this, ID_LEVEL_TEXT);
+   mLevelTextCtrl->SetValue(wxString::Format(wxT("%.1f"), mLevel));
+   levelSizer->Add(new wxStaticText(this, ID_LEVEL_STATIC_MINUS, _("-"),
+                   wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT), 0,
+                   wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   levelSizer->Add(mLevelTextCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   levelSizer->Add(new wxStaticText(this, ID_LEVEL_STATIC_DB, _("dB"),
+                   wxDefaultPosition,
+                   wxDefaultSize, wxALIGN_LEFT), 0,
+                   wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+   mainSizer->Add(levelSizer, 0, wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -327,10 +354,24 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    mainSizer->SetSizeHints(this);
 }
 
+void NormalizeDialog::OnUpdateUI(wxCommandEvent& evt)
+{
+   UpdateUI();
+}
+
+void NormalizeDialog::UpdateUI()
+{
+   bool enable = mGainCheckBox->GetValue();
+   FindWindowById(ID_LEVEL_STATIC_MINUS)->Enable(enable);
+   FindWindowById(ID_LEVEL_STATIC_DB)->Enable(enable);
+   FindWindowById(ID_LEVEL_TEXT)->Enable(enable);
+}
+
 bool NormalizeDialog::TransferDataToWindow()
 {
    mGainCheckBox->SetValue(mGain);
    mDCCheckBox->SetValue(mDC);
+   UpdateUI();
 
    TransferDataFromWindow();
 
@@ -341,7 +382,7 @@ bool NormalizeDialog::TransferDataFromWindow()
 {
    mGain = mGainCheckBox->GetValue();
    mDC = mDCCheckBox->GetValue();
-
+   mLevel = Internat::CompatibleToDouble(mLevelTextCtrl->GetValue());
    return true;
 }
 
@@ -352,14 +393,17 @@ void NormalizeDialog::OnPreview(wxCommandEvent &event)
 	// Save & restore parameters around Preview, because we didn't do OK.
    bool oldGain = mEffect->mGain;
    bool oldDC = mEffect->mDC;
+   bool oldLevel = mEffect->mLevel;
 
    mEffect->mGain = mGain;
    mEffect->mDC = mDC;
+   mEffect->mLevel = mLevel;
    
 	mEffect->Preview();
    
 	mEffect->mGain = oldGain;
    mEffect->mDC = oldDC;
+   mEffect->mLevel = oldLevel;
 }
 
 void NormalizeDialog::OnOk(wxCommandEvent &event)
