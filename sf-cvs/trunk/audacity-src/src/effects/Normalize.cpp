@@ -14,7 +14,7 @@
 #include <math.h>
 
 #include "Normalize.h"
-#include "Internat.h"
+#include "../Internat.h"
 #include "../WaveTrack.h"
 #include "../Prefs.h"
 #include "../Project.h"
