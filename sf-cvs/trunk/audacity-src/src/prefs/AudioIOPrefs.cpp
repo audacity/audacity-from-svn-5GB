@@ -374,9 +374,11 @@ PrefsPanel(parent)
       wxDefaultSize, wxALIGN_LEFT);
       
    // For Portaudio v18, we cannot set the latency
+#if USE_PORTAUDIO_V19
    mLatencyDuration->Enable(USE_PORTAUDIO_V19);
    latencyDurationLabel->Enable(USE_PORTAUDIO_V19);
    latencyDurationUnitLabel->Enable(USE_PORTAUDIO_V19);
+#endif
    
    latencyFlexSizer->Add(latencyDurationLabel, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
