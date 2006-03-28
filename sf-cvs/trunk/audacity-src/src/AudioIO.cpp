@@ -15,7 +15,7 @@
   Software Foundation; either version 2 of the License, or (at your option)
   any later version.
 
-  Use the PortAudio library to play and record sound
+  Uses the PortAudio library to play and record sound.
 
   Great care and attention to detail are necessary for understanding and
   modifying this system.  The code in this file is run from three
@@ -440,6 +440,9 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 #if USE_PORTAUDIO_V19
    PaStreamParameters *playbackParameters = NULL;
    PaStreamParameters *captureParameters = NULL;
+   
+   double latencyDuration = 100.0;
+   gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
 
    if( numPlaybackChannels > 0)
    {
@@ -472,8 +475,12 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       playbackParameters->sampleFormat = paFloat32;
       playbackParameters->hostApiSpecificStreamInfo = NULL;
       playbackParameters->channelCount = mNumPlaybackChannels;
-      playbackParameters->suggestedLatency =
-         playbackDeviceInfo->defaultLowOutputLatency;
+
+      if (mSoftwarePlaythrough)
+         playbackParameters->suggestedLatency =
+            playbackDeviceInfo->defaultLowOutputLatency;
+      else
+         playbackParameters->suggestedLatency = latencyDuration/1000.0;
    }
 
    if( numCaptureChannels > 0)
@@ -509,8 +516,12 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 
       captureParameters->hostApiSpecificStreamInfo = NULL;
       captureParameters->channelCount = mNumCaptureChannels;
-      captureParameters->suggestedLatency =
-         captureDeviceInfo->defaultHighInputLatency;
+
+      if (mSoftwarePlaythrough)
+         captureParameters->suggestedLatency =
+            captureDeviceInfo->defaultHighInputLatency;
+      else
+         captureParameters->suggestedLatency = latencyDuration/1000.0;
    }
 
    mLastPaError = Pa_OpenStream( &mPortStreamV19,
@@ -1003,13 +1014,20 @@ void AudioIO::StopStream()
          delete[] mPlaybackMixers;
       }
 
+      //
+      // Offset all recorded tracks to account for latency
+      //
+      double latencyCorrection = 0;
+      gPrefs->Read(wxT("/AudioIO/LatencyCorrection"), &latencyCorrection);
+      
       if( mCaptureTracks.GetCount() > 0 )
       {
          for( unsigned int i = 0; i < mCaptureTracks.GetCount(); i++ )
             {
                delete mCaptureBuffers[i];
                mCaptureTracks[i]->Flush();
-               mCaptureTracks[i]->Offset(mLastRecordingOffset);
+               mCaptureTracks[i]->Offset(mLastRecordingOffset +
+                                         latencyCorrection/1000.0);
             }
          
          delete[] mCaptureBuffers;

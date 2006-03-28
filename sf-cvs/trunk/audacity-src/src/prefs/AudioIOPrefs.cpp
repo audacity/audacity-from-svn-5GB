@@ -75,6 +75,10 @@ PrefsPanel(parent)
    double cutPreviewBeforeLen, cutPreviewAfterLen;
    gPrefs->Read(wxT("CutPreviewBeforeLen"), &cutPreviewBeforeLen, 1.0);
    gPrefs->Read(wxT("CutPreviewAfterLen"), &cutPreviewAfterLen, 1.0);
+   
+   double latencyDuration, latencyCorrection;
+   gPrefs->Read(wxT("LatencyDuration"), &latencyDuration, 100.0);
+   gPrefs->Read(wxT("LatencyCorrection"), &latencyCorrection, 0.0);
 
    gPrefs->SetPath(wxT("/"));
 
@@ -316,13 +320,12 @@ PrefsPanel(parent)
    mCutPreviewBeforeLen = new wxTextCtrl(this, -1, cutPreviewBeforeLenString);
    mCutPreviewAfterLen = new wxTextCtrl(this, -1, cutPreviewAfterLenString);
 
-   wxFlexGridSizer* cutPreviewFlexSizer = new wxFlexGridSizer(2, 3,
-      GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
+   wxFlexGridSizer* cutPreviewFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
 
    cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
       _("Amount of audio to play before cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT), 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    cutPreviewFlexSizer->Add(mCutPreviewBeforeLen, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -334,8 +337,8 @@ PrefsPanel(parent)
 
    cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
       _("Amount of audio to play after cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT), 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    cutPreviewFlexSizer->Add(mCutPreviewAfterLen, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -354,7 +357,59 @@ PrefsPanel(parent)
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
    topSizer->Add(cutPreviewSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   
+   // msmeyer: Create latency options
+   mLatencyDuration = new wxTextCtrl(this, -1,
+                      wxString::Format(wxT("%g"), latencyDuration));
+   mLatencyCorrection = new wxTextCtrl(this, -1, 
+                        wxString::Format(wxT("%g"), latencyCorrection));
+   
+   wxFlexGridSizer* latencyFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
+   
+   wxStaticText* latencyDurationLabel = new wxStaticText(this, -1,
+      _("Amount of audio to buffer:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT);
+   wxStaticText* latencyDurationUnitLabel = new wxStaticText(this, -1,
+      _("milliseconds"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT);
+      
+   // For Portaudio v18, we cannot set the latency
+   mLatencyDuration->Enable(USE_PORTAUDIO_V19);
+   latencyDurationLabel->Enable(USE_PORTAUDIO_V19);
+   latencyDurationUnitLabel->Enable(USE_PORTAUDIO_V19);
+   
+   latencyFlexSizer->Add(latencyDurationLabel, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   
+   latencyFlexSizer->Add(mLatencyDuration, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      
+   latencyFlexSizer->Add(latencyDurationUnitLabel, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      
+   latencyFlexSizer->Add(new wxStaticText(this, -1,
+      _("Additional latency correction:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   
+   latencyFlexSizer->Add(mLatencyCorrection, 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      
+   latencyFlexSizer->Add(new wxStaticText(this, -1,
+      _("milliseconds"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_LEFT), 1,
+      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+   
+   wxStaticBoxSizer *latencySizer =
+      new wxStaticBoxSizer(
+         new wxStaticBox(this, -1, _("Latency")),
+            wxVERTICAL);
 
+   latencySizer->Add(latencyFlexSizer, 0,
+      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
+
+   topSizer->Add(latencySizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   
    SetAutoLayout(true);
    outSizer->Fit(this);
    outSizer->SetSizeHints(this);
@@ -394,9 +449,14 @@ bool AudioIOPrefs::Apply()
    gPrefs->Write(wxT("SWPlaythrough"), mSWPlaythrough->GetValue());
 
    gPrefs->Write(wxT("CutPreviewBeforeLen"),
-       Internat::CompatibleToDouble(mCutPreviewBeforeLen->GetValue()));
+      Internat::CompatibleToDouble(mCutPreviewBeforeLen->GetValue()));
    gPrefs->Write(wxT("CutPreviewAfterLen"),
-       Internat::CompatibleToDouble(mCutPreviewAfterLen->GetValue()));
+      Internat::CompatibleToDouble(mCutPreviewAfterLen->GetValue()));
+       
+   gPrefs->Write(wxT("LatencyDuration"),
+      Internat::CompatibleToDouble(mLatencyDuration->GetValue()));
+   gPrefs->Write(wxT("LatencyCorrection"),
+      Internat::CompatibleToDouble(mLatencyCorrection->GetValue()));
 
    gPrefs->SetPath(wxT("/"));
 
