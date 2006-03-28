@@ -371,6 +371,8 @@ bool NormalizeDialog::TransferDataToWindow()
 {
    mGainCheckBox->SetValue(mGain);
    mDCCheckBox->SetValue(mDC);
+   mLevelTextCtrl->SetValue(Internat::ToString(mLevel, 1));
+   
    UpdateUI();
 
    TransferDataFromWindow();
@@ -393,7 +395,7 @@ void NormalizeDialog::OnPreview(wxCommandEvent &event)
 	// Save & restore parameters around Preview, because we didn't do OK.
    bool oldGain = mEffect->mGain;
    bool oldDC = mEffect->mDC;
-   bool oldLevel = mEffect->mLevel;
+   double oldLevel = mEffect->mLevel;
 
    mEffect->mGain = mGain;
    mEffect->mDC = mDC;
