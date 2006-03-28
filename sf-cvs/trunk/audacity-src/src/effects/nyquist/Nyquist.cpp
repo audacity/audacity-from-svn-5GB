@@ -19,6 +19,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textdlg.h>
 #include <wx/textfile.h>
+#include <wx/choice.h>
 
 #include "../../AudacityApp.h"
 #include "../../LabelTrack.h"
@@ -40,6 +41,7 @@ wxString EffectNyquist::mXlispPath;
 #define NYQ_CTRL_INT 0
 #define NYQ_CTRL_REAL 1
 #define NYQ_CTRL_STRING 2
+#define NYQ_CTRL_CHOICE 3
 
 extern "C" {
    extern void set_xlisp_path(const char *p);
@@ -134,10 +136,11 @@ void EffectNyquist::Parse(wxString line)
       return;
    }
 
-   // We support versions 1 and 2
+   // We support versions 1, 2 and 3
    // (Version 2 added support for string parameters.)
+   // (Version 3 added support for choice parameters.)
    if (len>=2 && tokens[0]==wxT("version")) {
-      if (tokens[1]==wxT("1") || tokens[1]==wxT("2")) {
+      if (tokens[1]==wxT("1") || tokens[1]==wxT("2") || tokens[1]==wxT("3")) {
          // We're okay
       }
       else {
@@ -172,6 +175,8 @@ void EffectNyquist::Parse(wxString line)
  
       if (tokens[3]==wxT("string"))
          ctrl.type = NYQ_CTRL_STRING;
+      else if( tokens[ 3 ] == wxT( "choice" ) )
+         ctrl.type = NYQ_CTRL_CHOICE;
       else {
          if (len < 8)
             return;
@@ -324,6 +329,9 @@ bool EffectNyquist::PromptUser()
       if (ctrl->val == UNINITIALIZED_CONTROL)
          ctrl->val = GetCtrlValue(ctrl->valStr);
 
+      if( ctrl->type == NYQ_CTRL_CHOICE )
+         continue;
+      
       ctrl->low = GetCtrlValue(ctrl->lowStr);
       ctrl->high = GetCtrlValue(ctrl->highStr);
 
@@ -514,7 +522,8 @@ bool EffectNyquist::ProcessOne()
          cmd = cmd+wxString::Format(wxT("(setf %s %f)\n"),
                                     mControls[j].var.c_str(),
                                     mControls[j].val);
-      else if (mControls[j].type==NYQ_CTRL_INT)
+      else if (mControls[j].type==NYQ_CTRL_INT || 
+            mControls[j].type == NYQ_CTRL_CHOICE)
          cmd = cmd+wxString::Format(wxT("(setf %s %d)\n"),
                                     mControls[j].var.c_str(),
                                     (int)(mControls[j].val));
@@ -672,6 +681,7 @@ bool EffectNyquist::ProcessOne()
 
 #define ID_NYQ_SLIDER 2000
 #define ID_NYQ_TEXT   3000
+#define ID_NYQ_CHOICE 4000
 
 BEGIN_EVENT_TABLE(NyquistDialog, wxDialog)
    EVT_BUTTON(wxID_OK, NyquistDialog::OnOk)
@@ -681,6 +691,8 @@ BEGIN_EVENT_TABLE(NyquistDialog, wxDialog)
                      wxEVT_COMMAND_SLIDER_UPDATED, NyquistDialog::OnSlider)
    EVT_COMMAND_RANGE(ID_NYQ_TEXT, ID_NYQ_TEXT+99,
                       wxEVT_COMMAND_TEXT_UPDATED, NyquistDialog::OnText)
+   EVT_COMMAND_RANGE( ID_NYQ_CHOICE, ID_NYQ_CHOICE + 99,
+                     wxEVT_COMMAND_CHOICE_SELECTED, NyquistDialog::OnChoice )
 END_EVENT_TABLE()
 
 NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
@@ -707,8 +719,6 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
    for(unsigned int i=0; i<mControls->GetCount(); i++) {
       wxControl  *item;
       NyqControl *ctrl = &((*mControls)[i]);
-      int val = (int)(0.5 + ctrl->ticks * (ctrl->val - ctrl->low)/
-                      (ctrl->high - ctrl->low));
 
       item = new wxStaticText(this, -1, ctrl->name);
       grid->Add(item, 0, wxALIGN_RIGHT | 
@@ -722,8 +732,42 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
          grid->Add(item, 0, wxALIGN_CENTRE |
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
       }
+      else if( ctrl->type == NYQ_CTRL_CHOICE )
+      {
+         //str is coma separated labels for each choice
+         wxString str = ctrl->label;
+         wxArrayString choices;
+         
+         while( 1 )
+         {       
+            int ci = str.Find( ',' ); //coma index
+            
+            if( ci == -1 )
+            {
+               choices.Add( str );
+               break;
+            }
+            else
+               choices.Add( str.Left( ci ) );
+            
+            str = str.Right( str.length() - ci - 1 );
+         }
+
+         wxChoice *choice = new wxChoice( this, ID_NYQ_CHOICE + i, 
+               wxDefaultPosition, wxSize( 150, -1 ), choices );
+         
+         int val = ( int )ctrl->val;
+         if( val >= 0 && val < choice->GetCount() )
+            choice->SetSelection( val );
+        
+         grid->Add( 10, 10 );
+         grid->Add( choice, 0, wxALIGN_CENTRE | 
+               wxALIGN_CENTER_VERTICAL | wxALL, 5 );
+      }
       else {
          // Integer or Real
+         int val = (int)(0.5 + ctrl->ticks * (ctrl->val - ctrl->low)/
+               (ctrl->high - ctrl->low));
 
          item = new wxTextCtrl(this, ID_NYQ_TEXT+i, wxT(""),
                                wxDefaultPosition, wxSize(60, -1));
@@ -736,9 +780,12 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
                    wxALIGN_CENTER_VERTICAL | wxALL, 5);
       }
          
-      item = new wxStaticText(this, -1, ctrl->label);
-      grid->Add(item, 0, wxALIGN_LEFT | 
-                wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      if( ctrl->type != NYQ_CTRL_CHOICE )
+      {
+         item = new wxStaticText(this, -1, ctrl->label);
+         grid->Add(item, 0, wxALIGN_LEFT | 
+                   wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      }
    }
    mainSizer->Add(grid, 0, wxALIGN_CENTRE | wxALL, 5);
 
@@ -776,7 +823,7 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
    for(unsigned int i=0; i<mControls->GetCount(); i++) {
       NyqControl *ctrl = &((*mControls)[i]);
 
-      if (ctrl->type == NYQ_CTRL_STRING)
+      if (ctrl->type == NYQ_CTRL_STRING || ctrl->type == NYQ_CTRL_CHOICE )
          continue;
 
       wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + i);
@@ -808,23 +855,42 @@ void NyquistDialog::OnSlider(wxCommandEvent & /* event */)
    mInHandler = false;
 }
 
-void NyquistDialog::OnText(wxCommandEvent & /* event */)
+void NyquistDialog::OnChoice( wxCommandEvent &event )
+{
+   if( mInHandler )
+      return; // prevent recursing forever
+   mInHandler = true;
+
+   int ctrlId = event.GetId() - ID_NYQ_CHOICE;
+   wxASSERT( ctrlId >= 0 && ctrlId < mControls->GetCount() );
+   
+   NyqControl *ctrl = &( mControls->Item( ctrlId ) );
+   wxChoice *choice = ( wxChoice * )FindWindow( ID_NYQ_CHOICE + ctrlId );
+   wxASSERT( choice );
+
+   ctrl->val = choice->GetSelection();
+
+   mInHandler = false;   
+}
+
+void NyquistDialog::OnText(wxCommandEvent &event)
 {
    if (mInHandler)
       return; // prevent recursing forever
    mInHandler = true;
 
-   for(unsigned int i=0; i<mControls->GetCount(); i++) {
-      NyqControl *ctrl = &((*mControls)[i]);
-      wxTextCtrl *text = (wxTextCtrl *)FindWindow(ID_NYQ_TEXT + i);
-      wxASSERT(text);
+   int ctrlId = event.GetId() - ID_NYQ_TEXT;
+   wxASSERT( ctrlId >= 0 && textId < mControls->GetCount() );
 
-      ctrl->valStr = text->GetValue();
+   NyqControl *ctrl = &((*mControls)[ ctrlId ]);
+   wxTextCtrl *text = (wxTextCtrl *)FindWindow(ID_NYQ_TEXT + ctrlId);
+   wxASSERT(text);
 
-      if (ctrl->type == NYQ_CTRL_STRING)
-         continue;
+   ctrl->valStr = text->GetValue();
 
-      wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + i);
+   if( ctrl->type != NYQ_CTRL_STRING )
+   {
+      wxSlider *slider = (wxSlider *)FindWindow(ID_NYQ_SLIDER + ctrlId);
       wxASSERT(slider);
 
       ctrl->valStr.ToDouble(&ctrl->val);
