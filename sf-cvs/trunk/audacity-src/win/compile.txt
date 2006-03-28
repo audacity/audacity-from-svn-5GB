@@ -209,8 +209,8 @@ choose the "Project" menu > "Audacity Properties..." command.
 Select the desired configuration ("Debug" or "Release"). 
 Select the "Link" folder in the tree on the left, and the 
 "Input" item. In the "Ignore Specific Library" field, enter 
-"libcmt.lib" if you were attempting to perform a
-Release build, or "libcmtd.lib" for a Debug build.
+"libcmtd.lib" if you were attempting to perform a
+Release build, or "libcmt.lib" for a Debug build.
 
 On some systems, you will need to ignore "msvcrt.lib" 
 or "msvcrtd.lib" instead of "libcmtd.lib" or "libcmtd.lib",
