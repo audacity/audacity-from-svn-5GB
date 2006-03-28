@@ -1,5 +1,5 @@
 /*
- * $Id: pa_front.c,v 1.2 2004-04-22 04:19:50 mbrubeck Exp $
+ * $Id: pa_front.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  * Portable Audio I/O Library Multi-Host API front end
  * Validate function parameters and manage multiple host APIs.
  *
@@ -98,6 +98,7 @@ enquire about status on the PortAudio mailing list first.
 #include "portaudio.h"
 #include "pa_util.h"
 #include "pa_endianness.h"
+#include "pa_types.h"
 #include "pa_hostapi.h"
 #include "pa_stream.h"
 
@@ -255,6 +256,9 @@ static PaError InitializeHostApis( void )
 
         if( hostApis_[hostApisCount_] )
         {
+            PaUtilHostApiRepresentation* hostApi = hostApis_[hostApisCount_];
+            assert( hostApi->info.defaultInputDevice < hostApi->info.deviceCount );
+            assert( hostApi->info.defaultOutputDevice < hostApi->info.deviceCount );
 
             hostApis_[hostApisCount_]->privatePaFrontInfo.baseDeviceIndex = baseDeviceIndex;
 
@@ -374,6 +378,7 @@ PaError Pa_Initialize( void )
     }
     else
     {
+        PA_VALIDATE_TYPE_SIZES;
         PA_VALIDATE_ENDIANNESS;
         
         PaUtil_InitializeClock();
@@ -787,7 +792,7 @@ PaDeviceIndex Pa_GetDefaultOutputDevice( void )
 {
     PaHostApiIndex hostApi;
     PaDeviceIndex result;
-
+    
 #ifdef PA_LOG_API_CALLS
     PaUtil_DebugPrint("Pa_GetDefaultOutputDevice called.\n" );
 #endif
@@ -903,8 +908,8 @@ static int SampleFormatIsValid( PaSampleFormat format )
  
     - at least one of inputParameters & outputParmeters is valid (not NULL)
 
-    - if inputParameters & outputParmeters are both valid, that
-        inputParameters->device & outputParmeters->device  both use the same host api
+    - if inputParameters & outputParameters are both valid, that
+        inputParameters->device & outputParameters->device  both use the same host api
  
     PaDeviceIndex inputParameters->device
         - is within range (0 to Pa_GetDeviceCount-1) Or:
@@ -1784,11 +1789,12 @@ PaError Pa_ReadStream( PaStream* stream,
     {
         if( frames == 0 )
         {
-            result = paInternalError; /** @todo should return a different error code */
+            /* XXX: Should we not allow the implementation to signal any overflow condition? */
+            result = paNoError;
         }
         else if( buffer == 0 )
         {
-            result = paInternalError; /** @todo should return a different error code */
+            result = paBadBufferPtr;
         }
         else
         {
@@ -1828,11 +1834,12 @@ PaError Pa_WriteStream( PaStream* stream,
     {
         if( frames == 0 )
         {
-            result = paInternalError; /** @todo should return a different error code */
+            /* XXX: Should we not allow the implementation to signal any underflow condition? */
+            result = paNoError;
         }
         else if( buffer == 0 )
         {
-            result = paInternalError; /** @todo should return a different error code */
+            result = paBadBufferPtr;
         }
         else
         {

@@ -10,7 +10,7 @@
     as in test pa_devs.c.
 */
 /*
- * $Id: paqa_devs.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
+ * $Id: paqa_devs.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

@@ -139,11 +139,15 @@ lib/$(PADLLV): lib/ $(OBJS) Makefile $(PAINC)
 $(TESTS): bin/%: lib/$(PALIB) Makefile $(PAINC) pa_tests/%.c
 	$(CC) -o $@ $(CFLAGS) pa_tests/$*.c lib/$(PALIB) $(LIBS)
 
-install: lib/$(PALIB) lib/$(PADLLV)
+install: lib/$(PALIB) lib/$(PADLLV) portaudio-2.0.pc
+	$(INSTALL) -d $(PREFIX)/lib
 	$(INSTALL) -m 644 lib/$(PADLLV) $(PREFIX)/lib/$(PADLLV)
 	$(INSTALL) -m 644 lib/$(PALIB) $(PREFIX)/lib/$(PALIB)
 	cd $(PREFIX)/lib && rm -f $(PADLL) && ln -s $(PADLLV) $(PADLL)
+	$(INSTALL) -d $(PREFIX)/include
 	$(INSTALL) -m 644 pa_common/portaudio.h $(PREFIX)/include/portaudio.h
+	$(INSTALL) -d $(PREFIX)/lib/pkgconfig
+	$(INSTALL) -m 644 portaudio-2.0.pc $(PREFIX)/lib/pkgconfig/portaudio-2.0.pc
 	@echo ""
 	@echo "------------------------------------------------------------"
 	@echo "PortAudio was successfully installed."
@@ -155,12 +159,14 @@ install: lib/$(PALIB) lib/$(PADLLV)
 	@echo "------------------------------------------------------------"
 	@echo ""
 
+uninstall:
+	rm -f $(PREFIX)/lib/$(PADLLV)
+	rm -f $(PREFIX)/lib/$(PALIB)
+	rm -f $(PREFIX)/lib/$(PADLL)
+	rm -f $(PREFIX)/include/portaudio.h
+
 clean:
 	rm -f $(OBJS) $(TESTS) lib/$(PALIB) lib/$(PADLLV)
-
-distclean: clean
-	rm -f Makefile
-	rm -f config.status config.cache config.log
 
 %.o: %.c Makefile $(PAINC)
 	$(CC) -c $(CFLAGS) $< -o $@
@@ -177,4 +183,5 @@ bin:
 lib:
 	mkdir lib
 
-.PHONY: clean distclean
+
+

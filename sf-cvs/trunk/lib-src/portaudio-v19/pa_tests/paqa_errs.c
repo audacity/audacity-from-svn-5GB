@@ -5,7 +5,7 @@
     Pieter Suurmond adapted to V19 API.
 */
 /*
- * $Id: paqa_errs.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
+ * $Id: paqa_errs.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -352,7 +352,7 @@ static int TestBadActions( void )
     HOPEFOR(((result = Pa_IsStreamActive(NULL)) == paBadStreamPtr));
     HOPEFOR(((result = Pa_CloseStream(NULL))    == paBadStreamPtr));
     HOPEFOR(((result = Pa_SetStreamFinishedCallback(NULL, NULL)) == paBadStreamPtr));
-    HOPEFOR(((result = Pa_GetStreamInfo(NULL))    == NULL));
+    HOPEFOR(((result = !Pa_GetStreamInfo(NULL))));
     HOPEFOR(((result = Pa_GetStreamTime(NULL))  == 0.0));
     HOPEFOR(((result = Pa_GetStreamCpuLoad(NULL))  == 0.0));
     HOPEFOR(((result = Pa_ReadStream(NULL, NULL, 0))  == paBadStreamPtr));
