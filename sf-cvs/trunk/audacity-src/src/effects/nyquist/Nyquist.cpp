@@ -861,7 +861,7 @@ void NyquistDialog::OnChoice( wxCommandEvent &event )
       return; // prevent recursing forever
    mInHandler = true;
 
-   int ctrlId = event.GetId() - ID_NYQ_CHOICE;
+   unsigned int ctrlId = event.GetId() - ID_NYQ_CHOICE;
    wxASSERT( ctrlId >= 0 && ctrlId < mControls->GetCount() );
    
    NyqControl *ctrl = &( mControls->Item( ctrlId ) );
@@ -879,8 +879,8 @@ void NyquistDialog::OnText(wxCommandEvent &event)
       return; // prevent recursing forever
    mInHandler = true;
 
-   int ctrlId = event.GetId() - ID_NYQ_TEXT;
-   wxASSERT( ctrlId >= 0 && textId < mControls->GetCount() );
+   unsigned int ctrlId = event.GetId() - ID_NYQ_TEXT;
+   wxASSERT( ctrlId >= 0 && ctrlId < mControls->GetCount() );
 
    NyqControl *ctrl = &((*mControls)[ ctrlId ]);
    wxTextCtrl *text = (wxTextCtrl *)FindWindow(ID_NYQ_TEXT + ctrlId);
