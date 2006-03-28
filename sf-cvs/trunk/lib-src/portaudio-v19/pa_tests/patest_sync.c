@@ -15,7 +15,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: patest_sync.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
+ * $Id: patest_sync.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -66,7 +66,7 @@ typedef struct
     float        left_phase;
     float        right_phase;
     int          state;
-    int          requestBeep;  /* Set by foreground, cleared by background. */
+    volatile int requestBeep;  /* Set by foreground, cleared by background. */
     PaTime       beepTime;
     int          beepCount;
     double       latency;    /* For debugging. */

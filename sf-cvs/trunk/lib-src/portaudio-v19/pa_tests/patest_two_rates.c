@@ -1,5 +1,5 @@
 /*
- * $Id: patest_two_rates.c,v 1.1.1.1 2004-04-22 04:08:25 mbrubeck Exp $
+ * $Id: patest_two_rates.c,v 1.2 2006-03-28 14:05:07 msmeyer Exp $
  * patest_two_rates.c
  * Play two streams at different rates to make sure they don't interfere.
  *

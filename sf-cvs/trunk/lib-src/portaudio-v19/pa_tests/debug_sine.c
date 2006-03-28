@@ -1,5 +1,5 @@
 /*
- * $Id: debug_sine.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
+ * $Id: debug_sine.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  * debug_sine.c
  * Play a sine sweep using the Portable Audio api for several seconds.
  * Hacked test for debugging PA.

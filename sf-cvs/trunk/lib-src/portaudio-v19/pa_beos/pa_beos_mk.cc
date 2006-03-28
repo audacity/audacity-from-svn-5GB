@@ -1,5 +1,5 @@
 /*
- * $Id: pa_beos_mk.cc,v 1.1.1.1 2004-04-22 04:08:18 mbrubeck Exp $
+ * $Id: pa_beos_mk.cc,v 1.2 2006-03-28 14:05:07 msmeyer Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * BeOS Media Kit Implementation by Joshua Haberman

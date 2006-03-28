@@ -1,5 +1,5 @@
 /*
- * $Id: debug_srate.c,v 1.2 2004-04-22 04:19:51 mbrubeck Exp $
+ * $Id: debug_srate.c,v 1.3 2006-03-28 14:05:07 msmeyer Exp $
  * debug_record_reuse.c
  * Record input into an array.
  * Save array to a file.
