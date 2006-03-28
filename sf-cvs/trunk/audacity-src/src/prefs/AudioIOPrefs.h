@@ -45,6 +45,9 @@ class AudioIOPrefs:public PrefsPanel {
    
    wxTextCtrl *mCutPreviewBeforeLen;
    wxTextCtrl *mCutPreviewAfterLen;
+   
+   wxTextCtrl *mLatencyDuration;
+   wxTextCtrl *mLatencyCorrection;
 
  public:
     DECLARE_EVENT_TABLE()
