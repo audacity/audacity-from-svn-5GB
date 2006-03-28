@@ -136,6 +136,7 @@ class NyquistDialog:public wxDialog {
 
    void OnText(wxCommandEvent & event);
    void OnSlider(wxCommandEvent & event);
+   void OnChoice( wxCommandEvent &event );
    void OnOk(wxCommandEvent & event);
    void OnDebug(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
