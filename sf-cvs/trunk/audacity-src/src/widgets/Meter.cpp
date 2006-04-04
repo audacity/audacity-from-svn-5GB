@@ -623,7 +623,7 @@ void Meter::HandleLayout()
       mRuler.SetBounds(mBar[1].r.x + mBar[1].r.width + 1,
                        mBar[1].r.y,
                        mBar[1].r.x + width,
-                       mBar[1].r.height);
+                       mBar[1].r.y + mBar[1].r.height);
       if (mDB) {
          mRuler.SetRange(0, -mDBRange);
          mRuler.SetFormat(Ruler::LinearDBFormat);
@@ -794,7 +794,7 @@ void Meter::RepaintBarsNow()
 void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
 {
    wxRect r = meterBar->r;
-   wxRect rRMS;
+   wxRect rRMS = meterBar->r;
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBkgndBrush);
    dc.DrawRectangle(r);
@@ -831,9 +831,9 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
       ht = (int)(meterBar->peak * r.height + 0.5);
       r = wxRect(r.x, r.y + r.height - ht,
                  r.width, ht);
-      ht = (int)(meterBar->rms * r.height + 0.5);
-      rRMS = wxRect(r.x, r.y + r.height - ht,
-                    r.width, ht);
+      ht = (int)(meterBar->rms * rRMS.height + 0.5);
+      rRMS = wxRect(rRMS.x, rRMS.y + rRMS.height - ht,
+                    rRMS.width, ht);
 
    }
    else {
@@ -852,9 +852,9 @@ void Meter::DrawMeterBar(wxDC &dc, MeterBar *meterBar)
       wd = (int)(meterBar->peak * r.width + 0.5);
       r = wxRect(r.x, r.y,
                  wd, r.height);
-      wd = (int)(meterBar->rms * r.width + 0.5);
-      rRMS = wxRect(r.x, r.y,
-                    wd, r.height);
+      wd = (int)(meterBar->rms * rRMS.width + 0.5);
+      rRMS = wxRect(rRMS.x, rRMS.y,
+                    wd, rRMS.height);
    }
    dc.SetPen(*wxTRANSPARENT_PEN);
    dc.SetBrush(mBrush);
