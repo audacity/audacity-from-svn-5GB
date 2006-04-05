@@ -2404,6 +2404,161 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
    }
 }
 
+//get regions selected by selected labels
+//removes unnecessary regions, overlapping regions are merged
+//regions memory need to be deleted by the caller
+void AudacityProject::GetRegionsByLabel( Regions &regions )
+{
+   TrackListIterator iter( mTracks );
+   Track *n;
+   
+   //determine labelled regions
+   for( n = iter.First(); n; n = iter.Next() )
+      if( n->GetKind() == Track::Label )
+      {
+         LabelTrack *lt = ( LabelTrack* )n;
+         for( int i = 0; i < lt->GetNumLabels(); i++ ) 
+         {
+            const LabelStruct *ls = lt->GetLabel( i );
+            if( ls->t >= mViewInfo.sel0 && ls->t1 <= mViewInfo.sel1 )
+            {
+               Region *region = new Region;
+               region->start = ls->t;
+               region->end = ls->t1;
+               regions.Add( region );
+            }
+         }
+      }
+
+   //anything to do ?
+   if( regions.GetCount() == 0 )
+      return;
+   
+   //sort and remove unnecessary regions
+   regions.Sort( Region::cmp );
+   unsigned int selected = 1;
+   while( selected < regions.GetCount() )
+   {
+      Region *cur = regions.Item( selected );
+      Region *last = regions.Item( selected - 1 );
+      if( cur->start <= last->end )
+      {
+         if( cur->end > last->end )
+            last->end = cur->end;
+         delete cur;
+         regions.RemoveAt( selected );
+      }
+      else
+         selected++;
+   }
+}
+
+//Executes the edit function on all selected wave tracks with
+//regions specified by selected labels
+//If No tracks selected, function is applied on all tracks
+void AudacityProject::EditByLabel( WaveTrack::EditFunction action )
+{ 
+   Regions regions;
+   
+   GetRegionsByLabel( regions );
+   if( regions.GetCount() == 0 )
+      return;
+
+   TrackListIterator iter( mTracks );
+   Track *n;
+   bool allTracks = true;
+
+   // if at least one wave track is selected
+   // apply only on the selected track
+   for( n = iter.First(); n; n = iter.Next() )
+      if( n->GetKind() == Track::Wave && n->GetSelected() )
+      {
+         allTracks = false;
+         break;
+      }
+  
+   //Apply action on wavetracks starting from
+   //labeled regions in the end. This is to correctly perform
+   //actions like 'Delete' which collapse the track area.
+   for( n = iter.First(); n; n = iter.Next() )
+      if( n->GetKind() == Track::Wave && ( allTracks || n->GetSelected() ) )
+      {
+         WaveTrack *wt = ( WaveTrack* )n;
+         for( int i = ( int )regions.GetCount() - 1; i >= 0; i-- )
+            ( wt->*action )( regions.Item( i )->start, regions.Item( i )->end );
+      }
+
+   //delete label regions
+   for( unsigned int i = 0; i < regions.GetCount(); i++ )
+      delete regions.Item( i );
+}
+
+//Executes the edit function on all selected wave tracks with
+//regions specified by selected labels
+//If No tracks selected, function is applied on all tracks
+//functions copy the edited regions to clipboard, possibly in multiple tracks
+void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
+{ 
+   Regions regions;
+   
+   GetRegionsByLabel( regions );
+   if( regions.GetCount() == 0 )
+      return;
+
+   TrackListIterator iter( mTracks );
+   Track *n;
+   bool allTracks = true;
+
+   // if at least one wave track is selected
+   // apply only on the selected track
+   for( n = iter.First(); n; n = iter.Next() )
+      if( n->GetKind() == Track::Wave && n->GetSelected() )
+      {
+         allTracks = false;
+         break;
+      }
+ 
+   ClearClipboard(); 
+   //Apply action on wavetracks starting from
+   //labeled regions in the end. This is to correctly perform
+   //actions like 'Cut' which collapse the track area.
+   for( n = iter.First(); n; n = iter.Next() )
+      if( n->GetKind() == Track::Wave && ( allTracks || n->GetSelected() ) )
+      {
+         WaveTrack *wt = ( WaveTrack* )n;
+         WaveTrack *merged = NULL;
+         for( int i = ( int )regions.GetCount() - 1; i >= 0; i-- )
+         {
+            Track *dest = NULL;
+            ( wt->*action )( regions.Item( i )->start, regions.Item( i )->end, 
+                             &dest );
+            if( dest )
+            {
+               dest->SetChannel( wt->GetChannel() );
+               dest->SetLinked( wt->GetLinked() );
+               dest->SetName( wt->GetName() );
+               ( ( WaveTrack* )dest )->SetRate( wt->GetRate() );
+               if( !merged )
+                  merged = ( WaveTrack* )dest;
+               else
+               {
+                  //since we are doing this from the end, next region
+                  //has to go in the beginning
+                  merged->Paste( merged->GetStartTime(), dest );
+                  delete dest;
+               }
+               msClipLen += ( regions.Item( i )->end - regions.Item( i )->start );
+            }
+         }
+         if( merged )
+            msClipboard->Add( merged );
+      }
+
+   //delete label regions
+   for( unsigned int i = 0; i < regions.GetCount(); i++ )
+      delete regions.Item( i );
+}
+
 // TrackPanel callback method
 void AudacityProject::TP_DisplayStatusMessage(wxString msg)
 {
