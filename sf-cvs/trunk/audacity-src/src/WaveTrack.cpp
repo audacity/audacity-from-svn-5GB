@@ -677,18 +677,15 @@ bool WaveTrack::InsertSilence(double t, double len)
    return true;
 }
 
+//Performs the opposite of Join
+//Analyses selected region for possible Joined clips and disjoins them
 bool WaveTrack::Disjoin(double t0, double t1)
 {
    sampleCount minSamples = TimeToLongSamples( WAVETRACK_MERGE_POINT_TOLERANCE );
    sampleCount maxAtOnce = 1048576;
    float *buffer = new float[ maxAtOnce ];
-   typedef struct SEQ_NODE
-   {
-      double start, end;
-      SEQ_NODE *next;
-   }SeqNode;
-   SeqNode *head = NULL;
-
+   Regions regions;
+   
    wxBusyCursor busy;
    
    for( WaveClipList::Node *it = GetClipIterator(); it; it = it->GetNext() )
@@ -705,6 +702,9 @@ bool WaveTrack::Disjoin(double t0, double t1)
          startTime = t0;
       if( t1 < endTime )
          endTime = t1;
+      
+      //simply look for a sequence of zeroes and if the sequence
+      //is greater than minimum number, split-delete the region
       
       longSampleCount seqStart = -1;
       longSampleCount start, end;
@@ -723,41 +723,39 @@ bool WaveTrack::Disjoin(double t0, double t1)
          for( sampleCount i = 0; i < numSamples; i++ )
          {
             longSampleCount curSamplePos = start + done + i;
-            if( buffer[ i ] == 0.0 )
+
+            //start a new sequence
+            if( buffer[ i ] == 0.0 && seqStart == -1 )
+               seqStart = curSamplePos;
+            else if( buffer[ i ] != 0.0 || curSamplePos == end - 1 )
             {
-               if( seqStart == -1 )
-                  seqStart = curSamplePos;
-            }
-            else
-            {
-               if( seqStart != -1 && curSamplePos - seqStart > minSamples )
+               if( seqStart != -1 )
                {
-                  if( !head )
-                  {
-                     head = new SeqNode;
-                     head->next = NULL;
-                  }
+                  longSampleCount seqEnd;
+                  
+                  //consider the end case, where selection ends in zeroes
+                  if( curSamplePos == end - 1 && buffer[ i ] == 0.0 )
+                     seqEnd = end - 1;
                   else
+                     seqEnd = curSamplePos - 1;
+                  if( seqEnd - seqStart + 1 > minSamples )
                   {
-                     SeqNode *temp = new SeqNode;
-                     temp->next = head;
-                     head = temp;
+                     Region *region = new Region;
+                     region->start = seqStart / GetRate() + clip->GetStartTime();
+                     region->end = seqEnd / GetRate() + clip->GetStartTime();
+                     regions.Add( region );
                   }
-                  head->start = seqStart / GetRate() + clip->GetStartTime();
-                  head->end = ( curSamplePos - 1 ) / GetRate() + clip->GetStartTime();
+                  seqStart = -1;
                }
-               seqStart = -1;
             }
          }
       }
    }
- 
-   while( head )
+
+   for( unsigned int i = 0; i < regions.GetCount(); i++ )
    {
-      SplitDelete( head->start, head->end );
-      SeqNode *temp = head;
-      head = head->next;
-      delete temp;
+      SplitDelete( regions.Item( i )->start, regions.Item( i )->end );
+      delete regions.Item( i );
    }
    
    delete[] buffer;
@@ -789,6 +787,10 @@ bool WaveTrack::Join(double t0, double t1)
       }
    }
 
+   //if there are no clips to delete, nothing to do
+   if( clipsToDelete.GetCount() == 0 )
+      return true;
+   
    newClip = CreateClip();
    double t = clipsToDelete[0]->GetOffset();
    newClip->SetOffset(t);
@@ -1358,6 +1360,14 @@ bool WaveTrack::CanInsertClip(WaveClip* clip)
    }
 
    return true;
+}
+
+bool WaveTrack::Split( double t0, double t1 )
+{
+   bool ret = SplitAt( t0 );
+   if( ret && t0 != t1 )
+      ret = SplitAt( t1 );
+   return ret;
 }
 
 bool WaveTrack::SplitAt(double t)
