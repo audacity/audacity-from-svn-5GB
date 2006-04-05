@@ -569,13 +569,24 @@ void TrackPanel::SelectNone()
    }
 }
 
-/// Set all tracks to 'selected'
-void TrackPanel::SelectAllTracks()
+/// Select all tracks marked by the label track lt
+void TrackPanel::SelectTracksByLabel( LabelTrack *lt )
 {
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
+
+   //do nothing if at least one other track is selected
    while (t) {
-      t->SetSelected(true);
+      if( t->GetSelected() && t != lt )
+         return;
+      t = iter.Next();
+   }
+
+   //otherwise, select all tracks
+   t = iter.First();
+   while( t )
+   {
+      t->SetSelected( true );
       t = iter.Next();
    }
 }
@@ -1494,24 +1505,27 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
          startNewSelection = false;
       }
    }
-
+ 
+   //Determine if user clicked on a label track. 
+   if (pTrack->GetKind() == Track::Label) {
+      ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
+           mViewInfo->h, mViewInfo->zoom,
+           &mViewInfo->sel0, &mViewInfo->sel1);
+      // IF the user clicked a label, THEN select all other tracks by Label
+      if (((LabelTrack *) pTrack)->IsSelected()) {
+         mTracks->Select( pTrack );
+         SelectTracksByLabel( ( LabelTrack* )pTrack );
+         DisplaySelection();
+         return;
+      }
+   }
+  
    if (startNewSelection) {
       // If we didn't move a selection boundary, start a new selection
       SelectNone();
       StartSelection(event.m_x, r.x);
       mTracks->Select(pTrack);
       DisplaySelection();
-   }
-
-   //Determine if user clicked on a label track. 
-   if (pTrack->GetKind() == Track::Label) {
-      ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
-           mViewInfo->h, mViewInfo->zoom,
-           &mViewInfo->sel0, &mViewInfo->sel1);
-      // IF the user clicked a label, THEN select all other tracks too
-      if (((LabelTrack *) pTrack)->IsSelected()) {
-         SelectAllTracks();
-      }
    }
 }
 
@@ -3326,15 +3340,19 @@ void TrackPanel::OnChar(wxKeyEvent & event)
       return;
    }
 
+   double bkpSel0 = mViewInfo->sel0, bkpSel1 = mViewInfo->sel1;
    // Pass keystroke to labeltrack's handler and add to history if any
    // updates were done
    if (((LabelTrack *)t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event))
       MakeParentPushState(_("Modified Label"),
                           _("Label Edit"),
                           true /* consolidate */);
-
-   // Refresh track display if the keystroke was handled
-   if (!event.GetSkipped())
+   
+   // If selection modified, refresh
+   // Otherwise, refresh track display if the keystroke was handled
+   if( bkpSel0 != mViewInfo->sel0 || bkpSel1 != mViewInfo->sel1 )
+      Refresh( false );
+   else if (!event.GetSkipped()) 
       RefreshTrack(t, true);
 }
 
