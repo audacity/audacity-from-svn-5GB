@@ -245,7 +245,7 @@ class TrackPanel:public wxPanel {
 			     Track* pTrack, wxRect r, int num);
    void StartSelection (int, int);
    void ExtendSelection(int, int);
-   void SelectAllTracks();
+   void SelectTracksByLabel( LabelTrack *t );
 
 
    // AS: Cursor handling

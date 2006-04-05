@@ -1154,6 +1154,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          }
       }
       
+      mSelIndex = -1;
       LabelStruct * pLabel;
       for (int i = 0; i < (int)mLabels.Count(); i++) {
          pLabel = mLabels[i];
