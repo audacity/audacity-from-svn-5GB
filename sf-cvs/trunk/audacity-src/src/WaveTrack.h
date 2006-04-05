@@ -27,6 +27,19 @@
 
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
+//structure and array to hold regions of wavetrack
+typedef struct REGION
+{
+   double start, end;
+   
+   //used for sorting
+   static int cmp( REGION **a, REGION **b )
+   { 
+      return ( ( *a )->start < ( *b )->start ) ? -1 : 1; 
+   }
+}Region;
+WX_DEFINE_ARRAY( Region*, Regions );
+
 class Envelope;
 
 class WaveTrack: public Track {
@@ -118,6 +131,7 @@ class WaveTrack: public Track {
    virtual bool InsertSilence(double t, double len);
 
    virtual bool SplitAt(double t);
+   virtual bool Split( double t0, double t1 );
    virtual bool CutAndAddCutLine(double t0, double t1, Track **dest);
    virtual bool ClearAndAddCutLine(double t0, double t1);
 
@@ -126,8 +140,10 @@ class WaveTrack: public Track {
    virtual bool Join       (double t0, double t1);
    virtual bool Disjoin    (double t0, double t1);
 
-   virtual bool Trim (double t0, double t1);
+   typedef bool ( WaveTrack::* EditFunction )( double, double );
+   typedef bool ( WaveTrack::* EditDestFunction )( double, double, Track** );
 
+   virtual bool Trim (double t0, double t1);
 
    bool HandleClear(double t0, double t1,
                     bool addCutLines, bool split);
