@@ -1358,7 +1358,7 @@ void TrackPanel::HandleSelect(wxMouseEvent & event)
    if (event.ButtonDown(1)) {
       wxRect r;
       int num;
-
+      
       Track *t = FindTrack(event.m_x, event.m_y, false, false, &r, &num);
 
       // AS: Now, did they click in a track somewhere?  If so, we want
@@ -3723,7 +3723,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
       return;
 
    int toolToUse = DetermineToolToUse(pTtb, event);
-
+   
    switch (toolToUse) {
    case selectTool:
       HandleSelect(event);
