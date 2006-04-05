@@ -1237,6 +1237,14 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
 
    const PaDeviceInfo* playInfo = NULL;
    const PaDeviceInfo* recInfo = NULL;
+   int playIndex = -1, recIndex = -1;
+
+#if USE_PORTAUDIO_V19
+   double latencyDuration = 100.0;
+   long recordChannels = 1;
+   gPrefs->Read(wxT("/AudioIO/LatencyDuration"), &latencyDuration);
+   gPrefs->Read(wxT("/AudioIO/RecordChannels"), &recordChannels);
+#endif
 
    if (playDevice.IsEmpty())
       playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
@@ -1257,9 +1265,15 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
          continue;
 
       if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
+      {
          playInfo = info;
+         playIndex = i;
+      }
       if (LAT1CTOWX(info->name) == recDevice && info->maxInputChannels > 0)
+      {
          recInfo = info;
+         recIndex = i;
+      }
    }
 
    // msmeyer: Check which sample rates the play device supports
@@ -1268,9 +1282,19 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    if (playInfo)
    {
 #if USE_PORTAUDIO_V19
-      // TODO: implement using IsFormatSupported()
+      PaStreamParameters pars;
+
+      pars.device = playIndex;
+      pars.channelCount = 2;
+      pars.sampleFormat = paFloat32;
+      pars.suggestedLatency = latencyDuration;
+      pars.hostApiSpecificStreamInfo = NULL;
+      
       for (i = 0; i < numDefaultRates; i++)
-         playSampleRates.Add(defaultRates[i]);
+      {
+         if (Pa_IsFormatSupported(NULL, &pars, defaultRates[i]) == 0)
+            playSampleRates.Add(defaultRates[i]);
+      }
 #else
       if (playInfo->numSampleRates == -1)
       {
@@ -1298,9 +1322,19 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
    if (recInfo)
    {
 #if USE_PORTAUDIO_V19
-      // TODO: implement using IsFormatSupported()
+      PaStreamParameters pars;
+
+      pars.device = recIndex;
+      pars.channelCount = recordChannels;
+      pars.sampleFormat = paFloat32;
+      pars.suggestedLatency = latencyDuration;
+      pars.hostApiSpecificStreamInfo = NULL;
+      
       for (i = 0; i < numDefaultRates; i++)
-         recSampleRates.Add(defaultRates[i]);
+      {
+         if (Pa_IsFormatSupported(NULL, &pars, defaultRates[i]) == 0)
+            recSampleRates.Add(defaultRates[i]);
+      }
 #else
       if (recInfo->numSampleRates == -1)
       {
