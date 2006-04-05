@@ -212,6 +212,8 @@ class AudacityProject:public wxFrame,
    void Rewind(bool shift);
    void SkipEnd(bool shift);
    void SetStop(bool bStopped);
+   void EditByLabel( WaveTrack::EditFunction action ); 
+   void EditClipboardByLabel( WaveTrack::EditDestFunction action );
 
    // Scrollbars
 
@@ -281,6 +283,7 @@ class AudacityProject:public wxFrame,
                   bool consolidate = false);
    void ModifyState();
    void PopState(TrackList * l);
+   void GetRegionsByLabel( Regions &regions );
 
    // Callbacks for backend operations
 

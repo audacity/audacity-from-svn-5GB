@@ -132,7 +132,8 @@ enum {
    StereoRequiredFlag     = 0x00002000,  //lda
    ToolBarDockHasFocus    = 0x00004000,  //lll
    TrackPanelHasFocus     = 0x00008000,  //lll
-   SelectionBarHasFocus   = 0x00010000   //lll
+   SelectionBarHasFocus   = 0x00010000,  //lll
+   LabelsSelectedFlag     = 0x00020000
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -349,27 +350,27 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
    c->AddItem(wxT("Cut"),            _("Cu&t\tCtrl+X"),                   FN(OnCut));
-   c->AddItem(wxT("SplitCut"),       _("Split Cut\tCtrl+Alt+X"),          FN(OnSplitCut));
+   c->AddItem(wxT("SplitCut"),       _("Spl&it Cut\tCtrl+Alt+X"),          FN(OnSplitCut));
    c->AddItem(wxT("Copy"),           _("&Copy\tCtrl+C"),                  FN(OnCopy)); 
    c->AddItem(wxT("Paste"),          _("&Paste\tCtrl+V"),                 FN(OnPaste));
    c->SetCommandFlags(wxT("Paste"),
                       AudioIONotBusyFlag | ClipboardFlag,
                       AudioIONotBusyFlag | ClipboardFlag);
-   c->AddItem(wxT("Trim"),           _("&Trim\tCtrl+T"),                  FN(OnTrim));
+   c->AddItem(wxT("Trim"),           _("Tri&m\tCtrl+T"),                  FN(OnTrim));
    c->AddSeparator();
    c->AddItem(wxT("Delete"),         _("&Delete\tCtrl+K"),                FN(OnDelete));
-   c->AddItem(wxT("SplitDelete"),    _("Split Delete\tCtrl+Alt+K"),       FN(OnSplitDelete));
+   c->AddItem(wxT("SplitDelete"),    _("Split D&elete\tCtrl+Alt+K"),       FN(OnSplitDelete));
    c->AddItem(wxT("Silence"),        _("&Silence\tCtrl+L"),               FN(OnSilence));
    c->AddSeparator();
-   c->AddItem(wxT("Split"),          _("Spl&it"),                         FN(OnSplit));
+   c->AddItem(wxT("Split"),          _("Sp&lit\tCtrl+I"),                         FN(OnSplit));
    c->SetCommandFlags(wxT("Split"),
       AudioIONotBusyFlag | WaveTracksSelectedFlag,
       AudioIONotBusyFlag | WaveTracksSelectedFlag);
 
    c->AddItem(wxT("Join"),           _("&Join\tCtrl+J"),                  FN(OnJoin));
-   c->AddItem(wxT("Disjoin"),        _("&Disjoin"),                       FN(OnDisjoin));
+   c->AddItem(wxT("Disjoin"),        _("Disj&oin\tCtrl+Alt+J"),                       FN(OnDisjoin));
    
-   c->AddItem(wxT("Duplicate"),      _("D&uplicate\tCtrl+D"),             FN(OnDuplicate));
+   c->AddItem(wxT("Duplicate"),      _("Duplic&ate\tCtrl+D"),             FN(OnDuplicate));
 
    // An anomoloy... StereoToMono and EditID3 are added here for CleanSpeech, 
    // which doesn't have a Project menu, but they are under Project for normal Audacity.
@@ -382,6 +383,47 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    c->AddSeparator();
 
+   c->BeginSubMenu( _( "Labeled Regions..." ) );
+   c->AddItem( wxT( "CutLabels" ), _( "&Cut\tAlt+X" ), 
+         FN( OnCutLabels ) );
+   c->SetCommandFlags( wxT( "CutLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "SplitCutLabels" ), _( "&Split Cut\tShift+Alt+X" ), 
+         FN( OnSplitCutLabels ) );
+   c->SetCommandFlags( wxT( "SplitCutLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "CopyLabels" ), _( "Co&py\tShift+Alt+C" ), 
+         FN( OnCopyLabels ) );
+   c->SetCommandFlags( wxT( "CopyLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddSeparator();
+   c->AddItem( wxT( "DeleteLabels" ), _( "&Delete\tAlt+K" ), 
+         FN( OnDeleteLabels ) );
+   c->SetCommandFlags( wxT( "DeleteLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "SplitDeleteLabels" ), _( "Sp&lit Delete\tShift+Alt+K" ), 
+         FN( OnSplitDeleteLabels ) );
+   c->SetCommandFlags( wxT( "SplitDeleteLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "SilenceLabels" ), _( "Sile&nce\tAlt+L" ), 
+         FN( OnSilenceLabels ) );
+   c->SetCommandFlags( wxT( "SilenceLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddSeparator();
+   c->AddItem( wxT( "SplitLabels" ), _( "Spli&t\tAlt+I" ), 
+         FN( OnSplitLabels ) );
+   c->SetCommandFlags( wxT( "SplitLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "JoinLabels" ), _( "&Join\tAlt+J" ), 
+         FN( OnJoinLabels ) );
+   c->SetCommandFlags( wxT( "JoinLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->AddItem( wxT( "DisjoinLabels" ), _( "Disj&oin\tShift+Alt+J" ), 
+         FN( OnDisjoinLabels ) );
+   c->SetCommandFlags( wxT( "DisjoinLabels" ), LabelsSelectedFlag, 
+         LabelsSelectedFlag );
+   c->EndSubMenu();
+   
    c->BeginSubMenu(_("Select..."));
    c->AddItem(wxT("SelectAll"),      _("&All\tCtrl+A"),                   FN(OnSelectAll));
    c->SetCommandFlags(wxT("SelectAll"),
@@ -934,7 +976,22 @@ wxUint32 AudacityProject::GetUpdateFlags()
    while (t) {
       flags |= TracksExistFlag;
       if (t->GetKind() == Track::Label)
+      {
          flags |= LabelTracksExistFlag;
+         if( t->GetSelected() )
+         {
+            LabelTrack *lt = ( LabelTrack* )t; 
+            for( int i = 0; i < lt->GetNumLabels(); i++ ) 
+            {
+               const LabelStruct *ls = lt->GetLabel( i );
+               if( ls->t >= mViewInfo.sel0 && ls->t1 <= mViewInfo.sel1 )
+               {
+                  flags |= LabelsSelectedFlag;
+                  break;
+               }
+            }
+         }
+      }
       if (t->GetSelected()) {
          flags |= TracksSelectedFlag;
          if (t->GetKind() == Track::Wave && t->GetLinked() == false)
@@ -2420,6 +2477,126 @@ void AudacityProject::OnDuplicate()
    RedrawProject();
 }
 
+void AudacityProject::OnCutLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+ 
+  if( gPrefs->Read( wxT( "/GUI/EnableCutLines" ), ( long )0 ) )
+     EditClipboardByLabel( &WaveTrack::CutAndAddCutLine );
+  else
+     EditClipboardByLabel( &WaveTrack::Cut );
+  
+  msClipProject = this;
+
+  mViewInfo.sel1 = mViewInfo.sel0 = 0.0;
+  
+  PushState( _( "Cut labeled regions to the clipboard" ), _( "CutLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnSplitCutLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+
+  EditClipboardByLabel( &WaveTrack::SplitCut );
+  
+  msClipProject = this;
+
+  PushState( _( "SplitCut labeled regions to the clipboard" ), 
+        _( "SplitCutLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnCopyLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+
+  EditClipboardByLabel( &WaveTrack::Copy );
+  
+  msClipProject = this;
+  
+  PushState( _( "Copied labeled regions to the clipboard" ), _( "CopyLabels" ) );
+
+  mTrackPanel->Refresh( false );
+}
+
+void AudacityProject::OnDeleteLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::Clear );
+  
+  PushState( _( "Deleted labeled regions" ), _( "DeleteLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnSplitDeleteLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::SplitDelete );
+  
+  PushState( _( "Split Deleted labeled regions" ), _( "SplitDeleteLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnSilenceLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::Silence );
+  
+  PushState( _( "Silenced labeled regions" ), _( "SilenceLabels" ) );
+
+  mTrackPanel->Refresh( false );
+}
+
+void AudacityProject::OnSplitLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::Split );
+  
+  PushState( _( "Split labeled regions" ), _( "SplitLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnJoinLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::Join );
+  
+  PushState( _( "Joined labeled regions" ), _( "JoinLabels" ) );
+
+  RedrawProject();
+}
+
+void AudacityProject::OnDisjoinLabels()
+{
+  if( mViewInfo.sel0 >= mViewInfo.sel1 )
+     return;
+  
+  EditByLabel( &WaveTrack::Disjoin );
+  
+  PushState( _( "Disjoined labeled regions" ), _( "DisjoinLabels" ) );
+
+  RedrawProject();
+}
+
 void AudacityProject::OnSplit()
 {
    TrackListIterator iter(mTracks);
@@ -2432,11 +2609,8 @@ void AudacityProject::OnSplit()
       if (n->GetKind() == Track::Wave)
       {
          WaveTrack* wt = (WaveTrack*)n;
-         if (wt->GetSelected()) {
-            wt->SplitAt(sel0);
-            if (sel0 != sel1)
-               wt->SplitAt(sel1);
-         }
+         if (wt->GetSelected())
+            wt->Split( sel0, sel1 );
       }
    }
 
@@ -2496,7 +2670,7 @@ void AudacityProject::OnSplit()
 #endif
 }
 
-void AudacityProject::OnSplitLabels()
+void AudacityProject::OnSplitLabelsToTracks()
 {
    TrackListIterator iter(mTracks);
 

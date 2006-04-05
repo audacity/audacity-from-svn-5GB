@@ -149,10 +149,20 @@ void OnSplitDelete();
 void OnSilence();
 
 void OnSplit();
-void OnSplitLabels();
+void OnSplitLabelsToTracks();
 void OnJoin();
 void OnDisjoin();
 void OnDuplicate();
+
+void OnCutLabels();
+void OnSplitCutLabels();
+void OnCopyLabels();
+void OnDeleteLabels();
+void OnSplitDeleteLabels();
+void OnSilenceLabels();
+void OnSplitLabels();
+void OnJoinLabels();
+void OnDisjoinLabels();
 
 void OnSelectAll();
 void OnSelectCursorEnd();
