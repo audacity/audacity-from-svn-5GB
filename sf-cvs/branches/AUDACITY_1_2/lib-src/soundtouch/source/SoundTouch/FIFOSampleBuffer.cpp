@@ -1,43 +1,47 @@
-/*****************************************************************************
- *
- * A buffer class for temporarily storaging sound samples, operates as a 
- * first-in-first-out pipe.
- *
- * Samples are added to the end of the sample buffer with the 'putSamples' 
- * function, and are received from the beginning of the buffer by calling
- * the 'receiveSamples' function. The class automatically removes the 
- * outputted samples from the buffer, as well as grows the buffer size 
- * whenever necessary.
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-11-05 03:28:09 $
- * File revision : $Revision: 1.1.1.1.2.1 $
- *
- * $Id: FIFOSampleBuffer.cpp,v 1.1.1.1.2.1 2004-11-05 03:28:09 mbrubeck Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// A buffer class for temporarily storaging sound samples, operates as a 
+/// first-in-first-out pipe.
+///
+/// Samples are added to the end of the sample buffer with the 'putSamples' 
+/// function, and are received from the beginning of the buffer by calling
+/// the 'receiveSamples' function. The class automatically removes the 
+/// outputted samples from the buffer, as well as grows the buffer size 
+/// whenever necessary.
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-04-06 21:39:56 $
+// File revision : $Revision: 1.1.1.1.2.2 $
+//
+// $Id: FIFOSampleBuffer.cpp,v 1.1.1.1.2.2 2006-04-06 21:39:56 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <stdlib.h>
 #include <memory.h>
