@@ -265,7 +265,8 @@ wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
    item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
 
    wxChoice *item4 = new wxChoice(parent, ID_WAVEFORM, wxDefaultPosition,
-                                  wxSize(80, -1), 0, NULL);
+                                  wxSize(80, -1), 0, (const wxString *)NULL);
+   	/* cast is needed on NetBSD/amd64. Seems to be fine elsewhere */
    item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
 
    item0->Add(item2, 1, wxALIGN_CENTRE | wxALL, 5);
