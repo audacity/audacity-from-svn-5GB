@@ -1,44 +1,51 @@
-/*****************************************************************************
- *
- * General FIR digital filter routines with MMX optimization. 
- *
- * Note : MMX optimized functions reside in a separate, platform-specific file, 
- * e.g. 'mmx_win.cpp' or 'mmx_gcc.cpp'
- * 
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-11-05 03:28:09 $
- * File revision : $Revision: 1.1.1.1.2.1 $
- *
- * $Id: FIRFilter.h,v 1.1.1.1.2.1 2004-11-05 03:28:09 mbrubeck Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// General FIR digital filter routines with MMX optimization. 
+///
+/// Note : MMX optimized functions reside in a separate, platform-specific file, 
+/// e.g. 'mmx_win.cpp' or 'mmx_gcc.cpp'
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-04-06 21:39:56 $
+// File revision : $Revision: 1.1.1.1.2.2 $
+//
+// $Id: FIRFilter.h,v 1.1.1.1.2.2 2006-04-06 21:39:56 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef FIRFilter_H
 #define FIRFilter_H
 
 #include "STTypes.h"
+
+namespace soundtouch
+{
 
 class FIRFilter 
 {
@@ -52,16 +59,16 @@ protected:
     uint resultDivFactor;
 
     // Result divider value.
-    soundtouch::SAMPLETYPE resultDivider;
+    SAMPLETYPE resultDivider;
 
     // Memory for filter coefficients
-    soundtouch::SAMPLETYPE *filterCoeffs;
+    SAMPLETYPE *filterCoeffs;
 
-    virtual uint evaluateFilterStereo(soundtouch::SAMPLETYPE *dest, 
-                                      const soundtouch::SAMPLETYPE *src, 
+    virtual uint evaluateFilterStereo(SAMPLETYPE *dest, 
+                                      const SAMPLETYPE *src, 
                                       uint numSamples) const;
-    virtual uint evaluateFilterMono(soundtouch::SAMPLETYPE *dest, 
-                                    const soundtouch::SAMPLETYPE *src, 
+    virtual uint evaluateFilterMono(SAMPLETYPE *dest, 
+                                    const SAMPLETYPE *src, 
                                     uint numSamples) const;
 
 public:
@@ -79,14 +86,14 @@ public:
     /// smaller than the amount of input samples.
     ///
     /// \return Number of samples copied to 'dest'.
-    uint evaluate(soundtouch::SAMPLETYPE *dest, 
-                  const soundtouch::SAMPLETYPE *src, 
+    uint evaluate(SAMPLETYPE *dest, 
+                  const SAMPLETYPE *src, 
                   uint numSamples, 
                   uint numChannels) const;
 
     uint getLength() const;
 
-    virtual void setCoefficients(const soundtouch::SAMPLETYPE *coeffs, 
+    virtual void setCoefficients(const SAMPLETYPE *coeffs, 
                                  uint newLength, 
                                  uint uResultDivFactor);
 };
@@ -139,7 +146,7 @@ public:
     {
     protected:
         float *filterCoeffsUnalign;
-		float *filterCoeffsAlign;
+        float *filterCoeffsAlign;
 
         virtual uint evaluateFilterStereo(float *dest, const float *src, uint numSamples) const;
     public:
@@ -150,5 +157,7 @@ public:
     };
 
 #endif // ALLOW_SSE
+
+}
 
 #endif  // FIRFilter_H

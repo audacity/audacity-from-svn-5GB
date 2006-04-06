@@ -20,14 +20,12 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/O2"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="TRUE"
-				RuntimeLibrary="0"
+				RuntimeLibrary="4"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Release/SoundTouch.pch"
@@ -47,7 +45,8 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy         .\Release\SoundTouch.lib         ..\..\lib\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -79,7 +78,7 @@
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="5"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug/SoundTouch.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -99,7 +98,8 @@
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copy .\Debug\SoundTouchD.lib ..\..\lib\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -230,25 +230,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="mmx_win.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\mmx_optimized.cpp">
 			</File>
 			<File
 				RelativePath="RateTransposer.cpp">
@@ -293,25 +275,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="sse_win.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
+				RelativePath=".\sse_optimized.cpp">
 			</File>
 			<File
 				RelativePath="TDStretch.cpp">

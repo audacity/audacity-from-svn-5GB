@@ -1,43 +1,44 @@
-/*****************************************************************************
- *
- * Win32 version of the MMX optimized routines. All MMX optimized functions
- * have been gathered into this single source code file, regardless to their 
- * class or original source code file, in order to ease porting the library
- * to other compiler and processor platforms.
- *
- * This file is to be compiled in Windows platform with Microsoft Visual C++ 
- * Compiler. Please see 'mmx_gcc.cpp' for the gcc compiler version for all
- * GNU platforms.
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-11-05 03:28:10 $
- * File revision : $Revision: 1.1.1.1.2.1 $
- *
- * $Id: cpu_detect_x86_win.cpp,v 1.1.1.1.2.1 2004-11-05 03:28:10 mbrubeck Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Win32 version of the x86 CPU detect routine.
+///
+/// This file is to be compiled in Windows platform with Microsoft Visual C++ 
+/// Compiler. Please see 'cpu_detect_x86_gcc.cpp' for the gcc compiler version 
+/// for all GNU platforms.
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-04-06 21:39:57 $
+// File revision : $Revision: 1.1.1.1.2.2 $
+//
+// $Id: cpu_detect_x86_win.cpp,v 1.1.1.1.2.2 2006-04-06 21:39:57 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include "cpu_detect.h"
 

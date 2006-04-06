@@ -1,6 +1,6 @@
 ## Process this file with automake to create Makefile.in
 ##
-## $Id: Makefile.am,v 1.1.1.1.2.1 2004-11-05 03:28:07 mbrubeck Exp $
+## $Id: Makefile.am,v 1.1.1.1.2.2 2006-04-06 21:39:53 richardash1981 Exp $
 ##
 ## Copyright (C) 2003 - David W. Durham
 ## 
@@ -43,7 +43,16 @@ m4data_DATA=soundtouch.m4
 ## of a final package, but it is useful for developers who might want to make
 ## changes to the configure scripts or makefiles.
 # NOTE: wouldn't have to list the .TXT file if it were named without the .TXT
-EXTRA_DIST=soundtouch.m4 config/m4 bootstrap make-win.bat COPYING.TXT README.html
+EXTRA_DIST=                  \
+       soundtouch.m4        \
+       config/m4            \
+       bootstrap            \
+       make-win.bat         \
+       COPYING.TXT          \
+       README.html
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = soundtouch-1.0.pc
 
 ## This removes stuff from the distribution which may be present
 ## from a cvs checkout or other build reasons
