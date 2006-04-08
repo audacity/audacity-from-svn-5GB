@@ -7,6 +7,9 @@ AC_INIT(libsndfile,1.0.15,erikd@mega-nerd.com)
 AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 
+AM_MAINTAINER_MODE
+dnl audacity patch - we would like to be in maintianer mode
+
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AM_CONFIG_HEADER(src/config.h)
 
