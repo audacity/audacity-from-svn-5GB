@@ -18,7 +18,9 @@
 #define __AUDACITY_EFFECT_SOUNDTOUCH__
 
 #include "Effect.h"
-#include "SoundTouch.h"
+#include <soundtouch/SoundTouch.h>
+// this is the standard system path, then we use -I cflags to make
+// it work if we have local soundtouch
 
 using namespace soundtouch;
 

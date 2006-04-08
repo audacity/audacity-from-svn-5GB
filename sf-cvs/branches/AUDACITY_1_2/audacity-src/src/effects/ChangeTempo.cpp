@@ -21,7 +21,9 @@
 #include <wx/intl.h>
 #include <wx/valtext.h>
 
-#include <SoundTouch.h>
+#include <soundtouch/SoundTouch.h>
+// this is the standard system path, then we use -I cflags to make
+// it work if we have local soundtouch
 
 #include "ChangeTempo.h"
 

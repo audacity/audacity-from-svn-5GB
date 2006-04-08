@@ -320,7 +320,7 @@ ac_subdirs_all="$ac_subdirs_all [lib-src/libvorbis]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libid3tag]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/portaudio-v19]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/dlcompat]"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG subdirs SOUNDTOUCH_CXXFLAGS SOUNDTOUCH_LIBS ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -878,6 +878,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-flac           enable FLAC support in local libsndfile [default=no]
                           This has no effect if you use system libsndfile.
+  --disable-soundtouch-check   Do not look for the SoundTouch Library
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -894,9 +895,10 @@ Optional Packages:
   --with-portmixer        compile with PortMixer [default=yes]
   --with-portaudio        which version of PortAudio to use (=[v18,v19])
                           [default=v18]
-  --with-soundtouch       compile with SoundTouch [default=yes]
+  --with-soundtouch       compile with SoundTouch: [local], [system], [none]
   --with-help             Make the help file "audacity-1.2-help.htb"
                           [default=yes]
+  --with-soundtouch-prefix=DIR   Prefix where SoundTouch was installed (optional)
 
 Some influential environment variables:
   CC          C compiler command
@@ -3837,7 +3839,8 @@ fi
 
 if [ "$default_libsndfile" = "system" ] ; then
 		echo "Checking for system libsndfile 1.0.12 or better (for flac support)"
-	if $PKG_CONFIG libsndfile >= 1.0.12 ; then
+	if $PKG_CONFIG --atleast-version=1.0.12 sndfile ; then
+#	if $PKG_CONFIG --exists sndfile >= 1.0.12 ; then
 				default_libsndfile="system"
 				echo "system libsndfile >= 1.0.12 found - using."
 	else
@@ -3991,6 +3994,31 @@ if test $ac_cv_file_lib_src_libresample_include_libresample_h = yes; then
 else
   default_libresample="no"
 fi
+
+
+echo "$as_me:$LINENO: checking for lib-src/soundtouch/include/SoundTouch.h" >&5
+echo $ECHO_N "checking for lib-src/soundtouch/include/SoundTouch.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_soundtouch_include_SoundTouch_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/soundtouch/include/SoundTouch.h"; then
+  ac_cv_file_lib_src_soundtouch_include_SoundTouch_h=yes
+else
+  ac_cv_file_lib_src_soundtouch_include_SoundTouch_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_soundtouch_include_SoundTouch_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_soundtouch_include_SoundTouch_h" >&6
+if test $ac_cv_file_lib_src_soundtouch_include_SoundTouch_h = yes; then
+  default_libsoundtouch="local"
+else
+  default_libsoundtouch="system"
+fi
+
 
 
 #AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
@@ -4439,6 +4467,153 @@ fi
 
 fi
 
+if [ "$default_libsoundtouch" = "system" ] ; then
+	if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo "$as_me:$LINENO: checking for soundtouch/SoundTouch.h" >&5
+echo $ECHO_N "checking for soundtouch/SoundTouch.h... $ECHO_C" >&6
+if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_soundtouch_SoundTouch_h" >&5
+echo "${ECHO_T}$ac_cv_header_soundtouch_SoundTouch_h" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking soundtouch/SoundTouch.h usability" >&5
+echo $ECHO_N "checking soundtouch/SoundTouch.h usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <soundtouch/SoundTouch.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking soundtouch/SoundTouch.h presence" >&5
+echo $ECHO_N "checking soundtouch/SoundTouch.h presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <soundtouch/SoundTouch.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: in the future, the compiler will take precedence" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------------ ##
+## Report this to the AC_PACKAGE_NAME lists.  ##
+## ------------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for soundtouch/SoundTouch.h" >&5
+echo $ECHO_N "checking for soundtouch/SoundTouch.h... $ECHO_C" >&6
+if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_soundtouch_SoundTouch_h=$ac_header_preproc
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_soundtouch_SoundTouch_h" >&5
+echo "${ECHO_T}$ac_cv_header_soundtouch_SoundTouch_h" >&6
+
+fi
+if test $ac_cv_header_soundtouch_SoundTouch_h = yes; then
+  :
+else
+  default_libsoundtouch="no"
+fi
+
+
+fi
+
 #if [[ "$default_libflac" = "system" ]] ; then
 #	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
 #fi
@@ -4546,7 +4721,7 @@ if test "${with_soundtouch+set}" = set; then
   withval="$with_soundtouch"
   use_soundtouch=$withval
 else
-  use_soundtouch="yes"
+  use_soundtouch="$default_libsoundtouch"
 fi;
 
 
@@ -4558,14 +4733,14 @@ else
   use_help="yes"
 fi;
 
-if [ "$use_soundtouch" = "yes" ] ; then
+if [ "$use_soundtouch" = "local" ] ; then
 
 cat >>confdefs.h <<\_ACEOF
 #define USE_SOUNDTOUCH 1
 _ACEOF
 
-	CXXFLAGS="-I../lib-src/soundtouch/include $CXXFLAGS"
-	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
+	CXXFLAGS="-I../lib-src/soundtouch/ $CXXFLAGS"
+			BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"
 
    if test ! -f "lib-src/soundtouch/Makefile"; then
@@ -4576,6 +4751,280 @@ subdirs="$subdirs lib-src/soundtouch"
 
    fi
 fi
+
+if [ "$use_soundtouch" = "system" ] ; then
+
+cat >>confdefs.h <<\_ACEOF
+#define USE_SOUNDTOUCH 1
+_ACEOF
+
+
+
+# Check whether --with-soundtouch-prefix or --without-soundtouch-prefix was given.
+if test "${with_soundtouch_prefix+set}" = set; then
+  withval="$with_soundtouch_prefix"
+  soundtouch_prefix="$withval"
+else
+  soundtouch_prefix=""
+fi;
+
+	# Check whether --enable-soundtouch-check or --disable-soundtouch-check was given.
+if test "${enable_soundtouch_check+set}" = set; then
+  enableval="$enable_soundtouch_check"
+  enable_soundtouch_check="$enableval"
+else
+  enable_soundtouch_check="yes"
+fi;
+
+	if test "$enable_soundtouch_check" = "yes"
+	then
+		saved_CPPFLAGS="$CPPFLAGS"
+		saved_LDFLAGS="$LDFLAGS"
+
+		CPPFLAGS="$CPPFLAGS -I$soundtouch_prefix/include"
+		LDFLAGS="$LDFLAGS -L$soundtouch_prefix/lib"
+
+							if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo "$as_me:$LINENO: checking for soundtouch/SoundTouch.h" >&5
+echo $ECHO_N "checking for soundtouch/SoundTouch.h... $ECHO_C" >&6
+if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_soundtouch_SoundTouch_h" >&5
+echo "${ECHO_T}$ac_cv_header_soundtouch_SoundTouch_h" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking soundtouch/SoundTouch.h usability" >&5
+echo $ECHO_N "checking soundtouch/SoundTouch.h usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <soundtouch/SoundTouch.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking soundtouch/SoundTouch.h presence" >&5
+echo $ECHO_N "checking soundtouch/SoundTouch.h presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <soundtouch/SoundTouch.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: soundtouch/SoundTouch.h: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: soundtouch/SoundTouch.h: in the future, the compiler will take precedence" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------------ ##
+## Report this to the AC_PACKAGE_NAME lists.  ##
+## ------------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for soundtouch/SoundTouch.h" >&5
+echo $ECHO_N "checking for soundtouch/SoundTouch.h... $ECHO_C" >&6
+if test "${ac_cv_header_soundtouch_SoundTouch_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_soundtouch_SoundTouch_h=$ac_header_preproc
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_soundtouch_SoundTouch_h" >&5
+echo "${ECHO_T}$ac_cv_header_soundtouch_SoundTouch_h" >&6
+
+fi
+if test $ac_cv_header_soundtouch_SoundTouch_h = yes; then
+
+												echo "$as_me:$LINENO: checking for soundtouch_ac_test in -lSoundTouch" >&5
+echo $ECHO_N "checking for soundtouch_ac_test in -lSoundTouch... $ECHO_C" >&6
+if test "${ac_cv_lib_SoundTouch_soundtouch_ac_test+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lSoundTouch  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char soundtouch_ac_test ();
+int
+main ()
+{
+soundtouch_ac_test ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_SoundTouch_soundtouch_ac_test=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_SoundTouch_soundtouch_ac_test=no
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_SoundTouch_soundtouch_ac_test" >&5
+echo "${ECHO_T}$ac_cv_lib_SoundTouch_soundtouch_ac_test" >&6
+if test $ac_cv_lib_SoundTouch_soundtouch_ac_test = yes; then
+
+										SOUNDTOUCH_CXXFLAGS="-I$soundtouch_prefix/include"
+					SOUNDTOUCH_LIBS="-L$soundtouch_prefix/lib -lSoundTouch"
+					cat >>confdefs.h <<\_ACEOF
+#define HAVE_LIBSOUNDTOUCH 1
+_ACEOF
+
+
+										:
+
+else
+
+										:
+
+fi
+
+
+else
+
+								:
+
+fi
+
+
+
+		CPPFLAGS="$saved_CPPFLAGS"
+		LDFLAGS="$saved_LDFLAGS"
+	fi
+
+
+
+
+			CXXFLAGS="$SOUNDTOUCH_CXXFLAGS $CXXFLAGS"
+	LIBS="$LIBS $SOUNDTOUCH_LIBS"
+
+fi
+
 
 if [ "$use_portmixer" = "yes" ] && [ "$use_portaudio" = "v19" ] ; then
 	echo "*** PortAudio v19 does not work with PortMixer (at least not yet)"
@@ -7047,6 +7496,8 @@ s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
 s,@PKG_CONFIG@,$PKG_CONFIG,;t t
 s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
 s,@subdirs@,$subdirs,;t t
+s,@SOUNDTOUCH_CXXFLAGS@,$SOUNDTOUCH_CXXFLAGS,;t t
+s,@SOUNDTOUCH_LIBS@,$SOUNDTOUCH_LIBS,;t t
 s,@ZIP@,$ZIP,;t t
 s,@WX_CONFIG@,$WX_CONFIG,;t t
 s,@build@,$build,;t t
@@ -7732,17 +8183,17 @@ echo ""
 echo "Finished configure:"
 
 if [ $use_libsndfile = "system" ] ; then
-	echo "  with    libsndfile=system";
+	echo "  with    libsndfile (system)";
 else
-	echo "  with    libsndfile=local";
+	echo "  with    libsndfile (local)";
 fi
 
 if [ $use_libresample = "yes" ] ; then
 	echo "  with    libresample";
 elif [ $use_libsamplerate = "system" ] ; then
-	echo "  with    libsamplerate=system";
+	echo "  with    libsamplerate (system)";
 elif [ $use_libsamplerate = "local" ] ; then
-	echo "  with    libsamplerate=local";
+	echo "  with    libsamplerate (local)";
 else
 	echo "  without any resampling support";
 fi
@@ -7758,7 +8209,7 @@ else
 fi
 
 if [ $use_libmad = "yes" ] ; then
-	echo "  with    libmad";
+	echo "  with    libmad (local)";
 else
 	if [ $use_libmad = "system" ] ; then
 		echo "  with    libmad (system)";
@@ -7802,10 +8253,14 @@ else
 	echo "  with    portaudio v18";
 fi
 
-if [ "$use_soundtouch" = "yes" ] ; then
+if [ "$use_soundtouch" = "local" ] ; then
 	echo "  with    soundtouch (local)";
 else
-	echo "  without soundtouch";
+	if [ "$use_soundtouch" = "system" ] ; then
+		echo "  with    soundtouch (system)";
+	else
+		echo "  without soundtouch";
+	fi
 fi
 
 if [ $use_help = "yes" ] ; then
