@@ -4,7 +4,7 @@
 	@author Phil Burk  http://www.softsynth.com
 */
 /*
- * $Id: pa_minlat.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: pa_minlat.c,v 1.1.2.2 2006-04-08 16:12:27 richardash1981 Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "portaudio.h"
 
 #ifndef M_PI
@@ -149,7 +150,13 @@ int main( int argc, char **argv )
         /* Ask user for a new nlatency. */
         printf("\nMove windows around to see if the sound glitches.\n");
         printf("Latency now %d, enter new number of frames, or 'q' to quit: ", outLatency );
-        gets( str );
+        fgets( str, 256, stdin );
+        {
+            /* Get rid of newline */
+            size_t l = strlen( str ) - 1;
+            if( str[ l ] == '\n')
+                str[ l ] = '\0';
+        }
         if( str[0] == 'q' ) go = 0;
         else
         {

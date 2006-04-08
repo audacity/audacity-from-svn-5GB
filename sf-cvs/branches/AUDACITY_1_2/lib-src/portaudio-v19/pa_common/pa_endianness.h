@@ -1,7 +1,7 @@
 #ifndef PA_ENDIANNESS_H
 #define PA_ENDIANNESS_H
 /*
- * $Id: pa_endianness.h,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: pa_endianness.h,v 1.1.2.2 2006-04-08 16:12:25 richardash1981 Exp $
  * Portable Audio I/O Library current platform endianness macros
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -67,11 +67,13 @@ extern "C"
 
     /* set PA_LITTLE_ENDIAN or PA_BIG_ENDIAN by testing well known platform specific defines */
 
-    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(LITTLE_ENDIAN) || defined(__i386) || defined(_M_IX86)
 
     #define PA_LITTLE_ENDIAN /* win32, assume intel byte order */
 
     #else
+		
+		 #define PA_BIG_ENDIAN
 
 #endif
 

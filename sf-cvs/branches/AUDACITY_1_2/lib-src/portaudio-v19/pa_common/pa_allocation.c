@@ -1,5 +1,5 @@
 /*
- * $Id: pa_allocation.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: pa_allocation.c,v 1.1.2.2 2006-04-08 16:12:25 richardash1981 Exp $
  * Portable Audio I/O Library allocation group implementation
  * memory allocation group for tracking allocation groups
  *
@@ -184,12 +184,22 @@ void PaUtil_GroupFreeMemory( PaUtilAllocationGroup* group, void *buffer )
     {
         if( current->buffer == buffer )
         {
-            previous->next = current->next;
+            if( previous )
+            {
+                previous->next = current->next;
+            }
+            else
+            {
+                group->allocations = current->next;
+            }
 
             current->buffer = 0;
             current->next = group->spareLinks;
             group->spareLinks = current;
+
+            break;
         }
+        
         previous = current;
         current = current->next;
     }

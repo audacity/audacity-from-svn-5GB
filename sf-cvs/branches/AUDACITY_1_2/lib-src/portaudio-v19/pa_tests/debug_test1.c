@@ -1,5 +1,5 @@
 /*
- * $Id: debug_test1.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: debug_test1.c,v 1.1.2.2 2006-04-08 16:12:27 richardash1981 Exp $
  patest1.c
  Ring modulate the audio input with a 441hz sine wave for 20 seconds
     using the Portable Audio api

@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.c,v 1.1.2.1 2004-04-22 04:39:42 mbrubeck Exp $
+ * $Id: pa_unix_util.c,v 1.1.2.2 2006-04-08 16:12:27 richardash1981 Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -31,12 +31,16 @@
  */
 
  
+#include <pthread.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/time.h>
+#include <assert.h>
+#include <string.h> /* For memset */
 
 #include "pa_util.h"
-
+#include "pa_unix_util.h"
 
 /*
    Track memory allocations to avoid leaks.
@@ -83,12 +87,22 @@ int PaUtil_CountCurrentlyAllocatedBlocks( void )
 
 void Pa_Sleep( long msec )
 {
+#ifdef HAVE_NANOSLEEP
+    struct timespec req = {0}, rem = {0};
+    PaTime time = msec / 1.e3;
+    req.tv_sec = (time_t)time;
+    assert(time - req.tv_sec < 1.0);
+    req.tv_nsec = (long)((time - req.tv_sec) * 1.e9);
+    nanosleep(&req, &rem);
+    /* XXX: Try sleeping the remaining time (contained in rem) if interrupted by a signal? */
+#else
     while( msec > 999 )     /* For OpenBSD and IRIX, argument */
         {                   /* to usleep must be < 1000000.   */
         usleep( 999000 );
         msec -= 999;
         }
     usleep( msec * 1000 );
+#endif
 }
 
 /*            *** NOT USED YET: ***
@@ -104,7 +118,75 @@ void PaUtil_InitializeClock( void )
 
 PaTime PaUtil_GetTime( void )
 {
+#ifdef HAVE_CLOCK_GETTIME
+    struct timespec tp;
+    clock_gettime(CLOCK_REALTIME, &tp);
+    return (PaTime)(tp.tv_sec + tp.tv_nsec / 1.e9);
+#else
     struct timeval tv;
     gettimeofday( &tv, NULL );
-    return (PaTime) tv.tv_usec / 1000000 + (PaTime) tv.tv_sec;
+    return (PaTime) tv.tv_usec / 1000000. + tv.tv_sec;
+#endif
 }
+
+PaError PaUtil_InitializeThreading( PaUtilThreading *threading )
+{
+    (void) paUtilErr_;
+    return paNoError;
+}
+
+void PaUtil_TerminateThreading( PaUtilThreading *threading )
+{
+}
+
+PaError PaUtil_StartThreading( PaUtilThreading *threading, void *(*threadRoutine)(void *), void *data )
+{
+    pthread_create( &threading->callbackThread, NULL, threadRoutine, data );
+    return paNoError;
+}
+
+PaError PaUtil_CancelThreading( PaUtilThreading *threading, int wait, PaError *exitResult )
+{
+    PaError result = paNoError;
+    void *pret;
+
+    if( exitResult )
+        *exitResult = paNoError;
+
+    /* Only kill the thread if it isn't in the process of stopping (flushing adaptation buffers) */
+    if( !wait )
+        pthread_cancel( threading->callbackThread );   /* XXX: Safe to call this if the thread has exited on its own? */
+    pthread_join( threading->callbackThread, &pret );
+
+#ifdef PTHREAD_CANCELED
+    if( pret && PTHREAD_CANCELED != pret )
+#else
+    /* !wait means the thread may have been canceled */
+    if( pret && wait )
+#endif
+    {
+        if( exitResult )
+            *exitResult = *(PaError *) pret;
+        free( pret );
+    }
+
+    return result;
+}
+
+/*
+static void *CanaryFunc( void *userData )
+{
+    const unsigned intervalMsec = 1000;
+    PaUtilThreading *th = (PaUtilThreading *) userData;
+
+    while( 1 )
+    {
+        th->canaryTime = PaUtil_GetTime();
+
+        pthread_testcancel();
+        Pa_Sleep( intervalMsec );
+    }
+
+    pthread_exit( NULL );
+}
+*/

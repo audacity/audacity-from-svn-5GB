@@ -1,7 +1,8 @@
+
 #ifndef PORTAUDIO_H
 #define PORTAUDIO_H
 /*
- * $Id: portaudio.h,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: portaudio.h,v 1.1.2.2 2006-04-08 16:12:25 richardash1981 Exp $
  * PortAudio Portable Real-Time Audio Library
  * PortAudio API Header File
  * Latest version available at: http://www.portaudio.com/
@@ -91,7 +92,8 @@ typedef enum PaErrorCode
     paCanNotWriteToACallbackStream,       /**< @todo review error code name */
     paCanNotReadFromAnOutputOnlyStream,   /**< @todo review error code name */
     paCanNotWriteToAnInputOnlyStream,     /**< @todo review error code name */
-    paIncompatibleStreamHostApi
+    paIncompatibleStreamHostApi,
+    paBadBufferPtr
 } PaErrorCode;
 
 
@@ -222,7 +224,9 @@ typedef enum PaHostApiTypeId
     paOSS=7,
     paALSA=8,
     paAL=9,
-    paBeOS=10
+    paBeOS=10,
+    paWDMKS=11,
+    paJACK=12
 } PaHostApiTypeId;
 
 
@@ -244,13 +248,13 @@ typedef struct PaHostApiInfo
     */
     int deviceCount;
 
-    /** The the default input device for this host API. The value will be a
+    /** The default input device for this host API. The value will be a
      device index ranging from 0 to (Pa_GetDeviceCount()-1), or paNoDevice
      if no default input device is available.
     */
     PaDeviceIndex defaultInputDevice;
 
-    /** The the default output device for this host API. The value will be a
+    /** The default output device for this host API. The value will be a
      device index ranging from 0 to (Pa_GetDeviceCount()-1), or paNoDevice
      if no default output device is available.
     */
@@ -360,7 +364,7 @@ PaDeviceIndex Pa_GetDeviceCount( void );
 /** Retrieve the index of the default input device. The result can be
  used in the inputDevice parameter to Pa_OpenStream().
 
- @return The default input device index for the defualt host API, or paNoDevice
+ @return The default input device index for the default host API, or paNoDevice
  if no default input device is available or an error was encountered.
 */
 PaDeviceIndex Pa_GetDefaultInputDevice( void );
@@ -486,11 +490,6 @@ typedef struct PaStreamParameters
     /** The sample format of the buffer provided to the stream callback,
      a_ReadStream() or Pa_WriteStream(). It may be any of the formats described
      by the PaSampleFormat enumeration.
-     FIXME: wrt below, what are we guaranteeing these days, if anything?
-     PortAudio guarantees support for
-     the device's native formats (nativeSampleFormats in the device info record)
-     and additionally 16 and 32 bit integer and 32 bit floating point formats.
-     Support for other formats is implementation defined.
     */
     PaSampleFormat sampleFormat;
 
@@ -498,8 +497,8 @@ typedef struct PaStreamParameters
      configure their latency based on these parameters, otherwise they may
      choose the closest viable latency instead. Unless the suggested latency
      is greater than the absolute upper limit for the device implementations
-     shouldround the suggestedLatency up to the next practial value - ie to
-     provide an equal or higher latency than suggestedLatency whereever possibe.
+     should round the suggestedLatency up to the next practial value - ie to
+     provide an equal or higher latency than suggestedLatency wherever possibe.
      Actual latency values for an open stream may be retrieved using the
      inputLatency and outputLatency fields of the PaStreamInfo structure
      returned by Pa_GetStreamInfo().
@@ -717,7 +716,7 @@ typedef enum PaStreamCallbackResult
 
  @return
  The stream callback should return one of the values in the
- PaStreamCallbackResult enumeration. To ensure that the callback is continues
+ PaStreamCallbackResult enumeration. To ensure that the callback continues
  to be called, it should return paContinue (0). Either paComplete or paAbort
  can be returned to finish stream processing, after either of these values is
  returned the callback will not be called again. If paAbort is returned the
@@ -824,11 +823,8 @@ PaError Pa_OpenStream( PaStream** stream,
 
  @param sampleFormat The sample format of both the input and output buffers
  provided to the callback or passed to and from Pa_ReadStream and Pa_WriteStream.
- sampleFormat may be any of the formats described by the PaSampleFormat enumeration
- (see above).
- FIXME: the following may need to be rewritten - PortAudio guarantees support for
- the device's native formats (nativeSampleFormats in the device info record)
- and additionally 16 and 32 bit integer and 32 bit float
+ sampleFormat may be any of the formats described by the PaSampleFormat
+ enumeration.
  
  @param sampleRate Same as Pa_OpenStream parameter of the same name.
  @param framesPerBuffer Same as Pa_OpenStream parameter of the same name.
