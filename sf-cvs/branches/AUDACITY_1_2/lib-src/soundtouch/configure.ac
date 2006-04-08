@@ -1,6 +1,6 @@
 dnl SoundTouch configure.ac, by David W. Durham
 dnl
-dnl $Id: configure.ac,v 1.1.1.1.2.3 2006-04-06 21:39:56 richardash1981 Exp $
+dnl $Id: configure.ac,v 1.1.1.1.2.4 2006-04-08 14:14:09 richardash1981 Exp $
 dnl
 dnl This file is part of SoundTouch, an audio processing library for pitch/time adjustments
 dnl 
@@ -28,9 +28,8 @@ AC_DISABLE_SHARED	dnl This makes libtool only build static libs
 
 AC_LANG(C++)
 
-
-
-
+#AC_MAINTAINER_MODE
+dnl added by audacity as this is a bundled library
 
 dnl ############################################################################
 dnl # Checks for programs                                                      #
