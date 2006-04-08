@@ -318,10 +318,9 @@ ac_subdirs_all="$ac_subdirs_all [lib-src/libmad]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libogg]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libvorbis]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/libid3tag]"
-ac_subdirs_all="$ac_subdirs_all [lib-src/libflac]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/portaudio-v19]"
 ac_subdirs_all="$ac_subdirs_all [lib-src/dlcompat]"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS OPTOBJS CDEPEND AFTERBUILD INSTALL_PREFIX CONFIGHEADER PRECOMP_CFLAGS EXTRATARGETS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -794,6 +793,10 @@ ac_env_CXXCPP_set=${CXXCPP+set}
 ac_env_CXXCPP_value=$CXXCPP
 ac_cv_env_CXXCPP_set=${CXXCPP+set}
 ac_cv_env_CXXCPP_value=$CXXCPP
+ac_env_PKG_CONFIG_set=${PKG_CONFIG+set}
+ac_env_PKG_CONFIG_value=$PKG_CONFIG
+ac_cv_env_PKG_CONFIG_set=${PKG_CONFIG+set}
+ac_cv_env_PKG_CONFIG_value=$PKG_CONFIG
 
 #
 # Report the --help message.
@@ -870,6 +873,12 @@ if test -n "$ac_init_help"; then
 
   cat <<\_ACEOF
 
+Optional Features:
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-flac           enable FLAC support in local libsndfile [default=no]
+                          This has no effect if you use system libsndfile.
+
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
@@ -880,8 +889,6 @@ Optional Packages:
   --with-libresample      use libresample: [yes], [no]
   --with-libsamplerate    use libsamplerate (instead of libresample):
                           [local], [system], [none]
-  --with-libflac local system none
-                          enable FLAC support [default=none]
   --with-ladspa           compile with ladspa plug-in support [default=yes]
   --with-nyquist          compile with Nyquist support [default=yes]
   --with-portmixer        compile with PortMixer [default=yes]
@@ -902,6 +909,7 @@ Some influential environment variables:
   CXX         C++ compiler command
   CXXFLAGS    C++ compiler flags
   CXXCPP      C++ preprocessor
+  PKG_CONFIG  path to pkg-config utility
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -3329,6 +3337,112 @@ _ACEOF
 fi
 
 
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+
+if test -n "$PKG_CONFIG"; then
+  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+echo "${ECHO_T}$PKG_CONFIG" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+
+if test -n "$ac_pt_PKG_CONFIG"; then
+  echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
+echo "${ECHO_T}$ac_pt_PKG_CONFIG" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  PKG_CONFIG=$ac_pt_PKG_CONFIG
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
+echo $ECHO_N "checking pkg-config is at least version $_pkg_min_version... $ECHO_C" >&6
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+	else
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+		PKG_CONFIG=""
+	fi
+
+fi
+
+
 BUILDLIBS="$BUILDLIBS expat/expat.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/expat/expat.a"
 CXXFLAGS="$CXXFLAGS -I../lib-src/expat"
@@ -3337,178 +3451,6 @@ BUILDLIBS="$BUILDLIBS allegro/allegro.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"
 CXXFLAGS="$CXXFLAGS -I../lib-src/allegro"
 
-
-
-echo "$as_me:$LINENO: checking for lib-src/libmad/frame.h" >&5
-echo $ECHO_N "checking for lib-src/libmad/frame.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libmad_frame_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libmad/frame.h"; then
-  ac_cv_file_lib_src_libmad_frame_h=yes
-else
-  ac_cv_file_lib_src_libmad_frame_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libmad_frame_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libmad_frame_h" >&6
-if test $ac_cv_file_lib_src_libmad_frame_h = yes; then
-  default_libmad="yes"
-else
-  default_libmad="system"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libvorbis/include/vorbis/vorbisenc.h" >&5
-echo $ECHO_N "checking for lib-src/libvorbis/include/vorbis/vorbisenc.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libvorbis/include/vorbis/vorbisenc.h"; then
-  ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h=yes
-else
-  ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h" >&6
-if test $ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h = yes; then
-  default_vorbis="yes"
-else
-  default_vorbis="system"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libid3tag/frame.h" >&5
-echo $ECHO_N "checking for lib-src/libid3tag/frame.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libid3tag_frame_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libid3tag/frame.h"; then
-  ac_cv_file_lib_src_libid3tag_frame_h=yes
-else
-  ac_cv_file_lib_src_libid3tag_frame_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libid3tag_frame_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libid3tag_frame_h" >&6
-if test $ac_cv_file_lib_src_libid3tag_frame_h = yes; then
-  default_libid3tag="yes"
-else
-  default_libid3tag="system"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libsndfile/src/sndfile.h.in" >&5
-echo $ECHO_N "checking for lib-src/libsndfile/src/sndfile.h.in... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libsndfile_src_sndfile_h_in+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libsndfile/src/sndfile.h.in"; then
-  ac_cv_file_lib_src_libsndfile_src_sndfile_h_in=yes
-else
-  ac_cv_file_lib_src_libsndfile_src_sndfile_h_in=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libsndfile_src_sndfile_h_in" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libsndfile_src_sndfile_h_in" >&6
-if test $ac_cv_file_lib_src_libsndfile_src_sndfile_h_in = yes; then
-  default_libsndfile="local"
-else
-  default_libsndfile="system"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libsamplerate/src/samplerate.h" >&5
-echo $ECHO_N "checking for lib-src/libsamplerate/src/samplerate.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libsamplerate_src_samplerate_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libsamplerate/src/samplerate.h"; then
-  ac_cv_file_lib_src_libsamplerate_src_samplerate_h=yes
-else
-  ac_cv_file_lib_src_libsamplerate_src_samplerate_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libsamplerate_src_samplerate_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libsamplerate_src_samplerate_h" >&6
-if test $ac_cv_file_lib_src_libsamplerate_src_samplerate_h = yes; then
-  default_libsamplerate="local"
-else
-  default_libsamplerate="system"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libresample/include/libresample.h" >&5
-echo $ECHO_N "checking for lib-src/libresample/include/libresample.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libresample_include_libresample_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libresample/include/libresample.h"; then
-  ac_cv_file_lib_src_libresample_include_libresample_h=yes
-else
-  ac_cv_file_lib_src_libresample_include_libresample_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libresample_include_libresample_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libresample_include_libresample_h" >&6
-if test $ac_cv_file_lib_src_libresample_include_libresample_h = yes; then
-  default_libresample="yes"
-else
-  default_libresample="no"
-fi
-
-
-echo "$as_me:$LINENO: checking for lib-src/libflac/include/FLAC/format.h" >&5
-echo $ECHO_N "checking for lib-src/libflac/include/FLAC/format.h... $ECHO_C" >&6
-if test "${ac_cv_file_lib_src_libflac_include_FLAC_format_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "lib-src/libflac/include/FLAC/format.h"; then
-  ac_cv_file_lib_src_libflac_include_FLAC_format_h=yes
-else
-  ac_cv_file_lib_src_libflac_include_FLAC_format_h=no
-fi
-fi
-echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libflac_include_FLAC_format_h" >&5
-echo "${ECHO_T}$ac_cv_file_lib_src_libflac_include_FLAC_format_h" >&6
-if test $ac_cv_file_lib_src_libflac_include_FLAC_format_h = yes; then
-  default_libflac="local"
-else
-  default_libflac="system"
-fi
-
-
-
-if [ "$default_libmad" = "system" ] ; then
 
 
 echo "$as_me:$LINENO: checking for ANSI C header files" >&5
@@ -3749,7 +3691,315 @@ fi
 done
 
 
-if test "${ac_cv_header_mad_h+set}" = set; then
+if test "${ac_cv_header_sndfile_h+set}" = set; then
+  echo "$as_me:$LINENO: checking for sndfile.h" >&5
+echo $ECHO_N "checking for sndfile.h... $ECHO_C" >&6
+if test "${ac_cv_header_sndfile_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_sndfile_h" >&5
+echo "${ECHO_T}$ac_cv_header_sndfile_h" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking sndfile.h usability" >&5
+echo $ECHO_N "checking sndfile.h usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <sndfile.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking sndfile.h presence" >&5
+echo $ECHO_N "checking sndfile.h presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <sndfile.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: sndfile.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: sndfile.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: sndfile.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: sndfile.h:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: sndfile.h: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: sndfile.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: sndfile.h: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: sndfile.h: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: sndfile.h: in the future, the compiler will take precedence" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------------ ##
+## Report this to the AC_PACKAGE_NAME lists.  ##
+## ------------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for sndfile.h" >&5
+echo $ECHO_N "checking for sndfile.h... $ECHO_C" >&6
+if test "${ac_cv_header_sndfile_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_sndfile_h=$ac_header_preproc
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_sndfile_h" >&5
+echo "${ECHO_T}$ac_cv_header_sndfile_h" >&6
+
+fi
+if test $ac_cv_header_sndfile_h = yes; then
+  default_libsndfile="system"
+else
+  default_libsndfile="local"
+fi
+
+
+if [ "$default_libsndfile" = "system" ] ; then
+		echo "Checking for system libsndfile 1.0.12 or better (for flac support)"
+	if $PKG_CONFIG libsndfile >= 1.0.12 ; then
+				default_libsndfile="system"
+				echo "system libsndfile >= 1.0.12 found - using."
+	else
+				echo "System libsndfile  older than 1.0.12"
+		echo "(needed for FLAC support) , trying local copy instead."
+		echo "$as_me:$LINENO: checking for lib-src/libsndfile/src/sndfile.h.in" >&5
+echo $ECHO_N "checking for lib-src/libsndfile/src/sndfile.h.in... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libsndfile_src_sndfile_h_in+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libsndfile/src/sndfile.h.in"; then
+  ac_cv_file_lib_src_libsndfile_src_sndfile_h_in=yes
+else
+  ac_cv_file_lib_src_libsndfile_src_sndfile_h_in=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libsndfile_src_sndfile_h_in" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libsndfile_src_sndfile_h_in" >&6
+if test $ac_cv_file_lib_src_libsndfile_src_sndfile_h_in = yes; then
+  default_libsndfile="local"
+else
+  default_libsndfile="no"
+fi
+
+							fi
+
+fi
+
+
+
+echo "$as_me:$LINENO: checking for lib-src/libmad/frame.h" >&5
+echo $ECHO_N "checking for lib-src/libmad/frame.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libmad_frame_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libmad/frame.h"; then
+  ac_cv_file_lib_src_libmad_frame_h=yes
+else
+  ac_cv_file_lib_src_libmad_frame_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libmad_frame_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libmad_frame_h" >&6
+if test $ac_cv_file_lib_src_libmad_frame_h = yes; then
+  default_libmad="yes"
+else
+  default_libmad="system"
+fi
+
+
+echo "$as_me:$LINENO: checking for lib-src/libvorbis/include/vorbis/vorbisenc.h" >&5
+echo $ECHO_N "checking for lib-src/libvorbis/include/vorbis/vorbisenc.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libvorbis/include/vorbis/vorbisenc.h"; then
+  ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h=yes
+else
+  ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h" >&6
+if test $ac_cv_file_lib_src_libvorbis_include_vorbis_vorbisenc_h = yes; then
+  default_vorbis="yes"
+else
+  default_vorbis="system"
+fi
+
+
+echo "$as_me:$LINENO: checking for lib-src/libid3tag/frame.h" >&5
+echo $ECHO_N "checking for lib-src/libid3tag/frame.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libid3tag_frame_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libid3tag/frame.h"; then
+  ac_cv_file_lib_src_libid3tag_frame_h=yes
+else
+  ac_cv_file_lib_src_libid3tag_frame_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libid3tag_frame_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libid3tag_frame_h" >&6
+if test $ac_cv_file_lib_src_libid3tag_frame_h = yes; then
+  default_libid3tag="yes"
+else
+  default_libid3tag="system"
+fi
+
+
+
+echo "$as_me:$LINENO: checking for lib-src/libsamplerate/src/samplerate.h" >&5
+echo $ECHO_N "checking for lib-src/libsamplerate/src/samplerate.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libsamplerate_src_samplerate_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libsamplerate/src/samplerate.h"; then
+  ac_cv_file_lib_src_libsamplerate_src_samplerate_h=yes
+else
+  ac_cv_file_lib_src_libsamplerate_src_samplerate_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libsamplerate_src_samplerate_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libsamplerate_src_samplerate_h" >&6
+if test $ac_cv_file_lib_src_libsamplerate_src_samplerate_h = yes; then
+  default_libsamplerate="local"
+else
+  default_libsamplerate="system"
+fi
+
+
+echo "$as_me:$LINENO: checking for lib-src/libresample/include/libresample.h" >&5
+echo $ECHO_N "checking for lib-src/libresample/include/libresample.h... $ECHO_C" >&6
+if test "${ac_cv_file_lib_src_libresample_include_libresample_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "lib-src/libresample/include/libresample.h"; then
+  ac_cv_file_lib_src_libresample_include_libresample_h=yes
+else
+  ac_cv_file_lib_src_libresample_include_libresample_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file_lib_src_libresample_include_libresample_h" >&5
+echo "${ECHO_T}$ac_cv_file_lib_src_libresample_include_libresample_h" >&6
+if test $ac_cv_file_lib_src_libresample_include_libresample_h = yes; then
+  default_libresample="yes"
+else
+  default_libresample="no"
+fi
+
+
+#AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
+#              default_libflac="local",
+#              default_libflac="system")
+
+
+if [ "$default_libmad" = "system" ] ; then
+	if test "${ac_cv_header_mad_h+set}" = set; then
   echo "$as_me:$LINENO: checking for mad.h" >&5
 echo $ECHO_N "checking for mad.h... $ECHO_C" >&6
 if test "${ac_cv_header_mad_h+set}" = set; then
@@ -4189,152 +4439,9 @@ fi
 
 fi
 
-if [ "$default_libflac" = "system" ] ; then
-	if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
-echo $ECHO_N "checking for FLAC/format.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLAC_format_h" >&6
-else
-  # Is the header compilable?
-echo "$as_me:$LINENO: checking FLAC/format.h usability" >&5
-echo $ECHO_N "checking FLAC/format.h usability... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-$ac_includes_default
-#include <FLAC/format.h>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_compiler=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_header_compiler=no
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
-echo "${ECHO_T}$ac_header_compiler" >&6
-
-# Is the header present?
-echo "$as_me:$LINENO: checking FLAC/format.h presence" >&5
-echo $ECHO_N "checking FLAC/format.h presence... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <FLAC/format.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_header_preproc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_header_preproc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
-echo "${ECHO_T}$ac_header_preproc" >&6
-
-# So?  What about this header?
-case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
-  yes:no: )
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&5
-echo "$as_me: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the compiler's result" >&5
-echo "$as_me: WARNING: FLAC/format.h: proceeding with the compiler's result" >&2;}
-    ac_header_preproc=yes
-    ;;
-  no:yes:* )
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: present but cannot be compiled" >&5
-echo "$as_me: WARNING: FLAC/format.h: present but cannot be compiled" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&5
-echo "$as_me: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: see the Autoconf documentation" >&5
-echo "$as_me: WARNING: FLAC/format.h: see the Autoconf documentation" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&5
-echo "$as_me: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&5
-echo "$as_me: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&2;}
-    (
-      cat <<\_ASBOX
-## ------------------------------------------ ##
-## Report this to the AC_PACKAGE_NAME lists.  ##
-## ------------------------------------------ ##
-_ASBOX
-    ) |
-      sed "s/^/$as_me: WARNING:     /" >&2
-    ;;
-esac
-echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
-echo $ECHO_N "checking for FLAC/format.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_cv_header_FLAC_format_h=$ac_header_preproc
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLAC_format_h" >&6
-
-fi
-if test $ac_cv_header_FLAC_format_h = yes; then
-  :
-else
-  default_libflac="no"
-fi
-
-
-fi
+#if [[ "$default_libflac" = "system" ]] ; then
+#	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
+#fi
 
 
 
@@ -4391,13 +4498,10 @@ else
   use_libsamplerate="default"
 fi;
 
+# Check whether --enable-flac or --disable-flac was given.
+if test "${enable_flac+set}" = set; then
+  enableval="$enable_flac"
 
-# Check whether --with-libflac or --without-libflac was given.
-if test "${with_libflac+set}" = set; then
-  withval="$with_libflac"
-  use_libflac=$withval
-else
-  use_libflac="no"
 fi;
 
 
@@ -4502,8 +4606,8 @@ _ACEOF
 fi
 
 if [ "$use_libsndfile" = "no" ] ; then
-	   { { echo "$as_me:$LINENO: error: *** Audacity requires libsndfile 1.0.0 or higher to compile.  You must choose either --with-libsndfile=local or --with-libsndfile=system" >&5
-echo "$as_me: error: *** Audacity requires libsndfile 1.0.0 or higher to compile.  You must choose either --with-libsndfile=local or --with-libsndfile=system" >&2;}
+	   { { echo "$as_me:$LINENO: error: *** Audacity requires libsndfile 1.0.0 or higher to compile.  FLAC support requires libsndfile 1.0.12 or newer. You must choose either --with-libsndfile=local or --with-libsndfile=system" >&5
+echo "$as_me: error: *** Audacity requires libsndfile 1.0.0 or higher to compile.  FLAC support requires libsndfile 1.0.12 or newer. You must choose either --with-libsndfile=local or --with-libsndfile=system" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -4522,6 +4626,21 @@ subdirs="$subdirs lib-src/libsndfile"
 fi
 
 if [ "$use_libsndfile" = "system" ] ; then
+		echo "Checking for libsndfile >= 1.0.0 ..."
+	if $PKG_CONFIG --atleast-version=1.0.0 sndfile ; then
+				echo "Good, you have libsndfile >=1.0.0 ..."
+		echo "Checking for libsndfile 1.0.12 or better for FLAC support"
+		if $PKG_CONFIG --atleast-version=1.0.12 sndfile ; then
+						echo "libsndfile 1.0.12 or better detected - FLAC support possible"
+		else
+						echo "Your libsndfile version is to old to enable FLAC support"
+			echo "If you need FLAC support please upgrade to libsndfile 1.0.12 or newer"
+		fi
+	else
+				echo "Your libsndfile is too old - you need at least libsndfile 1.0.0 to compile audacity."
+		echo "You need libsndfile 1.0.12 for FLAC support."
+		exit;
+			fi
 
 	LIBS="$LIBS -lsndfile"
 fi
@@ -5421,402 +5540,37 @@ _ACEOF
 
 fi
 
-if [ $use_libflac = "local" ] ; then
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
-   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
-   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
-   CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
+#if [[ $use_libflac = "local" ]] ; then
+#   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
+#   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
+#   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
+#   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
+#   CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
 
+#   AC_DEFINE(USE_LIBFLAC, 1,
+#      [Define if the FLAC library is present])
+#
+#   if test ! -f "lib-src/libflac/Makefile"; then
+#		echo "--- Configuring libflac";
+#		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
+#   fi
+#fi
 
-cat >>confdefs.h <<\_ACEOF
-#define USE_LIBFLAC 1
-_ACEOF
-
-
-   if test ! -f "lib-src/libflac/Makefile"; then
-		echo "--- Configuring libflac";
-
-
-subdirs="$subdirs lib-src/libflac"
-
-   fi
-fi
-
-if [ $use_libflac = "system" ] ; then
-   echo "$as_me:$LINENO: checking for FLAC__format_sample_rate_is_valid in -lFLAC" >&5
-echo $ECHO_N "checking for FLAC__format_sample_rate_is_valid in -lFLAC... $ECHO_C" >&6
-if test "${ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lFLAC -lFLAC++ $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char FLAC__format_sample_rate_is_valid ();
-int
-main ()
-{
-FLAC__format_sample_rate_is_valid ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid=no
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid" >&5
-echo "${ECHO_T}$ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid" >&6
-if test $ac_cv_lib_FLAC_FLAC__format_sample_rate_is_valid = yes; then
-  true
-else
-  	   { { echo "$as_me:$LINENO: error: *** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it." >&5
-echo "$as_me: error: *** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it." >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-   if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
-echo $ECHO_N "checking for FLAC/format.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLAC_format_h" >&6
-else
-  # Is the header compilable?
-echo "$as_me:$LINENO: checking FLAC/format.h usability" >&5
-echo $ECHO_N "checking FLAC/format.h usability... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-$ac_includes_default
-#include <FLAC/format.h>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_compiler=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_header_compiler=no
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
-echo "${ECHO_T}$ac_header_compiler" >&6
-
-# Is the header present?
-echo "$as_me:$LINENO: checking FLAC/format.h presence" >&5
-echo $ECHO_N "checking FLAC/format.h presence... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <FLAC/format.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_header_preproc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_header_preproc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
-echo "${ECHO_T}$ac_header_preproc" >&6
-
-# So?  What about this header?
-case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
-  yes:no: )
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&5
-echo "$as_me: WARNING: FLAC/format.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the compiler's result" >&5
-echo "$as_me: WARNING: FLAC/format.h: proceeding with the compiler's result" >&2;}
-    ac_header_preproc=yes
-    ;;
-  no:yes:* )
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: present but cannot be compiled" >&5
-echo "$as_me: WARNING: FLAC/format.h: present but cannot be compiled" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&5
-echo "$as_me: WARNING: FLAC/format.h:     check for missing prerequisite headers?" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: see the Autoconf documentation" >&5
-echo "$as_me: WARNING: FLAC/format.h: see the Autoconf documentation" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&5
-echo "$as_me: WARNING: FLAC/format.h:     section \"Present But Cannot Be Compiled\"" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: FLAC/format.h: proceeding with the preprocessor's result" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&5
-echo "$as_me: WARNING: FLAC/format.h: in the future, the compiler will take precedence" >&2;}
-    (
-      cat <<\_ASBOX
-## ------------------------------------------ ##
-## Report this to the AC_PACKAGE_NAME lists.  ##
-## ------------------------------------------ ##
-_ASBOX
-    ) |
-      sed "s/^/$as_me: WARNING:     /" >&2
-    ;;
-esac
-echo "$as_me:$LINENO: checking for FLAC/format.h" >&5
-echo $ECHO_N "checking for FLAC/format.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLAC_format_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_cv_header_FLAC_format_h=$ac_header_preproc
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLAC_format_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLAC_format_h" >&6
-
-fi
-if test $ac_cv_header_FLAC_format_h = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: *** FLAC headers not found.  Run configure --without-libflac to disable it" >&5
-echo "$as_me: error: *** FLAC headers not found.  Run configure --without-libflac to disable it" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-
-
-   if test "${ac_cv_header_FLACpp_all_h+set}" = set; then
-  echo "$as_me:$LINENO: checking for FLAC++/all.h" >&5
-echo $ECHO_N "checking for FLAC++/all.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLACpp_all_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLACpp_all_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLACpp_all_h" >&6
-else
-  # Is the header compilable?
-echo "$as_me:$LINENO: checking FLAC++/all.h usability" >&5
-echo $ECHO_N "checking FLAC++/all.h usability... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-$ac_includes_default
-#include <FLAC++/all.h>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_compiler=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_header_compiler=no
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
-echo "${ECHO_T}$ac_header_compiler" >&6
-
-# Is the header present?
-echo "$as_me:$LINENO: checking FLAC++/all.h presence" >&5
-echo $ECHO_N "checking FLAC++/all.h presence... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <FLAC++/all.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_cxx_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_header_preproc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_header_preproc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
-echo "${ECHO_T}$ac_header_preproc" >&6
-
-# So?  What about this header?
-case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
-  yes:no: )
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: accepted by the compiler, rejected by the preprocessor!" >&5
-echo "$as_me: WARNING: FLAC++/all.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: proceeding with the compiler's result" >&5
-echo "$as_me: WARNING: FLAC++/all.h: proceeding with the compiler's result" >&2;}
-    ac_header_preproc=yes
-    ;;
-  no:yes:* )
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: present but cannot be compiled" >&5
-echo "$as_me: WARNING: FLAC++/all.h: present but cannot be compiled" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h:     check for missing prerequisite headers?" >&5
-echo "$as_me: WARNING: FLAC++/all.h:     check for missing prerequisite headers?" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: see the Autoconf documentation" >&5
-echo "$as_me: WARNING: FLAC++/all.h: see the Autoconf documentation" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h:     section \"Present But Cannot Be Compiled\"" >&5
-echo "$as_me: WARNING: FLAC++/all.h:     section \"Present But Cannot Be Compiled\"" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: FLAC++/all.h: proceeding with the preprocessor's result" >&2;}
-    { echo "$as_me:$LINENO: WARNING: FLAC++/all.h: in the future, the compiler will take precedence" >&5
-echo "$as_me: WARNING: FLAC++/all.h: in the future, the compiler will take precedence" >&2;}
-    (
-      cat <<\_ASBOX
-## ------------------------------------------ ##
-## Report this to the AC_PACKAGE_NAME lists.  ##
-## ------------------------------------------ ##
-_ASBOX
-    ) |
-      sed "s/^/$as_me: WARNING:     /" >&2
-    ;;
-esac
-echo "$as_me:$LINENO: checking for FLAC++/all.h" >&5
-echo $ECHO_N "checking for FLAC++/all.h... $ECHO_C" >&6
-if test "${ac_cv_header_FLACpp_all_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_cv_header_FLACpp_all_h=$ac_header_preproc
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_FLACpp_all_h" >&5
-echo "${ECHO_T}$ac_cv_header_FLACpp_all_h" >&6
-
-fi
-if test $ac_cv_header_FLACpp_all_h = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: *** FLAC++ headers not found.  Run configure --without-libflac to disable it" >&5
-echo "$as_me: error: *** FLAC++ headers not found.  Run configure --without-libflac to disable it" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-
-
-   LIBS="$LIBS -lFLAC -lFLAC++"
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_LIBFLAC 1
-_ACEOF
-
-fi
+#if [[ $use_libflac = "system" ]] ; then
+#   AC_CHECK_LIB(FLAC, FLAC__format_sample_rate_is_valid, true, dnl here true is just a nop
+#	   AC_MSG_ERROR([*** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it.]),
+#	   -lFLAC++) dnl auxiliary library that -lFLAC needs
+#
+#   AC_CHECK_HEADER(FLAC/format.h, ,
+#		AC_MSG_ERROR([*** FLAC headers not found.  Run configure --without-libflac to disable it]))
+#
+#   AC_CHECK_HEADER(FLAC++/all.h, ,
+#		AC_MSG_ERROR([*** FLAC++ headers not found.  Run configure --without-libflac to disable it]))
+#
+#   LIBS="$LIBS -lFLAC -lFLAC++"
+#   AC_DEFINE(USE_LIBFLAC, 1,
+#      [Define if the FLAC library is present])
+#fi
 
 
 
@@ -5930,16 +5684,14 @@ case "${wx_version}" in
   wx_list=`${WX_CONFIG} --list`
   { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.4.x.
 The currently available configurations are listed below.  If necessary, either
-install the package for your distribution or download the latest version of wxWi
-dgets
-from http://wxwidgets.org.
+install the package for your distribution or download the 2.4.x version of
+wxWidgets from http://wxwidgets.org.
 wxWidgets 2.5.x and 2.6.x are NOT supported!
 ${wx_list}" >&5
 echo "$as_me: error: Unable to locate a suitable configuration of wxWidgets v2.4.x.
 The currently available configurations are listed below.  If necessary, either
-install the package for your distribution or download the latest version of wxWi
-dgets
-from http://wxwidgets.org.
+install the package for your distribution or download the 2.4.x version of
+wxWidgets from http://wxwidgets.org.
 wxWidgets 2.5.x and 2.6.x are NOT supported!
 ${wx_list}" >&2;}
    { (exit 1); exit 1; }; }
@@ -7292,6 +7044,8 @@ s,@CONFIGHEADER@,$CONFIGHEADER,;t t
 s,@PRECOMP_CFLAGS@,$PRECOMP_CFLAGS,;t t
 s,@EXTRATARGETS@,$EXTRATARGETS,;t t
 s,@AUDACITY_NAME@,$AUDACITY_NAME,;t t
+s,@PKG_CONFIG@,$PKG_CONFIG,;t t
+s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
 s,@subdirs@,$subdirs,;t t
 s,@ZIP@,$ZIP,;t t
 s,@WX_CONFIG@,$WX_CONFIG,;t t
@@ -7979,6 +7733,8 @@ echo "Finished configure:"
 
 if [ $use_libsndfile = "system" ] ; then
 	echo "  with    libsndfile=system";
+else
+	echo "  with    libsndfile=local";
 fi
 
 if [ $use_libresample = "yes" ] ; then
@@ -7986,13 +7742,13 @@ if [ $use_libresample = "yes" ] ; then
 elif [ $use_libsamplerate = "system" ] ; then
 	echo "  with    libsamplerate=system";
 elif [ $use_libsamplerate = "local" ] ; then
-	echo "  with    libsamplerate";
+	echo "  with    libsamplerate=local";
 else
 	echo "  without any resampling support";
 fi
 
 if [ $use_libid3tag = "yes" ] ; then
-	echo "  with    libid3tag";
+	echo "  with    libid3tag (local)";
 else
 	if [ $use_libid3tag = "system" ] ; then
 		echo "  with    libid3tag (system)";
@@ -8012,19 +7768,19 @@ else
 fi
 
 if [ $use_ladspa = "yes" ] ; then
-	echo "  with    LADSPA plug-ins";
+	echo "  with    LADSPA plug-in support";
 else
-	echo "  without LADSPA plug-ins";
+	echo "  without LADSPA plug-in support";
 fi
 
 if [ "$use_nyquist" = "yes" ] ; then
-	echo "  with    Nyquist plug-ins";
+	echo "  with    Nyquist plug-in support";
 else
-	echo "  without Nyquist plug-ins";
+	echo "  without Nyquist plug-in support";
 fi
 
 if [ $use_vorbis = "yes" ] ; then
-	echo "  with    vorbis";
+	echo "  with    vorbis (local)";
 else
 	if [ $use_vorbis = "system" ] ; then
 		echo "  with    vorbis (system)";
@@ -8047,7 +7803,7 @@ else
 fi
 
 if [ "$use_soundtouch" = "yes" ] ; then
-	echo "  with    soundtouch";
+	echo "  with    soundtouch (local)";
 else
 	echo "  without soundtouch";
 fi

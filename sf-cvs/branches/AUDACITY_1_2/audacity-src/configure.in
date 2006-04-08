@@ -86,6 +86,11 @@ else
 	AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "$prefix")
 fi
 
+dnl we are going to need pkg-config to test for library versions
+dnl so let's get it over with
+PKG_PROG_PKG_CONFIG()
+dnl PKG_CONFIG will now be set to the best pkg-config available
+
 dnl
 dnl Required sublibraries
 dnl
@@ -98,6 +103,40 @@ dnl TODO enable/disable allegro
 BUILDLIBS="$BUILDLIBS allegro/allegro.a"
 EXTRAOBJS="$EXTRAOBJS ../lib-src/allegro/allegro.a"
 CXXFLAGS="$CXXFLAGS -I../lib-src/allegro"
+
+dnl libsndfile is required (reworked by Richard Ash)
+dnl default is worked out as:
+dnl	* If system is new enough, use it
+dnl	* else try local
+dnl	* else tough (set to no and force the user to specify which)
+dnl first, let's see if we have a system copy
+AC_CHECK_HEADER(sndfile.h, default_libsndfile="system", default_libsndfile="local")
+dnl try local if no system lib
+if [[ "$default_libsndfile" = "system" ]] ; then
+	dnl we have a system lib, so check version
+	echo "Checking for system libsndfile 1.0.12 or better (for flac support)"
+	if $PKG_CONFIG libsndfile >= 1.0.12 ; then
+		dnl get here if we have >=1.0.12 installed
+		default_libsndfile="system"
+		dnl if we have a new one go with it
+		echo "system libsndfile >= 1.0.12 found - using."
+	else	
+		dnl get here if don't have >=1.0.12 installed
+		echo "System libsndfile  older than 1.0.12"
+		echo "(needed for FLAC support) , trying local copy instead."
+		AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h.in,
+	              default_libsndfile="local",
+        	      default_libsndfile="no")
+		dnl we assume local libsndfile is new enough.
+		dnl if we have neither new enough system nor local we
+		dnl leave the mess to the user to fix by defaulting no.
+	fi
+	
+fi
+dnl so by now we are using system if exists and is new enough, otherwise
+dnl we've tried the local copy
+dnl TODO - fall back on old system copy if nothing better in local tree?
+dnl is this a good idea?
 
 dnl
 dnl Optional sublibraries
@@ -119,9 +158,6 @@ AC_CHECK_FILE(lib-src/libid3tag/frame.h,
               default_libid3tag="yes",
               default_libid3tag="system")
 
-AC_CHECK_FILE(lib-src/libsndfile/src/sndfile.h.in,
-              default_libsndfile="local",
-              default_libsndfile="system")
 
 AC_CHECK_FILE(lib-src/libsamplerate/src/samplerate.h,
               default_libsamplerate="local",
@@ -131,9 +167,11 @@ AC_CHECK_FILE(lib-src/libresample/include/libresample.h,
               default_libresample="yes",
               default_libresample="no")
 
-AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
-              default_libflac="local",
-              default_libflac="system")
+#AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
+#              default_libflac="local",
+#              default_libflac="system")
+dnl removed libflac check as the only place it would get used is in
+dnl libsndfile, not audacity itself
 
 dnl If any of the optional sublibraries was not found in lib-src,
 dnl we assume the user wants to use a system library.  If the
@@ -152,9 +190,9 @@ if [[ "$default_libid3tag" = "system" ]] ; then
 	AC_CHECK_HEADER(id3tag.h, , default_libid3tag="no")
 fi
 
-if [[ "$default_libflac" = "system" ]] ; then
-	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
-fi
+#if [[ "$default_libflac" = "system" ]] ; then
+#	AC_CHECK_HEADER(FLAC/format.h, , default_libflac="no")
+#fi
 
 dnl options
 
@@ -194,11 +232,13 @@ AC_ARG_WITH(libsamplerate,
 	use_libsamplerate=$withval,
 	use_libsamplerate="default")
 
-AC_ARG_WITH(libflac,
-	[AC_HELP_STRING([--with-libflac [local system none]],
-		[enable FLAC support [default=none]])],
-	use_libflac=$withval,
-	use_libflac="no")
+AC_ARG_ENABLE(flac,
+	[AC_HELP_STRING([--enable-flac ],
+		[enable FLAC support in local libsndfile [default=no]
+		This has no effect if you use system libsndfile.])],
+	,)
+dnl this does nothing, because all we are after is passing through the command
+dnl line option to the local libsndfile configure
 
 AC_ARG_WITH(ladspa,
 	[AC_HELP_STRING([--with-ladspa],
@@ -272,7 +312,7 @@ if [[ "$use_nyquist" = "yes" ]] ; then
 fi
 
 if [[ "$use_libsndfile" = "no" ]] ; then
-	   AC_MSG_ERROR([*** Audacity requires libsndfile 1.0.0 or higher to compile.  You must choose either --with-libsndfile=local or --with-libsndfile=system])
+	   AC_MSG_ERROR([*** Audacity requires libsndfile 1.0.0 or higher to compile.  FLAC support requires libsndfile 1.0.12 or newer. You must choose either --with-libsndfile=local or --with-libsndfile=system])
 fi
 
 if [[ "$use_libsndfile" = "local" ]] ; then
@@ -287,10 +327,27 @@ if [[ "$use_libsndfile" = "local" ]] ; then
 fi
 
 if [[ "$use_libsndfile" = "system" ]] ; then
-	dnl libsndfile -- we need at least version 1.0
-	dnl PKG_CHECK_MODULES(SNDFILE, sndfile >= 1.0.0,
-	dnl if found...
-	dnl LIBS="$LIBS $SNDFILE_LIBS" CPPFLAGS="$CPPFLAGS $SNDFILE_CFLAGS",
+	dnl libsndfile -- we need at least version 1.0.0
+	echo "Checking for libsndfile >= 1.0.0 ..."
+	if $PKG_CONFIG --atleast-version=1.0.0 sndfile ; then
+		dnl here for something over 1.0.0
+		echo "Good, you have libsndfile >=1.0.0 ..."
+		echo "Checking for libsndfile 1.0.12 or better for FLAC support"
+		if $PKG_CONFIG --atleast-version=1.0.12 sndfile ; then
+			dnl here for 1.0.12 and over
+			echo "libsndfile 1.0.12 or better detected - FLAC support possible"
+		else
+			dnl here for 1.0.0 to 1.0.12
+			echo "Your libsndfile version is to old to enable FLAC support"
+			echo "If you need FLAC support please upgrade to libsndfile 1.0.12 or newer"
+		fi
+	else
+		dnl here for less than 1.0.0
+		echo "Your libsndfile is too old - you need at least libsndfile 1.0.0 to compile audacity."
+		echo "You need libsndfile 1.0.12 for FLAC support."
+		exit;
+		dnl we are screwed - bye
+	fi
 
 	LIBS="$LIBS -lsndfile"	
 fi
@@ -466,37 +523,38 @@ if [[ $use_libid3tag = "system" ]] ; then
 
 fi
 
-if [[ $use_libflac = "local" ]] ; then
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
-   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
-   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
-   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
-   CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
+#if [[ $use_libflac = "local" ]] ; then
+#   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC/.libs/libFLAC.a"
+#   EXTRAOBJS="$EXTRAOBJS ../lib-src/libflac/src/libFLAC++/.libs/libFLAC++.a"
+#   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC/.libs/libFLAC.a"
+#   BUILDLIBS="$BUILDLIBS libflac/src/libFLAC++/.libs/libFLAC++.a"
+#   CXXFLAGS="$CXXFLAGS -I../lib-src/libflac/include"
 
-   AC_DEFINE(USE_LIBFLAC, 1,
-      [Define if the FLAC library is present])
+#   AC_DEFINE(USE_LIBFLAC, 1,
+#      [Define if the FLAC library is present])
+#
+#   if test ! -f "lib-src/libflac/Makefile"; then
+#		echo "--- Configuring libflac";
+#		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
+#   fi
+#fi
 
-   if test ! -f "lib-src/libflac/Makefile"; then
-		echo "--- Configuring libflac";
-		AC_CONFIG_SUBDIRS([[lib-src/libflac]])
-   fi
-fi
-
-if [[ $use_libflac = "system" ]] ; then
-   AC_CHECK_LIB(FLAC, FLAC__format_sample_rate_is_valid, true, dnl here true is just a nop
-	   AC_MSG_ERROR([*** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it.]),
-	   -lFLAC++) dnl auxiliary library that -lFLAC needs
-
-   AC_CHECK_HEADER(FLAC/format.h, ,
-		AC_MSG_ERROR([*** FLAC headers not found.  Run configure --without-libflac to disable it]))
-
-   AC_CHECK_HEADER(FLAC++/all.h, ,
-		AC_MSG_ERROR([*** FLAC++ headers not found.  Run configure --without-libflac to disable it]))
-
-   LIBS="$LIBS -lFLAC -lFLAC++"
-   AC_DEFINE(USE_LIBFLAC, 1,
-      [Define if the FLAC library is present])
-fi
+#if [[ $use_libflac = "system" ]] ; then
+#   AC_CHECK_LIB(FLAC, FLAC__format_sample_rate_is_valid, true, dnl here true is just a nop
+#	   AC_MSG_ERROR([*** FLAC libraries not found or they are too old. Run configure --without-libflac to disable it.]),
+#	   -lFLAC++) dnl auxiliary library that -lFLAC needs
+#
+#   AC_CHECK_HEADER(FLAC/format.h, ,
+#		AC_MSG_ERROR([*** FLAC headers not found.  Run configure --without-libflac to disable it]))
+#
+#   AC_CHECK_HEADER(FLAC++/all.h, ,
+#		AC_MSG_ERROR([*** FLAC++ headers not found.  Run configure --without-libflac to disable it]))
+#
+#   LIBS="$LIBS -lFLAC -lFLAC++"
+#   AC_DEFINE(USE_LIBFLAC, 1,
+#      [Define if the FLAC library is present])
+#fi
+dnl there is no direct flac support in 1.2.x, so disable all of this
 
 dnl if [[ $use_help = "yes" ]] ; then
 dnl   enable help
@@ -535,9 +593,8 @@ case "${wx_version}" in
   wx_list=`${WX_CONFIG} --list`
   AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.4.x.
 The currently available configurations are listed below.  If necessary, either
-install the package for your distribution or download the latest version of wxWi
-dgets
-from http://wxwidgets.org.
+install the package for your distribution or download the 2.4.x version of
+wxWidgets from http://wxwidgets.org.
 wxWidgets 2.5.x and 2.6.x are NOT supported!
 ${wx_list}])
 esac
@@ -751,6 +808,8 @@ echo "Finished configure:"
 
 if [[ $use_libsndfile = "system" ]] ; then
 	echo "  with    libsndfile=system";
+else
+	echo "  with    libsndfile=local";
 fi
 
 if [[ $use_libresample = "yes" ]] ; then
@@ -758,13 +817,13 @@ if [[ $use_libresample = "yes" ]] ; then
 elif [[ $use_libsamplerate = "system" ]] ; then
 	echo "  with    libsamplerate=system";
 elif [[ $use_libsamplerate = "local" ]] ; then
-	echo "  with    libsamplerate";
+	echo "  with    libsamplerate=local";
 else
 	echo "  without any resampling support";
 fi
 
 if [[ $use_libid3tag = "yes" ]] ; then
-	echo "  with    libid3tag";
+	echo "  with    libid3tag (local)";
 else
 	if [[ $use_libid3tag = "system" ]] ; then
 		echo "  with    libid3tag (system)";
@@ -784,19 +843,19 @@ else
 fi
 
 if [[ $use_ladspa = "yes" ]] ; then
-	echo "  with    LADSPA plug-ins";
+	echo "  with    LADSPA plug-in support";
 else
-	echo "  without LADSPA plug-ins";
+	echo "  without LADSPA plug-in support";
 fi
 
 if [[ "$use_nyquist" = "yes" ]] ; then
-	echo "  with    Nyquist plug-ins";
+	echo "  with    Nyquist plug-in support";
 else
-	echo "  without Nyquist plug-ins";
+	echo "  without Nyquist plug-in support";
 fi
 
 if [[ $use_vorbis = "yes" ]] ; then	
-	echo "  with    vorbis";
+	echo "  with    vorbis (local)";
 else
 	if [[ $use_vorbis = "system" ]] ; then
 		echo "  with    vorbis (system)";
@@ -828,7 +887,7 @@ else
 fi
 
 if [[ "$use_soundtouch" = "yes" ]] ; then
-	echo "  with    soundtouch";
+	echo "  with    soundtouch (local)";
 else
 	echo "  without soundtouch";
 fi
