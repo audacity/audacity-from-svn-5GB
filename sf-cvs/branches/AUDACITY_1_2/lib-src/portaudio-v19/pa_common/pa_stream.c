@@ -1,5 +1,5 @@
 /*
- * $Id: pa_stream.c,v 1.1.2.1 2004-04-22 04:39:41 mbrubeck Exp $
+ * $Id: pa_stream.c,v 1.1.2.2 2006-04-08 16:12:25 richardash1981 Exp $
  * Portable Audio I/O Library
  * 
  *

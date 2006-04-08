@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.1.2.1 2004-04-22 04:39:42 mbrubeck Exp $
+ * $Id: pa_win_ds.c,v 1.1.2.2 2006-04-08 16:12:27 richardash1981 Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -46,8 +46,6 @@
 
     @todo implement IsFormatSupported
 
-    @todo implement PaDeviceInfo.defaultSampleRate;
-
     @todo check that CoInitialize() CoUninitialize() are always correctly
         paired, even in error cases.
 
@@ -77,11 +75,17 @@
 #pragma comment( lib, "winmm.lib" )
 #endif
 
+/*
+ provided in newer platform sdks and x64
+ */
+#ifndef DWORD_PTR
+#define DWORD_PTR DWORD
+#endif
 
-#define PRINT(x) /* { printf x; fflush(stdout); } */
+#define PRINT(x) PA_DEBUG(x);
 #define ERR_RPT(x) PRINT(x)
-#define DBUG(x)  /* PRINT(x) */
-#define DBUGX(x) /* PRINT(x) */
+#define DBUG(x)   PRINT(x)
+#define DBUGX(x)  PRINT(x)
 
 #define PA_USE_HIGH_LATENCY   (0)
 #if PA_USE_HIGH_LATENCY
@@ -210,8 +214,8 @@ static char *DuplicateDeviceNameString( PaUtilAllocationGroup *allocations, cons
     
     if( src != NULL )
     {
-        int len = strlen(src);
-        result = (char*)PaUtil_GroupAllocateMemory( allocations, len + 1 );
+        size_t len = strlen(src);
+        result = (char*)PaUtil_GroupAllocateMemory( allocations, (long)(len + 1) );
         if( result )
             memcpy( (void *) result, src, len+1 );
     }
@@ -366,7 +370,23 @@ static BOOL CALLBACK CollectGUIDsProc(LPGUID lpGUID,
     
     return TRUE;
 }
-              
+
+
+/* 
+    GUIDs for emulated devices which we blacklist below.
+    are there more than two of them??
+*/
+
+GUID IID_IRolandVSCEmulated1 = {0xc2ad1800, 0xb243, 0x11ce, 0xa8, 0xa4, 0x00, 0xaa, 0x00, 0x6c, 0x45, 0x01};
+GUID IID_IRolandVSCEmulated2 = {0xc2ad1800, 0xb243, 0x11ce, 0xa8, 0xa4, 0x00, 0xaa, 0x00, 0x6c, 0x45, 0x02};
+
+
+#define PA_DEFAULTSAMPLERATESEARCHORDER_COUNT_  (13) /* must match array length below */
+static double defaultSampleRateSearchOrder_[] =
+    { 44100.0, 48000.0, 32000.0, 24000.0, 22050.0, 88200.0, 96000.0, 192000.0,
+        16000.0, 12000.0, 11025.0, 9600.0, 8000.0 };
+
+
 /************************************************************************************
 ** Extract capabilities from an output device, and add it to the device info list
 ** if successful. This function assumes that there is enough room in the
@@ -385,6 +405,7 @@ static PaError AddOutputDeviceInfoFromDirectSound(
     DSCAPS                        caps;
     int                           deviceOK = TRUE;
     PaError                       result = paNoError;
+    int                           i;
     
     /* Copy GUID to the device info structure. Set pointer. */
     if( lpGUID == NULL )
@@ -398,6 +419,16 @@ static PaError AddOutputDeviceInfoFromDirectSound(
     }
 
     
+    if( lpGUID )
+    {
+        if (IsEqualGUID (&IID_IRolandVSCEmulated1,lpGUID) ||
+            IsEqualGUID (&IID_IRolandVSCEmulated2,lpGUID) )
+        {
+            PA_DEBUG(("BLACKLISTED: %s \n",name));
+            return paNoError;
+        }
+    }
+
     /* Create a DirectSound object for the specified GUID
         Note that using CoCreateInstance doesn't work on windows CE.
     */
@@ -421,7 +452,24 @@ static PaError AddOutputDeviceInfoFromDirectSound(
     
     if( hr != DS_OK )
     {
+        if (hr == DSERR_ALLOCATED)
+            PA_DEBUG(("AddOutputDeviceInfoFromDirectSound %s DSERR_ALLOCATED\n",name));
         DBUG(("Cannot create DirectSound for %s. Result = 0x%x\n", name, hr ));
+        if (lpGUID)
+            DBUG(("%s's GUID: {0x%x,0x%x,0x%x,0x%x,0x%x,0x%x,0x%x,0x%x,0x%x,0x%x, 0x%x} \n",
+                 name,
+                 lpGUID->Data1,
+                 lpGUID->Data2,
+                 lpGUID->Data3,
+                 lpGUID->Data4[0],
+                 lpGUID->Data4[1],
+                 lpGUID->Data4[2],
+                 lpGUID->Data4[3],
+                 lpGUID->Data4[4],
+                 lpGUID->Data4[5],
+                 lpGUID->Data4[6],
+                 lpGUID->Data4[7]));
+
         deviceOK = FALSE;
     }
     else
@@ -456,7 +504,52 @@ static PaError AddOutputDeviceInfoFromDirectSound(
                 deviceInfo->defaultLowOutputLatency = 0.;   /** @todo IMPLEMENT ME */
                 deviceInfo->defaultHighInputLatency = 0.;   /** @todo IMPLEMENT ME */
                 deviceInfo->defaultHighOutputLatency = 0.;  /** @todo IMPLEMENT ME */
-                deviceInfo->defaultSampleRate = 0;          /** @todo IMPLEMENT ME */
+                
+                /* initialize defaultSampleRate */
+                
+                if( caps.dwFlags & DSCAPS_CONTINUOUSRATE )
+                {
+                    /* initialize to caps.dwMaxSecondarySampleRate incase none of the standard rates match */
+                    deviceInfo->defaultSampleRate = caps.dwMaxSecondarySampleRate;
+
+                    for( i = 0; i < PA_DEFAULTSAMPLERATESEARCHORDER_COUNT_; ++i )
+                    {
+                        if( defaultSampleRateSearchOrder_[i] >= caps.dwMinSecondarySampleRate
+                                && defaultSampleRateSearchOrder_[i] <= caps.dwMaxSecondarySampleRate ){
+
+                            deviceInfo->defaultSampleRate = defaultSampleRateSearchOrder_[i];
+                            break;
+                        }
+                    }
+                }
+                else if( caps.dwMinSecondarySampleRate == caps.dwMaxSecondarySampleRate )
+                {
+                    if( caps.dwMinSecondarySampleRate == 0 )
+                    {
+                        /*
+                        ** On my Thinkpad 380Z, DirectSoundV6 returns min-max=0 !!
+                        ** But it supports continuous sampling.
+                        ** So fake range of rates, and hope it really supports it.
+                        */
+                        deviceInfo->defaultSampleRate = 44100.0f;
+
+                        DBUG(("PA - Reported rates both zero. Setting to fake values for device #%s\n", name ));
+                    }
+                    else
+                    {
+	                    deviceInfo->defaultSampleRate = caps.dwMaxSecondarySampleRate;
+                    }
+                }
+                else if( (caps.dwMinSecondarySampleRate < 1000.0) && (caps.dwMaxSecondarySampleRate > 50000.0) )
+                {
+                    /* The EWS88MT drivers lie, lie, lie. The say they only support two rates, 100 & 100000.
+                    ** But we know that they really support a range of rates!
+                    ** So when we see a ridiculous set of rates, assume it is a range.
+                    */
+                  deviceInfo->defaultSampleRate = 44100.0f;
+                  DBUG(("PA - Sample rate range used instead of two odd values for device #%s\n", name ));
+                }
+                else deviceInfo->defaultSampleRate = caps.dwMaxSecondarySampleRate;
 
 
                 //printf( "min %d max %d\n", caps.dwMinSecondarySampleRate, caps.dwMaxSecondarySampleRate );
@@ -559,7 +652,66 @@ static PaError AddInputDeviceInfoFromDirectSoundCapture(
                 deviceInfo->defaultLowOutputLatency = 0.;   /** @todo IMPLEMENT ME */
                 deviceInfo->defaultHighInputLatency = 0.;   /** @todo IMPLEMENT ME */
                 deviceInfo->defaultHighOutputLatency = 0.;  /** @todo IMPLEMENT ME */
-                deviceInfo->defaultSampleRate = 0;          /** @todo IMPLEMENT ME */
+
+/*  constants from a WINE patch by Francois Gouget, see:
+    http://www.winehq.com/hypermail/wine-patches/2003/01/0290.html
+
+    ---
+    Date: Fri, 14 May 2004 10:38:12 +0200 (CEST)
+    From: Francois Gouget <fgouget@ ... .fr>
+    To: Ross Bencina <rbencina@ ... .au>
+    Subject: Re: Permission to use wine 48/96 wave patch in BSD licensed library
+
+    [snip]
+
+    I give you permission to use the patch below under the BSD license.
+    http://www.winehq.com/hypermail/wine-patches/2003/01/0290.html
+
+    [snip]
+*/
+#ifndef WAVE_FORMAT_48M08
+#define WAVE_FORMAT_48M08      0x00001000    /* 48     kHz, Mono,   8-bit  */
+#define WAVE_FORMAT_48S08      0x00002000    /* 48     kHz, Stereo, 8-bit  */
+#define WAVE_FORMAT_48M16      0x00004000    /* 48     kHz, Mono,   16-bit */
+#define WAVE_FORMAT_48S16      0x00008000    /* 48     kHz, Stereo, 16-bit */
+#define WAVE_FORMAT_96M08      0x00010000    /* 96     kHz, Mono,   8-bit  */
+#define WAVE_FORMAT_96S08      0x00020000    /* 96     kHz, Stereo, 8-bit  */
+#define WAVE_FORMAT_96M16      0x00040000    /* 96     kHz, Mono,   16-bit */
+#define WAVE_FORMAT_96S16      0x00080000    /* 96     kHz, Stereo, 16-bit */
+#endif
+
+                /* defaultSampleRate */
+                if( caps.dwChannels == 2 )
+                {
+                    if( caps.dwFormats & WAVE_FORMAT_4S16 )
+                        deviceInfo->defaultSampleRate = 44100.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_48S16 )
+                        deviceInfo->defaultSampleRate = 48000.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_2S16 )
+                        deviceInfo->defaultSampleRate = 22050.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_1S16 )
+                        deviceInfo->defaultSampleRate = 11025.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_96S16 )
+                        deviceInfo->defaultSampleRate = 96000.0;
+                    else
+                        deviceInfo->defaultSampleRate = 0.;
+                }
+                else if( caps.dwChannels == 1 )
+                {
+                    if( caps.dwFormats & WAVE_FORMAT_4M16 )
+                        deviceInfo->defaultSampleRate = 44100.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_48M16 )
+                        deviceInfo->defaultSampleRate = 48000.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_2M16 )
+                        deviceInfo->defaultSampleRate = 22050.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_1M16 )
+                        deviceInfo->defaultSampleRate = 11025.0;
+                    else if( caps.dwFormats & WAVE_FORMAT_96M16 )
+                        deviceInfo->defaultSampleRate = 96000.0;
+                    else
+                        deviceInfo->defaultSampleRate = 0.;
+                }
+                else deviceInfo->defaultSampleRate = 0.;
             }
         }
         
@@ -1401,7 +1553,7 @@ error2:
     return result;
 }
 /*******************************************************************/
-static void CALLBACK Pa_TimerCallback(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
+static void CALLBACK Pa_TimerCallback(UINT uID, UINT uMsg, DWORD_PTR dwUser, DWORD dw1, DWORD dw2)
 {
     PaWinDsStream *stream;
 
@@ -1525,7 +1677,7 @@ static PaError StartStream( PaStream *s )
         else if( msecPerWakeup > 100 ) msecPerWakeup = 100;
         resolution = msecPerWakeup/4;
         stream->timerID = timeSetEvent( msecPerWakeup, resolution, (LPTIMECALLBACK) Pa_TimerCallback,
-                                             (DWORD) stream, TIME_PERIODIC );
+                                             (DWORD_PTR) stream, TIME_PERIODIC );
     }
     if( stream->timerID == 0 )
     {

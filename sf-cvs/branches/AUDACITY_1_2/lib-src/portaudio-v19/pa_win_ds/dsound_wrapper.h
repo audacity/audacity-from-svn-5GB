@@ -1,7 +1,7 @@
 #ifndef __DSOUND_WRAPPER_H
 #define __DSOUND_WRAPPER_H
 /*
- * $Id: dsound_wrapper.h,v 1.1.2.1 2004-04-22 04:39:42 mbrubeck Exp $
+ * $Id: dsound_wrapper.h,v 1.1.2.2 2006-04-08 16:12:27 richardash1981 Exp $
  * Simplified DirectSound interface.
  *
  * Author: Phil Burk & Robert Marsanyi
@@ -43,6 +43,11 @@
 #define WIN32
 #endif
 #endif
+
+/*
+  We are only using DX3 in here, no need to polute the namespace - davidv
+*/
+#define DIRECTSOUND_VERSION 0x0300
 
 #include <DSound.h>
 
