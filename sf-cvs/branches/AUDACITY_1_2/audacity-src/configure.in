@@ -115,7 +115,8 @@ dnl try local if no system lib
 if [[ "$default_libsndfile" = "system" ]] ; then
 	dnl we have a system lib, so check version
 	echo "Checking for system libsndfile 1.0.12 or better (for flac support)"
-	if $PKG_CONFIG libsndfile >= 1.0.12 ; then
+	if $PKG_CONFIG --atleast-version=1.0.12 sndfile ; then
+#	if $PKG_CONFIG --exists sndfile >= 1.0.12 ; then
 		dnl get here if we have >=1.0.12 installed
 		default_libsndfile="system"
 		dnl if we have a new one go with it
@@ -167,6 +168,11 @@ AC_CHECK_FILE(lib-src/libresample/include/libresample.h,
               default_libresample="yes",
               default_libresample="no")
 
+AC_CHECK_FILE(lib-src/soundtouch/include/SoundTouch.h,
+              default_libsoundtouch="local",
+              default_libsoundtouch="system")
+
+
 #AC_CHECK_FILE(lib-src/libflac/include/FLAC/format.h,
 #              default_libflac="local",
 #              default_libflac="system")
@@ -188,6 +194,10 @@ fi
 
 if [[ "$default_libid3tag" = "system" ]] ; then
 	AC_CHECK_HEADER(id3tag.h, , default_libid3tag="no")
+fi
+
+if [[ "$default_libsoundtouch" = "system" ]] ; then
+	AC_CHECK_HEADER(soundtouch/SoundTouch.h, , default_libsoundtouch="no")
 fi
 
 #if [[ "$default_libflac" = "system" ]] ; then
@@ -266,9 +276,9 @@ AC_ARG_WITH(portaudio,
 
 AC_ARG_WITH(soundtouch,
 	[AC_HELP_STRING([--with-soundtouch],
-		[compile with SoundTouch [default=yes]])],
+		[compile with SoundTouch: [local system none]])],
 	use_soundtouch=$withval,
-	use_soundtouch="yes")
+	use_soundtouch="$default_libsoundtouch")
 
 AC_ARG_WITH(help,
 	[AC_HELP_STRING([--with-help],
@@ -276,10 +286,12 @@ AC_ARG_WITH(help,
 	use_help=$withval,
 	use_help="yes")
 
-if [[ "$use_soundtouch" = "yes" ]] ; then
+if [[ "$use_soundtouch" = "local" ]] ; then
 	AC_DEFINE(USE_SOUNDTOUCH, 1,	
 	[Define if SoundTouch support should be enabled])
-	CXXFLAGS="-I../lib-src/soundtouch/include $CXXFLAGS"
+	CXXFLAGS="-I../lib-src/soundtouch/ $CXXFLAGS"
+	dnl we are looking for soundtouch/SoundTouch.h, so
+	dnl this is the path we need to make that work
 	BUILDLIBS="$BUILDLIBS soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/soundtouch/source/SoundTouch/.libs/libSoundTouch.a"		
 
@@ -288,6 +300,20 @@ if [[ "$use_soundtouch" = "yes" ]] ; then
 		AC_CONFIG_SUBDIRS([[lib-src/soundtouch]])
    fi
 fi
+
+if [[ "$use_soundtouch" = "system" ]] ; then
+	AC_DEFINE(USE_SOUNDTOUCH, 1,	
+	[Define if SoundTouch support should be enabled])
+	dnl note this is done separately because the soundtouch supplied
+	dnl m4 file sets HAVE_LIBSOUNDTOUCH instead of USE_SOUNDTOUCH
+	AM_PATH_SOUNDTOUCH()
+	dnl no args here as we "know" it will work because we checked earlier
+	dnl do the necessary libs / flags
+	CXXFLAGS="$SOUNDTOUCH_CXXFLAGS $CXXFLAGS"
+	LIBS="$LIBS $SOUNDTOUCH_LIBS"	
+
+fi
+
 
 if [[ "$use_portmixer" = "yes" ]] && [[ "$use_portaudio" = "v19" ]] ; then
 	echo "*** PortAudio v19 does not work with PortMixer (at least not yet)"
@@ -807,17 +833,17 @@ echo ""
 echo "Finished configure:"
 
 if [[ $use_libsndfile = "system" ]] ; then
-	echo "  with    libsndfile=system";
+	echo "  with    libsndfile (system)";
 else
-	echo "  with    libsndfile=local";
+	echo "  with    libsndfile (local)";
 fi
 
 if [[ $use_libresample = "yes" ]] ; then
 	echo "  with    libresample";
 elif [[ $use_libsamplerate = "system" ]] ; then
-	echo "  with    libsamplerate=system";
+	echo "  with    libsamplerate (system)";
 elif [[ $use_libsamplerate = "local" ]] ; then
-	echo "  with    libsamplerate=local";
+	echo "  with    libsamplerate (local)";
 else
 	echo "  without any resampling support";
 fi
@@ -833,7 +859,7 @@ else
 fi
 
 if [[ $use_libmad = "yes" ]] ; then
-	echo "  with    libmad";
+	echo "  with    libmad (local)";
 else
 	if [[ $use_libmad = "system" ]] ; then
 		echo "  with    libmad (system)";
@@ -886,10 +912,14 @@ else
 	echo "  with    portaudio v18";
 fi
 
-if [[ "$use_soundtouch" = "yes" ]] ; then
+if [[ "$use_soundtouch" = "local" ]] ; then
 	echo "  with    soundtouch (local)";
 else
-	echo "  without soundtouch";
+	if [[ "$use_soundtouch" = "system" ]] ; then
+		echo "  with    soundtouch (system)";
+	else
+		echo "  without soundtouch";
+	fi
 fi
 
 if [[ $use_help = "yes" ]] ; then

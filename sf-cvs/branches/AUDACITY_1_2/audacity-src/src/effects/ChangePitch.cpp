@@ -15,7 +15,9 @@
 
 #if USE_SOUNDTOUCH
 
-#include "SoundTouch.h"
+#include <soundtouch/SoundTouch.h>
+// this is the standard system path, then we use -I cflags to make
+// it work if we have local soundtouch
 
 #include "ChangePitch.h"
 
