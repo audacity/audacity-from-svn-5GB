@@ -589,8 +589,14 @@ void Envelope::Paste(double t0, Envelope *e)
       mTrackLen += deltat;
       // was the last inserted controlpoint at the end of insertion?
       if(len && e->mEnv[len-1]->t == e->mTrackLen){
-         // it both must be shifted and functions as the framing point 
-         mEnv[pos]->t-=mTrackEpsilon;
+         // it both must be shifted and functions as the framing point
+	 if (mEnv.IsEmpty())
+	    {   //we have an issue - the destination track has no points in it
+	    }
+	 else
+	    {	// we do this bit normally
+            mEnv[pos]->t-=mTrackEpsilon;
+	    }
       }
       else {
          Insert(t0 + e->mTrackLen - mTrackEpsilon, rightval);
