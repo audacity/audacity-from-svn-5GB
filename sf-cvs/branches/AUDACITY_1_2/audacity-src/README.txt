@@ -46,6 +46,7 @@ Audacity is based on code from the following projects::
    Resample
    SoundTouch
    wxWidgets
+   RTaudio
 
 Special Thanks:
    Richard Ash
@@ -141,6 +142,10 @@ license.  Specifically:
     Decodes and encodes Ogg Vorbis files.  Optional
     separate download.
 
+  SoundTouch: LGPL
+    Changes tempo without changing pitch and vice versa.
+    Included in audacity
+
 For more information, see the documentation inside
 each library's source code directory.
 
@@ -210,7 +215,7 @@ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Compilation instructions:
 
-First you must download wxWidgets from:
+First you must download wxWidgets 2.4.x from:
 
   http://www.wxWidgets.org/
 
@@ -253,7 +258,8 @@ Known issues/problems:
 
   * Linux only: Recording in full duplex on some Linux systems causes
     mono recordings to sound slowed-down or low-pitched.  To work around
-    this problem, set Audacity to record in stereo.
+    this problem (a bug in the ALSA OSS emulation code), set Audacity to
+    record in stereo.
 
   * Mac OS X only: Audacity cannot work with files or folders that
     are contained inside folders with international characters
@@ -261,6 +267,19 @@ Known issues/problems:
     accented characters work, and Audacity projects with
     accented characters work.  Only files inside of folders
     with accented characters in their names will cause problems.
+
+  * MacOS X only: Some users find that after running Audacity other media
+    players don't produce any sound or crash. Audacity tries to select the best
+    quality settings your system is capable of, to give the best recordings
+    possible. Some sound drivers also retain these settings as defaults for
+    other applications, which can cause these symptoms
+ 
+    To get round this, enable the option "Do not modify audio device settings"
+    on the Audio I/O tab of the preferences, and make sure that your sound
+    device is set up (in the Apple Sound and Midi Setup utility) to work in
+    stereo, 16bits, with a sample rate of 44100Hz or 48000Hz.  See also 
+      http://docs.info.apple.com/article.html?artnum=300832
+
 
 -------------------------------------------------------------
 
