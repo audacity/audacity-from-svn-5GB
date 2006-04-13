@@ -120,6 +120,9 @@ class AudacityProject:public wxFrame,
    double GetSel0() { return mViewInfo.sel0; }
    double GetSel1() { return mViewInfo.sel1; }
 
+   void GetPlayRegion(double* playRegionStart, double *playRegionEnd);
+   bool IsPlayRegionLocked() { return mLockPlayRegion; }
+   
    void SetSel0(double);        //Added by STM 
    void SetSel1(double);        //Added by STM 
 
@@ -370,6 +373,8 @@ class AudacityProject:public wxFrame,
    bool mCleanSpeechMode;  //lda
    bool mShowId3Dialog; //lda
    bool mEmptyCanBeDirty;
+   
+   bool mLockPlayRegion;
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;

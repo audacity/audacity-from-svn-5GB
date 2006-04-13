@@ -28,6 +28,8 @@ wxPen AColor::darkPen[2];
 wxPen AColor::cursorPen;
 wxBrush AColor::indicatorBrush[2];
 wxPen AColor::indicatorPen[2];
+wxPen AColor::playRegionPen[2];
+wxBrush AColor::playRegionBrush[2];
 
 wxBrush AColor::muteBrush[2];
 wxBrush AColor::soloBrush;
@@ -138,6 +140,14 @@ void AColor::IndicatorColor(wxDC * dc, bool recording)
    dc->SetBrush(indicatorBrush[index]);
 }
 
+void AColor::PlayRegionColor(wxDC * dc, bool locked)
+{
+   if (!inited)
+      Init();
+   dc->SetPen(playRegionPen[(int)locked]);
+   dc->SetBrush(playRegionBrush[(int)locked]);
+}
+
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
@@ -201,6 +211,11 @@ void AColor::Init()
    indicatorPen[1].SetColour( 36,96, 46); //playback
    indicatorBrush[0].SetColour(190,129,129); //recording
    indicatorBrush[1].SetColour( 28,171, 51); //playback
+   
+   playRegionBrush[0].SetColour(196,196,196);
+   playRegionPen[0].SetColour(128,128,128);
+   playRegionBrush[1].SetColour(190,129,129);
+   playRegionPen[1].SetColour(176,0, 28);
 
 //Determine tooltip color
 //TODO: Find out why the commented out version yields black.

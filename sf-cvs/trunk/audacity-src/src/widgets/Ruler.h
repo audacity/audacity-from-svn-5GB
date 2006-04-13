@@ -48,6 +48,7 @@
 #include "../Envelope.h"
 
 struct ViewInfo;
+class TrackPanel;
 
 class Ruler {
  public:
@@ -230,12 +231,19 @@ public:
    void DrawSelection();
    void ClearIndicator();
 
+   void SetPlayRegion(double playRegionStart, double playRegionEnd);
+   void ClearPlayRegion();
+   void GetPlayRegion(double* playRegionStart, double* playRegionEnd);
+   
+   void SetTrackPanel(TrackPanel* trackPanel) { mTrackPanel = trackPanel; }
+
 public:
 
 private:
    void OnErase(wxEraseEvent &evt);
    void OnPaint(wxPaintEvent &evt);
    void OnSize(wxSizeEvent &evt);
+   void OnMouseEvents(wxMouseEvent &evt);
 
    void DoDraw(wxDC *dc);
 
@@ -244,9 +252,16 @@ private:
    void DoDrawCursor(wxDC * dc);
    void DoDrawSelection(wxDC * dc);
    void DoDrawIndicator(wxDC * dc);
+   void DoDrawPlayRegion(wxDC *dc);
+
+   double Pos2Time(int p);
+   int Time2Pos(double t);
+
+   bool IsWithinMarker(int mousePosX, double markerTime);
 
    Ruler  ruler;
    ViewInfo *mViewInfo;
+   TrackPanel *mTrackPanel;
 
    wxBitmap *mBuffer;
 
@@ -259,6 +274,20 @@ private:
 
    int mIndType;     // -1 = No indicator, 0 = Play, 1 = Record
    double mIndPos;
+
+   double mPlayRegionStart;
+   double mPlayRegionEnd;
+   
+   enum MouseEventState {
+      mesNone,
+      mesDraggingPlayRegionStart,
+      mesDraggingPlayRegionEnd,
+      mesSelectingPlayRegionClick,
+      mesSelectingPlayRegionRange
+   };
+   
+   MouseEventState mMouseEventState;
+   int mButtonDownMousePos;
 
    DECLARE_EVENT_TABLE()
 };

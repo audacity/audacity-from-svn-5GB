@@ -104,6 +104,9 @@ void OnSelToEnd();
 
 void OnZeroCrossing();
 
+void OnLockPlayRegion();
+void OnUnlockPlayRegion();
+
         // File Menu
 
 void OnNew();
