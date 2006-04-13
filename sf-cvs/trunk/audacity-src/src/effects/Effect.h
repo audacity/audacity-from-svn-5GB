@@ -137,9 +137,15 @@ class Effect {
    wxString GetPreviewName();
 
  private:
-    static int LastType;
-    static int LastIndex;
-    static Effect * pLastEffect;
+   static int LastType;
+   static int LastIndex;
+   static Effect * pLastEffect;
+
+   // Strip ampersand ('&' char) from string. This effectively removes the
+   // shortcut from the string ('E&qualizer' becomes 'Equalizer'). This is
+   // important for sorting.
+   static wxString StripAmpersand(const wxString& str);
+    
  public:
     static void SetLastEffect(int type, Effect * pEffect){
        LastType=type;
