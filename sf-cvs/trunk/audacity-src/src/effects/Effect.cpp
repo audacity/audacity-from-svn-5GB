@@ -35,6 +35,13 @@ int Effect::LastType=0;
 int Effect::LastIndex=0;
 Effect * Effect::pLastEffect=NULL;
 
+wxString Effect::StripAmpersand(const wxString& str)
+{
+   wxString strippedStr = str;
+   strippedStr.Replace(wxT("&"), wxT(""));
+   return strippedStr;
+}
+
 void Effect::RegisterEffect(Effect *f, int NewFlags)
 {
    f->mID = sNumEffects;
@@ -45,11 +52,11 @@ void Effect::RegisterEffect(Effect *f, int NewFlags)
    // Insert the effect into the list in alphabetical order
    // A linear search is good enough as long as there are
    // only a few dozen or even a few hundred effects.
-   wxString name = f->GetEffectName();
+   wxString name = StripAmpersand(f->GetEffectName());
    int len = mEffects.GetCount();
    int i;
    for(i=0; i<len; i++)
-      if (name.CmpNoCase(mEffects[i]->GetEffectName()) < 0) {
+      if (name.CmpNoCase(StripAmpersand(mEffects[i]->GetEffectName())) < 0) {
          mEffects.Insert(f, i);
          break;
       }
