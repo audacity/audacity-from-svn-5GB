@@ -22,8 +22,17 @@
 #include "../Internat.h"
 #include "../Project.h"
 #include "Ruler.h"
+#include "TrackPanel.h"
+#include "ControlToolBar.h"
 
 #define max(a,b)  ( (a<b)?b:a )
+
+#define SELECT_TOLERANCE_PIXEL 10
+
+#define PLAY_REGION_TRIANGLE_SIZE 6
+#define PLAY_REGION_RECT_WIDTH 2
+#define PLAY_REGION_RECT_HEIGHT 3
+#define PLAY_REGION_GLOBAL_OFFSET_Y 3
 
 //
 // Ruler
@@ -943,9 +952,10 @@ void RulerPanel::OnSize(wxSizeEvent &evt)
 #include "../AColor.h"
 
 BEGIN_EVENT_TABLE(AdornedRulerPanel, wxPanel)
-    EVT_ERASE_BACKGROUND(AdornedRulerPanel::OnErase)
-    EVT_PAINT(AdornedRulerPanel::OnPaint)
-    EVT_SIZE(AdornedRulerPanel::OnSize)
+   EVT_ERASE_BACKGROUND(AdornedRulerPanel::OnErase)
+   EVT_PAINT(AdornedRulerPanel::OnPaint)
+   EVT_SIZE(AdornedRulerPanel::OnSize)
+   EVT_MOUSE_EVENTS(AdornedRulerPanel::OnMouseEvents)
 END_EVENT_TABLE()
 
 AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
@@ -957,6 +967,15 @@ AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
 {
    SetLabel( wxT("Vertical Ruler") );
    SetName( wxT("Vertical Ruler") );
+
+   mTrackPanel = NULL;
+   mLeftOffset = 0;
+   mCurPos = -1;
+   mIndPos = -1;
+   mIndType = -1;
+   mPlayRegionStart = -1;
+   mPlayRegionEnd = -1;
+   mMouseEventState = mesNone;
 
    mBuffer = new wxBitmap( 1, 1 );
    mViewInfo = viewinfo;
@@ -1023,6 +1042,130 @@ void AdornedRulerPanel::OnSize(wxSizeEvent &evt)
    Refresh( false );
 }
 
+double AdornedRulerPanel::Pos2Time(int p)
+{
+   return (p-mLeftOffset) / mViewInfo->zoom + mViewInfo->h;
+}
+
+int AdornedRulerPanel::Time2Pos(double t)
+{
+   return mLeftOffset + (int)((t-mViewInfo->h) * mViewInfo->zoom + 0.5);
+}
+
+bool AdornedRulerPanel::IsWithinMarker(int mousePosX, double markerTime)
+{
+   if (markerTime < 0)
+      return false;
+      
+   int pixelPos = Time2Pos(markerTime);
+   int boundLeft = pixelPos - SELECT_TOLERANCE_PIXEL;
+   int boundRight = pixelPos + SELECT_TOLERANCE_PIXEL;
+   
+   return mousePosX >= boundLeft && mousePosX < boundRight;
+}
+
+void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
+{
+   bool isWithinStart = IsWithinMarker(evt.GetX(), mPlayRegionStart);
+   bool isWithinEnd = IsWithinMarker(evt.GetX(), mPlayRegionEnd);
+   
+   if (isWithinStart || isWithinEnd)
+      SetCursor(wxCursor(wxCURSOR_SIZEWE));
+   else
+      SetCursor(wxCursor(wxCURSOR_HAND));
+      
+   double mouseTime = Pos2Time(evt.GetX());
+   
+   if (evt.LeftDown())
+   {
+      mButtonDownMousePos = evt.GetX();
+
+      if (isWithinStart && isWithinEnd)
+      {
+         // Both could be selected, check which marker is nearer
+         if (fabs(mouseTime-mPlayRegionStart) < fabs(mouseTime-mPlayRegionEnd))
+            mMouseEventState = mesDraggingPlayRegionStart;
+         else
+            mMouseEventState = mesDraggingPlayRegionEnd;
+      } else if (isWithinStart)
+         mMouseEventState = mesDraggingPlayRegionStart;
+      else if (isWithinEnd)
+         mMouseEventState = mesDraggingPlayRegionEnd;
+      else {
+         // First, we enter "click" mode to avoid selecting a small range
+         // accidentially
+         mMouseEventState = mesSelectingPlayRegionClick;
+         mPlayRegionStart = mouseTime;
+         mPlayRegionEnd = mouseTime;
+         Refresh();
+      }
+         
+      CaptureMouse();
+   }
+   
+   switch (mMouseEventState)
+   {
+   case mesNone:
+      // do nothing
+      break;
+   case mesDraggingPlayRegionStart:
+      mPlayRegionStart = mouseTime;
+      Refresh();
+      break;
+   case mesDraggingPlayRegionEnd:
+      mPlayRegionEnd = mouseTime;
+      Refresh();
+      break;
+   case mesSelectingPlayRegionClick:
+      if (abs(evt.GetX() - mButtonDownMousePos) > SELECT_TOLERANCE_PIXEL)
+      {
+         // User moved mouse at least SELECT_TOLERANCE_PIXEL, so change
+         // from "click" mode to "range" mode to allow selecting a range
+         mMouseEventState = mesSelectingPlayRegionRange;
+         mPlayRegionEnd = mouseTime;
+         Refresh();
+      }
+      break;
+   case mesSelectingPlayRegionRange:
+      mPlayRegionEnd = mouseTime;
+      Refresh();
+      break;
+   }
+   
+   if (evt.LeftUp())
+   {
+      ReleaseMouse();
+
+      if (mPlayRegionStart < 0 && mPlayRegionEnd >= 0)
+      {
+         // This makes no sense, remove play region
+         mPlayRegionStart = -1;
+         mPlayRegionEnd = -1;
+      }
+      
+      if (mPlayRegionEnd < mPlayRegionStart)
+      {
+         // Swap values to make sure mPlayRegionStart > mPlayRegionEnd
+         double tmp = mPlayRegionStart;
+         mPlayRegionStart = mPlayRegionEnd;
+         mPlayRegionEnd = tmp;
+      }
+      
+      bool startPlaying = mPlayRegionStart >= 0 && 
+         (mMouseEventState == mesSelectingPlayRegionClick ||
+          mMouseEventState == mesSelectingPlayRegionRange);
+          
+      mMouseEventState = mesNone;
+      
+      if (startPlaying && mTrackPanel)
+      {
+         ControlToolBar* ctb = mTrackPanel->GetProject()->GetControlToolBar();
+         ctb->StopPlaying();
+         ctb->PlayDefault();
+      }
+   }
+}
+
 void AdornedRulerPanel::DoDraw(wxDC *dc)
 {
    DoDrawBorder( dc );
@@ -1042,6 +1185,64 @@ void AdornedRulerPanel::DoDraw(wxDC *dc)
    if( mViewInfo->sel0 == mViewInfo->sel1 )
    {
       DoDrawCursor( dc );
+   }
+   
+   DoDrawPlayRegion(dc);
+}
+
+void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
+{
+   double start, end;
+   GetPlayRegion(&start, &end);
+   
+   if (start >= 0)
+   {
+      int x1 = Time2Pos(start);
+      int x2 = Time2Pos(end) - 2;
+      int y = mInner.height/2;
+
+      bool isLocked = mTrackPanel->GetProject()->IsPlayRegionLocked();
+      AColor::PlayRegionColor(dc, isLocked);
+   
+      wxPoint tri[3];
+      wxRect r;
+
+      tri[0].x = x1;
+      tri[0].y = y + PLAY_REGION_GLOBAL_OFFSET_Y;
+      tri[1].x = x1 + PLAY_REGION_TRIANGLE_SIZE;
+      tri[1].y = y - PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+      tri[2].x = x1 + PLAY_REGION_TRIANGLE_SIZE;
+      tri[2].y = y + PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+      dc->DrawPolygon(3, tri);
+
+      r.x = x1;
+      r.y = y - PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+      r.width = PLAY_REGION_RECT_WIDTH;
+      r.height = PLAY_REGION_TRIANGLE_SIZE*2 + 1;
+      dc->DrawRectangle(r);
+   
+      if (end != start)
+      {
+         tri[0].x = x2;
+         tri[0].y = y + PLAY_REGION_GLOBAL_OFFSET_Y;
+         tri[1].x = x2 - PLAY_REGION_TRIANGLE_SIZE;
+         tri[1].y = y - PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+         tri[2].x = x2 - PLAY_REGION_TRIANGLE_SIZE;
+         tri[2].y = y + PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+         dc->DrawPolygon(3, tri);
+
+         r.x = x2 - PLAY_REGION_RECT_WIDTH + 1;
+         r.y = y - PLAY_REGION_TRIANGLE_SIZE + PLAY_REGION_GLOBAL_OFFSET_Y;
+         r.width = PLAY_REGION_RECT_WIDTH;
+         r.height = PLAY_REGION_TRIANGLE_SIZE*2 + 1;
+         dc->DrawRectangle(r);
+   
+         r.x = x1 + PLAY_REGION_TRIANGLE_SIZE;
+         r.y = y - PLAY_REGION_RECT_HEIGHT/2 + PLAY_REGION_GLOBAL_OFFSET_Y;
+         r.width = x2-x1 - PLAY_REGION_TRIANGLE_SIZE*2;
+         r.height = PLAY_REGION_RECT_HEIGHT;
+         dc->DrawRectangle(r);
+      }
    }
 }
 
@@ -1193,6 +1394,37 @@ void AdornedRulerPanel::DoDrawIndicator(wxDC * dc)
 
    AColor::IndicatorColor( dc, ( mIndType ? true : false ) );
    dc->DrawPolygon( 3, tri );
+}
+
+void AdornedRulerPanel::SetPlayRegion(double playRegionStart,
+                                      double playRegionEnd)
+{
+   mPlayRegionStart = playRegionStart;
+   mPlayRegionEnd = playRegionEnd;
+   Refresh();
+}
+
+void AdornedRulerPanel::ClearPlayRegion()
+{
+   mPlayRegionStart = -1;
+   mPlayRegionEnd = -1;
+   Refresh();
+}
+
+void AdornedRulerPanel::GetPlayRegion(double* playRegionStart,
+                                      double* playRegionEnd)
+{
+   if (mPlayRegionStart >= 0 && mPlayRegionEnd >= 0 &&
+       mPlayRegionEnd < mPlayRegionStart)
+   {
+      // swap values to make sure end > start
+      *playRegionStart = mPlayRegionEnd;
+      *playRegionEnd = mPlayRegionStart;
+   } else
+   {
+      *playRegionStart = mPlayRegionStart;
+      *playRegionEnd = mPlayRegionEnd;
+   }
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

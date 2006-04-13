@@ -474,6 +474,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags(0, 0, wxT("SnapOn"), wxT("SnapOff"), NULL);
 
    c->EndSubMenu();
+   
+   c->BeginSubMenu(_("Play &Region..."));
+   c->AddItem(wxT("LockPlayRegion"), _("Lock Play Region"), FN(OnLockPlayRegion));
+   c->AddItem(wxT("UnlockPlayRegion"), _("Unlock Play Region"), FN(OnUnlockPlayRegion));
+   c->SetCommandFlags(0, 0, wxT("LockPlayRegion"), wxT("UnlockPlayRegion"), NULL);
+   c->EndSubMenu();
 
    // Alternate strings
    wxString dummy1 = _("Turn Snap-To On");
@@ -4021,6 +4027,16 @@ void AudacityProject::OnExpandAllTracks()
 
    ModifyState();
    RedrawProject();
+}
+
+void AudacityProject::OnLockPlayRegion()
+{
+   mLockPlayRegion = true;
+}
+
+void AudacityProject::OnUnlockPlayRegion()
+{
+   mLockPlayRegion = false;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -76,6 +76,8 @@ class ControlToolBar:public ToolBar {
                        bool looped = false,
                        bool cutpreview = false);
 
+   void PlayDefault();
+   
    // Stop playing
    void StopPlaying();
 

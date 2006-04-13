@@ -436,6 +436,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.bIsPlaying = false;
    mViewInfo.bRedrawWaveform = false;
 
+   mLockPlayRegion = false;
    mLastUpdateUITime = ::wxGetUTCTime();
 
    CreateMenusAndCommands();
@@ -584,6 +585,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    InitialState();
    FixScrollbars();
    mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() );
+   mRuler->SetTrackPanel(mTrackPanel);
 
    //
    // Set the Icon
@@ -2572,8 +2574,11 @@ void AudacityProject::TP_DisplaySelection()
 
    if (gAudioIO->IsBusy())
       audioTime = gAudioIO->GetStreamTime();
-   else
+   else {
       audioTime = 0;
+      if (!mLockPlayRegion)
+         mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
+   }
 
    mSelectionBar->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
 }
@@ -2641,6 +2646,12 @@ void AudacityProject::TP_HasMouse()
 void AudacityProject::TP_HandleResize()
 {
    HandleResize();
+}
+
+void AudacityProject::GetPlayRegion(double* playRegionStart,
+                                    double *playRegionEnd)
+{
+   mRuler->GetPlayRegion(playRegionStart, playRegionEnd);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

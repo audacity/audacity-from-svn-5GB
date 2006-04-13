@@ -561,7 +561,14 @@ void ControlToolBar::PlayCurrentRegion(bool looped /* = false */,
          p->mLastPlayMode = loopedPlay;
       else
          p->mLastPlayMode = normalPlay;
-      PlayPlayRegion(p->GetSel0(), p->GetSel1(), looped, cutpreview);
+
+      double playRegionStart, playRegionEnd;
+      p->GetPlayRegion(&playRegionStart, &playRegionEnd);
+         
+      if (playRegionStart >= 0)
+         PlayPlayRegion(playRegionStart,
+                        playRegionEnd,
+                        looped, cutpreview);
    }
 }
 
@@ -605,17 +612,22 @@ void ControlToolBar::OnShiftUp(wxKeyEvent & event)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
+   PlayDefault();
+}
+
+void ControlToolBar::OnStop(wxCommandEvent &evt)
+{
+   StopPlaying();
+}
+
+void ControlToolBar::PlayDefault()
+{
    if(mPlay->WasControlDown())
       PlayCurrentRegion(false, true); /* play with cut preview */
    else if(mPlay->WasShiftDown())
       PlayCurrentRegion(true); /* play looped */
    else
       PlayCurrentRegion(false); /* play normal */
-}
-
-void ControlToolBar::OnStop(wxCommandEvent &evt)
-{
-   StopPlaying();
 }
 
 void ControlToolBar::StopPlaying()
