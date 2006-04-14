@@ -130,7 +130,7 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    /* Detemine if exported file will be stereo or mono or multichannel,
       and if mixing will occur */
 
-   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+   BOOL downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
    
    int channels;
    if( downMix || !mixerSpec )
@@ -533,7 +533,7 @@ void ExportMixerPanel::OnPaint(wxPaintEvent & evt)
    if( mChannelHeight > 30 )
       mChannelHeight = 30;
 
-   static double PI = 2 * acos( 0 );
+   static double PI = 2 * acos( 0.0 );
    double angle = atan( ( 3.0 * mHeight ) / mWidth );
    double radius = mHeight / ( 2.0 * sin( PI - 2.0 * angle ) );
    double totAngle = ( asin( mHeight / ( 2.0 * radius ) ) * 2.0 );
@@ -610,7 +610,7 @@ void ExportMixerPanel::OnPaint(wxPaintEvent & evt)
 
 double ExportMixerPanel::Distance( wxPoint &a, wxPoint &b )
 {
-   return sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) );
+   return sqrt( pow( a.x - b.x, 2.0 ) + pow( a.y - b.y, 2.0 ) );
 }
 
 //checks if p is on the line connecting la, lb with tolerence
