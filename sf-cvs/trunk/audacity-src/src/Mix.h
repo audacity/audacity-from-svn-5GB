@@ -30,6 +30,29 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
                 sampleFormat format, samplePtr src,
                 samplePtr *dests, int len, bool interleaved);
 
+class MixerSpec
+{
+   int mNumTracks, mNumChannels, mMaxNumChannels;
+  
+   void Alloc();
+   void Free();
+
+   public:
+   bool **mMap;
+   
+   MixerSpec( int numTracks, int maxNumChannels );
+   MixerSpec( const MixerSpec &mixerSpec );
+   virtual ~MixerSpec();
+
+   bool SetNumChannels( int numChannels );
+   int GetNumChannels() { return mNumChannels; }
+
+   int GetMaxNumChannels() { return mMaxNumChannels; }
+   int GetNumTracks() { return mNumTracks; }
+
+   MixerSpec& operator=( const MixerSpec &mixerSpec );
+};
+
 class Mixer {
  public:
    // 
@@ -41,7 +64,7 @@ class Mixer {
          double startTime, double stopTime,
          int numOutChannels, int outBufferSize, bool outInterleaved,
          double outRate, sampleFormat outFormat,
-         bool highQuality = true);
+         bool highQuality = true, MixerSpec *mixerSpec = NULL);
 
    virtual ~ Mixer();
 
@@ -103,6 +126,7 @@ class Mixer {
    int             *mQueueLen;
    int              mQueueMaxLen;
    int              mProcessLen;
+   MixerSpec        *mMixerSpec;
 
    // Output
    int              mMaxOut;

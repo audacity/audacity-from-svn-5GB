@@ -170,7 +170,7 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
              double startTime, double stopTime,
              int numOutChannels, int outBufferSize, bool outInterleaved,
              double outRate, sampleFormat outFormat,
-             bool highQuality)
+             bool highQuality, MixerSpec *mixerSpec)
 {
    int i;
 
@@ -192,6 +192,11 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    mFormat = outFormat;
    mApplyTrackGains = true;
    mGains = new float[mNumChannels];
+   if( mixerSpec && mixerSpec->GetNumChannels() == mNumChannels &&
+         mixerSpec->GetNumTracks() == mNumInputTracks )
+      mMixerSpec = mixerSpec;
+   else
+      mMixerSpec = NULL;
 
    if (mInterleaved) {
       mNumBuffers = 1;
@@ -495,12 +500,10 @@ sampleCount Mixer::Process(int maxToProcess)
       for(j=0; j<mNumChannels; j++)
          channelFlags[j] = 0;
 
-      //for now, ignore left and right when downmixing is not required
-      if( mNumChannels > 2 ) {
-         if( i < mNumChannels )
-            channelFlags[ i ] = 1;
-         else
-            channelFlags[ 0 ] = 1; //extra channels mixed to first channel
+      if( mMixerSpec ) {
+         //ignore left and right when downmixing is not required
+         for( j = 0; j < mNumChannels; j++ )
+            channelFlags[ j ] = mMixerSpec->mMap[ i ][ j ] ? 1 : 0;
       }
       else {
          switch(track->GetChannel()) {
@@ -568,6 +571,92 @@ void Mixer::Restart()
       mQueueStart[i] = 0;
       mQueueLen[i] = 0;
    }
+}
+
+MixerSpec::MixerSpec( int numTracks, int maxNumChannels )
+{
+   mNumTracks = mNumChannels = numTracks;
+   mMaxNumChannels = maxNumChannels;
+   
+   if( mNumChannels > mMaxNumChannels )
+         mNumChannels = mMaxNumChannels;
+   
+   Alloc();
+
+   for( int i = 0; i < mNumTracks; i++ )
+      for( int j = 0; j < mNumChannels; j++ )
+         mMap[ i ][ j ] = ( i == j );
+}
+
+MixerSpec::MixerSpec( const MixerSpec &mixerSpec )
+{
+   mNumTracks = mixerSpec.mNumTracks;
+   mMaxNumChannels = mixerSpec.mMaxNumChannels;
+   mNumChannels = mixerSpec.mNumChannels;
+
+   Alloc();
+
+   for( int i = 0; i < mNumTracks; i++ )
+      for( int j = 0; j < mNumChannels; j++ )
+         mMap[ i ][ j ] = mixerSpec.mMap[ i ][ j ];
+}
+
+void MixerSpec::Alloc()
+{
+   mMap = new bool*[ mNumTracks ];
+   for( int i = 0; i < mNumTracks; i++ )
+      mMap[ i ] = new bool[ mMaxNumChannels ];
+}
+
+MixerSpec::~MixerSpec()
+{
+   Free();
+}
+
+void MixerSpec::Free()
+{
+   for( int i = 0; i < mNumTracks; i++ )
+      delete[] mMap[ i ];
+
+   delete[] mMap;
+}
+
+bool MixerSpec::SetNumChannels( int newNumChannels )
+{
+   if( mNumChannels == newNumChannels )
+      return true;
+
+   if( newNumChannels > mMaxNumChannels )
+      return false;
+   
+   for( int i = 0; i < mNumTracks; i++ )
+   {
+      for( int j = newNumChannels; j < mNumChannels; j++ )
+         mMap[ i ][ j ] = false;
+
+      for( int j = mNumChannels; j < newNumChannels; j++ )
+         mMap[ i ][ j ] = false;
+   }
+
+   mNumChannels = newNumChannels;
+   return true;
+}
+
+MixerSpec& MixerSpec::operator=( const MixerSpec &mixerSpec )
+{
+   Free();
+   
+   mNumTracks = mixerSpec.mNumTracks;
+   mNumChannels = mixerSpec.mNumChannels;
+   mMaxNumChannels = mixerSpec.mMaxNumChannels;
+
+   Alloc();
+
+   for( int i = 0; i < mNumTracks; i++ )
+      for( int j = 0; j < mNumChannels; j++ )
+         mMap[ i ][ j ] = mixerSpec.mMap[ i ][ j ];
+
+   return *this;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
