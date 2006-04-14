@@ -38,7 +38,7 @@
 
 bool ExportOGG(AudacityProject *project,
                int numChannels, wxString fName,
-               bool selectionOnly, double t0, double t1)
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
    wxWindow  *parent = project;
@@ -123,7 +123,7 @@ bool ExportOGG(AudacityProject *project,
                             tracks->GetTimeTrack(),
                             t0, t1,
                             numChannels, SAMPLES_PER_RUN, false,
-                            rate, floatSample);
+                            rate, floatSample, true, mixerSpec);
 
    while(!cancelling && !eos) {
       float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);

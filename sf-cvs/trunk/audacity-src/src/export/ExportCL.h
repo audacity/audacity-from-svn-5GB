@@ -13,8 +13,11 @@
 
 #include <wx/string.h>
 
+class MixerSpec;
+
 bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
-              bool selectionOnly, double t0, double t1);
+              bool selectionOnly, double t0, double t1, 
+              MixerSpec *mixerSpec = NULL);
 
 #endif
 

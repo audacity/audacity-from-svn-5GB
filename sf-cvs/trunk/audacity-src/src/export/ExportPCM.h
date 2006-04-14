@@ -16,10 +16,12 @@ class wxString;
 class AudacityProject;
 class DirManager;
 class WaveTrack;
+class MixerSpec;
 
 bool ExportPCM(AudacityProject *project,
                int numChannels, wxString fName,
-               bool selectionOnly, double t0, double t1);
+               bool selectionOnly, double t0, double t1, 
+               MixerSpec *mixerSpec = NULL);
 
 
 #endif

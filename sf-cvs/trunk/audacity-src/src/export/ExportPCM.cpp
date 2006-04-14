@@ -43,7 +43,7 @@
 
 bool ExportPCM(AudacityProject *project,
                int numChannels, wxString fName,
-               bool selectionOnly, double t0, double t1)
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double       rate = project->GetRate();
    wxWindow    *parent = project;
@@ -108,7 +108,7 @@ bool ExportPCM(AudacityProject *project,
                             tracks->GetTimeTrack(),
                             t0, t1,
                             info.channels, maxBlockLen, true,
-                            rate, format);
+                            rate, format, true, mixerSpec);
 
    while(!cancelling) {
       sampleCount numSamples = mixer->Process(maxBlockLen);
