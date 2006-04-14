@@ -12,6 +12,7 @@
 #define __AUDACITY_EXPORTOGG__
 
 class AudacityProject;
+class MixerSpec;
 
 #include <wx/string.h>
 
@@ -20,7 +21,8 @@ bool ExportOGG(
    int numChannels,
    wxString fName,
    bool selectionOnly,
-   double t0, double t1);
+   double t0, double t1, 
+   MixerSpec *mixerSpec = NULL);
 
 #endif
 

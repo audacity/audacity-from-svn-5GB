@@ -15,6 +15,7 @@
 #include <wx/dynlib.h>
 
 class AudacityProject;
+class MixerSpec;
 
 class MP3Exporter {
    public:
@@ -71,7 +72,8 @@ void         ReleaseMP3Exporter();
         
 bool ExportMP3(AudacityProject *project,
                bool stereo, wxString fName,
-               bool selectionOnly, double t0, double t1);
+               bool selectionOnly, double t0, double t1, 
+               MixerSpec *mixerSpec = NULL);
 
 #endif
 

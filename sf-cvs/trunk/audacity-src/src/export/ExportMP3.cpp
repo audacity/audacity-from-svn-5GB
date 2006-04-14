@@ -1304,7 +1304,7 @@ MP3ExporterCleanup gMP3ExporterCleanup;
 
 bool ExportMP3(AudacityProject *project,
                bool stereo, wxString fName,
-               bool selectionOnly, double t0, double t1)
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double rate = project->GetRate();
    wxWindow *parent = project;
@@ -1384,7 +1384,7 @@ bool ExportMP3(AudacityProject *project,
                             tracks->GetTimeTrack(),
                             t0, t1,
                             stereo? 2: 1, inSamples, true,
-                            rate, int16Sample);
+                            rate, int16Sample, true, mixerSpec);
 
    while(!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);

@@ -46,7 +46,7 @@ struct wav_header {
 };
 
 bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
-              bool selectionOnly, double t0, double t1)
+              bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    int rate = int(project->GetRate() + 0.5);
    wxWindow *parent = project;
@@ -111,7 +111,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
                             tracks->GetTimeTrack(),
                             t0, t1,
                             channels, maxBlockLen, true,
-                            rate, int16Sample);
+                            rate, int16Sample, true, mixerSpec);
 
    while(!cancelling) {
       sampleCount numSamples = mixer->Process(maxBlockLen);
