@@ -59,6 +59,7 @@
   <li>Karsten Zeller (de)</li>
   <li>Antonio Paniagua (es)</li>
   <li>Ezequiel Plaza (es)</li>
+  <li>Waldo Ramirez (es)</li>
   <li>Petri Vuorio (fi)</li>
   <li>Lionel Allorge (fr)</li>
   <li>Olivier Ballestraz (fr)</li>
