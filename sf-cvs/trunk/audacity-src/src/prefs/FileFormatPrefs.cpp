@@ -96,7 +96,7 @@ PrefsPanel(parent)
    {
       wxStaticBoxSizer *downMixSizer = new wxStaticBoxSizer(
          new wxStaticBox(this, -1,
-            _("When exporting more than two tracks")),
+            _("When exporting tracks")),
          wxVERTICAL );
 
       bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
@@ -109,7 +109,7 @@ PrefsPanel(parent)
          wxGROW | wxALL, RADIO_BUTTON_BORDER );
 
       mDownMix[ 1 ] = new wxRadioButton(
-         this, -1, _("&Save each track as a separate channel. ( Only for Multichannel Formats )"),
+         this, -1, _("&Use Advanced Mixing Options"),
          wxDefaultPosition, wxDefaultSize, 0 );
       
       downMixSizer->Add( mDownMix[ 1 ], 0,
