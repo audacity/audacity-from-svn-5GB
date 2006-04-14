@@ -22,8 +22,8 @@
 #include "../Internat.h"
 #include "../Project.h"
 #include "Ruler.h"
-#include "TrackPanel.h"
-#include "ControlToolBar.h"
+#include "../TrackPanel.h"
+#include "../ControlToolBar.h"
 
 #define max(a,b)  ( (a<b)?b:a )
 
