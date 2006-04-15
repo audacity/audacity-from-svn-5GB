@@ -130,7 +130,7 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    /* Detemine if exported file will be stereo or mono or multichannel,
       and if mixing will occur */
 
-   BOOL downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
    
    int channels;
    if( downMix || !mixerSpec )
@@ -470,7 +470,7 @@ ExportMixerPanel::~ExportMixerPanel()
 void ExportMixerPanel::SetFont( wxMemoryDC &memDC, wxString text, int width,
       int height )
 {
-   int l = 0, u = height / 2, m, w, h;
+   int l = 0, u = 13, m, w, h;
    wxFont font = memDC.GetFont();
    while( l < u - 1 )
    {
@@ -539,7 +539,7 @@ void ExportMixerPanel::OnPaint(wxPaintEvent & evt)
    double totAngle = ( asin( mHeight / ( 2.0 * radius ) ) * 2.0 );
 
    //draw tracks
-   memDC.SetBrush( *wxBLUE_BRUSH );
+   memDC.SetBrush( AColor::envelopeBrush );
    angle = totAngle / ( mMixerSpec->GetNumTracks() + 1 );
   
    int max = 0, w, h;
@@ -570,7 +570,7 @@ void ExportMixerPanel::OnPaint(wxPaintEvent & evt)
    }
 
    //draw channels
-   memDC.SetBrush( *wxGREY_BRUSH );
+   memDC.SetBrush( AColor::playRegionBrush[ 0 ] );
    angle = ( asin( mHeight / ( 2.0 * radius ) ) * 2.0 ) / 
       ( mMixerSpec->GetNumChannels() + 1 );
 
