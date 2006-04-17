@@ -603,7 +603,7 @@ void CommandManager::ToggleAccels(wxMenu *m, bool show)
 
          // Rebuild the label based on whether the accelerator should
          // be shown.
-         wxString label = entry->label.BeforeFirst(wxT('\t'));
+         wxString label = mi->GetText().BeforeFirst(wxT('\t'));
          if (show && !entry->key.IsEmpty()) {
             label = label + wxT("\t") + entry->key;
          }
