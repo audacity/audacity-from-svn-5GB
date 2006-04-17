@@ -280,6 +280,10 @@ wxAccStatus TrackPanelAx::GetName( int childId, wxString* name )
          {
             *name->Append( _( " Solo On" ) );
          }
+         if( t->GetSelected() )
+         {
+            *name->Append( _( " Select On" ) );
+         }
       }
    }
 

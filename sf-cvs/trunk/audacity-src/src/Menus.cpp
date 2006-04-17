@@ -741,7 +741,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->SetDefaultFlags(0, 0);
    c->AddCommand(wxT("PrevFrame"),   _("Cycle backward through Dock, Track View, and Selection Bar\tCtrl+Shift+F6"), FN(PrevFrame));
-   c->AddCommand(wxT("NextFrame"),   _("Cycle foward through Dock, Track View, and Selection Bar\tCtrl+F6"), FN(NextFrame));
+   c->AddCommand(wxT("NextFrame"),   _("Cycle forward through Dock, Track View, and Selection Bar\tCtrl+F6"), FN(NextFrame));
 
 //   c->SetDefaultFlags(TrackPanelHasFocus, TrackPanelHasFocus);
    c->AddCommand(wxT("SelectTool"),  _("Selection Tool\tF1"),          FN(OnSelectTool));
@@ -782,13 +782,18 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
    c->AddCommand(wxT("PrevTrack"),     _("Move to Previous Track\tUp"),                      FN(OnCursorUp));
+   c->AddCommand(wxT("ShiftUp"),      _("Move to Previous and Change Selection\tShift+Up"),                  FN(OnShiftUp));
    c->AddCommand(wxT("NextTrack"),     _("Move to Next Track\tDown"),                        FN(OnCursorDown));
+   c->AddCommand(wxT("ShiftDown"),    _("Move to Next and Change Selection\tShift+Down"),             FN(OnShiftDown));
+   c->AddCommand(wxT("Toggle"),    _("Toggle Focused Track\tReturn"),             FN(OnToggle));
+   c->AddCommand(wxT("Toggle1"),    _("Toggle Focused Track\tNUMPAD_ENTER"),             FN(OnToggle));
+   c->AddCommand(wxT("Toggle2"),    _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
+
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
    c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left"),               FN(OnSelExtendLeft));
    c->AddCommand(wxT("SelExtRight"),   _("Selection Extend Right\tShift+Right"),             FN(OnSelExtendRight));
-   c->AddCommand(wxT("SelExtUp"),      _("Selection Extend Top\tShift+Up"),                  FN(OnSelExtendUp));
-   c->AddCommand(wxT("SelExtDown"),    _("Selection Extend Bottom\tShift+Down"),             FN(OnSelExtendDown));
+
    c->AddCommand(wxT("SelCntrLeft"),   _("Selection Contract Left\tCtrl+Shift+Right"),       FN(OnSelContractLeft));
    c->AddCommand(wxT("SelCntrRight"),  _("Selection Contract Right\tCtrl+Shift+Left"),       FN(OnSelContractRight));
 
@@ -1375,12 +1380,27 @@ void AudacityProject::OnSelToEnd()
 
 void AudacityProject::OnCursorUp()
 {
-   mTrackPanel->OnPrevTrack();
+   mTrackPanel->OnPrevTrack( false );
+}
+
+void AudacityProject::OnShiftUp()
+{
+   mTrackPanel->OnPrevTrack( true );
 }
 
 void AudacityProject::OnCursorDown()
 {
-   mTrackPanel->OnNextTrack();
+   mTrackPanel->OnNextTrack( false );
+}
+
+void AudacityProject::OnShiftDown()
+{
+   mTrackPanel->OnNextTrack( true );
+}
+
+void AudacityProject::OnToggle()
+{
+   mTrackPanel->OnToggle( );
 }
 
 void AudacityProject::OnCursorLeft()
@@ -1411,16 +1431,6 @@ void AudacityProject::OnSelContractLeft()
 void AudacityProject::OnSelContractRight()
 {
    mTrackPanel->OnCursorLeft( true, true );
-}
-
-void AudacityProject::OnSelExtendUp()
-{
-   mTrackPanel->OnPrevTrack( true );
-}
-
-void AudacityProject::OnSelExtendDown()
-{
-   mTrackPanel->OnNextTrack( true );
 }
 
 //this pops up a dialog which allows the left selection to be set.

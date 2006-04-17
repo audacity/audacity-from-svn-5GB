@@ -4219,139 +4219,208 @@ void TrackPanel::DrawOutsideOfTrack(Track * t, wxDC * dc, const wxRect r)
    }
 }
 
-/// The following 2 functions move to the previous and next tracks,
-/// selecting after movement.
-///
-void TrackPanel::OnPrevTrack( bool select )
+// The following 2 functions move to the previous and next tracks,
+// selecting and unselecting depending if you are on the start of a
+// block or not.
+void TrackPanel::OnPrevTrack( bool shift )
 {
    Track *t;
    Track *p;
+   TrackListIterator iter( mTracks );
+   bool tSelected,pSelected;
 
-   // Get currently focused track...bail if there isn't one.
-   t = GetFocusedTrack();
-   if( t == NULL )
+   t = GetFocusedTrack();   // Get currently focused track
+   if( t == NULL )   // if there isn't one (does this ever happen?), focus on first
    {
+      t = iter.First();
+      SetFocusedTrack( t );
       return;
    }
 
-   // Get previous track
-   p = mTracks->GetPrev( t, true );
-
-   // On first track...complain and stay on it
-   if( p == NULL )
+   if( shift )
    {
-      wxBell();
-
-      // We're done if linear track navigation desired
-      if( !mCircularTrackNavigation )
+      p = mTracks->GetPrev( t, true ); // Get previous track
+      if( p == NULL )   // On first track
       {
+         wxBell();
+         if( mCircularTrackNavigation )
+         {
+            TrackListIterator iter( mTracks );
+            for( Track *d = iter.First(); d; d = iter.Next( true ) )
+            {
+               p = d;
+            }
+         }
+         else
+         {
+            EnsureVisible( t );
+            wxLogDebug(wxT("On last track, %s"),t->GetName());
+            return;
+         }
+      }
+      tSelected = t->GetSelected();
+      pSelected = p->GetSelected();
+      if( tSelected & pSelected )
+      {
+         mTracks->Select( t, false );
+         SetFocusedTrack( p );   // move focus to next track down
+         EnsureVisible( p );
          return;
       }
-
-      // Wrap to the last track
-      TrackListIterator iter( mTracks );
-      for( Track *d = iter.First(); d; d = iter.Next( true ) )
+      if( tSelected & !pSelected )
       {
-         p = d;
+         mTracks->Select( p, true );
+         SetFocusedTrack( p );   // move focus to next track down
+         EnsureVisible( p );
+         return;
+      }
+      if( !tSelected & pSelected )
+      {
+         mTracks->Select( p, false );
+         SetFocusedTrack( p );   // move focus to next track down
+         EnsureVisible( p );
+         return;
+      }
+      if( !tSelected & !pSelected )
+      {
+         mTracks->Select( t, true );
+         SetFocusedTrack( p );   // move focus to next track down
+         EnsureVisible( p );
+         return;
       }
    }
-   
-   // Make sure it's in view
-   EnsureVisible( p );
-
-   // Not selecting...we're done
-   if( !select )
+   else
    {
-      mViewInfo->sel0 = mViewInfo->sel1;
-      SelectNone();
-      return;
+      p = mTracks->GetPrev( t, true ); // Get next track
+      if( p == NULL )   // On last track so stay there?
+      {
+         wxBell();
+         if( mCircularTrackNavigation )
+         {
+            TrackListIterator iter( mTracks );
+            for( Track *d = iter.First(); d; d = iter.Next( true ) )
+            {
+               p = d;
+            }
+            SetFocusedTrack( p );   // Wrap to the first track
+            EnsureVisible( p );
+            return;
+         }
+         else
+         {
+            EnsureVisible( t );
+            return;
+         }
+      }
+      else
+      {
+         SetFocusedTrack( p );   // move focus to next track down
+         EnsureVisible( p );
+         return;
+      }
    }
-
-   // Must be working our way up from bottom to starting track...deselect it
-   if( p->GetSelected() )
-   {
-      mTracks->Select( t, false );
-      return;
-   }
-
-   // Default to full selection if not already selected
-   if( mViewInfo->sel0 == mViewInfo->sel1 )
-   {
-      mViewInfo->sel0 = mTracks->GetMinOffset();
-      mViewInfo->sel1 = mTracks->GetEndTime();
-      mTracks->Select( t );
-      EnsureVisible( t );
-      return;
-   }
-
-   // Select the new track
-   mTracks->Select( p, true );
-
-   return;
 }
 
-void TrackPanel::OnNextTrack( bool select )
+void TrackPanel::OnNextTrack( bool shift )
 {
    Track *t;
    Track *n;
+   TrackListIterator iter( mTracks );
+   bool tSelected,nSelected;
 
-   // Get currently focused track...bail if there isn't one.
-   t = GetFocusedTrack();
-   if( t == NULL )
+   t = GetFocusedTrack();   // Get currently focused track
+   if( t == NULL )   // if there isn't one (does this ever happen?), focus on first
    {
+      t = iter.First();
+      SetFocusedTrack( t );
       return;
    }
 
-   // Get next track
-   n = mTracks->GetNext( t, true );
-
-   // On last track...complain and stay on it if not circling the wagons
-   if( n == NULL )
+   if( shift )
    {
-      wxBell();
-
-      // We're done if linear track navigation desired
-      if( !mCircularTrackNavigation )
+      n = mTracks->GetNext( t, true ); // Get next track
+      if( n == NULL )   // On last track so stay there
       {
+         wxBell();
+         if( mCircularTrackNavigation )
+         {
+            TrackListIterator iter( mTracks );
+            n = iter.First();
+         }
+         else
+         {
+            EnsureVisible( t );
+            wxLogDebug(wxT("On last track, %s"),t->GetName());
+            return;
+         }
+      }
+      tSelected = t->GetSelected();
+      nSelected = n->GetSelected();
+      if( tSelected & nSelected )
+      {
+         mTracks->Select( t, false );
+         SetFocusedTrack( n );   // move focus to next track down
+         EnsureVisible( n );
          return;
       }
-
-      // Wrap to the first track
-      TrackListIterator iter( mTracks );
-      n = iter.First();
+      if( tSelected & !nSelected )
+      {
+         mTracks->Select( n, true );
+         SetFocusedTrack( n );   // move focus to next track down
+         EnsureVisible( n );
+         return;
+      }
+      if( !tSelected & nSelected )
+      {
+         mTracks->Select( n, false );
+         SetFocusedTrack( n );   // move focus to next track down
+         EnsureVisible( n );
+         return;
+      }
+      if( !tSelected & !nSelected )
+      {
+         mTracks->Select( t, true );
+         SetFocusedTrack( n );   // move focus to next track down
+         EnsureVisible( n );
+         return;
+      }
    }
-   
-   // Make sure it's in view
-   EnsureVisible( n );
-
-   // Not selecting...we're done
-   if( !select )
+   else
    {
-      mViewInfo->sel0 = mViewInfo->sel1;
-      SelectNone();
-      return;
+      n = mTracks->GetNext( t, true ); // Get next track
+      if( n == NULL )   // On last track so stay there
+      {
+         wxBell();
+         if( mCircularTrackNavigation )
+         {
+            TrackListIterator iter( mTracks );
+            n = iter.First();
+            SetFocusedTrack( n );   // Wrap to the first track
+            EnsureVisible( n );
+            return;
+         }
+         else
+         {
+            EnsureVisible( t );
+            return;
+         }
+      }
+      else
+      {
+         SetFocusedTrack( n );   // move focus to next track down
+         EnsureVisible( n );
+         return;
+      }
    }
+}
 
-   // Must be working our way up from bottom to starting track
-   if( n->GetSelected() )
-   {
-      mTracks->Select( t, false );
-      return;
-   }
+void TrackPanel::OnToggle()
+{
+   Track *t;
 
-   // Default to full selection if not already selected
-   if( mViewInfo->sel0 == mViewInfo->sel1 )
-   {
-      mViewInfo->sel0 = mTracks->GetMinOffset();
-      mViewInfo->sel1 = mTracks->GetEndTime();
-      mTracks->Select( t );
-      EnsureVisible( t );
-      return;
-   }
-
-   // Select the new track
-   mTracks->Select( n, true );
-
+   t = GetFocusedTrack();   // Get currently focused track
+   mTracks->Select( t, !t->GetSelected() );
+   EnsureVisible( t );
    return;
 }
 
@@ -4951,7 +5020,10 @@ void TrackPanel::DrawBordersAroundTrack(Track * t, wxDC * dc,
                                         const int labelw)
 {
    // Borders around track and label area
-   dc->SetPen(*wxBLACK_PEN);
+   if( mAx->IsFocused( t ) )
+      dc->SetPen(*wxGREEN_PEN);
+   else
+      dc->SetPen(*wxBLACK_PEN);
    dc->DrawLine(r.x, r.y, r.x + r.width - 1, r.y);      // top
    dc->DrawLine(r.x, r.y, r.x, r.y + r.height - 1);     // left
    dc->DrawLine(r.x, r.y + r.height - 2, r.x + r.width - 1, r.y + r.height - 2);        // bottom

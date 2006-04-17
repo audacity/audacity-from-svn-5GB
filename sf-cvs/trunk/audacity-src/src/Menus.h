@@ -86,13 +86,15 @@ void OnTrackClose();
         // Selection-Editing Commands
 
 void OnCursorUp();
+void OnShiftUp();
 void OnCursorDown();
+void OnShiftDown();
+void OnToggle();
+
 void OnCursorLeft();
 void OnCursorRight();
 void OnSelExtendLeft();
 void OnSelExtendRight();
-void OnSelExtendUp();
-void OnSelExtendDown();
 void OnSelContractLeft();
 void OnSelContractRight();
 
