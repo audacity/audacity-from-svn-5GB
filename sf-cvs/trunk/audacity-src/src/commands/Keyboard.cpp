@@ -63,6 +63,9 @@ wxString KeyEventToKeyString(wxKeyEvent &event)
       case WXK_TAB:
          newStr += wxT("Tab");
          break;
+      case WXK_RETURN:
+         newStr += wxT("Return");
+         break;
       case WXK_PRIOR:
          newStr += wxT("PageUp");
          break;

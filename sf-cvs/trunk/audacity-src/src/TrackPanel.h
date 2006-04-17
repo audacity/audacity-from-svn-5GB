@@ -193,8 +193,9 @@ class TrackPanel:public wxPanel {
    void HandleControlKey(bool down);
    AudacityProject * GetProject() const;
 
-   void OnPrevTrack(bool select = false);
-   void OnNextTrack(bool select = false);
+   void OnPrevTrack(bool shift = false);
+   void OnNextTrack(bool shift = false);
+   void OnToggle();
 
    void OnCursorLeft(bool shift, bool ctrl);
    void OnCursorRight(bool shift, bool ctrl);
