@@ -1808,6 +1808,8 @@ int LabelTrack::AddLabel(double t, double t1, const wxString &title)
    l->t = t;
    l->t1 = t1;
    l->title = title;
+   mCurrentCursorPos = title.length();
+   mInitialCursorPos = mCurrentCursorPos;
 
    int len = mLabels.Count();
    int pos = 0;
