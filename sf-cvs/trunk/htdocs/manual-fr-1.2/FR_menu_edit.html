@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+	<title>Edit Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p><a class=ss href="FR_index.html"><font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_file.html">
+        <font color="#0000FF">Fichier - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref_current href="FR_menu_edit.html">
+        <font color="#0000FF">Edition - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_view.html">
+        <font color="#0000FF">Affichage - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_project.html">
+        <font color="#0000FF">Projet - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_generate.html">
+        <font color="#0000FF">Générer - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_effects.html">
+        <font color="#0000FF">Effets - </font> </a></td>
+	  	<td dir="ltr"><a class=menuref href="FR_menu_analyze.html">
+        <font color="#0000FF">Analyse</font></a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Menu Edition</font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%" height="1266"><tr>
+    <td valign=top width="50%" height="381">
+
+
+<a name="undo"></a>
+<p class=menuref_item>Annuler ...</p>
+<p class=a>Annule la dernière action que vous avez réalisée.  Audacity supporte 
+un nombre illimité d'annulations - et vous pouvez annuler toutes les opérations 
+pour revenir à l'état lors de l'ouverture de la fenêtre.</p>
+
+
+
+<a name="redo"></a>
+<p class=menuref_item>Refaire</p>
+<p class=a>Cela vous permettra de refaire les opérations que vous venez 
+d'annuler. Après avoir exécuté une nouvelle opération, vous ne pouvez plus 
+refaire les opérations que vous aviez annulé sans annuler cette dernière 
+opération elle même.</p>
+
+
+<a name="cut"></a>
+<P class=menuref_item>Couper</P>
+<p class=a>Déplace les données sélectionnées et les place dans le presse-papier. 
+Seulement une sélection peut être dans le presse-papier à un instant T, mais 
+elle peut contenir plusieurs pistes.</p>
+
+
+<a name="copy"></a>
+<p class=menuref_item>Copier</p>
+<p class=a>Copie la sélection vers le presse-papier sans la déplacer du projet.</p>
+
+
+	</td>
+	<td valign=top width="50%" height="381">
+
+
+<a name="paste"></a>
+<p class=menuref_item>Coller</p>
+<p class=a>Insères ce qui est dans le presse-papier à la position où se trouve 
+le curseur dans le projet, remplaçant les données sélectionnées s'il y en a. </p>
+
+
+<a name="trim"></a>
+<p class=menuref_item>Ne garder que la sélection </p>
+<p class=a>Efface tout sauf la sélection. </P>
+
+
+<a name="delete"></a>
+<p class=menuref_item>Effacer </p>
+<p class=a >Efface les données sélectionnées sans les copier dans le 
+presse papier .</p>
+
+<a name="silence"></a>
+<p class=menuref_item>Silence</p>
+<p class=a>Efface les données sélectionnées et les remplace par un silence avant 
+de les supprimer complètement. Cette commande figure aussi dans le menu Générer 
+mais avec possibilité de choisir la longueur du silence sans sélectionner de 
+zone audio .</p>
+
+<!-- a name="insertsilence"></a>
+<p class=menuref_item>Insert Silence...</p>
+<p class=a>Prompts for a dialog indicating the number of seconds of silence
+to insert, then inserts that amount of silence at the current
+selection cursor position in the project, replacing whatever audio
+data is currently selected, if any.</p -->
+
+
+	</td>
+    </tr>
+    <tr><td colspan=2 class=top_b height="15"></td></tr>
+
+    <tr>
+      <td valign=top height="542">
+
+<a name="split"></a>
+<p class=menuref_item>&nbsp;Séparer (Glisser Déplacer)&nbsp; </p>
+<p class=a>Déplace la zone sélectionnée vers une ou plusieurs pistes, et 
+remplace, dans l'original,&nbsp; la partie affectée par un silence. Voir schéma 
+ci-dessous :</p>
+
+<center><img border=0 src="images/split.png" width="320" height="80" alt="illustration de fonction Séparer"></center>
+
+<a name="duplicate"></a>
+<p class=menuref_item>Dupliquer</p>
+<p class=a>Crée une copie de tout ou partie de piste ou définition de piste vers 
+de nouvelles pistes. Voir le schéma ci-dessous :</p>
+
+<center><img border=0 src="images/duplicate.png" width="320" height="80" alt="illustration de fonction Dupliquer"><p>&nbsp;</p>
+</center>
+
+    </td>
+    <td valign=top rowspan="2" height="858">
+
+<a name="splitatlabels"></a>
+<p class=menuref_item>Séparer <font color="#800000">: </font>
+<span style="font-weight: 400">effet sur les annotations </span></p>
+<p class=a>L'utilisation de la fonction Séparer, ci-contre, sur une piste 
+annotée, crée aussi une piste d'annotations. Mais le contenu initial 
+d'annotations n'est pas copié vers cette nouvelle piste. </p>
+
+<a name="selectall"></a>
+<p class=menuref_item>Sélectionner ... Tout</p>
+<p class=a>Sélectionne tous les morceaux de toutes&nbsp; les pistes.</p>
+
+<a name="selectstarttocursor"></a>
+<p class=menuref_item>Sélectionner ... du début jusqu'au&nbsp; Curseur</p>
+<p class=a dir="ltr">Sélectionne le morceau du début jusqu'au curseur courant.</p>
+
+<a name="selectcursortoend"></a>
+<p class=menuref_item>Sélectionner ... du Curseur à la fin</p>
+<p class=a>Sélectionne le morceau du curseur jusqu'à la fin du projet. quel que 
+soit sa longueur. </p>
+
+
+<p class=menuref_item>Préférences</p>
+<p class=a dir="ltr">Ouvrez la fenêtre qui vous permet de configurer Audacity.
+Pour plus de détails sur les différentes préférences, Voir la section&nbsp; <a href="FR_prefs.html">
+<font color="#0000FF">Préférences Audacity</font></a><font color="#0000FF">.</font></p>
+
+  <table width="573" style="border-left-width: 0; border-right-width: 0; border-top-width: 0">
+    <tr>
+        <td valign=top width="563" style="border-top-style: none; border-top-width: medium">
+
+<a name="cursortotrackstart"></a>
+<p class=menuref_item align="center"><span style="font-size: 14pt">-&gt; Déplacer 
+le curseur &lt;-</span></p>
+<p class=menuref_item>Curseur en début de piste</p>
+<p class=a>Place le curseur au début de la piste audio courante.</P>
+
+<a name="cursortotrackend"></a>
+<p class=menuref_item dir="ltr">Curseur en fin de piste</p>
+<p class=a dir="ltr">Place le curseur à la fin de la piste audio courante.</P>
+
+<a name="cursortoselectionstart"></a>
+<p class=menuref_item>Curseur en début de Sélection </p>
+<p class=a>Place le curseur au début de la sélection courante .</P>
+
+<a name="cursortoselectionend"></a>
+<p class=menuref_item dir="ltr">Curseur en fin de Sélection </p>
+<p class=a dir="ltr">Place le curseur à la fin de la sélection courante.</P>
+
+	    </td>
+    </tr>
+</table>
+
+    </td>
+  </tr>
+
+    <tr>
+      <td valign=top height="312">
+
+<p><br></p>
+<p class=menuref_item dir="ltr">Sélection ...</p>
+<p class=a dir="ltr"><b>Par bloc ou libre</b>. Par bloc donne la possibilité 
+d'être précis sur l'échantillon sélectionné. Voir chapitre &quot;Séparer les pistes 
+très longues&quot; et la fonction [<span style="font-weight: 700; background-color: #00FFFF">Affichage 
+/ Choisir un format de sélection]</span> qui conditionne la taille du bloc à 
+sélectionner.</p>
+
+<p class=menuref_item dir="ltr">Enregistrer la sélection</p>
+<p class=a>Mémorise la sélection courante,(ou la position du curseur), vous 
+permettant de la restaurer plus tard. </p>
+
+<a name="cursororselectionrestore"></a>
+<p class=menuref_item dir="ltr">Restaurer la sélection</p>
+<p class=a dir="ltr">Restaure l'élément enregistré avec la commande ci-dessus. 
+Permet de retrouver rapidement un élément intéressant.</p>
+
+        <p>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+</body>
+</html>

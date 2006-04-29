@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Audioeffect - Delay</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+<body>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0 height="16">
+  <tr>
+    <td width="25%" align=left valign=top height="16"><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center height="16"><a class="ss" href="FR_effects.html">
+    <font color="#0000FF">Retour aux Effets</font></a></td>
+    <td width="25%" align=right height="16"></td>
+  </tr>
+</table>
+
+<H1 align=center>Retard (Delay)</H1>
+</center>
+
+<P class=qr>Qu'est ce qu'un retard ?</P>
+<P class=a>
+ Cet effet Retard  utilise une zone de mémoire RAM pour stocker l'audio pendant un 
+ certain temps, au bout duquel il le restitue.</P>
+<P class=a>
+ Cette zone n'est pas toujours suffisante pour stocker la valeur définie dans le 
+ temps de base, mais reste très important car de nombreux effets pré définissent 
+ leur propres paramètres.
+</P>
+<center>
+<img border=0 src="images/FR_delay_signalflow.jpg" width="296" height="117" alt="Signal de l'effet retard">
+<BR>&nbsp;<br>
+<img border=0 src="images/FR_delay.jpg" width="459" height="169" alt="diagramme de l'effet Retard">
+</center>
+
+
+<P class=qr>Retards multiples</P>
+<P class=a dir="ltr">
+ Ceci incorpore plusieurs lignes de retard, chacun ayant son paramètre temps, 
+ niveau(amplitude) et panneau de contrôle . Le paramètre de retour (feedback) 
+ est généralement partagé par tous les retards.&nbsp;Le multi retards modulé peut 
+ être aussi utilisé pour créer des effets de <a href="FR_effects_chorus.html">
+ <font color="#0000FF">chorus</font></a>.
+</P>
+<BR>
+
+
+
+<P class=qr>Paramètres usuels des délais numériques </P>
+<table cellpadding=4>
+<tr>
+ <td valign=top align=right class=menuref_item>Temps de Retard</td>
+ <td valign=top>
+   <P class=a>
+    Plage de
+    Paramétrage : 0.000 à xxx.xxx secondes
+   </P>
+   <P class=a>
+    La borne haute de ce paramètre (xxx.xxx) dépend&nbsp; du montant de RAM du 
+    matériel, ou du montant de RAM réservé par le logiciel de plugin. Pour les plugins 
+    logiciels, les programmeurs définissent cette borne haute. Elle peut aller 
+    de quelques secondes (4 secondes sous Windows) à plusieurs minutes (sur 
+    certains plugins) en fonction du matériel et du logiciel .<BR>
+   </P>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Retour</td>
+ <td valign=top>
+   <P class=a>
+    Plusieurs types de paramètres matériels et logiciels :&nbsp;
+   </P>
+   <P class=a dir="ltr">
+    <B>a) Plage de pourcentage : 0 à 99(or 100)%</B>
+    <BR>
+    C'est utilisé par beaucoup de matériels et quelques plugins. Cela détermine 
+    la valeur du retard pour que le signal revienne de la zone mémoire. Le même 
+    retard est appliqué partout . Ce paramètre est courant pour le feedback.
+   </P>
+   <P class=a>
+    <B>b) Temps de déclin (Decay) : 0.1 à xx seconds</B>
+    <BR>
+    Une approche légèrement différente. Le plugin ou le matériel détermine la 
+    valeur du signal retardé, qu'il revoie dans sa zone mémoire elle même. Ceci 
+    peut paraître très intuitif et n'est pas très utilisé.</P>
+   <P class=a>
+    <B>c) Feedback Delay Time : 0.000 to xxx.xxx seconds</B>
+    <BR>
+    C'est une ligne additionnelle de retardement du signal à l'entrée. 
+    Il nécessite un paramètre de niveau, défini en %.&nbsp;
+   </P>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>Egaliseurs &nbsp;&amp;&nbsp;Filtres</td>
+ <td valign=top>
+   <P class=a>
+    De nombreux plugins de retard comportent des égaliseurs haut ou bas niveau et 
+    des filtres haut et/ou bas&nbsp; Ces égaliseurs et filtres traitent 
+    généralement chaque retard . L'idée est ici de simuler la distance car avec 
+    l'augmentation de la distance, les hautes et basses fréquences sont 
+    étouffées.
+   </P>
+   <P class=a>
+    <table><tr>
+     <td valign=top>
+      <B><B>Hi- &amp; Lowshelf Egaliseurs</B><BR>
+      <UL><LI>Volume : -xx to xx dB</LI><LI>Fréquence: 20 Hz - 20 kHz</LI></UL>
+     </td>
+     <td valign=top>
+      <B><B>Low- &amp; Hipass Filtres</B><BR>
+      <UL><LI>Fréquence: 20 Hz - 20 kHz</LI><LI>Filtre de puissance : 6, 12, 18 or 24 dB/Octave</LI></UL>
+     </td>
+    </tr></table>
+   </P>
+   <P class=a>
+   </P><BR>
+ </td>
+</tr>
+<tr>
+ <td valign=top align=right class=menuref_item>PANNEAU de contrôle</td>
+ <td valign=top>
+   <P class=a>
+    Ce sont les types de panneaux stéréo les plus courants que vous trouverez 
+    pour régler les paramètres.
+   </P>
+   <P class=a>
+    <table cellpadding=2>
+       <tr>
+        <td align=center>GAUCHE</td> <td align=center>DROITE</td><td rowspan=2>&nbsp;&nbsp;</td>
+        <td align=center>GAUCHE</td> <td align=center>DROITE</td><td rowspan=2>&nbsp;&nbsp;</td>
+        <td align=center>GAUCHE</td> <td align=center>DROITE</td>
+       </tr>
+       <tr><td align=center>-63</td>  <td align=center>+64</td>
+           <td align=center>0%</td>   <td align=center>100%</td>
+           <td align=center>-100%</td><td align=center>100%</td></tr>
+    </table>
+   </P>
+   <P class=a>
+    Un simple panneau de contrôle pour le délai. Le retour peut aussi avoir le 
+    sien.
+   </P>
+   <BR>
+ </td>
+</tr>
+</table>
+
+<P>&nbsp;</P>
+</body>
+</html>

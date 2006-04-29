@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>Project Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel=stylesheet type="text/css" href="audacity.css">
+</head>
+
+<body>
+<!--top table-->
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top>
+    <p dir="ltr"><a class=ss href="FR_index.html">
+    <font color="#000080">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+<BR>
+<table cellpadding=0 cellspacing=0 width="98%">
+	<tr>
+	  <td align=center>
+	  	<table cellpadding=0 cellspacing=0><tr>
+	  	<td><a class=menuref href="FR_menu_file.html"><font color="#0000FF">Fichier -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_edit.html"><font color="#0000FF">Edition -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_view.html"><font color="#0000FF">Affichage -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_project.html"><font color="#0000FF">Projet -</font></a></td>
+	  	<td><a class=menuref_current href="FR_menu_generate.html">
+        <font color="#0000FF">Générer - </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_effects.html"><font color="#0000FF">Effets -
+        </font> </a></td>
+	  	<td><a class=menuref href="FR_menu_analyze.html"><font color="#0000FF">Analyse</font></a></td>
+	  	</tr></table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class=bg_r align=center><font size="+3">Menu Générer </font></td>
+	</tr>
+</table>
+
+<center>
+  <table width="100%"><tr>
+    <td valign=top width="50%">
+
+<a name="silence"></a>
+<p class=menuref_item>Silence</p>
+<p class=a><B>Insère </B>un silence. La longueur est déterminée par celle de 
+votre sélection et écrasera cette sélection.</p>
+<P class=a>S'il n'y a pas de sélection, la longueur par défaut sera de <B>30 secondes </B>
+et le point d'insertion au niveau du curseur.</P>
+<P class=a>Par exemple, pour insérer un silence de 2 secondes à un certain 
+point, placez le curseur à ce point, sélectionnez 2 secondes (échelle de temps) 
+et activez la fonction. La longueur de votre sélection s'affiche et peut 
+être ajustée. <b>Avec</b> une sélection, l'insertion écrase la zone. <b>Sans</b> 
+zone sélectionnée , elle décale l'original et insère un silence.</td>
+	<td valign=top width="50%">
+
+<a name="tone"></a>
+<p class=menuref_item>Son</p>
+<p class=a><B>Insère </B>&nbsp;un type de son déterminé par la forme, la fréquence et 
+l'amplitude. Les autres modalités sont identiques au Silence (durée...)</p>
+<P class=a><B>Paramètres :</B></P>
+<table>
+	<tr>
+	  <td valign=top class=ss>forme d'onde</td>
+	  <td valign=top class=ss><span style="font-weight: 400"><font size="2">Sinusoïdale, Carré, 
+      en Dent de scie</font></span></td>
+	</tr>
+	<tr>
+	  <td valign=top class=ss>Fréquence (Hz)</td>
+	  <td valign=top class=ss><span style="font-weight: 400"><font size="2">1-20000 (les valeurs 
+      &lt; 1.0 et &gt; 20000 seront corrigées de&nbsp; 1.0 à&nbsp; 20000!)</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span></td>
+	</tr>
+	<tr>
+	  <td valign=top class=ss>Amplitude</td>
+	  <td valign=top class=ss><span style="font-weight: 400"><font size="2">0-1 - C'est le 
+      volume de la vague crée.</font></span></td>
+	</tr>
+	</table>
+</P>
+
+	</td>
+    </tr>
+    <tr>
+	<td valign=top width="50%">
+&nbsp;<p class=menuref_item>Click track&nbsp;&nbsp; (Piste de Tempo / rythme)</p>
+<p class=a><B>Insère </B>une zone de tempo (métronome) avec réglages spécifiques : 
+tempo; nombre de battements, nombre de mesures. Les autres modalités sont 
+identiques au Silence.</p>
+	</td>
+    </tr>
+
+    <tr>
+	<td valign=top width="50%">
+<a name="whitenoise"></a>
+<p class=menuref_item>Bruit blanc</p>
+<p class=a><B>Insère </B>&nbsp;un bruit blanc. (onde de fond cf. porteuse radio) 
+Les modalités sont identiques au Silence.</p>
+	
+	</td>
+	<td valign=top width="50%">
+<a name="pluck"></a>
+<p class=menuref_item>Pluck&nbsp; (Note) </p>
+<p class=a><B>Insère </B>une note pincée. Les autres modalités sont identiques 
+au Silence.</p>
+<table>
+	<tr>
+	  <td valign=top class=ss>Pitch (ton)</td>
+	  <td valign=top class=ss>
+      <p dir="ltr">0-127
+	    <BR>
+	    <span style="font-weight: 400">Le chiffre correspond à la valeur d'une 
+      note MIDI, qui est assignée au ton. Plus le chiffre est haut, plus la note 
+       
+      est aiguë . </span>
+	  </td>
+	</tr>
+	</table>
+</P>
+	</td>
+    </tr>
+
+</table>
+</center>
+
+<center>
+<table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr>
+    <td width="25%" align=left valign=top><a class=ss href="FR_index.html">
+    <font color="#0000FF">Retour au Sommaire</font></a></td>
+    <td width="50%" align=center><a class="ss" href="FR_screen.html">
+    <font color="#0000FF">Retour aux détails d'écran</font></a></td>
+    <td width="25%" align=right>&nbsp;</td>
+  </tr>
+</table>
+</center>
+
+
+</body>
+</html>
