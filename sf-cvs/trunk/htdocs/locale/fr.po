@@ -1859,7 +1859,7 @@ msgstr "Documentation"
 #. there is documentation available in your language, link to it here.
 #: help/documentation.php:16
 msgid "This page contains manuals and user’s guides for the free Audacity sound editor.  For additional help, see the <a href=\"faq\">Frequently Asked Questions</a> and <a href=\"tutorials\">Tutorials</a>."
-msgstr "Cette page présente les manuels et les guides d'utilisation de l'éditeur audio libre Audacity. Pour plus d'aide, reportez vous à la <a href=\"faq\">Foire aux Questions</a> et les <a href=\"tutorials\">tutoriels</a>.</p><p><a href=\"../manual-fr-1.2/FR_index.html\">Consultez le manuel en ligne (en fran�ais)</a></p><p><a href=\"../audacity-fr-manuel-1.2.zip\">Téléchargez le manuel (en fran�ais)</a><br>(Traduction fran�aise de Roger Turries.)"
+msgstr "Cette page présente les manuels et les guides d'utilisation de l'éditeur audio libre Audacity. Pour plus d'aide, reportez vous à la <a href=\"faq\">Foire aux Questions</a> et les <a href=\"tutorials\">tutoriels</a>.</p><p><a href=\"../manual-fr-1.2/FR_index.html\">Consultez le manuel en ligne (en français)</a></p><p><a href=\"../audacity-fr-manuel-1.2.zip\">Téléchargez le manuel (en français)</a><br>(Traduction française de Roger Turries.)"
 
 #: help/documentation.php:19
 msgid "Quick Reference Guide"
