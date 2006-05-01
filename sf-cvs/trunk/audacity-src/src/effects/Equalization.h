@@ -197,7 +197,7 @@ public:
    virtual bool Validate();
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
-   virtual bool EqualizationDialog::CalcFilter();
+   virtual bool CalcFilter();
 
    void EnvelopeUpdated();
    static const double thirdOct[];
