@@ -98,7 +98,7 @@ protected:
    DECLARE_EVENT_TABLE();
 
 private:
-   void Grabber::DrawGrabber( wxDC & dc );
+   void DrawGrabber( wxDC & dc );
    void SendEvent( wxEventType type, int x, int y );
 
    bool mOver;
