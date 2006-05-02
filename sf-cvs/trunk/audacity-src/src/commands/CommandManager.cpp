@@ -516,6 +516,7 @@ void CommandManager::Modify(wxString name, wxString newLabel)
       newLabel = newLabel.BeforeFirst(wxT('\t'));
       if (!entry->key.IsEmpty())
          newLabel = newLabel + wxT("\t") + entry->key;
+      entry->label = newLabel;
       entry->menu->SetLabel(entry->id, newLabel);
    }
 }
@@ -603,7 +604,7 @@ void CommandManager::ToggleAccels(wxMenu *m, bool show)
 
          // Rebuild the label based on whether the accelerator should
          // be shown.
-         wxString label = mi->GetText().BeforeFirst(wxT('\t'));
+         wxString label = entry->label.BeforeFirst(wxT('\t'));
          if (show && !entry->key.IsEmpty()) {
             label = label + wxT("\t") + entry->key;
          }
