@@ -51,7 +51,7 @@
   <li><p><b>"Import Audio...\tCtrl+i"</b> is also a menu item.  The \t stands for a tab character, which separates the menu text from the keyboard command.</p>
   <li><p>You will find many strings like <b>"There were %%d buffer underruns, last near %%lf seconds."</b>  The %% signs mark places where numbers or names will be inserted into the string.  For example, this string might become "There were 4 buffer underruns, last near 3.01 seconds." If you change the order of the the %% markers in a string, add "1$" after the percent sign that used to be first, "2$" after the percent sign that used to be second, and so on.  For example:</p>
   <blockquote><p><b>"The buffer underrun near %%2$lf seconds was the last of %%1$d."</b></p></blockquote>
-</ul>'), "http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/locale/?only_with_tag=AUDACITY_1_2", "http://cvs.sourceforge.net/viewcvs.py/audacity/htdocs/locale/");
+</ul>'), "http://audacity.cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/locale/?only_with_tag=AUDACITY_1_2", "http://audacity.cvs.sourceforge.net/viewcvs.py/audacity/htdocs/locale/");
 
   include "../include/footer.inc.php";
 ?>

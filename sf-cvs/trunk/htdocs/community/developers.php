@@ -23,10 +23,10 @@
   <li><p><a href="http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/">Browse the Audacity source code online.</a></p></li>
 
   <li><p>Use this command to check out the latest Audacity 1.2 (stable) source code from CVS:</p>
-  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
+  <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
 
   <li><p>Or use this command to check out the latest Audacity 1.3 (unstable) source code from CVS:</p>
-  <p><kbd>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
+  <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout audacity</kbd></p></li>
 </ul>
 <p>For more information, read the <a href="http://sourceforge.net/cvs/?group_id=6235">SourceForge CVS instructions</a>.</p>
 <p>See the source code page for <a href="../download/source#instructions">compilation instructions</a>.</p>')?>

@@ -15,10 +15,13 @@
 <p><?=_("These are some of the people who have <a href=\"../community/\">contributed</a> to the free Audacity audio editor.</p>  
 </p>If you have questions or feedback about Audacity, please see the <a href=\"../contact/\">contact page</a>.")?></p>
 
+<h3><?=_("History")?></h3>
+
+<p><?=_("Audacity was started by Dominic Mazzoni and Roger Dannenberg in the fall of 1999 at Carnegie Mellon University.  It was released as open-source software at SourceForge.net in May of 2000.")?></p>
+
 <h3><?=_("Lead Developers")?></h3>
 <ul>
-  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)
-  <p><?=_("Dominic is the project leader and original author of Audacity.")?></p></li>
+  <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)</li>
   <li><a href="http://advogato.org/person/mbrubeck/">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
   <li>James Crook - (james (at) audacityteam.org)</li>
   <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
@@ -35,13 +38,15 @@
 <h3><?=_("Contributors")?></h3>
 <ul>
   <li>William Bland</li>
-  <li>Roger Dannenberg</li>
+  <li>Roger Dannenberg -
+    <p><?=_("Nyquist author, Audacity founder, data structure architect")?></p></li>
   <li>Brian Gunlogson</li>
   <li>Harvey Lubin</li>
   <li>Greg Mekkes</li>
   <li>Abe Milde</li>
   <li>Paul Nasca</li>
-  <li>Tony Oetzmann</li>
+  <li>Tony Oetzmann -
+    <p><?=_("lead documentation writer")?></p></li>
   <li>Augustus Saunders</li>
   <li>Tom Woodhams</li>
 </ul>
