@@ -1598,13 +1598,8 @@ void EqualizationDialog::LayoutEQSliders()
 
 void EqualizationDialog::GraphicEQ(Envelope *env)
 {
-   double loLog = log10(mLoFreq);
-   double hiLog = log10(mHiFreq);
-   double denom = hiLog - loLog;
-
-   int width = NUM_PTS;
-
    double value, dist, span, s;
+
    env->Flatten(0.);
    env->SetTrackLen(1.0);
 
@@ -1726,16 +1721,12 @@ void EqualizationDialog::GraphicEQ(Envelope *env)
       case 2:  // Cubic Spline
       {
          double y2[NUMBER_OF_BANDS];
-         double aa=log10(20.);
-         float aaa=log10(20.);
-         double aaaa=aa-aaa;
          m_EQVals[bandsInUse] = m_EQVals[bandsInUse-1];
          spline(whenSliders, m_EQVals, bandsInUse+1, y2);
          for(double xf=0; xf<1.; xf+=1./NUM_PTS)
          {
             env->Insert(xf, splint(whenSliders, m_EQVals, bandsInUse+1, y2, xf));
          }
-//         env->Move( 1., env->GetValue( ((double)NUM_PTS-1.)/(double)NUM_PTS ) );
          break;
       }
    }
