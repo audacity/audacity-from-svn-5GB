@@ -70,7 +70,7 @@ PrefsPanel(parent)
    mTempDirText = NULL;
    mTempDirText = new wxTextCtrl(
       this, TempDirID, mTempDir,
-      wxDefaultPosition, wxSize(160, -1), 0 );
+      wxDefaultPosition, wxSize(30, -1), 0 );
 
    /* Order is important here: mFreeSpace must be allocated before
       mTempDirText, so that the handler doesn't try to operate on

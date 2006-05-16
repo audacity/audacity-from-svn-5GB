@@ -5,6 +5,7 @@
   PrefsDialog.cpp
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
@@ -18,8 +19,11 @@
 #include <wx/gdicmn.h>
 #include <wx/intl.h>
 #include <wx/listbox.h>
+#include <wx/imaglist.h>
 #include <wx/msgdlg.h>
 #include <wx/notebook.h>
+#include <wx/listbook.h>
+#include <wx/listctrl.h>
 #include <wx/sizer.h>
 
 #include "../Project.h"
@@ -33,6 +37,7 @@
 #include "DirectoriesPrefs.h"
 #include "FileFormatPrefs.h"
 #include "GUIPrefs.h"
+#include "ThemePrefs.h"
 #include "BatchPrefs.h"
 #include "KeyConfigPrefs.h"
 #include "QualityPrefs.h"
@@ -50,6 +55,23 @@ BEGIN_EVENT_TABLE(PrefsDialog, wxDialog)
 END_EVENT_TABLE()
 
 bool gPrefsDialogVisible = false;
+
+
+
+// This is just a test image for the preference dialog image list.
+// We'll replace it in due course with nicer images.
+static const char * TrialImage[] = {
+"64 5 3 1",
+"+	c #004010",
+".	c None", // mask color = RGB:255,0,0
+"#	c #00AA30",
+"###+.......+###.###+.......+###.###+.......+###.###+.......+###.",
+"+###+.....+###+.+###+.....+###+.+###+.....+###+.+###+.....+###+.",
+".+###+...+###+...+###+...+###+...+###+...+###+...+###+...+###+..",
+"..+###+.+###+.....+###+.+###+.....+###+.+###+.....+###+.+###+...",
+"...+###+###+.......+###+###+.......+###+###+.......+###+###+...."};
+
+
 
 PrefsDialog::PrefsDialog(wxWindow * parent):
    wxDialog(parent, -1, _("Audacity Preferences"), wxDefaultPosition,
@@ -73,28 +95,46 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
-   mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
+// mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
+   mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
 #ifdef __WXGTK__
                                 ,wxNB_LEFT
 #endif
                                 );
+
+   // The list width is determined by the width of the images.
+   // If you don't add some images the list will be too narrow.
+   wxImageList *pImages = new wxImageList(64,5);
+   wxBitmap bmpTrial(TrialImage);
+   pImages->Add( bmpTrial );
+   mCategories->SetImageList(pImages);
+
+   //These two lines were an attempt to size the list correctly.
+   //They don't work (in wxWidgets 2.6.1/XP)
+   //wxListView * pList = mCategories->GetListView();
+   //pList->SetMinSize( wxSize(300,100));
+
    topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
    wxWindow *w;
 
-   w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName());
-   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName());
-   w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName());
-   w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName());
-   w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName());
-   w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName());
-   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName());
-   w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName());
-   w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName());
+   // Parameters are: AppPage( page, name, IsSelected, imageId)
+   w = new AudioIOPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+   w = new QualityPrefs(mCategories);     mCategories->AddPage(w, w->GetName(),false,0);
+   w = new FileFormatPrefs(mCategories);  mCategories->AddPage(w, w->GetName(),false,0);
+   w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
+   w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
+   w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
+#ifdef USE_THEME_PREFS
+   w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+#endif
+   w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
+   w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(),false,0);
+   w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
 
    long selected = gPrefs->Read(wxT("/Prefs/PrefsCategory"), 0L);
-   if (selected < 0 || selected >= mCategories->GetPageCount())
+   if (selected < 0 || selected >= (int)mCategories->GetPageCount())
       mSelected = 0;
 
    mCategories->SetSelection(selected);
@@ -167,7 +207,7 @@ void PrefsDialog::OnOK(wxCommandEvent & event)
    unsigned int j;
 
    gPrefs->Write(wxT("/Prefs/PrefsCategory"), (long)mCategories->GetSelection());
-   for (i = 0; i < mCategories->GetPageCount(); i++) {
+   for (i = 0; i < (int)mCategories->GetPageCount(); i++) {
       PrefsPanel *panel = (PrefsPanel *) mCategories->GetPage(i);
 
       /* The dialog doesn't end until all the input is valid */

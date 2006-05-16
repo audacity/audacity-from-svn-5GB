@@ -55,6 +55,12 @@
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
 
+// These lines ensure that Audacity gets WindowsXP themes.
+// Without them we get the old-style Windows98/2000 look under XP.
+#if defined(__WXMSW__) && !defined(__WXWINCE__) 
+#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='X86' publicKeyToken='6595b64144ccf1df'\"") 
+#endif 
+
 #if wxUSE_ACCESSIBILITY
 const wxChar *overrideTextCtrlNameStr = wxT("");
 const wxChar *overrideChoiceNameStr = wxT("");

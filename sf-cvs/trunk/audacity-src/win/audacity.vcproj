@@ -1769,6 +1769,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\ShuttleGui.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\ShuttleGui.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Spectrum.cpp"
 				>
 				<FileConfiguration
@@ -1842,6 +1850,14 @@
 			</File>
 			<File
 				RelativePath="..\src\Tags.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Theme.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Theme.h"
 				>
 			</File>
 			<File
@@ -4256,6 +4272,14 @@
 			</File>
 			<File
 				RelativePath="..\src\prefs\SpectrumPrefs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\prefs\ThemePrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\prefs\ThemePrefs.h"
 				>
 			</File>
 		</Filter>

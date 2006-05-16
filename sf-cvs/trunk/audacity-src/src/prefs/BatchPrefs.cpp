@@ -144,15 +144,15 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
    batchOptionsSizer->Add(btnEmpty, 0, wxALIGN_CENTER | wxALL, 5);
    batchOptionsSizer->Add(btnLoad, 0, wxALIGN_CENTER | wxALL, 5);
    batchOptionsSizer->Add(btnSave, 0, wxALIGN_CENTER | wxALL, 5);
-   batchControlSizer->Add( batchOptionsSizer, 1, wxGROW|wxALL, 1);
+   batchControlSizer->Add( batchOptionsSizer, 0, wxGROW|wxALL, 1);
+
  
    wxStaticBoxSizer *batchSequenceSizer =
       new wxStaticBoxSizer(
          new wxStaticBox(this, -1, _("Batch Sequence (Double-Click or press SPACE to edit)")),
             wxVERTICAL);
-
    mList = new wxListCtrl( this, CommandsListID ,
-      wxDefaultPosition, wxDefaultSize,
+      wxDefaultPosition, wxSize(230,120),//wxDefaultSize,
       wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
       );
 
@@ -172,10 +172,11 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
    mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
    mList->SetColumnWidth( ItemNumberColumn,  wxLIST_AUTOSIZE );
    mList->SetColumnWidth( ActionColumn, 110 );
-   mList->SetColumnWidth( ParamsColumn, 320 );
+   mList->SetColumnWidth( ParamsColumn, 220 );
 
    batchSequenceSizer->Add( mList, 1, wxEXPAND );
-   batchControlSizer->Add( batchSequenceSizer, 3, wxGROW|wxALL, 1);
+
+   batchControlSizer->Add( batchSequenceSizer, 1, wxGROW|wxALL, 1);
    topSizer->Add( batchControlSizer, 1, wxEXPAND );
 
    // Finish layout

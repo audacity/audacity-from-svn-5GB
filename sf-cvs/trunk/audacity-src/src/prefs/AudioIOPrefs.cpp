@@ -313,19 +313,25 @@ PrefsPanel(parent)
    outSizer = new wxBoxSizer( wxVERTICAL );
    outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
+
+   // playControlSizer is a sizer that holds the left and right sizers.
+   wxBoxSizer * playControlSizer = new wxBoxSizer( wxHORIZONTAL );
+
    // msmeyer: Create CutPreview options
    wxString cutPreviewBeforeLenString, cutPreviewAfterLenString;
    cutPreviewBeforeLenString.Printf(wxT("%g"), cutPreviewBeforeLen);
    cutPreviewAfterLenString.Printf(wxT("%g"), cutPreviewAfterLen);
-   mCutPreviewBeforeLen = new wxTextCtrl(this, -1, cutPreviewBeforeLenString);
-   mCutPreviewAfterLen = new wxTextCtrl(this, -1, cutPreviewAfterLenString);
+   mCutPreviewBeforeLen = new wxTextCtrl(this, -1, cutPreviewBeforeLenString,
+	   wxDefaultPosition, wxSize(40,-1));
+   mCutPreviewAfterLen = new wxTextCtrl(this, -1, cutPreviewAfterLenString,
+	   wxDefaultPosition, wxSize(40,-1));
 
    wxFlexGridSizer* cutPreviewFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
 
    cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("Amount of audio to play before cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      _("Play before cut region:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT), 1,
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    cutPreviewFlexSizer->Add(mCutPreviewBeforeLen, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -336,9 +342,9 @@ PrefsPanel(parent)
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("Amount of audio to play after cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      _("Play after cut region:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT), 1,
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
 
    cutPreviewFlexSizer->Add(mCutPreviewAfterLen, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -356,19 +362,24 @@ PrefsPanel(parent)
    cutPreviewSizer->Add(cutPreviewFlexSizer, 0,
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
-   topSizer->Add(cutPreviewSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   playControlSizer->Add( cutPreviewSizer, 1, wxGROW|wxALL, 1);
+
+//   topSizer->Add(cutPreviewSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
    
    // msmeyer: Create latency options
    mLatencyDuration = new wxTextCtrl(this, -1,
-                      wxString::Format(wxT("%g"), latencyDuration));
+	   wxString::Format(wxT("%g"), latencyDuration),
+      wxDefaultPosition, wxSize(40,-1));
+
    mLatencyCorrection = new wxTextCtrl(this, -1, 
-                        wxString::Format(wxT("%g"), latencyCorrection));
-   
+      wxString::Format(wxT("%g"), latencyCorrection),
+      wxDefaultPosition, wxSize(40,-1));
+
    wxFlexGridSizer* latencyFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
    
    wxStaticText* latencyDurationLabel = new wxStaticText(this, -1,
-      _("Amount of audio to buffer:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT);
+      _("Audio to buffer:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT);
    wxStaticText* latencyDurationUnitLabel = new wxStaticText(this, -1,
       _("milliseconds"), wxDefaultPosition,
       wxDefaultSize, wxALIGN_LEFT);
@@ -381,7 +392,7 @@ PrefsPanel(parent)
 #endif
    
    latencyFlexSizer->Add(latencyDurationLabel, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
    
    latencyFlexSizer->Add(mLatencyDuration, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -390,9 +401,9 @@ PrefsPanel(parent)
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
       
    latencyFlexSizer->Add(new wxStaticText(this, -1,
-      _("Additional latency correction:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
+      _("Latency correction:"), wxDefaultPosition,
+      wxDefaultSize, wxALIGN_RIGHT), 1,
+      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
    
    latencyFlexSizer->Add(mLatencyCorrection, 1,
       wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
@@ -410,7 +421,9 @@ PrefsPanel(parent)
    latencySizer->Add(latencyFlexSizer, 0,
       wxGROW|wxALL, GENERIC_CONTROL_BORDER);
 
-   topSizer->Add(latencySizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
+   playControlSizer->Add( latencySizer, 1, wxGROW|wxALL, 1);
+
+   topSizer->Add(playControlSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
    
    SetAutoLayout(true);
    outSizer->Fit(this);
