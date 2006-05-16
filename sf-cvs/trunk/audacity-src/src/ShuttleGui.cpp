@@ -87,7 +87,7 @@ wxCheckBox * ShuttleGuiBase::AddCheckBox( const wxString &Prompt, const wxString
    wxCheckBox * pCheckBox;
    miProp=0;
    mpWind = pCheckBox = new wxCheckBox(mpParent, miId, Prompt);
-   pCheckBox->SetValue(Selected == "true");
+   pCheckBox->SetValue(Selected == wxT("true"));
    UpdateSizers();
    return pCheckBox;
 }
@@ -111,12 +111,12 @@ void ShuttleGuiBase::AddTickBox( const wxString &Prompt, const wxString &Selecte
    wxCheckBox * pCheckBox;
    miProp=0;
    wxString Prompt2=Prompt;
-   Prompt2.Replace( "&", "&&" );
+   Prompt2.Replace( wxT("&"), wxT("&&") );
    mpWind = new wxStaticText(mpParent, -1, Prompt2, wxDefaultPosition, wxDefaultSize, 
       wxALIGN_RIGHT );
    UpdateSizers();
-   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, "");
-   pCheckBox->SetValue(Selected=="true");
+   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, wxT(""));
+   pCheckBox->SetValue(Selected==wxT("true"));
    UpdateSizers();
 }
 
@@ -497,7 +497,7 @@ void ShuttleGuiBase::TieTickbox(const wxString &Prompt, bool &Var)
    // IF Creating the dialog controls and setting them from internal storage.
    case eIsCreating:
       {
-         AddTickBox( Prompt, Var ? "true" : "false");
+         AddTickBox( Prompt, Var ? wxT("true") : wxT("false"));
       }
       break;
    // IF setting internal storage from the controls.

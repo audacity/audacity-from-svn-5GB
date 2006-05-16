@@ -146,93 +146,93 @@ void Theme::RegisterImages()
    mFlags = resFlagPaired;
    mbInitialised = true;
    int i=0;
-   RegisterBitmap( i++,MaskedBmp(Pause, PauseAlpha ),"Pause");
-   RegisterBitmap( i++,MaskedBmp(PauseDisabled,PauseAlpha),"PauseDisabled");
+   RegisterBitmap( i++,MaskedBmp(Pause, PauseAlpha ),wxT("Pause"));
+   RegisterBitmap( i++,MaskedBmp(PauseDisabled,PauseAlpha),wxT("PauseDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(Play,PlayAlpha),"Play");
-   RegisterBitmap( i++,MaskedBmp(PlayDisabled,PlayAlpha),"PlayDisabled");
+   RegisterBitmap( i++,MaskedBmp(Play,PlayAlpha),wxT("Play"));
+   RegisterBitmap( i++,MaskedBmp(PlayDisabled,PlayAlpha),wxT("PlayDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp((const char **)Loop,(const char **)LoopAlpha),"Loop");
-   RegisterBitmap( i++,MaskedBmp((const char **)LoopDisabled,(const char **)LoopAlpha),"LoopDisabled");
+   RegisterBitmap( i++,MaskedBmp((const char **)Loop,(const char **)LoopAlpha),wxT("Loop"));
+   RegisterBitmap( i++,MaskedBmp((const char **)LoopDisabled,(const char **)LoopAlpha),wxT("LoopDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(Stop,StopAlpha),"Stop");
-   RegisterBitmap( i++,MaskedBmp(StopDisabled,StopAlpha),"StopDisabled");
+   RegisterBitmap( i++,MaskedBmp(Stop,StopAlpha),wxT("Stop"));
+   RegisterBitmap( i++,MaskedBmp(StopDisabled,StopAlpha),wxT("StopDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(Rewind,RewindAlpha),"Rewind");
-   RegisterBitmap( i++,MaskedBmp(RewindDisabled,RewindAlpha),"RewindDisabled");
+   RegisterBitmap( i++,MaskedBmp(Rewind,RewindAlpha),wxT("Rewind"));
+   RegisterBitmap( i++,MaskedBmp(RewindDisabled,RewindAlpha),wxT("RewindDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(FFwd,FFwdAlpha),"FFwd");
-   RegisterBitmap( i++,MaskedBmp(FFwdDisabled,FFwdAlpha),"FFwdDisabled");
+   RegisterBitmap( i++,MaskedBmp(FFwd,FFwdAlpha),wxT("FFwd"));
+   RegisterBitmap( i++,MaskedBmp(FFwdDisabled,FFwdAlpha),wxT("FFwdDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(Record,RecordAlpha),"Record");
-   RegisterBitmap( i++,MaskedBmp(RecordDisabled,RecordAlpha),"RecordDisabled");
+   RegisterBitmap( i++,MaskedBmp(Record,RecordAlpha),wxT("Record"));
+   RegisterBitmap( i++,MaskedBmp(RecordDisabled,RecordAlpha),wxT("RecordDisabled"));
 
-   RegisterBitmap( i++,MaskedBmp(CleanSpeech,CleanSpeechAlpha),"CleanSpeech");
-   RegisterBitmap( i++,MaskedBmp(CleanSpeechDisabled,CleanSpeechAlpha),"CleanSpeechDisabled");
+   RegisterBitmap( i++,MaskedBmp(CleanSpeech,CleanSpeechAlpha),wxT("CleanSpeech"));
+   RegisterBitmap( i++,MaskedBmp(CleanSpeechDisabled,CleanSpeechAlpha),wxT("CleanSpeechDisabled"));
 
    mFlags = resFlagPaired | resFlagCursor;
-   RegisterBitmap( i++,IBeamCursorXpm, "IBeamCursor");
-   RegisterBitmap( i++,DrawCursorXpm, "DrawCursor");
-   RegisterBitmap( i++,EnvCursorXpm, "EnvCursor");
-   RegisterBitmap( i++,MaskedBmp(TimeCursorXpm,TimeCursorXpm), "TimeCursor");
-   RegisterBitmap( i++,ZoomInCursorXpm, "ZoomInCursor");
-   RegisterBitmap( i++,ZoomOutCursorXpm, "ZoomOutCursor");
-   RegisterBitmap( i++,LabelCursorLeftXpm, "LabelCursorLeft");
-   RegisterBitmap( i++,LabelCursorRightXpm, "LabelCursorRight");
-   RegisterBitmap( i++,DisabledCursorXpm, "DisabledCursor");
+   RegisterBitmap( i++,IBeamCursorXpm, wxT("IBeamCursor"));
+   RegisterBitmap( i++,DrawCursorXpm, wxT("DrawCursor"));
+   RegisterBitmap( i++,EnvCursorXpm, wxT("EnvCursor"));
+   RegisterBitmap( i++,MaskedBmp(TimeCursorXpm,TimeCursorXpm), wxT("TimeCursor"));
+   RegisterBitmap( i++,ZoomInCursorXpm, wxT("ZoomInCursor"));
+   RegisterBitmap( i++,ZoomOutCursorXpm, wxT("ZoomOutCursor"));
+   RegisterBitmap( i++,LabelCursorLeftXpm, wxT("LabelCursorLeft"));
+   RegisterBitmap( i++,LabelCursorRightXpm, wxT("LabelCursorRight"));
+   RegisterBitmap( i++,DisabledCursorXpm, wxT("DisabledCursor"));
 
    mFlags = resFlagPaired;
-   RegisterBitmap( i++,MaskedBmp(Cut,CutAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(CutDisabled,CutAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Cut,CutAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(CutDisabled,CutAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Copy,CopyAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(CopyDisabled,CopyAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Copy,CopyAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(CopyDisabled,CopyAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Paste,PasteAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(PasteDisabled,PasteAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Paste,PasteAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(PasteDisabled,PasteAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Trim,TrimAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(TrimDisabled,TrimAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Trim,TrimAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(TrimDisabled,TrimAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Silence,SilenceAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(SilenceDisabled,SilenceAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Silence,SilenceAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(SilenceDisabled,SilenceAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Undo,UndoAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(UndoDisabled,UndoAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Undo,UndoAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(UndoDisabled,UndoAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(Redo,RedoAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(RedoDisabled,RedoAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Redo,RedoAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(RedoDisabled,RedoAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(ZoomFit,ZoomFitAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(ZoomFitDisabled,ZoomFitAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(ZoomFit,ZoomFitAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(ZoomFitDisabled,ZoomFitAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(ZoomIn,ZoomInAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(ZoomInDisabled,ZoomInAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(ZoomIn,ZoomInAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(ZoomInDisabled,ZoomInAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(ZoomOut,ZoomOutAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(ZoomOutDisabled,ZoomOutAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(ZoomOut,ZoomOutAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(ZoomOutDisabled,ZoomOutAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(ZoomSel,ZoomSelAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(ZoomSelDisabled,ZoomSelAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(ZoomSel,ZoomSelAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(ZoomSelDisabled,ZoomSelAlpha), wxT(""));
 
-//   RegisterBitmap( i++,MaskedBmp(ZoomToggle,ZoomToggleAlpha), "");
-//   RegisterBitmap( i++,MaskedBmp(ZoomToggleDisabled,ZoomToggleAlpha), "");
+//   RegisterBitmap( i++,MaskedBmp(ZoomToggle,ZoomToggleAlpha), wxT(""));
+//   RegisterBitmap( i++,MaskedBmp(ZoomToggleDisabled,ZoomToggleAlpha), wxT(""));
 
-   RegisterBitmap( i++,MaskedBmp(IBeam,IBeamAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(Zoom,ZoomAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(Envelope,EnvelopeAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(TimeShift,TimeShiftAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(Draw,DrawAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(Multi,MultiAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(IBeam,IBeamAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(Zoom,ZoomAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(Envelope,EnvelopeAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(TimeShift,TimeShiftAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(Draw,DrawAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(Multi,MultiAlpha), wxT(""));
 
    mFlags = resFlagNone;
-   RegisterBitmap( i++,MaskedBmp(Mic,MicAlpha), "");
-   RegisterBitmap( i++,MaskedBmp(Speaker,SpeakerAlpha), "");
+   RegisterBitmap( i++,MaskedBmp(Mic,MicAlpha), wxT(""));
+   RegisterBitmap( i++,MaskedBmp(Speaker,SpeakerAlpha), wxT(""));
 
-//   RegisterBitmap( i++,DisabledXpm, "");
-   RegisterBitmap( i++,Up, "");
-   RegisterBitmap( i++,Down, "");
-   RegisterBitmap( i++,Hilite, "");
+//   RegisterBitmap( i++,DisabledXpm, wxT(""));
+   RegisterBitmap( i++,Up, wxT(""));
+   RegisterBitmap( i++,Down, wxT(""));
+   RegisterBitmap( i++,Hilite, wxT(""));
 
 }
 
@@ -249,7 +249,7 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
 {
    wxBitmap Bmp1( pXpm );
    wxBitmap Bmp2( pMask );
-   wxLogDebug( "Image 1: %i Image 2: %i", 
+   wxLogDebug( wxT("Image 1: %i Image 2: %i"), 
       Bmp1.GetDepth(), Bmp2.GetDepth() );
    
    wxASSERT( Bmp1.GetDepth()==24);
@@ -296,9 +296,9 @@ void ThemeBase::RegisterBitmap( int iIndex, const wxBitmap &Bmp, const wxString 
 wxString ThemeBase::GetCacheFileName()
 {
 #ifdef  __WXMSW__
-   return "C:\\ImageCache.png";
+   return wxT("C:\\ImageCache.png");
 #else
-   return "IamgeCache.png";
+   return wxT("IamgeCache.png");
 #endif
 }
 
@@ -374,7 +374,7 @@ void ThemeBase::CreateImageCache()
       GetNextPosition( xWidth1, yHeight1 );
 
       SrcMemDC.SelectObject(*pBmp);
-      wxLogDebug("Draw at %i %i (%i,%i)", mxPos, myPos, xWidth1, yHeight1 );
+      wxLogDebug(wxT("Draw at %i %i (%i,%i)"), mxPos, myPos, xWidth1, yHeight1 );
       DestMemDC.Blit( mxPos, myPos, xWidth1,yHeight1, &SrcMemDC, 0,0,wxCOPY);
       SrcMemDC.SelectObject( wxNullBitmap);
    }
