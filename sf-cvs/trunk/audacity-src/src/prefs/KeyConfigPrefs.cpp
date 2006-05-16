@@ -72,7 +72,7 @@ PrefsPanel(parent)
    // Would be nice to create a new 'Bindings' class which both 
    // KeyConfigPrefs and MousePrefs use.
    mList = new wxListCtrl( this, CommandsListID ,
-      wxDefaultPosition, wxSize(500,250),
+      wxDefaultPosition, wxSize(400,250),
       wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
       );
 
@@ -89,8 +89,8 @@ PrefsPanel(parent)
    mList->SetColumnWidth( BlankColumn, 0 ); // First column width is zero, to hide it.
    // Would like to use wxLIST_AUTOSIZE but
    // wxWindows does not look at the size of column heading.
-//   mList->SetColumnWidth( CommandColumn, 250 );
-   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
+   mList->SetColumnWidth( CommandColumn, 250 );
+//   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
    mList->SetColumnWidth( KeyComboColumn, 115 );
 
    topSizer->Add( mList, 1, 

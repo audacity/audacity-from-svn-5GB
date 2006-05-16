@@ -5,6 +5,7 @@
   PrefsDialog.h
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
@@ -15,6 +16,7 @@
 #include <wx/string.h>
 
 class wxNotebook;
+class wxListbook;
 class wxWindow;
 class wxButton;
 class wxCommandEvent;
@@ -36,7 +38,7 @@ class PrefsDialog:public wxDialog {
    void ShowTempDirPage();
 
  private:
-   wxNotebook *mCategories;
+   wxListbook *mCategories;
    wxButton *mOK;
    wxButton *mCancel;
 
