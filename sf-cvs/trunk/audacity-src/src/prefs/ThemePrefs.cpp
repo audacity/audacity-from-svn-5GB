@@ -61,21 +61,16 @@ void ThemePrefs::Populate()
    S.Init();
    S.StartHorizontalLay(wxEXPAND);
 
-   S.StartStatic( "Actions");
-   S.Id( idSaveTheme ).AddButton( "Save Theme")->Enable(false);
-   S.Id( idLoadTheme ).AddButton( "Load Theme")->Enable(false);
-   S.Id( idSaveThemeCache ).AddButton( "Save Theme Cache");
-   S.Id( idLoadThemeCache ).AddButton( "Load Theme Cache");
+   S.StartStatic( wxT("Actions"));
+   S.Id( idSaveTheme ).AddButton( wxT("Save Theme"))->Enable(false);
+   S.Id( idLoadTheme ).AddButton( wxT("Load Theme"))->Enable(false);
+   S.Id( idSaveThemeCache ).AddButton( wxT("Save Theme Cache"));
+   S.Id( idLoadThemeCache ).AddButton( wxT("Load Theme Cache"));
    S.EndStatic();
 
-   S.StartStatic( "Info", 1 );
+   S.StartStatic( wxT("Info"), 1 );
    S.AddFixedText( 
-      "Themability is an experimental feature.\r\n\r\n"
-      "To try it out, click 'Save Theme Cache' then find\r\n"
-      "and modify the images and colors in ImageCache.png\r\n"
-      "using an image editor such as the Gimp.\r\n\r\n"
-      "Click 'Load Theme Cache' to load the changed images\r\n"
-      "and colors back into Audacity."
+      wxT("Themability is an experimental feature.\r\n\r\nTo try it out, click 'Save Theme Cache' then find\r\nand modify the images and colors in ImageCache.png\r\nusing an image editor such as the Gimp.\r\n\r\nClick 'Load Theme Cache' to load the changed images\r\nand colors back into Audacity.")
       );
    S.EndStatic();
 }
