@@ -141,6 +141,8 @@ void OnExit();
 void OnUndo();
 void OnRedo();
 void OnHistory();
+void OnExperimentalTrackPanel();
+
 
 void OnCut();
 void OnSplitCut();
