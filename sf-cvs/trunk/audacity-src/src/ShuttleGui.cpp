@@ -13,7 +13,8 @@
   It allows the code that is used to create dialogs to be reused
   to shuttle information in and out.  
 
-  GPL.  A version of this file is available LGPL.
+  Audacity is free software.
+  This file is licensed under the wxWindows license, see License.txt
 
 **********************************************************************/
 

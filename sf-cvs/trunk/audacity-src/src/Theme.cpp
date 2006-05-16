@@ -10,6 +10,9 @@
    It maps sets of ids to the resources and to names of the resources,
    so that they can be loaded/saved from files.
 
+  Audacity is free software.
+  This file is licensed under the wxWindows license, see License.txt
+
 **********************************************************************/
 
 #include <wx/wx.h>

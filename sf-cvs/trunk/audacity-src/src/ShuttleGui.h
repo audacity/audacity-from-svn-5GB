@@ -6,6 +6,9 @@
 
   James Crook
 
+  Audacity is free software.
+  This file is licensed under the wxWindows license, see License.txt
+
 **********************************************************************/
 
 #pragma once
