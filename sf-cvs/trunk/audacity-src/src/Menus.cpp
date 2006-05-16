@@ -64,6 +64,7 @@
 #include "MixerToolBar.h"
 #include "ToolsToolBar.h"
 #include "TranscriptionToolBar.h"
+#include "Experimental.h"
 
 enum {
    kAlignZero=0,
@@ -528,6 +529,9 @@ void AudacityProject::CreateMenusAndCommands()
 //
 //   c->AddSeparator();
    c->AddItem(wxT("UndoHistory"),    _("&History..."),               FN(OnHistory));
+#ifdef EXPERIMENTAL_TRACK_PANEL
+   c->AddItem(wxT("NewTrackPanel"),  _("&Experimental Display..."),  FN(OnExperimentalTrackPanel));
+#endif
    c->AddSeparator();
    c->BeginSubMenu(_("Toolbars..."));
    c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar));
@@ -2043,6 +2047,14 @@ void AudacityProject::OnHistory()
       mHistoryWindow = new HistoryWindow(this, &mUndoManager);
       mHistoryWindow->Show(true);
    }
+}
+
+void AudacityProject::OnExperimentalTrackPanel()
+{
+#ifdef EXPERIMENTAL_TRACK_PANEL
+   TrackPanel2 Dlg;
+   Dlg.ShowModal();
+#endif
 }
 
 

@@ -30,6 +30,9 @@
 //Uncomment the next #define to enable experimental features.
 //#define EXPERIMENTAL_FEATURES
 
+// The Experimental TRackPanel is a refactoring of the existing track panel.
+//#define EXPERIMENTAL_TRACK_PANEL
+
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
    // a tabbed divider to the project.
@@ -79,6 +82,10 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 #endif
 
 #ifdef EXPERIMENTAL_WX_PLUG_INS
+#endif
+
+#ifdef EXPERIMENTAL_TRACK_PANEL
+#include "TrackPanel2.h"
 #endif
 
 #endif
