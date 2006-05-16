@@ -457,9 +457,9 @@ bool ExportMultipleByTrack(AudacityProject *project,
          
          i++;
          
-         if (tr)
-            tr = iter.Next();
       }
+      if (tr)
+         tr = iter.Next();
    }   
    
    RestoreSelected(tracks, saveSelected);
