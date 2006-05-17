@@ -33,6 +33,7 @@ OBJECTS = 	nyx/nyx.o \
 	tran/ifft.o tran/congen.o tran/fromobject.o tran/fromarraystream.o  \
 	tran/coterm.o tran/convolve.o tran/alpass.o tran/oneshot.o  \
 	tran/chase.o tran/tapv.o tran/biquad.o tran/pluck.o  \
+        tran/abs.o tran/sqrt.o tran/alpasscv.o tran/alpassvc.o \
 	cmt/cext.o cmt/cleanup.o cmt/cmdline.o cmt/cmtcmd.o  \
 	cmt/moxc.o cmt/mem.o cmt/midifile.o cmt/midifns.o  \
 	cmt/record.o cmt/seq.o cmt/seqmread.o cmt/seqmwrite.o  \
@@ -65,7 +66,8 @@ NYQHDRS = snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h  \
 	tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h  \
 	tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h  \
 	tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h  \
-	tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h 
+	tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h \
+        tran/abs.h tran/sqrt.h tran/alpasscv.h tran/alpassvc.h
 
 CMTHDRS = cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h  \
 	cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h 
@@ -334,6 +336,18 @@ tran/biquad.o: tran/biquad.c tran/biquad.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc
 
 tran/pluck.o: tran/pluck.c tran/pluck.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc/cque.h
 	$(CC) -c tran/pluck.c -o tran/pluck.o $(CFLAGS)
+
+tran/abs.o: tran/abs.c tran/abs.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc/cque.h
+	cc -c tran/abs.c -o tran/abs.o $(CFLAGS)
+
+tran/sqrt.o: tran/sqrt.c tran/sqrt.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc/cque.h
+	cc -c tran/sqrt.c -o tran/sqrt.o $(CFLAGS)
+
+tran/alpasscv.o: tran/alpasscv.c tran/alpasscv.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc/cque.h
+	cc -c tran/alpasscv.c -o tran/alpasscv.o $(CFLAGS)
+
+tran/alpassvc.o: tran/alpassvc.c tran/alpassvc.h nyqsrc/sound.h nyqsrc/falloc.h nyqsrc/cque.h
+	cc -c tran/alpassvc.c -o tran/alpassvc.o $(CFLAGS)
 
 nyqsrc/sndfnint.o: nyqsrc/sndfnint.c 
 	$(CC) -c nyqsrc/sndfnint.c -o nyqsrc/sndfnint.o $(CFLAGS)
