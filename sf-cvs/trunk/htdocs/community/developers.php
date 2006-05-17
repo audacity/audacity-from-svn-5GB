@@ -20,7 +20,7 @@
 <?=_('<h3 id="cvs">CVS</h3>
 <p>You can get the latest development code from our CVS repository.</p>
 <ul>
-  <li><p><a href="http://cvs.sourceforge.net/viewcvs.py/audacity/audacity-src/">Browse the Audacity source code online.</a></p></li>
+  <li><p><a href="http://audacity.cvs.sourceforge.net/audacity">Browse the Audacity source code online.</a></p></li>
 
   <li><p>Use this command to check out the latest Audacity 1.2 (stable) source code from CVS:</p>
   <p><kbd>cvs -d:pserver:anonymous@audacity.cvs.sourceforge.net:/cvsroot/audacity checkout -r AUDACITY_1_2 audacity</kbd></p></li>
