@@ -57,7 +57,7 @@ END_EVENT_TABLE()
 bool gPrefsDialogVisible = false;
 
 
-
+#ifdef NOT_USED
 // This is just a test image for the preference dialog image list.
 // We'll replace it in due course with nicer images.
 static const char * TrialImage[] = {
@@ -70,6 +70,17 @@ static const char * TrialImage[] = {
 ".+###+...+###+...+###+...+###+...+###+...+###+...+###+...+###+..",
 "..+###+.+###+.....+###+.+###+.....+###+.+###+.....+###+.+###+...",
 "...+###+###+.......+###+###+.......+###+###+.......+###+###+...."};
+#endif
+
+// wxListBook doesn't let you use report mode for the list.
+// We don't want images, we do want a single column, 
+// so we work around the limitations by defining a thin and empty image.
+static const char * TrialImage[] = {
+"64 1 3 1",
+"+	c #004010",
+".	c None", // mask color = RGB:255,0,0
+"#	c #00AA30",
+"................................................................"};
 
 
 
@@ -104,15 +115,19 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    // The list width is determined by the width of the images.
    // If you don't add some images the list will be too narrow.
-   wxImageList *pImages = new wxImageList(64,5);
+   wxImageList *pImages = new wxImageList(64,1);
    wxBitmap bmpTrial(TrialImage);
    pImages->Add( bmpTrial );
    mCategories->SetImageList(pImages);
 
    //These two lines were an attempt to size the list correctly.
    //They don't work (in wxWidgets 2.6.1/XP)
-   //wxListView * pList = mCategories->GetListView();
+   wxListView * pList = mCategories->GetListView();
+   // Can't use wxLC_REPORT because of limitations in wxListBook.
+   pList->SetWindowStyleFlag(wxLC_ICON | wxLC_SINGLE_SEL );//| wxLC_ALIGN_LEFT);
    //pList->SetMinSize( wxSize(300,100));
+
+
 
    topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
 
@@ -159,7 +174,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    topSizer->Add(buttonSizer, 0, wxALIGN_RIGHT);
 
    wxBoxSizer *outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    SetSizer(outSizer);
