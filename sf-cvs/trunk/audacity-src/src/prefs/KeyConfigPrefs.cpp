@@ -143,7 +143,7 @@ PrefsPanel(parent)
                  wxALL, GENERIC_CONTROL_BORDER);
 
    outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
 
    SetAutoLayout(true);
    SetSizer(outSizer);
