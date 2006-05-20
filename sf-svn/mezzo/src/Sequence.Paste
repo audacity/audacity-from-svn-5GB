@@ -1,0 +1,151 @@
+/**********************************************************************
+
+  Mezzo: A Cross-Platform Audio Editing Engine
+
+  BlockedSequence::Paste
+
+  Copyright (c) 2004 Dominic Mazzoni
+
+  This program is free software and comes with no warranty; for more
+  information, see the file LICENSE.txt or visit
+  http://audacity.sourceforge.net/mezzo/license/
+
+**********************************************************************/
+
+// The BlockedSequence class implements an efficient, disk-based
+// sequence of audio samples, where all editing operations (Cut, Copy,
+// Paste, Delete, etc) are constant-time in terms of disk access.
+// Specifically, the samples are broken up into SeqBlocks, each one of
+// which corresponds to one file on disk.  To achieve the constant-time
+// property, all methods enforce the invariant that all blocks except
+// for the first and last must be between mMaxSamples/2 and mMaxSamples
+// in length (inclusive).  When this invariant is maintained, a Cut or
+// Paste operation needs to modify at most 5 blocks on disk.
+//
+// Paste is the most tricky operation; the code path is different
+// depending on both the insertion location ("start"), and the length
+// of the Sequence being inserted.
+
+void BlockedSequence::Paste(long_sample_count start, const Sequence *src)
+{
+   ClientAssert(start >= 0 && start <= mNumSamples,
+                fmt("Attempt to Paste into a BlockedSequence with "
+                    "start=%s, when Sequence len is %s",
+                    LongSampleCountToStr(start).c_str(),
+                    LongSampleCountToStr(mNumSamples).c_str()));
+
+   ClientAssert(mNumSamples + (double)src->GetLength() < LONG_SAMPLE_COUNT_MAX,
+                fmt("Pasting %s samples in BlockedSequence of length %s "
+                    "would overflow.",
+                    LongSampleCountToStr(src->GetLength()).c_str(),
+                    LongSampleCountToStr(mNumSamples).c_str()));
+
+   if (src->GetLength() == 0)
+      return;
+
+   const BlockedSequence *bsrc = dynamic_cast<const BlockedSequence *>(src);
+   if (!bsrc) {
+      // If it's some other type of Sequence, we convert it to
+      // a BlockedSequence, then call Paste again...
+      BlockedSequence tempSequence(mContext);
+      long_sample_count len = src->GetLength();
+      int i = 0;
+      while(i < len) {
+         int chunk = mMaxSamples < len-i? mMaxSamples: len-i;
+         tempSequence.AppendBlock(mContext->NewSeqBlock(src->Get(i, chunk)));
+         i += chunk;
+      }
+      Paste(start, &tempSequence);
+      return;
+   }
+
+   long_sample_count srcLen = bsrc->mNumSamples;
+   int numNodes = mNodes.size();
+   SeqBlockNodeVec srcNodes = bsrc->mNodes;
+   int srcNumNodes = srcNodes.size();
+   int n;
+
+   if (numNodes == 0 ||
+       (start == mNumSamples && mNodes[numNodes-1].len() >= mMinSamples)) {
+      // Special case: this seq is currently empty, or it's safe to append
+      // onto the end because the current last block is longer than the
+      // minimum size
+
+      for(n=0; n<srcNumNodes; n++)
+         AppendBlock(mContext->GetSeqBlockRef(srcNodes[n].block));
+
+      return;
+   }
+
+   int n0 = FindNode(start);
+
+   if (mNodes[n0].len() + srcLen < mMaxSamples) {
+      // Special case: we can fit all of the new samples inside of
+      // one block!
+
+      long_sample_count splitPoint = start - mNodes[n0].start;
+      Buffer left = mNodes[n0].Get(0, splitPoint);
+      Buffer right = mNodes[n0].Get(splitPoint);
+      Buffer newBlockData = Buffer::Append(left, bsrc->Get(0, srcLen), right);
+      mContext->ReleaseSeqBlockRef(mNodes[n0].block);
+      mNodes[n0].block = mContext->NewSeqBlock(newBlockData);
+      mNumSamples += srcLen;
+      for(n=n0+1; n<numNodes; n++)
+         mNodes[n].start += srcLen;
+      return;
+   }
+
+   // Create a new array of blocks
+   SeqBlockNodeVec oldNodes = mNodes;
+   mNodes.clear();
+   mNodes.reserve(numNodes + srcNumNodes + 2);
+   mNumSamples = 0;
+
+   for(n=0; n<n0; n++) {
+      mNodes.push_back(oldNodes[n]);
+      mNumSamples += oldNodes[n].len();
+   }
+
+   long_sample_count splitPoint = start - oldNodes[n0].start;
+
+   if (srcNumNodes <= 4) {
+      // If we are inserting four or fewer blocks,
+      // it's simplest to just lump all the data together
+      // into one big block along with the split block,
+      // then resplit it all
+
+      Buffer left = oldNodes[n0].Get(0, splitPoint);
+      Buffer right = oldNodes[n0].Get(splitPoint);
+      Buffer newBlockData = Buffer::Append(left, bsrc->Get(0, srcLen), right);
+      SplitAndAppend(newBlockData);
+   }
+   else {
+      // The final case is that we're inserting at least five blocks.
+      // We divide these into three groups: the first two get merged
+      // with the first half of the split block, the middle ones get
+      // copied in as is, and the last two get merged with the last
+      // half of the split block.
+
+      Buffer groupOneData = Buffer::Append(oldNodes[n0].Get(0, splitPoint),
+                                           srcNodes[0].Get(),
+                                           srcNodes[1].Get());
+      SplitAndAppend(groupOneData);
+
+      for(n=2; n<srcNumNodes-2; n++) {
+         AppendBlock(mContext->GetSeqBlockRef(srcNodes[n].block));
+      }
+
+      Buffer groupThreeData = Buffer::Append(srcNodes[srcNumNodes-2].Get(),
+                                             srcNodes[srcNumNodes-1].Get(),
+                                             oldNodes[n0].Get(splitPoint));
+      SplitAndAppend(groupThreeData);
+   }
+
+   mContext->ReleaseSeqBlockRef(oldNodes[n0].block);
+
+   for(n=n0+1; n<numNodes; n++) {
+      oldNodes[n].start += srcLen;
+      mNodes.push_back(oldNodes[n]);
+      mNumSamples += oldNodes[n].len();
+   }
+}
