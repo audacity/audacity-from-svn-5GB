@@ -1,0 +1,27 @@
+
+Import('env')
+
+source_files = [
+    "Buffer.cpp",
+    "BufferGroup.cpp",
+    "Sequence.cpp",
+    "Cubic.cpp",
+    "DiskIO.cpp",
+    "Exceptions.cpp",
+    "RTDiskIONode.cpp",
+    "RTGraph.cpp",
+    "RTSineWaveNode.cpp",
+    "SeqBlock.cpp",
+    "SeqMemBlock.cpp",
+    "SeqDataFileBlock.cpp",
+    "Storable.cpp",
+    "srsw_queue.c",
+    "ManagedFile.cpp",
+    "ManagedFileContext.cpp",
+    "Util.cpp",
+    "XMLLoadStore.cpp",
+    "platform/posix/DiskFunctions.cpp"
+]
+
+env.StaticLibrary("audacity", source = source_files)
+

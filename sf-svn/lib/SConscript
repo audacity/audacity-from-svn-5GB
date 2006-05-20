@@ -1,0 +1,16 @@
+
+Import('env')
+
+expat_files = [
+               "expat/xmlparse.c",
+               "expat/xmltok.c",
+               "expat/xmlrole.c"
+]
+
+posh_files = [
+              "posh/posh.c"
+]
+
+env.StaticLibrary("expat", source = expat_files)
+
+env.StaticLibrary("posh", source = posh_files)
