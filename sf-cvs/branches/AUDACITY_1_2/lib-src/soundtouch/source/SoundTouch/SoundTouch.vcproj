@@ -46,7 +46,8 @@
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy         .\Release\SoundTouch.lib         ..\..\lib\"/>
+				CommandLine="copy         .\Release\SoundTouch.lib         ..\..\lib\"
+				ExcludedFromBuild="TRUE"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -78,7 +79,7 @@
 				AdditionalIncludeDirectories="..\..\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderFile=".\Debug/SoundTouch.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -93,13 +94,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Debug\SoundTouchD.lib"
+				OutputFile=".\Debug\SoundTouchD.lib"
 				SuppressStartupBanner="TRUE"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy .\Debug\SoundTouchD.lib ..\..\lib\"/>
+				CommandLine="copy .\Debug\SoundTouchD.lib ..\..\lib\"
+				ExcludedFromBuild="TRUE"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
