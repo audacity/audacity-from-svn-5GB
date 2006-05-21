@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\mswd,.,$(WXWIN)\include,..\src\include,..\src\include\win32,..\lib-src\allegro,..\lib-src\expat,..\lib-src\libid3tag,..\lib-src\portaudio\pa_common,..\lib-src\libsndfile\src,..\lib-src\libmad,..\lib-src\libogg\include,..\lib-src\libvorbis\include,..\lib-src\libnyquist\nyx,..\lib-src\portmixer\px_common,..\lib-src\libsamplerate\src,..\lib-src\libflac\include,..\lib-src\soundtouch\include,..\lib-src\libresample\include"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\mswd&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch&quot;;&quot;..\lib-src\libresample\include&quot;"
 				PreprocessorDefinitions="_DEBUG;DEBUG=1;__WXDEBUG__;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -92,7 +92,7 @@
 				InlineFunctionExpansion="2"
 				OptimizeForProcessor="3"
 				OptimizeForWindowsApplication="TRUE"
-				AdditionalIncludeDirectories="$(WXWIN)\lib\msw,.,$(WXWIN)\include,..\src\include,..\src\include\win32,..\lib-src\allegro,..\lib-src\expat,..\lib-src\libid3tag,..\lib-src\portaudio\pa_common,..\lib-src\libsndfile\src,..\lib-src\libmad,..\lib-src\libogg\include,..\lib-src\libvorbis\include,..\lib-src\libnyquist\nyx,..\lib-src\portmixer\px_common,..\lib-src\libsamplerate\src,..\lib-src\libflac\include,..\lib-src\soundtouch\include,..\lib-src\libresample\include"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\msw&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch&quot;;&quot;..\lib-src\libresample\include&quot;"
 				PreprocessorDefinitions="NDEBUG;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
