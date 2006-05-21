@@ -22,7 +22,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="FLAC__NO_DLL;WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -74,7 +74,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\..\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="FLAC__NO_DLL;WIN32;NDEBUG;_LIB"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="TRUE"
@@ -121,137 +121,25 @@
 			Name="Source Files"
 			Filter="cpp;cc;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
-				RelativePath="..\file_decoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\file_decoder.cpp">
 			</File>
 			<File
-				RelativePath="..\file_encoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\file_encoder.cpp">
 			</File>
 			<File
-				RelativePath="..\metadata.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\metadata.cpp">
 			</File>
 			<File
-				RelativePath="..\seekable_stream_decoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\seekable_stream_decoder.cpp">
 			</File>
 			<File
-				RelativePath="..\seekable_stream_encoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\seekable_stream_encoder.cpp">
 			</File>
 			<File
-				RelativePath="..\stream_decoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\stream_decoder.cpp">
 			</File>
 			<File
-				RelativePath="..\stream_encoder.cc">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MTd /W3 /Gm /GX /ZI /Od /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /GZ /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="cl /nologo /MT /W3 /GX /O2 /I &quot;..\..\..\include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_MBCS&quot; /D &quot;_LIB&quot; /YX /FD /c /TP &quot;$(InputPath)&quot;
-"
-						Outputs="$(IntDir)\$(InputName).obj"/>
-				</FileConfiguration>
+				RelativePath="..\stream_encoder.cpp">
 			</File>
 		</Filter>
 		<Filter
