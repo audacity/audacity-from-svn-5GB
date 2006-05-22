@@ -2052,7 +2052,7 @@ void AudacityProject::OnHistory()
 void AudacityProject::OnExperimentalTrackPanel()
 {
 #ifdef EXPERIMENTAL_TRACK_PANEL
-   TrackPanel2 Dlg;
+   TrackPanel2 Dlg(NULL);
    Dlg.ShowModal();
 #endif
 }

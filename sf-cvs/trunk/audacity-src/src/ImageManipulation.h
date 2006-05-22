@@ -10,6 +10,7 @@
 
 #include <wx/defs.h>
 #include <wx/colour.h>
+#include "Theme.h"
 
 class wxImage;
 
@@ -37,6 +38,13 @@ wxImage *ChangeImageColour(wxImage * srcImage,
 // at location (xoff, yoff).
 wxImage *OverlayImage(wxImage * background, wxImage * foreground,
                       wxImage * mask, int xoff, int yoff);
+
+
+// Same idea, but this time the mask is an alpha channel in
+// the foreground bitmap, and it's all retrieved from Themes.
+wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
+                      int xoff, int yoff);
+
 
 // Creates an image with a solid background color
 wxImage *CreateBackground(int width, int height, wxColour colour);

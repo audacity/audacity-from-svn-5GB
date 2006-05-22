@@ -45,6 +45,7 @@ class TrackArtist {
    TrackArtist();
    ~TrackArtist();
 
+   void SetColours();
    void DrawTracks(TrackList * tracks,
                    wxDC & dc, wxRegion & reg,
                    wxRect & r, wxRect & clip, ViewInfo * viewInfo, 

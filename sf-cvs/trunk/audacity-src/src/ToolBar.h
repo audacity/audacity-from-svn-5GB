@@ -79,12 +79,15 @@ DECLARE_EVENT_TYPE(EVT_TOOLBAR_BEGINDRAG, -1);
 /// class ToolBar
 ////////////////////////////////////////////////////////////
 
+#include "Theme.h"  // to get the teBmps enum.
+
 class ToolBar:
    public wxPanel
 {
 public:
    ToolBar();
    virtual ~ToolBar();
+   virtual void ReCreateButtons();
 
    wxString GetTitle();
 
@@ -124,6 +127,16 @@ protected:
                                 wxSize size,
                                 int xoff,
                                 int yoff);
+
+   AButton * MakeButton(teBmps eUp,
+                              teBmps eDown,
+                              teBmps eHilite,
+                              teBmps eStandard,
+                              teBmps eDisabled,
+                              wxWindowID id,
+                              wxPoint placement,
+                              bool processdownevents, 
+                              wxSize size);
 
    void SetButton(bool down, AButton* button);
 

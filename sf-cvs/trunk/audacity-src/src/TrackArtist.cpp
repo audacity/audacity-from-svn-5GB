@@ -44,6 +44,7 @@
 #include "Spectrum.h"
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
+#include "Theme.h"
 
 #undef PROFILE_WAVEFORM
 #ifdef PROFILE_WAVEFORM
@@ -74,29 +75,33 @@ TrackArtist::TrackArtist()
    mInsetRight  = 0;
    mInsetBottom = 0;
 
-   blankBrush     .SetColour(214, 214, 214);
-   unselectedBrush.SetColour(192, 192, 192);
-   selectedBrush  .SetColour(148, 148, 170);
-   sampleBrush    .SetColour( 50,  50, 200);
-   selsampleBrush .SetColour( 50,  50, 200);
-   dragsampleBrush.SetColour(  0,   0,   0);
-
-   blankPen     .SetColour(214, 214, 214);
-   unselectedPen.SetColour(192, 192, 192);
-   selectedPen  .SetColour(148, 148, 170);
-   samplePen    .SetColour( 50,  50, 200);
-   selsamplePen .SetColour( 50,  50, 200);
-   muteSamplePen.SetColour(136, 136, 144);
-   rmsPen       .SetColour(100, 100, 220);
-   muteRmsPen   .SetColour(136, 136, 144);
-   shadowPen    .SetColour(148, 148, 148);
-
+   SetColours();
    vruler = new Ruler();
 }
 
 TrackArtist::~TrackArtist()
 {
    delete vruler;
+}
+
+void TrackArtist::SetColours()
+{
+   theTheme.SetBrushColour( blankBrush,      clrBlank );
+   theTheme.SetBrushColour( unselectedBrush, clrUnselected);
+   theTheme.SetBrushColour( selectedBrush,   clrSelected);
+   theTheme.SetBrushColour( sampleBrush,     clrSample);
+   theTheme.SetBrushColour( selsampleBrush,  clrSelSample);
+   theTheme.SetBrushColour( dragsampleBrush, clrDragSample);
+
+   theTheme.SetPenColour(   blankPen,        clrBlank);
+   theTheme.SetPenColour(   unselectedPen,   clrUnselected);
+   theTheme.SetPenColour(   selectedPen,     clrSelected);
+   theTheme.SetPenColour(   samplePen,       clrSample);
+   theTheme.SetPenColour(   selsamplePen,    clrSelSample);
+   theTheme.SetPenColour(   muteSamplePen,   clrMuteSample);
+   theTheme.SetPenColour(   rmsPen,          clrRms);
+   theTheme.SetPenColour(   muteRmsPen,      clrMuteRms);
+   theTheme.SetPenColour(   shadowPen,       clrShadow);
 }
 
 void TrackArtist::SetInset(int left, int top, int right, int bottom)
@@ -117,6 +122,7 @@ void TrackArtist::DrawTracks(TrackList * tracks,
                              bool drawSamples,
                              bool drawSliders)
 {
+   SetColours();
    wxRect trackRect = r;
    wxRect stereoTrackRect;
 

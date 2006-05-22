@@ -68,7 +68,7 @@ wxImage *ChangeImageColour(wxImage * srcImage,
    for (i = 0; i < width * height * 3; i++) {
       int s = (int) *src;
 
-      if (s > srcVal[c])
+      if (s >= srcVal[c])
          *dst++ = dstVal[c] + dstOpp[c] * (s - srcVal[c]) / srcOpp[c];
 
       else
@@ -136,6 +136,72 @@ wxImage *OverlayImage(wxImage * background, wxImage * foreground,
       for (x = 0; x < wCutoff; x++) {
 
          int value = mk[3 * (y * mkWidth + x)];
+         int opp = 255 - value;
+
+         for (int c = 0; c < 3; c++)
+            dstp[x * 3 + c] = 
+               ((bkp[x * 3 + c] * opp) + 
+                (fg[3 * (y * fgWidth + x) + c] * value)) / 255;
+      }
+   } 
+   return dstImage;
+}
+
+wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
+                      int xoff, int yoff)
+{
+   // Takes a background image, foreground image, and mask
+   // (i.e. the alpha channel for the foreground), and
+   // returns an new image where the foreground has been
+   // overlaid onto the background using alpha-blending,
+   // at location (xoff, yoff).
+   wxImage imgBack(theTheme.Bitmap( eBack       ).ConvertToImage());
+   wxImage imgFore(theTheme.Bitmap( eForeground ).ConvertToImage());
+   wxASSERT( imgFore.HasAlpha() );
+
+   unsigned char *bg = imgBack.GetData();
+   unsigned char *fg = imgFore.GetData();
+   unsigned char *mk = imgFore.GetAlpha();
+
+   int bgWidth = imgBack.GetWidth();
+   int bgHeight = imgBack.GetHeight();
+   int fgWidth = imgFore.GetWidth();
+   int fgHeight = imgFore.GetHeight();
+
+
+   //Now, determine the dimensions of the images to be masked together
+   //on top of the background.  This should be equal to the area of the
+   //smaller of the foreground and the mask, as long as it is 
+   //within the area of the background, given the offset.
+
+   //Make sure the foreground size is no bigger than the mask
+   int wCutoff = fgWidth;
+   int hCutoff = fgHeight;
+
+
+   // If the masked foreground + offset is bigger than the background, masking
+   // should only occur within these bounds of the foreground image
+   wCutoff = (bgWidth - xoff > wCutoff) ? wCutoff : bgWidth - xoff;
+   hCutoff = (bgHeight - yoff > hCutoff) ? hCutoff : bgHeight - yoff;
+
+   //Make a new image the size of the background
+   wxImage * dstImage = new wxImage(bgWidth, bgHeight);
+   unsigned char *dst = dstImage->GetData();
+   memcpy(dst, bg, bgWidth * bgHeight * 3);
+
+   // Go through the foreground image bit by bit and mask it on to the
+   // background, at an offset of xoff,yoff.
+   // BUT...Don't go beyond the size of the background image,
+   // the foreground image, or the mask 
+   int x, y;
+   for (y = 0; y < hCutoff; y++) {
+
+      unsigned char *bkp = bg + 3 * ((y + yoff) * bgWidth + xoff);
+      unsigned char *dstp = dst + 3 * ((y + yoff) * bgWidth + xoff);
+
+      for (x = 0; x < wCutoff; x++) {
+
+         int value = mk[(y * fgWidth + x)];// Don't multiply by 3...
          int opp = 255 - value;
 
          for (int c = 0; c < 3; c++)

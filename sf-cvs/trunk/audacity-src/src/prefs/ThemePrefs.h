@@ -23,6 +23,8 @@
 #define USE_THEME_PREFS
 #endif
 
+class ShuttleGui;
+
 class ThemePrefs :
    public PrefsPanel
 {
@@ -31,11 +33,13 @@ public:
    ~ThemePrefs(void);
    bool Apply();
 
-   void Populate();
-   void OnLoad(wxCommandEvent &event);
-   void OnSave(wxCommandEvent &event);
+   void Populate(ShuttleGui & S);
+   void OnLoadThemeComponents(wxCommandEvent &event);
+   void OnSaveThemeComponents(wxCommandEvent &event);
    void OnLoadThemeCache(wxCommandEvent &event);
    void OnSaveThemeCache(wxCommandEvent &event);
+
+   bool bLoadThemeAtStart;
 
    DECLARE_EVENT_TABLE();
 };
