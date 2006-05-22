@@ -28,6 +28,7 @@
 #define __AUDACITY_CONTROL_TOOLBAR__
 
 #include "ToolBar.h"
+#include "../Theme.h"
 
 class AButton;
 class ControlToolBar;
@@ -90,6 +91,7 @@ class ControlToolBar:public ToolBar {
 
    void SetVUMeters(AudacityProject *p);
 
+   virtual void ReCreateButtons();
    DECLARE_EVENT_TABLE()
    ;
  private:
@@ -97,9 +99,12 @@ class ControlToolBar:public ToolBar {
    AButton *MakeButton(char const **foreground, char const **disabled,
                        char const **alpha, int id, bool processdownevents,
                        const wxChar *label, const wxChar *tip);
-
+   AButton *MakeButton(teBmps eFore, teBmps eDisabled,
+                                       int id,
+                                       bool processdownevents,
+                                       const wxChar *label,
+                                       const wxChar *tip);
    void MakeLoopImage();
-
    void ArrangeButtons();
    
    void SetupCutPreviewTracks(double playStart, double cutStart,

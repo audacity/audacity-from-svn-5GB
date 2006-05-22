@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Shane T. Mueller
+  James Crook
  
   See ControlToolBar.h for details
 
@@ -46,6 +47,7 @@
 
 #include "AColor.h"
 #include "MeterToolBar.h"
+#include "Theme.h"
 
 #include "../images/ControlButtons.h"
 
@@ -72,7 +74,10 @@ ControlToolBar::ControlToolBar( wxWindow * parent ):
    ToolBar()
 {
    mPaused = false;
-   mSizer = new wxBoxSizer( wxHORIZONTAL );
+//   mSizer = new wxBoxSizer( wxHORIZONTAL );
+//   Add( mSizer, 1, wxEXPAND );
+   mSizer = NULL;
+
    mCutPreviewTracks = NULL;
 
    gPrefs->Read( wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true );
@@ -87,6 +92,9 @@ ControlToolBar::ControlToolBar( wxWindow * parent ):
 
 ControlToolBar::~ControlToolBar()
 {
+// As the buttons are placed on the window, we should not delete them.
+// They will be deleted by wxWidgets.
+#if 0
    delete mPause;
    delete mPlay;
    delete mStop;
@@ -94,6 +102,7 @@ ControlToolBar::~ControlToolBar()
    delete mFF;
    delete mRecord;
    delete mBatch;
+#endif
 }
 
 // This is a convenience function that allows for button creation in
@@ -111,6 +120,27 @@ AButton *ControlToolBar::MakeButton(char const **foreground,
                                     wxDefaultPosition, processdownevents,
                                     wxSize(upPattern->GetWidth(), upPattern->GetHeight()),
                                     0, 0 );
+   r->SetLabel(label);
+   r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
+
+#if wxUSE_TOOLTIPS
+   r->SetToolTip(tip);
+#endif
+
+   return r;
+}
+
+AButton *ControlToolBar::MakeButton(teBmps eFore, teBmps eDisabled,
+                                    int id,
+                                    bool processdownevents,
+                                    const wxChar *label,
+                                    const wxChar *tip)
+{
+   AButton *r = ToolBar::MakeButton(bmpRecoloredUpButton, bmpRecoloredDownButton, bmpRecoloredHiliteButton,
+                                    eFore, eDisabled,
+                                    wxWindowID(id),
+                                    wxDefaultPosition, processdownevents,
+                                    wxSize(upPattern->GetWidth(), upPattern->GetHeight()));
    r->SetLabel(label);
    r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
 
@@ -148,9 +178,10 @@ void ControlToolBar::MakeLoopImage()
 
 void ControlToolBar::Populate()
 {
-   wxImage *upOriginal = new wxImage(wxBitmap(UpButton).ConvertToImage());
-   wxImage *downOriginal = new wxImage(wxBitmap(DownButton).ConvertToImage());
-   wxImage *hiliteOriginal = new wxImage(wxBitmap(HiliteButton).ConvertToImage());
+   // Each of these three allocs a new Image.
+   wxImage *upOriginal     = theTheme.Image( bmpUpButton );  
+   wxImage *downOriginal   = theTheme.Image( bmpDownButton );  
+   wxImage *hiliteOriginal = theTheme.Image( bmpHiliteButton );
 
    wxColour newColour =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
@@ -160,19 +191,22 @@ void ControlToolBar::Populate()
    downPattern = downOriginal;
    hilitePattern = hiliteOriginal;
 #else
-   upPattern = ChangeImageColour(upOriginal, newColour);
-   downPattern = ChangeImageColour(downOriginal, newColour);
-   hilitePattern = ChangeImageColour(hiliteOriginal, newColour);
+   upPattern     = ChangeImageColour(  upOriginal,     newColour );
+   downPattern   = ChangeImageColour(  downOriginal,   newColour );
+   hilitePattern = ChangeImageColour(  hiliteOriginal, newColour );
 #endif
 
-   mPause = MakeButton((char const **)Pause,
-                       (char const **) PauseDisabled,
-                       (char const **) PauseAlpha,
+   theTheme.Bitmap( bmpRecoloredUpButton )     = wxBitmap(*upPattern);
+   theTheme.Bitmap( bmpRecoloredDownButton )   = wxBitmap(*downPattern);
+   theTheme.Bitmap( bmpRecoloredHiliteButton ) = wxBitmap(*hilitePattern);
+
+   mPause = MakeButton(bmpPause,bmpPauseDisabled,
                        ID_PAUSE_BUTTON,
                        true,
                        _("Pause"),
                        _("Pause"));
 
+#if 0
    mPlay = MakeButton((char const **) Play,
                       (char const **) PlayDisabled,
                       (char const **) PlayAlpha,
@@ -180,43 +214,41 @@ void ControlToolBar::Populate()
                       false,
                       _("Play"),
                       _("Play (Shift for loop-play)"));
+#endif
+
+   mPlay = MakeButton( bmpPlay, bmpPlayDisabled, 
+                      ID_PLAY_BUTTON,
+                      false,
+                      _("Play"),
+                      _("Play (Shift for loop-play)"));
+
    MakeLoopImage();
 
-   mStop = MakeButton((char const **) Stop,
-                      (char const **) StopDisabled,
-                      (char const **) StopAlpha,
+   mStop = MakeButton( bmpStop, bmpStopDisabled ,
                       ID_STOP_BUTTON,
                       false,
                       _("Stop"),
                       _("Stop"));
 
-   mRewind = MakeButton((char const **) Rewind,
-                        (char const **) RewindDisabled,
-                        (char const **) RewindAlpha,
+   mRewind = MakeButton(bmpRewind, bmpRewindDisabled,
                         ID_REW_BUTTON,
                         false,
                         _("Start"),
                         _("Skip to Start"));
 
-   mFF = MakeButton((char const **) FFwd,
-                    (char const **) FFwdDisabled,
-                    (char const **) FFwdAlpha,
+   mFF = MakeButton(bmpFFwd, bmpFFwdDisabled,
                     ID_FF_BUTTON,
                     false,
                     _("End"),
                     _("Skip to End"));
 
-   mRecord = MakeButton((char const **) Record,
-                        (char const **) RecordDisabled,
-                        (char const **) RecordAlpha,
+   mRecord = MakeButton(bmpRecord, bmpRecordDisabled,
                         ID_RECORD_BUTTON,
                         false,
                         _("Record"),
                         _("Record"));
 
-   mBatch = MakeButton((char const **) CleanSpeech,
-                       (char const **) CleanSpeechDisabled,
-                       (char const **) CleanSpeechAlpha,
+   mBatch = MakeButton(bmpCleanSpeech,bmpCleanSpeechDisabled,
                        ID_BATCH_BUTTON,
                        false,
                        _("Clean Speech"),
@@ -294,9 +326,12 @@ void ControlToolBar::ArrangeButtons()
 {
    int flags = wxALIGN_CENTER | wxRIGHT;
 
-   // Reallocate the button sizer
-   Detach( mSizer );
-   delete mSizer;
+   // (Re)allocate the button sizer
+   if( mSizer )
+   {
+      Detach( mSizer );
+      delete mSizer;
+   }
    mSizer = new wxBoxSizer( wxHORIZONTAL );
    Add( mSizer, 1, wxEXPAND );
 
@@ -338,6 +373,20 @@ void ControlToolBar::ArrangeButtons()
 
    // And make that size the minimum
    SetMinSize( GetSizer()->GetMinSize() );
+}
+
+void ControlToolBar::ReCreateButtons()
+{
+   // Get rid of mSizer here in case getting rid of 
+   // Toolbars mHSizer would try to but leave mSizer non-NULL
+   // We do not need to delete the buttons here as they belong
+   // to the window.
+   Detach( mSizer );
+   delete mSizer;
+   mSizer = NULL;
+//   mSizer = new wxBoxSizer( wxHORIZONTAL );
+//   SetSizer( mSizer );
+   ToolBar::ReCreateButtons();
 }
 
 void ControlToolBar::Repaint( wxDC *dc )

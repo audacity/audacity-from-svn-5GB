@@ -14,6 +14,7 @@
 #include "Audacity.h"
 
 #include "ToolBar.h"
+#include "Theme.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -1210,6 +1211,7 @@ ToolBar::ToolBar():
    mParent = NULL;
    mDocked = true;
    mResizeable = false;
+   mHSizer = NULL;
    mType = NoBarID;
    mTitle.Clear();
    mLabel.Clear();
@@ -1317,6 +1319,25 @@ void ToolBar::InitToolBar( wxWindow *parent,
    SetSizerAndFit( mHSizer );
    Layout();
    Show();
+}
+
+void ToolBar::ReCreateButtons()
+{
+   // SetSizer(NULL) detaches mHSizer and deletes it.
+   // Do not use Detach() here, as that attempts to detach mHSizer from itself!
+   SetSizer( NULL );
+
+   DestroyChildren();
+   mHSizer = new wxBoxSizer( wxHORIZONTAL );
+
+   mGrabber = new Grabber( this, mType );
+   mHSizer->Add( mGrabber, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP | wxRIGHT, 1 );
+   SetSizer( mHSizer );
+   // Default to docked
+   //SetDocked( true );
+
+   // Go add all the rest of the gadgets
+   Populate();
 }
 
 //
@@ -1503,6 +1524,40 @@ AButton * ToolBar::MakeButton(wxImage * up,
 
    return button;
 }
+
+AButton * ToolBar::MakeButton(teBmps eUp,
+                              teBmps eDown,
+                              teBmps eHilite,
+                              teBmps eStandard,
+                              teBmps eDisabled,
+                              wxWindowID id,
+                              wxPoint placement,
+                              bool processdownevents, 
+                              wxSize size) 
+{
+   wxImage color(          theTheme.Bitmap(eStandard).ConvertToImage());
+   wxImage color_disabled( theTheme.Bitmap(eDisabled).ConvertToImage());
+
+   int xoff = (size.GetWidth() - color.GetWidth())/2;
+   int yoff = (size.GetHeight() - color.GetHeight())/2;
+   
+   wxImage * up2        = OverlayImage(eUp,     eStandard, xoff, yoff);
+   wxImage * hilite2    = OverlayImage(eHilite, eStandard, xoff, yoff);
+   wxImage * down2      = OverlayImage(eDown,   eStandard, xoff + 1, yoff + 1);
+   wxImage * disable2   = OverlayImage(eUp,     eDisabled, xoff, yoff);
+
+   AButton * button =
+      new AButton(this, id, placement, size, up2, hilite2, down2,
+            disable2, processdownevents);
+
+   delete up2;
+   delete down2;
+   delete hilite2;
+   delete disable2;
+
+   return button;
+}
+
 
 //
 // This changes the state a button (from up to down or vice versa)

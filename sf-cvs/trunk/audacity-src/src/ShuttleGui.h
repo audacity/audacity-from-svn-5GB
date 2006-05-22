@@ -63,6 +63,7 @@ public:
 	void AddFixedText( const wxString & Str, bool bCenter = false );
    void AddConstTextBox( const wxString &Caption, const wxString & Value );
    void AddTickBox( const wxString &Prompt, const wxString &Selected);
+   void AddTickBoxOnRight( const wxString &Prompt, const wxString &Selected);
 
 //-- Start and end functions.  These are used for sizer, or other window containers
 //   and create the appropriate widget.
@@ -90,7 +91,8 @@ public:
    wxChoice * TieCombo( const wxString &Prompt, wxString &Selected, const wxArrayString * pChoices );
    wxSlider * TieSlider( const wxString &Prompt, const float min, const float max, float &f );
    void TieRadioButton( const wxString & Prompt, int iIndex, wxString &Selected);
-	void TieTickbox( const wxString & Prompt, bool & Var );
+	void TieTickbox(        const wxString & Prompt, bool & Var );
+	void TieTickboxOnRight( const wxString & Prompt, bool & Var );
 
    
 
@@ -129,6 +131,9 @@ protected:
 };
 
 
+
+class GuiWaveTrack;
+
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
 class ShuttleGui : public ShuttleGuiBase
 {
@@ -138,4 +143,5 @@ public:
    ~ShuttleGui(void){;};
 public:
    ShuttleGui & Id(int id );
+   GuiWaveTrack * AddGuiWaveTrack( const wxString & Name);
 };

@@ -57,6 +57,9 @@ void ShuttleGuiBase::Init()
    miIdSetByUser = -1;
    miId = -1;
    miIdNext = 1000;
+   if( mShuttleMode != eIsCreating )
+      return;
+
    mpSizer = mpParent->GetSizer();
    if( mpSizer == NULL )
    {
@@ -104,6 +107,23 @@ wxButton * ShuttleGuiBase::AddButton(const wxString &Text)
 }
 
 void ShuttleGuiBase::AddTickBox( const wxString &Prompt, const wxString &Selected)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return;
+   wxCheckBox * pCheckBox;
+   miProp=0;
+   wxString Prompt2=Prompt;
+   Prompt2.Replace( wxT("&"), wxT("&&") );
+   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, Prompt2);
+   pCheckBox->SetValue(Selected==wxT("true"));
+   UpdateSizers();
+}
+
+// For a consistant two-column layout we want labels on the left and
+// controls on the right.  TickBoxes break that rule, so we fake it by
+// placing a static text label and then a tick box with an empty label.
+void ShuttleGuiBase::AddTickBoxOnRight( const wxString &Prompt, const wxString &Selected)
 {
    UseUpId();
    if( mShuttleMode != eIsCreating )
@@ -534,6 +554,56 @@ void ShuttleGuiBase::TieTickbox(const wxString &Prompt, bool &Var)
       break;
    }
 }
+// See comment in AddTickBoxOnRight() for why we have this variant.
+void ShuttleGuiBase::TieTickboxOnRight(const wxString &Prompt, bool &Var)
+{
+   // The Add function does a UseUpId(), so don't do it here in that case.
+   if( mShuttleMode != eIsCreating )
+      UseUpId();
+
+   switch( mShuttleMode )
+   {
+   // IF Creating the dialog controls and setting them from internal storage.
+   case eIsCreating:
+      {
+         AddTickBoxOnRight( Prompt, Var ? wxT("true") : wxT("false"));
+      }
+      break;
+   // IF setting internal storage from the controls.
+   case eIsGettingFromDialog:
+      {
+         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
+         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
+         wxASSERT( pCheckBox );
+         Var = pCheckBox->GetValue();
+      }
+      break;
+   case eIsSettingToDialog:
+      {
+         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
+         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
+         wxASSERT( pCheckBox );
+         pCheckBox->SetValue( Var );
+      }
+      break;
+   // IF Saving settings to external storage...
+   case eIsSavingViaShuttle:
+      {
+         wxASSERT(false);
+      }
+      break;
+   // IF Getting settings from external storage.
+   case eIsGettingViaShuttle:
+      {
+         wxASSERT(false);
+      }
+      break;
+   default:
+      wxASSERT( false );
+      break;
+   }
+}
+
 
 
 wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, const float min, const float max, float &f )
@@ -793,8 +863,27 @@ void ShuttleGuiBase::PushSizer()
 }
 
 
+
+// Additional includes down here, to make it easier to split this into
+// two files at some later date.
+#include "GuiWaveTrack.h"
+// Now we have Audacity specific shuttle functions.
+
 ShuttleGui & ShuttleGui::Id(int id )
 {
    miIdSetByUser = id;
    return *this;
+}
+
+GuiWaveTrack * ShuttleGui::AddGuiWaveTrack( const wxString & Name)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return (GuiWaveTrack*)NULL;
+   GuiWaveTrack * pGuiWaveTrack;
+   miProp=1;
+   mpWind = pGuiWaveTrack = new GuiWaveTrack(mpParent, miId, Name);
+   mpWind->SetMinSize(wxSize(100,100));
+   UpdateSizers();
+   return pGuiWaveTrack;
 }
