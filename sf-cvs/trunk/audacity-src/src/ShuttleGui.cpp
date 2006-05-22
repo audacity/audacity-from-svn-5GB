@@ -78,6 +78,12 @@ void ShuttleGuiBase::Init()
    mpSizer->SetMinSize(250,100);
 }
 
+void ShuttleGuiBase::EnableCtrl( bool bEnable )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   mpLastWind->Enable( bEnable );
+}
 
 
 //---- Add Functions.

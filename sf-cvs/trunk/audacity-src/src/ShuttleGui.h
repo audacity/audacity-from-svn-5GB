@@ -94,6 +94,8 @@ public:
 	void TieTickbox(        const wxString & Prompt, bool & Var );
 	void TieTickboxOnRight( const wxString & Prompt, bool & Var );
 
+   void EnableCtrl( bool bEnable );
+
    
 
 protected:
