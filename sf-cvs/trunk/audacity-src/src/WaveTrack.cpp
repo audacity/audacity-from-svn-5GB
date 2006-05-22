@@ -779,7 +779,7 @@ bool WaveTrack::Join(double t0, double t1)
 
          // Put in sorted order
          int i;
-         for(i=0; i<clipsToDelete.GetCount(); i++)
+         for(i=0; i<(int)clipsToDelete.GetCount(); i++)
             if (clipsToDelete[i]->GetStartTime() > clip->GetStartTime())
                break;
          //printf("Insert clip %.6f at position %d\n", clip->GetStartTime(), i);

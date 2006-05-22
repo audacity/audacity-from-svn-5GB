@@ -73,10 +73,16 @@ void ThemePrefs::Populate( ShuttleGui & S)
    S.EndStatic();
    S.StartStatic( wxT("Info"), 1 );
    S.AddFixedText( 
-      wxT("Themability is an experimental feature.\r\n\r\nTo try it out, click 'Save Theme' then find and modify\r\nthe images and colors in ImageCache.png using an\r\nimage editor such as the Gimp.\r\n\r\nClick 'Load Theme' to load the changed images\r\nand colors back into Audacity.")
+      wxT("Themability is an experimental feature.\r\n\r\n")
+      wxT("To try it out, click 'Save Theme' then find and modify\r\n")
+      wxT("the images and colors in ImageCache.png using an\r\n")
+      wxT("image editor such as the Gimp.\r\n\r\n")
+      wxT("Click 'Load Theme' to load the changed images\r\n")
+      wxT("and colors back into Audacity.")
       );
    S.AddFixedText( 
-      wxT("Saving and loading components isn't implemented\r\nyet.  It will use separate files for each image.")
+      wxT("Saving and loading components isn't implemented\r\n")
+      wxT("yet.  It will use separate files for each image.")
       );
    S.EndStatic();
 }
@@ -98,7 +104,7 @@ void ThemePrefs::OnSaveThemeComponents(wxCommandEvent &event)
 void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
 {
    theTheme.ReadImageCache();
-   wxLogDebug("OK So Far");
+//   wxLogDebug(wxT("OK So Far"));
    AudacityProject *p = GetActiveProject();
    if( p->GetControlToolBar() )
    {
