@@ -346,7 +346,7 @@ wxString ThemeBase::GetCacheFileName()
 #ifdef  __WXMSW__
    return wxT("C:\\ImageCache.png");
 #else
-   return wxT("IamgeCache.png");
+   return wxT("ImageCache.png");
 #endif
 }
 
