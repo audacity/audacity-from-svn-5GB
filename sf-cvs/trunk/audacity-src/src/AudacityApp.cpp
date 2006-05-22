@@ -534,10 +534,24 @@ bool AudacityApp::OnInit()
             continue;
          bool handled = false;
 
+// JKC: In order to have long strings that span multiple lines,
+// and for this to work with i18n, use the magic formula
+// of wrapping continuations with wxT() but not the first
+// part of the string.
+// Why does it work?  Because in unicode _(s) and wxT(s) both
+// prepend an L to s.  That's why you don't want a wxT on the 
+// first string.
+
          if (!wxString(wxT("-help")).CmpNoCase(argv[option])) {
             wxPrintf(/* i18n-hint: '-help', '-test' and
                       '-blocksize' need to stay in English. */
-                   _("Command-line options supported:\n  -help (this message)\n  -test (run self diagnostics)\n  -blocksize ### (set max disk block size in bytes)\n\nIn addition, specify the name of an audio file or Audacity project\nto open it.\n\n"));
+                   _(
+                    "Command-line options supported:\n"
+                    wxT("  -help (this message)\n")
+                    wxT("  -test (run self diagnostics)\n")
+                    wxT("  -blocksize ### (set max disk block size in bytes)\n\n")
+                    wxT("In addition, specify the name of an audio file or Audacity project\n")
+                    wxT("to open it.\n\n")));
             exit(0);
          }
 

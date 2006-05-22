@@ -574,8 +574,10 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
          }
          else {
             // msmeyer: Show error message if stream could not be opened
-            wxMessageBox(_("Error while opening sound device. Please check the output device settings and the project sample rate."),
-                         _("Error"), wxOK | wxICON_EXCLAMATION, this);
+            wxMessageBox(_(
+               "Error while opening sound device. "
+               wxT("Please check the output device settings and the project sample rate.")),
+               _("Error"), wxOK | wxICON_EXCLAMATION, this);
          }
       }
 
@@ -724,7 +726,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       size_t numProjects = gAudacityProjects.Count();
       bool tracks = (p && !p->GetTracks()->IsEmpty());
       if (tracks || (numProjects > 1)) {
-         wxMessageBox(_("CleanSpeech only allows recording mono track.\nRecording not possible when more than one window open."),
+         wxMessageBox(_("CleanSpeech only allows recording mono track.\n"
+            wxT("Recording not possible when more than one window open.")),
                         _("Recording not permitted"),
                         wxOK | wxICON_INFORMATION,
                         this);
@@ -805,7 +808,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       }
       else {
          // msmeyer: Show error message if stream could not be opened
-         wxMessageBox(_("Error while opening sound device. Please check the input device settings and the project sample rate."),
+         wxMessageBox(_("Error while opening sound device. "
+            wxT("Please check the input device settings and the project sample rate.")),
                       _("Error"), wxOK | wxICON_EXCLAMATION, this);
 
          SetPlay(false);
