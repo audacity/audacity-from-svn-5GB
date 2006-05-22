@@ -864,11 +864,14 @@ void ShuttleGuiBase::PushSizer()
 
 
 
+#ifdef EXPERIMENTAL_TRACK_PANEL
 // Additional includes down here, to make it easier to split this into
 // two files at some later date.
 #include "GuiWaveTrack.h"
-// Now we have Audacity specific shuttle functions.
+#endif
 
+
+// Now we have Audacity specific shuttle functions.
 ShuttleGui & ShuttleGui::Id(int id )
 {
    miIdSetByUser = id;
@@ -877,6 +880,7 @@ ShuttleGui & ShuttleGui::Id(int id )
 
 GuiWaveTrack * ShuttleGui::AddGuiWaveTrack( const wxString & Name)
 {
+#ifdef EXPERIMENTAL_TRACK_PANEL
    UseUpId();
    if( mShuttleMode != eIsCreating )
       return (GuiWaveTrack*)NULL;
@@ -886,4 +890,7 @@ GuiWaveTrack * ShuttleGui::AddGuiWaveTrack( const wxString & Name)
    mpWind->SetMinSize(wxSize(100,100));
    UpdateSizers();
    return pGuiWaveTrack;
+#else
+   return NULL;
+#endif
 }
