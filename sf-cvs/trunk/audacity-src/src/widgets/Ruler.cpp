@@ -301,9 +301,26 @@ void Ruler::FindLinearTickSizes(double UPP)
          mMajor = 6.0;
          return;
       }
-      mMinor = 3.0;
-      mMajor = 12.0;
-      return;
+      if (units < 3.0) {
+         mMinor = 3.0;
+         mMajor = 12.0;
+      }
+      d = 10.0;
+      for(;;) {
+         if (units < d) {
+            mMinor = d;
+            mMajor = d*5.0;
+            return;
+         }
+         d *= 5.0;
+         if (units < d) {
+            mMinor = d;
+            mMajor = d*2.0;
+            return;
+         }
+         d *= 2.0;
+      }
+      break;
 
    case IntFormat:
       d = 1.0;
