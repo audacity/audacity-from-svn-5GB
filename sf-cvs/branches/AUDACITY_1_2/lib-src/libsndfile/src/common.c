@@ -559,7 +559,10 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
 
 	while ((c = *format++))
 	{	switch (c)
-		{	case 'e' : /* All conversions are now from LE to host. */
+		{	case ' ' : /* Do nothing. Just used to space out format string. */
+					break ;
+
+			case 'e' : /* All conversions are now from LE to host. */
 					psf->rwf_endian = SF_ENDIAN_LITTLE ;
 					break ;
 
@@ -809,7 +812,7 @@ header_read (SF_PRIVATE *psf, void *ptr, int bytes)
 
 		most = SIGNED_SIZEOF (psf->header) - psf->headindex ;
 		psf_fread (psf->header + psf->headend, 1, most, psf) ;
-		memset (((char *)ptr) + most, 0, bytes - most) ;
+		memset (ptr + most, 0, bytes - most) ;
 
 		psf_fseek (psf, bytes - most, SEEK_CUR) ;
 		return bytes ;

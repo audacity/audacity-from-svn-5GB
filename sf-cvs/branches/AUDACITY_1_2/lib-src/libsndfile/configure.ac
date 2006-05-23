@@ -1,17 +1,16 @@
-# Copyright (C) 1999-2005 Erik de Castro Lopo (erikd AT mega-nerd DOT com).
+# Copyright (C) 1999-2006 Erik de Castro Lopo (erikd AT mega-nerd DOT com).
 
 dnl Require autoconf version
-AC_PREREQ(2.53)
+AC_PREREQ(2.59)
 
-AC_INIT(libsndfile,1.0.15,erikd@mega-nerd.com)
+AC_INIT([libsndfile],[1.0.16],[erikd@mega-nerd.com])
 AC_CONFIG_SRCDIR([src/sndfile.c])
 AC_CANONICAL_TARGET([])
 
-AM_MAINTAINER_MODE
-dnl audacity patch - we would like to be in maintianer mode
-
 AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
-AM_CONFIG_HEADER(src/config.h)
+AC_CONFIG_HEADERS([src/config.h])
+
+AC_LANG([C])
 
 #------------------------------------------------------------------------------------
 # Rules for library version information:
@@ -29,7 +28,7 @@ AM_CONFIG_HEADER(src/config.h)
 #  6. If any interfaces have been removed since the last public release, then set age
 #     to 0.
 
-SHARED_VERSION_INFO="1:15:0"
+SHARED_VERSION_INFO="1:16:0"
 
 AC_PROG_CC
 AM_PROG_LIBTOOL
