@@ -91,6 +91,7 @@ if [ ! -f $INSTALL/bin/libsndfile-1.dll ]; then
 	rm -rf $INSTALL/lib
 	rmdir $INSTALL/include
 	cp src/libsndfile.def $INSTALL/
+	cp Win32/README-precompiled-dll.txt $INSTALL/
 	fi
 
 if [ ! -f $INSTALL/libsndfile-$VERSION.tar.gz ]; then

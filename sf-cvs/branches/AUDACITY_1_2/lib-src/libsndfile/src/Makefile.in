@@ -68,7 +68,7 @@ libsndfile_la_DEPENDENCIES = GSM610/libgsm.la G72x/libg72x.la \
 am__objects_1 = sndfile.lo common.lo file_io.lo command.lo pcm.lo \
 	ulaw.lo alaw.lo float32.lo double64.lo ima_adpcm.lo \
 	ms_adpcm.lo gsm610.lo dwvw.lo vox_adpcm.lo interleave.lo \
-	strings.lo dither.lo
+	strings.lo dither.lo broadcast.lo
 am__objects_2 = aiff.lo au.lo g72x.lo avr.lo caf.lo ircam.lo \
 	macbinary3.lo macos.lo mat4.lo mat5.lo nist.lo paf.lo pvf.lo \
 	raw.lo svx.lo voc.lo htk.lo dwd.lo ogg.lo rx2.lo sd2.lo sds.lo \
@@ -170,9 +170,6 @@ LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
-MAINT = @MAINT@
-MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
-MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 OBJEXT = @OBJEXT@
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
@@ -258,7 +255,7 @@ EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
 noinst_HEADERS = common.h sfconfig.h sfendian.h float_cast.h wav_w64.h sf_unistd.h
 COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c \
 		double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c vox_adpcm.c \
-		interleave.c strings.c dither.c
+		interleave.c strings.c dither.c broadcast.c
 
 FILESPECIFIC = aiff.c au.c g72x.c avr.c caf.c ircam.c macbinary3.c macos.c \
 				mat4.c mat5.c nist.c paf.c pvf.c raw.c svx.c voc.c htk.c dwd.c \
@@ -281,7 +278,7 @@ all: config.h
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -306,9 +303,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+$(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
 config.h: stamp-h1
@@ -320,7 +317,7 @@ config.h: stamp-h1
 stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
 	cd $(top_builddir) && $(SHELL) ./config.status src/config.h
-$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps) 
+$(srcdir)/config.h.in:  $(am__configure_deps) 
 	cd $(top_srcdir) && $(AUTOHEADER)
 	rm -f stamp-h1
 	touch $@
@@ -385,6 +382,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alaw.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/au.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/avr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/broadcast.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/command.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Plo@am__quote@
@@ -801,7 +799,7 @@ uninstall-info: uninstall-info-recursive
 
 
 test_endswap.c: test_endswap.def test_endswap.tpl
-	autogen --writable --source-time test_endswap.def
+	autogen --writable test_endswap.def
 
 genfiles : test_endswap.c Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def
 

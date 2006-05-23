@@ -256,9 +256,6 @@ LIBTOOL = @LIBTOOL@
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
-MAINT = @MAINT@
-MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
-MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
 OBJEXT = @OBJEXT@
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
@@ -419,7 +416,7 @@ all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -444,9 +441,9 @@ Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 $(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
-$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+$(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+$(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 
 clean-noinstPROGRAMS:
@@ -795,28 +792,28 @@ uninstall-am: uninstall-info-am
 #===============================================================================
 
 write_read_test.c: write_read_test.def write_read_test.tpl
-	autogen --writable --source-time write_read_test.def
+	autogen --writable write_read_test.def
 
 pcm_test.c: pcm_test.def pcm_test.tpl
-	autogen --writable --source-time pcm_test.def
+	autogen --writable pcm_test.def
 
 header_test.c: header_test.def header_test.tpl
-	autogen --writable --source-time header_test.def
+	autogen --writable header_test.def
 
 utils.c: utils.def utils.tpl
-	autogen --writable --source-time utils.def
+	autogen --writable utils.def
 
 scale_clip_test.c: scale_clip_test.def scale_clip_test.tpl
-	autogen --writable --source-time scale_clip_test.def
+	autogen --writable scale_clip_test.def
 
 pipe_test.c: pipe_test.def pipe_test.tpl
-	autogen --writable --source-time pipe_test.def
+	autogen --writable pipe_test.def
 
 floating_point_test.c: floating_point_test.def floating_point_test.tpl
-	autogen --writable --source-time floating_point_test.def
+	autogen --writable floating_point_test.def
 
 benchmark.c: benchmark.def benchmark.tpl
-	autogen --writable --source-time benchmark.def
+	autogen --writable benchmark.def
 
 genfiles : write_read_test.c pcm_test.c header_test.c utils.c \
 		scale_clip_test.c pipe_test.c floating_point_test.c benchmark.c
@@ -841,6 +838,7 @@ generic-tests : error_test ulaw_test alaw_test command_test floating_point_test 
 	./command_test peak
 	./command_test trunc
 	./command_test inst
+	./command_test bext
 	./floating_point_test
 	./scale_clip_test
 	./headerless_test
