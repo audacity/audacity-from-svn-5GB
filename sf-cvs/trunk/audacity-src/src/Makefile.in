@@ -74,8 +74,10 @@ OBJS = \
 	RingBuffer.o \
 	SelectionBar.o \
 	Shuttle.o \
+	ShuttleGui.o \
 	Spectrum.o \
 	Tags.o \
+	Theme.o \
 	TimeTrack.o \
 	ToolBar.o \
 	ToolsToolBar.o \
@@ -148,6 +150,7 @@ OBJS = \
 	prefs/PrefsDialog.o \
 	prefs/QualityPrefs.o \
 	prefs/SpectrumPrefs.o \
+	prefs/ThemePrefs.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
 	widgets/Meter.o \
