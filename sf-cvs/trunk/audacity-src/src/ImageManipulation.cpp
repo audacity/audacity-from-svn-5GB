@@ -157,6 +157,14 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
    // at location (xoff, yoff).
    wxImage imgBack(theTheme.Bitmap( eBack       ).ConvertToImage());
    wxImage imgFore(theTheme.Bitmap( eForeground ).ConvertToImage());
+
+
+   // TMP: dmazzoni - just so the code runs even though not all of
+   // our images have transparency...
+   if (!imgFore.HasAlpha())
+      return new wxImage(imgBack);
+
+
    wxASSERT( imgFore.HasAlpha() );
 
    unsigned char *bg = imgBack.GetData();

@@ -11,8 +11,11 @@
 
 **********************************************************************/
 
-#pragma once
+#ifndef __AUDACITY_THEME__
+#define __AUDACITY_THEME__
+
 #include <wx/bitmap.h>
+
 class wxBitmap;
 class wxImage;
 class wxColour;
@@ -86,7 +89,7 @@ class ThemeBase
 public:
    ThemeBase(void);
 public:
-   ~ThemeBase(void);
+   virtual ~ThemeBase(void);
 
 public:
    virtual void EnsureInitialised()=0;
@@ -149,3 +152,5 @@ public:
 };
 
 extern Theme theTheme;
+
+#endif // __AUDACITY_THEME__

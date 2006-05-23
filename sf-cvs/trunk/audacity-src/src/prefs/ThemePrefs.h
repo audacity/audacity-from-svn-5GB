@@ -19,9 +19,8 @@
 // on Windows for now.  Adventurous people can
 // try it out by defining USE_THEME_PREFS on other platforms
 // if they so wish.  JKC: 16-May-2006.
-#ifdef __WXMSW__
+
 #define USE_THEME_PREFS
-#endif
 
 class ShuttleGui;
 
