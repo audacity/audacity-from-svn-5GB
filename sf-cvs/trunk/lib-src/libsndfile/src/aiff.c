@@ -1147,6 +1147,7 @@ aiff_write_header (SF_PRIVATE *psf, int calc_length)
 		unsigned short ct = 0 ;
 
 		memset (m, 0, sizeof (m)) ;
+		memset (&ch, 0, sizeof (ch)) ;
 
 		ch.baseNote = psf->instrument->basenote ;
 		ch.detune = psf->instrument->detune ;
@@ -1178,23 +1179,25 @@ aiff_write_header (SF_PRIVATE *psf, int calc_length)
 			ch.release_loop.beginLoop = 0 ;
 			ch.release_loop.endLoop = 0 ;
 			} ;
-		psf_binheader_writef (psf, "Em4b", INST_MARKER, sizeof (INST_CHUNK), &ch.baseNote, 6) ;
+
+		psf_binheader_writef (psf, "Em4111111", INST_MARKER, SIZEOF_INST_CHUNK, ch.baseNote, ch.detune,
+						ch.lowNote, ch.highNote, ch.lowVelocity, ch.highVelocity) ;
 		psf_binheader_writef (psf, "2222222", ch.gain, ch.sustain_loop.playMode,
-				ch.sustain_loop.beginLoop, ch.sustain_loop.endLoop, ch.release_loop.playMode,
-				ch.release_loop.beginLoop, ch.release_loop.endLoop) ;
+						ch.sustain_loop.beginLoop, ch.sustain_loop.endLoop, ch.release_loop.playMode,
+						ch.release_loop.beginLoop, ch.release_loop.endLoop) ;
 
 		if (ct == 2)
 			psf_binheader_writef (psf, "Em42241b241b",
-					MARK_MARKER, 2 * sizeof (MARK_ID_POS) + 16, 2,
-					m [0].markerID, m [0].position, 8, "beg loop", 9,
-					m [1].markerID, m [1].position, 8, "end loop", 9) ;
+					MARK_MARKER, 2 + 2 * (2 + 4 + 1 + 9), 2,
+					m [0].markerID, m [0].position, 8, "beg loop", make_size_t (9),
+					m [1].markerID, m [1].position, 8, "end loop", make_size_t (9)) ;
 		else if (ct == 4)
-			psf_binheader_writef (psf, "Em42241b241b241b241b",
-					MARK_MARKER, 4 * sizeof (MARK_ID_POS) + 34, 4,
-					m [0].markerID, m [0].position, 8, "beg loop", 9,
-					m [1].markerID, m [1].position, 8, "end loop", 9,
-					m [2].markerID, m [2].position, 8, "beg loop", 9,
-					m [3].markerID, m [3].position, 8, "end loop", 9) ;
+			psf_binheader_writef (psf, "Em42 241b 241b 241b 241b",
+					MARK_MARKER, 2 + 4 * (2 + 4 + 1 + 9), 4,
+					m [0].markerID, m [0].position, 8, "beg loop", make_size_t (9),
+					m [1].markerID, m [1].position, 8, "end loop", make_size_t (9),
+					m [2].markerID, m [2].position, 8, "beg loop", make_size_t (9),
+					m [3].markerID, m [3].position, 8, "end loop", make_size_t (9)) ;
 		} ;
 
 	if (psf->str_flags & SF_STR_LOCATE_START)

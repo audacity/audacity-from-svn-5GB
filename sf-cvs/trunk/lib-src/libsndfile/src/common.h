@@ -176,6 +176,11 @@ typedef struct
 	char 	*str ;
 } STR_DATA ;
 
+static inline size_t
+make_size_t (int x)
+{	return (size_t) x ;
+} /* size_t_of_int */
+
 /*=======================================================================================
 **	SF_PRIVATE stuct - a pointer to this struct is passed back to the caller of the
 **	sf_open_XXXX functions. The caller however has no knowledge of the struct's
@@ -269,6 +274,9 @@ typedef struct sf_private_tag
 	/* Loop Info */
 	SF_LOOP_INFO	*loop_info ;
 	SF_INSTRUMENT	*instrument ;
+
+	/* Broadcast (EBU) Info */
+	SF_BROADCAST_INFO *broadcast_info ;
 
 	sf_count_t		filelength ;	/* Overall length of (embedded) file. */
 	sf_count_t		fileoffset ;	/* Offset in number of bytes from beginning of file. */
@@ -576,6 +584,9 @@ void	psf_generate_format_desc (SF_PRIVATE *psf) ;
 double	psf_calc_signal_max			(SF_PRIVATE *psf, int normalize) ;
 int		psf_calc_max_all_channels	(SF_PRIVATE *psf, double *peaks, int normalize) ;
 
+int		psf_get_signal_max			(SF_PRIVATE *psf, double *peak) ;
+int		psf_get_max_all_channels	(SF_PRIVATE *psf, double *peaks) ;
+
 /* Functions in strings.c. */
 
 const char* psf_get_string (SF_PRIVATE *psf, int str_type) ;
@@ -692,6 +703,11 @@ int		interleave_init (SF_PRIVATE *psf) ;
 void	*psf_memset (void *s, int c, sf_count_t n) ;
 
 SF_INSTRUMENT * psf_instrument_alloc (void) ;
+
+
+SF_BROADCAST_INFO* broadcast_info_alloc (void) ;
+int		broadcast_info_copy (SF_BROADCAST_INFO* dst, SF_BROADCAST_INFO* src) ;
+int		broadcast_add_coding_history (SF_BROADCAST_INFO* bext, unsigned int channels, unsigned int samplerate) ;
 
 /*------------------------------------------------------------------------------------
 ** Here's how we fix systems which don't snprintf / vsnprintf.

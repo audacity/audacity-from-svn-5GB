@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2004 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2006 Erik de Castro Lopo <erikd@mega-nerd.com>
 ** Copyright (C) 2004 Paavo Jumppanen
 **
 ** This program is free software; you can redistribute it and/or modify
@@ -435,12 +435,20 @@ sd2_parse_rsrc_fork (SF_PRIVATE *psf)
 	rsrc.data_length = read_int (rsrc.rsrc_data, 8) ;
 	rsrc.map_length = read_int (rsrc.rsrc_data, 12) ;
 
+	if (rsrc.data_offset == 0x51607 && rsrc.map_offset == 0x20000)
+	{	psf_log_printf (psf, "Trying offset of 0x52 bytes.\n") ;
+		rsrc.data_offset = read_int (rsrc.rsrc_data, 0x52 + 0) + 0x52 ;
+		rsrc.map_offset = read_int (rsrc.rsrc_data, 0x52 + 4) + 0x52 ;
+		rsrc.data_length = read_int (rsrc.rsrc_data, 0x52 + 8) ;
+		rsrc.map_length = read_int (rsrc.rsrc_data, 0x52 + 12) ;
+		} ;
+
 	psf_log_printf (psf, "  data offset : 0x%04X\n  map  offset : 0x%04X\n"
 				"  data length : 0x%04X\n  map  length : 0x%04X\n",
 				rsrc.data_offset, rsrc.map_offset, rsrc.data_length, rsrc.map_length) ;
 
 	if (rsrc.data_offset > rsrc.rsrc_len)
-	{	psf_log_printf (psf, "Error : rsrc.data_offset > len\n") ;
+	{	psf_log_printf (psf, "Error : rsrc.data_offset (%d, 0x%x) > len\n", rsrc.data_offset, rsrc.data_offset) ;
 		error = SFE_SD2_BAD_DATA_OFFSET ;
 		goto parse_rsrc_fork_cleanup ;
 		} ;

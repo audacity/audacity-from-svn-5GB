@@ -6,7 +6,7 @@ noinst_PROGRAMS = sfversion floating_point_test write_read_test \
 	pcm_test headerless_test pipe_test benchmark header_test misc_test \
 	raw_test string_test open_fail_test multi_file_test dither_test \
 	scale_clip_test win32_test fix_this aiff_rw_test virtual_io_test \
-	locale_test largefile_test
+	locale_test largefile_test win32_ordinal_test
 
 SNDFILEDIR = ../src
 INCLUDES = -I$(srcdir)/$(SNDFILEDIR)
@@ -104,7 +104,10 @@ virtual_io_test_SOURCES = virtual_io_test.c utils.c
 virtual_io_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 win32_test_SOURCES = win32_test.c
-win32_test_LDADD = 
+win32_test_LDADD =
+
+win32_ordinal_test_SOURCES = win32_ordinal_test.c utils.c
+win32_ordinal_test_LDADD = $(SNDFILEDIR)/libsndfile.la 
 
 # Lite remove start
 dwvw_test_SOURCES = utils.c dwvw_test.c
@@ -123,28 +126,28 @@ scale_clip_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 #===============================================================================
 
 write_read_test.c: write_read_test.def write_read_test.tpl
-	autogen --writable --source-time write_read_test.def
+	autogen --writable write_read_test.def
 
 pcm_test.c: pcm_test.def pcm_test.tpl
-	autogen --writable --source-time pcm_test.def
+	autogen --writable pcm_test.def
 
 header_test.c: header_test.def header_test.tpl
-	autogen --writable --source-time header_test.def
+	autogen --writable header_test.def
 
 utils.c: utils.def utils.tpl
-	autogen --writable --source-time utils.def
+	autogen --writable utils.def
 
 scale_clip_test.c: scale_clip_test.def scale_clip_test.tpl
-	autogen --writable --source-time scale_clip_test.def
+	autogen --writable scale_clip_test.def
 
 pipe_test.c: pipe_test.def pipe_test.tpl
-	autogen --writable --source-time pipe_test.def
+	autogen --writable pipe_test.def
 
 floating_point_test.c: floating_point_test.def floating_point_test.tpl
-	autogen --writable --source-time floating_point_test.def
+	autogen --writable floating_point_test.def
 
 benchmark.c: benchmark.def benchmark.tpl
-	autogen --writable --source-time benchmark.def
+	autogen --writable benchmark.def
 
 genfiles : write_read_test.c pcm_test.c header_test.c utils.c \
 		scale_clip_test.c pipe_test.c floating_point_test.c benchmark.c
@@ -156,7 +159,7 @@ check: generic-tests wav-tests aiff-tests au-tests caf-tests raw-tests \
 	mat5-tests pvf-tests xi-tests htk-tests avr-tests sds-tests sd2-tests \
 	flac-tests caf-tests io-tests
 
-generic-tests : error_test ulaw_test alaw_test command_test floating_point_test pcm_test
+generic-tests : error_test ulaw_test alaw_test command_test floating_point_test pcm_test win32_ordinal_test
 	uname -a
 	./error_test
 	./pcm_test
@@ -169,10 +172,12 @@ generic-tests : error_test ulaw_test alaw_test command_test floating_point_test 
 	./command_test peak
 	./command_test trunc
 	./command_test inst
+	./command_test bext
 	./floating_point_test
 	./scale_clip_test
 	./headerless_test
 	./locale_test
+	./win32_ordinal_test
 	@echo "----------------------------------------------------------------------"
 	@echo "  `./sfversion` passed common tests."
 	@echo "----------------------------------------------------------------------"
