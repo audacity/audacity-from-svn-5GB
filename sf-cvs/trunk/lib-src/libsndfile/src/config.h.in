@@ -87,6 +87,9 @@
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
+
 /* Define if you have C99's lrint function. */
 #undef HAVE_LRINT
 
@@ -119,6 +122,9 @@
 
 /* Define to 1 if you have the `realloc' function. */
 #undef HAVE_REALLOC
+
+/* Define to 1 if you have the `setlocale' function. */
+#undef HAVE_SETLOCALE
 
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
@@ -233,6 +239,9 @@
 
 /* Set to long if unknown. */
 #undef TYPEOF_SF_COUNT_T
+
+/* Set to 1 to use the native windows API */
+#undef USE_WINDOWS_API
 
 /* Version number of package */
 #undef VERSION

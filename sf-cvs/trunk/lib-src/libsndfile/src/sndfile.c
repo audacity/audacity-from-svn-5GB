@@ -569,9 +569,7 @@ sf_format_check	(const SF_INFO *info)
 	switch (info->format & SF_FORMAT_TYPEMASK)
 	{	case SF_FORMAT_WAV :
 		case SF_FORMAT_WAVEX :
-				/* WAV is strictly little endian. */
-				if (endian == SF_ENDIAN_BIG || endian == SF_ENDIAN_CPU)
-					return 0 ;
+				/* WAV now allows both endian, RIFF or RIFX (little or big respectively) */
 				if (subformat == SF_FORMAT_PCM_U8 || subformat == SF_FORMAT_PCM_16)
 					return 1 ;
 				if (subformat == SF_FORMAT_PCM_24 || subformat == SF_FORMAT_PCM_32)
@@ -912,19 +910,18 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 			if (psf->have_written)
 				return SF_FALSE ;
 			/* Everything seems OK, so set psf->has_peak and re-write header. */
-			if (datasize == SF_FALSE)
-			{	if (psf->peak_info)
-				{	free (psf->peak_info) ;
-					psf->peak_info = NULL ;
-					} ;
-				return SF_FALSE ;
+			if (datasize == SF_FALSE && psf->peak_info != NULL)
+			{	free (psf->peak_info) ;
+				psf->peak_info = NULL ;
+				}
+			else if (psf->peak_info == NULL)
+			{	psf->peak_info = peak_info_calloc (psf->sf.channels) ;
+				psf->peak_info->peak_loc = SF_PEAK_START ;
 				} ;
-			if (psf->peak_info == NULL)
-				psf->peak_info = peak_info_calloc (psf->sf.channels) ;
 
 			if (psf->write_header)
 				psf->write_header (psf, SF_TRUE) ;
-			return SF_TRUE ;
+			return datasize ;
 
 		case SFC_GET_LOG_INFO :
 			if (data == NULL)
@@ -953,6 +950,20 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 			if (data == NULL || datasize != SIGNED_SIZEOF (double) * psf->sf.channels)
 				return (psf->error = SFE_BAD_CONTROL_CMD) ;
 			return psf_calc_max_all_channels (psf, (double*) data, SF_TRUE) ;
+
+		case SFC_GET_SIGNAL_MAX :
+			if (data == NULL || datasize != sizeof (double))
+			{	psf->error = SFE_BAD_CONTROL_CMD ;
+				return SF_FALSE ;
+				} ;
+			return psf_get_signal_max (psf, (double *) data) ;
+
+		case SFC_GET_MAX_ALL_CHANNELS :
+			if (data == NULL || datasize != SIGNED_SIZEOF (double) * psf->sf.channels)
+			{	psf->error = SFE_BAD_CONTROL_CMD ;
+				return SF_FALSE ;
+				} ;
+			return psf_get_max_all_channels (psf, (double*) data) ;
 
 		case SFC_UPDATE_HEADER_NOW :
 			if (psf->write_header)
@@ -1054,6 +1065,38 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 			memcpy (data, psf->loop_info, sizeof (SF_LOOP_INFO)) ;
 			return SF_TRUE ;
 
+		case SFC_SET_BROADCAST_INFO :
+			{	int format = psf->sf.format & SF_FORMAT_TYPEMASK ;
+
+				/* Only WAV supports the BEXT (Broadcast) chunk. */
+				if (format != SF_FORMAT_WAV && format != SF_FORMAT_WAVEX)
+					return SF_FALSE ;
+				} ;
+
+			/* Can only do this is in SFM_WRITE mode. */
+			if (psf->mode != SFM_WRITE)
+				return SF_FALSE ;
+			/* If data has already been written this must fail. */
+			if (psf->have_written)
+				return SF_FALSE ;
+
+			if (psf->broadcast_info == NULL)
+				psf->broadcast_info = broadcast_info_alloc () ;
+
+			broadcast_info_copy (psf->broadcast_info, data) ;
+			broadcast_add_coding_history (psf->broadcast_info, psf->sf.channels, psf->sf.samplerate) ;
+
+			if (psf->write_header)
+				psf->write_header (psf, SF_TRUE) ;
+			return SF_TRUE ;
+
+		case SFC_GET_BROADCAST_INFO :
+			if (datasize != sizeof (SF_BROADCAST_INFO) || data == NULL)
+				return SF_FALSE ;
+			if (psf->broadcast_info == NULL)
+				return SF_FALSE ;
+			return broadcast_info_copy (data, psf->broadcast_info) ;
+
 		case SFC_GET_INSTRUMENT :
 			if (datasize != sizeof (SF_INSTRUMENT) || data == NULL)
 				return SF_FALSE ;
@@ -1063,6 +1106,9 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 			return SF_TRUE ;
 
 		case SFC_SET_INSTRUMENT :
+			/* If data has already been written this must fail. */
+			if (psf->have_written)
+				return SF_FALSE ;
 			if (datasize != sizeof (SF_INSTRUMENT) || data == NULL)
 				return SF_FALSE ;
 			if (psf->instrument == NULL && (psf->instrument = psf_instrument_alloc ()) == NULL)
@@ -2140,7 +2186,8 @@ guess_file_type (SF_PRIVATE *psf)
 		return 0 ;
 		} ;
 
-	if (buffer [0] == MAKE_MARKER ('R', 'I', 'F', 'F') && buffer [2] == MAKE_MARKER ('W', 'A', 'V', 'E'))
+	if ((buffer [0] == MAKE_MARKER ('R', 'I', 'F', 'F') || buffer [0] == MAKE_MARKER ('R', 'I', 'F', 'X'))
+			&& buffer [2] == MAKE_MARKER ('W', 'A', 'V', 'E'))
 		return SF_FORMAT_WAV ;
 
 	if (buffer [0] == MAKE_MARKER ('F', 'O', 'R', 'M'))
@@ -2332,6 +2379,9 @@ psf_close (SF_PRIVATE *psf)
 
 	if (psf->peak_info)
 		free (psf->peak_info) ;
+
+	if (psf->broadcast_info)
+		free (psf->broadcast_info) ;
 
 	if (psf->loop_info)
 		free (psf->loop_info) ;

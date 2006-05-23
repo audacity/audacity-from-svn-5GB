@@ -26,6 +26,9 @@
 
 [+ CASE (suffix) +]
 [+ ==  h  +]
+
+#include <stdarg.h>
+
 #define SF_COUNT_TO_LONG(x)	((long) (x))
 #define	ARRAY_LEN(x)		((int) (sizeof (x)) / (sizeof ((x) [0])))
 
@@ -46,6 +49,17 @@ void	check_file_hash_or_die	(const char *filename, unsigned int target_hash, int
 void	print_test_name (const char *test, const char *filename) ;
 
 void	dump_data_to_file (const char *filename, void *data, unsigned int datalen) ;
+
+static inline void
+exit_if_true (int test, const char *format, ...)
+{	if (test)
+	{	va_list	argptr ;
+		va_start (argptr, format) ;
+		vprintf (format, argptr) ;
+		va_end (argptr) ;
+		exit (1) ;
+		} ;
+} /* exit_if_true */
 
 /*
 **	Functions for saving two vectors of data in an ascii text file which
@@ -293,6 +307,13 @@ check_log_buffer_or_die (SNDFILE *file, int line_num)
 	/* Look for "**" */
 	if (strstr (buffer, "*"))
 	{	printf ("\n\nLine %d : Log buffer contains `*'. Dumping.\n", line_num) ;
+		puts (buffer) ;
+		exit (1) ;
+		} ;
+
+	/* Look for "Should" */
+	if (strstr (buffer, "nknown marker"))
+	{	printf ("\n\nLine %d : Log buffer contains `nknown marker'. Dumping.\n", line_num) ;
 		puts (buffer) ;
 		exit (1) ;
 		} ;
@@ -611,7 +632,7 @@ delete_file (int format, const char *filename)
 	unlink (rsrc_name) ;
 } /* delete_file */
 
-static int allowed_open_files = -1;
+static int allowed_open_files = -1 ;
 
 void
 count_open_files (void)

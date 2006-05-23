@@ -1,3 +1,280 @@
+2006-02-19 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Mingw-make-dist.sh
+    Add a shell script to build the windows binary/source ZIP file.
+
+    * doc/index.html
+    Add download link for windows binary/source ZIP file. Add links for GPG
+    signatures.
+
+    * doc/win32.html
+    Remove info about building using microsoft compiler.
+
+    * configure.ac
+    Bump version to 1.0.14.
+
+2006-02-11 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sd2.c
+    Improve logging of errors in resource fork parser.
+
+2006-01-31 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/Makefile.msvc
+    Replace au_g72x.* with g72x.*. Thanks to ussell Borogove.
+
+2006-01-29 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/common.c
+    Make sure return values are initialised header buffer is full.
+
+    * src/wav.c
+    Add workarounds for messed up WAV files.
+
+2006-01-21 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * Win32/config.h
+    Undef HAVE_INTTYPES_H for win32.
+
+    * tests/command_test.c
+    Don't exit on error in instrument test for XI files.
+
+    * configure.ac
+    Bump version to 1.0.13.
+
+    * doc/*.html NEWS README
+    Update version numbers.
+
+2006-01-19 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/xi.c
+    Start work on add read/write of instrument chunks.
+
+    * src/command_test.c
+    Add tests for XI instrument chunk.
+
+    * tests/largefile_test.c tests/Makefile.am
+    Add new test and hook it into the build system. This test will not be run
+    automatically because it requires 3 Gig of disk space and takes 3 minutes
+    to run.
+
+2006-01-10 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-play.c
+    Fix calculation of samples remaining in win32 code. Thanks Axel Roebel.
+
+    * src/common.h
+    Make sure length of header buffer can hold header plus strings. Thanks Axel
+    Roebel.
+
+2006-01-09 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in src/aiff.c src/wav.c
+    Apply a patch from John Fitch (Csound project).
+    Add detune field to SF_INSTRUMENT struct.
+    Add reading/writing instrument chunks to WAV files.
+
+    * tests/command_test.c
+    Update SF_INSTRUMENT tests.
+
+    * tests/Makefile.am
+    Hook instrument tests into test suite.
+
+2006-01-05 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Check for <inttypes.h> because some broken systems (like Solaris) don't have
+    <stdint.h> which is the 1999 ISO C standard file containing int64_t.
+
+    * src/sfendian.h src/common.h
+    Use <inttypes.h> if <stdint.h> is not available.
+
+2005-12-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/peak_chunk_test.c
+    Extend and clean up tests.
+
+    * src/sndfile.c
+    Fix a bug that prevented the turning off of PEAK chunks.
+
+2005-12-29 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/error_test.c
+    Make the test distclean correct.
+
+    * src/file_io.c
+    Fix an SD2 MacOSX bug (reported by vince schwarzinger).
+
+2005-12-28 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/aiff.c tests/command_test.c
+    Apply a big patch from John ffitch (Csound project) to add reading and
+    writing of instrument chunks to AIFF files. Also update the test.
+
+2005-12-10 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/aiff_rw_test.c tests/virtual_io_test.c tests/utils.tpl
+    Move test function dump_data_to_file() to utils.tpl.
+
+    * tests/error_test.c tests/Makefile.am
+    Updates, including a new test to test that sf_error() returns a valid error
+    number.
+
+2005-12-07 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/list_formats.c
+    Make sure the SF_INFO struct is memset to all zero before being used.
+    Thanks to Stephen F. Booth.
+
+    * src/sndfile.c
+    Make the return value of sf_error() match the API documentation.
+
+2005-11-19 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-convert.c
+    Allow conversion to raw gsm610.
+
+    * src/common.h src/sndfile.c src/au.c
+    Remove au_nh_open() and all references to it (wasn't working anyway).
+
+    * tests/headerless_test.c
+    Add new test for file extension based detection.
+
+    * src/sndfile.c
+    Rejig file extension based file type detection.
+
+2005-11-16 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.c
+    Add "gsm" as a recognised file extension when no magic number can be found.
+
+    * tests/lossy_comp_test.c tests/Makefile.am
+    Test headerless GSM610.
+
+2005-11-13 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * doc/api.html
+    Fix a minor typo and a minor error. Thanks Christoph Kobe and John Pavel.
+
+2005-10-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/wav_w64.c
+    Add more reporting of 'fmt ' chunk for G721 encoded files.
+
+    * src/wav.c
+    Gernerate a more correct 20 byte 'fmt ' chunk rather than a 16 byte one.
+
+2005-10-29 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/G72x/g72x.[ch]
+    Minor cleanup of interface.
+
+2005-10-28 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/ogg.c
+    Removed the horribly broken and non-functional OGG implementation when
+    --enable-experimental was enabled. When OGG does finally work it will be
+    merged.
+
+    * src/caf.c
+    Fix a memory leak.
+
+2005-10-27 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/g72x.c src/G72x/*.(c|h) src/common.h src/sndfile.c src/wav.c src/au.c
+    Add support for G721 encoded WAV files.
+
+    * doc/index.html
+    Update support matrix.
+
+    * tests/lossy_comp_test.c
+    For file formats that support it, add string data after the audio data and
+    make sure it isn't treated as audio data on read.
+
+    * src/gsm610.c
+    Add code to ensure that the container close function (ie for WAV files) gets
+    called after the codec's close function. This allows GSM610 encoded WAV files
+    to have string data following the audio data.
+    Add an AIFF specific check on psf->datalength.
+
+    * src/wav.c
+    Simplify wav_close function.
+
+    * src/aiff.c
+    Make sure the tailer data gets written at an even file offset. Pad if
+    necessary.
+
+    * src/common.h
+    Replace the close function pointer in SF_PRIVATE with separate functions
+    codec_close and container_close. The former is always called first.
+
+    *  src/*.c
+    Fix knock on effects of above.
+
+2005-10-26 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-info.c
+    Complete dumping SF_INSTRUMENT data.
+
+    * src/dwvw.c src/ima_adpcm.c src/gsm610.c src/ms_adpcm.c
+    Add extra checks in *_init function.
+
+    * tests/lossy_comp_test.c
+    Add a string comment to the end of the files to make sure that the decoder
+    doesn't decode beyond the end of the audio data section.
+
+2005-10-25 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * examples/sndfile-info.c
+    Minor code cleanup.
+    Start work on dumping SF_INSTRUMENT data.
+
+2005-10-23 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/sndfile.h.in src/common.h src/common.c
+    Update definition of SF_INSTRUMENT struct and create a function to allocate
+    and initialize the struct (input from David Viens).
+    Clean up definition of SF_INSTRUMENT struct.
+
+    * src/wav.c src/wav_w64.c
+    Add support for Ambisoncs B WAVEX files (David Viens).
+
+    * src/aiff.c src/wav.c src/wav_w64.c
+    Start work on reading/writing the SF_INSTRUMENT data.
+
+    * src/sndfile.c
+    Add code to get and set SF_INSTRUMENT data.
+
+    * tests/command_test.* tests/Makefile.am
+    Add test for set and getof SF_INSTRUMENT data.
+    The file command_test.c is no longer autogen generated.
+
+2005-10-15 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/gsm610.c
+    Minor cleanup.
+
+2005-10-14 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * tests/lossy_comp_test.c
+    Minor cleanup.
+
+2005-10-13 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * src/*.c
+    Ensure sfconfig.h is included before any other header file.
+
+    * src/file_io.c
+    Add comments documenting the three sections of the file.
+
+    * src/gsm610.c
+    Make sure SF_FORMAT_WAVEX are handled correctly.
+
+2005-10-07 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
+
+    * configure.ac
+    Add options to allow disabling of FLAC and ALSA. Suggested by Ben Greear.
+
 2005-09-30 Erik de Castro Lopo  <erikd AT mega-nerd DOT com>
 
     * tests/locale_test.c

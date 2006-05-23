@@ -334,6 +334,13 @@ check_log_buffer_or_die (SNDFILE *file, int line_num)
 		exit (1) ;
 		} ;
 
+	/* Look for "Should" */
+	if (strstr (buffer, "nknown marker"))
+	{	printf ("\n\nLine %d : Log buffer contains `nknown marker'. Dumping.\n", line_num) ;
+		puts (buffer) ;
+		exit (1) ;
+		} ;
+
 	return ;
 } /* check_log_buffer_or_die */
 
@@ -902,7 +909,7 @@ delete_file (int format, const char *filename)
 	unlink (rsrc_name) ;
 } /* delete_file */
 
-static int allowed_open_files = -1;
+static int allowed_open_files = -1 ;
 
 void
 count_open_files (void)

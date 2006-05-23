@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2005 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2006 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -559,7 +559,10 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
 
 	while ((c = *format++))
 	{	switch (c)
-		{	case 'e' : /* All conversions are now from LE to host. */
+		{	case ' ' : /* Do nothing. Just used to space out format string. */
+					break ;
+
+			case 'e' : /* All conversions are now from LE to host. */
 					psf->rwf_endian = SF_ENDIAN_LITTLE ;
 					break ;
 
@@ -722,7 +725,7 @@ psf_binheader_writef (SF_PRIVATE *psf, const char *format, ...)
 					break ;
 
 			case 'j' :
-					size = va_arg (argptr, int) ;
+					size = va_arg (argptr, size_t) ;
 					psf->headindex += size ;
 					count = size ;
 					break ;
@@ -796,11 +799,22 @@ static int
 header_read (SF_PRIVATE *psf, void *ptr, int bytes)
 {	int count = 0 ;
 
-	if (psf->headindex + bytes > SIGNED_SIZEOF (psf->header))
+	if (psf->headindex >= SIGNED_SIZEOF (psf->header))
 	{	memset (ptr, 0, SIGNED_SIZEOF (psf->header) - psf->headindex) ;
 
 		/* This is the best that we can do. */
 		psf_fseek (psf, bytes, SEEK_CUR) ;
+		return bytes ;
+		} ;
+
+	if (psf->headindex + bytes > SIGNED_SIZEOF (psf->header))
+	{	int most ;
+
+		most = SIGNED_SIZEOF (psf->header) - psf->headindex ;
+		psf_fread (psf->header + psf->headend, 1, most, psf) ;
+		memset (ptr + most, 0, bytes - most) ;
+
+		psf_fseek (psf, bytes - most, SEEK_CUR) ;
 		return bytes ;
 		} ;
 
@@ -943,11 +957,13 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 
 			case '1' :
 					charptr = va_arg (argptr, char*) ;
+					*charptr = 0 ;
 					byte_count += header_read (psf, charptr, sizeof (char)) ;
 					break ;
 
 			case '2' :
 					shortptr = va_arg (argptr, unsigned short*) ;
+					*shortptr = 0 ;
 					ucptr = (unsigned char*) shortptr ;
 					byte_count += header_read (psf, ucptr, sizeof (short)) ;
 					if (psf->rwf_endian == SF_ENDIAN_BIG)
@@ -958,6 +974,7 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 
 			case '3' :
 					intptr = va_arg (argptr, unsigned int*) ;
+					*intptr = 0 ;
 					byte_count += header_read (psf, sixteen_bytes, 3) ;
 					if (psf->rwf_endian == SF_ENDIAN_BIG)
 						*intptr = GET_BE_3BYTE (sixteen_bytes) ;
@@ -967,6 +984,7 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 
 			case '4' :
 					intptr = va_arg (argptr, unsigned int*) ;
+					*intptr = 0 ;
 					ucptr = (unsigned char*) intptr ;
 					byte_count += header_read (psf, ucptr, sizeof (int)) ;
 					if (psf->rwf_endian == SF_ENDIAN_BIG)
@@ -976,7 +994,8 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 					break ;
 
 			case '8' :
-					countptr = va_arg (argptr, sf_count_t*) ;
+					countptr = va_arg (argptr, sf_count_t *) ;
+					*countptr = 0 ;
 					byte_count += header_read (psf, sixteen_bytes, 8) ;
 					if (psf->rwf_endian == SF_ENDIAN_BIG)
 						countdata = GET_BE_8BYTE (sixteen_bytes) ;

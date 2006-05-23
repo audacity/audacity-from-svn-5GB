@@ -9,7 +9,8 @@ OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
 
 EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
-			Symbols.linux Symbols.darwin libsndfile.def create_symbols_file.py
+			Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def \
+			create_symbols_file.py
 
 noinst_HEADERS = common.h sfconfig.h sfendian.h float_cast.h wav_w64.h sf_unistd.h
 
@@ -17,7 +18,7 @@ noinst_PROGRAMS = test_endswap test_file_io test_log_printf
 
 COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c \
 		double64.c ima_adpcm.c ms_adpcm.c gsm610.c dwvw.c vox_adpcm.c \
-		interleave.c strings.c dither.c
+		interleave.c strings.c dither.c broadcast.c
 
 FILESPECIFIC = aiff.c au.c g72x.c avr.c caf.c ircam.c macbinary3.c macos.c \
 				mat4.c mat5.c nist.c paf.c pvf.c raw.c svx.c voc.c htk.c dwd.c \
@@ -39,15 +40,15 @@ test_log_printf_CFLAGS = $(AM_CFLAGS)
 test_log_printf_SOURCES = test_log_printf.c
 
 test_endswap.c: test_endswap.def test_endswap.tpl
-	autogen --writable --source-time test_endswap.def
+	autogen --writable test_endswap.def
 
-genfiles : test_endswap.c Symbols.linux Symbols.darwin libsndfile.def
+genfiles : test_endswap.c Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def
 
 # Two test programs.
 # It is not possible to place these in the tests/ directory because they
 # need access to the internals of the SF_PRIVATE struct.
 
-check: test_file_io test_log_printf
+check: test_endswap test_file_io test_log_printf
 	@echo
 	@echo
 	@echo
@@ -74,8 +75,11 @@ Symbols.darwin: create_symbols_file.py
 libsndfile.def: create_symbols_file.py
 	./create_symbols_file.py win32 $(VERSION) > libsndfile.def
 
+cygsndfile.def: create_symbols_file.py
+	./create_symbols_file.py cygwin $(VERSION) > cygsndfile.def
+
 # Fake dependancy to force the creation of these files.
-sndfile.c : Symbols.linux Symbols.darwin libsndfile.def
+sndfile.c : Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def
 
 #======================================================================
 # Disable autoheader.
