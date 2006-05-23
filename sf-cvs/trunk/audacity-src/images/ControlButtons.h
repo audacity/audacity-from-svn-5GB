@@ -2,9 +2,9 @@
 #include "Aqua/UpButtonSquare.xpm"
 #include "Aqua/DownButtonSquare.xpm"
 #include "Aqua/HiliteButtonSquare.xpm"
-#include "Aqua/Up.xpm"
-#include "Aqua/Down.xpm"
-#include "Aqua/Hilite.xpm"
+//#include "Aqua/Up.xpm"
+//#include "Aqua/Down.xpm"
+//#include "Aqua/Hilite.xpm"
 #include "Aqua/SliderThumb.xpm"
 #include "Aqua/Slider.xpm"
 #else
