@@ -18,6 +18,10 @@
 #include <wx/gdicmn.h>
 #include <wx/pen.h>
 #include <wx/font.h>
+#include <wx/sizer.h>
+#include <wx/stattext.h>
+
+#include "../widgets/Ruler.h"
 
 class wxStatusBar;
 class wxButton;
@@ -99,7 +103,10 @@ class FreqWindow:public wxDialog {
    wxRect mPlotRect;
    wxRect mInfoRect;
    wxRect mUpdateRect;
-
+   wxFlexGridSizer *szr;
+   RulerPanel *vRuler;
+   RulerPanel *hRuler;
+   wxStaticText *mInfoText;
    int mLeftMargin;
    int mBottomMargin;
    int mInfoHeight;

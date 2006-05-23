@@ -231,7 +231,42 @@ FreqWindow::FreqWindow(wxWindow * parent, wxWindowID id,
    wxBoxSizer *vs = new wxBoxSizer( wxVERTICAL );
    wxBoxSizer *hs;
 
-   vs->Add( mFreqPlot, 1, wxEXPAND | wxALL, 5 );
+   szr = new wxFlexGridSizer(2);
+   szr->AddGrowableCol( 1, 1 );
+   szr->AddGrowableRow( 0, 1 );
+   szr->SetFlexibleDirection( wxBOTH );
+
+   vRuler = new RulerPanel(this, wxID_ANY);
+   vRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
+   vRuler->ruler.SetOrientation(wxVERTICAL);
+   vRuler->ruler.SetRange(10.0, -90.0);
+   vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
+   vRuler->ruler.SetUnits(_("dB"));
+   vRuler->ruler.SetLabelEdges(true);
+   int w, h;
+   vRuler->ruler.GetMaxSize(&w, NULL);
+   vRuler->SetSize(wxSize(w, 150));  // height needed for wxGTK
+   szr->Add( vRuler, 0, wxEXPAND|wxTOP|wxBOTTOM, 1 ); //for border around graph
+   szr->Add( mFreqPlot, 1, wxEXPAND );
+   szr->Add(1,1); //spacer on next row, under vRuler
+
+   hRuler  = new RulerPanel(this, wxID_ANY);
+   hRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
+   hRuler->ruler.SetOrientation(wxHORIZONTAL);
+   hRuler->ruler.SetLog(false);  //default for freq axis
+   hRuler->ruler.SetRange(10, 20000);  //dummy values - will get replaced
+   hRuler->ruler.SetFormat(Ruler::RealFormat);
+   hRuler->ruler.SetUnits(_("Hz"));
+   hRuler->ruler.SetFlip(true);
+   hRuler->ruler.SetLabelEdges(false);
+   hRuler->ruler.GetMaxSize(NULL, &h);
+   hRuler->SetMinSize(wxSize(-1, h));
+   szr->Add( hRuler, 0, wxEXPAND|wxLEFT|wxRIGHT, 1 ); //for border around graph
+   szr->Add(1,1); //spacer
+   mInfoText = new wxStaticText(this, wxID_ANY, wxT(""));   //box for info text
+   szr->Add( mInfoText, 0, wxEXPAND|wxALL, 5);
+
+   vs->Add(szr, 1, wxEXPAND|wxALL, 5);
 
    vs->Add( 1, 5, 0 );
 
@@ -282,14 +317,7 @@ void FreqWindow::OnSize(wxSizeEvent & event)
    mUpdateRect.x = 0;
    mUpdateRect.y = 0;
    mUpdateRect.SetSize( mFreqPlot->GetSize() );
-
-   mInfoRect = mUpdateRect;
-   mInfoRect.width -= 1;                     // -1 for AColor::Bevel()
-   mInfoRect.y = mInfoRect.GetBottom() - mInfoHeight;
-   mInfoRect.height -= ( mInfoRect.y + 1 );  // +1 for AColor::Bevel()
-
    mPlotRect = mUpdateRect;
-   mPlotRect.height = mInfoRect.y - 5;
 
    DrawPlot();
 
@@ -315,9 +343,6 @@ void FreqWindow::DrawPlot()
    memDC.Clear();
 
    wxRect r = mPlotRect;
-   r.x += mLeftMargin;
-   r.width -= mLeftMargin;
-   r.height -= mBottomMargin;
 
    memDC.SetPen(*wxBLACK_PEN);
    memDC.SetBrush(*wxWHITE_BRUSH);
@@ -338,71 +363,28 @@ void FreqWindow::DrawPlot()
 
    memDC.SetFont(mFreqFont);
 
-   // Draw y axis and gridlines
+   // Set up y axis ruler
 
    if (alg == 0) {
-      for (float yi = mYMin; yi <= mYMax; yi += mYStep) {
-         i = (int) yi;
-         int y =
-             (int) (r.y + r.height - 1 -
-                    (yi - mYMin) * (r.height - 1) / yTotal);
-
-         // Light blue gridline
-         memDC.SetPen(wxPen(wxColour(204, 204, 255), 1, wxSOLID));
-         memDC.DrawLine(r.x, y, r.x + r.width, y);
-
-         // Pure blue axis line
-         memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-         memDC.DrawLine(mPlotRect.x, y, r.x, y);
-
-         if (i != (int) mYMin) {
-            wxString label = wxString::Format(wxT("%d dB"), i);
-            long labelWidth, labelHeight;
-            memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-            memDC.DrawText(label, r.x - labelWidth - 2, y + 1);
-         }
-      }
+      vRuler->ruler.SetUnits(_("dB"));
+      vRuler->ruler.SetFormat(Ruler::LinearDBFormat);
    } else {
-      wxString label;
-      long labelWidth, labelHeight;
-
-      if (fabs(mYMax) < 1.0)
-         label.Printf(wxT("%.3f"), mYMax);
-      else
-         label.Printf(wxT("%.1f"), mYMax);
-      memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-      memDC.DrawText(label, r.x - labelWidth - 2, r.y + 2);
-
-      if (fabs(mYMin) < 1.0)
-         label.Printf(wxT("%.3f"), mYMin);
-      else
-         label.Printf(wxT("%.1f"), mYMin);
-      memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-      memDC.DrawText(label,
-                     r.x - labelWidth - 2,
-                     r.y + r.height - labelHeight - 2);
-
-      if (mYMax > 0.0 && mYMin < 0.0) {
-         int y = int ((mYMax / (mYMax - mYMin)) * r.height);
-
-         if (y > labelHeight + 4 && y < r.height - 2 * labelHeight - 4) {
-            label = wxT("0.0");
-            memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-            memDC.DrawText(label,
-                           r.x - labelWidth - 2, r.y + y - labelHeight);
-
-            // Light blue gridline
-            memDC.SetPen(wxPen(wxColour(204, 204, 255), 1, wxSOLID));
-            memDC.DrawLine(r.x, r.y + y, r.x + r.width, r.y + y);
-
-            // Pure blue axis line
-            memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-            memDC.DrawLine(mPlotRect.x, r.y + y, r.x, r.y + y);
-         }
-      }
+      vRuler->ruler.SetUnits(wxT(""));
+      vRuler->ruler.SetFormat(Ruler::RealFormat);
    }
+   int w1, w2, h;
+   vRuler->ruler.GetMaxSize(&w1, &h);
+   vRuler->ruler.SetRange(mYMax, mYMin);
+   vRuler->ruler.GetMaxSize(&w2, &h);
+   if( w1 != w2 )   // Reduces flicker
+   {
+      vRuler->SetSize(wxSize(w2,h));
+      szr->Layout();
+      hRuler->Refresh(false);
+   }
+   vRuler->Refresh(false);
 
-   // Draw x axis and gridlines
+   // Set up x axis ruler
 
    int width = r.width - 2;
 
@@ -415,63 +397,27 @@ void FreqWindow::DrawPlot()
       xPos = xMin;
       xLast = xPos / 2.0;
       if (mLogAxis)
+      {
          xStep = pow(2.0f, (log(xRatio) / log(2.0f)) / width);
+         hRuler->ruler.SetLog(true);
+      }
       else
+      {
          xStep = (xMax - xMin) / width;
+         hRuler->ruler.SetLog(false);
+      }
+      hRuler->ruler.SetUnits(_("Hz"));
    } else {
       xMin = 0;
       xMax = mProcessedSize / mRate;
       xPos = xMin;
       xLast = xPos / 2.0;
       xStep = (xMax - xMin) / width;
+      hRuler->ruler.SetLog(false);
+      hRuler->ruler.SetUnits(_("s"));
    }
-
-   int nextx = 0;
-
-   for (i = 0; i < width; i++) {
-
-      if ((mLogAxis && xPos / xLast >= 2.0) ||
-          (!mLogAxis && (i % 60) == 0)) {
-         int x = i + 1;
-
-         // Light blue gridline
-         memDC.SetPen(wxPen(wxColour(204, 204, 255), 1, wxSOLID));
-         memDC.DrawLine(r.x + x, r.y, r.x + x, r.y + r.height);
-
-         if (x >= nextx) {
-
-            // Pure blue axis line
-            memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
-            memDC.DrawLine(r.x + x, r.y + r.height, r.x + x,
-                           r.y + r.height + 15);
-
-            // Label
-
-            wxString label;
-            if (alg == 0) {
-               if (xPos < 950.0)
-                  label = wxString::Format(wxT("%dHz"), int (xPos + 0.5));
-               else
-                  label =
-                      wxString::Format(wxT("%dKHz"),
-                                       int ((xPos / 1000.0) + 0.5));
-            } else
-               label = wxString::Format(wxT("%.4f s"), xPos);
-            long labelWidth, labelHeight;
-            memDC.GetTextExtent(label, &labelWidth, &labelHeight);
-            if (x + labelWidth < width)
-               memDC.DrawText(label, r.x + x + 3, r.y + r.height + 2);
-            nextx = x + labelWidth + 4;
-         }
-
-         xLast *= 2.0;
-      }
-
-      if (mLogAxis)
-         xPos *= xStep;
-      else
-         xPos += xStep;
-   }
+   hRuler->ruler.SetRange(xMin, xMax-xStep);
+   hRuler->Refresh(false);
 
    // Draw the plot
 
@@ -526,9 +472,6 @@ void FreqWindow::PlotMouseEvent(wxMouseEvent & event)
       mMouseY = event.m_y;
 
       wxRect r = mPlotRect;
-      r.x += mLeftMargin;
-      r.width -= mLeftMargin;
-      r.height -= mBottomMargin;
 
       if (r.Inside(mMouseX, mMouseY))
          mFreqPlot->SetCursor(*mCrossCursor);
@@ -692,16 +635,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    dc.SetFont(mFreqFont);
 
-   // Draw the info rect
-   wxDCClipper *dcc = new wxDCClipper( dc, mInfoRect );
-   dc.Clear();
-   delete dcc;
-   AColor::Bevel( dc, false, mInfoRect );
-
    wxRect r = mPlotRect;
-   r.x += mLeftMargin;
-   r.width -= mLeftMargin;
-   r.height -= mBottomMargin;
 
    int width = r.width - 2;
 
@@ -728,7 +662,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
    // Find the peak nearest the cursor and plot it
 
    float bestpeak = float(0.0);
-   if (r.Inside(mMouseX, mMouseY)) {
+   if ( r.Inside(mMouseX, mMouseY) & (mMouseX!=0) & (mMouseX!=r.width-1) ) {
       if (mLogAxis)
          xPos = xMin * pow(xStep, mMouseX - (r.x + 1));
       else
@@ -809,9 +743,11 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
                      int (1.0 / xPos + 0.5),
                      xp, value, bestpeak, int (1.0 / bestpeak + 0.5), pp);
       }
-
-      dc.DrawText(info, mInfoRect.x + 2, mInfoRect.y + 2);
+      mInfoText->SetLabel(info);
    }
+   else
+      mInfoText->SetLabel(wxT(""));
+
 
    // Outline the graph
    dc.SetPen(*wxBLACK_PEN);
@@ -1046,44 +982,6 @@ void FreqWindow::Recalc()
    delete[]in2;
    delete[]out;
    delete[]out2;
-
-   // This rest of this really doesn't belong here, but this routine
-   // is called in all the right places and the sizes are based on
-   // the calculations performed.  So, it's just convenient.
-
-   // Recalculate the margin sizes
-   wxString lo;
-   wxString hi;
-
-   if(alg == 0)
-   {
-      lo = wxString::Format(wxT("%d dB"), (int)mYMin);
-      hi = wxString::Format(wxT("%d dB"), (int)mYMax);
-   }
-   else
-   {
-      lo.Printf(fabs(mYMin) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMin);
-      hi.Printf(fabs(mYMax) < 1.0 ? wxT("%.3f") : wxT("%.1f"), mYMax);
-   }
-
-   wxRect mr( 0, 0, 0, 0 );
-   wxRect lr( 0, 0, 0, 0 );
-
-   GetTextExtent(lo, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
-   mr.Union(lr);
-   GetTextExtent(hi, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
-   mr.Union(lr);
-
-   mLeftMargin = mr.width + 2;
-   mBottomMargin = mr.height + 2;
-
-   // This looks fairly silly, but it was done to keep the string
-   // the same as the one actually used.  No additional translation
-   // required.
-   wxChar *p = PitchName_Absolute(440.0);
-   lo.Printf(_("Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"), 0, p, 0, 0, p);
-   GetTextExtent(lo, &lr.width, &lr.height, NULL, NULL, &mFreqFont);
-   mInfoHeight = lr.height + 4; // +4 to allow for top and bottoms margins
 
    DrawPlot();
    mFreqPlot->Refresh(true);
