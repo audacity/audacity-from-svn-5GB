@@ -11,7 +11,7 @@ AM_INIT_AUTOMAKE($PACKAGE_NAME,$PACKAGE_VERSION)
 AC_CONFIG_HEADERS([src/config.h])
 
 AC_LANG([C])
-
+AM_MAINTAINER_MODE
 #------------------------------------------------------------------------------------
 # Rules for library version information:
 #
