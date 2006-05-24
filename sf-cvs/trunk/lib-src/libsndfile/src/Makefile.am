@@ -3,7 +3,7 @@
 SUBDIRS = GSM610 G72x
 
 lib_LTLIBRARIES = libsndfile.la
-nodist_include_HEADERS = sndfile.h
+#nodist_include_HEADERS = sndfile.h     --dmazzoni
 
 OS_SPECIFIC_CFLAGS = @OS_SPECIFIC_CFLAGS@
 OS_SPECIFIC_LINKS = @OS_SPECIFIC_LINKS@
@@ -28,7 +28,7 @@ FILESPECIFIC = aiff.c au.c g72x.c avr.c caf.c ircam.c macbinary3.c macos.c \
 # MinGW requires -no-undefined if a DLL is to be built.
 libsndfile_la_LDFLAGS = -no-undefined -version-info @SHARED_VERSION_INFO@ @SHLIB_VERSION_ARG@
 libsndfile_la_SOURCES = $(COMMON) $(FILESPECIFIC) $(noinst_HEADERS)
-nodist_libsndfile_la_SOURCES = $(nodist_include_HEADERS)
+# nodist_libsndfile_la_SOURCES = $(nodist_include_HEADERS) dmazzoni
 libsndfile_la_LIBADD  = GSM610/libgsm.la G72x/libg72x.la -lm $(FLAC_LIBS)
 
 test_endswap_SOURCES = test_endswap.c
@@ -39,8 +39,9 @@ test_file_io_SOURCES = file_io.c test_file_io.c
 test_log_printf_CFLAGS = $(AM_CFLAGS)
 test_log_printf_SOURCES = test_log_printf.c
 
-test_endswap.c: test_endswap.def test_endswap.tpl
-	autogen --writable test_endswap.def
+# dmazzoni: get rid of dependency on autogen
+# test_endswap.c: test_endswap.def test_endswap.tpl
+#	autogen --writable test_endswap.def
 
 genfiles : test_endswap.c Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def
 

@@ -8,7 +8,7 @@ SNDFILEDIR =../src
 INCLUDES = -I$(srcdir)/$(SNDFILEDIR) $(OS_SPECIFIC_CFLAGS)
 
 sndfile_regtest_SOURCES = sndfile-regtest.c database.c checksum.c
-sndfile_regtest_LDADD = $(SNDFILEDIR)/libsndfile.la $(SQLITE3_LIBS)
+sndfile_regtest_LDADD = $(SNDFILEDIR)/libsndfile.la ##dmazzoni$(SQLITE3_LIBS)
 
 
 ## Do not edit or modify anything in this comment block.

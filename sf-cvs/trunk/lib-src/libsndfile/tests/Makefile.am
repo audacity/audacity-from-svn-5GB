@@ -125,29 +125,32 @@ scale_clip_test_LDADD = $(SNDFILEDIR)/libsndfile.la
 
 #===============================================================================
 
-write_read_test.c: write_read_test.def write_read_test.tpl
-	autogen --writable write_read_test.def
+# dmazzoni: unless you're a libsndfile developer, this build system shouldn't
+# depend on autogen...
 
-pcm_test.c: pcm_test.def pcm_test.tpl
-	autogen --writable pcm_test.def
-
-header_test.c: header_test.def header_test.tpl
-	autogen --writable header_test.def
-
-utils.c: utils.def utils.tpl
-	autogen --writable utils.def
-
-scale_clip_test.c: scale_clip_test.def scale_clip_test.tpl
-	autogen --writable scale_clip_test.def
-
-pipe_test.c: pipe_test.def pipe_test.tpl
-	autogen --writable pipe_test.def
-
-floating_point_test.c: floating_point_test.def floating_point_test.tpl
-	autogen --writable floating_point_test.def
-
-benchmark.c: benchmark.def benchmark.tpl
-	autogen --writable benchmark.def
+#write_read_test.c: write_read_test.def write_read_test.tpl
+#	autogen --writable write_read_test.def
+#
+#pcm_test.c: pcm_test.def pcm_test.tpl
+#	autogen --writable pcm_test.def
+#
+#header_test.c: header_test.def header_test.tpl
+#	autogen --writable header_test.def
+#
+#utils.c: utils.def utils.tpl
+#	autogen --writable utils.def
+#
+#scale_clip_test.c: scale_clip_test.def scale_clip_test.tpl
+#	autogen --writable scale_clip_test.def
+#
+#pipe_test.c: pipe_test.def pipe_test.tpl
+#	autogen --writable pipe_test.def
+#
+#floating_point_test.c: floating_point_test.def floating_point_test.tpl
+#	autogen --writable floating_point_test.def
+#
+#benchmark.c: benchmark.def benchmark.tpl
+#	autogen --writable benchmark.def
 
 genfiles : write_read_test.c pcm_test.c header_test.c utils.c \
 		scale_clip_test.c pipe_test.c floating_point_test.c benchmark.c
