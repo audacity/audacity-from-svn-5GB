@@ -81,7 +81,7 @@ msgstr ""
 #: ../src/AudacityApp.cpp:304 ../src/Project.cpp:1770
 #, c-format
 msgid "%s is already open in another window."
-msgstr "%s is reeds opend in 'n ander venster."
+msgstr "%s is reeds oop in 'n ander venster."
 
 #. i18n-hint: This is the pattern for filenames that are created
 #: ../src/DirManager.cpp:627
@@ -292,7 +292,7 @@ msgstr "2 kanale (stereo)"
 
 #: ../src/prefs/SpectrumPrefs.cpp:40
 msgid "256 - default"
-msgstr "U256 - standaard"
+msgstr "256 - standaard"
 
 #: ../src/prefs/SpectrumPrefs.cpp:44
 #, fuzzy
@@ -444,7 +444,7 @@ msgid ""
 msgstr ""
 "Alle lêers (*.*)|*.*|Audacity-projekte (*.aup)|*.aup|WAV-lêers (*.wav)|*.wav|"
 "AIFF-lêers (*.aif)|*.aif|AU-lêers (*.au)|*.au|MP3-lêers (*.mp3)|*.mp3|Ogg "
-"Vorbis-lêers (*.ogg)|*.ogg|Lêerslys (*.lof)|*.lof"
+"Vorbis-lêers (*.ogg)|*.ogg|Lêerlys (*.lof)|*.lof"
 
 #: ../src/Menus.cpp:2676
 msgid "All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
@@ -592,7 +592,7 @@ msgstr "Dinamiese omvangkompressie word toegepas..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Applying Nyquist Effect..."
-msgstr "Nyquist-effek word toegepas...."
+msgstr "Nyquist-effek word toegepas..."
 
 #: ../src/effects/Phaser.h:45
 msgid "Applying Phaser"
@@ -685,6 +685,7 @@ msgstr ""
 "Audacity voer nie MP3-lêers direk uit nie, maar gebruik LAME,\n"
 "'n aparte MP3-uitvoerbiblioteek. Sien gerus die dokumentasie\n"
 "vir meer inligting.\n"
+"\n"
 "Wil u LameLib nou opspoor?"
 
 #. i18n-hint: This message is used on Windows.
@@ -718,7 +719,7 @@ msgstr ""
 "Wys dit dan aan Audacity uit.\n"
 "Hierdie hoef slegs een keer gedoen te word.\n"
 "\n"
-"Wil u lame_enc.dll nou uitwys?"
+"Wil u libmp3lame.so nou uitwys?"
 
 #: ../src/DirManager.cpp:127
 msgid ""
@@ -806,7 +807,7 @@ msgid ""
 "\n"
 "Do you still want to start Audacity?"
 msgstr ""
-"Audcity kon nie die die gids vir tydelike lêers sluit nie.\n"
+"Audcity kon nie die gids vir tydelike lêers sluit nie.\n"
 "Miskien gebruik 'n ander kopie van Audacity dié gids.\n"
 "Twee kopieë wat gelyktydig loop kan dataverlies of\n"
 "stelselonstabiliteit tot gevolg hê.\n"
@@ -1010,7 +1011,7 @@ msgstr "Wysig tempo (toonhoogte onveranderd)"
 
 #: ../src/effects/ChangeTempo.h:40
 msgid "Change Tempo..."
-msgstr "Wysig tempo"
+msgstr "Wysig tempo..."
 
 #: ../src/TrackPanel.cpp:4351
 msgid "Change lower speed limit (%) to:"
@@ -2233,7 +2234,7 @@ msgstr "Ongeldige lengte in LOF-lêer."
 
 #: ../src/AStatus.cpp:362 ../src/TrackPanel.cpp:4331
 msgid "Invalid rate."
-msgstr "Ongeldige tempo"
+msgstr "Ongeldige tempo."
 
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:383
@@ -2491,7 +2492,7 @@ msgstr "Maksimum frekwensie (Hz):"
 
 #: ../src/prefs/SpectrumPrefs.cpp:152
 msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
-msgstr "Maksimum frekwensie moet in die omvang 100 Hz - 100.000 Hz lê"
+msgstr "Maksimum frekwensie moet in die omvang 100 Hz - 100 000 Hz lê"
 
 #: ../src/Tags.cpp:429
 #, c-format
