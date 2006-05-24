@@ -394,6 +394,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\src\broadcast.c"
+				>
+			</File>
+			<File
 				RelativePath="..\src\caf.c"
 				>
 			</File>
@@ -1742,6 +1746,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\config.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\floatcast.h"
 				>
 			</File>
@@ -1757,9 +1765,9 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Using Windows versions of libsndfile headers"
-						CommandLine="copy sndfile.h &quot;$(InputPath)&quot;&#x0D;&#x0A;copy config.h &quot;$(InputDir)config.h&quot;&#x0D;&#x0A;copy config.h &quot;$(IntDir)\tempconfig.h&quot;&#x0D;&#x0A;"
-						Outputs="$(IntDir)\tempconfig.h"
+						Description="Performing Custom Build Step"
+						CommandLine=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration
