@@ -1775,9 +1775,9 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Using Windows versions of libsndfile headers"
-						CommandLine="copy sndfile.h &quot;$(InputPath)&quot;&#x0D;&#x0A;copy config.h &quot;$(InputDir)config.h&quot;&#x0D;&#x0A;copy config.h &quot;$(IntDir)\tempconfig.h&quot;&#x0D;&#x0A;"
-						Outputs="$(IntDir)\tempconfig.h"
+						Description="Performing Custom Build Step"
+						CommandLine=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1785,9 +1785,9 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Using Windows versions of libsndfile headers"
-						CommandLine="copy sndfile.h &quot;$(InputPath)&quot;&#x0D;&#x0A;copy config.h &quot;$(InputDir)config.h&quot;&#x0D;&#x0A;copy config.h &quot;$(IntDir)\tempconfig.h&quot;&#x0D;&#x0A;"
-						Outputs="$(IntDir)\tempconfig.h"
+						Description="Performing Custom Build Step"
+						CommandLine=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 			</File>
