@@ -607,7 +607,7 @@ fi
 
 dnl Check that the wx version is 2.4.x
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference --version`
+wx_version=`${WX_CONFIG} $static_preference $unicode_preference --version=2.4 --version`
 
 AC_MSG_NOTICE([Checking that the installed version of wxWidgets is 2.4.x])
 
@@ -626,8 +626,8 @@ ${wx_list}])
 esac
 		
 
-LIBS="$LIBS `$WX_CONFIG --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
+LIBS="$LIBS `$WX_CONFIG --version=2.4 --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --version=2.4 --cxxflags`"
 
 
 AC_CANONICAL_HOST
