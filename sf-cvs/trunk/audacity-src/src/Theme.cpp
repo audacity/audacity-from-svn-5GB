@@ -290,6 +290,7 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
 {
    wxBitmap Bmp1( pXpm );
    wxBitmap Bmp2( pMask );
+
 //   wxLogDebug( wxT("Image 1: %i Image 2: %i"), 
 //      Bmp1.GetDepth(), Bmp2.GetDepth() );
    
@@ -311,9 +312,13 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
       alpha[i] = mk[0];
       mk+=3;
    }
+
    Img1.SetAlpha( alpha);
 
-   wxBitmap Result( Img1, 32 );
+   //dmazzoni: the top line does not work on wxGTK
+   //wxBitmap Result( Img1, 32 );
+   wxBitmap Result( Img1 );
+
    return Result;
 }
 
@@ -323,7 +328,11 @@ void ThemeBase::RegisterBitmap( int iIndex, char const ** pXpm, const wxString &
    wxBitmap Bmp( pXpm ); // a 24 bit bitmap.
    wxImage Img( Bmp.ConvertToImage() );
    Img.InitAlpha();
-   wxBitmap Bmp2( Img, 32 );
+
+   //dmazzoni: the top line does not work on wxGTK
+   //wxBitmap Bmp2( Img, 32 );
+   wxBitmap Bmp2( Img );
+
    RegisterBitmap( iIndex, Bmp2, Name );
 }
 
