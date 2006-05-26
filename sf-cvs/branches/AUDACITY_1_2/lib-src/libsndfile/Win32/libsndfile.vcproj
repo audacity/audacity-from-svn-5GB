@@ -21,7 +21,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".,include,../src"
+				AdditionalIncludeDirectories=".;include;../Win32;../src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;inline=__inline"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -75,7 +75,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				OptimizeForProcessor="3"
-				AdditionalIncludeDirectories=".,include,../src"
+				AdditionalIncludeDirectories=".;include;../Win32;../src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;inline=__inline"
 				StringPooling="TRUE"
 				RuntimeLibrary="0"
@@ -201,6 +201,9 @@
 						AdditionalIncludeDirectories=""
 						PreprocessorDefinitions=""/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\broadcast.c">
 			</File>
 			<File
 				RelativePath="..\src\caf.c">
@@ -954,35 +957,16 @@
 				RelativePath="..\src\common.h">
 			</File>
 			<File
+				RelativePath=".\config.h">
+			</File>
+			<File
 				RelativePath="..\src\floatcast.h">
 			</File>
 			<File
 				RelativePath="..\src\sfendian.h">
 			</File>
 			<File
-				RelativePath="..\src\sndfile.h">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Using Windows versions of libsndfile headers"
-						CommandLine="copy sndfile.h &quot;$(InputPath)&quot;
-copy config.h &quot;$(InputDir)config.h&quot;
-copy config.h &quot;$(IntDir)\tempconfig.h&quot;
-"
-						Outputs="$(IntDir)\tempconfig.h"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Using Windows versions of libsndfile headers"
-						CommandLine="copy sndfile.h &quot;$(InputPath)&quot;
-copy config.h &quot;$(InputDir)config.h&quot;
-copy config.h &quot;$(IntDir)\tempconfig.h&quot;
-"
-						Outputs="$(IntDir)\tempconfig.h"/>
-				</FileConfiguration>
+				RelativePath=".\sndfile.h">
 			</File>
 			<File
 				RelativePath="..\src\wav.h">

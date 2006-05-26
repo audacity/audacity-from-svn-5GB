@@ -67,7 +67,6 @@
 /* #undef HAVE_ENDIAN_H */
 
 /* Define to 1 if you have the `fdatasync' function. */
-
 /* #undef HAVE_FDATASYNC */
 
 /* Define to 1 if you have libflac 1.1.1 */
@@ -206,16 +205,16 @@
 #define PACKAGE_NAME "libsndfile"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libsndfile 1.0.13"
+#define PACKAGE_STRING "libsndfile 1.0.16"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libsndfile"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.13"
+#define PACKAGE_VERSION "1.0.16"
 
 /* Set to maximum allowed value of sf_count_t type. */
-#define SF_COUNT_MAX 0x7FFFFFFFFFFFFFFFi64
+// #define SF_COUNT_MAX 0x7FFFFFFFFFFFFFFFLL
 
 /* The size of a `double', as computed by sizeof. */
 #define SIZEOF_DOUBLE 8
@@ -230,13 +229,13 @@
 #define SIZEOF_INT64_T 0
 
 /* The size of a `loff_t', as computed by sizeof. */
-#define SIZEOF_LOFF_T 0
+/* #undef SIZEOF_LOFF_T */
 
 /* The size of a `long', as computed by sizeof. */
 #define SIZEOF_LONG 4
 
 /* The size of a `long long', as computed by sizeof. */
-#define SIZEOF_LONG_LONG 0
+#define SIZEOF_LONG_LONG 8
 
 /* The size of a `off64_t', as computed by sizeof. */
 /* #undef SIZEOF_OFF64_T */
@@ -269,7 +268,7 @@
 #define USE_WINDOWS_API 1
 
 /* Version number of package */
-#define VERSION "1.0.13"
+#define VERSION "1.0.16"
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
@@ -280,11 +279,9 @@
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
 
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch 
-** revision control system.
-**
-** arch-tag: 78a733c0-a430-46bd-81ab-4e479fbcffac
-*/
+
+
+
+
+
 

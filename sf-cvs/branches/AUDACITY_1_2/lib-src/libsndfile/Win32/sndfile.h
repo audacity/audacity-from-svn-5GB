@@ -52,7 +52,7 @@ extern "C" {
 
 enum
 {	/* Major formats. */
-	SF_FORMAT_WAV			= 0x010000,		/* Microsoft WAV format (little endian). */
+	SF_FORMAT_WAV			= 0x010000,		/* Microsoft WAV format (little endian default). */
 	SF_FORMAT_AIFF			= 0x020000,		/* Apple/SGI AIFF format (big endian). */
 	SF_FORMAT_AU			= 0x030000,		/* Sun/NeXT AU format (big endian). */
 	SF_FORMAT_RAW			= 0x040000,		/* RAW PCM data. */
@@ -148,6 +148,8 @@ enum
 	SFC_CALC_NORM_SIGNAL_MAX		= 0x1041,
 	SFC_CALC_MAX_ALL_CHANNELS		= 0x1042,
 	SFC_CALC_NORM_MAX_ALL_CHANNELS	= 0x1043,
+	SFC_GET_SIGNAL_MAX				= 0x1044,
+	SFC_GET_MAX_ALL_CHANNELS		= 0x1045,
 
 	SFC_SET_ADD_PEAK_CHUNK			= 0x1050,
 
@@ -173,6 +175,9 @@ enum
 	SFC_SET_INSTRUMENT				= 0x10D1,
 
 	SFC_GET_LOOP_INFO				= 0x10E0,
+
+	SFC_GET_BROADCAST_INFO			= 0x10F0,
+	SFC_SET_BROADCAST_INFO			= 0x10F1,
 
 	/* Following commands for testing only. */
 	SFC_TEST_IEEE_FLOAT_REPLACE		= 0x6001,
@@ -247,7 +252,7 @@ typedef	struct SNDFILE_tag	SNDFILE ;
 
 typedef __int64	sf_count_t ;
 
-#define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFi64
+#define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFLL
 
 /* A pointer to a SF_INFO structure is passed to sf_open_read () and filled in.
 ** On write, the SF_INFO structure is filled in by the user and passed into
@@ -361,6 +366,25 @@ typedef struct
 	int	root_key ;			/* MIDI note, or -1 for None */
 	int future [6] ;
 } SF_LOOP_INFO ;
+
+
+/*	Struct used to retrieve broadcast (EBU) information from a file. 
+**	Strongly (!) based on EBU "bext" chunk format used in Broadcast WAVE.
+*/
+typedef struct
+{	char			description [256] ;
+	char			originator [32] ;
+	char			originator_reference [32] ;
+	char			origination_date [10] ;
+	char			origination_time [8] ;
+	int				time_reference_low ;
+	int				time_reference_high ;
+	short			version ;
+	char			umid [64] ;
+	char			reserved [190] ;
+	unsigned int	coding_history_size ;
+	char			coding_history [256] ;
+} SF_BROADCAST_INFO ;
 
 typedef sf_count_t		(*sf_vio_get_filelen)	(void *user_data) ;
 typedef sf_count_t		(*sf_vio_seek)		(sf_count_t offset, int whence, void *user_data) ;
@@ -528,12 +552,3 @@ void	sf_write_sync	(SNDFILE *sndfile) ;
 #endif	/* __cplusplus */
 
 #endif	/* SNDFILE_H */
-
-/*
-** Do not edit or modify anything in this comment block.
-** The arch-tag line is a file identity tag for the GNU Arch
-** revision control system.
-**
-** arch-tag: 906bb197-18f2-4f66-a395-b4722bab5114
-*/
-
