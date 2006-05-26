@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.5-pre
+Version 1.2.5rc1
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
