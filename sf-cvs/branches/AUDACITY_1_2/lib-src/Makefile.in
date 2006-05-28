@@ -13,13 +13,13 @@ expat/expat.a:
 libogg/src/.libs/libogg.a:
 	cd libogg && $(MAKE)
 
-libvorbis/lib/.libs/libvorbis.a:
+libvorbis/lib/.libs/libvorbis.a: libogg/src/.libs/libogg.a
 	cd libvorbis && $(MAKE)
 
-libvorbis/lib/.libs/libvorbisfile.a:
+libvorbis/lib/.libs/libvorbisfile.a: libogg/src/.libs/libogg.a
 	cd libvorbis && $(MAKE)
 
-libvorbis/lib/.libs/libvorbisenc.a:
+libvorbis/lib/.libs/libvorbisenc.a: libogg/src/.libs/libogg.a
 	cd libvorbis && $(MAKE)
 
 libnyquist/libnyquist.a:
