@@ -19709,8 +19709,8 @@ if test "x$ogg_configured" = "xyes" && test "x$ogg_h_available" = "xyes" ; then
 
 
 
-  OGG_LIBS="-L../.. -logg"
-  LIBS="-L../.. -logg"
+  OGG_LIBS="-L../../libogg/src -logg"
+  LIBS="-L../../libogg/src -logg"
   OGG_CFLAGS="-I../../libogg/include"
 
 else
