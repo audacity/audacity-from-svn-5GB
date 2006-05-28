@@ -463,7 +463,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT V_LIB_CURRENT V_LIB_REVISION V_LIB_AGE VF_LIB_CURRENT VF_LIB_REVISION VF_LIB_AGE VE_LIB_CURRENT VE_LIB_REVISION VE_LIB_AGE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL XSLTPROC PDFXMLTEX BUILD_DOCS_TRUE BUILD_DOCS_FALSE HAVE_PKG_CONFIG PKG_CONFIG OGG_CFLAGS OGG_LIBS ALLOCA LIBOBJS VORBIS_LIBS DEBUG PROFILE pthread_lib LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO AMTAR install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT V_LIB_CURRENT V_LIB_REVISION V_LIB_AGE VF_LIB_CURRENT VF_LIB_REVISION VF_LIB_AGE VE_LIB_CURRENT VE_LIB_REVISION VE_LIB_AGE CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CPP EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL XSLTPROC PDFXMLTEX BUILD_DOCS_TRUE BUILD_DOCS_FALSE OGG_CFLAGS OGG_LIBS HAVE_PKG_CONFIG PKG_CONFIG ALLOCA LIBOBJS VORBIS_LIBS DEBUG PROFILE pthread_lib LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -19654,7 +19654,67 @@ fi
 
 
 HAVE_OGG=no
-# Extract the first word of "pkg-config", so it can be a program name with args.
+
+echo "$as_me:$LINENO: checking for ../libogg/include/ogg/ogg.h" >&5
+echo $ECHO_N "checking for ../libogg/include/ogg/ogg.h... $ECHO_C" >&6
+if test "${ac_cv_file____libogg_include_ogg_ogg_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "../libogg/include/ogg/ogg.h"; then
+  ac_cv_file____libogg_include_ogg_ogg_h=yes
+else
+  ac_cv_file____libogg_include_ogg_ogg_h=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file____libogg_include_ogg_ogg_h" >&5
+echo "${ECHO_T}$ac_cv_file____libogg_include_ogg_ogg_h" >&6
+if test $ac_cv_file____libogg_include_ogg_ogg_h = yes; then
+  ogg_h_available="yes"
+else
+  ogg_h_available="no"
+fi
+
+
+echo "$as_me:$LINENO: checking for ../libogg/Makefile" >&5
+echo $ECHO_N "checking for ../libogg/Makefile... $ECHO_C" >&6
+if test "${ac_cv_file____libogg_Makefile+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "../libogg/Makefile"; then
+  ac_cv_file____libogg_Makefile=yes
+else
+  ac_cv_file____libogg_Makefile=no
+fi
+fi
+echo "$as_me:$LINENO: result: $ac_cv_file____libogg_Makefile" >&5
+echo "${ECHO_T}$ac_cv_file____libogg_Makefile" >&6
+if test $ac_cv_file____libogg_Makefile = yes; then
+  ogg_configured="yes"
+else
+  ogg_configured="no"
+fi
+
+
+if test "x$ogg_configured" = "xyes" && test "x$ogg_h_available" = "xyes" ; then
+  echo "Using local libogg library from Audacity lib-src directory."
+
+
+
+
+  OGG_LIBS="-L../.. -logg"
+  LIBS="-L../.. -logg"
+  OGG_CFLAGS="-I../../libogg/include"
+
+else
+      # Extract the first word of "pkg-config", so it can be a program name with args.
 set dummy pkg-config; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -19689,8 +19749,8 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-if test "x$HAVE_PKG_CONFIG" = "xyes"
-then
+  if test "x$HAVE_PKG_CONFIG" = "xyes"
+  then
 
   succeeded=no
 
@@ -19787,9 +19847,9 @@ echo "${ECHO_T}$OGG_LIBS" >&6
      HAVE_OGG=no
   fi
 
-fi
-if test "x$HAVE_OGG" = "xno"
-then
+  fi
+  if test "x$HAVE_OGG" = "xno"
+  then
 
 # Check whether --with-ogg or --without-ogg was given.
 if test "${with_ogg+set}" = set; then
@@ -19985,9 +20045,9 @@ echo "$as_me: error: must have Ogg installed!" >&2;}
 
   rm -f conf.oggtest
 
-  libs_save=$LIBS
-  LIBS="$OGG_LIBS $VORBIS_LIBS"
-  echo "$as_me:$LINENO: checking for oggpack_writealign" >&5
+    libs_save=$LIBS
+    LIBS="$OGG_LIBS $VORBIS_LIBS"
+    echo "$as_me:$LINENO: checking for oggpack_writealign" >&5
 echo $ECHO_N "checking for oggpack_writealign... $ECHO_C" >&6
 if test "${ac_cv_func_oggpack_writealign+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -20084,7 +20144,8 @@ echo "$as_me: error: Ogg >= 1.0 required !" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-  LIBS=$libs_save
+    LIBS=$libs_save
+  fi
 fi
 
 
@@ -21296,10 +21357,10 @@ s,@XSLTPROC@,$XSLTPROC,;t t
 s,@PDFXMLTEX@,$PDFXMLTEX,;t t
 s,@BUILD_DOCS_TRUE@,$BUILD_DOCS_TRUE,;t t
 s,@BUILD_DOCS_FALSE@,$BUILD_DOCS_FALSE,;t t
-s,@HAVE_PKG_CONFIG@,$HAVE_PKG_CONFIG,;t t
-s,@PKG_CONFIG@,$PKG_CONFIG,;t t
 s,@OGG_CFLAGS@,$OGG_CFLAGS,;t t
 s,@OGG_LIBS@,$OGG_LIBS,;t t
+s,@HAVE_PKG_CONFIG@,$HAVE_PKG_CONFIG,;t t
+s,@PKG_CONFIG@,$PKG_CONFIG,;t t
 s,@ALLOCA@,$ALLOCA,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@VORBIS_LIBS@,$VORBIS_LIBS,;t t
