@@ -2059,8 +2059,18 @@ void AudacityProject::OnHistory()
 void AudacityProject::OnExperimentalTrackPanel()
 {
 #ifdef EXPERIMENTAL_TRACK_PANEL
+   // Parasite Track Panel.
+   // Takes over the display...
    TrackPanel2 Dlg(NULL);
+   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(false);
+// Dlg.Maximize();
    Dlg.ShowModal();
+#define RETURN_TO_AUDACITY
+#ifdef RETURN_TO_AUDACITY
+   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(true);
+#else
+   QuitAudacity( false );
+#endif
 #endif
 }
 

@@ -418,6 +418,7 @@ void Ruler::FindLinearTickSizes(double UPP)
 
    case RealFormat:
       d = 0.000001;
+      // mDigits is number of digits after the decimal point.
       mDigits = 6;
       for(;;) {
          if (units < d) {
@@ -433,7 +434,12 @@ void Ruler::FindLinearTickSizes(double UPP)
          }
          d *= 2.0;
          mDigits--;
+         // More than 10 digit numbers?  Something is badly wrong.
+         // Probably units is coming in with too high a value.
+         wxASSERT( mDigits >= -10 );
       }
+      mMinor = d;
+      mMajor = d * 2.0;
       break;
 
    }
@@ -553,6 +559,13 @@ void Ruler::Tick(int pos, double d, bool major)
    wxCoord strW, strH;
    int strPos, strLen, strLeft, strTop;
 
+   // FIXME: We don't draw a tick if of end of our label arrays
+   // But we shouldn't have an array of labels.
+   if( mNumMinor >= mLength )
+      return;
+   if( mNumMajor >= mLength )
+      return;
+
    Label *label;
    if (major)
       label = &mMajorLabels[mNumMajor++];
@@ -603,6 +616,13 @@ void Ruler::Tick(int pos, double d, bool major)
       }
    }
 
+
+   // FIXME: we shouldn't even get here if strPos < 0.
+   // Ruler code currently does  not handle very small or
+   // negative sized windows (i.e. don't draw) properly.
+   if( strPos < 0 )
+      return;
+
    // See if any of the pixels we need to draw this
    // label is already covered
 
@@ -648,6 +668,13 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
    int i;
    int j;
 
+   // If ruler is being resized, we could end up with it being too small.
+   // Values of mLength of zero or below cause bad array allocations and 
+   // division by zero.  So...
+   // IF too small THEN bail out and don't draw.
+   if( mLength <= 0 )
+      return;
+
    if (mOrientation == wxHORIZONTAL) {
       mMaxWidth = mLength;
       mMaxHeight = 0;
@@ -657,6 +684,8 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
       mMaxHeight = mLength;
    }
 
+   // FIXME: Surely we do not need to allocate storage for the labels?
+   // We can just recompute them as we need them?
    mNumMajor = 0;
    mMajorLabels = new Label[mLength+1];
    mNumMinor = 0;
@@ -804,6 +833,9 @@ void Ruler::Draw(wxDC& dc)
 void Ruler::Draw(wxDC& dc, Envelope *speedEnv, long minSpeed, long maxSpeed)
 {
    mDC = &dc;
+
+   if( mLength <=0 )
+      return;
 
    if (!mValid)
       Update( speedEnv, minSpeed, maxSpeed );
@@ -1209,6 +1241,9 @@ void AdornedRulerPanel::DoDraw(wxDC *dc)
 
 void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
 {
+   if( mTrackPanel == NULL )
+      return;
+
    double start, end;
    GetPlayRegion(&start, &end);
    

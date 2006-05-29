@@ -18,6 +18,7 @@
 #include <wx/wx.h>
 #include <wx/image.h>
 #include <wx/arrimpl.cpp> 
+#include "ImageManipulation.h"
 #include "Theme.h"
 
 
@@ -398,7 +399,14 @@ void ThemeBase::CreateImageCache()
    const int width = 32 * nBmpsPerRow;// we want to be 6 32 bit images across.
    int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
    height +=200;
-   mImageCache = wxBitmap(width, height, depth);
+
+   wxImage Image( width, height );
+
+   // Ensure we have an alpha channel...
+   if( !Image.HasAlpha() )
+   {
+      Image.InitAlpha();
+   }
 
    mxCacheWidth = width;
 
@@ -406,6 +414,35 @@ void ThemeBase::CreateImageCache()
    int xStart=0;
    int yStart=0;
    int iHeight=0;
+
+   int xWidth1;
+   int yHeight1;
+   int i;
+   wxBitmap * pBmp;
+   myPos = 0;
+   myPosBase =0;
+   myHeight = 0;
+   iImageGroupSize = 1;
+   SetNewGroup(1);
+   // Save the bitmaps
+   for(i=0;i<(int)mBitmaps.GetCount();i++)
+   {
+      pBmp = &mBitmaps[i];
+      mFlags = mBitmapFlags[i];
+      xWidth1=pBmp->GetWidth();
+      yHeight1=pBmp->GetHeight();
+      GetNextPosition( xWidth1, yHeight1 );
+      wxImage SrcImage( pBmp->ConvertToImage() );
+      PasteSubImage( &Image, &SrcImage, mxPos, myPos );
+   }
+
+#if 0
+//   mImageCache = wxBitmap(width, height, depth);
+
+   // UseAlpha is a deprecated function!
+   // However (under windows) there is no other way to ensure the
+   // cache file has the alpha channel in it!
+//   mImageCache.UseAlpha();
 
    wxMemoryDC DestMemDC;
    DestMemDC.SelectObject(mImageCache);
@@ -445,6 +482,8 @@ void ThemeBase::CreateImageCache()
    // cache file has the alpha channel in it!
    mImageCache.UseAlpha();
    wxImage Image( mImageCache.ConvertToImage() );
+#endif
+
 
    // Now save the colours.
    int x,y;

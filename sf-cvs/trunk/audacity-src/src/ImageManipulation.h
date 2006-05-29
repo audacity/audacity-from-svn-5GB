@@ -57,6 +57,9 @@ wxImage *CreateAquaBackground(int width, int height, int offset);
 wxImage *CreateSysBackground(int width, int height, int offset,
                              wxColour colour);
 
+// Pastes one image into another at specified location.
+void PasteSubImage( wxImage * pDest, wxImage * pSrc, int x, int y );
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

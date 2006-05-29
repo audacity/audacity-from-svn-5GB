@@ -274,6 +274,7 @@ class AudacityProject:public wxFrame,
    virtual void WriteXML(int depth, FILE *fp);
 
    PlayMode mLastPlayMode;
+   ViewInfo mViewInfo;
 
  private:
 
@@ -309,7 +310,7 @@ class AudacityProject:public wxFrame,
    // List of tracks and display info
 
    TrackList *mTracks;
-   ViewInfo mViewInfo;
+//   ViewInfo mViewInfo;
 
    int mSnapTo;
 
