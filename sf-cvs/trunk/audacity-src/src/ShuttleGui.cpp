@@ -21,6 +21,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <wx/treectrl.h>
+#include "Experimental.h"
 #include "ShuttleGui.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -465,6 +466,54 @@ void ShuttleGuiBase::EndPanel()
    mpParent = mpParent->GetParent(); 
 }
 
+wxNotebook * ShuttleGuiBase::StartNotebook()
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return NULL;
+   wxNotebook * pNotebook;
+   mpWind = pNotebook = new wxNotebook(mpParent, 
+      miId, wxDefaultPosition, wxDefaultSize);
+   miProp=1;
+   UpdateSizers();
+   mpParent = pNotebook;
+   return pNotebook;
+}
+
+void ShuttleGuiBase::EndNotebook()
+{
+   //PopSizer();
+   mpParent = mpParent->GetParent(); 
+}
+
+
+void ShuttleGuiBase::StartNotebookPage( const wxString Name )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   wxNotebook * pNotebook = (wxNotebook*)mpParent;
+   wxNotebookPage * pPage = new wxPanel(mpParent ); 
+   pNotebook->AddPage( 
+      pPage, 
+      Name);
+   PushSizer();
+
+   miProp=1;
+   mpParent = pPage;
+   mpSizer = new wxBoxSizer( wxVERTICAL );
+   mpSizer->SetMinSize(250,500);
+   pPage->SetSizer( mpSizer );
+//   UpdateSizers();
+}
+
+void ShuttleGuiBase::EndNotebookPage()
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   PopSizer();
+   mpParent = mpParent->GetParent(); 
+}
+
 void ShuttleGuiBase::StartHorizontalLay( int PositionFlags, int iProp)
 {
    if( mShuttleMode != eIsCreating )
@@ -510,6 +559,18 @@ void ShuttleGuiBase::EndMultiColumn()
    if( mShuttleMode != eIsCreating )
       return;
    PopSizer();
+}
+
+void ShuttleGuiBase::StartTwoColumnStretchy()
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   wxFlexGridSizer * pSizer = new wxFlexGridSizer( 2 );
+   mpSubSizer = pSizer;
+   pSizer->AddGrowableCol( 1,1 );
+   pSizer->AddGrowableRow( 1,1 );
+   miSizerProp=1;
+   UpdateSizers();
 }
 
 void ShuttleGuiBase::TieTickbox(const wxString &Prompt, bool &Var)
@@ -875,6 +936,7 @@ void ShuttleGuiBase::PushSizer()
 // two files at some later date.
 #include "GuiWaveTrack.h"
 #endif
+#include  "./widgets/Ruler.h"
 
 
 // Now we have Audacity specific shuttle functions.
@@ -893,10 +955,57 @@ GuiWaveTrack * ShuttleGui::AddGuiWaveTrack( const wxString & Name)
    GuiWaveTrack * pGuiWaveTrack;
    miProp=1;
    mpWind = pGuiWaveTrack = new GuiWaveTrack(mpParent, miId, Name);
-   mpWind->SetMinSize(wxSize(100,100));
+   mpWind->SetMinSize(wxSize(100,50));
    UpdateSizers();
    return pGuiWaveTrack;
 #else
    return NULL;
 #endif
+}
+
+AdornedRulerPanel * ShuttleGui::AddAdornedRuler( ViewInfo *pViewInfo )
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return (AdornedRulerPanel*)NULL;
+   AdornedRulerPanel * pAdornedRuler;
+   miProp=0;
+   mpWind = pAdornedRuler = new AdornedRulerPanel(
+      mpParent, 
+      miId, 
+      wxDefaultPosition,
+      wxDefaultSize,
+      pViewInfo
+      );
+
+   mpWind->SetMinSize(wxSize(100,28));
+   UpdateSizers();
+   return pAdornedRuler;
+}
+
+
+RulerPanel * ShuttleGui::AddRulerVertical(float low, float hi, const wxString & Units )
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return (RulerPanel*)NULL;
+   RulerPanel * pRulerPanel;
+   miProp=0;
+   mpWind = pRulerPanel = new RulerPanel(
+      mpParent, 
+      miId,
+      wxDefaultPosition,
+      wxDefaultSize
+      );
+   Ruler & Ruler = pRulerPanel->ruler;
+   Ruler.SetOrientation(wxVERTICAL);
+   Ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
+   Ruler.SetRange(low, hi);
+   Ruler.SetFormat(Ruler::RealFormat);
+   Ruler.SetUnits(Units);
+   Ruler.SetLabelEdges(true);
+   
+   mpWind->SetMinSize(wxSize(38,50));
+   UpdateSizers();
+   return pRulerPanel;
 }

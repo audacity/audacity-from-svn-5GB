@@ -272,6 +272,64 @@ wxImage *CreateSysBackground(int width, int height, int offset,
    #endif
 }
 
+void PasteSubImage( wxImage * background, wxImage * foreground, int xoff, int yoff )
+{
+// Pastes one image into another including the alpha channel.
+// Differs from OverlayImage in that:
+//   Happens in place to existing background image.
+//   Pastes image on top; no blending with existing background is done.
+
+   unsigned char *bg = background->GetData();
+   unsigned char *fg = foreground->GetData();
+   unsigned char *bgAlpha = background->HasAlpha() ? background->GetAlpha() : NULL; 
+   unsigned char *fgAlpha = foreground->HasAlpha() ? foreground->GetAlpha() : NULL; 
+   // For testing... Set as if no alpha in foreground....
+   // fgAlpha = NULL;
+
+   int bgWidth = background->GetWidth();
+   int bgHeight = background->GetHeight();
+   int fgWidth = foreground->GetWidth();
+   int fgHeight = foreground->GetHeight();
+
+   int wCutoff = fgWidth;
+   int hCutoff = fgHeight;
+
+   // If the masked foreground + offset is bigger than the background, masking
+   // should only occur within these bounds of the foreground image
+   wCutoff = (bgWidth - xoff > wCutoff) ? wCutoff : bgWidth - xoff;
+   hCutoff = (bgHeight - yoff > hCutoff) ? hCutoff : bgHeight - yoff;
+
+   // Go through the foreground image bit by bit and place it on to the
+   // background, at an offset of xoff,yoff.
+   // Don't go beyond the size of the background image,
+   // or the foreground image.
+   int y;
+   unsigned char *bkp;
+   unsigned char *fgp;
+   unsigned char *bgAlphap;
+   unsigned char *fgAlphap;
+   for (y = 0; y < hCutoff; y++) {
+      // RGB bytes
+      bkp = bg + 3 * ((y + yoff) * bgWidth + xoff);
+      fgp = fg + 3 * ( y * fgWidth);
+      memcpy( bkp, fgp, 3 * wCutoff );
+
+      // Alpha bytes.
+      if( bgAlpha )
+      {
+         bgAlphap = bgAlpha + ((y+yoff) * bgWidth + xoff );
+         if( fgAlpha )
+         {
+            fgAlphap = fgAlpha + (y * fgWidth );
+            memcpy( bgAlphap, fgAlphap, wCutoff );
+         }
+         else
+         {
+            memset( bgAlphap, 255, wCutoff );
+         }
+      }
+   } 
+}
 
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

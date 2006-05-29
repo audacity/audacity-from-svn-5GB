@@ -82,9 +82,15 @@ public:
    void EndTwoColumn() {EndMultiColumn();};
    void StartThreeColumn(){StartMultiColumn(3);};
    void EndThreeColumn(){EndMultiColumn();};
+   void StartTwoColumnStretchy();
 
    void StartStatic( const wxString & Str, int iProp=0 );
    void EndStatic();
+
+   wxNotebook * StartNotebook();
+   void EndNotebook();
+   void StartNotebookPage( const wxString Name );
+   void EndNotebookPage();
 
 //-- Tie functions both add controls and also read/write to them.
    wxTextCtrl * TieTextBox( const wxString &Caption, wxString & Value, const int nChars=0);
@@ -95,7 +101,7 @@ public:
 	void TieTickboxOnRight( const wxString & Prompt, bool & Var );
 
    void EnableCtrl( bool bEnable );
-
+   void SetBorder( int Border ) {miBorder = Border;};
    
 
 protected:
@@ -135,6 +141,9 @@ protected:
 
 
 class GuiWaveTrack;
+class AdornedRulerPanel;
+class RulerPanel;
+struct ViewInfo;
 
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
 class ShuttleGui : public ShuttleGuiBase
@@ -146,4 +155,6 @@ public:
 public:
    ShuttleGui & Id(int id );
    GuiWaveTrack * AddGuiWaveTrack( const wxString & Name);
+   AdornedRulerPanel * AddAdornedRuler( ViewInfo *pViewInfo );
+   RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
 };
