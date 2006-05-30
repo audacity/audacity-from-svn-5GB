@@ -5,6 +5,8 @@
   LabelTrack.h
 
   Dominic Mazzoni
+  James Crook
+  Jun Wan
 
 **********************************************************************/
 
@@ -32,6 +34,10 @@ class TrackList;
 class AudacityProject;
 class DirManager;
 
+/// A LabelStruct holds information for ONE label in a LabelTrack
+
+/// LabelStruct also has label specific functions, mostly functions
+/// for drawing different aspects of the label and its text box.
 class LabelStruct 
 {
 public:
@@ -44,19 +50,19 @@ public:
    void getXPos( wxDC & dc, int * xPos1, int cursorPos);
    
 public:
-   double t;  // Time for left hand of label.
-   double t1; // Time for right hand of label.
-   wxString title; // Text of the label.
-   int width; // width of the text in pixels.
+   double t;  /// Time for left hand of label.
+   double t1; /// Time for right hand of label.
+   wxString title; /// Text of the label.
+   int width; /// width of the text in pixels.
    
 // Working storage for on-screen layout.
-   int x;     // Pixel position of left hand glyph
-   int x1;    // Pixel position of right hand glyph
-   int xText; // Pixel position of left hand side of text box
-   int y;     // Pixel position of label.
+   int x;     /// Pixel position of left hand glyph
+   int x1;    /// Pixel position of right hand glyph
+   int xText; /// Pixel position of left hand side of text box
+   int y;     /// Pixel position of label.
 
-   bool highlighted;              // if the text is highlighted
-   bool changeInitialMouseXPos;   // flag to change initial mouse X pos 
+   bool highlighted;              /// if the text is highlighted
+   bool changeInitialMouseXPos;   /// flag to change initial mouse X pos 
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
@@ -65,6 +71,13 @@ const int NUM_GLYPH_CONFIGS = 3;
 const int NUM_GLYPH_HIGHLIGHTS = 4;
 const int MAX_NUM_ROWS =80;
 
+
+/// A LabelTrack is a track that holds labels.
+
+/// These are used to annotate a waveform.
+/// Each label has a start time and an end time.
+/// The text of the labels is editable and the
+/// positions of the end points are draggable.
 class LabelTrack:public Track {
    friend class LabelStruct;
    friend class BouncePane;
@@ -168,10 +181,10 @@ class LabelTrack:public Track {
    int mOldEdge;               
  private:
 
-   int mSelIndex;              //Keeps track of the currently selected label
-   int mMouseOverLabelLeft;    //Keeps track of which left label the mouse is currently over.
-   int mMouseOverLabelRight;   //Keeps track of which right label the mouse is currently over.
-   int mxMouseDisplacement;    //Displacement of mouse cursor from the centre being dragged.
+   int mSelIndex;              /// Keeps track of the currently selected label
+   int mMouseOverLabelLeft;    /// Keeps track of which left label the mouse is currently over.
+   int mMouseOverLabelRight;   /// Keeps track of which right label the mouse is currently over.
+   int mxMouseDisplacement;    /// Displacement of mouse cursor from the centre being dragged.
    LabelArray mLabels;
 
    wxBrush mUnselectedBrush;
@@ -192,17 +205,17 @@ class LabelTrack:public Track {
    int xUsed[MAX_NUM_ROWS];
 
    static int mFontHeight;
-   int mXPos1;                         //left X pos of highlighted area
-   int mXPos2;                         //right X pos of highlighted area 
-   int mCurrentCursorPos;              //current cursor position
-   int mInitialCursorPos;              //initial cursor position
-   double mMouseXPos;                  //mouse X pos
-   int mDragXPos;                      //end X pos of dragging
-   bool mInBox;                        //flag to tell if the mouse is in text box
-   bool mResetCursorPos;               //flag to reset cursor position(used in the dragging the glygh) 
-   bool mRightDragging;                //flag to tell if it's a valid dragging
-   bool mKeyOn;                        //flag to tell if current label track has keyboard focus
-   bool mDrawCursor;                   //flag to tell if drawing the cursor or not
+   int mXPos1;                         /// left X pos of highlighted area
+   int mXPos2;                         /// right X pos of highlighted area 
+   int mCurrentCursorPos;              /// current cursor position
+   int mInitialCursorPos;              /// initial cursor position
+   double mMouseXPos;                  /// mouse X pos
+   int mDragXPos;                      /// end X pos of dragging
+   bool mInBox;                        /// flag to tell if the mouse is in text box
+   bool mResetCursorPos;               /// flag to reset cursor position(used in the dragging the glygh) 
+   bool mRightDragging;                /// flag to tell if it's a valid dragging
+   bool mKeyOn;                        /// flag to tell if current label track has keyboard focus
+   bool mDrawCursor;                   /// flag to tell if drawing the cursor or not
    
    // Used only for a LabelTrack on the clipboard
    double mClipLen;

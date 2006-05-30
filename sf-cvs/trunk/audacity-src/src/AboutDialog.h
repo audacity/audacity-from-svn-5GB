@@ -24,6 +24,10 @@ struct AboutDialogCreditItem {
 
 WX_DECLARE_LIST(AboutDialogCreditItem, AboutDialogCreditItemsList);
 
+/// The AboutDialog shows the program version and developer credits.
+
+/// It is a simple scrolling window with an 'Audacious' button to
+/// close it.
 class AboutDialog:public wxDialog {
    DECLARE_DYNAMIC_CLASS(AboutDialog)
 

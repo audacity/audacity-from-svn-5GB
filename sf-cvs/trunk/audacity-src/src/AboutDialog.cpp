@@ -52,6 +52,7 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Augustus Saunders"), roleContributor);
    AddCredit(wxT("Martyn Shaw"), roleContributor);
    AddCredit(wxT("Mike Underwood"), roleContributor);
+   AddCredit(wxT("Jun Wan"), roleContributor);
    AddCredit(wxT("Tom Woodhams"), roleContributor);
    AddCredit(wxT("Wing Yu"), roleContributor);
    
