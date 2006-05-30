@@ -153,6 +153,8 @@ OBJS = \
 	prefs/ThemePrefs.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
+	widgets/ExpandingToolBar.o \
+	widgets/ImageRoll.o \
 	widgets/Meter.o \
 	widgets/MultiDialog.o \
 	widgets/Ruler.o \

@@ -184,8 +184,8 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->AddItem(wxT("EditID3"),        _("Edit ID3 &Tags..."),              FN(OnEditID3));
-   c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+   c->AddItem(wxT("EditID3"),        _("Open Metadata Editor"),              FN(OnEditID3));
+   //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    if( !mCleanSpeechMode )
 	{
