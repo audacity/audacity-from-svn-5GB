@@ -14,12 +14,8 @@
 #pragma once
 #include "PrefsPanel.h"
 
-// ThemePrefs is being developed first under Windows.
-// In case it breaks Linux or mac builds, we only use it
-// on Windows for now.  Adventurous people can
-// try it out by defining USE_THEME_PREFS on other platforms
-// if they so wish.  JKC: 16-May-2006.
-
+// ThemePrefs is a new feature (May 2006)
+// To disable it, comment out the USE_THEME_PREFS #define.
 #define USE_THEME_PREFS
 
 class ShuttleGui;
