@@ -157,17 +157,17 @@ BuiltinFormatString BuiltinFormatStrings[] =
     {_("hh:mm:ss + samples"),
      _("*h060m060s+.#samples")},
     {_("samples"),
-     _("*01000samples|#")},
+    _("*samples")},
     {_("hh:mm:ss + film frames (24 fps)"),
      _("*h060m060s+.24 frames")},
     {_("film frames (24 fps)"),
      _("* frames |24")},
     {_("hh:mm:ss + NTSC drop frames (29.97 fps)"),
-     _("*h060m060s+.2997 frames")},
+     _("*h060m060s+.029.97002997 frames")},
     {_("NTSC drop frames (29.97 fps)"),
      _("* frames|29.97002997")},
     {_("hh:mm:ss + NTSC non-drop frames (30 fps)"),
-     _("*h060m060s+.3 frames")},
+     _("*h060m060s+.030 frames")},
     {_("NTSC non-drop frames (30 fps)"),
      _("* frames|30")},
     {_("hh:mm:ss + PAL frames (25 fps)"),
@@ -488,6 +488,8 @@ void TimeTextCtrl::CreateControls()
       if (digits < 1)
          digits = 3;
       if (digits > 10)
+         digits = 10;
+      if( (mWholeFields.GetCount() == 1) && (mFracFields.GetCount() == 0) )
          digits = 10;
       width = sTextWidth[digits];
       text = new wxTextCtrl(this, AnyTextCtrlID, wxT(""),
