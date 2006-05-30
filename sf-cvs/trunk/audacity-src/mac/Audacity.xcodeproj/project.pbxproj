@@ -13,9 +13,6 @@
 			buildPhases = (
 				17072E8C0988BD85008541CC /* ShellScript */,
 			);
-			buildSettings = {
-				PRODUCT_NAME = Untitled;
-			};
 			dependencies = (
 			);
 			name = Configure;
@@ -328,7 +325,6 @@
 		176EEC2509A2F2FA00188F3B /* stream_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 176EEB6C09A2EF1100188F3B /* stream_encoder.cpp */; };
 		176EEC2709A2F30800188F3B /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EE9F209A2EF1000188F3B /* config.h */; };
 		176EEC2809A2F30A00188F3B /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EE9F209A2EF1000188F3B /* config.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		176EEC2909A2F31300188F3B /* all.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA0F09A2EF1000188F3B /* all.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		176EEC2B09A2F31300188F3B /* callback.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1109A2EF1000188F3B /* callback.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		176EEC2C09A2F31300188F3B /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1209A2EF1000188F3B /* export.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		176EEC2D09A2F31300188F3B /* file_decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1309A2EF1000188F3B /* file_decoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -340,7 +336,6 @@
 		176EEC3309A2F31300188F3B /* seekable_stream_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1D09A2EF1000188F3B /* seekable_stream_encoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		176EEC3409A2F31300188F3B /* stream_decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1E09A2EF1000188F3B /* stream_decoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		176EEC3509A2F31300188F3B /* stream_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA1F09A2EF1000188F3B /* stream_encoder.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		176EEC3609A2F31A00188F3B /* all.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2109A2EF1000188F3B /* all.h */; };
 		176EEC3709A2F31A00188F3B /* decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2209A2EF1000188F3B /* decoder.h */; };
 		176EEC3809A2F31A00188F3B /* encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2309A2EF1000188F3B /* encoder.h */; };
 		176EEC3909A2F31A00188F3B /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = 176EEA2409A2EF1000188F3B /* export.h */; };
@@ -431,7 +426,6 @@
 		1790B16F09883BFD008A330A /* RawAudioGuess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B09009883BFD008A330A /* RawAudioGuess.cpp */; };
 		1790B17009883BFD008A330A /* Internat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B09909883BFD008A330A /* Internat.cpp */; };
 		1790B17109883BFD008A330A /* LabelTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B09B09883BFD008A330A /* LabelTrack.cpp */; };
-		1790B17209883BFD008A330A /* Landmark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B09D09883BFD008A330A /* Landmark.cpp */; };
 		1790B17309883BFD008A330A /* LangChoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B09F09883BFD008A330A /* LangChoice.cpp */; };
 		1790B17409883BFD008A330A /* Languages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B0A109883BFD008A330A /* Languages.cpp */; };
 		1790B17509883BFD008A330A /* Legacy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B0A309883BFD008A330A /* Legacy.cpp */; };
@@ -765,24 +759,14 @@
 		17FDBD01098BFF4E00BCEF32 /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F90988D6AB008541CC /* os_types.h */; };
 		17FDBD02098BFF4E00BCEF32 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 170733980988D6AC008541CC /* bitwise.c */; };
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
+		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
+		283A11AA0A2C0E15004372C4 /* ShuttleGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */; };
+		283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A80A2C0E15004372C4 /* Theme.cpp */; };
+		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
+		28F1D81D0A2D0019005506A7 /* AttachableScrollBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */; };
+		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
+		28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildStyle section */
-		1790ABF009883354008A330A /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-			};
-			name = Development;
-		};
-		1790ABF109883354008A330A /* Deployment */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-			};
-			name = Deployment;
-		};
-/* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
 		17072E930988C35B008541CC /* PBXContainerItemProxy */ = {
@@ -1197,8 +1181,6 @@
 		176EE9DC09A2EC1000188F3B /* flac.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = flac.c; sourceTree = "<group>"; };
 		176EE9DD09A2EC1000188F3B /* g72x.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = g72x.c; sourceTree = "<group>"; };
 		176EE9F209A2EF1000188F3B /* config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		176EEA0F09A2EF1000188F3B /* all.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
-		176EEA1009A2EF1000188F3B /* assertz.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = assertz.h; sourceTree = "<group>"; };
 		176EEA1109A2EF1000188F3B /* callback.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = callback.h; sourceTree = "<group>"; };
 		176EEA1209A2EF1000188F3B /* export.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = export.h; sourceTree = "<group>"; };
 		176EEA1309A2EF1000188F3B /* file_decoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = file_decoder.h; sourceTree = "<group>"; };
@@ -1210,7 +1192,6 @@
 		176EEA1D09A2EF1000188F3B /* seekable_stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = seekable_stream_encoder.h; sourceTree = "<group>"; };
 		176EEA1E09A2EF1000188F3B /* stream_decoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = stream_decoder.h; sourceTree = "<group>"; };
 		176EEA1F09A2EF1000188F3B /* stream_encoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = stream_encoder.h; sourceTree = "<group>"; };
-		176EEA2109A2EF1000188F3B /* all.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = all.h; sourceTree = "<group>"; };
 		176EEA2209A2EF1000188F3B /* decoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = decoder.h; sourceTree = "<group>"; };
 		176EEA2309A2EF1000188F3B /* encoder.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = encoder.h; sourceTree = "<group>"; };
 		176EEA2409A2EF1000188F3B /* export.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = export.h; sourceTree = "<group>"; };
@@ -1241,8 +1222,8 @@
 		176EEB6409A2EF1100188F3B /* seekable_stream_encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = seekable_stream_encoder.cpp; sourceTree = "<group>"; };
 		176EEB6809A2EF1100188F3B /* stream_decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = stream_decoder.cpp; sourceTree = "<group>"; };
 		176EEB6C09A2EF1100188F3B /* stream_encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = stream_encoder.cpp; sourceTree = "<group>"; };
-		176EEBEA09A2F16200188F3B /* liblibFLAC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibFLAC.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		176EEC1E09A2F2DD00188F3B /* liblibFLAC++.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "liblibFLAC++.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		176EEBEA09A2F16200188F3B /* libFLAC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFLAC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		176EEC1E09A2F2DD00188F3B /* libFLAC++.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libFLAC++.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		178CF4FF0989541C0056CE58 /* configmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = configmac.h; path = mac/configmac.h; sourceTree = "<group>"; };
 		1790AFB009883B6D008A330A /* Audacity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Audacity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1790AFC709883BFD008A330A /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AboutDialog.cpp; sourceTree = "<group>"; };
@@ -1425,8 +1406,6 @@
 		1790B09A09883BFD008A330A /* Internat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Internat.h; sourceTree = "<group>"; };
 		1790B09B09883BFD008A330A /* LabelTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LabelTrack.cpp; sourceTree = "<group>"; };
 		1790B09C09883BFD008A330A /* LabelTrack.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LabelTrack.h; sourceTree = "<group>"; };
-		1790B09D09883BFD008A330A /* Landmark.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Landmark.cpp; sourceTree = "<group>"; };
-		1790B09E09883BFD008A330A /* Landmark.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Landmark.h; sourceTree = "<group>"; };
 		1790B09F09883BFD008A330A /* LangChoice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LangChoice.cpp; sourceTree = "<group>"; };
 		1790B0A009883BFD008A330A /* LangChoice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LangChoice.h; sourceTree = "<group>"; };
 		1790B0A109883BFD008A330A /* Languages.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Languages.cpp; sourceTree = "<group>"; };
@@ -1799,6 +1778,19 @@
 		17C8BF52098B654400216F16 /* xlsym.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsym.c; sourceTree = "<group>"; };
 		17C8BF54098B654400216F16 /* xlsys.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsys.c; sourceTree = "<group>"; };
 		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
+		283A11A40A2C0DE7004372C4 /* broadcast.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = broadcast.c; sourceTree = "<group>"; };
+		283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttleGui.cpp; sourceTree = "<group>"; };
+		283A11A70A2C0E15004372C4 /* ShuttleGui.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttleGui.h; sourceTree = "<group>"; };
+		283A11A80A2C0E15004372C4 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
+		283A11A90A2C0E15004372C4 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ThemePrefs.cpp; sourceTree = "<group>"; };
+		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
+		28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AttachableScrollBar.cpp; sourceTree = "<group>"; };
+		28F1D8180A2D0018005506A7 /* AttachableScrollBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AttachableScrollBar.h; sourceTree = "<group>"; };
+		28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExpandingToolBar.cpp; sourceTree = "<group>"; };
+		28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExpandingToolBar.h; sourceTree = "<group>"; };
+		28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImageRoll.cpp; sourceTree = "<group>"; };
+		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2072,6 +2064,7 @@
 				170734990988D6AD008541CC /* au.c */,
 				1707349A0988D6AD008541CC /* au.h */,
 				1707349C0988D6AD008541CC /* avr.c */,
+				283A11A40A2C0DE7004372C4 /* broadcast.c */,
 				176EE9DB09A2EC1000188F3B /* caf.c */,
 				1707349D0988D6AD008541CC /* command.c */,
 				1707349E0988D6AD008541CC /* common.c */,
@@ -2432,8 +2425,6 @@
 		176EEA0E09A2EF1000188F3B /* FLAC */ = {
 			isa = PBXGroup;
 			children = (
-				176EEA0F09A2EF1000188F3B /* all.h */,
-				176EEA1009A2EF1000188F3B /* assertz.h */,
 				176EEA1109A2EF1000188F3B /* callback.h */,
 				176EEA1209A2EF1000188F3B /* export.h */,
 				176EEA1309A2EF1000188F3B /* file_decoder.h */,
@@ -2452,7 +2443,6 @@
 		176EEA2009A2EF1000188F3B /* FLAC++ */ = {
 			isa = PBXGroup;
 			children = (
-				176EEA2109A2EF1000188F3B /* all.h */,
 				176EEA2209A2EF1000188F3B /* decoder.h */,
 				176EEA2309A2EF1000188F3B /* encoder.h */,
 				176EEA2409A2EF1000188F3B /* export.h */,
@@ -2549,8 +2539,8 @@
 				1707407A0988F1BB008541CC /* libsoundtouch.a */,
 				170740D40988F820008541CC /* libvorbis.a */,
 				170741430988FDB3008541CC /* intgen */,
-				176EEBEA09A2F16200188F3B /* liblibFLAC.a */,
-				176EEC1E09A2F2DD00188F3B /* liblibFLAC++.a */,
+				176EEBEA09A2F16200188F3B /* libFLAC.a */,
+				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2619,8 +2609,6 @@
 				1790B09A09883BFD008A330A /* Internat.h */,
 				1790B09B09883BFD008A330A /* LabelTrack.cpp */,
 				1790B09C09883BFD008A330A /* LabelTrack.h */,
-				1790B09D09883BFD008A330A /* Landmark.cpp */,
-				1790B09E09883BFD008A330A /* Landmark.h */,
 				1790B09F09883BFD008A330A /* LangChoice.cpp */,
 				1790B0A009883BFD008A330A /* LangChoice.h */,
 				1790B0A109883BFD008A330A /* Languages.cpp */,
@@ -2659,10 +2647,14 @@
 				1790B0DB09883BFD008A330A /* Sequence.h */,
 				1790B0DC09883BFD008A330A /* Shuttle.cpp */,
 				1790B0DD09883BFD008A330A /* Shuttle.h */,
+				283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */,
+				283A11A70A2C0E15004372C4 /* ShuttleGui.h */,
 				1790B0DE09883BFD008A330A /* Spectrum.cpp */,
 				1790B0DF09883BFD008A330A /* Spectrum.h */,
 				1790B0E009883BFD008A330A /* Tags.cpp */,
 				1790B0E109883BFD008A330A /* Tags.h */,
+				283A11A80A2C0E15004372C4 /* Theme.cpp */,
+				283A11A90A2C0E15004372C4 /* Theme.h */,
 				1790B0E209883BFD008A330A /* TimeTrack.cpp */,
 				1790B0E309883BFD008A330A /* TimeTrack.h */,
 				1790B0E409883BFD008A330A /* ToolBar.cpp */,
@@ -2893,6 +2885,8 @@
 		1790B0B509883BFD008A330A /* prefs */ = {
 			isa = PBXGroup;
 			children = (
+				28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */,
+				28456AC10A2C180E00C23C1E /* ThemePrefs.h */,
 				1790B0B609883BFD008A330A /* AudioIOPrefs.cpp */,
 				1790B0B709883BFD008A330A /* AudioIOPrefs.h */,
 				1790B0B809883BFD008A330A /* BatchPrefs.cpp */,
@@ -2921,6 +2915,12 @@
 		1790B0FD09883BFD008A330A /* widgets */ = {
 			isa = PBXGroup;
 			children = (
+				28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */,
+				28F1D8180A2D0018005506A7 /* AttachableScrollBar.h */,
+				28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */,
+				28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */,
+				28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */,
+				28F1D81C0A2D0019005506A7 /* ImageRoll.h */,
 				1790B0FE09883BFD008A330A /* AButton.cpp */,
 				1790B0FF09883BFD008A330A /* AButton.h */,
 				1790B10009883BFD008A330A /* ASlider.cpp */,
@@ -3642,7 +3642,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				176EEC2809A2F30A00188F3B /* config.h in Headers */,
-				176EEC2909A2F31300188F3B /* all.h in Headers */,
 				176EEC2B09A2F31300188F3B /* callback.h in Headers */,
 				176EEC2C09A2F31300188F3B /* export.h in Headers */,
 				176EEC2D09A2F31300188F3B /* file_decoder.h in Headers */,
@@ -3662,7 +3661,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				176EEC2709A2F30800188F3B /* config.h in Headers */,
-				176EEC3609A2F31A00188F3B /* all.h in Headers */,
 				176EEC3709A2F31A00188F3B /* decoder.h in Headers */,
 				176EEC3809A2F31A00188F3B /* encoder.h in Headers */,
 				176EEC3909A2F31A00188F3B /* export.h in Headers */,
@@ -3682,14 +3680,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = allegro;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = allegro;
@@ -3706,14 +3696,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = expat;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = expat;
@@ -3730,14 +3712,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libid3tag;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libid3tag;
@@ -3755,14 +3729,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libmad;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libmad;
@@ -3779,14 +3745,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libogg;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libogg;
@@ -3803,14 +3761,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libresample;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libresample;
@@ -3827,14 +3777,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libsndfile;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libsndfile;
@@ -3851,14 +3793,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = soundtouch;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = soundtouch;
@@ -3875,14 +3809,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = portmixer;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = portmixer;
@@ -3899,14 +3825,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = portaudio;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = portaudio;
@@ -3923,14 +3841,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libvorbis;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libvorbis;
@@ -3948,14 +3858,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = "$(HOME)/bin";
-				PREBINDING = NO;
-				PRODUCT_NAME = intgen;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = intgen;
@@ -3972,14 +3874,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libnyquist;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 				176A1B6C098B7C5900DC73B4 /* PBXTargetDependency */,
 			);
@@ -3997,19 +3891,11 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = libFLAC;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = libFLAC;
 			productName = libFLAC;
-			productReference = 176EEBEA09A2F16200188F3B /* liblibFLAC.a */;
+			productReference = 176EEBEA09A2F16200188F3B /* libFLAC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		176EEC1D09A2F2DD00188F3B /* libFLAC++ */ = {
@@ -4021,19 +3907,11 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
-				PRODUCT_NAME = "libFLAC++";
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 			);
 			name = "libFLAC++";
 			productName = "libFLAC++";
-			productReference = 176EEC1E09A2F2DD00188F3B /* liblibFLAC++.a */;
+			productReference = 176EEC1E09A2F2DD00188F3B /* libFLAC++.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		1790AFAF09883B6D008A330A /* Audacity */ = {
@@ -4047,22 +3925,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				INFOPLIST_FILE = "Audacity-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Carbon,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Audacity;
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
 			dependencies = (
 				17072E940988C35B008541CC /* PBXTargetDependency */,
 				17C99D53098970800041B1BC /* PBXTargetDependency */,
@@ -4083,27 +3945,6 @@
 			name = Audacity;
 			productName = Audacity;
 			productReference = 1790AFB009883B6D008A330A /* Audacity.app */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.Audacity</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.0</string>
-</dict>
-</plist>
-";
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4112,12 +3953,6 @@
 		1790ABE309883346008A330A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1790ABE409883346008A330A /* Build configuration list for PBXProject "Audacity" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				1790ABF009883354008A330A /* Development */,
-				1790ABF109883354008A330A /* Deployment */,
-			);
 			hasScannedForEncodings = 0;
 			mainGroup = 1790ABE109883346008A330A;
 			productRefGroup = 1790AFB109883B6D008A330A /* Products */;
@@ -4452,6 +4287,7 @@
 				176EE9DE09A2EC1000188F3B /* caf.c in Sources */,
 				176EE9DF09A2EC1000188F3B /* flac.c in Sources */,
 				176EE9E009A2EC1000188F3B /* g72x.c in Sources */,
+				283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4792,7 +4628,6 @@
 				1790B16F09883BFD008A330A /* RawAudioGuess.cpp in Sources */,
 				1790B17009883BFD008A330A /* Internat.cpp in Sources */,
 				1790B17109883BFD008A330A /* LabelTrack.cpp in Sources */,
-				1790B17209883BFD008A330A /* Landmark.cpp in Sources */,
 				1790B17309883BFD008A330A /* LangChoice.cpp in Sources */,
 				1790B17409883BFD008A330A /* Languages.cpp in Sources */,
 				1790B17509883BFD008A330A /* Legacy.cpp in Sources */,
@@ -4850,6 +4685,12 @@
 				17190D25098A3F15004583C6 /* AboutDialog.cpp in Sources */,
 				174D9031098C78AF00D5909F /* CommandManager.cpp in Sources */,
 				174D9033098C78AF00D5909F /* Keyboard.cpp in Sources */,
+				283A11AA0A2C0E15004372C4 /* ShuttleGui.cpp in Sources */,
+				283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */,
+				28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */,
+				28F1D81D0A2D0019005506A7 /* AttachableScrollBar.cpp in Sources */,
+				28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */,
+				28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5035,7 +4876,7 @@
 					USE_MEMORY_H,
 				);
 				PRODUCT_NAME = vorbis;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
 			};
 			name = "Debug Static";
 		};
@@ -5066,8 +4907,8 @@
 					"FLaC__INLINE=__inline__",
 					NDEBUG,
 				);
-				PRODUCT_NAME = libFLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC/**";
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
 			};
 			name = "Debug Static";
 		};
@@ -5080,8 +4921,8 @@
 					"FLaC__INLINE=__inline__",
 					NDEBUG,
 				);
-				PRODUCT_NAME = libFLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC/**";
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
 			};
 			name = "Debug Static Unicode";
 		};
@@ -5094,8 +4935,8 @@
 					"FLaC__INLINE=__inline__",
 					NDEBUG,
 				);
-				PRODUCT_NAME = libFLAC;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC/**";
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
 			};
 			name = "Release Static";
 		};
@@ -5107,8 +4948,8 @@
 					NDEBUG,
 					"FLaC__INLINE=__inline__",
 				);
-				PRODUCT_NAME = "libFLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC++/**";
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
 			};
 			name = "Debug Static";
 		};
@@ -5120,8 +4961,8 @@
 					NDEBUG,
 					"FLaC__INLINE=__inline__",
 				);
-				PRODUCT_NAME = "libFLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC++/**";
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
 			};
 			name = "Debug Static Unicode";
 		};
@@ -5133,8 +4974,8 @@
 					NDEBUG,
 					"FLaC__INLINE=__inline__",
 				);
-				PRODUCT_NAME = "libFLAC++";
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/src/libFLAC++/**";
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
 			};
 			name = "Release Static";
 		};
@@ -5179,7 +5020,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Debug Static";
 		};
@@ -5274,7 +5115,7 @@
 					USE_MEMORY_H,
 				);
 				PRODUCT_NAME = vorbis;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
 			};
 			name = "Release Static";
 		};
@@ -5319,7 +5160,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Release Static";
 		};
@@ -5435,7 +5276,7 @@
 					USE_MEMORY_H,
 				);
 				PRODUCT_NAME = vorbis;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
 			};
 			name = "Debug Static Unicode";
 		};
@@ -5480,7 +5321,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio/pa_common $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
 			};
 			name = "Debug Static Unicode";
 		};
