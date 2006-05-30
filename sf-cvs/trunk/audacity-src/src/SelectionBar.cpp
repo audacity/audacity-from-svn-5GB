@@ -159,7 +159,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                   0, wxEXPAND | wxALL, 1);
 #endif
 
-   mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, 44100.0);
+   mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, mRate);
    mLeftTime->SetName(_("Selection Start:"));
    mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -171,7 +171,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                   0, wxEXPAND | wxALL, 1);
 #endif
 
-   mRightTime = new TimeTextCtrl(this, OnRightTimeID, format, 0.0, 44100.0);
+   mRightTime = new TimeTextCtrl(this, OnRightTimeID, format, 0.0, mRate);
    mRightTime->SetName(wxString(_("Selection ")) + (showSelectionLength ?
                                                    _("Length") :
                                                    _("End")));
@@ -185,7 +185,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                   0, wxEXPAND | wxALL, 1);
 #endif
 
-   mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, 44100.0);
+   mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -397,12 +397,18 @@ void SelectionBar::SetRate(double rate)
    if (rate != mRate) {
       mRate = rate;
       mRateBox->SetValue(wxString::Format(wxT("%d"), (int)rate));
+      mLeftTime->SetSampleRate(rate);
+      mRightTime->SetSampleRate(rate);
+      mAudioTime->SetSampleRate(rate);
    }
 }
 
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
    mRateBox->GetValue().ToDouble(&mRate);
+   mLeftTime->SetSampleRate(mRate);
+   mRightTime->SetSampleRate(mRate);
+   mAudioTime->SetSampleRate(mRate);
    mListener->AS_SetRate(mRate);
 }
 
