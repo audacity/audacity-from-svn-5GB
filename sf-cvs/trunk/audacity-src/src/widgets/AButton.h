@@ -25,10 +25,10 @@
 #include <wx/access.h>
 #endif
 
+#include <wx/image.h>
 #include <wx/window.h>
 
-class wxBitmap;
-class wxImage;
+#include "ImageRoll.h"
 
 class AButton: public wxWindow {
    friend class AButtonAx;
@@ -39,28 +39,33 @@ class AButton: public wxWindow {
            wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
-           wxImage *up,
-           wxImage *over,
-           wxImage *down,
-           wxImage *dis,
-           bool processdownevents);
+           ImageRoll up,
+           ImageRoll over,
+           ImageRoll down,
+           ImageRoll dis,
+           bool toggle);
 
    AButton(wxWindow * parent,
            wxWindowID id,
            const wxPoint & pos,
            const wxSize & size,
-           char **upXPM,
-           char **overXPM,
-           char **downXPM,
-           char **disXPM,
-           bool processdownevents);
+           wxImage up,
+           wxImage over,
+           wxImage down,
+           wxImage dis,
+           bool toggle);
 
    virtual ~ AButton();
 
-   virtual void SetAlternateImages(wxImage *up,
-                                   wxImage *over,
-                                   wxImage *down,
-                                   wxImage *dis);
+   virtual void SetAlternateImages(ImageRoll up,
+                                   ImageRoll over,
+                                   ImageRoll down,
+                                   ImageRoll dis);
+
+   virtual void SetAlternateImages(wxImage up,
+                                   wxImage over,
+                                   wxImage down,
+                                   wxImage dis);
 
    virtual void SetAlternate(bool useAlternateImages);
    virtual void SetFocusRect(wxRect & r);
@@ -88,7 +93,7 @@ class AButton: public wxWindow {
    virtual bool WasControlDown(); // returns true if control was held down
                                   // the last time the button was clicked
    bool IsDown(){ return mButtonIsDown;}
-   void SetButtonToggles( bool toggler ){ mProcessDownEvents = toggler;}
+   void SetButtonToggles( bool toggler ){ mToggle = toggler;}
    void Toggle(){ mButtonIsDown ? PopUp() : PushDown();}
    void Click();
 
@@ -99,44 +104,44 @@ class AButton: public wxWindow {
       AButtonDis
    };
 
-   AButtonState GetState(){ return mButtonState; }
+   AButtonState GetState();
+
+   void UseDisabledAsDownHiliteImage(bool flag);
 
  private:
+
+   bool HasAlternateImages();
 
    void Init(wxWindow * parent,
              wxWindowID id,
              const wxPoint & pos,
              const wxSize & size,
-             wxBitmap *up,
-             wxBitmap *over,
-             wxBitmap *down,
-             wxBitmap *dis,
-             bool processdownevents);
-
-   int mWidth;
-   int mHeight;
+             ImageRoll up,
+             ImageRoll over,
+             ImageRoll down,
+             ImageRoll dis,
+             bool toggle);
 
    bool mAlternate;
+   bool mToggle;   // This bool, if true, makes the button able to
+                   // process events when it is in the down state, and
+                   // moving to the opposite state when it is clicked.
+                   // It is used for the Pause button, and possibly
+                   // others.  If false, it (should) behave just like
+                   // a standard button.
 
    bool mWasShiftDown;
    bool mWasControlDown;
 
+   bool mCursorIsInWindow;
    bool mButtonIsFocused;
    bool mButtonIsDown;
    bool mIsClicking;
    bool mEnabled;
-   bool mProcessDownEvents;    // This bool, if true, makes the button able to process 
-                               // events when it is in the down state, and moving to
-                               // the opposite state when it is clicked. It is used for the Pause
-                               // button, and possibly others. If false, it (should)
-                               // behave just like a standard button.
-   
+   bool mUseDisabledAsDownHiliteImage;
 
-   AButtonState mButtonState;
-
-   wxBitmap *mBitmap[4];
-   wxBitmap *mAltBitmap[4];
-   wxWindow *mParent;
+   ImageRoll mImage[4];
+   ImageRoll mAltImage[4];
 
    wxRect mFocusRect;
 

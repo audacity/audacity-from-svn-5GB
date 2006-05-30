@@ -41,6 +41,11 @@ enum teBmps
    bmpRecordDisabled,
    bmpCleanSpeech,
    bmpCleanSpeechDisabled,
+
+   bmpToolBarToggle,
+   bmpToolBarTarget,
+   bmpToolBarGrabber,
+
    bmpUpButton,
    bmpDownButton,
    bmpHiliteButton,

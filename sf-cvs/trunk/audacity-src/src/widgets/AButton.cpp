@@ -43,98 +43,72 @@ AButton::AButton(wxWindow * parent,
                  wxWindowID id,
                  const wxPoint & pos,
                  const wxSize & size,
-                 char **upXPM,
-                 char **overXPM,
-                 char **downXPM,
-                 char **disXPM,
-                 bool processdownevents):
+                 wxImage up,
+                 wxImage over,
+                 wxImage down,
+                 wxImage dis,
+                 bool toggle):
    wxWindow()
 {
-   Init(parent,
-        id,
-        pos,
-        size,
-        new wxBitmap((const char **) upXPM),
-        new wxBitmap((const char **) overXPM),
-        new wxBitmap((const char **) downXPM),
-        new wxBitmap((const char **) disXPM),
-        processdownevents);
+   Init(parent, id, pos, size,
+        ImageRoll(up), ImageRoll(over),
+        ImageRoll(down), ImageRoll(dis),
+        toggle);
 }
 
 AButton::AButton(wxWindow * parent,
                  wxWindowID id,
                  const wxPoint & pos,
                  const wxSize & size,
-                 wxImage *up,
-                 wxImage *over,
-                 wxImage *down,
-                 wxImage *dis,
-                 bool processdownevents):
+                 ImageRoll up,
+                 ImageRoll over,
+                 ImageRoll down,
+                 ImageRoll dis,
+                 bool toggle):
    wxWindow()
 {
-   Init(parent,
-        id,
-        pos,
-        size,
-        new wxBitmap(up),
-        new wxBitmap(over),
-        new wxBitmap(down),
-        new wxBitmap(dis),
-        processdownevents);
+   Init(parent, id, pos, size,
+        up, over, down, dis,
+        toggle);
 }
 
 AButton::~AButton()
 {
-   delete mBitmap[0];
-   delete mBitmap[1];
-   delete mBitmap[2];
-   delete mBitmap[3];
-
-   if (mAltBitmap[0]) {
-      delete mAltBitmap[0];
-      delete mAltBitmap[1];
-      delete mAltBitmap[2];
-      delete mAltBitmap[3];
-   }
 }
 
 void AButton::Init(wxWindow * parent,
                    wxWindowID id,
                    const wxPoint & pos,
                    const wxSize & size,
-                   wxBitmap *up,
-                   wxBitmap *over,
-                   wxBitmap *down,
-                   wxBitmap *dis,
-                   bool processdownevents)
+                   ImageRoll up,
+                   ImageRoll over,
+                   ImageRoll down,
+                   ImageRoll dis,
+                   bool toggle)
 {
    Create(parent, id, pos, size);
 
-   mParent = parent;
    mWasShiftDown = false;
    mWasControlDown = false;
    mButtonIsDown = false;
-   mButtonState = AButtonUp;
    mIsClicking = false;
    mEnabled = true;
-   mProcessDownEvents = processdownevents;
+   mCursorIsInWindow = false;
+   mToggle = toggle;
+   mUseDisabledAsDownHiliteImage = false;
 
-   mBitmap[0] = up;
-   mBitmap[1] = over;
-   mBitmap[2] = down;
-   mBitmap[3] = dis;
-
-   mAltBitmap[0] = NULL;
-   mAltBitmap[1] = NULL;
-   mAltBitmap[2] = NULL;
-   mAltBitmap[3] = NULL;
+   mImage[0] = up;
+   mImage[1] = over;
+   mImage[2] = down;
+   mImage[3] = dis;
 
    mAlternate = false;
 
-   GetSize(&mWidth, &mHeight);
-
    mButtonIsFocused = false;
    mFocusRect = GetRect().Deflate( 3, 3 );
+
+   SetSizeHints(mImage[0].GetMinSize(),
+                mImage[0].GetMaxSize());
 
 #if wxUSE_ACCESSIBILITY
    SetName( wxT("") );
@@ -142,15 +116,31 @@ void AButton::Init(wxWindow * parent,
 #endif
 }
 
-void AButton::SetAlternateImages(wxImage *up,
-                                 wxImage *over,
-                                 wxImage *down,
-                                 wxImage *dis)
+void AButton::UseDisabledAsDownHiliteImage(bool flag)
 {
-   mAltBitmap[0] = new wxBitmap(up);
-   mAltBitmap[1] = new wxBitmap(over);
-   mAltBitmap[2] = new wxBitmap(down);
-   mAltBitmap[3] = new wxBitmap(dis);
+   mUseDisabledAsDownHiliteImage = flag;
+}
+
+void AButton::SetAlternateImages(wxImage up,
+                                 wxImage over,
+                                 wxImage down,
+                                 wxImage dis)
+{
+   mAltImage[0] = ImageRoll(up);
+   mAltImage[1] = ImageRoll(over);
+   mAltImage[2] = ImageRoll(down);
+   mAltImage[3] = ImageRoll(dis);
+}
+
+void AButton::SetAlternateImages(ImageRoll up,
+                                 ImageRoll over,
+                                 ImageRoll down,
+                                 ImageRoll dis)
+{
+   mAltImage[0] = up;
+   mAltImage[1] = over;
+   mAltImage[2] = down;
+   mAltImage[3] = dis;
 }
 
 void AButton::SetAlternate(bool useAlternateImages)
@@ -164,14 +154,37 @@ void AButton::SetFocusRect(wxRect & r)
    mFocusRect = r;
 }
 
+AButton::AButtonState AButton::GetState()
+{
+   if (!mEnabled && !mToggle)
+      return AButtonDis;
+
+   if (mButtonIsDown || mIsClicking) {
+      if (mToggle && mUseDisabledAsDownHiliteImage)
+         if (mCursorIsInWindow)
+            return AButtonDis;
+         else
+            return AButtonDown;
+      else
+         return AButtonDown;
+   }
+
+   if (mCursorIsInWindow)
+      return AButtonOver;
+
+   return AButtonUp;
+}
+
 void AButton::OnPaint(wxPaintEvent & event)
 {
    wxBufferedPaintDC dc(this);
 
+   AButtonState buttonState = GetState();
+
    if (mAlternate)
-      dc.DrawBitmap(*mAltBitmap[mButtonState], 0, 0);
+      mAltImage[buttonState].Draw(dc, GetClientRect());
    else
-      dc.DrawBitmap(*mBitmap[mButtonState], 0, 0);
+      mImage[buttonState].Draw(dc, GetClientRect());
 
 #if defined(__WXMSW__)
    if( mButtonIsFocused )
@@ -188,173 +201,86 @@ void AButton::OnErase(wxEraseEvent & event)
 
 void AButton::OnSize(wxSizeEvent & event)
 {
+   mFocusRect = GetRect().Deflate( 3, 3 );
    Refresh(false);
+}
+
+bool AButton::HasAlternateImages()
+{
+   return (mAltImage[0].Ok() &&
+           mAltImage[1].Ok() &&
+           mAltImage[2].Ok() &&
+           mAltImage[3].Ok());
 }
 
 void AButton::OnMouseEvent(wxMouseEvent & event)
 {
-   if (mAltBitmap[0] && mButtonState != AButtonDown) {
-      if (mAlternate != event.ShiftDown()) {
-         mAlternate = event.ShiftDown();
-         Refresh(false);
-      }
-   }
-
-   if (event.Leaving()){
-      GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
-   }
+   wxSize clientSize = GetClientSize();
+   AButtonState prevState = GetState();
    
+   if (event.Entering())
+      mCursorIsInWindow = true;
+   else if (event.Leaving())
+      mCursorIsInWindow = false;
+   else
+      mCursorIsInWindow =
+         (event.m_x >= 0 && event.m_y >= 0 &&
+          event.m_x < clientSize.x && event.m_y < clientSize.y);
 
-// In windows, Leave/Enter events appear to clobber each other,
-// so the new enter event doesn't get processed.  If we change to a newer
-// version of WXWINDOWS, (Post version 2), this may be fixed
-
-#if defined __WXMSW__
-   else {
-#else
-   else if (event.Entering()) {
-#endif
-
-      #if wxUSE_TOOLTIPS // Not available in wxX11
-      // Display the tooltip in the status bar
-      wxToolTip * pTip = this->GetToolTip();
-      if( pTip ) {
-         wxString tipText = pTip->GetTip();
-         if (!mEnabled)
-            tipText += _(" (disabled)");
-         GetActiveProject()->TP_DisplayStatusMessage(tipText);
-      }
-      #endif
-   }
-
-   //If the graphical button is disabled, or the button is down
-   // the button can't process down events, get out of here.
-   if (!mEnabled || (mButtonIsDown && !mProcessDownEvents) ) {
-      this->Refresh(false);
-      return;
-   }
+   if (HasAlternateImages() && !mButtonIsDown)
+      mAlternate = event.ShiftDown();
 
    //If the mouse button is released, the following stuff happens
-   if (event.ButtonUp() ) {
+   if (event.ButtonUp() && mCursorIsInWindow &&
+       mEnabled && (mToggle || !mButtonIsDown)) {
+      
       SetFocus();
       mIsClicking = false;
       if (HasCapture())
          ReleaseMouse();
-
-
-      //Only process the event if you are releasing on the button--if you moved
-      //off the button, dump the event.
-      if (event.m_x >= 0 && event.m_y >= 0 &&
-          event.m_x < mWidth && event.m_y < mHeight) {
+         
+      if(mToggle)
+         mButtonIsDown = !mButtonIsDown;
+      else
+         mButtonIsDown = true;
       
-         // Although this may be a little redundant, I'm segregating
-         // two types of buttons for clarity
-         // mProcessDownEvents=false buttons can only by pushed down-their pushing up must
-         // be handled immediately, by the action of another button, or by
-         // some other event (e.g., the file ending stops playing and pops up
-         // the play button.
-         // mProcessDownEvents=true buttons can be pushed down and then pushed up again
-         // by clicking on them again once in the down state.
-         if(mProcessDownEvents)
-            {
-               if(mButtonIsDown)
-                  {
-                     
-                     //If the button is down, set the button state to up 
-                     // and 'over'--highlighted.
-                     mButtonState = AButtonOver;
-                     mButtonIsDown = false;          
-                  }
-               else
-                  {
-                     //If the button is up, set the button state to down
-                     mButtonState=AButtonDown;
-                     mButtonIsDown=true;
-                  }
-            }
-         else
-            {
-               //If it is a one-state button,
-               //Set the button state to down undconditionally
-               mButtonState = AButtonDown;
-               mButtonIsDown = true;
-            }
-
-         mWasShiftDown = event.ShiftDown();
-         mWasControlDown = event.ControlDown();
-
-         //Create an event for the parent window to process.
-         wxCommandEvent *e =
-             new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
-         GetParent()->AddPendingEvent(*e);
-         delete e;
-      }
-
-      this->Refresh(false);
-      return;
+      mWasShiftDown = event.ShiftDown();
+      mWasControlDown = event.ControlDown();
+      
+      Click();
    }
-      //This handles the mouse down event.
    else if (event.ButtonDown()) {
       SetFocus();
       mIsClicking = true;
       CaptureMouse();
    }
+   
+   // Only redraw and change tooltips if the state has changed.
+   AButtonState newState = GetState();
 
+   if (newState != prevState) {
+      Refresh(false);
 
-   //This following logic handles button in situations other than the 
-   //up-click
-   if (mProcessDownEvents)
-      {
-         if (mIsClicking) {
-            if (event.m_x >= 0 && event.m_y >= 0 &&
-                event.m_x < mWidth && event.m_y < mHeight) {
-               mButtonState =  AButtonDown;
-            } else
-               mButtonState = mButtonIsDown ? AButtonDown: AButtonUp;
+      if (mCursorIsInWindow) {
+       #if wxUSE_TOOLTIPS // Not available in wxX11
+         // Display the tooltip in the status bar
+         wxToolTip * pTip = this->GetToolTip();
+         if( pTip ) {
+            wxString tipText = pTip->GetTip();
+            if (!mEnabled)
+               tipText += _(" (disabled)");
+            GetActiveProject()->TP_DisplayStatusMessage(tipText);
          }
-         else {
-            if (event.Entering())
-               mButtonState = mButtonIsDown ? AButtonDown: AButtonOver;
-            
-            //If mouse leaves the button, put it in its previous state.
-            else if (event.Leaving())
-               mButtonState = mButtonIsDown ? AButtonDown: AButtonUp;
-            
-         }
-
+       #endif
       }
-   else  //This is a push-down-only traditional button
-      {
-         if (mIsClicking) {
-            if (event.m_x >= 0 && event.m_y >= 0 &&
-                event.m_x < mWidth && event.m_y < mHeight) {
-               mButtonState = AButtonDown;
-            } else
-               mButtonState = AButtonUp;
-         }
-         else {
-            if (event.Entering())
-               mButtonState = AButtonOver;
-            else if (event.Leaving())
-               mButtonState = AButtonUp;
-         }
-         
-         
+      else {
+         GetActiveProject()->TP_DisplayStatusMessage(wxT(""));
       }
-
-   // If the button is disabled, make sure it doesn't accidentally get
-   // set to the "up" state by the above logic:
-   if (mButtonState == AButtonUp && !mEnabled)
-      mButtonState = AButtonDis;
-
-   //Do a final Refresh() event
-   this->Refresh(false);
+   }
 }
 
 void AButton::OnKeyDown(wxKeyEvent & event)
 {
-   wxMouseEvent evt;
-
    switch( event.GetKeyCode() )
    {
       case WXK_RETURN:
@@ -392,17 +318,12 @@ bool AButton::WasControlDown()
 void AButton::Enable()
 {
    mEnabled = true;
-   if (mButtonIsDown)
-      mButtonState = AButtonDown;
-   else
-      mButtonState = AButtonUp;
    this->Refresh(false);
 }
 
 void AButton::Disable()
 {
    mEnabled = false;
-   mButtonState = AButtonDis;
    if (GetCapture()==this)
       ReleaseMouse();
    this->Refresh(false);
@@ -411,18 +332,12 @@ void AButton::Disable()
 void AButton::PushDown()
 {
    mButtonIsDown = true;
-   mButtonState = AButtonDown;
    this->Refresh(false);
 }
 
 void AButton::PopUp()
 {
-
    mButtonIsDown = false;
-   if (mEnabled)
-      mButtonState = AButtonUp;
-   else
-      mButtonState = AButtonDis;
 
    if (GetCapture()==this)
       ReleaseMouse();
@@ -432,11 +347,9 @@ void AButton::PopUp()
 
 void AButton::Click()
 {
-   //Create an event for the parent window to process.
-   wxCommandEvent *e =
-         new wxCommandEvent(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
-   GetParent()->AddPendingEvent(*e);
-   delete e;
+   wxCommandEvent event(wxEVT_COMMAND_BUTTON_CLICKED, GetId());
+   event.SetEventObject(this);
+   GetEventHandler()->ProcessEvent(event);
 }
 
 #if wxUSE_ACCESSIBILITY
@@ -458,8 +371,9 @@ wxAccStatus AButtonAx::DoDefaultAction(int childId)
 {
    AButton *ab = wxDynamicCast( GetWindow(), AButton );
 
-   if( ab->GetState() != AButton::AButtonDis )
-   {
+   if(ab && ab->IsEnabled()) {
+      ab->mWasShiftDown = false;
+      ab->mWasControlDown = false;
       ab->Click();
    }
 
@@ -490,12 +404,13 @@ wxAccStatus AButtonAx::GetChildCount(int* childCount)
    return wxACC_OK;
 }
 
-// Gets the default action for this object (0) or > 0 (the action for a child).
-// Return wxACC_OK even if there is no action. actionName is the action, or the empty
-// string if there is no action.
-// The retrieved string describes the action that is performed on an object,
-// not what the object does as a result. For example, a toolbar button that prints
-// a document has a default action of "Press" rather than "Prints the current document."
+// Gets the default action for this object (0) or > 0 (the action for
+// a child).  Return wxACC_OK even if there is no action. actionName
+// is the action, or the empty string if there is no action.  The
+// retrieved string describes the action that is performed on an
+// object, not what the object does as a result. For example, a
+// toolbar button that prints a document has a default action of
+// "Press" rather than "Prints the current document."
 wxAccStatus AButtonAx::GetDefaultAction(int childId, wxString* actionName)
 {
    *actionName = _( "Press" );

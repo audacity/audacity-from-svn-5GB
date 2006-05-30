@@ -44,6 +44,9 @@ WX_DEFINE_OBJARRAY( ArrayOfColours );
 #include "../images/ToolsButtons/Zoom.xpm"
 #include "../images/ToolsButtons/ZoomAlpha.xpm"
 
+#include "../images/ExpandingToolBar/ToolBarToggle.xpm"
+#include "../images/ExpandingToolBar/ToolBarTarget.xpm"
+#include "../images/ExpandingToolBar/ToolBarGrabber.xpm"
 
 #if 0
 #include "../images/ToolsButtons.h"
@@ -182,6 +185,10 @@ void Theme::RegisterImages()
    RegisterBitmap( i++,MaskedBmp(CleanSpeech,CleanSpeechAlpha),wxT("CleanSpeech"));
    RegisterBitmap( i++,MaskedBmp(CleanSpeechDisabled,CleanSpeechAlpha),wxT("CleanSpeechDisabled"));
    
+   RegisterBitmap( i++,ToolBarToggle,wxT("ToolBarToggle"));
+   RegisterBitmap( i++,ToolBarTarget,wxT("ToolBarTarget"));
+   RegisterBitmap( i++,ToolBarGrabber,wxT("ToolBarGrabber"));
+
    // The backgrounds used for the control buttons.
    mFlags = resFlagNone;
    RegisterBitmap( i++,UpButton, wxT("UpButton"));
@@ -191,7 +198,6 @@ void Theme::RegisterImages()
    RegisterBitmap( i++,UpButton, wxT("RecolouredUpButton"));
    RegisterBitmap( i++,DownButton, wxT("RecolouredDownButton"));
    RegisterBitmap( i++,HiliteButton, wxT("RecolouredHiliteButton"));
-
 
    wxASSERT( i== (bmpFirstCursor));
 

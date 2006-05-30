@@ -30,6 +30,7 @@
 #define __AUDACITY_TAGS__
 
 #include "Audacity.h"
+#include "widgets/ExpandingToolBar.h"
 #include "xml/XMLTagHandler.h"
 
 #include <wx/string.h>
@@ -39,9 +40,11 @@ class wxRadioBox;
 class wxTextCtrl;
 class wxChoice;
 
+class TagsEditor;
+
 class Tags: public XMLTagHandler {
 
-   friend class TagsDialog;
+   friend class TagsEditor;
 
 public:
    Tags();  // constructor
@@ -72,72 +75,72 @@ public:
    bool IsEmpty();
 
 private:
-   wxString  mTitle;
-   wxString  mArtist;
-   wxString  mAlbum;
-   int       mTrackNum;
-   wxString  mYear;
-   int       mGenre;
-   wxString  mComments;
-   bool      mID3V2;
+   void EditorIsClosing();
 
-   bool      mEditTitle;
-   bool      mEditTrackNumber;
+   wxString      mTitle;
+   wxString      mArtist;
+   wxString      mAlbum;
+   int           mTrackNum;
+   wxString      mYear;
+   int           mGenre;
+   wxString      mComments;
+   bool          mID3V2;
+
+   wxArrayString mExtraNames;
+   wxArrayString mExtraValues;
+
+   bool          mEditTitle;
+   bool          mEditTrackNumber;
+
+   TagsEditor   *mTagsEditor;
+   ToolBarFrame *mTagsEditorFrame;
 };
 
-wxSizer *MakeTagsDialog(wxWindow * parent, bool call_fit,
-                        bool set_sizer);
-                        
-#define ID_TEXT 10000
-#define ID_TITLE_TEXT 10001
-#define ID_ARTIST_TEXT 10002
-#define ID_ALBUM_TEXT 10003
-#define ID_TRACK_NUM_TEXT 10004
-#define ID_YEAR_TEXT 10005
-#define ID_COMMENTS_TEXT 10006
-#define ID_GENRE 10007
-#define ID_FORMAT 10008
-
-class TagsDialog:public wxDialog {
-
+class TagsEditor: public ExpandingToolBar
+{
  public:
    // constructors and destructors
-   TagsDialog(wxWindow * parent, wxWindowID id,
-              const wxString & title,
+   TagsEditor(wxWindow * parent, wxWindowID id,
+              Tags * tags,
               bool editTitle, bool editTrackNumber);
 
-   wxTextCtrl *GetTitleText() {
-      return (wxTextCtrl *) FindWindow(ID_TITLE_TEXT);
-   }
-   wxTextCtrl *GetArtistText() {
-      return (wxTextCtrl *) FindWindow(ID_ARTIST_TEXT);
-   }
-   wxTextCtrl *GetAlbumText() {
-      return (wxTextCtrl *) FindWindow(ID_ALBUM_TEXT);
-   }
-   wxTextCtrl *GetTrackNumText() {
-      return (wxTextCtrl *) FindWindow(ID_TRACK_NUM_TEXT);
-   }
-   wxTextCtrl *GetYearText() {
-      return (wxTextCtrl *) FindWindow(ID_YEAR_TEXT);
-   }
-   wxTextCtrl *GetCommentsText() {
-      return (wxTextCtrl *) FindWindow(ID_COMMENTS_TEXT);
-   }
-   wxChoice *GetGenreChoice() {
-      return (wxChoice *) FindWindow(ID_GENRE);
-   }
-   wxRadioBox *GetFormatRadioBox() {
-      return (wxRadioBox *) FindWindow(ID_FORMAT);
-   }
-   
+   virtual ~TagsEditor();
+
+   void BuildMainPanel();
+   void BuildExtraPanel();
+
+   void RebuildMainPanel();
+
    virtual bool Validate();
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
 
  private:
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
+   void OnChange(wxCommandEvent & event);
+
+   void OnClose(wxCommandEvent & event);
+
+   void OnMore(wxCommandEvent & event);
+   void OnFewer(wxCommandEvent & event);
+
+   void OnLoad(wxCommandEvent & event);
+   void OnSave(wxCommandEvent & event);
+   void OnSaveDefaults(wxCommandEvent & event);
+
+   wxTextCtrl  *mTitleText;
+   wxTextCtrl  *mArtistText;
+   wxTextCtrl  *mAlbumText;
+   wxTextCtrl  *mTrackNumText;
+   wxTextCtrl  *mYearText;
+   wxTextCtrl  *mCommentsText;
+   wxChoice    *mGenreChoice;
+   wxRadioBox  *mFormatRadioBox;
+
+   int          mNumExtras;
+   wxTextCtrl **mExtraNameTexts;
+   wxTextCtrl **mExtraValueTexts;
+
+   bool         mTransfering;
 
  private:
    DECLARE_EVENT_TABLE()
