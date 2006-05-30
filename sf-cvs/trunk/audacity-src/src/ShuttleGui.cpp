@@ -515,6 +515,12 @@ void ShuttleGuiBase::EndNotebookPage()
 }
 
 
+/// An InvisiblePanel is a panel which does not repaint its own background.
+
+/// It is used (a) To group together widgets which need to be refreshed 
+/// together.  A single refresh of the panel causes all the subwindows to
+/// refresh.  (b) as a base class for some flicker-free classes for which
+/// the backgorund is never repainted.
 class InvisiblePanel : public wxPanel
 {
 public:

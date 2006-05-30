@@ -84,6 +84,46 @@ void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
 }
 #endif
 
+// The next comment block is for the title page in Doxygen Documentation.
+
+/// \mainpage Audacity Index Page
+///
+/// \section intro_sec Introduction
+///
+/// Audacity is a free, easy-to-use audio editor and recorder for Windows, 
+/// Mac OS X, GNU/Linux, and other operating systems.
+///
+/// \section license License
+///
+/// Audacity is free software, developed by a group of volunteers and 
+/// distributed under the GNU General Public License (GPL).  See
+/// License.txt for details.
+///
+/// Free software is not just free of cost (like “free beer”). 
+/// It is free as in freedom (like “free speech”). Free software gives you 
+/// the freedom to use a program, study how it works, improve it, and share 
+/// it with others. For more information, visit the Free Software Foundation.
+///
+/// Programs like Audacity are also called open source software, because their 
+/// source code is available for anyone to study or use. There are thousands of 
+/// other free and open source programs, including the Mozilla web browser, the 
+/// OpenOffice.org office suite, and entire Linux-based operating systems.
+///
+/// \section src_code Understanding The Source Code
+///
+/// To understand the GUI parts of Audacity, you will first need to familiarise 
+/// yourself with the wxWidgets toolkit.  Next look at classes in src/widgets
+/// to see how we create new widgets of our own.
+///
+/// A great deal of the Audio processing in Audacity is done using libraries of
+/// code such as libsndfile and allegro.  Some self contained audio functions
+/// can be found in src/effects, for example EffectEcho and its accompanying
+/// dialog EchoDialog.
+///
+/// The BlockFile system is central to how Audacity allows cut and paste
+/// of audio to be performed efficiently.  It works closely with the DirManager
+/// class.
+
 wxFrame *gParentFrame = NULL;
 wxWindow *gParentWindow = NULL;
 

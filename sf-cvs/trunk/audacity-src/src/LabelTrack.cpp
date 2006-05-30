@@ -36,11 +36,12 @@ wxFont LabelTrack::msFont;
 
 // static member variables.
 bool LabelTrack::mbGlyphsReady=false;
-// We have several variants of the icons (highlighting).
-// The icons are draggable, and you can drag one boundary
-// or all boundaries at the same timecode depending on whether you 
-// click the centre (for all) or the arrow part (for one).
-// Currently we have twelve variants but we're only using six.
+
+/// We have several variants of the icons (highlighting).
+/// The icons are draggable, and you can drag one boundary
+/// or all boundaries at the same timecode depending on whether you 
+/// click the centre (for all) or the arrow part (for one).
+/// Currently we have twelve variants but we're only using six.
 wxBitmap LabelTrack::mBoundaryGlyphs[ NUM_GLYPH_CONFIGS * NUM_GLYPH_HIGHLIGHTS ];
 int LabelTrack::mIconHeight;
 int LabelTrack::mIconWidth;
@@ -53,6 +54,7 @@ LabelTrack *TrackFactory::NewLabelTrack()
 {
    return new LabelTrack(mDirManager);
 }
+
 
 LabelTrack::LabelTrack(DirManager * projDirManager):
    Track(projDirManager),
@@ -73,9 +75,8 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    CreateCustomGlyphs();
    mSelIndex = -1;
 
-   // reset falgs
+   // reset flags
    ResetFlags();
-
 }
 
 LabelTrack::LabelTrack(const LabelTrack &orig) :
