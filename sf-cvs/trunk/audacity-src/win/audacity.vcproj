@@ -4325,6 +4325,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\widgets\AttachableScrollBar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\AttachableScrollBar.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\widgets\Meter.cpp"
 				>
 				<FileConfiguration

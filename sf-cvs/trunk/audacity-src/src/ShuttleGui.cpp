@@ -514,6 +514,69 @@ void ShuttleGuiBase::EndNotebookPage()
    mpParent = mpParent->GetParent(); 
 }
 
+
+class InvisiblePanel : public wxPanel
+{
+public:
+   InvisiblePanel( 
+      wxWindow* parent, 
+      wxWindowID id = -1, 
+      const wxPoint& pos = wxDefaultPosition, 
+      const wxSize& size = wxDefaultSize, 
+      long style = wxTAB_TRAVERSAL ) :
+      wxPanel( parent, id, pos, size, style )
+   {
+   };
+   ~InvisiblePanel(){;};
+   void OnPaint( wxPaintEvent &event );
+   void OnErase(wxEraseEvent &evt){;};
+   DECLARE_EVENT_TABLE()  
+};
+
+
+BEGIN_EVENT_TABLE(InvisiblePanel, wxPanel)
+//   EVT_PAINT(InvisiblePanel::OnPaint)
+     EVT_ERASE_BACKGROUND( InvisiblePanel::OnErase)
+END_EVENT_TABLE()
+
+void InvisiblePanel::OnPaint( wxPaintEvent &event )
+{
+   // Don't repaint my background...
+   wxPaintDC dc(this);
+// event.Skip();
+   ;// swallow the paint event.
+}
+
+
+wxPanel * ShuttleGuiBase::StartInvisiblePanel()
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return NULL;
+   wxPanel * pPanel;
+   mpWind = pPanel = new wxPanel( mpParent, miId, wxDefaultPosition, wxDefaultSize,
+      wxNO_BORDER);
+
+   mpWind->SetBackgroundColour( 
+      wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE) 
+      );
+   miProp=1;
+   miBorder=0;
+   UpdateSizers();  // adds window in to current sizer.
+
+   // create a sizer within the window...
+   mpParent = pPanel;
+   mpSizer = new wxBoxSizer( wxVERTICAL );
+   pPanel->SetSizer( mpSizer );
+   PushSizer();
+   return pPanel;
+}
+
+void ShuttleGuiBase::EndInvisiblePanel()
+{
+   EndPanel();
+}
+
 void ShuttleGuiBase::StartHorizontalLay( int PositionFlags, int iProp)
 {
    if( mShuttleMode != eIsCreating )
@@ -936,7 +999,8 @@ void ShuttleGuiBase::PushSizer()
 // two files at some later date.
 #include "GuiWaveTrack.h"
 #endif
-#include  "./widgets/Ruler.h"
+#include "./widgets/Ruler.h"
+#include "./widgets/AttachableScrollbar.h"
 
 
 // Now we have Audacity specific shuttle functions.
@@ -1008,4 +1072,23 @@ RulerPanel * ShuttleGui::AddRulerVertical(float low, float hi, const wxString & 
    mpWind->SetMinSize(wxSize(38,50));
    UpdateSizers();
    return pRulerPanel;
+}
+
+AttachableScrollBar * ShuttleGui::AddAttachableScrollBar( long style )
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return (AttachableScrollBar*)NULL;
+   AttachableScrollBar * pAttachableScrollBar;
+   miProp=0;
+   mpWind = pAttachableScrollBar = new AttachableScrollBar(
+      mpParent, 
+      miId,
+      wxDefaultPosition,
+      wxDefaultSize,
+	  style
+      );
+   mpWind->SetMinSize(wxSize(10,20));
+   UpdateSizers();
+   return pAttachableScrollBar;
 }

@@ -91,6 +91,8 @@ public:
    void EndNotebook();
    void StartNotebookPage( const wxString Name );
    void EndNotebookPage();
+   wxPanel * StartInvisiblePanel();
+   void EndInvisiblePanel();
 
 //-- Tie functions both add controls and also read/write to them.
    wxTextCtrl * TieTextBox( const wxString &Caption, wxString & Value, const int nChars=0);
@@ -143,7 +145,9 @@ protected:
 class GuiWaveTrack;
 class AdornedRulerPanel;
 class RulerPanel;
+class AttachableScrollBar;
 struct ViewInfo;
+#include <wx/scrolbar.h>  // to get wxSB_HORIZONTAL
 
 // ShuttleGui extends ShuttleGuiBase with Audacity specific extensions.
 class ShuttleGui : public ShuttleGuiBase
@@ -157,4 +161,5 @@ public:
    GuiWaveTrack * AddGuiWaveTrack( const wxString & Name);
    AdornedRulerPanel * AddAdornedRuler( ViewInfo *pViewInfo );
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
+   AttachableScrollBar * AddAttachableScrollBar( long style = wxSB_HORIZONTAL );
 };
