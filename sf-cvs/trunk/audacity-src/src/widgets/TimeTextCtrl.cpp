@@ -157,7 +157,7 @@ BuiltinFormatString BuiltinFormatStrings[] =
     {_("hh:mm:ss + samples"),
      _("*h060m060s+.#samples")},
     {_("samples"),
-    _("*samples")},
+    _("*samples|#")},
     {_("hh:mm:ss + film frames (24 fps)"),
      _("*h060m060s+.24 frames")},
     {_("film frames (24 fps)"),
