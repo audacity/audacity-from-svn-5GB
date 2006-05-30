@@ -4333,6 +4333,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\widgets\ExpandingToolBar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\ExpandingToolBar.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\ImageRoll.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\ImageRoll.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\widgets\Meter.cpp"
 				>
 				<FileConfiguration
