@@ -68,7 +68,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                            double rate,
                            SelectionBarListener * listener):
    wxPanel(parent, id, pos,  size, wxTAB_TRAVERSAL | wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE ),
-   mListener(listener), mRate(rate),
+   mListener(listener), mRate(rate), mLeftTime(NULL),
    mStart(0.0), mEnd(0.0), mAudio(0.0),
    mModifyingSelection(false)
 {
@@ -406,10 +406,12 @@ void SelectionBar::SetRate(double rate)
 void SelectionBar::OnRate(wxCommandEvent & WXUNUSED(event))
 {
    mRateBox->GetValue().ToDouble(&mRate);
-   mLeftTime->SetSampleRate(mRate);
-   mRightTime->SetSampleRate(mRate);
-   mAudioTime->SetSampleRate(mRate);
-   mListener->AS_SetRate(mRate);
+   if (mLeftTime) {
+      mLeftTime->SetSampleRate(mRate);
+      mRightTime->SetSampleRate(mRate);
+      mAudioTime->SetSampleRate(mRate);
+      mListener->AS_SetRate(mRate);
+   }
 }
 
 void SelectionBar::UpdateRates()
