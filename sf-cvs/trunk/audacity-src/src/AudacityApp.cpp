@@ -1080,7 +1080,8 @@ void AudacityApp::OnMenuExit(wxCommandEvent & event)
    // this happens, and enable the same code to be present on
    // all platforms.
 
-   if(gAudacityProjects.GetCount() == 0)
+   // LL:  Removed "if" to allow closing based on final project count.
+   // if(gAudacityProjects.GetCount() == 0)
       QuitAudacity();
    
    // LL:  Veto quit if projects are still open.  This can happen
