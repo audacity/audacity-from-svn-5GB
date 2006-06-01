@@ -2915,16 +2915,16 @@
 		1790B0FD09883BFD008A330A /* widgets */ = {
 			isa = PBXGroup;
 			children = (
+				1790B0FE09883BFD008A330A /* AButton.cpp */,
+				1790B0FF09883BFD008A330A /* AButton.h */,
+				1790B10009883BFD008A330A /* ASlider.cpp */,
+				1790B10109883BFD008A330A /* ASlider.h */,
 				28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */,
 				28F1D8180A2D0018005506A7 /* AttachableScrollBar.h */,
 				28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */,
 				28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */,
 				28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */,
 				28F1D81C0A2D0019005506A7 /* ImageRoll.h */,
-				1790B0FE09883BFD008A330A /* AButton.cpp */,
-				1790B0FF09883BFD008A330A /* AButton.h */,
-				1790B10009883BFD008A330A /* ASlider.cpp */,
-				1790B10109883BFD008A330A /* ASlider.h */,
 				1790B10309883BFD008A330A /* Meter.cpp */,
 				1790B10409883BFD008A330A /* Meter.h */,
 				1790B10509883BFD008A330A /* MultiDialog.cpp */,
