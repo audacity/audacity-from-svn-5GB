@@ -14,6 +14,8 @@
 #include "ImageRoll.h"
 
 #include <wx/arrimpl.cpp>
+#include <wx/bitmap.h>
+#include <wx/dcmemory.h>
 #include <wx/image.h>
 
 WX_DEFINE_OBJARRAY(BitmapArray);
