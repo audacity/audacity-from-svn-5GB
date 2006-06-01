@@ -1005,8 +1005,9 @@ void ShuttleGuiBase::PushSizer()
 // two files at some later date.
 #include "GuiWaveTrack.h"
 #endif
-#include "./widgets/Ruler.h"
-#include "./widgets/AttachableScrollbar.h"
+
+#include "widgets/Ruler.h"
+#include "widgets/AttachableScrollBar.h"
 
 
 // Now we have Audacity specific shuttle functions.
@@ -1098,3 +1099,12 @@ AttachableScrollBar * ShuttleGui::AddAttachableScrollBar( long style )
    UpdateSizers();
    return pAttachableScrollBar;
 }
+
+// Indentation settings for Vim and Emacs
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+
