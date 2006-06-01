@@ -57,7 +57,12 @@ ImageArray ImageRoll::SplitH(const wxImage &src, wxColour magicColor)
       
       if ((cur && !prev)) {
          wxRect subRect(start, 0, i-start, height);
-         result.Add(src.GetSubImage(subRect));
+         wxImage subImage;
+         if (subRect.width > 0)
+            subImage = src.GetSubImage(subRect);
+         else
+            subImage = wxImage(subRect.width, subRect.height);
+         result.Add(subImage);
       }
       else if (!cur && prev) {
          start = i;
@@ -107,7 +112,12 @@ ImageArray ImageRoll::SplitV(const wxImage &src, wxColour magicColor)
 
       if ((cur && !prev)) {
          wxRect subRect(0, start, width, i-start);
-         result.Add(src.GetSubImage(subRect));
+         wxImage subImage;
+         if (subRect.width > 0)
+            subImage = src.GetSubImage(subRect);
+         else
+            subImage = wxImage(subRect.width, subRect.height);
+         result.Add(subImage);
       }
       else if (!cur && prev) {
          start = i;
