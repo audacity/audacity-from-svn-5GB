@@ -11,8 +11,8 @@
 
 **********************************************************************/
 
-#pragma once
-
+#ifndef __AUDACITY_SHUTTLE_GUI__
+#define __AUDACITY_SHUTTLE_GUI__
 
 const int nMaxNestedSizers = 20;
 
@@ -163,3 +163,15 @@ public:
    RulerPanel * AddRulerVertical( float low, float hi, const wxString & Units );
    AttachableScrollBar * AddAttachableScrollBar( long style = wxSB_HORIZONTAL );
 };
+
+#endif // __AUDACITY_SHUTTLE_GUI__
+
+// Indentation settings for Vim and Emacs
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+
+
