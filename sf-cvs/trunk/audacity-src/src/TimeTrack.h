@@ -60,8 +60,8 @@ class TimeTrack: public Track {
 
    // Get/Set the speed-warping range, as percentage of original speed (e.g. 90%-110%)
 
-   long GetRangeLower() { return mRangeLower; }
-   long GetRangeUpper() { return mRangeUpper; }
+   long GetRangeLower() { return mRangeLower ? mRangeLower : 1; }
+   long GetRangeUpper() { return mRangeUpper ? mRangeUpper : 1; }
 
    void SetRangeLower(long lower) { mRangeLower = lower; }
    void SetRangeUpper(long upper) { mRangeUpper = upper; }
