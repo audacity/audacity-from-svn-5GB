@@ -249,9 +249,11 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 SUBDIRS = GSM610 G72x
 lib_LTLIBRARIES = libsndfile.la
-EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
-			Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def \
-			create_symbols_file.py
+EXTRA_DIST =
+#dmazzoni: End-users should never accidentally trigger building these files...
+#EXTRA_DIST = sndfile.h.in config.h.in test_endswap.tpl test_endswap.def \
+#			Symbols.linux Symbols.darwin libsndfile.def cygsndfile.def \
+#			create_symbols_file.py
 
 noinst_HEADERS = common.h sfconfig.h sfendian.h float_cast.h wav_w64.h sf_unistd.h
 COMMON = sndfile.c common.c file_io.c command.c pcm.c ulaw.c alaw.c float32.c \
