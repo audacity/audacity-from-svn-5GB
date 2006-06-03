@@ -75,11 +75,16 @@ versions.
    location if you installed wxWidgets someplace other than 
    the default). 
 
-2. Open "C:\wxWidgets-2.6.2\build\msw\wx.sln" and build the 
-   Debug and Release configurations for all the wxWidgets 
-   projects.
+2. Open "C:\wxWidgets-2.6.2\build\msw\wx.sln".
 
-3. A Unicode Debug version of Audacity for Windows is under 
+3. If you want to use the accessibility features of Audacity,
+   locate the "Setup Headers" group within the "core" project
+   and change the wxAccessible define within setup.h to 1. 
+
+4. Build the Debug and Release configurations for all the
+   wxWidgets projects.
+
+5. A Unicode Debug version of Audacity for Windows is under 
    development. If you want to build that, also build the 
    Unicode Debug configuration of wxWidgets at this point.
 
