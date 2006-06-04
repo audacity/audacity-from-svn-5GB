@@ -56,6 +56,11 @@ Ruler::Ruler()
    mRight = -1;
    mBottom = -1;
 
+   // Note: the font size is now adjusted automatically whenever
+   // Invalidate is called on a horizontal Ruler, unless the user
+   // calls SetFonts manually.  So the defaults here are not used
+   // often.
+
    int fontSize = 10;
 #ifdef __WXMSW__
    fontSize = 8;
@@ -63,6 +68,7 @@ Ruler::Ruler()
 
    mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
    mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
+   mUserFonts = false;
 
    #ifdef __WXMAC__
    mMinorFont->SetNoAntiAliasing(true);
@@ -195,6 +201,9 @@ void Ruler::SetFonts(const wxFont &minorFont, const wxFont &majorFont)
    mMinorFont->SetNoAntiAliasing(true);
    mMajorFont->SetNoAntiAliasing(true);
    #endif
+   
+   // Won't override these fonts
+   mUserFonts = true;
 
    Invalidate();
 }
@@ -663,10 +672,40 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 {
    // This gets called when something has been changed
    // (i.e. we've been invalidated).  Recompute all
-   // tick positions.
+   // tick positions and font size.
 
    int i;
    int j;
+
+   if (!mUserFonts) {
+     int fontSize = 4;
+     wxCoord strW, strH;
+     wxString exampleText = wxT("0.9");
+     int desiredPixelHeight;
+
+     if (mOrientation == wxHORIZONTAL)
+       desiredPixelHeight = (mBottom-mTop-2);
+     else
+       desiredPixelHeight = (mRight-mLeft)/2;
+
+     if (desiredPixelHeight < 8)
+       desiredPixelHeight = 8;
+     if (desiredPixelHeight > 16)
+       desiredPixelHeight = 16;
+
+     // Keep making the font bigger until it's too big, then subtract one.
+     mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+     mDC->GetTextExtent(exampleText, &strW, &strH);
+     while(strH <= desiredPixelHeight && fontSize < 40) {
+       fontSize++;
+       mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+       mDC->GetTextExtent(exampleText, &strW, &strH);
+     }
+     fontSize--;
+     
+     mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+     mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
+   }
 
    // If ruler is being resized, we could end up with it being too small.
    // Values of mLength of zero or below cause bad array allocations and 
