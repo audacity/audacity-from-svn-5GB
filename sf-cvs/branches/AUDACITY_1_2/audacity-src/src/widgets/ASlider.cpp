@@ -322,6 +322,8 @@ void LWSlider::Init(wxWindow * parent,
 
       if (style == PAN_SLIDER)
       {
+	 AColor::SetLabelFont(*dc);
+
          wxFont labelFont(sliderFontSize, wxSWISS, wxNORMAL, wxNORMAL);
          dc->SetFont(labelFont);
 

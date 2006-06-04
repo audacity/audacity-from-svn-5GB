@@ -188,7 +188,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
    CreateIcon(2);
 
-   mRuler.SetFonts(GetFont(), GetFont());
+   // The new Ruler is much smarter at picking fonts than we are...
+   //mRuler.SetFonts(GetFont(), GetFont());
 
    mTimer.SetOwner(this, OnMeterUpdateID);
    Reset(44100.0, true);

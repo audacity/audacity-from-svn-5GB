@@ -68,8 +68,6 @@ const int notePos[12] = { 1, 6, 11, 16, 21,
 
 TrackArtist::TrackArtist()
 {
-   AColor::Init();
-
    mInsetLeft   = 0;
    mInsetTop    = 0;
    mInsetRight  = 0;
@@ -325,13 +323,7 @@ void TrackArtist::DrawVRuler(Track *t, wxDC * dc, wxRect & r)
 
       dc->SetBrush(blackKeyBrush);
 
-      int fontSize = 10;
-#ifdef __WXMSW__
-      fontSize = 8;
-#endif
-
-      wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-      dc->SetFont(labelFont);
+      AColor::SetLabelFont(*dc);
 
       for (int octave = 0; octave < 50; octave++) {
          int obottom = bottom - octave * octaveHeight;
