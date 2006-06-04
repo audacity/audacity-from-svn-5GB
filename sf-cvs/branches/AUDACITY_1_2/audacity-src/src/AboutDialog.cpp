@@ -131,9 +131,16 @@ AboutDialog::AboutDialog(wxWindow * parent)
    }
    wxString localeStr = wxLocale::GetSystemEncodingName();
 
+   #if defined(__WXGTK__) && defined(wxUSE_UNICODE) && !wxCHECK_VERSION(2, 5, 0)
+   // HTML Charsets are broken in wxGTK 2.4.x with unicode turned on
+   wxString metaTag = "";
+   #else
+   wxString metaTag = "<META http-equiv=\"Content-Type\" content=\"text/html; charset=" + localeStr + "\">";
+   #endif
+
    wxString creditStr = 
       "<html>"
-      "<head><META http-equiv=\"Content-Type\" content=\"text/html; charset=" + localeStr + "\"></head>"
+      "<head>" + metaTag + "</head>"
       "<body bgcolor=\"#ffffff\">"
       "<font size=1>"
       "<center>"
@@ -168,6 +175,10 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<td>" + _("Lead developer") + "</td>"
       "</tr>"
       "<tr>"
+      "<td>Roger Dannenberg</td>"
+      "<td>" + _("Founding developer") + "</td>"
+      "</tr>"
+      "<tr>"
       "<td>Vaughan Johnson</td>"
       "<td>" + _("Lead developer") + "</td>"
       "</tr>"
@@ -177,11 +188,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "</tr>"
       "<tr>"
       "<td>Joshua Haberman</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>" + _("Major developer") + "</td>"
       "</tr>"
       "<tr>"
       "<td>Shane Mueller</td>"
-      "<td>" + _("Programmer") + "</td>"
+      "<td>" + _("Major developer") + "</td>"
       "</tr>"
       "<tr>"
       "<td>Tony Oetzmann </td>"
@@ -210,7 +221,6 @@ AboutDialog::AboutDialog(wxWindow * parent)
       "<br>"
       "Dave Beydler<br>"
       "Jason Cohen<br>"
-      "Roger Dannenberg<br>"
       "Dave Fancella<br>"
       "Steve Harris<br>"
       "Daniel James<br>"

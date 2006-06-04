@@ -186,12 +186,6 @@ void AStatus::OnPaint(wxPaintEvent & event)
    AColor::Medium(&memDC, false);
    memDC.DrawRectangle(0, 0, mWidth, mHeight);
 
-
-   int fontSize = 10;
-#ifdef __WXMSW__
-   fontSize = 8;
-#endif
-
    memDC.SetPen(*wxBLACK_PEN);
    memDC.DrawLine(0, 0, mWidth, 0);
 
@@ -203,8 +197,7 @@ void AStatus::OnPaint(wxPaintEvent & event)
    AColor::Bevel(memDC, true, outline);
 
    // Display status message.
-   wxFont statusFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   memDC.SetFont(statusFont);
+   AColor::SetLabelFont(memDC);
 
    wxRect msgField;
    msgField.x = 4;

@@ -605,16 +605,9 @@ template < class CLIPPEE, class CLIPVAL >
       clippee = val;
 }
 
-// Probably should move to 'Utils.cpp'.
 void SetLabelFont(wxDC * dc)
 {
-   int fontSize = 10;
-#if defined __WXMSW__
-   fontSize = 8;
-#endif
-
-   wxFont labelFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   dc->SetFont(labelFont);
+  AColor::SetLabelFont(*dc);
 }
 
 

@@ -471,14 +471,7 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
 
    int i;
 
-#ifdef __WXMSW__
-   const int fontSize = 8;
-#else
-   const int fontSize = 10;
-#endif
-
-   wxFont freqWindowFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
-   memDC.SetFont(freqWindowFont);
+   AColor::SetLabelFont(memDC);
 
    // Draw y axis and gridlines
 

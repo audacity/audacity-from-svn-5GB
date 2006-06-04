@@ -37,6 +37,16 @@ wxPen AColor::envelopePen;
 wxPen AColor::WideEnvelopePen;
 wxBrush AColor::tooltipBrush;
 
+wxFont AColor::labelFont;
+
+void AColor::SetLabelFont(wxDC & dc)
+{
+  if (!inited)
+    Init(&dc);
+  
+  dc.SetFont(labelFont);
+}
+
 void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
 {
    if (up)
@@ -59,7 +69,7 @@ void AColor::Bevel(wxDC & dc, bool up, wxRect & r)
 void AColor::Light(wxDC * dc, bool selected)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) selected;
    dc->SetBrush(lightBrush[index]);
    dc->SetPen(lightPen[index]);
@@ -68,7 +78,7 @@ void AColor::Light(wxDC * dc, bool selected)
 void AColor::Medium(wxDC * dc, bool selected)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) selected;
    dc->SetBrush(mediumBrush[index]);
    dc->SetPen(mediumPen[index]);
@@ -77,7 +87,7 @@ void AColor::Medium(wxDC * dc, bool selected)
 void AColor::Dark(wxDC * dc, bool selected)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) selected;
    dc->SetBrush(darkBrush[index]);
    dc->SetPen(darkPen[index]);
@@ -86,7 +96,7 @@ void AColor::Dark(wxDC * dc, bool selected)
 void AColor::CursorColor(wxDC * dc)
 {
    if (!inited)
-      Init();
+      Init(dc);
    dc->SetLogicalFunction(wxINVERT);
    dc->SetPen(cursorPen);
 }
@@ -94,7 +104,7 @@ void AColor::CursorColor(wxDC * dc)
 void AColor::IndicatorColor(wxDC * dc, bool recording)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) recording;
    dc->SetPen(indicatorPen[index]);
    dc->SetBrush(indicatorBrush[index]);
@@ -103,7 +113,7 @@ void AColor::IndicatorColor(wxDC * dc, bool recording)
 void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) selected;
    if (on) {
       dc->SetPen(*wxBLACK_PEN);
@@ -118,7 +128,7 @@ void AColor::Mute(wxDC * dc, bool on, bool selected, bool soloing)
 void AColor::Solo(wxDC * dc, bool on, bool selected)
 {
    if (!inited)
-      Init();
+      Init(dc);
    int index = (int) selected;
    if (on) {
       dc->SetPen(*wxBLACK_PEN);
@@ -130,10 +140,27 @@ void AColor::Solo(wxDC * dc, bool on, bool selected)
    }
 }
 
-void AColor::Init()
+void AColor::Init(wxDC * dc)
 {
    if (inited)
       return;
+
+   int fontSize = 4;
+   wxCoord strW, strH;
+   wxString exampleText = wxT("Mute");
+   int desiredPixelHeight = 16;
+   
+   // Keep making the font bigger until it's too big, then subtract one.
+   dc->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+   dc->GetTextExtent(exampleText, &strW, &strH);
+   while(strH <= desiredPixelHeight && fontSize < 40) {
+     fontSize++;
+     dc->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+     dc->GetTextExtent(exampleText, &strW, &strH);
+   }
+   fontSize--;
+
+   labelFont = wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
 
    wxColour light =
        wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DHIGHLIGHT);

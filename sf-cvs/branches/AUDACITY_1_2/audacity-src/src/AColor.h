@@ -22,7 +22,9 @@ class wxRect;
 
 class AColor {
  public:
-   static void Init();
+   static void Init(wxDC * dc);
+
+   static void SetLabelFont(wxDC & dc);
 
    static void Bevel(wxDC & dc, bool up, wxRect & r);
 
@@ -60,6 +62,7 @@ class AColor {
 
    static wxBrush tooltipBrush;
 
+   static wxFont labelFont;
 
  private:
    static bool inited;
