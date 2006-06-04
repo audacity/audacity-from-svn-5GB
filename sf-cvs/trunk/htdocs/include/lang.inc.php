@@ -19,25 +19,26 @@ $cookie_days = 90;
 // List of available languages.
 $available_locales = array(
   // Language code => Full locale name, Human-readable name.
-  "cs" => array("cs_CZ", "Česky"),
+  "cs" => array("cs_CZ", "ƒåesky"),
   "de" => array("de_DE", "Deutsch"),
-  "el" => array("el_GR", "Ελληνικά"),
+  "el" => array("el_GR", "ŒïŒªŒªŒ∑ŒΩŒπŒ∫Œ¨"),
   "en" => array("en_US", "English"),
-  "es" => array("es_ES", "Español"),
-  "fr" => array("fr_FR", "Français"),
+  "es" => array("es_ES", "Espa√±ol"),
+  "fr" => array("fr_FR", "Fran√ßais"),
   "it" => array("it_IT", "Italiano"),
   "hu" => array("hu_HU", "Magyar"),
-  "nb" => array("nb_NO", "Norsk (Bokmål)"),
+  "nb" => array("nb_NO", "Norsk (Bokm√•l)"),
   "pl" => array("pl_PL", "Polski"),
-  "pt" => array("pt_BR", "Português"),
-  "ro" => array("ro_RO", "Română"),
-  "sl" => array("sl_SI", "Slovenščina"),
+  "pt" => array("pt_BR", "Portugu√™s"),
+  "ro" => array("ro_RO", "Rom√¢nƒÉ"),
+  "sl" => array("sl_SI", "Sloven≈°ƒçina"),
   "fi" => array("fi_FI", "Suomi"),
   "sv" => array("sv_SE", "Svenska"),
-  "ja" => array("ja_JP", "日本語"),
-  "ru" => array("ru_RU", "Русский"),
-  "zh-CN" => array("zh_CN.UTF-8", "中文(简)"),
-  "zh-TW" => array("zh_TW.UTF-8", "中文(繁)"),
+  "tr" => array("tr_TR", "Türkçe"),
+  "ja" => array("ja_JP", "Êó•Êú¨Ë™û"),
+  "ru" => array("ru_RU", "–†—É—Å—Å–∫–∏–π"),
+  "zh-CN" => array("zh_CN.UTF-8", "‰∏≠Êñá(ÁÆÄ)"),
+  "zh-TW" => array("zh_TW.UTF-8", "‰∏≠Êñá(ÁπÅ)"),
 );
 
 // Set up the translation variables and libraries.
