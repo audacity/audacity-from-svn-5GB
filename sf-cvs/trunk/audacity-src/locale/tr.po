@@ -3,20 +3,23 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Melih <melih@dhcppc0>, 2006.
+# Melih <melih@ttnet.net.tr>, 2006.
+# Melih <aktas1734@ttnet.net.tr>, 2006.
+# Melih AKTAŞ <aktas1734@ttnet.net.tr>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-10-14 09:03+0200\n"
-"PO-Revision-Date: 2006-05-30 22:40+0000\n"
-"Last-Translator: Melih <aktas1734@ttnet.net.tr>\n"
-"Language-Team: Türkçe <tr@li.org>\n"
+"PO-Revision-Date: 2006-06-04 03:48+0000\n"
+"Last-Translator: Melih AKTAŞ <aktas1734@ttnet.net.tr>\n"
+"Language-Team: Türkçe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Turkish\n"
-"X-Poedit-Country: Turkey\n"
+"X-Poedit-Language: Turkce\n"
+"X-Poedit-Country: Turkiye\n"
 "X-Generator: KBabel 1.10.1\n"
 
 #: ../src/effects/ClickRemoval.cpp:326
@@ -61,17 +64,17 @@ msgstr "pencere"
 #: ../src/import/ImportRaw.cpp:335
 #, c-format
 msgid "%d Channels"
-msgstr "%d Kanallar"
+msgstr "%d Kanal"
 
 #: ../src/effects/Repeat.cpp:282
 #, c-format
 msgid "%d minutes, %d seconds"
-msgstr "%d dakikalar %d saniyeler"
+msgstr "%d dakika %d saniye"
 
 #: ../src/effects/Repeat.cpp:285
 #, c-format
 msgid "%d seconds"
-msgstr "%d saniyeler"
+msgstr "%d saniye"
 
 #: ../src/AudacityApp.cpp:338
 #, c-format
@@ -129,7 +132,7 @@ msgstr "&Sil\tCtrl+K"
 
 #: ../src/Menus.cpp:227
 msgid "&Edit"
-msgstr "&Düzenle"
+msgstr "&Düzen"
 
 #: ../src/Menus.cpp:386
 msgid "&Edit ID3 Tags..."
@@ -138,12 +141,12 @@ msgstr "&ID3 tag'ı düzenle.."
 #: ../src/Menus.cpp:605
 #, c-format
 msgid "&Export As %s..."
-msgstr "%s ı dışarı aktar..."
+msgstr "%s olarak dışarı aktar..."
 
 #: ../src/Menus.cpp:608
 #, c-format
 msgid "&Export Selection As %s..."
-msgstr "%s i &dışarı farklı aktar..."
+msgstr "%s olarak &dışarı farklı aktar..."
 
 #: ../src/Menus.cpp:139
 msgid "&File"
@@ -169,7 +172,7 @@ msgstr "&Geçmiş..."
 
 #: ../src/Menus.cpp:381
 msgid "&Import Audio...\tCtrl+I"
-msgstr "& ı İçe Aktar...\tCtrl+I"
+msgstr "&Dosyayı İçe Aktar...\tCtrl+I"
 
 #: ../src/Menus.cpp:141
 msgid "&New\tCtrl+N"
@@ -185,12 +188,12 @@ msgstr "&Yapıştır\tCtrl+V"
 
 #: ../src/Menus.cpp:496
 msgid "&Plot Spectrum"
-msgstr "Vykreslit s&pektrum"
+msgstr "T&ayfın haritasını çıkart"
 
 #: ../src/Menus.cpp:327
 #: ../src/Menus.cpp:333
 msgid "&Preferences...\tCtrl+P"
-msgstr "&Ayarlar...\tCtrl+P"
+msgstr "&Tercihler...\tCtrl+P"
 
 #: ../src/Menus.cpp:379
 msgid "&Project"
@@ -215,7 +218,7 @@ msgstr "Ölçüm yap..."
 
 #: ../src/Menus.cpp:146
 msgid "&Save Project\tCtrl+S"
-msgstr "&Tasarıyı Farklı Kaydet\tCtrl+S"
+msgstr "&Tasarıyı Kaydet\tCtrl+S"
 
 #: ../src/Menus.cpp:261
 msgid "&Silence\tCtrl+L"
@@ -320,7 +323,7 @@ msgstr "Audacity Hakkında..."
 
 #: ../src/HistoryWindow.cpp:57
 msgid "Action"
-msgstr "Akce"
+msgstr "Hareket"
 
 #: ../src/Menus.cpp:432
 msgid "Add Label At Playback Position\tCtrl+M"
@@ -392,7 +395,7 @@ msgstr "&İmleci ile Sırala"
 
 #: ../src/Menus.cpp:405
 msgid "Align with &Zero"
-msgstr "Zarovnat na n&ulu"
+msgstr "&Sıfır ile Sırala"
 
 #: ../src/Menus.cpp:408
 msgid "Align with Selection &End"
@@ -536,7 +539,7 @@ msgstr "Uygulanan efekt: %s %d bölüm(ler), %.0f%% wet, frekans = %.1f Hz, baş
 #: ../src/effects/Echo.cpp:33
 #, c-format
 msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
-msgstr "Uygulanan efekt: %s gecikme = %f saniye(ler), decay faktor = %f"
+msgstr "Uygulanan efekt: %s gecikme = %f saniye, decay faktor = %f"
 
 #: ../src/effects/BassBoost.cpp:36
 #, c-format
@@ -551,12 +554,12 @@ msgstr "Uygulanan efekt: %s frekans = %.1f Hz, başlangıç phase = %.0f deg, de
 #: ../src/effects/ToneGen.cpp:33
 #, c-format
 msgid "Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"
-msgstr "Uygulanan efekt: Yarat %s %s wav, frekans = %.2f Hz, kuvvetlendirme = %.2f, %.6lf saniye(ler)"
+msgstr "Uygulanan efekt: Yarat %s %s wav, frekans = %.2f Hz, kuvvetlendirme = %.2f, %.6lf saniye"
 
 #: ../src/effects/Silence.h:42
 #, c-format
 msgid "Applied effect: Generate Silence, %.6lf seconds"
-msgstr "Uygulanan efekt: Sessizlik Yarat, %.6lf saniye(ler)"
+msgstr "Uygulanan efekt: Sessizlik Yarat, %.6lf saniye"
 
 #: ../src/effects/Noise.h:31
 #, c-format
@@ -569,7 +572,7 @@ msgstr "Dynamic Range Compression Uygulanıyor..."
 
 #: ../src/effects/nyquist/Nyquist.cpp:217
 msgid "Applying Nyquist Effect..."
-msgstr "Nyquist Effec Uygulanıyor..."
+msgstr "Nyquist Effect Uygulanıyor..."
 
 #: ../src/effects/Phaser.h:45
 msgid "Applying Phaser"
@@ -602,7 +605,7 @@ msgstr "Atak Zamanı: %.1f secs"
 
 #: ../src/AboutDialog.cpp:271
 msgid "Audacious!"
-msgstr "Audacious!"
+msgstr ""
 
 #: ../src/ControlToolBar.cpp:141
 msgid "Audacity Control Toolbar"
@@ -626,7 +629,7 @@ msgstr "Audacity Karıştırıcı Çubuğu"
 
 #: ../src/prefs/PrefsDialog.cpp:52
 msgid "Audacity Preferences"
-msgstr "Audacity Ayarları"
+msgstr "Audacity Tercihleri"
 
 #: ../src/AudacityApp.cpp:1100
 msgid "Audacity Project Files"
@@ -638,7 +641,7 @@ msgid ""
 "Please enter an appropriate directory in the preferences dialog."
 msgstr ""
 "Audacity dosyaları saklayacak yer bulamadı.\n"
-"Lütfen ayar penceresinden uygun bir dizin seçin."
+"Lütfen tercihler penceresinden uygun bir dizin seçin."
 
 #: ../src/import/Import.cpp:170
 msgid ""
@@ -670,7 +673,10 @@ msgid ""
 "Would you like to locate lame_enc.dll now?"
 msgstr ""
 "Audacity MP3 dosyasını doğrudan dışarı aktaramıyor, fakat\n"
-"LAME kullanarak bunun üstesinden gelebilirsiniz. !!!!!"
+"LAME kullanarak bunun üstesinden gelebilirsiniz. Bunun için \n"
+"lame_enc.dll dosyasının yerini bulun, LAME MP3 dönüştürücüsünü indirip alın,sonra Audacity içinden seçin.\n"
+"\n"
+"lame_enc.dll dosyasının yerini şimdi seçmek ister misiniz?"
 
 #. i18n-hint: This message is used on Unix/Linux
 #: ../src/export/ExportMP3.cpp:261
@@ -740,6 +746,11 @@ msgid ""
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
 msgstr ""
+"Audacity tasarı dosyaları (.aup) üzerinde çalıştığınız her şeyi tam olarak kaydedebilmenizi sağlar\n"
+"fakat Hemen hemen diğer tüm programlar Audacity dosyalarını açamaz.\n"
+"\n"
+"Kaydettiğiniz dosyanın diğer programlar tarafından açılmasını istediğinizde\n"
+"menüden Dışarı Aktar'ı seçin."
 
 #: ../src/Project.cpp:2378
 msgid "Audacity projects (*.aup)|*.aup"
@@ -748,7 +759,7 @@ msgstr "Audacity tasarıları (*.aup)|*.aup"
 #: ../src/export/ExportMP3.cpp:137
 #, c-format
 msgid "Audacity was expecting a library named \"%s\".  Are you sure you want to attempt to export MP3 files using \"%s\"?"
-msgstr ""
+msgstr "Audacity \"%s\" isimle kitaplığı açacaktı.  MP3 dosyalarını \"%s\" kullanarak açmak istediğinizden emin misiniz?"
 
 #: ../src/AudacityApp.cpp:823
 msgid ""
@@ -796,7 +807,7 @@ msgstr "Otomatik Ses Denetimi..."
 
 #: ../src/prefs/GUIPrefs.cpp:66
 msgid "Autoscroll while playing"
-msgstr "Automaticky posouvat během přehrávání"
+msgstr "Çalınan kısmı görüntüle"
 
 #: ../src/effects/BassBoost.cpp:69
 msgid "Bass Boost"
@@ -823,7 +834,7 @@ msgstr "Sırası"
 #. i18n-hint: Refers to byte-order.  Don't translate this if you don't
 #: ../src/import/ImportRaw.cpp:305
 msgid "Big-endian"
-msgstr "Big-endian"
+msgstr "Büyük-endian"
 
 #: ../src/prefs/FileFormatPrefs.cpp:197
 msgid "Bit Rate:"
@@ -919,7 +930,7 @@ msgstr "Merkez"
 #. i18n-hint: This is a technical term, derived from the word
 #: ../src/FreqWindow.cpp:136
 msgid "Cepstrum"
-msgstr "Cepstrum"
+msgstr ""
 
 #: ../src/prefs/MousePrefs.cpp:98
 msgid "Change Amplification Envelope"
@@ -927,7 +938,7 @@ msgstr "Kuvvetlendirme Katmanını Değiştir"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Change ONE Sample only"
-msgstr "Sadece ONE Örnekeleme Sesini Değiştir"
+msgstr "Sadece ONE Örneklemesini Değiştir"
 
 #: ../src/effects/ChangePitch.cpp:119
 msgid "Change Pitch"
@@ -975,7 +986,7 @@ msgstr "Tempoyu Değiştir..."
 
 #: ../src/TrackPanel.cpp:4351
 msgid "Change lower speed limit (%) to:"
-msgstr "Daha yavaş hız sınırını &değiştir  (%):"
+msgstr "Alt hız sınırını &değiştir  (%):"
 
 #: ../src/TrackPanel.cpp:4416
 msgid "Change track name to:"
@@ -983,7 +994,7 @@ msgstr "Kanal ismini değiştir:"
 
 #: ../src/TrackPanel.cpp:4358
 msgid "Change upper speed limit (%) to:"
-msgstr "Daha yüksek hız sınırını &değiştir  (%):"
+msgstr "Üst hız sınırını &değiştir  (%):"
 
 #: ../src/effects/AvcCompressor.cpp:398
 msgid "Change window size must be less than or equal to Adjustment window size."
@@ -1035,7 +1046,7 @@ msgstr "Kanallar:"
 
 #: ../src/LangChoice.cpp:74
 msgid "Choose Language for Audacity to use:"
-msgstr "Audacity'yi Kullanmak için Dili Seçin:"
+msgstr "Audacity'yi Kullanmak için Dil Seçin:"
 
 #: ../src/TrackPanel.cpp:4453
 msgid "Choose a font for Label Tracks"
@@ -1246,7 +1257,7 @@ msgstr "Gürültü Kimliği Oluşturuluyor"
 
 #: ../src/AboutDialog.cpp:154
 msgid "Credits"
-msgstr "Güven"
+msgstr "Emeği Geçenler"
 
 #: ../src/prefs/MousePrefs.cpp:103
 msgid "Ctrl-Left-Drag"
@@ -1262,7 +1273,7 @@ msgstr "&Kes\tCtrl+X"
 
 #: ../src/FreqWindow.cpp:131
 msgid "Cuberoot Autocorrelation"
-msgstr "Cuberoot autokorelace"
+msgstr ""
 
 #: ../src/Menus.cpp:585
 msgid "Cursor Left\tLeft"
@@ -1339,7 +1350,7 @@ msgstr "İmleç: %i+%04i cdda dilimleri+bayt (2352 bayt, saniyede)   [Örnekelme
 #: ../src/FormatSelection.cpp:783
 #, c-format
 msgid "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To Samples]   Change Project Rate to 44100 for cdda"
-msgstr ""
+msgstr "İmleç: %i+%04i cdda dilimi+bayt (2352 bayt, dilimdeki)   [Örneklemelere Uygula]   Tasarı Oranını cdda için 44100 a değiştir"
 
 #: ../src/FormatSelection.cpp:745
 #, c-format
@@ -1532,7 +1543,7 @@ msgstr "Çizim Aracı\tF3"
 
 #: ../src/TrackPanel.cpp:2364
 msgid "Draw currently only works with waveforms."
-msgstr ""
+msgstr "Sadece ses dalga biçimleriyle çalışırken &çiz."
 
 #: ../src/Menus.cpp:1962
 msgid "Duplicate"
@@ -1558,11 +1569,11 @@ msgstr "&Çıkış"
 #: ../src/effects/Echo.cpp:39
 #: ../src/effects/Echo.cpp:177
 msgid "Echo"
-msgstr "Echo"
+msgstr "Yankı"
 
 #: ../src/effects/Echo.h:36
 msgid "Echo..."
-msgstr "Echo..."
+msgstr "Yankı..."
 
 #: ../src/Menus.cpp:2752
 msgid "Edit ID3 Tags"
@@ -1606,7 +1617,7 @@ msgstr "Karıştırıcı Çubuğu Kullanılabilir"
 
 #: ../src/prefs/GUIPrefs.cpp:106
 msgid "Enable dragging of left and right selection edges"
-msgstr ""
+msgstr "Seçilen kenarları sola ve sağa sürükleme açık"
 
 #: ../src/prefs/GUIPrefs.cpp:113
 msgid "Enable ergonomic order of Audio I/O buttons"
@@ -1622,7 +1633,7 @@ msgstr "Dönüştürülüyor:"
 
 #: ../src/FreqWindow.cpp:132
 msgid "Enhanced Autocorrelation"
-msgstr ""
+msgstr "Ses içindeki Tekrarlamaları Bulmayı Fazlalaştır"
 
 #: ../src/effects/nyquist/Nyquist.cpp:282
 msgid "Enter Nyquist Command: "
@@ -1675,7 +1686,7 @@ msgstr "Hata(dosya yazılmamış olabilir): %s"
 
 #: ../src/AudioIO.cpp:173
 msgid "Error Initializing Audio"
-msgstr ""
+msgstr "Ses Hazırlama Hatası"
 
 #: ../src/Project.cpp:2340
 msgid "Error importing"
@@ -1740,7 +1751,7 @@ msgstr "Hata: %s, %d satırında"
 
 #: ../src/DirManager.cpp:613
 msgid "Error: is directory write-protected or disk full?"
-msgstr "ChHata: dizin yazma korumalı mı ya da disk dolu mu?"
+msgstr "Hata: dizin yazma korumalı mı ya da disk dolu mu?"
 
 #: ../src/Sequence.cpp:779
 #, c-format
@@ -1857,7 +1868,7 @@ msgstr "Seçili sesi komut satırı dönüştürücüsünü kullanarak dışarı
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Extend Selection Range"
-msgstr ""
+msgstr "Seçili Alanı Genişlet"
 
 #: ../src/effects/Filter.cpp:53
 msgid "FFT Filter"
@@ -1893,7 +1904,7 @@ msgstr "Azaltılıyor"
 
 #: ../src/Resample.cpp:48
 msgid "Fast Sinc Interpolation"
-msgstr "Fast Sinc Interpolation"
+msgstr ""
 
 #: ../src/effects/Phaser.cpp:545
 msgid "Feedback (%):"
@@ -1995,7 +2006,7 @@ msgstr "Frekans Çözümlemesi"
 #: ../src/TrackPanel.cpp:2807
 #: ../src/TrackPanel.cpp:4726
 msgid "Gain"
-msgstr "Yarar"
+msgstr "Kazanç"
 
 #: ../src/effects/Noise.cpp:35
 msgid "Generate Noise"
@@ -2091,6 +2102,10 @@ msgid ""
 "\n"
 "This project does not have multiple tracks or a Label Track, so you cannot export multiple files."
 msgstr ""
+"Birden fazla Ses Kanalınız varsa, her bir kanalı ayrı bir dosya olarak dışarı aktarabilirsiniz,\n"
+"eğer birden fazla Etiket Parçanız varsa, her bir etiketi yeni bir dosya olarak dışarı aktarabilirsiniz.\n"
+"\n"
+"Bu tasarı çoklu kanala ya da Etiket Parçasına sahip değil, bu yüzden çoklu dosyalar dışarıya aktarılamaz."
 
 #: ../src/Project.cpp:2236
 #: ../src/Project.cpp:2283
@@ -2110,7 +2125,7 @@ msgstr "&MIDI'yi İçeri Aktar..."
 
 #: ../src/Menus.cpp:384
 msgid "Import &Raw Data..."
-msgstr "&Raw Verisini İçeri Aktar..."
+msgstr "&Ham Veriyi(raw) İçeri Aktar..."
 
 #: ../src/Menus.cpp:2661
 msgid "Import Labels"
@@ -2122,7 +2137,7 @@ msgstr "MIDI'yi İçeri Aktar..."
 
 #: ../src/import/ImportRaw.cpp:256
 msgid "Import Raw Data"
-msgstr "Raw Verisini İçeri Aktar"
+msgstr "Ham Veriyi(raw) İçeri Aktar"
 
 #: ../src/Project.cpp:2282
 #, c-format
@@ -2151,7 +2166,7 @@ msgstr "%s dosyası içeri aktarılıyor..."
 
 #: ../src/export/ExportMultiple.cpp:623
 msgid "Include audio before first label"
-msgstr "Etiketten önce ses dahil"
+msgstr "Ses dahil ilk etiketten önce"
 
 #: ../src/AboutDialog.cpp:150
 msgid "Information"
@@ -2184,7 +2199,7 @@ msgstr "Tanınamayan Vorbis örnekleme değeri"
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:289
 msgid "Invalid duration in LOF file."
-msgstr ""
+msgstr "LOF dosyasında geçersiz süre dengesi."
 
 #: ../src/AStatus.cpp:362
 #: ../src/TrackPanel.cpp:4331
@@ -2195,13 +2210,13 @@ msgstr "Tanınamayan oran"
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:383
 msgid "Invalid track offset in LOF file."
-msgstr ""
+msgstr "LOF dosyasında geçersiz parça dengesi."
 
 #  i18n-hint: You do not need to translate "LOF"
 #. i18n-hint: You do not need to translate "LOF"
 #: ../src/import/ImportLOF.cpp:268
 msgid "Invalid window offset in LOF file."
-msgstr ""
+msgstr "LOF dosyasında geçersiz pencere dengesi."
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
@@ -2213,7 +2228,7 @@ msgstr "Çevriliyor"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Key Combination"
-msgstr "Tuş gruplaması"
+msgstr "Tuş Gruplaması"
 
 #: ../src/prefs/PrefsDialog.cpp:90
 msgid "Keyboard"
@@ -2274,7 +2289,7 @@ msgstr "Etiketler"
 
 #: ../src/FreqWindow.cpp:1025
 msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
-msgstr ""
+msgstr "Lag(saniye)\tFrekans (Hz)\tSeviyeler"
 
 #: ../src/prefs/GUIPrefs.cpp:134
 msgid "Language:"
@@ -2321,11 +2336,11 @@ msgstr "Sol=Yakınlaş, Sağ=Uzaklaş, Orta tuş=Normal"
 #: ../src/effects/Silence.cpp:127
 #: ../src/effects/ToneGen.cpp:306
 msgid "Length (seconds)"
-msgstr "Uzunluk (saniyeler)"
+msgstr "Uzunluk (saniye)"
 
 #: ../src/effects/ChangeTempo.cpp:241
 msgid "Length (seconds):   from"
-msgstr "Uzunluk (saniyeler): 'den"
+msgstr "Uzunluk (saniye): 'den"
 
 #: ../src/effects/ClickRemoval.cpp:349
 #: ../src/effects/NoiseRemoval.cpp:441
@@ -2377,7 +2392,7 @@ msgstr "Küçük-endian"
 
 #: ../src/effects/Equalization.cpp:677
 msgid "Load Predefined Curve"
-msgstr ""
+msgstr "Öntanımlı Eğriyi Yükle"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:127
 msgid "Load..."
@@ -2407,7 +2422,7 @@ msgstr "Daha yavaş hız sınırı"
 
 #: ../src/import/ImportLOF.cpp:362
 msgid "MIDI tracks cannot be offset individually, only audio files may be."
-msgstr ""
+msgstr "MIDI kanallalrı biribirinden bağımsız olarak dengelenemez, sadece ses dosyalarına bu uygulanabilir."
 
 #: ../src/prefs/FileFormatPrefs.cpp:172
 msgid "MP3 Export Setup"
@@ -2427,7 +2442,7 @@ msgstr "MP3 içeri aktarlamıyor"
 
 #: ../src/AboutDialog.cpp:54
 msgid "MP3 importing enabled"
-msgstr "MP3 içeni aktarılabiliyor"
+msgstr "MP3 içeri aktarılabiliyor"
 
 #: ../src/TrackPanel.cpp:4153
 #, c-format
@@ -2465,7 +2480,7 @@ msgstr "Azami frekans 100 Hz - 100,000 Hz arasında olmalı"
 #: ../src/Tags.cpp:429
 #, c-format
 msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
-msgstr ""
+msgstr "Niteliğin azami uzunluğu '%s', '%d' karakterdir.Veriler uçundan kesiliyor."
 
 #: ../src/import/ImportOGG.cpp:124
 msgid "Media read error"
@@ -2481,7 +2496,7 @@ msgstr "Asgari Değiştirme Penceresi:"
 
 #: ../src/prefs/GUIPrefs.cpp:145
 msgid "Minimum of dB mode display range"
-msgstr ""
+msgstr "dB gösterim sıralaması özelliğinin asgari değeri"
 
 #: ../src/Mix.cpp:74
 #: ../src/Mix.cpp:82
@@ -2494,7 +2509,7 @@ msgstr "Karışan kanallar"
 
 #: ../src/TrackPanel.cpp:3314
 msgid "Modified Label"
-msgstr "Değiştirilmeş Etiket"
+msgstr "Değiştirilmiş Etiket"
 
 #: ../src/widgets/Meter.cpp:299
 msgid "Monitor input"
@@ -2554,11 +2569,11 @@ msgstr "Taşınan Örnekleme"
 
 #: ../src/TrackPanel.cpp:2806
 msgid "Moved gain slider"
-msgstr ""
+msgstr "Kazanç kaydırıcısı taşındı"
 
 #: ../src/TrackPanel.cpp:2806
 msgid "Moved pan slider"
-msgstr ""
+msgstr "Sağ-sol denge kaydırıcısı taşındı"
 
 #: ../src/prefs/MousePrefs.cpp:105
 #: ../src/prefs/MousePrefs.cpp:106
@@ -2577,15 +2592,15 @@ msgstr "Kullanılan Araç"
 
 #: ../src/TrackPanel.cpp:1541
 msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
-msgstr "Kullanılan Araç: Cmd Fare ve Klavye Ayarları için"
+msgstr "Kullanılan Araç: Cmd Fare ve Klavye Tercihleri için"
 
 #: ../src/TrackPanel.cpp:1543
 msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
-msgstr "Kullanılan Araç: Ctrl+P Fare ve Klavye Ayarları için"
+msgstr "Kullanılan Araç: Ctrl+P Fare ve Klavye Tercihleri için"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Mute"
-msgstr "Etkinsizleştir"
+msgstr "Sessiz"
 
 #  i18n-hint: hours, minutes, seconds, frames
 #  i18n-hint: hours, minutes, seconds, frames
@@ -2629,11 +2644,11 @@ msgstr "Yeni &Stereo Kanal"
 
 #: ../src/Menus.cpp:396
 msgid "New &Time Track"
-msgstr "Yeni &Zaman Kanalı"
+msgstr "Yeni &Zaman Parçası"
 
 #: ../src/Menus.cpp:395
 msgid "New La&bel Track"
-msgstr "Yeni &Etiket"
+msgstr "Yeni &Etiket Parçası"
 
 #: ../src/effects/Amplify.cpp:152
 msgid "New Peak Amplitude (dB):"
@@ -2657,7 +2672,7 @@ msgstr "Yeni Değer"
 #: ../src/effects/Repeat.cpp:241
 #: ../src/effects/Repeat.cpp:280
 msgid "New selection length: "
-msgstr "Yeni seçien kısmıni uzunluğu:"
+msgstr "Yeni seçilen kısmını uzunluğu:"
 
 #: ../src/Menus.cpp:556
 msgid "Next Tool\tD"
@@ -2742,7 +2757,7 @@ msgstr "Nota Kanalı"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:115
 msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
-msgstr ""
+msgstr "Not: Cmd+Q'ya basarak çıkabilirsiniz. Diğer tüm tuşlar geçerli."
 
 #: ../src/Menus.cpp:1655
 msgid "Nothing to redo"
@@ -2758,7 +2773,7 @@ msgstr "Tekrar etme sayısı:"
 
 #: ../src/export/ExportMultiple.cpp:655
 msgid "Numbering consecutively"
-msgstr ""
+msgstr "Sırayla numaralandırma"
 
 #: ../src/effects/nyquist/Nyquist.cpp:397
 msgid "Nyquist"
@@ -2883,7 +2898,7 @@ msgstr "Disk boşluğundan"
 
 #: ../src/AudacityApp.cpp:369
 msgid "Output Meter"
-msgstr "Çıkış Ölçümü"
+msgstr "Çıkış Ölçücü"
 
 #: ../src/MixerToolBar.cpp:135
 msgid "Output Volume"
@@ -3008,7 +3023,7 @@ msgstr "Parça Çal\tShift+Boşluk"
 
 #: ../src/Menus.cpp:564
 msgid "Play One Second\t1"
-msgstr "Přehrát jednu sekundu\t1"
+msgstr "Bir Saniye Çal\t1"
 
 #: ../src/Menus.cpp:565
 msgid "Play To Selection\tB"
@@ -3105,7 +3120,7 @@ msgstr "Hızlı karıştır"
 
 #: ../src/prefs/GUIPrefs.cpp:99
 msgid "Quit Audacity upon closing last window"
-msgstr "Son pencere de kapanıncaAudacity'den çık."
+msgstr "Son pencere de kapanınca Audacity'den çık."
 
 #. i18n-hint: One-letter abbreviation for Right, in the Pan slider
 #: ../src/widgets/ASlider.cpp:332
@@ -3119,17 +3134,17 @@ msgstr "Oran Değiştir"
 
 #: ../src/effects/Compressor.cpp:451
 msgid "Ratio: "
-msgstr ""
+msgstr "Oran:"
 
 #: ../src/effects/Compressor.cpp:528
 #, c-format
 msgid "Ratio: %.0f:1"
-msgstr ""
+msgstr "Oran: %.0f:1"
 
 #: ../src/effects/Compressor.cpp:530
 #, c-format
 msgid "Ratio: %.1f:1"
-msgstr ""
+msgstr "Oran: %.1f:1"
 
 #  i18n-hint: This refers to files that are opened directly
 #  without looking at the file header.  Same as "Import Raw"
@@ -3219,7 +3234,7 @@ msgstr "Kanalı Sil"
 
 #: ../src/effects/Normalize.cpp:239
 msgid "Remove any DC offset (center on 0 vertically)"
-msgstr ""
+msgstr "DC dengelemesini kaldır (dikey 0 olarak merkez)"
 
 #: ../src/effects/ClickRemoval.cpp:363
 msgid "Remove clicks"
@@ -3240,7 +3255,7 @@ msgstr "Gürültü Siliniyor"
 
 #: ../src/effects/ClickRemoval.h:46
 msgid "Removing clicks and pops..."
-msgstr ""
+msgstr "Çıt ve Pat sesleri Siliniyor"
 
 #: ../src/effects/PopClick.h:33
 msgid "Removing unwanted noise"
@@ -3390,11 +3405,11 @@ msgstr "Testerediş"
 
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Scroll up or down"
-msgstr ""
+msgstr "Aşağı ya da yukarı Kaydır"
 
 #: ../src/Help.cpp:109
 msgid "Search for?"
-msgstr "Ara?"
+msgstr "Neyi ara?"
 
 #: ../src/Help.cpp:110
 msgid "Search help for keyword"
@@ -3416,6 +3431,9 @@ msgid ""
 "so Audacity knows what to filter out, then\n"
 "click Get Noise Profile:"
 msgstr ""
+"Birkaç saniyelik bir ses seçin\n"
+"böylece Audacity süzgüden ne çıktığını tanıyabilir, o zaman\n"
+"Gürültü Kimliğini Ala tıklayın:"
 
 #: ../src/Menus.cpp:2631
 msgid "Select a text file containing labels..."
@@ -3427,6 +3445,9 @@ msgid ""
 "choose how much noise you want filtered out,\n"
 "and then click Remove Noise.\n"
 msgstr ""
+"Süzgüden geçirmek istediğiniz tüm sesleri seçin,\n"
+"ne kadar gürültüyü süzmek istediğinizi seçin,\n"
+"daha sonra Gürültü Kaldır'a tıkayın:\n"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:188
 msgid "Select an XML file containing Audacity keyboard shortcuts..."
@@ -3447,19 +3468,19 @@ msgstr "Seç..."
 
 #: ../src/Menus.cpp:589
 msgid "Selection Contract Left\tCtrl+Shift+Right"
-msgstr ""
+msgstr "Soldaki Düzenlemeyi Seç\tCtrl+Shift+Sağ"
 
 #: ../src/Menus.cpp:590
 msgid "Selection Contract Right\tCtrl+Shift+Left"
-msgstr ""
+msgstr "Sağdaki Düzenlemeyi Seç\tCtrl+Shift+Sol"
 
 #: ../src/Menus.cpp:587
 msgid "Selection Extend Left\tShift+Left"
-msgstr ""
+msgstr "Soldaki Yayılmayı Seç\tCtrl+Shift+Sol"
 
 #: ../src/Menus.cpp:588
 msgid "Selection Extend Right\tShift+Right"
-msgstr ""
+msgstr "Sağdaki Yayılmayı Seç\tCtrl+Shift+Sağ"
 
 #: ../src/Menus.cpp:281
 msgid "Selection Restore"
@@ -3585,11 +3606,11 @@ msgstr "Kur"
 
 #: ../src/TrackPanel.cpp:4371
 msgid "Set Range"
-msgstr ""
+msgstr "Alanı Kur"
 
 #: ../src/TrackPanel.cpp:873
 msgid "Set Range..."
-msgstr ""
+msgstr "Alanı Kur..."
 
 #: ../src/AStatus.cpp:352
 #: ../src/TrackPanel.cpp:848
@@ -3611,12 +3632,12 @@ msgstr "Seçilen Noktayı Ayarla"
 
 #: ../src/prefs/MousePrefs.cpp:89
 msgid "Set Selection Range"
-msgstr ""
+msgstr "Seçili Alanı Kur"
 
 #: ../src/TrackPanel.cpp:4368
 #, c-format
 msgid "Set range to '%d' - '%d'"
-msgstr ""
+msgstr "Alanı Kur '%d' - '%d'"
 
 #: ../src/effects/ClickRemoval.cpp:323
 msgid "Settings"
@@ -3624,7 +3645,7 @@ msgstr "Kurulum"
 
 #: ../src/prefs/QualityPrefs.cpp:163
 msgid "Shaped"
-msgstr ""
+msgstr "Biçimlendi"
 
 #: ../src/prefs/MousePrefs.cpp:90
 msgid "Shift-Left-Click"
@@ -3633,7 +3654,7 @@ msgstr "Shift-Sol Tıklama"
 #: ../src/Menus.cpp:1928
 #: ../src/effects/Silence.h:33
 msgid "Silence"
-msgstr "Sessiz"
+msgstr "Sessizlik"
 
 #: ../src/EditToolBar.cpp:156
 msgid "Silence selection"
@@ -3646,7 +3667,7 @@ msgstr "Seçilen kanallar %.2f saniyede %.2f"
 
 #: ../src/effects/ToneGen.cpp:48
 msgid "Sine"
-msgstr ""
+msgstr "Sinüs"
 
 #: ../src/HistoryWindow.cpp:58
 msgid "Size"
@@ -3670,7 +3691,7 @@ msgstr "Başa Atla\tHome"
 
 #: ../src/prefs/MousePrefs.cpp:101
 msgid "Smooth at Sample"
-msgstr ""
+msgstr "Örneklemede Düzenleme Yap"
 
 #  i18n-hint: Set snap-to mode on or off
 #  i18n-hint: Set snap-to mode on or off
@@ -3691,15 +3712,15 @@ msgstr "Uygula..."
 
 #: ../src/prefs/AudioIOPrefs.cpp:244
 msgid "Software Playthrough (Play new track while recording it)"
-msgstr ""
+msgstr "Yazılım Kendi İçinde Çalsın(Yeni kanal kaydedilirken)"
 
 #: ../src/TrackPanel.cpp:4701
 msgid "Solo"
-msgstr "Tek başına"
+msgstr "Solo"
 
 #: ../src/Prefs.cpp:108
 msgid "Some of your preferences were from an earlier version of Audacity and have been reset."
-msgstr "Eski Audacity sürümünden kalan ayarlarınız sıfırlandı."
+msgstr "Eski Audacity sürümünden kalan tercihleriniz sıfırlandı."
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:157
 msgid "Sorry, Plug-in Effects cannot be performed on stereo tracks where the individual channels of the track do not match."
@@ -3728,7 +3749,7 @@ msgstr "Spektrogramlar"
 #: ../src/FreqWindow.cpp:129
 #: ../src/TrackPanel.cpp:837
 msgid "Spectrum"
-msgstr "Spektrum"
+msgstr "Tayf"
 
 #: ../src/Menus.cpp:263
 msgid "Spl&it"
@@ -3766,19 +3787,19 @@ msgstr "Bölümler:"
 
 #: ../src/FreqWindow.cpp:130
 msgid "Standard Autocorrelation"
-msgstr ""
+msgstr "Standart Kendiliğinden Bağıntılı "
 
 #: ../src/effects/ChangeSpeed.cpp:341
 msgid "Standard Vinyl RPM:   from"
-msgstr ""
+msgstr "Standart Vinyl RPM: den"
 
 #: ../src/import/ImportRaw.cpp:348
 msgid "Start offset:"
-msgstr ""
+msgstr "Dengelemeyi başlat:"
 
 #: ../src/Menus.cpp:272
 msgid "Start to Cursor"
-msgstr "İmlecle Başlat"
+msgstr "İmleçle Başlat"
 
 #: ../src/effects/NoiseRemoval.cpp:410
 msgid "Step 1"
@@ -3822,7 +3843,7 @@ msgid ""
 msgstr ""
 "VU metre kullanılamaz durumda.\n"
 "\n"
-"Tekrar kullanabilmek için Ayarlar dialoğunu açın ve Arayüz kısmına tıklayın."
+"Tekrar kullanabilmek için Tercihler dialoğunu açın ve Arayüz kısmına tıklayın."
 
 #: ../src/Project.cpp:2304
 msgid ""
@@ -3832,10 +3853,14 @@ msgid ""
 "into an existing project.  To open a project file,\n"
 "select Open from the File menu.\n"
 msgstr ""
+"Seçtiğiniz dosya, bir Audacity dosyasıdır.\n"
+"Sadece ses dosyaları, tasarı dosyaları değil, var olan bir dosyanın\n"
+"içine aktarılabilir. Bir tasarı dosyasını açmak için,\n"
+"Dosya menüsünden Aç seçeneğini seçin.\n"
 
 #: ../src/prefs/SpectrumPrefs.cpp:148
 msgid "The maximum frequency must be an integer"
-msgstr ""
+msgstr "Girilen azami frekans bir tamsayı olmalı"
 
 #: ../src/AudacityApp.cpp:841
 msgid ""
@@ -3846,6 +3871,11 @@ msgid ""
 "Use the New or Open commands in the currently running Audacity\n"
 "process to open multiple projects simultaneously.\n"
 msgstr ""
+"Sistem, başka Audacity'nin bir başka kopyasının çalışmakta olduğunu buldu.\n"
+"İki tane Audacity kopyasının çalışması veri kaybına\n"
+" ya da sistemde çakışma meydana gelmesine neden olabilir, bundan dolayı izin verilmez.\n"
+"Çoklu tasarıları açmak için, esas işlemde olan\n"
+" Audacity'de Yeni ya da Aç seçeneklerini kullanın.\n"
 
 #: ../src/Menus.cpp:3041
 msgid "The version of Audacity you are using does not support multiple time tracks."
@@ -3853,7 +3883,7 @@ msgstr "Kullandığınız Audacity sürümü çoklu zaman kanallarını destekle
 
 #: ../src/Menus.cpp:1352
 msgid "There are no label tracks to export."
-msgstr "Dışarı aktarılacak etiket kanalı yok."
+msgstr "Dışarı aktarılacak etiket parçası yok."
 
 #: ../src/Menus.cpp:1617
 msgid "There was a problem printing."
@@ -3861,7 +3891,7 @@ msgstr "Bir yazdırma sorunu var."
 
 #: ../src/AudioIO.cpp:166
 msgid "There was an error initializing the audio i/o layer.\n"
-msgstr ""
+msgstr "Ses(i/o) katmanı hazırlama hatası var.\n"
 
 #: ../src/Project.cpp:1985
 #, c-format
@@ -3870,57 +3900,60 @@ msgid ""
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"Bu dosya Audacity kullanılarak kaydedildi %s.\n"
+"Audacity %s'yi kullanıyorsunuz - bu dosyayı açmak için\n daha yeni bir sürümüne"
+"güncellemelisiniz."
 
 #: ../src/AboutDialog.cpp:108
 msgid "This is a beta version of the program.  It may contain bugs and unfinished features.  We depend on your feedback, so please visit our website and give us your bug reports and feature requests."
-msgstr ""
+msgstr "Yazılımın beta sürümüdür. Hatalar ya da tamamlanmamış özellikler içerebilir. Sizden gelen geri beslemeye ihtiyacımız var, hata raporlarınızı ve  yazılımın özellikleriyle ilgili isteklerinizi bize iletin."
 
 #: ../src/AboutDialog.cpp:114
 msgid "This is a stable, completed release of Audacity.  However, if you find a bug or have a suggestion, please contact us.  We depend on feedback from users in order to continue to improve Audacity.  For more information, visit our website."
-msgstr ""
+msgstr "Kararlı sürümdür, tamamen duyurulmuştur. Ancak, bir sorun yaşadığınızda ya da bir öneriniz olduğunda bizimle iletişime geçin. Audacity'yi geliştirmeye devam etmek için, kullanıcılardan gelen geri beslemeye ihtiyacımız var. Daha fazla bilgi için sitemizi ziyaret edin."
 
 #: ../src/import/Import.cpp:159
 #, c-format
 msgid "This version of Audacity was not compiled with %s support."
-msgstr ""
+msgstr "Audacity'nin bu sürümü %s'i derlemeyi desteklemiyor."
 
 #: ../src/effects/Compressor.cpp:444
 msgid "Threshold: "
-msgstr ""
+msgstr "Eşik değeri:"
 
 #: ../src/effects/Compressor.cpp:525
 #, c-format
 msgid "Threshold: %d dB"
-msgstr ""
+msgstr "Eşik değeri: %d dB"
 
 #: ../src/TrackPanel.cpp:2015
 msgid "Time Shift"
-msgstr ""
+msgstr "Zaman Değişimi"
 
 #: ../src/ControlToolBar.cpp:357
 msgid "Time Shift Tool"
-msgstr ""
+msgstr "Zaman Değştirme"
 
 #: ../src/Menus.cpp:553
 msgid "Time Shift Tool\tF5"
-msgstr ""
+msgstr "Zaman Değiştirme\tF5"
 
 #: ../src/TimeTrack.cpp:38
 msgid "Time Track"
-msgstr "Zaman Kanalı"
+msgstr "Zaman Parçası"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time shift sequence"
-msgstr ""
+msgstr "Bağımsız zaman değişimi"
 
 #: ../src/TrackPanel.cpp:2009
 #, c-format
 msgid "Time shifted track '%s' %s %.02f seconds"
-msgstr ""
+msgstr "Zamanı değişmiş kanal '%s' %s %.02f saniye"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time-Shift"
-msgstr ""
+msgstr "Zaman Değişimi"
 
 #: ../src/Tags.cpp:435
 msgid "Title"
@@ -3932,7 +3965,7 @@ msgstr "Başlık:"
 
 #: ../src/Menus.cpp:2369
 msgid "To plot the spectrum, all selected tracks must be the same sample rate."
-msgstr ""
+msgstr "Tayfın haritasını çıkartmak için, tüm seçili kanalların örnekleme oranı aynı olmalıdır."
 
 #: ../src/effects/ToneGen.cpp:43
 msgid "Tone Generator"
@@ -3981,11 +4014,11 @@ msgstr "&Düzelt"
 
 #: ../src/Menus.cpp:1902
 msgid "Trim file to selection"
-msgstr ""
+msgstr "Dosyayı seçilene düzelt"
 
 #: ../src/EditToolBar.cpp:154
 msgid "Trim outside selection"
-msgstr ""
+msgstr "Seçilenin dışını düzelt"
 
 #: ../src/Menus.cpp:314
 msgid "Turn Grid Snap Off"
@@ -4030,7 +4063,7 @@ msgstr "Geri alma geçmişi"
 
 #: ../src/HistoryWindow.cpp:72
 msgid "Undo Levels Available (lots and lots)"
-msgstr ""
+msgstr "Geri Alma Seviyeleri Açık(çok fazla)"
 
 #: ../src/HistoryWindow.cpp:140
 #, c-format
@@ -4079,7 +4112,7 @@ msgstr "VST eklentisi değişkenleri"
 #: ../src/effects/AvcCompressor.cpp:424
 #: ../src/effects/AvcCompressor.cpp:431
 msgid "Validation error"
-msgstr ""
+msgstr "Onaylama hatası"
 
 #: ../src/effects/AvcCompressor.cpp:361
 #, c-format
@@ -4089,7 +4122,7 @@ msgstr "Değerler %d'den %d'e olmalı."
 #: ../src/effects/AvcCompressor.cpp:423
 #: ../src/effects/AvcCompressor.cpp:430
 msgid "Values in columns must be in ascending order."
-msgstr ""
+msgstr "Sütundaki değerler sırayla yukarı doğru çıkmalı."
 
 #: ../src/widgets/Meter.cpp:286
 msgid "Vertical Stereo"
@@ -4109,7 +4142,7 @@ msgstr "WET"
 
 #: ../src/effects/Wahwah.cpp:532
 msgid "Wah Frequency Offset (%):"
-msgstr ""
+msgstr "Wah Frekans Dengesi (%):"
 
 #: ../src/effects/Wahwah.cpp:52
 msgid "Wahwah"
@@ -4117,7 +4150,7 @@ msgstr "Wahwah"
 
 #: ../src/effects/Wahwah.cpp:461
 msgid "Wahwah by Nasca Octavian Paul"
-msgstr "Wahwah, Nasca Octavian Paul"
+msgstr "Wahwah (Nasca Octavian Paul)"
 
 #: ../src/effects/Wahwah.h:39
 msgid "Wahwah..."
@@ -4129,19 +4162,19 @@ msgstr "Uyarı"
 
 #: ../src/DirManager.cpp:83
 msgid "Warning: there is very little free disk space left on this volume. Please select another temporary directory in your preferences."
-msgstr "Uyarı: Sabit diskte çok az boşluk var. Lütfen ayarlar bölümünden başka bir geçici dizin seçin."
+msgstr "Uyarı: Sabit diskte çok az boşluk var. Lütfen tercihler bölümünden başka bir geçici dizin seçin."
 
 #: ../src/TrackPanel.cpp:835
 msgid "Waveform"
-msgstr "Wavebiçimi"
+msgstr "Dalgabiçimi"
 
 #: ../src/TrackPanel.cpp:836
 msgid "Waveform (dB)"
-msgstr "Wave biçimi (dB)"
+msgstr "Dalga biçimi (dB)"
 
 #: ../src/effects/ToneGen.cpp:263
 msgid "Waveform:"
-msgstr "Wave biçimi:"
+msgstr "Dalga biçimi:"
 
 #: ../src/prefs/MousePrefs.cpp:110
 msgid "Wheel-Rotate"
@@ -4149,7 +4182,7 @@ msgstr "Tekerlek-Yönlendir"
 
 #: ../src/prefs/FileFormatPrefs.cpp:68
 msgid "When importing uncompressed audio files into Audacity"
-msgstr "Dosya Audaciyt'e, içeri aktarılırken"
+msgstr "Dosya Audacity'ye, içeri aktarılırken"
 
 #. i18n-hint: It's asking for the location of a file, for
 #: ../src/export/ExportMP3.cpp:113
@@ -4270,7 +4303,7 @@ msgstr "Bir basamak uzaklaş"
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:113
 msgid "[Snap-To Off]"
-msgstr "(Kapa&t)"
+msgstr "(Kapat)"
 
 #. i18n-hint: This snap-to string will appear in the status bar.
 #: ../src/FormatSelection.cpp:115
@@ -4294,7 +4327,7 @@ msgstr "bayt"
 #. i18n-hint: fps is "frames per second",
 #: ../src/FormatSelection.cpp:44
 msgid "cdda min:sec:frames 75 fps"
-msgstr "cdda dk:sn:çerçeveler 75 fps"
+msgstr "cdda dk:sn:çerçeve 75 fps"
 
 #  i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #  A "sector" is a technical term - don't translate unless you're sure
@@ -4302,7 +4335,7 @@ msgstr "cdda dk:sn:çerçeveler 75 fps"
 #. i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
 #: ../src/FormatSelection.cpp:54
 msgid "cdda sectors+bytes (snap to samples)"
-msgstr "cdda dilimleri+bayt (örneklemelere uygula)"
+msgstr "cdda dilimi+bayt (örneklemelere uygula)"
 
 #: ../src/effects/Compressor.cpp:385
 #: ../src/effects/Compressor.cpp:393
@@ -4349,7 +4382,7 @@ msgstr "dk:sn (örneklemelere uygula)"
 
 #: ../src/FormatSelection.cpp:48
 msgid "min:sec+samples (snap to samples)"
-msgstr "dk:sn+örneklemeler (örneklemelere uygula)"
+msgstr "dk:sn+örnekleme (örneklemelere uygula)"
 
 #. i18n-hint: n/a is an English
 #: ../src/effects/ChangeSpeed.cpp:338
@@ -4362,7 +4395,7 @@ msgstr "sağ"
 
 #: ../src/FormatSelection.cpp:45
 msgid "samples (snap to samples)"
-msgstr "örneklemeler(örneklemelere uygula)"
+msgstr "örnekleme(örneklemelere uygula)"
 
 #: ../src/FormatSelection.cpp:24
 msgid "sec"
@@ -4374,7 +4407,7 @@ msgstr "sn (örneklemelere uygula)"
 
 #: ../src/FormatSelection.cpp:49
 msgid "sec+samples (snap to samples)"
-msgstr "sn+örneklemeler (örneklemelere uygula )"
+msgstr "sn+örnekleme (örneklemelere uygula )"
 
 #: ../src/FreqWindow.cpp:996
 msgid "spectrum.txt"
@@ -4427,4 +4460,3 @@ msgstr "SampleRate kullanımı, Erik de Castro Lopo"
 #: ../src/effects/ChangeTempo.cpp:169
 msgid "using SoundTouch, by Olli Parviainen"
 msgstr "SoundTouch kullanımı, Olli Parviainen"
-
