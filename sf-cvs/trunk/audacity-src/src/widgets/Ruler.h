@@ -146,6 +146,7 @@ class Ruler {
    wxDC        *mDC;
 
    wxFont      *mMinorFont, *mMajorFont;
+   bool         mUserFonts;
 
    double       mMin, mMax;
 
