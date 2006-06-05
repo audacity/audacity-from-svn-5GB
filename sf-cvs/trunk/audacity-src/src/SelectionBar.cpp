@@ -68,10 +68,12 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                            double rate,
                            SelectionBarListener * listener):
    wxPanel(parent, id, pos,  size, wxTAB_TRAVERSAL | wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE ),
-   mListener(listener), mRate(rate), mLeftTime(NULL),
+   mListener(listener), mRate(rate), 
    mStart(0.0), mEnd(0.0), mAudio(0.0),
-   mModifyingSelection(false)
+   mModifyingSelection(false), mLeftTime(NULL)
 {
+   int i;
+
    SetLabel(wxT("Selection Bar"));
    SetName(wxT("Selection Bar"));
 
@@ -80,9 +82,14 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    wxFlexGridSizer *mainSizer;
    wxBoxSizer *hSizer;
-   int i;
 
-   wxString format = TimeTextCtrl::GetBuiltinFormat(1);
+   wxString formatName = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
+   int formatIndex = 1;
+   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
+      if (TimeTextCtrl::GetBuiltinName(i) == formatName)
+         formatIndex = i;
+   formatName = TimeTextCtrl::GetBuiltinName(formatIndex);
+   wxString format = TimeTextCtrl::GetBuiltinFormat(formatIndex);
 
    mainSizer = new wxFlexGridSizer(9);
 
@@ -204,15 +211,17 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
                                     choices);
    box->SetName(_("Time Format"));
    box->SetWindowStyle(wxCB_READONLY);
-   box->SetValue(TimeTextCtrl::GetBuiltinName(1));
+   box->SetValue(formatName);
+
    mFormatChoice = box;
   #else
    wxChoice *choice = new wxChoice(this, OnFormatChoiceID, 
-                                    wxDefaultPosition, wxDefaultSize,
-                                    TimeTextCtrl::GetNumBuiltins(),
-                                    choices);
+                                   wxDefaultPosition, wxDefaultSize,
+                                   TimeTextCtrl::GetNumBuiltins(),
+                                   choices);
    choice->SetName(_("Time Format"));
-   choice->SetSelection(1);
+   choice->SetSelection(formatIndex);
+
    mFormatChoice = choice;   
   #endif
    delete [] choices;
@@ -343,7 +352,10 @@ void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
    #endif
    #endif
 
+   wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
    wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
+
+   gPrefs->Write(wxT("/SelectionFormat"), formatName);
 
    mLeftTime->SetFormatString(formatString);
    mRightTime->SetFormatString(formatString);

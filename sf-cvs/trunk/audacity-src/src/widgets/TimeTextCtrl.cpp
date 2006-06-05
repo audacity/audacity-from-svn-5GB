@@ -130,17 +130,15 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
-// static
-int TimeTextCtrl::sTextHeight = 0;
-int TimeTextCtrl::sTextWidth[11];
-
-enum {
-   AnyTextCtrlID = 2700
-};
-
 BEGIN_EVENT_TABLE(TimeTextCtrl, wxPanel)
-   EVT_TEXT(AnyTextCtrlID, TimeTextCtrl::OnText)
+   EVT_PAINT(TimeTextCtrl::OnPaint)
+   EVT_MOUSE_EVENTS(TimeTextCtrl::OnMouse)
+   EVT_CHAR(TimeTextCtrl::OnChar)
+   EVT_SET_FOCUS(TimeTextCtrl::OnFocus)
+   EVT_KILL_FOCUS(TimeTextCtrl::OnFocus)
 END_EVENT_TABLE()
+
+IMPLEMENT_CLASS(TimeTextCtrl, wxPanel)
 
 struct BuiltinFormatString {
    const wxChar *name;
@@ -148,36 +146,36 @@ struct BuiltinFormatString {
 };
 
 BuiltinFormatString BuiltinFormatStrings[] =
-   {{_("mm:ss"),
-     _("*,01000m060.01000s")},
-    {_("seconds"),
-     _("*.01000 seconds")},
+   {{_("seconds"),
+     _("01000,01000.01000 seconds")},
+    {_("hh:mm:ss"),
+     _("099h060m060.01000s")},
     {_("hh:mm:ss + milliseconds"),
-     _("*h060m060.01000s")},
+     _("099h060m060.01000s")},
     {_("hh:mm:ss + samples"),
-     _("*h060m060s+.#samples")},
+     _("099h060m060s+.#samples")},
     {_("samples"),
-    _("*samples|#")},
+     _("01000,01000,01000samples|#")},
     {_("hh:mm:ss + film frames (24 fps)"),
-     _("*h060m060s+.24 frames")},
+     _("099h060m060s+.24 frames")},
     {_("film frames (24 fps)"),
-     _("* frames |24")},
+     _("01000,01000 frames |24")},
     {_("hh:mm:ss + NTSC drop frames (29.97 fps)"),
-     _("*h060m060s+.2997 frames")},
+     _("099h060m060s+.2997 frames")},
     {_("NTSC drop frames (29.97 fps)"),
-     _("* frames|29.97002997")},
+     _("01000,01000 frames|29.97002997")},
     {_("hh:mm:ss + NTSC non-drop frames (30 fps)"),
-     _("*h060m060s+.030 frames")},
+     _("099h060m060s+.030 frames")},
     {_("NTSC non-drop frames (30 fps)"),
-     _("* frames|30")},
+     _("01000,01000 frames|30")},
     {_("hh:mm:ss + PAL frames (25 fps)"),
-     _("*h060m060s+.25 frames")},
+     _("099h060m060s+.25 frames")},
     {_("PAL frames (25 fps)"),
-     _("* frames|25")},
+     _("01000,01000 frames|25")},
     {_("hh:mm:ss + CDDA frames (75 fps)"),
-     _("*h060m060s+.75 frames")},
+     _("099h060m060s+.75 frames")},
     {_("CDDA frames (75 fps)"),
-     _("* frames |75")}};
+     _("01000,01000 frames |75")}};
 
 const int kNumBuiltinFormatStrings =
    sizeof(BuiltinFormatStrings) /
@@ -185,30 +183,47 @@ const int kNumBuiltinFormatStrings =
 
 class TimeField {
 public:
-   TimeField(int _base, int _range, bool _zeropad)
-     { base = _base; range = _range; zeropad = _zeropad; 
-       digits = 0; textCtrl = NULL; staticCtrl = NULL; }
+   TimeField(bool _frac, int _base, int _range, bool _zeropad)
+     { frac = _frac; base = _base; range = _range;
+       zeropad = _zeropad; digits = 0; }
+   bool frac; // is it a fractional field
    int base;  // divide by this (multiply, after decimal point)
    int range; // then take modulo this
    int digits;
+   int pos;   // Index of this field in the ValueString
+   int fieldX; // x-position of the field on-screen
+   int labelX; // x-position of the label on-screen
    bool zeropad;
    wxString label;
    wxString formatStr;
    wxString str;
-   wxTextCtrl *textCtrl;
-   wxStaticText *staticCtrl;
    void CreateDigitFormatStr() {
       if (range > 1)
          digits = (int)ceil(log10(range-1.0));
+      else
+         digits = 5; // hack: default
       if (zeropad && range>1)
          formatStr.Printf(wxT("%%0%dd"), digits); // ex. "%03d" if digits is 3
-      else
-         formatStr = wxT("%d");
+      else {
+         //formatStr = wxT("%d");/////////////old code
+         formatStr.Printf(wxT("%%0%dd"), digits);
+      }
    }
+};
+
+class DigitInfo {
+public:
+   DigitInfo(int _field, int _index, int _pos, wxRect _box)
+     { field = _field; index = _index; pos = _pos; digitBox = _box; }
+   int field; // Which field
+   int index; // Index of this digit within the field
+   int pos;   // Position in the ValueString
+   wxRect digitBox;
 };
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(TimeFieldArray);
+WX_DEFINE_OBJARRAY(DigitInfoArray);
 
 TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
                            wxWindowID id,
@@ -221,29 +236,49 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
    mFormatString(formatString),
-   mModifyingText(false),
-   mPrefixStaticText(NULL)
+   mBackgroundBitmap(NULL),
+   mDigitFont(NULL),
+   mLabelFont(NULL)
 {
+   mDigitBoxW = 10;
+   mDigitBoxH = 16;
+
    ParseFormatString();
-   CreateControls();
+   Layout();
+   Fit();
    ValueToControls();
+
+#if wxUSE_ACCESSIBILITY
+   SetName( wxT("") );
+   SetAccessible(new TimeTextCtrlAx(this));
+#endif
+}
+
+TimeTextCtrl::~TimeTextCtrl()
+{
+   if (mBackgroundBitmap)
+      delete mBackgroundBitmap;
+   if (mDigitFont)
+      delete mDigitFont;
+   if (mLabelFont)
+      delete mLabelFont;
 }
 
 void TimeTextCtrl::SetFormatString(wxString formatString)
 {
    mFormatString = formatString;
-   DeleteControls();
    ParseFormatString();
-   CreateControls();
+   Layout();
+   Fit();
    ValueToControls();
 }
 
 void TimeTextCtrl::SetSampleRate(double sampleRate)
 {
    mSampleRate = sampleRate;
-   DeleteControls();
    ParseFormatString();
-   CreateControls();
+   Layout();
+   Fit();
    ValueToControls();
 }
 
@@ -283,13 +318,14 @@ wxString TimeTextCtrl::GetBuiltinFormat(int index)
 void TimeTextCtrl::ParseFormatString()
 {
    mPrefix = wxT("");
-   mWholeFields.Clear();
-   mFracFields.Clear();
+   mFields.Clear();
    mScalingFactor = 1.0;
 
    const wxString format = mFormatString;
    bool inFrac = false;
    int fracMult = 1;
+   int numWholeFields = 0;
+   int numFracFields = 0;
    wxString numStr;
    wxString delimStr;
    unsigned int i;
@@ -342,16 +378,21 @@ void TimeTextCtrl::ParseFormatString()
          if (numStr.GetChar(0)=='0' && numStr.Length()>1)
             zeropad = true;
 
+         // Hack: always zeropad
+         zeropad = true;
+         
          if (inFrac) {
             int base = fracMult * range;
-            mFracFields.Add(TimeField(base, range, zeropad));
+            mFields.Add(TimeField(inFrac, base, range, zeropad));
             fracMult *= range;
+            numFracFields++;
          }
          else {
             unsigned int j;
-            for(j=0; j<mWholeFields.GetCount(); j++)
-               mWholeFields[j].base *= range;
-            mWholeFields.Add(TimeField(1, range, zeropad));
+            for(j=0; j<mFields.GetCount(); j++)
+               mFields[j].base *= range;
+            mFields.Add(TimeField(inFrac, 1, range, zeropad));
+            numWholeFields++;
          }
          numStr = wxT("");
       }
@@ -366,20 +407,20 @@ void TimeTextCtrl::ParseFormatString()
          }
 
          if (inFrac) {
-            if (mFracFields.GetCount() == 0) {
+            if (numFracFields == 0) {
                // Should never happen
                return;
             }
-            if (handleNum && mFracFields.GetCount() > 1)
-               mFracFields[mFracFields.GetCount()-2].label = delimStr;
+            if (handleNum && numFracFields > 1)
+               mFields[mFields.GetCount()-2].label = delimStr;
             else
-               mFracFields[mFracFields.GetCount()-1].label = delimStr;
+               mFields[mFields.GetCount()-1].label = delimStr;
          }
          else {
-            if (mWholeFields.GetCount() == 0)
+            if (numWholeFields == 0)
                mPrefix = delimStr;
             else {
-               mWholeFields[mWholeFields.GetCount()-1].label = delimStr;
+               mFields[numWholeFields-1].label = delimStr;
             }
          }
 
@@ -389,10 +430,33 @@ void TimeTextCtrl::ParseFormatString()
       }
    }
 
-   for(i=0; i<mWholeFields.GetCount(); i++)
-      mWholeFields[i].CreateDigitFormatStr();
-   for(i=0; i<mFracFields.GetCount(); i++)
-      mFracFields[i].CreateDigitFormatStr();
+   for(i=0; i<mFields.GetCount(); i++)
+      mFields[i].CreateDigitFormatStr();
+
+   int pos = 0;
+   int j;
+   mValueMask = wxT("");
+   mValueTemplate = wxT("");
+
+   mValueTemplate += mPrefix;
+   for(j=0; j<(int)mPrefix.Length(); j++)
+      mValueMask += wxT(".");
+   pos += mPrefix.Length();
+
+   for(i=0; i<mFields.GetCount(); i++) {
+      mFields[i].pos = pos;
+
+      pos += mFields[i].digits;
+      for(j=0; j<mFields[i].digits; j++) {
+         mValueTemplate += wxT("0");
+         mValueMask += wxT("0");
+      }
+
+      pos += mFields[i].label.Length();
+      mValueTemplate += mFields[i].label;
+      for(j=0; j<(int)mFields[i].label.Length(); j++)
+         mValueMask += wxT(".");
+   }
 }
 
 void TimeTextCtrl::PrintDebugInfo()
@@ -401,174 +465,281 @@ void TimeTextCtrl::PrintDebugInfo()
 
    printf("%s", (const char *)mPrefix.mb_str());
 
-   for(i=0; i<mWholeFields.GetCount(); i++)
-      printf("(t / %d) %% %d '%s' ",
-             mWholeFields[i].base,
-             mWholeFields[i].range,
-             (const char *)mWholeFields[i].label.mb_str());
+   for(i=0; i<mFields.GetCount(); i++) {
+      if (mFields[i].frac) {
+         printf("(t * %d) %% %d '%s' ",
+                mFields[i].base,
+                mFields[i].range,
+                (const char *)mFields[i].label.mb_str());
 
-   for(i=0; i<mFracFields.GetCount(); i++)
-      printf("(t * %d) %% %d '%s' ",
-             mFracFields[i].base,
-             mFracFields[i].range,
-             (const char *)mFracFields[i].label.mb_str());
+      }
+      else {
+         printf("(t / %d) %% %d '%s' ",
+                mFields[i].base,
+                mFields[i].range,
+                (const char *)mFields[i].label.mb_str());
+      }
+   }
 
    printf("\n");
 }
 
 wxString TimeTextCtrl::GetTimeString()
 {
-   int t_int = int(mTimeValue);
-   double t_frac = (mTimeValue - t_int);
-   wxString result;
-   unsigned int i;
+   ValueToControls();
 
-   result = mPrefix;
-   for(i=0; i<mWholeFields.GetCount(); i++) {
-      int value = (t_int / mWholeFields[i].base);
-      if (mWholeFields[i].range > 0)
-         value = value % mWholeFields[i].range;
-      result += wxString::Format(mWholeFields[i].formatStr, value);
-      result += mWholeFields[i].label;
-   }
-   for(i=0; i<mFracFields.GetCount(); i++) {
-      int value = (int)(t_frac * mFracFields[i].base);
-      if (mFracFields[i].range > 0)
-         value = value % mFracFields[i].range;
-      result += wxString::Format(mFracFields[i].formatStr, value);
-      result += mFracFields[i].label;
-   }
-
-   return result;
+   return mValueString;
 }
 
-void TimeTextCtrl::DeleteControls()
+bool TimeTextCtrl::Layout()
 {
-   unsigned int i;
+   unsigned int i, j;
+   int x, pos;
 
-   if (mPrefixStaticText) {
-      mPrefixStaticText->Destroy();
-      mPrefixStaticText = NULL;
+   wxMemoryDC memDC;
+   if (mBackgroundBitmap) {
+      delete mBackgroundBitmap;
+      mBackgroundBitmap = NULL;
+   }
+   // Placeholder bitmap so the memDC has something to reference
+   mBackgroundBitmap = new wxBitmap(1, 1);
+   memDC.SelectObject(*mBackgroundBitmap);
+
+   mDigits.Clear();
+
+   mBorderLeft = 1;
+   mBorderTop = 1;
+   mBorderRight = 1;
+   mBorderBottom = 1;
+
+   int fontSize = 4;
+   wxCoord strW, strH;
+   wxString exampleText = wxT("0");
+
+   // Keep making the font bigger until it's too big, then subtract one.
+   memDC.SetFont(wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL));
+   memDC.GetTextExtent(exampleText, &strW, &strH);
+   while(strW <= mDigitBoxW && strH <= mDigitBoxH) {
+      fontSize++;
+      memDC.SetFont(wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL));
+      memDC.GetTextExtent(exampleText, &strW, &strH);
+   }
+   fontSize--;
+
+   mDigitFont = new wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL);
+   memDC.SetFont(*mDigitFont);
+   memDC.GetTextExtent(exampleText, &strW, &strH);
+   mDigitW = strW;
+   mDigitH = strH;
+
+   // The label font should be a little smaller
+   fontSize--;
+   mLabelFont = new wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL);
+
+   // Figure out the x-position of each field and label in the box
+   x = mBorderLeft;
+   pos = 0;
+
+   memDC.SetFont(*mLabelFont);
+   memDC.GetTextExtent(mPrefix, &strW, &strH);
+   x += strW;
+   pos += mPrefix.Length();
+
+   for(i=0; i<mFields.GetCount(); i++) {
+      mFields[i].fieldX = x;
+      for(j=0; j<(unsigned int)mFields[i].digits; j++) {
+         mDigits.Add(DigitInfo(i, j, pos, wxRect(x, mBorderTop,
+                                                 mDigitBoxW, mDigitBoxH)));
+         x += mDigitBoxW;
+         pos++;
+      }
+
+      mFields[i].labelX = x;
+      memDC.GetTextExtent(mFields[i].label, &strW, &strH);
+      pos += mFields[i].label.Length();
+      x += strW;
    }
 
-   for(i=0; i<mWholeFields.GetCount(); i++) {
-      mWholeFields[i].textCtrl->Destroy();
-      mWholeFields[i].staticCtrl->Destroy();
+   mWidth = x + mBorderRight;
+   mHeight = mDigitBoxH + mBorderTop + mBorderBottom;
+
+   // Draw the background bitmap - it contains black boxes where
+   // all of the digits go and all of the other text
+
+   delete mBackgroundBitmap; // Delete placeholder
+   mBackgroundBitmap = new wxBitmap(mWidth, mHeight);
+   memDC.SelectObject(*mBackgroundBitmap);
+
+   memDC.SetBrush(*wxLIGHT_GREY_BRUSH);
+   memDC.SetPen(*wxTRANSPARENT_PEN);
+   memDC.DrawRectangle(0, 0, mWidth, mHeight);
+
+   int numberBottom = mBorderTop + (mDigitBoxH - mDigitH)/2 + mDigitH;
+
+   memDC.GetTextExtent(wxT("0"), &strW, &strH);
+   int labelTop = numberBottom - strH;
+
+   memDC.SetTextForeground(*wxBLACK);
+   memDC.SetTextBackground(*wxLIGHT_GREY);
+   memDC.DrawText(mPrefix, mBorderLeft, labelTop);
+
+   memDC.SetBrush(*wxBLACK_BRUSH);
+   for(i=0; i<mDigits.GetCount(); i++)
+      memDC.DrawRectangle(mDigits[i].digitBox);
+
+   for(i=0; i<mFields.GetCount(); i++)
+      memDC.DrawText(mFields[i].label,
+                     mFields[i].labelX, labelTop);
+
+   return true;
+}
+
+void TimeTextCtrl::Fit()
+{
+   wxSize size(mWidth, mHeight);
+   SetSizeHints(size, size);
+   SetSize(size);
+}
+
+void TimeTextCtrl::OnPaint(wxPaintEvent &event)
+{
+   wxPaintDC dc(this);
+
+   dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
+
+   if (FindFocus()==this) {
+      dc.SetPen(*wxGREEN_PEN);
+      dc.SetBrush(*wxTRANSPARENT_BRUSH);
+      dc.DrawRectangle(0, 0, mWidth, mHeight);
    }
 
-   for(i=0; i<mFracFields.GetCount(); i++) {
-      mFracFields[i].textCtrl->Destroy();
-      mFracFields[i].staticCtrl->Destroy();
+   dc.SetFont(*mDigitFont);
+   dc.SetTextForeground(*wxGREEN);
+   dc.SetTextBackground(*wxBLACK);
+
+   dc.SetPen(*wxTRANSPARENT_PEN);
+   dc.SetBrush(*wxWHITE_BRUSH);
+
+   int i;
+   for(i=0; i<(int)mDigits.GetCount(); i++) {
+      wxRect box = mDigits[i].digitBox;
+      if (FindFocus()==this && mFocusedDigit == i) {
+         dc.DrawRectangle(box);
+         dc.SetTextForeground(*wxBLACK);
+         dc.SetTextBackground(*wxWHITE);
+      }
+      int pos = mDigits[i].pos;
+      wxString digit = mValueString.Mid(pos, 1);
+      int x = box.x + (mDigitBoxW - mDigitW)/2;
+      int y = box.y + (mDigitBoxH - mDigitH)/2;
+      dc.DrawText(digit, x, y);
+      if (FindFocus()==this && mFocusedDigit == i) {
+         dc.SetTextForeground(*wxGREEN);
+         dc.SetTextBackground(*wxBLACK);
+      }
+  }
+}
+
+void TimeTextCtrl::OnMouse(wxMouseEvent &event)
+{
+   if (event.ButtonDown()) {
+      SetFocus();
+
+      int bestDist = 9999;
+      unsigned int i;
+
+      mFocusedDigit = 0;
+      for(i=0; i<mDigits.GetCount(); i++) {
+         int dist = abs(event.m_x - (mDigits[i].digitBox.x +
+                                     mDigits[i].digitBox.width/2));
+         if (dist < bestDist) {
+            mFocusedDigit = i;
+            bestDist = dist;
+         }
+      }
+
+      Refresh(false);
    }
 }
 
-void TimeTextCtrl::CreateControls()
+void TimeTextCtrl::OnFocus(wxFocusEvent &event)
 {
-   wxBoxSizer *mainSizer;
-   wxTextCtrl *text;
-   wxStaticText *stat;
-   unsigned int i;
-   int width;
-   int digits;
+   Refresh(false);
+}
 
-   if (sTextHeight == 0)
-      ComputeTextExtents();
+void TimeTextCtrl::OnChar(wxKeyEvent &event)
+{
+   int keyCode = event.GetKeyCode();
 
-   mainSizer = new wxBoxSizer(wxHORIZONTAL);
+   if (mFocusedDigit < 0)
+      mFocusedDigit = 0;
+   if (mFocusedDigit >= (int)mDigits.GetCount())
+      mFocusedDigit = mDigits.GetCount()-1;
 
-   if (mPrefix != wxT("")) {
-      stat = new wxStaticText(this, -1, mPrefix);
-      mainSizer->Add(stat, 0, wxALL | wxALIGN_CENTER_VERTICAL |
-                     wxLEFT | wxRIGHT, 1);
-      mPrefixStaticText = stat;
+   if (keyCode >= '0' && keyCode <= '9') {
+      mValueString[mDigits[mFocusedDigit].pos] = wxChar(keyCode);
+      ControlsToValue();
+      ValueToControls();
+      mFocusedDigit = (mFocusedDigit+1)%(mDigits.GetCount());
+      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
+      event.SetEventObject(this);
+      GetEventHandler()->ProcessEvent(event);
    }
 
-   for(i=0; i<mWholeFields.GetCount(); i++) {
-      digits = mWholeFields[i].digits;
-      if (digits < 1)
-         digits = 3;
-      if (digits > 10)
-         digits = 10;
-      if( (mWholeFields.GetCount() == 1) && (mFracFields.GetCount() == 0) )
-         digits = 10;
-      width = sTextWidth[digits];
-      text = new wxTextCtrl(this, AnyTextCtrlID, wxT(""),
-                            wxDefaultPosition, wxSize(width, -1),
-                            wxTE_RIGHT);
-      //if (mWholeFields[i].digits > 0)
-      //   text->SetMaxLength(mWholeFields[i].digits);
-      mainSizer->Add(text, 0, wxALL, 0);
-      mWholeFields[i].textCtrl = text;
-
-      stat = new wxStaticText(this, -1, mWholeFields[i].label);
-      mainSizer->Add(stat, 0, wxALL | wxALIGN_CENTER_VERTICAL |
-                     wxLEFT | wxRIGHT, 1);
-      mWholeFields[i].staticCtrl = stat;
+   if (keyCode == WXK_BACK) {
+      // Moves left, replaces that char with '0', stays there...
+      mFocusedDigit--;
+      mFocusedDigit += mDigits.GetCount();
+      mFocusedDigit %= mDigits.GetCount();
+      mValueString[mDigits[mFocusedDigit].pos] = '0';
+      ControlsToValue();
+      ValueToControls();
+      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
+      event.SetEventObject(this);
+      GetEventHandler()->ProcessEvent(event);
    }
 
-   for(i=0; i<mFracFields.GetCount(); i++) {
-      digits = mFracFields[i].digits;
-      if (digits < 1)
-         digits = 5;
-      if (digits > 10)
-         digits = 10;
-      width = sTextWidth[digits];
-      text = new wxTextCtrl(this, AnyTextCtrlID, wxT(""),
-                            wxDefaultPosition, wxSize(width, -1),
-                            wxTE_RIGHT);
-      //if (mFracFields[i].digits > 0)
-      //   text->SetMaxLength(mFracFields[i].digits);
-      mainSizer->Add(text, 0, wxALL, 0);
-      mFracFields[i].textCtrl = text;
-
-      stat = new wxStaticText(this, -1, mFracFields[i].label);
-      mainSizer->Add(stat, 0, wxALL | wxALIGN_CENTER_VERTICAL |
-                     wxLEFT | wxRIGHT, 1);
-      mFracFields[i].staticCtrl = stat;
+   if (keyCode == WXK_LEFT) {
+      mFocusedDigit--;
+      mFocusedDigit += mDigits.GetCount();
+      mFocusedDigit %= mDigits.GetCount();
+      Refresh();
    }
 
-   SetAutoLayout(true);
-   SetSizerAndFit(mainSizer);
-   Layout();
+   if (keyCode == WXK_RIGHT) {
+      mFocusedDigit++;
+      mFocusedDigit %= mDigits.GetCount();
+      Refresh();
+   }
 }
 
 void TimeTextCtrl::ValueToControls()
 {
-   long sel0, sel1;
    double theValue = mTimeValue * mScalingFactor;
    int t_int = int(theValue);
    double t_frac = (theValue - t_int);
-   wxString str;
    unsigned int i;
 
-   mModifyingText = true;
+   mValueString = mPrefix;
 
-   for(i=0; i<mWholeFields.GetCount(); i++) {
-      int value = (t_int / mWholeFields[i].base);
-      if (mWholeFields[i].range > 0)
-         value = value % mWholeFields[i].range;
-      str.Printf(mWholeFields[i].formatStr, value);
-      if (mWholeFields[i].str != str) {
-         mWholeFields[i].str = str;
-         mWholeFields[i].textCtrl->GetSelection(&sel0, &sel1);
-         mWholeFields[i].textCtrl->SetValue(str);
-         mWholeFields[i].textCtrl->SetSelection(sel0, sel1);
+   for(i=0; i<mFields.GetCount(); i++) {
+      int value;
+      if (mFields[i].frac) {
+         value = (int)(t_frac * mFields[i].base);
+         if (mFields[i].range > 0)
+            value = value % mFields[i].range;
       }
-   }
-   for(i=0; i<mFracFields.GetCount(); i++) {
-      int value = (int)(t_frac * mFracFields[i].base);
-      if (mFracFields[i].range > 0)
-         value = value % mFracFields[i].range;
-      str.Printf(mFracFields[i].formatStr, value);
-      if (mFracFields[i].str != str) {
-         mFracFields[i].str = str;
-         mFracFields[i].textCtrl->GetSelection(&sel0, &sel1);
-         mFracFields[i].textCtrl->SetValue(str);
-         mFracFields[i].textCtrl->SetSelection(sel0, sel1);
+      else {
+         value = (t_int / mFields[i].base);
+         if (mFields[i].range > 0)
+            value = value % mFields[i].range;
       }
+      wxString field = wxString::Format(mFields[i].formatStr, value);
+      mValueString += field;
+      mValueString += mFields[i].label;
    }
 
-   mModifyingText = false;
+   Refresh(false);
 }
 
 void TimeTextCtrl::ControlsToValue()
@@ -576,17 +747,15 @@ void TimeTextCtrl::ControlsToValue()
    unsigned int i;
    double t = 0.0;
 
-   for(i=0; i<mWholeFields.GetCount(); i++) {
+   for(i=0; i<mFields.GetCount(); i++) {
       long val;
-      mWholeFields[i].str = mWholeFields[i].textCtrl->GetValue();
-      mWholeFields[i].str.ToLong(&val);
-      t += (val * (double)mWholeFields[i].base);
-   }
-   for(i=0; i<mFracFields.GetCount(); i++) {
-      long val;
-      mFracFields[i].str = mFracFields[i].textCtrl->GetValue();
-      mFracFields[i].str.ToLong(&val);
-      t += (val / (double)mFracFields[i].base);
+      mFields[i].str = mValueString.Mid(mFields[i].pos,
+                                        mFields[i].digits);
+      mFields[i].str.ToLong(&val);
+      if (mFields[i].frac)
+         t += (val / (double)mFields[i].base);
+      else
+         t += (val * (double)mFields[i].base);
    }
 
    t /= mScalingFactor;
@@ -594,94 +763,187 @@ void TimeTextCtrl::ControlsToValue()
    mTimeValue = t;
 }
 
-void TimeTextCtrl::OnText(wxCommandEvent &event)
+#if wxUSE_ACCESSIBILITY
+
+AButtonAx::AButtonAx( wxWindow *window ):
+   wxWindowAccessible( window )
 {
-   // Don't trigger an event if we were the ones who modified the text
-   if (mModifyingText) {
-      return;
+}
+
+AButtonAx::~AButtonAx()
+{
+}
+
+// Performs the default action. childId is 0 (the action for this object)
+// or > 0 (the action for a child).
+// Return wxACC_NOT_SUPPORTED if there is no default action for this
+// window (e.g. an edit control).
+wxAccStatus AButtonAx::DoDefaultAction(int childId)
+{
+   return wxACC_NOT_SUPPORTED;
+}
+
+// Retrieves the address of an IDispatch interface for the specified child.
+// All objects must support this property.
+wxAccStatus AButtonAx::GetChild( int childId, wxAccessible** child )
+{
+   if( childId == wxACC_SELF )
+   {
+      *child = this;
    }
-
-   double oldValue = mTimeValue;
-
-   ControlsToValue();
-
-   if (oldValue == mTimeValue)
-      return;
-
-   //Create an event for the parent window to process.
-   wxCommandEvent *e =
-      new wxCommandEvent(wxEVT_COMMAND_TEXT_UPDATED, GetId());
-   GetParent()->AddPendingEvent(*e);
-   delete e;
-}
-
-bool TimeTextCtrl::HasAnyFocus()
-{
-   unsigned int i;
-   wxWindow *focus = FindFocus();
-
-   if (focus == this)
-      return true;
-
-   for(i=0; i<mWholeFields.GetCount(); i++)
-      if (focus == mWholeFields[i].textCtrl)
-         return true;
-
-   for(i=0; i<mFracFields.GetCount(); i++)
-      if (focus == mFracFields[i].textCtrl)
-         return true;
-
-   return false;
-}
-
-void TimeTextCtrl::ComputeTextExtents()
-{
-   // Figure out the font used in text controls, and measure it to
-   // determine how many pixels wide (and tall) we need to make a
-   // TextCtrl in order to have room for any number of digits
-   // from 1 to 10.  Because the text control has a margin and border,
-   // we need to add some constant pixels to this, which is currently
-   // a hardcoded number per platform.
-
-   #if defined(__WXGTK__)
-   int xBorder = 2;
-   int yBorder = 2;
-   #elif defined(__WXMSW__)
-   int xBorder = 6;
-   int yBorder = 2;
-   #elif defined(__WXMAC__)
-   int xBorder = 2;
-   int yBorder = 2;
-   #else
-   int xBorder = 2;
-   int yBorder = 2;
-   #endif
-
-   wxChar str[12];
-   wxTextCtrl *text;
-   wxCoord width=0, height=0;
-   unsigned int i;
-
-   text = new wxTextCtrl(this, -1, wxT(""));
-   wxTextAttr attr = text->GetDefaultStyle();
-   wxMemoryDC dc;
-   wxBitmap bitmap(300, 100);
-   dc.SelectObject(bitmap);
-   if (attr.HasFont())
-      dc.SetFont(attr.GetFont());
    else
-      dc.SetFont(text->GetFont());
-
-   for(i=0; i<=10; i++) {
-      str[i] = wxT('0');
-      str[i+1] = 0;
-      dc.GetTextExtent(str, &width, &height);
-      sTextWidth[i] = width + xBorder;
-      sTextHeight = height + yBorder;
+   {
+      *child = NULL;
    }
 
-   text->Destroy();
+   return wxACC_OK;
 }
+
+// Gets the number of children.
+wxAccStatus AButtonAx::GetChildCount(int* childCount)
+{
+   *childCount = 0;
+
+   return wxACC_OK;
+}
+
+// Gets the default action for this object (0) or > 0 (the action for
+// a child).  Return wxACC_OK even if there is no action. actionName
+// is the action, or the empty string if there is no action.  The
+// retrieved string describes the action that is performed on an
+// object, not what the object does as a result. For example, a
+// toolbar button that prints a document has a default action of
+// "Press" rather than "Prints the current document."
+wxAccStatus AButtonAx::GetDefaultAction(int childId, wxString* actionName)
+{
+   *actionName = wxT("");
+
+   return wxACC_OK;
+}
+
+// Returns the description for this object or a child.
+wxAccStatus AButtonAx::GetDescription( int childId, wxString *description )
+{
+   description->Clear();
+
+   return wxACC_OK;
+}
+
+// Gets the window with the keyboard focus.
+// If childId is 0 and child is NULL, no object in
+// this subhierarchy has the focus.
+// If this object has the focus, child should be 'this'.
+wxAccStatus AButtonAx::GetFocus(int* childId, wxAccessible** child)
+{
+   *childId = 0;
+   *child = this;
+
+   return wxACC_OK;
+}
+
+// Returns help text for this object or a child, similar to tooltip text.
+wxAccStatus AButtonAx::GetHelpText( int childId, wxString *helpText )
+{
+#if wxUSE_TOOLTIPS // Not available in wxX11
+   AButton *ab = wxDynamicCast( GetWindow(), AButton );
+
+   wxToolTip *pTip = ab->GetToolTip();
+   if( pTip )
+   {
+      *helpText = pTip->GetTip();
+   }
+
+   return wxACC_OK;
+#else
+   helpText->Clear();
+
+   return wxACC_NOT_SUPPORTED;
+#endif
+}
+
+// Returns the keyboard shortcut for this object or child.
+// Return e.g. ALT+K
+wxAccStatus AButtonAx::GetKeyboardShortcut( int childId, wxString *shortcut )
+{
+   shortcut->Clear();
+
+   return wxACC_OK;
+}
+
+// Returns the rectangle for this object (id = 0) or a child element (id > 0).
+// rect is in screen coordinates.
+wxAccStatus AButtonAx::GetLocation( wxRect& rect, int elementId )
+{
+   TimeTextCtrl *ctrl = wxDynamicCast( GetWindow(), TimeTextCtrl );
+
+   rect = ctrl->GetRect();
+   rect.SetPosition( ctrl->GetParent()->ClientToScreen( rect.GetPosition() ) );
+
+   return wxACC_OK;
+}
+
+// Gets the name of the specified object.
+wxAccStatus AButtonAx::GetName(int childId, wxString* name)
+{
+   TimeTextCtrl *ctrl = wxDynamicCast( GetWindow(), TimeTextCtrl );
+
+   *name = ctrl->GetName();
+   if( name->IsEmpty() )
+   {
+      *name = ctrl->GetLabel();
+   }
+
+   if( name->IsEmpty() )
+   {
+      *name = _("Time Control");
+   }
+
+   return wxACC_OK;
+}
+
+// Returns a role constant.
+wxAccStatus AButtonAx::GetRole(int childId, wxAccRole* role)
+{
+   *role = wxROLE_SYSTEM_TEXT;
+
+   return wxACC_OK;
+}
+
+// Gets a variant representing the selected children
+// of this object.
+// Acceptable values:
+// - a null variant (IsNull() returns TRUE)
+// - a list variant (GetType() == wxT("list"))
+// - an integer representing the selected child element,
+//   or 0 if this object is selected (GetType() == wxT("long"))
+// - a "void*" pointer to a wxAccessible child object
+wxAccStatus AButtonAx::GetSelections( wxVariant *selections )
+{
+   return wxACC_NOT_IMPLEMENTED;
+}
+
+// Returns a state constant.
+wxAccStatus AButtonAx::GetState(int childId, long* state)
+{
+   TimeTextCtrl *ctrl = wxDynamicCast( GetWindow(), TimeTextCtrl );
+
+   *state = wxACC_STATE_SYSTEM_FOCUSABLE;
+
+   *state |= ( ctrl == wxWindow::FindFocus() ? wxACC_STATE_SYSTEM_FOCUSED : 0 );
+
+   return wxACC_OK;
+}
+
+// Returns a localized string representing the value for the object
+// or child.
+wxAccStatus AButtonAx::GetValue(int childId, wxString* strValue)
+{
+   TimeTextCtrl *ctrl = wxDynamicCast( GetWindow(), TimeTextCtrl );
+
+   *strValue = ctrl->GetTimeString();
+}
+
+#endif
 
 
 // Indentation settings for Vim and Emacs.
