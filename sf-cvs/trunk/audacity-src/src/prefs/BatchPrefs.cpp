@@ -11,29 +11,17 @@
 
 #include "../Audacity.h"
 
-#include "BatchPrefs.h"
+#include <wx/defs.h>
+#include <wx/intl.h>
 
+#include "BatchPrefs.h"
 #include "../Envelope.h"
 #include "../Languages.h"
 #include "../Prefs.h"
 #include "../Project.h"
 #include "../BatchCommandDialog.h"
+#include "../ShuttleGui.h"
 
-#include <wx/defs.h>
-#include <wx/checkbox.h>
-#include <wx/choice.h>
-#include <wx/intl.h>
-#include <wx/sizer.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/radiobut.h>
-#include <wx/button.h>
-
-#define AssignDefaultsButtonID  7001
-#define CurrentComboID          7002
-#define SetButtonID             7003
-#define ClearButtonID           7004
 #define CommandsListID          7005
 #define SaveButtonID            7006
 #define LoadButtonID            7007
@@ -42,18 +30,17 @@
 #define EmptyChainButtonID      7010
 
 BEGIN_EVENT_TABLE(BatchPrefs, wxPanel)
-//   EVT_BUTTON(AssignDefaultsButtonID, BatchPrefs::OnDefaults)
-//   EVT_BUTTON(SetButtonID, BatchPrefs::OnSet)
-//   EVT_BUTTON(ClearButtonID, BatchPrefs::OnClear)
    EVT_BUTTON(SaveButtonID, BatchPrefs::OnSave)
    EVT_BUTTON(LoadButtonID, BatchPrefs::OnLoad)
-   EVT_LIST_ITEM_ACTIVATED(CommandsListID, BatchPrefs::OnItemSelected)
-   EVT_LIST_BEGIN_DRAG(CommandsListID, BatchPrefs::OnDrag)  // The user has started dragging an item with the left mouse button. The event handler must call wxTreeEvent::Allow() for the drag operation to continue.  
    EVT_BUTTON(CleanSpeechButtonID, BatchPrefs::OnSetChainCleanSpeech)
    EVT_BUTTON(Mp3ButtonID,         BatchPrefs::OnSetChainMp3)
    EVT_BUTTON(EmptyChainButtonID,  BatchPrefs::OnSetChainEmpty)
-//EVT_TREE_BEGIN_RDRAG(id, func)  // The user has started dragging an item with the right mouse button. The event handler must call wxTreeEvent::Allow() for the drag operation to continue.  
-//   EVT_LIST_END_DRAG(CommandsListID, BatchPrefs::OnDragEnd)   // The user has released the mouse after dragging an item.  
+   EVT_LIST_ITEM_ACTIVATED(CommandsListID, BatchPrefs::OnItemSelected)
+
+// Is someone working on drag and drop????
+   EVT_LIST_BEGIN_DRAG(CommandsListID, BatchPrefs::OnDrag)  // The user has started dragging an item with the left mouse button. The event handler must call wxTreeEvent::Allow() for the drag operation to continue.  
+// EVT_TREE_BEGIN_RDRAG(id, func)  // The user has started dragging an item with the right mouse button. The event handler must call wxTreeEvent::Allow() for the drag operation to continue.  
+// EVT_LIST_END_DRAG(CommandsListID, BatchPrefs::OnDragEnd)   // The user has released the mouse after dragging an item.  
 END_EVENT_TABLE()
 
 enum { BlankColumn,   
@@ -62,100 +49,85 @@ enum { BlankColumn,
    ParamsColumn,
 };
 
-// Titles for the lists of check boxes.
-const wxString Titles[NUM_BATCH_CHECKBOX_CONTAINERS] =
-{
-   _("Behaviors"),  // e.g. 'Pause Always Allowed'.
-   _("Show / Hide") // e.g. show/hide a toolbar or a tabbed window.
-};
-
+/// Constructor
 BatchPrefs::BatchPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
-   int i;
-
    SetLabel(_("Batch"));         // Provide visual label
    SetName(_("Batch"));          // Provide audible label
+   Populate();
+}
 
-   topSizer = new wxBoxSizer( wxVERTICAL );
-   // CheckSizer is a sizer that holds the left and right sizers.
-   wxBoxSizer * CheckSizer = new wxBoxSizer( wxHORIZONTAL );
+/// Creates the dialog and its contents.
+void BatchPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
 
-   // We have two containers, a left and a right one.
-   for(i=0;i<NUM_BATCH_CHECKBOX_CONTAINERS;i++)
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   // We have a bare list.  We need to add columns and content.
+   CreateList();
+}
+
+/// Defines the dialog and does data exchange with it.
+void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.StartHorizontalLay( wxEXPAND, 0 );
+   S.SetBorder( 2 );
+   S.StartStatic( _("Behaviors"),1 );
    {
-      mCheckListSizers[i] = new wxStaticBoxSizer(
-            new wxStaticBox(this, -1,
-         Titles[i] ),
-         wxVERTICAL );
-
-#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
-      mCheckListBoxes[i] = new wxCheckListBox
-           (
-            this,                  // parent
-            -1,                    // control id
-            wxPoint(10, 10),       // listbox poistion
-            wxSize(245, 130),      // listbox size
-            0,                     // initially no entries.
-            NULL,                  // initial empty list of strings.
-            0
-           );
-      if( mCheckListBoxes[i] )
-         mCheckListSizers[i]->Add(mCheckListBoxes[i], 1, wxGROW|wxALL, 2);
-#endif
-      CheckSizer->Add( mCheckListSizers[i], 1, wxGROW|wxALL, 1);
+      S.TieCheckBox( _("&Batch debug mode"),  
+         wxT("/Batch/Debug"), false);
+      S.TieCheckBox( _("&Normalize on load"), 
+         wxT("/Batch/NormalizeOnLoad"), false );
+      S.TieCheckBox( _("&Prompt to save, even if empty"),    
+         wxT("/Batch/EmptyCanBeDirty"), false );
+      S.TieCheckBox( _("Cl&eanSpeech Mode (Customized GUI)"), 
+         wxT("/Batch/CleanSpeechMode"), false);
    }
+   S.EndStatic();
+   S.StartStatic( _("Show / Hide"),1 );
+   {
+      S.TieCheckBox( _("S&how Mp3-ID3 Dialog"), 
+         wxT("/Batch/ShowId3Dialog"), false);
+//    S.TieCheckBox( _("Show Confirmation for 'delete orphans'"), 
+//       wxT("/Batch/ShowDeleteConfirmation"), true);
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
+   S.StartHorizontalLay( wxEXPAND, 1 );
+   S.StartStatic( _("Batch Options"));
+   {
+      S.AddFixedText( 
+         _("Batch mode is an\n"
+         wxT("experimental feature.\n\n")
+         wxT("Please read the release\n")
+         wxT("notes for known limitations")));
+      S.Id( CleanSpeechButtonID ).AddButton( _("&CleanSpeech Chain") );
+      S.Id( Mp3ButtonID ).AddButton( _("&Mp3 Conversion Chain") );
+      S.Id( EmptyChainButtonID ).AddButton( _("&Empty Chain") );
+      S.Id( LoadButtonID ).AddButton( _("&Load Chain") );
+      S.Id( SaveButtonID ).AddButton( _("&Save Chain") );
+   }
+   S.EndStatic();
+   S.StartStatic( _("Batch Sequence (Double-Click or press SPACE to edit)"),1);
+   {
+      mList = S.Id( CommandsListID ).AddListControlReportMode();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
+   return;
+}
 
-   // And CheckSizer is itself added in to the topSizer.
-   topSizer->Add( CheckSizer, 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
-
-   // Create all the checkboxes.
-   mbCreating=true;
-   AllCheckBoxActions();
-
-   // batchControlSizer is a sizer that holds the left and right sizers.
-   wxBoxSizer * batchControlSizer = new wxBoxSizer( wxHORIZONTAL );
-
-   wxStaticBoxSizer *batchOptionsSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Batch Options")),
-            wxVERTICAL);
-
-   wxStaticText * item = 
-      new wxStaticText(this, -1,
-                        _("Batch mode is an\nexperimental feature.\n\nPlease read the release\nnotes for known limitations"),
-                        wxDefaultPosition, wxDefaultSize, 0);
-
-   batchOptionsSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
-   wxButton * btnCleanSpeech = new wxButton( this, CleanSpeechButtonID,
-      _("&CleanSpeech Chain"), wxDefaultPosition, wxDefaultSize, 0);
-
-   wxButton * btnMp3 = new wxButton( this, Mp3ButtonID,
-      _("&Mp3 Conversion Chain"), wxDefaultPosition, wxDefaultSize, 0);
-
-   wxButton * btnEmpty = new wxButton( this, EmptyChainButtonID,
-      _("&Empty Chain"), wxDefaultPosition, wxDefaultSize, 0);
-
-   wxButton * btnLoad = new wxButton( this, LoadButtonID, _("&Load Chain") );
-   wxButton * btnSave = new wxButton( this, SaveButtonID, _("&Save Chain") );
-
-   batchOptionsSizer->Add(btnCleanSpeech, 0, wxALIGN_CENTER | wxALL, 5);
-   batchOptionsSizer->Add(btnMp3, 0, wxALIGN_CENTER | wxALL, 5);
-   batchOptionsSizer->Add(btnEmpty, 0, wxALIGN_CENTER | wxALL, 5);
-   batchOptionsSizer->Add(btnLoad, 0, wxALIGN_CENTER | wxALL, 5);
-   batchOptionsSizer->Add(btnSave, 0, wxALIGN_CENTER | wxALL, 5);
-   batchControlSizer->Add( batchOptionsSizer, 0, wxGROW|wxALL, 1);
-
- 
-   wxStaticBoxSizer *batchSequenceSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Batch Sequence (Double-Click or press SPACE to edit)")),
-            wxVERTICAL);
-   mList = new wxListCtrl( this, CommandsListID ,
-      wxDefaultPosition, wxSize(230,120),//wxDefaultSize,
-      wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
-      );
-
+/// Sets up mList with the right number of columns, titles,
+/// fills the contents and sets column widths.
+void BatchPrefs::CreateList()
+{
    wxASSERT( mList );
 
    //An empty first column is a workaround - under Win98 the first column 
@@ -173,23 +145,19 @@ BatchPrefs::BatchPrefs(wxWindow * parent):
    mList->SetColumnWidth( ItemNumberColumn,  wxLIST_AUTOSIZE );
    mList->SetColumnWidth( ActionColumn, 110 );
    mList->SetColumnWidth( ParamsColumn, 220 );
-
-   batchSequenceSizer->Add( mList, 1, wxEXPAND );
-
-   batchControlSizer->Add( batchSequenceSizer, 1, wxGROW|wxALL, 1);
-   topSizer->Add( batchControlSizer, 1, wxEXPAND );
-
-   // Finish layout
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   SetSizer(outSizer);
-
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
 }
 
+/// Add one item into mList
+void BatchPrefs::AddItem( wxString const & Action, wxString const & Params)
+{
+   int i=mList->GetItemCount();
+   mList->InsertItem( i, wxT("") );
+   mList->SetItem( i, ItemNumberColumn, wxString::Format(wxT(" %02i"),i+1) );
+   mList->SetItem( i, ActionColumn, Action );
+   mList->SetItem( i, ParamsColumn, Params );
+}
+
+/// This clears and updates the contents of mList
 void BatchPrefs::PopulateList()
 {
    unsigned int i;
@@ -207,36 +175,43 @@ void BatchPrefs::PopulateList()
    mList->Refresh(false);
 }
 
+/// Select the MP3 Command chain.
 void BatchPrefs::OnSetChainMp3(wxCommandEvent &event)
 {
    mBatchCommands.SetWavToMp3Chain();
    PopulateList();
 }
 
+/// Select the CleanSpeech Command chain.
 void BatchPrefs::OnSetChainCleanSpeech(wxCommandEvent &event)
 {
    mBatchCommands.SetCleanSpeechChain();
    PopulateList();
 }
 
+/// Select the empty Command chain.
 void BatchPrefs::OnSetChainEmpty(wxCommandEvent &event)
 {
    mBatchCommands.ResetChain();
    PopulateList();
 }
 
+/// Loads a command chain from a file.
 void BatchPrefs::OnLoad(wxCommandEvent &event)
 {
    mBatchCommands.LoadChain( this );
    PopulateList();
 }
 
+/// Saves the current command chain to a file.
 void BatchPrefs::OnSave(wxCommandEvent &event)
 {
    mBatchCommands.SaveChain( this );
    PopulateList();
 }
 
+/// JKC: This looks like the start of some code for dragging command chains
+/// into the list box...  Is anyone working on it? (June/2006)
 void BatchPrefs::OnDrag(wxListEvent &event)
 {
    event.Allow();
@@ -244,12 +219,15 @@ void BatchPrefs::OnDrag(wxListEvent &event)
 //   mDragStart = event.GetItem();
 }
 
+/// See comment in OnDrag
 void BatchPrefs::OnDragEnd(wxListEvent &event)
 {
    int i;
-   i=7;
+   i=7;// place for a breakpoint?
 }
 
+/// An item in the list has been selected.
+/// Bring up a dialog to allow its parameters to be edited.
 void BatchPrefs::OnItemSelected(wxListEvent &event)
 {
    int itemNo = event.GetIndex();
@@ -259,7 +237,6 @@ void BatchPrefs::OnItemSelected(wxListEvent &event)
       return;
 
    wxString command, params;
-
    BatchCommandDialog Dlg( this, -1);
 
    wxListItem info;
@@ -285,128 +262,7 @@ void BatchPrefs::OnItemSelected(wxListEvent &event)
    }
 }
 
-wxCheckBox * BatchPrefs::CreateCheckBox(const wxString Description, const bool State)
-{
-   wxSizer * pSizer;
-   pSizer = mCheckListSizers[mCurrentCheckBoxContainer];
-   wxASSERT( pSizer );
-   wxCheckBox * pCheckBox = new wxCheckBox(this, -1, Description);
-   pCheckBox->SetValue(State);
-   pSizer->Add(pCheckBox, 0, wxGROW|wxALL, 2);
-   return pCheckBox;
-}
-
-// TIDY-ME: Can CheckBoxAction be made part of the base class?
-// It is used by both GuiPrefs and BatchPrefs.
-
-// Function that deals with one checkbox, either creating it or
-// using its value to update gPrefs and the GUI.
-// The function is made more complex by coping with
-// checkboxes in a sizer or checkboxes in a check list box.
-void BatchPrefs::CheckBoxAction(
-   const wxString Description,
-   const wxString SettingName,
-   bool bDefault,
-   int mWindowID)
-{
-   bool bValue = false;
-   bool bIsInListBox;
-
-// TODO:  What should we do if on a Mac?
-// wxWidgets 2.4.1 documentation suggests that wxCheckListBox isn't
-// supported on Mac.
-#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
-   int Counter = ++(mCheckBoxCounters[mCurrentCheckBoxContainer]);
-
-   wxCheckListBox * pCurrentList = mCheckListBoxes[mCurrentCheckBoxContainer];
-   // If there was a non null list box, then it goes in it.
-   bIsInListBox = ( pCurrentList != NULL );
-#else
-   bIsInListBox = false;
-#endif
-
-   if( !bIsInListBox )
-   {
-      // It's on the dialog, better make sure we
-      // have a slot for a check box pointer for it.
-      mCurrentCheckBox++;
-      wxASSERT( mCurrentCheckBox < MAX_BATCH_CHECKBOXES );
-   }
-
-   // IF Creating THEN create the checkbox, reading from gPrefs
-   if( mbCreating )
-   {
-      gPrefs->Read(SettingName, &bValue, bDefault);
-      if( !bIsInListBox )
-      {
-         mCheckBoxes[ mCurrentCheckBox ] =
-            CreateCheckBox( Description, bValue );
-      }
-      else
-      {
-#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
-         wxASSERT( pCurrentList );
-         pCurrentList->Append( Description );
-         pCurrentList->Check(Counter, bValue);
-#endif
-      }
-   }
-   // ELSE we are taking the value and writing it to
-   // gPrefs and then applying the settings
-   else
-   {
-      if( !bIsInListBox )
-      {
-         wxASSERT( mCheckBoxes[ mCurrentCheckBox ] != NULL );
-         bValue = mCheckBoxes[ mCurrentCheckBox ]->GetValue();
-      }
-      else
-      {
-#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
-         wxASSERT( pCurrentList );
-         bValue = pCurrentList->IsChecked( Counter );
-#endif
-      }
-      gPrefs->Write(SettingName,bValue);
-   }
-}
-
-void BatchPrefs::AddItem( wxString const & Action, wxString const & Params)
-{
-   int i=mList->GetItemCount();
-   mList->InsertItem( i, wxT("") );
-   mList->SetItem( i, ItemNumberColumn, wxString::Format(wxT(" %02i"),i+1) );
-   mList->SetItem( i, ActionColumn, Action );
-   mList->SetItem( i, ParamsColumn, Params );
-}
-
-/// This is a condensed list of all the check boxes.
-/// This function is used in two ways :
-///   a) when creating the check boxes.
-///   b) when applying the settings.
-/// Member variables of BatchPrefs are set before calling this function
-/// so that it 'knows what to do'.
-/// This removes repetitive code and guarantees that the same setting
-/// names are used in saving the parameters as were used in retrieving
-/// them.
-void BatchPrefs::AllCheckBoxActions()
-{
-   mCurrentCheckBox=-1;
-   mCheckBoxCounters[0]=-1;
-   mCheckBoxCounters[1]=-1;
-   mCurrentCheckBoxContainer=0;
-
-   CheckBoxAction(_("&Batch debug mode"),  wxT("/Batch/Debug"), false);
-   CheckBoxAction(_("&Normalize on load"), wxT("/Batch/NormalizeOnLoad"), false );
-   CheckBoxAction(_("&Prompt to save, even if empty"),    wxT("/Batch/EmptyCanBeDirty"), false );
-   CheckBoxAction(_("Cl&eanSpeech Mode (Customized GUI)"), wxT("/Batch/CleanSpeechMode"), false);
-
-   mCurrentCheckBoxContainer=1;
-
-   CheckBoxAction(_("S&how Mp3-ID3 Dialog"), wxT("/Batch/ShowId3Dialog"), false);
-// CheckBoxAction(_("Show Confirmation for 'delete orphans'"), wxT("/Batch/ShowDeleteConfirmation"), true);
-
-// Commented out code might be useful as a first step if we want an immediate response to 
+// This commented out code might be useful as a first step if we want an immediate response to 
 // switching in and out of CleanSpeech mode.
 // As things currently stand, the batch commands available will NOT reflect changes in
 // CleanSpeech mode until we close and reopen the preferences dialog.
@@ -416,12 +272,13 @@ void BatchPrefs::AllCheckBoxActions()
    mode = gPrefs->Read(wxT("/Batch/CleanSpeechMode"), 1L);
    proj->GetControlToolBar()->SetCleanSpeechMode(mode == 1);
 #endif
-};
 
+/// Send changed values back to Prefs, and update Audacity.
 bool BatchPrefs::Apply()
 {
-   mbCreating = false;
-   AllCheckBoxActions();
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
+
    unsigned int j;
    for(j = 0; j < gAudacityProjects.GetCount(); j++)
    {
@@ -435,6 +292,7 @@ BatchPrefs::~BatchPrefs()
 {
 }
 
+/// Sets one item in mList to a command/parameter pair.
 void BatchPrefs::SetItem(int itemNo, const wxString command, const wxString params)
 {
    // There is a 'rogue' entry of "- END -" at the end of the list
@@ -486,6 +344,3 @@ void BatchPrefs::SetItem(int itemNo, const wxString command, const wxString para
 //
 // vim: et sts=3 sw=3
 // arch-tag: 7e997d04-6b94-4abb-b3d6-748400f86598
-
-
-

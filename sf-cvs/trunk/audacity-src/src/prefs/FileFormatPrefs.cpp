@@ -6,27 +6,24 @@
 
   Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
 #include "../Audacity.h"
 
 #include <wx/defs.h>
-#include <wx/statbox.h>
-#include <wx/sizer.h>
+#include <wx/intl.h>
+#include <wx/choice.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
-#include <wx/radiobut.h>
-#include <wx/checkbox.h>
-#include <wx/choice.h>
-#include <wx/intl.h>
-#include <wx/slider.h>
 
 #include "sndfile.h"
 
 #include "../export/ExportMP3.h"
 #include "../FileFormats.h"
 #include "../Prefs.h"
+#include "../ShuttleGui.h"
 #include "FileFormatPrefs.h"
 
 #define ID_MP3_FIND_BUTTON         7001
@@ -39,293 +36,181 @@ BEGIN_EVENT_TABLE(FileFormatPrefs, wxPanel)
 END_EVENT_TABLE()
 
 FileFormatPrefs::FileFormatPrefs(wxWindow * parent):
-PrefsPanel(parent)
+   PrefsPanel(parent)
 {
    SetLabel(_("File Formats"));         // Provide visual label
    SetName(_("File Formats"));          // Provide audible label
-
-   mAudacity = GetActiveProject();
-
-   /* Read existing config... */
-
-   wxString copyEdit =
-       gPrefs->Read(wxT("/FileFormats/CopyOrEditUncompressedData"), wxT("edit"));
-
-   int copyEditPos = 1; // Fall back to edit if it doesn't match anything else
-   if (copyEdit.IsSameAs(wxT("copy"), false))
-      copyEditPos = 0;
-
-   long mp3Bitrate = gPrefs->Read(wxT("/FileFormats/MP3Bitrate"), 128);
-   wxString mp3BitrateString = wxString::Format(wxT("%ld"), mp3Bitrate);
-
-   mFormat = ReadExportFormatPref();
-
-   wxString lossyFormat = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
-   long oggQuality = gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/10;
-
-   /* Begin layout code... */
-
-   topSizer = new wxBoxSizer( wxVERTICAL );
-
-   {
-      wxStaticBoxSizer *copyOrEditSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1,
-            _("When importing uncompressed audio files into Audacity")),
-         wxVERTICAL );
-
-      mCopyOrEdit[0] = new wxRadioButton(
-         this, -1, _("&Make a copy of the file before editing (safer)"),
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-          
-      copyOrEditSizer->Add( mCopyOrEdit[0], 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
-
-      mCopyOrEdit[1] = new wxRadioButton(
-         this, -1, _("&Read directly from the original file (faster)"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-
-	  mCopyOrEdit[0]->SetValue(false);
-	  mCopyOrEdit[1]->SetValue(false);
-   
-      copyOrEditSizer->Add( mCopyOrEdit[1], 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
-
-      topSizer->Add( copyOrEditSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
-   }
-
-   {
-      wxStaticBoxSizer *downMixSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1,
-            _("When exporting tracks")),
-         wxVERTICAL );
-
-      bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
-      
-      mDownMix[ 0 ] = new wxRadioButton(
-         this, -1, _("&Always mix all tracks down to Stereo or Mono channel(s)."),
-         wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
-          
-      downMixSizer->Add( mDownMix[ 0 ], 0,
-         wxGROW | wxALL, RADIO_BUTTON_BORDER );
-
-      mDownMix[ 1 ] = new wxRadioButton(
-         this, -1, _("&Use Advanced Mixing Options"),
-         wxDefaultPosition, wxDefaultSize, 0 );
-      
-      downMixSizer->Add( mDownMix[ 1 ], 0,
-         wxGROW | wxALL, RADIO_BUTTON_BORDER );
-
-      mDownMix[ 0 ]->SetValue( downMix );
-      mDownMix[ 1 ]->SetValue( !downMix );
-
-      topSizer->Add( downMixSizer, 0, wxGROW | wxALL, TOP_LEVEL_BORDER );
-   }
-
-   {
-      wxStaticBoxSizer *defFormatSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Uncompressed Export Format")),
-         wxVERTICAL);
-
-      int numSimpleFormats = sf_num_simple_formats();
-      int sel = numSimpleFormats;
-
-      wxString *formatStrings = new wxString[numSimpleFormats+1];
-      for(int i=0; i<numSimpleFormats; i++) {
-         formatStrings[i] = wxString(sf_simple_format(i)->name, wxConvISO8859_1);
-         if (mFormat == sf_simple_format(i)->format)
-            sel = i;
-      }
-      formatStrings[numSimpleFormats] = _("Other...");
-
-      #ifdef __WXMAC__
-        // This is just to work around a wxChoice auto-sizing bug
-        mDefaultExportFormat = new wxChoice(
-           this, ID_FORMAT_CHOICE, wxDefaultPosition, wxSize(200,-1),
-           numSimpleFormats+1, formatStrings);
-      #else
-        mDefaultExportFormat = new wxChoice(
-           this, ID_FORMAT_CHOICE, wxDefaultPosition, wxDefaultSize,
-           numSimpleFormats+1, formatStrings);
-      #endif
-
-      mDefaultExportFormat->SetSelection(sel);
-        
-      delete[] formatStrings;
-
-      mFormatText = new wxStaticText(this, -1, wxT("CAPITAL LETTERS"));
-      SetFormatText();
-      
-      defFormatSizer->Add(mDefaultExportFormat, 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      defFormatSizer->Add(mFormatText, 0,
-                          wxALL, GENERIC_CONTROL_BORDER);
-
-      topSizer->Add(
-         defFormatSizer, 0, 
-         wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
-   }
-
-   {
-      wxStaticBoxSizer *vOGGFormatSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("OGG Export Setup")),
-         wxVERTICAL);
-
-      wxBoxSizer *hOGGQualitySizer = new wxBoxSizer(wxHORIZONTAL);
-      
-      mOGGQuality = new wxSlider(this, -1, oggQuality, 0, 10,
-                            wxDefaultPosition, wxDefaultSize,
-                            wxSL_LABELS);
-
-      hOGGQualitySizer->Add(new wxStaticText(this, -1, _("OGG Quality:")), 0, 
-                            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL,
-                            GENERIC_CONTROL_BORDER);
-      hOGGQualitySizer->Add(mOGGQuality, 1,
-                            wxALL|wxGROW, GENERIC_CONTROL_BORDER);
-
-      vOGGFormatSizer->Add(hOGGQualitySizer, 0, 
-                           wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-
-      // dmazzoni: Ogg is now always in the File menu...
-      #if 0
-      mOGGEnabled = new wxCheckBox(this, -1, _("Use OGG instead of MP3"));
-      mOGGEnabled->SetValue((lossyFormat == wxT("OGG")));
-
-      vOGGFormatSizer->Add(mOGGEnabled, 0,
-                           wxALL, GENERIC_CONTROL_BORDER);
-      #endif
-      
-      topSizer->Add(
-         vOGGFormatSizer, 0, 
-         wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER );
-   }
-
-   {
-      wxStaticBoxSizer *mp3SetupSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("MP3 Export Setup")),
-         wxVERTICAL);
-
-      {
-         wxFlexGridSizer *mp3InfoSizer = new wxFlexGridSizer(0, 3, 0, 0);
-         mp3InfoSizer->AddGrowableCol(1);
-
-         mp3InfoSizer->Add(
-            new wxStaticText(this, -1, _("MP3 Library Version:")), 0, 
-            wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-         mMP3Version = new wxStaticText(this, -1, wxT("CAPITAL LETTERS"));
-         SetMP3VersionText();
-
-         mp3InfoSizer->Add(mMP3Version, 0,
-            wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-         
-         mMP3FindButton = new wxButton(this, ID_MP3_FIND_BUTTON,
-               _("&Find Library"));
-         
-         mp3InfoSizer->Add(mMP3FindButton, 0,
-                           wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-         if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
-            mp3InfoSizer->Add(
-               new wxStaticText(this, -1, _("Bit Rate:")), 0,
-               wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-            wxString bitrates[] = { wxT("16"), wxT("24"), wxT("32"), wxT("40"), wxT("48"), wxT("56"), wxT("64"),
-                                    wxT("80"), wxT("96"), wxT("112"), wxT("128"), wxT("160"),
-                                    wxT("192"), wxT("224"), wxT("256"), wxT("320") };
-            int numBitrates = 16;
-
-            #ifdef __WXMAC__
-            // This is just to work around a wxChoice auto-sizing bug
-            mMP3Bitrate = new wxChoice(
-               this, -1, wxDefaultPosition, wxSize(120,-1), numBitrates, bitrates);
-            #else
-            mMP3Bitrate = new wxChoice(
-               this, -1, wxDefaultPosition, wxDefaultSize, numBitrates, bitrates);
-            #endif
-
-            mp3InfoSizer->Add(mMP3Bitrate, 0, 
-               wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-            mMP3Bitrate->SetStringSelection(mp3BitrateString);
-            if(mMP3Bitrate->GetSelection() == -1)
-               mMP3Bitrate->SetStringSelection(wxT("128"));
-
-            if(!GetMP3Exporter()->ValidLibraryLoaded())
-               mMP3Bitrate->Enable(false);
-         }
-
-         mp3SetupSizer->Add(
-            mp3InfoSizer, 0, wxGROW|wxALL, 0);
-      }
-
-      topSizer->Add(
-         mp3SetupSizer, 0,
-         wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, TOP_LEVEL_BORDER);
-   }
-
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   SetSizer(outSizer);
-
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-
-   /* set controls to match existing configuration... */
-
-   mCopyOrEdit[copyEditPos]->SetValue(true);
+   mFormatText = NULL;
+   Populate( );
 }
 
+int iBitrates[] = {
+   16, 24, 32, 40, 48, 56, 64,
+   80, 96, 112, 128, 160,
+   192, 224, 256, 320 
+};
+
+/// Creates the dialog and its contents.
+void FileFormatPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   mOggQualityUnscaled = gPrefs->Read( wxT("/FileFormats/OggExportQuality"),50)/10;
+   mFormat = ReadExportFormatPref();
+
+   //----- Gather our strings used in choices.
+   GetNamesAndLabels();
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   // Set the MP3 Version string.  Also enable/disable bitrate.
+   SetMP3VersionText();
+   if(!GetMP3Exporter()->ValidLibraryLoaded())
+      mMP3Bitrate->Enable(false);
+   // Set the format string.
+   SetFormatText();
+}
+
+/// Gets ArrayStrings that will be used in wxChoices.
+void FileFormatPrefs::GetNamesAndLabels()
+{
+   for(int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
+   {
+      mBitRateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
+      mBitRateLabels.Add( iBitrates[i] );
+   }
+
+   int numSimpleFormats = sf_num_simple_formats();
+   int sel = numSimpleFormats;
+   for(int i=0; i<numSimpleFormats; i++) 
+   {
+      mFormatNames.Add( wxString(sf_simple_format(i)->name, wxConvISO8859_1));
+      if (mFormat == sf_simple_format(i)->format)
+         sel = i;
+   }
+   mFormatNames.Add( _("Other..."));
+   // the selected format from within the list.
+   mFormatFromChoice = mFormatNames[sel];
+}
+
+/// This PopulateOrExchange function is a good example of mixing the fully 
+/// automatic style of reading/writing from GUI to prefs with the partial form.
+/// 
+/// You'll notice that some of the Tie functions have Prefs identifiers in them
+/// and others don't.  
+void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.SetBorder( 2 );
+   S.StartStatic( _("When importing uncompressed audio files into Audacity"));
+   {
+      S.StartRadioButtonGroup(wxT("/FileFormats/CopyOrEditUncompressedData"),wxT("edit"));
+      S.TieRadioButton( _("&Make a copy of the file before editing (safer)"),wxT("copy"));
+      S.TieRadioButton( _("&Read directly from the original file (faster)"),wxT("edit"));
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
+   S.StartStatic( _("When exporting tracks"));
+   {
+      S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
+      S.TieRadioButton( _("&Always mix all tracks down to Stereo or Mono channel(s)."), true);
+      S.TieRadioButton( _("&Use Advanced Mixing Options"),false );
+      S.EndRadioButtonGroup();
+   }
+   S.EndStatic();
+   S.StartHorizontalLay(wxEXPAND,0);
+   S.StartStatic(_("Uncompressed Export Format"),1);
+   {
+      S.StartMultiColumn(1);
+      // We need the pointers to these controls for the special behaviour.      
+      mDefaultExportFormat = S.Id( ID_FORMAT_CHOICE ).TieChoice( 
+            wxT(""),           // No prompt required.
+            mFormatFromChoice, // Value (as a string)
+            &mFormatNames      // List of possible options, including 'Other...'
+            );
+      mFormatText = S.AddVariableText( wxT("CAPITAL LETTERS"));
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+   S.StartStatic( _("OGG Export Setup"),1);
+   {
+      S.StartMultiColumn(2, wxEXPAND);
+      S.SetStretchyCol(1);
+      S.TieSlider( _("OGG Quality:"),mOggQualityUnscaled,10 );
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
+   S.StartStatic( _("MP3 Export Setup"),0);
+   {
+      // Some rather fiddly sizers to get the 'Find Library' button 
+      // exactly where we want it.
+      S.StartMultiColumn(2,wxEXPAND);
+      S.SetStretchyCol(1);
+      S.StartTwoColumn();
+      S.AddFixedText( _("MP3 Library Version:"));
+      mMP3Version = S.AddVariableText( wxT("CAPITAL LETTERS"));
+      mMP3Bitrate = S.TieChoice( _("Bit Rate:"), wxT("/FileFormats/MP3Bitrate"), 
+         128, mBitRateNames, mBitRateLabels );
+      S.EndTwoColumn();
+      S.Id( ID_MP3_FIND_BUTTON ).AddButton( _("&Find Library"), 
+         wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL);
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+}
+
+/// Sets the a text area on the dialog to have the name
+/// of the MP3 Library version.
 void FileFormatPrefs::SetMP3VersionText()
 {
-   wxString versionString;
-   bool doMP3 = true;
-   
-   doMP3 = GetMP3Exporter()->LoadLibrary();
+   wxString versionString = _("MP3 exporting plugin not found");
+   bool doMP3 = GetMP3Exporter()->LoadLibrary();
 
    if (doMP3)
       doMP3 = GetMP3Exporter()->ValidLibraryLoaded();
-
    if(doMP3)
       versionString = GetMP3Exporter()->GetLibraryVersion();
-   else
-      versionString = _("MP3 exporting plugin not found");
    
    mMP3Version->SetLabel(versionString);
 }
 
+/// Sets a text area on the dialog to have the name
+/// of the currently selected format.
 void FileFormatPrefs::SetFormatText()
 {
    wxString formatString;
-
    formatString = sf_header_name(mFormat & SF_FORMAT_TYPEMASK);
-
    formatString += wxT(", ") + sf_encoding_name(mFormat & SF_FORMAT_SUBMASK);
-
    mFormatText->SetLabel(formatString);
 }
 
+/// Updates the dialog when a format preference has changed.
+/// If the user selected 'Other... ' for the format, then a 
+/// more detailed dialog for format preferences is opened
+/// up in which header and encoding can be selected separately.
 void FileFormatPrefs::OnFormatChoice(wxCommandEvent& evt)
 {
    int sel = mDefaultExportFormat->GetSelection();
    int numSimpleFormats = sf_num_simple_formats();
 
-   if (sel == numSimpleFormats) {
-      Other();
-   }
-   else {
+   if (sel == numSimpleFormats) //i.e. if we selected 'Other..' 
+      OpenOtherFormatDialog();
+   else 
       mFormat = sf_simple_format(sel)->format;
-   }
 
    SetFormatText();
 }
-         
+
+/// Opens a file-finder dialog so that the user can
+/// tell us where the MP3 library is.
 void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
 {
+   // We go round the houses here, because GetMP3Exporter 
+   // takes its path from gPrefs rather than as a parameter.
    wxString oldPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
- 
    gPrefs->Write(wxT("/MP3/MP3LibPath"), wxString(wxT("")));
    
    if (GetMP3Exporter()->FindLibrary(this))
@@ -338,40 +223,31 @@ void FileFormatPrefs::OnMP3FindButton(wxCommandEvent& evt)
       mMP3Bitrate->Enable(GetMP3Exporter()->ValidLibraryLoaded());
 }
 
+/// Takes the settings from the dilaog and puts them into prefs.
+/// Most of the preferences are set by the ShuttleGui, but for some
+/// specially handled ones we need to do this ourselves.
 bool FileFormatPrefs::Apply()
-{
-   int originalExportFormat = ReadExportFormatPref();
-
-   WriteExportFormatPref(mFormat);
-   gPrefs->Write( wxT( "/FileFormats/ExportDownMix" ), mDownMix[ 0 ]->GetValue() );
+{  
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );    
    
-   gPrefs->SetPath(wxT("/FileFormats"));
+   gPrefs->Write( wxT("/FileFormats/OggExportQuality"),mOggQualityUnscaled * 10);
+   // JKC: I'd like to include the body of this one-line function here.
+   // so that the code is more regular/readable, and the same with the read.
+   WriteExportFormatPref(mFormat);
 
-   wxString copyEditString[] = { wxT("copy"), wxT("edit") };
-   int pos = mCopyOrEdit[0]->GetValue() ? 0 : 1;
-   wxString copyOrEdit = copyEditString[pos];
-   gPrefs->Write(wxT("CopyOrEditUncompressedData"), copyOrEdit);
+   //-- Isn't the next parameter long gone??  Can we remove it?
+   //gPrefs->Write( wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
 
+   //-- We always write the bitrate, so I don't think we need the commmented out
+   // code anymore.
+#if 0
    if(GetMP3Exporter()->GetConfigurationCaps() & MP3CONFIG_BITRATE) {
       long bitrate;
       mMP3Bitrate->GetStringSelection().ToLong(&bitrate);
-      gPrefs->Write(wxT("MP3Bitrate"), bitrate);
+      gPrefs->Write(wxT("/FileFormats/MP3Bitrate"), bitrate);
    }
-   gPrefs->SetPath(wxT("/"));
-      
-   if (originalExportFormat != mFormat)
-      gMenusDirty++;
-
-   wxString lossyFormat = wxT("MP3");
-   
-   #if 0 // dmazzoni
-   if(mOGGEnabled->GetValue()) lossyFormat = wxT("OGG");
-   #endif
-
-   long oggQuality = mOGGQuality->GetValue();
-
-   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), lossyFormat);
-   gPrefs->Write(wxT("/FileFormats/OggExportQuality"), (long)(oggQuality * 10));
+#endif
 
    // Tell all open projects to modify their menu bar to reflect
    // the new export formats.
@@ -380,7 +256,6 @@ bool FileFormatPrefs::Apply()
       if(gAudacityProjects[i])
          gAudacityProjects[i]->ModifyExportMenus();
    }
-
    return true;
 }
 
@@ -392,25 +267,35 @@ FileFormatPrefs::~FileFormatPrefs()
 #define ID_BITS_CHOICE             7102
 #define ID_ENCODING_CHOICE         7103
 
-class OtherFormatDialog:public wxDialog {
- public:
+/// A helper Dialog to help FileFormatPrefs with sound format selection.
+///
+/// The dialog shows a header and an encoding, and the user can change 
+/// the selection of either.  However some combinations are illegal and
+/// for these the OK button is disabled.
+class OtherFormatDialog : public wxDialog 
+{
+public:
    // constructors and destructors
    OtherFormatDialog(wxWindow * parent, wxWindowID id,
                      unsigned int format);
 
 public:
+   unsigned int  mFormat;
+
+private:
    void OnChoice(wxCommandEvent & event);
    void OnOk(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
-
    void ValidateChoices();
 
-   unsigned int  mFormat;
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
 
+   wxArrayString mHeaderNames;
+   wxArrayString mEncodingNames;
+   wxString mHeader;
+   wxString mEncoding;
    wxButton   *mOK;
-   wxChoice   *mHeaderChoice;
-   wxChoice   *mBitsChoice;
-   wxChoice   *mEncodingChoice;
 
    DECLARE_EVENT_TABLE()
 };
@@ -430,126 +315,90 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
             wxDefaultPosition, wxDefaultSize)
 {
    mFormat = format;
+   Populate();
+}
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-   wxControl *item;
-
-   item = new wxStaticText(this, -1,
-                           _("(Not all combinations of headers\nand encodings are possible.)"),
-                           wxDefaultPosition, wxDefaultSize, 0);
-
-   mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
-
-   /***/
-   
-   wxFlexGridSizer *gridSizer = new wxFlexGridSizer(2, 0, 0);
-
-   item = new wxStaticText(this, -1, _("Header: "),
-                        wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item, 0,
-                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-   int i;
+/// Creates the dialog.
+void OtherFormatDialog::Populate()
+{
+   //----- Gather our strings used in choices.
    int selection=0;
-
-   wxString *headerStrings = new wxString[sf_num_headers()];
-   for(i=0; i<sf_num_headers(); i++) {
-      headerStrings[i] = sf_header_index_name(i);
+   for(int i=0; i<sf_num_headers(); i++) {
+      mHeaderNames.Add( sf_header_index_name(i));
       if ((mFormat & SF_FORMAT_TYPEMASK) == sf_header_index_to_type(i))
          selection = i;
    }
-   mHeaderChoice = 
-      new wxChoice(this, ID_HEADER_CHOICE,
-                   wxDefaultPosition, wxDefaultSize,
-                   sf_num_headers(), headerStrings);
-   mHeaderChoice->SetSelection(selection);
-   gridSizer->Add(mHeaderChoice, 1, wxEXPAND | wxALL, 5);
-
-   /***/
-
-   item = new wxStaticText(this, -1, _("Encoding: "),
-                           wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item, 0,
-                  wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
-   wxString *encodingStrings = new wxString[sf_num_encodings()];
+   mHeader = mHeaderNames[selection];
    selection = 0;
-   for(i=0; i<sf_num_encodings(); i++) {
-      encodingStrings[i] = sf_encoding_index_name(i);
+   for(int i=0; i<sf_num_encodings(); i++) {
+      mEncodingNames.Add( sf_encoding_index_name(i));
       if ((mFormat & SF_FORMAT_SUBMASK) == sf_encoding_index_to_subtype(i))
          selection = i;
    }
-   mEncodingChoice = 
-      new wxChoice(this, ID_ENCODING_CHOICE,
-                   wxDefaultPosition, wxDefaultSize,
-                   sf_num_encodings(), encodingStrings);
-   mEncodingChoice->SetSelection(selection);
-                                        
-   gridSizer->Add(mEncodingChoice, 1, wxEXPAND | wxALL, 5);
-
-   /***/
-
-   mainSizer->Add(gridSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-   
-   /***/
-   
-   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mOK = 
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   mOK->SetDefault();
-   mOK->SetFocus();
-   okSizer->Add(mOK, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   SetAutoLayout(TRUE);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   mEncoding = mEncodingNames[selection];
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   ShuttleGui S(this, eIsCreating);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   Fit();
 }
 
+/// Defines the dialog's contents and is used both in creation
+/// and in exchanging data with the dialog.
+void OtherFormatDialog::PopulateOrExchange( ShuttleGui & S )
+{
+   S.AddFixedText( _("(Not all combinations of headers\nand encodings are possible.)"));
+   S.StartTwoColumn();
+   S.Id( ID_HEADER_CHOICE).TieChoice( _("Header: "), mHeader, &mHeaderNames );
+   S.Id( ID_ENCODING_CHOICE).TieChoice( _("Encoding: "), mEncoding, &mEncodingNames );
+   S.EndTwoColumn();
+   S.StartHorizontalLay(wxALIGN_CENTRE, 1);
+   S.Id( wxID_CANCEL ).AddButton( _("Cancel"));
+   mOK = S.Id( wxID_OK).AddButton( _("OK") );
+   S.EndHorizontalLay();
+}
+
+/// Calls a library function to determine whether a combination of
+/// settings is valid, and enables/disables the OK button accordingly.
 void OtherFormatDialog::ValidateChoices()
 {
-   SF_INFO info = 
-   {44100, 1, 2, mFormat, 1, 1};
-   
-   if (sf_format_check(&info))
-      mOK->Enable(true);
-   else
-      mOK->Enable(false);
+   SF_INFO info = {44100, 1, 2, mFormat, 1, 1};
+   mOK->Enable(sf_format_check(&info) ? true : false);
 }
 
+/// When a choice is changed, update our values and validate the
+/// combination.
 void OtherFormatDialog::OnChoice(wxCommandEvent & event)
 {
-   int h = mHeaderChoice->GetSelection();
-   int e = mEncodingChoice->GetSelection();
+   // Get all values from the GUI.
+   ShuttleGui S( this, eIsGettingFromDialog );
+   PopulateOrExchange( S );
+
+   int h = mHeaderNames.Index( mHeader );
+   int e = mEncodingNames.Index( mEncoding );
 
    mFormat = sf_header_index_to_type(h) | sf_encoding_index_to_subtype(e);
-
    ValidateChoices();
 }
 
+/// Finish when OK.
 void OtherFormatDialog::OnOk(wxCommandEvent & event)
 {
    EndModal(true);
 }
 
+/// Finish when Cancel.
 void OtherFormatDialog::OnCancel(wxCommandEvent & event)
 {
    EndModal(false);
 }
 
-void FileFormatPrefs::Other()
+/// The user has selected 'Other...' for the format, so show the 
+/// extra dialog and process the result.
+void FileFormatPrefs::OpenOtherFormatDialog()
 {
-   OtherFormatDialog dlog(this, -1,
-                          mFormat);
+   OtherFormatDialog dlog(this, -1, mFormat);
    dlog.CentreOnParent();
    dlog.ShowModal();
 

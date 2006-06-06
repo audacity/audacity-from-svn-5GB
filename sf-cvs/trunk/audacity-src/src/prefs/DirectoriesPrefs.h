@@ -19,31 +19,36 @@
 class wxStaticBox;
 class wxStaticText;
 class wxTextCtrl;
+class ShuttleGui;
 
-class DirectoriesPrefs:public PrefsPanel {
+class DirectoriesPrefs:public PrefsPanel 
+{
 
- public:
+public:
    DirectoriesPrefs(wxWindow * parent);
    ~DirectoriesPrefs();
-   bool Apply();
+   virtual bool Apply();
+
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
    void UpdateFreeSpace(wxCommandEvent &event);
    void OnChooseTempDir(wxCommandEvent &event);
-
- private:
    wxString FormatSize(wxLongLong size);
+
+   wxString mStrFreeSpace;
    wxStaticBox *mEnclosingBox;
 
    wxStaticText *mTempDirLabel;
    wxTextCtrl   *mTempDirText;
    wxStaticText *mFreeSpaceLabel;
    wxStaticText *mFreeSpace;
-   
+  
    wxString      mOldTempDir;
    wxString      mTempDir;
 
 public:
    DECLARE_EVENT_TABLE();
-
 };
 
 #endif

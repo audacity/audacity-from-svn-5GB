@@ -6,6 +6,7 @@
 
   Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
   Presents interface for user to select the recording device and
   playback device, from the list of choices that PortAudio
@@ -17,253 +18,166 @@
 **********************************************************************/
 
 #include "../Audacity.h"
-
 #include <wx/defs.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/choice.h>
-#include <wx/gdicmn.h>
 #include <wx/intl.h>
-#include <wx/msgdlg.h>
-#include <wx/sizer.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
-#include <wx/utils.h>
-#include <wx/window.h>
 
 #include "../Prefs.h"
 #include "../AudioIO.h"
 #include "../Project.h"
-#include "AudioIOPrefs.h"
 #include "../Internat.h"
-
+#include "../ShuttleGui.h"
 #include "portaudio.h"
-
-enum {
-   RecChoiceID = 1000,
-   PlayChoiceID
-};
-
-BEGIN_EVENT_TABLE(AudioIOPrefs, wxPanel)
-END_EVENT_TABLE()	
+#include "AudioIOPrefs.h"
 
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
-PrefsPanel(parent)
+   PrefsPanel(parent)
 {
    SetLabel(wxT("Audio I/O"));         // Provide visual label
    SetName(wxT("Audio I/O"));          // Provide audible label
+   Populate();
+}
 
-   /* read prefs all at once, then set up the dialog */
+void AudioIOPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   GetNamesAndLabels();
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   // GUI is built, now do any post processing of it.
+
+   // For Portaudio v18, we cannot set the latency
+   // \todo Check whether this test would always enable the control.
+#if USE_PORTAUDIO_V19
+// Commented out for the moment...
+//   mLatencyDuration->Enable(USE_PORTAUDIO_V19);
+#endif
+   // Fit(); // JKC: Doesn't seem to make any difference...
+}
+
+/// Gets the lists of names and lists of labels which are
+/// used in the choice controls.
+/// The names are what the user sees in the wxChoice.
+/// The corresponding labels are what gets stored.
+void AudioIOPrefs::GetNamesAndLabels()
+{
+   // Get lists of devices both for play and record.
+   int j;
+   wxString Name;
+   wxString Label;
+
+#if USE_PORTAUDIO_V19
+   int nDevices = Pa_GetDeviceCount();
+#else
+   int nDevices = Pa_CountDevices();
+#endif
+
+   for(j=0; j<nDevices; j++) {
+      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
+      Name =  wxString(info->name, wxConvISO8859_1) ;
+      Label = Name;
+#if USE_PORTAUDIO_V19
+      Label =  wxString::Format(wxT("%hs: %hs"),
+          Pa_GetHostApiInfo(info->hostApi)->name,
+          info->name));
+#endif
+      if (info->maxOutputChannels > 0) {
+         mmPlayNames.Add( Name );
+         mmPlayLabels.Add( Label );
+      }
+      if (info->maxInputChannels > 0) {
+         mmRecordNames.Add( Name );
+         mmRecordLabels.Add( Label );
+      }
+   }
+
+   // Channel counts, mono, stereo etc...
+   const int numChannels = 16;
+   for(int c=0; c<numChannels; c++)
+   {
+      mmChannelNames.Add(  wxString::Format(wxT("%d"), c+1));
+      mmChannelLabels.Add( wxString::Format(wxT("%d"), c+1));
+   }
+   mmChannelNames[0] = wxString::Format(_("1 (Mono)"));
+   mmChannelNames[1] = wxString::Format(_("2 (Stereo)"));
+}
+
+void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   /// \todo
+   /// JKC: I think setting paths in gPrefs is bad practice.
+   /// Suppose we are using gPrefs from elsewhere at the same time?
+   /// Change these all to full paths?
    gPrefs->SetPath(wxT("/AudioIO"));
-   mPlayDevice = gPrefs->Read(wxT("PlaybackDevice"), wxT(""));
-   mRecDevice = gPrefs->Read(wxT("RecordingDevice"), wxT(""));
 
-   long recordChannels = 1;
-   gPrefs->Read(wxT("RecordChannels"), &recordChannels, 1L);
-   bool duplex;
-   gPrefs->Read(wxT("Duplex"), &duplex, false);
+   S.SetBorder( 2 );
 
-   #ifdef __MACOSX__
-   bool playthrough;
-   gPrefs->Read(wxT("Playthrough"), &playthrough, false);
-   #endif
-
-   bool swplaythrough;
-   gPrefs->Read(wxT("SWPlaythrough"), &swplaythrough, false);
-   
-   double cutPreviewBeforeLen, cutPreviewAfterLen;
-   gPrefs->Read(wxT("CutPreviewBeforeLen"), &cutPreviewBeforeLen, 1.0);
-   gPrefs->Read(wxT("CutPreviewAfterLen"), &cutPreviewAfterLen, 1.0);
-   
-   double latencyDuration, latencyCorrection;
-   gPrefs->Read(wxT("LatencyDuration"), &latencyDuration, 100.0);
-   gPrefs->Read(wxT("LatencyCorrection"), &latencyCorrection, 0.0);
+   S.StartHorizontalLay(wxEXPAND, 0 );
+   S.StartStatic( _("Playback"),1 );
+   {
+      S.StartTwoColumn();
+      S.TieChoice( _("Device:"), wxT("PlaybackDevice"), 
+         wxT(""), mmPlayNames, mmPlayLabels );
+      S.EndTwoColumn();
+   }                              
+   S.EndStatic();
+   S.StartStatic( _("Recording"), 1 );
+   {
+      S.StartTwoColumn();
+      S.TieChoice( _("Device:"), wxT("RecordingDevice"), 
+         wxT(""), mmPlayNames, mmPlayLabels );
+      S.TieChoice( _("Channels:"), wxT("RecordChannels"), 
+         wxT("2"), mmChannelNames, mmChannelLabels );
+      S.EndTwoColumn();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
+   S.StartStatic( _("Playthrough") );
+   {
+      S.TieCheckBox( _("&Play other tracks while recording new one"),
+         wxT("Duplex"),false);
+#ifdef __MACOSX__
+      S.TieCheckBox( _("&Hardware Playthrough (Play new track while recording it)"),
+         wxT("Playthrough"),false);
+#endif
+      S.TieCheckBox( _("&Software Playthrough (Play new track while recording it)"),
+         wxT("SWPlaythrough"),false);
+   }
+   S.EndStatic();
+   S.StartHorizontalLay( wxEXPAND, 0 );
+   S.StartStatic( _("Cut Preview"),1 );
+   {
+      S.StartThreeColumn();
+      S.TieTextBox( _("Play before cut region:"), wxT("CutPreviewBeforeLen"),1.0,9);
+      S.AddFixedText(  _("seconds") );
+      S.TieTextBox( _("Play after cut region:"),wxT("CutPreviewAfterLen"), 1.0,9);
+      S.AddFixedText(  _("seconds") );
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
+   S.StartStatic( _("Latency"),1 );
+   {
+      S.StartThreeColumn();
+      S.TieTextBox( _("Audio to buffer:"),wxT("LatencyDuration"),100.0,9);
+      S.AddFixedText(  _("milliseconds") );
+      S.TieTextBox( _("Latency correction:"),wxT("LatencyCorrection"),0.0,9);
+      S.AddFixedText(  _("milliseconds") );
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
 
    gPrefs->SetPath(wxT("/"));
-
-   topSizer = new wxBoxSizer( wxVERTICAL );
-
-   //
-   // Playback
-   //
-
-   wxStaticBoxSizer *playbackSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Playback")),
-            wxVERTICAL);
-
-   wxFlexGridSizer *fileSizer[2];// = new wxFlexGridSizer *[2];
-   fileSizer[0] = new wxFlexGridSizer(1, 2, GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
-   fileSizer[0]->AddGrowableCol(1);
-
-   int j, k;
-   int playIndex = 0;
-   int numDevices = 0;
-
-   // Count the number of devices which do output
-#if USE_PORTAUDIO_V19
-   for(j=0; j<Pa_GetDeviceCount(); j++) {
-#else
-   for(j=0; j<Pa_CountDevices(); j++) {
-#endif
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->maxOutputChannels > 0)
-         numDevices++;
-   }
-
-   wxString *playLabels=NULL;
-   mPlayNames=NULL;
-   if(numDevices){
-      mPlayNames = new wxString[numDevices];
-      playLabels = new wxString[numDevices];
-   }
-
-   k = 0;
-#if USE_PORTAUDIO_V19
-   for(j=0; j<Pa_GetDeviceCount(); j++) {
-#else
-   for(j=0; j<Pa_CountDevices(); j++) {
-#endif
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->maxOutputChannels > 0) {
-         mPlayNames[k] = wxString(info->name, wxConvISO8859_1);
-#if USE_PORTAUDIO_V19
-         playLabels[k].Printf(wxT("%hs: %hs"),
-                             Pa_GetHostApiInfo(info->hostApi)->name,
-                             info->name);
-#else
-         playLabels[k] = wxString(info->name, wxConvISO8859_1);
-#endif
-
-         if (mPlayNames[k] == mPlayDevice)
-            playIndex = k;
-         k++;
-      }
-   }
-      
-   // declare three box sizers for static text
-   wxBoxSizer *textSizer[3];
-   
-   // device label and choice box
-   textSizer[0] = new wxBoxSizer(wxHORIZONTAL);
-   
-   textSizer[0]->Add(
-      new wxStaticText(this, -1, _("Device:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   fileSizer[0]->Add(
-      textSizer[0], 0, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   mPlayChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numDevices, playLabels);
-   mPlayChoice->SetSelection(playIndex);
-   if(playLabels) delete [] playLabels;
-
-   fileSizer[0]->Add(mPlayChoice, 1, 
-      wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+}
 
 
-   //
-   // Recording
-   //
-
-   wxStaticBoxSizer *recordingSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Recording")),
-            wxVERTICAL);
-
-   fileSizer[1] = new wxFlexGridSizer(2, 2, GENERIC_CONTROL_BORDER, GENERIC_CONTROL_BORDER);
-   fileSizer[1]->AddGrowableCol(1);
-
-   int recIndex = 0;
-   numDevices = 0;
-
-   // Count the number of devices which do input
-#if USE_PORTAUDIO_V19
-   for(j=0; j<Pa_GetDeviceCount(); j++) {
-#else
-   for(j=0; j<Pa_CountDevices(); j++) {
-#endif
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->maxInputChannels > 0)
-         numDevices++;
-   }
-
-   mRecNames = NULL;
-   wxString *recLabels = NULL;
-   if(numDevices){
-      mRecNames = new wxString[numDevices];
-      recLabels = new wxString[numDevices];
-   }
-
-   k = 0;
-#if USE_PORTAUDIO_V19
-   for(j=0; j<Pa_GetDeviceCount(); j++) {
-#else
-   for(j=0; j<Pa_CountDevices(); j++) {
-#endif
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      if (info->maxInputChannels > 0) {
-         mRecNames[k] = wxString(info->name, wxConvISO8859_1);
-#if USE_PORTAUDIO_V19
-         recLabels[k].Printf(wxT("%hs: %hs"),
-                             Pa_GetHostApiInfo(info->hostApi)->name,
-                             info->name);
-#else
-         recLabels[k] = wxString(info->name, wxConvISO8859_1);
-#endif
-         if (mRecNames[k] == mRecDevice)
-            recIndex = k;
-         k++;
-      }
-   }
-
-   mRecChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numDevices, recLabels);
-   mRecChoice->SetSelection(recIndex);
-   if(recLabels) delete[] recLabels;
-
-   // device label and choice box
-   textSizer[1] = new wxBoxSizer(wxHORIZONTAL);
-   
-   textSizer[1]->Add(
-      new wxStaticText(this, -1, _("Device:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   fileSizer[1]->Add(
-      textSizer[1], 0, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   fileSizer[1]->Add(mRecChoice, 1, 
-      wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
-
-
-   const int numChannels = 16;
-   wxString channelNames[16];
-   for(int c=0; c<numChannels; c++)
-      channelNames[c] = wxString::Format(wxT("%d"), c+1);
-   channelNames[0] = wxString::Format(_("1 (Mono)"));
-   channelNames[1] = wxString::Format(_("2 (Stereo)"));
-
-   mChannelsChoice = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                                  numChannels, channelNames);
-   mChannelsChoice->SetSelection(recordChannels-1);
-
-   // channel label and choice box
-   textSizer[2] = new wxBoxSizer(wxHORIZONTAL);
-   
-   textSizer[2]->Add(
-      new wxStaticText(this, -1, _("Channels:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 1, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   fileSizer[1]->Add(
-      textSizer[2], 0, 
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-   
-   fileSizer[1]->Add(mChannelsChoice, 1, 
-      wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+// JKC: This is some old code that was sizing control labels all the same, 
+// even if in different static controls.  It made for a nicer layout.
+// We might want to do something like that again in future.
+#if 0
 
    // find out the biggest minimum size of labels
    int maxIndex = 0,r;
@@ -280,202 +194,17 @@ PrefsPanel(parent)
       if (r != maxIndex) 
          textSizer[r]->SetMinSize( maxMinSize );
    }
-   
-   // add flexgrid sizer to static sizer
-   playbackSizer->Add(fileSizer[0], 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-   recordingSizer->Add(fileSizer[1], 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   // add static sizer to top sizer
-   topSizer->Add(playbackSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-   topSizer->Add(recordingSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-
-   wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer(new wxStaticBox(this, -1, _("Playthrough")), wxVERTICAL);
-   mDuplex = new wxCheckBox(this, -1,
-                            _("&Play other tracks while recording new one"));
-   mDuplex->SetValue(duplex);
-   staticSizer->Add(mDuplex, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   #ifdef __MACOSX__
-   mPlaythrough = new wxCheckBox(this, -1,
-                                 _("&Hardware Playthrough (Play new track while recording it)"));
-   mPlaythrough->SetValue(playthrough);
-   staticSizer->Add(mPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-   #endif
-
-   mSWPlaythrough = new wxCheckBox(this, -1,
-                                 _("&Software Playthrough (Play new track while recording it)"));
-   mSWPlaythrough->SetValue(swplaythrough);
-   staticSizer->Add(mSWPlaythrough, 0, wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-   topSizer->Add(staticSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-
-   // playControlSizer is a sizer that holds the left and right sizers.
-   wxBoxSizer * playControlSizer = new wxBoxSizer( wxHORIZONTAL );
-
-   // msmeyer: Create CutPreview options
-   wxString cutPreviewBeforeLenString, cutPreviewAfterLenString;
-   cutPreviewBeforeLenString.Printf(wxT("%g"), cutPreviewBeforeLen);
-   cutPreviewAfterLenString.Printf(wxT("%g"), cutPreviewAfterLen);
-   mCutPreviewBeforeLen = new wxTextCtrl(this, -1, cutPreviewBeforeLenString,
-	   wxDefaultPosition, wxSize(40,-1));
-   mCutPreviewAfterLen = new wxTextCtrl(this, -1, cutPreviewAfterLenString,
-	   wxDefaultPosition, wxSize(40,-1));
-
-   wxFlexGridSizer* cutPreviewFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
-
-   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("Play before cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT), 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   cutPreviewFlexSizer->Add(mCutPreviewBeforeLen, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("seconds"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("Play after cut region:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT), 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   cutPreviewFlexSizer->Add(mCutPreviewAfterLen, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   cutPreviewFlexSizer->Add(new wxStaticText(this, -1,
-      _("seconds"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-
-   wxStaticBoxSizer *cutPreviewSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Cut Preview")),
-            wxVERTICAL);
-
-   cutPreviewSizer->Add(cutPreviewFlexSizer, 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   playControlSizer->Add( cutPreviewSizer, 1, wxGROW|wxALL, 1);
-
-//   topSizer->Add(cutPreviewSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-   
-   // msmeyer: Create latency options
-   mLatencyDuration = new wxTextCtrl(this, -1,
-	   wxString::Format(wxT("%g"), latencyDuration),
-      wxDefaultPosition, wxSize(40,-1));
-
-   mLatencyCorrection = new wxTextCtrl(this, -1, 
-      wxString::Format(wxT("%g"), latencyCorrection),
-      wxDefaultPosition, wxSize(40,-1));
-
-   wxFlexGridSizer* latencyFlexSizer = new wxFlexGridSizer(2, 3, 0, 0);
-   
-   wxStaticText* latencyDurationLabel = new wxStaticText(this, -1,
-      _("Audio to buffer:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT);
-   wxStaticText* latencyDurationUnitLabel = new wxStaticText(this, -1,
-      _("milliseconds"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT);
-      
-   // For Portaudio v18, we cannot set the latency
-#if USE_PORTAUDIO_V19
-   mLatencyDuration->Enable(USE_PORTAUDIO_V19);
-   latencyDurationLabel->Enable(USE_PORTAUDIO_V19);
-   latencyDurationUnitLabel->Enable(USE_PORTAUDIO_V19);
 #endif
-   
-   latencyFlexSizer->Add(latencyDurationLabel, 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-   
-   latencyFlexSizer->Add(mLatencyDuration, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-      
-   latencyFlexSizer->Add(latencyDurationUnitLabel, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-      
-   latencyFlexSizer->Add(new wxStaticText(this, -1,
-      _("Latency correction:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT), 1,
-      wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-   
-   latencyFlexSizer->Add(mLatencyCorrection, 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-      
-   latencyFlexSizer->Add(new wxStaticText(this, -1,
-      _("milliseconds"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_LEFT), 1,
-      wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, GENERIC_CONTROL_BORDER);
-   
-   wxStaticBoxSizer *latencySizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Latency")),
-            wxVERTICAL);
 
-   latencySizer->Add(latencyFlexSizer, 0,
-      wxGROW|wxALL, GENERIC_CONTROL_BORDER);
-
-   playControlSizer->Add( latencySizer, 1, wxGROW|wxALL, 1);
-
-   topSizer->Add(playControlSizer, 0, wxALL|wxGROW, TOP_LEVEL_BORDER);
-   
-   SetAutoLayout(true);
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-   SetSizer(outSizer);
-}
 
 AudioIOPrefs::~AudioIOPrefs()
 {
-   if(mPlayNames)delete[] mPlayNames;
-   if(mRecNames) delete[] mRecNames;
 }
 
 bool AudioIOPrefs::Apply()
 {
-   mPlayDevice = wxEmptyString;
-   mRecDevice = wxEmptyString;
-
-   if(mPlayNames) mPlayDevice = mPlayNames[mPlayChoice->GetSelection()];
-   if(mRecNames) mRecDevice = mRecNames[mRecChoice->GetSelection()];
-
-   long recordChannels = mChannelsChoice->GetSelection()+1;
-   bool duplex = mDuplex->GetValue();
-
-   // Step 2: Write to gPrefs
-   gPrefs->SetPath(wxT("/AudioIO"));
-
-   gPrefs->Write(wxT("PlaybackDevice"), mPlayDevice);
-   gPrefs->Write(wxT("RecordingDevice"), mRecDevice);
-
-   gPrefs->Write(wxT("RecordChannels"), recordChannels);
-   gPrefs->Write(wxT("Duplex"), duplex);
-
-   #ifdef __MACOSX__
-   gPrefs->Write(wxT("Playthrough"), mPlaythrough->GetValue());
-   #endif
-
-   gPrefs->Write(wxT("SWPlaythrough"), mSWPlaythrough->GetValue());
-
-   gPrefs->Write(wxT("CutPreviewBeforeLen"),
-      Internat::CompatibleToDouble(mCutPreviewBeforeLen->GetValue()));
-   gPrefs->Write(wxT("CutPreviewAfterLen"),
-      Internat::CompatibleToDouble(mCutPreviewAfterLen->GetValue()));
-       
-   gPrefs->Write(wxT("LatencyDuration"),
-      Internat::CompatibleToDouble(mLatencyDuration->GetValue()));
-   gPrefs->Write(wxT("LatencyCorrection"),
-      Internat::CompatibleToDouble(mLatencyCorrection->GetValue()));
-
-   gPrefs->SetPath(wxT("/"));
-
-   // Step 3: Make audio sub-system re-read preferences
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
 
 #if USE_PORTMIXER
    if (gAudioIO)

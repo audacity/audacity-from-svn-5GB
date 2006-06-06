@@ -35,9 +35,10 @@ class wxBoxSizer;
 #define TOP_LEVEL_BORDER       5
 #define GENERIC_CONTROL_BORDER 5
 
-class PrefsPanel:public wxPanel {
+class PrefsPanel:public wxPanel 
+{
 
- public:
+public:
    PrefsPanel(wxWindow * parent):wxPanel(parent, -1) {
       /* I'm not sure if we should be setting this... I'll play around
        * and see what looks best on different platforms under
@@ -47,11 +48,9 @@ class PrefsPanel:public wxPanel {
    
    virtual ~ PrefsPanel() {}
    virtual bool Apply() = 0;
-
- protected:
+protected:
    wxBoxSizer *topSizer;
    wxBoxSizer *outSizer;
-
 };
 
 #endif

@@ -41,6 +41,7 @@ class Shuttle {
    virtual bool TransferDouble( const wxString & Name, double & dValue, const double &dDefault );
    virtual bool TransferInt( const wxString & Name, int & iValue, const int &iDefault );
    virtual bool TransferLongLong( const wxString & Name, wxLongLong_t & iValue, const wxLongLong_t &iDefault );
+   virtual bool TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault );
    virtual bool TransferEnum( const wxString & Name, int & iValue, 
       const int nChoices, const wxString * pFirstStr);
    // We expect the ExchangeWithMaster function to change from one type of

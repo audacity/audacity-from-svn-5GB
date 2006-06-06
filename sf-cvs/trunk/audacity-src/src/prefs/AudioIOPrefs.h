@@ -5,6 +5,7 @@
   AudioIOPrefs.h
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
@@ -18,40 +19,32 @@
 class wxWindow;
 class wxCheckBox;
 class wxChoice;
+#include <wx/defs.h>
+#include <wx/string.h>
 
-class AudioIOPrefs:public PrefsPanel {
+#include "PrefsPanel.h"
 
- public:
+class wxWindow;
+class ShuttleGui;
+
+class AudioIOPrefs:public PrefsPanel 
+{
+public:
    AudioIOPrefs(wxWindow * parent);
    ~AudioIOPrefs();
-   bool Apply();
+   virtual bool Apply();
 
- private:
-   wxString  mRecDevice;
-   wxString  mPlayDevice;
-   
-   wxCheckBox *mDuplex;
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void GetNamesAndLabels();
 
-   wxCheckBox *mPlaythrough; // Hardware playthrough, currently Mac OS X only
-   wxCheckBox *mSWPlaythrough;
-
-   wxChoice *mRecChoice;
-   wxChoice *mPlayChoice;
-
-   wxChoice *mChannelsChoice;
-
-   wxString *mPlayNames;
-   wxString *mRecNames;
-   
-   wxTextCtrl *mCutPreviewBeforeLen;
-   wxTextCtrl *mCutPreviewAfterLen;
-   
-   wxTextCtrl *mLatencyDuration;
-   wxTextCtrl *mLatencyCorrection;
-
- public:
-    DECLARE_EVENT_TABLE()
-
+   wxArrayString mmPlayNames;
+   wxArrayString mmPlayLabels;
+   wxArrayString mmRecordNames;
+   wxArrayString mmRecordLabels;
+   wxArrayString mmChannelNames;
+   wxArrayString mmChannelLabels;
 };
 
 #endif

@@ -4,9 +4,13 @@
 
   MousePrefs.cpp
 
-  Presents interface for user to view the default bindings of mouse
-  buttons to commands.
+  James Crook
 
+********************************************************************//*!
+
+\class MousePrefs
+\brief Presents interface for user to view the default bindings of mouse
+  buttons to commands.
 
   April/2003: These are default bindings and are not yet configurable.  
   They are provided to give information about what the bindings are.
@@ -18,78 +22,78 @@
 
   Unlike key-bindings which are parameterless, mouse bindings 
   provide parameters:
+
     - a single point for a click, and 
     - a stream of points or a start and end point for a drag.  
+
   If we allow a nyquist filter to be bound to the mouse, instead of 
   being applied to the current selection it would be applied to the 
   start and end points of the drag.
 
-**********************************************************************/
+*//********************************************************************/
 
 #include "../Audacity.h"
 
 #include <wx/defs.h>
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/choice.h>
-#include <wx/gdicmn.h>
 #include <wx/intl.h>
-#include <wx/msgdlg.h>
-#include <wx/sizer.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
 #include <wx/listctrl.h>
-#include <wx/utils.h>
-#include <wx/window.h>
 
 #include "../Prefs.h"
+#include "../ShuttleGui.h"
 #include "MousePrefs.h"
-
 
 // The numbers of the columns of the mList.
 enum { BlankColumn=0, ToolColumn=1, ActionColumn=2, ButtonsColumn=3, CommentColumn=4};
 
-
 BEGIN_EVENT_TABLE(MousePrefs, wxPanel)
 END_EVENT_TABLE()	
 
-
-
+/// Constructor
 MousePrefs::MousePrefs(wxWindow * parent):
 PrefsPanel(parent)
 {
    SetLabel(_("Mouse"));         // Provide visual label
    SetName(_("Mouse"));          // Provide audible label
+   Populate();
+}
 
-   /* read prefs all at once, then set up the dialog */
-   // There aren't any configurable preferences yet.
-   gPrefs->SetPath(wxT("/Mouse"));
-//   mValue = gPrefs->Read(wxT("itemname"), wxT(""));
-   gPrefs->SetPath(wxT("/"));
+/// Creates the dialog and its contents.
+void MousePrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   CreateList();
+}
 
-//   topSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer = new wxBoxSizer( wxVERTICAL );
+/// Places controls on the panel and also exchanges data with them.
+void MousePrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.SetBorder( 2 );
+   S.StartStatic( _("Mouse Bindings (default values, not configurable)"),1);
+   {
+      mList = S.AddListControlReportMode( );
+   }
+   S.EndStatic();
+}
 
-   wxStaticBoxSizer *bindingsSizer =
-      new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Mouse Bindings (default values, not configurable)")),
-            wxVERTICAL);
-
-   mList = new wxListCtrl( this, -1 ,
-      wxDefaultPosition, wxDefaultSize,
-      wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
-      );
-
+/// Creates the contents of mList
+void MousePrefs::CreateList()
+{
    wxASSERT( mList );
 
    //An empty first column is a workaround - under Win98 the first column 
    //can't be right aligned.
-   mList->InsertColumn(BlankColumn,   wxT(""),               wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(BlankColumn,   wxT(""),              wxLIST_FORMAT_LEFT );
    mList->InsertColumn(ToolColumn,    _("Tool"),            wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ActionColumn,  _("Command Action"),  wxLIST_FORMAT_RIGHT );
    mList->InsertColumn(ButtonsColumn, _("Buttons"),         wxLIST_FORMAT_LEFT );
-   mList->InsertColumn(CommentColumn, _("Comments"),         wxLIST_FORMAT_LEFT );
+   mList->InsertColumn(CommentColumn, _("Comments"),        wxLIST_FORMAT_LEFT );
 
    AddItem( _("Left-Click"),       _("Select"),    _("Set Selection Point") );
    AddItem( _("Left-Drag"),        _("Select"),    _("Set Selection Range") );
@@ -128,22 +132,13 @@ PrefsPanel(parent)
    // wider to see what's there (the comments show that the duplication of functions
    // is for a reason, and not just random).
    mList->SetColumnWidth( CommentColumn, 5 ); 
-
-   bindingsSizer->Add( mList, 1, wxEXPAND );
-//   topSizer->Add( bindingsSizer, 1, wxEXPAND );
-//   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
-   outSizer->Add(bindingsSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-   SetSizer(outSizer);
 }
 
 MousePrefs::~MousePrefs()
 {
 }
 
+/// Adds an item to mList
 void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool, 
                          wxString const & Action, wxString const & Comment )
 {
@@ -165,10 +160,9 @@ void MousePrefs::AddItem( wxString const & MouseButtons, wxString const & Tool,
 /// Currently does nothing as Mouse Preferences don't change.
 bool MousePrefs::Apply()
 {
-   /* Step 2: Write to gPrefs */
-   gPrefs->SetPath(wxT("/Mouse"));
-//   gPrefs->Write(wxT("itemname"), mValue);
-   gPrefs->SetPath(wxT("/"));
+// Not yet required...
+//   ShuttleGui S( this, eIsSavingToPrefs );
+//   PopulateOrExchange( S );
    return true;
 }
 

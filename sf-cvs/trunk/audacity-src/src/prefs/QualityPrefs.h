@@ -5,39 +5,47 @@
   QualityPrefs.h
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
-#ifndef __AUDACITY_SAMPLE_RATE_PREFS__
-#define __AUDACITY_SAMPLE_RATE_PREFS__
+#ifndef __AUDACITY_QUALITY_PREFS__
+#define __AUDACITY_QUALITY_PREFS__
 
 #include "PrefsPanel.h"
 
 class wxChoice;
 class wxTextCtrl;
 
-class QualityPrefs:public PrefsPanel {
+class ShuttleGui;
 
- public:
+class QualityPrefs:public PrefsPanel 
+{
+public:
    QualityPrefs(wxWindow * parent);
    ~QualityPrefs();
 
    void OnSampleRateChoice(wxCommandEvent& evt);
+   virtual bool Apply();
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void DefineSampleRateControl( ShuttleGui & S );
+   void QualityPrefs::GetNamesAndLabels();
 
-   bool Apply();
+   wxArrayString mmDitherNames;
+   wxArrayInt    mmDitherLabels;
+   wxArrayString mmSampleRateNames;
+   wxArrayInt    mmSampleRateLabels;
+   wxArrayString mmSampleFormatNames;
+   wxArrayInt    mmSampleFormatLabels;
+   wxArrayString mConverterNames;
+   wxArrayInt    mConverterLabels;
 
- private:
    wxChoice *mSampleRates;
-   wxChoice *mSampleFormats;
    wxTextCtrl *mOtherSampleRate;
-
-   wxChoice *mConverters;
-   wxChoice *mHQConverters;
-
-   wxChoice *mDithers;
-   wxChoice *mHQDithers;
-
- public:
+   int mOtherSampleRateValue;
+public:
    DECLARE_EVENT_TABLE();
 };
 

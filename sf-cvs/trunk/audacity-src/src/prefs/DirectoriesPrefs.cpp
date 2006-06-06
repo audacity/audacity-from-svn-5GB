@@ -5,6 +5,7 @@
   DirectoriesPrefs.cpp
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
@@ -13,23 +14,22 @@
 #include <math.h>
 
 #include <wx/defs.h>
+#include <wx/intl.h>
+#include <wx/log.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/button.h>
 #include <wx/dirdlg.h>
 #include <wx/event.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
-#include <wx/intl.h>
-#include <wx/log.h>
 #include <wx/msgdlg.h>
-#include <wx/sizer.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
 #include <wx/utils.h>
 
 #include "../Prefs.h"
 #include "../AudacityApp.h"
 #include "../Internat.h"
+#include "../ShuttleGui.h"
 #include "DirectoriesPrefs.h"
 
 enum {
@@ -47,64 +47,46 @@ PrefsPanel(parent)
 {
    SetLabel(_("Directories"));         // Provide visual label
    SetName(_("Directories"));          // Provide audible label
+   Populate();
+}
+
+/// Creates the dialog and its contents.
+void DirectoriesPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
 
    mTempDir = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
    mOldTempDir = mTempDir;
-
-   topSizer = new wxBoxSizer( wxVERTICAL );
-
-   wxStaticBoxSizer *tempDirSizer = new wxStaticBoxSizer(
-      new wxStaticBox(this, -1, _("Temporary files directory")), wxVERTICAL );
-
-   wxFlexGridSizer *tempDirGridSizer = new wxFlexGridSizer( 0, 3, 0, 0 );
-
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
-
    wxLongLong freeSpace;
    wxGetDiskSpace(mTempDir, NULL, &freeSpace);
+   mStrFreeSpace = FormatSize(freeSpace);
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
 
-   mTempDirLabel = new wxStaticText(
-      this, -1, _("Location:"), wxDefaultPosition,
-      wxDefaultSize, wxALIGN_RIGHT );
-
-   mTempDirText = NULL;
-   mTempDirText = new wxTextCtrl(
-      this, TempDirID, mTempDir,
-      wxDefaultPosition, wxSize(30, -1), 0 );
-
-   /* Order is important here: mFreeSpace must be allocated before
-      mTempDirText, so that the handler doesn't try to operate on
-      mFreeSpace before it exists! */
-   mFreeSpaceLabel = new wxStaticText(
-      this, -1, _("Free Space:"),
-      wxDefaultPosition, wxDefaultSize, 0 );
-
-   mFreeSpace = new wxStaticText(
-      this, -1, FormatSize(freeSpace),
-      wxDefaultPosition, wxDefaultSize, 0 );
-
-   wxButton *chooseButton =
-      new wxButton(this, ChooseButtonID, _("Choose..."));
-     
-   tempDirGridSizer->Add( mTempDirLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-   tempDirGridSizer->Add( mTempDirText, 1, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-   tempDirGridSizer->Add( chooseButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-
-   tempDirGridSizer->Add( mFreeSpaceLabel, 0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-   tempDirGridSizer->Add( mFreeSpace, 0, wxGROW|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-   tempDirGridSizer->AddGrowableCol(1);
-   tempDirSizer->Add( tempDirGridSizer, 0, wxGROW|wxALL, 2 );
-
-   topSizer->Add( tempDirSizer, 0, wxGROW|wxALL, 5 );
-
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   SetSizer(outSizer);
-
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
+/// Places controls on the panel and also exchanges data with them.
+/// As of Jun/2006 the only gPrefs value, mTempDir is
+/// actually retrieved from gPrefs earlier, so the exchange is
+/// with that variable rather than with gPrefs.
+void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.SetBorder( 2 );
+   S.StartStatic( _("Temporary files directory"),0);
+   {
+      S.StartMultiColumn(3, wxEXPAND);
+      S.SetStretchyCol( 1 );// Column 1 is stretchy...
+      mTempDirText = S.Id( TempDirID ).AddTextBox( _("Location:"),  mTempDir, 30);
+      S.Id( ChooseButtonID ).AddButton( _("Choose..."));
+      S.AddFixedText( _("Free Space:"));
+      mFreeSpace = S.AddVariableText( mStrFreeSpace );
+   }
+   S.EndStatic();
 }
 
 wxString DirectoriesPrefs::FormatSize(wxLongLong size)
@@ -172,15 +154,12 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
       tempDir = tempDir.BeforeLast(wxFILE_SEP_PATH);
 
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
-
    wxGetDiskSpace(tempDir, NULL, &space);
-
    mFreeSpace->SetLabel(FormatSize(space));
 }
    
 bool DirectoriesPrefs::Apply()
 {
-   
    mTempDir = mTempDirText->GetValue();
 
    if(!wxDirExists(mTempDir)) {

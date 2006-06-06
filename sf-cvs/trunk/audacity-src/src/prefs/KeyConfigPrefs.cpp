@@ -6,32 +6,33 @@
 
   Brian Gunlogson
   Dominic Mazzoni
+  James Crook
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class KeyConfigPrefs
+
+The code for displaying keybindings is similar to code in MousePrefs.
+It would be nice to create a new 'Bindings' class which both 
+KeyConfigPrefs and MousePrefs use.
+
+*//*********************************************************************/
 
 #include "../Audacity.h"
 
 #include <wx/defs.h>
 #include <wx/ffile.h>
-#include <wx/statbox.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
-#include <wx/textctrl.h>
-#include <wx/listctrl.h>
-#include <wx/choice.h>
 #include <wx/intl.h>
 #include <wx/filedlg.h>
-#include <wx/msgdlg.h>
-#include <wx/menuitem.h>
 
 #include "../Prefs.h"
 #include "../commands/CommandManager.h"
 #include "../commands/Keyboard.h"
 #include "../xml/XMLFileReader.h"
 
-#include "KeyConfigPrefs.h"
 #include "../Internat.h"
+#include "../ShuttleGui.h"
+#include "KeyConfigPrefs.h"
 
 #define AssignDefaultsButtonID  7001
 #define CurrentComboID          7002
@@ -40,7 +41,6 @@
 #define CommandsListID          7005
 #define SaveButtonID            7006
 #define LoadButtonID            7007
-
 
 // The numbers of the columns of the mList.
 enum { BlankColumn=0, CommandColumn=1, KeyComboColumn=2};
@@ -59,23 +59,72 @@ PrefsPanel(parent)
 {
    SetLabel(_("Keyboard"));         // Provide visual label
    SetName(_("Keyboard"));          // Provide audible label
+   Populate( );
+}
 
+void KeyConfigPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   // These steps set up the pointer to the command manager...
    AudacityProject *project = GetActiveProject();
    if (!project)
       return;
-
    mManager = project->GetCommandManager();
 
-   topSizer = new wxBoxSizer( wxVERTICAL );
+   // The SysKeyText ctrl is so special that we aren't
+   // going to include it into Audacity's version of ShuttleGui.
+   // So instead we create it here, and we can add it into 
+   // the sizer scheme later...
+   mCurrentComboText = new SysKeyTextCtrl(
+         this, CurrentComboID, wxT(""),
+         wxDefaultPosition, wxSize(115, -1), 0 );
 
-   // This code for displaying keybindings is similar to code in MousePrefs.
-   // Would be nice to create a new 'Bindings' class which both 
-   // KeyConfigPrefs and MousePrefs use.
-   mList = new wxListCtrl( this, CommandsListID ,
-      wxDefaultPosition, wxSize(400,250),
-      wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER 
-      );
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   CreateList();
+   mCommandSelected = -1;
+}
 
+/// Normally in classes derived from PrefsPanel this function 
+/// is used both to populate the panel and to exchange data with it.
+/// With KeyConfigPrefs all the exchanges are handled specially,
+/// so this is only used in populating the panel.
+void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.StartStatic( _("Key Bindings"), 1 );
+   mList = S.Id( CommandsListID ).AddListControlReportMode();
+   S.StartHorizontalLay( wxALIGN_LEFT, 0);
+   {
+      // AddWindow is a generic 'Add' for ShuttleGui.
+      // It allows us to add 'foreign' controls.
+      S.AddWindow( mCurrentComboText );
+      S.Id( SetButtonID ).AddButton( _("S&et"));
+      S.Id( ClearButtonID ).AddButton( _("&Clear"));
+   }
+   S.EndHorizontalLay();
+   #ifdef __WXMAC__
+   S.AddFixedText( _("Note: Pressing Cmd+Q will quit. All other keys are valid."));
+   #endif
+   S.StartHorizontalLay( wxALIGN_LEFT, 0);
+   {
+      S.Id( AssignDefaultsButtonID ).AddButton( _("&Defaults"));
+      S.Id( SaveButtonID ).AddButton( _("&Save..."));
+      S.Id( LoadButtonID ).AddButton( _("&Load..."));
+   }
+   S.EndHorizontalLay();
+   S.EndStatic();
+   return;
+}
+
+/// Sets up mList with the right number of columns, titles,
+/// fills the contents and sets column widths.
+void KeyConfigPrefs::CreateList()
+{
    wxASSERT( mList );
 
    //An empty first column is a workaround - under Win98 the first column 
@@ -92,66 +141,6 @@ PrefsPanel(parent)
    mList->SetColumnWidth( CommandColumn, 250 );
 //   mList->SetColumnWidth( CommandColumn, wxLIST_AUTOSIZE );
    mList->SetColumnWidth( KeyComboColumn, 115 );
-
-   topSizer->Add( mList, 1, 
-                  wxGROW | wxALL, GENERIC_CONTROL_BORDER);
-
-   //Add key combo text box
-   mCurrentComboText = new SysKeyTextCtrl(
-      this, CurrentComboID, wxT(""),
-      wxDefaultPosition, wxSize(115, -1), 0 );
-
-   wxButton *pSetButton = new wxButton(this, SetButtonID, _("S&et"));
-   wxButton *pClearButton = new wxButton(this, ClearButtonID, _("&Clear"));
-
-   wxBoxSizer * pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
-
-   pComboLabelSizer->Add( mCurrentComboText, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   pComboLabelSizer->Add( pSetButton, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   pComboLabelSizer->Add( pClearButton, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   topSizer->Add(pComboLabelSizer, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-
-   #ifdef __WXMAC__
-   wxBoxSizer * pMacSizer = new wxBoxSizer( wxHORIZONTAL );
-   wxString warningStr = 
-      _("Note: Pressing Cmd+Q will quit. All other keys are valid.");
-   pMacSizer->Add(new wxStaticText(this, -1, warningStr),
-                  0, 
-                  wxALL, GENERIC_CONTROL_BORDER);
-   topSizer->Add(pMacSizer, 0, wxALL, GENERIC_CONTROL_BORDER);
-   #endif
-
-   wxButton *pDefaultsButton =
-      new wxButton(this, AssignDefaultsButtonID, _("&Defaults"));
-   wxButton *pSaveButton =
-      new wxButton(this, SaveButtonID, _("&Save..."));
-   wxButton *pLoadButton =
-      new wxButton(this, LoadButtonID, _("&Load..."));
-
-   pComboLabelSizer = new wxBoxSizer( wxHORIZONTAL );
-   pComboLabelSizer->Add( pDefaultsButton, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   pComboLabelSizer->Add( pSaveButton, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   pComboLabelSizer->Add( pLoadButton, 0,
-                       wxALL, GENERIC_CONTROL_BORDER);
-   topSizer->Add(pComboLabelSizer, 0,
-                 wxALL, GENERIC_CONTROL_BORDER);
-
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 1, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   SetSizer(outSizer);
-
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-
-   mCommandSelected = -1;
 }
 
 void KeyConfigPrefs::OnSave(wxCommandEvent& event)
@@ -219,17 +208,14 @@ void KeyConfigPrefs::OnSet(wxCommandEvent& event)
 {
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
-
    mList->SetItem( mCommandSelected, KeyComboColumn, mCurrentComboText->GetValue() );
 }
 
 void KeyConfigPrefs::OnClear(wxCommandEvent& event)
 {
    mCurrentComboText->Clear();
-
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
-
    mList->SetItem( mCommandSelected, KeyComboColumn, wxT("") );
 }
 
@@ -287,7 +273,6 @@ void KeyConfigPrefs::RepopulateBindingsList()
    }
 }
 
-
 void KeyConfigPrefs::OnDefaults(wxCommandEvent& event)
 {
    unsigned int i;
@@ -302,6 +287,9 @@ bool KeyConfigPrefs::Apply()
    unsigned int i;
    wxListItem item;
 
+   /// \todo
+   /// gPrefs SetPath is dodgy as we might be using gPrefs
+   /// elsewhere.
    gPrefs->SetPath(wxT("/NewKeys"));
 
    //

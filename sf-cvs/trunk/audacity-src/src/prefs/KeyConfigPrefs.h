@@ -28,15 +28,21 @@ class wxWindow;
 
 class SysKeyTextCtrl;
 class CommandManager;
+class ShuttleGui;
 
-class KeyConfigPrefs:public PrefsPanel {
+class KeyConfigPrefs:public PrefsPanel 
+{
 
- public:
+public:
    KeyConfigPrefs(wxWindow * parent);
    ~KeyConfigPrefs();
-   bool Apply();
+   virtual bool Apply();
 
- private:
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void CreateList();
+
    void OnDefaults(wxCommandEvent& event);
    void OnLoad(wxCommandEvent& event);
    void OnSave(wxCommandEvent& event);
@@ -51,12 +57,13 @@ class KeyConfigPrefs:public PrefsPanel {
    int mCommandSelected;
    wxArrayString mNames;
 
- public:
+public:
    DECLARE_EVENT_TABLE();
 };
 
-//BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
-
+/// \brief BG: A quick and dirty override of wxTextCtrl to capture keys like Ctrl, Alt
+///
+/// This is only ever used by KeyConfigPrefs.
 class SysKeyTextCtrl:public wxTextCtrl
 {
 public:
