@@ -17,6 +17,7 @@
 
 class wxNotebook;
 class wxListbook;
+class wxChoicebook;
 class wxWindow;
 class wxButton;
 class wxCommandEvent;

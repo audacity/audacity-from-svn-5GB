@@ -87,17 +87,6 @@ class TrackPanelListener {
 };
 
 
-/// The TrackLabel is shown to the side of a track 
-/// It has the menus, pan and gain controls displayed in it.
-///
-/// In its current implementation it is not derived from a
-/// wxWindow.  Following the original coding style, it has 
-/// been coded as a 'flyweight' class, which is passed 
-/// state as needed, except for the array of gains and pans.
-/// 
-/// An alternative way to code this is to have an instance
-/// of this class for each instance displayed.
-/// 
 class TrackLabel
 {
 public:
@@ -137,9 +126,7 @@ public:
 
 const int DragThreshold = 3;// Anything over 3 pixels is a drag, else a click.
 
-/// The TrackPanel manages multiple tracks and their TrackLabels.
-/// Note that with stereo tracks there will be one TrackLabel
-/// being used by two wavetracks.
+
 class TrackPanel:public wxPanel {
  public:
 

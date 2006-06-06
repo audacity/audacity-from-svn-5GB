@@ -447,11 +447,11 @@ int TrackArtist::GetWaveYPos(float value, int height, bool dB, float dBr)
    }
 }
 
-// Takes a value between min    and max and returns a value between 
-//                       height and 0 
-// ToDo:  Should this function move int GuiWaveTrack where it can
-// then use the zoomMin, zoomMax and height values without having 
-// to have them passed in to it??
+/// Takes a value between min and max and returns a value between 
+/// height and 0 
+/// \todo  Should this function move int GuiWaveTrack where it can
+/// then use the zoomMin, zoomMax and height values without having 
+/// to have them passed in to it??
 int GetWaveYPosNew(float value, float min, float max,
 		   int height, bool dB, bool outer,
 		   float dBr, bool clip)
