@@ -75,6 +75,7 @@ OBJS = \
 	SelectionBar.o \
 	Shuttle.o \
 	ShuttleGui.o \
+	ShuttlePrefs.o \
 	Spectrum.o \
 	Tags.o \
 	Theme.o \
@@ -151,6 +152,7 @@ OBJS = \
 	prefs/QualityPrefs.o \
 	prefs/SpectrumPrefs.o \
 	prefs/ThemePrefs.o \
+	widgets/treebook.o \
 	widgets/AButton.o \
 	widgets/ASlider.o \
 	widgets/AttachableScrollBar.o \
