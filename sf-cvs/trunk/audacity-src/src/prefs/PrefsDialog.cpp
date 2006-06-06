@@ -22,6 +22,7 @@
 #include <wx/imaglist.h>
 #include <wx/msgdlg.h>
 #include <wx/notebook.h>
+//#include <wx/choicebk.h>
 #include <wx/listbook.h>
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
@@ -107,6 +108,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
 // mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
+// mCategories = new wxChoicebook(this, -1, wxDefaultPosition, wxDefaultSize
    mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
 #ifdef __WXGTK__
                                 ,wxNB_LEFT

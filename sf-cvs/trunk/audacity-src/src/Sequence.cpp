@@ -559,7 +559,7 @@ bool Sequence::AppendBlock(SeqBlock * b)
    newBlock->start = mNumSamples;
    newBlock->f = mDirManager->CopyBlockFile(b->f);
    if (!newBlock->f) {
-      // TODO error Could not paste!  (Out of disk space?)
+      /// \todo Error Could not paste!  (Out of disk space?)
       return false;
    }
 
