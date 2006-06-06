@@ -11,7 +11,8 @@
 #define __TREEBOOK_H__ 
 
 #include "wx/treectrl.h" 
-#include "wx/bookctrl.h" 
+#include "wx/bookctrl.h"
+#include "wx/containr.h"
 
 // ---------------------------------------------------------------------------- 
 // wxTreebook 
@@ -129,6 +130,8 @@ protected:
 
     DECLARE_EVENT_TABLE() 
     DECLARE_DYNAMIC_CLASS_NO_COPY(wxTreebook) 
+
+    WX_DECLARE_CONTROL_CONTAINER();
 }; 
 
 #endif // __TREEBOOK_H__ 
