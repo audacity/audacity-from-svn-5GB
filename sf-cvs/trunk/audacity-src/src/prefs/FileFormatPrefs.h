@@ -6,6 +6,7 @@
 
   Joshua Haberman
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
@@ -23,40 +24,39 @@ class wxRadioButton;
 class wxStaticText;
 class wxSlider;
 class wxWindow;
+class ShuttleGui;
 
-class FileFormatPrefs:public PrefsPanel {
-
- public:
+class FileFormatPrefs:public PrefsPanel 
+{
+public:
    FileFormatPrefs(wxWindow * parent);
    ~FileFormatPrefs();
-   bool Apply();
+   virtual bool Apply();
    
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void GetNamesAndLabels();
    void OnFormatChoice(wxCommandEvent& evt);
    void OnMP3FindButton(wxCommandEvent& evt);
-
- private:
-   wxRadioButton *mCopyOrEdit[2];
-   wxCheckBox *mOGGEnabled;
-   wxChoice *mMP3Bitrate;
-   wxButton *mMP3FindButton;
-   wxStaticText *mMP3Version;
-   wxSlider *mOGGQuality;
-
-   wxChoice *mDefaultExportFormat;
-   wxButton *mExportOptionsButton;
-   wxStaticText *mFormatText;
-
-   AudacityProject *mAudacity;
-
-   int mFormat;
-   wxRadioButton *mDownMix[2];
-
    void SetMP3VersionText();
    void SetFormatText();
+   void OpenOtherFormatDialog();
 
-   void Other();
+   int mOggQualityUnscaled;
+   int mFormat;
 
- public:
+   wxArrayString mBitRateNames;
+   wxArrayInt    mBitRateLabels;
+   wxArrayString mFormatNames;
+   wxString      mFormatFromChoice;
+
+   wxChoice *mMP3Bitrate;
+   wxStaticText *mMP3Version;
+   wxStaticText *mFormatText;
+   wxChoice *mDefaultExportFormat;
+
+public:
    DECLARE_EVENT_TABLE();
 };
 

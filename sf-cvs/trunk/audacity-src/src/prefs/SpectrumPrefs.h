@@ -5,33 +5,32 @@
   SpectrumPrefs.h
 
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
 #ifndef __AUDACITY_SPECTRUM_PREFS__
 #define __AUDACITY_SPECTRUM_PREFS__
 
+#include <wx/defs.h>
+#include <wx/string.h>
+
 #include "PrefsPanel.h"
 
-#define numFFTSizes  10
+class wxWindow;
+class ShuttleGui;
 
-class wxRadioButton;
-class wxCheckBox;
-class wxTextCtrl;
-
-class SpectrumPrefs:public PrefsPanel {
-
- public:
+class SpectrumPrefs:public PrefsPanel 
+{
+public:
    SpectrumPrefs(wxWindow * parent);
    ~SpectrumPrefs();
-   bool Apply();
+   virtual bool Apply();
 
- private:
-
-   wxRadioButton *mFFTSize[numFFTSizes];
-   wxCheckBox *mGrayscale;
-
-   wxTextCtrl *mMaxFreqCtrl;
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   wxString maxFreqStr;
 };
 
 #endif

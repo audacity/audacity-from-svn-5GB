@@ -5,159 +5,94 @@
   SpectrumPrefs.cpp
 
   Dominic Mazzoni
+  James Crook
 
 **********************************************************************/
 
-#include "../Audacity.h"
-
 #include <wx/defs.h>
-#include <wx/checkbox.h>
-#include <wx/colordlg.h>
 #include <wx/intl.h>
 #include <wx/msgdlg.h>
-#include <wx/radiobut.h>
-#include <wx/sizer.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
-#include <wx/textctrl.h>
 
+#include "../Audacity.h"
 #include "../Prefs.h"
+#include "../ShuttleGui.h"
 #include "SpectrumPrefs.h"
 
-int FFTSizes[numFFTSizes] = {
-   8,
-   16,
-   32,
-   64,
-   128,
-   256,
-   512,
-   1024,
-   2048,
-   4096
-};
-
-wxString stringFFTSizes[numFFTSizes] = {
-   wxTRANSLATE("8 - most wideband"),
-               wxT("16"),
-               wxT("32"),
-               wxT("64"),
-               wxT("128"),
-   wxTRANSLATE("256 - default"),
-               wxT("512"),
-               wxT("1024"),
-               wxT("2048"),
-   wxTRANSLATE("4096 - most narrowband")
-};
-
 SpectrumPrefs::SpectrumPrefs(wxWindow * parent):
-PrefsPanel(parent)
+   PrefsPanel(parent)
 {
    SetLabel(_("Spectrograms"));         // Provide visual label
    SetName(_("Spectrograms"));          // Provide audible label
+   Populate( );
+}
 
-   int fftSize = gPrefs->Read(wxT("/Spectrum/FFTSize"), 256L);
-   bool isGrayscale = false;
-   gPrefs->Read(wxT("/Spectrum/Grayscale"), &isGrayscale, false);
-
-   int i;
+void SpectrumPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   // Unusual handling of maxFreqStr because it is a validated input.
    int maxFreq = gPrefs->Read(wxT("/Spectrum/MaxFreq"), 8000L);
-   wxString maxFreqStr;
    maxFreqStr.Printf(wxT("%d"), maxFreq);
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
 
-   int pos = 5;      // Fall back to 256 if it doesn't match anything else
-   for (i = 0; i < numFFTSizes; i++)
-      if (fftSize == FFTSizes[i]) {
-         pos = i;
-         break;
-      }
-
-   topSizer = new wxBoxSizer( wxVERTICAL );
-
+void SpectrumPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.SetBorder( 2 );
+   S.StartHorizontalLay(wxEXPAND, 0 );
+   S.StartStatic( _("FFT Size"), 0 );
    {
-      wxStaticBoxSizer *fftSizeSizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("FFT Size")),
-         wxVERTICAL);
-
-      mFFTSize[0] = new wxRadioButton(
-         this, -1, wxGetTranslation(stringFFTSizes[0]), wxDefaultPosition,
-         wxDefaultSize, wxRB_GROUP );
-      mFFTSize[0]->SetValue(false);
-      fftSizeSizer->Add(mFFTSize[0], 0, 
-         wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
-
-      for(i = 1; i < numFFTSizes; i++) {
-         mFFTSize[i] = new wxRadioButton(this, -1, wxGetTranslation(stringFFTSizes[i]));
-         mFFTSize[i]->SetValue(false);
-         fftSizeSizer->Add(mFFTSize[i], 0,
-            wxGROW|wxLEFT|wxRIGHT, RADIO_BUTTON_BORDER );
-      }
-
-      mFFTSize[pos]->SetValue(true);
-            
-      topSizer->Add( fftSizeSizer, 0, 
-         wxGROW|wxALL, TOP_LEVEL_BORDER );
-   }
-
+      S.StartRadioButtonGroup( wxT("/Spectrum/FFTSize"), 256 );
+      S.TieRadioButton( _("8 - most wideband"),     8);
+      S.TieRadioButton( wxT("16"),                  16);
+      S.TieRadioButton( wxT("32"),                  32);
+      S.TieRadioButton( wxT("64"),                  64);
+      S.TieRadioButton( wxT("128"),                 128);
+      S.TieRadioButton( _("256 - default"),         256);
+      S.TieRadioButton( wxT("512"),                 512);
+      S.TieRadioButton( wxT("1024"),                1024);
+      S.TieRadioButton( wxT("2048"),                2048);
+      S.TieRadioButton( _("4096 - most narrowband"),4096);
+      S.EndRadioButtonGroup();
+   }                              
+   S.EndStatic();
+   S.StartStatic( _("Display"),1 );
    {
-      wxStaticBoxSizer *displaySizer = new wxStaticBoxSizer(
-         new wxStaticBox(this, -1, _("Display")),
-         wxVERTICAL);
-
-      mGrayscale  = new wxCheckBox(this, -1, _("&Grayscale"));
-      displaySizer->Add(mGrayscale, 0,
-         wxGROW|wxALL, RADIO_BUTTON_BORDER );
-      
-      if(isGrayscale)
-         mGrayscale->SetValue(true);
-
-      wxBoxSizer *freqSizer = new wxBoxSizer( wxHORIZONTAL );
-
-      freqSizer->Add(
-         new wxStaticText(this, -1, _("Maximum Frequency (Hz):")),
-         0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxRIGHT, GENERIC_CONTROL_BORDER );
-
-      mMaxFreqCtrl = new wxTextCtrl( this, -1, maxFreqStr,
-         wxDefaultPosition, wxSize(80,-1));
-      freqSizer->Add(mMaxFreqCtrl, 0, wxALIGN_CENTER_VERTICAL|wxLEFT,
-                     GENERIC_CONTROL_BORDER );
-
-      displaySizer->Add(freqSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER );
-
-      topSizer->Add(displaySizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
+      // JC: For layout of mixtures of controls I prefer checkboxes on the right,
+      // with everything in two columns over what we have here.
+      S.TieCheckBox( _("&Grayscale"),
+         wxT("/Spectrum/Grayscale"), false);
+      S.StartTwoColumn(); // 2 cols because we have a control with a separate label.
+      S.TieTextBox( 
+         _("Maximum Frequency (Hz):"), // prompt
+         maxFreqStr, // String to exchange with
+         12 // max number of characters (used to size the control).
+         );
+      S.EndTwoColumn();
    }
+   S.EndStatic();
+   S.EndHorizontalLay();
+}
 
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-
-   SetAutoLayout(true);
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-   SetSizer(outSizer);
-} 
 
 bool SpectrumPrefs::Apply()
 {
-   /*
-      wxColourDialog dlog(this);
-      dlog.ShowModal();
-    */
-  
-   int pos = 0;
-   
-   for(int i = 0; i < numFFTSizes; i++)
-      if(mFFTSize[i]->GetValue()) {
-         pos = i;
-         break;
-      }
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
 
-   long fftSize = FFTSizes[pos];
-   gPrefs->Write(wxT("/Spectrum/FFTSize"), fftSize);
+   // maxFreqStr is an input field that has validation.
+   // We've handled it slightly differently to all the
+   // other fields, which just go straight through to gPrefs.
+   // Instead ShuttleGui has been told to only do a one step 
+   // exchange with it, not including gPrefs..  so we now 
+   // need to validate it and possibly write it back to gPrefs.
 
-   bool isGrayscale = mGrayscale->GetValue();
-   gPrefs->Write(wxT("/Spectrum/Grayscale"), isGrayscale);
-
-   wxString maxFreqStr = mMaxFreqCtrl->GetValue();
+   //---- Validation of maxFreqStr
    long maxFreq;
    if (!maxFreqStr.ToLong(&maxFreq)) {
       wxMessageBox(_("The maximum frequency must be an integer"));
@@ -167,12 +102,12 @@ bool SpectrumPrefs::Apply()
       wxMessageBox(_("Maximum frequency must be in the range 100 Hz - 100,000 Hz"));
       return false;
    }
+   //---- End of validation of maxFreqStr.
+
    gPrefs->Write(wxT("/Spectrum/MaxFreq"), maxFreq);
 
    // TODO: Force all projects to repaint themselves
-
    return true;
-
 }
 
 

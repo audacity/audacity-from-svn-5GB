@@ -150,7 +150,7 @@ bool Shuttle::TransferLongLong( const wxString & Name, wxLongLong_t & iValue, co
    }  
    else
    {
-      //TODO: fixup for long long values.
+      /// \todo Fix for long long values.
       mValueString = wxString::Format(wxT("%d"),iValue);
       return ExchangeWithMaster( Name );
    }
@@ -188,6 +188,14 @@ bool Shuttle::TransferEnum( const wxString & Name, int & iValue,
    }
    return true;
 }
+
+bool Shuttle::TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault )
+{
+   /// Not yet implemented...  but might be implemented in a derived class.
+   wxASSERT( false );
+   return false;
+}
+
 
 bool Shuttle::ExchangeWithMaster(const wxString & Name)
 {

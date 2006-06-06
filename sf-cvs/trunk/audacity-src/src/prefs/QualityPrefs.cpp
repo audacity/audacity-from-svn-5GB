@@ -5,40 +5,24 @@
   QualityPrefs.cpp
 
   Joshua Haberman
+  James Crook
 
 **********************************************************************/
 
 #include "../Audacity.h"
 
-#include "QualityPrefs.h"
+#include <wx/defs.h>
+#include <wx/choice.h>
+#include <wx/textctrl.h>
+#include <wx/intl.h>
 
 #include "../AudioIO.h"
 #include "../Dither.h"
 #include "../Prefs.h"
 #include "../Resample.h"
 #include "../SampleFormat.h"
-
-#include <wx/defs.h>
-#include <wx/choice.h>
-#include <wx/stattext.h>
-#include <wx/sizer.h>
-#include <wx/intl.h>
-#include <wx/textctrl.h>
-#include <wx/statbox.h>
-
-int formats[] = {
-   int16Sample,
-   int24Sample,
-   floatSample
-};
-
-wxString stringFormats[] = {
-   wxT("16-bit"),
-   wxT("24-bit"),
-   wxT("32-bit float")
-};
-
-#define NUM_FORMATS 3
+#include "../ShuttleGui.h"
+#include "QualityPrefs.h"
 
 #define ID_SAMPLE_RATE_CHOICE           7001
 
@@ -46,212 +30,192 @@ BEGIN_EVENT_TABLE(QualityPrefs, wxPanel)
    EVT_CHOICE(ID_SAMPLE_RATE_CHOICE,   QualityPrefs::OnSampleRateChoice)
 END_EVENT_TABLE()
 
-
 QualityPrefs::QualityPrefs(wxWindow * parent):
-PrefsPanel(parent)
+   PrefsPanel(parent)
 {
-   int i;
-
    SetLabel(_("Quality"));         // Provide visual label
    SetName(_("Quality"));          // Provide audible label
+   mSampleRates = NULL;            // Pointers to controls.
+   mOtherSampleRate = NULL;
+   Populate( );
+}
 
+void QualityPrefs::Populate( )
+{
+   // First any pre-processing for constructing the GUI.
+   GetNamesAndLabels();
+   gPrefs->Read( wxT("/SamplingRate/DefaultProjectSampleRate"), &mOtherSampleRateValue, 44100 );
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   // Use 'eIsCreatingFromPrefs' so that the GUI is 
+   // initialised with values from gPrefs.
+   ShuttleGui S(this, eIsCreatingFromPrefs);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+   OnSampleRateChoice(wxCommandEvent()); // Enable/disable the control.
+}
+
+/// Gets the lists of names and lists of labels which are
+/// used in the choice controls.
+/// The names are what the user sees in the wxChoice.
+/// The corresponding labels are what gets stored.
+void QualityPrefs::GetNamesAndLabels()
+{
+   //------------ Dither Names 
+   mmDitherNames.Add( _("None") );        mmDitherLabels.Add( Dither::none );
+   mmDitherNames.Add( _("Rectangle") );   mmDitherLabels.Add( Dither::rectangle );
+   mmDitherNames.Add( _("Triangle") );    mmDitherLabels.Add( Dither::triangle );
+   mmDitherNames.Add( _("Shaped") );      mmDitherLabels.Add( Dither::shaped );
+
+   //------------ Sample Rate Names
+   // JKC: I don't understand the following comment.
+   //      Can someone please explain or correct it?
    // XXX: This should use a previously changed, but not yet saved
    //      sound card setting from the "I/O" preferences tab.
-   wxArrayLong sampleRates = AudioIO::GetSupportedSampleRates();
-   
-   int rate =
-       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"),
-                    AudioIO::GetOptimalSupportedSampleRate());
-
-   int format =
-      gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
-
-   int pos = sampleRates.GetCount(); // Fall back to "Other..."
-   for (i = 0; i < (int)sampleRates.GetCount(); i++)
-      if (rate == sampleRates[i]) {
-         pos = i;
-         break;
-      }
-
-   int fmtpos = NUM_FORMATS-1;
-   for (i = 0; i < NUM_FORMATS; i++)
-      if (format == formats[i]) {
-         fmtpos = i;
-         break;
-      }
-
-    topSizer = new wxBoxSizer( wxHORIZONTAL );
-    // horizontal box sizer for two controls in the first row
-    wxBoxSizer *firstRowSizer = new wxBoxSizer(wxHORIZONTAL);
-    // flexgrid sizer and make second column stretchable only
-    wxFlexGridSizer *gridSizer = new wxFlexGridSizer(6, 2, 5, 5);
-    gridSizer->AddGrowableCol(1);
-    // static box sizer
-    wxStaticBoxSizer *staticSizer = new wxStaticBoxSizer( new wxStaticBox(this, -1, _("Sampling") ), wxHORIZONTAL );
-    // adding
-    staticSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 1);
-    topSizer->Add( staticSizer, 1, wxEXPAND | wxALL, 1 );
-    
+   wxArrayLong SampleRateLabelsLong = AudioIO::GetSupportedSampleRates();
+   for (int i=0; i<(int)SampleRateLabelsLong.GetCount(); i++)
    {
-      gridSizer->Add(
-         new wxStaticText(this, -1, _("Default Sample Rate:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0, 
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
-         
-      wxString *stringRates = new wxString[sampleRates.GetCount() + 1];
-      
-      for (i = 0; i < (int)sampleRates.GetCount(); i++)
-      {
-         int sampleRate = (int)sampleRates[i];
-         stringRates[i] = wxString::Format(wxT("%i Hz"), sampleRate);
-      }
-      
-      stringRates[sampleRates.GetCount()] = _("Other...");
-
-      mSampleRates = new wxChoice(this, ID_SAMPLE_RATE_CHOICE, wxDefaultPosition, wxDefaultSize,
-                                 (int)sampleRates.GetCount() + 1, stringRates);
-      mSampleRates->SetSelection(pos);
-
-      firstRowSizer->Add( mSampleRates, 0, wxRIGHT|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
-
-      mOtherSampleRate = NULL;
-      mOtherSampleRate = new wxTextCtrl(
-         this, -1, wxString::Format(wxT("%i"), rate),
-         wxDefaultPosition, wxSize(50, -1), 0 );
-
-      mOtherSampleRate->Enable(pos == (int)sampleRates.GetCount() + 1);
-
-      firstRowSizer->Add( mOtherSampleRate, 0, wxLEFT|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
-      gridSizer->Add(firstRowSizer, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
-      delete[] stringRates;
+      int iRate = (int)SampleRateLabelsLong[i];
+      mmSampleRateLabels.Add( iRate );
+      mmSampleRateNames.Add( wxString::Format(wxT("%i Hz"), iRate ));
    }
+   mmSampleRateNames.Add( _("Other..."));
+   // The label for the 'Other...' case can be any value at all.
+   mmSampleRateLabels.Add( 44100 ); // If chosen, this value will be overwritten
 
-   {
-      gridSizer->Add(
-         new wxStaticText(this, -1, _("Default Sample Format:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0, 
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+   //------------- Sample Format Names
+   mmSampleFormatNames.Add( wxT("16-bit")       );mmSampleFormatLabels.Add(int16Sample);
+   mmSampleFormatNames.Add( wxT("24-bit")       );mmSampleFormatLabels.Add(int24Sample);
+   mmSampleFormatNames.Add( wxT("32-bit float") );mmSampleFormatLabels.Add(floatSample);
 
-      mSampleFormats = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                                 NUM_FORMATS, stringFormats);
-      mSampleFormats->SetSelection(fmtpos);
-
-      gridSizer->Add( mSampleFormats, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
-   }
-
-   int converterHQ = Resample::GetBestMethod();
-   int converter = Resample::GetFastMethod();
+   //------------- Converter Names
+   // We used to set and get best/fast method via Resample.cpp.
+   // Need to ensure that preferences strings in Resample.cpp match.
+   // int converterHQ = Resample::GetBestMethod();
+   // int converter = Resample::GetFastMethod();
    int numConverters = Resample::GetNumMethods();
+   for(int i=0; i<numConverters; i++)
+   {
+      mConverterNames.Add(  Resample::GetMethodName(i) );
+      mConverterLabels.Add( i );
+   }
+}
 
-   wxString *converterStrings;
-   converterStrings = new wxString[numConverters];
-   for(i=0; i<numConverters; i++)
-      converterStrings[i] = Resample::GetMethodName(i);
+void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
+{
+   S.SetBorder( 5 );
+   S.StartStatic(_("Sampling"),0 );
+   {
+      S.StartTwoColumn();
+      S.AddPrompt( _("Default Sample Rate:") );
+      DefineSampleRateControl( S ); // A tricky control.
+      S.TieChoice(_("Default Sample Format:"),
+         wxT("/SamplingRate/DefaultProjectSampleFormat"),
+         floatSample, mmSampleFormatNames, mmSampleFormatLabels );
 
-   gridSizer->Add(
-         new wxStaticText(this, -1, _("Real-time sample rate converter:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0, 
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+// JKC For the old style of layout, uncomment the next line.
+// #define OLD_STYLE_LAYOUT
+// Once we've chosen which layout to use we'll remove the 
+// other one.  (June/2006).
+#ifdef OLD_STYLE_LAYOUT
+      S.TieChoice(_("Real-time sample rate converter:"),
+         wxT("/Quality/LibresampleSampleRateConverter"),
+         (int)0, mConverterNames, mConverterLabels),
+      S.TieChoice(_("High-quality sample rate converter:"),
+         wxT("/Quality/LibresampleHQSampleRateConverter"),
+         (int)1, mConverterNames, mConverterLabels),
+      S.TieChoice(_("Real-time dither:"),
+         wxT("/Quality/DitherAlgorithm"),
+         Dither::none, mmDitherNames, mmDitherLabels );  
+      S.TieChoice(_("High-quality dither:"),
+         wxT("/Quality/HQDitherAlgorithm"),
+         Dither::none, mmDitherNames, mmDitherLabels );  
+#endif
+      S.EndTwoColumn();
+   }
+   S.EndStatic();
 
-   mConverters = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                              numConverters, converterStrings);
-   mConverters->SetSelection(converter);
-   gridSizer->Add(mConverters, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
+// The new style of layout has 
+//   - columns for converter and dither.
+//   - rows for Real-time and High-quality.
+#ifndef OLD_STYLE_LAYOUT
+   S.StartStatic( _("Conversion") );
+   {
+      // We use blank labels here and there to end up with
+      // a three column layout.
+      S.StartMultiColumn(3);
+      S.AddFixedText(wxT(""));
+      S.AddTitle(_("Sample Rate Converter" ));
+      S.AddTitle(_("Dither"));
+      S.TieChoice(_("Real-time:"),
+         wxT("/Quality/LibresampleSampleRateConverter"),
+         (int)0, mConverterNames, mConverterLabels),
+      S.TieChoice(wxT(""),
+         wxT("/Quality/DitherAlgorithm"),
+         Dither::none, mmDitherNames, mmDitherLabels );  
+      S.TieChoice(_("High-quality:"),
+         wxT("/Quality/LibresampleHQSampleRateConverter"),
+         (int)1, mConverterNames, mConverterLabels),
+      S.TieChoice(wxT(""),
+         wxT("/Quality/HQDitherAlgorithm"),
+         Dither::none, mmDitherNames, mmDitherLabels );  
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+#endif
+}
 
-   gridSizer->Add(
-         new wxStaticText(this, -1, _("High-quality sample rate converter:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0, 
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
+/// Add a compound control made up from a choice and an edit 
+/// box.  
+void QualityPrefs::DefineSampleRateControl( ShuttleGui & S )
+{
+   // We use a sizer within a sizer to get the effect we want.
+   // We also use the SetIfCreated idiom to get pointers to
+   // the controls, so that we can drive them from
+   // our own code.
 
-   mHQConverters = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                                numConverters, converterStrings);
-   mHQConverters->SetSelection(converterHQ);
-   gridSizer->Add(mHQConverters, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER );
-   
-   delete[] converterStrings;
-
-   // These ditherers are currently defined
-   int numDithers = 4;
-   wxString ditherStrings[4];
-   ditherStrings[Dither::none] = _("None");
-   ditherStrings[Dither::rectangle] = _("Rectangle");
-   ditherStrings[Dither::triangle] = _("Triangle");
-   ditherStrings[Dither::shaped] = _("Shaped");
-   
-   // Low-quality dithering option
-   int dither = gPrefs->Read(wxT("/Quality/DitherAlgorithm"), (long)Dither::none);
-   
-   gridSizer->Add(
-         new wxStaticText(this, -1, _("Real-time dither:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0,
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
-   
-   mDithers = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                           numDithers, ditherStrings);
-   mDithers->SetSelection(dither);
-   
-   gridSizer->Add(mDithers, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
-   
-   // High quality dithering option
-   int ditherHQ = gPrefs->Read(wxT("/Quality/HQDitherAlgorithm"), (long)Dither::triangle);;
-   
-   gridSizer->Add(
-         new wxStaticText(this, -1, _("High-quality dither:"), wxPoint(-1,-1), wxDefaultSize, wxALIGN_RIGHT), 0,
-         wxALIGN_RIGHT|wxALL|wxALIGN_CENTER_VERTICAL, GENERIC_CONTROL_BORDER);
-   
-   mHQDithers = new wxChoice(this, -1, wxDefaultPosition, wxDefaultSize,
-                             numDithers, ditherStrings);
-   mHQDithers->SetSelection(ditherHQ);
-   
-   gridSizer->Add(mHQDithers, 0, wxALL|wxALIGN_CENTER_VERTICAL, TOP_LEVEL_BORDER);
-   
-   outSizer = new wxBoxSizer( wxVERTICAL );
-   outSizer->Add(topSizer, 0, wxGROW|wxALL, TOP_LEVEL_BORDER);
-   
-   SetAutoLayout(true);
-   outSizer->Fit(this);
-   outSizer->SetSizeHints(this);
-   SetSizer(outSizer);
-
+   // Adjust borders so that extra sizer doesn't add extra space.
+   S.SetBorder(0);
+   S.StartHorizontalLay(wxALIGN_LEFT );
+   S.SetBorder(5);
+   // If the value in Prefs isn't in the list, then we want
+   // the last item, 'Other...' to be shown.
+   S.SetNoMatchSelector( mmSampleRateNames.GetCount()-1 );
+   // First the choice...
+   // We make sure it uses the ID we want, so that we get changes
+   S.Id( ID_SAMPLE_RATE_CHOICE );
+   // We make sure we have a pointer to it, so that we can drive it.
+   mSampleRates = S.TieChoice( wxT(""),
+      wxT("/SamplingRate/DefaultProjectSampleRate"),
+      AudioIO::GetOptimalSupportedSampleRate(),
+      mmSampleRateNames, mmSampleRateLabels );
+   // Now do the edit box...
+   mOtherSampleRate = S.TieTextBox(wxT(""),
+      mOtherSampleRateValue, 9);
+   S.EndHorizontalLay();
 }
 
 bool QualityPrefs::Apply()
 {
-   long rate = 44100;
-   long format = floatSample;
-   int sel = mSampleRates->GetSelection();
-   int fmtsel = mSampleFormats->GetSelection();
-   
-   if (sel < mSampleRates->GetCount()-1)
-      (mSampleRates->GetString(sel)).ToLong(&rate);
-   else
-      (mOtherSampleRate->GetValue()).ToLong(&rate);
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
 
-   gPrefs->Write(wxT("/SamplingRate/DefaultProjectSampleRate"), rate);
-
-   format = formats[fmtsel];
-
-   gPrefs->Write(wxT("/SamplingRate/DefaultProjectSampleFormat"), format);
-
-   /* Audacity will automatically re-read this value whenever a new project
-    * is created, so don't bother making it do so now... */
-
-   int converter = mConverters->GetSelection();
-   int converterHQ = mHQConverters->GetSelection();
-   Resample::SetFastMethod(converter);
-   Resample::SetBestMethod(converterHQ);
-
-   // Save dither options
-   int dither = mDithers->GetSelection();
-   int ditherHQ = mHQDithers->GetSelection();
-   gPrefs->Write(wxT("/Quality/HQDitherAlgorithm"), (long)ditherHQ);
-   gPrefs->Write(wxT("/Quality/DitherAlgorithm"), (long)dither);
-   
+   // The complex compound control may have value 'other' in which case the
+   // value in prefs comes from the second field.
+   if( mOtherSampleRate->IsEnabled() )
+   {
+      gPrefs->Write( wxT("/SamplingRate/DefaultProjectSampleRate"), mOtherSampleRateValue );
+   }
    // Tell CopySamples() to use these ditherers now
    InitDitherers();
-
    return true;
 }
 
+/// Enables or disables the Edit box depending on
+/// whether we selected 'Other...' or not.
 void QualityPrefs::OnSampleRateChoice(wxCommandEvent& evt)
 {
    int sel = mSampleRates->GetSelection();
-
    mOtherSampleRate->Enable(sel == mSampleRates->GetCount() - 1);
 }
 

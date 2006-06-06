@@ -18,52 +18,26 @@
 #include "PrefsPanel.h"
 #include "../BatchCommands.h"
 
-#ifdef __WXMSW__
-    #include  <wx/ownerdrw.h>
-#endif
-
-//#include  "wx/log.h"
-#include  <wx/sizer.h>
-#include  <wx/menuitem.h>
-#include  <wx/checklst.h>
-
-#if wxUSE_CHECKLISTBOX
-//  JKC: uncomment the #define to convert the lists of checkboxes
-//  into scrollable lists.  We're likely to need this when the 
-//  list of preferences is longer.
-//#define USE_SCROLLING_CHECK_LISTBOX_IN_PREFS 1
-#endif
-
 class wxWindow;
-class wxCheckBox;
-class wxChoice;
-class wxTextCtrl;
-class wxStaticText;
-class wxRadioButton;
 class wxListCtrl;
+class ShuttleGui;
 class wxListEvent;
 
-//CheckBox containers may be sizers or CCheckListBoxes.
-class BatchPrefs;
-
-const int MAX_BATCH_CHECKBOXES=30;
-const int MAX_BATCH_RADIO_BUTTONS=5;
-const int NUM_BATCH_CHECKBOX_CONTAINERS=2;
-
-class BatchPrefs : public PrefsPanel {
-
+class BatchPrefs : public PrefsPanel 
+{
 public:
    BatchPrefs(wxWindow * parent);
    ~BatchPrefs();
-
-   bool Apply();
+   virtual bool Apply();
 
 private:
-   wxCheckBox * CreateCheckBox( const wxString Description, const bool State);
-   void CheckBoxAction(const wxString mDescription, const wxString mSettingName,
-      bool bDefault, int mWindowID=0); //0 should be NoneID.
-   void AllCheckBoxActions();
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
    void AddItem( wxString const & Action, wxString const & Params);
+	void SetItem( int ItemNo, const wxString command, const wxString params );
+	void PopulateList();
+   void CreateList();
+
    void OnItemSelected(wxListEvent &event);
    void OnDrag(wxListEvent &event);
    void OnDragEnd(wxListEvent &event);
@@ -72,28 +46,9 @@ private:
    void OnSetChainEmpty(wxCommandEvent &event);
    void OnLoad(wxCommandEvent &event);
    void OnSave(wxCommandEvent &event);
-// These private member variables are used in
-// creating lists of checkboxes.
-   wxCheckBox *mCheckBoxes[MAX_BATCH_CHECKBOXES]; // CheckBoxes not contained in a ListBox.
-#if USE_SCROLLING_CHECK_LISTBOX_IN_PREFS
-   wxCheckListBox *mCheckListBoxes[  NUM_BATCH_CHECKBOX_CONTAINERS]; // (Optional) ListBoxes of checkboxes
-#endif
-   wxSizer *mCheckListSizers[ NUM_BATCH_CHECKBOX_CONTAINERS]; // Sizers that contain them.
-   int      mCheckBoxCounters[NUM_BATCH_CHECKBOX_CONTAINERS]; // How many in each list?
-   wxListCtrl * mList;
 
-   int mCurrentCheckBoxContainer;  // Current container when creating / applying.
-   wxSizer * mCurrentSizer;
-   int mCurrentCheckBox; // 0..MAX_BATCH_CHECKBOXES-1
-   int mCurrentRadioButton;
-   int mSelectedRadioButton;
-   wxString mCurrentPrefName;
-   int mCurrentPrefValue;
-   bool mbCreating; // Are we currently creating the checkboxes?  
- public:
-	 void SetItem( int ItemNo, const wxString command, const wxString params );
-	void PopulateList();
-   BatchCommands mBatchCommands;
+   wxListCtrl * mList;   /// List of commands in current command chain.
+   BatchCommands mBatchCommands;  /// Provides list of available commands.
    DECLARE_EVENT_TABLE();
 };
 

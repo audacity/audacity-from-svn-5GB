@@ -14,27 +14,28 @@
 #include "PrefsPanel.h"
 
 class wxWindow;
-class wxCheckBox;
-class wxChoice;
 class wxListCtrl;
+class ShuttleGui;
 
 class MousePrefs:public PrefsPanel {
 
- public:
+public:
    MousePrefs(wxWindow * parent);
    ~MousePrefs();
+   virtual bool Apply();
+
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void CreateList();
    void AddItem( wxString const & MouseButtons, 
       wxString const & Tool, 
       wxString const & Action,
       wxString const & Comment = wxString(wxT("")));
-   bool Apply();
 
- private:
-    wxListCtrl * mList;
-
- public:
-    DECLARE_EVENT_TABLE()
-
+   wxListCtrl * mList;
+public:
+   DECLARE_EVENT_TABLE()
 };
 
 #endif

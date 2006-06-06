@@ -11,30 +11,28 @@
 
 **********************************************************************/
 
-#pragma once
-#include "PrefsPanel.h"
+#ifndef __AUDACITY_THEME_PREFS__
+#define __AUDACITY_THEME_PREFS__
 
-// ThemePrefs is a new feature (May 2006)
-// To disable it, comment out the USE_THEME_PREFS #define.
-#define USE_THEME_PREFS
+#include "PrefsPanel.h"
 
 class ShuttleGui;
 
-class ThemePrefs :
-   public PrefsPanel
+class ThemePrefs : public PrefsPanel
 {
 public:
    ThemePrefs(wxWindow * parent);
    ~ThemePrefs(void);
-   bool Apply();
+   virtual bool Apply();
 
-   void Populate(ShuttleGui & S);
+private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui & S);
    void OnLoadThemeComponents(wxCommandEvent &event);
    void OnSaveThemeComponents(wxCommandEvent &event);
    void OnLoadThemeCache(wxCommandEvent &event);
    void OnSaveThemeCache(wxCommandEvent &event);
 
-   bool bLoadThemeAtStart;
-
    DECLARE_EVENT_TABLE();
 };
+#endif
