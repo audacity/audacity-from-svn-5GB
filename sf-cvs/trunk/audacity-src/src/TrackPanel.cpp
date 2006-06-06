@@ -4451,6 +4451,14 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
+   // If playing, skip a bit of audio
+   AudacityProject *p = GetProject();
+   if (p->GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
+      gAudioIO->SeekStream(-1.0);
+      return;
+   }
+   
    // Get currently focused track...bail if there isn't one.
    t = GetFocusedTrack();
    if( t == NULL )
@@ -4552,6 +4560,14 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
+   // If playing, skip a bit of audio
+   AudacityProject *p = GetProject();
+   if (p->GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
+      gAudioIO->SeekStream(1.0);
+      return;
+   }
+   
    // Get currently focused track...bail if there isn't one.
    t = GetFocusedTrack();
    if( t == NULL )

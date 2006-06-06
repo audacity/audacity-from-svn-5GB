@@ -56,7 +56,8 @@ class AudioIO {
                    double cutPreviewGapLen = 0.0);
 
    void StopStream();
-
+   void SeekStream(double seconds) { mSeek = seconds; };
+   
    /* Returns true if audio i/o is busy starting, stopping,
       playing, or recording.  When this is
       false, it's safe to start playing or recording */
@@ -163,6 +164,8 @@ private:
    double              mT;
    double              mT0;
    double              mT1;
+   double              mTime;
+   double              mSeek;
    double              mPlaybackRingBufferSecs;
    double              mCaptureRingBufferSecs;
    double              mMaxPlaybackSecsToCopy;
