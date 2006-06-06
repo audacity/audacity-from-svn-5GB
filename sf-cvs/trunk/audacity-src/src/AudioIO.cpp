@@ -732,6 +732,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mT0      = t0;
    mT       = t0;
    mT1      = t1;
+   mTime    = t0 * mRate;
+   mSeek    = 0;
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
@@ -1172,7 +1174,7 @@ double AudioIO::NormalizeStreamTime(double absoluteTime) const
       if (absoluteTime > mCutPreviewGapStart)
          absoluteTime += mCutPreviewGapLen;
    }
-      
+   
    return absoluteTime;
 }
 
@@ -1203,11 +1205,8 @@ double AudioIO::GetStreamTime()
 
    return NormalizeStreamTime(time);
 #else
-   PaStream *stream = mPortStreamV18;
-
-   double streamTime = Pa_StreamTime(stream);
-   double indicator = mT0 + (streamTime / mRate) - mPausedSeconds;
-
+   double indicator = (mTime / mRate) - mPausedSeconds;
+   
    // Pa_StreamTime can sometimes return wacky results, so we
    // try to filter those out...
    if (mLastStableIndicator != NO_STABLE_INDICATOR &&
@@ -1453,6 +1452,10 @@ void AudioIO::FillBuffers()
 {
    unsigned int i;
 
+   // Can't fill buffers while seeking
+   if( mSeek )
+      return;
+   
    if( mPlaybackTracks.GetCount() > 0 )
    {
       // Though extremely unlikely, it is possible that some buffers
@@ -1491,7 +1494,6 @@ void AudioIO::FillBuffers()
          // This is the purpose of this loop.
          do {
             deltat = secsAvail;
-
             if( mT + deltat > mT1 )
             {
                deltat = mT1 - mT;
@@ -1499,6 +1501,7 @@ void AudioIO::FillBuffers()
                   deltat = 0.0;
             }
             mT += deltat;
+            
             secsAvail -= deltat;
 
             for( i = 0; i < mPlaybackTracks.GetCount(); i++ )
@@ -1511,6 +1514,7 @@ void AudioIO::FillBuffers()
                samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
                mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
             }
+            mT = mPlaybackMixers[0]->MixGetCurrentTime();
 
             // msmeyer: If playing looped, check if we are at the end of the buffer
             // and if yes, restart from the beginning.
@@ -1520,6 +1524,7 @@ void AudioIO::FillBuffers()
                   mPlaybackMixers[i]->Restart();
                mT = mT0;
             }
+
          } while (mPlayLooped && secsAvail > 0 && deltat > 0);
       }
    }
@@ -1639,7 +1644,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
 
    if (gAudioIO->mStreamToken > 0)
    {
-
       //
       // Mix and copy to PortAudio's output buffer
       //
@@ -1662,7 +1666,32 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                                   numCaptureChannels,
                                   (float *)outputBuffer, (int)framesPerBuffer, gain);
          }
+
          
+         gAudioIO->mTime += framesPerBuffer;
+
+         if (gAudioIO->mSeek)
+         {
+            gAudioIO->mTime += (gAudioIO->mSeek * gAudioIO->mRate);
+            if (gAudioIO->mTime < (gAudioIO->mT0 * gAudioIO->mRate))
+               gAudioIO->mTime = gAudioIO->mT0 * gAudioIO->mRate;
+            if (gAudioIO->mTime > (gAudioIO->mT1 * gAudioIO->mRate))
+               gAudioIO->mTime = gAudioIO->mT1 * gAudioIO->mRate;
+
+            for (i = 0; i < numPlaybackTracks; i++)
+            {
+               gAudioIO->mPlaybackMixers[i]->Reposition( gAudioIO->mTime / gAudioIO->mRate );
+               gAudioIO->mPlaybackBuffers[i]->Discard( gAudioIO->mPlaybackBuffers[i]->AvailForGet() );
+            }
+
+            gAudioIO->mSeek = 0;
+
+            ClearSamples((samplePtr)outputBuffer, floatSample,
+                         0, framesPerBuffer * numPlaybackChannels);
+               
+            return paContinue;
+         }
+
          int numSolo = 0;
          for( t = 0; t < numPlaybackTracks; t++ )
             if( gAudioIO->mPlaybackTracks[t]->GetSolo() )
@@ -1693,7 +1722,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                   gAudioIO->mPlaybackBuffers[t]->Discard(framesPerBuffer);
                   continue;
                }
-            
+
             unsigned int len = (unsigned int)
                gAudioIO->mPlaybackBuffers[t]->Get((samplePtr)tempFloats,
                                                   floatSample,

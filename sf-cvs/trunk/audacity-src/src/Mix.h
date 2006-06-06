@@ -88,6 +88,10 @@ class Mixer {
    /// Process() is called.
    void Restart();
 
+   /// Reposition processing to absolute time next time
+   /// Process() is called.
+   void Reposition(double t);
+
    /// Current time in seconds
    double MixGetCurrentTime();
 

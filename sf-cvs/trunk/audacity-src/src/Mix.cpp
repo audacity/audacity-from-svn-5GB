@@ -573,6 +573,23 @@ void Mixer::Restart()
    }
 }
 
+void Mixer::Reposition(double t)
+{
+   int i;
+
+   mT = t;
+   if( mT < mT0 )
+      mT = mT0;
+   if( mT > mT1 )
+      mT = mT1;
+   
+   for(i=0; i<mNumInputTracks; i++) {
+      mSamplePos[i] = mInputTrack[i]->TimeToLongSamples(mT);
+      mQueueStart[i] = 0;
+      mQueueLen[i] = 0;
+   }
+}
+
 MixerSpec::MixerSpec( int numTracks, int maxNumChannels )
 {
    mNumTracks = mNumChannels = numTracks;
