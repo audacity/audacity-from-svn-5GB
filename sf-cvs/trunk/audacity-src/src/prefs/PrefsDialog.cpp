@@ -147,9 +147,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    w = new SpectrumPrefs(mCategories);    mCategories->AddPage(w, w->GetName(),false,0);
    w = new DirectoriesPrefs(mCategories); mCategories->AddPage(w, w->GetName(),false,0);
    w = new GUIPrefs(mCategories);         mCategories->AddPage(w, w->GetName(),false,0);
-#ifdef USE_THEME_PREFS
    w = new ThemePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
-#endif
    w = new BatchPrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
    w = new KeyConfigPrefs(mCategories);   mCategories->AddPage(w, w->GetName(),false,0);
    w = new MousePrefs(mCategories);       mCategories->AddPage(w, w->GetName(),false,0);
