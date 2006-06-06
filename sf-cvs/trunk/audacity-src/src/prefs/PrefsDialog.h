@@ -17,6 +17,7 @@
 
 class wxNotebook;
 class wxListbook;
+class wxTreebook;
 class wxChoicebook;
 class wxWindow;
 class wxButton;
@@ -39,7 +40,8 @@ class PrefsDialog:public wxDialog {
    void ShowTempDirPage();
 
  private:
-   wxListbook *mCategories;
+// wxListbook *mCategories;
+   wxTreebook *mCategories;
    wxButton *mOK;
    wxButton *mCancel;
 
