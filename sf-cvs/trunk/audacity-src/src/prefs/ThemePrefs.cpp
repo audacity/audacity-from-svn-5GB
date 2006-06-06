@@ -92,27 +92,27 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
    S.StartStatic( _("Info"), 1 );
    {
       S.AddFixedText( 
-         _("Themability is an experimental feature.\r\n\r\n"
-         wxT("To try it out, click \"Save Theme\" then find and modify\r\n")
-         wxT("the images and colors in ImageCache.png using an\r\n")
-         wxT("image editor such as the Gimp.\r\n\r\n")
-         wxT("Click \"Load Theme\" to load the changed images\r\n")
+         _("Themability is an experimental feature.\n\n"
+         wxT("To try it out, click \"Save Theme\" then find and modify\n")
+         wxT("the images and colors in ImageCache.png using an\n")
+         wxT("image editor such as the Gimp.\n\n")
+         wxT("Click \"Load Theme\" to load the changed images\n")
          wxT("and colors back into Audacity."))
          );
       S.AddFixedText( 
-         _("Only the control toolbar and the colors on the \r\n"
-         wxT("wavetrack are currently affected, even though the\r\n")
-         wxT("image file shows other icons too.\r\n\r\n\r\n")
+         _("Only the control toolbar and the colors on the \n"
+         wxT("wavetrack are currently affected, even though the\n")
+         wxT("image file shows other icons too.\n\n\n")
 
 
-         wxT("Loading themes at start up isn't implemented yet.\r\n\r\n")
+         wxT("Loading themes at start up isn't implemented yet.\n\n")
 
-         wxT("Saving and loading components isn't implemented\r\n")
-         wxT("yet.  This will use a separate file for each image.\r\n")
-         wxT("Having a single image file is the normal way themes\r\n")
-         wxT("will work.  However, when we change the layout\r\n")
-         wxT("of the image file, we will want to save and then\r\n")
-         wxT("load from individual files.\r\n"))
+         wxT("Saving and loading components isn't implemented\n")
+         wxT("yet.  This will use a separate file for each image.\n")
+         wxT("Having a single image file is the normal way themes\n")
+         wxT("will work.  However, when we change the layout\n")
+         wxT("of the image file, we will want to save and then\n")
+         wxT("load from individual files.\n"))
 
          );
    }
