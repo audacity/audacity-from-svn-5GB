@@ -45,6 +45,9 @@
 #include "SpectrumPrefs.h"
 #include "MousePrefs.h"
 
+//JKC: Experimental treebook, backported from wxWidgets 2.7.x
+#include "../widgets/treebook.h"
+
 
 enum {
    CategoriesID = 1000
@@ -109,7 +112,8 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
 // mCategories = new wxNotebook(this, -1, wxDefaultPosition, wxDefaultSize
 // mCategories = new wxChoicebook(this, -1, wxDefaultPosition, wxDefaultSize
-   mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
+// mCategories = new wxListbook(this, -1, wxDefaultPosition, wxDefaultSize
+   mCategories = new wxTreebook(this, -1, wxDefaultPosition, wxDefaultSize
 #ifdef __WXGTK__
                                 ,wxNB_LEFT
 #endif
@@ -124,9 +128,9 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    //These two lines were an attempt to size the list correctly.
    //They don't work (in wxWidgets 2.6.1/XP)
-   wxListView * pList = mCategories->GetListView();
+//   wxListView * pList = mCategories->GetListView();
    // Can't use wxLC_REPORT because of limitations in wxListBook.
-   pList->SetWindowStyleFlag(wxLC_ICON | wxLC_SINGLE_SEL );//| wxLC_ALIGN_LEFT);
+//   pList->SetWindowStyleFlag(wxLC_ICON | wxLC_SINGLE_SEL );//| wxLC_ALIGN_LEFT);
    //pList->SetMinSize( wxSize(300,100));
 
 
