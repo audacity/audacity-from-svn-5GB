@@ -1205,17 +1205,8 @@ double AudioIO::GetStreamTime()
 
    return NormalizeStreamTime(time);
 #else
-   double indicator = (mTime / mRate) - mPausedSeconds;
+   double indicator = (mTime / mRate);
    
-   // Pa_StreamTime can sometimes return wacky results, so we
-   // try to filter those out...
-   if (mLastStableIndicator != NO_STABLE_INDICATOR &&
-       fabs(indicator - mLastIndicator) > 0.1) {
-      mLastIndicator = indicator;
-      return NormalizeStreamTime(mLastStableIndicator);
-   }
-   mLastIndicator = indicator;
-   mLastStableIndicator = indicator;
    return NormalizeStreamTime(indicator);
 #endif
 }
@@ -1666,10 +1657,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                                   numCaptureChannels,
                                   (float *)outputBuffer, (int)framesPerBuffer, gain);
          }
-
          
-         gAudioIO->mTime += framesPerBuffer;
-
          if (gAudioIO->mSeek)
          {
             gAudioIO->mTime += (gAudioIO->mSeek * gAudioIO->mRate);
@@ -1854,6 +1842,8 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             }
          }
       }
+      
+      gAudioIO->mTime += framesPerBuffer;
       
      #if USE_PORTAUDIO_V19
       gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
