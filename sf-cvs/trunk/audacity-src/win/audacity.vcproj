@@ -1739,6 +1739,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\ShuttlePrefs.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\ShuttlePrefs.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Spectrum.cpp"
 				>
 				<FileConfiguration
