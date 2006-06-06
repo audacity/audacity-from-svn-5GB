@@ -80,6 +80,8 @@ class TimeTextCtrl: public wxPanel
 
    void PrintDebugInfo();
 
+   void SetFieldFocus(int digit);
+
    double         mTimeValue;
    double         mSampleRate;
    wxString       mFormatString;
@@ -105,6 +107,7 @@ class TimeTextCtrl: public wxPanel
    int            mHeight;
 
    int            mFocusedDigit;
+   int            mLastField;
 
    DigitInfoArray mDigits;
 
@@ -187,6 +190,8 @@ public:
    // or child.
    virtual wxAccStatus GetValue(int childId, wxString* strValue);
 
+private:
+   TimeTextCtrl *mCtrl;
 };
 
 #endif // wxUSE_ACCESSIBILITY
