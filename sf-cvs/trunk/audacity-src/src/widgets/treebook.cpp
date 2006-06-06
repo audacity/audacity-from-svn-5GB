@@ -47,11 +47,14 @@ const int wxID_TREEBOOKCTRL = wxNewId();
 BEGIN_EVENT_TABLE(wxTreebook, wxBookCtrlBase) 
     EVT_SIZE(wxTreebook::OnSize) 
     EVT_TREE_SEL_CHANGED(wxID_TREEBOOKCTRL, wxTreebook::OnListSelected) 
+
+    WX_EVENT_TABLE_CONTROL_CONTAINER(wxTreebook)
 END_EVENT_TABLE() 
 
 // ============================================================================ 
 // wxTreebook implementation 
 // ============================================================================ 
+WX_DELEGATE_TO_CONTROL_CONTAINER(wxTreebook)
 
 // ---------------------------------------------------------------------------- 
 // wxTreebook creation 
@@ -64,6 +67,7 @@ void wxTreebook::Init()
     m_line = NULL; 
 #endif // wxUSE_LINE_IN_LISTBOOK 
     m_selection = wxNOT_FOUND; 
+    m_container.SetContainerWindow(this);
 } 
 
 bool 
