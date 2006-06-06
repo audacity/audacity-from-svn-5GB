@@ -320,6 +320,7 @@ void SelectionBar::OnRightTime(wxCommandEvent &evt)
 void SelectionBar::OnLengthRadio(wxCommandEvent &evt)
 {
    gPrefs->Write(wxT("/ShowSelectionLength"), true);
+   mRightTime->SetName(wxString(_("Selection Length")));
 
    ValuesToControls();
 }
@@ -327,6 +328,7 @@ void SelectionBar::OnLengthRadio(wxCommandEvent &evt)
 void SelectionBar::OnEndRadio(wxCommandEvent &evt)
 {
    gPrefs->Write(wxT("/ShowSelectionLength"), false);
+   mRightTime->SetName(wxString(_("Selection End")));
 
    ValuesToControls();
 }
