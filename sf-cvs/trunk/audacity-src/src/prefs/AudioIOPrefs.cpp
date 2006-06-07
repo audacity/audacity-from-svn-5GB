@@ -83,7 +83,7 @@ void AudioIOPrefs::GetNamesAndLabels()
 #if USE_PORTAUDIO_V19
       Label =  wxString::Format(wxT("%hs: %hs"),
           Pa_GetHostApiInfo(info->hostApi)->name,
-          info->name));
+          info->name);
 #endif
       if (info->maxOutputChannels > 0) {
          mmPlayNames.Add( Name );
