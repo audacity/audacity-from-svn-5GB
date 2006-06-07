@@ -212,13 +212,26 @@ void wxTreebook::OnSize(wxSizeEvent& event)
     } 
 
     m_list->Move(posList.x, posList.y);
-	// JKC Reduce x-size slightly to prevent drift when resizing.
-	// The constant of 4 may need to be adjusted on Linux/Mac
-	// This is a temporary fix.  We plan to use the real wxTreebook when
-	// wxWidgets 2.7.x is ready, so it is not worth investing huge time
-	// in patching this fully.
-	const int iBorder = 4;
-    m_list->SetClientSize(sizeList.x-4, sizeList.y); 
+   // JKC Reduce x-size slightly to prevent drift when resizing.
+   // The constant of 4 is needed on WindowsXP, 
+   //    wxWidgets 2.6.1 (reported JKC)
+   // A constant of 0 should be used on Windows XP and on Mac with 
+   //    wxWidgets 2.6.3 (reportaed LL)
+   // 
+   // This is a temporary fix.  We plan to use the real wxTreebook when
+   // wxWidgets 2.7.x is ready, so it is not worth investing huge time
+   // in patching this fully.
+
+   // If you see the tree shrinking in width, you need a smaller iBorder.
+   // If you see the tree increasing in width, you need a larger iBorder.
+
+#if wxCHECK_VERSION(2, 6, 2)
+   const int iBorder = 0;
+#else 
+   const int iBorder = 4;
+#endif
+
+   m_list->SetClientSize(sizeList.x-iBorder, sizeList.y); 
 
 #if wxUSE_LINE_IN_LISTBOOK 
     if ( m_line ) 
