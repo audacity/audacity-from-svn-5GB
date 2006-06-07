@@ -54,6 +54,7 @@
 #include "WaveTrack.h"
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
+#include "Theme.h"
 
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
@@ -394,6 +395,7 @@ bool AudacityApp::OnInit()
 
    wxString home = wxGetHomeDir();
    mAppHomeDir = home;
+   theTheme.EnsureInitialised();
 
    // On Unix systems, the default temp dir is in /tmp.
    // Search path (in this order):

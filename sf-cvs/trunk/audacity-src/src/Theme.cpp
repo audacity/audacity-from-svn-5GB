@@ -48,6 +48,12 @@ WX_DEFINE_OBJARRAY( ArrayOfColours );
 #include "../images/ExpandingToolBar/ToolBarTarget.xpm"
 #include "../images/ExpandingToolBar/ToolBarGrabber.xpm"
 
+
+// This declares the variables such as
+// int BmpRecordButton = -1;
+#define THEME_DECLARATIONS
+#include "AllThemeResources.h"
+
 #if 0
 #include "../images/ToolsButtons.h"
 #include "../images/TranscriptionButtons.h"
@@ -160,112 +166,11 @@ void Theme::RegisterImages()
    mbInitialised = true;
    int i=0;
 
-   // The control buttons...
-   RegisterBitmap( i++,MaskedBmp(Pause, PauseAlpha ),wxT("Pause"));
-   RegisterBitmap( i++,MaskedBmp(PauseDisabled,PauseAlpha),wxT("PauseDisabled"));
+// This initialises the variables e.g
+// RegisterBitmap( bmpRecordButton, some bitmap, wxT("RecordButton"));
+#define THEME_INITS
+#include "AllThemeResources.h"
 
-   RegisterBitmap( i++,MaskedBmp(Play,PlayAlpha),wxT("Play"));
-   RegisterBitmap( i++,MaskedBmp(PlayDisabled,PlayAlpha),wxT("PlayDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp((const char **)Loop,(const char **)LoopAlpha),wxT("Loop"));
-   RegisterBitmap( i++,MaskedBmp((const char **)LoopDisabled,(const char **)LoopAlpha),wxT("LoopDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Stop,StopAlpha),wxT("Stop"));
-   RegisterBitmap( i++,MaskedBmp(StopDisabled,StopAlpha),wxT("StopDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Rewind,RewindAlpha),wxT("Rewind"));
-   RegisterBitmap( i++,MaskedBmp(RewindDisabled,RewindAlpha),wxT("RewindDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(FFwd,FFwdAlpha),wxT("FFwd"));
-   RegisterBitmap( i++,MaskedBmp(FFwdDisabled,FFwdAlpha),wxT("FFwdDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Record,RecordAlpha),wxT("Record"));
-   RegisterBitmap( i++,MaskedBmp(RecordDisabled,RecordAlpha),wxT("RecordDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(CleanSpeech,CleanSpeechAlpha),wxT("CleanSpeech"));
-   RegisterBitmap( i++,MaskedBmp(CleanSpeechDisabled,CleanSpeechAlpha),wxT("CleanSpeechDisabled"));
-   
-   RegisterBitmap( i++,ToolBarToggle,wxT("ToolBarToggle"));
-   RegisterBitmap( i++,ToolBarTarget,wxT("ToolBarTarget"));
-   RegisterBitmap( i++,ToolBarGrabber,wxT("ToolBarGrabber"));
-
-   // The backgrounds used for the control buttons.
-   mFlags = resFlagNone;
-   RegisterBitmap( i++,UpButton, wxT("UpButton"));
-   RegisterBitmap( i++,DownButton, wxT("DownButton"));
-   RegisterBitmap( i++,HiliteButton, wxT("HiliteButton"));
-
-   RegisterBitmap( i++,UpButton, wxT("RecolouredUpButton"));
-   RegisterBitmap( i++,DownButton, wxT("RecolouredDownButton"));
-   RegisterBitmap( i++,HiliteButton, wxT("RecolouredHiliteButton"));
-
-   wxASSERT( i== (bmpFirstCursor));
-
-   mFlags = resFlagPaired | resFlagCursor;
-   RegisterBitmap( i++,IBeamCursorXpm, wxT("IBeamCursor"));
-   RegisterBitmap( i++,DrawCursorXpm, wxT("DrawCursor"));
-   RegisterBitmap( i++,EnvCursorXpm, wxT("EnvCursor"));
-   RegisterBitmap( i++,MaskedBmp(TimeCursorXpm,TimeCursorXpm), wxT("TimeCursor"));
-   RegisterBitmap( i++,ZoomInCursorXpm, wxT("ZoomInCursor"));
-   RegisterBitmap( i++,ZoomOutCursorXpm, wxT("ZoomOutCursor"));
-   RegisterBitmap( i++,LabelCursorLeftXpm, wxT("LabelCursorLeft"));
-   RegisterBitmap( i++,LabelCursorRightXpm, wxT("LabelCursorRight"));
-   RegisterBitmap( i++,DisabledCursorXpm, wxT("DisabledCursor"));
-
-   mFlags = resFlagPaired;
-   RegisterBitmap( i++,MaskedBmp(Cut,CutAlpha), wxT("Cut"));
-   RegisterBitmap( i++,MaskedBmp(CutDisabled,CutAlpha), wxT("CutDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Copy,CopyAlpha), wxT("Copy"));
-   RegisterBitmap( i++,MaskedBmp(CopyDisabled,CopyAlpha), wxT("CopyDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Paste,PasteAlpha), wxT("Paste"));
-   RegisterBitmap( i++,MaskedBmp(PasteDisabled,PasteAlpha), wxT("PasteDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Trim,TrimAlpha), wxT("Trim"));
-   RegisterBitmap( i++,MaskedBmp(TrimDisabled,TrimAlpha), wxT("TrimDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Silence,SilenceAlpha), wxT("Silence"));
-   RegisterBitmap( i++,MaskedBmp(SilenceDisabled,SilenceAlpha), wxT("SilenceDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Undo,UndoAlpha), wxT("Undo"));
-   RegisterBitmap( i++,MaskedBmp(UndoDisabled,UndoAlpha), wxT("UndoDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(Redo,RedoAlpha), wxT("Redo"));
-   RegisterBitmap( i++,MaskedBmp(RedoDisabled,RedoAlpha), wxT("RedoDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(ZoomFit,ZoomFitAlpha), wxT("ZoomFit"));
-   RegisterBitmap( i++,MaskedBmp(ZoomFitDisabled,ZoomFitAlpha), wxT("ZoomFitDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(ZoomIn,ZoomInAlpha), wxT("ZoomIn"));
-   RegisterBitmap( i++,MaskedBmp(ZoomInDisabled,ZoomInAlpha), wxT("ZoomInDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(ZoomOut,ZoomOutAlpha), wxT("ZoomOut"));
-   RegisterBitmap( i++,MaskedBmp(ZoomOutDisabled,ZoomOutAlpha), wxT("ZoomOutDisabled"));
-
-   RegisterBitmap( i++,MaskedBmp(ZoomSel,ZoomSelAlpha), wxT("ZoomSel"));
-   RegisterBitmap( i++,MaskedBmp(ZoomSelDisabled,ZoomSelAlpha), wxT("ZoomSelDisabled"));
-
-//   RegisterBitmap( i++,MaskedBmp(ZoomToggle,ZoomToggleAlpha), wxT(""));
-//   RegisterBitmap( i++,MaskedBmp(ZoomToggleDisabled,ZoomToggleAlpha), wxT(""));
-
-   RegisterBitmap( i++,MaskedBmp(IBeam,IBeamAlpha), wxT("IBeam"));
-   RegisterBitmap( i++,MaskedBmp(Zoom,ZoomAlpha), wxT("Zoom"));
-   RegisterBitmap( i++,MaskedBmp(Envelope,EnvelopeAlpha), wxT("Envelope"));
-   RegisterBitmap( i++,MaskedBmp(TimeShift,TimeShiftAlpha), wxT("TimeShift"));
-   RegisterBitmap( i++,MaskedBmp(Draw,DrawAlpha), wxT("Draw"));
-   RegisterBitmap( i++,MaskedBmp(Multi,MultiAlpha), wxT("Multi"));
-
-   mFlags = resFlagNone;
-   RegisterBitmap( i++,MaskedBmp(Mic,MicAlpha), wxT("Mic"));
-   RegisterBitmap( i++,MaskedBmp(Speaker,SpeakerAlpha), wxT("Speaker"));
-
-
-
-//   RegisterBitmap( i++,DisabledXpm, wxT(""));
-   RegisterBitmap( i++,Up, wxT("Up"));
-   RegisterBitmap( i++,Down, wxT("Down"));
-   RegisterBitmap( i++,Hilite, wxT("Hilite"));
 
 }
 
@@ -329,9 +234,10 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
    return Result;
 }
 
-void ThemeBase::RegisterBitmap( int iIndex, char const ** pXpm, const wxString & Name )
+void ThemeBase::RegisterBitmap( int &iIndex, char const ** pXpm, const wxString & Name )
 {
 
+   wxASSERT( iIndex == -1 ); // Don't initialise same bitmap twice!
    wxBitmap Bmp( pXpm ); // a 24 bit bitmap.
    wxImage Img( Bmp.ConvertToImage() );
    Img.InitAlpha();
@@ -343,15 +249,18 @@ void ThemeBase::RegisterBitmap( int iIndex, char const ** pXpm, const wxString &
    RegisterBitmap( iIndex, Bmp2, Name );
 }
 
-void ThemeBase::RegisterBitmap( int iIndex, const wxBitmap &Bmp, const wxString & Name )
+void ThemeBase::RegisterBitmap( int &iIndex, const wxBitmap &Bmp, const wxString & Name )
 {
+   wxASSERT( iIndex == -1 ); // Don't initialise same bitmap twice!
    mBitmaps.Add( Bmp );
    mBitmapNames.Add( Name );
    mBitmapFlags.Add( mFlags );
+   iIndex = mBitmaps.GetCount()-1;
 }
 
 void ThemeBase::RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name )
 {
+//   wxASSERT( iIndex == -1 ); // Don't initialise same colour twice!
    mColours.Add( Clr );
    mColourNames.Add( Name );
 }
@@ -587,22 +496,26 @@ wxImage ThemeBase::MakeImageWithAlpha( wxBitmap & Bmp )
 
 wxColour & ThemeBase::Colour( int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    EnsureInitialised();
    return mColours[iIndex];
 }
 
 void ThemeBase::SetBrushColour( wxBrush & Brush, int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    Brush.SetColour( Colour( iIndex ));
 }
 
 void ThemeBase::SetPenColour(   wxPen & Pen, int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    Pen.SetColour( Colour( iIndex ));
 }
 
 wxBitmap & ThemeBase::Bitmap( int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    EnsureInitialised();
    return mBitmaps[iIndex];
 //   return *(wxBitmap*)NULL;
@@ -610,17 +523,21 @@ wxBitmap & ThemeBase::Bitmap( int iIndex )
 
 wxImage  * ThemeBase::Image( int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
+   EnsureInitialised();
    return new wxImage(Bitmap(iIndex).ConvertToImage());
 }
 
 wxCursor & ThemeBase::Cursor( int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    EnsureInitialised();
    return *(wxCursor*)NULL;
 }
 
 wxFont   & ThemeBase::Font( int iIndex )
 {
+   wxASSERT( iIndex >= 0 );
    EnsureInitialised();
    return *(wxFont*)NULL;
 }
