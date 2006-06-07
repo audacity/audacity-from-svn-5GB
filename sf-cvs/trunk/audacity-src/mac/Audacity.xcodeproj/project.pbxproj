@@ -1797,6 +1797,8 @@
 		28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExpandingToolBar.h; sourceTree = "<group>"; };
 		28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ImageRoll.cpp; sourceTree = "<group>"; };
 		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
+		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
+		28FB12230A3790DF006F0917 /* AllThemeResources.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AllThemeResources.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2567,6 +2569,7 @@
 				1790AFC809883BFD008A330A /* AboutDialog.h */,
 				1790AFC909883BFD008A330A /* AColor.cpp */,
 				1790AFCA09883BFD008A330A /* AColor.h */,
+				28FB12230A3790DF006F0917 /* AllThemeResources.h */,
 				1790AFCC09883BFD008A330A /* Audacity.h */,
 				1790AFCE09883BFD008A330A /* AudacityApp.cpp */,
 				1790AFCF09883BFD008A330A /* AudacityApp.h */,
@@ -2621,6 +2624,7 @@
 				1790B0A209883BFD008A330A /* Languages.h */,
 				1790B0A309883BFD008A330A /* Legacy.cpp */,
 				1790B0A409883BFD008A330A /* Legacy.h */,
+				28FB121F0A3790A8006F0917 /* MacroMagic.h */,
 				1790B0A709883BFD008A330A /* Menus.cpp */,
 				1790B0A809883BFD008A330A /* Menus.h */,
 				1790B0A909883BFD008A330A /* MeterToolBar.cpp */,
@@ -2893,8 +2897,6 @@
 		1790B0B509883BFD008A330A /* prefs */ = {
 			isa = PBXGroup;
 			children = (
-				28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */,
-				28456AC10A2C180E00C23C1E /* ThemePrefs.h */,
 				1790B0B609883BFD008A330A /* AudioIOPrefs.cpp */,
 				1790B0B709883BFD008A330A /* AudioIOPrefs.h */,
 				1790B0B809883BFD008A330A /* BatchPrefs.cpp */,
@@ -2916,6 +2918,8 @@
 				1790B0C909883BFD008A330A /* QualityPrefs.h */,
 				1790B0CA09883BFD008A330A /* SpectrumPrefs.cpp */,
 				1790B0CB09883BFD008A330A /* SpectrumPrefs.h */,
+				28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */,
+				28456AC10A2C180E00C23C1E /* ThemePrefs.h */,
 			);
 			path = prefs;
 			sourceTree = "<group>";
