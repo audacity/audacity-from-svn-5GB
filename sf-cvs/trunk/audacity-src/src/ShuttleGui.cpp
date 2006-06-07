@@ -1624,7 +1624,7 @@ void SetIfCreated( wxStaticText *&Var, wxStaticText * Val )
 #include "GuiWaveTrack.h"
 #endif
 #include "./widgets/Ruler.h"
-#include "./widgets/AttachableScrollbar.h"
+#include "./widgets/AttachableScrollBar.h"
 #include "ShuttlePrefs.h"
 
 ShuttleGui::ShuttleGui(wxWindow * pParent, teShuttleMode ShuttleMode) :
