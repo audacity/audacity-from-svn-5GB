@@ -23,39 +23,14 @@ class wxImage;
 class wxColour;
 class wxFont;
 
-enum teBmps 
-{
-   bmpPause=0,
-   bmpPauseDisabled,
-   bmpPlay,
-   bmpPlayDisabled,
-   bmpLoop,
-   bmpLoopDisabled,
-   bmpStop,
-   bmpStopDisabled,
-   bmpRewind,
-   bmpRewindDisabled,
-   bmpFFwd,
-   bmpFFwdDisabled,
-   bmpRecord,
-   bmpRecordDisabled,
-   bmpCleanSpeech,
-   bmpCleanSpeechDisabled,
+// JKC: will probably change name from 'teBmps' to 'tIndexBmp';
+typedef int teBmps; /// The index of a bitmap resource in Theme Resources.
 
-   bmpToolBarToggle,
-   bmpToolBarTarget,
-   bmpToolBarGrabber,
+// Later on, this include will be taken out of Theme.h,
+// and each class that uses theme resources will define just the resources it needs.
+#include "AllThemeResources.h"
 
-   bmpUpButton,
-   bmpDownButton,
-   bmpHiliteButton,
-   bmpRecoloredUpButton,
-   bmpRecoloredDownButton,
-   bmpRecoloredHiliteButton,
-
-   bmpFirstCursor
-};
-
+// We'll do the same thing for colours and fonts in due course.
 enum teColours
 {
    clrBlank=0,
@@ -100,8 +75,8 @@ public:
 
 public:
    virtual void EnsureInitialised()=0;
-   void RegisterBitmap( int iIndex,char const** pXpm, const wxString & Name);
-   void RegisterBitmap( int iIndex, const wxBitmap &Bmp, const wxString & Name );
+   void RegisterBitmap( int &iIndex,char const** pXpm, const wxString & Name);
+   void RegisterBitmap( int &iIndex, const wxBitmap &Bmp, const wxString & Name );
    void RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name );
 
    wxString GetCacheFileName();
