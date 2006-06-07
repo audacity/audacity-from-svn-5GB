@@ -119,20 +119,22 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartHorizontalLay(wxEXPAND, 0 );
    S.StartStatic( _("Playback"),1 );
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
+      S.SetStretchyCol(1);
       S.TieChoice( _("Device:"), wxT("PlaybackDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }                              
    S.EndStatic();
    S.StartStatic( _("Recording"), 1 );
    {
-      S.StartTwoColumn();
+      S.StartMultiColumn(2, wxEXPAND);
+      S.SetStretchyCol(1);
       S.TieChoice( _("Device:"), wxT("RecordingDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
       S.TieChoice( _("Channels:"), wxT("RecordChannels"), 
          wxT("2"), mmChannelNames, mmChannelLabels );
-      S.EndTwoColumn();
+      S.EndMultiColumn();
    }
    S.EndStatic();
    S.EndHorizontalLay();
