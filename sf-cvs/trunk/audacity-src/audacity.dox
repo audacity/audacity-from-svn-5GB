@@ -82,9 +82,11 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = src/
+INPUT                  = src/ \
+                         dox2-src/
 FILE_PATTERNS          = *.cpp \
-                         *.h
+                         *.h \
+                         *.dox2
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
