@@ -10,25 +10,44 @@
 
 ********************************************************************//*
 
+JKC: The examples in this file need to be extracted into a separate file so
+that we can get the comments to show correctly in the output files.
 
 
 /*****************************************************************//*! 
 \page CrossPlatform Cross Platform Coding Tips
 \brief Guidelines for making the code compile and work on all supported platforms.
 
-\section PragmaOnce pragma once
+\section PragmaOnce \#pragma once
 
-'#pragma once' is not suppported by gcc 2.x, instead use
-the traditional #ifdef/#define brackets around header files.
+The following is not supported under gcc 2.x:
 
+\code
+#pragma once
+\endcode
+
+Instead use the traditional:
+
+\code
+#ifndef __AUDACITY_HEADER_FILE_NAME__
+#define __AUDACITY_HEADER_FILE_NAME__
+
+// your header file contents goes here.
+
+#endif
+\endcode
 
 \section UnicodeStrings Unicode strings
 
 Audacity code is translated, and it may be built in Unicode versions.  
-For this reason all strings should be enclosed in either:
+For this reason all strings should be wrapped like this:
 
- - wxT("some untranslated string") for strings which are not translated
- - _("some translatable string") for strings which should be translated.
+\code
+ // for strings which are not translated
+ mMyFirstString = wxT("some untranslated string");
+ // for strings which should be translated
+ mMySecondString = _("some translatable string");
+\endcode
 
 In some cases you need to give hints to a translator about how a 
 string should be translated.  Do so as follows:
@@ -42,17 +61,13 @@ string should be translated.  Do so as follows:
 
 Very long strings can be wrapped across multiple lines, as follows:
 
-- For untranslated strings:
-
 \code
+ // For untranslated strings:
  wxT("This is a long untranslated string ")
  wxT("which spans several lines ")
  wxT("and works in Unicode builds too")
-\endcode
 
-- And for translated strings:
-
-\code
+ // For translated strings:
  _("This is a long translated string "
  wxT("which spans several lines ")
  wxT("and works in Unicode builds too"))
@@ -60,19 +75,20 @@ Very long strings can be wrapped across multiple lines, as follows:
 
 \section ConstructorsAsArguments Constructors as Arguments
 
-Code like this:
+Don't write code like this:
 
 \code
-  / / Now call OnSampleRateChange to update the values.
+  // Now call OnSampleRateChange to update the values.
   OnSampleRateChange( wxCommandEvent() );
 \endcode
 
-Is fine under MSVC but will cause a problem under gcc as the 
+Whilst it is fine under MSVC it will cause a problem under gcc as the 
 constructor is a temporary object which will be optimised away.  
+
 Instead use:
 
 \code
-  / / Now call OnSampleRateChange to update the values.
+  // Now call OnSampleRateChange to update the values.
   wxCommandEvent e;
   OnSampleRateChange( e );
 \endcode
