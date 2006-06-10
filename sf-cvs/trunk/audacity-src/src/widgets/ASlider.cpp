@@ -146,7 +146,8 @@ void TipPanel::SetPos(const wxPoint& pos)
    int left = pos.x - width/2;
    if (left < 0)
       left = 0;
-   SetSize(left, pos.y, width, height);   
+   SetSize(left, pos.y, width, height);
+   Raise();
 }
 
 #endif
