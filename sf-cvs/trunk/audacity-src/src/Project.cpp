@@ -1345,7 +1345,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    }
 
    //BG: Process messages before we destroy the window
-   wxSafeYield();
+   wxSafeYield(NULL, true);
    Destroy();
 }
 
