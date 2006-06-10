@@ -320,7 +320,7 @@ LWSlider::LWSlider(wxWindow *parent,
       stepValue = STEP_CONTINUOUS;
       break;
    case SPEED_SLIDER:
-      minValue = 0.0f;
+      minValue = 0.01f;
       maxValue = 3.0f;
       stepValue = STEP_CONTINUOUS;
       break;
