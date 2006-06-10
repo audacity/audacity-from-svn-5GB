@@ -123,6 +123,15 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.SetStretchyCol(1);
       S.TieChoice( _("Device:"), wxT("PlaybackDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
+
+      wxString ver = _("Using: Portaudio v");
+#if USE_PORTAUDIO_V19
+      ver += _("19");
+#else
+      ver += _("18");
+#endif
+      S.AddFixedText( wxT("") );
+      S.AddFixedText( ver );
       S.EndMultiColumn();
    }                              
    S.EndStatic();
@@ -168,6 +177,18 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.AddFixedText(  _("milliseconds") );
       S.TieTextBox( _("Latency correction:"),wxT("LatencyCorrection"),0.0,9);
       S.AddFixedText(  _("milliseconds") );
+      S.EndThreeColumn();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
+   S.StartHorizontalLay( wxEXPAND, 0 );
+   S.StartStatic( _("Seek Time"),1 );
+   {
+      S.StartThreeColumn();
+      S.TieTextBox( _("Short period:"), wxT("SeekShortPeriod"),1.0,9);
+      S.AddFixedText(  _("seconds") );
+      S.TieTextBox( _("Long period:"),wxT("SeekLongPeriod"), 15.0,9);
+      S.AddFixedText(  _("seconds") );
       S.EndThreeColumn();
    }
    S.EndStatic();

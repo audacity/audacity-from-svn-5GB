@@ -584,6 +584,10 @@ void TrackPanel::UpdatePrefs()
                false);
    gPrefs->Read(wxT("/GUI/PresentTrackNumber"), &mPresentTrackNumber,
                true);
+   gPrefs->Read(wxT("/AudioIO/SeekShortPeriod"), &mSeekShort,
+               1.0);
+   gPrefs->Read(wxT("/AudioIO/SeekLongPeriod"), &mSeekLong,
+               15.0);
 }
 
 void TrackPanel::SetStop(bool bStopped)
@@ -4513,14 +4517,6 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
-   // If playing, skip a bit of audio
-   AudacityProject *p = GetProject();
-   if (p->GetAudioIOToken()>0 &&
-       gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
-      gAudioIO->SeekStream(-1.0);
-      return;
-   }
-   
    // Get currently focused track...bail if there isn't one.
    t = GetFocusedTrack();
    if( t == NULL )
@@ -4554,6 +4550,14 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    // Extend selection toward the left
    else if( shift )
    {
+      // If playing, reposition a long amount of time
+      int token = GetProject()->GetAudioIOToken();
+      if( token > 0 && gAudioIO->IsStreamActive( token ) )
+      {
+         gAudioIO->SeekStream(-mSeekLong);
+         return;
+      }
+      
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
       if( !t->GetSelected() )
@@ -4577,6 +4581,14 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
    // Move the cursor toward the left
    else
    {
+      // If playing, reposition a short amount of time
+      int token = GetProject()->GetAudioIOToken();
+      if( token > 0 && gAudioIO->IsStreamActive( token ) )
+      {
+         gAudioIO->SeekStream(-mSeekShort);
+         return;
+      }
+      
       // Clear all selections
       SelectNone();
  
@@ -4622,14 +4634,6 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    }
    mLastSelectionAdjustment = curtime;
 
-   // If playing, skip a bit of audio
-   AudacityProject *p = GetProject();
-   if (p->GetAudioIOToken()>0 &&
-       gAudioIO->IsStreamActive(p->GetAudioIOToken())) {
-      gAudioIO->SeekStream(1.0);
-      return;
-   }
-   
    // Get currently focused track...bail if there isn't one.
    t = GetFocusedTrack();
    if( t == NULL )
@@ -4663,6 +4667,14 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    // Extend selection toward the right
    else if( shift )
    {
+      // If playing, reposition a long amount of time
+      int token = GetProject()->GetAudioIOToken();
+      if( token > 0 && gAudioIO->IsStreamActive( token ) )
+      {
+         gAudioIO->SeekStream(mSeekLong);
+         return;
+      }
+      
       // Ensure currently focused track is selected.
       // (Possible if mouse and keyboard are used together)
       if( !t->GetSelected() )
@@ -4687,6 +4699,14 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
    // Move the cursor toward the right
    else
    {
+      // If playing, reposition a short amount of time
+      int token = GetProject()->GetAudioIOToken();
+      if( token > 0 && gAudioIO->IsStreamActive( token ) )
+      {
+         gAudioIO->SeekStream(mSeekShort);
+         return;
+      }
+      
       // Clear all selections
       SelectNone();
  

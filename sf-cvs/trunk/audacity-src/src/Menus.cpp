@@ -134,7 +134,8 @@ enum {
    ToolBarDockHasFocus    = 0x00004000,  //lll
    TrackPanelHasFocus     = 0x00008000,  //lll
    SelectionBarHasFocus   = 0x00010000,  //lll
-   LabelsSelectedFlag     = 0x00020000
+   LabelsSelectedFlag     = 0x00020000,
+   AudioIOBusyFlag        = 0x00040000   //lll
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -793,6 +794,15 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Toggle1"),    _("Toggle Focused Track\tNUMPAD_ENTER"),             FN(OnToggle));
    c->AddCommand(wxT("Toggle2"),    _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
 
+   c->AddCommand(wxT("SeekLeftShort"), _("Seek left short period during playback\tLeft"),        FN(OnSeekLeftShort));
+   c->SetCommandFlags(wxT("SeekLeftShort"), AudioIOBusyFlag, AudioIOBusyFlag);
+   c->AddCommand(wxT("SeekRightShort"),_("Seek right short period during playback\tRight"),      FN(OnSeekRightShort));
+   c->SetCommandFlags(wxT("SeekRightShort"), AudioIOBusyFlag, AudioIOBusyFlag);
+   c->AddCommand(wxT("SeekLeftLong"),  _("Seek left long period during playback\tShift+Left"),   FN(OnSeekLeftLong));
+   c->SetCommandFlags(wxT("SeekLeftLong"), AudioIOBusyFlag, AudioIOBusyFlag);
+   c->AddCommand(wxT("SeekRightLong"), _("Seek right long period during playback\tShift+Right"), FN(OnSeekRightLong));
+   c->SetCommandFlags(wxT("SeekRightLong"), AudioIOBusyFlag, AudioIOBusyFlag);
+   
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
    c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left"),               FN(OnSelExtendLeft));
@@ -987,6 +997,8 @@ wxUint32 AudacityProject::GetUpdateFlags()
    if (GetAudioIOToken() == 0 ||
        !gAudioIO->IsAudioTokenActive(GetAudioIOToken()))
       flags |= AudioIONotBusyFlag;
+   else
+      flags |= AudioIOBusyFlag;
 
    if (mViewInfo.sel1 > mViewInfo.sel0)
       flags |= TimeSelectedFlag;
@@ -1376,6 +1388,26 @@ void AudacityProject::OnSkipEnd()
    wxCommandEvent evt;
 
    toolbar->OnFF(evt);
+}
+
+void AudacityProject::OnSeekLeftShort()
+{
+   mTrackPanel->OnCursorLeft( false, false );
+}
+
+void AudacityProject::OnSeekRightShort()
+{
+   mTrackPanel->OnCursorRight( false, false );
+}
+
+void AudacityProject::OnSeekLeftLong()
+{
+   mTrackPanel->OnCursorLeft( true, false );
+}
+
+void AudacityProject::OnSeekRightLong()
+{
+   mTrackPanel->OnCursorRight( true, false );
 }
 
 void AudacityProject::OnSelToStart()

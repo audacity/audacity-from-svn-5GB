@@ -386,6 +386,8 @@ private:
 
    AdornedRulerPanel *mRuler;
 
+   double mSeekShort;
+   double mSeekLong;
 
    TrackArtist *mTrackArtist;
 
