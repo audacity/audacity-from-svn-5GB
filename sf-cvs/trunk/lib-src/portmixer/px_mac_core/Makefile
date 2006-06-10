@@ -1,8 +1,15 @@
 # Make PortMixer Library for Mac OS X / CoreAudio
 
 CC = cc
+CFLAGS = -g -I../px_common
+PA = ../../portaudio$(PA_VER)
 
-CFLAGS = -g -I../px_common -I../../portaudio/pa_common
+ifeq ($(PA_VER),-v19)
+CFLAGS += -I$(PA)/include -I$(PA)/src/common -I$(PA)/src/hostapi/coreaudio
+else
+CFLAGS += -I$(PA)/pa_common
+endif
+
 PASRC = px_mac_core.c
 PAINC = ../px_common/portmixer.h
 PAOBJ = px_mac_core.o 

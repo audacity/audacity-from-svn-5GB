@@ -126,9 +126,9 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
 
       wxString ver = _("Using: Portaudio v");
 #if USE_PORTAUDIO_V19
-      ver += _("19");
+      ver += wxT("19");
 #else
-      ver += _("18");
+      ver += wxT("18");
 #endif
       S.AddFixedText( wxT("") );
       S.AddFixedText( ver );

@@ -84,20 +84,22 @@ libSoundTouch.a: soundtouch-recursive
 	ln -sf soundtouch/source/SoundTouch/.libs/libSoundTouch.a .
 
 # PortAudio
+portaudio-v19-recursive:
+	$(MAKE) -C portaudio-v19
+portaudio-v19/lib/libportaudio.a: portaudio-v19-recursive
+	ln -sf .libs/libportaudio.a $@
+
 portaudio/pa_unix_oss/portaudio.a:
 	$(MAKE) -C portaudio/pa_unix_oss
-
-portaudio-v19/lib/libportaudio.a:
-	$(MAKE) -C portaudio-v19
 
 portaudio/pa_mac_core/portaudio.a:
 	$(MAKE) -C portaudio/pa_mac_core
 
 portmixer/px_unix_oss/portmixer.a:
-	$(MAKE) -C portmixer/px_unix_oss
+	$(MAKE) -C portmixer/px_unix_oss PA_VER=$(findstring -v19,@BUILDLIBS@)
 
 portmixer/px_mac_core/portmixer.a:
-	$(MAKE) -C portmixer/px_mac_core
+	$(MAKE) -C portmixer/px_mac_core PA_VER=$(findstring -v19,@BUILDLIBS@)
 
 # RTAudio
 librtaudio-recursive:
@@ -119,6 +121,7 @@ clean:
 	-$(MAKE) -C libsndfile clean
 	-$(MAKE) -C libvorbis clean
 	-$(MAKE) -C libflac clean
+	-$(MAKE) -C portaudio-v19 clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
 	-$(MAKE) -C portaudio/pa_mac_core clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
@@ -140,6 +143,7 @@ distclean:
 	-$(MAKE) -C libsndfile distclean
 	-$(MAKE) -C libvorbis distclean
 	-$(MAKE) -C libflac distclean
+	-$(MAKE) -C portaudio-v19 distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
 	-$(MAKE) -C portaudio/pa_mac_core distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
@@ -151,4 +155,6 @@ distclean:
 .PHONY: allegro-recursive expat-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
-	libresample-recursive libsamplerate-recursive librtaudio-recursive
+	libresample-recursive libsamplerate-recursive librtaudio-recursive \
+	portaudio-v19-recursive
+

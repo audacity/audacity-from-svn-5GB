@@ -124,7 +124,7 @@ AC_ARG_WITH(lib-preference,
             lib_preference=$withval,
             lib_preference="system local")
 
-LIBRARIES="LIBVORBIS LIBMAD LIBFLAC LIBSNDFILE LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
@@ -291,7 +291,7 @@ fi
 
 
 if [[ "$use_portmixer" = "yes" ]] && [[ "$use_portaudio" = "v19" ]] ; then
-   AC_MSG_ERROR([*** PortAudio v19 does not work with PortMixer (at least not yet) ])
+   echo "*** PortAudio v19 usage with PortMixer is currently experimental ***"
 fi
 
 
@@ -393,7 +393,7 @@ if [[ "$use_portaudio" = "v19" ]] ; then
 
    BUILDLIBS="$BUILDLIBS portaudio-v19/lib/libportaudio.a"
    EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/pa_common $CXXFLAGS"
+   CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
    AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
 
@@ -415,6 +415,9 @@ if [[ "$use_portaudio" = "v19" ]] ; then
          if [[ $have_jack = "yes" ]] ; then
             LIBS="$LIBS $JACK_LIBS"
          fi
+         AC_CHECK_LIB(rt, clock_gettime, [rt_libs=" -lrt"])
+         LIBS="${LIBS}${rt_libs}"
+         AC_CHECK_FUNCS([clock_gettime nanosleep])
          ;;
    esac
 

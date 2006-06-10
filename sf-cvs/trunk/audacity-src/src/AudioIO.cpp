@@ -315,12 +315,20 @@ void AudioIO::HandleDeviceChange()
       return;
 
 #if defined(USE_PORTMIXER)
+   const PaDeviceInfo* info;
+
    if( mPortMixer )
       Px_CloseMixer(mPortMixer);
    mPortMixer = NULL;
 
+#if USE_PORTAUDIO_V19
+   int recDeviceNum = Pa_GetDefaultInputDevice();
+   int playDeviceNum = Pa_GetDefaultOutputDevice();
+#else
    int recDeviceNum = Pa_GetDefaultInputDeviceID();
    int playDeviceNum = Pa_GetDefaultOutputDeviceID();
+#endif
+
    wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
    wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    int j;
@@ -329,9 +337,13 @@ void AudioIO::HandleDeviceChange()
    // available on this device, using 44.1kHz as the default, if the info
    // cannot be fetched.
 
+#if USE_PORTAUDIO_V19
+   for(j=0; j<Pa_GetDeviceCount(); j++) {
+#else
    for(j=0; j<Pa_CountDevices(); j++) {
-      const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
+#endif
 
+      info = Pa_GetDeviceInfo(j);
       if(!info)
          continue;
 
@@ -349,8 +361,48 @@ void AudioIO::HandleDeviceChange()
    mMixerInputVol = 1.0;
    mMixerOutputVol = 1.0;
 
-   PortAudioStream *stream;
    int error;
+
+#if USE_PORTAUDIO_V19
+
+   PaStream *stream;
+
+   PaStreamParameters playbackParameters;
+
+   playbackParameters.device = playDeviceNum;
+   playbackParameters.sampleFormat = paFloat32;
+   playbackParameters.hostApiSpecificStreamInfo = NULL;
+   playbackParameters.channelCount = 2;
+   playbackParameters.suggestedLatency =
+      Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
+
+   PaStreamParameters captureParameters;
+ 
+   captureParameters.device = recDeviceNum;
+   captureParameters.sampleFormat = paFloat32;;
+   captureParameters.hostApiSpecificStreamInfo = NULL;
+   captureParameters.channelCount = 2;
+   captureParameters.suggestedLatency =
+      Pa_GetDeviceInfo(recDeviceNum)->defaultLowOutputLatency;
+ 
+   error = Pa_OpenStream(&stream,
+                         &captureParameters, &playbackParameters,
+                         highestSampleRate, paFramesPerBufferUnspecified,
+                         paClipOff | paDitherOff,
+                         audacityAudioCallback, NULL);
+
+   if( error ) {
+      error = Pa_OpenStream(&stream,
+                            &captureParameters, NULL,
+                            highestSampleRate, paFramesPerBufferUnspecified,
+                            paClipOff | paDitherOff,
+                            audacityAudioCallback, NULL);
+   }
+  
+#else
+
+   PortAudioStream *stream;
+
    error = Pa_OpenStream(&stream, recDeviceNum, 2, paFloat32, NULL,
                          playDeviceNum, 2, paFloat32, NULL,
                          highestSampleRate, 512, 1, paClipOff | paDitherOff,
@@ -362,6 +414,8 @@ void AudioIO::HandleDeviceChange()
                             highestSampleRate, 512, 1, paClipOff | paDitherOff,
                             audacityAudioCallback, NULL);
    }
+
+#endif
 
    if( error )
       return;
@@ -530,14 +584,33 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                  paNoFlag,
                                  audacityAudioCallback, NULL );
 
-#if 0 //USE_PORTMIXER  TODO: support PortMixer with v19
-   if (mPortMixer)
+#if USE_PORTMIXER
+   if (mPortMixer) {
+      #if __WXMAC__
+      if (Px_SupportsPlaythrough(mPortMixer) && mPreviousHWPlaythrough >= 0.0)
+         Px_SetPlaythrough(mPortMixer, mPreviousHWPlaythrough);
+      #endif
       Px_CloseMixer(mPortMixer);
+   }
    mPortMixer = NULL;
-   if (mPortStream != NULL && mLastPaError == paNoError) {
-      mPortMixer = Px_OpenMixer(mPortStream, 0);
-      if (mPortMixer)
-         AdjustMixer();
+   if (mPortStreamV19 != NULL && mLastPaError == paNoError) {
+      mPortMixer = Px_OpenMixer(mPortStreamV19, 0);
+
+      #ifdef __MACOSX__
+      if (mPortMixer) {
+         if (Px_SupportsPlaythrough(mPortMixer)) {
+            bool playthrough;
+
+            mPreviousHWPlaythrough = Px_GetPlaythrough(mPortMixer);
+
+            gPrefs->Read(wxT("/AudioIO/Playthrough"), &playthrough, false);
+            if (playthrough)
+               Px_SetPlaythrough(mPortMixer, 1.0);
+            else
+               Px_SetPlaythrough(mPortMixer, 0.0);
+         }
+      }
+      #endif
    }
 #endif
 
@@ -741,7 +814,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
 
-#ifndef USE_PORTAUDIO_V19
+#if !USE_PORTAUDIO_V19
    mLastStableIndicator = NO_STABLE_INDICATOR;
    mPausedSeconds = 0;
 #endif
@@ -1627,7 +1700,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
 
-#ifndef USE_PORTAUDIO_V19
+#if !USE_PORTAUDIO_V19
       gAudioIO->mPausedSeconds += (float)framesPerBuffer / gAudioIO->mRate;
 #endif
       return paContinue;

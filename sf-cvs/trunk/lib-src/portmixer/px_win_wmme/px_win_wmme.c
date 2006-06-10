@@ -38,9 +38,16 @@
 #include <Windows.h>
 
 #include "portaudio.h"
-#include "pa_host.h"
-
 #include "portmixer.h"
+
+#if defined(PaStream)
+#define PA_V18
+#else
+#define PA_V19
+#endif
+
+#if defined(PA_V18)
+#include "pa_host.h"
 
 typedef struct PaWMMEStreamData
 {
@@ -53,6 +60,58 @@ typedef struct PaWMMEStreamData
     /* Output -------------- */
     HWAVEOUT           hWaveOut;
 } PaWMMEStreamData;
+#endif
+
+#if defined(PA_V19)
+#include "pa_cpuload.h"
+#include "pa_process.h"
+#include "pa_stream.h"
+
+typedef struct
+{
+    HANDLE bufferEvent;
+    void *waveHandles;
+    unsigned int deviceCount;
+    /* unsigned int channelCount; */
+    WAVEHDR **waveHeaders;                  /* waveHeaders[device][buffer] */
+    unsigned int bufferCount;
+    unsigned int currentBufferIndex;
+    unsigned int framesPerBuffer;
+    unsigned int framesUsedInCurrentBuffer;
+}PaWinMmeSingleDirectionHandlesAndBuffers;
+
+/* PaWinMmeStream - a stream data structure specifically for this implementation */
+/* note that struct PaWinMmeStream is typedeffed to PaWinMmeStream above. */
+struct PaWinMmeStream
+{
+    PaUtilStreamRepresentation streamRepresentation;
+    PaUtilCpuLoadMeasurer cpuLoadMeasurer;
+    PaUtilBufferProcessor bufferProcessor;
+
+    int primeStreamUsingCallback;
+
+    PaWinMmeSingleDirectionHandlesAndBuffers input;
+    PaWinMmeSingleDirectionHandlesAndBuffers output;
+
+    /* Processing thread management -------------- */
+    HANDLE abortEvent;
+    HANDLE processingThread;
+    DWORD processingThreadId;
+
+    char throttleProcessingThreadOnOverload; /* 0 -> don't throtte, non-0 -> throttle */
+    int processingThreadPriority;
+    int highThreadPriority;
+    int throttledThreadPriority;
+    unsigned long throttledSleepMsecs;
+
+    int isStopped;
+    volatile int isActive;
+    volatile int stopProcessing; /* stop thread once existing buffers have been returned */
+    volatile int abortProcessing; /* stop thread immediately */
+
+    DWORD allBuffersDurationMs; /* used to calculate timeouts */
+};
+#endif
 
 typedef struct PxSrcInfo
 {
@@ -84,8 +143,15 @@ const char *Px_GetMixerName( void *pa_stream, int index )
 
 PxMixer *Px_OpenMixer( void *pa_stream, int index )
 {
+#if defined(PA_V18)
    internalPortAudioStream     *past;
    PaWMMEStreamData            *wmmeStreamData;
+#endif
+
+#if defined(PA_V19)
+   struct PaWinMmeStream       *past;
+#endif
+
    HWAVEIN                      hWaveIn;
    HWAVEOUT                     hWaveOut;
    PxInfo                      *mixer;
@@ -97,14 +163,35 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
    MIXERCONTROLDETAILS_LISTTEXT mixList[32];
    int                          j;
 
+   if (!pa_stream)
+      return NULL;
+
    mixer = (PxMixer *)malloc(sizeof(PxInfo));
    mixer->hInputMixer = NULL;
    mixer->hOutputMixer = NULL;
 
+#if defined(PA_V18)
    past = (internalPortAudioStream *) pa_stream;
    wmmeStreamData = (PaWMMEStreamData *) past->past_DeviceData;
 
    hWaveIn = wmmeStreamData->hWaveIn;
+   hWaveOut = wmmeStreamData->hWaveOut;
+#endif
+
+#if defined(PA_V19)
+   past = (struct PaWinMmeStream *) pa_stream;
+
+   hWaveIn = 0;
+   if (past->input.waveHandles) {
+      hWaveIn = ((HWAVEIN *)past->input.waveHandles)[0];
+   }
+
+   hWaveOut = 0;
+   if (past->output.waveHandles) {
+      hWaveOut = ((HWAVEOUT *)past->output.waveHandles)[0];
+   }
+#endif
+
    if (hWaveIn) {
       result = mixerOpen((HMIXER *)&mixer->hInputMixer, (UINT)hWaveIn, 0, 0, MIXER_OBJECTF_HWAVEIN);
       if (result != MMSYSERR_NOERROR) {
@@ -113,7 +200,6 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
       }
    }
 
-   hWaveOut = wmmeStreamData->hWaveOut;
    if (hWaveOut) {
       result = mixerOpen((HMIXER *)&mixer->hOutputMixer, (UINT)hWaveOut, 0, 0, MIXER_OBJECTF_HWAVEOUT);
       if (result != MMSYSERR_NOERROR) {

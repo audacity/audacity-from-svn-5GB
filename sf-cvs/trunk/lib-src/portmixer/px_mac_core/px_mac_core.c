@@ -44,8 +44,15 @@
 #include <stdlib.h>
 
 #include "portaudio.h"
-#include "pa_host.h"
 #include "portmixer.h"
+
+#if defined(PaStream)
+#define PA_V18
+#include "pa_host.h"
+#else
+#define PA_V19
+#include "pa_mac_core_internal.h"
+#endif
 
 typedef enum PaDeviceMode
 {
@@ -98,15 +105,31 @@ const char *Px_GetMixerName( void *pa_stream, int index )
 PxMixer *Px_OpenMixer( void *pa_stream, int index )
 {
    PxInfo                      *info;
-   internalPortAudioStream     *past;
    PaHostSoundControl          *macInfo;
    
    info = (PxInfo *)malloc(sizeof(PxInfo));   
+   if (!info) {
+      return (PxMixer *)info;
+   }
+
+#if defined(PA_V18)
+   internalPortAudioStream     *past;
+   
    past = (internalPortAudioStream *) pa_stream;
    macInfo = (PaHostSoundControl *) past->past_DeviceData;
 
    info->input = macInfo->input.audioDeviceID;
    info->output = macInfo->output.audioDeviceID;
+#endif
+
+#if defined(PA_V19)
+   PaMacCoreStream             *pamcs;
+   
+   pamcs = (PaMacCoreStream *) pa_stream;
+
+   info->input = pamcs->inputDevice;
+   info->output = pamcs->outputDevice;
+#endif 
 
    return (PxMixer *)info;
 }
