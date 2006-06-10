@@ -59,6 +59,10 @@ void OnPause();
 void OnRecord();
 void OnSkipStart();
 void OnSkipEnd();
+void OnSeekLeftShort();
+void OnSeekRightShort();
+void OnSeekLeftLong();
+void OnSeekRightLong();
 
         // Different posibilities for playing sound
 
