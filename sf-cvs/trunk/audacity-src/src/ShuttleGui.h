@@ -149,18 +149,18 @@ public:
       const wxString &Default, 
       const wxArrayString &Choices,
       const wxArrayString & TranslatedChoices );
-   wxChoice * ShuttleGuiBase::TieChoice( 
+   wxChoice * TieChoice( 
       const wxString &Prompt, 
       const wxString &SettingName, 
       const int Default, 
       const wxArrayString & Choices,
       const wxArrayInt & TranslatedChoices);
-   void ShuttleGuiBase::TieTextBox(
+   void TieTextBox(
       const wxString &Prompt, 
       const wxString &SettingName, 
       const wxString &Default,
       const int nChars);
-   void ShuttleGuiBase::TieTextBox(
+   void TieTextBox(
       const wxString & Prompt, 
       const wxString & SettingName, 
       const double & Default,
