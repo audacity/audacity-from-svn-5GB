@@ -44,7 +44,7 @@
 				AdditionalOptions="/O2"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\..\portaudio\pa_common,..\px_common"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;..\..\portaudio-v19\include&quot;;&quot;..\..\portaudio-v19\src\common&quot;;..\..\portaudio\pa_common;..\px_common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -119,7 +119,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\portaudio\pa_common,..\px_common"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;..\..\portaudio-v19\include&quot;;&quot;..\..\portaudio-v19\src\common&quot;;..\..\portaudio\pa_common;..\px_common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -194,7 +194,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\portaudio\pa_common,..\px_common"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;..\..\portaudio-v19\include&quot;;&quot;..\..\portaudio-v19\src\common&quot;;..\..\portaudio\pa_common;..\px_common"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"

@@ -114,7 +114,7 @@ OBJS = $(COMMON_OBJS) $(OTHER_OBJS)
 
 LTOBJS:= $(OBJS:.o=.lo)
 
-all: lib/$(PALIB) tests
+all: lib/$(PALIB) #tests
 
 tests: bin-stamp $(TESTS)
 

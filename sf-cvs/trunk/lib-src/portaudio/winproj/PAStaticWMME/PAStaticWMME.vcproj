@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="../Lib/PAStaticWMME.lib"
+				OutputFile="$(SolutionDir)\$(ConfigurationName)\PAStaticWMME.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -147,7 +147,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="../Lib/PAStaticWMMED.lib"
+				OutputFile="$(SolutionDir)\$(ConfigurationName)\PAStaticWMMED.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -222,7 +222,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="../Lib/PAStaticWMMEuD.lib"
+				OutputFile="$(SolutionDir)\$(ConfigurationName)\PAStaticWMMEud.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
