@@ -51,6 +51,11 @@ TimeTrack::TimeTrack(TimeTrack &orig):
 {
    Init(orig);
 
+   mHeight = 50;
+
+   mRangeLower = 90;
+   mRangeUpper = 110;
+
    mEnvelope = new Envelope();
    mEnvelope->SetTrackLen(1000000000.0);
    mEnvelope->SetInterpolateDB(false);
@@ -62,6 +67,9 @@ TimeTrack::TimeTrack(TimeTrack &orig):
    mRuler = new Ruler();
    mRuler->SetLabelEdges(false);
    mRuler->SetFormat(Ruler::TimeFormat);
+
+   blankBrush.SetColour(214, 214, 214);
+   blankPen.SetColour(214, 214, 214);
 }
 
 // Copy the track metadata but not the contents.
