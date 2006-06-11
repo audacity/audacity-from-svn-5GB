@@ -166,19 +166,16 @@ private:
    double              mT1;
    double              mTime;
    double              mSeek;
+   double              mPlaySpeed;
    double              mPlaybackRingBufferSecs;
    double              mCaptureRingBufferSecs;
    double              mMaxPlaybackSecsToCopy;
    double              mMinCaptureSecsToCopy;
    bool                mPaused;
-   double              mPausePosition;
 #if USE_PORTAUDIO_V19
    PaStream           *mPortStreamV19;
 #else
    PortAudioStream    *mPortStreamV18;
-   double              mLastIndicator;
-   double              mLastStableIndicator;
-   volatile double     mPausedSeconds;
    volatile bool       mInCallbackFinishedState;
 #endif
    bool                mSoftwarePlaythrough;
@@ -189,6 +186,7 @@ private:
    int                 mLostSamples;
    volatile bool       mAudioThreadShouldCallFillBuffersOnce;
    volatile bool       mAudioThreadFillBuffersLoopRunning;
+   volatile bool       mAudioThreadFillBuffersLoopActive;
    volatile double     mLastBufferAudibleTime;
    volatile double     mLastRecordingOffset;
    volatile double     mTotalSamplesPlayed;
