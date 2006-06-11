@@ -147,6 +147,13 @@ AboutDialog::AboutDialog(wxWindow * parent)
    #endif
    informationStr += wxT("<br>\n");
 
+   #if USE_PORTAUDIO_V19
+   informationStr += _("PortAudio v19");
+   #else
+   informationStr += _("PortAudio v18");
+   #endif
+   informationStr += wxT("<br>\n");
+
    // wxWindows version:
    informationStr += wxVERSION_STRING;
    informationStr += wxT("<br>\n");
