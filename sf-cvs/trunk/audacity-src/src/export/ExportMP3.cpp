@@ -584,59 +584,61 @@ void ReleaseMP3Exporter()
                                   errMsg);
 
             if (err) {
-               printf(wxT("GetDiskFragment: err=%d\n"), err);
                return false;
             }
 
-            MakePString(name, wxT("lame_init"));
+            // Note: These should NOT be wrapped in wxT()
+            // They are symbol names!
+
+            MakePString(name, "lame_init");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_init = (lame_init_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("get_lame_version"));
+            MakePString(name, "get_lame_version");
             FindSymbol(connID, name, &mainAddr, &symClass);
             get_lame_version = (get_lame_version_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_init_params"));
+            MakePString(name, "lame_init_params");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_init_params = (lame_init_params_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_encode_buffer"));
+            MakePString(name, "lame_encode_buffer");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_buffer = (lame_encode_buffer_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_encode_buffer_interleaved"));
+            MakePString(name, "lame_encode_buffer_interleaved");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_buffer_interleaved = (lame_encode_buffer_interleaved_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_encode_flush"));
+            MakePString(name, "lame_encode_flush");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_encode_flush = (lame_encode_flush_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_close"));
+            MakePString(name, "lame_close");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_close = (lame_close_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_set_in_samplerate"));
+            MakePString(name, "lame_set_in_samplerate");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_in_samplerate = (lame_set_in_samplerate_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_set_num_channels"));
+            MakePString(name, "lame_set_num_channels");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_num_channels = (lame_set_num_channels_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_set_quality"));
+            MakePString(name, "lame_set_quality");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_quality = (lame_set_quality_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_get_quality"));
+            MakePString(name, "lame_get_quality");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_get_quality = (lame_get_quality_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_set_brate"));
+            MakePString(name, "lame_set_brate");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_brate = (lame_set_brate_t *) NewMachOFromCFM(mainAddr);
 
-            MakePString(name, wxT("lame_get_brate"));
+            MakePString(name, "lame_get_brate");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_get_brate = (lame_get_brate_t *) NewMachOFromCFM(mainAddr);
 

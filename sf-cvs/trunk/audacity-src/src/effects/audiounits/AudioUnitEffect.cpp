@@ -98,7 +98,7 @@ wxString AudioUnitEffect::GetEffectName()
 wxString AudioUnitEffect::GetEffectAction()
 {
    return wxString::Format(_("Performing Effect: %s"), 
-                           (const char *)mName);
+                           (const char *)mName.mb_str());
 }
 
 int AudioUnitEffect::GetEffectFlags()
@@ -634,7 +634,8 @@ bool AudioUnitGUIControl::Create(wxWindow *parent, wxWindowID id,
    m_macIsUserPane = FALSE ;
    
    if ( !wxControl::Create(parent, id, pos, size,
-                           0, wxDefaultValidator, "AudioUnitControl") )
+                           0, wxDefaultValidator,
+                           wxString(wxT("AudioUnitControl"))) )
       return false;
    
    m_peer = new wxMacControl(this, controlRef);
@@ -827,17 +828,17 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
    
-   wxButton *preview = new wxButton(this, PreviewID, "Preview");
+   wxButton *preview = new wxButton(this, PreviewID, _("Preview"));
    hSizer->Add(preview, 0, wxALL, 10);
 
    hSizer->Add(10, 10);
 
-   wxButton *ok = new wxButton(this, wxID_OK, "OK");
+   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
    ok->SetDefault();
    ok->SetFocus();
    hSizer->Add(ok, 0, wxALL, 10);
 
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, "Cancel");
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
    hSizer->Add(cancel, 0, wxALL, 10);
 
    mMainSizer->Add(hSizer, 0, wxALIGN_CENTER);
