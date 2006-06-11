@@ -805,19 +805,15 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mT0      = t0;
    mT       = t0;
    mT1      = t1;
-   mTime    = t0 * mRate;
+   mTime    = t0;
    mSeek    = 0;
+   mPlaySpeed = 100.0 / (timeTrack ? timeTrack->GetRangeUpper() : 100);
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
    mTotalSamplesPlayed = 0;
    mPlayLooped = playLooped;
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
-
-#if !USE_PORTAUDIO_V19
-   mLastStableIndicator = NO_STABLE_INDICATOR;
-   mPausedSeconds = 0;
-#endif
 
    //
    // The RingBuffer sizes, and the max amount of the buffer to
@@ -941,13 +937,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    // are the ones who have reserved AudioIO or not.
    //
    mStreamToken = (++mNextStreamToken);
-
-#if USE_PORTAUDIO_V19
-   // To make GetStreamTime behave correctly before the callback sets
-   // mLastBufferAudibleTime the first time, we make a rough guess
-   // TODO: guess better
-   mLastBufferAudibleTime = Pa_GetStreamTime( mPortStreamV19 ) + (2048 / mRate);
-#endif
 
    return mStreamToken;
 }
@@ -1123,23 +1112,6 @@ void AudioIO::StopStream()
 
 void AudioIO::SetPaused(bool state)
 {
-   if(state)
-   {
-      // When we are beginning a pause, we note the time so that GetStreamTime
-      // can always return this position while we're paused
-      mPausePosition = GetStreamTime();
-   }
-   else
-   {
-#if USE_PORTAUDIO_V19
-      // When we're coming out of a pause, we guess mLastBufferAudibleTime so
-      // that the indicator won't be erratic between now and when the callback
-      // sets mLastBufferAudibleTime again.  This is similar to what happens
-      // in StartStream
-      mLastBufferAudibleTime = Pa_GetStreamTime( mPortStreamV19 ) + (2048 / mRate);
-#endif
-   }
-
    mPaused = state;
 }
 
@@ -1247,8 +1219,8 @@ double AudioIO::NormalizeStreamTime(double absoluteTime) const
       if (absoluteTime > mCutPreviewGapStart)
          absoluteTime += mCutPreviewGapLen;
    }
-   
-   return absoluteTime;
+
+   return absoluteTime / mPlaySpeed;
 }
 
 double AudioIO::GetStreamTime()
@@ -1256,32 +1228,7 @@ double AudioIO::GetStreamTime()
    if( !IsStreamActive() )
       return -1000000000;
 
-   if( mPaused )
-      return NormalizeStreamTime(mPausePosition);
-
-#if USE_PORTAUDIO_V19
-
-   PaStream *stream = mPortStreamV19;
-
-   // Based on the number of samples we have written, this is the value
-   // in time that represents how far we are through the source data
-   double lastBufferTime =  mT0 + (mTotalSamplesPlayed / mRate);
-
-   // This is the number of seconds ago that the last buffer started
-   // being heard.  It will be negative if the last buffer is not
-   // yet audible.
-   double deltat = Pa_GetStreamTime(stream) - mLastBufferAudibleTime;
-
-   // [JH]: I need to diagram this, but I'm pretty sure this calculation
-   // is off by one buffer size
-   double time = lastBufferTime + deltat;
-
-   return NormalizeStreamTime(time);
-#else
-   double indicator = (mTime / mRate);
-   
-   return NormalizeStreamTime(indicator);
-#endif
+   return NormalizeStreamTime(mTime);
 }
 
 
@@ -1516,9 +1463,7 @@ void AudioIO::FillBuffers()
 {
    unsigned int i;
 
-   // Can't fill buffers while seeking
-   if( mSeek )
-      return;
+   gAudioIO->mAudioThreadFillBuffersLoopActive = true;
    
    if( mPlaybackTracks.GetCount() > 0 )
    {
@@ -1620,6 +1565,8 @@ void AudioIO::FillBuffers()
          }
       }
    }
+
+   gAudioIO->mAudioThreadFillBuffersLoopActive = false;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1700,9 +1647,6 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
 
-#if !USE_PORTAUDIO_V19
-      gAudioIO->mPausedSeconds += (float)framesPerBuffer / gAudioIO->mRate;
-#endif
       return paContinue;
    }
 
@@ -1733,22 +1677,37 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          
          if (gAudioIO->mSeek)
          {
-            gAudioIO->mTime += (gAudioIO->mSeek * gAudioIO->mRate);
-            if (gAudioIO->mTime < (gAudioIO->mT0 * gAudioIO->mRate))
-               gAudioIO->mTime = gAudioIO->mT0 * gAudioIO->mRate;
-            if (gAudioIO->mTime > (gAudioIO->mT1 * gAudioIO->mRate))
-               gAudioIO->mTime = gAudioIO->mT1 * gAudioIO->mRate;
+            // Pause audio thread and wait for it to finish
+            gAudioIO->mAudioThreadFillBuffersLoopRunning = false;
+            while( gAudioIO->mAudioThreadFillBuffersLoopActive == true )
+            {
+               wxMilliSleep( 50 );
+            }
 
+            // Calculate the new time position
+            gAudioIO->mTime += gAudioIO->mSeek;
+            if (gAudioIO->mTime < gAudioIO->mT0)
+                gAudioIO->mTime = gAudioIO->mT0;
+            else if (gAudioIO->mTime > gAudioIO->mT1)
+                gAudioIO->mTime = gAudioIO->mT1;
+            gAudioIO->mSeek = 0.0;
+            
+            // Reset mixer positions and flush buffers for all tracks
             for (i = 0; i < numPlaybackTracks; i++)
             {
-               gAudioIO->mPlaybackMixers[i]->Reposition( gAudioIO->mTime / gAudioIO->mRate );
+               gAudioIO->mPlaybackMixers[i]->Reposition( gAudioIO->mTime );
                gAudioIO->mPlaybackBuffers[i]->Discard( gAudioIO->mPlaybackBuffers[i]->AvailForGet() );
             }
 
-            gAudioIO->mSeek = 0;
+            // Reload the ring buffers
+            gAudioIO->mAudioThreadShouldCallFillBuffersOnce = true;
+            while( gAudioIO->mAudioThreadShouldCallFillBuffersOnce == true )
+            {
+               wxMilliSleep( 50 );
+            }
 
-            ClearSamples((samplePtr)outputBuffer, floatSample,
-                         0, framesPerBuffer * numPlaybackChannels);
+            // Reenable the audio thread
+            gAudioIO->mAudioThreadFillBuffersLoopRunning = true;
                
             return paContinue;
          }
@@ -1916,7 +1875,8 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
          }
       }
       
-      gAudioIO->mTime += framesPerBuffer;
+      // Update the current time position
+      gAudioIO->mTime += (framesPerBuffer / gAudioIO->mRate);
       
      #if USE_PORTAUDIO_V19
       gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
