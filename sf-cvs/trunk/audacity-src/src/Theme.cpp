@@ -205,9 +205,12 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
 
 //   wxLogDebug( wxT("Image 1: %i Image 2: %i"), 
 //      Bmp1.GetDepth(), Bmp2.GetDepth() );
-   
-   wxASSERT( Bmp1.GetDepth()==24);
-   wxASSERT( Bmp2.GetDepth()==24);
+
+   // We want a 24-bit-depth bitmap if all is working, but on some
+   // platforms it might just return -1 (which means best available
+   // or not relevant).
+   wxASSERT( Bmp1.GetDepth()==-1 || Bmp1.GetDepth()==24);
+   wxASSERT( Bmp1.GetDepth()==-1 || Bmp2.GetDepth()==24);
 
    int i,nBytes;
    nBytes = Bmp1.GetWidth() * Bmp1.GetHeight();

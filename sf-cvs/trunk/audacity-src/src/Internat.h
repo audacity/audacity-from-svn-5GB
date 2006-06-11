@@ -64,7 +64,7 @@ private:
 // Use this macro to wrap all filenames and pathnames that get
 // passed directly to a system call, like opening a file, creating
 // a directory, checking to see that a file exists, etc...
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(wxUSE_UNICODE)
 #define FILENAME(X) Internat::ToFilename(X)
 #define FROMFILENAME(X) Internat::FromFilename(X)
 #else
