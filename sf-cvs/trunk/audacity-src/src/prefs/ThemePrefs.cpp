@@ -9,17 +9,21 @@
   Audacity is free software.
   This file is licensed under the wxWindows license, see License.txt
 
-********************************************************************//*!
+********************************************************************//**
 
 \class ThemePrefs
 \brief Configures dynamic loading of 'Theme' icons and colours
 
 Provides:
- - CheckBox for loading custom themes at startup.
  - Button to save current theme as a single png image.
  - Button to load theme from a single png image.
  - Button to save current theme to multiple png images.
  - Button to load theme from multiple png images.
+ - (Optional) Button to save theme as Cee data.
+ - Button to read theme from default values in program.
+ - CheckBox for loading custom themes at startup.
+
+\see \ref Themability
 
 *//********************************************************************/
 
@@ -35,7 +39,9 @@ enum eThemePrefsIds {
    idLoadThemeCache=7000,
    idSaveThemeCache,
    idLoadThemeComponents,
-   idSaveThemeComponents
+   idSaveThemeComponents,
+   idReadThemeInternal,
+   idSaveThemeAsCode
 };
 
 BEGIN_EVENT_TABLE(ThemePrefs, wxPanel)
@@ -43,6 +49,8 @@ BEGIN_EVENT_TABLE(ThemePrefs, wxPanel)
    EVT_BUTTON( idSaveThemeCache,      ThemePrefs::OnSaveThemeCache)
    EVT_BUTTON( idLoadThemeComponents, ThemePrefs::OnLoadThemeComponents)
    EVT_BUTTON( idSaveThemeComponents, ThemePrefs::OnSaveThemeComponents)
+   EVT_BUTTON( idReadThemeInternal,   ThemePrefs::OnReadThemeInternal)
+   EVT_BUTTON( idSaveThemeAsCode,     ThemePrefs::OnSaveThemeAsCode)
 END_EVENT_TABLE()
 
 ThemePrefs::ThemePrefs(wxWindow * parent) :
@@ -78,42 +86,55 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
    S.StartHorizontalLay(wxEXPAND,1);
    S.StartStatic( _("Actions"));
    {
-      S.TieCheckBox( _("Load Theme At Startup"),  
-         wxT("/Theme/LoadAtStart"), false);
-      S.EnableCtrl(false);
       S.Id( idSaveThemeCache ).AddButton( _("Save Theme"));
       S.Id( idLoadThemeCache ).AddButton( _("Load Theme"));
       S.Id( idSaveThemeComponents ).AddButton( _("Save Components"));
-      S.EnableCtrl(false);
       S.Id( idLoadThemeComponents ).AddButton( _("Load Components"));
-      S.EnableCtrl(false);
+
+// This next button is only provided in Debug mode.
+// It is for developers who are compiling Audacity themselves
+// and who who wish to generate a new ThemeAsCeeCode.h and compile it in.
+#ifdef __WXDEBUG__
+//      S.Id( idSaveThemeAsCode ).AddButton( wxT("Save Code" ));
+      S.Id( idSaveThemeAsCode ).AddButton( wxT("Output Sourcery" ));
+#endif
+
+      S.Id( idReadThemeInternal ).AddButton( _("Defaults" ));
+      S.TieCheckBox( _("Load Theme At Startup"),  
+         wxT("/Theme/LoadAtStart"), false);
    }
    S.EndStatic();
    S.StartStatic( _("Info"), 1 );
    {
       S.AddFixedText( 
-         _("Themability is an experimental feature.\n\n"
-         wxT("To try it out, click \"Save Theme\" then find and modify\n")
-         wxT("the images and colors in ImageCache.png using an\n")
-         wxT("image editor such as the Gimp.\n\n")
-         wxT("Click \"Load Theme\" to load the changed images\n")
+         _("Themability is an experimental feature.\r\n\r\n"
+         wxT("To try it out, click \"Save Theme\" then find and modify\r\n")
+         wxT("the images and colors in ImageCacheVxx.png using an\r\n")
+         wxT("image editor such as the Gimp.\r\n\r\n")
+         wxT("Click \"Load Theme\" to load the changed images\r\n")
          wxT("and colors back into Audacity."))
          );
       S.AddFixedText( 
-         _("Only the control toolbar and the colors on the \n"
-         wxT("wavetrack are currently affected, even though the\n")
-         wxT("image file shows other icons too.\n\n\n")
+         _("[Only the control toolbar and the colors on the \r\n"
+         wxT("wavetrack are currently affected, even though the\r\n")
+         wxT("image file shows other icons too.]\r\n\r\n")
 
+         wxT("Saving and loading components uses a separate file\r\n")
+         wxT("for each image, but is otherwise the same idea.\r\n\r\n"))
+         );
 
-         wxT("Loading themes at start up isn't implemented yet.\n\n")
+#ifdef __WXDEBUG__
+      S.AddFixedText( 
+         wxT("You have compiled Audacity with an extra button, \r\n")
+         wxT("'Output Sourcery'.  This will save a C version of \r\n")
+         wxT("the image cache that can be compiled in as a default.\r\n\r\n")
+         );
+#endif
 
-         wxT("Saving and loading components isn't implemented\n")
-         wxT("yet.  This will use a separate file for each image.\n")
-         wxT("Having a single image file is the normal way themes\n")
-         wxT("will work.  However, when we change the layout\n")
-         wxT("of the image file, we will want to save and then\n")
-         wxT("load from individual files.\n"))
-
+      S.AddFixedText( 
+         _("If 'Load Theme At Startup' is checked, then the Theme\r\n"
+         wxT("will be loaded when the program starts up.\r\n")
+         wxT("The component files do not play any part in this.\r\n\r\n"))
          );
    }
    S.EndStatic();
@@ -131,28 +152,39 @@ bool ThemePrefs::Apply()
 /// Load Theme from multiple png files.
 void ThemePrefs::OnLoadThemeComponents(wxCommandEvent &event)
 {
-   int i=1;
+   theTheme.LoadComponents();
+   theTheme.ApplyUpdatedImages();
 }
+
 /// Save Theme to multiple png files.
 void ThemePrefs::OnSaveThemeComponents(wxCommandEvent &event)
 {
-
+   theTheme.SaveComponents();
 }
 
 /// Load Theme from single png file.
 void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
 {
    theTheme.ReadImageCache();
-   AudacityProject *p = GetActiveProject();
-   if( p->GetControlToolBar() )
-   {
-      p->GetControlToolBar()->ReCreateButtons();     
-   }
+   theTheme.ApplyUpdatedImages();
 }
 
 /// Save Theme to single png file.
 void ThemePrefs::OnSaveThemeCache(wxCommandEvent &event)
 {
-   int i=4;
    theTheme.CreateImageCache();
 }
+
+/// Read Theme from internal storage.
+void ThemePrefs::OnReadThemeInternal( wxCommandEvent &event)
+{
+   theTheme.ReadThemeInternal();
+   theTheme.ApplyUpdatedImages();
+}
+
+/// Save Theme as C source code.
+void ThemePrefs::OnSaveThemeAsCode(wxCommandEvent &event)
+{
+   theTheme.SaveThemeAsCode();
+}
+

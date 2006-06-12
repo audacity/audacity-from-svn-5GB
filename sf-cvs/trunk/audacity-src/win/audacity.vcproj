@@ -776,6 +776,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\Experimental.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\FFT.cpp"
 				>
 				<FileConfiguration
@@ -849,6 +853,14 @@
 			</File>
 			<File
 				RelativePath="..\src\FileFormats.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\FileNames.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\FileNames.h"
 				>
 			</File>
 			<File

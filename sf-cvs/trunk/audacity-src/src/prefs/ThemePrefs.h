@@ -32,6 +32,9 @@ private:
    void OnSaveThemeComponents(wxCommandEvent &event);
    void OnLoadThemeCache(wxCommandEvent &event);
    void OnSaveThemeCache(wxCommandEvent &event);
+   void OnReadThemeInternal( wxCommandEvent &event);
+   void OnSaveThemeAsCode(wxCommandEvent &event);
+
 
    DECLARE_EVENT_TABLE();
 };
