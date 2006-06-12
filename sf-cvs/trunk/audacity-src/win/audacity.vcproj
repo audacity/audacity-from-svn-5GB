@@ -402,6 +402,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\AllThemeResources.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Audacity.h"
 				>
 			</File>
@@ -1203,6 +1207,10 @@
 			</File>
 			<File
 				RelativePath="..\src\Legacy.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\MacroMagic.h"
 				>
 			</File>
 			<File
