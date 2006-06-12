@@ -75,13 +75,19 @@ public:
 
 public:
    virtual void EnsureInitialised()=0;
+   virtual void ApplyUpdatedImages()=0;
+   void LoadThemeAtStartUp( bool bLookForExternalFiles );
    void RegisterBitmap( int &iIndex,char const** pXpm, const wxString & Name);
    void RegisterBitmap( int &iIndex, const wxBitmap &Bmp, const wxString & Name );
    void RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name );
 
-   wxString GetCacheFileName();
-   void CreateImageCache();
-   void ReadImageCache();
+   void CreateImageCache(bool bBinarySave = true);
+   bool ReadImageCache( bool bBinaryRead = true, bool bOkIfNotFound=false);
+   void LoadComponents( bool bOkIfNotFound =false);
+   void SaveComponents();
+   void ReadThemeInternal();
+   void SaveThemeAsCode();
+
    void SetNewGroup( int iGroupSize );
    void GetNextPosition( int xSize, int ySize );
 
@@ -117,6 +123,7 @@ protected:
    int iImageGroupSize; 
    int iImageGroupIndex;
    int mFlags;
+   int mOldFlags;
 };
 
 
@@ -128,6 +135,7 @@ public:
    ~Theme(void);
 public:
    virtual void EnsureInitialised();
+   virtual void ApplyUpdatedImages();
    void RegisterImages();
    void RegisterColours();
    bool mbInitialised;
