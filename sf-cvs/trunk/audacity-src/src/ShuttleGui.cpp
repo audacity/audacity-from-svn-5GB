@@ -1621,7 +1621,7 @@ void SetIfCreated( wxStaticText *&Var, wxStaticText * Val )
 #ifdef EXPERIMENTAL_TRACK_PANEL
 // Additional includes down here, to make it easier to split this into
 // two files at some later date.
-#include "GuiWaveTrack.h"
+#include "../extnpanel-src/GuiWaveTrack.h"
 #endif
 #include "./widgets/Ruler.h"
 #include "./widgets/AttachableScrollBar.h"
