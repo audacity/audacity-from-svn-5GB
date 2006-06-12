@@ -738,7 +738,7 @@ void ThemeBase::SaveComponents()
       /// \bug in wxWidgets documentation; wxMkDir returns false if 
       /// directory didn't exist, even if it successfully creates it.
       /// so we create and then test if it exists instead.
-      wxMkDir( FileNames::ThemeComponentsDir() );
+      wxMkDir( FileNames::ThemeComponentsDir().fn_str(), 0700 );
       if( !wxDirExists( FileNames::ThemeComponentsDir() ))
       {
          wxMessageBox(
