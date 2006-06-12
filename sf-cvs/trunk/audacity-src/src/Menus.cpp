@@ -764,6 +764,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("Pause"),       _("Pause\tP"),                    FN(OnPause));
    c->AddCommand(wxT("Record"),      _("Record\tR"),                   FN(OnRecord));
    
+   c->AddCommand(wxT("StopSelect"),  _("Stop and Select\tShift+A"),    FN(OnStopSelect));
+
    c->AddCommand(wxT("PlayOneSec"),     _("Play One Second\t1"),       FN(OnPlayOneSecond));
    c->AddCommand(wxT("PlayToSelection"),_("Play To Selection\tB"),       FN(OnPlayToSelection));
    c->AddCommand(wxT("PlayLooped"),     _("Play Looped\tL"),           FN(OnPlayLooped));
@@ -1372,6 +1374,20 @@ void AudacityProject::OnRecord()
    wxCommandEvent evt;
 
    toolbar->OnRecord(evt);
+}
+
+void AudacityProject::OnStopSelect()
+{
+	ControlToolBar *toolbar = GetControlToolBar();
+	wxCommandEvent evt;
+
+	if (gAudioIO->IsStreamActive()) {
+		mViewInfo.sel0 = gAudioIO->GetStreamTime();
+		if( mViewInfo.sel1 < mViewInfo.sel0 ) {
+			mViewInfo.sel1 = mViewInfo.sel0;
+		}
+		toolbar->OnStop(evt);
+	}
 }
 
 void AudacityProject::OnSkipStart()
