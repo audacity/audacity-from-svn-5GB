@@ -57,6 +57,7 @@ void OnPrevTool();
 void OnStop();
 void OnPause();
 void OnRecord();
+void OnStopSelect();
 void OnSkipStart();
 void OnSkipEnd();
 void OnSeekLeftShort();
