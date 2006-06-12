@@ -56,7 +56,13 @@ wxString FileNames::FixForOS(const wxString &Str)
 #ifdef __WXMSW__
    return Str;
 #else
-   return Str = ::wxDos2UnixFilename( Str );
+   wxString tstr;
+   wxChar *tmp = new wxChar(Str.Length()+1);
+   strcpy(tmp, Str.c_str());
+   ::wxDos2UnixFilename( tmp );
+   tstr = tmp;
+   delete tmp;
+   return tstr;
 #endif
 }
 
