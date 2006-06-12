@@ -788,23 +788,21 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag,
                       AudioIONotBusyFlag | TracksSelectedFlag | TimeSelectedFlag);
 
-   c->AddCommand(wxT("PrevTrack"),     _("Move to Previous Track\tUp"),                      FN(OnCursorUp));
-   c->AddCommand(wxT("ShiftUp"),      _("Move to Previous and Change Selection\tShift+Up"),                  FN(OnShiftUp));
-   c->AddCommand(wxT("NextTrack"),     _("Move to Next Track\tDown"),                        FN(OnCursorDown));
-   c->AddCommand(wxT("ShiftDown"),    _("Move to Next and Change Selection\tShift+Down"),             FN(OnShiftDown));
-   c->AddCommand(wxT("Toggle"),    _("Toggle Focused Track\tReturn"),             FN(OnToggle));
-   c->AddCommand(wxT("Toggle1"),    _("Toggle Focused Track\tNUMPAD_ENTER"),             FN(OnToggle));
-   c->AddCommand(wxT("Toggle2"),    _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
-
+   c->SetDefaultFlags(AudioIOBusyFlag, AudioIOBusyFlag);
    c->AddCommand(wxT("SeekLeftShort"), _("Seek left short period during playback\tLeft"),        FN(OnSeekLeftShort));
-   c->SetCommandFlags(wxT("SeekLeftShort"), AudioIOBusyFlag, AudioIOBusyFlag);
    c->AddCommand(wxT("SeekRightShort"),_("Seek right short period during playback\tRight"),      FN(OnSeekRightShort));
-   c->SetCommandFlags(wxT("SeekRightShort"), AudioIOBusyFlag, AudioIOBusyFlag);
    c->AddCommand(wxT("SeekLeftLong"),  _("Seek left long period during playback\tShift+Left"),   FN(OnSeekLeftLong));
-   c->SetCommandFlags(wxT("SeekLeftLong"), AudioIOBusyFlag, AudioIOBusyFlag);
    c->AddCommand(wxT("SeekRightLong"), _("Seek right long period during playback\tShift+Right"), FN(OnSeekRightLong));
-   c->SetCommandFlags(wxT("SeekRightLong"), AudioIOBusyFlag, AudioIOBusyFlag);
    
+   c->SetDefaultFlags(TracksExistFlag, TracksExistFlag);
+   c->AddCommand(wxT("PrevTrack"),     _("Move to Previous Track\tUp"),                      FN(OnCursorUp));
+   c->AddCommand(wxT("ShiftUp"),       _("Move to Previous and Change Selection\tShift+Up"), FN(OnShiftUp));
+   c->AddCommand(wxT("NextTrack"),     _("Move to Next Track\tDown"),                        FN(OnCursorDown));
+   c->AddCommand(wxT("ShiftDown"),     _("Move to Next and Change Selection\tShift+Down"),   FN(OnShiftDown));
+   c->AddCommand(wxT("Toggle"),        _("Toggle Focused Track\tReturn"),                    FN(OnToggle));
+   c->AddCommand(wxT("Toggle1"),       _("Toggle Focused Track\tNUMPAD_ENTER"),              FN(OnToggle));
+   c->AddCommand(wxT("Toggle2"),       _("Toggle Focused Track\tCtrl+Spacebar"),             FN(OnToggle));
+
    c->AddCommand(wxT("CursorLeft"),    _("Cursor Left\tLeft"),                               FN(OnCursorLeft));
    c->AddCommand(wxT("CursorRight"),   _("Cursor Right\tRight"),                             FN(OnCursorRight));
    c->AddCommand(wxT("SelExtLeft"),    _("Selection Extend Left\tShift+Left"),               FN(OnSelExtendLeft));
