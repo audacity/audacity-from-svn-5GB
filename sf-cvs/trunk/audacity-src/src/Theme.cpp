@@ -493,6 +493,13 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    myHeight = 0;
    iImageGroupSize = 1;
    SetNewGroup(1);
+
+//#define IMAGE_MAP
+#ifdef IMAGE_MAP
+   wxLogDebug( "<img src=\"ImageCache.png\" usemap=\"#map1\">" );
+   wxLogDebug( "<map name=\"map1\">" );
+#endif
+
    // Save the bitmaps
    for(i=0;i<(int)mBitmaps.GetCount();i++)
    {
@@ -503,6 +510,11 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
       GetNextPosition( xWidth1, yHeight1 );
       wxImage SrcImage( pBmp->ConvertToImage() );
       PasteSubImage( &Image, &SrcImage, mxPos, myPos );
+#ifdef IMAGE_MAP
+      // No href
+      wxLogDebug( "<area alt=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">",
+         mBitmapNames[i].c_str(), mxPos, myPos, mxPos+xWidth1, myPos+yHeight1 );
+#endif
    }
 
    // Now save the colours.
@@ -525,7 +537,16 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
             Image.SetAlpha( mxPos + x, myPos+y, 255);
          }
       }
+#ifdef IMAGE_MAP
+      // No href
+      wxLogDebug( "<area alt=\"Colour:%s\" shape=rect coords=\"%i,%i,%i,%i\">",
+         mColourNames[i].c_str(), mxPos, myPos, mxPos+xWidth1, myPos+yHeight1 );
+#endif
    }
+
+#ifdef IMAGE_MAP
+   wxLogDebug( "</map>" );
+#endif
 
    // IF nBinarySave, THEN saving to a normal PNG file.
    if( bBinarySave )
