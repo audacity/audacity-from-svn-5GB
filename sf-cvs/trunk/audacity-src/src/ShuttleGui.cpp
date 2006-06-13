@@ -373,7 +373,7 @@ wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString 
    AddPrompt( Caption );
    miProp=0;
    mpWind = pTextCtrl = new wxTextCtrl(mpParent, miId, Value,
-      wxDefaultPosition, Size);
+      wxDefaultPosition, Size, wxTE_RIGHT);
    UpdateSizers();
    return pTextCtrl;
 }
