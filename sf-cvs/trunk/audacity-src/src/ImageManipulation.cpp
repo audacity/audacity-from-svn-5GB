@@ -159,23 +159,38 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
    wxImage imgFore(theTheme.Bitmap( eForeground ).ConvertToImage());
 
 
+   // JKC: The original code required that we had a valid alpha channel.
+   // Because of problems on Mac, now if there is no alpha channel, 
+   // we fall back to using pixel(0,0) as indicating the
+   // transparent colour.
+
+   // JKC: Using transparent colour is a band-aid just to get something to 
+   // display.  It looks pretty ugly/rough.  It is looking as if 
+   // wxMac does not support alpha in bitmaps at all.  How to fix?
+   // We could shift over to storing images in Theme instead of storing 
+   // bitmaps, or store both Images and bitmaps - just to support 
+   // wxMac better.
+
+   // Flag that tells us whether we are blending or masking.
+   bool bHasAlpha = imgFore.HasAlpha();
    // TMP: dmazzoni - just so the code runs even though not all of
    // our images have transparency...
-   if (!imgFore.HasAlpha())
-      return new wxImage(imgBack);
+//   if (!imgFore.HasAlpha())
+//      return new wxImage(imgBack);
 
+//   wxASSERT( imgFore.HasAlpha() );
 
-   wxASSERT( imgFore.HasAlpha() );
+   // For testing Mac behaviour on Windows...
+   // bHasAlpha = false;
 
    unsigned char *bg = imgBack.GetData();
    unsigned char *fg = imgFore.GetData();
-   unsigned char *mk = imgFore.GetAlpha();
+   unsigned char *mk = bHasAlpha ? imgFore.GetAlpha() : NULL;
 
    int bgWidth = imgBack.GetWidth();
    int bgHeight = imgBack.GetHeight();
    int fgWidth = imgFore.GetWidth();
    int fgHeight = imgFore.GetHeight();
-
 
    //Now, determine the dimensions of the images to be masked together
    //on top of the background.  This should be equal to the area of the
@@ -185,7 +200,6 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
    //Make sure the foreground size is no bigger than the mask
    int wCutoff = fgWidth;
    int hCutoff = fgHeight;
-
 
    // If the masked foreground + offset is bigger than the background, masking
    // should only occur within these bounds of the foreground image
@@ -206,16 +220,40 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
 
       unsigned char *bkp = bg + 3 * ((y + yoff) * bgWidth + xoff);
       unsigned char *dstp = dst + 3 * ((y + yoff) * bgWidth + xoff);
+      unsigned char *fgp = fg + 3 * (y * fgWidth);
 
       for (x = 0; x < wCutoff; x++) {
+         int value;
+         // IF has alpha channel, THEN we are blending...
+         if( bHasAlpha )
+         {
+            value = mk[(y * fgWidth + x)];// Don't multiply by 3...
+            int opp = 255 - value;
 
-         int value = mk[(y * fgWidth + x)];// Don't multiply by 3...
-         int opp = 255 - value;
-
-         for (int c = 0; c < 3; c++)
-            dstp[x * 3 + c] = 
-               ((bkp[x * 3 + c] * opp) + 
-                (fg[3 * (y * fgWidth + x) + c] * value)) / 255;
+            for (int c = 0; c < 3; c++)
+               dstp[x * 3 + c] = 
+                  ((bkp[x * 3 + c] * opp) + 
+                   (fgp[x * 3 + c] * value)) / 255;
+         }
+         // ELSE we are masking.
+         else
+         {
+            if( 
+               (fg[0]==fgp[ x*3]) && 
+               (fg[1]==fgp[ x*3 +1]) && 
+               (fg[2]==fgp[ x*3 +2]))
+            {
+               // Hit the transparent colour, so use background.
+               for (int c = 0; c < 3; c++)
+                  dstp[x * 3 + c] = bkp[x * 3 + c];
+            }
+            else
+            {
+               // Not transparent, so use the foreground colour.
+               for (int c = 0; c < 3; c++)
+                  dstp[x * 3 + c] = fgp[x * 3 + c];
+            }
+         }
       }
    } 
    return dstImage;
