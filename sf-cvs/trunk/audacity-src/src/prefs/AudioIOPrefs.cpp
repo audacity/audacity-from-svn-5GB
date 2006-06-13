@@ -124,13 +124,13 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieChoice( _("Device:"), wxT("PlaybackDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
 
-      wxString ver = _("Using: Portaudio v");
+      S.AddPrompt( _("Using:") );
+      wxString ver = _("Portaudio v");
 #if USE_PORTAUDIO_V19
       ver += wxT("19");
 #else
       ver += wxT("18");
 #endif
-      S.AddFixedText( wxT("") );
       S.AddFixedText( ver );
       S.EndMultiColumn();
    }                              
