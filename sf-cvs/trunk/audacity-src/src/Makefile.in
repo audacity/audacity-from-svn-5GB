@@ -53,6 +53,7 @@ OBJS = \
 	Envelope.o \
 	EditToolBar.o \
 	FFT.o \
+	FileNames.o \
 	FreqWindow.o \
 	Help.o \
 	HistoryWindow.o \
