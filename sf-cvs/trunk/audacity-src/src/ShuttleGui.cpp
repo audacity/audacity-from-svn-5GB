@@ -133,9 +133,10 @@ void ShuttleGuiBase::AddPrompt(const wxString &Prompt)
       return;
    if( mShuttleMode != eIsCreating )
       return;
+   miProp=1;
    mpWind = new wxStaticText(mpParent, -1, Prompt, wxDefaultPosition, wxDefaultSize, 
       wxALIGN_RIGHT );
-   UpdateSizers();
+   UpdateSizersCore( false, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
 }
 
 void ShuttleGuiBase::AddTitle(const wxString &Prompt)
@@ -306,9 +307,7 @@ wxComboBox * ShuttleGuiBase::AddCombo( const wxString &Prompt, const wxString &S
       Choices[i] = (*pChoices)[i];
    }
 
-   mpWind = new wxStaticText(mpParent, -1, Prompt, wxDefaultPosition, wxDefaultSize, 
-      wxALIGN_RIGHT );
-   UpdateSizers();
+   AddPrompt( Prompt );
 
    mpWind = pCombo = new wxComboBox(mpParent, miId, Selected, wxDefaultPosition, wxDefaultSize, 
       n, Choices);
@@ -366,15 +365,13 @@ wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString 
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxTextCtrl);
    wxTextCtrl * pTextCtrl;
-   miProp=0;
    wxSize Size(wxDefaultSize);
    if( nChars > 0 )
    {
       Size.SetWidth( nChars *5 );
    }
-   mpWind = new wxStaticText(mpParent, -1, Caption, wxDefaultPosition, wxDefaultSize, 
-      wxALIGN_RIGHT );
-   UpdateSizers();
+   AddPrompt( Caption );
+   miProp=0;
    mpWind = pTextCtrl = new wxTextCtrl(mpParent, miId, Value,
       wxDefaultPosition, Size);
    UpdateSizers();
@@ -401,9 +398,9 @@ void ShuttleGuiBase::AddConstTextBox(const wxString &Caption, const wxString &Va
       return;
 //      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
    miProp=0;
-   mpWind = new wxStaticText(mpParent, miId, Caption, wxDefaultPosition, wxDefaultSize, 
-      wxALIGN_RIGHT );
+   AddPrompt( Caption );
    UpdateSizers();
+   miProp=0;
    mpWind = new wxStaticText(mpParent, miId, Value);
    UpdateSizers();
 }
