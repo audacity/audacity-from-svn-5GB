@@ -114,7 +114,7 @@ void ShuttleGuiBase::EnableCtrl( bool bEnable )
    mpLastWind->Enable( bEnable );
 }
 
-/// Used to modify an already placed FlexGridSizer.
+/// Used to modify an already placed FlexGridSizer to make a column stretchy.
 void ShuttleGuiBase::SetStretchyCol( int i )
 {
    if( mShuttleMode != eIsCreating )
@@ -122,6 +122,16 @@ void ShuttleGuiBase::SetStretchyCol( int i )
    wxFlexGridSizer *pSizer = wxDynamicCast(mpSizer, wxFlexGridSizer);
    wxASSERT( pSizer );
    pSizer->AddGrowableCol( i, 1 );
+}
+
+/// Used to modify an already placed FlexGridSizer to make a row stretchy.
+void ShuttleGuiBase::SetStretchyRow( int i )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   wxFlexGridSizer *pSizer = wxDynamicCast(mpSizer, wxFlexGridSizer);
+   wxASSERT( pSizer );
+   pSizer->AddGrowableRow( i, 1 );
 }
 
 
@@ -751,19 +761,6 @@ void ShuttleGuiBase::EndMultiColumn()
       return;
    PopSizer();
 }
-
-void ShuttleGuiBase::StartTwoColumnStretchy()
-{
-   if( mShuttleMode != eIsCreating )
-      return;
-   wxFlexGridSizer * pSizer = new wxFlexGridSizer( 2 );
-   mpSubSizer = pSizer;
-   pSizer->AddGrowableCol( 1,1 );
-   pSizer->AddGrowableRow( 1,1 );
-   miSizerProp=1;
-   UpdateSizers();
-}
-
 
 void ShuttleGuiBase::TieCheckBox(const wxString &Prompt, bool &Var)
 {
