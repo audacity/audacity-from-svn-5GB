@@ -20,6 +20,7 @@
 #include <wx/intl.h>
 
 #include "AboutDialog.h"
+#include "portaudio.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(AboutDialogCreditItemsList);
