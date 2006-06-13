@@ -110,7 +110,6 @@ public:
    void EndTwoColumn() {EndMultiColumn();};
    void StartThreeColumn(){StartMultiColumn(3);};
    void EndThreeColumn(){EndMultiColumn();};
-   void StartTwoColumnStretchy();
 
    void StartStatic( const wxString & Str, int iProp=0 );
    void EndStatic();
@@ -171,6 +170,7 @@ public:
    void SetNoMatchSelector( int iSelector ) {miNoMatchSelector = iSelector;};
    void SetSizerProportion( int iProp ) {miSizerProp = iProp;};
    void SetStretchyCol( int i );
+   void SetStretchyRow( int i );
 
 protected:
    void UseUpId();
