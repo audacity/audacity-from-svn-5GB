@@ -1386,6 +1386,8 @@ void AudacityProject::OnStopSelect()
 		}
 		toolbar->OnStop(evt);
 	}
+
+   ModifyState();
 }
 
 void AudacityProject::OnSkipStart()
@@ -1526,8 +1528,10 @@ void AudacityProject::OnSetLeftSelection()
    
    if(mViewInfo.sel1 < mViewInfo.sel0)
       mViewInfo.sel1 = mViewInfo.sel0;
+
+   ModifyState();
+
    mTrackPanel->Refresh(false);
-   
 }
 
 
@@ -1562,8 +1566,10 @@ void AudacityProject::OnSetRightSelection()
 
    if(mViewInfo.sel0 >  mViewInfo.sel1)
       mViewInfo.sel0 = mViewInfo.sel1;
-   mTrackPanel->Refresh(false);
+
+   ModifyState();
    
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::NextFrame()
@@ -1723,6 +1729,8 @@ void AudacityProject::OnZeroCrossing()
       if (mViewInfo.sel1 < mViewInfo.sel0)
          mViewInfo.sel1 = mViewInfo.sel0;
    }
+
+   ModifyState();
 
    mTrackPanel->Refresh(false);
 }
@@ -2855,6 +2863,8 @@ void AudacityProject::OnSelectAll()
    mViewInfo.sel0 = mTracks->GetMinOffset();
    mViewInfo.sel1 = mTracks->GetEndTime();
 
+   ModifyState();
+   
    mTrackPanel->Refresh(false);
 }
 
@@ -2876,6 +2886,8 @@ void AudacityProject::OnSelectCursorEnd()
 
    mViewInfo.sel1 = maxEndOffset;
 
+   ModifyState();
+   
    mTrackPanel->Refresh(false);
 }
 
@@ -2897,6 +2909,8 @@ void AudacityProject::OnSelectStartCursor()
 
    mViewInfo.sel0 = minOffset;
 
+   ModifyState();
+   
    mTrackPanel->Refresh(false);
 }
 
@@ -3428,6 +3442,9 @@ void AudacityProject::OnSelectionRestore()
 {
    mViewInfo.sel0 = mSel0save;
    mViewInfo.sel1 = mSel1save;
+
+   ModifyState();
+   
    mTrackPanel->Refresh(false);
 }
 
