@@ -23,6 +23,7 @@ used throughout Audacity into this one place.
 #include "../Audacity.h"
 
 #include <wx/defs.h>
+#include <wx/filename.h>
 #include <wx/intl.h>
 #include "Prefs.h"
 #include "FileNames.h"
@@ -43,41 +44,20 @@ wxString FileNames::ThemeDir()
 
 wxString FileNames::ThemeComponentsDir()
 {
-   return ThemeDir() + FixForOS( wxT("\\Components") );
+   return wxFileName( ThemeDir(), wxT("Components") ).GetFullPath();
 }
-
-
-/// Turn backslashes into forward slashes for Unix.
-wxString FileNames::FixForOS(const wxString &Str)
-{
-   /// \todo Possibly we should use:
-   ///    PlatformCompatibility::GetLongFileName()
-   /// in here?
-#ifdef __WXMSW__
-   return Str;
-#else
-   wxString tstr;
-   wxChar *tmp = new wxChar(Str.Length()+1);
-   strcpy(tmp, Str.c_str());
-   ::wxDos2UnixFilename( tmp );
-   tstr = tmp;
-   delete tmp;
-   return tstr;
-#endif
-}
-
 
 wxString FileNames::ThemeCachePng()
 {
-   return ThemeDir() + FixForOS( wxT("\\ImageCache.png"));
+   return wxFileName( ThemeDir(), wxT("ImageCache.png") ).GetFullPath();
 }
 
 wxString FileNames::ThemeCacheAsCee( )
 {
-   return ThemeDir() + FixForOS( wxT("\\ThemeAsCeeCode.h"));
+   return wxFileName( ThemeDir(), wxT("ThemeAsCeeCode.h") ).GetFullPath();
 }
 
 wxString FileNames::ThemeComponent(const wxString &Str)
 {
-   return ThemeComponentsDir() + FixForOS( wxT("\\") + Str + wxT(".png"));
+   return wxFileName( ThemeComponentsDir(), Str, wxT("png") ).GetFullPath();
 }
