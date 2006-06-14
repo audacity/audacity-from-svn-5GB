@@ -22,7 +22,6 @@ public:
    static wxString TempDir();
    static wxString ThemeDir();
    static wxString ThemeComponentsDir();
-   static wxString FixForOS(const wxString &Str);
    static wxString ThemeCachePng();
    static wxString ThemeCacheAsCee();
    static wxString ThemeComponent(const wxString &Str);
