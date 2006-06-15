@@ -6,9 +6,16 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\file Prefs.cpp
+\brief Utility functions for working with our wxConf (gPrefs)
+
+
   Audacity uses wxWindows' wxConfig class to handle preferences.
   See Prefs.h for more information on how it works...
 
+\verbatim
   Preference field specification:
   	/
 		Version					- Audacity Version that created these prefs
@@ -36,8 +43,10 @@
 	(*): wxGTK
 	(+): wxWin
 	($): wxMac
+\endverbatim
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

@@ -7,24 +7,6 @@
   Dominic Mazzoni
   Shane T. Mueller
 
-  This file contains three classes: ToolBarStub, ToolBarFrame, and ToolBar.
-
-
-  For each new toolbar, a global instance of ToolBarStub should be created
-  in AudacityApp.cpp.  ToolBarStub contains some information about the ToolBar,
-  and contains ToolBarFrame, which is the floating (hidden or visable) toolbar.
-  ToolBar is a base class that is used to base new toolbars on (cf ControlToolBar.h) 
-  To create a new toolbar, a new class that inherits this class should be created,
-  the class should be given an ID in enum ToolBarType, and accessor functions in
-  Menus.h and Menus.cpp should be written. Type-specific
-  switch statements in ToolBarFrame::ToolBarFrame, AudacityProject::OnMouseEvent(),
-  AudacityProject::LoadToolBar() and AudacityProject::UnloadToolBar() should
-  be made to handle the new toolbar type.
-
-  The toolbars in each window are not tied directly to a ToolBarStub, although 
-  there are some methods in ToolBarStub that will load and unload toolbars from
-  all project windows.
-
 **********************************************************************/
 
 #ifndef __AUDACITY_TOOLBAR__

@@ -5,6 +5,11 @@
   Tags.cpp
 
   Dominic Mazzoni
+ 
+*******************************************************************//*!
+
+\class Tags
+\brief ID3 Tags (for MP3)
 
   This class started as an ID3 tag 
 
@@ -25,8 +30,9 @@
   
   Use of this functionality requires that libid3tag be compiled in
   with Audacity.
-  
-**********************************************************************/
+
+*//*******************************************************************/
+
 
 #include "Tags.h"
 

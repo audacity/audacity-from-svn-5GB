@@ -11,7 +11,14 @@
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class SelectionBar
+\brief (not quite a Toolbar) at foot of screen for setting and viewing the 
+selection range.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

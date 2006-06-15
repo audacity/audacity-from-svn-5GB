@@ -6,7 +6,15 @@
 
   Markus Meyer
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class PlatformCompatability
+\brief Filename Compatability utilities.
+
+\see FileNames
+
+*//*******************************************************************/
+
 
 #ifdef _WIN32
 #include <windows.h>

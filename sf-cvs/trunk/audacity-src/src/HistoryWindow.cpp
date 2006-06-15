@@ -6,7 +6,15 @@
 
   Joshua Haberman
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class HistoryWindow
+\brief Works with UndoManager to allow user to see descriptions of 
+and undo previous commands.  Also allows you to selectively clear the 
+undo memory so as to free up space.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

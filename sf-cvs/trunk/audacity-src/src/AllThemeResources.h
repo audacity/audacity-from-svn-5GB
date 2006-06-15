@@ -9,7 +9,7 @@
   Audacity is free software.
   This file is licensed under the GPL license, see License.txt
 
-********************************************************************//*@
+********************************************************************//*!
 
 \file AllThemeResources.h
 

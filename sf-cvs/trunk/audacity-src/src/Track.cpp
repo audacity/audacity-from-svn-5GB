@@ -6,7 +6,15 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class Track
+\brief Fundamental data object of Audacity, placed in the TrackPanel.
+Classes derived form it include the WaveTrack, NoteTrack, LabelTrack 
+and TimeTrack.
+
+*//*******************************************************************/
+
 
 #include <float.h>
 #include <wx/file.h>

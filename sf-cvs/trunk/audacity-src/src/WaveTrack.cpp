@@ -2,11 +2,17 @@
 
   Audacity: A Digital Audio Editor
 
-  WaveTrack.h
+  WaveTrack.cpp
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class WaveTrack
+\brief A Track that contains audio waveform data.
+
+*//*******************************************************************/
+
 
 #include <wx/defs.h>
 #include <wx/intl.h>

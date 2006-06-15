@@ -34,10 +34,7 @@ class TrackList;
 class AudacityProject;
 class DirManager;
 
-/// A LabelStruct holds information for ONE label in a LabelTrack
 
-/// LabelStruct also has label specific functions, mostly functions
-/// for drawing different aspects of the label and its text box.
 class LabelStruct 
 {
 public:
@@ -72,12 +69,6 @@ const int NUM_GLYPH_HIGHLIGHTS = 4;
 const int MAX_NUM_ROWS =80;
 
 
-/// A LabelTrack is a track that holds labels.
-
-/// These are used to annotate a waveform.
-/// Each label has a start time and an end time.
-/// The text of the labels is editable and the
-/// positions of the end points are draggable.
 class LabelTrack:public Track {
    friend class LabelStruct;
    friend class BouncePane;

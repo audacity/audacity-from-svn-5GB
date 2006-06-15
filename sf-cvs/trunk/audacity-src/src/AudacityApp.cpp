@@ -6,7 +6,15 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+******************************************************************//**
+
+\class AudacityApp
+\brief This is the 'main' class for Audacity 
+
+It handles initialization and termination by subclassing wxApp.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h" // This should always be included first
 

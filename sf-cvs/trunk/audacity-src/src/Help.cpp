@@ -6,6 +6,11 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\file Help.cpp
+\brief Glue code to connect to html help controller.
+
   Audacity uses the wxWindows HTML help controller and gets the
   HTML files from a zip archive with a "htb" extension, which
   is supposed to stand for "HTML Book".  It expects the help
@@ -17,7 +22,7 @@
   for the location of the help file the first time (if necessary)
   and then remembers it from then on.
 
-**********************************************************************/
+*//*******************************************************************/
 
 #include "Audacity.h"
 

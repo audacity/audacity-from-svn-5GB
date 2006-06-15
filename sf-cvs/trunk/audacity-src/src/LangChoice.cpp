@@ -6,7 +6,14 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class LangChoiceDialog
+\brief A dialog used (at start up) to present the user with a choice
+of languages for Audacity.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

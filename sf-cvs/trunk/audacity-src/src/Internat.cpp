@@ -7,7 +7,19 @@
   Markus Meyer
   Dominic Mazzoni (Mac OS X code)
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class Internat
+\brief Internationalisation support.
+
+This class is used to help internationalisation and in general
+compatibility with different locales and character sets.
+It deals mostly with converting numbers, but also has important
+functions to convert to/from UTF-8, which is used in XML files
+and on Mac OS X for the filesystem.
+
+*//*******************************************************************/
+
 
 #include "Internat.h"
 

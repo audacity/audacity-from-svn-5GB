@@ -6,7 +6,16 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class FreqWindow
+\brief Displays a spectrum plot of the waveform.
+
+Has a feature that finds peaks and rerports their value as you move 
+the mouse around.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

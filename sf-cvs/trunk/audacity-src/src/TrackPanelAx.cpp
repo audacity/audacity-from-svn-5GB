@@ -7,7 +7,13 @@
   Dominic Mazzoni
   and lots of other contributors
 
-**********************************************************************/
+******************************************************************//*!
+
+\class TrackPanelAx
+\brief Helper to TrackPanel to give accessibility.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 #include "TrackPanelAx.h"

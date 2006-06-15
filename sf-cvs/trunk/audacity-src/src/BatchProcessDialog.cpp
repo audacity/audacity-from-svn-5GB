@@ -7,7 +7,13 @@
   Dominic Mazzoni
   James Crook
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class BatchProcessDialog
+\brief Shows progress in executring commands in BatchCommands.
+
+*//*******************************************************************/
+
 #include "Audacity.h"
 
 #include <wx/defs.h>

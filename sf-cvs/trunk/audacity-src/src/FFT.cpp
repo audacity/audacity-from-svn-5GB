@@ -6,6 +6,13 @@
 
   September 2000
 
+
+
+*******************************************************************//*!
+
+\file FFT.cpp
+\brief Fast Fourier Transform routines.
+
   This file contains a few FFT routines, including a real-FFT
   routine that is almost twice as fast as a normal complex FFT,
   and a power spectrum routine when you know you don't care
@@ -22,7 +29,8 @@
   float-to-double conversions, and I added the routines to
   calculate a real FFT and a real power spectrum.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include <wx/intl.h>
 #include <stdlib.h>

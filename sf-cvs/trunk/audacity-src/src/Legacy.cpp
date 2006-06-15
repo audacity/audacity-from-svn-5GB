@@ -6,11 +6,17 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\file Legacy.cpp
+\brief Converts old Audacity file types.
+
   These routines convert Audacity project files from the
   0.98...1.0 format into an XML format that's compatible with
   Audacity 1.2.0 and newer.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

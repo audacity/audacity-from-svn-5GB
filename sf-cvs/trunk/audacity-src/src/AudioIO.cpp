@@ -15,7 +15,11 @@
   Software Foundation; either version 2 of the License, or (at your option)
   any later version.
 
-  Uses the PortAudio library to play and record sound.
+
+********************************************************************//*!
+
+\class AudioIO
+\brief AudioIO uses the PortAudio library to play and record sound.
 
   Great care and attention to detail are necessary for understanding and
   modifying this system.  The code in this file is run from three
@@ -24,10 +28,11 @@
   To highlight this deliniation, the file is divided into three parts
   based on what thread context each function is intended to run in.
 
-  TODO: run through all functions called from audio and portaudio threads
+  \todo run through all functions called from audio and portaudio threads
   to verify they are thread-safe.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

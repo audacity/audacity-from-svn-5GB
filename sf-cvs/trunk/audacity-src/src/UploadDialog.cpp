@@ -4,13 +4,18 @@
 
   UploadDialog.cpp
 
-  Mike Underwood
-  munderwood@bedheaddesign.com
+  Mike Underwood - munderwood@bedheaddesign.com
 
   Much like the author, this code is crazy at times but it gets the job
   done.
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class UploadDialog
+\brief A contributed class for uploading audio via FTP.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 
@@ -53,6 +58,8 @@
 #endif
 
 // Icon images
+
+///\todo get these XPMs out of here and into Theme.
 
 static const char *file_xpm[] = {
 /* columns rows colors chars-per-pixel */

@@ -7,11 +7,16 @@
   Dominic Mazzoni
   Joshua Haberman
 
+********************************************************************//*!
+
+\file
+
   This is the main include file for Audacity.  All files which need
   any Audacity-specific #defines or need to access any of Audacity's
   global functions should #include this file.
 
-**********************************************************************/
+*//********************************************************************/
+
 
 // Increment this every time you release a new version
 #define AUDACITY_VERSION_STRING "1.3.1-beta"

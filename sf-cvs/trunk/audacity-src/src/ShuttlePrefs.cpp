@@ -11,15 +11,16 @@
 
 ********************************************************************//*!
 
-\file ShuttlePrefs.cpp
+\class ShuttlePrefs
+
 \brief
   A kind of Shuttle to exchange data with preferences e.g. the registry
 
   This class may be used by ShuttleGui to do the two step exchange,
 
-<pre>
+\verbatim
      Gui -- Data -- Prefs
-</pre>
+\endverbatim
   
 *//*******************************************************************/
 

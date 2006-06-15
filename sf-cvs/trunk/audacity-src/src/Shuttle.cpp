@@ -7,6 +7,11 @@
   Dominic Mazzoni
   James Crook
 
+*******************************************************************//*!
+
+\class Shuttle
+\brief Moves data from one place to another, converting it as required.
+
   Shuttle provides a base class for transfering parameter data into and
   out of clasess into some other structure.  This is a common 
   requirement and is needed for:
@@ -17,7 +22,11 @@
   The 'Master' is the string side of the shuttle transfer, the 'Client'
   is the binary data side of the transfer.
 
-**********************************************************************/
+  \see ShuttleBase
+  \see ShuttleGui
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

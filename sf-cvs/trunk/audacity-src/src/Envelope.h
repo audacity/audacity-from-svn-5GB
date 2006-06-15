@@ -6,11 +6,6 @@
 
   Dominic Mazzoni
 
-  This class manages an envelope - i.e. a piecewise linear funtion
-  that the user can edit by dragging control points around.  The
-  envelope is most commonly used to control the amplitude of a
-  waveform, but it is also used to shape a general FFT filter.
-
 **********************************************************************/
 
 #ifndef __AUDACITY_ENVELOPE__

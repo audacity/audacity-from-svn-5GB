@@ -6,10 +6,6 @@
 
   Dominic Mazzoni
 
-  All of the menu bar handling is part of the class AudacityProject,
-  but the event handlers for all of the menu items have been moved
-  to Menus.h and Menus.cpp for clarity.
-
 **********************************************************************/
 #ifndef __AUDACITY_MENUS__
 #define __AUDACITY_MENUS__
