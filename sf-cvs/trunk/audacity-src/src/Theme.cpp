@@ -511,7 +511,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
 
    mFlow.Init(width);
 
-#define IMAGE_MAP
+//#define IMAGE_MAP
 #ifdef IMAGE_MAP
    wxLogDebug( wxT("<img src=\"ImageCache.png\" usemap=\"#map1\">" ));
    wxLogDebug( wxT("<map name=\"map1\">") );
