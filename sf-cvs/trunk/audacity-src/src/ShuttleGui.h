@@ -72,6 +72,7 @@ public:
 
 //-- Add functions.  These only add a widget.
    void AddPrompt(const wxString &Prompt);
+   void AddUnits(const wxString &Prompt);
    void AddTitle(const wxString &Prompt);
    wxWindow * AddWindow(wxWindow * pWindow );
    wxSlider * AddSlider(const wxString &Prompt, int pos, int Max);

@@ -99,8 +99,9 @@ wxTreebook::Create(wxWindow *parent,
     m_list = new wxTreeCtrl(this,wxID_TREEBOOKCTRL, 
         wxDefaultPosition, 
         wxDefaultSize, 
-        wxTR_HIDE_ROOT | wxTR_SINGLE /*| wxTR_HIDE_ROOT | */| wxTR_LINES_AT_ROOT | wxTR_HAS_BUTTONS); 
+        wxTR_HIDE_ROOT | wxTR_SINGLE /*| wxTR_HIDE_ROOT |  wxTR_LINES_AT_ROOT */| wxTR_HAS_BUTTONS); 
 
+//    m_list->SetIndent( 20 );// JKC Is this in pixels??
     GetTreeCtrl()->AddRoot(name); 
 
 #if wxUSE_LINE_IN_LISTBOOK 

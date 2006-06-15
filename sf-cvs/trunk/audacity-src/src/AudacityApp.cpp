@@ -63,6 +63,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "Internat.h"
 #include "prefs/PrefsDialog.h"
 #include "Theme.h"
+#include "Experimental.h"
 
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
@@ -571,7 +572,18 @@ bool AudacityApp::OnInit()
    SetExitOnFrameDelete(true);
 
    AudacityProject *project = CreateNewAudacityProject(gParentWindow);
+
+#ifdef EXPERIMENTAL_TRACK_PANEL_FROM_THE_START
+   // Parasite Track Panel.
+   // Takes over the display...
+   wxWindow * pWnd = new TrackPanel2(NULL) ;
+   SetTopWindow(pWnd);
+   pWnd->Show( true );
+   project->Show( false );
+#else
    SetTopWindow(project);
+#endif
+
 
    delete temporarywindow;
 

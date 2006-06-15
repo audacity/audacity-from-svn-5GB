@@ -149,6 +149,18 @@ void ShuttleGuiBase::AddPrompt(const wxString &Prompt)
    UpdateSizersCore( false, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
 }
 
+void ShuttleGuiBase::AddUnits(const wxString &Prompt)
+{
+   if( Prompt.IsEmpty() )
+      return;
+   if( mShuttleMode != eIsCreating )
+      return;
+   miProp=1;
+   mpWind = new wxStaticText(mpParent, -1, Prompt, wxDefaultPosition, wxDefaultSize, 
+      wxALIGN_LEFT );
+   UpdateSizersCore( false, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
+}
+
 void ShuttleGuiBase::AddTitle(const wxString &Prompt)
 {
    if( Prompt.IsEmpty() )
@@ -274,7 +286,7 @@ wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Se
       *pChoices);
 //      n, 
 //      Choices);
-   pChoice->SetSizeHints( 180,20);
+   pChoice->SetSizeHints( 180,-1);// Use -1 for 'default size' - Platform specific.
    pChoice->SetStringSelection( Selected );
 
    UpdateSizers();
@@ -398,8 +410,15 @@ wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString 
    }
    AddPrompt( Caption );
    miProp=0;
+
+#ifdef RIGHT_ALIGNED_TEXTBOXES
+   long flags = wxTE_RIGHT;
+#else
+   long flags = wxTE_LEFT;
+#endif
+
    mpWind = pTextCtrl = new wxTextCtrl(mpParent, miId, Value,
-      wxDefaultPosition, Size, wxTE_RIGHT);
+      wxDefaultPosition, Size, flags);
    UpdateSizers();
    return pTextCtrl;
 }
