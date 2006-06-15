@@ -304,8 +304,12 @@ void SelectionBar::ModifySelection()
    mStart = mLeftTime->GetTimeValue();
    double right = mRightTime->GetTimeValue();
 
-   if (mRightEndButton->GetValue())
-      mEnd = right;
+   if (mRightEndButton->GetValue()) {
+      if(mStart > right)
+         mEnd = mStart;
+      else
+         mEnd = right;
+   }
    else
       mEnd = mStart + right;
 
