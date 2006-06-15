@@ -82,7 +82,8 @@ ExpandingToolBar::ExpandingToolBar(wxWindow* parent,
    if (toolBarParent)
       mGrabber = new ToolBarGrabber(this, -1, this);
 
-   wxImage hbar = *theTheme.Image(bmpToolBarToggle);
+   /// \todo check whether this is a memory leak (and check similar code)
+   wxImage hbar = theTheme.Image(bmpToolBarToggle);
    wxColour magicColor = wxColour(0, 255, 255);
    ImageArray fourStates = ImageRoll::SplitV(hbar, magicColor);
 
@@ -447,7 +448,7 @@ void ExpandingToolBar::StartMoving()
    mDropTarget = kDummyRect;
    
    wxColour magicColor = wxColour(0, 255, 255);
-   wxImage tgtImage = *theTheme.Image(bmpToolBarTarget);
+   wxImage tgtImage = theTheme.Image(bmpToolBarTarget);
    ImageRoll tgtImageRoll = ImageRoll(ImageRoll::VerticalRoll,
                                       tgtImage,
                                       magicColor);
@@ -580,7 +581,7 @@ ToolBarGrabber::ToolBarGrabber(wxWindow *parent,
    wxPanel(parent, id, pos, size),
    mOwnerToolBar(ownerToolbar)
 {
-   wxImage grabberImages = *theTheme.Image(bmpToolBarGrabber);
+   wxImage grabberImages = theTheme.Image(bmpToolBarGrabber);
    wxColour magicColor = wxColour(0, 255, 255);
    ImageArray images = ImageRoll::SplitH(grabberImages, magicColor);
 

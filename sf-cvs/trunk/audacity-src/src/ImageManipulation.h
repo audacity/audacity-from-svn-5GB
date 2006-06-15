@@ -60,6 +60,9 @@ wxImage *CreateSysBackground(int width, int height, int offset,
 // Pastes one image into another at specified location.
 void PasteSubImage( wxImage * pDest, wxImage * pSrc, int x, int y );
 
+// Gets a rectangle from within anothe rimage, INCLUDING the alpha channel
+wxImage GetSubImageWithAlpha( const wxImage & Src,  const wxRect &rect );
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

@@ -36,9 +36,11 @@
 #include "Prefs.h"
 
 
+WX_DEFINE_OBJARRAY( ArrayOfImages );
 WX_DEFINE_OBJARRAY( ArrayOfBitmaps );
 WX_DEFINE_OBJARRAY( ArrayOfColours );
 
+#include "../images/PostfishButtons.h"
 #include "../images/ControlButtons.h"
 #include "../images/EditButtons.h"
 #include "../images/MixerImages.h"
@@ -195,13 +197,11 @@ void Theme::RegisterImages()
 {
    if( mbInitialised )
       return;
-   mFlags = resFlagPaired;
-   mOldFlags = mFlags;
    mbInitialised = true;
    int i=0;
 
 // This initialises the variables e.g
-// RegisterBitmap( bmpRecordButton, some bitmap, wxT("RecordButton"));
+// RegisterImage( bmpRecordButton, some image, wxT("RecordButton"));
 #define THEME_INITS
 #include "AllThemeResources.h"
 
@@ -293,7 +293,7 @@ void ThemeBase::LoadThemeAtStartUp( bool bLookForExternalFiles )
 }
 
 
-wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
+wxImage ThemeBase::MaskedImage( char const ** pXpm, char const ** pMask )
 {
    wxBitmap Bmp1( pXpm );
    wxBitmap Bmp2( pMask );
@@ -328,12 +328,12 @@ wxBitmap ThemeBase::MaskedBmp( char const ** pXpm, char const ** pMask )
 
    //dmazzoni: the top line does not work on wxGTK
    //wxBitmap Result( Img1, 32 );
-   wxBitmap Result( Img1 );
+   //wxBitmap Result( Img1 );
 
-   return Result;
+   return Img1;
 }
 
-void ThemeBase::RegisterBitmap( int &iIndex, char const ** pXpm, const wxString & Name )
+void ThemeBase::RegisterImage( int &iIndex, char const ** pXpm, const wxString & Name )
 {
 
    wxASSERT( iIndex == -1 ); // Don't initialise same bitmap twice!
@@ -343,17 +343,18 @@ void ThemeBase::RegisterBitmap( int &iIndex, char const ** pXpm, const wxString 
 
    //dmazzoni: the top line does not work on wxGTK
    //wxBitmap Bmp2( Img, 32 );
-   wxBitmap Bmp2( Img );
+   //wxBitmap Bmp2( Img );
 
-   RegisterBitmap( iIndex, Bmp2, Name );
+   RegisterImage( iIndex, Img, Name );
 }
 
-void ThemeBase::RegisterBitmap( int &iIndex, const wxBitmap &Bmp, const wxString & Name )
+void ThemeBase::RegisterImage( int &iIndex, const wxImage &Image, const wxString & Name )
 {
    wxASSERT( iIndex == -1 ); // Don't initialise same bitmap twice!
-   mBitmaps.Add( Bmp );
+   mImages.Add( Image );
+   mBitmaps.Add( wxBitmap( Image ) );
    mBitmapNames.Add( Name );
-   mBitmapFlags.Add( mFlags );
+   mBitmapFlags.Add( mFlow.mFlags );
    iIndex = mBitmaps.GetCount()-1;
 }
 
@@ -364,40 +365,69 @@ void ThemeBase::RegisterColour( int iIndex, const wxColour &Clr, const wxString 
    mColourNames.Add( Name );
 }
 
-void ThemeBase::SetNewGroup( int iGroupSize )
+void FlowPacker::Init(int width)
+{
+   mFlags = resFlagPaired;
+   mOldFlags = mFlags;
+   mxCacheWidth = width;
+
+   myPos = 0;
+   myPosBase =0;
+   myHeight = 0;
+   iImageGroupSize = 1;
+   SetNewGroup(1);
+}
+
+void FlowPacker::SetNewGroup( int iGroupSize )
 {
    myPosBase +=myHeight * iImageGroupSize;
    mxPos =0;
    mOldFlags = mFlags;
    iImageGroupSize = iGroupSize;
    iImageGroupIndex = -1;
+   mComponentWidth=0;
 }
 
-void ThemeBase::GetNextPosition( int xSize, int ySize )
+void FlowPacker::GetNextPosition( int xSize, int ySize )
 {
    // if the height has increased, then we are on a new group.
    if(( ySize > myHeight )||(mFlags != mOldFlags ))
    {
       SetNewGroup( mFlags && resFlagPaired ? 2 : 1 );
-      mOldFlags = mFlags;
+      myHeight = ySize;
    }
-   myHeight = ySize;
 
    iImageGroupIndex++;
    if( iImageGroupIndex == iImageGroupSize )
    {
       iImageGroupIndex = 0;
-      mxPos += xSize;
+      mxPos += mComponentWidth;
    }
 
    if(mxPos > (mxCacheWidth - xSize ))
    {
       SetNewGroup(iImageGroupSize);
       iImageGroupIndex++;
+      myHeight = ySize;
    }
    myPos = myPosBase + iImageGroupIndex * myHeight;
+
+   mComponentWidth = xSize;
+   mComponentHeight = ySize;
 }
-   
+
+wxRect FlowPacker::Rect()
+{
+   return wxRect( mxPos, myPos, mComponentWidth, mComponentHeight);
+}
+
+void FlowPacker::RectMid( int &x, int &y )
+{
+   x = mxPos + mComponentWidth/2;
+   y = myPos + mComponentHeight/2;
+}
+
+
 /// \brief Helper class based on wxOutputStream used to get a png file in text format
 ///
 /// The trick used here is that wxWidgets can write a PNG image to a stream.
@@ -469,78 +499,65 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
    height +=200;
 
-   wxImage Image( width, height );
+   wxImage ImageCache( width, height );
 
    // Ensure we have an alpha channel...
-   if( !Image.HasAlpha() )
+   if( !ImageCache.HasAlpha() )
    {
-      Image.InitAlpha();
+      ImageCache.InitAlpha();
    }
 
-   mxCacheWidth = width;
-
-//   mImageCache.m_hasAlpha = true;
-   int xStart=0;
-   int yStart=0;
-   int iHeight=0;
-
-   int xWidth1;
-   int yHeight1;
    int i;
-   wxBitmap * pBmp;
-   myPos = 0;
-   myPosBase =0;
-   myHeight = 0;
-   iImageGroupSize = 1;
-   SetNewGroup(1);
 
-//#define IMAGE_MAP
+   mFlow.Init(width);
+
+#define IMAGE_MAP
 #ifdef IMAGE_MAP
-   wxLogDebug( "<img src=\"ImageCache.png\" usemap=\"#map1\">" );
-   wxLogDebug( "<map name=\"map1\">" );
+   wxLogDebug( wxT("<img src=\"ImageCache.png\" usemap=\"#map1\">" ));
+   wxLogDebug( wxT("<map name=\"map1\">") );
 #endif
 
    // Save the bitmaps
-   for(i=0;i<(int)mBitmaps.GetCount();i++)
+   for(i=0;i<(int)mImages.GetCount();i++)
    {
-      pBmp = &mBitmaps[i];
-      mFlags = mBitmapFlags[i];
-      xWidth1=pBmp->GetWidth();
-      yHeight1=pBmp->GetHeight();
-      GetNextPosition( xWidth1, yHeight1 );
-      wxImage SrcImage( pBmp->ConvertToImage() );
-      PasteSubImage( &Image, &SrcImage, mxPos, myPos );
+      wxImage &SrcImage = mImages[i];
+      mFlow.mFlags = mBitmapFlags[i];
+      mFlow.GetNextPosition( SrcImage.GetWidth(), SrcImage.GetHeight());
+      PasteSubImage( &ImageCache, &SrcImage, mFlow.mxPos, mFlow.myPos );
 #ifdef IMAGE_MAP
-      // No href
-      wxLogDebug( "<area alt=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">",
-         mBitmapNames[i].c_str(), mxPos, myPos, mxPos+xWidth1, myPos+yHeight1 );
+      // No href in html.  Uses title not alt.
+      wxRect R( mFlow.Rect() );
+      wxLogDebug( wxT("<area title=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">"),
+         mBitmapNames[i].c_str(), 
+         R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom() );
 #endif
    }
 
    // Now save the colours.
    int x,y;
 
-   SetNewGroup(1);
-      xWidth1 = 10;
-      yHeight1 = 10;
+   mFlow.SetNewGroup(1);
+   const int iColSize=10;
    for(i=0;i<(int)mColours.GetCount();i++)
    {
-      GetNextPosition( xWidth1, yHeight1 );
+      mFlow.GetNextPosition( iColSize, iColSize );
       wxColour c = mColours[i];
-      Image.SetRGB( wxRect( mxPos, myPos, xWidth1, yHeight1), c.Red(), c.Green(), c.Blue() );
+      ImageCache.SetRGB( mFlow.Rect(), c.Red(), c.Green(), c.Blue() );
 
       // YUCK!  No function in wxWidgets to set a rectangle of alpha...
-      for(x=0;x<xWidth1;x++)
+      for(x=0;x<iColSize;x++)
       {
-         for(y=0;y<yHeight1;y++)
+         for(y=0;y<iColSize;y++)
          {
-            Image.SetAlpha( mxPos + x, myPos+y, 255);
+            ImageCache.SetAlpha( mFlow.mxPos + x, mFlow.myPos+y, 255);
          }
       }
 #ifdef IMAGE_MAP
-      // No href
-      wxLogDebug( "<area alt=\"Colour:%s\" shape=rect coords=\"%i,%i,%i,%i\">",
-         mColourNames[i].c_str(), mxPos, myPos, mxPos+xWidth1, myPos+yHeight1 );
+      // No href in html.  Uses title not alt.
+      wxRect R( mFlow.Rect() );
+      wxLogDebug( wxT("<area title=\"Colour:%s\" shape=rect coords=\"%i,%i,%i,%i\">"),
+         mColourNames[i].c_str(), 
+         R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom() );
 #endif
    }
 
@@ -566,7 +583,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
          return;
       }
 #endif
-      if( !Image.SaveFile( FileName, wxBITMAP_TYPE_PNG ))
+      if( !ImageCache.SaveFile( FileName, wxBITMAP_TYPE_PNG ))
       {
          wxMessageBox(
             wxString::Format( 
@@ -592,7 +609,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
             FileName.c_str() ));
          return;
       }
-      if( !Image.SaveFile(OutStream, wxBITMAP_TYPE_PNG ) )
+      if( !ImageCache.SaveFile(OutStream, wxBITMAP_TYPE_PNG ) )
       {
          wxMessageBox(
             wxString::Format( 
@@ -620,14 +637,15 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    const int width = 32 * nBmpsPerRow;// we want to be 6 32 bit images across.
    int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
    height +=200;
-   mImageCache = wxBitmap(width, height, depth);
 
-   mxCacheWidth = width;
+   // I'm not sure that this part is needed when reading...
+   wxImage ImageCache( width, height );
 
-//   mImageCache.m_hasAlpha = true;
-   int xStart=0;
-   int yStart=0;
-   int iHeight=0;
+   // Ensure we have an alpha channel...
+   if( !ImageCache.HasAlpha() )
+   {
+      ImageCache.InitAlpha();
+   }
 
    // IF bBinary read THEN a normal read from a PNG file
    if(  bBinaryRead )
@@ -643,7 +661,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
                FileName.c_str() ));
          return false;
       }
-      if( !mImageCache.LoadFile( FileName, wxBITMAP_TYPE_PNG ))
+      if( !ImageCache.LoadFile( FileName, wxBITMAP_TYPE_PNG ))
       {
          wxMessageBox(
             wxString::Format( 
@@ -655,10 +673,9 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    // ELSE we are reading from internal storage.
    else
    {  
-      wxImage LoadedImage;
       wxMemoryInputStream InternalStream(
          (char *)ImageCacheAsData, sizeof(ImageCacheAsData));
-      if( !LoadedImage.LoadFile( InternalStream, wxBITMAP_TYPE_PNG ))
+      if( !ImageCache.LoadFile( InternalStream, wxBITMAP_TYPE_PNG ))
       {
          // If we get this message, it means that the data in file
          // was not a valid png image.
@@ -672,43 +689,33 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
                );
          return false;
       }
-      mImageCache = wxBitmap( LoadedImage, 32 );
    }
 
-   int xWidth1;
-   int yHeight1;
    int i;
-   wxBitmap * pBmp;
-   myPos = 0;
-   myPosBase =0;
-   myHeight = 0;
-   iImageGroupSize = 1;
-   SetNewGroup(1);
+   mFlow.Init(width);
    // Load the bitmaps
-   for(i=0;i<(int)mBitmaps.GetCount();i++)
+   for(i=0;i<(int)mImages.GetCount();i++)
    {
-      pBmp = &mBitmaps[i];
-      mFlags = mBitmapFlags[i];
-      xWidth1=pBmp->GetWidth();
-      yHeight1=pBmp->GetHeight();
-      GetNextPosition( xWidth1, yHeight1 );
-
-//      wxLogDebug(wxT("Copy at %i %i (%i,%i)"), mxPos, myPos, xWidth1, yHeight1 );
-      *pBmp = mImageCache.GetSubBitmap( wxRect( mxPos, myPos, xWidth1, yHeight1 ));
+      wxImage &Image = mImages[i];
+      mFlow.mFlags = mBitmapFlags[i];
+      mFlow.GetNextPosition( Image.GetWidth(),Image.GetHeight() );
+      //      wxLogDebug(wxT("Copy at %i %i (%i,%i)"), mxPos, myPos, xWidth1, yHeight1 );
+      Image = GetSubImageWithAlpha( ImageCache, mFlow.Rect());
+      mBitmaps[i] = wxBitmap(Image);
    }
 
    // Now load the colours.
-   wxImage Image( mImageCache.ConvertToImage() );
    int x,y;
-   SetNewGroup(1);
-      xWidth1 = 10;
-      yHeight1 = 10;
+   mFlow.SetNewGroup(1);
+   const int iColSize=10;
    for(i=0;i<(int)mColours.GetCount();i++)
    {
-      GetNextPosition( xWidth1, yHeight1 );
-      x=mxPos + xWidth1/2;
-      y=myPos + yHeight1/2;
-      mColours[i] = wxColour( Image.GetRed( x,y), Image.GetGreen( x,y), Image.GetBlue(x,y));
+      mFlow.GetNextPosition( iColSize, iColSize );
+      mFlow.RectMid( x, y );
+      mColours[i] = wxColour( 
+         ImageCache.GetRed( x,y), 
+         ImageCache.GetGreen( x,y), 
+         ImageCache.GetBlue(x,y));
    }
    return true;
 }
@@ -723,12 +730,12 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
    int i;
    int n=0;
    wxString FileName;
-   for(i=0;i<(int)mBitmaps.GetCount();i++)
+   for(i=0;i<(int)mImages.GetCount();i++)
    {
       FileName = FileNames::ThemeComponent( mBitmapNames[i] );
       if( wxFileExists( FileName ))
       {
-         if( !mBitmaps[i].LoadFile( FileName, wxBITMAP_TYPE_PNG ))
+         if( !mImages[i].LoadFile( FileName, wxBITMAP_TYPE_PNG ))
          {
             wxMessageBox(
                wxString::Format( 
@@ -736,6 +743,7 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
                   FileName.c_str() ));
             return;
          }
+         mBitmaps[i] = wxBitmap( mImages[i] );
          n++;
       }
    }
@@ -780,12 +788,12 @@ void ThemeBase::SaveComponents()
    int i;
    int n=0;
    wxString FileName;
-   for(i=0;i<(int)mBitmaps.GetCount();i++)
+   for(i=0;i<(int)mImages.GetCount();i++)
    {
       FileName = FileNames::ThemeComponent( mBitmapNames[i] );
       if( !wxFileExists( FileName ))
       {
-         if( !mBitmaps[i].SaveFile( FileName, wxBITMAP_TYPE_PNG ))
+         if( !mImages[i].SaveFile( FileName, wxBITMAP_TYPE_PNG ))
          {
             wxMessageBox(
                wxString::Format( 
@@ -855,11 +863,11 @@ wxBitmap & ThemeBase::Bitmap( int iIndex )
    return mBitmaps[iIndex];
 }
 
-wxImage  * ThemeBase::Image( int iIndex )
+wxImage  & ThemeBase::Image( int iIndex )
 {
    wxASSERT( iIndex >= 0 );
    EnsureInitialised();
-   return new wxImage(Bitmap(iIndex).ConvertToImage());
+   return mImages[iIndex];
 }
 
 wxCursor & ThemeBase::Cursor( int iIndex )
