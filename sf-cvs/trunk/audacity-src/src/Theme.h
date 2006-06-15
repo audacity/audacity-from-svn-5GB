@@ -17,6 +17,7 @@
 #include <wx/defs.h>
 #include <wx/dynarray.h>
 #include <wx/bitmap.h>
+#include <wx/image.h>
 
 class wxBitmap;
 class wxImage;
@@ -62,9 +63,44 @@ enum teResourceFlags
    resFlagCursor =0x02
 };
 
-
+WX_DECLARE_OBJARRAY(wxImage,  ArrayOfImages);
 WX_DECLARE_OBJARRAY(wxBitmap, ArrayOfBitmaps);
 WX_DECLARE_OBJARRAY(wxColour, ArrayOfColours);
+
+/// \brief Packs rectangular boxes into a rectangle, using simple first fit.
+///
+/// This class is currently used by Theme to pack its images into the image
+/// cache.  Perhaps someday we will improve FlowPacker and make it more flexible,
+/// and use it for toolbar and window layouts too.
+class FlowPacker 
+{
+public:
+   FlowPacker(){;};
+   ~FlowPacker(){;};
+   void Init(int width);
+   void GetNextPosition( int xSize, int ySize );
+   void SetNewGroup( int iGroupSize );
+   wxRect Rect();
+   void RectMid( int &x, int &y );
+
+   // These 3 should become private again...
+   int mFlags;
+   int mxPos;
+   int myPos;
+
+private:
+   int iImageGroupSize; 
+   int iImageGroupIndex;
+   int mOldFlags;
+   int myPosBase;
+   int mxWidth;
+   int myHeight;
+   int mxCacheWidth;
+
+   int mComponentWidth;
+   int mComponentHeight;
+
+};
 
 class ThemeBase
 {
@@ -77,8 +113,8 @@ public:
    virtual void EnsureInitialised()=0;
    virtual void ApplyUpdatedImages()=0;
    void LoadThemeAtStartUp( bool bLookForExternalFiles );
-   void RegisterBitmap( int &iIndex,char const** pXpm, const wxString & Name);
-   void RegisterBitmap( int &iIndex, const wxBitmap &Bmp, const wxString & Name );
+   void RegisterImage( int &iIndex,char const** pXpm, const wxString & Name);
+   void RegisterImage( int &iIndex, const wxImage &Image, const wxString & Name );
    void RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name );
 
    void CreateImageCache(bool bBinarySave = true);
@@ -88,12 +124,10 @@ public:
    void ReadThemeInternal();
    void SaveThemeAsCode();
 
-   void SetNewGroup( int iGroupSize );
-   void GetNextPosition( int xSize, int ySize );
 
    wxColour & Colour( int iIndex );
    wxBitmap & Bitmap( int iIndex );
-   wxImage  * Image( int iIndex ); // beware!  This one allocates storage.
+   wxImage  & Image( int iIndex ); 
    wxCursor & Cursor( int iIndex );
    wxFont   & Font( int iIndex );
 
@@ -101,29 +135,19 @@ public:
    void SetPenColour(   wxPen & Pen, int iIndex );
 
    // Utility function that combines a bitmap and a mask, both in XPM format.
-   wxBitmap MaskedBmp( char const ** pXpm, char const ** pMask );
+   wxImage MaskedImage( char const ** pXpm, char const ** pMask );
    // Utility functiuon that takes a 32 bit bitmap and makes it into an image.
    wxImage MakeImageWithAlpha( wxBitmap & Bmp );
 
 protected:
-   wxBitmap mImageCache;
+   ArrayOfImages mImages;
    ArrayOfBitmaps mBitmaps;
    wxArrayString mBitmapNames;
    wxArrayInt mBitmapFlags;
 
    ArrayOfColours mColours;
    wxArrayString mColourNames;
-
-   int mxPos;
-   int myPos;
-   int myPosBase;
-   int mxWidth;
-   int myHeight;
-   int mxCacheWidth;
-   int iImageGroupSize; 
-   int iImageGroupIndex;
-   int mFlags;
-   int mOldFlags;
+   FlowPacker mFlow;
 };
 
 

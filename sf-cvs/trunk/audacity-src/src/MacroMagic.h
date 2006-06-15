@@ -20,7 +20,7 @@ For example DEFINE_IMAGE will generate:
 
   - extern int name;
   - int name = -1;
-  - RegisterBitmap( name, initiialiser, textual_name);
+  - RegisterImage( name, initiialiser, textual_name);
 
 On three different passes.  We control which by defining one of
 THEME_INITS or THEME_DECLARATIONS or neither of these.
@@ -39,12 +39,12 @@ THEME_INITS or THEME_DECLARATIONS or neither of these.
 
 #ifdef THEME_INITS
 #define DEFINE_IMAGE( name, initialiser, textual_name ) \
-   RegisterBitmap( name, initialiser, textual_name );
+   RegisterImage( name, initialiser, textual_name );
 #define DEFINE_COLOUR( name, initialiser, textual_name )\
    RegisterColour( name, initialiser, textual_name );
 #define DEFINE_FONT( name, initialiser, textual_name )  \
    RegisterFont( name, initialiser, textual_name );
-#define SET_THEME_FLAGS( flags ) mFlags = flags;
+#define SET_THEME_FLAGS( flags ) mFlow.mFlags = flags;
 #undef THEME_DECLARATIONS
 #undef THEME_EXTERNS
 #endif

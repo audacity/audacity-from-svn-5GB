@@ -195,6 +195,22 @@ wxButton * ShuttleGuiBase::AddButton(const wxString &Text, int PositionFlags)
    return pBtn;
 }
 
+wxBitmapButton * ShuttleGuiBase::AddBitmapButton(const wxBitmap &Bitmap, int PositionFlags)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxBitmapButton);
+   wxBitmapButton * pBtn;
+   mpWind = pBtn = new wxBitmapButton( mpParent, miId, Bitmap, 
+      wxDefaultPosition, wxDefaultSize, wxNO_BORDER );
+   pBtn->SetBackgroundColour( 
+      wxColour( 246,246,243));
+//      wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+   miProp=0;
+   UpdateSizersCore(false, PositionFlags | wxALL);
+   return pBtn;
+}
+
 void ShuttleGuiBase::AddTickBox( const wxString &Prompt, const wxString &Selected)
 {
    UseUpId();

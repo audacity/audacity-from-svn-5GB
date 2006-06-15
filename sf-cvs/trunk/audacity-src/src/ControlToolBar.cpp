@@ -179,9 +179,9 @@ void ControlToolBar::MakeLoopImage()
 void ControlToolBar::Populate()
 {
    // Each of these three allocs a new Image.
-   wxImage *upOriginal     = theTheme.Image( bmpUpButton );  
-   wxImage *downOriginal   = theTheme.Image( bmpDownButton );  
-   wxImage *hiliteOriginal = theTheme.Image( bmpHiliteButton );
+   wxImage *upOriginal     = new wxImage( theTheme.Image( bmpUpButton ));  
+   wxImage *downOriginal   = new wxImage( theTheme.Image( bmpDownButton ));  
+   wxImage *hiliteOriginal = new wxImage( theTheme.Image( bmpHiliteButton ));
 
    wxColour newColour =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
@@ -199,6 +199,10 @@ void ControlToolBar::Populate()
    theTheme.Bitmap( bmpRecoloredUpButton )     = wxBitmap(*upPattern);
    theTheme.Bitmap( bmpRecoloredDownButton )   = wxBitmap(*downPattern);
    theTheme.Bitmap( bmpRecoloredHiliteButton ) = wxBitmap(*hilitePattern);
+
+   theTheme.Image( bmpRecoloredUpButton )     = *upPattern;
+   theTheme.Image( bmpRecoloredDownButton )   = *downPattern;
+   theTheme.Image( bmpRecoloredHiliteButton ) = *hilitePattern;
 
    mPause = MakeButton(bmpPause,bmpPauseDisabled,
                        ID_PAUSE_BUTTON,

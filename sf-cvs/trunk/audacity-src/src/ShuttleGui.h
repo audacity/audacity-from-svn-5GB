@@ -44,6 +44,7 @@ class wxSlider;
 class wxTreeListCtrl;
 class wxNotebook;
 class wxButton;
+class wxBitmapButton;
 class wxRadioButton;
 class wxBitmap;
 class wxPanel;
@@ -78,6 +79,7 @@ public:
 	wxRadioButton * AddRadioButton( const wxString & Prompt );
 	wxRadioButton * AddRadioButtonToGroup( const wxString & Prompt);
 	wxButton * AddButton( const wxString & Text, int PositionFlags = wxALIGN_CENTRE );
+   wxBitmapButton * AddBitmapButton(const wxBitmap &Bitmap, int PositionFlags = wxALIGN_CENTRE);
    wxStaticText * AddVariableText(const wxString &Str, bool bCenter = false);
    wxTextCtrl * AddTextBox(const wxString &Caption, const wxString &Value, const int nChars);
    wxTextCtrl * AddTextWindow(const wxString &Value);

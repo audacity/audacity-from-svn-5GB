@@ -5,17 +5,31 @@
   ImageManipulation.cpp
   
   Dominic Mazzoni
+  James Crook
 
-**********************************************************************/  
+  wxWidgets license (Dominic to confirm).
+
+********************************************************************//*@
+
+\file ImageManipulation.cpp
+
+Provides Image Manipulation functions.
+
+wxWidgets misses some important functions involving cutting and
+pasting bitmaps, and (in version 2.6.1) is patchy in support of alpha 
+channel.  This collection of functions fills that gap.
+
+*//*********************************************************************/
+
 
 #include <wx/image.h>
 
 #include "ImageManipulation.h"
 
-// This looks at the first pixel in the image, and shifts
-// the entire image by the vector difference between that 
-// pixel and the dstColour.  For better control, use
-// ChangeImageColour(wxImage, wxColour*, wxColour*) below
+/// This looks at the first pixel in the image, and shifts
+/// the entire image by the vector difference between that 
+/// pixel and the dstColour.  For better control, use
+/// ChangeImageColour(wxImage, wxColour*, wxColour*) below
 wxImage *ChangeImageColour(wxImage * srcImage, wxColour & dstColour) 
 {
    unsigned char *src = srcImage->GetData();
@@ -24,8 +38,8 @@ wxImage *ChangeImageColour(wxImage * srcImage, wxColour & dstColour)
    return ChangeImageColour(srcImage, c, dstColour);
 }
 
-//This will explicitly shift the image color from
-//srcColour to dstColour. 
+///This will explicitly shift the image color from
+///srcColour to dstColour. 
 wxImage *ChangeImageColour(wxImage * srcImage,
                            wxColour & srcColour,
                            wxColour & dstColour) 
@@ -61,7 +75,6 @@ wxImage *ChangeImageColour(wxImage * srcImage,
    for (i = 0; i < 3; i++) {
       srcOpp[i] = 255 - srcVal[i];
       dstOpp[i] = 255 - dstVal[i];
-
    }
 
    int c = 0;
@@ -80,15 +93,14 @@ wxImage *ChangeImageColour(wxImage * srcImage,
    return dstImage;
 }
 
-
+/// Takes a background image, foreground image, and mask
+/// (i.e. the alpha channel for the foreground), and
+/// returns an new image where the foreground has been
+/// overlaid onto the background using alpha-blending,
+/// at location (xoff, yoff).
 wxImage *OverlayImage(wxImage * background, wxImage * foreground,
                       wxImage * mask, int xoff, int yoff) 
 {
-   // Takes a background image, foreground image, and mask
-   // (i.e. the alpha channel for the foreground), and
-   // returns an new image where the foreground has been
-   // overlaid onto the background using alpha-blending,
-   // at location (xoff, yoff).
    unsigned char *bg = background->GetData();
    unsigned char *fg = foreground->GetData();
    unsigned char *mk = mask->GetData();
@@ -147,50 +159,35 @@ wxImage *OverlayImage(wxImage * background, wxImage * foreground,
    return dstImage;
 }
 
+/// Takes a background image, foreground image, and mask
+/// (i.e. the alpha channel for the foreground), and
+/// returns an new image where the foreground has been
+/// overlaid onto the background using alpha-blending,
+/// at location (xoff, yoff).
 wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
                       int xoff, int yoff)
 {
-   // Takes a background image, foreground image, and mask
-   // (i.e. the alpha channel for the foreground), and
-   // returns an new image where the foreground has been
-   // overlaid onto the background using alpha-blending,
-   // at location (xoff, yoff).
-   wxImage imgBack(theTheme.Bitmap( eBack       ).ConvertToImage());
-   wxImage imgFore(theTheme.Bitmap( eForeground ).ConvertToImage());
+   wxImage imgBack(theTheme.Image( eBack       ));
+   wxImage imgFore(theTheme.Image( eForeground ));
 
 
-   // JKC: The original code required that we had a valid alpha channel.
-   // Because of problems on Mac, now if there is no alpha channel, 
-   // we fall back to using pixel(0,0) as indicating the
-   // transparent colour.
-
-   // JKC: Using transparent colour is a band-aid just to get something to 
-   // display.  It looks pretty ugly/rough.  It is looking as if 
-   // wxMac does not support alpha in bitmaps at all.  How to fix?
-   // We could shift over to storing images in Theme instead of storing 
-   // bitmaps, or store both Images and bitmaps - just to support 
-   // wxMac better.
-
-   // Flag that tells us whether we are blending or masking.
-   bool bHasAlpha = imgFore.HasAlpha();
    // TMP: dmazzoni - just so the code runs even though not all of
    // our images have transparency...
-//   if (!imgFore.HasAlpha())
-//      return new wxImage(imgBack);
+   if (!imgFore.HasAlpha())
+      return new wxImage(imgBack);
 
-//   wxASSERT( imgFore.HasAlpha() );
 
-   // For testing Mac behaviour on Windows...
-   // bHasAlpha = false;
+   wxASSERT( imgFore.HasAlpha() );
 
    unsigned char *bg = imgBack.GetData();
    unsigned char *fg = imgFore.GetData();
-   unsigned char *mk = bHasAlpha ? imgFore.GetAlpha() : NULL;
+   unsigned char *mk = imgFore.GetAlpha();
 
    int bgWidth = imgBack.GetWidth();
    int bgHeight = imgBack.GetHeight();
    int fgWidth = imgFore.GetWidth();
    int fgHeight = imgFore.GetHeight();
+
 
    //Now, determine the dimensions of the images to be masked together
    //on top of the background.  This should be equal to the area of the
@@ -200,6 +197,7 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
    //Make sure the foreground size is no bigger than the mask
    int wCutoff = fgWidth;
    int hCutoff = fgHeight;
+
 
    // If the masked foreground + offset is bigger than the background, masking
    // should only occur within these bounds of the foreground image
@@ -220,40 +218,16 @@ wxImage *OverlayImage(teBmps eBack, teBmps eForeground,
 
       unsigned char *bkp = bg + 3 * ((y + yoff) * bgWidth + xoff);
       unsigned char *dstp = dst + 3 * ((y + yoff) * bgWidth + xoff);
-      unsigned char *fgp = fg + 3 * (y * fgWidth);
 
       for (x = 0; x < wCutoff; x++) {
-         int value;
-         // IF has alpha channel, THEN we are blending...
-         if( bHasAlpha )
-         {
-            value = mk[(y * fgWidth + x)];// Don't multiply by 3...
-            int opp = 255 - value;
 
-            for (int c = 0; c < 3; c++)
-               dstp[x * 3 + c] = 
-                  ((bkp[x * 3 + c] * opp) + 
-                   (fgp[x * 3 + c] * value)) / 255;
-         }
-         // ELSE we are masking.
-         else
-         {
-            if( 
-               (fg[0]==fgp[ x*3]) && 
-               (fg[1]==fgp[ x*3 +1]) && 
-               (fg[2]==fgp[ x*3 +2]))
-            {
-               // Hit the transparent colour, so use background.
-               for (int c = 0; c < 3; c++)
-                  dstp[x * 3 + c] = bkp[x * 3 + c];
-            }
-            else
-            {
-               // Not transparent, so use the foreground colour.
-               for (int c = 0; c < 3; c++)
-                  dstp[x * 3 + c] = fgp[x * 3 + c];
-            }
-         }
+         int value = mk[(y * fgWidth + x)];// Don't multiply by 3...
+         int opp = 255 - value;
+
+         for (int c = 0; c < 3; c++)
+            dstp[x * 3 + c] = 
+               ((bkp[x * 3 + c] * opp) + 
+                (fg[3 * (y * fgWidth + x) + c] * value)) / 255;
       }
    } 
    return dstImage;
@@ -310,12 +284,12 @@ wxImage *CreateSysBackground(int width, int height, int offset,
    #endif
 }
 
+/// Pastes one image into another including the alpha channel.
+/// Differs from OverlayImage in that:
+///   Happens in place to existing background image.
+///   Pastes image on top; no blending with existing background is done.
 void PasteSubImage( wxImage * background, wxImage * foreground, int xoff, int yoff )
 {
-// Pastes one image into another including the alpha channel.
-// Differs from OverlayImage in that:
-//   Happens in place to existing background image.
-//   Pastes image on top; no blending with existing background is done.
 
    unsigned char *bg = background->GetData();
    unsigned char *fg = foreground->GetData();
@@ -369,6 +343,67 @@ void PasteSubImage( wxImage * background, wxImage * foreground, int xoff, int yo
    } 
 }
 
+/// Gets a rectangle from within another image, INCLUDING the alpha channel
+/// \bug in wxWidgets, wxImage::GetSubImage should do this itself.
+wxImage GetSubImageWithAlpha( const wxImage & Src,  const wxRect &rect )
+{
+   //First part of this code is lifted from wxImage::GetSubImage() source code.
+   wxImage image;
+
+   wxCHECK_MSG( Src.Ok(), image, wxT("invalid image") );
+
+   wxCHECK_MSG( (rect.GetLeft()>=0) && (rect.GetTop()>=0) && (
+      rect.GetRight()<=Src.GetWidth()) && (rect.GetBottom()<=Src.GetHeight()),
+      image, wxT("invalid subimage size") );
+
+   int subwidth=rect.GetWidth();
+   const int subheight=rect.GetHeight();
+
+   image.Create( subwidth, subheight, false );
+
+   unsigned char *subdata = image.GetData(), *data=Src.GetData();
+
+   wxCHECK_MSG( subdata, image, wxT("unable to create image") );
+
+   // JKC: Quick hack - don't deal with masks - need to understand macro M_IMGDATA first.
+//   if (Src.M_IMGDATA->m_hasMask)
+//      image.SetMaskColour( Src.M_IMGDATA->m_maskRed, Src.M_IMGDATA->m_maskGreen, Src.M_IMGDATA->m_maskBlue );
+
+   int subleft=3*rect.GetLeft();
+   int width=3*Src.GetWidth();
+   subwidth*=3;
+
+   data+=rect.GetTop()*width+subleft;
+
+   for (long j = 0; j < subheight; ++j)
+   {
+      memcpy( subdata, data, subwidth);
+      subdata+=subwidth;
+      data+=width;
+   }
+
+   // OK, so we've copied the RGB data.
+   // Now do the Alpha channel.
+   wxASSERT( Src.HasAlpha() );
+   image.InitAlpha();
+
+   subleft/=3;
+   width/=3;
+   subwidth/=3;
+
+   data =Src.GetAlpha();
+   subdata =image.GetAlpha();
+
+   data+=rect.GetTop()*width+subleft;
+
+   for (long j = 0; j < subheight; ++j)
+   {
+      memcpy( subdata, data, subwidth);
+      subdata+=subwidth;
+      data+=width;
+   }
+   return image;
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
