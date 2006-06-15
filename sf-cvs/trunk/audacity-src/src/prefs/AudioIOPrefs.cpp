@@ -164,9 +164,9 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartThreeColumn();
       S.TieTextBox( _("Play before cut region:"), wxT("CutPreviewBeforeLen"),1.0,9);
-      S.AddFixedText(  _("seconds") );
+      S.AddUnits(  _("seconds") );
       S.TieTextBox( _("Play after cut region:"),wxT("CutPreviewAfterLen"), 1.0,9);
-      S.AddFixedText(  _("seconds") );
+      S.AddUnits(  _("seconds") );
       S.EndThreeColumn();
    }
    S.EndStatic();
@@ -174,9 +174,9 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartThreeColumn();
       S.TieTextBox( _("Audio to buffer:"),wxT("LatencyDuration"),100.0,9);
-      S.AddFixedText(  _("milliseconds") );
+      S.AddUnits(  _("milliseconds") );
       S.TieTextBox( _("Latency correction:"),wxT("LatencyCorrection"),0.0,9);
-      S.AddFixedText(  _("milliseconds") );
+      S.AddUnits(  _("milliseconds") );
       S.EndThreeColumn();
    }
    S.EndStatic();
@@ -186,9 +186,9 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       S.StartThreeColumn();
       S.TieTextBox( _("Short period:"), wxT("SeekShortPeriod"),1.0,9);
-      S.AddFixedText(  _("seconds") );
+      S.AddUnits(  _("seconds") );
       S.TieTextBox( _("Long period:"),wxT("SeekLongPeriod"), 15.0,9);
-      S.AddFixedText(  _("seconds") );
+      S.AddUnits(  _("seconds") );
       S.EndThreeColumn();
    }
    S.EndStatic();

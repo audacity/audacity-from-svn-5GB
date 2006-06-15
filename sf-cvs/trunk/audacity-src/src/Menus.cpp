@@ -2126,13 +2126,19 @@ void AudacityProject::OnExperimentalTrackPanel()
 #ifdef EXPERIMENTAL_TRACK_PANEL
    // Parasite Track Panel.
    // Takes over the display...
-   TrackPanel2 Dlg(NULL);
-   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(false);
+   TrackPanel2 * pDlg = new TrackPanel2(NULL) ;
+   wxTopLevelWindow * pOldWindow =  ((wxTopLevelWindow*)wxTheApp->GetTopWindow());
+   pOldWindow->Show(false);
 // Dlg.Maximize();
-   Dlg.ShowModal();
+//   Dlg.ShowModal();
+
+   wxTheApp->SetTopWindow(pDlg);
+   pDlg->Show( true );
 #define RETURN_TO_AUDACITY
 #ifdef RETURN_TO_AUDACITY
-   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(true);
+   wxTheApp->SetTopWindow(pOldWindow);
+   pOldWindow->Show(true);
+//   ((wxTopLevelWindow*)wxTheApp->GetTopWindow())->Show(true);
 #else
    QuitAudacity( false );
 #endif
