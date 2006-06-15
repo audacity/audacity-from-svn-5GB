@@ -148,15 +148,15 @@ struct BuiltinFormatString {
 
 BuiltinFormatString BuiltinFormatStrings[] =
    {{_("seconds"),
-     _("01000,01000.01000 seconds")},
+     _("01000,01000 seconds")},
     {_("hh:mm:ss"),
-     _("099h060m060.01000s")},
+     _("099 h 060 m 060 s")},
     {_("hh:mm:ss + milliseconds"),
-     _("099h060m060.01000s")},
+     _("099 h 060 m 060.01000 s")},
     {_("hh:mm:ss + samples"),
-     _("099h060m060s+.#samples")},
+     _("099 h 060 m 060 s+.# samples")},
     {_("samples"),
-     _("01000,01000,01000samples|#")},
+     _("01000,01000,01000 samples|#")},
     {_("hh:mm:ss + film frames (24 fps)"),
      _("099h060m060s+.24 frames")},
     {_("film frames (24 fps)"),
@@ -747,14 +747,21 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
    }
 
    else if (keyCode == WXK_UP) {
-      wxChar digit = mValueString[mDigits[mFocusedDigit].pos];
-      if (digit == '9')
-         digit = '0';
-      else
-         digit++;
-      mValueString[mDigits[mFocusedDigit].pos] = digit;
-      ControlsToValue();
-      ValueToControls();
+      for(unsigned int i=0; i<mFields.GetCount(); i++) {
+         if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
+            ControlsToValue();
+            mTimeValue *= mScalingFactor;
+            if (mFields[i].frac)
+               mTimeValue += pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)/(double)mFields[i].base;
+            else
+               mTimeValue += pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)*(double)mFields[i].base;
+            if(mTimeValue<0.)
+               mTimeValue=0.;
+            mTimeValue /= mScalingFactor;
+            ValueToControls();
+            break;
+         }
+      }
       wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
       event.SetEventObject(this);
       GetEventHandler()->ProcessEvent(event);
@@ -767,14 +774,21 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
    }
 
    else if (keyCode == WXK_DOWN) {
-      wxChar digit = mValueString[mDigits[mFocusedDigit].pos];
-      if (digit == '0')
-         digit = '9';
-      else
-         digit--;
-      mValueString[mDigits[mFocusedDigit].pos] = digit;
-      ControlsToValue();
-      ValueToControls();
+      for(unsigned int i=0; i<mFields.GetCount(); i++) {
+         if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
+            ControlsToValue();
+            mTimeValue *= mScalingFactor;
+            if (mFields[i].frac)
+               mTimeValue -= pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)/(double)mFields[i].base;
+            else
+               mTimeValue -= pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)*(double)mFields[i].base;
+            if(mTimeValue<0.)
+               mTimeValue=0.;
+            mTimeValue /= mScalingFactor;
+            ValueToControls();
+            break;
+         }
+      }
       wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
       event.SetEventObject(this);
       GetEventHandler()->ProcessEvent(event);
@@ -809,7 +823,7 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
 
 void TimeTextCtrl::ValueToControls()
 {
-   double theValue = mTimeValue * mScalingFactor;
+   double theValue = mTimeValue * mScalingFactor+.00000001;
    int t_int = int(theValue);
    double t_frac = (theValue - t_int);
    unsigned int i;
