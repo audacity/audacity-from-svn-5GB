@@ -6,7 +6,13 @@
 
   Shane T. Mueller
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class TranscriptionToolBar
+\brief A kind of ToolBar used to help with analysing voice recordings.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

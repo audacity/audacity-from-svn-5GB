@@ -6,6 +6,11 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\class AudacityProject
+\brief The main window, with tools and tracks contained within it.
+
   In Audacity, the main window you work in is called a project.
   AudacityProjects can contain an arbitrary number of tracks of many
   different types, but if a project contains just one or two
@@ -13,7 +18,11 @@
   This window is the one that contains the menu bar (except on
   the Mac).
 
-**********************************************************************/
+\attention The menu functions for AudacityProject, those for creating 
+the menu bars and acting on clicks, are found in file Menus.cpp
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

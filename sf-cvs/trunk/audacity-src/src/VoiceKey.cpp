@@ -1,6 +1,22 @@
-/******************************************************************************/
-/* This implements a voice key, detecting either the next "ON" or "OFF" point */
-/******************************************************************************/
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  VoiceKey.cpp
+
+  ?? Dominic Mazzoni
+  ?? Shane Muller
+
+*******************************************************************//*!
+
+\class VoiceKey
+
+\brief
+This implements a voice key, detecting either the next "ON" 
+or "OFF" point 
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

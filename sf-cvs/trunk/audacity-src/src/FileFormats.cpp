@@ -6,7 +6,14 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\file FileFormats.cpp
+\brief Works with libsndfile to provide encoding and other file
+information.
+
+*//*******************************************************************/
+
 
 #include <wx/intl.h>
 #include "sndfile.h"

@@ -4,6 +4,11 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\class Resample
+\brief Combined interface to libresample and libsamplerate.
+
   This class abstracts the interface to two different resampling
   libraries:
 
@@ -14,7 +19,9 @@
     of libsamplerate requests that you not distribute a binary version
     of Audacity that links to libsamplerate and also has plug-in support.
 
-**********************************************************************/
+
+*//*******************************************************************/
+
 
 #include "Resample.h"
 #include "Prefs.h"

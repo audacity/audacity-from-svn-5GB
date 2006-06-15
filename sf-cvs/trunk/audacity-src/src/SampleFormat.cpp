@@ -6,6 +6,12 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\file SampleFormat.cpp
+\brief Functions that work with Dither and initialise it.
+
+
   This file handles converting between all of the different
   sample formats that Audacity supports, such as 16-bit,
   24-bit (packed into a 32-bit int), and 32-bit float.
@@ -20,9 +26,11 @@
   might clip, and check for clipping...but this option is
   both uncompelling and slow.)
 
+
   Audacity chooses to use a symmetric mapping that doesn't
   preserve 0:
 
+\verbatim
   16-bit    float        16-bit
   -32768 -> -1.000000 -> -32768
 
@@ -30,6 +38,7 @@
              0.000000 ->      0
 
    32767 ->  1.000000 ->  32767
+\endverbatim
 
    Note that 0.0 (float) still maps to 0 (int), so it is nearly
    an ideal mapping.  An analogous mapping is used between
@@ -38,7 +47,8 @@
    Note: These things are now handled by the Dither class, which
          also replaces the CopySamples() method (msmeyer)
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include <math.h>
 #include <stdio.h>

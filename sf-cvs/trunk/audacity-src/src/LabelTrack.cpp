@@ -8,7 +8,23 @@
   James Crook
   Jun Wan
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class LabelTrack
+\brief A LabelStruct holds information for ONE label in a LabelTrack
+
+LabelStruct also has label specific functions, mostly functions
+for drawing different aspects of the label and its text box.
+
+A LabelTrack is a track that holds labels.
+
+These are used to annotate a waveform.
+Each label has a start time and an end time.
+The text of the labels is editable and the
+positions of the end points are draggable.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

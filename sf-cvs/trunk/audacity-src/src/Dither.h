@@ -5,21 +5,6 @@
   Steve Harris
   Markus Meyer
 
-  This class implements various functions for dithering and is derived
-  from the dither code in the Ardour project, written by Steve Harris.
-
-  Dithering is only done if it really is necessary. Otherwise (e.g.
-  when the source and destination format of the samples is the same),
-  the samples are only copied or converted. However, copied samples
-  are always checked for out-of-bounds values and possibly clipped
-  accordingly.
-
-  These dither algorithms are currently implemented:
-  - No dithering at all
-  - Rectangle dithering
-  - Triangle dithering
-  - Noise-shaped dithering
-
 **********************************************************************/
 
 #ifndef __AUDACITY_DITHER_H__
@@ -27,10 +12,7 @@
 
 #include "SampleFormat.h"
 
-/// Dither class. You must construct an instance because it keeps
-/// state. Call Dither::Apply() to apply the dither. You can call
-/// Reset() between subsequent dithers to reset the dither state
-/// and get deterministic behaviour.
+
 class Dither
 {
 public:

@@ -1,3 +1,14 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  WaveClip.h
+
+  ?? Dominic Mazzoni
+  ?? Markus Meyer
+
+*******************************************************************/
+
 #ifndef __AUDACITY_WAVECLIP__
 #define __AUDACITY_WAVECLIP__
 

@@ -7,7 +7,13 @@
   Dominic Mazzoni
   James Crook
 
-**********************************************************************/
+********************************************************************//*!
+
+\class BatchCommands
+\brief Maintains the chain of commands used in batch processing.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

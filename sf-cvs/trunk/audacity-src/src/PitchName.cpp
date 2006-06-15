@@ -4,13 +4,18 @@
 
   PitchName.cpp
 
-  Dominic Mazzoni, Vaughan Johnson
+  Dominic Mazzoni
+  Vaughan Johnson
 
-  Utilities for converting from frequency to pitch  
+*******************************************************************//*!
+
+\file PitchName.cpp
+\brief   Utilities for converting from frequency to pitch  
   and from pitch to absolute (e.g., C4 for middle C) 
   or nominal (A through G#) pitch name.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include <math.h>
 #include <stdio.h>

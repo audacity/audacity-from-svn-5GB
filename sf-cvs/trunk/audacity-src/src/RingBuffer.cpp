@@ -6,6 +6,11 @@
 
   Dominic Mazzoni
 
+*******************************************************************//*!
+
+\class RingBuffer
+\brief Holds streamed audio samples.
+
   This class is thread-safe, assuming that there is only one
   thread writing, and one thread reading.  If two threads both
   need to read, or both need to write, they need to lock this
@@ -14,7 +19,8 @@
   AvailForPut and AvailForGet may underestimate but will never
   overestimate.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "RingBuffer.h"
 

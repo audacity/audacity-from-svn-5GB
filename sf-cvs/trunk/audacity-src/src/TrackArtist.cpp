@@ -6,14 +6,20 @@
 
   Dominic Mazzoni
 
-  This class handles the actual rendering of WaveTracks (both
+
+*******************************************************************//*!
+
+\class TrackArtist
+\brief   This class handles the actual rendering of WaveTracks (both
   waveforms and spectra), NoteTracks, LabelTracks and TimeTracks.
 
   It's actually a little harder than it looks, because for
   waveforms at least it needs to cache the samples that are
   currently on-screen.
 
-**********************************************************************/
+
+*//*******************************************************************/
+
 #include "Audacity.h"
 #include "TrackArtist.h"
 

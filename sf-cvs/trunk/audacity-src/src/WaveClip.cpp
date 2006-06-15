@@ -1,3 +1,20 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  WaveClip.cpp
+
+  ?? Dominic Mazzoni
+  ?? Markus Meyer
+
+*******************************************************************//*!
+
+\class WaveClip
+\brief This allows multiple clips to be a part of one WaveTrack.
+
+*//*******************************************************************/
+
+
 #include <math.h>
 #include <wx/log.h>
 

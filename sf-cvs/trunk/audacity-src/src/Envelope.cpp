@@ -8,7 +8,18 @@
   Dr William Bland (integration - the Calculus kind)
   Monty (xiphmont) (important bug fixes)
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class Envelope
+\brief Draggable curve used in TrackPanel for varying amplification.
+
+  This class manages an envelope - i.e. a piecewise linear funtion
+  that the user can edit by dragging control points around.  The
+  envelope is most commonly used to control the amplitude of a
+  waveform, but it is also used to shape a general FFT filter.
+
+*//*******************************************************************/
+
 
 #include "Envelope.h"
 

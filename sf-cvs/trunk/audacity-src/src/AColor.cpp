@@ -7,9 +7,15 @@
 
   Dominic Mazzoni
 
-  Manages color brushes and pens
 
-**********************************************************************/
+********************************************************************//*!
+
+\class AColour
+\brief AColor Manages color brushes and pens
+
+It is also a place to document colour usage policy in Audacity
+
+*//********************************************************************/
 
 #include <wx/dc.h>
 #include <wx/settings.h>

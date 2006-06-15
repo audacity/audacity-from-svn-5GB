@@ -7,9 +7,33 @@
   Steve Harris
   Markus Meyer
  
-  See Dither.h for details
+*******************************************************************//*!
 
-**********************************************************************/
+\class Dither
+\brief
+
+  This class implements various functions for dithering and is derived
+  from the dither code in the Ardour project, written by Steve Harris.
+
+  Dithering is only done if it really is necessary. Otherwise (e.g.
+  when the source and destination format of the samples is the same),
+  the samples are only copied or converted. However, copied samples
+  are always checked for out-of-bounds values and possibly clipped
+  accordingly.
+
+  These dither algorithms are currently implemented:
+  - No dithering at all
+  - Rectangle dithering
+  - Triangle dithering
+  - Noise-shaped dithering
+
+Dither class. You must construct an instance because it keeps
+state. Call Dither::Apply() to apply the dither. You can call
+Reset() between subsequent dithers to reset the dither state
+and get deterministic behaviour.
+
+*//*******************************************************************/
+
 
 // Erik de Castro Lopo's header file that
 // makes sure that we have lrint and lrintf

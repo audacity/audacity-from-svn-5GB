@@ -36,28 +36,7 @@ class SummaryInfo {
    int            totalSummaryBytes;
 };
 
-/// A BlockFile is a chunk of immutable audio data.
 
-/// A BlockFile represents a chunk of audio data.  These chunks are
-/// assembled into sequences by the class Sequence.  These classes
-/// are at the heart of how Audacity stores audio data.
-///
-/// BlockFile is an abstract base class that can be implemented in
-/// many different ways.  However it does have a fairly large amount
-/// of shared code that deals with the physical file and manipulating
-/// the summary data.
-///
-/// BlockFile should be thought of as an immutable class.  After it
-/// is constructed, it is essentially never changed (though there are
-/// a few exceptions).  Most notably, the audio data and summary data
-/// are never altered once it is constructed.  This is important to
-/// some of the derived classes that are actually aliases to audio
-/// data stored in existing files.
-///
-/// BlockFiles are reference-counted, and deleted when their reference
-/// count hits zero.  DirManager is the class responsible for
-/// constructing and managing BlockFiles and managing their reference
-/// counts.
 
 class BlockFile {
  public:

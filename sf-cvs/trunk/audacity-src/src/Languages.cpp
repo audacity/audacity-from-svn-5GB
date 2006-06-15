@@ -6,6 +6,12 @@
 
   Dominic Mazzoni
 
+
+*******************************************************************//*!
+
+\file Languages.cpp
+\brief Determine installed languages.
+
   Figure out what translations are installed and return a list
   of language codes (like "es", "fr", or "pt-br") and corresponding
   language names (like "Español", "Français", and "Português").
@@ -21,7 +27,8 @@
   But for the most part, this means that somebody could add a new
   translation and have it work immediately.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

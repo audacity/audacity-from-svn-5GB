@@ -7,19 +7,6 @@
  
   Dominic Mazzoni
   Shane T. Mueller
- 
-  This class, which is a child of Toolbar, creates the
-  window containing interfaces to commonly-used edit
-  functions that are otherwise only available through
-  menus. The window can be embedded within a normal project
-  window, or within a ToolbarFrame that is managed by a
-  global ToolBarStub called gControlToolBarStub.
-
-  All of the controls in this window were custom-written for
-  Audacity - they are not native controls on any platform -
-  however, it is intended that the images could be easily
-  replaced to allow "skinning" or just customization to
-  match the look and feel of each platform.
 
 **********************************************************************/
 

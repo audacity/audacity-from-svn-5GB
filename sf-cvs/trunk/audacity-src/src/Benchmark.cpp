@@ -6,7 +6,13 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class Benchmark
+\brief Used for measuring performance and accuracy of the BlockFile system.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

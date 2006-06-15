@@ -6,9 +6,13 @@
 
   Dominic Mazzoni
  
-  See MixerToolBar.h for details
+*******************************************************************//*!
 
-**********************************************************************/
+\class MixerToolBar
+\brief A ToolBar that provides the record and playback volume settings.
+
+*//*******************************************************************/
+
 
 #include "Audacity.h"
 

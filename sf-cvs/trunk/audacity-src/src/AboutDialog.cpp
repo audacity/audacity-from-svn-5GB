@@ -7,7 +7,15 @@
   Dominic Mazzoni
   Vaughan Johnson
 
-**********************************************************************/
+********************************************************************//*!
+
+\class AboutDialog
+\brief The AboutDialog shows the program version and developer credits.
+
+It is a simple scrolling window with an 'Audacious' button to
+close it.
+
+*//********************************************************************/
 
 #include "Audacity.h"
 
