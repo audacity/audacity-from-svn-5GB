@@ -78,13 +78,8 @@ void AudioIOPrefs::GetNamesAndLabels()
 
    for(j=0; j<nDevices; j++) {
       const PaDeviceInfo* info = Pa_GetDeviceInfo(j);
-      Name =  wxString(info->name, wxConvISO8859_1) ;
+      Name = DeviceName(info);
       Label = Name;
-#if USE_PORTAUDIO_V19
-      Label =  wxString::Format(wxT("%hs: %hs"),
-          Pa_GetHostApiInfo(info->hostApi)->name,
-          info->name);
-#endif
       if (info->maxOutputChannels > 0) {
          mmPlayNames.Add( Name );
          mmPlayLabels.Add( Label );

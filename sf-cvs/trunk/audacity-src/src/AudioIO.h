@@ -38,6 +38,7 @@ extern AudioIO *gAudioIO;
 
 void InitAudioIO();
 void DeinitAudioIO();
+wxString DeviceName(const PaDeviceInfo* info);
 
 class AudioIO {
 

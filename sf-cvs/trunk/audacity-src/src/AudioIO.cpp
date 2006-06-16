@@ -150,6 +150,17 @@ void DeinitAudioIO()
    delete gAudioIO;
 }
 
+wxString DeviceName(const PaDeviceInfo* info)
+{
+#if USE_PORTAUDIO_V19
+   return wxString::Format(wxT("%s: %s"),
+                           Pa_GetHostApiInfo(info->hostApi)->name,
+                           info->name);
+#else  
+   return wxString(info->name, wxConvISO8859_1);
+#endif
+}
+
 AudioIO::AudioIO()
 {
    mAudioThreadShouldCallFillBuffersOnce = false;
@@ -352,10 +363,10 @@ void AudioIO::HandleDeviceChange()
       if(!info)
          continue;
 
-      if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
+      if (DeviceName(info) == playDevice && info->maxOutputChannels > 0)
          playDeviceNum = j;
 
-      if (LAT1CTOWX(info->name) == recDevice && info->maxInputChannels > 0)
+      if (DeviceName(info) == recDevice && info->maxInputChannels > 0)
          recDeviceNum = j;
    }
    
@@ -520,7 +531,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
             if(!info)
                continue;
 
-            if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
+            if (DeviceName(info) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackParameters->device = i;
          }
       }
@@ -560,7 +571,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
             if(!info)
                continue;
 
-            if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
+            if (DeviceName(info) == captureDeviceName && info->maxInputChannels > 0)
                captureParameters->device = i;
          }
       }
@@ -643,7 +654,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
             if(!info)
                continue;
 
-            if (LAT1CTOWX(info->name) == playbackDeviceName && info->maxOutputChannels > 0)
+            if (DeviceName(info) == playbackDeviceName && info->maxOutputChannels > 0)
                playbackDevice = i;
          }
       }
@@ -665,7 +676,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
             if(!info)
                continue;
 
-            if (LAT1CTOWX(info->name) == captureDeviceName && info->maxInputChannels > 0)
+            if (DeviceName(info) == captureDeviceName && info->maxInputChannels > 0)
                captureDevice = i;
          }
       }
@@ -1279,12 +1290,12 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
       if(!info)
          continue;
 
-      if (LAT1CTOWX(info->name) == playDevice && info->maxOutputChannels > 0)
+      if (DeviceName(info) == playDevice && info->maxOutputChannels > 0)
       {
          playInfo = info;
          playIndex = i;
       }
-      if (LAT1CTOWX(info->name) == recDevice && info->maxInputChannels > 0)
+      if (DeviceName(info) == recDevice && info->maxInputChannels > 0)
       {
          recInfo = info;
          recIndex = i;
