@@ -3807,7 +3807,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
 
 /// If we are in multimode, looks at the type of track and where we are on it to 
 /// determine what object we are hovering over and hence what tool to use.
-/// @param pCtb - A pointer to the control tool bar
+/// @param pTtb - A pointer to the tools tool bar
 /// @param event - Mouse event, with info about position and what mouse buttons are down.
 int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
 {
@@ -5579,6 +5579,7 @@ void TrackPanel::OnSetFont(wxCommandEvent &event)
 ///  @param mouseX - mouse X position.
 ///  @param mouseY - mouse Y position.
 ///  @param label  - true iff the X Y position is relative to side-panel with the labels in it.
+///  @param link - true iff we should consider a hit in any linked track as a hit.
 ///  @param *trackRect - returns track rectangle.
 ///  @param *trackNum  - returns track number.
 Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
