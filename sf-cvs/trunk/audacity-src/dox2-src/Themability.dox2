@@ -21,7 +21,7 @@ part to see its name (if there is no image shown here, you will need
 to add the image ImageCache.png into the html directory):
 
 \htmlonly
-<img src="ImageCache.png" width=192 height=584 usemap="#map1">
+<img src="ImageCache.png" width=192 height=584 usemap="#map1" align="left" hspace="10">
 <map name="map1">
 <area title="Bitmap:Pause" shape=rect coords="0,0,15,15">
 <area title="Bitmap:PauseDisabled" shape=rect coords="0,16,15,31">
@@ -115,7 +115,7 @@ ThemeBase provides most of the implementation of Themes.  It is destined for
 \ref WidgetMigration.   Theme is Audacity's variant of a class derived 
 from ThemeBase.  It contains the Audacity specific list of icons and images
 and overloads for the required virtual functions.  A singleton instance, 
-theTheme is created by Audacity.
+\p theTheme is created by Audacity.
 
 Another class, ThemePrefs, provides the GUI for loading and saving theme 
 information.
@@ -152,8 +152,9 @@ third form that provides the built in defaults in Audacity.
 \attention The button to save a theme in the 'C' format is only 
 provided in debug builds. 
 
+<hr>
 
-Which version of the images does Audacity use?  
+\section ThemesChoosingVersion How Audacity Chooses Which Version Of The images To Use?  
 
 At the time of writing this document, Audacity also has a deprecated system
 for its images where they initially start out with contents determined by
@@ -162,7 +163,7 @@ XPMs built into the program.
 The current algorithm for determining which image to use is:
   - IF loading the theme at start up is disabled, use the XPM defaults.
   - ELSE if the image cache is available THEN use it.
-  - ELSE use the built in 'ThemeAsCeeCode.h' defaults.
+  - ELSE use the built in ' ThemeAsCeeCode.h ' defaults.
 
 This is handled in function \ref ThemeBase::LoadThemeAtStartUp().  Once the 
 deprecated XPMs have been removed, we wil switch over to using the built 

@@ -127,7 +127,7 @@ Don't write code like this:
 \code
    wxString Message( wxT("Hello" )); 
    // WRONG
-   wxString Temp = wxString::Format("Your said %s in your message", Message );
+   wxString Temp = wxString::Format(wxT("Your said %s in your message"), Message );
 \endcode
 
 Although MSVC won't complain even in Unicode mode, it generates a warning under gcc.
@@ -135,7 +135,7 @@ Instead you need:
 
 \code
    wxString Message( wxT("Hello" )); 
-   wxString Temp = wxString::Format("Your said %s in your message", Message.c_str() );
+   wxString Temp = wxString::Format(wxT("Your said %s in your message"), Message.c_str() );
 \endcode
    
    
