@@ -7,7 +7,18 @@
   Lynn Allan (from DM's Normalize)
   Note: Only works on complete mono track for now
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectChangeLength
+\brief An Effect.
+
+*//****************************************************************//**
+
+\class ChangeLengthDialog
+\brief Dialog used with EffectChangeLength
+
+*//*******************************************************************/
+
 
 #include <wx/wx.h>
 #include <math.h>

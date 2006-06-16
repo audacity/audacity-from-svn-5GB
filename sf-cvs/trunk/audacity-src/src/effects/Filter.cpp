@@ -6,14 +6,22 @@
 
   Dominic Mazzoni
 
-  This effect performs an FFT filter - it lets the user draw an
+*******************************************************************//**
+
+\class EffectFilter
+\brief An Effect that performs an FFT filter - it lets the user draw an
   arbitrary envelope (using the same envelope editing code that
   is used to edit the track's amplitude envelope) specifying how much
   to boost or reduce each frequency.
 
   The filter is applied using overlap/add of Hanning windows.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class FilterDialog
+\brief Dialog used with EffectFilter
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

@@ -6,9 +6,14 @@
 
   Mark Phillips
 
-  This class inverts the selected audio.
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectInvert
+\brief An EffectSimpleMono that inverts the selected audio.
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

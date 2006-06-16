@@ -5,10 +5,13 @@
   Noise.cpp
 
   Dominic Mazzoni
-  
-  An effect for the "Generator" menu to add white noise.
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectNoise
+\brief An Effect for the "Generator" menu to add white noise.
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

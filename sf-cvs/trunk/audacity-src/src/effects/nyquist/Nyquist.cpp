@@ -6,7 +6,25 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+******************************************************************//**
+
+\class EffectNyquist
+\brief An Effect that calls up a Nyquist (XLISP) plug in, i.e. many possible 
+effects from this one class.
+
+*//****************************************************************//**
+
+\class NyquistInputDialog
+\brief Dialog used with EffectNyquist
+
+*//****************************************************************//**
+
+\class NyquistOutputDialog
+\brief Dialog used with EffectNyquist
+
+*//*******************************************************************/
+
+
 
 #include "../../Audacity.h"
 

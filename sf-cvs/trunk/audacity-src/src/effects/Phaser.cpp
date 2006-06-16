@@ -11,7 +11,18 @@
   Dominic Mazzoni (with the help of wxDesigner)
   Vaughan Johnson (Preview)
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectPhaser
+\brief An EffectSimpleMono
+
+*//****************************************************************//**
+
+\class PhaserDialog
+\brief Dialog for EffectPhaser
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

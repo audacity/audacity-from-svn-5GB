@@ -6,9 +6,18 @@
 
   Vaughan Johnson, Dominic Mazzoni
   
-  Change Speed effect, that affects both pitch & tempo.
+*******************************************************************//**
 
-**********************************************************************/
+\class EffectChangeSpeed
+\brief An Effect that affects both pitch & tempo.
+
+*//****************************************************************//**
+
+\class ChangeSpeedDialog
+\brief Dialog used with EffectChangeSpeed
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

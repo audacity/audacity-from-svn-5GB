@@ -6,18 +6,25 @@
 
   Mitch Golden
   Vaughan Johnson (Preview)
+  Martyn Shaw (FIR filters, response curve, graphic EQ)
+
+*******************************************************************//**
+
+\class EffectEqualization
+\brief An Effect.
 
   Applies an FFT of certain specific equalization curves, suitable
   for old recordings.
 
   Clone of the FFT Filter effect, see documentation there.
 
-  Martyn Shaw made it do FIR filters using the overlap-add method, with
-  variable filter length.
-  Also added the animated 'response' curve.
-  Also added the graphic EQ.
+*//****************************************************************//**
 
-**********************************************************************/
+\class EqualizationDialog
+\brief Dialog used with EffectEqualization
+
+*//*******************************************************************/
+
 
 #include "Equalization.h"
 #include "../Audacity.h"

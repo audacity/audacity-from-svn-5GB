@@ -6,6 +6,11 @@
 
   Craig DeForest
 
+*******************************************************************//**
+
+\class EffectClickRemoval
+\brief An Effect.
+
   Clicks are identified as small regions of high amplitude compared
   to the surrounding chunk of sound.  Anything sufficiently tall compared
   to a large (2048 sample) window around it, and sufficiently narrow,
@@ -17,7 +22,13 @@
   This file is intended to become part of Audacity.  You may modify
   and/or distribute it under the same terms as Audacity itself.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class ClickRemovalDialog
+\brief Dialog used with EffectClickRemoval
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

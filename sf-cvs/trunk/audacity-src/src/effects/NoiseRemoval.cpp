@@ -6,11 +6,20 @@
 
   Dominic Mazzoni
 
+*******************************************************************//**
+
+\class EffectNoiseRemoval
+\brief An Effect.
+
   The noise is removed using noise gates on each frequency band in
   the FFT, and the signal is reconstructed using overlap/add of
   Hanning windows.
+*//****************************************************************//**
 
-**********************************************************************/
+\class NoiseRemovalDialog
+\brief Dialog used with EffectNoiseRemoval
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

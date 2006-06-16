@@ -7,7 +7,18 @@
   Dominic Mazzoni
   Vaughan Johnson (Preview)
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectNormalize
+\brief An Effect.
+
+*//****************************************************************//**
+
+\class NormalizeDialog
+\brief Dialog used with EffectNormalize
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h" // for rint from configwin.h
 
