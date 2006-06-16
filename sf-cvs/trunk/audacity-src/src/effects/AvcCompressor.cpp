@@ -6,7 +6,13 @@
 
   Vincent A. Busam
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectAvcCompressor
+\brief An unused Effect (we use EffectCompressor instead) derived 
+from EffectSimplePairedTwoTrackBase
+
+*//*******************************************************************/
 
 /*  TODO List:
 

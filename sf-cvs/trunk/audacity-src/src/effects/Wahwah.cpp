@@ -11,7 +11,19 @@
   Dominic Mazzoni (with the help of wxDesigner)
   Vaughan Johnson (Preview)
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectWahwah
+\brief An EffectSimpleMono
+
+*//****************************************************************//**
+
+\class WahwahDialog
+\brief Dialog for EffectWahWah
+
+*//*******************************************************************/
+
+
 
 #include "../Audacity.h"
 

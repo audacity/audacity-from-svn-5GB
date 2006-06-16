@@ -7,11 +7,16 @@
   Dominic Mazzoni
   Vaughan Johnson (Preview)
 
+*******************************************************************//**
+
+\class EffectAmplify
+\brief An EffectSimpleMono
+
   This rewritten class supports a smart Amplify effect - it calculates
   the maximum amount of gain that can be applied to all tracks without
   causing clipping and selects this as the default parameter.
 
-**********************************************************************/
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

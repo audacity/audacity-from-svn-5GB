@@ -5,12 +5,21 @@
   Compressor.cpp
 
   Dominic Mazzoni
+  Martyn Shaw
+  Steve Jolly
 
-  Martyn Shaw made it inherit from EffectTwoPassSimpleMono 10/2005.
-  Steve Jolly made it inherit from EffectSimpleMono.
-  GUI added and implementation improved by Dominic Mazzoni, 5/11/2003.
+*******************************************************************//**
 
-**********************************************************************/
+\class EffectCompressor
+\brief An Effect derived from EffectTwoPassSimpleMono
+
+ - Martyn Shaw made it inherit from EffectTwoPassSimpleMono 10/2005.
+ - Steve Jolly made it inherit from EffectSimpleMono.
+ - GUI added and implementation improved by Dominic Mazzoni, 5/11/2003.
+
+*//*******************************************************************/
+
+
 
 #include "../Audacity.h" // for rint from configwin.h
 

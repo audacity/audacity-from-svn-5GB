@@ -5,12 +5,23 @@
   TruncSilence.cpp
 
   Lynn Allan (from DM's Normalize)
-  ToDo: Only works on complete mono track for now
-  ToDo: mBlendFrameCount only retrieved from prefs ... not using dialog
+
+*******************************************************************//**
+
+\class EffectTruncSilence
+\brief An Effect.
+
+  \todo Only works on complete mono track for now
+  \todo mBlendFrameCount only retrieved from prefs ... not using dialog
         Only way to change (for windows) is thru registry
         The values should be figured dynamically ... too many frames could be invalid
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class TruncSilenceDialog
+\brief Dialog used with EffectTruncSilence
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

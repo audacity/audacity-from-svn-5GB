@@ -11,7 +11,17 @@
   Dominic Mazzoni (with the help of wxDesigner)
   Vaughan Johnson (Preview)
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectBassBoost
+\brief An EffectSimpleMono
+
+*//****************************************************************//**
+
+\class BassBoostDialog
+\brief Dialog for EffectBassBoost
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

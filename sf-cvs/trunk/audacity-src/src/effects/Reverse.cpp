@@ -6,9 +6,13 @@
 
   Mark Phillips
 
-  This class reverses the selected audio.
+*******************************************************************//**
 
-**********************************************************************/
+\class EffectReverse
+\brief An Effect that reverses the selected audio.
+
+*//********************************************************************/
+
 
 #include "../Audacity.h"
 

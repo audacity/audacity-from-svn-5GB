@@ -8,7 +8,19 @@
   
   This class implements a Ladspa Plug-in effect.
 
-**********************************************************************/
+*******************************************************************//**
+
+\class LadspaEffect
+\brief An Effect that calls up a LADSPA plug in, i.e. many possible 
+effects from this one class.
+
+*//****************************************************************//**
+
+\class LadspaEffectDialog
+\brief Dialog used with Effect
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

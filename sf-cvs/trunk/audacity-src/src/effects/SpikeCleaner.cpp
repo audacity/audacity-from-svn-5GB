@@ -6,7 +6,22 @@
 
   Lynn Allan
 
-**********************************************************************/
+******************************************************************//**
+
+\class EffectSpikeCleaner
+\brief An EffectSimpleMono for removing spikes.  
+
+This is a simple version, Audacity could do with
+a more sophisticated approach to this.
+
+*//****************************************************************//**
+
+\class SpikeCleanerDialog
+\brief Dialog for EffectSpikeCleaner
+
+*//*******************************************************************/
+
+
 
 #include "../Audacity.h"
 

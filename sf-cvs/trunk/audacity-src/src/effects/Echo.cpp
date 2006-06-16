@@ -7,7 +7,18 @@
   Dominic Mazzoni
   Vaughan Johnson (dialog)
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectEcho
+\brief An Effect that causes an echo, variable delay and volume.
+
+*//****************************************************************//**
+
+\class EchoDialog
+\brief EchoDialog used with EffectEcho
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

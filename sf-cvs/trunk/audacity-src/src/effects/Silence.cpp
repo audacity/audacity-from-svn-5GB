@@ -5,10 +5,19 @@
   Silence.cpp
 
   Dominic Mazzoni
-  
-  An effect for the "Generator" menu to add silence.
 
-**********************************************************************/
+*******************************************************************//**
+
+\class EffectSilence
+\brief An Effect for the "Generator" menu to add silence.
+
+*//****************************************************************//**
+
+\class GenerateDialog
+\brief Dialog used with EffectSilence and others..
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

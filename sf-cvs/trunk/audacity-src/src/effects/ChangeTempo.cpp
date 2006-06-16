@@ -4,12 +4,21 @@
 
   ChangeTempo.cpp
 
-  Vaughan Johnson, Dominic Mazzoni
-  
-  Change Tempo effect provides speeding up or 
+  Vaughan Johnson, 
+  Dominic Mazzoni
+
+*******************************************************************//**
+
+\class EffectChangeTempo
+\brief An EffectSoundTouch provides speeding up or 
   slowing down tempo without changing pitch.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class ChangeTempoDialog
+\brief Dialog used with EffectChangeTempo
+
+*//*******************************************************************/
 
 #include "../Audacity.h" // for USE_SOUNDTOUCH
 

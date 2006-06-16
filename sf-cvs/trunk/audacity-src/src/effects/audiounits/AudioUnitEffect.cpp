@@ -6,7 +6,22 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\class AudioUnitEffect
+\brief An Effect class that handles a wide range of effects.  ??Mac only??
+
+*//****************************************************************//**
+
+\class AudioUnitGUIControl
+\brief Used with AudioUnitEffect
+
+*//****************************************************************//**
+
+\class AudioUnitDialog
+\brief A Dialog used with AudioUnitEffect
+
+*//*******************************************************************/
 
 #include "AudioUnitEffect.h"
 
