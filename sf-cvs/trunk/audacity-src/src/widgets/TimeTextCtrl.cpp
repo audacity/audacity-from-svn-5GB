@@ -530,7 +530,7 @@ bool TimeTextCtrl::Layout()
    fontSize--;
 
    if (mDigitFont)
-      delete mDigitFont
+      delete mDigitFont;
    mDigitFont = new wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL);
    memDC.SetFont(*mDigitFont);
    memDC.GetTextExtent(exampleText, &strW, &strH);
