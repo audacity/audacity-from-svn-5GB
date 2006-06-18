@@ -702,8 +702,13 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
        mDC->GetTextExtent(exampleText, &strW, &strH);
      }
      fontSize--;
-     
+
+     if (mMinorFont)
+        delete mMinorFont;
      mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
+
+     if (mMajorFont)
+        delete mMajorFont;
      mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
    }
 
@@ -1222,7 +1227,8 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
    
    if (evt.LeftUp())
    {
-      ReleaseMouse();
+      if (HasCapture())
+         ReleaseMouse();
 
       if (mPlayRegionStart < 0 && mPlayRegionEnd >= 0)
       {
