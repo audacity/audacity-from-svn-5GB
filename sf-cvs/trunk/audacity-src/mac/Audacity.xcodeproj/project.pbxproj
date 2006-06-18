@@ -356,7 +356,6 @@
 		1790B12E09883BFD008A330A /* Amplify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790AFFE09883BFD008A330A /* Amplify.cpp */; };
 		1790B12F09883BFD008A330A /* AudioUnitEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00109883BFD008A330A /* AudioUnitEffect.cpp */; };
 		1790B13009883BFD008A330A /* LoadAudioUnits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00409883BFD008A330A /* LoadAudioUnits.cpp */; };
-		1790B13109883BFD008A330A /* AvcCompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00609883BFD008A330A /* AvcCompressor.cpp */; };
 		1790B13209883BFD008A330A /* BassBoost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00809883BFD008A330A /* BassBoost.cpp */; };
 		1790B13309883BFD008A330A /* ChangeLength.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00A09883BFD008A330A /* ChangeLength.cpp */; };
 		1790B13409883BFD008A330A /* ChangePitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1790B00C09883BFD008A330A /* ChangePitch.cpp */; };
@@ -1300,8 +1299,6 @@
 		1790B00209883BFD008A330A /* AudioUnitEffect.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioUnitEffect.h; sourceTree = "<group>"; };
 		1790B00409883BFD008A330A /* LoadAudioUnits.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = LoadAudioUnits.cpp; sourceTree = "<group>"; };
 		1790B00509883BFD008A330A /* LoadAudioUnits.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LoadAudioUnits.h; sourceTree = "<group>"; };
-		1790B00609883BFD008A330A /* AvcCompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AvcCompressor.cpp; sourceTree = "<group>"; };
-		1790B00709883BFD008A330A /* AvcCompressor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AvcCompressor.h; sourceTree = "<group>"; };
 		1790B00809883BFD008A330A /* BassBoost.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = BassBoost.cpp; sourceTree = "<group>"; };
 		1790B00909883BFD008A330A /* BassBoost.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BassBoost.h; sourceTree = "<group>"; };
 		1790B00A09883BFD008A330A /* ChangeLength.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = ChangeLength.cpp; sourceTree = "<group>"; };
@@ -2756,8 +2753,6 @@
 				1790B05409883BFD008A330A /* VST */,
 				1790AFFE09883BFD008A330A /* Amplify.cpp */,
 				1790AFFF09883BFD008A330A /* Amplify.h */,
-				1790B00609883BFD008A330A /* AvcCompressor.cpp */,
-				1790B00709883BFD008A330A /* AvcCompressor.h */,
 				1790B00809883BFD008A330A /* BassBoost.cpp */,
 				1790B00909883BFD008A330A /* BassBoost.h */,
 				1790B00A09883BFD008A330A /* ChangeLength.cpp */,
@@ -4720,7 +4715,6 @@
 				1790B12E09883BFD008A330A /* Amplify.cpp in Sources */,
 				1790B12F09883BFD008A330A /* AudioUnitEffect.cpp in Sources */,
 				1790B13009883BFD008A330A /* LoadAudioUnits.cpp in Sources */,
-				1790B13109883BFD008A330A /* AvcCompressor.cpp in Sources */,
 				1790B13209883BFD008A330A /* BassBoost.cpp in Sources */,
 				1790B13309883BFD008A330A /* ChangeLength.cpp in Sources */,
 				1790B13409883BFD008A330A /* ChangePitch.cpp in Sources */,
@@ -5169,7 +5163,7 @@
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System  -lwx_mac_xrc-2.6 -lwx_mac_qa-2.6 -lwx_mac_html-2.6 -lwx_mac_adv-2.6 -lwx_mac_core-2.6 -lwx_base_carbon_xml-2.6 -lwx_base_carbon_net-2.6 -lwx_base_carbon-2.6 -framework WebKit -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6 -lz -lpthread -liconv";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_mac_xrc-2.6.a $(WX_PREFIX)/lib/libwx_mac_qa-2.6.a $(WX_PREFIX)/lib/libwx_mac_html-2.6.a $(WX_PREFIX)/lib/libwx_mac_adv-2.6.a $(WX_PREFIX)/lib/libwx_mac_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon-2.6.a -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6";
 				WX_PREFIX = /usr/local;
 				ZERO_LINK = YES;
 			};
@@ -5178,6 +5172,8 @@
 		1790AFB509883B6E008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
@@ -5185,11 +5181,26 @@
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
 					CoreAudio,
 					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
 					"-lFLAC++",
 					"-lFLAC",
 				);
@@ -5312,6 +5323,8 @@
 		17CAEB88098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
@@ -5319,11 +5332,26 @@
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
 					CoreAudio,
 					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
 					"-lFLAC++",
 					"-lFLAC",
 				);
@@ -5348,7 +5376,7 @@
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-ansi-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System  -lwx_mac_xrc-2.6 -lwx_mac_qa-2.6 -lwx_mac_html-2.6 -lwx_mac_adv-2.6 -lwx_mac_core-2.6 -lwx_base_carbon_xml-2.6 -lwx_base_carbon_net-2.6 -lwx_base_carbon-2.6 -framework WebKit -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6 -lz -lpthread -liconv";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_mac_xrc-2.6.a $(WX_PREFIX)/lib/libwx_mac_qa-2.6.a $(WX_PREFIX)/lib/libwx_mac_html-2.6.a $(WX_PREFIX)/lib/libwx_mac_adv-2.6.a $(WX_PREFIX)/lib/libwx_mac_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbon-2.6.a -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6";
 				WX_PREFIX = /usr/local;
 			};
 			name = "Release Static";
@@ -5467,6 +5495,8 @@
 		17CAEBB5098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
@@ -5474,11 +5504,26 @@
 				OTHER_LDFLAGS = (
 					"$(WX_LDFLAGS)",
 					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
 					CoreAudio,
 					"-framework",
 					AudioUnit,
 					"-framework",
 					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
 					"-lFLAC++",
 					"-lFLAC",
 				);
@@ -5504,7 +5549,7 @@
 				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
 				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
 				WX_CXXFLAGS = "$(WX_CFLAGS)";
-				WX_LDFLAGS = "-L$(WX_PREFIX)/lib -framework QuickTime -framework IOKit -framework Carbon -framework Cocoa -framework System  -lwx_macu_xrc-2.6 -lwx_macu_qa-2.6 -lwx_macu_html-2.6 -lwx_macu_adv-2.6 -lwx_macu_core-2.6 -lwx_base_carbonu_xml-2.6 -lwx_base_carbonu_net-2.6 -lwx_base_carbonu-2.6 -framework WebKit -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6 -lz -lpthread -liconv";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-2.6.a $(WX_PREFIX)/lib/libwx_macu_qa-2.6.a $(WX_PREFIX)/lib/libwx_macu_html-2.6.a $(WX_PREFIX)/lib/libwx_macu_adv-2.6.a $(WX_PREFIX)/lib/libwx_macu_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu-2.6.a -lwxregexu-2.6 -lwxexpat-2.6 -lwxtiff-2.6 -lwxjpeg-2.6 -lwxpng-2.6";
 				WX_PREFIX = /usr/local;
 				ZERO_LINK = YES;
 			};
