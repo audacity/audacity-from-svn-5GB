@@ -113,7 +113,7 @@ wxString AudioUnitEffect::GetEffectName()
 wxString AudioUnitEffect::GetEffectAction()
 {
    return wxString::Format(_("Performing Effect: %s"), 
-                           (const char *)mName.mb_str());
+                           mName.c_str());
 }
 
 int AudioUnitEffect::GetEffectFlags()

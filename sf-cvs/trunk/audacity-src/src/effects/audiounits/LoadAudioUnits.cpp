@@ -31,7 +31,7 @@ void LoadAudioUnits()
       GetComponentInfo(component, &found, nameHandle, 0, 0);
       HLock(nameHandle);
       int len = ((const char *)(*nameHandle))[0];
-      wxString name((const wxChar *)(*nameHandle)+1, len);
+      wxString name(((const char *)(*nameHandle)+1), wxConvISO8859_1, len);
       HUnlock(nameHandle);
       DisposeHandle(nameHandle);
 
