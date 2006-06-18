@@ -926,6 +926,7 @@ void Meter::OnDisableMeter(wxCommandEvent &evt)
 
       mBkgndBrush = mSavedBkgndBrush;
       mLightPen = mSavedLightPen;
+      Refresh(false);
 
       mMeterDisabled = false;
       }
