@@ -231,28 +231,31 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
       mAlternate = event.ShiftDown();
 
    //If the mouse button is released, the following stuff happens
-   if (event.ButtonUp() && mCursorIsInWindow &&
-       mEnabled && (mToggle || !mButtonIsDown)) {
-      
-      SetFocus();
-      mIsClicking = false;
-      if (HasCapture())
-         ReleaseMouse();
-         
-      if(mToggle)
-         mButtonIsDown = !mButtonIsDown;
-      else
-         mButtonIsDown = true;
-      
-      mWasShiftDown = event.ShiftDown();
-      mWasControlDown = event.ControlDown();
-      
-      Click();
-   }
-   else if (event.ButtonDown()) {
-      SetFocus();
-      mIsClicking = true;
-      CaptureMouse();
+   if (mEnabled) {
+      if (event.ButtonUp()) {
+         if (HasCapture())
+            ReleaseMouse();
+
+         if (mCursorIsInWindow && (mToggle || !mButtonIsDown)) {
+            SetFocus();
+            mIsClicking = false;
+               
+            if(mToggle)
+               mButtonIsDown = !mButtonIsDown;
+            else
+               mButtonIsDown = true;
+            
+            mWasShiftDown = event.ShiftDown();
+            mWasControlDown = event.ControlDown();
+            
+            Click();
+         }
+      }
+      else if (event.ButtonDown()) {
+         SetFocus();
+         mIsClicking = true;
+         CaptureMouse();
+      }
    }
    
    // Only redraw and change tooltips if the state has changed.
