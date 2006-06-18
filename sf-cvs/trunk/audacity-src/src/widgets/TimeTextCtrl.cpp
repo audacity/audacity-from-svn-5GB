@@ -529,6 +529,8 @@ bool TimeTextCtrl::Layout()
    }
    fontSize--;
 
+   if (mDigitFont)
+      delete mDigitFont
    mDigitFont = new wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL);
    memDC.SetFont(*mDigitFont);
    memDC.GetTextExtent(exampleText, &strW, &strH);
@@ -537,6 +539,8 @@ bool TimeTextCtrl::Layout()
 
    // The label font should be a little smaller
    fontSize--;
+   if (mLabelFont)
+      delete mLabelFont;
    mLabelFont = new wxFont(fontSize, wxFIXED, wxNORMAL, wxNORMAL);
 
    // Figure out the x-position of each field and label in the box
