@@ -1354,6 +1354,15 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    }
 
    //BG: Process messages before we destroy the window
+   //
+   //LL: On 2006-06-18, I had a failure in Meter::OnMouse()
+   //    when quitting.  The wxSafeYield() was allowing some
+   //    messages to get processed and Meter::OnMouse() failed
+   //    when it attepted to use the result returned from
+   //    GetActiveProject().  I was unable to reproduce it and
+   //    couldn't figure out how to correct it, so the exposure
+   //    is still there.
+   //
    wxSafeYield(NULL, true);
    Destroy();
 }
