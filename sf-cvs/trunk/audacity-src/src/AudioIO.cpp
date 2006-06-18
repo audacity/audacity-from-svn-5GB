@@ -826,7 +826,6 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mPlaySpeed = 100.0 / (timeTrack ? timeTrack->GetRangeUpper() : 100);
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
-   mTotalSamplesPlayed = 0;
    mPlayLooped = playLooped;
    mCutPreviewGapStart = cutPreviewGapStart;
    mCutPreviewGapLen = cutPreviewGapLen;
@@ -1894,18 +1893,13 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       // Update the current time position
       gAudioIO->mTime += (framesPerBuffer / gAudioIO->mRate);
       
-     #if USE_PORTAUDIO_V19
-      gAudioIO->mTotalSamplesPlayed += framesPerBuffer;
-      if (numPlaybackChannels > 0)
-         gAudioIO->mLastBufferAudibleTime = timeInfo->outputBufferDacTime;
-      else
-         gAudioIO->mLastBufferAudibleTime = timeInfo->inputBufferAdcTime;
-     #endif
-
       // Record the reported latency from PortAudio.
       // TODO: Don't recalculate this with every callback?
      #if USE_PORTAUDIO_V19
-      if (numCaptureChannels > 0 && numPlaybackChannels > 0)
+      // As of 06/17/2006, portaudio v19 returns inputBufferAdcTime set to
+      // zero.  It is being worked on, but for now we just can't do much
+      // but follow the leader.
+      if (numCaptureChannels > 0 && numPlaybackChannels > 0 && timeInfo->inputBufferAdcTime > 0)
          gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
       else
          gAudioIO->mLastRecordingOffset = 0;
