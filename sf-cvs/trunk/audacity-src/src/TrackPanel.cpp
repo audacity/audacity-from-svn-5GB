@@ -1590,6 +1590,8 @@ void TrackPanel::StartSelection(int mouseXCoordinate, int trackLeftEdge)
                                / mViewInfo->zoom);
    mViewInfo->sel0 = mSelStart;
    mViewInfo->sel1 = mSelStart;
+
+   MakeParentModifyState();
 }
 
 /// AS: If we're dragging to extend a selection (or actually,
@@ -1670,6 +1672,8 @@ void TrackPanel::ExtendSelection(int mouseXCoordinate, int trackLeftEdge)
 
    mViewInfo->sel0 = wxMin(mSelStart, selend);
    mViewInfo->sel1 = wxMax(mSelStart, selend);
+
+   MakeParentModifyState();
 
    // Full refresh since the label area may need to indicate
    // newly selected tracks.
@@ -4618,6 +4622,8 @@ void TrackPanel::OnCursorLeft( bool shift, bool ctrl )
       // Make sure it's visible
       ScrollIntoView( mViewInfo->sel0 );
    }
+
+   MakeParentModifyState();
 }
 
 void TrackPanel::OnCursorRight( bool shift, bool ctrl )
@@ -4737,6 +4743,8 @@ void TrackPanel::OnCursorRight( bool shift, bool ctrl )
       // Make sure new position is in view
       ScrollIntoView( mViewInfo->sel1 );
    }
+
+   MakeParentModifyState();
 }
 
 //The following functions operate controls on specified tracks,
