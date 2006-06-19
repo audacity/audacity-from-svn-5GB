@@ -44,6 +44,7 @@
 
 #include "Project.h"
 #include "Shuttle.h"
+#include "WrappedType.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 
@@ -203,6 +204,23 @@ bool Shuttle::TransferString( const wxString & Name, wxString & strValue, const 
    /// Not yet implemented...  but might be implemented in a derived class.
    wxASSERT( false );
    return false;
+}
+
+bool Shuttle::TransferWrappedType( const wxString & Name, WrappedType & W )
+{
+   if( mbStoreInClient )
+   {
+      if( ExchangeWithMaster( Name ))
+      {
+         W.WriteToAsString( mValueString );
+      }
+   }
+   else
+   {
+      mValueString = W.ReadAsString();
+      return ExchangeWithMaster( Name );
+   }
+   return true;
 }
 
 

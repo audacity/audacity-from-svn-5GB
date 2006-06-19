@@ -14,6 +14,8 @@
 #ifndef SHUTTLE_GUI
 #define SHUTTLE_GUI
 
+#include "WrappedType.h" 
+
 const int nMaxNestedSizers = 20;
 
 enum teShuttleMode
@@ -51,18 +53,9 @@ class wxPanel;
 class wxSizer;
 class Shuttle;
 
+class WrappedType;
 
-/// \brief Base class for shuttling data to and from GUI.
-/// 
-/// ShuttleGuiBase contains the generic functionality.
-///   - wxWidgets controls are in ShuttleGuiBase.
-///   - Audacity specific widgets are in ShuttleGui
-/// 
-/// Use the:
-///   - Start/End methods for containers like two-column-layout.
-///   - Add methods if you are only interested in creating the controls.
-///   - Tie methods if you also want to exchange data using ShuttleGui.
-///
+
 class ShuttleGuiBase
 {
 public:
@@ -87,14 +80,13 @@ public:
    wxListCtrl * AddListControl();
    wxListCtrl * AddListControlReportMode();
    wxCheckBox * AddCheckBox( const wxString &Prompt, const wxString &Selected);
+   wxCheckBox * AddCheckBoxOnRight( const wxString &Prompt, const wxString &Selected);
    wxComboBox * AddCombo( const wxString &Prompt, const wxString &Selected,const wxArrayString * pChoices );
-   wxChoice * AddChoice( const wxString &Prompt, const wxString &Selected, const wxArrayString * pChoices );
+   wxChoice   * AddChoice( const wxString &Prompt, const wxString &Selected, const wxArrayString * pChoices );
 	void AddIcon( wxBitmap * pBmp);
 	void AddIconButton( const wxString & Command, const wxString & Params,wxBitmap * pBmp );
 	void AddFixedText( const wxString & Str, bool bCenter = false );
    void AddConstTextBox( const wxString &Caption, const wxString & Value );
-   void AddTickBox( const wxString &Prompt, const wxString &Selected);
-   void AddTickBoxOnRight( const wxString &Prompt, const wxString &Selected);
 
 //-- Start and end functions.  These are used for sizer, or other window containers
 //   and create the appropriate widget.
@@ -124,27 +116,48 @@ public:
    wxPanel * StartInvisiblePanel();
    void EndInvisiblePanel();
 
-   void StartRadioButtonGroup( const wxString & SettingName, const int iDefaultValue );
-   void StartRadioButtonGroup( const wxString & SettingName, const wxString &DefaultValue );
+   void StartRadioButtonGroup( const wxString & SettingName );
    void EndRadioButtonGroup();
 
+   void StartRadioButtonGroup( const wxString & SettingName, const int iDefaultValue );
+   void StartRadioButtonGroup( const wxString & SettingName, const wxString &DefaultValue );
+
+   void DoDataShuttle( const wxString &Name, WrappedType & WrappedRef );
+
+   bool DoStep( int iStep );
+   int TranslateToIndex( const wxString &Value, const wxArrayString &Choices );
+   wxString TranslateFromIndex( const int nIn, const wxArrayString &Choices );
+   int TranslateToIndex( const int Value, const wxArrayInt &Choices );
+   int TranslateFromIndex( const int nIn, const wxArrayInt &Choices );
+
 //-- Tie functions both add controls and also read/write to them.
+// The ones taking a 'WrappedType' are type-generic and are used by the type specific ones.
+
+   wxTextCtrl * TieTextBox( const wxString &Prompt, WrappedType &  WrappedRef, const int nChars);
    wxTextCtrl * TieTextBox( const wxString &Caption, wxString & Value, const int nChars=0);
    wxTextCtrl * TieTextBox( const wxString &Prompt, int &Selected, const int nChars=0);
+
+   wxCheckBox * TieCheckBox( const wxString &Prompt, WrappedType & WrappedRef);
+   wxCheckBox * TieCheckBox( const wxString &Prompt, const wxString &Selected);
+	wxCheckBox * TieCheckBox( const wxString &Prompt, bool & Var );
+	wxCheckBox * TieCheckBoxOnRight( const wxString & Prompt, bool & Var );
+
+   wxChoice * TieChoice( const wxString &Prompt, WrappedType & WrappedRef, const wxArrayString * pChoices );
    wxChoice * TieChoice( const wxString &Prompt, wxString &Selected, const wxArrayString * pChoices );
-   wxSlider * TieSlider( const wxString &Prompt, const float min, const float max, float &f );
+   wxChoice * TieChoice( const wxString &Prompt, int &Selected, const wxArrayString * pChoices );
+   
+   wxSlider * TieSlider( const wxString &Prompt, WrappedType & WrappedRef, const int max );
    wxSlider * TieSlider( const wxString &Prompt, int &pos, const int max );
-   void TieRadioButton( const wxString & Prompt, int iIndex, wxString &Selected);
-	void TieCheckBox(    const wxString & Prompt, bool & Var );
-	void TieCheckBoxOnRight( const wxString & Prompt, bool & Var );
+
+   wxRadioButton * TieRadioButton( const wxString & Prompt, WrappedType &WrappedRef);
+   void TieRadioButton( const wxString &Prompt, const int iValue);
+   void TieRadioButton( const wxString &Prompt, const wxString &Value);
 
 //-- Variants of the standard Tie functions which do two step exchange in one go
 // Note that unlike the other Tie functions, ALL the arguments are const.
 // That's because the data is being exchanged between the dialog and mpShuttle
 // so it doesn't need an argument that is writeable.
    void TieCheckBox( const wxString &Prompt, const wxString &SettingName, const bool bDefault);
-   void TieRadioButton( const wxString &Prompt, const int iValue);
-   void TieRadioButton( const wxString &Prompt, const wxString &Value);
    wxChoice * TieChoice( 
       const wxString &Prompt, 
       const wxString &SettingName, 
@@ -196,11 +209,13 @@ protected:
 
    teShuttleMode mShuttleMode;
 
-   // These four are needed to handle radio button groups.
+   // These five are needed to handle radio button groups.
    wxString mSettingName; /// The setting controlled by a group.
    int mRadioCount;       /// The index of this radio item.  -1 for none.
-   int mRadioValue;       /// The value associated with the active radio button.
-   wxString mStrRadioValue; /// mRadioValue, for when values map to strings.
+
+   WrappedType mRadioValue;  /// The wrapped value associated with the active radio button.
+   wxString mRadioValueString; /// Unwrapped string value.
+   int mRadioValueInt;         /// Unwrapped integer value.
 
    int miSizerProp;
    int mSizerDepth;

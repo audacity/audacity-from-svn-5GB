@@ -2303,6 +2303,14 @@
 				RelativePath="..\src\WaveTrack.h"
 				>
 			</File>
+			<File
+				RelativePath="..\src\WrappedType.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\WrappedType.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="src/effects"

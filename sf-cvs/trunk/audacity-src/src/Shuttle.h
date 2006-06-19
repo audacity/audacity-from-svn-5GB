@@ -25,6 +25,8 @@ public:
    static const wxString DbChoices[];
 };
 
+class WrappedType;
+
 class Shuttle {
  public:
    // constructors and destructors
@@ -44,6 +46,7 @@ class Shuttle {
    virtual bool TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault );
    virtual bool TransferEnum( const wxString & Name, int & iValue, 
       const int nChoices, const wxString * pFirstStr);
+   virtual bool TransferWrappedType( const wxString & Name, WrappedType & W );
    // We expect the ExchangeWithMaster function to change from one type of
    // archive to another.
    virtual bool ExchangeWithMaster(const wxString & Name);
