@@ -2485,7 +2485,7 @@ void AudacityProject::OnSplitDelete()
    }
 
    PushState(wxString::Format(_("Split-deleted %.2f seconds at t=%.2f"),
-                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel1 - mViewInfo.sel0,
                               mViewInfo.sel0),
              _("Split Delete"));
 
@@ -2509,7 +2509,7 @@ void AudacityProject::OnDisjoin()
    }
 
    PushState(wxString::Format(_("Disjoined %.2f seconds at t=%.2f"),
-                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel1 - mViewInfo.sel0,
                               mViewInfo.sel0),
              _("Disjoin"));
 
@@ -2533,7 +2533,7 @@ void AudacityProject::OnJoin()
    }
 
    PushState(wxString::Format(_("Joined %.2f seconds at t=%.2f"),
-                              mViewInfo.sel0 - mViewInfo.sel1,
+                              mViewInfo.sel1 - mViewInfo.sel0,
                               mViewInfo.sel0),
              _("Join"));
 
