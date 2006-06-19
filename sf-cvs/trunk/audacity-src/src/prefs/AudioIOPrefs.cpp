@@ -95,7 +95,7 @@ void AudioIOPrefs::GetNamesAndLabels()
    for(int c=0; c<numChannels; c++)
    {
       mmChannelNames.Add(  wxString::Format(wxT("%d"), c+1));
-      mmChannelLabels.Add( wxString::Format(wxT("%d"), c+1));
+      mmChannelLabels.Add( c+1 );
    }
    mmChannelNames[0] = wxString::Format(_("1 (Mono)"));
    mmChannelNames[1] = wxString::Format(_("2 (Stereo)"));
@@ -137,7 +137,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieChoice( _("Device:"), wxT("RecordingDevice"), 
          wxT(""), mmPlayNames, mmPlayLabels );
       S.TieChoice( _("Channels:"), wxT("RecordChannels"), 
-         wxT("2"), mmChannelNames, mmChannelLabels );
+         2, mmChannelNames, mmChannelLabels );
       S.EndMultiColumn();
    }
    S.EndStatic();

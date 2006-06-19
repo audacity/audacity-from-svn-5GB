@@ -27,9 +27,6 @@ class wxFont;
 // JKC: will probably change name from 'teBmps' to 'tIndexBmp';
 typedef int teBmps; /// The index of a bitmap resource in Theme Resources.
 
-// Later on, this include will be taken out of Theme.h,
-// and each class that uses theme resources will define just the resources it needs.
-#include "AllThemeResources.h"
 
 // We'll do the same thing for colours and fonts in due course.
 enum teColours
@@ -60,18 +57,15 @@ enum teResourceFlags
 {
    resFlagNone   =0x00,
    resFlagPaired =0x01,
-   resFlagCursor =0x02
+   resFlagCursor =0x02,
+   resFlagNewLine = 0x04,
+   resFlagInternal = 0x08  // For image manipulation.  Don't save or load.
 };
 
 WX_DECLARE_OBJARRAY(wxImage,  ArrayOfImages);
 WX_DECLARE_OBJARRAY(wxBitmap, ArrayOfBitmaps);
 WX_DECLARE_OBJARRAY(wxColour, ArrayOfColours);
 
-/// \brief Packs rectangular boxes into a rectangle, using simple first fit.
-///
-/// This class is currently used by Theme to pack its images into the image
-/// cache.  Perhaps someday we will improve FlowPacker and make it more flexible,
-/// and use it for toolbar and window layouts too.
 class FlowPacker 
 {
 public:
@@ -130,6 +124,9 @@ public:
    wxImage  & Image( int iIndex ); 
    wxCursor & Cursor( int iIndex );
    wxFont   & Font( int iIndex );
+   wxSize ImageSize( int iIndex );
+
+   void ReplaceImage( int iIndex, wxImage * pImage );
 
    void SetBrushColour( wxBrush & Brush, int iIndex );
    void SetPenColour(   wxPen & Pen, int iIndex );

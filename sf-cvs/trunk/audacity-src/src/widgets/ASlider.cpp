@@ -42,13 +42,15 @@
 
 #include "ASlider.h"
 
-
 #include "../AColor.h"
 #include "../ImageManipulation.h"
 #include "../Project.h"
 
-#include "../../images/SliderThumb.xpm"
-#include "../../images/SliderThumbAlpha.xpm"
+#include "../Theme.h"
+#include "../AllThemeResources.h"
+
+//#include "../../images/SliderThumb.xpm"
+//#include "../../images/SliderThumbAlpha.xpm"
 
 #include <iostream>
 
@@ -368,9 +370,15 @@ void LWSlider::Init(wxWindow * parent,
    mCurrentValue = 0.0f;
    mBitmap = NULL;
 
-   // Create the Thumb bitmap
-   mThumbBitmap = new wxBitmap( SliderThumb );
-   mThumbBitmap->SetMask( new wxMask( wxBitmap( SliderThumbAlpha ), *wxBLACK ) );
+   // Get the Thumb bitmap.  Generic version fo rnow...
+//#ifdef USE_AQUA
+//   mThumbBitmap = &theTheme.Bitmap( bmpMacSliderThumb );
+//#else
+   mThumbBitmap = &theTheme.Bitmap( bmpSliderThumb );
+//#endif
+
+//   mThumbBitmap = new wxBitmap( SliderThumb );
+//   mThumbBitmap->SetMask( new wxMask( wxBitmap( SliderThumbAlpha ), *wxBLACK ) );
 
    Draw();
 
@@ -382,7 +390,7 @@ void LWSlider::Init(wxWindow * parent,
 LWSlider::~LWSlider()
 {
    delete mBitmap;
-   delete mThumbBitmap;
+//   delete mThumbBitmap;
    delete mPopWin;
 }
 

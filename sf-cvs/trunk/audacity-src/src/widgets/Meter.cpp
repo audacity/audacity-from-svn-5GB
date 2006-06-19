@@ -35,10 +35,13 @@
 #include "../AudioIO.h"
 #include "../AColor.h"
 #include "../ImageManipulation.h"
-#include "../../images/MixerImages.h"
+//#include "../../images/MixerImages.h"
 #include "../Project.h"
 #include "../MeterToolBar.h"
 #include "../Prefs.h"
+
+#include "../Theme.h"
+#include "../AllThemeResources.h"
 
 //
 // The Meter passes itself messages via this queue so that it can
@@ -231,27 +234,22 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
 
 void Meter::CreateIcon(int aquaOffset)
 {
+   /// \todo Remove wasteful delete/new pair.  It is done in every call to layout.
    if (mIcon) {
+//      wxASSERT( false );
       delete mIcon;
       mIcon = NULL;
    }
-
-   const char **icon;
-   const char **alpha;
-
    if(mIsInput)
    {
-      icon = Mic;
-      alpha = MicAlpha;
+      /// JKC: !!!! If you pass theTheme.Bitmap(bmpMic) you get a white rather than a black mic.
+      /// Weird behaviour in wxWidgets, I guess.
+      mIcon = new wxBitmap(theTheme.Image( bmpMic ));
    }
    else
    {
-      icon = Speaker;
-      alpha = SpeakerAlpha;
+      mIcon = new wxBitmap(theTheme.Image( bmpSpeaker ));
    }
-
-   mIcon = new wxBitmap( icon );
-   mIcon->SetMask( new wxMask( wxBitmap( alpha ), *wxBLACK ) );
 }
 
 Meter::~Meter()

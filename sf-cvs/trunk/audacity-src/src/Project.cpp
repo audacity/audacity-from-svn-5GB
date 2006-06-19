@@ -136,7 +136,9 @@ const int sbarSpaceWidth = 15;
 const int sbarControlWidth = 15;
 const int sbarExtraLen = 0;
 const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the l/r buttons are pressed, or auto-scrolling occurs
-#include "../images/AudacityLogo48x48.xpm"
+//#include "../images/AudacityLogo48x48.xpm"
+#include "Theme.h"
+#include "AllThemeResources.h"
 #endif
 
 /* Define Global Variables */

@@ -50,8 +50,10 @@
 #if USE_PORTMIXER
 #include "AudioIO.h"
 #endif
+#include "Theme.h"
+#include "AllThemeResources.h"
 
-#include "../images/MixerImages.h"
+//#include "../images/MixerImages.h"
 
 ////////////////////////////////////////////////////////////
 /// Methods for MixerToolBar
@@ -105,8 +107,9 @@ void MixerToolBar::Populate()
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour origColour(204, 204, 204);
 
-   mPlayBitmap = new wxBitmap( Speaker );
-   mPlayBitmap->SetMask( new wxMask( wxBitmap( SpeakerAlpha ), *wxBLACK ) );
+//   mPlayBitmap = new wxBitmap( Speaker );
+//   mPlayBitmap->SetMask( new wxMask( wxBitmap( SpeakerAlpha ), *wxBLACK ) );
+   mPlayBitmap = new wxBitmap( theTheme.Bitmap( bmpSpeaker ));
 
    Add( new wxStaticBitmap( this,
                             wxID_ANY, 
@@ -117,8 +120,9 @@ void MixerToolBar::Populate()
    mOutputSlider->SetLabel( wxT("Slider-Output") );
    Add( mOutputSlider, 0, wxALIGN_CENTER );
 
-   mRecordBitmap = new wxBitmap( Mic );
-   mRecordBitmap->SetMask( new wxMask( wxBitmap( MicAlpha ), *wxBLACK ) );
+//   mRecordBitmap = new wxBitmap( Mic );
+//   mRecordBitmap->SetMask( new wxMask( wxBitmap( MicAlpha ), *wxBLACK ) );
+   mRecordBitmap = new wxBitmap( theTheme.Bitmap( bmpMic ));
 
    Add( new wxStaticBitmap( this,
                             wxID_ANY, 

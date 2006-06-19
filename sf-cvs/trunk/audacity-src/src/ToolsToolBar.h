@@ -41,7 +41,7 @@ enum {
 };
 
 class ToolsToolBar:public ToolBar {
- public:
+public:
    ToolsToolBar() {};
    ToolsToolBar(wxWindow * parent);
    virtual ~ToolsToolBar();
@@ -69,18 +69,12 @@ class ToolsToolBar:public ToolBar {
 
    DECLARE_EVENT_TABLE()
    ;
- private:
-
+private:
    void RegenerateToolsTooltips();
-
    wxImage *MakeToolImage(wxImage * tool, wxImage * mask, int style);
-   AButton *MakeTool(const char **tool, const char **alpha,
-                     wxWindowID id, const wxChar *label);
-   AButton *MakeButton(char const **foreground, char const **disabled,
-                       char const **alpha, int id, bool processdownevents);
+   AButton *MakeTool( teBmps eTool, int id, const wxChar *label);
 
    AButton *mTool[numTools];
-
    wxGridSizer *mToolSizer;
    int mCurrentTool;
 };

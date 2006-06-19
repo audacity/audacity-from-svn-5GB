@@ -13,6 +13,7 @@
 
 #include "ToolBar.h"
 #include "Sequence.h" // for sampleCount
+#include "Theme.h" // for definition of teBmps;
 
 #include <wx/brush.h>
 #include <wx/gdicmn.h>
@@ -79,10 +80,13 @@ class TranscriptionToolBar:public ToolBar {
    virtual void EnableDisableButtons();
 
    virtual void SetKeyType(wxCommandEvent & event);
- private:
+private:
    void InitializeTranscriptionToolBar();
-   void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const wxChar *tooltip, const wxChar *label);
+   AButton *TranscriptionToolBar::AddButton(
+      teBmps eFore, teBmps eDisabled,
+      int id,
+      //   bool processdownevents,
+      const wxChar *label, const wxChar *tip);
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
    void SetButton(bool newstate, AButton* button); 
    

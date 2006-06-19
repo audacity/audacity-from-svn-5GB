@@ -27,7 +27,9 @@ Provides:
 
 *//********************************************************************/
 
-#include <wx/wx.h>
+#include "../Audacity.h"
+
+#include <wx/wxprec.h>
 #include "../Prefs.h"
 #include "../Theme.h"
 #include "../Project.h"
@@ -84,13 +86,11 @@ void ThemePrefs::Populate( )
 void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
 {
    S.StartHorizontalLay(wxEXPAND,1);
-   S.StartStatic( _("Actions"));
+   S.StartVerticalLay(0);
+   S.StartStatic( _("Theme Cache - Images && Color"));
    {
-      S.Id( idSaveThemeCache ).AddButton( _("Save Theme"));
-      S.Id( idLoadThemeCache ).AddButton( _("Load Theme"));
-      S.Id( idSaveThemeComponents ).AddButton( _("Save Components"));
-      S.Id( idLoadThemeComponents ).AddButton( _("Load Components"));
-
+      S.Id( idSaveThemeCache ).AddButton( _("Save Theme Cache"));
+      S.Id( idLoadThemeCache ).AddButton( _("Load Theme Cache"));
 // This next button is only provided in Debug mode.
 // It is for developers who are compiling Audacity themselves
 // and who who wish to generate a new ThemeAsCeeCode.h and compile it in.
@@ -100,41 +100,57 @@ void ThemePrefs::PopulateOrExchange( ShuttleGui & S)
 #endif
 
       S.Id( idReadThemeInternal ).AddButton( _("Defaults" ));
-      S.TieCheckBox( _("Load Theme At Startup"),  
+      S.TieCheckBox( _("Load Theme Cache At Startup"),  
          wxT("/Theme/LoadAtStart"), false);
    }
    S.EndStatic();
+
+   // JKC: 'Ergonomic' details:
+   // Theme components are used much less frequently than 
+   // the ImageCache.  Yet it's easy to click them 'by mistake'.
+   //
+   // To reduce that risk, we use a separate box to separate them off.  
+   // And choose text on the buttons that is shorter, making the 
+   // buttons smaller and less tempting to click.
+   S.StartStatic( _("Individual Theme Files"),1);
+   {
+      S.Id( idSaveThemeComponents ).AddButton( _("Save Files"));
+      S.Id( idLoadThemeComponents ).AddButton( _("Load Files"));
+   }
+   S.EndStatic();
+   S.EndVerticalLay();
+
    S.StartStatic( _("Info"), 1 );
    {
       S.AddFixedText( 
          _("Themability is an experimental feature.\r\n\r\n"
-         wxT("To try it out, click \"Save Theme\" then find and modify\r\n")
-         wxT("the images and colors in ImageCacheVxx.png using an\r\n")
-         wxT("image editor such as the Gimp.\r\n\r\n")
-         wxT("Click \"Load Theme\" to load the changed images\r\n")
-         wxT("and colors back into Audacity."))
-         );
-      S.AddFixedText( 
-         _("[Only the control toolbar and the colors on the \r\n"
+         wxT("To try it out, click \"Save Theme Cache\" then\r\n" )
+         wxT("find and modify the images and colors in \r\n" )
+         wxT("ImageCacheVxx.png using an image editor such \r\n" )
+         wxT("as the Gimp.\r\n\r\n")
+         wxT("Click \"Load Theme Cache\" to load the changed images\r\n")
+         wxT("and colors back into Audacity.\r\n\r\n")
+         wxT("[Only the control toolbar and the colors on the \r\n")
          wxT("wavetrack are currently affected, even though the\r\n")
-         wxT("image file shows other icons too.]\r\n\r\n")
-
-         wxT("Saving and loading components uses a separate file\r\n")
-         wxT("for each image, but is otherwise the same idea.\r\n\r\n"))
+         wxT("image file shows other icons too.]\r\n"))
          );
 
 #ifdef __WXDEBUG__
       S.AddFixedText( 
-         wxT("You have compiled Audacity with an extra button, \r\n")
+         _("You have compiled Audacity with an extra button, \r\n"
          wxT("'Output Sourcery'.  This will save a C version of \r\n")
-         wxT("the image cache that can be compiled in as a default.\r\n\r\n")
+         wxT("the image cache that can be compiled in as a default.\r\n"))
          );
 #endif
 
       S.AddFixedText( 
-         _("If 'Load Theme At Startup' is checked, then the Theme\r\n"
-         wxT("will be loaded when the program starts up.\r\n")
-         wxT("The component files do not play any part in this.\r\n\r\n"))
+         _("If 'Load Theme Cache At Startup' is checked, then \r\n"
+         wxT("the Theme Cache will be loaded when the program \r\n")
+         wxT("starts up.\r\n\r\n")
+
+         wxT("Saving and loading individual theme files uses a \r\n")
+         wxT("separate file for each image, but is otherwise the \r\n")
+         wxT("same idea.\r\n\r\n"))
          );
    }
    S.EndStatic();
