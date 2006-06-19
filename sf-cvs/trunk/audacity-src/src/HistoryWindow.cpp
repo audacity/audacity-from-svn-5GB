@@ -6,168 +6,132 @@
 
   Joshua Haberman
 
-*******************************************************************//*!
-
-\class HistoryWindow
-\brief Works with UndoManager to allow user to see descriptions of 
-and undo previous commands.  Also allows you to selectively clear the 
-undo memory so as to free up space.
-
-*//*******************************************************************/
-
+**********************************************************************/
 
 #include "Audacity.h"
 
 #include <wx/defs.h>
 #include <wx/log.h>
 #include <wx/button.h>
+#include <wx/dialog.h>
 #include <wx/event.h>
-#include <wx/image.h>
-#include <wx/imaglist.h>
 #include <wx/textctrl.h>
 #include <wx/listctrl.h>
+#include <wx/settings.h>
 #include <wx/sizer.h>
-#include <wx/spinctrl.h>
-#include <wx/statbox.h>
-#include <wx/stattext.h>
 #include <wx/intl.h>
-#include <wx/frame.h>
 
-#include "../images/Arrow.xpm"
 #include "HistoryWindow.h"
 #include "UndoManager.h"
 #include "Project.h"
+#include "ShuttleGui.h"
 
 enum {
-   HistoryListID = 1000,
-   DiscardID
+   ID_LIST = 1000,
+   ID_DISCARD
 };
 
-BEGIN_EVENT_TABLE(HistoryWindow, wxFrame)
+BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
+   EVT_SHOW(HistoryWindow::OnShow)
+   EVT_SIZE(HistoryWindow::OnSize)
    EVT_CLOSE(HistoryWindow::OnCloseWindow)
-   EVT_LIST_END_LABEL_EDIT(HistoryListID, HistoryWindow::OnLabelChanged)
-   EVT_LIST_ITEM_SELECTED(HistoryListID, HistoryWindow::OnItemSelected)
-   EVT_BUTTON(DiscardID, HistoryWindow::OnDiscard)
+   EVT_LIST_ITEM_SELECTED(wxID_ANY, HistoryWindow::OnItemSelected)
+   EVT_BUTTON(ID_DISCARD, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
-  wxFrame(parent, -1, _("Undo History"), wxDefaultPosition,  wxDefaultSize)
-
+   wxDialog((wxWindow*)parent, wxID_ANY, wxString(_("Undo History")),
+      wxDefaultPosition, wxDefaultSize,
+      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxWANTS_CHARS )
 {
-   mTopSizer = new wxBoxSizer(wxVERTICAL);
-
-   mList = new wxListCtrl(this, HistoryListID, wxDefaultPosition, wxSize(350, 180),
-                          wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxSUNKEN_BORDER  /* | wxLC_EDIT_LABELS */);
-   mList->SetSizeHints(350, 180);
-
-   wxImageList *imageList = new wxImageList(9, 16);
-   imageList->Add(wxIcon(empty_9x16_xpm));
-   imageList->Add(wxIcon(arrow_xpm));
-   //Assign rather than set the image list, so that it is deleted later.
-   mList->AssignImageList(imageList, wxIMAGE_LIST_SMALL);
-   mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 280);
-   mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 66);
-
-   mTopSizer->Add(mList, 1, wxGROW|wxALL, 2);
-
-
-   // "Discard" cluster
-   wxStaticBoxSizer *purgeSizer = new wxStaticBoxSizer(
-            new wxStaticBox(this, -1, _("Discard undo data")),
-            wxVERTICAL);
-
-   wxBoxSizer *firstLine = new wxBoxSizer(wxHORIZONTAL);
-
-   purgeSizer->Add(
-      mLevelsAvailable = new wxStaticText(this, -1,
-         _("Undo Levels Available (lots and lots)"),
-         wxDefaultPosition, wxDefaultSize, 0),
-         0, wxALIGN_LEFT|wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, 2);
-
-   purgeSizer->Add(firstLine);
-
-   wxBoxSizer *secondLine = new wxBoxSizer(wxHORIZONTAL);
-
-   secondLine->Add(new wxStaticText(this, -1, _("Levels to discard: ")),
-                           0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 3);
-
-   secondLine->Add(
-      mDiscardNum = new wxSpinCtrl(this, -1, wxT("1"), wxDefaultPosition, wxDefaultSize,
-                     wxSP_ARROW_KEYS, 1, manager->GetCurrentState() - 1),
-                     0, wxALIGN_LEFT|wxALL|wxALIGN_CENTER_VERTICAL, 2 );
-
-   secondLine->Add(
-      mDiscard = new wxButton(this, DiscardID, _("Discard")),
-      0, wxALIGN_RIGHT|wxALL, 2 );
-
-   purgeSizer->Add(secondLine, 0, wxGROW);
-
-   mTopSizer->Add(purgeSizer, 0, wxGROW|wxALL, 3);
-
-
    mManager = manager;
    mProject = parent;
+   mSelected = 0;
 
-   UpdateDisplay();
+   //------------------------- Main section --------------------
+   // Now construct the GUI itself.
+   ShuttleGui *mS = new ShuttleGui(this, eIsCreating);
 
-   SetAutoLayout(true);
-   mTopSizer->Fit(this);
-   mTopSizer->SetSizeHints(this);
-   SetSizer(mTopSizer);
+   mS->SetBorder(5);
+   mS->StartVerticalLay(true);
+      mList = mS->Id(ID_LIST).AddListControlReportMode();
+      mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 250);
+      mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
+      mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+
+      mS->SetBorder(1);
+      mS->StartHorizontalLay(wxALIGN_RIGHT, false);
+         mS->Id(wxID_CANCEL).AddButton(_("&Close"));
+         mDiscard = mS->Id(ID_DISCARD).AddButton(_("&Discard"));
+      mS->EndHorizontalLay();
+   mS->EndVerticalLay();
+   DoUpdate();
+   mList->SetMinSize(mList->GetSize());
+   Fit();
+   SetMinSize(GetSize());
+   // ----------------------- End of main section --------------
+
+   mList->SetColumnWidth(0, mList->GetClientSize().x - mList->GetColumnWidth(1));
+}
+
+HistoryWindow::~HistoryWindow()
+{
+   mList->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
 }
 
 void HistoryWindow::UpdateDisplay()
 {
-   mList->Hide();   // to speed up the update
-   
+   if(IsShown())
+      DoUpdate();
+}
+
+void HistoryWindow::DoUpdate()
+{
    mList->DeleteAllItems();
+
+   mSelected = mManager->GetCurrentState() - 1;
    for(unsigned int i = 0; i < mManager->GetNumStates(); i++) {
       wxString desc, size;
       wxListItem item;
       
       mManager->GetLongDescription(i + 1, &desc, &size);
-      mList->InsertItem(i, desc, i == mManager->GetCurrentState() - 1 ? 1 : 0);
+      mList->InsertItem(i, desc);
       mList->SetItem(i, 1, size);
-
-      if(i > mManager->GetCurrentState() - 1) {
-         item.m_itemId = i;
-         item.SetTextColour(*wxLIGHT_GREY);
-         mList->SetItem(item);
-      }
    }
+   mList->SetItemState(mSelected,
+                       wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
+                       wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
 
-   mList->EnsureVisible(mManager->GetCurrentState() - 1);
-   
-   /* I may or may not like this, we'll see */
-   /*
-   wxListItem item;
-   item.m_itemId = mSelected;
-   item.m_state = wxLIST_STATE_SELECTED;
-   mList->SetItem(item);
-   */
-   
-   mList->Show();
+   mList->EnsureVisible(mSelected);
 
-   mLevelsAvailable->SetLabel(wxString::Format(_("Undo Levels Available: %d"),
-                                              mManager->GetCurrentState() - 1));
-
-   mDiscardNum->SetRange(1, mManager->GetCurrentState() - 1);
-   if (((int)mManager->GetCurrentState() - 1) < mDiscardNum->GetValue()) 
-      mDiscardNum->SetValue(mManager->GetCurrentState() - 1);
-
-   mDiscard->Enable(mManager->GetCurrentState() > 1);
-
-}
-
-void HistoryWindow::OnLabelChanged(wxListEvent &event)
-{
-   mManager->SetLongDescription(event.GetIndex() + 1, event.GetItem().m_text);
-   UpdateDisplay();
+   mDiscard->Enable(mList->GetItemCount());
 }
 
 void HistoryWindow::OnDiscard(wxCommandEvent &event)
 {
-   mManager->RemoveStates(mDiscardNum->GetValue());
+   int i;
+
+   for (i = mList->GetItemCount() - 1; i >= 0; i--) {
+      if (mList->GetItemState(i, wxLIST_STATE_SELECTED)) {
+         mProject->SetStateTo(i + 1);
+         mManager->RemoveStateAt(i);
+         mSelected = i;
+      }
+   }
+
+   i = mManager->GetNumStates();
+   if (i == 0) {
+      mProject->TP_PushState(_("History Cleared"),
+                             _("History Cleared"),
+                             false);
+      mSelected = 0;
+      i = mManager->GetNumStates();
+   }
+
+   if (mSelected >= i)
+      mSelected = i - 1;
+
+   mProject->SetStateTo(mSelected + 1);
    UpdateDisplay();
 }
 
@@ -175,22 +139,58 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
 {
    mSelected = event.GetIndex();
    mProject->SetStateTo(mSelected + 1);
-   UpdateDisplay();
 }  
-
 
 void HistoryWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
   this->Show(FALSE);
 }
 
-
-HistoryWindow::~HistoryWindow()
+void HistoryWindow::OnSize(wxSizeEvent & event)
 {
-// delete not required, as image list is assigned to the window.
-//   delete mList->GetImageList(wxIMAGE_LIST_SMALL);
+   Layout();
+   mList->SetColumnWidth(0, mList->GetClientSize().x - mList->GetColumnWidth(1));
+   mList->EnsureVisible(mSelected);
 }
 
+void HistoryWindow::OnShow(wxShowEvent & event)
+{
+   if (event.GetShow())
+      UpdateDisplay();
+}
+
+void HistoryWindow::OnChar(wxKeyEvent &event)
+{
+   wxListCtrl *l = wxDynamicCast( event.GetEventObject(), wxListCtrl );
+
+   event.Skip(true);
+
+   switch (event.GetKeyCode())
+   {
+      case WXK_DELETE:
+      case WXK_BACK:
+      {
+         wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, ID_DISCARD);
+         l->GetEventHandler()->AddPendingEvent(e);
+
+         event.Skip(false);
+      }
+      break;
+
+      case 'A':
+         if (event.ControlDown()) {
+            int i;
+
+            for (i = l->GetItemCount() - 1; i >= 0; i--) {
+               l->SetItemState(i,
+                               wxLIST_STATE_SELECTED,
+                               wxLIST_STATE_SELECTED);
+            }
+            event.Skip(false);
+         }
+      break;
+   }
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

@@ -11,20 +11,17 @@
 #ifndef __AUDACITY_HISTORY_WINDOW__
 #define __AUDACITY_HISTORY_WINDOW__
 
+#include <wx/button.h>
 #include <wx/dialog.h>
-
-class wxBoxSizer;
-class wxListCtrl;
-class wxSpinCtrl;
-class wxButton;
-class wxStaticText;
-class wxCommandEvent;
-class wxListEvent;
+#include <wx/event.h>
+#include <wx/frame.h>
+#include <wx/listctrl.h>
 
 class AudacityProject;
+class ShuttleGui;
 class UndoManager;
 
-class HistoryWindow :public wxFrame {
+class HistoryWindow :public wxDialog {
 
  public:
    HistoryWindow(AudacityProject * parent, UndoManager *manager);
@@ -33,21 +30,21 @@ class HistoryWindow :public wxFrame {
    void UpdateDisplay();
 
  private:
+   void  DoUpdate();
 
-   void OnDiscard(wxCommandEvent & event);
-   void OnLabelChanged(wxListEvent & event);
-   void OnItemSelected(wxListEvent & event);
+   void OnShow(wxShowEvent & event);
+   void OnSize(wxSizeEvent & event);
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
-   AudacityProject *mProject;
-   
-   wxBoxSizer *mTopSizer;
-   wxListCtrl *mList;
-   wxSpinCtrl *mDiscardNum;
-   wxButton   *mDiscard;
-   wxStaticText *mLevelsAvailable;
-   UndoManager *mManager;
+   void OnChar(wxKeyEvent & event);
+   void OnItemSelected(wxListEvent & event);
+   void OnDiscard(wxCommandEvent & event);
 
-   int mSelected;
+   AudacityProject   *mProject;
+   ShuttleGui        *mS;
+   wxListCtrl        *mList;
+   wxButton          *mDiscard;
+   UndoManager       *mManager;
+   int               mSelected;
 
  public:
    DECLARE_EVENT_TABLE()
