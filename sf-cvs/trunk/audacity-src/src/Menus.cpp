@@ -2115,12 +2115,11 @@ void AudacityProject::OnRedo()
 
 void AudacityProject::OnHistory()
 {
-   if (mHistoryWindow)
-      mHistoryWindow->Show(true);
-   else {
+   if (!mHistoryWindow)
       mHistoryWindow = new HistoryWindow(this, &mUndoManager);
-      mHistoryWindow->Show(true);
-   }
+
+   mHistoryWindow->Show(true);
+   mHistoryWindow->UpdateDisplay();
 }
 
 void AudacityProject::OnExperimentalTrackPanel()
