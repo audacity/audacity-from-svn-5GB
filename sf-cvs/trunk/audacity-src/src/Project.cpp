@@ -2239,10 +2239,12 @@ void AudacityProject::Clear()
       n = iter.Next();
    }
 
+   double seconds = mViewInfo.sel1 - mViewInfo.sel0;
+
    mViewInfo.sel1 = mViewInfo.sel0;
 
    PushState(wxString::Format(_("Deleted %.2f seconds at t=%.2f"),
-                              mViewInfo.sel1 - mViewInfo.sel0,
+                              seconds,
                               mViewInfo.sel0),
              _("Delete"));
 
