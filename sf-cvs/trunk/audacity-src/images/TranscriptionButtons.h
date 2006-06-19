@@ -1,3 +1,4 @@
+#ifndef HAVE_SHARED_BUTTONS
 #ifdef USE_AQUA_THEME
 #include "Aqua/Up.xpm"
 #include "Aqua/Down.xpm"    
@@ -6,6 +7,7 @@
 #include "EditButtons/Up.xpm"
 #include "EditButtons/Down.xpm"      
 #include "EditButtons/Hilite.xpm"       
+#endif
 #endif
 
 #include "TranscriptionImages/StartOn.xpm"
