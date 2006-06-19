@@ -113,10 +113,10 @@ wxString WrappedType::ReadAsString()
       return *mpStr;
       break;
    case eWrappedInt:
-      return wxString::Format("%i",*mpInt );
+      return wxString::Format(wxT("%i"),*mpInt );
       break;
    case eWrappedDouble:
-      return wxString::Format("%g",*mpDouble );
+      return wxString::Format(wxT("%g"),*mpDouble );
       break;
    case eWrappedBool:
       return (* mpBool) ? wxT("true") : wxT("false" );
@@ -188,7 +188,7 @@ bool WrappedType::ReadAsBool()
    switch( eWrappedType )
    {
    case eWrappedString:
-      return mpStr->IsSameAs( "true", false ); // case free comparison.
+      return mpStr->IsSameAs( wxT("true"), false ); // case free comparison.
       break;
    case eWrappedInt:
       return  *mpInt != 0;
@@ -225,7 +225,7 @@ void WrappedType::WriteToAsString( const wxString & InStr)
       *mpDouble = Internat::CompatibleToDouble( InStr );
       break;
    case eWrappedBool:
-      *mpBool = InStr.IsSameAs( "true", false ); // case free comparison.;
+      *mpBool = InStr.IsSameAs( wxT("true"), false ); // case free comparison.;
       break;
    case eWrappedEnum:
       wxASSERT( false );
@@ -241,7 +241,7 @@ void WrappedType::WriteToAsInt( const int InInt)
    switch( eWrappedType )
    {
    case eWrappedString:
-      *mpStr = wxString::Format( "%i", InInt );
+      *mpStr = wxString::Format( wxT("%i"), InInt );
       break;
    case eWrappedInt:
       *mpInt = InInt;
@@ -266,7 +266,7 @@ void WrappedType::WriteToAsDouble( const double InDouble)
    switch( eWrappedType )
    {
    case eWrappedString:
-      *mpStr = wxString::Format( "%g", InDouble );
+      *mpStr = wxString::Format( wxT("%g"), InDouble );
       break;
    case eWrappedInt:
       *mpInt = (int)InDouble;
