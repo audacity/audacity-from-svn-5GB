@@ -6,46 +6,109 @@
 
   James Crook
 
-  Implements ShuttleGui, ShuttleGuiBase and InvisiblePanel.
-
   Audacity is free software.
   This file is licensed under the wxWindows license, see License.txt
 
-**********************************************************************//*!
+**********************************************************************//**
 
 \file ShuttleGui.cpp
+\brief Implements ShuttleGui, ShuttleGuiBase and InvisiblePanel.
+
+*//***************************************************************//**
+
+\class ShuttleGui
 \brief
-  ShuttleGui extends the idea of the data shuttle class to include creation 
+  Derived from ShuttleGuiBase, an Audacity specific class for shuttling 
+  data to and from GUI.
+  
+  ShuttleGui extends the idea of the data Shuttle class to include creation 
   of dialog controls.  As part of this it provides an interface to sizers 
   that leads to shorter more readable code.  
 
-  It allows the code that is used to create dialogs to be reused
+  It also allows the code that is used to create dialogs to be reused
   to shuttle information in and out.  
 
-  Most of the ShuttleGui functions are defined in ShuttleGuiBase
-  which handles wxWidgets.  Audacity widgets are in the derived class.
+  Most of the ShuttleGui functions are actually defined in 
+  ShuttleGuiBase.
+     - wxWidgets widgets are dealt with by ShuttleGuiBase.
+     - Audacity specific widgets are dealt with by ShuttleGui
 
-  The code in this file is fairly repetitive.  We are dealing with
-    - Many different types of Widget.
-    - Creation / Reading / Writing / Exporting / Importing
-    - int, float, string variants (for example of TextCtrl contents).
+  There is documentation on how to use this class in \ref ShuttleSystem
 
-  Possibly something cleverer with template classes 
-  or macros could be done to reduce this code.  
+*//***************************************************************//**
+
+\class ShuttleGuiBase
+\brief Base class for shuttling data to and from a GUI.
+
+see also ShuttleGui
+
+Use the:
+  - \p Start / \p End methods for containers, like two-column-layout.
+  - \p Add methods if you are only interested in creating the controls.
+  - \p Tie methods if you also want to exchange data using ShuttleGui.
+
+The code in this file is fairly repetitive.  We are dealing with
+  - Many different types of Widget.
+  - Creation / Reading / Writing / Exporting / Importing
+  - int, float, string variants (for example of TextCtrl contents).
+
+A technique used to reduce the size of the \p Tie functions is to 
+have one generic \p Tie function that uses WrappedType for its
+data type.  Type specific \p Tie functions themselves call the generic
+variant.
+
+A second technique used to reduce the size of \p Tie functions 
+only comes into play for two-step \p Tie functions.  (A two step
+\p Tie function is one that transfers data between the registry 
+and the GUI via an intermediate temporary variable). In the two 
+step style, a function ShuttleGuiBase::DoStep() determines which 
+transfers in the function are to be done, reducing repetitive 
+if-then-else's.
+
+Although unusual, these two techniques make the code easier to
+add to and much easier to check for correctness.  The alternative 
+'more obvious' code that just repeats code as needed is 
+considerably longer.
+
+You would rarely use ShuttleGuiBase directly, instead you'd use 
+ShuttleGui.  
+
+There is DOxygen documentation on how to use the ShuttleGui 
+class in \ref ShuttleSystem .  
+
+*//***************************************************************//**
+
+\class InvisiblePanel
+\brief An InvisiblePanel is a panel which does not repaint its 
+own background.
+
+It is used (a) To group together widgets which need to be refreshed 
+together.  A single refresh of the panel causes all the subwindows to
+refresh.  (b) as a base class for some flicker-free classes for which
+the backgorund is never repainted.
+
+JKC: InvisiblePanel will probably be replaced in time by a mechanism
+for registering for changes.
 
 *//******************************************************************/
 
-#include <wx/wx.h>
+
+#include "Audacity.h"
+
+#include <wx/wxprec.h>
 #include <wx/listctrl.h>
 #include <wx/treectrl.h>
 #include "Internat.h"
 #include "Experimental.h"
 #include "ShuttleGui.h"
 #include "Shuttle.h"
+#include "WrappedType.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+
+
 
 ShuttleGuiBase::ShuttleGuiBase(wxWindow * pParent, teShuttleMode ShuttleMode )
 {
@@ -137,6 +200,7 @@ void ShuttleGuiBase::SetStretchyRow( int i )
 
 //---- Add Functions.
 
+/// Right aligned text string.
 void ShuttleGuiBase::AddPrompt(const wxString &Prompt)
 {
    if( Prompt.IsEmpty() )
@@ -149,6 +213,7 @@ void ShuttleGuiBase::AddPrompt(const wxString &Prompt)
    UpdateSizersCore( false, wxALL | wxALIGN_RIGHT | wxALIGN_CENTRE_VERTICAL );
 }
 
+/// Left aligned text string.
 void ShuttleGuiBase::AddUnits(const wxString &Prompt)
 {
    if( Prompt.IsEmpty() )
@@ -161,6 +226,7 @@ void ShuttleGuiBase::AddUnits(const wxString &Prompt)
    UpdateSizersCore( false, wxALL | wxALIGN_LEFT | wxALIGN_CENTRE_VERTICAL );
 }
 
+/// Centred text string.
 void ShuttleGuiBase::AddTitle(const wxString &Prompt)
 {
    if( Prompt.IsEmpty() )
@@ -172,6 +238,8 @@ void ShuttleGuiBase::AddTitle(const wxString &Prompt)
    UpdateSizers();
 }
 
+/// Very generic 'Add' function.  We can add anything we like.
+/// Useful for unique controls
 wxWindow * ShuttleGuiBase::AddWindow(wxWindow * pWindow )
 {
    if( mShuttleMode != eIsCreating )
@@ -180,7 +248,6 @@ wxWindow * ShuttleGuiBase::AddWindow(wxWindow * pWindow )
    UpdateSizersC();
    return pWindow;
 }
-
 
 wxCheckBox * ShuttleGuiBase::AddCheckBox( const wxString &Prompt, const wxString &Selected)
 {
@@ -191,6 +258,23 @@ wxCheckBox * ShuttleGuiBase::AddCheckBox( const wxString &Prompt, const wxString
    miProp=0;
    mpWind = pCheckBox = new wxCheckBox(mpParent, miId, Prompt);
    pCheckBox->SetValue(Selected == wxT("true"));
+   UpdateSizers();
+   return pCheckBox;
+}
+
+/// For a consistant two-column layout we want labels on the left and
+/// controls on the right.  CheckBoxes break that rule, so we fake it by
+/// placing a static text label and then a tick box with an empty label.
+wxCheckBox * ShuttleGuiBase::AddCheckBoxOnRight( const wxString &Prompt, const wxString &Selected)
+{
+   UseUpId();
+   if( mShuttleMode != eIsCreating )
+      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxCheckBox);
+   wxCheckBox * pCheckBox;
+   miProp=0;
+   AddPrompt( Prompt );
+   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, wxT(""));
+   pCheckBox->SetValue(Selected==wxT("true"));
    UpdateSizers();
    return pCheckBox;
 }
@@ -223,59 +307,13 @@ wxBitmapButton * ShuttleGuiBase::AddBitmapButton(const wxBitmap &Bitmap, int Pos
    return pBtn;
 }
 
-void ShuttleGuiBase::AddTickBox( const wxString &Prompt, const wxString &Selected)
-{
-   UseUpId();
-   if( mShuttleMode != eIsCreating )
-      return;
-   wxCheckBox * pCheckBox;
-   miProp=0;
-   wxString Prompt2=Prompt;
-   // Prompt2.Replace( wxT("&"), wxT("&&") );
-   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, Prompt2);
-   pCheckBox->SetValue(Selected==wxT("true"));
-   UpdateSizers();
-}
-
-/// For a consistant two-column layout we want labels on the left and
-/// controls on the right.  TickBoxes break that rule, so we fake it by
-/// placing a static text label and then a tick box with an empty label.
-void ShuttleGuiBase::AddTickBoxOnRight( const wxString &Prompt, const wxString &Selected)
-{
-   UseUpId();
-   if( mShuttleMode != eIsCreating )
-//      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
-      return;
-   wxCheckBox * pCheckBox;
-   miProp=0;
-   wxString Prompt2=Prompt;
-   Prompt2.Replace( wxT("&"), wxT("&&") );
-   mpWind = new wxStaticText(mpParent, -1, Prompt2, wxDefaultPosition, wxDefaultSize, 
-      wxALIGN_RIGHT );
-   UpdateSizers();
-   mpWind = pCheckBox = new wxCheckBox(mpParent, miId, wxT(""));
-   pCheckBox->SetValue(Selected==wxT("true"));
-   UpdateSizers();
-}
-
-
 wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Selected, const wxArrayString * pChoices )
 {
-// wxCheckBox * pCheckBox;
    UseUpId();
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxChoice);
    wxChoice * pChoice;
    miProp=0;
-
-   int n = pChoices->GetCount();
-   if( n>50 ) n=50;
-   int i;
-   wxString Choices[50];
-   for(i=0;i<n;i++)
-   {
-      Choices[i] = (*pChoices)[i];
-   }
 
    AddPrompt( Prompt );
    mpWind = pChoice = new wxChoice(
@@ -284,8 +322,7 @@ wxChoice * ShuttleGuiBase::AddChoice( const wxString &Prompt, const wxString &Se
       wxDefaultPosition, 
       wxDefaultSize,
       *pChoices);
-//      n, 
-//      Choices);
+
    pChoice->SetSizeHints( 180,-1);// Use -1 for 'default size' - Platform specific.
    pChoice->SetStringSelection( Selected );
 
@@ -357,6 +394,8 @@ wxComboBox * ShuttleGuiBase::AddCombo( const wxString &Prompt, const wxString &S
 
 wxRadioButton * ShuttleGuiBase::AddRadioButton(const wxString &Prompt)
 {
+   /// \todo This function and the next one, suitably adapted, could be 
+   /// used by TieRadioButton.
    UseUpId();
    if( mShuttleMode != eIsCreating )
       return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wxRadioButton);
@@ -396,7 +435,6 @@ wxSlider * ShuttleGuiBase::AddSlider(const wxString &Prompt, int pos, int Max)
    return pSlider;
 }
 
-
 wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString &Value, const int nChars)
 {
    UseUpId();
@@ -423,6 +461,7 @@ wxTextCtrl * ShuttleGuiBase::AddTextBox(const wxString &Caption, const wxString 
    return pTextCtrl;
 }
 
+/// Multiline text box that grows.
 wxTextCtrl * ShuttleGuiBase::AddTextWindow(const wxString &Value)
 {
    UseUpId();
@@ -435,21 +474,20 @@ wxTextCtrl * ShuttleGuiBase::AddTextWindow(const wxString &Value)
    return pTextCtrl;
 }
 
-
-void ShuttleGuiBase::AddConstTextBox(const wxString &Caption, const wxString &Value)
+/// Single line text box of fixed size.
+void ShuttleGuiBase::AddConstTextBox(const wxString &Prompt, const wxString &Value)
 {
    UseUpId();
    if( mShuttleMode != eIsCreating )
       return;
 //      return wxDynamicCast(wxWindow::FindWindowById( miId, mpDlg), wx);
    miProp=0;
-   AddPrompt( Caption );
+   AddPrompt( Prompt );
    UpdateSizers();
    miProp=0;
    mpWind = new wxStaticText(mpParent, miId, Value);
    UpdateSizers();
 }
-
 
 wxListCtrl * ShuttleGuiBase::AddListControl()
 {
@@ -674,13 +712,8 @@ void ShuttleGuiBase::EndNotebookPage()
    mpParent = mpParent->GetParent(); 
 }
 
-
-/// An InvisiblePanel is a panel which does not repaint its own background.
-
-/// It is used (a) To group together widgets which need to be refreshed 
-/// together.  A single refresh of the panel causes all the subwindows to
-/// refresh.  (b) as a base class for some flicker-free classes for which
-/// the backgorund is never repainted.
+// Doxygen description is at the start of the file 
+// this is a wxPanel with erase background disabled.
 class InvisiblePanel : public wxPanel
 {
 public:
@@ -712,7 +745,6 @@ void InvisiblePanel::OnPaint( wxPaintEvent &event )
 // event.Skip();
    ;// swallow the paint event.
 }
-
 
 wxPanel * ShuttleGuiBase::StartInvisiblePanel()
 {
@@ -797,144 +829,100 @@ void ShuttleGuiBase::EndMultiColumn()
    PopSizer();
 }
 
-void ShuttleGuiBase::TieCheckBox(const wxString &Prompt, bool &Var)
+/// When we're exchanging with the configured shuttle rather than with the GUI
+/// We use this function.
+void ShuttleGuiBase::DoDataShuttle( const wxString &Name, WrappedType & WrappedRef )
+{
+    wxASSERT( mpShuttle );
+    mpShuttle->TransferWrappedType( Name, WrappedRef );
+}
+
+//-----------------------------------------------------------------------//
+
+// We now have a group of tie functions which are generic in the type
+// they bind to (i.e. WrappedType).  
+// The type specific versions are much shorter and are later
+// in this file.
+wxCheckBox * ShuttleGuiBase::TieCheckBox(const wxString &Prompt, WrappedType & WrappedRef)
 {
    // The Add function does a UseUpId(), so don't do it here in that case.
-   if( mShuttleMode != eIsCreating )
-      UseUpId();
+   if( mShuttleMode == eIsCreating )
+      return AddCheckBox( Prompt, WrappedRef.ReadAsString());
+
+   UseUpId();
+
+   wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
+   wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
 
    switch( mShuttleMode )
    {
-   // IF Creating the dialog controls and setting them from internal storage.
-   case eIsCreating:
-      {
-         AddTickBox( Prompt, Var ? wxT("true") : wxT("false"));
-      }
-      break;
    // IF setting internal storage from the controls.
    case eIsGettingFromDialog:
       {
-         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
-         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
          wxASSERT( pCheckBox );
-         Var = pCheckBox->GetValue();
+         WrappedRef.WriteToAsBool( pCheckBox->GetValue() );
       }
       break;
    case eIsSettingToDialog:
       {
-         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
-         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
          wxASSERT( pCheckBox );
-         pCheckBox->SetValue( Var );
+         pCheckBox->SetValue( WrappedRef.ReadAsBool() );
       }
       break;
    // IF Saving settings to external storage...
    // or IF Getting settings from external storage.
    case eIsSavingViaShuttle:
    case eIsGettingViaShuttle:
-      {
-         wxASSERT( mpShuttle );
-         mpShuttle->TransferBool( Prompt, Var, Var );
-      }
+      DoDataShuttle( Prompt, WrappedRef );
       break;
    default:
       wxASSERT( false );
       break;
    }
+   return pCheckBox;
 }
-// See comment in AddTickBoxOnRight() for why we have this variant.
-void ShuttleGuiBase::TieCheckBoxOnRight(const wxString &Prompt, bool &Var)
+
+wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, WrappedType & WrappedRef, const int nChars)
 {
    // The Add function does a UseUpId(), so don't do it here in that case.
-   if( mShuttleMode != eIsCreating )
-      UseUpId();
+   if( mShuttleMode == eIsCreating )
+      return AddTextBox( Prompt, WrappedRef.ReadAsString(), nChars );
+
+   UseUpId();
+   wxTextCtrl * pTextBox=NULL;
+
+   wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
+   pTextBox = wxDynamicCast(pWnd, wxTextCtrl);
 
    switch( mShuttleMode )
    {
-   // IF Creating the dialog controls and setting them from internal storage.
-   case eIsCreating:
-      {
-         AddTickBoxOnRight( Prompt, Var ? wxT("true") : wxT("false"));
-      }
-      break;
    // IF setting internal storage from the controls.
    case eIsGettingFromDialog:
       {
-         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
-         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
-         wxASSERT( pCheckBox );
-         Var = pCheckBox->GetValue();
+         wxASSERT( pTextBox );
+         WrappedRef.WriteToAsString( pTextBox->GetValue() );
       }
       break;
    case eIsSettingToDialog:
       {
-         wxWindow * pWnd      = wxWindow::FindWindowById( miId, mpDlg);
-         wxCheckBox * pCheckBox = wxDynamicCast(pWnd, wxCheckBox);
-         wxASSERT( pCheckBox );
-         pCheckBox->SetValue( Var );
-      }
-      break;
-   // IF Saving settings to external storage...
-   case eIsSavingViaShuttle:
-      {
-//         wxASSERT(false);
-      }
-      break;
-   // IF Getting settings from external storage.
-   case eIsGettingViaShuttle:
-      {
-//         wxASSERT(false);
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
-}
-
-wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, const float min, const float max, float &f )
-{
-   wxASSERT( false );// This version needs fixing.
-   // The Add function does a UseUpId(), so don't do it here in that case.
-   if( mShuttleMode != eIsCreating )
-      UseUpId();
-   wxSlider * pSlider=NULL;
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         pSlider = AddSlider( Prompt, 100*(f-min)/(max-min), 100 );
-      }
-      break;
-   // IF setting internal storage from the controls.
-   case eIsGettingFromDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pSlider = wxDynamicCast(pWnd, wxSlider);
-         wxASSERT( pSlider );
-         f = (pSlider->GetValue() / 100.0f) * (max-min) + min;
-      }
-      break;
-   case eIsSettingToDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pSlider = wxDynamicCast(pWnd, wxSlider);
-         wxASSERT( pSlider );
-         pSlider->SetValue( 100*(f-min)/(max-min) );
+         wxASSERT( pTextBox );
+         pTextBox->SetValue( WrappedRef.ReadAsString() );
       }
       break;
    // IF Saving settings to external storage...
    // or IF Getting settings from external storage.
-   case eIsSavingViaShuttle:
    case eIsGettingViaShuttle:
+   case eIsSavingViaShuttle:
+      DoDataShuttle( Prompt, WrappedRef );
+      break;
    default:
       wxASSERT( false );
       break;
    }
-   return pSlider;
+   return pTextBox;
 }
 
-wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const int max )
+wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, WrappedType & WrappedRef, const int max )
 {
    // The Add function does a UseUpId(), so don't do it here in that case.
    if( mShuttleMode != eIsCreating )
@@ -944,7 +932,7 @@ wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const in
    {
    case eIsCreating:
       {
-         pSlider = AddSlider( Prompt, pos, max );
+         pSlider = AddSlider( Prompt, WrappedRef.ReadAsInt(), max );
       }
       break;
    // IF setting internal storage from the controls.
@@ -953,7 +941,7 @@ wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const in
          wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
          pSlider = wxDynamicCast(pWnd, wxSlider);
          wxASSERT( pSlider );
-         pos = pSlider->GetValue();
+         WrappedRef.WriteToAsInt( pSlider->GetValue() );
       }
       break;
    case eIsSettingToDialog:
@@ -961,13 +949,15 @@ wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const in
          wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
          pSlider = wxDynamicCast(pWnd, wxSlider);
          wxASSERT( pSlider );
-         pSlider->SetValue( pos );
+         pSlider->SetValue( WrappedRef.ReadAsInt() );
       }
       break;
    // IF Saving settings to external storage...
    // or IF Getting settings from external storage.
    case eIsSavingViaShuttle:
    case eIsGettingViaShuttle:
+      DoDataShuttle( Prompt, WrappedRef );
+      break;
    default:
       wxASSERT( false );
       break;
@@ -975,102 +965,10 @@ wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const in
    return pSlider;
 }
 
-wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, wxString &Selected, const int nChars)
-{
-   // The Add function does a UseUpId(), so don't do it here in that case.
-   if( mShuttleMode != eIsCreating )
-      UseUpId();
-   wxTextCtrl * pTextBox=NULL;
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         pTextBox = AddTextBox( Prompt, Selected, nChars );
-      }
-      break;
-   // IF setting internal storage from the controls.
-   case eIsGettingFromDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pTextBox = wxDynamicCast(pWnd, wxTextCtrl);
-         wxASSERT( pTextBox );
-         Selected = pTextBox->GetValue();
-      }
-      break;
-   case eIsSettingToDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pTextBox = wxDynamicCast(pWnd, wxTextCtrl);
-         wxASSERT( pTextBox );
-         pTextBox->SetValue( Selected );
-      }
-      break;
-   // IF Saving settings to external storage...
-   // or IF Getting settings from external storage.
-   case eIsGettingViaShuttle:
-   case eIsSavingViaShuttle:
-      {
-         wxASSERT( mpShuttle );
-         mpShuttle->TransferString( Prompt, Selected, Selected );
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
-   return pTextBox;
-}
-
-
-wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, int &Selected, const int nChars)
-{
-   // The Add function does a UseUpId(), so don't do it here in that case.
-   if( mShuttleMode != eIsCreating )
-      UseUpId();
-   wxTextCtrl * pTextBox=NULL;
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         pTextBox = AddTextBox( Prompt, wxString::Format( wxT("%i"), Selected), nChars );
-      }
-      break;
-   // IF setting internal storage from the controls.
-   case eIsGettingFromDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pTextBox = wxDynamicCast(pWnd, wxTextCtrl);
-         wxASSERT( pTextBox );
-         Selected = wxAtoi(pTextBox->GetValue());
-      }
-      break;
-   case eIsSettingToDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         pTextBox = wxDynamicCast(pWnd, wxTextCtrl);
-         wxASSERT( pTextBox );
-         pTextBox->SetValue( wxString::Format( wxT("%i"), Selected ));
-      }
-      break;
-   // IF Saving settings to external storage...
-   // or IF Getting settings from external storage.
-   case eIsGettingViaShuttle:
-   case eIsSavingViaShuttle:
-      {
-         wxASSERT( mpShuttle );
-         mpShuttle->TransferInt( Prompt, Selected, Selected );
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
-   return pTextBox;
-}
 
 wxChoice * ShuttleGuiBase::TieChoice( 
    const wxString &Prompt, 
-   wxString &Selected, 
+   WrappedType &WrappedRef,
    const wxArrayString * pChoices )
 {
    // The Add function does a UseUpId(), so don't do it here in that case.
@@ -1081,7 +979,14 @@ wxChoice * ShuttleGuiBase::TieChoice(
    {
    case eIsCreating:
       {
-         pChoice = AddChoice( Prompt, Selected, pChoices );
+         if( WrappedRef.IsString() )
+            pChoice = AddChoice( Prompt, WrappedRef.ReadAsString(), pChoices );
+         else
+         {
+            wxString Temp;
+            Temp = (*pChoices)[WrappedRef.ReadAsInt()];
+            pChoice = AddChoice( Prompt, Temp, pChoices );
+         }
       }
       break;
    // IF setting internal storage from the controls.
@@ -1090,7 +995,10 @@ wxChoice * ShuttleGuiBase::TieChoice(
          wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
          pChoice = wxDynamicCast(pWnd, wxChoice);
          wxASSERT( pChoice );
-         Selected = pChoice->GetStringSelection();
+         if( WrappedRef.IsString())
+            WrappedRef.WriteToAsString( pChoice->GetStringSelection());
+         else
+            WrappedRef.WriteToAsInt( pChoice->GetSelection() );
       }
       break;
    case eIsSettingToDialog:
@@ -1098,33 +1006,17 @@ wxChoice * ShuttleGuiBase::TieChoice(
          wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
          pChoice = wxDynamicCast(pWnd, wxChoice);
          wxASSERT( pChoice );
-         pChoice->SetStringSelection( Selected );
+         if( WrappedRef.IsString() )
+            pChoice->SetStringSelection( WrappedRef.ReadAsString() );
+         else
+            pChoice->SetSelection( WrappedRef.ReadAsInt() );
       }
       break;
    // IF Saving settings to external storage...
    // or IF Getting settings from external storage.
    case eIsSavingViaShuttle:
    case eIsGettingViaShuttle:
-      {
-         wxASSERT( mpShuttle );
-         // HACK: Determine whether a string or integer, based on
-         // choices.
-         // Perhaps we should have a different TieChoice
-         // to cover such cases?
-         wxString Temp;
-         Temp = wxString::Format( wxT("%i"), wxAtoi( (*pChoices)[0] ));
-         if( Temp.IsSameAs( (*pChoices)[0] ))
-         {
-            // Another HACK: make up for Selected being a string..
-            int Value=wxAtoi( Selected );
-            mpShuttle->TransferInt( Prompt, Value, Value );
-            Selected = wxString::Format( wxT("%i"), Value );
-         }
-         else
-         {
-            mpShuttle->TransferString( Prompt, Selected, Selected );
-         }
-      }
+      DoDataShuttle( Prompt, WrappedRef );
       break;
    default:
       wxASSERT( false );
@@ -1133,59 +1025,166 @@ wxChoice * ShuttleGuiBase::TieChoice(
    return pChoice;
 }
 
-void ShuttleGuiBase::TieRadioButton(const wxString &Prompt, int iIndex, wxString &Selected)
+wxRadioButton * ShuttleGuiBase::TieRadioButton(const wxString &Prompt, WrappedType & WrappedRef)
 {
+   wxASSERT( mRadioCount >= 0); // Did you remember to use StartRadioButtonGroup() ?
+   mRadioCount++;
    UseUpId();
+   wxRadioButton * pRadioButton = NULL;
+
    switch( mShuttleMode )
    {
    case eIsCreating:
       {
-         wxRadioButton * pRad;
-         mpWind = pRad = new wxRadioButton( mpParent, miId, Prompt,
+         mpWind = pRadioButton = new wxRadioButton( mpParent, miId, Prompt,
             wxDefaultPosition, wxDefaultSize, 
-            (iIndex==0)?wxRB_GROUP:0);
-//         pRad->SetValue(iIndex == 0);
-         pRad->SetValue(Selected==Prompt);
+            (mRadioCount==1)?wxRB_GROUP:0);
+         pRadioButton->SetValue(WrappedRef.ValuesMatch( mRadioValue ));
          UpdateSizers();
       }
       break;
-   // IF setting internal storage from the controls.
    case eIsGettingFromDialog:
       {
          wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         wxRadioButton * pRadioButton = wxDynamicCast(pWnd, wxRadioButton);
+         pRadioButton = wxDynamicCast(pWnd, wxRadioButton);
          wxASSERT( pRadioButton );
          if( pRadioButton->GetValue() )
          {
-            Selected = pRadioButton->GetLabel();
+            mRadioValue.WriteToAsWrappedType( WrappedRef );
          }
-      }
-      break;
-   case eIsSettingToDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         wxRadioButton * pRadioButton = wxDynamicCast(pWnd, wxRadioButton);
-         wxASSERT( pRadioButton );
-         if( pRadioButton->GetLabel() == Selected )
-         {
-            pRadioButton->SetValue( true );
-         }
-      }
-      break;
-   // IF Saving settings to external storage...
-   // or IF Getting settings from external storage.
-   case eIsSavingViaShuttle:
-   case eIsGettingViaShuttle:
-      {
-         wxASSERT(mpShuttle);
-         // Nothing to do here since exchange with the shuttle is done by the 
-         // group...
       }
       break;
    default:
       wxASSERT( false );
       break;
    }
+   return pRadioButton;
+}
+
+/// Call this before any TieRadioButton calls.  
+/// This is the generic version and requires mRadioValue already initialised.
+/// Versions for specific types must do that initialisation.
+void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName )
+{
+   wxASSERT( mRadioValue.eWrappedType != eWrappedNotSet );
+   mSettingName = SettingName;
+   mRadioCount = 0;
+   if( mShuttleMode == eIsCreating )
+      DoDataShuttle( SettingName, mRadioValue );
+}
+
+/// Call this after any TieRadioButton calls.
+/// It's generic too.  We don't need type-specific ones.
+void ShuttleGuiBase::EndRadioButtonGroup()
+{
+   if( mShuttleMode == eIsGettingFromDialog )
+      DoDataShuttle( mSettingName, mRadioValue );
+   mRadioValue.Init();// Clear it out...
+   mSettingName = wxT("");
+   mRadioCount = -1; // So we detect a problem.
+}
+
+//-----------------------------------------------------------------------//
+//-- Now we are into type specific Tie() functions.
+//-- These are all 'one-step' tie functions.
+
+wxCheckBox * ShuttleGuiBase::TieCheckBox(const wxString &Prompt, bool &Var)
+{
+   WrappedType WrappedRef( Var );
+   return TieCheckBox( Prompt, WrappedRef );
+}
+
+// See comment in AddCheckBoxOnRight() for why we have this variant.
+wxCheckBox * ShuttleGuiBase::TieCheckBoxOnRight(const wxString &Prompt, bool &Var)
+{  
+   // Only odes anything different if it's creating.
+   WrappedType WrappedRef( Var );
+   if( mShuttleMode == eIsCreating )
+      return AddCheckBoxOnRight( Prompt, WrappedRef.ReadAsString() );
+   return TieCheckBox( Prompt, WrappedRef );
+}
+
+wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, wxString &Selected, const int nChars)
+{  
+   WrappedType WrappedRef(Selected);
+   return TieTextBox( Prompt, WrappedRef, nChars );
+}
+
+wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, int &Selected, const int nChars)
+{
+   WrappedType WrappedRef( Selected );
+   return TieTextBox( Prompt, WrappedRef, nChars );
+}
+
+wxSlider * ShuttleGuiBase::TieSlider( const wxString &Prompt, int &pos, const int max )
+{
+   WrappedType WrappedRef( pos );
+   return TieSlider( Prompt, WrappedRef, max );
+}
+
+wxChoice * ShuttleGuiBase::TieChoice( 
+   const wxString &Prompt, 
+   wxString &Selected, 
+   const wxArrayString * pChoices )
+{
+   WrappedType WrappedRef( Selected );
+   return TieChoice( Prompt, WrappedRef, pChoices );
+}
+
+wxChoice * ShuttleGuiBase::TieChoice( 
+   const wxString &Prompt, 
+   int &Selected, 
+   const wxArrayString * pChoices )
+{
+   WrappedType WrappedRef( Selected );
+   return TieChoice( Prompt, WrappedRef, pChoices );
+}
+
+//-----------------------------------------------------------------------//
+
+// ShuttleGui utility functions to look things up in a list.
+// If not present, we use the configured default index value.
+
+//-----------------------------------------------------------------------//
+
+/// String-to-Index
+int ShuttleGuiBase::TranslateToIndex( const wxString &Value, const wxArrayString &Choices )
+{
+   int n = Choices.Index( Value );
+   if( n== wxNOT_FOUND )
+      n=miNoMatchSelector;
+   miNoMatchSelector = 0;
+   return n;
+}
+
+/// Index-to-String
+wxString ShuttleGuiBase::TranslateFromIndex( const int nIn, const wxArrayString &Choices )
+{
+   int n = nIn;
+   if( n== wxNOT_FOUND )
+      n=miNoMatchSelector;
+   miNoMatchSelector = 0;
+   return Choices[n];
+}
+
+/// Int-to-Index (choices can be items like e.g 0x400120 )
+int ShuttleGuiBase::TranslateToIndex( const int Value, const wxArrayInt &Choices )
+{
+   int n = Choices.Index( Value );
+   if( n== wxNOT_FOUND )
+      n=miNoMatchSelector;
+   miNoMatchSelector = 0;
+   return n;
+}
+
+/// Index-to-int (choices can be items like e.g 0x400120 )
+int ShuttleGuiBase::TranslateFromIndex( const int nIn, const wxArrayInt &Choices )
+{
+   int n = nIn;
+   if( n== wxNOT_FOUND )
+      n=miNoMatchSelector;
+   miNoMatchSelector = 0;
+   return Choices[n];
 }
 
 //-----------------------------------------------------------------------//
@@ -1200,6 +1199,60 @@ void ShuttleGuiBase::TieRadioButton(const wxString &Prompt, int iIndex, wxString
 
 //----------------------------------------------------------------------//
 
+
+/** 
+ Code-Condenser function.
+
+We have functions which need to do:
+
+\code
+  // Either: Values are coming in:
+  DoDataShuttle( SettingName, WrappedRef );
+  TieMyControl( Prompt, WrappedRef );
+
+  // Or: Values are going out:
+  TieMyControl( Prompt, WrappedRef );
+  DoDataShuttle( SettingName, WrappedRef );
+\endcode
+
+So we make a list of all the possible steps,
+and have DoStep choose which ones are actually done,
+like this:
+
+\code
+  if( DoStep(1) ) DoFirstThing();
+  if( DoStep(2) ) DoSecondThing();
+  if( DoStep(3) ) DoThirdThing();
+\endcode
+
+The repeated choice logic can then be taken out of those 
+functions.
+
+JKC: This paves the way for doing data validation too,
+though when we add that we wil need to renumber the
+steps.
+*/
+bool ShuttleGuiBase::DoStep( int iStep )
+{
+   // Get value and create
+   if( mShuttleMode == eIsCreating )
+   {
+      return (iStep==1) || (iStep==2);
+   }
+   // Like creating, get the value and set.
+   if( mShuttleMode == eIsSettingToDialog )
+   {
+      return (iStep==1) || (iStep==2);
+   }
+   if( mShuttleMode == eIsGettingFromDialog )
+   {
+      return (iStep==2) || (iStep==3);
+   }
+   wxASSERT( false );
+   return false;
+}
+
+
 /// Variant of the standard TieCheckBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
 void ShuttleGuiBase::TieCheckBox(
@@ -1207,177 +1260,51 @@ void ShuttleGuiBase::TieCheckBox(
    const wxString &SettingName, 
    const bool bDefault)
 {
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         bool bValue = bDefault;
-         mShuttleMode = eIsGettingViaShuttle;
-         TieCheckBox( SettingName, bValue );
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsCreating;
-         TieCheckBox( Prompt, bValue );
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         bool bValue = bDefault;
-         TieCheckBox( Prompt, bValue );
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsSavingViaShuttle;
-         TieCheckBox( SettingName, bValue );
-         mShuttleMode = eIsGettingFromDialog;
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+   bool bValue=bDefault;
+   WrappedType WrappedRef( bValue );
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
+   if( DoStep(2) ) TieCheckBox( Prompt, WrappedRef );
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
 }
 
-
-void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const int iDefaultValue )
-{
-   mSettingName = SettingName;
-   mRadioCount = 0;
-   mRadioValue = iDefaultValue;
-   mStrRadioValue = wxT("USE_INTEGERS"); // a b
-   if( mShuttleMode == eIsCreating )
-   {
-      if( mpShuttle )
-      {
-         mpShuttle->TransferInt( SettingName, mRadioValue, iDefaultValue );
-      }
-   }
-}
-
-void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const wxString & DefaultValue )
-{
-   mSettingName = SettingName;
-   mRadioCount = 0;
-   mStrRadioValue = DefaultValue;
-   mRadioValue = -1;
-   if( mShuttleMode == eIsCreating )
-   {
-      if( mpShuttle )
-      {
-         mpShuttle->TransferString( SettingName, mStrRadioValue, DefaultValue );
-      }
-   }
-}
-
-
-void ShuttleGuiBase::EndRadioButtonGroup()
-{
-   if( mShuttleMode == eIsGettingFromDialog )
-   {
-      if( mpShuttle )
-      {
-         if( mStrRadioValue == wxT("USE_INTEGERS") )
-         {
-            mpShuttle->TransferInt( mSettingName, mRadioValue, mRadioValue );
-         }
-         else
-         {
-            mpShuttle->TransferString( mSettingName, mStrRadioValue, mStrRadioValue );
-         }
-      }
-   }
-   mSettingName = wxT("");
-   mRadioCount = -1; // So we detect a problem.
-}
-
-/// Variant of the standard TieRadioButton which does the two step exchange 
+/// Variant of the standard TieTextBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
-/// This one must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
-void ShuttleGuiBase::TieRadioButton( 
-   const wxString &Prompt, 
-   int iValue)
+void ShuttleGuiBase::TieTextBox(
+   const wxString & Prompt, 
+   const wxString & SettingName, 
+   const wxString & Default,
+   const int nChars)
 {
-   /// \todo Current implementation is stand alone and does not use the basic
-   /// TieRadioButton.  Should change that.
-   wxASSERT( mRadioCount >= 0); // Did you remember to use StartRadioButtonGroup() ?
-   mRadioCount++;
-   UseUpId();
-
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         wxRadioButton * pRad;
-         mpWind = pRad = new wxRadioButton( mpParent, miId, Prompt,
-            wxDefaultPosition, wxDefaultSize, 
-            (mRadioCount==1)?wxRB_GROUP:0);
-         pRad->SetValue(iValue==mRadioValue);
-         UpdateSizers();
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         wxRadioButton * pRadioButton = wxDynamicCast(pWnd, wxRadioButton);
-         wxASSERT( pRadioButton );
-         if( pRadioButton->GetValue() )
-         {
-            mRadioValue = iValue;
-         }
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+   wxString Temp = Default;
+   WrappedType WrappedRef( Temp );
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
+   if( DoStep(2) ) TieTextBox( Prompt, WrappedRef, nChars );
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
 }
 
-/// Variant of the standard TieRadioButton which does the two step exchange 
+/// Variant of the standard TieTextBox which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
-/// This one must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
-void ShuttleGuiBase::TieRadioButton( 
-   const wxString &Prompt, 
-   const wxString &Value)
+/// This one does it for double values...
+void ShuttleGuiBase::TieTextBox(
+   const wxString & Prompt, 
+   const wxString & SettingName, 
+   const double & Default,
+   const int nChars)
 {
-   /// \todo Current implementation is stand alone and does not use the basic
-   /// TieRadioButton.  Should change that.
-   wxASSERT( mRadioCount >= 0); // Did you remember to use StartRadioButtonGroup() ?
-   mRadioCount++;
-   UseUpId();
-
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         wxRadioButton * pRad;
-         mpWind = pRad = new wxRadioButton( mpParent, miId, Prompt,
-            wxDefaultPosition, wxDefaultSize, 
-            (mRadioCount==1)?wxRB_GROUP:0);
-         pRad->SetValue(Value==mStrRadioValue);
-         UpdateSizers();
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         wxWindow * pWnd  = wxWindow::FindWindowById( miId, mpDlg);
-         wxRadioButton * pRadioButton = wxDynamicCast(pWnd, wxRadioButton);
-         wxASSERT( pRadioButton );
-         if( pRadioButton->GetValue() )
-         {
-            mStrRadioValue = Value;
-         }
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+   double Temp = Default;
+   WrappedType WrappedRef( Temp );
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef );
+   if( DoStep(2) ) TieTextBox( Prompt, WrappedRef, nChars );
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef );
 }
 
 /// Variant of the standard TieChoice which does the two step exchange 
 /// between gui and stack variable and stack variable and shuttle.
 ///   @param Prompt             The prompt shown beside the control.
 ///   @param SettingName        The setting name as stored in gPrefs
-///   @parsm Default            The default value for this control (translated)
+///   @param Default            The default value for this control (translated)
 ///   @param Choices            An array of choices that appear on screen.
-///   @param TranslatedChoices  The correcponding values (as a string array)
+///   @param TranslatedChoices  The corresponding values (as a string array)
 wxChoice * ShuttleGuiBase::TieChoice( 
    const wxString &Prompt, 
    const wxString &SettingName, 
@@ -1386,46 +1313,18 @@ wxChoice * ShuttleGuiBase::TieChoice(
    const wxArrayString & TranslatedChoices)
 {
    wxChoice * pChoice=(wxChoice*)NULL;
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         int n;
-         wxString strValue = Default;
-         mShuttleMode = eIsGettingViaShuttle;
-         pChoice = TieChoice( SettingName, strValue, &TranslatedChoices );
-         // Translate from translated to display version
-         n = TranslatedChoices.Index( strValue );
-         if( n== wxNOT_FOUND )
-            n=miNoMatchSelector;
-         miNoMatchSelector=0;
-         strValue = Choices[n];
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsCreating;
-         TieChoice( Prompt, strValue, &Choices );
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         int n;
-         wxString strValue = Default;
-         pChoice = TieChoice( Prompt, strValue, &Choices );
-         // Translate from display version to translated version
-         n = Choices.Index( strValue );
-         if( n== wxNOT_FOUND )
-            n=miNoMatchSelector;
-         miNoMatchSelector=0;
-         strValue = TranslatedChoices[n];
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsSavingViaShuttle;
-         TieChoice( SettingName, strValue, &TranslatedChoices );
-         mShuttleMode = eIsGettingFromDialog;
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+ 
+   int TempIndex;
+//   int TempIndex = TranslateToIndex( Default, TranslatedChoices );
+   wxString TempStr = Default;
+   WrappedType WrappedRef( TempStr );
+   // Get from prefs does 1 and 2.
+   // Put to prefs does 2 and 3.
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef ); // Get Index from Prefs.
+   if( DoStep(1) ) TempIndex = TranslateToIndex( TempStr, TranslatedChoices ); // To an index
+   if( DoStep(2) ) pChoice = TieChoice( Prompt, TempIndex, &Choices ); // Get/Put index from GUI.
+   if( DoStep(3) ) TempStr = TranslateFromIndex( TempIndex, TranslatedChoices ); // To a string
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef ); // Put into Prefs.
    return pChoice;
 }
 
@@ -1437,7 +1336,7 @@ wxChoice * ShuttleGuiBase::TieChoice(
 ///   @param SettingName        The setting name as stored in gPrefs
 ///   @parsm Default            The default value for this control (translated)
 ///   @param Choices            An array of choices that appear on screen.
-///   @param TranslatedChoices  The correcponding values (as a string array)
+///   @param TranslatedChoices  The correcponding values (as an integer array)
 wxChoice * ShuttleGuiBase::TieChoice( 
    const wxString &Prompt, 
    const wxString &SettingName, 
@@ -1445,123 +1344,75 @@ wxChoice * ShuttleGuiBase::TieChoice(
    const wxArrayString & Choices,
    const wxArrayInt & TranslatedChoices)
 {
-   wxASSERT( mpShuttle );
    wxChoice * pChoice=(wxChoice*)NULL;
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         int n;
-         int Value;
-         mpShuttle->TransferInt( SettingName, Value, Default );
-         // Translate from translated to display version
-         n = TranslatedChoices.Index( Value );
-         if( n== wxNOT_FOUND )
-            n=miNoMatchSelector;
-         miNoMatchSelector=0;
-         wxString strValue = Choices[n];
-         pChoice = TieChoice( Prompt, strValue, &Choices );
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         int n;
-         wxString strValue;
-         pChoice = TieChoice( Prompt, strValue, &Choices );
-         // Translate from display version to translated version
-         n = Choices.Index( strValue );
-         if( n== wxNOT_FOUND )
-            n=miNoMatchSelector;
-         miNoMatchSelector=0;
-         int Value = TranslatedChoices[n];
-         mpShuttle->TransferInt( SettingName, Value, Default );
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+ 
+   int TempIndex;
+   int TranslatedInt = Default;
+   WrappedType WrappedRef( TranslatedInt );
+   // Get from prefs does 1 and 2.
+   // Put to prefs does 2 and 3.
+   if( DoStep(1) ) DoDataShuttle( SettingName, WrappedRef ); // Get Int from Prefs.
+   if( DoStep(1) ) TempIndex = TranslateToIndex( TranslatedInt, TranslatedChoices ); // Int to an index.
+   if( DoStep(2) ) pChoice = TieChoice( Prompt, TempIndex, &Choices ); // Get/Put index from GUI.
+   if( DoStep(3) ) TranslatedInt = TranslateFromIndex( TempIndex, TranslatedChoices ); // Index to int
+   if( DoStep(3) ) DoDataShuttle( SettingName, WrappedRef ); // Put into Prefs.
    return pChoice;
 }
 
-/// Variant of the standard TieTextBox which does the two step exchange 
-/// between gui and stack variable and stack variable and shuttle.
-void ShuttleGuiBase::TieTextBox(
-   const wxString & Prompt, 
-   const wxString & SettingName, 
-   const wxString & Default,
-   const int nChars)
+/// Integer specific version of StartRadioButtonGroup.
+/// All 'TieRadioButton()' enclosed must be ints.
+void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const int iDefaultValue )
 {
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         wxString strValue = Default;
-         mShuttleMode = eIsGettingViaShuttle;
-         TieTextBox( SettingName, strValue, nChars );
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsCreating;
-         TieTextBox( Prompt, strValue, nChars );
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         wxString strValue = Default;
-         TieTextBox( Prompt, strValue, nChars );
-         miIdSetByUser = miId; // Reset the id, we're about to reuse it.
-         mShuttleMode = eIsSavingViaShuttle;
-         TieTextBox( SettingName, strValue, nChars );
-         mShuttleMode = eIsGettingFromDialog;
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+   // Configure the generic type mechanism to use OUR integer.
+   mRadioValueInt = iDefaultValue;
+   mRadioValue.SetTo( mRadioValueInt );
+   // Now actually start the radio button group.
+   StartRadioButtonGroup( SettingName );
+}
+
+/// String specific version of StartRadioButtonGroup.
+/// All 'TieRadioButton()' enclosed must be strings.
+void ShuttleGuiBase::StartRadioButtonGroup( const wxString & SettingName, const wxString & DefaultValue )
+{
+   // Configure the generic type mechanism to use OUR string.
+   mRadioValueString = DefaultValue;
+   mRadioValue.SetTo( mRadioValueString );
+   // Now actually start the radio button group.
+   StartRadioButtonGroup( SettingName );
 }
 
 
-/// Variant of the standard TieTextBox which does the two step exchange 
-/// between gui and stack variable and stack variable and shuttle.
-/// This one does it for double values...
-void ShuttleGuiBase::TieTextBox(
-   const wxString & Prompt, 
-   const wxString & SettingName, 
-   const double & Default,
-   const int nChars)
+/// This function must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
+void ShuttleGuiBase::TieRadioButton( 
+   const wxString &Prompt, 
+   int iValue)
 {
-   switch( mShuttleMode )
-   {
-   case eIsCreating:
-      {
-         double Value = Default;
-         wxASSERT( mpShuttle );
-         mpShuttle->TransferDouble( SettingName, Value, Value );
-         wxString strValue = wxString::Format(wxT("%g"),Value ); 
-         TieTextBox( Prompt, strValue, nChars );
-      }
-      break;
-   case eIsGettingFromDialog:
-      {
-         wxString strValue;
-         TieTextBox( Prompt, strValue, nChars );
-         wxASSERT( mpShuttle );
-         double Value= Internat::CompatibleToDouble( strValue );
-         mpShuttle->TransferDouble( SettingName, Value, Value );
-      }
-      break;
-   default:
-      wxASSERT( false );
-      break;
-   }
+   WrappedType WrappedRef( iValue );
+   TieRadioButton( Prompt, WrappedRef );
 }
 
-// The Ids increment as we add new controls.
-// However, the user can force the id manually, for example
-// if they need a specific Id for a button, and then let it
-// resume normal numbering later.
-// UseUpId() sets miId to the next Id, either using the 
-// user specicfied one, or resuming the sequence.
+/// This function must be within a StartRadioButtonGroup - EndRadioButtonGroup pair.
+void ShuttleGuiBase::TieRadioButton( 
+   const wxString &Prompt, 
+   const wxString &Value)
+{
+   // In what follows, WrappedRef is used in read only mode, but we
+   // don't have a 'read-only' version, so we copy to deal with the constness.
+   wxString Temp = Value;
+   WrappedType WrappedRef( Temp ); 
+   TieRadioButton( Prompt, WrappedRef );
+}
+
+//------------------------------------------------------------------//
+
+// We're now into ShuttleGuiBase sizer and misc functions.
+
+/// The Ids increment as we add new controls.
+/// However, the user can force the id manually, for example
+/// if they need a specific Id for a button, and then let it
+/// resume normal numbering later.
+/// UseUpId() sets miId to the next Id, either using the 
+/// user specicfied one, or resuming the sequence.
 void ShuttleGuiBase::UseUpId()
 {
    if( miIdSetByUser > 0)
@@ -1591,7 +1442,16 @@ void ShuttleGuiBase::UpdateSizersCore(bool bPrepend, int Flags)
 
    if( mpSubSizer && mpSizer )
    {
-      mpSizer->Add( mpSubSizer,miSizerProp, Flags ,miBorder);
+      // When adding sizers into sizers, don't add a border.
+      // unless it's a static box sizer.
+      if( wxDynamicCast( mpSubSizer, wxStaticBoxSizer ))
+      {
+         mpSizer->Add( mpSubSizer,miSizerProp, Flags , miBorder);
+      }
+      else
+      {
+         mpSizer->Add( mpSubSizer,miSizerProp, Flags ,0);//miBorder);
+      }
       mpSizer = mpSubSizer;
       mpSubSizer = NULL;
       PushSizer();
