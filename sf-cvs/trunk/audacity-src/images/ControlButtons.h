@@ -1,3 +1,4 @@
+#ifndef HAVE_SHARED_BUTTONS
 #ifdef USE_AQUA_THEME
 #include "Aqua/UpButtonSquare.xpm"
 #include "Aqua/DownButtonSquare.xpm"
@@ -11,6 +12,7 @@
 #include "ControlButtons/UpButton.xpm"
 #include "ControlButtons/DownButton.xpm"
 #include "ControlButtons/HiliteButton.xpm"
+#endif
 #endif
 
 #include "ControlButtons/FFwdAlpha.xpm"
