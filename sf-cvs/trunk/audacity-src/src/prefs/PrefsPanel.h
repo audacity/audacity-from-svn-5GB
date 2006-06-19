@@ -6,6 +6,14 @@
 
   Joshua Haberman
 
+*******************************************************************//**
+
+\class PrefsPanel
+\brief Used within the PrefsDialog, classes derived from this class
+include AudioIOPrefs, BatchPrefs, DirectoriesPrefs, FileFormatPrefs,
+GUIPrefs, KeyConfigPrefs, MousePrefs, QualityPrefs, SpectrumPrefs and
+ThemePrefs.
+
   The interface works like this: Each panel in the preferences dialog
   must derive from PrefsPanel. You must override Apply() with code
   to validate fields (returning false if any are bad), updating the
@@ -15,7 +23,7 @@
   To actually add a the new panel, edit the PrefsDialog constructor
   to append the panel to its list of panels.
 
-**********************************************************************/
+*//*******************************************************************/
 
 #ifndef __AUDACITY_PREFS_PANEL__
 #define __AUDACITY_PREFS_PANEL__

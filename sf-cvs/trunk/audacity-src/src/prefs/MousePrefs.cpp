@@ -9,8 +9,8 @@
 ********************************************************************//*!
 
 \class MousePrefs
-\brief Presents interface for user to view the default bindings of mouse
-  buttons to commands.
+\brief A PrefsPanel that presents an interface for user to view the 
+   default bindings of mouse buttons to commands.
 
   April/2003: These are default bindings and are not yet configurable.  
   They are provided to give information about what the bindings are.

@@ -12,7 +12,8 @@
 ********************************************************************//**
 
 \class ThemePrefs
-\brief Configures dynamic loading of 'Theme' icons and colours
+\brief A PrefsPanel that configures dynamic loading of Theme
+icons and colours.
 
 Provides:
  - Button to save current theme as a single png image.

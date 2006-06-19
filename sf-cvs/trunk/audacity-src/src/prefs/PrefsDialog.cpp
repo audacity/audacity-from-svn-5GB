@@ -7,7 +7,12 @@
   Joshua Haberman
   James Crook
 
-**********************************************************************/
+*******************************************************************//**
+
+\class PrefsDialog
+\brief Dialog that shows the current PrefsPanel in a tabbed divider.
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

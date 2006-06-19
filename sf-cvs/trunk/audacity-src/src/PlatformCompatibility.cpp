@@ -8,8 +8,8 @@
 
 *******************************************************************//*!
 
-\class PlatformCompatability
-\brief Filename Compatability utilities.
+\class PlatformCompatibility
+\brief Filename Compatibility utilities.
 
 \see FileNames
 

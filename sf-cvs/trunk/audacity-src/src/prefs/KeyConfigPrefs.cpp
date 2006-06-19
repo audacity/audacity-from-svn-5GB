@@ -11,6 +11,7 @@
 *******************************************************************//*!
 
 \class KeyConfigPrefs
+\brief A PrefsPanel for keybindings.
 
 The code for displaying keybindings is similar to code in MousePrefs.
 It would be nice to create a new 'Bindings' class which both 
