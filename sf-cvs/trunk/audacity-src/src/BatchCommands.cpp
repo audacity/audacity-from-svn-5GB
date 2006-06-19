@@ -26,13 +26,17 @@
 #include "BatchCommands.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
-#include "../images/Arrow.xpm"
+//#include "../images/Arrow.xpm"
 #include "Internat.h"
 #include "../Prefs.h"
 #include "Shuttle.h"
 #include "../export/ExportMP3.h"
 #include "../export/ExportOGG.h"
 #include "../export/ExportPCM.h"
+
+#include "Theme.h"
+#include "AllThemeResources.h"
+
 
 // KLUDGE: All commands should be on the same footing
 // however, for historical reasons we distinguish between

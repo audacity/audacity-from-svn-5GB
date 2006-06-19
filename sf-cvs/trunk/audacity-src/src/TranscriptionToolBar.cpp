@@ -6,15 +6,32 @@
 
   Shane T. Mueller
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class TranscriptionToolBar
 \brief A kind of ToolBar used to help with analysing voice recordings.
 
 *//*******************************************************************/
 
-
 #include "Audacity.h"
+
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifdef __BORLANDC__
+#pragma hdrstop
+#endif
+
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#include <wx/brush.h>
+#include <wx/intl.h>
+#include <wx/choice.h>
+#endif // WX_PRECOMP
+
+#include <wx/image.h>
+#include <cmath>
+#include <iostream>
 
 #include "TranscriptionToolBar.h"
 
@@ -29,30 +46,12 @@
 #include "WaveTrack.h"
 #include "TimeTrack.h"
 #include "VoiceKey.h"
+#include "AllThemeResources.h"
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#include <wx/brush.h>
-#include <wx/intl.h>
-#include <wx/choice.h>
-#endif
-
-#include <wx/image.h>
-
-#include <cmath>
-#include <iostream>
-
-#include "../images/TranscriptionButtons.h"
-#include "../images/ControlButtons/Play.xpm"
-#include "../images/ControlButtons/PlayAlpha.xpm"
-#include "../images/ControlButtons/PlayDisabled.xpm"
+//#include "../images/TranscriptionButtons.h"
+//#include "../images/ControlButtons/Play.xpm"
+//#include "../images/ControlButtons/PlayAlpha.xpm"
+//#include "../images/ControlButtons/PlayDisabled.xpm"
 
 const int BUTTON_WIDTH = 27;
 const int SEPARATOR_WIDTH = 14;
@@ -132,58 +131,51 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
       mTimeTrack = NULL;
    mPlaySpeed = 1.0;
 
-
-
    //Process a dummy event to set up the slider
    wxCommandEvent dummy;
    OnSpeedSlider(dummy);
 }
 
-
-
-// This is a convenience function that allows for button creation in
-// MakeButtons() with fewer arguments
-
-void TranscriptionToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
-				     int id, const wxChar *tooltip, const wxChar *label)
+/// This is a convenience function that allows for button creation in
+/// MakeButtons() with fewer arguments
+/// Very similar to code in ControlToolBar...
+AButton *TranscriptionToolBar::AddButton(
+   teBmps eFore, teBmps eDisabled,
+   int id,
+//   bool processdownevents,
+   const wxChar *label,
+   const wxChar *tip)
 {
-   //The image needs to be centered in the button--not all icons are (e.g., the playback button).
-   mButtons[id] = ToolBar::MakeButton(
-                                      upImage, downImage, hiliteImage,
-                                      fg, disabled, alpha,
-                                      wxWindowID(id),
-                                      wxDefaultPosition,
-                                      false /*No buttons should process down events.*/,
-                                      wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
-#if wxUSE_TOOLTIPS // Not available in wxX11
-   mButtons[id]->SetToolTip(tooltip);
+   AButton *&r = mButtons[id];
+
+   r = ToolBar::MakeButton(
+      bmpRecoloredUpSmall, bmpRecoloredDownSmall, bmpRecoloredHiliteSmall,
+      eFore, eDisabled,
+      wxWindowID(id),
+      wxDefaultPosition, 
+//      processdownevents,
+      false,
+      theTheme.ImageSize( bmpRecoloredUpSmall ));
+
+   r->SetLabel(label);
+// JKC: Unlike ControlToolBar, does not have a focus rect.  Shouldn't it?
+// r->SetFocusRect( r->GetRect().Deflate( 4, 4 ) );
+
+#if wxUSE_TOOLTIPS
+   r->SetToolTip(tip);
 #endif
-   mButtons[id]->SetLabel( label );
-   Add( mButtons[id], 0, wxALIGN_CENTER );
+   Add( r, 0, wxALIGN_CENTER );
+
+   return r;
 }
 
 void TranscriptionToolBar::Populate()
 {
-   wxColour newColour =
-      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour = wxColour(204, 204, 204);
-   
-   wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
-   wxImage *downOriginal = new wxImage(wxBitmap(Down).ConvertToImage());
-   wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite).ConvertToImage());
+// Very similar to code in ControlToolBar...
+// Very similar to code in EditToolBar
+   MakeButtonBackgroundsSmall();
 
-#ifdef __WXGTK__
-   /* dmazzoni: hack to get around XPM color bugs in GTK */
-   unsigned char *data = upOriginal->GetData();
-   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
-#endif
-
-   upImage = ChangeImageColour(upOriginal, baseColour, newColour);
-   downImage = ChangeImageColour(downOriginal, baseColour, newColour);
-   hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
-
-
-   AddButton(Play,     PlayDisabled,   PlayAlpha,   TTB_PlaySpeed,
+   AddButton(bmpPlay,     bmpPlayDisabled,   TTB_PlaySpeed,
       _("Play at selected speed"),
       _("Play-at-speed"));
    
@@ -198,37 +190,32 @@ void TranscriptionToolBar::Populate()
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
    Add( mPlaySpeedSlider, 0, wxALIGN_CENTER );
-
    
-   AddButton(StartOn,     StartOnDisabled,   StartOnAlpha,   TTB_StartOn,
-             _("Adjust left selection to  next onset"),
-             _("Left-to-On"));
-   AddButton(EndOn,       EndOnDisabled,     EndOnAlpha,     TTB_EndOn,
-             _("Adjust right selection to previous offset"),
-             _("Right-to-Off"));
-   AddButton(StartOff,    StartOffDisabled,  StartOffAlpha,  TTB_StartOff,
-             _("Adjust left selection to next offset"),
-             _("Left-to-Off"));
-   AddButton(EndOff,      EndOffDisabled,    EndOffAlpha,    TTB_EndOff,
-             _("Adjust right selection to previous onset"),
-             _("Right-to-On"));
-
-   AddButton(SelectSound, SelectSoundDisabled, SelectSoundAlpha, TTB_SelectSound,
-             _("Select region of sound around cursor"),
-             _("Select-Sound"));
-
-   AddButton(SelectSilence, SelectSilenceDisabled, SelectSilenceAlpha, TTB_SelectSilence,
-             _("Select region of silence around cursor"),
-             _("Select-Silence"));
-
-   AddButton(AutomateSelection,   AutomateSelectionDisabled,   AutomateSelectionAlpha,      TTB_AutomateSelection,
+   AddButton(bmpTnStartOn,     bmpTnStartOnDisabled,  TTB_StartOn,
+      _("Adjust left selection to  next onset"),
+      _("Left-to-On"));
+   AddButton(bmpTnEndOn,       bmpTnEndOnDisabled,   TTB_EndOn,
+      _("Adjust right selection to previous offset"),
+      _("Right-to-Off"));
+   AddButton(bmpTnStartOff,    bmpTnStartOffDisabled,  TTB_StartOff,
+      _("Adjust left selection to next offset"),
+      _("Left-to-Off"));
+   AddButton(bmpTnEndOff,      bmpTnEndOffDisabled,    TTB_EndOff,
+      _("Adjust right selection to previous onset"),
+      _("Right-to-On"));
+   AddButton(bmpTnSelectSound, bmpTnSelectSoundDisabled, TTB_SelectSound,
+      _("Select region of sound around cursor"),
+      _("Select-Sound"));
+   AddButton(bmpTnSelectSilence, bmpTnSelectSilenceDisabled, TTB_SelectSilence,
+      _("Select region of silence around cursor"),
+      _("Select-Silence"));
+   AddButton(bmpTnAutomateSelection,   bmpTnAutomateSelectionDisabled,  TTB_AutomateSelection,
       _("Automatically make labels from words"),
       _("Make Labels"));
-   AddButton(MakeTag,     MakeTagDisabled,   MakeTagAlpha,   TTB_MakeLabel,  
+   AddButton(bmpTnMakeTag, bmpTnMakeTagDisabled,  TTB_MakeLabel,  
       _("Add label at selection"),
       _("Add Label"));
-  
-   AddButton(CalibrateUp, CalibrateDisabled, CalibrateAlpha, TTB_Calibrate,
+   AddButton(bmpTnCalibrate, bmpTnCalibrateDisabled, TTB_Calibrate,
       _("Calibrate voicekey"),
       _("Calibrate"));
  
@@ -259,15 +246,8 @@ void TranscriptionToolBar::Populate()
    mKeyTypeChoice->SetName(_("Key type"));
    mKeyTypeChoice->SetSelection(0);
    Add( mKeyTypeChoice, 0, wxALIGN_CENTER );
- 
-      delete upImage; 
-      delete downImage; 
-      delete hiliteImage; 
-      delete upOriginal; 
-      delete downOriginal; 
-      delete hiliteOriginal; 
+
 }
-  
 
 TranscriptionToolBar::~TranscriptionToolBar()
 {
@@ -277,7 +257,6 @@ TranscriptionToolBar::~TranscriptionToolBar()
    if(mPlaySpeedSlider)delete mPlaySpeedSlider;
    if(mSensitivitySlider)delete mSensitivitySlider;
 
-   
    for (int i=0; i<TTBNumButtons; i++)
       if(mButtons[i]) delete mButtons[i];
 

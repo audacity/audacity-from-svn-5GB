@@ -70,33 +70,23 @@ public:
    ToolBar();
    virtual ~ToolBar();
    virtual void ReCreateButtons();
-
    wxString GetTitle();
-
    wxString GetLabel();
-
    int GetType();
-
    bool IsResizeable();
-
    bool IsVisible();
-
    bool IsDocked();
-
    void SetDocked( bool dock );
-   
    void ShowMarker( bool state );
-
    virtual void EnableDisableButtons() = 0;
 
 protected:
-
    void InitToolBar( wxWindow *parent,
                      int type,
                      const wxString &title,
                      const wxString &label,
                      bool resizable = false );
-
+#if 0
    virtual AButton * MakeButton(wxImage * up,
                                 wxImage * down,
                                 wxImage * hilite,
@@ -109,6 +99,7 @@ protected:
                                 wxSize size,
                                 int xoff,
                                 int yoff);
+#endif
 
    AButton * MakeButton(teBmps eUp,
                               teBmps eDown,
@@ -121,6 +112,11 @@ protected:
                               wxSize size);
 
    void SetButton(bool down, AButton* button);
+
+   void MakeMacRecoloredImageMac(teBmps eBmpOut, teBmps eBmpIn );
+   void MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn );
+   void MakeButtonBackgroundsLarge();
+   void MakeButtonBackgroundsSmall();
 
    wxBoxSizer *GetSizer();
 

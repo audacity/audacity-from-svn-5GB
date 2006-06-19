@@ -14,11 +14,11 @@
 
 #include <wx/dcmemory.h>
 #include <wx/dragimag.h>
+#include <wx/arrimpl.cpp>
 
 #include "ExpandingToolBar.h"
 #include "AButton.h"
-
-#include <wx/arrimpl.cpp>
+#include "../AllThemeResources.h"
 
 const int kToggleButtonHeight = 8;
 const int kTimerInterval = 50; // every 50 ms -> ~20 updates per second   

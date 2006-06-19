@@ -24,7 +24,9 @@
 
 **********************************************************************/
 
-#include <wx/wx.h>
+#include "../Audacity.h"
+
+#include <wx/wxprec.h>
 #include "AttachableScrollBar.h"
 #include "../ViewInfo.h"
 

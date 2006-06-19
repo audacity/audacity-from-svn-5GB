@@ -59,8 +59,8 @@ void GUIPrefs::Populate( )
 
 void GUIPrefs::PopulateOrExchange( ShuttleGui & S )
 {
-   S.StartHorizontalLay( wxEXPAND, 0 );
    S.SetBorder( 2 );
+   S.StartHorizontalLay( wxEXPAND, 0 );
    S.StartStatic( _("Behaviors"),1 );
    {
       S.TieCheckBox( _("&Autoscroll while playing"),

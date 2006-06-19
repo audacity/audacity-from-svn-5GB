@@ -27,6 +27,7 @@ public:
    virtual bool TransferDouble( const wxString & Name, double & dValue, const double &dDefault );
    virtual bool TransferInt( const wxString & Name, int & iValue, const int &iDefault );
    virtual bool TransferString( const wxString & Name, wxString & strValue, const wxString &strDefault );
+   virtual bool TransferWrappedType( const wxString & Name, WrappedType & W );
    virtual bool ExchangeWithMaster(const wxString & Name);
 };
 

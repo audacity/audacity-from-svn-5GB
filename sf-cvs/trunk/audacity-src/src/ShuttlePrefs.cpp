@@ -31,6 +31,7 @@
 #include "Project.h"
 #include "Shuttle.h"
 #include "ShuttlePrefs.h"
+#include "WrappedType.h"
 #include "Prefs.h"
 
 bool ShuttlePrefs::TransferBool( const wxString & Name, bool & bValue, const bool & bDefault )
@@ -87,6 +88,32 @@ bool ShuttlePrefs::TransferString( const wxString & Name, wxString & strValue, c
       return gPrefs->Write( Name, strValue );
    }
    return true;
+}
+
+bool ShuttlePrefs::TransferWrappedType( const wxString & Name, WrappedType & W )
+{
+   switch( W.eWrappedType )
+   {
+   case eWrappedString:
+      return TransferString( Name, *W.mpStr, *W.mpStr );
+      break;
+   case eWrappedInt:
+      return TransferInt( Name, *W.mpInt, *W.mpInt );
+      break;
+   case eWrappedDouble:
+      return TransferDouble( Name, *W.mpDouble, *W.mpDouble );
+      break;
+   case eWrappedBool:
+      return TransferBool( Name, *W.mpBool, *W.mpBool );
+      break;
+   case eWrappedEnum:
+      wxASSERT( false );
+      break;
+   default:
+      wxASSERT( false );
+      break;
+   }
+   return false;
 }
 
 bool ShuttlePrefs::ExchangeWithMaster(const wxString & Name)

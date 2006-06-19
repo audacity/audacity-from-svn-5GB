@@ -104,7 +104,7 @@ void QualityPrefs::GetNamesAndLabels()
 
 void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
 {
-   S.SetBorder( 5 );
+   S.SetBorder( 2 );
    S.StartStatic(_("Sampling"),0 );
    {
       S.StartTwoColumn();
@@ -175,10 +175,8 @@ void QualityPrefs::DefineSampleRateControl( ShuttleGui & S )
    // the controls, so that we can drive them from
    // our own code.
 
-   // Adjust borders so that extra sizer doesn't add extra space.
-   S.SetBorder(0);
+   S.SetBorder(2);
    S.StartHorizontalLay(wxALIGN_LEFT );
-   S.SetBorder(5);
    // If the value in Prefs isn't in the list, then we want
    // the last item, 'Other...' to be shown.
    S.SetNoMatchSelector( mmSampleRateNames.GetCount()-1 );

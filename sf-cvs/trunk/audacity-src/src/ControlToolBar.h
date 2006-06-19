@@ -33,9 +33,7 @@ class ControlToolBar:public ToolBar {
    ControlToolBar() {};
    ControlToolBar(wxWindow * parent);
    virtual ~ControlToolBar();
-
    void UpdatePrefs();
-
    virtual void OnKeyEvent(wxKeyEvent & event);
 
    // msmeyer: These are public, but it's far better to
@@ -57,12 +55,10 @@ class ControlToolBar:public ToolBar {
    // Play currently selected region, or if nothing selected,
    // play from current cursor.
    void PlayCurrentRegion(bool looped = false, bool cutpreview = false);
-
    // Play the region [t0,t1]
    void PlayPlayRegion(double t0, double t1,
                        bool looped = false,
                        bool cutpreview = false);
-
    void PlayDefault();
    
    // Stop playing
@@ -71,7 +67,6 @@ class ControlToolBar:public ToolBar {
    void Populate();
    virtual void Repaint( wxDC *dc );
    virtual void EnableDisableButtons();
-
    void OnShiftDown(wxKeyEvent & event);
    void OnShiftUp(wxKeyEvent & event);
 
@@ -81,18 +76,13 @@ class ControlToolBar:public ToolBar {
    DECLARE_EVENT_TABLE()
    ;
  private:
-
-   AButton *MakeButton(char const **foreground, char const **disabled,
-                       char const **alpha, int id, bool processdownevents,
-                       const wxChar *label, const wxChar *tip);
    AButton *MakeButton(teBmps eFore, teBmps eDisabled,
-                                       int id,
-                                       bool processdownevents,
-                                       const wxChar *label,
-                                       const wxChar *tip);
+      int id,
+      bool processdownevents,
+      const wxChar *label,
+      const wxChar *tip);
    void MakeLoopImage();
    void ArrangeButtons();
-   
    void SetupCutPreviewTracks(double playStart, double cutStart,
                              double cutEnd, double playEnd);
    void ClearCutPreviewTracks();
@@ -119,11 +109,6 @@ class ControlToolBar:public ToolBar {
    AButton *mFF;
 
    static AudacityProject *mBusyProject;
-
-   wxImage *upPattern;
-   wxImage *downPattern;
-   wxImage *hilitePattern;
-
    // Maybe button state values shouldn't be duplicated in this toolbar?
    bool mPaused;         //Play or record is paused or not paused?
    bool mAlwaysEnablePause;

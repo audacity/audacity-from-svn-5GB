@@ -18,15 +18,43 @@
    It maps sets of ids to the resources and to names of the resources,
    so that they can be loaded/saved from files.
 
+   Theme adds the Audacity specific images to ThemeBase.
+
 \see \ref Themability
 
-*//********************************************************************/
+*//*****************************************************************//**
 
-#include <wx/wx.h>
+\class ThemeBase
+\brief Theme management - Image loading and saving.
+
+   Base for the Theme class. ThemeBase is a generic 
+   non-Audacity specific class.
+
+\see \ref Themability
+
+*//*****************************************************************//**
+
+\class FlowPacker
+\brief Packs rectangular boxes into a rectangle, using simple first fit.
+
+This class is currently used by Theme to pack its images into the image
+cache.  Perhaps someday we will improve FlowPacker and make it more flexible,
+and use it for toolbar and window layouts too.
+
+*//*****************************************************************/
+
+#include "Audacity.h"
+
+#include <wx/wxprec.h>
 #include <wx/image.h>
 #include <wx/arrimpl.cpp> 
 #include <wx/file.h>
 #include <wx/mstream.h>
+
+// This step should mean that we get PC/Linux images only
+// except where we EXPLICITLY request otherwise.
+#undef USE_AQUA_THEME
+
 #include "Project.h" 
 #include "ToolBar.h"
 #include "ControlToolBar.h"
@@ -40,119 +68,98 @@ WX_DEFINE_OBJARRAY( ArrayOfImages );
 WX_DEFINE_OBJARRAY( ArrayOfBitmaps );
 WX_DEFINE_OBJARRAY( ArrayOfColours );
 
+
+// JKC: First get the MAC specific images.
+// As we've disabled USE_AQUA_THEME, we need to name each file we use.
+//
+// JKC: Mac Hackery.
+// These #defines are very temporary.  We want to ensure the Mac XPM names don't collide with
+// the PC XPM names, so we do some #defines and later undo them.
+// Use the same trick wherever we need to avoid name collisions.
+
+// All this will vanish when the XPMs are eliminated.
+
+#define DownButton             MacDownButton
+#define HiliteButton           MacHiliteButton
+#define UpButton               MacUpButton
+#define Down                   MacDown
+#define Hilite                 MacHilite
+#define Up                     MacUp
+#define Slider                 MacSlider
+#define SliderThumb            MacSliderThumb
+
+
+#include "../images/Aqua/HiliteButtonSquare.xpm"
+#include "../images/Aqua/UpButtonSquare.xpm"
+#include "../images/Aqua/DownButtonSquare.xpm"
+#include "../images/Aqua/Slider.xpm"
+#include "../images/Aqua/SliderThumb.xpm"
+#include "../images/Aqua/Down.xpm"
+#include "../images/Aqua/Hilite.xpm"
+#include "../images/Aqua/Up.xpm"
+
+#if 0
+// These ones aren't used...
+#include "../images/Aqua/DownButtonStripes.xpm"
+#include "../images/Aqua/DownButtonWhite.xpm"
+#include "../images/Aqua/HiliteButtonStripes.xpm"
+#include "../images/Aqua/HiliteButtonWhite.xpm"
+#include "../images/Aqua/UpButtonStripes.xpm"
+#include "../images/Aqua/UpButtonWhite.xpm"
+#endif
+
+#undef DownButton           
+#undef UpButton
+#undef HiliteButton
+#undef Down          
+#undef Hilite       
+#undef Up           
+#undef Slider       
+#undef SliderThumb  
+
+
+
+//-- OK now on to includes for Linux/PC images.
+
 #include "../images/PostfishButtons.h"
 #include "../images/ControlButtons.h"
+#define HAVE_SHARED_BUTTONS
 #include "../images/EditButtons.h"
 #include "../images/MixerImages.h"
 #include "../images/Cursors.h"
 #include "../images/ToolBarButtons.h"
-
-#include "../images/ToolsButtons/Draw.xpm"
-#include "../images/ToolsButtons/DrawAlpha.xpm"
-#include "../images/ToolsButtons/Envelope.xpm"
-#include "../images/ToolsButtons/EnvelopeAlpha.xpm"
-#include "../images/ToolsButtons/IBeam.xpm"
-#include "../images/ToolsButtons/IBeamAlpha.xpm"
-#include "../images/ToolsButtons/Multi.xpm"
-#include "../images/ToolsButtons/MultiAlpha.xpm"
-#include "../images/ToolsButtons/TimeShift.xpm"
-#include "../images/ToolsButtons/TimeShiftAlpha.xpm"
-#include "../images/ToolsButtons/Zoom.xpm"
-#include "../images/ToolsButtons/ZoomAlpha.xpm"
+#include "../images/TranscriptionButtons.h"
+#include "../images/ToolsButtons.h"
 
 #include "../images/ExpandingToolBar/ToolBarToggle.xpm"
 #include "../images/ExpandingToolBar/ToolBarTarget.xpm"
 #include "../images/ExpandingToolBar/ToolBarGrabber.xpm"
+
+#define Slider      VolumeSlider
+#define SliderThumb VolumeSliderThumb
+#include "../images/ControlButtons/Slider.xpm"
+#include "../images/ControlButtons/SliderThumb.xpm"
+#undef Slider
+#undef SliderThumb
+
+// A different slider's thumb.
+#include "../images/SliderThumb.xpm"
+#include "../images/SliderThumbAlpha.xpm"
+
+// Include files to get the default images
+//#include "../images/Aqua.xpm"
+#include "../images/Arrow.xpm"
+#include "../images/GlyphImages.h"
+#include "../images/UploadImages.h"
+
+#include "../images/AudacityLogo.xpm"
+#include "../images/AudacityLogo48x48.xpm"
 
 
 // This declares the variables such as
 // int BmpRecordButton = -1;
 #define THEME_DECLARATIONS
 #include "AllThemeResources.h"
-
-#if 0
-#include "../images/ToolsButtons.h"
-#include "../images/TranscriptionButtons.h"
-
-// Include files to get the default images
-#include "../images/Aqua.xpm"
-#include "../images/Arrow.xpm"
-#include "../images/AudacityLogo.xpm"
-#include "../images/AudacityLogo48x48.xpm"
-#include "../images/SliderThumb.xpm"
-#include "../images/SliderThumbAlpha.xpm"
-#endif
-
-#if 0
-#include "../images/Aqua/Down.xpm"
-#include "../images/Aqua/DownButtonSquare.xpm"
-#include "../images/Aqua/DownButtonStripes.xpm"
-#include "../images/Aqua/DownButtonWhite.xpm"
-#include "../images/Aqua/Hilite.xpm"
-#include "../images/Aqua/HiliteButtonSquare.xpm"
-#include "../images/Aqua/HiliteButtonStripes.xpm"
-#include "../images/Aqua/HiliteButtonWhite.xpm"
-#include "../images/Aqua/Slider.xpm"
-#include "../images/Aqua/SliderThumb.xpm"
-#include "../images/Aqua/Up.xpm"
-#include "../images/Aqua/UpButtonSquare.xpm"
-#include "../images/Aqua/UpButtonStripes.xpm"
-#include "../images/Aqua/UpButtonWhite.xpm"
-
-
-#include "../images/ControlButtons/Disabled.xpm"
-#include "../images/ControlButtons/Down.xpm"
-#include "../images/ControlButtons/DownButton.xpm"
-#include "../images/ControlButtons/Hilite.xpm"
-#include "../images/ControlButtons/HiliteButton.xpm"
-#include "../images/ControlButtons/Slider.xpm"
-#include "../images/ControlButtons/SliderThumb.xpm"
-#include "../images/ControlButtons/Up.xpm"
-#include "../images/ControlButtons/UpButton.xpm"
-#include "../images/ControlButtons/Zoom.xpm"
-#include "../images/ControlButtons/ZoomAlpha.xpm"
-
-
-#include "../images/ToolBarImages/DockDown.xpm"
-#include "../images/ToolBarImages/DockDownShort.xpm"
-#include "../images/ToolBarImages/DockOver.xpm"
-#include "../images/ToolBarImages/DockOverShort.xpm"
-#include "../images/ToolBarImages/DockUp.xpm"
-#include "../images/ToolBarImages/DockUpShort.xpm"
-
-#include "../images/TranscriptionImages/Automate.xpm"
-#include "../images/TranscriptionImages/AutomateSelection.xpm"
-#include "../images/TranscriptionImages/AutomateSelectionAlpha.xpm"
-#include "../images/TranscriptionImages/AutomateSelectionDisabled.xpm"
-#include "../images/TranscriptionImages/CalibrateAlpha.xpm"
-#include "../images/TranscriptionImages/CalibrateDisabled.xpm"
-#include "../images/TranscriptionImages/CalibrateUp.xpm"
-#include "../images/TranscriptionImages/Down.xpm"
-#include "../images/TranscriptionImages/EndOff.xpm"
-#include "../images/TranscriptionImages/EndOffAlpha.xpm"
-#include "../images/TranscriptionImages/EndOffDisabled.xpm"
-#include "../images/TranscriptionImages/EndOn.xpm"
-#include "../images/TranscriptionImages/EndOnAlpha.xpm"
-#include "../images/TranscriptionImages/EndOnDisabled.xpm"
-#include "../images/TranscriptionImages/Hilite.xpm"
-#include "../images/TranscriptionImages/MakeTag.xpm"
-#include "../images/TranscriptionImages/MakeTagAlpha.xpm"
-#include "../images/TranscriptionImages/MakeTagDisabled.xpm"
-#include "../images/TranscriptionImages/SelectSilence.xpm"
-#include "../images/TranscriptionImages/SelectSilenceAlpha.xpm"
-#include "../images/TranscriptionImages/SelectSilenceDisabled.xpm"
-#include "../images/TranscriptionImages/SelectSound.xpm"
-#include "../images/TranscriptionImages/SelectSoundAlpha.xpm"
-#include "../images/TranscriptionImages/SelectSoundDisabled.xpm"
-#include "../images/TranscriptionImages/StartOff.xpm"
-#include "../images/TranscriptionImages/StartOffAlpha.xpm"
-#include "../images/TranscriptionImages/StartOffDisabled.xpm"
-#include "../images/TranscriptionImages/StartOn.xpm"
-#include "../images/TranscriptionImages/StartOnAlpha.xpm"
-#include "../images/TranscriptionImages/StartOnDisabled.xpm"
-#include "../images/TranscriptionImages/Up.xpm"
-#endif
-
 
 // Include the ImageCache...
 unsigned char ImageCacheAsData[] = {
@@ -393,7 +400,7 @@ void FlowPacker::GetNextPosition( int xSize, int ySize )
    // if the height has increased, then we are on a new group.
    if(( ySize > myHeight )||(mFlags != mOldFlags ))
    {
-      SetNewGroup( mFlags && resFlagPaired ? 2 : 1 );
+      SetNewGroup( ((mFlags & resFlagPaired)!=0) ? 2 : 1 );
       myHeight = ySize;
    }
 
@@ -495,9 +502,9 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    EnsureInitialised();
    const int nBmpsPerRow=6;
    const int depth = 32; //32 bits depth.  Includes alpha channel.
-   const int width = 32 * nBmpsPerRow;// we want to be 6 32 bit images across.
+   const int width = 440;// Must be wide enough for Audacity logo which is 215, use double width.
    int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
-   height +=200;
+   height +=100;// extra space..
 
    wxImage ImageCache( width, height );
 
@@ -522,15 +529,18 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    {
       wxImage &SrcImage = mImages[i];
       mFlow.mFlags = mBitmapFlags[i];
-      mFlow.GetNextPosition( SrcImage.GetWidth(), SrcImage.GetHeight());
-      PasteSubImage( &ImageCache, &SrcImage, mFlow.mxPos, mFlow.myPos );
+      if( (mBitmapFlags[i] & resFlagInternal)==0)
+      {
+         mFlow.GetNextPosition( SrcImage.GetWidth(), SrcImage.GetHeight());
+         PasteSubImage( &ImageCache, &SrcImage, mFlow.mxPos, mFlow.myPos );
 #ifdef IMAGE_MAP
-      // No href in html.  Uses title not alt.
-      wxRect R( mFlow.Rect() );
-      wxLogDebug( wxT("<area title=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">"),
-         mBitmapNames[i].c_str(), 
-         R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom() );
+         // No href in html.  Uses title not alt.
+         wxRect R( mFlow.Rect() );
+         wxLogDebug( wxT("<area title=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">"),
+            mBitmapNames[i].c_str(), 
+            R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom() );
 #endif
+      }
    }
 
    // Now save the colours.
@@ -634,9 +644,9 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    EnsureInitialised();
    const int nBmpsPerRow=6;
    const int depth = 32; //32 bits depth.  Includes alpha channel.
-   const int width = 32 * nBmpsPerRow;// we want to be 6 32 bit images across.
+   const int width = 440;// Must be wide enough for Audacity logo which is 215, use double width.
    int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
-   height +=200;
+   height +=100;
 
    // I'm not sure that this part is needed when reading...
    wxImage ImageCache( width, height );
@@ -698,10 +708,13 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    {
       wxImage &Image = mImages[i];
       mFlow.mFlags = mBitmapFlags[i];
-      mFlow.GetNextPosition( Image.GetWidth(),Image.GetHeight() );
-      //      wxLogDebug(wxT("Copy at %i %i (%i,%i)"), mxPos, myPos, xWidth1, yHeight1 );
-      Image = GetSubImageWithAlpha( ImageCache, mFlow.Rect());
-      mBitmaps[i] = wxBitmap(Image);
+      if( (mBitmapFlags[i] & resFlagInternal)==0)
+      {
+         mFlow.GetNextPosition( Image.GetWidth(),Image.GetHeight() );
+         //      wxLogDebug(wxT("Copy at %i %i (%i,%i)"), mxPos, myPos, xWidth1, yHeight1 );
+         Image = GetSubImageWithAlpha( ImageCache, mFlow.Rect());
+         mBitmaps[i] = wxBitmap(Image);
+      }
    }
 
    // Now load the colours.
@@ -732,19 +745,32 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
    wxString FileName;
    for(i=0;i<(int)mImages.GetCount();i++)
    {
-      FileName = FileNames::ThemeComponent( mBitmapNames[i] );
-      if( wxFileExists( FileName ))
+      
+      if( (mBitmapFlags[i] & resFlagInternal)==0)
       {
-         if( !mImages[i].LoadFile( FileName, wxBITMAP_TYPE_PNG ))
+         FileName = FileNames::ThemeComponent( mBitmapNames[i] );
+         if( wxFileExists( FileName ))
          {
-            wxMessageBox(
-               wxString::Format( 
-               _("Audacity could not load file:\r\n  %s.\r\nBad png format perhaps?"),
-                  FileName.c_str() ));
-            return;
+            if( !mImages[i].LoadFile( FileName, wxBITMAP_TYPE_PNG ))
+            {
+               wxMessageBox(
+                  wxString::Format( 
+                  _("Audacity could not load file:\r\n  %s.\r\nBad png format perhaps?"),
+                     FileName.c_str() ));
+               return;
+            }
+            /// JKC: \bug (wxWidgets) A png may have been saved with alpha, but when you 
+            /// load it, it comes back with a mask instead!  (well I guess it is more
+            /// efficient).  Anyway, we want alpha and not a mask, so we call InitAlpha,
+            /// and that transfers the mask into the alpha channel, and we're done.
+            if( ! mImages[i].HasAlpha() )
+            {
+               // wxLogDebug( wxT("File %s lacked alpha"), mBitmapNames[i].c_str() );
+               mImages[i].InitAlpha();
+            }
+            mBitmaps[i] = wxBitmap( mImages[i] );
+            n++;
          }
-         mBitmaps[i] = wxBitmap( mImages[i] );
-         n++;
       }
    }
    if( n==0 )
@@ -790,18 +816,21 @@ void ThemeBase::SaveComponents()
    wxString FileName;
    for(i=0;i<(int)mImages.GetCount();i++)
    {
-      FileName = FileNames::ThemeComponent( mBitmapNames[i] );
-      if( !wxFileExists( FileName ))
+      if( (mBitmapFlags[i] & resFlagInternal)==0)
       {
-         if( !mImages[i].SaveFile( FileName, wxBITMAP_TYPE_PNG ))
+         FileName = FileNames::ThemeComponent( mBitmapNames[i] );
+         if( !wxFileExists( FileName ))
          {
-            wxMessageBox(
-               wxString::Format( 
-               _("Audacity could not save file:\r\n  %s"),
-                  FileName.c_str() ));
-            return;
+            if( !mImages[i].SaveFile( FileName, wxBITMAP_TYPE_PNG ))
+            {
+               wxMessageBox(
+                  wxString::Format( 
+                  _("Audacity could not save file:\r\n  %s"),
+                     FileName.c_str() ));
+               return;
+            }
+            n++;
          }
-         n++;
       }
    }
    if( n==0 )
@@ -869,7 +898,13 @@ wxImage  & ThemeBase::Image( int iIndex )
    EnsureInitialised();
    return mImages[iIndex];
 }
-
+wxSize  ThemeBase::ImageSize( int iIndex )
+{
+   wxASSERT( iIndex >= 0 );
+   EnsureInitialised();
+   wxImage & Image = mImages[iIndex];
+   return wxSize( Image.GetWidth(), Image.GetHeight());
+}
 wxCursor & ThemeBase::Cursor( int iIndex )
 {
    wxASSERT( iIndex >= 0 );
@@ -883,4 +918,12 @@ wxFont   & ThemeBase::Font( int iIndex )
    EnsureInitialised();
    return *(wxFont*)NULL;
 }
+
+/// Replaces both the image and the bitmap.
+void ThemeBase::ReplaceImage( int iIndex, wxImage * pImage )
+{
+   Image( iIndex ) = *pImage;
+   Bitmap( iIndex ) = wxBitmap( *pImage );
+}
+
 

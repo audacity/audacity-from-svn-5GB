@@ -33,7 +33,9 @@ close it.
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(AboutDialogCreditItemsList);
 
-#include "../images/AudacityLogo.xpm"
+#include "Theme.h"
+#include "AllThemeResources.h"
+//#include "../images/AudacityLogo.xpm"
 
 void AboutDialog::CreateCreditsList()
 {
@@ -229,9 +231,9 @@ AboutDialog::AboutDialog(wxWindow * parent)
 
    wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
 
-   logo = new wxBitmap((const char **) AudacityLogo_xpm);
+//   logo = new wxBitmap((const char **) AudacityLogo_xpm);
    icon =
-       new wxStaticBitmap(this, -1, *logo, wxPoint(93, 10),
+       new wxStaticBitmap(this, -1, theTheme.Bitmap(bmpAudacityLogo), wxPoint(93, 10),
                           wxSize(215, 190));
    pBoxSizer->Add(icon, 0, wxALIGN_CENTER | wxALL, 8);
 
@@ -296,7 +298,7 @@ wxString AboutDialog::GetCreditsByRole(AboutDialog::Role role)
 AboutDialog::~AboutDialog()
 {
    delete icon;
-   delete logo;
+//   delete logo;
 }
 
 void AboutDialog::OnOK(wxCommandEvent & WXUNUSED(event))

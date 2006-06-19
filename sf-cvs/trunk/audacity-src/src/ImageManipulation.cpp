@@ -73,7 +73,7 @@ wxImage *ChangeImageColour(wxImage * srcImage,
 
    int i;
    for (i = 0; i < 3; i++) {
-      srcOpp[i] = 255 - srcVal[i];
+      srcOpp[i] = 256 - srcVal[i];  // avoid zero!
       dstOpp[i] = 255 - dstVal[i];
    }
 

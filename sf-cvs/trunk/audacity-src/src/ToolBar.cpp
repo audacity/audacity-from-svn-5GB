@@ -30,7 +30,7 @@ dockable window in which buttons can be placed.
   there are some methods in ToolBarStub that will load and unload toolbars from
   all project windows.
 
-*//*******************************************************************//*!
+*//*******************************************************************//**
 
 \file ToolBar.cpp
 
@@ -39,9 +39,6 @@ dockable window in which buttons can be placed.
 *//*******************************************************************/
 
 #include "Audacity.h"
-
-#include "ToolBar.h"
-#include "Theme.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
@@ -67,6 +64,10 @@ dockable window in which buttons can be placed.
 #include <wx/timer.h>
 #include <wx/dcbuffer.h>
 #include <wx/region.h>
+
+#include "ToolBar.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 #include "AColor.h"
 #include "Prefs.h"
@@ -1512,6 +1513,8 @@ void ToolBar::Detach( wxSizer *sizer )
 ///                        if it is in the down position (and pop up when clicked in the down position)
 /// xadjust       x-offset to adjust the icon pixmaps from, wrt a centered icon on background image
 /// yadjust       y-offset to adjust the icon pixmaps from, wrt a centered icon on background image
+
+#if 0
 AButton * ToolBar::MakeButton(wxImage * up,
                               wxImage * down,
                               wxImage * hilite,
@@ -1551,7 +1554,68 @@ AButton * ToolBar::MakeButton(wxImage * up,
 
    return button;
 }
+#endif
 
+
+void ToolBar::MakeMacRecoloredImageMac(teBmps eBmpOut, teBmps eBmpIn )
+{
+   theTheme.ReplaceImage( eBmpOut, &theTheme.Image( eBmpIn ));
+}
+
+void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
+{
+   wxImage * pPattern;
+   wxImage * pSrc = &theTheme.Image( eBmpIn );
+   wxColour newColour = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
+   wxColour baseColour = wxColour(204, 204, 204);
+
+#ifdef __WXGTK__
+   /* dmazzoni: hack to get around XPM color bugs in GTK */
+   unsigned char *data = pSrc->GetData();
+   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
+#endif
+
+   pPattern     = ChangeImageColour( pSrc,     baseColour, newColour );
+   theTheme.ReplaceImage( eBmpOut, pPattern);
+   delete pPattern;
+}
+
+void ToolBar:: MakeButtonBackgroundsLarge()
+{
+#ifdef USE_AQUA_THEME
+   MakeMacRecoloredImage( bmpRecoloredUpLarge,     bmpMacUpButtonLarge );
+   MakeMacRecoloredImage( bmpRecoloredDownLarge,   bmpMacDownButtonLarge );
+   MakeMacRecoloredImage( bmpRecoloredHiliteLarge, bmpMacHiliteButtonLarge );
+#else
+   MakeRecoloredImage( bmpRecoloredUpLarge,     bmpUpButtonLarge );
+   MakeRecoloredImage( bmpRecoloredDownLarge,   bmpDownButtonLarge );
+   MakeRecoloredImage( bmpRecoloredHiliteLarge, bmpHiliteButtonLarge );
+#endif
+}
+
+void ToolBar::MakeButtonBackgroundsSmall()
+{
+#ifdef USE_AQUA_THEME
+   MakeMacRecoloredImage( bmpRecoloredUpSmall,     bmpMacUpButtonSmall );
+   MakeMacRecoloredImage( bmpRecoloredDownSmall,   bmpMacDownButtonSmall );
+   MakeMacRecoloredImage( bmpRecoloredHiliteSmall, bmpMacHiliteButtonSmall );
+#else
+   MakeRecoloredImage( bmpRecoloredUpSmall,     bmpUpButtonSmall );
+   MakeRecoloredImage( bmpRecoloredDownSmall,   bmpDownButtonSmall );
+   MakeRecoloredImage( bmpRecoloredHiliteSmall, bmpHiliteButtonSmall );
+#endif
+}
+
+/// Makes a button and its four different state bitmaps
+/// @param eUp        Background for when button is Up.
+/// @param eDown      Background for when button is Down.
+/// @param eHilite    Background for when button is Hilit.
+/// @param eStandard  Foreground when enabled.
+/// @param eDisabled  Foreground when disabled.
+/// @param id         Windows Id.
+/// @param placement  Placement position
+/// @param processdownevents true iff button handles down events.
+/// @param size       Size of the background.
 AButton * ToolBar::MakeButton(teBmps eUp,
                               teBmps eDown,
                               teBmps eHilite,
@@ -1562,11 +1626,8 @@ AButton * ToolBar::MakeButton(teBmps eUp,
                               bool processdownevents, 
                               wxSize size) 
 {
-   wxImage color(          theTheme.Bitmap(eStandard).ConvertToImage());
-   wxImage color_disabled( theTheme.Bitmap(eDisabled).ConvertToImage());
-
-   int xoff = (size.GetWidth() - color.GetWidth())/2;
-   int yoff = (size.GetHeight() - color.GetHeight())/2;
+   int xoff = (size.GetWidth() - theTheme.Image(eStandard).GetWidth())/2;
+   int yoff = (size.GetHeight() - theTheme.Image(eStandard).GetHeight())/2;
    
    wxImage * up2        = OverlayImage(eUp,     eStandard, xoff, yoff);
    wxImage * hilite2    = OverlayImage(eHilite, eStandard, xoff, yoff);
@@ -1581,7 +1642,6 @@ AButton * ToolBar::MakeButton(teBmps eUp,
    delete down2;
    delete hilite2;
    delete disable2;
-
    return button;
 }
 

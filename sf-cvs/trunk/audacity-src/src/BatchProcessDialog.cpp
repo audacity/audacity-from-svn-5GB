@@ -34,8 +34,11 @@
 #include "BatchProcessDialog.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
-#include "../images/Arrow.xpm"
+//#include "../images/Arrow.xpm"
 #include "BatchCommands.h"
+
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 
 #define FileListID 7001
@@ -76,8 +79,13 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
    mList->SetSizeHints(350, 180);
 
    wxImageList *imageList = new wxImageList(9, 16);
-   imageList->Add(wxIcon(empty_9x16_xpm));
-   imageList->Add(wxIcon(arrow_xpm));
+
+   wxIcon TempIcon;
+   TempIcon.CopyFromBitmap( wxBitmap(9,16) );
+   imageList->Add(TempIcon);
+   TempIcon.CopyFromBitmap( theTheme.Bitmap( bmpArrow));
+   imageList->Add(TempIcon);
+
    mList->AssignImageList(imageList, wxIMAGE_LIST_SMALL);
    mList->InsertColumn(0, _("File"), wxLIST_FORMAT_LEFT, 280);
 //   mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 66);

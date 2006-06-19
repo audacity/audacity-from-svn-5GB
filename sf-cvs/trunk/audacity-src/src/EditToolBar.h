@@ -19,6 +19,7 @@
 #include <wx/object.h>
 
 #include "ToolBar.h"
+#include "Theme.h" // for type teBmps
 
 class AButton;
 class ASlider;
@@ -67,8 +68,11 @@ class EditToolBar:public ToolBar {
 
 
  private:
-   void AddButton(const char **fg, const char **disabled, const char **alpha,
-                  int id, const wxChar *tooltip, const wxChar *label);
+   AButton *EditToolBar::AddButton( teBmps eFore, teBmps eDisabled,
+      int id,
+//    bool processdownevents,
+      const wxChar *label, const wxChar *tip);
+
    void AddSeparator();
 
    void MakeButtons();

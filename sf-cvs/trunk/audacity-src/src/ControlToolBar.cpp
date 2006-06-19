@@ -29,13 +29,8 @@
 
 *//*******************************************************************/
 
-
 #include "Audacity.h"
-
 #include "ControlToolBar.h"
-
-// For compilers that support precompilation, includes "wx/wx.h".
-#include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
 #pragma hdrstop
@@ -66,8 +61,9 @@
 #include "AColor.h"
 #include "MeterToolBar.h"
 #include "Theme.h"
+#include "AllThemeResources.h"
 
-#include "../images/ControlButtons.h"
+// #include "../images/ControlButtons.h"
 
 //static
 AudacityProject *ControlToolBar::mBusyProject = NULL;
@@ -125,40 +121,18 @@ ControlToolBar::~ControlToolBar()
 
 // This is a convenience function that allows for button creation in
 // MakeButtons() with fewer arguments
-AButton *ControlToolBar::MakeButton(char const **foreground,
-                                    char const **disabled,
-                                    char const **alpha,
-                                    int id,
-                                    bool processdownevents,
-                                    const wxChar *label,
-                                    const wxChar *tip)
-{
-   AButton *r = ToolBar::MakeButton(upPattern, downPattern, hilitePattern,
-                                    foreground, disabled, alpha, wxWindowID(id),
-                                    wxDefaultPosition, processdownevents,
-                                    wxSize(upPattern->GetWidth(), upPattern->GetHeight()),
-                                    0, 0 );
-   r->SetLabel(label);
-   r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
-
-#if wxUSE_TOOLTIPS
-   r->SetToolTip(tip);
-#endif
-
-   return r;
-}
-
 AButton *ControlToolBar::MakeButton(teBmps eFore, teBmps eDisabled,
                                     int id,
                                     bool processdownevents,
                                     const wxChar *label,
                                     const wxChar *tip)
 {
-   AButton *r = ToolBar::MakeButton(bmpRecoloredUpButton, bmpRecoloredDownButton, bmpRecoloredHiliteButton,
-                                    eFore, eDisabled,
-                                    wxWindowID(id),
-                                    wxDefaultPosition, processdownevents,
-                                    wxSize(upPattern->GetWidth(), upPattern->GetHeight()));
+   AButton *r = ToolBar::MakeButton(
+      bmpRecoloredUpLarge, bmpRecoloredDownLarge, bmpRecoloredHiliteLarge,
+      eFore, eDisabled,
+      wxWindowID(id),
+      wxDefaultPosition, processdownevents,
+      theTheme.ImageSize( bmpRecoloredUpLarge ));
    r->SetLabel(label);
    r->SetFocusRect( r->GetRect().Deflate( 12, 12 ) );
 
@@ -171,23 +145,21 @@ AButton *ControlToolBar::MakeButton(teBmps eFore, teBmps eDisabled,
 
 void ControlToolBar::MakeLoopImage()
 {
-   int xoff = 16;
-   int yoff = 16;
+   // JKC: See ToolBar::MakeButton() for almost identical code.  Condense??
 
-   wxImage * color          = new wxImage(wxBitmap(Loop).ConvertToImage());
-   wxImage * color_disabled = new wxImage(wxBitmap(LoopDisabled).ConvertToImage());
-   wxImage * mask           = new wxImage(wxBitmap(LoopAlpha).ConvertToImage());
-   
-   wxImage * up2            = OverlayImage(upPattern, color, mask, xoff, yoff);
-   wxImage * hilite2 	    = OverlayImage(hilitePattern, color, mask, xoff, yoff);
-   wxImage * down2          = OverlayImage(downPattern, color, mask, xoff + 1, yoff + 1);
-   wxImage * disable2 	    = OverlayImage(upPattern, color_disabled, mask, xoff, yoff);
+   wxSize Size1( theTheme.ImageSize( bmpRecoloredUpLarge ));
+   wxSize Size2( theTheme.ImageSize( bmpLoop ));
+
+   int xoff = (Size1.GetWidth()  - Size2.GetWidth())/2;
+   int yoff = (Size1.GetHeight() - Size2.GetHeight())/2;
+
+   wxImage * up2        = OverlayImage(bmpRecoloredUpLarge,     bmpLoop, xoff, yoff);
+   wxImage * hilite2    = OverlayImage(bmpRecoloredHiliteLarge, bmpLoop, xoff, yoff);
+   wxImage * down2      = OverlayImage(bmpRecoloredDownLarge,   bmpLoop, xoff + 1, yoff + 1);
+   wxImage * disable2   = OverlayImage(bmpRecoloredUpLarge,     bmpLoopDisabled, xoff, yoff);
 
    mPlay->SetAlternateImages(up2, hilite2, down2, disable2);
 
-   delete color;
-   delete color_disabled;
-   delete mask;
    delete up2;
    delete hilite2;
    delete down2;
@@ -196,97 +168,30 @@ void ControlToolBar::MakeLoopImage()
 
 void ControlToolBar::Populate()
 {
-   // Each of these three allocs a new Image.
-   wxImage *upOriginal     = new wxImage( theTheme.Image( bmpUpButton ));  
-   wxImage *downOriginal   = new wxImage( theTheme.Image( bmpDownButton ));  
-   wxImage *hiliteOriginal = new wxImage( theTheme.Image( bmpHiliteButton ));
-
-   wxColour newColour =
-       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-
-#ifdef USE_AQUA_THEME
-   upPattern = upOriginal;
-   downPattern = downOriginal;
-   hilitePattern = hiliteOriginal;
-#else
-   upPattern     = ChangeImageColour(  upOriginal,     newColour );
-   downPattern   = ChangeImageColour(  downOriginal,   newColour );
-   hilitePattern = ChangeImageColour(  hiliteOriginal, newColour );
-#endif
-
-   theTheme.Bitmap( bmpRecoloredUpButton )     = wxBitmap(*upPattern);
-   theTheme.Bitmap( bmpRecoloredDownButton )   = wxBitmap(*downPattern);
-   theTheme.Bitmap( bmpRecoloredHiliteButton ) = wxBitmap(*hilitePattern);
-
-   theTheme.Image( bmpRecoloredUpButton )     = *upPattern;
-   theTheme.Image( bmpRecoloredDownButton )   = *downPattern;
-   theTheme.Image( bmpRecoloredHiliteButton ) = *hilitePattern;
+   MakeButtonBackgroundsLarge();
 
    mPause = MakeButton(bmpPause,bmpPauseDisabled,
-                       ID_PAUSE_BUTTON,
-                       true,
-                       _("Pause"),
-                       _("Pause"));
-
-#if 0
-   mPlay = MakeButton((char const **) Play,
-                      (char const **) PlayDisabled,
-                      (char const **) PlayAlpha,
-                      ID_PLAY_BUTTON,
-                      false,
-                      _("Play"),
-                      _("Play (Shift for loop-play)"));
-#endif
+      ID_PAUSE_BUTTON,  true,  _("Pause"), _("Pause"));
 
    mPlay = MakeButton( bmpPlay, bmpPlayDisabled, 
-                      ID_PLAY_BUTTON,
-                      false,
-                      _("Play"),
-                      _("Play (Shift for loop-play)"));
+      ID_PLAY_BUTTON, false, _("Play"), _("Play (Shift for loop-play)"));
 
    MakeLoopImage();
 
    mStop = MakeButton( bmpStop, bmpStopDisabled ,
-                      ID_STOP_BUTTON,
-                      false,
-                      _("Stop"),
-                      _("Stop"));
+      ID_STOP_BUTTON, false, _("Stop"), _("Stop"));
 
    mRewind = MakeButton(bmpRewind, bmpRewindDisabled,
-                        ID_REW_BUTTON,
-                        false,
-                        _("Start"),
-                        _("Skip to Start"));
+      ID_REW_BUTTON, false, _("Start"), _("Skip to Start"));
 
    mFF = MakeButton(bmpFFwd, bmpFFwdDisabled,
-                    ID_FF_BUTTON,
-                    false,
-                    _("End"),
-                    _("Skip to End"));
+      ID_FF_BUTTON, false, _("End"), _("Skip to End"));
 
    mRecord = MakeButton(bmpRecord, bmpRecordDisabled,
-                        ID_RECORD_BUTTON,
-                        false,
-                        _("Record"),
-                        _("Record"));
+      ID_RECORD_BUTTON, false, _("Record"), _("Record"));
 
    mBatch = MakeButton(bmpCleanSpeech,bmpCleanSpeechDisabled,
-                       ID_BATCH_BUTTON,
-                       false,
-                       _("Clean Speech"),
-                       _("Clean Speech"));
-
-
-#ifndef USE_AQUA_THEME
-   delete upPattern;
-   delete downPattern;
-   delete hilitePattern;
-#endif
-
-   delete upOriginal;
-   delete downOriginal;
-   delete hiliteOriginal;
-
+      ID_BATCH_BUTTON, false, _("Clean Speech"), _("Clean Speech"));
 
 #if wxUSE_TOOLTIPS
 #ifdef __WXMAC__
@@ -743,21 +648,21 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
       return;
    }
    AudacityProject *p = GetActiveProject();
-        if( p && p->GetCleanSpeechMode() )
-        {
+   if( p && p->GetCleanSpeechMode() )
+   {
       size_t numProjects = gAudacityProjects.Count();
       bool tracks = (p && !p->GetTracks()->IsEmpty());
       if (tracks || (numProjects > 1)) {
          wxMessageBox(_("CleanSpeech only allows recording mono track.\n"
             wxT("Recording not possible when more than one window open.")),
-                        _("Recording not permitted"),
-                        wxOK | wxICON_INFORMATION,
-                        this);
+            _("Recording not permitted"),
+            wxOK | wxICON_INFORMATION,
+            this);
          mRecord->PopUp();
          mRecord->Disable();
          return;
       }
-        }
+   }
    mPlay->Disable();
    mStop->Enable();
    mRewind->Disable();
@@ -767,7 +672,8 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
    mRecord->PushDown();
 
-   if (p) {
+   if (p) 
+   {
       TrackList *t = p->GetTracks();
       double t0 = p->GetSel0();
       double t1 = p->GetSel1();

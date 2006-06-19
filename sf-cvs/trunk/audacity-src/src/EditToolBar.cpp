@@ -32,8 +32,6 @@
 
 #include "Audacity.h"
 
-#include "EditToolBar.h"
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -53,13 +51,16 @@
 
 #include <wx/image.h>
 
+#include "EditToolBar.h"
 #include "AudioIO.h"
 #include "ImageManipulation.h"
 #include "Project.h"
 #include "UndoManager.h"
 #include "widgets/AButton.h"
 
-#include "../images/EditButtons.h"
+//#include "../images/EditButtons.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 const int BUTTON_WIDTH = 27;
 const int SEPARATOR_WIDTH = 14;
@@ -85,86 +86,80 @@ EditToolBar::EditToolBar(wxWindow * parent):
                 _("Edit") );
 }
 
-
-// This is a convenience function that allows for button creation in
-// MakeButtons() with fewer arguments
-void EditToolBar::AddButton(const char **fg, const char **disabled, const char **alpha,
-                            int id, const wxChar *tooltip, const wxChar *label)
-{
-
-   mButtons[id] = MakeButton(
-                     upImage, downImage, hiliteImage, fg,
-                     disabled, alpha,
-                     wxWindowID(id),
-                     wxDefaultPosition,
-                     false /*No edit buttons should process down events.*/,
-                     wxSize(BUTTON_WIDTH, BUTTON_WIDTH), 0, 0);
-   #if wxUSE_TOOLTIPS // Not available in wxX11
-   mButtons[id]->SetToolTip(tooltip);
-   #endif
-   mButtons[id]->SetLabel( label );
-   Add( mButtons[id] );
-}
-
 void EditToolBar::AddSeparator()
 {
    AddSpacer();
 }
 
+/// This is a convenience function that allows for button creation in
+/// MakeButtons() with fewer arguments
+/// Very similar to code in ControlToolBar...
+AButton *EditToolBar::AddButton(
+   teBmps eFore, teBmps eDisabled,
+   int id,
+//   bool processdownevents,
+   const wxChar *label,
+   const wxChar *tip)
+{
+   AButton *&r = mButtons[id];
+
+   r = ToolBar::MakeButton(
+      bmpRecoloredUpSmall, bmpRecoloredDownSmall, bmpRecoloredHiliteSmall,
+      eFore, eDisabled,
+      wxWindowID(id),
+      wxDefaultPosition, 
+//      processdownevents,
+      false,
+      theTheme.ImageSize( bmpRecoloredUpSmall ));
+
+   r->SetLabel(label);
+// JKC: Unlike ControlToolBar, does not have a focus rect.  Shouldn't it?
+// r->SetFocusRect( r->GetRect().Deflate( 4, 4 ) );
+
+#if wxUSE_TOOLTIPS
+   r->SetToolTip(tip);
+#endif
+   Add( r, 0, wxALIGN_CENTER );
+
+   return r;
+}
+
 void EditToolBar::Populate()
 {
-   wxColour newColour =
-       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour = wxColour(204, 204, 204);
-
-   wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
-   wxImage *downOriginal = new wxImage(wxBitmap(Down).ConvertToImage());
-   wxImage *hiliteOriginal = new wxImage(wxBitmap(Hilite).ConvertToImage());
-
-#ifdef __WXGTK__
-   /* dmazzoni: hack to get around XPM color bugs in GTK */
-   unsigned char *data = upOriginal->GetData();
-   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
-#endif
-
-   upImage = ChangeImageColour(upOriginal, baseColour, newColour);
-   downImage = ChangeImageColour(downOriginal, baseColour, newColour);
-   hiliteImage = ChangeImageColour(hiliteOriginal, baseColour, newColour);
+   MakeButtonBackgroundsSmall();
 
    /* Buttons */
-
-   AddButton(Cut, CutDisabled, CutAlpha, ETBCutID,
-             _("Cut"), _("Cut"));
-   AddButton(Copy, CopyDisabled, CopyAlpha, ETBCopyID,
-             _("Copy"), _("Copy"));
-   AddButton(Paste, PasteDisabled, PasteAlpha, ETBPasteID,
-             _("Paste"), _("Paste"));
-   AddButton(Trim, TrimDisabled, TrimAlpha, ETBTrimID,
-             _("Trim outside selection"),_("Trim"));
-   AddButton(Silence, SilenceDisabled, SilenceAlpha, ETBSilenceID,
-             _("Silence selection"),_("Silence"));
+   AddButton(bmpCut, bmpCutDisabled, ETBCutID,
+      _("Cut"), _("Cut"));
+   AddButton(bmpCopy, bmpCopyDisabled, ETBCopyID,
+      _("Copy"), _("Copy"));
+   AddButton(bmpPaste, bmpPasteDisabled, ETBPasteID,
+      _("Paste"), _("Paste"));
+   AddButton(bmpTrim, bmpTrimDisabled, ETBTrimID,
+      _("Trim outside selection"),_("Trim"));
+   AddButton(bmpSilence, bmpSilenceDisabled, ETBSilenceID,
+      _("Silence selection"),_("Silence"));
+   AddSeparator();
+   AddButton(bmpUndo, bmpUndoDisabled, ETBUndoID,
+      _("Undo"), _("Undo"));
+   AddButton(bmpRedo, bmpRedoDisabled, ETBRedoID,
+      _("Redo"), _("Redo"));
    AddSeparator();
 
-   AddButton(Undo, UndoDisabled, UndoAlpha, ETBUndoID,
-             _("Undo"), _("Undo"));
-   AddButton(Redo, RedoDisabled, RedoAlpha, ETBRedoID,
-             _("Redo"), _("Redo"));
-   AddSeparator();
-
-   AddButton(ZoomIn, ZoomInDisabled, ZoomInAlpha, ETBZoomInID,
-             _("Zoom In"),_("Zoom In"));
-   AddButton(ZoomOut, ZoomOutDisabled, ZoomOutAlpha, ETBZoomOutID,
-             _("Zoom Out"),_("Zoom Out"));
+   AddButton(bmpZoomIn, bmpZoomInDisabled, ETBZoomInID,
+      _("Zoom In"),_("Zoom In"));
+   AddButton(bmpZoomOut, bmpZoomOutDisabled, ETBZoomOutID,
+      _("Zoom Out"),_("Zoom Out"));
 
    #if 0 // Disabled for version 1.2.0 since it doesn't work quite right...
-   AddButton(ZoomToggle, ZoomToggleDisabled, ZoomToggleAlpha, ETBZoomToggleID,
-             _("Zoom Toggle"),_("Zoom Toggle"));
+   AddButton(bmpZoomToggle, bmpZoomToggleDisabled, ETBZoomToggleID,
+      _("Zoom Toggle"),_("Zoom Toggle"));
    #endif
 
-   AddButton(ZoomSel, ZoomSelDisabled, ZoomSelAlpha, ETBZoomSelID,
-             _("Fit selection in window"),_("Fit Selection"));
-   AddButton(ZoomFit, ZoomFitDisabled, ZoomFitAlpha, ETBZoomFitID,
-             _("Fit project in window"),_("Fit Project"));
+    AddButton(bmpZoomSel, bmpZoomSelDisabled, ETBZoomSelID,
+      _("Fit selection in window"),_("Fit Selection"));
+   AddButton(bmpZoomFit, bmpZoomFitDisabled, ETBZoomFitID,
+      _("Fit project in window"),_("Fit Project"));
 
    mButtons[ETBZoomInID]->SetEnabled(false);
    mButtons[ETBZoomOutID]->SetEnabled(false);
@@ -176,13 +171,6 @@ void EditToolBar::Populate()
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
-
-   delete upImage;
-   delete downImage;
-   delete hiliteImage;
-   delete upOriginal;
-   delete downOriginal;
-   delete hiliteOriginal;
 }
 
 EditToolBar::~EditToolBar()

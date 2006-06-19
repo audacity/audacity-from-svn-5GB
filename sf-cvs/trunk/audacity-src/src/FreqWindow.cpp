@@ -19,8 +19,6 @@ the mouse around.
 
 #include "Audacity.h"
 
-#include "FreqWindow.h"
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
@@ -48,6 +46,8 @@ the mouse around.
 #include <wx/textfile.h>
 
 #include <math.h>
+
+#include "FreqWindow.h"
 
 #include "AColor.h"
 #include "FFT.h"

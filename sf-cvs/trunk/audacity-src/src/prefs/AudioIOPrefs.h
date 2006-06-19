@@ -44,7 +44,7 @@ private:
    wxArrayString mmRecordNames;
    wxArrayString mmRecordLabels;
    wxArrayString mmChannelNames;
-   wxArrayString mmChannelLabels;
+   wxArrayInt    mmChannelLabels;
 };
 
 #endif

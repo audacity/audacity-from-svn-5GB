@@ -65,8 +65,10 @@
 
 #include "AColor.h"
 #include "MeterToolBar.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
-#include "../images/ToolsButtons.h"
+//#include "../images/ToolsButtons.h"
 
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
@@ -116,91 +118,6 @@ ToolsToolBar::ToolsToolBar( wxWindow * parent ):
    mTool[mCurrentTool]->PushDown();
 }
 
-
-wxImage *ToolsToolBar::MakeToolImage(wxImage * tool,
-                                       wxImage * mask, int style)
-{
-   // This code takes the image of a tool, and its mask,
-   // and creates one of four images of this tool inside
-   // a little button, for the toolbar.  The tool
-   // is alpha-blended onto the background.
-
-   const char **src;
-
-   switch(style) {
-   case 1: // hilite
-      src = Hilite;
-      break;
-   case 2: // down
-      src = Down;
-      break;
-   default:
-      src = Up;
-      break;
-   }
-
-   wxImage *bkgndOriginal = new wxImage(wxBitmap(src).ConvertToImage());
-   wxImage *upOriginal = new wxImage(wxBitmap(Up).ConvertToImage());
-
-#ifdef USE_AQUA_THEME
-   wxImage *background = bkgndOriginal;
-#else
-   wxColour backgroundColour =
-       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour;
-   unsigned char *data = upOriginal->GetData();
-   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
-   wxImage *background = ChangeImageColour(bkgndOriginal,
-                                           baseColour,
-                                           backgroundColour);
-#endif
-
-   // 
-   // Overlay the tool on top of it
-   //
-
-   wxImage *result;
-   if (style == 2)              // down
-      result = OverlayImage(background, tool, mask, 1, 1);
-   else
-      result = OverlayImage(background, tool, mask, 0, 0);
-   delete background;
-
-   #ifndef USE_AQUA_THEME
-   delete bkgndOriginal;
-   delete upOriginal;
-   #endif
-
-   return result;
-}
-
-AButton *ToolsToolBar::MakeTool(const char **tool, const char **alpha,
-                                  wxWindowID id, const wxChar *label)
-{
-   wxImage *ctr = new wxImage(wxBitmap(tool).ConvertToImage());
-   wxImage *mask = new wxImage(wxBitmap(alpha).ConvertToImage());
-   wxImage *up = MakeToolImage(ctr, mask, 0);
-   wxImage *hilite = MakeToolImage(ctr, mask, 1);
-   wxImage *down = MakeToolImage(ctr, mask, 2);
-   wxImage *dis = MakeToolImage(ctr, mask, 3);
-
-   AButton *button =
-       new AButton(this, id, wxDefaultPosition, wxSize(27, 27),
-                   up, hilite, down, dis, false);
-   button->SetLabel( label );
-   mToolSizer->Add( button );
-
-   delete ctr;
-   delete mask;
-   delete up;
-   delete hilite;
-   delete down;
-   delete dis;
-
-   return button;
-}
-
-
 void ToolsToolBar::RegenerateToolsTooltips()
 {
 
@@ -236,22 +153,37 @@ void ToolsToolBar::RegenerateToolsTooltips()
 
    //		wxSafeYield();
    return;
-
 }
+
+
+AButton * ToolsToolBar::MakeTool( teBmps eTool, 
+   int id, const wxChar *label)
+{
+   AButton *button = ToolBar::MakeButton(
+      bmpRecoloredUpSmall, bmpRecoloredDownSmall, bmpRecoloredHiliteSmall,
+      eTool, eTool,
+      wxWindowID(id),
+      wxDefaultPosition, false,
+      theTheme.ImageSize( bmpRecoloredUpSmall ));
+   button->SetLabel( label );
+   mToolSizer->Add( button );
+   return button;
+}
+                        
 
 void ToolsToolBar::Populate()
 {
+   MakeButtonBackgroundsSmall();
    mToolSizer = new wxGridSizer( 2, 3, 1, 1 );
    Add( mToolSizer );
 
    /* Tools */
-
-   mTool[ selectTool   ] = MakeTool( IBeam, IBeamAlpha, selectTool, _("SelectionTool") );
-   mTool[ envelopeTool ] = MakeTool( Envelope, EnvelopeAlpha, envelopeTool, _("TimeShiftTool") );
-   mTool[ drawTool     ] = MakeTool( Draw, DrawAlpha, drawTool, _("DrawTool") );
-   mTool[ zoomTool     ] = MakeTool( Zoom, ZoomAlpha, zoomTool, _("ZoomTool") );
-   mTool[ slideTool    ] = MakeTool( TimeShift, TimeShiftAlpha, slideTool, _("SlideTool") );
-   mTool[ multiTool    ] = MakeTool( Multi, MultiAlpha, multiTool, _("MultiTool") );
+   mTool[ selectTool   ] = MakeTool( bmpIBeam, selectTool, _("SelectionTool") );
+   mTool[ envelopeTool ] = MakeTool( bmpEnvelope, envelopeTool, _("TimeShiftTool") );
+   mTool[ drawTool     ] = MakeTool( bmpDraw, drawTool, _("DrawTool") );
+   mTool[ zoomTool     ] = MakeTool( bmpZoom, zoomTool, _("ZoomTool") );
+   mTool[ slideTool    ] = MakeTool( bmpTimeShift, slideTool, _("SlideTool") );
+   mTool[ multiTool    ] = MakeTool( bmpMulti, multiTool, _("MultiTool") );
 
 #if wxUSE_TOOLTIPS
 #ifdef __WXMAC__

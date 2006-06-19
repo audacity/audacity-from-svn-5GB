@@ -1870,7 +1870,7 @@ static char *GlyphXpmRegionSpec[] = {
 /* columns rows colors chars-per-pixel */
 "15 23 7 1",
 /* Default colors, with first color transparent */
-". c #C0C0C0",
+". c none",
 "2 c black",
 "3 c black",
 "4 c black",
@@ -1946,8 +1946,8 @@ void LabelTrack::CreateCustomGlyphs()
          if( iHighlight==3 ) XmpBmp[7]="7 c #FFFFFF";
          // For left or right arrow the other side of the glyph
          // is the transparent color.
-         if( iConfig==0) { XmpBmp[3]="3 c #C0C0C0"; XmpBmp[5]="5 c #C0C0C0"; }
-         if( iConfig==1) { XmpBmp[4]="4 c #C0C0C0"; XmpBmp[7]="7 c #C0C0C0"; }
+         if( iConfig==0) { XmpBmp[3]="3 c none"; XmpBmp[5]="5 c none"; }
+         if( iConfig==1) { XmpBmp[4]="4 c none"; XmpBmp[7]="7 c none"; }
          // Create the icon from the tweaked spec.
          mBoundaryGlyphs[index] = wxBitmap(XmpBmp);
          // Create the mask

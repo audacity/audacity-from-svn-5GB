@@ -9,7 +9,7 @@
 
 ********************************************************************//*!
 
-\file
+\file Audacity.h
 
   This is the main include file for Audacity.  All files which need
   any Audacity-specific #defines or need to access any of Audacity's
@@ -47,6 +47,22 @@ void QuitAudacity();
 
 #ifdef __WXMSW__
 #include "configwin.h"
+#endif
+
+// For compilers that support precompilation, includes "wx/wx.h".
+// Mainly for MSVC developers.
+//
+// This precompilation is only done for non-unicode debug builds.  
+// The rationale is that this is where there is the big time saving
+// because that's what you build whilst debugging.
+// Whilst disabling precompilation for other builds will ensure
+// that missing headers that would affect other platforms do get 
+// seen by MSVC developers too.
+
+#ifndef UNICODE
+#ifdef __WXDEBUG__
+//#include <wx/wxprec.h>
+#endif
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
