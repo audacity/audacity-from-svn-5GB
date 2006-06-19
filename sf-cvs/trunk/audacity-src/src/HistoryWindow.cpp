@@ -5,6 +5,7 @@
   HistoryWindow.cpp
 
   Joshua Haberman
+  Leland Lucius
 
 **********************************************************************/
 
@@ -50,21 +51,21 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
-   ShuttleGui *mS = new ShuttleGui(this, eIsCreating);
+   ShuttleGui S(this, eIsCreating);
 
-   mS->SetBorder(5);
-   mS->StartVerticalLay(true);
-      mList = mS->Id(ID_LIST).AddListControlReportMode();
+   S.SetBorder(5);
+   S.StartVerticalLay(true);
+      mList = S.Id(ID_LIST).AddListControlReportMode();
       mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 250);
       mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
       mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
 
-      mS->SetBorder(1);
-      mS->StartHorizontalLay(wxALIGN_RIGHT, false);
-         mS->Id(wxID_CANCEL).AddButton(_("&Close"));
-         mDiscard = mS->Id(ID_DISCARD).AddButton(_("&Discard"));
-      mS->EndHorizontalLay();
-   mS->EndVerticalLay();
+      S.SetBorder(1);
+      S.StartHorizontalLay(wxALIGN_RIGHT, false);
+         S.Id(wxID_CANCEL).AddButton(_("&Close"));
+         mDiscard = S.Id(ID_DISCARD).AddButton(_("&Discard"));
+      S.EndHorizontalLay();
+   S.EndVerticalLay();
    DoUpdate();
    mList->SetMinSize(mList->GetSize());
    Fit();
@@ -104,7 +105,7 @@ void HistoryWindow::DoUpdate()
 
    mList->EnsureVisible(mSelected);
 
-   mDiscard->Enable(mList->GetItemCount());
+   mDiscard->Enable(mList->GetItemCount()!=0);
 }
 
 void HistoryWindow::OnDiscard(wxCommandEvent &event)
