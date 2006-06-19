@@ -7,7 +7,12 @@
   Dominic Mazzoni
   James Crook
 
-**********************************************************************/
+*******************************************************************//**
+
+\class BatchPrefs
+\brief A PrefsPanel that builds up a chain of effects in BatchCommands
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

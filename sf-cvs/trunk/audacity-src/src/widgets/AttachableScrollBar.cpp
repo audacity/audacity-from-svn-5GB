@@ -6,23 +6,26 @@
 
   James Crook
  
-  A scroll bar that can be attached to multiple items and so control 
-  their scrolling.  Uses floats internally, not ints, allowing for 
-  (external) control of zooming.
-  
-  Limitations: 
-
-  1: Currently horizontal only.
-  2: Attached items not yet supported.  Instead for now place the
-     attached windows in an InvisiblePanel, and rely on refreshing of
-     the invisible panel to refresh each of the objects.
-  3: Currently closely tied to the mViewInfo class.  This will change
-     to make the class much more generic.
-
   Audacity is free software.
   This file is licensed under the wxWindows license, see License.txt
 
-**********************************************************************/
+/****************************************************************//**
+
+\class AttachableScrollBar
+\brief An AttachableScrollBar is a scroll bar that can be attached 
+to multiple items and so control their scrolling.  Uses floats 
+internally, not ints, allowing for (external) control of zooming.
+  
+  Limitations: 
+
+  - Currently horizontal only.
+  - Attached item repainting not yet supported.  Instead for now place the
+    attached windows in an InvisiblePanel, and rely on refreshing of
+    the invisible panel to refresh each of the objects.
+  - Currently closely tied to the mViewInfo class.  This will change
+    to make the class much more generic.
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

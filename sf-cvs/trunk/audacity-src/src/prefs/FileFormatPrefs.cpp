@@ -8,7 +8,14 @@
   Dominic Mazzoni
   James Crook
 
-**********************************************************************/
+
+*******************************************************************//**
+
+\class FileFormatPrefs
+\brief A PrefsPanel used to select file format preferences and to 
+locate the MP3 encoding library.
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

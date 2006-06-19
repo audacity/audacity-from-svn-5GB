@@ -11,6 +11,7 @@
 
 \class BatchCommands
 \brief Maintains the chain of commands used in batch processing.
+See also BatchCommandDialog and BatchProcessDialog.
 
 *//*******************************************************************/
 

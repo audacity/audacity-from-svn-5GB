@@ -25,8 +25,16 @@
   \see ShuttleBase
   \see ShuttleGui
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class ShuttleCli
+\brief Derived from Shuttle, this class exchanges string parameters
+with a binary representation.
+
+  \see ShuttleBase
+  \see ShuttleGui
+
+*//*******************************************************************/
 
 #include "Audacity.h"
 

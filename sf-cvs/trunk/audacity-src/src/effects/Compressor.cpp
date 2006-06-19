@@ -17,8 +17,17 @@
  - Steve Jolly made it inherit from EffectSimpleMono.
  - GUI added and implementation improved by Dominic Mazzoni, 5/11/2003.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class CompressorDialog
+\brief Dialog used with EffectCompressor.
+
+*//****************************************************************//**
+
+\class CompressorPanel
+\brief Panel used within the CompressorDialog for EffectCompressor.
+
+*//*******************************************************************/
 
 
 #include "../Audacity.h" // for rint from configwin.h

@@ -10,7 +10,7 @@
 *******************************************************************//*!
 
 \class BatchCommandDialog
-\brief Provides a list of configurable commands for use with BatchCommand
+\brief Provides a list of configurable commands for use with BatchCommands
 
 Provides a list of commands, mostly effects, which can be chained 
 together in a simple linear sequence.  Can configure parameters on each

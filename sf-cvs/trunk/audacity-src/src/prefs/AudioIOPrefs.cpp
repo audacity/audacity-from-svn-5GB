@@ -8,6 +8,12 @@
   Dominic Mazzoni
   James Crook
 
+*******************************************************************//**
+
+\class AudioIOPrefs
+\brief A PrefsPanel used to select recording and playback devices and
+other settings.
+
   Presents interface for user to select the recording device and
   playback device, from the list of choices that PortAudio
   makes available.
@@ -15,7 +21,7 @@
   Also lets user decide whether or not to record in stereo, and
   whether or not to play other tracks while recording one (duplex).
 
-**********************************************************************/
+*//********************************************************************/
 
 #include "../Audacity.h"
 #include <wx/defs.h>

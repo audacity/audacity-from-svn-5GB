@@ -6,12 +6,6 @@
 
   Dominic Mazzoni
 
-  This is a custom button class for Audacity.  The main feature it
-  supports that a wxButton does not is mouseovers.  It uses an image
-  for all of its states: up, over, down, and disabled, allowing any
-  sort of customization you want.  Currently it does not support
-  transparency effects, so the image musts be rectangular and
-  opaque.
 
 **********************************************************************/
 
