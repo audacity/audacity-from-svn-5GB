@@ -799,6 +799,7 @@
 		28F1D81D0A2D0019005506A7 /* AttachableScrollBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8170A2D0018005506A7 /* AttachableScrollBar.cpp */; };
 		28F1D81E0A2D0019005506A7 /* ExpandingToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */; };
 		28F1D81F0A2D0019005506A7 /* ImageRoll.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */; };
+		28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28FC1AF90A47762C00A188AE /* WrappedType.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1860,6 +1861,8 @@
 		28F1D81C0A2D0019005506A7 /* ImageRoll.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ImageRoll.h; sourceTree = "<group>"; };
 		28FB121F0A3790A8006F0917 /* MacroMagic.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = MacroMagic.h; sourceTree = "<group>"; };
 		28FB12230A3790DF006F0917 /* AllThemeResources.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AllThemeResources.h; sourceTree = "<group>"; };
+		28FC1AF90A47762C00A188AE /* WrappedType.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = WrappedType.cpp; sourceTree = "<group>"; };
+		28FC1AFA0A47762C00A188AE /* WrappedType.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = WrappedType.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2581,6 +2584,8 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
+				28FC1AF90A47762C00A188AE /* WrappedType.cpp */,
+				28FC1AFA0A47762C00A188AE /* WrappedType.h */,
 				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
 				1790AFFD09883BFD008A330A /* effects */,
@@ -4843,6 +4848,7 @@
 				2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */,
 				2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */,
 				28F00A930A3E2FF100A3E5F5 /* FileNames.cpp in Sources */,
+				28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
