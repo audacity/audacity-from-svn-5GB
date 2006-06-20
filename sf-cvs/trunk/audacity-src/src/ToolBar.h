@@ -113,7 +113,7 @@ protected:
 
    void SetButton(bool down, AButton* button);
 
-   void MakeMacRecoloredImageMac(teBmps eBmpOut, teBmps eBmpIn );
+   void MakeMacRecoloredImage(teBmps eBmpOut, teBmps eBmpIn );
    void MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn );
    void MakeButtonBackgroundsLarge();
    void MakeButtonBackgroundsSmall();
