@@ -1557,7 +1557,7 @@ AButton * ToolBar::MakeButton(wxImage * up,
 #endif
 
 
-void ToolBar::MakeMacRecoloredImageMac(teBmps eBmpOut, teBmps eBmpIn )
+void ToolBar::MakeMacRecoloredImage(teBmps eBmpOut, teBmps eBmpIn )
 {
    theTheme.ReplaceImage( eBmpOut, &theTheme.Image( eBmpIn ));
 }
