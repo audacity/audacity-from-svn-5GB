@@ -25,7 +25,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="cd ..\help\wxhelp&#x0D;&#x0A;zip -9 &quot;$(OutDir)\audacity-1.2-help.htb&quot; *.htm *.hhc *.hhk *.hhp images\*.png"
+				CommandLine="cd ..\help\wxhelp&#x0D;&#x0A;zip -9 &quot;$(OutDir)\audacity-1.2-help.htb&quot; *.htm *.hhc *.hhk *.hhp images\*.png&#x0D;&#x0A;"
 				Outputs="&quot;$(OutDir)\audacity-1.2-help.htb&quot;"
 			/>
 			<Tool
@@ -79,6 +79,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			>
 			<Tool
@@ -86,6 +88,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				CommandLine="cd ..\help\wxhelp&#x0D;&#x0A;zip -9 &quot;$(OutDir)\audacity-1.2-help.htb&quot; *.htm *.hhc *.hhk *.hhp images\*.png&#x0D;&#x0A;"
+				Outputs="&quot;$(OutDir)\audacity-1.2-help.htb&quot;"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -147,6 +151,8 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				CommandLine="cd ..\help\wxhelp&#x0D;&#x0A;zip -9 &quot;$(OutDir)\audacity-1.2-help.htb&quot; *.htm *.hhc *.hhk *.hhp images\*.png&#x0D;&#x0A;"
+				Outputs="&quot;$(OutDir)\audacity-1.2-help.htb&quot;"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
