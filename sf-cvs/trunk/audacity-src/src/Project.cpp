@@ -2197,6 +2197,7 @@ void AudacityProject::SetStateTo(unsigned int n)
    PopState(l);
 
    HandleResize();
+   mTrackPanel->SetFocusedTrack(NULL);
    mTrackPanel->Refresh(false);
    ModifyUndoMenus();
 }
