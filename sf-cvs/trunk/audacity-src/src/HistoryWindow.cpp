@@ -7,29 +7,37 @@
   Joshua Haberman
   Leland Lucius
 
-**********************************************************************/
+*******************************************************************//*!
+
+\class HistoryWindow
+\brief Works with UndoManager to allow user to see descriptions of 
+and undo previous commands.  Also allows you to selectively clear the 
+undo memory so as to free up space.
+
+*//*******************************************************************/
 
 #include "Audacity.h"
 
 #include <wx/defs.h>
-#include <wx/log.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 #include <wx/event.h>
-#include <wx/textctrl.h>
+#include <wx/imaglist.h>
+#include <wx/intl.h>
 #include <wx/listctrl.h>
 #include <wx/settings.h>
-#include <wx/sizer.h>
-#include <wx/intl.h>
+#include <wx/textctrl.h>
 
+#include "../images/Arrow.xpm"
 #include "HistoryWindow.h"
 #include "UndoManager.h"
 #include "Project.h"
 #include "ShuttleGui.h"
 
 enum {
-   ID_LIST = 1000,
-   ID_DISCARD
+   ID_LEVELS = 1000,
+   ID_DISCARD,
+   ID_CLEAR
 };
 
 BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
@@ -37,17 +45,22 @@ BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
    EVT_SIZE(HistoryWindow::OnSize)
    EVT_CLOSE(HistoryWindow::OnCloseWindow)
    EVT_LIST_ITEM_SELECTED(wxID_ANY, HistoryWindow::OnItemSelected)
+   EVT_BUTTON(ID_CLEAR, HistoryWindow::OnClear)
    EVT_BUTTON(ID_DISCARD, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
    wxDialog((wxWindow*)parent, wxID_ANY, wxString(_("Undo History")),
       wxDefaultPosition, wxDefaultSize,
-      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxWANTS_CHARS )
+      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ) //| wxWANTS_CHARS )
 {
    mManager = manager;
    mProject = parent;
    mSelected = 0;
+
+   wxImageList *imageList = new wxImageList(9, 16);
+   imageList->Add(wxIcon(empty_9x16_xpm));
+   imageList->Add(wxIcon(arrow_xpm));
 
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
@@ -55,23 +68,35 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 
    S.SetBorder(5);
    S.StartVerticalLay(true);
-      mList = S.Id(ID_LIST).AddListControlReportMode();
-      mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 250);
-      mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
-      mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+      S.StartStatic(_("Manage History"), 1);
+      {
+         mList = S.AddListControlReportMode();
+         mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+         mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 250);
+         mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
+         mList->SetSingleStyle(wxLC_SINGLE_SEL);
 
-      S.SetBorder(1);
-      S.StartHorizontalLay(wxALIGN_RIGHT, false);
-         S.Id(wxID_CANCEL).AddButton(_("&Close"));
-         mDiscard = S.Id(ID_DISCARD).AddButton(_("&Discard"));
+         //Assign rather than set the image list, so that it is deleted later.
+         mList->AssignImageList(imageList, wxIMAGE_LIST_SMALL);
+
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+            mLevels = S.Id(ID_LEVELS).AddTextBox(_("&Selected levels"), wxT("0"), 10);
+            mLevels->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+            mDiscard = S.Id(ID_DISCARD).AddButton(_("&Discard"));
+            mClear = S.Id(ID_CLEAR).AddButton(_("&Clear All"));
+         S.EndHorizontalLay();
+      }
+      S.EndStatic();
+      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
+         S.Id(wxID_OK).AddButton(_("&OK"));
       S.EndHorizontalLay();
    S.EndVerticalLay();
+   // ----------------------- End of main section --------------
+
    DoUpdate();
    mList->SetMinSize(mList->GetSize());
    Fit();
    SetMinSize(GetSize());
-   // ----------------------- End of main section --------------
-
    mList->SetColumnWidth(0, mList->GetClientSize().x - mList->GetColumnWidth(1));
 }
 
@@ -88,17 +113,20 @@ void HistoryWindow::UpdateDisplay()
 
 void HistoryWindow::DoUpdate()
 {
+   int i;
+
    mList->DeleteAllItems();
 
    mSelected = mManager->GetCurrentState() - 1;
-   for(unsigned int i = 0; i < mManager->GetNumStates(); i++) {
+   for (i = 0; i < mManager->GetNumStates(); i++) {
       wxString desc, size;
       wxListItem item;
       
       mManager->GetLongDescription(i + 1, &desc, &size);
-      mList->InsertItem(i, desc);
+      mList->InsertItem(i, desc, i == mSelected ? 1 : 0);
       mList->SetItem(i, 1, size);
    }
+
    mList->SetItemState(mSelected,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
@@ -108,16 +136,20 @@ void HistoryWindow::DoUpdate()
    mDiscard->Enable(mList->GetItemCount()!=0);
 }
 
+void HistoryWindow::OnClear(wxCommandEvent &event)
+{
+   mSelected = mList->GetItemCount() - 1;
+   OnDiscard(event);
+}
+
 void HistoryWindow::OnDiscard(wxCommandEvent &event)
 {
    int i;
 
-   for (i = mList->GetItemCount() - 1; i >= 0; i--) {
-      if (mList->GetItemState(i, wxLIST_STATE_SELECTED)) {
-         mProject->SetStateTo(i + 1);
-         mManager->RemoveStateAt(i);
-         mSelected = i;
-      }
+   for (i = mSelected; i >= 0; i--) {
+      mProject->SetStateTo(i + 1);
+      mManager->RemoveStateAt(i);
+      mSelected = i;
    }
 
    i = mManager->GetNumStates();
@@ -138,8 +170,22 @@ void HistoryWindow::OnDiscard(wxCommandEvent &event)
 
 void HistoryWindow::OnItemSelected(wxListEvent &event)
 {
+   int i;
+
    mSelected = event.GetIndex();
+
+   for (i = 0; i < mList->GetItemCount(); i++) {
+      mList->SetItemImage(i, 0);
+
+      if (i > mSelected)
+         mList->SetItemTextColour(i, *wxLIGHT_GREY);
+      else
+         mList->SetItemTextColour(i, mList->GetTextColour());
+   }
+   mList->SetItemImage(mSelected, 1);
+
    mProject->SetStateTo(mSelected + 1);
+   mLevels->SetValue(wxString::Format("%d", mSelected + 1));
 }  
 
 void HistoryWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
@@ -162,9 +208,13 @@ void HistoryWindow::OnShow(wxShowEvent & event)
 
 void HistoryWindow::OnChar(wxKeyEvent &event)
 {
-   wxListCtrl *l = wxDynamicCast( event.GetEventObject(), wxListCtrl );
+   event.Skip(false);
 
-   event.Skip(true);
+   if (event.GetId() == ID_LEVELS) {
+      return;
+   }
+
+   wxListCtrl *l = wxDynamicCast( event.GetEventObject(), wxListCtrl );
 
    switch (event.GetKeyCode())
    {
@@ -173,24 +223,12 @@ void HistoryWindow::OnChar(wxKeyEvent &event)
       {
          wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, ID_DISCARD);
          l->GetEventHandler()->AddPendingEvent(e);
-
-         event.Skip(false);
+         return;
       }
       break;
-
-      case 'A':
-         if (event.ControlDown()) {
-            int i;
-
-            for (i = l->GetItemCount() - 1; i >= 0; i--) {
-               l->SetItemState(i,
-                               wxLIST_STATE_SELECTED,
-                               wxLIST_STATE_SELECTED);
-            }
-            event.Skip(false);
-         }
-      break;
    }
+
+   event.Skip(true);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
