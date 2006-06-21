@@ -16,6 +16,7 @@
 #include <wx/event.h>
 #include <wx/frame.h>
 #include <wx/listctrl.h>
+#include <wx/textctrl.h>
 
 class AudacityProject;
 class ShuttleGui;
@@ -37,12 +38,15 @@ class HistoryWindow :public wxDialog {
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
    void OnChar(wxKeyEvent & event);
    void OnItemSelected(wxListEvent & event);
+   void OnClear(wxCommandEvent & event);
    void OnDiscard(wxCommandEvent & event);
 
    AudacityProject   *mProject;
    ShuttleGui        *mS;
    wxListCtrl        *mList;
+   wxTextCtrl        *mLevels;
    wxButton          *mDiscard;
+   wxButton          *mClear;
    UndoManager       *mManager;
    int               mSelected;
 
