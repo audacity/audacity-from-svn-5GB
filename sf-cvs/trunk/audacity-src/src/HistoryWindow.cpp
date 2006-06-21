@@ -185,7 +185,7 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
    mList->SetItemImage(mSelected, 1);
 
    mProject->SetStateTo(mSelected + 1);
-   mLevels->SetValue(wxString::Format("%d", mSelected + 1));
+   mLevels->SetValue(wxString::Format(wxT("%d"), mSelected + 1));
 }  
 
 void HistoryWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
