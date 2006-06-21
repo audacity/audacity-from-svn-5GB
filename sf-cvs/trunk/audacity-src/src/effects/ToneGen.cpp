@@ -50,8 +50,7 @@ EffectToneGen::EffectToneGen()
 wxString EffectToneGen::GetEffectDescription() { 
    // Note: This is useful only after values have been set. 
    const wxChar* waveformNames[] = {wxT("sine"), wxT("square"), wxT("sawtooth")};
-   return wxString::Format(_("Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
-                           this->GetEffectName().c_str(), 
+   return wxString::Format(_("Applied effect: Generate %s wave tone, frequency = %.2f Hz, amplitude = %.2f, %.6lf seconds"), 
                            waveformNames[waveform], frequency, amplitude, length); 
 } 
 
