@@ -42,12 +42,9 @@ class HistoryWindow :public wxDialog {
    void OnDiscard(wxCommandEvent & event);
 
    AudacityProject   *mProject;
-   ShuttleGui        *mS;
+   UndoManager       *mManager;
    wxListCtrl        *mList;
    wxTextCtrl        *mLevels;
-   wxButton          *mDiscard;
-   wxButton          *mClear;
-   UndoManager       *mManager;
    int               mSelected;
 
  public:

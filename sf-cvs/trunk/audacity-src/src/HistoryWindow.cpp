@@ -52,7 +52,7 @@ END_EVENT_TABLE()
 HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
    wxDialog((wxWindow*)parent, wxID_ANY, wxString(_("Undo History")),
       wxDefaultPosition, wxDefaultSize,
-      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ) //| wxWANTS_CHARS )
+      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
 {
    mManager = manager;
    mProject = parent;
@@ -63,33 +63,43 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
    imageList->Add(wxIcon(arrow_xpm));
 
    //------------------------- Main section --------------------
-   // Now construct the GUI itself.
+   // Construct the GUI.
    ShuttleGui S(this, eIsCreating);
 
    S.SetBorder(5);
    S.StartVerticalLay(true);
+   {
       S.StartStatic(_("Manage History"), 1);
       {
          mList = S.AddListControlReportMode();
          mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
-         mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 250);
-         mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
+         // Do this BEFORE inserting the columns.  On the Mac at least, the
+         // columns are deleted and later InsertItem()s will cause Audacity to crash.
          mList->SetSingleStyle(wxLC_SINGLE_SEL);
+         mList->InsertColumn(0, _("Action"), wxLIST_FORMAT_LEFT, 300);
+         mList->InsertColumn(1, _("Size"), wxLIST_FORMAT_LEFT, 65);
 
          //Assign rather than set the image list, so that it is deleted later.
          mList->AssignImageList(imageList, wxIMAGE_LIST_SMALL);
 
          S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
             mLevels = S.Id(ID_LEVELS).AddTextBox(_("&Selected levels"), wxT("0"), 10);
             mLevels->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
-            mDiscard = S.Id(ID_DISCARD).AddButton(_("&Discard"));
-            mClear = S.Id(ID_CLEAR).AddButton(_("&Clear All"));
+            S.Id(ID_DISCARD).AddButton(_("&Discard"));
+            S.Id(ID_CLEAR).AddButton(_("&Clear All"));
+         }
          S.EndHorizontalLay();
       }
       S.EndStatic();
+
       S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
+      {
+         S.SetBorder(10);
          S.Id(wxID_OK).AddButton(_("&OK"));
+      }
       S.EndHorizontalLay();
+   }
    S.EndVerticalLay();
    // ----------------------- End of main section --------------
 
@@ -120,20 +130,17 @@ void HistoryWindow::DoUpdate()
    mSelected = mManager->GetCurrentState() - 1;
    for (i = 0; i < mManager->GetNumStates(); i++) {
       wxString desc, size;
-      wxListItem item;
       
       mManager->GetLongDescription(i + 1, &desc, &size);
       mList->InsertItem(i, desc, i == mSelected ? 1 : 0);
       mList->SetItem(i, 1, size);
    }
 
+   mList->EnsureVisible(mSelected);
+
    mList->SetItemState(mSelected,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
-
-   mList->EnsureVisible(mSelected);
-
-   mDiscard->Enable(mList->GetItemCount()!=0);
 }
 
 void HistoryWindow::OnClear(wxCommandEvent &event)
@@ -214,7 +221,7 @@ void HistoryWindow::OnChar(wxKeyEvent &event)
       return;
    }
 
-   wxListCtrl *l = wxDynamicCast( event.GetEventObject(), wxListCtrl );
+   wxListCtrl *l = wxDynamicCast(event.GetEventObject(), wxListCtrl);
 
    switch (event.GetKeyCode())
    {
