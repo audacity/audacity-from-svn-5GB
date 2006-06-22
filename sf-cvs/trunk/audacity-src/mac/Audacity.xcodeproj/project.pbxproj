@@ -2584,8 +2584,6 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
-				28FC1AF90A47762C00A188AE /* WrappedType.cpp */,
-				28FC1AFA0A47762C00A188AE /* WrappedType.h */,
 				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
 				1790AFFD09883BFD008A330A /* effects */,
@@ -2727,6 +2725,8 @@
 				1790B0FA09883BFD008A330A /* WaveClip.h */,
 				1790B0FB09883BFD008A330A /* WaveTrack.cpp */,
 				1790B0FC09883BFD008A330A /* WaveTrack.h */,
+				28FC1AF90A47762C00A188AE /* WrappedType.cpp */,
+				28FC1AFA0A47762C00A188AE /* WrappedType.h */,
 			);
 			name = src;
 			path = ../src;
