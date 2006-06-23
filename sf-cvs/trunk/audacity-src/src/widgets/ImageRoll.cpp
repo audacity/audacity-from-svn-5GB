@@ -181,7 +181,7 @@ void ImageRoll::Init(RollType type, const wxImage &src, wxColour magicColor)
 
 ImageRoll::ImageRoll()
 {
-   mType == Uninitialized;
+   mType = Uninitialized;
 }
 
 ImageRoll::ImageRoll(RollType type, const wxImage &src, wxColour magicColor)

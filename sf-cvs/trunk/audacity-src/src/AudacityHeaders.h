@@ -36,7 +36,9 @@
 #include <wx/thread.h>
 #include <wx/tooltip.h>
 
+#ifdef __WXMAC__
 #include <wx/mac/private.h>
+#endif
 
 
 #include "AColor.h"

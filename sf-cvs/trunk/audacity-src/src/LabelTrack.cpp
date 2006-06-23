@@ -49,6 +49,8 @@ for drawing different aspects of the label and its text box.
 #include "DirManager.h"
 #include "Internat.h"
 #include "Prefs.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 wxFont LabelTrack::msFont;
 
@@ -415,11 +417,11 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRig
    const int yStart=y-LabelTrack::mIconHeight/2;
 
    if((x  >= r.x) && (x  <= (r.x+r.width)))
-      dc.DrawBitmap(LabelTrack::mBoundaryGlyphs[GlyphLeft], x-xHalfWidth,yStart, true);
+      dc.DrawBitmap(LabelTrack::GetGlyph(GlyphLeft), x-xHalfWidth,yStart, true);
    // The extra test here suppresses right hand markers when they overlap
    // the left hand marker (e.g. zoomed out) or are to the left.
    if((x1 >= r.x) && (x1 <= (r.x+r.width)) && (x1>x+LabelTrack::mIconWidth))
-      dc.DrawBitmap(LabelTrack::mBoundaryGlyphs[GlyphRight], x1-xHalfWidth,yStart, true);
+      dc.DrawBitmap(LabelTrack::GetGlyph(GlyphRight), x1-xHalfWidth,yStart, true);
 }
 
 /// Draw the text of the label and also draw
@@ -1862,6 +1864,10 @@ void LabelTrack::InitColours()
    mSelectedPen.SetColour(148, 148, 170);
 }
 
+wxBitmap & LabelTrack::GetGlyph( int i)
+{
+   return theTheme.Bitmap( i + bmpLabelGlyph0);
+}
 
 // This one XPM spec is used to generate a number of
 // different wxIcons.

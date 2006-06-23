@@ -50,8 +50,8 @@
 				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio-v19\include&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch\include&quot;;&quot;..\lib-src\libresample\include&quot;"
 				PreprocessorDefinitions="_DEBUG;DEBUG=1;__WXDEBUG__;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT"
 				RuntimeLibrary="1"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="wx/wxprec.h"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="AudacityHeaders.h"
 				PrecompiledHeaderFile=".\$(ConfigurationName)/audacity.pch"
 				AssemblerListingLocation=".\$(ConfigurationName)/"
 				ObjectFile=".\$(ConfigurationName)/"
@@ -61,6 +61,7 @@
 				DebugInformationFormat="3"
 				CompileAs="0"
 				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="AudacityHeaders.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -446,6 +447,18 @@
 			<File
 				RelativePath="..\src\AudacityApp.h"
 				>
+			</File>
+			<File
+				RelativePath="..\src\AudacityHeaders.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\src\AudioIO.cpp"

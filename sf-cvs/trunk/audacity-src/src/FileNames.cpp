@@ -52,6 +52,16 @@ wxString FileNames::ThemeCachePng()
    return wxFileName( ThemeDir(), wxT("ImageCache.png") ).GetFullPath();
 }
 
+wxString FileNames::ThemeCacheHtm()
+{
+   return wxFileName( ThemeDir(), wxT("ImageCache.htm") ).GetFullPath();
+}
+
+wxString FileNames::ThemeImageDefsAsCee()
+{
+   return wxFileName( ThemeDir(), wxT("ThemeImageDefsAsCee.h") ).GetFullPath();
+}
+
 wxString FileNames::ThemeCacheAsCee( )
 {
    return wxFileName( ThemeDir(), wxT("ThemeAsCeeCode.h") ).GetFullPath();
