@@ -94,6 +94,12 @@ WX_DEFINE_OBJARRAY( ArrayOfColours );
 // except where we EXPLICITLY request otherwise.
 #undef USE_AQUA_THEME
 
+// This step ensures we treat the cursors as 32x32 even on Mac.
+// We're not yet creating the cursors from the theme, so 
+// all this ensures is that the sizing on PC and Mac stays in step.
+#define CURSORS_SIZE32
+
+
 #define DownButton             MacDownButton
 #define HiliteButton           MacHiliteButton
 #define UpButton               MacUpButton
