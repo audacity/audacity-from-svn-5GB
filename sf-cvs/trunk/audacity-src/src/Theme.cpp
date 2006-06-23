@@ -41,6 +41,16 @@ This class is currently used by Theme to pack its images into the image
 cache.  Perhaps someday we will improve FlowPacker and make it more flexible,
 and use it for toolbar and window layouts too.
 
+*//*****************************************************************//**
+
+\class SourceOutputStream
+\brief Allows us to capture output of the Save .png and 'pipe' it into
+our own output function which gives a series of numbers.
+
+This class is currently used by Theme to pack its images into the image
+cache.  Perhaps someday we will improve FlowPacker and make it more flexible,
+and use it for toolbar and window layouts too.
+
 *//*****************************************************************/
 
 #include "Audacity.h"
@@ -49,11 +59,8 @@ and use it for toolbar and window layouts too.
 #include <wx/image.h>
 #include <wx/arrimpl.cpp> 
 #include <wx/file.h>
+#include <wx/ffile.h>
 #include <wx/mstream.h>
-
-// This step should mean that we get PC/Linux images only
-// except where we EXPLICITLY request otherwise.
-#undef USE_AQUA_THEME
 
 #include "Project.h" 
 #include "ToolBar.h"
@@ -78,6 +85,14 @@ WX_DEFINE_OBJARRAY( ArrayOfColours );
 // Use the same trick wherever we need to avoid name collisions.
 
 // All this will vanish when the XPMs are eliminated.
+
+// Indeed XPMS_RETIRED the #ifndef ensures we're already not using any of it.
+#ifndef XPMS_RETIRED
+
+
+// This step should mean that we get PC/Linux images only
+// except where we EXPLICITLY request otherwise.
+#undef USE_AQUA_THEME
 
 #define DownButton             MacDownButton
 #define HiliteButton           MacHiliteButton
@@ -154,6 +169,7 @@ WX_DEFINE_OBJARRAY( ArrayOfColours );
 
 #include "../images/AudacityLogo.xpm"
 #include "../images/AudacityLogo48x48.xpm"
+#endif
 
 
 // This declares the variables such as
@@ -262,9 +278,12 @@ void ThemeBase::LoadThemeAtStartUp( bool bLookForExternalFiles )
    // THEN just use the internal default set.
    if( !bLookForExternalFiles )
    {
-      // JKC: Next line commented out for the moment!
-      // We have an alternative set of defaults already in place.
-//    ReadThemeInternal();
+      // IF the XPMs have been retired, THEN we'd better use the built-in cache
+      // at start up.  
+      // ELSE do nothing, we already have XPM based images.
+#ifdef XPMS_RETIRED
+      ReadThemeInternal();
+#endif
       return;
    }
    // ELSE IF can't read the external image cache.
@@ -359,7 +378,20 @@ void ThemeBase::RegisterImage( int &iIndex, const wxImage &Image, const wxString
 {
    wxASSERT( iIndex == -1 ); // Don't initialise same bitmap twice!
    mImages.Add( Image );
+
+#ifdef __WXMAC__
+   // On Mac, bitmaps with alpha don't work.
+   // So we convert to a mask and use that.
+   // It isn't quite as good, as alpha gives smoother edges.
+   //[Does not affect the large control buttons, as for those we do
+   // the blending ourselves anyway.]
+   wxImage TempImage( Image );
+   TempImage.ConvertAlphaToMask();
+   mBitmaps.Add( wxBitmap( TempImage ) );
+#else
    mBitmaps.Add( wxBitmap( Image ) );
+#endif
+
    mBitmapNames.Add( Name );
    mBitmapFlags.Add( mFlow.mFlags );
    iIndex = mBitmaps.GetCount()-1;
@@ -497,16 +529,16 @@ SourceOutputStream::~SourceOutputStream()
    File.Close();
 }
 
+
+const int ImageCacheWidth = 440;// Must be wide enough for Audacity logo which is 215, use double width.
+const int ImageCacheHeight = 836;
+
 void ThemeBase::CreateImageCache( bool bBinarySave )
 {
    EnsureInitialised();
-   const int nBmpsPerRow=6;
-   const int depth = 32; //32 bits depth.  Includes alpha channel.
-   const int width = 440;// Must be wide enough for Audacity logo which is 215, use double width.
-   int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
-   height +=100;// extra space..
+   wxBusyCursor busy;
 
-   wxImage ImageCache( width, height );
+   wxImage ImageCache( ImageCacheWidth, ImageCacheHeight );
 
    // Ensure we have an alpha channel...
    if( !ImageCache.HasAlpha() )
@@ -516,7 +548,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
 
    int i;
 
-   mFlow.Init(width);
+   mFlow.Init( ImageCacheWidth );
 
 //#define IMAGE_MAP
 #ifdef IMAGE_MAP
@@ -634,6 +666,103 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    }
 }
 
+/// Writes an html file with an image map of the ImageCache
+/// Very handy for seeing what each part is for.
+void ThemeBase::WriteImageMap( )
+{
+   EnsureInitialised();
+   wxBusyCursor busy;
+
+   int i;
+   mFlow.Init( ImageCacheWidth );
+   
+   wxFFile File( FileNames::ThemeCacheHtm(), wxT("wb") );// I'll put in new lines explicitly.
+   if( !File.IsOpened() )
+      return;
+
+   File.Write( wxT("<html>\r\n"));
+   File.Write( wxT("<body>\r\n"));
+   File.Write( wxT("<img src=\"ImageCache.png\" usemap=\"#map1\">\r\n" ));
+   File.Write( wxT("<map name=\"map1\">\r\n") );
+
+   for(i=0;i<(int)mImages.GetCount();i++)
+   {
+      wxImage &SrcImage = mImages[i];
+      mFlow.mFlags = mBitmapFlags[i];
+      if( (mBitmapFlags[i] & resFlagInternal)==0)
+      {
+         mFlow.GetNextPosition( SrcImage.GetWidth(), SrcImage.GetHeight());
+         // No href in html.  Uses title not alt.
+         wxRect R( mFlow.Rect() );
+         File.Write( wxString::Format( 
+            wxT("<area title=\"Bitmap:%s\" shape=rect coords=\"%i,%i,%i,%i\">\r\n"),
+            mBitmapNames[i].c_str(), 
+            R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom()) );
+      }
+   }
+   // Now save the colours.
+   mFlow.SetNewGroup(1);
+   const int iColSize=10;
+   for(i=0;i<(int)mColours.GetCount();i++)
+   {
+      mFlow.GetNextPosition( iColSize, iColSize );
+      // No href in html.  Uses title not alt.
+      wxRect R( mFlow.Rect() );
+      File.Write( wxString::Format( wxT("<area title=\"Colour:%s\" shape=rect coords=\"%i,%i,%i,%i\">\r\n"),
+         mColourNames[i].c_str(), 
+         R.GetLeft(), R.GetTop(), R.GetRight(), R.GetBottom()) );
+   }
+   File.Write( wxT("</map>\r\n") );
+   File.Write( wxT("</body>\r\n"));
+   File.Write( wxT("</html>\r\n"));
+   // File will be closed automatically.
+}
+
+/// Writes a series of Macro definitions that can be used in the include file.
+void ThemeBase::WriteImageDefs( )
+{
+   EnsureInitialised();
+   wxBusyCursor busy;
+
+   int i;
+   wxFFile File( FileNames::ThemeImageDefsAsCee(), wxT("wb") );
+   if( !File.IsOpened() )
+      return;
+   teResourceFlags PrevFlags = (teResourceFlags)-1;
+   for(i=0;i<(int)mImages.GetCount();i++)
+   {
+      wxImage &SrcImage = mImages[i];
+      // No href in html.  Uses title not alt.
+      if( PrevFlags != mBitmapFlags[i] )
+      {
+         PrevFlags = (teResourceFlags)mBitmapFlags[i];
+         int t = (int)PrevFlags;
+         wxString Temp;
+         if( t==0 ) Temp = wxT(" resFlagNone ");
+         if( t & resFlagPaired )   Temp += wxT(" resFlagPaired ");
+         if( t & resFlagCursor )   Temp += wxT(" resFlagCursor ");
+         if( t & resFlagNewLine )  Temp += wxT(" resFlagNewLine ");
+         if( t & resFlagInternal ) Temp += wxT(" resFlagInternal ");
+         Temp.Replace( wxT("  "), wxT(" | ") );
+
+         File.Write( wxString::Format( wxT("\r\n   SET_THEME_FLAGS( %s );\r\n"),
+            Temp.c_str() ));
+      }
+      File.Write( wxString::Format( 
+         wxT("   DEFINE_IMAGE( bmp%s, wxImage( %i, %i ), wxT(\"%s\"));\r\n"),
+         mBitmapNames[i].c_str(), 
+         SrcImage.GetWidth(),
+         SrcImage.GetHeight(),
+         mBitmapNames[i].c_str()
+         ));
+   }
+}
+
+
+
+
+
+
 /// Reads an image cache including images, cursors and colours.
 /// @param bBinaryRead if true means read from an external bbinary file.  
 ///   otherwise the data is taken from a compiled in block of memory.
@@ -642,20 +771,14 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
 bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
 {
    EnsureInitialised();
-   const int nBmpsPerRow=6;
-   const int depth = 32; //32 bits depth.  Includes alpha channel.
-   const int width = 440;// Must be wide enough for Audacity logo which is 215, use double width.
-   int height = 32 * (((int)mBitmapNames.GetCount()+nBmpsPerRow-1)/nBmpsPerRow);
-   height +=100;
-
-   // I'm not sure that this part is needed when reading...
-   wxImage ImageCache( width, height );
+   wxImage ImageCache;
+   wxBusyCursor busy;
 
    // Ensure we have an alpha channel...
-   if( !ImageCache.HasAlpha() )
-   {
-      ImageCache.InitAlpha();
-   }
+//   if( !ImageCache.HasAlpha() )
+//   {
+//      ImageCache.InitAlpha();
+//   }
 
    // IF bBinary read THEN a normal read from a PNG file
    if(  bBinaryRead )
@@ -702,7 +825,7 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    }
 
    int i;
-   mFlow.Init(width);
+   mFlow.Init(ImageCacheWidth);
    // Load the bitmaps
    for(i=0;i<(int)mImages.GetCount();i++)
    {
@@ -739,7 +862,7 @@ void ThemeBase::LoadComponents( bool bOkIfNotFound )
    if( !wxDirExists( FileNames::ThemeComponentsDir() ))
       return;
 
-   wxBusyCursor();
+   wxBusyCursor busy;
    int i;
    int n=0;
    wxString FileName;
@@ -810,7 +933,7 @@ void ThemeBase::SaveComponents()
       }
    }
 
-   wxBusyCursor();
+   wxBusyCursor busy;
    int i;
    int n=0;
    wxString FileName;

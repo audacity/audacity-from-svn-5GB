@@ -117,7 +117,8 @@ public:
    void SaveComponents();
    void ReadThemeInternal();
    void SaveThemeAsCode();
-
+   void WriteImageDefs( );
+   void WriteImageMap( );
 
    wxColour & Colour( int iIndex );
    wxBitmap & Bitmap( int iIndex );

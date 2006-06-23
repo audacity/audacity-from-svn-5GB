@@ -190,6 +190,7 @@ void ThemePrefs::OnLoadThemeCache(wxCommandEvent &event)
 void ThemePrefs::OnSaveThemeCache(wxCommandEvent &event)
 {
    theTheme.CreateImageCache();
+   theTheme.WriteImageMap( );// bonus - give them the html version.
 }
 
 /// Read Theme from internal storage.
@@ -203,5 +204,6 @@ void ThemePrefs::OnReadThemeInternal( wxCommandEvent &event)
 void ThemePrefs::OnSaveThemeAsCode(wxCommandEvent &event)
 {
    theTheme.SaveThemeAsCode();
+   theTheme.WriteImageDefs( );// bonus - give them the Defs too.
 }
 

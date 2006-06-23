@@ -29,6 +29,7 @@ class wxMouseEvent;
 class wxTextFile;
 class wxWindow;
 class wxIcon;
+class wxBitmap;
 class TrackList;
 
 class AudacityProject;
@@ -122,6 +123,7 @@ class LabelTrack:public Track {
    virtual bool Silence(double t0, double t1);
    virtual bool InsertSilence(double t, double len);
    int OverGlyph(int x, int y);
+   static wxBitmap & GetGlyph( int i);
 
 
    void ResetFlags();
