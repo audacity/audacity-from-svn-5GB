@@ -95,6 +95,7 @@ for registering for changes.
 
 #include "Audacity.h"
 
+#include <wx/wx.h>
 #include <wx/wxprec.h>
 #include <wx/listctrl.h>
 #include <wx/treectrl.h>

@@ -57,7 +57,6 @@ and use it for toolbar and window layouts too.
 
 #include <wx/wxprec.h>
 #include <wx/image.h>
-#include <wx/arrimpl.cpp> 
 #include <wx/file.h>
 #include <wx/ffile.h>
 #include <wx/mstream.h>
@@ -70,10 +69,11 @@ and use it for toolbar and window layouts too.
 #include "FileNames.h"
 #include "Prefs.h"
 
+#include <wx/arrimpl.cpp> 
 
-WX_DEFINE_OBJARRAY( ArrayOfImages );
-WX_DEFINE_OBJARRAY( ArrayOfBitmaps );
-WX_DEFINE_OBJARRAY( ArrayOfColours );
+WX_DEFINE_OBJARRAY( ArrayOfImages )
+WX_DEFINE_OBJARRAY( ArrayOfBitmaps )
+WX_DEFINE_OBJARRAY( ArrayOfColours )
 
 
 // JKC: First get the MAC specific images.
