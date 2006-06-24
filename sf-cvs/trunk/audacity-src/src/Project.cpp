@@ -607,12 +607,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 #if !defined(__WXMAC__) && !defined(__WXX11__)
    #ifdef __WXMSW__
       wxIcon ic(wxICON(AudacityLogo));
-      SetIcon(ic);
    #else
-      // msmeyer: Temporarily disabled because it gives compile-time error
-/*      wxIcon ic(wxICON(AudacityLogo48x48));
-      SetIcon(ic);*/
+      wxIcon ic;
+      ic.CopyFromBitmap(theTheme.Bitmap(bmpAudacityLogo48x48));
    #endif
+   SetIcon(ic);
 #endif
    mIconized = false;
 
