@@ -783,7 +783,7 @@ void TrackPanel::ScrollDuringDrag()
    //  than waiting for the next update event; this makes scrolling
    //  smoother on MacOS 9.
 
-   if (mMouseMostRecentX > mCapturedRect.x + mCapturedRect.width) {
+   if (mMouseMostRecentX >= mCapturedRect.x + mCapturedRect.width) {
       mAutoScrolling = true;
       mListener->TP_ScrollRight();
    }
@@ -3741,7 +3741,7 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    }
 
    //Determine if user clicked on the track's left-hand label
-   if (!mCapturedTrack && event.m_x < GetLabelWidth()) {
+   if (!mCapturedTrack && event.m_x < GetLabelWidth()+1) {
       if (event.m_x >= GetVRulerOffset()) {
          HandleVZoom(event);
          HandleCursor(event);
@@ -5600,10 +5600,10 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
    GetSize(&r.width, &r.height);
 
    if (label) {
-      r.width = GetLabelWidth() - kLeftInset;
+      r.width = GetLabelWidth();
    } else {
-      r.x += GetLabelWidth() + 1;
-      r.width -= GetLabelWidth() - 3;
+      r.x = GetLeftOffset();
+      r.width -= GetLeftOffset();
    }
 
    TrackListIterator iter(mTracks);
