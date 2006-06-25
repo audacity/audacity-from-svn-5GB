@@ -161,23 +161,40 @@ void AButton::SetFocusRect(wxRect & r)
 
 AButton::AButtonState AButton::GetState()
 {
+   AButtonState state;
+
    if (!mEnabled && !mToggle)
       return AButtonDis;
 
-   if (mButtonIsDown || mIsClicking) {
-      if (mToggle && mUseDisabledAsDownHiliteImage)
-         if (mCursorIsInWindow)
-            return AButtonDis;
-         else
-            return AButtonDown;
-      else
-         return AButtonDown;
+   if (mCursorIsInWindow) {
+      if (mToggle) {
+         if (mIsClicking) {
+            state = mButtonIsDown ? AButtonUp : AButtonDown;
+            if (mUseDisabledAsDownHiliteImage) {
+               state = mButtonIsDown ? AButtonOver : AButtonDis;
+            }
+         }
+         else {
+            state = mButtonIsDown ? AButtonDown : AButtonOver;
+            if (mUseDisabledAsDownHiliteImage) {
+               state = mButtonIsDown ? AButtonDis : AButtonOver;
+            }
+         }
+      }
+      else {
+         state = mIsClicking ? AButtonDown : AButtonOver;
+      }
    }
-
-   if (mCursorIsInWindow)
-      return AButtonOver;
-
-   return AButtonUp;
+   else {
+      if (mToggle) {
+         state = mButtonIsDown ? AButtonDown : AButtonUp;
+      }
+      else {
+         state = AButtonUp;
+      }
+   }
+         
+   return state;
 }
 
 void AButton::OnPaint(wxPaintEvent & event)
@@ -238,12 +255,13 @@ void AButton::OnMouseEvent(wxMouseEvent & event)
    //If the mouse button is released, the following stuff happens
    if (mEnabled) {
       if (event.ButtonUp()) {
+         mIsClicking = false;
+
          if (HasCapture())
             ReleaseMouse();
 
          if (mCursorIsInWindow && (mToggle || !mButtonIsDown)) {
             SetFocus();
-            mIsClicking = false;
                
             if(mToggle)
                mButtonIsDown = !mButtonIsDown;
