@@ -1583,9 +1583,9 @@ void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
 void ToolBar:: MakeButtonBackgroundsLarge()
 {
 #ifdef USE_AQUA_THEME
-   MakeMacRecoloredImage( bmpRecoloredUpLarge,     bmpMacUpButtonLarge );
-   MakeMacRecoloredImage( bmpRecoloredDownLarge,   bmpMacDownButtonLarge );
-   MakeMacRecoloredImage( bmpRecoloredHiliteLarge, bmpMacHiliteButtonLarge );
+   MakeMacRecoloredImage( bmpRecoloredUpLarge,     bmpMacUpButton );
+   MakeMacRecoloredImage( bmpRecoloredDownLarge,   bmpMacDownButton );
+   MakeMacRecoloredImage( bmpRecoloredHiliteLarge, bmpMacHiliteButton );
 #else
    MakeRecoloredImage( bmpRecoloredUpLarge,     bmpUpButtonLarge );
    MakeRecoloredImage( bmpRecoloredDownLarge,   bmpDownButtonLarge );
