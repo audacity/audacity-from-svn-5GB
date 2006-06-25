@@ -390,6 +390,7 @@ void ControlToolBar::SetStop(bool down)
       mBatch->Enable();
       mRecord->Enable();
       mPlay->Enable();
+      mPlay->SetFocus();
       if(!mAlwaysEnablePause)
          mPause->Disable();
       mRewind->Enable();
