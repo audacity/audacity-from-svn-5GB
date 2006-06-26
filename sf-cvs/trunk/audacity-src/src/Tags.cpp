@@ -126,52 +126,74 @@ int Tags::GetTrackNumber()
 
 bool Tags::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
-   if (wxStrcmp(tag, wxT("tags")) != 0)
-      return false;
+   if (wxStrcmp(tag, wxT("tags")) == 0) {
+      // loop through attrs, which is a null-terminated list of
+      // attribute-value pairs
+      while(*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
 
-   // loop through attrs, which is a null-terminated list of
-   // attribute-value pairs
-   while(*attrs) {
-      const wxChar *attr = *attrs++;
-      const wxChar *value = *attrs++;
+         if (!value)
+            break;
 
-      if (!value)
-         break;
+         if (!wxStrcmp(attr, wxT("title")))
+            mTitle = value;
+         else if (!wxStrcmp(attr, wxT("artist")))
+            mArtist = value;
+         else if (!wxStrcmp(attr, wxT("album")))
+            mAlbum = value;
+         else if (!wxStrcmp(attr, wxT("track")))
+            mTrackNum = wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("year")))
+            mYear = value;
+         else if (!wxStrcmp(attr, wxT("genre")))
+            mGenre = wxAtoi(value);
+         else if (!wxStrcmp(attr, wxT("comments")))
+            mComments = value;
+         else if (!wxStrcmp(attr, wxT("id3v2")))
+            mID3V2 = wxAtoi(value)?true:false;
+         else {
+            mExtraNames.Add(wxString(attr));
+            mExtraValues.Add(wxString(value));
+         }
+      } // while
 
-      if (!wxStrcmp(attr, wxT("title")))
-         mTitle = value;
-      else if (!wxStrcmp(attr, wxT("artist")))
-         mArtist = value;
-      else if (!wxStrcmp(attr, wxT("album")))
-         mAlbum = value;
-      else if (!wxStrcmp(attr, wxT("track")))
-         mTrackNum = wxAtoi(value);
-      else if (!wxStrcmp(attr, wxT("year")))
-         mYear = value;
-      else if (!wxStrcmp(attr, wxT("genre")))
-         mGenre = wxAtoi(value);
-      else if (!wxStrcmp(attr, wxT("comments")))
-         mComments = value;
-      else if (!wxStrcmp(attr, wxT("id3v2")))
-         mID3V2 = wxAtoi(value)?true:false;
-      else {
-         mExtraNames.Add(wxString(attr));
-         mExtraValues.Add(wxString(value));
-      }
-   } // while
+      return true;
+   }
 
-   
-   return true;
+   if (wxStrcmp(tag, wxT("tag")) == 0) {
+      // loop through attrs, which is a null-terminated list of
+      // attribute-value pairs
+      while(*attrs) {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+
+         if (!value)
+            break;
+
+         if (!wxStrcmp(attr, wxT("name")))
+            mExtraNames.Add(wxString(value));
+         else if (!wxStrcmp(attr, wxT("value")))
+            mExtraValues.Add(wxString(value));
+      } // while
+
+      return true;
+   }
+
+   return false;
 }
 
-XMLTagHandler *Tags::HandleXMLChild(const wxChar *)
+XMLTagHandler *Tags::HandleXMLChild(const wxChar *tag)
 {
+   if (wxStrcmp(tag, wxT("tag")) == 0)
+      return this;
+
    return NULL;
 }
 
 void Tags::WriteXML(int depth, FILE *fp)
 {
-   int i;
+   int i, j;
 
    for(i=0; i<depth; i++)
       fprintf(fp, "\t");
@@ -183,15 +205,26 @@ void Tags::WriteXML(int depth, FILE *fp)
    fprintf(fp, "year=\"%s\" ", (const char *)XMLEsc(mYear).mb_str());
    fprintf(fp, "genre=\"%d\" ", mGenre);
    fprintf(fp, "comments=\"%s\" ", (const char *)XMLEsc(mComments).mb_str());
-   fprintf(fp, "id3v2=\"%d\" ", (int)mID3V2);
+   fprintf(fp, "id3v2=\"%d\"", (int)mID3V2);
 
-   for(i=0; i<(int)mExtraNames.GetCount(); i++) {
-      fprintf(fp, "%s=\"%s\" ",
-              (const char *)XMLEsc(mExtraNames[i]).mb_str(),
-              (const char *)XMLEsc(mExtraValues[i]).mb_str());
+   if (mExtraNames.GetCount() == 0) {
+      fprintf(fp, "/>\n"); // XML shorthand for childless tag
+      return;
    }
 
-   fprintf(fp, "/>\n"); // XML shorthand for childless tag
+   fprintf(fp, ">\n");
+   for(j=0; j<(int)mExtraNames.GetCount(); j++) {
+      for(i=0; i<depth+1; i++)
+         fprintf(fp, "\t");
+
+      fprintf(fp, "<tag name=\"%s\" value=\"%s\"/>\n",
+              (const char *)XMLEsc(mExtraNames[j]).mb_str(),
+              (const char *)XMLEsc(mExtraValues[j]).mb_str());
+   }
+
+   for(i=0; i<depth; i++)
+      fprintf(fp, "\t");
+   fprintf(fp, "</tags>\n");
 }
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
