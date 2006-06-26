@@ -10,9 +10,20 @@ typedef float MEMFLOAT;
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
-#define ntohl(x) (x)
-#define ntohs(x) (x)
-#define htonl(x) (x)
-#define htons(x) (x)
+#endif
 
+#ifndef ntohl
+#define ntohl(x) (x)
+#endif
+
+#ifndef ntohs
+#define ntohs(x) (x)
+#endif
+
+#ifndef htonl
+#define htonl(x) (x)
+#endif
+
+#ifndef htons
+#define htons(x) (x)
 #endif
