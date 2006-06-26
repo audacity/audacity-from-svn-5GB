@@ -255,8 +255,8 @@
 				PreprocessorDefinitions="_DEBUG;DEBUG=1;__WXDEBUG__;__WX__;wxUSE_UNICODE=1;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="wx/wxprec.h"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="AudacityHeaders.h"
 				PrecompiledHeaderFile=".\$(ConfigurationName)/audacity.pch"
 				AssemblerListingLocation=".\$(ConfigurationName)/"
 				ObjectFile=".\$(ConfigurationName)/"
@@ -266,6 +266,7 @@
 				DebugInformationFormat="3"
 				CompileAs="0"
 				DisableSpecificWarnings="4996"
+				ForcedIncludeFiles="AudacityHeaders.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -453,6 +454,14 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode_Debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
