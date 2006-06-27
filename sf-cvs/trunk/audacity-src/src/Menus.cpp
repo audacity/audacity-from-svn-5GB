@@ -1532,12 +1532,11 @@ void AudacityProject::OnSetLeftSelection()
          ShuttleGui S(&D, eIsCreating);
          TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel0, mRate);
 
-         S.SetBorder(10);
+         S.SetBorder(5);
          S.StartVerticalLay(true);
          {
             S.StartStatic(_("Please enter time"), false);
             {
-               S.SetBorder(0);
                S.AddWindow(&T);
             }
             S.EndStatic();
@@ -1593,12 +1592,11 @@ void AudacityProject::OnSetRightSelection()
          ShuttleGui S(&D, eIsCreating);
          TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel1, mRate);
 
-         S.SetBorder(10);
+         S.SetBorder(5);
          S.StartVerticalLay(true);
          {
             S.StartStatic(_("Please enter time"), false);
             {
-               S.SetBorder(0);
                S.AddWindow(&T);
             }
             S.EndStatic();
