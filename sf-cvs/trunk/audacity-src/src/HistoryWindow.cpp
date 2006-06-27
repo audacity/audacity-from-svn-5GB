@@ -172,7 +172,7 @@ void HistoryWindow::UpdateLevels()
    mLevels->SetValue(value);
    mLevels->SetRange(1, mSelected);
 
-   mAvail->SetValue(wxString::Format("%d", mSelected));
+   mAvail->SetValue(wxString::Format(wxT("%d"), mSelected));
 
    focus = FindFocus();
    if ((focus == mDiscard || focus == mLevels) && mSelected == 0) {
