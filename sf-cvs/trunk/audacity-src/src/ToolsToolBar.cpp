@@ -163,7 +163,7 @@ AButton * ToolsToolBar::MakeTool( teBmps eTool,
       bmpRecoloredUpSmall, bmpRecoloredDownSmall, bmpRecoloredHiliteSmall,
       eTool, eTool,
       wxWindowID(id),
-      wxDefaultPosition, false,
+      wxDefaultPosition, true,
       theTheme.ImageSize( bmpRecoloredUpSmall ));
    button->SetLabel( label );
    mToolSizer->Add( button );
