@@ -51,6 +51,8 @@
 #include "export/ExportMP3.h"
 #include "export/ExportMultiple.h"
 #include "prefs/PrefsDialog.h"
+#include "widgets/TimeTextCtrl.h"
+#include "ShuttleGui.h"
 #include "HistoryWindow.h"
 #include "Internat.h"
 #include "FileFormats.h"
@@ -1518,25 +1520,45 @@ void AudacityProject::OnSetLeftSelection()
       }
    else
       {
-         wxString curval = wxString::Format(wxT("%2.2f"),mViewInfo.sel0);
-         wxTextEntryDialog * dialog = new wxTextEntryDialog(this,
-                                                            _("Set Left Selection Bound"),
-                                                            _("Please Enter time"),
-                                                            curval,
-                                                            wxCANCEL|wxOK|wxCENTRE);
-         if(wxID_OK==dialog->ShowModal() )
+         wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
+         int ndx = 1;
+         int i;
+         for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
+            if (TimeTextCtrl::GetBuiltinName(i) == fmt)
+               ndx = i;
+         fmt = TimeTextCtrl::GetBuiltinFormat(ndx);
+
+         wxDialog D(this, wxID_ANY, wxString(_("Set Left Selection Bound")));
+         ShuttleGui S(&D, eIsCreating);
+         TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel0, mRate);
+
+         S.SetBorder(10);
+         S.StartVerticalLay(true);
+         {
+            S.StartStatic(_("Please enter time"), false);
+            {
+               S.SetBorder(0);
+               S.AddWindow(&T);
+            }
+            S.EndStatic();
+         }
+         S.EndVerticalLay();
+         D.GetSizer()->Add(D.CreateButtonSizer(wxOK | wxCANCEL),
+                           0,
+                           wxCENTER | wxBOTTOM,
+                           10);
+         D.Layout();
+         D.Fit();
+         D.Center();
+         if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
-               wxString val = dialog->GetValue();
-               double tmp;
-               val.ToDouble(&tmp);
-               mViewInfo.sel0 = tmp;
+               mViewInfo.sel0 = T.GetTimeValue();
                
                //Make sure it is 'legal'
-               if(mViewInfo.sel0 < 0)
-                  mViewInfo.sel0 = 0;
+               if(mViewInfo.sel0 < 0.0)
+                  mViewInfo.sel0 = 0.0;
             }
-         delete dialog;
       }
    
    if(mViewInfo.sel1 < mViewInfo.sel0)
@@ -1559,22 +1581,45 @@ void AudacityProject::OnSetRightSelection()
 
    else
       {
-         wxString curval = wxString::Format(wxT("%2.2f"),mViewInfo.sel1);
-         wxTextEntryDialog * dialog =  new wxTextEntryDialog(this,_("Set Right Selection Bound"),_("Please Enter time"),
-                                                      curval,wxCANCEL|wxOK|wxCENTRE);
-         if(wxID_OK==dialog->ShowModal() )
+         wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
+         int ndx = 1;
+         int i;
+         for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
+            if (TimeTextCtrl::GetBuiltinName(i) == fmt)
+               ndx = i;
+         fmt = TimeTextCtrl::GetBuiltinFormat(ndx);
+
+         wxDialog D(this, wxID_ANY, wxString(_("Set Right Selection Bound")));
+         ShuttleGui S(&D, eIsCreating);
+         TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel1, mRate);
+
+         S.SetBorder(10);
+         S.StartVerticalLay(true);
+         {
+            S.StartStatic(_("Please enter time"), false);
+            {
+               S.SetBorder(0);
+               S.AddWindow(&T);
+            }
+            S.EndStatic();
+         }
+         S.EndVerticalLay();
+         D.GetSizer()->Add(D.CreateButtonSizer(wxOK | wxCANCEL),
+                           0,
+                           wxCENTER | wxBOTTOM,
+                           10);
+         D.Layout();
+         D.Fit();
+         D.Center();
+         if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
-               wxString val = dialog->GetValue();
-               double tmp;
-               val.ToDouble(&tmp);
-               mViewInfo.sel1=tmp; 
-             
+               mViewInfo.sel1 = T.GetTimeValue();
+               
                //Make sure it is 'legal'
                if(mViewInfo.sel1 < 0)
                   mViewInfo.sel1 = 0;
             }
-         delete dialog;
       }
 
    if(mViewInfo.sel0 >  mViewInfo.sel1)
