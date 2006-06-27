@@ -35,9 +35,9 @@ undo memory so as to free up space.
 #include "ShuttleGui.h"
 
 enum {
-   ID_LEVELS = 1000,
-   ID_DISCARD,
-   ID_CLEAR
+   ID_AVAIL = 1000,
+   ID_LEVELS,
+   ID_DISCARD
 };
 
 BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
@@ -45,7 +45,6 @@ BEGIN_EVENT_TABLE(HistoryWindow, wxDialog)
    EVT_SIZE(HistoryWindow::OnSize)
    EVT_CLOSE(HistoryWindow::OnCloseWindow)
    EVT_LIST_ITEM_SELECTED(wxID_ANY, HistoryWindow::OnItemSelected)
-   EVT_BUTTON(ID_CLEAR, HistoryWindow::OnClear)
    EVT_BUTTON(ID_DISCARD, HistoryWindow::OnDiscard)
 END_EVENT_TABLE()
 
@@ -72,7 +71,6 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
       S.StartStatic(_("Manage History"), 1);
       {
          mList = S.AddListControlReportMode();
-         mList->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
          // Do this BEFORE inserting the columns.  On the Mac at least, the
          // columns are deleted and later InsertItem()s will cause Audacity to crash.
          mList->SetSingleStyle(wxLC_SINGLE_SEL);
@@ -82,21 +80,34 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
          //Assign rather than set the image list, so that it is deleted later.
          mList->AssignImageList(imageList, wxIMAGE_LIST_SMALL);
 
-         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         S.StartMultiColumn(3, wxCENTRE);
          {
-            mLevels = S.Id(ID_LEVELS).AddTextBox(_("&Selected levels"), wxT("0"), 10);
-            mLevels->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
-            S.Id(ID_DISCARD).AddButton(_("&Discard"));
-            S.Id(ID_CLEAR).AddButton(_("&Clear All"));
+            mAvail = S.Id(ID_AVAIL).AddTextBox(_("&Undo Levels Available"), wxT("0"), 10);
+            mAvail->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+            S.AddVariableText(wxT(""))->Hide();
          }
-         S.EndHorizontalLay();
+
+         {
+            S.AddPrompt(_("Levels To Discard"));
+            mLevels = new wxSpinCtrl(this,
+                                     ID_LEVELS,
+                                     wxT("1"),
+                                     wxDefaultPosition,
+                                     wxDefaultSize,
+                                     wxSP_ARROW_KEYS,
+                                     10,
+                                     mManager->GetCurrentState());
+            S.AddWindow(mLevels);
+            mDiscard = S.Id(ID_DISCARD).AddButton(_("&Discard"));
+         }
+         S.EndMultiColumn();
       }
       S.EndStatic();
 
       S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
       {
          S.SetBorder(10);
-         S.Id(wxID_OK).AddButton(_("&OK"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
       }
       S.EndHorizontalLay();
    }
@@ -112,7 +123,7 @@ HistoryWindow::HistoryWindow(AudacityProject *parent, UndoManager *manager):
 
 HistoryWindow::~HistoryWindow()
 {
-   mList->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
+   mAvail->Disconnect(wxEVT_KEY_DOWN, wxKeyEventHandler(HistoryWindow::OnChar));
 }
 
 void HistoryWindow::UpdateDisplay()
@@ -141,38 +152,49 @@ void HistoryWindow::DoUpdate()
    mList->SetItemState(mSelected,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED,
                        wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
+
+   UpdateLevels();
 }
 
-void HistoryWindow::OnClear(wxCommandEvent &event)
+void HistoryWindow::UpdateLevels()
 {
-   mSelected = mList->GetItemCount() - 1;
-   OnDiscard(event);
+   wxWindow *focus;
+   int value = mLevels->GetValue();
+
+   if (value > mSelected) {
+      value = mSelected;
+   }
+
+   if (value == 0) {
+      value = 1;
+   }
+
+   mLevels->SetValue(value);
+   mLevels->SetRange(1, mSelected);
+
+   mAvail->SetValue(wxString::Format("%d", mSelected));
+
+   focus = FindFocus();
+   if ((focus == mDiscard || focus == mLevels) && mSelected == 0) {
+      mList->SetFocus();
+   }
+
+   mLevels->Enable(mSelected > 0);
+   mDiscard->Enable(mSelected > 0);
 }
 
 void HistoryWindow::OnDiscard(wxCommandEvent &event)
 {
-   int i;
+   int i = mLevels->GetValue();
 
-   for (i = mSelected; i >= 0; i--) {
-      mProject->SetStateTo(i + 1);
-      mManager->RemoveStateAt(i);
-      mSelected = i;
-   }
-
-   i = mManager->GetNumStates();
-   if (i == 0) {
-      mProject->TP_PushState(_("History Cleared"),
-                             _("History Cleared"),
-                             false);
-      mSelected = 0;
-      i = mManager->GetNumStates();
-   }
-
-   if (mSelected >= i)
-      mSelected = i - 1;
-
+   mSelected -= i;
+   mManager->RemoveStates(i);
    mProject->SetStateTo(mSelected + 1);
-   UpdateDisplay();
+
+   while(--i >= 0)
+      mList->DeleteItem(i);
+
+   UpdateLevels();
 }
 
 void HistoryWindow::OnItemSelected(wxListEvent &event)
@@ -192,12 +214,13 @@ void HistoryWindow::OnItemSelected(wxListEvent &event)
    mList->SetItemImage(mSelected, 1);
 
    mProject->SetStateTo(mSelected + 1);
-   mLevels->SetValue(wxString::Format(wxT("%d"), mSelected + 1));
-}  
+
+   UpdateLevels();
+}
 
 void HistoryWindow::OnCloseWindow(wxCloseEvent & WXUNUSED(event))
 {
-  this->Show(FALSE);
+  this->Show(false);
 }
 
 void HistoryWindow::OnSize(wxSizeEvent & event)
@@ -216,26 +239,7 @@ void HistoryWindow::OnShow(wxShowEvent & event)
 void HistoryWindow::OnChar(wxKeyEvent &event)
 {
    event.Skip(false);
-
-   if (event.GetId() == ID_LEVELS) {
-      return;
-   }
-
-   wxListCtrl *l = wxDynamicCast(event.GetEventObject(), wxListCtrl);
-
-   switch (event.GetKeyCode())
-   {
-      case WXK_DELETE:
-      case WXK_BACK:
-      {
-         wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, ID_DISCARD);
-         l->GetEventHandler()->AddPendingEvent(e);
-         return;
-      }
-      break;
-   }
-
-   event.Skip(true);
+   return;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

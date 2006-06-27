@@ -16,6 +16,7 @@
 #include <wx/event.h>
 #include <wx/frame.h>
 #include <wx/listctrl.h>
+#include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
 class AudacityProject;
@@ -31,20 +32,22 @@ class HistoryWindow :public wxDialog {
    void UpdateDisplay();
 
  private:
-   void  DoUpdate();
+   void DoUpdate();
+   void UpdateLevels();
 
    void OnShow(wxShowEvent & event);
    void OnSize(wxSizeEvent & event);
    void OnCloseWindow(wxCloseEvent & WXUNUSED(event));
    void OnChar(wxKeyEvent & event);
    void OnItemSelected(wxListEvent & event);
-   void OnClear(wxCommandEvent & event);
    void OnDiscard(wxCommandEvent & event);
 
    AudacityProject   *mProject;
    UndoManager       *mManager;
    wxListCtrl        *mList;
-   wxTextCtrl        *mLevels;
+   wxTextCtrl        *mAvail;
+   wxSpinCtrl        *mLevels;
+   wxButton          *mDiscard;
    int               mSelected;
 
  public:
