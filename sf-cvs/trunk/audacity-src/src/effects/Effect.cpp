@@ -360,6 +360,105 @@ void Effect::Preview()
    mWaveTracks = saveWaveTracks;
 }
 
+BEGIN_EVENT_TABLE(GenerateDialog, wxDialog)
+EVT_BUTTON(wxID_OK, GenerateDialog::OnOK)
+EVT_BUTTON(wxID_CANCEL, GenerateDialog::OnCancel)
+END_EVENT_TABLE()
+
+GenerateDialog::GenerateDialog(wxWindow * parent, const wxString & title):
+wxDialog(parent, wxID_ANY, title)
+{
+}
+
+void GenerateDialog::Init()
+{
+   ShuttleGui S(this, eIsCreating);
+   
+   S.SetBorder(5);
+   S.StartVerticalLay(true);
+   {
+      PopulateOrExchange(S);
+
+      S.SetBorder(10);
+      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
+      {
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&Generate"))->SetDefault();
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndVerticalLay();
+
+   Fit();
+}
+
+void GenerateDialog::OnOK(wxCommandEvent & event)
+{
+   GetParent()->TransferDataFromWindow();
+   
+   if (GetParent()->Validate())
+      EndModal(true);
+   else {
+      event.Skip();
+   }
+}
+
+void GenerateDialog::OnCancel(wxCommandEvent & event)
+{
+   EndModal(false);
+}
+
+
+BEGIN_EVENT_TABLE(EffectDialog, wxDialog)
+EVT_BUTTON(wxID_OK, EffectDialog::OnOK)
+EVT_BUTTON(wxID_CANCEL, EffectDialog::OnCancel)
+EVT_BUTTON(wxID_APPLY, EffectDialog::OnApply)
+END_EVENT_TABLE()
+
+EffectDialog::EffectDialog(wxWindow * parent, const wxString & title):
+wxDialog(parent, wxID_ANY, title)
+{
+}
+
+void EffectDialog::Init()
+{
+   ShuttleGui S(this, eIsCreating);
+   
+   S.SetBorder(5);
+   S.StartVerticalLay(true);
+   {
+      PopulateOrExchange(S);
+
+      S.SetBorder(10);
+      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
+      {
+         S.Id(wxID_APPLY).AddButton(_("&Preview"));
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
+         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+      }
+      S.EndHorizontalLay();
+   }
+   S.EndVerticalLay();
+   Layout();
+   Fit();
+   Center();
+}
+
+void EffectDialog::OnOK(wxCommandEvent & event)
+{
+   GetParent()->TransferDataFromWindow();
+   
+   if (GetParent()->Validate())
+      EndModal(true);
+   else {
+      event.Skip();
+   }
+}
+
+void EffectDialog::OnCancel(wxCommandEvent & event)
+{
+   EndModal(false);
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

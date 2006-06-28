@@ -51,7 +51,7 @@ wxString EffectEcho::GetEffectDescription() {
 
 bool EffectEcho::PromptUser()
 {
-   EchoDialog dlog(this, mParent, -1, _("Echo"));
+   EchoDialog dlog(this, mParent);
    dlog.delay = delay;
    dlog.decay = decay;
    dlog.CentreOnParent();
@@ -153,28 +153,14 @@ bool EffectEcho::ProcessOne(int count, WaveTrack * track,
 // EchoDialog
 //----------------------------------------------------------------------------
 
-enum {
-   ID_TEXT_DELAY = 10001,
-   ID_TEXT_DECAY,
-	ID_BUTTON_PREVIEW
-};
-
-
 // event table for EchoDialog
 
-BEGIN_EVENT_TABLE(EchoDialog, wxDialog)
-    EVT_BUTTON(wxID_OK, EchoDialog::OnOk)
-    EVT_BUTTON(wxID_CANCEL, EchoDialog::OnCancel)
-    EVT_BUTTON(ID_BUTTON_PREVIEW, EchoDialog::OnPreview)
+BEGIN_EVENT_TABLE(EchoDialog, EffectDialog)
+    EVT_BUTTON(ID_EFFECT_PREVIEW, EchoDialog::OnPreview)
 END_EVENT_TABLE()
 
-EchoDialog::EchoDialog(EffectEcho * effect,
-								wxWindow * parent, wxWindowID id,
-								const wxString & title, 
-								const wxPoint & position, 
-								const wxSize & size, 
-								long style)
-: wxDialog(parent, id, title, position, size, style)
+EchoDialog::EchoDialog(EffectEcho * effect, wxWindow * parent)
+: EffectDialog(parent, _("Echo"))
 {
    m_bLoopDetect = false;
 	m_pEffect = effect;
@@ -188,95 +174,38 @@ EchoDialog::EchoDialog(EffectEcho * effect,
 	// effect parameters
    delay = float(1.0);
    decay = float(0.5);
-
-	// CREATE THE CONTROLS PROGRAMMATICALLY.
-	wxStaticText * pStaticText;
-
-   wxBoxSizer * pBoxSizer_Dialog = new wxBoxSizer(wxVERTICAL);
-
-	// heading
-   pStaticText = new wxStaticText(this, -1, 
-												_("Echo"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxALL, 8);
-
-   pStaticText = new wxStaticText(this, -1, 
-												_("by Dominic Mazzoni && Vaughan Johnson"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Dialog->Add(pStaticText, 0, wxALIGN_CENTER | wxTOP | wxLEFT | wxRIGHT, 8);
-
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-
-	// delay
-   wxBoxSizer * pBoxSizer_Delay = new wxBoxSizer(wxHORIZONTAL);
    
-   pStaticText = new wxStaticText(this, -1, _("Delay time (seconds):"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Delay->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
-
-	//v Override wxTextValidator to disallow negative values <= -100.0?
-   m_pTextCtrl_Delay = 
-		new wxTextCtrl(this, ID_TEXT_DELAY, wxT("1.0"), 
-							wxDefaultPosition, wxSize(64, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Delay->Add(m_pTextCtrl_Delay, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_Delay, 0, wxALIGN_CENTER | wxALL, 4);
-
-
-	// decay
-   wxBoxSizer * pBoxSizer_Decay = new wxBoxSizer(wxHORIZONTAL);
-   
-   pStaticText = new wxStaticText(this, -1, _("Decay factor:"),
-												wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_Decay->Add(pStaticText, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 4);
-
-	//v Override wxTextValidator to disallow negative values <= -100.0?
-   m_pTextCtrl_Decay = 
-		new wxTextCtrl(this, ID_TEXT_DECAY, wxT("0.5"), 
-							wxDefaultPosition, wxSize(64, -1), 0,
-							wxTextValidator(wxFILTER_NUMERIC));
-   pBoxSizer_Decay->Add(m_pTextCtrl_Decay, 0, 
-								wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_Decay, 0, wxALIGN_CENTER | wxALL, 4);
-
-
-	// Preview, OK, & Cancel buttons
-   pBoxSizer_Dialog->Add(0, 8, 0); // spacer
-
-   wxBoxSizer * pBoxSizer_OK = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton * pButton_Preview = 
-		new wxButton(this, ID_BUTTON_PREVIEW, m_pEffect->GetPreviewName());
-   pBoxSizer_OK->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 4);
-   pBoxSizer_OK->Add(32, 8); // horizontal spacer
-
-   wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-   pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
-
-   wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
-   pButton_OK->SetDefault();
-   pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
-
-   pBoxSizer_Dialog->Add(pBoxSizer_OK, 0, wxALIGN_CENTER | wxALL, 8);
-
-
-   this->SetAutoLayout(true);
-   this->SetSizer(pBoxSizer_Dialog);
-   pBoxSizer_Dialog->Fit(this);
-   pBoxSizer_Dialog->SetSizeHints(this);
+   // Initialize dialog
+   Init();
 }
 
-bool EchoDialog::Validate()
+void EchoDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   return true; 
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      S.AddTitle(_("by Dominic Mazzoni && Vaughan Johnson"));
+   }
+   S.EndHorizontalLay();
+
+   S.StartHorizontalLay(wxCENTER, false);
+   {
+      // Add a little space
+   }
+   S.EndHorizontalLay();
+
+   S.StartMultiColumn(2, wxALIGN_CENTER);
+   {
+      m_pTextCtrl_Delay = S.AddTextBox(_("Delay time (seconds):"),
+                                       wxT("1.0"),
+                                       10);
+      m_pTextCtrl_Delay->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+
+      m_pTextCtrl_Decay = S.AddTextBox(_("Decay factor:"),
+                                       wxT("0.5"),
+                                       10);
+      m_pTextCtrl_Decay->SetValidator(wxTextValidator(wxFILTER_NUMERIC));
+   }
+   S.EndMultiColumn();
 }
 
 bool EchoDialog::TransferDataToWindow()
@@ -314,6 +243,12 @@ bool EchoDialog::TransferDataFromWindow()
    return true;
 }
 
+
+bool EchoDialog::Validate()
+{
+   return true; 
+}
+
 // handler implementations for EchoDialog
 
 void EchoDialog::OnPreview(wxCommandEvent &event)
@@ -332,23 +267,6 @@ void EchoDialog::OnPreview(wxCommandEvent &event)
    m_pEffect->delay = oldDelay;
    m_pEffect->decay = oldDecay;
 }
-
-void EchoDialog::OnOk(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-   
-   if (Validate()) 
-      EndModal(true);
-   else 
-      event.Skip();
-}
-
-void EchoDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
-}
-
-
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

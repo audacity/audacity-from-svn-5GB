@@ -21,6 +21,7 @@ class wxProgressDialog;
 
 #include "../WaveTrack.h"
 #include "../Shuttle.h"
+#include "../ShuttleGui.h"
 
 class Effect;
 
@@ -273,6 +274,57 @@ class Effect {
 
 };
 
+// Base dialog for generate effect
+class wxDialog;
+class wxStdDialogButtonSizer;
+
+class GenerateDialog:public wxDialog
+{
+public:
+   // constructors and destructors
+   GenerateDialog(wxWindow * parent, const wxString & title);
+   
+   void Init();
+   
+   virtual bool Validate() = 0;
+   virtual bool TransferDataToWindow() = 0;
+   virtual bool TransferDataFromWindow() = 0;
+   virtual void PopulateOrExchange(ShuttleGui & S) = 0;
+   
+private:
+      
+   void OnOK(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+   
+private:
+   DECLARE_EVENT_TABLE()
+};
+
+#define ID_EFFECT_PREVIEW wxID_APPLY
+
+// Base dialog for regular effect
+class EffectDialog:public wxDialog
+{
+public:
+   // constructors and destructors
+   EffectDialog(wxWindow * parent, const wxString & title);
+   
+   void Init();
+   
+   virtual bool Validate() = 0;
+   virtual bool TransferDataToWindow() = 0;
+   virtual bool TransferDataFromWindow() = 0;
+   virtual void PopulateOrExchange(ShuttleGui & S) = 0;
+   
+private:
+      
+   void OnOK(wxCommandEvent & event);
+   void OnCancel(wxCommandEvent & event);
+   void OnPreview(wxCommandEvent & event);
+   
+private:
+   DECLARE_EVENT_TABLE()
+};
 
 // Utility functions
 
