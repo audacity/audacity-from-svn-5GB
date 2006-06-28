@@ -196,6 +196,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
    typedef int lame_close_t(lame_global_flags*);
    
    typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_out_samplerate_t(lame_global_flags*, int);
    typedef int lame_set_num_channels_t(lame_global_flags*, int );
    typedef int lame_set_quality_t(lame_global_flags*, int);
    typedef int lame_get_quality_t(lame_global_flags*);
@@ -217,6 +218,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
          get_lame_version_t* get_lame_version;
          
          lame_set_in_samplerate_t* lame_set_in_samplerate;
+         lame_set_out_samplerate_t* lame_set_out_samplerate;
          lame_set_num_channels_t* lame_set_num_channels;
          lame_set_quality_t* lame_set_quality;
          lame_get_quality_t* lame_get_quality;
@@ -304,6 +306,8 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
             lame_set_in_samplerate =
                 (lame_set_in_samplerate_t *) lame_enc_lib.GetSymbol(wxT("lame_set_in_samplerate"));
+            lame_set_out_samplerate =
+                (lame_set_out_samplerate_t *) lame_enc_lib.GetSymbol(wxT("lame_set_out_samplerate"));
             lame_set_num_channels =
                 (lame_set_num_channels_t *) lame_enc_lib.GetSymbol(wxT("lame_set_num_channels"));
             lame_set_quality =
@@ -325,6 +329,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
                 !lame_encode_flush ||
                 !lame_close ||
                 !lame_set_in_samplerate ||
+                !lame_set_out_samplerate ||
                 !lame_set_num_channels ||
                 !lame_set_quality ||
                 !lame_set_brate) {
@@ -349,6 +354,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
          lame_set_num_channels(mGF, channels);
          lame_set_in_samplerate(mGF, sampleRate);
+         lame_set_out_samplerate(mGF, sampleRate);
 
          lame_init_params(mGF);
 
@@ -456,6 +462,7 @@ void ReleaseMP3Exporter()
    typedef int lame_close_t(lame_global_flags*);
    
    typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_out_samplerate_t(lame_global_flags*, int);
    typedef int lame_set_num_channels_t(lame_global_flags*, int );
    typedef int lame_set_quality_t(lame_global_flags*, int);
    typedef int lame_get_quality_t(lame_global_flags*);
@@ -477,6 +484,7 @@ void ReleaseMP3Exporter()
          get_lame_version_t* get_lame_version;
          
          lame_set_in_samplerate_t* lame_set_in_samplerate;
+         lame_set_out_samplerate_t* lame_set_out_samplerate;
          lame_set_num_channels_t* lame_set_num_channels;
          lame_set_quality_t* lame_set_quality;
          lame_get_quality_t* lame_get_quality;
@@ -622,6 +630,10 @@ void ReleaseMP3Exporter()
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_in_samplerate = (lame_set_in_samplerate_t *) NewMachOFromCFM(mainAddr);
 
+            MakePString(name, "lame_set_out_samplerate");
+            FindSymbol(connID, name, &mainAddr, &symClass);
+            lame_set_out_samplerate = (lame_set_out_samplerate_t *) NewMachOFromCFM(mainAddr);
+
             MakePString(name, "lame_set_num_channels");
             FindSymbol(connID, name, &mainAddr, &symClass);
             lame_set_num_channels = (lame_set_num_channels_t *) NewMachOFromCFM(mainAddr);
@@ -653,6 +665,7 @@ void ReleaseMP3Exporter()
                 !lame_encode_flush ||
                 !lame_close ||
                 !lame_set_in_samplerate ||
+                !lame_set_out_samplerate ||
                 !lame_set_num_channels ||
                 !lame_set_quality ||
                 !lame_set_brate) {
@@ -677,6 +690,7 @@ void ReleaseMP3Exporter()
 
          lame_set_num_channels(mGF, channels);
          lame_set_in_samplerate(mGF, sampleRate);
+         lame_set_out_samplerate(mGF, sampleRate);
 
          lame_init_params(mGF);
 
