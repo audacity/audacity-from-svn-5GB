@@ -113,6 +113,7 @@ class TimeTextCtrl: public wxPanel
 
    TimeFieldArray mFields;
    double         mScalingFactor;
+   bool           mNtscDrop;
 
    DECLARE_EVENT_TABLE()
 };
