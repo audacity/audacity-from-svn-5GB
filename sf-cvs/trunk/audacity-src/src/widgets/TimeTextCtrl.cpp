@@ -158,23 +158,21 @@ BuiltinFormatString BuiltinFormatStrings[] =
     {_("samples"),
      _("01000,01000,01000 samples|#")},
     {_("hh:mm:ss + film frames (24 fps)"),
-     _("099h060m060s+.24 frames")},
+     _("099 h 060 m 060 s+.24 frames")},
     {_("film frames (24 fps)"),
      _("01000,01000 frames |24")},
-    {_("hh:mm:ss + NTSC drop frames (29.97 fps)"),
-     _("099h060m060s+.2997 frames")},
-    {_("NTSC drop frames (29.97 fps)"),
+    {_("hh:mm:ss + NTSC drop frames"),
+     _("099 h 060 m 060 s+.30 frames |N")},
+    {_("hh:mm:ss + NTSC non-drop frames"),
+     _("099 h 060 m 060 s+.030 frames | .999000999")},
+    {_("NTSC frames"),
      _("01000,01000 frames|29.97002997")},
-    {_("hh:mm:ss + NTSC non-drop frames (30 fps)"),
-     _("099h060m060s+.030 frames")},
-    {_("NTSC non-drop frames (30 fps)"),
-     _("01000,01000 frames|30")},
     {_("hh:mm:ss + PAL frames (25 fps)"),
-     _("099h060m060s+.25 frames")},
+     _("099 h 060 m 060 s+.25 frames")},
     {_("PAL frames (25 fps)"),
      _("01000,01000 frames|25")},
     {_("hh:mm:ss + CDDA frames (75 fps)"),
-     _("099h060m060s+.75 frames")},
+     _("099 h 060 m 060 s+.75 frames")},
     {_("CDDA frames (75 fps)"),
      _("01000,01000 frames |75")}};
 
@@ -333,6 +331,7 @@ void TimeTextCtrl::ParseFormatString()
    wxString delimStr;
    unsigned int i;
 
+   mNtscDrop = false;
    for(i=0; i<format.Length(); i++) {
       bool handleDelim = false;
       bool handleNum = false;
@@ -342,6 +341,9 @@ void TimeTextCtrl::ParseFormatString()
 
          if (remainder == wxT("#"))
             mScalingFactor = mSampleRate;
+         else if (remainder == wxT("N")) {
+            mNtscDrop = true;
+         }
          else
             remainder.ToDouble(&mScalingFactor);
          i = format.Length()-1; // force break out of loop
@@ -753,16 +755,35 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
    else if (keyCode == WXK_UP) {
       for(unsigned int i=0; i<mFields.GetCount(); i++) {
          if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
-            ControlsToValue();
+            if(!mNtscDrop)
+               ControlsToValue();
+            else {
+               mNtscDrop = false;
+               ControlsToValue();
+               mNtscDrop = true;
+            }
             mTimeValue *= mScalingFactor;
+            double mult = pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1);
             if (mFields[i].frac)
-               mTimeValue += pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)/(double)mFields[i].base;
+               mTimeValue += mult/(double)mFields[i].base;
             else
-               mTimeValue += pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)*(double)mFields[i].base;
+               mTimeValue += mult*(double)mFields[i].base;
+            if(mNtscDrop) {
+               if( (mTimeValue - (int)mTimeValue)*30 < 2 )
+                  if( (((int)mTimeValue)%60 == 0) && (((int)mTimeValue)%600 != 0) )
+                     mTimeValue = (int)mTimeValue + 2./30.;
+            }
             if(mTimeValue<0.)
                mTimeValue=0.;
             mTimeValue /= mScalingFactor;
-            ValueToControls();
+            if(!mNtscDrop)
+               ValueToControls();
+            else {
+               mNtscDrop = false;
+               ValueToControls();
+               mNtscDrop = true;
+               ControlsToValue();
+            }
             break;
          }
       }
@@ -780,16 +801,35 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
    else if (keyCode == WXK_DOWN) {
       for(unsigned int i=0; i<mFields.GetCount(); i++) {
          if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
-            ControlsToValue();
+            if(!mNtscDrop)
+               ControlsToValue();
+            else {
+               mNtscDrop = false;
+               ControlsToValue();
+               mNtscDrop = true;
+            }
             mTimeValue *= mScalingFactor;
+            double mult = pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1);
             if (mFields[i].frac)
-               mTimeValue -= pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)/(double)mFields[i].base;
+               mTimeValue -= mult/(double)mFields[i].base;
             else
-               mTimeValue -= pow(10.,mFields[i].digits-(mDigits[mFocusedDigit].pos-mFields[i].pos)-1)*(double)mFields[i].base;
+               mTimeValue -= mult*(double)mFields[i].base;
+            if(mNtscDrop) {
+               if( (mTimeValue - (int)mTimeValue)*30 < 2 )
+                  if( (((int)mTimeValue)%60 == 0) && (((int)mTimeValue)%600 != 0) )
+                     mTimeValue = (int)mTimeValue - 1./30.;
+            }
             if(mTimeValue<0.)
                mTimeValue=0.;
             mTimeValue /= mScalingFactor;
-            ValueToControls();
+            if(!mNtscDrop)
+               ValueToControls();
+            else {
+               mNtscDrop = false;
+               ValueToControls();
+               mNtscDrop = true;
+               ControlsToValue();
+            }
             break;
          }
       }
@@ -827,12 +867,44 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
 
 void TimeTextCtrl::ValueToControls()
 {
-   double theValue = mTimeValue * mScalingFactor+.00000001;
+   double theValue = mTimeValue * mScalingFactor + .000001;
    int t_int = int(theValue);
    double t_frac = (theValue - t_int);
    unsigned int i;
+   int tenMins;
+   int mins;
+   int addMins;
+   int secs;
+   int frames;
 
    mValueString = mPrefix;
+
+   if(mNtscDrop) {
+      frames = (int)(theValue*30./1.001);
+      tenMins = frames/17982;
+      frames -= tenMins*17982;
+      mins = tenMins * 10;
+      if(frames >= 1800) {
+         frames -= 1800;
+         mins++;
+         addMins = frames/1798;
+         frames -= addMins*1798;
+         mins += addMins;
+         secs = frames/30;
+         frames -= secs*30;
+         frames += 2;
+         if( frames >= 30 ) {
+            secs++;
+            frames -= 30;
+         }
+      }
+      else {
+         secs = frames/30;
+         frames -= secs*30;
+      }
+      t_int = mins * 60 + secs;
+      t_frac = frames / 30.;
+   }
 
    for(i=0; i<mFields.GetCount(); i++) {
       int value;
@@ -871,6 +943,30 @@ void TimeTextCtrl::ControlsToValue()
    }
 
    t /= mScalingFactor;
+   if(mNtscDrop) {
+      int t_int = int(t + .000000001);
+      double t_frac = (t - t_int);
+      int tenMins = t_int/600;
+      double frames = tenMins*17982;
+      t_int -= tenMins*600;
+      int mins = t_int/60;
+      int addMins = 0;
+      if( mins > 0 ) {
+         frames += 1800;
+         addMins = mins - 1;
+      }
+      frames += addMins * 1798;
+      t_int -= mins*60;
+      if( mins == 0 )   //first min of a block of 10, don't drop frames 0 and 1
+         frames += t_int * 30 + t_frac*30.;
+      else {   //drop frames 0 and 1 of first seconds of these minutes
+         if( t_int > 0 )
+            frames += 28 + (t_int-1)*30 + t_frac*30.;
+         else
+            frames += t_frac*30. -2.;
+      }
+      t = frames * 1.001 / 30.;
+   }
 
    mTimeValue = t;
 }
