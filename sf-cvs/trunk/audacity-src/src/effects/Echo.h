@@ -60,24 +60,18 @@ friend class EchoDialog;
 // EchoDialog
 //----------------------------------------------------------------------------
 
-class EchoDialog:public wxDialog {
+class EchoDialog:public EffectDialog {
  public:
-   EchoDialog(EffectEcho * effect,
-					wxWindow * parent, wxWindowID id, 
-					const wxString & title, 
-					const wxPoint & pos = wxDefaultPosition, 
-					const wxSize & size = wxDefaultSize, 
-					long style = wxDEFAULT_DIALOG_STYLE);
+   EchoDialog(EffectEcho * effect, wxWindow * parent);
 
-   virtual bool Validate();
+   virtual void PopulateOrExchange(ShuttleGui & S);
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
+   virtual bool Validate();
 
  private:
 	// handlers
    void OnPreview( wxCommandEvent &event );
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
 
  private:
 	bool				m_bLoopDetect;

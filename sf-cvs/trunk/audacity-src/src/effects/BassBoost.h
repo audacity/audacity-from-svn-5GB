@@ -21,13 +21,6 @@
 #include <wx/intl.h>
 #include <wx/slider.h>
 
-// Declare window functions
-
-#define ID_FREQ_TEXT    10001
-#define ID_FREQ_SLIDER  10002
-#define ID_BOOST_TEXT   10003
-#define ID_BOOST_SLIDER 10004
-
 class wxSizer;
 class wxTextCtrl;
 
@@ -71,35 +64,16 @@ class EffectBassBoost:public EffectSimpleMono {
 //----------------------------------------------------------------------------
 // BassBoostDialog
 //----------------------------------------------------------------------------
-
-class BassBoostDialog:public wxDialog {
+class BassBoostDialog:public EffectDialog {
  public:
    // constructors and destructors
-   BassBoostDialog(EffectBassBoost *effect,
-                   wxWindow * parent, wxWindowID id,
-                   const wxString & title, const wxPoint & pos =
-                   wxDefaultPosition, const wxSize & size =
-                   wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE);
+   BassBoostDialog(EffectBassBoost *effect, wxWindow * parent);
 
    // WDR: method declarations for BassBoostDialog
-   wxSlider *GetBoostSlider() {
-      return (wxSlider *) FindWindow(ID_BOOST_SLIDER);
-   } wxSlider *GetFreqSlider() {
-      return (wxSlider *) FindWindow(ID_FREQ_SLIDER);
-   }
-   wxTextCtrl *GetBoostText() {
-      return (wxTextCtrl *) FindWindow(ID_BOOST_TEXT);
-   }
-   wxTextCtrl *GetFreqText() {
-      return (wxTextCtrl *) FindWindow(ID_FREQ_TEXT);
-   }
-   virtual bool Validate();
+   virtual void PopulateOrExchange(ShuttleGui & S);
    virtual bool TransferDataToWindow();
    virtual bool TransferDataFromWindow();
-
- private:
-   wxSizer *MakeBassBoostDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer);
+   virtual bool Validate();
 
  private:
    // WDR: handler declarations for BassBoostDialog
@@ -108,15 +82,18 @@ class BassBoostDialog:public wxDialog {
    void OnBoostSlider(wxCommandEvent & event);
    void OnFreqSlider(wxCommandEvent & event);
    void OnPreview(wxCommandEvent & event);
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
 
  private:
+   wxSlider *mBoostS;
+   wxSlider *mFreqS;
+   wxTextCtrl *mBoostT;
+   wxTextCtrl *mFreqT;
+
    DECLARE_EVENT_TABLE()
 
  public:
    EffectBassBoost *mEffect;
-
+   
    float freq;
    float boost;
 

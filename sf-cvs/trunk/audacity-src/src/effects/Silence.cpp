@@ -30,17 +30,73 @@
 
 #include "Silence.h"
 #include "../WaveTrack.h"
+#include "../widgets/TimeTextCtrl.h"
 
-#define ID_TEXT 10000
-#define ID_LENGTHTEXT 10001
+class SilenceDialog:public GenerateDialog
+{
+ public:
+   SilenceDialog(wxWindow * parent, const wxString & action):
+      GenerateDialog(parent, action)
+   {
+      Init();
+   }
+
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      S.StartStatic(_("Specify Length"), true);
+         mLenCtrl = new TimeTextCtrl(this,
+                                    wxID_ANY,
+                                    TimeTextCtrl::GetBuiltinFormat(0),
+                                    30.0,
+                                    44000.0);
+         S.AddWindow(mLenCtrl);
+      S.EndStatic();
+   }
+
+   bool TransferDataToWindow()
+   {
+      mLenCtrl->SetTimeValue(mLength);
+      mLenCtrl->SetFocus();
+
+      return true;
+   }
+
+   bool TransferDataFromWindow()
+   {
+      mLength = mLenCtrl->GetTimeValue();
+
+      return true;
+   }
+
+   bool Validate()
+   {
+      return true;
+   }
+
+   double GetLength()
+   {
+      return mLength;
+   }
+
+   void SetLength(double length)
+   {
+      mLength = length;
+   }
+
+ private:
+
+   TimeTextCtrl *mLenCtrl;
+   wxString mLenText;
+   double mLength;
+};
 
 bool EffectSilence::PromptUser()
 {
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   GenerateDialog dlog(mParent, -1, _("Silence Generator"));
-   dlog.length = length;
+   SilenceDialog dlog(mParent, _("Silence Generator"));
+   dlog.SetLength(length);
    dlog.TransferDataToWindow();
    dlog.CentreOnParent();
    dlog.ShowModal();
@@ -48,7 +104,7 @@ bool EffectSilence::PromptUser()
    if (dlog.GetReturnCode() == 0)
       return false;
 
-   length = dlog.length;
+   length = dlog.GetLength();
    return true;
 }
 
@@ -72,105 +128,6 @@ bool EffectSilence::Process()
 
 	mT1 = mT0 + length; // Update selection.
    return true;
-}
-
-BEGIN_EVENT_TABLE(GenerateDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, GenerateDialog::OnCreateSilence)
-   EVT_BUTTON(wxID_CANCEL, GenerateDialog::OnCancel)
-END_EVENT_TABLE()
-
-GenerateDialog::GenerateDialog(wxWindow * parent, wxWindowID id, const wxString & action, const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, action, position, size, style)
-{
-   CreateGenerateDialog(action, this, TRUE);
-}
-
-bool GenerateDialog::Validate()
-{
-   return TRUE;
-}
-
-bool GenerateDialog::TransferDataToWindow()
-{
-   wxTextCtrl *text = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
-   if (text) {
-      wxString str;
-      str.Printf(wxT("%.6lf"), length);
-      text->SetValue(str);
-      text->SetSelection(-1, -1);
-      text->SetFocus();
-   }
-   return TRUE;
-}
-
-bool GenerateDialog::TransferDataFromWindow()
-{
-   wxTextCtrl *t = (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
-   if (t) {
-      t->GetValue().ToDouble(&length);
-   }
-   return TRUE;
-}
-
-// WDR: handler implementations for GenerateDialog
-
-void GenerateDialog::OnCreateSilence(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   if (Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void GenerateDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
-}
-
-wxSizer *CreateGenerateDialog(const wxString &action, wxWindow * parent, bool call_fit,
-                             bool set_sizer)
-{
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item9 = new wxStaticText(parent, ID_TEXT, _("Length (seconds)"),
-         wxDefaultPosition, wxDefaultSize, 0);
-   item2->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxTextCtrl *item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, wxT(""),
-         wxDefaultPosition, wxSize(120, -1), 0);
-   item2->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item2, 1, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *item13 =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("&Generate"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item12->SetDefault();
-   item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   if (set_sizer) {
-      parent->SetAutoLayout(TRUE);
-      parent->SetSizer(item0);
-      if (call_fit) {
-         item0->Fit(parent);
-         item0->SetSizeHints(parent);
-      }
-   }
-
-   return item0;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
