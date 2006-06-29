@@ -13,18 +13,14 @@
 #ifndef __AUDACITY_EFFECT_TONEGEN__
 #define __AUDACITY_EFFECT_TONEGEN__
 
-#include "SimpleMono.h"
-#include "../FFT.h"
+#include "Effect.h"
 
 #include <wx/dialog.h>
-#include <math.h>
 
 class wxString;
-class wxButton;
-class wxCheckBox;
 class wxChoice;
-class wxSizer;
 class wxTextCtrl;
+class ShuttleGui;
 
 #define __UNINITIALIZED__ (-1)
 
@@ -67,60 +63,35 @@ class EffectToneGen:public Effect {
    double mCurRate;
 };
 
-// Declare window functions
-
-#define ID_TEXT 10000
-#define ID_WAVEFORM 10001
-#define ID_AMPTEXT 10002
-#define ID_FREQTEXT 10003
-#define ID_LENGTHTEXT 10005
-wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit =
-                             TRUE, bool set_sizer = TRUE);
-
 // WDR: class declarations
 
 //----------------------------------------------------------------------------
 // ToneGenDialog
 //----------------------------------------------------------------------------
 
-class ToneGenDialog:public wxDialog {
+class ToneGenDialog:public EffectDialog {
  public:
    // constructors and destructors
-   ToneGenDialog(wxWindow * parent, wxWindowID id, const wxString & title,
-                 const wxPoint & pos = wxDefaultPosition,
-                 const wxSize & size = wxDefaultSize,
-                 long style = wxDEFAULT_DIALOG_STYLE);
+   ToneGenDialog(wxWindow * parent, const wxString & title);
 
-   wxSizer *MakeToneGenDialog(wxWindow * parent, bool call_fit = TRUE,
-                              bool set_sizer = TRUE);
-
-   wxTextCtrl *GetFreqText() {
-      return (wxTextCtrl *) FindWindow(ID_FREQTEXT);
-   } wxTextCtrl *GetAmpText() {
-      return (wxTextCtrl *) FindWindow(ID_AMPTEXT);
-   } wxTextCtrl *GetLengthText() {
-      return (wxTextCtrl *) FindWindow(ID_LENGTHTEXT);
-   }
-   wxChoice *GetWaveformChoice() {
-      return (wxChoice *) FindWindow(ID_WAVEFORM);
-   }
-   virtual bool Validate();
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-   wxButton *mCreateToneButton;
+   // WDR: method declarations
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
  private:
-   // WDR: handler declarations for FilterDialog
-   void OnCreateTone(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
+   // WDR: handler declarations
 
- private:
-   DECLARE_EVENT_TABLE()
+   wxChoice *mWaveform;
+   wxTextCtrl *mFreq;
+   wxTextCtrl *mAmp;
+   wxTextCtrl *mLength;
 
  public:
+   wxArrayString *waveforms;
    int waveform;
-   float frequency;
-   float amplitude;
+   double frequency;
+   double amplitude;
    double length;
 };
 

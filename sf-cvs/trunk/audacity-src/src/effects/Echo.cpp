@@ -57,7 +57,7 @@ bool EffectEcho::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    delay = dlog.delay;
@@ -241,12 +241,6 @@ bool EchoDialog::TransferDataFromWindow()
 		decay = (float)(newValue);
 	}
    return true;
-}
-
-
-bool EchoDialog::Validate()
-{
-   return true; 
 }
 
 // handler implementations for EchoDialog

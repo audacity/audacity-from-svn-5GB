@@ -24,16 +24,15 @@
 #include "../Audacity.h"
 
 #include "ToneGen.h"
+#include "../FFT.h"
+#include "../ShuttleGui.h"
 #include "../WaveTrack.h"
 
-#include <wx/button.h>
-#include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/intl.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/wxprec.h> 
+
+#include <math.h>
 
 //
 // EffectToneGen
@@ -56,22 +55,25 @@ wxString EffectToneGen::GetEffectDescription() {
 
 bool EffectToneGen::PromptUser()
 {
+   wxArrayString waveforms;
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   ToneGenDialog dlog(mParent, -1, _("Tone Generator"));
+   waveforms.Add(_("Sine"));
+   waveforms.Add(_("Square"));
+   waveforms.Add(_("Sawtooth"));
+
+   ToneGenDialog dlog(mParent, _("Tone Generator"));
    dlog.frequency = frequency;
    dlog.waveform = waveform;
    dlog.amplitude = amplitude;
    dlog.length = length;
-   dlog.GetWaveformChoice()->Append(_("Sine"));
-   dlog.GetWaveformChoice()->Append(_("Square"));
-   dlog.GetWaveformChoice()->Append(_("Sawtooth"));
+   dlog.waveforms = &waveforms;
+   dlog.Init();
    dlog.TransferDataToWindow();
-   dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (dlog.GetReturnCode() == 0)
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    frequency = dlog.frequency;
@@ -179,191 +181,54 @@ bool EffectToneGen::Process()
 #define WAVEFORM_MIN 0
 #define WAVEFORM_MAX 2
 
-BEGIN_EVENT_TABLE(ToneGenDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, ToneGenDialog::OnCreateTone)
-   EVT_BUTTON(wxID_CANCEL, ToneGenDialog::OnCancel)
-END_EVENT_TABLE()
-
-ToneGenDialog::ToneGenDialog(wxWindow * parent, wxWindowID id, const wxString & title, const wxPoint & position, const wxSize & size, long style):
-wxDialog(parent, id, title, position, size, style)
+ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
+: EffectDialog(parent, title, EDS_GENERATE)
 {
-   CreateToneGenDialog(this, TRUE);
 }
 
-bool ToneGenDialog::Validate()
+void ToneGenDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   return TRUE;
+   S.StartTwoColumn();
+   {
+      mWaveform = S.AddChoice(_("Waveform:"),
+                              waveforms->Item(waveform),
+                              waveforms);
+      mFreq = S.AddTextBox(_("Frequency / Hz"),
+                           wxT(""),
+                           5);
+      mAmp = S.AddTextBox(_("Amplitude (0-1)"),
+                          wxT(""),
+                          5);
+      mLength = S.AddTextBox(_("Length (seconds)"),
+                             wxT(""),
+                             5);
+   }
+   S.EndTwoColumn();
 }
 
 bool ToneGenDialog::TransferDataToWindow()
 {
-   wxChoice *choice;
-   wxTextCtrl *text;
+   mWaveform->SetSelection(waveform);
+   mFreq->SetValue(wxString::Format(wxT("%.2f"), frequency));
+   mAmp->SetValue(wxString::Format(wxT("%.2f"), amplitude));
+   mLength->SetValue(wxString::Format(wxT("%.2f"), length));
 
-   choice = GetWaveformChoice();
-   if (choice)
-      choice->SetSelection(waveform);
-
-   text = GetFreqText();
-   if (text) {
-      wxString str;
-      str.Printf(wxT("%.2f"), frequency);
-      text->SetValue(str);
-   }
-
-   text = GetAmpText();
-   if (text) {
-      wxString str;
-      str.Printf(wxT("%.2f"), amplitude);
-      text->SetValue(str);
-   }
-
-   text = GetLengthText();
-   if (text) {
-      wxString str;
-      str.Printf(wxT("%.6lf"), length);
-      text->SetValue(str);
-   }
-
-   return TRUE;
+   return true;
 }
 
 bool ToneGenDialog::TransferDataFromWindow()
 {
-   wxTextCtrl *t;
+   mLength->GetValue().ToDouble(&length);
 
-   t = GetLengthText();
-   if (t) {
-      t->GetValue().ToDouble(&length);
-   }
+   mAmp->GetValue().ToDouble(&amplitude);
+   amplitude = TrapDouble(amplitude, AMP_MIN, AMP_MAX);
 
-   t = GetAmpText();
-   if (t) {
-      double d;
-      t->GetValue().ToDouble(&d);
-      amplitude = TrapDouble(d, AMP_MIN, AMP_MAX);
-   }
+   mFreq->GetValue().ToDouble(&frequency);
+   frequency = TrapDouble(frequency, FREQ_MIN, FREQ_MAX);
 
-   t = GetFreqText();
-   if (t) {
-      double d;
-      t->GetValue().ToDouble(&d);
-      frequency = TrapDouble(d, FREQ_MIN, FREQ_MAX);
-   }
+   waveform = TrapLong(mWaveform->GetSelection(), WAVEFORM_MIN, WAVEFORM_MAX);
 
-   wxChoice *c = GetWaveformChoice();
-   if (c)
-      waveform = TrapLong(c->GetSelection(), WAVEFORM_MIN, WAVEFORM_MAX);
-
-   return TRUE;
-}
-
-// WDR: handler implementations for ToneGenDialog
-
-void ToneGenDialog::OnCreateTone(wxCommandEvent & event)
-{
-   TransferDataFromWindow();
-
-   if (Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void ToneGenDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
-}
-
-wxSizer *CreateToneGenDialog(wxWindow * parent, bool call_fit,
-                             bool set_sizer)
-{
-   wxBoxSizer *item0 = new wxBoxSizer(wxVERTICAL);
-
-
-   wxBoxSizer *item2 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item3 =
-       new wxStaticText(parent, ID_TEXT, _("Waveform:"), wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item2->Add(item3, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxChoice *item4 = new wxChoice(parent, ID_WAVEFORM, wxDefaultPosition,
-                                  wxSize(80, -1), 0, (const wxString *)NULL, 0);
-   item2->Add(item4, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item2, 1, wxALIGN_CENTRE | wxALL, 5);
-
-
-   wxBoxSizer *item5 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item6 =
-       new wxStaticText(parent, ID_TEXT, _("Frequency / Hz"),
-                        wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item5->Add(item6, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxTextCtrl *item7 =
-       new wxTextCtrl(parent, ID_FREQTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(60, -1), 0);
-   item5->Add(item7, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item5, 1, wxALIGN_CENTRE | wxALL, 5);
-
-
-   wxBoxSizer *item8 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxStaticText *item9 =
-       new wxStaticText(parent, ID_TEXT, _("Amplitude (0-1)"),
-                        wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxTextCtrl *item10 =
-       new wxTextCtrl(parent, ID_AMPTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(60, -1), 0);
-   item8->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item8, 1, wxALIGN_CENTRE | wxALL, 5);
-
-   item8 = new wxBoxSizer(wxHORIZONTAL);
-   item9 = new wxStaticText(parent, ID_TEXT, _("Length (seconds)"),
-                        wxDefaultPosition,
-                        wxDefaultSize, 0);
-   item8->Add(item9, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item10 = new wxTextCtrl(parent, ID_LENGTHTEXT, wxT(""), wxDefaultPosition,
-                      wxSize(120, -1), 0);
-   item8->Add(item10, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item8, 1, wxALIGN_CENTRE | wxALL, 5);
-
-   wxBoxSizer *item11 = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *item13 =
-       new wxButton(parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item11->Add(item13, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   wxButton *item12 =
-       new wxButton(parent, wxID_OK, _("&Generate Tone"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   item12->SetDefault();
-   item11->Add(item12, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   item0->Add(item11, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   if (set_sizer) {
-      parent->SetAutoLayout(TRUE);
-      parent->SetSizer(item0);
-      if (call_fit) {
-         item0->Fit(parent);
-         item0->SetSizeHints(parent);
-      }
-   }
-
-   return item0;
+   return true;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

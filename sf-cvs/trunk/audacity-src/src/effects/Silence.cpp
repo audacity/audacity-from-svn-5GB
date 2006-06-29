@@ -32,76 +32,17 @@
 #include "../WaveTrack.h"
 #include "../widgets/TimeTextCtrl.h"
 
-class SilenceDialog:public GenerateDialog
-{
- public:
-   SilenceDialog(wxWindow * parent, const wxString & action):
-      GenerateDialog(parent, action)
-   {
-      Init();
-   }
-
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartStatic(_("Specify Length"), true);
-         mLenCtrl = new TimeTextCtrl(this,
-                                    wxID_ANY,
-                                    TimeTextCtrl::GetBuiltinFormat(0),
-                                    30.0,
-                                    44000.0);
-         S.AddWindow(mLenCtrl);
-      S.EndStatic();
-   }
-
-   bool TransferDataToWindow()
-   {
-      mLenCtrl->SetTimeValue(mLength);
-      mLenCtrl->SetFocus();
-
-      return true;
-   }
-
-   bool TransferDataFromWindow()
-   {
-      mLength = mLenCtrl->GetTimeValue();
-
-      return true;
-   }
-
-   bool Validate()
-   {
-      return true;
-   }
-
-   double GetLength()
-   {
-      return mLength;
-   }
-
-   void SetLength(double length)
-   {
-      mLength = length;
-   }
-
- private:
-
-   TimeTextCtrl *mLenCtrl;
-   wxString mLenText;
-   double mLength;
-};
-
 bool EffectSilence::PromptUser()
 {
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   SilenceDialog dlog(mParent, _("Silence Generator"));
+   TimeDialog dlog(mParent, _("Silence Generator"));
    dlog.SetLength(length);
-   dlog.TransferDataToWindow();
-   dlog.CentreOnParent();
+   dlog.Init();
    dlog.ShowModal();
 
-   if (dlog.GetReturnCode() == 0)
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    length = dlog.GetLength();

@@ -19,6 +19,7 @@
 #include <wx/string.h>
 #include <wx/msgdlg.h>
 #include <wx/progdlg.h>
+#include <wx/sizer.h>
 #include <wx/timer.h>
 
 #include "Effect.h"
@@ -360,64 +361,12 @@ void Effect::Preview()
    mWaveTracks = saveWaveTracks;
 }
 
-BEGIN_EVENT_TABLE(GenerateDialog, wxDialog)
-EVT_BUTTON(wxID_OK, GenerateDialog::OnOK)
-EVT_BUTTON(wxID_CANCEL, GenerateDialog::OnCancel)
-END_EVENT_TABLE()
-
-GenerateDialog::GenerateDialog(wxWindow * parent, const wxString & title):
-wxDialog(parent, wxID_ANY, title)
+EffectDialog::EffectDialog(wxWindow * parent,
+                           const wxString & title,
+                           EffectDialogStyle style)
+: wxDialog(parent, wxID_ANY, title)
 {
-}
-
-void GenerateDialog::Init()
-{
-   ShuttleGui S(this, eIsCreating);
-   
-   S.SetBorder(5);
-   S.StartVerticalLay(true);
-   {
-      PopulateOrExchange(S);
-
-      S.SetBorder(10);
-      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
-      {
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&Generate"))->SetDefault();
-      }
-      S.EndHorizontalLay();
-   }
-   S.EndVerticalLay();
-
-   Fit();
-}
-
-void GenerateDialog::OnOK(wxCommandEvent & event)
-{
-   GetParent()->TransferDataFromWindow();
-   
-   if (GetParent()->Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
-}
-
-void GenerateDialog::OnCancel(wxCommandEvent & event)
-{
-   EndModal(false);
-}
-
-
-BEGIN_EVENT_TABLE(EffectDialog, wxDialog)
-EVT_BUTTON(wxID_OK, EffectDialog::OnOK)
-EVT_BUTTON(wxID_CANCEL, EffectDialog::OnCancel)
-EVT_BUTTON(wxID_APPLY, EffectDialog::OnApply)
-END_EVENT_TABLE()
-
-EffectDialog::EffectDialog(wxWindow * parent, const wxString & title):
-wxDialog(parent, wxID_ANY, title)
-{
+   mStyle = style;
 }
 
 void EffectDialog::Init()
@@ -429,35 +378,73 @@ void EffectDialog::Init()
    {
       PopulateOrExchange(S);
 
-      S.SetBorder(10);
-      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_RIGHT, false);
+      S.SetBorder(5);
+      S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
       {
-         S.Id(wxID_APPLY).AddButton(_("&Preview"));
-         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
-         S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+         if (mStyle == EDS_DEFAULT)
+         {
+            S.StartHorizontalLay(wxALIGN_LEFT, false);
+            {
+               S.Id(ID_EFFECT_PREVIEW).AddButton(_("Pre&view"));
+            }
+            S.EndHorizontalLay();
+
+            S.SetBorder(10);
+            S.StartHorizontalLay(wxALIGN_LEFT, false);
+            {
+               // Everyone needs a little space sometime
+            }
+            S.EndHorizontalLay();
+            S.SetBorder(5);
+         }
+
+         S.StartHorizontalLay(wxALIGN_CENTER, false);
+         {
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+            S.Id(wxID_CANCEL)
+             .AddButton(_("&Cancel"))
+             ->Show( mStyle == EDS_DEFAULT || mStyle == EDS_GENERATE);
+            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+#else
+            S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
+            S.Id(wxID_CANCEL)
+             .AddButton(_("&Cancel"))
+             ->Show( mStyle == EDS_DEFAULT || mStyle == EDS_GENERATE);
+#endif
+         }
       }
       S.EndHorizontalLay();
    }
    S.EndVerticalLay();
+   GetSizer()->AddSpacer(5);
    Layout();
    Fit();
    Center();
 }
 
-void EffectDialog::OnOK(wxCommandEvent & event)
+void EffectDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   GetParent()->TransferDataFromWindow();
-   
-   if (GetParent()->Validate())
-      EndModal(true);
-   else {
-      event.Skip();
-   }
+   return;
 }
 
-void EffectDialog::OnCancel(wxCommandEvent & event)
+bool EffectDialog::TransferDataToWindow()
 {
-   EndModal(false);
+   return true;
+}
+
+bool EffectDialog::TransferDataFromWindow()
+{
+   return true;
+}
+
+bool EffectDialog::Validate()
+{
+   return true;
+}
+
+void EffectDialog::OnPreview(wxCommandEvent & event)
+{
+   return;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

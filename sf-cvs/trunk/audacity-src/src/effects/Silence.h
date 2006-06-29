@@ -13,13 +13,12 @@
 #ifndef __AUDACITY_EFFECT_SILENCE__
 #define __AUDACITY_EFFECT_SILENCE__
 
-#include "Effect.h"
-
 #include <wx/defs.h>
 #include <wx/dialog.h>
 #include <wx/intl.h>
 
 #include "Effect.h"
+#include "../widgets/TimeTextCtrl.h"
 
 class wxSizer;
 class wxTextCtrl;
@@ -54,6 +53,65 @@ class EffectSilence:public Effect {
 
  private:
    double length;
+};
+
+class TimeDialog:public EffectDialog
+{
+ public:
+   TimeDialog(wxWindow * parent, const wxString & title):
+      EffectDialog(parent, title, EDS_GENERATE)
+   {
+   }
+
+   void PopulateOrExchange(ShuttleGui & S)
+   {
+      S.StartStatic(_("Specify Length"), true);
+      {
+         mLenCtrl = new
+            TimeTextCtrl(this,
+                         wxID_ANY,
+                         TimeTextCtrl::GetBuiltinFormat(_("seconds")),
+                         mLength,
+                         44000.0,
+                         wxDefaultPosition,
+                         wxDefaultSize,
+                         true);
+         S.AddWindow(mLenCtrl);
+      }
+      S.EndStatic();
+      TransferDataToWindow();
+   }
+
+   bool TransferDataToWindow()
+   {
+      mLenCtrl->SetTimeValue(mLength);
+      mLenCtrl->SetFocus();
+
+      return true;
+   }
+
+   bool TransferDataFromWindow()
+   {
+      mLength = mLenCtrl->GetTimeValue();
+
+      return true;
+   }
+
+   double GetLength()
+   {
+      return mLength;
+   }
+
+   void SetLength(double length)
+   {
+      mLength = length;
+   }
+
+ private:
+
+   TimeTextCtrl *mLenCtrl;
+   wxString mLenText;
+   double mLength;
 };
 
 #endif
