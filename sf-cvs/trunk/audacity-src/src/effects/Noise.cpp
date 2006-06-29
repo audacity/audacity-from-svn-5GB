@@ -16,70 +16,13 @@
 #include "../Audacity.h"
 
 #include "Noise.h"
+#include "Silence.h"
 
 #include "../WaveTrack.h"
 #include "../widgets/TimeTextCtrl.h"
 
 #include <wx/defs.h> 
 #include <stdlib.h>
-
-class NoiseDialog:public GenerateDialog
-{
- public:
-   NoiseDialog(wxWindow * parent, const wxString & action):
-      GenerateDialog(parent, action)
-   {
-      Init();
-   }
-
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartStatic(_("Specify Length"), true);
-         mLenCtrl = new TimeTextCtrl(this,
-                                    wxID_ANY,
-                                    TimeTextCtrl::GetBuiltinFormat(0),
-                                    30.0,
-                                    44000.0);
-         S.AddWindow(mLenCtrl);
-      S.EndStatic();
-   }
-
-   bool TransferDataToWindow()
-   {
-      mLenCtrl->SetTimeValue(mLength);
-      mLenCtrl->SetFocus();
-
-      return true;
-   }
-
-   bool TransferDataFromWindow()
-   {
-      mLength = mLenCtrl->GetTimeValue();
-
-      return true;
-   }
-
-   bool Validate()
-   {
-      return true;
-   }
-
-   double GetLength()
-   {
-      return mLength;
-   }
-
-   void SetLength(double length)
-   {
-      mLength = length;
-   }
-
- private:
-
-   TimeTextCtrl *mLenCtrl;
-   wxString mLenText;
-   double mLength;
-};
 
 void MakeNoise(float *buffer, sampleCount len)
 {
@@ -97,13 +40,12 @@ bool EffectNoise::PromptUser()
    else
 	   length = sDefaultGenerateLen;
 
-   NoiseDialog dlog(mParent, _("White Noise Generator"));
+   TimeDialog dlog(mParent, _("White Noise Generator"));
    dlog.SetLength(length);
-   dlog.TransferDataToWindow();
-   dlog.CentreOnParent();
+   dlog.Init();
    dlog.ShowModal();
 
-   if (dlog.GetReturnCode() == 0)
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    length = dlog.GetLength();

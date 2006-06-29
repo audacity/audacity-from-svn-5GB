@@ -33,6 +33,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/valtext.h>
 
 #include <math.h>
 
@@ -88,7 +89,7 @@ bool EffectBassBoost::PromptUser()
    dlog.CentreOnParent();
    dlog.ShowModal();
 
-   if (!dlog.GetReturnCode())
+   if (dlog.GetReturnCode() == wxID_CANCEL)
       return false;
 
    frequency = dlog.freq;
@@ -173,7 +174,6 @@ BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
 
 void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   wxSlider *sdr;
    wxTextValidator vld(wxFILTER_INCLUDE_CHAR_LIST);
    vld.SetIncludes(wxArrayString(10, numbers));
 
@@ -231,7 +231,7 @@ bool BassBoostDialog::TransferDataToWindow()
    mBoostT->SetValue(wxString::Format(wxT("%d"), (int) boost));
    mFreqT->SetValue(wxString::Format(wxT("%d"), (int) freq));
 
-   return TRUE;
+   return true;
 }
 
 bool BassBoostDialog::TransferDataFromWindow()
@@ -239,12 +239,7 @@ bool BassBoostDialog::TransferDataFromWindow()
    boost = TrapLong(mBoostS->GetValue(), BOOST_MIN, BOOST_MAX);
    freq = TrapLong(mFreqS->GetValue(), FREQ_MIN, FREQ_MAX);
 
-   return TRUE;
-}
-
-bool BassBoostDialog::Validate()
-{
-   return TRUE;
+   return true;
 }
 
 // WDR: handler implementations for BassBoostDialog

@@ -11,6 +11,7 @@
 #ifndef __AUDACITY_EFFECT__
 #define __AUDACITY_EFFECT__
 
+#include <wx/button.h>
 #include <wx/dynarray.h>
 #include <wx/intl.h> 
 #include <wx/string.h>
@@ -276,54 +277,35 @@ class Effect {
 
 // Base dialog for generate effect
 class wxDialog;
-class wxStdDialogButtonSizer;
-
-class GenerateDialog:public wxDialog
-{
-public:
-   // constructors and destructors
-   GenerateDialog(wxWindow * parent, const wxString & title);
-   
-   void Init();
-   
-   virtual bool Validate() = 0;
-   virtual bool TransferDataToWindow() = 0;
-   virtual bool TransferDataFromWindow() = 0;
-   virtual void PopulateOrExchange(ShuttleGui & S) = 0;
-   
-private:
-      
-   void OnOK(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
-   
-private:
-   DECLARE_EVENT_TABLE()
-};
 
 #define ID_EFFECT_PREVIEW wxID_APPLY
+
+typedef enum
+{
+   EDS_DEFAULT,
+   EDS_GENERATE,
+   EDS_ANALYZE
+} EffectDialogStyle;
 
 // Base dialog for regular effect
 class EffectDialog:public wxDialog
 {
 public:
    // constructors and destructors
-   EffectDialog(wxWindow * parent, const wxString & title);
-   
+   EffectDialog(wxWindow * parent,
+                const wxString & title,
+                EffectDialogStyle style = EDS_DEFAULT);
+
    void Init();
-   
-   virtual bool Validate() = 0;
-   virtual bool TransferDataToWindow() = 0;
-   virtual bool TransferDataFromWindow() = 0;
-   virtual void PopulateOrExchange(ShuttleGui & S) = 0;
-   
+
+   virtual void PopulateOrExchange(ShuttleGui & S);
+   virtual bool TransferDataToWindow();
+   virtual bool TransferDataFromWindow();
+   virtual bool Validate();
+   virtual void OnPreview(wxCommandEvent & event);
+
 private:
-      
-   void OnOK(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
-   void OnPreview(wxCommandEvent & event);
-   
-private:
-   DECLARE_EVENT_TABLE()
+   EffectDialogStyle mStyle;
 };
 
 // Utility functions

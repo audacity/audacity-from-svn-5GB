@@ -70,10 +70,9 @@ class BassBoostDialog:public EffectDialog {
    BassBoostDialog(EffectBassBoost *effect, wxWindow * parent);
 
    // WDR: method declarations for BassBoostDialog
-   virtual void PopulateOrExchange(ShuttleGui & S);
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-   virtual bool Validate();
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
  private:
    // WDR: handler declarations for BassBoostDialog

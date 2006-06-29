@@ -64,10 +64,9 @@ class EchoDialog:public EffectDialog {
  public:
    EchoDialog(EffectEcho * effect, wxWindow * parent);
 
-   virtual void PopulateOrExchange(ShuttleGui & S);
-   virtual bool TransferDataToWindow();
-   virtual bool TransferDataFromWindow();
-   virtual bool Validate();
+   void PopulateOrExchange(ShuttleGui & S);
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
 
  private:
 	// handlers
