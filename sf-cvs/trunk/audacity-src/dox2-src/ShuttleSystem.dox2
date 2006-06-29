@@ -169,12 +169,11 @@ adjust the code to read:
 
 \section ShuttleGuiInternals ShuttleGui Internals
 
-At the time of writing, ShuttleGui has a lot of cut-and-paste repeated 
-code within it.  It is still a net win, because of the way ShuittleGui
-cleans up the classes which use it.  It is also planned to restructure the
-internals of ShuttleGui.  Compound functions will then be made by chaining
-together shorter functions.  This will make it much easier to add new options.
-
-
+ShuttleGui cleans up the classes which use it.  Parts of its own internal
+code are quite repetitive, doing the same thing for different widgets with
+slightly different options - e.g. a wxTextCtrl with an integer value or with
+a string.  To make the internals of ShuttleGui cleaner, it uses class 
+WrappedType.  Also compound functions are formed by chaining
+together shorter functions.  This makes it much easier to add new options.
 
 *//********************************************************************/
