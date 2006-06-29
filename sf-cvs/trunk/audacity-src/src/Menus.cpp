@@ -1521,16 +1521,17 @@ void AudacityProject::OnSetLeftSelection()
    else
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
-         int ndx = 1;
-         int i;
-         for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-            if (TimeTextCtrl::GetBuiltinName(i) == fmt)
-               ndx = i;
-         fmt = TimeTextCtrl::GetBuiltinFormat(ndx);
 
          wxDialog D(this, wxID_ANY, wxString(_("Set Left Selection Bound")));
          ShuttleGui S(&D, eIsCreating);
-         TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel0, mRate);
+         TimeTextCtrl T(&D,
+                        wxID_ANY,
+                        TimeTextCtrl::GetBuiltinFormat(fmt),
+                        mViewInfo.sel0,
+                        mRate,
+                        wxDefaultPosition,
+                        wxDefaultSize,
+                        true);
 
          S.SetBorder(5);
          S.StartVerticalLay(true);
@@ -1549,6 +1550,7 @@ void AudacityProject::OnSetLeftSelection()
          D.Layout();
          D.Fit();
          D.Center();
+         T.SetFocus();
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
@@ -1577,20 +1579,20 @@ void AudacityProject::OnSetRightSelection()
          double indicator = gAudioIO->GetStreamTime();
          mViewInfo.sel1 = indicator;
       }
-
    else
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
-         int ndx = 1;
-         int i;
-         for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-            if (TimeTextCtrl::GetBuiltinName(i) == fmt)
-               ndx = i;
-         fmt = TimeTextCtrl::GetBuiltinFormat(ndx);
 
          wxDialog D(this, wxID_ANY, wxString(_("Set Right Selection Bound")));
          ShuttleGui S(&D, eIsCreating);
-         TimeTextCtrl T(&D, wxID_ANY, fmt, mViewInfo.sel1, mRate);
+         TimeTextCtrl T(&D,
+                        wxID_ANY,
+                        TimeTextCtrl::GetBuiltinFormat(fmt),
+                        mViewInfo.sel1,
+                        mRate,
+                        wxDefaultPosition,
+                        wxDefaultSize,
+                        true);
 
          S.SetBorder(5);
          S.StartVerticalLay(true);
@@ -1609,6 +1611,7 @@ void AudacityProject::OnSetRightSelection()
          D.Layout();
          D.Fit();
          D.Center();
+         T.SetFocus();
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
@@ -1829,6 +1832,8 @@ bool AudacityProject::OnEffect(int type, Effect * f)
 {
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
+   WaveTrack *newTrack = NULL;
+
    //double prevEndTime = mTracks->GetEndTime();
    int count = 0;
    
@@ -1842,7 +1847,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       // No tracks were selected...
       if (f->GetEffectFlags() & INSERT_EFFECT) {
          // Create a new track for the generated audio...
-         WaveTrack *newTrack = mTrackFactory->NewWaveTrack();
+         newTrack = mTrackFactory->NewWaveTrack();
          mTracks->Add(newTrack);
          newTrack->SetSelected(true);
       }
@@ -1882,7 +1887,10 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       
       mTrackPanel->Refresh(false);
    } else {
-      // TODO: undo the effect if necessary?
+      if (newTrack) {
+         mTracks->Remove(newTrack);
+         mTrackPanel->Refresh(false);
+      }
       return false;
    }
    return true;
