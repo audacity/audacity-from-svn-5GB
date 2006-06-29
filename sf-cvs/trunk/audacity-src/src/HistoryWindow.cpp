@@ -26,6 +26,7 @@ undo memory so as to free up space.
 #include <wx/intl.h>
 #include <wx/listctrl.h>
 #include <wx/settings.h>
+#include <wx/stattext.h>
 #include <wx/textctrl.h>
 
 #include "../images/Arrow.xpm"
