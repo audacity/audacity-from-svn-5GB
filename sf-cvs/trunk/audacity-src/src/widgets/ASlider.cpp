@@ -758,6 +758,17 @@ void LWSlider::OnKeyEvent(wxKeyEvent & event)
       }
       break;
 
+      case WXK_RETURN:
+      case WXK_NUMPAD_ENTER:
+      {
+         wxWindow *def = mParent->GetParent()->GetDefaultItem();
+         if (def) {
+            wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                                  def->GetId());
+            mParent->ProcessEvent( cevent );
+         }
+      }
+
       default:
          // Allow it to propagate
          event.Skip();
