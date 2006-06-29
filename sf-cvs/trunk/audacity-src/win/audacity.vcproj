@@ -2882,6 +2882,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\src\effects\Noise.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\effects\NoiseRemoval.cpp"
 				>
 				<FileConfiguration
