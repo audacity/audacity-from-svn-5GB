@@ -140,7 +140,7 @@ void HistoryWindow::DoUpdate()
    mList->DeleteAllItems();
 
    mSelected = mManager->GetCurrentState() - 1;
-   for (i = 0; i < mManager->GetNumStates(); i++) {
+   for (i = 0; i < (int)mManager->GetNumStates(); i++) {
       wxString desc, size;
       
       mManager->GetLongDescription(i + 1, &desc, &size);

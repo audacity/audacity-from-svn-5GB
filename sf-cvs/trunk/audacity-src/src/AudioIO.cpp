@@ -1713,7 +1713,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             gAudioIO->mSeek = 0.0;
             
             // Reset mixer positions and flush buffers for all tracks
-            for (i = 0; i < numPlaybackTracks; i++)
+            for (i = 0; i < (unsigned int)numPlaybackTracks; i++)
             {
                gAudioIO->mPlaybackMixers[i]->Reposition( gAudioIO->mTime );
                gAudioIO->mPlaybackBuffers[i]->Discard( gAudioIO->mPlaybackBuffers[i]->AvailForGet() );

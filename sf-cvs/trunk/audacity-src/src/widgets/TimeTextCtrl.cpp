@@ -279,7 +279,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
 
    if (autoPos) {
       mFocusedDigit = 0;
-      while (mFocusedDigit < mDigits.GetCount() - 1) {
+      while (mFocusedDigit < ((int)mDigits.GetCount() - 1)) {
          wxChar dgt = mValueString[mDigits[mFocusedDigit].pos];
          if (dgt != '0') {
             break;
