@@ -11,6 +11,12 @@
 \class Effect
 \brief Base class for many of the effects in Audacity.
 
+*//****************************************************************//**
+
+\class EffectDialog
+\brief New (Jun-2006) base class for effects dialogs.  Likely to get 
+greater use in future.
+
 *//*******************************************************************/
 
 #include "../Audacity.h"
@@ -422,6 +428,9 @@ void EffectDialog::Init()
    Center();
 }
 
+/// This is a virtual function which will be overridden to
+/// provide the actual parameters that we want for each
+/// kind of dialog.
 void EffectDialog::PopulateOrExchange(ShuttleGui & S)
 {
    return;

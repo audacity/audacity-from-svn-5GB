@@ -55,6 +55,8 @@ class EffectSilence:public Effect {
    double length;
 };
 
+/// \brief TimeDialog is an EffectDialog that shows a TimeTextCtrl for 
+/// setting the duration of a generated effect.
 class TimeDialog:public EffectDialog
 {
  public:

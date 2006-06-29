@@ -140,7 +140,7 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    /* Detemine if exported file will be stereo or mono or multichannel,
       and if mixing will occur */
 
-   bool downMix = gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true );
+   bool downMix = (gPrefs->Read( wxT("/FileFormats/ExportDownMix" ), true ) !=0) ? true:false ;
    
    int channels;
    if( downMix || !mixerSpec )
