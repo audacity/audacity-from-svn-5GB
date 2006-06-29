@@ -230,7 +230,8 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
                            double timeValue,
                            double sampleRate,
                            const wxPoint &pos,
-                           const wxSize &size):
+                           const wxSize &size,
+                           bool autoPos):
    wxPanel(parent, id, pos, size, wxWANTS_CHARS),
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
@@ -248,6 +249,17 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    Layout();
    Fit();
    ValueToControls();
+
+   if (autoPos) {
+      mFocusedDigit = 0;
+      while (mFocusedDigit < mDigits.GetCount() - 1) {
+         wxChar dgt = mValueString[mDigits[mFocusedDigit].pos];
+         if (dgt != '0') {
+            break;
+         }
+         mFocusedDigit++;
+      }
+   }
 
 #if wxUSE_ACCESSIBILITY
    SetName( wxT("") );
@@ -286,7 +298,7 @@ void TimeTextCtrl::SetSampleRate(double sampleRate)
 void TimeTextCtrl::SetTimeValue(double newTime)
 {
    mTimeValue = newTime;
-   ValueToControls();   
+   ValueToControls();
 }
 
 const double TimeTextCtrl::GetTimeValue()
@@ -314,6 +326,21 @@ wxString TimeTextCtrl::GetBuiltinFormat(int index)
       return BuiltinFormatStrings[index].formatStr;
    else
       return wxT("");
+}
+
+wxString TimeTextCtrl::GetBuiltinFormat(const wxString &name)
+{
+   int ndx = 1;
+   int i;
+
+   for (i=0; i<TimeTextCtrl::GetNumBuiltins(); i++) {
+      if (name == TimeTextCtrl::GetBuiltinName(i)) {
+         ndx = i;
+         break;
+      }
+   }
+
+   return TimeTextCtrl::GetBuiltinFormat(ndx);
 }
 
 void TimeTextCtrl::ParseFormatString()
@@ -852,6 +879,16 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
       nevent.SetEventObject( parent );
       nevent.SetCurrentFocus( parent );
       GetParent()->ProcessEvent( nevent );
+   }
+
+   else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
+      wxWindow *parent = GetParent();
+      wxWindow *def = parent->GetDefaultItem();
+      if (parent && def) {
+         wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                               def->GetId());
+         GetParent()->ProcessEvent( cevent );
+      }
    }
    else {
       event.Skip();
