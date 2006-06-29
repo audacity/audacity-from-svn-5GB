@@ -6,7 +6,7 @@
 
   Dominic Mazzoni
  
-*******************************************************************//*!
+*******************************************************************//**
 
 \class Tags
 \brief ID3 Tags (for MP3)
@@ -31,8 +31,12 @@
   Use of this functionality requires that libid3tag be compiled in
   with Audacity.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class TagsEditor
+\brief Derived from ExpandingToolBar, this dialog allows editing of Tags.
+
+*//*******************************************************************/
 
 #include "Tags.h"
 

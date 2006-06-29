@@ -6,13 +6,18 @@
 
   Dominic Mazzoni
 
-  This abstract class simplifies the implementation of a basic
+*******************************************************************//**
+\class EffectSimpleMono
+\brief An abstract Effect class that simplifies the implementation of a basic
   monaural effect.  Inherit from it if your effect just modifies
   a single track in place and doesn't care how many samples
-  it gets at a time.  Your derived class only needs to implement
+  it gets at a time.  
+  
+  Your derived class only needs to implement
   GetEffectName, GetEffectAction, and ProcessSimpleMono.
 
-**********************************************************************/
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

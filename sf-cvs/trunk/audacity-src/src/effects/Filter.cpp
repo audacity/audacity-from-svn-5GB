@@ -21,6 +21,11 @@
 \class FilterDialog
 \brief Dialog used with EffectFilter
 
+*//****************************************************************//**
+
+\class FilterPanel
+\brief Panel used with EffectFilter and FilterDialog
+
 *//*******************************************************************/
 
 #include "../Audacity.h"

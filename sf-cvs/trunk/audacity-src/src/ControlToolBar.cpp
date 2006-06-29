@@ -8,10 +8,10 @@
   Shane T. Mueller
   James Crook
  
-*******************************************************************//*!
+*******************************************************************//**
 
 \class ControlToolBar
-\brief A Toolbar that has the main control buttons.
+\brief A ToolBar that has the main control buttons.
 
   This class, which is a child of Toolbar, creates the
   window containing the tool selection (ibeam, envelope,

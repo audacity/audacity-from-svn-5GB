@@ -6,12 +6,6 @@
 
   Dominic Mazzoni
 
-  This file contains a general function which will import almost
-  any type of sampled audio file (i.e. anything except MIDI)
-  and return the tracks that were imported.  This function just
-  figures out which one to call; the actual importers are in
-  ImportPCM, ImportMP3, ImportOGG, ImportRawData, and ImportLOF.
-
 **********************************************************************/
 
 #ifndef _IMPORT_

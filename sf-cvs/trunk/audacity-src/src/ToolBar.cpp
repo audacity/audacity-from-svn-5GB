@@ -9,7 +9,14 @@
 
   See ToolBar.h for details.
 
-*******************************************************************//*!
+*******************************************************************//**
+
+\file ToolBar.cpp
+
+  Implements ToolBarStub, ToolBarFrame, ToolBar, ToolBarDock, 
+  Grabber and GrabberPosition
+
+*//*******************************************************************//**
 
 \class ToolBar
 \brief Works with ToolBarStub and ToolBarFrame, ToolBar provides a 
@@ -32,11 +39,31 @@ dockable window in which buttons can be placed.
 
 *//*******************************************************************//**
 
-\file ToolBar.cpp
+\class ToolBarStub
+\brief Used for global variables that point to ToolBars.
 
-  This file contains three classes: ToolBarStub, ToolBarFrame, and ToolBar.
+*//*******************************************************************//**
 
-*//*******************************************************************/
+\class ToolBarFrame
+\brief The window that contains a ToolBar.
+
+*//*******************************************************************//**
+
+\class ToolBarDock
+\brief Place where a ToolBar can be docked.
+
+*//*******************************************************************//**
+
+\class Grabber
+\brief The widget to the left of a ToolBar that allows it to be dragged 
+around to new positions.
+
+*//*******************************************************************//**
+
+\class GrabberPosition
+\brief A small class used in sending an event to a Grabber
+
+*//**********************************************************************/
 
 #include "Audacity.h"
 

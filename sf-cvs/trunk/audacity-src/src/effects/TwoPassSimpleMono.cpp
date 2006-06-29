@@ -6,13 +6,17 @@
 
   Dominic Mazzoni
 
-  This bit by Martyn Shaw.
-  This class implements a two pass process by using EffectSimpleMono.
-  Inherit from it if your effect needs to pass twice over the data.
-  It does the first pass on all selected tracks before going back and
-  doing the second pass over all selected tracks.
+*******************************************************************//**
+\class EffectTwoPassSimpleMono
+\brief An Effect base class that implements a two pass process by using 
+EffectSimpleMono.
 
-**********************************************************************/
+Inherit from it if your effect needs to pass twice over the data.
+It does the first pass on all selected tracks before going back and
+doing the second pass over all selected tracks.
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

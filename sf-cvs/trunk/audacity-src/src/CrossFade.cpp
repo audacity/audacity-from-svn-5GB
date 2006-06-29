@@ -1,3 +1,16 @@
+/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  CrossFade.cpp
+
+*******************************************************************//**
+
+\class CrossFader
+\brief Not used by Audacity (yet) apparently work in progress that has
+been abandoned.
+
+*//********************************************************************/
 
 #include "CrossFade.h"
 

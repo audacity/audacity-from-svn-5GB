@@ -7,7 +7,13 @@
   Dominic Mazzoni
   James Crook
 
-*******************************************************************//*!
+*******************************************************************//**
+
+\file Shuttle.cpp
+\brief Implements Shuttle, ShuttleCli and Enums.
+
+*//****************************************************************//**
+
 
 \class Shuttle
 \brief Moves data from one place to another, converting it as required.
@@ -33,6 +39,15 @@ with a binary representation.
 
   \see ShuttleBase
   \see ShuttleGui
+
+*//****************************************************************//**
+
+\class Enums
+\brief Enums is a helper class for Shuttle.  It defines enumerations 
+which are used in effects dialogs, in the effects themselves and in 
+preferences.
+
+(If it grows big, we will move it out of shuttle.h).
 
 *//*******************************************************************/
 

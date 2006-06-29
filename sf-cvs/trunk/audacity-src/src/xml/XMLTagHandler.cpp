@@ -6,11 +6,15 @@
 
   Dominic Mazzoni
 
-  This class is an interface which should be implemented by
+
+*//****************************************************************//**
+
+\class XMLTagHandler
+\brief This class is an interface which should be implemented by
   classes which wish to be able to load and save themselves
   using XML files.
 
-**********************************************************************/
+*//*******************************************************************/
 
 #include "XMLTagHandler.h"
 

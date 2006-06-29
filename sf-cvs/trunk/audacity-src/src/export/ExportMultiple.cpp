@@ -6,14 +6,17 @@
 
   Dominic Mazzoni
 
-  Presents a dialog box allowing the user to export multiple files
-  either by exporting each track as a separate file, or by
-  exporting each label as a separate file.
-
   2004.06.23 added mp3 export using tompg.exe for multiple export, by ChackoN
   tested under w2k only
 
-**********************************************************************/
+*******************************************************************//**
+
+\class ExportMultipleDialog
+\brief Presents a dialog box allowing the user to export multiple files
+  either by exporting each track as a separate file, or by
+  exporting each label as a separate file.
+
+*//********************************************************************/
 
 #include "../Audacity.h"
 

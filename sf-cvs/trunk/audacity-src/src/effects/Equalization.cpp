@@ -10,6 +10,13 @@
 
 *******************************************************************//**
 
+\file EffectEqualization.cpp
+\brief Implements EffectEqualiztaion, EqualizationDialog, 
+EqualizationPanel, EQCurve and EQPoint.
+
+*//****************************************************************//**
+
+
 \class EffectEqualization
 \brief An Effect.
 
@@ -22,6 +29,23 @@
 
 \class EqualizationDialog
 \brief Dialog used with EffectEqualization
+
+*//****************************************************************//**
+
+\class EqualizationPanel
+\brief EqualizationPanel is used with EqualizationDialog and controls 
+a graph for EffectEqualization.  We should look at amalgamating the 
+various graphing code, such as provided by FreqWindow and FilterPanel.
+
+*//****************************************************************//**
+
+\class EQCurve
+\brief EQCurve is used with EffectEqualization.
+
+*//****************************************************************//**
+
+\class EQPoint
+\brief EQPoint is used with EQCurve and hence EffectEqualization.
 
 *//*******************************************************************/
 

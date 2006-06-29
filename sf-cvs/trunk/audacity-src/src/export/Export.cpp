@@ -6,7 +6,17 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\class ExportMixerDialog
+\brief Dialog for advanced mixing.
+
+*//****************************************************************//**
+
+\class ExportMixerPanel
+\brief Panel that displays mixing for advanced mixing option.
+
+*//********************************************************************/
 
 #include <wx/textctrl.h>
 #include <wx/file.h>

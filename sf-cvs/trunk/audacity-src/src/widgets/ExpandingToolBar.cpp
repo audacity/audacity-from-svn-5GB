@@ -6,9 +6,52 @@
 
   Dominic Mazzoni
 
-  See ExpandingToolBar.h for details.
+*******************************************************************//**
 
-**********************************************************************/
+\class ExpandingToolBar
+\brief A smart ToolBar class that has a "MainPanel" which is always
+  displayed, and an "ExtraPanel" that can be hidden to save space.
+
+  Can be docked into a ToolBarArea or floated in an ToolBarFrame;
+
+  If auto-expanding is off, behavior is very simple: clicking the
+  toggle button expands, clicking it again collapses.
+
+  If auto-expanding is on, behavior is a little more complicated.
+  When the mouse movers over a toolbar and it is collapsed, it gets
+  auto-expanded, and it gets auto-collapsed as soon as the mouse
+  leaves.  However, if they manually toggle it collapsed
+  while it was auto-expanded, it will stay collapsed until you move
+  the mouse completely away and then back again later.  If you
+  manually expand it, it will stay manually expanded until you
+  manually collapse it.
+
+*//****************************************************************//**
+
+\class ExpandingToolBarEvtHandler
+\brief A custom event handler for ExpandingToolBar.
+
+*//****************************************************************//**
+
+\class ToolBarGrabber
+\brief Draws the grabber for an ExpandingToolBar.
+
+*//****************************************************************//**
+
+\class ToolBarArea
+\brief An alterantive to ToolBarFrame which can contain an
+ExpandingToolBar.  ToolBarArea is used for a 'docked' ToolBar, 
+ToolBarFrame for a floating one.
+
+*//****************************************************************//**
+
+\class ToolBarArrangement
+\brief Small class that holds some layout information for an 
+ExpandingToolBar.
+
+*//*******************************************************************/
+
+
 
 #include "../Theme.h"
 

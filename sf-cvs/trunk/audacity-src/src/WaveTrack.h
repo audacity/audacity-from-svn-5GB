@@ -27,7 +27,8 @@
 
 typedef wxLongLong_t longSampleCount; /* 64-bit int */
 
-//structure and array to hold regions of wavetrack
+/// \brief Structure to hold region of a wavetrack and a comparison function
+/// for sortability.
 typedef struct REGION
 {
    double start, end;

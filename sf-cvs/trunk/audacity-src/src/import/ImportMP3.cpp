@@ -6,6 +6,11 @@
 
   Joshua Haberman
 
+*//****************************************************************//**
+
+\class MP3ImportFileHandle
+\brief An ImportFileHandle for MP3 data
+
   Audacity has finally moved to using a single mp3 library on all
   platforms! It is the high performance, beautifully written libmad
   (mpeg audio decoder). Finally there is harmony in the mp3 universe.
@@ -13,7 +18,12 @@
   Much of this source code is based on 'minimad.c' as distributed
   with libmad.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class MP3ImportPlugin
+\brief An ImportPlugin for MP3 data
+
+*//*******************************************************************/
 
 #include <wx/defs.h>
 #include "../Audacity.h"

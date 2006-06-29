@@ -6,7 +6,17 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class PCMImportFileHandle
+\brief An ImportFileHandle for PCM data
+
+*//****************************************************************//**
+
+\class PCMImportPlugin
+\brief An ImportPlugin for PCM data
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 #include "../Internat.h"

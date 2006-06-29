@@ -8,9 +8,9 @@
   Dominic Mazzoni
 
 
-********************************************************************//*!
+********************************************************************//**
 
-\class AColour
+\class AColor
 \brief AColor Manages color brushes and pens
 
 It is also a place to document colour usage policy in Audacity

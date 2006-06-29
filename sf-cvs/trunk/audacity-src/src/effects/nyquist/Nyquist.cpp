@@ -22,6 +22,16 @@ effects from this one class.
 \class NyquistOutputDialog
 \brief Dialog used with EffectNyquist
 
+*//****************************************************************//**
+
+\class NyquistDialog
+\brief Base class for NyquistInputDialog and NyquistOutputDialog.
+
+*//****************************************************************//**
+
+\class NyqControl
+\brief A control on a NyquistDialog.
+
 *//*******************************************************************/
 
 

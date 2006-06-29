@@ -6,11 +6,17 @@
 
   David I. Murray
 
+*//****************************************************************//**
+
+\class LOFImportFileHandle
+\brief An ImportFileHandle for LOF data
+
   Supports the opening of ".lof" files which are text files that contain
   a list of individual files to open in audacity in specific formats.
 
   (In BNF) The syntax for an LOF file, denoted by <lof>:
 
+\verbatim
   <lof> ::= [<window> | <file> | <#>]*
   <window> ::= window [<window-parameter>]* <newline>
   <window-parameter> ::= offset <time> | duration <time>
@@ -18,9 +24,11 @@
   <file> ::= file [<file-parameter>]* <newline>
   <file-parameter> ::= offset <time>
   <#> ::= <comment> <newline>
+\endverbatim
 
   EXAMPLE LOF file:
 
+\verbatim
   # everything following the hash character is ignored
   window # an initial window command is implicit and optional
   file "C:\folder1\sample1.wav"    # sample1.wav is displayed
@@ -29,6 +37,7 @@
   window offset 5 duration 10      # open a new window, zoom to display 
   # 10 seconds total starting at 5 (ending at 15) seconds
   file "C:\sample3.wav" offset 2.5
+\endverbatim
 
   SEMANTICS:
 
@@ -49,7 +58,12 @@
   time should be displayed in the window. The default duration is equal
   to the duration of the longest track currently displayed.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class LOFImportPlugin
+\brief An ImportPlugin for LOF data
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

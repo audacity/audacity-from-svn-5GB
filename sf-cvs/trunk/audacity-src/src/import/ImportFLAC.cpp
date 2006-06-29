@@ -8,7 +8,17 @@
   Based on ImportPCM.cpp by Dominic Mazzoni
   Licensed under the GNU General Public License v2 or later
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class FLACImportFileHandle
+\brief An ImportFileHandle for FLAC data
+
+*//****************************************************************//**
+
+\class FLACImportPlugin
+\brief An ImportPlugin for FLAC data
+
+*//*******************************************************************/
 
 #include <wx/defs.h>
 #include "../Audacity.h"

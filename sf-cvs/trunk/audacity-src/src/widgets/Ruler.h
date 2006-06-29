@@ -6,35 +6,6 @@
 
   Dominic Mazzoni
 
-  This is a generic class which can be used to display just about
-  any kind of ruler.  In addition to the Ruler class, which
-  draws onto any wxDC, this file also contains a simple
-  RulerPanel class, which allows you to work with a Ruler like
-  any other wxWindow.
-
-  At a minimum, the user must specify the dimensions of the
-  ruler, its orientation (horizontal or vertical), and the
-  values displayed at the two ends of the ruler (min and max).
-  By default, this class will display tick marks at reasonable
-  round numbers and fractions, for example, 100, 50, 10, 5, 1,
-  0.5, 0.1, etc.
-
-  The class is designed to display a small handful of
-  labeled Major ticks, and a few Minor ticks between each of
-  these.  Minor ticks are labeled if there is enough space.
-  Labels will never run into each other.
-
-  In addition to Real numbers, the Ruler currently supports
-  two other formats for its display:
-
-  Integer - never shows tick marks for fractions of an integer
-  
-  Time - Assumes values represent seconds, and labels the tick
-         marks in "HH:MM:SS" format, e.g. 4000 seconds becomes
-         "1:06:40", for example.  Will display fractions of
-         a second, and tick marks are all reasonable round
-         numbers for time (i.e. 15 seconds, 30 seconds, etc.)
-
 **********************************************************************/
 
 #ifndef __AUDACITY_RULER__

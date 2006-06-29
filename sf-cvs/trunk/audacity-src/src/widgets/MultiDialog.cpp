@@ -6,7 +6,14 @@
 
   Monty
 
-**********************************************************************/
+*******************************************************************//**
+
+\class MultiDialog
+\brief A multi purpose dialog, mainly used to show lists of orphaned or
+damaged block files.  It is a good alternative to having a dialog pop up
+for each problem encountered, since there can be many orphans.
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 

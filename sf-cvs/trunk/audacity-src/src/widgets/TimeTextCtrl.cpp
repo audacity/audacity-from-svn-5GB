@@ -6,9 +6,12 @@
 
   Dominic Mazzoni
 
-  *
-  * TimeTextCtrl Format String Documentation
-  *
+
+********************************************************************//**
+
+\class TimeTextCtrl 
+\brief TimeTextCtrl provides the advanced time formatting control used
+in the status bar of Audacity.
 
   The TimeTextCtrl makes use of a format string to specify the
   exact way that a single time value is split into several fields,
@@ -94,29 +97,53 @@
 
   Summary of format string rules:
 
-  * The characters '0-9', '*', and '#' are numeric.  Any sequence of
+  - The characters '0-9', '*', and '#' are numeric.  Any sequence of
     these characters is treated as defining a new field by specifying
     its range.  All other characters become delimiters between fields.
     (The one exception is that '.' is treated as numeric after the
     optional '|'.)
-  * A field with a range of '*', which only makes sense as the
+  - A field with a range of '*', which only makes sense as the
     leftmost field, means the field should display as large a number
     as necessary.
-  * The character '#' represents the current sample rate.
-  * If a field specifier beings with a leading zero, it will be formatted
+  - The character '#' represents the current sample rate.
+  - If a field specifier beings with a leading zero, it will be formatted
     with leading zeros, too - enough to display the maximum value
     that field can display.  So the number 7 in a field specified
     as '01000' would be formatted as '007'.  Bond.  James Bond.
-  * Any non-numeric characters before the first field are treated
+  - Any non-numeric characters before the first field are treated
     as a prefix, and will be displayed to the left of the first field.
-  * A delimiter ending in '.' is treated specially.  All fields after
+  - A delimiter ending in '.' is treated specially.  All fields after
     this delimeter are fractional fields, after the decimal point.
-  * The '|' character is treated as a special delimiter.  The number
+  - The '|' character is treated as a special delimiter.  The number
     to the right of this character (which is allowed to contain a
     decimal point) is treated as a scaling factor.  The time is
     multiplied by this factor before multiplying.
 
+*******************************************************************//**
+
+\class TimeTextCtrlAx
+\brief TimeTextCtrlAx gives the TimeTextCtrl Accessibility.
+
+*//****************************************************************//**
+
+\class BuiltinFormatString
+\brief BuiltinFormatString is a structure used in the TimeTextCtrl 
+and holds both a descriptive name for the string format and a 
+printf inspired style format string, optimised for displaying time in 
+different formats.
+
+*//****************************************************************//**
+
+\class TimeField
+\brief TimeField is a class used in the TimeTextCtrl
+
+*//****************************************************************//**
+
+\class DigitInfo
+\brief DigitInfo is a class used in the TimeTextCtrl
+
 **********************************************************************/
+
 
 #include "../Audacity.h"
 

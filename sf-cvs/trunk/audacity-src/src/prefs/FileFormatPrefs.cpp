@@ -15,7 +15,16 @@
 \brief A PrefsPanel used to select file format preferences and to 
 locate the MP3 encoding library.
 
+*//****************************************************************//**
+
+\class OtherFormatDialog
+\brief A fairly complex small dialog that is called up by 
+FileFormatPrefs to allow selection of *any* audio file format, not 
+just the standard combinations.
+
 *//*******************************************************************/
+
+ 
 
 #include "../Audacity.h"
 

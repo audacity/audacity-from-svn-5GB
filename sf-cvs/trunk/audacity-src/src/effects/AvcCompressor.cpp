@@ -12,8 +12,17 @@
 \brief An unused Effect (we use EffectCompressor instead) derived 
 from EffectSimplePairedTwoTrackBase
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class iAVCBufferList
+\brief An unused class used by EffectAvcCompressor.
+
+*//****************************************************************//**
+
+\class AvcCompressorDialog
+\brief An unused class used by unused effect, EffectAvcCompressor.
+
+*//*******************************************************************/
 /*  TODO List:
 
   1.  Add graph shows curve specified by grid, keep it up to date,

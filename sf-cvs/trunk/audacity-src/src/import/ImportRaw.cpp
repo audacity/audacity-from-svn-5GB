@@ -6,7 +6,20 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\file ImportRaw.cpp
+\brief Functions for guessing audio type and attempting to read from
+unknown sample audio data.  Implements ImportRawDialog.
+
+*//****************************************************************//**
+
+\class ImportRawDialog
+\brief ImportRawDialog prompts you with options such as endianness 
+and sample size to help you importing data of an unknown format.
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 

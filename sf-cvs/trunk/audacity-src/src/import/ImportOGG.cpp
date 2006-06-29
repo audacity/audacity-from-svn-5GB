@@ -6,6 +6,11 @@
 
   Joshua Haberman
 
+*//****************************************************************//**
+
+\class ImportFileHandle
+\brief An ImportFileHandle for data
+
   The Ogg format supports multiple logical bitstreams that can be chained
   within the physical bitstream. The sampling rate and number of channels
   can vary between these logical bitstreams. For the moment, we'll ignore
@@ -15,7 +20,12 @@
   Audacity. We'll call the first channel LeftChannel, the second
   RightChannel, and all others after it MonoChannel.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class OGGImportPlugin
+\brief An ImportPlugin for OGG data
+
+*//*******************************************************************/
 
 #include "../Audacity.h"
 #include "ImportOGG.h"

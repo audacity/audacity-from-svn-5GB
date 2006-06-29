@@ -8,11 +8,11 @@
   Brian Gunlogson
   et. al.
 
-
-*******************************************************************//*!
+*******************************************************************//**
 
 \file Menus.cpp
-\brief All AudacityProject functions that provide the menus.
+\brief All AudacityProject functions that provide the menus.  
+Implements AudacityProjectCommandFunctor.
 
   This file implements the method that creates the menu bar, plus
   all of the methods that get called when you select an item
@@ -22,8 +22,13 @@
   but the event handlers for all of the menu items have been moved
   to Menus.h and Menus.cpp for clarity.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class AudacityProjectCommandFunctor
+\brief AudacityProjectCommandFunctor, derived from CommandFunctor, 
+simplifies construction of menu items.
+
+*//*******************************************************************/
 
 #include "Audacity.h"
 

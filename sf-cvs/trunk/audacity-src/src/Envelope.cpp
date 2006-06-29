@@ -8,7 +8,7 @@
   Dr William Bland (integration - the Calculus kind)
   Monty (xiphmont) (important bug fixes)
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class Envelope
 \brief Draggable curve used in TrackPanel for varying amplification.
@@ -18,8 +18,13 @@
   envelope is most commonly used to control the amplitude of a
   waveform, but it is also used to shape a general FFT filter.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class EnvPoint
+\brief EnvPoint, derived from XMLTagHandler, provides Envelope with 
+a draggable point type.
+
+*//*******************************************************************/
 
 #include "Envelope.h"
 
