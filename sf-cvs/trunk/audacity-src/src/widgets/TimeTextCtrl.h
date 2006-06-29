@@ -48,7 +48,8 @@ class TimeTextCtrl: public wxPanel
                 double timeValue = 0.0,
                 double sampleRate = 44100,
                 const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize);
+                const wxSize &size = wxDefaultSize,
+                bool autoPos = false);
 
    virtual ~TimeTextCtrl();
 
@@ -62,11 +63,12 @@ class TimeTextCtrl: public wxPanel
 
    wxString GetTimeString();
 
-   static int  GetNumBuiltins();
+   static int GetNumBuiltins();
    static wxString GetBuiltinName(int index);
    static wxString GetBuiltinFormat(int index);
+   static wxString GetBuiltinFormat(const wxString &name);
 
- private:
+private:
 
    void OnChar(wxKeyEvent &event);
    void OnMouse(wxMouseEvent &event);
