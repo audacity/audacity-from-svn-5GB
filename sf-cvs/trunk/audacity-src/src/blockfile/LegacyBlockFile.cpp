@@ -6,14 +6,17 @@
 
   Dominic Mazzoni
 
-  Audacity 1.1.0 block file format:
+******************************************************************//**
 
-  1. Header tag: 20 bytes
-     "AudacityBlockFile110"
-  2. 64K summaries (min, max, RMS, each a 4-byte float)
-  3. 256 summaries (min, max, RMS, each a 4-byte float)
+\class LegacyBlockFile
+\brief Audacity 1.1.0 block file format:
 
-**********************************************************************/
+  - Header tag: 20 bytes "AudacityBlockFile110"
+  - 64K summaries (min, max, RMS, each a 4-byte float)
+  - 256 summaries (min, max, RMS, each a 4-byte float)
+
+*//******************************************************************/
+
 
 #include <float.h>
 #include <math.h>

@@ -42,6 +42,9 @@ class TrackPanelAx;
 
 struct ViewInfo;
 
+#ifdef OLD_CODE
+/// Holds a bitmap and its position, this is an element of a tpBitmapArray,
+/// which appears to be not used anymore.
 struct tpBitmap
 {
    wxBitmap *bitmap;
@@ -50,6 +53,8 @@ struct tpBitmap
 };
 
 WX_DEFINE_ARRAY(tpBitmap *, tpBitmapArray);
+#endif
+
 WX_DEFINE_ARRAY(LWSlider *, LWSliderArray);
 
 class TrackClip

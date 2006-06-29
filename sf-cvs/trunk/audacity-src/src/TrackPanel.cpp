@@ -11,40 +11,6 @@
 
 ********************************************************************//*! 
 
-\class TrackPanel
-\brief
-  The TrackPanel class coordinates updates and operations on the
-  main part of the screen which contains multiple tracks.
-
-  It uses many other classes, but in particular it uses the
-  TrackLabel class to draw the label on the left of a track,
-  and the TrackArtist class to draw the actual waveforms.
-
-  The TrackPanel manages multiple tracks and their TrackLabels.
-
-  Note that with stereo tracks there will be one TrackLabel
-  being used by two wavetracks.
-
-*//*****************************************************************//*!
-
-\class TrackLabel
-\brief
-  The TrackLabel is shown to the side of a track 
-  It has the menus, pan and gain controls displayed in it.
- 
-  TrackPanel and not TrackLabel takes care of the functionality for 
-  each of the buttons in that panel.
-
-  In its current implementation TrackLabel is not derived from a
-  wxWindow.  Following the original coding style, it has 
-  been coded as a 'flyweight' class, which is passed 
-  state as needed, except for the array of gains and pans.
- 
-  If we'd instead coded it as a wxWindow, we would have an instance
-  of this class for each instance displayed.
-
-*//*****************************************************************//*!
-
 \todo
   Refactoring of the TrackPanel, possibly as described 
   in \ref TrackPanelRefactor
@@ -71,7 +37,80 @@
 // put the following lengthy description of refactoring on a new page 
 // and link to it from the docs.
 
-/*****************************************************************//*! 
+/*****************************************************************//**
+
+\class TrackPanel
+\brief
+  The TrackPanel class coordinates updates and operations on the
+  main part of the screen which contains multiple tracks.
+
+  It uses many other classes, but in particular it uses the
+  TrackLabel class to draw the label on the left of a track,
+  and the TrackArtist class to draw the actual waveforms.
+
+  The TrackPanel manages multiple tracks and their TrackLabels.
+
+  Note that with stereo tracks there will be one TrackLabel
+  being used by two wavetracks.
+
+*//*****************************************************************//**
+
+\class TrackLabel
+\brief
+  The TrackLabel is shown to the side of a track 
+  It has the menus, pan and gain controls displayed in it.
+ 
+  TrackPanel and not TrackLabel takes care of the functionality for 
+  each of the buttons in that panel.
+
+  In its current implementation TrackLabel is not derived from a
+  wxWindow.  Following the original coding style, it has 
+  been coded as a 'flyweight' class, which is passed 
+  state as needed, except for the array of gains and pans.
+ 
+  If we'd instead coded it as a wxWindow, we would have an instance
+  of this class for each instance displayed.
+
+*//**************************************************************//**
+
+\class TrackClip
+\brief One clip (i.e short section) of a WaveTrack.
+
+*//**************************************************************//**
+
+\class TrackPanelListener
+\brief A now badly named class which is used to give access to a
+subset of the TrackPanel functions from all over the place.
+
+*//**************************************************************//**
+
+\class TrackList
+\brief A list of TrackListNode items.
+
+*//**************************************************************//**
+
+\class TrackListIterator
+\brief An iterator for a TrackList.
+
+*//**************************************************************//**
+
+\class TrackListNode
+\brief Used by TrackList, points to a Track.
+
+*//**************************************************************//**
+
+\class TrackPanel::AudacityTimer
+\brief Timer class dedicated to infomring the TrackPanel that it 
+is time to refresh some aspect of the screen.
+
+*//**************************************************************//**
+
+\class MyFontEnumerator
+\brief MyFontEnumerator, derived from wxFontEnumerator, creates 
+a list of fonts.
+
+*//*****************************************************************//**
+
 \page TrackPanelRefactor Track Panel Refactor
 \brief Planned refactoring of TrackPanel.cpp
 

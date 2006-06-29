@@ -6,10 +6,16 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class UndoManager
 \brief Works with HistoryWindow to provide the Undo functionality.
+
+*//****************************************************************//**
+
+\class UndoStackElem
+\brief Holds one item with description and time range for the 
+UndoManager
 
 *//*******************************************************************/
 

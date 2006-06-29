@@ -6,7 +6,14 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\class MIDIParser
+\brief Unused class that might someday be used again to read MIDI files 
+into a NoteTrack.
+
+*//*******************************************************************/
+
 
 #ifndef _IMPORT_MIDI_
 #define _IMPORT_MIDI_

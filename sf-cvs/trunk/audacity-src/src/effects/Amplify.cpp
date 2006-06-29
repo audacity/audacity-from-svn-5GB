@@ -16,6 +16,11 @@
   the maximum amount of gain that can be applied to all tracks without
   causing clipping and selects this as the default parameter.
 
+*//****************************************************************//**
+
+\class AmplifyDialog
+\brief Dilaog used with EffectAmplify.
+
 *//*******************************************************************/
 
 #include "../Audacity.h"

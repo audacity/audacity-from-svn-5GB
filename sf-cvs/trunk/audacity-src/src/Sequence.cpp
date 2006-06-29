@@ -6,10 +6,22 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
+\file Sequence.cpp
+\brief Appears to duplicate some structures such as SeqBlock that are 
+also found in Track.cpp. 
+
+*//****************************************************************//**
 
 \class Sequence
 \brief Has a sequence of samples.  Compare with RingBuffer.
+
+*//****************************************************************//**
+
+\class SeqBlock
+\brief Pointer to a BlockFile along with a start time.  Element of 
+a BlockArray.  WARNING defined differently in Track.cpp and 
+Sequence.cpp.  Not yet sure why.
 
 *//*******************************************************************/
 

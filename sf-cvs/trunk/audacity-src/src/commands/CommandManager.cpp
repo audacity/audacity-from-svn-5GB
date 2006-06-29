@@ -7,9 +7,73 @@
   Brian Gunlogson
   Dominic Mazzoni
 
-  See CommandManager.h for an overview of this class.
+*******************************************************************//**
 
-**********************************************************************/
+\class CommandManager
+\brief CommandManager implements a system for organizing all user-callable
+  commands.  
+  
+  It creates and manages a menu bar with a command
+  associated with each item, and managing other commands callable
+  by keyboard shortcuts.
+
+  Commands are implemented by overriding an abstract functor class.
+  See Menus.cpp for an example use.
+
+  Menus or submenus containing lists of items can be added at once,
+  with a single function (functor) to be called when any of the
+  items is selected, with the index number of the selection as the
+  parameter.  This is useful for dynamic menus (effects) and
+  submenus containing a list of choices (selection formats).
+
+  Menu items can be enabled or disabled individually, groups of
+  "multi-items" can be enabled or disabled all at once, or entire
+  sets of commands can be enabled or disabled all at once using
+  flags.  The flags should be a bitfield stored in a 32-bit
+  integer but can be whatever you want.  You specify both the
+  desired values of the flags, and the set of flags relevant to
+  a particular command, by using a combination of a flags parameter
+  and a mask parameter.  Any flag set to 0 in the mask parameter is
+  the same as "don't care".  Any command whose mask is set to zero
+  will not be affected by enabling/disabling by flags.
+
+*//****************************************************************//**
+
+\class CommandFunctor
+\brief CommandFunctor is a very small class that works with 
+CommandManager.  It holds the callback for one command.
+
+*//****************************************************************//**
+
+\class MenuBarListEntry
+\brief MenuBarListEntry is a structure used by CommandManager.
+
+*//****************************************************************//**
+
+\class SubMenuListEntry
+\brief SubMenuListEntry is a structure used by CommandManager.
+
+*//****************************************************************//**
+
+\class CommandListEntry
+\brief CommandListEntry is a structure used by CommandManager.
+
+*//****************************************************************//**
+
+\class MenuBarList
+\brief List of MenuBarListEntry.
+
+*//****************************************************************//**
+
+\class SubMenuList
+\brief List of SubMenuListEntry.
+
+*//****************************************************************//**
+
+\class CommandList
+\brief List of CommandListEntry.
+
+*//******************************************************************/
 
 #include "../Audacity.h"
 

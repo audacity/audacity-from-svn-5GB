@@ -6,10 +6,93 @@
 
   Dominic Mazzoni
 
-  See ImageRoll.h for information on what this class is and what it
-  is for.
+*******************************************************************//**
 
-**********************************************************************/
+\class ImageRoll
+\brief
+  An ImageRoll is an image that can be expanded to an arbitrary size;
+  it is made up of both fixed pieces and repeating pieces.  
+  
+  
+  A typical
+  ImageRoll might be made up of two fixed ends and a repeating
+  middle part:
+
+\verbatim
+  /-----\                       /-----\
+  |LEFT |--REPEATING--REPEATING-|RIGHT|
+  \-----/                       \-----/
+\endverbatim
+
+  As you resize the image, it could look like this:
+
+\verbatim
+  /-----\ /-----\
+  |LEFT |-|RIGHT|
+  \-----/ \-----/
+\endverbatim
+
+  Or like this:
+
+\verbatim
+  /-----\                                  /-----\
+  |LEFT |--REPEATING--REPEATING--REPEATING-|RIGHT|
+  \-----/                                  \-----/
+\endverbatim
+
+  Note that an ImageRoll can have a center piece; in fact, its pieces
+  always alternate fixed, repeating, fixed, repeating, etc. - although
+  one of these pieces is allowed to be of size zero, making it skipped.
+  Here's an example with a center piece:
+
+\verbatim
+  /-----\                /------\                /-----\
+  |LEFT |-REPEAT--REPEAT-|CENTER|-repeat--repeat-|RIGHT|
+  \-----/                \------/                \-----/
+\endverbatim
+
+  Note that the left and right repeating sections can be different.
+  Of course, an ImageRoll can be oriented vertically as well.
+  In the future, support for an ImageRoll that expands both horizontally
+  and vertically at the same time will be supported.
+
+  An ImageRoll is initialized with a _single_ wxImage that defines
+  all of its pieces.  This is done by way of a "magic color" which
+  separates each piece in the image.  If the magic colored pixel is
+  denoted by "X", the above ImageRoll could be encoded like this:
+
+\verbatim
+  /-----\X        X/------\X        X/-----\
+  |LEFT |X-REPEAT-X|CENTER|X-repeat-X|RIGHT|
+  \-----/X        X\------/X        X\-----/
+\endverbatim
+
+  Putting two lines of magic color in a row will create a blank
+  piece.  For example, for an ImageRoll with a center piece but no
+  left and right pieces:
+
+\verbatim
+  X        X/------\X        X
+  X-REPEAT-X|CENTER|X-repeat-X
+  X        X\------/X        X
+\endverbatim
+
+  Once again, the pieces are always assumed to alternate: fixed,
+  repeating, fixed, repeating, etc.  The magic color is specified
+  when you construct the ImageRoll from a wxImage.
+
+  In the constructor, you also choose whether it is a horizontal or
+  vertical ImageRoll (and later a "Frame" as well).  You can also
+  choose a "fixed" ImageRoll, which behaves just like a wxImage -
+  this is handy so that you can use ImageRolls everywhere you were
+  previously using wxImages.
+
+*//****************************************************************//**
+
+\class ImageRollPanel
+\brief A wxPanel which displays an ImageRoll.
+
+*//*******************************************************************/
 
 #include "ImageRoll.h"
 

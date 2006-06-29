@@ -6,7 +6,15 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\class WarningDialog
+\brief Gives a warning message, that can be dismissed, with crucially
+the ability to not see similar warnings again for this session.
+
+*//********************************************************************/
+
+
 
 #include "../Audacity.h"
 

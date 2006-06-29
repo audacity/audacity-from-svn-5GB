@@ -13,10 +13,7 @@
 #define __AUDACITY_SHUTTLE__
 
 
-// Enums is a helper class for Shuttle.
-// It defines enumerations which are used in effects dialogs,
-// in the effects themselves and in preferences.
-// (If it grows big, we will move it out of shuttle.h).
+
 class Enums {
 public:
    static const wxString * GetDbChoices();

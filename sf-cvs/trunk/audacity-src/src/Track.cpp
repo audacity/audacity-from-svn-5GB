@@ -6,15 +6,20 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class Track
 \brief Fundamental data object of Audacity, placed in the TrackPanel.
 Classes derived form it include the WaveTrack, NoteTrack, LabelTrack 
 and TimeTrack.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class ConstTrackListIterator
+\brief ConstTrackListIterator provides an iterator to iterate through 
+a TrackList.
+
+*//*******************************************************************/
 
 #include <float.h>
 #include <wx/file.h>

@@ -6,10 +6,17 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
+
+\file Project.cpp
+\brief Implements AudacityProject, AdornedRulerPanel and 
+AudacityDropTarget.  Includes Menus.cpp.
+
+*//****************************************************************//**
 
 \class AudacityProject
-\brief The main window, with tools and tracks contained within it.
+\brief AudacityProject provides the main window, with tools and 
+tracks contained within it.
 
   In Audacity, the main window you work in is called a project.
   AudacityProjects can contain an arbitrary number of tracks of many
@@ -21,13 +28,29 @@
 \attention The menu functions for AudacityProject, those for creating 
 the menu bars and acting on clicks, are found in file Menus.cpp
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class AdornedRulerPanel
+\brief AdornedRulerPanel provides the Audacity Ruler, including 
+the cursor for play back and record.
+
+*//****************************************************************//**
+
+\class AudacityDropTarget
+\brief AudacityDropTarget, derived from wxFileDropTarget gives 
+drag and drop functionality for audio files.
+
+*//****************************************************************//**
+
+\class ViewInfo
+\brief ViewInfo is used mainly to hold the zooming, selection and
+scroll information.  It also has some status flags.
+
+*//*******************************************************************/
 
 #include "Audacity.h"
 
 #include <stdio.h>
-
 #include <iostream>
 #include <wx/wxprec.h>
 
@@ -106,6 +129,9 @@ the menu bars and acting on clicks, are found in file Menus.cpp
 #include "PlatformCompatibility.h"
 #include "Experimental.h"
 #include "export/Export.h"
+
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 
 using std::cout;

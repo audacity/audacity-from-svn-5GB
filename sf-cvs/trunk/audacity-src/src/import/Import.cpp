@@ -6,13 +6,33 @@
 
   Dominic Mazzoni
 
+*******************************************************************//**
+
+\file Import.cpp
+
   This file contains a general function which will import almost
   any type of sampled audio file (i.e. anything except MIDI)
   and return the tracks that were imported.  This function just
   figures out which one to call; the actual importers are in
   ImportPCM, ImportMP3, ImportOGG, ImportRawData, and ImportLOF.
 
-**********************************************************************/
+*//***************************************************************//**
+
+\class Format
+\brief Abstract base class used in importing a file.
+
+It's defined in Import.h
+
+*//***************************************************************//**
+
+\class Importer
+\brief Class which actulaly imports the auido, using functions defined 
+in ImportPCM.cpp, ImportMP3.cpp, ImportOGG.cpp, ImportRawData.cpp, 
+and ImportLOF.cpp.
+ 
+*//******************************************************************/
+
+
 
 #include <wx/textctrl.h>
 #include <wx/msgdlg.h>

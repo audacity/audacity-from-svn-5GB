@@ -7,10 +7,21 @@
   ?? Dominic Mazzoni
   ?? Markus Meyer
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class WaveClip
 \brief This allows multiple clips to be a part of one WaveTrack.
+
+*//****************************************************************//**
+
+\class WaveCache
+\brief Cache used with WaveClip to cache wave information (for drawing).
+
+*//****************************************************************//**
+
+\class SpecCache
+\brief Cache used with WaveClip to cache spectrum information (for 
+drawing).
 
 *//*******************************************************************/
 

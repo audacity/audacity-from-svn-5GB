@@ -6,7 +6,33 @@
 
   Joshua Haberman
 
-**********************************************************************/
+*******************************************************************//**
+
+\file SimpleBlockFile.cpp
+\brief Implements SimpleBlockFile and auHeader.
+
+*//****************************************************************//**
+
+\class SimpleBlockFile
+\brief A BlockFile that reads and writes uncompressed data using 
+libsndfile
+
+A block file that writes the audio data to an .au file and reads
+it back using libsndfile.
+
+There are two ways to construct a simple block file.  One is to
+supply data and have the constructor write the file.  The other
+is for when the file already exists and we simply want to create
+the data structure to refer to it.
+
+*//****************************************************************//**
+
+\class auHeader
+\brief The auHeader is a structure used by SimpleBlockFile for .au file 
+format.  There probably is an 'official' header file we should include 
+to get its definition, rather than rolling our own.
+
+*//*******************************************************************/
 
 #include <wx/filefn.h>
 #include <wx/ffile.h>

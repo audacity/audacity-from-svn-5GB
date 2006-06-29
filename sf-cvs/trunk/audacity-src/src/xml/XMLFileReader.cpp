@@ -6,7 +6,12 @@
 
   Dominic Mazzoni
 
-**********************************************************************/
+*******************************************************************//**
+
+\class XMLFileReader
+\brief Reads a file and passes the results through an XMLTagHandler.
+
+*//*******************************************************************/
 
 #include <wx/defs.h>
 #include <wx/ffile.h>

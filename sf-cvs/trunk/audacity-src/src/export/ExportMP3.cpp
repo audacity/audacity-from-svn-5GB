@@ -52,7 +52,19 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-**********************************************************************/
+*******************************************************************//**
+
+\class MP3Exporter
+\brief Class used to export MP3 files
+
+*//*****************************************************************//**
+
+\class MP3ExporterCleanup
+\brief Tiny class that is used to clean up any allocated resources 
+when the program exits.  A global instance of it is created, and its
+destructor does the cleanup.
+
+*//********************************************************************/
 
 #include <wx/defs.h>
 #include <wx/textctrl.h>

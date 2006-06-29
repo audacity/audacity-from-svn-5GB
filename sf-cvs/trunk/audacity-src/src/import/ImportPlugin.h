@@ -6,13 +6,55 @@
 
   Joshua Haberman
 
+
+*******************************************************************//**
+
+\file ImportPlugin.h
+\brief
   The interface that all file import "plugins" (if you want to call
-  them that) must implement.
+  them that) must implement.  Defines ImportFileHandle, ImportPlugin,
+  UnusableImportPlugin, ImportPluginList and UnusableImportPluginList.
 
   Since this is part of libaudacity, it must not use any GUI parts
   of wxWindows.
 
-**********************************************************************/
+*//****************************************************************//**
+
+\class ImportFileHandle
+\brief Base class for FlacImportFileHandle, LOFImportFileHandle,
+MP3ImportFileHandle, OggImportFileHandle and PCMImportFileHandle.  
+Gives API for sound file import.
+
+*//****************************************************************//**
+
+\class ImportPlugin
+\brief Base class for FlacImportPlugin, LOFImportPlugin,
+MP3ImportPlugin, OggImportPlugin and PCMImportPlugin.  
+Gives API for sound file import.
+
+*//****************************************************************//**
+
+\class UnusableImportPlugin
+\brief Used in place of a real plug in for plug ins that have not
+been compiled or are not available in this version of Audacity.  Has
+enough information to identify the file extensions that would be used, 
+but little else.
+
+*//****************************************************************//**
+
+\class ImportPluginList
+\brief An ImportPlugin list.
+
+*//****************************************************************//**
+
+\class UnusableImportPluginList
+\brief An UnusableImportPlugin list.
+
+*//*******************************************************************/
+
+
+
+
 
 #ifndef __AUDACITY_IMPORTER__
 #define __AUDACITY_IMPORTER__

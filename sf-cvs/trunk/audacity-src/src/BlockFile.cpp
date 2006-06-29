@@ -33,8 +33,14 @@ count hits zero.  DirManager is the class responsible for
 constructing and managing BlockFiles and managing their reference
 counts.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class SummaryInfo
+\brief Works with BlockFile to hold info about max and min and RMS 
+over multiple samples, which in turn allows rapid drawing when zoomed 
+out.
+
+*//*******************************************************************/
 
 #include <float.h>
 #include <math.h>

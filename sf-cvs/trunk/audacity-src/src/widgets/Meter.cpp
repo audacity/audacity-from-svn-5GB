@@ -6,14 +6,32 @@
 
   Dominic Mazzoni
 
-  VU Meter, for displaying recording/playback level
+  2004.06.25 refresh rate limited to 30mS, by ChackoN
+
+*******************************************************************//**
+
+\class Meter
+\brief VU Meter, for displaying recording/playback level
 
   This is a bunch of common code that can display many different
   forms of VU meters and other displays.
 
-  2004.06.25 refresh rate limited to 30mS, by ChackoN
+*//****************************************************************//**
 
-**********************************************************************/
+\class MeterBar
+\brief A struct used by Meter to hold the position of one bar.
+
+*//****************************************************************//**
+
+\class MeterUpdateMsg
+\brief Message used to update the Meter
+
+*//****************************************************************//**
+
+\class MeterUpdateQueue
+\brief Queue of MeterUpdateMsg used to feed the Meter.
+
+*//******************************************************************/
 
 #include "../Audacity.h"
 

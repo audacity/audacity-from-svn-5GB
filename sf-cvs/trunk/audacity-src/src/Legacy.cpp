@@ -9,11 +9,19 @@
 *******************************************************************//*!
 
 \file Legacy.cpp
-\brief Converts old Audacity file types.
+\brief Converts old Audacity file types.  Implements 
+AutoRollbackRenamer.
 
   These routines convert Audacity project files from the
   0.98...1.0 format into an XML format that's compatible with
   Audacity 1.2.0 and newer.
+
+*//****************************************************************//**
+
+\class AutoRollbackRenamer
+\brief AutoRollbackRenamer handles the renaming of files
+which is needed when producing a new version of a file which may fail.
+On failure the old version is put back in place.
 
 *//*******************************************************************/
 

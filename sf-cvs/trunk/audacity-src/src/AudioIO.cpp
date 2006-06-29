@@ -15,8 +15,7 @@
   Software Foundation; either version 2 of the License, or (at your option)
   any later version.
 
-
-********************************************************************//*!
+********************************************************************//**
 
 \class AudioIO
 \brief AudioIO uses the PortAudio library to play and record sound.
@@ -31,8 +30,14 @@
   \todo run through all functions called from audio and portaudio threads
   to verify they are thread-safe.
 
-*//*******************************************************************/
+*//****************************************************************//**
 
+\class AudioThread
+\brief Defined different on Mac and other platforms (on Mac it does not
+use wxWidgets wxThread), this class sits in a thread loop reading and 
+writing audio.
+
+*//*******************************************************************/
 
 #include "Audacity.h"
 

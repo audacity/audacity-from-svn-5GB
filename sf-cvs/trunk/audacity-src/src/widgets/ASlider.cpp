@@ -6,11 +6,34 @@
 
   Dominic Mazzoni
 
-  This class is a custom slider, allowing for a 
-  slicker look and feel by allowing you to use images
-  for the slider background and the thumb.
+*******************************************************************//**
 
-**********************************************************************/
+\class ASlider
+\brief ASlider is a custom slider, allowing for a slicker look and 
+feel.
+
+It allows you to use images for the slider background and 
+the thumb.
+
+*//****************************************************************//**
+
+\class LWSlider
+\brief Lightweight version of ASlider.  In other words it does not 
+have a window permanaently associated with it.
+
+*//****************************************************************//**
+
+\class SliderDialog
+\brief Pop up dialog used with an LWSlider.
+
+*//****************************************************************//**
+
+\class TipPanel
+\brief A wxPanel or a wxPopupWindow used to give the numerical value
+of an LWSlider or ASlider.
+
+*//*******************************************************************/
+
 
 #include "../Audacity.h"
 
@@ -171,10 +194,6 @@ void TipPanel::OnPaint(wxPaintEvent& event)
 
 
 
-
-///
-///SliderDialog
-///
 #define ID_SLIDER 10000
 BEGIN_EVENT_TABLE(SliderDialog, wxDialog)
    EVT_SLIDER(ID_SLIDER,SliderDialog::OnSlider)
