@@ -6,10 +6,20 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class FreqWindow
-\brief Displays a spectrum plot of the waveform.
+\brief Displays a spectrum plot of the waveform.  Has options for 
+selecting parameters of the plot.
+
+Has a feature that finds peaks and rerports their value as you move 
+the mouse around.
+
+*//****************************************************************//**
+
+\class FreqPlot
+\brief Works with FreqWindow to dsplay a spectrum plot of the waveform.
+This class actually does the graph display.
 
 Has a feature that finds peaks and rerports their value as you move 
 the mouse around.
@@ -639,6 +649,8 @@ void FreqWindow::PlotPaint(wxPaintEvent & evt)
    wxPaintDC dc( (wxWindow *) evt.GetEventObject() );
 
    dc.DrawBitmap( *mBitmap, 0, 0, true );
+   if( mProcessed == NULL )
+      return;
 
    int alg = mAlgChoice->GetSelection();
 
