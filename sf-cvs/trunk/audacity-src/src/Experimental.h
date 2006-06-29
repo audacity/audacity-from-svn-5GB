@@ -31,9 +31,9 @@
 //#define EXPERIMENTAL_FEATURES
 
 // The Experimental TrackPanel is a refactoring of the existing track panel.
-#define EXPERIMENTAL_TRACK_PANEL
+//#define EXPERIMENTAL_TRACK_PANEL
 //#define EXPERIMENTAL_TRACK_PANEL_FROM_THE_START
-#define RIGHT_ALIGNED_TEXTBOXES
+//#define RIGHT_ALIGNED_TEXTBOXES
 
 #ifdef EXPERIMENTAL_FEATURES
    // The first experimental feature is a notebook that adds
