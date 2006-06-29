@@ -5639,7 +5639,7 @@ Track *TrackPanel::FindTrack(int mouseX, int mouseY, bool label, bool link,
    GetSize(&r.width, &r.height);
 
    if (label) {
-      r.width = GetLabelWidth();
+      r.width = GetLabelWidth()+1;
    } else {
       r.x = GetLeftOffset();
       r.width -= GetLeftOffset();
