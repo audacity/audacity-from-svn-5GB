@@ -66,6 +66,7 @@ and use it for toolbar and window layouts too.
 #include "ControlToolBar.h"
 #include "ImageManipulation.h"
 #include "Theme.h"
+#include "AllThemeResources.h"  // can remove this later, only needed for 'XPMS_RETIRED'.
 #include "FileNames.h"
 #include "Prefs.h"
 
@@ -74,74 +75,6 @@ and use it for toolbar and window layouts too.
 WX_DEFINE_OBJARRAY( ArrayOfImages )
 WX_DEFINE_OBJARRAY( ArrayOfBitmaps )
 WX_DEFINE_OBJARRAY( ArrayOfColours )
-
-
-// JKC: First get the MAC specific images.
-// As we've disabled USE_AQUA_THEME, we need to name each file we use.
-//
-// JKC: Mac Hackery.
-// These #defines are very temporary.  We want to ensure the Mac XPM names don't collide with
-// the PC XPM names, so we do some #defines and later undo them.
-// Use the same trick wherever we need to avoid name collisions.
-
-// All this will vanish when the XPMs are eliminated.
-
-// Indeed XPMS_RETIRED the #ifndef ensures we're already not using any of it.
-#ifndef XPMS_RETIRED
-
-
-// This step should mean that we get PC/Linux images only
-// except where we EXPLICITLY request otherwise.
-#undef USE_AQUA_THEME
-
-// This step ensures we treat the cursors as 32x32 even on Mac.
-// We're not yet creating the cursors from the theme, so 
-// all this ensures is that the sizing on PC and Mac stays in step.
-#define CURSORS_SIZE32
-
-
-#define DownButton             MacDownButton
-#define HiliteButton           MacHiliteButton
-#define UpButton               MacUpButton
-#define Down                   MacDown
-#define Hilite                 MacHilite
-#define Up                     MacUp
-#define Slider                 MacSlider
-#define SliderThumb            MacSliderThumb
-
-
-#include "../images/Aqua/HiliteButtonSquare.xpm"
-#include "../images/Aqua/UpButtonSquare.xpm"
-#include "../images/Aqua/DownButtonSquare.xpm"
-#include "../images/Aqua/Slider.xpm"
-#include "../images/Aqua/SliderThumb.xpm"
-#include "../images/Aqua/Down.xpm"
-#include "../images/Aqua/Hilite.xpm"
-#include "../images/Aqua/Up.xpm"
-
-#if 0
-// These ones aren't used...
-#include "../images/Aqua/DownButtonStripes.xpm"
-#include "../images/Aqua/DownButtonWhite.xpm"
-#include "../images/Aqua/HiliteButtonStripes.xpm"
-#include "../images/Aqua/HiliteButtonWhite.xpm"
-#include "../images/Aqua/UpButtonStripes.xpm"
-#include "../images/Aqua/UpButtonWhite.xpm"
-#endif
-
-#undef DownButton           
-#undef UpButton
-#undef HiliteButton
-#undef Down          
-#undef Hilite       
-#undef Up           
-#undef Slider       
-#undef SliderThumb  
-
-
-
-//-- OK now on to includes for Linux/PC images.
-
 
 // JKC: First get the MAC specific images.
 // As we've disabled USE_AQUA_THEME, we need to name each file we use.
