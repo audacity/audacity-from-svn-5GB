@@ -6,10 +6,23 @@
 
   Dominic Mazzoni
 
-*******************************************************************//*!
+*******************************************************************//**
 
 \class WaveTrack
 \brief A Track that contains audio waveform data.
+
+*//****************************************************************//**
+
+\class WaveTrack::Location
+\brief Used only by WaveTrack, a special way to hold location that
+can accommodate merged regions.
+
+*//****************************************************************//**
+
+\class TrackFactory
+\brief Used to create a WaveTrack, or a LabelTrack..  Implementation 
+of the functions of this class are dispersed through the different 
+Track classes.
 
 *//*******************************************************************/
 
@@ -1304,6 +1317,7 @@ void WaveTrack::MoveClipToTrack(WaveClip *clip, WaveTrack* dest)
          WaveClip* clip = it->GetData();
          mClips.DeleteNode(it);
          dest->mClips.Append(clip);
+         return; // JKC iterator is now 'defunct' so better return straight away.
       }
    }
 }
