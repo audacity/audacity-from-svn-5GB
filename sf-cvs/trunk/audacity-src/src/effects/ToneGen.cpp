@@ -188,11 +188,24 @@ ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
 
 void ToneGenDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   S.StartTwoColumn();
+   S.StartMultiColumn(2, wxCENTER);
    {
+#if 1
+      S.AddPrompt(_("Waveform:"));
+      mWaveform = new wxChoice(this,
+                               wxID_ANY,
+                               wxDefaultPosition,
+                               wxDefaultSize,
+                               *waveforms);
+      mWaveform->SetSizeHints(-1,-1);
+      mWaveform->SetStringSelection(waveforms->Item(waveform));
+      S.AddWindow(mWaveform);
+#else
       mWaveform = S.AddChoice(_("Waveform:"),
                               waveforms->Item(waveform),
                               waveforms);
+      mWaveform->SetSizeHints(-1,-1);
+#endif
       mFreq = S.AddTextBox(_("Frequency / Hz"),
                            wxT(""),
                            5);
@@ -203,7 +216,7 @@ void ToneGenDialog::PopulateOrExchange(ShuttleGui & S)
                              wxT(""),
                              5);
    }
-   S.EndTwoColumn();
+   S.EndMultiColumn();
 }
 
 bool ToneGenDialog::TransferDataToWindow()

@@ -80,8 +80,6 @@ class ToneGenDialog:public EffectDialog {
    bool TransferDataFromWindow();
 
  private:
-   // WDR: handler declarations
-
    wxChoice *mWaveform;
    wxTextCtrl *mFreq;
    wxTextCtrl *mAmp;
