@@ -812,7 +812,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddCommand(wxT("SeekLeftLong"),  _("Seek left long period during playback\tShift+Left"),   FN(OnSeekLeftLong));
    c->AddCommand(wxT("SeekRightLong"), _("Seek right long period during playback\tShift+Right"), FN(OnSeekRightLong));
    
-   c->SetDefaultFlags(TracksExistFlag, TracksExistFlag);
+   c->SetDefaultFlags(TracksExistFlag | TrackPanelHasFocus,
+                      TracksExistFlag | TrackPanelHasFocus);
    c->AddCommand(wxT("PrevTrack"),     _("Move to Previous Track\tUp"),                      FN(OnCursorUp));
    c->AddCommand(wxT("ShiftUp"),       _("Move to Previous and Change Selection\tShift+Up"), FN(OnShiftUp));
    c->AddCommand(wxT("NextTrack"),     _("Move to Next Track\tDown"),                        FN(OnCursorDown));
