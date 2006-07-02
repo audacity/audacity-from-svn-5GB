@@ -68,7 +68,7 @@ class EditToolBar:public ToolBar {
 
 
  private:
-   AButton *EditToolBar::AddButton( teBmps eFore, teBmps eDisabled,
+   AButton *AddButton( teBmps eFore, teBmps eDisabled,
       int id,
 //    bool processdownevents,
       const wxChar *label, const wxChar *tip);
