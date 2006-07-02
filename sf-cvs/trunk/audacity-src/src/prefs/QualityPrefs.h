@@ -31,7 +31,7 @@ private:
    void Populate();
    void PopulateOrExchange( ShuttleGui & S );
    void DefineSampleRateControl( ShuttleGui & S );
-   void QualityPrefs::GetNamesAndLabels();
+   void GetNamesAndLabels();
 
    wxArrayString mmDitherNames;
    wxArrayInt    mmDitherLabels;

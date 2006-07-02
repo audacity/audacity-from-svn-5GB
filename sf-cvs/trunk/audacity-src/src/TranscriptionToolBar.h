@@ -82,7 +82,7 @@ class TranscriptionToolBar:public ToolBar {
    virtual void SetKeyType(wxCommandEvent & event);
 private:
    void InitializeTranscriptionToolBar();
-   AButton *TranscriptionToolBar::AddButton(
+   AButton *AddButton(
       teBmps eFore, teBmps eDisabled,
       int id,
       //   bool processdownevents,
