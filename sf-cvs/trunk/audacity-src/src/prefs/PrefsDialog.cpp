@@ -164,7 +164,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    mCategories->SetSelection(selected);
 
    mOK = new wxButton(this,
-                      wxID_OK, _("OK"));
+                      wxID_OK, _("&OK"));
 
 #ifndef TARGET_CARBON
    mOK->SetDefault();
@@ -173,7 +173,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
    mCancel = new wxButton(this,
                           wxID_CANCEL,
-                          _("Cancel"));
+                          _("&Cancel"));
 
    wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 

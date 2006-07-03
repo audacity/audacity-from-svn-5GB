@@ -819,10 +819,10 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   mCancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   mCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(mCancel, 0, wxALL, 5);
 
-   mExport = new wxButton(this, wxID_OK, _("Export"));
+   mExport = new wxButton(this, wxID_OK, _("E&xport"));
    mExport->SetDefault();
    hSizer->Add(mExport, 0, wxALL, 5);
 

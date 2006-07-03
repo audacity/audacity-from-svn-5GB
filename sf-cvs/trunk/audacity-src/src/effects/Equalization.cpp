@@ -817,7 +817,7 @@ void EqualizationDialog::LoadDefaultCurves()
          mCurves[ curve ].points.Add( EQPoint( freq, db ) );
       }
    }
-   mCurves.Add( wxT("custom") );
+   mCurves.Add( _("Custom") );
 
    SaveCurves();
 
@@ -1054,10 +1054,10 @@ void EqualizationDialog::MakeEqualizationDialog()
 
    szrH->Add(80, 4); // horizontal spacer
 
-   btn = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   btn = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 
-   btn = new wxButton(this, wxID_OK, _("OK"));
+   btn = new wxButton(this, wxID_OK, _("&OK"));
    btn->SetDefault();
    szrH->Add( btn, 0, wxALIGN_RIGHT | wxALL, 4 );
 

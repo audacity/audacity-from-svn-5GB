@@ -819,13 +819,13 @@ NyquistDialog::NyquistDialog(wxWindow * parent, wxWindowID id,
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
 
-   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_MORE, _("Debug"));
+   button = new wxButton(this, wxID_MORE, _("&Debug"));
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_OK, _("OK"));
+   button = new wxButton(this, wxID_OK, _("&OK"));
    button->SetDefault();
    hSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 

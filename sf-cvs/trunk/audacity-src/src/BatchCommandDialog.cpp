@@ -70,7 +70,7 @@ BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
    wxBoxSizer * boxSizer = new wxBoxSizer( wxHORIZONTAL ); 
    mCommand = new wxTextCtrl(this, -1, wxT(""));
    boxSizer->Add(mCommand, 1, wxALIGN_LEFT | wxALL | wxGROW, 0);
-   mEditParams = new wxButton( this, EditParamsButtonID, _("Edit Parameters"));
+   mEditParams = new wxButton( this, EditParamsButtonID, _("&Edit Parameters"));
    boxSizer->Add(mEditParams, 0, wxALIGN_LEFT | wxLEFT, 3);
    gridSizer->Add(boxSizer, 0, wxALIGN_LEFT | wxALL | wxGROW, 0);
 
@@ -106,12 +106,12 @@ BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mOK = 
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
+       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    mOK->SetDefault();
    mOK->SetFocus();

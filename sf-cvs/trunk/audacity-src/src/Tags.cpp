@@ -964,19 +964,19 @@ void TagsEditor::BuildExtraPanel()
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
 
    wxButton *fewer =
-       new wxButton(parent, FewerID, _("Fewer"), wxDefaultPosition,
+       new wxButton(parent, FewerID, _("&Fewer"), wxDefaultPosition,
                     wxDefaultSize, 0);
    hSizer->Add(fewer, 0, wxALIGN_CENTRE | wxALL, 3);
 
    wxButton *more =
-       new wxButton(parent, MoreID, _("More"), wxDefaultPosition,
+       new wxButton(parent, MoreID, _("&More"), wxDefaultPosition,
                     wxDefaultSize, 0);
    hSizer->Add(more, 0, wxALIGN_CENTRE | wxALL, 3);
 
    hSizer->Add(1, 1, wxEXPAND);
 
    wxButton *close =
-       new wxButton(parent, CloseID, _("Done"), wxDefaultPosition,
+       new wxButton(parent, CloseID, _("&Done"), wxDefaultPosition,
                     wxDefaultSize, 0);
    hSizer->Add(close, 0, wxALIGN_CENTRE | wxALL, 3);
 
@@ -989,19 +989,19 @@ void TagsEditor::BuildExtraPanel()
                                                      _("Template"));
 
    wxButton *load =
-       new wxButton(parent, LoadID, _("Load..."), wxDefaultPosition,
+       new wxButton(parent, LoadID, _("&Load..."), wxDefaultPosition,
                     wxDefaultSize, 0);
    staticBoxSizer->Add(load, 0, wxALIGN_CENTRE | wxALL, 3);
 
    wxButton *save =
-       new wxButton(parent, SaveID, _("Save..."), wxDefaultPosition,
+       new wxButton(parent, SaveID, _("&Save..."), wxDefaultPosition,
                     wxDefaultSize, 0);
    staticBoxSizer->Add(save, 0, wxALIGN_CENTRE | wxALL, 3);
 
    staticBoxSizer->Add(1, 1, wxEXPAND);
 
    wxButton *defaultButton =
-       new wxButton(parent, SaveDefaultsID, _("Set Default"),
+       new wxButton(parent, SaveDefaultsID, _("S&et default"),
                     wxDefaultPosition, wxDefaultSize, 0);
    staticBoxSizer->Add(defaultButton, 0, wxALIGN_CENTRE | wxALL, 3);
 

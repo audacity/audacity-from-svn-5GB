@@ -350,10 +350,10 @@ NormalizeDialog::NormalizeDialog(EffectNormalize *effect,
    hSizer->Add(pButton_Preview, 0, wxALIGN_CENTER | wxALL, 5);
    hSizer->Add(20, 10); // horizontal spacer
 
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
    ok->SetDefault();
    hSizer->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 

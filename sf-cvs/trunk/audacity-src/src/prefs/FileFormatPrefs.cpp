@@ -370,8 +370,8 @@ void OtherFormatDialog::PopulateOrExchange( ShuttleGui & S )
    S.Id( ID_ENCODING_CHOICE).TieChoice( _("Encoding: "), mEncoding, &mEncodingNames );
    S.EndTwoColumn();
    S.StartHorizontalLay(wxALIGN_CENTRE, 1);
-   S.Id( wxID_CANCEL ).AddButton( _("Cancel"));
-   mOK = S.Id( wxID_OK).AddButton( _("OK") );
+   S.Id( wxID_CANCEL ).AddButton( _("&Cancel"));
+   mOK = S.Id( wxID_OK).AddButton( _("&OK") );
    S.EndHorizontalLay();
 }
 

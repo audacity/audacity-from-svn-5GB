@@ -603,12 +603,12 @@ wxSizer *NoiseRemovalDialog::MakeNoiseRemovalDialog(bool call_fit /* = true */,
    
    hSizer->Add(25, 5); // horizontal spacer
 
-   item = new wxButton( this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+   item = new wxButton( this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
    hSizer->Add(item, 0, wxALIGN_CENTER | wxALL, 5 );
 
    hSizer->Add(25, 5); // horizontal spacer
    
-	m_pButton_RemoveNoise = new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_pButton_RemoveNoise = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
    hSizer->Add(m_pButton_RemoveNoise, 0, wxALIGN_RIGHT | wxALL, 5 );
 
 	group->Add(hSizer, 0, wxALIGN_CENTER | wxALL, 5 );
