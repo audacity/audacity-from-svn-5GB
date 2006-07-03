@@ -295,10 +295,10 @@ void DirManager::CleanTempDir(bool startup)
       int action = wxYES;
       if (warn == 1) {
          wxString prompt = _("Audacity found temporary files that were not deleted or saved \n"
-            wxT("the last time you used Audacity. \n\n")
-            wxT("Audacity can't recover them automatically, but if you choose not \n")
-            wxT("to delete them, you can recover them manually. \n\n")
-            wxT("Delete temporary files?"));
+            _("the last time you used Audacity. \n\n")
+            _("Audacity can't recover them automatically, but if you choose not \n")
+            _("to delete them, you can recover them manually. \n\n")
+            _("Delete temporary files?"));
       
          action = wxMessageBox(prompt,
                                wxT("Warning"),
@@ -517,7 +517,7 @@ bool DirManager::AssignFile(wxFileName &fileName,
          checkit.GetFirst(&collision,filespec);
          
          wxLogWarning(_("Audacity found an orphaned blockfile %s! \n"
-            wxT("Please consider saving and reloading the project to perform a complete project check.\n")),
+            _("Please consider saving and reloading the project to perform a complete project check.\n")),
                       collision.c_str());
          
          return FALSE;
@@ -1208,8 +1208,7 @@ int DirManager::ProjectFSCK(bool forceerror)
       !missingDataList.empty() ||
       !missingSummaryList.empty()){
 
-      wxLogWarning(_("Project check found inconsistencies inspecting the loaded project data;\n"
-         wxT("click 'Details' for a complete list of errors, or 'OK' to proceed to more options.")));
+      wxLogWarning(_("Project check found inconsistencies inspecting the loaded project data;\nclick 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
       
       wxLog::GetActiveTarget()->Flush(); // Flush is both modal
       // (desired) and will clear the log (desired)
@@ -1219,9 +1218,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!orphanList.IsEmpty()){
 
       wxString promptA =
-         _("Project check found %d orphaned blockfile[s]. These files are\n"
-         wxT("unused and probably left over from a crash or some other bug.\n")
-         wxT("They should be deleted to avoid disk contention."));
+         _("Project check found %d orphaned blockfile[s]. These files are\nunused and probably left over from a crash or some other bug.\nThey should be deleted to avoid disk contention."));
       wxString prompt;
       
       prompt.Printf(promptA,orphanList.GetCount());
@@ -1251,12 +1248,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingAliasList.empty()){
 
       wxString promptA =
-         _("Project check detected %d input file[s] being used in place\n"
-         wxT("('alias files') are now missing.  There is no way for Audacity\n")
-         wxT("to recover these files automatically; you may choose to\n")
-         wxT("permanently fill in silence for the missing files, temporarily\n")
-         wxT("fill in silence for this session only, or close the project now\n")
-         wxT("and try to restore the missing files by hand."));
+         _("Project check detected %d input file[s] being used in place\n('alias files') are now missing.  There is no way for Audacity\nto recover these files automatically; you may choose to\npermanently fill in silence for the missing files, temporarily\nfill in silence for this session only, or close the project now\nand try to restore the missing files by hand."));
       wxString prompt;
       
       prompt.Printf(promptA,missingAliasFiles.size());
@@ -1294,9 +1286,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingSummaryList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing summary file[s] (.auf).\n"
-         wxT("Audacity can fully regenerate these summary files from the\n")
-         wxT("original audio data in the project."));
+         _("Project check detected %d missing summary file[s] (.auf).\nAudacity can fully regenerate these summary files from the\noriginal audio data in the project."));
       wxString prompt;
       
       prompt.Printf(promptA,missingSummaryList.size());
@@ -1327,13 +1317,7 @@ int DirManager::ProjectFSCK(bool forceerror)
    if(!missingDataList.empty()){
 
       wxString promptA =
-         _("Project check detected %d missing audio data blockfile[s] (.au), \n"
-         wxT("probably due to a bug, system crash or accidental deletion.\n")
-         wxT("There is no way for Audacity to recover this lost data\n")
-         wxT("automatically; you may choose to permanently fill in silence\n")
-         wxT("for the missing data, temporarily fill in silence for this\n")
-         wxT("session only, or close the project now and try to restore the\n")
-         wxT("missing data by hand."));
+         _("Project check detected %d missing audio data blockfile[s] (.au), \nprobably due to a bug, system crash or accidental deletion.\nThere is no way for Audacity to recover this lost data\nautomatically; you may choose to permanently fill in silence\nfor the missing data, temporarily fill in silence for this\nsession only, or close the project now and try to restore the\nmissing data by hand."));
       wxString prompt;
       
       prompt.Printf(promptA,missingDataList.size());
