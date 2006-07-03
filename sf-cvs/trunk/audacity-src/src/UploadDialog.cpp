@@ -173,7 +173,7 @@ UploadDialog::UploadDialog(wxWindow * parent)
     connectionBox->Add(connectionSizer, 0, wxALIGN_CENTER);
     connectionBox->Add(200, 0);
 
-    stdButtonSizer->AddButton(new wxButton(this, wxID_CANCEL, _("Cancel")));
+    stdButtonSizer->AddButton(new wxButton(this, wxID_CANCEL, _("&Cancel")));
     stdButtonSizer->Realize();
 
     fileButtonSizer->Add(btnUploadFile, 0, wxALL, 5);
