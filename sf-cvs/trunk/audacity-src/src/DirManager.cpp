@@ -294,14 +294,10 @@ void DirManager::CleanTempDir(bool startup)
       int warn = gPrefs->Read(wxT("/GUI/WarnAboutTempFiles"), true);
       int action = wxYES;
       if (warn == 1) {
-         wxString prompt = _("Audacity found temporary files that were not deleted or saved \n"
-            _("the last time you used Audacity. \n\n")
-            _("Audacity can't recover them automatically, but if you choose not \n")
-            _("to delete them, you can recover them manually. \n\n")
-            _("Delete temporary files?"));
+         wxString prompt = _("Audacity found temporary files that were not deleted or saved \nthe last time you used Audacity. \n\nAudacity can't recover them automatically, but if you choose not \nto delete them, you can recover them manually. \n\nDelete temporary files?"));
       
          action = wxMessageBox(prompt,
-                               wxT("Warning"),
+                               _("Warning"),
                                wxYES_NO | wxICON_EXCLAMATION,
                                NULL);
       }
@@ -516,8 +512,7 @@ bool DirManager::AssignFile(wxFileName &fileName,
          wxString collision;
          checkit.GetFirst(&collision,filespec);
          
-         wxLogWarning(_("Audacity found an orphaned blockfile %s! \n"
-            _("Please consider saving and reloading the project to perform a complete project check.\n")),
+         wxLogWarning(_("Audacity found an orphaned blockfile %s! \nPlease consider saving and reloading the project to perform a complete project check.\n")),
                       collision.c_str());
          
          return FALSE;
