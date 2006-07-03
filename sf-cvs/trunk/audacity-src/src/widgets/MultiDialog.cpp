@@ -79,7 +79,7 @@ MultiDialog::MultiDialog(wxString prompt,
    }
 
    mBox = new wxRadioBox(this,-1,
-                         wxT(" Please select an action "),
+                         _(" Please select an action "),
                          wxDefaultPosition, wxDefaultSize,
                          count, prompts,
                          1, wxRA_SPECIFY_COLS);
