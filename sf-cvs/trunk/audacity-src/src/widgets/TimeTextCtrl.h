@@ -83,6 +83,9 @@ private:
    void PrintDebugInfo();
 
    void SetFieldFocus(int digit);
+   void Updated();
+   void Increase(int steps);
+   void Decrease(int steps);
 
    double         mTimeValue;
    double         mSampleRate;

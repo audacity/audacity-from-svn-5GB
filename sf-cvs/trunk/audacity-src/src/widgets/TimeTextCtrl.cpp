@@ -723,11 +723,105 @@ void TimeTextCtrl::OnMouse(wxMouseEvent &event)
 
       Refresh(false);
    }
+   else if( event.m_wheelRotation != 0 ) {
+      int steps =  event.m_wheelRotation /
+         (event.m_wheelDelta > 0 ? event.m_wheelDelta : 120);
+
+      if (steps < 0) {
+         Decrease(-steps);
+      }
+      else {
+         Increase(steps);
+      }
+   }
 }
 
 void TimeTextCtrl::OnFocus(wxFocusEvent &event)
 {
    Refresh(false);
+}
+
+void TimeTextCtrl::OnChar(wxKeyEvent &event)
+{
+   int keyCode = event.GetKeyCode();
+   int digit = mFocusedDigit;
+
+   if (mFocusedDigit < 0)
+      mFocusedDigit = 0;
+   if (mFocusedDigit >= (int)mDigits.GetCount())
+      mFocusedDigit = mDigits.GetCount()-1;
+
+   if (keyCode >= '0' && keyCode <= '9') {
+      mValueString[mDigits[mFocusedDigit].pos] = wxChar(keyCode);
+      ControlsToValue();
+      ValueToControls();
+      mFocusedDigit = (mFocusedDigit+1)%(mDigits.GetCount());
+      Updated();
+   }
+
+   else if (keyCode == WXK_BACK) {
+      // Moves left, replaces that char with '0', stays there...
+      mFocusedDigit--;
+      mFocusedDigit += mDigits.GetCount();
+      mFocusedDigit %= mDigits.GetCount();
+      mValueString[mDigits[mFocusedDigit].pos] = '0';
+      ControlsToValue();
+      ValueToControls();
+      Updated();
+   }
+
+   else if (keyCode == WXK_LEFT) {
+      mFocusedDigit--;
+      mFocusedDigit += mDigits.GetCount();
+      mFocusedDigit %= mDigits.GetCount();
+      Refresh();
+   }
+
+   else if (keyCode == WXK_RIGHT) {
+      mFocusedDigit++;
+      mFocusedDigit %= mDigits.GetCount();
+      Refresh();
+   }
+
+   else if (keyCode == WXK_UP) {
+      Increase(1);
+      Updated();
+   }
+
+   else if (keyCode == WXK_DOWN) {
+      Decrease(1);
+      Updated();
+   }
+
+   else if (keyCode == WXK_TAB) {
+      wxWindow *parent = GetParent();
+      wxNavigationKeyEvent nevent;
+      nevent.SetWindowChange( event.ControlDown() );
+      nevent.SetDirection( !event.ShiftDown() );
+      nevent.SetEventObject( parent );
+      nevent.SetCurrentFocus( parent );
+      GetParent()->ProcessEvent( nevent );
+   }
+
+   else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
+      wxWindow *parent = GetParent();
+      wxWindow *def = parent->GetDefaultItem();
+      if (parent && def) {
+         wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                               def->GetId());
+         GetParent()->ProcessEvent( cevent );
+      }
+   }
+   else {
+      event.Skip();
+      return;
+   }
+
+   if (digit != mFocusedDigit) {
+      SetFieldFocus( mFocusedDigit );
+   }
+
+   event.Skip(false);
 }
 
 void TimeTextCtrl::SetFieldFocus(int digit)
@@ -754,59 +848,23 @@ void TimeTextCtrl::SetFieldFocus(int digit)
                 mLastField );
 #endif
 }
-void TimeTextCtrl::OnChar(wxKeyEvent &event)
+
+void TimeTextCtrl::Updated()
 {
-   int keyCode = event.GetKeyCode();
-   int digit = mFocusedDigit;
-
-   if (mFocusedDigit < 0)
-      mFocusedDigit = 0;
-   if (mFocusedDigit >= (int)mDigits.GetCount())
-      mFocusedDigit = mDigits.GetCount()-1;
-
-   if (keyCode >= '0' && keyCode <= '9') {
-      mValueString[mDigits[mFocusedDigit].pos] = wxChar(keyCode);
-      ControlsToValue();
-      ValueToControls();
-      mFocusedDigit = (mFocusedDigit+1)%(mDigits.GetCount());
-      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
-      event.SetEventObject(this);
-      GetEventHandler()->ProcessEvent(event);
+   wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
+   event.SetEventObject(this);
+   GetEventHandler()->ProcessEvent(event);
 #if wxUSE_ACCESSIBILITY
-      GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_VALUECHANGE,
-                                    this,
-                                    wxOBJID_CLIENT,
-                                    mDigits[ mFocusedDigit ].field + 1 );
+   GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_VALUECHANGE,
+                                 this,
+                                 wxOBJID_CLIENT,
+                                 mDigits[ mFocusedDigit ].field + 1 );
 #endif
-   }
+}
 
-   else if (keyCode == WXK_BACK) {
-      // Moves left, replaces that char with '0', stays there...
-      mFocusedDigit--;
-      mFocusedDigit += mDigits.GetCount();
-      mFocusedDigit %= mDigits.GetCount();
-      mValueString[mDigits[mFocusedDigit].pos] = '0';
-      ControlsToValue();
-      ValueToControls();
-      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
-      event.SetEventObject(this);
-      GetEventHandler()->ProcessEvent(event);
-   }
-
-   else if (keyCode == WXK_LEFT) {
-      mFocusedDigit--;
-      mFocusedDigit += mDigits.GetCount();
-      mFocusedDigit %= mDigits.GetCount();
-      Refresh();
-   }
-
-   else if (keyCode == WXK_RIGHT) {
-      mFocusedDigit++;
-      mFocusedDigit %= mDigits.GetCount();
-      Refresh();
-   }
-
-   else if (keyCode == WXK_UP) {
+void TimeTextCtrl::Increase(int steps)
+{
+   while(steps > 0) {
       for(unsigned int i=0; i<mFields.GetCount(); i++) {
          if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
             if(!mNtscDrop)
@@ -841,18 +899,13 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
             break;
          }
       }
-      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
-      event.SetEventObject(this);
-      GetEventHandler()->ProcessEvent(event);
-#if wxUSE_ACCESSIBILITY
-      GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_VALUECHANGE,
-                                    this,
-                                    wxOBJID_CLIENT,
-                                    mDigits[ mFocusedDigit ].field + 1 );
-#endif
+      steps--;
    }
+}
 
-   else if (keyCode == WXK_DOWN) {
+void TimeTextCtrl::Decrease(int steps)
+{
+   while(steps > 0) {
       for(unsigned int i=0; i<mFields.GetCount(); i++) {
          if( (mDigits[mFocusedDigit].pos>=mFields[i].pos) && (mDigits[mFocusedDigit].pos<mFields[i].pos+mFields[i].digits)) {   //it's this field
             if(!mNtscDrop)
@@ -887,46 +940,8 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
             break;
          }
       }
-      wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, GetId());
-      event.SetEventObject(this);
-      GetEventHandler()->ProcessEvent(event);
-#if wxUSE_ACCESSIBILITY
-      GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_VALUECHANGE,
-                                    this,
-                                    wxOBJID_CLIENT,
-                                    mDigits[ mFocusedDigit ].field + 1 );
-#endif
+      steps--;
    }
-
-   else if (keyCode == WXK_TAB) {
-      wxWindow *parent = GetParent();
-      wxNavigationKeyEvent nevent;
-      nevent.SetWindowChange( event.ControlDown() );
-      nevent.SetDirection( !event.ShiftDown() );
-      nevent.SetEventObject( parent );
-      nevent.SetCurrentFocus( parent );
-      GetParent()->ProcessEvent( nevent );
-   }
-
-   else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
-      wxWindow *parent = GetParent();
-      wxWindow *def = parent->GetDefaultItem();
-      if (parent && def) {
-         wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
-                               def->GetId());
-         GetParent()->ProcessEvent( cevent );
-      }
-   }
-   else {
-      event.Skip();
-      return;
-   }
-
-   if (digit != mFocusedDigit) {
-      SetFieldFocus( mFocusedDigit );
-   }
-
-   event.Skip(false);
 }
 
 void TimeTextCtrl::ValueToControls()
