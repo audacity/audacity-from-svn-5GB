@@ -98,7 +98,7 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndStatic();
    S.StartStatic( _("Show / Hide"),1 );
    {
-      S.TieCheckBox( _("S&how Mp3-ID3 Dialog"), 
+      S.TieCheckBox( _("S&how MP3-ID3 Dialog"), 
          wxT("/Batch/ShowId3Dialog"), false);
 //    S.TieCheckBox( _("Show Confirmation for 'delete orphans'"), 
 //       wxT("/Batch/ShowDeleteConfirmation"), true);
@@ -109,15 +109,12 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartStatic( _("Batch Options"));
    {
       S.AddFixedText( 
-         _("Batch mode is an\n"
-         wxT("experimental feature.\n\n")
-         wxT("Please read the release\n")
-         wxT("notes for known limitations")));
-      S.Id( CleanSpeechButtonID ).AddButton( _("&CleanSpeech Chain") );
-      S.Id( Mp3ButtonID ).AddButton( _("&Mp3 Conversion Chain") );
-      S.Id( EmptyChainButtonID ).AddButton( _("&Empty Chain") );
-      S.Id( LoadButtonID ).AddButton( _("&Load Chain") );
-      S.Id( SaveButtonID ).AddButton( _("&Save Chain") );
+         _("Batch mode is an\nexperimental feature.\n\nPlease read the release\nnotes for known limitations"));
+      S.Id( CleanSpeechButtonID ).AddButton( _("&CleanSpeech chain") );
+      S.Id( Mp3ButtonID ).AddButton( _("&MP3 conversion chain") );
+      S.Id( EmptyChainButtonID ).AddButton( _("&Empty chain") );
+      S.Id( LoadButtonID ).AddButton( _("&Load chain") );
+      S.Id( SaveButtonID ).AddButton( _("&Save chain") );
    }
    S.EndStatic();
    S.StartStatic( _("Batch Sequence (Double-Click or press SPACE to edit)"),1);
