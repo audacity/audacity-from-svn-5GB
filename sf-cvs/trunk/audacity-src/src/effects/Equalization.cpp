@@ -704,7 +704,9 @@ EqualizationDialog::EqualizationDialog(EffectEqualization * effect,
    dBMin = -30.;
    dBMax = 30;
 
+#if wxUSE_TOOLTOPS
    wxToolTip::Enable(true);
+#endif
 
    mEnvelope = new Envelope();
    mEnvelope->SetInterpolateDB(false);
@@ -1374,7 +1376,7 @@ void EqualizationDialog::EnvelopeUpdated()
    mEnvelope->GetPoints( when, value, numPoints );
 
    // Clear the custom curve
-   #if wxCHECK_VERSION(2, 6, 2)
+   #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
    int curve = mCurve->GetCurrentSelection();
    #else
    int curve = mCurve->GetSelection();
@@ -1983,7 +1985,7 @@ void EqualizationDialog::OnSliderDBMAX(wxCommandEvent &event)
 void EqualizationDialog::OnCurve(wxCommandEvent &event)
 {
    // Select new curve
-   #if wxCHECK_VERSION(2, 6, 2)
+   #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
    setCurve( mEnvelope, mCurve->GetCurrentSelection() );
    #else
    setCurve( mEnvelope, mCurve->GetSelection() );
