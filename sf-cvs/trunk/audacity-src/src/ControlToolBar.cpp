@@ -385,12 +385,13 @@ void ControlToolBar::SetStop(bool down)
    if (down)
       mStop->PushDown();
    else {
+      if(FindFocus() == mStop)
+         mPlay->SetFocus();
       mStop->PopUp();
       mStop->Disable();
       mBatch->Enable();
       mRecord->Enable();
       mPlay->Enable();
-      mPlay->SetFocus();
       if(!mAlwaysEnablePause)
          mPause->Disable();
       mRewind->Enable();
