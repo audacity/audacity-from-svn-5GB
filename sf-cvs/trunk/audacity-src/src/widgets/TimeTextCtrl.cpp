@@ -41,7 +41,7 @@ in the status bar of Audacity.
   (seconds) is 60.  So, if you give it a number like 3758 (note
   format it as:
 
-    3758 seconds, "#:60:60" -> "1:2:38"
+    3758 seconds, "*:60:60" -> "1:2:38"
 
   Note that 3758 = 1*60*60 + 2*60 + 38.
 
@@ -54,7 +54,7 @@ in the status bar of Audacity.
   In order to format a field with leading zeros, simply add a leading
   zero to that field, like this:
 
-    3758 seconds, "#:060:060" -> "1:02:38"
+    3758 seconds, "*:060:060" -> "1:02:38"
 
   In order to format fractions, simply include a field delimiter
   ending with a decimal point.  If the delimiter is simply '.' with
@@ -65,12 +65,12 @@ in the status bar of Audacity.
   Here's how we'd display hours, minutes, and seconds with three
   decimal places after the seconds:
 
-    3758.5 seconds, "#:060:060.01000" -> "1:02:38.500"
+    3758.5 seconds, "*:060:060.01000" -> "1:02:38.500"
 
   Similarly, here's how we'd display the fractional part of
   seconds as film frames (24 per second) instead of milliseconds:
 
-    3758.5 seconds, "#:060:060 and .24 frames" -> "1:02:38 and 12 frames"
+    3758.5 seconds, "*:060:060 and .24 frames" -> "1:02:38 and 12 frames"
 
   Note that the decimal '.' is associated with the delimeter, not
   with the 24.
@@ -79,9 +79,9 @@ in the status bar of Audacity.
   to represent the current sample rate.  Use '0#' to add leading
   zeros to that field.  For example:
 
-    3758.5 seconds, "#:060:060+.#samples" -> "1:02:38+22050samples"
+    3758.5 seconds, "*:060:060+.#samples" -> "1:02:38+22050samples"
 
-  Finally, there is a rule that allows you to change the units into
+  (Almost) Finally, there is a rule that allows you to change the units into
   something other than seconds.  To do this, put a "|" character on
   the far right, followed by a number specifying the scaling factor.
   As an exception to previous rules, decimal points are allowed
@@ -95,6 +95,9 @@ in the status bar of Audacity.
 
     3758.5 seconds, "*.01000 frames|29.97002997" -> "112642.358 frames"
 
+  Finally there is a further special character that can be used after a "|" 
+  and that is "N".  This applies special rule for NTSC drop-frame timecode.
+
   Summary of format string rules:
 
   - The characters '0-9', '*', and '#' are numeric.  Any sequence of
@@ -104,7 +107,8 @@ in the status bar of Audacity.
     optional '|'.)
   - A field with a range of '*', which only makes sense as the
     leftmost field, means the field should display as large a number
-    as necessary.
+    as necessary. (Note: this no longer makes sense here and applies to a
+    previous version).
   - The character '#' represents the current sample rate.
   - If a field specifier beings with a leading zero, it will be formatted
     with leading zeros, too - enough to display the maximum value
@@ -118,6 +122,7 @@ in the status bar of Audacity.
     to the right of this character (which is allowed to contain a
     decimal point) is treated as a scaling factor.  The time is
     multiplied by this factor before multiplying.
+  - The special character 'N' after '|' is only used for NTSC drop-frame.
 
 *******************************************************************//**
 
@@ -187,11 +192,11 @@ BuiltinFormatString BuiltinFormatStrings[] =
     {_("hh:mm:ss + film frames (24 fps)"),
      _("099 h 060 m 060 s+.24 frames")},
     {_("film frames (24 fps)"),
-     _("01000,01000 frames |24")},
+     _("01000,01000 frames|24")},
     {_("hh:mm:ss + NTSC drop frames"),
-     _("099 h 060 m 060 s+.30 frames |N")},
+     _("099 h 060 m 060 s+.30 frames|N")},
     {_("hh:mm:ss + NTSC non-drop frames"),
-     _("099 h 060 m 060 s+.030 frames | .999000999")},
+     _("099 h 060 m 060 s+.030 frames| .999000999")},
     {_("NTSC frames"),
      _("01000,01000 frames|29.97002997")},
     {_("hh:mm:ss + PAL frames (25 fps)"),
@@ -201,7 +206,7 @@ BuiltinFormatString BuiltinFormatStrings[] =
     {_("hh:mm:ss + CDDA frames (75 fps)"),
      _("099 h 060 m 060 s+.75 frames")},
     {_("CDDA frames (75 fps)"),
-     _("01000,01000 frames |75")}};
+     _("01000,01000 frames|75")}};
 
 const int kNumBuiltinFormatStrings =
    sizeof(BuiltinFormatStrings) /
@@ -729,9 +734,11 @@ void TimeTextCtrl::OnMouse(wxMouseEvent &event)
 
       if (steps < 0) {
          Decrease(-steps);
+         Updated();
       }
       else {
          Increase(steps);
+         Updated();
       }
    }
 }
