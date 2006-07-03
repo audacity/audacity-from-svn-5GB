@@ -843,7 +843,7 @@ AudioUnitDialog::AudioUnitDialog(wxWindow *parent, wxWindowID id,
 
    wxBoxSizer *hSizer = new wxBoxSizer(wxHORIZONTAL);
    
-   wxButton *preview = new wxButton(this, PreviewID, _("Preview"));
+   wxButton *preview = new wxButton(this, PreviewID, _("Pre&view"));
    hSizer->Add(preview, 0, wxALL, 10);
 
    hSizer->Add(10, 10);

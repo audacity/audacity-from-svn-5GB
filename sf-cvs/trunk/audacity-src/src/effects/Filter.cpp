@@ -510,10 +510,10 @@ wxSizer *FilterDialog::MakeFilterDialog( wxWindow *parent,
    item3->Add( item4b, 0, wxALIGN_CENTRE|wxALL, 5 );
    item3->Add(20, 8); // horizontal spacer
 
-   wxButton *item6 = new wxButton( parent, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+   wxButton *item6 = new wxButton( parent, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
    item3->Add( item6, 0, wxALIGN_CENTRE|wxALL, 5 );
 
-   wxButton *item5 = new wxButton( parent, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+   wxButton *item5 = new wxButton( parent, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
    item5->SetDefault();
    item3->Add( item5, 0, wxALIGN_CENTRE|wxALL, 5 );
 

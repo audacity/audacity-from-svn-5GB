@@ -757,10 +757,10 @@ ExportMixerDialog::ExportMixerDialog( TrackList *tracks, bool selectionOnly,
 
    horSizer = new wxBoxSizer( wxHORIZONTAL );
    
-   wxButton *cancel = new wxButton( this, wxID_CANCEL, _( "Cancel" ) );
+   wxButton *cancel = new wxButton( this, wxID_CANCEL, _( "&Cancel" ) );
    horSizer->Add( cancel, 0, wxALIGN_CENTRE | wxALL, 5 );
 
-   wxButton *ok = new wxButton( this, wxID_OK, _( "OK" ) );
+   wxButton *ok = new wxButton( this, wxID_OK, _( "&OK" ) );
    ok->SetDefault();
    horSizer->Add( ok, 0, wxALIGN_CENTRE | wxALL, 5 );
 

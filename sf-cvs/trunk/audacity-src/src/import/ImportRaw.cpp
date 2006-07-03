@@ -445,10 +445,10 @@ ImportRawDialog::ImportRawDialog(wxWindow * parent,
    hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
    */
 
-   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    hSizer->Add(button, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-   mOK = new wxButton(this, wxID_OK, _("Import"));
+   mOK = new wxButton(this, wxID_OK, _("&Import"));
    mOK->SetDefault();
    hSizer->Add(mOK, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 

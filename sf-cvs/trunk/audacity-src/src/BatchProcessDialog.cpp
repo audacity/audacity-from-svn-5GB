@@ -96,12 +96,12 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent, wxWindowID id):
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
    mCancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition,
+       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
                     wxDefaultSize, 0);
    okSizer->Add(mCancel, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mOK = 
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition,
+       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition,
                     wxDefaultSize, 0);
    mOK->SetDefault();
    mOK->SetFocus();

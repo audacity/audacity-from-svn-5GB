@@ -392,11 +392,11 @@ ChangePitchDialog::ChangePitchDialog(EffectChangePitch * effect,
    pBoxSizer_OK->Add(32, 8); // horizontal spacer
 
    wxButton * pButton_Cancel =
-       new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
    pBoxSizer_OK->Add(pButton_Cancel, 0, wxALIGN_CENTER | wxALL, 4);
 
    wxButton * pButton_OK =
-       new wxButton(this, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
+       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
    pButton_OK->SetDefault();
    pBoxSizer_OK->Add(pButton_OK, 0, wxALIGN_CENTER | wxALL, 4);
 

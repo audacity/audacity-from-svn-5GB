@@ -181,10 +181,10 @@ ChangeLengthDialog::ChangeLengthDialog(wxWindow *parent, wxWindowID id, const wx
    wxButton *recalculate = new wxButton(this, ID_BUTTON_RECALCULATE, _("Recalculate"));
    pBoxSizer_Controls->Add(recalculate, 0, wxALIGN_CENTRE|wxALL, 5);
 
-   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   wxButton *cancel = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    pBoxSizer_Controls->Add(cancel, 0, wxALIGN_CENTRE|wxALL, 5);
 
-   wxButton *ok = new wxButton(this, wxID_OK, _("OK"));
+   wxButton *ok = new wxButton(this, wxID_OK, _("&OK"));
    ok->SetDefault();
    pBoxSizer_Controls->Add(ok, 0, wxALIGN_CENTRE|wxALL, 5);
 

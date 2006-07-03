@@ -507,10 +507,10 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    button = new wxButton(this, LADSPA_PREVIEW_ID, effect->GetPreviewName());
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_CANCEL, _("Cancel"));
+   button = new wxButton(this, wxID_CANCEL, _("&Cancel"));
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   button = new wxButton(this, wxID_OK, _("OK"));
+   button = new wxButton(this, wxID_OK, _("&OK"));
    button->SetDefault();
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
