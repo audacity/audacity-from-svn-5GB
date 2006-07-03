@@ -203,7 +203,7 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->AddSeparator();
 
-   c->AddItem(wxT("EditID3"),        _("Open Metadata Editor"),              FN(OnEditID3));
+   c->AddItem(wxT("EditID3"),        _("Open &Metadata Editor"),              FN(OnEditID3));
    //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    if( !mCleanSpeechMode )
@@ -313,7 +313,7 @@ void AudacityProject::CreateMenusAndCommands()
    if( !mCleanSpeechMode )
 	{
    c->AddSeparator();
-   c->AddItem(wxT("PageSetup"),   _("Page Setup..."),              FN(OnPageSetup));
+   c->AddItem(wxT("PageSetup"),   _("Pa&ge Setup..."),              FN(OnPageSetup));
    c->AddItem(wxT("Print"),       _("&Print..."),                   FN(OnPrint));
    c->SetCommandFlags(wxT("PageSetup"),
                       AudioIONotBusyFlag | TracksExistFlag,
@@ -403,7 +403,7 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    c->AddSeparator();
 
-   c->BeginSubMenu( _( "Labeled Regions..." ) );
+   c->BeginSubMenu( _( "Labeled Re&gions..." ) );
    c->AddItem( wxT( "CutLabels" ), _( "&Cut\tAlt+X" ), 
          FN( OnCutLabels ) );
    c->SetCommandFlags( wxT( "CutLabels" ), LabelsSelectedFlag, 
@@ -461,9 +461,9 @@ void AudacityProject::CreateMenusAndCommands()
 
    c->EndSubMenu();
 
-   c->AddItem(wxT("ZeroCross"),      _("Find Zero Crossings\tZ"),         FN(OnZeroCrossing));
+   c->AddItem(wxT("ZeroCross"),      _("Find &Zero Crossings\tZ"),         FN(OnZeroCrossing));
 
-   c->BeginSubMenu(_("Move Cursor..."));
+   c->BeginSubMenu(_("Mo&ve Cursor..."));
 
    c->AddItem(wxT("CursSelStart"),   _("to Selection Start"),             FN(OnCursorSelStart));
    c->AddItem(wxT("CursSelEnd"),     _("to Selection End"),               FN(OnCursorSelEnd));
@@ -484,7 +484,7 @@ void AudacityProject::CreateMenusAndCommands()
                       wxT("SelSave"), wxT("SelRestore"), NULL);
    c->AddSeparator();
 
-   c->BeginSubMenu(_("Snap-To..."));
+   c->BeginSubMenu(_("S&nap-To..."));
 
    /* i18n-hint: Set snap-to mode on or off */
    c->AddItem(wxT("SnapOn"),         _("Snap On"),                        FN(OnSnapOn));
@@ -552,7 +552,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("NewTrackPanel"),  _("&Experimental Display..."),  FN(OnExperimentalTrackPanel));
 #endif
    c->AddSeparator();
-   c->BeginSubMenu(_("Toolbars..."));
+   c->BeginSubMenu(_("&Toolbars..."));
    c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar));
    c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar));
    c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar));
