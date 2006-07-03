@@ -194,6 +194,7 @@ void SetActiveProject(AudacityProject * project)
    wxTheApp->SetTopWindow(project);
 }
 
+#if wxUSE_DRAG_AND_DROP
 AudacityDropTarget::AudacityDropTarget(AudacityProject *proj)
    : mProject(proj)
 {
@@ -209,6 +210,7 @@ bool AudacityDropTarget::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& 
       mProject->Import(filenames[i]);
    return true;
 }
+#endif
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentWindow)
 {
@@ -435,8 +437,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    mDrag = NULL;
 
+#if wxUSE_DRAG_AND_DROP
    SetDropTarget(new AudacityDropTarget(this));
-   
+#endif
+
    // MM: DirManager is created dynamically, freed on demand via ref-counting
    // MM: We don't need to Ref() here because it start with refcount=1
    mDirManager = new DirManager();

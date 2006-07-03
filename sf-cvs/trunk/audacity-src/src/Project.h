@@ -88,6 +88,7 @@ enum PlayMode {
    loopedPlay
 };
 
+#if wxUSE_DRAG_AND_DROP
 class AudacityDropTarget : public wxFileDropTarget
 {
  public:
@@ -97,6 +98,7 @@ class AudacityDropTarget : public wxFileDropTarget
  private:
    AudacityProject *mProject;
 };
+#endif
 
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
