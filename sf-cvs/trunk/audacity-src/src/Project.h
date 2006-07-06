@@ -243,7 +243,6 @@ class AudacityProject:public wxFrame,
    virtual void TP_RedrawScrollbars();
    virtual void TP_ScrollLeft();
    virtual void TP_ScrollRight();
-   virtual void TP_HasMouse();
    virtual void TP_ScrollWindow(double scrollto);
    virtual void TP_ScrollUpDown(int delta);
    virtual void TP_HandleResize();

@@ -3450,8 +3450,6 @@ void TrackPanel::OnChar(wxKeyEvent & event)
 /// various interested parties.
 void TrackPanel::OnMouseEvent(wxMouseEvent & event)
 {
-   mListener->TP_HasMouse();
-   
    if (event.m_wheelRotation != 0)
       HandleWheelRotation(event);
    
