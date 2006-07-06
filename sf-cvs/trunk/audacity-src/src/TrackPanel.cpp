@@ -3784,7 +3784,8 @@ void TrackPanel::HandleTrackSpecificMouseEvent(wxMouseEvent & event)
    //Determine if user clicked on the track's left-hand label
    if (!mCapturedTrack && event.m_x < GetLabelWidth()+1) {
       if (event.m_x >= GetVRulerOffset()) {
-         HandleVZoom(event);
+         if( !event.Dragging() ) // JKC: Only want the mouse down event.
+            HandleVZoom(event);
          HandleCursor(event);
       }
       else {
