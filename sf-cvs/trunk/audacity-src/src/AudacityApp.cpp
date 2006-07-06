@@ -914,6 +914,13 @@ void AudacityApp::OnKeyDown(wxKeyEvent & event)
 
    // Make sure this event is destined for a project window
    AudacityProject *prj = GetActiveProject();
+
+   // TODO: I don't know how it can happen, but it did on 2006-07-06.
+   // I was switching between apps fairly quickly so maybe that has something
+   // to do with it.
+   if (!prj)
+      return;
+
    if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
       return;
 
@@ -928,6 +935,13 @@ void AudacityApp::OnChar(wxKeyEvent & event)
 
    // Make sure this event is destined for a project window
    AudacityProject *prj = GetActiveProject();
+
+   // TODO: I don't know how it can happen, but it did on 2006-07-06.
+   // I was switching between apps fairly quickly so maybe that has something
+   // to do with it.
+   if (!prj)
+      return;
+
    if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
       return;
 
@@ -942,6 +956,13 @@ void AudacityApp::OnKeyUp(wxKeyEvent & event)
 
    // Make sure this event is destined for a project window
    AudacityProject *prj = GetActiveProject();
+
+   // TODO: I don't know how it can happen, but it did on 2006-07-06.
+   // I was switching between apps fairly quickly so maybe that has something
+   // to do with it.
+   if (!prj)
+      return;
+
    if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
       return;
 
