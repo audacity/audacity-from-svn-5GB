@@ -1879,8 +1879,8 @@ bool AudacityProject::OnEffect(int type, Effect * f)
       //if (mTracks->GetEndTime() > prevEndTime)
       //      OnZoomFit();
 
-
-      FixScrollbars();
+      RedrawProject();
+      mTrackPanel->EnsureVisible(mTrackPanel->GetFirstSelectedTrack());
 
       // Only remember a successful effect, don't rmemeber insert,
       // or analyze effects.
@@ -3794,22 +3794,36 @@ int AudacityProject::DoAddLabel(double left, double right)
 {
    TrackListIterator iter(mTracks);
    LabelTrack *lt = NULL;
+   LabelTrack *st = NULL;
 
    Track *t = iter.First();
-   while (t && !lt) {
-      if (t->GetKind() == Track::Label)
+   while (t) {
+      if (t->GetKind() == Track::Label) {
          lt = (LabelTrack *)t;
-      else
-         t = iter.Next();
+         if (lt->GetSelected()) {
+            st = lt;
+            break;
+         }
+      }
+      t = iter.Next();
    }
+
+   if (st)
+      lt = st;
 
    if (!lt) {
       lt = new LabelTrack(mDirManager);
       mTracks->Add(lt);
 
    }
-   SelectNone();
-   lt->SetSelected(true);
+
+// LLL: Commented as it seemed a little forceful to remove users
+//      selection when adding the label.  This does not happen if
+//      you select several tracks and the last one of those is a
+//      label track...typing a label will not clear the selections.
+//
+//   SelectNone();
+//   lt->SetSelected(true);
 
    int index = lt->AddLabel(left, right);
 
