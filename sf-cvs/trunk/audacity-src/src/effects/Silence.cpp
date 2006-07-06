@@ -54,17 +54,19 @@ bool EffectSilence::Process()
    if (length <= 0.0)
       length = sDefaultGenerateLen;
 
-   //Iterate over each track
-   TrackListIterator iter(mTracks);
-   Track *track = iter.First();
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
-      if (track->GetSelected()) {
-         track->Clear(mT0, mT1);
-         track->InsertSilence(mT0, length);
-      }
+      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat());
+      tmp->SetRate(track->GetRate());
+      tmp->InsertSilence(0.0, length);
+      tmp->Flush();
+      track->Clear(mT0, mT1);
+      track->Paste(mT0, tmp);
+      delete tmp;
       
       //Iterate to the next track
-      track = iter.Next();
+      track = (WaveTrack *)iter.Next();
    }
 
 	mT1 = mT0 + length; // Update selection.
