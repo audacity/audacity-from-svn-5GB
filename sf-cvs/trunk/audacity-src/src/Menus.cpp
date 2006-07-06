@@ -4227,11 +4227,13 @@ void AudacityProject::OnExpandAllTracks()
 void AudacityProject::OnLockPlayRegion()
 {
    mLockPlayRegion = true;
+   mRuler->Refresh(false);
 }
 
 void AudacityProject::OnUnlockPlayRegion()
 {
    mLockPlayRegion = false;
+   mRuler->Refresh(false);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
