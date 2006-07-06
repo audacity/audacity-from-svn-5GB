@@ -108,8 +108,21 @@ void BatchPrefs::PopulateOrExchange( ShuttleGui & S )
    S.StartHorizontalLay( wxEXPAND, 1 );
    S.StartStatic( _("Batch Options"));
    {
+      // JKC: Experimenting with an alternative way to get multiline
+      // translated strings to work correctly without very long lines.
+      // My appologies Alexandre if this way didn't work either.
+      // 
+      // With this method:
+      //   1) it compiles fine under windows unicode and normal mode.
+      //   2) xgettext source code has handling for the trailing '\'
+      //
+      // It remains to see if linux and mac can cope and if xgettext 
+      // actually does do fine with strings presented like this.
+      // If it doesn't work out, revert to all-on-one-line.
       S.AddFixedText( 
-         _("Batch mode is an\nexperimental feature.\n\nPlease read the release\nnotes for known limitations"));
+         _("Batch mode is an\n\
+experimental feature.\n\n\
+Please read the release\nnotes for known limitations"));
       S.Id( CleanSpeechButtonID ).AddButton( _("&CleanSpeech chain") );
       S.Id( Mp3ButtonID ).AddButton( _("&MP3 conversion chain") );
       S.Id( EmptyChainButtonID ).AddButton( _("&Empty chain") );
