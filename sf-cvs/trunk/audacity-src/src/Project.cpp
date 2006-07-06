@@ -2690,14 +2690,6 @@ void AudacityProject::TP_RedrawScrollbars()
    FixScrollbars();
 }
 
-// TrackPanel callback method
-void AudacityProject::TP_HasMouse()
-{
-   // This is unneccesary, I think, because it already gets done in our own ::OnMouseEvent
-   //SetActiveProject(this);
-   //mTrackPanel->SetFocus();
-}
-
 void AudacityProject::TP_HandleResize()
 {
    HandleResize();
