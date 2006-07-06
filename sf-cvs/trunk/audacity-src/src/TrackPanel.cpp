@@ -2430,6 +2430,10 @@ void TrackPanel::HandleVZoomButtonUp( wxMouseEvent & event )
 ///  @return true if we can edit the samples, false otherwise.
 bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event, Track * t )
 {
+   //Exit if we don't have a track
+   if(!t)
+      return false;
+   
    //Exit if it's not a WaveTrack
    if(t->GetKind() != Track::Wave)
       return false;
