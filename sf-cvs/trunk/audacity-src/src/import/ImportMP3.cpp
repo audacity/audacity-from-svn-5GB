@@ -28,7 +28,7 @@
 #include <wx/defs.h>
 #include "../Audacity.h"
 
-#include "Prefs.h"
+#include "../Prefs.h"
 #include "Import.h"
 #include "ImportMP3.h"
 #include "ImportPlugin.h"
