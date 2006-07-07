@@ -78,8 +78,8 @@ class LabelTrack:public Track {
                bool selectionOnly, double t0, double t1);
 
  public:
-	bool IsGoodLabelCharacter( long keyCode );
-	bool IsGoodLabelFirstCharacter( long keyCode );
+	bool IsGoodLabelCharacter(wxChar charCode);
+	bool IsGoodLabelFirstCharacter(wxChar charCode);
    bool IsTextSelected();
 
 	void CreateCustomGlyphs();
