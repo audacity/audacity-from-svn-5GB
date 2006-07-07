@@ -156,7 +156,7 @@ const static wxChar *numbers[] =
 #define BOOST_MIN 0
 #define BOOST_MAX 36
 
-BEGIN_EVENT_TABLE(BassBoostDialog, wxDialog)
+BEGIN_EVENT_TABLE(BassBoostDialog, EffectDialog)
     EVT_SLIDER(ID_FREQ_SLIDER, BassBoostDialog::OnFreqSlider)
     EVT_SLIDER(ID_BOOST_SLIDER, BassBoostDialog::OnBoostSlider)
     EVT_TEXT(ID_FREQ_TEXT, BassBoostDialog::OnFreqText)
