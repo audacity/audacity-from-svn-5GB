@@ -26,6 +26,8 @@
 #include "Import.h"
 #include "ImportPlugin.h"
 
+#define FLAC_HEADER "fLaC"
+
 #ifndef USE_LIBFLAC
 
 void GetFLACImportPlugin(ImportPluginList *importPluginList,
@@ -60,10 +62,19 @@ class FLACImportFileHandle;
 class MyFLACFile : public FLAC::Decoder::File
 {
  public:
-   MyFLACFile(FLACImportFileHandle *handle) : mFile(handle) {}
+   MyFLACFile(FLACImportFileHandle *handle) : mFile(handle)
+   {
+      mWasError = false;
+   }
+   
+   bool get_was_error() const
+   {
+      return mWasError;
+   }
  private:
    friend class FLACImportFileHandle;
    FLACImportFileHandle *mFile;
+   bool                  mWasError;
  protected:
    virtual FLAC__StreamDecoderWriteStatus write_callback(const FLAC__Frame *frame,
 							 const FLAC__int32 * const buffer[]);
@@ -140,9 +151,25 @@ void MyFLACFile::metadata_callback(const FLAC__StreamMetadata *metadata)
 
 void MyFLACFile::error_callback(FLAC__StreamDecoderErrorStatus status)
 {
-   //wxASSERT(0);
+   mWasError = true;
+   
+   /*
+   switch (status)
+   {
+   case FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC:
+      wxPrintf(wxT("Flac Error: Lost sync\n"));
+      break;
+   case FLAC__STREAM_DECODER_ERROR_STATUS_FRAME_CRC_MISMATCH:
+      wxPrintf(wxT("Flac Error: Crc mismatch\n"));
+      break;
+   case FLAC__STREAM_DECODER_ERROR_STATUS_BAD_HEADER:
+      wxPrintf(wxT("Flac Error: Bad Header\n"));
+      break;
+   default:
+      wxPrintf(wxT("Flac Error: Unknown error code\n"));
+      break;
+   }*/
 }
-
 
 FLAC__StreamDecoderWriteStatus MyFLACFile::write_callback(const FLAC__Frame *frame,
 							  const FLAC__int32 * const buffer[])
@@ -186,6 +213,25 @@ wxString FLACImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 {
+   // First check if it really is a FLAC file
+   
+   wxFile binaryFile;
+   if (!binaryFile.Open(filename))
+      return false; // File not found
+
+   char buf[5];
+   int num_bytes = binaryFile.Read(buf, 4);
+   buf[num_bytes] = 0;
+   if (strcmp(buf, FLAC_HEADER) != 0)
+   {
+      // File is not a FLAC file
+      binaryFile.Close();
+      return false; 
+   }
+
+   binaryFile.Close();
+   
+   // Open the file for import
    FLACImportFileHandle *handle = new FLACImportFileHandle(filename);
 
    bool success = handle->Init();
@@ -200,7 +246,6 @@ ImportFileHandle *FLACImportPlugin::Open(wxString filename)
 
 FLACImportFileHandle::FLACImportFileHandle(wxString name):
    mName(name),
-   mFile(new MyFLACFile(this)),
    mUserData(NULL),
    mProgressCallback(NULL),
    mSamplesDone(0),
@@ -208,6 +253,7 @@ FLACImportFileHandle::FLACImportFileHandle(wxString name):
 {
    mFormat = (sampleFormat)
       gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+   mFile = new MyFLACFile(this);
 }
 
 bool FLACImportFileHandle::Init()
@@ -223,6 +269,11 @@ bool FLACImportFileHandle::Init()
    mFile->process_until_end_of_metadata();
    state = mFile->get_state();
    if (state != FLAC__FILE_DECODER_OK) {
+      return false;
+   }
+   if (!mFile->is_valid() || mFile->get_was_error())
+   {
+      // This probably is not a FLAC file at all
       return false;
    }
    return true;

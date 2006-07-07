@@ -48,7 +48,7 @@ WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
    if (format == (sampleFormat)0) 
    {
       format = (sampleFormat) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), int16Sample);
+         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
    }
    if (rate == 0) 
    {
@@ -65,7 +65,7 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
    if (format == (sampleFormat)0) 
    {
       format = (sampleFormat) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), int16Sample);
+         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
    }
    if (rate == 0) 
    {

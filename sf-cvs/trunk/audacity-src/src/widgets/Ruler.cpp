@@ -1538,6 +1538,12 @@ void AdornedRulerPanel::DoDrawIndicator(wxDC * dc)
 void AdornedRulerPanel::SetPlayRegion(double playRegionStart,
                                       double playRegionEnd)
 {
+   // This is called by AudacityProject to make the play region follow
+   // the current selection. But while the user is selecting a play region
+   // with the mouse directly in the ruler, changes from outside are blocked.
+   if (mMouseEventState != mesNone)
+      return;
+      
    mPlayRegionStart = playRegionStart;
    mPlayRegionEnd = playRegionEnd;
    Refresh();
