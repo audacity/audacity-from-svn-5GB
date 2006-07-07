@@ -150,6 +150,10 @@ void LabelTrack::ResetFont()
                       wxFONTWEIGHT_NORMAL, FALSE, facename,
                       wxFONTENCODING_SYSTEM);
    }
+   else {
+      msFont = wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+                      wxFONTWEIGHT_NORMAL);
+   }
 }
 
 /// ComputeTextPosition is 'smart' about where to display 
