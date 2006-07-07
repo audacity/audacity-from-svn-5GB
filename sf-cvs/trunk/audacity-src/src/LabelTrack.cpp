@@ -1214,6 +1214,10 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
 
    // Cache the keycode
    int keyCode = event.GetKeyCode();
+   wxChar charCode = keyCode;
+#if wxUSE_UNICODE
+   charCode = event.GetUnicodeKey();
+#endif
 
    if (mSelIndex >= 0) {
       switch (keyCode) {
@@ -1341,7 +1345,7 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
          break;
       
       default:
-         if( IsGoodLabelCharacter( keyCode )) {
+         if( IsGoodLabelCharacter( charCode )) {
             // Test if cursor is in the end of string or not
             if (mLabels[mSelIndex]->highlighted) {
                RemoveSelectedText();
@@ -1352,15 +1356,15 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
                wxString rightPart = mLabels[mSelIndex]->title.Mid(mCurrentCursorPos);
                // Set title to substring on the lefthand side of cursor
                mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(mCurrentCursorPos);
-               //append keycode
-               mLabels[mSelIndex]->title += keyCode;
+               //append charcode
+               mLabels[mSelIndex]->title += charCode;
                //append the right part substring
                mLabels[mSelIndex]->title += rightPart;
             }
             else
             {
-               //append keycode
-               mLabels[mSelIndex]->title += keyCode;
+               //append charCode
+               mLabels[mSelIndex]->title += charCode;
             }
             //moving cursor position forward
             mCurrentCursorPos++;
@@ -1372,13 +1376,13 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
          break;
       }
    } 
-   else if( !IsGoodLabelFirstCharacter( keyCode ))
+   else if( !IsGoodLabelFirstCharacter( charCode ))
    {
       // Don't automatically start a label unless its one of the accepted 
       // characters.
       // We can always create the label and then type the forbidden character
       // as our first character.
-      // TODO: (Possibly) pass the unused characters on to other keycode
+      // TODO: (Possibly) pass the unused characters on to other charCode
       // handlers, 
       handled = false;
    }
@@ -1389,7 +1393,7 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
       LabelStruct *l = new LabelStruct();
       l->t =  newSel0;
       l->t1 = newSel1;
-      l->title += wxChar(keyCode);
+      l->title += wxChar(charCode);
       mCurrentCursorPos = 1;
       mInitialCursorPos = mCurrentCursorPos;
       
@@ -1972,27 +1976,17 @@ void LabelTrack::CreateCustomGlyphs()
 }
 
 /// The 'typing at selection creates label' feature
-/// will only accept these keyCodes as a first label 
+/// will only accept these charCodes as a first label 
 /// character.
-bool LabelTrack::IsGoodLabelFirstCharacter(long keyCode)
+bool LabelTrack::IsGoodLabelFirstCharacter(wxChar charCode)
 {
-   if(( 'a' <= keyCode ) && (keyCode <='z' ))
-      return true;
-   if(( 'A' <= keyCode ) && (keyCode <='Z' ))
-      return true;
-   if(( '0' <= keyCode ) && (keyCode <='9' ))
-      return true;
-   return false;
+   return !wxIscntrl(charCode);
 }
 
 /// We'll only accept these characters within a label
-bool LabelTrack::IsGoodLabelCharacter(long keyCode)
+bool LabelTrack::IsGoodLabelCharacter(wxChar charCode)
 {
-// if( IsGoodLabelFirstCharacter( keyCode ))
-//    return true;
-   if( keyCode >= WXK_START )
-      return false;
-   return true;
+   return !wxIscntrl(charCode);
 }
 
 /// Sorts the labels in order of their starting times.
