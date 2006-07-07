@@ -137,9 +137,7 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
    // Can't use wxLC_REPORT because of limitations in wxListBook.
 //   pList->SetWindowStyleFlag(wxLC_ICON | wxLC_SINGLE_SEL );//| wxLC_ALIGN_LEFT);
    //pList->SetMinSize( wxSize(300,100));
-
-
-
+   
    topSizer->Add(mCategories, 1, wxGROW | wxALL, 0);
 
    /* All panel additions belong here */
