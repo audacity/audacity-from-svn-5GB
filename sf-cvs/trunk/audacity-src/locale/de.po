@@ -446,11 +446,11 @@ msgstr "&Frequenzanalyse"
 #: ../src/AudacityApp.cpp:551
 #: ../src/Menus.cpp:495
 msgid "&Preferences...\tCtrl+,"
-msgstr "Einstellungen..."
+msgstr "Einstellungen...\tCtrl+"
 
 #: ../src/Menus.cpp:499
 msgid "&Preferences...\tCtrl+P"
-msgstr "Ein&stellungen..."
+msgstr "Ein&stellungen...\tCtrl+P"
 
 #: ../src/prefs/GUIPrefs.cpp:82
 msgid "&Present track number to accessibility aid"
