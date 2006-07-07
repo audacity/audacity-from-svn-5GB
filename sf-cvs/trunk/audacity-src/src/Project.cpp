@@ -1494,7 +1494,7 @@ void AudacityProject::OpenFile(wxString fileName)
       return;
    }
 
-   wxFFile *ff = new wxFFile(FILENAME(fileName).c_str(), wxT("r"));
+   wxFFile *ff = new wxFFile(FILENAME(fileName).c_str(), wxT("rb"));
    if (!ff->IsOpened()) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
