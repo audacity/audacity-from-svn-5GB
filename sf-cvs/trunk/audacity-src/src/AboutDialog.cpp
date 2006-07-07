@@ -149,6 +149,13 @@ AboutDialog::AboutDialog(wxWindow * parent)
    #endif
    informationStr += wxT("<br>\n");
 
+   # if USE_LIBFLAC
+   informationStr += _("FLAC plug-in support enabled");
+   # else
+   informationStr += _("FLAC plug-in support disabled");
+   # endif
+   informationStr += wxT("<br>\n");
+
    # if USE_LADSPA
    informationStr += _("LADSPA plug-in support enabled");
    # else
