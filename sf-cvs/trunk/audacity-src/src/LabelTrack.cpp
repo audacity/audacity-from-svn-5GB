@@ -1345,7 +1345,7 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
          break;
       
       default:
-         if( IsGoodLabelCharacter( charCode )) {
+         if( IsGoodLabelCharacter(keyCode, charCode)) {
             // Test if cursor is in the end of string or not
             if (mLabels[mSelIndex]->highlighted) {
                RemoveSelectedText();
@@ -1376,7 +1376,7 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
          break;
       }
    } 
-   else if( !IsGoodLabelFirstCharacter( charCode ))
+   else if( !IsGoodLabelFirstCharacter(keyCode, charCode))
    {
       // Don't automatically start a label unless its one of the accepted 
       // characters.
@@ -1978,15 +1978,15 @@ void LabelTrack::CreateCustomGlyphs()
 /// The 'typing at selection creates label' feature
 /// will only accept these charCodes as a first label 
 /// character.
-bool LabelTrack::IsGoodLabelFirstCharacter(wxChar charCode)
+bool LabelTrack::IsGoodLabelFirstCharacter(int keyCode, wxChar charCode)
 {
-   return !wxIscntrl(charCode);
+   return (keyCode < WXK_START && !wxIscntrl(charCode));
 }
 
 /// We'll only accept these characters within a label
-bool LabelTrack::IsGoodLabelCharacter(wxChar charCode)
+bool LabelTrack::IsGoodLabelCharacter(int keyCode, wxChar charCode)
 {
-   return !wxIscntrl(charCode);
+   return (keyCode < WXK_START && !wxIscntrl(charCode));
 }
 
 /// Sorts the labels in order of their starting times.
