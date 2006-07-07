@@ -87,6 +87,8 @@
 #include "../WaveTrack.h"
 #include "../Internat.h"
 
+#define BINARY_FILE_CHECK_BUFFER_SIZE 1024
+
 class LOFImportPlugin : public ImportPlugin
 {
 public:
@@ -167,6 +169,30 @@ wxString LOFImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *LOFImportPlugin::Open(wxString filename)
 {
+   // Check if it is a binary file
+   wxFile binaryFile;
+   if (!binaryFile.Open(filename))
+      return NULL; // File not found
+
+   char* buf = new char[BINARY_FILE_CHECK_BUFFER_SIZE];
+   int count = binaryFile.Read(buf, BINARY_FILE_CHECK_BUFFER_SIZE);
+
+   for (int i = 0; i < count; i++)
+   {
+      // Check if this char is below the space character, but not a 
+      // line feed or carriage return
+      if (buf[i] < 32 && buf[i] != 10 && buf[i] != 13)
+      {
+         // Assume it is a binary file
+         binaryFile.Close();
+         return NULL;
+      }
+   }
+
+   // Close it again so it can be opened as a text file
+   binaryFile.Close();
+
+   // Now open the file again as text file   
    wxTextFile *file = new wxTextFile(FILENAME(filename));
    file->Open();
 

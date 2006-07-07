@@ -461,7 +461,7 @@ int CommandManager::NewIdentifier(wxString name, wxString label, wxMenu *menu,
    else if (name == wxT("About"))
       tmpEntry->id = wxID_ABOUT;
   #endif
-
+  
    tmpEntry->name = name;
    tmpEntry->label = label;
    tmpEntry->menu = menu;

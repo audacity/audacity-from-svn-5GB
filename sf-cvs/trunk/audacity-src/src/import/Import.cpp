@@ -39,7 +39,7 @@ and ImportLOF.cpp.
 #include <wx/string.h>
 #include <wx/intl.h>
 #include <wx/listimpl.cpp>
-
+#include <wx/log.h>
 #include "../Audacity.h"
 
 #include "Import.h"
@@ -134,18 +134,18 @@ int Importer::Import(wxString fName,
 
    // no importPlugin that recognized the extension succeeded.  However, the
    // file might be misnamed.  So this time we try all the importPlugins
-   // in order and see if any of them can handle the file
+   //in order and see if any of them can handle the file
    importPluginNode = mImportPluginList->GetFirst();
    while(importPluginNode)
    {
       ImportPlugin *plugin = importPluginNode->GetData();
+
       mInFile = plugin->Open(fName);
       if( mInFile != NULL )
       {
          mInFile->SetProgressCallback(progressCallback, userData);
          numTracks = 0;
-			//FIX-ME: Sometimes crashes on this line (import).
-         if( mInFile->Import(trackFactory, tracks, &numTracks) == true )  //lda crashes on this line
+         if(mInFile->Import(trackFactory, tracks, &numTracks))
          {
             if (numTracks > 0) {
                // success!

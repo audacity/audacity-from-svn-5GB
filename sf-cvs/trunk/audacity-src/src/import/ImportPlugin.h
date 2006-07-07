@@ -87,7 +87,16 @@ public:
 
    bool SupportsExtension(wxString extension)
    {
-      return mExtensions.Member(extension);
+      // Case-insensitive check if extension is supported
+      for (wxStringListNode* node = mExtensions.GetFirst();
+           node; node = node->GetNext())
+      {
+         wxString ext = wxString(node->GetData());
+         if (ext.CmpNoCase(extension) == 0)
+            return true;
+      }
+
+      return false;
    }
 
    // Open the given file, returning true if it is in a recognized

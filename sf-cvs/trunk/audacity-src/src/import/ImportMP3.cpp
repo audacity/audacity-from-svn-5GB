@@ -28,6 +28,7 @@
 #include <wx/defs.h>
 #include "../Audacity.h"
 
+#include "Prefs.h"
 #include "Import.h"
 #include "ImportMP3.h"
 #include "ImportPlugin.h"
@@ -317,8 +318,11 @@ enum mad_flow output_cb(void *_data,
    if(!data->channels) {
       data->channels = new WaveTrack* [channels];
 
+      sampleFormat format = (sampleFormat) gPrefs->
+         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+
       for(chn = 0; chn < channels; chn++) {
-         data->channels[chn] = data->trackFactory->NewWaveTrack(floatSample);
+         data->channels[chn] = data->trackFactory->NewWaveTrack(format);
          data->channels[chn]->SetRate(samplerate);
          data->channels[chn]->SetChannel(Track::MonoChannel);
       }
