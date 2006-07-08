@@ -232,8 +232,12 @@ void ImageRoll::Init(RollType type, const wxImage &src, wxColour magicColor)
       mMaxSize.y = src.GetHeight();
 
       for(i=0; i<(int)images.GetCount(); i++) {
-         mPieces.Add(wxBitmap(images[i]));
-         mMinSize.x += mPieces[i].GetWidth();
+         if (images[i].Ok()) {
+            mPieces.Add(wxBitmap(images[i]));
+            mMinSize.x += mPieces[i].GetWidth();
+         }
+         else
+            mPieces.Add(wxBitmap());
       }
       break;
 
@@ -246,8 +250,12 @@ void ImageRoll::Init(RollType type, const wxImage &src, wxColour magicColor)
       mMaxSize.y = 9999;
 
       for(i=0; i<(int)images.GetCount(); i++) {
-         mPieces.Add(wxBitmap(images[i]));
-         mMinSize.y += mPieces[i].GetHeight();
+         if (images[i].Ok()) {
+            mPieces.Add(wxBitmap(images[i]));
+            mMinSize.y += mPieces[i].GetHeight();
+         }
+         else
+            mPieces.Add(wxBitmap());
       }
       break;
 
@@ -308,19 +316,20 @@ void ImageRoll::Draw(wxDC &dc, wxRect rect, int logicalFunc)
       
       int fixedWidth = 0;
       for(i=0; i<num; i+=2)
-         fixedWidth += mPieces[i].GetWidth();
+         fixedWidth += (mPieces[i].Ok() ? mPieces[i].GetWidth() : 0);
       
       int rollingSpace = width - fixedWidth;
       int numRolling = num / 2;
       int x = 0;
       
       for(i=0; i<num; i++) {
-         int w = mPieces[i].GetWidth();
+         int w = (mPieces[i].Ok() ? mPieces[i].GetWidth() : 0);
          
          if (i%2==0) {
             // fixed
             
-            DrawBitmap(dc, mPieces[i], rect.x + x, rect.y);
+            if (mPieces[i].Ok())
+               DrawBitmap(dc, mPieces[i], rect.x + x, rect.y);
             x += w;
          }
          else {
@@ -332,7 +341,8 @@ void ImageRoll::Draw(wxDC &dc, wxRect rect, int logicalFunc)
             
             j = 0;
             while(j < space) {
-               DrawBitmap(dc, mPieces[i], rect.x + x + j, rect.y);
+               if (mPieces[i].Ok())
+                  DrawBitmap(dc, mPieces[i], rect.x + x + j, rect.y);
                j += w;
             }
             
@@ -346,19 +356,20 @@ void ImageRoll::Draw(wxDC &dc, wxRect rect, int logicalFunc)
       
       int fixedHeight = 0;
       for(i=0; i<num; i+=2)
-         fixedHeight += mPieces[i].GetHeight();
+         fixedHeight += (mPieces[i].Ok() ? mPieces[i].GetHeight() : 0);
       
       int rollingSpace = height - fixedHeight;
       int numRolling = num / 2;
       int y = 0;
 
       for(i=0; i<num; i++) {
-         int h = mPieces[i].GetHeight();
+         int h = (mPieces[i].Ok() ? mPieces[i].GetHeight() : 0);
          
          if (i%2==0) {
             // fixed
             
-            DrawBitmap(dc, mPieces[i], rect.x, rect.y + y);
+            if (mPieces[i].Ok())
+               DrawBitmap(dc, mPieces[i], rect.x, rect.y + y);
             y += h;
          }
          else {
@@ -370,7 +381,8 @@ void ImageRoll::Draw(wxDC &dc, wxRect rect, int logicalFunc)
             
             j = 0;
             while(j < space) {
-               DrawBitmap(dc, mPieces[i], rect.x, rect.y + y + j);
+               if (mPieces[i].Ok())
+                  DrawBitmap(dc, mPieces[i], rect.x, rect.y + y + j);
                j += h;
             }
             
