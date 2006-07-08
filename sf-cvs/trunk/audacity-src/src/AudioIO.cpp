@@ -173,6 +173,7 @@ AudioIO::AudioIO()
 {
    mAudioThreadShouldCallFillBuffersOnce = false;
    mAudioThreadFillBuffersLoopRunning = false;
+   mAudioThreadFillBuffersLoopActive = false;
 #if USE_PORTAUDIO_V19
    mPortStreamV19 = NULL;
 #else
@@ -1546,7 +1547,6 @@ void AudioIO::FillBuffers()
                samplePtr warpedSamples = mPlaybackMixers[i]->GetBuffer();
                mPlaybackBuffers[i]->Put(warpedSamples, floatSample, processed);
             }
-            mT = mPlaybackMixers[0]->MixGetCurrentTime();
 
             // msmeyer: If playing looped, check if we are at the end of the buffer
             // and if yes, restart from the beginning.
