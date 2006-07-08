@@ -32,12 +32,10 @@ used throughout Audacity into this one place.
 wxString FileNames::MkDir(const wxString &Str)
 {
    wxFileName fn = Str;
-printf("fn = %s %d\n", fn.GetPath().c_str(),fn.DirExists());
 
    // If the directory doesn't exist...
    if( !fn.DirExists() )
    {
-printf("making\n"); 
       // Attempt to create it
       fn.Mkdir( fn.GetFullPath(), 511, wxPATH_MKDIR_FULL );
    }
