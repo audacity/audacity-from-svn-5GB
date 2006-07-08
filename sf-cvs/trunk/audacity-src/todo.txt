@@ -1,5 +1,8 @@
 todo.txt
 
+No one uses this file.  Should we delete it?  [I am
+just testing audacity-cvs@sourceforge.net]
+
 This file contains a list of current features being
 worked on, possible ideas, and ideas for the future.
 Last updated June 27, 2003.  Please check the
