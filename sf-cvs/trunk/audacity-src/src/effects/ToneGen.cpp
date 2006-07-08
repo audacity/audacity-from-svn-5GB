@@ -182,7 +182,7 @@ bool EffectToneGen::Process()
 #define WAVEFORM_MAX 2
 
 ToneGenDialog::ToneGenDialog(wxWindow * parent, const wxString & title)
-: EffectDialog(parent, title, EDS_GENERATE)
+: EffectDialog(parent, title, INSERT_EFFECT)
 {
 }
 

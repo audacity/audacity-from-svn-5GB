@@ -369,10 +369,11 @@ void Effect::Preview()
 
 EffectDialog::EffectDialog(wxWindow * parent,
                            const wxString & title,
-                           EffectDialogStyle style)
-: wxDialog(parent, wxID_ANY, title)
+                           int type,
+                           int flags)
+: wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, flags)
 {
-   mStyle = style;
+   mType = type;
 }
 
 void EffectDialog::Init()
@@ -387,7 +388,7 @@ void EffectDialog::Init()
       S.SetBorder(5);
       S.StartHorizontalLay(wxALIGN_BOTTOM | wxALIGN_CENTER, false);
       {
-         if (mStyle == EDS_DEFAULT)
+         if (mType == PROCESS_EFFECT)
          {
             S.StartHorizontalLay(wxALIGN_LEFT, false);
             {
@@ -409,13 +410,13 @@ void EffectDialog::Init()
 #if defined(__WXGTK20__) || defined(__WXMAC__)
             S.Id(wxID_CANCEL)
              .AddButton(_("&Cancel"))
-             ->Show( mStyle == EDS_DEFAULT || mStyle == EDS_GENERATE);
+             ->Show( mType == PROCESS_EFFECT || mType == INSERT_EFFECT);
             S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
 #else
             S.Id(wxID_OK).AddButton(_("&OK"))->SetDefault();
             S.Id(wxID_CANCEL)
              .AddButton(_("&Cancel"))
-             ->Show( mStyle == EDS_DEFAULT || mStyle == EDS_GENERATE);
+             ->Show( mType == PROCESS_EFFECT || mType == INSERT_EFFECT);
 #endif
          }
       }
