@@ -61,7 +61,7 @@ class TimeDialog:public EffectDialog
 {
  public:
    TimeDialog(wxWindow * parent, const wxString & title):
-      EffectDialog(parent, title, EDS_GENERATE)
+      EffectDialog(parent, title, INSERT_EFFECT)
    {
    }
 

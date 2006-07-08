@@ -280,13 +280,6 @@ class wxDialog;
 
 #define ID_EFFECT_PREVIEW wxID_APPLY
 
-typedef enum
-{
-   EDS_DEFAULT,
-   EDS_GENERATE,
-   EDS_ANALYZE
-} EffectDialogStyle;
-
 // Base dialog for regular effect
 class EffectDialog:public wxDialog
 {
@@ -294,7 +287,8 @@ public:
    // constructors and destructors
    EffectDialog(wxWindow * parent,
                 const wxString & title,
-                EffectDialogStyle style = EDS_DEFAULT);
+                int type = PROCESS_EFFECT,
+                int flags = wxDEFAULT_DIALOG_STYLE);
 
    void Init();
 
@@ -305,7 +299,7 @@ public:
    virtual void OnPreview(wxCommandEvent & event);
 
 private:
-   EffectDialogStyle mStyle;
+   int mType;
 };
 
 // Utility functions
