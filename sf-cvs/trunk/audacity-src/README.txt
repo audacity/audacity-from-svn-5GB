@@ -294,6 +294,11 @@ Known issues/problems:
 
 Changes in 1.3.1:
 
+   New Features
+
+   The dockable toolbars now have a dock at the foot of the page as well 
+   as the top.
+
    
 
 Changes in 1.3.0:
