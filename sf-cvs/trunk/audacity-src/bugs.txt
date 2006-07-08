@@ -9,6 +9,8 @@
 
 <H2>Audacity Active Buglist</H2>
 
+Should we abolish this file?  It is out of date and rarely used.
+
 <font size=+1>This is a list of known bugs with Audacity.  The bugs are
 classified so as to make it easier to find whether a bug you have seen has already been reported.
 Of course some bugs will belong in more than one category.  The rule is simple - the bug
