@@ -576,7 +576,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddSeparator();*/
 		
 		c->BeginSubMenu(_("Add &New Track..."));
-			c->AddItem(wxT("NewAudioTrack"),  _("&Audio Track\tShift+Ctrl+N"),               FN(OnNewWaveTrack));
+			c->AddItem(wxT("NewAudioTrack"),  _("&Audio Track\tCtrl+Shift+N"),               FN(OnNewWaveTrack));
 			c->AddItem(wxT("NewStereoTrack"), _("&Stereo Track"),              FN(OnNewStereoTrack));
 			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
