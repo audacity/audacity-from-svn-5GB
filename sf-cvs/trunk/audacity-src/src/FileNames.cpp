@@ -25,8 +25,25 @@ used throughout Audacity into this one place.
 #include <wx/defs.h>
 #include <wx/filename.h>
 #include <wx/intl.h>
+#include <wx/stdpaths.h>
 #include "Prefs.h"
 #include "FileNames.h"
+
+wxString FileNames::MkDir(const wxString &Str)
+{
+   wxFileName fn = Str;
+printf("fn = %s %d\n", fn.GetPath().c_str(),fn.DirExists());
+
+   // If the directory doesn't exist...
+   if( !fn.DirExists() )
+   {
+printf("making\n"); 
+      // Attempt to create it
+      fn.Mkdir( fn.GetFullPath(), 511, wxPATH_MKDIR_FULL );
+   }
+
+   return fn.GetFullPath();
+}
 
 /// Returns the directory used for temp files.
 /// \todo put a counter in here to see if it gets used a lot.
@@ -34,17 +51,30 @@ used throughout Audacity into this one place.
 /// each time.
 wxString FileNames::TempDir()
 {
-   return gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
+   return FileNames::MkDir(gPrefs->Read(wxT("/Directories/TempDir"), wxT("")));
+}
+
+wxString FileNames::DataDir()
+{
+   // LLL:  Wouldn't you know that as of WX 2.6.2, there is a conflict
+   //       between wxStandardPaths and wxConfig under Linux.  The latter
+   //       creates a normal file as "$HOME/.audacity", while the former
+   //       expects the ".audacity" portion to be a directory.
+#if defined( __WXGTK__ )
+   return FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() + wxT("-data") );
+#else
+   return FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() );
+#endif
 }
 
 wxString FileNames::ThemeDir()
 {
-   return TempDir();
+   return FileNames::MkDir( wxFileName( DataDir(), wxT("Theme") ).GetFullPath() );
 }
 
 wxString FileNames::ThemeComponentsDir()
 {
-   return wxFileName( ThemeDir(), wxT("Components") ).GetFullPath();
+   return FileNames::MkDir( wxFileName( ThemeDir(), wxT("Components") ).GetFullPath() );
 }
 
 wxString FileNames::ThemeCachePng()
