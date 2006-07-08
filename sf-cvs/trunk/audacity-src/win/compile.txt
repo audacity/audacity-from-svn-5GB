@@ -64,7 +64,7 @@ build it. Audacity requires different build settings than
 are shipped with the wxWidgets projects, to use the 
 multithreaded statically-linked runtime libraries instead 
 of the multithreaded DLL runtime libraries. However, 
-wxWidgets 2.6.2 does not ship with VC8 (or VC7) solution and project 
+wxWidgets 2.6.3 does not ship with VC8 (or VC7) solution and project 
 files, only MSVC6, so Audacity supplies VC8 (and VC7) versions. 
 All you need to do is copy them to the right place and use 
 them to build wxWidgets -- no need to edit the wxWidgets 
@@ -72,11 +72,11 @@ versions.
 
 1. Copy all the files from "audacity\win\wxWidgets_additions" 
    (or "audacity\win\wxWidgets_additions_VC7" if using VC7)
-   to "C:\wxWidgets-2.6.2\build\msw" (or the corresponding 
+   to "C:\wxWidgets-2.6.3\build\msw" (or the corresponding 
    location if you installed wxWidgets someplace other than 
    the default). 
 
-2. Open "C:\wxWidgets-2.6.2\build\msw\wx.sln".
+2. Open "C:\wxWidgets-2.6.3\build\msw\wx.sln".
 
 3. If you want to use the accessibility features of Audacity,
    locate the "Setup Headers" group within the "core" project
@@ -106,9 +106,9 @@ MSVC++ STEP 4:  Set wxWidgets location for Audacity
 Before you can start the build process, you must update the
 project settings to tell Visual C++ where to find wxWidgets.
 There are three settings that need changing:
-    1.  Include Directory (e.g., "C:\wxWidgets-2.6.2\include")
-    2.  Resource Directory (e.g., "C:\wxWidgets-2.6.2\include")
-    3.  Library Directory (e.g., "C:\wxWidgets-2.6.2\lib")
+    1.  Include Directory (e.g., "C:\wxWidgets-2.6.3\include")
+    2.  Resource Directory (e.g., "C:\wxWidgets-2.6.3\include")
+    3.  Library Directory (e.g., "C:\wxWidgets-2.6.3\lib")
 
 Fortunately, this is parameterized, using a Windows system 
 environment variable. There are various ways to set these, so 
@@ -117,14 +117,14 @@ environment variable WXWIN, set to the top-level directory
 where you installed wxWidgets. For example, 
 in your "autoexec.bat" file, you might have a line:
 
-   set WXWIN=C:\wxWidgets-2.6.2
+   set WXWIN=C:\wxWidgets-2.6.3
 
 Note that you don't want a trailing backslash on that. In the 
 Audacity project file, there are declarations like 
 
    $(WXWIN)\include
 
-that get interpreted as, e.g., "C:\wxWidgets-2.6.2\include".
+that get interpreted as, e.g., "C:\wxWidgets-2.6.3\include".
 
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
