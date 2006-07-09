@@ -166,7 +166,7 @@ END_EVENT_TABLE()
 
 BassBoostDialog::BassBoostDialog(EffectBassBoost *effect,
                                  wxWindow * parent):
-   EffectDialog(parent, _("BassBoost")),
+   EffectDialog(parent, _("BassBoost"), PROCESS_EFFECT),
    mEffect(effect)
 {
    Init();
@@ -190,7 +190,7 @@ void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
    S.EndHorizontalLay();
 
    S.StartMultiColumn(3, wxEXPAND);
-   S.SetStretchyCol(3);
+   S.SetStretchyCol(2);
    {
       // Frequency
       mFreqT = S.Id(ID_FREQ_TEXT).AddTextBox(_("Frequency (Hz):"),
@@ -198,12 +198,11 @@ void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
                                              10);
       mFreqT->SetValidator(vld);
 
-      mFreqS = new wxSlider(this,
-                            ID_FREQ_SLIDER,
-                            0,
-                            FREQ_MIN,
-                            FREQ_MAX);
-      S.AddWindow(mFreqS);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mFreqS = S.Id(ID_FREQ_SLIDER).AddSlider(wxT(""),
+                                              0,
+                                              FREQ_MAX);
+      mFreqS->SetRange(FREQ_MIN, FREQ_MAX);
 
       // Boost
       mBoostT = S.Id(ID_BOOST_TEXT).AddTextBox(_("Boost (dB):"),
@@ -211,15 +210,13 @@ void BassBoostDialog::PopulateOrExchange(ShuttleGui & S)
                                                10);
       mBoostT->SetValidator(vld);
 
-      mBoostS = new wxSlider(this,
-                             ID_BOOST_SLIDER,
-                             0,
-                             BOOST_MIN,
-                             BOOST_MAX);
-      S.AddWindow(mBoostS);
+      S.SetStyle(wxSL_HORIZONTAL);
+      mBoostS = S.Id(ID_BOOST_SLIDER).AddSlider(wxT(""),
+                                                0,
+                                                BOOST_MAX);
+      mBoostS->SetRange(BOOST_MIN, BOOST_MAX);
    }
    S.EndMultiColumn();
-
    return;
 }
 
