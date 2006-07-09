@@ -1596,15 +1596,6 @@ void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
    wxColour newColour = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
    wxColour baseColour = wxColour(204, 204, 204);
 
-#ifdef __WXGTK__
-   /* dmazzoni: hack to get around XPM color bugs in GTK */
-   unsigned char *data = pSrc->GetData();
-//   baseColour.Set(data[28 * 3], data[28 * 3 + 1], data[28 * 3 + 2]);
-// JKC: Not using XPMs anymore.
-// Use first pixel, which by default has value 204,204,204
-   baseColour.Set(data[0], data[1], data[2]);
-#endif
-
    pPattern     = ChangeImageColour( pSrc,     baseColour, newColour );
    theTheme.ReplaceImage( eBmpOut, pPattern);
    delete pPattern;
