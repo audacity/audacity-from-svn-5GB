@@ -1041,7 +1041,6 @@ void AudacityProject::FixScrollbars()
 
    if (panelHeight >= totalHeight && mViewInfo.vpos != 0) {
       mViewInfo.vpos = 0;
-      
 
       mTrackPanel->Refresh(false);
       rescroll = false;
@@ -1055,11 +1054,12 @@ void AudacityProject::FixScrollbars()
 
    mHsbar->SetScrollbar(mViewInfo.sbarH, mViewInfo.sbarScreen,
                         mViewInfo.sbarTotal, mViewInfo.sbarScreen, TRUE);
+   mHsbar->Refresh();
    mVsbar->SetScrollbar(mViewInfo.vpos / mViewInfo.scrollStep,
                         panelHeight / mViewInfo.scrollStep,
                         totalHeight / mViewInfo.scrollStep,
                         panelHeight / mViewInfo.scrollStep, TRUE);
-
+   mVsbar->Refresh();
    mViewInfo.lastZoom = mViewInfo.zoom;
 
    if (rescroll && mViewInfo.screen < mViewInfo.total){
