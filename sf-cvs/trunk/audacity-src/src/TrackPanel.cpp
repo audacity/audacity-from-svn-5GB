@@ -187,6 +187,7 @@ a list of fonts.
 #include <wx/image.h>
 
 #include "AColor.h"
+#include "AudacityApp.h"
 #include "AudioIO.h"
 #include "ControlToolBar.h"
 #include "ToolsToolBar.h"
@@ -5839,6 +5840,18 @@ Track *TrackPanel::GetFocusedTrack()
 
 void TrackPanel::SetFocusedTrack( Track *t )
 {
+   AudacityProject *p = GetActiveProject();
+   
+   if (p && p->HasKeyboardCapture()) {
+      wxCommandEvent e(EVT_RELEASE_KEYBOARD);
+      GetParent()->GetEventHandler()->ProcessEvent(e);
+   }
+
+   if (t && t->GetKind() == Track::Label) {
+      wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+      GetParent()->GetEventHandler()->ProcessEvent(e);
+   }
+      
    mAx->SetFocus( t );
 }
 

@@ -31,6 +31,7 @@
 
 #include <wx/defs.h>
 #include <wx/dnd.h>
+#include <wx/event.h>
 #include <wx/log.h>
 #include <wx/dragimag.h>
 #include <wx/generic/dragimgg.h>
@@ -195,6 +196,8 @@ class AudacityProject:public wxFrame,
    void OnCloseWindow(wxCloseEvent & event);
    void OnTimer(wxTimerEvent & event);
    void OnToolBarUpdate(wxCommandEvent & event);
+   void OnCaptureKeyboard(wxCommandEvent & event);
+   void OnReleaseKeyboard(wxCommandEvent & event);
    bool HandleKeyDown(wxKeyEvent & event);
    bool HandleChar(wxKeyEvent & event);
    bool HandleKeyUp(wxKeyEvent & event);
@@ -276,6 +279,10 @@ class AudacityProject:public wxFrame,
 
    PlayMode mLastPlayMode;
    ViewInfo mViewInfo;
+
+   bool HasKeyboardCapture();
+   void CaptureKeyboard();
+   void ReleaseKeyboard();
 
  private:
 
@@ -377,6 +384,8 @@ class AudacityProject:public wxFrame,
    bool mEmptyCanBeDirty;
    
    bool mLockPlayRegion;
+
+   bool mKeyboardCaptured;
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;

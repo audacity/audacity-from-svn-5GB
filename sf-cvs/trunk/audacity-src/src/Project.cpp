@@ -405,9 +405,19 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_UPDATE_UI(1, AudacityProject::OnUpdateMenus)
     EVT_ICONIZE(AudacityProject::OnIconize)
     EVT_COMMAND(wxID_ANY, EVT_TOOLBAR_UPDATED, AudacityProject::OnToolBarUpdate)
+    EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEYBOARD, AudacityProject::OnCaptureKeyboard)
+    EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
 END_EVENT_TABLE()
 
+void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
+{
+   CaptureKeyboard();
+}
 
+void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
+{
+   ReleaseKeyboard();
+}
 
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
@@ -431,7 +441,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mIsDeleting(false),
      mTracksFitVerticallyZoomed(false),  //lda
      mCleanSpeechMode(false),            //lda
-     mShowId3Dialog(false)              //lda
+     mShowId3Dialog(false),              //lda
+     mKeyboardCaptured(false)
 {
    mStatusBar = CreateStatusBar();
 
@@ -1192,7 +1203,10 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    if (event.GetKeyCode() == WXK_CONTROL)
       mTrackPanel->HandleControlKey(true);
 
-   return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
+   if (!HasKeyboardCapture())
+      return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
+   else
+      return false;
 }
 
 bool AudacityProject::HandleChar(wxKeyEvent & event)
@@ -2699,6 +2713,21 @@ void AudacityProject::GetPlayRegion(double* playRegionStart,
                                     double *playRegionEnd)
 {
    mRuler->GetPlayRegion(playRegionStart, playRegionEnd);
+}
+
+bool AudacityProject::HasKeyboardCapture()
+{
+   return mKeyboardCaptured;
+}
+
+void AudacityProject::CaptureKeyboard()
+{
+   mKeyboardCaptured = true;
+}
+
+void AudacityProject::ReleaseKeyboard()
+{
+   mKeyboardCaptured = false;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
