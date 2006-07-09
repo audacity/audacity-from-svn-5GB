@@ -426,6 +426,7 @@ void EffectDialog::Init()
    GetSizer()->AddSpacer(5);
    Layout();
    Fit();
+   SetMinSize(GetSize());
    Center();
 }
 
