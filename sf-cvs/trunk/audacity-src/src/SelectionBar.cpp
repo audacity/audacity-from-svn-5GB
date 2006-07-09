@@ -412,6 +412,19 @@ void SelectionBar::SetTimes(double start, double end, double audio)
    ValuesToControls();
 }
 
+double SelectionBar::GetLeftTime()
+{
+   return mLeftTime->GetTimeValue();
+}
+
+double SelectionBar::GetRightTime()
+{
+   if (mRightEndButton->GetValue())
+      return mRightTime->GetTimeValue();
+   else
+      return mRightTime->GetTimeValue() + mLeftTime->GetTimeValue();
+}
+
 void SelectionBar::SetField(const wxChar *msg, int fieldNum)
 {
    if (fieldNum < 0 || fieldNum >= 10)
