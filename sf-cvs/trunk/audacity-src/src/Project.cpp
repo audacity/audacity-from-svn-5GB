@@ -565,7 +565,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );
    bs->Add( mToolBarDock, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
-   bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
+   bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
    bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
    bs->Add( mSelectionBar, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
    SetAutoLayout( true );
@@ -2650,6 +2650,10 @@ void AudacityProject::TP_DisplaySelection()
    }
 
    mSelectionBar->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
+   if( mSnapTo ) {
+      mViewInfo.sel0 = mSelectionBar->GetLeftTime();
+      mViewInfo.sel1 = mSelectionBar->GetRightTime();
+   }
 }
 
 // TrackPanel callback method

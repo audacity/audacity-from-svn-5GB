@@ -39,6 +39,8 @@ class SelectionBar : public wxPanel {
    virtual ~ SelectionBar();
 
    void SetTimes(double start, double end, double audio);
+   double GetLeftTime();
+   double GetRightTime();
    void SetField(const wxChar *msg, int fieldNum);
    void SetRate(double rate);
 
