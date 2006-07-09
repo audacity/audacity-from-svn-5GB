@@ -1192,12 +1192,12 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    if (event.GetKeyCode() == WXK_CONTROL)
       mTrackPanel->HandleControlKey(true);
 
-   return false;
+   return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
 }
 
 bool AudacityProject::HandleChar(wxKeyEvent & event)
 {
-   return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
+   return false;
 }
 
 bool AudacityProject::HandleKeyUp(wxKeyEvent & event)
