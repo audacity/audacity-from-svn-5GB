@@ -484,8 +484,19 @@ OtherFormatDialog::OtherFormatDialog(wxWindow * parent, wxWindowID id,
 
 void OtherFormatDialog::ValidateChoices()
 {
-   SF_INFO info = 
-   {44100, 1, 2, mFormat, 1, 1};
+   // Calls a libsndfile library function to determine whether the user's
+   // choice of sample encoding (e.g. pcm 16-bit or GSM 6.10 compression)
+   // is compatible with their choice of file format (e.g. WAV, AIFF)
+   // and enables/disables the OK button accordingly.
+
+   SF_INFO info;
+   memset(&info, 0, sizeof(info));
+   info.frames = 0;
+   info.samplerate = 44100;
+   info.channels = 1;
+   info.format = mFormat;
+   info.sections = 1;
+   info.seekable = 0;
    
    if (sf_format_check(&info))
       mOK->Enable(true);
