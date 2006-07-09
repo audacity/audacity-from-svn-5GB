@@ -151,7 +151,7 @@ different formats.
 
 
 #include "../Audacity.h"
-
+#include "../AudacityApp.h"
 #include "TimeTextCtrl.h"
 
 #include <math.h>
@@ -745,6 +745,13 @@ void TimeTextCtrl::OnMouse(wxMouseEvent &event)
 
 void TimeTextCtrl::OnFocus(wxFocusEvent &event)
 {
+   wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+
+   if (event.GetEventType() == wxEVT_KILL_FOCUS) {
+      e.SetEventType(EVT_RELEASE_KEYBOARD);
+   }
+   GetParent()->GetEventHandler()->ProcessEvent(e);
+
    Refresh(false);
 }
 

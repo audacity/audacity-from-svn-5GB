@@ -21,6 +21,7 @@ It handles initialization and termination by subclassing wxApp.
 #include <wx/defs.h>
 #include <wx/app.h>
 #include <wx/docview.h>
+#include <wx/event.h>
 #include <wx/log.h>
 #include <wx/window.h>
 #include <wx/intl.h>
@@ -76,6 +77,13 @@ const wxChar *overrideTextCtrlNameStr = wxT("");
 const wxChar *overrideChoiceNameStr = wxT("");
 const wxChar *overrideComboBoxNameStr = wxT("");
 #endif
+
+////////////////////////////////////////////////////////////
+/// Custom events
+////////////////////////////////////////////////////////////
+
+DEFINE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD);
+DEFINE_EVENT_TYPE(EVT_RELEASE_KEYBOARD);
 
 #ifdef __WXGTK__
 void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)
@@ -906,9 +914,6 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
 
 void AudacityApp::OnKeyDown(wxKeyEvent & event)
 {
-   // Remember it
-   mLastKeyDown = event;
-
    // Not handled
    event.Skip(true);
 
@@ -930,7 +935,7 @@ void AudacityApp::OnKeyDown(wxKeyEvent & event)
 
 void AudacityApp::OnChar(wxKeyEvent & event)
 {
-   // Default to being handled
+   // Not handled
    event.Skip(true);
 
    // Make sure this event is destined for a project window
@@ -945,7 +950,7 @@ void AudacityApp::OnChar(wxKeyEvent & event)
    if (prj != wxGetTopLevelParent(wxWindow::FindFocus()))
       return;
 
-   if (prj->HandleChar(mLastKeyDown))
+   if (prj->HandleChar(event))
       event.Skip(false);
 }
 

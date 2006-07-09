@@ -28,6 +28,9 @@ extern wxFrame *gParentFrame;
 
 extern bool gIsQuitting;
 
+DECLARE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD, -1);
+DECLARE_EVENT_TYPE(EVT_RELEASE_KEYBOARD, -1);
+
 class AudacityApp:public wxApp {
  public:
    virtual bool OnInit(void);
@@ -51,6 +54,9 @@ class AudacityApp:public wxApp {
    void OnKeyDown(wxKeyEvent & event);
    void OnChar(wxKeyEvent & event);
    void OnKeyUp(wxKeyEvent & event);
+
+   void OnCaptureKeyboard(wxCommandEvent & event);
+   void OnReleaseKeyboard(wxCommandEvent & event);
 
    // Most Recently Used File support (for all platforms).
    void OnMRUFile(wxCommandEvent &event);
@@ -94,8 +100,6 @@ class AudacityApp:public wxApp {
 
  private:
 
-   wxKeyEvent mLastKeyDown;
-    
    wxLocale *mLocale;
 
    wxSingleInstanceChecker *mChecker;
