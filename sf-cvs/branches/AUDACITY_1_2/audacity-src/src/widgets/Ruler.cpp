@@ -625,7 +625,7 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
      int desiredPixelHeight;
 
      if (mOrientation == wxHORIZONTAL)
-       desiredPixelHeight = (mBottom-mTop-2);
+       desiredPixelHeight = (mBottom-mTop-3);
      else
        desiredPixelHeight = (mRight-mLeft)/2;
 
@@ -643,6 +643,8 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
        mDC->GetTextExtent(exampleText, &strW, &strH);
      }
      fontSize--;
+
+     printf("Font size: %d\n", fontSize);
      
      mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
      mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
