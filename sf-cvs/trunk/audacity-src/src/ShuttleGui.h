@@ -183,6 +183,7 @@ public:
 //-- End of variants.
    void EnableCtrl( bool bEnable );
    void SetBorder( int Border ) {miBorder = Border;};
+   void SetStyle( int Style ) {miStyle = Style;};
    void SetNoMatchSelector( int iSelector ) {miNoMatchSelector = iSelector;};
    void SetSizerProportion( int iProp ) {miSizerProp = iProp;};
    void SetStretchyCol( int i );
@@ -197,7 +198,9 @@ protected:
    void UpdateSizers();
    void UpdateSizersC();
    void UpdateSizersAtStart();
-  
+
+   long Style( long Style );
+
    wxWindow * mpLastWind;
 	wxWindow * mpDlg;
 	wxSizer * pSizerStack[ nMaxNestedSizers ];
@@ -220,6 +223,7 @@ protected:
    int miSizerProp;
    int mSizerDepth;
    int miBorder;
+   long miStyle;
    int miProp;
 
    // See UseUpId() for explanation of these three.
