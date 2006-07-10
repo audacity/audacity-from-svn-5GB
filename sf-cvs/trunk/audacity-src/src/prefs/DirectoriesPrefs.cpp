@@ -49,7 +49,8 @@ BEGIN_EVENT_TABLE(DirectoriesPrefs, wxPanel)
 END_EVENT_TABLE()
 
 DirectoriesPrefs::DirectoriesPrefs(wxWindow * parent):
-PrefsPanel(parent)
+   PrefsPanel(parent),
+   mTempDirText( NULL )  // JKC: Must be initialised, ready for UpdateFreeSpace to look at.
 {
    SetLabel(_("Directories"));         // Provide visual label
    SetName(_("Directories"));          // Provide audible label
