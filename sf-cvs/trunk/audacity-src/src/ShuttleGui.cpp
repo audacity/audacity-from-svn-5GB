@@ -143,7 +143,7 @@ void ShuttleGuiBase::Init()
 
    miIdSetByUser = -1;
    miId = -1;
-   miIdNext = 1000;
+   miIdNext = 3000;
 
    miNoMatchSelector = 0;
 
@@ -178,6 +178,15 @@ void ShuttleGuiBase::EnableCtrl( bool bEnable )
       return;
    mpLastWind->Enable( bEnable );
 }
+
+/// Used to modify an already placed Window.
+void ShuttleGuiBase::SetSizeHints( int minX, int minY )
+{
+   if( mShuttleMode != eIsCreating )
+      return;
+   mpLastWind->SetSizeHints( minX, minY );
+}
+
 
 /// Used to modify an already placed FlexGridSizer to make a column stretchy.
 void ShuttleGuiBase::SetStretchyCol( int i )
@@ -1125,6 +1134,12 @@ wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, wxString &Selec
 wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, int &Selected, const int nChars)
 {
    WrappedType WrappedRef( Selected );
+   return TieTextBox( Prompt, WrappedRef, nChars );
+}
+
+wxTextCtrl * ShuttleGuiBase::TieTextBox( const wxString &Prompt, double &Value, const int nChars)
+{
+   WrappedType WrappedRef( Value );
    return TieTextBox( Prompt, WrappedRef, nChars );
 }
 

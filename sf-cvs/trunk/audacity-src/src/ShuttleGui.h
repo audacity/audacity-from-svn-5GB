@@ -136,6 +136,7 @@ public:
    wxTextCtrl * TieTextBox( const wxString &Prompt, WrappedType &  WrappedRef, const int nChars);
    wxTextCtrl * TieTextBox( const wxString &Caption, wxString & Value, const int nChars=0);
    wxTextCtrl * TieTextBox( const wxString &Prompt, int &Selected, const int nChars=0);
+   wxTextCtrl * TieTextBox( const wxString &Prompt, double &Value, const int nChars=0);
 
    wxCheckBox * TieCheckBox( const wxString &Prompt, WrappedType & WrappedRef);
    wxCheckBox * TieCheckBox( const wxString &Prompt, const wxString &Selected);
@@ -182,6 +183,7 @@ public:
       const int nChars);
 //-- End of variants.
    void EnableCtrl( bool bEnable );
+   void SetSizeHints( int minX, int minY );
    void SetBorder( int Border ) {miBorder = Border;};
    void SetStyle( int Style ) {miStyle = Style;};
    void SetNoMatchSelector( int iSelector ) {miNoMatchSelector = iSelector;};
