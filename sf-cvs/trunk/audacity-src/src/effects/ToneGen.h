@@ -26,17 +26,20 @@ class ShuttleGui;
 
 class WaveTrack;
 
+
 class EffectToneGen:public Effect {
 
  public:
    EffectToneGen();
+   // A 'Chirp' is a tone that changes in frequency.
+   EffectToneGen & EnableForChirps(){mbChirp=true;return *this;}; 
 
    virtual wxString GetEffectName() {
-      return wxString(_("&Tone..."));
+      return wxString(mbChirp? _("&Chirp..."):_("&Tone..."));
    }
 
    virtual wxString GetEffectAction() {
-      return wxString(_("Generating Tone"));
+      return wxString(mbChirp? _("Generating Chirp") : _("Generating Tone"));
    }
 
    // Useful only after PromptUser values have been set. 
@@ -55,10 +58,20 @@ class EffectToneGen:public Effect {
    virtual bool MakeTone(float *buffer, sampleCount len);
 
  private:
+
+   longSampleCount numSamples;
+   bool mbChirp;
+   bool mbLogInterpolation;
+
+   double mPositionInCycles;
+
+   // If we made these static variables, 
+   // Tone and Chirp would share the same parameters.
    int waveform;
-   float frequency;
-   float amplitude;
+   float frequency[2];
+   float amplitude[2];
    double length;
+   float logFrequency[2];
    int mSample;
    double mCurRate;
 };
@@ -80,16 +93,20 @@ class ToneGenDialog:public EffectDialog {
    bool TransferDataFromWindow();
 
  private:
-   wxChoice *mWaveform;
-   wxTextCtrl *mFreq;
-   wxTextCtrl *mAmp;
-   wxTextCtrl *mLength;
+   void PopulateOrExchangeStandard( ShuttleGui & S );
+   void PopulateOrExchangeExtended( ShuttleGui & S );
+
+//   wxChoice *mWaveform;
+//   wxTextCtrl *mFreq;
+//   wxTextCtrl *mAmp;
+//   wxTextCtrl *mLength;
 
  public:
+   bool mbChirp;
    wxArrayString *waveforms;
    int waveform;
-   double frequency;
-   double amplitude;
+   double frequency[2];
+   double amplitude[2];
    double length;
 };
 
