@@ -74,6 +74,8 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectNoise());
    Effect::RegisterEffect(new EffectSilence());
    Effect::RegisterEffect(new EffectToneGen());
+   // A little magic to convert 'Tone' to chirps.
+   Effect::RegisterEffect(&((new EffectToneGen())->EnableForChirps()));
 
    // Effect menu
    
