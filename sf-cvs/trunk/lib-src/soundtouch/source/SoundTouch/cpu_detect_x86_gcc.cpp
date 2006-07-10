@@ -1,47 +1,44 @@
-/*****************************************************************************
- *
- * gcc version of the MMX optimized routines. All MMX optimized functions
- * have been gathered into this single source code file, regardless to their 
- * class or original source code file, in order to ease porting the library
- * to other compiler and processor platforms.
- *
- * This file is to be compiled on any platform with the GNU C compiler.
- * Compiler. Please see 'mmx_win.cpp' for the x86 Windows version of this
- * file.
- *
- * Author          : Copyright (c) Olli Parviainen
- * Author e-mail   : oparviai @ iki.fi
- * File created    : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-03-14 15:51:43 $
- * File revision : $Revision: 1.1.1.1 $
- *
- * $Id: cpu_detect_x86_gcc.cpp,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
- *
- * Acknowledgements:
- * Adopted for gcc : Stuart Lamble <sjl @ debian.lib.monash.edu.au>
- * Adopted for gcc3: Shachar Raindel <shacharr @ users.sourceforge.net>
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// gcc version of the x86 CPU detect routine.
+///
+/// This file is to be compiled on any platform with the GNU C compiler.
+/// Compiler. Please see 'cpu_detect_x86_win.cpp' for the x86 Windows version 
+/// of this file.
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-07-10 04:00:37 $
+// File revision : $Revision: 1.2 $
+//
+// $Id: cpu_detect_x86_gcc.cpp,v 1.2 2006-07-10 04:00:37 llucius Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <stdexcept>
 #include <string>
@@ -95,7 +92,7 @@ uint detectCPUextensions(void)
         "\n\tpushf"                      // save updated eflags to stack
         "\n\tpop     %%eax"              // load from stack
         "\n\txor     %%edx, %%edx"       // clear edx for defaulting no mmx
-        "\n\tcmp     %%eax, %%ecx"       // compare to original eflags values
+        "\n\tcmp     %%ecx, %%eax"       // compare to original eflags values
         "\n\tjz      end"                // jumps to 'end' if cpuid not present
 
         // cpuid instruction available, test for presence of mmx instructions
@@ -132,9 +129,9 @@ uint detectCPUextensions(void)
 
         "\n\tmov     %%esi, %0"
 
-      : "=rm" (res)
+      : "=r" (res)
       : /* no inputs */
-      : "%edx", "%eax", "%ecx", "%ebx", "%esi" );
+      : "%edx", "%eax", "%ecx", "%esi" );
       
     return res & ~_dwDisabledISA;
 #endif
