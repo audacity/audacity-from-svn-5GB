@@ -778,9 +778,10 @@ void AudacityProject::UpdatePrefs()
 
    if( mTrackPanel )
       mTrackPanel->UpdatePrefs();
-// TODO: Do we need to update the new status bar after a prefs change?
-//   if( mStatus )
-//      mStatus->UpdateRates();
+
+   mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
+   if( mSelectionBar )
+      mSelectionBar->SetRate(mRate);
 
    if( GetMixerToolBar() )
       GetMixerToolBar()->UpdateControls();
