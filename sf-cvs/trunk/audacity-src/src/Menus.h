@@ -38,6 +38,7 @@ double mSel1save;
  
         // Selecting a tool from the keyboard
 
+void SetTool(int tool);
 void OnSelectTool();
 void OnZoomTool();
 void OnEnvelopeTool();

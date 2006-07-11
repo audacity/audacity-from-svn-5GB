@@ -221,7 +221,7 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
    //cursor icon.  The buttons are not updated.
 
    bool leavingMulticlipMode =
-      GetMultiToolDown() && show && tool != multiTool;
+      IsDown(multiTool) && show && tool != multiTool;
       
    if (leavingMulticlipMode)
       mTool[multiTool]->PopUp();
@@ -243,34 +243,20 @@ void ToolsToolBar::SetCurrentTool(int tool, bool show)
       RefreshCursorForAllProjects();
 }
 
-bool ToolsToolBar::GetSelectToolDown()
+bool ToolsToolBar::IsDown(int tool)
 {
-   return mTool[selectTool]->IsDown();
+   return mTool[tool]->IsDown();
 }
 
-bool ToolsToolBar::GetZoomToolDown()
+int ToolsToolBar::GetDownTool()
 {
-   return mTool[zoomTool]->IsDown();
-}
+   int tool;
+   
+   for (tool = firstTool; tool <= lastTool; tool++)
+      if (IsDown(tool)) 
+         return tool;
 
-bool ToolsToolBar::GetEnvelopeToolDown()
-{
-   return mTool[envelopeTool]->IsDown();
-}
-
-bool ToolsToolBar::GetSlideToolDown()
-{
-   return mTool[slideTool]->IsDown();
-}
-
-bool ToolsToolBar::GetDrawToolDown()
-{
-   return mTool[drawTool ]->IsDown();
-}
-
-bool ToolsToolBar::GetMultiToolDown()
-{
-   return mTool[multiTool ]->IsDown();
+   return firstTool;  // Should never happen
 }
 
 const wxChar * ToolsToolBar::GetMessageForTool( int ToolNumber )

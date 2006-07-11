@@ -1434,7 +1434,7 @@ void TrackPanel::HandleCursor(wxMouseEvent & event)
       }
       else
       {
-         bool bMultiToolMode = ttb->GetMultiToolDown();
+         bool bMultiToolMode = ttb->IsDown(multiTool);
          SetCursorAndTipWhenSelectTool( t, event, r, bMultiToolMode, &tip );
       }
    }
@@ -1934,7 +1934,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
       return;
 
    ToolsToolBar * ttb = mListener->TP_GetToolsToolBar();
-   bool multiToolModeActive = (ttb && ttb->GetMultiToolDown());
+   bool multiToolModeActive = (ttb && ttb->IsDown(multiTool));
 
    if (vt->GetKind() == Track::Wave && !event.ShiftDown() &&
        ((event.ControlDown() && event.ShiftDown()) || !multiToolModeActive))
@@ -3861,7 +3861,7 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    int currentTool = pTtb->GetCurrentTool();
 
    // Unless in Multimode keep using the current tool.
-   if( !pTtb->GetMultiToolDown() )
+   if( !pTtb->IsDown(multiTool) )
       return currentTool;
 
    // We NEVER change tools whilst we are dragging.
@@ -4122,9 +4122,9 @@ void TrackPanel::DrawTracks(wxDC * dc)
    tracksRect.width -= GetLabelWidth();
 
    ToolsToolBar *pTtb = mListener->TP_GetToolsToolBar();
-   bool bMultiToolDown = pTtb->GetMultiToolDown();
-   bool envelopeFlag   = pTtb->GetEnvelopeToolDown() || bMultiToolDown;
-   bool samplesFlag    = pTtb->GetDrawToolDown() || bMultiToolDown;
+   bool bMultiToolDown = pTtb->IsDown(multiTool);
+   bool envelopeFlag   = pTtb->IsDown(envelopeTool) || bMultiToolDown;
+   bool samplesFlag    = pTtb->IsDown(drawTool) || bMultiToolDown;
    bool sliderFlag     = bMultiToolDown;
 
    // The track artist actually draws the stuff inside each track

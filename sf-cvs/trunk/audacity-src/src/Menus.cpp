@@ -1179,58 +1179,43 @@ void AudacityProject::UpdateMenus()
 // Tool selection commands
 //
 
-void AudacityProject::OnSelectTool()
+void AudacityProject::SetTool(int tool)
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
    if (toolbar) {
-      toolbar->SetCurrentTool(selectTool, true);
+      toolbar->SetCurrentTool(tool, true);
       mTrackPanel->Refresh(false);
    }
+}
+
+void AudacityProject::OnSelectTool()
+{
+   SetTool(selectTool);
 }
 
 void AudacityProject::OnZoomTool()
 {
-   ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar) {
-      toolbar->SetCurrentTool(zoomTool, true);
-      mTrackPanel->Refresh(false);
-   }
+   SetTool(zoomTool);
 }
 
 void AudacityProject::OnEnvelopeTool()
 {
-   ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar) {
-      toolbar->SetCurrentTool(envelopeTool, true);
-      mTrackPanel->Refresh(false);
-   }
+   SetTool(envelopeTool);
 }
 
 void AudacityProject::OnTimeShiftTool()
 {
-   ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar) {
-      toolbar->SetCurrentTool(slideTool, true);
-      mTrackPanel->Refresh(false);
-   }
+   SetTool(slideTool);
 }
 
 void AudacityProject::OnDrawTool()
 {
-   ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar) {
-      toolbar->SetCurrentTool(drawTool, true);
-      mTrackPanel->Refresh(false);
-   }
+   SetTool(drawTool);
 }
 
 void AudacityProject::OnMultiTool()
 {
-   ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar) {
-      toolbar->SetCurrentTool(multiTool, true);
-      mTrackPanel->Refresh(false);
-   }
+   SetTool(multiTool);
 }
 
 
@@ -1238,7 +1223,9 @@ void AudacityProject::OnNextTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
    if (toolbar) {
-      toolbar->SetCurrentTool((toolbar->GetCurrentTool()+1)%numTools, true);
+      // Use GetDownTool() here since GetCurrentTool() can return a value that
+      // doesn't represent the real tool if the Multi-tool is being used.
+      toolbar->SetCurrentTool((toolbar->GetDownTool()+1)%numTools, true);
       mTrackPanel->Refresh(false);
    }
 }
@@ -1247,7 +1234,9 @@ void AudacityProject::OnPrevTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
    if (toolbar) {
-      toolbar->SetCurrentTool((toolbar->GetCurrentTool()+(numTools-1))%numTools, true);
+      // Use GetDownTool() here since GetCurrentTool() can return a value that
+      // doesn't represent the real tool if the Multi-tool is being used.
+      toolbar->SetCurrentTool((toolbar->GetDownTool()+(numTools-1))%numTools, true);
       mTrackPanel->Refresh(false);
    }
 }
