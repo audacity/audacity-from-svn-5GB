@@ -209,7 +209,29 @@ void KeyConfigPrefs::OnSet(wxCommandEvent& event)
 {
    if (mCommandSelected < 0 || mCommandSelected >= (int)mNames.GetCount())
       return;
-   mList->SetItem( mCommandSelected, KeyComboColumn, mCurrentComboText->GetValue() );
+   wxString newKey = mCurrentComboText->GetValue();
+   
+   // Check if shortcut has already been assigned
+   for (int i = 0; i < mList->GetItemCount(); i++)
+   {
+      wxListItem item;
+      item.m_col = KeyComboColumn;
+      item.m_mask = wxLIST_MASK_TEXT;
+      item.SetId(i);
+      mList->GetItem(item);
+      if (item.m_text == newKey)
+      {
+         wxString prompt = wxString::Format(
+            _("The keyboard shortcut '%s' is already assigned to another key. It has not been set."),
+            newKey.c_str());
+            
+         wxMessageBox(prompt, _("Error"), wxICON_STOP | wxCENTRE, this);
+         
+         return;
+      }
+   }
+   
+   mList->SetItem( mCommandSelected, KeyComboColumn, newKey);
 }
 
 void KeyConfigPrefs::OnClear(wxCommandEvent& event)
