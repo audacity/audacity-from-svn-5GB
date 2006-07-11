@@ -22,6 +22,8 @@ It is also a place to document colour usage policy in Audacity
 #include <wx/utils.h>
 
 #include "AColor.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 bool AColor::inited = false;
 wxBrush AColor::lightBrush[2];
@@ -195,38 +197,31 @@ void AColor::Init()
    wxColour dark =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DSHADOW);
 
-   envelopePen.SetColour(110, 110, 220);
-   WideEnvelopePen.SetColour(110, 110, 220);
-   envelopeBrush.SetColour(110, 110, 220);
+   theTheme.SetPenColour(   envelopePen,     clrEnvelope );
+   theTheme.SetPenColour(   WideEnvelopePen, clrEnvelope );
+   theTheme.SetBrushColour( envelopeBrush,   clrEnvelope );
+
    WideEnvelopePen.SetWidth( 3 );
    
-   // muteBrush[1] is used when solo is on, since solo overrides mute.
-//   muteBrush[0].SetColour(110, 220, 110);
-//   muteBrush[1].SetColour(170, 180, 170);
-//   soloBrush.SetColour(255, 140, 140);
-   // Colors modified to avoid using reserved colors red and green.
-   muteBrush[0].SetColour(160, 170, 210);
-   muteBrush[1].SetColour(160, 170, 190);
-   soloBrush.SetColour(160, 170, 210);
+   // These colors were modified to avoid using reserved colors red and green
+   // for the buttons.
+   theTheme.SetBrushColour( muteBrush[0],      clrMuteButtonActive);      
+   theTheme.SetBrushColour( muteBrush[1],      clrMuteButtonVetoed);     
+   theTheme.SetBrushColour( soloBrush,         clrMuteButtonActive);     
+                                                                         
+   theTheme.SetPenColour(   cursorPen,         clrCursorPen);
+   theTheme.SetPenColour(   indicatorPen[0],   clrRecordingPen);
+   theTheme.SetPenColour(   indicatorPen[1],   clrPlaybackPen);
+   theTheme.SetBrushColour( indicatorBrush[0], clrRecordingBrush);        
+   theTheme.SetBrushColour( indicatorBrush[1], clrPlaybackBrush);         
+                                                                         
+   theTheme.SetBrushColour( playRegionBrush[0],clrRulerRecordingBrush);   
+   theTheme.SetPenColour(   playRegionPen[0],  clrRulerRecordingPen);     
+   theTheme.SetBrushColour( playRegionBrush[1],clrRulerPlaybackBrush);     
+   theTheme.SetPenColour(   playRegionPen[1],  clrRulerPlaybackPen);      
 
-
-   cursorPen.SetColour(0, 0, 0);
-//   indicatorPen[0].SetColour(255, 0, 51); //recording
-//   indicatorPen[1].SetColour(0, 255, 51); //playback
-   indicatorPen[0].SetColour(176, 0, 28); //recording
-   indicatorPen[1].SetColour( 36,96, 46); //playback
-   indicatorBrush[0].SetColour(190,129,129); //recording
-   indicatorBrush[1].SetColour( 28,171, 51); //playback
-   
-   playRegionBrush[0].SetColour(196,196,196);
-   playRegionPen[0].SetColour(128,128,128);
-   playRegionBrush[1].SetColour(190,129,129);
-   playRegionPen[1].SetColour(176,0, 28);
-
-//Determine tooltip color
-//TODO: Find out why the commented out version yields black.
-//   tooltipBrush.SetColour( wxSystemSettings::GetSystemColour(wxSYS_COLOUR_INFOTEXT) );
-   tooltipBrush.SetColour( 250,250,215); //pale shade of yellow, to match MS Windows tooltips
+   //Determine tooltip color
+   tooltipBrush.SetColour( wxSystemSettings::GetSystemColour(wxSYS_COLOUR_INFOBK) );
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected
@@ -320,7 +315,7 @@ void AColor::MIDIChannel(wxDC * dc, int channel /* 1 - 16 */ )
       dc->SetBrush(wxBrush(wxColour(colors[0],
                                     colors[1], colors[2]), wxSOLID));
    } else {
-      dc->SetPen(wxPen(wxColour(153, 153, 153), 1, wxSOLID));
+      dc->SetPen(wxPen(wxColour(153, 153, 153), 1, wxSOLID));// DONT-THEME Midi, unused.
       dc->SetBrush(wxBrush(wxColour(153, 153, 153), wxSOLID));
    }
 

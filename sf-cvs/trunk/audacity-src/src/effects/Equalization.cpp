@@ -59,6 +59,9 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 #include "../xml/XMLFileReader.h"
+#include "../Theme.h"
+#include "../AllThemeResources.h"
+
 
 #include <wx/bitmap.h>
 #include <wx/button.h>
@@ -530,13 +533,13 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
    mEnvRect.Deflate( 2, 2 );
 
    // Pure blue x-axis line
-   memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
+   memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 1, wxSOLID));
    int center = (int) (mEnvRect.height * dBMax/(dBMax-dBMin) + .5);
    memDC.DrawLine(mEnvRect.x, mEnvRect.y + center,
                   mEnvRect.x + mEnvRect.width, mEnvRect.y + center);
 
    // Med-blue envelope line
-   memDC.SetPen(wxPen(wxColour(110, 110, 220), 3, wxSOLID));
+   memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 3, wxSOLID));
 
    // Draw envelope
    double *values = new double[mEnvRect.width];
@@ -570,7 +573,7 @@ void EqualizationPanel::OnPaint(wxPaintEvent & evt)
 
    //Now draw the actual response that you will get.
    //mFilterFunc has a linear scale, window has a log one so we have to fiddle about
-   memDC.SetPen(wxPen(wxColour(0, 255, 0), 1, wxSOLID));
+   memDC.SetPen(wxPen(theTheme.Colour( clrResponseLines ), 1, wxSOLID));
    double scale = (double)mEnvRect.height/(dBMax-dBMin);   //pixels per dB
    double yF;   //gain at this freq
    double delta = mHiFreq/(((double)mWindowSize/2.));   //size of each freq bin

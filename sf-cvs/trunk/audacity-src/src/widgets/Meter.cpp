@@ -198,9 +198,8 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
       mMeterDisabled = gPrefs->Read(wxT("/Meter/MeterOutputDisabled"), (long)0);
    }
 
-   wxColour origColour(204, 204, 204);
-   mPeakPeakPen = wxPen(wxColour(102, 102, 255), 1, wxSOLID);
-   mDisabledPen = wxPen(wxColour(192, 192, 192), 1, wxSOLID);
+   mPeakPeakPen = wxPen(theTheme.Colour( clrMeterPeak),        1, wxSOLID);
+   mDisabledPen = wxPen(theTheme.Colour( clrMeterDisabledPen), 1, wxSOLID);
 
    /* i18n-hint: One-letter abbreviation for Left, in VU Meter */
    mLeftText = _("L");
@@ -211,23 +210,23 @@ Meter::Meter(wxWindow* parent, wxWindowID id,
    mRightSize = wxSize(0, 0);
 
    if (mIsInput) {
-      mPen = wxPen(wxColour(204, 70, 70), 1, wxSOLID);
-      mBrush = wxBrush(wxColour(204, 70, 70), wxSOLID);
-      mRMSBrush = wxBrush(wxColour(255, 102, 102), wxSOLID);
-      mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
-      mLightPen = wxPen(wxColour(255, 153, 153), 1, wxSOLID);
-      mDarkPen = wxPen(wxColour(153, 61, 61), 1, wxSOLID);
-   }
-   else {
-      mPen = wxPen(wxColour(70, 204, 70), 1, wxSOLID);
-      mBrush = wxBrush(wxColour(70, 204, 70), wxSOLID);
-      mRMSBrush = wxBrush(wxColour(102, 255, 102), wxSOLID);
-      mClipBrush = wxBrush(wxColour(255, 53, 53), wxSOLID);
-      mLightPen = wxPen(wxColour(153, 255, 153), 1, wxSOLID);
-      mDarkPen = wxPen(wxColour(61, 164, 61), 1, wxSOLID);
+      mPen       = wxPen(   theTheme.Colour( clrMeterInputPen         ), 1, wxSOLID);
+      mBrush     = wxBrush( theTheme.Colour( clrMeterInputBrush       ), wxSOLID);
+      mRMSBrush  = wxBrush( theTheme.Colour( clrMeterInputRMSBrush    ), wxSOLID);
+      mClipBrush = wxBrush( theTheme.Colour( clrMeterInputClipBrush   ), wxSOLID);
+      mLightPen  = wxPen(   theTheme.Colour( clrMeterInputLightPen    ), 1, wxSOLID);
+      mDarkPen   = wxPen(   theTheme.Colour( clrMeterInputDarkPen     ), 1, wxSOLID);
+   }   
+   else {                                                         
+      mPen       = wxPen(   theTheme.Colour( clrMeterOutputPen        ), 1, wxSOLID);
+      mBrush     = wxBrush( theTheme.Colour( clrMeterOutputBrush      ), wxSOLID);
+      mRMSBrush  = wxBrush( theTheme.Colour( clrMeterOutputRMSBrush   ), wxSOLID);
+      mClipBrush = wxBrush( theTheme.Colour( clrMeterOutputClipBrush  ), wxSOLID);
+      mLightPen  = wxPen(   theTheme.Colour( clrMeterOutputLightPen   ), 1, wxSOLID);
+      mDarkPen   = wxPen(   theTheme.Colour( clrMeterOutputDarkPen    ), 1, wxSOLID);
    }
 
-      mDisabledBkgndBrush = wxBrush(wxColour(160, 160, 160), wxSOLID);
+   mDisabledBkgndBrush = wxBrush(theTheme.Colour( clrMeterDisabledBrush), wxSOLID);
 //   mDisabledBkgndBrush = wxBrush(
 //            wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DSHADOW), wxSOLID);
 //            wxSystemSettings::GetSystemColour(wxSYS_COLOUR_3DLIGHT), wxSOLID);

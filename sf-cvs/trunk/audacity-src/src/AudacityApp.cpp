@@ -359,7 +359,6 @@ bool AudacityApp::OnInit()
 
    wxFileSystem::AddHandler(new wxZipFSHandler);
 
-   AColor::Init();
    InitPreferences();
 
 	#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__) && !defined(__CYGWIN__)
@@ -373,6 +372,9 @@ bool AudacityApp::OnInit()
    wxString home = wxGetHomeDir();
    mAppHomeDir = home;
    theTheme.EnsureInitialised();
+
+   // AColor depends on theTheme.
+   AColor::Init(); 
 
    // On Unix systems, the default temp dir is in /tmp.
    // Search path (in this order):

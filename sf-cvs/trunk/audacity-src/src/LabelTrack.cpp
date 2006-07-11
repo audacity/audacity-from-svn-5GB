@@ -609,7 +609,7 @@ void LabelTrack::Draw(wxDC & dc, wxRect & r, double h, double pps,
    dc.GetTextExtent(wxT("Demo Text x^y"), &textWidth, &textHeight);
    mTextHeight = (int)textHeight;   
    ComputeLayout( r, h , pps );
-   dc.SetTextForeground(wxColour(0, 0, 0));
+   dc.SetTextForeground(theTheme.Colour( clrLabelTrackText));
    dc.SetBackgroundMode(wxTRANSPARENT);
    dc.SetBrush(mTextNormalBrush);
    dc.SetPen(mLabelSurroundPen);

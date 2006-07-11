@@ -209,6 +209,8 @@ a list of fonts.
   
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 #include <wx/arrimpl.cpp>
 
@@ -4173,7 +4175,7 @@ void TrackPanel::DrawEverythingElse(Track * t, wxDC * dc, wxRect & r,
 
    // Draw label area
    SetLabelFont(dc);
-   dc->SetTextForeground(wxColour(0, 0, 0));
+   dc->SetTextForeground(theTheme.Colour( clrTrackPanelText ));
 
    int labelw = GetLabelWidth();
    int vrul = GetVRulerOffset();

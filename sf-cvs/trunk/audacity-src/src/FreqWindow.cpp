@@ -63,7 +63,8 @@ the mouse around.
 #include "FFT.h"
 #include "Internat.h"
 #include "PitchName.h"
-
+#include "Theme.h"
+#include "AllThemeResources.h"
 
 enum {
    FirstID = 7000,
@@ -358,7 +359,7 @@ void FreqWindow::DrawPlot()
    wxMemoryDC memDC;
    memDC.SelectObject(*mBitmap);
 
-   memDC.SetBackground(wxBrush(wxColour(254, 254, 254)));
+   memDC.SetBackground(wxBrush(wxColour(254, 254, 254)));// DONT-THEM Mask colour.
    memDC.Clear();
 
    wxRect r = mPlotRect;
@@ -441,9 +442,9 @@ void FreqWindow::DrawPlot()
    // Draw the plot
 
    if (alg == 0)
-      memDC.SetPen(wxPen(wxColour(140, 60, 190), 1, wxSOLID));
+      memDC.SetPen(wxPen(theTheme.Colour( clrHzPlot ), 1, wxSOLID));
    else
-      memDC.SetPen(wxPen(wxColour(200, 50, 150), 1, wxSOLID));
+      memDC.SetPen(wxPen(theTheme.Colour( clrWavelengthPlot), 1, wxSOLID));
 
    xPos = xMin;
 
