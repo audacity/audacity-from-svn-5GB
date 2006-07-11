@@ -1009,7 +1009,7 @@ bool WaveTrack::GetErrorOpening()
 bool WaveTrack::Lock()
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
-      it->GetData()->GetSequence()->Lock();
+      it->GetData()->Lock();
 
    return true;
 }
@@ -1017,7 +1017,7 @@ bool WaveTrack::Lock()
 bool WaveTrack::Unlock()
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
-      it->GetData()->GetSequence()->Unlock();
+      it->GetData()->Unlock();
 
    return true;
 }
