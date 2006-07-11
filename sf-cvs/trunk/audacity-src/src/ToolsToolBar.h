@@ -54,12 +54,8 @@ public:
 
    //These interrogate the state of the buttons or controls.
    int GetCurrentTool();
-   bool GetSelectToolDown();
-   bool GetZoomToolDown();
-   bool GetEnvelopeToolDown();
-   bool GetSlideToolDown();
-   bool GetDrawToolDown();
-   bool GetMultiToolDown();
+   bool IsDown(int tool);
+   int GetDownTool();
 
    const wxChar * GetMessageForTool( int ToolNumber );
 
