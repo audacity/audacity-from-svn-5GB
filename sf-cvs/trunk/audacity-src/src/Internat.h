@@ -35,9 +35,12 @@ public:
    // Function version of above.
    static double CompatibleToDouble(const wxString& stringToConvert);
 
-   // Convert a number to a string, using the given decimal separator.
-   // The default is to use the decimal separator for the current locale.
+   // Convert a number to a string, always uses the dot as decimal separator
    static wxString ToString(double numberToConvert,
+                     int digitsAfterDecimalPoint = -1);
+
+   // Convert a number to a string, uses the user's locale's decimal separator
+   static wxString ToDisplayString(double numberToConvert,
                      int digitsAfterDecimalPoint = -1);
 
    // Convert strings to and from UTF-8 (used for XML files).

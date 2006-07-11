@@ -112,15 +112,48 @@ double Internat::CompatibleToDouble(const wxString& stringToConvert)
 wxString Internat::ToString(double numberToConvert,
                      int digitsAfterDecimalPoint /* = -1 */)
 {
-   wxString format, result;
+   wxString result = ToDisplayString(
+      numberToConvert, digitsAfterDecimalPoint);
+
+   result.Replace(wxString(GetDecimalSeparator()), wxT("."));
+
+   return result;
+}
+
+wxString Internat::ToDisplayString(double numberToConvert,
+                     int digitsAfterDecimalPoint /* = -1 */)
+{
+   wxString decSep = wxString(GetDecimalSeparator());
+   wxString result;
 
    if (digitsAfterDecimalPoint == -1)
-      format = wxT("%f");
-   else
-      format.Printf(wxT("%%.%if"), digitsAfterDecimalPoint);
+   {
+      result.Printf(wxT("%f"), numberToConvert);
 
-   result.Printf(format, numberToConvert);
-   result.Replace(wxString(GetDecimalSeparator()), wxT("."));
+      // Not all libcs respect the decimal separator, so always convert
+      // any dots found to the decimal separator
+      result.Replace(wxT("."), decSep);
+      
+      if (result.Find(decSep) != -1)
+      {
+         // Strip trailing zeros
+         int pos = result.Length() - 1;
+         while (pos > 0 && result.GetChar(pos) == wxT('0'))
+            pos--;
+         if (result.GetChar(pos) == decSep)
+            pos--; // strip point before empty fractional part
+         result = result.Left(pos+1);
+      }
+   } else
+   {
+      wxString format;
+      format.Printf(wxT("%%.%if"), digitsAfterDecimalPoint);
+      result.Printf(format, numberToConvert);
+      
+      // Not all libcs respect the decimal separator, so always convert
+      // any dots found to the decimal separator
+      result.Replace(wxT("."), decSep);
+   }
 
    return result;
 }
