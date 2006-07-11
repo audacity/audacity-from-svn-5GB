@@ -480,7 +480,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
          fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
       else
-         fieldText.Printf(wxT("%f"), inputControls[ports[p]]);
+         fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
       fields[p] = new wxTextCtrl(this, LADSPA_TEXTCTRL_ID, fieldText);
       gridSizer->Add(fields[p], 0, wxALL, 5);
 
@@ -578,7 +578,7 @@ void LadspaEffectDialog::HandleSlider()
       if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
          str.Printf(wxT("%d"), (int)(val + 0.5));
       else
-         str.Printf(wxT("%f"), val);
+         str = Internat::ToDisplayString(val);
 
       fields[p]->SetValue(str);
 
@@ -605,7 +605,7 @@ void LadspaEffectDialog::HandleText()
       float upper = float(10.0);
       float range;
 
-      fields[p]->GetValue().ToDouble(&dval);
+      dval = Internat::CompatibleToDouble(fields[p]->GetValue());
       val = dval;
 
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
