@@ -84,6 +84,7 @@ simplifies construction of menu items.
 #include "TranscriptionToolBar.h"
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
+#include "FileNames.h"
 
 enum {
    kAlignZero=0,
@@ -3861,7 +3862,7 @@ void AudacityProject::OnAddLabelPlaying()
 #define PRESET_COUNT  14
 void AudacityProject::OnExportCleanSpeechPresets()
 {
-   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
+   wxString userdatadir = FileNames::DataDir();
    #ifdef __WXMSW__
    wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
    #else
@@ -3945,7 +3946,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
 
 void AudacityProject::OnImportCleanSpeechPresets()
 {
-   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
+   wxString userdatadir = FileNames::DataDir();
    #ifdef __WXMSW__
    wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
    #else

@@ -66,6 +66,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "Theme.h"
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
+#include "FileNames.h"
 
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
@@ -707,7 +708,7 @@ bool AudacityApp::OnInit()
 
 bool AudacityApp::InitCleanSpeech()
 {
-   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
+   wxString userdatadir = FileNames::DataDir();
    wxString presetsFromPrefs = gPrefs->Read(wxT("/Directories/PresetsDir"), wxT(""));
    wxString presets = wxT("");
 
