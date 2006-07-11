@@ -83,6 +83,7 @@ simplifies construction of menu items.
 #include "ToolsToolBar.h"
 #include "TranscriptionToolBar.h"
 #include "Experimental.h"
+#include "PlatformCompatibility.h"
 
 enum {
    kAlignZero=0,
@@ -3860,11 +3861,11 @@ void AudacityProject::OnAddLabelPlaying()
 #define PRESET_COUNT  14
 void AudacityProject::OnExportCleanSpeechPresets()
 {
-   wxString cwd = FROMFILENAME(::wxGetCwd());
+   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
    #ifdef __WXMSW__
-   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
    #else
-   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("/presets");
    #endif
    wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), presetsDefaultLoc);
 
@@ -3944,11 +3945,11 @@ void AudacityProject::OnExportCleanSpeechPresets()
 
 void AudacityProject::OnImportCleanSpeechPresets()
 {
-   wxString cwd = FROMFILENAME(::wxGetCwd());
+   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
    #ifdef __WXMSW__
-   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
    #else
-   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("/presets");
    #endif
 
    wxString path = gPrefs->Read(wxT("/Directories/PresetsDir"), presetsDefaultLoc);

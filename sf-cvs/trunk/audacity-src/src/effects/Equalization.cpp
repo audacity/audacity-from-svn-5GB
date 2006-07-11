@@ -51,6 +51,7 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 
 
 #include "Equalization.h"
+#include "../PlatformCompatibility.h"
 #include "../Audacity.h"
 #include "../Envelope.h"
 #include "../FFT.h"
@@ -758,11 +759,7 @@ void EqualizationDialog::LoadCurves()
    //       between wxStandardPaths and wxConfig under Linux.  The latter
    //       creates a normal file as "$HOME/.audacity", while the former
    //       expects the ".audacity" portion to be a directory.
-#if !defined( __WXMSW__ )
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir() + wxT("-data"), wxT("EQCurves.xml") );
-#else
-   wxFileName fn( wxStandardPaths::Get().GetUserDataDir(), wxT("EQCurves.xml") );
-#endif
+   wxFileName fn( PlatformCompatibility::GetUserDataDir(), wxT("EQCurves.xml") );
 
    // If it doesn't exist...
    if( !fn.FileExists() )

@@ -43,6 +43,7 @@
 #endif
 
 #include "UploadDialog.h"
+#include "PlatformCompatibility.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -1321,7 +1322,9 @@ void UploadDialog::OnDeleteSite (wxCommandEvent &event)
 //  debug.Printf("%d", index);
 //  wxMessageBox(debug, _T("FTP Status"), wxOK | wxICON_INFORMATION, this);
     
-    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
+    wxFileName fn( PlatformCompatibility::GetUserDataDir(), wxT("connections.ini") );
+
+    wxTextFile *file = new wxTextFile(fn.GetFullPath());
 
     if (file->Exists())
     {
@@ -1368,8 +1371,9 @@ void UploadDialog::OnSelectSite (wxListEvent &event)
 
 bool UploadDialog::SaveFtpSite(wxString name, wxString host, wxString user, wxString pass)
 {
+    wxFileName fn( PlatformCompatibility::GetUserDataDir(), wxT("connections.ini") );
 
-    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
+    wxTextFile *file = new wxTextFile(fn.GetFullPath());
 
     if (file->Exists())
         file->Open();
@@ -1434,7 +1438,9 @@ bool UploadDialog::SaveFtpSite(wxString name, wxString host, wxString user, wxSt
 
 void UploadDialog::LoadFtpSiteList (void)
 {
-    wxTextFile *file = new wxTextFile(wxT("connections.ini"));
+    wxFileName fn( PlatformCompatibility::GetUserDataDir(), wxT("connections.ini") );
+
+    wxTextFile *file = new wxTextFile(fn.GetFullPath());
     unsigned int count;
 
     if (file->Exists())
