@@ -33,6 +33,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "Experimental.h"
 #include "TranscriptionToolBar.h"
 
 #include "widgets/AButton.h"
@@ -109,7 +110,8 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
    mBackgroundBitmap = NULL;
    mBackgroundHeight = 0;
    mBackgroundWidth = 0;
- 
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
    mButtons[TTB_StartOn]->Disable();
    mButtons[TTB_StartOff]->Disable();
    mButtons[TTB_EndOn]->Disable();
@@ -119,6 +121,7 @@ TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
    mButtons[TTB_Calibrate]->Enable();
    mButtons[TTB_AutomateSelection]->Disable();
    mButtons[TTB_MakeLabel]->Enable();
+#endif
 
    AudacityProject * p = GetActiveProject();
    if(p)
@@ -190,7 +193,8 @@ void TranscriptionToolBar::Populate()
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
    Add( mPlaySpeedSlider, 0, wxALIGN_CENTER );
-   
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
    AddButton(bmpTnStartOn,     bmpTnStartOnDisabled,  TTB_StartOn,
       _("Adjust left selection to  next onset"),
       _("Left-to-On"));
@@ -246,6 +250,7 @@ void TranscriptionToolBar::Populate()
    mKeyTypeChoice->SetName(_("Key type"));
    mKeyTypeChoice->SetSelection(0);
    Add( mKeyTypeChoice, 0, wxALIGN_CENTER );
+#endif
 
 }
 
@@ -255,12 +260,15 @@ TranscriptionToolBar::~TranscriptionToolBar()
    
    if (mBackgroundBitmap) delete mBackgroundBitmap;
    if(mPlaySpeedSlider)delete mPlaySpeedSlider;
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
    if(mSensitivitySlider)delete mSensitivitySlider;
 
    for (int i=0; i<TTBNumButtons; i++)
       if(mButtons[i]) delete mButtons[i];
 
    if(mKeyTypeChoice) delete mKeyTypeChoice;
+#endif
 }
 
 
@@ -853,6 +861,8 @@ void TranscriptionToolBar::OnSensitivitySlider(wxCommandEvent & event)
 
 void TranscriptionToolBar::EnableDisableButtons()
 {
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
    AudacityProject *p = GetActiveProject();
    if (!p) return;
    // Is anything selected?
@@ -866,6 +876,7 @@ void TranscriptionToolBar::EnableDisableButtons()
    selection &= (p->GetSel0() < p->GetSel1());
 
    mButtons[TTB_Calibrate]->SetEnabled(selection);
+#endif
 }
 
 void TranscriptionToolBar::SetKeyType(wxCommandEvent & event)
