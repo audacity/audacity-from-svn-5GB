@@ -809,6 +809,16 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
       mFocusedDigit %= mDigits.GetCount();
       Refresh();
    }
+   
+   else if (keyCode == WXK_HOME) {
+      mFocusedDigit = 0;
+      Refresh();
+   }
+   
+   else if (keyCode == WXK_END) {
+      mFocusedDigit = mDigits.GetCount() - 1;
+      Refresh();
+   }
 
    else if (keyCode == WXK_UP) {
       Increase(1);

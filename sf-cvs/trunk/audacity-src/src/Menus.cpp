@@ -212,7 +212,7 @@ void AudacityProject::CreateMenusAndCommands()
 
 	c->BeginSubMenu(_("&Import..."));
 		c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
-		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+I"),	FN(OnImport));
+		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+Shift+I"),	FN(OnImport));
 		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
 		c->AddItem(wxT("ImportMIDI"),     _("&MIDI..."),							FN(OnImportMIDI));
 		c->AddItem(wxT("ImportRaw"),      _("&Raw Data..."),				FN(OnImportRaw));
