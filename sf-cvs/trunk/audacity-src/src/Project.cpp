@@ -1280,8 +1280,14 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    mActive = event.GetActive();
-   if (mActive)
+   if (mActive) {
       SetActiveProject(this);
+
+      // Under Windows, focus can be "lost" when returning to 
+      // Audacity from a different application.  For keyboard
+      // users, this is a major problem.
+      mTrackPanel->SetFocus();
+   }
    event.Skip();
 }
 
