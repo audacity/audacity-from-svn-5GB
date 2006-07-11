@@ -65,6 +65,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "prefs/PrefsDialog.h"
 #include "Theme.h"
 #include "Experimental.h"
+#include "PlatformCompatibility.h"
 
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
@@ -706,7 +707,7 @@ bool AudacityApp::OnInit()
 
 bool AudacityApp::InitCleanSpeech()
 {
-   wxString cwd = FROMFILENAME(::wxGetCwd());
+   wxString userdatadir = PlatformCompatibility::GetUserDataDir();
    wxString presetsFromPrefs = gPrefs->Read(wxT("/Directories/PresetsDir"), wxT(""));
    wxString presets = wxT("");
 
@@ -716,9 +717,9 @@ bool AudacityApp::InitCleanSpeech()
    #endif
 
    #ifdef __WXMSW__
-   wxString presetsDefaultLoc = cwd + wxT("\\presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("\\presets");
    #else
-   wxString presetsDefaultLoc = cwd + wxT("/presets");
+   wxString presetsDefaultLoc = userdatadir + wxT("/presets");
    #endif
 
    // Stop wxWindows from printing its own error messages (not used ... does this really do anything?)

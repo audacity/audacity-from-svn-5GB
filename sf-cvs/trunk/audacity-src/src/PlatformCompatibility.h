@@ -32,6 +32,14 @@ public:
    // just returns the exact string it is given.
    //
    static wxString GetLongFileName(const wxString& shortFileName);
+   
+   //
+   // Get directory where audacity-specific configuration information is
+   // supposed to be saved on this platform.
+   //
+   // E.g., on Linux this will return "/home/username/.audacity-data"
+   //
+   static wxString GetUserDataDir();
 };
 
 #endif

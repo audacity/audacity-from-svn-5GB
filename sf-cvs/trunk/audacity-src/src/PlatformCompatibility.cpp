@@ -20,6 +20,9 @@
 #include <windows.h>
 #endif
 
+#include <wx/filefn.h>
+#include <wx/stdpaths.h>
+
 #include "PlatformCompatibility.h"
 
 wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
@@ -74,5 +77,14 @@ wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
 
    return longFileName;
 
+#endif
+}
+
+wxString PlatformCompatibility::GetUserDataDir()
+{
+#if !defined( __WXMSW__ )
+   return wxStandardPaths::Get().GetUserDataDir() + wxT("-data");
+#else
+   return wxStandardPaths::Get().GetUserDataDir();
 #endif
 }
