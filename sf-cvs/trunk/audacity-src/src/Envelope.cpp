@@ -586,6 +586,14 @@ void Envelope::CollapseRegion(double t0, double t1)
 
 void Envelope::Paste(double t0, Envelope *e)
 {
+   if (e->mEnv.Count() == 0 && e->mDefaultValue == this->mDefaultValue)
+   {
+      // msmeyer: The envelope is empty and has the same default value, so
+      // there is nothing that must be inserted, just return. This avoids
+      // the creation of unnecessary duplicate control points
+      return;
+   }
+   
    t0 = wxMin(t0 - mOffset, mTrackLen);
    double deltat = e->mTrackLen;
 
