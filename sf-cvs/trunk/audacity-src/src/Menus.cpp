@@ -1182,58 +1182,74 @@ void AudacityProject::UpdateMenus()
 void AudacityProject::OnSelectTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(selectTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnZoomTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(zoomTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnEnvelopeTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(envelopeTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnTimeShiftTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(slideTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnDrawTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(drawTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnMultiTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool(multiTool, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 
 void AudacityProject::OnNextTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool((toolbar->GetCurrentTool()+1)%numTools, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 void AudacityProject::OnPrevTool()
 {
    ToolsToolBar *toolbar = GetToolsToolBar();
-   if (toolbar)
+   if (toolbar) {
       toolbar->SetCurrentTool((toolbar->GetCurrentTool()+(numTools-1))%numTools, true);
+      mTrackPanel->Refresh(false);
+   }
 }
 
 
