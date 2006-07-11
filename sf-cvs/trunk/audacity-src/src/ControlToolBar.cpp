@@ -268,6 +268,12 @@ void ControlToolBar::ArrangeButtons()
    // Add the buttons in order based on ergonomic setting
    if( mErgonomicTransportButtons )
    {
+      mPause->MoveBeforeInTabOrder( mRecord );
+      mPlay->MoveBeforeInTabOrder( mRecord );
+      mStop->MoveBeforeInTabOrder( mRecord );
+      mRewind->MoveBeforeInTabOrder( mRecord );
+      mFF->MoveBeforeInTabOrder( mRecord );
+
       mSizer->Add( mPause,  0, flags, 2 );
       mSizer->Add( mPlay,   0, flags, 2 );
       mSizer->Add( mStop,   0, flags, 2 );
@@ -277,6 +283,12 @@ void ControlToolBar::ArrangeButtons()
    }
    else
    {
+      mRewind->MoveBeforeInTabOrder( mFF );
+      mPlay->MoveBeforeInTabOrder( mFF );
+      mRecord->MoveBeforeInTabOrder( mFF );
+      mPause->MoveBeforeInTabOrder( mFF );
+      mStop->MoveBeforeInTabOrder( mFF );
+
       mSizer->Add( mRewind, 0, flags, 2 );
       mSizer->Add( mPlay,   0, flags, 2 );
       mSizer->Add( mRecord, 0, flags, 2 );
