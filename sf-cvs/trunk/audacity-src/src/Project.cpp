@@ -484,7 +484,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
 
+   // Selection bar is used by UpdatePrefs(), so set it to a known value
+   mSelectionBar = NULL;
+   
    UpdatePrefs();
+   
    // Some extra information
    mViewInfo.bIsPlaying = false;
    mViewInfo.bRedrawWaveform = false;
@@ -537,7 +541,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                     wxDefaultSize,
                                     mRate,
                                     this);
-
+                                    
    //
    // Create the TrackPanel and the scrollbars
    //
@@ -780,6 +784,7 @@ void AudacityProject::UpdatePrefs()
       mTrackPanel->UpdatePrefs();
 
    mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
+
    if( mSelectionBar )
       mSelectionBar->SetRate(mRate);
 
