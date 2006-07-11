@@ -2457,7 +2457,16 @@ bool TrackPanel::IsSampleEditingPossible( wxMouseEvent & event, Track * t )
    //If we aren't zoomed in far enough, show a message dialog.
    if(!showPoints)
    {
+      // Release capture so user will be able to click OK on Linux
+      bool hadCapture = HasCapture();
+      if (hadCapture)
+         ReleaseMouse();
+         
       wxMessageBox(_("You are not zoomed in enough. Zoom in until you can see the individual samples."), wxT("Notice"));
+      
+      // Re-aquire capture
+      if (hadCapture)
+         CaptureMouse();
       return false;
    }
    return true;
