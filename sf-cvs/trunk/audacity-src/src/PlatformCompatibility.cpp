@@ -79,12 +79,3 @@ wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
 
 #endif
 }
-
-wxString PlatformCompatibility::GetUserDataDir()
-{
-#if !defined( __WXMSW__ )
-   return wxStandardPaths::Get().GetUserDataDir() + wxT("-data");
-#else
-   return wxStandardPaths::Get().GetUserDataDir();
-#endif
-}

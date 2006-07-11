@@ -29,7 +29,7 @@ public:
    static wxString ThemeComponent(const wxString &Str);
    static wxString ThemeCacheHtm();
    static wxString ThemeImageDefsAsCee();
-   
+
 private:
    // Private constructors: No one is ever going to instantiate it.
    // 
