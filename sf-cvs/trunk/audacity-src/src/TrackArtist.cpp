@@ -51,6 +51,7 @@
 #include "ViewInfo.h"
 #include "widgets/Ruler.h"
 #include "Theme.h"
+#include "AllThemeResources.h"
 
 #undef PROFILE_WAVEFORM
 #ifdef PROFILE_WAVEFORM

@@ -105,7 +105,6 @@ void MixerToolBar::Populate()
 {
    wxColour backgroundColour =
        wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour origColour(204, 204, 204);
 
 //   mPlayBitmap = new wxBitmap( Speaker );
 //   mPlayBitmap->SetMask( new wxMask( wxBitmap( SpeakerAlpha ), *wxBLACK ) );

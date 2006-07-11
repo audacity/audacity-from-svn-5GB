@@ -153,6 +153,8 @@ different formats.
 #include "../Audacity.h"
 #include "../AudacityApp.h"
 #include "TimeTextCtrl.h"
+#include "../Theme.h"
+#include "../AllThemeResources.h"
 
 #include <math.h>
 
@@ -634,6 +636,8 @@ bool TimeTextCtrl::Layout()
    // Draw the background bitmap - it contains black boxes where
    // all of the digits go and all of the other text
 
+   wxBrush Brush;
+
    delete mBackgroundBitmap; // Delete placeholder
    mBackgroundBitmap = new wxBitmap(mWidth, mHeight);
    memDC.SelectObject(*mBackgroundBitmap);
@@ -651,9 +655,11 @@ bool TimeTextCtrl::Layout()
    memDC.SetTextBackground(*wxLIGHT_GREY);
    memDC.DrawText(mPrefix, mBorderLeft, labelTop);
 
-   memDC.SetBrush(*wxBLACK_BRUSH);
+   theTheme.SetBrushColour( Brush, clrTimeBack );
+   memDC.SetBrush(Brush);
    for(i=0; i<mDigits.GetCount(); i++)
       memDC.DrawRectangle(mDigits[i].digitBox);
+   memDC.SetBrush( wxNullBrush );
 
    for(i=0; i<mFields.GetCount(); i++)
       memDC.DrawText(mFields[i].label,
@@ -675,26 +681,31 @@ void TimeTextCtrl::OnPaint(wxPaintEvent &event)
 
    dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
 
+   wxPen   Pen;
+   wxBrush Brush;
    if (FindFocus()==this) {
-      dc.SetPen(*wxGREEN_PEN);
+      theTheme.SetPenColour( Pen, clrTimeFontFocus );
+      dc.SetPen(Pen);
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
       dc.DrawRectangle(0, 0, mWidth, mHeight);
+      dc.SetPen( wxNullPen );
    }
 
    dc.SetFont(*mDigitFont);
-   dc.SetTextForeground(*wxGREEN);
-   dc.SetTextBackground(*wxBLACK);
+   dc.SetTextForeground(theTheme.Colour( clrTimeFont ));
+   dc.SetTextBackground(theTheme.Colour( clrTimeBack ));
 
    dc.SetPen(*wxTRANSPARENT_PEN);
-   dc.SetBrush(*wxWHITE_BRUSH);
+   theTheme.SetBrushColour( Brush , clrTimeBackFocus );
+   dc.SetBrush( Brush );
 
    int i;
    for(i=0; i<(int)mDigits.GetCount(); i++) {
       wxRect box = mDigits[i].digitBox;
       if (FindFocus()==this && mFocusedDigit == i) {
          dc.DrawRectangle(box);
-         dc.SetTextForeground(*wxBLACK);
-         dc.SetTextBackground(*wxWHITE);
+         dc.SetTextForeground(theTheme.Colour( clrTimeFontFocus ));
+         dc.SetTextBackground(theTheme.Colour( clrTimeBackFocus ));
       }
       int pos = mDigits[i].pos;
       wxString digit = mValueString.Mid(pos, 1);
@@ -702,10 +713,12 @@ void TimeTextCtrl::OnPaint(wxPaintEvent &event)
       int y = box.y + (mDigitBoxH - mDigitH)/2;
       dc.DrawText(digit, x, y);
       if (FindFocus()==this && mFocusedDigit == i) {
-         dc.SetTextForeground(*wxGREEN);
-         dc.SetTextBackground(*wxBLACK);
+         dc.SetTextForeground(theTheme.Colour( clrTimeFont ));
+         dc.SetTextBackground(theTheme.Colour( clrTimeBack ));
       }
-  }
+   }
+   dc.SetPen( wxNullPen );
+   dc.SetBrush( wxNullBrush );
 }
 
 void TimeTextCtrl::OnMouse(wxMouseEvent &event)

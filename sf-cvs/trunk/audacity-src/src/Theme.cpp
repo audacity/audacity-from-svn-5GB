@@ -240,17 +240,6 @@ void Theme::RegisterImages()
 
 void Theme::RegisterColours()
 {
-   RegisterColour( clrBlank,      wxColour(214, 214, 214), wxT("Blank"));
-   RegisterColour( clrUnselected, wxColour(192, 192, 192), wxT("Unselected"));
-   RegisterColour( clrSelected,   wxColour(148, 148, 170), wxT("Selected"));
-   RegisterColour( clrSample,     wxColour( 50,  50, 200), wxT("Sample"));
-   RegisterColour( clrSelSample,  wxColour( 50,  50, 200), wxT("SelSample"));
-   RegisterColour( clrDragSample, wxColour(  0,   0,   0), wxT("DragSample"));
-                                                                
-   RegisterColour( clrMuteSample, wxColour(136, 136, 144), wxT("MuteSample"));
-   RegisterColour( clrRms,        wxColour(100, 100, 220), wxT("Rms"));
-   RegisterColour( clrMuteRms,    wxColour(136, 136, 144), wxT("MuteRms"));
-   RegisterColour( clrShadow,     wxColour(148, 148, 148), wxT("Shadow"));
 }
 
 ThemeBase::ThemeBase(void)
@@ -403,11 +392,12 @@ void ThemeBase::RegisterImage( int &iIndex, const wxImage &Image, const wxString
    iIndex = mBitmaps.GetCount()-1;
 }
 
-void ThemeBase::RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name )
+void ThemeBase::RegisterColour( int &iIndex, const wxColour &Clr, const wxString & Name )
 {
-//   wxASSERT( iIndex == -1 ); // Don't initialise same colour twice!
+   wxASSERT( iIndex == -1 ); // Don't initialise same colour twice!
    mColours.Add( Clr );
    mColourNames.Add( Name );
+   iIndex = mColours.GetCount()-1;
 }
 
 void FlowPacker::Init(int width)
@@ -545,6 +535,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
    wxBusyCursor busy;
 
    wxImage ImageCache( ImageCacheWidth, ImageCacheHeight );
+   ImageCache.SetRGB( wxRect( 0,0,ImageCacheWidth, ImageCacheHeight), 1,1,1);//Not-quite black.
 
    // Ensure we have an alpha channel...
    if( !ImageCache.HasAlpha() )
@@ -586,6 +577,7 @@ void ThemeBase::CreateImageCache( bool bBinarySave )
 
    mFlow.SetNewGroup(1);
    const int iColSize=10;
+   mFlow.myHeight = iColSize+1;
    for(i=0;i<(int)mColours.GetCount();i++)
    {
       mFlow.GetNextPosition( iColSize, iColSize );
@@ -770,7 +762,7 @@ void ThemeBase::WriteImageDefs( )
 
 
 /// Reads an image cache including images, cursors and colours.
-/// @param bBinaryRead if true means read from an external bbinary file.  
+/// @param bBinaryRead if true means read from an external binary file.  
 ///   otherwise the data is taken from a compiled in block of memory.
 /// @param bOkIfNotFound if true means do not report absent file.
 /// @return true iff we loaded the images.
@@ -849,15 +841,28 @@ bool ThemeBase::ReadImageCache( bool bBinaryRead, bool bOkIfNotFound)
    // Now load the colours.
    int x,y;
    mFlow.SetNewGroup(1);
+   wxColour TempColour;
    const int iColSize=10;
+   mFlow.myHeight = iColSize+1;
    for(i=0;i<(int)mColours.GetCount();i++)
    {
       mFlow.GetNextPosition( iColSize, iColSize );
       mFlow.RectMid( x, y );
-      mColours[i] = wxColour( 
-         ImageCache.GetRed( x,y), 
-         ImageCache.GetGreen( x,y), 
-         ImageCache.GetBlue(x,y));
+      // Only change the colour if the alpha is opaque.
+      // This allows us to add new colours more easily.
+      if( ImageCache.GetAlpha(x,y ) > 128 )
+      {
+         TempColour = wxColour( 
+            ImageCache.GetRed( x,y), 
+            ImageCache.GetGreen( x,y), 
+            ImageCache.GetBlue(x,y));
+         /// \todo revisit this hack which makes adding new colours easier
+         /// but which prevents a colour of (1,1,1) from being added.
+         /// find an alternative way to make adding new colours easier.
+         /// e.g. initialise the background to translucent, perhaps.
+         if( TempColour != wxColour(1,1,1) )
+            mColours[i] = TempColour;
+      }
    }
    return true;
 }

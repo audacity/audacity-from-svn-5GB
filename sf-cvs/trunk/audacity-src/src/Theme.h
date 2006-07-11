@@ -27,23 +27,6 @@ class wxFont;
 // JKC: will probably change name from 'teBmps' to 'tIndexBmp';
 typedef int teBmps; /// The index of a bitmap resource in Theme Resources.
 
-
-// We'll do the same thing for colours and fonts in due course.
-enum teColours
-{
-   clrBlank=0,
-   clrUnselected,
-   clrSelected,
-   clrSample,
-   clrSelSample,
-   clrDragSample,
-                  
-   clrMuteSample,
-   clrRms,
-   clrMuteRms,
-   clrShadow
-};
-
 enum teResourceType
 { 
    resTypeColour,
@@ -77,10 +60,11 @@ public:
    wxRect Rect();
    void RectMid( int &x, int &y );
 
-   // These 3 should become private again...
+   // These 4 should become private again...
    int mFlags;
    int mxPos;
    int myPos;
+   int myHeight;
 
 private:
    int iImageGroupSize; 
@@ -88,7 +72,6 @@ private:
    int mOldFlags;
    int myPosBase;
    int mxWidth;
-   int myHeight;
    int mxCacheWidth;
 
    int mComponentWidth;
@@ -109,7 +92,7 @@ public:
    void LoadThemeAtStartUp( bool bLookForExternalFiles );
    void RegisterImage( int &iIndex,char const** pXpm, const wxString & Name);
    void RegisterImage( int &iIndex, const wxImage &Image, const wxString & Name );
-   void RegisterColour( int iIndex, const wxColour &Clr, const wxString & Name );
+   void RegisterColour( int &iIndex, const wxColour &Clr, const wxString & Name );
 
    void CreateImageCache(bool bBinarySave = true);
    bool ReadImageCache( bool bBinaryRead = true, bool bOkIfNotFound=false);

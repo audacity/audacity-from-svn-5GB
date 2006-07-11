@@ -66,6 +66,8 @@ array of Ruler::Label.
 #include "Ruler.h"
 #include "../TrackPanel.h"
 #include "../ControlToolBar.h"
+#include "../Theme.h"
+#include "../AllThemeResources.h"
 
 #define max(a,b)  ( (a<b)?b:a )
 
@@ -1440,9 +1442,8 @@ void AdornedRulerPanel::DoDrawSelection(wxDC * dc)
    int p0 = int ( sel0 * zoom + 0.5 );
    int p1 = int ( sel1 * zoom + 0.5 );
 
-   wxColour c( 148, 148, 170 );
-   dc->SetBrush( wxBrush( c ) );
-   dc->SetPen( wxPen( c ) );
+   dc->SetBrush( wxBrush( theTheme.Colour( clrRulerBackground )) );
+   dc->SetPen(   wxPen(   theTheme.Colour( clrRulerBackground )) );
 
    wxRect r;
    r.x = p0;

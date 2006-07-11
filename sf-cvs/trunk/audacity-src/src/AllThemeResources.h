@@ -42,9 +42,7 @@ from there.  Audacity will look for a file called "Pause.png".
 // we want to include it multiple times in Theme.cpp.
 
 #include "MacroMagic.h"
-
 #define XPMS_RETIRED
-#ifdef XPMS_RETIRED
 
    SET_THEME_FLAGS(  resFlagPaired  );
    DEFINE_IMAGE( bmpPause, wxImage( 16, 16 ), wxT("Pause"));
@@ -204,241 +202,65 @@ from there.  Audacity will look for a file called "Pause.png".
    DEFINE_IMAGE( bmpAudacityLogo, wxImage( 215, 190 ), wxT("AudacityLogo"));
    DEFINE_IMAGE( bmpAudacityLogo48x48, wxImage( 48, 48 ), wxT("AudacityLogo48x48"));
 
-#else
+   DEFINE_COLOUR( clrBlank,      wxColour(214, 214, 214), wxT("Blank"));
+   DEFINE_COLOUR( clrUnselected, wxColour(192, 192, 192), wxT("Unselected"));
+   DEFINE_COLOUR( clrSelected,   wxColour(148, 148, 170), wxT("Selected"));
+   DEFINE_COLOUR( clrSample,     wxColour( 50,  50, 200), wxT("Sample"));
+   DEFINE_COLOUR( clrSelSample,  wxColour( 50,  50, 200), wxT("SelSample"));
+   DEFINE_COLOUR( clrDragSample, wxColour(  0,   0,   0), wxT("DragSample"));
+                                                                
+   DEFINE_COLOUR( clrMuteSample, wxColour(136, 136, 144), wxT("MuteSample"));
+   DEFINE_COLOUR( clrRms,        wxColour(100, 100, 220), wxT("Rms"));
+   DEFINE_COLOUR( clrMuteRms,    wxColour(136, 136, 144), wxT("MuteRms"));
+   DEFINE_COLOUR( clrShadow,     wxColour(148, 148, 148), wxT("Shadow"));
 
-   // This is older 'bootstrap' code that defined the images using XPMs.
-   SET_THEME_FLAGS( resFlagPaired );
-   // The control buttons...
-   DEFINE_IMAGE(  bmpPause, MaskedImage(Pause, PauseAlpha ),wxT("Pause"));
-   DEFINE_IMAGE(  bmpPauseDisabled, MaskedImage(PauseDisabled,PauseAlpha),wxT("PauseDisabled"));
-                  
-   DEFINE_IMAGE(  bmpPlay, MaskedImage(Play,PlayAlpha),wxT("Play"));
-   DEFINE_IMAGE(  bmpPlayDisabled, MaskedImage(PlayDisabled,PlayAlpha),wxT("PlayDisabled"));
-                  
-   DEFINE_IMAGE(  bmpLoop, MaskedImage((const char **)Loop,(const char **)LoopAlpha),wxT("Loop"));
-   DEFINE_IMAGE(  bmpLoopDisabled, MaskedImage((const char **)LoopDisabled,(const char **)LoopAlpha),wxT("LoopDisabled"));
-                  
-   DEFINE_IMAGE(  bmpStop, MaskedImage(Stop,StopAlpha),wxT("Stop"));
-   DEFINE_IMAGE(  bmpStopDisabled, MaskedImage(StopDisabled,StopAlpha),wxT("StopDisabled"));
-                  
-//   DEFINE_IMAGE(  bmpRewind, MaskedImage(Rewind,RewindAlpha),wxT("Rewind"));
-   DEFINE_IMAGE(  bmpRewind, wxImage( 16, 16 ),wxT("Rewind"));
-   DEFINE_IMAGE(  bmpRewindDisabled, wxImage( 16, 16 ),wxT("RewindDisabled"));
-                  
-   DEFINE_IMAGE(  bmpFFwd, MaskedImage(FFwd,FFwdAlpha),wxT("FFwd"));
-   DEFINE_IMAGE(  bmpFFwdDisabled, MaskedImage(FFwdDisabled,FFwdAlpha),wxT("FFwdDisabled"));
-                  
-   DEFINE_IMAGE(  bmpRecord, MaskedImage(Record,RecordAlpha),wxT("Record"));
-   DEFINE_IMAGE(  bmpRecordDisabled, MaskedImage(RecordDisabled,RecordAlpha),wxT("RecordDisabled"));
-                  
-   DEFINE_IMAGE(  bmpCleanSpeech, MaskedImage(CleanSpeech,CleanSpeechAlpha),wxT("CleanSpeech"));
-   DEFINE_IMAGE(  bmpCleanSpeechDisabled, MaskedImage(CleanSpeechDisabled,CleanSpeechAlpha),wxT("CleanSpeechDisabled"));
+   DEFINE_COLOUR( clrAboutBoxBackground,  wxColour(255, 255, 255),  wxT("AboutBackground"));
+   DEFINE_COLOUR( clrTrackPanelText,      wxColour(  0,   0,   0),  wxT("TrackPanelText"));
+   DEFINE_COLOUR( clrLabelTrackText,      wxColour(  0,   0,   0),  wxT("LabelTrackText"));
+
    
-//------- START of Platform specific images -----------------------// 
-   SET_THEME_FLAGS( resFlagNewLine );
+   DEFINE_COLOUR( clrMeterPeak,            wxColour(102, 102, 255),  wxT("MeterPeak"));
+   DEFINE_COLOUR( clrMeterDisabledPen,     wxColour(192, 192, 192),  wxT("MeterDisabledPen"));
+   DEFINE_COLOUR( clrMeterDisabledBrush,   wxColour(160, 160, 160),  wxT("MeterDisabledBrush"));
 
-   // PC/Linux: The backgrounds used for the large control buttons.
-   DEFINE_IMAGE(  bmpUpButtonLarge, UpButton, wxT("UpButtonLarge"));
-   DEFINE_IMAGE(  bmpDownButtonLarge, DownButton, wxT("DownButtonLarge"));
-   DEFINE_IMAGE(  bmpHiliteButtonLarge, HiliteButton, wxT("HiliteButtonLarge"));
+   DEFINE_COLOUR( clrMeterInputPen,        wxColour(204, 70, 70),     wxT("MeterInputPen") );       
+   DEFINE_COLOUR( clrMeterInputBrush,      wxColour(204, 70, 70),     wxT("MeterInputBrush") );     
+   DEFINE_COLOUR( clrMeterInputRMSBrush,   wxColour(255, 102, 102),   wxT("MeterInputRMSBrush") );  
+   DEFINE_COLOUR( clrMeterInputClipBrush,  wxColour(255, 53, 53),     wxT("MeterInputClipBrush") );
+   DEFINE_COLOUR( clrMeterInputLightPen,   wxColour(255, 153, 153),   wxT("MeterInputLightPen") );  
+   DEFINE_COLOUR( clrMeterInputDarkPen,    wxColour(153, 61, 61),     wxT("MeterInputDarkPen") );   
+                                                                 
+   DEFINE_COLOUR( clrMeterOutputPen,       wxColour(70, 204, 70),     wxT("MeterOutputPen") ); 
+   DEFINE_COLOUR( clrMeterOutputBrush,     wxColour(70, 204, 70),     wxT("MeterOutputBrush") );     
+   DEFINE_COLOUR( clrMeterOutputRMSBrush,  wxColour(102, 255, 102),   wxT("MeterOutputRMSBrush") );  
+   DEFINE_COLOUR( clrMeterOutputClipBrush, wxColour(255, 53, 53),     wxT("MeterOutputClipBrush") );
+   DEFINE_COLOUR( clrMeterOutputLightPen,  wxColour(153, 255, 153),   wxT("MeterOutputLightPen") );
+   DEFINE_COLOUR( clrMeterOutputDarkPen,   wxColour(61, 164, 61),     wxT("MeterOutputDarkPen") );
 
-   // PC/Linux: The backgrounds used for the small control buttons.
-   DEFINE_IMAGE(  bmpUpButtonSmall, Up, wxT("UpButtonSmall"));
-   DEFINE_IMAGE(  bmpDownButtonSmall, Down, wxT("DownButtonSmall"));
-   DEFINE_IMAGE(  bmpHiliteButtonSmall, Hilite, wxT("HiliteButtonSmall"));
-   // Other sliders...
-   DEFINE_IMAGE(  bmpVolumeSlider,      VolumeSlider,      wxT("VolumeSlider"));
-   DEFINE_IMAGE(  bmpVolumeSliderThumb, VolumeSliderThumb, wxT("VolumeSliderThumb"));
+   DEFINE_COLOUR( clrRulerBackground,      wxColour(148, 148, 170),   wxT("RulerBackground") );
+   DEFINE_COLOUR( clrAxisLines,            wxColour(0, 0, 255),       wxT("AxisLines") );
+   DEFINE_COLOUR( clrGraphLines,           wxColour(110, 110, 220),   wxT("GraphLines") );
+   DEFINE_COLOUR( clrResponseLines,        wxColour(0, 255, 0),       wxT("ResponseLines") );
+   DEFINE_COLOUR( clrHzPlot,               wxColour(140, 60, 190),    wxT("HzPlot") );
+   DEFINE_COLOUR( clrWavelengthPlot,       wxColour(200, 50, 150),    wxT("WavelengthPlot") );
 
-   // PC/Linux: Sliders and their thumbs.
-   DEFINE_IMAGE(  bmpSliderThumb, MaskedImage( SliderThumb, (const char**)SliderThumbAlpha ), wxT("SliderThumb"));
-   // The Basic slider is hand-drawn for now.
-//   DEFINE_IMAGE(  bmpSlider,      Slider,      wxT("Slider"));
+   DEFINE_COLOUR( clrEnvelope,             wxColour( 110, 110, 220),  wxT("Envelope") );
 
-// Hack: force new line in imageCache
-   SET_THEME_FLAGS( resFlagNone );
-   // Mac: The backgrounds used for the large control buttons.
-   DEFINE_IMAGE(  bmpMacUpButtonLarge, MacUpButton, wxT("MacUpButton"));
-   DEFINE_IMAGE(  bmpMacDownButtonLarge, MacDownButton, wxT("MacDownButton"));
-   DEFINE_IMAGE(  bmpMacHiliteButtonLarge, MacHiliteButton, wxT("MacHiliteButton"));
+   DEFINE_COLOUR( clrMuteButtonActive,     wxColour( 160, 170, 210),  wxT("MuteButtonActive") );
+   DEFINE_COLOUR( clrMuteButtonVetoed,     wxColour( 180, 180, 185),  wxT("MuteButtonVetoed") );
+                                                     
+   DEFINE_COLOUR( clrCursorPen,            wxColour(     0,  0,  0),  wxT("CursorPen") );
+   DEFINE_COLOUR( clrRecordingPen,         wxColour(   176,  0, 28),  wxT("RecordingPen") );
+   DEFINE_COLOUR( clrPlaybackPen,          wxColour(    36, 96, 46),  wxT("PlaybackPen") );
+   DEFINE_COLOUR( clrRecordingBrush,       wxColour(   190,129,129),  wxT("RecordingBrush") );
+   DEFINE_COLOUR( clrPlaybackBrush,        wxColour(    28,171, 51),  wxT("PlaybackBrush") );
+                                                     
+   DEFINE_COLOUR( clrRulerRecordingBrush,  wxColour(   196,196,196),  wxT("RulerRecordingBrush") );
+   DEFINE_COLOUR( clrRulerRecordingPen,    wxColour(   128,128,128),  wxT("RulerRecordingPen") );
+   DEFINE_COLOUR( clrRulerPlaybackBrush,   wxColour(   190,129,129),  wxT("RulerPlaybackBrush") );
+   DEFINE_COLOUR( clrRulerPlaybackPen,     wxColour(   176,  0, 28),  wxT("RulerPlaybackPen") );
 
-   // Mac: The backgrounds used for the small control buttons.
-   DEFINE_IMAGE(  bmpMacUpButtonSmall, MacUp, wxT("MacUpButtonSmall"));
-   DEFINE_IMAGE(  bmpMacDownButtonSmall, MacDown, wxT("MacDownButtonSmall"));
-   DEFINE_IMAGE(  bmpMacHiliteButtonSmall, MacHilite, wxT("MacHiliteButtonSmall"));
-
-   // Mac: Sliders and their thumbs.
-   DEFINE_IMAGE(  bmpMacSlider,      MacSlider,      wxT("MacSlider"));
-   DEFINE_IMAGE(  bmpMacSliderThumb, MacSliderThumb, wxT("MacSliderThumb"));
-
-//------- END of Platform specific images -----------------------// 
-
-   SET_THEME_FLAGS( resFlagNewLine );
-   // These three images are just 'workspace'.  Use the internal flag so they
-   // aren't loaded or saved.
-   SET_THEME_FLAGS( resFlagInternal );
-   DEFINE_IMAGE(  bmpRecoloredUpLarge, UpButton, wxT("RecoloredUpLarge"));
-   DEFINE_IMAGE(  bmpRecoloredDownLarge, DownButton, wxT("RecoloredDownLarge"));
-   DEFINE_IMAGE(  bmpRecoloredHiliteLarge,HiliteButton, wxT("RecoloredHiliteLarge"));
-
-   DEFINE_IMAGE(  bmpRecoloredUpSmall, UpButton, wxT("RecoloredUpSmall"));
-   DEFINE_IMAGE(  bmpRecoloredDownSmall, DownButton, wxT("RecoloredDownSmall"));
-   DEFINE_IMAGE(  bmpRecoloredHiliteSmall,HiliteButton, wxT("RecoloredHiliteSmall"));
-   SET_THEME_FLAGS( resFlagNone );
-
-
-   SET_THEME_FLAGS( resFlagCursor );
-   DEFINE_IMAGE(  bmpIBeamCursor, IBeamCursorXpm, wxT("IBeamCursor"));
-   DEFINE_IMAGE(  bmpDrawCursor,DrawCursorXpm, wxT("DrawCursor"));
-   DEFINE_IMAGE(  bmpEnvCursor,EnvCursorXpm, wxT("EnvCursor"));
-   DEFINE_IMAGE(  bmpTimeCursor,MaskedImage(TimeCursorXpm,TimeCursorXpm), wxT("TimeCursor"));
-   DEFINE_IMAGE(  bmpZoomInCursor,ZoomInCursorXpm, wxT("ZoomInCursor"));
-   DEFINE_IMAGE(  bmpZoomOutCursor,ZoomOutCursorXpm, wxT("ZoomOutCursor"));
-   DEFINE_IMAGE(  bmpLabelCursorLeft,LabelCursorLeftXpm, wxT("LabelCursorLeft"));
-   DEFINE_IMAGE(  bmpLabelCursorRight, LabelCursorRightXpm, wxT("LabelCursorRight"));
-   DEFINE_IMAGE(  bmpDisabledCursor,DisabledCursorXpm, wxT("DisabledCursor"));
-
-   SET_THEME_FLAGS( resFlagNone );
-   DEFINE_IMAGE(  bmpIBeam,MaskedImage(IBeam,IBeamAlpha), wxT("IBeam"));
-   DEFINE_IMAGE(  bmpZoom,MaskedImage(Zoom,ZoomAlpha), wxT("Zoom"));
-   DEFINE_IMAGE(  bmpEnvelope,MaskedImage(Envelope,EnvelopeAlpha), wxT("Envelope"));
-   DEFINE_IMAGE(  bmpTimeShift,MaskedImage(TimeShift,TimeShiftAlpha), wxT("TimeShift"));
-   DEFINE_IMAGE(  bmpDraw,MaskedImage(Draw,DrawAlpha), wxT("Draw"));
-   DEFINE_IMAGE(  bmpMulti,MaskedImage(Multi,MultiAlpha), wxT("Multi"));
-
-   DEFINE_IMAGE(  bmpMic,MaskedImage(Mic,MicAlpha), wxT("Mic"));
-   DEFINE_IMAGE(  bmpSpeaker,MaskedImage(Speaker,SpeakerAlpha), wxT("Speaker"));
-
-   SET_THEME_FLAGS( resFlagPaired );
-   DEFINE_IMAGE(  bmpZoomFit,MaskedImage(ZoomFit,ZoomFitAlpha), wxT("ZoomFit"));
-   DEFINE_IMAGE(  bmpZoomFitDisabled,MaskedImage(ZoomFitDisabled,ZoomFitAlpha), wxT("ZoomFitDisabled"));
-                  
-   DEFINE_IMAGE(  bmpZoomIn,MaskedImage(ZoomIn,ZoomInAlpha), wxT("ZoomIn"));
-   DEFINE_IMAGE(  bmpZoomInDisabled,MaskedImage(ZoomInDisabled,ZoomInAlpha), wxT("ZoomInDisabled"));
-                  
-   DEFINE_IMAGE(  bmpZoomOut,MaskedImage(ZoomOut,ZoomOutAlpha), wxT("ZoomOut"));
-   DEFINE_IMAGE(  bmpZoomOutDisabled,MaskedImage(ZoomOutDisabled,ZoomOutAlpha), wxT("ZoomOutDisabled"));
-                  
-   DEFINE_IMAGE(  bmpZoomSel,MaskedImage(ZoomSel,ZoomSelAlpha), wxT("ZoomSel"));
-   DEFINE_IMAGE(  bmpZoomSelDisabled,MaskedImage(ZoomSelDisabled,ZoomSelAlpha), wxT("ZoomSelDisabled"));
-                  
-   DEFINE_IMAGE(  bmpZoomToggle,MaskedImage(ZoomToggle,ZoomToggleAlpha), wxT("ZoomToggle"));
-   DEFINE_IMAGE(  bmpZoomToggleDisabled,MaskedImage(ZoomToggleDisabled,ZoomToggleAlpha), wxT("ZoomToggleDisabled"));
-   DEFINE_IMAGE(  bmpCut,MaskedImage(Cut,CutAlpha), wxT("Cut"));
-   DEFINE_IMAGE(  bmpCutDisabled,MaskedImage(CutDisabled,CutAlpha), wxT("CutDisabled"));
-                  
-   DEFINE_IMAGE(  bmpCopy,MaskedImage(Copy,CopyAlpha), wxT("Copy"));
-   DEFINE_IMAGE(  bmpCopyDisabled,MaskedImage(CopyDisabled,CopyAlpha), wxT("CopyDisabled"));
-                  
-   DEFINE_IMAGE(  bmpPaste,MaskedImage(Paste,PasteAlpha), wxT("Paste"));
-   DEFINE_IMAGE(  bmpPasteDisabled,MaskedImage(PasteDisabled,PasteAlpha), wxT("PasteDisabled"));
-                  
-   DEFINE_IMAGE(  bmpTrim,MaskedImage(Trim,TrimAlpha), wxT("Trim"));
-   DEFINE_IMAGE(  bmpTrimDisabled,MaskedImage(TrimDisabled,TrimAlpha), wxT("TrimDisabled"));
-                  
-   DEFINE_IMAGE(  bmpSilence,MaskedImage(Silence,SilenceAlpha), wxT("Silence"));
-   DEFINE_IMAGE(  bmpSilenceDisabled,MaskedImage(SilenceDisabled,SilenceAlpha), wxT("SilenceDisabled"));
-                  
-   DEFINE_IMAGE(  bmpUndo,MaskedImage(Undo,UndoAlpha), wxT("Undo"));
-   DEFINE_IMAGE(  bmpUndoDisabled,MaskedImage(UndoDisabled,UndoAlpha), wxT("UndoDisabled"));
-                  
-   DEFINE_IMAGE(  bmpRedo,MaskedImage(Redo,RedoAlpha), wxT("Redo"));
-   DEFINE_IMAGE(  bmpRedoDisabled,MaskedImage(RedoDisabled,RedoAlpha), wxT("RedoDisabled"));
-
-   SET_THEME_FLAGS( resFlagPaired | resFlagNewLine );
-   DEFINE_IMAGE(  bmpTnStartOn,MaskedImage(StartOn, StartOnAlpha), wxT("TnStartOn"));
-   DEFINE_IMAGE(  bmpTnStartOnDisabled,MaskedImage(StartOnDisabled, StartOnAlpha), wxT("TnStartOnDisabled"));
-
-   DEFINE_IMAGE(  bmpTnStartOff,MaskedImage(StartOff, StartOffAlpha), wxT("TnStartOff"));
-   DEFINE_IMAGE(  bmpTnStartOffDisabled,MaskedImage(StartOffDisabled, StartOffAlpha), wxT("TnStartOffDisabled"));
-
-   DEFINE_IMAGE(  bmpTnEndOn,MaskedImage(EndOn, EndOnAlpha), wxT("TnEndOn"));
-   DEFINE_IMAGE(  bmpTnEndOnDisabled,MaskedImage(EndOnDisabled, EndOnAlpha), wxT("TnEndOnDisabled"));
-
-   DEFINE_IMAGE(  bmpTnEndOff,MaskedImage(EndOff, EndOffAlpha), wxT("TnEndOff"));
-   DEFINE_IMAGE(  bmpTnEndOffDisabled,MaskedImage(EndOffDisabled, EndOffAlpha), wxT("TnEndOffDisabled"));
-
-   DEFINE_IMAGE(  bmpTnCalibrate,MaskedImage(CalibrateUp, CalibrateAlpha), wxT("TnCalibrate"));
-   DEFINE_IMAGE(  bmpTnCalibrateDisabled,MaskedImage(CalibrateDisabled, CalibrateAlpha), wxT("TnCalibrateDisabled"));
-
-   DEFINE_IMAGE(  bmpTnAutomateSelection,MaskedImage(AutomateSelection, AutomateSelectionAlpha), wxT("TnAutomateSelection"));
-   DEFINE_IMAGE(  bmpTnAutomateSelectionDisabled,MaskedImage(AutomateSelectionDisabled, AutomateSelectionAlpha), wxT("TnAutomateSelectionDisabled"));
-
-   DEFINE_IMAGE(  bmpTnMakeTag,MaskedImage(MakeTag, MakeTagAlpha), wxT("TnMakeTag"));
-   DEFINE_IMAGE(  bmpTnMakeTagDisabled,MaskedImage(MakeTagDisabled, MakeTagAlpha), wxT("TnMakeTagDisabled"));
-
-   DEFINE_IMAGE(  bmpTnSelectSound,MaskedImage(SelectSound, SelectSoundAlpha), wxT("TnSelectSound"));
-   DEFINE_IMAGE(  bmpTnSelectSoundDisabled,MaskedImage(SelectSoundDisabled, SelectSoundAlpha), wxT("TnSelectSoundDisabled"));
-
-   DEFINE_IMAGE(  bmpTnSelectSilence,MaskedImage(SelectSilence, SelectSilenceAlpha), wxT("TnSelectSilence"));
-   DEFINE_IMAGE(  bmpTnSelectSilenceDisabled,MaskedImage(SelectSilenceDisabled, SelectSilenceAlpha), wxT("TnSelectSilenceDisabled"));
-
-
-   SET_THEME_FLAGS( resFlagNone );
-   DEFINE_IMAGE(  bmpLabelGlyph0,        Glyph0, wxT("LabelGlyph0" ));
-   DEFINE_IMAGE(  bmpLabelGlyph1,        Glyph1, wxT("LabelGlyph1" ));
-   DEFINE_IMAGE(  bmpLabelGlyph2,        Glyph2, wxT("LabelGlyph2" ));
-   DEFINE_IMAGE(  bmpLabelGlyph3,        Glyph3, wxT("LabelGlyph3" ));
-   DEFINE_IMAGE(  bmpLabelGlyph4,        Glyph4, wxT("LabelGlyph4" ));
-   DEFINE_IMAGE(  bmpLabelGlyph5,        Glyph5, wxT("LabelGlyph5" ));
-   DEFINE_IMAGE(  bmpLabelGlyph6,        Glyph6, wxT("LabelGlyph6" ));
-   DEFINE_IMAGE(  bmpLabelGlyph7,        Glyph7, wxT("LabelGlyph7" ));
-   DEFINE_IMAGE(  bmpLabelGlyph8,        Glyph8, wxT("LabelGlyph8" ));
-   DEFINE_IMAGE(  bmpLabelGlyph9,        Glyph9, wxT("LabelGlyph9" ));
-   DEFINE_IMAGE(  bmpLabelGlyph10,        Glyph10, wxT("LabelGlyph10" ));
-   DEFINE_IMAGE(  bmpLabelGlyph11,        Glyph11, wxT("LabelGlyph11" ));
-
-
-   SET_THEME_FLAGS( resFlagNewLine );
-   DEFINE_IMAGE(  bmpPostfishHome,        bar_home_xpm, wxT("PostfishHome" ));
-   DEFINE_IMAGE(  bmpPostfishFastRewind,  bar_bb_xpm,   wxT("PostfishFastRewind" ));
-   DEFINE_IMAGE(  bmpPostfishRewind,      bar_b_xpm,    wxT("PostfishRewind" ));
-   DEFINE_IMAGE(  bmpPostfishPlay,        bar_p_xpm,    wxT("PostfishPlay" ));
-   DEFINE_IMAGE(  bmpPostfishForward,     bar_f_xpm,    wxT("PostfishForward" ));
-   DEFINE_IMAGE(  bmpPostfishFastForward, bar_ff_xpm,   wxT("PostfishFastForward" ));
-   DEFINE_IMAGE(  bmpPostfishEnd,         bar_end_xpm,  wxT("PostfishEnd" ));
-   DEFINE_IMAGE(  bmpPostfishLoop,        bar_l_xpm,    wxT("PostfishLoop" ));
-
-   SET_THEME_FLAGS( resFlagNone );
-
-   DEFINE_IMAGE( bmpDockDown, DockDown, wxT("DockDown"));
-   DEFINE_IMAGE( bmpDockDownShort, DockDownShort, wxT("DockDownShort"));
-   DEFINE_IMAGE( bmpDockOver, DockOver, wxT("DockOver"));
-   DEFINE_IMAGE( bmpDockOverShort, DockOverShort, wxT("DockOverShort"));
-   DEFINE_IMAGE( bmpDockUp, DockUp, wxT("DockUp"));
-   DEFINE_IMAGE( bmpDockUpShort, DockUpShort, wxT("DockUpShort"));
-
-   DEFINE_IMAGE(  bmpToolBarToggle, ToolBarToggle,wxT("ToolBarToggle"));
-   DEFINE_IMAGE(  bmpToolBarTarget, ToolBarTarget,wxT("ToolBarTarget"));
-   DEFINE_IMAGE(  bmpToolBarGrabber, ToolBarGrabber,wxT("ToolBarGrabber"));
-   
-   //   DEFINE_IMAGE( bmpAqua, Aqua, wxT("Aqua"));
-   DEFINE_IMAGE( bmpArrow, arrow_xpm, wxT("Arrow"));
-
-   DEFINE_IMAGE( bmpUploadFile, file_xpm,wxT("UploadFile"));
-   DEFINE_IMAGE( bmpUploadFolder, folder_xpm, wxT("UploadFolder"));
-   DEFINE_IMAGE( bmpUploadMp3, mp3_xpm, wxT("UploadMp3"));
-   DEFINE_IMAGE( bmpUploadUp, up_xpm, wxT("UploadUp"));
-
-   SET_THEME_FLAGS( resFlagNewLine );
-   DEFINE_IMAGE( bmpAudacityLogo, AudacityLogo_xpm, wxT("AudacityLogo"));
-   DEFINE_IMAGE( bmpAudacityLogo48x48, AudacityLogo48x48_xpm, wxT("AudacityLogo48x48"));
-#endif
-
-#if 0
-enum teColours
-{
-   clrBlank=0,
-   clrUnselected,
-   clrSelected,
-   clrSample,
-   clrSelSample,
-   clrDragSample,
-                  
-   clrMuteSample,
-   clrRms,
-   clrMuteRms,
-   clrShadow
-};
-#endif
-
+   DEFINE_COLOUR( clrTimeFont,             wxColour(     0,  0,180),  wxT("TimeFont") ); 
+   DEFINE_COLOUR( clrTimeBack,             wxColour(   160,160,160),  wxT("TimeBack") ); 
+   DEFINE_COLOUR( clrTimeFontFocus,        wxColour(     0,  0,  0),  wxT("TimeFontFocus") );
+   DEFINE_COLOUR( clrTimeBackFocus,        wxColour(   242,242,255),  wxT("TimeBackFocus") );

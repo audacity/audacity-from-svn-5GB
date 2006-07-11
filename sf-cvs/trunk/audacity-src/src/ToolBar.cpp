@@ -281,9 +281,11 @@ void Grabber::DrawGrabber( wxDC & dc )
    // Need to draw the marker
    if( mMarker )
    {
+      /// \todo replace this code by code that uses a graphic.
+      // (That's why we've not themes the colour).
       // Make it really visible ;-)
-      dc.SetPen( wxPen( wxColour( 0, 0, 255 ) ) );
-      dc.SetBrush( wxBrush( wxColour( 0, 0, 255 ) ) );
+      dc.SetPen( wxPen( wxColour( 0, 0, 255 ) ) ); // DONT-THEME will use graphic instead.
+      dc.SetBrush( wxBrush( wxColour( 0, 0, 255 ) ) ); // DONT-THEME will use graphic instead.
       
       // Make a left-pointing arrow
       // (Really should come up with a better marker)
@@ -1594,7 +1596,7 @@ void ToolBar::MakeRecoloredImage( teBmps eBmpOut, teBmps eBmpIn )
    wxImage * pPattern;
    wxImage * pSrc = &theTheme.Image( eBmpIn );
    wxColour newColour = wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
-   wxColour baseColour = wxColour(204, 204, 204);
+   wxColour baseColour = wxColour(204, 204, 204); // DONT-THEME, reference grey for recolouring.
 
    pPattern     = ChangeImageColour( pSrc,     baseColour, newColour );
    theTheme.ReplaceImage( eBmpOut, pPattern);

@@ -241,7 +241,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
       GetCreditsByRole(roleThanks) +
       wxT("</center></font></body></html>");
    
-   this->SetBackgroundColour(wxColour(255, 255, 255));
+   this->SetBackgroundColour(theTheme.Colour( clrAboutBoxBackground ));
 
    wxBoxSizer * pBoxSizer = new wxBoxSizer(wxVERTICAL);
 

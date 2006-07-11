@@ -49,6 +49,9 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
+#include "../Theme.h"
+#include "../AllThemeResources.h"
+
 EffectFilter::EffectFilter()
 {
    mEnvelope = new Envelope();
@@ -333,13 +336,13 @@ void FilterPanel::OnPaint(wxPaintEvent & evt)
    mEnvRect.Deflate( 2, 2 );
 
    // Pure blue x-axis line
-   memDC.SetPen(wxPen(wxColour(0, 0, 255), 1, wxSOLID));
+   memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 1, wxSOLID));
    int center = mEnvRect.height/2;
    memDC.DrawLine(mEnvRect.x, mEnvRect.y + center,
                   mEnvRect.x + mEnvRect.width, mEnvRect.y + center);
 
    // Med-blue envelope line
-   memDC.SetPen(wxPen(wxColour(110, 110, 220), 3, wxSOLID));
+   memDC.SetPen(wxPen(theTheme.Colour( clrGraphLines ), 3, wxSOLID));
 
    // Draw envelope
    double *values = new double[mEnvRect.width];

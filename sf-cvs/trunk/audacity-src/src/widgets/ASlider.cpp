@@ -526,7 +526,7 @@ void LWSlider::Draw()
    // mask creation.  And garbage can be displayed if it isn't
    // cleared.
    dc->SelectObject(*mBitmap);
-   dc->SetBackground( wxBrush( wxColour( 255, 254, 255 ) ) );
+   dc->SetBackground( wxBrush( wxColour( 255, 254, 255 ) ) );// DONT-THEME Mask colour.
    dc->Clear();
 
    AColor::Dark(dc, false);
