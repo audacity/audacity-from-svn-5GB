@@ -145,6 +145,12 @@ public:
    
    // Offset cutlines right to time 't0' by time amount 'len'
    void OffsetCutLines(double t0, double len);
+   
+   // Lock all blockfiles
+   void Lock();
+   
+   // Unlock all blockfiles
+   void Unlock();
 
    //
    // XMLTagHandler callback methods for loading and saving

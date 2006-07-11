@@ -784,12 +784,51 @@ bool WaveClip::InsertSilence(double t, double len)
 bool WaveClip::Clear(double t0, double t1)
 {
    longSampleCount s0, s1;
-   
+
    TimeToSamplesClip(t0, &s0);
    TimeToSamplesClip(t1, &s1);
    
    if (GetSequence()->Delete(s0, s1-s0))
    {
+      // msmeyer
+      //
+      // Delete all cutlines that are within the given area, if any.
+      //
+      // Note that when cutlines are active, two functions are used:
+      // Clear() and ClearAndAddCutLine(). ClearAndAddCutLine() is called
+      // whenever the user directly calls a command that removes some audio, e.g.
+      // "Cut" or "Clear" from the menu. This command takes care about recursive
+      // preserving of cutlines within clips. Clear() is called when internal
+      // operations want to remove audio. In the latter case, it is the right
+      // thing to just remove all cutlines within the area.
+      //
+      double clip_t0 = t0;
+      double clip_t1 = t1;
+      if (clip_t0 < GetStartTime())
+         clip_t0 = GetStartTime();
+      if (clip_t1 > GetEndTime())
+         clip_t1 = GetEndTime();
+
+      WaveClipList::Node* nextIt = (WaveClipList::Node*)-1;
+
+      for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=nextIt)
+      {
+         nextIt = it->GetNext();
+         WaveClip* clip = it->GetData();
+         double cutlinePosition = mOffset + clip->GetOffset();
+         if (cutlinePosition >= t0 && cutlinePosition <= t1)
+         {
+            // This cutline is within the area, delete it
+            delete clip;
+            mCutLines.DeleteNode(it);
+         } else
+         if (cutlinePosition >= t1)
+         {
+            clip->Offset(clip_t0-clip_t1);
+         }
+      }
+
+      // Collapse envelope
       GetEnvelope()->CollapseRegion(t0, t1);
       if (t0 < GetStartTime())
          Offset(-(GetStartTime() - t0));
@@ -839,15 +878,29 @@ bool WaveClip::ClearAndAddCutLine(double t0, double t1)
          clip->Offset(clip_t0-clip_t1);
       }
    }
+   
+   // Clear actual audio data
+   longSampleCount s0, s1;
 
-   if (Clear(t0, t1))
+   TimeToSamplesClip(t0, &s0);
+   TimeToSamplesClip(t1, &s1);
+   
+   if (GetSequence()->Delete(s0, s1-s0))
    {
+      // Collapse envelope
+      GetEnvelope()->CollapseRegion(t0, t1);
+      if (t0 < GetStartTime())
+         Offset(-(GetStartTime() - t0));
+
+      MarkChanged();
+
       mCutLines.Append(newClip);
       return true;
+   } else
+   {
+      delete newClip;
+      return false;
    }
-
-   delete newClip;
-   return false;
 }
 
 bool WaveClip::ExpandCutLine(double cutLinePosition, double* cutlineStart, double* cutlineEnd)
@@ -905,4 +958,18 @@ void WaveClip::OffsetCutLines(double t0, double len)
       if (mOffset + cutLine->GetOffset() >= t0)
          cutLine->Offset(len);
    }
+}
+
+void WaveClip::Lock()
+{
+   GetSequence()->Lock();
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+      it->GetData()->Lock();
+}
+
+void WaveClip::Unlock()
+{
+   GetSequence()->Unlock();
+   for (WaveClipList::Node* it = mCutLines.GetFirst(); it; it=it->GetNext())
+      it->GetData()->Unlock();
 }

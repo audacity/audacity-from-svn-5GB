@@ -53,6 +53,17 @@ out.
 #include "BlockFile.h"
 #include "Internat.h"
 
+// msmeyer: Define this to add debug output via printf()
+//#define DEBUG_BLOCKFILE
+
+#ifdef DEBUG_BLOCKFILE
+#define BLOCKFILE_DEBUG_OUTPUT(op, i) \
+   wxPrintf(wxT("[BlockFile %x %s] %s: %i\n"), (unsigned)this, \
+            mFileName.GetFullName().c_str(), wxT(op), i);
+#else
+#define BLOCKFILE_DEBUG_OUTPUT(op, i)
+#endif
+
 const int headerTagLen = 20;
 char headerTag[headerTagLen + 1] = "AudacityBlockFile112";
 
@@ -118,12 +129,14 @@ wxFileName BlockFile::GetFileName()
 void BlockFile::Lock()
 {
    mLockCount++;
+   BLOCKFILE_DEBUG_OUTPUT("Lock", mLockCount);
 }
 
 /// Marks this BlockFile as "unlocked."
 void BlockFile::Unlock()
 {
    mLockCount--;
+   BLOCKFILE_DEBUG_OUTPUT("Unlock", mLockCount);
 }
 
 /// Returns true if the block is locked.
@@ -137,6 +150,7 @@ bool BlockFile::IsLocked()
 void BlockFile::Ref()
 {
    mRefCount++;
+   BLOCKFILE_DEBUG_OUTPUT("Ref", mRefCount);
 }
 
 /// Decreases the reference count of this block by one.  If this
@@ -145,6 +159,7 @@ void BlockFile::Ref()
 bool BlockFile::Deref()
 {
    mRefCount--;
+   BLOCKFILE_DEBUG_OUTPUT("Deref", mRefCount);
    if (mRefCount <= 0) {
       delete this;
       return true;
