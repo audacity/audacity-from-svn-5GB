@@ -158,14 +158,14 @@ void DeinitAudioIO()
 wxString DeviceName(const PaDeviceInfo* info)
 {
 #if USE_PORTAUDIO_V19
-   wxString hostapiName(Pa_GetHostApiInfo(info->hostApi)->name, wxConvUTF8);
-   wxString infoName(info->name, wxConvUTF8);
+   wxString hostapiName(Pa_GetHostApiInfo(info->hostApi)->name, wxConvLocal);
+   wxString infoName(info->name, wxConvLocal);
 
    return wxString::Format(wxT("%s: %s"),
                            hostapiName.c_str(),
                            infoName.c_str());
 #else  
-   return wxString(info->name, wxConvISO8859_1);
+   return wxString(info->name, wxConvLocal);
 #endif
 }
 
