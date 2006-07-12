@@ -193,6 +193,13 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndThreeColumn();
    }
    S.EndStatic();
+   S.StartStatic( _("Effects Preview"),1 );
+   {
+      S.StartThreeColumn();
+      S.TieTextBox( _("Play when previewing:"), wxT("EffectsPreviewLen"), 3.0,9);
+      S.AddUnits( _("seconds") );
+      S.EndThreeColumn();
+   }
 
    gPrefs->SetPath(wxT("/"));
 }

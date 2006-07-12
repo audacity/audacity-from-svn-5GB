@@ -283,7 +283,8 @@ void Effect::Preview()
 
    // Mix the first 3 seconds of audio from all of the tracks
    double previewLen = 3.0;
-
+   gPrefs->Read(wxT("/AudioIO/EffectsPreviewLen"), &previewLen);
+   
    WaveTrack *mixLeft = NULL;
    WaveTrack *mixRight = NULL;
    double rate = mProjectRate;
