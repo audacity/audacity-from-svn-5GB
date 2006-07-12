@@ -385,7 +385,7 @@ void UploadDialog::OnListRightClick(wxListEvent &event)
     listIndex = event.m_itemIndex;
 
     wxMenu *menu = new wxMenu();
-    wxMenuItem *del = new wxMenuItem(menu, wxID_POPUP_DELETE, _("Delete"), _("Delete file(s) from server)"));
+    wxMenuItem *del = new wxMenuItem(menu, wxID_POPUP_DELETE, _("Delete"), _("Delete file(s) from server"));
     wxMenuItem *rn  = new wxMenuItem(menu, wxID_POPUP_RENAME, _("Rename"), _("Rename file"));
     wxMenuItem *dl  = new wxMenuItem(menu, wxID_POPUP_DOWNLOAD, _("Download"), _("Download this file(s) to your computer"));
 
