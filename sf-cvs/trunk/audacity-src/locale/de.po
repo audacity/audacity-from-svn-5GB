@@ -4513,7 +4513,7 @@ msgstr "Wiedergabe (Loop-Wiedergabe mit Shift, Schnitt vorhören mit Strg)"
 
 #: ../src/Menus.cpp:773
 msgid "Play Cut Preview\tC"
-msgstr "Schnitt vorhören"
+msgstr "Schnitt vorhören\tC"
 
 #: ../src/Menus.cpp:771
 msgid "Play Looped\tL"
