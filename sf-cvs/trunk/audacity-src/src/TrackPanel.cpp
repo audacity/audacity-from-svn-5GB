@@ -5274,6 +5274,10 @@ void TrackPanel::OnChannelChange(wxCommandEvent & event)
 void TrackPanel::OnSplitStereo(wxCommandEvent &event)
 {
    wxASSERT(mPopupMenuTarget);
+   Track *partner = mTracks->GetLink(mPopupMenuTarget);
+   if (partner)
+      partner->SetChannel(Track::MonoChannel);
+   mPopupMenuTarget->SetChannel(Track::MonoChannel);
    mPopupMenuTarget->SetLinked(false);
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
