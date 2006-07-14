@@ -240,16 +240,17 @@ class SliderDialog: public wxDialog
                 float value);
    ~SliderDialog();
    
-   void OnSlider(wxCommandEvent &event);
-   void OnKeyEvent(wxCommandEvent &event);
-   void OnOK(wxCommandEvent & event);
    float Get();
-   
+
  private:
-   
+   bool TransferDataToWindow();
+   bool TransferDataFromWindow();
+
+   void OnSlider(wxCommandEvent &event);
+
    ASlider * mSlider;
    wxTextCtrl * mTextCtrl;
-   wxString mValue;
+   int mStyle;
 
  public:
    DECLARE_EVENT_TABLE()
