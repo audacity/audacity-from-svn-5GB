@@ -1,6 +1,7 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.2.5rc1
+Version 1.2.5-IntelPre1
+
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -284,6 +285,8 @@ Known issues/problems:
 -------------------------------------------------------------
 
 Changes in 1.2.5:
+
+  * An official Intel Mac version is now available.
 
   * Fixed bug in Generate Silence which caused it to apply to all tracks
     instead of just the selected ones.
