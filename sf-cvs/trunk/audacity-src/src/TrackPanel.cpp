@@ -3093,12 +3093,24 @@ void TrackPanel::HandleRearrange(wxMouseEvent & event)
       SetCursor(*mArrowCursor);
       return;
    }
-   if (event.m_y < mMoveUpThreshold)
+
+   wxString dir;
+
+   if (event.m_y < mMoveUpThreshold) {
       mTracks->MoveUp(mCapturedTrack);
-   else if (event.m_y > mMoveDownThreshold)
+      dir = _("up");
+   }
+   else if (event.m_y > mMoveDownThreshold) {
       mTracks->MoveDown(mCapturedTrack);
+      dir = _("down");
+   }
    else
       return;
+
+   MakeParentPushState(wxString::Format(_("Moved '%s' %s"),
+                                        mCapturedTrack->GetName().c_str(),
+                                        dir.c_str()),
+                       _("Move Track"));
 
    // JH: if we moved up or down, recalculate the thresholds
    TrackPanel::CalculateRearrangingThresholds(event);
