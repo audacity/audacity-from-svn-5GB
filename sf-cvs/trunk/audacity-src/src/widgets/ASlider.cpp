@@ -192,15 +192,13 @@ void TipPanel::OnPaint(wxPaintEvent& event)
    dc.DrawText(label, (width-textWidth)/2, (height-textHeight)/2);
 }
 
+//
+// SliderDialog
+//
 
-
-#define ID_SLIDER 10000
 BEGIN_EVENT_TABLE(SliderDialog, wxDialog)
-   EVT_SLIDER(ID_SLIDER,SliderDialog::OnSlider)
-   EVT_TEXT(SLIDER_DIALOG_TEXTCTRL,SliderDialog::OnKeyEvent)
-   EVT_BUTTON(wxID_OK,SliderDialog::OnOK)
-END_EVENT_TABLE()
-   ;
+   EVT_SLIDER(wxID_ANY,SliderDialog::OnSlider)
+END_EVENT_TABLE();
 
 SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                            const wxString & title, 
@@ -208,22 +206,24 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
                            wxSize size,
                            int style, 
                            float value):
-   wxDialog(parent,id,title,position)
+   wxDialog(parent,id,title,position),
+   mStyle(style)
 {
    //Use a vertical sizer
    wxBoxSizer * vs = new wxBoxSizer(wxVERTICAL);
 
    //Add the text
-   mValue.Printf(wxT("%2.2f"),value);
-   mTextCtrl = new wxTextCtrl(this,SLIDER_DIALOG_TEXTCTRL,mValue,
+   mTextCtrl = new wxTextCtrl(this,
+                              SLIDER_DIALOG_TEXTCTRL,
+                              wxT(""),
                               wxDefaultPosition,
                               wxDefaultSize,
                               0,
-                              wxTextValidator(wxFILTER_NUMERIC,&mValue));
+                              wxTextValidator(wxFILTER_NUMERIC));
    vs->Add(mTextCtrl,0,wxEXPAND|wxALL,5);
 
    //Add a slider 
-   mSlider = new ASlider(this,ID_SLIDER,title,wxDefaultPosition,size,style,false);
+   mSlider = new ASlider(this,wxID_ANY,title,wxDefaultPosition,size,style,false);
    vs->Add(mSlider, 0, wxEXPAND | wxLEFT | wxRIGHT, 5 );
    
    //Create buttons 
@@ -240,57 +240,38 @@ SliderDialog::SliderDialog(wxWindow * parent, wxWindowID id,
 
 SliderDialog::~SliderDialog()
 {
-   delete mSlider;
-   delete mTextCtrl;
 }
 
+bool SliderDialog::TransferDataToWindow()
+{
+   mTextCtrl->SetValue(wxString::Format(wxT("%g"), mSlider->Get(false)));
+
+   return true;
+}
+
+bool SliderDialog::TransferDataFromWindow()
+{
+   double value;
+
+   mTextCtrl->GetValue().ToDouble(&value);
+   if (mStyle == DB_SLIDER)
+      value = pow(10.0, value / 20.0);
+   mSlider->Set(value);
+
+   return true;
+}
 
 void SliderDialog::OnSlider(wxCommandEvent & event)
 {
-   mValue.Printf(wxT("%2.2f"),mSlider->Get(false));
    TransferDataToWindow();
 
    event.Skip(false);
 }
 
-
-void SliderDialog::OnKeyEvent(wxCommandEvent & event)
-{
-   //Do not do anything here right now.  Possibly, better rounding
-   //and validation could go here.
-}
-
-
-void SliderDialog::OnOK(wxCommandEvent & event)
-{
-   if (Validate() && TransferDataFromWindow())
-   {
-      double value;
-
-      //Convert to a double
-      mValue.ToDouble(&value);
-
-      //Set the slider to the value.
-      mSlider->Set(value);
-
-      if (IsModal())
-      {
-         EndModal(wxID_OK);
-      }
-      else
-      {
-         SetReturnCode(wxID_OK);
-         this->Show(false);
-      }
-   }
-}
-
-
 float SliderDialog::Get()
 {
-   return mSlider->Get( false );
+   return mSlider->Get(false);
 }
-
 
 //
 // LWSlider
