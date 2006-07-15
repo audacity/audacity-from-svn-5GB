@@ -111,6 +111,10 @@ void OnZeroCrossing();
 void OnLockPlayRegion();
 void OnUnlockPlayRegion();
 
+double GetTime(Track *t);
+void OnSortTime();
+void OnSortName();
+
         // File Menu
 
 void OnNew();

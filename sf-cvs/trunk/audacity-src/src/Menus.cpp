@@ -638,6 +638,15 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
+
+      c->AddSeparator();   
+      c->BeginSubMenu(_("Sort tracks by..."));
+      c->AddItem(wxT("SortByTime"), _("Start time"), FN(OnSortTime));
+      c->SetCommandFlags(wxT("SortByTime"), TracksExistFlag, TracksExistFlag);
+      c->AddItem(wxT("SortByName"), _("Name"), FN(OnSortName));
+      c->SetCommandFlags(wxT("SortByName"), TracksExistFlag, TracksExistFlag);
+      c->EndSubMenu();
+
       c->EndMenu();
    
       //
@@ -1414,6 +1423,99 @@ void AudacityProject::OnStopSelect()
 	}
 
    ModifyState();
+}
+
+double AudacityProject::GetTime(Track *t)
+{
+   double stime = 0.0;
+
+   if (t->GetKind() == Track::Wave) {
+      WaveTrack *w = (WaveTrack *)t;
+      stime = w->GetEndTime();
+
+      WaveClip *c;
+      int ndx;
+      for (ndx = 0; ndx < w->GetNumClips(); ndx++) {
+         c = w->GetClipByIndex(ndx);
+         if (c->GetNumSamples() == 0)
+            continue;
+         if (c->GetStartTime() < stime) {
+            stime = c->GetStartTime();
+         }
+      }
+   }
+   else if (t->GetKind() == Track::Label) {
+      LabelTrack *l = (LabelTrack *)t;
+      stime = l->GetStartTime();
+   }
+
+   return stime;
+}
+
+void AudacityProject::OnSortTime()
+{
+   int ndx;
+
+   wxArrayPtrVoid warr, marr;
+   TrackListIterator iter(mTracks);
+   Track *track = iter.First();
+   while (track) {
+      if (track->GetKind() == Track::Wave) {
+         for (ndx = 0; ndx < warr.GetCount(); ndx++) {
+            if (GetTime(track) < GetTime((Track *) warr[ndx])) {
+               break;
+            }
+         }
+         warr.Insert(track, ndx);
+      }
+      else {
+         for (ndx = 0; ndx < marr.GetCount(); ndx++) {
+            if (GetTime(track) < GetTime((Track *) marr[ndx])) {
+               break;
+            }
+         }
+         marr.Insert(track, ndx);
+      }
+      track = iter.RemoveCurrent();
+   }
+
+   for (ndx = 0; ndx < marr.GetCount(); ndx++) {
+      mTracks->Add((Track *)marr[ndx]);
+   }
+
+   for (ndx = 0; ndx < warr.GetCount(); ndx++) {
+      mTracks->Add((Track *)warr[ndx]);
+   }
+
+   PushState(_("Tracks sorted by time"), _("SortByTime"));
+
+   mTrackPanel->Refresh(false);
+}
+
+void AudacityProject::OnSortName()
+{
+   int ndx;
+
+   wxArrayPtrVoid arr;
+   TrackListIterator iter(mTracks);
+   Track *track = iter.First();
+   while (track) {
+      for (ndx = 0; ndx < arr.GetCount(); ndx++) {
+         if (track->GetName() < ((Track *) arr[ndx])->GetName()) {
+            break;
+         }
+      }
+      arr.Insert(track, ndx);
+      track = iter.RemoveCurrent();
+   }
+
+   for (ndx = 0; ndx < arr.GetCount(); ndx++) {
+      mTracks->Add((Track *)arr[ndx]);
+   }
+
+   PushState(_("Tracks sorted by name"), _("SortByName"));
+
+   mTrackPanel->Refresh(false);
 }
 
 void AudacityProject::OnSkipStart()
