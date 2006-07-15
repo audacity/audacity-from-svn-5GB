@@ -141,16 +141,15 @@ void QuitAudacity(bool bForce)
    // BG: Are there any projects open?
    if (!gAudacityProjects.IsEmpty())
    {
-      size_t len = gAudacityProjects.Count();
-      for (size_t i = 0; i < len; i++)
+      while (gAudacityProjects.Count())
       {
          if (bForce)
          {
-            gAudacityProjects[i]->Close(true);
+            gAudacityProjects[0]->Close(true);
          }
          else
          {
-            if (!gAudacityProjects[i]->Close())
+            if (!gAudacityProjects[0]->Close())
             {
                gIsQuitting = false;
                return;
