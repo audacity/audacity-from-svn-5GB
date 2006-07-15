@@ -756,6 +756,7 @@
 		283A11AA0A2C0E15004372C4 /* ShuttleGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */; };
 		283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A80A2C0E15004372C4 /* Theme.cpp */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
+		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
@@ -1811,6 +1812,8 @@
 		283A11A90A2C0E15004372C4 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ThemePrefs.cpp; sourceTree = "<group>"; };
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
+		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
+		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
 		2882177A0A35D8730029AF41 /* ShuttlePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttlePrefs.h; sourceTree = "<group>"; };
 		2882178A0A35D90C0029AF41 /* treebook.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = treebook.cpp; sourceTree = "<group>"; };
@@ -2698,6 +2701,8 @@
 				283A11A80A2C0E15004372C4 /* Theme.cpp */,
 				283A11A90A2C0E15004372C4 /* Theme.h */,
 				28F00A920A3E2FF100A3E5F5 /* ThemeAsCeeCode.h */,
+				287F9F3C0A69748F00F025FA /* TimeDialog.cpp */,
+				287F9F3B0A69748F00F025FA /* TimeDialog.h */,
 				1790B0E209883BFD008A330A /* TimeTrack.cpp */,
 				1790B0E309883BFD008A330A /* TimeTrack.h */,
 				1790B0E409883BFD008A330A /* ToolBar.cpp */,
@@ -4849,6 +4854,7 @@
 				2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */,
 				28F00A930A3E2FF100A3E5F5 /* FileNames.cpp in Sources */,
 				28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */,
+				287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

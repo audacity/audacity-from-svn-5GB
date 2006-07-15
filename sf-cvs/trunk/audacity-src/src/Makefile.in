@@ -80,6 +80,7 @@ OBJS = \
 	Spectrum.o \
 	Tags.o \
 	Theme.o \
+	TimeDialog.o \
 	TimeTrack.o \
 	ToolBar.o \
 	ToolsToolBar.o \
