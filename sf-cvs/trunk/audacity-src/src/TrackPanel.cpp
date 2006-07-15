@@ -5291,8 +5291,7 @@ void TrackPanel::OnSplitStereo(wxCommandEvent &event)
    wxASSERT(mPopupMenuTarget);
    Track *partner = mTracks->GetLink(mPopupMenuTarget);
    if (partner)
-      partner->SetChannel(Track::MonoChannel);
-   mPopupMenuTarget->SetChannel(Track::MonoChannel);
+      partner->SetTeamed(false);
    mPopupMenuTarget->SetLinked(false);
    MakeParentPushState(wxString::Format(_("Split stereo track '%s'"),
                                         mPopupMenuTarget->GetName().
@@ -5314,6 +5313,7 @@ void TrackPanel::OnMergeStereo(wxCommandEvent &event)
 
       mPopupMenuTarget->SetChannel(Track::LeftChannel);
       partner->SetChannel(Track::RightChannel);
+      partner->SetTeamed(true);
       MakeParentPushState(wxString::Format(_("Made '%s' a stereo track"),
                                            mPopupMenuTarget->GetName().
                                            c_str()),

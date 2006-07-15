@@ -179,8 +179,10 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
          }
    }
 
-   if (*outNumTracks == 2)
+   if (*outNumTracks == 2) {
       channels[0]->SetLinked(true);
+      channels[1]->SetTeamed(true);
+   }
 
    sampleCount fileTotalFrames = (sampleCount)mInfo.frames;
    sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
@@ -381,6 +383,7 @@ bool ImportPCM(wxWindow * parent,
       (*channels)[0]->SetChannel(Track::LeftChannel);
       (*channels)[1]->SetChannel(Track::RightChannel);
       (*channels)[0]->SetLinked(true);
+      (*channels)[1]->SetTeamed(true);
    }
 
    sampleCount fileTotalFrames = (sampleCount)info.frames;
