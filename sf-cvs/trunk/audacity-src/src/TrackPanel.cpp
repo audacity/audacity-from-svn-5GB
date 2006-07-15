@@ -508,9 +508,9 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mWaveTrackMenu->Append(OnSpectrumID, _("Spectrum"));
    mWaveTrackMenu->Append(OnPitchID, _("Pitch (EAC)"));
    mWaveTrackMenu->AppendSeparator();
-   mWaveTrackMenu->Append(OnChannelMonoID, _("Mono"));
-   mWaveTrackMenu->Append(OnChannelLeftID, _("Left Channel"));
-   mWaveTrackMenu->Append(OnChannelRightID, _("Right Channel"));
+   mWaveTrackMenu->AppendCheckItem(OnChannelMonoID, _("Mono"));
+   mWaveTrackMenu->AppendCheckItem(OnChannelLeftID, _("Left Channel"));
+   mWaveTrackMenu->AppendCheckItem(OnChannelRightID, _("Right Channel"));
    mWaveTrackMenu->Append(OnMergeStereoID, _("Make Stereo Track"));
    mWaveTrackMenu->Append(OnSplitStereoID, _("Split Stereo Track"));
    mWaveTrackMenu->AppendSeparator();
@@ -4963,6 +4963,9 @@ void TrackPanel::OnTrackMenu(Track *t)
       
       theMenu->Enable(OnMergeStereoID, canMakeStereo);
       theMenu->Enable(OnSplitStereoID, t->GetLinked());
+      theMenu->Check(OnChannelMonoID, t->GetChannel() == Track::MonoChannel);
+      theMenu->Check(OnChannelLeftID, t->GetChannel() == Track::LeftChannel);
+      theMenu->Check(OnChannelRightID, t->GetChannel() == Track::RightChannel);
       theMenu->Enable(OnChannelMonoID, !t->GetLinked());
       theMenu->Enable(OnChannelLeftID, !t->GetLinked());
       theMenu->Enable(OnChannelRightID, !t->GetLinked());
