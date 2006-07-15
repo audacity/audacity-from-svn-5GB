@@ -165,8 +165,16 @@ different formats.
 #include <wx/stattext.h>
 #include <wx/tooltip.h>
 
+#define ID_MENU 9800
+
+// Custom events
+
+DEFINE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED)
+
 BEGIN_EVENT_TABLE(TimeTextCtrl, wxPanel)
    EVT_PAINT(TimeTextCtrl::OnPaint)
+   EVT_CONTEXT_MENU(TimeTextCtrl::OnContext)
+   EVT_MENU_RANGE(ID_MENU, ID_MENU+100, TimeTextCtrl::OnMenu)
    EVT_MOUSE_EVENTS(TimeTextCtrl::OnMouse)
    EVT_CHAR(TimeTextCtrl::OnChar)
    EVT_SET_FOCUS(TimeTextCtrl::OnFocus)
@@ -270,6 +278,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
    mFormatString(formatString),
+   mMenuEnabled(false),
    mBackgroundBitmap(NULL),
    mDigitFont(NULL),
    mLabelFont(NULL),
@@ -296,7 +305,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    }
 
 #if wxUSE_ACCESSIBILITY
-   SetName( wxT("") );
+   SetName(wxT(""));
    SetAccessible(new TimeTextCtrlAx(this));
 #endif
 }
@@ -333,6 +342,21 @@ void TimeTextCtrl::SetTimeValue(double newTime)
 {
    mTimeValue = newTime;
    ValueToControls();
+}
+
+void TimeTextCtrl::EnableMenu(bool enable)
+{
+   wxString tip(_("Use right mouse button or context key to change format"));
+#if wxUSE_TOOLTIPS
+   if (enable)
+      SetToolTip(tip);
+   else {
+      wxToolTip *tt = GetToolTip();
+      if (tt && tt->GetTip() == tip)
+         SetToolTip(NULL);
+   }
+#endif
+   mMenuEnabled = enable;
 }
 
 const double TimeTextCtrl::GetTimeValue()
@@ -721,9 +745,43 @@ void TimeTextCtrl::OnPaint(wxPaintEvent &event)
    dc.SetBrush( wxNullBrush );
 }
 
+void TimeTextCtrl::OnMenu(wxCommandEvent &event)
+{
+   int id = event.GetId() - ID_MENU;
+
+   if (!mMenuEnabled || id < 0 || id > GetNumBuiltins()) {
+      event.Skip();
+      return;
+   }
+
+   SetFormatString(GetBuiltinFormat(id));
+
+   wxCommandEvent e(EVT_TIMETEXTCTRL_UPDATED, GetId());
+   GetParent()->GetEventHandler()->AddPendingEvent(e);
+}
+
+void TimeTextCtrl::OnContext(wxContextMenuEvent &event)
+{
+   wxMenu menu;
+   int i;
+
+   if (!mMenuEnabled) {
+      event.Skip();
+      return;
+   }
+
+   for(i=0; i<GetNumBuiltins(); i++) {
+      menu.AppendCheckItem(ID_MENU+i, GetBuiltinName(i));
+      if (mFormatString == GetBuiltinFormat(i))
+         menu.Check(ID_MENU+i, true);
+   }
+
+   PopupMenu(&menu, wxPoint(0, 0));
+}
+
 void TimeTextCtrl::OnMouse(wxMouseEvent &event)
 {
-   if (event.ButtonDown()) {
+   if (event.LeftDown()) {
       SetFocus();
 
       int bestDist = 9999;
@@ -740,6 +798,12 @@ void TimeTextCtrl::OnMouse(wxMouseEvent &event)
       }
 
       Refresh(false);
+   }
+   else if (event.RightDown() && mMenuEnabled) {
+      SetFocus();
+
+      wxContextMenuEvent e;
+      OnContext(e);
    }
    else if( event.m_wheelRotation != 0 ) {
       int steps =  event.m_wheelRotation /

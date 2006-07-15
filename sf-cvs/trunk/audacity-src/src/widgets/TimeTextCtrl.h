@@ -29,6 +29,8 @@
 #include <wx/access.h>
 #endif
 
+DECLARE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED, -1);
+
 class TimeField;
 WX_DECLARE_OBJARRAY(TimeField, TimeFieldArray);
 
@@ -68,12 +70,16 @@ class TimeTextCtrl: public wxPanel
    static wxString GetBuiltinFormat(int index);
    static wxString GetBuiltinFormat(const wxString &name);
 
+   void EnableMenu(bool enable = true);
+
 private:
 
    void OnChar(wxKeyEvent &event);
    void OnMouse(wxMouseEvent &event);
    void OnPaint(wxPaintEvent &event);
    void OnFocus(wxFocusEvent &event);
+   void OnContext(wxContextMenuEvent &event);
+   void OnMenu(wxCommandEvent &event);
 
    void ParseFormatString();
 
@@ -93,6 +99,8 @@ private:
    wxString       mValueString;
    wxString       mValueTemplate;
    wxString       mValueMask;
+
+   bool           mMenuEnabled;
 
    wxString       mPrefix;
 
