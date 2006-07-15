@@ -103,7 +103,7 @@ void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
    {
       // AddWindow is a generic 'Add' for ShuttleGui.
       // It allows us to add 'foreign' controls.
-      S.AddWindow( mCurrentComboText );
+      S.AddWindow( mCurrentComboText )->MoveAfterInTabOrder( mList );
       S.Id( SetButtonID ).AddButton( _("S&et"));
       S.Id( ClearButtonID ).AddButton( _("&Clear"));
    }
@@ -265,7 +265,7 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    // It's OK under WinXP.  TODO: Is there a #define that only excludes
    // WIN_98 that we could use here instead??
 #ifndef __WXMSW__
-   mCurrentComboText->SetFocus();
+//   mCurrentComboText->SetFocus();
 #else
    //JKC Something like the following might do what we want under Win98?
    //mCurrentComboText->GetEventHandler()->AddPendingEvent( wxFocusEvent(wxEVT_SET_FOCUS));
