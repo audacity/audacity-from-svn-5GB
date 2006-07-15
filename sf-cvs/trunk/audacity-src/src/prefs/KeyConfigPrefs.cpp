@@ -265,7 +265,11 @@ void KeyConfigPrefs::OnItemSelected(wxListEvent &event)
    // It's OK under WinXP.  TODO: Is there a #define that only excludes
    // WIN_98 that we could use here instead??
 #ifndef __WXMSW__
-//   mCurrentComboText->SetFocus();
+   // LLL: Removed since the focus would jump away from the listctrl when
+   //      using the keyboard to move up and down the list.  Every time
+   //      the up/down arrows are pressed, the focus jumps aways and you have
+   //      to tab back to the listctrl.
+   //mCurrentComboText->SetFocus();
 #else
    //JKC Something like the following might do what we want under Win98?
    //mCurrentComboText->GetEventHandler()->AddPendingEvent( wxFocusEvent(wxEVT_SET_FOCUS));
