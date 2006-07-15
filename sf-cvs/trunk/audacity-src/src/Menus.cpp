@@ -85,6 +85,7 @@ simplifies construction of menu items.
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
+#include "TimeDialog.h"
 
 enum {
    kAlignZero=0,
@@ -1637,39 +1638,12 @@ void AudacityProject::OnSetLeftSelection()
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
-         wxDialog D(this, wxID_ANY, wxString(_("Set Left Selection Bound")));
-         ShuttleGui S(&D, eIsCreating);
-         TimeTextCtrl T(&D,
-                        wxID_ANY,
-                        TimeTextCtrl::GetBuiltinFormat(fmt),
-                        mViewInfo.sel0,
-                        mRate,
-                        wxDefaultPosition,
-                        wxDefaultSize,
-                        true);
-
-         S.SetBorder(5);
-         S.StartVerticalLay(true);
-         {
-            S.StartStatic(_("Please enter time"), false);
-            {
-               S.AddWindow(&T);
-            }
-            S.EndStatic();
-         }
-         S.EndVerticalLay();
-         D.GetSizer()->Add(D.CreateButtonSizer(wxOK | wxCANCEL),
-                           0,
-                           wxCENTER | wxBOTTOM,
-                           10);
-         D.Layout();
-         D.Fit();
-         D.Center();
-         T.SetFocus();
+         TimeDialog D(this, wxID_ANY, _("Set Left Selection Bound"));
+         D.SetFormatString(fmt);
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
-               mViewInfo.sel0 = T.GetTimeValue();
+               mViewInfo.sel0 = D.GetTimeValue();
                
                //Make sure it is 'legal'
                if(mViewInfo.sel0 < 0.0)
@@ -1698,39 +1672,12 @@ void AudacityProject::OnSetRightSelection()
       {
          wxString fmt = gPrefs->Read(wxT("/SelectionFormat"), wxT(""));
 
-         wxDialog D(this, wxID_ANY, wxString(_("Set Right Selection Bound")));
-         ShuttleGui S(&D, eIsCreating);
-         TimeTextCtrl T(&D,
-                        wxID_ANY,
-                        TimeTextCtrl::GetBuiltinFormat(fmt),
-                        mViewInfo.sel1,
-                        mRate,
-                        wxDefaultPosition,
-                        wxDefaultSize,
-                        true);
-
-         S.SetBorder(5);
-         S.StartVerticalLay(true);
-         {
-            S.StartStatic(_("Please enter time"), false);
-            {
-               S.AddWindow(&T);
-            }
-            S.EndStatic();
-         }
-         S.EndVerticalLay();
-         D.GetSizer()->Add(D.CreateButtonSizer(wxOK | wxCANCEL),
-                           0,
-                           wxCENTER | wxBOTTOM,
-                           10);
-         D.Layout();
-         D.Fit();
-         D.Center();
-         T.SetFocus();
+         TimeDialog D(this, wxID_ANY, _("Set Right Selection Bound"));
+         D.SetFormatString(fmt);
          if(wxID_OK==D.ShowModal() )
             {
                //Get the value from the dialog
-               mViewInfo.sel1 = T.GetTimeValue();
+               mViewInfo.sel1 = D.GetTimeValue();
                
                //Make sure it is 'legal'
                if(mViewInfo.sel1 < 0)
