@@ -194,13 +194,9 @@ void ControlToolBar::Populate()
       ID_BATCH_BUTTON, false, _("Clean Speech"), _("Clean Speech"));
 
 #if wxUSE_TOOLTIPS
-#ifdef __WXMAC__
-   wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
-#else
 // MB: Should make this a pref
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
-#endif
 #endif
 
    // Set default order and mode
