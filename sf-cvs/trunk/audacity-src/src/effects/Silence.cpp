@@ -11,11 +11,6 @@
 \class EffectSilence
 \brief An Effect for the "Generator" menu to add silence.
 
-*//****************************************************************//**
-
-\class GenerateDialog
-\brief Dialog used with EffectSilence and others..
-
 *//*******************************************************************/
 
 
@@ -30,22 +25,21 @@
 
 #include "Silence.h"
 #include "../WaveTrack.h"
-#include "../widgets/TimeTextCtrl.h"
+#include "../TimeDialog.h"
 
 bool EffectSilence::PromptUser()
 {
    if (mT1 > mT0)
       length = mT1 - mT0;
 
-   TimeDialog dlog(mParent, _("Silence Generator"));
-   dlog.SetLength(length);
-   dlog.Init();
-   dlog.ShowModal();
+   TimeDialog dlog(mParent, wxID_ANY, _("Silence Generator"));
+   dlog.SetTimeValue(length);
 
-   if (dlog.GetReturnCode() == wxID_CANCEL)
+   if (dlog.ShowModal() == wxID_CANCEL)
       return false;
 
-   length = dlog.GetLength();
+   length = dlog.GetTimeValue();
+
    return true;
 }
 

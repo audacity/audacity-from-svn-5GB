@@ -55,67 +55,6 @@ class EffectSilence:public Effect {
    double length;
 };
 
-/// \brief TimeDialog is an EffectDialog that shows a TimeTextCtrl for 
-/// setting the duration of a generated effect.
-class TimeDialog:public EffectDialog
-{
- public:
-   TimeDialog(wxWindow * parent, const wxString & title):
-      EffectDialog(parent, title, INSERT_EFFECT)
-   {
-   }
-
-   void PopulateOrExchange(ShuttleGui & S)
-   {
-      S.StartStatic(_("Specify Length"), true);
-      {
-         mLenCtrl = new
-            TimeTextCtrl(this,
-                         wxID_ANY,
-                         TimeTextCtrl::GetBuiltinFormat(_("seconds")),
-                         mLength,
-                         44000.0,
-                         wxDefaultPosition,
-                         wxDefaultSize,
-                         true);
-         S.AddWindow(mLenCtrl);
-      }
-      S.EndStatic();
-      TransferDataToWindow();
-   }
-
-   bool TransferDataToWindow()
-   {
-      mLenCtrl->SetTimeValue(mLength);
-      mLenCtrl->SetFocus();
-
-      return true;
-   }
-
-   bool TransferDataFromWindow()
-   {
-      mLength = mLenCtrl->GetTimeValue();
-
-      return true;
-   }
-
-   double GetLength()
-   {
-      return mLength;
-   }
-
-   void SetLength(double length)
-   {
-      mLength = length;
-   }
-
- private:
-
-   TimeTextCtrl *mLenCtrl;
-   wxString mLenText;
-   double mLength;
-};
-
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

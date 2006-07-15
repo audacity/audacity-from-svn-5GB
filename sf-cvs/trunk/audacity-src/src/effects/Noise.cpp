@@ -15,14 +15,14 @@
 
 #include "../Audacity.h"
 
+#include <wx/defs.h> 
+#include <stdlib.h>
+
 #include "Noise.h"
 #include "Silence.h"
 
 #include "../WaveTrack.h"
-#include "../widgets/TimeTextCtrl.h"
-
-#include <wx/defs.h> 
-#include <stdlib.h>
+#include "../TimeDialog.h"
 
 void MakeNoise(float *buffer, sampleCount len)
 {
@@ -40,15 +40,14 @@ bool EffectNoise::PromptUser()
    else
 	   length = sDefaultGenerateLen;
 
-   TimeDialog dlog(mParent, _("White Noise Generator"));
-   dlog.SetLength(length);
-   dlog.Init();
-   dlog.ShowModal();
+   TimeDialog dlog(mParent, wxID_ANY, _("White Noise Generator"));
+   dlog.SetTimeValue(length);
 
-   if (dlog.GetReturnCode() == wxID_CANCEL)
+   if (dlog.ShowModal() == wxID_CANCEL)
       return false;
 
-   length = dlog.GetLength();
+   length = dlog.GetTimeValue();
+
    return true;
 }
 
