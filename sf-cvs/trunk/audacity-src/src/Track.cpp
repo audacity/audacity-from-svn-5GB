@@ -45,6 +45,7 @@ Track::Track(DirManager * projDirManager)
 
    mSelected  = false;
    mLinked    = false;
+   mTeamed    = false;
    mMute      = false;
    mSolo      = false;
 
@@ -105,7 +106,7 @@ Track::~Track()
 
 int Track::GetMinimizedHeight() const
 {
-   if (mChannel == LeftChannel || mChannel == RightChannel)
+   if (mTeamed)
       return 20;
    else
       return 40;

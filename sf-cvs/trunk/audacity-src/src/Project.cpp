@@ -409,16 +409,6 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_COMMAND(wxID_ANY, EVT_RELEASE_KEYBOARD, AudacityProject::OnReleaseKeyboard)
 END_EVENT_TABLE()
 
-void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
-{
-   CaptureKeyboard();
-}
-
-void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
-{
-   ReleaseKeyboard();
-}
-
 AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxPoint & pos,
                                  const wxSize & size)
@@ -1425,6 +1415,16 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    //
    wxSafeYield(NULL, true);
    Destroy();
+}
+
+void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
+{
+   CaptureKeyboard();
+}
+
+void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
+{
+   ReleaseKeyboard();
 }
 
 // static method, can be called outside of a project
@@ -2618,6 +2618,7 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
             if( dest )
             {
                dest->SetChannel( wt->GetChannel() );
+               dest->SetTeamed( wt->GetTeamed() ); // do first
                dest->SetLinked( wt->GetLinked() );
                dest->SetName( wt->GetName() );
                ( ( WaveTrack* )dest )->SetRate( wt->GetRate() );

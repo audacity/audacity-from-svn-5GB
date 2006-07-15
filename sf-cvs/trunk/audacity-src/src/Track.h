@@ -38,6 +38,7 @@ class Track: public XMLTagHandler {
    bool       mSelected;
 
    bool       mLinked;
+   bool       mTeamed;
    bool       mMinimized;
 
  public:
@@ -97,11 +98,13 @@ class Track: public XMLTagHandler {
    bool GetSelected() const { return mSelected; }
    bool GetMute    () const { return mMute;     }
    bool GetLinked  () const { return mLinked;   }
+   bool GetTeamed  () const { return mTeamed;   }
    bool GetSolo    () const { return mSolo;     }
 
    void SetSelected(bool s) { mSelected = s; }
    void SetMute    (bool m) { mMute     = m; }
-   void SetLinked  (bool l) { mLinked   = l; }
+   void SetLinked  (bool l) { mLinked   = l; mTeamed = l; }
+   void SetTeamed  (bool l) { mTeamed   = l; mLinked = false; }
    void SetSolo    (bool s) { mSolo     = s; }
 
    int    GetChannel() const { return mChannel; }

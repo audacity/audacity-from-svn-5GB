@@ -330,8 +330,10 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
 	 mChannels[c]->SetChannel(Track::MonoChannel);
    }
 
-   if (*outNumTracks == 2)
+   if (*outNumTracks == 2) {
       mChannels[0]->SetLinked(true);
+      mChannels[1]->SetTeamed(true);
+   }
 
    mFile->process_until_end_of_file();
    

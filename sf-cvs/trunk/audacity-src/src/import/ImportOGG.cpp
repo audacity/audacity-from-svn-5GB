@@ -204,8 +204,10 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
          }
    }
 
-   if (*outNumTracks == 2)
+   if (*outNumTracks == 2) {
       channels[0]->SetLinked(true);
+      channels[1]->SetTeamed(true);
+   }
 
 /* The number of bytes to get from the codec in each run */
 #define CODEC_TRANSFER_SIZE 4096

@@ -101,6 +101,7 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
       mixLeft->SetChannel(Track::LeftChannel);
       mixRight->SetChannel(Track::RightChannel);
       mixLeft->SetLinked(true);
+      mixRight->SetTeamed(true);
    }
 
    int maxBlockLen = mixLeft->GetIdealBlockSize();

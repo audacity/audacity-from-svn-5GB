@@ -722,7 +722,10 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
                newTrack->SetLinked(true);
             }
             else
+            {
                newTrack->SetChannel(Track::RightChannel);
+               newTrack->SetTeamed(true);
+            }
          }
          else
          {

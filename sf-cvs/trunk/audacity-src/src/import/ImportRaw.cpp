@@ -193,8 +193,10 @@ int ImportRaw(wxWindow *parent, wxString fileName,
          }
    }
 
-   if (numChannels == 2)
+   if (numChannels == 2) {
       channels[0]->SetLinked(true);
+      channels[1]->SetTeamed(true);
+   }
 
    sampleCount maxBlockSize = channels[0]->GetMaxBlockSize();
    bool cancelled = false;

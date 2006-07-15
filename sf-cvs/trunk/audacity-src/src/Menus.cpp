@@ -2350,6 +2350,7 @@ void AudacityProject::OnCut()
          }
          if (dest) {
             dest->SetChannel(n->GetChannel());
+            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             if (n->GetKind() == Track::Wave) {
@@ -2392,6 +2393,7 @@ void AudacityProject::OnSplitCut()
          }
          if (dest) {
             dest->SetChannel(n->GetChannel());
+            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             if (n->GetKind() == Track::Wave) {
@@ -2440,6 +2442,7 @@ void AudacityProject::OnCopy()
          n->Copy(mViewInfo.sel0, mViewInfo.sel1, &dest);
          if (dest) {
             dest->SetChannel(n->GetChannel());
+            dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
             if (n->GetKind() == Track::Wave) {
@@ -2520,6 +2523,7 @@ void AudacityProject::OnPaste()
             continue;
          }
 
+         n->SetTeamed(c->GetTeamed()); // do first
          n->SetLinked(c->GetLinked());
          n->SetChannel(c->GetChannel());
          n->SetName(c->GetName());
@@ -3832,7 +3836,8 @@ void AudacityProject::OnNewStereoTrack()
    t->SetRate((int) mRate);
    
    mTracks->Add(t);
-   t->SetSelected (true);
+   t->SetSelected(true);
+   t->SetTeamed (true);
    
    PushState(_("Created new stereo audio track"), _("New Track"));
    
