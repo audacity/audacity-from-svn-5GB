@@ -1888,6 +1888,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\TimeDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TimeDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\TimeTrack.cpp"
 				>
 				<FileConfiguration

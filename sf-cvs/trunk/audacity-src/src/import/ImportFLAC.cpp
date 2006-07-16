@@ -48,6 +48,7 @@ void GetFLACImportPlugin(ImportPluginList *importPluginList,
 #include <wx/string.h>
 #include <wx/utils.h>
 #include <wx/intl.h>
+#include <wx/file.h>
 #include <wx/ffile.h>
 
 #include "FLAC++/decoder.h"
