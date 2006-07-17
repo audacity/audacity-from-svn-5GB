@@ -346,6 +346,17 @@ if [[ "$use_libsndfile" = "local" ]] ; then
 	EXTRAOBJS="$EXTRAOBJS ../lib-src/libsndfile/src/.libs/libsndfile.a"
 	CXXFLAGS="$CXXFLAGS -I../lib-src/libsndfile/src"
 
+	dnl we might need to add flac libs as well - if they are on the system
+	dnl then libsndfile will have detected and linked against them
+	dnl so we need extra (static) link flags
+
+        AC_CHECK_HEADERS(FLAC/all.h)
+        if test x$ac_cv_header_FLAC_all_h = xyes ;
+	then
+        	LIBS="$LIBS -lFLAC"
+        fi
+
+
    if test ! -f "lib-src/libsndfile/Makefile"; then
 		echo "--- Configuring libsndfile";
 		AC_CONFIG_SUBDIRS([[lib-src/libsndfile]])
@@ -607,27 +618,26 @@ fi
 
 dnl Check that the wx version is 2.4.x
 
-wx_version=`${WX_CONFIG} $static_preference $unicode_preference --version=2.4 --version`
+wx_release=`${WX_CONFIG} $static_preference $unicode_preference --release`
 
 AC_MSG_NOTICE([Checking that the installed version of wxWidgets is 2.4.x])
 
-case "${wx_version}" in
- 2.4.*)
+if [[ "${wx_release}" = 2.4 ]]
+then
    echo "Great, you're using wxWidgets 2.4.x!"
-   ;;
-  *)
-  wx_list=`${WX_CONFIG} --list`
+else
   AC_MSG_ERROR([Unable to locate a suitable configuration of wxWidgets v2.4.x.
 The currently available configurations are listed below.  If necessary, either
 install the package for your distribution or download the 2.4.x version of
 wxWidgets from http://wxwidgets.org.
+To help configure find the right version set WX_CONFIG to point to it.
 wxWidgets 2.5.x and 2.6.x are NOT supported!
-${wx_list}])
-esac
+])
+fi
 		
 
-LIBS="$LIBS `$WX_CONFIG --version=2.4 --libs`"
-CPPFLAGS="$CPPFLAGS `$WX_CONFIG --version=2.4 --cxxflags`"
+LIBS="$LIBS `$WX_CONFIG --libs`"
+CPPFLAGS="$CPPFLAGS `$WX_CONFIG --cxxflags`"
 
 
 AC_CANONICAL_HOST
