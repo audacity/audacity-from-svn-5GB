@@ -348,7 +348,7 @@ void CompressorPanel::OnPaint(wxPaintEvent & evt)
    hRuler.GetMaxSize(NULL, &h);
 
    vRuler.SetBounds(0, 0, w, mHeight - h);
-   hRuler.SetBounds(w, mHeight - h, mWidth, h);
+   hRuler.SetBounds(w, mHeight - h, mWidth, mHeight);
 
    wxColour bkgnd = GetBackgroundColour();
    wxBrush bkgndBrush(bkgnd, wxSOLID);
