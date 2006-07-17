@@ -117,6 +117,13 @@ wxString sf_header_shortname(int format)
    format_info.format = (format & SF_FORMAT_TYPEMASK);
    sf_command(NULL, SFC_GET_FORMAT_INFO, &format_info, sizeof(format_info));
 
+   /* add a trap for getting a null name back from the library */
+   if (format_info.name == NULL)
+   {
+	   s = "";
+	   return s;
+   }
+	
    tmp = (char *)malloc(strlen(format_info.name)+1);
    strcpy(tmp, format_info.name);
    i = 0;
