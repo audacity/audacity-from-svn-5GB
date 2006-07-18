@@ -21,8 +21,11 @@
 #endif
 
 #include <wx/filefn.h>
+#include <wx/filename.h>
 #include <wx/stdpaths.h>
+#include <wx/app.h>
 
+#include "AudacityApp.h"
 #include "PlatformCompatibility.h"
 
 wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
@@ -78,4 +81,58 @@ wxString PlatformCompatibility::GetLongFileName(const wxString& shortFileName)
    return longFileName;
 
 #endif
+}
+
+//
+// Taken from http://wxwidgets.org/docs/technote/install.htm
+//
+wxString PlatformCompatibility::GetExecutablePath()
+{
+    static bool found = false;
+    static wxString path;
+
+    if (found)
+        return path;
+    else
+    {
+#ifdef __WXMSW__
+
+        char buf[512];
+        *buf = '\0';
+        GetModuleFileName(NULL, buf, 511);
+        path = buf;
+
+#elif defined(__WXMAC__)
+
+        ProcessInfoRec processinfo;
+        ProcessSerialNumber procno ;
+        FSSpec fsSpec;
+
+        procno.highLongOfPSN = NULL ;
+        procno.lowLongOfPSN = kCurrentProcess ;
+        processinfo.processInfoLength = sizeof(ProcessInfoRec);
+        processinfo.processName = NULL;
+        processinfo.processAppSpec = &fsSpec;
+
+        GetProcessInformation( &procno , &processinfo ) ;
+        path = wxMacFSSpec2MacFilename(&fsSpec);
+#else
+        wxString argv0 = wxGetApp().argv[0];
+
+        if (wxIsAbsolutePath(argv0))
+            path = argv0;
+        else
+        {
+            wxPathList pathlist;
+            pathlist.AddEnvList(wxT("PATH"));
+            path = pathlist.FindAbsoluteValidPath(argv0);
+        }
+
+        wxFileName filename(path);
+        filename.Normalize();
+        path = filename.GetFullPath();
+#endif
+        found = true;
+        return path;
+    }
 }

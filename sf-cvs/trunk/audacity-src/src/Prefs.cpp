@@ -16,6 +16,8 @@
   See Prefs.h for more information on how it works...
 
 \verbatim
+  Note: The info below is very outdated and incomplete
+
   Preference field specification:
   	/
 		Version					- Audacity Version that created these prefs
@@ -55,6 +57,9 @@
 #include <wx/app.h>
 #include <wx/config.h>
 #include <wx/intl.h>
+#include <wx/filename.h>
+
+#include "FileNames.h"
 
 #include "sndfile.h"
 
@@ -95,7 +100,12 @@ void InitPreferences()
    wxTheApp->SetVendorName(vendorName);
    wxTheApp->SetAppName(appName);
 
-   gPrefs = new wxConfig(appName);
+   wxFileName configFileName(FileNames::DataDir(), wxT("audacity.cfg"));
+
+   gPrefs = new wxFileConfig(appName, wxEmptyString,
+                            configFileName.GetFullPath(),
+                            wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+      
    wxConfigBase::Set(gPrefs);
 
 #ifdef __WXMAC__

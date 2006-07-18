@@ -28,6 +28,9 @@ used throughout Audacity into this one place.
 #include <wx/stdpaths.h>
 #include "Prefs.h"
 #include "FileNames.h"
+#include "PlatformCompatibility.h"
+
+static wxString gDataDir;
 
 wxString FileNames::MkDir(const wxString &Str)
 {
@@ -58,11 +61,30 @@ wxString FileNames::DataDir()
    //       between wxStandardPaths and wxConfig under Linux.  The latter
    //       creates a normal file as "$HOME/.audacity", while the former
    //       expects the ".audacity" portion to be a directory.
+   if (gDataDir.IsEmpty())
+   {
+      // If there is a directory "Portable Settings" relative to the
+      // executable's EXE file, the prefs are stored in there, otherwise
+      // the prefs are stored in the user data dir provided by the OS.
+      wxFileName exePath(PlatformCompatibility::GetExecutablePath());
+      wxFileName portablePrefsPath(exePath.GetPath(), wxT("Portable Settings"));
+      
+      if (portablePrefsPath.DirExists())
+      {
+         // Use "Portable Settings" folder
+         gDataDir = portablePrefsPath.GetFullPath();
+      } else
+      {
+         // Use OS-provided user data dir folder
 #if defined( __WXGTK__ )
-   return FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() + wxT("-data") );
+         gDataDir = FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() + wxT("-data") );
 #else
-   return FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() );
+         gDataDir = FileNames::MkDir( wxStandardPaths::Get().GetUserDataDir() );
 #endif
+      }
+   }
+   
+   return gDataDir;
 }
 
 wxString FileNames::ThemeDir()
