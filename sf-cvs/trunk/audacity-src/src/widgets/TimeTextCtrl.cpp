@@ -161,7 +161,6 @@ different formats.
 #include <wx/dcmemory.h>
 #include <wx/font.h>
 #include <wx/intl.h>
-#include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/tooltip.h>
@@ -172,7 +171,7 @@ different formats.
 
 DEFINE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED)
 
-BEGIN_EVENT_TABLE(TimeTextCtrl, wxPanel)
+BEGIN_EVENT_TABLE(TimeTextCtrl, wxControl)
    EVT_PAINT(TimeTextCtrl::OnPaint)
    EVT_CONTEXT_MENU(TimeTextCtrl::OnContext)
    EVT_MENU_RANGE(ID_MENU, ID_MENU+100, TimeTextCtrl::OnMenu)
@@ -182,7 +181,7 @@ BEGIN_EVENT_TABLE(TimeTextCtrl, wxPanel)
    EVT_KILL_FOCUS(TimeTextCtrl::OnFocus)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(TimeTextCtrl, wxPanel)
+IMPLEMENT_CLASS(TimeTextCtrl, wxControl)
 
 struct BuiltinFormatString {
    const wxChar *name;
@@ -275,7 +274,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
                            const wxPoint &pos,
                            const wxSize &size,
                            bool autoPos):
-   wxPanel(parent, id, pos, size, wxWANTS_CHARS),
+   wxControl(parent, id, pos, size, wxWANTS_CHARS),
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
    mFormatString(formatString),
@@ -758,6 +757,8 @@ void TimeTextCtrl::OnMenu(wxCommandEvent &event)
    SetFormatString(GetBuiltinFormat(id));
 
    wxCommandEvent e(EVT_TIMETEXTCTRL_UPDATED, GetId());
+   e.SetInt(id);
+   e.SetString(GetBuiltinName(id));
    GetParent()->GetEventHandler()->AddPendingEvent(e);
 }
 

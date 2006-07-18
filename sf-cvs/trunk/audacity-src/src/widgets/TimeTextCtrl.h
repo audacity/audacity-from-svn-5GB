@@ -37,7 +37,7 @@ WX_DECLARE_OBJARRAY(TimeField, TimeFieldArray);
 class DigitInfo;
 WX_DECLARE_OBJARRAY(DigitInfo, DigitInfoArray);
 
-class TimeTextCtrl: public wxPanel
+class TimeTextCtrl: public wxControl
 {
    friend class TimeTextCtrlAx;
 
