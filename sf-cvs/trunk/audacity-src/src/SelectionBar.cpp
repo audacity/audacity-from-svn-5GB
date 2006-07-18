@@ -73,6 +73,11 @@ BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
   #else
    EVT_CHOICE(OnFormatChoiceID, SelectionBar::OnFormatChoice)
   #endif
+
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, SelectionBar::OnUpdate)
+#endif
+
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
@@ -181,6 +186,9 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, mRate);
    mLeftTime->SetName(_("Selection Start:"));
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+   mLeftTime->EnableMenu();
+#endif
    mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -195,6 +203,9 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRightTime->SetName(wxString(_("Selection ")) + (showSelectionLength ?
                                                    _("Length") :
                                                    _("End")));
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+   mRightTime->EnableMenu();
+#endif
    mainSizer->Add(mRightTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -207,12 +218,15 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+   mAudioTime->EnableMenu();
+#endif
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
    mainSizer->Add(20, 10);
 
    mFormatChoice = NULL;
-
+#if !defined(TESTING_TIMETEXTCTRL_MENU)
    wxString *choices = new wxString[TimeTextCtrl::GetNumBuiltins()];
    for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
       choices[i] = TimeTextCtrl::GetBuiltinName(i);
@@ -237,10 +251,11 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mFormatChoice = choice;   
   #endif
+
    delete [] choices;
 
    mainSizer->Add(mFormatChoice, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-
+#endif
    //
    // Bottom row (buttons)
    //
@@ -272,7 +287,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    Layout();
 
    mMainSizer = mainSizer;
-
+#if defined(TESTING_TIMETEXTCTRL_MENU)
 #if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    // Under GTK the radio buttons cause tabbing to have "end-points" which prevents
@@ -284,16 +299,19 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mFormatChoice->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
 #endif
 #endif
+#endif
 }
 
 SelectionBar::~SelectionBar()
 {
+#if defined(TESTING_TIMETEXTCTRL_MENU)
 #if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    mRightEndButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mRightLengthButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mRateBox->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
    mFormatChoice->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
+#endif
 #endif
 #endif
 }
@@ -383,6 +401,26 @@ void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
    Layout();
    Refresh(false);
 }
+
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+void SelectionBar::OnUpdate(wxCommandEvent &evt)
+{
+   int index = evt.GetInt();
+   wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
+   wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
+
+   gPrefs->Write(wxT("/SelectionFormat"), formatName);
+
+   mLeftTime->SetFormatString(formatString);
+   mRightTime->SetFormatString(formatString);
+   mAudioTime->SetFormatString(formatString);
+
+   Layout();
+   Refresh(false);
+
+   evt.Skip(false);
+}
+#endif
 
 void SelectionBar::ValuesToControls()
 {

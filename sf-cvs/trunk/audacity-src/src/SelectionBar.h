@@ -52,7 +52,10 @@ class SelectionBar : public wxPanel {
  private:
 
    void ValuesToControls();
-
+#define TESTING_TIMETEXTCTRL_MENU
+#if defined(TESTING_TIMETEXTCTRL_MENU)
+   void OnUpdate(wxCommandEvent &evt);
+#endif
    void OnFormatChoice(wxCommandEvent &evt);
    void OnLeftTime(wxCommandEvent &evt);
    void OnRightTime(wxCommandEvent &evt);
