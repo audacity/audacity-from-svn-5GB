@@ -287,7 +287,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    Layout();
 
    mMainSizer = mainSizer;
-#if defined(TESTING_TIMETEXTCTRL_MENU)
+#if !defined(TESTING_TIMETEXTCTRL_MENU)
 #if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    // Under GTK the radio buttons cause tabbing to have "end-points" which prevents
@@ -304,7 +304,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
 SelectionBar::~SelectionBar()
 {
-#if defined(TESTING_TIMETEXTCTRL_MENU)
+#if !defined(TESTING_TIMETEXTCTRL_MENU)
 #if wxCHECK_VERSION(2, 6, 1)
 #if defined(__WXGTK__)
    mRightEndButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
