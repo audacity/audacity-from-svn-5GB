@@ -38,8 +38,8 @@ other settings.
 AudioIOPrefs::AudioIOPrefs(wxWindow * parent):
    PrefsPanel(parent)
 {
-   SetLabel(wxT("Audio I/O"));         // Provide visual label
-   SetName(wxT("Audio I/O"));          // Provide audible label
+   SetLabel(_("Audio I/O"));         // Provide visual label
+   SetName(_("Audio I/O"));          // Provide audible label
    Populate();
 }
 

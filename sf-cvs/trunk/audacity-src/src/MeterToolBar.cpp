@@ -71,8 +71,8 @@ void MeterToolBar::Populate()
                            false,
                            wxDefaultPosition,
                            wxSize( 99, 55 ) );
-   mPlayMeter->SetName( wxT("Play Meter"));
-   mPlayMeter->SetLabel( wxT("Meter-Play"));
+   mPlayMeter->SetName( _("Play Meter"));
+   mPlayMeter->SetLabel( _("Meter-Play"));
    mSizer->Add( mPlayMeter, wxGBPosition( 0, 0 ), wxDefaultSpan, wxEXPAND );
 
    mRecordMeter = new Meter( this,
@@ -80,8 +80,8 @@ void MeterToolBar::Populate()
                              true,
                              wxDefaultPosition,
                              wxSize( 99, 55 ) );
-   mPlayMeter->SetName( wxT("Record Meter"));
-   mRecordMeter->SetLabel( wxT("Meter-Record") );
+   mPlayMeter->SetName( _("Record Meter"));
+   mRecordMeter->SetLabel( _("Meter-Record") );
    mSizer->Add( mRecordMeter, wxGBPosition( 0, 1 ), wxDefaultSpan, wxEXPAND );
 
 #if wxUSE_TOOLTIPS

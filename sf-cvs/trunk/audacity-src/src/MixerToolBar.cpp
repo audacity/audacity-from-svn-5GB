@@ -116,7 +116,7 @@ void MixerToolBar::Populate()
 
    mOutputSlider = new ASlider(this, OutputVolumeID, _("Output Volume"),
                                wxDefaultPosition, wxSize(130, 25));
-   mOutputSlider->SetLabel( wxT("Slider-Output") );
+   mOutputSlider->SetLabel( _("Slider-Output") );
    Add( mOutputSlider, 0, wxALIGN_CENTER );
 
 //   mRecordBitmap = new wxBitmap( Mic );
@@ -129,7 +129,7 @@ void MixerToolBar::Populate()
 
    mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
                               wxDefaultPosition, wxSize(130, 25));
-   mInputSlider->SetLabel( wxT("Slider-Input") );
+   mInputSlider->SetLabel( _("Slider-Input") );
    Add( mInputSlider, 0, wxALIGN_CENTER );
 
    mInputSourceChoice = NULL;
