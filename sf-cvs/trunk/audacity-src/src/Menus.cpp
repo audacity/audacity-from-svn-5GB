@@ -156,7 +156,9 @@ enum {
    TrackPanelHasFocus     = 0x00008000,  //lll
    SelectionBarHasFocus   = 0x00010000,  //lll
    LabelsSelectedFlag     = 0x00020000,
-   AudioIOBusyFlag        = 0x00040000   //lll
+   AudioIOBusyFlag        = 0x00040000,  //lll
+   PlayRegionLockedFlag   = 0x00080000,  //msmeyer
+   PlayRegionNotLockedFlag= 0x00100000   //msmeyer
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -501,7 +503,8 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginSubMenu(_("Play &Region..."));
    c->AddItem(wxT("LockPlayRegion"), _("Lock Play Region"), FN(OnLockPlayRegion));
    c->AddItem(wxT("UnlockPlayRegion"), _("Unlock Play Region"), FN(OnUnlockPlayRegion));
-   c->SetCommandFlags(0, 0, wxT("LockPlayRegion"), wxT("UnlockPlayRegion"), NULL);
+   c->SetCommandFlags(wxT("LockPlayRegion"), PlayRegionNotLockedFlag, PlayRegionNotLockedFlag);
+   c->SetCommandFlags(wxT("UnlockPlayRegion"), PlayRegionLockedFlag, PlayRegionLockedFlag);
    c->EndSubMenu();
 
    // Alternate strings
@@ -1089,6 +1092,11 @@ wxUint32 AudacityProject::GetUpdateFlags()
       flags |= ZoomOutAvailableFlag;
 
    flags |= GetFocusedFrame();
+   
+   if (IsPlayRegionLocked())
+      flags |= PlayRegionLockedFlag;
+   else
+      flags |= PlayRegionNotLockedFlag;
 
    return flags;
 }
