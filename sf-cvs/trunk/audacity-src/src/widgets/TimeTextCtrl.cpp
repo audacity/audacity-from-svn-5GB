@@ -161,6 +161,7 @@ different formats.
 #include <wx/dcmemory.h>
 #include <wx/font.h>
 #include <wx/intl.h>
+#include <wx/menu.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/tooltip.h>
