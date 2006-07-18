@@ -32,6 +32,12 @@ public:
    // just returns the exact string it is given.
    //
    static wxString GetLongFileName(const wxString& shortFileName);
+   
+   //
+   // Get filename and path of executable (e.g. "/usr/bin/audacity" on
+   // Linux or "C:\Program Files\Audacity\Audacity.exe" on Windows)
+   //
+   static wxString GetExecutablePath();
 };
 
 #endif

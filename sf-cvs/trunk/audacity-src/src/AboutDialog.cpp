@@ -35,6 +35,7 @@ hold information about one contributor to Audacity.
 #include <wx/intl.h>
 
 #include "AboutDialog.h"
+#include "FileNames.h"
 #include "portaudio.h"
 
 #include <wx/listimpl.cpp>
@@ -42,6 +43,7 @@ WX_DEFINE_LIST(AboutDialogCreditItemsList);
 
 #include "Theme.h"
 #include "AllThemeResources.h"
+
 //#include "../images/AudacityLogo.xpm"
 
 void AboutDialog::CreateCreditsList()
@@ -186,6 +188,11 @@ AboutDialog::AboutDialog(wxWindow * parent)
    // Current date
    informationStr += _("Program build date: ");
    informationStr += __TDATE__;
+   informationStr += wxT("<br>\n");
+   
+   // Location of settings
+   informationStr += _("Settings folder: ");
+   informationStr += FileNames::DataDir();
    informationStr += wxT("<br>\n");
 
    wxString par1Str = _(

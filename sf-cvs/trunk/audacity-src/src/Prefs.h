@@ -5,12 +5,13 @@
   Prefs.h
 
   Dominic Mazzoni
+  Markus Meyer
 
-  Audacity uses wxWindows' wxConfig class to handle preferences.
-  What it actually does depends on the platform - on Unix it's
-  a configuration file in the ".audacity" directory, on the
-  Mac it's an "Audacity Preferences" file in their System Folder,
-  and on Windows it uses the Windows Registry.
+  Audacity uses wxWindows' wxFileConfig class to handle preferences.
+  In Audacity versions prior to 1.3.1, it used wxConfig, which would
+  store the prefs in a platform-dependent way (e.g. in the registry
+  on Windows). Now it always stores the settings in a configuration file
+  in the Audacity Data Directory.
 
   Every time we read a preference, we need to specify the default
   value for that preference, to be used if the preference hasn't
