@@ -190,7 +190,7 @@ Grabber::Grabber( wxWindow * parent, wxWindowID id ):
    mMarker = false;
    mPressed = false;
 
-   SetLabel( wxT("Grabber") );
+   SetLabel( _("Grabber") );
 }
 
 //
@@ -394,8 +394,8 @@ END_EVENT_TABLE()
 ToolBarDock::ToolBarDock( wxWindow *parent ):
    wxPanel( parent, wxID_ANY, wxPoint( 0, 0 ), parent->GetSize())
 {
-   SetLabel( wxT( "ToolBarDock" ) );
-   SetName( wxT( "ToolBarDock" ) );
+   SetLabel( _( "ToolBarDock" ) );
+   SetName( _( "ToolBarDock" ) );
 
    // Init
    mDragBar = NULL;
@@ -1408,14 +1408,14 @@ void ToolBar::SetDocked( bool dock )
    // Change the tooltip of the the grabber
    if( dock )
    {
-      mGrabber->SetLabel( wxT("Float") );
+      mGrabber->SetLabel( _("Float") );
 #if wxUSE_TOOLTIPS
       mGrabber->SetToolTip( _("Float Toolbar") );
 #endif
    }
    else
    {
-      mGrabber->SetLabel( wxT("Dock") );
+      mGrabber->SetLabel( _("Dock") );
 #if wxUSE_TOOLTIPS
       mGrabber->SetToolTip( _("Dock Toolbar") );
 #endif

@@ -446,8 +446,8 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
 #pragma warning( default: 4355 )
 #endif
 {
-   SetLabel(wxT("Track Panel"));
-   SetName(wxT("Track Panel"));
+   SetLabel(_("Track Panel"));
+   SetName(_("Track Panel"));
 
    mAx = new TrackPanelAx( this );
 #if wxUSE_ACCESSIBILITY

@@ -1102,8 +1102,8 @@ AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
                                      ViewInfo *viewinfo):
    wxPanel( parent, id, pos, size )
 {
-   SetLabel( wxT("Vertical Ruler") );
-   SetName( wxT("Vertical Ruler") );
+   SetLabel( _("Vertical Ruler") );
+   SetName( _("Vertical Ruler") );
 
    mTrackPanel = NULL;
    mLeftOffset = 0;

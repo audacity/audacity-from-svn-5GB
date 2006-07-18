@@ -92,8 +92,8 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 {
    int i;
 
-   SetLabel(wxT("Selection Bar"));
-   SetName(wxT("Selection Bar"));
+   SetLabel(_("Selection Bar"));
+   SetName(_("Selection Bar"));
 
    // This will be inherited by all children:
    SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL));
