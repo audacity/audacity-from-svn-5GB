@@ -96,7 +96,6 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
 
-   S.StartHorizontalLay( wxEXPAND, 0 );
    S.StartStatic( _("Auto save"),1);
    {
       S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
