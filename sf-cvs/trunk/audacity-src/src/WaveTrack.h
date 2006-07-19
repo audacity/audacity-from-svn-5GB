@@ -291,6 +291,9 @@ class WaveTrack: public Track {
    // This track has been merged into a stereo track.  Copy shared parameters
    // from the new partner.
    virtual void Merge(const Track &orig);
+   
+   // Resample track (i.e. all clips in the track)
+   bool Resample(int rate);
 
    //
    // The following code will eventually become part of a GUIWaveTrack

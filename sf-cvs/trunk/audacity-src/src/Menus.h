@@ -282,6 +282,8 @@ void OnSeparator();
 void PrevFrame();
 void NextFrame();
 
+void OnResample();
+
 #endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
