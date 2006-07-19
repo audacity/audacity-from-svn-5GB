@@ -30,11 +30,12 @@
 #define __AUDACITY_PREFS__
 
 #include <wx/config.h>
+#include <wx/fileconf.h>
 
 void InitPreferences();
 void FinishPreferences();
 
-extern wxConfig *gPrefs;
+extern wxFileConfig *gPrefs;
 
 extern int gMenusDirty;
 
