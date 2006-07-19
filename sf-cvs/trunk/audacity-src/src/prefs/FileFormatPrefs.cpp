@@ -126,6 +126,8 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("&Make a copy of the file before editing (safer)"),wxT("copy"));
       S.TieRadioButton( _("&Read directly from the original file (faster)"),wxT("edit"));
       S.EndRadioButtonGroup();
+      S.TieCheckBox( _("&Show warning before reading file directly"),
+                     wxT("/FileFormats/ShowEditWarning"), true);
    }
    S.EndStatic();
    S.StartStatic( _("When exporting tracks"));
