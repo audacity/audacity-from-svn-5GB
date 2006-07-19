@@ -57,6 +57,7 @@
 #include <wx/app.h>
 #include <wx/config.h>
 #include <wx/intl.h>
+#include <wx/fileconf.h>
 #include <wx/filename.h>
 
 #include "FileNames.h"
@@ -80,7 +81,7 @@ pascal OSErr FSpGetFullPath(const FSSpec * spec,
 
 #include "Prefs.h"
 
-wxConfig *gPrefs = NULL;
+wxFileConfig *gPrefs = NULL;
 int gMenusDirty = 0;
 
 void InitPreferences()

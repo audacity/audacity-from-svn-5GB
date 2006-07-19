@@ -97,7 +97,7 @@ wxString PlatformCompatibility::GetExecutablePath()
     {
 #ifdef __WXMSW__
 
-        char buf[512];
+        wxChar buf[512];
         *buf = '\0';
         GetModuleFileName(NULL, buf, 511);
         path = buf;
