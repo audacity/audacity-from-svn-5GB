@@ -14,7 +14,6 @@
 #include <wx/panel.h>
 
 class wxBitmap;
-class wxChoice;
 class wxComboBox;
 class wxRadioButton;
 class wxMenu;
@@ -52,11 +51,7 @@ class SelectionBar : public wxPanel {
  private:
 
    void ValuesToControls();
-#define TESTING_TIMETEXTCTRL_MENU
-#if defined(TESTING_TIMETEXTCTRL_MENU)
    void OnUpdate(wxCommandEvent &evt);
-#endif
-   void OnFormatChoice(wxCommandEvent &evt);
    void OnLeftTime(wxCommandEvent &evt);
    void OnRightTime(wxCommandEvent &evt);
 
@@ -66,10 +61,6 @@ class SelectionBar : public wxPanel {
    void OnRate(wxCommandEvent & event);
 
    void OnSize(wxSizeEvent &evt);
-
-#if defined(__WXGTK__)
-   void OnKeyDown(wxKeyEvent &evt);
-#endif
 
    void ModifySelection();
 
@@ -84,7 +75,6 @@ class SelectionBar : public wxPanel {
    wxRadioButton  *mRightEndButton;
    wxRadioButton  *mRightLengthButton;
    TimeTextCtrl   *mAudioTime;
-   wxControl      *mFormatChoice;
 
    wxComboBox     *mRateBox;
    
