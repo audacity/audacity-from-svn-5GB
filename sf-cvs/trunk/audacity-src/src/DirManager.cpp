@@ -461,10 +461,15 @@ wxLongLong DirManager::GetFreeDiskSpace()
    return freeSpace;
 }
 
+wxString DirManager::GetDataFilesDir() const
+{
+   return projFull != wxT("")? projFull: mytemp;
+}
+
 wxFileName DirManager::MakeBlockFilePath(wxString value){
    
    wxFileName dir;
-   dir.AssignDir(projFull != wxT("")? projFull: mytemp);
+   dir.AssignDir(GetDataFilesDir());
    
    if(value.GetChar(0)==wxT('d')){
       // this file is located in a subdiretory tree 

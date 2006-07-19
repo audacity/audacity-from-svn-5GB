@@ -129,6 +129,7 @@ scroll information.  It also has some status flags.
 #include "PlatformCompatibility.h"
 #include "Experimental.h"
 #include "export/Export.h"
+#include "FileNames.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -167,6 +168,32 @@ const int sbarHjump = 30;       //STM: This is how far the thumb jumps when the 
 #include "AllThemeResources.h"
 
 #endif
+
+//
+// This small template class resembles a try-finally block
+//
+// It sets var to val_entry in the constructor and
+// var to val_exit in the destructor.
+//
+template <typename T>
+class VarSetter
+{
+public:
+   VarSetter(T* var, T val_entry, T val_exit)
+   {
+      mVar = var;
+      mValExit = val_exit;
+      *var = val_entry;
+   }
+    
+   ~VarSetter()
+   {
+      *mVar = mValExit;
+   }
+private:
+   T* mVar;
+   T mValExit;
+};
 
 /* Define Global Variables */
 //The following global counts the number of documents that have been opened
@@ -377,6 +404,13 @@ void GetNextWindowPlacement(wxRect *nextRect, bool *bMaximized)
    gAudacityPosInc++;
 }
 
+wxString CreateUniqueName()
+{
+   static int count = 0;
+   return wxDateTime::Now().Format(wxT("%Y-%m-%d %H-%M-%S")) +
+          wxString::Format(wxT(" N-%i"), ++count);
+}
+
 enum {
    FirstID = 1000,
 
@@ -432,7 +466,9 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mTracksFitVerticallyZoomed(false),  //lda
      mCleanSpeechMode(false),            //lda
      mShowId3Dialog(false),              //lda
-     mKeyboardCaptured(false)
+     mKeyboardCaptured(false),
+     mLastAutoSaveTime(0),
+     mAutoSaving(false)
 {
    mStatusBar = CreateStatusBar();
 
@@ -1363,6 +1399,10 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
          }
 		}
    }
+   
+   // The project is now either saved or the user doesn't want to save it,
+   // so there's no need to keep auto save info around anymore
+   DeleteCurrentAutoSaveFile();
 
    // LL:  Moved here from destructor since the object isn't necessarily deleted
    // right away (Destroy() can queue the deletion) and, during QuitAudacity(), a
@@ -1779,6 +1819,25 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
    return NULL;
 }
 
+void AudacityProject::WriteXMLHeader(FILE *fp)
+{
+   fprintf(fp, "<?xml ");
+   fprintf(fp, "version=\"1.0\" ");
+   fprintf(fp, "standalone=\"no\" ");
+   fprintf(fp, "?>\n");
+
+   wxString dtdName = wxT("-//audacityproject-1.3.0//DTD//EN");
+   wxString dtdURI =
+      wxT("http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd");
+
+   fprintf(fp, "<!DOCTYPE ");
+   fprintf(fp, "project ");
+   fprintf(fp, "PUBLIC ");
+   fprintf(fp, "\"%s\" ", (const char*)dtdName.mb_str());
+   fprintf(fp, "\"%s\" ", (const char*)dtdURI.mb_str());
+   fprintf(fp, ">\n");
+}
+
 void AudacityProject::WriteXML(int depth, FILE *fp)
 {
    int i;
@@ -1803,6 +1862,14 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    fprintf(fp, "h=\"%s\" ", (const char *)Internat::ToString(mViewInfo.h, 10).mb_str());
    fprintf(fp, "zoom=\"%s\" ", (const char *)Internat::ToString(mViewInfo.zoom, 10).mb_str());
    fprintf(fp, "rate=\"%s\" ", (const char *)Internat::ToString(mRate).mb_str());
+   
+   if (mAutoSaving)
+   {
+      // When auto-saving, remember full path to data files directory
+      wxString dataDir = mDirManager->GetDataFilesDir();
+      fprintf(fp, "datadir=\"%s\" ", (const char *)XMLEsc(dataDir).mb_str());
+   }
+   
    fprintf(fp, ">\n");
 
    mTags->WriteXML(depth+1, fp);
@@ -1922,25 +1989,13 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       return false;
    }
 
-   fprintf(saveFile.fp(), "<?xml ");
-   fprintf(saveFile.fp(), "version=\"1.0\" ");
-   fprintf(saveFile.fp(), "standalone=\"no\" ");
-   fprintf(saveFile.fp(), "?>\n");
-
-   wxString dtdName = wxT("-//audacityproject-1.3.0//DTD//EN");
-   wxString dtdURI =
-      wxT("http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd");
-
-   fprintf(saveFile.fp(), "<!DOCTYPE ");
-   fprintf(saveFile.fp(), "project ");
-   fprintf(saveFile.fp(), "PUBLIC ");
-   fprintf(saveFile.fp(), "\"%s\" ", (const char*)dtdName.mb_str());
-   fprintf(saveFile.fp(), "\"%s\" ", (const char*)dtdURI.mb_str());
-   fprintf(saveFile.fp(), ">\n");
-
+   WriteXMLHeader(saveFile.fp());
    WriteXML(0, saveFile.fp());
 
    saveFile.Close();
+   
+   // Now that we have saved the file, we can delete the auto-saved version
+   DeleteCurrentAutoSaveFile();
 
 #ifdef __WXMAC__
    FSSpec spec;
@@ -2219,6 +2274,8 @@ void AudacityProject::PushState(wxString desc,
    ModifyUndoMenus();
 
    UpdateMenus();
+   
+   AutoSaveIfNeeded();
 }
 
 void AudacityProject::ModifyState()
@@ -2745,6 +2802,92 @@ void AudacityProject::CaptureKeyboard()
 void AudacityProject::ReleaseKeyboard()
 {
    mKeyboardCaptured = false;
+}
+
+void AudacityProject::DeleteCurrentAutoSaveFile()
+{
+   if (!mAutoSaveFileName.IsEmpty())
+   {
+      if (wxFileExists(mAutoSaveFileName))
+      {
+         if (!wxRemoveFile(mAutoSaveFileName))
+         {
+            wxMessageBox(_("Could not remove old autosave file: ") +
+                         mAutoSaveFileName, _("Error"), wxICON_STOP, this);
+            return;
+         }
+      }
+      
+      mAutoSaveFileName = wxT("");
+   }
+}
+
+void AudacityProject::AutoSaveIfNeeded()
+{
+   bool autoSaveEnabled = true;
+   gPrefs->Read(wxT("/Directories/AutoSaveEnabled"), &autoSaveEnabled);
+      
+   if (!autoSaveEnabled)
+      return; // user disabled auto-save
+      
+   double autoSaveMinutes = 5.0;
+   gPrefs->Read(wxT("/Directories/AutoSaveMinutes"), &autoSaveMinutes);
+   
+   if (mAutoSaveFileName.IsEmpty() ||
+       wxGetLocalTime() > mLastAutoSaveTime + autoSaveMinutes * 60)
+   {
+      // We need to auto-save, so do it
+      AutoSave();
+   }
+}
+
+void AudacityProject::AutoSave()
+{
+   // To minimize the possibility of race conditions, we first write to a
+   // file with the extension ".tmp", then rename the file to .autosave
+   wxString projName;
+
+   if (mFileName.IsEmpty())
+      projName = _("New Project");
+   else
+      projName = wxFileName(mFileName).GetName();
+   
+   wxString fn = wxFileName(FileNames::AutoSaveDir(),
+      projName + wxString(wxT(" - ")) + CreateUniqueName()).GetFullPath();
+   
+   wxFFile saveFile(FILENAME(fn + wxT(".tmp")).c_str(), wxT("wb"));
+
+   if (!saveFile.IsOpened())
+   {
+      wxMessageBox(_("Couldn't write to file: ") + fn + wxT(".tmp"),
+                   _("Error writing autosave file"),
+                   wxICON_STOP, this);
+      return;
+   }
+
+   {
+      VarSetter<bool> setter(&mAutoSaving, true, false);
+      WriteXMLHeader(saveFile.fp());
+      WriteXML(0, saveFile.fp());
+   }
+
+   saveFile.Close();
+   
+   // Now that we have a new auto-save file, delete the old one
+   DeleteCurrentAutoSaveFile();
+   
+   if (!mAutoSaveFileName.IsEmpty())
+      return; // could not remove auto-save file
+   
+   if (!wxRenameFile(fn + wxT(".tmp"), fn + wxT(".autosave")))
+   {
+      wxMessageBox(_("Could not create autosave file: ") + fn +
+                   wxT(".autosave"), _("Error"), wxICON_STOP, this);
+      return;
+   }
+   
+   mAutoSaveFileName += fn + wxT(".autosave");
+   mLastAutoSaveTime = wxGetLocalTime();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

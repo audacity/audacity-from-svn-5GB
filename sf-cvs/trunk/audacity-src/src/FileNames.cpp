@@ -55,6 +55,12 @@ wxString FileNames::TempDir()
    return FileNames::MkDir(gPrefs->Read(wxT("/Directories/TempDir"), wxT("")));
 }
 
+wxString FileNames::AutoSaveDir()
+{
+   wxFileName autoSaveDir(FileNames::DataDir(), wxT("AutoSave"));
+   return FileNames::MkDir(autoSaveDir.GetFullPath());
+}
+
 wxString FileNames::DataDir()
 {
    // LLL:  Wouldn't you know that as of WX 2.6.2, there is a conflict

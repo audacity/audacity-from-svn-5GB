@@ -22,6 +22,7 @@ public:
    static wxString MkDir(const wxString &Str);
    static wxString TempDir();
    static wxString DataDir();
+   static wxString AutoSaveDir();
    static wxString ThemeDir();
    static wxString ThemeComponentsDir();
    static wxString ThemeCachePng();

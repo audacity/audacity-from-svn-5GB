@@ -277,6 +277,8 @@ class AudacityProject:public wxFrame,
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    virtual void WriteXML(int depth, FILE *fp);
 
+   void WriteXMLHeader(FILE *fp);
+
    PlayMode mLastPlayMode;
    ViewInfo mViewInfo;
 
@@ -296,6 +298,10 @@ class AudacityProject:public wxFrame,
    void ModifyState();
    void PopState(TrackList * l);
    void GetRegionsByLabel( Regions &regions );
+   
+   void AutoSaveIfNeeded();
+   void AutoSave();
+   void DeleteCurrentAutoSaveFile();
 
    // Callbacks for backend operations
 
@@ -389,6 +395,15 @@ class AudacityProject:public wxFrame,
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;
+   
+   // Last auto-save file name and path (empty if none)
+   wxString mAutoSaveFileName;
+   
+   // When the last auto-save took place (as returned wx wxGetLocalTime)
+   long mLastAutoSaveTime;
+   
+   // Are we currently auto-saving or not?
+   bool mAutoSaving;
 
  public:
     DECLARE_EVENT_TABLE()

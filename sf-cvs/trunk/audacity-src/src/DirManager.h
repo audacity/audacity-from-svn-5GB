@@ -91,6 +91,8 @@ class DirManager: public XMLTagHandler {
 
    static void CleanTempDir(bool startup);
    int ProjectFSCK(bool);
+   
+   wxString GetDataFilesDir() const;
 
  private:
 
