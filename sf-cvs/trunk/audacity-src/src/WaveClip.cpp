@@ -738,7 +738,7 @@ bool WaveClip::CreateFromCopy(double t0, double t1, WaveClip* other)
 
 bool WaveClip::Paste(double t0, WaveClip* other)
 {
-   assert(false); // resample!!!!
+//   assert(false); // resample!!!!
    
    longSampleCount s0;
    TimeToSamplesClip(t0, &s0);
@@ -978,5 +978,5 @@ void WaveClip::Unlock()
 
 void WaveClip::Resample(int rate)
 {
-   assert(false); // FIXME!!
+//   assert(false); // FIXME!!
 }
