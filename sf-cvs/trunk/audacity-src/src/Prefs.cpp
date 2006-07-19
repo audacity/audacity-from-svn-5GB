@@ -84,6 +84,64 @@ pascal OSErr FSpGetFullPath(const FSSpec * spec,
 wxFileConfig *gPrefs = NULL;
 int gMenusDirty = 0;
 
+// Copy one entry from one wxConfig object to another
+void CopyEntry(wxString path, wxConfigBase *src, wxConfigBase *dst, wxString entry)
+{
+   switch(src->GetEntryType(entry)) {
+   case wxConfigBase::Type_Unknown:
+   case wxConfigBase::Type_String: {
+      wxString value = src->Read(entry, wxT(""));
+      dst->Write(path + entry, value);
+      break;
+   }
+   case wxConfigBase::Type_Boolean: {
+      bool value = false;
+      src->Read(entry, &value, value);
+      dst->Write(path + entry, value);
+      break;
+   }
+   case wxConfigBase::Type_Integer: {
+      long value = false;
+      src->Read(entry, &value, value);
+      dst->Write(path + entry, value);
+      break;
+   }
+   case wxConfigBase::Type_Float: {
+      double value = false;
+      src->Read(entry, &value, value);
+      dst->Write(path + entry, value);
+      break;
+   }
+   }
+}
+
+// Recursive routine to copy all groups and entries from one wxConfig object to another
+void CopyEntriesRecursive(wxString path, wxConfigBase *src, wxConfigBase *dst)
+{
+   wxString entryName;
+   long entryIndex;
+   bool entryKeepGoing;
+   
+   entryKeepGoing = src->GetFirstEntry(entryName, entryIndex);
+   while (entryKeepGoing) {
+      CopyEntry(path, src, dst, entryName);
+      entryKeepGoing = src->GetNextEntry(entryName, entryIndex);
+   }
+
+   wxString groupName;
+   long groupIndex;
+   bool groupKeepGoing;
+   
+   groupKeepGoing = src->GetFirstGroup(groupName, groupIndex);
+   while (groupKeepGoing) {
+      wxString subPath = path+groupName+wxT("/");
+      src->SetPath(subPath);
+      CopyEntriesRecursive(subPath, src, dst);
+      src->SetPath(path);
+      groupKeepGoing = src->GetNextGroup(groupName, groupIndex);
+   }
+}
+
 void InitPreferences()
 {
 //MERGE:
@@ -104,36 +162,23 @@ void InitPreferences()
    wxFileName configFileName(FileNames::DataDir(), wxT("audacity.cfg"));
 
    gPrefs = new wxFileConfig(appName, wxEmptyString,
-                            configFileName.GetFullPath(),
-                            wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+                             configFileName.GetFullPath(),
+                             wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
       
    wxConfigBase::Set(gPrefs);
 
-#ifdef __WXMAC__
-#ifndef __UNIX__
-   // This fixes changes in Mac filenames under wxWindows between versions
-   // 0.95 and 0.96 of Audacity.
-   wxString path;
-   bool fix = false;   
-   path = gPrefs->Read(wxT("/DefaultOpenPath"), wxT(""));
-   if (path.Length() > 0 && path.Left(1)==wxT("/"))
-      fix = true;
-   path = gPrefs->Read(wxT("/DefaultExportPath"), wxT(""));
-   if (path.Length() > 0 && path.Left(1)==wxT("/"))
-      fix = true;
-   path = gPrefs->Read(wxT("/Directories/TempDir"), wxT(""));
-   if (path.Length() > 0 && path.Left(1)==wxT("/"))
-      fix = true;
-   if (fix) {
-      gPrefs->Write(wxT("/DefaultOpenPath"), FROMFILENAME(::wxGetCwd()));
-      gPrefs->Write(wxT("/DefaultExportPath"), FROMFILENAME(::wxGetCwd()));
-      gPrefs->Write(wxT("/Directories/TempDir"), wxT(""));
-      wxMessageBox(_("Some of your preferences were from an earlier version "
-                     "of Audacity and have been reset."));
+   // We introduced new file-based preferences in version 1.3.1; the
+   // first time this version of Audacity is run we try to migrate
+   // old preferences.
+   bool newPrefsInitialized = false;
+   gPrefs->Read(wxT("/NewPrefsInitialized"), &newPrefsInitialized, false);
+   if (!newPrefsInitialized) {
+      wxConfigBase *legacyConfig = new wxConfig(appName);
+      CopyEntriesRecursive(wxT("/"), legacyConfig, gPrefs);
+      delete legacyConfig;
+      gPrefs->Write(wxT("/NewPrefsInitialized"), true);
    }
-#endif
-#endif
-
+   
    gPrefs->Write(wxT("/Version"), wxString(wxT(AUDACITY_VERSION_STRING)));
 
    // BG: Make sure the users prefs are up to date
