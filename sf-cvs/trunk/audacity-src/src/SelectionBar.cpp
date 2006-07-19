@@ -37,7 +37,6 @@ with changes in the SelectionBar.
 #include "widgets/TimeTextCtrl.h"
 
 #include <wx/button.h>
-#include <wx/choice.h>
 #include <wx/combobox.h>
 #include <wx/intl.h>
 #include <wx/menu.h>
@@ -47,14 +46,11 @@ with changes in the SelectionBar.
 #include <wx/statline.h>
 #include <wx/textdlg.h>
 
-#define FORMAT_CHOICE_IS_COMBO_BOX 0
-
 enum {
    SelectionBarFirstID = 2700,
    OnRateID,
    OnLengthRadioID,
    OnEndRadioID,
-   OnFormatChoiceID,
    OnLeftTimeID,
    OnRightTimeID
 };
@@ -67,17 +63,7 @@ BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
    EVT_RADIOBUTTON(OnEndRadioID, SelectionBar::OnEndRadio)
    EVT_COMBOBOX(OnRateID, SelectionBar::OnRate)
    EVT_TEXT(OnRateID, SelectionBar::OnRate)
-  #if FORMAT_CHOICE_IS_COMBO_BOX
-   EVT_COMBOBOX(OnFormatChoiceID, SelectionBar::OnFormatChoice)
-   EVT_TEXT(OnFormatChoiceID, SelectionBar::OnFormatChoice)
-  #else
-   EVT_CHOICE(OnFormatChoiceID, SelectionBar::OnFormatChoice)
-  #endif
-
-#if defined(TESTING_TIMETEXTCTRL_MENU)
    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, SelectionBar::OnUpdate)
-#endif
-
 END_EVENT_TABLE()
 
 SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
@@ -186,9 +172,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mLeftTime = new TimeTextCtrl(this, OnLeftTimeID, format, 0.0, mRate);
    mLeftTime->SetName(_("Selection Start:"));
-#if defined(TESTING_TIMETEXTCTRL_MENU)
    mLeftTime->EnableMenu();
-#endif
    mainSizer->Add(mLeftTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -203,9 +187,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mRightTime->SetName(wxString(_("Selection ")) + (showSelectionLength ?
                                                    _("Length") :
                                                    _("End")));
-#if defined(TESTING_TIMETEXTCTRL_MENU)
    mRightTime->EnableMenu();
-#endif
    mainSizer->Add(mRightTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 #if __WXMSW__ /* As of wx 2.6.2, wxStaticLine is broken for Windows*/
@@ -218,44 +200,11 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
 
    mAudioTime = new TimeTextCtrl(this, -1, format, 0.0, mRate);
    mAudioTime->SetName(_("Audio Position:"));
-#if defined(TESTING_TIMETEXTCTRL_MENU)
    mAudioTime->EnableMenu();
-#endif
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
    mainSizer->Add(20, 10);
 
-   mFormatChoice = NULL;
-#if !defined(TESTING_TIMETEXTCTRL_MENU)
-   wxString *choices = new wxString[TimeTextCtrl::GetNumBuiltins()];
-   for(i=0; i<TimeTextCtrl::GetNumBuiltins(); i++)
-      choices[i] = TimeTextCtrl::GetBuiltinName(i);
-
-  #if FORMAT_CHOICE_IS_COMBO_BOX
-   wxComboBox *box = new wxComboBox(this, OnFormatChoiceID, wxT(""),
-                                    wxDefaultPosition, wxDefaultSize,
-                                    TimeTextCtrl::GetNumBuiltins(),
-                                    choices);
-   box->SetName(_("Time Format"));
-   box->SetWindowStyle(wxCB_READONLY);
-   box->SetValue(formatName);
-
-   mFormatChoice = box;
-  #else
-   wxChoice *choice = new wxChoice(this, OnFormatChoiceID, 
-                                   wxDefaultPosition, wxDefaultSize,
-                                   TimeTextCtrl::GetNumBuiltins(),
-                                   choices);
-   choice->SetName(_("Time Format"));
-   choice->SetSelection(formatIndex);
-
-   mFormatChoice = choice;   
-  #endif
-
-   delete [] choices;
-
-   mainSizer->Add(mFormatChoice, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-#endif
    //
    // Bottom row (buttons)
    //
@@ -287,33 +236,10 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    Layout();
 
    mMainSizer = mainSizer;
-#if !defined(TESTING_TIMETEXTCTRL_MENU)
-#if wxCHECK_VERSION(2, 6, 1)
-#if defined(__WXGTK__)
-   // Under GTK the radio buttons cause tabbing to have "end-points" which prevents
-   // the focus from wrapping to the beginning of the tab order when at the end.
-   // (To see the problem, comment these lines and the ones in the destructor)
-   mRightEndButton->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mRightLengthButton->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mRateBox->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mFormatChoice->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-#endif
-#endif
-#endif
 }
 
 SelectionBar::~SelectionBar()
 {
-#if !defined(TESTING_TIMETEXTCTRL_MENU)
-#if wxCHECK_VERSION(2, 6, 1)
-#if defined(__WXGTK__)
-   mRightEndButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mRightLengthButton->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mRateBox->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-   mFormatChoice->Disconnect( wxEVT_KEY_DOWN, wxKeyEventHandler(SelectionBar::OnKeyDown));
-#endif
-#endif
-#endif
 }
 
 void SelectionBar::OnSize(wxSizeEvent &evt)
@@ -368,41 +294,6 @@ void SelectionBar::OnEndRadio(wxCommandEvent &evt)
    ValuesToControls();
 }
 
-void SelectionBar::OnFormatChoice(wxCommandEvent &evt)
-{
-   if (!mFormatChoice)
-      return;
-
-   #if FORMAT_CHOICE_IS_COMBO_BOX
-   int index=0;
-   wxString value = ((wxComboBox *)mFormatChoice)->GetValue();
-   for(index=0; index<TimeTextCtrl::GetNumBuiltins(); index++)
-      if (value == TimeTextCtrl::GetBuiltinName(index))
-         break;
-   if (index == TimeTextCtrl::GetNumBuiltins())
-      return;
-   #else
-   #if wxCHECK_VERSION(2, 6, 2) && !defined(__WXX11__)
-   int index = ((wxChoice *)mFormatChoice)->GetCurrentSelection();
-   #else
-   int index = ((wxChoice *)mFormatChoice)->GetSelection();
-   #endif
-   #endif
-
-   wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
-   wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
-
-   gPrefs->Write(wxT("/SelectionFormat"), formatName);
-
-   mLeftTime->SetFormatString(formatString);
-   mRightTime->SetFormatString(formatString);
-   mAudioTime->SetFormatString(formatString);
-
-   Layout();
-   Refresh(false);
-}
-
-#if defined(TESTING_TIMETEXTCTRL_MENU)
 void SelectionBar::OnUpdate(wxCommandEvent &evt)
 {
    int index = evt.GetInt();
@@ -420,7 +311,6 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
 
    evt.Skip(false);
 }
-#endif
 
 void SelectionBar::ValuesToControls()
 {
@@ -517,67 +407,6 @@ void SelectionBar::UpdateRates()
    }
    mRateBox->SetValue(oldValue);
 }
-
-#if defined(__WXGTK__)
-void SelectionBar::OnKeyDown(wxKeyEvent &evt)
-{
-   SelectionBar *sb = (SelectionBar *)((wxWindow *)evt.GetEventObject())->GetParent();
-   wxWindowID id = evt.GetId();
-   bool shift = evt.ShiftDown();
-
-   switch( evt.GetKeyCode() )
-   {
-      case WXK_TAB:
-         if( shift )
-         {
-            if( id == OnLengthRadioID )
-            {
-               sb->mFormatChoice->SetFocus();
-            }
-            else if( id == OnRateID )
-            {
-               if( sb->mRightEndButton->GetValue() )
-               {
-                  sb->mRightEndButton->SetFocus();
-               }
-            }
-         }
-         else
-         {
-            if( id == OnEndRadioID )
-            {
-               sb->mRateBox->SetFocus();
-            }
-            else if( id == OnFormatChoiceID )
-            {
-               if( sb->mRightLengthButton->GetValue() )
-               {
-                  sb->mRightLengthButton->SetFocus();
-               }
-            }
-         }
-      break;
-
-      case WXK_LEFT:
-      case WXK_RIGHT:
-         if( id == OnEndRadioID )
-         {
-            // LLL: The SetFocus MUST follow the SetValue...don't know why
-            sb->mRightLengthButton->SetValue( true );
-            sb->mRightLengthButton->SetFocus();
-         }
-         else if( id == OnLengthRadioID )
-         {
-            // LLL: The SetFocus MUST follow the SetValue...don't know why
-            sb->mRightEndButton->SetValue( true );
-            sb->mRightEndButton->SetFocus();
-         }
-      break;
-   }
-
-   evt.Skip( true );
-}
-#endif // defined(__WXGTK__)
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
