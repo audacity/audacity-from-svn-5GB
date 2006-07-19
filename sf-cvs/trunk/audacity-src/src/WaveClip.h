@@ -55,7 +55,14 @@ public:
 
    void TimeToSamplesClip(double t0, longSampleCount *s0) const;
    int GetRate() const { return mRate; }
+   
+   // Set rate without resampling. This will change the length of the clip
    void SetRate(int rate) { mRate = rate; MarkChanged(); }
+   
+   // Resample clip. This also will set the rate, but without changing
+   // the length of the clip
+   void Resample(int rate);
+   
    void SetOffset(double offset);
    double GetOffset() const { return mOffset; }
    void Offset(double delta) { SetOffset(GetOffset() + delta); }
@@ -126,7 +133,7 @@ public:
    // Clear, and add cut line that starts at t0 and contains everything until t1.
    bool ClearAndAddCutLine(double t0, double t1);
 
-   // Paste data from other clip
+   // Paste data from other clip, resampling it if not equal rate
    bool Paste(double t0, WaveClip* other);
 
    // Insert silence - note that this is an efficient operation for

@@ -515,6 +515,7 @@ bool WaveTrack::Paste(double t0, Track *src)
       WaveClip* clip = it->GetData();
 
       WaveClip* newClip = new WaveClip(*clip, mDirManager);
+      newClip->Resample(mRate);
       newClip->Offset(t0);
       newClip->MarkChanged();
       mClips.Append(newClip);
