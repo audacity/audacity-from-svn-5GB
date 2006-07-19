@@ -599,6 +599,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
+      c->AddItem(wxT("Resample"), _("&Resample..."), FN(OnResample));
+      c->SetCommandFlags(wxT("Resample"),
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag,
+                         AudioIONotBusyFlag | WaveTracksSelectedFlag);
       c->AddSeparator();
      /* c->AddItem(wxT("NewAudioTrack"),  _("New &Audio Track\tShift+Ctrl+N"),               FN(OnNewWaveTrack));
       c->AddItem(wxT("NewStereoTrack"), _("New &Stereo Track"),              FN(OnNewStereoTrack));
@@ -644,10 +648,10 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
 
       c->AddSeparator();   
-      c->BeginSubMenu(_("Sort tracks by..."));
-      c->AddItem(wxT("SortByTime"), _("Start time"), FN(OnSortTime));
+      c->BeginSubMenu(_("S&ort tracks by..."));
+      c->AddItem(wxT("SortByTime"), _("&Start time"), FN(OnSortTime));
       c->SetCommandFlags(wxT("SortByTime"), TracksExistFlag, TracksExistFlag);
-      c->AddItem(wxT("SortByName"), _("Name"), FN(OnSortName));
+      c->AddItem(wxT("SortByName"), _("&Name"), FN(OnSortName));
       c->SetCommandFlags(wxT("SortByName"), TracksExistFlag, TracksExistFlag);
       c->EndSubMenu();
 
@@ -4303,6 +4307,40 @@ void AudacityProject::OnUnlockPlayRegion()
 {
    mLockPlayRegion = false;
    mRuler->Refresh(false);
+}
+
+void AudacityProject::OnResample()
+{
+   TrackListIterator iter(mTracks);
+
+   int newRate;
+   
+   while (true) {
+      wxTextEntryDialog* dlg = new wxTextEntryDialog(this,
+         _("Enter new samplerate:"), _("Resample"), wxT(""));
+      if (dlg->ShowModal() != wxID_OK)
+         return; // user cancelled dialog
+      newRate = atoi(dlg->GetValue().mb_str());
+      delete dlg;
+      if (newRate < 1 || newRate > 1000000)
+         wxMessageBox(_("The entered value is invalid"), _("Error"),
+                      wxICON_STOP, this);
+      else
+         break;
+   }
+      
+   for (Track *t = iter.First(); t; t = iter.Next())
+   {
+      if (t->GetSelected() && t->GetKind() == Track::Wave)
+         if (!((WaveTrack*)t)->Resample(newRate))
+            break;
+   }
+   
+   PushState(_("Resampled audio track(s)"), _("Resample Track"));
+   RedrawProject();
+   
+   // Need to reset
+   FinishAutoScroll();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

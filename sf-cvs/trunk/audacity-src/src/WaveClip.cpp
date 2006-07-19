@@ -33,7 +33,7 @@ drawing).
 #include "Prefs.h"
 #include "WaveClip.h"
 #include "Envelope.h"
-
+#include "Resample.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(WaveClipList);
@@ -738,10 +738,29 @@ bool WaveClip::CreateFromCopy(double t0, double t1, WaveClip* other)
 
 bool WaveClip::Paste(double t0, WaveClip* other)
 {
-//   assert(false); // resample!!!!
-   
+   WaveClip* resampledClip;
+
+   bool clipNeedsResampling = other->mRate != mRate;
+
+   if (clipNeedsResampling)
+   {
+      // The other clip's rate is different to our's, so resample
+      resampledClip = new WaveClip(*other, mSequence->GetDirManager());
+      if (!resampledClip->Resample(mRate))
+      {
+         delete resampledClip;
+         return false;
+      }
+   } else
+   {
+      // No resampling needed, just use original clip without making a copy
+      resampledClip = other;
+   }
+
    longSampleCount s0;
    TimeToSamplesClip(t0, &s0);
+   
+   bool result = false;
 
    if (mSequence->Paste(s0, other->mSequence))
    {
@@ -759,10 +778,16 @@ bool WaveClip::Paste(double t0, WaveClip* other)
          mCutLines.Append(newCutLine);
       }
       
-      return true;
+      result = true;
+   }
+   
+   if (clipNeedsResampling)
+   {
+      // Clip was constructed as a copy, so delete it
+      delete resampledClip;
    }
 
-   return false;
+   return result;
 }
 
 bool WaveClip::InsertSilence(double t, double len)
@@ -976,7 +1001,78 @@ void WaveClip::Unlock()
       it->GetData()->Unlock();
 }
 
-void WaveClip::Resample(int rate)
+bool WaveClip::Resample(int rate)
 {
-//   assert(false); // FIXME!!
+   if (rate == mRate)
+      return true; // Nothing to do
+
+   double factor = (double)rate / (double)mRate;
+   ::Resample* resample = new ::Resample(true, factor, factor);
+   
+   int bufsize = 65536;
+   float* inBuffer = new float[bufsize];
+   float* outBuffer = new float[bufsize];
+   int pos = 0;
+   bool error = false;
+   
+   Sequence* newSequence =
+      new Sequence(mSequence->GetDirManager(), mSequence->GetSampleFormat());
+   
+   while (pos < mSequence->GetNumSamples())
+   {
+      int inLen = mSequence->GetNumSamples() - pos;
+      if (inLen > bufsize)
+         inLen = bufsize;
+         
+      bool isLast = ((pos + inLen) == mSequence->GetNumSamples());
+      
+      if (!mSequence->Get((samplePtr)inBuffer, floatSample, pos, inLen))
+      {
+         error = true;
+         break;
+      }
+      
+      int inBufferUsed = 0;
+      int outGenerated = resample->Process(factor, inBuffer, inLen, isLast,
+                                           &inBufferUsed, outBuffer, bufsize);
+                                           
+      pos += inBufferUsed;
+      
+      if (outGenerated < 0)
+      {
+         error = true;
+         break;
+      }
+      
+      if (!newSequence->Append((samplePtr)outBuffer, floatSample,
+                               outGenerated))
+      {
+         error = true;
+         break;
+      }
+   }
+   
+   delete[] inBuffer;
+   delete[] outBuffer;
+   delete resample;
+   
+   if (error)
+   {
+      delete newSequence;
+   } else
+   {
+      delete mSequence;
+      mSequence = newSequence;
+      mRate = rate;
+
+      // Invalidate wave display cache
+      if (mWaveCache)
+      {
+         delete mWaveCache;
+         mWaveCache = NULL;
+      }
+      mWaveCache = new WaveCache(1);
+   }
+
+   return !error;
 }

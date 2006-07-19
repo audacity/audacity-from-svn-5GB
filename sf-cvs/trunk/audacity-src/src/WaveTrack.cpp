@@ -1516,6 +1516,21 @@ bool WaveTrack::MergeClips(int clipidx1, int clipidx2)
    return true;
 }
 
+bool WaveTrack::Resample(int rate)
+{
+   for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
+      if (!it->GetData()->Resample(rate))
+      {
+         // FIXME: The track is now in an inconsistent state since some
+         //        clips are resampled and some are not
+         return false;
+      }
+      
+   mRate = rate;
+   
+   return true;
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //
