@@ -92,6 +92,19 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
       S.Id( ChooseButtonID ).AddButton( _("Choose..."));
       S.AddFixedText( _("Free Space:"));
       mFreeSpace = S.AddVariableText( mStrFreeSpace );
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+
+   S.StartHorizontalLay( wxEXPAND, 0 );
+   S.StartStatic( _("Auto save"),1);
+   {
+      S.TieCheckBox( _("Auto save a copy of the project in a separate folder"),
+                     wxT("AutoSaveEnabled"), true);
+      S.StartThreeColumn();
+      S.TieTextBox( _("Auto save every:"), wxT("AutoSaveMinutes"), 5.0, 9);
+      S.AddUnits(  _("minutes") );
+      S.EndThreeColumn();
    }
    S.EndStatic();
 }
