@@ -275,7 +275,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
                            const wxPoint &pos,
                            const wxSize &size,
                            bool autoPos):
-   wxControl(parent, id, pos, size, wxWANTS_CHARS),
+   wxControl(parent, id, pos, size, wxSUNKEN_BORDER | wxWANTS_CHARS),
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
    mFormatString(formatString),
@@ -695,9 +695,13 @@ bool TimeTextCtrl::Layout()
 
 void TimeTextCtrl::Fit()
 {
-   wxSize size(mWidth, mHeight);
-   SetSizeHints(size, size);
-   SetSize(size);
+   wxSize sz = GetSize();
+   wxSize csz = GetClientSize();
+
+   sz.x = mWidth + (sz.x - csz.x);
+   sz.y = mHeight + (sz.y - csz.y);
+
+   SetBestFittingSize(sz);
 }
 
 void TimeTextCtrl::OnPaint(wxPaintEvent &event)
