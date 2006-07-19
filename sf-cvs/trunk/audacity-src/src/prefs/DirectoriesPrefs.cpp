@@ -220,6 +220,9 @@ bool DirectoriesPrefs::Apply()
             _("Changes to temporary directory will not take effect until Audacity is restarted"),
             wxT("Temp Directory Update"), wxOK|wxCENTRE|wxICON_INFORMATION);
 
+   ShuttleGui S( this, eIsSavingToPrefs );
+   PopulateOrExchange( S );
+
    return true;
 }
 
