@@ -650,6 +650,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\Dependencies.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Dependencies.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\DirManager.cpp"
 				>
 				<FileConfiguration
