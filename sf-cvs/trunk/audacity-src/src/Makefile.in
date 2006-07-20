@@ -50,6 +50,7 @@ OBJS = \
 	BatchProcessDialog.o \
 	Benchmark.o \
 	ControlToolBar.o \
+	Dependencies.o \
 	Envelope.o \
 	EditToolBar.o \
 	FFT.o \

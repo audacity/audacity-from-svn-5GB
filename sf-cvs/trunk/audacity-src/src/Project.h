@@ -118,6 +118,8 @@ class AudacityProject:public wxFrame,
    TrackList *GetTracks() { return mTracks; };
    UndoManager *GetUndoManager() { return &mUndoManager; }
 
+   sampleFormat GetDefaultFormat() { return mDefaultFormat; }
+
    double GetRate() { return mRate; }
    double GetZoom() { return mViewInfo.zoom; }
    double GetSel0() { return mViewInfo.sel0; }

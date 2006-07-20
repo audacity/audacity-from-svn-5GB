@@ -49,6 +49,7 @@ simplifies construction of menu items.
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
+#include "Dependencies.h"
 #include "LabelTrack.h"
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
@@ -197,14 +198,16 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
 
    c->AddItem(wxT("Close"),          _("&Close\tCtrl+W"),                 FN(OnClose));
-	if( !mCleanSpeechMode )
-	{
-   c->AddItem(wxT("Save"),           _("&Save Project\tCtrl+S"),          FN(OnSave));
-   c->SetCommandFlags(wxT("Save"),
-                      AudioIONotBusyFlag | UnsavedChangesFlag,
-                      AudioIONotBusyFlag | UnsavedChangesFlag);
-   c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
-	}
+   if( !mCleanSpeechMode )
+   {
+      c->AddItem(wxT("Save"),           _("&Save Project\tCtrl+S"),          FN(OnSave));
+      c->SetCommandFlags(wxT("Save"),
+                         AudioIONotBusyFlag | UnsavedChangesFlag,
+                         AudioIONotBusyFlag | UnsavedChangesFlag);
+      c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
+   }
+
+   c->AddItem(wxT("CheckDeps"),      _("Check Dependencies..."),          FN(OnCheckDependencies));
 
    c->AddSeparator();
 
@@ -2049,6 +2052,11 @@ void AudacityProject::OnSave()
 void AudacityProject::OnSaveAs()
 {
    SaveAs();
+}
+
+void AudacityProject::OnCheckDependencies()
+{
+   ShowDependencyDialogIfNeeded(this, false);
 }
 
 void AudacityProject::OnExit()

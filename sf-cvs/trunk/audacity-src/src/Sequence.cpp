@@ -44,15 +44,6 @@ Sequence.cpp.  Not yet sure why.
 
 #include "blockfile/SilentBlockFile.h"
 
-class SeqBlock {
- public:
-   BlockFile * f;
-
-   sampleCount start;
-};
-
-WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
-
 int Sequence::sMaxDiskBlockSize = 1048576;
 
 // Sequence methods

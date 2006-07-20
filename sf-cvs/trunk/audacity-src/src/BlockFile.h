@@ -164,9 +164,10 @@ class AliasBlockFile : public BlockFile
    // applying to Alias file access
    void SilenceAliasLog() { mSilentAliasLog = TRUE; }
 
- private:
-   // These methods are only for use by DirManager
-   friend class DirManager;
+
+   //
+   // These methods are for advanced use only!
+   //
 
    /// Gets the name of the aliased file.
    wxFileName GetAliasedFile();

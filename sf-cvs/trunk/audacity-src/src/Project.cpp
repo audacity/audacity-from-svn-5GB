@@ -100,6 +100,7 @@ scroll information.  It also has some status flags.
 #include "AColor.h"
 #include "SelectionBar.h"
 #include "AudioIO.h"
+#include "Dependencies.h"
 #include "ControlToolBar.h"
 #include "ToolsToolBar.h"
 #include "EditToolBar.h"
@@ -1892,6 +1893,13 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 {
    if (!fromSaveAs && mDirManager->GetProjectName() == wxT(""))
       return SaveAs();
+
+   // Show a dialog where the user can see audio files that are
+   // aliased by this project.  The user may make the project
+   // self-contained during this dialog, it modifies the project!
+   bool resultCode = ShowDependencyDialogIfNeeded(this, true);
+   if (!resultCode)
+      return false;
 
    //TIDY-ME: CleanSpeechMode could be split into a number of prefs?
    // For example, this could be a preference to only work
