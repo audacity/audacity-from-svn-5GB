@@ -123,6 +123,8 @@ void OnClose();
 void OnSave();
 void OnSaveAs();
 
+void OnCheckDependencies();
+
 void OnExportMix();
 void OnExportSelection();
 void OnExportMP3Mix();

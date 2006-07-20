@@ -945,7 +945,9 @@ bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
 void DirManager::Ref(BlockFile * f)
 {
    f->Ref();
-   //  wxPrintf(wxT("Ref(%d): %s\n"),f->refCount, f->fullPath.c_str());
+   //printf("Ref(%d): %s\n",
+   //       f->mRefCount,
+   //       (const char *)f->mFileName.GetFullPath().mb_str());
 }
 
 int DirManager::GetRefCount(BlockFile * f)
@@ -957,7 +959,9 @@ void DirManager::Deref(BlockFile * f)
 {
    wxString theFileName = f->GetFileName().GetName();
 
-   //  wxPrintf(wxT("Deref(%d): %s\n"),f->mRefCount-1, f->mRullPath.c_str());
+   //printf("Deref(%d): %s\n",
+   //       f->mRefCount-1,
+   //       (const char *)f->mFileName.GetFullPath().mb_str());
 
    if (f->Deref()) {
       // If Deref() returned true, the reference count reached zero

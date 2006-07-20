@@ -18,9 +18,16 @@
 
 typedef int sampleCount;
 
+class BlockFile;
 class DirManager;
-class BlockArray;
-class SeqBlock;
+
+// This is an internal data structure!  For advanced use only.
+class SeqBlock {
+ public:
+   BlockFile * f;
+   sampleCount start;
+};
+WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
 
 class Sequence: public XMLTagHandler {
  public:
@@ -125,8 +132,9 @@ class Sequence: public XMLTagHandler {
    sampleCount GetIdealBlockSize() const;
 
    //
-   // Temporary: to be deleted after TrackList::GetSpaceUsage()
-   // is reimplemented
+   // This should only be used if you really, really know what
+   // you're doing!  Currently used by TrackList::GetSpaceUsage()
+   // and Dependencies.cpp.
    //
 
    BlockArray *GetBlockArray() {return mBlock;}

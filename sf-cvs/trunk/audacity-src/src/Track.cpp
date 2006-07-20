@@ -566,19 +566,6 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
 #include "BlockFile.h"
 #include "Sequence.h"
 
-class SeqBlock {
- public:
-   BlockFile * f;
-
-   sampleCount start;
-   sampleCount len;
-   float       min;
-   float       max;
-   float       rms;
-};
-
-WX_DEFINE_ARRAY(SeqBlock *, BlockArray);
-
 // get the sum of the sizes of all blocks this track list
 // references.  However, if a block is referred to multiple
 // times it is only counted once.  Return value is in bytes
