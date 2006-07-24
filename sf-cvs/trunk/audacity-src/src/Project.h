@@ -25,6 +25,7 @@
 #include "UndoManager.h"
 #include "ViewInfo.h"
 #include "TrackPanel.h"
+#include "AudioIO.h"
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "xml/XMLTagHandler.h"
@@ -104,7 +105,8 @@ class AudacityDropTarget : public wxFileDropTarget
 class AudacityProject:public wxFrame,
                       public TrackPanelListener,
                       public SelectionBarListener,
-                      public XMLTagHandler
+                      public XMLTagHandler,
+                      public AudioIOListener
 {
  public:
 
@@ -287,6 +289,11 @@ class AudacityProject:public wxFrame,
    bool HasKeyboardCapture();
    void CaptureKeyboard();
    void ReleaseKeyboard();
+   
+   // Audio IO callback methods
+   virtual void OnAudioIOStartRecording();
+   virtual void OnAudioIOStopRecording();
+   virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
 
  private:
 

@@ -280,21 +280,29 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    return framesRead;
 }
 
+wxString SimpleBlockFile::GetXMLString()
+{
+   wxString s = wxT("<simpleblockfile ");
+   s += wxString::Format(wxT("filename='%s' "),
+                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str());
+   s += wxString::Format(wxT("len='%d' "), mLen);
+   s += wxString::Format(wxT("min='%s' "),
+            Internat::ToString(mMin).c_str());
+   s += wxString::Format(wxT("max='%s' "),
+            Internat::ToString(mMax).c_str());
+   s += wxString::Format(wxT("rms='%s'"),
+            Internat::ToString(mRMS).c_str());
+   s += wxT("/>");
+
+   return s;
+}
+
 void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
 {
    for(int i = 0; i < depth; i++)
       xmlFile.Write(wxT("\t"));
-   xmlFile.Write(wxT("<simpleblockfile "));
-   xmlFile.Write(wxString::Format(wxT("filename='%s' "),
-                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
-   xmlFile.Write(wxString::Format(wxT("min='%s' "),
-            Internat::ToString(mMin).c_str()));
-   xmlFile.Write(wxString::Format(wxT("max='%s' "),
-            Internat::ToString(mMax).c_str()));
-   xmlFile.Write(wxString::Format(wxT("rms='%s'"),
-            Internat::ToString(mRMS).c_str()));
-   xmlFile.Write(wxT("/>\n"));
+   xmlFile.Write(GetXMLString());
+   xmlFile.Write(wxT("\n"));
 }
 
 /// static

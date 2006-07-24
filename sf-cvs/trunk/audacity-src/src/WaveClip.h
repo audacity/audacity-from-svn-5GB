@@ -119,7 +119,8 @@ public:
 
    /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,
-               sampleCount len, unsigned int stride=1);
+               sampleCount len, unsigned int stride=1,
+               wxString* blockFileLog = NULL);
    /// Flush must be called after last Append
    bool Flush();
 

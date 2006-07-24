@@ -496,12 +496,12 @@ void ControlToolBar::PlayPlayRegion(double t0, double t1,
             SetupCutPreviewTracks(tcp0, t0, t1, tcp1);
             token = gAudioIO->StartStream(
                 mCutPreviewTracks->GetWaveTrackArray(false),
-                WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, false,
+                WaveTrackArray(), NULL, p->GetRate(), tcp0, tcp1, p, false,
                 t0, t1-t0);
          } else {
             token = gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                   WaveTrackArray(), t->GetTimeTrack(),
-                                  p->GetRate(), t0, t1, looped);
+                                  p->GetRate(), t0, t1, p, looped);
          }
          if (token != 0) {
             success = true;
@@ -733,7 +733,7 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
       int token = gAudioIO->StartStream(playbackTracks,
                                         newRecordingTracks, t->GetTimeTrack(),
-                                        p->GetRate(), t0, t1);
+                                        p->GetRate(), t0, t1, p);
 
       bool success = (token != 0);
       for( unsigned int i = 0; i < newRecordingTracks.GetCount(); i++ )

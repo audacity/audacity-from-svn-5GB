@@ -1659,6 +1659,7 @@ void AudacityProject::OpenFile(wxString fileName)
          // at this point mFileName != fileName, because when opening a
          // recovered file mFileName is faked to point to the original file
          // which has been recovered, not the one in the auto-save folder.
+         GetDirManager()->ProjectFSCK(err, true); // silently correct problems
          AutoSave();
          if (!wxRemoveFile(fileName))
             wxMessageBox(_("Could not remove old auto save file"),
@@ -1666,8 +1667,8 @@ void AudacityProject::OpenFile(wxString fileName)
          this->PushState(_("Project was recovered"), _("Recover"));
       } else
       {
-         // This is a regular project, check it
-         int status=GetDirManager()->ProjectFSCK(err);
+         // This is a regular project, check it and ask user
+         int status=GetDirManager()->ProjectFSCK(err, false);
 
          if(status & FSCKstatus_CLOSEREQ){
             // there was an error in the load/check and the user
@@ -2095,9 +2096,21 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 
    if (mIsRecovered)
    {
+      // This was a recovered file, that is, we have just overwritten the
+      // old, crashed .aup file. There may still be orphaned blockfiles in
+      // this directory left over from the crash, so we delete them now
+      mDirManager->RemoveOrphanedBlockfiles();
+      
+      // Before we saved this, this was a recovered project, but now it is
+      // a regular project, so remember this.
       mIsRecovered = false;
       mRecoveryAutoSaveDataDir = wxT("");
       SetProjectTitle();
+   } else if (fromSaveAs)
+   {
+      // On save as, always remove orphaned blockfiles that may be left over
+      // because the user is trying to overwrite another project
+      mDirManager->RemoveOrphanedBlockfiles();
    }
 
 #ifdef __WXMAC__
@@ -2994,6 +3007,21 @@ void AudacityProject::AutoSave()
    mLastAutoSaveTime = wxGetLocalTime();
 }
 
+void AudacityProject::OnAudioIOStartRecording()
+{
+   //printf("OnAudioIOStartRecording()\n");
+}
+
+void AudacityProject::OnAudioIOStopRecording()
+{
+   //printf("OnAudioIOStopRecording()\n");
+}
+
+void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
+{
+   //printf("OnAudioIONewBlockFiles(\"%s\")\n", (const char*)blockFileLog.mb_str());
+}
+   
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

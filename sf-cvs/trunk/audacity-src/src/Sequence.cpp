@@ -42,6 +42,7 @@ Sequence.cpp.  Not yet sure why.
 #include "BlockFile.h"
 #include "DirManager.h"
 
+#include "blockfile/SimpleBlockFile.h"
 #include "blockfile/SilentBlockFile.h"
 
 int Sequence::sMaxDiskBlockSize = 1048576;
@@ -1109,7 +1110,7 @@ sampleCount Sequence::GetIdealAppendLen()
 }
 
 bool Sequence::Append(samplePtr buffer, sampleFormat format,
-                      sampleCount len)
+                      sampleCount len, wxString* blockFileLog /*=NULL*/)
 {
    // Quick check to make sure that it doesn't overflow
    if (((double)mNumSamples) + ((double)len) > 2147483647)
@@ -1152,7 +1153,9 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
 
       newLastBlock->f =
          mDirManager->NewSimpleBlockFile(buffer2, newLastBlockLen, mSampleFormat);
-
+      if (blockFileLog)
+         *blockFileLog += ((SimpleBlockFile*)newLastBlock->f)->GetXMLString();
+         
       DeleteSamples(buffer2);
 
       mDirManager->Deref(lastBlock->f);
@@ -1173,10 +1176,14 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       if (format == mSampleFormat)
       {
          w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
+         if (blockFileLog)
+            *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
       }
       else {
          CopySamples(buffer, format, temp, mSampleFormat, l);
          w->f = mDirManager->NewSimpleBlockFile(temp, l, mSampleFormat);
+         if (blockFileLog)
+            *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
       }
 
       mBlock->Add(w);

@@ -1088,7 +1088,7 @@ void DirManager::Deref()
 // good thing; this is one reason why we use the hash and not the most
 // recent savefile.
 
-int DirManager::ProjectFSCK(bool forceerror)
+int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
 {
       
    // get a rough guess of how many blockfiles will be found/processed
@@ -1121,8 +1121,9 @@ int DirManager::ProjectFSCK(bool forceerror)
       if(blockFileHash.find(basename) == blockFileHash.end()){
          // the blockfile on disk is orphaned
          orphanList.Add(fullname.GetFullPath());
-         wxLogWarning(_("Orphaned blockfile: (%s)"),
-                      fullname.GetFullPath().c_str());
+         if (!silentlycorrect)
+            wxLogWarning(_("Orphaned blockfile: (%s)"),
+                         fullname.GetFullPath().c_str());
       }
       node=node->GetNext();
    }
@@ -1142,14 +1143,15 @@ int DirManager::ProjectFSCK(bool forceerror)
       }
       i++;
    }
-   
-   i=missingAliasFiles.begin();
-   while(i != missingAliasFiles.end()) {
-      wxString key=i->first;
-      wxLogWarning(_("Missing alias file: (%s)"),key.c_str());
-      i++;
-   }
 
+   if (!silentlycorrect) {
+      i=missingAliasFiles.begin();
+      while(i != missingAliasFiles.end()) {
+         wxString key=i->first;
+         wxLogWarning(_("Missing alias file: (%s)"),key.c_str());
+         i++;
+      }
+   }
 
    // enumerate missing summary blockfiles
    i=blockFileHash.begin();
@@ -1165,8 +1167,9 @@ int DirManager::ProjectFSCK(bool forceerror)
          file.SetExt(wxT("auf"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingSummaryList[key]=b;
-            wxLogWarning(_("Missing summary file: (%s.auf)"),
-                         key.c_str());
+            if (!silentlycorrect)
+               wxLogWarning(_("Missing summary file: (%s.auf)"),
+                            key.c_str());
          }
       }
       i++;
@@ -1184,8 +1187,9 @@ int DirManager::ProjectFSCK(bool forceerror)
          file.SetExt(wxT("au"));
          if(!wxFileExists(file.GetFullPath().c_str())){
             missingDataList[key]=b;
-            wxLogWarning(_("Missing data file: (%s.au)"),
-                         key.c_str());
+            if (!silentlycorrect)
+               wxLogWarning(_("Missing data file: (%s.au)"),
+                            key.c_str());
          }
       }
       i++;
@@ -1193,10 +1197,10 @@ int DirManager::ProjectFSCK(bool forceerror)
    
    // First, pop the log so the user can see what be up.
    if(forceerror ||
-      !orphanList.IsEmpty() ||
+      (!orphanList.IsEmpty() ||
       !missingAliasList.empty() ||
       !missingDataList.empty() ||
-      !missingSummaryList.empty()){
+      !missingSummaryList.empty()) && !silentlycorrect){
 
       wxLogWarning(_("Project check found inconsistencies inspecting the loaded project data;\nclick 'Details' for a complete list of errors, or 'OK' to proceed to more options."));
       
@@ -1205,7 +1209,9 @@ int DirManager::ProjectFSCK(bool forceerror)
    }
 
    // report, take action
-   if(!orphanList.IsEmpty()){
+   // If in "silently correct" mode, leave orphaned blockfiles alone
+   // (they will be deleted when project is saved the first time)
+   if(!orphanList.IsEmpty() && !silentlycorrect){
 
       wxString promptA =
          _("Project check found %d orphaned blockfile[s]. These files are\nunused and probably left over from a crash or some other bug.\nThey should be deleted to avoid disk contention.");
@@ -1236,21 +1242,30 @@ int DirManager::ProjectFSCK(bool forceerror)
 
    // Deal with any missing aliases
    if(!missingAliasList.empty()){
-
-      wxString promptA =
-         _("Project check detected %d input file[s] being used in place\n('alias files') are now missing.  There is no way for Audacity\nto recover these files automatically; you may choose to\npermanently fill in silence for the missing files, temporarily\nfill in silence for this session only, or close the project now\nand try to restore the missing files by hand.");
-      wxString prompt;
+      int action;
       
-      prompt.Printf(promptA,missingAliasFiles.size());
+      if (silentlycorrect)
+      {
+         // In "silently correct" mode, we always create silent blocks. This
+         // makes sure the project is complete even if we open it again.
+         action = 0;
+      } else
+      {
+         wxString promptA =
+            _("Project check detected %d input file[s] being used in place\n('alias files') are now missing.  There is no way for Audacity\nto recover these files automatically; you may choose to\npermanently fill in silence for the missing files, temporarily\nfill in silence for this session only, or close the project now\nand try to restore the missing files by hand.");
+         wxString prompt;
       
-      const wxChar *buttons[]={_("Replace missing data with silence [permanent upon save]"),
-                               _("Temporarily replace missing files with silence [this session only]"),
-                               _("Close project immediately with no further changes"),NULL};
-      int action = ShowMultiDialog(prompt,
-                                   _("Warning"),
-                                   buttons);
+         prompt.Printf(promptA,missingAliasFiles.size());
+      
+         const wxChar *buttons[]={_("Replace missing data with silence [permanent upon save]"),
+                                  _("Temporarily replace missing files with silence [this session only]"),
+                                  _("Close project immediately with no further changes"),NULL};
+         action = ShowMultiDialog(prompt,
+                                      _("Warning"),
+                                      buttons);
 
-      if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+         if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+      }
 
       BlockHash::iterator i=missingAliasList.begin();
       while(i != missingAliasList.end()) {
@@ -1274,21 +1289,30 @@ int DirManager::ProjectFSCK(bool forceerror)
 
    // Summary regeneration must happen after alias checking.
    if(!missingSummaryList.empty()){
-
-      wxString promptA =
-         _("Project check detected %d missing summary file[s] (.auf).\nAudacity can fully regenerate these summary files from the\noriginal audio data in the project.");
-      wxString prompt;
+      int action;
       
-      prompt.Printf(promptA,missingSummaryList.size());
+      if (silentlycorrect)
+      {
+         // In "silently correct" mode we just recreate the summary files
+         action = 0;
+      } else
+      {
+         wxString promptA =
+            _("Project check detected %d missing summary file[s] (.auf).\nAudacity can fully regenerate these summary files from the\noriginal audio data in the project.");
+         wxString prompt;
       
-      const wxChar *buttons[]={_("Regenerate summary files [safe and recommended]"),
-                               _("Fill in silence for missing display data [this session only]"),
-                               _("Close project immediately with no further changes"),NULL};
-      int action = ShowMultiDialog(prompt,
-                                   _("Warning"),
-                                   buttons);
-
-      if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+         prompt.Printf(promptA,missingSummaryList.size());
+      
+         const wxChar *buttons[]={_("Regenerate summary files [safe and recommended]"),
+                                 _("Fill in silence for missing display data [this session only]"),
+                                  _("Close project immediately with no further changes"),NULL};
+         action = ShowMultiDialog(prompt,
+                                      _("Warning"),
+                                      buttons);
+                                      
+         if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+      }
+      
       BlockHash::iterator i=missingSummaryList.begin();
       while(i != missingSummaryList.end()) {
          BlockFile *b = i->second;
@@ -1306,20 +1330,30 @@ int DirManager::ProjectFSCK(bool forceerror)
    // Deal with any missing SimpleBlockFiles
    if(!missingDataList.empty()){
 
-      wxString promptA =
-         _("Project check detected %d missing audio data blockfile[s] (.au), \nprobably due to a bug, system crash or accidental deletion.\nThere is no way for Audacity to recover this lost data\nautomatically; you may choose to permanently fill in silence\nfor the missing data, temporarily fill in silence for this\nsession only, or close the project now and try to restore the\nmissing data by hand.");
-      wxString prompt;
+      int action;
       
-      prompt.Printf(promptA,missingDataList.size());
+      if (silentlycorrect)
+      {
+         // In "silently correct" mode, we always create silent blocks. This
+         // makes sure the project is complete even if we open it again.
+         action = 0;
+      } else
+      {
+         wxString promptA =
+            _("Project check detected %d missing audio data blockfile[s] (.au), \nprobably due to a bug, system crash or accidental deletion.\nThere is no way for Audacity to recover this lost data\nautomatically; you may choose to permanently fill in silence\nfor the missing data, temporarily fill in silence for this\nsession only, or close the project now and try to restore the\nmissing data by hand.");
+         wxString prompt;
       
-      const wxChar *buttons[]={_("Replace missing data with silence [permanent immediately]"),
-                               _("Temporarily replace missing data with silence [this session only]"),
-                               _("Close project immediately with no further changes"),NULL};
-      int action = ShowMultiDialog(prompt,
-                                   _("Warning"),
-                                   buttons);
+         prompt.Printf(promptA,missingDataList.size());
       
-      if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+         const wxChar *buttons[]={_("Replace missing data with silence [permanent immediately]"),
+                                  _("Temporarily replace missing data with silence [this session only]"),
+                                 _("Close project immediately with no further changes"),NULL};
+         action = ShowMultiDialog(prompt,
+                                      _("Warning"),
+                                      buttons);
+      
+         if(action==2)return (ret | FSCKstatus_CLOSEREQ);
+      }
       
       BlockHash::iterator i=missingDataList.begin();
       while(i != missingDataList.end()) {
@@ -1349,6 +1383,45 @@ int DirManager::ProjectFSCK(bool forceerror)
 void DirManager::SetLocalTempDir(wxString path)
 {
    mytemp = path;
+}
+
+// msmeyer: Large parts of this function have been copied from 'ProjectFSCK'.
+//          Might want to unify / modularize the approach some time.
+void DirManager::RemoveOrphanedBlockfiles()
+{
+   // get a rough guess of how many blockfiles will be found/processed
+   // at each step by looking at the size of the blockfile hash
+   int blockcount=blockFileHash.size();
+
+   // enumerate *all* files in the project directory
+   wxStringList fnameList;
+
+   // this function is finally a misnomer
+   rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
+                               &fnameList,wxEmptyString,1,0,blockcount,
+                               _("Inspecting project file data..."));
+   
+   // enumerate orphaned blockfiles
+   wxStringList orphanList;
+   wxStringListNode *node = fnameList.GetFirst();
+   while(node){
+      wxFileName fullname(node->GetData());
+      wxString basename=fullname.GetName();
+      
+      if(blockFileHash.find(basename) == blockFileHash.end()){
+         // the blockfile on disk is orphaned
+         orphanList.Add(fullname.GetFullPath());
+      }
+      node=node->GetNext();
+   }
+   
+   // remove all orphaned blockfiles
+   node=orphanList.GetFirst();
+   while(node){
+      wxString fullpath=node->GetData();
+      wxRemoveFile(fullpath);
+      node=node->GetNext();
+   }
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
