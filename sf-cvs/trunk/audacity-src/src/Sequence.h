@@ -76,7 +76,8 @@ class Sequence: public XMLTagHandler {
    bool Paste(sampleCount s0, const Sequence *src);
 
    sampleCount GetIdealAppendLen();
-   bool Append(samplePtr buffer, sampleFormat format, sampleCount len);
+   bool Append(samplePtr buffer, sampleFormat format, sampleCount len,
+               wxString* blockFileLog=NULL);
    bool Delete(sampleCount start, sampleCount len);
    bool AppendAlias(wxString fullPath,
                     sampleCount start,

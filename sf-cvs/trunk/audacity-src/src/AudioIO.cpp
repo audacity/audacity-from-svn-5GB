@@ -354,6 +354,13 @@ void AudioIO::HandleDeviceChange()
    int playDeviceNum = Pa_GetDefaultOutputDeviceID();
 #endif
 
+   // Sometimes PortAudio returns -1 if it cannot find a suitable default
+   // device, so we just use the first one available
+   if (recDeviceNum < 0)
+      recDeviceNum = 0;
+   if (playDeviceNum < 0)
+      playDeviceNum = 0;
+      
    wxString recDevice = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
    wxString playDevice = gPrefs->Read(wxT("/AudioIO/PlaybackDevice"), wxT(""));
    int j;
@@ -363,8 +370,14 @@ void AudioIO::HandleDeviceChange()
    // cannot be fetched.
 
 #if USE_PORTAUDIO_V19
+   if (Pa_GetDeviceCount() <= 0)
+      return; // no devices found!?
+      
    for(j=0; j<Pa_GetDeviceCount(); j++) {
 #else
+   if (Pa_CountDevices() <= 0)
+      return; // no devices found!?
+
    for(j=0; j<Pa_CountDevices(); j++) {
 #endif
 
@@ -398,8 +411,11 @@ void AudioIO::HandleDeviceChange()
    playbackParameters.sampleFormat = paFloat32;
    playbackParameters.hostApiSpecificStreamInfo = NULL;
    playbackParameters.channelCount = 2;
-   playbackParameters.suggestedLatency =
-      Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
+   if (Pa_GetDeviceInfo(playDeviceNum))
+      playbackParameters.suggestedLatency =
+         Pa_GetDeviceInfo(playDeviceNum)->defaultLowOutputLatency;
+   else
+      playbackParameters.suggestedLatency = 100; // we're just probing anyway
 
    PaStreamParameters captureParameters;
  
@@ -407,8 +423,11 @@ void AudioIO::HandleDeviceChange()
    captureParameters.sampleFormat = paFloat32;;
    captureParameters.hostApiSpecificStreamInfo = NULL;
    captureParameters.channelCount = 2;
-   captureParameters.suggestedLatency =
-      Pa_GetDeviceInfo(recDeviceNum)->defaultLowOutputLatency;
+   if (Pa_GetDeviceInfo(recDeviceNum))
+      captureParameters.suggestedLatency =
+         Pa_GetDeviceInfo(recDeviceNum)->defaultLowOutputLatency;
+   else
+      captureParameters.suggestedLatency = 100; // we're just probing anyway
  
    error = Pa_OpenStream(&stream,
                          &captureParameters, &playbackParameters,
@@ -530,6 +549,8 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       const PaDeviceInfo *playbackDeviceInfo;
       
       playbackParameters->device = Pa_GetDefaultOutputDevice();
+      if (playbackParameters->device < 0)
+         playbackParameters->device = 0;
       
       if( playbackDeviceName != wxT("") )
       {
@@ -570,6 +591,8 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
       wxString captureDeviceName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
 
       captureParameters->device = Pa_GetDefaultInputDevice();
+      if (captureParameters->device < 0)
+         captureParameters->device = 0;
 
       if( captureDeviceName != wxT("") )
       {
@@ -786,7 +809,9 @@ void AudioIO::StartMonitoring(double sampleRate)
 int AudioIO::StartStream(WaveTrackArray playbackTracks,
                          WaveTrackArray captureTracks,
                          TimeTrack *timeTrack, double sampleRate,
-                         double t0, double t1, bool playLooped /* = false */,
+                         double t0, double t1,
+                         AudioIOListener* listener,
+                         bool playLooped /* = false */,
                          double cutPreviewGapStart /* = 0.0 */,
                          double cutPreviewGapLen /* = 0.0 */)
 {
@@ -824,6 +849,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
 
    gPrefs->Read(wxT("/AudioIO/SWPlaythrough"), &mSoftwarePlaythrough, false);
 
+   mListener = listener;
    mInputMeter = NULL;
    mOutputMeter = NULL;
    mRate    = sampleRate;
@@ -875,12 +901,18 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       // track wouldn't get the benefit of all 24 bits the card is capable
       // of.
       captureFormat = mCaptureTracks[0]->GetSampleFormat();
-   }   
-
+      
+      // Tell project that we are about to start recording
+      if (mListener)
+         mListener->OnAudioIOStartRecording();
+   }
+   
    bool success = StartPortAudioStream(sampleRate, playbackChannels,
                                        captureChannels, captureFormat);
    
    if (!success) {
+      if (mListener && captureChannels > 0)
+         mListener->OnAudioIOStopRecording();
       mStreamToken = 0;
       return 0;
    }
@@ -948,6 +980,8 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
       // TODO
       // we'll need a more complete way to indicate error.
       // AND we need to delete the ring buffers and mixers, etc.
+      if (mListener && mNumCaptureChannels > 0)
+         mListener->OnAudioIOStopRecording();
       wxPrintf(wxT("%hs\n"), Pa_GetErrorText(err));
       mStreamToken = 0;
       return 0;
@@ -1127,6 +1161,9 @@ void AudioIO::StopStream()
    if (mOutputMeter)
       mOutputMeter->Reset(mRate, false);
 
+   if (mListener && mNumCaptureChannels > 0)
+      mListener->OnAudioIOStopRecording();
+      
    //
    // Only set token to 0 after we're totally finished with everything
    //
@@ -1575,17 +1612,29 @@ void AudioIO::FillBuffers()
       {
          // Append captured samples to the end of the WaveTracks.
          // The WaveTracks have their own buffering for efficiency.
+         wxString blockFileLog;
+         
          for( i = 0; i < mCaptureTracks.GetCount(); i++ )
          {
             int avail = commonlyAvail;
             sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
+
+            wxString appendLog;
+            
             samplePtr temp = NewSamples(avail, trackFormat);
-
             mCaptureBuffers[i]->Get   (temp, trackFormat, avail);
-            mCaptureTracks[i]-> Append(temp, trackFormat, avail);
-
+            mCaptureTracks[i]-> Append(temp, trackFormat, avail, 1, 
+                                       &appendLog);
             DeleteSamples(temp);
+                                       
+            if (!appendLog.IsEmpty())
+               blockFileLog += wxString::Format(
+                  wxT("<recordingrecovery channel=%i>%s</recordingrecovery>"),
+                  i, appendLog.c_str());
          }
+         
+         if (mListener && !blockFileLog.IsEmpty())
+            mListener->OnAudioIONewBlockFiles(blockFileLog);
       }
    }
 

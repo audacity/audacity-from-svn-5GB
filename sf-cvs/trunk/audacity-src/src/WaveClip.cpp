@@ -561,7 +561,8 @@ void WaveClip::GetDisplayRect(wxRect* r)
 }
 
 bool WaveClip::Append(samplePtr buffer, sampleFormat format,
-                      sampleCount len, unsigned int stride /* = 1 */)
+                      sampleCount len, unsigned int stride /* = 1 */,
+                      wxString* blockFileLog /*=NULL*/)
 {
    //wxLogDebug(wxT("Append: len=%i\n"), len);
    
@@ -575,7 +576,8 @@ bool WaveClip::Append(samplePtr buffer, sampleFormat format,
    for(;;) {
       if (mAppendBufferLen >= blockSize) {
          bool success =
-            mSequence->Append(mAppendBuffer, seqFormat, blockSize);
+            mSequence->Append(mAppendBuffer, seqFormat, blockSize,
+                              blockFileLog);
          if (!success)
             return false;
          memmove(mAppendBuffer,

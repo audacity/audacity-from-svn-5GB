@@ -437,7 +437,7 @@ void TranscriptionToolBar::OnPlaySpeed(wxCommandEvent & event)
             {
                int token =   gAudioIO->StartStream(t->GetWaveTrackArray(false),
                                                    WaveTrackArray(), mTimeTrack,
-                                                   p->GetRate(), t0, t1, looped);
+                                                   p->GetRate(), t0, t1, p, looped);
                                                    
                if (token != 0) {
                   success = true;

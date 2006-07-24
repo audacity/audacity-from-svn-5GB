@@ -94,7 +94,23 @@ class DirManager: public XMLTagHandler {
    // program is exited normally.
    static void CleanTempDir();
 
-   int ProjectFSCK(bool);
+   // Check the project for errors and possibly prompt user
+   //
+   // forceerror: Always show log error dialog even if no errors are found
+   //             Important when you know that there are already errors in
+   //             the log
+   //
+   // silentlycorrect: Do not show an error dialog (except if forceerror is
+   //             true) and silently correct problems the "safest" way.
+   //             This leaves orphaned blockfiles on disk, but replaces
+   //             files that are not found by silence
+   //
+   int ProjectFSCK(bool forceerror, bool silentlycorrect);
+   
+   // Remove all orphaned blockfiles without user interaction. This is
+   // generally safe, because orphaned blockfiles are not referenced by the
+   // project and thus worthless anyway.
+   void RemoveOrphanedBlockfiles();
 
    // Get directory where data files are in. Note that projects are normally
    // not interested in this information, but it is important for the
@@ -130,8 +146,6 @@ class DirManager: public XMLTagHandler {
    void BalanceInfoAdd(wxString);
    void BalanceFileAdd(int);
    int BalanceMidAdd(int, int);
-
-   static bool dontDeleteTempFiles;
 
    wxString projName;
    wxString projPath;

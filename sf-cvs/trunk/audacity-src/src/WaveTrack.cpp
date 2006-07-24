@@ -840,9 +840,11 @@ bool WaveTrack::Join(double t0, double t1)
 }
 
 bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
-                       sampleCount len, unsigned int stride /* = 1 */)
+                       sampleCount len, unsigned int stride /* = 1 */,
+                       wxString *blockFileLog /* = NULL */)
 {
-   return GetLastOrCreateClip()->Append(buffer, format, len, stride);
+   return GetLastOrCreateClip()->Append(buffer, format, len, stride,
+                                        blockFileLog);
 }
 
 bool WaveTrack::AppendAlias(wxString fName, sampleCount start,

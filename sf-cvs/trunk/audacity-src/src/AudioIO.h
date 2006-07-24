@@ -40,6 +40,16 @@ void InitAudioIO();
 void DeinitAudioIO();
 wxString DeviceName(const PaDeviceInfo* info);
 
+class AudioIOListener {
+public:
+   AudioIOListener() {}
+   virtual ~AudioIOListener() {}
+   
+   virtual void OnAudioIOStartRecording() = 0;
+   virtual void OnAudioIOStopRecording() = 0;
+   virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog) = 0;
+};
+
 class AudioIO {
 
  public:
@@ -52,7 +62,9 @@ class AudioIO {
     * instance.  For use with IsStreamActive() below */
    int StartStream(WaveTrackArray playbackTracks, WaveTrackArray captureTracks,
                    TimeTrack *timeTrack, double sampleRate,
-                   double t0, double t1, bool playLooped = false,
+                   double t0, double t1,
+                   AudioIOListener* listener,
+                   bool playLooped = false,
                    double cutPreviewGapStart = 0.0,
                    double cutPreviewGapLen = 0.0);
 
@@ -209,6 +221,8 @@ private:
    bool                mPlayLooped;
    double              mCutPreviewGapStart;
    double              mCutPreviewGapLen;
+   
+   AudioIOListener*    mListener;
 
    friend class AudioThread;
 

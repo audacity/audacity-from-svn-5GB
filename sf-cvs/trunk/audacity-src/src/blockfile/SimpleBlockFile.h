@@ -44,6 +44,8 @@ class SimpleBlockFile : public BlockFile {
    virtual BlockFile *Copy(wxFileName newFileName);
    /// Write an XML representation of this file
    virtual void SaveXML(int depth, wxFFile &xmlFile);
+   wxString GetXMLString();
+
    virtual int GetSpaceUsage();
    virtual void Recover();
 
