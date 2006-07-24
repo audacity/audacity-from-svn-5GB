@@ -78,7 +78,6 @@
 // Static class variables
 
 int DirManager::numDirManagers = 0;
-bool DirManager::dontDeleteTempFiles = false;
 
 wxString DirManager::globaltemp;
 
@@ -90,11 +89,22 @@ DirManager::DirManager()
 
    mRef = 1; // MM: Initial refcount is 1 by convention
    
-   // set up local temp subdir
-   wxString numstring;
-   numstring.Printf(wxT("project%d"),numDirManagers);
-   mytemp=globaltemp + wxFILE_SEP_PATH + numstring;
+   // this need not be strictly uniform or random, but it should give
+   // unclustered numbers
+   srand(time(0));
 
+   // Set up local temp subdir
+   // Previously, Audacity just named project temp directories "project0",
+   // "project1" and so on. But with the advent of recovery code, we need an
+   // unique name even after a crash. So we create a random project index
+   // and make sure it is not used already. This will not pose any performance
+   // penalties as long as the number of open Audacity projects is much
+   // lower than RAND_MAX.
+   do {
+      mytemp = globaltemp + wxFILE_SEP_PATH +
+               wxString::Format(wxT("project%d"), rand());
+   } while (wxDirExists(mytemp));
+   
    numDirManagers++;
 
    projPath = wxT("");
@@ -124,9 +134,6 @@ DirManager::DirManager()
          }
       }
    }
-   // this need not be strictly uniform or random, but it should give
-   // unclustered numbers
-   srand(time(0));
 }
 
 DirManager::~DirManager()
@@ -135,7 +142,7 @@ DirManager::~DirManager()
 
    numDirManagers--;
    if (numDirManagers == 0) {
-      CleanTempDir(false);
+      CleanTempDir();
       //::wxRmdir(temp);
    }
 }
@@ -274,13 +281,10 @@ static void rm_dash_rf_execute(wxStringList fnameList,
 }
 
 // static
-void DirManager::CleanTempDir(bool startup)
+void DirManager::CleanTempDir()
 {
    wxStringList fnameList;
    int count = 0;
-
-   if (dontDeleteTempFiles)
-      return;
 
    // don't count the global temp directory, which this will find and
    // list last
@@ -288,24 +292,6 @@ void DirManager::CleanTempDir(bool startup)
    
    if (count == 0) 
       return;
-
-   if (startup) {
-//lda ... CleanSpeech not that concerned about temp files ... allow end-users to ignore this warning
-      int warn = gPrefs->Read(wxT("/GUI/WarnAboutTempFiles"), true);
-      int action = wxYES;
-      if (warn == 1) {
-         wxString prompt = _("Audacity found temporary files that were not deleted or saved \nthe last time you used Audacity. \n\nAudacity can't recover them automatically, but if you choose not \nto delete them, you can recover them manually. \n\nDelete temporary files?");
-      
-         action = wxMessageBox(prompt,
-                               _("Warning"),
-                               wxYES_NO | wxICON_EXCLAMATION,
-                               NULL);
-      }
-      if (action != wxYES) {
-         dontDeleteTempFiles = true;
-         return;
-      }
-   }
 
    rm_dash_rf_execute(fnameList,count,1,1,_("Cleaning up temporary files"));
 }
@@ -1358,6 +1344,11 @@ int DirManager::ProjectFSCK(bool forceerror)
 
 
    return ret;
+}
+
+void DirManager::SetLocalTempDir(wxString path)
+{
+   mytemp = path;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

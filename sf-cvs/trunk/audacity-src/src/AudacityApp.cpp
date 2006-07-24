@@ -67,6 +67,7 @@ It handles initialization and termination by subclassing wxApp.
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
+#include "AutoRecovery.h"
 
 // These lines ensure that Audacity gets WindowsXP themes.
 // Without them we get the old-style Windows98/2000 look under XP.
@@ -614,7 +615,15 @@ bool AudacityApp::OnInit()
          }
 
          if (!handled)
+         {
+            if (!project)
+            {
+               // Create new window for project
+               project = CreateNewAudacityProject(gParentWindow);
+            }
             project->OpenFile(argv[option]);
+            project = NULL; // don't reuse this project for other file
+         }
 
       }                         // for option...
    }                            // if (argc>1)
@@ -692,7 +701,13 @@ bool AudacityApp::OnInit()
             openThisFile = true;
          if(openThisFile) {
             openThisFile = false;
+            if (!project)
+            {
+               // Create new window for project
+               project = CreateNewAudacityProject(gParentWindow);
+            }
             project->OpenFile(fileToOpen);
+            project = NULL; // don't reuse this project for other file
          }
 
       }                         // for option...
@@ -701,7 +716,10 @@ bool AudacityApp::OnInit()
 #endif // Cygwin command-line parser
 
    gInited = true;
-
+   
+   if (!ShowAutoRecoveryDialogIfNeeded(&project))
+      QuitAudacity(true);
+   
    return TRUE;
 }
 
@@ -817,8 +835,6 @@ bool AudacityApp::InitTempDir()
    // Make sure the temp dir isn't locked by another process.
    if (!CreateSingleInstanceChecker(temp))
       return false;
-
-   DirManager::CleanTempDir(true);
 
    return true;
 }

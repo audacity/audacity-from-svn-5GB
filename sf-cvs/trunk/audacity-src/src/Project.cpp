@@ -469,7 +469,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mShowId3Dialog(false),              //lda
      mKeyboardCaptured(false),
      mLastAutoSaveTime(0),
-     mAutoSaving(false)
+     mAutoSaving(false),
+     mIsRecovered(false)
 {
    mStatusBar = CreateStatusBar();
 
@@ -895,6 +896,13 @@ void AudacityProject::SetProjectTitle()
    {
       name = mCleanSpeechMode ? wxT("Audacity CleanSpeech") : wxT("Audacity");
    }
+   
+   if (mIsRecovered)
+   {
+      name += wxT(" ");
+      name += _("(Recovered)");
+   }
+
    SetTitle( name );
 }
 
@@ -1608,6 +1616,10 @@ void AudacityProject::OpenFile(wxString fileName)
    ///
 
    mFileName = fileName;
+   
+   mRecoveryAutoSaveDataDir = wxT("");
+   mIsRecovered = false;
+
    SetProjectTitle();
 
    XMLFileReader xmlFile;
@@ -1640,33 +1652,49 @@ void AudacityProject::OpenFile(wxString fileName)
       // else any asynch calls into the blockfile code will not have
       // finished logging errors (if any) before the call to ProjectFSCK()
 
-      int status=GetDirManager()->ProjectFSCK(err);
+      if (mIsRecovered)
+      {
+         // This project has been recovered, so write a new auto-save file
+         // now and then delete the old one in the auto-save folder. Note that
+         // at this point mFileName != fileName, because when opening a
+         // recovered file mFileName is faked to point to the original file
+         // which has been recovered, not the one in the auto-save folder.
+         AutoSave();
+         if (!wxRemoveFile(fileName))
+            wxMessageBox(_("Could not remove old auto save file"),
+                         _("Error"), wxICON_STOP, this);
+         this->PushState(_("Project was recovered"), _("Recover"));
+      } else
+      {
+         // This is a regular project, check it
+         int status=GetDirManager()->ProjectFSCK(err);
 
-      if(status & FSCKstatus_CLOSEREQ){
-         // there was an error in the load/check and the user
-         // explictly opted to close the project
+         if(status & FSCKstatus_CLOSEREQ){
+            // there was an error in the load/check and the user
+            // explictly opted to close the project
 
-         mTracks->Clear(true);
+            mTracks->Clear(true);
          
-         mFileName = wxT("");
-         SetProjectTitle();
-         mTrackPanel->Refresh(true);
+            mFileName = wxT("");
+            SetProjectTitle();
+            mTrackPanel->Refresh(true);
 
-      }else if (status & FSCKstatus_CHANGED){
+         }else if (status & FSCKstatus_CHANGED){
          
-         t = iter.First();
-         while (t) {
-            if (t->GetKind() == Track::Wave)
-            {
-               // Only wave tracks have a notion of "changed"
-               for (WaveClipList::Node* it=((WaveTrack*)t)->GetClipIterator(); it; it=it->GetNext())
-                  it->GetData()->MarkChanged();
+            t = iter.First();
+            while (t) {
+               if (t->GetKind() == Track::Wave)
+               {
+                  // Only wave tracks have a notion of "changed"
+                  for (WaveClipList::Node* it=((WaveTrack*)t)->GetClipIterator(); it; it=it->GetNext())
+                     it->GetData()->MarkChanged();
+               }
+               t = iter.Next();
             }
-            t = iter.Next();
+            mTrackPanel->Refresh(true);
+            this->PushState(_("Project checker repaired file"), _("Repair"));
+   
          }
-         mTrackPanel->Refresh(true);
-         this->PushState(_("Project checker repaired file"), _("Repair"));
-
       }
    } else {
       mTracks->Clear(true);
@@ -1695,6 +1723,21 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       if (!value)
          break;
 
+      if (!wxStrcmp(attr, wxT("datadir"))) {
+         //
+         // This is an auto-saved version whose data is in another directory
+         //
+         // Note: This attribute must currently be written and parsed before
+         //       any other attributes
+         //
+         if (value[0] != 0)
+         {
+            // Remember that this is a recovered project
+            mIsRecovered = true;
+            mRecoveryAutoSaveDataDir = value;
+         }
+      }
+
       if (!wxStrcmp(attr, wxT("version"))) {
          fileVersion = value;
          requiredTags++;
@@ -1706,17 +1749,57 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
       }
 
       if (!wxStrcmp(attr, wxT("projname"))) {
-         wxString projName = value;
-         wxString projPath = wxPathOnly(mFileName);
+         wxString projName;
+         wxString projPath;
          
-         if (!mDirManager->SetProject(projPath, projName, false)) {
+         if (mIsRecovered) {
+            // Fake the filename as if we had opened the original file
+            // (which was lost by the crash) rather than the one in the 
+            // auto save folder
+            wxFileName realFileDir;
+            realFileDir.AssignDir(mRecoveryAutoSaveDataDir);
+            realFileDir.RemoveLastDir();
 
-            wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
-                                          projName.c_str()),
-                         _("Error opening project"),
-                         wxOK | wxCENTRE, this);
+            wxString realFileName = value;
+            if (realFileName.Length() >= 5 &&
+                realFileName.Right(5) == wxT("_data"))
+            {
+               realFileName = realFileName.Left(realFileName.Length() - 5);
+            }
+               
+            if (realFileName.IsEmpty())
+            {
+               // A previously unsaved project has been recovered, so fake
+               // an unsaved project. The data files just stay in the temp
+               // directory
+               mDirManager->SetLocalTempDir(mRecoveryAutoSaveDataDir);
+               mFileName = wxT("");
+               projName = wxT("");
+               projPath = wxT("");
+            } else
+            {
+               realFileName += wxT(".aup");
+               projPath = realFileDir.GetFullPath();
+               mFileName = wxFileName(projPath, realFileName).GetFullPath();
+               projName = value;
+            }
+                                   
+            SetProjectTitle();
+         } else {
+            projName = value;
+            projPath = wxPathOnly(mFileName);
+         }
 
-            return false;
+         if (!projName.IsEmpty())
+         {
+            if (!mDirManager->SetProject(projPath, projName, false))
+            {
+               wxMessageBox(wxString::Format(_("Couldn't find the project data folder: \"%s\""),
+                                             projName.c_str()),
+                                             _("Error opening project"),
+                                             wxOK | wxCENTRE, this);
+               return false;
+            }
          }
 
          requiredTags++;
@@ -1854,6 +1937,19 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
       fprintf(fp, "\t");
    fprintf(fp, "<project ");
    fprintf(fp, "xmlns=\"http://audacity.sourceforge.net/xml/\" ");
+
+   if (mAutoSaving)
+   {
+      //
+      // When auto-saving, remember full path to data files directory
+      //
+      // Note: This attribute must currently be written and parsed before
+      //       all other attributes
+      //
+      wxString dataDir = mDirManager->GetDataFilesDir();
+      fprintf(fp, "datadir=\"%s\" ", (const char *)XMLEsc(dataDir).mb_str());
+   }
+
    fprintf(fp, "projname=\"%s\" ", (const char *)XMLEsc(projName).mb_str());
    fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
    fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
@@ -1863,14 +1959,6 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    fprintf(fp, "h=\"%s\" ", (const char *)Internat::ToString(mViewInfo.h, 10).mb_str());
    fprintf(fp, "zoom=\"%s\" ", (const char *)Internat::ToString(mViewInfo.zoom, 10).mb_str());
    fprintf(fp, "rate=\"%s\" ", (const char *)Internat::ToString(mRate).mb_str());
-   
-   if (mAutoSaving)
-   {
-      // When auto-saving, remember full path to data files directory
-      wxString dataDir = mDirManager->GetDataFilesDir();
-      fprintf(fp, "datadir=\"%s\" ", (const char *)XMLEsc(dataDir).mb_str());
-   }
-   
    fprintf(fp, ">\n");
 
    mTags->WriteXML(depth+1, fp);
@@ -2005,6 +2093,13 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    // Now that we have saved the file, we can delete the auto-saved version
    DeleteCurrentAutoSaveFile();
 
+   if (mIsRecovered)
+   {
+      mIsRecovered = false;
+      mRecoveryAutoSaveDataDir = wxT("");
+      SetProjectTitle();
+   }
+
 #ifdef __WXMAC__
    FSSpec spec;
 
@@ -2035,6 +2130,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
                                               mFileName.c_str()));
    
    mUndoManager.StateSaved();
+   
    return true;
 }
 

@@ -89,10 +89,20 @@ class DirManager: public XMLTagHandler {
    void WriteXML(int depth, FILE *fp) { }
    bool AssignFile(wxFileName &filename,wxString value,bool check);
 
-   static void CleanTempDir(bool startup);
+   // Clean the temp dir. Note that now where we have auto recovery the temp
+   // dir is not cleaned at start up anymore. But it is cleaned when the
+   // program is exited normally.
+   static void CleanTempDir();
+
    int ProjectFSCK(bool);
-   
+
+   // Get directory where data files are in. Note that projects are normally
+   // not interested in this information, but it is important for the
+   // auto-save functionality
    wxString GetDataFilesDir() const;
+   
+   // This should only be used by the auto save functionality
+   void SetLocalTempDir(wxString path);
 
  private:
 
