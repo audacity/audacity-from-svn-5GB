@@ -45,6 +45,7 @@ OBJS = \
 	AboutDialog.o \
 	AudacityApp.o \
 	AudioIO.o \
+	AutoRecovery.o \
 	BatchCommandDialog.o \
 	BatchCommands.o \
 	BatchProcessDialog.o \

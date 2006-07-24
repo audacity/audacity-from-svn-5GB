@@ -406,6 +406,12 @@ class AudacityProject:public wxFrame,
    
    // Are we currently auto-saving or not?
    bool mAutoSaving;
+   
+   // Has this project been recovered from an auto-saved version
+   bool mIsRecovered;
+   
+   // The auto-save data dir the project has been recovered from
+   wxString mRecoveryAutoSaveDataDir;
 
  public:
     DECLARE_EVENT_TABLE()
