@@ -212,7 +212,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
       // If this mode has been selected, we form the tracks as
       // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)
       // instead of actually making fresh copies of the samples.
-
+      
       for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
          sampleCount blockLen = maxBlockSize;
          if (i + blockLen > fileTotalFrames)
