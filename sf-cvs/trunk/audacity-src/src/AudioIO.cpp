@@ -1613,8 +1613,9 @@ void AudioIO::FillBuffers()
          // Append captured samples to the end of the WaveTracks.
          // The WaveTracks have their own buffering for efficiency.
          wxString blockFileLog;
+         int numChannels = mCaptureTracks.GetCount();
          
-         for( i = 0; i < mCaptureTracks.GetCount(); i++ )
+         for( i = 0; i < numChannels; i++ )
          {
             int avail = commonlyAvail;
             sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
@@ -1629,8 +1630,8 @@ void AudioIO::FillBuffers()
                                        
             if (!appendLog.IsEmpty())
                blockFileLog += wxString::Format(
-                  wxT("<recordingrecovery channel=%i>%s</recordingrecovery>"),
-                  i, appendLog.c_str());
+                  wxT("\t<recordingrecovery channel='%i' numchannels='%i'>%s</recordingrecovery>\n"),
+                  i, numChannels, appendLog.c_str());
          }
          
          if (mListener && !blockFileLog.IsEmpty())

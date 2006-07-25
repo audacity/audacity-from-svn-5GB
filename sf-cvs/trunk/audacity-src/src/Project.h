@@ -67,6 +67,7 @@ class Importer;
 class AdornedRulerPanel;
 
 class AudacityProject;
+class RecordingRecoveryHandler;
 
 AudacityProject *CreateNewAudacityProject(wxWindow * parentFrame);
 AudacityProject *GetActiveProject();
@@ -310,6 +311,7 @@ class AudacityProject:public wxFrame,
    
    void AutoSaveIfNeeded();
    void AutoSave();
+   static bool IsAutoSaveEnabled();
    void DeleteCurrentAutoSaveFile();
 
    // Callbacks for backend operations
@@ -419,6 +421,9 @@ class AudacityProject:public wxFrame,
    
    // The auto-save data dir the project has been recovered from
    wxString mRecoveryAutoSaveDataDir;
+   
+   // The handler that handles recovery of <recordingrecovery> tags
+   RecordingRecoveryHandler* mRecordingRecoveryHandler;
 
  public:
     DECLARE_EVENT_TABLE()

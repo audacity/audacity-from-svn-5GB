@@ -96,6 +96,7 @@ scroll information.  It also has some status flags.
 
 #include "Project.h"
 
+#include "AutoRecovery.h"
 #include "AudacityApp.h"
 #include "AColor.h"
 #include "SelectionBar.h"
@@ -470,7 +471,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mKeyboardCaptured(false),
      mLastAutoSaveTime(0),
      mAutoSaving(false),
-     mIsRecovered(false)
+     mIsRecovered(false),
+     mRecordingRecoveryHandler(NULL)
 {
    mStatusBar = CreateStatusBar();
 
@@ -1621,6 +1623,42 @@ void AudacityProject::OpenFile(wxString fileName)
    mIsRecovered = false;
 
    SetProjectTitle();
+   
+   // Auto-save files (which are known by the special ending .autosave) do
+   // not necessarily have the closing </project> tag, because log data can
+   // be added anytime. So before opening an .autosave file, add the necessary
+   // closing bracket to make the XML parser happy.
+   const wxString autoSaveExt = wxT(".autosave");
+   if (mFileName.Length() >= autoSaveExt.Length() &&
+       mFileName.Right(autoSaveExt.Length()) == autoSaveExt)
+   {
+      // This is an auto-save file, add </project> tag, if necessary
+      wxFile f(fileName, wxFile::read_write);
+      if (f.IsOpened())
+      {
+         // Read the last 16 bytes of the file and check if they contain
+         // "</project>" somewhere.
+         const int bufsize = 16;
+         char buf[bufsize];
+         bool seekOk, readOk;
+         seekOk = f.SeekEnd(-bufsize) != wxInvalidOffset;
+         if (seekOk)
+            readOk = (f.Read(buf, bufsize) == bufsize);
+         else
+            readOk = false;
+         if (readOk && !strstr(buf, "</project>"))
+         {
+            // End of file does not contain closing </project> tag, so add it
+            if (f.Seek(0, wxFromEnd) != wxInvalidOffset)
+            {
+               strcpy(buf, "</project>\n");
+               f.Write(buf, strlen(buf));
+            }
+         }
+         
+         f.Close();
+      }
+   }
 
    XMLFileReader xmlFile;
 
@@ -1706,6 +1744,13 @@ void AudacityProject::OpenFile(wxString fileName)
       wxMessageBox(xmlFile.GetErrorStr(),
                    _("Error opening project"),
                    wxOK | wxCENTRE, this);
+   }
+   
+   // Clean up now unused recording recovery handler if any
+   if (mRecordingRecoveryHandler)
+   {
+      delete mRecordingRecoveryHandler;
+      mRecordingRecoveryHandler = NULL;
    }
 }
 
@@ -1900,6 +1945,12 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
       mTracks->Add(newTrack);
       return newTrack;
    }
+   
+   if (!wxStrcmp(tag, wxT("recordingrecovery"))) {
+      if (!mRecordingRecoveryHandler)
+         mRecordingRecoveryHandler = new RecordingRecoveryHandler(this);
+      return mRecordingRecoveryHandler;
+   }
 
    return NULL;
 }
@@ -1972,9 +2023,14 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
       t = iter.Next();
    }
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</project>\n");
+   if (!mAutoSaving)
+   {
+      // Only write closing bracket when not auto-saving, since we may add
+      // recording log data to the end of the file later
+      for(i=0; i<depth; i++)
+         fprintf(fp, "\t");
+      fprintf(fp, "</project>\n");
+   }
 }
 
 bool AudacityProject::Save(bool overwrite /* = true */ ,
@@ -2939,12 +2995,17 @@ void AudacityProject::DeleteCurrentAutoSaveFile()
    }
 }
 
-void AudacityProject::AutoSaveIfNeeded()
+// static
+bool AudacityProject::IsAutoSaveEnabled()
 {
    bool autoSaveEnabled = true;
    gPrefs->Read(wxT("/Directories/AutoSaveEnabled"), &autoSaveEnabled);
-      
-   if (!autoSaveEnabled)
+   return autoSaveEnabled;
+}
+
+void AudacityProject::AutoSaveIfNeeded()
+{
+   if (!IsAutoSaveEnabled())
       return; // user disabled auto-save
       
    double autoSaveMinutes = 5.0;
@@ -3009,17 +3070,31 @@ void AudacityProject::AutoSave()
 
 void AudacityProject::OnAudioIOStartRecording()
 {
-   //printf("OnAudioIOStartRecording()\n");
+   // Before recording is started, auto-save the file. The file will have
+   // empty tracks at the bottom where the recording will be put into
+   if (IsAutoSaveEnabled())
+      AutoSave();
 }
 
 void AudacityProject::OnAudioIOStopRecording()
 {
-   //printf("OnAudioIOStopRecording()\n");
+   // This is called after recording has stopped and all tracks have flushed.
+   // Now we auto-save again to get the project to a "normal" state again.
+   if (IsAutoSaveEnabled())
+      AutoSave();
 }
 
 void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
 {
-   //printf("OnAudioIONewBlockFiles(\"%s\")\n", (const char*)blockFileLog.mb_str());
+   // New blockfiles have been created, so add them to the auto-save file
+   if (IsAutoSaveEnabled() && !mAutoSaveFileName.IsEmpty())
+   {
+      wxFFile f(mAutoSaveFileName, wxT("at"));
+      if (!f.IsOpened())
+         return; // Keep recording going, there's not much we can do here
+      f.Write(blockFileLog);
+      f.Close();
+   }
 }
    
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
