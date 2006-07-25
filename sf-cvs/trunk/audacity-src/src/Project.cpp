@@ -132,6 +132,7 @@ scroll information.  It also has some status flags.
 #include "Experimental.h"
 #include "export/Export.h"
 #include "FileNames.h"
+#include "BlockFile.h"
 
 #include "Theme.h"
 #include "AllThemeResources.h"
@@ -472,7 +473,8 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mLastAutoSaveTime(0),
      mAutoSaving(false),
      mIsRecovered(false),
-     mRecordingRecoveryHandler(NULL)
+     mRecordingRecoveryHandler(NULL),
+     mImportedDependencies(false)
 {
    mStatusBar = CreateStatusBar();
 
@@ -2039,12 +2041,17 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    if (!fromSaveAs && mDirManager->GetProjectName() == wxT(""))
       return SaveAs();
 
-   // Show a dialog where the user can see audio files that are
+   // If the user has recently imported dependencies, show
+   // a dialog where the user can see audio files that are
    // aliased by this project.  The user may make the project
    // self-contained during this dialog, it modifies the project!
-   bool resultCode = ShowDependencyDialogIfNeeded(this, true);
-   if (!resultCode)
-      return false;
+   if (mImportedDependencies)
+   {
+      bool resultCode = ShowDependencyDialogIfNeeded(this, true);
+      if (!resultCode)
+         return false;
+      mImportedDependencies = false; // do not show again
+   }
 
    //TIDY-ME: CleanSpeechMode could be split into a number of prefs?
    // For example, this could be a preference to only work
@@ -2265,6 +2272,19 @@ void AudacityProject::AddImportedTracks(wxString fileName,
          newTracks[i]->SetName(trackNameBase + wxString::Format(wxT(" %d" ), i + 1));
       else
          newTracks[i]->SetName(trackNameBase);
+         
+      // Check if new track contains aliased blockfiles and if yes,
+      // remember this to show a warning later
+      if (newTracks[i]->GetKind() == WaveTrack::Wave)
+      {
+         WaveClip* clip = ((WaveTrack*)newTracks[i])->GetClipByIndex(0);
+         if (clip)
+         {
+            SeqBlock* block = clip->GetSequence()->GetBlockArray()->Item(0);
+            if (block->f->IsAlias())
+               mImportedDependencies = true;
+         }
+      }
    }
 
    delete[]newTracks;
@@ -2386,6 +2406,8 @@ bool AudacityProject::SaveAs()
    if (len > 4 && fName.Mid(len - 4) == wxT(".aup"))
       fName = fName.Mid(0, len - 4);
 
+   wxString oldFileName = mFileName;
+   
    mFileName = fName + ext;
    SetProjectTitle();
 
@@ -2396,6 +2418,11 @@ bool AudacityProject::SaveAs()
       gPrefs->SetPath(wxT("/RecentFiles"));
       mRecentFiles->Save(*gPrefs);
       gPrefs->SetPath(wxT(".."));
+   } else
+   {
+      // Reset file name on error
+      mFileName = oldFileName;
+      SetProjectTitle();
    }
 
    return(success);

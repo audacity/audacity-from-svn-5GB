@@ -142,8 +142,9 @@ class Sequence: public XMLTagHandler {
 
    //
    // This should only be used if you really, really know what
-   // you're doing!  Currently used by TrackList::GetSpaceUsage()
-   // and Dependencies.cpp.
+   // you're doing!  Currently used by TrackList::GetSpaceUsage(),
+   // Dependencies.cpp and by Project.cpp to check if the first
+   // block of the sequence is aliased (for a warning message).
    //
 
    BlockArray *GetBlockArray() {return mBlock;}

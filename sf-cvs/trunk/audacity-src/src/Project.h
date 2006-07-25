@@ -425,6 +425,9 @@ class AudacityProject:public wxFrame,
    // The handler that handles recovery of <recordingrecovery> tags
    RecordingRecoveryHandler* mRecordingRecoveryHandler;
 
+   // Dependencies have been imported and a warning should be shown on save
+   bool mImportedDependencies;
+
  public:
     DECLARE_EVENT_TABLE()
 };
