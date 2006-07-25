@@ -508,6 +508,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\AutoRecovery.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\AutoRecovery.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\BatchCommandDialog.cpp"
 				>
 			</File>
