@@ -49,7 +49,6 @@ simplifies construction of menu items.
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
-#include "Dependencies.h"
 #include "LabelTrack.h"
 #include "import/ImportMIDI.h"
 #include "import/ImportRaw.h"
@@ -87,6 +86,7 @@ simplifies construction of menu items.
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
 #include "TimeDialog.h"
+#include "LabelDialog.h"
 
 enum {
    kAlignZero=0,
@@ -157,9 +157,7 @@ enum {
    TrackPanelHasFocus     = 0x00008000,  //lll
    SelectionBarHasFocus   = 0x00010000,  //lll
    LabelsSelectedFlag     = 0x00020000,
-   AudioIOBusyFlag        = 0x00040000,  //lll
-   PlayRegionLockedFlag   = 0x00080000,  //msmeyer
-   PlayRegionNotLockedFlag= 0x00100000   //msmeyer
+   AudioIOBusyFlag        = 0x00040000   //lll
 };
 
 #define FN(X) new AudacityProjectCommandFunctor(this, &AudacityProject:: X )
@@ -198,16 +196,14 @@ void AudacityProject::CreateMenusAndCommands()
    #endif
 
    c->AddItem(wxT("Close"),          _("&Close\tCtrl+W"),                 FN(OnClose));
-   if( !mCleanSpeechMode )
-   {
-      c->AddItem(wxT("Save"),           _("&Save Project\tCtrl+S"),          FN(OnSave));
-      c->SetCommandFlags(wxT("Save"),
-                         AudioIONotBusyFlag | UnsavedChangesFlag,
-                         AudioIONotBusyFlag | UnsavedChangesFlag);
-      c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
-   }
-
-   c->AddItem(wxT("CheckDeps"),      _("Check Dependencies..."),          FN(OnCheckDependencies));
+	if( !mCleanSpeechMode )
+	{
+   c->AddItem(wxT("Save"),           _("&Save Project\tCtrl+S"),          FN(OnSave));
+   c->SetCommandFlags(wxT("Save"),
+                      AudioIONotBusyFlag | UnsavedChangesFlag,
+                      AudioIONotBusyFlag | UnsavedChangesFlag);
+   c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
+	}
 
    c->AddSeparator();
 
@@ -506,8 +502,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginSubMenu(_("Play &Region..."));
    c->AddItem(wxT("LockPlayRegion"), _("Lock Play Region"), FN(OnLockPlayRegion));
    c->AddItem(wxT("UnlockPlayRegion"), _("Unlock Play Region"), FN(OnUnlockPlayRegion));
-   c->SetCommandFlags(wxT("LockPlayRegion"), PlayRegionNotLockedFlag, PlayRegionNotLockedFlag);
-   c->SetCommandFlags(wxT("UnlockPlayRegion"), PlayRegionLockedFlag, PlayRegionLockedFlag);
+   c->SetCommandFlags(0, 0, wxT("LockPlayRegion"), wxT("UnlockPlayRegion"), NULL);
    c->EndSubMenu();
 
    // Alternate strings
@@ -602,10 +597,6 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(wxT("MixAndRender"),
                          AudioIONotBusyFlag | WaveTracksSelectedFlag,
                          AudioIONotBusyFlag | WaveTracksSelectedFlag);
-      c->AddItem(wxT("Resample"), _("&Resample..."), FN(OnResample));
-      c->SetCommandFlags(wxT("Resample"),
-                         AudioIONotBusyFlag | WaveTracksSelectedFlag,
-                         AudioIONotBusyFlag | WaveTracksSelectedFlag);
       c->AddSeparator();
      /* c->AddItem(wxT("NewAudioTrack"),  _("New &Audio Track\tShift+Ctrl+N"),               FN(OnNewWaveTrack));
       c->AddItem(wxT("NewStereoTrack"), _("New &Stereo Track"),              FN(OnNewStereoTrack));
@@ -649,12 +640,13 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
+      c->AddItem(wxT("EditLabels"),     _("Edit Labels"), FN(OnEditLabels));
 
       c->AddSeparator();   
-      c->BeginSubMenu(_("S&ort tracks by..."));
-      c->AddItem(wxT("SortByTime"), _("&Start time"), FN(OnSortTime));
+      c->BeginSubMenu(_("Sort tracks by..."));
+      c->AddItem(wxT("SortByTime"), _("Start time"), FN(OnSortTime));
       c->SetCommandFlags(wxT("SortByTime"), TracksExistFlag, TracksExistFlag);
-      c->AddItem(wxT("SortByName"), _("&Name"), FN(OnSortName));
+      c->AddItem(wxT("SortByName"), _("Name"), FN(OnSortName));
       c->SetCommandFlags(wxT("SortByName"), TracksExistFlag, TracksExistFlag);
       c->EndSubMenu();
 
@@ -1099,11 +1091,6 @@ wxUint32 AudacityProject::GetUpdateFlags()
       flags |= ZoomOutAvailableFlag;
 
    flags |= GetFocusedFrame();
-   
-   if (IsPlayRegionLocked())
-      flags |= PlayRegionLockedFlag;
-   else
-      flags |= PlayRegionNotLockedFlag;
 
    return flags;
 }
@@ -2052,11 +2039,6 @@ void AudacityProject::OnSave()
 void AudacityProject::OnSaveAs()
 {
    SaveAs();
-}
-
-void AudacityProject::OnCheckDependencies()
-{
-   ShowDependencyDialogIfNeeded(this, false);
 }
 
 void AudacityProject::OnExit()
@@ -3930,6 +3912,16 @@ void AudacityProject::OnAddLabelPlaying()
    }
 }
 
+void AudacityProject::OnEditLabels()
+{
+   LabelDialog d(this, mDirManager, mTracks, mRate);
+   
+   if (d.ShowModal() == wxID_OK) {
+      PushState(_("Edited labels"), _("Label"));
+      RedrawProject();
+   }
+}
+
 // #define PRESET_FORMAT 20050501
 #define PRESET_FORMAT 20050428
 // #define PRESET_COUNT  16
@@ -4315,40 +4307,6 @@ void AudacityProject::OnUnlockPlayRegion()
 {
    mLockPlayRegion = false;
    mRuler->Refresh(false);
-}
-
-void AudacityProject::OnResample()
-{
-   TrackListIterator iter(mTracks);
-
-   int newRate;
-   
-   while (true) {
-      wxTextEntryDialog* dlg = new wxTextEntryDialog(this,
-         _("Enter new samplerate:"), _("Resample"), wxT(""));
-      if (dlg->ShowModal() != wxID_OK)
-         return; // user cancelled dialog
-      newRate = atoi(dlg->GetValue().mb_str());
-      delete dlg;
-      if (newRate < 1 || newRate > 1000000)
-         wxMessageBox(_("The entered value is invalid"), _("Error"),
-                      wxICON_STOP, this);
-      else
-         break;
-   }
-      
-   for (Track *t = iter.First(); t; t = iter.Next())
-   {
-      if (t->GetSelected() && t->GetKind() == Track::Wave)
-         if (!((WaveTrack*)t)->Resample(newRate))
-            break;
-   }
-   
-   PushState(_("Resampled audio track(s)"), _("Resample Track"));
-   RedrawProject();
-   
-   // Need to reset
-   FinishAutoScroll();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

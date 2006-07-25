@@ -123,8 +123,6 @@ void OnClose();
 void OnSave();
 void OnSaveAs();
 
-void OnCheckDependencies();
-
 void OnExportMix();
 void OnExportSelection();
 void OnExportMP3Mix();
@@ -241,6 +239,7 @@ void OnNewTimeTrack();
 void OnRemoveTracks();
 void OnAddLabel();
 void OnAddLabelPlaying();
+void OnEditLabels();
 
         // Effect Menu
 
@@ -283,8 +282,6 @@ void OnSeparator();
 
 void PrevFrame();
 void NextFrame();
-
-void OnResample();
 
 #endif
 

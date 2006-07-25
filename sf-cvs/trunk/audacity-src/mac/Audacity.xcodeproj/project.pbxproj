@@ -750,6 +750,8 @@
 		17FDBD01098BFF4E00BCEF32 /* os_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 170732F90988D6AB008541CC /* os_types.h */; };
 		17FDBD02098BFF4E00BCEF32 /* bitwise.c in Sources */ = {isa = PBXBuildFile; fileRef = 170733980988D6AC008541CC /* bitwise.c */; };
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
+		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
+		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
 		2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 283506290A3A88ED00EB1EBD /* pa_unix_util.h */; };
 		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
@@ -757,6 +759,7 @@
 		283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A80A2C0E15004372C4 /* Theme.cpp */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
+		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
@@ -1804,6 +1807,10 @@
 		17C8BF52098B654400216F16 /* xlsym.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsym.c; sourceTree = "<group>"; };
 		17C8BF54098B654400216F16 /* xlsys.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = xlsys.c; sourceTree = "<group>"; };
 		17FC86F30994637C0061DC94 /* compile.txt */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; name = compile.txt; path = mac/compile.txt; sourceTree = "<group>"; };
+		280828530A75E0D0000002EF /* LabelDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = LabelDialog.cpp; sourceTree = "<group>"; };
+		280828540A75E0D0000002EF /* LabelDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LabelDialog.h; sourceTree = "<group>"; };
+		280828580A75E0EA000002EF /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
+		280828590A75E0EA000002EF /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
 		283506290A3A88ED00EB1EBD /* pa_unix_util.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_unix_util.h; sourceTree = "<group>"; };
 		283A11A40A2C0DE7004372C4 /* broadcast.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = broadcast.c; sourceTree = "<group>"; };
@@ -1815,6 +1822,8 @@
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
 		2849B4600A7444BE00ECF12D /* Dependencies.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Dependencies.cpp; sourceTree = "<group>"; };
 		2849B4610A7444BE00ECF12D /* Dependencies.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Dependencies.h; sourceTree = "<group>"; };
+		28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = AutoRecovery.cpp; sourceTree = "<group>"; };
+		28560C900A75E40F00A3429E /* AutoRecovery.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = AutoRecovery.h; sourceTree = "<group>"; };
 		287F9F3B0A69748F00F025FA /* TimeDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDialog.h; sourceTree = "<group>"; };
 		287F9F3C0A69748F00F025FA /* TimeDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeDialog.cpp; sourceTree = "<group>"; };
 		288217790A35D8730029AF41 /* ShuttlePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ShuttlePrefs.cpp; sourceTree = "<group>"; };
@@ -2590,8 +2599,6 @@
 		1790AFC409883BFD008A330A /* src */ = {
 			isa = PBXGroup;
 			children = (
-				2849B4600A7444BE00ECF12D /* Dependencies.cpp */,
-				2849B4610A7444BE00ECF12D /* Dependencies.h */,
 				174D9025098C78AF00D5909F /* commands */,
 				1790AFDC09883BFD008A330A /* blockfile */,
 				1790AFFD09883BFD008A330A /* effects */,
@@ -2612,6 +2619,8 @@
 				1790AFD009883BFD008A330A /* AudacityHeaders.h */,
 				1790AFD209883BFD008A330A /* AudioIO.cpp */,
 				1790AFD309883BFD008A330A /* AudioIO.h */,
+				28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */,
+				28560C900A75E40F00A3429E /* AutoRecovery.h */,
 				1790AFD409883BFD008A330A /* BatchCommandDialog.cpp */,
 				1790AFD509883BFD008A330A /* BatchCommandDialog.h */,
 				1790AFD609883BFD008A330A /* BatchCommands.cpp */,
@@ -2628,6 +2637,8 @@
 				1790AFF309883BFD008A330A /* ControlToolBar.h */,
 				1790AFF409883BFD008A330A /* CrossFade.cpp */,
 				1790AFF509883BFD008A330A /* CrossFade.h */,
+				2849B4600A7444BE00ECF12D /* Dependencies.cpp */,
+				2849B4610A7444BE00ECF12D /* Dependencies.h */,
 				1790AFF709883BFD008A330A /* DirManager.cpp */,
 				1790AFF809883BFD008A330A /* DirManager.h */,
 				1790AFF909883BFD008A330A /* Dither.cpp */,
@@ -2654,6 +2665,8 @@
 				1790B07C09883BFD008A330A /* ImageManipulation.h */,
 				1790B09909883BFD008A330A /* Internat.cpp */,
 				1790B09A09883BFD008A330A /* Internat.h */,
+				280828530A75E0D0000002EF /* LabelDialog.cpp */,
+				280828540A75E0D0000002EF /* LabelDialog.h */,
 				1790B09B09883BFD008A330A /* LabelTrack.cpp */,
 				1790B09C09883BFD008A330A /* LabelTrack.h */,
 				1790B09F09883BFD008A330A /* LangChoice.cpp */,
@@ -2978,6 +2991,8 @@
 				28F1D8180A2D0018005506A7 /* AttachableScrollBar.h */,
 				28F1D8190A2D0018005506A7 /* ExpandingToolBar.cpp */,
 				28F1D81A0A2D0018005506A7 /* ExpandingToolBar.h */,
+				280828580A75E0EA000002EF /* Grid.cpp */,
+				280828590A75E0EA000002EF /* Grid.h */,
 				28F1D81B0A2D0019005506A7 /* ImageRoll.cpp */,
 				28F1D81C0A2D0019005506A7 /* ImageRoll.h */,
 				1790B10309883BFD008A330A /* Meter.cpp */,
@@ -4861,6 +4876,9 @@
 				28FC1AFB0A47762C00A188AE /* WrappedType.cpp in Sources */,
 				287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */,
 				2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */,
+				280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */,
+				2808285A0A75E0EA000002EF /* Grid.cpp in Sources */,
+				28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

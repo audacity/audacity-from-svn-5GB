@@ -79,10 +79,10 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/IGNORE:4049"
-				AdditionalDependencies="allegrod.lib libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_core.lib wxmsw26d_html.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib libFLAC++d.lib libFLACd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="allegrod.lib libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_adv.lib wxmsw26d_core.lib wxmsw26d_html.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib libFLAC++d.lib libFLACd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
-				LinkIncremental="0"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\portaudio\winproj\lib&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;"
 				GenerateDebugInformation="true"
@@ -180,7 +180,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_net.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_adv.lib wxbase26_net.lib wxmsw26_adv.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
 				LinkIncremental="0"
@@ -284,7 +284,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/IGNORE:4049"
-				AdditionalDependencies="allegroud.lib libresampleud.lib soundtouchud.lib libsamplerateud.lib portmixerud.lib libnyquistud.lib libid3tagud.lib expatud.lib madud.lib sndfileud.lib wxbase26ud.lib wxbase26ud_net.lib wxmsw26ud_core.lib wxmsw26ud_html.lib ogg_static_ud.lib vorbis_static_ud.lib vorbisfile_static_ud.lib wxpngud.lib wxzlibud.lib wxjpegud.lib wxtiffud.lib libFLAC++ud.lib libFLACud.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib $(NOINHERIT)"
+				AdditionalDependencies="allegroud.lib libresampleud.lib soundtouchud.lib libsamplerateud.lib portmixerud.lib libnyquistud.lib libid3tagud.lib expatud.lib madud.lib sndfileud.lib wxbase26ud.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib ogg_static_ud.lib vorbis_static_ud.lib vorbisfile_static_ud.lib wxpngud.lib wxzlibud.lib wxjpegud.lib wxtiffud.lib libFLAC++ud.lib libFLACud.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib $(NOINHERIT)"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
 				LinkIncremental="0"
@@ -1085,6 +1085,14 @@
 			</File>
 			<File
 				RelativePath="..\src\Internat.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\LabelDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\LabelDialog.h"
 				>
 			</File>
 			<File
@@ -4431,6 +4439,14 @@
 			</File>
 			<File
 				RelativePath="..\src\widgets\ExpandingToolBar.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\Grid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\widgets\Grid.h"
 				>
 			</File>
 			<File
