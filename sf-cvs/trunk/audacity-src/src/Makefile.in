@@ -60,6 +60,7 @@ OBJS = \
 	Help.o \
 	HistoryWindow.o \
 	ImageManipulation.o \
+	LabelDialog.o \
 	LabelTrack.o \
 	Languages.o \
 	LangChoice.o \
@@ -162,6 +163,7 @@ OBJS = \
 	widgets/ASlider.o \
 	widgets/AttachableScrollBar.o \
 	widgets/ExpandingToolBar.o \
+	widgets/Grid.o \
 	widgets/ImageRoll.o \
 	widgets/Meter.o \
 	widgets/MultiDialog.o \

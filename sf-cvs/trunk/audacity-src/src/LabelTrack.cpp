@@ -1853,6 +1853,12 @@ int LabelTrack::AddLabel(double t, double t1, const wxString &title)
    return pos;
 }
 
+void LabelTrack::DeleteLabel(int index)
+{
+   wxASSERT((index < mLabels.GetCount()));
+   mLabels.RemoveAt(index);
+}
+
 // Private method called from the constructor
 void LabelTrack::InitColours()
 {

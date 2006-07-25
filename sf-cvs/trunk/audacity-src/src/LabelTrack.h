@@ -162,6 +162,9 @@ class LabelTrack:public Track {
    //This returns the index of the label we just added.
    int AddLabel(double t, double t1, const wxString &title = wxT(""));
 
+   //This deletes the label at given index.
+   void DeleteLabel(int index);
+
    //get current cursor position
    int getCurrentCursorPosition() const { return mCurrentCursorPos; };
 
