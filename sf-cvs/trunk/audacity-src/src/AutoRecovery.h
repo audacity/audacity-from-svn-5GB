@@ -2,6 +2,9 @@
 #define __AUDACITY_AUTORECOVERY__
 
 #include "Project.h"
+#include "xml/XMLTagHandler.h"
+
+#include <wx/debug.h>
 
 //
 // Show auto recovery dialog if there are projects to recover. Should be
@@ -14,5 +17,24 @@
 //          False if Audacity should be quit immediately
 //
 bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj);
+
+//
+// XML Handler for a <recordingrecovery> tag
+//
+class RecordingRecoveryHandler: public XMLTagHandler
+{
+public:
+   RecordingRecoveryHandler(AudacityProject* proj);
+   virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
+   virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
+   
+   // This class only knows reading tags
+   virtual void WriteXML(int depth, FILE *fp) { wxASSERT(false); }
+
+private:
+   AudacityProject* mProject;
+   int mChannel;
+   int mNumChannels;
+};
 
 #endif

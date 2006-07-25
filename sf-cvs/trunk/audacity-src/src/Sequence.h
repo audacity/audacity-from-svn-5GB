@@ -82,6 +82,14 @@ class Sequence: public XMLTagHandler {
    bool AppendAlias(wxString fullPath,
                     sampleCount start,
                     sampleCount len, int channel);
+                    
+   // Append a blockfile. The blockfile pointer is then "owned" by the
+   // sequence. This function is used by the recording log crash recovery
+   // code, but may be useful for other purposes. The blockfile must already
+   // be registered within the dir manager hash. This is the case
+   // when the blockfile is created using DirManager::NewSimpleBlockFile or
+   // loaded from an XML file via DirManager::HandleXMLTag
+   void AppendBlockFile(BlockFile* blockFile);
 
    bool SetSilence(sampleCount s0, sampleCount len);
    bool InsertSilence(sampleCount s0, sampleCount len);

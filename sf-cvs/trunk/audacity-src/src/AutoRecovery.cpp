@@ -2,6 +2,7 @@
 #include "Audacity.h"
 #include "AudacityApp.h"
 #include "FileNames.h"
+#include "blockfile/SimpleBlockFile.h"
 
 #include <wx/wxprec.h>
 #include <wx/filefn.h>
@@ -227,4 +228,83 @@ bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj)
       // Nothing to recover, move along
       return true;
    }
+}
+
+////////////////////////////////////////////////////////////////////////////
+/// Recording recovery handler
+
+RecordingRecoveryHandler::RecordingRecoveryHandler(AudacityProject* proj)
+{
+   mProject = proj;
+   mChannel = -1;
+   mNumChannels = -1;
+}
+
+bool RecordingRecoveryHandler::HandleXMLTag(const wxChar *tag,
+                                            const wxChar **attrs)
+{
+   if (wxStrcmp(tag, wxT("simpleblockfile")) == 0)
+   {
+      // Check if we have a valid channel and numchannels
+      if (mChannel < 0 || mNumChannels < 0 || mChannel >= mNumChannels)
+      {
+         // This should only happen if there is a bug
+         wxASSERT(false);
+         return false;
+      }
+
+      // We need to find the track and sequence where the blockfile belongs
+      WaveTrackArray tracks = mProject->GetTracks()->GetWaveTrackArray(false);
+      int index = tracks.GetCount() - mNumChannels + mChannel;
+      if (index < 0 || index >= (int)tracks.GetCount())
+      {
+         // This should only happen if there is a bug
+         wxASSERT(false);
+         return false;
+      }
+      WaveTrack* track = tracks.Item(index);
+      Sequence* seq = track->GetLastOrCreateClip()->GetSequence();
+      
+      // Load the blockfile from the XML
+      BlockFile* blockFile = NULL;
+      DirManager* dirManager = mProject->GetDirManager();
+      dirManager->SetLoadingFormat(seq->GetSampleFormat());
+      dirManager->SetLoadingTarget(&blockFile);
+      if (!dirManager->HandleXMLTag(tag, attrs) || !blockFile)
+      {
+         // This should only happen if there is a bug
+         wxASSERT(false);
+         return false;
+      }
+
+      seq->AppendBlockFile(blockFile);
+
+   } else if (wxStrcmp(tag, wxT("recordingrecovery")) == 0)
+   {
+      // loop through attrs, which is a null-terminated list of
+      // attribute-value pairs
+      while(*attrs)
+      {
+         const wxChar *attr = *attrs++;
+         const wxChar *value = *attrs++;
+
+         if (!value)
+            break;
+         
+         if (wxStrcmp(attr, wxT("channel")) == 0)
+            mChannel = wxAtoi(value);
+         if (wxStrcmp(attr, wxT("numchannels")) == 0)
+            mNumChannels = wxAtoi(value);
+      }
+   }
+   
+   return true;
+}
+
+XMLTagHandler* RecordingRecoveryHandler::HandleXMLChild(const wxChar *tag)
+{
+   if (wxStrcmp(tag, wxT("simpleblockfile")) == 0)
+      return this; // HandleXMLTag also handles <simpleblockfile>
+   
+   return NULL;
 }

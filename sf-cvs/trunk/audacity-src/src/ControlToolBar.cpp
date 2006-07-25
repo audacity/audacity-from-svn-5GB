@@ -730,24 +730,32 @@ void ControlToolBar::OnRecord(wxCommandEvent &evt)
 
          newRecordingTracks.Add(newTrack);
       }
+      
+      // msmeyer: StartStream calls a callback which triggers auto-save, so
+      // we add the tracks where recording is done into now. We remove them
+      // later if starting the stream fails
+      for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++)
+         t->Add(newRecordingTracks[i]);
 
       int token = gAudioIO->StartStream(playbackTracks,
                                         newRecordingTracks, t->GetTimeTrack(),
                                         p->GetRate(), t0, t1, p);
 
       bool success = (token != 0);
-      for( unsigned int i = 0; i < newRecordingTracks.GetCount(); i++ )
-         if (success)
-            t->Add(newRecordingTracks[i]);
-         else
-            delete newRecordingTracks[i];
-
+      
       if (success) {
          p->SetAudioIOToken(token);
          mBusyProject = p;
          SetVUMeters(p);
       }
       else {
+         // msmeyer: Delete recently added tracks if opening stream fails
+         for (unsigned int i = 0; i < newRecordingTracks.GetCount(); i++)
+         {
+            t->Remove(newRecordingTracks[i]);
+            delete newRecordingTracks[i];
+         }
+
          // msmeyer: Show error message if stream could not be opened
          wxMessageBox(_("Error while opening sound device. "
             wxT("Please check the input device settings and the project sample rate.")),

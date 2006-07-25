@@ -718,7 +718,11 @@ bool AudacityApp::OnInit()
    gInited = true;
    
    if (!ShowAutoRecoveryDialogIfNeeded(&project))
+   {
+      // Important: Prevent deleting any temporary files!
+      DirManager::SetDontDeleteTempFiles();
       QuitAudacity(true);
+   }
    
    return TRUE;
 }

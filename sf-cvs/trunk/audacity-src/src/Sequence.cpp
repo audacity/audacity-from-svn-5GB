@@ -1504,6 +1504,17 @@ void Sequence::SetMaxDiskBlockSize(int bytes)
    sMaxDiskBlockSize = bytes;
 }
 
+void Sequence::AppendBlockFile(BlockFile* blockFile)
+{
+   SeqBlock *w = new SeqBlock();
+   w->start = mNumSamples;
+   w->f = blockFile;
+   mBlock->Add(w);
+   mNumSamples += blockFile->GetLength();
+
+   ConsistencyCheck(wxT("AppendBlockFile"));
+}
+
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

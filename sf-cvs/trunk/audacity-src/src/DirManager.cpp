@@ -78,6 +78,7 @@
 // Static class variables
 
 int DirManager::numDirManagers = 0;
+bool DirManager::dontDeleteTempFiles = false;
 
 wxString DirManager::globaltemp;
 
@@ -283,6 +284,9 @@ static void rm_dash_rf_execute(wxStringList fnameList,
 // static
 void DirManager::CleanTempDir()
 {
+   if (dontDeleteTempFiles)
+      return; // do nothing
+      
    wxStringList fnameList;
    int count = 0;
 
