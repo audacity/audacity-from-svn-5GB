@@ -18,12 +18,14 @@
 #include <wx/dialog.h>
 #include <wx/hashmap.h>
 #include <wx/progdlg.h>
+#include <wx/choice.h>
 
 #include "BlockFile.h"
 #include "Dependencies.h"
 #include "DirManager.h"
 #include "Project.h"
 #include "ShuttleGui.h"
+#include "Prefs.h"
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY( AliasedFileArray );
@@ -210,11 +212,12 @@ bool RemoveDependencies(AudacityProject *project,
 
 enum {
    FileListID = 6000,
-   CopyID
+   CopyID,
+   FutureActionID
 };
 
 wxString kDependencyDialogPrompt =
-_("Copy audio from the following files into your project to make it self-contained?\nA self-contained project is safer, but linking to external files\nis faster and saves disk space.");
+_("Your project currently depends on the presence of other files.\nCopy audio from the following files into your project to make it self-contained?\nThis will need more disc space but is safer.");
 
 class DependencyDialog : public wxDialog
 {
@@ -233,10 +236,15 @@ private:
    void OnYes(wxCommandEvent &evt);
 
    void PopulateOrExchange(ShuttleGui & S);
+   void SaveChoice();
+   
+   virtual void OnCancel(wxCommandEvent& evt);
+   
    AudacityProject  *mProject;
    AliasedFileArray *mAliasedFiles;
    wxListCtrl       *mFileList;
    wxButton         *mCopyButton;
+   wxChoice         *mChoice;
    bool              mIsSaving;
 
 public:
@@ -248,6 +256,7 @@ BEGIN_EVENT_TABLE(DependencyDialog, wxDialog)
    EVT_BUTTON(CopyID, DependencyDialog::OnCopy)
    EVT_BUTTON(wxID_NO, DependencyDialog::OnNo)
    EVT_BUTTON(wxID_YES, DependencyDialog::OnYes)
+   EVT_BUTTON(wxID_CANCEL, DependencyDialog::OnCancel) // seems to be needed
 END_EVENT_TABLE()
 
 DependencyDialog::DependencyDialog(wxWindow *parent,
@@ -256,7 +265,9 @@ DependencyDialog::DependencyDialog(wxWindow *parent,
                                    AliasedFileArray *aliasedFiles,
                                    bool isSaving):
    wxDialog(parent, id, _("Project depends on other audio files"),
-            wxDefaultPosition, wxDefaultSize),
+            wxDefaultPosition, wxDefaultSize,
+            isSaving ? wxDEFAULT_DIALOG_STYLE & (~wxCLOSE_BOX) :
+                       wxDEFAULT_DIALOG_STYLE), // no close box when saving
    mProject(project),
    mAliasedFiles(aliasedFiles),
    mFileList(NULL),
@@ -284,11 +295,11 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
          PopulateList();
 
          mCopyButton = S.Id(CopyID).AddButton
-            (_("Copy Selected Audio Into Project"));
+            (_("Copy Selected Audio Into Project"), wxALIGN_LEFT);
       }
       S.EndStatic();
 
-      S.StartHorizontalLay(true);
+      S.StartHorizontalLay(wxALIGN_CENTRE);
       {
          if (mIsSaving) {
             S.Id(wxID_CANCEL).AddButton(_("Cancel Save"));
@@ -298,9 +309,27 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
             S.Id(wxID_NO).AddButton(_("Close"));
          }
 
-         S.Id(wxID_YES).AddButton(_("Copy All Audio Into Project"));
+         S.Id(wxID_YES).AddButton(_("Copy All Audio Into Project (safer)"));
       }
       S.EndHorizontalLay();
+      
+      if (mIsSaving)
+      {
+         S.StartHorizontalLay(wxALIGN_LEFT);
+         {
+            wxArrayString choices;
+            choices.Add(_("Ask me"));
+            choices.Add(_("Always copy all audio (safest)"));
+            choices.Add(_("Never copy any audio"));
+            mChoice = S.Id(FutureActionID).AddChoice(
+               _("Whenever a project depends on other files:"),
+               _("Ask me"), &choices);
+         }
+         S.EndHorizontalLay();
+      } else
+      {
+         mChoice = NULL;
+      }
    }
    S.EndVerticalLay();
    Layout();
@@ -347,11 +376,13 @@ void DependencyDialog::OnList(wxListEvent &evt)
 
 void DependencyDialog::OnNo(wxCommandEvent &evt)
 {
+   SaveChoice();
    EndModal(wxID_NO);
 }
 
 void DependencyDialog::OnYes(wxCommandEvent &evt)
 {
+   SaveChoice();
    EndModal(wxID_YES);
 }
 
@@ -372,7 +403,39 @@ void DependencyDialog::OnCopy(wxCommandEvent &evt)
    PopulateList();
 
    if (mAliasedFiles->GetCount() == 0) {
+      SaveChoice();
       EndModal(wxID_NO);  // Don't need to remove dependencies
+   }
+}
+
+void DependencyDialog::OnCancel(wxCommandEvent& evt)
+{
+   if (mIsSaving)
+   {
+      int ret = wxMessageBox(
+         _("If you proceed, your project will not be saved to disk. Is this what you want?"),
+         _("Cancel Save"), wxICON_QUESTION | wxYES_NO | wxNO_DEFAULT, this);
+      if (ret != wxYES)
+         return;
+   }
+   
+   EndModal(wxID_CANCEL);
+}
+
+void DependencyDialog::SaveChoice()
+{
+   if (mChoice)
+   {
+      wxString savePref;   
+      int sel = mChoice->GetSelection();
+      switch (sel)
+      {
+      case 1: savePref = wxT("copy"); break;
+      case 2: savePref = wxT("never"); break;
+      default: savePref = wxT("ask");
+      }
+      gPrefs->Write(wxT("/FileFormats/SaveProjectWithDependencies"),
+                    savePref);
    }
 }
 
@@ -397,6 +460,27 @@ bool ShowDependencyDialogIfNeeded(AudacityProject *project,
       }
 
       return true; // Nothing to do
+   }
+   
+   if (isSaving)
+   {
+      wxString action = gPrefs->Read(
+         wxT("/FileFormats/SaveProjectWithDependencies"), wxT("ask"));
+
+      if (action == wxT("copy"))
+      {
+         // User always wants to remove dependencies
+         RemoveDependencies(project, &aliasedFiles);
+         return true;
+      }
+
+      if (action == wxT("never"))
+      {
+         // User never wants to remove dependencies
+         return true;
+      }
+
+      // Fall through to show the dialog
    }
 
    DependencyDialog dlog(project, -1, project, &aliasedFiles, isSaving);

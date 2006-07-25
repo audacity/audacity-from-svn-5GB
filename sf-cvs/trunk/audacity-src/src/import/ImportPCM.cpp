@@ -43,118 +43,6 @@
 #include "../WaveTrack.h"
 #include "ImportPlugin.h"
 
-// msmeyer: Created by wxDesigner
-const int ID_TEXT = 10000;
-const int ID_COPY = 10001;
-const int ID_EDIT = 10002;
-const int ID_ALWAYS = 10003;
-
-wxSizer *EditWarningDialogResource( wxWindow *parent, bool call_fit, bool set_sizer )
-{
-    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item1 = new wxStaticText( parent, ID_TEXT, _("Audacity is currently set up not to make a copy when importing uncompressed audio files."), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
-
-    wxStaticText *item2 = new wxStaticText( parent, ID_TEXT, _("This speeds up file import and consumes less disk space."), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item3 = new wxStaticText( parent, ID_TEXT, _("However, if you later delete or move the original file, your Audacity project will be lost, too."), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxStaticText *item4 = new wxStaticText( parent, ID_TEXT, _("Is this what you want?"), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
-
-    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxButton *item6 = new wxButton( parent, ID_COPY, _("No, make a copy while importing (safer)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetDefault();
-    item5->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxButton *item7 = new wxButton( parent, ID_EDIT, _("Yes, import without making a copy"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item7, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxCheckBox *item8 = new wxCheckBox( parent, ID_ALWAYS, _("Always perform this action when importing uncompressed audio files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item0->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    if (set_sizer)
-    {
-        parent->SetSizer( item0 );
-        if (call_fit)
-            item0->SetSizeHints( parent );
-    }
-    
-    return item0;
-}
-
-class EditWarningDialog: public wxDialog
-{
-public:
-   EditWarningDialog(wxWindow* parent) :
-      wxDialog(parent, -1, _("Warning"), wxDefaultPosition, wxDefaultSize,
-      wxDEFAULT_DIALOG_STYLE & (~wxCLOSE_BOX)) // user must answer, no close box
-   {
-      EditWarningDialogResource(this, true, true);
-   }
-   
-   void OnButtonCopy(wxCommandEvent& evt)
-   {
-      EndModal(ID_COPY);
-   }
-   
-   void OnButtonEdit(wxCommandEvent& evt)
-   {
-      EndModal(ID_EDIT);
-   }
-   
-   bool GetSaveChoice()
-   {
-      wxCheckBox* chkAlways = (wxCheckBox*)FindWindowById(ID_ALWAYS);
-      return chkAlways->GetValue() != 0;
-   }
-   
-   DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(EditWarningDialog, wxDialog)
-   EVT_BUTTON(ID_COPY, EditWarningDialog::OnButtonCopy)
-   EVT_BUTTON(ID_EDIT, EditWarningDialog::OnButtonEdit)
-END_EVENT_TABLE();
-
-bool ShowEditWarning()
-{
-   bool showWarning = true;
-   gPrefs->Read(wxT("/FileFormats/ShowEditWarning"), &showWarning, true);
-      
-   if (!showWarning)
-   {
-      // User doesn't want to be asked and always wants to edit
-      return true;
-   }
-   
-   EditWarningDialog dlg(gParentFrame);
-   int result = dlg.ShowModal();
-   
-   if (dlg.GetSaveChoice())
-   {
-      // User ticked 'remember choice' checkbox
-      if (result == ID_EDIT)
-      {
-         // User always wants to edit, so disable warning
-         gPrefs->Write(wxT("/FileFormats/ShowEditWarning"), false);
-      } else
-      {
-         // User always wants to copy, so remember this
-         gPrefs->Write(wxT("/FileFormats/CopyOrEditUncompressedData"),
-                       wxT("copy"));
-      }
-   }
-   
-   return result == ID_EDIT;
-}
-
 class PCMImportPlugin : public ImportPlugin
 {
 public:
@@ -319,12 +207,6 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
    if (!mInfo.seekable)
       doEdit = false;
 
-   if (doEdit)
-   {
-      // Ask user if he really wants to edit, not copy the file
-      doEdit = ShowEditWarning();
-   }
-   
    if (doEdit) {
 
       // If this mode has been selected, we form the tracks as

@@ -126,14 +126,21 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.TieRadioButton( _("&Make a copy of the file before editing (safer)"),wxT("copy"));
       S.TieRadioButton( _("&Read directly from the original file (faster)"),wxT("edit"));
       S.EndRadioButtonGroup();
-      S.TieCheckBox( _("&Show warning before reading file directly"),
-                     wxT("/FileFormats/ShowEditWarning"), true);
+   }
+   S.EndStatic();
+   S.StartStatic( _("When saving a project that depends on other audio files"));
+   {
+      S.StartRadioButtonGroup(wxT("/FileFormats/SaveProjectWithDependencies"),wxT("ask"));
+      S.TieRadioButton( _("&Ask user"), wxT("ask"));
+      S.TieRadioButton( _("Always &copy all audio (safest)"), wxT("copy"));
+      S.TieRadioButton( _("&Never copy any audio"), wxT("never"));
+      S.EndRadioButtonGroup();
    }
    S.EndStatic();
    S.StartStatic( _("When exporting tracks"));
    {
       S.StartRadioButtonGroup( wxT("/FileFormats/ExportDownMix" ), true );
-      S.TieRadioButton( _("&Always mix all tracks down to Stereo or Mono channel(s)."), true);
+      S.TieRadioButton( _("A&lways mix all tracks down to Stereo or Mono channel(s)."), true);
       S.TieRadioButton( _("&Use Advanced Mixing Options"),false );
       S.EndRadioButtonGroup();
    }
