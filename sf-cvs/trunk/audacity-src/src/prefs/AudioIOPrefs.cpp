@@ -141,7 +141,7 @@ void AudioIOPrefs::PopulateOrExchange( ShuttleGui & S )
       S.StartMultiColumn(2, wxEXPAND);
       S.SetStretchyCol(1);
       S.TieChoice( _("Device:"), wxT("RecordingDevice"), 
-         wxT(""), mmPlayNames, mmPlayLabels );
+         wxT(""), mmRecordNames, mmRecordLabels );
       S.TieChoice( _("Channels:"), wxT("RecordChannels"), 
          2, mmChannelNames, mmChannelLabels );
       S.EndMultiColumn();
