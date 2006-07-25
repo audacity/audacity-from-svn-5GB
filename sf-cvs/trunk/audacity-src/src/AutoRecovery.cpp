@@ -95,7 +95,8 @@ void AutoRecoveryDialog::PopulateList()
       
    wxString filename;
    int i = 0;
-   for (bool c = dir.GetFirst(&filename); c; c = dir.GetNext(&filename))
+   for (bool c = dir.GetFirst(&filename, wxT("*.autosave"), wxDIR_FILES);
+        c; c = dir.GetNext(&filename))
       mFileList->InsertItem(i++, wxFileName(filename).GetName());
       
    mFileList->SetColumnWidth(0, wxLIST_AUTOSIZE);
@@ -134,26 +135,21 @@ static bool HaveFilesToRecover()
    }
    
    wxString filename;
-   bool c = dir.GetFirst(&filename, wxT(""), wxDIR_FILES);
+   bool c = dir.GetFirst(&filename, wxT("*.autosave"), wxDIR_FILES);
    
    return c;
 }
 
 static bool RemoveAllAutoSaveFiles()
 {
-   wxDir dir(FileNames::AutoSaveDir());
-   if (!dir.IsOpened())
-   {
-      wxMessageBox(_("Could not enumerate files in auto save directory"),
-                   _("Error"), wxICON_STOP);
-      return false;
-   }
+   wxArrayString files;
+   wxDir::GetAllFiles(FileNames::AutoSaveDir(), &files,
+                      _T("*.autosave"), wxDIR_FILES);
 
    wxString filename;
-   for (bool c = dir.GetFirst(&filename, wxT(""), wxDIR_FILES);
-        c; c = dir.GetNext(&filename))
+   for (unsigned int i = 0; i < files.GetCount(); i++)
    {
-      wxFileName fullPath(FileNames::AutoSaveDir(), filename);
+      wxFileName fullPath(FileNames::AutoSaveDir(), files.Item(i));
       if (!wxRemoveFile(fullPath.GetFullPath()))
       {
          wxMessageBox(_("Could not remove auto save file: " + filename),
@@ -179,7 +175,7 @@ static bool RecoverAllProjects(AudacityProject** pproj)
    wxString filename;
    AudacityProject* proj = NULL;
    
-   for (bool c = dir.GetFirst(&filename, wxT(""), wxDIR_FILES);
+   for (bool c = dir.GetFirst(&filename, wxT("*.autosave"), wxDIR_FILES);
         c; c = dir.GetNext(&filename))
    {
       wxFileName fullPath(FileNames::AutoSaveDir(), filename);
