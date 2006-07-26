@@ -146,13 +146,11 @@ static bool RemoveAllAutoSaveFiles()
    wxDir::GetAllFiles(FileNames::AutoSaveDir(), &files,
                       _T("*.autosave"), wxDIR_FILES);
 
-   wxString filename;
    for (unsigned int i = 0; i < files.GetCount(); i++)
    {
-      wxFileName fullPath(FileNames::AutoSaveDir(), files.Item(i));
-      if (!wxRemoveFile(fullPath.GetFullPath()))
+      if (!wxRemoveFile(files[i]))
       {
-         wxMessageBox(_("Could not remove auto save file: " + filename),
+         wxMessageBox(_("Could not remove auto save file: " + files[i]),
                       _("Error"), wxICON_STOP);
          return false;
       }
