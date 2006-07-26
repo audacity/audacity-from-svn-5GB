@@ -2,14 +2,14 @@
 
   Audacity: A Digital Audio Editor
 
-  PopClick.h
+  Repair.h
 
   Dominic Mazzoni
 
 **********************************************************************/
 
-#ifndef __AUDACITY_EFFECT_POPCLICK__
-#define __AUDACITY_EFFECT_POPCLICK__
+#ifndef __AUDACITY_EFFECT_REPAIR__
+#define __AUDACITY_EFFECT_REPAIR__
 
 #include <wx/intl.h>
 #include <wx/string.h>
@@ -18,19 +18,19 @@
 
 class WaveTrack;
 
-class EffectPopClickRemoval: public Effect {
+class EffectRepair: public Effect {
    
 public:
    
-   EffectPopClickRemoval();
-   virtual ~EffectPopClickRemoval();
+   EffectRepair();
+   virtual ~EffectRepair();
 
    virtual wxString GetEffectName() {
-      return wxString(_("Pop and Click Removal..."));
+      return wxString(_("Repair"));
    }
    
    virtual wxString GetEffectAction() {
-      return wxString(_("Removing unwanted noise"));
+      return wxString(_("Repairing damaged audio"));
    }
    
    virtual bool PromptUser();
@@ -41,7 +41,19 @@ public:
 private:
    bool ProcessOne(int count, WaveTrack * track,
                    longSampleCount start,
-                   sampleCount preLen, sampleCount postLen);
+                   sampleCount len,
+                   sampleCount repairStart, sampleCount repairLen);
 };
 
-#endif
+#endif // __AUDACITY_EFFECT_REPAIT__
+
+// Indentation settings for Vim and Emacs.
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
+

@@ -60,11 +60,13 @@ OBJS = \
 	Help.o \
 	HistoryWindow.o \
 	ImageManipulation.o \
+	InterpolateAudio.o \
 	LabelDialog.o \
 	LabelTrack.o \
 	Languages.o \
 	LangChoice.o \
 	Legacy.o \
+	Matrix.o \
 	Menus.o \
 	MeterToolBar.o \
 	Mix.o \
@@ -123,6 +125,7 @@ OBJS = \
 	effects/NoiseRemoval.o \
 	effects/Normalize.o \
 	effects/Phaser.o \
+	effects/Repair.o \
 	effects/Repeat.o \
 	effects/Reverse.o \
 	effects/Silence.o \
