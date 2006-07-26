@@ -30,6 +30,7 @@
 #include "NoiseRemoval.h"
 #include "Normalize.h"
 #include "Phaser.h"
+#include "Repair.h"
 #include "Repeat.h"
 #include "Reverse.h"
 #include "Silence.h"
@@ -106,6 +107,7 @@ void LoadEffects()
    Effect::RegisterEffect(new EffectNoiseRemoval(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectNormalize(), SIMPLE_EFFECT);
    Effect::RegisterEffect(new EffectPhaser());
+   Effect::RegisterEffect(new EffectRepair());
    Effect::RegisterEffect(new EffectRepeat());
    Effect::RegisterEffect(new EffectReverse());
    Effect::RegisterEffect(new EffectStereoToMono(), HIDDEN_EFFECT);// NOT in normal effects list.
