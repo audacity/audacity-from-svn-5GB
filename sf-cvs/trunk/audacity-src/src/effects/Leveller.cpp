@@ -242,7 +242,7 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
    group->Add(item, 0, wxALIGN_CENTRE|wxALL, 5 );
 
    hSizer = new wxBoxSizer(wxHORIZONTAL);
-   statText = new wxStaticText(this, -1, _("Theshold for Noise: "));
+   statText = new wxStaticText(this, -1, _("Threshold for Noise: "));
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mLevellerDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
