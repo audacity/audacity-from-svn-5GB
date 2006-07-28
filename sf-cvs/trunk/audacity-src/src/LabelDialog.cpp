@@ -24,11 +24,15 @@
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/textdlg.h>
+#include <wx/msgdlg.h>
+#include <wx/filedlg.h>
 
 #include "LabelDialog.h"
 #include "LabelTrack.h"
 #include "Track.h"
 #include "widgets/TimeTextCtrl.h"
+#include "Prefs.h"
+#include "Internat.h"
 
 enum Column
 {
