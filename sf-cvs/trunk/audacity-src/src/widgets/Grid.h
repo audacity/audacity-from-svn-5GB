@@ -162,7 +162,7 @@ class Grid
         wxWindowID id,
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
-        long style = wxWANTS_CHARS,
+        long style = wxWANTS_CHARS | wxBORDER,
         const wxString& name = wxPanelNameStr);
 
    Grid::~Grid();
