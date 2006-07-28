@@ -1403,7 +1403,7 @@ wxArrayLong AudioIO::GetSupportedSampleRates(wxString playDevice, wxString recDe
       
       for (i = 0; i < numDefaultRates; i++)
       {
-         if (Pa_IsFormatSupported(NULL, &pars, defaultRates[i]) == 0)
+         if (Pa_IsFormatSupported(&pars, NULL, defaultRates[i]) == 0)
             recSampleRates.Add(defaultRates[i]);
       }
 #else
