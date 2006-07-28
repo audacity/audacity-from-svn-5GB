@@ -22,6 +22,8 @@
 class DirManager;
 class TrackList;
 class RowData;
+class EmptyLabelRenderer;
+class LabelTrack;
 
 WX_DEFINE_ARRAY(RowData *, RowDataArray);
 
@@ -40,9 +42,16 @@ class LabelDialog:public wxDialog
    bool TransferDataToWindow();
    bool TransferDataFromWindow();
    void FindAllLabels();
+   void AddLabels(LabelTrack *t);
+   wxString TrackName(int index, wxString dflt = _("Label Track"));
 
    void OnKeyDown(wxKeyEvent &event);
    void OnUpdate(wxCommandEvent &event);
+   void OnInsert(wxCommandEvent &event);
+   void OnRemove(wxCommandEvent &event);
+   void OnImport(wxCommandEvent &event);
+   void OnExport(wxCommandEvent &event);
+   void OnEditorShown(wxGridEvent &event);
    void OnCellChange(wxGridEvent &event);
    void OnChangeTrack(wxGridEvent &event, int row, RowData *rd);
    void OnChangeLabel(wxGridEvent &event, int row, RowData *rd);
@@ -54,7 +63,6 @@ class LabelDialog:public wxDialog
    Grid *mGrid;
    ChoiceEditor *mChoiceEditor;
    TimeEditor *mTimeEditor;
-   TimeRenderer *mTimeRenderer;
 
    RowDataArray mData;
    
