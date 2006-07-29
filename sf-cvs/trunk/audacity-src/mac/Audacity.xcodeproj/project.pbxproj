@@ -762,6 +762,7 @@
 		287F9F3D0A69748F00F025FA /* TimeDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 287F9F3C0A69748F00F025FA /* TimeDialog.cpp */; };
 		2882177B0A35D8730029AF41 /* ShuttlePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 288217790A35D8730029AF41 /* ShuttlePrefs.cpp */; };
 		2882178C0A35D90C0029AF41 /* treebook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2882178A0A35D90C0029AF41 /* treebook.cpp */; };
+		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
 		28E67F730A3A1A780021D89F /* pa_cpuload.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822070A39FD7600DCE280 /* pa_cpuload.c */; };
@@ -1830,6 +1831,8 @@
 		2882177A0A35D8730029AF41 /* ShuttlePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttlePrefs.h; sourceTree = "<group>"; };
 		2882178A0A35D90C0029AF41 /* treebook.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = treebook.cpp; sourceTree = "<group>"; };
 		2882178B0A35D90C0029AF41 /* treebook.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = treebook.h; sourceTree = "<group>"; };
+		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
+		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
 		28E67F5F0A3A160D0021D89F /* libportaudio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportaudio.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		28E67FC10A3A29AE0021D89F /* pa_asio.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_asio.h; sourceTree = "<group>"; };
 		28E67FC20A3A29AE0021D89F /* pa_linux_alsa.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_linux_alsa.h; sourceTree = "<group>"; };
@@ -2911,6 +2914,8 @@
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
 				1790B06709883BFD008A330A /* ExportCL.h */,
+				28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */,
+				28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */,
 				1790B06809883BFD008A330A /* ExportMP3.cpp */,
 				1790B06909883BFD008A330A /* ExportMP3.h */,
 				1790B06A09883BFD008A330A /* ExportMultiple.cpp */,
@@ -4891,6 +4896,7 @@
 				28EBA7FC0A78FADE00C8BB1F /* Repair.cpp in Sources */,
 				28EBA8010A78FAF800C8BB1F /* InterpolateAudio.cpp in Sources */,
 				28EBA8020A78FAF800C8BB1F /* Matrix.cpp in Sources */,
+				28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
