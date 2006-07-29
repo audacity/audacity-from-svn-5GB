@@ -386,6 +386,107 @@ void LadspaEffect::End()
    fOutBuffer = NULL;
 }
 
+class Slider:public wxSlider
+{
+ public:
+   Slider(wxWindow *parent, wxWindowID id,
+          int value, int minValue, int maxValue,
+          const wxPoint& pos = wxDefaultPosition,
+          const wxSize& size = wxDefaultSize,
+          long style = wxSL_HORIZONTAL,
+          const wxValidator& validator = wxDefaultValidator,
+          const wxString& name = wxSliderNameStr)
+   : wxSlider(parent, id, value, minValue, maxValue,
+              pos, size, style, validator, name)
+   {
+   };
+
+   void OnSetFocus(wxFocusEvent &event)
+   {
+      wxScrolledWindow *p = (wxScrolledWindow *) GetParent();
+      wxRect r = GetRect();
+      wxRect rv = p->GetRect();
+      rv.y = 0;
+
+      event.Skip();
+
+      int y;
+      int yppu;
+      p->GetScrollPixelsPerUnit(NULL, &yppu);
+
+      if (r.y >= rv.y && r.GetBottom() <= rv.GetBottom()) {
+         return;
+      }
+
+      if (r.y < rv.y) {
+         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         y = r.y / yppu;
+      }
+      else {
+         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
+      }
+
+      p->Scroll(-1, y);
+   };
+
+   DECLARE_EVENT_TABLE();
+};
+
+BEGIN_EVENT_TABLE(Slider, wxSlider)
+    EVT_SET_FOCUS(Slider::OnSetFocus)
+END_EVENT_TABLE()
+
+class TextCtrl:public wxTextCtrl
+{
+ public:
+   TextCtrl(wxWindow *parent, wxWindowID id,
+            const wxString& value = wxEmptyString,
+            const wxPoint& pos = wxDefaultPosition,
+            const wxSize& size = wxDefaultSize, long style = 0,
+            const wxValidator& validator = wxDefaultValidator,
+            const wxString& name = wxTextCtrlNameStr)
+   : wxTextCtrl(parent, id, value,
+                pos, size, style, validator, name)
+   {
+   };
+
+   void OnSetFocus(wxFocusEvent &event)
+   {
+      wxScrolledWindow *p = (wxScrolledWindow *) GetParent();
+      wxRect r = GetRect();
+      wxRect rv = p->GetRect();
+      rv.y = 0;
+
+      event.Skip();
+
+      int y;
+      int yppu;
+      p->GetScrollPixelsPerUnit(NULL, &yppu);
+
+      if (r.y >= rv.y && r.GetBottom() <= rv.GetBottom()) {
+         return;
+      }
+
+      if (r.y < rv.y) {
+         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         y = r.y / yppu;
+      }
+      else {
+         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
+      }
+
+      p->Scroll(-1, y);
+   };
+
+   DECLARE_EVENT_TABLE();
+};
+
+BEGIN_EVENT_TABLE(TextCtrl, wxTextCtrl)
+    EVT_SET_FOCUS(TextCtrl::OnSetFocus)
+END_EVENT_TABLE()
+
 const int LADSPA_SLIDER_ID = 13100;
 const int LADSPA_TEXTCTRL_ID = 13101;
 const int LADSPA_PREVIEW_ID = 13102;
@@ -407,7 +508,7 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
                                        int sampleRate)
    :wxDialog(parent, -1, LAT1CTOWX(data->Name),
              wxDefaultPosition, wxDefaultSize,
-             wxDEFAULT_DIALOG_STYLE),
+             wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
     effect(eff)
 {
    numParams = 0;
@@ -442,15 +543,16 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       }
    }
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxControl *item;
+
+   wxBoxSizer *vSizer = new wxBoxSizer(wxVERTICAL);
 
    if (mData->Maker &&
        mData->Maker[0] && 
        LAT1CTOWX(mData->Maker) != wxString(_("None"))) {       
       item = new wxStaticText(this, 0,
                               wxString(_("Author: "))+LAT1CTOWX(mData->Maker));
-      mainSizer->Add(item, 0, wxALL, 5);
+      vSizer->Add(item, 0, wxALL, 5);
    }
    
    if (mData->Copyright &&
@@ -459,46 +561,16 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       
       item = new wxStaticText(this, 0,
                               LAT1CTOWX(mData->Copyright));
-      mainSizer->Add(item, 0, wxALL, 5);
+      vSizer->Add(item, 0, wxALL, 5);
    }
 
-   wxSizer *paramSizer =
-      new wxStaticBoxSizer(new wxStaticBox(this, -1,
-                                           _("Effect Settings")),
-                           wxVERTICAL );
-
-   wxFlexGridSizer *gridSizer =
-      new wxFlexGridSizer(3, 0, 0);
-
-   for (p = 0; p < numParams; p++) {
-
-      item = new wxStaticText(this, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
-      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-      wxString fieldText;
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
-      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
-         fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
-      else
-         fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
-      fields[p] = new wxTextCtrl(this, LADSPA_TEXTCTRL_ID, fieldText);
-      gridSizer->Add(fields[p], 0, wxALL, 5);
-
-      sliders[p] =
-          new wxSlider(this, LADSPA_SLIDER_ID,
-                       0, 0, 1000,
-                       wxDefaultPosition,
-                       wxSize(200, -1));
-      gridSizer->Add(sliders[p], 0, wxALL, 5);
-   }
-
-   // Set all of the sliders based on the value in the
-   // text fields
-	inSlider = false; // Now we're ready for HandleText to actually do something.
-   HandleText();
-   
-   paramSizer->Add(gridSizer, 1, wxALL, 5);
-   mainSizer->Add(paramSizer, 1, wxALL, 5);
+   wxScrolledWindow *w = new wxScrolledWindow(this,
+                                              wxID_ANY,
+                                              wxDefaultPosition,
+                                              wxDefaultSize,
+                                              wxVSCROLL | wxTAB_TRAVERSAL);
+   w->SetScrollRate(0, 20);
+   vSizer->Add(w, 1, wxEXPAND|wxALL, 5);
 
    wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -514,12 +586,51 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    button->SetDefault();
    okSizer->Add(button, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   mainSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
+   vSizer->Add(okSizer, 0, wxALIGN_CENTRE | wxALL, 5);
 
-   SetAutoLayout(TRUE);
-   SetSizer(mainSizer);
-   mainSizer->Fit(this);
-   mainSizer->SetSizeHints(this);
+   SetSizer(vSizer);
+
+   wxSizer *paramSizer =
+      new wxStaticBoxSizer(wxVERTICAL, w, _("Effect Settings"));
+
+   wxFlexGridSizer *gridSizer =
+      new wxFlexGridSizer(3, 0, 0);
+   gridSizer->AddGrowableCol(2);
+
+   for (p = 0; p < numParams; p++) {
+
+      item = new wxStaticText(w, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+      wxString fieldText;
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
+      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+         fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
+      else
+         fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
+
+      fields[p] = new TextCtrl(w, LADSPA_TEXTCTRL_ID, fieldText);
+      gridSizer->Add(fields[p], 0, wxALL, 5);
+
+      sliders[p] =
+          new Slider(w, LADSPA_SLIDER_ID,
+                       0, 0, 1000,
+                       wxDefaultPosition,
+                       wxSize(200, -1));
+      gridSizer->Add(sliders[p], 0, wxEXPAND|wxALL, 5);
+   }
+
+   // Set all of the sliders based on the value in the
+   // text fields
+	inSlider = false; // Now we're ready for HandleText to actually do something.
+   HandleText();
+   
+   paramSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 5);
+   w->SetSizer(paramSizer);
+
+   Layout();
+   Fit();
+   SetSizeHints(GetSize());
 }
 
 LadspaEffectDialog::~LadspaEffectDialog()
