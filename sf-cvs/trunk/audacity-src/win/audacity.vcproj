@@ -1096,6 +1096,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\InterpolateAudio.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\InterpolateAudio.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\LabelDialog.cpp"
 				>
 			</File>
@@ -1257,6 +1265,14 @@
 			</File>
 			<File
 				RelativePath="..\src\MacroMagic.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Matrix.h"
 				>
 			</File>
 			<File
@@ -3029,6 +3045,14 @@
 			</File>
 			<File
 				RelativePath="..\src\effects\Phaser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\effects\Repair.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\effects\Repair.h"
 				>
 			</File>
 			<File
