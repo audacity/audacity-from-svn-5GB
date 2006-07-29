@@ -35,6 +35,7 @@ effects from this one class.
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/intl.h>
+#include <wx/scrolwin.h>
 
 #include "../Effect.h"          // Audacity Effect base class
 #include "LadspaEffect.h"       // This class's header file
