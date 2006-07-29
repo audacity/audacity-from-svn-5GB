@@ -130,7 +130,7 @@ void InterpolateAudio(float *buffer, int len,
    Vector b(P);
 
    for(i=0; i<len-P; i++)
-      if (i+P < firstBad or i >= (firstBad + numBad))
+      if (i+P < firstBad || i >= (firstBad + numBad))
          for(row=0; row<P; row++) {
             for(col=0; col<P; col++)
                X[row][col] += (s[i+row] * s[i+col]);
