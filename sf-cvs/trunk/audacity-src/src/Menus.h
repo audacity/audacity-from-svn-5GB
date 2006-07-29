@@ -131,6 +131,9 @@ void OnExportMP3Mix();
 void OnExportMP3Selection();
 void OnExportOggMix();
 void OnExportOggSelection();
+void OnExportFLACMix();
+void OnExportFLACSelection();
+
 void OnExportMultiple();
 
 void OnExportLabels();

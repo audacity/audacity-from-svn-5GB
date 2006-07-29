@@ -239,6 +239,12 @@ void AudacityProject::CreateMenusAndCommands()
                       AudioIONotBusyFlag | TracksExistFlag,
                          wxT("ExportOgg"), NULL);
 #endif
+#ifdef USE_LIBFLAC
+   c->AddItem(wxT("ExportFLAC"),      _("&FLAC..."),        FN(OnExportFLACMix));
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("ExportFLAC"), NULL);
+#endif
    c->EndSubMenu();
 
    c->BeginSubMenu(_("Expo&rt Selection As..."));
@@ -250,6 +256,12 @@ void AudacityProject::CreateMenusAndCommands()
    c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                       AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                          wxT("ExportOggSel"), NULL);
+#endif
+#ifdef USE_LIBFLAC
+   c->AddItem(wxT("ExportFLACSel"),   _("&FLAC..."), FN(OnExportFLACSelection));
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                      AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("ExportFLACSel"), NULL);
 #endif
    c->EndSubMenu();
 
@@ -2153,36 +2165,42 @@ void AudacityProject::OnExportLabels()
 
 void AudacityProject::OnExportMix()
 {
-   ::Export(this, false, 0.0, mTracks->GetEndTime());
+   ::ExportPCM(this, false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportSelection()
 {
-   ::Export(this, true, mViewInfo.sel0, mViewInfo.sel1);
+   ::ExportPCM(this, true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportMP3Mix()
 {
-   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
-   ::ExportLossy(this, false, 0.0, mTracks->GetEndTime());
+   ::ExportCompressed(this, wxT("MP3"), false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportMP3Selection()
 {
-   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
-   ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
+   ::ExportCompressed(this, wxT("MP3"), true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportOggMix()
 {
-   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), wxT("OGG"));
-   ::ExportLossy(this, false, 0.0, mTracks->GetEndTime());
+   ::ExportCompressed(this, wxT("OGG"), false, 0.0, mTracks->GetEndTime());
+}
+
+void AudacityProject::OnExportFLACMix()
+{
+   ::ExportCompressed(this, wxT("FLAC"), false, 0.0, mTracks->GetEndTime());
 }
 
 void AudacityProject::OnExportOggSelection()
 {
-   gPrefs->Write(wxT("/FileFormats/LossyExportFormat"), wxT("OGG"));
-   ::ExportLossy(this, true, mViewInfo.sel0, mViewInfo.sel1);
+   ::ExportCompressed(this, wxT("OGG"), true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportFLACSelection()
+{
+   ::ExportCompressed(this, wxT("FLAC"), true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportMultiple()

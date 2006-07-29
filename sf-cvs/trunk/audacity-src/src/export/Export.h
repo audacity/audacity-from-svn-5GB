@@ -20,11 +20,11 @@ class TrackList;
 class MixerSpec;
 class wxMemoryDC;
 
-bool Export(AudacityProject *project,
-            bool selectionOnly, double t0, double t1);
+bool ExportPCM(AudacityProject *project,
+               bool selectionOnly, double t0, double t1);
 
-bool ExportLossy(AudacityProject *project,
-                 bool selectionOnly, double t0, double t1);
+bool ExportCompressed(AudacityProject *project, const wxString& format,
+                      bool selectionOnly, double t0, double t1);
 
 class ExportMixerPanel: public wxPanel
 {
