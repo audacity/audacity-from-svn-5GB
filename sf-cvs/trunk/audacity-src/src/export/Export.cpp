@@ -33,6 +33,7 @@
 #include "ExportPCM.h"
 #include "ExportMP3.h"
 #include "ExportOGG.h"
+#include "ExportFLAC.h"
 #include "ExportCL.h"
 
 #include "sndfile.h"
@@ -329,8 +330,8 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    return fName;
 }
 
-bool Export(AudacityProject *project,
-            bool selectionOnly, double t0, double t1)
+bool ExportPCM(AudacityProject *project,
+               bool selectionOnly, double t0, double t1)
 {
    wxString fName;
    wxString formatStr;
@@ -376,15 +377,14 @@ bool Export(AudacityProject *project,
    }
 }
 
-bool ExportLossy(AudacityProject *project,
-                 bool selectionOnly, double t0, double t1)
+bool ExportCompressed(AudacityProject *project, const wxString& format,
+                      bool selectionOnly, double t0, double t1)
 {
    wxString fName;
    int numChannels;
    wxString actualName;
    bool     success = false;
    MixerSpec *mixerSpec = NULL;
-   wxString format = gPrefs->Read(wxT("/FileFormats/LossyExportFormat"), wxT("MP3"));
 
 	try { //lda
    if( format == wxT("MP3") ) {
@@ -407,6 +407,21 @@ bool ExportLossy(AudacityProject *project,
                       selectionOnly, t0, t1, mixerSpec);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
+#endif
+   }
+   else if( format == wxT("FLAC") ) {
+#ifdef USE_LIBFLAC
+      fName = ExportCommon(project, wxT("FLAC"), wxT(".flac"),
+                           selectionOnly, &t0, &t1, &numChannels,
+                           actualName);
+
+      if (fName == wxT(""))
+         return false;
+
+      success = ::ExportFLAC(project, (numChannels == 2), fName,
+                      selectionOnly, t0, t1);
+#else
+      wxMessageBox(_("Flac support is not included in this build of Audacity"));
 #endif
    }
    else if( format == wxT("External Program") ) {

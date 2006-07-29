@@ -139,6 +139,7 @@ OBJS = \
 	export/ExportMultiple.o \
 	export/ExportMP3.o \
 	export/ExportOGG.o \
+	export/ExportFLAC.o \
 	export/ExportPCM.o \
 	export/ExportCL.o \
 	import/Import.o \

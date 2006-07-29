@@ -2062,7 +2062,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    if( mCleanSpeechMode )
    {
       double endTime = mTracks->GetEndTime();
-      bool flag = ::Export(this, false, 0.0, endTime);
+      bool flag = ::ExportPCM(this, false, 0.0, endTime);
       return flag;
    }
 
