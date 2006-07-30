@@ -28,6 +28,7 @@ effects from this one class.
 
 #include <wx/wxprec.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
@@ -488,16 +489,15 @@ BEGIN_EVENT_TABLE(TextCtrl, wxTextCtrl)
     EVT_SET_FOCUS(TextCtrl::OnSetFocus)
 END_EVENT_TABLE()
 
-const int LADSPA_SLIDER_ID = 13100;
-const int LADSPA_TEXTCTRL_ID = 13101;
-const int LADSPA_PREVIEW_ID = 13102;
+const int LADSPA_PREVIEW_ID = 13100;
 
 BEGIN_EVENT_TABLE(LadspaEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, LadspaEffectDialog::OnOK)
     EVT_BUTTON(wxID_CANCEL, LadspaEffectDialog::OnCancel)
     EVT_BUTTON(LADSPA_PREVIEW_ID, LadspaEffectDialog::OnPreview)
-    EVT_SLIDER(LADSPA_SLIDER_ID, LadspaEffectDialog::OnSlider)
-    EVT_TEXT(LADSPA_TEXTCTRL_ID, LadspaEffectDialog::OnTextCtrl)
+    EVT_SLIDER(wxID_ANY, LadspaEffectDialog::OnSlider)
+    EVT_TEXT(wxID_ANY, LadspaEffectDialog::OnTextCtrl)
+    EVT_CHECKBOX(wxID_ANY, LadspaEffectDialog::OnCheckBox)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(LadspaEffectDialog, wxDialog)
@@ -527,8 +527,8 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
 		inSlider = false;
 	#endif
    inText = false;
-   targetSlider = NULL;
 
+   toggles = new wxCheckBox*[mData->PortCount];
    sliders = new wxSlider*[mData->PortCount];
    fields = new wxTextCtrl*[mData->PortCount];
 	labels = new wxStaticText*[mData->PortCount];
@@ -595,30 +595,92 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       new wxStaticBoxSizer(wxVERTICAL, w, _("Effect Settings"));
 
    wxFlexGridSizer *gridSizer =
-      new wxFlexGridSizer(3, 0, 0);
-   gridSizer->AddGrowableCol(2);
+      new wxFlexGridSizer(5, 0, 0);
+   gridSizer->AddGrowableCol(3);
 
    for (p = 0; p < numParams; p++) {
+      bool toggle = false;
 
       item = new wxStaticText(w, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
       wxString fieldText;
       LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
-      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
-         fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
-      else
-         fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
 
-      fields[p] = new TextCtrl(w, LADSPA_TEXTCTRL_ID, fieldText);
-      gridSizer->Add(fields[p], 0, wxALL, 5);
+      if (LADSPA_IS_HINT_TOGGLED(hint.HintDescriptor)) {
+         toggles[p] = new wxCheckBox(w, p, wxT(""));
+         toggles[p]->SetValue(inputControls[ports[p]] > 0);
+         gridSizer->Add(toggles[p], 0, wxALL, 5);
+         ConnectFocus(toggles[p]);
 
-      sliders[p] =
-          new Slider(w, LADSPA_SLIDER_ID,
-                       0, 0, 1000,
-                       wxDefaultPosition,
-                       wxSize(200, -1));
-      gridSizer->Add(sliders[p], 0, wxEXPAND|wxALL, 5);
+         gridSizer->Add(1, 1, 0);
+         gridSizer->Add(1, 1, 0);
+         gridSizer->Add(1, 1, 0);
+      }
+      else {
+         if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+            fieldText.Printf(wxT("%d"), (int)(inputControls[ports[p]] + 0.5));
+         else
+            fieldText = Internat::ToDisplayString(inputControls[ports[p]]);
+
+         fields[p] = new wxTextCtrl(w, p, fieldText);
+         gridSizer->Add(fields[p], 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+         ConnectFocus(fields[p]);
+
+         wxString bound;
+         double lower = 0.0;
+         double upper = 0.0;
+         bool haslo = false;
+         bool hashi = false;
+         bool forceint = false;
+
+         if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor)) {
+            lower = hint.LowerBound;
+            haslo = true;
+         }
+         if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor)) {
+            upper = hint.UpperBound;
+            hashi = true;
+         }
+         if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
+            lower *= sampleRate * 1000;
+            upper *= sampleRate;
+            forceint = true;
+         }
+
+         wxString str;
+         if (haslo) {
+            if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor) || forceint)
+               str.Printf(wxT("%d"), (int)(lower + 0.5));
+            else
+               str = Internat::ToDisplayString(lower);
+            item = new wxStaticText(w, 0, str);
+            gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+         }
+         else {
+            gridSizer->Add(1, 1, 0);
+         }
+
+         sliders[p] =
+             new wxSlider(w, p,
+                          0, 0, 1000,
+                          wxDefaultPosition,
+                          wxSize(200, -1));
+         gridSizer->Add(sliders[p], 0, wxALIGN_CENTER_VERTICAL | wxEXPAND | wxALL, 5);
+         ConnectFocus(sliders[p]);
+
+         if (hashi) {
+            if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor) || forceint)
+               str.Printf(wxT("%d"), (int)(upper + 0.5));
+            else
+               str = Internat::ToDisplayString(upper);
+            item = new wxStaticText(w, 0, str);
+            gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxALL, 5);
+         }
+         else {
+            gridSizer->Add(1, 1, 0);
+         }
+      }
    }
 
    // Set all of the sliders based on the value in the
@@ -641,20 +703,17 @@ LadspaEffectDialog::~LadspaEffectDialog()
    delete[]labels;
 }
 
+void LadspaEffectDialog::OnCheckBox(wxCommandEvent &event)
+{
+   int p = event.GetId();
+
+   inputControls[ports[p]] = toggles[p]->GetValue();
+}
+
 void LadspaEffectDialog::OnSlider(wxCommandEvent &event)
 {
-   targetSlider = (wxSlider *)event.GetEventObject();
-   HandleSlider();
-   targetSlider = NULL;
-}
+   int p = event.GetId();
 
-void LadspaEffectDialog::OnTextCtrl(wxCommandEvent & WXUNUSED(event))
-{
-	HandleText();
-}
-
-void LadspaEffectDialog::HandleSlider()
-{
    // if we don't add the following three lines, changing
    // the value of the slider will change the text, which
    // will change the slider, and so on.  This gets rid of
@@ -663,41 +722,43 @@ void LadspaEffectDialog::HandleSlider()
       return;
    inSlider = true;
 
-   for (unsigned long p = 0; p < numParams; p++) {
-      if (targetSlider && targetSlider!=sliders[p])
-         continue;
+   float val;
+   float lower = float(0.0);
+   float upper = float(10.0);
+   float range;
+   bool forceint = false;
 
-      float val;
-      float lower = float(0.0);
-      float upper = float(10.0);
-      float range;
-
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
-      if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
-         lower = hint.LowerBound;
-      if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
-         upper = hint.UpperBound;
-      if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
-         lower *= sampleRate;
-         upper *= sampleRate;
-      }
-
-      range = upper - lower;
-
-      val = (sliders[p]->GetValue() / 1000.0) * range + lower;
-
-      wxString str;
-      if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
-         str.Printf(wxT("%d"), (int)(val + 0.5));
-      else
-         str = Internat::ToDisplayString(val);
-
-      fields[p]->SetValue(str);
-
-      inputControls[ports[p]] = val;
+   LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
+   if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
+      lower = hint.LowerBound;
+   if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
+      upper = hint.UpperBound;
+   if (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor)) {
+      lower *= sampleRate;
+      upper *= sampleRate;
+      forceint = true;
    }
 
+   range = upper - lower;
+
+   val = (sliders[p]->GetValue() / 1000.0) * range + lower;
+
+   wxString str;
+   if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor) || forceint)
+      str.Printf(wxT("%d"), (int)(val + 0.5));
+   else
+      str = Internat::ToDisplayString(val);
+
+   fields[p]->SetValue(str);
+
+   inputControls[ports[p]] = val;
+
    inSlider = false;
+}
+
+void LadspaEffectDialog::OnTextCtrl(wxCommandEvent & WXUNUSED(event))
+{
+	HandleText();
 }
 
 void LadspaEffectDialog::HandleText()
@@ -717,10 +778,14 @@ void LadspaEffectDialog::HandleText()
       float upper = float(10.0);
       float range;
 
+      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
+      if (LADSPA_IS_HINT_TOGGLED(hint.HintDescriptor)) {
+         continue;
+      }
+
       dval = Internat::CompatibleToDouble(fields[p]->GetValue());
       val = dval;
 
-      LADSPA_PortRangeHint hint = mData->PortRangeHints[ports[p]];
       if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor))
          lower = hint.LowerBound;
       if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
@@ -758,6 +823,48 @@ void LadspaEffectDialog::OnPreview(wxCommandEvent & WXUNUSED(event))
 {
    effect->Preview();
 }
+
+void LadspaEffectDialog::ConnectFocus(wxControl *c)
+{
+   c->GetEventHandler()->Connect(wxEVT_SET_FOCUS,
+                                 wxFocusEventHandler(LadspaEffectDialog::ControlSetFocus));
+}
+
+void LadspaEffectDialog::DisconnectFocus(wxControl *c)
+{
+   c->GetEventHandler()->Disconnect(wxEVT_SET_FOCUS,
+                                 wxFocusEventHandler(LadspaEffectDialog::ControlSetFocus));
+}
+
+void LadspaEffectDialog::ControlSetFocus(wxFocusEvent &event)
+{
+   wxControl *c = (wxControl *) event.GetEventObject();
+   wxScrolledWindow *p = (wxScrolledWindow *) c->GetParent();
+   wxRect r = c->GetRect();
+   wxRect rv = p->GetRect();
+   rv.y = 0;
+
+   event.Skip();
+
+   int y;
+   int yppu;
+   p->GetScrollPixelsPerUnit(NULL, &yppu);
+
+   if (r.y >= rv.y && r.GetBottom() <= rv.GetBottom()) {
+      return;
+   }
+
+   if (r.y < rv.y) {
+      p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+      y = r.y / yppu;
+   }
+   else {
+      p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+      y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
+   }
+
+   p->Scroll(-1, y);
+};
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
