@@ -288,6 +288,7 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
 {
    mDigitBoxW = 10;
    mDigitBoxH = 16;
+   mButtonWidth = 9;
 
    ParseFormatString();
    Layout();
@@ -664,12 +665,12 @@ bool TimeTextCtrl::Layout()
    wxBrush Brush;
 
    delete mBackgroundBitmap; // Delete placeholder
-   mBackgroundBitmap = new wxBitmap(mWidth, mHeight);
+   mBackgroundBitmap = new wxBitmap(mWidth + mButtonWidth, mHeight);
    memDC.SelectObject(*mBackgroundBitmap);
 
    memDC.SetBrush(*wxLIGHT_GREY_BRUSH);
    memDC.SetPen(*wxTRANSPARENT_PEN);
-   memDC.DrawRectangle(0, 0, mWidth, mHeight);
+   memDC.DrawRectangle(0, 0, mWidth + mButtonWidth, mHeight);
 
    int numberBottom = mBorderTop + (mDigitBoxH - mDigitH)/2 + mDigitH;
 
@@ -682,6 +683,7 @@ bool TimeTextCtrl::Layout()
 
    theTheme.SetBrushColour( Brush, clrTimeBack );
    memDC.SetBrush(Brush);
+   memDC.SetBrush(*wxLIGHT_GREY_BRUSH);
    for(i=0; i<mDigits.GetCount(); i++)
       memDC.DrawRectangle(mDigits[i].digitBox);
    memDC.SetBrush( wxNullBrush );
@@ -690,6 +692,15 @@ bool TimeTextCtrl::Layout()
       memDC.DrawText(mFields[i].label,
                      mFields[i].labelX, labelTop);
 
+   wxRect r(mWidth, 0, mButtonWidth - 1, mHeight - 1);
+   AColor::Bevel(memDC, true, r);
+   memDC.SetPen(*wxBLACK_PEN);
+   int triWid = mButtonWidth - 2;
+   int xStart = mWidth + 1;
+   int yStart = (mHeight / 2) - 2;
+   for (i = 0; i <= triWid / 2; i++ ) {
+      memDC.DrawLine(xStart + i, yStart + i, xStart + triWid - i, yStart + i);
+   }
    return true;
 }
 
@@ -698,7 +709,7 @@ void TimeTextCtrl::Fit()
    wxSize sz = GetSize();
    wxSize csz = GetClientSize();
 
-   sz.x = mWidth + (sz.x - csz.x);
+   sz.x = mButtonWidth + mWidth + (sz.x - csz.x);
    sz.y = mHeight + (sz.y - csz.y);
 
    SetBestFittingSize(sz);
@@ -707,12 +718,13 @@ void TimeTextCtrl::Fit()
 void TimeTextCtrl::OnPaint(wxPaintEvent &event)
 {
    wxPaintDC dc(this);
+   bool focused = (FindFocus() == this);
 
    dc.DrawBitmap(*mBackgroundBitmap, 0, 0);
 
    wxPen   Pen;
    wxBrush Brush;
-   if (FindFocus()==this) {
+   if (focused) {
       theTheme.SetPenColour( Pen, clrTimeFontFocus );
       dc.SetPen(Pen);
       dc.SetBrush(*wxTRANSPARENT_BRUSH);
@@ -731,7 +743,7 @@ void TimeTextCtrl::OnPaint(wxPaintEvent &event)
    int i;
    for(i=0; i<(int)mDigits.GetCount(); i++) {
       wxRect box = mDigits[i].digitBox;
-      if (FindFocus()==this && mFocusedDigit == i) {
+      if (focused && mFocusedDigit == i) {
          dc.DrawRectangle(box);
          dc.SetTextForeground(theTheme.Colour( clrTimeFontFocus ));
          dc.SetTextBackground(theTheme.Colour( clrTimeBackFocus ));
@@ -741,7 +753,7 @@ void TimeTextCtrl::OnPaint(wxPaintEvent &event)
       int x = box.x + (mDigitBoxW - mDigitW)/2;
       int y = box.y + (mDigitBoxH - mDigitH)/2;
       dc.DrawText(digit, x, y);
-      if (FindFocus()==this && mFocusedDigit == i) {
+      if (focused && mFocusedDigit == i) {
          dc.SetTextForeground(theTheme.Colour( clrTimeFont ));
          dc.SetTextBackground(theTheme.Colour( clrTimeBack ));
       }
@@ -788,7 +800,11 @@ void TimeTextCtrl::OnContext(wxContextMenuEvent &event)
 
 void TimeTextCtrl::OnMouse(wxMouseEvent &event)
 {
-   if (event.LeftDown()) {
+   if (event.LeftDown() && event.GetX() >= mWidth) {
+      wxContextMenuEvent e;
+      OnContext(e);
+   }
+   else if (event.LeftDown()) {
       SetFocus();
 
       int bestDist = 9999;

@@ -118,6 +118,7 @@ private:
    int            mBorderBottom;
    int            mWidth;
    int            mHeight;
+   int            mButtonWidth;
 
    int            mFocusedDigit;
    int            mLastField;
