@@ -250,7 +250,7 @@ dep:
 
 clean:
 	rm -rf $(OBJS) $(LIBAUDACITY_OBJS)
-	rm -f libaudacity.a
+	rm -f libaudacity.a AudacityHeaders.h.gch
 
 #
 # Rule for compiling C++ files
