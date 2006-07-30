@@ -82,7 +82,7 @@ bool ExportFLAC(AudacityProject *project,
                             stereo? 2: 1, SAMPLES_PER_RUN, false,
                             rate, format);
    int idx=0;
-   FLAC__int32 *tmpsmplbuf[stereo? 2: 1];
+   FLAC__int32 *tmpsmplbuf[2];
    for(idx=0;idx<(stereo? 2: 1);idx++)
    	tmpsmplbuf[idx]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
    while(!cancelling && !eos) {
