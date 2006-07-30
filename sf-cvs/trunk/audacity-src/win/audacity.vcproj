@@ -180,7 +180,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_adv.lib wxbase26_net.lib wxmsw26_adv.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
 				LinkIncremental="0"
@@ -3511,6 +3511,22 @@
 			</File>
 			<File
 				RelativePath="..\src\export\Export.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\export\ExportFLAC.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						PreprocessorDefinitions="FLAC__NO_DLL"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\export\ExportFLAC.h"
 				>
 			</File>
 			<File
