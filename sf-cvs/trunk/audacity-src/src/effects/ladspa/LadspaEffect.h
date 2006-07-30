@@ -11,6 +11,7 @@
 class wxSlider;
 class wxStaticText;
 class wxTextCtrl;
+class wxCheckBox;
 
 #include <wx/dialog.h>
 
@@ -81,27 +82,29 @@ class LadspaEffectDialog:public wxDialog {
 
    ~LadspaEffectDialog();
 
+   void OnCheckBox(wxCommandEvent & event);
    void OnSlider(wxCommandEvent & event);
    void OnTextCtrl(wxCommandEvent & event);
    void OnOK(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
    void OnPreview(wxCommandEvent & event);
+   void ControlSetFocus(wxFocusEvent & event);
 
    DECLARE_EVENT_TABLE()
 
  private:
-   void HandleSlider();
    void HandleText();
-
+   void ConnectFocus(wxControl *c);
+   void DisconnectFocus(wxControl *c);
    bool inSlider;
    bool inText;
       
    int sampleRate;
    const LADSPA_Descriptor *mData;
    wxSlider **sliders;
-   wxSlider *targetSlider;
    wxTextCtrl **fields;
    wxStaticText **labels;
+   wxCheckBox **toggles;
    unsigned long *ports;
    unsigned long numParams;
    float *inputControls;
