@@ -49,11 +49,11 @@ various graphing code, such as provided by FreqWindow and FilterPanel.
 
 *//*******************************************************************/
 
+#include "../Audacity.h"
 
 #include "Equalization.h"
 #include "../PlatformCompatibility.h"
 #include "../FileNames.h"
-#include "../Audacity.h"
 #include "../Envelope.h"
 #include "../FFT.h"
 #include "../Prefs.h"
@@ -904,6 +904,13 @@ void EqualizationDialog::MakeEqualizationDialog()
    szr2->Add( dBMinSlider, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 4 );
    szr1->Add( szr2, 0, wxEXPAND|wxALIGN_CENTRE|wxALL, 4 );
 
+#if wxUSE_ACCESSIBILITY
+   dBMaxSlider->SetName(_("Max dB"));
+   dBMaxSlider->SetAccessible(new SliderAx(dBMaxSlider, _("%d dB")));
+   dBMinSlider->SetName(_("Min dB"));
+   dBMinSlider->SetAccessible(new SliderAx(dBMinSlider, _("%d dB")));
+#endif
+
    dBRuler = new RulerPanel(this, wxID_ANY);
    dBRuler->ruler.SetBounds(0, 0, 100, 100); // Ruler can't handle small sizes
    dBRuler->ruler.SetOrientation(wxVERTICAL);
@@ -989,6 +996,16 @@ void EqualizationDialog::MakeEqualizationDialog()
       m_sliders[i]->Connect(wxEVT_ERASE_BACKGROUND,wxEraseEventHandler(EqualizationDialog::OnErase));
       m_sliders_old[i] = 0;
       m_EQVals[i] = 0.;
+
+#if wxUSE_ACCESSIBILITY
+      wxString name;
+      if( thirdOct[i] < 1000.)
+         name.Printf(_("%dHz"), (int)thirdOct[i]);
+      else
+         name.Printf(_("%gkHz"), thirdOct[i]/1000.);
+      m_sliders[i]->SetName(name);
+      m_sliders[i]->SetAccessible(new SliderAx(m_sliders[i], _("%d dB")));
+#endif
    }
    szrV->Add( szrG, 0, wxEXPAND|wxALIGN_LEFT|wxALL, 0 );
 
@@ -2220,7 +2237,200 @@ void EqualizationDialog::OnOk(wxCommandEvent &event)
    }
 }
 
+#if wxUSE_ACCESSIBILITY
 
+SliderAx::SliderAx( wxWindow * window, wxString fmt ):
+   wxWindowAccessible( window )
+{
+   mParent = window;
+   mFmt = fmt;
+}
+
+SliderAx::~SliderAx()
+{
+}
+
+// Retrieves the address of an IDispatch interface for the specified child.
+// All objects must support this property.
+wxAccStatus SliderAx::GetChild( int childId, wxAccessible** child )
+{
+   if( childId == wxACC_SELF )
+   {
+      *child = this;
+   }
+   else
+   {
+      *child = NULL;
+   }
+
+   return wxACC_OK;
+}
+
+// Gets the number of children.
+wxAccStatus SliderAx::GetChildCount(int* childCount)
+{
+   *childCount = 3;
+
+   return wxACC_OK;
+}
+
+// Gets the default action for this object (0) or > 0 (the action for a child).
+// Return wxACC_OK even if there is no action. actionName is the action, or the empty
+// string if there is no action.
+// The retrieved string describes the action that is performed on an object,
+// not what the object does as a result. For example, a toolbar button that prints
+// a document has a default action of "Press" rather than "Prints the current document."
+wxAccStatus SliderAx::GetDefaultAction( int childId, wxString *actionName )
+{
+   actionName->Clear();
+
+   return wxACC_OK;
+}
+
+// Returns the description for this object or a child.
+wxAccStatus SliderAx::GetDescription( int childId, wxString *description )
+{
+   description->Clear();
+
+   return wxACC_OK;
+}
+
+// Gets the window with the keyboard focus.
+// If childId is 0 and child is NULL, no object in
+// this subhierarchy has the focus.
+// If this object has the focus, child should be 'this'.
+wxAccStatus SliderAx::GetFocus(int* childId, wxAccessible** child)
+{
+   *childId = 0;
+   *child = this;
+
+   return wxACC_OK;
+}
+
+// Returns help text for this object or a child, similar to tooltip text.
+wxAccStatus SliderAx::GetHelpText( int childId, wxString *helpText )
+{
+   helpText->Clear();
+
+   return wxACC_OK;
+}
+
+// Returns the keyboard shortcut for this object or child.
+// Return e.g. ALT+K
+wxAccStatus SliderAx::GetKeyboardShortcut( int childId, wxString *shortcut )
+{
+   shortcut->Clear();
+
+   return wxACC_OK;
+}
+
+// Returns the rectangle for this object (id = 0) or a child element (id > 0).
+// rect is in screen coordinates.
+wxAccStatus SliderAx::GetLocation( wxRect& rect, int elementId )
+{
+   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+
+   rect = s->GetRect();
+   rect.SetPosition( s->GetParent()->ClientToScreen( rect.GetPosition() ) );
+
+   return wxACC_OK;
+}
+
+// Gets the name of the specified object.
+wxAccStatus SliderAx::GetName(int childId, wxString* name)
+{
+   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+
+   *name = s->GetName();
+
+   return wxACC_OK;
+}
+
+// Returns a role constant.
+wxAccStatus SliderAx::GetRole(int childId, wxAccRole* role)
+{
+   switch( childId )
+   {
+      case 0:
+         *role = wxROLE_SYSTEM_SLIDER;
+      break;
+
+      case 1:
+      case 3:
+         *role = wxROLE_SYSTEM_PUSHBUTTON;
+      break;
+
+      case 2:
+         *role = wxROLE_SYSTEM_INDICATOR;
+      break;
+   }
+
+   return wxACC_OK;
+}
+
+// Gets a variant representing the selected children
+// of this object.
+// Acceptable values:
+// - a null variant (IsNull() returns TRUE)
+// - a list variant (GetType() == wxT("list"))
+// - an integer representing the selected child element,
+//   or 0 if this object is selected (GetType() == wxT("long"))
+// - a "void*" pointer to a wxAccessible child object
+wxAccStatus SliderAx::GetSelections( wxVariant *selections )
+{
+   return wxACC_NOT_IMPLEMENTED;
+}
+
+// Returns a state constant.
+wxAccStatus SliderAx::GetState(int childId, long* state)
+{
+   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+
+   switch( childId )
+   {
+      case 0:
+         *state = wxACC_STATE_SYSTEM_FOCUSABLE;
+      break;
+
+      case 1:
+         if( s->GetValue() == s->GetMin() )
+         {
+            *state = wxACC_STATE_SYSTEM_INVISIBLE;
+         }
+      break;
+
+      case 3:
+         if( s->GetValue() == s->GetMax() )
+         {
+            *state = wxACC_STATE_SYSTEM_INVISIBLE;
+         }
+      break;
+   }
+
+   // Do not use mSliderIsFocused is not set until after this method
+   // is called.
+   *state |= ( s == wxWindow::FindFocus() ? wxACC_STATE_SYSTEM_FOCUSED : 0 );
+
+   return wxACC_OK;
+}
+
+// Returns a localized string representing the value for the object
+// or child.
+wxAccStatus SliderAx::GetValue(int childId, wxString* strValue)
+{
+   wxSlider *s = wxDynamicCast( GetWindow(), wxSlider );
+
+   if( childId == 0 )
+   {
+      strValue->Printf( mFmt, s->GetValue() );
+
+      return wxACC_OK;
+   }
+
+   return wxACC_NOT_SUPPORTED;
+}
+
+#endif
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.

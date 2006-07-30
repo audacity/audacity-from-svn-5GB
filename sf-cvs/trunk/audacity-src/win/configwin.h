@@ -66,6 +66,9 @@ extern const wxChar *overrideChoiceNameStr;
 
 #define wxComboBoxNameStr overrideComboBoxNameStr
 extern const wxChar *overrideComboBoxNameStr;
+
+#define wxSliderNameStr overrideSliderNameStr
+extern const wxChar *overrideSliderNameStr;
 #endif
 // arch-tag: dcb2defc-1c07-4bae-a9ca-c5377cb470e4
 
