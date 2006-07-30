@@ -25,6 +25,6 @@ static inline int isnan(double x) { return (int)(x != x); }
 #define _USE_MATH_DEFINES
 #define FFTW3 
 #define WIN32
-#include "win/ladspa.h"
+#include "LADSPA_plugins-win/ladspa.h"
 
 #endif _CONFIG_H
