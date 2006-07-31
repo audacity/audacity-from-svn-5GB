@@ -138,12 +138,8 @@ class LabelTrack:public Track {
    void SetInBox(bool inTextBox) { mInBox = inTextBox; };
    void SetResetCursorPos(bool resetFlag) { mResetCursorPos = resetFlag; };
    void SetWrongDragging(bool rightFlag) { mRightDragging = rightFlag; };
-   void SetKeyOn(bool keyFlag) { mKeyOn = keyFlag; };
    void SetDrawCursor(bool drawCursorFlag) { mDrawCursor = drawCursorFlag; };
    
-   bool getKeyOn() { return mKeyOn; };
-
-
    void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
@@ -211,7 +207,6 @@ class LabelTrack:public Track {
    bool mInBox;                        /// flag to tell if the mouse is in text box
    bool mResetCursorPos;               /// flag to reset cursor position(used in the dragging the glygh) 
    bool mRightDragging;                /// flag to tell if it's a valid dragging
-   bool mKeyOn;                        /// flag to tell if current label track has keyboard focus
    bool mDrawCursor;                   /// flag to tell if drawing the cursor or not
    
    // Used only for a LabelTrack on the clipboard

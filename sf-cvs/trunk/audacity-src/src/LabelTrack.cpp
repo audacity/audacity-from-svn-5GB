@@ -137,7 +137,6 @@ void LabelTrack::ResetFlags()
    mCurrentCursorPos = 1;
    mResetCursorPos = false;
    mRightDragging = false;
-   mKeyOn = false;
    mDrawCursor = false;
 }
 

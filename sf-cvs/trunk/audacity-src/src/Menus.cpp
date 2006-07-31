@@ -3840,7 +3840,6 @@ void AudacityProject::OnNewLabelTrack()
 
    mTracks->Add(t);
    t->SetSelected(true);
-   t->SetKeyOn(true);
 
    PushState(_("Created new label track"), _("New Track"));
 
