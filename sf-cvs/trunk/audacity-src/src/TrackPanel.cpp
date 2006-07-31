@@ -3689,8 +3689,6 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
    /// TrackPanel which suitably modified belong in other classes.
    if(event.ButtonDown(1))      
    {
-      lTrack->SetKeyOn(true);
-
       TrackListIterator iter(mTracks);
       Track *n = iter.First();
  
