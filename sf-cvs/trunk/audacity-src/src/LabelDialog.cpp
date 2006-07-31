@@ -368,6 +368,7 @@ bool LabelDialog::TransferDataFromWindow()
 
       // Add the label to it
       ((LabelTrack *) t)->AddLabel(rd->stime, rd->etime, rd->title);
+      ((LabelTrack *) t)->Unselect();
    }
 
    return true;
