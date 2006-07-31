@@ -3695,6 +3695,7 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
       while (n) {
          if (n->GetKind() == Track::Label && lTrack != n) {
             ((LabelTrack *)n)->ResetFlags();
+            ((LabelTrack *)n)->Unselect();
          }
          n = iter.Next();
       }
