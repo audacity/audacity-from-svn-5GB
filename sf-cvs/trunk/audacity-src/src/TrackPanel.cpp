@@ -318,6 +318,7 @@ enum {
 
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
+    EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TrackPanel::OnCaptureKey)
     EVT_CHAR(TrackPanel::OnChar)
     EVT_SIZE(TrackPanel::OnSize)
     EVT_ERASE_BACKGROUND(TrackPanel::OnErase)
@@ -3447,6 +3448,20 @@ void TrackPanel::HandleWheelRotation(wxMouseEvent & event)
    }
 }
 
+/// Filter captured keys typed into LabelTracks.
+void TrackPanel::OnCaptureKey(wxCommandEvent & event)
+{
+   // Only deal with LabelTracks
+   Track *t = GetFocusedTrack();
+   if (!t || t->GetKind() != Track::Label) {
+      event.Skip();
+      return;
+   }
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+
+   event.Skip(!((LabelTrack *)t)->CaptureKey(*kevent));
+}
+
 /// Allow typing into LabelTracks.
 void TrackPanel::OnChar(wxKeyEvent & event)
 {
@@ -5874,11 +5889,13 @@ void TrackPanel::SetFocusedTrack( Track *t )
    
    if (p && p->HasKeyboardCapture()) {
       wxCommandEvent e(EVT_RELEASE_KEYBOARD);
+      e.SetEventObject(this);
       GetParent()->GetEventHandler()->ProcessEvent(e);
    }
 
    if (t && t->GetKind() == Track::Label) {
       wxCommandEvent e(EVT_CAPTURE_KEYBOARD);
+      e.SetEventObject(this);
       GetParent()->GetEventHandler()->ProcessEvent(e);
    }
       

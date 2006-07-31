@@ -180,6 +180,7 @@ BEGIN_EVENT_TABLE(TimeTextCtrl, wxControl)
    EVT_CHAR(TimeTextCtrl::OnChar)
    EVT_SET_FOCUS(TimeTextCtrl::OnFocus)
    EVT_KILL_FOCUS(TimeTextCtrl::OnFocus)
+   EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TimeTextCtrl::OnCaptureKey)
 END_EVENT_TABLE()
 
 IMPLEMENT_CLASS(TimeTextCtrl, wxControl)
@@ -850,9 +851,36 @@ void TimeTextCtrl::OnFocus(wxFocusEvent &event)
    if (event.GetEventType() == wxEVT_KILL_FOCUS) {
       e.SetEventType(EVT_RELEASE_KEYBOARD);
    }
+   e.SetEventObject(this);
    GetParent()->GetEventHandler()->ProcessEvent(e);
 
    Refresh(false);
+}
+
+void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
+{
+   wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
+   int keyCode = kevent->GetKeyCode();
+
+   switch (keyCode)
+   {
+      case WXK_BACK:
+      case WXK_LEFT:
+      case WXK_RIGHT:
+      case WXK_HOME:
+      case WXK_END:
+      case WXK_UP:
+      case WXK_DOWN:
+         return;
+
+      default:
+         if (keyCode >= '0' || keyCode <= '9')
+            return;
+   }
+
+   event.Skip();
+
+   return;
 }
 
 void TimeTextCtrl::OnChar(wxKeyEvent &event)
@@ -917,25 +945,6 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
       Updated();
    }
 
-   else if (keyCode == WXK_TAB) {
-      wxWindow *parent = GetParent();
-      wxNavigationKeyEvent nevent;
-      nevent.SetWindowChange( event.ControlDown() );
-      nevent.SetDirection( !event.ShiftDown() );
-      nevent.SetEventObject( parent );
-      nevent.SetCurrentFocus( parent );
-      GetParent()->ProcessEvent( nevent );
-   }
-
-   else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
-      wxWindow *parent = GetParent();
-      wxWindow *def = parent->GetDefaultItem();
-      if (parent && def) {
-         wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
-                               def->GetId());
-         GetParent()->ProcessEvent( cevent );
-      }
-   }
    else {
       event.Skip();
       return;

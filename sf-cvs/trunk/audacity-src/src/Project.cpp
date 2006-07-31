@@ -1248,10 +1248,20 @@ bool AudacityProject::HandleKeyDown(wxKeyEvent & event)
    if (event.GetKeyCode() == WXK_CONTROL)
       mTrackPanel->HandleControlKey(true);
 
-   if (!HasKeyboardCapture())
-      return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
-   else
-      return false;
+   // If a window has captured the keyboard, then allow it
+   // first dibs at the event.  If it does an event.Skip(false)
+   // then allow the event to process as normal, bypassing the
+   // command handler.
+   wxWindow *w = HasKeyboardCapture();
+   if (w) {
+      wxCommandEvent e(EVT_CAPTURE_KEY);
+      e.SetEventObject(&event);
+      if (w->ProcessEvent(e)) {
+         return false;
+      }
+   }
+
+   return mCommandManager.HandleKey(event, GetUpdateFlags(), 0xFFFFFFFF);
 }
 
 bool AudacityProject::HandleChar(wxKeyEvent & event)
@@ -1472,7 +1482,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
 void AudacityProject::OnCaptureKeyboard(wxCommandEvent & event)
 {
-   CaptureKeyboard();
+   CaptureKeyboard((wxWindow *)event.GetEventObject());
 }
 
 void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
@@ -2989,19 +2999,19 @@ void AudacityProject::GetPlayRegion(double* playRegionStart,
    mRuler->GetPlayRegion(playRegionStart, playRegionEnd);
 }
 
-bool AudacityProject::HasKeyboardCapture()
+wxWindow *AudacityProject::HasKeyboardCapture()
 {
    return mKeyboardCaptured;
 }
 
-void AudacityProject::CaptureKeyboard()
+void AudacityProject::CaptureKeyboard(wxWindow *w)
 {
-   mKeyboardCaptured = true;
+   mKeyboardCaptured = w;
 }
 
 void AudacityProject::ReleaseKeyboard()
 {
-   mKeyboardCaptured = false;
+   mKeyboardCaptured = NULL;
 }
 
 void AudacityProject::DeleteCurrentAutoSaveFile()

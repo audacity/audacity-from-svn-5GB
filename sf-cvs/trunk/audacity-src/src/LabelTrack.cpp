@@ -1199,9 +1199,38 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
    }
 }
 
+// Check for keys that we will process
+bool LabelTrack::CaptureKey(wxKeyEvent & event)
+{
+   // Cache the keycode
+   int keyCode = event.GetKeyCode();
+   wxChar charCode = keyCode;
+#if wxUSE_UNICODE
+   charCode = event.GetUnicodeKey();
+#endif
+
+   if (mSelIndex >= 0) {
+      switch (keyCode)
+      {
+         case WXK_BACK:
+         case WXK_DELETE:
+         case WXK_LEFT:
+         case WXK_RIGHT:
+         case WXK_RETURN:
+         case WXK_ESCAPE:
+         case WXK_TAB:
+            return true;
+         break;
+      }
+   }
+
+   if (IsGoodLabelCharacter(keyCode, charCode))
+      return true;
+
+   return false;
+}
+
 /// KeyEvent is called for every keypress when over the label track.
-/// TODO: Modify so that it can pass unused characters on to 
-/// higher levels of the interface.
 bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event)
 {
    // Ignore modified characters (this does not include shifted ones)
@@ -1386,8 +1415,6 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
       // characters.
       // We can always create the label and then type the forbidden character
       // as our first character.
-      // TODO: (Possibly) pass the unused characters on to other charCode
-      // handlers, 
       handled = false;
    }
    else
