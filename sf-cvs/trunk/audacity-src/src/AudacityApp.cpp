@@ -88,6 +88,7 @@ const wxChar *overrideSliderNameStr = wxT("");
 
 DEFINE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD);
 DEFINE_EVENT_TYPE(EVT_RELEASE_KEYBOARD);
+DEFINE_EVENT_TYPE(EVT_CAPTURE_KEY);
 
 #ifdef __WXGTK__
 void wxOnAssert(const wxChar *fileName, int lineNumber, const wxChar *msg)

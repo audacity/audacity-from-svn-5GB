@@ -287,8 +287,8 @@ class AudacityProject:public wxFrame,
    PlayMode mLastPlayMode;
    ViewInfo mViewInfo;
 
-   bool HasKeyboardCapture();
-   void CaptureKeyboard();
+   wxWindow *HasKeyboardCapture();
+   void CaptureKeyboard(wxWindow *h);
    void ReleaseKeyboard();
    
    // Audio IO callback methods
@@ -402,7 +402,7 @@ class AudacityProject:public wxFrame,
    
    bool mLockPlayRegion;
 
-   bool mKeyboardCaptured;
+   wxWindow *mKeyboardCaptured;
 
    // Recent File and Project History
    wxFileHistory *mRecentFiles;

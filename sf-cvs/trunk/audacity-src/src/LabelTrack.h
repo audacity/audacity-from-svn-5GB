@@ -147,6 +147,7 @@ class LabelTrack:public Track {
    void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
+   bool CaptureKey(wxKeyEvent & event);
    bool KeyEvent(double & sel0, double & sel1, wxKeyEvent & event);
 
    void Import(wxTextFile & f);

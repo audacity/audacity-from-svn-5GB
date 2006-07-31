@@ -28,8 +28,10 @@ extern wxFrame *gParentFrame;
 
 extern bool gIsQuitting;
 
+// Keyboard capture support
 DECLARE_EVENT_TYPE(EVT_CAPTURE_KEYBOARD, -1);
 DECLARE_EVENT_TYPE(EVT_RELEASE_KEYBOARD, -1);
+DECLARE_EVENT_TYPE(EVT_CAPTURE_KEY, -1);
 
 class AudacityApp:public wxApp {
  public:

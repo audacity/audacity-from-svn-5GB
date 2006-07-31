@@ -74,6 +74,7 @@ class TimeTextCtrl: public wxControl
 
 private:
 
+   void OnCaptureKey(wxCommandEvent &event);
    void OnChar(wxKeyEvent &event);
    void OnMouse(wxMouseEvent &event);
    void OnPaint(wxPaintEvent &event);
