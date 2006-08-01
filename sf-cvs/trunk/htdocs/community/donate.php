@@ -82,7 +82,7 @@
   <?= ('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
 </h2>
 <p>
-  <?=_('You're invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
+  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
   Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.')?>
 </p>
 
