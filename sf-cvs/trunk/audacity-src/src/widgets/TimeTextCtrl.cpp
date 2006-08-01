@@ -155,6 +155,7 @@ different formats.
 #include "TimeTextCtrl.h"
 #include "../Theme.h"
 #include "../AllThemeResources.h"
+#include "../AColor.h"
 
 #include <math.h>
 
