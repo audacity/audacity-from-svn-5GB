@@ -25,6 +25,10 @@
 #include <wx/stdpaths.h>
 #include <wx/app.h>
 
+#ifdef __WXMAC__
+#include <wx/mac/private.h>
+#endif
+
 #include "AudacityApp.h"
 #include "PlatformCompatibility.h"
 

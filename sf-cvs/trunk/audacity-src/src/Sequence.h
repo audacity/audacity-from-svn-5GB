@@ -12,6 +12,7 @@
 #define __AUDACITY_SEQUENCE__
 
 #include <wx/string.h>
+#include <wx/dynarray.h>
 
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
