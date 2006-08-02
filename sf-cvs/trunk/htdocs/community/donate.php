@@ -8,16 +8,15 @@
  */
   require_once "main.inc.php";
   $pageId = "donate";
-  $pageTitle = _("Why does the Audacity Team want to raise money?");
+  $pageTitle = _("How Does Audacity Raise Money?");
   include "../include/header.inc.php";
 ?>
 
 <h2><?=$pageTitle?></h2>
 
 <p>
-  <?=_('The Audacity Team has started exploring new means of bringing money to the project. 
-  These include ads at various locations on our websites, in addition to expanded sales 
-  of associated products and the donations program.')?>
+  <?=_('Audacity raises money via donations, advertisements on our web pages, and 
+  product sales through the <a href="http://audacitystore.com/">Audacity Store</a>.')?>
 </p>
 
 <p>
@@ -56,6 +55,16 @@
   Thank you for supporting Audacity.')?>
 </p>
 
+
+<h2>
+  <?= ('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
+</h2>
+<p>
+  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
+  Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.')?>
+</p>
+
+
 <h2><?= ('Make a Donation')?></h2>
 <p>
   <?=_('We currently accept donations via the Amazon Honor System. Use your credit card and make a donation as small as US$1.00, or up to US$50.00:')?>
@@ -76,15 +85,6 @@
 </p>
 
 <p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the lead developers.')?></p>
-
-
-<h2>
-  <?= ('Purchase from the <a href="http://audacitystore.com/">Audacity Store</a>')?>
-</h2>
-<p>
-  <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
-  Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.')?>
-</p>
 
 
 <h2>
