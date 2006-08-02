@@ -256,6 +256,9 @@ Known issues/problems:
   * Audacity can import and display MIDI files, but they cannot be played
     or edited.
 
+  * On Pentium-II based systems effects using the Soundtouch libraries may
+    cause Audacity to crash. This is a problem with the upstream library.
+
   * Windows only: If you installed one of the 1.1.x beta versions,
     you must uninstall it before installing Audacity 1.2.
     (You do not need to uninstall earlier 1.2 or 1.0 releases.)
@@ -306,7 +309,9 @@ Changes in 1.2.5:
   * Mac OS X: added new Audio I/O preference that lets you tell Audacity
     to never change any audio device settings.
 
-  * Newer libsndfile supports FLAC import and export#
+  * Newer libsndfile supports FLAC import and export
+
+  * Updated soundtouch to current version which is faster and better quality
 
   * Modified configure script prefers system libraries to local copies to
     reduce compilation times and memory usage.
