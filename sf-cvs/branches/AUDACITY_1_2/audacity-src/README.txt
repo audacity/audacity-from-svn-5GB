@@ -47,7 +47,6 @@ Audacity is based on code from the following projects::
    Resample
    SoundTouch
    wxWidgets
-   RTaudio
 
 Special Thanks:
    Richard Ash
@@ -131,6 +130,9 @@ license.  Specifically:
 
   libogg: BSD-like license.
     Optional separate download, along with libvorbis.
+
+  libflac: BSD-like license.
+    Optional separate download for libsndfile
 
   libresample: LGPL
     High-quality audio resampling.
@@ -243,8 +245,9 @@ a configure cache and header dependencies:
 To compile on Windows using MSVC++, please follow the
 instructions found in compile.txt in the "win" subdirectory.
 
-For more information on compilation (CodeWarrior for Mac is
-also supported) please email audacity-help@lists.sourceforge.net
+For more information on compilation please email
+audacity-help@lists.sourceforge.net or see the audacity forum
+http://www.audacityteam.org/forum/
 
 -------------------------------------------------------------
 
@@ -302,6 +305,11 @@ Changes in 1.2.5:
 
   * Mac OS X: added new Audio I/O preference that lets you tell Audacity
     to never change any audio device settings.
+
+  * Newer libsndfile supports FLAC import and export#
+
+  * Modified configure script prefers system libraries to local copies to
+    reduce compilation times and memory usage.
 
   * Minor updates to help files.
 
