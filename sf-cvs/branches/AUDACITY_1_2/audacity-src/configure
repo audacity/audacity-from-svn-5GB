@@ -6271,8 +6271,8 @@ echo "${ECHO_T}no" >&6
 fi
 
 if [ "$WX_CONFIG" = "no" ] ; then
-	{ { echo "$as_me:$LINENO: error: \"Could not find wx-config: is wxWindows installed? is wx-config in your path?\"" >&5
-echo "$as_me: error: \"Could not find wx-config: is wxWindows installed? is wx-config in your path?\"" >&2;}
+	{ { echo "$as_me:$LINENO: error: \"Could not find wx-config: is wxWidgets installed? is wx-config in your path?\"" >&5
+echo "$as_me: error: \"Could not find wx-config: is wxWidgets installed? is wx-config in your path?\"" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
@@ -6284,7 +6284,30 @@ echo "$as_me: Checking that the installed version of wxWidgets is 2.4.x" >&6;}
 
 if [ "${wx_release}" = 2.4 ]
 then
-   echo "Great, you're using wxWidgets 2.4.x!"
+	# 2.4 only, away we go
+	wx_ok=1
+
+elif [ "${wx_release}" = 2.6 ]
+then
+	wx24_release=`${WX_CONFIG} $static_preference $unicode_preference --version=2.4 --release`
+	if [ "${wx24_release}" = 2.4 ]
+	then
+		# we have 2.6 before 2.4, so we need to force 2.4
+		WX_CONFIG="${WX_CONFIG} --version=2.4"
+		wx_ok=1
+	else
+		# 2.6 only - no go
+		wx_ok=0
+	fi
+else
+	# not 2.4 and not 2.6 - dead loss
+	wx_ok=0
+fi
+
+# now some messages to the user
+if [ $wx_ok = 1 ]
+then
+	echo "Great, you're using wxWidgets 2.4.x!"
 else
   { { echo "$as_me:$LINENO: error: Unable to locate a suitable configuration of wxWidgets v2.4.x.
 The currently available configurations are listed below.  If necessary, either
