@@ -5224,8 +5224,6 @@
 		1790AFB509883B6E008A330A /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
