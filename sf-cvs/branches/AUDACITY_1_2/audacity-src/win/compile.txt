@@ -13,21 +13,17 @@ Authors:
   Shane Mueller
 
 ================================================================
-This version is currently accurate for Audacity version 1.2.4.
-Last Updated: December 18, 2005
+This version is currently accurate for Audacity version 1.2.5.
+Last Updated: August 03, 2006
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 ================================================================
 
-Audacity releases to date have been built with Visual C++ 6.0, 
-with Service Pack 5.  If you require it, this patch is available from
-Microsoft at
+Audacity 1.2.x releases are built with Visual C++ 2003 onwards. The freely
+available Express editions are fully suitable for this.
 
-  http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp5/default.asp
-
-Audacity can be built with Visual C++ .NET 7.1 (or 2003). Just 
-build wxWidgets with the .NET C++, and then use 
-"audacity.vcproj" instead of "audacity.dsw".
+wxWidgets must be built with the same compiler as is used to build
+audacity.
 
 It is worth noting that Audacity uses VC++'s multithreaded
 statically-linked run-time libraries.
