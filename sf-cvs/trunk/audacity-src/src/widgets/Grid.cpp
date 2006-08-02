@@ -288,6 +288,8 @@ void ChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
 
    mOld = grid->GetTable()->GetValue(row, col);
 
+   Choice()->Clear();
+   Choice()->Append(mChoices);
    Choice()->SetSelection(mChoices.Index(mOld));
    Choice()->SetFocus();
 }
@@ -332,7 +334,6 @@ void ChoiceEditor::OnKillFocus(wxFocusEvent &event)
 BEGIN_EVENT_TABLE(Grid, wxGrid)
    EVT_KEY_DOWN(Grid::OnKeyDown)
    EVT_GRID_SELECT_CELL(Grid::OnSelectCell)
-   //   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, Grid::OnUpdate)
 END_EVENT_TABLE()
 
 Grid::Grid(wxWindow *parent,
@@ -341,7 +342,7 @@ Grid::Grid(wxWindow *parent,
            const wxSize& size,
            long style,
            const wxString& name)
-: wxGrid(parent, id, pos, size, style, name)
+: wxGrid(parent, id, pos, size, style | wxWANTS_CHARS, name)
 {
 #if wxUSE_ACCESSIBILITY
    mAx = new GridAx(this, NULL, wxROLE_SYSTEM_TABLE, 0, 0);
@@ -381,40 +382,10 @@ void Grid::OnSelectCell(wxGridEvent &event)
 #endif
 }
 
-#if 0
-void Grid::OnUpdate(wxCommandEvent &event)
-{
-   event.Skip();
-}
-#endif
 void Grid::OnKeyDown(wxKeyEvent &event)
 {
    switch (event.GetKeyCode())
    {
-      case WXK_RETURN:
-      {
-         if (IsCellEditControlEnabled()) {
-            wxGrid::OnKeyDown(event);
-         }
-         else {
-            wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
-            wxGrid::GetParent()->GetEventHandler()->AddPendingEvent(e);
-         }
-      }
-      break;
-
-      case WXK_ESCAPE:
-      {
-         if (IsCellEditControlEnabled()) {
-            wxGrid::OnKeyDown(event);
-         }
-         else {
-            wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, wxID_CANCEL);
-            GetParent()->GetEventHandler()->AddPendingEvent(e);
-         }
-      }
-      break;
-
       case WXK_TAB:
       {
          int flags = wxNavigationKeyEvent::FromTab |
@@ -787,7 +758,38 @@ wxAccStatus GridAx::GetName(int childId, wxString* name)
       break;
 
       case wxROLE_SYSTEM_CELL:
+      {
          *name = mGrid->GetCellValue(mRow - 1, mCol - 1);
+         if (name->IsEmpty()) {
+            *name = _("Empty");
+         }
+
+         // Hack to provide a more intelligible response
+         TimeEditor *d =
+            (TimeEditor *)mGrid->GetDefaultEditorForType(GRID_VALUE_TIME);
+         TimeEditor *c =
+            (TimeEditor *)mGrid->GetCellEditor(mRow - 1, mCol - 1);
+
+         if (c && d && c == d) {
+            double value;
+            name->ToDouble(&value);
+
+            TimeTextCtrl tt(mGrid,
+                            wxID_ANY,
+                            TimeTextCtrl::GetBuiltinFormat(c->GetFormat()),
+                            value,
+                            c->GetRate(),
+                            wxPoint(10000, 10000),  // create offscreen
+                            wxDefaultSize,
+                            true);
+            *name = tt.GetTimeString();
+         }
+
+         if (c)
+            c->DecRef();
+         if (d)
+            d->DecRef();
+      }
       break;
 
       default:

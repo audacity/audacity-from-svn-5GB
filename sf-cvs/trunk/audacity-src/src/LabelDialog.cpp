@@ -68,59 +68,21 @@ enum {
    ID_INSERTB,
    ID_REMOVE,
    ID_IMPORT,
-   ID_EXPORT
-};
-
-class EmptyLabelRenderer:public wxGridCellStringRenderer
-{
- public:
-   void Draw(wxGrid &grid,
-             wxGridCellAttr& attr,
-             wxDC& dc,
-             const wxRect& rect,
-             int row, int col,
-             bool isSelected)
-   {
-      wxString val = grid.GetCellValue(row, col);
-      wxColour clr;
-      int halign;
-      int valign;
-
-      if (val.IsEmpty()) {
-         attr.GetAlignment(&halign, &valign);
-         clr = attr.GetTextColour();
-
-         if (col == 0) {
-            grid.SetCellValue(row, col, _("<add new label here>"));
-         }
-         else {
-            grid.SetCellValue(row, col, _("<enter label name>"));
-         }
-
-         attr.SetTextColour(wxColour(128, 128, 128));
-         attr.SetAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
-      }
-
-      wxGridCellStringRenderer::Draw(grid, attr, dc, rect, row, col, isSelected);
-
-      if (val.IsEmpty()) {
-         attr.SetAlignment(halign, valign);
-         attr.SetTextColour(clr);
-         grid.SetCellValue(row, col, wxT(""));
-      }
-   }
+   ID_EXPORT,
+   ID_OK,
+   ID_CANCEL
 };
 
 BEGIN_EVENT_TABLE(LabelDialog, wxDialog)
-   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, LabelDialog::OnUpdate)
+   EVT_GRID_CELL_CHANGE(LabelDialog::OnCellChange)
    EVT_BUTTON(ID_INSERTA, LabelDialog::OnInsert)
    EVT_BUTTON(ID_INSERTB, LabelDialog::OnInsert)
    EVT_BUTTON(ID_REMOVE,  LabelDialog::OnRemove)
    EVT_BUTTON(ID_IMPORT,  LabelDialog::OnImport)
    EVT_BUTTON(ID_EXPORT,  LabelDialog::OnExport)
-//   EVT_KEY_DOWN(LabelDialog::OnKeyDown)
-   EVT_GRID_CELL_CHANGE(LabelDialog::OnCellChange)
-   EVT_GRID_EDITOR_SHOWN(LabelDialog::OnEditorShown)
+   EVT_BUTTON(ID_OK,      LabelDialog::OnOK)
+   EVT_BUTTON(ID_CANCEL,  LabelDialog::OnCancel)
+   EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, LabelDialog::OnUpdate)
 END_EVENT_TABLE()
 
 LabelDialog::LabelDialog(wxWindow *parent,
@@ -137,23 +99,42 @@ LabelDialog::LabelDialog(wxWindow *parent,
   mTracks(tracks),
   mRate(rate)
 {
+   // Create the main sizer
    wxBoxSizer *vs = new wxBoxSizer(wxVERTICAL);
+
+   // A little instruction
+   vs->Add(new wxStaticText(this,
+                            wxID_ANY,
+                            _("Press F2 or double click to edit cell contents.")),
+                            0,
+                            wxALIGN_LEFT | wxALL,
+                            5);
+
+   // Create the main sizer
    mGrid = new Grid(this, wxID_ANY);
    vs->Add(mGrid, 1, wxEXPAND | wxALL, 5);
 
-   // Build the works
+   // Create the action buttons
    wxBoxSizer *hs = new wxBoxSizer(wxHORIZONTAL);
    hs->Add(new wxButton(this, ID_INSERTA, _("Insert &After")), 1, wxCENTER | wxALL, 5);
    hs->Add(new wxButton(this, ID_INSERTB, _("Insert &Before")), 1, wxCENTER | wxALL, 5);
    hs->Add(new wxButton(this, ID_REMOVE,  _("&Remove")), 1, wxCENTER | wxALL, 5);
-   hs->Add(new wxButton(this, ID_IMPORT,  _("I&mport...")), 1, wxCENTER | wxALL, 5);
-   hs->Add(new wxButton(this, ID_EXPORT,  _("E&xport...")), 1, wxCENTER | wxALL, 5);
+   hs->Add(new wxButton(this, ID_IMPORT,  _("&Import...")), 1, wxCENTER | wxALL, 5);
+   hs->Add(new wxButton(this, ID_EXPORT,  _("&Export...")), 1, wxCENTER | wxALL, 5);
    vs->Add(hs, 0, wxEXPAND | wxCENTER | wxALL, 5);
 
-   vs->Add(CreateButtonSizer(wxOK | wxCANCEL),
-           0,
-           wxCENTER | wxBOTTOM | wxALL,
-           10);
+   // Create the exit buttons
+   hs = new wxBoxSizer(wxHORIZONTAL);
+#if defined(__WXGTK20__) || defined(__WXMAC__)
+   hs->Add(new wxButton(this, ID_CANCEL, _("&Cancel")), 1, wxCENTER | wxALL, 5);
+   hs->Add(new wxButton(this, wxID_OK, _("&OK")), 1, wxCENTER | wxALL, 5);
+#else
+   hs->Add(new wxButton(this, wxID_OK, _("&OK")), 1, wxCENTER | wxALL, 5);
+   hs->Add(new wxButton(this, wxID_CANCEL, _("&Cancel")), 1, wxCENTER | wxALL, 5);
+#endif
+   vs->Add(hs, 0, wxALIGN_RIGHT | wxALL, 5);
+
+   // Make it so
    SetSizer(vs);
 
    // Build the initial (empty) grid
@@ -176,11 +157,6 @@ LabelDialog::LabelDialog(wxWindow *parent,
    mGrid->SetColAttr(Col_Track, attr);
    mTrackNames.Add(_("New..."));
 
-   // Initialize and set the label name column attributes
-//   attr = new wxGridCellAttr();
-//   attr->SetRenderer(new EmptyLabelRenderer());
-//   mGrid->SetColAttr(Col_Label, attr);
-
    // Initialize and set the time column attributes
    attr = new wxGridCellAttr();
    attr->SetRenderer(mGrid->GetDefaultRendererForType(GRID_VALUE_TIME));
@@ -200,29 +176,6 @@ LabelDialog::LabelDialog(wxWindow *parent,
    mGrid->SetRowMinimalAcceptableHeight(0);
    mGrid->EnableDragRowSize(false);
 
-   // Add 3 rows...1 for determining size and 2 for "new label" rows
-   mGrid->AppendRows(3);
-
-   // Call Autosize() to set the height of the first row.  Use that
-   // height for the first "new label" row and hide the second row.
-   mGrid->AutoSize();
-   mGrid->SetRowSize(1, mGrid->GetRowSize(0));
-   mGrid->SetRowSize(2, 0);
-
-   // No longer need the "height" row.
-   mGrid->DeleteRows(0, 1);
-
-   // Allow the "new label" row to span the full width of the grid
-   // and 2 rows due to critter (see above).
-   mGrid->SetCellSize(0, 0, 2, Col_Max);
-
-   // Set various properties for "new label" row
-   mGrid->SetCellRenderer(0, 0, new wxGridCellStringRenderer);
-   mGrid->SetCellEditor(0, 0, new wxGridCellTextEditor);
-   mGrid->SetCellAlignment(0, 0, wxALIGN_CENTRE, wxALIGN_CENTRE);
-   mGrid->SetCellTextColour(0, 0, wxColour(128, 128, 128));
-   mGrid->SetCellValue(0, 0, _("<add new label here>"));
-
    // Locate all labels in current track list
    FindAllLabels();
 
@@ -230,11 +183,10 @@ LabelDialog::LabelDialog(wxWindow *parent,
    TransferDataToWindow();
 
    // Resize the label name column and ensure it doesn't go below an
-   // arbitrary width.  (Should be as wide as the "Enter Label Name"
-   // prompt...see EmptyLabelRenderer.)
+   // arbitrary width.
    //
    // This should not be in TransferDataToWindow() since a user might
-   // resize the column and we'd resize it back the the minimum.
+   // resize the column and we'd resize it back to the minimum.
    mGrid->AutoSizeColumn(Col_Label, false );
    mGrid->SetColSize(Col_Label, wxMax(150, mGrid->GetColSize(Col_Label)));
    mGrid->SetColMinimalWidth(Col_Label, mGrid->GetColSize(Col_Label));
@@ -272,12 +224,19 @@ bool LabelDialog::TransferDataToWindow()
    int cnt = mData.GetCount();
    int i;
 
+   // Set the editor parameters.  Do this each time since they may change
+   // due to new tracks and change in TimeTextCtrl format.  Rate won't
+   // change but might as well leave it here.
+   mChoiceEditor->SetChoices(mTrackNames);
+   mTimeEditor->SetFormat(mFormat);
+   mTimeEditor->SetRate(mRate);
+
    // Disable redrawing until we're done
    mGrid->BeginBatch();
 
-   // Delete all rows except the "new label" rows
-   if (mGrid->GetNumberRows() - 2) {
-      mGrid->DeleteRows(0, mGrid->GetNumberRows() - 2);
+   // Delete all rows
+   if (mGrid->GetNumberRows()) {
+      mGrid->DeleteRows(0, mGrid->GetNumberRows());
    }
 
    // Add the exact number that we'll need
@@ -287,10 +246,6 @@ bool LabelDialog::TransferDataToWindow()
    for (i = 0; i < cnt; i++) {
       RowData *rd = mData[i];
 
-      // Autosize each row...do not use AutoSizeRows() since that would autosize
-      // the "new label" rows and we have specific requirements for those.
-      mGrid->AutoSizeRow(i, false);
-
       // Set the cell contents
       mGrid->SetCellValue(i, Col_Track, TrackName(rd->index));
       mGrid->SetCellValue(i, Col_Label, rd->title);
@@ -298,12 +253,8 @@ bool LabelDialog::TransferDataToWindow()
       mGrid->SetCellValue(i, Col_Etime, wxString::Format(wxT("%g"), rd->etime));
    }
 
-   // Set the editor parameters.  Do this each time since they may change
-   // due to new tracks and change in TimeTextCtrl format.  Rate won't
-   // change but might as well leave it here.
-   mChoiceEditor->SetChoices(mTrackNames);
-   mTimeEditor->SetFormat(mFormat);
-   mTimeEditor->SetRate(mRate);
+   // Autosize all the rows
+   mGrid->AutoSizeRows(true);
 
    // Resize the track name column.  Use a wxChoice to determine the maximum
    // width needed.
@@ -367,14 +318,42 @@ bool LabelDialog::TransferDataFromWindow()
       }
 
       // Add the label to it
-      ((LabelTrack *) t)->AddLabel(rd->stime, rd->etime, rd->title);
-      ((LabelTrack *) t)->Unselect();
+      if (!rd->title.IsEmpty()) {
+         ((LabelTrack *) t)->AddLabel(rd->stime, rd->etime, rd->title);
+         ((LabelTrack *) t)->Unselect();
+      }
    }
 
    return true;
 }
 
-wxString LabelDialog::TrackName(int index, wxString dflt)
+bool LabelDialog::Validate()
+{
+   int cnt = mData.GetCount();
+   int i;
+   
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->HideCellEditControl();
+      mGrid->SaveEditControlValue();
+   }
+
+   for (i = 0; i < cnt; i++) {
+      if (mData[i]->title.IsEmpty()) {
+         int id = wxMessageBox(_("You have left blank label names.  These will be\n"
+                             wxT("skipped when repopulating the Label Tracks.\n\n")
+                             wxT("Would you like to go back and provide names?")),
+                               _("Confirm"),
+                               wxYES_NO | wxICON_EXCLAMATION);
+         if (id == wxYES) {
+            return false;
+         }
+      }
+   }
+   
+   return true;
+}
+
+wxString LabelDialog::TrackName(int & index, wxString dflt)
 {
    // Generate a new track name if the passed index is out of range
    if (index < 1 || index >= mTrackNames.GetCount()) {
@@ -397,13 +376,21 @@ void LabelDialog::FindAllLabels()
          AddLabels((LabelTrack *) t);
       }
    }
+
+   if (mData.GetCount() == 0) {
+      wxCommandEvent e;
+      OnInsert(e);
+   }
 }
 
 void LabelDialog::AddLabels(LabelTrack *t)
 {
    wxString lab;
-   int tndx = mTrackNames.GetCount();
+   int tndx = 0;
    int i;
+
+   // Add a new track name
+   TrackName(tndx, t->GetName());
 
    // Add each label in the track
    for (i = 0; i < t->GetNumLabels(); i++) {
@@ -416,41 +403,6 @@ void LabelDialog::AddLabels(LabelTrack *t)
       rd->title = ls->title;
 
       mData.Add(rd);
-   }
-
-   // Add a new track name
-   TrackName(tndx, t->GetName());
-}
-
-void LabelDialog::OnKeyDown(wxKeyEvent &event)
-{
-   switch (event.GetKeyCode())
-   {
-      case WXK_RETURN:
-      {
-         if (!mGrid->IsCellEditControlEnabled()) {
-            wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, wxID_OK);
-            GetEventHandler()->AddPendingEvent(e);
-            event.Skip(false);
-         }
-         else {
-            event.Skip(true);
-         }
-      }
-      break;
-
-      case WXK_ESCAPE:
-      {
-         if (!mGrid->IsCellEditControlEnabled()) {
-            wxCommandEvent e(wxEVT_COMMAND_BUTTON_CLICKED, wxID_CANCEL);
-            GetEventHandler()->AddPendingEvent(e);
-            event.Skip(false);
-         }
-         else {
-            event.Skip(true);
-         }
-      }
-      break;
    }
 }
 
@@ -475,7 +427,7 @@ void LabelDialog::OnInsert(wxCommandEvent &event)
       mGrid->HideCellEditControl();
    }
 
-   // Attempt to guess which track the label to reside on
+   // Attempt to guess which track the label should reside on
    if (cnt > 0) {
       row = mGrid->GetCursorRow();
       if (row > 0 && row >= cnt) {
@@ -514,10 +466,14 @@ void LabelDialog::OnRemove(wxCommandEvent &event)
    int col = mGrid->GetCursorColumn();
    int cnt = mData.GetCount();
 
-   // Don't try to remove if no labels exist and don't remove the
-   // "new label" rows
-   if (cnt == 0 || row >= cnt) {
+   // Don't try to remove if no labels exist
+   if (cnt == 0) {
       return;
+   }
+
+   // Make sure the edit control isn't active before removing rows
+   if (mGrid->IsCellEditControlShown()) {
+      mGrid->HideCellEditControl();
    }
 
    // Remove the row
@@ -566,11 +522,13 @@ void LabelDialog::OnImport(wxCommandEvent &event)
          // into it
          LabelTrack *lt = new LabelTrack(mDirManager);
          lt->Import(f);
-         delete lt;
-
+ 
          // Add the labesls to our collection
          AddLabels(lt);
-      }
+
+         // Done with the temporary track
+         delete lt;
+     }
 
       // Repopulate the grid
       TransferDataToWindow();
@@ -583,7 +541,7 @@ void LabelDialog::OnExport(wxCommandEvent &event)
 
    // Silly user (could just disable the button, but that's a hassle ;-))
    if (cnt == 0) {
-      wxMessageBox(_("There are no label to export."));
+      wxMessageBox(_("No labels to export."));
       return;
    }
 
@@ -650,21 +608,6 @@ void LabelDialog::OnExport(wxCommandEvent &event)
    f.Close();
 }
 
-void LabelDialog::OnEditorShown(wxGridEvent &event)
-{
-   int row = event.GetRow();
-   int col = event.GetCol();
-
-   // User typed something into the "new label" row
-   if (row == mData.GetCount()) {
-      mGrid->SetCellTextColour(row, col, wxColour(0, 0, 0));
-      mGrid->SetCellValue(row, col, wxT(""));
-      event.Skip();
-
-      return;
-   }
-}
-
 void LabelDialog::OnCellChange(wxGridEvent &event)
 {
    static bool guard = false;
@@ -680,41 +623,6 @@ void LabelDialog::OnCellChange(wxGridEvent &event)
       return;
    }
    guard = true;
-
-   // User typed something into the "new label" row
-   if (row == mData.GetCount()) {
-      rd = new RowData();
-
-      // Initialize and add the new label...use 1 for index to either create
-      // a new track or use the first one available.
-      rd->index = 1;
-      rd->stime = 0.0;
-      rd->etime = 0.0;
-      rd->title = mGrid->GetCellValue(row, 0);
-      mData.Add(rd);
-
-      // Repopulate the grid
-      TransferDataToWindow();
-
-      // Clear the "new label" row
-      mGrid->SetCellValue(row + 1, 0, wxT("<add new label here>"));
-      mGrid->SetCellTextColour(row + 1, 0, wxColour(128, 128, 128));
-
-      // Make sure the new row is completely visible
-      mGrid->MakeCellVisible(mData.GetCount(), Col_Track);
-
-      // The refresh is necessary cause MakeCellVisible() leaves border
-      // artifacts.
-      mGrid->Refresh(false);
-
-      // Hmmm...is this needed?  Check me later...
-      event.Skip(true);
-
-      // Done...no need for protection anymore
-      guard = false;
-
-      return;
-   }
 
    // The change was to an existing label, so go process it based
    // on which column was changed.
@@ -763,11 +671,13 @@ void LabelDialog::OnChangeTrack(wxGridEvent &event, int row, RowData *rd)
       }
 
       // Force generation of a new track name
-      val = TrackName(-1, d.GetValue());
+      rd->index = 0;
+      TrackName(rd->index, d.GetValue());
    }
-
-   // Remember the tracks index
-   rd->index = mTrackNames.Index(val);
+   else {
+      // Remember the tracks index
+      rd->index = mTrackNames.Index(val);
+   }
 
    // Repopulate the grid
    TransferDataToWindow();
