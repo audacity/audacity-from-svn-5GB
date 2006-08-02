@@ -37,6 +37,7 @@ print "removing emacs / vim temp files...\n";
 
 print "removing executable and other intermediate files...\n";
 `rm -rf audacity .depend obj config.cache config.status config.log Makefile`;
+`rm -rf autom4te.cache`
 
 print "removing bugs and todo lists\n";
 `rm -f bugs.txt todo.txt`;
@@ -52,7 +53,7 @@ print "removing libraries that should be installed locally...\n";
 
 print "removing qa and test files\n";
 `rm -rf qa`;
-`rm -rf test`;
+`rm -rf tests`;
 
 print "removing doxygen files (unfinished)\n";
 `rm audacity.dox`;
