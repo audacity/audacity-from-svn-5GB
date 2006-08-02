@@ -67,7 +67,7 @@ print "removing unused portaudio-v19 dirs\n";
 `rm -rf lib-src/portaudio-v19/pa_mac_sm`;
 `rm -f lib-src/portaudio-v19/pa_tests/debug*`;
 
-print "removing wxstd locale files (since they should come with wxWindows\n";
+print "removing wxstd locale files (since they should come with wxWidgets)\n";
 `rm -rf locale/wxstd`;
 
 print "removing Nyquist plug-ins that are just for show\n";
@@ -82,14 +82,11 @@ print "removing Nyquist plug-ins that are just for show\n";
 #`rm /tmp/Makefile.in.tmp`;
 
 print "Giving VC++ project/workspace files DOS line endings\n";
-@projfiles = split("\n", `find . -name "*.ds?"`);
-foreach $f (@projfiles) {
-	 print `unix2dos "$f"`;
-}
+`unix2dos win/audacity.sln`;
+`unix2dos win/audacity.vcproj`;
 
 print "Changing Windows header so that it doesn't build with\n";
 print "support for libmad, libid3tag, or libvorbis by default.\n";
-print "\n";
 
 open FP, ">>win/configwin.h";
 print FP "\n\n";
@@ -104,12 +101,10 @@ print FP "#undef USE_LIBMAD\n";
 print FP "#undef USE_LIBVORBIS\n";
 close FP;
 
-print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
-print "libogg, libvorbis, libsamplerate, or libflac.\n";
-print "\n";
-
-`cp win/audacity-nomp3ogg.dsw win/audacity.dsw`;
+print "Removing VC++ 6.0 workspace and projects\n";
 `rm win/audacity-nomp3ogg.dsw`;
+`rm win/audacity.dsp`;
+`rm win/audacity.dsw`;
 
 #print "making tarball audacity-src-$version.tgz...\n";
 chdir "..";
