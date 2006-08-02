@@ -41,17 +41,16 @@ class LabelDialog:public wxDialog
 
    bool TransferDataToWindow();
    bool TransferDataFromWindow();
+   bool Validate();
    void FindAllLabels();
    void AddLabels(LabelTrack *t);
-   wxString TrackName(int index, wxString dflt = _("Label Track"));
+   wxString TrackName(int & index, wxString dflt = _("Label Track"));
 
-   void OnKeyDown(wxKeyEvent &event);
    void OnUpdate(wxCommandEvent &event);
    void OnInsert(wxCommandEvent &event);
    void OnRemove(wxCommandEvent &event);
    void OnImport(wxCommandEvent &event);
    void OnExport(wxCommandEvent &event);
-   void OnEditorShown(wxGridEvent &event);
    void OnCellChange(wxGridEvent &event);
    void OnChangeTrack(wxGridEvent &event, int row, RowData *rd);
    void OnChangeLabel(wxGridEvent &event, int row, RowData *rd);

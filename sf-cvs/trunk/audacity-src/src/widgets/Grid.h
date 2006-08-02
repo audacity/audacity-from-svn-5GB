@@ -83,7 +83,7 @@ class TimeEditor:public wxGridCellEditor
 
 class TimeRenderer : public wxGridCellRenderer
 {
-public:
+ public:
     void Draw(wxGrid &grid,
               wxGridCellAttr &attr,
               wxDC &dc,
