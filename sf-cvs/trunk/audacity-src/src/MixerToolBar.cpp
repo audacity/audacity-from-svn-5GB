@@ -139,7 +139,7 @@ void MixerToolBar::Populate()
    int leftPosition = 355;
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
-
+#if 0
    wxString *choices = new wxString[ inputSources.GetCount() ];
    for( j = 0; j < inputSources.GetCount(); j++ )
    {
@@ -151,8 +151,14 @@ void MixerToolBar::Populate()
                                      wxDefaultSize,
                                      j,
                                      choices );
+#endif
+   mInputSourceChoice = new wxChoice(this, InputSourceID,
+                                     wxDefaultPosition,
+                                     wxDefaultSize,
+                                     inputSources);
+
    mInputSourceChoice->SetName(_("Input Source"));
-   delete [] choices;
+//   delete [] choices;
    Add( mInputSourceChoice, 0, wxALIGN_CENTER );
 
    if (inputSources.GetCount() == 0)
@@ -170,6 +176,40 @@ void MixerToolBar::Populate()
 #endif
 }
 
+void MixerToolBar::UpdatePrefs()
+{
+#if USE_PORTMIXER
+   float inputVolume;
+   float playbackVolume;
+   int inputSource;
+
+   wxArrayString inputSources = gAudioIO->GetInputSourceNames();
+
+   // Repopulate the selections
+   mInputSourceChoice->Clear();
+   mInputSourceChoice->Append(inputSources);
+
+   // Reset the selected source
+   gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
+   mInputSourceChoice->SetSelection(inputSource);
+
+   // Resize the control
+   mInputSourceChoice->SetSize(mInputSourceChoice->GetBestFittingSize());
+
+   // Layout the toolbar
+   Layout();
+
+   // Resize the toolbar to fit the contents
+   Fit();
+
+   // And make that size the minimum
+   SetMinSize( GetSizer()->GetMinSize() );
+
+   // Notify someone that we've changed our size
+   Updated();
+#endif
+}
+
 void MixerToolBar::UpdateControls()
 {
 #if USE_PORTMIXER
@@ -183,6 +223,7 @@ void MixerToolBar::UpdateControls()
    // We could enable it again later.
    //if (inputSource != mInputSourceChoice->GetSelection())
    //    mInputSourceChoice->SetSelection(inputSource);
+
    mOutputSlider->Set(playbackVolume);
    mInputSlider->Set(inputVolume);
 #endif // USE_PORTMIXER
