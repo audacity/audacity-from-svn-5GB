@@ -165,7 +165,7 @@ class Grid
         long style = wxWANTS_CHARS | wxBORDER,
         const wxString& name = wxPanelNameStr);
 
-   Grid::~Grid();
+   ~Grid();
 
 #if wxUSE_ACCESSIBILITY
    void ClearGrid();
