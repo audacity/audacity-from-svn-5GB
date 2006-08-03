@@ -88,9 +88,35 @@ typedef struct PaHostSoundControl
 
 typedef struct PxInfo
 {
-   AudioDeviceID   input;
-   AudioDeviceID   output;
+   AudioDeviceID  input;
+   AudioDeviceID  output;
+   UInt32         *srcids;
+   char           **srcnames;
+   int            numsrcs;
 } PxInfo;
+
+static PxInfo *Px_FreeInfo( PxInfo *info )
+{
+   int i;
+
+   if (info) {
+      if (info->srcids) {
+         free(info->srcids);
+      }
+
+      if (info->srcnames) {
+         for (i = 0; i < info->numsrcs; i++) {
+            if (info->srcnames[i]) {
+               free(info->srcnames[i]);
+            }
+         }
+         free(info->srcnames);
+      }
+      free(info);
+   }
+
+   return NULL;
+}
 
 int Px_GetNumMixers( void *pa_stream )
 {
@@ -104,10 +130,14 @@ const char *Px_GetMixerName( void *pa_stream, int index )
 
 PxMixer *Px_OpenMixer( void *pa_stream, int index )
 {
-   PxInfo                      *info;
-   PaHostSoundControl          *macInfo;
-   
-   info = (PxInfo *)malloc(sizeof(PxInfo));   
+   PxInfo                     *info;
+   PaHostSoundControl         *macInfo;
+   OSStatus                   err;
+   UInt32                     outSize;
+   UInt32                     inID;
+   int                        i;
+
+   info = (PxInfo *)calloc(1, sizeof(PxInfo));
    if (!info) {
       return (PxMixer *)info;
    }
@@ -131,6 +161,70 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
    info->output = pamcs->outputDevice;
 #endif 
 
+   outSize = sizeof(UInt32);
+   err = AudioDeviceGetPropertyInfo(info->input,
+                                    0,
+                                    IS_INPUT,
+                                    kAudioDevicePropertyDataSources,
+                                    &outSize,
+                                    NULL);
+   if (err) {
+      return Px_FreeInfo(info);
+   }
+
+   info->numsrcs  = outSize / sizeof(UInt32);
+   info->srcids   = (UInt32 *)malloc(outSize);
+   info->srcnames = (char **)calloc(info->numsrcs, sizeof(char *));
+
+   if (info->srcids == NULL || info->srcnames == NULL) {
+      return Px_FreeInfo(info);
+   }
+
+   err = AudioDeviceGetProperty(info->input,
+                                0,
+                                IS_INPUT,
+                                kAudioDevicePropertyDataSources,
+                                &outSize,
+                                info->srcids);
+   if (err) {
+      return Px_FreeInfo(info);
+   }
+
+   for (i = 0; i < info->numsrcs; i++) {
+      AudioValueTranslation trans;
+      CFStringRef           name;
+      Boolean               ok;
+
+      trans.mInputData = &info->srcids[i];
+      trans.mInputDataSize = sizeof(UInt32);
+      trans.mOutputData = &name;
+      trans.mOutputDataSize = sizeof(CFStringRef);
+
+      outSize = sizeof(AudioValueTranslation);
+      err = AudioDeviceGetProperty(info->input,
+                                   0,
+                                   IS_INPUT,
+                                   kAudioDevicePropertyDataSourceNameForIDCFString,
+                                   &outSize,
+                                   &trans);
+      if (err) {
+         return Px_FreeInfo(info);
+      }
+
+      info->srcnames[i] = malloc(CFStringGetLength(name)+1);
+      if (info->srcnames[i] == NULL) {
+         return Px_FreeInfo(info);
+      }
+
+      ok = CFStringGetCString(name,
+                              info->srcnames[i],
+                              CFStringGetLength(name)+1,
+                              kCFStringEncodingISOLatin1);
+      if (!ok) {
+         return Px_FreeInfo(info);
+      }
+   }
+
    return (PxMixer *)info;
 }
 
@@ -143,7 +237,7 @@ void Px_CloseMixer(PxMixer *mixer)
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   free(info);
+   Px_FreeInfo(info);
 }
 
 /*
@@ -283,27 +377,67 @@ void Px_SetOutputVolume( PxMixer *mixer, int i, PxVolume volume )
 int Px_GetNumInputSources( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
+   OSStatus err;
+   UInt32   outSize;
 
-   return 1 ;
+   return info->numsrcs;
 }
 
 const char *Px_GetInputSourceName( PxMixer *mixer, int i)
 {
    PxInfo *info = (PxInfo *)mixer;
 
-   return "Default Input Source" ;
+   if (i >= info->numsrcs)
+      return "";
+
+   return info->srcnames[i];
 }
 
 int Px_GetCurrentInputSource( PxMixer *mixer )
 {
    PxInfo *info = (PxInfo *)mixer;
+   OSStatus err;
+   UInt32   outSize;
+   UInt32   outID = 0;
+   int      i;
 
-   return -1; /* none */
+   outSize = sizeof(UInt32);
+   err = AudioDeviceGetProperty(info->input,
+                                0,
+                                IS_INPUT,
+                                kAudioDevicePropertyDataSource,
+                                &outSize,
+                                &outID);
+
+   if (!err) {
+      for (i = 0; i < info->numsrcs; i++) {
+         if (info->srcids[i] == outID) {
+            return i;
+         }
+      }
+   }
+
+   return -1;
 }
 
 void Px_SetCurrentInputSource( PxMixer *mixer, int i )
 {
    PxInfo *info = (PxInfo *)mixer;
+   OSStatus err;
+
+   if (i >= info->numsrcs) {
+      return;
+   }
+
+   err = AudioDeviceSetProperty(info->input,
+                                0,
+                                0,
+                                IS_INPUT,
+                                kAudioDevicePropertyDataSource,
+                                sizeof(UInt32),
+                                &info->srcids[i]);
+
+   return;
 }
 
 /*
