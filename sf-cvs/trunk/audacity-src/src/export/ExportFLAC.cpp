@@ -85,7 +85,7 @@ bool ExportFLAC(AudacityProject *project,
 
    int i,j;
    i=j=0;
-   FLAC__int32 *tmpsmplbuf[numChannels];
+   FLAC__int32 **tmpsmplbuf = new FLAC__int32*[numChannels];
    for(i=0;i<numChannels;i++)
    	tmpsmplbuf[i]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
    while(!cancelling && !eos) {
@@ -132,6 +132,8 @@ bool ExportFLAC(AudacityProject *project,
 
    if(progress)
       delete progress;
+
+   delete[] tmpsmplbuf;
 
    return !cancelling;
 }
