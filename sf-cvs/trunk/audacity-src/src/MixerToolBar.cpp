@@ -139,26 +139,12 @@ void MixerToolBar::Populate()
    int leftPosition = 355;
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
-#if 0
-   wxString *choices = new wxString[ inputSources.GetCount() ];
-   for( j = 0; j < inputSources.GetCount(); j++ )
-   {
-      choices[ j ] = inputSources[ j ];
-   }
 
-   mInputSourceChoice = new wxChoice(this, InputSourceID,
-                                     wxDefaultPosition,
-                                     wxDefaultSize,
-                                     j,
-                                     choices );
-#endif
    mInputSourceChoice = new wxChoice(this, InputSourceID,
                                      wxDefaultPosition,
                                      wxDefaultSize,
                                      inputSources);
-
    mInputSourceChoice->SetName(_("Input Source"));
-//   delete [] choices;
    Add( mInputSourceChoice, 0, wxALIGN_CENTER );
 
    if (inputSources.GetCount() == 0)
