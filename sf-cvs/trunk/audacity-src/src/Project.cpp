@@ -821,7 +821,7 @@ void AudacityProject::UpdatePrefs()
       mSelectionBar->SetRate(mRate);
 
    if( GetMixerToolBar() )
-      GetMixerToolBar()->UpdateControls();
+      GetMixerToolBar()->UpdatePrefs();
 }
 
 void AudacityProject::RedrawProject()
