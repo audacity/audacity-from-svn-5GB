@@ -4,6 +4,9 @@
    so it can find the files it needs at runtime */
 #undef AUDACITY_NAME
 
+/* Define to 1 if you have the `clock_gettime' function. */
+#undef HAVE_CLOCK_GETTIME
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -15,6 +18,9 @@
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the `nanosleep' function. */
+#undef HAVE_NANOSLEEP
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -90,6 +96,9 @@
 
 /* Define if PortMixer support should be enabled */
 #undef USE_PORTMIXER
+
+/* Define if RTAudio support should be enabled */
+#undef USE_RTAUDIO
 
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH

@@ -575,10 +575,21 @@ bool ExportMultipleByLabel(AudacityProject *project,
       l++;
    }
    
-   ::wxMessageBox(wxString::Format(_("Successfully exported %d files."),
-                                   count),
-                  _("Export Multiple"),
-                  wxOK | wxCENTRE, project);
+
+   if (ok)
+   {      
+      ::wxMessageBox(wxString::Format(_("Successfully exported %d file(s)."),
+                                      count),
+                     _("Export Multiple"),
+                     wxOK | wxCENTRE, project);
+   }
+   else
+   {
+      ::wxMessageBox(wxString::Format(_("Something went wrong after exporting %d file(s)."),
+                                      count),
+                     _("Export Multiple"),
+                     wxOK | wxCENTRE, project);
+   }
    
    return ok;
 }

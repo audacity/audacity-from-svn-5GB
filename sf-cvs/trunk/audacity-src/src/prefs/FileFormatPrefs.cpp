@@ -33,6 +33,7 @@ just the standard combinations.
 #include <wx/choice.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/arrstr.h>
 
 #include "sndfile.h"
 
@@ -93,7 +94,7 @@ void FileFormatPrefs::Populate( )
 /// Gets ArrayStrings that will be used in wxChoices.
 void FileFormatPrefs::GetNamesAndLabels()
 {
-   for(int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
+   for(unsigned int i=0;i<(sizeof(iBitrates)/sizeof(int));i++)
    {
       mBitRateNames.Add( wxString::Format(wxT("%i"),iBitrates[i] ));
       mBitRateLabels.Add( iBitrates[i] );
@@ -168,6 +169,7 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
    S.EndHorizontalLay();
+   S.StartHorizontalLay(wxEXPAND,0);
    S.StartStatic( _("MP3 Export Setup"),0);
    {
       // Some rather fiddly sizers to get the 'Find Library' button 
@@ -185,6 +187,19 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
       S.EndMultiColumn();
    }
    S.EndStatic();
+   S.StartStatic( _("FLAC Export Setup"),0);
+   {
+      wxArrayString flacBitDepthNames, flacBitDepthLabels;
+      flacBitDepthLabels.Add(wxT("16")); flacBitDepthNames.Add(_("16 bit"));
+      flacBitDepthLabels.Add(wxT("24")); flacBitDepthNames.Add(_("24 bit"));
+      S.StartMultiColumn(2, wxEXPAND);
+      S.SetStretchyCol(1);
+      S.TieChoice(_("Bit depth:"), wxT("/FileFormats/FLACBitDepth"),
+                  wxT("16"), flacBitDepthNames, flacBitDepthLabels);
+      S.EndMultiColumn();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
 }
 
 /// Sets the a text area on the dialog to have the name
