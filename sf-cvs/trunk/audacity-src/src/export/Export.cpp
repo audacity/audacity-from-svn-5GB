@@ -413,13 +413,12 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
 #ifdef USE_LIBFLAC
       fName = ExportCommon(project, wxT("FLAC"), wxT(".flac"),
                            selectionOnly, &t0, &t1, &numChannels,
-                           actualName);
-
+                           actualName, 8, &mixerSpec);
       if (fName == wxT(""))
          return false;
 
-      success = ::ExportFLAC(project, (numChannels == 2), fName,
-                      selectionOnly, t0, t1);
+      success = ::ExportFLAC(project, numChannels, fName,
+                      selectionOnly, t0, t1,mixerSpec);
 #else
       wxMessageBox(_("Flac support is not included in this build of Audacity"));
 #endif

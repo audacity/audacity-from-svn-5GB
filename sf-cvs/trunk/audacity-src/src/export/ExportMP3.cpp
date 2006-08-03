@@ -1502,7 +1502,7 @@ bool ExportMP3(AudacityProject *project,
 
    delete[]buffer;
    
-   return true;
+   return !cancelling;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

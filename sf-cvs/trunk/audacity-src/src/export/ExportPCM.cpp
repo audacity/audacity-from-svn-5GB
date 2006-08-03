@@ -186,7 +186,7 @@ bool ExportPCM(AudacityProject *project,
    if (progress)
       delete progress;
 
-   return true;
+   return !cancelling;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

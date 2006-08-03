@@ -13,13 +13,14 @@
 
 class wxString;
 
+class MixerSpec;
 class AudacityProject;
 class DirManager;
 class WaveTrack;
 
 bool ExportFLAC(AudacityProject *project,
-               bool stereo, wxString fName,
-               bool selectionOnly, double t0, double t1);
+               int channels, wxString fName,
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec);
 
 
 #endif

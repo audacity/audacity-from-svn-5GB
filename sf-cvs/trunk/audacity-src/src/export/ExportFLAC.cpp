@@ -41,31 +41,32 @@
 #define SAMPLES_PER_RUN 8192
 
 bool ExportFLAC(AudacityProject *project,
-               bool stereo, wxString fName,
-               bool selectionOnly, double t0, double t1)
+               int numChannels, wxString fName,
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
    wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
-   char    quality = 9;//(gPrefs->Read(wxT("/FileFormats/OggExportQuality"), 50)/(float)100.0);
 
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
-   bool      cancelling = false;
    int       eos = 0;
-
+   bool      cancelling = false;
+   
+   wxString bitDepthPref =
+      gPrefs->Read(wxT("/FileFormats/FLACBitDepth"), wxT("16"));
 
    FLAC::Encoder::File *encoder= new FLAC::Encoder::File();
    encoder->set_filename(fName.mb_str());
-   encoder->set_channels(stereo?2:1);
+   encoder->set_channels(numChannels);
    encoder->set_sample_rate(int(rate + 0.5));
    sampleFormat format;
-/*   if(ReadExportFormatPref()==int24Sample){
+   if(bitDepthPref == wxT("24")){
    	format=int24Sample;
    	encoder->set_bits_per_sample(24);
    }else {//convert float to 16 bits*/
-      	format=int16Sample;
+    	format=int16Sample;
    	encoder->set_bits_per_sample(16);
-/*   }*/
+   }
    encoder->init();
 
    wxProgressDialog *progress = NULL;
@@ -79,33 +80,29 @@ bool ExportFLAC(AudacityProject *project,
    Mixer *mixer = new Mixer(numWaveTracks, waveTracks,
                             tracks->GetTimeTrack(),
                             t0, t1,
-                            stereo? 2: 1, SAMPLES_PER_RUN, false,
-                            rate, format);
-   int idx=0;
-   FLAC__int32 *tmpsmplbuf[2];
-   for(idx=0;idx<(stereo? 2: 1);idx++)
-   	tmpsmplbuf[idx]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
+                            numChannels, SAMPLES_PER_RUN, false,
+                            rate, format, true, mixerSpec);
+
+   int i,j;
+   i=j=0;
+   FLAC__int32 *tmpsmplbuf[numChannels];
+   for(i=0;i<numChannels;i++)
+   	tmpsmplbuf[i]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
    while(!cancelling && !eos) {
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);
       if (samplesThisRun == 0) {//stop encoding
          break;
       }
       else {
-         samplePtr mixed = mixer->GetBuffer();
-/*	 if(format==int24Sample){
-		for(idx=0;idx<SAMPLES_PER_RUN;idx++)
-			tmpsmplbuf[idx]= ((int*)mixed)[idx];
-	 }else{*/
-		mixed = mixer->GetBuffer(0);
-		for(idx=0;idx<samplesThisRun;idx++)
-			tmpsmplbuf[0][idx]= ((short*)mixed)[idx];	
-		if(stereo){
-			mixed = mixer->GetBuffer(1);
-			mixed = mixer->GetBuffer();		
-			for(idx=0;idx<samplesThisRun;idx++)
-				tmpsmplbuf[1][idx]= ((short*)mixed)[idx];	
+	for(i=0;i<numChannels;i++){
+		samplePtr mixed = mixer->GetBuffer(i);
+		for(j=0;j<samplesThisRun;j++){
+			if(format==int24Sample)
+				tmpsmplbuf[i][j]= ((int*)mixed)[j];
+			else
+				tmpsmplbuf[i][j]= ((short*)mixed)[j];
 		}
-/*	}*/
+	}
          encoder->process(tmpsmplbuf,samplesThisRun);
       }
       if(progress) {
@@ -128,15 +125,15 @@ bool ExportFLAC(AudacityProject *project,
       }
    }
    encoder->finish();
-   for(idx=0;idx<(stereo? 2: 1);idx++)
-   	free(tmpsmplbuf[idx]);
+   for(i=0;i<numChannels;i++)
+   	free(tmpsmplbuf[i]);
    delete mixer;
    delete encoder;
 
    if(progress)
       delete progress;
 
-   return true;
+   return !cancelling;
 }
 
 #endif // USE_LIBVORBIS
