@@ -72,14 +72,6 @@ void KeyConfigPrefs::Populate( )
       return;
    mManager = project->GetCommandManager();
 
-   // The SysKeyText ctrl is so special that we aren't
-   // going to include it into Audacity's version of ShuttleGui.
-   // So instead we create it here, and we can add it into 
-   // the sizer scheme later...
-   mCurrentComboText = new SysKeyTextCtrl(
-         this, CurrentComboID, wxT(""),
-         wxDefaultPosition, wxSize(115, -1), 0 );
-
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -101,6 +93,19 @@ void KeyConfigPrefs::PopulateOrExchange( ShuttleGui & S )
    mList = S.Id( CommandsListID ).AddListControlReportMode();
    S.StartHorizontalLay( wxALIGN_LEFT, 0);
    {
+      // LLL: Moved here from Populate.  On the Mac, the control
+      //      would not accept focus when using the mouse, but it
+      //      would when tabbing to the field.  Not really sure
+      //      why...just glad it works now.  :-)
+
+      // The SysKeyText ctrl is so special that we aren't
+      // going to include it into Audacity's version of ShuttleGui.
+      // So instead we create it here, and we can add it into 
+      // the sizer scheme later...
+      mCurrentComboText = new SysKeyTextCtrl(
+            this, CurrentComboID, wxT(""),
+            wxDefaultPosition, wxSize(115, -1), 0 );
+
       // AddWindow is a generic 'Add' for ShuttleGui.
       // It allows us to add 'foreign' controls.
       S.AddWindow( mCurrentComboText )->MoveAfterInTabOrder( mList );
