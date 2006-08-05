@@ -51,7 +51,7 @@
 <p><?=_("For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory.")?></p>
 <p><?=_("More information can be found on the ")?>
 <a href="http://www.audacityteam.org/wiki/index.php?title=CompilingAudacity">
-<?="Audacity Wiki site")?></a>.</p>
+<?=_("Audacity Wiki site")?></a>.</p>
 
 <?php
   include "../include/footer.inc.php";
