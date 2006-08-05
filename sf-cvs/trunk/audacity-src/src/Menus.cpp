@@ -259,8 +259,8 @@ void AudacityProject::CreateMenusAndCommands()
 #endif
 #ifdef USE_LIBFLAC
    c->AddItem(wxT("ExportFLACSel"),   _("&FLAC..."), FN(OnExportFLACSelection));
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
+   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
+                      AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          wxT("ExportFLACSel"), NULL);
 #endif
    c->EndSubMenu();

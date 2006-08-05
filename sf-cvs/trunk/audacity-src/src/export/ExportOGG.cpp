@@ -212,7 +212,7 @@ bool ExportOGG(AudacityProject *project,
    if(progress)
       delete progress;
 
-   return true;
+   return !cancelling;
 }
 
 #endif // USE_LIBVORBIS
