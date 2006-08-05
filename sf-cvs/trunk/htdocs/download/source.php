@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
+ * 2006 Richard Ash
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
@@ -28,7 +29,7 @@
 <h3 id="instructions"><?=_("How to Build Audacity")?></h3>
 
 <h4><?=_("Dependencies")?></h4>
-<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the gtk2 or unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)')?></p>
+<p><?=_('The <a href="http://wxwidgets.org">wxWidgets</a> library is <b>required</b>.  Audacity 1.2 needs wxGTK 2.4, compiled <em>without</em> the unicode options.  (Future versions of Audacity will support newer wxWidgets and GTK libraries.)')?></p>
 <p><?=_("You may also choose to install the following <b>optional libraries</b>, or get them by checking out Audacity from CVS.")?></p>
 <ul>
   <li><a href="http://www.underbit.com/products/mad/">libmad</a></li>
@@ -48,6 +49,9 @@
 
 <h4><?=_("Notes")?></h4>
 <p><?=_("For additional information about building Audacity on Windows or Mac OS X, see the files <b>win/compile.txt</b> and <b>mac/compile.txt</b> in the Audacity source code directory.")?></p>
+<p><?=_("More information can be found on the ")?>
+<a href="http://www.audacityteam.org/wiki/index.php?title=CompilingAudacity">
+<?="Audacity Wiki site")?></a>.</p>
 
 <?php
   include "../include/footer.inc.php";
