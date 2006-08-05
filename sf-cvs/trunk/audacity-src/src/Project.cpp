@@ -699,7 +699,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mImporter = new Importer;
    mImportingRaw = false;
 
-   wxString msg = wxString::Format(wxT("Welcome to Audacity version %s"),
+   wxString msg = wxString::Format(_("Welcome to Audacity version %s"),
                                    wxT(AUDACITY_VERSION_STRING));
    mStatusBar->SetStatusText(msg);
    mLastStatusUpdateTime = ::wxGetUTCTime();
