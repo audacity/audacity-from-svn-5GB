@@ -1,6 +1,7 @@
 <?php
 /*
  * Copyright 2004 Matt Brubeck
+ * Richard Ash 2006
  * This file is licensed under a Creative Commons license:
  * http://creativecommons.org/licenses/by/2.0/
  */
