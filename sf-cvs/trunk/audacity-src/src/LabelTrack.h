@@ -61,6 +61,7 @@ public:
 
    bool highlighted;              /// if the text is highlighted
    bool changeInitialMouseXPos;   /// flag to change initial mouse X pos 
+   bool updated;                  /// flag to tell if the label times were updated
 };
 
 WX_DEFINE_ARRAY(LabelStruct *, LabelArray);
@@ -140,7 +141,7 @@ class LabelTrack:public Track {
    void SetWrongDragging(bool rightFlag) { mRightDragging = rightFlag; };
    void SetDrawCursor(bool drawCursorFlag) { mDrawCursor = drawCursorFlag; };
    
-   void HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
+   bool HandleMouse(const wxMouseEvent & evt, wxRect & r, double h, double pps,
                            double *newSel0, double *newSel1);
 
    bool CaptureKey(wxKeyEvent & event);

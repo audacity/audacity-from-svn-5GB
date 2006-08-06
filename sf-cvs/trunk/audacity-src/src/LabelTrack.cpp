@@ -376,6 +376,7 @@ void LabelTrack::ComputeLayout( wxRect & r, double h, double pps)
 LabelStruct::LabelStruct() {
    changeInitialMouseXPos = true;
    highlighted = false;
+   updated = false;
 }
 
 /// Draw vertical lines that go exactly through the position
@@ -792,7 +793,7 @@ bool LabelTrack::CutSelectedText()
    wxString left=wxT("");
    wxString right=wxT("");
    wxString text = mLabels[mSelIndex]->title;
-   
+
    // swapping to make sure currentCursorPos > initialCursorPos always
    if (mInitialCursorPos > mCurrentCursorPos) {
       int temp = mCurrentCursorPos;
@@ -801,8 +802,8 @@ bool LabelTrack::CutSelectedText()
    }
 
    // data for cutting
-   wxString data = mLabels[mSelIndex]->title.Mid(mInitialCursorPos, mCurrentCursorPos-mInitialCursorPos);
-   
+   wxString data = text.Mid(mInitialCursorPos, mCurrentCursorPos-mInitialCursorPos);
+
    // get left-remaining text
    if (mInitialCursorPos > 0) {
       left = text.Mid(0, mInitialCursorPos);
@@ -1029,16 +1030,27 @@ bool LabelTrack::OverTextBox(const LabelStruct *pLabel, int x, int y)
 
 /// HandleMouse gets called with every mouse move or click.
 /// 
-void LabelTrack::HandleMouse(const wxMouseEvent & evt,
+bool LabelTrack::HandleMouse(const wxMouseEvent & evt,
                              wxRect & r, double h, double pps,
                              double *newSel0, double *newSel1)
 {
-   if(evt.ButtonUp(1) )
+   if(evt.ButtonUp(1))
    {
+      bool lupd = false, rupd = false;
+      if(mIsAdjustingLabel) {
+         if(mMouseOverLabelLeft>=0) {
+            lupd = mLabels[mMouseOverLabelLeft]->updated;
+            mLabels[mMouseOverLabelLeft]->updated = false;
+         }
+         if(mMouseOverLabelRight>=0) {
+            rupd = mLabels[mMouseOverLabelRight]->updated;
+            mLabels[mMouseOverLabelRight]->updated = false;
+         }
+      }
       mIsAdjustingLabel = false;
       mMouseOverLabelLeft  = -1;
       mMouseOverLabelRight = -1;
-      return;
+      return lupd || rupd;
    }
 
    if(evt.Dragging())
@@ -1071,6 +1083,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
             {
                mLabels[mMouseOverLabelLeft]->t1  = mLabels[mMouseOverLabelLeft]->t;
             }
+            mLabels[mMouseOverLabelLeft]->updated = true;
          }
          if (mMouseOverLabelRight>=0)
          {
@@ -1079,6 +1092,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
             {
                mLabels[mMouseOverLabelRight]->t  = mLabels[mMouseOverLabelRight]->t1;
             }
+            mLabels[mMouseOverLabelRight]->updated = true;
          }
 
          if( mSelIndex >=0 )
@@ -1091,7 +1105,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          SortLabels();
       }
 
-      return;
+      return false;
    }
 
    if( evt.ButtonDown())
@@ -1099,7 +1113,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       //OverGlyph sets mMouseOverLabel to be the chosen label.         
       mIsAdjustingLabel = OverGlyph(evt.m_x, evt.m_y) != 0;   
       
-      // reset mouseXPos if the mouse is pressed in thte text box
+      // reset mouseXPos if the mouse is pressed in the text box
       mMouseXPos = -1;
       mInBox = false;
       bool changeCursor = true;
@@ -1107,7 +1121,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
       // reset the highlight indicator
       wxRect highlightedRect;
       if (mSelIndex != -1) {
-         // the rectangle  of highlighted area
+         // the rectangle of highlighted area
          if (mXPos1 < mXPos2)
             highlightedRect = wxRect(mXPos1, mLabels[mSelIndex]->y - mFontHeight/2, (int) (mXPos2-mXPos1+0.5), mFontHeight);
          else
@@ -1130,7 +1144,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
          mLabels[mSelIndex]->changeInitialMouseXPos = true;
       }
 
-      if(mIsAdjustingLabel )
+      if (mIsAdjustingLabel)
       {
          float t = 0.0;
          // When we start dragging the label(s) we don't want them to jump.
@@ -1156,15 +1170,15 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
             t = mLabels[mMouseOverLabelLeft]->t;
          }
          mxMouseDisplacement = (int)((((t-h) * pps) + r.x )-evt.m_x);
-         return;
+         return false;
       } 
 
       // disable displaying if left button is down
       if (evt.LeftDown())
          mDragXPos = -1;
-         
+
       // disable displaying if right button is down outside text box
-      if( mSelIndex >0)
+      if(mSelIndex != -1)
       {
          if (evt.RightDown())
          {
@@ -1177,7 +1191,7 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
                changeCursor = false;
          }
       }
-      
+
       mSelIndex = -1;
       LabelStruct * pLabel;
       for (int i = 0; i < (int)mLabels.Count(); i++) {
@@ -1192,10 +1206,12 @@ void LabelTrack::HandleMouse(const wxMouseEvent & evt,
                mMouseXPos = evt.m_x;
             // set mInBox flag
             mInBox = true;
-            return;
+            return false;
          }
       }
    }
+
+   return false;
 }
 
 // Check for keys that we will process
