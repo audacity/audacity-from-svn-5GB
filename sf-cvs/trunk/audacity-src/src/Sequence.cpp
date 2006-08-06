@@ -1137,16 +1137,11 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       samplePtr buffer2 = NewSamples((lastBlock->f->GetLength() + addLen), mSampleFormat);
       Read(buffer2, mSampleFormat, lastBlock, 0, lastBlock->f->GetLength());
 
-      if (format == mSampleFormat)
-         memcpy(buffer2 + lastBlock->f->GetLength() * SAMPLE_SIZE(format),
-                buffer,
-                addLen * SAMPLE_SIZE(format));
-      else {
-         CopySamples(buffer, format, temp, mSampleFormat, addLen);
-         memcpy(buffer2 + lastBlock->f->GetLength() * SAMPLE_SIZE(format),
-                temp,
-                addLen * SAMPLE_SIZE(format));
-      }
+      CopySamples(buffer,
+                  format,
+                  buffer2 + lastBlock->f->GetLength() * SAMPLE_SIZE(format),
+                  mSampleFormat,
+                  addLen);
 
       newLastBlock->start = lastBlock->start;
       int newLastBlockLen = lastBlock->f->GetLength() + addLen;
@@ -1173,18 +1168,16 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       SeqBlock *w = new SeqBlock();
       w->start = mNumSamples;
 
-      if (format == mSampleFormat)
-      {
+      if (format == mSampleFormat) {
          w->f = mDirManager->NewSimpleBlockFile(buffer, l, mSampleFormat);
-         if (blockFileLog)
-            *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
       }
       else {
          CopySamples(buffer, format, temp, mSampleFormat, l);
          w->f = mDirManager->NewSimpleBlockFile(temp, l, mSampleFormat);
-         if (blockFileLog)
-            *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
       }
+
+      if (blockFileLog)
+         *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
 
       mBlock->Add(w);
 
