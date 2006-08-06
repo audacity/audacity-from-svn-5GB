@@ -16,6 +16,7 @@
 <p><?=$downloadTagline?></p>
 
 <h3><?=_("Recommended Download")?></h3>
+<?php include "recommended.inc.php" ?>
 <ul>
   <li><p><?php printf(_('For Mac OS X: <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$macosx_url, macosx_version, macosx_size)?></p></li>
   <!-- TODO: Installation instructions? -->
