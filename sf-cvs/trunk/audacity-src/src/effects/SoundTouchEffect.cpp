@@ -87,7 +87,7 @@ bool EffectSoundTouch::ProcessOne(WaveTrack *track,
 
    mSoundTouch->setSampleRate((unsigned int)(track->GetRate()+0.5));
    
-   outputTrack = mFactory->NewWaveTrack(track->GetSampleFormat());
+   outputTrack = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
 
    //Get the length of the buffer (as double). len is
    //used simple to calculate a progress meter, so it is easier
