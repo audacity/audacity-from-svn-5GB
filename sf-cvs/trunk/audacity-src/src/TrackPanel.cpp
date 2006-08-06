@@ -581,6 +581,11 @@ TrackPanel::~TrackPanel()
 {
    mTimer.Stop();
 
+   // This can happen if a label is being edited and the user presses
+   // ALT+F4 or Command+Q
+   if (HasCapture())
+      ReleaseMouse();
+
    if (mBacking)
    {
       mBackingDC.SelectObject( wxNullBitmap );
@@ -1604,13 +1609,19 @@ void TrackPanel::SelectionHandleClick(wxMouseEvent & event,
  
    //Determine if user clicked on a label track. 
    if (pTrack->GetKind() == Track::Label) {
-      ((LabelTrack *) pTrack)->HandleMouse(event, r,//mCapturedRect,
-           mViewInfo->h, mViewInfo->zoom,
-           &mViewInfo->sel0, &mViewInfo->sel1);
+      LabelTrack *lt = (LabelTrack *) pTrack;
+      if (lt->HandleMouse(event, r,//mCapturedRect,
+                          mViewInfo->h, mViewInfo->zoom,
+                          &mViewInfo->sel0, &mViewInfo->sel1)) {
+         MakeParentPushState(_("Modified Label"),
+                             _("Label Edit"),
+                             true /* consolidate */);
+      }
+
       // IF the user clicked a label, THEN select all other tracks by Label
-      if (((LabelTrack *) pTrack)->IsSelected()) {
-         mTracks->Select( pTrack );
-         SelectTracksByLabel( ( LabelTrack* )pTrack );
+      if (lt->IsSelected()) {
+         mTracks->Select( lt );
+         SelectTracksByLabel( lt );
          DisplaySelection();
          return;
       }
@@ -3713,8 +3724,14 @@ bool TrackPanel::HandleLabelTrackMouseEvent(LabelTrack * lTrack, wxRect &r, wxMo
       SetCapturedTrack( NULL );
    }
    
-   lTrack->HandleMouse(event, r,//mCapturedRect,
-      mViewInfo->h, mViewInfo->zoom, &mViewInfo->sel0, &mViewInfo->sel1);
+   if (lTrack->HandleMouse(event, r,//mCapturedRect,
+      mViewInfo->h, mViewInfo->zoom, &mViewInfo->sel0, &mViewInfo->sel1)) {
+
+      MakeParentPushState(_("Modified Label"),
+                          _("Label Edit"),
+                          true /* consolidate */);
+   }
+
    
    if (event.ButtonDown(3)) {
       // popup menu for editing
@@ -5607,25 +5624,33 @@ void TrackPanel::OnSetName(wxCommandEvent &event)
 /// Cut selected text if cut menu item is selected
 void TrackPanel::OnCutSelectedText(wxCommandEvent &event)
 {
-   Track *t = mPopupMenuTarget;
-   ((LabelTrack *)t)->CutSelectedText();
-   Refresh(false);
+   LabelTrack *lt = (LabelTrack *)mPopupMenuTarget;
+   if (lt->CutSelectedText()) {
+      MakeParentPushState(_("Modified Label"),
+                          _("Label Edit"),
+                          true /* consolidate */);
+   }
+   RefreshTrack(lt, true);
 }
 
 /// Copy selected text if copy menu item is selected
 void TrackPanel::OnCopySelectedText(wxCommandEvent &event)
 {
-   Track *t = mPopupMenuTarget;
-   ((LabelTrack *)t)->CopySelectedText();
-   Refresh(false);
+   LabelTrack *lt = (LabelTrack *)mPopupMenuTarget;
+   lt->CopySelectedText();
+   RefreshTrack(lt, true);
 }
 
-/// paste selected text if paste menu item is selected
+/// paste selected text if p`aste menu item is selected
 void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
 {
-   Track *t = mPopupMenuTarget;
-   ((LabelTrack *)t)->PasteSelectedText();
-   Refresh(false);
+   LabelTrack *lt = (LabelTrack *)mPopupMenuTarget;
+   if (lt->PasteSelectedText()) {
+      MakeParentPushState(_("Modified Label"),
+                          _("Label Edit"),
+                          true /* consolidate */);
+   }
+   RefreshTrack(lt, true);
 }
 
 class MyFontEnumerator : public wxFontEnumerator
