@@ -1213,6 +1213,8 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
       {
          case WXK_BACK:
          case WXK_DELETE:
+         case WXK_HOME:
+         case WXK_END:
          case WXK_LEFT:
          case WXK_RIGHT:
          case WXK_RETURN:
@@ -1316,6 +1318,32 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
             }
             mInitialCursorPos = mCurrentCursorPos;
             updated = true;
+         }
+         break;
+
+      case WXK_HOME:
+         // Move cursor to beginning of label
+         mCurrentCursorPos = 0;
+         if (event.ShiftDown()) {
+            mDragXPos = 0;
+         }
+         else
+         {
+            mDragXPos = -1;
+            mInitialCursorPos = mCurrentCursorPos;
+         }
+         break;
+
+      case WXK_END:
+         // Move cursor to end of label
+         mCurrentCursorPos = (int)mLabels[mSelIndex]->title.length();
+         if (event.ShiftDown()) {
+            mDragXPos = 0;
+         }
+         else
+         {
+            mDragXPos = -1;
+            mInitialCursorPos = mCurrentCursorPos;
          }
          break;
 
