@@ -14,6 +14,7 @@
 <h2><?=$pageTitle?></h2>
 
 <h3><?=_("Recommended Download")?></h3>
+<?php include "recommended.inc.php"?>
 <ul>
   <li><p><?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../latest/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 </ul>
