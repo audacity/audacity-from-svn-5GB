@@ -872,6 +872,7 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
       case WXK_END:
       case WXK_UP:
       case WXK_DOWN:
+      case WXK_TAB:
          return;
 
       default:
@@ -945,6 +946,16 @@ void TimeTextCtrl::OnChar(wxKeyEvent &event)
       Decrease(1);
       Updated();
    }
+
+   else if (keyCode == WXK_TAB) {   
+      wxWindow *parent = GetParent();   
+      wxNavigationKeyEvent nevent;   
+      nevent.SetWindowChange( event.ControlDown() );   
+      nevent.SetDirection( !event.ShiftDown() );   
+      nevent.SetEventObject( parent );   
+      nevent.SetCurrentFocus( parent );   
+      GetParent()->ProcessEvent( nevent );   
+   } 
 
    else {
       event.Skip();
