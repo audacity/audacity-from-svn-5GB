@@ -136,8 +136,8 @@ bool EffectRepeat::Process()
       //
 
       sampleFormat format = track->GetSampleFormat();
-      WaveTrack *unitTrack = mFactory->NewWaveTrack(format);
-      WaveTrack *dest = mFactory->NewWaveTrack(format);
+      WaveTrack *unitTrack = mFactory->NewWaveTrack(format, track->GetRate());
+      WaveTrack *dest = mFactory->NewWaveTrack(format, track->GetRate());
       sampleCount maxBlockSize = unitTrack->GetMaxBlockSize();
       sampleCount minBlockSize = maxBlockSize / 2;
       samplePtr buffer = NewSamples(maxBlockSize, format);
