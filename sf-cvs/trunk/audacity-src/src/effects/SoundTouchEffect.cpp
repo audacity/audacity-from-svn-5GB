@@ -171,8 +171,10 @@ bool EffectSoundTouch::ProcessStereo(WaveTrack* leftTrack, WaveTrack* rightTrack
 {
    mSoundTouch->setSampleRate((unsigned int)(leftTrack->GetRate()+0.5));
    
-   WaveTrack* outputLeftTrack = mFactory->NewWaveTrack(leftTrack->GetSampleFormat());
-   WaveTrack* outputRightTrack = mFactory->NewWaveTrack(rightTrack->GetSampleFormat());
+   WaveTrack* outputLeftTrack = mFactory->NewWaveTrack(leftTrack->GetSampleFormat(),
+                                                       leftTrack->GetRate());
+   WaveTrack* outputRightTrack = mFactory->NewWaveTrack(rightTrack->GetSampleFormat(),
+                                                       rightTrack->GetRate());
 
    //Get the length of the buffer (as double). len is
    //used simple to calculate a progress meter, so it is easier
