@@ -63,6 +63,13 @@
   <?=_('You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
   Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.')?>
 </p>
+<p class="logo">
+  <a title="<?=_('Audacity Store')?>" 
+     href="http://audacitystore.com/">
+    <img alt="<?=_('Audacity Store')?>" 
+    src="../images/Audacity Store_banner_50pct.jpg">
+  </a>
+</p>
 
 
 <h2><?= ('Make a Donation')?></h2>
@@ -81,7 +88,10 @@
 <p><?=_('We also accept PayPal donations through the SourceForge donation system:')?></p>
 
 <p class="logo">
-  <a title="<?=_('Donate via PayPal')?>" href="http://sourceforge.net/donate/index.php?group_id=6235"><img alt="<?=_('Donate via PayPal')?>" src="../images/paypal.gif"></a>
+  <a title="<?=_('Donate via PayPal')?>" 
+    href="http://sourceforge.net/donate/index.php?group_id=6235">
+    <img alt="<?=_('Donate via PayPal')?>" 
+    src="../images/paypal.gif"></a>
 </p>
 
 <p><?=_('If you prefer to send a personal check or another form of payment, please visit the <a href="../about/credits">credits</a> page and contact one of the lead developers.')?></p>
