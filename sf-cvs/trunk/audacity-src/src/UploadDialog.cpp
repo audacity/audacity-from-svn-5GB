@@ -47,6 +47,7 @@
 #include "FileNames.h"
 #include "Theme.h"
 #include "AllThemeResources.h"
+#include "Project.h"
 
 //#include "../images/AudacityLogo.xpm"
 //#include "../images/UploadImages.h"
@@ -471,8 +472,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                         // if directory
                         if (selectPerm->Item(count).GetChar(0) == wxT('d'))
                         {
-                            progress = new wxProgressDialog(_("Deleting..."), wxT(""), 100, this);
-                            progress->SetCursor(wxCURSOR_ARROWWAIT);
+                            GetActiveProject()->ProgressShow(_("Deleting..."), wxT(""));
 
                             deleteFileList = new wxArrayString();
                             deleteDirList = new wxArrayString();
@@ -483,7 +483,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                             deleteFileList->Clear();
                             deleteDirList->Clear();
 
-                            progress->Destroy();
+                            GetActiveProject()->ProgressHide();
                         }
 
                         else
@@ -519,8 +519,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                     if (displayPerm->Item(listIndex).GetChar(0) == 'd')
                     {
                         // create progress bar
-                        progress = new wxProgressDialog(_("Delete"), wxT(""), 100, this);
-                        progress->SetCursor(wxCURSOR_ARROWWAIT);
+                        GetActiveProject()->ProgressShow(_("Delete"), wxT(""));
 
                         deleteFileList = new wxArrayString();
                         deleteDirList = new wxArrayString();    
@@ -531,8 +530,7 @@ void UploadDialog::OnPopupMenu (wxCommandEvent & event)
                         deleteFileList->Clear();
                         deleteDirList->Clear();
 
-                        progress->Destroy();
-
+                        GetActiveProject()->ProgressHide();
                     }
                     else
                     {
@@ -585,12 +583,8 @@ void UploadDialog::GetDeleteList (wxString src)
                 }
             }
 
-            if (progress)
-            {
-                int percent = (int)(((float)count / (float)displayNames->GetCount())*100.0);
-                progress->Update(percent, _("Preparing to delete"));
-            }           
-
+            int percent = (int)(((float)count / (float)displayNames->GetCount())*1000.0);
+            GetActiveProject()->ProgressUpdate(percent, _("Preparing to delete"));
         }
 
         deleteDirList->Add(ftp->Pwd());
@@ -609,17 +603,16 @@ void UploadDialog::RemoveItems(wxArrayString *files, wxArrayString *dirs)
     {
         ftp->RmFile(files->Item(count));
         
-        percent = (int)(((float)count / (float)files->GetCount())*100.0);
-        progress->Update(percent, _("Deleting files"));
+        percent = (int)(((float)count / (float)files->GetCount())*1000.0);
+        GetActiveProject()->ProgressUpdate(percent, _("Deleting files"));
     }
     
     for (count = 0; count < dirs->GetCount(); count++)
     {
         ftp->RmDir(dirs->Item(count));
 
-        percent = (int)(((float)count / (float)dirs->GetCount())*100.0);
-        progress->Update(percent, _("Deleting directories"));
-
+        percent = (int)(((float)count / (float)dirs->GetCount())*1000.0);
+        GetActiveProject()->ProgressUpdate(percent, _("Deleting directories"));
     }
 
 }
@@ -875,8 +868,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
             else
                 chunk = new char[size];
 
-            progress = new wxProgressDialog(_("Download Progress"), wxT(""), 100, this, wxPD_CAN_ABORT);
-            progress->SetCursor(wxCURSOR_ARROWWAIT);    
+            GetActiveProject()->ProgressShow(_("Download Progress"), wxT(""));
 
             // create output file
             out = new wxFileOutputStream(dest);
@@ -907,7 +899,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
 
                     int percent = (int)(((float)count / (float)iterations)*100.0);
                         
-                    if (!progress->Update(percent, src))
+                    if (!GetActiveProject()->ProgressUpdate(percent, src))
                     {
                         //wxMessageBox("ABORT", _T("FTP Status"), wxOK | wxICON_INFORMATION, NULL);
 
@@ -944,7 +936,7 @@ void UploadDialog::DownloadFile (wxString src, wxString dest)
                 ftp->Reconnect();
             }
 
-            progress->Destroy();
+            GetActiveProject()->ProgressHide();
         }       
     }
 }
@@ -967,8 +959,7 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
         chunk = new char[size];
 
     // create progress bar
-    progress = new wxProgressDialog(_("Upload Progress"), wxT(""), 100, this, wxPD_CAN_ABORT);
-    progress->SetCursor(wxCURSOR_ARROWWAIT);
+    GetActiveProject()->ProgressShow(_("Upload Progress"), wxT(""));
 
     // find number of iterations needed
     if (size > CHUNKSIZE)
@@ -1003,10 +994,10 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
                     out_stream->Write(chunk, size);
                 }
 
-                int percent = (int)(((float)count / (float)iterations)*100.0);
+                int percent = (int)(((float)count / (float)iterations)*1000.0);
                     
                 // result is false, user clicked abort
-                if(!progress->Update(percent, dest))
+                if(!GetActiveProject()->ProgressUpdate(percent, dest))
                 {
                     abort = true;
                         break;
@@ -1041,7 +1032,7 @@ void UploadDialog::UploadFile(wxString src, wxString dest)
     if (abort)
         ftp->RmFile(dest);
 
-    progress->Destroy();
+    GetActiveProject()->ProgressHide();
 }
 
 void UploadDialog::UploadDir (wxString src, wxString dest)

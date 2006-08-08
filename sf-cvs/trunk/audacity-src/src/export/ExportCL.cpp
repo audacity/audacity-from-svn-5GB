@@ -98,10 +98,6 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 
    sampleCount maxBlockLen = 44100 * 5;
 
-   wxProgressDialog *progress = NULL;
-   wxYield();
-   wxStartTimer();
-   wxBusyCursor busy;
    bool cancelling = false;
 
    int numWaveTracks;
@@ -112,6 +108,11 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
                             t0, t1,
                             channels, maxBlockLen, true,
                             rate, int16Sample, true, mixerSpec);
+
+   GetActiveProject()->ProgressShow(_("Export"),
+      selectionOnly ?
+      _("Exporting the selected audio using command-line encoder") :
+      _("Exporting the entire project using command-line encoder"));
 
    while(!cancelling) {
       sampleCount numSamples = mixer->Process(maxBlockLen);
@@ -136,38 +137,18 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
 
       fwrite( mixed, numSamples * channels * SAMPLE_SIZE(int16Sample), 1, pipe );
 
-      if (!progress && wxGetElapsedTime(false) > 500) {
-
-         wxString message;
-
-         if (selectionOnly)
-            message = _("Exporting the selected audio using command-line encoder");
-         else
-            message = _("Exporting the entire project using command-line encoder");
-
-         progress =
-             new wxProgressDialog(wxT("Export"),
-                                  message,
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-      }
-      if (progress) {
-         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                          (t1-t0)));
-         cancelling = !progress->Update(progressvalue);
-      }
+      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                       (t1-t0)));
+      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
 
       delete[]buffer;
    }
+   GetActiveProject()->ProgressHide();
 
    delete mixer;
 
    pclose( pipe );
 
-   if(progress)
-      delete progress;
    return true;
 }
 

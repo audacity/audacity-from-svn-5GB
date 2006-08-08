@@ -110,7 +110,6 @@ class UploadDialog:public wxDialog {
    wxTextCtrl *txtFtpPass;
    wxFTP *ftp;
    wxPoint mousePos;
-   wxProgressDialog *progress;
 
    wxArrayString *filenameList;
    wxArrayString *filepermList;

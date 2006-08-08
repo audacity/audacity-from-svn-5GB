@@ -32,6 +32,7 @@ greater use in future.
 #include "../AudioIO.h"
 #include "../Mix.h"
 #include "../Prefs.h"
+#include "../Project.h"
 #include "../WaveTrack.h"
 
 //
@@ -119,7 +120,6 @@ EffectArray *Effect::GetEffects(int flags /* = ALL_EFFECTS */)
 Effect::Effect()
 {
    mWaveTracks = NULL;
-   mProgress = NULL;
    // Can change effect flags later (this is the new way)
    // OR using the old way, over-ride GetEffectFlags().
    mFlags = BUILTIN_EFFECT | PROCESS_EFFECT | ADVANCED_EFFECT ;
@@ -157,22 +157,17 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
       if (!PromptUser())
          return false;
    }
-   wxBusyCursor busy;
-   wxYield();
-   wxStartTimer();
 
    bool returnVal = true;
    bool skipFlag = CheckWhetherSkipEffect();
    if (skipFlag == false) {
+      GetActiveProject()->ProgressShow(GetEffectName(), GetEffectAction());
       returnVal = Process();
+      GetActiveProject()->ProgressHide();
    }
+
    End();
-   
-   if (mProgress) {
-      delete mProgress;
-      mProgress = NULL;
-   }
-   
+
    delete mWaveTracks;
    mWaveTracks = NULL;
 
@@ -186,25 +181,7 @@ bool Effect::DoEffect(wxWindow *parent, int flags,
 
 bool Effect::TotalProgress(double frac)
 {
-   if (!mProgress && wxGetElapsedTime(false) > 500) {
-      mProgress =
-         new wxProgressDialog(GetEffectName(),
-                              GetEffectAction(),
-                              1000,
-                              mParent,
-                              wxPD_CAN_ABORT |
-                              wxPD_REMAINING_TIME | 
-                              wxPD_AUTO_HIDE);
-   }
-   
-   bool cancelling = false;
-
-   if (mProgress) {
-      cancelling =
-         !mProgress->Update((int)(frac*1000 + 0.5));
-   }
-   
-   return cancelling;
+   return !GetActiveProject()->ProgressUpdate((int)(frac*1000 + 0.5));
 }
 
 bool Effect::TrackProgress(int whichTrack, double frac)
@@ -216,6 +193,7 @@ bool Effect::TrackGroupProgress(int whichGroup, double frac)
 {
    return TotalProgress((whichGroup+frac)/mNumGroups);
 }
+
 void Effect::CountWaveTracks()
 {
    mNumTracks = 0;
@@ -321,11 +299,7 @@ void Effect::Preview()
    // again, so the state is exactly the way it was before Preview
    // was called.
    Process();
-   End();   
-   if (mProgress) {
-      delete mProgress;
-      mProgress = NULL;
-   }
+   End();
    Init();
 
    mT0 = t0save;

@@ -1394,10 +1394,6 @@ bool ExportMP3(AudacityProject *project,
 
    sampleCount inSamples = GetMP3Exporter()->InitializeStream(stereo ? 2 : 1, int(rate + 0.5));
 
-   wxProgressDialog *progress = NULL;
-   wxYield();
-   wxStartTimer();
-   wxBusyCursor busy;
    bool cancelling = false;
    long bytes;
 
@@ -1413,6 +1409,11 @@ bool ExportMP3(AudacityProject *project,
                             t0, t1,
                             stereo? 2: 1, inSamples, true,
                             rate, int16Sample, true, mixerSpec);
+
+   GetActiveProject()->ProgressShow(selectionOnly ?
+      wxString::Format(_("Exporting selected audio at %d kbps"), bitrate) :
+      wxString::Format(_("Exporting entire file at %d kbps"), bitrate),
+      wxFileName(fName).GetName());
 
    while(!cancelling) {
       sampleCount blockLen = mixer->Process(inSamples);
@@ -1437,33 +1438,12 @@ bool ExportMP3(AudacityProject *project,
 
       outFile.Write(buffer, bytes);
 
-      if (!progress && wxGetElapsedTime(false) > 500) {
-
-         wxString title;
-         wxFileName newFileName(fName);
-         wxString justName = newFileName.GetName();
-
-         if (selectionOnly)
-            title = wxString::Format(_("Exporting selected audio at %d kbps"), bitrate);
-         else {
-            title = wxString::Format(_("Exporting entire file at %d kbps"), bitrate);
-         }
-         progress =
-             new wxProgressDialog(title,
-                                  justName,
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | 
-                                  wxPD_AUTO_HIDE);
-      }
-
-      if (progress) {
-         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
                                           (t1-t0)));
-         cancelling = !progress->Update(progressvalue);
-      }
+      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
+
+   GetActiveProject()->ProgressHide();
 
    delete mixer;
 
@@ -1496,9 +1476,6 @@ bool ExportMP3(AudacityProject *project,
       FSpSetFInfo(&spec, &finfo);
    }
 #endif
-
-   if (progress)
-      delete progress;
 
    delete[]buffer;
    

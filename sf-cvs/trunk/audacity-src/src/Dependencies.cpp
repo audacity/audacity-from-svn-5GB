@@ -134,11 +134,9 @@ bool RemoveDependencies(AudacityProject *project,
 			AliasedFileArray *aliasedFiles)
 {
    DirManager *dirManager = project->GetDirManager();
-   wxProgressDialog *progress =
-      new wxProgressDialog(_("Removing Dependencies"),
-                           _("Copying audio data into project..."),
-                           1000);
-   progress->Show();
+
+   GetActiveProject()->ProgressShow(_("Removing Dependencies"),
+                                    _("Copying audio data into project..."));
 
    AliasedFileHash aliasedFileHash;
    ReplacedBlockFileHash blockFileHash;   
@@ -182,7 +180,7 @@ bool RemoveDependencies(AudacityProject *project,
          completedBytes += (double)SAMPLE_SIZE(format) * len;
          int progressValue =
             (int)(completedBytes * 1000.0 / totalBytesToProcess);
-         progress->Update(progressValue);
+         GetActiveProject()->ProgressUpdate(progressValue);
       }
    }
 
@@ -201,7 +199,7 @@ bool RemoveDependencies(AudacityProject *project,
       dirManager->Deref(f);
    }
 
-   delete progress;
+   GetActiveProject()->ProgressHide();
 
    return true;
 }

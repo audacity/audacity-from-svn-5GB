@@ -408,12 +408,9 @@ bool ImportPCM(wxWindow * parent,
       // aliases to the files we're editing, i.e. ("foo.wav", 12000-18000)
       // instead of actually making fresh copies of the samples.
 
-      wxProgressDialog *progress = NULL;
-      wxYield();
-      wxStartTimer();
-      wxBusyCursor busy;
-
       bool cancelling = false;
+
+      GetActiveProject()->ProgressShow(_("Import"), progressStr);
 
       for (sampleCount i = 0; i < fileTotalFrames; i += maxBlockSize) {
          sampleCount blockLen = maxBlockSize;
@@ -423,26 +420,15 @@ bool ImportPCM(wxWindow * parent,
          for(c=0; c<*numChannels; c++)
             (*channels)[c]->AppendAlias(fName, i, blockLen, c);
 
-         if (!progress && wxGetElapsedTime(false) > 500) {
-            progress =
-                new wxProgressDialog(_("Import"), progressStr,
-                                     1000,
-                                     parent,
-                                     wxPD_CAN_ABORT |
-                                     wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-         }
-         if (progress) {
-            cancelling = !progress->Update((int)((i*1000.0)/fileTotalFrames));
+         cancelling = !GetActiveProject()->ProgressUpdate((int)((i*1000.0)/fileTotalFrames));
 
-            if (cancelling)
-               i = fileTotalFrames;
-         }
+         if (cancelling)
+            i = fileTotalFrames;
       }
 
-      //printf(_("Time elapsed: %d\n"), wxGetElapsedTime());
+      GetActiveProject()->ProgressHide();
 
-      if (progress)
-         delete progress;
+      //printf(_("Time elapsed: %d\n"), wxGetElapsedTime());
 
       if (cancelling) {
          for(c=0; c<*numChannels; c++)
@@ -466,12 +452,9 @@ bool ImportPCM(wxWindow * parent,
 
    sampleCount framescompleted = 0;
 
-   wxProgressDialog *progress = NULL;
-   wxYield();
-   wxStartTimer();
-   wxBusyCursor busy;
-
    bool cancelling = false;
+
+   GetActiveProject->ProgressShow(_("Import"), progressStr);
 
    long block;
    do {
@@ -508,33 +491,21 @@ bool ImportPCM(wxWindow * parent,
          framescompleted += block;
       }
 
-      if (!progress && wxGetElapsedTime(false) > 500) {
-         progress =
-            new wxProgressDialog(_("Import"), progressStr,
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | 
-                                  wxPD_AUTO_HIDE);
-      }
-      if (progress) {
-         int progressvalue = (framescompleted > fileTotalFrames) ?
-             fileTotalFrames : framescompleted;
+      int progressvalue = (framescompleted > fileTotalFrames) ?
+          fileTotalFrames : framescompleted;
 
-         cancelling =
-            !progress->Update((int)((progressvalue*1000.0)/fileTotalFrames));
+      cancelling =
+         !GetActiveProject()->ProgressUpdate((int)((progressvalue*1000.0)/fileTotalFrames));
 
-         if (cancelling)
-            block = 0;
-      }
+      if (cancelling)
+         block = 0;
    } while (block > 0);
+
+   GetActiveProject()->ProgressHide();
 
    sf_close(fp);
 
    //printf("Time elapsed: %d\n", wxGetElapsedTime());
-
-   if (progress)
-      delete progress;
 
    DeleteSamples(srcbuffer);
    DeleteSamples(buffer);

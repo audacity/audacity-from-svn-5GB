@@ -296,6 +296,12 @@ class AudacityProject:public wxFrame,
    virtual void OnAudioIOStopRecording();
    virtual void OnAudioIONewBlockFiles(const wxString& blockFileLog);
 
+   // Progress dialog methods
+   void ProgressShow(const wxString &title, const wxString &message = wxT(""));
+   void ProgressHide();
+   bool ProgressUpdate(int value, const wxString &message = wxT(""));
+   bool ProgressIsShown();
+
  private:
 
 
@@ -318,8 +324,6 @@ class AudacityProject:public wxFrame,
 
    bool mUserCanceledProgress;
    static bool ImportProgressCallback(void *self, float percent);
-
-   wxProgressDialog *mImportProgressDialog;
 
    // The project's name and file info
 
@@ -386,6 +390,8 @@ class AudacityProject:public wxFrame,
    bool mIconized;
    HistoryWindow *mHistoryWindow;
 
+   wxProgressDialog *mProgressDialog[3];
+   int mProgressCurrent;
 
  public:
    ToolBarDock *mToolBarDock;

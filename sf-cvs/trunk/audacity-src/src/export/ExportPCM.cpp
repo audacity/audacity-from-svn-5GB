@@ -95,10 +95,6 @@ bool ExportPCM(AudacityProject *project,
 
    int maxBlockLen = 44100 * 5;
 
-   wxProgressDialog *progress = NULL;
-   wxYield();
-   wxStartTimer();
-   wxBusyCursor busy;
    bool cancelling = false;
 
    int numWaveTracks;
@@ -109,6 +105,13 @@ bool ExportPCM(AudacityProject *project,
                             t0, t1,
                             info.channels, maxBlockLen, true,
                             rate, format, true, mixerSpec);
+
+   GetActiveProject()->ProgressShow(_("Export"),
+      selectionOnly ?
+      wxString::Format(_("Exporting the selected audio as a %s file"),
+                       formatStr.c_str()) :
+      wxString::Format(_("Exporting the entire project as a %s file"),
+                       formatStr.c_str()));
 
    while(!cancelling) {
       sampleCount numSamples = mixer->Process(maxBlockLen);
@@ -123,36 +126,12 @@ bool ExportPCM(AudacityProject *project,
       else
          sf_writef_float(sf, (float *)mixed, numSamples);
 
-      if (!progress && wxGetElapsedTime(false) > 500) {
-
-         wxString message;
-
-         if (selectionOnly)
-            message =
-                wxString::
-                Format(_("Exporting the selected audio as a %s file"),
-                       formatStr.c_str());
-         else
-            message =
-                wxString::
-                Format(_("Exporting the entire project as a %s file"),
-                       formatStr.c_str());
-
-         progress =
-             new wxProgressDialog(_("Export"),
-                                  message,
-                                  1000,
-                                  parent,
-                                  wxPD_CAN_ABORT |
-                                  wxPD_REMAINING_TIME | 
-                                  wxPD_AUTO_HIDE);
-      }
-      if (progress) {
-         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                          (t1-t0)));
-         cancelling = !progress->Update(progressvalue);
-      }
+      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                       (t1-t0)));
+      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
+
+   GetActiveProject()->ProgressHide();
 
    delete mixer;
 
@@ -182,9 +161,6 @@ bool ExportPCM(AudacityProject *project,
       FSpSetFInfo(&spec, &finfo);
    }
 #endif
-
-   if (progress)
-      delete progress;
 
    return !cancelling;
 }
