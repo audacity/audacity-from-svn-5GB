@@ -228,7 +228,7 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mLevellerNumPassesChoice = new wxChoice(this, ID_DB_NUM_PASSES_CHOICE,
-                                       wxDefaultPosition, wxSize(72, -1), NUM_PASSES_CHOICES,
+                                       wxDefaultPosition, wxDefaultSize, NUM_PASSES_CHOICES,
                                        numPasses);
    hSizer->Add(mLevellerNumPassesChoice, 0, wxALIGN_LEFT|wxALL, 5);
    group->Add(hSizer, 0, wxALIGN_CENTRE|wxALL, 5 );
@@ -246,7 +246,7 @@ LevellerDialog::LevellerDialog(wxWindow *parent, wxWindowID id,
    hSizer->Add(statText, 0, wxALIGN_CENTRE | wxALL, 5);
 
    mLevellerDbSilenceThresholdChoice = new wxChoice(this, ID_DB_SILENCE_THRESHOLD_CHOICE,
-      wxDefaultPosition, wxSize(64, -1), Enums::NumDbChoices,
+      wxDefaultPosition, wxDefaultSize, Enums::NumDbChoices,
                                        Enums::GetDbChoices());
    hSizer->Add(mLevellerDbSilenceThresholdChoice, 0, wxALIGN_CENTER | wxALL, 4);
    group->Add(hSizer, 0, wxALIGN_CENTRE|wxALL, 5 );
