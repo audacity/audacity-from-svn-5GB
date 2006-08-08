@@ -3512,20 +3512,13 @@ void AudacityProject::OnImportRaw()
    Track **newTracks;
    int numTracks;
    
-   wxStartTimer();
-
-   wxASSERT(!mImportProgressDialog);
-
    mImportingRaw = true;
 
    numTracks = ::ImportRaw(this, fileName, mTrackFactory, &newTracks,
                            AudacityProject::ImportProgressCallback,
                            this);
 
-   if(mImportProgressDialog) {
-      delete mImportProgressDialog;
-      mImportProgressDialog = NULL;
-   }
+   ProgressHide();
 
    mImportingRaw = false;
    

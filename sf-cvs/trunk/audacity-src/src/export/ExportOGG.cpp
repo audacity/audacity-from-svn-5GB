@@ -111,11 +111,6 @@ bool ExportOGG(AudacityProject *project,
       outFile.Write(page.body, page.body_len);
    }
 
-   wxProgressDialog *progress = NULL;
-
-   wxYield();
-   wxStartTimer();
-
    int numWaveTracks;
    WaveTrack **waveTracks;
    tracks->GetWaveTracks(selectionOnly, &numWaveTracks, &waveTracks);
@@ -124,6 +119,11 @@ bool ExportOGG(AudacityProject *project,
                             t0, t1,
                             numChannels, SAMPLES_PER_RUN, false,
                             rate, floatSample, true, mixerSpec);
+
+   GetActiveProject()->ProgressShow(_("Export"),
+                                    selectionOnly ?
+                                    _("Exporting the selected audio as Ogg Vorbis") :
+                                    _("Exporting the entire project as Ogg Vorbis"));
 
    while(!cancelling && !eos) {
       float **vorbis_buffer = vorbis_analysis_buffer(&dsp, SAMPLES_PER_RUN);
@@ -179,25 +179,11 @@ bool ExportOGG(AudacityProject *project,
          }
       }
 
-      if(progress) {
-         int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
-                                          (t1-t0)));
-         cancelling = !progress->Update(progressvalue);
-      }
-      else if(wxGetElapsedTime(false) > 500) {
-            
-         wxString message = selectionOnly ?
-            _("Exporting the selected audio as Ogg Vorbis") :
-            _("Exporting the entire project as Ogg Vorbis");
-
-         progress = new wxProgressDialog(
-               _("Export"),
-               message,
-               1000,
-               parent,
-               wxPD_CAN_ABORT | wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-      }
+      int progressvalue = int (1000 * ((mixer->MixGetCurrentTime()-t0) /
+                                       (t1-t0)));
+      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
+   GetActiveProject()->ProgressHide();
 
    delete mixer;
 
@@ -208,9 +194,6 @@ bool ExportOGG(AudacityProject *project,
 	vorbis_info_clear(&info);
 
    outFile.Close();
-
-   if(progress)
-      delete progress;
 
    return !cancelling;
 }

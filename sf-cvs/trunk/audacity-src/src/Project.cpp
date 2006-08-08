@@ -451,7 +451,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                  const wxSize & size)
    : wxFrame(parent, id, wxT("Audacity"), pos, size),
      mLastPlayMode(normalPlay),
-     mImportProgressDialog(NULL),
      mRate((double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate())),
      mDefaultFormat((sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample)),
@@ -476,6 +475,11 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mRecordingRecoveryHandler(NULL),
      mImportedDependencies(false)
 {
+   // Initialize progress dialog array
+   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
+      mProgressDialog[mProgressCurrent] = NULL;
+   }
+
    mStatusBar = CreateStatusBar();
 
    mDrag = NULL;
@@ -784,6 +788,13 @@ AudacityProject::~AudacityProject()
 #ifdef EXPERIMENTAL_VOCAL_STUDIO
    ButtonWindow::ClearStripesAndButtons();
 #endif
+
+   // Delete the progress dialogs
+   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
+      if (mProgressDialog[mProgressCurrent]) {
+         delete mProgressDialog[mProgressCurrent];
+      }
+   }
 }
 
 void AudacityProject::UpdateGuiPrefs()
@@ -2225,17 +2236,7 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
    AudacityProject *self = (AudacityProject*)_self;
    const int progressDialogGranularity = 1000;
 
-   if (self->mImportProgressDialog) {
-      bool keepGoing =
-         self->mImportProgressDialog->Update((int)(percent *
-                                                   progressDialogGranularity));
-
-      if (!keepGoing)
-         self->mUserCanceledProgress = true;
-
-      return !keepGoing;
-   }
-   else if (wxGetElapsedTime(false) > 500) {
+   if (!self->ProgressIsShown()) {
       wxString description;
 
       if (self->mImportingRaw)
@@ -2249,18 +2250,18 @@ bool AudacityProject::ImportProgressCallback(void *_self, float percent)
       dialogMessage.Printf(_("Importing %s File..."),
                            description.c_str());
 
-      self->mImportProgressDialog = new wxProgressDialog(_("Import"),
-                                         dialogMessage,
-                                         progressDialogGranularity,
-                                         self,
-                                         wxPD_CAN_ABORT |
-                                         wxPD_REMAINING_TIME |
-                                         wxPD_AUTO_HIDE);
-      return !self->mImportProgressDialog->Update((int)(percent * progressDialogGranularity));
+      self->ProgressShow(_("Import"),
+                         dialogMessage);
    }
-   else {
-      return 0;
-   }
+
+   bool keepGoing =
+      self->ProgressUpdate((int)(percent *
+                           progressDialogGranularity));
+
+   if (!keepGoing)
+      self->mUserCanceledProgress = true;
+
+   return !keepGoing;
 }
 
 void AudacityProject::AddImportedTracks(wxString fileName,
@@ -2335,20 +2336,13 @@ void AudacityProject::Import(wxString fileName)
    int numTracks;
    wxString errorMessage;
 
-   wxStartTimer();
-
-   wxASSERT(!mImportProgressDialog);
-
    mUserCanceledProgress = false;
    numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
                                  this);
 
-   if(mImportProgressDialog) {
-      delete mImportProgressDialog;
-      mImportProgressDialog = NULL;
-   }
+   ProgressHide();
 
    if (mUserCanceledProgress)
       return;
@@ -3133,7 +3127,65 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
       f.Close();
    }
 }
+
+void AudacityProject::ProgressShow(const wxString &title, const wxString &message)
+{
+   if (mProgressDialog[mProgressCurrent]) {
+      ProgressHide();
+   }
+
+   wxBeginBusyCursor();
+   wxSafeYield(this, true);
+
+   mProgressCurrent = (mProgressCurrent + 1) % 3;
+
+   if (mProgressDialog[mProgressCurrent]) {
+      delete mProgressDialog[mProgressCurrent];
+   }
+
+   mProgressDialog[mProgressCurrent] = new wxProgressDialog(title,
+                                                            message,
+                                                            1000,
+                                                            NULL,
+                                                            wxPD_CAN_ABORT |
+                                                            wxPD_REMAINING_TIME |
+                                                            wxPD_AUTO_HIDE);
+      
+   wxStartTimer();
+}
    
+void AudacityProject::ProgressHide()
+{
+   if (mProgressDialog[mProgressCurrent]) {
+      mProgressDialog[mProgressCurrent]->Hide();
+   }
+
+   if (wxIsBusy()) {
+      wxEndBusyCursor();
+   }
+}
+
+bool AudacityProject::ProgressUpdate(int value, const wxString &message)
+{
+   if (value > 1000) {
+      value = 1000;
+   }
+
+   wxASSERT(mProgressDialog[mProgressCurrent]);
+
+   if (mProgressDialog[mProgressCurrent]) {
+      return mProgressDialog[mProgressCurrent]->Update(value, message);
+   }
+
+   return true;
+}
+
+bool AudacityProject::ProgressIsShown()
+{
+   return mProgressDialog[mProgressCurrent] &&
+          mProgressDialog[mProgressCurrent]->IsShown();
+}
+
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
 //

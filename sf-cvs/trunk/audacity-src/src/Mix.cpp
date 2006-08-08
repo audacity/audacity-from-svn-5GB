@@ -36,6 +36,7 @@
 #include "DirManager.h"
 #include "Envelope.h"
 #include "Prefs.h"
+#include "Project.h"
 #include "Resample.h"
 
 bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
@@ -115,9 +116,9 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
                             startTime, endTime, mono ? 1 : 2, maxBlockLen, false,
                             rate, format);
 
-   wxProgressDialog *progress = NULL;
    wxYield();
-   wxStartTimer();
+   GetActiveProject()->ProgressShow(_("Mix and Render"),
+                                    _("Mixing and rendering tracks"));
    wxBusyCursor busy;
    
    bool cancelling = false;
@@ -139,16 +140,11 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
          mixRight->Append(buffer, format, blockLen);
       }
 
-      if (!progress && wxGetElapsedTime(false) > 500) {
-         progress =
-            new wxProgressDialog(_("Mix and Render"),
-                                 _("Mixing and rendering tracks"), 1000);
-      }
-      if (progress) {
-         int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));
-         cancelling = !progress->Update(progressvalue);
-      }
+      int progressvalue = int (1000 * (mixer->MixGetCurrentTime() / totalTime));
+      cancelling = !GetActiveProject()->ProgressUpdate(progressvalue);
    }
+
+   GetActiveProject()->ProgressHide();
 
    mixLeft->Flush();
    *newLeft = mixLeft;
@@ -156,8 +152,6 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
       mixRight->Flush();
       *newRight = mixRight;
    }
-
-   delete progress;
 
 #if 0
    int elapsedMS = wxGetElapsedTime();

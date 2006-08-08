@@ -18,7 +18,6 @@
 
 class wxWindow;
 class wxFrame;
-class wxProgressDialog;
 
 #include "../WaveTrack.h"
 #include "../Shuttle.h"
@@ -270,7 +269,6 @@ class Effect {
    int mID;
    static int sNumEffects;
    
-   wxProgressDialog *mProgress;
    friend class BatchCommands;// so can call PromptUser.
 
 };
