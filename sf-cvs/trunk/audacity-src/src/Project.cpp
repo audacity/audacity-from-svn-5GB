@@ -2234,29 +2234,20 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 bool AudacityProject::ImportProgressCallback(void *_self, float percent)
 {
    AudacityProject *self = (AudacityProject*)_self;
-   const int progressDialogGranularity = 1000;
+   wxString description;
 
-   if (!self->ProgressIsShown()) {
-      wxString description;
+   if (self->mImportingRaw)
+      /* i18n-hint: This refers to files that are opened directly
+         without looking at the file header.  Same as "Import Raw" */
+      description = _("Raw");
+   else
+      description = self->mImporter->GetFileDescription();
+      
+   wxString dialogMessage;
+   dialogMessage.Printf(_("Importing %s File..."),
+                        description.c_str());
 
-      if (self->mImportingRaw)
-         /* i18n-hint: This refers to files that are opened directly
-            without looking at the file header.  Same as "Import Raw" */
-         description = _("Raw");
-      else
-         description = self->mImporter->GetFileDescription();
-         
-      wxString dialogMessage;
-      dialogMessage.Printf(_("Importing %s File..."),
-                           description.c_str());
-
-      self->ProgressShow(_("Import"),
-                         dialogMessage);
-   }
-
-   bool keepGoing =
-      self->ProgressUpdate((int)(percent *
-                           progressDialogGranularity));
+   bool keepGoing = self->ProgressUpdate((int)(percent * 1000), dialogMessage);
 
    if (!keepGoing)
       self->mUserCanceledProgress = true;
@@ -2337,6 +2328,9 @@ void AudacityProject::Import(wxString fileName)
    wxString errorMessage;
 
    mUserCanceledProgress = false;
+
+   ProgressShow(_("Import"));
+
    numTracks = mImporter->Import(fileName, mTrackFactory, &newTracks,
                                  errorMessage,
                                  AudacityProject::ImportProgressCallback,
@@ -3128,30 +3122,35 @@ void AudacityProject::OnAudioIONewBlockFiles(const wxString& blockFileLog)
    }
 }
 
+// LLL: There is an issue between the Jaws screen reader and the wxWidgets accessibility
+//      support.  When a wxGuage is displayed, Jaws will monitor its progress by querying
+//      the current value.  But, because it doesn't necessarily know when the control
+//      gets deleted, it can cause storage violations attempting to use the deleted
+//      control.
+//
+//      Whether this is a design issue with Jaws, wxWidgets, or MSAA is uncertain, but
+//      the work around is to not delete the guage right away.  So, we keep a backlog of
+//      the last three wxProgressDialogs displayed.  This gives Jaws a chance to get the
+//      last update without accessing freed storage.
+
 void AudacityProject::ProgressShow(const wxString &title, const wxString &message)
 {
    if (mProgressDialog[mProgressCurrent]) {
       ProgressHide();
    }
 
-   wxBeginBusyCursor();
-   wxSafeYield(this, true);
+   mProgressTitle = title;
+   mProgressMessage = message;
 
    mProgressCurrent = (mProgressCurrent + 1) % 3;
-
    if (mProgressDialog[mProgressCurrent]) {
       delete mProgressDialog[mProgressCurrent];
+      mProgressDialog[mProgressCurrent] = NULL;
    }
 
-   mProgressDialog[mProgressCurrent] = new wxProgressDialog(title,
-                                                            message,
-                                                            1000,
-                                                            NULL,
-                                                            wxPD_CAN_ABORT |
-                                                            wxPD_REMAINING_TIME |
-                                                            wxPD_AUTO_HIDE);
-      
    wxStartTimer();
+   wxBeginBusyCursor();
+   wxSafeYield(this, true);
 }
    
 void AudacityProject::ProgressHide()
@@ -3167,11 +3166,16 @@ void AudacityProject::ProgressHide()
 
 bool AudacityProject::ProgressUpdate(int value, const wxString &message)
 {
-   if (value > 1000) {
-      value = 1000;
+   if (!mProgressDialog[mProgressCurrent] && wxGetElapsedTime(false) > 500) {
+      mProgressDialog[mProgressCurrent] =
+         new wxProgressDialog(mProgressTitle,
+                              mProgressMessage,
+                              1000,
+                              this, 
+                              wxPD_CAN_ABORT |
+                              wxPD_REMAINING_TIME |
+                              wxPD_AUTO_HIDE);
    }
-
-   wxASSERT(mProgressDialog[mProgressCurrent]);
 
    if (mProgressDialog[mProgressCurrent]) {
       return mProgressDialog[mProgressCurrent]->Update(value, message);
