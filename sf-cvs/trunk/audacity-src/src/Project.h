@@ -392,6 +392,8 @@ class AudacityProject:public wxFrame,
 
    wxProgressDialog *mProgressDialog[3];
    int mProgressCurrent;
+   wxString mProgressTitle;
+   wxString mProgressMessage;
 
  public:
    ToolBarDock *mToolBarDock;

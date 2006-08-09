@@ -3514,6 +3514,8 @@ void AudacityProject::OnImportRaw()
    
    mImportingRaw = true;
 
+   ProgressShow(_("Import"));
+
    numTracks = ::ImportRaw(this, fileName, mTrackFactory, &newTracks,
                            AudacityProject::ImportProgressCallback,
                            this);
