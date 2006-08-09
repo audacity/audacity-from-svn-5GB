@@ -166,6 +166,28 @@
 			<string>Editor</string>
 		</dict>
 
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>FLAC Audio File</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>flac</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>AudacityFLAC.icns</string>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>audio/flac</string>
+				<string>audio/x-flac</string>
+			</array>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>flac</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+
 	</array>
 
 	<key>CFBundleInfoDictionaryVersion</key>
