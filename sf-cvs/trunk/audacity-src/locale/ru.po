@@ -13,13 +13,13 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-05 03:04+0400\n"
-"PO-Revision-Date: 2006-08-05 07:18+0400\n"
+"PO-Revision-Date: 2006-08-11 03:37+0400\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
@@ -226,7 +226,7 @@ msgstr "%s-old%d"
 #: ../src/Menus.cpp:945 ../src/Menus.cpp:948
 #, c-format
 msgid "&%s..."
-msgstr ""
+msgstr "&%s..."
 
 #: ../src/Menus.cpp:783
 msgid "&About Audacity CleanSpeech..."
@@ -755,7 +755,7 @@ msgstr "-96 Дб (диапазон PCM при 16 битах)"
 #: ../src/effects/ChangeLength.cpp:124 ../src/effects/ChangeLength.cpp:138
 #: ../src/effects/ChangeLength.cpp:173
 msgid "0.0"
-msgstr ""
+msgstr "0.0"
 
 #: ../src/widgets/TimeTextCtrl.cpp:208
 msgid "01000,01000 frames|24"
@@ -1496,6 +1496,9 @@ msgid ""
 "Please consider saving and reloading the project to perform a complete "
 "project check.\n"
 msgstr ""
+"Программа нашла осиротевший блочный файл %s! \n"
+"Вам стоит сохранить и перезагрузить проект, чтобы пройти полную "
+"проверку проекта.\n"
 
 #: ../src/AboutDialog.cpp:199
 msgid ""
@@ -1821,6 +1824,8 @@ msgid ""
 "Cannot create directory 'cleaned'. \n"
 "File already exists that is not a directory"
 msgstr ""
+"Невозможно создать каталог 'cleaned'. \n"
+"Файл с таким именем, не являющийся каталогом, уже существует."
 
 #: ../src/export/ExportPCM.cpp:73
 msgid "Cannot export audio in this format."
@@ -1911,7 +1916,7 @@ msgstr "Смена темпа..."
 
 #: ../src/Menus.cpp:872
 msgid "Change gain on focused track\tShift+G"
-msgstr ""
+msgstr "Изменить усиление активной дорожки\tShift+G"
 
 #: ../src/TrackPanel.cpp:5529
 msgid "Change lower speed limit (%) to:"
@@ -1919,7 +1924,7 @@ msgstr "Изменить нижний предел скорости (%) на:"
 
 #: ../src/Menus.cpp:869
 msgid "Change pan on focused track\tShift+P"
-msgstr ""
+msgstr "Изменить панораму активной дорожки\tShift+G"
 
 #: ../src/TrackPanel.cpp:5594
 msgid "Change track name to:"
@@ -2017,11 +2022,11 @@ msgstr "Выберите каталог для экспортируемых фа
 
 #: ../src/UploadDialog.cpp:332
 msgid "Choose file(s) to upload"
-msgstr ""
+msgstr "Выберите файл(ы) для закачки"
 
 #: ../src/UploadDialog.cpp:369
 msgid "Choose folder to upload"
-msgstr ""
+msgstr "Выберите папку длязакачки"
 
 #: ../src/BatchCommandDialog.cpp:85
 msgid "Choose from the list below"
@@ -2053,11 +2058,11 @@ msgstr "Предустановки CleanSpeech (*.csp)|*.csp"
 
 #: ../src/ControlToolBar.cpp:666
 msgid "CleanSpeech only allows recording mono track.\n"
-msgstr ""
+msgstr "CleanSpeech может записывать только монодорожку.\n"
 
 #: ../src/DirManager.cpp:428
 msgid "Cleaning up cache directories"
-msgstr ""
+msgstr "Идёт очистка каталогов с кэшем"
 
 #: ../src/DirManager.cpp:300
 msgid "Cleaning up temporary files"
@@ -2345,11 +2350,13 @@ msgid ""
 "Could not set parameters of effect %s\n"
 " to %s."
 msgstr ""
+"Не удалось установить параметра эффекта %s\n"
+" на %s."
 
 #: ../src/Project.cpp:1855
 #, c-format
 msgid "Couldn't find the project data folder: \"%s\""
-msgstr "Не удалось найти каталог с данными проекта: \"%s\""
+msgstr "Не удалось найти папку с данными проекта: \"%s\""
 
 #: ../src/Help.cpp:79
 msgid "Couldn't open the Audacity Help file."
@@ -2474,7 +2481,7 @@ msgstr "До обработки"
 
 #: ../src/effects/nyquist/Nyquist.cpp:989
 msgid "Debug"
-msgstr ""
+msgstr "Отладка"
 
 #: ../src/effects/Echo.cpp:203
 msgid "Decay factor:"
@@ -2482,7 +2489,7 @@ msgstr "Коэффициент спада: "
 
 #: ../src/Menus.cpp:874
 msgid "Decrease gain on focused track\tAlt+Shift+Down"
-msgstr ""
+msgstr "Уменьшить усиление активной дорожки\tAlt+Shift+Down"
 
 #: ../src/prefs/QualityPrefs.cpp:119
 msgid "Default Sample Format:"
@@ -2914,7 +2921,7 @@ msgstr "Введите новую частоту сэмплирования:"
 
 #: ../src/effects/Equalization.cpp:2021
 msgid "Enter the desired name of the curve"
-msgstr ""
+msgstr "Введите желаемое имя для кривой"
 
 #: ../src/LabelDialog.cpp:663
 #, fuzzy
@@ -3160,6 +3167,8 @@ msgid ""
 "Export recording to %s\n"
 "/cleaned/%s.mp3"
 msgstr ""
+"Экспортировать запись в %s\n"
+"/cleaned/%s.mp3"
 
 #: ../src/FreqWindow.cpp:198
 msgid "Export..."
@@ -3306,11 +3315,13 @@ msgid ""
 "File may be invalid or corrupted: \n"
 "%s"
 msgstr ""
+"Файл может быть неподдерживаемого формата или испорчен: \n"
+"%s"
 
 #: ../src/export/Export.cpp:369 ../src/export/Export.cpp:450
 #, c-format
 msgid "File may be invalid or corrupted: %s"
-msgstr ""
+msgstr "Файл может быть неподдерживаемого формата или испорчен: %s"
 
 #: ../src/export/ExportMultiple.cpp:797
 msgid "File name prefix:"
@@ -3557,7 +3568,7 @@ msgstr ""
 msgid ""
 "If you proceed, your project will not be saved to disk. Is this what you "
 "want?"
-msgstr ""
+msgstr "Если продолжить, ваш проект не будет записан на диск. Вы точно этого хотите?"
 
 #: ../src/import/ImportPCM.cpp:428 ../src/import/ImportPCM.cpp:513
 #: ../src/Project.cpp:2252 ../src/Project.cpp:2316
@@ -3607,7 +3618,7 @@ msgstr "Включая звук перед первой пометкой"
 
 #: ../src/Menus.cpp:873
 msgid "Increase gain on focused track\tAlt+Shift+Up"
-msgstr ""
+msgstr "Увеличить усиление активной дорожки\tAlt+Shift+Up"
 
 #: ../src/prefs/ThemePrefs.cpp:116
 msgid "Individual Theme Files"
@@ -3691,12 +3702,11 @@ msgstr "Производится инвертирование"
 
 #: ../src/Menus.cpp:2694
 msgid "Join"
-msgstr ""
+msgstr "Объединить"
 
 #: ../src/Menus.cpp:2857
-#, fuzzy
 msgid "JoinLabels"
-msgstr "Заметки"
+msgstr ""
 
 #: ../src/Menus.cpp:2691
 #, c-format
@@ -3717,7 +3727,7 @@ msgstr "Комбинация клавиш"
 
 #: ../src/TranscriptionToolBar.cpp:250
 msgid "Key type"
-msgstr ""
+msgstr "Тип клавиши"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:61 ../src/prefs/KeyConfigPrefs.cpp:62
 msgid "Keyboard"
@@ -4101,7 +4111,7 @@ msgstr "Записать"
 
 #: ../src/effects/Equalization.cpp:910
 msgid "Min dB"
-msgstr ""
+msgstr "Мин. Дб"
 
 #: ../src/effects/AvcCompressor.cpp:628
 msgid "Minimum Change %:"
@@ -4118,17 +4128,17 @@ msgstr "Минимальный диапазон отображения волн�
 #: ../src/DirManager.cpp:1155
 #, c-format
 msgid "Missing alias file: (%s)"
-msgstr ""
+msgstr "Отсутствует файл алиаса: (%s)"
 
 #: ../src/DirManager.cpp:1195
 #, c-format
 msgid "Missing data file: (%s.au)"
-msgstr ""
+msgstr "Отсутствует файл данных: (%s.au)"
 
 #: ../src/DirManager.cpp:1175
 #, c-format
 msgid "Missing summary file: (%s.auf)"
-msgstr ""
+msgstr "Отсутствует файл резюме: (%s.auf)"
 
 #: ../src/Mix.cpp:92 ../src/Mix.cpp:100
 msgid "Mix"
@@ -4149,9 +4159,8 @@ msgid "Mixed and rendered %d tracks into one new stereo track"
 msgstr ""
 
 #: ../src/MixerToolBar.cpp:84
-#, fuzzy
 msgid "Mixer"
-msgstr "Микс"
+msgstr "Микшер"
 
 #: ../src/Mix.cpp:145
 #, fuzzy
@@ -4269,15 +4278,16 @@ msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
 msgstr "Мультиинструментальный режим: нажмите Ctrl-P для настройки мыши и клавиатуры"
 
 #: ../src/ToolsToolBar.cpp:186
-#, fuzzy
 msgid "MultiTool"
-msgstr "Многоинструментальный режим\tF6"
+msgstr "Многоинструментальный режим"
 
 #: ../src/Project.cpp:1506
 msgid ""
 "Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
 "mp3)|*.mp3"
 msgstr ""
+"Файлы с музыкой (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
+"mp3)|*.mp3"
 
 #: ../src/TrackPanel.cpp:6091
 msgid "Mute"
@@ -4294,7 +4304,7 @@ msgstr "Новое значение"
 
 #: ../src/widgets/TimeTextCtrl.cpp:213
 msgid "NTSC frames"
-msgstr ""
+msgstr "Кадры NTSC"
 
 #: ../src/AutoRecovery.cpp:64
 #, fuzzy
@@ -4320,30 +4330,27 @@ msgstr "Имя соединения:"
 
 #: ../src/Dependencies.cpp:323
 msgid "Never copy any audio"
-msgstr ""
+msgstr "Никогда не копировать звуковые данные"
 
 #: ../src/UploadDialog.cpp:1278
-#, fuzzy
 msgid "New Folder"
-msgstr "Новое значение"
+msgstr "Новая папка"
 
 #: ../src/LabelDialog.cpp:662
-#, fuzzy
 msgid "New Label Track"
-msgstr "Дорожка пометок"
+msgstr "Новая дорожка пометок"
 
 #: ../src/effects/Amplify.cpp:180
 msgid "New Peak Amplitude (dB):"
 msgstr "Новая пиковая амплитуда (Дб):"
 
 #: ../src/Project.cpp:3066
-#, fuzzy
 msgid "New Project"
-msgstr "Уместить проект"
+msgstr "Новый проект"
 
 #: ../src/UploadDialog.cpp:269 ../src/UploadDialog.cpp:1298
 msgid "New Site"
-msgstr ""
+msgstr "Новое соединение"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:188
 msgid "New Temporary Directory"
@@ -4372,9 +4379,8 @@ msgid "Next Tool\tD"
 msgstr "Следующий инструмент\tD"
 
 #: ../src/prefs/BatchPrefs.cpp:151
-#, fuzzy
 msgid "No"
-msgstr "Ничего"
+msgstr "Нет"
 
 #: ../src/UploadDialog.cpp:316
 msgid "No Connection"
@@ -4382,7 +4388,7 @@ msgstr "Нет соединения"
 
 #: ../src/BatchCommands.cpp:638
 msgid "No batch command chain defined."
-msgstr ""
+msgstr "Цепочка команд пакетной обработки не определена."
 
 #. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
 #. know the correct technical word.
@@ -4397,24 +4403,23 @@ msgstr "Невозможно экспортировать"
 
 #: ../src/BatchCommands.cpp:364 ../src/BatchCommands.cpp:383
 msgid "No project and no Audio to process!"
-msgstr ""
+msgstr "Нет проекта и звуковых данных для обработки!"
 
 #: ../src/AboutDialog.cpp:173
 msgid "No resampling support enabled"
 msgstr "Поддержка пересэмплирования отключена"
 
 #: ../src/export/Export.cpp:134
-#, fuzzy
 msgid ""
 "No tracks are selected! Use Ctrl-A (Select All)\n"
 "Choose Export... to export all tracks."
 msgstr ""
-"Не выбрано ни одной дорожки\n"
-"Нажмите \"Экспортировать\" для экспорта всех дорожек."
+"Не выбрано ни одной дорожки! Используйте команду «Выделить всё» (Ctrl+A)\n"
+"Нажмите «Экспортировать...» для экспорта всех дорожек."
 
 #: ../src/BatchCommands.cpp:370 ../src/BatchCommands.cpp:390
 msgid "No tracks to process!"
-msgstr ""
+msgstr "Нет дорожек для обработки!"
 
 #: ../src/effects/NoiseRemoval.cpp:158 ../src/BatchCommands.cpp:251
 msgid "Noise Removal"
@@ -4430,7 +4435,7 @@ msgstr "Удаление шума..."
 
 #: ../src/effects/Leveller.cpp:238
 msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
-msgstr ""
+msgstr "Порог шума (шипение/гудение/фоновый шум)"
 
 #: ../src/effects/ladspa/LadspaEffect.cpp:553
 #: ../src/effects/ladspa/LadspaEffect.cpp:561
@@ -4611,7 +4616,7 @@ msgstr "Изменить &метаданные..."
 
 #: ../src/Menus.cpp:4067
 msgid "Open CleanSpeech Preset File:"
-msgstr ""
+msgstr "Открыть файл предустановки CleanSpeech:"
 
 #. i18n-hint: This is the name of the menu item on Mac OS X only
 #: ../src/Menus.cpp:892
@@ -4896,7 +4901,7 @@ msgstr "Параметры..."
 
 #: ../src/effects/NoiseRemoval.cpp:547
 msgid "Preparation Steps"
-msgstr ""
+msgstr "Подготовительные шаги"
 
 #: ../src/UploadDialog.cpp:591
 msgid "Preparing to delete"
@@ -5336,7 +5341,7 @@ msgstr ""
 #: ../src/widgets/Grid.cpp:622 ../src/widgets/Grid.cpp:749
 #, c-format
 msgid "Row %d"
-msgstr ""
+msgstr "Ряд %d"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:112
 msgid "S&et"
@@ -5418,7 +5423,7 @@ msgstr "Сохранить изменения?"
 
 #: ../src/BatchCommands.cpp:181
 msgid "Save command chain As:"
-msgstr ""
+msgstr "Сохранить цепочку как:"
 
 #: ../src/Project.cpp:2215
 #, c-format
@@ -5855,7 +5860,7 @@ msgstr "Соло"
 
 #: ../src/Menus.cpp:877
 msgid "Solo/Unsolo focused track\tShift+S"
-msgstr ""
+msgstr "Включить или отключить соло для активной дорожки\tShift+S"
 
 #: ../src/AutoRecovery.cpp:59
 msgid ""
@@ -6194,6 +6199,8 @@ msgid ""
 "Themability is an experimental feature.\n"
 "\n"
 msgstr ""
+"Стили оформления — экспериментальная функция.\n"
+"\n"
 
 #: ../src/prefs/ThemePrefs.cpp:62 ../src/prefs/ThemePrefs.cpp:63
 msgid "Theme"
@@ -6201,7 +6208,7 @@ msgstr "Стиль оформления"
 
 #: ../src/prefs/ThemePrefs.cpp:91
 msgid "Theme Cache - Images && Color"
-msgstr ""
+msgstr "Кэш стиля оформления — Изображения и цвет"
 
 #: ../src/Theme.cpp:620
 #, c-format
@@ -6253,6 +6260,9 @@ msgid ""
 "You are using Audacity %s - you need to upgrade to\n"
 "a newer version to open this file."
 msgstr ""
+"Этот файл был сохранён в Audacity %s.\n"
+"Сейчас вы используете Audacity %s — вам нужно \n"
+"установить более новую версию, чтобы открыть этот файл."
 
 #: ../src/AboutDialog.cpp:203
 msgid ""
@@ -6266,7 +6276,6 @@ msgstr ""
 "функциональные запросы."
 
 #: ../src/AboutDialog.cpp:206
-#, fuzzy
 msgid ""
 "This is a stable, completed release of Audacity. However, if you find a bug "
 "or have a suggestion, please contact us. We depend on feedback from users in "
@@ -6274,7 +6283,7 @@ msgid ""
 "website."
 msgstr ""
 "Это стабильная и завершённая версия Audacity.  Так или иначе, если вы "
-"обнаружите ошибку или захотите предложить что-либо, свяжитесь с нами.  "
+"обнаружите ошибку или захотите предложить что-либо, свяжитесь с нами. "
 "Постоянный контакт с пользователями позволяет нам улучшать Audacity.  Для "
 "получения подробной информации посетите наш веб-сайт."
 
@@ -6284,7 +6293,6 @@ msgid "This version of Audacity was not compiled with %s support."
 msgstr "Эта версия Audacity была скомпилирована без поддержки %s."
 
 #: ../src/effects/Leveller.cpp:245
-#, fuzzy
 msgid "Threshold for Noise: "
 msgstr "Порог шума: "
 
@@ -6298,9 +6306,8 @@ msgid "Threshold: %d dB"
 msgstr "Порог: %d Дб"
 
 #: ../src/widgets/TimeTextCtrl.cpp:1329
-#, fuzzy
 msgid "Time Control"
-msgstr "центр"
+msgstr ""
 
 #: ../src/TrackPanel.cpp:1922
 msgid "Time Shift"
@@ -6324,7 +6331,7 @@ msgstr "Сместить во времени все области в дорож
 
 #: ../src/prefs/MousePrefs.cpp:107
 msgid "Time shift clip or move up/down between tracks"
-msgstr "\t"
+msgstr ""
 
 #: ../src/TrackPanel.cpp:1918
 #, fuzzy, c-format
@@ -6772,6 +6779,8 @@ msgid ""
 "recover those projects later if you change your mind. Do you really want to "
 "continue without recovering?"
 msgstr ""
+"Вы решили не восстанавливать ни один из проектов. Если в дальнейшем "
+"вы передумаете, будет уже поздно. Вы уверены в своём выборе?"
 
 #: ../src/prefs/ThemePrefs.cpp:141
 msgid "You have compiled Audacity with an extra button, \n"
@@ -6779,7 +6788,7 @@ msgstr ""
 
 #: ../src/LabelDialog.cpp:342
 msgid "You have left blank label names.  These will be\n"
-msgstr ""
+msgstr "Вы оставили некоторые метки пустыми.  В частности\n"
 
 #: ../src/Menus.cpp:1946
 msgid "You must select a track first."
@@ -6896,7 +6905,7 @@ msgstr "Масштабирование"
 
 #: ../src/effects/Echo.cpp:186
 msgid "by Dominic Mazzoni && Vaughan Johnson"
-msgstr " D—ominic Mazzoni и Vaughan Johnson"
+msgstr " — Dominic Mazzoni и Vaughan Johnson"
 
 #: ../src/effects/BassBoost.cpp:182
 #, fuzzy
@@ -6925,33 +6934,28 @@ msgid "down"
 msgstr "вниз"
 
 #: ../src/widgets/TimeTextCtrl.cpp:207
-#, fuzzy
 msgid "film frames (24 fps)"
-msgstr "чч:мм:сс + кинокадры при 24 fps"
+msgstr "кинокадры при 24 fps"
 
 #: ../src/widgets/TimeTextCtrl.cpp:197
-#, fuzzy
 msgid "hh:mm:ss"
-msgstr "мм:сс"
+msgstr "чч:мм:сс"
 
 #: ../src/widgets/TimeTextCtrl.cpp:219
 msgid "hh:mm:ss + CDDA frames (75 fps)"
 msgstr "чч:мм:сс + CDDA выборки (75 fps)"
 
 #: ../src/widgets/TimeTextCtrl.cpp:209
-#, fuzzy
 msgid "hh:mm:ss + NTSC drop frames"
-msgstr "чч:мм:сс + CDDA выборки (75 fps)"
+msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:211
-#, fuzzy
 msgid "hh:mm:ss + NTSC non-drop frames"
-msgstr "чч:мм:сс + CDDA выборки (75 fps)"
+msgstr ""
 
 #: ../src/widgets/TimeTextCtrl.cpp:215
-#, fuzzy
 msgid "hh:mm:ss + PAL frames (25 fps)"
-msgstr "чч:мм:сс + CDDA выборки (75 fps)"
+msgstr "чч:мм:сс + кинокадры PAL при 24 fps"
 
 #: ../src/widgets/TimeTextCtrl.cpp:205
 msgid "hh:mm:ss + film frames (24 fps)"
@@ -6967,7 +6971,7 @@ msgstr "чч:мм:сс + сэмплы"
 
 #: ../src/SelectionBar.cpp:134
 msgid "hidden"
-msgstr ""
+msgstr "спрятана"
 
 #: ../src/Menus.cpp:2109 ../src/LabelDialog.cpp:552
 msgid "labels.txt"
@@ -6978,13 +6982,12 @@ msgid "left"
 msgstr "левый"
 
 #: ../src/prefs/AudioIOPrefs.cpp:178 ../src/prefs/AudioIOPrefs.cpp:180
-#, fuzzy
 msgid "milliseconds"
-msgstr "секунд"
+msgstr "миллисекунд"
 
 #: ../src/prefs/DirectoriesPrefs.cpp:105
 msgid "minutes"
-msgstr ""
+msgstr "минут"
 
 #  i18n-hint: n/a is an English
 #  abbreviation meaning "not
@@ -7016,7 +7019,7 @@ msgstr "правый"
 
 #: ../src/FreqWindow.cpp:437
 msgid "s"
-msgstr ""
+msgstr "с"
 
 #: ../src/prefs/MousePrefs.cpp:105
 msgid "same as left-drag"
