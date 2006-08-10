@@ -1925,7 +1925,7 @@ int LabelTrack::AddLabel(double t, double t1, const wxString &title)
 
 void LabelTrack::DeleteLabel(int index)
 {
-   wxASSERT((index < mLabels.GetCount()));
+   wxASSERT((index < (int)mLabels.GetCount()));
    mLabels.RemoveAt(index);
 }
 

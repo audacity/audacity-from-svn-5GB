@@ -36,7 +36,7 @@ static void LinearInterpolateAudio(float *buffer, int len,
 {
    int i;
 
-   float decay = 0.9;
+   float decay = 0.9f;
 
    if (firstBad==0) {
       float delta = buffer[numBad] - buffer[numBad+1];

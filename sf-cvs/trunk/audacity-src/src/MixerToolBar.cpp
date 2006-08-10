@@ -135,7 +135,6 @@ void MixerToolBar::Populate()
    mInputSourceChoice = NULL;
 
 #if USE_PORTMIXER
-   unsigned int    j;
    int leftPosition = 355;
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();

@@ -1491,7 +1491,7 @@ void AudacityProject::OnSortTime()
    Track *track = iter.First();
    while (track) {
       if (track->GetKind() == Track::Wave) {
-         for (ndx = 0; ndx < warr.GetCount(); ndx++) {
+         for (ndx = 0; ndx < (int)warr.GetCount(); ndx++) {
             if (GetTime(track) < GetTime((Track *) warr[ndx])) {
                break;
             }
@@ -1499,7 +1499,7 @@ void AudacityProject::OnSortTime()
          warr.Insert(track, ndx);
       }
       else {
-         for (ndx = 0; ndx < marr.GetCount(); ndx++) {
+         for (ndx = 0; ndx < (int)marr.GetCount(); ndx++) {
             if (GetTime(track) < GetTime((Track *) marr[ndx])) {
                break;
             }
@@ -1509,11 +1509,11 @@ void AudacityProject::OnSortTime()
       track = iter.RemoveCurrent();
    }
 
-   for (ndx = 0; ndx < marr.GetCount(); ndx++) {
+   for (ndx = 0; ndx < (int)marr.GetCount(); ndx++) {
       mTracks->Add((Track *)marr[ndx]);
    }
 
-   for (ndx = 0; ndx < warr.GetCount(); ndx++) {
+   for (ndx = 0; ndx < (int)warr.GetCount(); ndx++) {
       mTracks->Add((Track *)warr[ndx]);
    }
 
@@ -1530,7 +1530,7 @@ void AudacityProject::OnSortName()
    TrackListIterator iter(mTracks);
    Track *track = iter.First();
    while (track) {
-      for (ndx = 0; ndx < arr.GetCount(); ndx++) {
+      for (ndx = 0; ndx < (int)arr.GetCount(); ndx++) {
          if (track->GetName() < ((Track *) arr[ndx])->GetName()) {
             break;
          }
@@ -1539,7 +1539,7 @@ void AudacityProject::OnSortName()
       track = iter.RemoveCurrent();
    }
 
-   for (ndx = 0; ndx < arr.GetCount(); ndx++) {
+   for (ndx = 0; ndx < (int)arr.GetCount(); ndx++) {
       mTracks->Add((Track *)arr[ndx]);
    }
 
