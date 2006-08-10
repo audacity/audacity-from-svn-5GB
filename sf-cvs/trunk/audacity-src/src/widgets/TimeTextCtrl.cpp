@@ -700,7 +700,7 @@ bool TimeTextCtrl::Layout()
    int triWid = mButtonWidth - 2;
    int xStart = mWidth + 1;
    int yStart = (mHeight / 2) - 2;
-   for (i = 0; i <= triWid / 2; i++ ) {
+   for (i = 0; i <= (unsigned int)(triWid / 2); i++ ) {
       memDC.DrawLine(xStart + i, yStart + i, xStart + triWid - i, yStart + i);
    }
    return true;

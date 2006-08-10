@@ -275,7 +275,7 @@ bool LabelDialog::TransferDataToWindow()
 bool LabelDialog::TransferDataFromWindow()
 {
    int cnt = mData.GetCount();
-   int i, j;
+   int i;
    TrackListIterator iter(mTracks);
    Track *t;
    int tndx = 0;
@@ -293,7 +293,7 @@ bool LabelDialog::TransferDataFromWindow()
    }
 
    // Create any added tracks
-   while (tndx < mTrackNames.GetCount() - 1) {
+   while (tndx < (int)mTrackNames.GetCount() - 1) {
 
       // Extract the name
       wxString name = mTrackNames[tndx + 1].AfterFirst(wxT('-')).Mid(1);
@@ -356,7 +356,7 @@ bool LabelDialog::Validate()
 wxString LabelDialog::TrackName(int & index, wxString dflt)
 {
    // Generate a new track name if the passed index is out of range
-   if (index < 1 || index >= mTrackNames.GetCount()) {
+   if (index < 1 || index >= (int)mTrackNames.GetCount()) {
       index = mTrackNames.GetCount();
       mTrackNames.Add(wxString::Format(wxT("%d - %s"), index, dflt.c_str()));
    }

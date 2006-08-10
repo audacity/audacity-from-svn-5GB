@@ -1615,7 +1615,7 @@ void AudioIO::FillBuffers()
          wxString blockFileLog;
          int numChannels = mCaptureTracks.GetCount();
          
-         for( i = 0; i < numChannels; i++ )
+         for( i = 0; (int)i < numChannels; i++ )
          {
             int avail = commonlyAvail;
             sampleFormat trackFormat = mCaptureTracks[i]->GetSampleFormat();
