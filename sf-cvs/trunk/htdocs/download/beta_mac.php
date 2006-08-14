@@ -17,6 +17,8 @@
 <?php include "betawarning.inc.php" ?>
 <?php include "betafeatures.inc.php" ?>
 
+<p><a href="http://audacityteam.org/mac"><?php printf(_('Using an Intel Mac?  Click Here!'))?></a></p>
+
 <p><?=$downloadTagline?></p>
 
 <h3><?=_("Recommended Download")?></h3>
