@@ -15,6 +15,8 @@
 <h2><?=$pageTitle?></h2>
 <p><?=$downloadTagline?></p>
 
+<p><a href="http://audacityteam.org/mac"><?php printf(_('Using an Intel Mac?  Click Here!'))?></a></p>
+
 <h3><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php" ?>
 <ul>
