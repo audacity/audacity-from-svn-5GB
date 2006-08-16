@@ -1,5 +1,6 @@
 <?php
 /*
+ * Copyright 2006 Vaughan Johnson
  * Copyright 2005 Dominic Mazzoni
  * Copyright 2004 Matt Brubeck
  * This file is licensed under a Creative Commons license:
@@ -16,18 +17,47 @@
 <body>
 <p><a class="skip" href="#content"><?=_("Jump to page content")?></a></p>
 
-<form id="search" action="http://google.com/custom" method="get"><p>
-  <label for="q"><a href="http://www.google.com/"><img alt="Google" title="<?=_("Powered by Google")?>" src="http://www.google.com/logos/Logo_25wht.gif"></a></label>
-  <input name="q" id="q" class="text">
-  <input type="hidden" name="sitesearch" value="audacity.sourceforge.net">
-  <input type="hidden" name="cof" value="S:http://audacity.sourceforge.net/;AH:center;LH:100;L:http://audacity.sourceforge.net/images/audacity.jpg;LW:253;AWFID:a42d5b7b681df0fd;">
-  <input type="hidden" name="domains" value="audacity.sourceforge.net">
-  <input type="submit" value="<?=_("Search this site")?>">
-</p></form>
+<!-- SiteSearch Google -->
+<form method="get" action="http://www.google.com/custom" target="_top">
+<table border="0" bgcolor="#ffffff" align="right">
+<tr><td nowrap="nowrap" valign="top" align="left" height="32">
+<a href="http://www.google.com/">
+<img src="http://www.google.com/logos/Logo_25wht.gif" border="0" alt="Google" align="middle"></img></a>
+</td>
+<td nowrap="nowrap">
+<input type="hidden" name="domains" value="audacity.sourceforge.net"></input>
+<input type="text" name="q" size="31" maxlength="255" value=""></input>
+<input type="submit" name="sa" value="Search"></input>
+</td></tr>
+<tr>
+<td>&nbsp;</td>
+<td nowrap="nowrap">
+<table>
+<tr>
+<td>
+<input type="radio" name="sitesearch" value=""></input>
+<font size="-1" color="#000000">Web</font>
+</td>
+<td>
+<input type="radio" name="sitesearch" value="audacity.sf.net" checked="checked"></input>
+<font size="-1" color="#000000">audacity.sourceforge.net</font>
+</td>
+</tr>
+</table>
+<input type="hidden" name="client" value="pub-2386514291404644"></input>
+<input type="hidden" name="forid" value="1"></input>
+<input type="hidden" name="ie" value="ISO-8859-1"></input>
+<input type="hidden" name="oe" value="ISO-8859-1"></input>
+<input type="hidden" name="safe" value="active"></input>
+<input type="hidden" name="cof" value="GALT:#008000;GL:1;DIV:#336699;VLC:663399;AH:center;BGC:FFFFFF;LBGC:336699;ALC:0000FF;LC:0000FF;T:000000;GFNT:0000FF;GIMP:0000FF;LH:50;LW:127;L:http://audacity.sourceforge.net/images/Audacity-logo-r_50pct.jpg;S:http://audacity.sourceforge.net/;FORID:1"></input>
+<input type="hidden" name="hl" value="en"></input>
+</td></tr></table>
+</form>
+<!-- SiteSearch Google -->
 
 <?php
   $titleStr = _("Audacity: Free Sound Editor and Recording Software");
-  $titleImg = "<img title=\"$titleStr\" alt=\"$titleStr\" src=\"$sitePath/images/audacity.jpg\" width=\"253\" height=\"100\">";
+  $titleImg = "<img title=\"$titleStr\" alt=\"$titleStr\" src=\"$sitePath/images/Audacity-logo-r_50pct.jpg\" width=\"253\" height=\"100\">";
 
   if ($sectionId == "" && $pageId == "") {
     echo "<h1>$titleImg</h1>";
