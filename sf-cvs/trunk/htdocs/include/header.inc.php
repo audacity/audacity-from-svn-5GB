@@ -39,7 +39,7 @@
 <font size="-1" color="#000000">Web</font>
 </td>
 <td>
-<input type="radio" name="sitesearch" value="audacity.sf.net" checked="checked"></input>
+<input type="radio" name="sitesearch" value="audacity.sourceforge.net" checked="checked"></input>
 <font size="-1" color="#000000">audacity.sourceforge.net</font>
 </td>
 </tr>
