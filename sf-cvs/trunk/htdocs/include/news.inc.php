@@ -39,6 +39,51 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "August 14, 2006",
+	"AudacityStore",
+  _("The Audacity Store Is Open"),
+  _('
+	<p>You are invited to try out the new <a href="http://audacitystore.com/">Audacity Store</a>, which features  
+		Audacity-logo items (T-shirts, embroidered polo shirts, embroidered messenger bags), and consumer electronics.
+	</p>
+	<p align="center">
+		<a href="http://audacitystore.com/">
+		  <img src="../images/Audacity Store_banner_50pct.jpg" alt=_("Audacity Store")></img>
+		</a>
+	</p>
+	<p><a href="http://audacity.sourceforge.net/community/donate">Learn more about how Audacity raises money...
+		</a>
+	</p>
+	<h3>New Releases on the Way</h3>
+	<p>Also, we will soon release updates to both the stable 1.2.x and development 1.3.x lines. 
+		The new 1.3.x version will be 1.3.2 -- no official 1.3.1 because there are lots of changes 
+			and several unofficial 1.3.1 builds have already been posted.
+		Major changes in the 1.3.2 release include:
+		<dl><dt></dt><dd><!-- indent cheat -->
+			<dl>
+				<dt>Preliminary Intel Mac Support</dt>
+					<dd>pre-release builds at <a href="http://audacityteam.org/mac">http://audacityteam.org/mac</a></dd>
+				<dt>Dependencies dialog</dt>
+					<dd>lets user see dependencies of project on other files, and 
+						copy audio data directly into the project</dd>
+				<dt>Crash Recovery</dt><dd>automatically saved data makes recovery fast and easy</dd>
+				<dt>New Repair Effect</dt><dd>smooths corrupted waveforms</dd>
+				<dt>UI Changes</dt>
+					<dd>themes (custom user interfaces), new toolbar docking features, new 
+						time-specification controls, increased accessibility support, history 
+						window changes, lots more</dd>
+				<dt>Selection Bar Improvements</dt><dd>increased control and bug fixes</dd>
+				<dt>Equalization Effect Improvements</dt><dd>better layout of Graphic EQ, faster animation of curve, increased control</dd>
+				<dt>Many More LADSPA effects for Windows</dt><dd>most LADSPA effects now ported to Windows</dd>
+				<dt>Numerous Bug Fixes</dt><dd>fixes to hotkeys, directories, Portable Audacity, crashes, etc.</dd>
+				<dt></dt><dd></dd>
+			</dl>
+		</dd></dl>
+	</p>
+	')
+);
+
+add_news_item(
   "November 28, 2005",
 	"1.2.4-release",
   _("Audacity 1.2.4 and 1.3.0 Released"),
