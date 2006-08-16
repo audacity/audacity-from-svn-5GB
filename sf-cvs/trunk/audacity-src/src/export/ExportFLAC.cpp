@@ -37,6 +37,7 @@ and libvorbis examples, Monty <monty@xiph.org>
 #include "../Prefs.h"
 
 #include "../Internat.h"
+#include "../Tags.h"
 
 #define SAMPLES_PER_RUN 8192
 
@@ -51,7 +52,9 @@ bool ExportFLAC(AudacityProject *project,
    wxLogNull logNo;            // temporarily disable wxWindows error messages 
    int       eos = 0;
    bool      cancelling = false;
-   
+
+   Tags *tags = project->GetTags();
+
    wxString bitDepthPref =
       gPrefs->Read(wxT("/FileFormats/FLACBitDepth"), wxT("16"));
    
@@ -59,6 +62,9 @@ bool ExportFLAC(AudacityProject *project,
    encoder->set_filename(fName.mb_str());
    encoder->set_channels(numChannels);
    encoder->set_sample_rate(int(rate + 0.5));
+
+   tags->ExportFLACTags(encoder);
+   
    sampleFormat format;
    if(bitDepthPref == wxT("24")){
    	format=int24Sample;

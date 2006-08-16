@@ -77,6 +77,11 @@ Tags::Tags()
 
    mTagsEditor = NULL;
    mTagsEditorFrame = NULL;
+
+#ifdef USE_LIBFLAC
+   mFLACMeta = new ::FLAC__StreamMetadata*[1];
+   mFLACMeta[0] = NULL;
+#endif
 }
 
 Tags::~Tags()
@@ -84,6 +89,15 @@ Tags::~Tags()
    if (mTagsEditorFrame) {
       mTagsEditorFrame->Destroy();
    }
+#ifdef USE_LIBFLAC
+   if (mFLACMeta[0])
+   {
+      ::FLAC__metadata_object_delete(mFLACMeta[0]);
+      mFLACMeta[0] = NULL;
+   }
+   delete[] mFLACMeta;
+#endif
+
 }
 
 bool Tags::IsEmpty()
@@ -544,6 +558,61 @@ int Tags::ExportID3(char **buffer, bool *endOfFile)
    return 0;
 #endif
 }
+
+#ifdef USE_LIBFLAC
+void Tags::ExportFLACTags(FLAC::Encoder::File *encoder)
+{
+   /* Somehow I can't get the hang of the libFLAC++ API for metadata, 
+      so we mix things a little with the 'pure' C API instead - JAPJ */
+
+   if (mFLACMeta[0])
+   {
+      /* first cleanup any previous metadata */
+      ::FLAC__metadata_object_delete(mFLACMeta[0]);
+      mFLACMeta[0] = NULL;
+   }
+
+   if (mFLACMeta[0] == NULL)
+   {
+      mFLACMeta[0] = ::FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+   }
+
+   if (mTitle != wxT(""))
+   {
+      FLAC::Metadata::VorbisComment::Entry entry("TITLE", mTitle.mb_str());
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
+   }
+
+   if (mArtist != wxT(""))
+   {
+      FLAC::Metadata::VorbisComment::Entry entry("ARTIST", mArtist.mb_str());
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
+   }
+
+   if (mAlbum != wxT(""))
+   {
+      FLAC::Metadata::VorbisComment::Entry entry("ALBUM", mAlbum.mb_str());
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
+   }
+
+   if (mTrackNum >= 0) {
+      wxString trackNumStr;
+      trackNumStr.Printf(wxT("%d"), mTrackNum);
+      FLAC::Metadata::VorbisComment::Entry entry("TRACKNUMBER", trackNumStr.mb_str());
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
+   }
+
+   if (mGenre >= 0) {
+      wxString genreStr = GetGenreNum(mGenre);
+      FLAC::Metadata::VorbisComment::Entry entry("GENRE", genreStr.mb_str());
+      ::FLAC__metadata_object_vorbiscomment_append_comment(mFLACMeta[0], entry.get_entry(), true);
+   }
+
+   encoder->set_metadata(mFLACMeta,1);
+}
+#endif
+
+
 
 //
 // TagsEditor

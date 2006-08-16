@@ -36,6 +36,10 @@
 #include <wx/string.h>
 #include <wx/dialog.h>
 
+#ifdef USE_LIBFLAC
+#include "FLAC++/encoder.h"
+#endif
+
 class wxRadioBox;
 class wxTextCtrl;
 class wxChoice;
@@ -62,7 +66,11 @@ public:
    // returns buffer len; caller frees
    // if endOfFile is true, should put the ID3 tags at
    // the END, rather than the beginning, of the MP3 file
-   int ExportID3(char **buffer, bool *endOfFile); 
+   int ExportID3(char **buffer, bool *endOfFile);
+
+#ifdef USE_LIBFLAC
+   void ExportFLACTags(FLAC::Encoder::File *encoder);
+#endif
    
    void AllowEditTitle(bool editTitle);
    void SetTitle(wxString title);
@@ -94,6 +102,10 @@ private:
 
    TagsEditor   *mTagsEditor;
    ToolBarFrame *mTagsEditorFrame;
+
+#ifdef USE_LIBFLAC
+   ::FLAC__StreamMetadata **mFLACMeta;
+#endif
 };
 
 class TagsEditor: public ExpandingToolBar
