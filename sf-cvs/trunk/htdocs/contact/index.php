@@ -47,8 +47,7 @@ post on the forum, then log in and use the "Create New Thread" link');?>.</p>
   messages or other problems you experience');?>.</li>
 </ol>
 <h3><?php echo _('Discussion Lists')?></h3>
-<p><?php echo _('To discuss Audacity with other users and developers, join our
-');?><a href="../contact/lists"><?php
+<p><?php echo _('To discuss Audacity with other users and developers, join our');?><a href="../contact/lists"><?php
 //i18n-hint: this is the link text to the mailing list page
 echo _('mailing lists');?></a>.</p>
 <?php
