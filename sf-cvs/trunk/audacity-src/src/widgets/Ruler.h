@@ -112,7 +112,7 @@ class Ruler {
 
  private:
    int          mMaxWidth, mMaxHeight;
-   int          mLeft, mTop, mRight, mBottom;
+   int          mLeft, mTop, mRight, mBottom, mLead;
    int          mLength;
    wxDC        *mDC;
 
@@ -195,7 +195,7 @@ public:
    ~AdornedRulerPanel();
 
 public:
-   static int GetRulerHeight() { return 22; }
+   static int GetRulerHeight() { return 28; }
    void SetLeftOffset(int offset){ mLeftOffset = offset; }
 
    void DrawCursor(double pos);

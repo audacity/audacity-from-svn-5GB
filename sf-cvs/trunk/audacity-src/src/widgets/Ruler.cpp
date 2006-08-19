@@ -74,9 +74,9 @@ array of Ruler::Label.
 #define SELECT_TOLERANCE_PIXEL 10
 
 #define PLAY_REGION_TRIANGLE_SIZE 6
-#define PLAY_REGION_RECT_WIDTH 2
+#define PLAY_REGION_RECT_WIDTH 1
 #define PLAY_REGION_RECT_HEIGHT 3
-#define PLAY_REGION_GLOBAL_OFFSET_Y 3
+#define PLAY_REGION_GLOBAL_OFFSET_Y 7
 
 //
 // Ruler
@@ -609,7 +609,7 @@ wxString Ruler::LabelString(double d, bool major)
 void Ruler::Tick(int pos, double d, bool major)
 {
    wxString l;
-   wxCoord strW, strH;
+   wxCoord strW, strH, strD, strL;
    int strPos, strLen, strLeft, strTop;
 
    // FIXME: We don't draw a tick if of end of our label arrays
@@ -632,7 +632,7 @@ void Ruler::Tick(int pos, double d, bool major)
 
    mDC->SetFont(major? *mMajorFont: *mMinorFont);
    l = LabelString(d, major);
-   mDC->GetTextExtent(l, &strW, &strH);
+   mDC->GetTextExtent(l, &strW, &strH, &strD, &strL);
 
    if (mOrientation == wxHORIZONTAL) {
       strLen = strW;
@@ -648,6 +648,8 @@ void Ruler::Tick(int pos, double d, bool major)
       }
       else {
          strTop = mBottom - strH - 6;
+         // Still leaves room for an umlaut or whatever above normal character
+         strTop = mTop- mLead;
          mMaxHeight = max(mMaxHeight, strH + 6);
       }
    }
@@ -723,29 +725,32 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
 
    if (!mUserFonts) {
      int fontSize = 4;
-     wxCoord strW, strH;
-     wxString exampleText = wxT("0.9");
+     wxCoord strW, strH, strD, strL;
+     wxString exampleText = wxT("0.9");   //ignored for height calcs on all platforms
      int desiredPixelHeight;
 
      if (mOrientation == wxHORIZONTAL)
-       desiredPixelHeight = (mBottom-mTop-3);
+       desiredPixelHeight = mBottom-mTop-5; // height less ticks and 1px gap
      else
        desiredPixelHeight = (mRight-mLeft)/2;
 
      if (desiredPixelHeight < 8)
        desiredPixelHeight = 8;
-     if (desiredPixelHeight > 16)
-       desiredPixelHeight = 16;
+     if (desiredPixelHeight > 12)
+       desiredPixelHeight = 12;
 
-     // Keep making the font bigger until it's too big, then subtract one.
-     mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
-     mDC->GetTextExtent(exampleText, &strW, &strH);
-     while(strH <= desiredPixelHeight && fontSize < 40) {
-       fontSize++;
-       mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
-       mDC->GetTextExtent(exampleText, &strW, &strH);
-     }
-     fontSize--;
+      // Keep making the font bigger until it's too big, then subtract one.
+      mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD));
+      mDC->GetTextExtent(exampleText, &strW, &strH, &strD, &strL);
+      while( (strH-strD-strL) <= desiredPixelHeight && fontSize < 40) {
+         fontSize++;
+         mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD));
+         mDC->GetTextExtent(exampleText, &strW, &strH, &strD, & strL);
+      }
+      fontSize--;
+      mDC->SetFont(wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL));
+      mDC->GetTextExtent(exampleText, &strW, &strH, &strD, &strL);
+      mLead = strL;
 
      if (mMinorFont)
         delete mMinorFont;
@@ -1338,8 +1343,8 @@ void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
    
    if (start >= 0)
    {
-      int x1 = Time2Pos(start);
-      int x2 = Time2Pos(end) - 2;
+      int x1 = Time2Pos(start) + 1;
+      int x2 = Time2Pos(end);
       int y = mInner.height/2;
 
       bool isLocked = mTrackPanel->GetProject()->IsPlayRegionLocked();
@@ -1439,8 +1444,8 @@ void AdornedRulerPanel::DoDrawSelection(wxDC * dc)
    if( sel1 > ( mInner.width / zoom ) )
       sel1 = mInner.width / zoom;
 
-   int p0 = int ( sel0 * zoom + 0.5 );
-   int p1 = int ( sel1 * zoom + 0.5 );
+   int p0 = int ( sel0 * zoom + 1.5 );
+   int p1 = int ( sel1 * zoom + 2.5 );
 
    dc->SetBrush( wxBrush( theTheme.Colour( clrRulerBackground )) );
    dc->SetPen(   wxPen(   theTheme.Colour( clrRulerBackground )) );

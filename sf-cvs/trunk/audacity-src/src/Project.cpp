@@ -677,7 +677,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
    InitialState();
    FixScrollbars();
-   mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() );
+   mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() - 1 );  // bevel on AdornedRuler
    mRuler->SetTrackPanel(mTrackPanel);
 
    //
