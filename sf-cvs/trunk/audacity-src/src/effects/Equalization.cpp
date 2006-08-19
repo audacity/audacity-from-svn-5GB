@@ -922,7 +922,11 @@ void EqualizationDialog::MakeEqualizationDialog()
    dBRuler->ruler.GetMaxSize(&w, NULL);
    dBRuler->SetSize(wxSize(w, 150));  // height needed for wxGTK
 
-   szr1->Add( dBRuler, 0, wxEXPAND|wxALIGN_LEFT|wxALL );
+   szr4 = new wxBoxSizer( wxVERTICAL );
+   szr4->AddSpacer(2); // vertical space for panel border and thickness of line
+   szr4->Add( dBRuler, 1, wxEXPAND|wxALIGN_LEFT|wxALL );
+   szr4->AddSpacer(1); // vertical space for thickness of line
+   szr1->Add( szr4, 0, wxEXPAND|wxALIGN_LEFT|wxALL );
 
    mPanel = new EqualizationPanel( mLoFreq, mHiFreq,
                                    mEnvelope,
