@@ -308,6 +308,7 @@ private:
    wxBoxSizer *szrG;
    wxBoxSizer *szrV;
    wxBoxSizer *szr3;
+   wxBoxSizer *szr4;
    wxBoxSizer *szr2;
    wxFlexGridSizer *szr1;
    wxSize size;
