@@ -1204,8 +1204,8 @@ msgid "Discussion Lists"
 msgstr "E-mailové konference"
 
 #: contact/index.php:50
-msgid "To discuss Audacity with other users and developers, join our\n"
-msgstr "Diskutujte o Audacity s ostatními uživateli a vývojáři.\n"
+msgid "To discuss Audacity with other users and developers, join our"
+msgstr "Diskutujte o Audacity s ostatními uživateli a vývojáři"
 
 #. i18n-hint: this is the link text to the mailing list page
 #: contact/index.php:53

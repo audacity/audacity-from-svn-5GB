@@ -28,6 +28,7 @@ $available_locales = array(
   "it" => array("it_IT", "Italiano"),
   "hu" => array("hu_HU", "Magyar"),
   "nb" => array("nb_NO", "Norsk (Bokmål)"),
+  "nl" => array("nl_NL", "Nederlands"),
   "pl" => array("pl_PL", "Polski"),
   "pt" => array("pt_BR", "Português"),
   "ro" => array("ro_RO", "Română"),
