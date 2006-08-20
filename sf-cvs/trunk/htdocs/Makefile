@@ -17,7 +17,7 @@ XGETTEXT_ARGS=-L php --add-comments="i18n-hint" --from-code="UTF-8"
 $(POT_FILE): $(SOURCES)
 	find . -name '*.php' ! -path './old/*' \
 	  | xargs $(XGETTEXT) $(XGETTEXT_ARGS) -o $@
-	chmod go+r $@
+	#chmod go+r $@
 
 # Update the PO files (translated message catalogs).
 MSGMERGE=msgmerge
