@@ -1,5 +1,5 @@
 /*
- * $Id: ringbuffer.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: ringbuffer.c,v 1.2 2006-08-20 00:17:51 dmazzoni Exp $
  * ringbuffer.c
  * Ring Buffer utility..
  *
@@ -65,15 +65,22 @@
  *
  ****************/
 
+#if defined( MOSX_USE_NON_ATOMIC_FLAG_BITS )
+#   define PAMemoryBarrier() 
+# else
+#   include <libkern/OSAtomic.h>
+#   define PAMemoryBarrier() OSMemoryBarrier();
+#endif
+
 #if defined(__APPLE__) || defined(__FreeBSD__)
 #   include <libkern/OSAtomic.h>
     /* Here are the memory barrier functions. Mac OS X and FreeBSD only provide
        full memory barriers, so the three types of barriers are the same.
        The asm volatile may be redundant with the memory barrier, but
        until I have proof of that, I'm leaving it. */
-#   define FullMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
-#   define ReadMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
-#   define WriteMemoryBarrier() do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
+#   define FullMemoryBarrier()  do{ asm volatile("":::"memory"); PAMemoryBarrier() }while(false)
+#   define ReadMemoryBarrier()  do{ asm volatile("":::"memory"); PAMemoryBarrier() }while(false)
+#   define WriteMemoryBarrier() do{ asm volatile("":::"memory"); PAMemoryBarrier(); }while(false)
 #else
 #   error Memory Barriers not defined on this system or system unknown
 #endif

@@ -116,6 +116,10 @@ AC_SUBST(NASMOPT)
 
 CFLAGS=${CFLAGS:-"-g -O2 -Wall -pedantic -pipe -fPIC"}
 
+dnl dmazzoni
+dnl This flag is necessary for OS X 10.3 compatibility
+CFLAGS="$CFLAGS -DMOSX_USE_NON_ATOMIC_FLAG_BITS"
+
 if [[ $ac_cv_c_bigendian = "yes" ]] ; then
    CFLAGS="$CFLAGS -DPA_BIG_ENDIAN"
 else
