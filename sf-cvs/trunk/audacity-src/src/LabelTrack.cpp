@@ -861,62 +861,67 @@ bool LabelTrack::CopySelectedText()
 
 /// Paste the text on the clipboard to text box
 ///  @return true if mouse is clicked in text box, false otherwise
-/// LL: Allows pasting non-printables...should that be changed?
-bool LabelTrack::PasteSelectedText() 
+bool LabelTrack::PasteSelectedText(double sel0, double sel1)
 {
-   if (mSelIndex == -1)
-      return false;
+   if (mSelIndex == -1) {
+      AddLabel(sel0, sel1, wxT(""));
+   }
 
-   wxTextDataObject data;
+   wxString text;
    wxString left=wxT("");
    wxString right=wxT("");
    
-   // if the mouse is clicked in text box
-   if (mInBox) {
-      // if text data is available
-      if (wxTheClipboard->IsSupported(wxDF_TEXT))
-      {
-         if (wxTheClipboard->Open()) {
-            wxTheClipboard->GetData( data );
-            wxTheClipboard->Close();
-         }
+   // if text data is available
+   if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+      if (wxTheClipboard->Open()) {
+         wxTextDataObject data;
+         wxTheClipboard->GetData( data );
+         wxTheClipboard->Close();
+         text = data.GetText();
       }
 
-      // if there is some highlighted text
-      if (mLabels[mSelIndex]->highlighted) {
-         // swapping to make sure currentCursorPos > mInitialCursorPos always
-         if (mInitialCursorPos > mCurrentCursorPos) {
-            int temp = mCurrentCursorPos;
-            mCurrentCursorPos = mInitialCursorPos;
-            mInitialCursorPos = temp;
+      // Convert control characters to blanks
+      int i;
+      for (i = 0; i < text.Length(); i++) {
+         if (wxIscntrl(text[i])) {
+            text[i] = wxT(' ');
          }
-
-         // same as cutting
-         if (mInitialCursorPos > 0) {
-            left = (mLabels[mSelIndex]->title).Mid(0, mInitialCursorPos);
-         }
-         if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
-            right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos, (mLabels[mSelIndex]->title).Length()-mCurrentCursorPos);
-         }
-         mLabels[mSelIndex]->title = left + data.GetText() + right;            
-         mCurrentCursorPos = left.Length() + data.GetTextLength() - 1;
-      } 
-      else
-      {
-         // insert the data on the clipboard from the cursor position
-         if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
-            right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos);
-         }
-         mLabels[mSelIndex]->title = (mLabels[mSelIndex]->title).Left(mCurrentCursorPos);
-         mLabels[mSelIndex]->title += data.GetText();
-         mLabels[mSelIndex]->title += right;
-         mCurrentCursorPos += data.GetTextLength() - 1;
       }
-      // set mInitialCursorPos equal to currentCursorPos
-      mInitialCursorPos = mCurrentCursorPos;
-      return true;
    }
-   return false;
+
+   // if there is some highlighted text
+   if (mLabels[mSelIndex]->highlighted) {
+      // swapping to make sure currentCursorPos > mInitialCursorPos always
+      if (mInitialCursorPos > mCurrentCursorPos) {
+         int temp = mCurrentCursorPos;
+         mCurrentCursorPos = mInitialCursorPos;
+         mInitialCursorPos = temp;
+      }
+
+      // same as cutting
+      if (mInitialCursorPos > 0) {
+         left = (mLabels[mSelIndex]->title).Mid(0, mInitialCursorPos);
+      }
+      if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
+         right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos, (mLabels[mSelIndex]->title).Length()-mCurrentCursorPos);
+      }
+      mLabels[mSelIndex]->title = left + text + right;            
+      mCurrentCursorPos = left.Length() + text.Length() - 1;
+   } 
+   else
+   {
+      // insert the data on the clipboard from the cursor position
+      if (mCurrentCursorPos < (int)(mLabels[mSelIndex]->title).Length()) {
+         right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos);
+      }
+      mLabels[mSelIndex]->title = (mLabels[mSelIndex]->title).Left(mCurrentCursorPos);
+      mLabels[mSelIndex]->title += text;
+      mLabels[mSelIndex]->title += right;
+      mCurrentCursorPos += text.Length() - 1;
+   }
+   // set mInitialCursorPos equal to currentCursorPos
+   mInitialCursorPos = mCurrentCursorPos;
+   return true;
 }
 
 
@@ -1241,26 +1246,17 @@ bool LabelTrack::CaptureKey(wxKeyEvent & event)
       }
    }
 
-   if (IsGoodLabelCharacter(keyCode, charCode))
+   if (IsGoodLabelCharacter(keyCode, charCode) && !event.CmdDown())
       return true;
 
    return false;
 }
 
 /// KeyEvent is called for every keypress when over the label track.
-bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event)
+bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & event)
 {
-   // Ignore modified characters (this does not include shifted ones)
-   if (event.HasModifiers() || event.CmdDown()) {
-      event.Skip();
-      return false;
-   }
-
    // Only track true changes to the label
    bool updated = false;
-
-   // Assume the key will be handled
-   int handled = true;
 
    // Cache the keycode
    int keyCode = event.GetKeyCode();
@@ -1269,6 +1265,7 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
    charCode = event.GetUnicodeKey();
 #endif
 
+   // All editing keys are only active if we're currently editing a label
    if (mSelIndex >= 0) {
       switch (keyCode) {
 
@@ -1395,7 +1392,6 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
 
       case WXK_RETURN:
 
-
       case WXK_ESCAPE:
          if (mLabels[mSelIndex]->title == wxT("")) {
             delete mLabels[mSelIndex];
@@ -1419,46 +1415,73 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
          newSel0 = mLabels[mSelIndex]->t;
          newSel1 = mLabels[mSelIndex]->t1;
          break;
-      
-      default:
-         if( IsGoodLabelCharacter(keyCode, charCode)) {
-            // Test if cursor is in the end of string or not
-            if (mLabels[mSelIndex]->highlighted) {
-               RemoveSelectedText();
-            }
 
-            if (mCurrentCursorPos < (int)mLabels[mSelIndex]->title.length()) {
-               // Get substring on the righthand side of cursor
-               wxString rightPart = mLabels[mSelIndex]->title.Mid(mCurrentCursorPos);
-               // Set title to substring on the lefthand side of cursor
-               mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(mCurrentCursorPos);
-               //append charcode
-               mLabels[mSelIndex]->title += charCode;
-               //append the right part substring
-               mLabels[mSelIndex]->title += rightPart;
-            }
-            else
-            {
-               //append charCode
-               mLabels[mSelIndex]->title += charCode;
-            }
-            //moving cursor position forward
-            mCurrentCursorPos++;
-            mInitialCursorPos = mCurrentCursorPos;
-            updated = true;
-         }
-         else
-            handled = false;
+      default:
+         event.Skip();
          break;
       }
-   } 
+   }
+   else
+   {
+      event.Skip();
+   }
+
+   // Make sure the caret is visible
+   mDrawCursor = true;
+
+   return updated;
+}
+
+/// KeyEvent is called for every keypress when over the label track.
+bool LabelTrack::OnChar(double & newSel0, double & newSel1, wxKeyEvent & event)
+{
+   // Only track true changes to the label
+   bool updated = false;
+
+   // Cache the keycode
+   int keyCode = event.GetKeyCode();
+   wxChar charCode = keyCode;
+#if wxUSE_UNICODE
+   charCode = event.GetUnicodeKey();
+#endif
+
+   if (mSelIndex >= 0) {
+      if (IsGoodLabelCharacter(keyCode, charCode)) {
+         // Test if cursor is in the end of string or not
+         if (mLabels[mSelIndex]->highlighted) {
+            RemoveSelectedText();
+         }
+
+         if (mCurrentCursorPos < (int)mLabels[mSelIndex]->title.length()) {
+            // Get substring on the righthand side of cursor
+            wxString rightPart = mLabels[mSelIndex]->title.Mid(mCurrentCursorPos);
+            // Set title to substring on the lefthand side of cursor
+            mLabels[mSelIndex]->title = mLabels[mSelIndex]->title.Left(mCurrentCursorPos);
+            //append charcode
+            mLabels[mSelIndex]->title += charCode;
+            //append the right part substring
+            mLabels[mSelIndex]->title += rightPart;
+         }
+         else
+         {
+            //append charCode
+            mLabels[mSelIndex]->title += charCode;
+         }
+         //moving cursor position forward
+         mCurrentCursorPos++;
+         mInitialCursorPos = mCurrentCursorPos;
+         updated = true;
+      }
+      else
+         event.Skip();
+   }
    else if( !IsGoodLabelFirstCharacter(keyCode, charCode))
    {
       // Don't automatically start a label unless its one of the accepted 
       // characters.
       // We can always create the label and then type the forbidden character
       // as our first character.
-      handled = false;
+      event.Skip();
    }
    else
    {
@@ -1482,10 +1505,6 @@ bool LabelTrack::KeyEvent(double & newSel0, double & newSel1, wxKeyEvent & event
       mSelIndex = pos;
       updated = true;
    }
-
-   // Allow event to continue to wxApp if we didn't handle it
-   if (!handled)
-      event.Skip();
 
    // Make sure the caret is visible
    mDrawCursor = true;
@@ -1920,6 +1939,17 @@ int LabelTrack::AddLabel(double t, double t1, const wxString &title)
 
    mSelIndex = pos;
 
+   // Make sure the caret is visible
+   //
+   // LLL: The cursor will not be drawn when the first label
+   //      is added since mDrawCursor will be false.  Presumably,
+   //      if the user adds a label, then a cursor should be drawn
+   //      to indicate that typing is expected.
+   //
+   //      If the label is added during actions like import, then the
+   //      mDrawCursor flag will be reset once the action is complete.
+   mDrawCursor = true;
+
    return pos;
 }
 
@@ -2060,13 +2090,15 @@ void LabelTrack::CreateCustomGlyphs()
 /// character.
 bool LabelTrack::IsGoodLabelFirstCharacter(int keyCode, wxChar charCode)
 {
-   return (keyCode < WXK_START && !wxIscntrl(charCode));
+   return (keyCode < WXK_START && !wxIscntrl(charCode)) ||
+          keyCode > WXK_COMMAND;
 }
 
 /// We'll only accept these characters within a label
 bool LabelTrack::IsGoodLabelCharacter(int keyCode, wxChar charCode)
 {
-   return (keyCode < WXK_START && !wxIscntrl(charCode));
+   return (keyCode < WXK_START && !wxIscntrl(charCode)) ||
+          keyCode > WXK_COMMAND;
 }
 
 /// Sorts the labels in order of their starting times.

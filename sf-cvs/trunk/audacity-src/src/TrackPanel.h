@@ -153,6 +153,7 @@ class TrackPanel:public wxPanel {
    void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void OnCaptureKey(wxCommandEvent & event);
+   void OnKeyDown(wxKeyEvent & event);
    void OnChar(wxKeyEvent & event);
 
    void OnSetFocus(wxFocusEvent & event);

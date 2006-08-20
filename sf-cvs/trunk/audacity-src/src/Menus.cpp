@@ -217,99 +217,99 @@ void AudacityProject::CreateMenusAndCommands()
 
    if( !mCleanSpeechMode )
 	{
-   c->AddSeparator();
-
-	c->BeginSubMenu(_("&Import..."));
+      c->AddSeparator();
+      
+      c->BeginSubMenu(_("&Import..."));
 		c->SetDefaultFlags(AudioIONotBusyFlag, AudioIONotBusyFlag);
 		c->AddItem(wxT("ImportAudio"),    _("&Audio...\tCtrl+Shift+I"),	FN(OnImport));
 		c->AddItem(wxT("ImportLabels"),   _("&Labels..."),					FN(OnImportLabels));
 		c->AddItem(wxT("ImportMIDI"),     _("&MIDI..."),							FN(OnImportMIDI));
 		c->AddItem(wxT("ImportRaw"),      _("&Raw Data..."),				FN(OnImportRaw));
-	c->EndSubMenu();
-
-	c->AddSeparator();
-
-   c->BeginSubMenu(_("&Export As..."));
-   c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
-   c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
+      c->EndSubMenu();
+      
+      c->AddSeparator();
+      
+      c->BeginSubMenu(_("&Export As..."));
+      c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
+      c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
 #ifdef USE_LIBVORBIS
-   c->AddItem(wxT("ExportOgg"),      _("Ogg &Vorbis..."),        FN(OnExportOggMix));
-   // Enable Export commands only when there are tracks
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
+      c->AddItem(wxT("ExportOgg"),      _("Ogg &Vorbis..."),        FN(OnExportOggMix));
+      // Enable Export commands only when there are tracks
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag,
                          wxT("ExportOgg"), NULL);
 #endif
 #ifdef USE_LIBFLAC
-   c->AddItem(wxT("ExportFLAC"),      _("&FLAC..."),        FN(OnExportFLACMix));
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
+      c->AddItem(wxT("ExportFLAC"),      _("&FLAC..."),        FN(OnExportFLACMix));
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag,
                          wxT("ExportFLAC"), NULL);
 #endif
-   c->EndSubMenu();
-
-   c->BeginSubMenu(_("Expo&rt Selection As..."));
-   c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
-   c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
+      c->EndSubMenu();
+      
+      c->BeginSubMenu(_("Expo&rt Selection As..."));
+      c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
+      c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
 #ifdef USE_LIBVORBIS
-   c->AddItem(wxT("ExportOggSel"),   _("Ogg &Vorbis..."), FN(OnExportOggSelection));
-   // Enable Export Selection commands only when there's a selection
-   c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+      c->AddItem(wxT("ExportOggSel"),   _("Ogg &Vorbis..."), FN(OnExportOggSelection));
+      // Enable Export Selection commands only when there's a selection
+      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
                          wxT("ExportOggSel"), NULL);
 #endif
 #ifdef USE_LIBFLAC
-   c->AddItem(wxT("ExportFLACSel"),   _("&FLAC..."), FN(OnExportFLACSelection));
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
+      c->AddItem(wxT("ExportFLACSel"),   _("&FLAC..."), FN(OnExportFLACSelection));
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
+                         AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          wxT("ExportFLACSel"), NULL);
 #endif
-   c->EndSubMenu();
-
-   // Enable Export commands only when there are tracks
-   c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag,
-                      wxT("Export"), wxT("ExportMP3"), NULL);
-   // Enable Export Selection commands only when there's a selection
-   c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                      AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-                      wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
-
-   c->AddSeparator();
-   c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
-   c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
-
-   c->SetCommandFlags(wxT("ExportLabels"),
-                      AudioIONotBusyFlag | LabelTracksExistFlag,
-                      AudioIONotBusyFlag | LabelTracksExistFlag);
-   c->SetCommandFlags(wxT("ExportMultiple"),
-                      AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag);                      
+      c->EndSubMenu();
+      
+      // Enable Export commands only when there are tracks
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("Export"), wxT("ExportMP3"), NULL);
+      // Enable Export Selection commands only when there's a selection
+      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
+      
+      c->AddSeparator();
+      c->AddItem(wxT("ExportLabels"),   _("Export &Labels..."),              FN(OnExportLabels));
+      c->AddItem(wxT("ExportMultiple"),   _("Export &Multiple..."),              FN(OnExportMultiple));
+      
+      c->SetCommandFlags(wxT("ExportLabels"),
+                         AudioIONotBusyFlag | LabelTracksExistFlag,
+                         AudioIONotBusyFlag | LabelTracksExistFlag);
+      c->SetCommandFlags(wxT("ExportMultiple"),
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag);                      
    }
 
    c->AddSeparator();
 
 	if( mCleanSpeechMode )
 	{
-
-	c->BeginSubMenu(_("&Export As..."));
-	c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
-	c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
-	c->EndSubMenu();
-
-	c->BeginSubMenu(_("Expo&rt Selection As..."));
-	c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
-	c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
-	c->EndSubMenu();
-
-	// Enable Export commands only when there are tracks
-	c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
-	                   AudioIONotBusyFlag | TracksExistFlag,
-	                   wxT("Export"), wxT("ExportMP3"), NULL);
-	// Enable Export Selection commands only when there's a selection
-	c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-	                   AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
-	                   wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
-
+      
+      c->BeginSubMenu(_("&Export As..."));
+      c->AddItem(wxT("Export"),         _("&WAV..."),                   FN(OnExportMix));
+      c->AddItem(wxT("ExportMP3"),      _("&MP3..."),               FN(OnExportMP3Mix));
+      c->EndSubMenu();
+      
+      c->BeginSubMenu(_("Expo&rt Selection As..."));
+      c->AddItem(wxT("ExportSel"),      _("&WAV..."),         FN(OnExportSelection));
+      c->AddItem(wxT("ExportMP3Sel"),   _("&MP3..."),     FN(OnExportMP3Selection));
+      c->EndSubMenu();
+      
+      // Enable Export commands only when there are tracks
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("Export"), wxT("ExportMP3"), NULL);
+      // Enable Export Selection commands only when there's a selection
+      c->SetCommandFlags(AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         AudioIONotBusyFlag | TimeSelectedFlag | TracksSelectedFlag,
+                         wxT("ExportSel"), wxT("ExportMP3Sel"), NULL);
+      
       c->AddSeparator();
 
       c->AddItem(wxT("BatchProcess"),     _("CleanSpeech C&hain..."),   FN(OnBatch));
@@ -333,20 +333,20 @@ void AudacityProject::CreateMenusAndCommands()
 
    if( !mCleanSpeechMode )
 	{
-   c->AddSeparator();
-   c->AddItem(wxT("PageSetup"),   _("Pa&ge Setup..."),              FN(OnPageSetup));
-   c->AddItem(wxT("Print"),       _("&Print..."),                   FN(OnPrint));
-   c->SetCommandFlags(wxT("PageSetup"),
-                      AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag);
-   c->SetCommandFlags(wxT("Print"),
-                      AudioIONotBusyFlag | TracksExistFlag,
-                      AudioIONotBusyFlag | TracksExistFlag);   
+      c->AddSeparator();
+      c->AddItem(wxT("PageSetup"),   _("Pa&ge Setup..."),              FN(OnPageSetup));
+      c->AddItem(wxT("Print"),       _("&Print..."),                   FN(OnPrint));
+      c->SetCommandFlags(wxT("PageSetup"),
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag);
+      c->SetCommandFlags(wxT("Print"),
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag);   
 	}
-
+   
    c->AddSeparator();
 
-	#ifdef __WXMSW__
+   #ifdef __WXMSW__
    CreateRecentFilesMenu(c);
    #endif
 
@@ -2459,8 +2459,9 @@ void AudacityProject::OnPaste()
    while (countTrack) {
       if (countTrack->GetSelected()) {
          if (countTrack->GetKind() == Track::Label) {
-            if (((LabelTrack *)countTrack)->PasteSelectedText()) {
-               mTrackPanel->Refresh(false);
+            if (((LabelTrack *)countTrack)->PasteSelectedText(mViewInfo.sel0, mViewInfo.sel1)) {
+               PushState(_("Pasted text from the clipboard"), _("Paste"));
+               RedrawProject();
                return;
             }
          }
@@ -3909,7 +3910,7 @@ int AudacityProject::DoAddLabel(double left, double right)
    if (!lt) {
       lt = new LabelTrack(mDirManager);
       mTracks->Add(lt);
-
+      lt->SetSelected(true);
    }
 
 // LLL: Commented as it seemed a little forceful to remove users
