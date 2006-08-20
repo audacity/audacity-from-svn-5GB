@@ -632,6 +632,13 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                 this,
                                 mRuler);
 
+   // LLL: When Audacity starts or becomes active after returning from
+   //      another application, the first window that can accept focus
+   //      will be given the focus even if we try to SetFocus().  By
+   //      making the TrackPanel that first window, we resolve several
+   //      keyboard focus problems.
+   pPage->MoveBeforeInTabOrder(mToolBarDock);
+
    bs = (wxBoxSizer *) pPage->GetSizer();
 
    wxBoxSizer *hs;
