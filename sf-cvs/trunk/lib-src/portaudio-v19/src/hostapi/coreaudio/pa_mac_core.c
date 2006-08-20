@@ -226,7 +226,7 @@ static PaError GetChannelInfo( PaMacAUHAL *auhalHostApi,
     PaError err = paNoError;
     UInt32 i;
     int numChannels = 0;
-    AudioBufferList *buflist;
+    AudioBufferList *buflist = NULL;
     UInt32 frameLatency;
 
     VVDBUG(("GetChannelInfo()\n"));
@@ -239,11 +239,11 @@ static PaError GetChannelInfo( PaMacAUHAL *auhalHostApi,
         return err;
 
     buflist = PaUtil_AllocateMemory(propSize);
+    if( !buflist )
+       return paInsufficientMemory;
     err = ERR(AudioDeviceGetProperty(macCoreDeviceId, 0, isInput, kAudioDevicePropertyStreamConfiguration, &propSize, buflist));
     if (err)
-        return err;
-
-    /*FIXME: dealocate buflist*/
+        goto error;
 
     for (i = 0; i < buflist->mNumberBuffers; ++i)
         numChannels += buflist->mBuffers[i].mNumberChannels;
@@ -265,6 +265,15 @@ static PaError GetChannelInfo( PaMacAUHAL *auhalHostApi,
        err = WARNING(AudioDeviceGetProperty(macCoreDeviceId, 0, isInput, kAudioDevicePropertyLatency, &propSize, &frameLatency));
        if (!err)
        {
+          /** FEEDBACK:
+           * This code was arrived at by trial and error, and some extentive, but not exhaustive
+           * testing. Sebastien Beaulieu <seb@plogue.com> has suggested using
+           * kAudioDevicePropertyLatency + kAudioDevicePropertySafetyOffset + buffer size instead.
+           * At the time this code was written, many users were reporting dropouts with audio
+           * programs that probably used this formula. This was probably
+           * around 10.4.4, and the problem is probably fixed now. So perhaps
+           * his formula should be reviewed and used.
+           * */
           double secondLatency = frameLatency / deviceInfo->defaultSampleRate;
           if (isInput)
           {
@@ -278,7 +287,11 @@ static PaError GetChannelInfo( PaMacAUHAL *auhalHostApi,
           }
        }
     }
+    PaUtil_FreeMemory( buflist );
     return paNoError;
+ error:
+    PaUtil_FreeMemory( buflist );
+    return err;
 }
 
 static PaError InitializeDeviceInfo( PaMacAUHAL *auhalHostApi,
@@ -1319,22 +1332,46 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
         maybe need to change input latency estimate if IO devs differ
     */
     stream->streamRepresentation.streamInfo.inputLatency =
-            PaUtil_GetBufferProcessorInputLatency(&stream->bufferProcessor);
+            PaUtil_GetBufferProcessorInputLatency(&stream->bufferProcessor)/sampleRate;
     stream->streamRepresentation.streamInfo.outputLatency =
-            PaUtil_GetBufferProcessorOutputLatency(&stream->bufferProcessor);
+            PaUtil_GetBufferProcessorOutputLatency(&stream->bufferProcessor)/sampleRate;
     stream->streamRepresentation.streamInfo.sampleRate = sampleRate;
 
     stream->sampleRate  = sampleRate;
+    stream->outDeviceSampleRate = 0;
+    if( stream->outputUnit ) {
+       Float64 rate;
+       UInt32 size = sizeof( rate );
+       result = ERR( AudioDeviceGetProperty( stream->outputDevice,
+                                    0,
+                                    FALSE,
+                                    kAudioDevicePropertyNominalSampleRate,
+                                    &size, &rate ) );
+       if( result )
+          goto error;
+       stream->outDeviceSampleRate = rate;
+    }
+    stream->inDeviceSampleRate = 0;
+    if( stream->inputUnit ) {
+       Float64 rate;
+       UInt32 size = sizeof( rate );
+       result = ERR( AudioDeviceGetProperty( stream->inputDevice,
+                                    0,
+                                    TRUE,
+                                    kAudioDevicePropertyNominalSampleRate,
+                                    &size, &rate ) );
+       if( result )
+          goto error;
+       stream->inDeviceSampleRate = rate;
+    }
     stream->userInChan  = inputChannelCount;
     stream->userOutChan = outputChannelCount;
 
-    /*stream->isTimeSet   = FALSE;*/
+    stream->isTimeSet   = FALSE;
     stream->state = STOPPED;
     stream->xrunFlags = 0;
 
     *s = (PaStream*)stream;
-
-    setStreamStartTime( stream );
 
     return result;
 
@@ -1352,19 +1389,18 @@ PaTime GetStreamTime( PaStream *s )
 
     VVDBUG(("GetStreamTime()\n"));
 
-/*
-    //if ( !stream->isTimeSet )
-    //    return (PaTime)0;
-*/
-
-    if ( stream->outputDevice )
-        AudioDeviceGetCurrentTime( stream->outputDevice, &timeStamp);
-    else if ( stream->inputDevice )
-        AudioDeviceGetCurrentTime( stream->inputDevice, &timeStamp);
-    else
+    if ( !stream->isTimeSet )
         return (PaTime)0;
 
-    return (PaTime)(timeStamp.mSampleTime - stream->startTime.mSampleTime)/stream->sampleRate;
+    if ( stream->outputDevice ) {
+        AudioDeviceGetCurrentTime( stream->outputDevice, &timeStamp);
+        return (PaTime)(timeStamp.mSampleTime - stream->startTime.mSampleTime)/stream->outDeviceSampleRate;
+    } else if ( stream->inputDevice ) {
+        AudioDeviceGetCurrentTime( stream->inputDevice, &timeStamp);
+    return (PaTime)(timeStamp.mSampleTime - stream->startTime.mSampleTime)/stream->inDeviceSampleRate;
+    } else {
+        return (PaTime)0;
+    }
 }
 
 static void setStreamStartTime( PaStream *stream )
@@ -1373,16 +1409,23 @@ static void setStreamStartTime( PaStream *stream )
              patest_sine_time reports negative latencies, which is wierd.*/
    PaMacCoreStream *s = (PaMacCoreStream *) stream;
    VVDBUG(("setStreamStartTime()\n"));
-   if( s->inputDevice )
+   if( s->outputDevice )
+      AudioDeviceGetCurrentTime( s->outputDevice, &s->startTime);
+   else if( s->inputDevice )
       AudioDeviceGetCurrentTime( s->inputDevice, &s->startTime);
    else
-      AudioDeviceGetCurrentTime( s->outputDevice, &s->startTime);
+      bzero( &s->startTime, sizeof( s->startTime ) );
+
+   //FIXME: we need a memory barier here
+
+   s->isTimeSet = TRUE;
 }
 
 
 static PaTime TimeStampToSecs(PaMacCoreStream *stream, const AudioTimeStamp* timeStamp)
 {
     VVDBUG(("TimeStampToSecs()\n"));
+    //printf( "ATS: %lu, %g, %g\n", timeStamp->mFlags, timeStamp->mSampleTime, timeStamp->mRateScalar );
     if (timeStamp->mFlags & kAudioTimeStampSampleTimeValid)
         return (timeStamp->mSampleTime / stream->sampleRate);
     else
@@ -1440,13 +1483,6 @@ static OSStatus AudioIOProc( void *inRefCon,
 
    PaUtil_BeginCpuLoadMeasurement( &stream->cpuLoadMeasurer );
 
-/*
-   //if( !stream->isTimeSet )
-   //   setStreamStartTime( stream );
-   //stream->isTimeSet = TRUE;
-*/
-
-
    /* -----------------------------------------------------------------*\
       This output may be useful for debugging,
       But printing durring the callback is a bad enough idea that
@@ -1474,6 +1510,9 @@ static OSStatus AudioIOProc( void *inRefCon,
    }
       ----------------------------------------------------------------- */
 
+   if( !stream->isTimeSet )
+      setStreamStartTime( stream );
+
    if( isRender ) {
       AudioTimeStamp currentTime;
       timeInfo.outputBufferDacTime = TimeStampToSecs(stream, inTimeStamp);
@@ -1489,6 +1528,7 @@ static OSStatus AudioIOProc( void *inRefCon,
       timeInfo.currentTime = TimeStampToSecs(stream, &currentTime);
    }
 
+   //printf( "---%g, %g, %g\n", timeInfo.inputBufferAdcTime, timeInfo.currentTime, timeInfo.outputBufferDacTime );
 
    if( isRender && stream->inputUnit == stream->outputUnit
                 && !stream->inputSRConverter )
@@ -1798,6 +1838,7 @@ static OSStatus AudioIOProc( void *inRefCon,
    case paContinue: break;
    case paComplete:
    case paAbort:
+      stream->isTimeSet = FALSE;
       stream->state = CALLBACK_STOPPED ;
       if( stream->outputUnit )
          AudioOutputUnitStop(stream->outputUnit);
@@ -1885,6 +1926,9 @@ static PaError StartStream( PaStream *s )
        ERR_WRAP( AudioOutputUnitStart(stream->outputUnit) );
     }
 
+    //setStreamStartTime( stream );
+    //stream->isTimeSet = TRUE;
+
     return paNoError;
 #undef ERR_WRAP
 }
@@ -1901,6 +1945,7 @@ static PaError StopStream( PaStream *s )
     waitUntilBlioWriteBufferIsFlushed( &stream->blio );
     VDBUG( ( "Stopping stream.\n" ) );
 
+    stream->isTimeSet = FALSE;
     stream->state = STOPPING;
 
 #define ERR_WRAP(mac_err) do { result = mac_err ; if ( result != noErr ) return ERR(result) ; } while(0)

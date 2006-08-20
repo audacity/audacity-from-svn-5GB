@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: pa_unix_util.c,v 1.2 2006-08-20 00:17:51 dmazzoni Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -354,14 +354,16 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
     if( th->watchdogRunning )
     {
         pthread_cancel( th->watchdogThread );
-        PA_ENSURE_SYSTEM( pthread_join( th->watchdogThread, &pret ), 0 );
+        PA_ENSURE_SYSTEM( pthread_join( th->watchdogThread, &pret ), 0 )
 
+      #ifdef PTHREAD_CANCELED
         if( pret && pret != PTHREAD_CANCELED )
         {
             if( watchdogExitResult )
                 *watchdogExitResult = *(PaError *) pret;
             free( pret );
         }
+      #endif
     }
 #endif
 
@@ -377,6 +379,7 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
     PA_DEBUG(( "%s: Joining thread %d\n", __FUNCTION__, self->thread ));
     PA_ENSURE_SYSTEM( pthread_join( self->thread, &pret ), 0 );
 
+  #ifdef PTHREAD_CANCELED
     if( pret && PTHREAD_CANCELED != pret )
     {
         if( exitResult )
@@ -385,6 +388,7 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
         }
         free( pret );
     }
+  #endif
 
 error:
     PA_ASSERT_CALL( PaUnixMutex_Terminate( &self->mtx ), paNoError );
