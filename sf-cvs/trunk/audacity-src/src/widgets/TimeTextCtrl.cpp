@@ -178,7 +178,7 @@ BEGIN_EVENT_TABLE(TimeTextCtrl, wxControl)
    EVT_CONTEXT_MENU(TimeTextCtrl::OnContext)
    EVT_MENU_RANGE(ID_MENU, ID_MENU+100, TimeTextCtrl::OnMenu)
    EVT_MOUSE_EVENTS(TimeTextCtrl::OnMouse)
-   EVT_CHAR(TimeTextCtrl::OnChar)
+   EVT_KEY_DOWN(TimeTextCtrl::OnKeyDown)
    EVT_SET_FOCUS(TimeTextCtrl::OnFocus)
    EVT_KILL_FOCUS(TimeTextCtrl::OnFocus)
    EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TimeTextCtrl::OnCaptureKey)
@@ -885,7 +885,7 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
    return;
 }
 
-void TimeTextCtrl::OnChar(wxKeyEvent &event)
+void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
 {
    int keyCode = event.GetKeyCode();
    int digit = mFocusedDigit;
