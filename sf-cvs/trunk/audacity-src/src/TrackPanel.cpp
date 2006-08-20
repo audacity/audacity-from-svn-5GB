@@ -319,6 +319,7 @@ enum {
 BEGIN_EVENT_TABLE(TrackPanel, wxWindow)
     EVT_MOUSE_EVENTS(TrackPanel::OnMouseEvent)
     EVT_COMMAND(wxID_ANY, EVT_CAPTURE_KEY, TrackPanel::OnCaptureKey)
+    EVT_KEY_DOWN(TrackPanel::OnKeyDown)
     EVT_CHAR(TrackPanel::OnChar)
     EVT_SIZE(TrackPanel::OnSize)
     EVT_ERASE_BACKGROUND(TrackPanel::OnErase)
@@ -3474,6 +3475,32 @@ void TrackPanel::OnCaptureKey(wxCommandEvent & event)
 }
 
 /// Allow typing into LabelTracks.
+void TrackPanel::OnKeyDown(wxKeyEvent & event)
+{
+   // Only deal with LabelTracks
+   Track *t = GetFocusedTrack();
+   if (!t || t->GetKind() != Track::Label) {
+      event.Skip();
+      return;
+   }
+
+   double bkpSel0 = mViewInfo->sel0, bkpSel1 = mViewInfo->sel1;
+   // Pass keystroke to labeltrack's handler and add to history if any
+   // updates were done
+   if (((LabelTrack *)t)->OnKeyDown(mViewInfo->sel0, mViewInfo->sel1, event))
+      MakeParentPushState(_("Modified Label"),
+                          _("Label Edit"),
+                          true /* consolidate */);
+   
+   // If selection modified, refresh
+   // Otherwise, refresh track display if the keystroke was handled
+   if( bkpSel0 != mViewInfo->sel0 || bkpSel1 != mViewInfo->sel1 )
+      Refresh( false );
+   else if (!event.GetSkipped()) 
+      RefreshTrack(t, true);
+}
+
+/// Allow typing into LabelTracks.
 void TrackPanel::OnChar(wxKeyEvent & event)
 {
    // Only deal with LabelTracks
@@ -3486,7 +3513,7 @@ void TrackPanel::OnChar(wxKeyEvent & event)
    double bkpSel0 = mViewInfo->sel0, bkpSel1 = mViewInfo->sel1;
    // Pass keystroke to labeltrack's handler and add to history if any
    // updates were done
-   if (((LabelTrack *)t)->KeyEvent(mViewInfo->sel0, mViewInfo->sel1, event))
+   if (((LabelTrack *)t)->OnChar(mViewInfo->sel0, mViewInfo->sel1, event))
       MakeParentPushState(_("Modified Label"),
                           _("Label Edit"),
                           true /* consolidate */);
@@ -5645,7 +5672,7 @@ void TrackPanel::OnCopySelectedText(wxCommandEvent &event)
 void TrackPanel::OnPasteSelectedText(wxCommandEvent &event)
 {
    LabelTrack *lt = (LabelTrack *)mPopupMenuTarget;
-   if (lt->PasteSelectedText()) {
+   if (lt->PasteSelectedText(mViewInfo->sel0, mViewInfo->sel1)) {
       MakeParentPushState(_("Modified Label"),
                           _("Label Edit"),
                           true /* consolidate */);

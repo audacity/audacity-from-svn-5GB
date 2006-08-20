@@ -131,7 +131,7 @@ class LabelTrack:public Track {
    bool OverTextBox(const LabelStruct *pLabel, int x, int y);
    bool CutSelectedText();
    bool CopySelectedText();
-   bool PasteSelectedText();
+   bool PasteSelectedText(double sel0, double sel1);
    bool IsTextClipSupported();
    
    // methods to set flags
@@ -145,7 +145,8 @@ class LabelTrack:public Track {
                            double *newSel0, double *newSel1);
 
    bool CaptureKey(wxKeyEvent & event);
-   bool KeyEvent(double & sel0, double & sel1, wxKeyEvent & event);
+   bool OnKeyDown(double & sel0, double & sel1, wxKeyEvent & event);
+   bool OnChar(double & sel0, double & sel1, wxKeyEvent & event);
 
    void Import(wxTextFile & f);
    void Export(wxTextFile & f);
