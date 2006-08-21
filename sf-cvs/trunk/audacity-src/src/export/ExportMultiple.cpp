@@ -41,6 +41,7 @@
 #include "ExportMP3.h"
 #include "ExportOGG.h"
 #include "ExportCL.h"
+#include "ExportFLAC.h"
 
 #include "../Internat.h"
 #include "../FileFormats.h"
@@ -382,6 +383,20 @@ static bool DoExport(AudacityProject *project,
       else
          return false;
    }
+   case 4: {
+#ifdef USE_LIBFLAC
+      Tags *tags = project->GetTags();
+      tags->SetTitle(name);            
+      tags->SetTrackNumber(trackNumber);
+      wxString fullPath = MakeFullPath(overwrite,
+                                       dir, name, wxT(".flac"));
+      return ExportFLAC(project, stereo, fullPath,
+                       selectionOnly, t0, t1);
+      
+#else
+      return false;
+#endif
+   }
 
    }
 }
@@ -688,13 +703,14 @@ ExportMultipleDialog::ExportMultipleDialog(wxWindow *parent, wxWindowID id):
    hSizer->Add(new wxStaticText(this, -1, _("Export format:")),
                0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-   int numFormats = 4;
-   wxString formatList[4];
+   int numFormats = 5;
+   wxString formatList[5];
    int format = ReadExportFormatPref();
    formatList[0] = sf_header_shortname(format & SF_FORMAT_TYPEMASK);
    formatList[1] = wxT("MP3");
    formatList[2] = wxT("Ogg Vorbis");
    formatList[3] = wxT("MP3_mpg");
+   formatList[4] = wxT("FLAC");
 
    mFormat = new wxChoice(this, FormatID,
                           wxDefaultPosition, wxDefaultSize,
