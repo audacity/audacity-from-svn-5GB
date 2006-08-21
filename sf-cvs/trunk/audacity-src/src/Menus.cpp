@@ -3927,6 +3927,7 @@ int AudacityProject::DoAddLabel(double left, double right)
 
    RedrawProject();
    mTrackPanel->EnsureVisible((Track *)lt);
+   mTrackPanel->SetFocus();
 
    return index;
 }
