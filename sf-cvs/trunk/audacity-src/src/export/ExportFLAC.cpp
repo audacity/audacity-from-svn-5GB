@@ -90,10 +90,10 @@ bool ExportFLAC(AudacityProject *project,
    for(i=0;i<numChannels;i++)
    	tmpsmplbuf[i]=(FLAC__int32*)calloc(SAMPLES_PER_RUN,sizeof(FLAC__int32));
 
-   GetActiveProject()->ProgressShow(_("Export"),
-                                    selectionOnly ?
+   GetActiveProject()->ProgressShow(selectionOnly ?
                                     _("Exporting the selected audio as FLAC") :
-                                    _("Exporting the entire project as FLAC"));
+                                    _("Exporting the entire project as FLAC"),
+                                    wxFileName(fName).GetName());
 
    while(!cancelling && !eos) {
       sampleCount samplesThisRun = mixer->Process(SAMPLES_PER_RUN);

@@ -20,7 +20,7 @@ class WaveTrack;
 
 bool ExportFLAC(AudacityProject *project,
                int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec);
+               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec = NULL);
 
 
 #endif
