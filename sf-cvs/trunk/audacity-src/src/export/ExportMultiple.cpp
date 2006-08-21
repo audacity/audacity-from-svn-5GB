@@ -390,7 +390,7 @@ static bool DoExport(AudacityProject *project,
       tags->SetTrackNumber(trackNumber);
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, wxT(".flac"));
-      return ExportFLAC(project, stereo, fullPath,
+      return ExportFLAC(project, (stereo ? 2: 1), fullPath,
                        selectionOnly, t0, t1);
       
 #else
