@@ -80,7 +80,7 @@ class ExportMultipleDialog : public wxDialog
    wxString prefix;
 
    // output
-   int format; // PCM, MP3, Ogg
+   int format; // PCM, MP3, Ogg, FLAC
    wxString dir;
    bool forceMono;
 
