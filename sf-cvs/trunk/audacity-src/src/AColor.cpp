@@ -221,7 +221,7 @@ void AColor::Init()
    theTheme.SetPenColour(   playRegionPen[1],  clrRulerPlaybackPen);      
 
    //Determine tooltip color
-   tooltipBrush.SetColour( wxSystemSettings::GetSystemColour(wxSYS_COLOUR_INFOBK) );
+   tooltipBrush.SetColour( wxSystemSettingsNative::GetColour(wxSYS_COLOUR_INFOBK) );
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
    // unselected
