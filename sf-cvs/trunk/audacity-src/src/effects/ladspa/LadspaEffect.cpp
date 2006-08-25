@@ -47,7 +47,6 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
    mData = data;
    pluginName = LAT1CTOWX(data->Name);
 
-   buffer = NULL;
    fInBuffer = NULL;
    fOutBuffer = NULL;
 
@@ -271,7 +270,6 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    if (mBlockSize == 0) {
       mBlockSize = left->GetMaxBlockSize() * 2;
 
-      buffer = new float[mBlockSize];
       fInBuffer = new float *[inputs];
       unsigned long i;
       for (i = 0; i < inputs; i++)
@@ -315,33 +313,24 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
    longSampleCount rs = rstart;
    while (len) {
       int block = mBlockSize;
-      int i;
       if (block > len)
          block = len;
 
       if (left && inputs > 0) {
-         left->Get((samplePtr)buffer, floatSample, ls, block);
-         for (i = 0; i < block; i++)
-            fInBuffer[0][i] = buffer[i];
+         left->Get((samplePtr)fInBuffer[0], floatSample, ls, block);
       }
       if (right && inputs > 1) {
-         right->Get((samplePtr)buffer, floatSample, rs, block);
-         for (i = 0; i < block; i++)
-            fInBuffer[1][i] = buffer[i];
+         right->Get((samplePtr)fInBuffer[1], floatSample, rs, block);
       }
 
       mData->run(handle, block);
 
       if (left && outputs > 0) {
-         for (i = 0; i < block; i++)
-            buffer[i] = fOutBuffer[0][i];
-         left->Set((samplePtr)buffer, floatSample, ls, block);
+         left->Set((samplePtr)fOutBuffer[0], floatSample, ls, block);
       }      
       
       if (right && outputs > 1) {
-         for (i = 0; i < block; i++)
-            buffer[i] = fOutBuffer[1][i];
-         right->Set((samplePtr)buffer, floatSample, rs, block);
+         right->Set((samplePtr)fOutBuffer[1], floatSample, rs, block);
       }      
 
       len -= block;
@@ -369,23 +358,27 @@ bool LadspaEffect::ProcessStereo(int count, WaveTrack *left, WaveTrack *right,
 
 void LadspaEffect::End()
 {
-   if (buffer) {
-      unsigned long i;
+   unsigned long i;
 
-      delete[]buffer;
+   if (fInBuffer) {
       for (i = 0; i < inputs; i++) {
-         delete fInBuffer[i];
+         if (fInBuffer[i]) {
+            delete [] fInBuffer[i];
+         }
       }
-      for (i = 0; i < outputs; i++) {
-         delete fOutBuffer[i];
-      }
-
-      delete[] fInBuffer;
-      delete[] fOutBuffer;
+      delete [] fInBuffer;
+      fInBuffer = NULL;
    }
-   buffer = NULL;
-   fInBuffer = NULL;
-   fOutBuffer = NULL;
+
+   if (fOutBuffer) {
+      for (i = 0; i < outputs; i++) {
+         if (fOutBuffer[i]) {
+            delete [] fOutBuffer[i];
+         }
+      }
+      delete [] fOutBuffer;
+      fOutBuffer = NULL;
+   }
 }
 
 class Slider:public wxSlider
