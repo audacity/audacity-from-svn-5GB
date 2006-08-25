@@ -168,8 +168,7 @@ bool PCMImportFileHandle::Import(TrackFactory *trackFactory,
 
    int c;
    for (c = 0; c < *outNumTracks; c++) {
-      channels[c] = trackFactory->NewWaveTrack(mFormat);
-      channels[c]->SetRate(mInfo.samplerate);
+      channels[c] = trackFactory->NewWaveTrack(mFormat, mInfo.samplerate);
 
       if (*outNumTracks > 1)
          switch (c) {
@@ -378,8 +377,7 @@ bool ImportPCM(wxWindow * parent,
 
    int c;
    for(c=0; c<*numChannels; c++) {
-      (*channels)[c] = new WaveTrack(dirManager, format);
-      (*channels)[c]->SetRate(info.samplerate);
+      (*channels)[c] = new WaveTrack(dirManager, format, info.samplerate);
       (*channels)[c]->SetName(TrackNameFromFileName(fName));
       (*channels)[c]->SetChannel(Track::MonoChannel);
    }
