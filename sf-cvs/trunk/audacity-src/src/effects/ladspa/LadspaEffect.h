@@ -57,7 +57,6 @@ class LadspaEffect:public Effect {
 
    const LADSPA_Descriptor *mData;
    sampleCount mBlockSize;
-   float *buffer;
    float **fInBuffer;
    float **fOutBuffer;
    unsigned long inputs;
