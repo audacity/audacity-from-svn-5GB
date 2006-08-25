@@ -188,8 +188,7 @@ bool OggImportFileHandle::Import(TrackFactory *trackFactory, Track ***outTracks,
 
    int c;
    for (c = 0; c < *outNumTracks; c++) {
-      channels[c] = trackFactory->NewWaveTrack(int16Sample);
-      channels[c]->SetRate(vi->rate);
+      channels[c] = trackFactory->NewWaveTrack(int16Sample, vi->rate);
 
       if (*outNumTracks > 1)
          switch (c) {

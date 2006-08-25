@@ -177,8 +177,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
 
    int c;
    for (c = 0; c < numChannels; c++) {
-      channels[c] = trackFactory->NewWaveTrack(format);
-      channels[c]->SetRate(rate);
+      channels[c] = trackFactory->NewWaveTrack(format, rate);
 
       if (numChannels > 1)
          switch (c) {

@@ -88,16 +88,14 @@ bool MixAndRender(TrackList *tracks, TrackFactory *trackFactory,
       t = iter.Next();
    }
 
-   WaveTrack *mixLeft = trackFactory->NewWaveTrack(format);
-   mixLeft->SetRate((int) rate);
+   WaveTrack *mixLeft = trackFactory->NewWaveTrack(format, rate);
    mixLeft->SetName(_("Mix"));
    WaveTrack *mixRight = 0;
    if (mono) {
       mixLeft->SetChannel(Track::MonoChannel);
    }
    else {
-      mixRight = trackFactory->NewWaveTrack(format);
-      mixRight->SetRate((int) rate);
+      mixRight = trackFactory->NewWaveTrack(format, rate);
       mixRight->SetName(_("Mix"));
       mixLeft->SetChannel(Track::LeftChannel);
       mixRight->SetChannel(Track::RightChannel);

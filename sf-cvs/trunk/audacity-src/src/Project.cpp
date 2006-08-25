@@ -834,6 +834,8 @@ void AudacityProject::UpdatePrefs()
       mTrackPanel->UpdatePrefs();
 
    mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
+   mDefaultFormat = (sampleFormat) gPrefs->
+           Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
    if( mSelectionBar )
       mSelectionBar->SetRate(mRate);
@@ -2883,7 +2885,6 @@ void AudacityProject::EditClipboardByLabel( WaveTrack::EditDestFunction action )
                dest->SetTeamed( wt->GetTeamed() ); // do first
                dest->SetLinked( wt->GetLinked() );
                dest->SetName( wt->GetName() );
-               ( ( WaveTrack* )dest )->SetRate( wt->GetRate() );
                if( !merged )
                   merged = ( WaveTrack* )dest;
                else

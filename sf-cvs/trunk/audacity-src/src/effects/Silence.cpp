@@ -51,8 +51,7 @@ bool EffectSilence::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat());
-      tmp->SetRate(track->GetRate());
+      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
       tmp->InsertSilence(0.0, length);
       tmp->Flush();
       track->Clear(mT0, mT1);

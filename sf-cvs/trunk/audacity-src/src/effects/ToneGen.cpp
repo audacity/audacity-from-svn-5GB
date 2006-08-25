@@ -190,9 +190,8 @@ bool EffectToneGen::Process()
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
       mSample = 0;
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat());
       mCurRate = track->GetRate();
-      tmp->SetRate(mCurRate);
+      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), mCurRate);
       numSamples = (longSampleCount)(length * mCurRate + 0.5);
       longSampleCount i = 0;
       float *data = new float[tmp->GetMaxBlockSize()];

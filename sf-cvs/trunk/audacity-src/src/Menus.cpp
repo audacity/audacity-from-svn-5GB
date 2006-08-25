@@ -2340,9 +2340,6 @@ void AudacityProject::OnCut()
             dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
-            if (n->GetKind() == Track::Wave) {
-               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
-            }
             msClipboard->Add(dest);
          }
       }
@@ -2383,9 +2380,6 @@ void AudacityProject::OnSplitCut()
             dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
-            if (n->GetKind() == Track::Wave) {
-               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
-            }
             msClipboard->Add(dest);
          }
       }
@@ -2432,9 +2426,6 @@ void AudacityProject::OnCopy()
             dest->SetTeamed(n->GetTeamed()); // do first
             dest->SetLinked(n->GetLinked());
             dest->SetName(n->GetName());
-            if (n->GetKind() == Track::Wave) {
-               ((WaveTrack *)dest)->SetRate(((WaveTrack *)n)->GetRate());
-            }
             msClipboard->Add(dest);
          }
       }
@@ -2490,8 +2481,7 @@ void AudacityProject::OnPaste()
          switch(c->GetKind()) {
          case Track::Wave: {
             WaveTrack *w = (WaveTrack *)c;
-            n = mTrackFactory->NewWaveTrack(w->GetSampleFormat());
-            ((WaveTrack *)n)->SetRate(w->GetRate());
+            n = mTrackFactory->NewWaveTrack(w->GetSampleFormat(), w->GetRate());
             } break;
 
          case Track::Note:
@@ -3599,6 +3589,7 @@ void AudacityProject::OnMixAndRender()
          PushState(msg, _("Mix and Render"));
       }
 
+      mTrackPanel->SetFocusedTrack(newLeft);
       RedrawProject();
    }
 }
@@ -3790,8 +3781,7 @@ void AudacityProject::OnAlignMoveSel(int index)
 
 void AudacityProject::OnNewWaveTrack()
 {
-   WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
-   t->SetRate((int) mRate);
+   WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat, mRate);
    SelectNone();
 
    mTracks->Add(t);
@@ -3805,18 +3795,16 @@ void AudacityProject::OnNewWaveTrack()
 
 void AudacityProject::OnNewStereoTrack()
 {
-   WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   WaveTrack *t = mTrackFactory->NewWaveTrack(mDefaultFormat, mRate);
    t->SetChannel(Track::LeftChannel);
-   t->SetRate((int) mRate);
    SelectNone();
    
    mTracks->Add(t);
    t->SetSelected(true);
    t->SetLinked (true);
    
-   t = mTrackFactory->NewWaveTrack(mDefaultFormat);
+   t = mTrackFactory->NewWaveTrack(mDefaultFormat, mRate);
    t->SetChannel(Track::RightChannel);
-   t->SetRate((int) mRate);
    
    mTracks->Add(t);
    t->SetSelected(true);

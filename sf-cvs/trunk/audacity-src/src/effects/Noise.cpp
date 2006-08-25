@@ -60,8 +60,7 @@ bool EffectNoise::Process()
    TrackListIterator iter(mWaveTracks);
    WaveTrack *track = (WaveTrack *)iter.First();
    while (track) {
-      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat());
-      tmp->SetRate(track->GetRate());
+      WaveTrack *tmp = mFactory->NewWaveTrack(track->GetSampleFormat(), track->GetRate());
       longSampleCount numSamples =
          (longSampleCount)(length * track->GetRate() + 0.5);
       longSampleCount i = 0;

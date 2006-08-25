@@ -38,24 +38,13 @@ Track classes.
 #include "Sequence.h"
 #include "Spectrum.h"
 
-#include "Prefs.h"
+#include "Project.h"
 #include "Internat.h"
 
 #include "AudioIO.h"
 
 WaveTrack *TrackFactory::NewWaveTrack(sampleFormat format, double rate)
 {
-   if (format == (sampleFormat)0) 
-   {
-      format = (sampleFormat) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
-   }
-   if (rate == 0) 
-   {
-      rate = (double) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
-   }
-
    return new WaveTrack(mDirManager, format, rate);
 }
 
@@ -64,13 +53,11 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 {
    if (format == (sampleFormat)0) 
    {
-      format = (sampleFormat) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
+      format = GetActiveProject()->GetDefaultFormat();
    }
    if (rate == 0) 
    {
-      rate = (double) gPrefs->
-         Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
+      rate = GetActiveProject()->GetRate();
    }
 
    mDisplay = 0; // Move to GUIWaveTrack

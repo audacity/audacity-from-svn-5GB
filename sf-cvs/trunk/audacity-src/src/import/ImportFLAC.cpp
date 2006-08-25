@@ -313,8 +313,7 @@ bool FLACImportFileHandle::Import(TrackFactory *trackFactory,
 
    int c;
    for (c = 0; c < *outNumTracks; c++) {
-      mChannels[c] = trackFactory->NewWaveTrack(mFormat);
-      mChannels[c]->SetRate(mSampleRate);
+      mChannels[c] = trackFactory->NewWaveTrack(mFormat, mSampleRate);
       
       if (*outNumTracks == 2)
          switch (c) {
