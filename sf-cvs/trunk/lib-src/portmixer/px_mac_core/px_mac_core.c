@@ -161,6 +161,16 @@ PxMixer *Px_OpenMixer( void *pa_stream, int index )
    info->output = pamcs->outputDevice;
 #endif 
 
+   if (info->input == kAudioDeviceUnknown) {
+      outSize = sizeof(AudioDeviceID);
+      err = AudioHardwareGetProperty(kAudioHardwarePropertyDefaultInputDevice,
+                                     &outSize,
+                                     &info->input);
+      if (err) {
+         return Px_FreeInfo(info);
+      }
+   }
+
    outSize = sizeof(UInt32);
    err = AudioDeviceGetPropertyInfo(info->input,
                                     0,
