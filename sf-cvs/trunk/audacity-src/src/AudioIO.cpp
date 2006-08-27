@@ -186,6 +186,7 @@ AudioIO::AudioIO()
 
    mLastPaError = paNoError;
 
+   mLastRecordingOffset = 0.0;
    mNumCaptureChannels = 0;
    mPaused = false;
    mPlayLooped = false;
@@ -1207,7 +1208,7 @@ bool AudioIO::IsStreamActive()
 {
 #if USE_PORTAUDIO_V19
    if( mPortStreamV19 )
-      return Pa_IsStreamActive( mPortStreamV19 );
+      return Pa_IsStreamActive( mPortStreamV19 ) != 0;
    else
       return false;
 #else
@@ -1959,8 +1960,12 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       // but follow the leader.
       if (numCaptureChannels > 0 && numPlaybackChannels > 0 && timeInfo->inputBufferAdcTime > 0)
          gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
-      else
-         gAudioIO->mLastRecordingOffset = 0;
+      else {
+         if (gAudioIO->mLastRecordingOffset == 0.0) {
+            const PaStreamInfo* si = Pa_GetStreamInfo( gAudioIO->mPortStreamV19 );
+            gAudioIO->mLastRecordingOffset = -si->inputLatency;
+         }
+      }
      #else
       if (numCaptureChannels > 0 && numPlaybackChannels > 0)
          gAudioIO->mLastRecordingOffset = (Pa_StreamTime(gAudioIO->mPortStreamV18) - outTime) / gAudioIO->mRate;
