@@ -859,6 +859,7 @@ int AudioIO::StartStream(WaveTrackArray playbackTracks,
    mT1      = t1;
    mTime    = t0;
    mSeek    = 0;
+   mLastRecordingOffset = 0;
    mPlaySpeed = 100.0 / (timeTrack ? timeTrack->GetRangeUpper() : 100);
    mPlaybackTracks = playbackTracks;
    mCaptureTracks  = captureTracks;
@@ -1958,6 +1959,10 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
       // As of 06/17/2006, portaudio v19 returns inputBufferAdcTime set to
       // zero.  It is being worked on, but for now we just can't do much
       // but follow the leader.
+      //
+      // 08/27/2006: too inconsistent for now...just leave it a zero.
+      //
+      /*
       if (numCaptureChannels > 0 && numPlaybackChannels > 0 && timeInfo->inputBufferAdcTime > 0)
          gAudioIO->mLastRecordingOffset = timeInfo->inputBufferAdcTime - timeInfo->outputBufferDacTime;
       else {
@@ -1966,6 +1971,7 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
             gAudioIO->mLastRecordingOffset = -si->inputLatency;
          }
       }
+      */
      #else
       if (numCaptureChannels > 0 && numPlaybackChannels > 0)
          gAudioIO->mLastRecordingOffset = (Pa_StreamTime(gAudioIO->mPortStreamV18) - outTime) / gAudioIO->mRate;
