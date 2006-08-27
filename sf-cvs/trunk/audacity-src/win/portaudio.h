@@ -1,6 +1,6 @@
 
 // Set to 0 for version 1.8 or 1 for version 1.9
-#define USE_PORTAUDIO_V19 0
+#define USE_PORTAUDIO_V19 1
 
 // Don't change anything below here
 #if USE_PORTAUDIO_V19
