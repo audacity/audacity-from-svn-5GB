@@ -477,11 +477,11 @@ int GetWaveYPosNew(float value, float min, float max,
         value *= sign;
      }
    }else
-     if(!outer) 
-       if( value >= 0.0)
-	 value -= 0.5;
-       else
-	 value += 0.5;
+      if(!outer) 
+         if( value >= 0.0)
+            value -= 0.5;
+         else
+            value += 0.5;
 
    if (clip) {
       if (value < min)
@@ -489,10 +489,8 @@ int GetWaveYPosNew(float value, float min, float max,
       if (value > max)
          value = max;
    }
-
    value = (max - value) / (max - min);
-
-   return (int) (value * height + sign * 0.5);
+   return (int) (value * (height - 1.0) + 0.5);
 }
 
 // This function isn't used anymore.  Use GetWaveYPosNew instead.
@@ -658,11 +656,11 @@ void TrackArtist::DrawWaveformBackground(wxDC &dc, wxRect r,
             dc.DrawLine(r.x + x, r.y + maxtop[x],
                         r.x + x, r.y + maxbot[x]);
             dc.DrawLine(r.x + x, r.y + mintop[x],
-                        r.x + x, r.y + minbot[x]);
+                        r.x + x, r.y + minbot[x] + 1);
          }
          else
             dc.DrawLine(r.x + x, r.y + maxtop[x],
-                        r.x + x, r.y + minbot[x]);
+                        r.x + x, r.y + minbot[x] + 1);
       }
    }
 
@@ -1122,12 +1120,12 @@ void TrackArtist::DrawClipWaveform(WaveTrack* track, WaveClip* clip,
    //is spread across r.height.  Draw the line at the proper place.
 
    if(trackmin < 0 && trackmax > 0)
-      {
+   {
          float height = (trackmax/(trackmax-trackmin))*mid.height;
          dc.SetPen(*wxBLACK_PEN);
          dc.DrawLine(mid.x, (int) (mid.y+height), mid.x+mid.width,
                (int) (mid.y+height));
-      }
+   }
 
 
    if (!showIndividualSamples)

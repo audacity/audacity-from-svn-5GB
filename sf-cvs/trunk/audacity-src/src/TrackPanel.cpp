@@ -551,7 +551,7 @@ TrackPanel::TrackPanel(wxWindow * parent, wxWindowID id,
    mLabelTrackLabelMenu->Append(OnPasteSelectedTextID, _("Paste"));
 
    mTrackArtist = new TrackArtist();
-   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 1);
+   mTrackArtist->SetInset(1, kTopInset + 1, kLeftInset + 2, 2);
 
    mCapturedTrack = NULL;
    mPopupMenuTarget = NULL;
