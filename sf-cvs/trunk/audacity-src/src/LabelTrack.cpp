@@ -91,7 +91,7 @@ LabelTrack::LabelTrack(DirManager * projDirManager):
    // Label tracks are narrow
    // Default is to allow two rows so that new users get the
    // idea that labels can 'stack' when they would overlap.
-   mHeight = 62;     
+   mHeight = 73;     
    CreateCustomGlyphs();
    mSelIndex = -1;
 
@@ -389,7 +389,7 @@ void LabelStruct::DrawLines( wxDC & dc, wxRect & r)
    // start, i.e. what is the y position of the icon?
    // We addjust this slightly so that the line encroaches on 
    // the icon slightly (there is white space in the design).
-   const int yIconStart = y - (LabelTrack::mIconHeight /2)+1;
+   const int yIconStart = y - (LabelTrack::mIconHeight /2)+1+(LabelTrack::mTextHeight+3)/2;
    const int yIconEnd   = yIconStart + LabelTrack::mIconHeight-2;
 
    if (y<0) 
@@ -418,7 +418,7 @@ void LabelStruct::DrawGlyphs( wxDC & dc, wxRect & r, int GlyphLeft, int GlyphRig
    if (y<0) 
       return;
    const int xHalfWidth=LabelTrack::mIconWidth/2;
-   const int yStart=y-LabelTrack::mIconHeight/2;
+   const int yStart=y-LabelTrack::mIconHeight/2+(LabelTrack::mTextHeight+3)/2;
 
    if((x  >= r.x) && (x  <= (r.x+r.width)))
       dc.DrawBitmap(LabelTrack::GetGlyph(GlyphLeft), x-xHalfWidth,yStart, true);
@@ -474,7 +474,7 @@ void LabelStruct::DrawTextBox( wxDC & dc, wxRect & r)
       if( (xStart < (r.x+r.width)) && (xEnd > r.x) && (xWidth>0))
       {
          
-         wxRect bar( xStart,y-yBarHeight/2, 
+         wxRect bar( xStart,y-yBarHeight/2+yFrameHeight/2, 
             xWidth,yBarHeight);
          if( x1 > x+xBarShorten )
             dc.DrawRectangle(bar);
@@ -990,7 +990,7 @@ int LabelTrack::OverGlyph(int x, int y)
       pLabel = mLabels[i];
       
       //over left or right selection bound
-      if(   abs(pLabel->y - y) < d1 &&
+      if(   abs(pLabel->y - (y - (LabelTrack::mTextHeight+3)/2)) < d1 &&
             abs(pLabel->x + d2 - x) < d1 )
       {
          mMouseOverLabelLeft = i;
@@ -1001,7 +1001,7 @@ int LabelTrack::OverGlyph(int x, int y)
       }
       // use else-if so that we don't detect left and right 
       // of the same label.
-      else if( abs(pLabel->y-y ) < d1 &&
+      else if( abs(pLabel->y - (y - (LabelTrack::mTextHeight+3)/2)) < d1 &&
                abs(pLabel->x1 - d2 -x) < d1)
       {
          mMouseOverLabelRight = i;
