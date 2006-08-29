@@ -287,7 +287,7 @@
 				AdditionalDependencies="allegroud.lib libresampleud.lib soundtouchud.lib libsamplerateud.lib portmixerud.lib libnyquistud.lib libid3tagud.lib expatud.lib madud.lib sndfileud.lib wxbase26ud.lib wxbase26ud_net.lib wxmsw26ud_adv.lib wxmsw26ud_core.lib wxmsw26ud_html.lib ogg_static_ud.lib vorbis_static_ud.lib vorbisfile_static_ud.lib wxpngud.lib wxzlibud.lib wxjpegud.lib wxtiffud.lib libFLAC++ud.lib libFLACud.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib $(NOINHERIT)"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
-				LinkIncremental="0"
+				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\portaudio\winproj\lib&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;"
 				GenerateDebugInformation="true"
