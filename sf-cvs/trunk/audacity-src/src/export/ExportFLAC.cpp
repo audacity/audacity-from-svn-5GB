@@ -46,7 +46,6 @@ bool ExportFLAC(AudacityProject *project,
                 bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec)
 {
    double    rate    = project->GetRate();
-   wxWindow  *parent = project;
    TrackList *tracks = project->GetTracks();
    
    wxLogNull logNo;            // temporarily disable wxWindows error messages 

@@ -11,7 +11,8 @@
 #ifndef __AUDACITY_EXPORTFLAC__
 #define __AUDACITY_EXPORTFLAC__
 
-class wxString;
+#include <wx/defs.h>
+#include <wx/string.h>
 
 class MixerSpec;
 class AudacityProject;
@@ -19,8 +20,9 @@ class DirManager;
 class WaveTrack;
 
 bool ExportFLAC(AudacityProject *project,
-               int channels, wxString fName,
-               bool selectionOnly, double t0, double t1, MixerSpec *mixerSpec = NULL);
+                int channels, wxString fName,
+                bool selectionOnly, double t0, double t1,
+                MixerSpec *mixerSpec = NULL);
 
 
 #endif
