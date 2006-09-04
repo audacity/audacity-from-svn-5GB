@@ -41,7 +41,7 @@
   <li><a href="http://www.gnu.org/software/gettext/">GNU gettext</a> is standard on most Unix systems.  It includes a PO mode for the Emacs text editor.</li>
 </ul>
 
-<p>Send completed PO files to Matt Brubeck, <a href="mailto:mbrubeck@cs.hmc.edu">mbrubeck@cs.hmc.edu</a>.</p>
+<p>Send completed PO files to Dominic Mazzoni <a href="mailto:dominic@audacityteam.org">dominic@audacityteam.org</a>.</p>
 
 <h3>Notes</h3>
 
