@@ -1,10 +1,12 @@
-# Aldo Boccacci <zorba_@tin.it>, 2003, 2004.
+# This file is distributed under the GNU General Public License (GPL).
+# nikos papadopoulos <231036448@in.gr>, 2006.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.2.4 el\n"
 "POT-Creation-Date: 2004-02-01 07:48-0800\n"
-"PO-Revision-Date: 2005-10-29 11:24+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2006-06-30 23:43+0200\n"
+"Last-Translator: nikos papadopoulos <231036448@in.gr>\n"
 "Language-Team: greek <audacity-translation@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -305,7 +307,7 @@ msgid "64 - most wideband"
 msgstr "64 - το πιο μεγάλο φάσμα"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity».
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:141
@@ -717,7 +719,7 @@ msgstr ""
 "Να διαγραφούν τα προσωρινά αρχεία ;"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:99
@@ -752,9 +754,9 @@ msgid ""
 "When you want to save a file that can be opened by other programs, select one of the\n"
 "Export commands."
 msgstr ""
-"Τα Audacity project αρχεία (.aup) σου επιτρέπουν να αποθηκεύσεις όλα όσα έχεις κάνει \n"
+"Τα αρχεία Audacity project(.aup) σου επιτρέπουν να αποθηκεύσεις όλα όσα έχεις κάνει, \n"
 "ακριβώς όπως εμφανίζονται στην οθόνη, \n"
-"όμως τα περισσότερα από τα άλλα προγράμματα δεν μπορούν να ανοίξουν τα Audacity project αρχεία.\n"
+"όμως τα περισσότερα από τα άλλα προγράμματα δεν μπορούν να αναπαράγουν τα αρχεία Audacity project.\n"
 "\n"
 "Όταν θέλεις το αρχείο που αποθηκεύεις να ανοίγει και από άλλα προγράμματα, \n"
 "επέλεξε μία από τις εντολές Εξαγωγής."
@@ -1271,7 +1273,7 @@ msgid "Creating Noise Profile"
 msgstr "Δημιουργία Προφίλ Θορύβου"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:154
@@ -1533,7 +1535,7 @@ msgid "Dock Mixer Toolbar"
 msgstr "Μόνιμη Τοποθέτηση Γραμμής Εργαλείων Μίκτη"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:188
@@ -1806,7 +1808,7 @@ msgstr "Εξαγωγή ως OGG Vorbis..."
 
 #: ../src/Menus.cpp:164
 msgid "Export As..."
-msgstr "Εξαγωγή ως ..."
+msgstr "Εξαγωγή ως WAV..."
 
 #: ../src/prefs/KeyConfigPrefs.cpp:159
 msgid "Export Keyboard Shortcuts As:"
@@ -1837,7 +1839,7 @@ msgstr "Εξαγωγή Επιλογής ως OGG Vorbis..."
 
 #: ../src/Menus.cpp:165
 msgid "Export Selection As..."
-msgstr "Εξαγωγή Επιλογής Ως ..."
+msgstr "Εξαγωγή Επιλογής Ως WAV..."
 
 #: ../src/FreqWindow.cpp:998
 msgid "Export Spectral Data As:"
@@ -2106,7 +2108,7 @@ msgid "Hz"
 msgstr "Hz"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity».
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:70
@@ -2114,7 +2116,7 @@ msgid "ID3 tag exporting disabled"
 msgstr "Εξαγωγή ID3 tag απενεργοποιημένη"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:68
@@ -2206,7 +2208,7 @@ msgid "Include audio before first label"
 msgstr "Περιέλαβε audio πριν την πρώτη ετικέτα"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:150
@@ -2262,11 +2264,11 @@ msgstr "Μη αποδεκτή μετατόπιση window στο αρχείο LO
 
 #: ../src/effects/Invert.h:27
 msgid "Invert"
-msgstr "Αντιστροφή"
+msgstr "Αντιστροφή Φάσης"
 
 #: ../src/effects/Invert.h:31
 msgid "Inverting"
-msgstr "Αντιστροφή"
+msgstr "Αντιστροφή Φάσης"
 
 #: ../src/prefs/KeyConfigPrefs.cpp:79
 msgid "Key Combination"
@@ -2284,7 +2286,7 @@ msgid "L"
 msgstr "L"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:77
@@ -2292,7 +2294,7 @@ msgid "LADSPA plug-in support disabled"
 msgstr "Υποστήριξη ενθέματος(plug-in) LADSPA απενεργοποιημένη"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:75
@@ -2407,7 +2409,7 @@ msgid "Libresample by Dominic Mazzoni and Julius Smith"
 msgstr "Libresample από τους Dominic Mazzoni και Julius Smith"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:82
@@ -2424,7 +2426,7 @@ msgid "Libsamplerate error: %d\n"
 msgstr "Libsamplerate σφάλμα: %d\n"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:84
@@ -2498,7 +2500,7 @@ msgid "MP3 exporting plugin not found"
 msgstr "Δεν βρέθηκε το ένθεμα (plugin) εξαγωγής MP3  "
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity».
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:56
@@ -2506,7 +2508,7 @@ msgid "MP3 importing disabled"
 msgstr "Εισαγωγή MP3 απενεργοποιημένη"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:54
@@ -2519,7 +2521,7 @@ msgid "Made '%s' a stereo track"
 msgstr "Δημιουργία '%s' στέρεο καναλιού"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:192
@@ -2920,7 +2922,7 @@ msgid "OK"
 msgstr "Εντάξει"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:63
@@ -2928,7 +2930,7 @@ msgid "Ogg Vorbis importing disabled"
 msgstr "Εισαγωγή Ogg Vorbis απενεργοποιημένη"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:61
@@ -2964,7 +2966,7 @@ msgid "Original Value"
 msgstr "Αρχική τιμή"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:208
@@ -3156,7 +3158,7 @@ msgid "Previous Tool\tA"
 msgstr "Προηγούμενο Εργαλείο\tA"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:164
@@ -3173,7 +3175,7 @@ msgid "Print..."
 msgstr "Εκτύπωση..."
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:95
@@ -3181,7 +3183,7 @@ msgid "Program build date:"
 msgstr "Ημερομηνία δημιουργίας έκδοσης προγράμματος:"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:172
@@ -3196,7 +3198,7 @@ msgid "Progress"
 msgstr "Πρόοδος"
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:160
@@ -3415,11 +3417,11 @@ msgstr "Αποκατάσταση Προεπιλεγμένων"
 
 #: ../src/effects/Reverse.h:30
 msgid "Reverse"
-msgstr "Αναστροφή"
+msgstr "Αναστροφή Χρονική"
 
 #: ../src/effects/Reverse.h:34
 msgid "Reversing"
-msgstr "Αντιστροφή"
+msgstr "Αναστροφή Χρονική"
 
 #: ../src/widgets/ASlider.cpp:491
 msgid "Right"
@@ -3840,7 +3842,7 @@ msgid "Sorry, pathnames longer than 256 characters not supported."
 msgstr "Λυπάμαι, δεν υποστηρίζονται ονόματα διαδρομής με περισσότερους από 256 χαρακτήρες."
 
 # Οι ελληνικοί χαρακτήρες δεν
-# εμφανίζονται πάντα σωστά στο 
+# εμφανίζονται πάντα σωστά στο
 # «Σχετικά με το Audacity» .
 # Είναι καλύτερα να μη γίνει μετάφραση.
 #: ../src/AboutDialog.cpp:237
@@ -4036,15 +4038,15 @@ msgstr "Κατώφλι: %d dB"
 
 #: ../src/TrackPanel.cpp:2015
 msgid "Time Shift"
-msgstr "Αλλαγή Χρόνου"
+msgstr "Χρονική Μετατόπιση"
 
 #: ../src/ControlToolBar.cpp:357
 msgid "Time Shift Tool"
-msgstr "Εργαλείο Αλλαγής Χρόνου"
+msgstr "Εργαλείο Χρονικής Μετατόπισης"
 
 #: ../src/Menus.cpp:553
 msgid "Time Shift Tool\tF5"
-msgstr "Εργαλείο Αλλαγής Χρόνου\tF5"
+msgstr "Εργαλείο Χρονικής Μετατόπισης\tF5"
 
 #: ../src/TimeTrack.cpp:38
 msgid "Time Track"
@@ -4052,16 +4054,16 @@ msgstr "Κανάλι Χρόνου"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time shift sequence"
-msgstr "Ακολουθία αλλαγής χρόνου"
+msgstr "Ακολουθία χρονικής μετατόπισης"
 
 #: ../src/TrackPanel.cpp:2009
 #, c-format
 msgid "Time shifted track '%s' %s %.02f seconds"
-msgstr "Κανάλι αλλαγής χρόνου '%s' %s %.02f δευτ."
+msgstr "Χρονική μετατόπιση καναλιού  '%s' %s %.02f δευτ."
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time-Shift"
-msgstr "Αλλαγής-Χρόνου"
+msgstr "Χρονική-Μετατόπιση"
 
 #: ../src/Tags.cpp:435
 msgid "Title"
@@ -4507,7 +4509,7 @@ msgstr "λεπ.:δευτ.+δείγματα (έλξη στα δείγματα)"
 #. i18n-hint: n/a is an English
 #: ../src/effects/ChangeSpeed.cpp:338
 msgid "n/a"
-msgstr "άλλο"
+msgstr "μή εφαρμόσιμο"
 
 #: ../src/TrackPanel.cpp:2012
 msgid "right"
