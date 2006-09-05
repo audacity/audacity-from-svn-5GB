@@ -1844,6 +1844,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\SmartRecordDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\SmartRecordDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Spectrum.cpp"
 				>
 				<FileConfiguration

@@ -241,6 +241,7 @@ void OnNewWaveTrack();
 void OnNewStereoTrack();
 void OnNewLabelTrack();
 void OnNewTimeTrack();
+void OnSmartRecord();
 void OnRemoveTracks();
 void OnAddLabel();
 void OnAddLabelPlaying();
