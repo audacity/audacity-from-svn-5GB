@@ -561,10 +561,26 @@ bool AudacityApp::OnInit()
 
    delete temporarywindow;
 
+   //
+   // Auto-recovery
+   //
+
+   bool didRecoverAnything = false;
+   if (!ShowAutoRecoveryDialogIfNeeded(&project, &didRecoverAnything))
+   {
+      // Important: Prevent deleting any temporary files!
+      DirManager::SetDontDeleteTempFiles();
+      QuitAudacity(true);
+   }
+
+   //
+   // Command-line parsing, but only if we didn't recover
+   //
+
 #if !defined(__CYGWIN__)
 
    // Parse command-line arguments
-   if (argc > 1) {
+   if (argc > 1 && !didRecoverAnything) {
       for (int option = 1; option < argc; option++) {
          if (!argv[option])
             continue;
@@ -633,7 +649,7 @@ bool AudacityApp::OnInit()
 #else
 	
    // Cygwin command line parser (by Dave Fancella)
-   if (argc > 1) {
+   if (argc > 1 && !didRecoverAnything) {
       int optionstart = 1;
       bool startAtOffset = false;
 		
@@ -718,13 +734,6 @@ bool AudacityApp::OnInit()
 #endif // Cygwin command-line parser
 
    gInited = true;
-   
-   if (!ShowAutoRecoveryDialogIfNeeded(&project))
-   {
-      // Important: Prevent deleting any temporary files!
-      DirManager::SetDontDeleteTempFiles();
-      QuitAudacity(true);
-   }
    
    return TRUE;
 }

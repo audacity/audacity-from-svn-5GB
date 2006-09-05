@@ -198,8 +198,12 @@ static bool RecoverAllProjects(AudacityProject** pproj)
    return true;
 }
 
-bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj)
+bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj,
+                                    bool *didRecoverAnything)
 {
+   if (didRecoverAnything)
+      *didRecoverAnything = false;
+
    if (HaveFilesToRecover())
    {
       AutoRecoveryDialog dlg(*pproj);
@@ -211,6 +215,8 @@ bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj)
          return RemoveAllAutoSaveFiles();
    
       case ID_RECOVER_ALL:
+         if (didRecoverAnything)
+            *didRecoverAnything = true;
          return RecoverAllProjects(pproj);
 
       default:
@@ -302,3 +308,13 @@ XMLTagHandler* RecordingRecoveryHandler::HandleXMLChild(const wxChar *tag)
    
    return NULL;
 }
+
+// Indentation settings for Vim and Emacs.
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
