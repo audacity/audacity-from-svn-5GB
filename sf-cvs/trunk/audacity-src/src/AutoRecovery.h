@@ -16,7 +16,8 @@
 // Returns: True, if the start of Audacity should continue as normal
 //          False if Audacity should be quit immediately
 //
-bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj);
+bool ShowAutoRecoveryDialogIfNeeded(AudacityProject** pproj,
+                                    bool *didRecoverAnything);
 
 //
 // XML Handler for a <recordingrecovery> tag
@@ -38,3 +39,13 @@ private:
 };
 
 #endif
+
+// Indentation settings for Vim and Emacs.
+// Please do not modify past this point.
+//
+// Local Variables:
+// c-basic-offset: 3
+// indent-tabs-mode: nil
+// End:
+//
+// vim: et sts=3 sw=3
