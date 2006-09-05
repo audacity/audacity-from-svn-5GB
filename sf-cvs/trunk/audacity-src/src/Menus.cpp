@@ -87,6 +87,7 @@ simplifies construction of menu items.
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
 #include "TimeDialog.h"
+#include "SmartRecordDialog.h"
 #include "LabelDialog.h"
 
 enum {
@@ -586,7 +587,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->EndMenu();
 
    //
-   // Project Menu
+   // Tracks Menu (formerly Project Menu)
    //
 	if( !mCleanSpeechMode )
 	{
@@ -603,6 +604,8 @@ void AudacityProject::CreateMenusAndCommands()
 			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
 			c->AddItem(wxT("NewTimeTrack"),   _("&Time Track"),                FN(OnNewTimeTrack));
 		c->EndSubMenu();
+
+      c->AddItem(wxT("SmartRecord"), _("&Timer Record"), FN(OnSmartRecord));
 
       c->AddSeparator();
       // StereoToMono moves elsewhere in the menu when in CleanSpeech mode.
@@ -3872,6 +3875,12 @@ void AudacityProject::OnNewTimeTrack()
          RedrawProject();
          mTrackPanel->EnsureVisible(t);
       }
+}
+
+void AudacityProject::OnSmartRecord()
+{
+   SmartRecordDialog dialog(this /* parent */ );
+   dialog.ShowModal();
 }
 
 int AudacityProject::DoAddLabel(double left, double right)
