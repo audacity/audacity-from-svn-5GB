@@ -82,6 +82,7 @@ OBJS = \
 	Shuttle.o \
 	ShuttleGui.o \
 	ShuttlePrefs.o \
+	SmartRecordDialog.o \
 	Spectrum.o \
 	Tags.o \
 	Theme.o \
