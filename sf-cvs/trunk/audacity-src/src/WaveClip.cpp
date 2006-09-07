@@ -34,6 +34,7 @@ drawing).
 #include "WaveClip.h"
 #include "Envelope.h"
 #include "Resample.h"
+#include "Project.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(WaveClipList);
@@ -1003,7 +1004,7 @@ void WaveClip::Unlock()
       it->GetData()->Unlock();
 }
 
-bool WaveClip::Resample(int rate)
+bool WaveClip::Resample(int rate, bool progress)
 {
    if (rate == mRate)
       return true; // Nothing to do
@@ -1016,17 +1017,18 @@ bool WaveClip::Resample(int rate)
    float* outBuffer = new float[bufsize];
    int pos = 0;
    bool error = false;
-   
+   sampleCount numSamples = mSequence->GetNumSamples();
+
    Sequence* newSequence =
       new Sequence(mSequence->GetDirManager(), mSequence->GetSampleFormat());
    
-   while (pos < mSequence->GetNumSamples())
+   while (pos < numSamples)
    {
-      int inLen = mSequence->GetNumSamples() - pos;
+      int inLen = numSamples - pos;
       if (inLen > bufsize)
          inLen = bufsize;
          
-      bool isLast = ((pos + inLen) == mSequence->GetNumSamples());
+      bool isLast = ((pos + inLen) == numSamples);
       
       if (!mSequence->Get((samplePtr)inBuffer, floatSample, pos, inLen))
       {
@@ -1051,6 +1053,15 @@ bool WaveClip::Resample(int rate)
       {
          error = true;
          break;
+      }
+
+      if (progress)
+      {
+         error = !GetActiveProject()->ProgressUpdate((int) (1000 * ((float)pos / numSamples)));
+         if (error)
+         {
+            break;
+         }
       }
    }
    

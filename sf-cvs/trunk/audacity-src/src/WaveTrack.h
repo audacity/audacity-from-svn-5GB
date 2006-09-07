@@ -294,7 +294,7 @@ class WaveTrack: public Track {
    virtual void Merge(const Track &orig);
    
    // Resample track (i.e. all clips in the track)
-   bool Resample(int rate);
+   bool Resample(int rate, bool progress = false);
 
    //
    // The following code will eventually become part of a GUIWaveTrack

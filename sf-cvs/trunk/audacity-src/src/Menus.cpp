@@ -4359,13 +4359,22 @@ void AudacityProject::OnResample()
       else
          break;
    }
-      
+
+   int ndx = 0;
    for (Track *t = iter.First(); t; t = iter.Next())
    {
+      wxString msg;
+      
+      msg.Printf(_("Resampling track %d"), ++ndx);
+
+      GetActiveProject()->ProgressShow(_("Resample"),
+                                       msg);
+
       if (t->GetSelected() && t->GetKind() == Track::Wave)
-         if (!((WaveTrack*)t)->Resample(newRate))
+         if (!((WaveTrack*)t)->Resample(newRate, true))
             break;
    }
+   GetActiveProject()->ProgressHide();
    
    PushState(_("Resampled audio track(s)"), _("Resample Track"));
    RedrawProject();

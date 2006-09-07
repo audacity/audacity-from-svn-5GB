@@ -1505,10 +1505,10 @@ bool WaveTrack::MergeClips(int clipidx1, int clipidx2)
    return true;
 }
 
-bool WaveTrack::Resample(int rate)
+bool WaveTrack::Resample(int rate, bool progress)
 {
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
-      if (!it->GetData()->Resample(rate))
+      if (!it->GetData()->Resample(rate, progress))
       {
          // FIXME: The track is now in an inconsistent state since some
          //        clips are resampled and some are not
