@@ -269,7 +269,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
          m_pTimeTextCtrl_Start = new TimeTextCtrl(this, ID_TIMETEXT_START, strFormat);
          m_pTimeTextCtrl_Start->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_Start));
          S.AddWindow(m_pTimeTextCtrl_Start);
-         //v Don't allow them to change time format: m_pTimeTextCtrl_Start->EnableMenu();
+         m_pTimeTextCtrl_Start->EnableMenu(false);
       }
       S.EndStatic();
 
@@ -286,7 +286,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
          m_pTimeTextCtrl_End = new TimeTextCtrl(this, ID_TIMETEXT_END, strFormat);
          m_pTimeTextCtrl_End->SetTimeValue(wxDateTime_to_AudacityTime(m_DateTime_End));
          S.AddWindow(m_pTimeTextCtrl_End);
-         //v Don't allow them to change time format:  m_pTimeTextCtrl_End->EnableMenu();
+         m_pTimeTextCtrl_End->EnableMenu(false);
       }
       S.EndStatic();
 
@@ -295,7 +295,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
          m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat);
          m_pTimeTextCtrl_Duration->SetTimeValue(m_TimeSpan_Duration.GetSeconds().ToDouble()); //vvv milliseconds?
          S.AddWindow(m_pTimeTextCtrl_Duration);
-         //vvv Maybe allow? //v Don't allow them to change time format:  m_pTimeTextCtrl_Duration->EnableMenu();
+         m_pTimeTextCtrl_Duration->EnableMenu(false);
       }
       S.EndStatic();
    }

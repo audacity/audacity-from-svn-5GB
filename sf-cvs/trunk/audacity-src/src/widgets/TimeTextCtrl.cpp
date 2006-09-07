@@ -281,7 +281,6 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
    mTimeValue(timeValue),
    mSampleRate(sampleRate),
    mFormatString(formatString),
-   mMenuEnabled(false),
    mBackgroundBitmap(NULL),
    mDigitFont(NULL),
    mLabelFont(NULL),
@@ -290,6 +289,8 @@ TimeTextCtrl::TimeTextCtrl(wxWindow *parent,
 {
    mDigitBoxW = 10;
    mDigitBoxH = 16;
+
+   mMenuEnabled = true;
    mButtonWidth = 9;
 
    ParseFormatString();
@@ -350,8 +351,8 @@ void TimeTextCtrl::SetTimeValue(double newTime)
 
 void TimeTextCtrl::EnableMenu(bool enable)
 {
-   wxString tip(_("Use right mouse button or context key to change format"));
 #if wxUSE_TOOLTIPS
+   wxString tip(_("Use right mouse button or context key to change format"));
    if (enable)
       SetToolTip(tip);
    else {
@@ -361,6 +362,9 @@ void TimeTextCtrl::EnableMenu(bool enable)
    }
 #endif
    mMenuEnabled = enable;
+   mButtonWidth = enable ? 9 : 0;
+   Layout();
+   Fit();
 }
 
 const double TimeTextCtrl::GetTimeValue()
@@ -694,14 +698,16 @@ bool TimeTextCtrl::Layout()
       memDC.DrawText(mFields[i].label,
                      mFields[i].labelX, labelTop);
 
-   wxRect r(mWidth, 0, mButtonWidth - 1, mHeight - 1);
-   AColor::Bevel(memDC, true, r);
-   memDC.SetPen(*wxBLACK_PEN);
-   int triWid = mButtonWidth - 2;
-   int xStart = mWidth + 1;
-   int yStart = (mHeight / 2) - 2;
-   for (i = 0; i <= (unsigned int)(triWid / 2); i++ ) {
-      memDC.DrawLine(xStart + i, yStart + i, xStart + triWid - i, yStart + i);
+   if (mMenuEnabled) {
+      wxRect r(mWidth, 0, mButtonWidth - 1, mHeight - 1);
+      AColor::Bevel(memDC, true, r);
+      memDC.SetPen(*wxBLACK_PEN);
+      int triWid = mButtonWidth - 2;
+      int xStart = mWidth + 1;
+      int yStart = (mHeight / 2) - 2;
+      for (i = 0; i <= (unsigned int)(triWid / 2); i++) {
+         memDC.DrawLine(xStart + i, yStart + i, xStart + triWid - i, yStart + i);
+      }
    }
    return true;
 }
@@ -873,6 +879,8 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
       case WXK_UP:
       case WXK_DOWN:
       case WXK_TAB:
+      case WXK_RETURN:
+      case WXK_NUMPAD_ENTER:
          return;
 
       default:
@@ -948,14 +956,24 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
    }
 
    else if (keyCode == WXK_TAB) {   
-      wxWindow *parent = GetParent();   
-      wxNavigationKeyEvent nevent;   
-      nevent.SetWindowChange( event.ControlDown() );   
-      nevent.SetDirection( !event.ShiftDown() );   
-      nevent.SetEventObject( parent );   
-      nevent.SetCurrentFocus( parent );   
-      GetParent()->ProcessEvent( nevent );   
+      wxWindow *parent = GetParent();
+      wxNavigationKeyEvent nevent;
+      nevent.SetWindowChange(event.ControlDown());
+      nevent.SetDirection(!event.ShiftDown());
+      nevent.SetEventObject(parent);
+      nevent.SetCurrentFocus(parent);
+      GetParent()->ProcessEvent(nevent);
    } 
+
+   else if (keyCode == WXK_RETURN || keyCode == WXK_NUMPAD_ENTER) {
+      wxWindow *parent = GetParent();
+      wxWindow *def = parent->GetDefaultItem();
+      if (def && def->IsEnabled()) {
+         wxCommandEvent cevent(wxEVT_COMMAND_BUTTON_CLICKED,
+                               def->GetId());
+         GetParent()->ProcessEvent(cevent);
+      }
+   }
 
    else {
       event.Skip();
@@ -963,7 +981,7 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
    }
 
    if (digit != mFocusedDigit) {
-      SetFieldFocus( mFocusedDigit );
+      SetFieldFocus(mFocusedDigit);
    }
 
    event.Skip(false);
@@ -972,25 +990,24 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
 void TimeTextCtrl::SetFieldFocus(int digit)
 {
 #if wxUSE_ACCESSIBILITY
-   if( mLastField != -1 )
-   {
-      GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_SELECTIONREMOVE,
+   if (mLastField != -1) {
+      GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_SELECTIONREMOVE,
                    this,
                    wxOBJID_CLIENT,
-                   mLastField );
+                   mLastField);
    }
 
    mLastField = mDigits[mFocusedDigit].field + 1;
 
-   GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_FOCUS,
+   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_FOCUS,
                 this,
                 wxOBJID_CLIENT,
-                mLastField );
+                mLastField);
 
-   GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_SELECTION,
+   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_SELECTION,
                 this,
                 wxOBJID_CLIENT,
-                mLastField );
+                mLastField);
 #endif
 }
 
@@ -1000,10 +1017,10 @@ void TimeTextCtrl::Updated()
    event.SetEventObject(this);
    GetEventHandler()->ProcessEvent(event);
 #if wxUSE_ACCESSIBILITY
-   GetAccessible()->NotifyEvent( wxACC_EVENT_OBJECT_VALUECHANGE,
-                                 this,
-                                 wxOBJID_CLIENT,
-                                 mDigits[ mFocusedDigit ].field + 1 );
+   GetAccessible()->NotifyEvent(wxACC_EVENT_OBJECT_VALUECHANGE,
+                                this,
+                                wxOBJID_CLIENT,
+                                mDigits[ mFocusedDigit ].field + 1);
 #endif
 }
 
