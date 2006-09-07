@@ -26,6 +26,7 @@
 #include <wx/progdlg.h>
 #include <wx/sizer.h>
 #include <wx/string.h>
+#include <wx/timer.h>
 
 #include "SmartRecordDialog.h"
 #include "Project.h"
