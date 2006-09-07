@@ -196,6 +196,8 @@ BuiltinFormatString BuiltinFormatStrings[] =
      _("01000,01000 seconds")},
     {_("hh:mm:ss"),
      _("099 h 060 m 060 s")},
+    {_("dd:hh:mm:ss"),
+     _("099 days 024 h 060 m 060 s")},
     {_("hh:mm:ss + milliseconds"),
      _("099 h 060 m 060.01000 s")},
     {_("hh:mm:ss + samples"),

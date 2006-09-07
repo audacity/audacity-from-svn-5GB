@@ -292,7 +292,8 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
 
       S.StartStatic(_("Duration"), true);
       {
-         m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat);
+         wxString strFormat1 = wxT("099 days 024 h 060 m 060 s");
+         m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat1);
          m_pTimeTextCtrl_Duration->SetTimeValue(m_TimeSpan_Duration.GetSeconds().ToDouble()); //vvv milliseconds?
          S.AddWindow(m_pTimeTextCtrl_Duration);
          m_pTimeTextCtrl_Duration->EnableMenu(false);
