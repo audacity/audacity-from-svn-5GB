@@ -211,16 +211,10 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
          _("Recording start: ") + m_DateTime_Start.Format() + 
          _("\n\nRecording end:   ") + m_DateTime_End.Format() + 
          _("          Duration: ") + m_TimeSpan_Duration.Format() + wxT("\n"); 
-      //vvvvv Need to change these to Leland's new shared prog dlg?
-      wxProgressDialog* progDlg =
-         new wxProgressDialog(
+
+      pProject->ProgressShow(
                _("Audacity Smart Record Progress"), // const wxString& title,
-               strMsg, // const wxString& message,
-               MAX_PROG, // int maximum = 100, 
-               NULL, // wxWindow * parent = NULL, 
-               wxPD_AUTO_HIDE | wxPD_APP_MODAL | 
-                  wxPD_CAN_ABORT | wxPD_ELAPSED_TIME | wxPD_REMAINING_TIME); // int style = wxPD_AUTO_HIDE | wxPD_APP_MODAL
-      progDlg->Show();
+               strMsg); // const wxString& message
 
       wxTimeSpan done_TimeSpan;
       wxLongLong llProgValue;
@@ -237,11 +231,11 @@ void SmartRecordDialog::OnOK(wxCommandEvent& event)
          nProgValue = llProgValue.ToLong(); //v ToLong truncates, so may fail.
 
          // strNewMsg = strMsg + _("\nDone: ") + done_TimeSpan.Format() + _("     Remaining: ") + remaining_TimeSpan.Format();
-         bDidCancel = !progDlg->Update(nProgValue); // , strNewMsg);
+         bDidCancel = !pProject->ProgressUpdate(nProgValue); // , strNewMsg);
          bIsRecording = (wxDateTime::UNow() < m_DateTime_End);
       }
       pProject->OnStop();
-      delete progDlg;
+      pProject->ProgressHide();
    }
 
    this->EndModal(wxID_OK);

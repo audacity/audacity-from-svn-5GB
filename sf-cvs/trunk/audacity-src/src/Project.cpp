@@ -3181,6 +3181,7 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
                               1000,
                               this, 
                               wxPD_CAN_ABORT |
+                              wxPD_ELAPSED_TIME |
                               wxPD_REMAINING_TIME |
                               wxPD_AUTO_HIDE);
    }
