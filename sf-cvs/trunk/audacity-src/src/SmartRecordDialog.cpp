@@ -363,16 +363,10 @@ void SmartRecordDialog::UpdateEnd()
 
 bool SmartRecordDialog::WaitForStart()
 {
+   AudacityProject* pProject = GetActiveProject();
    wxString strMsg = _("Waiting to start recording at ") + m_DateTime_Start.Format() + wxT(".\n"); 
-   wxProgressDialog* progDlg =
-      new wxProgressDialog(
-            _("Audacity Smart Record - Waiting for Start"), // const wxString& title,
-            strMsg, // const wxString& message,
-            MAX_PROG, // int maximum = 100, 
-            NULL, // wxWindow * parent = NULL, 
-            wxPD_AUTO_HIDE | wxPD_APP_MODAL | 
-               wxPD_CAN_ABORT | wxPD_ELAPSED_TIME | wxPD_REMAINING_TIME); // int style = wxPD_AUTO_HIDE | wxPD_APP_MODAL
-   progDlg->Show();
+   pProject->ProgressShow(_("Audacity Smart Record - Waiting for Start"),
+                          strMsg);
    wxDateTime startWait_DateTime = wxDateTime::Now();
    wxTimeSpan waitDuration = m_DateTime_Start - startWait_DateTime;
 
@@ -389,10 +383,10 @@ bool SmartRecordDialog::WaitForStart()
          (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
                         waitDuration.GetSeconds());
       nProgValue = llProgValue.ToLong(); //vvv ToLong truncates, so may fail ASSERT.
-      bDidCancel = !progDlg->Update(nProgValue);
+      bDidCancel = !pProject->ProgressUpdate(nProgValue);
 
       bIsRecording = (m_DateTime_Start <= wxDateTime::UNow());
    }
-   delete progDlg;
+   pProject->ProgressHide();
    return !bDidCancel;
 }
