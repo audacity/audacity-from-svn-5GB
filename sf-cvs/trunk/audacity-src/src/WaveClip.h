@@ -61,7 +61,7 @@ public:
    
    // Resample clip. This also will set the rate, but without changing
    // the length of the clip
-   bool Resample(int rate);
+   bool Resample(int rate, bool progress = false);
    
    void SetOffset(double offset);
    double GetOffset() const { return mOffset; }
