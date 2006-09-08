@@ -1355,7 +1355,10 @@ void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    mActive = event.GetActive();
-   if (mActive) {
+
+   // LLL:  Activate events can fire during deleting, so
+   //       protect against it.
+   if (mActive && !mIsDeleting) {
       SetActiveProject(this);
 
       // Under Windows, focus can be "lost" when returning to 
