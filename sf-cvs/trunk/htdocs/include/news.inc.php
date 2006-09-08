@@ -48,7 +48,7 @@ add_news_item(
 	</p>
 	<p align="center">
 		<a href="http://audacitystore.com/">
-		  <img src="../images/Audacity Store_banner_50pct.jpg" alt=_("Audacity Store")></img>
+		  <img src="../images/Audacity Store_banner_50pct.jpg" alt="Audacity Store"></img>
 		</a>
 	</p>
 	<p><a href="http://audacity.sourceforge.net/community/donate">Learn more about how Audacity raises money...
