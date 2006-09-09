@@ -22,7 +22,7 @@
 <h3><?=_("Lead Developers")?></h3>
 <ul>
   <li><a href="http://dominic-mazzoni.com/">Dominic Mazzoni</a> - (dominic (at) audacityteam.org)</li>
-  <li><a href="http://advogato.org/person/mbrubeck/">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
+  <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
   <li>James Crook - (james (at) audacityteam.org)</li>
   <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
   <li>Markus Meyer - (markus (at) audacityteam.org)</li>
