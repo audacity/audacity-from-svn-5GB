@@ -191,6 +191,7 @@ AudioIO::AudioIO()
    mPaused = false;
    mPlayLooped = false;
 
+   mListener = NULL;
    mUpdateMeters = false;
    mUpdatingMeters = false;
 
