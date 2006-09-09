@@ -3190,6 +3190,9 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
    }
 
    if (mProgressDialog[mProgressCurrent]) {
+      if (value > 1000) {
+         value = 1000;
+      }
       return mProgressDialog[mProgressCurrent]->Update(value, message);
    }
 
