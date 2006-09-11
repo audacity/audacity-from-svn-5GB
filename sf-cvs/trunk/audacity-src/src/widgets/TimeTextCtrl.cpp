@@ -871,6 +871,9 @@ void TimeTextCtrl::OnCaptureKey(wxCommandEvent &event)
    wxKeyEvent *kevent = (wxKeyEvent *)event.GetEventObject();
    int keyCode = kevent->GetKeyCode();
 
+   // Convert numeric keypad entries.
+   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9)) keyCode -= WXK_NUMPAD0 - '0';
+
    switch (keyCode)
    {
       case WXK_BACK:
@@ -904,6 +907,9 @@ void TimeTextCtrl::OnKeyDown(wxKeyEvent &event)
       mFocusedDigit = 0;
    if (mFocusedDigit >= (int)mDigits.GetCount())
       mFocusedDigit = mDigits.GetCount()-1;
+
+   // Convert numeric keypad entries.
+   if ((keyCode >= WXK_NUMPAD0) && (keyCode <= WXK_NUMPAD9)) keyCode -= WXK_NUMPAD0 - '0';
 
    if (keyCode >= '0' && keyCode <= '9') {
       mValueString[mDigits[mFocusedDigit].pos] = wxChar(keyCode);
