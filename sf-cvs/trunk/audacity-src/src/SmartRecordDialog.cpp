@@ -30,6 +30,7 @@
 
 #include "SmartRecordDialog.h"
 #include "Project.h"
+#include "Internat.h"
 
 #define MAX_PROG 1000
 #define TIMER_ID 7000
