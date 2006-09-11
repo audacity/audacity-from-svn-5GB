@@ -294,7 +294,8 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
       {
          wxString strFormat1 = wxT("099 days 024 h 060 m 060 s");
          m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat1);
-         m_pTimeTextCtrl_Duration->SetTimeValue(m_TimeSpan_Duration.GetSeconds().ToDouble()); //vvv milliseconds?
+         m_pTimeTextCtrl_Duration->SetTimeValue(
+            Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //vvv milliseconds?
          S.AddWindow(m_pTimeTextCtrl_Duration);
          m_pTimeTextCtrl_Duration->EnableMenu(false);
       }
@@ -348,7 +349,8 @@ void SmartRecordDialog::UpdateDuration()
 {
    //vvvvv A week overflows timeTextCTrl, so implement days ctrl and fix this calculation.
    m_TimeSpan_Duration = m_DateTime_End - m_DateTime_Start;
-   m_pTimeTextCtrl_Duration->SetTimeValue(m_TimeSpan_Duration.GetSeconds().ToDouble()); //vvv milliseconds?
+   m_pTimeTextCtrl_Duration->SetTimeValue(
+      Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //vvv milliseconds?
 }
 
 // Update m_DateTime_End and ctrls based on m_DateTime_Start and m_TimeSpan_Duration.
