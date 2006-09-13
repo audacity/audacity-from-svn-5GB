@@ -2556,9 +2556,28 @@ void AudacityProject::OnPaste()
          else {
             ((WaveTrack *) n)->Clear(t0, t1);
          }
-         
-         n->Paste(t0, c);
 
+         n->Paste(t0, c);
+         
+         // When copying from mono to stereo track, paste the wave form
+         // to both channels
+         if (n->GetLinked() && !c->GetLinked())
+         {
+            n = iter.Next();
+            
+            if (n->GetKind() == Track::Wave) {
+               //printf("Checking to see if we need to pre-clear the track\n");
+               if (!((WaveTrack *) n)->IsEmpty(t0, t1)) {
+                  ((WaveTrack *) n)->Clear(t0, t1);
+               }
+            }
+            else {
+               ((WaveTrack *) n)->Clear(t0, t1);
+            }
+            
+            n->Paste(t0, c);
+         }
+         
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Unlock();
 
