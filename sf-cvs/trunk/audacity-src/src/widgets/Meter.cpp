@@ -55,7 +55,7 @@
 #include "../ImageManipulation.h"
 //#include "../../images/MixerImages.h"
 #include "../Project.h"
-#include "../MeterToolBar.h"
+#include "../toolbars/MeterToolBar.h"
 #include "../Prefs.h"
 
 #include "../Theme.h"

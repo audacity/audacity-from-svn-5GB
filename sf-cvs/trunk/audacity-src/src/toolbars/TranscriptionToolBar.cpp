@@ -5,6 +5,7 @@
   TranscriptionToolBar.cpp
 
   Shane T. Mueller
+  Leland Lucius
 
 *******************************************************************//**
 
@@ -13,53 +14,34 @@
 
 *//*******************************************************************/
 
-#include "Audacity.h"
+#include "../Audacity.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
-#include <wx/wx.h>
-#include <wx/brush.h>
-#include <wx/intl.h>
 #include <wx/choice.h>
+#include <wx/defs.h>
+#include <wx/brush.h>
+#include <wx/image.h>
+#include <wx/intl.h>
 #endif // WX_PRECOMP
 
-#include <wx/image.h>
-#include <cmath>
-#include <iostream>
-
-#include "Experimental.h"
 #include "TranscriptionToolBar.h"
 
-#include "widgets/AButton.h"
-#include "widgets/ASlider.h"
+#include "../AllThemeResources.h"
+#include "../AudioIO.h"
+#include "../Experimental.h"
+#include "../ImageManipulation.h"
+#include "../Project.h"
+#include "../TimeTrack.h"
+#include "../VoiceKey.h"
+#include "../WaveTrack.h"
+#include "../widgets/AButton.h"
+#include "../widgets/ASlider.h"
 
-#include "AudioIO.h"
-#include "ImageManipulation.h"
-#include "LabelTrack.h"
-#include "Prefs.h"
-#include "Project.h"
-#include "WaveTrack.h"
-#include "TimeTrack.h"
-#include "VoiceKey.h"
-#include "AllThemeResources.h"
+IMPLEMENT_CLASS(TranscriptionToolBar, ToolBar);
 
-//#include "../images/TranscriptionButtons.h"
-//#include "../images/ControlButtons/Play.xpm"
-//#include "../images/ControlButtons/PlayAlpha.xpm"
-//#include "../images/ControlButtons/PlayDisabled.xpm"
-
-const int BUTTON_WIDTH = 27;
-const int SEPARATOR_WIDTH = 14;
-
-using std::cout;
-using std::flush;
-using std::endl;
 ///////////////////////////////////////////
 ///  Methods for TranscriptionToolBar
 ///////////////////////////////////////////
@@ -95,13 +77,31 @@ END_EVENT_TABLE()
    ;   //semicolon enforces  proper automatic indenting in emacs.
 
 ////Standard Constructor
-TranscriptionToolBar::TranscriptionToolBar(wxWindow * parent):
-   ToolBar()
+TranscriptionToolBar::TranscriptionToolBar()
+: ToolBar(TranscriptionBarID, _("Transcrpition"))
 {
-   InitToolBar( parent,
-                TranscriptionBarID,
-                _("Audacity Transcription Toolbar"),
-                _("Transcription") );
+}
+
+TranscriptionToolBar::~TranscriptionToolBar()
+{
+   delete vk;	
+   
+   if (mBackgroundBitmap) delete mBackgroundBitmap;
+   if(mPlaySpeedSlider)delete mPlaySpeedSlider;
+
+#ifdef EXPERIMENTAL_VOICE_DETECTION
+   if(mSensitivitySlider)delete mSensitivitySlider;
+
+   for (int i=0; i<TTBNumButtons; i++)
+      if(mButtons[i]) delete mButtons[i];
+
+   if(mKeyTypeChoice) delete mKeyTypeChoice;
+#endif
+}
+
+void TranscriptionToolBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
 
    vk = new VoiceKey();
    mBackgroundBrush.SetColour(wxColour(204, 204, 204));
@@ -253,26 +253,6 @@ void TranscriptionToolBar::Populate()
 #endif
 
 }
-
-TranscriptionToolBar::~TranscriptionToolBar()
-{
-   delete vk;	
-   
-   if (mBackgroundBitmap) delete mBackgroundBitmap;
-   if(mPlaySpeedSlider)delete mPlaySpeedSlider;
-
-#ifdef EXPERIMENTAL_VOICE_DETECTION
-   if(mSensitivitySlider)delete mSensitivitySlider;
-
-   for (int i=0; i<TTBNumButtons; i++)
-      if(mButtons[i]) delete mButtons[i];
-
-   if(mKeyTypeChoice) delete mKeyTypeChoice;
-#endif
-}
-
-
-
 
 //This handles key-stroke events????
 void TranscriptionToolBar::OnKeyEvent(wxKeyEvent & event)

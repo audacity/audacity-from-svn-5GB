@@ -62,8 +62,8 @@ and use it for toolbar and window layouts too.
 #include <wx/mstream.h>
 
 #include "Project.h" 
-#include "ToolBar.h"
-#include "ControlToolBar.h"
+#include "toolbars/ToolBar.h"
+#include "toolbars/ControlToolBar.h"
 #include "ImageManipulation.h"
 #include "Theme.h"
 #include "AllThemeResources.h"  // can remove this later, only needed for 'XPMS_RETIRED'.

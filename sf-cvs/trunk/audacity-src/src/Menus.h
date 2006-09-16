@@ -210,6 +210,7 @@ void OnShowControlToolBar();
 void OnShowEditToolBar();
 void OnShowMeterToolBar();
 void OnShowMixerToolBar();
+void OnShowSelectionToolBar();
 void OnShowToolsToolBar();
 void OnShowTranscriptionToolBar();
 

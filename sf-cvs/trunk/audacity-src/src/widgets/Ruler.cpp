@@ -65,7 +65,7 @@ array of Ruler::Label.
 #include "../Project.h"
 #include "Ruler.h"
 #include "../TrackPanel.h"
-#include "../ControlToolBar.h"
+#include "../toolbars/ControlToolBar.h"
 #include "../Theme.h"
 #include "../AllThemeResources.h"
 

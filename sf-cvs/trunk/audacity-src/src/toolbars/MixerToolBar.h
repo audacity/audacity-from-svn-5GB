@@ -13,21 +13,21 @@
 
 #include "ToolBar.h"
 
-class MixerToolBar;
-class ToolBar;
-class ToolBarFrame;
-class ASlider;
-
 class wxImage;
 class wxSize;
 class wxPoint;
 class wxChoice;
 
+class ASlider;
+
 class MixerToolBar:public ToolBar {
+
  public:
-   MixerToolBar() {};
-   MixerToolBar(wxWindow * parent);
-   virtual ~ MixerToolBar();
+
+   MixerToolBar();
+   virtual ~MixerToolBar();
+
+   void Create(wxWindow * parent);
 
    void RecreateTipWindows();
    void UpdatePrefs();
@@ -35,7 +35,7 @@ class MixerToolBar:public ToolBar {
    void SetMixer(wxCommandEvent &event);
 
    virtual void Populate();
-   virtual void Repaint( wxDC *dc ) {};
+   virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons() {};
 
    void OnSlider(wxCommandEvent & event);
@@ -47,12 +47,15 @@ class MixerToolBar:public ToolBar {
    wxBitmap *mPlayBitmap;
    wxBitmap *mRecordBitmap;
 
-   wxChoice *mInputSourceChoice;
-
    ASlider *mInputSlider;
    ASlider *mOutputSlider;
 
-   DECLARE_EVENT_TABLE()
+   wxChoice *mInputSourceChoice;
+
+ public:
+
+   DECLARE_CLASS(MixerToolBar);
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

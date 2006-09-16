@@ -5,6 +5,7 @@
   MeterToolBar.cpp
 
   Dominic Mazzoni
+  Leland Lucius
  
   See MeterToolBar.h for details
 
@@ -16,19 +17,24 @@
 *//*******************************************************************/
 
 
-#include "Audacity.h"
+#include "../Audacity.h"
 
-#include <wx/defs.h>
-#include <wx/intl.h>
-#include <wx/dc.h>
-#include <wx/dcclient.h>
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
 #include <wx/event.h>
-#include <wx/dcclient.h> // wxPaintDC
+#include <wx/intl.h>
+#include <wx/tooltip.h>
+#endif
+
 #include <wx/gbsizer.h>
 
 #include "MeterToolBar.h"
-#include "widgets/Meter.h"
-#include <wx/log.h>
+
+#include "../widgets/Meter.h"
+
+IMPLEMENT_CLASS(MeterToolBar, ToolBar);
 
 ////////////////////////////////////////////////////////////
 /// Methods for MeterToolBar
@@ -39,26 +45,25 @@ BEGIN_EVENT_TABLE( MeterToolBar, ToolBar )
 END_EVENT_TABLE()
 
 //Standard contructor
-MeterToolBar::MeterToolBar( wxWindow * parent ):
-   ToolBar()
+MeterToolBar::MeterToolBar()
+: ToolBar(MeterBarID, _("Meter"), true)
 {
    mSizer = NULL;
    mPlayMeter = NULL;
    mRecordMeter = NULL;
-
-   InitToolBar( parent,
-                MeterBarID,
-                _("Audacity Meter Toolbar"),
-                _("Meter"),
-                true );
-
-   // Simulate a size event to set initial meter placement/size
-   wxSizeEvent dummy;
-   OnSize( dummy );
 }
 
 MeterToolBar::~MeterToolBar()
 {
+}
+
+void MeterToolBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
+
+   // Simulate a size event to set initial meter placement/size
+   wxSizeEvent dummy;
+   OnSize(dummy);
 }
 
 void MeterToolBar::Populate()
@@ -102,7 +107,7 @@ void MeterToolBar::OnSize( wxSizeEvent & evt )
 
    // Get the usable area
    GetClientSize( &width, &height );
-   width -= mSizer->GetPosition().x;
+   width -= mSizer->GetPosition().x + 4;
 
    // Default location for record meter
    wxGBPosition pos( 0, 1 );
@@ -142,6 +147,12 @@ void MeterToolBar::OnSize( wxSizeEvent & evt )
 
    // And make it happen
    Layout();
+}
+
+void MeterToolBar::GetMeters(Meter **playMeter, Meter **recordMeter)
+{
+   *playMeter = mPlayMeter;
+   *recordMeter = mRecordMeter;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

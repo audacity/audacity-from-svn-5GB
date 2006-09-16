@@ -189,8 +189,6 @@ a list of fonts.
 #include "AColor.h"
 #include "AudacityApp.h"
 #include "AudioIO.h"
-#include "ControlToolBar.h"
-#include "ToolsToolBar.h"
 #include "Envelope.h"
 #include "LabelTrack.h"
 #include "NoteTrack.h"
@@ -202,11 +200,13 @@ a list of fonts.
 #include "WaveTrack.h"
 #include "TimeTrack.h"
 #include "Experimental.h"
-#include "MeterToolBar.h"
-
 
 #include "TrackPanelAx.h"
   
+#include "toolbars/ToolManager.h"
+#include "toolbars/ControlToolBar.h"
+#include "toolbars/ToolsToolBar.h"
+
 #include "widgets/ASlider.h"
 #include "widgets/Ruler.h"
 #include "Theme.h"

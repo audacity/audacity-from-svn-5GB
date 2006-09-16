@@ -20,7 +20,6 @@
 
 #include "Audacity.h"
 
-#include "SelectionBar.h"
 #include "DirManager.h"
 #include "UndoManager.h"
 #include "ViewInfo.h"
@@ -29,6 +28,7 @@
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "xml/XMLTagHandler.h"
+#include "toolbars/SelectionBar.h"
 
 #include <wx/defs.h>
 #include <wx/dnd.h>
@@ -51,12 +51,13 @@ class wxScrollBar;
 class wxProgressDialog;
 class wxPanel;
 
-class ToolBarDock;
+class ToolManager;
 class Toolbar;
 class ControlToolBar;
 class EditToolBar;
 class MeterToolBar;
 class MixerToolBar;
+class SelectionToolBar;
 class ToolsToolBar;
 class TranscriptionToolBar;
 
@@ -208,6 +209,7 @@ class AudacityProject:public wxFrame,
    bool HandleKeyUp(wxKeyEvent & event);
 
    void HandleResize();
+   void UpdateLayout();
 
    // Other commands
 
@@ -263,6 +265,7 @@ class AudacityProject:public wxFrame,
    EditToolBar *GetEditToolBar();
    MeterToolBar *GetMeterToolBar();
    MixerToolBar *GetMixerToolBar();
+   SelectionBar *GetSelectionBar();
    ToolsToolBar *GetToolsToolBar();
    TranscriptionToolBar *GetTranscriptionToolBar();
 
@@ -371,11 +374,7 @@ class AudacityProject:public wxFrame,
    long mLastStatusUpdateTime;
    long mLastUpdateUITime;
 
-   SelectionBar *mSelectionBar;
    wxStatusBar *mStatusBar;
-   wxPoint mToolBarHotspot;
-
-   wxGenericDragImage *mDrag;
 
    AdornedRulerPanel *mRuler;
    TrackPanel *mTrackPanel;
@@ -396,7 +395,7 @@ class AudacityProject:public wxFrame,
    wxString mProgressMessage;
 
  public:
-   ToolBarDock *mToolBarDock;
+   ToolManager *mToolManager;
 
  private:
    int  mAudioIOToken;

@@ -77,12 +77,10 @@ simplifies construction of menu items.
 #include "BatchProcessDialog.h"
 #include "BatchCommands.h"
 
-#include "ControlToolBar.h"
-#include "EditToolBar.h"
-#include "MeterToolBar.h"
-#include "MixerToolBar.h"
-#include "ToolsToolBar.h"
-#include "TranscriptionToolBar.h"
+#include "toolbars/ToolManager.h"
+#include "toolbars/ControlToolBar.h"
+#include "toolbars/ToolsToolBar.h"
+
 #include "Experimental.h"
 #include "PlatformCompatibility.h"
 #include "FileNames.h"
@@ -155,9 +153,9 @@ enum {
    ZoomInAvailableFlag    = 0x00000800,
    ZoomOutAvailableFlag   = 0x00001000,
    StereoRequiredFlag     = 0x00002000,  //lda
-   ToolBarDockHasFocus    = 0x00004000,  //lll
+   TopDockHasFocus        = 0x00004000,  //lll
    TrackPanelHasFocus     = 0x00008000,  //lll
-   SelectionBarHasFocus   = 0x00010000,  //lll
+   BotDockHasFocus        = 0x00010000,  //lll
    LabelsSelectedFlag     = 0x00020000,
    AudioIOBusyFlag        = 0x00040000,  //lll
    PlayRegionLockedFlag   = 0x00080000,  //msmeyer
@@ -580,6 +578,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar));
    c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar));
    c->AddItem(wxT("ShowMixerTB"),         _("Show Mixer Toolbar"),         FN(OnShowMixerToolBar));
+   c->AddItem(wxT("ShowSelectionTB"),     _("Show Selection Toolbar"),     FN(OnShowSelectionToolBar));
    c->AddItem(wxT("ShowToolsTB"),         _("Show Tools Toolbar"),         FN(OnShowToolsToolBar));
    c->AddItem(wxT("ShowTranscriptionTB"), _("Show Transcription Toolbar"), FN(OnShowTranscriptionToolBar));
    c->EndSubMenu();
@@ -1021,21 +1020,17 @@ int AudacityProject::GetFocusedFrame()
 {
    wxWindow *w = FindFocus();
 
-   while( w )
-   {
-      if( w == mToolBarDock )
-      {
-         return ToolBarDockHasFocus;
+   while (w) {
+      if (w == mToolManager->GetTopDock()) {
+         return TopDockHasFocus;
       }
 
-      if( w == mTrackPanel )
-      {
+      if (w == mTrackPanel) {
          return TrackPanelHasFocus;
       }
 
-      if( w == mSelectionBar )
-      {
-         return SelectionBarHasFocus;
+      if (w == mToolManager->GetBotDock()) {
+         return BotDockHasFocus;
       }
 
       w = w->GetParent();
@@ -1164,30 +1159,34 @@ void AudacityProject::SelectAllIfNone()
 
 void AudacityProject::ModifyToolbarMenus()
 {
-   mCommandManager.Modify( wxT("ShowControlTB"),
-                           mToolBarDock->IsVisible( ControlBarID ) ?
-                           _("Hide Control Toolbar") :
-                           _("Show Control Toolbar") );
-   mCommandManager.Modify( wxT("ShowEditTB"),
-                           mToolBarDock->IsVisible( EditBarID ) ?
-                           _("Hide Edit Toolbar") :
-                           _("Show Edit Toolbar") );
-   mCommandManager.Modify( wxT("ShowMeterTB"),
-                           mToolBarDock->IsVisible( MeterBarID ) ?
-                           _("Hide Meter Toolbar") :
-                           _("Show Meter Toolbar") );
-   mCommandManager.Modify( wxT("ShowMixerTB"),
-                           mToolBarDock->IsVisible( MixerBarID ) ?
-                           _("Hide Mixer Toolbar") :
-                           _("Show Mixer Toolbar") );
-   mCommandManager.Modify( wxT("ShowToolsTB"),
-                           mToolBarDock->IsVisible( ToolsBarID ) ?
-                           _("Hide Tools Toolbar") :
-                           _("Show Tools Toolbar") );
-   mCommandManager.Modify( wxT("ShowTranscriptionTB"),
-                           mToolBarDock->IsVisible( TranscriptionBarID ) ?
-                           _("Hide Transcription Toolbar") :
-                           _("Show Transcription Toolbar") );
+   mCommandManager.Modify(wxT("ShowControlTB"),
+                          mToolManager->IsVisible(ControlBarID ) ?
+                          _("Hide Control Toolbar") :
+                          _("Show Control Toolbar"));
+   mCommandManager.Modify(wxT("ShowEditTB"),
+                          mToolManager->IsVisible(EditBarID) ?
+                          _("Hide Edit Toolbar") :
+                          _("Show Edit Toolbar"));
+   mCommandManager.Modify(wxT("ShowMeterTB"),
+                          mToolManager->IsVisible(MeterBarID) ?
+                          _("Hide Meter Toolbar") :
+                          _("Show Meter Toolbar"));
+   mCommandManager.Modify(wxT("ShowMixerTB"),
+                          mToolManager->IsVisible(MixerBarID) ?
+                          _("Hide Mixer Toolbar") :
+                          _("Show Mixer Toolbar"));
+   mCommandManager.Modify(wxT("ShowSelectionTB"),
+                          mToolManager->IsVisible(SelectionBarID) ?
+                          _("Hide Selection Toolbar") :
+                          _("Show Selection Toolbar"));
+   mCommandManager.Modify(wxT("ShowToolsTB"),
+                          mToolManager->IsVisible(ToolsBarID) ?
+                          _("Hide Tools Toolbar") :
+                          _("Show Tools Toolbar"));
+   mCommandManager.Modify(wxT("ShowTranscriptionTB"),
+                          mToolManager->IsVisible(TranscriptionBarID) ?
+                          _("Hide Transcription Toolbar") :
+                          _("Show Transcription Toolbar"));
  }
 
 void AudacityProject::UpdateMenus()
@@ -1215,7 +1214,7 @@ void AudacityProject::UpdateMenus()
    // Now, go through each toolbar, and call EnableDisableButtons()
    for( int i = 0; i < ToolBarCount; i++ )
    {
-      mToolBarDock->GetToolBar( i )->EnableDisableButtons();
+      mToolManager->GetToolBar( i )->EnableDisableButtons();
    }
 }
 
@@ -1327,10 +1326,9 @@ void AudacityProject::OnPlayOneSecond()
    if( !MakeReadyToPlay() )
       return;
 
-   ControlToolBar *toolbar = GetControlToolBar();
    double pos = mTrackPanel->GetMostRecentXPos();
    mLastPlayMode = oneSecondPlay;
-   toolbar->PlayPlayRegion(pos - 0.5, pos + 0.5);
+   GetControlToolBar()->PlayPlayRegion(pos - 0.5, pos + 0.5);
 }
 
 
@@ -1346,7 +1344,6 @@ void AudacityProject::OnPlayToSelection()
    if( !MakeReadyToPlay() )
       return;
 
-   ControlToolBar *toolbar = GetControlToolBar();
    double pos = mTrackPanel->GetMostRecentXPos();
 
    double t0,t1;
@@ -1373,7 +1370,7 @@ void AudacityProject::OnPlayToSelection()
    // only when playing a short region, less than or equal to a second.
 //   mLastPlayMode = ((t1-t0) > 1.0) ? normalPlay : oneSecondPlay;
 
-   toolbar->PlayPlayRegion(t0, t1);
+   GetControlToolBar()->PlayPlayRegion(t0, t1);
 }
 
 void AudacityProject::OnPlayLooped()
@@ -1383,8 +1380,7 @@ void AudacityProject::OnPlayLooped()
 
    // Now play in a loop
    // Will automatically set mLastPlayMode
-   ControlToolBar *toolbar = GetControlToolBar();
-   toolbar->PlayCurrentRegion(true);
+   GetControlToolBar()->PlayCurrentRegion(true);
 }
 
 void AudacityProject::OnPlayCutPreview()
@@ -1393,8 +1389,7 @@ void AudacityProject::OnPlayCutPreview()
       return;
       
    // Play with cut preview
-   ControlToolBar *toolbar = GetControlToolBar();
-   toolbar->PlayCurrentRegion(false, true);
+   GetControlToolBar()->PlayCurrentRegion(false, true);
 }
    
 void AudacityProject::OnPlayStop()
@@ -1419,41 +1414,37 @@ void AudacityProject::OnPlayStop()
 
 void AudacityProject::OnStop()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
    if (gAudioIO->IsStreamActive())
-      toolbar->OnStop(evt);
+      GetControlToolBar()->OnStop(evt);
 }
 
 void AudacityProject::OnPause()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
-   toolbar->OnPause(evt);
+   GetControlToolBar()->OnPause(evt);
 }
 
 void AudacityProject::OnRecord()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
-   toolbar->OnRecord(evt);
+   GetControlToolBar()->OnRecord(evt);
 }
 
 void AudacityProject::OnStopSelect()
 {
-	ControlToolBar *toolbar = GetControlToolBar();
-	wxCommandEvent evt;
+   wxCommandEvent evt;
 
-	if (gAudioIO->IsStreamActive()) {
-		mViewInfo.sel0 = gAudioIO->GetStreamTime();
-		if( mViewInfo.sel1 < mViewInfo.sel0 ) {
-			mViewInfo.sel1 = mViewInfo.sel0;
-		}
-		toolbar->OnStop(evt);
-	}
+   if (gAudioIO->IsStreamActive()) {
+      mViewInfo.sel0 = gAudioIO->GetStreamTime();
+      if( mViewInfo.sel1 < mViewInfo.sel0 ) {
+         mViewInfo.sel1 = mViewInfo.sel0;
+      }
+      GetControlToolBar()->OnStop(evt);
+   }
 
    ModifyState();
 }
@@ -1553,18 +1544,16 @@ void AudacityProject::OnSortName()
 
 void AudacityProject::OnSkipStart()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
-   toolbar->OnRewind(evt);
+   GetControlToolBar()->OnRewind(evt);
 }
 
 void AudacityProject::OnSkipEnd()
 {
-   ControlToolBar *toolbar = GetControlToolBar();
    wxCommandEvent evt;
 
-   toolbar->OnFF(evt);
+   GetControlToolBar()->OnFF(evt);
 }
 
 void AudacityProject::OnSeekLeftShort()
@@ -1729,16 +1718,16 @@ void AudacityProject::NextFrame()
 {
    switch( GetFocusedFrame() )
    {
-      case ToolBarDockHasFocus:
+      case TopDockHasFocus:
          mTrackPanel->SetFocus();
       break;
 
       case TrackPanelHasFocus:
-         mSelectionBar->SetFocus();
+         mToolManager->GetBotDock()->SetFocus();
       break;
 
-      case SelectionBarHasFocus:
-         mToolBarDock->SetFocus();
+      case BotDockHasFocus:
+         mToolManager->GetTopDock()->SetFocus();
       break;
    }
 }
@@ -1747,15 +1736,15 @@ void AudacityProject::PrevFrame()
 {
    switch( GetFocusedFrame() )
    {
-      case ToolBarDockHasFocus:
-         mSelectionBar->SetFocus();
+      case TopDockHasFocus:
+         mToolManager->GetBotDock()->SetFocus();
       break;
 
       case TrackPanelHasFocus:
-         mToolBarDock->SetFocus();
+         mToolManager->GetTopDock()->SetFocus();
       break;
 
-      case SelectionBarHasFocus:
+      case BotDockHasFocus:
          mTrackPanel->SetFocus();
       break;
    }
@@ -3356,37 +3345,43 @@ void AudacityProject::OnPlotSpectrum()
 
 void AudacityProject::OnShowControlToolBar()
 {
-   mToolBarDock->ShowHide( ControlBarID );
+   mToolManager->ShowHide( ControlBarID );
    ModifyToolbarMenus();
 }
 
 void AudacityProject::OnShowEditToolBar()
 {
-   mToolBarDock->ShowHide( EditBarID );
+   mToolManager->ShowHide( EditBarID );
    ModifyToolbarMenus();
 }
 
 void AudacityProject::OnShowMeterToolBar()
 {
-   mToolBarDock->ShowHide( MeterBarID );
+   mToolManager->ShowHide( MeterBarID );
    ModifyToolbarMenus();
 }
 
 void AudacityProject::OnShowMixerToolBar()
 {
-   mToolBarDock->ShowHide( MixerBarID );
+   mToolManager->ShowHide( MixerBarID );
+   ModifyToolbarMenus();
+}
+
+void AudacityProject::OnShowSelectionToolBar()
+{
+   mToolManager->ShowHide( SelectionBarID );
    ModifyToolbarMenus();
 }
 
 void AudacityProject::OnShowToolsToolBar()
 {
-   mToolBarDock->ShowHide( ToolsBarID );
+   mToolManager->ShowHide( ToolsBarID );
    ModifyToolbarMenus();
 }
 
 void AudacityProject::OnShowTranscriptionToolBar()
 {
-   mToolBarDock->ShowHide( TranscriptionBarID );
+   mToolManager->ShowHide( TranscriptionBarID );
    ModifyToolbarMenus();
 }
 
