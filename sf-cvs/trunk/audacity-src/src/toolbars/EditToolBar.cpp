@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Shane T. Mueller
+  Leland Lucius
  
   See EditToolBar.h for details
 
@@ -30,37 +31,30 @@
 *//*******************************************************************/
 
 
-#include "Audacity.h"
+#include "../Audacity.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
-#include <wx/log.h>
 #include <wx/event.h>
-#include <wx/brush.h>
-#include <wx/dcclient.h>
+#include <wx/image.h>
 #include <wx/intl.h>
-#include <wx/settings.h>
+#include <wx/sizer.h>
 #include <wx/tooltip.h>
 #endif
 
-#include <wx/image.h>
-
 #include "EditToolBar.h"
-#include "AudioIO.h"
-#include "ImageManipulation.h"
-#include "Project.h"
-#include "UndoManager.h"
-#include "widgets/AButton.h"
 
-//#include "../images/EditButtons.h"
-#include "Theme.h"
-#include "AllThemeResources.h"
+#include "../AllThemeResources.h"
+#include "../AudioIO.h"
+#include "../ImageManipulation.h"
+#include "../Project.h"
+#include "../Theme.h"
+#include "../UndoManager.h"
+#include "../widgets/AButton.h"
+
+IMPLEMENT_CLASS(EditToolBar, ToolBar);
 
 const int BUTTON_WIDTH = 27;
 const int SEPARATOR_WIDTH = 14;
@@ -77,13 +71,20 @@ BEGIN_EVENT_TABLE( EditToolBar, ToolBar )
 END_EVENT_TABLE()
 
 //Standard contructor
-EditToolBar::EditToolBar(wxWindow * parent):
-   ToolBar()
+EditToolBar::EditToolBar()
+: ToolBar(EditBarID, _("Edit"))
 {
-   InitToolBar( parent,
-                EditBarID,
-                _("Audacity Edit Toolbar"),
-                _("Edit") );
+}
+
+EditToolBar::~EditToolBar()
+{
+   for (int i=0; i<ETBNumButtons; i++)
+      delete mButtons[i];
+}
+
+void EditToolBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
 }
 
 void EditToolBar::AddSeparator()
@@ -97,7 +98,6 @@ void EditToolBar::AddSeparator()
 AButton *EditToolBar::AddButton(
    teBmps eFore, teBmps eDisabled,
    int id,
-//   bool processdownevents,
    const wxChar *label,
    const wxChar *tip)
 {
@@ -108,7 +108,6 @@ AButton *EditToolBar::AddButton(
       eFore, eDisabled,
       wxWindowID(id),
       wxDefaultPosition, 
-//      processdownevents,
       false,
       theTheme.ImageSize( bmpRecoloredUpSmall ));
 
@@ -171,12 +170,6 @@ void EditToolBar::Populate()
    mButtons[ETBZoomSelID]->SetEnabled(false);
    mButtons[ETBZoomFitID]->SetEnabled(false);
    mButtons[ETBPasteID]->SetEnabled(false);
-}
-
-EditToolBar::~EditToolBar()
-{
-   for (int i=0; i<ETBNumButtons; i++)
-      delete mButtons[i];
 }
 
 void EditToolBar::OnButton(wxCommandEvent &event)

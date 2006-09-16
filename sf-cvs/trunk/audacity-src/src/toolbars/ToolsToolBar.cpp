@@ -6,6 +6,7 @@
 
   Dominic Mazzoni
   Shane T. Mueller
+  Leland Lucius
  
   See ToolsToolBar.h for details
 
@@ -32,43 +33,29 @@
 *//*******************************************************************/
 
 
-#include "Audacity.h"
-#include "ToolsToolBar.h"
+#include "../Audacity.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
-#include <wx/dcmemory.h>
 #include <wx/defs.h>
 #include <wx/event.h>
-#include <wx/brush.h>
 #include <wx/intl.h>
-#include <wx/log.h>
-#include <wx/settings.h>
+#include <wx/sizer.h>
+#include <wx/tooltip.h>
 #endif
 
-#include <wx/image.h>
-#include <wx/tooltip.h>
-#include <wx/msgdlg.h>
-
-#include "widgets/AButton.h"
-#include "AudioIO.h"
-#include "ImageManipulation.h"
-#include "Prefs.h"
-#include "Project.h"
-#include "Track.h"
-
-#include "AColor.h"
 #include "MeterToolBar.h"
-#include "Theme.h"
-#include "AllThemeResources.h"
+#include "ToolsToolBar.h"
 
-//#include "../images/ToolsButtons.h"
+#include "../AllThemeResources.h"
+#include "../ImageManipulation.h"
+#include "../Project.h"
+#include "../Theme.h"
+#include "../widgets/AButton.h"
+
+IMPLEMENT_CLASS(ToolsToolBar, ToolBar);
 
 // Strings to convert a tool number into a status message
 // These MUST be in the same order as the ids above.
@@ -91,21 +78,16 @@ const wxChar * MessageOfTool[numTools] = { wxTRANSLATE("Click and drag to select
 ////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE(ToolsToolBar, ToolBar)
-   EVT_COMMAND_RANGE( firstTool,
-                      lastTool,
-                      wxEVT_COMMAND_BUTTON_CLICKED,
-                      ToolsToolBar::OnTool )
+   EVT_COMMAND_RANGE(firstTool,
+                     lastTool,
+                     wxEVT_COMMAND_BUTTON_CLICKED,
+                     ToolsToolBar::OnTool)
 END_EVENT_TABLE()
 
 //Standard constructor
-ToolsToolBar::ToolsToolBar( wxWindow * parent ):
-   ToolBar()
+ToolsToolBar::ToolsToolBar()
+: ToolBar(ToolsBarID, _("Tools"))
 {
-   InitToolBar( parent,
-                ToolsBarID,
-                _("Audacity Tools Toolbar"),
-                _("Tools") );
-
    //Read the following wxASSERTs as documentating a design decision
    wxASSERT( selectTool   == selectTool   - firstTool );
    wxASSERT( envelopeTool == envelopeTool - firstTool );
@@ -113,6 +95,17 @@ ToolsToolBar::ToolsToolBar( wxWindow * parent ):
    wxASSERT( zoomTool     == zoomTool     - firstTool );
    wxASSERT( drawTool     == drawTool     - firstTool );
    wxASSERT( multiTool    == multiTool    - firstTool );
+}
+
+ToolsToolBar::~ToolsToolBar()
+{
+   for (int i = 0; i < 5; i++)
+      delete mTool[i];
+}
+
+void ToolsToolBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
 
    mCurrentTool = selectTool;
    mTool[mCurrentTool]->PushDown();
@@ -196,12 +189,6 @@ void ToolsToolBar::Populate()
 #endif
 
    RegenerateToolsTooltips();
-}
-
-ToolsToolBar::~ToolsToolBar()
-{
-   for (int i = 0; i < 5; i++)
-      delete mTool[i];
 }
 
 /// Gets the currently active tool

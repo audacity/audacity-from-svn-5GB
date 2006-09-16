@@ -14,84 +14,60 @@
 *//*******************************************************************/
 
 
-#include "Audacity.h"
-
-#include "MixerToolBar.h"
+#include "../Audacity.h"
 
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
 #ifndef WX_PRECOMP
-#include <wx/defs.h>
 #include <wx/choice.h>
-#include <wx/dcmemory.h>
 #include <wx/event.h>
-#include <wx/brush.h>
 #include <wx/intl.h>
-#include <wx/log.h>
 #include <wx/settings.h>
+#include <wx/sizer.h>
 #include <wx/statbmp.h>
-#endif
-
-#include <wx/image.h>
 #include <wx/tooltip.h>
-
-#include "AudioIO.h"
-#include "ImageManipulation.h"
-#include "widgets/ASlider.h"
-#include "Prefs.h"
-#include "Project.h"
-#include "AColor.h"
-
-#if USE_PORTMIXER
-#include "AudioIO.h"
 #endif
-#include "Theme.h"
-#include "AllThemeResources.h"
 
-//#include "../images/MixerImages.h"
+#include "MixerToolBar.h"
+
+#include "../AColor.h"
+#include "../AllThemeResources.h"
+#include "../AudioIO.h"
+#include "../ImageManipulation.h"
+#include "../Prefs.h"
+#include "../Project.h"
+#include "../Theme.h"
+#include "../widgets/ASlider.h"
+
+IMPLEMENT_CLASS(MixerToolBar, ToolBar);
 
 ////////////////////////////////////////////////////////////
 /// Methods for MixerToolBar
 ////////////////////////////////////////////////////////////
 
-enum {
-   FirstID = 2000,
-   OutputVolumeID,
-   InputVolumeID,
-   InputSourceID
-};
-
-
 BEGIN_EVENT_TABLE(MixerToolBar, ToolBar)
    EVT_PAINT(MixerToolBar::OnPaint)
-   EVT_SLIDER(OutputVolumeID, MixerToolBar::SetMixer)
-   EVT_SLIDER(InputVolumeID, MixerToolBar::SetMixer)
-   EVT_CHOICE(InputSourceID, MixerToolBar::SetMixer)
+   EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
+   EVT_SLIDER(wxID_ANY, MixerToolBar::SetMixer)
+   EVT_CHOICE(wxID_ANY, MixerToolBar::SetMixer)
 END_EVENT_TABLE()
 
 //Standard contructor
-MixerToolBar::MixerToolBar(wxWindow * parent):
-   ToolBar()
+MixerToolBar::MixerToolBar()
+: ToolBar(MixerBarID, _("Mixer"))
 {
-   InitToolBar( parent,
-                MixerBarID,
-                _("Audacity Mixer Toolbar"),
-                _("Mixer") );
 }
 
 MixerToolBar::~MixerToolBar()
 {
    delete mPlayBitmap;
    delete mRecordBitmap;
-   delete mInputSlider;
-   delete mOutputSlider;
-   if (mInputSourceChoice)
-      delete mInputSourceChoice;
+}
+
+void MixerToolBar::Create(wxWindow *parent)
+{
+   ToolBar::Create(parent);
 }
 
 void MixerToolBar::RecreateTipWindows()
@@ -104,33 +80,29 @@ void MixerToolBar::RecreateTipWindows()
 void MixerToolBar::Populate()
 {
    wxColour backgroundColour =
-       wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
+      wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE);
 
-//   mPlayBitmap = new wxBitmap( Speaker );
-//   mPlayBitmap->SetMask( new wxMask( wxBitmap( SpeakerAlpha ), *wxBLACK ) );
-   mPlayBitmap = new wxBitmap( theTheme.Bitmap( bmpSpeaker ));
+   mPlayBitmap = new wxBitmap(theTheme.Bitmap(bmpSpeaker));
 
-   Add( new wxStaticBitmap( this,
-                            wxID_ANY, 
-                            *mPlayBitmap ), 0, wxALIGN_CENTER );
+   Add(new wxStaticBitmap(this,
+                          wxID_ANY, 
+                          *mPlayBitmap), 0, wxALIGN_CENTER);
 
-   mOutputSlider = new ASlider(this, OutputVolumeID, _("Output Volume"),
+   mOutputSlider = new ASlider(this, wxID_ANY, _("Output Volume"),
                                wxDefaultPosition, wxSize(130, 25));
-   mOutputSlider->SetLabel( _("Slider-Output") );
-   Add( mOutputSlider, 0, wxALIGN_CENTER );
+   mOutputSlider->SetLabel(_("Slider-Output"));
+   Add(mOutputSlider, 0, wxALIGN_CENTER);
 
-//   mRecordBitmap = new wxBitmap( Mic );
-//   mRecordBitmap->SetMask( new wxMask( wxBitmap( MicAlpha ), *wxBLACK ) );
-   mRecordBitmap = new wxBitmap( theTheme.Bitmap( bmpMic ));
+   mRecordBitmap = new wxBitmap(theTheme.Bitmap(bmpMic));
 
-   Add( new wxStaticBitmap( this,
-                            wxID_ANY, 
-                            *mRecordBitmap ), 0, wxALIGN_CENTER );
+   Add(new wxStaticBitmap(this,
+                          wxID_ANY, 
+                          *mRecordBitmap), 0, wxALIGN_CENTER);
 
-   mInputSlider = new ASlider(this, InputVolumeID, _("Input Volume"),
+   mInputSlider = new ASlider(this, wxID_ANY, _("Input Volume"),
                               wxDefaultPosition, wxSize(130, 25));
-   mInputSlider->SetLabel( _("Slider-Input") );
-   Add( mInputSlider, 0, wxALIGN_CENTER );
+   mInputSlider->SetLabel(_("Slider-Input"));
+   Add(mInputSlider, 0, wxALIGN_CENTER);
 
    mInputSourceChoice = NULL;
 
@@ -139,12 +111,13 @@ void MixerToolBar::Populate()
 
    wxArrayString inputSources = gAudioIO->GetInputSourceNames();
 
-   mInputSourceChoice = new wxChoice(this, InputSourceID,
+   mInputSourceChoice = new wxChoice(this,
+                                     wxID_ANY,
                                      wxDefaultPosition,
                                      wxDefaultSize,
                                      inputSources);
    mInputSourceChoice->SetName(_("Input Source"));
-   Add( mInputSourceChoice, 0, wxALIGN_CENTER );
+   Add(mInputSourceChoice, 0, wxALIGN_CENTER);
 
    if (inputSources.GetCount() == 0)
       mInputSourceChoice->Enable(false);

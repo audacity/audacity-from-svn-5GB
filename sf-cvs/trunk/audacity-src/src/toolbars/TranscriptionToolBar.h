@@ -2,9 +2,11 @@
 
   Audacity: A Digital Audio Editor
 
+
   TranscriptionToolBar.h
 
   Shane T. Mueller
+  Leland Lucius
 
 **********************************************************************/
 
@@ -12,19 +14,26 @@
 #define __AUDACITY_TRANSCRIPTION_TOOLBAR__
 
 #include "ToolBar.h"
-#include "Sequence.h" // for sampleCount
-#include "Theme.h" // for definition of teBmps;
 
 #include <wx/brush.h>
-#include <wx/gdicmn.h>
 #include <wx/pen.h>
+
+#include "../Sequence.h"
+#include "../Theme.h"
+
+class wxBitmap;
+class wxBrush;
+class wxChoice;
+class wxCommandEvent;
+class wxImage;
+class wxKeyEvent;
+class wxPen;
 
 class AButton;
 class ASlider;
+class TimeTrack;
 class VoiceKey;
 class WaveTrack;
-class TimeTrack;
-class wxChoice;
 
 //TTB 0-8 are button-ids, which also correspond to their
 //position in mButtons.  9 & 10 are ids for sliders, which aren't
@@ -50,54 +59,53 @@ enum
 #define TTBNumButtons 10
 
 class TranscriptionToolBar:public ToolBar {
+
  public:
   
-   TranscriptionToolBar(wxWindow * parent);
-   TranscriptionToolBar(wxWindow * parent, wxWindowID id,
-                        const wxPoint & pos, const wxSize & size);
-   
-   virtual ~ TranscriptionToolBar();
-   
+   TranscriptionToolBar();
+   virtual ~TranscriptionToolBar();
+
+   void Create(wxWindow *parent);
 
    virtual void OnKeyEvent(wxKeyEvent & event);
-
    virtual void OnPlaySpeed(wxCommandEvent & event);
-   virtual void OnSpeedSlider(wxCommandEvent& event);
-   virtual void OnStartOn(wxCommandEvent &event);
-   virtual void OnStartOff(wxCommandEvent &event);
-   virtual void OnEndOn(wxCommandEvent &event);
-   virtual void OnEndOff(wxCommandEvent &event);
-   virtual void OnSelectSound(wxCommandEvent &event);
-   virtual void OnSelectSilence(wxCommandEvent &event);
-   virtual void OnCalibrate(wxCommandEvent &event);
-   virtual void OnMakeLabel(wxCommandEvent &event);
-   virtual void OnAutomateSelection(wxCommandEvent &event);
-   virtual double GetSensitivity();
-   virtual void OnSensitivitySlider(wxCommandEvent& evt);
+   virtual void OnSpeedSlider(wxCommandEvent & event);
+   virtual void OnStartOn(wxCommandEvent & event);
+   virtual void OnStartOff(wxCommandEvent & event);
+   virtual void OnEndOn(wxCommandEvent & event);
+   virtual void OnEndOff(wxCommandEvent & event);
+   virtual void OnSelectSound(wxCommandEvent & event);
+   virtual void OnSelectSilence(wxCommandEvent & event);
+   virtual void OnCalibrate(wxCommandEvent & event);
+   virtual void OnMakeLabel(wxCommandEvent & event);
+   virtual void OnAutomateSelection(wxCommandEvent & event);
+   virtual void OnSensitivitySlider(wxCommandEvent & event);
 
    virtual void Populate();
-   virtual void Repaint( wxDC *dc ) {};
+   virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons();
 
+   virtual double GetSensitivity();
    virtual void SetKeyType(wxCommandEvent & event);
-private:
+
+ private:
+
    void InitializeTranscriptionToolBar();
    AButton *AddButton(
       teBmps eFore, teBmps eDisabled,
       int id,
-      //   bool processdownevents,
       const wxChar *label, const wxChar *tip);
    void GetSamples(WaveTrack *t, sampleCount *s0, sampleCount *slen);
-   void SetButton(bool newstate, AButton* button); 
+   void SetButton(bool newstate, AButton *button);
    
-   AButton * mButtons[TTBNumButtons];
+   AButton *mButtons[TTBNumButtons];
    wxImage *upImage;
    wxImage *downImage;
    wxImage *hiliteImage;
    
-   ASlider * mPlaySpeedSlider;
+   ASlider *mPlaySpeedSlider;
    double mPlaySpeed;
-   ASlider * mSensitivitySlider;
+   ASlider *mSensitivitySlider;
    double mSensitivity;
    VoiceKey *vk;
    
@@ -107,10 +115,13 @@ private:
    int mBackgroundWidth;
    int mBackgroundHeight;
 
-   TimeTrack * mTimeTrack;
-   wxChoice * mKeyTypeChoice;
-   
-DECLARE_EVENT_TABLE()
+   TimeTrack *mTimeTrack;
+   wxChoice *mKeyTypeChoice;
+
+ public:
+
+   DECLARE_CLASS(TranscriptionToolBar);
+   DECLARE_EVENT_TABLE();
 };
 
 

@@ -99,14 +99,8 @@ scroll information.  It also has some status flags.
 #include "AutoRecovery.h"
 #include "AudacityApp.h"
 #include "AColor.h"
-#include "SelectionBar.h"
 #include "AudioIO.h"
 #include "Dependencies.h"
-#include "ControlToolBar.h"
-#include "ToolsToolBar.h"
-#include "EditToolBar.h"
-#include "MeterToolBar.h"
-#include "TranscriptionToolBar.h"
 #include "FreqWindow.h"
 #include "HistoryWindow.h"
 #include "Internat.h"
@@ -114,11 +108,9 @@ scroll information.  It also has some status flags.
 #include "LabelTrack.h"
 #include "Legacy.h"
 #include "Mix.h"
-#include "MixerToolBar.h"
 #include "NoteTrack.h"
 #include "Prefs.h"
 #include "Tags.h"
-#include "ToolBar.h"
 #include "Track.h"
 #include "TrackPanel.h"
 #include "WaveTrack.h"
@@ -137,15 +129,20 @@ scroll information.  It also has some status flags.
 #include "Theme.h"
 #include "AllThemeResources.h"
 
+#include "toolbars/ToolManager.h"
+#include "toolbars/ControlToolBar.h"
+#include "toolbars/EditToolBar.h"
+#include "toolbars/MeterToolBar.h"
+#include "toolbars/MixerToolBar.h"
+#include "toolbars/SelectionBar.h"
+#include "toolbars/ToolsToolBar.h"
+#include "toolbars/TranscriptionToolBar.h"
 
 using std::cout;
 
 TrackList *AudacityProject::msClipboard = new TrackList();
 double AudacityProject::msClipLen = 0.0;
 AudacityProject *AudacityProject::msClipProject = NULL;
-
-
-const int grabberWidth=10;
 
 #ifdef __WXMAC__
 # ifndef __UNIX__
@@ -462,7 +459,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
      mAutoScrolling(false),
      mActive(true),
      mHistoryWindow(NULL),
-     mToolBarDock(NULL),
+     mToolManager(NULL),
      mAudioIOToken(-1),
      mIsDeleting(false),
      mTracksFitVerticallyZoomed(false),  //lda
@@ -481,8 +478,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    }
 
    mStatusBar = CreateStatusBar();
-
-   mDrag = NULL;
 
 #if wxUSE_DRAG_AND_DROP
    SetDropTarget(new AudacityDropTarget(this));
@@ -520,9 +515,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.sbarScreen = 1;
    mViewInfo.sbarTotal = 1;
 
-   // Selection bar is used by UpdatePrefs(), so set it to a known value
-   mSelectionBar = NULL;
-   
    UpdatePrefs();
    
    // Some extra information
@@ -545,10 +537,12 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //
 
    //
-   // Create the ToolBarDock
+   // Create the ToolDock
    //
-   mToolBarDock = new ToolBarDock( this );
-   mToolBarDock->LayoutToolBars();
+   mToolManager = new ToolManager( this );
+   GetSelectionBar()->SetListener(this);
+   GetSelectionBar()->SetRate(mRate);
+   mToolManager->LayoutToolBars();
 
    // Fix the sliders on the mixer toolbar so that the tip windows
    // actually pop-up on top of everything else.  Sorry for the hack -
@@ -568,16 +562,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
                                    wxSize( -1, AdornedRulerPanel::GetRulerHeight() ),
                                    &mViewInfo );
 
-   //
-   // Create the selection bar
-   //
-   mSelectionBar = new SelectionBar(this,
-                                    wxID_ANY, 
-                                    wxDefaultPosition,
-                                    wxDefaultSize,
-                                    mRate,
-                                    this);
-                                    
    //
    // Create the TrackPanel and the scrollbars
    //
@@ -604,10 +588,10 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 #endif
 
    wxBoxSizer *bs = new wxBoxSizer( wxVERTICAL );
-   bs->Add( mToolBarDock, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
+   bs->Add( mToolManager->GetTopDock(), 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP );
    bs->Add( mRuler, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_CENTRE );
    bs->Add( pPage, 1, wxEXPAND | wxALIGN_LEFT );
-   bs->Add( mSelectionBar, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
+   bs->Add( mToolManager->GetBotDock(), 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
    SetAutoLayout( true );
    SetSizer( bs );
    bs->Layout();
@@ -637,7 +621,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    //      will be given the focus even if we try to SetFocus().  By
    //      making the TrackPanel that first window, we resolve several
    //      keyboard focus problems.
-   pPage->MoveBeforeInTabOrder(mToolBarDock);
+   pPage->MoveBeforeInTabOrder(mToolManager->GetTopDock());
 
    bs = (wxBoxSizer *) pPage->GetSizer();
 
@@ -668,7 +652,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    bs->Add( hs, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_BOTTOM );
 
    // Lay it out
-   pPage->SetAutoLayout( true );
+   pPage->SetAutoLayout(true);
    pPage->Layout();
 
 #ifdef EXPERIMENTAL_NOTEBOOK
@@ -837,8 +821,8 @@ void AudacityProject::UpdatePrefs()
    mDefaultFormat = (sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
-   if( mSelectionBar )
-      mSelectionBar->SetRate(mRate);
+   if( GetSelectionBar() )
+      GetSelectionBar()->SetRate(mRate);
 
    if( GetMixerToolBar() )
       GetMixerToolBar()->UpdatePrefs();
@@ -1107,10 +1091,19 @@ void AudacityProject::FixScrollbars()
    if (mViewInfo.vpos < 0)
       mViewInfo.vpos = 0;
 
+   bool oldhstate;
+   bool oldvstate;
+   bool newhstate = mViewInfo.screen < mViewInfo.total;
+   bool newvstate = panelHeight < totalHeight;
+
 #ifdef __WXGTK__
+   oldhstate = mHsbar->IsShown();
+   oldvstate = mVsbar->IsShown();
    mHsbar->Show(mViewInfo.screen < mViewInfo.total);
    mVsbar->Show(panelHeight < totalHeight);
 #else
+   oldhstate = mHsbar->IsEnabled();
+   oldvstate = mVsbar->IsEnabled();
    mHsbar->Enable(mViewInfo.screen < mViewInfo.total);
    mVsbar->Enable(panelHeight < totalHeight);
 #endif
@@ -1143,7 +1136,35 @@ void AudacityProject::FixScrollbars()
    }
 
    UpdateMenus();
+
+   if (oldhstate != newhstate || oldvstate != newvstate) {
+      UpdateLayout();
+   }
 }
+
+void AudacityProject::UpdateLayout()
+{
+   if (!mTrackPanel) 
+      return;
+
+   mToolManager->LayoutToolBars();
+   Layout();
+
+   // Retrieve size of this projects window
+   wxSize mainsz = GetSize();
+
+   // Retrieve position of the track panel to use as the size of the top
+   // third of the window
+   wxPoint tppos = ClientToScreen(mTrackPanel->GetParent()->GetPosition());
+
+   // Retrieve position of bottom dock to use as the size of the bottom
+   // third of the window
+   wxPoint sbpos = ClientToScreen(mToolManager->GetBotDock()->GetPosition());
+
+   // The "+ 50" is the minimum height of the TrackPanel
+   SetSizeHints(250, (mainsz.y - sbpos.y) + tppos.y + 50, 20000, 20000);
+}
+
 
 void AudacityProject::HandleResize()
 {
@@ -1152,24 +1173,7 @@ void AudacityProject::HandleResize()
 
    FixScrollbars();
 
-   mToolBarDock->LayoutToolBars();
-   Layout();
-
-   mSelectionBar->Refresh( false );
-
-   // Retrieve size of this projects window
-   wxSize mainsz = GetSize();
-
-   // Retrieve position of the track panel to use as the size of the top
-   // third of the window
-   wxPoint tppos = ClientToScreen( mTrackPanel->GetParent()->GetPosition() );
-
-   // Retrieve position of selection bar to use as the size of the bottom
-   // third of the window
-   wxPoint sbpos = ClientToScreen( mSelectionBar->GetPosition() );
-
-   // The "+ 50" is the minimum height of the TrackPanel
-   SetSizeHints( 250, ( mainsz.y - sbpos.y ) + tppos.y + 50, 20000, 20000 );
+   UpdateLayout();
 }
 
 
@@ -1209,7 +1213,7 @@ void AudacityProject::OnToolBarUpdate(wxCommandEvent & event)
 {
    HandleResize();
 
-   event.Skip( false );             /* No need to propagate any further */
+   event.Skip(false);             /* No need to propagate any further */
 }
 
 void AudacityProject::OnScroll(wxScrollEvent & event)
@@ -1405,7 +1409,7 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       
       // We were playing or recording audio, but we've stopped the stream.
       wxCommandEvent dummyEvent;
-      this->GetControlToolBar()->OnStop(dummyEvent);      
+      GetControlToolBar()->OnStop(dummyEvent);
          
       if (gAudioIO->GetNumCaptureChannels() > 0) {
          // Tracks are buffered during recording.  This flushes
@@ -1905,7 +1909,7 @@ bool AudacityProject::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 
       if (!wxStrcmp(attr, wxT("rate"))) {
          Internat::CompatibleToDouble(value, &mRate);
-         mSelectionBar->SetRate(mRate);
+         GetSelectionBar()->SetRate(mRate);
       }
    } // while
 
@@ -2312,7 +2316,7 @@ void AudacityProject::AddImportedTracks(wxString fileName,
       if (AudioIO::GetSupportedSampleRates().Index((int)newRate) != wxNOT_FOUND)
       {
          mRate = newRate;
-         mSelectionBar->SetRate(mRate);
+         GetSelectionBar()->SetRate(mRate);
       }
    }
 
@@ -2656,12 +2660,14 @@ void AudacityProject::SkipEnd(bool shift)
 
 ////////////////////////////////////////////////////////////
 //  This fetches a pointer to the control toolbar.  It may
-//  either be embedded in the current window or floating out
-//  in the open.
+//  either be docked or floating out in the open.
 ////////////////////////////////////////////////////////////
 ControlToolBar *AudacityProject::GetControlToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetControlToolBar() : NULL;
+   return (ControlToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(ControlBarID) :
+           NULL);
 }
 
 //JKC: same as above *except* this a virtual function that
@@ -2681,27 +2687,50 @@ ToolsToolBar * AudacityProject::TP_GetToolsToolBar()
 
 EditToolBar *AudacityProject::GetEditToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetEditToolBar() : NULL;
+   return (EditToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(EditBarID) :
+           NULL);
 }
 
 MeterToolBar *AudacityProject::GetMeterToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetMeterToolBar() : NULL;
+   return (MeterToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(MeterBarID) :
+           NULL);
 }
 
 MixerToolBar *AudacityProject::GetMixerToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetMixerToolBar() : NULL;
+   return (MixerToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(MixerBarID) :
+           NULL);
+}
+
+SelectionBar *AudacityProject::GetSelectionBar()
+{
+   return (SelectionBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(SelectionBarID) :
+           NULL);
 }
 
 ToolsToolBar *AudacityProject::GetToolsToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetToolsToolBar() : NULL;
+   return (ToolsToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(ToolsBarID) :
+           NULL);
 }
-
+ 
 TranscriptionToolBar *AudacityProject::GetTranscriptionToolBar()
 {
-   return mToolBarDock ? mToolBarDock->GetTranscriptionToolBar() : NULL;
+   return (TranscriptionToolBar *)
+          (mToolManager ?
+           mToolManager->GetToolBar(TranscriptionBarID) :
+           NULL);
 }
 
 void AudacityProject::SetStop(bool bStopped)
@@ -2928,10 +2957,10 @@ void AudacityProject::TP_DisplaySelection()
          mRuler->SetPlayRegion(mViewInfo.sel0, mViewInfo.sel1);
    }
 
-   mSelectionBar->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
+   GetSelectionBar()->SetTimes(mViewInfo.sel0, mViewInfo.sel1, audioTime);
    if( mSnapTo ) {
-      mViewInfo.sel0 = mSelectionBar->GetLeftTime();
-      mViewInfo.sel1 = mSelectionBar->GetRightTime();
+      mViewInfo.sel0 = GetSelectionBar()->GetLeftTime();
+      mViewInfo.sel1 = GetSelectionBar()->GetRightTime();
    }
 }
 

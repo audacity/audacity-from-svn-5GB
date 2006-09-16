@@ -34,7 +34,6 @@ Provides:
 #include "../Prefs.h"
 #include "../Theme.h"
 #include "../Project.h"
-#include "../ControlToolBar.h"
 #include "../ShuttleGui.h"
 #include "ThemePrefs.h"
 

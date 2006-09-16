@@ -7,29 +7,24 @@
  
   Dominic Mazzoni
   Shane T. Mueller
+  Leland Lucius
 
 **********************************************************************/
 
 #ifndef __AUDACITY_EDIT_TOOLBAR__
 #define __AUDACITY_EDIT_TOOLBAR__
 
-#include <wx/brush.h>
-#include <wx/pen.h>
-#include <wx/minifram.h>
-#include <wx/object.h>
+#include <wx/defs.h>
 
 #include "ToolBar.h"
-#include "Theme.h" // for type teBmps
+#include "../Theme.h"
+
+class wxCommandEvent;
+class wxDC;
+class wxImage;
+class wxWindow;
 
 class AButton;
-class ASlider;
-class EditToolBar;
-class ToolBar;
-class ToolBarFrame;
-
-class wxImage;
-class wxSize;
-class wxPoint;
 
 enum {
    ETBCutID,
@@ -55,23 +50,24 @@ enum {
 };
 
 class EditToolBar:public ToolBar {
- public:
-   EditToolBar() {};
-   EditToolBar(wxWindow * parent);
-   virtual ~ EditToolBar();
 
-   void OnButton(wxCommandEvent &event);
+ public:
+
+   EditToolBar();
+   virtual ~EditToolBar();
+
+   void Create(wxWindow *parent);
+
+   void OnButton(wxCommandEvent & event);
 
    void Populate();
-   void Repaint( wxDC *dc ) {};
+   void Repaint(wxDC *dc) {};
    void EnableDisableButtons();
 
-
  private:
-   AButton *AddButton( teBmps eFore, teBmps eDisabled,
-      int id,
-//    bool processdownevents,
-      const wxChar *label, const wxChar *tip);
+
+   AButton *AddButton(teBmps eFore, teBmps eDisabled,
+      int id, const wxChar *label, const wxChar *tip);
 
    void AddSeparator();
 
@@ -83,7 +79,10 @@ class EditToolBar:public ToolBar {
    wxImage *downImage;
    wxImage *hiliteImage;
 
-   DECLARE_EVENT_TABLE()
+ public:
+
+   DECLARE_CLASS(EditToolBar);
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

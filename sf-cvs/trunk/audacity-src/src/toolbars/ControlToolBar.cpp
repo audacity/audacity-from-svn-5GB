@@ -7,6 +7,7 @@
   Dominic Mazzoni
   Shane T. Mueller
   James Crook
+  Leland Lucius
  
 *******************************************************************//**
 
@@ -29,41 +30,33 @@
 
 *//*******************************************************************/
 
-#include "Audacity.h"
-#include "ControlToolBar.h"
+#include "../Audacity.h"
 
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
-#include <wx/dcmemory.h>
-#include <wx/defs.h>
+#include <wx/dc.h>
 #include <wx/event.h>
-#include <wx/brush.h>
+#include <wx/image.h>
 #include <wx/intl.h>
-#include <wx/log.h>
-#include <wx/settings.h>
+#include <wx/tooltip.h>
 #endif
 
-#include <wx/image.h>
-#include <wx/tooltip.h>
-#include <wx/msgdlg.h>
-#include <wx/gbsizer.h>
-
-#include "widgets/AButton.h"
-#include "AudioIO.h"
-#include "ImageManipulation.h"
-#include "Prefs.h"
-#include "Project.h"
-#include "Track.h"
-
-#include "AColor.h"
+#include "ControlToolBar.h"
 #include "MeterToolBar.h"
-#include "Theme.h"
-#include "AllThemeResources.h"
 
-// #include "../images/ControlButtons.h"
+#include "../AColor.h"
+#include "../AllThemeResources.h"
+#include "../AudioIO.h"
+#include "../ImageManipulation.h"
+#include "../Prefs.h"
+#include "../Project.h"
+#include "../Theme.h"
+#include "../Track.h"
+#include "../widgets/AButton.h"
+
+IMPLEMENT_CLASS(ControlToolBar, ToolBar);
 
 //static
 AudacityProject *ControlToolBar::mBusyProject = NULL;
@@ -73,50 +66,38 @@ AudacityProject *ControlToolBar::mBusyProject = NULL;
 ////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE(ControlToolBar, ToolBar)
-   EVT_CHAR( ControlToolBar::OnKeyEvent )
-   EVT_BUTTON( ID_PLAY_BUTTON,   ControlToolBar::OnPlay )
-   EVT_BUTTON( ID_STOP_BUTTON,   ControlToolBar::OnStop )
-   EVT_BUTTON( ID_RECORD_BUTTON, ControlToolBar::OnRecord )
-   EVT_BUTTON( ID_BATCH_BUTTON,  ControlToolBar::OnBatch )
-   EVT_BUTTON( ID_REW_BUTTON,    ControlToolBar::OnRewind )
-   EVT_BUTTON( ID_FF_BUTTON,     ControlToolBar::OnFF )
-   EVT_BUTTON( ID_PAUSE_BUTTON,  ControlToolBar::OnPause )
+   EVT_CHAR(ControlToolBar::OnKeyEvent)
+   EVT_BUTTON(ID_PLAY_BUTTON,   ControlToolBar::OnPlay)
+   EVT_BUTTON(ID_STOP_BUTTON,   ControlToolBar::OnStop)
+   EVT_BUTTON(ID_RECORD_BUTTON, ControlToolBar::OnRecord)
+   EVT_BUTTON(ID_BATCH_BUTTON,  ControlToolBar::OnBatch)
+   EVT_BUTTON(ID_REW_BUTTON,    ControlToolBar::OnRewind)
+   EVT_BUTTON(ID_FF_BUTTON,     ControlToolBar::OnFF)
+   EVT_BUTTON(ID_PAUSE_BUTTON,  ControlToolBar::OnPause)
 END_EVENT_TABLE()
 
 //Standard constructor
-ControlToolBar::ControlToolBar( wxWindow * parent ):
-   ToolBar()
+ControlToolBar::ControlToolBar()
+: ToolBar(ControlBarID, _("Control"))
 {
    mPaused = false;
-//   mSizer = new wxBoxSizer( wxHORIZONTAL );
-//   Add( mSizer, 1, wxEXPAND );
    mSizer = NULL;
 
    mCutPreviewTracks = NULL;
 
-   gPrefs->Read( wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true );
-   gPrefs->Read( wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false );
-   gPrefs->Read( wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false );
-
-   InitToolBar( parent,
-                ControlBarID,
-               _("Audacity Control Toolbar"),
-               _("Control") );
+   gPrefs->Read(wxT("/GUI/ErgonomicTransportButtons"), &mErgonomicTransportButtons, true);
+   gPrefs->Read(wxT("/Batch/CleanSpeechMode"), &mCleanSpeechMode, false);
+   gPrefs->Read(wxT("/GUI/AlwaysEnablePause"), &mAlwaysEnablePause, false);
 }
 
 ControlToolBar::~ControlToolBar()
 {
-// As the buttons are placed on the window, we should not delete them.
-// They will be deleted by wxWidgets.
-#if 0
-   delete mPause;
-   delete mPlay;
-   delete mStop;
-   delete mRewind;
-   delete mFF;
-   delete mRecord;
-   delete mBatch;
-#endif
+}
+
+
+void ControlToolBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
 }
 
 // This is a convenience function that allows for button creation in
@@ -240,7 +221,7 @@ void ControlToolBar::UpdatePrefs()
 
    if( updated )
    {
-      ArrangeButtons();
+      ReCreateButtons();
       Updated();
    }
 }
@@ -303,24 +284,22 @@ void ControlToolBar::ArrangeButtons()
    // Layout the toolbar
    Layout();
 
-   // Resize the toolbar to fit the contents
-   Fit();
-
-   // And make that size the minimum
+   // (Re)Establish the minimum size
    SetMinSize( GetSizer()->GetMinSize() );
 }
 
 void ControlToolBar::ReCreateButtons()
 {
-   // Get rid of mSizer here in case getting rid of 
-   // Toolbars mHSizer would try to but leave mSizer non-NULL
-   // We do not need to delete the buttons here as they belong
-   // to the window.
-   Detach( mSizer );
-   delete mSizer;
-   mSizer = NULL;
-//   mSizer = new wxBoxSizer( wxHORIZONTAL );
-//   SetSizer( mSizer );
+   // ToolBar::ReCreateButtons() will get rid of its sizer and
+   // since we've attach our sizer to it, ours will get deleted too
+   // so clean ours up first.
+   if( mSizer )
+   {
+      Detach( mSizer );
+      delete mSizer;
+      mSizer = NULL;
+   }
+
    ToolBar::ReCreateButtons();
 }
 

@@ -7,6 +7,7 @@
  
   Dominic Mazzoni
   Shane T. Mueller
+  Leland Lucius
  
 **********************************************************************/
 
@@ -16,36 +17,38 @@
 #include "ToolBar.h"
 #include "../Theme.h"
 
-class AButton;
-class ControlToolBar;
-class ToolBar;
-class AudacityProject;
-class wxGridBagSizer;
-class TrackList;
+class wxBoxSizer;
+class wxCommandEvent;
+class wxDC;
+class wxKeyEvent;
+class wxWindow;
 
-class wxImage;
-class wxSize;
-class wxPoint;
+class AButton;
+class AudacityProject;
+class TrackList;
 
 class ControlToolBar:public ToolBar {
 
  public:
-   ControlToolBar() {};
-   ControlToolBar(wxWindow * parent);
+
+   ControlToolBar();
    virtual ~ControlToolBar();
+
+   void Create(wxWindow *parent);
+
    void UpdatePrefs();
    virtual void OnKeyEvent(wxKeyEvent & event);
 
    // msmeyer: These are public, but it's far better to
    // call the "real" interface functions like PlayCurrentRegion() and
    // StopPlaying() which are defined below.
-   void OnRewind(wxCommandEvent &evt);
-   void OnPlay(wxCommandEvent &evt);
-   void OnStop(wxCommandEvent &evt);
-   void OnBatch(wxCommandEvent &evt);
-   void OnRecord(wxCommandEvent &evt);
-   void OnFF(wxCommandEvent &evt);
-   void OnPause(wxCommandEvent &evt);
+   void OnRewind(wxCommandEvent & evt);
+   void OnPlay(wxCommandEvent & evt);
+   void OnStop(wxCommandEvent & evt);
+   void OnBatch(wxCommandEvent & evt);
+   void OnRecord(wxCommandEvent & evt);
+   void OnFF(wxCommandEvent & evt);
+   void OnPause(wxCommandEvent & evt);
 
    //These allow buttons to be controlled externally:
    void SetPlay(bool down);
@@ -65,7 +68,7 @@ class ControlToolBar:public ToolBar {
    void StopPlaying();
 
    void Populate();
-   virtual void Repaint( wxDC *dc );
+   virtual void Repaint(wxDC *dc);
    virtual void EnableDisableButtons();
    void OnShiftDown(wxKeyEvent & event);
    void OnShiftUp(wxKeyEvent & event);
@@ -73,9 +76,9 @@ class ControlToolBar:public ToolBar {
    void SetVUMeters(AudacityProject *p);
 
    virtual void ReCreateButtons();
-   DECLARE_EVENT_TABLE()
-   ;
+
  private:
+
    AButton *MakeButton(teBmps eFore, teBmps eDisabled,
       int id,
       bool processdownevents,
@@ -123,6 +126,11 @@ class ControlToolBar:public ToolBar {
    wxBoxSizer *mSizer;
 
    TrackList* mCutPreviewTracks;
+
+ public:
+
+   DECLARE_CLASS(ControlToolBar);
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

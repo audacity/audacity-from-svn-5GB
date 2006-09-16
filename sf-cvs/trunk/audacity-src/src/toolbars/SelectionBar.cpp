@@ -26,25 +26,28 @@ with changes in the SelectionBar.
 *//*******************************************************************/
 
 
-#include "Audacity.h"
+#include "../Audacity.h"
 
-#include "SelectionBar.h"
+// For compilers that support precompilation, includes "wx/wx.h".
+#include <wx/wxprec.h>
 
-#include "AudioIO.h"
-#include "AColor.h"
-#include "Prefs.h"
-
-#include "widgets/TimeTextCtrl.h"
-
+#ifndef WX_PRECOMP
 #include <wx/button.h>
 #include <wx/combobox.h>
 #include <wx/intl.h>
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
 #include <wx/radiobut.h>
 #include <wx/sizer.h>
 #include <wx/statline.h>
-#include <wx/textdlg.h>
+#endif
+
+#include "SelectionBar.h"
+
+#include "../AudioIO.h"
+#include "../AColor.h"
+#include "../Prefs.h"
+#include "../widgets/TimeTextCtrl.h"
+
+IMPLEMENT_CLASS(SelectionBar, ToolBar);
 
 enum {
    SelectionBarFirstID = 2700,
@@ -55,7 +58,7 @@ enum {
    OnRightTimeID
 };
 
-BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
+BEGIN_EVENT_TABLE(SelectionBar, ToolBar)
    EVT_SIZE(SelectionBar::OnSize)
    EVT_TEXT(OnLeftTimeID, SelectionBar::OnLeftTime)
    EVT_TEXT(OnRightTimeID, SelectionBar::OnRightTime)
@@ -66,20 +69,25 @@ BEGIN_EVENT_TABLE(SelectionBar, wxPanel)
    EVT_COMMAND(wxID_ANY, EVT_TIMETEXTCTRL_UPDATED, SelectionBar::OnUpdate)
 END_EVENT_TABLE()
 
-SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
-                           const wxPoint & pos,
-                           const wxSize & size,
-                           double rate,
-                           SelectionBarListener * listener):
-   wxPanel(parent, id, pos,  size, wxTAB_TRAVERSAL | wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE ),
-   mListener(listener), mRate(rate), 
-   mStart(0.0), mEnd(0.0), mAudio(0.0),
-   mModifyingSelection(false), mLeftTime(NULL)
+SelectionBar::SelectionBar()
+: ToolBar(SelectionBarID, _("Selection")),
+  mStart(0.0), mEnd(0.0), mAudio(0.0),
+  mModifyingSelection(false), mLeftTime(NULL)  
+{
+}
+
+SelectionBar::~SelectionBar()
+{
+}
+
+void SelectionBar::Create(wxWindow * parent)
+{
+   ToolBar::Create(parent);
+}
+
+void SelectionBar::Populate()
 {
    int i;
-
-   SetLabel(_("Selection Bar"));
-   SetName(_("Selection Bar"));
 
    // This will be inherited by all children:
    SetFont(wxFont(9, wxSWISS, wxNORMAL, wxNORMAL));
@@ -95,7 +103,8 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    formatName = TimeTextCtrl::GetBuiltinName(formatIndex);
    wxString format = TimeTextCtrl::GetBuiltinFormat(formatIndex);
 
-   mainSizer = new wxFlexGridSizer(9);
+   mainSizer = new wxFlexGridSizer(8);
+   Add(mainSizer, 0, wxALIGN_CENTER_VERTICAL);
 
    //
    // Top row (mostly labels)
@@ -145,9 +154,7 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mainSizer->Add(stat,
                   0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
-   mainSizer->Add(20, 10);
-
-   mainSizer->Add(20, 10);
+   mainSizer->Add(2, 10);
 
    //
    // Middle row (mostly time controls)
@@ -203,43 +210,11 @@ SelectionBar::SelectionBar(wxWindow * parent, wxWindowID id,
    mAudioTime->EnableMenu();
    mainSizer->Add(mAudioTime, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
-   mainSizer->Add(20, 10);
+   mainSizer->Layout();
 
-   //
-   // Bottom row (buttons)
-   //
-
-#if 0
-
-   mainSizer->Add(20, 10);
-   mainSizer->Add(20, 10);
-
-   hSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *b;
-   b = new wxButton(this, -1, _("Label"),
-                    wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-   mainSizer->Add(20, 10);
-   b = new wxButton(this, -1, _("Label"),
-                    wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-   mainSizer->Add(20, 10);
-   b = new wxButton(this, -1, _("Label"),
-                    wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-   mainSizer->Add(b, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
-
-#endif
-   
-   SetAutoLayout(true);
-   SetSizer(mainSizer);
    Layout();
 
-   mMainSizer = mainSizer;
-}
-
-SelectionBar::~SelectionBar()
-{
+   SetMinSize( GetSizer()->GetMinSize() );
 }
 
 void SelectionBar::OnSize(wxSizeEvent &evt)
@@ -297,19 +272,28 @@ void SelectionBar::OnEndRadio(wxCommandEvent &evt)
 void SelectionBar::OnUpdate(wxCommandEvent &evt)
 {
    int index = evt.GetInt();
+
+   evt.Skip(false);
+
    wxString formatName =  TimeTextCtrl::GetBuiltinName(index);
    wxString formatString = TimeTextCtrl::GetBuiltinFormat(index);
 
    gPrefs->Write(wxT("/SelectionFormat"), formatName);
 
-   mLeftTime->SetFormatString(formatString);
-   mRightTime->SetFormatString(formatString);
-   mAudioTime->SetFormatString(formatString);
+   // ToolBar::ReCreateButtons() will get rid of our sizers and controls
+   // so reset pointers first.
+   mLeftTime =
+   mRightTime =
+   mAudioTime = NULL;
 
-   Layout();
-   Refresh(false);
+   mRightEndButton =
+   mRightLengthButton = NULL;
 
-   evt.Skip(false);
+   mRateBox = NULL;
+
+   ToolBar::ReCreateButtons();
+
+   Updated();
 }
 
 void SelectionBar::ValuesToControls()

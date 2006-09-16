@@ -11,37 +11,49 @@
 #ifndef __AUDACITY_SELECTION_BAR__
 #define __AUDACITY_SELECTION_BAR__
 
-#include <wx/panel.h>
+#include <wx/defs.h>
+
+#include "ToolBar.h"
 
 class wxBitmap;
 class wxComboBox;
+class wxCommandEvent;
+class wxDC;
 class wxRadioButton;
-class wxMenu;
+class wxSizeEvent;
 
 class TimeTextCtrl;
 
 class SelectionBarListener {
+
  public:
+
    SelectionBarListener(){};
    virtual ~SelectionBarListener(){};
+
    virtual void AS_SetRate(double rate) = 0;
    virtual void AS_ModifySelection(double &start, double &end) = 0;
 };
 
-class SelectionBar : public wxPanel {
+class SelectionBar:public ToolBar {
+
  public:
 
-   SelectionBar(wxWindow * parent, wxWindowID id,
-           const wxPoint & pos,
-           const wxSize & size, double rate, SelectionBarListener * listener);
+   SelectionBar();
+   virtual ~SelectionBar();
 
-   virtual ~ SelectionBar();
+   void Create(wxWindow *parent);
+
+   virtual void Populate();
+   virtual void Repaint(wxDC *dc) {};
+   virtual void EnableDisableButtons() {};
 
    void SetTimes(double start, double end, double audio);
    double GetLeftTime();
    double GetRightTime();
    void SetField(const wxChar *msg, int fieldNum);
    void SetRate(double rate);
+   void SetListener(SelectionBarListener *l) {mListener = l;};
 
    // msmeyer: Call this to enable/disable menu items
    // in the "rate" menu, f.e. if sound card selection
@@ -77,12 +89,11 @@ class SelectionBar : public wxPanel {
    TimeTextCtrl   *mAudioTime;
 
    wxComboBox     *mRateBox;
-   
-   wxSizer        *mMainSizer;
 
  public:
 
-   DECLARE_EVENT_TABLE()
+   DECLARE_CLASS(SelectionBar);
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

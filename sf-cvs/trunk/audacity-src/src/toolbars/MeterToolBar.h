@@ -5,6 +5,7 @@
   MeterToolbar.h
  
   Dominic Mazzoni
+  Leland Lucius
  
   ToolBar to hold the VU Meter
 
@@ -15,37 +16,41 @@
 
 #include "ToolBar.h"
 
+class wxDC;
+class wxGridBagSizer;
+class wxSizeEvent;
+class wxWindow;
 
 class Meter;
-class wxGridBagSizer;
 
 class MeterToolBar:public ToolBar {
-public:
-   MeterToolBar() {};
-   MeterToolBar(wxWindow * parent);
-   virtual ~ MeterToolBar();
+
+ public:
+
+   MeterToolBar();
+   virtual ~MeterToolBar();
+
+   void Create(wxWindow *parent);
 
    virtual void Populate();
-   virtual void Repaint( wxDC *dc ) {};
+   virtual void Repaint(wxDC *dc) {};
    virtual void EnableDisableButtons() {};
 
-   void GetMeters(Meter **playMeter, Meter **recordMeter)
-   {
-      *playMeter = mPlayMeter;
-      *recordMeter = mRecordMeter;
-   }
+   void GetMeters(Meter **playMeter, Meter **recordMeter);
 
    virtual void OnSize(wxSizeEvent & event);
 
-
-   DECLARE_EVENT_TABLE()
-   ;
-      
-private:
+ private:
 
    wxGridBagSizer *mSizer;
    Meter *mPlayMeter;
    Meter *mRecordMeter;
+
+ public:
+
+   DECLARE_CLASS(MeterToolBar);
+   DECLARE_EVENT_TABLE();
+      
 };
 
 #endif
