@@ -77,6 +77,7 @@ private:
    void OnCaptureKey(wxCommandEvent &event);
    void OnKeyDown(wxKeyEvent &event);
    void OnMouse(wxMouseEvent &event);
+   void OnErase(wxEraseEvent &event);
    void OnPaint(wxPaintEvent &event);
    void OnFocus(wxFocusEvent &event);
    void OnContext(wxContextMenuEvent &event);
