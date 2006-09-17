@@ -69,6 +69,7 @@
 #include "blockfile/PCMAliasBlockFile.h"
 #include "DirManager.h"
 #include "Internat.h"
+#include "Project.h"
 #include "Prefs.h"
 #include "widgets/Warning.h"
 #include "widgets/MultiDialog.h"
@@ -162,7 +163,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                   wxString dirspec,
                                   int files_p,int dirs_p,
                                   int progress_count,int progress_bias,
-                                  const wxChar *prompt, wxProgressDialog **progress){
+                                  const wxChar *prompt){
 
    int count=0;
    bool cont;
@@ -181,18 +182,9 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             
             cont = dir.GetNext(&name);
             
-            if (prompt && progress && !*progress && wxGetElapsedTime(false) > 500)
-               *progress =
-                  new wxProgressDialog(_("Progress"),
-                                       prompt,
-                                       1000,
-                                       NULL,
-                                       wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-
-            if (progress && *progress)
-               (*progress)->Update(int ((count+progress_bias * 1000.0) / 
-                                        progress_count));
-
+            if (prompt)
+               GetActiveProject()->ProgressUpdate(int ((count+progress_bias * 1000.0) / 
+                                                  progress_count));
          }
       }
 
@@ -201,7 +193,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
          wxString subdirpath=dirpath + wxFILE_SEP_PATH + name;
          count+=rm_dash_rf_enumerate_i(subdirpath,flist,wxEmptyString,
                                      files_p,dirs_p,progress_count,
-                                     count+progress_bias,prompt,progress);  
+                                     count+progress_bias,prompt);  
          cont = dir.GetNext(&name);
       }
    }
@@ -222,15 +214,13 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
                                        int progress_count,
                                        const wxChar *prompt){
 
-   wxProgressDialog *progress = NULL;
-   wxStartTimer();
+   GetActiveProject()->ProgressShow(_("Progress"), prompt);
 
    int count=rm_dash_rf_enumerate_i(dirpath, flist, dirspec, files_p,dirs_p,
                                     progress_count,0,
-                                    prompt, &progress);
-   
-   if (progress)
-      delete progress;
+                                    prompt);
+
+   GetActiveProject()->ProgressHide();
 
    return count;
 }
@@ -241,7 +231,7 @@ static int rm_dash_rf_enumerate(wxString dirpath,
                                 int files_p,int dirs_p){
 
    return rm_dash_rf_enumerate_i(dirpath, flist, dirspec, files_p,dirs_p,
-                                    0,0,0,0);
+                                    0,0,NULL);
 
 }
 
@@ -250,12 +240,11 @@ static void rm_dash_rf_execute(wxArrayString &fList,
                                int count, int files_p, int dirs_p,
                                const wxChar *prompt){
 
-   wxProgressDialog *progress = NULL;
-   wxStartTimer();
-
+   if (prompt)
+      GetActiveProject()->ProgressShow(_("Progress"), prompt);
+  
    for (int i = 0; i < count; i++) {
-      const wxChar *file = fList[i].fn_str();
-
+      const wxChar *file = fList[i].c_str();
       if(files_p){
          wxRemoveFile(file);
       }
@@ -263,20 +252,12 @@ static void rm_dash_rf_execute(wxArrayString &fList,
          wxRmdir(file);
       }
 
-      if (prompt && !progress && wxGetElapsedTime(false) > 500)
-         progress =
-            new wxProgressDialog(_("Progress"),
-                                 prompt,
-                                 1000,
-                                 NULL,
-                                 wxPD_REMAINING_TIME | wxPD_AUTO_HIDE);
-      
-      if (progress)
-         progress->Update(int ((i * 1000.0) / count));
+      if (prompt)
+         GetActiveProject()->ProgressUpdate(int ((i * 1000.0) / count));
    }
    
-   if (progress)
-      delete progress;
+   if (prompt)
+      GetActiveProject()->ProgressHide();
 }
 
 // static
@@ -291,7 +272,6 @@ void DirManager::CleanTempDir()
    // don't count the global temp directory, which this will find and
    // list last
    count=rm_dash_rf_enumerate(globaltemp,flist,wxT("project*"),1,1)-1;
-   
    if (count == 0) 
       return;
 
@@ -340,10 +320,11 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       saved version of the old project must not be moved,
       otherwise the old project would not be safe. */
 
-   wxProgressDialog *progress = NULL;
+   GetActiveProject()->ProgressShow(_("Progress"),
+                                    _("Saving project data files"));
+
    int total=blockFileHash.size();
    int count=0;
-   wxStartTimer();
 
    BlockHash::iterator i=blockFileHash.begin();
    bool success = true;
@@ -356,18 +337,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          success = MoveToNewProjectDirectory(b);
       }
 
-
-      if (!progress && wxGetElapsedTime(false) > 500)
-         progress =
-            new wxProgressDialog(_("Progress"),
-                                 _("Saving project data files"),
-                                 1000,
-                                 NULL,
-                                 wxPD_REMAINING_TIME | 
-                                 wxPD_AUTO_HIDE);
-      
-      if (progress)
-         progress->Update(int ((count * 1000.0) / total));
+      GetActiveProject()->ProgressUpdate(int ((count * 1000.0) / total));
 
       i++;
       count++;
@@ -387,8 +357,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          BlockFile *b = i->second;
          MoveToNewProjectDirectory(b);
 
-         if (progress && count>=0)
-            progress->Update(int ((count * 1000.0) / total));
+         if (count>=0)
+            GetActiveProject()->ProgressUpdate(int ((count * 1000.0) / total));
 
          i++;
          count--;
@@ -398,14 +368,12 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       this->projPath = oldPath;
       this->projName = oldName;
 
-      if (progress)
-         delete progress;
+      GetActiveProject()->ProgressHide();
 
       return false;
    }
 
-   if (progress)
-      delete progress;
+   GetActiveProject()->ProgressHide();
 
    // Some subtlety; SetProject is used both to move a temp project
    // into a permanent home as well as just set up path variables when
