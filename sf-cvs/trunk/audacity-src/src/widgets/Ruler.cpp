@@ -64,7 +64,6 @@ array of Ruler::Label.
 #include "../Internat.h"
 #include "../Project.h"
 #include "Ruler.h"
-#include "../TrackPanel.h"
 #include "../toolbars/ControlToolBar.h"
 #include "../Theme.h"
 #include "../AllThemeResources.h"
@@ -1110,7 +1109,6 @@ AdornedRulerPanel::AdornedRulerPanel(wxWindow* parent,
    SetLabel( _("Vertical Ruler") );
    SetName( _("Vertical Ruler") );
 
-   mTrackPanel = NULL;
    mLeftOffset = 0;
    mCurPos = -1;
    mIndPos = -1;
@@ -1300,9 +1298,9 @@ void AdornedRulerPanel::OnMouseEvents(wxMouseEvent &evt)
           
       mMouseEventState = mesNone;
       
-      if (startPlaying && mTrackPanel)
+      if (startPlaying)
       {
-         ControlToolBar* ctb = mTrackPanel->GetProject()->GetControlToolBar();
+         ControlToolBar* ctb = mProject->GetControlToolBar();
          ctb->StopPlaying();
          ctb->PlayDefault();
       }
@@ -1335,9 +1333,6 @@ void AdornedRulerPanel::DoDraw(wxDC *dc)
 
 void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
 {
-   if( mTrackPanel == NULL )
-      return;
-
    double start, end;
    GetPlayRegion(&start, &end);
    
@@ -1347,7 +1342,7 @@ void AdornedRulerPanel::DoDrawPlayRegion(wxDC *dc)
       int x2 = Time2Pos(end);
       int y = mInner.height/2;
 
-      bool isLocked = mTrackPanel->GetProject()->IsPlayRegionLocked();
+      bool isLocked = mProject->IsPlayRegionLocked();
       AColor::PlayRegionColor(dc, isLocked);
    
       wxPoint tri[3];

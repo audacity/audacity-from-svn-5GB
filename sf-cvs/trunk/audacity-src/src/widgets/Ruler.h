@@ -19,7 +19,7 @@
 #include "../Envelope.h"
 
 struct ViewInfo;
-class TrackPanel;
+class AudacityProject;
 
 class Ruler {
  public:
@@ -207,9 +207,7 @@ public:
    void ClearPlayRegion();
    void GetPlayRegion(double* playRegionStart, double* playRegionEnd);
    
-   void SetTrackPanel(TrackPanel* trackPanel) { mTrackPanel = trackPanel; }
-
-public:
+   void SetProject(AudacityProject* project) {mProject = project;};
 
 private:
    void OnErase(wxEraseEvent &evt);
@@ -233,7 +231,7 @@ private:
 
    Ruler  ruler;
    ViewInfo *mViewInfo;
-   TrackPanel *mTrackPanel;
+   AudacityProject *mProject;
 
    wxBitmap *mBuffer;
 
