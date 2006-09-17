@@ -139,8 +139,6 @@ void QuitAudacity(bool bForce)
    // in a Save Changes dialog, don't continue.
    // BG: unless force is true
 
-   SaveWindowSize();
-
    // BG: Are there any projects open?
    if (!gAudacityProjects.IsEmpty())
    {
