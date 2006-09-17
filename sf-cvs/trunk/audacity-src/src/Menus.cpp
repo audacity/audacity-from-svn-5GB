@@ -3950,7 +3950,7 @@ void AudacityProject::OnAddLabelPlaying()
 
 void AudacityProject::OnEditLabels()
 {
-   LabelDialog d(this, mDirManager, mTracks, mRate);
+   LabelDialog d(this, mDirManager, mTracks, mViewInfo, mRate);
    
    if (d.ShowModal() == wxID_OK) {
       PushState(_("Edited labels"), _("Label"));

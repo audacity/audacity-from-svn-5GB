@@ -19,20 +19,22 @@
 #include <wx/choice.h>
 #include <wx/dc.h>
 #include <wx/dialog.h>
+#include <wx/filedlg.h>
 #include <wx/grid.h>
 #include <wx/intl.h>
+#include <wx/msgdlg.h>
 #include <wx/settings.h>
 #include <wx/sizer.h>
 #include <wx/textdlg.h>
-#include <wx/msgdlg.h>
-#include <wx/filedlg.h>
 
+#include "Internat.h"
 #include "LabelDialog.h"
 #include "LabelTrack.h"
-#include "Track.h"
-#include "widgets/TimeTextCtrl.h"
 #include "Prefs.h"
-#include "Internat.h"
+#include "Project.h"
+#include "Track.h"
+#include "ViewInfo.h"
+#include "widgets/TimeTextCtrl.h"
 
 enum Column
 {
@@ -74,6 +76,7 @@ enum {
 };
 
 BEGIN_EVENT_TABLE(LabelDialog, wxDialog)
+   EVT_GRID_SELECT_CELL(LabelDialog::OnSelectCell)
    EVT_GRID_CELL_CHANGE(LabelDialog::OnCellChange)
    EVT_BUTTON(ID_INSERTA, LabelDialog::OnInsert)
    EVT_BUTTON(ID_INSERTB, LabelDialog::OnInsert)
@@ -88,6 +91,7 @@ END_EVENT_TABLE()
 LabelDialog::LabelDialog(wxWindow *parent,
                          DirManager *dirmanager,
                          TrackList *tracks,
+                         ViewInfo &viewinfo,
                          double rate)
 : wxDialog(parent,
            wxID_ANY,
@@ -97,6 +101,7 @@ LabelDialog::LabelDialog(wxWindow *parent,
            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
   mDirManager(dirmanager),
   mTracks(tracks),
+  mViewInfo(&viewinfo),
   mRate(rate)
 {
    // Create the main sizer
@@ -606,6 +611,29 @@ void LabelDialog::OnExport(wxCommandEvent &event)
    f.Write();
 #endif
    f.Close();
+}
+
+void LabelDialog::OnSelectCell(wxGridEvent &event)
+{
+   TrackListIterator iter(mTracks);
+   Track *t = iter.First();
+   RowData *rd;
+
+   rd = mData[event.GetRow()];
+
+   t = iter.First();
+   while( t )
+   {
+      t->SetSelected( true );
+      t = iter.Next();
+   }
+
+   mViewInfo->sel0 = rd->stime;
+   mViewInfo->sel1 = rd->etime;
+
+   GetActiveProject()->RedrawProject();
+
+   event.Skip();
 }
 
 void LabelDialog::OnCellChange(wxGridEvent &event)
