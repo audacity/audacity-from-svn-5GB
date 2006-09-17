@@ -41,6 +41,11 @@ Track *TrackPanelAx::GetFocus()
       SetFocus( NULL );
    }
 
+   if( !TrackNum( mFocusedTrack ) )
+   {
+      mFocusedTrack = NULL;
+   }
+
    return( mFocusedTrack );
 }
 
