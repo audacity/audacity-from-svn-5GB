@@ -905,14 +905,6 @@ void AudacityProject::CreateRecentFilesMenu(CommandManager *c)
    mRecentFiles->Load(*gPrefs);
    gPrefs->SetPath(wxT(".."));
 
-   //   pm = c->BeginSubMenu(_("Recent Pro&jects..."));
-   //   c->EndSubMenu();
-   //   mRecentProjects = new audFileHistory(6, 6050);
-   //   mRecentProjects->UseMenu(pm);
-   //	  gPrefs->SetPath(wxT("/RecentProjects");
-   //   mRecentProjects->Load(*gPrefs);
-   //   gPrefs->SetPath(wxT("..");
-
    c->AddSeparator();
 }
 
@@ -1011,8 +1003,7 @@ void AudacityProject::RebuildMenuBar()
    mCommandManager.PurgeData();
    delete mRecentFiles;
    mRecentFiles = NULL;
-//   delete mRecentProjects;
-//   mRecentProjects = NULL;
+
    CreateMenusAndCommands();
 }
 
@@ -3398,7 +3389,7 @@ void AudacityProject::OnImport()
    
    wxFileDialog dlog(this, _("Select one or more audio files..."),
                      path, wxT(""),
-                     _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|.AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
+                     _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
                      wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
