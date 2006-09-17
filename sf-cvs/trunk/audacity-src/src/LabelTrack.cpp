@@ -1403,11 +1403,36 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
          
       case WXK_TAB:
          if (event.ShiftDown()) {
-            if (mSelIndex > 0)
                mSelIndex--;
          } else {
-            if (mSelIndex < (int)mLabels.Count() - 1) 
                mSelIndex++;
+         }
+         
+         if (mSelIndex >= 0 && mSelIndex < (int)mLabels.Count()) {
+            mCurrentCursorPos = mLabels[mSelIndex]->title.Length();
+            //Set the selection region to be equal to the selection bounds of the tabbed-to label.
+            newSel0 = mLabels[mSelIndex]->t;
+            newSel1 = mLabels[mSelIndex]->t1;
+         }
+         else {
+            mSelIndex = -1;
+         }
+         break;
+
+      default:
+         event.Skip();
+         break;
+      }
+   }
+   else
+   {
+      switch (keyCode) {
+
+      case WXK_TAB:
+         if (event.ShiftDown()) {
+            mSelIndex = (int)mLabels.Count() - 1;
+         } else {
+            mSelIndex = 0;
          }
          
          mCurrentCursorPos = mLabels[mSelIndex]->title.Length();
@@ -1420,10 +1445,6 @@ bool LabelTrack::OnKeyDown(double & newSel0, double & newSel1, wxKeyEvent & even
          event.Skip();
          break;
       }
-   }
-   else
-   {
-      event.Skip();
    }
 
    // Make sure the caret is visible
