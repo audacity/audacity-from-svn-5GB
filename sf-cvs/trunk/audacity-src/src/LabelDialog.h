@@ -21,6 +21,7 @@
 
 class DirManager;
 class TrackList;
+class ViewInfo;
 class RowData;
 class EmptyLabelRenderer;
 class LabelTrack;
@@ -34,6 +35,7 @@ class LabelDialog:public wxDialog
    LabelDialog(wxWindow *parent,
                DirManager *dirmanager,
                TrackList *tracks,
+               ViewInfo &viewinfo,
                double rate);
    ~LabelDialog();
 
@@ -51,6 +53,7 @@ class LabelDialog:public wxDialog
    void OnRemove(wxCommandEvent &event);
    void OnImport(wxCommandEvent &event);
    void OnExport(wxCommandEvent &event);
+   void OnSelectCell(wxGridEvent &event);
    void OnCellChange(wxGridEvent &event);
    void OnChangeTrack(wxGridEvent &event, int row, RowData *rd);
    void OnChangeLabel(wxGridEvent &event, int row, RowData *rd);
@@ -67,6 +70,7 @@ class LabelDialog:public wxDialog
    
    DirManager *mDirManager;
    TrackList *mTracks;
+   ViewInfo *mViewInfo;
    wxArrayString mTrackNames;
    wxString mFormat;
    double mRate;
