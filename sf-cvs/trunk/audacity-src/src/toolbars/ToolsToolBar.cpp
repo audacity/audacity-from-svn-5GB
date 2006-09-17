@@ -178,11 +178,6 @@ void ToolsToolBar::Populate()
    mTool[ slideTool    ] = MakeTool( bmpTimeShift, slideTool, _("SlideTool") );
    mTool[ multiTool    ] = MakeTool( bmpMulti, multiTool, _("MultiTool") );
 
-#if wxUSE_TOOLTIPS
-   wxToolTip::Enable(true);     
-   wxToolTip::SetDelay(1000);
-#endif
-
    RegenerateToolsTooltips();
 }
 

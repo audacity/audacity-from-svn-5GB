@@ -40,8 +40,8 @@
 #include <wx/event.h>
 #include <wx/image.h>
 #include <wx/intl.h>
-#include <wx/tooltip.h>
 #endif
+#include <wx/tooltip.h>
 
 #include "ControlToolBar.h"
 #include "MeterToolBar.h"

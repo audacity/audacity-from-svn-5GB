@@ -21,10 +21,10 @@
 
 class DirManager;
 class TrackList;
-class ViewInfo;
 class RowData;
 class EmptyLabelRenderer;
 class LabelTrack;
+struct ViewInfo;
 
 WX_DEFINE_ARRAY(RowData *, RowDataArray);
 
