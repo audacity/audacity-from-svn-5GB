@@ -119,9 +119,9 @@ public:
     bool FindItemRecursively(const wxTreeItemId& idParent, 
                                      wxTreeItemIdValue* cookie, 
                                      int nPage, 
-                                     wxTreeItemId* foundid); 
-    wxTreeItemId FindItemByPageNum(const wxTreeItemId& parent,int nPage); 
-    wxTreeItemId FindItemByPageNum(int nPage) { return FindItemByPageNum(GetRootItem(), nPage); } 
+                                     wxTreeItemId* foundid) const; 
+    wxTreeItemId FindItemByPageNum(const wxTreeItemId& parent,int nPage) const; 
+    wxTreeItemId FindItemByPageNum(int nPage) const { return FindItemByPageNum(GetRootItem(), nPage); } 
     void SelectByPageNum(int nPage); 
 
 protected: 

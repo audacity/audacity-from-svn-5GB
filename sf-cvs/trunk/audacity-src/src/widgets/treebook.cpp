@@ -299,14 +299,14 @@ wxSize wxTreebook::CalcSizeFromPage(const wxSize& sizePage) const
 // ---------------------------------------------------------------------------- 
 bool wxTreebook::SetPageText(size_t n, const wxString& strText) 
 { 
-    m_list->SetItemText(n, strText); 
+    m_list->SetItemText(FindItemByPageNum(n), strText); 
 
     return true; 
 } 
 
 wxString wxTreebook::GetPageText(size_t n) const 
 { 
-    return m_list->GetItemText(n); 
+    return m_list->GetItemText(FindItemByPageNum(n)); 
 } 
 
 // ---------------------------------------------------------------------------- 
@@ -463,7 +463,7 @@ void wxTreebook::OnListSelected(wxTreeEvent& event)
 bool wxTreebook::FindItemRecursively(const wxTreeItemId& idParent, 
                                      wxTreeItemIdValue* cookie, 
                                      int nPage, 
-                                     wxTreeItemId* foundid) 
+                                     wxTreeItemId* foundid) const
 { 
    wxTreeItemIdValue temp; 
    wxTreeItemId id = cookie ? GetTreeCtrl()->GetNextChild(idParent, *cookie) : GetTreeCtrl()->GetFirstChild(idParent, temp); 
@@ -487,7 +487,7 @@ bool wxTreebook::FindItemRecursively(const wxTreeItemId& idParent,
     return FALSE; 
 } 
 
-wxTreeItemId wxTreebook::FindItemByPageNum(const wxTreeItemId& parent,int nPage) 
+wxTreeItemId wxTreebook::FindItemByPageNum(const wxTreeItemId& parent,int nPage) const 
 {    
     wxTreeItemId id; 
     FindItemRecursively(parent,NULL,nPage,&id); 
