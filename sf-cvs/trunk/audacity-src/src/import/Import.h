@@ -25,9 +25,9 @@ typedef bool (*progress_callback_t)( void *userData, float percent );
 class Format {
 public:
    wxString formatName;
-   wxStringList formatExtensions;
+   wxArrayString formatExtensions;
 
-   Format(wxString _formatName, wxStringList _formatExtensions):
+   Format(wxString _formatName, wxArrayString _formatExtensions):
       formatName(_formatName),
       formatExtensions(_formatExtensions)
    {

@@ -204,7 +204,7 @@ bool sf_subtype_is_integer(unsigned int format)
            subtype == SF_FORMAT_PCM_32);
 }
       
-void sf_get_all_extensions(wxStringList exts)
+void sf_get_all_extensions(wxArrayString &exts)
 {
    SF_FORMAT_INFO	format_info;
    int count, k;

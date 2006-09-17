@@ -47,7 +47,7 @@ class PCMImportPlugin : public ImportPlugin
 {
 public:
    PCMImportPlugin():
-      ImportPlugin(wxStringList())
+      ImportPlugin(wxArrayString())
    {
       sf_get_all_extensions(mExtensions);
    }

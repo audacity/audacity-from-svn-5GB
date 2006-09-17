@@ -54,7 +54,7 @@ SF_FORMAT_INFO *sf_simple_format(int i);
 bool sf_subtype_more_than_16_bits(unsigned int format);
 bool sf_subtype_is_integer(unsigned int format);
 
-void sf_get_all_extensions(wxStringList exts);
+void sf_get_all_extensions(wxArrayString &exts);
 
 //
 // Mac OS 4-char type

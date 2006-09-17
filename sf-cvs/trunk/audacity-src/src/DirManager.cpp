@@ -149,7 +149,7 @@ DirManager::~DirManager()
 }
 
 // behavior of dash_rf_enum is tailored to our two uses and thus not
-// entirely strightforward.  It recurses depth-first from the passed
+// entirely straightforward.  It recurses depth-first from the passed
 // in directory into its subdirs according to optional dirspec
 // matching, building a list of directories and [optionally] files to
 // be rm()ed in the listed order.  The dirspec is not applied to
@@ -158,7 +158,7 @@ DirManager::~DirManager()
 // to the list.
 
 static int rm_dash_rf_enumerate_i(wxString dirpath, 
-                                  wxStringList *flist, 
+                                  wxArrayString &flist, 
                                   wxString dirspec,
                                   int files_p,int dirs_p,
                                   int progress_count,int progress_bias,
@@ -177,7 +177,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             wxString filepath=dirpath + wxFILE_SEP_PATH + name;
             
             count++;
-            flist->Add(filepath);
+            flist.Add(filepath);
             
             cont = dir.GetNext(&name);
             
@@ -207,7 +207,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
    }
    
    if(dirs_p){
-      flist->Add(dirpath);
+      flist.Add(dirpath);
       count++;
    }
 
@@ -216,7 +216,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
 
 
 static int rm_dash_rf_enumerate_prompt(wxString dirpath,
-                                       wxStringList *flist, 
+                                       wxArrayString &flist, 
                                        wxString dirspec,
                                        int files_p,int dirs_p,
                                        int progress_count,
@@ -236,7 +236,7 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
 }
 
 static int rm_dash_rf_enumerate(wxString dirpath,
-                                wxStringList *flist, 
+                                wxArrayString &flist, 
                                 wxString dirspec,
                                 int files_p,int dirs_p){
 
@@ -246,16 +246,16 @@ static int rm_dash_rf_enumerate(wxString dirpath,
 }
 
 
-static void rm_dash_rf_execute(wxStringList fnameList, 
+static void rm_dash_rf_execute(wxArrayString &fList, 
                                int count, int files_p, int dirs_p,
                                const wxChar *prompt){
 
-   wxChar **array = fnameList.ListToArray();   
    wxProgressDialog *progress = NULL;
    wxStartTimer();
 
    for (int i = 0; i < count; i++) {
-      wxChar *file = array[i];
+      const wxChar *file = fList[i].fn_str();
+
       if(files_p){
          wxRemoveFile(file);
       }
@@ -277,8 +277,6 @@ static void rm_dash_rf_execute(wxStringList fnameList,
    
    if (progress)
       delete progress;
-   
-   delete [] array;
 }
 
 // static
@@ -287,17 +285,17 @@ void DirManager::CleanTempDir()
    if (dontDeleteTempFiles)
       return; // do nothing
       
-   wxStringList fnameList;
-   int count = 0;
+   wxArrayString flist;
+   int count;
 
    // don't count the global temp directory, which this will find and
    // list last
-   count=rm_dash_rf_enumerate(globaltemp,&fnameList,wxT("project*"),1,1)-1;
+   count=rm_dash_rf_enumerate(globaltemp,flist,wxT("project*"),1,1)-1;
    
    if (count == 0) 
       return;
 
-   rm_dash_rf_execute(fnameList,count,1,1,_("Cleaning up temporary files"));
+   rm_dash_rf_execute(flist,count,1,1,_("Cleaning up temporary files"));
 }
 
 bool DirManager::SetProject(wxString & projPath, wxString & projName,
@@ -420,9 +418,9 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       // recurse depth-first and rmdir every directory seen in old and
       // new; rmdir will fail on non-empty dirs.
       
-      wxStringList dirlist;
-      count=rm_dash_rf_enumerate(cleanupLoc1,&dirlist,wxEmptyString,0,1);
-      count+=rm_dash_rf_enumerate(cleanupLoc2,&dirlist,wxEmptyString,0,1);
+      wxArrayString dirlist;
+      count=rm_dash_rf_enumerate(cleanupLoc1,dirlist,wxEmptyString,0,1);
+      count+=rm_dash_rf_enumerate(cleanupLoc2,dirlist,wxEmptyString,0,1);
       
       if(count)
          rm_dash_rf_execute(dirlist,count,0,1,_("Cleaning up cache directories"));
@@ -969,7 +967,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    // Quick check: If it's not even in our alias list,
    // then the file name is A-OK.
 
-   if (!aliasList.Member(fName.GetFullPath()))
+   if (aliasList.Index(fName.GetFullPath()) == wxNOT_FOUND)
       return true;
 
    // If any of the following commands fail, your guess is as
@@ -1055,7 +1053,7 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          return false;
       }
 
-      aliasList.Delete(fName.GetFullPath());
+      aliasList.Remove(fName.GetFullPath());
       aliasList.Add(renamedFile.GetFullPath());
    }
 
@@ -1099,11 +1097,12 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
    // at each step by looking at the size of the blockfile hash
    int blockcount=blockFileHash.size();
    int ret=0;
+   int ndx;
 
    // enumerate *all* files in the project directory
-   wxStringList fnameList;
+   wxArrayString fnameList;
 
-   wxStringList orphanList;
+   wxArrayString orphanList;
    BlockHash    missingAliasList;
    BlockHash    missingAliasFiles;
    BlockHash    missingSummaryList;
@@ -1111,14 +1110,13 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
 
    // this function is finally a misnomer
    rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
-                               &fnameList,wxEmptyString,1,0,blockcount,
+                               fnameList,wxEmptyString,1,0,blockcount,
                                _("Inspecting project file data..."));
    
    // enumerate orphaned blockfiles
    BlockHash diskFileHash;
-   wxStringListNode *node = fnameList.GetFirst();
-   while(node){
-      wxFileName fullname(node->GetData());
+   for(ndx=0;ndx<(int)fnameList.GetCount();ndx++){
+      wxFileName fullname = fnameList[ndx];
       wxString basename=fullname.GetName();
       
       diskFileHash[basename.c_str()]=0; // just needs to be defined
@@ -1129,7 +1127,6 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
             wxLogWarning(_("Orphaned blockfile: (%s)"),
                          fullname.GetFullPath().c_str());
       }
-      node=node->GetNext();
    }
    
    // enumerate missing alias files
@@ -1221,7 +1218,7 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
          _("Project check found %d orphaned blockfile[s]. These files are\nunused and probably left over from a crash or some other bug.\nThey should be deleted to avoid disk contention.");
       wxString prompt;
       
-      prompt.Printf(promptA,orphanList.GetCount());
+      prompt.Printf(promptA,(int)orphanList.GetCount());
       
       const wxChar *buttons[]={_("Delete orphaned files [safe and recommended]"),
                                _("Continue without deleting; silently work around the extra files"),
@@ -1234,11 +1231,8 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
 
       if(action==0){
          ret |= FSCKstatus_CHANGED;
-         wxStringListNode *node=orphanList.GetFirst();
-         while(node){
-            wxString fullpath=node->GetData();
-            wxRemoveFile(fullpath);
-            node=node->GetNext();
+         for(ndx=0;ndx<(int)orphanList.GetCount();ndx++){
+            wxRemoveFile(orphanList[ndx]);
          }
       }
    }
@@ -1376,7 +1370,7 @@ int DirManager::ProjectFSCK(bool forceerror, bool silentlycorrect)
    // clean up any empty directories
    fnameList.Clear();
    rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
-                               &fnameList,wxEmptyString,0,1,blockcount,
+                               fnameList,wxEmptyString,0,1,blockcount,
                                _("Cleaning up unused directories in project data..."));
    rm_dash_rf_execute(fnameList,0,0,1,0);
 
@@ -1393,38 +1387,35 @@ void DirManager::SetLocalTempDir(wxString path)
 //          Might want to unify / modularize the approach some time.
 void DirManager::RemoveOrphanedBlockfiles()
 {
+   int i;
+
    // get a rough guess of how many blockfiles will be found/processed
    // at each step by looking at the size of the blockfile hash
    int blockcount=blockFileHash.size();
 
    // enumerate *all* files in the project directory
-   wxStringList fnameList;
+   wxArrayString fnameList;
 
    // this function is finally a misnomer
    rm_dash_rf_enumerate_prompt((projFull != wxT("")? projFull: mytemp),
-                               &fnameList,wxEmptyString,1,0,blockcount,
+                               fnameList,wxEmptyString,1,0,blockcount,
                                _("Inspecting project file data..."));
    
    // enumerate orphaned blockfiles
-   wxStringList orphanList;
-   wxStringListNode *node = fnameList.GetFirst();
-   while(node){
-      wxFileName fullname(node->GetData());
+   wxArrayString orphanList;
+   for(i=0;i<(int)fnameList.GetCount();i++){
+      wxFileName fullname(fnameList[i]);
       wxString basename=fullname.GetName();
       
       if(blockFileHash.find(basename) == blockFileHash.end()){
          // the blockfile on disk is orphaned
          orphanList.Add(fullname.GetFullPath());
       }
-      node=node->GetNext();
    }
    
    // remove all orphaned blockfiles
-   node=orphanList.GetFirst();
-   while(node){
-      wxString fullpath=node->GetData();
-      wxRemoveFile(fullpath);
-      node=node->GetNext();
+   for(i=0;i<(int)orphanList.GetCount();i++){
+      wxRemoveFile(orphanList[i]);
    }
 }
 
