@@ -27,7 +27,7 @@ bool MixAndRender(TrackList * tracks, TrackFactory *factory,
                   WaveTrack **newLeft, WaveTrack **newRight);
 
 void MixBuffers(int numChannels, int *channelFlags, float *gains,
-                sampleFormat format, samplePtr src,
+                samplePtr src,
                 samplePtr *dests, int len, bool interleaved);
 
 class MixerSpec
@@ -141,7 +141,7 @@ class Mixer {
    sampleFormat     mFormat;
    bool             mInterleaved;
    samplePtr       *mBuffer;
-   samplePtr        mTemp;
+   samplePtr       *mTemp;
    float           *mFloatBuffer;
    double           mRate;
 };

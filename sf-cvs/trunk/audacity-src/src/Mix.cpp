@@ -213,9 +213,11 @@ Mixer::Mixer(int numInputTracks, WaveTrack **inputTracks,
    }
    
    mBuffer = new samplePtr[mNumBuffers];
-   for (int c = 0; c < mNumBuffers; c++)
+   mTemp = new samplePtr[mNumBuffers];
+   for (int c = 0; c < mNumBuffers; c++) {
       mBuffer[c] = NewSamples(mInterleavedBufferSize, mFormat);
-   mTemp = NewSamples(mInterleavedBufferSize, mFormat);
+      mTemp[c] = NewSamples(mInterleavedBufferSize, floatSample);
+   }
    mFloatBuffer = new float[mInterleavedBufferSize];
 
    mQueueMaxLen = 65536;
@@ -248,9 +250,10 @@ Mixer::~Mixer()
 {
    int i;
 
-   DeleteSamples(mTemp);
-   for (i = 0; i < mNumBuffers; i++)
+   for (i = 0; i < mNumBuffers; i++) {
       DeleteSamples(mBuffer[i]);
+      DeleteSamples(mTemp[i]);
+   }
    delete[] mBuffer;
    delete[] mInputTrack;
    delete[] mEnvValues;
@@ -275,12 +278,13 @@ void Mixer::ApplyTrackGains(bool apply)
 
 void Mixer::Clear()
 {
-   for (int c = 0; c < mNumBuffers; c++)
-      memset(mBuffer[c], 0, mInterleavedBufferSize * SAMPLE_SIZE(mFormat));
+   for (int c = 0; c < mNumBuffers; c++) {
+      memset(mTemp[c], 0, mInterleavedBufferSize * SAMPLE_SIZE(floatSample));
+   }
 }
 
 void MixBuffers(int numChannels, int *channelFlags, float *gains,
-                sampleFormat format, samplePtr src, samplePtr *dests,
+                samplePtr src, samplePtr *dests,
                 int len, bool interleaved)
 {
    for (int c = 0; c < numChannels; c++) {
@@ -291,7 +295,7 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
       int skip;
       
       if (interleaved) {
-         destPtr = dests[0] + c*SAMPLE_SIZE(format);
+         destPtr = dests[0] + c*SAMPLE_SIZE(floatSample);
          skip = numChannels;
       } else {
          destPtr = dests[c];
@@ -299,50 +303,12 @@ void MixBuffers(int numChannels, int *channelFlags, float *gains,
       }
 
       float gain = gains[c];
-
-      switch(format) {
-      case int16Sample: {
-         short *dest = (short *)destPtr;
-         short *temp = (short *)src;
-         for (int j = 0; j < len; j++) {
-            float f = temp[j] * gain + *dest;
-            if (f > 32767)
-               f = 32767;
-            if (f < -32768)
-               f = -32768;
-            *dest = (short)f;
-            dest += skip;
-         }
-      } break;
-      case int24Sample: {
-         int *dest = (int *)destPtr;
-         int *temp = (int *)src;
-         for (int j = 0; j < len; j++) {
-            float f = temp[j] * gain + *dest;
-            if (f > 8388607)
-               f = 8388607;
-            if (f < -8388608)
-               f = -8388608;
-            *dest = (int)f;
-            dest += skip;
-         }
-      } break;
-      case floatSample: {
-         float *dest = (float *)destPtr;
-         float *temp = (float *)src;
-         for (int j = 0; j < len; j++) {
-            float f = *dest + temp[j] * gain;
-            // MM: XXX Should probably go outside the loop
-            if (f > 1.0f)
-               *dest = 1.0f;
-            else if (f < -1.0f)
-               *dest = -1.0f;
-            else
-               *dest = f;
-            dest += skip;
-         }
-      } break;
-      } // switch
+      float *dest = (float *)destPtr;
+      float *temp = (float *)src;
+      for (int j = 0; j < len; j++) {
+         *dest += temp[j] * gain;   // the actual mixing process
+         dest += skip;
+      }
    }
 }
    
@@ -426,18 +392,14 @@ sampleCount Mixer::MixVariableRates(int *channelFlags, WaveTrack *track,
          break;
    }
 
-   CopySamples((samplePtr)mFloatBuffer, floatSample,
-               mTemp, mFormat,
-               mMaxOut);
-
    for(c=0; c<mNumChannels; c++)
       if (mApplyTrackGains)
          mGains[c] = track->GetChannelGain(c);
       else
          mGains[c] = 1.0;
 
-   MixBuffers(mNumChannels, channelFlags, mGains, mFormat,
-              mTemp, mBuffer, mMaxOut, mInterleaved);
+   MixBuffers(mNumChannels, channelFlags, mGains,
+              (samplePtr)mFloatBuffer, mTemp, mMaxOut, mInterleaved);
 
    return mMaxOut;
 }
@@ -463,24 +425,14 @@ sampleCount Mixer::MixSameRate(int *channelFlags, WaveTrack *track,
    for(int i=0; i<slen; i++)
       mFloatBuffer[i] *= mEnvValues[i]; // Track gain control will go here?
    
-   if (mFormat == track->GetSampleFormat())
-   {
-      CopySamplesNoDither((samplePtr)mFloatBuffer, floatSample,
-                          mTemp, mFormat, slen);
-   } else {
-      CopySamples((samplePtr)mFloatBuffer, floatSample,
-                          mTemp, mFormat, slen);
-   }
-   
-
    for(c=0; c<mNumChannels; c++)
       if (mApplyTrackGains)
          mGains[c] = track->GetChannelGain(c);
       else
          mGains[c] = 1.0;
 
-   MixBuffers(mNumChannels, channelFlags, mGains, mFormat,
-              mTemp, mBuffer, slen, mInterleaved);
+   MixBuffers(mNumChannels, channelFlags, mGains,
+              (samplePtr)mFloatBuffer, mTemp, slen, mInterleaved);
 
    *pos += slen;
 
@@ -540,6 +492,8 @@ sampleCount Mixer::Process(int maxToProcess)
       if (out > maxOut)
          maxOut = out;
    }
+   for(int c=0; c<mNumChannels; c++)
+      CopySamples(mTemp[c], floatSample, mBuffer[c], mFormat, out);
 
    mT += (maxOut / mRate);
 
