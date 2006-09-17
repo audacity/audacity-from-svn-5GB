@@ -72,14 +72,6 @@ extern void AddPages(   AudacityProject * pProj, GuiFactory & Factory,  wxNotebo
 #include "NyquistAdapter.h"
 #endif
 
-#ifdef EXPERIMENTAL_VOCAL_STUDIO
-#include "VowelQuad.h"
-#include "AboveBarText.h"
-#include "BarChart.h"
-#include "InfoWindow.h"
-#include "ButtonWindow.h"
-#endif
-
 #ifdef EXPERIMENTAL_AUDACITY_TESTER
 #endif
 
