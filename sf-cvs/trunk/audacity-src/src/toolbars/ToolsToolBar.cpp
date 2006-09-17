@@ -43,8 +43,8 @@
 #include <wx/event.h>
 #include <wx/intl.h>
 #include <wx/sizer.h>
-#include <wx/tooltip.h>
 #endif
+#include <wx/tooltip.h>
 
 #include "MeterToolBar.h"
 #include "ToolsToolBar.h"
@@ -179,13 +179,8 @@ void ToolsToolBar::Populate()
    mTool[ multiTool    ] = MakeTool( bmpMulti, multiTool, _("MultiTool") );
 
 #if wxUSE_TOOLTIPS
-#ifdef __WXMAC__
-   wxToolTip::Enable(false);    // DM: tooltips are broken in wxMac
-#else
-// MB: Should make this a pref
    wxToolTip::Enable(true);     
    wxToolTip::SetDelay(1000);
-#endif
 #endif
 
    RegenerateToolsTooltips();
