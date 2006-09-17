@@ -88,6 +88,7 @@ TranscriptionToolBar::~TranscriptionToolBar()
    
    if (mBackgroundBitmap) delete mBackgroundBitmap;
    if(mPlaySpeedSlider)delete mPlaySpeedSlider;
+   if (mTimeTrack) delete mTimeTrack;
 
 #ifdef EXPERIMENTAL_VOICE_DETECTION
    if(mSensitivitySlider)delete mSensitivitySlider;
