@@ -9,8 +9,8 @@
 *******************************************************************//**
 
 \file Project.cpp
-\brief Implements AudacityProject, AdornedRulerPanel and 
-AudacityDropTarget.  Includes Menus.cpp.
+\brief Implements AudacityProject and AudcityDropTarget.  
+Includes Menus.cpp.
 
 *//****************************************************************//**
 
@@ -27,12 +27,6 @@ tracks contained within it.
 
 \attention The menu functions for AudacityProject, those for creating 
 the menu bars and acting on clicks, are found in file Menus.cpp
-
-*//****************************************************************//**
-
-\class AdornedRulerPanel
-\brief AdornedRulerPanel provides the Audacity Ruler, including 
-the cursor for play back and record.
 
 *//****************************************************************//**
 
@@ -426,7 +420,6 @@ BEGIN_EVENT_TABLE(AudacityProject, wxFrame)
     EVT_MENU_CLOSE(AudacityProject::OnMenuEvent)
     EVT_MENU(wxID_ANY, AudacityProject::OnMenu)
     EVT_MOUSE_EVENTS(AudacityProject::OnMouseEvent)
-    EVT_PAINT(AudacityProject::OnPaint)
     EVT_CLOSE(AudacityProject::OnCloseWindow)
     EVT_SIZE(AudacityProject::OnSize)
     EVT_ACTIVATE(AudacityProject::OnActivate)
@@ -522,7 +515,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    mViewInfo.bRedrawWaveform = false;
 
    mLockPlayRegion = false;
-   mLastUpdateUITime = ::wxGetUTCTime();
 
    CreateMenusAndCommands();
 
@@ -669,7 +661,7 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
    InitialState();
    FixScrollbars();
    mRuler->SetLeftOffset( mTrackPanel->GetLeftOffset() - 1 );  // bevel on AdornedRuler
-   mRuler->SetTrackPanel(mTrackPanel);
+   mRuler->SetProject(this);
 
    //
    // Set the Icon
@@ -705,87 +697,6 @@ AudacityProject::AudacityProject(wxWindow * parent, wxWindowID id,
 
 AudacityProject::~AudacityProject()
 {
-   // DMM: Save the size of the last window the user closes
-   // (unless we're quitting - then the Quit routine will
-   // do it for us).
-   if (gAudacityProjects.GetCount() == 1 &&
-       !gIsQuitting)
-      SaveWindowSize();
-
-   mIsDeleting = true;
-
-   delete mTimer;
-   mTimer=NULL;
-
-
-// JKC: For Win98 and Linux do not detach the menu bar.
-// We want wxWindows to clean it up for us.
-// TODO: Is there a Mac issue here??
-// SetMenuBar(NULL);
-
-   if (gAudioIO->IsStreamActive(mAudioIOToken)) {
-      gAudioIO->StopStream();
-
-      while(gAudioIO->IsBusy()) {
-         wxMilliSleep(100);
-      }
-   }
-
-   mTrackPanel->Destroy();
-
-   delete mImporter;
-   mImporter = NULL;
-
-   delete mTrackFactory;
-   mTrackFactory = NULL;
-
-   // Lock all blocks in all tracks of the last saved version, so that
-   // the blockfiles aren't deleted on disk when we delete the blockfiles
-   // in memory.  After it's locked, delete the data structure so that
-   // there's no memory leak.
-   if (mLastSavedTracks) {
-      TrackListIterator iter(mLastSavedTracks);
-      Track *t = iter.First();
-      while (t) {
-         if (t->GetKind() == Track::Wave)
-            ((WaveTrack *) t)->Lock();
-         t = iter.Next();
-      }
-
-      mLastSavedTracks->Clear(true);
-      delete mLastSavedTracks;
-      mLastSavedTracks = NULL;
-   }
-
-
-   delete mTags;
-   mTags = NULL;
-
-   mTracks->Clear(true);
-   delete mTracks;
-   mTracks = NULL;
-
-   delete mRecentFiles;
-   mRecentFiles = NULL;
-//   delete mRecentProjects;
-//   mRecentProjects = NULL;
-
-   // MM: Tell the DirManager it can now delete itself
-   // if it finds it is no longer needed. If it is still
-   // used (f.e. by the clipboard), it will recognize this
-   // and will destroy itself later.
-   mDirManager->Deref();
-
-#ifdef EXPERIMENTAL_VOCAL_STUDIO
-   ButtonWindow::ClearStripesAndButtons();
-#endif
-
-   // Delete the progress dialogs
-   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
-      if (mProgressDialog[mProgressCurrent]) {
-         delete mProgressDialog[mProgressCurrent];
-      }
-   }
 }
 
 void AudacityProject::UpdateGuiPrefs()
@@ -1336,31 +1247,14 @@ void AudacityProject::OnMenu(wxCommandEvent & event)
 //TODO: This function is still kinda hackish, clean up
 void AudacityProject::OnUpdateMenus(wxUpdateUIEvent & event)
 {
- #if 0
-   if (::wxGetUTCTime() - mLastUpdateUITime < 3)
-      return;
-
-   mLastUpdateUITime = ::wxGetUTCTime();
- #endif
-
    UpdateMenus();
-}
-
-void AudacityProject::OnPaint(wxPaintEvent & /*event*/)
-{
-   // Unfortunately some of the code called in our destructor
-   // can trigger evens like Paint events...
-   if (mIsDeleting)
-      return;
-
-   wxPaintDC dc(this);
 }
 
 void AudacityProject::OnActivate(wxActivateEvent & event)
 {
    mActive = event.GetActive();
 
-   // LLL:  Activate events can fire during deleting, so
+   // LLL:  Activate events can fire while closing project, so
    //       protect against it.
    if (mActive && !mIsDeleting) {
       SetActiveProject(this);
@@ -1384,6 +1278,10 @@ void AudacityProject::OnMouseEvent(wxMouseEvent & event)
       SetActiveProject(this);
 }
 
+// LL: All objects that have a reference to the DirManager should
+//     be deleted before the final mDirManager->Deref() in this
+//     routine.  Failing to do so can cause unwanted recursion
+//     and/or attempts to delete objects twice.
 void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 {
    if (gPrefsDialogVisible) {
@@ -1398,8 +1296,8 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
    // recording new state.
    // This code is derived from similar code in 
    // AudacityProject::~AudacityProject() and TrackPanel::OnTimer().
-   if (this->GetAudioIOToken()>0 &&
-       gAudioIO->IsStreamActive(this->GetAudioIOToken())) {
+   if (GetAudioIOToken()>0 &&
+       gAudioIO->IsStreamActive(GetAudioIOToken())) {
 
       wxBusyCursor busy;
       gAudioIO->StopStream();
@@ -1421,12 +1319,12 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
                ((WaveTrack *)t)->Flush();
             }
          }
-         this->PushState(_("Recorded Audio"), _("Record"));
+         PushState(_("Recorded Audio"), _("Record"));
       }
 
-      this->FixScrollbars();
-      this->SetAudioIOToken(0);
-      this->RedrawProject();
+      FixScrollbars();
+      SetAudioIOToken(0);
+      RedrawProject();
    }
 
 	// These two lines test for an 'empty' project.
@@ -1450,17 +1348,91 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 		}
    }
    
+   // Stop the timer since there's no need to update anything anymore
+   delete mTimer;
+   mTimer = NULL;
+
    // The project is now either saved or the user doesn't want to save it,
    // so there's no need to keep auto save info around anymore
    DeleteCurrentAutoSaveFile();
 
-   // LL:  Moved here from destructor since the object isn't necessarily deleted
-   // right away (Destroy() can queue the deletion) and, during QuitAudacity(), a
-   // check is made for active projects.  If left in the destructor, there
-   // is a chance that the project will not have been removed from the list
-   // and it will be "closed" twice.
-   gAudacityProjects.Remove(this);
+   // DMM: Save the size of the last window the user closes
+   //
+   // LL: Save before doing anything else to the window that might make
+   //     its size change.
+   if (gAudacityProjects.GetCount() == 1) {
+      SaveWindowSize();
+   }
 
+   mIsDeleting = true;
+
+   // JKC: For Win98 and Linux do not detach the menu bar.
+   // We want wxWindows to clean it up for us.
+   // TODO: Is there a Mac issue here??
+   // SetMenuBar(NULL);
+
+   // Lock all blocks in all tracks of the last saved version, so that
+   // the blockfiles aren't deleted on disk when we delete the blockfiles
+   // in memory.  After it's locked, delete the data structure so that
+   // there's no memory leak.
+   if (mLastSavedTracks) {
+      TrackListIterator iter(mLastSavedTracks);
+      Track *t = iter.First();
+      while (t) {
+         if (t->GetKind() == Track::Wave)
+            ((WaveTrack *) t)->Lock();
+         t = iter.Next();
+      }
+
+      mLastSavedTracks->Clear(true);
+      delete mLastSavedTracks;
+      mLastSavedTracks = NULL;
+   }
+
+   // Destroy the TrackPanel early so it's not around once we start
+   // deleting things like tracks and such out from underneath it.
+   // The DestroyChildren() takes care of this for us.
+   DestroyChildren();
+   mTrackPanel = NULL;              // Make sure this gets set...see HandleResize()
+
+   delete mImporter;
+   mImporter = NULL;
+
+   delete mTrackFactory;
+   mTrackFactory = NULL;
+
+   delete mTags;
+   mTags = NULL;
+
+   delete mRecentFiles;
+   mRecentFiles = NULL;
+
+   // Delete all the tracks to free up memory and DirManager references.
+   mTracks->Clear(true);
+   delete mTracks;
+   mTracks = NULL;
+
+   // This must be done before the following Deref() since it holds
+   // references to the DirManager.
+   mUndoManager.ClearStates();
+
+   // MM: Tell the DirManager it can now delete itself
+   // if it finds it is no longer needed. If it is still
+   // used (f.e. by the clipboard), it will recognize this
+   // and will destroy itself later.
+   //
+   // LL: All objects with references to the DirManager should
+   //     have been deleted before this.
+   mDirManager->Deref();
+
+   // Delete the progress dialogs
+   for (mProgressCurrent = 2; mProgressCurrent >= 0; mProgressCurrent--) {
+      if (mProgressDialog[mProgressCurrent]) {
+         delete mProgressDialog[mProgressCurrent];
+      }
+   }
+
+   gAudacityProjects.Remove(this);
    if (gActiveProject == this) {
       // Find a new active project
       if (gAudacityProjects.Count() > 0) {
@@ -1493,17 +1465,6 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
       }
    }
 
-   //BG: Process messages before we destroy the window
-   //
-   //LL: On 2006-06-18, I had a failure in Meter::OnMouse()
-   //    when quitting.  The wxSafeYield() was allowing some
-   //    messages to get processed and Meter::OnMouse() failed
-   //    when it attepted to use the result returned from
-   //    GetActiveProject().  I was unable to reproduce it and
-   //    couldn't figure out how to correct it, so the exposure
-   //    is still there.
-   //
-   wxSafeYield(NULL, true);
    Destroy();
 }
 
@@ -2747,7 +2708,6 @@ void AudacityProject::OnTimer(wxTimerEvent& event)
    if (::wxGetUTCTime() - mLastStatusUpdateTime < 3)
       return;
 
-
    // gAudioIO->GetNumCaptureChannels() should only be positive 
    // when we are recording.
    if (gAudioIO->GetNumCaptureChannels() > 0) {
@@ -3211,7 +3171,7 @@ bool AudacityProject::ProgressUpdate(int value, const wxString &message)
          new wxProgressDialog(mProgressTitle,
                               mProgressMessage,
                               1000,
-                              this, 
+                              NULL,
                               wxPD_CAN_ABORT |
                               wxPD_ELAPSED_TIME |
                               wxPD_REMAINING_TIME |

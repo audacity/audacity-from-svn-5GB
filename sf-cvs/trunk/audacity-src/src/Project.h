@@ -165,7 +165,6 @@ class AudacityProject:public wxFrame,
 
    bool GetIsEmpty() { return mTracks->IsEmpty(); }
    wxFileHistory *GetRecentFiles() { return mRecentFiles; }
-// audFileHistory *GetRecentProjects() { return mRecentProjects; }
 
    bool GetTracksFitVerticallyZoomed() { return mTracksFitVerticallyZoomed; } //lda
    void SetTracksFitVerticallyZoomed(bool flag) { mTracksFitVerticallyZoomed = flag; } //lda
@@ -194,7 +193,6 @@ class AudacityProject:public wxFrame,
    void OnUpdateMenus(wxUpdateUIEvent & event);
 
    void OnActivate(wxActivateEvent & event);
-   void OnPaint(wxPaintEvent & event);
    void OnMouseEvent(wxMouseEvent & event);
    void OnIconize(wxIconizeEvent &event);
    void OnSize(wxSizeEvent & event);
@@ -372,7 +370,6 @@ class AudacityProject:public wxFrame,
 
    wxTimer *mTimer;
    long mLastStatusUpdateTime;
-   long mLastUpdateUITime;
 
    wxStatusBar *mStatusBar;
 
