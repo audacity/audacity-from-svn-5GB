@@ -174,6 +174,7 @@ different formats.
 DEFINE_EVENT_TYPE(EVT_TIMETEXTCTRL_UPDATED)
 
 BEGIN_EVENT_TABLE(TimeTextCtrl, wxControl)
+   EVT_ERASE_BACKGROUND(TimeTextCtrl::OnErase)
    EVT_PAINT(TimeTextCtrl::OnPaint)
    EVT_CONTEXT_MENU(TimeTextCtrl::OnContext)
    EVT_MENU_RANGE(ID_MENU, ID_MENU+100, TimeTextCtrl::OnMenu)
@@ -723,6 +724,11 @@ void TimeTextCtrl::Fit()
    sz.y = mHeight + (sz.y - csz.y);
 
    SetBestFittingSize(sz);
+}
+
+void TimeTextCtrl::OnErase(wxEraseEvent & event)
+{
+   // Ignore it to prevent flashing
 }
 
 void TimeTextCtrl::OnPaint(wxPaintEvent &event)
