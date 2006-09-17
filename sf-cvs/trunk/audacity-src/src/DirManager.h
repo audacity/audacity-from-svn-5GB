@@ -157,7 +157,7 @@ class DirManager: public XMLTagHandler {
 
    wxString lastProject;
 
-   wxStringList aliasList;
+   wxArrayString aliasList;
 
    BlockFile **mLoadingTarget;
    sampleFormat mLoadingFormat;

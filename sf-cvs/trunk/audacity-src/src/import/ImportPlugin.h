@@ -80,7 +80,7 @@ public:
    // Get a list of extensions this plugin expects to be able to
    // import.  If a filename matches any of these extensions,
    // this importer will get first dibs on importing it.
-   virtual wxStringList GetSupportedExtensions()
+   virtual wxArrayString GetSupportedExtensions()
    {
       return mExtensions;
    }
@@ -88,15 +88,7 @@ public:
    bool SupportsExtension(wxString extension)
    {
       // Case-insensitive check if extension is supported
-      for (wxStringListNode* node = mExtensions.GetFirst();
-           node; node = node->GetNext())
-      {
-         wxString ext = wxString(node->GetData());
-         if (ext.CmpNoCase(extension) == 0)
-            return true;
-      }
-
-      return false;
+      return mExtensions.Index(extension, false) != wxNOT_FOUND;
    }
 
    // Open the given file, returning true if it is in a recognized
@@ -108,12 +100,12 @@ public:
 
 protected:
 
-   ImportPlugin(wxStringList supportedExtensions):
+   ImportPlugin(wxArrayString supportedExtensions):
       mExtensions(supportedExtensions)
    {
    }
 
-   wxStringList mExtensions;
+   wxArrayString mExtensions;
 };
 
 
@@ -146,7 +138,7 @@ public:
 class UnusableImportPlugin
 {
 public:
-   UnusableImportPlugin(wxString formatName, wxStringList extensions):
+   UnusableImportPlugin(wxString formatName, wxArrayString extensions):
       mFormatName(formatName),
       mExtensions(extensions)
    {
@@ -159,12 +151,12 @@ public:
 
    bool SupportsExtension(wxString extension)
    {
-      return mExtensions.Member(extension);
+      return mExtensions.Index(extension, false) != wxNOT_FOUND;
    }
 
 private:
    wxString mFormatName;
-   wxStringList mExtensions;
+   wxArrayString mExtensions;
 };
 
 WX_DECLARE_LIST(ImportPlugin, ImportPluginList);

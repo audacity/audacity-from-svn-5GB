@@ -34,14 +34,21 @@
 #include "ImportPlugin.h"
 #include "../Internat.h"
 
+static const wxChar *exts[] =
+{
+   wxT("mp3"),
+   wxT("mp2"),
+   wxT("mpg"),
+   wxT("mpeg")
+};
+
 #ifndef USE_LIBMAD
 
 void GetMP3ImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* mp3IsUnsupported =
-      new UnusableImportPlugin(wxT("MP3"),
-                               wxStringList(wxT("mp3"), wxT("mp2"), wxT("mpg"), wxT("mpeg"), NULL));
+      new UnusableImportPlugin(wxT("MP3"), wxArrayString(4, exts));
 
    unusableImportPluginList->Append(mp3IsUnsupported);
 }
@@ -84,7 +91,7 @@ class MP3ImportPlugin : public ImportPlugin
 {
 public:
    MP3ImportPlugin():
-      ImportPlugin(wxStringList(wxT("mp3"), wxT("mp2"), wxT("mpg"), wxT("mpeg"), NULL))
+      ImportPlugin(wxArrayString(4, exts))
    {
    }
 

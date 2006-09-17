@@ -31,6 +31,11 @@
 #include "ImportOGG.h"
 #include "../Internat.h"
 
+static const wxChar *exts[] =
+{
+   wxT("ogg")
+};
+
 #ifndef USE_LIBVORBIS
 /* BPF There is no real reason to compile without LIBVORBIS, but if you do, you will needs this header */
 #include "ImportPlugin.h"  
@@ -39,8 +44,7 @@ void GetOGGImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* oggIsUnsupported =
-      new UnusableImportPlugin(wxT("Ogg Vorbis"),
-                               wxStringList(wxT("ogg"), NULL));
+      new UnusableImportPlugin(wxT("Ogg Vorbis"), wxArrayString(1, exts));
 
    unusableImportPluginList->Append(oggIsUnsupported);
 }
@@ -65,7 +69,7 @@ class OggImportPlugin : public ImportPlugin
 {
 public:
    OggImportPlugin():
-      ImportPlugin(wxStringList(wxT("ogg"), NULL))
+      ImportPlugin(wxArrayString(1, exts))
    {
    }
 

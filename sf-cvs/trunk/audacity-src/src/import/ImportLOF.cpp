@@ -89,11 +89,16 @@
 
 #define BINARY_FILE_CHECK_BUFFER_SIZE 1024
 
+static const wxChar *exts[] =
+{
+   wxT("lof")
+};
+
 class LOFImportPlugin : public ImportPlugin
 {
 public:
    LOFImportPlugin():
-      ImportPlugin(wxStringList(wxT("lof"), NULL))
+      ImportPlugin(wxArrayString(1, exts))
    {
    }
 

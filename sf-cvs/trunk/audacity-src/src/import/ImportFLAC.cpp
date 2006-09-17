@@ -28,14 +28,19 @@
 
 #define FLAC_HEADER "fLaC"
 
+static const wxChar *exts[] =
+{
+   wxT("flac"),
+   wxT("flc")
+};
+
 #ifndef USE_LIBFLAC
 
 void GetFLACImportPlugin(ImportPluginList *importPluginList,
                         UnusableImportPluginList *unusableImportPluginList)
 {
    UnusableImportPlugin* flacIsUnsupported =
-      new UnusableImportPlugin(wxT("FLAC"),
-                               wxStringList(wxT("flac"), wxT("flc"), NULL));
+      new UnusableImportPlugin(wxT("FLAC"), wxArrayString(2, exts));
 
    unusableImportPluginList->Append(flacIsUnsupported);
 }
@@ -88,7 +93,7 @@ class FLACImportPlugin : public ImportPlugin
 {
  public:
    FLACImportPlugin():
-      ImportPlugin(wxStringList(wxT("flac"),NULL))
+      ImportPlugin(wxArrayString(2, exts))
    {
    }
 
