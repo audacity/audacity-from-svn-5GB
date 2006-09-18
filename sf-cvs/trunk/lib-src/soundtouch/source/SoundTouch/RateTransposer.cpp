@@ -1,38 +1,42 @@
-/*****************************************************************************
- * 
- * Sample rate transposer. Changes sample rate by using linear interpolation 
- * together with anti-alias filtering (first order interpolation with anti-
- * alias filtering should be quite adequate for this application)
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- * 
- * Last changed  : $Date: 2004-10-26 19:09:37 $
- * File revision : $Revision: 1.3 $
- *
- * $Id: RateTransposer.cpp,v 1.3 2004-10-26 19:09:37 vjohnson Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+/// 
+/// Sample rate transposer. Changes sample rate by using linear interpolation 
+/// together with anti-alias filtering (first order interpolation with anti-
+/// alias filtering should be quite adequate for this application)
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:41 $
+// File revision : $Revision: 1.4 $
+//
+// $Id: RateTransposer.cpp,v 1.4 2006-09-18 07:31:41 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <memory.h>
 #include <assert.h>
@@ -45,7 +49,6 @@
 using namespace soundtouch;
 
 
-
 /// A linear samplerate transposer class that uses integer arithmetics.
 /// for the transposing.
 class RateTransposerInteger : public RateTransposer
@@ -53,15 +56,15 @@ class RateTransposerInteger : public RateTransposer
 protected:
     int iSlopeCount;
     uint uRate;
-    soundtouch::SAMPLETYPE sPrevSampleL, sPrevSampleR;
+    SAMPLETYPE sPrevSampleL, sPrevSampleR;
 
     virtual void resetRegisters();
 
-    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
-                         const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeStereo(SAMPLETYPE *dest, 
+                         const SAMPLETYPE *src, 
                          uint numSamples);
-    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
-                       const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeMono(SAMPLETYPE *dest, 
+                       const SAMPLETYPE *src, 
                        uint numSamples);
 
 public:
@@ -82,15 +85,15 @@ class RateTransposerFloat : public RateTransposer
 protected:
     float fSlopeCount;
     float fRateStep;
-    soundtouch::SAMPLETYPE sPrevSampleL, sPrevSampleR;
+    SAMPLETYPE sPrevSampleL, sPrevSampleR;
 
     virtual void resetRegisters();
 
-    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
-                         const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeStereo(SAMPLETYPE *dest, 
+                         const SAMPLETYPE *src, 
                          uint numSamples);
-    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
-                       const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeMono(SAMPLETYPE *dest, 
+                       const SAMPLETYPE *src, 
                        uint numSamples);
 
 public:
@@ -437,7 +440,7 @@ end:
 
 
 // Transposes the sample rate of the given samples using linear interpolation. 
-// 'Mono' version of the routine. Returns the number of samples returned in 
+// 'Stereo' version of the routine. Returns the number of samples returned in 
 // the "dest" buffer
 uint RateTransposerInteger::transposeStereo(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples)
 {
@@ -549,6 +552,8 @@ uint RateTransposerFloat::transposeMono(SAMPLETYPE *dest, const SAMPLETYPE *src,
     }
     fSlopeCount -= 1.0f;
 
+    if (numSamples == 1) goto end;
+
     while (1)
     {
         while (fSlopeCount > 1.0f) 
@@ -591,6 +596,8 @@ uint RateTransposerFloat::transposeStereo(SAMPLETYPE *dest, const SAMPLETYPE *sr
     }
     // now always (iSlopeCount > 1.0f)
     fSlopeCount -= 1.0f;
+
+    if (numSamples == 1) goto end;
 
     while (1)
     {

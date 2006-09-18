@@ -1,42 +1,45 @@
-/*****************************************************************************
- * 
- * Sampled sound tempo changer/time stretch algorithm. Changes the sound tempo 
- * while maintaining the original pitch by using a time domain WSOLA-like 
- * method with several performance-increasing tweaks.
- *
- * Note : MMX optimized functions reside in a separate, platform-specific 
- * file, e.g. 'mmx_win.cpp' or 'mmx_gcc.cpp'
- *
- * Author        : Copyright (c) Olli Parviainen 
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-10-26 19:09:37 $
- * File revision : $Revision: 1.4 $
- *
- * $Id: TDStretch.cpp,v 1.4 2004-10-26 19:09:37 vjohnson Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
-
+////////////////////////////////////////////////////////////////////////////////
+/// 
+/// Sampled sound tempo changer/time stretch algorithm. Changes the sound tempo 
+/// while maintaining the original pitch by using a time domain WSOLA-like 
+/// method with several performance-increasing tweaks.
+///
+/// Note : MMX optimized functions reside in a separate, platform-specific 
+/// file, e.g. 'mmx_win.cpp' or 'mmx_gcc.cpp'
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:41 $
+// File revision : $Revision: 1.5 $
+//
+// $Id: TDStretch.cpp,v 1.5 2006-09-18 07:31:41 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <string.h>
 #include <stdlib.h>
@@ -64,8 +67,6 @@ using namespace soundtouch;
  *
  *****************************************************************************/
 
-
-#define MAX_SCAN_DELTA      124
 
 // Table for the hierarchical mixing position seeking algorithm
 int scanOffsets[4][24]={
@@ -555,12 +556,15 @@ void TDStretch::processSamples()
     uint ovlSkip, offset;
     int temp;
 
+    /* Removed this small optimization - can introduce a click to sound when tempo setting
+       crosses the nominal value
     if (tempo == 1.0f) 
     {
         // tempo not changed from the original, so bypass the processing
         processNominalTempo();
         return;
     }
+    */
 
     if (bMidBufferDirty == FALSE) 
     {
@@ -892,6 +896,9 @@ void TDStretch::calculateOverlapLength(uint overlapMs)
 
     newOvl = (sampleRate * overlapMs) / 1000;
     if (newOvl < 16) newOvl = 16;
+
+    // must be divisible by 8
+    newOvl -= newOvl % 8;
 
     acceptNewOverlapLength(newOvl);
 }

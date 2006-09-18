@@ -1,45 +1,49 @@
-/******************************************************************************
- *
- * Classes for easy reading & writing of WAV sound files. 
- *
- * For big-endian CPU, define _BIG_ENDIAN_ during compile-time to correctly
- * parse the WAV files with such processors.
- * 
- * Admittingly, more complete WAV reader routines may exist in public domain,
- * but the reason for 'yet another' one is that those generic WAV reader 
- * libraries are exhaustingly large and cumbersome! Wanted to have something
- * simpler here, i.e. something that's not already larger than rest of the
- * SoundTouch/SoundStretch program...
- * 
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-10-26 19:09:39 $
- * File revision : $Revision: 1.2 $
- *
- * $Id: WavFile.cpp,v 1.2 2004-10-26 19:09:39 vjohnson Exp $
- *
- * License :
- *
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Classes for easy reading & writing of WAV sound files. 
+///
+/// For big-endian CPU, define _BIG_ENDIAN_ during compile-time to correctly
+/// parse the WAV files with such processors.
+/// 
+/// Admittingly, more complete WAV reader routines may exist in public domain,
+/// but the reason for 'yet another' one is that those generic WAV reader 
+/// libraries are exhaustingly large and cumbersome! Wanted to have something
+/// simpler here, i.e. something that's not already larger than rest of the
+/// SoundTouch/SoundStretch program...
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:48 $
+// File revision : $Revision: 1.3 $
+//
+// $Id: WavFile.cpp,v 1.3 2006-09-18 07:31:48 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdexcept>
@@ -201,33 +205,99 @@ int WavInFile::checkCharTags()
 }
 
 
-int WavInFile::read(void *buffer, const int bufferSizeInBytes)
+int WavInFile::read(char *buffer, int maxElems)
 {
-    unsigned int afterDataRead;
-    int num;
+    int numBytes;
+    uint afterDataRead;
 
-    num = bufferSizeInBytes;
-    afterDataRead = dataRead + num;
+    // ensure it's 8 bit format
+    if (header.format.bits_per_sample != 8)
+    {
+        throw runtime_error("Error: WavInFile::read(char*, int) works only with 8bit samples.");
+    }
+    assert(sizeof(char) == 1);
+
+    numBytes = maxElems;
+    afterDataRead = dataRead + numBytes;
     if (afterDataRead > header.data.data_len) 
     {
         // Don't read more samples than are marked available in header
-        num = header.data.data_len - dataRead;
-        assert(num >= 0);
+        numBytes = header.data.data_len - dataRead;
+        assert(numBytes >= 0);
     }
 
-    num = fread(buffer, 1, num, fptr);
-    dataRead += num;
+    numBytes = fread(buffer, 1, numBytes, fptr);
+    dataRead += numBytes;
 
-    if (header.format.bits_per_sample == 16)
+    return numBytes;
+}
+
+
+int WavInFile::read(short *buffer, int maxElems)
+{
+    unsigned int afterDataRead;
+    int numBytes;
+    int numElems;
+
+    if (header.format.bits_per_sample == 8)
     {
-        // 16bit samples, swap byte order if necessary
-        _swap16Buffer((unsigned short *)buffer, num / 2);
+        // 8 bit format
+        char *temp = new char[maxElems];
+        int i;
+
+        numElems = read(temp, maxElems);
+        // convert from 8 to 16 bit
+        for (i = 0; i < numElems; i ++)
+        {
+            buffer[i] = temp[i] << 8;
+        }
+        delete[] temp;
     }
     else
     {
-        // (should always be) 8 bit samples
-        assert(header.format.bits_per_sample == 8);
+        // 16 bit format
+        assert(header.format.bits_per_sample == 16);
+        assert(sizeof(short) == 2);
+
+        numBytes = maxElems * 2;
+        afterDataRead = dataRead + numBytes;
+        if (afterDataRead > header.data.data_len) 
+        {
+            // Don't read more samples than are marked available in header
+            numBytes = header.data.data_len - dataRead;
+            assert(numBytes >= 0);
+        }
+
+        numBytes = fread(buffer, 1, numBytes, fptr);
+        dataRead += numBytes;
+        numElems = numBytes / 2;
+
+        // 16bit samples, swap byte order if necessary
+        _swap16Buffer((unsigned short *)buffer, numElems);
     }
+
+    return numElems;
+}
+
+
+
+int WavInFile::read(float *buffer, int maxElems)
+{
+    short *temp = new short[maxElems];
+    int num;
+    int i;
+    double fscale;
+
+    num = read(temp, maxElems);
+
+    fscale = 1.0 / 32768.0;
+    // convert to floats, scale to range [-1..+1[
+    for (i = 0; i < num; i ++)
+    {
+        buffer[i] = (float)(fscale * (double)temp[i]);
+    }
+
+    delete[] temp;
 
     return num;
 }
@@ -448,7 +518,7 @@ uint WavInFile::getLengthMS() const
 // Class WavOutFile
 //
 
-WavOutFile::WavOutFile(const char *fileName, const int sampleRate, const int bits, const int channels)
+WavOutFile::WavOutFile(const char *fileName, int sampleRate, int bits, int channels)
 {
     bytesWritten = 0;
     fptr = fopen(fileName, "wb");
@@ -553,41 +623,89 @@ void WavOutFile::close()
 }
 
 
-void WavOutFile::write(const void *buffer, const int numBytes)
+void WavOutFile::write(const char *buffer, int numElems)
 {
     int res;
 
-    if (header.format.bits_per_sample == 16)
+    if (header.format.bits_per_sample != 8)
     {
-        unsigned short *pTemp;
-
-        // 16 bit samples
-        if (numBytes < 2) return;   // nothing to do
-
-        // allocate temp buffer to swap byte order if necessary
-        pTemp = new unsigned short[numBytes / 2];
-        memcpy(pTemp, buffer, numBytes);
-        _swap16Buffer(pTemp, numBytes / 2);
-
-        res = fwrite(pTemp, 1, numBytes, fptr);
-
-        delete[] pTemp;
+        throw runtime_error("Error: WavOutFile::write(const char*, int) accepts only 8bit samples.");
     }
-    else
-    {
-        // 8bit samples
+    assert(sizeof(char) == 1);
 
-        if (numBytes < 1) return;   // nothing to do
-
-        assert(header.format.bits_per_sample == 8);
-
-        res = fwrite(buffer, 1, numBytes, fptr);
-    }
-
-    if (res != numBytes) 
+    res = fwrite(buffer, 1, numElems, fptr);
+    if (res != numElems) 
     {
         throw runtime_error("Error while writing to a wav file.");
     }
 
-    bytesWritten += numBytes;
+    bytesWritten += numElems;
+}
+
+
+void WavOutFile::write(const short *buffer, int numElems)
+{
+    int res;
+
+    // 16 bit samples
+    if (numElems < 1) return;   // nothing to do
+
+    if (header.format.bits_per_sample == 8)
+    {
+        int i;
+        char *temp = new char[numElems];
+        // convert from 16bit format to 8bit format
+        for (i = 0; i < numElems; i ++)
+        {
+            temp[i] = buffer[i] >> 8;
+        }
+        // write in 8bit format
+        write(temp, numElems);
+        delete[] temp;
+    }
+    else
+    {
+        // 16bit format
+        unsigned short *pTemp = new unsigned short[numElems];
+
+        assert(header.format.bits_per_sample == 16);
+
+        // allocate temp buffer to swap byte order if necessary
+        memcpy(pTemp, buffer, numElems * 2);
+        _swap16Buffer(pTemp, numElems);
+
+        res = fwrite(pTemp, 2, numElems, fptr);
+
+        delete[] pTemp;
+
+        if (res != numElems) 
+        {
+            throw runtime_error("Error while writing to a wav file.");
+        }
+        bytesWritten += 2 * numElems;
+    }
+}
+
+
+void WavOutFile::write(const float *buffer, int numElems)
+{
+    int i;
+    short *temp = new short[numElems];
+    int iTemp;
+
+    // convert to 16 bit integer
+    for (i = 0; i < numElems; i ++)
+    {
+        // convert to integer
+        iTemp = (int)(32768.0f * buffer[i]);
+
+        // saturate
+        if (iTemp < -32768) iTemp = -32768;
+        if (iTemp > 32767)  iTemp = 32767;
+        temp[i] = (short)iTemp;
+    }
+
+    write(temp, numElems);
+
+    delete[] temp;
 }

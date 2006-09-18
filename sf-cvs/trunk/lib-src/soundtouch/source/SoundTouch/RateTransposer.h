@@ -1,42 +1,46 @@
-/*****************************************************************************
- * 
- * Sample rate transposer. Changes sample rate by using linear interpolation 
- * together with anti-alias filtering (first order interpolation with anti-
- * alias filtering should be quite adequate for this application).
- *
- * Use either of the derived classes of 'RateTransposerInteger' or 
- * 'RateTransposerFloat' for corresponding integer/floating point tranposing
- * algorithm implementation.
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-10-26 19:09:37 $
- * File revision : $Revision: 1.2 $
- *
- * $Id: RateTransposer.h,v 1.2 2004-10-26 19:09:37 vjohnson Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+/// 
+/// Sample rate transposer. Changes sample rate by using linear interpolation 
+/// together with anti-alias filtering (first order interpolation with anti-
+/// alias filtering should be quite adequate for this application).
+///
+/// Use either of the derived classes of 'RateTransposerInteger' or 
+/// 'RateTransposerFloat' for corresponding integer/floating point tranposing
+/// algorithm implementation.
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:41 $
+// File revision : $Revision: 1.3 $
+//
+// $Id: RateTransposer.h,v 1.3 2006-09-18 07:31:41 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef RateTransposer_H
 #define RateTransposer_H
@@ -82,28 +86,28 @@ protected:
 
     virtual void resetRegisters() = 0;
 
-    virtual uint transposeStereo(soundtouch::SAMPLETYPE *dest, 
-                         const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeStereo(SAMPLETYPE *dest, 
+                         const SAMPLETYPE *src, 
                          uint numSamples) = 0;
-    virtual uint transposeMono(soundtouch::SAMPLETYPE *dest, 
-                       const soundtouch::SAMPLETYPE *src, 
+    virtual uint transposeMono(SAMPLETYPE *dest, 
+                       const SAMPLETYPE *src, 
                        uint numSamples) = 0;
-    uint transpose(soundtouch::SAMPLETYPE *dest, 
-                   const soundtouch::SAMPLETYPE *src, 
+    uint transpose(SAMPLETYPE *dest, 
+                   const SAMPLETYPE *src, 
                    uint numSamples);
 
     void flushStoreBuffer();
 
-    void downsample(const soundtouch::SAMPLETYPE *src, 
+    void downsample(const SAMPLETYPE *src, 
                     uint numSamples);
-    void upsample(const soundtouch::SAMPLETYPE *src, 
+    void upsample(const SAMPLETYPE *src, 
                  uint numSamples);
 
     /// Transposes sample rate by applying anti-alias filter to prevent folding. 
     /// Returns amount of samples returned in the "dest" buffer.
     /// The maximum amount of samples that can be returned at a time is set by
     /// the 'set_returnBuffer_size' function.
-    void processSamples(const soundtouch::SAMPLETYPE *src, 
+    void processSamples(const SAMPLETYPE *src, 
                         uint numSamples);
 
 
@@ -144,7 +148,7 @@ public:
 
     /// Adds 'numSamples' pcs of samples from the 'samples' memory position into
     /// the input of the object.
-    void putSamples(const soundtouch::SAMPLETYPE *samples, uint numSamples);
+    void putSamples(const SAMPLETYPE *samples, uint numSamples);
 
     /// Clears all the samples in the object
     void clear();

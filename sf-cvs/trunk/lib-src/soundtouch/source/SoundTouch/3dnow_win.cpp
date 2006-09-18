@@ -1,64 +1,67 @@
-/*****************************************************************************
- *
- * Win32 version of the AMD 3DNow! optimized routines for AMD K6-2/Athlon 
- * processors. All 3DNow! optimized functions have been gathered into this
- * single source code file, regardless to their class or original source code 
- * file, in order to ease porting the library to other compiler and processor 
- * platforms.
- *
- * By the way; the performance gain depends heavily on the CPU generation: On 
- * K6-2 these routines provided speed-up of even 2.4 times, while on Athlon the 
- * difference to the original routines stayed at unremarkable 8%! Such a small 
- * improvement on Athlon is due to 3DNow can perform only two operations in 
- * parallel, and obviously also the Athlon FPU is doing a very good job with
- * the standard C floating point routines! Here these routines are anyway, 
- * although it might not be worth the effort to convert these to GCC platform, 
- * for Athlon CPU at least. The situation is different regarding the SSE 
- * optimizations though, thanks to the four parallel operations of SSE that 
- * already make a difference.
- * 
- * This file is to be compiled in Windows platform with Microsoft Visual C++ 
- * Compiler. Please see '3dnow_gcc.cpp' for the gcc compiler version for all
- * GNU platforms (if file supplied).
- *
- * NOTICE: If using Visual Studio 6.0, you'll need to install the "Visual C++ 
- * 6.0 processor pack" update to support 3DNow! instruction set. The update is 
- * available for download at Microsoft Developers Network, see here:
- * http://msdn.microsoft.com/vstudio/downloads/tools/ppack/default.aspx
- *
- * If the above URL is expired or removed, go to "http://msdn.microsoft.com" and 
- * perform a search with keywords "processor pack".
- *
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 02-Nov-2003
- *
- * Last changed  : $Date: 2004-10-26 19:09:35 $
- * File revision : $Revision: 1.2 $
- *
- * $Id: 3dnow_win.cpp,v 1.2 2004-10-26 19:09:35 vjohnson Exp $
- *
- * License :
- * 
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Win32 version of the AMD 3DNow! optimized routines for AMD K6-2/Athlon 
+/// processors. All 3DNow! optimized functions have been gathered into this
+/// single source code file, regardless to their class or original source code 
+/// file, in order to ease porting the library to other compiler and processor 
+/// platforms.
+///
+/// By the way; the performance gain depends heavily on the CPU generation: On 
+/// K6-2 these routines provided speed-up of even 2.4 times, while on Athlon the 
+/// difference to the original routines stayed at unremarkable 8%! Such a small 
+/// improvement on Athlon is due to 3DNow can perform only two operations in 
+/// parallel, and obviously also the Athlon FPU is doing a very good job with
+/// the standard C floating point routines! Here these routines are anyway, 
+/// although it might not be worth the effort to convert these to GCC platform, 
+/// for Athlon CPU at least. The situation is different regarding the SSE 
+/// optimizations though, thanks to the four parallel operations of SSE that 
+/// already make a difference.
+/// 
+/// This file is to be compiled in Windows platform with Microsoft Visual C++ 
+/// Compiler. Please see '3dnow_gcc.cpp' for the gcc compiler version for all
+/// GNU platforms (if file supplied).
+///
+/// NOTICE: If using Visual Studio 6.0, you'll need to install the "Visual C++ 
+/// 6.0 processor pack" update to support 3DNow! instruction set. The update is 
+/// available for download at Microsoft Developers Network, see here:
+/// http://msdn.microsoft.com/vstudio/downloads/tools/ppack/default.aspx
+///
+/// If the above URL is expired or removed, go to "http://msdn.microsoft.com" and 
+/// perform a search with keywords "processor pack".
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:40 $
+// File revision : $Revision: 1.3 $
+//
+// $Id: 3dnow_win.cpp,v 1.3 2006-09-18 07:31:40 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include "cpu_detect.h"
 #include "STTypes.h"

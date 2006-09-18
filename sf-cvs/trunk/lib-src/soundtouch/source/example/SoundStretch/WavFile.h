@@ -1,44 +1,48 @@
-/******************************************************************************
- *
- * Classes for easy reading & writing of WAV sound files.
- *
- * For big-endian CPU, define BIG_ENDIAN during compile-time to correctly
- * parse the WAV files with such processors.
- * 
- * Admittingly, more complete WAV reader routines may exist in public domain, but 
- * the reason for 'yet another' one is that those generic WAV reader libraries are
- * exhaustingly large and cumbersome! Wanted to have something simpler here, i.e. 
- * something that's not already larger than rest of the SoundTouch/SoundStretch program...
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-03-14 15:51:42 $
- * File revision : $Revision: 1.1.1.1 $
- *
- * $Id: WavFile.h,v 1.1.1.1 2004-03-14 15:51:42 mbrubeck Exp $
- *
- * License :
- *
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// Classes for easy reading & writing of WAV sound files.
+///
+/// For big-endian CPU, define BIG_ENDIAN during compile-time to correctly
+/// parse the WAV files with such processors.
+/// 
+/// Admittingly, more complete WAV reader routines may exist in public domain, but 
+/// the reason for 'yet another' one is that those generic WAV reader libraries are
+/// exhaustingly large and cumbersome! Wanted to have something simpler here, i.e. 
+/// something that's not already larger than rest of the SoundTouch/SoundStretch program...
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:48 $
+// File revision : $Revision: 1.2 $
+//
+// $Id: WavFile.h,v 1.2 2006-09-18 07:31:48 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef WAVFILE_H
 #define WAVFILE_H
@@ -153,12 +157,29 @@ public:
     /// Get the audio file length in milliseconds
     uint getLengthMS() const;
 
-    /// Reads audio samples from the WAV file. Reads given number of bytes from the file.
-    /// or if end-of-file reached, as many bytes as are left in the file.
+    /// Reads audio samples from the WAV file. This routine works only for 8 bit samples.
+    /// Reads given number of elements from the file or if end-of-file reached, as many 
+    /// elements as are left in the file.
     ///
-    /// \return Number of _bytes_ read from the file.
-    int read(void *buffer,                  ///< Pointer to buffer where to read data.
-             const int bufferSizeInBytes    ///< Size of buffer. Reads at most these many bytes.
+    /// \return Number of 8-bit integers read from the file.
+    int read(char *buffer, int maxElems);
+
+    /// Reads audio samples from the WAV file to 16 bit integer format. Reads given number 
+    /// of elements from the file or if end-of-file reached, as many elements as are 
+    /// left in the file.
+    ///
+    /// \return Number of 16-bit integers read from the file.
+    int read(short *buffer,     ///< Pointer to buffer where to read data.
+             int maxElems       ///< Size of 'buffer' array (number of array elements).
+             );
+
+    /// Reads audio samples from the WAV file to floating point format, converting 
+    /// sample values to range [-1,1[. Reads given number of elements from the file
+    /// or if end-of-file reached, as many elements as are left in the file.
+    ///
+    /// \return Number of elements read from the file.
+    int read(float *buffer,     ///< Pointer to buffer where to read data.
+             int maxElems       ///< Size of 'buffer' array (number of array elements).
              );
 
     /// Check end-of-file.
@@ -166,6 +187,7 @@ public:
     /// \return Nonzero if end-of-file reached.
     int eof() const;
 };
+
 
 
 /// Class for writing WAV audio files.
@@ -195,18 +217,30 @@ public:
     /// Constructor: Creates a new WAV file. Throws a 'runtime_error' exception 
     /// if file creation fails.
     WavOutFile(const char *fileName,    ///< Filename
-               const int sampleRate,    ///< Sample rate (e.g. 44100 etc)
-               const int bits,          ///< Bits per sample (8 or 16 bits)
-               const int channels       ///< Number of channels (1=mono, 2=stereo)
+               int sampleRate,          ///< Sample rate (e.g. 44100 etc)
+               int bits,                ///< Bits per sample (8 or 16 bits)
+               int channels             ///< Number of channels (1=mono, 2=stereo)
                );
 
     /// Destructor: Finalizes & closes the WAV file.
     ~WavOutFile();
 
+    /// Write data to WAV file. This function works only with 8bit samples. 
+    /// Throws a 'runtime_error' exception if writing to file fails.
+    void write(const char *buffer,     ///< Pointer to sample data buffer.
+               int numElems             ///< How many array items are to be written to file.
+               );
+
     /// Write data to WAV file. Throws a 'runtime_error' exception if writing to
     /// file fails.
-    void write(const void *buffer,      ///< Pointer to sample data buffer.
-               const int numBytes       ///< How many _bytes_ of data are to be written to file.
+    void write(const short *buffer,     ///< Pointer to sample data buffer.
+               int numElems             ///< How many array items are to be written to file.
+               );
+
+    /// Write data to WAV file in floating point format, saturating sample values to range
+    /// [-1..+1[. Throws a 'runtime_error' exception if writing to file fails.
+    void write(const float *buffer,     ///< Pointer to sample data buffer.
+               int numElems             ///< How many array items are to be written to file.
                );
 
     /// Finalize & close the WAV file. Automatically supplements the WAV file header

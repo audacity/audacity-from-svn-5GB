@@ -1,56 +1,60 @@
-/******************************************************************************
- *
- * SoundStretch main routine.
- *
- * Author        : Copyright (c) Olli Parviainen
- * Author e-mail : oparviai @ iki.fi
- * File created  : 13-Jan-2002
- *
- * Last changed  : $Date: 2004-10-26 19:09:38 $
- * File revision : $Revision: 1.2 $
- *
- * $Id: main.cpp,v 1.2 2004-10-26 19:09:38 vjohnson Exp $
- *
- * License :
- *
- *  SoundTouch sound processing library
- *  Copyright (c) Olli Parviainen
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *****************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
+///
+/// SoundStretch main routine.
+///
+/// Author        : Copyright (c) Olli Parviainen
+/// Author e-mail : oparviai 'at' iki.fi
+/// SoundTouch WWW: http://www.surina.net/soundtouch
+///
+////////////////////////////////////////////////////////////////////////////////
+//
+// Last changed  : $Date: 2006-09-18 07:31:48 $
+// File revision : $Revision: 1.3 $
+//
+// $Id: main.cpp,v 1.3 2006-09-18 07:31:48 richardash1981 Exp $
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// License :
+//
+//  SoundTouch audio processing library
+//  Copyright (c) Olli Parviainen
+//
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+////////////////////////////////////////////////////////////////////////////////
 
 #include <stdexcept>
 #include <stdio.h>
 #include "RunParameters.h"
 #include "WavFile.h"
 #include "SoundTouch.h"
-
 #include "BPMDetect.h"
 
 using namespace soundtouch;
 using namespace std;
 
-#define BUFF_SIZE       2048
-#define BUFF_SIZE_BYTES (2 * BUFF_SIZE)
+// Processing chunk size
+#define BUFF_SIZE           2048
+
 
 static const char _helloText[] = 
     "\n"
-    "   SoundStretch v%s -  Written by Olli Parviainen 2001 - 2004\n"
+    "   SoundStretch v%s -  Written by Olli Parviainen 2001 - 2006\n"
     "==================================================================\n"
-    "author e-mail: <oparviai@iki.fi> - WWW: http://www.iki.fi/oparviai/soundtouch\n"
+    "author e-mail: <oparviai@iki.fi> - WWW: http://www.surina.net/soundtouch\n"
     "\n"
     "This program is subject to (L)GPL license. Run \"soundstretch -license\" for\n"
     "more information.\n"
@@ -127,89 +131,55 @@ static void setup(SoundTouch *pSoundTouch, const WavInFile *inFile, const RunPar
 }
 
 
-/// Convert samples in SAMPLETYPE format to 16bit integer
-///
-/// Note: This conversion function is inefficient for floating point
-/// sample format, because the standard C way of converting floats to
-/// integers is slow. If you're concerned about performance, you'd 
-/// better remake this function with some CPU-specific stuff, but it's 
-/// here only as an example.
-static void _sampleType2Short(short *pDest, const SAMPLETYPE *pSrc, uint uNum)
-{
-    uint i;
-
-    for (i = 0; i < uNum; i ++)
-    {
-        int temp;
-
-        // saturate result between -32768..32767
-        temp = (int)pSrc[i];
-        if (temp > 32767)
-        {
-            temp = 32767;
-        } 
-        else if (temp < -32768)
-        {
-            temp = -32768;
-        }
-        pDest[i] = temp;
-    }
-}
-
-
-/// Convert 16bit integer samples to SAMPLETYPE format.
-static void _short2SampleType(SAMPLETYPE *pDest, const short *pSrc, uint uNum)
-{
-    uint i;
-
-    for (i = 0; i < uNum; i ++)
-    {
-        pDest[i] = pSrc[i];
-    }
-}
 
 
 // Processes the sound
 static void process(SoundTouch *pSoundTouch, WavInFile *inFile, WavOutFile *outFile)
 {
-    int nBytes;
     int nSamples;
-    int bytesPerSample;
+    int nChannels;
     int buffSizeSamples;
-    short intBuffer[BUFF_SIZE];
     SAMPLETYPE sampleBuffer[BUFF_SIZE];
 
     if ((inFile == NULL) || (outFile == NULL)) return;  // nothing to do.
 
-    bytesPerSample = inFile->getBytesPerSample();
-    buffSizeSamples = BUFF_SIZE_BYTES / bytesPerSample;
+    nChannels = inFile->getNumChannels();
+    buffSizeSamples = BUFF_SIZE / nChannels;
 
+    // Process samples read from the input file
     while (inFile->eof() == 0)
     {
-        nBytes = inFile->read(intBuffer, BUFF_SIZE_BYTES);
-        _short2SampleType(sampleBuffer, intBuffer, nBytes / sizeof(short));
+        int num;
 
-        nSamples = nBytes / bytesPerSample;
+        // Read a chunk of samples from the input file
+        num = inFile->read(sampleBuffer, BUFF_SIZE);
+        nSamples = num / inFile->getNumChannels();
+
+        // Feed the samples into SoundTouch processor
         pSoundTouch->putSamples(sampleBuffer, nSamples);
 
+        // Read ready samples from SoundTouch processor & write them output file.
+        // NOTES:
+        // - 'receiveSamples' doesn't necessarily return any samples at all
+        //   during some rounds!
+        // - On the other hand, during some round 'receiveSamples' may have more
+        //   ready samples than would fit into 'sampleBuffer', and for this reason 
+        //   the 'receiveSamples' call is iterated for as many times as it
+        //   outputs samples.
         do 
         {
             nSamples = pSoundTouch->receiveSamples(sampleBuffer, buffSizeSamples);
-            nBytes = nSamples * bytesPerSample;
-            assert(nBytes <= BUFF_SIZE_BYTES);
-
-            _sampleType2Short(intBuffer, sampleBuffer, nBytes / sizeof(short));
-            outFile->write(intBuffer, nBytes);
+            outFile->write(sampleBuffer, nSamples * nChannels);
         } while (nSamples != 0);
     }
 
+    // Now the input file is processed, yet 'flush' few last samples that are
+    // hiding in the SoundTouch's internal processing pipeline.
     pSoundTouch->flush();
     do 
     {
         nSamples = pSoundTouch->receiveSamples(sampleBuffer, buffSizeSamples);
-        nBytes = nSamples * bytesPerSample;
-        _sampleType2Short(intBuffer, sampleBuffer, nBytes / sizeof(short));
-        outFile->write(intBuffer, nBytes);
+        outFile->write(sampleBuffer, nSamples * nChannels);
     } while (nSamples != 0);
 }
 
@@ -218,31 +188,28 @@ static void process(SoundTouch *pSoundTouch, WavInFile *inFile, WavOutFile *outF
 // Detect BPM rate of inFile and adjust tempo setting accordingly if necessary
 static void detectBPM(WavInFile *inFile, RunParameters *params)
 {
-    BPMDetect bpm(inFile->getNumChannels(), inFile->getSampleRate());
     float bpmValue;
-    int bytesPerSample;
-    short intBuffer[BUFF_SIZE];
+    int nChannels;
+    BPMDetect bpm(inFile->getNumChannels(), inFile->getSampleRate());
     SAMPLETYPE sampleBuffer[BUFF_SIZE];
 
     // detect bpm rate
     printf("Detecting BPM rate...");
     fflush(stdout);
 
-    bytesPerSample = inFile->getBytesPerSample();
+    nChannels = inFile->getNumChannels();
 
     // Process the 'inFile' in small blocks, repeat until whole file has 
     // been processed
     while (inFile->eof() == 0)
     {
-        int bytes, samples;
+        int num, samples;
 
         // Read sample data from input file
-        bytes = inFile->read(intBuffer, BUFF_SIZE_BYTES);
-        // Convert to locally used sample type
-        _short2SampleType(sampleBuffer, intBuffer, bytes / sizeof(short));
+        num = inFile->read(sampleBuffer, BUFF_SIZE);
 
         // Enter the new samples to the bpm analyzer class
-        samples = bytes / bytesPerSample;
+        samples = num / nChannels;
         bpm.inputSamples(sampleBuffer, samples);
     }
 
@@ -277,8 +244,8 @@ int main(const int nParams, const char *paramStr[])
 {
     WavInFile *inFile;
     WavOutFile *outFile;
-    SoundTouch SoundTouch;
     RunParameters *params;
+    SoundTouch SoundTouch;
 
     printf(_helloText, SoundTouch::getVersionString());
 

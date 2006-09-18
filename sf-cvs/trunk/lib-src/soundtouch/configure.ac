@@ -1,6 +1,6 @@
 dnl SoundTouch configure.ac, by David W. Durham
 dnl
-dnl $Id: configure.ac,v 1.2 2005-09-12 07:13:20 dmazzoni Exp $
+dnl $Id: configure.ac,v 1.3 2006-09-18 07:31:36 richardash1981 Exp $
 dnl
 dnl This file is part of SoundTouch, an audio processing library for pitch/time adjustments
 dnl 
@@ -19,21 +19,17 @@ dnl this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 dnl Place - Suite 330, Boston, MA  02111-1307, USA
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT(SoundTouch, 1.2.1, [http://www.iki.fi/oparviai/soundtouch])
+AC_INIT(SoundTouch, 1.3.1, [http://www.surina.net/soundtouch])
 AC_CONFIG_AUX_DIR(config)
-AM_CONFIG_HEADER([config/config.h])
+AM_CONFIG_HEADER([include/soundtouch_config.h])
 AM_INIT_AUTOMAKE
-
-AM_MAINTAINER_MODE
-
 AC_DISABLE_SHARED	dnl This makes libtool only build static libs 
 #AC_GNU_SOURCE 		dnl enable posix extensions in glibc
 
 AC_LANG(C++)
 
-
-
-
+#AC_MAINTAINER_MODE
+dnl added by audacity as this is a bundled library
 
 dnl ############################################################################
 dnl # Checks for programs                                                      #
@@ -74,17 +70,21 @@ AC_C_INLINE
 #AC_TYPE_OFF_T
 #AC_TYPE_SIZE_T
 
-dnl define WORDS_BIGENDIAN if this is a big endian platform
-AH_TEMPLATE(WORDS_BIGENDIAN)
-AC_C_BIGENDIAN([
-	AC_DEFINE(WORDS_BIGENDIAN)
-	dnl well, I dunno, maybe it has???
-	AC_MSG_WARN([The soundstretch binary is not coded to work with big endian machines yet])
-])
 
+AC_ARG_ENABLE(integer-samples,
+              [AC_HELP_STRING([--enable-integer-samples],
+                              [use integer samples instead of floats
+[default=yes]])],,
+              [enable_integer_samples=no])
 
-
-
+      
+if test "x$enable_integer_samples" = "xyes"; then
+        echo "****** Integer sample type enabled ******"
+        AC_DEFINE(INTEGER_SAMPLES,1,[Use Integer as Sample type])
+else
+        echo "****** Float sample type enabled ******"
+        AC_DEFINE(FLOAT_SAMPLES,1,[Use Float as Sample type])
+fi
 
 
 
@@ -131,7 +131,8 @@ AC_CONFIG_FILES([
 	include/Makefile
 ])
 
-AC_OUTPUT
-
+AC_OUTPUT(
+	soundtouch-1.0.pc
+)
 
 dnl use 'echo' to put stuff here if you want a message to the builder
