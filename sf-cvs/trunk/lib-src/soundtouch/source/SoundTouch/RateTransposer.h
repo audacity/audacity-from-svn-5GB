@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// 
-/// Sample rate transposer. Changes sample rate by using linear interpolation 
+///
+/// Sample rate transposer. Changes sample rate by using linear interpolation
 /// together with anti-alias filtering (first order interpolation with anti-
 /// alias filtering should be quite adequate for this application).
 ///
-/// Use either of the derived classes of 'RateTransposerInteger' or 
+/// Use either of the derived classes of 'RateTransposerInteger' or
 /// 'RateTransposerFloat' for corresponding integer/floating point tranposing
 /// algorithm implementation.
 ///
@@ -14,10 +14,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2006-09-18 07:31:41 $
-// File revision : $Revision: 1.3 $
+// Last changed  : $Date: 2006-09-18 22:29:22 $
+// File revision : $Revision: 1.4 $
 //
-// $Id: RateTransposer.h,v 1.3 2006-09-18 07:31:41 richardash1981 Exp $
+// $Id: RateTransposer.h,v 1.4 2006-09-18 22:29:22 martynshaw Exp $
 //
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -56,9 +56,9 @@ namespace soundtouch
 
 /// A common linear samplerate transposer class.
 ///
-/// Note: Use function "RateTransposer::newInstance()" to create a new class 
-/// instance instead of the "new" operator; that function automatically 
-/// chooses a correct implementation depending on if integer or floating 
+/// Note: Use function "RateTransposer::newInstance()" to create a new class
+/// instance instead of the "new" operator; that function automatically
+/// chooses a correct implementation depending on if integer or floating
 /// arithmetics are to be used.
 class RateTransposer : public FIFOProcessor
 {
@@ -86,28 +86,28 @@ protected:
 
     virtual void resetRegisters() = 0;
 
-    virtual uint transposeStereo(SAMPLETYPE *dest, 
-                         const SAMPLETYPE *src, 
+    virtual uint transposeStereo(SAMPLETYPE *dest,
+                         const SAMPLETYPE *src,
                          uint numSamples) = 0;
-    virtual uint transposeMono(SAMPLETYPE *dest, 
-                       const SAMPLETYPE *src, 
+    virtual uint transposeMono(SAMPLETYPE *dest,
+                       const SAMPLETYPE *src,
                        uint numSamples) = 0;
-    uint transpose(SAMPLETYPE *dest, 
-                   const SAMPLETYPE *src, 
+    uint transpose(SAMPLETYPE *dest,
+                   const SAMPLETYPE *src,
                    uint numSamples);
 
     void flushStoreBuffer();
 
-    void downsample(const SAMPLETYPE *src, 
+    void downsample(const SAMPLETYPE *src,
                     uint numSamples);
-    void upsample(const SAMPLETYPE *src, 
+    void upsample(const SAMPLETYPE *src,
                  uint numSamples);
 
-    /// Transposes sample rate by applying anti-alias filter to prevent folding. 
+    /// Transposes sample rate by applying anti-alias filter to prevent folding.
     /// Returns amount of samples returned in the "dest" buffer.
     /// The maximum amount of samples that can be returned at a time is set by
     /// the 'set_returnBuffer_size' function.
-    void processSamples(const SAMPLETYPE *src, 
+    void processSamples(const SAMPLETYPE *src,
                         uint numSamples);
 
 
@@ -115,12 +115,12 @@ public:
     RateTransposer();
     virtual ~RateTransposer();
 
-    /// Operator 'new' is overloaded so that it automatically creates a suitable instance 
+    /// Operator 'new' is overloaded so that it automatically creates a suitable instance
     /// depending on if we're to use integer or floating point arithmetics.
     void *operator new(size_t s);
 
-    /// Use this function instead of "new" operator to create a new instance of this class. 
-    /// This function automatically chooses a correct implementation, depending on if 
+    /// Use this function instead of "new" operator to create a new instance of this class.
+    /// This function automatically chooses a correct implementation, depending on if
     /// integer ot floating point arithmetics are to be used.
     static RateTransposer *newInstance();
 
@@ -139,7 +139,7 @@ public:
     /// Returns nonzero if anti-alias filter is enabled.
     BOOL isAAFilterEnabled() const;
 
-    /// Sets new target rate. Normal rate = 1.0, smaller values represent slower 
+    /// Sets new target rate. Normal rate = 1.0, smaller values represent slower
     /// rate, larger faster rates.
     virtual void setRate(float newRate);
 
