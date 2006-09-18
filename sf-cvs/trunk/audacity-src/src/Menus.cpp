@@ -652,7 +652,7 @@ void AudacityProject::CreateMenusAndCommands()
    
       alignLabels.RemoveAt(7); // Can't align together and move cursor
    
-      c->BeginSubMenu(_("Align And Mo&ve Cursor..."));
+      c->BeginSubMenu(_("Ali&gn And Move Cursor..."));
       c->AddItemList(wxT("AlignMove"), alignLabels, FN(OnAlignMoveSel));
       c->SetCommandFlags(wxT("AlignMove"),
                          AudioIONotBusyFlag | TracksSelectedFlag,
@@ -664,7 +664,7 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("AddLabelPlaying"),       _("Add Label At &Playback Position\tCtrl+M"), FN(OnAddLabelPlaying));
       c->SetCommandFlags(wxT("AddLabel"), 0, 0);
       c->SetCommandFlags(wxT("AddLabelPlaying"), 0, AudioIONotBusyFlag);
-      c->AddItem(wxT("EditLabels"),       _("Edit Labels"), FN(OnEditLabels));
+      c->AddItem(wxT("EditLabels"),       _("&Edit Labels"), FN(OnEditLabels));
 
       c->AddSeparator();   
       c->BeginSubMenu(_("S&ort tracks by..."));
