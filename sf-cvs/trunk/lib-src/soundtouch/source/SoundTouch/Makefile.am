@@ -1,6 +1,6 @@
 ## Process this file with automake to create Makefile.in
 ##
-## $Id: Makefile.am,v 1.1.1.1 2004-03-14 15:51:43 mbrubeck Exp $
+## $Id: Makefile.am,v 1.2 2006-09-18 07:31:40 richardash1981 Exp $
 ##
 ## Copyright (C) 2003 - David W. Durham
 ## 
@@ -24,18 +24,18 @@ include $(top_srcdir)/config/am_include.mk
 
 
 # set to something if you want other stuff to be included in the distribution tarball
-EXTRA_DIST=3dnow_win.cpp cpu_detect_x86_win.cpp mmx_win.cpp SoundTouch.dsp SoundTouch.dsw sse_win.cpp
+EXTRA_DIST=3dnow_win.cpp cpu_detect_x86_win.cpp SoundTouch.dsp SoundTouch.dsw SoundTouch.sln SoundTouch.vcproj
 
 noinst_HEADERS=AAFilter.h cpu_detect.h cpu_detect_x86_gcc.cpp FIRFilter.h RateTransposer.h TDStretch.h
 
 lib_LTLIBRARIES=libSoundTouch.la
 # the mmx_gcc.cpp and cpu_detect_x86_gcc.cpp may need to be conditionally included here from things discovered in configure.ac
-libSoundTouch_la_SOURCES=AAFilter.cpp FIRFilter.cpp FIFOSampleBuffer.cpp mmx_gcc.cpp RateTransposer.cpp SoundTouch.cpp TDStretch.cpp cpu_detect_x86_gcc.cpp
+libSoundTouch_la_SOURCES=AAFilter.cpp FIRFilter.cpp FIFOSampleBuffer.cpp mmx_optimized.cpp sse_optimized.cpp RateTransposer.cpp SoundTouch.cpp TDStretch.cpp cpu_detect_x86_gcc.cpp
 
 
 # ??? test for -fcheck-new in configure.ac
 # other compiler flags to add
-AM_CXXFLAGS=-O3 -fcheck-new -I../../include
+AM_CXXFLAGS=-O3 -msse -fcheck-new -I../../include
 
 # other linking flags to add
 #libSoundTouch_la_LIBADD=

@@ -1,7 +1,7 @@
 # m4 configure test script for the SoundTouch library
 # (c)2003 David W. Durham
 #
-# $Id: soundtouch.m4,v 1.1.1.1 2004-03-14 15:51:34 mbrubeck Exp $
+# $Id: soundtouch.m4,v 1.2 2006-09-18 07:31:36 richardash1981 Exp $
 #
 # This file can be included with other packages that need to test
 # for libSoundTouch.
@@ -26,7 +26,7 @@ AH_TEMPLATE([HAVE_LIBSOUNDTOUCH], [defined by $0])
 SOUNDTOUCH_CXXFLAGS=""
 SOUNDTOUCH_LIBS=""
 
-AC_DEFUN(AM_PATH_SOUNDTOUCH,[
+AC_DEFUN([AM_PATH_SOUNDTOUCH],[
 	AC_ARG_WITH(soundtouch-prefix,[  --with-soundtouch-prefix=DIR   Prefix where SoundTouch was installed (optional)], [soundtouch_prefix="$withval"],[soundtouch_prefix=""])
 
 	AC_ARG_ENABLE(soundtouch-check,[  --disable-soundtouch-check   Do not look for the SoundTouch Library],[enable_soundtouch_check="$enableval"],[enable_soundtouch_check="yes"])
