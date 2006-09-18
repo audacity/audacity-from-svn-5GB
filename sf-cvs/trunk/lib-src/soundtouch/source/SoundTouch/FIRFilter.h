@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///
-/// General FIR digital filter routines with MMX optimization. 
+/// General FIR digital filter routines with MMX optimization.
 ///
-/// Note : MMX optimized functions reside in a separate, platform-specific file, 
+/// Note : MMX optimized functions reside in a separate, platform-specific file,
 /// e.g. 'mmx_win.cpp' or 'mmx_gcc.cpp'
 ///
 /// Author        : Copyright (c) Olli Parviainen
@@ -11,10 +11,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2006-09-18 07:31:40 $
-// File revision : $Revision: 1.3 $
+// Last changed  : $Date: 2006-09-18 22:29:22 $
+// File revision : $Revision: 1.4 $
 //
-// $Id: FIRFilter.h,v 1.3 2006-09-18 07:31:40 richardash1981 Exp $
+// $Id: FIRFilter.h,v 1.4 2006-09-18 22:29:22 martynshaw Exp $
 //
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -47,11 +47,11 @@
 namespace soundtouch
 {
 
-class FIRFilter 
+class FIRFilter
 {
 protected:
     // Number of FIR filter taps
-    uint length;    
+    uint length;
     // Number of FIR filter taps divided by 8
     uint lengthDiv8;
 
@@ -64,37 +64,37 @@ protected:
     // Memory for filter coefficients
     SAMPLETYPE *filterCoeffs;
 
-    virtual uint evaluateFilterStereo(SAMPLETYPE *dest, 
-                                      const SAMPLETYPE *src, 
+    virtual uint evaluateFilterStereo(SAMPLETYPE *dest,
+                                      const SAMPLETYPE *src,
                                       uint numSamples) const;
-    virtual uint evaluateFilterMono(SAMPLETYPE *dest, 
-                                    const SAMPLETYPE *src, 
+    virtual uint evaluateFilterMono(SAMPLETYPE *dest,
+                                    const SAMPLETYPE *src,
                                     uint numSamples) const;
 
 public:
     FIRFilter();
     virtual ~FIRFilter();
 
-    /// Operator 'new' is overloaded so that it automatically creates a suitable instance 
+    /// Operator 'new' is overloaded so that it automatically creates a suitable instance
     /// depending on if we've a MMX-capable CPU available or not.
     void * operator new(size_t s);
 
     static FIRFilter *newInstance();
 
-    /// Applies the filter to the given sequence of samples. 
-    /// Note : The amount of outputted samples is by value of 'filter_length' 
+    /// Applies the filter to the given sequence of samples.
+    /// Note : The amount of outputted samples is by value of 'filter_length'
     /// smaller than the amount of input samples.
     ///
     /// \return Number of samples copied to 'dest'.
-    uint evaluate(SAMPLETYPE *dest, 
-                  const SAMPLETYPE *src, 
-                  uint numSamples, 
+    uint evaluate(SAMPLETYPE *dest,
+                  const SAMPLETYPE *src,
+                  uint numSamples,
                   uint numChannels) const;
 
     uint getLength() const;
 
-    virtual void setCoefficients(const SAMPLETYPE *coeffs, 
-                                 uint newLength, 
+    virtual void setCoefficients(const SAMPLETYPE *coeffs,
+                                 uint newLength,
                                  uint uResultDivFactor);
 };
 
