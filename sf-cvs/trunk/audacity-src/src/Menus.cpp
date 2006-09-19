@@ -2521,9 +2521,22 @@ void AudacityProject::OnPaste()
 
    Track *n = iter.First();
    Track *c = clipIter.First();
+   
+   bool pastedSomething = false;
 
    while (n && c) {
       if (n->GetSelected()) {
+         // When trying to copy from stereo to mono track, show error and exit
+         // TODO: Automatically offer user to mix down to mono (unfortunately
+         //       this is not easy to implement
+         if (c->GetLinked() && !n->GetLinked())
+         {
+            wxMessageBox(
+               _("Copying stereo audio into a mono track is not allowed."),
+               _("Error"), wxICON_ERROR, this);
+            break;
+         }
+         
          if (msClipProject != this && c->GetKind() == Track::Wave)
             ((WaveTrack *) c)->Lock();
 
@@ -2538,6 +2551,8 @@ void AudacityProject::OnPaste()
          }
 
          n->Paste(t0, c);
+         
+         pastedSomething = true;
          
          // When copying from mono to stereo track, paste the wave form
          // to both channels
@@ -2569,12 +2584,15 @@ void AudacityProject::OnPaste()
 
    // TODO: What if we clicked past the end of the track?
 
-   mViewInfo.sel0 = t0;
-   mViewInfo.sel1 = t0 + msClipLen;
+   if (pastedSomething)
+   {
+      mViewInfo.sel0 = t0;
+      mViewInfo.sel1 = t0 + msClipLen;
 
-   PushState(_("Pasted from the clipboard"), _("Paste"));
+      PushState(_("Pasted from the clipboard"), _("Paste"));
 
-   RedrawProject();
+      RedrawProject();
+   }
 }
 
 void AudacityProject::OnPasteOver()
