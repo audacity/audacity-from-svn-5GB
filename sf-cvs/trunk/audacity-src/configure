@@ -707,9 +707,9 @@ SAMPLERATE_LIBS
 JACK_CFLAGS
 JACK_LIBS'
 ac_subdirs_all='$CONFIG_SUBDIRS
-[lib-src/portaudio-v19]
-[lib-src/rtaudio]
-[lib-src/dlcompat]'
+lib-src/portaudio-v19
+lib-src/rtaudio
+lib-src/dlcompat'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -6867,7 +6867,7 @@ _ACEOF
    EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
    CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
-   subdirs="$subdirs [lib-src/portaudio-v19]"
+   subdirs="$subdirs lib-src/portaudio-v19"
 
 
       case "${host_os}" in
@@ -7255,7 +7255,7 @@ else
 fi
 
 if [ "$use_rtaudio" = "yes" ] ; then
-    subdirs="$subdirs [lib-src/rtaudio]"
+    subdirs="$subdirs lib-src/rtaudio"
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -7463,7 +7463,7 @@ if [ "$use_ladspa" = "yes" ] ; then
          CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
          if test ! -f "lib-src/dlcompat/Makefile"; then
             echo "--- Configuring dlcompat";
-            subdirs="$subdirs [lib-src/dlcompat]"
+            subdirs="$subdirs lib-src/dlcompat"
 
          fi
          ;;

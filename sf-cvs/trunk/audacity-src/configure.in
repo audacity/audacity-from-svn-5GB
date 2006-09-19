@@ -395,7 +395,7 @@ if [[ "$use_portaudio" = "v19" ]] ; then
    EXTRAOBJS="$EXTRAOBJS ../lib-src/portaudio-v19/lib/libportaudio.a"
    CXXFLAGS="-I\$(top_srcdir)/lib-src/portaudio-v19/include $CXXFLAGS"
 
-   AC_CONFIG_SUBDIRS([[lib-src/portaudio-v19]])
+   AC_CONFIG_SUBDIRS([lib-src/portaudio-v19])
 
    dnl TODO: Use same library selections as PortAudio v19's configure script.
    case "${host_os}" in
@@ -446,7 +446,7 @@ else
 fi
 
 if [[ "$use_rtaudio" = "yes" ]] ; then
-    AC_CONFIG_SUBDIRS([[lib-src/rtaudio]])
+    AC_CONFIG_SUBDIRS([lib-src/rtaudio])
     AC_DEFINE(USE_RTAUDIO, 1,   
      [Define if RTAudio support should be enabled])
     CXXFLAGS="-I\$(top_srcdir)/lib-src/rtaudio $CXXFLAGS"
@@ -500,7 +500,7 @@ if [[ "$use_ladspa" = "yes" ]] ; then
          CXXFLAGS="$CXXFLAGS -I$(srcdir)/lib-src/dlcompat"
          if test ! -f "lib-src/dlcompat/Makefile"; then
             echo "--- Configuring dlcompat";
-            AC_CONFIG_SUBDIRS([[lib-src/dlcompat]])
+            AC_CONFIG_SUBDIRS([lib-src/dlcompat])
          fi    
          ;;
       *)
