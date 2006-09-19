@@ -265,6 +265,9 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBSNDFILE], [
          LIBSNDFILE_LOCAL_CONFIG_SUBDIRS="lib-src/libsndfile"
       fi
       AC_MSG_NOTICE([libsndfile libraries are available in this source tree])
+
+      dnl Temporary fix for bug #248
+      ac_configure_args="$ac_configure_args --disable-sqlite --disable-flac --disable-alsa"
    else
       LIBSNDFILE_LOCAL_AVAILABLE="no"
       AC_MSG_NOTICE([libsndfile libraries are NOT available in this source tree])
