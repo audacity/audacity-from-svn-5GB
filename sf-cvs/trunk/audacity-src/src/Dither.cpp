@@ -6,7 +6,7 @@
 
   Steve Harris
   Markus Meyer
- 
+
 *******************************************************************//*!
 
 \class Dither
@@ -38,7 +38,7 @@ and get deterministic behaviour.
 // Erik de Castro Lopo's header file that
 // makes sure that we have lrint and lrintf
 // (Note: this file should be included first)
-#include "float_cast.h" 
+#include "float_cast.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -166,7 +166,7 @@ void Dither::Apply(enum DitherType ditherType,
 
     if (len == 0)
         return; // nothing to do
-    
+
     if (sourceFormat == destFormat)
     {
         // No need to dither, because source and destination
@@ -199,7 +199,7 @@ void Dither::Apply(enum DitherType ditherType,
                 else if (*p < -1.0)
                     *p = -1.0;
         }
-    } else 
+    } else
     if (destFormat == floatSample)
     {
         // No need to dither, just convert samples to float.
@@ -268,36 +268,36 @@ inline float Dither::RectangleDither(float sample)
     return sample - DITHER_NOISE;
 }
 
-// Triangle dither
+// Triangle dither - high pass filtered
 inline float Dither::TriangleDither(float sample)
 {
-    float r = DITHER_NOISE * 2.0f - 1.0f;
+    float r = DITHER_NOISE - 0.5f;
     float result = sample + r - mTriangleState;
     mTriangleState = r;
-    
+
     return result;
 }
 
 // Shaped dither
 inline float Dither::ShapedDither(float sample)
 {
-    float r = DITHER_NOISE * 2.0f - 1.0f;
-    
+   // Generate triangular dither, +-1 LSB, flat psd
+    float r = DITHER_NOISE + DITHER_NOISE - 1.0f;
+
     // Run FIR
     float xe = sample + mBuffer[mPhase] * SHAPED_BS[0]
         + mBuffer[(mPhase - 1) & BUF_MASK] * SHAPED_BS[1]
         + mBuffer[(mPhase - 2) & BUF_MASK] * SHAPED_BS[2]
         + mBuffer[(mPhase - 3) & BUF_MASK] * SHAPED_BS[3]
         + mBuffer[(mPhase - 4) & BUF_MASK] * SHAPED_BS[4];
-    
+
     // Accumulate FIR and triangular noise
-    float result = xe + r - mTriangleState;
-    mTriangleState = r;
-    
+    float result = xe + r;
+
     // Roll buffer and store last error
     mPhase = (mPhase + 1) & BUF_MASK;
     mBuffer[mPhase] = xe - lrintf(result);
-    
+
     return result;
 }
 
