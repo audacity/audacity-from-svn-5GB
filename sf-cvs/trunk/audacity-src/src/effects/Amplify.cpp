@@ -117,8 +117,8 @@ bool EffectAmplify::ProcessSimpleMono(float *buffer, sampleCount len)
 // AmplifyDialog
 //----------------------------------------------------------------------------
 
-#define AMP_MIN -240
-#define AMP_MAX 240
+#define AMP_MIN -500
+#define AMP_MAX 500
 
 // WDR: event table for AmplifyDialog
 
@@ -231,6 +231,10 @@ bool AmplifyDialog::Validate()
 bool AmplifyDialog::TransferDataToWindow()
 {
    wxSlider *slider;
+
+   // limit range of gain
+   double dB = TrapDouble(200*log10(ratio), AMP_MIN, AMP_MAX)/10.0;
+   ratio = pow(10.0, dB/20.0);
 
    slider = GetAmpSlider();
    if (slider)
