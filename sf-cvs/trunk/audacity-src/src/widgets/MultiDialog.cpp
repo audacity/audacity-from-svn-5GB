@@ -52,7 +52,7 @@ END_EVENT_TABLE()
 MultiDialog::MultiDialog(wxString prompt,
                          wxString title,
                          const wxChar **buttons):
-   wxDialog(NULL, (wxWindowID)-1, (wxString)_("title"))
+   wxDialog(NULL, (wxWindowID)-1, title)
 {
    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
    wxBoxSizer *vSizer = new wxBoxSizer(wxVERTICAL);
