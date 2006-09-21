@@ -225,7 +225,7 @@ AboutDialog::AboutDialog(wxWindow * parent)
          localeStr + 
          wxT("\"></head>") + 
       wxT("<body bgcolor=\"#ffffff\"><font size=1><center>") + 
-      wxT("<h3>Audacity ") + versionStr + wxT("</h3>")+ 
+      wxT("<h3>Audacity &reg; ") + versionStr + wxT("</h3>")+ 
       _("A Free Digital Audio Editor") + 
       wxT("</center><p>") + par1Str +
       wxT("<p>") + par2Str +
