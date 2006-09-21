@@ -2,7 +2,7 @@
 
   Audacity: A Digital Audio Editor
 
-  SmartRecordDialog.h
+  SmartRecordDialog.cpp
 
   Copyright 2006 by Vaughan Johnson
   
@@ -68,7 +68,7 @@ SmartRecordDialog::SmartRecordDialog(wxWindow* parent)
 : wxDialog(parent, -1, _("Audacity Timer Record"), wxDefaultPosition, 
            wxDefaultSize, wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
-   m_DateTime_Start = wxDateTime::Now(); //vvv + wxTimeSpan::Minutes(1); 
+   m_DateTime_Start = wxDateTime::Now(); 
    m_TimeSpan_Duration = wxTimeSpan::Minutes(5); // default 5 minute duration
    m_DateTime_End = m_DateTime_Start + m_TimeSpan_Duration;
 
@@ -247,15 +247,6 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
    S.SetBorder(5);
    S.StartVerticalLay(true);
    {
-      /* //vvv
-         S.StartRadioButtonGroup(wxT("Start"));
-         {
-            S.AddRadioButton(_("Start Time"));
-            //vvv TimeTextControl
-            S.AddRadioButton(_("Now"));
-            }
-         S.EndRadioButtonGroup();
-         */
       wxString strFormat = wxT("099 h 060 m 060 s");
       S.StartStatic(_("Start Date and Time"), true);
       {
@@ -296,7 +287,7 @@ void SmartRecordDialog::PopulateOrExchange(ShuttleGui& S)
          wxString strFormat1 = wxT("099 days 024 h 060 m 060 s");
          m_pTimeTextCtrl_Duration = new TimeTextCtrl(this, ID_TIMETEXT_DURATION, strFormat1);
          m_pTimeTextCtrl_Duration->SetTimeValue(
-            Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //vvv milliseconds?
+            Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //v milliseconds?
          S.AddWindow(m_pTimeTextCtrl_Duration);
          m_pTimeTextCtrl_Duration->EnableMenu(false);
       }
@@ -348,16 +339,15 @@ bool SmartRecordDialog::TransferDataFromWindow()
 // Update m_TimeSpan_Duration and ctrl based on m_DateTime_Start and m_DateTime_End.
 void SmartRecordDialog::UpdateDuration() 
 {
-   //vvvvv A week overflows timeTextCTrl, so implement days ctrl and fix this calculation.
    m_TimeSpan_Duration = m_DateTime_End - m_DateTime_Start;
    m_pTimeTextCtrl_Duration->SetTimeValue(
-      Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //vvv milliseconds?
+      Internat::CompatibleToDouble(m_TimeSpan_Duration.GetSeconds().ToString())); //v milliseconds?
 }
 
 // Update m_DateTime_End and ctrls based on m_DateTime_Start and m_TimeSpan_Duration.
 void SmartRecordDialog::UpdateEnd()
 {
-   //vvv Use remaining disk -> record time calcs from AudacityProject::OnTimer to set range?
+   //v Use remaining disk -> record time calcs from AudacityProject::OnTimer to set range?
    m_DateTime_End = m_DateTime_Start + m_TimeSpan_Duration;
    m_pDatePickerCtrl_End->SetValue(m_DateTime_End);
    m_pDatePickerCtrl_End->SetRange(m_DateTime_Start, wxInvalidDateTime); // No backdating.
@@ -380,13 +370,13 @@ bool SmartRecordDialog::WaitForStart()
    wxLongLong llProgValue;
    int nProgValue = 0;
    while (!bDidCancel && !bIsRecording) {
-      wxMilliSleep(kTimerInterval); //vvv Resolution?
+      wxMilliSleep(kTimerInterval);
 
       done_TimeSpan = wxDateTime::Now() - startWait_DateTime;
       llProgValue = 
          (wxLongLong)((done_TimeSpan.GetSeconds() * (double)MAX_PROG) / 
                         waitDuration.GetSeconds());
-      nProgValue = llProgValue.ToLong(); //vvv ToLong truncates, so may fail ASSERT.
+      nProgValue = llProgValue.ToLong(); //v ToLong truncates, so may fail ASSERT.
       bDidCancel = !pProject->ProgressUpdate(nProgValue);
 
       bIsRecording = (m_DateTime_Start <= wxDateTime::UNow());
