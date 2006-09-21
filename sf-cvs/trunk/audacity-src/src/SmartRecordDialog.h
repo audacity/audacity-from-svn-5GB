@@ -61,7 +61,6 @@ private:
    wxDatePickerCtrl* m_pDatePickerCtrl_End;
    TimeTextCtrl* m_pTimeTextCtrl_End;
 
-   //vvv need to show number of days, too. 
    TimeTextCtrl* m_pTimeTextCtrl_Duration;
 
    wxTimer m_timer;
