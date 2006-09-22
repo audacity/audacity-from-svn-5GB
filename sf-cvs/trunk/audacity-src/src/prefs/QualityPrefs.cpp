@@ -136,7 +136,7 @@ void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
          Dither::none, mmDitherNames, mmDitherLabels );  
       S.TieChoice(_("High-quality dither:"),
          wxT("/Quality/HQDitherAlgorithm"),
-         Dither::none, mmDitherNames, mmDitherLabels );  
+         Dither::shaped, mmDitherNames, mmDitherLabels );  
 #endif
       S.EndTwoColumn();
    }
@@ -165,7 +165,7 @@ void QualityPrefs::PopulateOrExchange( ShuttleGui & S )
          (int)1, mConverterNames, mConverterLabels),
       S.TieChoice(wxT(""),
          wxT("/Quality/HQDitherAlgorithm"),
-         Dither::none, mmDitherNames, mmDitherLabels );  
+         Dither::shaped, mmDitherNames, mmDitherLabels );  
       S.EndMultiColumn();
    }
    S.EndStatic();
