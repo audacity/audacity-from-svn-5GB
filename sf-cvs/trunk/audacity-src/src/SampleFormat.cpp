@@ -72,7 +72,7 @@ void InitDitherers()
    gPrefs->Read(wxT("/Quality/DitherAlgorithm"), (long)Dither::none);
 
    gHighQualityDither = (Dither::DitherType)
-   gPrefs->Read(wxT("/Quality/HQDitherAlgorithm"), (long)Dither::triangle);
+   gPrefs->Read(wxT("/Quality/HQDitherAlgorithm"), (long)Dither::shaped);
 }
 
 const wxChar *GetSampleFormatStr(sampleFormat format)
