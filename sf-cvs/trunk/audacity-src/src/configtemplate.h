@@ -103,6 +103,9 @@
 /* Define if SoundTouch support should be enabled */
 #undef USE_SOUNDTOUCH
 
+/* Use system Expat library */
+#undef USE_SYSTEM_EXPAT
+
 /* Placeholder for large file support */
 #undef _FILE_OFFSET_BITS
 

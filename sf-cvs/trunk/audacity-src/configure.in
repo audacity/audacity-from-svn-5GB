@@ -124,7 +124,7 @@ AC_ARG_WITH(lib-preference,
             lib_preference=$withval,
             lib_preference="system local")
 
-LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST"
+LIBRARIES="LIBVORBIS LIBMAD LIBSNDFILE LIBFLAC LIBID3TAG LIBSAMPLERATE LIBRESAMPLE LIBSOUNDTOUCH LIBNYQUIST LIBEXPAT"
 
 AC_MSG_NOTICE([Determining what libraries are available in this tree and on the system])
 
@@ -137,6 +137,7 @@ AUDACITY_CHECKLIB_LIBSAMPLERATE
 AUDACITY_CHECKLIB_LIBRESAMPLE
 AUDACITY_CHECKLIB_LIBSOUNDTOUCH
 AUDACITY_CHECKLIB_LIBNYQUIST
+AUDACITY_CHECKLIB_LIBEXPAT
 
 dnl Decide what libraries to build with, and whether to use system or local libraries
 dnl Set variables based on choices.
@@ -196,6 +197,14 @@ if test "$LIBSNDFILE_USE_LOCAL" != "yes" && test "$LIBSNDFILE_USE_SYSTEM" != "ye
    AC_MSG_ERROR([Audacity requires libsndfile to be enabled])
 fi
 
+if test "$LIBEXPAT_USE_LOCAL" != "yes" && test "$LIBEXPAT_USE_SYSTEM" != "yes" ; then
+   AC_MSG_ERROR([Audacity requires expat to be enabled])
+else
+   if test "$LIBEXPAT_USE_SYSTEM" = "yes" ; then
+      AC_DEFINE(USE_SYSTEM_EXPAT, 1, [Use system Expat library])
+   fi
+fi
+
 if test "$LIBRESAMPLE_USE_LOCAL" = "yes" || test "$LIBRESAMPLE_USE_SYSTEM" = "yes" ; then
    LIBSAMPLERATE_USE_LOCAL="no"
    LIBSAMPLERATE_USE_SYSTEM="no"
@@ -232,8 +241,8 @@ for lib in $LIBRARIES ; do
    fi
 done
 
-LOCAL_LIBS="$LOCAL_LIBS expat.a"
-CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/expat"
+dnl LOCAL_LIBS="$LOCAL_LIBS expat.a"
+dnl CXXFLAGS="$CXXFLAGS -I\$(top_srcdir)/lib-src/expat"
 
 dnl TODO enable/disable allegro
 LOCAL_LIBS="$LOCAL_LIBS allegro.a"
