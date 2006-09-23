@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_oss.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: pa_unix_oss.c,v 1.2 2006-09-23 18:42:50 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * OSS implementation by:
@@ -22,10 +22,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,6 +31,22 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/**
+ @file
+ @ingroup hostaip_src
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -42,8 +54,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <alloca.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -968,7 +979,7 @@ static PaError PaOssStreamComponent_Configure( PaOssStreamComponent *component, 
     PaError result = paNoError;
     int temp, nativeFormat;
     int sr = (int)sampleRate;
-    PaSampleFormat availableFormats, hostFormat;
+    PaSampleFormat availableFormats = 0, hostFormat = 0;
     int chans = component->userChannelCount;
     int frgmt;
     int numBufs;
@@ -1173,7 +1184,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     PaSampleFormat inputSampleFormat = 0, outputSampleFormat = 0, inputHostFormat = 0, outputHostFormat = 0;
     const PaDeviceInfo *inputDeviceInfo = 0, *outputDeviceInfo = 0;
     int bpInitialized = 0;
-    double inLatency, outLatency;
+    double inLatency = 0., outLatency = 0.;
 
     /* validate platform specific flags */
     if( (streamFlags & paPlatformSpecificFlags) != 0 )
@@ -1531,7 +1542,7 @@ static void *PaOSS_AudioThreadProc( void *userData )
 {
     PaError result = paNoError;
     PaOssStream *stream = (PaOssStream*)userData;
-    unsigned long framesAvail, framesProcessed;
+    unsigned long framesAvail = 0, framesProcessed = 0;
     int callbackResult = paContinue;
     int triggered = stream->triggered;  /* See if SNDCTL_DSP_TRIGGER has been issued already */
     int initiateProcessing = triggered;    /* Already triggered? */

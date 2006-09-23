@@ -1,4 +1,4 @@
-dnl
+	dnl
 dnl portaudio V19 configure.in script
 dnl
 dnl Dominic Mazzoni, Arve Knudsen
@@ -24,6 +24,10 @@ AC_ARG_WITH(jack,
 AC_ARG_WITH(oss, 
             [  --with-oss (default=yes)],
             with_oss=$withval, with_oss="yes")
+
+AC_ARG_WITH(asihpi,
+            [  --with-asihpi (default=auto)],
+            with_asihpi=$withval, with_asihpi="yes")
 
 AC_ARG_WITH(host_os, 
             [  --with-host_os (no default)],
@@ -53,6 +57,10 @@ AC_ARG_ENABLE(debug-output,
           fi
         ])
 
+AC_ARG_ENABLE(cxx,
+              [  --enable-cxx (default=no)],
+              enable_cxx=$enableval, enable_cxx="no")
+
 dnl Checks for programs.
 
 AC_PROG_CC
@@ -72,6 +80,7 @@ dnl checks for various host APIs and arguments to configure that
 dnl turn them on or off
 
 AC_CHECK_LIB(asound, snd_pcm_open, have_alsa=yes, have_alsa=no)
+AC_CHECK_LIB(hpi, HPI_SubSysCreate, have_asihpi=yes, have_asihpi=no, -lm)
 
 dnl Determine the host description for the subsequent test.
 dnl PKG_CHECK_MODULES seems to check and set the host variable also, but
@@ -116,10 +125,6 @@ AC_SUBST(NASMOPT)
 
 CFLAGS=${CFLAGS:-"-g -O2 -Wall -pedantic -pipe -fPIC"}
 
-dnl dmazzoni
-dnl This flag is necessary for OS X 10.3 compatibility
-CFLAGS="$CFLAGS -DMOSX_USE_NON_ATOMIC_FLAG_BITS"
-
 if [[ $ac_cv_c_bigendian = "yes" ]] ; then
    CFLAGS="$CFLAGS -DPA_BIG_ENDIAN"
 else
@@ -131,7 +136,7 @@ case "${host_os}" in
 	dnl Mac OS X configuration
 
 	AC_DEFINE(PA_USE_COREAUDIO)
-	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/ringbuffer.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/pa_mac_core_blocking.o";
+	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o";
 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
 	PADLL="libportaudio.dylib";
 	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib";
@@ -160,7 +165,7 @@ case "${host_os}" in
               DXDIR="/usr/local/dx7sdk";
             fi
             echo "DXDIR: $DXDIR"
-            OTHER_OBJS="src/hostapi/dsound/pa_win_ds.o src/hostapi/dsound/dsound_wrapper.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
+            OTHER_OBJS="src/hostapi/dsound/pa_win_ds.o src/hostapi/dsound/pa_win_ds_dynlink.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
             LIBS="-lwinmm -lm -ldsound -lole32";
             PADLL="portaudio.dll";
 	    THREAD_CFLAGS="-mthreads"
@@ -215,7 +220,8 @@ case "${host_os}" in
   cygwin* )
 	dnl Cygwin configuration
 
-	OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o";
+	OTHER_OBJS="src/hostapi/wmme/pa_win_wmme.o src/os/win/pa_win_hostapis.o src/os/win/pa_win_util.o";
+	CFLAGS="$CFLAGS -DPA_NO_DS -DPA_NO_WDMKS -DPA_NO_ASIO -DPA_NO_WASAPI"
 	LIBS="-lwinmm -lm";
 	PADLL="portaudio.dll";
 	THREAD_CFLAGS="-mthreads"
@@ -273,6 +279,14 @@ case "${host_os}" in
 		OTHER_OBJS="$OTHER_OBJS src/hostapi/oss/pa_unix_oss.o"
 		AC_DEFINE(PA_USE_OSS)
 	fi
+	
+	if [[ $have_asihpi = "yes" ] && [ $with_asihpi != "no" ]] ; then
+                LIBS="$LIBS -lhpi"
+		DLL_LIBS="$DLL_LIBS -lhpi"
+		OTHER_OBJS="$OTHER_OBJS src/hostapi/asihpi/pa_linux_asihpi.o"
+                AC_DEFINE(PA_USE_ASIHPI)
+	fi
+	
 	THREAD_CFLAGS="-pthread"
 	DLL_LIBS="$DLL_LIBS -lm -lpthread";
 	LIBS="$LIBS -lm -lpthread";
@@ -282,5 +296,16 @@ case "${host_os}" in
         OTHER_OBJS="$OTHER_OBJS src/os/unix/pa_unix_hostapis.o src/os/unix/pa_unix_util.o"
 esac
 CFLAGS="$CFLAGS $THREAD_CFLAGS"
+
+if test "$enable_cxx" = "yes"; then
+   AC_CONFIG_SUBDIRS([bindings/cpp])
+   ENABLE_CXX_TRUE=""
+   ENABLE_CXX_FALE="#"
+else
+   ENABLE_CXX_TRUE="#"
+   ENABLE_CXX_FALE=""
+fi
+AC_SUBST(ENABLE_CXX_TRUE)
+AC_SUBST(ENABLE_CXX_FALSE)
 
 AC_OUTPUT([Makefile portaudio-2.0.pc])

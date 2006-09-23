@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_hostapis.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: pa_unix_hostapis.c,v 1.2 2006-09-23 18:42:51 llucius Exp $
  * Portable Audio I/O Library UNIX initialization table
  *
  * Based on the Open Source API proposed by Ross Bencina
@@ -16,10 +16,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -29,6 +25,20 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/** @file
+ @ingroup unix_src
+*/
 
 #include "pa_hostapi.h"
 
@@ -37,6 +47,8 @@ PaError PaAlsa_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex
 PaError PaOSS_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
 /* Added for IRIX, Pieter, oct 2, 2003: */
 PaError PaSGI_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
+/* Linux AudioScience HPI */
+PaError PaAsiHpi_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex index );
 
 
 PaUtilHostApiInitializer *paHostApiInitializers[] =
@@ -56,9 +68,11 @@ PaUtilHostApiInitializer *paHostApiInitializers[] =
 #ifdef PA_USE_SGI 
         PaSGI_Initialize,
 #endif
+
+#ifdef PA_USE_ASIHPI
+        PaAsiHpi_Initialize,
+#endif
         0   /* NULL terminated array */
     };
 
 int paDefaultHostApiIndex = 0;
-
-

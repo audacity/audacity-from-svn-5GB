@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.1 2006-06-10 21:30:55 dmazzoni Exp $
+ * $Id: pa_linux_alsa.c,v 1.2 2006-09-23 18:42:47 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -21,10 +21,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -33,6 +29,22 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/**
+ @file
+ @ingroup hostapi_src
+*/
 
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API
@@ -518,6 +530,7 @@ static PaError BuildDeviceList( PaAlsaHostApiRepresentation *alsaApi )
         if( snd_ctl_open( &ctl, alsaCardName, 0 ) < 0 )
         {
             /* Unable to open card :( */
+            PA_DEBUG(( "%s: Unable to open device %s\n", __FUNCTION__, alsaCardName ));
             continue;
         }
         snd_ctl_card_info( ctl, cardInfo );
@@ -834,7 +847,8 @@ static PaError AlsaOpen( const PaUtilHostApiRepresentation *hostApi, const PaStr
 {
     PaError result = paNoError;
     int ret;
-    const char *deviceName = alloca( 50 );
+    char dnameArray[50];
+    const char* deviceName = dnameArray;
     const PaAlsaDeviceInfo *deviceInfo = NULL;
     PaAlsaStreamInfo *streamInfo = (PaAlsaStreamInfo *)params->hostApiSpecificStreamInfo;
 
@@ -847,7 +861,7 @@ static PaError AlsaOpen( const PaUtilHostApiRepresentation *hostApi, const PaStr
         if( !strncmp( "hw:", deviceInfo->alsaName, 3 ) && getenv( "PA_ALSA_PLUGHW" ) )
             usePlug = atoi( getenv( "PA_ALSA_PLUGHW" ) );
         if( usePlug )
-            snprintf( (char *) deviceName, 50, "plug%s", deviceInfo->alsaName );
+            snprintf( dnameArray, 50, "plug%s", deviceInfo->alsaName );
         else
             deviceName = deviceInfo->alsaName;
     }

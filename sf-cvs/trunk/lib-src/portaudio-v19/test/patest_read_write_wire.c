@@ -1,11 +1,12 @@
 /** @file patest_read_write_wire.c
+	@ingroup test_src
 	@brief Tests full duplex blocking I/O by passing input straight to output.
 	@author Bjorn Roche. XO Audio LLC for Z-Systems Engineering.
     @author based on code by: Phil Burk  http://www.softsynth.com
     @author based on code by: Ross Bencina rossb@audiomulch.com
 */
 /*
- * $Id: patest_read_write_wire.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: patest_read_write_wire.c,v 1.2 2006-09-23 18:42:52 llucius Exp $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -22,10 +23,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -33,7 +30,17 @@
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
  *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
  */
 
 #include <stdio.h>
@@ -76,7 +83,7 @@ int main(void);
 int main(void)
 {
     PaStreamParameters inputParameters, outputParameters;
-    PaStream *stream;
+    PaStream *stream = NULL;
     PaError err;
     SAMPLE *sampleBlock;
     int i;
@@ -160,12 +167,19 @@ int main(void)
     err = Pa_StopStream( stream );
     if( err != paNoError ) goto error;
 
+    Pa_CloseStream( stream );
+
     free( sampleBlock );
 
     Pa_Terminate();
     return 0;
 
 xrun:
+    if( stream ) {
+       Pa_AbortStream( stream );
+       Pa_CloseStream( stream );
+    }
+    free( sampleBlock );
     Pa_Terminate();
     if( err & paInputOverflow )
        fprintf( stderr, "Input Overflow.\n" );
@@ -174,6 +188,11 @@ xrun:
     return -2;
 
 error:
+    if( stream ) {
+       Pa_AbortStream( stream );
+       Pa_CloseStream( stream );
+    }
+    free( sampleBlock );
     Pa_Terminate();
     fprintf( stderr, "An error occured while using the portaudio stream\n" );
     fprintf( stderr, "Error number: %d\n", err );

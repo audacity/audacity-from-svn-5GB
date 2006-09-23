@@ -1,7 +1,7 @@
 #ifndef PA_WIN_WMME_H
 #define PA_WIN_WMME_H
 /*
- * $Id: pa_win_wmme.h,v 1.1 2006-06-10 21:30:51 dmazzoni Exp $
+ * $Id: pa_win_wmme.h,v 1.2 2006-09-23 18:42:46 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * MME specific extensions
  *
@@ -18,10 +18,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -29,7 +25,17 @@
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
  *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
  */
 
 /** @file
@@ -119,7 +125,7 @@ int PaWinMME_GetStreamInputHandleCount( PaStream* stream );
 
  @param stream The stream to query.
  @param handleIndex The zero based index of the wave in handle to retrieve. This
-    should be in the range [0, PaWinMME_GetStreamInputHandle(stream)-1].
+    should be in the range [0, PaWinMME_GetStreamInputHandleCount(stream)-1].
 
  @return A valid wave in handle, or NULL if an error occurred.
 

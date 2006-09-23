@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_ds.c,v 1.1 2006-06-10 21:30:56 dmazzoni Exp $
+ * $Id: pa_win_ds.c,v 1.2 2006-09-23 18:42:49 llucius Exp $
  * Portable Audio I/O Library DirectSound implementation
  *
  * Authors: Phil Burk, Robert Marsanyi & Ross Bencina
@@ -17,10 +17,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -30,7 +26,19 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
 /** @file
+ @ingroup hostaip_src
 
     @todo implement paInputOverflow callback status flag
     
@@ -1288,6 +1296,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     else
     {
         inputChannelCount = 0;
+		inputSampleFormat = 0;
         suggestedInputLatencyFrames = 0;
     }
 
@@ -1314,6 +1323,7 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
     else
     {
         outputChannelCount = 0;
+		outputSampleFormat = 0;
         suggestedOutputLatencyFrames = 0;
     }
 
@@ -1377,6 +1387,10 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
         hostInputSampleFormat =
             PaUtil_SelectClosestAvailableFormat( paInt16 /* native formats */, inputParameters->sampleFormat );
     }
+	else
+	{
+		hostInputSampleFormat = 0;
+	}
 
     if( outputParameters )
     {
@@ -1384,7 +1398,11 @@ static PaError OpenStream( struct PaUtilHostApiRepresentation *hostApi,
         hostOutputSampleFormat =
             PaUtil_SelectClosestAvailableFormat( paInt16 /* native formats */, outputParameters->sampleFormat );
     }
-    
+    else
+	{
+		hostOutputSampleFormat = 0;
+	}
+
     result =  PaUtil_InitializeBufferProcessor( &stream->bufferProcessor,
                     inputChannelCount, inputSampleFormat, hostInputSampleFormat,
                     outputChannelCount, outputSampleFormat, hostOutputSampleFormat,
