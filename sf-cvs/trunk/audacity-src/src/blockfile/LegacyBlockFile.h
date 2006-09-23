@@ -56,7 +56,7 @@ class LegacyBlockFile : public BlockFile {
    /// Create a new block file identical to this one
    virtual BlockFile *Copy(wxFileName newFileName);
    /// Write an XML representation of this file
-   virtual void SaveXML(int depth, wxFFile &xmlFile);
+   virtual void SaveXML(XMLWriter &xmlFile);
    virtual int GetSpaceUsage();
    virtual void Recover();
 

@@ -850,7 +850,8 @@ void EqualizationDialog::SaveCurves()
    }
 
    // Create/Open the file
-   wxFFile eqFile( fn.GetFullPath().c_str(), wxT("wb") );
+   XMLFileWriter eqFile;
+   eqFile.Open( fn.GetFullPath(), wxT("wb") );
 
    // Complain if open failed
    if( !eqFile.IsOpened() )
@@ -860,7 +861,7 @@ void EqualizationDialog::SaveCurves()
    }
 
    // Write the curves
-   WriteXML( 0, eqFile.fp() );
+   WriteXML( eqFile );
 
    // Close the file
    eqFile.Close();
@@ -1521,11 +1522,10 @@ XMLTagHandler *EqualizationDialog::HandleXMLChild(const wxChar *tag)
 //
 // Write all of the curves to the XML file
 //
-void EqualizationDialog::WriteXML(int depth, FILE *fp)
+void EqualizationDialog::WriteXML(XMLWriter &xmlFile)
 {
    // Start our heirarchy
-   fprintf( fp,
-            "<equalizationeffect>\n" );
+   xmlFile.StartTag( wxT( "equalizationeffect" ) );
 
    // Write all curves
    int numCurves = mCurves.GetCount();
@@ -1533,34 +1533,27 @@ void EqualizationDialog::WriteXML(int depth, FILE *fp)
    for( curve = 0; curve < numCurves; curve++ )
    {
       // Start a new curve
-      fprintf( fp,
-               "\t<curve name='%s'>\n",
-               (const char *)mCurves[ curve ].Name.mb_str() );
+      xmlFile.StartTag( wxT( "curve" ) );
+      xmlFile.WriteAttr( wxT( "name" ), mCurves[ curve ].Name );
 
       // Write all points
       int numPoints = mCurves[ curve ].points.GetCount();
       int point;
       for( point = 0; point < numPoints; point++ )
       {
-         // Convert to external format
-         wxString freq = Internat::ToString( mCurves[ curve ].points[ point ].Freq, 12 );
-         wxString db = Internat::ToString( mCurves[ curve ].points[ point ].dB, 12 );
-
          // Write new point
-         fprintf( fp,
-                  "\t\t<point f='%s' d='%s'/>\n",
-                  (const char *)freq.mb_str(),
-                  (const char *)db.mb_str() );
+         xmlFile.StartTag( wxT( "point" ) );
+         xmlFile.WriteAttr( wxT( "f" ), mCurves[ curve ].points[ point ].Freq, 12 );
+         xmlFile.WriteAttr( wxT( "d" ), mCurves[ curve ].points[ point ].dB, 12 );
+         xmlFile.EndTag( wxT( "point" ) );
       }
 
       // Terminate curve
-      fprintf( fp,
-               "\t</curve>\n" );
+      xmlFile.EndTag( wxT( "curve" ) );
    }
 
    // Terminate our heirarchy
-   fprintf( fp,
-            "</equalizationeffect>\n" );
+   xmlFile.EndTag( wxT( "equalizationeffect" ) );
 }
 
 // WDR: handler implementations for EqualizationDialog

@@ -710,39 +710,28 @@ XMLTagHandler *Sequence::HandleXMLChild(const wxChar *tag)
    }
 }
 
-void Sequence::WriteXML(int depth, FILE *fp)
+void Sequence::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
    unsigned int b;
    
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<sequence ");
-   fprintf(fp, "maxsamples=\"%d\" ", (int)mMaxSamples);
-   fprintf(fp, "sampleformat=\"%d\" ", (int)mSampleFormat);
-   fprintf(fp, "numsamples=\"%d\" ", (int)mNumSamples);
-   fprintf(fp, ">\n");
+   xmlFile.StartTag(wxT("sequence"));
+
+   xmlFile.WriteAttr(wxT("maxsamples"), mMaxSamples);
+   xmlFile.WriteAttr(wxT("sampleformat"), mSampleFormat);
+   xmlFile.WriteAttr(wxT("numsamples"), mNumSamples);
 
    for (b = 0; b < mBlock->Count(); b++) {
       SeqBlock *bb = mBlock->Item(b);
-      for(i=0; i<depth+1; i++)
-         fprintf(fp, "\t");
-      fprintf(fp, "<waveblock ");
-      fprintf(fp, "start=\"%d\" ", bb->start);
-      fprintf(fp, ">\n");
 
-      wxFFile xmlFile(fp);
-      bb->f->SaveXML(depth+2, xmlFile);
-      xmlFile.Detach();
+      xmlFile.StartTag(wxT("waveblock"));
+      xmlFile.WriteAttr(wxT("start"), bb->start);
 
-      for(i=0; i<depth+1; i++)
-         fprintf(fp, "\t");
-      fprintf(fp, "</waveblock>\n");
+      bb->f->SaveXML(xmlFile);
+
+      xmlFile.EndTag(wxT("waveblock"));
    }
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</sequence>\n");
+   xmlFile.EndTag(wxT("sequence"));
 }
 
 int Sequence::FindBlock(sampleCount pos, sampleCount lo,
@@ -1110,7 +1099,7 @@ sampleCount Sequence::GetIdealAppendLen()
 }
 
 bool Sequence::Append(samplePtr buffer, sampleFormat format,
-                      sampleCount len, wxString* blockFileLog /*=NULL*/)
+                      sampleCount len, XMLWriter* blockFileLog /*=NULL*/)
 {
    // Quick check to make sure that it doesn't overflow
    if (((double)mNumSamples) + ((double)len) > 2147483647)
@@ -1149,7 +1138,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       newLastBlock->f =
          mDirManager->NewSimpleBlockFile(buffer2, newLastBlockLen, mSampleFormat);
       if (blockFileLog)
-         *blockFileLog += ((SimpleBlockFile*)newLastBlock->f)->GetXMLString();
+         ((SimpleBlockFile*)newLastBlock->f)->SaveXML(*blockFileLog);
          
       DeleteSamples(buffer2);
 
@@ -1177,7 +1166,7 @@ bool Sequence::Append(samplePtr buffer, sampleFormat format,
       }
 
       if (blockFileLog)
-         *blockFileLog += ((SimpleBlockFile*)w->f)->GetXMLString();
+         ((SimpleBlockFile*)w->f)->SaveXML(*blockFileLog);
 
       mBlock->Add(w);
 

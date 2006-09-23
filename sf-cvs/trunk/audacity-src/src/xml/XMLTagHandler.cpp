@@ -54,7 +54,7 @@ wxString XMLTagHandler::XMLEsc(wxString s)
       }
    }
 
-   return Internat::LocalToUTF8(result);
+   return result;
 }
 
 bool XMLTagHandler::ReadXMLTag(const char *tag, const char **attrs)

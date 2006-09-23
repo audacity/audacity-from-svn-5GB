@@ -44,7 +44,7 @@ XMLFileReader::~XMLFileReader()
 bool XMLFileReader::Parse(XMLTagHandler *baseHandler,
                           const wxString &fname)
 {
-   wxFFile theXMLFile(FILENAME(fname).c_str(), wxT("rb"));
+   wxFFile theXMLFile(fname, wxT("rb"));
    if (!theXMLFile.IsOpened()) {
       wxString errStr;
       mErrorStr.Printf(_("Could not open file: \"%s\""), fname.c_str());

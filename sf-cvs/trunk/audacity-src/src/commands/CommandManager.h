@@ -150,7 +150,7 @@ class CommandManager: public XMLTagHandler
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual void HandleXMLEndTag(const wxChar *tag);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
  protected:
 

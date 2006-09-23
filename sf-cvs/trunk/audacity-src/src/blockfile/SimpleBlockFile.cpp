@@ -79,7 +79,7 @@ SimpleBlockFile::SimpleBlockFile(wxFileName baseFileName,
    //wxASSERT( !wxFileExists(FILENAME(mFileName.GetFullPath())) );
 
    // Open and write the file
-   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("wb"));
+   wxFFile file(mFileName.GetFullPath(), wxT("wb"));
 
    if( !file.IsOpened() ){
       // Can't do anything else.
@@ -174,7 +174,7 @@ SimpleBlockFile::~SimpleBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool SimpleBlockFile::ReadSummary(void *data)
 {
-   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("rb"));
+   wxFFile file(mFileName.GetFullPath(), wxT("rb"));
 
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
@@ -220,13 +220,7 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    
    memset(&info, 0, sizeof(info));
 
-   #ifdef _UNICODE
-      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).mb_str(), SFM_READ, &info);
-   #else // ANSI
-      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
-   #endif // Unicode/ANSI
-
+   SNDFILE *sf=sf_open(OSFILENAME(mFileName.GetFullPath()), SFM_READ, &info);
    if (!sf){
       
       memset(data,0,SAMPLE_SIZE(format)*len);
@@ -280,29 +274,17 @@ int SimpleBlockFile::ReadData(samplePtr data, sampleFormat format,
    return framesRead;
 }
 
-wxString SimpleBlockFile::GetXMLString()
+void SimpleBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   wxString s = wxT("<simpleblockfile ");
-   s += wxString::Format(wxT("filename='%s' "),
-                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str());
-   s += wxString::Format(wxT("len='%d' "), mLen);
-   s += wxString::Format(wxT("min='%s' "),
-            Internat::ToString(mMin).c_str());
-   s += wxString::Format(wxT("max='%s' "),
-            Internat::ToString(mMax).c_str());
-   s += wxString::Format(wxT("rms='%s'"),
-            Internat::ToString(mRMS).c_str());
-   s += wxT("/>");
+   xmlFile.StartTag(wxT("simpleblockfile"));
 
-   return s;
-}
+   xmlFile.WriteAttr(wxT("filename"), mFileName.GetFullName());
+   xmlFile.WriteAttr(wxT("len"), mLen);
+   xmlFile.WriteAttr(wxT("min"), mMin);
+   xmlFile.WriteAttr(wxT("max"), mMax);
+   xmlFile.WriteAttr(wxT("rms"), mRMS);
 
-void SimpleBlockFile::SaveXML(int depth, wxFFile &xmlFile)
-{
-   for(int i = 0; i < depth; i++)
-      xmlFile.Write(wxT("\t"));
-   xmlFile.Write(GetXMLString());
-   xmlFile.Write(wxT("\n"));
+   xmlFile.EndTag(wxT("simpleblockfile"));
 }
 
 /// static
@@ -350,7 +332,7 @@ int SimpleBlockFile::GetSpaceUsage()
 }
 
 void SimpleBlockFile::Recover(){
-   wxFFile file(FILENAME(mFileName.GetFullPath()).c_str(), wxT("wb"));
+   wxFFile file(mFileName.GetFullPath(), wxT("wb"));
    int i;
 
    if( !file.IsOpened() ){

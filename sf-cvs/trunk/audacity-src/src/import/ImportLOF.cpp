@@ -198,7 +198,7 @@ ImportFileHandle *LOFImportPlugin::Open(wxString filename)
    binaryFile.Close();
 
    // Now open the file again as text file   
-   wxTextFile *file = new wxTextFile(FILENAME(filename));
+   wxTextFile *file = new wxTextFile(filename);
    file->Open();
 
    if (!file->IsOpened())

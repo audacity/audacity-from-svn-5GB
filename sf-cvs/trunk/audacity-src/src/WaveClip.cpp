@@ -563,7 +563,7 @@ void WaveClip::GetDisplayRect(wxRect* r)
 
 bool WaveClip::Append(samplePtr buffer, sampleFormat format,
                       sampleCount len, unsigned int stride /* = 1 */,
-                      wxString* blockFileLog /*=NULL*/)
+                      XMLWriter* blockFileLog /*=NULL*/)
 {
    //wxLogDebug(wxT("Append: len=%i\n"), len);
    
@@ -693,25 +693,18 @@ XMLTagHandler *WaveClip::HandleXMLChild(const wxChar *tag)
       return NULL;
 }
 
-void WaveClip::WriteXML(int depth, FILE *fp)
+void WaveClip::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
+   xmlFile.StartTag(wxT("waveclip"));
+   xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<waveclip ");
-   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
-   fprintf(fp, ">\n");
-
-   mSequence->WriteXML(depth+1, fp);
-   mEnvelope->WriteXML(depth+1, fp);
+   mSequence->WriteXML(xmlFile);
+   mEnvelope->WriteXML(xmlFile);
 
    for (WaveClipList::Node* it=mCutLines.GetFirst(); it; it=it->GetNext())
-      it->GetData()->WriteXML(depth+1, fp);
+      it->GetData()->WriteXML(xmlFile);
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</waveclip>\n");
+   xmlFile.EndTag(wxT("waveclip"));
 }
 
 bool WaveClip::CreateFromCopy(double t0, double t1, WaveClip* other)

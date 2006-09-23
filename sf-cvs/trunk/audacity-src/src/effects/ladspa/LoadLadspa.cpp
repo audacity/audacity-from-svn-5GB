@@ -38,12 +38,12 @@ void LoadLadspaEffect(wxString fname)
    // open other plug-ins, we set the current working
    // directory to be the plug-in's directory.
 
-   wxString saveOldCWD = FROMFILENAME(::wxGetCwd());
+   wxString saveOldCWD = ::wxGetCwd();
    wxString prefix = ::wxPathOnly(fname);
-   ::wxSetWorkingDirectory(FILENAME(prefix));
+   ::wxSetWorkingDirectory(prefix);
 
    wxDynamicLibrary* pDLL = new wxDynamicLibrary();
-   if (pDLL && pDLL->Load(FILENAME(fname), wxDL_LAZY)) {
+   if (pDLL && pDLL->Load(fname, wxDL_LAZY)) {
       mainFn = (LADSPA_Descriptor_Function)(pDLL->GetSymbol(wxT(descriptorFnName)));
    }
 
@@ -78,7 +78,7 @@ void LoadLadspaPlugins()
       wxGetApp().AddMultiPathsToPathList(pathVar, pathList);
 
    #ifdef __WXGTK__
-   wxGetApp().AddUniquePathToPathList(INSTALL_PREFIX wxT("/ladspa"), pathList);
+   wxGetApp().AddUniquePathToPathList(wxT(INSTALL_PREFIX) wxT("/ladspa"), pathList);
    wxGetApp().AddUniquePathToPathList(wxT("/usr/local/lib/ladspa"), pathList);
    wxGetApp().AddUniquePathToPathList(wxT("/usr/lib/ladspa"), pathList);
    #endif

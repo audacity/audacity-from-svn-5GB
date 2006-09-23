@@ -1060,7 +1060,7 @@ int RawAudioGuess(const wxString &in_fname,
    *out_offset = 0;
    *out_channels = 1;
 
-   wxFFile in_wxFFile(FILENAME(in_fname).c_str(), wxT("rb"));
+   wxFFile in_wxFFile(in_fname, wxT("rb"));
    if (!in_wxFFile.IsOpened())
       return false;
    inf = in_wxFFile.fp();

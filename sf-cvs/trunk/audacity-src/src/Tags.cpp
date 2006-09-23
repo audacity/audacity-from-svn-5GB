@@ -209,40 +209,33 @@ XMLTagHandler *Tags::HandleXMLChild(const wxChar *tag)
    return NULL;
 }
 
-void Tags::WriteXML(int depth, FILE *fp)
+void Tags::WriteXML(XMLWriter &xmlFile)
 {
    int i, j;
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<tags ");
-   fprintf(fp, "title=\"%s\" ", (const char *)XMLEsc(mTitle).mb_str());
-   fprintf(fp, "artist=\"%s\" ", (const char *)XMLEsc(mArtist).mb_str());
-   fprintf(fp, "album=\"%s\" ", (const char *)XMLEsc(mAlbum).mb_str());
-   fprintf(fp, "track=\"%d\" ", mTrackNum);
-   fprintf(fp, "year=\"%s\" ", (const char *)XMLEsc(mYear).mb_str());
-   fprintf(fp, "genre=\"%d\" ", mGenre);
-   fprintf(fp, "comments=\"%s\" ", (const char *)XMLEsc(mComments).mb_str());
-   fprintf(fp, "id3v2=\"%d\"", (int)mID3V2);
+   xmlFile.StartTag(wxT("tags"));
+   xmlFile.WriteAttr(wxT("title"), mTitle);
+   xmlFile.WriteAttr(wxT("artist"), mArtist);
+   xmlFile.WriteAttr(wxT("album"), mAlbum);
+   xmlFile.WriteAttr(wxT("track"), mTrackNum);
+   xmlFile.WriteAttr(wxT("year"), mYear);
+   xmlFile.WriteAttr(wxT("genre"), mGenre);
+   xmlFile.WriteAttr(wxT("comments"), mComments);
+   xmlFile.WriteAttr(wxT("id3v2"), mID3V2);
 
    if (mExtraNames.GetCount() == 0) {
-      fprintf(fp, "/>\n"); // XML shorthand for childless tag
+      xmlFile.EndTag(wxT("tags"));
       return;
    }
 
-   fprintf(fp, ">\n");
    for(j=0; j<(int)mExtraNames.GetCount(); j++) {
-      for(i=0; i<depth+1; i++)
-         fprintf(fp, "\t");
-
-      fprintf(fp, "<tag name=\"%s\" value=\"%s\"/>\n",
-              (const char *)XMLEsc(mExtraNames[j]).mb_str(),
-              (const char *)XMLEsc(mExtraValues[j]).mb_str());
+      xmlFile.StartTag(wxT("tag"));
+      xmlFile.WriteAttr(wxT("name"), mExtraNames[j]);
+      xmlFile.WriteAttr(wxT("value"), mExtraValues[j]);
+      xmlFile.EndTag(wxT("tag"));
    }
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</tags>\n");
+   xmlFile.EndTag(wxT("tags"));
 }
 
 bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
@@ -336,15 +329,8 @@ void Tags::ImportID3(wxString fileName)
 {
 #ifdef USE_LIBID3TAG 
 
-   #ifdef _UNICODE
-      /* id3_file_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      struct id3_file *fp = id3_file_open(FILENAME(fileName).mb_str(),
+   struct id3_file *fp = id3_file_open(OSFILENAME(fileName),
                                           ID3_FILE_MODE_READONLY);
-   #else // ANSI
-      struct id3_file *fp = id3_file_open(FILENAME(fileName).fn_str(),
-                                          ID3_FILE_MODE_READONLY);
-   #endif // Unicode/ANSI
-
    if (!fp) return;
 
    struct id3_tag *tp = id3_file_tag(fp);

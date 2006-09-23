@@ -36,7 +36,7 @@ class PCMAliasBlockFile : public AliasBlockFile
    /// Reads the specified data from the aliased file using libsndfile
    virtual int ReadData(samplePtr data, sampleFormat format,
                         sampleCount start, sampleCount len);
-   virtual void SaveXML(int depth, wxFFile &xmlFile);
+   virtual void SaveXML(XMLWriter &xmlFile);
    virtual BlockFile *Copy(wxFileName fileName);
    virtual void Recover();
 

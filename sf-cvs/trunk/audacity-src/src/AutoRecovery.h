@@ -30,7 +30,7 @@ public:
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
    
    // This class only knows reading tags
-   virtual void WriteXML(int depth, FILE *fp) { wxASSERT(false); }
+   virtual void WriteXML(XMLWriter &xmlFile) { wxASSERT(false); }
 
 private:
    AudacityProject* mProject;

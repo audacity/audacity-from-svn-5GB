@@ -105,7 +105,7 @@ class LabelTrack:public Track {
 
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
 #if LEGACY_PROJECT_FILE_SUPPORT
    virtual bool Load(wxTextFile * in, DirManager * dirManager);

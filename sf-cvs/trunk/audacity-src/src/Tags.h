@@ -58,7 +58,7 @@ public:
    
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
    // Import any ID3 tags from this file   
    void ImportID3(wxString fileName);

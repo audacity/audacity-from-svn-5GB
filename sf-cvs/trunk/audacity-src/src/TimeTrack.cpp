@@ -142,23 +142,17 @@ XMLTagHandler *TimeTrack::HandleXMLChild(const wxChar *tag)
   return NULL;
 }
 
-void TimeTrack::WriteXML(int depth, FILE *fp)
+void TimeTrack::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
+   xmlFile.StartTag(wxT("timetrack"));
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<timetrack ");
-   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
-   fprintf(fp, "channel=\"%d\" ", mChannel);
-   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
-   fprintf(fp, ">\n");
+   xmlFile.WriteAttr(wxT("name"), mName);
+   xmlFile.WriteAttr(wxT("channel"), mChannel);
+   xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
 
-   mEnvelope->WriteXML(depth+1, fp);
+   mEnvelope->WriteXML(xmlFile);
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</timetrack>\n");
+   xmlFile.EndTag(wxT("timetrack"));
 }
 
 void TimeTrack::Draw(wxDC & dc, wxRect & r, double h, double pps)

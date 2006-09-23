@@ -19,6 +19,7 @@
 #include "WaveTrack.h"
 
 #include "xml/XMLTagHandler.h"
+#include "xml/XMLWriter.h"
 
 class wxFFile;
 
@@ -56,7 +57,8 @@ class BlockFile {
    // Other Properties
 
    /// Stores a representation of this file in XML
-   virtual void SaveXML(int depth, wxFFile &xmlFile) = 0;
+   virtual void SaveXML(XMLWriter &xmlFile) = 0;
+
    /// Gets the filename of the disk file associated with this BlockFile
    virtual wxFileName GetFileName();
    virtual sampleCount GetLength() { return mLen; }

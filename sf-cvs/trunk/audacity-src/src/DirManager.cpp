@@ -289,7 +289,7 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       oldLoc = mytemp;
 
    if (projPath == wxT(""))
-      projPath = FROMFILENAME(::wxGetCwd());
+      projPath = ::wxGetCwd();
 
    this->projPath = projPath;
    this->projName = projName;
@@ -299,17 +299,17 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
    wxString cleanupLoc2=projFull;
 
    if (create) {
-      if (!wxDirExists(FILENAME(projFull)))
-         if (!wxMkdir(FILENAME(projFull)))
+      if (!wxDirExists(projFull))
+         if (!wxMkdir(projFull))
             return false;
 
       #ifdef __UNIX__
-      chmod(FILENAME(projFull).fn_str(), 0775);
+      chmod(OSFILENAME(projFull), 0775);
       #endif
 
    } else {
       #ifndef __WXMAC__
-      if (!wxDirExists(FILENAME(projFull)))
+      if (!wxDirExists(projFull))
          return false;
       #endif
    }
@@ -411,7 +411,7 @@ wxLongLong DirManager::GetFreeDiskSpace()
    {
       wxLogNull logNo;
 
-      if (!wxGetDiskSpace(FILENAME(path), NULL, &freeSpace))
+      if (!wxGetDiskSpace(path, NULL, &freeSpace))
          freeSpace = -1;
    }
    return freeSpace;
@@ -768,8 +768,8 @@ BlockFile *DirManager::CopyBlockFile(BlockFile *b)
    // as the existing file
    newFile.SetExt(b->GetFileName().GetExt());
 
-   if( !wxCopyFile(FILENAME(b->GetFileName().GetFullPath()),
-                   FILENAME(newFile.GetFullPath())) )
+   if( !wxCopyFile(b->GetFileName().GetFullPath(),
+                   newFile.GetFullPath()) )
       return NULL;
 
    BlockFile *b2 = b->Copy(newFile);
@@ -860,16 +860,16 @@ bool DirManager::MoveToNewProjectDirectory(BlockFile *f)
    AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
 
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxRenameFile(FILENAME(f->mFileName.GetFullPath()),
-                             FILENAME(newFileName.GetFullPath()));
+      bool ok = wxRenameFile(f->mFileName.GetFullPath(),
+                             newFileName.GetFullPath());
 
       if (ok)
          f->mFileName = newFileName;
       else {
-         ok = wxCopyFile(FILENAME(f->mFileName.GetFullPath()),
-                         FILENAME(newFileName.GetFullPath()));
+         ok = wxCopyFile(f->mFileName.GetFullPath(),
+                         newFileName.GetFullPath());
          if (ok) {
-            wxRemoveFile(FILENAME(f->mFileName.GetFullPath()));
+            wxRemoveFile(f->mFileName.GetFullPath());
             f->mFileName = newFileName;
          }
          else
@@ -886,8 +886,8 @@ bool DirManager::CopyToNewProjectDirectory(BlockFile *f)
    AssignFile(newFileName,f->mFileName.GetFullName(),FALSE); 
 
    if ( !(newFileName == f->mFileName) ) {
-      bool ok = wxCopyFile(FILENAME(f->mFileName.GetFullPath()),
-                           FILENAME(newFileName.GetFullPath()));
+      bool ok = wxCopyFile(f->mFileName.GetFullPath(),
+                           newFileName.GetFullPath());
       if (ok) {
          f->mFileName = newFileName;
       }
@@ -958,17 +958,17 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          when a file needs to be backed up to a different name.  For
          example, mysong would become mysong-old1, mysong-old2, etc. */
       renamedFile.SetName(wxString::Format(_("%s-old%d"), fName.GetName().c_str(), i));
-   } while (wxFileExists(FILENAME(renamedFile.GetFullPath())));
+   } while (wxFileExists(renamedFile.GetFullPath()));
 
    // Test creating a file by that name to make sure it will
    // be possible to do the rename
 
-   wxFile testFile(FILENAME(renamedFile.GetFullPath()), wxFile::write);
+   wxFile testFile(renamedFile.GetFullPath(), wxFile::write);
    if (!testFile.IsOpened()) {
       wxMessageBox(errStr);
       return false;
    }
-   if (!wxRemoveFile(FILENAME(renamedFile.GetFullPath()))) {
+   if (!wxRemoveFile(renamedFile.GetFullPath())) {
       wxMessageBox(errStr);
       return false;
    }
@@ -997,8 +997,8 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    }
 
    if (needToRename) {
-      if (!wxRenameFile(FILENAME(fName.GetFullPath()),
-                        FILENAME(renamedFile.GetFullPath()))) {
+      if (!wxRenameFile(fName.GetFullPath(),
+                        renamedFile.GetFullPath())) {
          // ACK!!! The renaming was unsuccessful!!!
          // (This shouldn't happen, since we tried creating a
          // file of this name and then deleted it just a

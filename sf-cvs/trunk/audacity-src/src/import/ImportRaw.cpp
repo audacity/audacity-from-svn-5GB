@@ -131,13 +131,7 @@ int ImportRaw(wxWindow *parent, wxString fileName,
    sndInfo.channels = (int)numChannels;
    sndInfo.format = encoding | SF_FORMAT_RAW;
 
-   #ifdef _UNICODE
-      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      sndFile = sf_open(FILENAME(fileName).mb_str(), SFM_READ, &sndInfo);
-   #else // ANSI
-      sndFile = sf_open(FILENAME(fileName).fn_str(), SFM_READ, &sndInfo);
-   #endif // Unicode/ANSI
-
+   sndFile = sf_open(OSFILENAME(fileName), SFM_READ, &sndInfo);
    if (!sndFile) {
       // TODO: Handle error
       char str[1000];

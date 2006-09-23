@@ -849,31 +849,29 @@ XMLTagHandler *CommandManager::HandleXMLChild(const wxChar *tag)
    return this;
 }
 
-void CommandManager::WriteXML(int depth, FILE *fp)
+void CommandManager::WriteXML(XMLWriter &xmlFile)
 {
    int i;
    unsigned int j;
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<audacitykeyboard audacityversion=\"%s\">\n",
-           AUDACITY_VERSION_STRING);
-   for(j=0; j<mCommandList.GetCount(); j++)
+   xmlFile.StartTag(wxT("audacitykeyboard"));
+   xmlFile.WriteAttr(wxT("audacityversion"), wxT(AUDACITY_VERSION_STRING));
+
+   for(j=0; j<mCommandList.GetCount(); j++) {
       if (!mCommandList[j]->multi) {
-         for(i=0; i<depth+1; i++)
-            fprintf(fp, "\t");
          
          wxString label = mCommandList[j]->label;
          label = wxMenuItem::GetLabelFromText(label.BeforeFirst(wxT('\t')));
          
-         fprintf(fp, "<command name=\"%s\" label=\"%s\" key=\"%s\" />\n",
-                 (const char *)XMLEsc(mCommandList[j]->name).mb_str(),
-                 (const char *)XMLEsc(label).mb_str(),
-                 (const char *)XMLEsc(mCommandList[j]->key).mb_str());
+         xmlFile.StartTag(wxT("command"));
+         xmlFile.WriteAttr(wxT("name"), mCommandList[j]->name);
+         xmlFile.WriteAttr(wxT("label"), label);
+         xmlFile.WriteAttr(wxT("key"), mCommandList[j]->key);
+         xmlFile.EndTag(wxT("command"));
       }
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</audacitykeyboard>\n");
+   }
+   
+   xmlFile.EndTag(wxT("audacitykeyboard"));
 }
 
 void CommandManager::SetDefaultFlags(wxUint32 flags, wxUint32 mask)

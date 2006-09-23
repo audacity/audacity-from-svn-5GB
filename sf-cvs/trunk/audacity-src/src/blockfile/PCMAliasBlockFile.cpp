@@ -61,15 +61,8 @@ int PCMAliasBlockFile::ReadData(samplePtr data, sampleFormat format,
 
    memset(&info, 0, sizeof(info));
 
-   #ifdef _UNICODE
-      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).mb_str(), 
+   SNDFILE *sf=sf_open(OSFILENAME(mAliasedFileName.GetFullPath()),
                         SFM_READ, &info);
-   #else // ANSI
-      SNDFILE *sf=sf_open(FILENAME(mAliasedFileName.GetFullPath()).fn_str(), 
-                        SFM_READ, &info);
-   #endif // Unicode/ANSI
-   
    if (!sf){
       
       memset(data,0,SAMPLE_SIZE(format)*len);
@@ -131,25 +124,20 @@ BlockFile *PCMAliasBlockFile::Copy(wxFileName newFileName)
    return newBlockFile;
 }
 
-void PCMAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
+void PCMAliasBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   for(int i = 0; i < depth; i++)
-      xmlFile.Write(wxT("\t"));
-   xmlFile.Write(wxT("<pcmaliasblockfile "));
-   xmlFile.Write(wxString::Format(wxT("summaryfile='%s' "),
-                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("aliasfile='%s' "),
-                                  XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("aliasstart='%d' "), mAliasStart));
-   xmlFile.Write(wxString::Format(wxT("aliaslen='%d' "), mLen));
-   xmlFile.Write(wxString::Format(wxT("aliaschannel='%d' "), mAliasChannel));
-   xmlFile.Write(wxString::Format(wxT("min='%s' "),
-            Internat::ToString(mMin).c_str()));
-   xmlFile.Write(wxString::Format(wxT("max='%s' "),
-            Internat::ToString(mMax).c_str()));
-   xmlFile.Write(wxString::Format(wxT("rms='%s'"),
-            Internat::ToString(mRMS).c_str()));
-   xmlFile.Write(wxT("/>\n"));
+   xmlFile.StartTag(wxT("pcmaliasblockfile"));
+
+   xmlFile.WriteAttr(wxT("summaryfile"), mFileName.GetFullName());
+   xmlFile.WriteAttr(wxT("aliasfile"), mAliasedFileName.GetFullPath());
+   xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
+   xmlFile.WriteAttr(wxT("aliaslen"), mLen);
+   xmlFile.WriteAttr(wxT("aliaschannel"), mAliasChannel);
+   xmlFile.WriteAttr(wxT("min"), mMin);
+   xmlFile.WriteAttr(wxT("max"), mMax);
+   xmlFile.WriteAttr(wxT("rms"), mRMS);
+
+   xmlFile.EndTag(wxT("pcmaliasblockfile"));
 }
 
 BlockFile *PCMAliasBlockFile::BuildFromXML(DirManager &dm, const wxChar **attrs)

@@ -155,7 +155,7 @@ class WaveTrack: public Track {
    /// You must call Flush after the last Append
    bool Append(samplePtr buffer, sampleFormat format,
                sampleCount len, unsigned int stride=1,
-               wxString* blockFileLog=NULL);
+               XMLWriter* blockFileLog=NULL);
    /// Flush must be called after last Append
    bool Flush();
 
@@ -207,7 +207,7 @@ class WaveTrack: public Track {
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual void HandleXMLEndTag(const wxChar *tag);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
    // Returns true if an error occurred while reading from XML
    virtual bool GetErrorOpening();

@@ -828,7 +828,7 @@ bool WaveTrack::Join(double t0, double t1)
 
 bool WaveTrack::Append(samplePtr buffer, sampleFormat format,
                        sampleCount len, unsigned int stride /* = 1 */,
-                       wxString *blockFileLog /* = NULL */)
+                       XMLWriter *blockFileLog /* = NULL */)
 {
    return GetLastOrCreateClip()->Append(buffer, format, len, stride,
                                         blockFileLog);
@@ -961,30 +961,23 @@ XMLTagHandler *WaveTrack::HandleXMLChild(const wxChar *tag)
       return NULL;
 }
 
-void WaveTrack::WriteXML(int depth, FILE *fp)
+void WaveTrack::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
-
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<wavetrack ");
-   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
-   fprintf(fp, "channel=\"%d\" ", mChannel);
-   fprintf(fp, "linked=\"%d\" ", mLinked);
-   fprintf(fp, "offset=\"%s\" ", (const char *)Internat::ToString(mOffset, 8).mb_str());
-   fprintf(fp, "rate=\"%s\" ", (const char *)Internat::ToString(mRate).mb_str());
-   fprintf(fp, "gain=\"%s\" ", (const char *)Internat::ToString((double)mGain).mb_str());
-   fprintf(fp, "pan=\"%s\" ", (const char *)Internat::ToString((double)mPan).mb_str());
-   fprintf(fp, ">\n");
+   xmlFile.StartTag(wxT("wavetrack"));
+   xmlFile.WriteAttr(wxT("name"), mName);
+   xmlFile.WriteAttr(wxT("channel"), mChannel);
+   xmlFile.WriteAttr(wxT("linked"), mLinked);
+   xmlFile.WriteAttr(wxT("offset"), mOffset, 8);
+   xmlFile.WriteAttr(wxT("rate"), mRate);
+   xmlFile.WriteAttr(wxT("gain"), (double)mGain);
+   xmlFile.WriteAttr(wxT("pan"), (double)mPan);
    
    for (WaveClipList::Node* it=GetClipIterator(); it; it=it->GetNext())
    {
-      it->GetData()->WriteXML(depth+1, fp);
+      it->GetData()->WriteXML(xmlFile);
    }
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</wavetrack>\n");
+   xmlFile.EndTag(wxT("wavetrack"));
 }
 
 bool WaveTrack::GetErrorOpening()

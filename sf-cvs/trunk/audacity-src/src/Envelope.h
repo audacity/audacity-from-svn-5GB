@@ -55,14 +55,12 @@ struct EnvPoint : public XMLTagHandler {
       return NULL;
    }
 
-   void WriteXML(int depth, FILE *fp)
+   void WriteXML(XMLWriter &xmlFile)
    {
-      int i;
-      for (i=0; i<depth; i++)
-         fprintf(fp, "\t");
-      fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
-            (const char *)Internat::ToString(t,8).mb_str(),
-            (const char *)Internat::ToString(val).mb_str());
+      xmlFile.StartTag(wxT("controlpoint"));
+      xmlFile.WriteAttr(wxT("t"), t, 8);
+      xmlFile.WriteAttr(wxT("val"), val);
+      xmlFile.EndTag(wxT("controlpoint"));
    }
 };
 
@@ -91,7 +89,7 @@ class Envelope : public XMLTagHandler {
    // Newfangled XML file I/O
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
 
    // Event Handlers

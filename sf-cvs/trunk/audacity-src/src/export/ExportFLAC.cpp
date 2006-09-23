@@ -58,7 +58,7 @@ bool ExportFLAC(AudacityProject *project,
       gPrefs->Read(wxT("/FileFormats/FLACBitDepth"), wxT("16"));
    
    FLAC::Encoder::File *encoder= new FLAC::Encoder::File();
-   encoder->set_filename(fName.mb_str());
+   encoder->set_filename(OSFILENAME(fName));
    encoder->set_channels(numChannels);
    encoder->set_sample_rate(int(rate + 0.5));
 

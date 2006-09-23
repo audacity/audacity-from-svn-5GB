@@ -99,11 +99,11 @@ void EffectNoiseRemoval::CleanSpeechMayReadNoisegate()
       }
    }
    // Try to open the file.
-   wxString filename = FILENAME(wxT("noisegate.nrp"));
+   wxString filename = wxT("noisegate.nrp");
    // if file doesn't exist, return quietly.
    if( !wxFile::Exists( filename ))
       return;
-	wxFFile   noiseGateFile((const wxChar*)filename, (const wxChar*)wxT("rb"));
+	wxFFile noiseGateFile(filename, wxT("rb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag != true)
       return;
@@ -126,7 +126,7 @@ void EffectNoiseRemoval::CleanSpeechMayWriteNoiseGate()
 	AudacityProject * project = GetActiveProject();
 	if( !project || !project->GetCleanSpeechMode() )
       return;
-   wxFFile   noiseGateFile((const wxChar*)FILENAME(wxT("noisegate.nrp")), (const wxChar*)wxT("wb"));
+   wxFFile noiseGateFile(wxT("noisegate.nrp"), wxT("wb"));
    bool flag = noiseGateFile.IsOpened();
    if (flag == true) {
       int expectedCount = (windowSize / 2) * sizeof(float);

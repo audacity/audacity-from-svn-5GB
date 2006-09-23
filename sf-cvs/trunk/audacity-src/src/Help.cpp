@@ -61,10 +61,10 @@ void InitHelp(wxWindow * parent)
       wxString helpFilePath =
           gPrefs->Read(wxT("/Help/HelpFilePath1.2"), defaultLoc);
 
-      if (!::wxFileExists(FILENAME(helpFilePath))) {
+      if (!::wxFileExists(helpFilePath)) {
          helpFilePath = defaultLoc;
       }
-      if (!::wxFileExists(FILENAME(helpFilePath))) {
+      if (!::wxFileExists(helpFilePath)) {
          helpFilePath = wxFileSelector(_("Where is audacity-1.2-help.htb?"), NULL,
                                        wxT("audacity-1.2-help.htb"),    // Name
                                        wxT(""),                     // Extension

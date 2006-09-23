@@ -103,7 +103,7 @@ void BatchCommands::LoadChain( wxWindow *parent )
 {
    // Get the initial path
    wxString pName = gPrefs->Read( wxT("/Batch/DefaultChainPath"),
-                                  FROMFILENAME( ::wxGetCwd() ) );
+                                  ::wxGetCwd() );
 
    // Prompt user for a file name
    wxString fName = wxFileSelector( _("Select a command chain file..."),
@@ -117,9 +117,6 @@ void BatchCommands::LoadChain( wxWindow *parent )
    // Nothing to do
    if( !fName )
       return;
-
-   // Convert name
-   fName = FROMFILENAME( fName );
 
    // Remember path
    gPrefs->Write( wxT("/Batch/DefaultChainPath"), wxPathOnly( fName ) );
@@ -171,11 +168,11 @@ void BatchCommands::SaveChain( wxWindow *parent )
 {
    // Get the initial path
    wxString pName = gPrefs->Read( wxT("/DefaultExportPath"),
-                                  FROMFILENAME( ::wxGetCwd() ) );
+                                  ::wxGetCwd() );
 
    // Get last used filename
    wxString fName = gPrefs->Read( wxT("/Batch/LastFile"),
-                                  FILENAME( wxT("Chain.txt") ) );
+                                  wxT("Chain.txt") );
 
    // Prompt user for a file name
    fName = wxFileSelector( _("Save command chain As:"),
@@ -189,9 +186,6 @@ void BatchCommands::SaveChain( wxWindow *parent )
    // Nothing to do
    if( !fName )
       return;
-
-   // Convert name
-   fName = FROMFILENAME( fName );
 
    // Remember path
    gPrefs->Write( wxT("/DefaultChainPath"), wxPathOnly( fName ) );
