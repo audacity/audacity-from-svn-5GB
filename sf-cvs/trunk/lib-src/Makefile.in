@@ -85,7 +85,7 @@ libSoundTouch.a: soundtouch-recursive
 
 # PortAudio
 portaudio-v19-recursive:
-	$(MAKE) -C portaudio-v19
+	$(MAKE) -C portaudio-v19 lib/libportaudio.la
 portaudio-v19/lib/libportaudio.a: portaudio-v19-recursive
 	ln -sf .libs/libportaudio.a $@
 
