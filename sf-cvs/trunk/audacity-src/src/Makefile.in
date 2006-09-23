@@ -179,6 +179,7 @@ OBJS = \
 	widgets/TimeTextCtrl.o \
 	widgets/Warning.o \
 	xml/XMLFileReader.o \
+	xml/XMLWriter.o \
 	@OPTOBJS@
 
 TEMPORARILY_DISABLED_IMPORTER_OBJS = \

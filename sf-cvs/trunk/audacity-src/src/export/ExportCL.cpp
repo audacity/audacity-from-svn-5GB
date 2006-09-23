@@ -21,6 +21,7 @@
 #include "../Project.h"
 #include "../Mix.h"
 #include "../Prefs.h"
+#include "../Internat.h"
 
 /* this structure combines the RIFF header, the format chunk, and the data
  * chunk header */
@@ -90,7 +91,7 @@ bool ExportCL(AudacityProject *project, bool stereo, wxString fName,
    header.dataID[3] = 'a';
    header.dataLen   = sampleBytes;
 
-   FILE *pipe = popen(command.mb_str(), "w");
+   FILE *pipe = popen(OSFILENAME(command), "w");
 
    /* write the header */
 

@@ -226,7 +226,7 @@ void EffectNyquist::Parse(wxString line)
 
 void EffectNyquist::ParseFile()
 {
-   wxTextFile f(FILENAME(mFileName.GetFullPath()));
+   wxTextFile f(mFileName.GetFullPath());
    if (!f.Open())
       return;
 
@@ -265,7 +265,7 @@ EffectNyquist::EffectNyquist(wxString fName)
    wxLogNull dontLog;
 
    mName = wxFileName(fName).GetName();
-   mFileName = wxFileName(FILENAME(fName));
+   mFileName = wxFileName(fName);
    mFileModified = mFileName.GetModificationTime();
    ParseFile();
 }
@@ -279,7 +279,7 @@ bool EffectNyquist::SetXlispPath()
    wxString fname;
 
    fname = mXlispPath + wxFILE_SEP_PATH + wxT("nyinit.lsp");
-   if (!(::wxFileExists(FILENAME(fname))))
+   if (!(::wxFileExists(fname)))
       mXlispPath = wxT("");
 
    if (mXlispPath == wxT("")) {
@@ -309,7 +309,7 @@ bool EffectNyquist::SetXlispPath()
    #endif // Unicode/ANSI
 
    fname = mXlispPath + wxFILE_SEP_PATH + wxT("nyinit.lsp");
-   return ::wxFileExists(FILENAME(fname));
+   return ::wxFileExists(fname);
 }
 
 bool EffectNyquist::PromptUser()

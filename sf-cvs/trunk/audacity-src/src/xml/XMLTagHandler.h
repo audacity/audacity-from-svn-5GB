@@ -11,12 +11,13 @@
   using XML files.
 
 **********************************************************************/
+#ifndef __AUDACITY_XML_TAG_HANDLER__
+#define __AUDACITY_XML_TAG_HANDLER__
 
 #include <wx/string.h>
 #include <stdio.h>
 
-#ifndef __AUDACITY_XML_TAG_HANDLER__
-#define __AUDACITY_XML_TAG_HANDLER__
+#include "XMLWriter.h"
 
 class XMLTagHandler {
  public:
@@ -48,7 +49,7 @@ class XMLTagHandler {
    // all of your children to the file.  One tag should appear
    // per line, and each tag should be preceded with [depth]
    // tab characters.
-   virtual void WriteXML(int depth, FILE *fp) = 0;
+   virtual void WriteXML(XMLWriter &xmlFile) = 0;
 
    //
    // Utility methods you should call

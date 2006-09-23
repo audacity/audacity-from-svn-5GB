@@ -1732,28 +1732,24 @@ XMLTagHandler *LabelTrack::HandleXMLChild(const wxChar *tag)
       return NULL;
 }
 
-void LabelTrack::WriteXML(int depth, FILE *fp)
+void LabelTrack::WriteXML(XMLWriter &xmlFile)
 {
    int len = mLabels.Count();
    int i, j;
 
-   for(j=0; j<depth; j++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<labeltrack ");
-   fprintf(fp, "name=\"%s\" ", (const char *)XMLEsc(mName).mb_str());
-   fprintf(fp, "numlabels=\"%d\">\n", len);
+   xmlFile.StartTag(wxT("labeltrack"));
+   xmlFile.WriteAttr(wxT("name"), mName);
+   xmlFile.WriteAttr(wxT("numlabels"), len);
 
    for (i = 0; i < len; i++) {
-      for(j=0; j<depth+1; j++)
-         fprintf(fp, "\t");
-      fprintf(fp, "<label t=\"%s\" t1=\"%s\" title=\"%s\"/>\n",
-            (const char *)Internat::ToString(mLabels[i]->t, 8).mb_str(),
-            (const char *)Internat::ToString(mLabels[i]->t1, 8).mb_str(),
-            (const char *)XMLEsc(mLabels[i]->title).mb_str());
+      xmlFile.StartTag(wxT("label"));
+      xmlFile.WriteAttr(wxT("t"), mLabels[i]->t, 8);
+      xmlFile.WriteAttr(wxT("t1"), mLabels[i]->t1, 8);
+      xmlFile.WriteAttr(wxT("title"), mLabels[i]->title);
+      xmlFile.EndTag(wxT("label"));
    }
-   for(j=0; j<depth; j++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</labeltrack>\n");
+
+   xmlFile.EndTag(wxT("labeltrack"));
 }
 
 #if LEGACY_PROJECT_FILE_SUPPORT

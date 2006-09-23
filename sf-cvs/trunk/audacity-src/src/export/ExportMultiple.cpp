@@ -265,7 +265,7 @@ wxString getMpgExePath()
 {
    wxString mMpgExePath = gPrefs->Read(wxT("/MP3/MpgExePath"), wxT(""));
 
-   if (mMpgExePath==wxT("") || !::wxFileExists(FILENAME(mMpgExePath))) {
+   if (mMpgExePath==wxT("") || !::wxFileExists(mMpgExePath)) {
          
       int action = wxMessageBox(
          _("Audacity needs to know the location of the TOMPG.EXE program.\nPlease download and save the freely available file in any convenient\nlocation such as the Plug-Ins subdir of Audacity and let Audacity\nknow about this path.  Would you like to help Audacity locate the file now?"),
@@ -365,13 +365,7 @@ static bool DoExport(AudacityProject *project,
             wxLogStatus(_T("command '%s' terminated with exit code %d."),
                tompgCmd.c_str(), code);
 
-            #ifdef _UNICODE
-               /* remove doesn't handle fn_Str() in Unicode build.  
-                  May or may not actually work. */
-               remove(tmpWavOuput.mb_str()); //delete the tmp wav file
-            #else // ANSI
-               remove(tmpWavOuput.fn_str()); //delete the tmp wav file
-            #endif // Unicode/ANSI
+            remove(OSFILENAME(tmpWavOuput)); //delete the tmp wav file
 
             wxEndBusyCursor();
 
@@ -891,7 +885,7 @@ void ExportMultipleDialog::EnableControls()
 void ExportMultipleDialog::CopyDataToControls()
 {
    wxString defaultPath = gPrefs->Read(wxT("/DefaultExportPath"),
-                                       FROMFILENAME(::wxGetCwd()));
+                                       ::wxGetCwd());
    wxString path = gPrefs->Read(wxT("/DefaultMultiplExportPath"),
                                 defaultPath);
    mDir->SetValue(path);

@@ -98,13 +98,7 @@ ImportFileHandle *PCMImportPlugin::Open(wxString filename)
 
    memset(&info, 0, sizeof(info));
 
-   #ifdef _UNICODE
-      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      file = sf_open(FILENAME(filename).mb_str(), SFM_READ, &info);
-   #else // ANSI
-      file = sf_open(FILENAME(filename).fn_str(), SFM_READ, &info);
-   #endif // Unicode/ANSI
-
+   file = sf_open(OSFILENAME(filename), SFM_READ, &info);
    if (!file) {
       // TODO: Handle error
       //char str[1000];
@@ -331,7 +325,7 @@ bool IsPCM(wxString fName)
    SF_INFO    info;
    SNDFILE   *fp;
 
-   fp = sf_open_read(FILENAME(fName), &info);
+   fp = sf_open_read(OSFILENAME(fName), &info);
 
    if (fp) {
       sf_close(fp);
@@ -352,7 +346,7 @@ bool ImportPCM(wxWindow * parent,
    SNDFILE      *fp;
    sampleFormat  format;
 
-   fp = sf_open_read(FILENAME(fName), &info);
+   fp = sf_open_read(OSFILENAME(fName), &info);
 
    if (!fp) {
       char str[1000];

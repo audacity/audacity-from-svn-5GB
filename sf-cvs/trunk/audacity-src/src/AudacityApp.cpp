@@ -28,10 +28,12 @@ It handles initialization and termination by subclassing wxApp.
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 #include <wx/snglinst.h>
+#include <wx/fontmap.h>
 
 #include <wx/fs_zip.h>
 #include <wx/image.h>
 
+#include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 
@@ -389,7 +391,7 @@ bool AudacityApp::OnInit()
    wxString pathVar = wxGetenv(wxT("AUDACITY_PATH"));
    if (pathVar != wxT(""))
       AddMultiPathsToPathList(pathVar, audacityPathList);
-   AddUniquePathToPathList(FROMFILENAME(::wxGetCwd()), audacityPathList);
+   AddUniquePathToPathList(::wxGetCwd(), audacityPathList);
    AddUniquePathToPathList(wxString::Format(wxT("%s/.audacity-files"),
                                             home.c_str()),
                            audacityPathList);
@@ -418,7 +420,7 @@ bool AudacityApp::OnInit()
    wxFileName tmpFile;
    tmpFile.AssignTempFileName(wxT("nn"));
    wxString tmpDirLoc = tmpFile.GetPath(wxPATH_GET_VOLUME);
-   ::wxRemoveFile(FILENAME(tmpFile.GetFullPath()));
+   ::wxRemoveFile(tmpFile.GetFullPath());
 
    // On Mac and Windows systems, use the directory which contains Audacity.
    #ifdef __WXMSW__
@@ -758,17 +760,17 @@ bool AudacityApp::InitCleanSpeech()
 
    // Try temp dir that was stored in prefs first
    if (presetsFromPrefs != wxT("")) {
-      if (wxDirExists(FILENAME(presetsFromPrefs)))
+      if (wxDirExists(presetsFromPrefs))
          presets = presetsFromPrefs;
-      else if (wxMkdir(FILENAME(presetsFromPrefs)))
+      else if (wxMkdir(presetsFromPrefs))
          presets = presetsFromPrefs;
    }
 
    // If that didn't work, try the default location
    if ((presets == wxT("")) && (presetsDefaultLoc != wxT(""))) {
-      if (wxDirExists(FILENAME(presetsDefaultLoc)))
+      if (wxDirExists(presetsDefaultLoc))
          presets = presetsDefaultLoc;
-      else if (wxMkdir(FILENAME(presetsDefaultLoc)))
+      else if (wxMkdir(presetsDefaultLoc))
          presets = presetsDefaultLoc;
    }
 
@@ -781,7 +783,7 @@ bool AudacityApp::InitCleanSpeech()
    // The permissions don't always seem to be set on
    // some platforms.  Hopefully this fixes it...
    #ifdef __UNIX__
-   chmod(FILENAME(presets).fn_str(), 0755);
+   chmod(OSFILENAME(presets), 0755);
    #endif
 
    gPrefs->Write(wxT("/Directories/PresetsDir"), presets);
@@ -809,18 +811,18 @@ bool AudacityApp::InitTempDir()
    // Try temp dir that was stored in prefs first
 
    if (tempFromPrefs != wxT("")) {
-      if (wxDirExists(FILENAME(tempFromPrefs)))
+      if (wxDirExists(tempFromPrefs))
          temp = tempFromPrefs;
-      else if (wxMkdir(FILENAME(tempFromPrefs)))
+      else if (wxMkdir(tempFromPrefs))
          temp = tempFromPrefs;
    }
 
    // If that didn't work, try the default location
 
    if (temp==wxT("") && tempDefaultLoc != wxT("")) {
-      if (wxDirExists(FILENAME(tempDefaultLoc)))
+      if (wxDirExists(tempDefaultLoc))
          temp = tempDefaultLoc;
-      else if (wxMkdir(FILENAME(tempDefaultLoc)))
+      else if (wxMkdir(tempDefaultLoc))
          temp = tempDefaultLoc;
    }
 
@@ -839,7 +841,7 @@ bool AudacityApp::InitTempDir()
    // The permissions don't always seem to be set on
    // some platforms.  Hopefully this fixes it...
    #ifdef __UNIX__
-   chmod(FILENAME(temp).fn_str(), 0755);
+   chmod(OSFILENAME(temp), 0755);
    #endif
 
    gPrefs->Write(wxT("/Directories/TempDir"), temp);
@@ -864,7 +866,7 @@ bool AudacityApp::CreateSingleInstanceChecker(wxString dir)
    wxString name = wxString::Format(wxT("audacity-lock-%s"), wxGetUserId().c_str());
    mChecker = new wxSingleInstanceChecker();
 
-   if (!mChecker->Create(FILENAME(name), FILENAME(dir))) {
+   if (!mChecker->Create(name, dir)) {
       // Error initializing the wxSingleInstanceChecker.  We don't know
       // whether there is another instance running or not.
 
@@ -931,16 +933,11 @@ void AudacityApp::FindFilesInPathList(wxString pattern,
    if (pattern == wxT(""))
       return;
 
+   wxFileName f;
+
    for(unsigned i=0; i<pathList.GetCount(); i++) {
-      wxString path = pathList[i];
-
-      wxString fname = 
-         wxFindFirstFile(path + wxFILE_SEP_PATH + pattern);
-
-      while(fname != wxT("")) {
-         results.Add(fname);
-         fname = wxFindNextFile();
-      }
+      f = pathList[i] + wxFILE_SEP_PATH + pattern;
+      wxDir::GetAllFiles(f.GetPath(), &results, f.GetFullName(), wxDIR_FILES);
    }
 }
 

@@ -746,6 +746,7 @@
 		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
 		283A11AA0A2C0E15004372C4 /* ShuttleGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */; };
 		283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A80A2C0E15004372C4 /* Theme.cpp */; };
+		283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283DE1350AC0D4FD00E8C3AE /* XMLWriter.cpp */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
@@ -1806,6 +1807,8 @@
 		283A11A70A2C0E15004372C4 /* ShuttleGui.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ShuttleGui.h; sourceTree = "<group>"; };
 		283A11A80A2C0E15004372C4 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
 		283A11A90A2C0E15004372C4 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		283DE1340AC0D4FD00E8C3AE /* XMLWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLWriter.h; sourceTree = "<group>"; };
+		283DE1350AC0D4FD00E8C3AE /* XMLWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLWriter.cpp; sourceTree = "<group>"; };
 		28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ThemePrefs.cpp; sourceTree = "<group>"; };
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
 		2849B4600A7444BE00ECF12D /* Dependencies.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Dependencies.cpp; sourceTree = "<group>"; };
@@ -3035,6 +3038,8 @@
 				1790B11109883BFD008A330A /* XMLFileReader.h */,
 				1790B11209883BFD008A330A /* XMLTagHandler.cpp */,
 				1790B11309883BFD008A330A /* XMLTagHandler.h */,
+				283DE1350AC0D4FD00E8C3AE /* XMLWriter.cpp */,
+				283DE1340AC0D4FD00E8C3AE /* XMLWriter.h */,
 			);
 			path = xml;
 			sourceTree = "<group>";
@@ -4933,6 +4938,7 @@
 				2897F6F80AB3DB5A003C20C5 /* ToolsToolBar.cpp in Sources */,
 				2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */,
 				2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */,
+				283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5580,8 +5586,6 @@
 		17CAEBB5098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
 				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = "$(WX_CFLAGS)";
@@ -5637,6 +5641,230 @@
 				ZERO_LINK = YES;
 			};
 			name = "Debug Static Unicode";
+		};
+		28E5DA290AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Untitled;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2A0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = allegro;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2B0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = expat;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2C0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FLAC__NO_ASM,
+					"FLaC__INLINE=__inline__",
+					NDEBUG,
+				);
+				PRODUCT_NAME = FLAC;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libflac/src/libFLAC/include";
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2D0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					NDEBUG,
+					"FLaC__INLINE=__inline__",
+				);
+				PRODUCT_NAME = "FLAC++";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libflac/include";
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2E0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = id3tag;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA2F0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					FPM_PPC,
+				);
+				PRODUCT_NAME = mad;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA300AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = intgen;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA310AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					CMTSTUFF,
+					EXT,
+				);
+				PRODUCT_NAME = nyquist;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA320AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = ogg;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA330AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				PRODUCT_NAME = resample;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA340AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = sndfile;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA350AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					HAVE_CONFIG_H,
+					DARWIN,
+					USE_MEMORY_H,
+				);
+				PRODUCT_NAME = vorbis;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/lib-src/libvorbis/lib $(TOPLEVEL)/lib-src/libogg/include";
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA360AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"STDC_HEADERS=1",
+					"HAVE_SYS_TYPES_H=1",
+					"HAVE_SYS_STAT_H=1",
+					"HAVE_STDLIB_H=1",
+					"HAVE_STRING_H=1",
+					"HAVE_MEMORY_H=1",
+					"HAVE_STRINGS_H=1",
+					"HAVE_INTTYPES_H=1",
+					"HAVE_STDINT_H=1",
+					"HAVE_UNISTD_H=1",
+					"HAVE_DLFCN_H=1",
+					"WORDS_BIGENDIAN=1",
+					"SIZEOF_SHORT=2",
+					"SIZEOF_INT=4",
+					"SIZEOF_LONG=4",
+					"HAVE_NANOSLEEP=1",
+					"PA_USE_COREAUDIO=1",
+				);
+				PRODUCT_NAME = portaudio;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA370AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = portmixer;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA380AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				OTHER_CFLAGS = "-fcheck-new";
+				PRODUCT_NAME = soundtouch;
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA390AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(TOPLEVEL)/src/AudacityHeaders.h";
+				GCC_PREPROCESSOR_DEFINITIONS = "USE_PORTAUDIO_V19=1";
+				INFOPLIST_FILE = Info.plist;
+				OTHER_CFLAGS = "$(WX_CFLAGS)";
+				OTHER_CPLUSPLUSFLAGS = "$(WX_CXXFLAGS)";
+				OTHER_LDFLAGS = (
+					"$(WX_LDFLAGS)",
+					"-framework",
+					QuickTime,
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					WebKit,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					AudioUnit,
+					"-framework",
+					AudioToolbox,
+					"-lz",
+					"-lpthread",
+					"-liconv",
+					"-lFLAC++",
+					"-lFLAC",
+				);
+				PRODUCT_NAME = Audacity;
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+			};
+			name = "Release Static Unicode";
+		};
+		28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIG_FLAGS = "";
+				CONFIG_STATIC = yes;
+				CONFIG_UNICODE = yes;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				KEEP_PRIVATE_EXTERNS = YES;
+				ONLY_LINK_ESSENTIAL_SYMBOLS = YES;
+				TOPLEVEL = ..;
+				WX_CFLAGS = "-I$(WX_PREFIX)/lib/wx/include/mac-unicode-release-static-2.6 -I$(WX_PREFIX)/include/wx-2.6 -D__WXMAC__ -D_FILE_OFFSET_BITS=64 -D_LARGE_FILES -DNO_GCC_PRAGMA";
+				WX_CONFIG = "$(WX_PREFIX)/bin/wx-config";
+				WX_CXXFLAGS = "$(WX_CFLAGS)";
+				WX_LDFLAGS = "-L$(WX_PREFIX)/lib $(WX_PREFIX)/lib/libwx_macu_xrc-2.6.a $(WX_PREFIX)/lib/libwx_macu_qa-2.6.a $(WX_PREFIX)/lib/libwx_macu_html-2.6.a $(WX_PREFIX)/lib/libwx_macu_adv-2.6.a $(WX_PREFIX)/lib/libwx_macu_core-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_xml-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu_net-2.6.a $(WX_PREFIX)/lib/libwx_base_carbonu-2.6.a $(WX_PREFIX)/lib/libwxregexu-2.6.a $(WX_PREFIX)/lib/libwxexpat-2.6.a $(WX_PREFIX)/lib/libwxtiff-2.6.a $(WX_PREFIX)/lib/libwxjpeg-2.6.a $(WX_PREFIX)/lib/libwxpng-2.6.a";
+				WX_PREFIX = /usr/local;
+			};
+			name = "Release Static Unicode";
 		};
 		28E67F5C0A3A160D0021D89F /* Debug Static */ = {
 			isa = XCBuildConfiguration;
@@ -5725,6 +5953,7 @@
 				17072E8A0988BD58008541CC /* Debug Static */,
 				17CAEBA7098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7A098C926000337968 /* Release Static */,
+				28E5DA290AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5735,6 +5964,7 @@
 				17073EEA0988DC02008541CC /* Debug Static */,
 				17CAEBA8098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7B098C926000337968 /* Release Static */,
+				28E5DA2A0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5745,6 +5975,7 @@
 				17073F580988E07F008541CC /* Debug Static */,
 				17CAEBA9098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7C098C926000337968 /* Release Static */,
+				28E5DA2B0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5755,6 +5986,7 @@
 				17073F8A0988E15A008541CC /* Debug Static */,
 				17CAEBAA098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7D098C926000337968 /* Release Static */,
+				28E5DA2E0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5765,6 +5997,7 @@
 				17073FDE0988E584008541CC /* Debug Static */,
 				17CAEBAB098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7E098C926000337968 /* Release Static */,
+				28E5DA2F0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5775,6 +6008,7 @@
 				170740060988EA90008541CC /* Debug Static */,
 				17CAEBAE098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB81098C926000337968 /* Release Static */,
+				28E5DA320AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5785,6 +6019,7 @@
 				170740170988EBB0008541CC /* Debug Static */,
 				17CAEBAF098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB82098C926000337968 /* Release Static */,
+				28E5DA330AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5795,6 +6030,7 @@
 				1707406C0988EEC0008541CC /* Debug Static */,
 				17CAEBB0098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB83098C926000337968 /* Release Static */,
+				28E5DA340AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5805,6 +6041,7 @@
 				1707408E0988F1FC008541CC /* Debug Static */,
 				17CAEBB4098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB87098C926000337968 /* Release Static */,
+				28E5DA380AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5815,6 +6052,7 @@
 				1707409B0988F30D008541CC /* Debug Static */,
 				17CAEBB3098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB86098C926000337968 /* Release Static */,
+				28E5DA370AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5825,6 +6063,7 @@
 				170741170988F83B008541CC /* Debug Static */,
 				17CAEBB1098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB84098C926000337968 /* Release Static */,
+				28E5DA350AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5835,6 +6074,7 @@
 				170741460988FDD2008541CC /* Debug Static */,
 				17CAEBAC098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB7F098C926000337968 /* Release Static */,
+				28E5DA300AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5845,6 +6085,7 @@
 				176A1B66098B7BDC00DC73B4 /* Debug Static */,
 				17CAEBAD098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB80098C926000337968 /* Release Static */,
+				28E5DA310AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5855,6 +6096,7 @@
 				176EEBEC09A2F1D600188F3B /* Debug Static */,
 				176EEBED09A2F1D600188F3B /* Debug Static Unicode */,
 				176EEBEE09A2F1D600188F3B /* Release Static */,
+				28E5DA2C0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5865,6 +6107,7 @@
 				176EEC3F09A2F33100188F3B /* Debug Static */,
 				176EEC4009A2F33100188F3B /* Debug Static Unicode */,
 				176EEC4109A2F33100188F3B /* Release Static */,
+				28E5DA2D0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5875,6 +6118,7 @@
 				1790ABE509883346008A330A /* Debug Static */,
 				17CAEBB6098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB89098C926000337968 /* Release Static */,
+				28E5DA3A0AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5885,6 +6129,7 @@
 				1790AFB509883B6E008A330A /* Debug Static */,
 				17CAEBB5098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB88098C926000337968 /* Release Static */,
+				28E5DA390AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
@@ -5895,6 +6140,7 @@
 				28E67F5C0A3A160D0021D89F /* Debug Static */,
 				28E67F5D0A3A160D0021D89F /* Debug Static Unicode */,
 				28E67F5E0A3A160D0021D89F /* Release Static */,
+				28E5DA360AC4CBA200E7F64C /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";

@@ -498,7 +498,7 @@ void LabelDialog::OnRemove(wxCommandEvent &event)
 
 void LabelDialog::OnImport(wxCommandEvent &event)
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    // Ask user for a filename
    wxString fileName =
@@ -564,23 +564,23 @@ void LabelDialog::OnExport(wxCommandEvent &event)
    // Move existing files out of the way.  Otherwise wxTextFile will
    // append to (rather than replace) the current file.
 
-   if (wxFileExists(FILENAME(fName))) {
+   if (wxFileExists(fName)) {
 #ifdef __WXGTK__
       wxString safetyFileName = fName + wxT("~");
 #else
       wxString safetyFileName = fName + wxT(".bak");
 #endif
 
-      if (wxFileExists(FILENAME(safetyFileName)))
-         wxRemoveFile(FILENAME(safetyFileName));
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
 
       wxRename(fName, safetyFileName);
    }
 
-   wxTextFile f(FILENAME(fName).c_str());
+   wxTextFile f(fName);
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
-   temp->Create(FILENAME(fName));
+   temp->Create(fName);
    delete temp;
 #else
    f.Create();

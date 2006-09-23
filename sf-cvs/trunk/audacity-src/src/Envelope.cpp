@@ -253,26 +253,22 @@ XMLTagHandler *Envelope::HandleXMLChild(const wxChar *tag)
       return NULL;
 }
 
-void Envelope::WriteXML(int depth, FILE *fp)
+void Envelope::WriteXML(XMLWriter &xmlFile)
 {
    unsigned int ctrlPt;
    int i;
 
-   for (i = 0; i < depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<envelope numpoints='%ld'>\n", (long)mEnv.GetCount());
+   xmlFile.StartTag(wxT("envelope"));
+   xmlFile.WriteAttr(wxT("numpoints"), mEnv.GetCount());
 
    for (ctrlPt = 0; ctrlPt < mEnv.GetCount(); ctrlPt++) {
-      for(i = 0; i < depth+1; i++)
-         fprintf(fp, "\t");
-      fprintf(fp, "<controlpoint t='%s' val='%s'/>\n",
-            (const char *)Internat::ToString(mEnv[ctrlPt]->t, 12).mb_str(),
-            (const char *)Internat::ToString(mEnv[ctrlPt]->val, 12).mb_str());
+      xmlFile.StartTag(wxT("controlpoint"));
+      xmlFile.WriteAttr(wxT("t"), mEnv[ctrlPt]->t, 12);
+      xmlFile.WriteAttr(wxT("val"), mEnv[ctrlPt]->val, 12);
+      xmlFile.EndTag(wxT("controlpoint"));
    }
 
-   for (i = 0; i < depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "</envelope>\n");
+   xmlFile.EndTag(wxT("envelope"));
 }
 
 #ifndef SQR

@@ -1482,7 +1482,7 @@ void AudacityProject::OnReleaseKeyboard(wxCommandEvent & event)
 void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 {
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
-                                FROMFILENAME(::wxGetCwd()));
+                                ::wxGetCwd());
    // Beware, some compilers let you access mCleanSpeechMode
    // here, even though it is not valid for a static method call,
    // so we must go via prefs.
@@ -1564,14 +1564,14 @@ void AudacityProject::OpenFile(wxString fileName)
 
    wxString firstLine = wxT("AudacityProject");
 
-   if (!::wxFileExists(FILENAME(fileName))) {
+   if (!::wxFileExists(fileName)) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
                    wxOK | wxCENTRE, this);
       return;
    }
 
-   wxFFile *ff = new wxFFile(FILENAME(fileName).c_str(), wxT("rb"));
+   wxFFile *ff = new wxFFile(fileName, wxT("rb"));
    if (!ff->IsOpened()) {
       wxMessageBox(_("Could not open file: ") + fileName,
                    _("Error opening file"),
@@ -1955,26 +1955,26 @@ XMLTagHandler *AudacityProject::HandleXMLChild(const wxChar *tag)
    return NULL;
 }
 
-void AudacityProject::WriteXMLHeader(FILE *fp)
+void AudacityProject::WriteXMLHeader(XMLWriter &xmlFile)
 {
-   fprintf(fp, "<?xml ");
-   fprintf(fp, "version=\"1.0\" ");
-   fprintf(fp, "standalone=\"no\" ");
-   fprintf(fp, "?>\n");
+   xmlFile.Write(wxT("<?xml "));
+   xmlFile.Write(wxT("version=\"1.0\" "));
+   xmlFile.Write(wxT("standalone=\"no\" "));
+   xmlFile.Write(wxT("?>\n"));
 
    wxString dtdName = wxT("-//audacityproject-1.3.0//DTD//EN");
    wxString dtdURI =
       wxT("http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd");
 
-   fprintf(fp, "<!DOCTYPE ");
-   fprintf(fp, "project ");
-   fprintf(fp, "PUBLIC ");
-   fprintf(fp, "\"%s\" ", (const char*)dtdName.mb_str());
-   fprintf(fp, "\"%s\" ", (const char*)dtdURI.mb_str());
-   fprintf(fp, ">\n");
+   xmlFile.Write(wxT("<!DOCTYPE "));
+   xmlFile.Write(wxT("project "));
+   xmlFile.Write(wxT("PUBLIC "));
+   xmlFile.Write(wxT("\"-//audacityproject-1.3.0//DTD//EN\" "));
+   xmlFile.Write(wxT("\"http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd\" "));
+   xmlFile.Write(wxT(">\n"));
 }
 
-void AudacityProject::WriteXML(int depth, FILE *fp)
+void AudacityProject::WriteXML(XMLWriter &xmlFile)
 {
    int i;
 
@@ -1985,10 +1985,8 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    wxString projName = wxFileNameFromPath(project) + wxT("_data");
    // End Warning -DMM
 
-   for(i=0; i<depth; i++)
-      fprintf(fp, "\t");
-   fprintf(fp, "<project ");
-   fprintf(fp, "xmlns=\"http://audacity.sourceforge.net/xml/\" ");
+   xmlFile.StartTag(wxT("project"));
+   xmlFile.WriteAttr(wxT("xmlns"), wxT("http://audacity.sourceforge.net/xml/"));
 
    if (mAutoSaving)
    {
@@ -1998,28 +1996,26 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
       // Note: This attribute must currently be written and parsed before
       //       all other attributes
       //
-      wxString dataDir = mDirManager->GetDataFilesDir();
-      fprintf(fp, "datadir=\"%s\" ", (const char *)XMLEsc(dataDir).mb_str());
+      xmlFile.WriteAttr(wxT("datadir"), mDirManager->GetDataFilesDir());
    }
 
-   fprintf(fp, "projname=\"%s\" ", (const char *)XMLEsc(projName).mb_str());
-   fprintf(fp, "version=\"%s\" ", AUDACITY_FILE_FORMAT_VERSION);
-   fprintf(fp, "audacityversion=\"%s\" ", AUDACITY_VERSION_STRING);
-   fprintf(fp, "sel0=\"%s\" ", (const char *)Internat::ToString(mViewInfo.sel0, 10).mb_str());
-   fprintf(fp, "sel1=\"%s\" ", (const char *)Internat::ToString(mViewInfo.sel1, 10).mb_str());
-   fprintf(fp, "vpos=\"%d\" ", mViewInfo.vpos);
-   fprintf(fp, "h=\"%s\" ", (const char *)Internat::ToString(mViewInfo.h, 10).mb_str());
-   fprintf(fp, "zoom=\"%s\" ", (const char *)Internat::ToString(mViewInfo.zoom, 10).mb_str());
-   fprintf(fp, "rate=\"%s\" ", (const char *)Internat::ToString(mRate).mb_str());
-   fprintf(fp, ">\n");
+   xmlFile.WriteAttr(wxT("projname"), projName);
+   xmlFile.WriteAttr(wxT("version"), wxT(AUDACITY_FILE_FORMAT_VERSION));
+   xmlFile.WriteAttr(wxT("audacityversion"), wxT(AUDACITY_VERSION_STRING));
+   xmlFile.WriteAttr(wxT("sel0"), mViewInfo.sel0, 10);
+   xmlFile.WriteAttr(wxT("sel1"), mViewInfo.sel1, 10);
+   xmlFile.WriteAttr(wxT("vpos"), mViewInfo.vpos);
+   xmlFile.WriteAttr(wxT("h"), mViewInfo.h, 10);
+   xmlFile.WriteAttr(wxT("zoom"), mViewInfo.zoom, 10);
+   xmlFile.WriteAttr(wxT("rate"), mRate);
 
-   mTags->WriteXML(depth+1, fp);
+   mTags->WriteXML(xmlFile);
 
    Track *t;
    TrackListIterator iter(mTracks);
    t = iter.First();
    while (t) {
-      t->WriteXML(depth+1, fp);
+      t->WriteXML(xmlFile);
       t = iter.Next();
    }
 
@@ -2027,9 +2023,7 @@ void AudacityProject::WriteXML(int depth, FILE *fp)
    {
       // Only write closing bracket when not auto-saving, since we may add
       // recording log data to the end of the file later
-      for(i=0; i<depth; i++)
-         fprintf(fp, "\t");
-      fprintf(fp, "</project>\n");
+      xmlFile.EndTag(wxT("project"));
    }
 }
 
@@ -2069,7 +2063,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
    //
 
    wxString safetyFileName = wxT("");
-   if (wxFileExists(FILENAME(mFileName))) {
+   if (wxFileExists(mFileName)) {
 
 #ifdef __WXGTK__
       safetyFileName = mFileName + wxT("~");
@@ -2077,10 +2071,10 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
       safetyFileName = mFileName + wxT(".bak");
 #endif
 
-      if (wxFileExists(FILENAME(safetyFileName)))
-         wxRemoveFile(FILENAME(safetyFileName));
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
 
-      wxRename(FILENAME(mFileName), FILENAME(safetyFileName));
+      wxRename(mFileName, safetyFileName);
    }
 
    if (fromSaveAs || mDirManager->GetProjectName() == wxT("")) {
@@ -2129,26 +2123,28 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
                       _("Error saving project"),
                       wxOK | wxCENTRE, this);
          if (safetyFileName)
-            wxRename(FILENAME(safetyFileName), FILENAME(mFileName));
+            wxRename(safetyFileName, mFileName);
          
          return false;
       }
    }
 
-   wxFFile saveFile(FILENAME(mFileName).c_str(), wxT("wb"));
+   XMLFileWriter saveFile;
+
+   saveFile.Open(mFileName, wxT("wb"));
    if (!saveFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + mFileName,
                    _("Error saving project"),
                    wxOK | wxCENTRE, this);
 
       if (safetyFileName)
-         wxRename(FILENAME(safetyFileName), FILENAME(mFileName));
+         wxRename(safetyFileName, mFileName);
       
       return false;
    }
 
-   WriteXMLHeader(saveFile.fp());
-   WriteXML(0, saveFile.fp());
+   WriteXMLHeader(saveFile);
+   WriteXML(saveFile);
 
    saveFile.Close();
    
@@ -2177,7 +2173,7 @@ bool AudacityProject::Save(bool overwrite /* = true */ ,
 #ifdef __WXMAC__
    FSSpec spec;
 
-   wxMacFilename2FSSpec(FILENAME(mFileName), &spec);
+   wxMacFilename2FSSpec(mFileName, &spec);
    FInfo finfo;
    if (FSpGetFInfo(&spec, &finfo) == noErr) {
       finfo.fdType = AUDACITY_PROJECT_TYPE;
@@ -3058,8 +3054,9 @@ void AudacityProject::AutoSave()
    wxString fn = wxFileName(FileNames::AutoSaveDir(),
       projName + wxString(wxT(" - ")) + CreateUniqueName()).GetFullPath();
    
-   wxFFile saveFile(FILENAME(fn + wxT(".tmp")).c_str(), wxT("wb"));
+   XMLFileWriter saveFile;
 
+   saveFile.Open(fn + wxT(".tmp"), wxT("wb"));
    if (!saveFile.IsOpened())
    {
       wxMessageBox(_("Couldn't write to file: ") + fn + wxT(".tmp"),
@@ -3070,8 +3067,8 @@ void AudacityProject::AutoSave()
 
    {
       VarSetter<bool> setter(&mAutoSaving, true, false);
-      WriteXMLHeader(saveFile.fp());
-      WriteXML(0, saveFile.fp());
+      WriteXMLHeader(saveFile);
+      WriteXML(saveFile);
    }
 
    saveFile.Close();

@@ -69,7 +69,7 @@ void ComputeLegacySummaryInfo(wxFileName fileName,
                                info->format);
 
    wxLogNull *silence=0;
-   wxFFile summaryFile(fileName.GetFullPath().c_str(), wxT("rb"));
+   wxFFile summaryFile(fileName.GetFullPath(), wxT("rb"));
    int read;
    if(Silent)silence= new wxLogNull();
 
@@ -150,7 +150,7 @@ LegacyBlockFile::~LegacyBlockFile()
 /// mSummaryinfo.totalSummaryBytes long.
 bool LegacyBlockFile::ReadSummary(void *data)
 {
-   wxFFile summaryFile(mFileName.GetFullPath().c_str(), wxT("rb"));
+   wxFFile summaryFile(mFileName.GetFullPath(), wxT("rb"));
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
 
@@ -205,12 +205,7 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    info.frames = mLen + (mSummaryInfo.totalSummaryBytes /
                          SAMPLE_SIZE(mFormat));
    
-   #ifdef _UNICODE
-      /* sf_open doesn't handle fn_Str() in Unicode build. May or may not actually work. */
-      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).mb_str(), SFM_READ, &info);
-   #else // ANSI
-      SNDFILE *sf=sf_open(FILENAME(mFileName.GetFullPath()).fn_str(), SFM_READ, &info);
-   #endif // Unicode/ANSI
+   SNDFILE *sf=sf_open(OSFILENAME(mFileName.GetFullPath()), SFM_READ, &info);
 
    wxLogNull *silence=0;
    if(mSilentLog)silence= new wxLogNull();
@@ -266,18 +261,17 @@ int LegacyBlockFile::ReadData(samplePtr data, sampleFormat format,
    return framesRead;
 }
 
-void LegacyBlockFile::SaveXML(int depth, wxFFile &xmlFile)
+void LegacyBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   for(int i = 0; i < depth; i++)
-      xmlFile.Write(wxT("\t"));
-   xmlFile.Write(wxT("<legacyblockfile "));
-   xmlFile.Write(wxString::Format(wxT("name='%s' "),
-                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
+   xmlFile.StartTag(wxT("legacyblockfile"));
+
+   xmlFile.WriteAttr(wxT("name"), mFileName.GetFullName());
+   xmlFile.WriteAttr(wxT("len"), mLen);
    if (mSummaryInfo.fields < 3)
-      xmlFile.Write(wxString::Format(wxT("norms='1' ")));
-   xmlFile.Write(wxString::Format(wxT("summarylen='%d' "), mSummaryInfo.totalSummaryBytes));
-   xmlFile.Write(wxT("/>\n"));
+      xmlFile.WriteAttr(wxT("norms"), 1);
+   xmlFile.WriteAttr(wxT("summarylen"), mSummaryInfo.totalSummaryBytes);
+
+   xmlFile.EndTag(wxT("legacyblockfile"));
 }
 
 /// static

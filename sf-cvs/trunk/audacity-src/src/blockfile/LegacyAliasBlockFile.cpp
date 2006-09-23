@@ -61,23 +61,21 @@ BlockFile *LegacyAliasBlockFile::Copy(wxFileName newFileName)
    return newBlockFile;
 }
 
-void LegacyAliasBlockFile::SaveXML(int depth, wxFFile &xmlFile)
+void LegacyAliasBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   for(int i = 0; i < depth; i++)
-      xmlFile.Write(wxT("\t"));
-   xmlFile.Write(wxT("<legacyblockfile "));
-   xmlFile.Write(wxT("alias='1' "));
-   xmlFile.Write(wxString::Format(wxT("name='%s' "),
-                                  XMLTagHandler::XMLEsc(mFileName.GetFullName()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("aliaspath='%s' "),
-                                  XMLTagHandler::XMLEsc(mAliasedFileName.GetFullPath()).c_str()));
-   xmlFile.Write(wxString::Format(wxT("aliasstart='%d' "), mAliasStart));
-   xmlFile.Write(wxString::Format(wxT("aliaslen='%d' "), mLen));
-   xmlFile.Write(wxString::Format(wxT("aliaschannel='%d' "), mAliasChannel));
-   xmlFile.Write(wxString::Format(wxT("summarylen='%d' "), mSummaryInfo.totalSummaryBytes));
+   xmlFile.StartTag(wxT("legacyblockfile"));
+   
+   xmlFile.WriteAttr(wxT("alias"), 1);
+   xmlFile.WriteAttr(wxT("name"), mFileName.GetFullName());
+   xmlFile.WriteAttr(wxT("aliaspath"), mAliasedFileName.GetFullPath());
+   xmlFile.WriteAttr(wxT("aliasstart"), mAliasStart);
+   xmlFile.WriteAttr(wxT("aliaslen"), mLen);
+   xmlFile.WriteAttr(wxT("aliaschannel"), mAliasChannel);
+   xmlFile.WriteAttr(wxT("summarylen"), mSummaryInfo.totalSummaryBytes);
    if (mSummaryInfo.fields < 3)
-      xmlFile.Write(wxString::Format(wxT("norms='1' ")));
-   xmlFile.Write(wxT("/>\n"));
+      xmlFile.WriteAttr(wxT("norms"), 1);
+
+   xmlFile.EndTag(wxT("legacyblockfile"));
 }
 
 BlockFile *LegacyAliasBlockFile::BuildFromXML(wxString projDir, const wxChar **attrs)

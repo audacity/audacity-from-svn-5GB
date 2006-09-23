@@ -189,7 +189,7 @@ bool DirectoriesPrefs::Apply()
             wxYES_NO|wxCENTRE|wxICON_EXCLAMATION);
 
       if(ans == wxYES) {
-         if(!wxMkdir(FILENAME(mTempDir), 0755)) {
+         if(!wxMkdir(mTempDir, 0755)) {
             /* wxWindows throws up a decent looking dialog */
             return false;
          }
@@ -202,14 +202,14 @@ bool DirectoriesPrefs::Apply()
       /* If the directory already exists, make sure it is writable */
       wxLogNull logNo;
       wxString tempDir = mTempDir + wxFILE_SEP_PATH + wxT("canicreate");
-      if(!wxMkdir(FILENAME(tempDir), 0755)) {
+      if(!wxMkdir(tempDir, 0755)) {
          wxMessageBox(
                wxString::Format(_("Directory %s is not writable"),
                                 mTempDir.c_str()),
                _("Error"), wxOK|wxICON_ERROR);
          return false;
       }
-      wxRmdir(FILENAME(tempDir));
+      wxRmdir(tempDir);
    }
 
    gPrefs->Write(wxT("/Directories/TempDir"), mTempDir);

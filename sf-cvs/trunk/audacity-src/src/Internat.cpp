@@ -33,7 +33,7 @@ and on Mac OS X for the filesystem.
 #include <locale.h>
 
 wxChar Internat::mDecimalSeparator = wxT('.'); // default
-wxMBConv *Internat::mConvLocal = 0;
+wxMBConv *Internat::mConvLocal = NULL;
 
 #ifdef __WXMAC__
 void *Internat::mTECToUTF = NULL;
@@ -158,7 +158,7 @@ wxString Internat::ToDisplayString(double numberToConvert,
    return result;
 }
 
-#ifdef __WXMAC__
+#ifdef __WXMAC__IGNORE
 
 // wxMac 2.4.x doesn't support converting to/from Mac encodings yet,
 // so we use Mac OS X-specific code
@@ -223,12 +223,20 @@ wxString Internat::FromFilename(const wxString &s)
 
 wxString Internat::LocalToUTF8(const wxString &s)
 {
+#if defined(__WXMAC__)
+   return wxString(s, wxConvUTF8);
+#else
    return wxString(s.wc_str(*mConvLocal), wxConvUTF8);
+#endif
 }
 
 wxString Internat::UTF8ToLocal(const wxString &s)
 {
+#if defined(__WXMAC__)
+   return wxString(s, wxConvLocal);
+#else
    return wxString(s.wc_str(wxConvUTF8), *mConvLocal);
+#endif
 }
 
 wxString Internat::ToFilename(const wxString &s)

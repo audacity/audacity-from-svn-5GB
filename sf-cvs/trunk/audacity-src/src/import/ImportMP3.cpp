@@ -156,7 +156,7 @@ wxString MP3ImportPlugin::GetPluginFormatDescription()
 
 ImportFileHandle *MP3ImportPlugin::Open(wxString Filename)
 {
-   wxFile *file = new wxFile(FILENAME(Filename));
+   wxFile *file = new wxFile(Filename);
 
    if (!file->IsOpened()) {
       delete file;

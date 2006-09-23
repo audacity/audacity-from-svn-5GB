@@ -34,13 +34,13 @@ int SilentBlockFile::ReadData(samplePtr data, sampleFormat format,
    return len;
 }
 
-void SilentBlockFile::SaveXML(int depth, wxFFile &xmlFile)
+void SilentBlockFile::SaveXML(XMLWriter &xmlFile)
 {
-   for(int i = 0; i < depth; i++)
-      xmlFile.Write(wxT("\t"));
-   xmlFile.Write(wxT("<silentblockfile "));
-   xmlFile.Write(wxString::Format(wxT("len='%d' "), mLen));
-   xmlFile.Write(wxT("/>\n"));
+   xmlFile.StartTag(wxT("silentblockfile"));
+
+   xmlFile.WriteAttr(wxT("len"), mLen);
+
+   xmlFile.EndTag(wxT("silentblockfile"));
 }
 
 /// static

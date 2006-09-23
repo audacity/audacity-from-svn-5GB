@@ -2103,23 +2103,23 @@ void AudacityProject::OnExportLabels()
    // Move existing files out of the way.  Otherwise wxTextFile will
    // append to (rather than replace) the current file.
 
-   if (wxFileExists(FILENAME(fName))) {
+   if (wxFileExists(fName)) {
 #ifdef __WXGTK__
       wxString safetyFileName = fName + wxT("~");
 #else
       wxString safetyFileName = fName + wxT(".bak");
 #endif
 
-      if (wxFileExists(FILENAME(safetyFileName)))
-         wxRemoveFile(FILENAME(safetyFileName));
+      if (wxFileExists(safetyFileName))
+         wxRemoveFile(safetyFileName);
 
       wxRename(fName, safetyFileName);
    }
 
-   wxTextFile f(FILENAME(fName).c_str());
+   wxTextFile f(fName);
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
-   temp->Create(FILENAME(fName));
+   temp->Create(fName);
    delete temp;
 #else
    f.Create();
@@ -3401,7 +3401,7 @@ void AudacityProject::OnShowTranscriptionToolBar()
 
 void AudacityProject::OnImport()
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    // TODO: Build the list of file types dynamically
    
@@ -3434,7 +3434,7 @@ void AudacityProject::OnImport()
 
 void AudacityProject::OnImportLabels()
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    wxString fileName =
        wxFileSelector(_("Select a text file containing labels..."),
@@ -3475,7 +3475,7 @@ void AudacityProject::OnImportLabels()
 
 void AudacityProject::OnImportMIDI()
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    wxString fileName = wxFileSelector(_("Select a MIDI file..."),
                                       path,     // Path
@@ -3509,7 +3509,7 @@ void AudacityProject::OnImportMIDI()
 
 void AudacityProject::OnImportRaw()
 {
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),::wxGetCwd());
 
    wxString fileName =
        wxFileSelector(_("Select any uncompressed audio file..."),
@@ -4014,7 +4014,7 @@ void AudacityProject::OnExportCleanSpeechPresets()
          continue;
       }
       ::wxSplitPath(fName, &path, &nameOnly, &extension);
-      wxFFile presetsFile((const wxChar*)FILENAME(fName), (const wxChar*)"wb");
+      wxFFile presetsFile(fName, wxT("wb"));
 
       bool flag = presetsFile.IsOpened();
 
@@ -4091,7 +4091,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
       if (fName.empty()) { // if cancel selected
          return;
       }
-      wxFFile presetsFile((const wxChar*)fName, wxT("rb"));
+      wxFFile presetsFile(fName, wxT("rb"));
       bool flag = presetsFile.IsOpened();
       if (flag == true) {
          int preset[PRESET_COUNT];
@@ -4167,7 +4167,7 @@ void AudacityProject::OnBatch()
       return;
    }
    
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"), FROMFILENAME(::wxGetCwd()));
+   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
    wxString prompt =  mCleanSpeechMode ? 
       _("Select vocal file(s) for batch CleanSpeech Chain...") :
       _("Select file(s) for batch processing...");
@@ -4219,7 +4219,7 @@ wxString AudacityProject::BuildCleanFileName(wxString fileName)
 //      double endTime = project->mTracks->GetEndTime();
 //      double startTime = 0.0;
       OnSelectAll();
-      pathName = gPrefs->Read(wxT("/DefaultOpenPath"), FROMFILENAME(::wxGetCwd()));
+      pathName = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
       ::wxMessageBox(wxString::Format(_("Export recording to %s\n/cleaned/%s.mp3"), 
          pathName.c_str(), justName.c_str()),
          _("Export recording"),

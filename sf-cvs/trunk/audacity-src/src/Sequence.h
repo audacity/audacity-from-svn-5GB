@@ -16,6 +16,7 @@
 
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
+#include "xml/XMLWriter.h"
 
 typedef int sampleCount;
 
@@ -78,7 +79,7 @@ class Sequence: public XMLTagHandler {
 
    sampleCount GetIdealAppendLen();
    bool Append(samplePtr buffer, sampleFormat format, sampleCount len,
-               wxString* blockFileLog=NULL);
+               XMLWriter* blockFileLog=NULL);
    bool Delete(sampleCount start, sampleCount len);
    bool AppendAlias(wxString fullPath,
                     sampleCount start,
@@ -104,7 +105,7 @@ class Sequence: public XMLTagHandler {
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual void HandleXMLEndTag(const wxChar *tag);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);
-   virtual void WriteXML(int depth, FILE *fp);
+   virtual void WriteXML(XMLWriter &xmlFile);
 
    bool GetErrorOpening() { return mErrorOpening; }
 

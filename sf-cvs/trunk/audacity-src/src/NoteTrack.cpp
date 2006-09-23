@@ -167,7 +167,7 @@ XMLTagHandler *NoteTrack::HandleXMLChild(const wxChar *tag)
    return NULL;
 }
 
-void NoteTrack::WriteXML(int depth, FILE *fp)
+void NoteTrack::WriteXML(XMLWriter &xmlFile)
 {
 }
 

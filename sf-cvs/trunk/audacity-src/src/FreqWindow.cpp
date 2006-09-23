@@ -1019,10 +1019,10 @@ void FreqWindow::OnExport(wxCommandEvent & WXUNUSED(event))
    if (fName == wxT(""))
       return;
 
-   wxTextFile f(FILENAME(fName).c_str());
+   wxTextFile f(fName);
 #ifdef __WXMAC__
    wxFile *temp = new wxFile();
-   temp->Create(FILENAME(fName));
+   temp->Create(fName);
    delete temp;
 #else
    f.Create();

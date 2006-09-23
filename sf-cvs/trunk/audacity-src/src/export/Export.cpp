@@ -179,7 +179,7 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    /* Prepare and display the filename selection dialog */
 
    wxString path = gPrefs->Read(wxT("/DefaultExportPath"),
-                                FROMFILENAME(::wxGetCwd()));
+                                ::wxGetCwd());
    wxString nameOnly;
    wxString extension;
    wxString defaultName = project->GetName();
@@ -321,7 +321,7 @@ wxString ExportCommon( AudacityProject *project, wxString format,
    actualName = fName;
 
    int suffix = 0;
-   while(::wxFileExists(FILENAME(fName))) {
+   while(::wxFileExists(fName)) {
       fName = path + endOfPathSep + 
          nameOnly + wxString::Format(wxT("%d"), suffix) + wxT(".") + extension;
       suffix++;
@@ -361,7 +361,7 @@ bool ExportPCM(AudacityProject *project,
       delete mixerSpec;
 
    if (success && actualName != fName)
-      ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
+      ::wxRenameFile(fName, actualName);
 
    return success;
 }
@@ -439,7 +439,7 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
    }
 
    if (success && actualName != fName)
-      ::wxRenameFile(FILENAME(fName), FILENAME(actualName));
+      ::wxRenameFile(fName, actualName);
 
    if( mixerSpec )
       delete mixerSpec;

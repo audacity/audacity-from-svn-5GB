@@ -155,7 +155,7 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
 
    wxString fName = wxT("Audacity-keys.xml");
    wxString path = gPrefs->Read(wxT("/DefaultExportPath"),
-                                FROMFILENAME(::wxGetCwd()));
+                                ::wxGetCwd());
 
    fName = wxFileSelector(_("Export Keyboard Shortcuts As:"),
                           NULL,
@@ -169,7 +169,9 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
    path = wxPathOnly(fName);
    gPrefs->Write(wxT("/DefaultExportPath"), path);
 
-   wxFFile prefFile(FILENAME(fName).c_str(), wxT("wb"));
+   XMLFileWriter prefFile;
+   
+   prefFile.Open(fName, wxT("wb"));
 
    if (!prefFile.IsOpened()) {
       wxMessageBox(_("Couldn't write to file: ") + fName,
@@ -178,14 +180,15 @@ void KeyConfigPrefs::OnSave(wxCommandEvent& event)
       return;
    }
 
-   mManager->WriteXML(0, prefFile.fp());
+   mManager->WriteXML(prefFile);
+
    prefFile.Close();
 }
 
 void KeyConfigPrefs::OnLoad(wxCommandEvent& event)
 {
    wxString path = gPrefs->Read(wxT("/DefaultOpenPath"),
-                                FROMFILENAME(::wxGetCwd()));
+                                ::wxGetCwd());
 
    wxString fileName = wxFileSelector(_("Select an XML file containing Audacity keyboard shortcuts..."),
                                       path,     // Path

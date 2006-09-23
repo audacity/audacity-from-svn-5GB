@@ -110,7 +110,7 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 {
    mLibPath = gPrefs->Read(wxT("/MP3/MP3LibPath"), wxT(""));
 
-   if (mLibPath==wxT("") || !::wxFileExists(FILENAME(mLibPath))) {
+   if (mLibPath==wxT("") || !::wxFileExists(mLibPath)) {
    
       int action = wxMessageBox(GetLibraryMessage(),
                                 _("Export MP3"),
@@ -283,14 +283,14 @@ bool MP3Exporter::FindLibrary(wxWindow *parent)
 
             //BG: I was unable to test the wxDynamicLibrary code on this platform
 
-            if (wxFileExists(FILENAME(mLibPath)))
+            if (wxFileExists(mLibPath))
             {
                if(lame_enc_lib.IsLoaded())
                {
                   lame_enc_lib.Unload();
                }
 
-               if(!lame_enc_lib.Load(FILENAME(mLibPath)))
+               if(!lame_enc_lib.Load(mLibPath))
                {
                   return false;
                }
@@ -590,10 +590,10 @@ void ReleaseMP3Exporter()
             Str255 name;
             CFragSymbolClass symClass;
 
-            if (!wxFileExists(FILENAME(mLibPath)))
+            if (!wxFileExists(mLibPath))
                return false;
 
-            wxMacFilename2FSSpec(FILENAME(mLibPath), &spec);
+            wxMacFilename2FSSpec(mLibPath, &spec);
 
             name[0] = 0;
             err = GetDiskFragment(&spec, 0, kCFragGoesToEOF,
@@ -908,14 +908,14 @@ void ReleaseMP3Exporter()
 
             //BG: I was unable to test the wxDynamicLibrary code on this platform
 
-            if (wxFileExists(FILENAME(mLibPath)))
+            if (wxFileExists(mLibPath))
             {
                if(lame_enc_lib.IsLoaded())
                {
                   lame_enc_lib.Unload();
                }
 
-               if(!lame_enc_lib.Load(FILENAME(mLibPath)))
+               if(!lame_enc_lib.Load(mLibPath))
                {
                   return false;
                }
@@ -1152,14 +1152,14 @@ public:
    bool  LoadLibrary() {
       wxLogNull logNo;
 
-      if (wxFileExists(FILENAME(mLibPath)))
+      if (wxFileExists(mLibPath))
       {
          if(lame_enc_lib.IsLoaded())
          {
             lame_enc_lib.Unload();
          }
 
-         if(!lame_enc_lib.Load(FILENAME(mLibPath)))
+         if(!lame_enc_lib.Load(mLibPath))
          {
             return false;
          }
@@ -1362,7 +1362,7 @@ bool ExportMP3(AudacityProject *project,
    
    /* Open file for writing */
 
-   wxFFile outFile(FILENAME(fName).c_str(), wxT("wb"));
+   wxFFile outFile(fName, wxT("wb"));
    if (!outFile.IsOpened()) {
       wxMessageBox(_("Unable to open target file for writing"));
       return false;
@@ -1467,7 +1467,7 @@ bool ExportMP3(AudacityProject *project,
       
 #ifdef __WXMAC__
    FSSpec spec;
-   wxMacFilename2FSSpec(FILENAME(fName), &spec);
+   wxMacFilename2FSSpec(fName, &spec);
    FInfo finfo;
    if (FSpGetFInfo(&spec, &finfo) == noErr) {
       finfo.fdType = 'MP3 ';
