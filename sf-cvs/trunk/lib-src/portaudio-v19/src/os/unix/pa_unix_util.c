@@ -1,5 +1,5 @@
 /*
- * $Id: pa_unix_util.c,v 1.2 2006-08-20 00:17:51 dmazzoni Exp $
+ * $Id: pa_unix_util.c,v 1.3 2006-09-23 18:42:51 llucius Exp $
  * Portable Audio I/O Library
  * UNIX platform-specific support functions
  *
@@ -17,10 +17,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -30,6 +26,20 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/** @file
+ @ingroup unix_src
+*/
  
 #include <pthread.h>
 #include <unistd.h>
@@ -354,16 +364,14 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
     if( th->watchdogRunning )
     {
         pthread_cancel( th->watchdogThread );
-        PA_ENSURE_SYSTEM( pthread_join( th->watchdogThread, &pret ), 0 )
+        PA_ENSURE_SYSTEM( pthread_join( th->watchdogThread, &pret ), 0 );
 
-      #ifdef PTHREAD_CANCELED
         if( pret && pret != PTHREAD_CANCELED )
         {
             if( watchdogExitResult )
                 *watchdogExitResult = *(PaError *) pret;
             free( pret );
         }
-      #endif
     }
 #endif
 
@@ -379,7 +387,6 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
     PA_DEBUG(( "%s: Joining thread %d\n", __FUNCTION__, self->thread ));
     PA_ENSURE_SYSTEM( pthread_join( self->thread, &pret ), 0 );
 
-  #ifdef PTHREAD_CANCELED
     if( pret && PTHREAD_CANCELED != pret )
     {
         if( exitResult )
@@ -388,7 +395,6 @@ PaError PaUnixThread_Terminate( PaUnixThread* self, int wait, PaError* exitResul
         }
         free( pret );
     }
-  #endif
 
 error:
     PA_ASSERT_CALL( PaUnixMutex_Terminate( &self->mtx ), paNoError );

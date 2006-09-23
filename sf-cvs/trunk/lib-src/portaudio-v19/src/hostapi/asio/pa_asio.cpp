@@ -1,5 +1,5 @@
 /*
- * $Id: pa_asio.cpp,v 1.1 2006-06-10 21:30:55 dmazzoni Exp $
+ * $Id: pa_asio.cpp,v 1.2 2006-09-23 18:42:48 llucius Exp $
  * Portable Audio I/O Library for ASIO Drivers
  *
  * Author: Stephane Letz
@@ -17,10 +17,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -28,6 +24,17 @@
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
  */
 
 /* Modification History
@@ -64,6 +71,7 @@
 */
 
 /** @file
+	@ingroup hostapi_src
 
     Note that specific support for paInputUnderflow, paOutputOverflow and
     paNeverDropInput is not necessary or possible with this driver due to the
@@ -1104,7 +1112,8 @@ PaError PaAsio_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIndex
             if (   strcmp (names[i],"ASIO DirectX Full Duplex Driver") == 0
                 || strcmp (names[i],"ASIO Multimedia Driver")          == 0
                 || strncmp(names[i],"Premiere",8)                      == 0   //"Premiere Elements Windows Sound 1.0"
-                || strncmp(names[i],"Adobe",5)                         == 0 ) //"Adobe Default Windows Sound 1.5"
+                || strncmp(names[i],"Adobe",5)                         == 0   //"Adobe Default Windows Sound 1.5"
+                || strncmp(names[i],"ReaRoute ASIO",13)                == 0)  //Reaper www.reaper.fm <- fix your stuff man.
             {
                 PA_DEBUG(("BLACKLISTED!!!\n"));
                 continue;

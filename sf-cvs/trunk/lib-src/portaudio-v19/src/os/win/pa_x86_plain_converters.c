@@ -1,11 +1,48 @@
+/*
+ * Plain Intel IA32 assembly implementations of PortAudio sample converter functions.
+ * Copyright (c) 1999-2002 Ross Bencina, Phil Burk
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files
+ * (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/** @file
+ @ingroup win_src
+*/
+
 #include "pa_x86_plain_converters.h"
 
 #include "pa_converters.h"
 #include "pa_dither.h"
 
 /*
-    plain intel assemby versions of standard pa converter functions.
-
     the main reason these versions are faster than the equivalent C versions
     is that float -> int casting is expensive in C on x86 because the rounding
     mode needs to be changed for every cast. these versions only set
@@ -92,6 +129,19 @@ static const float const_float_dither_scale_ = PA_FLOAT_DITHER_SCALE_;
 #define PA_DITHER_SHIFT_  ((32 - PA_DITHER_BITS_) + 1)
 
 /* -------------------------------------------------------------------------- */
+
+#ifdef _WIN64
+
+/*
+	-EMT64/AMD64 uses different asm
+	-VC2005 doesnt allow _WIN64 with inline assembly either!
+ */
+void PaUtil_InitializeX86PlainConverters( void )
+{
+}
+
+#else
+
 
 static void Float32_To_Int32(
     void *destinationBuffer, signed int destinationStride,
@@ -1163,5 +1213,7 @@ void PaUtil_InitializeX86PlainConverters( void )
     paConverters.Float32_To_Int16_Clip = Float32_To_Int16_Clip;
     paConverters.Float32_To_Int16_DitherClip = Float32_To_Int16_DitherClip;
 }
+
+#endif
 
 /* -------------------------------------------------------------------------- */

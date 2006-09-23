@@ -1,15 +1,14 @@
 /*
- * This is the AUHAL implementation of portaudio.
+ * Internal interfaces for PortAudio Apple AUHAL implementation
+ *
+ * PortAudio Portable Real-Time Audio Library
+ * Latest Version at: http://www.portaudio.com
  *
  * Written by Bjorn Roche of XO Audio LLC, from PA skeleton code.
  * Portions copied from code by Dominic Mazzoni (who wrote a HAL implementation)
  *
  * Dominic's code was based on code by Phil Burk, Darren Gibbs,
  * Gord Peters, Stephane Letz, and Greg Pfiel.
- *
- * Bjorn Roche and XO Audio LLC reserve no rights to this code.
- * The maintainers of PortAudio may redistribute and modify the code and
- * licenses as they deam appropriate.
  *
  * The following people also deserve acknowledgements:
  *
@@ -32,10 +31,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -45,8 +40,20 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
 /**
  @file pa_mac_core
+ @ingroup hostapi_src
  @author Bjorn Roche
  @brief AUHAL implementation of PortAudio
 */

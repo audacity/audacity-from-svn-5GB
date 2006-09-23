@@ -1,5 +1,5 @@
 /*
- * $Id: ringbuffer.c,v 1.2 2006-08-20 00:17:51 dmazzoni Exp $
+ * $Id: ringbuffer.c,v 1.3 2006-09-23 18:42:49 llucius Exp $
  * ringbuffer.c
  * Ring Buffer utility..
  *
@@ -10,7 +10,7 @@
  * single-thread writer.
  *
  * This program uses the PortAudio Portable Audio Library.
- * For more information see: http://www.audiomulch.com/portaudio/
+ * For more information see: http://www.portaudio.com
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -24,10 +24,6 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version.
- *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -35,8 +31,24 @@
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
  */
+
+/*
+ * The text above constitutes the entire PortAudio license; however, 
+ * the PortAudio community also makes the following non-binding requests:
+ *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version. It is also 
+ * requested that these non-binding requests be included along with the 
+ * license above.
+ */
+
+/**
+ @file
+ @ingroup hostapi_src
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -65,22 +77,15 @@
  *
  ****************/
 
-#if defined( MOSX_USE_NON_ATOMIC_FLAG_BITS )
-#   define PAMemoryBarrier() 
-# else
-#   include <libkern/OSAtomic.h>
-#   define PAMemoryBarrier() OSMemoryBarrier();
-#endif
-
 #if defined(__APPLE__) || defined(__FreeBSD__)
 #   include <libkern/OSAtomic.h>
     /* Here are the memory barrier functions. Mac OS X and FreeBSD only provide
        full memory barriers, so the three types of barriers are the same.
        The asm volatile may be redundant with the memory barrier, but
        until I have proof of that, I'm leaving it. */
-#   define FullMemoryBarrier()  do{ asm volatile("":::"memory"); PAMemoryBarrier() }while(false)
-#   define ReadMemoryBarrier()  do{ asm volatile("":::"memory"); PAMemoryBarrier() }while(false)
-#   define WriteMemoryBarrier() do{ asm volatile("":::"memory"); PAMemoryBarrier(); }while(false)
+#   define FullMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
+#   define ReadMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
+#   define WriteMemoryBarrier() do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
 #else
 #   error Memory Barriers not defined on this system or system unknown
 #endif
