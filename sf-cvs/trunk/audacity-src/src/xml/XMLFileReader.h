@@ -8,7 +8,13 @@
 
 **********************************************************************/
 
+#include "../Audacity.h"         // to pull in USE_SYSTEM_EXPAT define
+
+#if defined(USE_SYSTEM_EXPAT)
+#include "expat.h"
+#else
 #include "xmlparse/xmlparse.h"
+#endif
 
 #include "XMLTagHandler.h"
 
