@@ -162,6 +162,7 @@ void MixerToolBar::UpdatePrefs()
 
    // And make that size the minimum
    SetMinSize( GetSizer()->GetMinSize() );
+   SetSize( GetMinSize() );
 
    // Notify someone that we've changed our size
    Updated();
