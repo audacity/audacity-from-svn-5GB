@@ -156,6 +156,7 @@ OBJS = \
 	prefs/SpectrumPrefs.o \
 	prefs/ThemePrefs.o \
    toolbars/ControlToolBar.o \
+   toolbars/DeviceToolBar.o \
    toolbars/EditToolBar.o \
    toolbars/MeterToolBar.o \
    toolbars/MixerToolBar.o \
