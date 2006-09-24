@@ -40,7 +40,6 @@ the general functionality for creating XML in UTF8 encoding.
 XMLWriter::XMLWriter()
 {
    mDepth = 0;
-   mMaxdepth = 0;
    mInTag = false;
    mHasKids.Add(false);
 }
@@ -62,12 +61,11 @@ void XMLWriter::StartTag(const wxString &name)
       Write(wxT("\t"));
    }
 
-   Write(wxString::Format(wxT("<%s "), name.c_str()));
+   Write(wxString::Format(wxT("<%s"), name.c_str()));
 
    mTagstack.Insert(name, 0);
    mHasKids[0] = true;
    mHasKids.Insert(false, 0);
-   mMaxdepth++;
    mDepth++;
    mInTag = true;
 }
@@ -103,7 +101,7 @@ void XMLWriter::EndTag(const wxString &name)
 
 void XMLWriter::WriteAttr(const wxString &name, const wxString &value)
 {
-   Write(wxString::Format(wxT("%s=\"%s\" "),
+   Write(wxString::Format(wxT(" %s=\"%s\""),
       name.c_str(),
       XMLTagHandler::XMLEsc(value).c_str()));
 }
@@ -125,7 +123,7 @@ void XMLWriter::WriteAttr(const wxChar *name, const wxString &value)
 
 void XMLWriter::WriteAttr(const wxString &name, int value)
 {
-   Write(wxString::Format(wxT("%s=\"%d\" "),
+   Write(wxString::Format(wxT(" %s=\"%d\""),
       name.c_str(),
       value));
 }
@@ -137,7 +135,7 @@ void XMLWriter::WriteAttr(const wxChar *name, int value)
 
 void XMLWriter::WriteAttr(const wxString &name, bool value)
 {
-   Write(wxString::Format(wxT("%s=\"%d\" "),
+   Write(wxString::Format(wxT(" %s=\"%d\""),
       name.c_str(),
       value));
 }
@@ -149,7 +147,7 @@ void XMLWriter::WriteAttr(const wxChar *name, bool value)
 
 void XMLWriter::WriteAttr(const wxString &name, long value)
 {
-   Write(wxString::Format(wxT("%s=\"%ld\" "),
+   Write(wxString::Format(wxT(" %s=\"%ld\""),
       name.c_str(),
       value));
 }
@@ -161,7 +159,7 @@ void XMLWriter::WriteAttr(const wxChar *name, long value)
 
 void XMLWriter::WriteAttr(const wxString &name, size_t value)
 {
-   Write(wxString::Format(wxT("%s=\"%ld\" "),
+   Write(wxString::Format(wxT(" %s=\"%ld\""),
       name.c_str(),
       value));
 }
@@ -173,7 +171,7 @@ void XMLWriter::WriteAttr(const wxChar *name, size_t value)
 
 void XMLWriter::WriteAttr(const wxString &name, float value, int digits)
 {
-   Write(wxString::Format(wxT("%s=\"%s\" "),
+   Write(wxString::Format(wxT(" %s=\"%s\""),
       name.c_str(),
       Internat::ToString(value, digits).c_str()));
 }
@@ -185,7 +183,7 @@ void XMLWriter::WriteAttr(const wxChar *name, float value, int digits)
 
 void XMLWriter::WriteAttr(const wxString &name, double value, int digits)
 {
-   Write(wxString::Format(wxT("%s=\"%s\" "),
+   Write(wxString::Format(wxT(" %s=\"%s\""),
       name.c_str(),
       Internat::ToString(value, digits).c_str()));
 }

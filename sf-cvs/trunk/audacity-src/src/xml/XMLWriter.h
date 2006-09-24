@@ -57,7 +57,6 @@ class XMLWriter {
  protected:
 
    bool mInTag;
-   int mMaxdepth;
    int mDepth;
    wxArrayString mTagstack;
    wxArrayInt mHasKids;
