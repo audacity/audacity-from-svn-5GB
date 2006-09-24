@@ -165,6 +165,7 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
                                   int progress_count,int progress_bias,
                                   const wxChar *prompt){
 
+   AudacityProject *p = GetActiveProject();
    int count=0;
    bool cont;
 
@@ -182,9 +183,9 @@ static int rm_dash_rf_enumerate_i(wxString dirpath,
             
             cont = dir.GetNext(&name);
             
-            if (prompt)
-               GetActiveProject()->ProgressUpdate(int ((count+progress_bias * 1000.0) / 
-                                                  progress_count));
+            if (prompt && p)
+               p->ProgressUpdate(int ((count+progress_bias * 1000.0) / 
+                                 progress_count));
          }
       }
 
@@ -213,14 +214,17 @@ static int rm_dash_rf_enumerate_prompt(wxString dirpath,
                                        int files_p,int dirs_p,
                                        int progress_count,
                                        const wxChar *prompt){
+   AudacityProject *p = GetActiveProject();
 
-   GetActiveProject()->ProgressShow(_("Progress"), prompt);
+   if (p)
+      p->ProgressShow(_("Progress"), prompt);
 
    int count=rm_dash_rf_enumerate_i(dirpath, flist, dirspec, files_p,dirs_p,
                                     progress_count,0,
                                     prompt);
 
-   GetActiveProject()->ProgressHide();
+   if (p)
+      p->ProgressHide();
 
    return count;
 }
@@ -240,8 +244,10 @@ static void rm_dash_rf_execute(wxArrayString &fList,
                                int count, int files_p, int dirs_p,
                                const wxChar *prompt){
 
-   if (prompt)
-      GetActiveProject()->ProgressShow(_("Progress"), prompt);
+   AudacityProject *p = GetActiveProject();
+
+   if (prompt && p)
+      p->ProgressShow(_("Progress"), prompt);
   
    for (int i = 0; i < count; i++) {
       const wxChar *file = fList[i].c_str();
@@ -252,12 +258,12 @@ static void rm_dash_rf_execute(wxArrayString &fList,
          wxRmdir(file);
       }
 
-      if (prompt)
-         GetActiveProject()->ProgressUpdate(int ((i * 1000.0) / count));
+      if (prompt && p)
+         p->ProgressUpdate(int ((i * 1000.0) / count));
    }
    
-   if (prompt)
-      GetActiveProject()->ProgressHide();
+   if (prompt && p)
+      p->ProgressHide();
 }
 
 // static
@@ -320,8 +326,10 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       saved version of the old project must not be moved,
       otherwise the old project would not be safe. */
 
-   GetActiveProject()->ProgressShow(_("Progress"),
-                                    _("Saving project data files"));
+   AudacityProject *p = GetActiveProject();
+   if (p)
+      p->ProgressShow(_("Progress"),
+                      _("Saving project data files"));
 
    int total=blockFileHash.size();
    int count=0;
@@ -337,7 +345,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          success = MoveToNewProjectDirectory(b);
       }
 
-      GetActiveProject()->ProgressUpdate(int ((count * 1000.0) / total));
+      if (p)
+         p->ProgressUpdate(int ((count * 1000.0) / total));
 
       i++;
       count++;
@@ -357,8 +366,8 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
          BlockFile *b = i->second;
          MoveToNewProjectDirectory(b);
 
-         if (count>=0)
-            GetActiveProject()->ProgressUpdate(int ((count * 1000.0) / total));
+         if (count>=0 && p)
+            p->ProgressUpdate(int ((count * 1000.0) / total));
 
          i++;
          count--;
@@ -368,12 +377,14 @@ bool DirManager::SetProject(wxString & projPath, wxString & projName,
       this->projPath = oldPath;
       this->projName = oldName;
 
-      GetActiveProject()->ProgressHide();
+      if (p)
+         p->ProgressHide();
 
       return false;
    }
 
-   GetActiveProject()->ProgressHide();
+   if (p)
+      p->ProgressHide();
 
    // Some subtlety; SetProject is used both to move a temp project
    // into a permanent home as well as just set up path variables when
