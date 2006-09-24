@@ -292,7 +292,7 @@ void KeyConfigPrefs::RepopulateBindingsList()
    unsigned int i;
    for(i=0; i<mNames.GetCount(); i++) {
       mList->InsertItem( i, wxT("") );
-      wxString label = mManager->GetLabelFromName(mNames[i]);
+      wxString label = mManager->GetPrefixedLabelFromName(mNames[i]);
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
       wxString key = mManager->GetKeyFromName(mNames[i]);
 
