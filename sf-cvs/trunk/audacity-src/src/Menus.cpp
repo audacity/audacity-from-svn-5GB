@@ -507,17 +507,17 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginSubMenu(_("S&nap-To..."));
 
    /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem(wxT("SnapOn"),         _("Snap On"),                        FN(OnSnapOn));
+   c->AddItem(wxT("SnapOn"),         _("On"),                        FN(OnSnapOn));
    /* i18n-hint: Set snap-to mode on or off */
-   c->AddItem(wxT("SnapOff"),        _("Snap Off"),                       FN(OnSnapOff));
+   c->AddItem(wxT("SnapOff"),        _("Off"),                       FN(OnSnapOff));
 
    c->SetCommandFlags(0, 0, wxT("SnapOn"), wxT("SnapOff"), NULL);
 
    c->EndSubMenu();
    
    c->BeginSubMenu(_("Play &Region..."));
-   c->AddItem(wxT("LockPlayRegion"), _("Lock Play Region"), FN(OnLockPlayRegion));
-   c->AddItem(wxT("UnlockPlayRegion"), _("Unlock Play Region"), FN(OnUnlockPlayRegion));
+   c->AddItem(wxT("LockPlayRegion"), _("Lock"), FN(OnLockPlayRegion));
+   c->AddItem(wxT("UnlockPlayRegion"), _("Unlock"), FN(OnUnlockPlayRegion));
    c->SetCommandFlags(wxT("LockPlayRegion"), PlayRegionNotLockedFlag, PlayRegionNotLockedFlag);
    c->SetCommandFlags(wxT("UnlockPlayRegion"), PlayRegionLockedFlag, PlayRegionLockedFlag);
    c->EndSubMenu();
@@ -597,7 +597,7 @@ void AudacityProject::CreateMenusAndCommands()
 
       c->AddSeparator();*/
 		
-		c->BeginSubMenu(_("Add &New Track..."));
+		c->BeginSubMenu(_("Add &New..."));
 			c->AddItem(wxT("NewAudioTrack"),  _("&Audio Track\tCtrl+Shift+N"),               FN(OnNewWaveTrack));
 			c->AddItem(wxT("NewStereoTrack"), _("&Stereo Track"),              FN(OnNewStereoTrack));
 			c->AddItem(wxT("NewLabelTrack"),  _("&Label Track"),               FN(OnNewLabelTrack));
