@@ -46,6 +46,7 @@ struct CommandListEntry
    wxString key;
    wxString defaultKey;
    wxString label;
+   wxString labelPrefix;
    wxMenu *menu;
    CommandFunctor *callback;
    bool multi;
@@ -140,6 +141,7 @@ class CommandManager: public XMLTagHandler
    void GetAllCommandNames(wxArrayString &names, bool includeMultis);
 
    wxString GetLabelFromName(wxString name);
+   wxString GetPrefixedLabelFromName( wxString name );
    wxString GetKeyFromName(wxString name);
    wxString GetDefaultKeyFromName(wxString name);
 
