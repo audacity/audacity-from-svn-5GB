@@ -765,6 +765,7 @@
 		2897F6F80AB3DB5A003C20C5 /* ToolsToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EC0AB3DB5A003C20C5 /* ToolsToolBar.cpp */; };
 		2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6EE0AB3DB5A003C20C5 /* TranscriptionToolBar.cpp */; };
 		2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */; };
+		289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */; };
 		28E3E6E80A7C14CA00AB1361 /* ExportFLAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */; };
 		28E67F710A3A1A750021D89F /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E821FF0A39FD7600DCE280 /* pa_allocation.c */; };
 		28E67F720A3A1A770021D89F /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 28E822030A39FD7600DCE280 /* pa_converters.c */; };
@@ -1845,6 +1846,8 @@
 		2897F6EF0AB3DB5A003C20C5 /* TranscriptionToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = TranscriptionToolBar.h; sourceTree = "<group>"; };
 		2897F6FC0AB3DCD0003C20C5 /* Grabber.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grabber.cpp; sourceTree = "<group>"; };
 		2897F6FD0AB3DCD0003C20C5 /* Grabber.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grabber.h; sourceTree = "<group>"; };
+		289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceToolBar.cpp; sourceTree = "<group>"; };
+		289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = DeviceToolBar.h; sourceTree = "<group>"; };
 		28E3E6E60A7C14CA00AB1361 /* ExportFLAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportFLAC.h; sourceTree = "<group>"; };
 		28E3E6E70A7C14CA00AB1361 /* ExportFLAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportFLAC.cpp; sourceTree = "<group>"; };
 		28E67F5F0A3A160D0021D89F /* libportaudio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportaudio.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3400,6 +3403,8 @@
 			children = (
 				2897F6DC0AB3DB5A003C20C5 /* ControlToolBar.cpp */,
 				2897F6DD0AB3DB5A003C20C5 /* ControlToolBar.h */,
+				289F9C7C0AC671BB00797DC1 /* DeviceToolBar.cpp */,
+				289F9C7D0AC671BB00797DC1 /* DeviceToolBar.h */,
 				2897F6DE0AB3DB5A003C20C5 /* EditToolBar.cpp */,
 				2897F6DF0AB3DB5A003C20C5 /* EditToolBar.h */,
 				2897F6E00AB3DB5A003C20C5 /* MeterToolBar.cpp */,
@@ -4939,6 +4944,7 @@
 				2897F6F90AB3DB5A003C20C5 /* TranscriptionToolBar.cpp in Sources */,
 				2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */,
 				283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */,
+				289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

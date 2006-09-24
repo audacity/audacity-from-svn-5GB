@@ -575,6 +575,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddSeparator();
    c->BeginSubMenu(_("&Toolbars..."));
    c->AddItem(wxT("ShowControlTB"),       _("Show Control Toolbar"),       FN(OnShowControlToolBar));
+   c->AddItem(wxT("ShowDeviceTB"),        _("Show Device Toolbar"),        FN(OnShowDeviceToolBar));
    c->AddItem(wxT("ShowEditTB"),          _("Show Edit Toolbar"),          FN(OnShowEditToolBar));
    c->AddItem(wxT("ShowMeterTB"),         _("Show Meter Toolbar"),         FN(OnShowMeterToolBar));
    c->AddItem(wxT("ShowMixerTB"),         _("Show Mixer Toolbar"),         FN(OnShowMixerToolBar));
@@ -1154,6 +1155,10 @@ void AudacityProject::ModifyToolbarMenus()
                           mToolManager->IsVisible(ControlBarID ) ?
                           _("Hide Control Toolbar") :
                           _("Show Control Toolbar"));
+   mCommandManager.Modify(wxT("ShowDeviceTB"),
+                          mToolManager->IsVisible(DeviceBarID) ?
+                          _("Hide Device Toolbar") :
+                          _("Show Device Toolbar"));
    mCommandManager.Modify(wxT("ShowEditTB"),
                           mToolManager->IsVisible(EditBarID) ?
                           _("Hide Edit Toolbar") :
@@ -3355,6 +3360,12 @@ void AudacityProject::OnPlotSpectrum()
 void AudacityProject::OnShowControlToolBar()
 {
    mToolManager->ShowHide( ControlBarID );
+   ModifyToolbarMenus();
+}
+
+void AudacityProject::OnShowDeviceToolBar()
+{
+   mToolManager->ShowHide( DeviceBarID );
    ModifyToolbarMenus();
 }
 

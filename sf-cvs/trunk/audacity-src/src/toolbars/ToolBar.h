@@ -66,6 +66,7 @@ enum
    EditBarID,
    TranscriptionBarID,
    SelectionBarID,
+   DeviceBarID,
    ToolBarCount
 };
   

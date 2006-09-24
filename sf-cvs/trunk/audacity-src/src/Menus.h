@@ -207,6 +207,7 @@ void OnSnapOff();
 void OnPlotSpectrum();
 
 void OnShowControlToolBar();
+void OnShowDeviceToolBar();
 void OnShowEditToolBar();
 void OnShowMeterToolBar();
 void OnShowMixerToolBar();

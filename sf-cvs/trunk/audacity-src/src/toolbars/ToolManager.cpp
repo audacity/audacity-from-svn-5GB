@@ -46,6 +46,7 @@
 
 #include "ToolManager.h"
 #include "ControlToolBar.h"
+#include "DeviceToolBar.h"
 #include "EditToolBar.h"
 #include "MeterToolBar.h"
 #include "MixerToolBar.h"
@@ -168,6 +169,7 @@ ToolManager::ToolManager( wxWindow *parent )
    mBars[ MixerBarID ]         = new MixerToolBar();
    mBars[ TranscriptionBarID ] = new TranscriptionToolBar();
    mBars[ SelectionBarID ]     = new SelectionBar();
+   mBars[ DeviceBarID ]        = new DeviceToolBar();
 
    // Process the toolbar config settings
    ReadConfig();
@@ -228,7 +230,7 @@ void ToolManager::ReadConfig()
       // Read in all the settings
       gPrefs->Read( wxT("Dock"), &dock, ndx == SelectionBarID ? BotDockID : TopDockID );
       gPrefs->Read( wxT("Order"), &ord, NoBarID );
-      gPrefs->Read( wxT("Show"), &show[ ndx ], true );
+      gPrefs->Read( wxT("Show"), &show[ ndx ], ndx == DeviceBarID ? false : true );
       gPrefs->Read( wxT("X"), &x, -1 );
       gPrefs->Read( wxT("Y"), &y, -1 );
 

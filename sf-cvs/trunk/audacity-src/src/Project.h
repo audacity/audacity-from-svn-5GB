@@ -54,6 +54,7 @@ class wxPanel;
 class ToolManager;
 class Toolbar;
 class ControlToolBar;
+class DeviceToolBar;
 class EditToolBar;
 class MeterToolBar;
 class MixerToolBar;
@@ -260,6 +261,7 @@ class AudacityProject:public wxFrame,
    // ToolBar
 
    ControlToolBar *GetControlToolBar();
+   DeviceToolBar *GetDeviceToolBar();
    EditToolBar *GetEditToolBar();
    MeterToolBar *GetMeterToolBar();
    MixerToolBar *GetMixerToolBar();
