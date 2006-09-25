@@ -38,6 +38,18 @@
 
 *//****************************************************************//**
 
+\class ToolBarDialog
+\brief A dialog based container for ExpandingToolBars providing modal
+based operations.
+
+*//****************************************************************//**
+
+\class ToolBarFrame
+\brief A miniframe based container for ExpandingToolBars providing
+modeless presentation.
+
+*//****************************************************************//**
+
 \class ToolBarArea
 \brief An alterantive to ToolBarFrame which can contain an
 ExpandingToolBar.  ToolBarArea is used for a 'docked' ToolBar, 
@@ -58,6 +70,7 @@ ExpandingToolBar.
 #include <wx/dcmemory.h>
 #include <wx/dragimag.h>
 #include <wx/arrimpl.cpp>
+#include <wx/dialog.h>
 
 #include "ExpandingToolBar.h"
 #include "AButton.h"
@@ -108,6 +121,7 @@ ExpandingToolBar::ExpandingToolBar(wxWindow* parent,
    mAutoExpand(true),
    mFirstTime(true),
    mFrameParent(NULL),
+   mDialogParent(NULL),
    mAreaParent(NULL),
    mSavedArrangement(NULL),
    mDragImage(NULL),
@@ -153,7 +167,7 @@ ExpandingToolBar::~ExpandingToolBar()
 
 void ExpandingToolBar::OnSize(wxSizeEvent &evt)
 {
-   if (mFrameParent || mAreaParent)
+   if (mFrameParent || mDialogParent || mAreaParent)
       return;
 
    // At the time of construction, it wasn't "safe" to tell
@@ -166,6 +180,16 @@ void ExpandingToolBar::OnSize(wxSizeEvent &evt)
       if (toolBarParent) {
          // We were placed into a floating window
          mFrameParent = toolBarParent;
+         toolBarParent->SetChild(this);
+      }
+   }
+
+   if (!mDialogParent) {   
+      ToolBarDialog *toolBarParent =
+         dynamic_cast<ToolBarDialog *>(GetParent());
+      if (toolBarParent) {
+         // We were placed into a dialog
+         mDialogParent = toolBarParent;
          toolBarParent->SetChild(this);
       }
    }
@@ -395,6 +419,15 @@ void ExpandingToolBar::MoveDrawer(wxSize prevSize)
 
    if (mFrameParent) {
       // If we're in a tool window
+
+      SetSizeHints(mCurrentTotalSize, mCurrentTotalSize);
+      SetSize(mCurrentTotalSize);
+      
+      GetParent()->Fit();
+   }
+
+   if (mDialogParent) {
+      // If we're in a dialog
 
       SetSizeHints(mCurrentTotalSize, mCurrentTotalSize);
       SetSize(mCurrentTotalSize);
@@ -681,6 +714,53 @@ void ToolBarGrabber::OnSize(wxSizeEvent &evt)
 }
 
 //
+// ToolBarDialog
+//
+
+BEGIN_EVENT_TABLE(ToolBarDialog, wxDialog)
+END_EVENT_TABLE()
+
+IMPLEMENT_CLASS(ToolBarDialog, wxDialog)
+
+ToolBarDialog::ToolBarDialog(wxWindow* parent,
+                           wxWindowID id,
+                           const wxString& name,
+                           const wxPoint& pos):
+   wxDialog(parent, id, name, pos, wxSize(1, 1)),
+   mChild(NULL)
+{
+}
+
+ToolBarDialog::~ToolBarDialog()
+{
+}
+
+void ToolBarDialog::SetChild(ExpandingToolBar *child)
+{
+   mChild = child;
+   if (mChild && mChild->GetParent() != this)
+      mChild->Reparent(this);
+
+   Fit();
+}
+
+void ToolBarDialog::Fit()
+{
+   if (mChild) {
+      wxSize childSize = mChild->GetBestFittingSize();
+
+      // Take into account the difference between the content
+      // size and the frame size
+      wxSize curContentSize = GetClientSize();
+      wxSize curFrameSize = GetSize();
+      wxSize newFrameSize = childSize + (curFrameSize - curContentSize);
+
+      SetSizeHints(newFrameSize, newFrameSize);
+      SetSize(newFrameSize);
+   }
+}
+
+//
 // ToolBarFrame
 //
 
@@ -705,7 +785,7 @@ ToolBarFrame::~ToolBarFrame()
 void ToolBarFrame::SetChild(ExpandingToolBar *child)
 {
    mChild = child;
-   if (mChild->GetParent() != this)
+   if (mChild && mChild->GetParent() != this)
       mChild->Reparent(this);
 
    Fit();

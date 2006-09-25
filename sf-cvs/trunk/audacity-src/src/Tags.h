@@ -54,7 +54,7 @@ public:
    Tags();  // constructor
    virtual ~Tags();
    
-   bool ShowEditDialog(wxWindow *parent, wxString title);
+   bool ShowEditDialog(wxWindow *parent, wxString title, bool model = false);
    
    virtual bool HandleXMLTag(const wxChar *tag, const wxChar **attrs);
    virtual XMLTagHandler *HandleXMLChild(const wxChar *tag);

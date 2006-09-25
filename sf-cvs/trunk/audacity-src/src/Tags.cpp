@@ -238,19 +238,37 @@ void Tags::WriteXML(XMLWriter &xmlFile)
    xmlFile.EndTag(wxT("tags"));
 }
 
-bool Tags::ShowEditDialog(wxWindow *parent, wxString title)
+bool Tags::ShowEditDialog(wxWindow *parent, wxString title, bool modal)
 {
    // If the window is already open, just bring it to front
    if (mTagsEditor && mTagsEditorFrame) {
-      mTagsEditorFrame->Raise();
-      return true;
+      if (!modal) {
+         mTagsEditorFrame->Raise();
+         return true;
+      }
+
+      // We must kill an existing modeless editor since we don't want
+      // to have two on the screen at once.
+      mTagsEditorFrame->Destroy();
+      mTagsEditor = NULL;
+      mTagsEditorFrame = NULL;
    }
 
-   mTagsEditorFrame = new ToolBarFrame(parent, -1, title);
-   mTagsEditor = new TagsEditor(mTagsEditorFrame, -1, this,
-                                mEditTitle, mEditTrackNumber);
-   mTagsEditorFrame->CentreOnParent();
-   mTagsEditorFrame->Show();
+   if (modal) {
+      ToolBarDialog *tbd = new ToolBarDialog(parent, -1, title);
+      TagsEditor *te = new TagsEditor(tbd, -1, this,
+                                      mEditTitle, mEditTrackNumber);
+      tbd->CentreOnParent();
+      tbd->ShowModal();
+      // No need to delete...see TagsEditor::OnClose()
+   }
+   else {
+      mTagsEditorFrame = new ToolBarFrame(parent, -1, title);
+      mTagsEditor = new TagsEditor(mTagsEditorFrame, -1, this,
+                                   mEditTitle, mEditTrackNumber);
+      mTagsEditorFrame->CentreOnParent();
+      mTagsEditorFrame->Show();
+   }
 
    return true;
 }
@@ -605,6 +623,8 @@ void Tags::ExportFLACTags(FLAC::Encoder::File *encoder)
 //
 
 enum {
+   CancelID = wxID_CANCEL,
+   CloseID = wxID_OK,
    StaticTextID = 10000,
    TitleTextID,
    ArtistTextID,
@@ -614,7 +634,6 @@ enum {
    CommentsTextID,
    GenreID,
    FormatID,
-   CloseID,
    MoreID,
    FewerID,
    LoadID,
@@ -831,13 +850,13 @@ void TagsEditor::OnFewer(wxCommandEvent & event)
    if (len > 0) {
       mTags->mExtraNames.RemoveAt(len-1);
       mTags->mExtraValues.RemoveAt(len-1);
+
+      RebuildMainPanel();
+
+      mTransfering = true;
+      TransferDataToWindow();
+      mTransfering = false;
    }
-
-   RebuildMainPanel();
-
-   mTransfering = true;
-   TransferDataToWindow();
-   mTransfering = false;
 }
 
 void TagsEditor::OnLoad(wxCommandEvent & event)
