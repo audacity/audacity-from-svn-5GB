@@ -949,13 +949,6 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
    if (aliasList.Index(fName.GetFullPath()) == wxNOT_FOUND)
       return true;
 
-   // If any of the following commands fail, your guess is as
-   // good as mine why.  The following error message is the
-   // best we can do - we'll use it if any of the renames,
-   // creates, or deletes fail.
-   wxString errStr =
-     _( "Error: is directory write-protected or disk full?" );
-
    /* i18n-hint: 'old' is part of a filename used when a file is renamed. */
    // Figure out what the new name for the existing file would be.  
    /* i18n-hint: e.g. Try to go from "mysong.wav" to "mysong-old1.wav". */
@@ -976,11 +969,17 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
 
    wxFile testFile(renamedFile.GetFullPath(), wxFile::write);
    if (!testFile.IsOpened()) {
-      wxMessageBox(errStr);
+      wxLogSysError(_("Unable to open/create test file"),
+                    renamedFile.GetFullPath().c_str());
       return false;
    }
+
+   // Close the file prior to renaming.
+   testFile.Close();
+
    if (!wxRemoveFile(renamedFile.GetFullPath())) {
-      wxMessageBox(errStr);
+      wxLogSysError(_("Unable to remove '%s'"),
+                    renamedFile.GetFullPath().c_str());
       return false;
    }
 
@@ -1028,7 +1027,9 @@ bool DirManager::EnsureSafeFilename(wxFileName fName)
          }
 
          // Print error message and cancel the export
-         wxMessageBox(errStr);
+         wxLogSysError(_("Unable to rename '%s' to '%s'"),
+                       fName.GetFullPath().c_str(),
+                       renamedFile.GetFullPath().c_str());
          return false;
       }
 
