@@ -12,6 +12,7 @@
 #define __AUDACITY_EXPANDING_TOOL_BAR__
 
 #include <wx/defs.h>
+#include <wx/dialog.h>
 #include <wx/dynarray.h>
 #include <wx/panel.h>
 #include <wx/hashmap.h>
@@ -26,6 +27,7 @@ class AButton;
 
 class ExpandingToolBar;
 class ToolBarFrame;
+class ToolBarDialog;
 class ToolBarArea;
 class ToolBarGrabber;
 
@@ -103,6 +105,7 @@ class ExpandingToolBar : public wxPanel
    WindowHash mWindowHash;
    wxTimer mTimer;
    ToolBarFrame *mFrameParent;
+   ToolBarDialog *mDialogParent;
    ToolBarArea *mAreaParent;
    ToolBarArrangement *mSavedArrangement;
    ImageRollPanel *mTargetPanel;
@@ -139,6 +142,28 @@ class ToolBarGrabber : public wxPanel
    ExpandingToolBar *mOwnerToolBar;
    
    DECLARE_EVENT_TABLE();
+};
+
+class ToolBarDialog : public wxDialog
+{
+ public:
+   DECLARE_DYNAMIC_CLASS(ToolBarDialog)
+
+   ToolBarDialog(wxWindow* parent,
+                 wxWindowID id,
+                 const wxString& name = wxEmptyString,
+                 const wxPoint& pos = wxDefaultPosition);
+
+   ~ToolBarDialog();
+
+   virtual void Fit();
+
+   void SetChild(ExpandingToolBar *child);
+
+ protected:
+   ExpandingToolBar *mChild;
+
+   DECLARE_EVENT_TABLE()
 };
 
 class ToolBarFrame : public wxMiniFrame
