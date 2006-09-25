@@ -80,7 +80,7 @@ void ReplaceBlockFiles(AudacityProject *project,
 
    int i;
    for(i=0; i<(int)blocks.GetCount(); i++) {
-      if (hash[blocks[i]->f]) {
+      if(hash.count(blocks[i]->f) > 0) {
          BlockFile *src = blocks[i]->f;
          BlockFile *dst = hash[src];
 
