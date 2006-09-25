@@ -60,8 +60,8 @@ const int Dither::BUF_SIZE = 8;
 // Lipshitz's minimally audible FIR
 const float Dither::SHAPED_BS[] = { 2.033f, -2.165f, 1.959f, -1.590f, 0.6149f };
 
-// This is supposed to produce white noise
-#define DITHER_NOISE (rand() / (float)RAND_MAX)
+// This is supposed to produce white noise and no dc
+#define DITHER_NOISE (rand() / (float)RAND_MAX - 0.5f)
 
 // The following is a rather ugly, but fast implementation
 // of a dither loop. The macro "DITHER" is expanded to an implementation
@@ -70,13 +70,12 @@ const float Dither::SHAPED_BS[] = { 2.033f, -2.165f, 1.959f, -1.590f, 0.6149f };
 // be quite fast.
 
 // Defines for sample conversion
-#define CONVERT_HALF float(0.5)
-#define CONVERT_DIV16 float(32767.5)
-#define CONVERT_DIV24 float(8388607.5)
+#define CONVERT_DIV16 float(1<<15)
+#define CONVERT_DIV24 float(1<<23)
 
 // Dereference sample pointer and convert to float sample
-#define FROM_INT16(ptr) ((*((short*)(ptr)) + CONVERT_HALF) / CONVERT_DIV16)
-#define FROM_INT24(ptr) ((*((int*)(ptr)) + CONVERT_HALF) / CONVERT_DIV24)
+#define FROM_INT16(ptr) (*((short*)(ptr)) / CONVERT_DIV16)
+#define FROM_INT24(ptr) (*((  int*)(ptr)) / CONVERT_DIV24)
 #define FROM_FLOAT(ptr) (*((float*)(ptr)))
 
 // Promote sample to range of specified type, keep it float, though
@@ -271,7 +270,7 @@ inline float Dither::RectangleDither(float sample)
 // Triangle dither - high pass filtered
 inline float Dither::TriangleDither(float sample)
 {
-    float r = DITHER_NOISE - 0.5f;
+    float r = DITHER_NOISE;
     float result = sample + r - mTriangleState;
     mTriangleState = r;
 
@@ -282,7 +281,7 @@ inline float Dither::TriangleDither(float sample)
 inline float Dither::ShapedDither(float sample)
 {
    // Generate triangular dither, +-1 LSB, flat psd
-    float r = DITHER_NOISE + DITHER_NOISE - 1.0f;
+    float r = DITHER_NOISE + DITHER_NOISE;
 
     // Run FIR
     float xe = sample + mBuffer[mPhase] * SHAPED_BS[0]
