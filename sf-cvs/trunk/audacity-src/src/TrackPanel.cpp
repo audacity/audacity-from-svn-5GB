@@ -1951,8 +1951,7 @@ void TrackPanel::StartSlide(wxMouseEvent & event)
    ToolsToolBar * ttb = mListener->TP_GetToolsToolBar();
    bool multiToolModeActive = (ttb && ttb->IsDown(multiTool));
 
-   if (vt->GetKind() == Track::Wave && !event.ShiftDown() &&
-       ((event.ControlDown() && event.ShiftDown()) || !multiToolModeActive))
+   if (vt->GetKind() == Track::Wave && !event.ShiftDown())
    {
       WaveTrack* wt = (WaveTrack*)vt;
       mCapturedClip = wt->GetClipAtX(event.m_x);
@@ -3979,8 +3978,9 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
    // From here on the order in which we hit test determines 
    // which tool takes priority in the rare cases where it
    // could be more than one.
-   } else if (event.ControlDown() && event.ShiftDown()){
-      // msmeyer: If control and shift are down, slide single clip
+   } else if (event.ControlDown()){
+      // msmeyer: If control is down, slide single clip
+      // msmeyer: If control and shift are down, slide all clips
       currentTool = slideTool;
    } else if( HitTestEnvelope( pTrack, r, event ) ){
       currentTool = envelopeTool;
