@@ -2,8 +2,13 @@
 # Builds the real makefile
 #
 
-all: ..\*.c
-   @echo off
+all: so_files build
+
+so_files:
+	-mkdir so_files
+	-move ..\*.so.c so_files
+
+build: ..\*.c
    -rename ..\config.h configold.h
    cd "$(OUTDIR)"
    echo >unistd.h /* dummy file */
@@ -16,7 +21,6 @@ all: ..\*.c
    -rename ..\configold.h config.h
 
 clean:
-   @echo off
    cd "$(OUTDIR)"
    -del *.dll *.exp *.lib *.obj *.pdb *.ilk unistd.h submake
    cd ..
