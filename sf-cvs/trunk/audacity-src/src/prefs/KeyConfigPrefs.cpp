@@ -292,7 +292,18 @@ void KeyConfigPrefs::RepopulateBindingsList()
    unsigned int i;
    for(i=0; i<mNames.GetCount(); i++) {
       mList->InsertItem( i, wxT("") );
-      wxString label = mManager->GetPrefixedLabelFromName(mNames[i]);
+      wxString label;
+      
+      // Labels for undo and redo change according to the last command
+      // which can be undone/redone, so give them a special check in order
+      // not to confuse users
+      if (mNames[i] == wxT("Undo"))
+         label = _("Undo");
+      else if (mNames[i] == wxT("Redo"))
+         label = _("Redo");
+      else
+         label = mManager->GetPrefixedLabelFromName(mNames[i]);
+      
       label = wxMenuItem::GetLabelFromText(label.BeforeFirst('\t'));
       wxString key = mManager->GetKeyFromName(mNames[i]);
 
