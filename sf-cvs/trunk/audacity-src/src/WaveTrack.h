@@ -352,6 +352,7 @@ class WaveTrack: public Track {
 
    wxCriticalSection mFlushCriticalSection;
    wxCriticalSection mAppendCriticalSection;
+   double mLegacyProjectFileOffset;
 
 };
 

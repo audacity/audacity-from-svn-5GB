@@ -62,6 +62,8 @@ WaveTrack::WaveTrack(DirManager *projDirManager, sampleFormat format, double rat
 
    mDisplay = 0; // Move to GUIWaveTrack
 
+   mLegacyProjectFileOffset = 0;
+
    mFormat = format;
    mRate = (int) rate;
    mGain = 1.0;
@@ -79,6 +81,8 @@ WaveTrack::WaveTrack(WaveTrack &orig):
    Track(orig)
 {
    mDisplay = 0; // Move to GUIWaveTrack
+
+   mLegacyProjectFileOffset = 0;
 
    Init(orig);
 
@@ -906,9 +910,12 @@ bool WaveTrack::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
          if (!wxStrcmp(attr, wxT("rate")))
             mRate = wxAtoi(value);
          else if (!wxStrcmp(attr, wxT("offset"))) {
+            // Offset is only relevant for legacy project files. The value
+            // is cached until the actual WaveClip containing the legacy
+            // track is created.
             double ofs = 0.0;
             Internat::CompatibleToDouble(wxString(value), &ofs);
-            GetLastOrCreateClip()->SetOffset(ofs);
+            mLegacyProjectFileOffset = ofs;
          }
          else if (!wxStrcmp(attr, wxT("gain"))) {
             double d;
@@ -947,10 +954,17 @@ XMLTagHandler *WaveTrack::HandleXMLChild(const wxChar *tag)
    //
    // This is legacy code (1.2 and previous) and is not called for new projects!
    //
-   if (!wxStrcmp(tag, wxT("sequence")))
-      return GetLastOrCreateClip()->GetSequence();
-   else if (!wxStrcmp(tag, wxT("envelope")))
-      return GetLastOrCreateClip()->GetEnvelope();
+   if (!wxStrcmp(tag, wxT("sequence")) || !wxStrcmp(tag, wxT("envelope")))
+   {
+      // This is a legacy project, so set the cached offset
+      GetLastOrCreateClip()->SetOffset(mLegacyProjectFileOffset);
+ 
+      // Legacy project file tracks are imported as one single wave clip
+      if (!wxStrcmp(tag, wxT("sequence")))
+         return GetLastOrCreateClip()->GetSequence();
+      else if (!wxStrcmp(tag, wxT("envelope")))
+         return GetLastOrCreateClip()->GetEnvelope();
+   }
    
    //
    // This is for the new file format (post-1.2)
