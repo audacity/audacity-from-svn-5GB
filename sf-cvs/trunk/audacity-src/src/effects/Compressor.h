@@ -41,6 +41,7 @@ public:
    }
    
    virtual bool PromptUser();
+   virtual bool TransferParameters( Shuttle & shuttle );
 
  protected:
    virtual bool ProcessPass1(float *buffer, sampleCount len);
