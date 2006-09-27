@@ -18,6 +18,7 @@
 #define descriptorFnName "ladspa_descriptor"
 
 #include <wx/dynlib.h>
+#include <wx/hashmap.h>
 #include <wx/list.h>
 #include <wx/log.h>
 #include <wx/string.h>
@@ -29,7 +30,7 @@
 #include "../../Internat.h"
 #include "LadspaEffect.h"
 
-void LoadLadspaEffect(wxString fname)
+void LoadLadspaEffect(wxSortedArrayString &uniq, wxString fname)
 {
    wxLogNull logNo;
    LADSPA_Descriptor_Function mainFn = NULL;
@@ -53,9 +54,14 @@ void LoadLadspaEffect(wxString fname)
 
       data = mainFn(index);
       while(data) {
-         LadspaEffect *effect = new LadspaEffect(data);
-         Effect::RegisterEffect(effect);
-         
+
+         wxString uniqid = wxString::Format(wxT("%08x-%s"), data->UniqueID, data->Label);
+         if (uniq.Index(uniqid) == wxNOT_FOUND) {
+            uniq.Add(uniqid);
+            LadspaEffect *effect = new LadspaEffect(data);
+            Effect::RegisterEffect(effect);
+         }
+            
          // Get next plugin
          index++;
          data = mainFn(index);            
@@ -70,6 +76,7 @@ void LoadLadspaPlugins()
    wxArrayString audacityPathList = wxGetApp().audacityPathList;
    wxArrayString pathList;
    wxArrayString files;
+   wxSortedArrayString uniq;
    wxString pathVar;
    unsigned int i;
 
@@ -105,7 +112,7 @@ void LoadLadspaPlugins()
    #endif
 
    for(i=0; i<files.GetCount(); i++)
-      LoadLadspaEffect(files[i]);
+      LoadLadspaEffect(uniq, files[i]);
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
