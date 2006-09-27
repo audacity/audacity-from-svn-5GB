@@ -592,8 +592,6 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
    gridSizer->AddGrowableCol(3);
 
    for (p = 0; p < numParams; p++) {
-      bool toggle = false;
-
       item = new wxStaticText(w, 0, wxString(mData->PortNames[ports[p]], wxConvISO8859_1));
       gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
