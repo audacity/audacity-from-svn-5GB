@@ -44,6 +44,7 @@
 #include "../WaveTrack.h"
 #include "../widgets/Ruler.h"
 #include "../AColor.h"
+#include "../Shuttle.h"
 
 EffectCompressor::EffectCompressor()
 {
@@ -55,6 +56,15 @@ EffectCompressor::EffectCompressor()
    mThresholdDB = -12.0;
    mCircle = NULL;
 	mLevelCircle = NULL;
+}
+
+bool EffectCompressor::TransferParameters( Shuttle & shuttle )
+{
+   shuttle.TransferDouble( wxT("Threshold"), mThresholdDB, -12.0f );
+   shuttle.TransferDouble( wxT("Ratio"), mRatio, 2.0f );
+   shuttle.TransferDouble( wxT("Attack Time"), mAttackTime, 0.2f );
+   shuttle.TransferBool( wxT("Normalize"), mNormalize, true );
+   return true;
 }
 
 bool EffectCompressor::PromptUser()
