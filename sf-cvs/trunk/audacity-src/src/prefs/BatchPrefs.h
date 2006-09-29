@@ -14,6 +14,7 @@
 
 #include <wx/defs.h>
 #include <wx/string.h>
+#include <wx/button.h>
 
 #include "PrefsPanel.h"
 #include "../BatchCommands.h"
