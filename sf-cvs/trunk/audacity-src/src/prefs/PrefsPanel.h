@@ -56,6 +56,7 @@ public:
    
    virtual ~ PrefsPanel() {}
    virtual bool Apply() = 0;
+   virtual void Cancel() {};
 protected:
    wxBoxSizer *topSizer;
    wxBoxSizer *outSizer;

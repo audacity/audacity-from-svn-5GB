@@ -55,6 +55,7 @@ wxString SpecialCommands[] = {
    wxT("Save Hq Master2"),
    wxT("Stereo To Mono"),
    wxT("ExportMp3"),
+   wxT("ExportOgg"),
    wxT("ExportWav")
 };
 
@@ -167,7 +168,7 @@ void BatchCommands::LoadChain( wxWindow *parent )
 void BatchCommands::SaveChain( wxWindow *parent )
 {
    // Get the initial path
-   wxString pName = gPrefs->Read( wxT("/DefaultExportPath"),
+   wxString pName = gPrefs->Read( wxT("/DefaultChainPath"),
                                   ::wxGetCwd() );
 
    // Get last used filename
@@ -441,24 +442,30 @@ bool BatchCommands::WriteMp3File( const wxString Name, int bitrate )
 bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,const wxString params)
 {
    AudacityProject *project = GetActiveProject();
-   wxString filename = project->BuildCleanFileName(mFileName);
+   wxString filename;
    int numChannels = 1;		//used to switch between mono and stereo export
    if (IsMono()) {
-	numChannels = 1;	//export in mono
+      numChannels = 1;	//export in mono
    } else {
-	numChannels = 2;	//export in stereo
+      numChannels = 2;	//export in stereo
    }
-
 
    if( ReportAndSkip(command, params))
       return true;
+
+   if (mFileName.IsEmpty()) {   
+      filename = project->BuildCleanFileName(project->GetFileName());
+   }
+   else {
+      filename = project->BuildCleanFileName(mFileName);
+   }
 
    // We have a command index, but we don't use it!
    // TODO: Make this special-batch-command code use the menu item code....
    // FIX-ME: No error reporting on write file failure in batch mode.
    if( command == wxT("No Action")){
       return true;
-   } else if (command == wxT("Import") ){
+   } else if (!mFileName.IsEmpty() && command == wxT("Import") ){
       project->OnRemoveTracks();
       project->Import(mFileName);
       project->OnSelectAll();
@@ -586,22 +593,31 @@ bool BatchCommands::ApplyCommandInBatchMode(const wxString & command, const wxSt
    return rc;
 }
 
-
-// ApplyBatchToNamedFile returns true on success, false otherwise.
+// ApplyChain returns true on success, false otherwise.
 // Any error reporting to the user has already been done.
-bool BatchCommands::ApplyBatchToNamedFile(const wxString & filename)
+bool BatchCommands::ApplyChain(const wxString & name, const wxString & filename)
 {
+   wxArrayString *chain = GetChain(name);
    mFileName = filename;
    unsigned int i;
+   bool res = true;
 
    mAbort = false;
 
-   for(i=0;i<mCommandChain.GetCount();i++)
-   {
-      if(!ApplyCommandInBatchMode( mCommandChain[i], mParamsChain[i]) || mAbort)
-         return false;
+   for (i = 0; i < chain->GetCount(); i++) {
+      wxString command;
+      wxString params;
+
+      Split((*chain)[i], command, params);
+      if (!ApplyCommandInBatchMode(command, params) || mAbort) {
+         res = false;
+         break;
+      }
    }
-   return true;
+
+   mFileName.Empty();
+
+   return res;
 }
 
 // AbortBatch() allows a premature terminatation of a batch.
@@ -656,6 +672,293 @@ bool BatchCommands::ReportAndSkip(const wxString command, const wxString params)
          _("Test Mode"));
    }
    return true;
+}
+
+void BatchCommands::ReadChains()
+{
+   wxString groupName;
+   long groupNdx;
+
+   mCommandChains.empty();
+   RestoreChain(wxT("CleanSpeech"));
+   RestoreChain(wxT("MP3 Conversion"));
+
+   wxString oldPath = gPrefs->GetPath();
+
+   gPrefs->SetPath(wxT("/Batch/Chains"));
+
+   if (gPrefs->GetFirstGroup(groupName, groupNdx)) {
+      do {
+         gPrefs->SetPath(groupName);
+
+         wxArrayString chain;
+         wxString entryName;
+         long entryNdx;
+         if (gPrefs->GetFirstEntry(entryName, entryNdx)) {
+            do {
+               wxString cmd = gPrefs->Read(entryName, wxT(""));
+               if (cmd.Length()) {
+                  chain.Add(cmd);
+               }
+            } while (gPrefs->GetNextEntry(entryName, entryNdx));
+         }
+         mCommandChains[groupName] = chain;
+
+         gPrefs->SetPath(wxT(".."));
+      } while (gPrefs->GetNextGroup(groupName, groupNdx));
+   }
+
+   gPrefs->SetPath(oldPath);
+}
+
+void BatchCommands::WriteChains()
+{
+   wxString groupName;
+
+   wxString oldPath = gPrefs->GetPath();
+
+   gPrefs->DeleteGroup(wxT("/Batch/Chains"));
+   gPrefs->SetPath(wxT("/Batch/Chains"));
+
+   CommandChains::iterator it;
+   for (it = mCommandChains.begin(); it != mCommandChains.end(); it++)
+   {
+      wxString groupName = it->first;
+      wxArrayString chain = it->second;
+
+      gPrefs->SetPath(groupName);
+
+      for (int i = 0; i < chain.GetCount(); i++) {
+         gPrefs->Write(wxString::Format(wxT("%d"), i), chain[i]);
+      }
+
+      gPrefs->SetPath(wxT(".."));
+   } 
+
+   gPrefs->SetPath(oldPath);
+}
+
+void BatchCommands::FlushChains()
+{
+   mCommandChains.clear();
+}
+
+wxArrayString * BatchCommands::GetChain(const wxString & name)
+{
+   return &mCommandChains[name];
+}
+
+wxArrayString * BatchCommands::RenameChain(const wxString & oldname, const wxString & newname)
+{
+   wxArrayString chain = *(GetChain(oldname));
+   mCommandChains.erase(oldname);
+   mCommandChains[newname] = chain;
+
+   return GetChain(newname);
+}
+
+void BatchCommands::DeleteChain(const wxString & name)
+{
+   mCommandChains.erase(name);
+}
+
+bool BatchCommands::IsFixed(const wxString & name)
+{
+   if (name == wxT("CleanSpeech") || name == wxT("MP3 Conversion")) {
+      return true;
+   }
+
+   return false;
+}
+
+int BatchCommands::GetChainCount()
+{
+   return (int) mCommandChains.size();
+}
+
+wxArrayString BatchCommands::GetChainNames()
+{
+   wxArrayString names;
+
+   CommandChains::iterator it;
+   for (it = mCommandChains.begin(); it != mCommandChains.end(); it++)
+   {
+      names.Add(it->first);
+   } 
+
+   return names;
+}
+
+
+wxArrayString * BatchCommands::RestoreChain(const wxString & name)
+{
+
+// TIDY-ME: Effects change their name with localisation.
+// Commands (at least currently) don't.  Messy.
+
+/* i18n-hint: Effect name translations must agree with those used elsewhere, or batch won't find them */
+
+   wxArrayString *chain = GetChain(name);
+   chain->Empty();
+
+   if (name == wxT("CleanSpeech")) {
+      chain->Add(Defaults(wxT("Import")));
+      chain->Add(Defaults(  _("Stereo To Mono")));
+      chain->Add(Defaults(  _("Normalize")));
+      chain->Add(Defaults(wxT("Save Hq Master1")));
+      chain->Add(Defaults(  _("Noise Removal")));
+      chain->Add(Defaults(  _("Truncate Silence")));
+      chain->Add(Defaults(  _("Leveller")));
+      chain->Add(Defaults(  _("Normalize")));
+      chain->Add(Defaults(wxT("ExportMp3")));
+   }
+   else if (name == wxT("MP3 Conversion")) {
+      chain->Add(Defaults(wxT("Import")));
+      chain->Add(Defaults(  _("Normalize")));
+      chain->Add(Defaults(wxT("ExportMp3")));
+   }
+
+   return chain;
+}
+
+void BatchCommands::ImportChain( wxWindow *parent, const wxString & name )
+{
+   // Get the initial path
+   wxString pName = gPrefs->Read( wxT("/Batch/DefaultChainPath"),
+                                  ::wxGetCwd() );
+
+   // Prompt user for a file name
+   wxString fName = wxFileSelector( _("Select a command chain file..."),
+                                    pName,                     // Path
+                                    name + wxT(".txt"),        // Name
+                                    wxT("txt"),                // Extension
+                                    _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                                    0,                         // Flags
+                                    parent);                   // Parent
+
+   // Nothing to do
+   if( !fName )
+      return;
+
+   // Remember path
+   gPrefs->Write( wxT("/Batch/DefaultChainPath"), wxPathOnly( fName ) );
+
+   // Set the file name
+   wxTextFile tf( fName );
+
+   // Open and check
+   tf.Open();
+   if( !tf.IsOpened() )
+   {
+      // wxTextFile will display any errors
+      return;
+   }
+
+   // Clear any previous chain
+   wxArrayString *chain = GetChain( name );
+   chain->Clear();
+
+   // Load commands from the file
+   int i;
+   int lines = tf.GetLineCount();
+   for( i = 0; i < lines; i++ )
+   {
+      chain->Add( tf[ i ] );
+   }
+
+   // Done with the file
+   tf.Close();
+}
+
+void BatchCommands::ExportChain( wxWindow *parent, const wxString & name )
+{
+   // Get the initial path
+   wxString pName = gPrefs->Read( wxT("/DefaultChainPath"),
+                                  ::wxGetCwd() );
+
+   // Prompt user for a file name
+   wxString fName = wxFileSelector( _("Save command chain As:"),
+                                    pName,                        // Path
+                                    name + wxT(".txt"),           // Name
+                                    wxT("txt"),                   // Extension
+                                    _("Text files (*.txt)|*.txt|All files (*.*)|*.*"),
+                                    wxSAVE | wxOVERWRITE_PROMPT,  // Flags
+                                    parent );                     // Parent
+
+   // Nothing to do
+   if( !fName )
+      return;
+
+   // Remember path
+   gPrefs->Write( wxT("/DefaultChainPath"), wxPathOnly( fName ) );
+
+   // Set the file name
+   wxTextFile tf( fName );
+
+   // (Possibly) create new file
+   if( !tf.Exists() )
+   {
+      tf.Create();
+   }
+
+   // Open and check
+   tf.Open();
+   if( !tf.IsOpened() )
+   {
+      // wxTextFile will display any errors
+      return;
+   }
+
+   // Start with a clean slate
+   tf.Clear();
+
+   // Copy over the commands
+   wxArrayString *chain = GetChain( name );
+   int i;
+   int lines = chain->GetCount();
+   for( i = 0; i < lines; i++ )
+   {
+      tf.AddLine( (*chain)[i] );
+   }
+
+   // Write the chain
+   tf.Write();
+
+   // Done with the file
+   tf.Close();
+}
+
+void BatchCommands::Split(const wxString & str, wxString & command, wxString & param)
+{
+   int splitAt;
+   int i;
+
+   command.Empty();
+   param.Empty();
+
+   if (str.IsEmpty()) {
+      return;
+   }
+
+   splitAt = str.Find(wxT(':'));
+   if (splitAt < 0) {
+      return;
+   }
+
+   command = str.Mid(0, splitAt);
+   param = str.Mid(splitAt + 1);
+
+   return;
+}
+
+wxString BatchCommands::Join(const wxString & command, const wxString & param)
+{
+   return command + wxT(": ") + param;
+}
+
+wxString BatchCommands::Defaults(const wxString & command)
+{
+   return Join(command, GetCurrentParamsFor(command));
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

@@ -264,6 +264,7 @@ void OnAnalyzePlugin(int index);
         //lda CleanSpeech Menu
 
 void OnBatch();
+void OnEditChains();
 void OnImportCleanSpeechPresets();
 void OnExportCleanSpeechPresets();
 void OnStereoToMono(int index);

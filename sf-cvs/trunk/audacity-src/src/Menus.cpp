@@ -76,6 +76,7 @@ simplifies construction of menu items.
 #include "Resample.h"
 #include "BatchProcessDialog.h"
 #include "BatchCommands.h"
+#include "prefs/BatchPrefs.h"
 
 #include "toolbars/ToolManager.h"
 #include "toolbars/ControlToolBar.h"
@@ -325,6 +326,7 @@ void AudacityProject::CreateMenusAndCommands()
    {
       c->AddItem(wxT("BatchProcess"),     _("Process &Batch..."),   FN(OnBatch));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
+      c->AddItem(wxT("EditChains"),       _("Edit Chains..."),   FN(OnEditChains));
    }
 
    c->AddSeparator();
@@ -4153,58 +4155,25 @@ void AudacityProject::OnImportCleanSpeechPresets()
 
 void AudacityProject::OnBatch()
 {
-   wxUint32 flags = GetTrackFlags();
-   size_t numProjects = gAudacityProjects.Count();
-   if (numProjects != 1) 
-   {
-      wxMessageBox(_("Please close all Audacity projects first."));
-      return;
-   }
-   if( (flags & TracksExistFlag) != 0)
-   {
-      wxMessageBox(_("Please save and close the current project first."));
-      return;
-   }
+   BatchProcessDialog d(this);
+   d.ShowModal();
+}
 
-   // Create (hidden) batch processing dialog, so that we can 
-   // query the batch command list and see if there is a sensible
-   // set of batch commands.
-   BatchProcessDialog batchProcessDlg( this, -1 );
-   wxString batchWarnings = batchProcessDlg.mBatchCommands->GetChainWarnings();
-   if( !batchWarnings.IsEmpty() )
-   {
-      wxMessageBox( batchWarnings + 
-         _("\n\nPlease edit the batch chain in preferences."));
-      return;
-   }
-   
-   wxString path = gPrefs->Read(wxT("/DefaultOpenPath"), ::wxGetCwd());
-   wxString prompt =  mCleanSpeechMode ? 
-      _("Select vocal file(s) for batch CleanSpeech Chain...") :
-      _("Select file(s) for batch processing...");
-   wxString fileSelector = mCleanSpeechMode ? 
-      _("Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3") :
-      _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac"
-//      "|List of Files (*.lof)|*.lof"
-       );
-
-   wxFileDialog dlog(NULL, prompt,
-                     path, wxT(""),fileSelector,
-                     wxOPEN | wxMULTIPLE);
-
-   if (dlog.ShowModal() != wxID_OK) {
-      return;
-   }
-
-   wxArrayString selectedFiles;
-   dlog.GetPaths(selectedFiles);
-
-   selectedFiles.Sort();
-
-   batchProcessDlg.PopulateList( selectedFiles );
-   // ShowModal() gives a progress screen and also applies the chain.
-   batchProcessDlg.ShowModal();
-   return;
+void AudacityProject::OnEditChains()
+{
+   EditChainsDialog d(this);
+   d.ShowModal();
+#if 0
+   wxDialog d(this, wxID_ANY, _("Edit Chains"), wxDefaultPosition, wxSize(500, 500));
+   wxBoxSizer *s = new wxBoxSizer(wxVERTICAL);
+   BatchPrefs *b = new BatchPrefs(&d);
+   s->Add(b);
+   s->Add(d.CreateButtonSizer(wxOK | wxCANCEL));
+   d.SetSizerAndFit(s);
+   d.Layout();
+   d.ShowModal();
+   b->Destroy();
+#endif
 }
 
 wxString AudacityProject::BuildCleanFileName(wxString fileName)
