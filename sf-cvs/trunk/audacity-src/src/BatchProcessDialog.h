@@ -25,6 +25,9 @@
 #include  <wx/menuitem.h>
 #include  <wx/checklst.h>
 
+#include "ShuttleGui.h"
+#include "BatchCommands.h"
+
 class wxWindow;
 class wxCheckBox;
 class wxChoice;
@@ -34,33 +37,72 @@ class wxRadioButton;
 class wxListCtrl;
 class wxListEvent;
 class wxButton;
-class BatchCommands;
 
 class BatchProcessDialog:public wxDialog {
  public:
    // constructors and destructors
-   BatchProcessDialog(wxWindow * parent, wxWindowID id);
+   BatchProcessDialog(wxWindow * parent);
    virtual ~BatchProcessDialog();
  public:
-	bool ProcessOne( const wxString Filename );
-	void DoProcessing();
-   void OnChoice(wxCommandEvent & event);
-   void OnOk(wxCommandEvent & event);
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+
+   void OnApplyToProject(wxCommandEvent & event);
+   void OnApplyToFiles(wxCommandEvent & event);
    void OnCancel(wxCommandEvent & event);
 
-   void ValidateChoices();
-   void PopulateList(wxArrayString fileList);
-
-   wxButton   *mOK;
-   wxButton   *mCancel;
+   wxButton *mOK;
+   wxButton *mCancel;
+   wxListCtrl *mChains;
    wxListCtrl *mList;
-   BatchCommands * mBatchCommands;
+   BatchCommands mBatchCommands;
 
    bool mAbort;
 
    DECLARE_EVENT_TABLE()
 };
 
+class EditChainsDialog:public wxDialog
+{
+public:
+   EditChainsDialog(wxWindow * parent);
+   ~EditChainsDialog();
+
+private:
+   void Populate();
+   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateChains();
+	void PopulateList();
+   void AddItem( wxString const & Action, wxString const & Params);
+	void SetItem( int ItemNo, const wxString command, const wxString params );
+
+   void OnOK(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
+   void OnAdd(wxCommandEvent &event);
+   void OnRemove(wxCommandEvent &event);
+   void OnRename(wxCommandEvent &event);
+   void OnUp(wxCommandEvent &event);
+   void OnDown(wxCommandEvent &event);
+   void OnImport(wxCommandEvent &event);
+   void OnExport(wxCommandEvent &event);
+   void OnDefaults(wxCommandEvent &event);
+   void OnChainSelected(wxListEvent &event);
+   void OnChainsBeginEdit(wxListEvent &event);
+   void OnChainsEndEdit(wxListEvent &event);
+   void OnItemSelected(wxListEvent &event);
+
+   wxListCtrl * mChains; /// List of chains.
+   wxListCtrl * mList;   /// List of commands in current command chain.
+   wxButton * mRemove;
+   wxButton * mRename;
+   wxButton * mDefaults;
+
+   BatchCommands mBatchCommands;  /// Provides list of available commands.
+   wxString mActiveChain;
+   wxArrayString *mChain;
+
+   DECLARE_EVENT_TABLE();
+};
 
 #endif
 

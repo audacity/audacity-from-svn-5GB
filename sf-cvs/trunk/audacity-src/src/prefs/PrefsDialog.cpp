@@ -220,6 +220,12 @@ PrefsDialog::PrefsDialog(wxWindow * parent):
 
 void PrefsDialog::OnCancel(wxCommandEvent & event)
 {
+   int i;
+
+   for (i = 0; i < (int)mCategories->GetPageCount(); i++) {
+      ((PrefsPanel *) mCategories->GetPage(i))->Cancel();
+   }
+
    EndModal(0);
 }
 

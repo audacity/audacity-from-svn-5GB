@@ -29,26 +29,39 @@ public:
    BatchPrefs(wxWindow * parent);
    ~BatchPrefs();
    virtual bool Apply();
+   virtual void Cancel();
 
 private:
    void Populate();
    void PopulateOrExchange( ShuttleGui & S );
+   void PopulateChains();
+	void PopulateList();
    void AddItem( wxString const & Action, wxString const & Params);
 	void SetItem( int ItemNo, const wxString command, const wxString params );
-	void PopulateList();
-   void CreateList();
 
+   void OnAdd(wxCommandEvent &event);
+   void OnRemove(wxCommandEvent &event);
+   void OnRename(wxCommandEvent &event);
+   void OnUp(wxCommandEvent &event);
+   void OnDown(wxCommandEvent &event);
+   void OnImport(wxCommandEvent &event);
+   void OnExport(wxCommandEvent &event);
+   void OnDefaults(wxCommandEvent &event);
+   void OnChainSelected(wxListEvent &event);
+   void OnChainsBeginEdit(wxListEvent &event);
+   void OnChainsEndEdit(wxListEvent &event);
    void OnItemSelected(wxListEvent &event);
-   void OnDrag(wxListEvent &event);
-   void OnDragEnd(wxListEvent &event);
-   void OnSetChainMp3(wxCommandEvent &event);
-   void OnSetChainCleanSpeech(wxCommandEvent &event);
-   void OnSetChainEmpty(wxCommandEvent &event);
-   void OnLoad(wxCommandEvent &event);
-   void OnSave(wxCommandEvent &event);
 
+   wxListCtrl * mChains; /// List of chains.
    wxListCtrl * mList;   /// List of commands in current command chain.
+   wxButton * mRemove;
+   wxButton * mRename;
+   wxButton * mDefaults;
+
    BatchCommands mBatchCommands;  /// Provides list of available commands.
+   wxString mActiveChain;
+   wxArrayString *mChain;
+
    DECLARE_EVENT_TABLE();
 };
 
