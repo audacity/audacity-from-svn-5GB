@@ -31,6 +31,7 @@ and on Mac OS X for the filesystem.
 #endif
 
 #include <locale.h>
+#include <math.h> // for pow()
 
 wxChar Internat::mDecimalSeparator = wxT('.'); // default
 wxMBConv *Internat::mConvLocal = NULL;
