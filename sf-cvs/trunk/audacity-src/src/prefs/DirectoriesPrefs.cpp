@@ -67,7 +67,7 @@ void DirectoriesPrefs::Populate( )
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
    wxLongLong freeSpace;
    wxGetDiskSpace(mTempDir, NULL, &freeSpace);
-   mStrFreeSpace = FormatSize(freeSpace);
+   mStrFreeSpace = Internat::FormatSize(freeSpace);
    //------------------------- Main section --------------------
    // Now construct the GUI itself.
    // Use 'eIsCreatingFromPrefs' so that the GUI is 
@@ -108,34 +108,6 @@ void DirectoriesPrefs::PopulateOrExchange( ShuttleGui & S )
    S.EndStatic();
 }
 
-wxString DirectoriesPrefs::FormatSize(wxLongLong size)
-{
-   wxString sizeStr;
-
-   /* wxLongLong contains no built-in conversion to double */
-   double dSize = size.GetHi() * pow(2.0, 32);  // 2 ^ 32
-   dSize += size.GetLo();
-
-   if (size == -1L)
-      sizeStr = _("Unable to determine");
-   else {
-      /* make it look nice, by formatting into k, MB, etc */
-      if (size < 1024)
-         sizeStr.sprintf(wxT("%ld bytes"), size.GetLo());
-      else if (size < 1024 * 1024) {
-         sizeStr.sprintf(wxT("%.1f kB"), dSize / 1024);
-      }
-      else if (size < 1024 * 1024 * 1024) {
-         sizeStr.sprintf(wxT("%.1f MB"), dSize / (1024 * 1024));
-      }
-      else {
-         sizeStr.sprintf(wxT("%.1f GB"), dSize / (1024 * 1024 * 1024));
-      }
-   }
-
-   return sizeStr;
-}
-
 void DirectoriesPrefs::OnChooseTempDir(wxCommandEvent &event)
 {
    wxDirDialog dlog(this, 
@@ -174,7 +146,7 @@ void DirectoriesPrefs::UpdateFreeSpace(wxCommandEvent &event)
 
    //BG: wxWindows 2.3.2 and higher claim to support this, through a function called wxGetDiskSpace
    wxGetDiskSpace(tempDir, NULL, &space);
-   mFreeSpace->SetLabel(FormatSize(space));
+   mFreeSpace->SetLabel(Internat::FormatSize(space));
 }
    
 bool DirectoriesPrefs::Apply()

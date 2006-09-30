@@ -24,12 +24,12 @@
 
 class AliasedFile {
  public:
-  AliasedFile(wxFileName fileName, int bytes) {
+  AliasedFile(wxFileName fileName, double bytes) {
     this->fileName = fileName;
     this->bytes = bytes;
   }
   wxFileName  fileName;
-  int         bytes; // if stored as current default sample format
+  double      bytes; // if stored as current default sample format
 };
 
 class AudacityProject;

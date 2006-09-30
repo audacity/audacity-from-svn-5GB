@@ -23,6 +23,7 @@
 #include "BlockFile.h"
 #include "Dependencies.h"
 #include "DirManager.h"
+#include "Internat.h"
 #include "Project.h"
 #include "ShuttleGui.h"
 #include "Prefs.h"
@@ -288,7 +289,7 @@ void DependencyDialog::PopulateOrExchange(ShuttleGui& S)
          mFileList = S.Id(FileListID).AddListControlReportMode();
          mFileList->InsertColumn(0, _("Audio file"));
          mFileList->SetColumnWidth(0, 220);
-         mFileList->InsertColumn(1, _("Disk space (MB)"));
+         mFileList->InsertColumn(1, _("Disk space"));
          mFileList->SetColumnWidth(1, 120);
          PopulateList();
 
@@ -343,13 +344,11 @@ void DependencyDialog::PopulateList()
    unsigned int i;
    for(i=0; i<mAliasedFiles->GetCount(); i++) {
       wxFileName fileName = mAliasedFiles->Item(i).fileName;
-      int bytes = mAliasedFiles->Item(i).bytes;
-
+      double bytes = mAliasedFiles->Item(i).bytes;
       double overhead = 1.24;
-      double MB = bytes * overhead / 1048576.0;
 
       mFileList->InsertItem(i, fileName.GetFullPath());
-      mFileList->SetItem(i, 1, wxString::Format(_("%.1f MB"), MB));
+      mFileList->SetItem(i, 1, Internat::FormatSize(bytes * overhead));
       mFileList->SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
    }
 }
