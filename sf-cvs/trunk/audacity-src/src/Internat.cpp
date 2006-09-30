@@ -158,6 +158,39 @@ wxString Internat::ToDisplayString(double numberToConvert,
    return result;
 }
 
+wxString Internat::FormatSize(wxLongLong size)
+{
+   /* wxLongLong contains no built-in conversion to double */
+   double dSize = size.GetHi() * pow(2.0, 32);  // 2 ^ 32
+   dSize += size.GetLo();
+
+   return FormatSize(dSize);
+}
+
+wxString Internat::FormatSize(double size)
+{
+   wxString sizeStr;
+
+   if (size == -1)
+      sizeStr = _("Unable to determine");
+   else {
+      /* make it look nice, by formatting into k, MB, etc */
+      if (size < 1024.0)
+         sizeStr = ToDisplayString(size) + _(" bytes");
+      else if (size < 1024.0 * 1024.0) {
+         sizeStr = ToDisplayString(size / 1024.0, 1) + _(" KB");
+      }
+      else if (size < 1024.0 * 1024.0 * 1024.0) {
+         sizeStr = ToDisplayString(size / (1024.0 * 1024.0), 1) + _(" MB");
+      }
+      else {
+         sizeStr = ToDisplayString(size / (1024.0 * 1024.0 * 1024.0), 1) + _(" GB");
+      }
+   }
+
+   return sizeStr;
+}
+
 #ifdef __WXMAC__IGNORE
 
 // wxMac 2.4.x doesn't support converting to/from Mac encodings yet,

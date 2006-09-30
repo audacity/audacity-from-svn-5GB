@@ -34,7 +34,6 @@ private:
    void PopulateOrExchange( ShuttleGui & S );
    void UpdateFreeSpace(wxCommandEvent &event);
    void OnChooseTempDir(wxCommandEvent &event);
-   wxString FormatSize(wxLongLong size);
 
    wxString mStrFreeSpace;
    wxStaticBox *mEnclosingBox;

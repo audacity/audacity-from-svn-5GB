@@ -13,7 +13,7 @@
 #define __AUDACITY_INTERNAT__
 
 #include <wx/string.h>
-
+#include <wx/longlong.h>
 
 class Internat
 {
@@ -42,6 +42,10 @@ public:
    // Convert a number to a string, uses the user's locale's decimal separator
    static wxString ToDisplayString(double numberToConvert,
                      int digitsAfterDecimalPoint = -1);
+
+   // Convert a number to a string while formatting it byte, KB, MB, GB
+   static wxString FormatSize(wxLongLong size);
+   static wxString FormatSize(double size);
 
    // Convert strings to and from UTF-8 (used for XML files).
    static wxString UTF8ToLocal(const wxString &s);
