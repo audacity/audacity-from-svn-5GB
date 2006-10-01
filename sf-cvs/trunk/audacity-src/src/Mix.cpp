@@ -492,8 +492,9 @@ sampleCount Mixer::Process(int maxToProcess)
       if (out > maxOut)
          maxOut = out;
    }
+   out = mInterleaved ? maxOut * mNumChannels : maxOut;
    for(int c=0; c<mNumBuffers; c++)
-      CopySamples(mTemp[c], floatSample, mBuffer[c], mFormat, out*mNumChannels);
+      CopySamples(mTemp[c], floatSample, mBuffer[c], mFormat, out);
 
    mT += (maxOut / mRate);
 
