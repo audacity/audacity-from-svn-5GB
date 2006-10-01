@@ -67,6 +67,7 @@ class LadspaEffect:public Effect {
    float *inputControls;
    float *outputControls;
    int mainRate;
+   double mLength;
 };
 
 class LadspaEffectDialog:public wxDialog {
@@ -77,7 +78,8 @@ class LadspaEffectDialog:public wxDialog {
                       wxWindow * parent,
                       const LADSPA_Descriptor *data,
                       float *inputControls,
-                      int sampleRate);
+                      int sampleRate,
+                      double length);
 
    ~LadspaEffectDialog();
 
@@ -89,6 +91,8 @@ class LadspaEffectDialog:public wxDialog {
    void OnPreview(wxCommandEvent & event);
    void ControlSetFocus(wxFocusEvent & event);
 
+   double GetLength();
+
    DECLARE_EVENT_TABLE()
 
  private:
@@ -97,7 +101,8 @@ class LadspaEffectDialog:public wxDialog {
    void DisconnectFocus(wxControl *c);
    bool inSlider;
    bool inText;
-      
+
+   double mLength;
    int sampleRate;
    const LADSPA_Descriptor *mData;
    wxSlider **sliders;
@@ -108,6 +113,7 @@ class LadspaEffectDialog:public wxDialog {
    unsigned long numParams;
    float *inputControls;
    LadspaEffect *effect;
+   wxTextCtrl *mSeconds;
 };
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

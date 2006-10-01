@@ -53,6 +53,7 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
    inputs = 0;
    outputs = 0;
    numInputControls = 0;
+   mLength = 0;
 
    unsigned long p;
 
@@ -189,14 +190,17 @@ bool LadspaEffect::Init()
 bool LadspaEffect::PromptUser()
 {
    if (numInputControls > 0) {
-      LadspaEffectDialog dlog(this, mParent, mData, inputControls, mainRate);
+      double length = mT1 > mT0 ? mT1 - mT0 : sDefaultGenerateLen;
+
+      LadspaEffectDialog dlog(this, mParent, mData, inputControls, mainRate, length);
       dlog.CentreOnParent();
       dlog.ShowModal();
       
       if (!dlog.GetReturnCode())
          return false;
-   }
 
+      mLength = dlog.GetLength();
+   }
    return true;
 }
 
@@ -208,7 +212,14 @@ void LadspaEffect::GetSamples(WaveTrack *track,
    double trackEnd = track->GetEndTime();
    double t0 = mT0 < trackStart? trackStart: mT0;
    double t1 = mT1 > trackEnd? trackEnd: mT1;
-   
+
+   if (flags & INSERT_EFFECT) {
+      t1 = t0 + mLength;
+      if (mT0 == mT1) {
+         track->InsertSilence(t0, t1);
+      }
+   }
+
    if (t1 > t0) {
       *start = track->TimeToLongSamples(t0);
       longSampleCount end = track->TimeToLongSamples(t1);
@@ -483,6 +494,7 @@ BEGIN_EVENT_TABLE(TextCtrl, wxTextCtrl)
 END_EVENT_TABLE()
 
 const int LADSPA_PREVIEW_ID = 13100;
+const int LADSPA_SECONDS_ID = 13101;
 
 BEGIN_EVENT_TABLE(LadspaEffectDialog, wxDialog)
     EVT_BUTTON(wxID_OK, LadspaEffectDialog::OnOK)
@@ -499,12 +511,14 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
                                        wxWindow * parent,
                                        const LADSPA_Descriptor *data,
                                        float *inputControls,
-                                       int sampleRate)
+                                       int sampleRate,
+                                       double length)
    :wxDialog(parent, -1, LAT1CTOWX(data->Name),
              wxDefaultPosition, wxDefaultSize,
              wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
     effect(eff)
 {
+   mLength = length;
    numParams = 0;
    this->mData = data;
    this->inputControls = inputControls;
@@ -672,6 +686,19 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
             gridSizer->Add(1, 1, 0);
          }
       }
+   }
+
+
+   // Now add the length control
+   if (effect->GetEffectFlags() & INSERT_EFFECT) {
+      item = new wxStaticText(w, 0, _("Length (seconds)"));
+      gridSizer->Add(item, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      mSeconds = new wxTextCtrl(w, LADSPA_SECONDS_ID, Internat::ToDisplayString(length));
+      gridSizer->Add(mSeconds, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+      gridSizer->Add(1, 1, 0);
+      gridSizer->Add(1, 1, 0);
+      gridSizer->Add(1, 1, 0);
+      ConnectFocus(mSeconds);
    }
 
    // Set all of the sliders based on the value in the
@@ -856,6 +883,11 @@ void LadspaEffectDialog::ControlSetFocus(wxFocusEvent &event)
 
    p->Scroll(-1, y);
 };
+
+double LadspaEffectDialog::GetLength()
+{
+   return Internat::CompatibleToDouble(mSeconds->GetValue());
+}
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
 // version control system. Please do not modify past this point.
