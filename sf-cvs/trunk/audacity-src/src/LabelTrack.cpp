@@ -882,7 +882,7 @@ bool LabelTrack::PasteSelectedText(double sel0, double sel1)
 
       // Convert control characters to blanks
       int i;
-      for (i = 0; i < text.Length(); i++) {
+      for (i = 0; i < (int)text.Length(); i++) {
          if (wxIscntrl(text[i])) {
             text[i] = wxT(' ');
          }
@@ -1735,7 +1735,7 @@ XMLTagHandler *LabelTrack::HandleXMLChild(const wxChar *tag)
 void LabelTrack::WriteXML(XMLWriter &xmlFile)
 {
    int len = mLabels.Count();
-   int i, j;
+   int i;
 
    xmlFile.StartTag(wxT("labeltrack"));
    xmlFile.WriteAttr(wxT("name"), mName);

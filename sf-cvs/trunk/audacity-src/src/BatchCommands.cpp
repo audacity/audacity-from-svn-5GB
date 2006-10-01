@@ -706,7 +706,6 @@ void BatchCommands::RestoreChain(const wxString & name)
 void BatchCommands::Split(const wxString & str, wxString & command, wxString & param)
 {
    int splitAt;
-   int i;
 
    command.Empty();
    param.Empty();

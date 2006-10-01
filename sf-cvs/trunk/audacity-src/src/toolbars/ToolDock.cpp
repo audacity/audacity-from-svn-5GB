@@ -113,7 +113,7 @@ void ToolDock::Dock( ToolBar *bar, int before )
    mBars[ bar->GetId() ] = bar;
 
    // Park the new bar in the correct berth
-   if( before >= 0 && before < mDockedBars.GetCount() )
+   if( before >= 0 && before < (int)mDockedBars.GetCount() )
    {
       mDockedBars.Insert( bar, before );
    }

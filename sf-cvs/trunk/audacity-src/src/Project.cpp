@@ -1980,8 +1980,6 @@ void AudacityProject::WriteXMLHeader(XMLWriter &xmlFile)
 
 void AudacityProject::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
-
    // Warning: This block of code is duplicated in Save, for now...
    wxString project = mFileName;
    if (project.Len() > 4 && project.Mid(project.Len() - 4) == wxT(".aup"))
