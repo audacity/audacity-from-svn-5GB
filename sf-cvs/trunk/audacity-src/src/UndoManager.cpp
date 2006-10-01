@@ -25,6 +25,7 @@ UndoManager
 #include <wx/textctrl.h>
 #include <wx/log.h>
 
+#include "Internat.h"
 #include "UndoManager.h"
 #include "Track.h"
 
@@ -49,15 +50,17 @@ void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
    n -= 1; // 1 based to zero based
 
    wxASSERT(n < stack.Count());
+   double bytes;
 
    *desc = stack[n]->description;
 
    if (n == 0)
-      size->Printf(wxT("%d MB"), stack[n]->tracks->GetSpaceUsage() / 1048576);
+      bytes = stack[n]->tracks->GetSpaceUsage();
    else {
-      int bytes = stack[n]->tracks->GetAdditionalSpaceUsage(&stack);
-      size->Printf(wxT("%d MB"), bytes / 1048576);
+      bytes = stack[n]->tracks->GetAdditionalSpaceUsage(&stack);
    }
+
+   *size = Internat::FormatSize(bytes);
 }
 
 void UndoManager::GetShortDescription(unsigned int n, wxString *desc)

@@ -23,6 +23,7 @@ public:
    static wxString TempDir();
    static wxString DataDir();
    static wxString AutoSaveDir();
+   static wxString ChainDir();
    static wxString ThemeDir();
    static wxString ThemeComponentsDir();
    static wxString ThemeCachePng();

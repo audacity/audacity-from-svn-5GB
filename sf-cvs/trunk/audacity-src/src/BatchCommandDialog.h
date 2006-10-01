@@ -34,26 +34,29 @@ class wxRadioButton;
 class wxListCtrl;
 class wxListEvent;
 class wxButton;
+class ShuttleGui;
 
 class BatchCommandDialog:public wxDialog {
  public:
    // constructors and destructors
-   BatchCommandDialog(wxWindow * parent, wxWindowID id);
+   BatchCommandDialog(wxWindow *parent, wxWindowID id);
+	void SetCommandAndParams(const wxString &Command, const wxString &Params);
  public:
-	void SetCommandAndParams( const wxString &Command, const wxString & Params);
+   wxString   mSelectedCommand;
+   wxString   mSelectedParameters;
+ private:
+   void Populate();
+   void PopulateOrExchange(ShuttleGui &S);
 	void OnEditParams(wxCommandEvent &event);
-   void OnChoice(wxCommandEvent & event);
-   void OnOk(wxCommandEvent & event);
-   void OnCancel(wxCommandEvent & event);
+   void OnChoice(wxCommandEvent &event);
+   void OnOk(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
    void OnItemSelected(wxListEvent &event);
 
    void ValidateChoices();
    void PopulateCommandList();
    int GetSelectedItem();
 
-   wxString   mSelectedCommand;
-   wxString   mSelectedParameters;
-   wxButton   *mOK;
    wxButton   *mEditParams;
    wxListCtrl *mChoices;
    wxTextCtrl * mCommand;
