@@ -87,7 +87,6 @@ void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
 {
    S.StartVerticalLay(true);
    {
-      
       S.StartStatic(_("&Select chain"), true);
       {
          S.SetStyle(wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_VRULES |
@@ -99,6 +98,7 @@ void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
 
       S.StartHorizontalLay(wxALIGN_RIGHT, false);
       {
+         S.SetBorder(10);
          S.Id(ApplyToProjectID).AddButton(_("Apply to Current &Project"));
          S.Id(ApplyToFilesID).AddButton(_("Apply to &Files..."));
          S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
@@ -108,8 +108,7 @@ void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
    S.EndVerticalLay();
 
    wxArrayString names = mBatchCommands.GetNames();
-   for (int i = 0; i < names.GetCount(); i++)
-   {
+   for (int i = 0; i < (int)names.GetCount(); i++) {
       mChains->InsertItem(i, names[i]);
    }
 
@@ -150,9 +149,9 @@ void BatchProcessDialog::OnApplyToProject(wxCommandEvent &event)
 
    S.StartHorizontalLay(wxCENTER, false);
    {
-      S.SetBorder(20);
       S.StartStatic(_(""), false);
       {
+         S.SetBorder(20);
          S.AddFixedText(wxString::Format(_("Applying '%s' to current project"),
                                          name.c_str()));
       }
@@ -193,8 +192,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
    gPrefs->Write(wxT("/Batch/ActiveChain"), name);
 
    AudacityProject *project = GetActiveProject();
-   if (!project->GetIsEmpty())
-   {
+   if (!project->GetIsEmpty()) {
       wxMessageBox(_("Please save and close the current project first."));
       return;
    }
@@ -249,8 +247,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
    S.EndVerticalLay();
 
    int i;
-   for (i = 0; i < files.GetCount(); i++ )
-   {
+   for (i = 0; i < (int)files.GetCount(); i++ ) {
       mList->InsertItem(i, files[i], i == 0);
    }
 
@@ -272,11 +269,9 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
    d.Show();
    Hide();
 
-   for (i = 0; i < files.GetCount(); i++)
-   {
+   for (i = 0; i < (int)files.GetCount(); i++) {
       wxWindowDisabler wd(&d);
-      if (i > 0)
-      {
+      if (i > 0) {
          //Clear the arrow in previous item.
          mList->SetItemImage(i - 1, 0, 0);
       }
@@ -399,14 +394,10 @@ void EditChainsDialog::Populate()
    mChains->SetColumnWidth(0, sz.x);
 
    // Size columns properly
-   sz = mList->GetClientSize();
-   mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
-   mList->SetColumnWidth( ItemNumberColumn,  wxLIST_AUTOSIZE );
-   mList->SetColumnWidth( ActionColumn, 110 );
-   sz.x -= mList->GetColumnWidth(BlankColumn);
-   sz.x -= mList->GetColumnWidth(ItemNumberColumn);
-   sz.x -= mList->GetColumnWidth(ActionColumn);
-   mList->SetColumnWidth(ParamsColumn, sz.x);
+   mList->SetColumnWidth(BlankColumn, 0); // First column width is zero, to hide it.
+   mList->SetColumnWidth(ItemNumberColumn,  wxLIST_AUTOSIZE);
+   mList->SetColumnWidth(ActionColumn, wxLIST_AUTOSIZE);
+   mList->SetColumnWidth(ParamsColumn, wxLIST_AUTOSIZE);
 }
 
 /// Defines the dialog and does data exchange with it.
@@ -468,7 +459,7 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
    }
    S.EndHorizontalLay();
 
-   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_RIGHT | wxBOTTOM, 10);
+   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_RIGHT | wxBOTTOM | wxRIGHT, 10);
 
    return;
 }
@@ -480,8 +471,7 @@ void EditChainsDialog::PopulateChains()
    int i;
 
    mChains->DeleteAllItems();
-   for (i = 0; i < names.GetCount(); i++)
-   {
+   for (i = 0; i < (int)names.GetCount(); i++) {
       mChains->InsertItem(i, names[i]);
    }
 
@@ -576,6 +566,9 @@ void EditChainsDialog::OnChainSelected(wxListEvent &event)
    }
 
    PopulateList();
+
+   mList->SetColumnWidth(ItemNumberColumn,  wxLIST_AUTOSIZE);
+   mList->SetColumnWidth(ActionColumn, wxLIST_AUTOSIZE);
 }
 
 ///
