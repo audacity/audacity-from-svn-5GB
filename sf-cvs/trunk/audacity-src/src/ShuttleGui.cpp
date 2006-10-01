@@ -1005,7 +1005,7 @@ wxChoice * ShuttleGuiBase::TieChoice(
          else
          {
             wxString Temp;
-            if( pChoices && ( WrappedRef.ReadAsInt() < pChoices->GetCount() ) )
+            if( pChoices && ( WrappedRef.ReadAsInt() < (int)pChoices->GetCount() ) )
             {
                Temp = (*pChoices)[WrappedRef.ReadAsInt()];
             }
@@ -1194,7 +1194,7 @@ wxString ShuttleGuiBase::TranslateFromIndex( const int nIn, const wxArrayString 
    if( n== wxNOT_FOUND )
       n=miNoMatchSelector;
    miNoMatchSelector = 0;
-   if( n < Choices.GetCount() )
+   if( n < (int)Choices.GetCount() )
    {
       return Choices[n];
    }
@@ -1218,7 +1218,7 @@ int ShuttleGuiBase::TranslateFromIndex( const int nIn, const wxArrayInt &Choices
    if( n== wxNOT_FOUND )
       n=miNoMatchSelector;
    miNoMatchSelector = 0;
-   if( n < Choices.GetCount() )
+   if( n < (int)Choices.GetCount() )
    {
       return Choices[n];
    }

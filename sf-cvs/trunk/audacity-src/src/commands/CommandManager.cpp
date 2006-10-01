@@ -865,7 +865,6 @@ XMLTagHandler *CommandManager::HandleXMLChild(const wxChar *tag)
 
 void CommandManager::WriteXML(XMLWriter &xmlFile)
 {
-   int i;
    unsigned int j;
 
    xmlFile.StartTag(wxT("audacitykeyboard"));

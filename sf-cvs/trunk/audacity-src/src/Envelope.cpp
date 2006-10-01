@@ -256,7 +256,6 @@ XMLTagHandler *Envelope::HandleXMLChild(const wxChar *tag)
 void Envelope::WriteXML(XMLWriter &xmlFile)
 {
    unsigned int ctrlPt;
-   int i;
 
    xmlFile.StartTag(wxT("envelope"));
    xmlFile.WriteAttr(wxT("numpoints"), mEnv.GetCount());

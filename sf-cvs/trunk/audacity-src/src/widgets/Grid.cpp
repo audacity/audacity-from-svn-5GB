@@ -470,7 +470,7 @@ GridAx *Grid::GetNextAx(GridAx *parent, wxAccRole role, int row, int col)
 {
    mObjNdx = (mObjNdx + 1) & 0x3f;
 
-   if (mObjNdx < mChildren.GetCount()) {
+   if (mObjNdx < (int)mChildren.GetCount()) {
       GridAx *ax = (GridAx *) mChildren[mObjNdx];
       delete ax;
 

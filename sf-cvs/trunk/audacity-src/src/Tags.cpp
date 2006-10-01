@@ -211,7 +211,7 @@ XMLTagHandler *Tags::HandleXMLChild(const wxChar *tag)
 
 void Tags::WriteXML(XMLWriter &xmlFile)
 {
-   int i, j;
+   int j;
 
    xmlFile.StartTag(wxT("tags"));
    xmlFile.WriteAttr(wxT("title"), mTitle);
