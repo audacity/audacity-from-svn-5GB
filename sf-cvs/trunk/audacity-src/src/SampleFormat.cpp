@@ -19,30 +19,15 @@
   Floating-point samples use the range -1.0...1.0, inclusive.
   Integer formats use the full signed range of their data type,
   for example 16-bit samples use the range -32768...32767.
-  This presents a problem, because either the conversion to
-  or from a float would have to be asymmetric, or zero would
-  have to be mapped to something other than zero.  (A third
-  option is to use a symmetric, zero-preserving mapping that
-  might clip, and check for clipping...but this option is
-  both uncompelling and slow.)
+  This means that reading in a wav file and writing it out again
+  ('round tripping'), via floats, is lossless; -32768 equates to -1.0f 
+  and 32767 equates to +1.0f - (a little bit).
+  It also means (unfortunatly) that writing out +1.0f leads to
+  clipping by 1 LSB.  This creates some distortion, but I (MJS) have
+  not been able to measure it, it's so small.  Zero is preserved.
 
-
-  Audacity chooses to use a symmetric mapping that doesn't
-  preserve 0:
-
-\verbatim
-  16-bit    float        16-bit
-  -32768 -> -1.000000 -> -32768
-
-       0 ->  0.000015 ->      0
-             0.000000 ->      0
-
-   32767 ->  1.000000 ->  32767
-\endverbatim
-
-   Note that 0.0 (float) still maps to 0 (int), so it is nearly
-   an ideal mapping.  An analogous mapping is used between
-   24-bit ints and floats.
+  http://limpet.net/audacity/bugzilla/show_bug.cgi?id=200
+  leads to some of the discussions that were held about this.
 
    Note: These things are now handled by the Dither class, which
          also replaces the CopySamples() method (msmeyer)
