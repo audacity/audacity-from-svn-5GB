@@ -39,6 +39,7 @@ selected command.
 #include "commands/CommandManager.h"
 #include "effects/Effect.h"
 #include "BatchCommands.h"
+#include "ShuttleGui.h"
 
 
 #define CommandsListID        7001
@@ -52,76 +53,63 @@ BEGIN_EVENT_TABLE(BatchCommandDialog, wxDialog)
 END_EVENT_TABLE();
 
 BatchCommandDialog::BatchCommandDialog(wxWindow * parent, wxWindowID id):
-   wxDialog(parent, id,
-            _("Select Command"),
-            wxDefaultPosition, wxSize(250,200), wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
+   wxDialog(parent, id, _("Select Command"),
+            wxDefaultPosition, wxSize(250,200),
+            wxDIALOG_MODAL | wxCAPTION | wxTHICK_FRAME)
 {
+   SetLabel(_("Select Command"));         // Provide visual label
+   SetName(_("Select Command"));          // Provide audible label
+   Populate();
+}
 
-   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+void BatchCommandDialog::Populate()
+{
+   //------------------------- Main section --------------------
+   ShuttleGui S(this, eIsCreating);
+   PopulateOrExchange(S);
+   // ----------------------- End of main section --------------
+}
 
-   wxFlexGridSizer * gridSizer = new wxFlexGridSizer( 2,2,5,5);// 2 rows, 3 cols, 5 padding.
-   gridSizer->AddGrowableCol( 1 );
+void BatchCommandDialog::PopulateOrExchange(ShuttleGui &S)
+{
+   S.StartVerticalLay(true);
+   {
+      S.StartMultiColumn(3, wxEXPAND);
+      {
+         S.SetStretchyCol(1);
+         mCommand = S.AddTextBox(_("&Command"), wxT(""), 20);
+         mCommand->SetEditable(false);
+         mEditParams = S.Id(EditParamsButtonID).AddButton(_("&Edit Parameters"));
+      }
+      S.EndMultiColumn();
 
-   wxControl *item;
-   
-   item = new wxStaticText(this, -1, _("Command:"),  wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item, 0, wxALIGN_RIGHT | wxTOP, 3);
+      S.StartMultiColumn(2, wxEXPAND);
+      {
+         S.SetStretchyCol(1);
+         mParameters = S.AddTextBox(_("&Parameters"), wxT(""), 0);
+      }
+      S.EndMultiColumn();
 
-   wxBoxSizer * boxSizer = new wxBoxSizer( wxHORIZONTAL ); 
-   mCommand = new wxTextCtrl(this, -1, wxT(""));
-   boxSizer->Add(mCommand, 1, wxALIGN_LEFT | wxALL | wxGROW, 0);
-   mEditParams = new wxButton( this, EditParamsButtonID, _("&Edit Parameters"));
-   boxSizer->Add(mEditParams, 0, wxALIGN_LEFT | wxLEFT, 3);
-   gridSizer->Add(boxSizer, 0, wxALIGN_LEFT | wxALL | wxGROW, 0);
+      S.StartStatic(_("C&hoose command"), true);
+      {
+         S.SetStyle(wxSUNKEN_BORDER | wxLC_LIST | wxLC_SINGLE_SEL);
+         mChoices = S.Id(CommandsListID).AddListControl();
+      }
+      S.EndStatic();
+   }
+   S.EndVerticalLay();
 
-   item = new wxStaticText(this, -1, _("Parameters:"),  wxDefaultPosition, wxDefaultSize, 0);
-   gridSizer->Add(item, 0, wxALIGN_RIGHT | wxTOP, 3);
-   mParameters = new wxTextCtrl(this, -1, wxT(""),  wxDefaultPosition, wxSize(250,-1),0);
-   gridSizer->Add(mParameters, 0, wxALIGN_LEFT | wxALL | wxGROW, 0);
+   GetSizer()->Add(CreateButtonSizer(wxOK | wxCANCEL), 0, wxALIGN_RIGHT | wxBOTTOM, 10);
 
-   mainSizer->Add(gridSizer, 0, wxALIGN_LEFT | wxALL | wxGROW, 5);
-
-   item = new wxStaticText(this, -1,
-                     _("Choose from the list below"),
-                     wxDefaultPosition, wxDefaultSize, 0);
-
-   mainSizer->Add(item, 0, wxALIGN_LEFT | wxALL, 5);
-
-   int i;
-
-   mChoices = new wxListCtrl( this, CommandsListID ,
-      wxDefaultPosition, wxDefaultSize,
-      wxLC_LIST | wxLC_SINGLE_SEL| wxSUNKEN_BORDER 
-      );
-
-   wxASSERT( mChoices );
-   for(i=0;i<99;i++)
+   for(int i=0;i<99;i++)
    {
       mChoices->InsertItem( i, wxString::Format(wxT("Item%02i"),i));
    }
    PopulateCommandList();
 
-   mainSizer->Add(mChoices, 1, wxEXPAND | wxALL, 5);
-
-   wxBoxSizer *okSizer = new wxBoxSizer(wxHORIZONTAL);
-
-   wxButton *cancel =
-       new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   okSizer->Add(cancel, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mOK = 
-       new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition,
-                    wxDefaultSize, 0);
-   mOK->SetDefault();
-   mOK->SetFocus();
-   okSizer->Add(mOK, 0, wxALIGN_CENTRE | wxALL, 5);
-
-   mainSizer->Add(okSizer,0 , wxALIGN_CENTRE | wxALL, 5);
-
-   SetAutoLayout(TRUE);
-   SetSizer(mainSizer);
    SetSize(350, 400);
+   SetSizeHints(GetSize());
+   Center();
 }
 
 void BatchCommandDialog::PopulateCommandList()
@@ -153,22 +141,20 @@ int BatchCommandDialog::GetSelectedItem()
 
 void BatchCommandDialog::ValidateChoices()
 {
-   mOK->Enable(false);
 }
 
-void BatchCommandDialog::OnChoice(wxCommandEvent & event)
+void BatchCommandDialog::OnChoice(wxCommandEvent &event)
 {
-   ValidateChoices();
 }
 
-void BatchCommandDialog::OnOk(wxCommandEvent & event)
+void BatchCommandDialog::OnOk(wxCommandEvent &event)
 {
-   mSelectedCommand = mCommand->GetValue();
-   mSelectedParameters = mParameters->GetValue();
-   EndModal(true );
+   mSelectedCommand = mCommand->GetValue().Strip(wxString::both);
+   mSelectedParameters = mParameters->GetValue().Strip(wxString::both);
+   EndModal(true);
 }
 
-void BatchCommandDialog::OnCancel(wxCommandEvent & event)
+void BatchCommandDialog::OnCancel(wxCommandEvent &event)
 {
    EndModal(false);
 }
@@ -180,6 +166,8 @@ void BatchCommandDialog::OnItemSelected(wxListEvent &event)
    mCommand->SetValue( command );
    wxString params = BatchCommands::GetCurrentParamsFor( command );
    mParameters->SetValue( params );
+   Effect * f = BatchCommands::GetEffectFromCommandName( command );
+   mEditParams->Enable( f != NULL );
 }
 
 void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
@@ -195,7 +183,7 @@ void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
       // we've just prompted for the parameters, so the values
       // that are current have changed.
       params = BatchCommands::GetCurrentParamsFor( command );
-      mParameters->SetValue( params );
+      mParameters->SetValue( params.Strip(wxString::both) );
       mParameters->Refresh();
    }
 }
@@ -204,6 +192,12 @@ void BatchCommandDialog::SetCommandAndParams(const wxString &Command, const wxSt
 {
    mCommand->SetValue( Command );
    mParameters->SetValue( Params );
+
+   int item = mChoices->FindItem(-1, Command);
+   if( item != -1 )
+   {
+      mChoices->SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+   }
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

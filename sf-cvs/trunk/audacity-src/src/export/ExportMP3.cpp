@@ -1375,9 +1375,10 @@ bool ExportMP3(AudacityProject *project,
    bool emptyTags = tags->IsEmpty();
    if (showId3Dialog && emptyTags) {
       if (!tags->ShowEditDialog(project,
-			_("Edit the ID3 tags for the MP3 file"))) {
+                                _("Edit the ID3 tags for the MP3 file"),
+                                true)) {
          return false;  // used selected "cancel"
-   }
+      }
    }
 
    char *id3buffer = NULL;

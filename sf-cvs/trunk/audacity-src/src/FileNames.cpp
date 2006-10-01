@@ -93,6 +93,11 @@ wxString FileNames::DataDir()
    return gDataDir;
 }
 
+wxString FileNames::ChainDir()
+{
+   return FileNames::MkDir( wxFileName( DataDir(), wxT("Chains") ).GetFullPath() );
+}
+
 wxString FileNames::ThemeDir()
 {
    return FileNames::MkDir( wxFileName( DataDir(), wxT("Theme") ).GetFullPath() );

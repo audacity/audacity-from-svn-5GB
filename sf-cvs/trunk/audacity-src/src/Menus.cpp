@@ -208,11 +208,11 @@ void AudacityProject::CreateMenusAndCommands()
       c->AddItem(wxT("SaveAs"),         _("Save Project &As..."),            FN(OnSaveAs));
    }
 
-   c->AddItem(wxT("CheckDeps"),      _("Check Dependencies..."),          FN(OnCheckDependencies));
+   c->AddItem(wxT("CheckDeps"),      _("Chec&k Dependencies..."),          FN(OnCheckDependencies));
 
    c->AddSeparator();
 
-   c->AddItem(wxT("EditID3"),        _("Open &Metadata Editor"),              FN(OnEditID3));
+   c->AddItem(wxT("EditID3"),        _("Open Me&tadata Editor"),              FN(OnEditID3));
    //c->SetCommandFlags(wxT("EditID3"), AudioIONotBusyFlag, AudioIONotBusyFlag);
 
    if( !mCleanSpeechMode )
@@ -312,7 +312,8 @@ void AudacityProject::CreateMenusAndCommands()
       
       c->AddSeparator();
 
-      c->AddItem(wxT("BatchProcess"),     _("CleanSpeech C&hain..."),   FN(OnBatch));
+      c->AddItem(wxT("ApplyChain"), _("CleanSpeech C&hain..."),   FN(OnApplyChain));
+      c->AddItem(wxT("EditChains"), _("Edit C&hains..."), FN(OnEditChains));
       c->AddItem(wxT("ExportCcSettings"), _("Export CleanSpeech &Presets..."),   FN(OnExportCleanSpeechPresets));
       c->AddItem(wxT("ImportCcSettings"), _("I&mport CleanSpeech Presets..."),   FN(OnImportCleanSpeechPresets));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
@@ -324,9 +325,9 @@ void AudacityProject::CreateMenusAndCommands()
 	}
    else
    {
-      c->AddItem(wxT("BatchProcess"),     _("Process &Batch..."),   FN(OnBatch));
+      c->AddItem(wxT("AppplyChain"), _("Appl&y Chain..."), FN(OnApplyChain));
       c->SetCommandFlags(wxT("BatchProcess"), AudioIONotBusyFlag, AudioIONotBusyFlag);
-      c->AddItem(wxT("EditChains"),       _("Edit Chains..."),   FN(OnEditChains));
+      c->AddItem(wxT("EditChains"), _("Edit C&hains..."), FN(OnEditChains));
    }
 
    c->AddSeparator();
@@ -4153,7 +4154,7 @@ void AudacityProject::OnImportCleanSpeechPresets()
    } while(!fileOkay);
 }
 
-void AudacityProject::OnBatch()
+void AudacityProject::OnApplyChain()
 {
    BatchProcessDialog d(this);
    d.ShowModal();
@@ -4163,17 +4164,6 @@ void AudacityProject::OnEditChains()
 {
    EditChainsDialog d(this);
    d.ShowModal();
-#if 0
-   wxDialog d(this, wxID_ANY, _("Edit Chains"), wxDefaultPosition, wxSize(500, 500));
-   wxBoxSizer *s = new wxBoxSizer(wxVERTICAL);
-   BatchPrefs *b = new BatchPrefs(&d);
-   s->Add(b);
-   s->Add(d.CreateButtonSizer(wxOK | wxCANCEL));
-   d.SetSizerAndFit(s);
-   d.Layout();
-   d.ShowModal();
-   b->Destroy();
-#endif
 }
 
 wxString AudacityProject::BuildCleanFileName(wxString fileName)

@@ -70,36 +70,42 @@ public:
 
 private:
    void Populate();
-   void PopulateOrExchange( ShuttleGui & S );
+   void PopulateOrExchange(ShuttleGui &S);
    void PopulateChains();
 	void PopulateList();
-   void AddItem( wxString const & Action, wxString const & Params);
-	void SetItem( int ItemNo, const wxString command, const wxString params );
+   void AddItem(const wxString &command, wxString const &params);
+   bool ChangeOK();
 
-   void OnOK(wxCommandEvent &event);
-   void OnCancel(wxCommandEvent &event);
-   void OnAdd(wxCommandEvent &event);
-   void OnRemove(wxCommandEvent &event);
-   void OnRename(wxCommandEvent &event);
-   void OnUp(wxCommandEvent &event);
-   void OnDown(wxCommandEvent &event);
-   void OnImport(wxCommandEvent &event);
-   void OnExport(wxCommandEvent &event);
-   void OnDefaults(wxCommandEvent &event);
    void OnChainSelected(wxListEvent &event);
    void OnChainsBeginEdit(wxListEvent &event);
    void OnChainsEndEdit(wxListEvent &event);
-   void OnItemSelected(wxListEvent &event);
+   void OnAdd(wxCommandEvent &event);
+   void OnRemove(wxCommandEvent &event);
+   void OnRename(wxCommandEvent &event);
 
-   wxListCtrl * mChains; /// List of chains.
-   wxListCtrl * mList;   /// List of commands in current command chain.
-   wxButton * mRemove;
-   wxButton * mRename;
-   wxButton * mDefaults;
+   void OnCommandActivated(wxListEvent &event);
+   void OnInsert(wxCommandEvent &event);
+   void OnDelete(wxCommandEvent &event);
+   void OnUp(wxCommandEvent &event);
+   void OnDown(wxCommandEvent &event);
+   void OnDefaults(wxCommandEvent &event);
+
+   void OnOK(wxCommandEvent &event);
+   void OnCancel(wxCommandEvent &event);
+
+   void OnKeyDown(wxKeyEvent &event);
+
+   wxListCtrl *mChains; /// List of chains.
+   wxListCtrl *mList;   /// List of commands in current command chain.
+   wxButton *mRemove;
+   wxButton *mRename;
+   wxButton *mDefaults;
 
    BatchCommands mBatchCommands;  /// Provides list of available commands.
    wxString mActiveChain;
-   wxArrayString *mChain;
+
+   int mSelectedCommand;
+   bool mChanged;
 
    DECLARE_EVENT_TABLE();
 };

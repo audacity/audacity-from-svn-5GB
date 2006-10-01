@@ -619,7 +619,7 @@ void ControlToolBar::StopPlaying()
 void ControlToolBar::OnBatch(wxCommandEvent &evt)
 {
    AudacityProject *proj = GetActiveProject();
-   proj->OnBatch();
+   proj->OnApplyChain();
 
    mPlay->Enable();
    mStop->Enable();

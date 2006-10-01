@@ -42,7 +42,6 @@
 #include "Theme.h"
 #include "AllThemeResources.h"
 
-
 #define ChainsListID       7001
 #define ApplyToProjectID   7002
 #define ApplyToFilesID     7003
@@ -54,7 +53,9 @@ BEGIN_EVENT_TABLE(BatchProcessDialog, wxDialog)
 END_EVENT_TABLE()
 
 BatchProcessDialog::BatchProcessDialog(wxWindow * parent):
-   wxDialog(parent, wxID_ANY, _("Batch Processing"), wxDefaultPosition)
+   wxDialog(parent, wxID_ANY, _("Apply Chain"),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    AudacityProject * p = GetActiveProject();
    if (p->GetCleanSpeechMode())
@@ -62,11 +63,9 @@ BatchProcessDialog::BatchProcessDialog(wxWindow * parent):
       SetTitle(_("CleanSpeech Batch Processing"));
    }
 
-   SetLabel(_("Batch Processing"));         // Provide visual label
-   SetName(_("Batch Processing"));          // Provide audible label
+   SetLabel(_("Apply Chain"));         // Provide visual label
+   SetName(_("Apply Chain"));          // Provide audible label
    Populate();
-
-   CenterOnParent();
 
    mAbort = false;
 }
@@ -77,20 +76,14 @@ BatchProcessDialog::~BatchProcessDialog()
 
 void BatchProcessDialog::Populate()
 {
-   // First any pre-processing for constructing the GUI.
-   mBatchCommands.ReadChains();
-
    //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
    ShuttleGui S(this, eIsCreating);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
 }
 
 /// Defines the dialog and does data exchange with it.
-void BatchProcessDialog::PopulateOrExchange( ShuttleGui & S )
+void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
 {
    S.StartVerticalLay(true);
    {
@@ -110,11 +103,11 @@ void BatchProcessDialog::PopulateOrExchange( ShuttleGui & S )
          S.Id(ApplyToFilesID).AddButton(_("Apply to Files..."));
          S.Id(wxID_CANCEL).AddButton(_("Cancel"));
       }
-      S.StartHorizontalLay();
+      S.EndHorizontalLay();
    }
    S.EndVerticalLay();
 
-   wxArrayString names = mBatchCommands.GetChainNames();
+   wxArrayString names = mBatchCommands.GetNames();
    for (int i = 0; i < names.GetCount(); i++)
    {
       mChains->InsertItem(i, names[i]);
@@ -123,7 +116,7 @@ void BatchProcessDialog::PopulateOrExchange( ShuttleGui & S )
    // Get and validate the currently active chain
    wxString name = gPrefs->Read(wxT("/Batch/ActiveChain"), wxT("CleanSpeech"));
    int item = mChains->FindItem(-1, name);
-   if (mChains->FindItem(-1, name) == -1) {
+   if (item == -1) {
       item = 0;
       name = mChains->GetItemText(0);
    }
@@ -134,13 +127,14 @@ void BatchProcessDialog::PopulateOrExchange( ShuttleGui & S )
    Layout();
    Fit();
    SetSizeHints(GetSize());
+   Center();
 
    // Set the column size for the chains list.
    wxSize sz = mChains->GetClientSize();
    mChains->SetColumnWidth(0, sz.x);
 }
 
-void BatchProcessDialog::OnApplyToProject(wxCommandEvent & event)
+void BatchProcessDialog::OnApplyToProject(wxCommandEvent &event)
 {
    long item = mChains->GetNextItem(-1,
                                     wxLIST_NEXT_ALL,
@@ -149,41 +143,43 @@ void BatchProcessDialog::OnApplyToProject(wxCommandEvent & event)
       wxMessageBox(_("No chain selected"));
       return;
    }
+   wxString name = mChains->GetItemText(item);
 
-   wxDialog d(this, wxID_ANY, wxString(_("Batch Processing")));
+   wxDialog d(this, wxID_ANY, GetTitle());
    ShuttleGui S(&d, eIsCreating);
 
    S.StartHorizontalLay(wxCENTER, false);
    {
-      S.StartStatic(_(""), 0);
-         S.AddFixedText(wxT(""));
-         S.AddFixedText(_("Applying chain to current project"), true);
-         S.AddFixedText(wxT(""));
+      S.SetBorder(20);
+      S.StartStatic(_(""), false);
+      {
+         S.AddFixedText(wxString::Format(_("Applying '%s' to current project"),
+                                         name.c_str()));
+      }
       S.EndStatic();
    }
    S.EndHorizontalLay();
 
    d.Layout();
    d.Fit();
-   d.CenterOnParent();
+   d.CenterOnScreen();
    d.Move(-1, 0);
    d.Show();
    Hide();
 
    wxWindowDisabler wd;
 
-   wxString name = mChains->GetItemText(item);
-
    gPrefs->Write(wxT("/Batch/ActiveChain"), name);
 
-   if (!mBatchCommands.ApplyChain(name, wxT(""))) {
+   mBatchCommands.ReadChain(name);
+   if (!mBatchCommands.ApplyChain()) {
       return;
    }
 
    EndModal(true);
 }
 
-void BatchProcessDialog::OnApplyToFiles(wxCommandEvent & event)
+void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
 {
    long item = mChains->GetNextItem(-1,
                                     wxLIST_NEXT_ALL,
@@ -225,7 +221,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent & event)
 
    files.Sort();
 
-   wxDialog d(this, wxID_ANY, wxString(_("Batch Processing")));
+   wxDialog d(this, wxID_ANY, GetTitle());
    ShuttleGui S(&d, eIsCreating);
 
    S.StartVerticalLay(false);
@@ -271,7 +267,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent & event)
    d.Layout();
    d.Fit();
    d.SetSizeHints(d.GetSize());
-   d.CenterOnParent();
+   d.CenterOnScreen();
    d.Move(-1, 0);
    d.Show();
    Hide();
@@ -287,7 +283,8 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent & event)
       mList->SetItemImage(i, 1, 1);
       mList->EnsureVisible(i);
 
-      if (!mBatchCommands.ApplyChain(name, files[i])) {
+      mBatchCommands.ReadChain(name);
+      if (!mBatchCommands.ApplyChain(files[i])) {
          break;
       }
 
@@ -299,7 +296,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent & event)
    EndModal(true);
 }
 
-void BatchProcessDialog::OnCancel(wxCommandEvent & event)
+void BatchProcessDialog::OnCancel(wxCommandEvent &event)
 {
    EndModal(false);
 }
@@ -307,32 +304,41 @@ void BatchProcessDialog::OnCancel(wxCommandEvent & event)
 /////////////////////////////////////////////////////////////////////
 #include <wx/textdlg.h>
 #include "../BatchCommandDialog.h"
-//#define ChainsListID             7005
-#define AddButtonID              7006
-#define RemoveButtonID           7007
-#define CommandsListID           7008
-#define ImportButtonID           7009
-#define ExportButtonID           7010
-#define DefaultsButtonID         7011
-#define UpButtonID               7012
-#define DownButtonID             7013
-#define RenameButtonID           7014
+
+enum {
+// ChainsListID             7005
+   AddButtonID = 10000,
+   RemoveButtonID,
+   CommandsListID,
+   ImportButtonID,
+   ExportButtonID,
+   DefaultsButtonID,
+   InsertButtonID,
+   DeleteButtonID,
+   UpButtonID,
+   DownButtonID,
+   RenameButtonID
+};
 
 BEGIN_EVENT_TABLE(EditChainsDialog, wxDialog)
-   EVT_BUTTON(wxID_OK, EditChainsDialog::OnOK)
-   EVT_BUTTON(wxID_CANCEL, EditChainsDialog::OnCancel)
-   EVT_BUTTON(AddButtonID, EditChainsDialog::OnAdd)
-   EVT_BUTTON(RemoveButtonID, EditChainsDialog::OnRemove)
-   EVT_BUTTON(RenameButtonID, EditChainsDialog::OnRename)
-   EVT_BUTTON(UpButtonID, EditChainsDialog::OnUp)
-   EVT_BUTTON(DownButtonID, EditChainsDialog::OnDown)
-   EVT_BUTTON(ImportButtonID, EditChainsDialog::OnImport)
-   EVT_BUTTON(ExportButtonID, EditChainsDialog::OnExport)
-   EVT_BUTTON(DefaultsButtonID, EditChainsDialog::OnDefaults)
    EVT_LIST_ITEM_SELECTED(ChainsListID, EditChainsDialog::OnChainSelected)
    EVT_LIST_BEGIN_LABEL_EDIT(ChainsListID, EditChainsDialog::OnChainsBeginEdit)
    EVT_LIST_END_LABEL_EDIT(ChainsListID, EditChainsDialog::OnChainsEndEdit)
-   EVT_LIST_ITEM_ACTIVATED(CommandsListID, EditChainsDialog::OnItemSelected)
+   EVT_BUTTON(AddButtonID, EditChainsDialog::OnAdd)
+   EVT_BUTTON(RemoveButtonID, EditChainsDialog::OnRemove)
+   EVT_BUTTON(RenameButtonID, EditChainsDialog::OnRename)
+
+   EVT_LIST_ITEM_ACTIVATED(CommandsListID, EditChainsDialog::OnCommandActivated)
+   EVT_BUTTON(InsertButtonID, EditChainsDialog::OnInsert)
+   EVT_BUTTON(DeleteButtonID, EditChainsDialog::OnDelete)
+   EVT_BUTTON(UpButtonID, EditChainsDialog::OnUp)
+   EVT_BUTTON(DownButtonID, EditChainsDialog::OnDown)
+   EVT_BUTTON(DefaultsButtonID, EditChainsDialog::OnDefaults)
+
+   EVT_BUTTON(wxID_OK, EditChainsDialog::OnOK)
+   EVT_BUTTON(wxID_CANCEL, EditChainsDialog::OnCancel)
+
+   EVT_KEY_DOWN(EditChainsDialog::OnKeyDown)
 END_EVENT_TABLE()
 
 enum {
@@ -344,10 +350,16 @@ enum {
 
 /// Constructor
 EditChainsDialog::EditChainsDialog(wxWindow * parent):
-   wxDialog(parent, wxID_ANY, wxString(_("Edit Chains")))
+   wxDialog(parent, wxID_ANY, _("Edit Chains"),
+            wxDefaultPosition, wxDefaultSize,
+            wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
-   SetLabel(_("Batch"));         // Provide visual label
-   SetName(_("Batch"));          // Provide audible label
+   SetLabel(_("Edit Chains"));         // Provide visual label
+   SetName(_("Edit Chains"));          // Provide audible label
+
+   mChanged = false;
+   mSelectedCommand = 0;
+
    Populate();
 }
 
@@ -356,60 +368,53 @@ EditChainsDialog::~EditChainsDialog()
 }
 
 /// Creates the dialog and its contents.
-void EditChainsDialog::Populate( )
+void EditChainsDialog::Populate()
 {
-   // First any pre-processing for constructing the GUI.
-   mBatchCommands.ReadChains();
-
    //------------------------- Main section --------------------
-   // Now construct the GUI itself.
-   // Use 'eIsCreatingFromPrefs' so that the GUI is 
-   // initialised with values from gPrefs.
    ShuttleGui S(this, eIsCreating);
    PopulateOrExchange(S);
    // ----------------------- End of main section --------------
 
-   // Set the column size for the chains list.
+   // Get and validate the currently active chain
+   mActiveChain = gPrefs->Read(wxT("/Batch/ActiveChain"), wxT("CleanSpeech"));
+
+   // Go populate the chains list.
    PopulateChains();
+
+   // We have a bare list.  We need to add columns and content.
+   PopulateList();
+
+   // Layout and set minimum size of window
+   Layout();
+   Fit();
+   SetSizeHints(GetSize());
+
+   // Size and place window
+   SetSize(wxSystemSettings::GetMetric(wxSYS_SCREEN_X) * 3 / 4,
+           wxSystemSettings::GetMetric(wxSYS_SCREEN_Y) * 4 / 5);
+   Center();
 
    // Set the column size for the chains list.
    wxSize sz = mChains->GetClientSize();
    mChains->SetColumnWidth(0, sz.x);
 
-   // Get and validate the currently active chain
-   mActiveChain = gPrefs->Read(wxT("/Batch/ActiveChain"), wxT("CleanSpeech"));
-   int item = mChains->FindItem(-1, mActiveChain);
-   if (mChains->FindItem(-1, mActiveChain) == -1) {
-      item = 0;
-      mActiveChain = mChains->GetItemText(0);
-   }
-
-   // Load it
-   mChain = mBatchCommands.GetChain(mActiveChain);
-
-   // Select the name in the list...this will fire an event.
-   mChains->SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-
-   // We have a bare list.  We need to add columns and content.
-   PopulateList();
-
    // Size columns properly
+   sz = mList->GetClientSize();
    mList->SetColumnWidth( BlankColumn,  0 ); // First column width is zero, to hide it.
    mList->SetColumnWidth( ItemNumberColumn,  wxLIST_AUTOSIZE );
    mList->SetColumnWidth( ActionColumn, 110 );
-   mList->SetColumnWidth( ParamsColumn, 220 );
-
-   Layout();
-   Fit();
-   CenterOnParent();
+   sz.x -= mList->GetColumnWidth(BlankColumn);
+   sz.x -= mList->GetColumnWidth(ItemNumberColumn);
+   sz.x -= mList->GetColumnWidth(ActionColumn);
+   mList->SetColumnWidth(ParamsColumn, sz.x);
 }
 
 /// Defines the dialog and does data exchange with it.
-void EditChainsDialog::PopulateOrExchange( ShuttleGui & S )
+void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
 {
-   S.StartHorizontalLay( wxEXPAND, 1 );
+   S.StartHorizontalLay(wxEXPAND, 1);
    {
-      S.StartStatic( _("Chains"));
+      S.StartStatic(_("Chains"));
       {
          // JKC: Experimenting with an alternative way to get multiline
          // translated strings to work correctly without very long lines.
@@ -422,41 +427,40 @@ void EditChainsDialog::PopulateOrExchange( ShuttleGui & S )
          // It remains to see if linux and mac can cope and if xgettext 
          // actually does do fine with strings presented like this.
          // If it doesn't work out, revert to all-on-one-line.
-         S.SetStyle( wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_SINGLE_SEL |
-                     wxLC_EDIT_LABELS );
-         mChains = S.Id( ChainsListID ).AddListControlReportMode();
-         mChains->InsertColumn( 0, wxT("Chain"), wxLIST_FORMAT_LEFT );
+         S.SetStyle(wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_SINGLE_SEL |
+                    wxLC_EDIT_LABELS);
+         mChains = S.Id(ChainsListID).AddListControlReportMode();
+         mChains->InsertColumn(0, wxT("Chain"), wxLIST_FORMAT_LEFT);
          S.StartHorizontalLay(wxCENTER, false);
          {
-            S.Id( AddButtonID ).AddButton( _("&Add") );
-            mRemove = S.Id( RemoveButtonID ).AddButton( _("&Remove") );
-            mRename = S.Id( RenameButtonID ).AddButton( _("Rena&me") );
+            S.Id(AddButtonID).AddButton(_("&Add"));
+            mRemove = S.Id(RemoveButtonID).AddButton(_("&Remove"));
+            mRename = S.Id(RenameButtonID).AddButton(_("Rena&me"));
          }
          S.EndHorizontalLay();
       }
       S.EndStatic();
 
-      S.StartStatic( _("Chain Sequence (Double-Click or press SPACE to edit)"),1);
+      S.StartStatic(_("Chain (Double-Click or press SPACE to edit)"), true);
       {
-         S.SetStyle( wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_VRULES |
-                     wxLC_SINGLE_SEL );
-         mList = S.Id( CommandsListID ).AddListControlReportMode();
+         S.SetStyle(wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_VRULES |
+                    wxLC_SINGLE_SEL);
+         mList = S.Id(CommandsListID).AddListControlReportMode();
 
          //An empty first column is a workaround - under Win98 the first column 
          //can't be right aligned.
-         mList->InsertColumn(BlankColumn,   wxT(""),         wxLIST_FORMAT_LEFT );
-         mList->InsertColumn(ItemNumberColumn,    _("No"),   wxLIST_FORMAT_RIGHT );
-         mList->InsertColumn(ActionColumn,  _("Command"),    wxLIST_FORMAT_RIGHT );
-         mList->InsertColumn(ParamsColumn,  _("Parameters"), wxLIST_FORMAT_LEFT );
-         mList->SetSizeHints(300, 200);
+         mList->InsertColumn(BlankColumn, wxT(""), wxLIST_FORMAT_LEFT);
+         mList->InsertColumn(ItemNumberColumn, _("No"), wxLIST_FORMAT_RIGHT);
+         mList->InsertColumn(ActionColumn, _("Command"), wxLIST_FORMAT_RIGHT);
+         mList->InsertColumn(ParamsColumn, _("Parameters"), wxLIST_FORMAT_LEFT);
 
          S.StartHorizontalLay(wxCENTER, false);
          {
-            S.Id( UpButtonID ).AddButton( _("Move &Up"), wxALIGN_LEFT );
-            S.Id( DownButtonID ).AddButton( _("Move &Down"), wxALIGN_LEFT );
-            mDefaults = S.Id( DefaultsButtonID ).AddButton( _("De&faults") );
-//            S.Id( ImportButtonID ).AddButton( _("&Import"), wxALIGN_LEFT );
-//            S.Id( ExportButtonID ).AddButton( _("E&xport"), wxALIGN_LEFT );
+            S.Id(InsertButtonID).AddButton(_("Insert"), wxALIGN_LEFT);
+            S.Id(DeleteButtonID).AddButton(_("Delete"), wxALIGN_LEFT);
+            S.Id(UpButtonID).AddButton(_("Move &Up"), wxALIGN_LEFT);
+            S.Id(DownButtonID).AddButton(_("Move &Down"), wxALIGN_LEFT);
+            mDefaults = S.Id(DefaultsButtonID).AddButton(_("De&faults"));
          }
          S.EndHorizontalLay();
       }
@@ -472,7 +476,7 @@ void EditChainsDialog::PopulateOrExchange( ShuttleGui & S )
 /// This clears and updates the contents of mChains
 void EditChainsDialog::PopulateChains()
 {
-   wxArrayString names = mBatchCommands.GetChainNames();
+   wxArrayString names = mBatchCommands.GetNames();
    int i;
 
    mChains->DeleteAllItems();
@@ -481,218 +485,84 @@ void EditChainsDialog::PopulateChains()
       mChains->InsertItem(i, names[i]);
    }
 
-   mChains->Refresh(false);
+   int item = mChains->FindItem(-1, mActiveChain);
+   if (item == -1) {
+      item = 0;
+      mActiveChain = mChains->GetItemText(0);
+   }
+
+   // Select the name in the list...this will fire an event.
+   mChains->SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 }
 
 /// This clears and updates the contents of mList
 void EditChainsDialog::PopulateList()
 {
-   wxString command;
-   wxString params;
-   int i;
-
    mList->DeleteAllItems();
 
-   for (i = 0; i < mChain->GetCount(); i++) {
-      mBatchCommands.Split( (*mChain)[i], command, params );
-      AddItem( command, params );
+   for (int i = 0; i < mBatchCommands.GetCount(); i++) {
+      AddItem(mBatchCommands.GetCommand(i),
+              mBatchCommands.GetParams(i));
    }
 
-   AddItem( _("- END -"), wxT(""));
-   mList->Refresh(false);
+   AddItem(_("- END -"), wxT(""));
+
+   // Select the name in the list...this will fire an event.
+   if (mSelectedCommand >= (int)mList->GetItemCount()) {
+      mSelectedCommand = 0;
+   }
+   mList->SetItemState(mSelectedCommand, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 }
 
-/// 
-void EditChainsDialog::OnAdd(wxCommandEvent &event)
+/// Add one item into mList
+void EditChainsDialog::AddItem(const wxString &Action, const wxString &Params)
 {
-   while (true) {
-      wxTextEntryDialog d(this,
-                          _("Enter name of new chain"),
-                          _("Batch Chain"));
-      wxString name;
+   int i = mList->GetItemCount();
 
-      if (d.ShowModal() == wxID_CANCEL) {
-         return;
+   mList->InsertItem(i, wxT(""));
+   mList->SetItem(i, ItemNumberColumn, wxString::Format(wxT(" %02i"), i + 1));
+   mList->SetItem(i, ActionColumn, Action );
+   mList->SetItem(i, ParamsColumn, Params );
+}
+
+bool EditChainsDialog::ChangeOK()
+{
+   if (mChanged) {
+      wxString title;
+      wxString msg;
+      int id;
+
+      title.Printf(_("%s changed"), mActiveChain.c_str());
+      msg = _("Do you want to save the changes?");
+
+      id = wxMessageBox(msg, title, wxYES_NO | wxCANCEL);
+      if (id == wxCANCEL) {
+         return false;
       }
 
-      name = d.GetValue().Strip(wxString::both);
-
-      if (name.Length() == 0) {
-         wxMessageBox(_("Name must not be blank"),
-                      _("Batch Chain"),
-                      wxOK | wxICON_ERROR,
-                      this);
-         continue;
+      if (id == wxYES) {
+         if (!mBatchCommands.WriteChain(mActiveChain)) {
+            return false;
+         }
       }
 
-      if (name.Contains(wxT("[")) ||
-          name.Contains(wxT("]")) ||
-          name.Contains(wxCONFIG_PATH_SEPARATOR)) {
-         wxMessageBox(wxString::Format(_("Names may not contain brackets and '%c'"), wxCONFIG_PATH_SEPARATOR),
-                      _("Batch Chain"),
-                      wxOK | wxICON_ERROR,
-                      this);
-         continue;
-      }
-
-      if (mChains->FindItem(-1, name) != -1) {
-         wxMessageBox(_("Chain already exists"),
-                      _("Batch Chain"),
-                      wxOK | wxICON_ERROR,
-                      this);
-         continue;
-      }
-
-      mBatchCommands.GetChain(name);
-      
-      long item = mChains->InsertItem(mChains->GetItemCount(), name);
-      mChains->SetItemState(item, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-
-      break;
-   }
-}
-
-///
-void EditChainsDialog::OnRemove(wxCommandEvent &event)
-{
-   long item = mChains->GetNextItem(-1,
-                                    wxLIST_NEXT_ALL,
-                                    wxLIST_STATE_SELECTED);
-   if (item == -1) {
-      return;
+      mChanged = false;
    }
 
-   wxString name = mChains->GetItemText(item);
-   wxMessageDialog m(this,
-                     wxString::Format(_("Are you sure you want to delete %s?"), name.c_str()),
-                     _("Batch Chain"),
-                     wxYES_NO | wxICON_QUESTION);
-   if (m.ShowModal() == wxID_NO) {
-      return;
-   }
+   return true;
 }
-
-///
-void EditChainsDialog::OnRename(wxCommandEvent &event)
-{
-   long item = mChains->GetNextItem(-1,
-                                    wxLIST_NEXT_ALL,
-                                    wxLIST_STATE_SELECTED);
-   if (item == -1) {
-      return;
-   }
-
-   mChains->EditLabel(item);
-}
-
-///
-void EditChainsDialog::OnUp(wxCommandEvent &event)
-{
-   long item = mList->GetNextItem(-1,
-                                  wxLIST_NEXT_ALL,
-                                  wxLIST_STATE_SELECTED);
-   if (item == -1 || item == 0 || item + 1 == mList->GetItemCount()) {
-      return;
-   }
-
-   wxString commandP, paramsP, commandC, paramsC;
-   wxListItem info;
-
-   info.SetMask(wxLIST_MASK_TEXT);
-   info.SetId(item - 1);
-
-   info.SetColumn(ActionColumn);
-   mList->GetItem(info);
-   commandP = info.GetText();
-
-   info.SetColumn(ParamsColumn);
-   mList->GetItem(info);
-   paramsP = info.GetText();
-
-   info.SetId(item);
-
-   info.SetColumn(ActionColumn);
-   mList->GetItem(info);
-   commandC = info.GetText();
-
-   info.SetColumn(ParamsColumn);
-   mList->GetItem(info);
-   paramsC = info.GetText();
-
-   SetItem(item - 1, commandC, paramsC);
-   SetItem(item, commandP, paramsP);
-
-   mList->SetItemState(item - 1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-}
-
-///
-void EditChainsDialog::OnDown(wxCommandEvent &event)
-{
-   long item = mList->GetNextItem(-1,
-                                  wxLIST_NEXT_ALL,
-                                  wxLIST_STATE_SELECTED);
-   if (item == -1 || item + 2 >= mList->GetItemCount()) {
-      return;
-   }
-
-   wxString commandN, paramsN, commandC, paramsC;
-   wxListItem info;
-
-   info.SetMask(wxLIST_MASK_TEXT);
-   info.SetId(item + 1);
-
-   info.SetColumn(ActionColumn);
-   mList->GetItem(info);
-   commandN = info.GetText();
-
-   info.SetColumn(ParamsColumn);
-   mList->GetItem(info);
-   paramsN = info.GetText();
-
-   info.SetId(item);
-
-   info.SetColumn(ActionColumn);
-   mList->GetItem(info);
-   commandC = info.GetText();
-
-   info.SetColumn(ParamsColumn);
-   mList->GetItem(info);
-   paramsC = info.GetText();
-
-   SetItem(item, commandN, paramsN);
-   SetItem(item + 1, commandC, paramsC);
-
-   mList->SetItemState(item + 1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-}
-
-/// Loads a command chain from a file.
-void EditChainsDialog::OnImport(wxCommandEvent &event)
-{
-   mBatchCommands.ImportChain(this, mActiveChain);
-   PopulateList();
-}
-
-/// Saves the current command chain to a file.
-void EditChainsDialog::OnExport(wxCommandEvent &event)
-{
-   mBatchCommands.ExportChain(this, mActiveChain);
-   PopulateList();
-}
-
-/// Select the empty Command chain.
-void EditChainsDialog::OnDefaults(wxCommandEvent &event)
-{
-   mChain = mBatchCommands.RestoreChain(mActiveChain);
-   PopulateList();
-}
-
 /// An item in the chains list has been selected.
 void EditChainsDialog::OnChainSelected(wxListEvent &event)
 {
-   int itemNo = event.GetIndex();
+   if (!ChangeOK()) {
+      event.Veto();
+      return;
+   }
 
-   mActiveChain = mChains->GetItemText(itemNo);
-   mChain = mBatchCommands.GetChain(mActiveChain);
+   int item = event.GetIndex();
+
+   mActiveChain = mChains->GetItemText(item);
+   mBatchCommands.ReadChain(mActiveChain);
 
    if (mBatchCommands.IsFixed(mActiveChain)) {
       mRemove->Disable();
@@ -730,122 +600,260 @@ void EditChainsDialog::OnChainsEndEdit(wxListEvent &event)
 
    wxString newname = event.GetLabel();
 
-   mChain = mBatchCommands.RenameChain(mActiveChain, newname);
+   mBatchCommands.RenameChain(mActiveChain, newname);
+
    mActiveChain = newname;
+
+   PopulateChains();
+}
+
+/// 
+void EditChainsDialog::OnAdd(wxCommandEvent &event)
+{
+   while (true) {
+      wxTextEntryDialog d(this,
+                          _("Enter name of new chain"),
+                          GetTitle());
+      wxString name;
+
+      if (d.ShowModal() == wxID_CANCEL) {
+         return;
+      }
+
+      name = d.GetValue().Strip(wxString::both);
+
+      if (name.Length() == 0) {
+         wxMessageBox(_("Name must not be blank"),
+                      GetTitle(),
+                      wxOK | wxICON_ERROR,
+                      this);
+         continue;
+      }
+
+      if (name.Contains(wxFILE_SEP_PATH) ||
+          name.Contains(wxFILE_SEP_PATH_UNIX)) {
+         wxMessageBox(wxString::Format(_("Names may not contain '%c' and '%c'"),
+                      wxFILE_SEP_PATH, wxFILE_SEP_PATH_UNIX),
+                      GetTitle(),
+                      wxOK | wxICON_ERROR,
+                      this);
+         continue;
+      }
+
+      mBatchCommands.AddChain(name);
+
+      mActiveChain = name;
+
+      PopulateChains();
+
+      break;
+   }
+}
+
+///
+void EditChainsDialog::OnRemove(wxCommandEvent &event)
+{
+   long item = mChains->GetNextItem(-1,
+                                    wxLIST_NEXT_ALL,
+                                    wxLIST_STATE_SELECTED);
+   if (item == -1) {
+      return;
+   }
+
+   wxString name = mChains->GetItemText(item);
+   wxMessageDialog m(this,
+                     wxString::Format(_("Are you sure you want to delete %s?"), name.c_str()),
+                     GetTitle(),
+                     wxYES_NO | wxICON_QUESTION);
+   if (m.ShowModal() == wxNO) {
+      return;
+   }
+
+   mBatchCommands.DeleteChain(name);
+
+   if (item >= (mChains->GetItemCount() - 1) && item >= 0) {
+      item--;
+   }
+
+   mActiveChain = mChains->GetItemText(item);
+
+   PopulateChains();
+}
+
+///
+void EditChainsDialog::OnRename(wxCommandEvent &event)
+{
+   long item = mChains->GetNextItem(-1,
+                                    wxLIST_NEXT_ALL,
+                                    wxLIST_STATE_SELECTED);
+   if (item == -1) {
+      return;
+   }
+
+   mChains->EditLabel(item);
 }
 
 /// An item in the list has been selected.
 /// Bring up a dialog to allow its parameters to be edited.
-void EditChainsDialog::OnItemSelected(wxListEvent &event)
+void EditChainsDialog::OnCommandActivated(wxListEvent &event)
 {
-   int itemNo = event.GetIndex();
-   // Keep chain short.
-   // We currently only store shortish chains in the prefs.
-   if( itemNo > 20 )
+   int item = event.GetIndex();
+
+   BatchCommandDialog d(this, wxID_ANY);
+   d.SetCommandAndParams(mBatchCommands.GetCommand(item),
+                         mBatchCommands.GetParams(item));
+
+   if (!d.ShowModal()) {
       return;
-
-   wxString command, params;
-   BatchCommandDialog Dlg( this, -1);
-
-   wxListItem info;
-   info.SetId( itemNo );
-   info.SetMask( wxLIST_MASK_TEXT );
-
-   info.SetColumn( ActionColumn );
-   mList->GetItem( info );
-   command = info.GetText();
-
-   info.SetColumn( ParamsColumn );
-   mList->GetItem( info );
-   params = info.GetText();
-   
-   Dlg.SetCommandAndParams( command, params );
-
-   if( Dlg.ShowModal())
-   {
-      SetItem( 
-         itemNo, 
-         Dlg.mSelectedCommand,
-         Dlg.mSelectedParameters);
    }
+
+   mBatchCommands.DeleteFromChain(item);
+   mBatchCommands.AddToChain(d.mSelectedCommand,
+                             d.mSelectedParameters,
+                             item);
+
+   mChanged = true;
+
+   mSelectedCommand = item;
+
+   PopulateList();
 }
 
-// This commented out code might be useful as a first step if we want an immediate response to 
-// switching in and out of CleanSpeech mode.
-// As things currently stand, the batch commands available will NOT reflect changes in
-// CleanSpeech mode until we close and reopen the preferences dialog.
-#if 0
-   int mode;
-   AudacityProject *proj = GetActiveProject();
-   mode = gPrefs->Read(wxT("/Batch/CleanSpeechMode"), 1L);
-   proj->GetControlToolBar()->SetCleanSpeechMode(mode == 1);
-#endif
+///
+void EditChainsDialog::OnInsert(wxCommandEvent &event)
+{
+   long item = mList->GetNextItem(-1,
+                                  wxLIST_NEXT_ALL,
+                                  wxLIST_STATE_SELECTED);
+   if (item == -1) {
+      return;
+   }
+
+   BatchCommandDialog d(this, wxID_ANY);
+
+   if (!d.ShowModal()) {
+      return;
+   }
+
+   mBatchCommands.AddToChain(d.mSelectedCommand,
+                             d.mSelectedParameters,
+                             item);
+   mChanged = true;
+
+   mSelectedCommand = item + 1;
+
+   PopulateList();
+}
+
+///
+void EditChainsDialog::OnDelete(wxCommandEvent &event)
+{
+   long item = mList->GetNextItem(-1,
+                                  wxLIST_NEXT_ALL,
+                                  wxLIST_STATE_SELECTED);
+   if (item == -1 || item + 1 == mList->GetItemCount()) {
+      return;
+   }
+
+   mBatchCommands.DeleteFromChain(item);
+
+   mChanged = true;
+
+   if (item >= (mList->GetItemCount() - 2) && item >= 0) {
+      item--;
+   }
+
+   mSelectedCommand = item;
+
+   PopulateList();
+}
+
+///
+void EditChainsDialog::OnUp(wxCommandEvent &event)
+{
+   long item = mList->GetNextItem(-1,
+                                  wxLIST_NEXT_ALL,
+                                  wxLIST_STATE_SELECTED);
+   if (item == -1 || item == 0 || item + 1 == mList->GetItemCount()) {
+      return;
+   }
+
+   mBatchCommands.AddToChain(mBatchCommands.GetCommand(item),
+                             mBatchCommands.GetParams(item),
+                             item - 1);
+   mBatchCommands.DeleteFromChain(item + 1);
+
+   mChanged = true;
+
+   mSelectedCommand = item - 1;
+
+   PopulateList();
+}
+
+///
+void EditChainsDialog::OnDown(wxCommandEvent &event)
+{
+   long item = mList->GetNextItem(-1,
+                                  wxLIST_NEXT_ALL,
+                                  wxLIST_STATE_SELECTED);
+   if (item == -1 || item + 2 >= mList->GetItemCount()) {
+      return;
+   }
+
+   mBatchCommands.AddToChain(mBatchCommands.GetCommand(item),
+                             mBatchCommands.GetParams(item),
+                             item + 2);
+   mBatchCommands.DeleteFromChain(item);
+
+   mChanged = true;
+
+   mSelectedCommand = item + 1;
+
+   PopulateList();
+}
+
+/// Select the empty Command chain.
+void EditChainsDialog::OnDefaults(wxCommandEvent &event)
+{
+   mBatchCommands.RestoreChain(mActiveChain);
+
+   mChanged = true;
+
+   PopulateList();
+}
 
 /// Send changed values back to Prefs, and update Audacity.
 void EditChainsDialog::OnOK(wxCommandEvent &event)
 {
    gPrefs->Write(wxT("/Batch/ActiveChain"), mActiveChain);
-   mBatchCommands.WriteChains();
-   mBatchCommands.FlushChains();
+
+   if (mChanged) {
+      if (!mBatchCommands.WriteChain(mActiveChain)) {
+         return;
+      }
+   }
+
    EndModal(true);
 }
 
 ///
 void EditChainsDialog::OnCancel(wxCommandEvent &event)
 {
-   mBatchCommands.FlushChains();
-   EndModal(false);
-}
-
-/// Add one item into mList
-void EditChainsDialog::AddItem( wxString const & Action, wxString const & Params)
-{
-   int i=mList->GetItemCount();
-   mList->InsertItem( i, wxT("") );
-   mList->SetItem( i, ItemNumberColumn, wxString::Format(wxT(" %02i"),i+1) );
-   mList->SetItem( i, ActionColumn, Action );
-   mList->SetItem( i, ParamsColumn, Params );
-}
-
-/// Sets one item in mList to a command/parameter pair.
-void EditChainsDialog::SetItem(int itemNo, const wxString command, const wxString params)
-{
-   // There is a 'rogue' entry of "- END -" at the end of the list
-   // which users can click on to add an entry to the end.
-
-   // There is a special entry of "No Action" in the effects list,
-   // which can be used to delete an entry.
-
-   // special case - deleting an item.
-   if( command.IsSameAs(wxT("No Action")))
-   {
-      //Attempt to delete the 'rogue' entry at the end.
-      if( (itemNo+1) >= mList->GetItemCount() )
-         return;
-
-      mChain->RemoveAt( itemNo );
-      PopulateList();
+   if (!ChangeOK()) {
       return;
    }
 
-   // Set the item in the list.
-   mList->SetItem( itemNo ,ActionColumn, command ); 
-   mList->SetItem( itemNo ,ParamsColumn, params );
+   EndModal(false);
+}
 
-   // IF at end of list THEN extend list
-   // else replace item.
-   if( (itemNo+1) >= mList->GetItemCount() )
-   {
-      // Add new rogue
-      AddItem( _("- END -"),wxT(""));
-      mChain->Add( mBatchCommands.Join( command, params ) );
-   }
-   else
-   {
-      (*mChain)[itemNo] = mBatchCommands.Join( command, params );
+///
+void EditChainsDialog::OnKeyDown(wxKeyEvent &event)
+{
+   if (event.GetKeyCode() == WXK_DELETE) {
+      printf("hello\n");
    }
 
-   mList->Refresh(false);
+   event.Skip();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
