@@ -88,7 +88,7 @@ void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
    S.StartVerticalLay(true);
    {
       
-      S.StartStatic(_("Select chain"), true);
+      S.StartStatic(_("&Select chain"), true);
       {
          S.SetStyle(wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_VRULES |
                      wxLC_SINGLE_SEL);
@@ -99,9 +99,9 @@ void BatchProcessDialog::PopulateOrExchange(ShuttleGui &S)
 
       S.StartHorizontalLay(wxALIGN_RIGHT, false);
       {
-         S.Id(ApplyToProjectID).AddButton(_("Apply to Current Project"));
-         S.Id(ApplyToFilesID).AddButton(_("Apply to Files..."));
-         S.Id(wxID_CANCEL).AddButton(_("Cancel"));
+         S.Id(ApplyToProjectID).AddButton(_("Apply to Current &Project"));
+         S.Id(ApplyToFilesID).AddButton(_("Apply to &Files..."));
+         S.Id(wxID_CANCEL).AddButton(_("&Cancel"));
       }
       S.EndHorizontalLay();
    }
@@ -414,7 +414,7 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
 {
    S.StartHorizontalLay(wxEXPAND, 1);
    {
-      S.StartStatic(_("Chains"));
+      S.StartStatic(_("&Chains"));
       {
          // JKC: Experimenting with an alternative way to get multiline
          // translated strings to work correctly without very long lines.
@@ -435,13 +435,13 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
          {
             S.Id(AddButtonID).AddButton(_("&Add"));
             mRemove = S.Id(RemoveButtonID).AddButton(_("&Remove"));
-            mRename = S.Id(RenameButtonID).AddButton(_("Rena&me"));
+            mRename = S.Id(RenameButtonID).AddButton(_("Re&name"));
          }
          S.EndHorizontalLay();
       }
       S.EndStatic();
 
-      S.StartStatic(_("Chain (Double-Click or press SPACE to edit)"), true);
+      S.StartStatic(_("C&hain (Double-Click or press SPACE to edit)"), true);
       {
          S.SetStyle(wxSUNKEN_BORDER | wxLC_REPORT | wxLC_HRULES | wxLC_VRULES |
                     wxLC_SINGLE_SEL);
@@ -456,8 +456,8 @@ void EditChainsDialog::PopulateOrExchange(ShuttleGui & S)
 
          S.StartHorizontalLay(wxCENTER, false);
          {
-            S.Id(InsertButtonID).AddButton(_("Insert"), wxALIGN_LEFT);
-            S.Id(DeleteButtonID).AddButton(_("Delete"), wxALIGN_LEFT);
+            S.Id(InsertButtonID).AddButton(_("&Insert"), wxALIGN_LEFT);
+            S.Id(DeleteButtonID).AddButton(_("De&lete"), wxALIGN_LEFT);
             S.Id(UpButtonID).AddButton(_("Move &Up"), wxALIGN_LEFT);
             S.Id(DownButtonID).AddButton(_("Move &Down"), wxALIGN_LEFT);
             mDefaults = S.Id(DefaultsButtonID).AddButton(_("De&faults"));
