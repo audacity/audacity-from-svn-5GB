@@ -189,7 +189,7 @@ void TranscriptionToolBar::Populate()
                                   TTB_PlaySpeedSlider,
                                   _("Playback Speed"), 
                                   wxDefaultPosition,
-                                  wxSize(SliderWidth,27),
+                                  wxSize(SliderWidth,25),
                                   SPEED_SLIDER);
    mPlaySpeedSlider->Set(1.0);
    mPlaySpeedSlider->SetLabel(_("Playback Speed"));
@@ -228,7 +228,7 @@ void TranscriptionToolBar::Populate()
                                     TTB_SensitivitySlider,
                                     _("Adjust Sensitivity"),
                                     wxDefaultPosition,
-                                    wxSize(SliderWidth,27),
+                                    wxSize(SliderWidth,25),
                                     SPEED_SLIDER);
    mSensitivitySlider->Set(.5);
    mSensitivitySlider->SetLabel(_("Sensitivity"));
