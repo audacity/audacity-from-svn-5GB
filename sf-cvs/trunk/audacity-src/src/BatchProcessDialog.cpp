@@ -10,7 +10,7 @@
 *******************************************************************//*!
 
 \class BatchProcessDialog
-\brief Shows progress in executring commands in BatchCommands.
+\brief Shows progress in executing commands in BatchCommands.
 
 *//*******************************************************************/
 
@@ -30,6 +30,7 @@
 #include <wx/button.h>
 #include <wx/imaglist.h>
 #include <wx/msgdlg.h>
+#include <wx/settings.h>
 
 #include "Prefs.h"
 #include "Project.h"
