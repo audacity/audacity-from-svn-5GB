@@ -113,7 +113,7 @@ of these libraries are not distributed under the terms
 of the GPL, but rather some other free, GPL-compatible
 license.  Specifically:
 
-  wxWidgets: LGPL
+  wxWidgets: wxWindows license (based on LGPL)
     Cross-platform GUI library - must be downloaded and
     compiled separately.
 
