@@ -16,9 +16,9 @@ DirExistsWarning=no
 DefaultGroupName=LADSPA_plugins-win
 DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE.txt
-InfoBeforeFile=readme.txt
+InfoBeforeFile=readme_LADSPA_plugins-win.txt
 OutputDir=.\Installer
-OutputBaseFilename=LADSPA_plugins-win-0.4.15 Setup
+OutputBaseFilename=LADSPA_plugins-win-0.4.15
 Compression=lzma
 SolidCompression=yes
 
@@ -44,7 +44,9 @@ Name: "slovenian"; MessagesFile: "compiler:Languages\Slovenian.isl"
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Files]
-; Remove the Excludes if FFTW lets us distribute their DLLs.
-Source: ".\Release\*.dll"; Excludes: "imp_1199.dll, mbeq_1197.dll, morph_1917.dll, pitch_scale_1193.dll, pitch_scale_1194.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Note that {app} is the plugins directory.
+Source: "readme_LADSPA_plugins-win.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\Release\FFTW_docs\*"; DestDir: "{app}\FFTW_docs"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
