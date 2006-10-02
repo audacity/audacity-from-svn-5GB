@@ -2038,3 +2038,30 @@ static double GetStreamCpuLoad( PaStream* s )
 
     return PaUtil_GetCpuLoad( &stream->cpuLoadMeasurer );
 }
+
+/* Use this function to initialize a paMacCoreStreamInfo struct
+   using the requested flags. */
+void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
+{
+   bzero( data, sizeof( paMacCoreStreamInfo ) );
+   data->size = sizeof( paMacCoreStreamInfo );
+   data->hostApiType = paCoreAudio;
+   data->version = 0x01;
+   data->flags = flags;
+}
+
+AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s )
+{
+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
+    VVDBUG(("PaMacCore_GetStreamInputHandle()\n"));
+
+    return ( stream->inputDevice );
+}
+
+AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s )
+{
+    PaMacCoreStream *stream = (PaMacCoreStream*)s;
+    VVDBUG(("PaMacCore_GetStreamOutputHandle()\n"));
+
+    return ( stream->outputDevice );
+}

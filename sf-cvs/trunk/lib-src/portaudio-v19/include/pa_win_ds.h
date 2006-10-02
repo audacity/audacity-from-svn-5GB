@@ -1,10 +1,9 @@
-#ifndef PA_LINUX_ALSA_H
-#define PA_LINUX_ALSA_H
-
+#ifndef PA_WIN_DS_H
+#define PA_WIN_DS_H
 /*
- * $Id: pa_linux_alsa.h,v 1.3 2006-10-02 00:29:02 llucius Exp $
+ * $Id: pa_win_ds.h,v 1.1 2006-10-02 00:29:02 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
- * ALSA-specific extensions
+ * DirectSound specific extensions
  *
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
  *
@@ -19,6 +18,10 @@
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
  *
+ * Any person wishing to distribute modifications to the Software is
+ * requested to send the modifications to the original developer so that
+ * they can be incorporated into the canonical version.
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -26,49 +29,41 @@
  * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-/*
- * The text above constitutes the entire PortAudio license; however, 
- * the PortAudio community also makes the following non-binding requests:
  *
- * Any person wishing to distribute modifications to the Software is
- * requested to send the modifications to the original developer so that
- * they can be incorporated into the canonical version. It is also 
- * requested that these non-binding requests be included along with the 
- * license above.
  */
 
 /** @file
- * ALSA-specific PortAudio API extension header file.
- */
+ @brief DirectSound-specific PortAudio API extension header file.
+*/
+
+
+#include "portaudio.h"
 
 #ifdef __cplusplus
-extern "C" {
-#endif
-
-typedef struct PaAlsaStreamInfo
+extern "C"
 {
-    unsigned long size;
-    PaHostApiTypeId hostApiType;
-    unsigned long version;
+#endif /* __cplusplus */
 
-    const char *deviceString;
-}
-PaAlsaStreamInfo;
 
-void PaAlsa_InitializeStreamInfo( PaAlsaStreamInfo *info );
+/** Retrieve the GUID of the input device.
 
-void PaAlsa_EnableRealtimeScheduling( PaStream *s, int enable );
+ @param stream The stream to query.
 
-void PaAlsa_EnableWatchdog( PaStream *s, int enable );
+ @return A pointer to the GUID, or NULL if none.
+*/
+LPGUID PaWinDS_GetStreamInputGUID( PaStream* s );
 
-int PaAlsa_GetInputCard( PaStream *s );
 
-int PaAlsa_GetOutputCard( PaStream *s );
+/** Retrieve the GUID of the output device.
+
+ @param stream The stream to query.
+
+ @return A pointer to the GUID, or NULL if none.
+*/
+LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s );
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
-#endif
+#endif /* PA_WIN_DS_H */
