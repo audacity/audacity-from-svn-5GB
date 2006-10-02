@@ -1,5 +1,5 @@
 /*
- * $Id: pa_linux_alsa.c,v 1.2 2006-09-23 18:42:47 llucius Exp $
+ * $Id: pa_linux_alsa.c,v 1.3 2006-10-02 00:29:03 llucius Exp $
  * PortAudio Portable Real-Time Audio Library
  * Latest Version at: http://www.portaudio.com
  * ALSA implementation by Joshua Haberman and Arve Knudsen
@@ -3321,3 +3321,40 @@ void PaAlsa_EnableWatchdog( PaStream *s, int enable )
     stream->threading.useWatchdog = enable;
 #endif
 }
+
+int PaAlsa_GetInputCard( PaStream *s )
+{
+    PaAlsaStream *stream = (PaAlsaStream *) s;
+    snd_pcm_info_t *pcmInfo;
+    int card = -1;
+
+    if( stream->capture.pcm )
+    {
+        snd_pcm_info_alloca( &pcmInfo );
+        if( snd_pcm_info( stream->capture.pcm, pcmInfo ) >= 0 )
+        {
+            card = snd_pcm_info_get_card( pcmInfo );
+        }
+    }
+
+    return card;
+}
+
+int PaAlsa_GetOutputCard( PaStream *s )
+{
+    PaAlsaStream *stream = (PaAlsaStream *) s;
+    snd_pcm_info_t *pcmInfo;
+    int card = -1;
+
+    if( stream->playback.pcm )
+    {
+        snd_pcm_info_alloca( &pcmInfo );
+        if( snd_pcm_info( stream->playback.pcm, pcmInfo ) >= 0 )
+        {
+            card = snd_pcm_info_get_card( pcmInfo );
+        }
+    }
+
+    return card;
+}
+
