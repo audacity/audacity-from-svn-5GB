@@ -206,8 +206,6 @@
 		170740890988F1CC008541CC /* SoundTouch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1707383D0988D6B0008541CC /* SoundTouch.cpp */; };
 		1707408A0988F1CC008541CC /* TDStretch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 170738410988D6B0008541CC /* TDStretch.cpp */; };
 		1707408B0988F1CC008541CC /* TDStretch.h in Headers */ = {isa = PBXBuildFile; fileRef = 170738420988D6B0008541CC /* TDStretch.h */; };
-		170740970988F305008541CC /* portmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 170737B80988D6AF008541CC /* portmixer.h */; };
-		170740980988F305008541CC /* px_mac_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 170737BF0988D6AF008541CC /* px_mac_core.c */; };
 		170740D50988F835008541CC /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 170735820988D6AD008541CC /* config.h */; };
 		170740D60988F835008541CC /* codec.h in Headers */ = {isa = PBXBuildFile; fileRef = 1707363D0988D6AE008541CC /* codec.h */; };
 		170740D70988F835008541CC /* vorbisenc.h in Headers */ = {isa = PBXBuildFile; fileRef = 170736420988D6AE008541CC /* vorbisenc.h */; };
@@ -741,6 +739,10 @@
 		17FDBD03098BFF4E00BCEF32 /* framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 1707339A0988D6AC008541CC /* framing.c */; };
 		280828550A75E0D0000002EF /* LabelDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828530A75E0D0000002EF /* LabelDialog.cpp */; };
 		2808285A0A75E0EA000002EF /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 280828580A75E0EA000002EF /* Grid.cpp */; };
+		28105D9C0AD09FB200BB4269 /* portmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105D9B0AD09FB200BB4269 /* portmixer.h */; };
+		28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */; };
+		28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */ = {isa = PBXBuildFile; fileRef = 28105DA10AD09FC500BB4269 /* px_mixer.c */; };
+		28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28105DA20AD09FC500BB4269 /* px_mixer.h */; };
 		2835062D0A3A88ED00EB1EBD /* pa_unix_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 283506280A3A88ED00EB1EBD /* pa_unix_util.c */; };
 		2835062E0A3A88ED00EB1EBD /* pa_unix_util.h in Headers */ = {isa = PBXBuildFile; fileRef = 283506290A3A88ED00EB1EBD /* pa_unix_util.h */; };
 		283A11A50A2C0DE7004372C4 /* broadcast.c in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A40A2C0DE7004372C4 /* broadcast.c */; };
@@ -1173,8 +1175,6 @@
 		170736BB0988D6AE008541CC /* vorbisfile.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = vorbisfile.c; sourceTree = "<group>"; };
 		170736BC0988D6AE008541CC /* window.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
 		170736BD0988D6AE008541CC /* window.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
-		170737B80988D6AF008541CC /* portmixer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = portmixer.h; sourceTree = "<group>"; };
-		170737BF0988D6AF008541CC /* px_mac_core.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = px_mac_core.c; sourceTree = "<group>"; };
 		170737EB0988D6AF008541CC /* BPMDetect.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BPMDetect.h; sourceTree = "<group>"; };
 		170737ED0988D6AF008541CC /* FIFOSampleBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FIFOSampleBuffer.h; sourceTree = "<group>"; };
 		170737EE0988D6AF008541CC /* FIFOSamplePipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = FIFOSamplePipe.h; sourceTree = "<group>"; };
@@ -1801,6 +1801,10 @@
 		280828540A75E0D0000002EF /* LabelDialog.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = LabelDialog.h; sourceTree = "<group>"; };
 		280828580A75E0EA000002EF /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Grid.cpp; sourceTree = "<group>"; };
 		280828590A75E0EA000002EF /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
+		28105D9B0AD09FB200BB4269 /* portmixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = portmixer.h; sourceTree = "<group>"; };
+		28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mac_coreaudio.c; sourceTree = "<group>"; };
+		28105DA10AD09FC500BB4269 /* px_mixer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = px_mixer.c; sourceTree = "<group>"; };
+		28105DA20AD09FC500BB4269 /* px_mixer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = px_mixer.h; sourceTree = "<group>"; };
 		283506280A3A88ED00EB1EBD /* pa_unix_util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_unix_util.c; sourceTree = "<group>"; };
 		283506290A3A88ED00EB1EBD /* pa_unix_util.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = pa_unix_util.h; sourceTree = "<group>"; };
 		283A11A40A2C0DE7004372C4 /* broadcast.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = broadcast.c; sourceTree = "<group>"; };
@@ -2378,26 +2382,10 @@
 		170737B00988D6AF008541CC /* portmixer */ = {
 			isa = PBXGroup;
 			children = (
-				170737B60988D6AF008541CC /* px_common */,
-				170737BC0988D6AF008541CC /* px_mac_core */,
+				28105D9A0AD09FB200BB4269 /* include */,
+				28105D9D0AD09FC500BB4269 /* src */,
 			);
 			path = portmixer;
-			sourceTree = "<group>";
-		};
-		170737B60988D6AF008541CC /* px_common */ = {
-			isa = PBXGroup;
-			children = (
-				170737B80988D6AF008541CC /* portmixer.h */,
-			);
-			path = px_common;
-			sourceTree = "<group>";
-		};
-		170737BC0988D6AF008541CC /* px_mac_core */ = {
-			isa = PBXGroup;
-			children = (
-				170737BF0988D6AF008541CC /* px_mac_core.c */,
-			);
-			path = px_mac_core;
 			sourceTree = "<group>";
 		};
 		170737D30988D6AF008541CC /* soundtouch */ = {
@@ -3389,6 +3377,24 @@
 			path = xlisp;
 			sourceTree = "<group>";
 		};
+		28105D9A0AD09FB200BB4269 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				28105D9B0AD09FB200BB4269 /* portmixer.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		28105D9D0AD09FC500BB4269 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				28105DA00AD09FC500BB4269 /* px_mac_coreaudio.c */,
+				28105DA10AD09FC500BB4269 /* px_mixer.c */,
+				28105DA20AD09FC500BB4269 /* px_mixer.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		283506260A3A88ED00EB1EBD /* unix */ = {
 			isa = PBXGroup;
 			children = (
@@ -3668,7 +3674,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				170740970988F305008541CC /* portmixer.h in Headers */,
+				28105D9C0AD09FB200BB4269 /* portmixer.h in Headers */,
+				28105DAC0AD09FC500BB4269 /* px_mixer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4558,7 +4565,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				170740980988F305008541CC /* px_mac_core.c in Sources */,
+				28105DAA0AD09FC500BB4269 /* px_mac_coreaudio.c in Sources */,
+				28105DAB0AD09FC500BB4269 /* px_mixer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5132,6 +5140,7 @@
 		1707409B0988F30D008541CC /* Debug Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
 			};
 			name = "Debug Static";
@@ -5405,6 +5414,7 @@
 		17CAEB86098C926000337968 /* Release Static */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
 			};
 			name = "Release Static";
@@ -5576,6 +5586,7 @@
 		17CAEBB3098C9B8E00337968 /* Debug Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
 			};
 			name = "Debug Static Unicode";
@@ -5799,6 +5810,7 @@
 		28E5DA370AC4CBA200E7F64C /* Release Static Unicode */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "PX_USE_MAC_COREAUDIO=1";
 				PRODUCT_NAME = portmixer;
 			};
 			name = "Release Static Unicode";
