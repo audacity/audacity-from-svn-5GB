@@ -643,8 +643,6 @@ void Ruler::Update( Envelope *speedEnv, long minSpeed, long maxSpeed )
        mDC->GetTextExtent(exampleText, &strW, &strH);
      }
      fontSize--;
-
-     printf("Font size: %d\n", fontSize);
      
      mMinorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxNORMAL);
      mMajorFont = new wxFont(fontSize, wxSWISS, wxNORMAL, wxBOLD);
