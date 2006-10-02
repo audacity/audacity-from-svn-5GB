@@ -303,8 +303,8 @@ ac_includes_default="\
 # include <inttypes.h>
 #else
 # if HAVE_STDINT_H
-# include <stdint.h>
-#endif
+#  include <stdint.h>
+# endif
 #endif
 #if HAVE_UNISTD_H
 # include <unistd.h>
@@ -313,6 +313,7 @@ ac_includes_default="\
 ac_subdirs_all="$ac_subdirs_all $CONFIG_SUBDIRS"
 ac_subdirs_all="$ac_subdirs_all lib-src/portaudio-v19"
 ac_subdirs_all="$ac_subdirs_all lib-src/rtaudio"
+ac_subdirs_all="$ac_subdirs_all lib-src/portmixer"
 ac_subdirs_all="$ac_subdirs_all lib-src/dlcompat"
 ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX CXXCPP INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA BUILDLIBS EXTRAOBJS EXTRATARGETS EXTRAINSTALLTARGETS EXTRAUNINSTALLTARGETS OPTOBJS CDEPEND PRECOMP_CFLAGS AFTERBUILD INSTALL_PREFIX CONFIGHEADER LOCAL_LIBS AUDACITY_NAME PKG_CONFIG ac_pt_PKG_CONFIG SNDFILE_CFLAGS SNDFILE_LIBS SAMPLERATE_CFLAGS SAMPLERATE_LIBS subdirs ZIP WX_CONFIG build build_cpu build_vendor build_os host host_cpu host_vendor host_os JACK_CFLAGS JACK_LIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
@@ -2122,7 +2123,7 @@ _ACEOF
 for ac_arg in "" -qlanglvl=ansi -std1 -Ae "-Aa -D_HPUX_SOURCE" "-Xc -D__EXTENSIONS__"
 do
   CC="$ac_save_CC $ac_arg"
-rm -f conftest.$ac_objext
+  rm -f conftest.$ac_objext
 if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>conftest.er1
   ac_status=$?
@@ -2561,8 +2562,8 @@ else
   if echo a | (grep -E '(a|b)') >/dev/null 2>&1
     then ac_cv_prog_egrep='grep -E'
     else ac_cv_prog_egrep='egrep'
-fi
     fi
+fi
 echo "$as_me:$LINENO: result: $ac_cv_prog_egrep" >&5
 echo "${ECHO_T}$ac_cv_prog_egrep" >&6
  EGREP=$ac_cv_prog_egrep
@@ -4673,7 +4674,7 @@ fi
 fi
 if test -z "$ac_cv_path_PKG_CONFIG"; then
   ac_pt_PKG_CONFIG=$PKG_CONFIG
-    # Extract the first word of "pkg-config", so it can be a program name with args.
+  # Extract the first word of "pkg-config", so it can be a program name with args.
 set dummy pkg-config; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -4712,7 +4713,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  PKG_CONFIG=$ac_pt_PKG_CONFIG
 else
   PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
 fi
@@ -4725,13 +4726,13 @@ echo $ECHO_N "checking pkg-config is at least version $_pkg_min_version... $ECHO
 	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
 		echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
-else
+	else
 		echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 		PKG_CONFIG=""
-fi
+	fi
 
-  fi
+fi
 
 
 
@@ -4770,7 +4771,7 @@ fi
 if test -n "$PKG_CONFIG"; then
     if test -n "$SNDFILE_LIBS"; then
         pkg_cv_SNDFILE_LIBS="$SNDFILE_LIBS"
-     else
+    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
@@ -4780,8 +4781,8 @@ if test -n "$PKG_CONFIG"; then
   pkg_cv_SNDFILE_LIBS=`$PKG_CONFIG --libs "sndfile >= 1.0.0" 2>/dev/null`
 else
   pkg_failed=yes
-     fi
-  fi
+fi
+    fi
 else
 	pkg_failed=untried
 fi
@@ -4792,14 +4793,14 @@ if test $pkg_failed = yes; then
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
         _pkg_short_errors_supported=yes
-  else
+else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
 	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
         else
 	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-  fi
+        fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$SNDFILE_PKG_ERRORS" >&5
 
@@ -4862,7 +4863,7 @@ fi
       { echo "$as_me:$LINENO: libsndfile libraries are available in this source tree" >&5
 echo "$as_me: libsndfile libraries are available in this source tree" >&6;}
 
-            ac_configure_args="$ac_configure_args --disable-sqlite --disable-flac --disable-alsa"
+            ac_configure_extra_args="$ac_configure_extra_args --disable-sqlite --disable-flac --disable-alsa"
    else
       LIBSNDFILE_LOCAL_AVAILABLE="no"
       { echo "$as_me:$LINENO: libsndfile libraries are NOT available in this source tree" >&5
@@ -5190,7 +5191,7 @@ echo $ECHO_N "checking for SAMPLERATE... $ECHO_C" >&6
 if test -n "$PKG_CONFIG"; then
     if test -n "$SAMPLERATE_CFLAGS"; then
         pkg_cv_SAMPLERATE_CFLAGS="$SAMPLERATE_CFLAGS"
-else
+    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
   ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
@@ -5200,8 +5201,8 @@ else
   pkg_cv_SAMPLERATE_CFLAGS=`$PKG_CONFIG --cflags "samplerate >= 0.1.2" 2>/dev/null`
 else
   pkg_failed=yes
-  fi
 fi
+    fi
 else
 	pkg_failed=untried
 fi
@@ -5219,10 +5220,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-  fi
+    fi
 else
 	pkg_failed=untried
-        fi
+fi
 
 
 
@@ -5230,18 +5231,18 @@ if test $pkg_failed = yes; then
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
         _pkg_short_errors_supported=yes
-     else
+else
         _pkg_short_errors_supported=no
-     fi
+fi
         if test $_pkg_short_errors_supported = yes; then
 	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
         else
 	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-  fi
+        fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$SAMPLERATE_PKG_ERRORS" >&5
 
-     samplerate_available_system="no"
+	samplerate_available_system="no"
 elif test $pkg_failed = untried; then
 	samplerate_available_system="no"
 else
@@ -5250,7 +5251,7 @@ else
         echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6
 	samplerate_available_system="yes"
-  fi
+fi
 
    if test "x$samplerate_available_system" = "xyes" ; then
       LIBSAMPLERATE_SYSTEM_AVAILABLE="yes"
@@ -5975,21 +5976,6 @@ else
   use_help="yes"
 fi;
 
-if [ "$use_portmixer" = "yes" ] ; then
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_PORTMIXER 1
-_ACEOF
-
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
-fi
-
-
-if [ "$use_portmixer" = "yes" ] && [ "$use_portaudio" = "v19" ] ; then
-   echo "*** PortAudio v19 usage with PortMixer is currently experimental ***"
-fi
-
-
 
 
 # Extract the first word of "zip", so it can be a program name with args.
@@ -6230,7 +6216,7 @@ _ACEOF
 
 
 
-   subdirs="$subdirs lib-src/portaudio-v19"
+subdirs="$subdirs lib-src/portaudio-v19"
 
 
       case "${host_os}" in
@@ -6297,7 +6283,7 @@ else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_asound_snd_pcm_open=no
+ac_cv_lib_asound_snd_pcm_open=no
 fi
 rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
@@ -6322,7 +6308,7 @@ echo $ECHO_N "checking for JACK... $ECHO_C" >&6
 if test -n "$PKG_CONFIG"; then
     if test -n "$JACK_CFLAGS"; then
         pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-else
+    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
@@ -6351,7 +6337,7 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-fi
+    fi
 else
 	pkg_failed=untried
 fi
@@ -6442,7 +6428,7 @@ else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_lib_rt_clock_gettime=no
+ac_cv_lib_rt_clock_gettime=no
 fi
 rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
@@ -6539,15 +6525,15 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   eval "$as_ac_var=yes"
-     else
+else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	eval "$as_ac_var=no"
-  fi
+eval "$as_ac_var=no"
+fi
 rm -f conftest.err conftest.$ac_objext \
       conftest$ac_exeext conftest.$ac_ext
-  fi
+fi
 echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_var'}'`" >&5
 echo "${ECHO_T}`eval echo '${'$as_ac_var'}'`" >&6
 if test `eval echo '${'$as_ac_var'}'` = yes; then
@@ -6555,7 +6541,7 @@ if test `eval echo '${'$as_ac_var'}'` = yes; then
 #define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
 _ACEOF
 
-         fi
+fi
 done
 
          ;;
@@ -6586,7 +6572,7 @@ fi
 if [ "$use_rtaudio" = "yes" ] ; then
 
 
-    subdirs="$subdirs lib-src/rtaudio"
+subdirs="$subdirs lib-src/rtaudio"
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -6601,22 +6587,41 @@ _ACEOF
 fi
 
 if [ "$use_portmixer" = "yes" ] ; then
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"
-         ;;
-      cygwin*)
-         BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-         ;;
-      *)
-                  BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"
-         ;;
-   esac
-fi
 
+cat >>confdefs.h <<\_ACEOF
+#define USE_PORTMIXER 1
+_ACEOF
+
+   if [ "$use_portaudio" = "v19" ] ; then
+
+      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
+      BUILDLIBS="$BUILDLIBS portmixer/libportmixer.a"
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
+
+
+
+subdirs="$subdirs lib-src/portmixer"
+
+      ac_configure_args="$ac_configure_extra_args --with-pa-include=../portaudio-v19/include"
+   else
+
+      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
+      case "${host_os}" in
+         darwin* | rhapsody*)
+            BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"
+            ;;
+         cygwin*)
+            BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+            ;;
+         *)
+                        BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"
+            ;;
+      esac
+   fi
+fi
 
 case "$host_os" in
    *)
@@ -6770,7 +6775,7 @@ if [ "$use_ladspa" = "yes" ] ; then
             echo "--- Configuring dlcompat";
 
 
-            subdirs="$subdirs lib-src/dlcompat"
+subdirs="$subdirs lib-src/dlcompat"
 
          fi
          ;;

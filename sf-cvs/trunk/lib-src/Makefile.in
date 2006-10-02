@@ -89,6 +89,12 @@ portaudio-v19-recursive:
 portaudio-v19/lib/libportaudio.a: portaudio-v19-recursive
 	ln -sf .libs/libportaudio.a $@
 
+# PortMixer
+portmixer-recursive:
+	$(MAKE) -C portmixer
+portmixer/libportmixer.a: portmixer-recursive
+	ln -sf portmixer/libportmixer.a .
+
 portaudio/pa_unix_oss/portaudio.a:
 	$(MAKE) -C portaudio/pa_unix_oss
 
@@ -124,6 +130,7 @@ clean:
 	-$(MAKE) -C portaudio-v19 clean
 	-$(MAKE) -C portaudio/pa_unix_oss clean
 	-$(MAKE) -C portaudio/pa_mac_core clean
+	-$(MAKE) -C portmixer clean
 	-$(MAKE) -C portmixer/px_unix_oss clean
 	-$(MAKE) -C portmixer/px_mac_core clean
 	-$(MAKE) -C rtaudio clean
@@ -146,6 +153,7 @@ distclean:
 	-$(MAKE) -C portaudio-v19 distclean
 	-$(MAKE) -C portaudio/pa_unix_oss distclean
 	-$(MAKE) -C portaudio/pa_mac_core distclean
+	-$(MAKE) -C portmixer distclean
 	-$(MAKE) -C portmixer/px_unix_oss distclean
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C rtaudio distclean
@@ -156,5 +164,5 @@ distclean:
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive librtaudio-recursive \
-	portaudio-v19-recursive
+	portaudio-v19-recursive portmixer-recursive
 
