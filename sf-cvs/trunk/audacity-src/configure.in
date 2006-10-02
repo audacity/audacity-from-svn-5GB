@@ -292,18 +292,6 @@ AC_ARG_WITH(help,
    use_help=$withval,
    use_help="yes")
 
-if [[ "$use_portmixer" = "yes" ]] ; then
-   AC_DEFINE(USE_PORTMIXER, 1,   
-   [Define if PortMixer support should be enabled])
-   CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
-fi
-
-
-if [[ "$use_portmixer" = "yes" ]] && [[ "$use_portaudio" = "v19" ]] ; then
-   echo "*** PortAudio v19 usage with PortMixer is currently experimental ***"
-fi
-
-
 dnl if [[ $use_help = "yes" ]] ; then
 dnl   enable help
 dnl fi
@@ -466,23 +454,38 @@ if [[ "$use_rtaudio" = "yes" ]] ; then
 fi
 
 if [[ "$use_portmixer" = "yes" ]] ; then
-   case "${host_os}" in
-      darwin* | rhapsody*)
-         BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
-         ;;
-      cygwin*)
-         BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
-         ;;
-      *)
-         dnl Unix
-         BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
-         EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
-         ;;
-   esac
-fi
+   AC_DEFINE(USE_PORTMIXER, 1,   
+   [Define if PortMixer support should be enabled])
+   if [[ "$use_portaudio" = "v19" ]] ; then
+      dnl PortMixer with PortAudio v19
 
+      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/include $CXXFLAGS"
+      BUILDLIBS="$BUILDLIBS portmixer/libportmixer.a"
+      EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
+
+      AC_CONFIG_SUBDIRS([lib-src/portmixer])
+      ac_configure_args="$ac_configure_extra_args --with-pa-include=../portaudio-v19/include"
+   else
+      dnl PortMixer with PortAudio v18
+
+      CXXFLAGS="-I\$(top_srcdir)/lib-src/portmixer/px_common $CXXFLAGS"
+      case "${host_os}" in
+         darwin* | rhapsody*)
+            BUILDLIBS="$BUILDLIBS portmixer/px_mac_core/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_mac_core/portmixer.a"     
+            ;;
+         cygwin*)
+            BUILDLIBS="$BUILDLIBS portmixer/px_win_wmme/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_win_wmme/portmixer.a"
+            ;;
+         *)
+            dnl Unix
+            BUILDLIBS="$BUILDLIBS portmixer/px_unix_oss/portmixer.a"
+            EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/px_unix_oss/portmixer.a"     
+            ;;
+      esac
+   fi
+fi
 
 case "$host_os" in
 dnl   darwin* | rhapsody*)
