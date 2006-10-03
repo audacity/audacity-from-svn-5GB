@@ -724,22 +724,24 @@ void AudacityProject::UpdatePrefs()
 {
    UpdateGuiPrefs();
    UpdateBatchPrefs();
-   SetProjectTitle( );
+   SetProjectTitle();
 
-   if( mTrackPanel )
+   if (mTrackPanel)
       mTrackPanel->UpdatePrefs();
 
    mRate = (double) gPrefs->Read(wxT("/SamplingRate/DefaultProjectSampleRate"), AudioIO::GetOptimalSupportedSampleRate());
    mDefaultFormat = (sampleFormat) gPrefs->
            Read(wxT("/SamplingRate/DefaultProjectSampleFormat"), floatSample);
 
-   if( GetSelectionBar() )
+   if (GetSelectionBar()) {
+      GetSelectionBar()->UpdateRates();
       GetSelectionBar()->SetRate(mRate);
+   }
 
-   if( GetDeviceToolBar() )
+   if (GetDeviceToolBar())
       GetDeviceToolBar()->UpdatePrefs();
 
-   if( GetMixerToolBar() )
+   if (GetMixerToolBar())
       GetMixerToolBar()->UpdatePrefs();
 }
 
