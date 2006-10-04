@@ -532,7 +532,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
                                    sampleFormat captureFormat)
 {
    mLastPaError = paNoError;
-   mRate = sampleRate;
+   mRate = GetBestRate(sampleRate);
 
    mNumPlaybackChannels = numPlaybackChannels;
    mNumCaptureChannels = numCaptureChannels;
@@ -1461,6 +1461,17 @@ int AudioIO::GetOptimalSupportedSampleRate()
    return rates[rates.GetCount() - 1];
 }
 
+long AudioIO::GetBestRate(double sampleRate)
+{
+   wxArrayLong rates = GetSupportedSampleRates();
+   long rate = (long)sampleRate;
+   
+   if (rates.Index(rate) != wxNOT_FOUND) {
+      return rate;
+   }
+
+   return rates[rates.GetCount() - 1];
+}      
 
 
 //////////////////////////////////////////////////////////////////////
