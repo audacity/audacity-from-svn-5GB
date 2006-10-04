@@ -910,11 +910,11 @@ void Meter::StartMonitoring()
          OnDisableMeter(dummy);
       }
       
-      gAudioIO->StartMonitoring(44100.0);
       AudacityProject *p = GetActiveProject();
       if (p) {
-         MeterToolBar *bar;
-         bar = p->GetMeterToolBar();
+         gAudioIO->StartMonitoring(p->GetRate());
+
+         MeterToolBar *bar = p->GetMeterToolBar();
          if (bar) {
             Meter *play, *record;
             bar->GetMeters(&play, &record);
