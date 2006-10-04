@@ -79,6 +79,15 @@ void QualityPrefs::GetNamesAndLabels()
    //      Can someone please explain or correct it?
    // XXX: This should use a previously changed, but not yet saved
    //      sound card setting from the "I/O" preferences tab.
+   // LLL: It means that until the user clicks "Ok" in preferences, the
+   //      GetSupportedSampleRates() call should use the devices they
+   //      may have changed on the Audio I/O page.  As coded, the sample
+   //      rates it will return could be completely invalid as they will
+   //      be what's supported by the devices that were selected BEFORE
+   //      coming into preferences.
+   //
+   //      GetSupportedSampleRates() allows passing in device names, but
+   //      how do you get at them as they are on the Audio I/O page????
    wxArrayLong SampleRateLabelsLong = AudioIO::GetSupportedSampleRates();
    for (int i=0; i<(int)SampleRateLabelsLong.GetCount(); i++)
    {
