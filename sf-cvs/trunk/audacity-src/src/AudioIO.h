@@ -151,6 +151,7 @@ class AudioIO {
    int GetNumCaptureChannels() { return mNumCaptureChannels; }
 
 private:
+   long GetBestRate(double sampleRate);
 
    bool StartPortAudioStream(double sampleRate,
                              unsigned int numPlaybackChannels,
