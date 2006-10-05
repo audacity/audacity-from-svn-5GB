@@ -78,5 +78,5 @@ int OpenMixer_Win_MME(px_mixer *Px, int index)
       return TRUE;
    }
 
-   return TRUE;
+   return FALSE;
 }
