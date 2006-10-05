@@ -26,7 +26,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -46,7 +46,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../include;../../src/common"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;PA_NO_ASIO"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -91,7 +91,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto VCEnd&#x0D;&#x0A;&#x0D;&#x0A;cl /O2 /Ob1 /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /GF /FD /EHsc /MT /Gy /W3 /c /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl /O2 /Ob1 /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /GF /FD /EHsc /MT /Gy /W3 /c /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; .\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
+				CommandLine="set CFLAGS=/I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /O2 /Ob1 /GF /FD /EHsc /MT /Gy /W3 /c /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /NOLOGO /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -106,7 +106,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -124,7 +124,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../include;../../src/common"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;PA_NO_ASIO"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto VCEnd&#x0D;&#x0A;&#x0D;&#x0A;cl /Od /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl /Od /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
+				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /NOLOGO /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -184,7 +184,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -202,7 +202,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../include;../../src/common"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;PA_NO_ASIO"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
@@ -247,7 +247,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto VCEnd&#x0D;&#x0A;&#x0D;&#x0A;cl /Od /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl /Od /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
+				CommandLine="set CFLAGS= /I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;_DEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /Od /FD /EHsc /RTC1 /MTd /W3 /c /ZI /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /NOLOGO /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -262,7 +262,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
+				CommandLine="echo // Automatically generated file &gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%DXSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_DS &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;IF &quot;%ASIOSDK_DIR%&quot; == &quot;&quot; echo #define PA_NO_ASIO &gt;&gt;&quot;.\$(ConfigurationName)\config.h&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -282,7 +282,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="../../include;../../src/common"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;PA_NO_ASIO"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -327,7 +327,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto VCEnd&#x0D;&#x0A;&#x0D;&#x0A;cl /O2 /Ob1 /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /GF /FD /EHsc /MT /Gy /W3 /c /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl /O2 /Ob1 /I &quot;../../include&quot; /I &quot;../../src/common&quot; /I &quot;%DXSDK_DIR%include&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;PA_NO_ASIO&quot; /D &quot;_MBCS&quot; /GF /FD /EHsc /MT /Gy /W3 /c /wd4996  /Fo&quot;.\$(OutDir)/&quot;  /Fd&quot;.\$(OutDir)/&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;lib /OUT:&quot;$(TargetPath)&quot; .\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
+				CommandLine="set CFLAGS=/I &quot;../../include&quot; /I &quot;../../src/common&quot; /D &quot;WIN32&quot; /D &quot;NDEBUG&quot; /D &quot;_LIB&quot; /D &quot;_MBCS&quot; /O2 /Ob1 /GF /FD /EHsc /MT /Gy /W3 /c /wd4996 /nologo /Fo&quot;.\$(OutDir)/&quot; /Fd&quot;.\$(OutDir)/&quot;&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%DXSDK_DIR%&quot;==&quot;&quot; goto NoDX&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds.c&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%DXSDK_DIR%include&quot; &quot;..\..\src\hostapi\dsound\pa_win_ds_dynlink.c&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoDX&#x0D;&#x0A;&#x0D;&#x0A;if &quot;%ASIOSDK_DIR%&quot;==&quot;&quot; goto NoASIO&#x0D;&#x0A;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\pa_asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;..\..\src\hostapi\asio\iasiothiscallresolver.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\common\asio.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\asiodrivers.cpp&quot;&#x0D;&#x0A;cl %CFLAGS% /I &quot;%ASIOSDK_DIR%/common&quot; /I &quot;%ASIOSDK_DIR%/host&quot; /I &quot;%ASIOSDK_DIR%/host/pc&quot; &quot;%ASIOSDK_DIR%\host\pc\asiolist.cpp&quot;&#x0D;&#x0A;&#x0D;&#x0A;:NoASIO&#x0D;&#x0A;&#x0D;&#x0A;lib /NOLOGO /OUT:&quot;$(TargetPAth)&quot; &quot;.\$(OutDir)\*.obj&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -581,6 +581,118 @@
 							>
 							<Tool
 								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+					</File>
+				</Filter>
+				<Filter
+					Name="asio"
+					>
+					<File
+						RelativePath="..\..\src\hostapi\asio\iasiothiscallresolver.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\src\hostapi\asio\iasiothiscallresolver.h"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCustomBuildTool"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\src\hostapi\asio\pa_asio.cpp"
+						>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Debug|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Unicode_Release|Win32"
+							ExcludedFromBuild="true"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
 							/>
 						</FileConfiguration>
 					</File>
