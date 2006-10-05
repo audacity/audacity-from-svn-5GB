@@ -72,6 +72,10 @@ int open_mixers(px_mixer *Px, UINT deviceIn, UINT deviceOut)
    PxInfo*info;
    MMRESULT res;
 
+   if (deviceIn == UINT_MAX && deviceOut == UINT_MAX) {
+      return FALSE;
+   }
+
    if (!initialize(Px)) {
       return FALSE;
    }
@@ -205,6 +209,10 @@ static UINT get_ctrls(HMIXEROBJ mixer, DWORD lineID, PxCtrl **pctrls)
             ctrls[s].controlID = control.dwControlID;
          else
             ctrls[s].controlID = 0;
+      }
+
+      if (s != num) {
+         break;
       }
 
       *pctrls = ctrls;
