@@ -124,7 +124,6 @@ LadspaEffect::LadspaEffect(const LADSPA_Descriptor *data)
    }
 
    flags = PLUGIN_EFFECT;
-
    if (inputs == 0)
       flags |= INSERT_EFFECT;
    else if (outputs == 0)
@@ -688,7 +687,6 @@ LadspaEffectDialog::LadspaEffectDialog(LadspaEffect *eff,
       }
    }
 
-
    // Now add the length control
    if (effect->GetEffectFlags() & INSERT_EFFECT) {
       item = new wxStaticText(w, 0, _("Length (seconds)"));
@@ -886,7 +884,11 @@ void LadspaEffectDialog::ControlSetFocus(wxFocusEvent &event)
 
 double LadspaEffectDialog::GetLength()
 {
-   return Internat::CompatibleToDouble(mSeconds->GetValue());
+   if (effect->GetEffectFlags() & INSERT_EFFECT) {
+      mLength = Internat::CompatibleToDouble(mSeconds->GetValue());
+   }
+
+   return mLength;
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
