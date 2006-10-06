@@ -44,6 +44,7 @@ $siteNavItems = array(
       array($ind._("Source Code"), "beta_source"),
       array(_("Plug-Ins"), "plugins"),
       array(_("Buy a CD"), "buy"),
+      array(_("Vendors that Bundle Audacity"), "bundlers"),
     )
   ),
   array(_("Help"), "help/",
