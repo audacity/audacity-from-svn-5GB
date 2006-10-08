@@ -141,8 +141,9 @@ ToolManager::ToolManager( wxWindow *parent )
                              wxEmptyString,
                              wxDefaultPosition,
                              wxSize( 32, 32 ),
+                             wxFRAME_TOOL_WINDOW |
                              wxFRAME_SHAPED |
-                             wxSIMPLE_BORDER | 
+                             wxSIMPLE_BORDER |
                              wxFRAME_NO_TASKBAR |
                              wxSTAY_ON_TOP );
 
@@ -766,13 +767,30 @@ void ToolManager::OnMouse( wxMouseEvent & event )
 //
 void ToolManager::OnTimer( wxTimerEvent & event )
 {
+   // Initialize the mouse event
+   wxMouseEvent e;
+   wxPoint p( ScreenToClient( wxGetMousePosition() ) );
+   e.m_x = p.x;
+   e.m_y = p.y;
+
+#if defined(__WXGTK__)
+   // When running under GTK, there "seems" to be an issue when Hide()ing
+   // and Show()ing the ferry window in regards to mouse capture and top
+   // level windows.  So rather than depend entirely on mouse capture, we
+   // generate our own motion events.
+   if( HasCapture() )
+   {
+      e.SetEventType( wxEVT_MOTION );
+      e.m_leftDown = true;
+      OnMouse( e );
+   }
+#endif
+
    // If we've lost capture, simulate a button up event
    if( !HasCapture() )
    {
-      wxMouseEvent e( wxEVT_LEFT_UP );
-      wxPoint p( wxGetMousePosition() );
-      e.m_x = p.x;
-      e.m_y = p.y;
+      e.SetEventType( wxEVT_LEFT_UP );
+      e.m_leftDown = false;
       OnMouse( e );
    }
 }
