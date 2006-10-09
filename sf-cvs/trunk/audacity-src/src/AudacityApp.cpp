@@ -595,11 +595,12 @@ bool AudacityApp::OnInit()
 // first string.
 
          if (!wxString(wxT("-help")).CmpNoCase(argv[option])) {
-            wxPrintf(/* i18n-hint: '-help', '-test' and
+            wxPrintf(/* i18n-hint: '-help', '-version', '-test' and
                       '-blocksize' need to stay in English. */
                    _(
                     "Command-line options supported:\n"
                     wxT("  -help (this message)\n")
+                    wxT("  -version (display Audacity version)\n")
                     wxT("  -test (run self diagnostics)\n")
                     wxT("  -blocksize ### (set max disk block size in bytes)\n\n")
                     wxT("In addition, specify the name of an audio file or Audacity project\n")
@@ -624,6 +625,13 @@ bool AudacityApp::OnInit()
 
          if (!handled && !wxString(wxT("-test")).CmpNoCase(argv[option])) {
             RunBenchmark(NULL);
+            exit(0);
+         }
+
+         if (!handled && !wxString(wxT("-version")).CmpNoCase(argv[option])) {
+            wxPrintf(wxT("Audacity v%s (%s)\n"),
+                     wxT(AUDACITY_VERSION_STRING),
+                     (wxUSE_UNICODE ? wxT("Unicode") : wxT("ANSI")));
             exit(0);
          }
 
