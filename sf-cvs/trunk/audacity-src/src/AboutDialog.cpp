@@ -220,12 +220,14 @@ AboutDialog::AboutDialog(wxWindow * parent)
    }
    wxString localeStr = wxLocale::GetSystemEncodingName();
 
+   wxString csetStr = wxUSE_UNICODE ? wxT("(Unicode)") : wxT("(ANSI)");
+
    wxString creditStr = 
       wxT("<html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=") + 
          localeStr + 
          wxT("\"></head>") + 
       wxT("<body bgcolor=\"#ffffff\"><font size=1><center>") + 
-      wxT("<h3>Audacity &reg; ") + versionStr + wxT("</h3>")+ 
+      wxT("<h3>Audacity &reg; ") + versionStr + wxT(" " ) + csetStr + wxT("</h3>")+ 
       _("A Free Digital Audio Editor") + 
       wxT("</center><p>") + par1Str +
       wxT("<p>") + par2Str +
