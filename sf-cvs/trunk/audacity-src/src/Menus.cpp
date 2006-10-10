@@ -1510,7 +1510,7 @@ void AudacityProject::OnSortTime()
       mTracks->Add((Track *)warr[ndx]);
    }
 
-   PushState(_("Tracks sorted by time"), _("SortByTime"));
+   PushState(_("Tracks sorted by time"), _("Sort By Time"));
 
    mTrackPanel->Refresh(false);
 }
@@ -1536,7 +1536,7 @@ void AudacityProject::OnSortName()
       mTracks->Add((Track *)arr[ndx]);
    }
 
-   PushState(_("Tracks sorted by name"), _("SortByName"));
+   PushState(_("Tracks sorted by name"), _("Sort By Name"));
 
    mTrackPanel->Refresh(false);
 }
@@ -2784,7 +2784,7 @@ void AudacityProject::OnCutLabels()
 
   mViewInfo.sel1 = mViewInfo.sel0 = 0.0;
   
-  PushState( _( "Cut labeled regions to the clipboard" ), _( "CutLabels" ) );
+  PushState( _( "Cut labeled regions to the clipboard" ), _( "Cut Labels" ) );
 
   RedrawProject();
 }
@@ -2799,7 +2799,7 @@ void AudacityProject::OnSplitCutLabels()
   msClipProject = this;
 
   PushState( _( "SplitCut labeled regions to the clipboard" ), 
-        _( "SplitCutLabels" ) );
+        _( "Split Cut Labels" ) );
 
   RedrawProject();
 }
@@ -2813,7 +2813,7 @@ void AudacityProject::OnCopyLabels()
   
   msClipProject = this;
   
-  PushState( _( "Copied labeled regions to the clipboard" ), _( "CopyLabels" ) );
+  PushState( _( "Copied labeled regions to the clipboard" ), _( "Copy Labels" ) );
 
   mTrackPanel->Refresh( false );
 }
@@ -2825,7 +2825,7 @@ void AudacityProject::OnDeleteLabels()
   
   EditByLabel( &WaveTrack::Clear );
   
-  PushState( _( "Deleted labeled regions" ), _( "DeleteLabels" ) );
+  PushState( _( "Deleted labeled regions" ), _( "Delete Labels" ) );
 
   RedrawProject();
 }
@@ -2837,7 +2837,7 @@ void AudacityProject::OnSplitDeleteLabels()
   
   EditByLabel( &WaveTrack::SplitDelete );
   
-  PushState( _( "Split Deleted labeled regions" ), _( "SplitDeleteLabels" ) );
+  PushState( _( "Split Deleted labeled regions" ), _( "Split Delete Labels" ) );
 
   RedrawProject();
 }
@@ -2849,7 +2849,7 @@ void AudacityProject::OnSilenceLabels()
   
   EditByLabel( &WaveTrack::Silence );
   
-  PushState( _( "Silenced labeled regions" ), _( "SilenceLabels" ) );
+  PushState( _( "Silenced labeled regions" ), _( "Silence Labels" ) );
 
   mTrackPanel->Refresh( false );
 }
@@ -2861,7 +2861,7 @@ void AudacityProject::OnSplitLabels()
   
   EditByLabel( &WaveTrack::Split );
   
-  PushState( _( "Split labeled regions" ), _( "SplitLabels" ) );
+  PushState( _( "Split labeled regions" ), _( "Split Labels" ) );
 
   RedrawProject();
 }
@@ -2873,7 +2873,7 @@ void AudacityProject::OnJoinLabels()
   
   EditByLabel( &WaveTrack::Join );
   
-  PushState( _( "Joined labeled regions" ), _( "JoinLabels" ) );
+  PushState( _( "Joined labeled regions" ), _( "Join Labels" ) );
 
   RedrawProject();
 }
@@ -2885,7 +2885,7 @@ void AudacityProject::OnDisjoinLabels()
   
   EditByLabel( &WaveTrack::Disjoin );
   
-  PushState( _( "Disjoined labeled regions" ), _( "DisjoinLabels" ) );
+  PushState( _( "Disjoined labeled regions" ), _( "Disjoin Labels" ) );
 
   RedrawProject();
 }
