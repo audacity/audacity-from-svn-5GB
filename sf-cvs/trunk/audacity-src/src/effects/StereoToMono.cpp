@@ -50,54 +50,20 @@ void EffectStereoToMono::End()
 //      to see if it is stereo. Consolidate these
 bool EffectStereoToMono::CheckWhetherSkipEffect()
 {
-   TrackListIterator iter(mTracks);
-   mLeftTrack = (WaveTrack*)(iter.First());
-   if ( mLeftTrack == 0 ) {
-      return true;  // we need an existing track .. this is actually an error that will be caught later
+   TrackListIterator iter(mWaveTracks);
+   WaveTrack *t = (WaveTrack*)iter.First();
+   while (t) {
+      if (t->GetLinked()) {
+         return false;
+      }
+      t = (WaveTrack *)iter.Next();
    }
-   int channelLeftNum = mLeftTrack->GetChannel();
 
-   if (mLeftTrack->GetLinked()) {
-      return false;
-   }
-   return true;  // already mono
+   return true;
 }
 
-bool EffectStereoToMono::Process()
+void EffectStereoToMono::ProcessOne()
 {
-   mnTracks = 1;
-   mnBlockSize = 0;
-   bool validStereo = false;
-
-   TrackListIterator iter(mTracks);
-   mLeftTrack = (WaveTrack*)(iter.First());
-   if ( mLeftTrack == 0 ) {
-      return false;		// we need an existing track
-   }
-   //int channelLeftNum = mLeftTrack->GetChannel();
-
-   mLeftTrackEnd = mLeftTrack->GetEndTime();
-   mLeftTrackLen = mLeftTrack->TimeToLongSamples(mLeftTrackEnd); 
-   mLeftRate = mLeftTrack->GetRate();
-   
-   if (mLeftTrack->GetLinked()) {
-      mnTracks = 2;
-      mRightTrack = (WaveTrack*)(iter.Next());
-      //int channelRightNum = mRightTrack->GetChannel();
-      mRightTrackEnd = mRightTrack->GetEndTime();
-      mRightTrackLen = mRightTrack->TimeToLongSamples(mRightTrackEnd); 
-      double rightRate = mRightTrack->GetRate();
-      long diff = abs((long)mRightTrackLen - (long)mLeftTrackLen);
-      WaveTrack *thirdTrack = (WaveTrack*)(iter.Next());
-      
-      if ((diff <= 2) && (mLeftRate == rightRate) && (thirdTrack == 0)) {
-         validStereo = true;
-      }
-   }
-   if (validStereo == false) {
-      wxMessageBox(_("Sorry, This effect can only be performed on stereo tracks where the individual channels of the track match."));
-      return false;
-   }
    float  curLeftFrame;
    float  curRightFrame;
    float  curMonoFrame;
@@ -128,13 +94,51 @@ bool EffectStereoToMono::Process()
       TrackProgress(0, ((double)index / (double)mLeftTrackLen));
    }
 
-   mLeftTrack->SetLinked( false );
-   mRightTrack->SetLinked( false );
-   mLeftTrack->SetChannel( Track::MonoChannel );
-   mTracks->Remove( mRightTrack );
+   mLeftTrack->SetLinked(false);
+   mRightTrack->SetLinked(false);
+   mLeftTrack->SetChannel(Track::MonoChannel);
+   mTracks->Remove(mRightTrack);
    delete mRightTrack;
 
    delete [] leftBuffer;
    delete [] rightBuffer;
+}
+
+bool EffectStereoToMono::Process()
+{
+   // Do not use mWaveTracks here.  We will possibly delete tracks,
+   // so we must use the "real" tracklist.
+   TrackListIterator iter(mTracks);
+   mLeftTrack = (WaveTrack *)iter.First();
+   bool refreshIter = false;
+
+   while (mLeftTrack) {
+      if (mLeftTrack->GetKind() == Track::Wave &&
+          mLeftTrack->GetSelected() &&
+          mLeftTrack->GetLinked()) {
+
+         mRightTrack = (WaveTrack *)iter.Next();
+
+         mLeftTrackLen = mLeftTrack->TimeToLongSamples(mLeftTrack->GetEndTime()); 
+         mRightTrackLen = mRightTrack->TimeToLongSamples(mRightTrack->GetEndTime()); 
+         long diff = abs((long)mRightTrackLen - (long)mLeftTrackLen);
+         
+         if ((diff <= 2) && (mLeftTrack->GetRate() == mRightTrack->GetRate())) {
+            ProcessOne();
+
+            // The right channel has been deleted, so we must restart from the beginning
+            refreshIter = true;
+         }
+      }
+            
+      if (refreshIter) {
+         mLeftTrack = (WaveTrack *)iter.First();
+         refreshIter = false;
+      }
+      else {
+         mLeftTrack = (WaveTrack *)iter.Next();
+      }
+   }
+         
    return true;
 }

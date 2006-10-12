@@ -1051,8 +1051,6 @@ wxUint32 AudacityProject::GetUpdateFlags()
    if (mViewInfo.sel1 > mViewInfo.sel0)
       flags |= TimeSelectedFlag;
 
-   flags |= GetTrackFlags();
-
    TrackListIterator iter(mTracks);
    Track *t = iter.First();
    while (t) {
@@ -1062,6 +1060,8 @@ wxUint32 AudacityProject::GetUpdateFlags()
          flags |= LabelTracksExistFlag;
          if( t->GetSelected() )
          {
+            flags |= TracksSelectedFlag;
+
             LabelTrack *lt = ( LabelTrack* )t; 
             for( int i = 0; i < lt->GetNumLabels(); i++ ) 
             {
@@ -1072,14 +1072,21 @@ wxUint32 AudacityProject::GetUpdateFlags()
                   break;
                }
             }
+
+            if (((LabelTrack *)t)->IsTextClipSupported())
+               flags |= TextClipFlag;
          }
       }
-      if (t->GetSelected()) {
-         flags |= TracksSelectedFlag;
-         if (t->GetKind() == Track::Wave && t->GetLinked() == false)
-            flags |= WaveTracksSelectedFlag;
-         if (t->GetKind() == Track::Label && ((LabelTrack *)t)->IsTextClipSupported())
-             flags |= TextClipFlag;
+      else if (t->GetKind() == Track::Wave) {
+         if (t->GetSelected()) {
+            flags |= TracksSelectedFlag;
+            if (t->GetLinked()) {
+               flags |= StereoRequiredFlag;
+            }
+            else {
+               flags |= WaveTracksSelectedFlag;
+            }
+         }
       }
       t = iter.Next();
    }
@@ -1115,38 +1122,9 @@ wxUint32 AudacityProject::GetUpdateFlags()
    return flags;
 }
 
-wxUint32 AudacityProject::GetTrackFlags()
-{
-   wxUint32 flags = 0;
-
-   TrackListIterator iter(mTracks);
-   Track *t = iter.First();
-   if (t != 0) {
-      flags |= TracksExistFlag;
-      if (t->GetKind() == Track::Label) {
-         flags |= LabelTracksExistFlag;
-      }
-      if (t->GetSelected()) {
-         flags |= TracksSelectedFlag;
-         if (t->GetKind() == Track::Wave && t->GetLinked() == false) {
-            flags |= WaveTracksSelectedFlag;
-         }
-      }
-      Track *secondTrack = iter.Next();
-      Track *thirdTrack = 0;
-      if (secondTrack != 0) {
-         thirdTrack = iter.Next();
-      }
-      if ((secondTrack != 0) && (thirdTrack == 0)) {
-         flags |= StereoRequiredFlag;
-      }
-   }
-   return flags;
-}
-
 void AudacityProject::SelectAllIfNone()
 {
-   wxUint32 flags = GetTrackFlags();
+   wxUint32 flags = GetUpdateFlags();
    if((flags & TracksSelectedFlag) ==0)
       OnSelectAll();
 }
@@ -1924,7 +1902,7 @@ bool AudacityProject::OnEffect(int type, Effect * f)
          count++;
       t = iter.Next();
    }
-   
+
    if (count == 0) {
       // No tracks were selected...
       if (f->GetEffectFlags() & INSERT_EFFECT) {

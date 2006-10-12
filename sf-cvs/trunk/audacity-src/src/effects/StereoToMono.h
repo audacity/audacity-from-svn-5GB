@@ -33,15 +33,8 @@ public:
     virtual bool Process();
 
 private:
-   sampleCount mnBlockSize;	// 0 if no processing done, thus no buffers allocated
+   void ProcessOne();
 
-   float *mLeftBuffer;
-   float *mRightBuffer;
-
-   int    mnTracks;			// either 1 or 2, set in Init
-   double mLeftTrackEnd;
-   double mRightTrackEnd;
-   double mLeftRate;
    longSampleCount mLeftTrackLen;
    longSampleCount mRightTrackLen;
    WaveTrack *mLeftTrack;
