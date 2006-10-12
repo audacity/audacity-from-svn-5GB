@@ -270,7 +270,6 @@ void OnExportCleanSpeechPresets();
 void OnStereoToMono(int index);
 void ResolveEffectIndices(EffectArray *effects);
 wxString BuildCleanFileName(wxString fileName);
-wxUint32 GetTrackFlags();
 
 int  mNormalizeIndex;
 int  mStereoToMonoIndex;
