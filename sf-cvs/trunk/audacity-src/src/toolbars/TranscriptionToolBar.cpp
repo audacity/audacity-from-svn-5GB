@@ -253,6 +253,8 @@ void TranscriptionToolBar::Populate()
    Add( mKeyTypeChoice, 0, wxALIGN_CENTER );
 #endif
 
+   // Add a little space
+   Add(2, -1);
 }
 
 //This handles key-stroke events????

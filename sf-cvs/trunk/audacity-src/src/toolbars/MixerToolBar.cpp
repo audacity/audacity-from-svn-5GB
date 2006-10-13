@@ -117,10 +117,7 @@ void MixerToolBar::Populate()
                                      wxDefaultSize,
                                      inputSources);
    mInputSourceChoice->SetName(_("Input Source"));
-   Add(mInputSourceChoice, 0, wxALIGN_CENTER);
-
-   if (inputSources.GetCount() == 0)
-      mInputSourceChoice->Enable(false);
+   Add(mInputSourceChoice, 0, wxALIGN_CENTER | wxLEFT, 2);
 
    // Set choice control to default value
    float inputVolume;
@@ -129,9 +126,15 @@ void MixerToolBar::Populate()
    gAudioIO->GetMixer(&inputSource, &inputVolume, &playbackVolume);
    mInputSourceChoice->SetSelection(inputSource);
 
+   // Show or hide the control based on input sources
+   mInputSourceChoice->Show( inputSources.GetCount() != 0 );
+
    UpdateControls();
 
 #endif
+
+   // Add a little space
+   Add(2, -1);
 }
 
 void MixerToolBar::UpdatePrefs()
@@ -153,6 +156,9 @@ void MixerToolBar::UpdatePrefs()
 
    // Resize the control
    mInputSourceChoice->SetSize(mInputSourceChoice->GetBestFittingSize());
+
+   // Show or hide the control based on input sources
+   mInputSourceChoice->Show( inputSources.GetCount() != 0 );
 
    // Layout the toolbar
    Layout();
