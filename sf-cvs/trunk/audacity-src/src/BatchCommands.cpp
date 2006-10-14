@@ -134,7 +134,7 @@ bool BatchCommands::ReadChain(const wxString & chain)
 
          // Parse and clean
          wxString cmd = tf[i].Left(splitAt).Strip(wxString::both);
-         wxString parm = tf[i].Mid(splitAt + 1).Strip(wxString::both);
+         wxString parm = tf[i].Mid(splitAt + 1).Strip(wxString::trailing);
 
          // Add to lists
          mCommandChain.Add(cmd);
