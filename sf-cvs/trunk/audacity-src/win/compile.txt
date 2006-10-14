@@ -78,9 +78,9 @@ versions.
 
 2. Open "C:\wxWidgets-2.6.3\build\msw\wx.sln".
 
-3. If you want to use the accessibility features of Audacity,
-   locate the "Setup Headers" group within the "core" project
-   and change the wxAccessible define within setup.h to 1. 
+3. If you want to use the accessibility features, locate the
+   "Setup Headers" group within the "core" project and change
+   the wxAccessible define within setup.h to 1. 
 
 4. Build the Debug and Release configurations for all the
    wxWidgets projects.
@@ -160,8 +160,18 @@ all libs necessary to build the default configuration, but
 some functionality like OGG/Vorbis support can be activated
 optionally and must be downloaded separately.
 
+If you wish DirectSound support, you must install the DirectX
+SDK.  The installation will automatically define the DXSDK_DIR
+environment variable and its presense will cause DirectSound
+support to be automatically included when Audacity is built.
+
+If you wish ASIO support, install the ASIO SDK and define an
+environment variable like you did for WXWIN above.  The value
+should be the full path to the base directory of the ASIO SDK.
+
 Select the configuration that you wish to build:
 * "Release" for general use 
+* "Unicode_Release" for Unicode-based, general use 
 * "Debug" for a slower but debuggable executable
 * "Unicode_Debug" for a Unicode-based, slower, debuggable 
    executable
