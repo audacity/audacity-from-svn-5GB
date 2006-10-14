@@ -150,7 +150,7 @@ void BatchCommandDialog::OnChoice(wxCommandEvent &event)
 void BatchCommandDialog::OnOk(wxCommandEvent &event)
 {
    mSelectedCommand = mCommand->GetValue().Strip(wxString::both);
-   mSelectedParameters = mParameters->GetValue().Strip(wxString::both);
+   mSelectedParameters = mParameters->GetValue().Strip(wxString::trailing);
    EndModal(true);
 }
 
@@ -183,7 +183,7 @@ void BatchCommandDialog::OnEditParams(wxCommandEvent &event)
       // we've just prompted for the parameters, so the values
       // that are current have changed.
       params = BatchCommands::GetCurrentParamsFor( command );
-      mParameters->SetValue( params.Strip(wxString::both) );
+      mParameters->SetValue( params.Strip(wxString::trailing) );
       mParameters->Refresh();
    }
 }
