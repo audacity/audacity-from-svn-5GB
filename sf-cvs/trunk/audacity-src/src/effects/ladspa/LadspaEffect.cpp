@@ -424,11 +424,11 @@ class Slider:public wxSlider
       }
 
       if (r.y < rv.y) {
-         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
          y = r.y / yppu;
       }
       else {
-         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
          y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
       }
 
@@ -474,11 +474,11 @@ class TextCtrl:public wxTextCtrl
       }
 
       if (r.y < rv.y) {
-         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
          y = r.y / yppu;
       }
       else {
-         p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+         p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
          y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
       }
 
@@ -871,11 +871,11 @@ void LadspaEffectDialog::ControlSetFocus(wxFocusEvent &event)
    }
 
    if (r.y < rv.y) {
-      p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+      p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
       y = r.y / yppu;
    }
    else {
-      p->CalcUnscrolledPosition(NULL, r.y, NULL, &r.y);
+      p->CalcUnscrolledPosition(0, r.y, NULL, &r.y);
       y = (r.GetBottom() - rv.GetBottom() + yppu) / yppu;
    }
 
