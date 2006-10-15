@@ -1,0 +1,6191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Vertimas 1,0\n"
+"POT-Creation-Date: 2005-11-24 13:02-0800\n"
+"PO-Revision-Date: 2005-10-26 22:21+0100\n"
+"Last-Translator: Šarūnas <Sharunas55387@hotmail.com>\n"
+"Language-Team: Sharunas <Sharunas55387@hotmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/effects/ClickRemoval.cpp:379
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Max spike width (higher is more sensitive)"
+msgstr ""
+"\n"
+"Didžiausias viršūnės plotis(platesnis yra jautresnis)"
+
+#: ../src/Menus.cpp:3703
+msgid ""
+"\n"
+"\n"
+"Please edit the batch chain in preferences."
+msgstr ""
+
+#: ../src/effects/ClickRemoval.cpp:358
+#, fuzzy
+msgid ""
+"\n"
+"Select threshold (lower is more sensitive)"
+msgstr ""
+"\n"
+" \n"
+"Pasirinkta riba (žemesnė yra jautresnė)"
+
+#: ../src/widgets/AButton.cpp:181
+msgid " (disabled)"
+msgstr " (išjungtas)"
+
+#: ../src/import/Import.cpp:86
+msgid ""
+" is an audio CD file. \n"
+"Audacity does not open this type of file.\n"
+"Try ripping it to a native audio format that Audacity can import."
+msgstr ""
+" yra audio CD failas. \n"
+"Audacity neatidarinėja šio tipo failų.\n"
+"Pabandykit failą konvertuoti į Audacity`čiui pažįstamą formatą."
+
+#  i18n-hint: This refers to a "window function", used in the
+#  Frequency analyze dialog box.
+#  i18n-hint: This refers to a "window function", used in the
+#. i18n-hint: This refers to a "window function", used in the
+#: ../src/FreqWindow.cpp:167
+msgid " window"
+msgstr " Langas"
+
+#: ../src/effects/ChangeLength.cpp:202
+#, c-format
+msgid "%.1f to %.1f"
+msgstr ""
+
+#: ../src/import/ImportRaw.cpp:363
+#, c-format
+msgid "%d Channels"
+msgstr "%d Kanalai"
+
+#: ../src/effects/Repeat.cpp:293
+#, c-format
+msgid "%d minutes, %d seconds"
+msgstr "%d minutės, %d sekundės"
+
+#: ../src/effects/Repeat.cpp:296
+#, c-format
+msgid "%d seconds"
+msgstr "%d sekundės"
+
+#: ../src/AudacityApp.cpp:313
+#, c-format
+msgid ""
+"%s does not exist and could not be opened.\n"
+"\n"
+"It has been removed from the history list."
+msgstr ""
+"%s neegzistuoja ir negali būti atidaryta.\n"
+"\n"
+"Jis buvo pašalintas iš istorijos sąrašo."
+
+#: ../src/AudacityApp.cpp:279 ../src/Project.cpp:1891
+#, c-format
+msgid "%s is already open in another window."
+msgstr "%s jau atidarytas kitame lange."
+
+#  i18n-hint: This is the pattern for filenames that are created
+#  when a file needs to be backed up to a different name.  For
+#  example, mysong would become mysong-old1, mysong-old2, etc.
+#  i18n-hint: This is the pattern for filenames that are created
+#. i18n-hint: This is the pattern for filenames that are created
+#: ../src/DirManager.cpp:968
+#, c-format
+msgid "%s-old%d"
+msgstr "%s-sena%d"
+
+#: ../src/Menus.cpp:606
+#, fuzzy
+msgid "&About Audacity CleanSpeech..."
+msgstr "&Apie Audacity..."
+
+#: ../src/Menus.cpp:608
+msgid "&About Audacity..."
+msgstr "&Apie Audacity..."
+
+#: ../src/Menus.cpp:328
+msgid "&All\tCtrl+A"
+msgstr "&Viską\tCtrl+A"
+
+#: ../src/Menus.cpp:563
+msgid "&Analyze"
+msgstr "&Analizuoti"
+
+#: ../src/Menus.cpp:159
+msgid "&Close\tCtrl+W"
+msgstr "&Uždaryti\tCtrl+W"
+
+#: ../src/Menus.cpp:415
+msgid "&Collapse All Tracks\tCtrl+Shift+C"
+msgstr ""
+
+#: ../src/Menus.cpp:603
+msgid "&Contents..."
+msgstr "&Turinys..."
+
+#: ../src/Menus.cpp:294
+msgid "&Copy\tCtrl+C"
+msgstr "&Kopijuoti\tCtrl+C"
+
+#: ../src/Menus.cpp:301
+msgid "&Delete\tCtrl+K"
+msgstr "&Trinti\tCtrl+K"
+
+#: ../src/Menus.cpp:267
+msgid "&Edit"
+msgstr "R&edaguoti"
+
+#: ../src/Menus.cpp:322 ../src/Menus.cpp:443
+msgid "&Edit ID3 Tags..."
+msgstr "R&edaguot ID3 Priesgas..."
+
+#: ../src/Menus.cpp:748
+#, c-format
+msgid "&Export As %s..."
+msgstr "&Eksportuoti kaip %s..."
+
+#: ../src/Menus.cpp:751
+#, c-format
+msgid "&Export Selection As %s..."
+msgstr "&Eksportuoti apibrauktą kaip %s..."
+
+#: ../src/Menus.cpp:148
+msgid "&File"
+msgstr "&Failas"
+
+#: ../src/Menus.cpp:410
+msgid "&Fit in Window\tCtrl+F"
+msgstr "&Pritaikyti lange\tCtrl+F"
+
+#: ../src/Menus.cpp:504
+msgid "&Generate"
+msgstr "&Generuoti"
+
+#  i18n-hint: The name of the Help menu
+#  i18n-hint: The name of the Help menu
+#: ../src/Menus.cpp:598 ../src/Menus.cpp:601
+msgid "&Help"
+msgstr "&Pagalba"
+
+#: ../src/Menus.cpp:424
+msgid "&History..."
+msgstr "&Istorija..."
+
+#: ../src/Menus.cpp:438
+msgid "&Import Audio...\tCtrl+I"
+msgstr "&Importuoti Audio...\tCtrl+I"
+
+#: ../src/Menus.cpp:310
+#, fuzzy
+msgid "&Join\tCtrl+J"
+msgstr "&Kopijuoti\tCtrl+C"
+
+#: ../src/Menus.cpp:150
+msgid "&New\tCtrl+N"
+msgstr "&Naujas\tCtrl+N"
+
+#: ../src/Menus.cpp:152
+msgid "&Open...\tCtrl+O"
+msgstr "&Atidaryti...\tCtrl+O"
+
+#: ../src/Menus.cpp:295
+msgid "&Paste\tCtrl+V"
+msgstr "&Įdėti\tCtrl+V"
+
+#: ../src/Menus.cpp:565
+#, fuzzy
+msgid "&Plot Spectrum..."
+msgstr "S&pektro išklotinė"
+
+#. i18n-hint: Mac OS X shortcut should be Ctrl+,
+#: ../src/AudacityApp.cpp:532 ../src/Menus.cpp:387
+#, fuzzy
+msgid "&Preferences...\tCtrl+,"
+msgstr "&Nuostatos"
+
+#: ../src/Menus.cpp:391
+msgid "&Preferences...\tCtrl+P"
+msgstr "&Nuostatos"
+
+#: ../src/Menus.cpp:436
+msgid "&Project"
+msgstr "&Projektas"
+
+#: ../src/Menus.cpp:279
+msgid "&Redo"
+msgstr "Sug&rąžinti"
+
+#: ../src/Menus.cpp:776
+#, c-format
+msgid "&Redo %s"
+msgstr "Sug&rąžinti %s"
+
+#: ../src/Menus.cpp:614
+msgid "&Run Benchmark..."
+msgstr "&Paleisti Bandymą..."
+
+#: ../src/Menus.cpp:162
+msgid "&Save Project\tCtrl+S"
+msgstr "&Išsaugoti projektą\tCtrl+S"
+
+#: ../src/Menus.cpp:303
+msgid "&Silence\tCtrl+L"
+msgstr "&Tyla\tCtrl+L"
+
+#: ../src/Menus.cpp:299
+msgid "&Trim\tCtrl+T"
+msgstr "Apkirp&ti\tCtrl+T"
+
+#: ../src/Menus.cpp:271
+msgid "&Undo\tCtrl+Z"
+msgstr "&Atšaukti\tCtrl+Z"
+
+#: ../src/Menus.cpp:763
+#, c-format
+msgid "&Undo %s"
+msgstr "&Atšaukti %s"
+
+#: ../src/Menus.cpp:228
+msgid "&Upload File..."
+msgstr ""
+
+#: ../src/Menus.cpp:401
+msgid "&View"
+msgstr "&Vaizdas"
+
+#: ../src/Menus.cpp:412
+msgid "&Zoom to Selection\tCtrl+E"
+msgstr "&Priartinti apibraukimą\tCtrl+E"
+
+#: ../src/TrackPanel.cpp:4847
+msgid "'left' channel"
+msgstr "'kairysis' kanalas"
+
+#: ../src/TrackPanel.cpp:4848
+msgid "'mono'"
+msgstr "'mono'"
+
+#: ../src/TrackPanel.cpp:4847
+msgid "'right' channel"
+msgstr "'dešinysis' kanalas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:405
+msgid ""
+"(Not all combinations of headers\n"
+"and encodings are possible.)"
+msgstr ""
+"(Ne visos antraštščių kombinacijos ir\n"
+"dekoderiai galimi.)"
+
+#: ../src/widgets/TimeTextCtrl.cpp:164
+msgid "*,01000,01000,01000samples|#"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:166
+msgid "*,01000,01000.01000 NTSC frames|29.97002997"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:162
+msgid "*,01000,01000.01000 seconds"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:152
+msgid "*,01000m060.01000s"
+msgstr ""
+
+#: ../src/Menus.cpp:3623
+msgid "*.csp"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:154
+msgid "*h060m060.01000s"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:156
+msgid "*h060m060s+.#samples"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:158
+msgid "*h060m060s+.24 frames"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:160
+msgid "*h060m060s+.75 frames"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:197 ../src/prefs/BatchPrefs.cpp:447
+msgid "- END -"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:389
+msgid "-120 dB (approximate limit of human hearing)"
+msgstr "-120 dB (apytikris žmogaus klausos limitas)"
+
+#: ../src/prefs/GUIPrefs.cpp:391
+msgid "-145 dB (PCM range of 24 bit samples)"
+msgstr "-145 dB (PCM diapazonas 24 bitų modeliams)"
+
+#: ../src/prefs/GUIPrefs.cpp:383
+msgid "-36 dB (shallow range for high-amplitude editing)"
+msgstr "-36 dB (negilus ruožas aukštos amplitudės redagavimui)"
+
+#: ../src/prefs/GUIPrefs.cpp:385
+msgid "-48 dB (PCM range of 8 bit samples)"
+msgstr "-48 dB (PCM diapazonas 8 bitų modeliams)"
+
+#: ../src/prefs/GUIPrefs.cpp:387
+msgid "-96 dB (PCM range of 16 bit samples)"
+msgstr "-96 dB (PCM diapazonas 16 bitų medeliams)"
+
+#: ../src/effects/ChangeLength.cpp:113 ../src/effects/ChangeLength.cpp:127
+#: ../src/effects/ChangeLength.cpp:162
+msgid "0.0"
+msgstr ""
+
+#: ../src/prefs/AudioIOPrefs.cpp:234
+msgid "1 (Mono)"
+msgstr "1 (Mono)"
+
+#: ../src/import/ImportRaw.cpp:360
+msgid "1 Channel (Mono)"
+msgstr "1 Kanalas (Mono)"
+
+#: ../src/prefs/AudioIOPrefs.cpp:235
+msgid "2 (Stereo)"
+msgstr "2 (Stereo)"
+
+#: ../src/import/ImportRaw.cpp:361
+msgid "2 Channels (Stereo)"
+msgstr "2 Kanalai (Stereo)"
+
+#: ../src/prefs/SpectrumPrefs.cpp:44
+msgid "256 - default"
+msgstr "256 - įprastas"
+
+#: ../src/prefs/SpectrumPrefs.cpp:48
+msgid "4096 - most narrowband"
+msgstr "4096 - pats siauriausias ruožas"
+
+#: ../src/prefs/SpectrumPrefs.cpp:39
+#, fuzzy
+msgid "8 - most wideband"
+msgstr "64 - pats plačiausias ruožas"
+
+#: ../src/effects/ChangeLength.cpp:142
+msgid "90% to 110%"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:186
+msgid "A Free Digital Audio Editor"
+msgstr "Nemokamas Skaitmeninis Audio Redaktorius"
+
+#: ../src/AboutDialog.cpp:100
+msgid "About Audacity..."
+msgstr "Apie Audacity..."
+
+#: ../src/HistoryWindow.cpp:58
+msgid "Action"
+msgstr "Veiksmas"
+
+#: ../src/effects/NoiseRemoval.cpp:559
+#, fuzzy
+msgid "Actually Remove Noise"
+msgstr "Pašalinti triukšmą"
+
+#: ../src/TranscriptionToolBar.cpp:246
+#, fuzzy
+msgid "Add Label"
+msgstr "Pridėtas pavadinimas"
+
+#: ../src/Menus.cpp:495
+msgid "Add Label At Playback Position\tCtrl+M"
+msgstr "Pridėti Pavadinimą Grojimo Vietoje\tCtrl+M"
+
+#: ../src/Menus.cpp:494
+msgid "Add Label At Selection\tCtrl+B"
+msgstr "Pridėti Pavadinimą Apibraukime\tCtrl+B"
+
+#: ../src/TranscriptionToolBar.cpp:245
+#, fuzzy
+msgid "Add label at selection"
+msgstr "Pridėti Pavadinimą Apibraukime\tCtrl+B"
+
+#: ../src/Menus.cpp:3495
+msgid "Added label"
+msgstr "Pridėtas pavadinimas"
+
+#: ../src/TranscriptionToolBar.cpp:252
+msgid "Adjust Sensitivity"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:221
+msgid "Adjust left selection to  next onset"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:227
+msgid "Adjust left selection to next offset"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:224
+msgid "Adjust right selection to previous offset"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:230
+msgid "Adjust right selection to previous onset"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:4453
+#, fuzzy
+msgid "Adjusted Pan"
+msgstr "Nustatyta amplitudė."
+
+#: ../src/TrackPanel.cpp:1634
+msgid "Adjusted envelope."
+msgstr "Nustatyta amplitudė."
+
+#: ../src/TrackPanel.cpp:4518
+#, fuzzy
+msgid "Adjusted gain"
+msgstr "Nustatyta amplitudė."
+
+#: ../src/effects/AvcCompressor.cpp:588
+msgid "Adjustment Delay:"
+msgstr "Nustatymo Uždelsimas:"
+
+#: ../src/effects/AvcCompressor.cpp:571
+msgid "Adjustment Settings"
+msgstr "Nustatymų Nuostatos"
+
+#: ../src/effects/AvcCompressor.cpp:576
+msgid "Adjustment Window:"
+msgstr "Nustatymų Langas:"
+
+#: ../src/Tags.cpp:474
+msgid "Album"
+msgstr "Albumas"
+
+#: ../src/Tags.cpp:660
+msgid "Album:"
+msgstr "Albumas:"
+
+#: ../src/Menus.cpp:3359
+msgid "Align"
+msgstr "Rikiuoti"
+
+#: ../src/Menus.cpp:472
+msgid "Align End with Cursor"
+msgstr "Rikiuoti Pabaigą prie Pelės"
+
+#: ../src/Menus.cpp:474
+msgid "Align End with Selection End"
+msgstr "Rikiuoti Pabaigą prie Apibraukimo Galo"
+
+#: ../src/Menus.cpp:473
+msgid "Align End with Selection Start"
+msgstr "Rikiuoti Pabaigą prie Apibraukimo Pradžios"
+
+#: ../src/Menus.cpp:475
+msgid "Align Tracks Together"
+msgstr "Rikiuoti Takelius Kartu"
+
+#: ../src/Menus.cpp:477
+msgid "Align Tracks..."
+msgstr "Rikiuoti Takelius..."
+
+#: ../src/Menus.cpp:486
+msgid "Align and move cursor..."
+msgstr "Rikiuoti ir judinti pelę..."
+
+#: ../src/Menus.cpp:469
+msgid "Align with &Cursor"
+msgstr "Rikiuoti pr&ie Pelės"
+
+#: ../src/Menus.cpp:468
+msgid "Align with &Zero"
+msgstr "Rikiuoti prie &Nulio"
+
+#: ../src/Menus.cpp:471
+msgid "Align with Selection &End"
+msgstr "Rikiuoti pri&e Apibraukimo Pabaigos"
+
+#: ../src/Menus.cpp:470
+msgid "Align with Selection &Start"
+msgstr "Rikiuoti prie Apibraukimo Pradžio&s"
+
+#: ../src/Menus.cpp:3326
+msgid "Aligned"
+msgstr "Surikiuota"
+
+#: ../src/Menus.cpp:3302
+msgid "Aligned cursor"
+msgstr "Surikiuota pelė"
+
+#: ../src/Menus.cpp:3314
+msgid "Aligned end with cursor"
+msgstr "Pabaiga surikiuota su pele"
+
+#: ../src/Menus.cpp:3322
+msgid "Aligned end with selection end"
+msgstr "Pabaiga surikiuota su apibraukimo pabaiga"
+
+#: ../src/Menus.cpp:3318
+msgid "Aligned end with selection start"
+msgstr "Pagaiga surikiuota su apibraukimo pradžia"
+
+#: ../src/Menus.cpp:3310
+msgid "Aligned with selection end"
+msgstr "Surikiuota su apibraukimo pabaiga"
+
+#: ../src/Menus.cpp:3306
+msgid "Aligned with selection start"
+msgstr "Surikiuota su apibraukimo pradžia"
+
+#: ../src/Menus.cpp:3298
+msgid "Aligned with zero"
+msgstr "Surikiuota su nuliu"
+
+#: ../src/UploadDialog.cpp:1320 ../src/UploadDialog.cpp:1347
+#, fuzzy
+msgid "All Files (*.*)|*.*"
+msgstr "Visi failai (*)|*"
+
+#: ../src/Menus.cpp:3087
+msgid "All files (*)|*"
+msgstr "Visi failai (*)|*"
+
+#: ../src/UploadDialog.cpp:454
+#, fuzzy
+msgid "All files (*.*)|*.*"
+msgstr "Visi failai (*)|*"
+
+#: ../src/Project.cpp:1868
+#, fuzzy
+msgid ""
+"All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|"
+"AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg "
+"Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|"
+"*.lof"
+msgstr ""
+"Visi failai  (*.*)|*.*|Audacity projektai (*.aup)|*.aup|WAV failai (*.wav)|*."
+"wav|AIFF failai (*.aif)|*.aif|AU failai (*.au)|*.au|MP3 failai (*.mp3)|*.mp3|"
+"Ogg Vorbis failai  (*.ogg)|*.ogg|Failų sąrašas (*.lof)|*.lof"
+
+#: ../src/Menus.cpp:3052
+msgid ""
+"All files (*.*)|*.*|MIDI files (*.mid)|*.mid|Allegro files (*.gro)|*.gro"
+msgstr ""
+"Visi failai  (*.*)|*.*|MIDI failai (*.mid)|*.mid|Allegro failai (*.gro)|*.gro"
+
+#: ../src/Menus.cpp:2977
+#, fuzzy
+msgid ""
+"All files (*.*)|*.*|WAV files (*.wav)|*.wav|.AIFF files (*.aif)|*.aif|AU "
+"files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|"
+"FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"
+msgstr ""
+"Visi failai (*.*)|*.*|WAV failai (*.wav)|*.wav|AIFF failai (*.aif)|*.aif|AU "
+"failai (*.au)|*.au|MP3 failai (*.mp3)|*.mp3|Ogg Vorbis failai (*.ogg)|*.ogg|"
+"Failų sąrašas (*.lof)|*.lof"
+
+#: ../src/Menus.cpp:3713
+#, fuzzy
+msgid ""
+"All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU "
+"files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|"
+"FLAC files (*.flac)|*.flac"
+msgstr ""
+"Visi failai (*.*)|*.*|WAV failai (*.wav)|*.wav|AIFF failai (*.aif)|*.aif|AU "
+"failai (*.au)|*.au|MP3 failai (*.mp3)|*.mp3|Ogg Vorbis failai (*.ogg)|*.ogg|"
+"Failų sąrašas (*.lof)|*.lof"
+
+#: ../src/effects/Amplify.cpp:180
+msgid "Allow clipping"
+msgstr "Leisti Iškirpimą"
+
+#: ../src/effects/ChangeLength.cpp:138
+msgid "Allowed Range: "
+msgstr ""
+
+#: ../src/prefs/MousePrefs.cpp:105
+msgid "Alt-Left-Click"
+msgstr "Alt-Left-Click"
+
+#: ../src/prefs/GUIPrefs.cpp:310
+msgid "Always allow pausing"
+msgstr "Visada leisti pauzę"
+
+#: ../src/import/ImportRaw.cpp:387
+msgid "Amount to import:"
+msgstr "Importavimo kiekis:"
+
+#: ../src/effects/Amplify.cpp:148
+msgid "Amplification (dB):"
+msgstr "Padidinimas (dB):"
+
+#: ../src/effects/AvcCompressor.cpp:652
+msgid "Amplification Settings"
+msgstr "Padidinimo Nuostatos"
+
+#: ../src/effects/Amplify.cpp:76
+msgid "Amplify"
+msgstr "Sustiprinti"
+
+#: ../src/effects/Amplify.cpp:141
+msgid "Amplify by Dominic Mazzoni"
+msgstr "Sustiprinimas by Dominic Mazzoni"
+
+#: ../src/effects/Amplify.h:46
+msgid "Amplify..."
+msgstr "Sustiprinimas"
+
+#: ../src/effects/Amplify.h:50
+msgid "Amplifying"
+msgstr "Stiprinama"
+
+#: ../src/effects/ToneGen.cpp:306
+msgid "Amplitude (0-1)"
+msgstr "Stiprumas (0-1)"
+
+#: ../src/prefs/MousePrefs.cpp:114 ../src/prefs/MousePrefs.cpp:115
+msgid "Any"
+msgstr "Bet kuris"
+
+#: ../src/effects/Effect.h:100
+#, c-format
+msgid "Applied effect: %s"
+msgstr "Priimtas efektas: %s"
+
+#: ../src/effects/Amplify.cpp:41
+#, c-format
+msgid "Applied effect: %s %.1f dB"
+msgstr "Priimtas efektas: %s %.1f dB"
+
+#: ../src/effects/ChangeSpeed.cpp:42 ../src/effects/ChangeTempo.cpp:46
+#, c-format
+msgid "Applied effect: %s %.1f%%"
+msgstr "Priimtas efektas: %s %.1f%%"
+
+#: ../src/effects/ChangePitch.cpp:56
+#, c-format
+msgid "Applied effect: %s %.2f semitones"
+msgstr "Priimtas efektas: %s %.2f semitones"
+
+#: ../src/effects/Phaser.cpp:53
+#, c-format
+msgid ""
+"Applied effect: %s %d stages, %.0f%% wet, frequency = %.1f Hz, start phase = "
+"%.0f deg, depth = %d, feedback = %.0f%%"
+msgstr ""
+"Priimtas efektas: %s %d stadijos, %.0f%% wet, dažnis = %.1f Hz, pradžios "
+"fazė= %.0f deg, gylis= %d, atsakomoji reakcija= %.0f%%"
+
+#: ../src/effects/Echo.cpp:37
+#, c-format
+msgid "Applied effect: %s delay = %f seconds, decay factor = %f"
+msgstr "Priimtas efektas: %s uždelsimas = %f sekundės, nykimo faktorius = %f"
+
+#: ../src/effects/BassBoost.cpp:41
+#, c-format
+msgid "Applied effect: %s frequency = %.0f Hz, boost = %.0f dB"
+msgstr "Priimtas efektas: %s dažnis = %.0f Hz, pakėlimas = %.0f dB"
+
+#: ../src/effects/Wahwah.cpp:46
+#, c-format
+msgid ""
+"Applied effect: %s frequency = %.1f Hz, start phase = %.0f deg, depth = %.0f%"
+"%, resonance = %.1f, frequency offset = %.0f%%"
+msgstr ""
+"Priimtas efektas: %s dažnis= %.1f Hz, pradžios fazė = %.0f deg, gylis= %.0f%"
+"%, rezonancas= %.1f, dažnio ofsetas= %.0f%%"
+
+#: ../src/effects/ToneGen.cpp:40
+#, c-format
+msgid ""
+"Applied effect: Generate %s %s wave, frequency = %.2f Hz, amplitude = %.2f, "
+"%.6lf seconds"
+msgstr ""
+"Priimtas efektas: Sukurtos %s %s bangos, dažnis= %.2f Hz, amplitudė= %.2f, "
+"%.6lf sekundės"
+
+#: ../src/effects/Silence.h:44
+#, c-format
+msgid "Applied effect: Generate Silence, %.6lf seconds"
+msgstr "Priimtas efektas: Tylos Generavimas, %.6lf sekundės"
+
+#: ../src/effects/Noise.h:31
+#, c-format
+msgid "Applied effect: Generate White Noise, %.6lf seconds"
+msgstr "Priimtas efektas: Šnypštimo Kūrimas, %.6lf sekundės"
+
+#: ../src/BatchCommands.cpp:455
+#, fuzzy, c-format
+msgid "Apply %s"
+msgstr "Pritaikomas Fazeris"
+
+#: ../src/BatchCommands.cpp:450
+#, c-format
+msgid ""
+"Apply %s with parameter(s)\n"
+"\n"
+"%s"
+msgstr ""
+
+#: ../src/effects/Compressor.h:40
+msgid "Applying Dynamic Range Compression..."
+msgstr "Pritaikomas Dinaminis Dažnio Kompresorius..."
+
+#: ../src/effects/Leveller.h:32
+#, fuzzy
+msgid "Applying Leveller..."
+msgstr "Pritaikomas Fazeris"
+
+#: ../src/effects/nyquist/Nyquist.cpp:215
+msgid "Applying Nyquist Effect..."
+msgstr "Priimamas Nyquist Efektas..."
+
+#: ../src/effects/Phaser.h:42
+msgid "Applying Phaser"
+msgstr "Pritaikomas Fazeris"
+
+#: ../src/effects/SpikeCleaner.h:31
+msgid "Applying Spike Cleaner..."
+msgstr ""
+
+#: ../src/effects/StereoToMono.h:27
+msgid "Applying Stereo To Mono"
+msgstr ""
+
+#: ../src/effects/Wahwah.h:38
+msgid "Applying Wahwah"
+msgstr "Vykdomas VachVach"
+
+#: ../src/export/Export.cpp:205
+msgid "Are you sure you want to save the file as \""
+msgstr "Ar tikrai norite išsaugoti failą kaip \""
+
+#: ../src/Tags.cpp:464
+msgid "Artist"
+msgstr "Atlikėjas"
+
+#: ../src/Tags.cpp:650
+msgid "Artist:"
+msgstr "Atlikėjas:"
+
+#: ../src/effects/Compressor.cpp:458
+msgid "Attack Time: "
+msgstr "Iki Pilno Garso:"
+
+#: ../src/effects/Compressor.cpp:532
+#, c-format
+msgid "Attack Time: %.1f secs"
+msgstr "Iki Pilno Garso: %.1f sek"
+
+#: ../src/effects/NoiseRemoval.cpp:211
+msgid ""
+"Attempt to run Noise Removal without a noise profile\n"
+"."
+msgstr ""
+
+#: ../src/AboutDialog.cpp:225
+msgid "Audacious!"
+msgstr "Audacious!"
+
+#: ../src/ControlToolBar.cpp:148
+msgid "Audacity Control Toolbar"
+msgstr "Audacity Kontrolės įrankinė"
+
+#: ../src/EditToolBar.cpp:80
+msgid "Audacity Edit Toolbar"
+msgstr "Audacity Redagavimo įrankinė"
+
+#: ../src/UploadDialog.cpp:232
+#, fuzzy
+msgid "Audacity FTP"
+msgstr "Audacity Pirmas paleidimas"
+
+#: ../src/LangChoice.cpp:47
+msgid "Audacity First Run"
+msgstr "Audacity Pirmas paleidimas"
+
+#: ../src/MeterToolBar.cpp:53
+msgid "Audacity Meter Toolbar"
+msgstr "Audacity Matuoklio įrankinė"
+
+#: ../src/MixerToolBar.cpp:101
+msgid "Audacity Mixer Toolbar"
+msgstr "Audacity Mikserio įrankinė"
+
+#: ../src/prefs/PrefsDialog.cpp:54
+msgid "Audacity Preferences"
+msgstr "Audacity Nuostatos"
+
+#: ../src/AudacityApp.cpp:1120
+msgid "Audacity Project Files"
+msgstr "Audacity Prijekto failai"
+
+#: ../src/prefs/GUIPrefs.cpp:360
+#, fuzzy
+msgid "Audacity Tester"
+msgstr "Audacity Matuoklio įrankinė"
+
+#: ../src/TranscriptionToolBar.cpp:109
+#, fuzzy
+msgid "Audacity Transcription Toolbar"
+msgstr "Audacity Redagavimo įrankinė"
+
+#: ../src/AudacityApp.cpp:747
+msgid ""
+"Audacity could not find a place to store\n"
+".csp CleanSpeech preset files\n"
+"Audacity is now going to exit. \n"
+"Installation may be corrupt."
+msgstr ""
+
+#: ../src/AudacityApp.cpp:799
+msgid ""
+"Audacity could not find a place to store temporary files.\n"
+"Please enter an appropriate directory in the preferences dialog."
+msgstr ""
+"Audacity neranda vietos laikiniems failams laikyti.\n"
+"Prašau įrašyti ją Nuostatų dialoge."
+
+#: ../src/import/Import.cpp:174
+msgid ""
+"Audacity did not recognize the type of this file.\n"
+"If it is uncompressed, try importing it using \"Import Raw\""
+msgstr ""
+"Audacity neatpažysta šio failo tipo. Jei jis nesuspaustas, \n"
+"bandykite importuoti naudodamiesi \"Imporuoti Raw doumenis\"."
+
+#  i18n-hint: This message is used on Mac OS X.  This particular
+#  message must be <= 255 characters.  Be brief.
+#  i18n-hint: This message is used on Mac OS 9.  This particular
+#  message must be <= 255 characters.  Be brief.
+#. i18n-hint: This message is used on Mac OS X.  This particular
+#: ../src/export/ExportMP3.cpp:558 ../src/export/ExportMP3.cpp:872
+msgid ""
+"Audacity does not export MP3 files directly, but instead uses LAME, an MP3 "
+"exporting library available separately.  See the documentation for more "
+"information.\n"
+"\n"
+"Would you like to locate LameLib now?"
+msgstr ""
+"Audacity ne eksportuoja MP3 failų tiesiogiai, bet naudoja atskirą LAME MP3 "
+"eksportavimo biblioteką. Dokumentacijoje rasite daugiau informacijos.\n"
+"\n"
+"Ar norite nurodyti LameLib dabar?"
+
+#  i18n-hint: This message is used on Windows.
+#. i18n-hint: This message is used on Windows.
+#: ../src/export/ExportMP3.cpp:1120
+msgid ""
+"Audacity does not export MP3 files directly, but instead uses the\n"
+"freely available LAME library to handle MP3 file encoding.  You must\n"
+"obtain lame_enc.dll separately, by downloading the LAME MP3 encoder,and then "
+"locate this file for Audacity.  You only need to do this once.\n"
+"\n"
+"Would you like to locate lame_enc.dll now?"
+msgstr ""
+"Audacity neeksportuoja MP3 failų tiesiogiai, bet vietoj to naudoja\n"
+"Nemokamą LAME bibliotekąč skirtą MP3 failų kodavimui. Jūs turite įsigyti\n"
+"lame_enc.dll atsirai, parsisiunčiant LAME MP3 koderį ir tada nurodant jį "
+"Audacity. Jums tai reiks daryti tik kartą.\n"
+"\n"
+"Ar norite nurodyti lame_enc.dll dabar?"
+
+#  i18n-hint: This message is used on Unix/Linux
+#. i18n-hint: This message is used on Unix/Linux
+#: ../src/export/ExportMP3.cpp:259
+msgid ""
+"Audacity does not export MP3 files directly, but instead uses the \n"
+"freely available LAME library to handle MP3 file encoding.  You must \n"
+"obtain libmp3lame.so separately, either by downloading it or building \n"
+"it from the sources, and then locate the file for Audacity.  You only \n"
+"need to do this once.\n"
+"\n"
+"Would you like to locate libmp3lame.so now?"
+msgstr ""
+"Audacity neeksportuoja MP3 failų tiesiogiai, bet vietoj to naudoja \n"
+"Nemokamą LAME biblioteką MP3 failų dekodavimui. Jūs turite įsigyti\n"
+"libmp3lame.so atskirai, bet kaip ar atsisiunčiant ar sudarant iš kodo, ir "
+"tada\n"
+"nurodant ją Audacity. Jums tą daryti reiks tik kartą.\n"
+"\n"
+"Ar norite nurodyti libmp3lame.so dabar?"
+
+#: ../src/DirManager.cpp:488
+#, c-format
+msgid ""
+"Audacity found an orphaned blockfile %s! \n"
+"Please consider saving and reloading the project to perform a complete "
+"project check.\n"
+msgstr ""
+
+#: ../src/DirManager.cpp:270
+#, fuzzy
+msgid ""
+"Audacity found temporary files that were not deleted or saved \n"
+"the last time you used Audacity. \n"
+"\n"
+"Audacity can't recover them automatically, but if you choose not \n"
+"to delete them, you can recover them manually. \n"
+"\n"
+"Delete temporary files?"
+msgstr ""
+"Audacity rado laikinų failų, kurie nebuvo ištrinti ar išsaugoti\n"
+"\n"
+"Audacity negali jų atstatyti automatiškai, bet jei jų neištrinsite,\n"
+"galėsite atstatyti rankiniu būdu.\n"
+"\n"
+"Ištrinti laikinus failus?"
+
+#: ../src/AboutDialog.cpp:156
+#, fuzzy
+msgid ""
+"Audacity is a free program written by a team of volunteer developers around "
+"the world. Coordination happens thanks to SourceForge.net, an online service "
+"that provides free tools to open-source software projects. Audacity is "
+"available for Windows 98 and newer, Mac OS X, Linux, and other Unix-like "
+"operating systems. Older versions of Audacity are available for Mac OS 9."
+msgstr ""
+"Audacity  yra nemokama programa parašyta savanorių komandos iš viso "
+"pasaulio. Už koordinacijos pagalbą ačiū SourceForge.net, online servisui "
+"kuris aprūpina nemokamais įrankiais atviro kodo programinės įrangos "
+"projektus. Audacity pritaikytas Windows 98 ir naujasnioms, Mac OS X, Linux "
+"ir kitoms Unix šeimos operacinėms sistemoms. Senesnės Audacity versijos "
+"pritaikytos Mac OS 9."
+
+#: ../src/AudacityApp.cpp:859
+msgid "Audacity is already running"
+msgstr "Audacity jau paleistas"
+
+#: ../src/AboutDialog.cpp:202
+msgid "Audacity is based on code from the following projects:"
+msgstr ""
+
+#: ../src/AudacityApp.cpp:805
+#, fuzzy
+msgid ""
+"Audacity is now going to exit. Please launch Audacity again to use the new "
+"temporary directory."
+msgstr ""
+"Audacity dabar išsijungs. Prašau paleiskite mane vėl, kad galėčiau naudotis "
+"nauja laikinaja vieta."
+
+#: ../src/export/ExportMultiple.cpp:267
+msgid ""
+"Audacity needs to know the location of the TOMPG.EXE program.\n"
+"Please download and save the freely available file in any convenient\n"
+"location such as the Plug-Ins subdir of Audacity and let Audacity\n"
+"know about this path.  Would you like to help Audacity locate the file now?"
+msgstr ""
+
+#: ../src/AudacityApp.cpp:1119
+msgid ""
+"Audacity project (.AUP) files are not currently \n"
+"associated with Audacity. \n"
+"\n"
+"Associate them, so they open on double-click?"
+msgstr ""
+"Audacity projektų failai (.AUP) kol kas nepriskirti Audacity programai.\n"
+"\n"
+"Ar juos priskirti dabar, kad galėtumėte atidaryti du kart paspaudę ant jų?"
+
+#: ../src/Project.cpp:2564
+msgid ""
+"Audacity project files (.aup) let you save everything you're working on "
+"exactly as it\n"
+"appears on the screen, but most other programs can't open Audacity project "
+"files.\n"
+"\n"
+"When you want to save a file that can be opened by other programs, select "
+"one of the\n"
+"Export commands."
+msgstr ""
+"Audacity projekto failai (.aup) leidžia išsaugoti viską tiksliai kaip matote "
+"dabar, dėja daugelis\n"
+"programų negali atidaryti Audacity projekto failų.\n"
+"\n"
+"Kai norite, kad failą būtų galima atidaryti ir kitomis programomis, "
+"pasirinkite Eksportavimo komandą."
+
+#: ../src/Project.cpp:2567
+msgid "Audacity projects (*.aup)|*.aup"
+msgstr "Audacity projektai (*.aup)|*.aup"
+
+#: ../src/export/ExportMP3.cpp:137
+#, fuzzy, c-format
+msgid ""
+"Audacity was expecting a library named \"%s\". Are you sure you want to "
+"attempt to export MP3 files using \"%s\"?"
+msgstr ""
+"Audacity tikėjosi bibliotekos pavadinimu \"%s\".  Ar tikrai norite MP3 "
+"failus eksportuoti naudodamiesi \"%s\"?"
+
+#: ../src/AudacityApp.cpp:844
+msgid ""
+"Audacity was not able to lock the temporary files directory.\n"
+"This folder may be in use by another copy of Audacity.\n"
+"Running two copies of Audacity simultaneously may cause\n"
+"data loss or cause your system to crash.\n"
+"\n"
+"Do you still want to start Audacity?"
+msgstr ""
+"Audacity negalėjo užrakinti laikinų failų vietos.Šis aplankas\n"
+"gali būti naudojamas kitos paleistos Audacity programos.\n"
+"Dviejų atskirai paleistų Audacity kopijų paleidimas gali sukelti\n"
+"informacijos sugadinimą ar net „pakabinti“ sistemą.\n"
+"\n"
+"Ar vis dar norite paleisti Audacity?"
+
+#: ../src/Project.cpp:1972
+msgid ""
+"Audacity was unable to convert an Audacity 1.0 project to the new project "
+"format."
+msgstr "Audacity nesugebėjo konvertuoti Audacity 1.0 projekto į naują formatą."
+
+#: ../src/prefs/PrefsDialog.cpp:83
+msgid "Audio I/O"
+msgstr "Audio I/O"
+
+#: ../src/SelectionBar.cpp:115
+msgid "Audio Position:"
+msgstr ""
+
+#: ../src/WaveTrack.cpp:63
+msgid "Audio Track"
+msgstr "Audio Takelis"
+
+#: ../src/BatchProcessDialog.cpp:60
+msgid "Audio files to be processed"
+msgstr ""
+
+#: ../src/effects/ladspa/LadspaEffect.cpp:438
+msgid "Author: "
+msgstr "Autorius:"
+
+#: ../src/effects/AvcCompressor.cpp:122
+msgid "Automatic Volume Control"
+msgstr "Automatinė Garso Kontrolė"
+
+#: ../src/effects/AvcCompressor.cpp:558
+msgid "Automatic Volume Control by Vincent A. Busam"
+msgstr "Automatinė Garso Kontrolė by Vincent A. Busam"
+
+#: ../src/effects/AvcCompressor.h:66
+msgid "Automatic Volume Control..."
+msgstr "Automatinė Garso Kontrolė..."
+
+#: ../src/TranscriptionToolBar.cpp:242
+msgid "Automatically make labels from words"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:308
+msgid "Autoscroll while playing"
+msgstr "Auto slinkimas kol grojama"
+
+#: ../src/effects/BassBoost.cpp:74
+#, fuzzy
+msgid "BassBoost"
+msgstr "Boso Pakėlimas"
+
+#: ../src/effects/BassBoost.cpp:291
+#, fuzzy
+msgid "BassBoost by Nasca Octavian Paul"
+msgstr "Boso Pakėlimas by Nasca Octavian Paul"
+
+#: ../src/effects/BassBoost.h:42
+#, fuzzy
+msgid "BassBoost..."
+msgstr "Boso Pakėlimas..."
+
+#: ../src/prefs/PrefsDialog.cpp:89
+msgid "Batch"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:118
+msgid "Batch Options"
+msgstr ""
+
+#: ../src/BatchProcessDialog.cpp:43
+#, fuzzy
+msgid "Batch Processing"
+msgstr "Negaliu pradėti pakeitimo"
+
+#: ../src/prefs/BatchPrefs.cpp:143
+msgid "Batch Sequence (Double-Click to edit)"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:378
+msgid "Batch debug mode"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:123
+msgid ""
+"Batch mode is an\n"
+" experimental feature.\n"
+"\n"
+"Please read the release\n"
+" notes for known limitations"
+msgstr ""
+
+#: ../src/effects/ChangeTempo.cpp:219
+msgid "Beats per Minute (BPM):   from"
+msgstr "Smūgiai per Minutę (BMP):   iš"
+
+#: ../src/prefs/BatchPrefs.cpp:68 ../src/prefs/GUIPrefs.cpp:36
+msgid "Behaviors"
+msgstr ""
+
+#: ../src/effects/Leveller.cpp:225
+msgid ""
+"Below the Noise Threshold, the Signal Strength is reduced.\n"
+"Above this Threshold, the Signal Strength is equalized so that\n"
+"soft parts are made louder and loud parts are made softer.\n"
+"\n"
+"Generally, recordings with low noise can use lower settings. so\n"
+"good equipment, technique, and NoiseRemoval help out a LOT."
+msgstr ""
+
+#: ../src/Benchmark.cpp:117
+msgid "Benchmark"
+msgstr "Sistemos bandymas"
+
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  know the correct technical word.
+#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#: ../src/import/ImportRaw.cpp:333
+msgid "Big-endian"
+msgstr "Didelis-endian"
+
+#: ../src/prefs/FileFormatPrefs.cpp:197
+msgid "Bit Rate:"
+msgstr "Bitų Skaičius:"
+
+#: ../src/effects/BassBoost.cpp:314
+msgid "Boost (dB):"
+msgstr "Pakelti (dB):"
+
+#: ../src/effects/BassBoost.h:46
+msgid "Boosting Bass Frequencies"
+msgstr "Didinu Boso Dažnį"
+
+#: ../src/prefs/MousePrefs.cpp:86
+msgid "Buttons"
+msgstr "Mygtukai"
+
+#: ../src/TranscriptionToolBar.cpp:250
+#, fuzzy
+msgid "Calibrate"
+msgstr "Neteisingas dažnis."
+
+#: ../src/TranscriptionToolBar.cpp:249
+msgid "Calibrate voicekey"
+msgstr ""
+
+#: ../src/VoiceKey.cpp:824
+msgid "Calibration Results\n"
+msgstr ""
+
+#: ../src/Menus.cpp:782
+msgid "Can't Redo"
+msgstr "Negaliu Sugrąžinti"
+
+#: ../src/Menus.cpp:769
+msgid "Can't Undo"
+msgstr "Negaliu atšaukti"
+
+#: ../src/export/ExportMultiple.cpp:587
+msgid "Can't export multiple files"
+msgstr "Negaliu eksportuoti daugialypio failo"
+
+#: ../src/Project.cpp:2137
+msgid "Can't open project file"
+msgstr "Negaliu atidaryti projekto failo."
+
+#: ../src/effects/VST/VSTEffect.cpp:196
+msgid "Can't process replacing"
+msgstr "Negaliu pradėti pakeitimo"
+
+#: ../src/BatchCommandDialog.cpp:98 ../src/BatchProcessDialog.cpp:82
+#: ../src/Tags.cpp:735 ../src/effects/Amplify.cpp:197
+#: ../src/effects/AvcCompressor.cpp:717 ../src/effects/BassBoost.cpp:339
+#: ../src/effects/ChangeLength.cpp:173 ../src/effects/ChangePitch.cpp:395
+#: ../src/effects/ChangeSpeed.cpp:382 ../src/effects/ChangeTempo.cpp:288
+#: ../src/effects/ClickRemoval.cpp:419 ../src/effects/Compressor.cpp:481
+#: ../src/effects/Echo.cpp:249 ../src/effects/Equalization.cpp:755
+#: ../src/effects/Filter.cpp:490 ../src/effects/Leveller.cpp:241
+#: ../src/effects/NoiseRemoval.cpp:597 ../src/effects/Normalize.cpp:314
+#: ../src/effects/Phaser.cpp:587 ../src/effects/Repeat.cpp:259
+#: ../src/effects/Silence.cpp:140 ../src/effects/SpikeCleaner.cpp:171
+#: ../src/effects/ToneGen.cpp:333 ../src/effects/TruncSilence.cpp:264
+#: ../src/effects/VST/VSTEffect.cpp:95 ../src/effects/VST/VSTEffect.cpp:453
+#: ../src/effects/Wahwah.cpp:573 ../src/effects/ladspa/LadspaEffect.cpp:496
+#: ../src/effects/nyquist/Nyquist.cpp:745
+#: ../src/effects/nyquist/Nyquist.cpp:891 ../src/export/ExportMultiple.cpp:815
+#: ../src/import/ImportRaw.cpp:433 ../src/prefs/FileFormatPrefs.cpp:465
+#: ../src/prefs/PrefsDialog.cpp:109
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: ../src/UploadDialog.cpp:1278
+#, fuzzy
+msgid "Cannot copy folder: "
+msgstr "Negaliu atidaryti failo:"
+
+#: ../src/Menus.cpp:3770
+msgid ""
+"Cannot create directory 'cleaned'. \n"
+"File already exists that is not a directory"
+msgstr ""
+
+#: ../src/export/ExportPCM.cpp:73
+msgid "Cannot export audio in this format."
+msgstr "Negaliu eksportuoti audio šiuo formatu."
+
+#: ../src/export/ExportPCM.cpp:85
+#, c-format
+msgid "Cannot export audio to %s"
+msgstr "Negaliu eksportuoti audio į %s"
+
+#: ../src/effects/PopClick.cpp:70
+msgid "Cannot remove a pop or click at the very beginning of a track."
+msgstr "Negaliu pašalinti trakštelėjimo pačioje takelio pradžioje."
+
+#: ../src/effects/PopClick.cpp:65
+msgid "Cannot remove a pop or click longer than one second."
+msgstr "Negaliu pašalinti trakštelėjimo, ilgesnio nei viena sekundė."
+
+#: ../src/widgets/ASlider.cpp:600
+msgid "Center"
+msgstr "Centrinis"
+
+#  i18n-hint: This is a technical term, derived from the word
+#  "spectrum".  Do not translate it unless you are sure you
+#  know the correct technical word in your language.
+#. i18n-hint: This is a technical term, derived from the word
+#: ../src/FreqWindow.cpp:136
+msgid "Cepstrum"
+msgstr "Cepstrum"
+
+#: ../src/prefs/MousePrefs.cpp:102
+msgid "Change Amplification Envelope"
+msgstr "Keisti Stiprinimo Amplitudę"
+
+#: ../src/effects/ChangeLength.cpp:46
+#, fuzzy
+msgid "Change Length"
+msgstr "Keisti Skardumą"
+
+#: ../src/effects/ChangeLength.cpp:101
+msgid ""
+"Change Length by Lynn Allan\n"
+"Make shorter or longer by up to +/- 10%\n"
+"to fit certain number of minutes\n"
+msgstr ""
+
+#: ../src/effects/ChangeLength.h:26
+#, fuzzy
+msgid "Change Length..."
+msgstr "Keisti Skardumą..."
+
+#: ../src/prefs/MousePrefs.cpp:107
+msgid "Change ONE Sample only"
+msgstr "Pakeisti tik VIENĄ Modelį"
+
+#: ../src/effects/ChangePitch.cpp:119
+msgid "Change Pitch"
+msgstr "Keisti Skardumą"
+
+#: ../src/effects/ChangePitch.cpp:248
+msgid "Change Pitch without Changing Tempo"
+msgstr "Pakeisti Skardumą Nekeičiant Tempo"
+
+#: ../src/effects/ChangePitch.h:31
+msgid "Change Pitch..."
+msgstr "Keisti Skardumą..."
+
+#: ../src/prefs/MousePrefs.cpp:104
+msgid "Change Sample"
+msgstr "Keisti pavyzdį"
+
+#: ../src/prefs/MousePrefs.cpp:106
+msgid "Change Several Samples"
+msgstr "Keisti kelis pavyzdžius"
+
+#: ../src/effects/ChangeSpeed.cpp:49
+msgid "Change Speed"
+msgstr "Keisti Greitį"
+
+#: ../src/effects/ChangeSpeed.cpp:289
+msgid "Change Speed, affecting both Tempo and Pitch"
+msgstr "Keisti greitį, įskaitant Tempą ir Skardumą"
+
+#: ../src/effects/ChangeSpeed.h:32
+msgid "Change Speed..."
+msgstr "Keisti Greitį..."
+
+#: ../src/effects/ChangeTempo.cpp:65
+msgid "Change Tempo"
+msgstr "Keisti Tempą"
+
+#: ../src/effects/ChangeTempo.cpp:167
+msgid "Change Tempo without Changing Pitch"
+msgstr "Keisti Tempą nekeičiant Skardumo"
+
+#: ../src/effects/ChangeTempo.h:35
+msgid "Change Tempo..."
+msgstr "Keisti Tempą..."
+
+#: ../src/Menus.cpp:674
+msgid "Change gain on first selected track\tShift+G"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:5088
+msgid "Change lower speed limit (%) to:"
+msgstr "Pakeisti mažesnio greičio limitą (%) į:"
+
+#: ../src/Menus.cpp:671
+msgid "Change pan on first selected track\tShift+P"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:5153
+msgid "Change track name to:"
+msgstr "Pakeisti takelio pavadinimą į:"
+
+#: ../src/TrackPanel.cpp:5095
+msgid "Change upper speed limit (%) to:"
+msgstr "Pakeisti didesnio greičio limitą (%) į:"
+
+#: ../src/effects/AvcCompressor.cpp:405
+msgid ""
+"Change window size must be less than or equal to Adjustment window size."
+msgstr ""
+"Pakeistas lango dydis turi būti mažesnis ar lygus Nustatymų lango dydžiui."
+
+#: ../src/TrackPanel.cpp:4930
+#, c-format
+msgid "Changed '%s' to %d Hz"
+msgstr "Pakeista '%s' į %d Hz"
+
+#: ../src/TrackPanel.cpp:4857 ../src/TrackPanel.cpp:4966
+#, c-format
+msgid "Changed '%s' to %s"
+msgstr "Pakeista '%s' į %s"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:216
+msgid ""
+"Changes to temporary directory will not take effect until Audacity is "
+"restarted"
+msgstr "Laikinos vietos keitimas bus priimtas tik perkrovus Audacity"
+
+#: ../src/effects/ChangeLength.h:30
+#, fuzzy
+msgid "Changing Length..."
+msgstr "Keičiamas Skardumas"
+
+#: ../src/effects/ChangePitch.h:35
+msgid "Changing Pitch"
+msgstr "Keičiamas Skardumas"
+
+#: ../src/effects/ChangeSpeed.h:35
+msgid "Changing Speed"
+msgstr "Keičiamas Greitis"
+
+#: ../src/effects/ChangeTempo.h:39
+msgid "Changing Tempo"
+msgstr "Keičiams tempas"
+
+#: ../src/DirManager.cpp:1000
+#, c-format
+msgid "Changing block %s\n"
+msgstr "Keičiamas blokas %s\n"
+
+#: ../src/effects/AvcCompressor.h:70
+msgid "Changing volume"
+msgstr "Keičiamas garsas"
+
+#: ../src/TrackPanel.cpp:4862
+msgid "Channel"
+msgstr "Kanalas"
+
+#: ../src/prefs/AudioIOPrefs.cpp:245
+msgid "Channels:"
+msgstr "Kanalai:"
+
+#: ../src/LangChoice.cpp:74
+msgid "Choose Language for Audacity to use:"
+msgstr "Pasirinkite Kurią Kalbą Audacity naudoti:"
+
+#: ../src/TrackPanel.cpp:5214
+msgid "Choose a font for Label Tracks"
+msgstr "Pasirinkite raštą Pavadinimų Takeliams"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:136
+msgid "Choose a location to place the temporary directory"
+msgstr "Pasirinkite kur dėti laikinus failus"
+
+#: ../src/export/ExportMultiple.cpp:901
+msgid "Choose a location to save the exported files"
+msgstr "Pasirinkite vietą eksportuotiems failams išsaugoti"
+
+#: ../src/UploadDialog.cpp:452
+msgid "Choose file(s) to upload"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:489
+msgid "Choose folder to upload"
+msgstr ""
+
+#: ../src/BatchCommandDialog.cpp:74
+#, fuzzy
+msgid "Choose from the list below"
+msgstr "Įterpta iš iškirptinės"
+
+#: ../src/export/ExportMultiple.cpp:700 ../src/prefs/DirectoriesPrefs.cpp:82
+msgid "Choose..."
+msgstr "Nurodyti..."
+
+#: ../src/ControlToolBar.cpp:517 ../src/ControlToolBar.cpp:527
+#, fuzzy
+msgid "Clean Speech"
+msgstr "Keisti Greitį"
+
+#: ../src/BatchProcessDialog.cpp:50
+msgid "CleanSpeech Batch Processing"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:128
+msgid "CleanSpeech Chain"
+msgstr ""
+
+#: ../src/Menus.cpp:211
+msgid "CleanSpeech Chain..."
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:381
+msgid "CleanSpeech Mode (Customized GUI)"
+msgstr ""
+
+#: ../src/Menus.cpp:3542 ../src/Menus.cpp:3625
+msgid "CleanSpeech Presets (*.csp)|*.csp"
+msgstr ""
+
+#: ../src/ControlToolBar.cpp:883
+msgid ""
+"CleanSpeech only allows recording mono track.\n"
+"Recording not possible when more than one window open."
+msgstr ""
+
+#: ../src/DirManager.cpp:411
+#, fuzzy
+msgid "Cleaning up cache directories"
+msgstr "Išvalomi laikini failai..."
+
+#: ../src/DirManager.cpp:283
+#, fuzzy
+msgid "Cleaning up temporary files"
+msgstr "Išvalomi laikini failai..."
+
+#: ../src/DirManager.cpp:1320
+msgid "Cleaning up unused directories in project data..."
+msgstr ""
+
+#: ../src/effects/Equalization.cpp:712 ../src/effects/Filter.cpp:479
+#: ../src/prefs/KeyConfigPrefs.cpp:100
+msgid "Clear"
+msgstr "Valyti"
+
+#: ../src/effects/ClickRemoval.h:42
+msgid "Click Removal..."
+msgstr "Trakštelėjimų Pašalintojas..."
+
+#: ../src/effects/ClickRemoval.cpp:93
+msgid "Click and Pop Removal"
+msgstr "Spragtelėjimų ir trakštelėjimų Pašalinimas"
+
+#: ../src/effects/ClickRemoval.cpp:349
+msgid "Click and Pop Removal by Craig DeForest"
+msgstr "Spragtelėjimų ir trakštelėjimų Pašalinimas by Craig DeForest"
+
+#: ../src/TrackPanel.cpp:1146
+msgid "Click and drag to adjust relative size of stereo tracks."
+msgstr "Spauskite ir temkite santykiniam stereo takelio dydižiui pakeisti."
+
+#: ../src/ControlToolBar.cpp:78
+msgid "Click and drag to edit the amplitude envelope"
+msgstr "Spausk ir tempk amplitudės redagavimui"
+
+#: ../src/ControlToolBar.cpp:79
+msgid "Click and drag to edit the samples"
+msgstr "Temti ir mesti pavyzdžių redagavimui"
+
+#: ../src/ControlToolBar.cpp:87
+msgid "Click and drag to move a track in time"
+msgstr "Temti ir mesti takelių laiko perkėlimui"
+
+#: ../src/TrackPanel.cpp:1222
+msgid "Click and drag to move left selection boundary."
+msgstr "Spauskite ir temkite kairiojo pažymėjimo kraštui tempti."
+
+#: ../src/TrackPanel.cpp:1227
+msgid "Click and drag to move right selection boundary."
+msgstr "Spauskite ir temkite dešiniojo pažymėjimo kraštui tempti."
+
+#: ../src/TrackPanel.cpp:1149
+msgid "Click and drag to resize the track."
+msgstr "Temti ir mesti takelio dydžio keitimui."
+
+#: ../src/ControlToolBar.cpp:77
+msgid "Click and drag to select audio"
+msgstr "Temti ir mesti audio pasirinkimui"
+
+#: ../src/ControlToolBar.cpp:81
+msgid "Click to Zoom In, Shift-Click to Zoom Out"
+msgstr "Vienas paspaudimas Priartinimui, Shift-Paspaudimas — Patolinimui"
+
+#: ../src/TrackPanel.cpp:1121
+msgid ""
+"Click to vertically zoom in, Shift-click to zoom out, Drag to create a "
+"particular zoom region."
+msgstr ""
+"Paspauskite verikaliam Priartinimui, Shift-Paspaudimas — Tolinimui, Temkite "
+"konkrečios vietos apibraukimui."
+
+#: ../src/prefs/GUIPrefs.cpp:351
+msgid "Clips"
+msgstr ""
+
+#: ../src/Benchmark.cpp:223 ../src/FreqWindow.cpp:123
+msgid "Close"
+msgstr "Uždaryti"
+
+#: ../src/Menus.cpp:680
+msgid "Close first selected track\tShift+C"
+msgstr ""
+
+#: ../src/DirManager.cpp:1196
+msgid "Close project immediately with no changes"
+msgstr ""
+
+#: ../src/DirManager.cpp:1226 ../src/DirManager.cpp:1264
+#: ../src/DirManager.cpp:1295
+msgid "Close project immediately with no further changes"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:157 ../src/prefs/KeyConfigPrefs.cpp:79
+msgid "Command"
+msgstr "Komanda"
+
+#: ../src/BatchCommands.cpp:308
+#, c-format
+msgid "Command %s not implemented yet"
+msgstr ""
+
+#: ../src/prefs/MousePrefs.cpp:85
+msgid "Command Action"
+msgstr "Komandos Veiksmas"
+
+#: ../src/export/Export.cpp:391
+msgid "Command-line exporting is only supported on UNIX"
+msgstr "Komandos eilutės eksportavimas galimas tik UNIX`e"
+
+#  i18n-hint: '-help', '-test' and
+#  '-blocksize' need to stay in English.
+#. i18n-hint: '-help', '-test' and
+#: ../src/AudacityApp.cpp:591 ../src/AudacityApp.cpp:655
+msgid ""
+"Command-line options supported:\n"
+"  -help (this message)\n"
+"  -test (run self diagnostics)\n"
+"  -blocksize ### (set max disk block size in bytes)\n"
+"\n"
+"In addition, specify the name of an audio file or Audacity project\n"
+"to open it.\n"
+"\n"
+msgstr ""
+"Komandinės eilutės numatytos komandos:\n"
+" -help (ši žinutė)\n"
+" -test (paleisti savidiagnostiką (pasitikrinti))\n"
+" -blocksize ### (nustatyti maksimalų blokų dydį baitais)\n"
+"\n"
+"Priedo, nurodykite audio failą ar Audacity projektą, kad \n"
+"galėčiau jį atidaryti.\n"
+"\n"
+
+#: ../src/BatchCommandDialog.cpp:56
+#, fuzzy
+msgid "Command:"
+msgstr "Komanda"
+
+#: ../src/Tags.cpp:494 ../src/prefs/MousePrefs.cpp:87
+msgid "Comments"
+msgstr "Komentarai"
+
+#: ../src/Tags.cpp:719
+msgid "Comments:"
+msgstr "Komentarai:"
+
+#: ../src/effects/Compressor.h:36
+msgid "Compressor..."
+msgstr "Kompresorius..."
+
+#: ../src/UploadDialog.cpp:565 ../src/UploadDialog.cpp:632
+msgid "Confirm"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:272
+msgid "Connect"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:399
+msgid "Connected to: "
+msgstr ""
+
+#: ../src/UploadDialog.cpp:347
+#, fuzzy
+msgid "Connecting..."
+msgstr "&Turinys..."
+
+#: ../src/UploadDialog.cpp:407
+msgid "Connection cannot be established"
+msgstr ""
+
+#: ../src/DirManager.cpp:1195
+msgid "Continue without deleting; silently work around the extra files"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:200
+#, fuzzy
+msgid "Contributors:"
+msgstr "Kiti bendradarbiai"
+
+#: ../src/ControlToolBar.cpp:149
+#, fuzzy
+msgid "Control"
+msgstr "Centrinis"
+
+#: ../src/Legacy.cpp:338
+#, c-format
+msgid ""
+"Converted a 1.0 project file to the new format.\n"
+"The old file has been saved as '%s'"
+msgstr ""
+"Konvertuotas 1.0 projekto failas nauju formatu. \n"
+"Senasis buvo išsaugotas kaip '%s'"
+
+#: ../src/EditToolBar.cpp:148 ../src/TrackPanel.cpp:432
+msgid "Copy"
+msgstr "Kopijuoti"
+
+#: ../src/UploadDialog.cpp:986
+#, fuzzy
+msgid "Could not get file: "
+msgstr "Negaliu atidaryti failo:"
+
+#: ../src/export/ExportMP3.cpp:1322
+msgid "Could not open MP3 encoding library!"
+msgstr "Neatsidaro MP3 dekodavimo biblioteka!"
+
+#: ../src/Menus.cpp:3023 ../src/Project.cpp:1940 ../src/Project.cpp:1948
+#: ../src/import/ImportMIDI.cpp:31
+msgid "Could not open file: "
+msgstr "Negaliu atidaryti failo:"
+
+#: ../src/xml/XMLFileReader.cpp:45
+#, c-format
+msgid "Could not open file: \"%s\""
+msgstr "Negaliu atidaryti failo: \"%s\""
+
+#: ../src/Project.cpp:2324
+#, fuzzy, c-format
+msgid ""
+"Could not save project. Perhaps %s is not writeable,\n"
+"or the disk is full."
+msgstr ""
+"Negaiu išsaugoti projekto. Gal %s neįrašomas, o gal\n"
+"diskas pilnas..."
+
+#: ../src/BatchCommands.cpp:324
+#, c-format
+msgid ""
+"Could not set parameters of effect %s\n"
+" to %s."
+msgstr ""
+
+#: ../src/Project.cpp:2095
+#, c-format
+msgid "Couldn't find the project data folder: \"%s\""
+msgstr "Nerandu projekto informacijos aplanko: \"%s\""
+
+#: ../src/Help.cpp:73
+msgid "Couldn't open the Audacity Help file."
+msgstr "Negaliu atidaryti Audacity Pagalbos failo."
+
+#: ../src/FreqWindow.cpp:1012 ../src/Menus.cpp:1840 ../src/Project.cpp:2337
+#: ../src/prefs/KeyConfigPrefs.cpp:175
+msgid "Couldn't write to file: "
+msgstr "Negaliu rašyti į failą:"
+
+#: ../src/Menus.cpp:3383
+msgid "Created new audio track"
+msgstr "Sukurtas naujas audio takelis"
+
+#: ../src/Menus.cpp:3423
+msgid "Created new label track"
+msgstr "Sukurtas naujas pavadinimo takelis"
+
+#: ../src/Project.cpp:2604
+msgid "Created new project"
+msgstr "Sukurtas naujas projektas"
+
+#: ../src/Menus.cpp:3407
+msgid "Created new stereo audio track"
+msgstr "Sukurtas naujas stereo audio takelis"
+
+#: ../src/Menus.cpp:3459
+msgid "Created new time track"
+msgstr "Sukurtas naujas laiko takelis"
+
+#: ../src/effects/NoiseRemoval.h:40
+msgid "Creating Noise Profile"
+msgstr "Kuriamas Triukšmo Profilis"
+
+#: ../src/AboutDialog.cpp:192
+msgid "Credits"
+msgstr "Bendraautoriai"
+
+#: ../src/prefs/MousePrefs.cpp:100 ../src/prefs/MousePrefs.cpp:107
+msgid "Ctrl-Left-Drag"
+msgstr "Ctrl-PelėsKairysis-Tempimas"
+
+#: ../src/prefs/MousePrefs.cpp:115
+msgid "Ctrl-Wheel-Rotate"
+msgstr "Ctrl-Ratukas-Pasukimas"
+
+#: ../src/Menus.cpp:292
+msgid "Cu&t\tCtrl+X"
+msgstr "Iškirp&t\tCtrl+X"
+
+#: ../src/FreqWindow.cpp:131
+msgid "Cuberoot Autocorrelation"
+msgstr "Kubinė Autokoreliacija"
+
+#: ../src/effects/ChangeLength.cpp:123
+msgid "Current Length (minutes): "
+msgstr ""
+
+#: ../src/Menus.cpp:664
+msgid "Cursor Left\tLeft"
+msgstr "Pelę į kairę \tLeft"
+
+#: ../src/Menus.cpp:665
+msgid "Cursor Right\tRight"
+msgstr "Pelę į dešinę\tRight"
+
+#: ../src/Menus.cpp:338
+msgid "Cursor to End"
+msgstr "Nuo kursoriaus iki pabaigos"
+
+#: ../src/FreqWindow.cpp:750
+#, c-format
+msgid "Cursor: %.4f sec (%d Hz) (%s) = %f,    Peak: %.4f sec (%d Hz) (%s)"
+msgstr ""
+"Kursorius: %.4f sek (%d Hz) (%s) = %f,    Aukščiausias: %.4f sek (%d Hz) (%s)"
+
+#: ../src/FreqWindow.cpp:742
+#, c-format
+msgid "Cursor: %d Hz (%s) = %d dB    Peak: %d Hz (%s)"
+msgstr "Kursorius: %d Hz (%s) = %d dB    Aukščiausias: %d Hz (%s)"
+
+#: ../src/EditToolBar.cpp:146 ../src/Menus.cpp:2021 ../src/TrackPanel.cpp:431
+msgid "Cut"
+msgstr "Iškirpti"
+
+#: ../src/Menus.cpp:2021
+msgid "Cut to the clipboard"
+msgstr "Iškirpti į iškirptinę"
+
+#: ../src/Menus.cpp:312
+msgid "D&uplicate\tCtrl+D"
+msgstr "D&ublikuoti"
+
+#: ../src/effects/Phaser.cpp:492
+msgid "DRY"
+msgstr "Mažiau"
+
+#: ../src/effects/nyquist/Nyquist.cpp:748
+#: ../src/effects/nyquist/Nyquist.cpp:894
+msgid "Debug"
+msgstr "Suderinti"
+
+#: ../src/effects/Echo.cpp:222
+msgid "Decay factor:"
+msgstr "Nykimo faktorius:"
+
+#: ../src/Menus.cpp:676
+msgid "Decrease gain on first selected track\tAlt+Shift+Down"
+msgstr ""
+
+#: ../src/prefs/QualityPrefs.cpp:125
+msgid "Default Sample Format:"
+msgstr "Įprastas Modelio Formatas:"
+
+#: ../src/prefs/QualityPrefs.cpp:92
+msgid "Default Sample Rate:"
+msgstr "Įprastas Modelio Dažnis:"
+
+#  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#  know the correct technical word.
+#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#: ../src/import/ImportRaw.cpp:336
+msgid "Default endianness"
+msgstr "Įprastas endianness"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:124
+msgid "Defaults"
+msgstr "Įprastas"
+
+#: ../src/effects/Leveller.cpp:205
+msgid "Degree of Leveling"
+msgstr ""
+
+#: ../src/effects/Leveller.cpp:212
+msgid "Degree of Leveling: "
+msgstr ""
+
+#: ../src/effects/Echo.cpp:203
+msgid "Delay time (seconds):"
+msgstr "Uždelsimo laikas (sek):"
+
+#: ../src/Project.cpp:2724 ../src/UploadDialog.cpp:508
+#: ../src/UploadDialog.cpp:642
+msgid "Delete"
+msgstr "Ištrinti"
+
+#: ../src/UploadDialog.cpp:629
+#, fuzzy, c-format
+msgid "Delete %s?"
+msgstr "Ištrinti"
+
+#: ../src/UploadDialog.cpp:508
+msgid "Delete file(s) from server)"
+msgstr ""
+
+#: ../src/DirManager.cpp:1194
+msgid "Delete orphaned files [safe and recommended]"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:565
+msgid "Delete selected items?"
+msgstr ""
+
+#: ../src/Menus.cpp:651
+msgid "DeleteKey\tBackspace"
+msgstr "Trynimo mygtukas\tBackspace"
+
+#: ../src/Menus.cpp:656
+msgid "DeleteKey2\tDelete"
+msgstr "Trynimo mygtukas2\tDelete"
+
+#: ../src/Project.cpp:2721
+#, c-format
+msgid "Deleted %.2f seconds at t=%.2f"
+msgstr "Ištrinta %.2f sekundės t=%.2f`e"
+
+#: ../src/UploadDialog.cpp:741
+#, fuzzy
+msgid "Deleting directories"
+msgstr "Vietos"
+
+#: ../src/UploadDialog.cpp:733
+#, fuzzy
+msgid "Deleting files"
+msgstr "Perrašyti egzistuojančius failus"
+
+#: ../src/UploadDialog.cpp:594
+#, fuzzy
+msgid "Deleting..."
+msgstr "Apibraukti..."
+
+#: ../src/effects/Wahwah.cpp:515
+msgid "Depth (%):"
+msgstr "Gylis (%):"
+
+#: ../src/effects/Phaser.cpp:545
+msgid "Depth:"
+msgstr "Gylis:"
+
+#: ../src/effects/ChangeLength.cpp:108
+msgid "Desired Length (minutes): "
+msgstr ""
+
+#: ../src/AboutDialog.cpp:198
+msgid "Developers:"
+msgstr "Vykdytojai:"
+
+#: ../src/prefs/AudioIOPrefs.cpp:144 ../src/prefs/AudioIOPrefs.cpp:219
+msgid "Device:"
+msgstr "Įrenginys:"
+
+#: ../src/VoiceKey.cpp:827
+#, c-format
+msgid "Direction Changes  -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:267
+msgid "Direction Changes (High Threshold)"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:266
+msgid "Direction Changes (Low Threshold)"
+msgstr ""
+
+#: ../src/prefs/PrefsDialog.cpp:87 ../src/prefs/PrefsDialog.cpp:210
+msgid "Directories"
+msgstr "Vietos"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:183
+#, c-format
+msgid "Directory %s does not exist. Create it?"
+msgstr "Vieta %s neegzistuoja. Ar sukurti?"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:204
+#, c-format
+msgid "Directory %s is not writable"
+msgstr "Vieta yra %s neįrašoma"
+
+#: ../src/widgets/Meter.cpp:325
+#, fuzzy
+msgid "Disable Meter"
+msgstr "Išjunkti"
+
+#: ../src/HistoryWindow.cpp:90
+msgid "Discard"
+msgstr "Nutraukti"
+
+#: ../src/HistoryWindow.cpp:66
+msgid "Discard undo data"
+msgstr "Panaikinti atšaukimų informaciją"
+
+#: ../src/UploadDialog.cpp:273
+msgid "Disconnect"
+msgstr ""
+
+#: ../src/Project.cpp:2904
+#, fuzzy, c-format
+msgid "Disk space remains for recording %d hours and %d minutes."
+msgstr "Dar liko %d valandų ir %d minučių įrašymo laiko."
+
+#: ../src/Project.cpp:2910
+#, c-format
+msgid "Disk space remains for recording %d minutes."
+msgstr ""
+
+#: ../src/Project.cpp:2913
+#, c-format
+msgid "Disk space remains for recording %d seconds."
+msgstr ""
+
+#: ../src/Project.cpp:2907
+#, fuzzy, c-format
+msgid "Disk space remains for recording 1 hour and %d minutes."
+msgstr "Dar liko 1 valanda ir %d minučių įrašymo laiko."
+
+#: ../src/prefs/SpectrumPrefs.cpp:99
+msgid "Display"
+msgstr ""
+
+#: ../src/Menus.cpp:926
+msgid "Dock Control Toolbar"
+msgstr "Prilipus Kontrolės įrankinė"
+
+#: ../src/Menus.cpp:931
+msgid "Dock Edit Toolbar"
+msgstr "Prilipus Redagavimo įrankinė"
+
+#: ../src/Menus.cpp:941
+msgid "Dock Meter Toolbar"
+msgstr "Prilipus Matuoklio įrankinė"
+
+#: ../src/Menus.cpp:936
+msgid "Dock Mixer Toolbar"
+msgstr "Prilipus Mikserio įrankinė"
+
+#: ../src/ToolBar.cpp:524
+#, fuzzy
+msgid "Dock Toolbar"
+msgstr "Prilipus Redagavimo įrankinė"
+
+#: ../src/Menus.cpp:946
+#, fuzzy
+msgid "Dock Transcription Toolbar"
+msgstr "Prilipus Redagavimo įrankinė"
+
+#: ../src/widgets/Warning.cpp:53
+msgid "Don't show this warning again"
+msgstr "Nerodyti šio perspėjimo dar kartą"
+
+#: ../src/TrackPanel.cpp:412
+msgid "Down Octave"
+msgstr "Oktava žemiau"
+
+#: ../src/UploadDialog.cpp:510
+msgid "Download"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:1318 ../src/UploadDialog.cpp:1347
+msgid "Download File"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:1362
+msgid "Download Files"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:1300 ../src/UploadDialog.cpp:1337
+msgid "Download Folder"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:998
+#, fuzzy
+msgid "Download Progress"
+msgstr "Progresas"
+
+#: ../src/UploadDialog.cpp:510
+msgid "Download this file(s) to your computer"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1183
+msgid "Drag label boundary"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1182
+msgid "Drag one or more label boundaries"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1126
+msgid "Drag the label vertically to change the order of the tracks."
+msgstr ""
+"Galite tampyti už pavadinimų vertikaliai ir taip pakeisti takelių "
+"išsidėstymą."
+
+#: ../src/ControlToolBar.cpp:83
+msgid "Drag to Zoom Into Region, Right-Click to Zoom Out"
+msgstr "Apibraukite Regiono Priartinimui, Dešinysis Paspaudimas - Patolinimui"
+
+#: ../src/prefs/GUIPrefs.cpp:317
+#, fuzzy
+msgid "Dragging of left and right selection edges"
+msgstr "Įjungti galimybę pratesti apibraukimą į kairę ir dešinę"
+
+#: ../src/ControlToolBar.cpp:367
+msgid "Draw Tool"
+msgstr "Piešimo įrankis"
+
+#: ../src/Menus.cpp:627
+msgid "Draw Tool\tF3"
+msgstr "Piešimo įrankis\tF3"
+
+#: ../src/TrackPanel.cpp:2289
+#, fuzzy
+msgid "Draw currently only works with linear-view waveforms."
+msgstr "Piešimas kol kas veikia tik su Bangos forma."
+
+#: ../src/ControlToolBar.cpp:400
+#, fuzzy
+msgid "DrawTool"
+msgstr "Piešimo įrankis"
+
+#: ../src/Menus.cpp:2390
+msgid "Duplicate"
+msgstr "Dublikuoti"
+
+#: ../src/Menus.cpp:2390
+msgid "Duplicated"
+msgstr "Dublikuota"
+
+#: ../src/effects/Compressor.cpp:43
+msgid "Dynamic Range Compressor"
+msgstr "Dinaminis Dažnio Kompresorius"
+
+#: ../src/effects/Compressor.cpp:433
+msgid "Dynamic Range Compressor by Dominic Mazzoni"
+msgstr "Dinaminis Dažnio Kompresorius by Dominic Mazzoni"
+
+#: ../src/Menus.cpp:255 ../src/Menus.cpp:258
+msgid "E&xit"
+msgstr "Išei&ti"
+
+#: ../src/Menus.cpp:416
+msgid "E&xpand All Tracks\tCtrl+Shift+X"
+msgstr ""
+
+#: ../src/effects/Echo.cpp:43 ../src/effects/Echo.cpp:188
+msgid "Echo"
+msgstr "Aidas"
+
+#: ../src/effects/Echo.h:34
+msgid "Echo..."
+msgstr "Aidas..."
+
+#: ../src/EditToolBar.cpp:81
+#, fuzzy
+msgid "Edit"
+msgstr "R&edaguoti"
+
+#: ../src/Menus.cpp:3126
+msgid "Edit ID3 Tags"
+msgstr "Redaguoti ID3 priesagas"
+
+#: ../src/Menus.cpp:3125
+msgid "Edit ID3 Tags (for MP3 exporting)"
+msgstr "Redaguoti ID3 priesagas (MP3 eksportavimui)"
+
+#: ../src/Menus.cpp:3126
+msgid "Edit ID3 tags"
+msgstr "Redaguoti ID3 priesagas"
+
+#: ../src/BatchCommandDialog.cpp:62
+msgid "Edit Parameters"
+msgstr ""
+
+#: ../src/export/ExportMultiple.cpp:615
+msgid "Edit the ID3 tags for all MP3 files"
+msgstr "Redaguoti ID3 priesagas visiems MP3 failamas"
+
+#: ../src/export/ExportMP3.cpp:1350
+msgid "Edit the ID3 tags for the MP3 file"
+msgstr "Redaguoti ID3 priesagas MP3 failui"
+
+#: ../src/Menus.cpp:527
+msgid "Effe&ct"
+msgstr "Efe&ktai"
+
+#: ../src/effects/ladspa/LadspaEffect.cpp:453
+msgid "Effect Settings"
+msgstr "Efektų nustatymai"
+
+#: ../src/prefs/GUIPrefs.cpp:354
+msgid "Effects Graph"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:134
+msgid "Empty Chain"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:327
+msgid "Enable Edit Toolbar"
+msgstr "Įjungti Redagavimo Įrankinę"
+
+#: ../src/widgets/Meter.cpp:323
+#, fuzzy
+msgid "Enable Meter"
+msgstr "Įjunkti Matuoklio Įrankinę"
+
+#: ../src/prefs/GUIPrefs.cpp:331
+msgid "Enable Meter Toolbar"
+msgstr "Įjunkti Matuoklio Įrankinę"
+
+#: ../src/prefs/GUIPrefs.cpp:329
+msgid "Enable Mixer Toolbar"
+msgstr "Įjungti Mikserio Įrankinę"
+
+#: ../src/prefs/GUIPrefs.cpp:333
+#, fuzzy
+msgid "Enable Transcription Toolbar"
+msgstr "Įjungti Redagavimo Įrankinę"
+
+#: ../src/prefs/GUIPrefs.cpp:336
+#, fuzzy
+msgid "Enable cut lines"
+msgstr "Negaliu baigti"
+
+#: ../src/effects/AvcCompressor.cpp:659
+msgid "Enabled"
+msgstr "Įjungtas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:437
+msgid "Encoding: "
+msgstr "Dekodavimas:"
+
+#: ../src/ControlToolBar.cpp:521
+msgid "End"
+msgstr ""
+
+#: ../src/SelectionBar.cpp:101
+msgid "End:"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:263
+msgid "Energy"
+msgstr ""
+
+#: ../src/VoiceKey.cpp:825
+#, c-format
+msgid "Energy                  -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr ""
+
+#: ../src/FreqWindow.cpp:132
+msgid "Enhanced Autocorrelation"
+msgstr "Padidinti Autokoreliacija"
+
+#: ../src/effects/nyquist/Nyquist.cpp:285
+msgid "Enter Nyquist Command: "
+msgstr "Įveskite Nyquist Komandą:"
+
+#: ../src/TrackPanel.cpp:5058
+msgid "Enter a sample rate in Hz (per second) between 1 and 100000:"
+msgstr "Įveskite pavyzdžio dažnį Hercais tarp 1 ir 100000:"
+
+#: ../src/effects/NoiseRemoval.cpp:531
+msgid ""
+"Entire recording should have been Normalized prior to this step.\n"
+"\n"
+"For noisy speech, find the best tradeoff for quieting the gaps between "
+"phrases and\n"
+"not causing the voice to sound distorted. For good audio with low noise, a "
+"setting\n"
+"more to the left should work well. Leveling and TruncateSilence work better "
+"with\n"
+"more of the noise removed, even if the voice ends up sounding somewhat "
+"distorted.\n"
+"Your objective is that the softly spoken words can be heard more clearly."
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1635 ../src/prefs/MousePrefs.cpp:102
+msgid "Envelope"
+msgstr "Amplitudė"
+
+#: ../src/ControlToolBar.cpp:364
+msgid "Envelope Tool"
+msgstr "Amplitudės Korektorius"
+
+#: ../src/Menus.cpp:626
+msgid "Envelope Tool\tF2"
+msgstr "Amplitudės Korektorius\tF2"
+
+#: ../src/ControlToolBar.cpp:397
+#, fuzzy
+msgid "EnvelopeTool"
+msgstr "Amplitudės Korektorius"
+
+#: ../src/effects/Equalization.cpp:180
+msgid "Equalization"
+msgstr "Sulyginimas"
+
+#: ../src/effects/Equalization.cpp:691
+msgid "Equalization, by Mitch Golden && Vaughan Johnson"
+msgstr "Sulyginimas, by Mitch Golden && Vaughan Johnson"
+
+#: ../src/effects/Equalization.h:43
+msgid "Equalization..."
+msgstr "Sulyginimas..."
+
+#: ../src/effects/Leveller.cpp:202
+msgid "Equalize soft and loud sections ... a key to better listening"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:320
+#, fuzzy
+msgid "Ergonomic order of audio I/O buttons"
+msgstr "Įjungti ergonominę Audio I/O mygtukų tvarką"
+
+#: ../src/ControlToolBar.cpp:775 ../src/ControlToolBar.cpp:965
+#: ../src/UploadDialog.cpp:370 ../src/UploadDialog.cpp:1278
+#: ../src/effects/Effect.cpp:340 ../src/prefs/DirectoriesPrefs.cpp:206
+msgid "Error"
+msgstr "Klaida"
+
+#: ../src/export/ExportPCM.cpp:167
+#, fuzzy, c-format
+msgid "Error (file may not have been written): %hs"
+msgstr "Klaida (failas gali būti neįsirašęs): %s"
+
+#: ../src/AudioIO.cpp:181
+msgid "Error Initializing Audio"
+msgstr "Klaida kraunant Audio"
+
+#: ../src/export/Export.cpp:336 ../src/export/Export.cpp:402
+#, fuzzy
+msgid "Error exporting file or project"
+msgstr "Klaida atidarant projektą"
+
+#: ../src/Project.cpp:2517
+msgid "Error importing"
+msgstr "Klaida importuojant"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:207
+msgid "Error loading keyboard shortcuts"
+msgstr "Klaida kraunant sparčuosius klavišus"
+
+#: ../src/AudacityApp.cpp:846
+msgid "Error locking temporary folder"
+msgstr "Klaida blokuojant laikiną aplanką"
+
+#: ../src/Project.cpp:1941 ../src/Project.cpp:1949
+msgid "Error opening file"
+msgstr "Klaida atidarant failą"
+
+#: ../src/Project.cpp:1956
+#, fuzzy
+msgid "Error opening file or project"
+msgstr "Klaida atidarant projektą"
+
+#: ../src/Menus.cpp:3639
+#, fuzzy
+msgid "Error opening preset"
+msgstr "Klaida atidarant projektą"
+
+#: ../src/AudacityApp.cpp:281 ../src/Project.cpp:1893 ../src/Project.cpp:1973
+#: ../src/Project.cpp:2059 ../src/Project.cpp:2097
+msgid "Error opening project"
+msgstr "Klaida atidarant projektą"
+
+#: ../src/import/ImportMIDI.cpp:46
+msgid "Error parsing Allegro file."
+msgstr "Klaida nagrinėjant Allegro failą"
+
+#: ../src/import/ImportMIDI.cpp:76
+msgid "Error parsing MIDI file."
+msgstr "Klaida nagrinėjant MIDI failą"
+
+#: ../src/UploadDialog.cpp:681
+msgid "Error renaming file, check permissions."
+msgstr ""
+
+#: ../src/prefs/KeyConfigPrefs.cpp:176
+msgid "Error saving keyboard shortcuts"
+msgstr "Klaida išsaugant sparčuosius klavišus"
+
+#: ../src/Project.cpp:2326 ../src/Project.cpp:2338
+msgid "Error saving project"
+msgstr "Klaida išsaugant projektą"
+
+#: ../src/ControlToolBar.cpp:964
+msgid ""
+"Error while opening sound device. Please check the input device settings and "
+"the project sample rate."
+msgstr ""
+"Klaida atidarinėjant garso tvarkykles. Prašau pasitikrinkite įvesties "
+"įrenginio nuostatas ir projekto modelio dažnį."
+
+#: ../src/ControlToolBar.cpp:774 ../src/effects/Effect.cpp:339
+msgid ""
+"Error while opening sound device. Please check the output device settings "
+"and the project sample rate."
+msgstr ""
+"Klaida atidarinėjant garso tvarkykles. Prašau pasitikrinkite išvesties "
+"įrenginio nuostatas ir projekto modelio dažnį."
+
+#: ../src/AudioIO.cpp:178
+msgid "Error: "
+msgstr "Klaida:"
+
+#: ../src/xml/XMLFileReader.cpp:59
+#, fuzzy, c-format
+msgid "Error: %hs at line %d"
+msgstr "Klaida: %s linijoje %d"
+
+#: ../src/DirManager.cpp:954
+msgid "Error: is directory write-protected or disk full?"
+msgstr "Klaida: ar vietoje uždarusta rašyti ar diskas pilnas?"
+
+#: ../src/TrackPanel.cpp:3469
+msgid "Expand"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:3469
+msgid "Expanded Cut Line"
+msgstr ""
+
+#: ../src/Sequence.cpp:788
+#, c-format
+msgid "Expected to read %d samples, got %d samples.\n"
+msgstr "Tikėtasi %d modelių, rasta %d. \n"
+
+#: ../src/export/ExportMultiple.cpp:818 ../src/export/ExportOGG.cpp:197
+#: ../src/export/ExportPCM.cpp:142
+msgid "Export"
+msgstr "Eksportuoju"
+
+#: ../src/Menus.cpp:189
+msgid "Export &Labels..."
+msgstr "Eksportuoti Pavadinimus..."
+
+#: ../src/Menus.cpp:190
+msgid "Export &Multiple..."
+msgstr "Daugialypis eksportavi&mas..."
+
+#: ../src/Menus.cpp:173
+msgid "Export As MP3..."
+msgstr "Eksportuoti kaip MP3..."
+
+#: ../src/Menus.cpp:186
+msgid "Export As Ogg Vorbis..."
+msgstr "Eksportuoti kaip Ogg Vorbis..."
+
+#: ../src/Menus.cpp:170
+msgid "Export As..."
+msgstr "Eksportuoti Kaip..."
+
+#: ../src/Menus.cpp:212
+#, fuzzy
+msgid "Export CleanSpeech Presets..."
+msgstr "Eksportuoti apibrauktą Kaip..."
+
+#: ../src/prefs/KeyConfigPrefs.cpp:160
+msgid "Export Keyboard Shortcuts As:"
+msgstr "Eksportuoti Sparčiuosius Klavišus Kaip:"
+
+#: ../src/Menus.cpp:1805
+msgid "Export Labels As:"
+msgstr "Eksportuoti Pavadinimus kaip"
+
+#: ../src/export/ExportMP3.cpp:104 ../src/export/ExportMP3.cpp:142
+msgid "Export MP3"
+msgstr "Eksportuoti MP3"
+
+#: ../src/export/ExportMultiple.cpp:464 ../src/export/ExportMultiple.cpp:573
+#: ../src/export/ExportMultiple.cpp:656
+msgid "Export Multiple"
+msgstr "Daugialypis Eksportavimas"
+
+#: ../src/Menus.cpp:174
+msgid "Export Selection As MP3..."
+msgstr "Eksporuoti apibrauktą kaip MP3..."
+
+#: ../src/Menus.cpp:187
+msgid "Export Selection As Ogg Vorbis..."
+msgstr "Eksportuoti Pasirinktą kaip Ogg Vorbis..."
+
+#: ../src/Menus.cpp:171
+msgid "Export Selection As..."
+msgstr "Eksportuoti apibrauktą Kaip..."
+
+#: ../src/FreqWindow.cpp:996
+msgid "Export Spectral Data As:"
+msgstr "Eksportuoti Spektro Duomenis Kaip:"
+
+#: ../src/export/ExportMultiple.cpp:670
+msgid "Export format:"
+msgstr "Eksportuoti formatu:"
+
+#: ../src/export/ExportMultiple.cpp:694
+msgid "Export location:"
+msgstr "Eksportavimo vieta:"
+
+#: ../src/export/ExportMultiple.cpp:268
+msgid "Export needs TOMPG.EXE PATH"
+msgstr ""
+
+#: ../src/Menus.cpp:3762
+#, fuzzy
+msgid "Export recording"
+msgstr "Įrašymas"
+
+#: ../src/Menus.cpp:3760
+#, c-format
+msgid ""
+"Export recording to %s\n"
+"/cleaned/%s.mp3"
+msgstr ""
+
+#: ../src/FreqWindow.cpp:119
+msgid "Export..."
+msgstr "Eksportuoti..."
+
+#: ../src/export/ExportMP3.cpp:1421
+#, fuzzy, c-format
+msgid "Exporting entire file at %d kbps"
+msgstr "Visas projektas eksportuojamas kaip mp3"
+
+#: ../src/export/ExportMP3.cpp:1419
+#, fuzzy, c-format
+msgid "Exporting selected audio at %d kbps"
+msgstr "Pasirinktas Audio eksportuojamas kaip mp3"
+
+#: ../src/export/ExportOGG.cpp:194
+msgid "Exporting the entire project as Ogg Vorbis"
+msgstr "Visas projektas eksportuojamas kaip Ogg Vorbis"
+
+#: ../src/export/ExportPCM.cpp:138
+#, c-format
+msgid "Exporting the entire project as a %s file"
+msgstr "Visas projektas eksportuojamas kaip %s failas"
+
+#: ../src/export/ExportCL.cpp:146
+msgid "Exporting the entire project using command-line encoder"
+msgstr "Visas projektas eksportuojamas naudojantis komandinės eilutės dekoderį"
+
+#: ../src/export/ExportOGG.cpp:193
+msgid "Exporting the selected audio as Ogg Vorbis"
+msgstr "Pasirinktas Audio eksportuojamas kaip Ogg Vorbis"
+
+#: ../src/export/ExportPCM.cpp:133
+#, c-format
+msgid "Exporting the selected audio as a %s file"
+msgstr "Pasirinktas Audio eksportuojamas kaip %s failas"
+
+#: ../src/export/ExportCL.cpp:144
+msgid "Exporting the selected audio using command-line encoder"
+msgstr "Pasirinktas audio eksportuojamas naudojant komandinės eilutės dekoderį"
+
+#: ../src/prefs/MousePrefs.cpp:91
+msgid "Extend Selection Range"
+msgstr "Pratęsti Apibraukimo Ruožą"
+
+#: ../src/effects/NoiseRemoval.cpp:585
+msgid "Extreme (May Distort)"
+msgstr ""
+
+#: ../src/effects/Filter.cpp:57
+msgid "FFT Filter"
+msgstr "FFT Filtras"
+
+#: ../src/effects/Filter.cpp:469
+msgid "FFT Filter by Dominic Mazzoni"
+msgstr "FFT Filtras by Dominic Mazzoni"
+
+#: ../src/effects/Filter.h:35
+msgid "FFT Filter..."
+msgstr "FFT Filtras..."
+
+#: ../src/prefs/SpectrumPrefs.cpp:74
+msgid "FFT Size"
+msgstr "FFT Dydis"
+
+#: ../src/UploadDialog.cpp:258
+msgid "FTP Connection"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:407 ../src/UploadDialog.cpp:681
+#: ../src/UploadDialog.cpp:829
+msgid "FTP Status"
+msgstr ""
+
+#: ../src/effects/Fade.h:24
+msgid "Fade In"
+msgstr "Garsėjimas"
+
+#: ../src/effects/Fade.h:44
+msgid "Fade Out"
+msgstr "Tylinimas"
+
+#: ../src/effects/Fade.h:28
+msgid "Fading In"
+msgstr "Garsinama"
+
+#: ../src/effects/Fade.h:48
+msgid "Fading Out"
+msgstr "Nutylinama"
+
+#: ../src/Resample.cpp:48
+msgid "Fast Sinc Interpolation"
+msgstr "Greitas Sinc Interpoliavimas"
+
+#: ../src/effects/Phaser.cpp:561
+msgid "Feedback (%):"
+msgstr "Atsakomoji reakcija (%):"
+
+#: ../src/BatchProcessDialog.cpp:73
+#, fuzzy
+msgid "File"
+msgstr "&Failas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:395
+msgid "File Format"
+msgstr "Failo formatas"
+
+#: ../src/prefs/PrefsDialog.cpp:85
+msgid "File Formats"
+msgstr "Failo formatai"
+
+#: ../src/UploadDialog.cpp:259
+#, fuzzy
+msgid "File Manager"
+msgstr "Failo prefiksas:"
+
+#: ../src/Project.cpp:1955
+#, c-format
+msgid ""
+"File may be invalid or corrupted: \n"
+"%s"
+msgstr ""
+
+#: ../src/export/Export.cpp:335 ../src/export/Export.cpp:401
+#, c-format
+msgid "File may be invalid or corrupted: %s"
+msgstr ""
+
+#: ../src/export/ExportMultiple.cpp:779
+msgid "File name prefix:"
+msgstr "Failo prefiksas:"
+
+#: ../src/DirManager.cpp:1263
+msgid "Fill in silence for missing display data [this session only]"
+msgstr ""
+
+#: ../src/prefs/FileFormatPrefs.cpp:190
+msgid "Find Library"
+msgstr "Nurodyt biblioteką"
+
+#: ../src/Menus.cpp:344
+msgid "Find Zero Crossings\tZ"
+msgstr "Rasti Susikirtimus ties Nuliu \tZ"
+
+#: ../src/export/ExportMultiple.cpp:748
+msgid "First file name:"
+msgstr "Pirmo failo vardas:"
+
+#: ../src/Menus.cpp:411
+msgid "Fit &Vertically\tCtrl+Shift+F"
+msgstr "Pritaikyti  &Vertikaliai\tCtrl+Shift+F"
+
+#: ../src/EditToolBar.cpp:174
+#, fuzzy
+msgid "Fit Project"
+msgstr "&Projektas"
+
+#: ../src/EditToolBar.cpp:172
+#, fuzzy
+msgid "Fit Selection"
+msgstr "į Apibraukimo Pabaigą"
+
+#: ../src/EditToolBar.cpp:174
+msgid "Fit project in window"
+msgstr "Pritaikyti projektą lange"
+
+#: ../src/EditToolBar.cpp:172
+msgid "Fit selection in window"
+msgstr "Išplėsti apibraukimą lange"
+
+#: ../src/Menus.cpp:927
+msgid "Float Control Toolbar"
+msgstr "Atskira Kontrolės Įrankinė"
+
+#: ../src/Menus.cpp:932
+msgid "Float Edit Toolbar"
+msgstr "Atskira Redagaavimo Įrankinė"
+
+#: ../src/Menus.cpp:426 ../src/Menus.cpp:942
+msgid "Float Meter Toolbar"
+msgstr "Atskira Matuoklio Įrankinė"
+
+#: ../src/Menus.cpp:937
+msgid "Float Mixer Toolbar"
+msgstr "Atskira Mikserio Įrankinė"
+
+#: ../src/Menus.cpp:947
+#, fuzzy
+msgid "Float Transcription Toolbar"
+msgstr "Atskira Redagaavimo Įrankinė"
+
+#: ../src/TrackPanel.cpp:417
+msgid "Font..."
+msgstr "Raštas..."
+
+#: ../src/export/ExportMultiple.cpp:715
+msgid "Force Mono"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:4970
+msgid "Format Change"
+msgstr "Formato Pakeitimas"
+
+#: ../src/Tags.cpp:629
+msgid "Format:"
+msgstr "Formatas:"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:78
+msgid "Free Space:"
+msgstr "Laisva Vieta:"
+
+#: ../src/FreqWindow.cpp:1017
+msgid "Frequency (Hz)\tLevel (dB)"
+msgstr "Dažnis  (Hz)\tLygis (dB)"
+
+#: ../src/effects/BassBoost.cpp:298
+msgid "Frequency (Hz):"
+msgstr "Dažnis  (Hz):"
+
+#: ../src/effects/ChangePitch.cpp:324
+msgid "Frequency (Hz):   from"
+msgstr "Dažnis  (Hz):    iš"
+
+#: ../src/effects/ToneGen.cpp:290
+msgid "Frequency / Hz"
+msgstr "Dažnis / Hz"
+
+#: ../src/FreqWindow.cpp:68
+msgid "Frequency Analysis"
+msgstr "Dažnio Analizė"
+
+#  i18n-hint: Title of the Gain slider, used to adjust the volume
+#. i18n-hint: Title of the Gain slider, used to adjust the volume
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4518
+#: ../src/TrackPanel.cpp:5677
+msgid "Gain"
+msgstr "Garsumas"
+
+#: ../src/effects/Noise.cpp:35
+msgid "Generate Noise"
+msgstr "Generuoti Triukšmą"
+
+#: ../src/effects/Silence.cpp:31
+msgid "Generate Silence"
+msgstr "Generuoti Tylą"
+
+#: ../src/effects/ToneGen.cpp:338
+msgid "Generate Tone"
+msgstr "Generuoti Toną"
+
+#: ../src/effects/Silence.h:39
+msgid "Generating Silence"
+msgstr "Generuoju tylą"
+
+#: ../src/effects/ToneGen.h:43
+msgid "Generating Tone"
+msgstr "Generuoju Toną"
+
+#: ../src/effects/Noise.h:35
+msgid "Generating White Noise"
+msgstr "Generuoju Šnypštimą"
+
+#: ../src/Tags.cpp:701
+msgid "Genre:"
+msgstr "Žanras"
+
+#: ../src/effects/NoiseRemoval.cpp:550
+msgid "Get Noise Profile"
+msgstr "Gauti Trukšmo Profilį"
+
+#: ../src/prefs/SpectrumPrefs.cpp:102
+msgid "Grayscale"
+msgstr "Pilkaskalė"
+
+#: ../src/Help.cpp:65
+msgid "HTML Help Books (*.htb)|*.htb"
+msgstr "HTML Pagalbos Knygos (*.htb)|*.htb"
+
+#: ../src/prefs/AudioIOPrefs.cpp:290
+msgid "Hardware Playthrough (Play new track while recording it)"
+msgstr "Groti takelį kol jis įrašinėjamas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:414
+msgid "Header: "
+msgstr "Pavadinimas:"
+
+#: ../src/Resample.cpp:46
+msgid "High-quality Sinc Interpolation"
+msgstr "Aukštos kokybės Sinc Interpoliavimas"
+
+#: ../src/prefs/QualityPrefs.cpp:189
+msgid "High-quality dither:"
+msgstr "Aukštos kokybės virpesiai:"
+
+#: ../src/prefs/QualityPrefs.cpp:154
+msgid "High-quality sample rate converter:"
+msgstr "Aukštos kokybės pavyzdžio dažnio konverteris:"
+
+#: ../src/widgets/Meter.cpp:334
+msgid "Horizontal Stereo"
+msgstr "Horizontalus Stereo"
+
+#: ../src/UploadDialog.cpp:297
+msgid "Host:"
+msgstr ""
+
+#  i18n-hint: This is the abbreviation for "Hertz", or
+#  cycles per second.
+#. i18n-hint: This is the abbreviation for "Hertz", or
+#: ../src/import/ImportRaw.cpp:406
+msgid "Hz"
+msgstr "Hz"
+
+#: ../src/AboutDialog.cpp:126
+msgid "ID3 tag exporting disabled"
+msgstr "ID3 galūnių eksportavimas išjunktas"
+
+#: ../src/AboutDialog.cpp:124
+msgid "ID3 tag exporting enabled"
+msgstr "ID3 galūnių eksportavimas įjungtas"
+
+#: ../src/Tags.cpp:626
+msgid "ID3v1 (more compatible)"
+msgstr "ID3v1 (Suderinamesnis)"
+
+#: ../src/Tags.cpp:627
+msgid "ID3v2 (more flexible)"
+msgstr "ID3v2 (Tikslesnis)"
+
+#: ../src/export/ExportMultiple.cpp:586
+msgid ""
+"If you have more than one Audio Track, you can export each track as a "
+"separate file,\n"
+"or if you have a Label Track, you can export a new file for each label.\n"
+"\n"
+"This project does not have multiple tracks or a Label Track, so you cannot "
+"export multiple files."
+msgstr ""
+"Jei turite daugiau nei vieną Audio Takelį, galite eksportuoti kiekvieną kaip "
+"atskirą failą,\n"
+"arba, jei turite pervadintus takelius, galite eksportuoti kiekvienam "
+"pavadinimui po failą\n"
+"\n"
+"Šis projektas neturi atskirų ar pervadintų takelių, taigi negalėsite "
+"eksportuoti atskirų failų."
+
+#: ../src/Project.cpp:2429 ../src/Project.cpp:2476
+#: ../src/import/ImportPCM.cpp:410 ../src/import/ImportPCM.cpp:495
+#: ../src/import/ImportRaw.cpp:436
+msgid "Import"
+msgstr "Importuoti"
+
+#: ../src/Menus.cpp:439
+msgid "Import &Labels..."
+msgstr "Importuoti &Pavadinimus"
+
+#: ../src/Menus.cpp:440
+msgid "Import &MIDI..."
+msgstr "Importuoti &MIDI..."
+
+#: ../src/Menus.cpp:441
+msgid "Import &Raw Data..."
+msgstr "Importuoti &Raw duomenis..."
+
+#: ../src/Menus.cpp:213
+msgid "Import CleanSpeech Presets..."
+msgstr ""
+
+#: ../src/Menus.cpp:3037
+msgid "Import Labels"
+msgstr "Importuoti Pavadinimus"
+
+#: ../src/Menus.cpp:3070
+msgid "Import MIDI"
+msgstr "Importuoti &MIDI"
+
+#: ../src/import/ImportRaw.cpp:267
+msgid "Import Raw Data"
+msgstr "Importuoti Raw duomenis"
+
+#: ../src/Project.cpp:2475
+#, c-format
+msgid "Imported '%s'"
+msgstr "Importuota '%s'"
+
+#: ../src/Menus.cpp:3068
+#, c-format
+msgid "Imported MIDI from '%s'"
+msgstr "Importuota MIDI iš  '%s'"
+
+#: ../src/Menus.cpp:3036
+#, c-format
+msgid "Imported labels from '%s'"
+msgstr "Importuoti pavadinimai iš '%s'"
+
+#: ../src/Project.cpp:2426
+#, c-format
+msgid "Importing %s File..."
+msgstr "Importuojamas '%s' Failas"
+
+#: ../src/import/ImportPCM.cpp:351
+#, c-format
+msgid "Importing %s file..."
+msgstr "Importuojamas '%s' failas..."
+
+#: ../src/export/ExportMultiple.cpp:742
+msgid "Include audio before first label"
+msgstr "Įterpti audio prieš pirmąjį pavadinimą"
+
+#: ../src/Menus.cpp:675
+msgid "Increase gain on first selected track\tAlt+Shift+Up"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:190 ../src/effects/ChangeLength.cpp:120
+msgid "Information"
+msgstr "Informacija"
+
+#: ../src/AudacityApp.cpp:362
+msgid "Input Meter"
+msgstr "Įvesties Matuoklis"
+
+#: ../src/MixerToolBar.cpp:139
+msgid "Input Volume"
+msgstr "Įvesties Garsumas"
+
+#: ../src/MeterToolBar.cpp:68
+msgid "Input level meter - click to monitor input"
+msgstr "Įvesties lygio matuoklis - paspauskite kad pradėtų rodyti"
+
+#: ../src/DirManager.cpp:1089
+#, fuzzy
+msgid "Inspecting project file data..."
+msgstr "Negaliu atidaryti projekto failo."
+
+#: ../src/prefs/PrefsDialog.cpp:88
+msgid "Interface"
+msgstr "Interfeisas"
+
+#: ../src/import/ImportOGG.cpp:136
+msgid "Internal logic fault"
+msgstr "Vidinis logikos gedimas"
+
+#: ../src/import/ImportOGG.cpp:133
+msgid "Invalid Vorbis bitstream header"
+msgstr "Neteisinga Vorbis kodo antraštė"
+
+#  i18n-hint: You do not need to translate "LOF"
+#. i18n-hint: You do not need to translate "LOF"
+#: ../src/import/ImportLOF.cpp:289
+msgid "Invalid duration in LOF file."
+msgstr "Neteisinga LOF failo trukmė"
+
+#: ../src/TrackPanel.cpp:5068
+msgid "Invalid rate."
+msgstr "Neteisingas dažnis."
+
+#  i18n-hint: You do not need to translate "LOF"
+#. i18n-hint: You do not need to translate "LOF"
+#: ../src/import/ImportLOF.cpp:382
+msgid "Invalid track offset in LOF file."
+msgstr "Blogas takelio ofsetas LOF faile."
+
+#  i18n-hint: You do not need to translate "LOF"
+#. i18n-hint: You do not need to translate "LOF"
+#: ../src/import/ImportLOF.cpp:268
+msgid "Invalid window offset in LOF file."
+msgstr "Blogas lango ofsetas LOF faile."
+
+#: ../src/effects/Invert.h:27
+msgid "Invert"
+msgstr "Invertuoti"
+
+#: ../src/effects/Invert.h:31
+msgid "Inverting"
+msgstr "Invertuojama"
+
+#: ../src/Menus.cpp:2335
+msgid "Join"
+msgstr ""
+
+#: ../src/Menus.cpp:2332
+#, fuzzy, c-format
+msgid "Joined %.2f seconds at t=%.2f"
+msgstr "Ištrinta %.2f sekundės t=%.2f`e"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:80
+msgid "Key Combination"
+msgstr "Klavišų Kombinacija"
+
+#: ../src/prefs/PrefsDialog.cpp:90
+msgid "Keyboard"
+msgstr "Klavetūra"
+
+#  i18n-hint: One-letter abbreviation for Left, in the Pan slider
+#  i18n-hint: One-letter abbreviation for Left, in VU Meter
+#. i18n-hint: One-letter abbreviation for Left, in the Pan slider
+#: ../src/widgets/ASlider.cpp:444 ../src/widgets/Meter.cpp:187
+msgid "L"
+msgstr "K"
+
+#: ../src/AboutDialog.cpp:133
+msgid "LADSPA plug-in support disabled"
+msgstr "LADSPA priedo palaikymas išjunktas"
+
+#: ../src/AboutDialog.cpp:131
+msgid "LADSPA plug-in support enabled"
+msgstr "LADSPA priedo palaikymas įjunktas"
+
+#: ../src/effects/Phaser.cpp:513 ../src/effects/Wahwah.cpp:483
+msgid "LFO Frequency (Hz):"
+msgstr "LFO Dažnis (Hz):"
+
+#: ../src/effects/Phaser.cpp:529 ../src/effects/Wahwah.cpp:499
+msgid "LFO Start Phase (deg.):"
+msgstr "LFO Pradžios Frazė (laipsn.):"
+
+#  i18n-hint: You do not need to translate "LOF"
+#. i18n-hint: You do not need to translate "LOF"
+#: ../src/import/ImportLOF.cpp:270 ../src/import/ImportLOF.cpp:291
+#: ../src/import/ImportLOF.cpp:363 ../src/import/ImportLOF.cpp:383
+msgid "LOF Error"
+msgstr "LOF Klaida"
+
+#: ../src/Menus.cpp:3495 ../src/SelectionBar.cpp:203
+#: ../src/SelectionBar.cpp:207 ../src/SelectionBar.cpp:211
+msgid "Label"
+msgstr "Pavadinimas"
+
+#: ../src/TrackPanel.cpp:3262
+msgid "Label Edit"
+msgstr "Pavadinimo Redagavimas"
+
+#: ../src/LabelTrack.cpp:62
+msgid "Label Track"
+msgstr "Pavadinimo Takelis"
+
+#: ../src/TrackPanel.cpp:5215
+msgid "Label Track Font"
+msgstr "Pavadinimo Takelio Šriftas"
+
+#: ../src/export/ExportMultiple.cpp:734
+msgid "Labels"
+msgstr "Pavadinimai"
+
+#: ../src/FreqWindow.cpp:1023
+msgid "Lag (seconds)\tFrequency (Hz)\tLevel"
+msgstr "Atsilikimas (sek)\tDažnis (Hz)\tLygis"
+
+#: ../src/prefs/GUIPrefs.cpp:100
+#, fuzzy
+msgid "Language"
+msgstr "Kalba:"
+
+#: ../src/prefs/GUIPrefs.cpp:98
+msgid "Language:"
+msgstr "Kalba:"
+
+#: ../src/AboutDialog.cpp:263
+#, fuzzy
+msgid "Lead Developer"
+msgstr "Vykdytojai:"
+
+#: ../src/widgets/ASlider.cpp:604
+msgid "Left"
+msgstr "Kairysis "
+
+#: ../src/TrackPanel.cpp:396
+msgid "Left Channel"
+msgstr "Kairysis kanalas"
+
+#: ../src/prefs/MousePrefs.cpp:109
+msgid "Left Click"
+msgstr "Kairysis Paspaudimas"
+
+#: ../src/prefs/MousePrefs.cpp:110
+msgid "Left Drag"
+msgstr "Kairysis Tempimas"
+
+#: ../src/Menus.cpp:332
+#, fuzzy
+msgid "Left at Playback Position\t["
+msgstr "Pridėti Pavadinimą Grojimo Vietoje\tCtrl+M"
+
+#: ../src/TrackPanel.cpp:4833
+msgid "Left, "
+msgstr "Kairysis,"
+
+#: ../src/prefs/MousePrefs.cpp:89 ../src/prefs/MousePrefs.cpp:93
+#: ../src/prefs/MousePrefs.cpp:104
+msgid "Left-Click"
+msgstr "Kairysis-Paspaudimas"
+
+#: ../src/prefs/MousePrefs.cpp:90 ../src/prefs/MousePrefs.cpp:94
+#: ../src/prefs/MousePrefs.cpp:98 ../src/prefs/MousePrefs.cpp:102
+#: ../src/prefs/MousePrefs.cpp:106
+msgid "Left-Drag"
+msgstr "Kairysis-Tempimas"
+
+#: ../src/TranscriptionToolBar.cpp:228
+msgid "Left-to-Off"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:222
+msgid "Left-to-On"
+msgstr ""
+
+#: ../src/ControlToolBar.cpp:85
+msgid "Left=Zoom In, Right=Zoom Out, Middle=Normal"
+msgstr "Kairys=Priartinti, Dešinysis=Tolinti, Vidurinis=Normaus"
+
+#: ../src/effects/Silence.cpp:127 ../src/effects/ToneGen.cpp:319
+msgid "Length (seconds)"
+msgstr "Ilgis (sekundėmis)"
+
+#: ../src/effects/ChangeTempo.cpp:249
+msgid "Length (seconds):   from"
+msgstr "Ilgis (sekundėmis):   iš"
+
+#: ../src/SelectionBar.cpp:107
+#, fuzzy
+msgid "Length:"
+msgstr "Gylis:"
+
+#: ../src/BatchCommands.cpp:103 ../src/effects/Leveller.cpp:114
+#, fuzzy
+msgid "Leveller"
+msgstr "Vykdytojai:"
+
+#: ../src/effects/Leveller.cpp:199
+msgid "Leveller by Lynn Allan"
+msgstr ""
+
+#: ../src/effects/Leveller.h:28
+msgid "Leveller..."
+msgstr ""
+
+#: ../src/HistoryWindow.cpp:81
+msgid "Levels to discard: "
+msgstr "Atmetimo lygiai:"
+
+#: ../src/Resample.cpp:35
+msgid "Libresample by Dominic Mazzoni and Julius Smith"
+msgstr "Libresample by Dominic Mazzoni and Julius Smith"
+
+#: ../src/AboutDialog.cpp:138
+msgid "Libresample support enabled"
+msgstr "Libresample palaikymas įjungtas"
+
+#: ../src/Resample.cpp:118
+msgid "Libsamplerate by Erik de Castro Lopo"
+msgstr "Libsamplerate by Erik de Castro Lopo"
+
+#: ../src/Resample.cpp:211
+#, c-format
+msgid "Libsamplerate error: %d\n"
+msgstr "Libsamplerate klaida: %d\n"
+
+#: ../src/AboutDialog.cpp:140
+msgid "Libsamplerate support enabled"
+msgstr "Libsamplerate palaikymas įjungtas"
+
+#: ../src/widgets/Meter.cpp:343
+msgid "Linear"
+msgstr "Linijinis"
+
+#: ../src/FreqWindow.cpp:177
+msgid "Linear frequency"
+msgstr "Linijinis dažnis"
+
+#: ../src/import/ImportLOF.cpp:151 ../src/import/ImportLOF.cpp:177
+msgid "List of Files in basic text format"
+msgstr "Failų sąrašas teksto formatu"
+
+#: ../src/effects/NoiseRemoval.cpp:544
+msgid ""
+"Listen carefully to section with some speech and some silence to check "
+"before/after.\n"
+"Select a few seconds of just noise ('thinner' part of wave pattern usually "
+"between\n"
+"spoken phrases or during pauses) so Audacity knows what to filter out, then "
+"click"
+msgstr ""
+
+#  i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#  know the correct technical word.
+#. i18n-hint: Refers to byte-order.  Don't translate this if you don't
+#: ../src/import/ImportRaw.cpp:330
+msgid "Little-endian"
+msgstr "Mažai-endian"
+
+#: ../src/effects/Equalization.cpp:706
+msgid "Load Predefined Curve"
+msgstr "Įkelti Nurodytą kreivę"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:128
+msgid "Load..."
+msgstr "Įkelti..."
+
+#: ../src/commands/CommandManager.cpp:680
+#, c-format
+msgid "Loaded %d keyboard shortcuts\n"
+msgstr "Įkelti %d spartieji klavišai\n"
+
+#: ../src/commands/CommandManager.cpp:682
+msgid "Loading keyboard shortcuts"
+msgstr "Kraunami klavetūros spartieji kavišai"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:57
+msgid "Location:"
+msgstr "Vieta:"
+
+#: ../src/FreqWindow.cpp:178
+msgid "Log frequency"
+msgstr "Log dažnis"
+
+#: ../src/TrackPanel.cpp:5089 ../src/TrackPanel.cpp:5090
+msgid "Lower speed limit"
+msgstr "Žemesnis greičio limitas"
+
+#: ../src/import/ImportLOF.cpp:362
+#, fuzzy
+msgid "MIDI tracks cannot be offset individually, only audio files can be."
+msgstr ""
+"MIDI takeliai negali pasidengti tarpusavyje, tai gali tik audio takeliai."
+
+#: ../src/export/ExportMultiple.cpp:711
+#, fuzzy
+msgid "MP3 Bit Rate: "
+msgstr "Bitų Skaičius:"
+
+#: ../src/prefs/FileFormatPrefs.cpp:172
+msgid "MP3 Export Setup"
+msgstr "MP3 Eksportavimo vedlys"
+
+#: ../src/prefs/FileFormatPrefs.cpp:180
+msgid "MP3 Library Version:"
+msgstr "MP3 Bibliotekos Versija:"
+
+#: ../src/prefs/FileFormatPrefs.cpp:261
+msgid "MP3 exporting plugin not found"
+msgstr "MP3 eksportavimo įskiepis nerastas"
+
+#: ../src/AboutDialog.cpp:112
+msgid "MP3 importing disabled"
+msgstr "MP3 importavimas išjunktas"
+
+#: ../src/AboutDialog.cpp:110
+msgid "MP3 importing enabled"
+msgstr "MP3 importavimas įjunktas"
+
+#: ../src/TrackPanel.cpp:4892
+#, c-format
+msgid "Made '%s' a stereo track"
+msgstr "'%s' paverstas stereo takeliu"
+
+#: ../src/Project.cpp:489
+msgid "Main Mix"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:348
+msgid "Main Mix (as a tree)"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:243
+#, fuzzy
+msgid "Make Labels"
+msgstr "Pavadinimai"
+
+#: ../src/TrackPanel.cpp:4895
+msgid "Make Stereo"
+msgstr "Paversti Stereo"
+
+#: ../src/TrackPanel.cpp:398
+msgid "Make Stereo Track"
+msgstr "Paversti Stereo Takeliu"
+
+#: ../src/prefs/FileFormatPrefs.cpp:72
+msgid "Make a copy of the file before editing (safer)"
+msgstr "Padaryti failo kopiją prieš redagavimą (saugiau)"
+
+#: ../src/AudacityApp.cpp:361
+msgid "Master Gain Control"
+msgstr "Pagrindinis Slinkties Kontroleris"
+
+#: ../src/effects/ClickRemoval.cpp:372 ../src/effects/ClickRemoval.cpp:401
+#, fuzzy
+msgid "Max"
+msgstr "Sujungti"
+
+#: ../src/effects/TruncSilence.cpp:242
+msgid ""
+"Max Silent Duration (milliseconds): \n"
+"(99999 or greater is off)"
+msgstr ""
+
+#: ../src/effects/SpikeCleaner.cpp:148
+msgid ""
+"Max Spike Duration (milliseconds): \n"
+"(99999 or greater is off)"
+msgstr ""
+
+#: ../src/prefs/SpectrumPrefs.cpp:112
+msgid "Maximum Frequency (Hz):"
+msgstr "Didžiausias Dažnis (Hz):"
+
+#: ../src/prefs/SpectrumPrefs.cpp:162
+msgid "Maximum frequency must be in the range 100 Hz - 100,000 Hz"
+msgstr "Didžiausias dažnis turi būti tarp 100 Hz ir 100 000 Hz"
+
+#: ../src/Tags.cpp:448
+#, c-format
+msgid "Maximum length of attribute '%s' is %d characters. Data was truncated."
+msgstr "Didžiausias atributo %s ilgis yra %d ženklai. Galas buvo nukirstas."
+
+#: ../src/import/ImportOGG.cpp:124
+msgid "Media read error"
+msgstr "Medijos skaitymo klaida"
+
+#: ../src/effects/ClickRemoval.cpp:369 ../src/effects/ClickRemoval.cpp:398
+#: ../src/effects/NoiseRemoval.cpp:579
+msgid "Medium"
+msgstr ""
+
+#: ../src/MeterToolBar.cpp:54
+#, fuzzy
+msgid "Meter"
+msgstr "Centrinis"
+
+#: ../src/widgets/Meter.cpp:1045
+#, fuzzy
+msgid "Meter Perferences"
+msgstr "Audacity Nuostatos"
+
+#: ../src/widgets/Meter.cpp:1044
+msgid "Meter refresh rate per second [1-100]: "
+msgstr ""
+
+#: ../src/effects/AvcCompressor.cpp:613
+msgid "Minimum Change %:"
+msgstr "Minimalus pakeitimas %:"
+
+#: ../src/effects/AvcCompressor.cpp:601
+msgid "Minimum Change Window:"
+msgstr "Minimalus lango pakeitimas:"
+
+#: ../src/prefs/GUIPrefs.cpp:110
+msgid "Minimum of dB mode display range"
+msgstr "Db režimo rodomo dažnio minimumas."
+
+#: ../src/DirManager.cpp:1127
+#, c-format
+msgid "Missing alias file: (%s)"
+msgstr ""
+
+#: ../src/DirManager.cpp:1165
+#, c-format
+msgid "Missing data file: (%s.au)"
+msgstr ""
+
+#: ../src/DirManager.cpp:1146
+#, c-format
+msgid "Missing summary file: (%s.auf)"
+msgstr ""
+
+#: ../src/Mix.cpp:81 ../src/Mix.cpp:89
+msgid "Mix"
+msgstr "Sujungti"
+
+#: ../src/Menus.cpp:451 ../src/Menus.cpp:3188 ../src/Mix.cpp:132
+msgid "Mix and Render"
+msgstr ""
+
+#: ../src/Menus.cpp:3186
+#, c-format
+msgid "Mixed and rendered %d tracks into one new mono track"
+msgstr ""
+
+#: ../src/Menus.cpp:3183
+#, c-format
+msgid "Mixed and rendered %d tracks into one new stereo track"
+msgstr ""
+
+#: ../src/MixerToolBar.cpp:102
+#, fuzzy
+msgid "Mixer"
+msgstr "Sujungti"
+
+#: ../src/Mix.cpp:133
+#, fuzzy
+msgid "Mixing and rendering tracks"
+msgstr "Miksuoju Takelius"
+
+#: ../src/TrackPanel.cpp:3261
+msgid "Modified Label"
+msgstr "Pakeistas Pavadinimas"
+
+#: ../src/TrackPanel.cpp:395
+msgid "Mono"
+msgstr "Mono"
+
+#: ../src/TrackPanel.cpp:4831
+msgid "Mono, "
+msgstr "Mono, "
+
+#: ../src/effects/NoiseRemoval.cpp:586
+msgid "More"
+msgstr "Daugiau"
+
+#: ../src/prefs/PrefsDialog.cpp:91
+msgid "Mouse"
+msgstr "Pelė"
+
+#: ../src/prefs/MousePrefs.cpp:71
+msgid "Mouse Bindings (default values, not configurable)"
+msgstr "Pelės veiksmai (įprastos reikšmės, nekeičiamos)"
+
+#: ../src/Menus.cpp:346
+msgid "Move Cursor..."
+msgstr "Perkelti pelę..."
+
+#: ../src/TrackPanel.cpp:5126
+msgid "Move Track"
+msgstr "Perkelti Takelį"
+
+#: ../src/TrackPanel.cpp:388 ../src/TrackPanel.cpp:409
+#: ../src/TrackPanel.cpp:420 ../src/TrackPanel.cpp:426
+msgid "Move Track Down"
+msgstr "Nuleisti takelį"
+
+#: ../src/TrackPanel.cpp:387 ../src/TrackPanel.cpp:408
+#: ../src/TrackPanel.cpp:419 ../src/TrackPanel.cpp:425
+msgid "Move Track Up"
+msgstr "Pakelti takelį"
+
+#: ../src/prefs/MousePrefs.cpp:100
+msgid "Move clip up/down between tracks"
+msgstr ""
+
+#: ../src/Menus.cpp:663
+#, fuzzy
+msgid "Move to Next Track\tDown"
+msgstr "Nuleisti takelį"
+
+#: ../src/Menus.cpp:662
+#, fuzzy
+msgid "Move to Previous Track\tUp"
+msgstr "Pakelti takelį"
+
+#: ../src/TrackPanel.cpp:5120
+#, c-format
+msgid "Moved '%s' %s"
+msgstr "Perkeltas '%s' %s"
+
+#: ../src/TrackPanel.cpp:2565
+msgid "Moved Sample"
+msgstr "Perkeltas Modelis"
+
+#: ../src/TrackPanel.cpp:1762
+msgid "Moved clip to another track"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:2765
+msgid "Moved gain slider"
+msgstr "Pajudinta garso slinktis"
+
+#: ../src/TrackPanel.cpp:2765
+msgid "Moved pan slider"
+msgstr "Pajudinta balanso slinktis"
+
+#: ../src/prefs/BatchPrefs.cpp:131
+msgid "Mp3 Conversion Chain"
+msgstr ""
+
+#: ../src/prefs/MousePrefs.cpp:109 ../src/prefs/MousePrefs.cpp:110
+#: ../src/prefs/MousePrefs.cpp:111 ../src/prefs/MousePrefs.cpp:112
+msgid "Multi"
+msgstr "Multi"
+
+#: ../src/Menus.cpp:630
+msgid "Multi Tool\tF6"
+msgstr "Multi Įrankis\tF6"
+
+#: ../src/ControlToolBar.cpp:368
+msgid "Multi-Tool Mode"
+msgstr "Multi Įrankio režimas"
+
+#. i18n-hint: This string is for the Mac OS, which uses Command-, as the shortcut for Preferences
+#: ../src/TrackPanel.cpp:1199
+msgid "Multi-Tool Mode: Cmd-, for Mouse and Keyboard Preferences"
+msgstr "Multi-Įrankio Režimas: Cmd-, Pelės ir Klaviatūros nustatymams"
+
+#. i18n-hint: This string is for Windows and Linux, which uses Control-P as the shortcut for Preferences
+#: ../src/TrackPanel.cpp:1202
+msgid "Multi-Tool Mode: Ctrl-P for Mouse and Keyboard Preferences"
+msgstr "Multi-Įrankio Režimas: Ctrl-P Pelės ir Klaviatūros nustatymams"
+
+#: ../src/ControlToolBar.cpp:401
+#, fuzzy
+msgid "MultiTool"
+msgstr "Multi Įrankis\tF6"
+
+#: ../src/Project.cpp:1866
+msgid ""
+"Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
+"mp3)|*.mp3"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:5612
+msgid "Mute"
+msgstr "Begars"
+
+#: ../src/Menus.cpp:678
+msgid "Mute/Unmute first selected track\tShift+U"
+msgstr ""
+
+#  i18n-hint: fps is "frames per second"
+#: ../src/widgets/TimeTextCtrl.cpp:165
+#, fuzzy
+msgid "NTSC frames"
+msgstr "NTSC kadrai 29.97 fps"
+
+#: ../src/TrackPanel.cpp:5160
+msgid "Name Change"
+msgstr "Pakeistas Pavadinimas"
+
+#: ../src/export/ExportMultiple.cpp:765
+msgid "Name files:"
+msgstr "Pervadinti failai:"
+
+#: ../src/TrackPanel.cpp:385 ../src/TrackPanel.cpp:406
+#: ../src/TrackPanel.cpp:415 ../src/TrackPanel.cpp:423
+msgid "Name..."
+msgstr "Pavadinimas..."
+
+#: ../src/UploadDialog.cpp:295
+#, fuzzy
+msgid "Name:"
+msgstr "Pavadinimas..."
+
+#: ../src/Menus.cpp:456
+msgid "New &Audio Track"
+msgstr "Naujas &Audio Takelis"
+
+#: ../src/Menus.cpp:457
+msgid "New &Stereo Track"
+msgstr "Naujas &Stereo Takelis"
+
+#: ../src/Menus.cpp:459
+msgid "New &Time Track"
+msgstr "Naujas Laiko &Takelis"
+
+#: ../src/UploadDialog.cpp:280 ../src/UploadDialog.cpp:1391
+#, fuzzy
+msgid "New Folder"
+msgstr "Nauja reikšmė"
+
+#: ../src/Menus.cpp:458
+msgid "New La&bel Track"
+msgstr "Naujas &Pavadinimo Takelis"
+
+#: ../src/effects/Amplify.cpp:168
+msgid "New Peak Amplitude (dB):"
+msgstr "Nauja Aukščiausia amplitudė (dB):"
+
+#: ../src/UploadDialog.cpp:389 ../src/UploadDialog.cpp:1409
+msgid "New Site"
+msgstr ""
+
+#: ../src/prefs/DirectoriesPrefs.cpp:185
+msgid "New Temporary Directory"
+msgstr "Nauja Laikina Vieta"
+
+#: ../src/Menus.cpp:3383 ../src/Menus.cpp:3407 ../src/Menus.cpp:3423
+#: ../src/Menus.cpp:3459
+msgid "New Track"
+msgstr "Naujas Takelis"
+
+#: ../src/effects/AvcCompressor.cpp:669
+msgid "New Value"
+msgstr "Nauja reikšmė"
+
+#: ../src/effects/Repeat.cpp:252 ../src/effects/Repeat.cpp:291
+msgid "New selection length: "
+msgstr "Naujas apibraukimo ilgis:"
+
+#: ../src/Menus.cpp:632
+msgid "Next Tool\tD"
+msgstr "Naujas įrankis\tD"
+
+#: ../src/prefs/BatchPrefs.cpp:156
+#, fuzzy
+msgid "No"
+msgstr "Nieko"
+
+#: ../src/UploadDialog.cpp:436
+msgid "No Connection"
+msgstr ""
+
+#: ../src/BatchCommands.cpp:432
+msgid "No batch command chain defined."
+msgstr ""
+
+#  i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#  know the correct technical word.
+#. i18n-hint: Refers to byte-order.  Don't translate "endianness" if you don't
+#: ../src/import/ImportRaw.cpp:327
+msgid "No endianness"
+msgstr "Be endianness"
+
+#: ../src/BatchCommands.cpp:214
+msgid "No project and no Audio to process!"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:142
+msgid "No resampling support enabled"
+msgstr "Perdarymo palaikymas neįjungtas"
+
+#: ../src/export/Export.cpp:123
+#, fuzzy
+msgid ""
+"No tracks are selected! Use Ctrl-A (Select All)\n"
+"Choose Export... to export all tracks."
+msgstr ""
+"Nėra pasirinktų takelių!\n"
+"Pasirinkite Eksportuoti... visų takelių eksportavimui."
+
+#: ../src/BatchCommands.cpp:220
+msgid "No tracks to process!"
+msgstr ""
+
+#: ../src/BatchCommands.cpp:101 ../src/effects/NoiseRemoval.cpp:148
+msgid "Noise Removal"
+msgstr "Triukšmo pašalinimas"
+
+#: ../src/effects/NoiseRemoval.cpp:522
+msgid "Noise Removal by Dominic Mazzoni"
+msgstr "Triukšmo pašalinimas by Dominic Mazzoni"
+
+#: ../src/effects/NoiseRemoval.h:35
+msgid "Noise Removal..."
+msgstr "Triukšmo pašalinimas..."
+
+#: ../src/effects/Leveller.cpp:223
+msgid "Noise Threshold (Hiss/Hum/Ambient Noise)"
+msgstr ""
+
+#: ../src/effects/NoiseRemoval.cpp:574
+#: ../src/effects/ladspa/LadspaEffect.cpp:436
+#: ../src/effects/ladspa/LadspaEffect.cpp:444
+#: ../src/prefs/QualityPrefs.cpp:167
+msgid "None"
+msgstr "Nieko"
+
+#: ../src/BatchCommands.cpp:99 ../src/BatchCommands.cpp:104
+#: ../src/BatchCommands.cpp:112 ../src/effects/Normalize.cpp:76
+msgid "Normalize"
+msgstr "Normalizuoti"
+
+#: ../src/effects/Normalize.cpp:289
+#, fuzzy
+msgid "Normalize by Dominic Mazzoni\n"
+msgstr "Normalizuoti by Dominic Mazzoni"
+
+#: ../src/effects/Normalize.cpp:302
+msgid "Normalize maximum amplitude to -3 dB"
+msgstr "Normalizuoti maksimalią amplidutę iki -3 dB"
+
+#: ../src/prefs/BatchPrefs.cpp:379
+#, fuzzy
+msgid "Normalize on load"
+msgstr "Normalizuoti"
+
+#: ../src/effects/Compressor.cpp:469
+msgid "Normalize to 0dB after compressing"
+msgstr "Normalizuoti iki 0dB po suspaudimao"
+
+#: ../src/effects/Normalize.h:31
+msgid "Normalize..."
+msgstr "Normalizuoti..."
+
+#: ../src/effects/Normalize.h:35
+msgid "Normalizing..."
+msgstr "Normalizuoju..."
+
+#: ../src/export/ExportMP3.cpp:1329
+msgid "Not a valid or supported MP3 encoding library!"
+msgstr "Negaliojanti arba nepritaikyta MP3 dekodavimo biblioteka!"
+
+#: ../src/import/ImportOGG.cpp:127
+msgid "Not an Ogg Vorbis file"
+msgstr "Tai ne Ogg Vorbis failas"
+
+#: ../src/FreqWindow.cpp:463
+msgid "Not enough data selected."
+msgstr "Pasirinkta per mažai duomenų"
+
+#: ../src/NoteTrack.cpp:30
+msgid "Note Track"
+msgstr "Užrašų takelis"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:116
+msgid "Note: Pressing Cmd+Q will quit. All other keys are valid."
+msgstr "Pranešimas: Paspaudus Cmd+Q išeisite. Visi kiti mygtukai galioja."
+
+#: ../src/Menus.cpp:1941
+msgid "Nothing to redo"
+msgstr "Nėra ko sugrąžinti"
+
+#: ../src/Menus.cpp:1922
+msgid "Nothing to undo"
+msgstr "Nėra ko atšaukti"
+
+#: ../src/effects/Repeat.cpp:240
+msgid "Number of times to repeat: "
+msgstr "Kiek kartų kartoti:"
+
+#: ../src/export/ExportMultiple.cpp:774
+msgid "Numbering consecutively"
+msgstr "Numeruojant iš eilės"
+
+#: ../src/effects/nyquist/Nyquist.cpp:402
+msgid "Nyquist"
+msgstr "Nyquist"
+
+#: ../src/prefs/GUIPrefs.cpp:357
+#, fuzzy
+msgid "Nyquist Debugger"
+msgstr "Nyquist"
+
+#: ../src/effects/nyquist/Nyquist.cpp:403
+msgid "Nyquist Output: "
+msgstr "Nyquist Išvestis: "
+
+#: ../src/effects/nyquist/Nyquist.cpp:284
+msgid "Nyquist Prompt"
+msgstr "Nyquist Komanda"
+
+#: ../src/effects/nyquist/Nyquist.cpp:222
+msgid "Nyquist Prompt..."
+msgstr "Nyquist Komanda..."
+
+#: ../src/effects/nyquist/Nyquist.cpp:606
+msgid "Nyquist did not return audio.\n"
+msgstr "Nyquist Negražino audio.\n"
+
+#: ../src/effects/nyquist/Nyquist.cpp:565
+#, c-format
+msgid "Nyquist returned the value: %d"
+msgstr "Nyquist Gražino reikšmę: %d"
+
+#: ../src/effects/nyquist/Nyquist.cpp:555
+#, c-format
+msgid "Nyquist returned the value: %f"
+msgstr "Nyquist Gražino reikšmę: %f"
+
+#: ../src/effects/nyquist/Nyquist.cpp:617
+msgid "Nyquist returned too many audio channels.\n"
+msgstr "Nyquist grąžino per daug audio kanalų.\n"
+
+#: ../src/prefs/FileFormatPrefs.cpp:138
+msgid "OGG Export Setup"
+msgstr "OGG Eksportavimo vedlys"
+
+#: ../src/prefs/FileFormatPrefs.cpp:147
+msgid "OGG Quality:"
+msgstr "OGG Kokybė:"
+
+#: ../src/BatchCommandDialog.cpp:103 ../src/BatchProcessDialog.cpp:87
+#: ../src/LangChoice.cpp:94 ../src/Tags.cpp:740 ../src/effects/Amplify.cpp:202
+#: ../src/effects/AvcCompressor.cpp:723 ../src/effects/BassBoost.cpp:344
+#: ../src/effects/ChangeLength.cpp:176 ../src/effects/ChangePitch.cpp:399
+#: ../src/effects/ChangeSpeed.cpp:386 ../src/effects/ChangeTempo.cpp:292
+#: ../src/effects/Compressor.cpp:484 ../src/effects/Echo.cpp:253
+#: ../src/effects/Equalization.cpp:760 ../src/effects/Filter.cpp:493
+#: ../src/effects/Leveller.cpp:244 ../src/effects/NoiseRemoval.cpp:602
+#: ../src/effects/Normalize.cpp:317 ../src/effects/Phaser.cpp:592
+#: ../src/effects/Repeat.cpp:262 ../src/effects/SpikeCleaner.cpp:174
+#: ../src/effects/TruncSilence.cpp:267 ../src/effects/VST/VSTEffect.cpp:98
+#: ../src/effects/VST/VSTEffect.cpp:455 ../src/effects/Wahwah.cpp:578
+#: ../src/effects/ladspa/LadspaEffect.cpp:499
+#: ../src/effects/nyquist/Nyquist.cpp:751
+#: ../src/effects/nyquist/Nyquist.cpp:897
+#: ../src/effects/nyquist/Nyquist.cpp:963 ../src/prefs/FileFormatPrefs.cpp:470
+#: ../src/prefs/PrefsDialog.cpp:100 ../src/widgets/Warning.cpp:56
+msgid "OK"
+msgstr "OK"
+
+#: ../src/effects/ClickRemoval.cpp:366 ../src/effects/ClickRemoval.cpp:395
+msgid "Off"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:119
+msgid "Ogg Vorbis importing disabled"
+msgstr "Ogg Vorbis importavimas išjungtas"
+
+#: ../src/AboutDialog.cpp:117
+msgid "Ogg Vorbis importing enabled"
+msgstr "Ogg Vorbis importavimas įjungtas"
+
+#: ../src/export/Export.cpp:375
+msgid "Ogg Vorbis support is not included in this build of Audacity"
+msgstr "Ši versija nėra pritaikyta Ogg Vorbis"
+
+#: ../src/export/ExportMP3.cpp:864
+msgid "Only LAMELib|LAMELib|Shared Libraries (*)|*"
+msgstr "Tik LAMELib|LAMELib|Shared Libraries (*)|*"
+
+#: ../src/export/ExportMP3.cpp:550
+msgid "Only LameLib|LameLib|All Files (*)|*"
+msgstr "Tik LameLib|LameLib|Visi Failai (*)|*"
+
+#: ../src/export/ExportMP3.cpp:1114
+msgid ""
+"Only lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|"
+"All Files (*.*)|*"
+msgstr ""
+"Tik lame_enc.dll|lame_enc.dll|Dynamically Linked Libraries (*.dll)|*.dll|"
+"Visi Failai (*.*)|*"
+
+#: ../src/export/ExportMP3.cpp:253
+msgid ""
+"Only libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|"
+"Extended Libraries (*.so*)|*.so*|All Files (*)|*"
+msgstr ""
+"Tik libmp3lame.so|libmp3lame.so|Primary Shared Object files (*.so)|*.so|"
+"Extended Libraries (*.so*)|*.so*|Visi Failai (*)|*"
+
+#: ../src/Menus.cpp:3621
+msgid "Open CleanSpeech Preset File:"
+msgstr ""
+
+#. i18n-hint: This is the name of the menu item on Mac OS X only
+#: ../src/Menus.cpp:695
+msgid "Open Recent"
+msgstr ""
+
+#: ../src/Menus.cpp:677
+msgid "Open menu on first selected track\tShift+M"
+msgstr ""
+
+#: ../src/Legacy.cpp:339
+msgid "Opening Audacity Project"
+msgstr "Atidaromas Audacity Projektas"
+
+#: ../src/Project.cpp:2149
+#, fuzzy
+msgid "Opening old project file"
+msgstr "Negaliu atidaryti projekto failo."
+
+#: ../src/effects/AvcCompressor.cpp:664
+msgid "Original Value"
+msgstr "Orginali Vertė"
+
+#: ../src/DirManager.cpp:1102
+#, c-format
+msgid "Orphaned blockfile: (%s)"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:377 ../src/prefs/FileFormatPrefs.cpp:105
+#: ../src/prefs/QualityPrefs.cpp:103
+msgid "Other..."
+msgstr "Kitas..."
+
+#: ../src/Project.cpp:2916
+msgid "Out of disk space"
+msgstr "Diske neužtenka vietos"
+
+#: ../src/AudacityApp.cpp:363
+msgid "Output Meter"
+msgstr "Sujungti Išvestį"
+
+#: ../src/MixerToolBar.cpp:136
+msgid "Output Volume"
+msgstr "Išvesties Garsumas"
+
+#: ../src/MeterToolBar.cpp:67
+msgid "Output level meter"
+msgstr "Išvesties lygio matuoklis"
+
+#: ../src/export/ExportMultiple.cpp:796
+msgid "Overwrite existing files"
+msgstr "Perrašyti egzistuojančius failus"
+
+#: ../src/Menus.cpp:233
+msgid "Page Setup..."
+msgstr "Puslapio Nustatymai..."
+
+#  i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#. i18n-hint: Title of the Pan slider, used to move the sound left or right stereoscopically
+#: ../src/TrackPanel.cpp:2766 ../src/TrackPanel.cpp:4453
+#: ../src/TrackPanel.cpp:5684
+msgid "Pan"
+msgstr "Balansas"
+
+#: ../src/Menus.cpp:672
+msgid "Pan left on first selected track\tAlt+Shift+Left"
+msgstr ""
+
+#: ../src/Menus.cpp:673
+msgid "Pan right on first selected track\tAlt+Shift+Right"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:158
+#, fuzzy
+msgid "Parameters"
+msgstr "VST Priedų parametrai:"
+
+#: ../src/BatchCommandDialog.cpp:66
+#, fuzzy
+msgid "Parameters:"
+msgstr "VST Priedų parametrai:"
+
+#: ../src/UploadDialog.cpp:301
+msgid "Password:"
+msgstr ""
+
+#: ../src/EditToolBar.cpp:150 ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
+#: ../src/TrackPanel.cpp:433
+msgid "Paste"
+msgstr "Įkelti"
+
+#: ../src/Menus.cpp:2194 ../src/Menus.cpp:2246
+msgid "Pasted from the clipboard"
+msgstr "Įterpta iš iškirptinės"
+
+#: ../src/ControlToolBar.cpp:519 ../src/ControlToolBar.cpp:528
+msgid "Pause"
+msgstr "Pauzė"
+
+#: ../src/Menus.cpp:637
+msgid "Pause\tP"
+msgstr "Pauzė\tP"
+
+#: ../src/prefs/MousePrefs.cpp:104 ../src/prefs/MousePrefs.cpp:105
+#: ../src/prefs/MousePrefs.cpp:106 ../src/prefs/MousePrefs.cpp:107
+msgid "Pencil"
+msgstr "Parkelis"
+
+#: ../src/effects/ChangeLength.cpp:157 ../src/effects/ChangePitch.cpp:359
+#: ../src/effects/ChangeSpeed.cpp:312 ../src/effects/ChangeTempo.cpp:190
+msgid "Percent Change:"
+msgstr "Procentinis Pakeitimas:"
+
+#: ../src/effects/Echo.h:38
+msgid "Performing Echo"
+msgstr "Pridedamas Aidas"
+
+#: ../src/effects/audiounits/AudioUnitEffect.cpp:100
+#: ../src/effects/ladspa/LadspaEffect.cpp:138
+#, c-format
+msgid "Performing Effect: %s"
+msgstr "Vykdomas Efektas: %s"
+
+#: ../src/effects/Equalization.h:47
+msgid "Performing Equalization"
+msgstr "Vykdomas Sulyginimas"
+
+#: ../src/effects/Filter.h:39
+msgid "Performing FFT Filter"
+msgstr "Vykdomas FFT Filtras"
+
+#: ../src/effects/Repeat.h:36
+msgid "Performing Repeat"
+msgstr "Pridedamas Kartojimas"
+
+#: ../src/effects/Phaser.cpp:65
+msgid "Phaser"
+msgstr "Fazeris"
+
+#: ../src/effects/Phaser.cpp:464
+msgid "Phaser by Nasca Octavian Paul"
+msgstr "Fazeris by Nasca Octavian Paul"
+
+#: ../src/effects/Phaser.h:38
+msgid "Phaser..."
+msgstr "Fazeris..."
+
+#: ../src/TrackPanel.cpp:393
+msgid "Pitch (EAC)"
+msgstr "Tamsus (EAC)"
+
+#: ../src/effects/ChangePitch.cpp:268
+msgid "Pitch:   from"
+msgstr "Aukščiausias:  nuo"
+
+#: ../src/ControlToolBar.cpp:516
+#, fuzzy
+msgid "Play"
+msgstr "Atkūrimas"
+
+#: ../src/ControlToolBar.cpp:525
+msgid "Play (Shift for loop-play)"
+msgstr "Groti (Shift grojimo kartojimui)"
+
+#: ../src/Menus.cpp:642
+msgid "Play Looped\tL"
+msgstr "Kartojamas Grojimas\tL"
+
+#: ../src/Menus.cpp:643
+msgid "Play Looped\tShift+Spacebar"
+msgstr "Kartojamas Grojimas\tShift+Spacebar"
+
+#: ../src/Menus.cpp:640
+msgid "Play One Second\t1"
+msgstr "Pagroti vieną sekundę\t1"
+
+#: ../src/Menus.cpp:641
+msgid "Play To Selection\tB"
+msgstr "Pagroti iki Apibraukimo\tB"
+
+#: ../src/TranscriptionToolBar.cpp:207
+msgid "Play at selected speed"
+msgstr ""
+
+#: ../src/prefs/AudioIOPrefs.cpp:284
+msgid "Play other tracks while recording new one"
+msgstr "Groti kitus takelius kol įrašinėjamas naujas"
+
+#: ../src/TranscriptionToolBar.cpp:208
+msgid "Play-at-speed"
+msgstr ""
+
+#: ../src/Menus.cpp:635
+msgid "Play/Stop\tSpacebar"
+msgstr "Groti/Stop\tSpacebar"
+
+#: ../src/prefs/AudioIOPrefs.cpp:80
+msgid "Playback"
+msgstr "Atkūrimas"
+
+#: ../src/TranscriptionToolBar.cpp:212 ../src/TranscriptionToolBar.cpp:216
+#, fuzzy
+msgid "Playback Speed"
+msgstr "Atkūrimas"
+
+#: ../src/prefs/AudioIOPrefs.cpp:282
+msgid "Playthrough"
+msgstr ""
+
+#: ../src/Menus.cpp:1408 ../src/Menus.cpp:1445
+msgid "Please Enter time"
+msgstr ""
+
+#: ../src/Menus.cpp:3686
+msgid "Please close all Audacity projects first."
+msgstr ""
+
+#: ../src/UploadDialog.cpp:1391
+msgid "Please enter new folder name:"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:672
+msgid "Please enter the new file/folder name:"
+msgstr ""
+
+#: ../src/Menus.cpp:3691
+msgid "Please save and close the current project first."
+msgstr ""
+
+#: ../src/commands/CommandManager.cpp:338
+#, c-format
+msgid "Plugins %i to %i"
+msgstr "Priedai %i iš %i"
+
+#: ../src/commands/CommandManager.cpp:324
+#, c-format
+msgid "Plugins 1 to %i"
+msgstr "Priedas 1 iš %i"
+
+#: ../src/effects/PopClick.h:29
+msgid "Pop and Click Removal..."
+msgstr "Trakštelėjimų Pašalintojas..."
+
+#: ../src/effects/Equalization.cpp:729
+msgid "Predefined:"
+msgstr "Pasirinktas:"
+
+#: ../src/widgets/Meter.cpp:352
+#, fuzzy
+msgid "Preferences..."
+msgstr "&Nuostatos"
+
+#: ../src/effects/NoiseRemoval.cpp:538
+msgid "Preparation Steps"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:711
+msgid "Preparing to delete"
+msgstr ""
+
+#: ../src/Menus.cpp:3638
+#, c-format
+msgid ""
+"Preset may be invalid or corrupted.\n"
+"Expected format %d ... found %d"
+msgstr ""
+
+#: ../src/effects/Effect.cpp:257 ../src/effects/Equalization.cpp:748
+#: ../src/effects/Phaser.cpp:582 ../src/effects/Wahwah.cpp:568
+msgid "Preview"
+msgstr "Peržiūra"
+
+#: ../src/Menus.cpp:633
+msgid "Previous Tool\tA"
+msgstr "Buvęs Įrankis\tA"
+
+#: ../src/Printing.cpp:182
+msgid "Print"
+msgstr "Spauzdinti"
+
+#: ../src/Menus.cpp:234
+msgid "Print..."
+msgstr "Spauzdinti..."
+
+#: ../src/Menus.cpp:3595
+msgid "Problem encountered exporting presets."
+msgstr ""
+
+#: ../src/Menus.cpp:3671
+msgid "Problem encountered importing presets."
+msgstr ""
+
+#: ../src/Menus.cpp:223
+msgid "Process Batch..."
+msgstr ""
+
+#: ../src/AboutDialog.cpp:151
+#, fuzzy
+msgid "Program build date: "
+msgstr "Programos sukūrimo data:"
+
+#: ../src/DirManager.cpp:151 ../src/DirManager.cpp:233
+#: ../src/DirManager.cpp:347
+msgid "Progress"
+msgstr "Progresas"
+
+#: ../src/SelectionBar.cpp:87
+#, fuzzy
+msgid "Project Rate (Hz):"
+msgstr "Projekto dažnis:"
+
+#: ../src/DirManager.cpp:1219
+#, c-format
+msgid ""
+"Project check detected %d input file[s] being used in place\n"
+"('alias files') are now missing.  There is no way for Audacity\n"
+"to recover these files automatically; you may choose to\n"
+"permanently fill in silence for the missing files, temporarily\n"
+"fill in silence for this session only, or close the project now\n"
+"and try to restore the missing files by hand."
+msgstr ""
+
+#: ../src/DirManager.cpp:1288
+#, c-format
+msgid ""
+"Project check detected %d missing audio data blockfile[s] (.au), \n"
+"probably due to a bug, system crash or accidental deletion.\n"
+"There is no way for Audacity to recover this lost data\n"
+"automatically; you may choose to permanently fill in silence\n"
+"for the missing data, temporarily fill in silence for this\n"
+"session only, or close the project now and try to restore the\n"
+"missing data by hand."
+msgstr ""
+
+#: ../src/DirManager.cpp:1257
+#, c-format
+msgid ""
+"Project check detected %d missing summary file[s] (.auf).\n"
+"Audacity can fully regenerate these summary files from the\n"
+"original audio data in the project."
+msgstr ""
+
+#: ../src/DirManager.cpp:1189
+#, c-format
+msgid ""
+"Project check found %d orphaned blockfile[s]. These files are\n"
+"unused and probably left over from a crash or some other bug.\n"
+"They should be deleted to avoid disk contention."
+msgstr ""
+
+#: ../src/DirManager.cpp:1179
+msgid ""
+"Project check found inconsistencies inspecting the loaded project data;\n"
+"click 'Details' for a complete list of errors, or 'OK' to proceed to more "
+"options."
+msgstr ""
+
+#: ../src/Project.cpp:2049
+msgid "Project checker repaired file"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:261
+msgid "Project leader and primary programmer"
+msgstr "Projekto vadovas ir pagrindinis programuotojas"
+
+#: ../src/prefs/BatchPrefs.cpp:380
+msgid "Prompt to save, even if empty"
+msgstr ""
+
+#: ../src/prefs/PrefsDialog.cpp:84
+msgid "Quality"
+msgstr "Kokybė"
+
+#: ../src/prefs/GUIPrefs.cpp:314
+msgid "Quit Audacity upon closing last window"
+msgstr "Išjungti Audacity uždarant paskutinį langą"
+
+#  i18n-hint: One-letter abbreviation for Right, in the Pan slider
+#  i18n-hint: One-letter abbreviation for Right, in VU Meter
+#. i18n-hint: One-letter abbreviation for Right, in the Pan slider
+#: ../src/widgets/ASlider.cpp:447 ../src/widgets/Meter.cpp:189
+msgid "R"
+msgstr "D"
+
+#: ../src/TrackPanel.cpp:4932
+msgid "Rate Change"
+msgstr "Dažnio Pakeitimas"
+
+#: ../src/effects/Compressor.cpp:451
+msgid "Ratio: "
+msgstr "Santykis:"
+
+#: ../src/effects/Compressor.cpp:528
+#, c-format
+msgid "Ratio: %.0f:1"
+msgstr "Santykis: %.0f:1"
+
+#: ../src/effects/Compressor.cpp:530
+#, c-format
+msgid "Ratio: %.1f:1"
+msgstr "Santykis: %.1f:1"
+
+#  i18n-hint: This refers to files that are opened directly
+#  without looking at the file header.  Same as "Import Raw"
+#. i18n-hint: This refers to files that are opened directly
+#: ../src/Project.cpp:2421
+msgid "Raw"
+msgstr "Raw"
+
+#: ../src/prefs/FileFormatPrefs.cpp:79
+msgid "Read directly from the original file (faster)"
+msgstr "Skaityti tiesiai iš orginalo (greičiau)"
+
+#: ../src/prefs/QualityPrefs.cpp:176
+msgid "Real-time dither:"
+msgstr "Esamo laiko virpesiai:"
+
+#: ../src/prefs/QualityPrefs.cpp:145
+msgid "Real-time sample rate converter:"
+msgstr "Esamo laiko pavyzdžio dažnio konverteris:"
+
+#: ../src/effects/ChangeLength.cpp:170
+#, fuzzy
+msgid "Recalculate"
+msgstr "Stačiakampis"
+
+#. i18n-hint: This is the name of the menu item on Windows and Linux
+#: ../src/Menus.cpp:698
+msgid "Recent &Files..."
+msgstr "Paskutiniai &Failai..."
+
+#: ../src/ControlToolBar.cpp:518 ../src/ControlToolBar.cpp:526
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
+msgid "Record"
+msgstr "Įrašyti"
+
+#: ../src/Menus.cpp:638
+msgid "Record\tR"
+msgstr "Įrašyti\tR"
+
+#: ../src/Project.cpp:1818 ../src/TrackPanel.cpp:816
+msgid "Recorded Audio"
+msgstr "Įrašytas Audio"
+
+#: ../src/prefs/AudioIOPrefs.cpp:161
+msgid "Recording"
+msgstr "Įrašymas"
+
+#: ../src/ControlToolBar.cpp:884
+msgid "Recording not permitted"
+msgstr ""
+
+#: ../src/prefs/QualityPrefs.cpp:168
+msgid "Rectangle"
+msgstr "Stačiakampis"
+
+#: ../src/FFT.cpp:364
+msgid "Rectangular"
+msgstr "Stačiakampis"
+
+#: ../src/EditToolBar.cpp:158
+msgid "Redo"
+msgstr "Sugražinti"
+
+#: ../src/DirManager.cpp:1262
+msgid "Regenerate summary files [safe and recommended]"
+msgstr ""
+
+#: ../src/Menus.cpp:461
+msgid "Remo&ve Tracks"
+msgstr "P&ašalinti Takelius"
+
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Remove"
+msgstr "Pašalinti triukšmą"
+
+#: ../src/UploadDialog.cpp:283
+#, fuzzy
+msgid "Remove Site"
+msgstr "Pašalinti triukšmą"
+
+#: ../src/Menus.cpp:3797
+msgid "Remove Track"
+msgstr "Pašalinti takelį"
+
+#: ../src/effects/Normalize.cpp:297
+msgid "Remove any DC offset (center on 0 vertically)"
+msgstr "Pašalinti visus DC ofsetus (centras ties 0 vertikaliai)"
+
+#: ../src/effects/ClickRemoval.cpp:412
+msgid "Remove clicks"
+msgstr "Pašalinti trakštelėjimus"
+
+#: ../src/TrackPanel.cpp:3489
+#, fuzzy
+msgid "Removed Cut Line"
+msgstr "Pašalinti triukšmą"
+
+#: ../src/Menus.cpp:3797
+msgid "Removed audio track(s)"
+msgstr "Pašalinti takeliai(-is)"
+
+#: ../src/TrackPanel.cpp:2652
+#, c-format
+msgid "Removed track '%s.'"
+msgstr "Pašalintas takelis '%s.'"
+
+#: ../src/effects/NoiseRemoval.h:42
+msgid "Removing Noise"
+msgstr "Šalinamas Triukšmas"
+
+#: ../src/effects/ClickRemoval.h:46
+msgid "Removing clicks and pops..."
+msgstr "Pašalinu spragtelėjimus ir trakštelėjimus..."
+
+#: ../src/effects/PopClick.h:33
+msgid "Removing unwanted noise"
+msgstr "Šalinamas pašalinis triukšmas"
+
+#: ../src/UploadDialog.cpp:509 ../src/UploadDialog.cpp:672
+#, fuzzy
+msgid "Rename"
+msgstr "Rezonansas:"
+
+#: ../src/UploadDialog.cpp:509
+#, fuzzy
+msgid "Rename file"
+msgstr "Pervardintas failas: %s\n"
+
+#: ../src/TrackPanel.cpp:5157
+#, c-format
+msgid "Renamed '%s' to '%s'"
+msgstr "Pervardintas '%s' į '%s'"
+
+#: ../src/DirManager.cpp:984
+#, c-format
+msgid "Renamed file: %s\n"
+msgstr "Pervardintas failas: %s\n"
+
+#: ../src/Menus.cpp:3178
+#, fuzzy
+msgid "Render"
+msgstr "Centrinis"
+
+#: ../src/Menus.cpp:3177
+#, fuzzy, c-format
+msgid "Rendered all audio in track '%s'"
+msgstr "Pašalinti takeliai(-is)"
+
+#: ../src/Project.cpp:2049
+#, fuzzy
+msgid "Repair"
+msgstr "Kartoti"
+
+#: ../src/effects/Repeat.cpp:63 ../src/effects/Repeat.cpp:67
+msgid "Repeat"
+msgstr "Kartoti"
+
+#: ../src/Menus.cpp:1677
+#, c-format
+msgid "Repeat %s\tCtrl+R"
+msgstr "Kartoti %s\tCtrl+R"
+
+#: ../src/Menus.cpp:531
+msgid "Repeat Last Effect\tCtrl+R"
+msgstr "Kartoti Praitą Efektą\tCtrl+R"
+
+#: ../src/effects/Repeat.cpp:233
+msgid "Repeat by Dominic Mazzoni && Vaughan Johnson"
+msgstr "Kartoti by Dominic Mazzoni && Vaughan Johnson"
+
+#: ../src/effects/Repeat.h:32
+msgid "Repeat..."
+msgstr "Kartoti..."
+
+#: ../src/effects/Repeat.cpp:36
+#, c-format
+msgid "Repeated %d times"
+msgstr "Pakartota %d kartus"
+
+#: ../src/DirManager.cpp:1293
+msgid "Replace missing data with silence [permanent immediately]"
+msgstr ""
+
+#: ../src/DirManager.cpp:1224
+msgid "Replace missing data with silence [permanent upon save]"
+msgstr ""
+
+#: ../src/Resample.cpp:233 ../src/Resample.cpp:243
+msgid "Resampling disabled."
+msgstr "Perdarymas išjungtas"
+
+#: ../src/effects/Wahwah.cpp:531
+msgid "Resonance:"
+msgstr "Rezonansas:"
+
+#: ../src/effects/AvcCompressor.cpp:711
+msgid "Restore Defaults"
+msgstr "Atstatyti Įprastus"
+
+#: ../src/effects/Reverse.h:30
+msgid "Reverse"
+msgstr "Reversavimas"
+
+#: ../src/effects/Reverse.h:34
+msgid "Reversing"
+msgstr "Reversuoju"
+
+#: ../src/widgets/ASlider.cpp:607
+msgid "Right"
+msgstr "Dešinė "
+
+#: ../src/TrackPanel.cpp:397
+msgid "Right Channel"
+msgstr "Dešinysis kanalas"
+
+#: ../src/prefs/MousePrefs.cpp:111
+msgid "Right Click"
+msgstr "Dešinysis Paspaudimas"
+
+#: ../src/prefs/MousePrefs.cpp:112
+msgid "Right Drag"
+msgstr "Kairysis Tempimas"
+
+#: ../src/Menus.cpp:333
+#, fuzzy
+msgid "Right at Playback Position\t]"
+msgstr "Pridėti Pavadinimą Grojimo Vietoje\tCtrl+M"
+
+#: ../src/TrackPanel.cpp:4835
+msgid "Right, "
+msgstr "Kairysis,"
+
+#: ../src/prefs/MousePrefs.cpp:95
+msgid "Right-Click"
+msgstr "Dešinysis-Paspaudimas"
+
+#: ../src/prefs/MousePrefs.cpp:96
+msgid "Right-Drag"
+msgstr "Dešinysis-Tempimas"
+
+#: ../src/TranscriptionToolBar.cpp:225
+msgid "Right-to-Off"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:231
+#, fuzzy
+msgid "Right-to-On"
+msgstr "Dešinė "
+
+#: ../src/TrackPanel.cpp:2566
+msgid "Sample Edit"
+msgstr "Modelio Redagavimas"
+
+#: ../src/import/ImportRaw.cpp:398
+msgid "Sample rate:"
+msgstr "Modelio dažnis:"
+
+#: ../src/prefs/QualityPrefs.cpp:85
+#, fuzzy
+msgid "Sampling"
+msgstr "Stiprinama"
+
+#: ../src/export/Export.cpp:178
+#, c-format
+msgid "Save %s File As:"
+msgstr "Išsaugoti %s failą kaip:"
+
+#: ../src/Menus.cpp:3538
+#, fuzzy
+msgid "Save CleanSpeech Preset File As:"
+msgstr "Išsaugoti %s failą kaip:"
+
+#: ../src/Menus.cpp:166
+msgid "Save Project &As..."
+msgstr "Išsaugoti Projektą K&aip"
+
+#: ../src/Project.cpp:2565
+msgid "Save Project As:"
+msgstr "Išsaugoti projektą kaip:"
+
+#: ../src/Project.cpp:2556
+#, fuzzy
+msgid "Save Speech As:"
+msgstr "Išsaugoti projektą kaip:"
+
+#: ../src/Project.cpp:1836
+msgid "Save changes before closing?"
+msgstr "Ar išsaugoti pakeitimus prieš išeinant?"
+
+#: ../src/Project.cpp:1837
+msgid "Save changes?"
+msgstr "Išsaugoti pakeitimus?"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:126
+msgid "Save..."
+msgstr "Išsaugoti..."
+
+#: ../src/Project.cpp:2393
+#, c-format
+msgid "Saved %s"
+msgstr "Išsaugotas %s"
+
+#: ../src/DirManager.cpp:348
+#, fuzzy
+msgid "Saving project data files"
+msgstr "Negaliu atidaryti projekto failo."
+
+#: ../src/effects/ToneGen.cpp:57
+msgid "Sawtooth"
+msgstr "Pjūklinė"
+
+#: ../src/prefs/MousePrefs.cpp:114
+msgid "Scroll up or down"
+msgstr "Paslinkti viršun arba apačion"
+
+#: ../src/Help.cpp:111
+msgid "Search for?"
+msgstr "Ieškoti ko?"
+
+#: ../src/Help.cpp:112
+msgid "Search help for keyword"
+msgstr "Ieškoti pagalbos šiam žodžiui"
+
+#: ../src/prefs/MousePrefs.cpp:89 ../src/prefs/MousePrefs.cpp:90
+#: ../src/prefs/MousePrefs.cpp:91
+msgid "Select"
+msgstr "Pasirinkti"
+
+#: ../src/BatchCommandDialog.cpp:45
+#, fuzzy
+msgid "Select Command"
+msgstr "Komanda"
+
+#: ../src/Menus.cpp:3048
+msgid "Select a MIDI file..."
+msgstr "Pasirinkti MIDI failą..."
+
+#: ../src/effects/NoiseRemoval.cpp:545
+msgid ""
+"Select a few seconds of just noise\n"
+"so Audacity knows what to filter out, then\n"
+"click Get Noise Profile:"
+msgstr ""
+"Apibraukite kelias sekundes vien tik triukšmo\n"
+"kad Audacity žinotų ką išfiltruoti, tada\n"
+"paspauskite Gauti Triukšmo Profilį:"
+
+#: ../src/Menus.cpp:3007
+msgid "Select a text file containing labels..."
+msgstr "Pasirinkite tekstinį failą kuriame yra pavadinimai..."
+
+#: ../src/effects/NoiseRemoval.cpp:565
+#, fuzzy
+msgid ""
+"Select all of the audio you want filtered,\n"
+"choose how much noise you want filtered out,\n"
+"and then click 'OK' to remove noise.\n"
+msgstr ""
+"Pasirinkite visą audio kurį norite išfiltruoti,\n"
+"pasirinkite kiek triukšmo norite filtruoti\n"
+"ir tada spauskite Pašalinti triukšmą.\n"
+
+#: ../src/prefs/KeyConfigPrefs.cpp:190
+msgid "Select an XML file containing Audacity keyboard shortcuts..."
+msgstr ""
+"Pasirinkite XML failą kuriame laikote Audacity klavetūros sparčuosius "
+"klavišus..."
+
+#: ../src/Menus.cpp:3083
+msgid "Select any uncompressed audio file..."
+msgstr "Pasirinkite bet kurį nesuspaustą audio failą..."
+
+#: ../src/Menus.cpp:3710
+msgid "Select file(s) for batch processing..."
+msgstr ""
+
+#: ../src/Menus.cpp:2975 ../src/Project.cpp:1863
+msgid "Select one or more audio files..."
+msgstr "Pasirinkite vieną ar daugiau audio failų..."
+
+#: ../src/TranscriptionToolBar.cpp:238
+msgid "Select region of silence around cursor"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:234
+msgid "Select region of sound around cursor"
+msgstr ""
+
+#: ../src/Menus.cpp:3709
+msgid "Select vocal file(s) for batch CleanSpeech Chain..."
+msgstr ""
+
+#: ../src/effects/NoiseRemoval.cpp:564
+#, fuzzy
+msgid ""
+"Select what part of the audio you want filtered (Ctrl-A = All), chose how "
+"much noise\n"
+"you want filtered out with Slider below, and then click 'OK' to remove "
+"noise.\n"
+"Find best setting with Ctrl-Z to Undo, Select All, and change Slider "
+"position."
+msgstr ""
+"Pasirinkite visą audio kurį norite išfiltruoti,\n"
+"pasirinkite kiek triukšmo norite filtruoti\n"
+"ir tada spauskite Pašalinti triukšmą.\n"
+
+#: ../src/TranscriptionToolBar.cpp:239
+#, fuzzy
+msgid "Select-Silence"
+msgstr "Generuoti Tylą"
+
+#: ../src/TranscriptionToolBar.cpp:235
+#, fuzzy
+msgid "Select-Sound"
+msgstr "Pasirinkti"
+
+#: ../src/Menus.cpp:327
+msgid "Select..."
+msgstr "Apibraukti..."
+
+#: ../src/Menus.cpp:668
+msgid "Selection Contract Left\tCtrl+Shift+Right"
+msgstr "Sumažinti apibraukimą į dešinę\tCtrl+Shift+Right"
+
+#: ../src/Menus.cpp:669
+msgid "Selection Contract Right\tCtrl+Shift+Left"
+msgstr "Sumažinti apibraukimą į kairę\tCtrl+Shift+Left"
+
+#: ../src/Menus.cpp:666
+msgid "Selection Extend Left\tShift+Left"
+msgstr "Apibraukimą pratęsti į kairę\tShift+Left"
+
+#: ../src/Menus.cpp:667
+msgid "Selection Extend Right\tShift+Right"
+msgstr "Apibraukimą pratęsti į dešinę\tShift+Right"
+
+#: ../src/Menus.cpp:362
+msgid "Selection Restore"
+msgstr "Pabraukimo Atstatymas"
+
+#: ../src/Menus.cpp:361
+msgid "Selection Save"
+msgstr "Pabraukimo Išsaugojimas"
+
+#: ../src/SelectionBar.cpp:92
+#, fuzzy
+msgid "Selection Start:"
+msgstr "į Apibraukimo Pradžią"
+
+#: ../src/ControlToolBar.cpp:363
+msgid "Selection Tool"
+msgstr "Apibraukimo Įrankis"
+
+#: ../src/Menus.cpp:625
+msgid "Selection Tool\tF1"
+msgstr "Apibraukimo Įrankis\tF1"
+
+#: ../src/VoiceKey.cpp:69 ../src/VoiceKey.cpp:219 ../src/VoiceKey.cpp:357
+#: ../src/VoiceKey.cpp:498
+msgid "Selection is too small to use voice key."
+msgstr ""
+
+#: ../src/Menus.cpp:649
+msgid "Selection to End\tShift+End"
+msgstr "Apibraukti iki Pabaigos\tShift+End"
+
+#: ../src/Menus.cpp:648
+msgid "Selection to Start\tShift+Home"
+msgstr "Apibraukti iki Pradžios\tShift+Home"
+
+#: ../src/ControlToolBar.cpp:396
+#, fuzzy
+msgid "SelectionTool"
+msgstr "Apibraukimo Įrankis"
+
+#: ../src/effects/ChangePitch.cpp:305
+msgid "Semitones (half-steps):"
+msgstr "Pustonis:"
+
+#: ../src/TranscriptionToolBar.cpp:255
+msgid "Sensitivity"
+msgstr ""
+
+#: ../src/prefs/KeyConfigPrefs.cpp:99
+msgid "Set"
+msgstr "Nustatyt"
+
+#: ../src/Menus.cpp:1407
+#, fuzzy
+msgid "Set Left Selection Bound"
+msgstr "Nustatyti Pasirinkimo Tašką"
+
+#: ../src/TrackPanel.cpp:5108
+msgid "Set Range"
+msgstr "Nustatyti dažnį"
+
+#: ../src/TrackPanel.cpp:428
+msgid "Set Range..."
+msgstr "Nustatyti dažnį..."
+
+#: ../src/TrackPanel.cpp:403 ../src/TrackPanel.cpp:5059
+msgid "Set Rate"
+msgstr "Nustatyti tempą"
+
+#: ../src/Menus.cpp:1445
+#, fuzzy
+msgid "Set Right Selection Bound"
+msgstr "Nustatyti Pasirinkimo Tašką"
+
+#: ../src/TrackPanel.cpp:401
+msgid "Set Sample Format"
+msgstr "Nustatyti Pavyzdžio Formatą"
+
+#: ../src/prefs/MousePrefs.cpp:89 ../src/prefs/MousePrefs.cpp:109
+msgid "Set Selection Point"
+msgstr "Nustatyti Pasirinkimo Tašką"
+
+#: ../src/prefs/MousePrefs.cpp:90 ../src/prefs/MousePrefs.cpp:110
+msgid "Set Selection Range"
+msgstr "Apibraukti"
+
+#: ../src/TrackPanel.cpp:5105
+#, c-format
+msgid "Set range to '%d' - '%d'"
+msgstr "Nustatyti dažnį į '%d' - '%d'"
+
+#: ../src/effects/ClickRemoval.cpp:355
+msgid "Settings"
+msgstr "Nustatymai"
+
+#: ../src/prefs/QualityPrefs.cpp:170
+msgid "Shaped"
+msgstr "Formuotas"
+
+#: ../src/prefs/MousePrefs.cpp:91
+msgid "Shift-Left-Click"
+msgstr "Shift-Pelės-Kairysis"
+
+#: ../src/prefs/MousePrefs.cpp:99
+#, fuzzy
+msgid "Shift-Left-Drag"
+msgstr "Ctrl-PelėsKairysis-Tempimas"
+
+#: ../src/prefs/BatchPrefs.cpp:69 ../src/prefs/GUIPrefs.cpp:37
+msgid "Show / Hide"
+msgstr ""
+
+#: ../src/prefs/BatchPrefs.cpp:385
+msgid "Show Mp3-ID3 Dialog"
+msgstr ""
+
+#: ../src/prefs/GUIPrefs.cpp:339
+msgid "Show warnings about temp files"
+msgstr ""
+
+#: ../src/VoiceKey.cpp:826
+#, c-format
+msgid "Sign Changes        -- mean: %1.4f  sd: (%1.4f)\n"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:265
+msgid "Sign Changes (High Threshold)"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:264
+msgid "Sign Changes (Low Threshold)"
+msgstr ""
+
+#: ../src/EditToolBar.cpp:154 ../src/Menus.cpp:2356
+msgid "Silence"
+msgstr "Tyla"
+
+#: ../src/EditToolBar.cpp:154
+msgid "Silence selection"
+msgstr "Paversti apibraukimą tyla"
+
+#: ../src/effects/Silence.h:35
+#, fuzzy
+msgid "Silence..."
+msgstr "Tyla"
+
+#: ../src/Menus.cpp:2354
+#, c-format
+msgid "Silenced selected tracks for %.2f seconds at %.2f"
+msgstr "Nutildyti pasirinkti takeliai %.2f sekundėm %.2f ruože"
+
+#: ../src/effects/ToneGen.cpp:55
+msgid "Sine"
+msgstr "Sinusoidė"
+
+#: ../src/UploadDialog.cpp:260
+#, fuzzy
+msgid "Site Manager"
+msgstr "Nustatyti dažnį"
+
+#: ../src/HistoryWindow.cpp:59
+msgid "Size"
+msgstr "Dydis"
+
+#: ../src/ControlToolBar.cpp:530
+msgid "Skip to End"
+msgstr "Perkelti į Pabaigą"
+
+#: ../src/Menus.cpp:646
+msgid "Skip to End\tEnd"
+msgstr "Perkelti į Pabaiga\tEnd"
+
+#: ../src/ControlToolBar.cpp:524
+msgid "Skip to Start"
+msgstr "Perkelti į Pradžią"
+
+#: ../src/Menus.cpp:645
+msgid "Skip to Start\tHome"
+msgstr "Perkelti į Pradžią\tHome"
+
+#: ../src/prefs/MousePrefs.cpp:105
+msgid "Smooth at Sample"
+msgstr "Sulieti pavizdį"
+
+#  i18n-hint: Set snap-to mode on or off
+#. i18n-hint: Set snap-to mode on or off
+#: ../src/Menus.cpp:372
+msgid "Snap Off"
+msgstr "Prikibimas išjungtas"
+
+#  i18n-hint: Set snap-to mode on or off
+#. i18n-hint: Set snap-to mode on or off
+#: ../src/Menus.cpp:370
+msgid "Snap On"
+msgstr "Prikibimas įjungtas"
+
+#: ../src/Menus.cpp:367
+msgid "Snap-To..."
+msgstr "Prikibimas..."
+
+#: ../src/prefs/AudioIOPrefs.cpp:296
+msgid "Software Playthrough (Play new track while recording it)"
+msgstr "Groti naują takelį kol jis įrašinėjamas"
+
+#: ../src/TrackPanel.cpp:5612
+msgid "Solo"
+msgstr "Solo"
+
+#: ../src/Menus.cpp:679
+msgid "Solo/Unsolo first selected track\tShift+S"
+msgstr ""
+
+#: ../src/Prefs.cpp:112
+msgid ""
+"Some of your preferences were from an earlier version of Audacity and have "
+"been reset."
+msgstr "Keletas jūsų nuostatų iš ankstesnės Audacity versijos buvo perkrautos."
+
+#: ../src/effects/ladspa/LadspaEffect.cpp:158
+#, fuzzy
+msgid ""
+"Sorry, Plug-in Effects cannot be performed                             on "
+"stereo tracks where the individual                             channels of "
+"the track do not match."
+msgstr ""
+"Atsiprašome, bet Priedų Efektai negali būti vygdomi stereo takeluose, kur "
+"individualūs kanalai nesutampa."
+
+#: ../src/effects/StereoToMono.cpp:89
+#, fuzzy
+msgid ""
+"Sorry, This effect can only be performed on stereo tracks where the "
+"individual channels of the track match."
+msgstr ""
+"Atsiprašome, bet VST Efektai negali būti vygdomi stereo takeluose, kur "
+"individualūs kanalai nesutampa."
+
+#: ../src/effects/VST/VSTEffect.cpp:180
+msgid ""
+"Sorry, VST Effects cannot be performed on stereo tracks where the individual "
+"channels of the track do not match."
+msgstr ""
+"Atsiprašome, bet VST Efektai negali būti vygdomi stereo takeluose, kur "
+"individualūs kanalai nesutampa."
+
+#: ../src/effects/nyquist/Nyquist.cpp:375
+msgid ""
+"Sorry, cannot apply effect on stereo tracks where the tracks don't match."
+msgstr ""
+"Atsiprašau, bet negaliu pritaikyti efekto stereo takeliams, kurių takeliai "
+"nesutampa."
+
+#: ../src/Menus.cpp:3549 ../src/export/Export.cpp:188
+msgid "Sorry, pathnames longer than 256 characters not supported."
+msgstr "Atsiprašau, bet nesuprantu adresų, ilgesių nei 256 ženklai."
+
+#: ../src/effects/TruncSilence.cpp:51
+msgid "Sorry. Truncate Silence only valid with mono track"
+msgstr ""
+
+#: ../src/AboutDialog.cpp:204
+msgid "Special thanks:"
+msgstr "Ypač ačiū"
+
+#: ../src/prefs/PrefsDialog.cpp:86
+msgid "Spectrograms"
+msgstr "Spektograma"
+
+#: ../src/FreqWindow.cpp:129 ../src/TrackPanel.cpp:392
+msgid "Spectrum"
+msgstr "Spektras"
+
+#: ../src/effects/SpikeCleaner.cpp:52
+msgid "Spike Cleaner"
+msgstr ""
+
+#: ../src/effects/SpikeCleaner.h:27
+#, fuzzy
+msgid "Spike Cleaner..."
+msgstr "Nustatyti dažnį..."
+
+#: ../src/effects/SpikeCleaner.cpp:143
+msgid "SpikeCleaner by Lynn Allan"
+msgstr ""
+
+#: ../src/Menus.cpp:305
+msgid "Spl&it"
+msgstr "Suska&idyti"
+
+#: ../src/Menus.cpp:2416 ../src/TrackPanel.cpp:4875
+msgid "Split"
+msgstr "Suskaldyti"
+
+#: ../src/Menus.cpp:2062
+#, fuzzy
+msgid "Split Cut"
+msgstr "Suskaldyti"
+
+#: ../src/Menus.cpp:293
+#, fuzzy
+msgid "Split Cut\tCtrl+Alt+X"
+msgstr "Iškirp&t\tCtrl+X"
+
+#: ../src/Menus.cpp:2311
+#, fuzzy
+msgid "Split Delete"
+msgstr "Ištrinti"
+
+#: ../src/Menus.cpp:302
+#, fuzzy
+msgid "Split Delete\tCtrl+Alt+K"
+msgstr "&Trinti\tCtrl+K"
+
+#: ../src/TrackPanel.cpp:399
+msgid "Split Stereo Track"
+msgstr "Suskaldyti Stereo Takelį"
+
+#: ../src/Menus.cpp:2549
+msgid "Split at labels"
+msgstr "Išskirti pavadinimuose"
+
+#: ../src/export/ExportMultiple.cpp:731
+msgid "Split files based on:"
+msgstr "Išskyrdtyti failus pagal"
+
+#: ../src/TrackPanel.cpp:4872
+#, c-format
+msgid "Split stereo track '%s'"
+msgstr "Išskirti stereo takelį '%s'"
+
+#: ../src/Menus.cpp:2062
+#, fuzzy
+msgid "Split-cut to the clipboard"
+msgstr "Iškirpti į iškirptinę"
+
+#: ../src/Menus.cpp:2308
+#, fuzzy, c-format
+msgid "Split-deleted %.2f seconds at t=%.2f"
+msgstr "Ištrinta %.2f sekundės t=%.2f`e"
+
+#: ../src/effects/ToneGen.cpp:56
+msgid "Square"
+msgstr "Kvadratinis"
+
+#: ../src/effects/Phaser.cpp:471
+msgid "Stages:"
+msgstr "Pakopos:"
+
+#: ../src/FreqWindow.cpp:130
+msgid "Standard Autocorrelation"
+msgstr "Standartinė Autokoreliacija"
+
+#: ../src/effects/ChangeSpeed.cpp:348
+msgid "Standard Vinyl RPM:   from"
+msgstr "Standartinis Vinyl RPM:    nuo"
+
+#: ../src/ControlToolBar.cpp:515
+#, fuzzy
+msgid "Start"
+msgstr "Nustatyti tempą"
+
+#: ../src/widgets/Meter.cpp:330
+#, fuzzy
+msgid "Start Monitoring"
+msgstr "Rodyti įvestį"
+
+#: ../src/import/ImportRaw.cpp:376
+msgid "Start offset:"
+msgstr "Pradėti ofsetą:"
+
+#: ../src/Menus.cpp:337
+msgid "Start to Cursor"
+msgstr "Pradedant nuo žymeklio"
+
+#: ../src/effects/NoiseRemoval.cpp:539
+msgid "Step 1"
+msgstr "1 Žingsnis"
+
+#: ../src/effects/NoiseRemoval.cpp:560
+msgid "Step 2"
+msgstr "2 Žingsnis"
+
+#: ../src/BatchCommands.cpp:98 ../src/BatchCommands.cpp:288
+#: ../src/Menus.cpp:318 ../src/Menus.cpp:447 ../src/effects/StereoToMono.h:23
+#, fuzzy
+msgid "Stereo To Mono"
+msgstr "Stereo, "
+
+#: ../src/BatchCommands.cpp:291
+msgid "Stereo To Mono Effect not found"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:4828
+msgid "Stereo, "
+msgstr "Stereo, "
+
+#: ../src/ControlToolBar.cpp:520 ../src/ControlToolBar.cpp:529
+msgid "Stop"
+msgstr "Stop"
+
+#: ../src/Menus.cpp:636
+msgid "Stop\tS"
+msgstr "Stop\tS"
+
+#: ../src/widgets/Meter.cpp:328
+#, fuzzy
+msgid "Stop Monitoring"
+msgstr "Rodyti įvestį"
+
+#: ../src/export/ExportMultiple.cpp:463 ../src/export/ExportMultiple.cpp:571
+#, c-format
+msgid "Successfully exported %d files."
+msgstr "Sėkmingai eksportavau %d failus."
+
+#: ../src/prefs/DirectoriesPrefs.cpp:52
+msgid "Temp. Directory"
+msgstr "Laikina Vieta"
+
+#: ../src/DirManager.cpp:1294
+msgid "Temporarily replace missing data with silence [this session only]"
+msgstr ""
+
+#: ../src/DirManager.cpp:1225
+msgid "Temporarily replace missing files with silence [this session only]"
+msgstr ""
+
+#: ../src/BatchCommands.cpp:451 ../src/BatchCommands.cpp:456
+msgid "Test Mode"
+msgstr ""
+
+#: ../src/Menus.cpp:3011
+msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+msgstr "Tekstiniai failai (*.txt)|*.txt|Visi failai (*.*)|*.*"
+
+#: ../src/prefs/SpectrumPrefs.cpp:158
+msgid "The maximum frequency must be an integer"
+msgstr "Didžiausias dažnis turi būti sveikasis skaičius"
+
+#: ../src/AudacityApp.cpp:858
+msgid ""
+"The system has detected that another copy of Audacity is running.\n"
+"Running two copies of Audacity simultaneously may lead to\n"
+"data loss or cause your system to crash, so is not allowed.\n"
+"\n"
+"Use the New or Open commands in the currently running Audacity\n"
+"process to open multiple projects simultaneously.\n"
+msgstr ""
+"Sistema surado kitą paleistą Audacity programą.\n"
+"Dviejų Audacity programų paleidimas gali privesti prie duomenų\n"
+"praradimo ar „pakabinti“ sistemą, todėl neatsidarysiu.\n"
+"\n"
+"Naudokitės Naujas ar Atidaryti komandomis jau paleistame Audacity,\n"
+"atskirų projektų atidarymui.\n"
+
+#: ../src/Menus.cpp:3448
+msgid ""
+"The version of Audacity you are using does not support multiple time tracks."
+msgstr ""
+"Audacity versija, kuria dabar naudojatės nepalaiko daugialypių laiko takelių."
+
+#: ../src/Menus.cpp:1799
+msgid "There are no label tracks to export."
+msgstr "Nėra ekspotuojamų takelių pavadinimų."
+
+#: ../src/Printing.cpp:181
+msgid "There was a problem printing."
+msgstr "Spauzdinant iškilo problemų."
+
+#: ../src/AudioIO.cpp:174
+msgid "There was an error initializing the audio i/o layer.\n"
+msgstr "Įvyko klaida kraunant audio i/o sluoksnį.\n"
+
+#: ../src/effects/Leveller.cpp:230
+#, fuzzy
+msgid "Theshold for Noise: "
+msgstr "Riba:"
+
+#: ../src/effects/SpikeCleaner.cpp:161 ../src/effects/TruncSilence.cpp:255
+#, fuzzy
+msgid "Theshold for silence: "
+msgstr "Riba:"
+
+#: ../src/widgets/Meter.cpp:1043
+msgid ""
+"This determines how often the meter is refreshed.\n"
+"If you have a slower PC you may want to select a\n"
+"lower refresh rate (30 per second or lower), so that\n"
+"audio qualtiy is not affected by the meter display."
+msgstr ""
+
+#: ../src/Project.cpp:2145
+#, c-format
+msgid ""
+"This file was saved by Audacity %s and the format\n"
+"has changed.  This version of Audacity can try to\n"
+"open it, but there may be problems.  You should back up\n"
+"your project first, to be safe.\n"
+"\n"
+"Would you like to open this file right now anyway?"
+msgstr ""
+
+#: ../src/Project.cpp:2133
+#, c-format
+msgid ""
+"This file was saved using Audacity %s.\n"
+"You are using Audacity %s - you need to upgrade to\n"
+"a newer version to open this file."
+msgstr ""
+"Šis failas buvo išsaugotas naudojantis Audacity %s.\n"
+"Jūs naudojatės Audacity %s, taigi jums reiks atnaujinti \n"
+"programą naujo failo atidarymui."
+
+#: ../src/AboutDialog.cpp:160
+msgid ""
+"This is a beta version of the program.  It may contain bugs and unfinished "
+"features.  We depend on your feedback, so please visit our website and give "
+"us your bug reports and feature requests."
+msgstr ""
+"Tai beta versijos programa. Joje gali pasitaikyti klaidų ir nebaigtų "
+"funkcijų. Mes laukiame jūsų raportų, taigi prašau apsilankykite mūsų "
+"svetainėje ir atibuokite savo raportus ar pageidavimus."
+
+#: ../src/AboutDialog.cpp:163
+#, fuzzy
+msgid ""
+"This is a stable, completed release of Audacity. However, if you find a bug "
+"or have a suggestion, please contact us. We depend on feedback from users in "
+"order to continue to improve Audacity. For more information, visit our "
+"website."
+msgstr ""
+"Tai stabili, išbaigta Audacity versija. Vis dėlto, jei rasite klaidų ar "
+"turite pasiūlymų, prašau susisiekite. Mes laukiame patarimų iš vartotojų, "
+"kad galėtumėme pagerinti Audacity. Daugiau informacijos rasite mūsų "
+"svetainėje."
+
+#: ../src/import/Import.cpp:165
+#, c-format
+msgid "This version of Audacity was not compiled with %s support."
+msgstr "Ši Audacity versija buvo sukompiluota be %s palaikymo."
+
+#: ../src/effects/Compressor.cpp:444
+msgid "Threshold: "
+msgstr "Riba:"
+
+#: ../src/effects/Compressor.cpp:525
+#, c-format
+msgid "Threshold: %d dB"
+msgstr "Riba:  %d dB"
+
+#: ../src/TrackPanel.cpp:1771
+msgid "Time Shift"
+msgstr "Laiko perkėlimas"
+
+#: ../src/ControlToolBar.cpp:365
+msgid "Time Shift Tool"
+msgstr "Laiko perkėlimo įrankis"
+
+#: ../src/Menus.cpp:629
+msgid "Time Shift Tool\tF5"
+msgstr "Laiko perkėlimo įrankis\tF5"
+
+#: ../src/TimeTrack.cpp:38
+msgid "Time Track"
+msgstr "Laiko takelis"
+
+#: ../src/prefs/MousePrefs.cpp:99
+msgid "Time shift all clips in track"
+msgstr ""
+
+#: ../src/prefs/MousePrefs.cpp:98
+msgid "Time shift clip or move up/down between tracks"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1767
+#, fuzzy, c-format
+msgid "Time shifted tracks/clips %s %.02f seconds"
+msgstr "Perkeltas laikas takelio  '%s' %s %.02f sekundėmis"
+
+#: ../src/prefs/MousePrefs.cpp:98 ../src/prefs/MousePrefs.cpp:99
+#: ../src/prefs/MousePrefs.cpp:100
+msgid "Time-Shift"
+msgstr "Laiko-Perkėlimas"
+
+#: ../src/ControlToolBar.cpp:398
+#, fuzzy
+msgid "TimeShiftTool"
+msgstr "Laiko perkėlimo įrankis"
+
+#: ../src/Tags.cpp:454
+msgid "Title"
+msgstr "Pavadinimas"
+
+#: ../src/Tags.cpp:640
+msgid "Title:"
+msgstr "Pavadinimas:"
+
+#: ../src/Menus.cpp:2825
+msgid "To plot the spectrum, all selected tracks must be the same sample rate."
+msgstr ""
+"Kad galėčiau nupiešti grafiką, visi pasirinkti takeliai turi būti to pačio "
+"dažnio."
+
+#: ../src/effects/ToneGen.cpp:50
+msgid "Tone Generator"
+msgstr "Tono Generatorius"
+
+#: ../src/effects/ToneGen.h:39
+msgid "Tone..."
+msgstr "Tonas..."
+
+#: ../src/Menus.cpp:2851
+#, c-format
+msgid ""
+"Too much audio was selected.  Only the first %.1f seconds of audio will be "
+"analyzed."
+msgstr "Per daug audio pasirinkta. Tik %.1f sekundės bus išanalizuotos."
+
+#: ../src/prefs/MousePrefs.cpp:84
+msgid "Tool"
+msgstr "Įrankis"
+
+#: ../src/TrackPanel.cpp:5154
+msgid "Track Name"
+msgstr "Takelio Pavadinimas"
+
+#: ../src/Tags.cpp:676
+msgid "Track Number:"
+msgstr "Takelio Numeris:"
+
+#: ../src/TrackPanel.cpp:2654
+msgid "Track Remove"
+msgstr "Takelį Pašalini"
+
+#: ../src/export/ExportMultiple.cpp:755
+msgid "Tracks"
+msgstr "Takelius"
+
+#: ../src/effects/Repeat.cpp:62
+msgid "Tracks are too long to repeat the selection."
+msgstr "Takeliai per ilgi, kad būtų galima pakartoti apibraukimą."
+
+#: ../src/prefs/GUIPrefs.cpp:324
+msgid "Tracks fit vertically zoomed"
+msgstr ""
+
+#: ../src/TranscriptionToolBar.cpp:110
+msgid "Transcription"
+msgstr ""
+
+#: ../src/prefs/QualityPrefs.cpp:169
+msgid "Triangle"
+msgstr "Trikampis"
+
+#: ../src/EditToolBar.cpp:152 ../src/Menus.cpp:2281
+msgid "Trim"
+msgstr "Apkirpti"
+
+#: ../src/Menus.cpp:2281
+msgid "Trim file to selection"
+msgstr "Apkirpti failą į apibraukimą"
+
+#: ../src/EditToolBar.cpp:152
+msgid "Trim outside selection"
+msgstr "Nukirpti kas šonuose"
+
+#: ../src/BatchCommands.cpp:102 ../src/effects/TruncSilence.cpp:71
+#, fuzzy
+msgid "Truncate Silence"
+msgstr "Generuoti Tylą"
+
+#: ../src/effects/TruncSilence.cpp:237
+msgid "Truncate Silence by Lynn Allan"
+msgstr ""
+
+#: ../src/effects/TruncSilence.h:29
+#, fuzzy
+msgid "Truncate Silence..."
+msgstr "Generuoti Tylą"
+
+#: ../src/effects/TruncSilence.h:33
+#, fuzzy
+msgid "Truncating Silence..."
+msgstr "Generuoju tylą"
+
+#: ../src/Menus.cpp:382
+msgid "Turn Grid Snap Off"
+msgstr "Išjungti Grotelų Prikibimą"
+
+#: ../src/Menus.cpp:381
+msgid "Turn Grid Snap On"
+msgstr "Įjungti Grotelų Prikibimą"
+
+#: ../src/Menus.cpp:380
+msgid "Turn Snap-To Off"
+msgstr "Išjungti Prikibimą"
+
+#: ../src/Menus.cpp:379
+msgid "Turn Snap-To On"
+msgstr "Įjungti Prikibimą"
+
+#: ../src/prefs/DirectoriesPrefs.cpp:114
+msgid "Unable to determine"
+msgstr "Negaliu baigti"
+
+#: ../src/Menus.cpp:3596 ../src/export/Export.cpp:124
+#, fuzzy
+msgid "Unable to export"
+msgstr "Negaliu baigti"
+
+#: ../src/Menus.cpp:3672
+#, fuzzy
+msgid "Unable to import"
+msgstr "Importavimo kiekis:"
+
+#: ../src/xml/XMLFileReader.cpp:75
+msgid "Unable to open project file."
+msgstr "Neįmanoma atidaryti projekto failo."
+
+#: ../src/export/ExportMP3.cpp:1339 ../src/export/ExportOGG.cpp:55
+msgid "Unable to open target file for writing"
+msgstr "Negaliu atidaryti failo įrašymui"
+
+#: ../src/UploadDialog.cpp:829
+msgid "Unable to retrieve directory contents."
+msgstr ""
+
+#: ../src/prefs/FileFormatPrefs.cpp:93
+msgid "Uncompressed Export Format"
+msgstr "Nususpausto Eksportavimo Formatas"
+
+#: ../src/EditToolBar.cpp:157
+msgid "Undo"
+msgstr "Atšaukti"
+
+#: ../src/HistoryWindow.cpp:44
+msgid "Undo History"
+msgstr "Atšaukimų Istorija"
+
+#: ../src/HistoryWindow.cpp:73
+msgid "Undo Levels Available (lots and lots)"
+msgstr "Įmanomas atšaukimų skaičius (daug ir daug)"
+
+#: ../src/HistoryWindow.cpp:141
+#, c-format
+msgid "Undo Levels Available: %d"
+msgstr "Galimas Atšaukimų Skaičius: %d"
+
+#: ../src/UploadDialog.cpp:369
+#, c-format
+msgid ""
+"Unknown FTP Server type: %s\n"
+"\n"
+"Only Unix based and Windows systems are supported/tested at this time."
+msgstr ""
+
+#: ../src/AudacityApp.cpp:616 ../src/AudacityApp.cpp:686
+#, c-format
+msgid "Unknown command line option: %s\n"
+msgstr "Nežinomas komandinės eilutės jungtukas %s\n"
+
+#: ../src/TrackPanel.cpp:411
+msgid "Up Octave"
+msgstr "Oktava Aukščiau"
+
+#: ../src/prefs/GUIPrefs.cpp:312
+msgid "Update spectrogram while playing"
+msgstr "Atnaujinti spektogramą kol grojama"
+
+#: ../src/UploadDialog.cpp:276
+msgid "Upload File"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:278
+msgid "Upload Folder"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:1090
+#, fuzzy
+msgid "Upload Progress"
+msgstr "Progresas"
+
+#: ../src/TrackPanel.cpp:5096 ../src/TrackPanel.cpp:5097
+msgid "Upper speed limit"
+msgstr "Didesnio greičio limitas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:158
+msgid "Use OGG instead of MP3"
+msgstr "Naudoti OGG vietoj MP3"
+
+#: ../src/UploadDialog.cpp:299
+msgid "Username:"
+msgstr ""
+
+#: ../src/export/ExportMultiple.cpp:768
+msgid "Using Label/Track Name"
+msgstr "Naudojantis pavadinimais/Takelio Pavadinimu"
+
+#: ../src/AudacityApp.cpp:601 ../src/AudacityApp.cpp:671
+#, c-format
+msgid "Using block size of %ld\n"
+msgstr "Naudojamas bloko dydžiu %ld\n"
+
+#: ../src/effects/VST/VSTEffect.cpp:410
+msgid "VST Plug-in parameters:"
+msgstr "VST Priedų parametrai:"
+
+#: ../src/effects/AvcCompressor.cpp:369 ../src/effects/AvcCompressor.cpp:406
+#: ../src/effects/AvcCompressor.cpp:431 ../src/effects/AvcCompressor.cpp:438
+msgid "Validation error"
+msgstr "Patvirtinimo klaida"
+
+#: ../src/effects/AvcCompressor.cpp:368
+#, c-format
+msgid "Value must be from %d to %d."
+msgstr "Reikšmė turi būti nuo %d iki %d."
+
+#: ../src/effects/AvcCompressor.cpp:430 ../src/effects/AvcCompressor.cpp:437
+msgid "Values in columns must be in ascending order."
+msgstr "Reikšmės stulpeliuose turi būti sudėtos didėjančia tvarka."
+
+#: ../src/widgets/Meter.cpp:335
+msgid "Vertical Stereo"
+msgstr "Vertikalus Stereo"
+
+#: ../src/Menus.cpp:3712
+msgid ""
+"Vocal files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*."
+"mp3)|*.mp3"
+msgstr ""
+
+#: ../src/import/ImportOGG.cpp:130
+msgid "Vorbis version mismatch"
+msgstr "Vorbis versijos neatitikimas"
+
+#: ../src/AudacityApp.cpp:121
+msgid ""
+"WARNING: You may be prompted to save your work. Clicking cancel will have "
+"the same effect as clicking no."
+msgstr ""
+"DĖMESIO: Jūsų gali paprašyti išsaugoti savo darbą. Paspausti „Atšaukti“ bus "
+"tas pats kaip ne."
+
+#: ../src/effects/Phaser.cpp:499
+msgid "WET"
+msgstr "Daugiau"
+
+#: ../src/effects/Wahwah.cpp:547
+msgid "Wah Frequency Offset (%):"
+msgstr "Vach Dažnio Ofsetas (%):"
+
+#: ../src/effects/Wahwah.cpp:57
+msgid "Wahwah"
+msgstr "VachVach"
+
+#: ../src/effects/Wahwah.cpp:476
+msgid "Wahwah by Nasca Octavian Paul"
+msgstr "VachVach by Nasca Octavian Paul"
+
+#: ../src/effects/Wahwah.h:34
+msgid "Wahwah..."
+msgstr "VachVach..."
+
+#: ../src/DirManager.cpp:1198 ../src/DirManager.cpp:1228
+#: ../src/DirManager.cpp:1266 ../src/DirManager.cpp:1297
+#: ../src/widgets/Warning.cpp:45
+msgid "Warning"
+msgstr "Perspėjimas"
+
+#: ../src/DirManager.cpp:96
+#, fuzzy
+msgid ""
+"Warning: there is very little free disk space left on this volume.\n"
+"Please select another temporary directory in your preferences."
+msgstr ""
+"Perspėjimas: Liko labai mažai disko vietos. Prašau, pasirink kitą laikinų "
+"failų vietą savo noustatose."
+
+#: ../src/TrackPanel.cpp:390
+msgid "Waveform"
+msgstr "Bangos Forma"
+
+#: ../src/TrackPanel.cpp:391
+msgid "Waveform (dB)"
+msgstr "Bangos Forma (dB)"
+
+#: ../src/effects/ToneGen.cpp:276
+msgid "Waveform:"
+msgstr "Bangos Forma:"
+
+#: ../src/prefs/MousePrefs.cpp:114
+msgid "Wheel-Rotate"
+msgstr "Ratuko-Pasukimas"
+
+#: ../src/prefs/FileFormatPrefs.cpp:68
+msgid "When importing uncompressed audio files into Audacity"
+msgstr "Kai į Audacity importuojami nesuspausti audio failai"
+
+#  i18n-hint: It's asking for the location of a file, for
+#  example, "Where is lame_enc.dll?" - you could translate
+#  "Where would I find the file %s" instead if you want.
+#. i18n-hint: It's asking for the location of a file, for
+#: ../src/export/ExportMP3.cpp:113
+#, c-format
+msgid "Where is %s?"
+msgstr "Kur galėčiau rasi  %s?"
+
+#: ../src/Help.cpp:62
+msgid "Where is audacity-1.2-help.htb?"
+msgstr "Kur yra audacity-1.2-help.htb?"
+
+#: ../src/export/ExportMultiple.cpp:274
+msgid "Where is the mp3 encoder TOMPG.EXE located?"
+msgstr ""
+
+#: ../src/effects/Noise.h:27
+msgid "White Noise"
+msgstr "Šnypštimas"
+
+#: ../src/Project.cpp:2558
+msgid "Windows PCM Audio file *.wav)|*.wav"
+msgstr ""
+
+#: ../src/prefs/KeyConfigPrefs.cpp:194
+msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*"
+msgstr "XML failai(*.xml)|*.xml|Visi Failai (*.*)|*.*"
+
+#: ../src/Tags.cpp:484
+msgid "Year"
+msgstr "Metai"
+
+#: ../src/Tags.cpp:686
+msgid "Year:"
+msgstr "Metai:"
+
+#: ../src/export/Export.cpp:243
+#, c-format
+msgid ""
+"You are about to save a %s file with the name %s.\n"
+"Normally these files end in %s, and some programs will not open files with "
+"nonstandard extensions.\n"
+"Are you sure you want to save the file under this name?"
+msgstr ""
+"Jūs norite išsugoti %s failą pavadinimu %s.\n"
+"Paprastai šie failai baigiasi galūne %s,ir kai kurios programos neatidarys "
+"failų su nestandartinėm galūnėm.\n"
+"Ar tikrai norite išsaugoti failą šuo pavadinimu?"
+
+#: ../src/TrackPanel.cpp:2301
+msgid ""
+"You are not zoomed in enough. Zoom in until you can see the individual "
+"samples."
+msgstr ""
+"Jūs nepakankamai prisiartinote vaizdą. prisartinkite taip, kad matytumėt "
+"taškučius."
+
+#: ../src/Menus.cpp:1648
+msgid "You must select a track first."
+msgstr "Pirma turite pasirinkti takelį."
+
+#: ../src/effects/Leveller.cpp:207
+msgid ""
+"You want to preclude the listener feeling the need to increase\n"
+"the volume during soft sections and decreasing during loud parts.\n"
+"Some distortion can result from excessive leveling, so try to minimize\n"
+"this with good equipment, recording technique, the speaker not\n"
+"using too much dynamic range, and perhaps 'working the mic'."
+msgstr ""
+
+#: ../src/AudioIO.cpp:175
+msgid ""
+"You will not be able to play or record audio.\n"
+"\n"
+msgstr ""
+"Jūs negalėsite groti ar įrašinėti audio.\n"
+"\n"
+
+#: ../src/BatchCommands.cpp:378
+#, c-format
+msgid "Your batch command of %s was not recognised."
+msgstr ""
+
+#: ../src/export/Export.cpp:147
+msgid ""
+"Your tracks will be mixed down to a single mono channel in the exported file."
+msgstr ""
+"Jūsų eksportuojamo failo takeliai bus sujungti į vieną mono kanalo failą."
+
+#: ../src/export/Export.cpp:143
+msgid ""
+"Your tracks will be mixed down to two stereo channels in the exported file."
+msgstr ""
+"Jūsų eksportuojamo failo takeliai bus sujungti į dviejų stereo kanalų failą."
+
+#: ../src/prefs/MousePrefs.cpp:93 ../src/prefs/MousePrefs.cpp:94
+#: ../src/prefs/MousePrefs.cpp:95 ../src/prefs/MousePrefs.cpp:96
+msgid "Zoom"
+msgstr "Keist Mastelį"
+
+#: ../src/Menus.cpp:403
+msgid "Zoom &In\tCtrl+1"
+msgstr "Pr&iartinti\tCtrl+1"
+
+#: ../src/Menus.cpp:406
+msgid "Zoom &Normal\tCtrl+2"
+msgstr "&Normaliai priartinti\tCtrl+2"
+
+#: ../src/Menus.cpp:407
+msgid "Zoom &Out\tCtrl+3"
+msgstr "Sumažinti\tCtrl+3"
+
+#: ../src/EditToolBar.cpp:162
+msgid "Zoom In"
+msgstr "Artinti"
+
+#: ../src/EditToolBar.cpp:164
+msgid "Zoom Out"
+msgstr "Tolinti"
+
+#: ../src/EditToolBar.cpp:168
+msgid "Zoom Toggle"
+msgstr "Mastelio Keitimas"
+
+#: ../src/ControlToolBar.cpp:366
+msgid "Zoom Tool"
+msgstr "Priartinimo įrankis"
+
+#: ../src/Menus.cpp:628
+msgid "Zoom Tool\tF4"
+msgstr "Priartinimo įrankis\tF4"
+
+#: ../src/prefs/MousePrefs.cpp:93
+msgid "Zoom in on Point"
+msgstr "Priartinti tašką"
+
+#: ../src/prefs/MousePrefs.cpp:94 ../src/prefs/MousePrefs.cpp:96
+#: ../src/prefs/MousePrefs.cpp:112
+msgid "Zoom in on a Range"
+msgstr "Priartinti Ruožą"
+
+#: ../src/prefs/MousePrefs.cpp:115
+msgid "Zoom in or out"
+msgstr "Priartinti arba Tolinti"
+
+#: ../src/prefs/MousePrefs.cpp:95 ../src/prefs/MousePrefs.cpp:111
+msgid "Zoom out one step"
+msgstr "Patolinti vienu žingsneliu"
+
+#: ../src/ControlToolBar.cpp:399
+#, fuzzy
+msgid "ZoomTool"
+msgstr "Priartinimo įrankis"
+
+#: ../src/effects/Echo.cpp:193
+msgid "by Dominic Mazzoni && Vaughan Johnson"
+msgstr "by Dominic Mazzoni && Vaughan Johnson"
+
+#: ../src/effects/ChangePitch.cpp:253 ../src/effects/ChangeSpeed.cpp:294
+#: ../src/effects/ChangeTempo.cpp:172
+msgid "by Vaughan Johnson && Dominic Mazzoni"
+msgstr "by Vaughan Johnson && Dominic Mazzoni"
+
+#: ../src/import/ImportRaw.cpp:382
+msgid "bytes"
+msgstr "baitai"
+
+#: ../src/effects/Compressor.cpp:385 ../src/effects/Compressor.cpp:393
+#: ../src/widgets/Meter.cpp:344
+msgid "dB"
+msgstr "dB"
+
+#: ../src/TrackPanel.cpp:5125 ../src/effects/ChangePitch.cpp:283
+msgid "down"
+msgstr "apačion"
+
+#: ../src/widgets/TimeTextCtrl.cpp:159
+msgid "hh:mm:ss + CDDA frames (75 fps)"
+msgstr ""
+
+#  i18n-hint: fps is "frames per second"
+#: ../src/widgets/TimeTextCtrl.cpp:157
+#, fuzzy
+msgid "hh:mm:ss + film frames (24 fps)"
+msgstr "filmo kadrai 24 fps"
+
+#: ../src/widgets/TimeTextCtrl.cpp:153
+msgid "hh:mm:ss + milliseconds"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:155
+#, fuzzy
+msgid "hh:mm:ss + samples"
+msgstr "min:sek (įjungti prikibimą)"
+
+#: ../src/Menus.cpp:1803
+msgid "labels.txt"
+msgstr "pavadinimai.txt"
+
+#: ../src/TrackPanel.cpp:1766
+msgid "left"
+msgstr "kairėn"
+
+#: ../src/widgets/TimeTextCtrl.cpp:151
+msgid "mm:ss"
+msgstr ""
+
+#  i18n-hint: n/a is an English
+#  abbreviation meaning "not
+#  applicable" (in other words,
+#  unimportant, not relevant).
+#. i18n-hint: n/a is an English
+#: ../src/effects/ChangeSpeed.cpp:345
+msgid "n/a"
+msgstr "n/a"
+
+#: ../src/UploadDialog.cpp:288
+msgid "name"
+msgstr ""
+
+#: ../src/UploadDialog.cpp:290
+msgid "permissions"
+msgstr ""
+
+#: ../src/TrackPanel.cpp:1766
+msgid "right"
+msgstr "dešinėn"
+
+#: ../src/prefs/MousePrefs.cpp:96
+#, fuzzy
+msgid "same as left-drag"
+msgstr "Tas pat kaip ir Kairysis-Tempimas"
+
+#: ../src/prefs/MousePrefs.cpp:94
+#, fuzzy
+msgid "same as right-drag"
+msgstr "Tas pat kaip ir Kairysis-Tempimas"
+
+#: ../src/prefs/MousePrefs.cpp:109 ../src/prefs/MousePrefs.cpp:110
+#, fuzzy
+msgid "same as select tool"
+msgstr "Tas pat kaip ir apibraukimo įrankis"
+
+#: ../src/prefs/MousePrefs.cpp:111 ../src/prefs/MousePrefs.cpp:112
+#, fuzzy
+msgid "same as zoom tool"
+msgstr "Tas pat kaip ir Priartinimo įrankis"
+
+#: ../src/widgets/TimeTextCtrl.cpp:163
+msgid "samples"
+msgstr ""
+
+#: ../src/widgets/TimeTextCtrl.cpp:161
+#, fuzzy
+msgid "seconds"
+msgstr "%d sekundės"
+
+#: ../src/UploadDialog.cpp:289
+msgid "size (bytes)"
+msgstr ""
+
+#: ../src/FreqWindow.cpp:994
+msgid "spectrum.txt"
+msgstr "spektras.txt"
+
+#: ../src/widgets/MultiDialog.cpp:46
+#, fuzzy
+msgid "title"
+msgstr "Pavadinimas"
+
+#: ../src/effects/ChangePitch.cpp:290 ../src/effects/ChangePitch.cpp:336
+#: ../src/effects/ChangeSpeed.cpp:358 ../src/effects/ChangeTempo.cpp:231
+#: ../src/effects/ChangeTempo.cpp:262
+msgid "to"
+msgstr "į"
+
+#: ../src/Menus.cpp:349
+msgid "to Selection End"
+msgstr "į Apibraukimo Pabaigą"
+
+#: ../src/Menus.cpp:348
+msgid "to Selection Start"
+msgstr "į Apibraukimo Pradžią"
+
+#: ../src/Menus.cpp:354
+msgid "to Track End"
+msgstr "į Takelio Pabaigą"
+
+#: ../src/Menus.cpp:353
+msgid "to Track Start"
+msgstr "į Takelio Pradžią"
+
+#  i18n-hint: The translation of "translator_credits" will appear
+#  in the credits in the About Audacity window.  Use this to add
+#  your own name(s) to the credits.
+#  For example:  "English translation by Dominic Mazzoni."
+#. i18n-hint: The translation of "translator_credits" will appear
+#: ../src/AboutDialog.cpp:173 ../src/AboutDialog.cpp:175
+msgid "translator_credits"
+msgstr "Lithuanian translation by Šarūnas Gliebus"
+
+#: ../src/TrackPanel.cpp:5124 ../src/effects/ChangePitch.cpp:283
+msgid "up"
+msgstr "viršun"
+
+#: ../src/effects/ChangeSpeed.cpp:299
+msgid "using SampleRate, by Erik de Castro Lopo"
+msgstr "naudojant SampleRate, by Erik de Castro Lopo"
+
+#: ../src/effects/ChangePitch.cpp:258 ../src/effects/ChangeTempo.cpp:177
+msgid "using SoundTouch, by Olli Parviainen"
+msgstr "naudojant SoundTouch, by Olli Parviainen"
+
+#~ msgid "&Quick Mix"
+#~ msgstr "&Greitas Mixsas"
+
+#~ msgid ""
+#~ "An error occurred while opening the project file.\n"
+#~ "Some audio may not have been retrieved."
+#~ msgstr ""
+#~ "Atidarinėjant projekto failą įsivėlė klaida.\n"
+#~ "Kai kas gali būti nepasikrovę."
+
+#~ msgid "Can't import project file"
+#~ msgstr "Negaliu importuoti projekto failo"
+
+#~ msgid "Cursor: %.3lf NTSC frames (29.97 fps)   %s"
+#~ msgstr "Kursorius: %.3lf NTSC kadrai (29.97 fps)   %s"
+
+#~ msgid "Cursor: %.3lf PAL frames (25 fps)   %s"
+#~ msgstr "Kursorius: %.3lf PAL kadrai (25 fps)   %s"
+
+#~ msgid "Cursor: %.3lf film frames (24 fps)   %s"
+#~ msgstr "Kursorius: %.3lf filmo kadrai (24 fps)   %s"
+
+#~ msgid "Cursor: %02i:%02i:%06.3lf cdda min:sec:frames (75 fps)   %s"
+#~ msgstr "Kursorius: %02i:%02i:%06.3lf cdda min:sek:kadrai (75 fps)   %s"
+
+#~ msgid ""
+#~ "Cursor: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC "
+#~ "frames)   %s"
+#~ msgstr ""
+#~ "Kursorius: %1i:%02i:%02i:%06.3lf NTSC drop-frame h:mm:ss:ff (%.3lf NTSC "
+#~ "kadrai)   %s"
+
+#~ msgid ""
+#~ "Cursor: %1i:%02i:%02i:%06.3lf NTSC non-drop-frame h:mm:ss:ff (%.3lf NTSC "
+#~ "frames)   %s"
+#~ msgstr ""
+#~ "Kursorius: %1i:%02i:%02i:%06.3lf NTSC non-drop-kadrai h:mm:ss:ff (%.3lf "
+#~ "NTSC kadrai)   %s"
+
+#~ msgid ""
+#~ "Cursor: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL frames)   %"
+#~ "s"
+#~ msgstr ""
+#~ "Kursorius: %1i:%02i:%02i:%06.3lf PAL h:mm:ss:ff 25 fps (%.3lf PAL "
+#~ "kadrai)   %s"
+
+#~ msgid ""
+#~ "Cursor: %1i:%02i:%02i:%06.3lf film h:mm:ss:ff 24 fps (%.3lf film "
+#~ "frames)   %s"
+#~ msgstr ""
+#~ "Kursorius: %1i:%02i:%02i:%06.3lf filmo h:mm:ss:ff 24 fps (%.3lf filmo "
+#~ "kadrai)   %s"
+
+#~ msgid "Cursor: %1i:%02i:%09.6f hr:min:sec   %s"
+#~ msgstr "Kursorius: %1i:%02i:%09.6f val:min:sek   %s"
+
+#~ msgid ""
+#~ "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To "
+#~ "Samples]"
+#~ msgstr ""
+#~ "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai per sektorių)   "
+#~ "[Prikibimas Įjungtas]"
+
+#~ msgid ""
+#~ "Cursor: %i+%04i cdda sectors+bytes (2352 bytes per sector)   [Snap-To "
+#~ "Samples]   Change Project Rate to 44100 for cdda"
+#~ msgstr ""
+#~ "Kursorius: %i+%04i cdda sektoriai+baitai (2352 baitai per sektorių)   "
+#~ "[Prikibimas Įjungtas]   Pakeistas Projekto Dažnis į 44100 dėl cdda"
+
+#~ msgid "Cursor: %i+%i sec+samples   [Snap-To Samples]"
+#~ msgstr "Kursorius: %i+%i sek+samples   [Prikibimas Įjungtas]"
+
+#~ msgid "Cursor: %i:%02i+%i min:sec+samples   [Snap-To Samples]"
+#~ msgstr "Kursorius: %i:%02i+%i min:sek+samples   [Prikibimas Įjungtas]"
+
+#~ msgid "Cursor: %i:%09.6f min:sec   %s"
+#~ msgstr "Kursorius: %i:%09.6f min:sek   %s"
+
+#~ msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
+#~ msgstr "Kursorius: %i:%09.6lf min:sek   [Prikibimas Įjungtas]"
+
+#~ msgid "Cursor: %lf sec   %s"
+#~ msgstr "Kursorius: %lf sek   %s"
+
+#~ msgid "Cursor: %lf sec   [Snap-To Samples]"
+#~ msgstr "Kursorius: %lf sek   [Prikibimas Įjungtas]"
+
+#~ msgid "Cursor: %li samples   [Snap-To Samples]"
+#~ msgstr "Kursorius: %li samples   [Prikibimas Įjungtas]"
+
+#~ msgid "Documentation Writer"
+#~ msgstr "Parašė Dokumentaciją "
+
+#~ msgid "Enter a rate in Hz (samples per second):"
+#~ msgstr "Įveskite dažnį HZ:"
+
+#~ msgid "Less"
+#~ msgstr "Mažiau"
+
+#~ msgid "Main Logo"
+#~ msgstr "Pagrindinis Logo"
+
+#  i18n-hint: hours, minutes, seconds, frames
+#~ msgid "NTSC drop-frame h:mm:ss:ff"
+#~ msgstr "NTSC drop-kadrai h:mm:ss:ff"
+
+#  i18n-hint: hours, minutes, seconds, frames
+#~ msgid "NTSC non-drop-frame h:mm:ss:ff"
+#~ msgstr "NTSC non-drop-kadras h:mm:ss:ff"
+
+#  i18n-hint: fps is "frames per second"
+#~ msgid "PAL frames 25 fps"
+#~ msgstr "PAL kadrai 25 fps"
+
+#  i18n-hint: fps is "frames per second",
+#  and the other letters are for hours, minutes, seconds, frames
+#~ msgid "PAL h:mm:ss:ff 25 fps"
+#~ msgstr "PAL val:mm:ss:kadrai 25 fps"
+
+#~ msgid "Primary developer"
+#~ msgstr "Pirminis vykdytojas"
+
+#~ msgid "Programmer"
+#~ msgstr "Programuotojas"
+
+#~ msgid "Quick Mix"
+#~ msgstr "Greitas Miksas"
+
+#~ msgid "Quick mix"
+#~ msgstr "Greitas miksas"
+
+#~ msgid "Recording time remaining: %d minutes"
+#~ msgstr "Dar liko %d minučių įrašymo laiko."
+
+#~ msgid "Recording time remaining: %d seconds"
+#~ msgstr "Dar liko %d sekundžių įrašymo laiko."
+
+#~ msgid "Selection: %.3lf - %.3lf (%.3lf NTSC frames)   %s"
+#~ msgstr "Apibraukta: %.3lf - %.3lf (%.3lf NTSC kadrai)   %s"
+
+#~ msgid "Selection: %.3lf - %.3lf (%.3lf PAL frames)   %s"
+#~ msgstr "Apibraukimas: %.3lf - %.3lf (%.3lf PAL kadtai)   %s"
+
+#~ msgid "Selection: %.3lf - %.3lf (%.3lf film frames)   %s"
+#~ msgstr "Apibraukimas: %.3lf - %.3lf (%.3lf filmo kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf cdda "
+#~ "min:sec:frames)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %02i:%02i:%06.3lf - %02i:%02i:%06.3lf (%02i:%02i:%06.3lf "
+#~ "cdda min:sek:kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
+#~ "06.3lf NTSC drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%"
+#~ "02i:%06.3lf NTSC drop-kadrai h:mm:ss:ff) (%.3lf NTSC kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
+#~ "06.3lf NTSC non-drop-frame h:mm:ss:ff) (%.3lf NTSC frames)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%"
+#~ "02i:%06.3lf NTSC non-drop-kadrai h:mm:ss:ff) (%.3lf NTSC kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
+#~ "06.3lf PAL h:mm:ss:ff) (%.3lf PAL frames)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%"
+#~ "02i:%06.3lf PAL h:mm:ss:ff) (%.3lf PAL kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%02i:%"
+#~ "06.3lf film h:mm:ss:ff) (%.3lf film frames)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %1i:%02i:%02i:%06.3lf - %1i:%02i:%02i:%06.3lf (%1i:%02i:%"
+#~ "02i:%06.3lf filmo h:mm:ss:ff) (%.3lf filmo kadrai)   %s"
+
+#~ msgid ""
+#~ "Selection: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f hr:min:"
+#~ "sec)   %s"
+#~ msgstr ""
+#~ "Apibraukimas: %1i:%02i:%09.6f - %1i:%02i:%09.6f (%1i:%02i:%09.6f val:min:"
+#~ "sek)   %s"
+
+#~ msgid ""
+#~ "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To "
+#~ "Samples]"
+#~ msgstr ""
+#~ "Apibraukimas: %i+%04i - %i+%04i (%i+%04i cdda sektoriai+baitai)   "
+#~ "[Prikibimas Įjngtas]"
+
+#~ msgid ""
+#~ "Selection: %i+%04i - %i+%04i (%i+%04i cdda sectors+bytes)   [Snap-To "
+#~ "Samples]   Change Project Rate to 44100 for cdda"
+#~ msgstr ""
+#~ "Apibraukimas: %i+%04i - %i+%04i (%i+%04i cdda sektoriai+baitai)   "
+#~ "[Priokibimas Įjungtas]   Padeistas Projekto Dažnis į 44100 dėl cdda"
+
+#~ msgid "Selection: %i+%i - %i+%i (%i+%i sec+samples)   [Snap-To Samples]"
+#~ msgstr ""
+#~ "Apibraukimas: %i+%i - %i+%i (%i+%i sek+samples)   [Prikibimas Įjungtas]"
+
+#~ msgid ""
+#~ "Selection: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sec+samples)   [Snap-"
+#~ "To Samples]"
+#~ msgstr ""
+#~ "Apibraukimas: %i:%02i+%i - %i:%02i+%i (%i:%02i+%i min:sek+samples)   "
+#~ "[Prikibimas Įjungtas]"
+
+#~ msgid "Selection: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sec)   %s"
+#~ msgstr "Apibraukimas: %i:%09.6f - %i:%09.6f (%i:%09.6f min:sek)   %s"
+
+#~ msgid ""
+#~ "Selection: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sec)   [Snap-To "
+#~ "Samples]"
+#~ msgstr ""
+#~ "Apibraukimas: %i:%09.6lf - %i:%09.6lf (%i:%09.6lf min:sek)   [Prikibimas "
+#~ "Įjungtas]"
+
+#~ msgid "Selection: %lf - %lf (%lf sec)   %s"
+#~ msgstr "Apibraukimas: %lf - %lf (%lf sek)   %s"
+
+#~ msgid "Selection: %lf - %lf (%lf sec)   [Snap-To Samples]"
+#~ msgstr "Apibraukimas: %lf - %lf (%lf sek)   [Prikibimas Įjungtas]"
+
+#~ msgid "Selection: %li - %li (%li samples)   [Snap-To Samples]"
+#~ msgstr "Apibraukimas: %li - %li (%li samples)   [Prikibimas Įjungtas]"
+
+#~ msgid "Set Selection Format"
+#~ msgstr "Nustatyti Apibraukimo Formatą"
+
+#~ msgid ""
+#~ "The VU meters will now be disabled.\n"
+#~ "\n"
+#~ "To enable them again, open the Preferences dialog and click on the "
+#~ "Interface tab."
+#~ msgstr ""
+#~ "Juostinis matuoklis tuoj bus išjungtas.\n"
+#~ "\n"
+#~ "Jei norėsite jį vėl įjungti, reiks atidaryti Nuostatų dialogą ir vėl jį "
+#~ "įjunkti."
+
+#~ msgid ""
+#~ "The file you selected is an Audacity Project file.\n"
+#~ "\n"
+#~ "Only audio files, not project files, can be imported\n"
+#~ "into an existing project.  To open a project file,\n"
+#~ "select Open from the File menu.\n"
+#~ msgstr ""
+#~ "Failas, kurį pasirinkote yra Audacity Projekto failas.\n"
+#~ "\n"
+#~ "Tik audio failai, bet ne projektai gali būti importuoti\n"
+#~ "į jau egzistuojantį projektą. Projekto atidarymui pasirinkite Atidaryti "
+#~ "iš Failas meniu.\n"
+
+#~ msgid "Time shift sequence"
+#~ msgstr "Laiko perkėlimo seka"
+
+#  i18n-hint: This snap-to string will appear in the status bar.
+#~ msgid "[Snap-To Off]"
+#~ msgstr "[Prilipimas Išjungtas]"
+
+#  i18n-hint: This snap-to string will appear in the status bar.
+#~ msgid "[Snap-To On]"
+#~ msgstr "[Prilipimas Įjungtas]"
+
+#  i18n-hint: fps is "frames per second",
+#  cdda is "Compact Disc Digital Audio - don't translate
+#~ msgid "cdda min:sec:frames 75 fps"
+#~ msgstr "cdda min:sek:kadrai 75 fps"
+
+#  i18n-hint: cdda is "Compact Disc Digital Audio - don't translate.
+#  A "sector" is a technical term - don't translate unless you're sure
+#  you know the correct term.
+#~ msgid "cdda sectors+bytes (snap to samples)"
+#~ msgstr "cdda sektoriai+baitai (įjungti prikibimą)"
+
+#  i18n-hint: fps is "frames per second",
+#  and the other letters are for hours, minutes, seconds, frames
+#~ msgid "film h:mm:ss:ff 24 fps"
+#~ msgstr "filmo h:mm:ss:ff 24 fps"
+
+#~ msgid "hr:min:sec"
+#~ msgstr "val:min:sek"
+
+#~ msgid "min:sec"
+#~ msgstr "min:sec"
+
+#~ msgid "min:sec+samples (snap to samples)"
+#~ msgstr "min:sek+samples (įjungti prikibimą)"
+
+#~ msgid "samples (snap to samples)"
+#~ msgstr "samples (įjungti prikibimą)"
+
+#~ msgid "sec"
+#~ msgstr "sek"
+
+#~ msgid "sec (snap to samples)"
+#~ msgstr "sek (įjungti prikibimą)"
+
+#~ msgid "sec+samples (snap to samples)"
+#~ msgstr "sek+samples (įjungti prikibimą)"
