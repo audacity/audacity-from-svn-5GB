@@ -180,7 +180,8 @@ bool EffectTruncSilence::ProcessOne()
                   buffer[truncIndex] = buffer[curOffset + fr];
                   truncIndex++;
                }
-               BlendFrames(buffer, mBlendFrameCount,
+               if(((truncIndex - rampInFrames) - mBlendFrameCount) >= 0)
+                  BlendFrames(buffer, mBlendFrameCount,
                           ((truncIndex - rampInFrames) - mBlendFrameCount), 
                           ((i - rampInFrames) - mBlendFrameCount));
             }
