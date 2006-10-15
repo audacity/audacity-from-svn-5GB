@@ -80,6 +80,9 @@ class GrabberEvent:public wxCommandEvent
 
 typedef void (wxEvtHandler::*GrabberEventFunction)(GrabberEvent &);
 
+#define GrabberEventHandler(func) \
+    (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent(GrabberEventFunction, &func)
+
 #define EVT_GRABBER(id, fn) \
     DECLARE_EVENT_TABLE_ENTRY(EVT_GRABBER_CLICKED, id, wxID_ANY, \
     (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) \

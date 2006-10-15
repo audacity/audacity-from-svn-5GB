@@ -141,20 +141,19 @@ void ToolDock::LayoutToolBars()
    int ndx, stkcnt = 0;
    int width, height;
 
+   // Get size of our parent since we haven't been sized yet
+   GetParent()->GetClientSize( &width, &height );
+   width -= toolbarGap;
+   height -= toolbarGap;
+
    // Get the number of docked toolbars and take a quick exit
    // if we don't have any
    int cnt = mDockedBars.GetCount();
    if( cnt == 0 )
    {
-      // Set the size of the dock window
-      SetMinSize( wxSize( -1, toolbarGap ) );
+      SetMinSize( wxSize( width, toolbarGap ) );
       return;
    }
-
-   // Get size of our parent since we haven't been sized yet
-   GetParent()->GetClientSize( &width, &height );
-   width -= toolbarGap;
-   height -= toolbarGap;
 
    // Set initial stack entry to maximum size
    stack[ 0 ].SetX( toolbarGap );
@@ -473,7 +472,7 @@ void ToolDock::OnToolBarUpdate( wxCommandEvent & event )
 //
 void ToolDock::OnSize( wxSizeEvent & event )
 {
-//   Refresh( false );
+//   event.Skip();
 }
 
 //

@@ -1082,7 +1082,6 @@ void AudacityProject::UpdateLayout()
    SetSizeHints(250, (mainsz.y - sbpos.y) + tppos.y + 50, 20000, 20000);
 }
 
-
 void AudacityProject::HandleResize()
 {
    if (!mTrackPanel) 
@@ -1092,7 +1091,6 @@ void AudacityProject::HandleResize()
 
    UpdateLayout();
 }
-
 
 void AudacityProject::OnIconize(wxIconizeEvent &event)
 {
@@ -1397,9 +1395,15 @@ void AudacityProject::OnCloseWindow(wxCloseEvent & event)
 
    // Destroy the TrackPanel early so it's not around once we start
    // deleting things like tracks and such out from underneath it.
-   // The DestroyChildren() takes care of this for us.
-   DestroyChildren();
+   mTrackPanel->Destroy();
    mTrackPanel = NULL;              // Make sure this gets set...see HandleResize()
+
+   // Delete the tool manager before the children since it needs
+   // to save the state of the toolbars.
+   delete mToolManager;
+   mToolManager = NULL;
+
+   DestroyChildren();
 
    delete mImporter;
    mImporter = NULL;
