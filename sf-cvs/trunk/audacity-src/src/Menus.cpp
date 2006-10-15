@@ -957,11 +957,33 @@ void AudacityProject::ModifyUndoMenus()
       mCommandManager.Modify(wxT("Undo"),
                              wxString::Format(_("&Undo %s"),
                                               desc.c_str()));
+      // LL:  Hackage Alert!!!
+      //
+      // On the Mac, all menu state changes are ignored if a modal
+      // dialog is displayed.
+      //
+      // An example of this is when applying chains where the "Undo"
+      // menu state should change when each command executes.  But,
+      // since the state changes are ignored, the "Undo" menu item
+      // will never get enabled.  And unfortunately, this will cause
+      // the menu item to be permanently disabled since the recorded
+      // state is enabled (even though it isn't) causing the routines
+      // to ignore the new enable request.
+      //
+      // So, the workaround is to transition the item back to disabled
+      // and then to enabled.  (Sorry, I couldn't find a better way of
+      // doing it.)
+      //
+      // See src/mac/carbon/menuitem.cpp, wxMenuItem::Enable() for more
+      // info.
+      mCommandManager.Enable(wxT("Undo"), false);
       mCommandManager.Enable(wxT("Undo"), true);
    }
    else {
       mCommandManager.Modify(wxT("Undo"), 
                              wxString::Format(_("Can't Undo")));
+      // LL: See above
+      mCommandManager.Enable(wxT("Undo"), true);
       mCommandManager.Enable(wxT("Undo"), false);
    }
 
