@@ -4158,6 +4158,11 @@ void AudacityProject::OnApplyChain()
 {
    BatchProcessDialog d(this);
    d.ShowModal();
+
+   // LL:  See comments in ModifyUndoMenus() for info about this...
+   //
+   // Refresh the Undo menu.
+   ModifyUndoMenus();
 }
 
 void AudacityProject::OnEditChains()
