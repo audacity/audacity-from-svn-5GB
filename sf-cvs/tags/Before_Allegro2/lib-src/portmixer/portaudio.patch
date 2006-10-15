@@ -1,0 +1,525 @@
+diff -wruN orig/pa/configure pa/configure
+--- configure	2006-09-04 17:47:10.000000000 -0500
++++ configure	2006-09-04 18:02:35.000000000 -0500
+@@ -20432,7 +20432,7 @@
+ #define PA_USE_COREAUDIO 1
+ _ACEOF
+ 
+-	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o";
++	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/ringbuffer.o";
+ 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
+ 	PADLL="libportaudio.dylib";
+ 	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib";
+diff -ruN orig/lib-src/portaudio-v19/configure.in b4build/audacity/lib-src/portaudio-v19/configure.in
+--- orig/lib-src/portaudio-v19/configure.in	2006-09-23 13:42:43.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/configure.in	2006-10-01 18:43:36.000000000 -0500
+@@ -136,7 +136,7 @@
+ 	dnl Mac OS X configuration
+ 
+ 	AC_DEFINE(PA_USE_COREAUDIO)
+-	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o";
++	OTHER_OBJS="src/os/mac_osx/pa_mac_hostapis.o src/os/unix/pa_unix_util.o src/hostapi/coreaudio/pa_mac_core.o src/hostapi/coreaudio/pa_mac_core_blocking.o src/hostapi/coreaudio/pa_mac_core_utilities.o src/hostapi/coreaudio/ringbuffer.o";
+ 	LIBS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon";
+ 	PADLL="libportaudio.dylib";
+ 	SHARED_FLAGS="-framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon -dynamiclib";
+diff -ruN orig/lib-src/portaudio-v19/include/pa_linux_alsa.h b4build/audacity/lib-src/portaudio-v19/include/pa_linux_alsa.h
+--- orig/lib-src/portaudio-v19/include/pa_linux_alsa.h	2006-09-23 13:42:45.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/include/pa_linux_alsa.h	2006-10-01 18:43:36.000000000 -0500
+@@ -63,6 +63,10 @@
+ 
+ void PaAlsa_EnableWatchdog( PaStream *s, int enable );
+ 
++int PaAlsa_GetInputCard( PaStream *s );
++
++int PaAlsa_GetOutputCard( PaStream *s );
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff -ruN orig/lib-src/portaudio-v19/include/pa_mac_core.h b4build/audacity/lib-src/portaudio-v19/include/pa_mac_core.h
+--- orig/lib-src/portaudio-v19/include/pa_mac_core.h	2006-09-23 13:42:45.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/include/pa_mac_core.h	2006-10-01 18:43:36.000000000 -0500
+@@ -58,14 +58,7 @@
+ 
+ /* Use this function to initialize a paMacCoreStreamInfo struct
+    using the requested flags. */
+-void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
+-{
+-   bzero( data, sizeof( paMacCoreStreamInfo ) );
+-   data->size = sizeof( paMacCoreStreamInfo );
+-   data->hostApiType = paCoreAudio;
+-   data->version = 0x01;
+-   data->flags = flags;
+-}
++void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags );
+ 
+ /*
+  * The following flags alter the behaviour of PA on the mac platform.
+@@ -76,20 +69,20 @@
+  * which allows for much lower latency, but might disrupt the device
+  * if other programs are using it, even when you are just Querying
+  * the device. */
+-const unsigned long paMacCore_ChangeDeviceParameters      = 0x01;
++#define paMacCore_ChangeDeviceParameters        (0x01)
+ 
+ /* In combination with the above flag,
+  * causes the stream opening to fail, unless the exact sample rates
+  * are supported by the device. */
+-const unsigned long paMacCore_FailIfConversionRequired    = 0x02;
++#define paMacCore_FailIfConversionRequired      (0x02)
+ 
+ /* These flags set the SR conversion quality, if required. The wierd ordering
+  * allows Maximum Quality to be the default.*/
+-const unsigned long paMacCore_ConversionQualityMin    = 0x0100;
+-const unsigned long paMacCore_ConversionQualityMedium = 0x0200;
+-const unsigned long paMacCore_ConversionQualityLow    = 0x0300;
+-const unsigned long paMacCore_ConversionQualityHigh   = 0x0400;
+-const unsigned long paMacCore_ConversionQualityMax    = 0x0000;
++#define paMacCore_ConversionQualityMin          (0x0100)
++#define paMacCore_ConversionQualityMedium       (0x0200)
++#define paMacCore_ConversionQualityLow          (0x0300)
++#define paMacCore_ConversionQualityHigh         (0x0400)
++#define paMacCore_ConversionQualityMax          (0x0000)
+ 
+ /*
+  * Here are some "preset" combinations of flags (above) to get to some
+@@ -98,15 +91,32 @@
+  */
+ /*This is the default setting: do as much sample rate conversion as possible
+  * and as little mucking with the device as possible. */
+-const unsigned long paMacCorePlayNice = 0x00;
++#define paMacCorePlayNice                       (0x00)
+ /*This setting is tuned for pro audio apps. It allows SR conversion on input
+   and output, but it tries to set the appropriate SR on the device.*/
+-const unsigned long paMacCorePro      = 0x01;
++#define paMacCorePro                            (0x01)
+ /*This is a setting to minimize CPU usage and still play nice.*/
+-const unsigned long paMacCoreMinimizeCPUButPlayNice = 0x0100;
++#define paMacCoreMinimizeCPUButPlayNice         (0x0100)
+ /*This is a setting to minimize CPU usage, even if that means interrupting the device. */
+-const unsigned long paMacCoreMinimizeCPU = 0x0101;
++#define paMacCoreMinimizeCPU                    (0x0101)
++
++/*
++ * Retrieve the AudioDeviceID of the input device assigned to an open stream
++ *
++ * @param s The stream to query.
++ *
++ * @return A valid AudioDeviceID, or NULL if an error occurred.
++ */
++AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
+ 
++/*
++ * Retrieve the AudioDeviceID of the output device assigned to an open stream
++ *
++ * @param s The stream to query.
++ *
++ * @return A valid AudioDeviceID, or NULL if an error occurred.
++ */
++AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s );
+ 
+ #ifdef __cplusplus
+ }
+diff -ruN orig/lib-src/portaudio-v19/include/pa_unix_oss.h b4build/audacity/lib-src/portaudio-v19/include/pa_unix_oss.h
+--- orig/lib-src/portaudio-v19/include/pa_unix_oss.h	1969-12-31 18:00:00.000000000 -0600
++++ b4build/audacity/lib-src/portaudio-v19/include/pa_unix_oss.h	2006-10-01 18:52:20.000000000 -0500
+@@ -0,0 +1,52 @@
++#ifndef PA_UNIX_OSS_H
++#define PA_UNIX_OSS_H
++
++/*
++ * $Id: portaudio.patch,v 1.1 2006-10-02 00:27:52 llucius Exp $
++ * PortAudio Portable Real-Time Audio Library
++ * OSS-specific extensions
++ *
++ * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * Any person wishing to distribute modifications to the Software is
++ * requested to send the modifications to the original developer so that
++ * they can be incorporated into the canonical version.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
++ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++/** @file
++ * OSS-specific PortAudio API extension header file.
++ */
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++const char *PaOSS_GetInputDevice( PaStream *s );
++
++const char *PaOSS_GetOutputDevice( PaStream *s );
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif
+diff -ruN orig/lib-src/portaudio-v19/include/pa_win_ds.h b4build/audacity/lib-src/portaudio-v19/include/pa_win_ds.h
+--- orig/lib-src/portaudio-v19/include/pa_win_ds.h	1969-12-31 18:00:00.000000000 -0600
++++ b4build/audacity/lib-src/portaudio-v19/include/pa_win_ds.h	2006-10-01 18:52:32.000000000 -0500
+@@ -0,0 +1,69 @@
++#ifndef PA_WIN_DS_H
++#define PA_WIN_DS_H
++/*
++ * $Id: portaudio.patch,v 1.1 2006-10-02 00:27:52 llucius Exp $
++ * PortAudio Portable Real-Time Audio Library
++ * DirectSound specific extensions
++ *
++ * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files
++ * (the "Software"), to deal in the Software without restriction,
++ * including without limitation the rights to use, copy, modify, merge,
++ * publish, distribute, sublicense, and/or sell copies of the Software,
++ * and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * Any person wishing to distribute modifications to the Software is
++ * requested to send the modifications to the original developer so that
++ * they can be incorporated into the canonical version.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
++ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++ * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
++ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ */
++
++/** @file
++ @brief DirectSound-specific PortAudio API extension header file.
++*/
++
++
++#include "portaudio.h"
++
++#ifdef __cplusplus
++extern "C"
++{
++#endif /* __cplusplus */
++
++
++/** Retrieve the GUID of the input device.
++
++ @param stream The stream to query.
++
++ @return A pointer to the GUID, or NULL if none.
++*/
++LPGUID PaWinDS_GetStreamInputGUID( PaStream* s );
++
++
++/** Retrieve the GUID of the output device.
++
++ @param stream The stream to query.
++
++ @return A pointer to the GUID, or NULL if none.
++*/
++LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s );
++
++#ifdef __cplusplus
++}
++#endif /* __cplusplus */
++
++#endif /* PA_WIN_DS_H */
+diff -ruN orig/lib-src/portaudio-v19/include/portaudio.h b4build/audacity/lib-src/portaudio-v19/include/portaudio.h
+--- orig/lib-src/portaudio-v19/include/portaudio.h	2006-09-23 13:42:46.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/include/portaudio.h	2006-10-01 18:43:36.000000000 -0500
+@@ -1105,6 +1105,15 @@
+ signed long Pa_GetStreamWriteAvailable( PaStream* stream );
+ 
+ 
++/** Retrieve the host type handling an open stream.
++
++ @return Returns a non-negative value representing the host API type
++ handling an open stream or, a PaErrorCode (which are always negative)
++ if PortAudio is not initialized or an error is encountered.
++*/
++PaHostApiTypeId Pa_GetStreamHostApiType( PaStream* stream );
++
++
+ /* Miscellaneous utilities */
+ 
+ 
+diff -ruN orig/lib-src/portaudio-v19/src/common/pa_front.c b4build/audacity/lib-src/portaudio-v19/src/common/pa_front.c
+--- orig/lib-src/portaudio-v19/src/common/pa_front.c	2006-09-23 13:42:47.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_front.c	2006-10-01 18:43:36.000000000 -0500
+@@ -1327,8 +1327,10 @@
+                                   hostApiInputParametersPtr, hostApiOutputParametersPtr,
+                                   sampleRate, framesPerBuffer, streamFlags, streamCallback, userData );
+ 
+-    if( result == paNoError )
++    if( result == paNoError ) {
+         AddOpenStream( *stream );
++        PA_STREAM_REP(*stream)->hostApiType = hostApi->info.type;
++    }
+ 
+ 
+ #ifdef PA_LOG_API_CALLS
+@@ -1915,6 +1917,33 @@
+ }
+ 
+ 
++PaHostApiTypeId Pa_GetStreamHostApiType( PaStream* stream )
++{
++    PaError error = PaUtil_ValidateStreamPointer( stream );
++    PaHostApiTypeId result;
++
++#ifdef PA_LOG_API_CALLS
++    PaUtil_DebugPrint("Pa_GetStreamHostApiType called:\n" );
++    PaUtil_DebugPrint("\tPaStream* stream: 0x%p\n", stream );
++#endif
++
++    if( error == paNoError )
++    {
++        result = PA_STREAM_REP(stream)->hostApiType;
++    }
++    else
++    {
++        result = (PaHostApiTypeId) error;
++    }
++
++#ifdef PA_LOG_API_CALLS
++    PaUtil_DebugPrint("Pa_GetStreamHostApiType returned:\n" );
++    PaUtil_DebugPrint("\tPaError: %d ( %s )\n\n", result, Pa_GetErrorText( result ) );
++#endif
++
++    return result;
++}
++
+ PaError Pa_GetSampleSize( PaSampleFormat format )
+ {
+     int result;
+diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.c b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.c
+--- orig/lib-src/portaudio-v19/src/common/pa_stream.c	2006-09-23 13:42:47.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.c	2006-10-01 18:43:36.000000000 -0500
+@@ -93,6 +93,8 @@
+     streamRepresentation->streamInfo.inputLatency = 0.;
+     streamRepresentation->streamInfo.outputLatency = 0.;
+     streamRepresentation->streamInfo.sampleRate = 0.;
++
++    streamRepresentation->hostApiType = 0;
+ }
+ 
+ 
+diff -ruN orig/lib-src/portaudio-v19/src/common/pa_stream.h b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.h
+--- orig/lib-src/portaudio-v19/src/common/pa_stream.h	2006-09-23 13:42:47.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/common/pa_stream.h	2006-10-01 18:43:36.000000000 -0500
+@@ -152,6 +152,7 @@
+     PaStreamFinishedCallback *streamFinishedCallback;
+     void *userData;
+     PaStreamInfo streamInfo;
++    PaHostApiTypeId hostApiType;
+ } PaUtilStreamRepresentation;
+ 
+ 
+diff -ruN orig/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c
+--- orig/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c	2006-09-23 13:42:47.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/alsa/pa_linux_alsa.c	2006-10-01 18:43:36.000000000 -0500
+@@ -3321,3 +3321,40 @@
+     stream->threading.useWatchdog = enable;
+ #endif
+ }
++
++int PaAlsa_GetInputCard( PaStream *s )
++{
++    PaAlsaStream *stream = (PaAlsaStream *) s;
++    snd_pcm_info_t *pcmInfo;
++    int card = -1;
++
++    if( stream->capture.pcm )
++    {
++        snd_pcm_info_alloca( &pcmInfo );
++        if( snd_pcm_info( stream->capture.pcm, pcmInfo ) >= 0 )
++        {
++            card = snd_pcm_info_get_card( pcmInfo );
++        }
++    }
++
++    return card;
++}
++
++int PaAlsa_GetOutputCard( PaStream *s )
++{
++    PaAlsaStream *stream = (PaAlsaStream *) s;
++    snd_pcm_info_t *pcmInfo;
++    int card = -1;
++
++    if( stream->playback.pcm )
++    {
++        snd_pcm_info_alloca( &pcmInfo );
++        if( snd_pcm_info( stream->playback.pcm, pcmInfo ) >= 0 )
++        {
++            card = snd_pcm_info_get_card( pcmInfo );
++        }
++    }
++
++    return card;
++}
++
+diff -ruN orig/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c
+--- orig/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c	2006-09-23 13:42:48.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/coreaudio/pa_mac_core.c	2006-10-01 18:43:36.000000000 -0500
+@@ -2038,3 +2038,30 @@
+ 
+     return PaUtil_GetCpuLoad( &stream->cpuLoadMeasurer );
+ }
++
++/* Use this function to initialize a paMacCoreStreamInfo struct
++   using the requested flags. */
++void paSetupMacCoreStreamInfo( paMacCoreStreamInfo *data, unsigned long flags )
++{
++   bzero( data, sizeof( paMacCoreStreamInfo ) );
++   data->size = sizeof( paMacCoreStreamInfo );
++   data->hostApiType = paCoreAudio;
++   data->version = 0x01;
++   data->flags = flags;
++}
++
++AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s )
++{
++    PaMacCoreStream *stream = (PaMacCoreStream*)s;
++    VVDBUG(("PaMacCore_GetStreamInputHandle()\n"));
++
++    return ( stream->inputDevice );
++}
++
++AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s )
++{
++    PaMacCoreStream *stream = (PaMacCoreStream*)s;
++    VVDBUG(("PaMacCore_GetStreamOutputHandle()\n"));
++
++    return ( stream->outputDevice );
++}
+diff -ruN orig/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c
+--- orig/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c	2006-09-23 13:42:49.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/dsound/pa_win_ds.c	2006-10-01 18:43:36.000000000 -0500
+@@ -198,6 +198,7 @@
+ /* DirectSound specific data. */
+ 
+ /* Output */
++    LPGUID               pOutputGuid;
+     LPDIRECTSOUND        pDirectSound;
+     LPDIRECTSOUNDBUFFER  pDirectSoundOutputBuffer;
+     DWORD                outputBufferWriteOffsetBytes;     /* last write position */
+@@ -213,6 +214,7 @@
+     double               dsw_framesWritten;
+     double               framesPlayed;
+ /* Input */
++    LPGUID               pInputGuid;
+     LPDIRECTSOUNDCAPTURE pDirectSoundCapture;
+     LPDIRECTSOUNDCAPTUREBUFFER   pDirectSoundInputBuffer;
+     INT                  bytesPerInputFrame;
+@@ -1267,8 +1269,8 @@
+     PaWinDsHostApiRepresentation *winDsHostApi = (PaWinDsHostApiRepresentation*)hostApi;
+     PaWinDsStream *stream = 0;
+     int inputChannelCount, outputChannelCount;
+-    PaSampleFormat inputSampleFormat, outputSampleFormat;
+-    PaSampleFormat hostInputSampleFormat, hostOutputSampleFormat;
++    PaSampleFormat inputSampleFormat = 0, outputSampleFormat = 0;
++    PaSampleFormat hostInputSampleFormat = 0, hostOutputSampleFormat = 0;
+     unsigned long suggestedInputLatencyFrames, suggestedOutputLatencyFrames;
+ 
+     if( inputParameters )
+@@ -1486,6 +1488,11 @@
+                 goto error;
+             }
+ 
++            stream->pOutputGuid = winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID;
++            if( stream->pOutputGuid == NULL )
++            {
++               stream->pOutputGuid = (GUID *) &DSDEVID_DefaultPlayback;
++            }
+ 
+             hr = paWinDsDSoundEntryPoints.DirectSoundCreate( winDsHostApi->winDsDeviceInfos[outputParameters->device].lpGUID,
+                         &stream->pDirectSound, NULL );
+@@ -1532,6 +1539,12 @@
+                 goto error;
+             }
+ 
++            stream->pInputGuid = winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID;
++            if( stream->pInputGuid == NULL )
++            {
++               stream->pInputGuid = (GUID *)&DSDEVID_DefaultCapture;
++            }
++
+             hr = paWinDsDSoundEntryPoints.DirectSoundCaptureCreate( winDsHostApi->winDsDeviceInfos[inputParameters->device].lpGUID,
+                         &stream->pDirectSoundCapture,   NULL );
+             if( hr != DS_OK )
+@@ -2193,4 +2206,19 @@
+ }
+ 
+ 
++/***********************************************************************************/
++LPGUID PaWinDS_GetStreamInputGUID( PaStream* s )
++{
++    PaWinDsStream *stream = (PaWinDsStream*)s;
+ 
++   return stream->pInputGuid;
++}
++
++
++/***********************************************************************************/
++LPGUID PaWinDS_GetStreamOutputGUID( PaStream* s )
++{
++    PaWinDsStream *stream = (PaWinDsStream*)s;
++
++    return stream->pOutputGuid;
++}
+diff -ruN orig/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c b4build/audacity/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c
+--- orig/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c	2006-09-23 13:42:50.000000000 -0500
++++ b4build/audacity/lib-src/portaudio-v19/src/hostapi/oss/pa_unix_oss.c	2006-10-01 18:43:36.000000000 -0500
+@@ -1933,3 +1933,26 @@
+     return (PaOssStreamComponent_BufferSize( stream->playback ) - delay) / PaOssStreamComponent_FrameSize( stream->playback );
+ }
+ 
++const char *PaOSS_GetInputDevice( PaStream* s )
++{
++    PaOssStream *stream = (PaOssStream*)s;
++
++    if( stream->capture )
++    {
++      return stream->capture->devName;
++    }
++
++   return NULL;
++}
++
++const char *PaOSS_GetOutputDevice( PaStream* s )
++{
++    PaOssStream *stream = (PaOssStream*)s;
++
++    if( stream->playback )
++    {
++      return stream->playback->devName;
++    }
++
++   return NULL;
++}
