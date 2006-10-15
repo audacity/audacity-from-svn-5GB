@@ -270,6 +270,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
    d.Show();
    Hide();
 
+   mBatchCommands.ReadChain(name);
    for (i = 0; i < (int)files.GetCount(); i++) {
       wxWindowDisabler wd(&d);
       if (i > 0) {
@@ -279,7 +280,6 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
       mList->SetItemImage(i, 1, 1);
       mList->EnsureVisible(i);
 
-      mBatchCommands.ReadChain(name);
       if (!mBatchCommands.ApplyChain(files[i])) {
          break;
       }
