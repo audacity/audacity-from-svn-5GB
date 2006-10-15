@@ -490,6 +490,13 @@ void ToolBar::OnLeftDown( wxMouseEvent & event )
    // Go ahead and set the event to propagate
    event.Skip();
 
+   // Don't do anything if we're not docked
+   if( !IsDocked() )
+   {
+      return;
+   }
+
+   // Can we be resized?
    if( IsResizeable() )
    {
       wxPoint pos = event.GetPosition();
@@ -518,12 +525,19 @@ void ToolBar::OnLeftUp( wxMouseEvent & event )
    {
       ReleaseMouse();
    }
+   SetCursor( wxCURSOR_ARROW );
 }
 
 void ToolBar::OnMotion( wxMouseEvent & event )
 {
    // Go ahead and set the event to propagate
    event.Skip();
+
+   // Don't do anything if we're not docked
+   if( !IsDocked() )
+   {
+      return;
+   }
 
    // Retrieve the mouse position
    wxPoint pos = ClientToScreen( event.GetPosition() );

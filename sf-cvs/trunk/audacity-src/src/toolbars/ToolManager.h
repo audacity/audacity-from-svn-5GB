@@ -37,7 +37,7 @@ class wxWindow;
 /// class ToolManager
 ////////////////////////////////////////////////////////////
 
-class ToolManager:public wxFrame
+class ToolManager:public wxEvtHandler
 {
 
  public:
@@ -66,12 +66,9 @@ class ToolManager:public wxFrame
 
    void OnTimer( wxTimerEvent & event );
    void OnMouse( wxMouseEvent & event );
-   void OnFloat( wxCommandEvent & event );
    void OnGrabber( GrabberEvent & event );
    void OnPaint( wxPaintEvent & event );
-#if defined(__WXGTK__)
    void OnCreate( wxWindowCreateEvent & event );
-#endif
   
    void ReadConfig();
    void WriteConfig();
@@ -103,10 +100,11 @@ class ToolManager:public wxFrame
 
    ToolBar *mBars[ ToolBarCount ];
 
+   wxWindow *mDragWindow;
+
  public:
 
    DECLARE_CLASS( ToolManager );
-   DECLARE_EVENT_TABLE();
 };
 
 #endif
