@@ -1047,6 +1047,10 @@ void TrackPanel::OnSize(wxSizeEvent & /* event */)
    int width, height;
    GetSize( &width, &height );
 
+   // wxMac doesn't like zero dimensions, so protect against it
+   width = width == 0 ? 1 : width;
+   height = height == 0 ? 1 : height;
+
    // (Re)allocate the backing bitmap
    if( mBacking )
    {
