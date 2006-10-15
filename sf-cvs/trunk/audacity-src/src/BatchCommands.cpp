@@ -32,6 +32,7 @@ See also BatchCommandDialog and BatchProcessDialog.
 #include "Internat.h"
 #include "Prefs.h"
 #include "Shuttle.h"
+#include "export/ExportFLAC.h"
 #include "export/ExportMP3.h"
 #include "export/ExportOGG.h"
 #include "export/ExportPCM.h"
@@ -55,6 +56,7 @@ wxString SpecialCommands[] = {
    wxT("Save Hq Master1"),
    wxT("Save Hq Master2"),
    wxT("Stereo To Mono"),
+   wxT("ExportFlac"),
    wxT("ExportMp3"),
    wxT("ExportOgg"),
    wxT("ExportWav")
@@ -489,6 +491,17 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
       return ::ExportOGG(project, numChannels, filename, false, 0.0, endTime);
 #else
       wxMessageBox(_("Ogg Vorbis support is not included in this build of Audacity"));
+      return false;
+#endif
+   } else if (command == wxT("ExportFlac")){
+#ifdef USE_LIBFLAC
+      filename.Replace(wxT(".mp3"), wxT(".flac"), false);
+      double endTime = GetEndTime();
+      if( endTime <= 0.0f )
+         return false;
+      return ::ExportFLAC(project, numChannels, filename, false, 0.0, endTime);
+#else
+      wxMessageBox(_("FLAC support is not included in this build of Audacity"));
       return false;
 #endif
    } 
