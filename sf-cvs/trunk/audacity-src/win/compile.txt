@@ -13,7 +13,7 @@ Authors:
 
 ========================================================================
 This version is currently accurate for Audacity version 1.3.2.
-Last Updated: August 10, 2006
+Last Updated: October 16, 2006
 If the advice here is inaccurate or incomplete, please
 email audacity-devel@lists.sourceforge.net.
 See also "http://audacityteam.org/wiki/index.pl?CompilingAudacity".
@@ -165,9 +165,11 @@ SDK.  The installation will automatically define the DXSDK_DIR
 environment variable and its presense will cause DirectSound
 support to be automatically included when Audacity is built.
 
-If you wish ASIO support, install the ASIO SDK and define an
-environment variable like you did for WXWIN above.  The value
-should be the full path to the base directory of the ASIO SDK.
+If you wish ASIO support, install the ASIO SDK from Steinberg 
+(http://www.steinberg.net/), then define an environment variable 
+called ASIOSDK_DIR, as you did for WXWIN above. The value should be 
+the full path to the base directory of the ASIO SDK, e.g., 
+         set ASIOSDK_DIR=C:\ASIOSDK2
 
 Select the configuration that you wish to build:
 * "Release" for general use 
