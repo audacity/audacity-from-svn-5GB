@@ -229,7 +229,6 @@ void BatchCommands::SetCleanSpeechChain()
 // Commands (at least currently) don't.  Messy.
 
 /* i18n-hint: Effect name translations must agree with those used elsewhere, or batch won't find them */
-   AddToChain( wxT("Import") );
    AddToChain(   _("Stereo To Mono") );
    AddToChain(   _("Normalize") );
    AddToChain( wxT("Save Hq Master1") );
@@ -244,7 +243,6 @@ void BatchCommands::SetWavToMp3Chain()
 {
    ResetChain();
  
-   AddToChain( wxT("Import") );
    AddToChain(   _("Normalize") );
    AddToChain( wxT("ExportMp3") );
 }
@@ -457,9 +455,7 @@ bool BatchCommands::ApplySpecialCommand(int iCommand, const wxString command,con
    if( command == wxT("No Action")){
       return true;
    } else if (!mFileName.IsEmpty() && command == wxT("Import") ){
-      project->OnRemoveTracks();
-      project->Import(mFileName);
-      project->OnSelectAll();
+      // historically this was in use, now ignored if there
       return true;
    } else if (command == wxT("Save Hq Master1")){
       filename.Replace(wxT("cleaned/"), wxT("cleaned/MasterBefore_"), false);
