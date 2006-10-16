@@ -82,12 +82,12 @@ versions.
    "Setup Headers" group within the "core" project and change
    the wxAccessible define within setup.h to 1. 
 
-4. Build the Debug and Release configurations for all the
-   wxWidgets projects.
-
-5. A Unicode Debug version of Audacity for Windows is under 
-   development. If you want to build that, also build the 
-   Unicode Debug configuration of wxWidgets at this point.
+4. Build the configurations for all the wxWidgets projects 
+   corresponding to which configurations of Audacity you want 
+   to build. Audacity for Windows is available in Debug, Release, 
+   Unicode Debug and Unicode Release configurations. So, e.g., 
+   if you plan to build Unicode Release Audacity, you need to 
+   have built Unicode Release wxWidgets.
 
 
 --------------------------
