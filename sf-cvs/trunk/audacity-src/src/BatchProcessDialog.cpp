@@ -280,7 +280,10 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
       mList->SetItemImage(i, 1, 1);
       mList->EnsureVisible(i);
 
-      if (!mBatchCommands.ApplyChain(files[i])) {
+      project->OnRemoveTracks();
+      project->Import(files[i]);
+      project->OnSelectAll();
+      if (!mBatchCommands.ApplyChain()) {
          break;
       }
 
@@ -288,6 +291,7 @@ void BatchProcessDialog::OnApplyToFiles(wxCommandEvent &event)
          break;
       }
    }
+   project->OnRemoveTracks();
 
    EndModal(true);
 }
