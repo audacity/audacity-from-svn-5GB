@@ -270,6 +270,7 @@ bool ShuttleCli::ExchangeWithMaster(const wxString & Name)
    else
    {
       int i;
+      mParams = wxT(" ")+mParams;
       i=mParams.Find( wxT(" ")+Name+wxT("=") );
       if( i>=0 )
       {
