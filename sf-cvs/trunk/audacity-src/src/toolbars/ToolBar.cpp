@@ -206,7 +206,6 @@ void ToolBar::ReCreateButtons()
    // Set the true AND minimum sizes and do final layout
    SetBestFittingSize(sz);
    Layout();
-   SetAutoLayout(false);
 }
 
 ToolDock *ToolBar::GetDock()
@@ -444,9 +443,6 @@ void ToolBar::SetButton( bool down, AButton * button )
 //
 void ToolBar::OnSize( wxSizeEvent & event )
 {
-   wxSize sz = GetSize();
-   Layout();
-   Move( 1, 1 );
    Refresh( false );
 }
 
