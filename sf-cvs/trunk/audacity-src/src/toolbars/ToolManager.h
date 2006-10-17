@@ -67,26 +67,22 @@ class ToolManager:public wxEvtHandler
    void OnTimer( wxTimerEvent & event );
    void OnMouse( wxMouseEvent & event );
    void OnGrabber( GrabberEvent & event );
-   void OnPaintIndicator( wxPaintEvent & event );
-   void OnPaintFloat( wxPaintEvent & event );
+   void OnPaint( wxPaintEvent & event );
    void OnCreate( wxWindowCreateEvent & event );
   
    void ReadConfig();
    void WriteConfig();
-   void StartDrag( wxPoint & pos );
+   void StartDrag( const wxPoint & pos );
    void Updated();
 
    wxWindow *mParent;
 
-   wxWindow *mDragWindow;
    ToolDock *mDragDock;
    ToolBar *mDragBar;
-   wxPoint mDragOffset;
    int mDragBefore;
 
    wxPoint mLastPos;
    wxRect mBarPos;
-
    wxFrame *mIndicator;
    wxRegion *mLeft;
    wxRegion *mDown;
@@ -103,6 +99,8 @@ class ToolManager:public wxEvtHandler
    ToolDock *mBotDock;
 
    ToolBar *mBars[ ToolBarCount ];
+
+   wxWindow *mDragWindow;
 
  public:
 
