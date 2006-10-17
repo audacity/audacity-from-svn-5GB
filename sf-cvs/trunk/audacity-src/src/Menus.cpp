@@ -3421,7 +3421,7 @@ void AudacityProject::OnImport()
    
    wxFileDialog dlog(this, _("Select one or more audio files..."),
                      path, wxT(""),
-                     _("All files (*.*)|*.*|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
+                     GetImportFilesFilter(),
                      wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
