@@ -134,7 +134,7 @@ ToolManager::ToolManager( wxWindow *parent )
 
    // Hook the paint event...needed for all
    mIndicator->Connect( wxEVT_PAINT,
-                        wxPaintEventHandler( ToolManager::OnPaint ),
+                        wxPaintEventHandler( ToolManager::OnPaintIndicator ),
                         NULL,
                         this );
 
@@ -173,7 +173,7 @@ ToolManager::~ToolManager()
                            NULL,
                            this );
    mIndicator->Disconnect( wxEVT_PAINT,
-                           wxPaintEventHandler( ToolManager::OnPaint ),
+                           wxPaintEventHandler( ToolManager::OnPaintIndicator ),
                            NULL,
                            this );
 
@@ -418,7 +418,7 @@ ToolDock *ToolManager::GetBotDock()
 //
 wxWindow *ToolManager::Float( ToolBar *t, wxPoint & pos )
 {
-   wxWindow *parent;
+   wxFrame *parent;
 
 #if defined(__WXMAC__)
    // Disable window animation
@@ -426,27 +426,31 @@ wxWindow *ToolManager::Float( ToolBar *t, wxPoint & pos )
 #endif
 
    // Create the floater window
-   int flags = wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT;
-   if( t->IsResizeable() )
-   {
-      parent = new wxFrame( mParent,
-                            wxID_ANY,
-                            t->GetTitle(),
-                            pos,
-                            wxDefaultSize,
-                            flags | wxRESIZE_BORDER,
-                            t->GetLabel() );
-   }
-   else
-   {
-      parent = new wxMiniFrame( mParent,
-                                wxID_ANY,
-                                t->GetTitle(),
-                                pos,
-                                wxDefaultSize,
-                                flags,
-                                t->GetLabel() );
-   }
+//   int flags = wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT;
+   int flags = wxFRAME_TOOL_WINDOW |
+               wxFRAME_FLOAT_ON_PARENT | 
+               wxNO_BORDER |
+               wxFRAME_SHAPED |
+               wxFRAME_NO_TASKBAR;
+
+#if defined(__WXMAC__)
+   // Mac needs the caption flag to ensure it stays on top of the parent.  Otherwise,
+   // it can fall behind the parent window.  The caption isn't used, but this flag
+   // give us what we need.
+   flags |= wxCAPTION;
+#endif
+
+   // Get the size of the toolbar
+   wxSize sz = t->GetSize();
+
+   // Create the floater
+   parent = new wxFrame( mParent,
+                         wxID_ANY,
+                         wxEmptyString,
+                         pos - mDragOffset,
+                         sz + wxSize( 2 , 2 ),
+                         flags,
+                         t->GetLabel() );
 
    // Intercept the grabber events
    parent->Connect( EVT_GRABBER_CLICKED,
@@ -454,15 +458,27 @@ wxWindow *ToolManager::Float( ToolBar *t, wxPoint & pos )
                     NULL,
                     this );
 
+   // Hook the paint event...needed for all
+   parent->Connect( wxEVT_PAINT,
+                    wxPaintEventHandler( ToolManager::OnPaintFloat ),
+                    NULL,
+                    this );
+
    // Move the toolbar from the toolbar dock to the floater window
    t->Reparent( parent );
+   t->Move( 1, 1 );
+
+//   wxBoxSizer *szr = new wxBoxSizer( wxHORIZONTAL );
+//   szr->Add(t);
+//   parent->SetSizer(szr);
+
+#if defined(__WXGTK__)
+   parent->SetBackgroundColour( *wxBLACK );
+   parent->ClearBackground();
+#endif
 
    // Tell the toolbar about the change
    t->SetDocked( false );
-
-   // Resize the floater client size to the toolbars minimum size
-   wxSize sz = t->GetSize();
-   parent->SetClientSize( sz.x + 1, sz.y + 1 );
 
    // Make sure resizable floaters don't get any smaller than initial size
    if( t->IsResizeable() )
@@ -479,7 +495,7 @@ wxWindow *ToolManager::Float( ToolBar *t, wxPoint & pos )
 
 #if defined(__WXMAC__)
    // Reinstate original transition
-   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
+//   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
 #endif
 
    return parent;
@@ -556,16 +572,23 @@ void ToolManager::UnDock( ToolBar *bar )
    // Inform toolbar of change
    mDragBar->SetDocked( false );
 
+   wxPoint mp = wxGetMousePosition();
+   mDragOffset = mp - 
+                 mDragBar->GetParent()->ClientToScreen( mDragBar->GetPosition() );
+
    // Continue the drag 
-   StartDrag( wxGetMousePosition() );
+   StartDrag( mp );
 }
 
 //
 // Common handler for transitioning a bar to dragging
 //
-void ToolManager::StartDrag( const wxPoint & pos )
+void ToolManager::StartDrag( wxPoint & pos )
 {
    wxSize sz;
+
+   // Calc the real position of the window
+   pos -= mDragOffset;
 
    // Get the current size and force the height to the minimum
    sz = mDragBar->GetSize();
@@ -600,7 +623,7 @@ void ToolManager::StartDrag( const wxPoint & pos )
                               wxID_ANY,
                               wxEmptyString,
                               pos,
-                              wxSize( sz.GetWidth() + 2, sz.GetHeight() + 2 ),
+                              sz + wxSize( 2, 2 ),
                               wxNO_BORDER |
                               wxFRAME_NO_TASKBAR |
                               wxFRAME_FLOAT_ON_PARENT );
@@ -712,13 +735,13 @@ void ToolManager::OnMouse( wxMouseEvent & event )
 
 #if defined(__WXMAC__)
       // Reinstate original transition
-      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
+//      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
 #endif
    }
    else if( event.Dragging() && pos != mLastPos )
    {
       // Make toolbar follow the mouse
-      mDragWindow->Move( pos );
+      mDragWindow->Move( pos - mDragOffset );
 
       // Remember to prevent excessive movement
       mLastPos = pos;
@@ -829,13 +852,29 @@ void ToolManager::OnTimer( wxTimerEvent & event )
 // Really only needed for the Mac since SetBackgroundColour()
 // doesn't seem to work with shaped frames.
 //
-void ToolManager::OnPaint( wxPaintEvent & event )
+void ToolManager::OnPaintIndicator( wxPaintEvent & event )
 {
-   wxPaintDC dc( mIndicator );
-
+   wxWindow *w = (wxWindow *)event.GetEventObject();
+   wxPaintDC dc( w );
    dc.BeginDrawing();
    dc.SetBackground( *wxBLUE_BRUSH );
    dc.Clear();
+   dc.EndDrawing();
+}
+
+//
+// Handle floaterpaint events
+//
+void ToolManager::OnPaintFloat( wxPaintEvent & event )
+{
+   wxWindow *w = (wxWindow *)event.GetEventObject();
+   wxPaintDC dc( w );
+   wxSize sz = w->GetSize();
+
+   dc.BeginDrawing();
+   dc.Clear();
+   dc.SetPen( *wxBLACK_PEN );
+   dc.DrawRectangle( 0, 0, sz.GetWidth(), sz.GetHeight() );
    dc.EndDrawing();
 }
 
@@ -877,8 +916,12 @@ void ToolManager::OnGrabber( GrabberEvent & event )
    // And make it disappear
    parent->Hide();
 
+   wxPoint mp = wxGetMousePosition();
+   mDragOffset = mp - 
+                 mDragBar->GetParent()->ClientToScreen( mDragBar->GetPosition() );
+
    // Start the dragging
-   StartDrag( wxGetMousePosition() );
+   StartDrag( mp );
 
    // Kill the parent
    parent->Destroy();

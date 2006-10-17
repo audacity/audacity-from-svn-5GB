@@ -1503,7 +1503,7 @@ void AudacityProject::ShowOpenDialog(AudacityProject *proj)
 	                  bCleanSpeechMode ? 
                         _("Music files (*.wav;*.mp3)|*.wav;*.mp3|WAV files (*.wav)|*.wav|MP3 files (*.mp3)|*.mp3")
                      :
-                        _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof"),
+                     GetImportFilesFilter().c_str(),
                      wxOPEN | wxMULTIPLE);
 
    int result = dlog.ShowModal();
@@ -3205,6 +3205,11 @@ bool AudacityProject::ProgressIsShown()
 {
    return mProgressDialog[mProgressCurrent] &&
           mProgressDialog[mProgressCurrent]->IsShown();
+}
+
+wxString AudacityProject::GetImportFilesFilter()
+{
+   return _("All files (*.*)|*.*|Audacity projects (*.aup)|*.aup|WAV files (*.wav)|*.wav|AIFF files (*.aif)|*.aif|AU files (*.au)|*.au|MP3 files (*.mp3)|*.mp3|MP2/MPEG files (*.mp2;*.mpa;*.mpg;*.mpeg)|*.mp2;*.mpa;*.mpg;*.mpeg|Ogg Vorbis files (*.ogg)|*.ogg|FLAC files (*.flac)|*.flac|List of Files (*.lof)|*.lof");
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a

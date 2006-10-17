@@ -322,6 +322,8 @@ class AudacityProject:public wxFrame,
    void AutoSave();
    static bool IsAutoSaveEnabled();
    void DeleteCurrentAutoSaveFile();
+   
+   static wxString GetImportFilesFilter();
 
    // Callbacks for backend operations
 
