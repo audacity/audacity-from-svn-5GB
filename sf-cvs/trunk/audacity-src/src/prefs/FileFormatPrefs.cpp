@@ -200,6 +200,16 @@ void FileFormatPrefs::PopulateOrExchange( ShuttleGui & S )
    }
    S.EndStatic();
    S.EndHorizontalLay();
+   S.StartHorizontalLay(wxEXPAND,0);
+   S.StartStatic( _("MP2 Export Setup"),0);
+   {
+      S.StartTwoColumn();
+      S.TieChoice( _("Bit Rate:"), wxT("/FileFormats/MP2Bitrate"), 
+         160, mBitRateNames, mBitRateLabels );
+      S.EndTwoColumn();
+   }
+   S.EndStatic();
+   S.EndHorizontalLay();
 }
 
 /// Sets the a text area on the dialog to have the name
