@@ -245,6 +245,12 @@ void AudacityProject::CreateMenusAndCommands()
                          AudioIONotBusyFlag | TracksExistFlag,
                          wxT("ExportFLAC"), NULL);
 #endif
+#ifdef USE_LIBTWOLAME
+      c->AddItem(wxT("ExportMP2"), _("MP&2..."), FN(OnExportMP2Mix));
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag,
+                         AudioIONotBusyFlag | TracksExistFlag,
+                         wxT("ExportMP2"), NULL);
+#endif
       c->EndSubMenu();
       
       c->BeginSubMenu(_("Expo&rt Selection As..."));
@@ -262,6 +268,12 @@ void AudacityProject::CreateMenusAndCommands()
       c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
                          wxT("ExportFLACSel"), NULL);
+#endif
+#ifdef USE_LIBTWOLAME
+      c->AddItem(wxT("ExportMP2Sel"),    _("&MP&2..."), FN(OnExportMP2Selection));
+      c->SetCommandFlags(AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
+                         AudioIONotBusyFlag | TracksExistFlag | TracksSelectedFlag,
+                         wxT("ExportMP2Sel"), NULL);
 #endif
       c->EndSubMenu();
       
@@ -2172,6 +2184,16 @@ void AudacityProject::OnExportMP3Mix()
 void AudacityProject::OnExportMP3Selection()
 {
    ::ExportCompressed(this, wxT("MP3"), true, mViewInfo.sel0, mViewInfo.sel1);
+}
+
+void AudacityProject::OnExportMP2Mix()
+{
+   ::ExportCompressed(this, wxT("MP2"), false, 0.0, mTracks->GetEndTime());
+}
+
+void AudacityProject::OnExportMP2Selection()
+{
+   ::ExportCompressed(this, wxT("MP2"), true, mViewInfo.sel0, mViewInfo.sel1);
 }
 
 void AudacityProject::OnExportOggMix()

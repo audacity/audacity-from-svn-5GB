@@ -35,6 +35,7 @@
 #include "ExportOGG.h"
 #include "ExportFLAC.h"
 #include "ExportCL.h"
+#include "ExportMP2.h"
 
 #include "sndfile.h"
 
@@ -435,6 +436,19 @@ bool ExportCompressed(AudacityProject *project, const wxString& format,
                            selectionOnly, t0, t1, mixerSpec);
 #else
       wxMessageBox(_("Command-line exporting is only supported on UNIX"));
+#endif
+   }
+   else if( format == wxT("MP2") ) {
+#if USE_LIBTWOLAME
+      fName = ExportCommon(project, wxT("MP2"), wxT(".mp2"),
+                           selectionOnly, &t0, &t1, &numChannels,
+                           actualName, 2, &mixerSpec);
+
+      if (fName != wxT(""))
+         success = ::ExportMP2(project, (numChannels == 2), fName,
+                            selectionOnly, t0, t1, mixerSpec);
+#else
+      wxMessageBox(_("MP2 export support is not included in this build of Audacity"));
 #endif
    }
 

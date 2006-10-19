@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="Audacity"
 	ProjectGUID="{1D64095C-F936-4FCF-B609-56E9DDF941FA}"
 	RootNamespace="Audacity"
@@ -47,7 +47,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio-v19\include&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch\include&quot;;&quot;..\lib-src\libresample\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\mswd&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio-v19\include&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch\include&quot;;&quot;..\lib-src\libresample\include&quot;;&quot;..\lib-src\twolame\libtwolame&quot;"
 				PreprocessorDefinitions="_DEBUG;DEBUG=1;__WXDEBUG__;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;FLAC__NO_DLL"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
@@ -79,12 +79,12 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/IGNORE:4049"
-				AdditionalDependencies="allegrod.lib libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_adv.lib wxmsw26d_core.lib wxmsw26d_html.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib libFLAC++d.lib libFLACd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="twolame_staticD.lib allegrod.lib libresampled.lib soundtouchd.lib libsamplerated.lib portmixerd.lib libnyquistd.lib libid3tagd.lib expatd.lib madd.lib sndfiled.lib wxbase26d.lib wxbase26d_net.lib wxmsw26d_adv.lib wxmsw26d_core.lib wxmsw26d_html.lib ogg_static_d.lib vorbis_static_d.lib vorbisfile_static_d.lib wxpngd.lib wxzlibd.lib wxjpegd.lib wxtiffd.lib libFLAC++d.lib libFLACd.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\portaudio\winproj\lib&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;;&quot;$(DXSDK_DIR)lib\x86&quot;;&quot;$(ASIOSDK_DIR)&quot;"
+				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\portaudio\winproj\lib&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;;&quot;../lib-src/twolame/winproj/lib&quot;;&quot;$(DXSDK_DIR)lib\x86&quot;;&quot;$(ASIOSDK_DIR)&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\$(ConfigurationName)/audacity.pdb"
 				SubSystem="2"
@@ -151,7 +151,7 @@
 				AdditionalOptions="/O2 /GA /GL"
 				Optimization="2"
 				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\msw&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio-v19\include&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch\include&quot;;&quot;..\lib-src\libresample\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\msw&quot;;.;&quot;$(WXWIN)\include&quot;;..\src\include;..\src\include\win32;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\portaudio-v19\include&quot;;&quot;..\lib-src\portaudio\pa_common&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\libsndfile\src&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libogg\include&quot;;&quot;..\lib-src\libvorbis\include&quot;;&quot;..\lib-src\libnyquist\nyx&quot;;&quot;..\lib-src\portmixer\px_common&quot;;&quot;..\lib-src\libsamplerate\src&quot;;&quot;..\lib-src\libflac\include&quot;;&quot;..\lib-src\soundtouch\include&quot;;&quot;..\lib-src\libresample\include&quot;;&quot;..\lib-src\twolame\libtwolame&quot;"
 				PreprocessorDefinitions="NDEBUG;__WX__;WIN32;_WINDOWS;__WINDOWS__;__WXMSW__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;FLAC__NO_DLL"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -180,12 +180,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
+				AdditionalDependencies="twolame_static.lib allegro.lib libresample.lib soundtouch.lib libsamplerate.lib portmixer.lib libnyquist.lib libid3tag.lib expat.lib mad.lib sndfile.lib wxbase26.lib wxbase26_net.lib wxmsw26_adv.lib wxmsw26_core.lib wxmsw26_html.lib ogg_static.lib vorbis_static.lib vorbisfile_static.lib wxpng.lib wxzlib.lib wxjpeg.lib wxtiff.lib libFLAC++.lib libFLAC.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib oleacc.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib"
 				ShowProgress="0"
 				OutputFile=".\$(ConfigurationName)/audacity.exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;;&quot;$(DXSDK_DIR)lib\x86&quot;;&quot;$(ASIOSDK_DIR)&quot;"
+				AdditionalLibraryDirectories="&quot;$(IntDir)&quot;;&quot;..\lib-src\libogg\win32\static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbis_static_$(ConfigurationName)&quot;;&quot;..\lib-src\libvorbis\win32\vorbisfile_static_$(ConfigurationName)&quot;;&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;..\lib-src\libid3tag&quot;;&quot;..\lib-src\expat&quot;;&quot;..\lib-src\libmad&quot;;&quot;..\lib-src\libsndfile\Win32&quot;;&quot;..\lib-src\allegro&quot;;&quot;..\lib-src\libnyquist&quot;;&quot;..\lib-src\portmixer\winproj&quot;;&quot;..\lib-src\libsamplerate\Win32&quot;;&quot;..\lib-src\libflac\obj\lib&quot;;&quot;..\lib-src\soundtouch\source\SoundTouch\$(ConfigurationName)&quot;;&quot;..\lib-src\libresample\win&quot;;&quot;../lib-src/twolame/winproj/lib&quot;;&quot;$(DXSDK_DIR)lib\x86&quot;;&quot;$(ASIOSDK_DIR)&quot;"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\$(ConfigurationName)/audacity.pdb"
@@ -4072,6 +4072,14 @@
 			</File>
 			<File
 				RelativePath="..\src\export\ExportFLAC.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\export\ExportMP2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\export\ExportMP2.h"
 				>
 			</File>
 			<File

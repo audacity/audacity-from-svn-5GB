@@ -133,6 +133,8 @@ void OnExportOggMix();
 void OnExportOggSelection();
 void OnExportFLACMix();
 void OnExportFLACSelection();
+void OnExportMP2Mix();
+void OnExportMP2Selection();
 
 void OnExportMultiple();
 

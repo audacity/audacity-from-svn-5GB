@@ -11,6 +11,7 @@
 #define USE_NYQUIST 1
 #define USE_PORTMIXER 1
 #define USE_SOUNDTOUCH 1
+#define USE_LIBTWOLAME 1
 #undef USE_VST
 
 #define INSTALL_PREFIX "."
