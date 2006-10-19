@@ -325,11 +325,6 @@ static bool DoExport(AudacityProject *project,
       Tags *tags = project->GetTags();
       tags->SetTitle(name);            
       tags->SetTrackNumber(trackNumber);
-      if (!tags->ShowEditDialog(project,
-         _("Edit the ID3 tags for the MP3 file"),
-         true)) {
-            return false;  // used selected "cancel"
-      }
       wxString fullPath = MakeFullPath(overwrite,
                                        dir, name, wxT(".mp3"));
       return ExportMP3(project, stereo, fullPath,
@@ -634,8 +629,7 @@ bool ExportMultiple(AudacityProject *project)
    if (!dlog.GetReturnCode())
       return false;
 
-#if 0
-   if (dlog.format == 1) { // MP3
+   if (dlog.format == 1 || dlog.format == 4) { // MP3 or FLAC
       Tags *tags = project->GetTags();
       if (tags->IsEmpty()) {
          wxString saveTitle = tags->GetTitle();
@@ -656,7 +650,6 @@ bool ExportMultiple(AudacityProject *project)
          }
       }
    }
-#endif
 
    if (dlog.byLabels)
       return ExportMultipleByLabel(project, dlog.dir, dlog.format,
