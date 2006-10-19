@@ -119,8 +119,14 @@ in your "autoexec.bat" file, you might have a line:
 
    set WXWIN=C:\wxWidgets-2.6.3
 
-Note that you don't want a trailing backslash on that. In the 
-Audacity project file, there are declarations like 
+Note that you don't want a trailing backslash on that.
+
+On newer version of Windows, the settings for environment
+variables can be found in the system control panel. Click
+the "System" option, then tab "Extended", then "Environment
+variables".
+
+In the Audacity project file, there are declarations like 
 
    $(WXWIN)\include
 
@@ -129,6 +135,18 @@ that get interpreted as, e.g., "C:\wxWidgets-2.6.3\include".
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
 
+Similarily, you will need to set the following environment
+variables:
+
+ASIOSDK_DIR = <Location of the ASIO SDK>
+DXSDK_DIR = <Location of the DirectX SDK>
+
+If you don't have the ASIO-SDK oder the DirectX SDK, you
+still have to set those variables. Just set them to something
+like "c:\" or so.
+
+Note that you have to restart the IDE so it picks up changes
+in the environment variables.
 
 -----------------------
 MSVC++ STEP 5:  Build Audacity
