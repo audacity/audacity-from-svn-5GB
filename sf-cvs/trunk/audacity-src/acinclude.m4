@@ -36,6 +36,40 @@ AC_DEFUN([AUDACITY_CHECKLIB_LIBNYQUIST], [
    fi
 ])
 
+AC_DEFUN([AUDACITY_CHECKLIB_LIBTWOLAME], [
+   AC_ARG_WITH(libtwolame,
+               [AC_HELP_STRING([--with-libtwolame],
+                               [compile with libtwolame (MP2 export) support [default=yes]])],
+               LIBTWOLAME_ARGUMENT=$withval,
+               LIBTWOLAME_ARGUMENT="unspecified")
+
+   if false ; then
+      AC_DEFINE(USE_LIBTWOLAME, 1,
+                [Define if libtwolame (MP2 export) support should be enabled])
+   fi
+
+   dnl Libtwolame is so new, we should really use our patched local version for now
+   dnl FIXME: Might want to change this at some point of time in the future...
+   LIBTWOLAME_SYSTEM_AVAILABLE="no"
+
+   dnl see if libtwolame is available locally
+
+   AC_CHECK_FILE(${srcdir}/lib-src/twolame/libtwolame/twolame.h,
+                 twolame_h_found="yes",
+                 twolame_h_found="no")
+
+   if test "x$twolame_h_found" = "xyes" ; then
+      LIBTWOLAME_LOCAL_AVAILABLE="yes"
+      LIBTWOLAME_LOCAL_LIBS="libtwolame.a"
+      LIBTWOLAME_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/twolame/libtwolame'
+      LIBTWOLAME_LOCAL_CPPSYMBOLS="USE_LIBTWOLAME"
+      AC_MSG_NOTICE([libtwolame library is available in the local tree])
+   else
+      LIBTWOLAME_LOCAL_AVAILABLE="no"
+      AC_MSG_NOTICE([libtwolame library is NOT available in the local tree])
+   fi
+])
+
 AC_DEFUN([AUDACITY_CHECKLIB_LIBSOUNDTOUCH], [
    AC_ARG_WITH(soundtouch,
                [AC_HELP_STRING([--with-soundtouch],

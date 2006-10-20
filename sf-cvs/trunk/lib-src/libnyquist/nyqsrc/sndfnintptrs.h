@@ -91,3 +91,7 @@
   { "SND-TAPV",  S, xlc_snd_tapv}, 
   { "SND-BIQUAD",  S, xlc_snd_biquad}, 
   { "SND-PLUCK",  S, xlc_snd_pluck}, 
+  { "SND-ABS",  S, xlc_snd_abs}, 
+  { "SND-SQRT",  S, xlc_snd_sqrt}, 
+  { "SND-ALPASSCV",  S, xlc_snd_alpasscv}, 
+  { "SND-ALPASSVC",  S, xlc_snd_alpassvc}, 

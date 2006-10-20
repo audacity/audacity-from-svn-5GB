@@ -91,3 +91,7 @@ extern LVAL xlc_snd_chase(void);
 extern LVAL xlc_snd_tapv(void);
 extern LVAL xlc_snd_biquad(void);
 extern LVAL xlc_snd_pluck(void);
+extern LVAL xlc_snd_abs(void);
+extern LVAL xlc_snd_sqrt(void);
+extern LVAL xlc_snd_alpasscv(void);
+extern LVAL xlc_snd_alpassvc(void);
