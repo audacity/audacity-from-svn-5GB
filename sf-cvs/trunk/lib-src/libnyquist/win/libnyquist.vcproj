@@ -3706,6 +3706,10 @@
 			Name="tran"
 			>
 			<File
+				RelativePath="..\tran\abs.c"
+				>
+			</File>
+			<File
 				RelativePath="..\tran\alpass.c"
 				>
 				<FileConfiguration
