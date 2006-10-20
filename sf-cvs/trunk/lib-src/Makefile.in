@@ -45,6 +45,13 @@ libnyquist-recursive:
 libnyquist.a: libnyquist-recursive
 	ln -sf libnyquist/libnyquist.a libnyquist.a
 
+# libtwolame
+libtwolame-recursive:
+	chmod +x twolame/configure
+	$(MAKE) -C twolame
+libtwolame.a: libtwolame-recursive
+	ln -sf twolame/libtwolame/.libs/libtwolame.a libtwolame.a
+
 # libmad
 libmad-recursive:
 	$(MAKE) -C libmad
@@ -135,6 +142,7 @@ clean:
 	-$(MAKE) -C portmixer/px_mac_core clean
 	-$(MAKE) -C rtaudio clean
 	-$(MAKE) -C soundtouch clean
+	-$(MAKE) -C twolame clean
 	-rm -rf @LOCAL_LIBS@
 
 distclean:
@@ -158,11 +166,12 @@ distclean:
 	-$(MAKE) -C portmixer/px_mac_core distclean
 	-$(MAKE) -C rtaudio distclean
 	-$(MAKE) -C soundtouch distclean
+	-$(MAKE) -C twolame distclean
 	-rm -f @LOCAL_LIBS@
 
 .PHONY: allegro-recursive expat-recursive libogg-recursive \
 	libvorbis-recursive libnyquist-recursive libmad-recursive \
 	libid3tag-recursive soundtouch-recursive libsndfile-recursive \
 	libresample-recursive libsamplerate-recursive librtaudio-recursive \
-	portaudio-v19-recursive portmixer-recursive
+	portaudio-v19-recursive portmixer-recursive libtwolame-recursive
 

@@ -20,7 +20,8 @@
  * tran/fromobject.h, tran/fromarraystream.h, 
  * tran/coterm.h, tran/convolve.h, tran/alpass.h, 
  * tran/oneshot.h, tran/chase.h, tran/tapv.h, 
- * tran/biquad.h, tran/pluck.h */
+ * tran/biquad.h, tran/pluck.h, tran/abs.h, tran/sqrt.h, 
+ * tran/alpasscv.h, tran/alpassvc.h */
 
 #ifndef mips
 #include "stdlib.h"
@@ -1598,6 +1599,71 @@ LVAL xlc_snd_pluck(void)
 
     xllastarg();
     result = snd_pluck(arg1, arg2, arg3, arg4, arg5);
+    return cvsound(result);
+}
+
+
+#include "abs.h"
+
+/* xlc_snd_abs -- interface to C routine snd_abs */
+/**/
+LVAL xlc_snd_abs(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_abs(arg1);
+    return cvsound(result);
+}
+
+
+#include "sqrt.h"
+
+/* xlc_snd_sqrt -- interface to C routine snd_sqrt */
+/**/
+LVAL xlc_snd_sqrt(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_sqrt(arg1);
+    return cvsound(result);
+}
+
+
+#include "alpasscv.h"
+
+/* xlc_snd_alpasscv -- interface to C routine snd_alpasscv */
+/**/
+LVAL xlc_snd_alpasscv(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    double arg2 = testarg2(xlgaanynum());
+    sound_type arg3 = getsound(xlgasound());
+    sound_type result;
+
+    xllastarg();
+    result = snd_alpasscv(arg1, arg2, arg3);
+    return cvsound(result);
+}
+
+
+#include "alpassvc.h"
+
+/* xlc_snd_alpassvc -- interface to C routine snd_alpassvc */
+/**/
+LVAL xlc_snd_alpassvc(void)
+{
+    sound_type arg1 = getsound(xlgasound());
+    sound_type arg2 = getsound(xlgasound());
+    double arg3 = testarg2(xlgaanynum());
+    double arg4 = testarg2(xlgaanynum());
+    sound_type result;
+
+    xllastarg();
+    result = snd_alpassvc(arg1, arg2, arg3, arg4);
     return cvsound(result);
 }
 
