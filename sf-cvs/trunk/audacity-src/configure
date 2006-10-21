@@ -4735,9 +4735,6 @@ echo "$as_me:$LINENO: checking for SNDFILE" >&5
 echo $ECHO_N "checking for SNDFILE... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_CFLAGS"; then
-        pkg_cv_SNDFILE_CFLAGS="$SNDFILE_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
@@ -4748,14 +4745,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SNDFILE_LIBS"; then
-        pkg_cv_SNDFILE_LIBS="$SNDFILE_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sndfile >= 1.0.0\"") >&5
   ($PKG_CONFIG --exists --print-errors "sndfile >= 1.0.0") 2>&5
@@ -4766,27 +4759,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-        else
-	        SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
-        fi
+	SNDFILE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sndfile >= 1.0.0"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$SNDFILE_PKG_ERRORS" >&5
+	echo "$SNDFILE_PKG_ERRORS" 1>&5
 
 	sndfile_available_system="no"
 elif test $pkg_failed = untried; then
@@ -5171,9 +5151,6 @@ echo "$as_me:$LINENO: checking for SAMPLERATE" >&5
 echo $ECHO_N "checking for SAMPLERATE... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_CFLAGS"; then
-        pkg_cv_SAMPLERATE_CFLAGS="$SAMPLERATE_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
   ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
@@ -5184,14 +5161,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$SAMPLERATE_LIBS"; then
-        pkg_cv_SAMPLERATE_LIBS="$SAMPLERATE_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"samplerate >= 0.1.2\"") >&5
   ($PKG_CONFIG --exists --print-errors "samplerate >= 0.1.2") 2>&5
@@ -5202,27 +5175,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        else
-	        SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
-        fi
+	SAMPLERATE_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "samplerate >= 0.1.2"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$SAMPLERATE_PKG_ERRORS" >&5
+	echo "$SAMPLERATE_PKG_ERRORS" 1>&5
 
 	samplerate_available_system="no"
 elif test $pkg_failed = untried; then
@@ -5816,6 +5776,10 @@ fi
       LIBTWOLAME_LOCAL_LIBS="libtwolame.a"
       LIBTWOLAME_LOCAL_CXXFLAGS='-I$(top_srcdir)/lib-src/twolame/libtwolame'
       LIBTWOLAME_LOCAL_CPPSYMBOLS="USE_LIBTWOLAME"
+
+      if test ! -f lib-src/twolame/Makefile ; then
+         LIBTWOLAME_LOCAL_CONFIG_SUBDIRS="lib-src/twolame"
+      fi
       { echo "$as_me:$LINENO: libtwolame library is available in the local tree" >&5
 echo "$as_me: libtwolame library is available in the local tree" >&6;}
    else
@@ -6344,9 +6308,6 @@ echo "$as_me:$LINENO: checking for JACK" >&5
 echo $ECHO_N "checking for JACK... $ECHO_C" >&6
 
 if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_CFLAGS"; then
-        pkg_cv_JACK_CFLAGS="$JACK_CFLAGS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
@@ -6357,14 +6318,10 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 if test -n "$PKG_CONFIG"; then
-    if test -n "$JACK_LIBS"; then
-        pkg_cv_JACK_LIBS="$JACK_LIBS"
-    else
         if test -n "$PKG_CONFIG" && \
     { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"jack\"") >&5
   ($PKG_CONFIG --exists --print-errors "jack") 2>&5
@@ -6375,27 +6332,14 @@ if test -n "$PKG_CONFIG"; then
 else
   pkg_failed=yes
 fi
-    fi
 else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "jack"`
-        else
-	        JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
-        fi
+	JACK_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "jack"`
 	# Put the nasty error message in config.log where it belongs
-	echo "$JACK_PKG_ERRORS" >&5
+	echo "$JACK_PKG_ERRORS" 1>&5
 
 	have_jack=no
 elif test $pkg_failed = untried; then
