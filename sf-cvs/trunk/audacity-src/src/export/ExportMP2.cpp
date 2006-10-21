@@ -49,7 +49,7 @@
 #include <wx/filedlg.h>
 #include <wx/intl.h>
 
-#include "ExportMP3.h"
+#include "ExportMP2.h"
 #include "../Internat.h"
 #include "../Mix.h"
 #include "../Prefs.h"
@@ -68,7 +68,7 @@
 #endif
 
 #define LIBTWOLAME_STATIC
-#include "twolame.h"
+#include "..\..\lib-src\twolame\libtwolame\twolame.h"
 
 bool ExportMP2(AudacityProject *project,
                bool stereo, wxString fName,
