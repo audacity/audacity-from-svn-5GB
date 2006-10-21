@@ -6525,6 +6525,18 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\tran\alpasscv.c"
+			>
+		</File>
+		<File
+			RelativePath="..\tran\alpassvc.c"
+			>
+		</File>
+		<File
+			RelativePath="..\tran\sqrt.c"
+			>
+		</File>
+		<File
 			RelativePath="winfun.c"
 			>
 			<FileConfiguration
