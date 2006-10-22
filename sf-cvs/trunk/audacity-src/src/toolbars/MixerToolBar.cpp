@@ -167,7 +167,7 @@ void MixerToolBar::UpdatePrefs()
    Fit();
 
    // And make that size the minimum
-   SetMinSize( GetSizer()->GetMinSize() );
+   SetMinSize( wxWindow::GetSizer()->GetMinSize() );
    SetSize( GetMinSize() );
 
    // Notify someone that we've changed our size
