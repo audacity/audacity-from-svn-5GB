@@ -49,7 +49,7 @@
 				PrecompiledHeaderFile=".\vc_mswud\wxtiff/wx_wxtiff.pch"
 				AssemblerListingLocation=".\vc_mswud\wxtiff/"
 				ObjectFile=".\vc_mswud\wxtiff/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxtiffd.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxtiffud.pdb"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				CompileAs="0"
@@ -1065,7 +1065,7 @@
 				PrecompiledHeaderFile=".\vc_mswu\wxtiff/wx_wxtiff.pch"
 				AssemblerListingLocation=".\vc_mswu\wxtiff/"
 				ObjectFile=".\vc_mswu\wxtiff/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxtiff.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxtiffu.pdb"
 				SuppressStartupBanner="true"
 				CompileAs="0"
 			/>

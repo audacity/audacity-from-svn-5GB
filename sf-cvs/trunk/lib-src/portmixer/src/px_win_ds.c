@@ -51,8 +51,6 @@
 #include "px_mixer.h"
 #include "px_win_common.h"
 
-#pragma comment( lib, "dxguid.lib" )
-
 const GUID FAR DSPROPSETID_DirectSoundDevice = 
 {0x84624f82, 0x25ec, 0x11d1, {0xa4, 0xd8, 0x0, 0xc0, 0x4f, 0xc2, 0x8a, 0xca}};
 

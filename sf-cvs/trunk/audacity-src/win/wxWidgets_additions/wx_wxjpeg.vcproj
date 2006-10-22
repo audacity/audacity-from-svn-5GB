@@ -267,7 +267,7 @@
 				PrecompiledHeaderFile=".\vc_mswud\wxjpeg/wx_wxjpeg.pch"
 				AssemblerListingLocation=".\vc_mswud\wxjpeg/"
 				ObjectFile=".\vc_mswud\wxjpeg/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxjpegd.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxjpegud.pdb"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				CompileAs="0"
@@ -632,7 +632,7 @@
 				PrecompiledHeaderFile=".\vc_mswu\wxjpeg/wx_wxjpeg.pch"
 				AssemblerListingLocation=".\vc_mswu\wxjpeg/"
 				ObjectFile=".\vc_mswu\wxjpeg/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxjpeg.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxjpegu.pdb"
 				SuppressStartupBanner="true"
 				CompileAs="0"
 			/>
