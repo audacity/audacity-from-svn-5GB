@@ -413,7 +413,7 @@
 				PrecompiledHeaderFile=".\vc_mswuniv\wxexpat/wx_wxexpat.pch"
 				AssemblerListingLocation=".\vc_mswuniv\wxexpat/"
 				ObjectFile=".\vc_mswuniv\wxexpat/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpat.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpatu.pdb"
 				SuppressStartupBanner="true"
 				CompileAs="0"
 			/>
@@ -559,7 +559,7 @@
 				PrecompiledHeaderFile=".\vc_mswu\wxexpat/wx_wxexpat.pch"
 				AssemblerListingLocation=".\vc_mswu\wxexpat/"
 				ObjectFile=".\vc_mswu\wxexpat/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpat.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpatu.pdb"
 				SuppressStartupBanner="true"
 				CompileAs="0"
 			/>
@@ -993,7 +993,7 @@
 				PrecompiledHeaderFile=".\vc_mswud\wxexpat/wx_wxexpat.pch"
 				AssemblerListingLocation=".\vc_mswud\wxexpat/"
 				ObjectFile=".\vc_mswud\wxexpat/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpatd.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxexpatud.pdb"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				CompileAs="0"

@@ -754,7 +754,7 @@
 				PrecompiledHeaderFile=".\vc_mswud\wxzlib/wx_wxzlib.pch"
 				AssemblerListingLocation=".\vc_mswud\wxzlib/"
 				ObjectFile=".\vc_mswud\wxzlib/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxzlibd.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxzlibud.pdb"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -896,7 +896,7 @@
 				PrecompiledHeaderFile=".\vc_mswu\wxzlib/wx_wxzlib.pch"
 				AssemblerListingLocation=".\vc_mswu\wxzlib/"
 				ObjectFile=".\vc_mswu\wxzlib/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxzlib.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxzlibu.pdb"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

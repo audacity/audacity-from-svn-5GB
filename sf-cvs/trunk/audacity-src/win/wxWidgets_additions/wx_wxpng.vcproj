@@ -485,7 +485,7 @@
 				PrecompiledHeaderFile=".\vc_mswud\wxpng/wx_wxpng.pch"
 				AssemblerListingLocation=".\vc_mswud\wxpng/"
 				ObjectFile=".\vc_mswud\wxpng/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxpngd.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxpngud.pdb"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 				CompileAs="0"
@@ -849,7 +849,7 @@
 				PrecompiledHeaderFile=".\vc_mswu\wxpng/wx_wxpng.pch"
 				AssemblerListingLocation=".\vc_mswu\wxpng/"
 				ObjectFile=".\vc_mswu\wxpng/"
-				ProgramDataBaseFileName="..\..\lib\vc_lib\wxpng.pdb"
+				ProgramDataBaseFileName="..\..\lib\vc_lib\wxpngu.pdb"
 				SuppressStartupBanner="true"
 				CompileAs="0"
 			/>

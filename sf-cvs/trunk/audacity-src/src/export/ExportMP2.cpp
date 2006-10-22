@@ -68,7 +68,7 @@
 #endif
 
 #define LIBTWOLAME_STATIC
-#include "..\..\lib-src\twolame\libtwolame\twolame.h"
+#include "twolame.h"
 
 bool ExportMP2(AudacityProject *project,
                bool stereo, wxString fName,
