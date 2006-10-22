@@ -216,7 +216,7 @@ class ToolFrame:public wxFrame
          Layout();
          Refresh( false );
       }
-      else if( event.LeftUp() )
+      else if( HasCapture() && event.LeftUp() )
       {
          ReleaseMouse();
       }
