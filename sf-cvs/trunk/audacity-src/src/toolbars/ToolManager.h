@@ -66,10 +66,11 @@ class ToolManager:public wxEvtHandler
 
    ToolBar *Float( ToolBar *t, wxPoint & pos );
 
+   void OnKey( wxKeyEvent & event );
    void OnMouse( wxMouseEvent & event );
    void OnGrabber( GrabberEvent & event );
-   void OnCreate( wxWindowCreateEvent & event );
 
+   void OnIndicatorCreate( wxWindowCreateEvent & event );
    void OnIndicatorPaint( wxPaintEvent & event );
 
    void ReadConfig();

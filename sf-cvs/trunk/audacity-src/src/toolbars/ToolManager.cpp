@@ -344,7 +344,7 @@ ToolManager::ToolManager( AudacityProject *parent )
 
    // Hook the creation event...only needed on GTK, but doesn't hurt for all
    mIndicator->Connect( wxEVT_CREATE,
-                        wxWindowCreateEventHandler( ToolManager::OnCreate ),
+                        wxWindowCreateEventHandler( ToolManager::OnIndicatorCreate ),
                         NULL,
                         this );
 
@@ -406,7 +406,7 @@ ToolManager::~ToolManager()
 
    // Remove our event handlers
    mIndicator->Disconnect( wxEVT_CREATE,
-                           wxWindowCreateEventHandler( ToolManager::OnCreate ),
+                           wxWindowCreateEventHandler( ToolManager::OnIndicatorCreate ),
                            NULL,
                            this );
    mIndicator->Disconnect( wxEVT_PAINT,
@@ -770,6 +770,17 @@ void ToolManager::OnMouse( wxMouseEvent & event )
          mParent->ReleaseMouse();
       }
 
+      // Need to watch for the shift key
+      wxTheApp->Disconnect( wxEVT_KEY_DOWN,
+                            wxKeyEventHandler( ToolManager::OnKey ),
+                            NULL,
+                            this );
+
+      wxTheApp->Disconnect( wxEVT_KEY_UP,
+                            wxKeyEventHandler( ToolManager::OnKey ),
+                            NULL,
+                            this );
+
       // Hide the indicator
       mIndicator->Hide();
 
@@ -861,8 +872,11 @@ void ToolManager::OnMouse( wxMouseEvent & event )
             // Move it into position and put it on stage
             mIndicator->SetShape( *mCurrent );
             mIndicator->Move( dock->GetParent()->ClientToScreen( p ) );
-            mIndicator->Show();
-            mIndicator->Update();
+            if( !event.ShiftDown() )
+            {
+               mIndicator->Show();
+               mIndicator->Update();
+            }
 
             // Remember for next go round
             mBarPos = r;
@@ -891,6 +905,38 @@ void ToolManager::OnMouse( wxMouseEvent & event )
 }
 
 //
+// Watch for shift key changes
+//
+void ToolManager::OnKey( wxKeyEvent & event )
+{
+   // Go ahead and set the event to propagate
+   event.Skip();
+
+   // Can't do anything if we're not dragging.  This also prevents
+   // us from intercepting events that don't belong to us from the
+   // parent since we're Connect()ed to a couple.
+   if( !mDragWindow )
+   {
+      return;
+   }
+
+   if( event.GetKeyCode() == WXK_SHIFT )
+   {
+#if defined(__WXMAC__)
+      // Disable window animation
+      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
+#endif
+
+      mIndicator->Show( event.GetEventType() == wxEVT_KEY_UP );
+
+#if defined(__WXMAC__)
+      // Disable window animation
+      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
+#endif
+   }
+}
+
+//
 // Handle Indicator paint events
 //
 // Really only needed for the Mac since SetBackgroundColour()
@@ -912,7 +958,7 @@ void ToolManager::OnIndicatorPaint( wxPaintEvent & event )
 // Without this, the initial Indicator window will be a solid blue square
 // until the next time it changes.
 //
-void ToolManager::OnCreate( wxWindowCreateEvent & event )
+void ToolManager::OnIndicatorCreate( wxWindowCreateEvent & event )
 {
 #if defined(__WXGTK__)
    mIndicator->SetShape( *mCurrent );
@@ -969,6 +1015,17 @@ void ToolManager::OnGrabber( GrabberEvent & event )
    {
       mDragWindow = (ToolFrame *) mDragBar->GetParent();
    }
+
+   // Need to watch for the shift key
+   wxTheApp->Connect( wxEVT_KEY_DOWN,
+                     wxKeyEventHandler( ToolManager::OnKey ),
+                     NULL,
+                     this );
+
+   wxTheApp->Connect( wxEVT_KEY_UP,
+                     wxKeyEventHandler( ToolManager::OnKey ),
+                     NULL,
+                     this );
 
    // We want all mouse events from this point on
    mParent->CaptureMouse();
