@@ -36,6 +36,7 @@
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
+#include <wx/app.h>
 #include <wx/dc.h>
 #include <wx/event.h>
 #include <wx/image.h>
@@ -92,12 +93,31 @@ ControlToolBar::ControlToolBar()
 
 ControlToolBar::~ControlToolBar()
 {
+   wxTheApp->Disconnect( wxEVT_KEY_DOWN,
+                         wxKeyEventHandler( ControlToolBar::OnKeyDown ),
+                         NULL,
+                         this );
+
+   wxTheApp->Disconnect( wxEVT_KEY_UP,
+                         wxKeyEventHandler( ControlToolBar::OnKeyUp ),
+                         NULL,
+                         this );
 }
 
 
 void ControlToolBar::Create(wxWindow * parent)
 {
    ToolBar::Create(parent);
+
+   wxTheApp->Connect( wxEVT_KEY_DOWN,
+                      wxKeyEventHandler( ControlToolBar::OnKeyDown ),
+                      NULL,
+                      this );
+
+   wxTheApp->Connect( wxEVT_KEY_UP,
+                      wxKeyEventHandler( ControlToolBar::OnKeyUp ),
+                      NULL,
+                      this );
 }
 
 // This is a convenience function that allows for button creation in
@@ -563,18 +583,26 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 }
 
 
-void ControlToolBar::OnShiftDown(wxKeyEvent & event)
+void ControlToolBar::OnKeyDown(wxKeyEvent & event)
 {
-   // Turn the "Play" button into a "Loop" button
-   if (!mPlay->IsDown())
-      mPlay->SetAlternate(true);
+   event.Skip();
+
+   if (event.GetKeyCode() == WXK_SHIFT ) {
+      // Turn the "Play" button into a "Loop" button
+      if (!mPlay->IsDown())
+         mPlay->SetAlternate(true);
+   }
 }
 
-void ControlToolBar::OnShiftUp(wxKeyEvent & event)
+void ControlToolBar::OnKeyUp(wxKeyEvent & event)
 {
-   // Turn the "Loop" button into a "Play" button
-   if (!mPlay->IsDown())
-      mPlay->SetAlternate(false);
+   event.Skip();
+
+   if (event.GetKeyCode() == WXK_SHIFT ) {
+      // Turn the "Loop" button into a "Play" button
+      if (!mPlay->IsDown())
+         mPlay->SetAlternate(false);
+   }
 }
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
