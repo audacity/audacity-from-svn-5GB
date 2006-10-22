@@ -906,7 +906,7 @@ bool LabelTrack::PasteSelectedText(double sel0, double sel1)
          right = (mLabels[mSelIndex]->title).Mid(mCurrentCursorPos, (mLabels[mSelIndex]->title).Length()-mCurrentCursorPos);
       }
       mLabels[mSelIndex]->title = left + text + right;            
-      mCurrentCursorPos = left.Length() + text.Length() - 1;
+      mCurrentCursorPos = left.Length() + text.Length();
    } 
    else
    {
@@ -917,7 +917,7 @@ bool LabelTrack::PasteSelectedText(double sel0, double sel1)
       mLabels[mSelIndex]->title = (mLabels[mSelIndex]->title).Left(mCurrentCursorPos);
       mLabels[mSelIndex]->title += text;
       mLabels[mSelIndex]->title += right;
-      mCurrentCursorPos += text.Length() - 1;
+      mCurrentCursorPos += text.Length();
    }
    // set mInitialCursorPos equal to currentCursorPos
    mInitialCursorPos = mCurrentCursorPos;
