@@ -2278,7 +2278,7 @@ void TrackPanel::HandleZoomButtonUp(wxMouseEvent & event)
    }
 
    if (IsDragZooming())
-      DragZoom(GetLabelWidth()+1);
+      DragZoom(event, GetLabelWidth()+1);
    else
       DoZoomInOut(event, GetLabelWidth()+1);
 
@@ -2290,12 +2290,16 @@ void TrackPanel::HandleZoomButtonUp(wxMouseEvent & event)
 
 ///  This actually sets the Zoom value when you're done doing
 ///  a drag zoom.
-void TrackPanel::DragZoom(int trackLeftEdge)
+void TrackPanel::DragZoom(wxMouseEvent & event, int trackLeftEdge)
 {
    double left = PositionToTime(mZoomStart, trackLeftEdge);
    double right = PositionToTime(mZoomEnd, trackLeftEdge);
 
-   mViewInfo->zoom *= mViewInfo->screen / (right - left);
+   if (event.ShiftDown())
+      mViewInfo->zoom /= mViewInfo->screen / (right - left);
+   else
+      mViewInfo->zoom *= mViewInfo->screen / (right - left);
+
    if (mViewInfo->zoom > gMaxZoom)
       mViewInfo->zoom = gMaxZoom;
    if (mViewInfo->zoom <= gMinZoom)
