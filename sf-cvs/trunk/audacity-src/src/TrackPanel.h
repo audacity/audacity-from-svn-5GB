@@ -268,8 +268,8 @@ class TrackPanel:public wxPanel {
    void HandleZoomDrag(wxMouseEvent & event);
    void HandleZoomButtonUp(wxMouseEvent & event);
 
-   void DragZoom(int x);
-   void DoZoomInOut(wxMouseEvent &event, int x_center);
+   void DragZoom(wxMouseEvent &event, int x);
+   void DoZoomInOut(wxMouseEvent &event, int x);
 
    void HandleVZoom(wxMouseEvent & event);
    void HandleVZoomClick(wxMouseEvent & event);
