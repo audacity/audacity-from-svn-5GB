@@ -135,16 +135,6 @@ that get interpreted as, e.g., "C:\wxWidgets-2.6.3\include".
 Once you have set the WXWIN environment variable correctly, 
 the Audacity project file's declarations will do the rest.
 
-Similarily, you will need to set the following environment
-variables:
-
-ASIOSDK_DIR = <Location of the ASIO SDK>
-DXSDK_DIR = <Location of the DirectX SDK>
-
-If you don't have the ASIO-SDK oder the DirectX SDK, you
-still have to set those variables. Just set them to something
-like "c:\" or so.
-
 Note that you have to restart the IDE so it picks up changes
 in the environment variables.
 
@@ -179,13 +169,15 @@ some functionality like OGG/Vorbis support can be activated
 optionally and must be downloaded separately.
 
 If you wish DirectSound support, you must install the DirectX
-SDK.  The installation will automatically define the DXSDK_DIR
+SDK from Microsoft (http://msdn.microsoft.com/directx).  The
+installation will automatically define the DXSDK_DIR
 environment variable and its presense will cause DirectSound
 support to be automatically included when Audacity is built.
 
 If you wish ASIO support, install the ASIO SDK from Steinberg 
-(http://www.steinberg.net/), then define an environment variable 
-called ASIOSDK_DIR, as you did for WXWIN above. The value should be 
+(http://www.steinberg.net ... select Company, then 3rd Party
+Developers), then define an environment variable called
+ASIOSDK_DIR, as you did for WXWIN above. The value should be 
 the full path to the base directory of the ASIO SDK, e.g., 
          set ASIOSDK_DIR=C:\ASIOSDK2
 
