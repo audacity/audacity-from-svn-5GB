@@ -70,8 +70,8 @@ class ControlToolBar:public ToolBar {
    void Populate();
    virtual void Repaint(wxDC *dc);
    virtual void EnableDisableButtons();
-   void OnShiftDown(wxKeyEvent & event);
-   void OnShiftUp(wxKeyEvent & event);
+   void OnKeyDown(wxKeyEvent & event);
+   void OnKeyUp(wxKeyEvent & event);
 
    void SetVUMeters(AudacityProject *p);
 
