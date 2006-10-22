@@ -82,14 +82,16 @@ class ToolBar:public wxPanel
    virtual void EnableDisableButtons() = 0;
    virtual void ReCreateButtons();
 
-   void SetDocked(bool dock);
+   void SetDocked(bool dock, bool pushed);
 
    int GetType();
    wxString GetTitle();
    wxString GetLabel();
    ToolDock *GetDock();
 
-   bool IsResizeable();
+   bool Expose( bool show = true );
+
+   bool IsResizable();
    bool IsVisible();
    bool IsDocked();
 
@@ -144,16 +146,11 @@ class ToolBar:public wxPanel
    virtual void Populate() = 0;
    virtual void Repaint(wxDC *dc) = 0;
 
-   void OnSize(wxSizeEvent & event);
    void OnErase(wxEraseEvent & event);
    void OnPaint(wxPaintEvent & event);
    void OnLeftDown(wxMouseEvent & event);
    void OnLeftUp(wxMouseEvent & event);
    void OnMotion(wxMouseEvent & event);
-
-   bool mDocked;
-   bool mVisible;
-   bool mResizeable;
 
  private:
 
@@ -163,12 +160,17 @@ class ToolBar:public wxPanel
    
    Grabber *mGrabber;
    wxBoxSizer *mHSizer;
+   wxSizerItem *mSpacer;
 
    wxPoint mResizeStart;
 
    wxString mTitle;
    wxString mLabel;
    int mType;
+
+   bool mVisible;
+   bool mDocked;
+   bool mResizable;
 
  public:
 

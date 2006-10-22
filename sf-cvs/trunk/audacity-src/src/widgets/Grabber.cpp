@@ -58,7 +58,7 @@ Grabber::Grabber(wxWindow * parent, wxWindowID id)
    mOver = false;
    mPressed = false;
 
-   SetLabel( _("Grabber") );
+   SetLabel(_("Grabber"));
 }
 
 //
@@ -73,14 +73,16 @@ Grabber::~Grabber()
 //
 void Grabber::SendEvent(wxEventType type, const wxPoint & pos)
 {
+   wxWindow *parent = GetParent();
+
    // Initialize event and convert mouse coordinates to screen space
-   GrabberEvent e(type, GetId(), ClientToScreen(pos));
+   GrabberEvent e(type, GetId(), parent->ClientToScreen(pos));
 
    // Set the object of our desire
-   e.SetEventObject(GetParent());
+   e.SetEventObject(parent);
 
    // Queue the event
-   GetParent()->GetEventHandler()->AddPendingEvent(e);
+   parent->AddPendingEvent(e);
 }
 
 //
@@ -108,8 +110,7 @@ void Grabber::DrawGrabber( wxDC & dc )
 
    // Calculate the bump rectangle
    r.Deflate(3, 3);
-   if ((r.GetHeight() % 4) < 2)
-   {
+   if ((r.GetHeight() % 4) < 2) {
       r.Offset(0, 1);
    }
 
@@ -120,24 +121,26 @@ void Grabber::DrawGrabber( wxDC & dc )
    bottom = r.GetBottom();
 
    // Draw the raised bumps
-   if( mPressed )
+   if (mPressed) {
       AColor::Dark(&dc, false);
-   else
+   }
+   else {
       AColor::Light(&dc, false);
+   }
 
-   for( y = top; y < bottom; y += 4 )
-   {
+   for (y = top; y < bottom; y += 4) {
       dc.DrawLine(left, y, right, y);
    }
 
    // Draw the pushed bumps
-   if (mPressed)
+   if (mPressed) {
       AColor::Light(&dc, false);
-   else
+   }
+   else {
       AColor::Dark(&dc, false);
+   }
 
-   for (y = top + 1; y <= bottom; y += 4)
-   {
+   for (y = top + 1; y <= bottom; y += 4) {
       dc.DrawLine(left, y, right, y);
    }
 }
@@ -145,8 +148,11 @@ void Grabber::DrawGrabber( wxDC & dc )
 //
 // Change the button state
 //
-void Grabber::PushButton(bool state)
+void Grabber::PushButton(bool state )
 {
+   wxRect r = GetRect();
+   mOver = r.Inside(ScreenToClient(wxGetMousePosition()));
+
    // Redraw button
    mPressed = state;
    Refresh(false);
@@ -181,9 +187,11 @@ void Grabber::OnEnter(wxMouseEvent & event)
 //
 void Grabber::OnLeave(wxMouseEvent & event)
 {
-   // Redraw plain
-   mOver = false;
-   Refresh(false);
+   if (!GetCapture()) {
+      // Redraw plain
+      mOver = false;
+      Refresh(false);
+   }
 }
 
 //
