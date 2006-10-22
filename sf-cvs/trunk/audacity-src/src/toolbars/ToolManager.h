@@ -23,6 +23,7 @@
 class wxArrayPtrVoid;
 class wxBitmap;
 class wxCommandEvent;
+class wxFrame;
 class wxMouseEvent;
 class wxPaintEvent;
 class wxPoint;
@@ -33,6 +34,9 @@ class wxTimer;
 class wxTimerEvent;
 class wxWindow;
 
+class AudacityProject;
+class ToolFrame;
+
 ////////////////////////////////////////////////////////////
 /// class ToolManager
 ////////////////////////////////////////////////////////////
@@ -42,7 +46,7 @@ class ToolManager:public wxEvtHandler
 
  public:
 
-   ToolManager( wxWindow *parent );
+   ToolManager( AudacityProject *parent );
    ~ToolManager();
 
    void LayoutToolBars();
@@ -58,37 +62,35 @@ class ToolManager:public wxEvtHandler
    ToolDock *GetTopDock();
    ToolDock *GetBotDock();
 
-   void UnDock( ToolBar *bar );
-
  private:
 
-   wxWindow *Float( ToolBar *t, wxPoint & pos );
+   ToolBar *Float( ToolBar *t, wxPoint & pos );
 
-   void OnTimer( wxTimerEvent & event );
    void OnMouse( wxMouseEvent & event );
    void OnGrabber( GrabberEvent & event );
-   void OnPaint( wxPaintEvent & event );
    void OnCreate( wxWindowCreateEvent & event );
-  
+
+   void OnIndicatorPaint( wxPaintEvent & event );
+
    void ReadConfig();
    void WriteConfig();
-   void StartDrag( const wxPoint & pos );
    void Updated();
 
-   wxWindow *mParent;
+   AudacityProject *mParent;
 
+   ToolFrame *mDragWindow;
    ToolDock *mDragDock;
    ToolBar *mDragBar;
+   wxPoint mDragOffset;
    int mDragBefore;
 
    wxPoint mLastPos;
    wxRect mBarPos;
+
    wxFrame *mIndicator;
    wxRegion *mLeft;
    wxRegion *mDown;
    wxRegion *mCurrent;
-
-   wxTimer mWatchdog;
 
 #if defined(__WXMAC__)
    bool mTransition;
@@ -100,11 +102,10 @@ class ToolManager:public wxEvtHandler
 
    ToolBar *mBars[ ToolBarCount ];
 
-   wxWindow *mDragWindow;
-
  public:
 
    DECLARE_CLASS( ToolManager );
+   DECLARE_EVENT_TABLE();
 };
 
 #endif

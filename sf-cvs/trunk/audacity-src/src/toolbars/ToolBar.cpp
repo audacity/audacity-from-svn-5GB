@@ -73,7 +73,6 @@ DEFINE_EVENT_TYPE(EVT_TOOLBAR_UPDATED)
 //
 BEGIN_EVENT_TABLE( ToolBar, wxPanel )
    EVT_PAINT( ToolBar::OnPaint )
-   EVT_SIZE( ToolBar::OnSize )
    EVT_ERASE_BACKGROUND( ToolBar::OnErase )
    EVT_LEFT_DOWN( ToolBar::OnLeftDown )
    EVT_LEFT_UP( ToolBar::OnLeftUp )
@@ -85,19 +84,21 @@ END_EVENT_TABLE()
 //
 ToolBar::ToolBar( int type,
                   const wxString &label,
-                  bool resizeable )
+                  bool resizable )
 : wxPanel()
 {
    // Save parameters
    mType = type;
    mLabel = label;
    mTitle.Printf( _("Audacity %s ToolBar"), mLabel.c_str() );
-   mResizeable = resizeable;
+   mResizable = resizable;
 
    // Initialize everything
    mParent = NULL;
-   mDocked = true;
    mHSizer = NULL;
+   mSpacer = NULL;
+   mDocked = true;
+   mVisible = false;
 }
 
 //
@@ -132,11 +133,11 @@ int ToolBar::GetType()
 }
 
 //
-// Returns whether the toolbar is resizeable or not
+// Returns whether the toolbar is resizable or not
 //
-bool ToolBar::IsResizeable()
+bool ToolBar::IsResizable()
 {
-   return mResizeable;
+   return mResizable;
 }
 
 //
@@ -145,6 +146,35 @@ bool ToolBar::IsResizeable()
 bool ToolBar::IsDocked()
 {
    return mDocked;
+}
+
+//
+// Returns the visibility of the toolbar
+//
+bool ToolBar::IsVisible()
+{
+   return mVisible;
+}
+
+//
+// Show or hide the toolbar
+//
+bool ToolBar::Expose( bool show )
+{
+   bool was = mVisible;
+
+   mVisible = show;
+
+   if( IsDocked() )
+   {
+      Show( show );
+   }
+   else
+   {
+      GetParent()->Show( show );
+   }
+
+   return was;
 }
 
 //
@@ -169,6 +199,7 @@ void ToolBar::Create( wxWindow *parent )
 
    // Let the user see it in all its glory
    Show();
+   mVisible = true;
 }
 
 void ToolBar::ReCreateButtons()
@@ -180,21 +211,31 @@ void ToolBar::ReCreateButtons()
    // Get rid of any children we may have
    DestroyChildren();
 
+   // Create the main sizer
+   wxBoxSizer *ms = new wxBoxSizer( wxHORIZONTAL );
+
+   // Create the grabber and add it to the main sizer
+   mGrabber = new Grabber( this, mType );
+   ms->Add( mGrabber, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP | wxRIGHT, 1 );
+
    // Use a box sizer for laying out controls
    mHSizer = new wxBoxSizer( wxHORIZONTAL );
-
-   // Create the grabber and add it to the sizer
-   mGrabber = new Grabber( this, mType );
-   Add( mGrabber, 0, wxEXPAND | wxALIGN_LEFT | wxALIGN_TOP | wxRIGHT, 1 );
+   ms->Add( mHSizer, 1, wxEXPAND );
 
    // (Re)Establish dock state
-   SetDocked( IsDocked() );
+   SetDocked( IsDocked(), false );
 
    // Go add all the rest of the gadgets
    Populate();
 
+   // Add some space for the resize border
+   if( IsResizable() )
+   {
+      mSpacer = ms->Add( RWIDTH, 1 );
+   }
+
    // Set the sizer and do initial layout
-   SetSizerAndFit( mHSizer );
+   SetSizerAndFit( ms );
    Layout();
 
    // Recalculate the height to be a multiple of toolbarSingle
@@ -216,29 +257,18 @@ ToolDock *ToolBar::GetDock()
 //
 // Toggle the docked/floating state
 //
-void ToolBar::SetDocked( bool dock )
+void ToolBar::SetDocked( bool dock, bool pushed )
 {
    // Remember it
    mDocked = dock;
 
    // Change the tooltip of the grabber
-   if( dock )
-   {
-      mGrabber->SetLabel( _("Float") );
 #if wxUSE_TOOLTIPS
-      mGrabber->SetToolTip( _("Float Toolbar") );
+   mGrabber->SetToolTip( GetTitle() );
 #endif
-   }
-   else
-   {
-      mGrabber->SetLabel( _("Dock") );
-#if wxUSE_TOOLTIPS
-      mGrabber->SetToolTip( _("Dock Toolbar") );
-#endif
-   }
 
-   // Raise the grabber button as it should be pushed
-   mGrabber->PushButton( false );
+   // Set the grabber button state
+   mGrabber->PushButton( pushed );
 }
 
 //
@@ -439,14 +469,6 @@ void ToolBar::SetButton( bool down, AButton * button )
 }
 
 //
-// Handle sizing
-//
-void ToolBar::OnSize( wxSizeEvent & event )
-{
-   Refresh( false );
-}
-
-//
 // Handle background erasure
 //
 void ToolBar::OnErase( wxEraseEvent & event )
@@ -472,7 +494,7 @@ void ToolBar::OnPaint( wxPaintEvent & event )
    // Go repaint the rest
    Repaint( &dc );
 
-   if( mResizeable && IsDocked() )
+   if( IsResizable() && IsDocked() )
    {
       wxSize sz = GetSize();
 
@@ -497,7 +519,7 @@ void ToolBar::OnLeftDown( wxMouseEvent & event )
    }
 
    // Can we be resized?
-   if( IsResizeable() )
+   if( IsResizable() )
    {
       wxPoint pos = event.GetPosition();
       wxRect rect = GetRect();
@@ -521,10 +543,14 @@ void ToolBar::OnLeftDown( wxMouseEvent & event )
 
 void ToolBar::OnLeftUp( wxMouseEvent & event )
 {
+   // Go ahead and set the event to propagate
+   event.Skip();
+
    if( HasCapture() )
    {
       ReleaseMouse();
    }
+
    SetCursor( wxCURSOR_ARROW );
 }
 
@@ -544,7 +570,7 @@ void ToolBar::OnMotion( wxMouseEvent & event )
 
    if( !HasCapture() )
    {
-      if( IsResizeable() )
+      if( IsResizable() )
       {
          wxPoint pos = event.GetPosition();
          wxRect rect = GetRect();
@@ -599,7 +625,7 @@ void ToolBar::OnMotion( wxMouseEvent & event )
       // Resize the bar
       SetSize( r.GetSize() );
 
-      // Tell everyone we'd changed sizes
+      // Tell everyone we've changed sizes
       Updated();
 
       // Refresh our world

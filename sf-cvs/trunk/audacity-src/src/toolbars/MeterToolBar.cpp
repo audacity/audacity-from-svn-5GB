@@ -105,9 +105,14 @@ void MeterToolBar::OnSize( wxSizeEvent & evt )
       return;
    }
 
+   // Update the layout
+   Layout();
+
    // Get the usable area
-   GetClientSize( &width, &height );
-   width -= mSizer->GetPosition().x + 4;
+//   GetClientSize( &width, &height );
+//   width -= mSizer->GetPosition().x;
+   wxSize sz = GetSizer()->GetSize();
+   width = sz.x; height = sz.y;
 
    // Default location for record meter
    wxGBPosition pos( 0, 1 );
@@ -118,16 +123,16 @@ void MeterToolBar::OnSize( wxSizeEvent & evt )
       if( height > 120 )
       {
          // Stacked
-         mPlayMeter->SetMinSize( wxSize( width - 2, ( height / 2 ) - 1 ) );
-         mRecordMeter->SetMinSize( wxSize( width - 2, ( height / 2 ) - 1 ) );
+         mPlayMeter->SetMinSize( wxSize( width, ( height / 2 ) ) );
+         mRecordMeter->SetMinSize( wxSize( width, ( height / 2 ) ) );
          pos.SetCol( 0 );
          pos.SetRow( 1 );
       }
       else
       {
          // Side-by-side
-         mPlayMeter->SetMinSize( wxSize( ( width / 2 ) - 3, height ) );
-         mRecordMeter->SetMinSize( wxSize( ( width / 2 ) - 6, height ) );
+         mPlayMeter->SetMinSize( wxSize( ( width / 2 ), height ) );
+         mRecordMeter->SetMinSize( wxSize( ( width / 2 ), height ) );
       }
 
       mPlayMeter->SetStyle(Meter::HorizontalStereo);
@@ -136,8 +141,8 @@ void MeterToolBar::OnSize( wxSizeEvent & evt )
    else
    {
       // Two vertical, side-by-side
-      mPlayMeter->SetMinSize( wxSize( ( width / 2 ) - 2, height ) );
-      mRecordMeter->SetMinSize( wxSize( ( width / 2 ) - 2, height ) );
+      mPlayMeter->SetMinSize( wxSize( ( width / 2 ), height ) );
+      mRecordMeter->SetMinSize( wxSize( ( width / 2 ), height ) );
       mPlayMeter->SetStyle(Meter::VerticalStereo);
       mRecordMeter->SetStyle(Meter::VerticalStereo);
    }

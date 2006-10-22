@@ -112,6 +112,9 @@ void ToolDock::Dock( ToolBar *bar, int before )
    bar->Reparent( this );
    mBars[ bar->GetId() ] = bar;
 
+   // Reset height
+   bar->SetSize( bar->GetSize().x, bar->GetMinSize().y );
+
    // Park the new bar in the correct berth
    if( before >= 0 && before < (int)mDockedBars.GetCount() )
    {
@@ -123,7 +126,7 @@ void ToolDock::Dock( ToolBar *bar, int before )
    }
 
    // Inform toolbar of change
-   bar->SetDocked( true );
+   bar->SetDocked( true, false );
 
    // Rearrange our world
    LayoutToolBars();
@@ -305,7 +308,7 @@ int ToolDock::PositionBar( ToolBar *t, wxPoint & pos, wxRect & rect )
 
             // Get bar rect and make gap part of it
             r.SetPosition( b->GetParent()->ClientToScreen( b->GetPosition() ) );
-            r.SetSize( b->IsResizeable() ? b->GetSize() : b->GetSize() );
+            r.SetSize( b->IsResizable() ? b->GetSize() : b->GetSize() );
             r.width += toolbarGap;
             r.height += toolbarGap;
 
@@ -401,7 +404,7 @@ void ToolDock::ShowHide( int type )
    ToolBar *t = mBars[ type ];
 
    // Maintain the docked array
-   if( t->IsShown() )
+   if( t->IsVisible() )
    {
       mDockedBars.Remove( t );
    }
@@ -411,7 +414,7 @@ void ToolDock::ShowHide( int type )
    }
 
    // Make it (dis)appear
-   t->Show( !t->IsShown() );
+   t->Expose( !t->IsVisible() );
 
    // Update the layout
    LayoutToolBars();
@@ -435,16 +438,12 @@ void ToolDock::Updated()
 void ToolDock::OnGrabber( GrabberEvent & event )
 {
    ToolBar *t = mBars[ event.GetId() ];
-   wxSize sz = t->GetSize();
 
-   // Send "request" to start a drag operation
-   mManager->UnDock( t );
+   // Pass it on to the manager since it isn't in the handling hierarchy
+   mManager->ProcessEvent( event );
 
    // We no longer have control
    mDockedBars.Remove( t );
-
-   // No need to propagate any further
-   event.Skip( true );
 }
 
 // 
@@ -476,7 +475,7 @@ void ToolDock::OnSize( wxSizeEvent & event )
 }
 
 //
-// Handle sizing
+// Prevent flicker
 //
 void ToolDock::OnErase( wxEraseEvent & event )
 {

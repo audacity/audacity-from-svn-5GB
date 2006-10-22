@@ -1,4 +1,4 @@
-/**********************************************************************
+ /**********************************************************************
 
   Audacity: A Digital Audio Editor
 
@@ -30,6 +30,7 @@
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
+#include <wx/app.h>
 #include <wx/defs.h>
 #include <wx/event.h>
 #include <wx/frame.h>
@@ -44,6 +45,10 @@
 
 #include <wx/minifram.h>
 #include <wx/popupwin.h>
+
+#if defined(__WXMAC__)
+#include <wx/mac/uma.h>
+#endif
 
 #include "ToolManager.h"
 #include "ControlToolBar.h"
@@ -64,16 +69,228 @@
 #include "../widgets/AButton.h"
 #include "../widgets/Grabber.h"
 
+////////////////////////////////////////////////////////////
+/// Methods for ToolFrame
+////////////////////////////////////////////////////////////
+#define sizerW 11
+
+//
+// Constructor
+//
+class ToolFrame:public wxFrame
+{
+ public:
+
+   ToolFrame( wxWindow *parent, ToolManager *manager, ToolBar *bar, wxPoint pos )
+   : wxFrame( parent,
+              bar->GetId(),
+              wxEmptyString,
+              pos,
+              wxDefaultSize,
+              wxNO_BORDER |
+              wxFRAME_NO_TASKBAR |
+              wxFRAME_TOOL_WINDOW |
+              wxFRAME_FLOAT_ON_PARENT )
+   {
+      int width = bar->GetSize().x;
+      int border;
+
+      // OSX doesn't need a border, but Windows and Linux do
+      border = 1;
+#if defined(__WXMAC__)
+      border = 0;
+
+      // WXMAC doesn't support wxFRAME_FLOAT_ON_PARENT, so we do
+      SetWindowClass( (WindowRef) MacGetWindowRef(), kFloatingWindowClass );
+#endif
+
+      // Save parameters
+      mParent = parent;
+      mManager = manager;
+      mBar = bar;
+
+      // Transfer the bar to the ferry
+      bar->Reparent( this );
+
+      // We use a sizer to maintain proper spacing
+      wxBoxSizer *s = new wxBoxSizer( wxHORIZONTAL );
+
+      // Add the bar to the sizer
+      s->Add( bar, 1, wxEXPAND | wxALL, border );
+
+      // Add space for the resize grabber
+      if( bar->IsResizable() )
+      {
+         s->Add( sizerW, 1 );
+         width += sizerW;
+      }
+
+      SetSize( width + 2, bar->GetMinSize().y + 2 );
+
+      // Attach the sizer and resize the window to fit
+      SetSizer( s );
+      Layout();
+
+      // Inform toolbar of change
+      bar->SetDocked( false, true );
+
+      // Make sure resizable floaters don't get any smaller than initial size
+      if( bar->IsResizable() )
+      {
+         // Calc the minimum size of the frame
+         mMinSize = bar->GetBestFittingSize() + ( GetSize() - bar->GetSize() );
+      }
+   }
+
+   //
+   // Transition a toolbar from float to dragging
+   //
+   void OnGrabber( GrabberEvent & event )
+   {
+      // Pass it on to the manager since it isn't in the handling hierarchy
+      mManager->ProcessEvent( event );
+   }
+
+   //
+   // Handle frame paint events
+   //
+   void OnPaint( wxPaintEvent & event )
+   {
+      wxPaintDC dc( this );
+      wxSize sz = GetSize();
+      wxRect r;
+
+      dc.BeginDrawing();
+      dc.SetPen( wxColour( 90, 90, 90 ) );
+
+#if !defined(__WXMAC__)
+      dc.SetBackground(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE)));
+      dc.Clear();
+      dc.SetBrush( *wxTRANSPARENT_BRUSH );
+      dc.DrawRectangle( 0, 0, sz.GetWidth(), sz.GetHeight() );
+#endif
+
+      if( mBar->IsResizable() )
+      {
+         r.x = sz.x - sizerW - 2,
+         r.y = sz.y - sizerW - 2;
+         r.width = sizerW + 2;
+         r.height = sizerW + 2;
+
+         dc.DrawLine( r.GetLeft(), r.GetBottom(), r.GetRight(), r.GetTop() );
+         dc.DrawLine( r.GetLeft() + 3, r.GetBottom(), r.GetRight(), r.GetTop() + 3 );
+         dc.DrawLine( r.GetLeft() + 6, r.GetBottom(), r.GetRight(), r.GetTop() + 6 );
+         dc.DrawLine( r.GetLeft() + 9, r.GetBottom(), r.GetRight(), r.GetTop() + 9 );
+      }
+
+      dc.EndDrawing();
+   }
+
+   void OnMotion( wxMouseEvent & event )
+   {
+      // Don't do anything if we're docked or not resizeable
+      if( mBar->IsDocked() || !mBar->IsResizable() )
+      {
+         return;
+      }
+
+      // Retrieve the mouse position
+      wxPoint pos = ClientToScreen( event.GetPosition() );
+      if( HasCapture() && event.Dragging() )
+      {
+         wxRect rect = GetRect();
+
+         rect.SetBottomRight( pos );
+         if( rect.width < mMinSize.x )
+         {
+            rect.width = mMinSize.x;
+         }
+
+         if( rect.height < mMinSize.y )
+         {
+            rect.height = mMinSize.y;
+         }        
+
+         SetMinSize( rect.GetSize() );
+         SetSize( rect.GetSize() );
+         Layout();
+         Refresh( false );
+      }
+      else if( event.LeftUp() )
+      {
+         ReleaseMouse();
+      }
+      else if( !HasCapture() )
+      {
+         wxRect rect = GetRect();
+         wxRect r;
+
+         r.x = rect.GetRight() - sizerW - 2,
+         r.y = rect.GetBottom() - sizerW - 2;
+         r.width = sizerW + 2;
+         r.height = sizerW + 2;
+
+         // Is left click within resize grabber?
+         if( r.Inside( pos ) && !event.Leaving() )
+         {
+            SetCursor( wxCURSOR_SIZENWSE );
+            if( event.LeftDown() )
+            {
+               CaptureMouse();
+            }
+         }
+         else
+         {
+            SetCursor( wxCURSOR_ARROW );
+         }
+      }
+   }
+
+   //
+   // Do not allow the window to close through keyboard accelerators
+   // (like ALT+F4 on Windows)
+   //
+   void OnClose( wxCloseEvent & event )
+   {
+      event.Veto();
+   }
+
+ private:
+
+   wxWindow *mParent;
+   ToolManager *mManager;
+   ToolBar *mBar;
+   wxSize mMinSize;
+
+ public:
+
+   DECLARE_CLASS( ToolFrame );
+   DECLARE_EVENT_TABLE();
+};
+
+IMPLEMENT_CLASS( ToolFrame, wxFrame );
+
+BEGIN_EVENT_TABLE( ToolFrame, wxFrame )
+   EVT_GRABBER( wxID_ANY, ToolFrame::OnGrabber )
+   EVT_PAINT( ToolFrame::OnPaint )
+   EVT_MOUSE_EVENTS( ToolFrame::OnMotion )
+   EVT_CLOSE( ToolFrame::OnClose )
+END_EVENT_TABLE()
+
 IMPLEMENT_CLASS( ToolManager, wxEvtHandler );
 
 ////////////////////////////////////////////////////////////
 /// Methods for ToolManager
 ////////////////////////////////////////////////////////////
 
+BEGIN_EVENT_TABLE( ToolManager, wxEvtHandler )
+   EVT_GRABBER( wxID_ANY, ToolManager::OnGrabber )
+END_EVENT_TABLE()
+
 //
 // Constructor
 //
-ToolManager::ToolManager( wxWindow *parent )
+ToolManager::ToolManager( AudacityProject *parent )
 : wxEvtHandler()
 {
    wxPoint pt[ 3 ];
@@ -90,7 +307,6 @@ ToolManager::ToolManager( wxWindow *parent )
    mDragWindow = NULL;
    mDragDock = NULL;
    mDragBar = NULL;
-   mWatchdog.SetOwner( this, wxID_ANY );
 
    // Create the down arrow
    pt[ 0 ].x = 0;
@@ -122,7 +338,7 @@ ToolManager::ToolManager( wxWindow *parent )
                              wxSize( 32, 32 ),
                              wxFRAME_TOOL_WINDOW |
                              wxFRAME_SHAPED |
-                             wxSIMPLE_BORDER |
+                             wxNO_BORDER |
                              wxFRAME_NO_TASKBAR |
                              wxSTAY_ON_TOP );
 
@@ -134,12 +350,23 @@ ToolManager::ToolManager( wxWindow *parent )
 
    // Hook the paint event...needed for all
    mIndicator->Connect( wxEVT_PAINT,
-                        wxPaintEventHandler( ToolManager::OnPaint ),
+                        wxPaintEventHandler( ToolManager::OnIndicatorPaint ),
                         NULL,
                         this );
 
    // It's a little shy
    mIndicator->Hide();
+
+   // Hook the parents mouse events...using the parent helps greatly
+   // under GTK
+   mParent->Connect( wxEVT_LEFT_UP,
+                     wxMouseEventHandler( ToolManager::OnMouse ),
+                     NULL,
+                     this );
+   mParent->Connect( wxEVT_MOTION,
+                     wxMouseEventHandler( ToolManager::OnMouse ),
+                     NULL,
+                     this );
 
    // Create the top and bottom docks
    mTopDock = new ToolDock( this, parent, TopDockID );
@@ -167,13 +394,23 @@ ToolManager::~ToolManager()
    // Save the toolbar states
    WriteConfig();
 
+   // Remove handlers from parent
+   mParent->Disconnect( wxEVT_LEFT_UP,
+                        wxMouseEventHandler( ToolManager::OnMouse ),
+                        NULL,
+                        this );
+   mParent->Disconnect( wxEVT_MOTION,
+                        wxMouseEventHandler( ToolManager::OnMouse ),
+                        NULL,
+                        this );
+
    // Remove our event handlers
    mIndicator->Disconnect( wxEVT_CREATE,
                            wxWindowCreateEventHandler( ToolManager::OnCreate ),
                            NULL,
                            this );
    mIndicator->Disconnect( wxEVT_PAINT,
-                           wxPaintEventHandler( ToolManager::OnPaint ),
+                           wxPaintEventHandler( ToolManager::OnIndicatorPaint ),
                            NULL,
                            this );
 
@@ -183,11 +420,6 @@ ToolManager::~ToolManager()
    // Delete the indicator regions
    delete mLeft;
    delete mDown;
-
-   if( mDragWindow )
-   {
-      mDragWindow->Destroy();
-   }
 }
 
 //
@@ -199,8 +431,11 @@ void ToolManager::ReadConfig()
    wxArrayInt unordered[ DockCount ];
    int order[ DockCount ][ ToolBarCount ];
    bool show[ ToolBarCount ];
+   int width[ ToolBarCount ];
+   int height[ ToolBarCount ];
    int x, y;
    int dock, ord, ndx;
+
 #if defined(__WXMAC__)
    // Disable window animation
    wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
@@ -221,8 +456,10 @@ void ToolManager::ReadConfig()
    // Load and apply settings for each bar
    for( ndx = 0; ndx < ToolBarCount; ndx++ )
    {
+      ToolBar *bar = mBars[ ndx ];
+
       // Change to the bar subkey
-      gPrefs->SetPath( mBars[ ndx ]->GetLabel() );
+      gPrefs->SetPath( bar->GetLabel() );
 
       // Read in all the settings
       gPrefs->Read( wxT("Dock"), &dock, ndx == SelectionBarID ? BotDockID : TopDockID );
@@ -230,6 +467,8 @@ void ToolManager::ReadConfig()
       gPrefs->Read( wxT("Show"), &show[ ndx ], ndx == DeviceBarID ? false : true );
       gPrefs->Read( wxT("X"), &x, -1 );
       gPrefs->Read( wxT("Y"), &y, -1 );
+      gPrefs->Read( wxT("W"), &width[ ndx ], -1 );
+      gPrefs->Read( wxT("H"), &height[ ndx ], -1 );
 
       // Docked or floating?
       if( dock )
@@ -242,11 +481,19 @@ void ToolManager::ReadConfig()
          // Create the bar with the correct parent
          if( dock == TopDockID )
          {
-            mBars[ ndx ]->Create( mTopDock );
+            bar->Create( mTopDock );
          }
          else
          {
-            mBars[ ndx ]->Create( mBotDock );
+            bar->Create( mBotDock );
+         }
+
+         // Set the width
+         if( width[ ndx ] )
+         {
+            wxSize sz( width[ ndx ], bar->GetSize().y );
+            bar->SetSize( sz );
+            bar->Layout();
          }
 
          // Is order within range and unoccupied?
@@ -266,13 +513,25 @@ void ToolManager::ReadConfig()
       else
       {
          // Create the bar (with the top dock being temporary parent)
-         mBars[ ndx ]->Create( mTopDock );
+         bar->Create( mTopDock );
 
-         // Set window position (validate these somehow????)
-         wxPoint pos( x, y );
+         // Construct a new floater
+         ToolFrame *f = new ToolFrame( mParent, this, bar, wxPoint( x, y ) );
 
-         // Set the bar afloat and show/hide it
-         Float( mBars[ ndx ], pos )->Show( show[ ndx ] );
+         // Set the width and height
+         if( width[ ndx ] != -1 && height[ ndx ] != -1 )
+         {
+            wxSize sz( width[ ndx ], height[ ndx ] );
+            f->SetMinSize( sz );
+            f->SetSize( sz );
+            f->Layout();
+         }
+
+         // Show or hide it
+         bar->Expose( show[ ndx ] );
+
+         // Inform toolbar of change
+         bar->SetDocked( false, false );
       }
 
       // Change back to the bar root
@@ -323,6 +582,11 @@ void ToolManager::ReadConfig()
 
    // Restore original config path
    gPrefs->SetPath( oldpath );
+
+#if defined(__WXMAC__)
+   // Reinstate original transition
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
+#endif
 }
 
 //
@@ -357,29 +621,21 @@ void ToolManager::WriteConfig()
       gPrefs->Write( wxT("Dock"), to ? TopDockID : bo ? BotDockID : NoDockID );
       gPrefs->Write( wxT("Order"), to + bo );
       gPrefs->Write( wxT("Show"), IsVisible( ndx ) );
-      if( bar->IsDocked() )
+
+      wxPoint pos( -1, -1 );
+      wxSize sz = bar->GetSize();
+      if( !bar->IsDocked() )
       {
-         gPrefs->Write( wxT("X"), -1 );
-         gPrefs->Write( wxT("Y"), -1 );
-
-         // Kill the bar
-         bar->Destroy();
+         pos = bar->GetParent()->GetPosition();
+         sz = bar->GetParent()->GetSize();
       }
-      else
-      {
-         wxPoint p = bar->GetParent()->GetPosition();
-         gPrefs->Write( wxT("X"), p.x );
-         gPrefs->Write( wxT("Y"), p.y );
+      gPrefs->Write( wxT("X"), pos.x );
+      gPrefs->Write( wxT("Y"), pos.y );
+      gPrefs->Write( wxT("W"), sz.x );
+      gPrefs->Write( wxT("H"), sz.y );
 
-         // Disconnect the event handler
-         bar->GetParent()->Disconnect( EVT_GRABBER_CLICKED,
-                                       GrabberEventHandler( ToolManager::OnGrabber ),
-                                       NULL,
-                                       this );
-
-         // Kill the bar
-         bar->Destroy();
-      }
+      // Kill the bar
+      bar->Destroy();
 
       // Change back to the bar root
       gPrefs->SetPath( wxT("..") );
@@ -414,78 +670,6 @@ ToolDock *ToolManager::GetBotDock()
 }
 
 //
-// Toggle the docked/floating state of the specified toolbar
-//
-wxWindow *ToolManager::Float( ToolBar *t, wxPoint & pos )
-{
-   wxWindow *parent;
-
-#if defined(__WXMAC__)
-   // Disable window animation
-   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
-#endif
-
-   // Create the floater window
-   int flags = wxCAPTION | wxFRAME_TOOL_WINDOW | wxFRAME_FLOAT_ON_PARENT;
-   if( t->IsResizeable() )
-   {
-      parent = new wxFrame( mParent,
-                            wxID_ANY,
-                            t->GetTitle(),
-                            pos,
-                            wxDefaultSize,
-                            flags | wxRESIZE_BORDER,
-                            t->GetLabel() );
-   }
-   else
-   {
-      parent = new wxMiniFrame( mParent,
-                                wxID_ANY,
-                                t->GetTitle(),
-                                pos,
-                                wxDefaultSize,
-                                flags,
-                                t->GetLabel() );
-   }
-
-   // Intercept the grabber events
-   parent->Connect( EVT_GRABBER_CLICKED,
-                    GrabberEventHandler( ToolManager::OnGrabber ),
-                    NULL,
-                    this );
-
-   // Move the toolbar from the toolbar dock to the floater window
-   t->Reparent( parent );
-
-   // Tell the toolbar about the change
-   t->SetDocked( false );
-
-   // Resize the floater client size to the toolbars minimum size
-   wxSize sz = t->GetSize();
-   parent->SetClientSize( sz.x + 1, sz.y + 1 );
-
-   // Make sure resizable floaters don't get any smaller than initial size
-   if( t->IsResizeable() )
-   {
-      // Adjust bar minimum size to account for frame decorations
-      wxSize msz = t->GetMinSize();
-      wxSize psz = parent->GetSize();
-      msz.x += ( psz.x - sz.x );
-      msz.y += ( psz.y - sz.y );
-
-      // Set the minimum size
-      parent->SetSizeHints( msz );
-   }
-
-#if defined(__WXMAC__)
-   // Reinstate original transition
-   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
-#endif
-
-   return parent;
-}
-
-//
 // Queues an EVT_TOOLBAR_UPDATED command event to notify any
 // interest parties of an updated toolbar or dock layout
 //
@@ -510,6 +694,8 @@ bool ToolManager::IsDocked( int type )
 bool ToolManager::IsVisible( int type )
 {
    ToolBar *t = mBars[ type ];
+
+   return t->IsVisible();
 
    // If toolbar is floating
    if( !t->IsDocked() )
@@ -536,115 +722,8 @@ void ToolManager::ShowHide( int type )
    }
    else
    {
-      t->GetParent()->Show( !t->GetParent()->IsShown() );
+      t->Expose( !t->IsVisible() );
    }
-}
-
-//
-// Transition a toolbar from docked to dragging
-//
-void ToolManager::UnDock( ToolBar *bar )
-{
-#if defined(__WXMAC__)
-   // Disable window animation
-   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
-#endif
-
-   // Remember which bar we're dragging
-   mDragBar = bar;
-
-   // Inform toolbar of change
-   mDragBar->SetDocked( false );
-
-   // Continue the drag 
-   StartDrag( wxGetMousePosition() );
-}
-
-//
-// Common handler for transitioning a bar to dragging
-//
-void ToolManager::StartDrag( const wxPoint & pos )
-{
-   wxSize sz;
-
-   // Get the current size and force the height to the minimum
-   sz = mDragBar->GetSize();
-   sz.y = mDragBar->GetMinSize().y;
-
-   // Sink the previous ferry
-   if( mDragWindow )
-   {
-      mDragWindow->Destroy();
-      mDragWindow = NULL;
-   }
-
-   // Construct a new ferry
-   //
-   // For GTK, we use a popup window since dragging a frame causes mouse capture
-   // problems and a wxWindow will not work as its position is restricted to the
-   // interior of the current project frame.  (We want to be able to drag toolbars
-   // outside the frame.)  The popup window (frame actually) doesn't have this
-   // constraint or capture problems.
-   //
-   // But, a standard frame should be used for Windows and OSX since a popup doesn't
-   // work quite right under Windows (for this purpose) and the latter doesn't yet
-   // support the wxPopupWindow class.
-#if defined(__WXGTK__)
-   mDragWindow = new wxPopupWindow( mParent,
-                                    wxNO_BORDER |
-                                    wxFRAME_NO_TASKBAR |
-                                    wxFRAME_FLOAT_ON_PARENT );
-   mDragWindow->SetSize( pos.x, pos.y, sz.GetWidth() + 2, sz.GetHeight() + 2 );
-#else
-   mDragWindow = new wxFrame( mParent,
-                              wxID_ANY,
-                              wxEmptyString,
-                              pos,
-                              wxSize( sz.GetWidth() + 2, sz.GetHeight() + 2 ),
-                              wxNO_BORDER |
-                              wxFRAME_NO_TASKBAR |
-                              wxFRAME_FLOAT_ON_PARENT );
-#endif
-
-   // Transfer the bar to the ferry
-   mDragBar->Reparent( mDragWindow );
-
-   // GTK needs a yield before we can reposition the bar within the ferry
-   wxYieldIfNeeded();
-
-   // Anchor it down
-   mDragBar->SetSize( 1,
-                      1,
-                      sz.GetWidth(),
-                      sz.GetHeight() );
-
-   // Intercept the mouse events
-   mDragWindow->Connect( wxEVT_MOTION,
-                         wxMouseEventHandler( ToolManager::OnMouse ),
-                         NULL,
-                         this );
-   mDragWindow->Connect( wxEVT_LEFT_UP,
-                         wxMouseEventHandler( ToolManager::OnMouse ),
-                         NULL,
-                         this );
-
-   // Draw a border
-#if defined(__WXGTK__)
-   mDragWindow->SetBackgroundColour( *wxBLACK );
-   mDragWindow->ClearBackground();
-#endif
-
-   // Make sure the ferry is visible
-   mDragWindow->Show();
-
-   // Notify parent of change
-   Updated();
-
-   // We want all mouse events from this point on
-   mDragWindow->CaptureMouse();
-
-   // Setup a watchdog in case we lose the capture
-//   mWatchdog.Start( 50, wxTIMER_CONTINUOUS );
 }
 
 //
@@ -665,60 +744,62 @@ void ToolManager::OnMouse( wxMouseEvent & event )
    // Go ahead and set the event to propagate
    event.Skip();
 
-   // Can't do anything if we're not dragging
-   if( !mDragBar )
+   // Can't do anything if we're not dragging.  This also prevents
+   // us from intercepting events that don't belong to us from the
+   // parent since we're Connect()ed to a couple.
+   if( !mDragWindow )
    {
       return;
    }
 
-   // Retrieve the mouse position
-   wxPoint pos = wxGetMousePosition();
+#if defined(__WXMAC__)
+   // Disable window animation
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
+#endif
+
+   // Retrieve the event position
+   wxPoint pos =
+      ( (wxWindow *)event.GetEventObject() )->ClientToScreen( event.GetPosition() );
 
    // Button was released...finish the drag
-   if( !event.LeftIsDown())
+   if( !event.LeftIsDown() )
    {
-      // Stop the watchdog
-//      mWatchdog.Stop();
-
-      // Release the mouse if we have it (we should, but sometimes...)
-      if( mDragWindow->HasCapture() )
+      // Release capture
+      if( mParent->HasCapture() )
       {
-         mDragWindow->ReleaseMouse();
+         mParent->ReleaseMouse();
       }
 
       // Hide the indicator
       mIndicator->Hide();
 
-      // Transition the bar to a dock or a floater
-      if( mDragDock )
+      // Transition the bar to a dock
+      if( mDragDock && !event.ShiftDown() )
       {
          // Trip over...everyone ashore that's going ashore...
          mDragDock->Dock( mDragBar, mDragBefore );
+
+         // Done with the floater
+         mDragWindow->Destroy();
+         mDragBar->Refresh(false);
       }
       else
       {
-         // Set the bar afloat
-         Float( mDragBar, pos )->Show();
+         // Calling SetDocked() to force the grabber button to popup
+         mDragBar->SetDocked( false, false );
       }
 
-      // Hide the ferry (gets deleted above)
-      mDragWindow->Hide();
-
       // Done dragging
+      mDragWindow = NULL;
       mDragDock = NULL;
       mDragBar = NULL;
       mLastPos.x = mBarPos.x = -1;
       mLastPos.y = mBarPos.y = -1;
-
-#if defined(__WXMAC__)
-      // Reinstate original transition
-      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
-#endif
    }
    else if( event.Dragging() && pos != mLastPos )
    {
       // Make toolbar follow the mouse
-      mDragWindow->Move( pos );
+      mDragWindow->Move( pos - mDragOffset );
 
       // Remember to prevent excessive movement
       mLastPos = pos;
@@ -781,6 +862,7 @@ void ToolManager::OnMouse( wxMouseEvent & event )
             mIndicator->SetShape( *mCurrent );
             mIndicator->Move( dock->GetParent()->ClientToScreen( p ) );
             mIndicator->Show();
+            mIndicator->Update();
 
             // Remember for next go round
             mBarPos = r;
@@ -801,25 +883,10 @@ void ToolManager::OnMouse( wxMouseEvent & event )
       // Remember to which dock the drag bar belongs.
       mDragDock = dock;
    }
-}
 
-//
-// Protect against losing mouse capture
-//
-void ToolManager::OnTimer( wxTimerEvent & event )
-{
-#if 0
-   // If we've lost capture, simulate a button up event
-   if( !mDragWindow->HasCapture() )
-   {
-      wxMouseEvent e;
-      wxPoint p( ScreenToClient( wxGetMousePosition() ) );
-      e.m_x = p.x;
-      e.m_y = p.y;
-      e.SetEventType( wxEVT_LEFT_UP );
-      e.m_leftDown = false;
-      OnMouse( e );
-   }
+#if defined(__WXMAC__)
+   // Reinstate original transition
+   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
 #endif
 }
 
@@ -829,10 +896,10 @@ void ToolManager::OnTimer( wxTimerEvent & event )
 // Really only needed for the Mac since SetBackgroundColour()
 // doesn't seem to work with shaped frames.
 //
-void ToolManager::OnPaint( wxPaintEvent & event )
+void ToolManager::OnIndicatorPaint( wxPaintEvent & event )
 {
-   wxPaintDC dc( mIndicator );
-
+   wxWindow *w = (wxWindow *)event.GetEventObject();
+   wxPaintDC dc( w );
    dc.BeginDrawing();
    dc.SetBackground( *wxBLUE_BRUSH );
    dc.Clear();
@@ -858,30 +925,53 @@ void ToolManager::OnCreate( wxWindowCreateEvent & event )
 //
 void ToolManager::OnGrabber( GrabberEvent & event )
 {
-   wxWindow *parent;
-
-#if defined(__WXMAC__)
-   // Disable window animation
-   wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
-#endif
-
    // No need to propagate any further
-   event.Skip( true );
+   event.Skip( false );
 
    // Remember which bar we're dragging
    mDragBar = mBars[ event.GetId() ];
 
-   // Get the parent
-   parent = mDragBar->GetParent();
+   // Calculate the drag offset
+   wxPoint mp = event.GetPosition();
+   mDragOffset = mp - 
+                 mDragBar->GetParent()->ClientToScreen( mDragBar->GetPosition() ) +
+                 wxPoint( 1, 1 );
 
-   // And make it disappear
-   parent->Hide();
+   // Must set the bar afloat if it's currently docked
+   if( mDragBar->IsDocked() )
+   {
+#if defined(__WXMAC__)
+      // Disable window animation
+      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
+#endif
 
-   // Start the dragging
-   StartDrag( wxGetMousePosition() );
+      // Adjust the starting position
+      mp -= mDragOffset;
 
-   // Kill the parent
-   parent->Destroy();
+      // Inform toolbar of change
+      mDragBar->SetDocked( false, true );
+
+      // Construct a new floater
+      mDragWindow = new ToolFrame( mParent, this, mDragBar, mp );
+
+      // Make sure the ferry is visible
+      mDragWindow->Show();
+   
+      // Notify parent of change
+      Updated();
+
+#if defined(__WXMAC__)
+      // Reinstate original transition
+      wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
+#endif
+   }
+   else
+   {
+      mDragWindow = (ToolFrame *) mDragBar->GetParent();
+   }
+
+   // We want all mouse events from this point on
+   mParent->CaptureMouse();
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
@@ -893,5 +983,4 @@ void ToolManager::OnGrabber( GrabberEvent & event )
 // End:
 //
 // vim: et sts=3 sw=3
-// arch-tag: 2f4ec75c-bdb7-4889-96d1-5d00abc41027
-
+// arch-tag: 2f4ec75c-bdb7-4889-96d-5d00abc41027
