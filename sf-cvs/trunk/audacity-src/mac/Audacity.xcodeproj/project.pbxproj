@@ -749,6 +749,51 @@
 		283A11AA0A2C0E15004372C4 /* ShuttleGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A60A2C0E15004372C4 /* ShuttleGui.cpp */; };
 		283A11AB0A2C0E15004372C4 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283A11A80A2C0E15004372C4 /* Theme.cpp */; };
 		283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 283DE1350AC0D4FD00E8C3AE /* XMLWriter.cpp */; };
+		2840CF4D0AEB807E00F49FC3 /* ath.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF230AEB807E00F49FC3 /* ath.c */; };
+		2840CF4E0AEB807E00F49FC3 /* ath.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF240AEB807E00F49FC3 /* ath.h */; };
+		2840CF4F0AEB807E00F49FC3 /* availbits.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF250AEB807E00F49FC3 /* availbits.c */; };
+		2840CF500AEB807E00F49FC3 /* availbits.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF260AEB807E00F49FC3 /* availbits.h */; };
+		2840CF510AEB807E00F49FC3 /* bitbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF270AEB807E00F49FC3 /* bitbuffer.c */; };
+		2840CF520AEB807E00F49FC3 /* bitbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF280AEB807E00F49FC3 /* bitbuffer.h */; };
+		2840CF530AEB807E00F49FC3 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF290AEB807E00F49FC3 /* common.h */; };
+		2840CF540AEB807E00F49FC3 /* crc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF2A0AEB807E00F49FC3 /* crc.c */; };
+		2840CF550AEB807E00F49FC3 /* crc.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF2B0AEB807E00F49FC3 /* crc.h */; };
+		2840CF560AEB807E00F49FC3 /* dab.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF2C0AEB807E00F49FC3 /* dab.c */; };
+		2840CF570AEB807E00F49FC3 /* dab.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF2D0AEB807E00F49FC3 /* dab.h */; };
+		2840CF580AEB807E00F49FC3 /* encode.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF2E0AEB807E00F49FC3 /* encode.c */; };
+		2840CF590AEB807E00F49FC3 /* encode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF2F0AEB807E00F49FC3 /* encode.h */; };
+		2840CF5A0AEB807E00F49FC3 /* energy.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF300AEB807E00F49FC3 /* energy.c */; };
+		2840CF5B0AEB807E00F49FC3 /* energy.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF310AEB807E00F49FC3 /* energy.h */; };
+		2840CF5C0AEB807E00F49FC3 /* enwindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF320AEB807E00F49FC3 /* enwindow.h */; };
+		2840CF5D0AEB807E00F49FC3 /* fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF330AEB807E00F49FC3 /* fft.c */; };
+		2840CF5E0AEB807E00F49FC3 /* fft.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF340AEB807E00F49FC3 /* fft.h */; };
+		2840CF5F0AEB807E00F49FC3 /* get_set.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF350AEB807E00F49FC3 /* get_set.c */; };
+		2840CF600AEB807E00F49FC3 /* mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF360AEB807E00F49FC3 /* mem.c */; };
+		2840CF610AEB807E00F49FC3 /* mem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF370AEB807E00F49FC3 /* mem.h */; };
+		2840CF620AEB807E00F49FC3 /* psycho_0.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF380AEB807E00F49FC3 /* psycho_0.c */; };
+		2840CF630AEB807E00F49FC3 /* psycho_0.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF390AEB807E00F49FC3 /* psycho_0.h */; };
+		2840CF640AEB807E00F49FC3 /* psycho_1_critband.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF3A0AEB807E00F49FC3 /* psycho_1_critband.h */; };
+		2840CF650AEB807E00F49FC3 /* psycho_1_freqtable.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF3B0AEB807E00F49FC3 /* psycho_1_freqtable.h */; };
+		2840CF660AEB807E00F49FC3 /* psycho_1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF3C0AEB807E00F49FC3 /* psycho_1.c */; };
+		2840CF670AEB807E00F49FC3 /* psycho_1.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF3D0AEB807E00F49FC3 /* psycho_1.h */; };
+		2840CF680AEB807E00F49FC3 /* psycho_2_absthr.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF3E0AEB807E00F49FC3 /* psycho_2_absthr.h */; };
+		2840CF690AEB807E00F49FC3 /* psycho_2.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF3F0AEB807E00F49FC3 /* psycho_2.c */; };
+		2840CF6A0AEB807E00F49FC3 /* psycho_2.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF400AEB807E00F49FC3 /* psycho_2.h */; };
+		2840CF6B0AEB807E00F49FC3 /* psycho_3.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF410AEB807E00F49FC3 /* psycho_3.c */; };
+		2840CF6C0AEB807E00F49FC3 /* psycho_3.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF420AEB807E00F49FC3 /* psycho_3.h */; };
+		2840CF6D0AEB807E00F49FC3 /* psycho_4.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF430AEB807E00F49FC3 /* psycho_4.c */; };
+		2840CF6E0AEB807E00F49FC3 /* psycho_4.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF440AEB807E00F49FC3 /* psycho_4.h */; };
+		2840CF6F0AEB807E00F49FC3 /* psycho_n1.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF450AEB807E00F49FC3 /* psycho_n1.c */; };
+		2840CF700AEB807E00F49FC3 /* psycho_n1.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF460AEB807E00F49FC3 /* psycho_n1.h */; };
+		2840CF710AEB807E00F49FC3 /* subband.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF470AEB807E00F49FC3 /* subband.c */; };
+		2840CF720AEB807E00F49FC3 /* subband.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF480AEB807E00F49FC3 /* subband.h */; };
+		2840CF730AEB807E00F49FC3 /* twolame.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF490AEB807E00F49FC3 /* twolame.c */; };
+		2840CF740AEB807E00F49FC3 /* twolame.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF4A0AEB807E00F49FC3 /* twolame.h */; };
+		2840CF750AEB807E00F49FC3 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF4B0AEB807E00F49FC3 /* util.c */; };
+		2840CF760AEB807E00F49FC3 /* util.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF4C0AEB807E00F49FC3 /* util.h */; };
+		2840CF7A0AEB810000F49FC3 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 2840CF790AEB810000F49FC3 /* config.h */; };
+		2840CF860AEB83DB00F49FC3 /* ExportMP2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */; };
+		2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2840CF220AEB803C00F49FC3 /* libtwolame.a */; };
 		28456AC20A2C180E00C23C1E /* ThemePrefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */; };
 		2849B4620A7444BE00ECF12D /* Dependencies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2849B4600A7444BE00ECF12D /* Dependencies.cpp */; };
 		28560C910A75E40F00A3429E /* AutoRecovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28560C8F0A75E40F00A3429E /* AutoRecovery.cpp */; };
@@ -924,6 +969,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 17073EE70988DBDD008541CC;
 			remoteInfo = allegro;
+		};
+		2840CF7F0AEB822100F49FC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1790ABE309883346008A330A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2840CECB0AEB803C00F49FC3 /* twolame */;
+			remoteInfo = twolame;
 		};
 		28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1814,6 +1866,52 @@
 		283A11A90A2C0E15004372C4 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		283DE1340AC0D4FD00E8C3AE /* XMLWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLWriter.h; sourceTree = "<group>"; };
 		283DE1350AC0D4FD00E8C3AE /* XMLWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLWriter.cpp; sourceTree = "<group>"; };
+		2840CF220AEB803C00F49FC3 /* libtwolame.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtwolame.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2840CF230AEB807E00F49FC3 /* ath.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = ath.c; path = twolame/libtwolame/ath.c; sourceTree = "<group>"; };
+		2840CF240AEB807E00F49FC3 /* ath.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = ath.h; path = twolame/libtwolame/ath.h; sourceTree = "<group>"; };
+		2840CF250AEB807E00F49FC3 /* availbits.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = availbits.c; path = twolame/libtwolame/availbits.c; sourceTree = "<group>"; };
+		2840CF260AEB807E00F49FC3 /* availbits.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = availbits.h; path = twolame/libtwolame/availbits.h; sourceTree = "<group>"; };
+		2840CF270AEB807E00F49FC3 /* bitbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = bitbuffer.c; path = twolame/libtwolame/bitbuffer.c; sourceTree = "<group>"; };
+		2840CF280AEB807E00F49FC3 /* bitbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = bitbuffer.h; path = twolame/libtwolame/bitbuffer.h; sourceTree = "<group>"; };
+		2840CF290AEB807E00F49FC3 /* common.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = common.h; path = twolame/libtwolame/common.h; sourceTree = "<group>"; };
+		2840CF2A0AEB807E00F49FC3 /* crc.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = crc.c; path = twolame/libtwolame/crc.c; sourceTree = "<group>"; };
+		2840CF2B0AEB807E00F49FC3 /* crc.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = crc.h; path = twolame/libtwolame/crc.h; sourceTree = "<group>"; };
+		2840CF2C0AEB807E00F49FC3 /* dab.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = dab.c; path = twolame/libtwolame/dab.c; sourceTree = "<group>"; };
+		2840CF2D0AEB807E00F49FC3 /* dab.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = dab.h; path = twolame/libtwolame/dab.h; sourceTree = "<group>"; };
+		2840CF2E0AEB807E00F49FC3 /* encode.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = encode.c; path = twolame/libtwolame/encode.c; sourceTree = "<group>"; };
+		2840CF2F0AEB807E00F49FC3 /* encode.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = encode.h; path = twolame/libtwolame/encode.h; sourceTree = "<group>"; };
+		2840CF300AEB807E00F49FC3 /* energy.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = energy.c; path = twolame/libtwolame/energy.c; sourceTree = "<group>"; };
+		2840CF310AEB807E00F49FC3 /* energy.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = energy.h; path = twolame/libtwolame/energy.h; sourceTree = "<group>"; };
+		2840CF320AEB807E00F49FC3 /* enwindow.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = enwindow.h; path = twolame/libtwolame/enwindow.h; sourceTree = "<group>"; };
+		2840CF330AEB807E00F49FC3 /* fft.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = fft.c; path = twolame/libtwolame/fft.c; sourceTree = "<group>"; };
+		2840CF340AEB807E00F49FC3 /* fft.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = fft.h; path = twolame/libtwolame/fft.h; sourceTree = "<group>"; };
+		2840CF350AEB807E00F49FC3 /* get_set.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = get_set.c; path = twolame/libtwolame/get_set.c; sourceTree = "<group>"; };
+		2840CF360AEB807E00F49FC3 /* mem.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = mem.c; path = twolame/libtwolame/mem.c; sourceTree = "<group>"; };
+		2840CF370AEB807E00F49FC3 /* mem.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = mem.h; path = twolame/libtwolame/mem.h; sourceTree = "<group>"; };
+		2840CF380AEB807E00F49FC3 /* psycho_0.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_0.c; path = twolame/libtwolame/psycho_0.c; sourceTree = "<group>"; };
+		2840CF390AEB807E00F49FC3 /* psycho_0.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_0.h; path = twolame/libtwolame/psycho_0.h; sourceTree = "<group>"; };
+		2840CF3A0AEB807E00F49FC3 /* psycho_1_critband.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_1_critband.h; path = twolame/libtwolame/psycho_1_critband.h; sourceTree = "<group>"; };
+		2840CF3B0AEB807E00F49FC3 /* psycho_1_freqtable.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_1_freqtable.h; path = twolame/libtwolame/psycho_1_freqtable.h; sourceTree = "<group>"; };
+		2840CF3C0AEB807E00F49FC3 /* psycho_1.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_1.c; path = twolame/libtwolame/psycho_1.c; sourceTree = "<group>"; };
+		2840CF3D0AEB807E00F49FC3 /* psycho_1.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_1.h; path = twolame/libtwolame/psycho_1.h; sourceTree = "<group>"; };
+		2840CF3E0AEB807E00F49FC3 /* psycho_2_absthr.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_2_absthr.h; path = twolame/libtwolame/psycho_2_absthr.h; sourceTree = "<group>"; };
+		2840CF3F0AEB807E00F49FC3 /* psycho_2.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_2.c; path = twolame/libtwolame/psycho_2.c; sourceTree = "<group>"; };
+		2840CF400AEB807E00F49FC3 /* psycho_2.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_2.h; path = twolame/libtwolame/psycho_2.h; sourceTree = "<group>"; };
+		2840CF410AEB807E00F49FC3 /* psycho_3.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_3.c; path = twolame/libtwolame/psycho_3.c; sourceTree = "<group>"; };
+		2840CF420AEB807E00F49FC3 /* psycho_3.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_3.h; path = twolame/libtwolame/psycho_3.h; sourceTree = "<group>"; };
+		2840CF430AEB807E00F49FC3 /* psycho_4.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_4.c; path = twolame/libtwolame/psycho_4.c; sourceTree = "<group>"; };
+		2840CF440AEB807E00F49FC3 /* psycho_4.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_4.h; path = twolame/libtwolame/psycho_4.h; sourceTree = "<group>"; };
+		2840CF450AEB807E00F49FC3 /* psycho_n1.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = psycho_n1.c; path = twolame/libtwolame/psycho_n1.c; sourceTree = "<group>"; };
+		2840CF460AEB807E00F49FC3 /* psycho_n1.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = psycho_n1.h; path = twolame/libtwolame/psycho_n1.h; sourceTree = "<group>"; };
+		2840CF470AEB807E00F49FC3 /* subband.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = subband.c; path = twolame/libtwolame/subband.c; sourceTree = "<group>"; };
+		2840CF480AEB807E00F49FC3 /* subband.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = subband.h; path = twolame/libtwolame/subband.h; sourceTree = "<group>"; };
+		2840CF490AEB807E00F49FC3 /* twolame.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = twolame.c; path = twolame/libtwolame/twolame.c; sourceTree = "<group>"; };
+		2840CF4A0AEB807E00F49FC3 /* twolame.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = twolame.h; path = twolame/libtwolame/twolame.h; sourceTree = "<group>"; };
+		2840CF4B0AEB807E00F49FC3 /* util.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = util.c; path = twolame/libtwolame/util.c; sourceTree = "<group>"; };
+		2840CF4C0AEB807E00F49FC3 /* util.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = util.h; path = twolame/libtwolame/util.h; sourceTree = "<group>"; };
+		2840CF790AEB810000F49FC3 /* config.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = config.h; path = twolame/build/config.h; sourceTree = "<group>"; };
+		2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ExportMP2.cpp; sourceTree = "<group>"; };
+		2840CF850AEB83DB00F49FC3 /* ExportMP2.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ExportMP2.h; sourceTree = "<group>"; };
 		28456AC00A2C180E00C23C1E /* ThemePrefs.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = ThemePrefs.cpp; sourceTree = "<group>"; };
 		28456AC10A2C180E00C23C1E /* ThemePrefs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ThemePrefs.h; sourceTree = "<group>"; };
 		2849B4600A7444BE00ECF12D /* Dependencies.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Dependencies.cpp; sourceTree = "<group>"; };
@@ -1939,6 +2037,7 @@
 				28E67FEE0A3A2B150021D89F /* libFLAC++.a in Frameworks */,
 				28E67FEF0A3A2B160021D89F /* libFLAC.a in Frameworks */,
 				28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */,
+				2840CFA80AEB883500F49FC3 /* libtwolame.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1961,6 +2060,7 @@
 				28E821F50A39FC1300DCE280 /* portaudio-v19 */,
 				170737B00988D6AF008541CC /* portmixer */,
 				170737D30988D6AF008541CC /* soundtouch */,
+				2840CEC70AEB7E9D00F49FC3 /* twolame */,
 			);
 			name = "lib-src";
 			path = "../lib-src";
@@ -2610,6 +2710,7 @@
 				176EEBEA09A2F16200188F3B /* libFLAC.a */,
 				176EEC1E09A2F2DD00188F3B /* libFLAC++.a */,
 				28E67F5F0A3A160D0021D89F /* libportaudio.a */,
+				2840CF220AEB803C00F49FC3 /* libtwolame.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2906,6 +3007,8 @@
 		1790B06209883BFD008A330A /* export */ = {
 			isa = PBXGroup;
 			children = (
+				2840CF840AEB83DB00F49FC3 /* ExportMP2.cpp */,
+				2840CF850AEB83DB00F49FC3 /* ExportMP2.h */,
 				1790B06409883BFD008A330A /* Export.cpp */,
 				1790B06509883BFD008A330A /* Export.h */,
 				1790B06609883BFD008A330A /* ExportCL.cpp */,
@@ -3404,6 +3507,72 @@
 			path = unix;
 			sourceTree = "<group>";
 		};
+		2840CEC70AEB7E9D00F49FC3 /* twolame */ = {
+			isa = PBXGroup;
+			children = (
+				2840CF780AEB80CE00F49FC3 /* build */,
+				2840CECA0AEB7FA700F49FC3 /* libtwolame */,
+			);
+			name = twolame;
+			sourceTree = "<group>";
+		};
+		2840CECA0AEB7FA700F49FC3 /* libtwolame */ = {
+			isa = PBXGroup;
+			children = (
+				2840CF230AEB807E00F49FC3 /* ath.c */,
+				2840CF240AEB807E00F49FC3 /* ath.h */,
+				2840CF250AEB807E00F49FC3 /* availbits.c */,
+				2840CF260AEB807E00F49FC3 /* availbits.h */,
+				2840CF270AEB807E00F49FC3 /* bitbuffer.c */,
+				2840CF280AEB807E00F49FC3 /* bitbuffer.h */,
+				2840CF290AEB807E00F49FC3 /* common.h */,
+				2840CF2A0AEB807E00F49FC3 /* crc.c */,
+				2840CF2B0AEB807E00F49FC3 /* crc.h */,
+				2840CF2C0AEB807E00F49FC3 /* dab.c */,
+				2840CF2D0AEB807E00F49FC3 /* dab.h */,
+				2840CF2E0AEB807E00F49FC3 /* encode.c */,
+				2840CF2F0AEB807E00F49FC3 /* encode.h */,
+				2840CF300AEB807E00F49FC3 /* energy.c */,
+				2840CF310AEB807E00F49FC3 /* energy.h */,
+				2840CF320AEB807E00F49FC3 /* enwindow.h */,
+				2840CF330AEB807E00F49FC3 /* fft.c */,
+				2840CF340AEB807E00F49FC3 /* fft.h */,
+				2840CF350AEB807E00F49FC3 /* get_set.c */,
+				2840CF360AEB807E00F49FC3 /* mem.c */,
+				2840CF370AEB807E00F49FC3 /* mem.h */,
+				2840CF380AEB807E00F49FC3 /* psycho_0.c */,
+				2840CF390AEB807E00F49FC3 /* psycho_0.h */,
+				2840CF3A0AEB807E00F49FC3 /* psycho_1_critband.h */,
+				2840CF3B0AEB807E00F49FC3 /* psycho_1_freqtable.h */,
+				2840CF3C0AEB807E00F49FC3 /* psycho_1.c */,
+				2840CF3D0AEB807E00F49FC3 /* psycho_1.h */,
+				2840CF3E0AEB807E00F49FC3 /* psycho_2_absthr.h */,
+				2840CF3F0AEB807E00F49FC3 /* psycho_2.c */,
+				2840CF400AEB807E00F49FC3 /* psycho_2.h */,
+				2840CF410AEB807E00F49FC3 /* psycho_3.c */,
+				2840CF420AEB807E00F49FC3 /* psycho_3.h */,
+				2840CF430AEB807E00F49FC3 /* psycho_4.c */,
+				2840CF440AEB807E00F49FC3 /* psycho_4.h */,
+				2840CF450AEB807E00F49FC3 /* psycho_n1.c */,
+				2840CF460AEB807E00F49FC3 /* psycho_n1.h */,
+				2840CF470AEB807E00F49FC3 /* subband.c */,
+				2840CF480AEB807E00F49FC3 /* subband.h */,
+				2840CF490AEB807E00F49FC3 /* twolame.c */,
+				2840CF4A0AEB807E00F49FC3 /* twolame.h */,
+				2840CF4B0AEB807E00F49FC3 /* util.c */,
+				2840CF4C0AEB807E00F49FC3 /* util.h */,
+			);
+			name = libtwolame;
+			sourceTree = "<group>";
+		};
+		2840CF780AEB80CE00F49FC3 /* build */ = {
+			isa = PBXGroup;
+			children = (
+				2840CF790AEB810000F49FC3 /* config.h */,
+			);
+			name = build;
+			sourceTree = "<group>";
+		};
 		2897F6DB0AB3DB5A003C20C5 /* toolbars */ = {
 			isa = PBXGroup;
 			children = (
@@ -3894,6 +4063,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2840CECC0AEB803C00F49FC3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2840CF4E0AEB807E00F49FC3 /* ath.h in Headers */,
+				2840CF500AEB807E00F49FC3 /* availbits.h in Headers */,
+				2840CF520AEB807E00F49FC3 /* bitbuffer.h in Headers */,
+				2840CF530AEB807E00F49FC3 /* common.h in Headers */,
+				2840CF550AEB807E00F49FC3 /* crc.h in Headers */,
+				2840CF570AEB807E00F49FC3 /* dab.h in Headers */,
+				2840CF590AEB807E00F49FC3 /* encode.h in Headers */,
+				2840CF5B0AEB807E00F49FC3 /* energy.h in Headers */,
+				2840CF5C0AEB807E00F49FC3 /* enwindow.h in Headers */,
+				2840CF5E0AEB807E00F49FC3 /* fft.h in Headers */,
+				2840CF610AEB807E00F49FC3 /* mem.h in Headers */,
+				2840CF630AEB807E00F49FC3 /* psycho_0.h in Headers */,
+				2840CF640AEB807E00F49FC3 /* psycho_1_critband.h in Headers */,
+				2840CF650AEB807E00F49FC3 /* psycho_1_freqtable.h in Headers */,
+				2840CF670AEB807E00F49FC3 /* psycho_1.h in Headers */,
+				2840CF680AEB807E00F49FC3 /* psycho_2_absthr.h in Headers */,
+				2840CF6A0AEB807E00F49FC3 /* psycho_2.h in Headers */,
+				2840CF6C0AEB807E00F49FC3 /* psycho_3.h in Headers */,
+				2840CF6E0AEB807E00F49FC3 /* psycho_4.h in Headers */,
+				2840CF700AEB807E00F49FC3 /* psycho_n1.h in Headers */,
+				2840CF720AEB807E00F49FC3 /* subband.h in Headers */,
+				2840CF740AEB807E00F49FC3 /* twolame.h in Headers */,
+				2840CF760AEB807E00F49FC3 /* util.h in Headers */,
+				2840CF7A0AEB810000F49FC3 /* config.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		28E67F520A3A160D0021D89F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -4179,11 +4379,28 @@
 				28E67F640A3A16AA0021D89F /* PBXTargetDependency */,
 				17C99D43098970800041B1BC /* PBXTargetDependency */,
 				17C99D45098970800041B1BC /* PBXTargetDependency */,
+				2840CF800AEB822100F49FC3 /* PBXTargetDependency */,
 			);
 			name = Audacity;
 			productName = Audacity;
 			productReference = 1790AFB009883B6D008A330A /* Audacity.app */;
 			productType = "com.apple.product-type.application";
+		};
+		2840CECB0AEB803C00F49FC3 /* twolame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2840CF1D0AEB803C00F49FC3 /* Build configuration list for PBXNativeTarget "twolame" */;
+			buildPhases = (
+				2840CECC0AEB803C00F49FC3 /* Headers */,
+				2840CEDA0AEB803C00F49FC3 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = twolame;
+			productName = libsndfile;
+			productReference = 2840CF220AEB803C00F49FC3 /* libtwolame.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		28E67F510A3A160D0021D89F /* portaudio-v19 */ = {
 			isa = PBXNativeTarget;
@@ -4228,6 +4445,7 @@
 				28E67F510A3A160D0021D89F /* portaudio-v19 */,
 				170740950988F2F7008541CC /* portmixer */,
 				170740790988F1BB008541CC /* soundtouch */,
+				2840CECB0AEB803C00F49FC3 /* twolame */,
 				170741420988FDB3008541CC /* intgen */,
 			);
 		};
@@ -4953,6 +5171,33 @@
 				2897F6FE0AB3DCD0003C20C5 /* Grabber.cpp in Sources */,
 				283DE1360AC0D4FD00E8C3AE /* XMLWriter.cpp in Sources */,
 				289F9C7E0AC671BB00797DC1 /* DeviceToolBar.cpp in Sources */,
+				2840CF860AEB83DB00F49FC3 /* ExportMP2.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2840CEDA0AEB803C00F49FC3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2840CF4D0AEB807E00F49FC3 /* ath.c in Sources */,
+				2840CF4F0AEB807E00F49FC3 /* availbits.c in Sources */,
+				2840CF510AEB807E00F49FC3 /* bitbuffer.c in Sources */,
+				2840CF540AEB807E00F49FC3 /* crc.c in Sources */,
+				2840CF560AEB807E00F49FC3 /* dab.c in Sources */,
+				2840CF580AEB807E00F49FC3 /* encode.c in Sources */,
+				2840CF5A0AEB807E00F49FC3 /* energy.c in Sources */,
+				2840CF5D0AEB807E00F49FC3 /* fft.c in Sources */,
+				2840CF5F0AEB807E00F49FC3 /* get_set.c in Sources */,
+				2840CF600AEB807E00F49FC3 /* mem.c in Sources */,
+				2840CF620AEB807E00F49FC3 /* psycho_0.c in Sources */,
+				2840CF660AEB807E00F49FC3 /* psycho_1.c in Sources */,
+				2840CF690AEB807E00F49FC3 /* psycho_2.c in Sources */,
+				2840CF6B0AEB807E00F49FC3 /* psycho_3.c in Sources */,
+				2840CF6D0AEB807E00F49FC3 /* psycho_4.c in Sources */,
+				2840CF6F0AEB807E00F49FC3 /* psycho_n1.c in Sources */,
+				2840CF710AEB807E00F49FC3 /* subband.c in Sources */,
+				2840CF730AEB807E00F49FC3 /* twolame.c in Sources */,
+				2840CF750AEB807E00F49FC3 /* util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5055,6 +5300,11 @@
 			isa = PBXTargetDependency;
 			target = 17073EE70988DBDD008541CC /* allegro */;
 			targetProxy = 17C99D52098970800041B1BC /* PBXContainerItemProxy */;
+		};
+		2840CF800AEB822100F49FC3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2840CECB0AEB803C00F49FC3 /* twolame */;
+			targetProxy = 2840CF7F0AEB822100F49FC3 /* PBXContainerItemProxy */;
 		};
 		28E67F640A3A16AA0021D89F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5312,7 +5562,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static";
 		};
@@ -5464,7 +5714,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static";
 		};
@@ -5634,7 +5884,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Debug Static Unicode";
 		};
@@ -5658,6 +5908,42 @@
 				ZERO_LINK = YES;
 			};
 			name = "Debug Static Unicode";
+		};
+		2840CF1E0AEB803C00F49FC3 /* Debug Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Debug Static";
+		};
+		2840CF1F0AEB803C00F49FC3 /* Debug Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Debug Static Unicode";
+		};
+		2840CF200AEB803C00F49FC3 /* Release Static */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Release Static";
+		};
+		2840CF210AEB803C00F49FC3 /* Release Static Unicode */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				HEADER_SEARCH_PATHS = /Developer/Headers/FlatCarbon;
+				PRODUCT_NAME = twolame;
+			};
+			name = "Release Static Unicode";
 		};
 		28E5DA290AC4CBA200E7F64C /* Release Static Unicode */ = {
 			isa = XCBuildConfiguration;
@@ -5860,7 +6146,7 @@
 					"-lFLAC",
 				);
 				PRODUCT_NAME = Audacity;
-				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include";
+				USER_HEADER_SEARCH_PATHS = "$(TOPLEVEL)/mac $(TOPLEVEL)/src/** $(TOPLEVEL)/lib-src/allegro $(TOPLEVEL)/lib-src/expat $(TOPLEVEL)/lib-src/libflac/include $(TOPLEVEL)/lib-src/libid3tag $(TOPLEVEL)/lib-src/libmad $(TOPLEVEL)/lib-src/libogg/include $(TOPLEVEL)/lib-src/libnyquist/nyq $(TOPLEVEL)/lib-src/libresample/include $(TOPLEVEL)/lib-src/libsndfile/src $(TOPLEVEL)/lib-src/libvorbis/include $(TOPLEVEL)/lib-src/portaudio-v19/include $(TOPLEVEL)/lib-src/portmixer/px_common $(TOPLEVEL)/lib-src/soundtouch/include $(TOPLEVEL)/lib-src/twolame/libtwolame";
 			};
 			name = "Release Static Unicode";
 		};
@@ -6148,6 +6434,17 @@
 				17CAEBB5098C9B8E00337968 /* Debug Static Unicode */,
 				17CAEB88098C926000337968 /* Release Static */,
 				28E5DA390AC4CBA200E7F64C /* Release Static Unicode */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Debug Static";
+		};
+		2840CF1D0AEB803C00F49FC3 /* Build configuration list for PBXNativeTarget "twolame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2840CF1E0AEB803C00F49FC3 /* Debug Static */,
+				2840CF1F0AEB803C00F49FC3 /* Debug Static Unicode */,
+				2840CF200AEB803C00F49FC3 /* Release Static */,
+				2840CF210AEB803C00F49FC3 /* Release Static Unicode */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Debug Static";
