@@ -25,6 +25,7 @@
   <li><a href="http://claimid.com/mbrubeck">Matt Brubeck</a> - (mbrubeck (at) audacityteam.org)</li>
   <li>James Crook - (james (at) audacityteam.org)</li>
   <li>Vaughan Johnson - (vaughan (at) audacityteam.org)</li>
+  <li>Leland Lucius - (leland (at) audacityteam.org)</li>
   <li>Markus Meyer - (markus (at) audacityteam.org)</li>
 </ul>
 
@@ -33,6 +34,7 @@
   <li><a href="http://www.reverberate.org/">Joshua Haberman</a> - (joshua (at) audacityteam.org)</li>
   <li>Monty Montgomery</li>
   <li>Shane Mueller</li>
+  <li>Martyn Shaw</li>
 </ul>
 
 <h3><?=_("Contributors")?></h3>
