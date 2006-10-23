@@ -47,7 +47,6 @@ libnyquist.a: libnyquist-recursive
 
 # libtwolame
 libtwolame-recursive:
-	chmod +x twolame/configure
 	$(MAKE) -C twolame
 libtwolame.a: libtwolame-recursive
 	ln -sf twolame/libtwolame/.libs/libtwolame.a libtwolame.a
