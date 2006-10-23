@@ -277,9 +277,9 @@ AC_ARG_WITH(portmixer,
 
 AC_ARG_WITH(portaudio,
    [AC_HELP_STRING([--with-portaudio],
-      [which version of PortAudio to use (=[v18,v19]) [default=v18]])],
+      [which version of PortAudio to use (=[v18,v19]) [default=v19]])],
    use_portaudio=$withval,
-   use_portaudio="v18")
+   use_portaudio="v19")
 
 AC_ARG_WITH(rtaudio,
    [AC_HELP_STRING([--with-rtaudio],
@@ -600,13 +600,9 @@ case "${host_os}" in
     ;;
   *)
     if [[ "$use_portaudio" = "v19" ]] ; then
-       echo ""
-       echo "Note: portaudio v19 supports ALSA and Jack, but may be less stable."
+       echo "portaudio: v19"
     else
-       echo ""
-       echo "Note: portaudio v18 only supports OSS.  If your system supports"
-       echo "ALSA, you may want to reconfigure --with-portaudio=v19, though"
-       echo "portaudio v19 is newer and possibly less stable."
+       echo "portaudio: v18 (OSS only)"
     fi
     ;;
 esac
