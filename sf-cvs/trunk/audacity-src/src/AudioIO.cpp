@@ -53,6 +53,7 @@ writing audio.
 #include <wx/msgdlg.h>
 #include <wx/timer.h>
 #include <wx/intl.h>
+#include <wx/debug.h>
 
 #include "AudacityApp.h"
 #include "AudioIO.h"
@@ -533,6 +534,12 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
 {
    mLastPaError = paNoError;
    mRate = GetBestRate(sampleRate);
+   
+   // Special case: Our 24-bit sample format is different from PortAudio's
+   // 3-byte packed format. So just make PortAudio return float samples,
+   // since we need float values anyway to apply the gain.
+   if (captureFormat == int24Sample)
+      captureFormat = floatSample;
 
    mNumPlaybackChannels = numPlaybackChannels;
    mNumCaptureChannels = numCaptureChannels;
@@ -588,6 +595,7 @@ bool AudioIO::StartPortAudioStream(double sampleRate,
    if( numCaptureChannels > 0)
    {
       mCaptureFormat = captureFormat;
+      
       captureParameters = new PaStreamParameters;
       const PaDeviceInfo *captureDeviceInfo;
       wxString captureDeviceName = gPrefs->Read(wxT("/AudioIO/RecordingDevice"), wxT(""));
@@ -1933,18 +1941,13 @@ int audacityAudioCallback(void *inputBuffer, void *outputBuffer,
                      tempFloats[i] =
                         inputFloats[numCaptureChannels*i+t] * gain;
                } break;
-               case int24Sample: {
-                  int *inputInts = (int *)inputBuffer;
-                  int *tempInts = (int *)tempBuffer;
-                  for( i = 0; i < len; i++) {
-                     float tmp = inputInts[numCaptureChannels*i+t] * gain;
-                     if (tmp > 8388607)
-                        tmp = 8388607;
-                     if (tmp < -8388608)
-                        tmp = -8388608;
-                     tempInts[i] = (int)(tmp);
-                  }
-               } break;
+               case int24Sample:
+                  // We should never get here. Audacity's int24Sample format
+                  // is different from PortAudio's sample format and so we
+                  // make PortAudio return float samples when recording in
+                  // 24-bit samples.
+                  wxASSERT(false);
+                  break;
                case int16Sample: {
                   short *inputShorts = (short *)inputBuffer;
                   short *tempShorts = (short *)tempBuffer;
