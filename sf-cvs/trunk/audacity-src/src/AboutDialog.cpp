@@ -52,11 +52,13 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Matt Brubeck"), roleLeadDeveloper);
    AddCredit(wxT("James Crook"), roleLeadDeveloper);
    AddCredit(wxT("Vaughan Johnson"), roleLeadDeveloper);
+   AddCredit(wxT("Leland Lucius"), roleLeadDeveloper);
    AddCredit(wxT("Markus Meyer"), roleLeadDeveloper);
    
    AddCredit(wxT("Joshua Haberman"), roleDeveloper);
    AddCredit(wxT("Monty Montgomery"), roleDeveloper);
    AddCredit(wxT("Shane Mueller"), roleDeveloper);
+   AddCredit(wxT("Martyn Shaw"), roleDeveloper);
    
    AddCredit(wxT("Lynn Allan (CleanSpeech)"), roleContributor);
    AddCredit(wxT("William Bland (Time Tracks)"), roleContributor);
@@ -64,13 +66,11 @@ void AboutDialog::CreateCreditsList()
    AddCredit(wxT("Brian Gunlogson"), roleContributor);
    AddCredit(wxT("Arun Kishore"), roleContributor);
    AddCredit(wxT("Harvey Lubin (Audacity logo)"), roleContributor);
-   AddCredit(wxT("Leland Lucius"), roleContributor);
    AddCredit(wxT("Grek Mekkes"), roleContributor);
    AddCredit(wxT("Abe Milde"), roleContributor);
    AddCredit(wxT("Paul Nasca"), roleContributor);
    AddCredit(wxT("Tony Oetzmann"), roleContributor);
    AddCredit(wxT("Augustus Saunders"), roleContributor);
-   AddCredit(wxT("Martyn Shaw"), roleContributor);
    AddCredit(wxT("Mike Underwood"), roleContributor);
    AddCredit(wxT("Jun Wan"), roleContributor);
    AddCredit(wxT("Tom Woodhams"), roleContributor);
