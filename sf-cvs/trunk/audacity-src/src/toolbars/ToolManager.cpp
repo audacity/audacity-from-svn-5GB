@@ -40,6 +40,7 @@
 #include <wx/settings.h>
 #include <wx/sysopt.h>
 #include <wx/timer.h>
+#include <wx/utils.h>
 #include <wx/window.h>
 #endif  /*  */
 
@@ -285,6 +286,7 @@ IMPLEMENT_CLASS( ToolManager, wxEvtHandler );
 
 BEGIN_EVENT_TABLE( ToolManager, wxEvtHandler )
    EVT_GRABBER( wxID_ANY, ToolManager::OnGrabber )
+   EVT_TIMER( wxID_ANY, ToolManager::OnTimer )
 END_EVENT_TABLE()
 
 //
@@ -381,6 +383,9 @@ ToolManager::ToolManager( AudacityProject *parent )
    mBars[ TranscriptionBarID ] = new TranscriptionToolBar();
    mBars[ SelectionBarID ]     = new SelectionBar();
    mBars[ DeviceBarID ]        = new DeviceToolBar();
+
+   // We own the timer
+   mTimer.SetOwner( this );
 
    // Process the toolbar config settings
    ReadConfig();
@@ -770,17 +775,6 @@ void ToolManager::OnMouse( wxMouseEvent & event )
          mParent->ReleaseMouse();
       }
 
-      // Need to watch for the shift key
-      wxTheApp->Disconnect( wxEVT_KEY_DOWN,
-                            wxKeyEventHandler( ToolManager::OnKey ),
-                            NULL,
-                            this );
-
-      wxTheApp->Disconnect( wxEVT_KEY_UP,
-                            wxKeyEventHandler( ToolManager::OnKey ),
-                            NULL,
-                            this );
-
       // Hide the indicator
       mIndicator->Hide();
 
@@ -806,6 +800,7 @@ void ToolManager::OnMouse( wxMouseEvent & event )
       mDragBar = NULL;
       mLastPos.x = mBarPos.x = -1;
       mLastPos.y = mBarPos.y = -1;
+      mTimer.Stop();
    }
    else if( event.Dragging() && pos != mLastPos )
    {
@@ -869,14 +864,18 @@ void ToolManager::OnMouse( wxMouseEvent & event )
                mCurrent = mLeft;
             }
 
-            // Move it into position and put it on stage
+            // Change the shape while hidden and then show it if okay
             mIndicator->SetShape( *mCurrent );
-            mIndicator->Move( dock->GetParent()->ClientToScreen( p ) );
             if( !event.ShiftDown() )
             {
                mIndicator->Show();
                mIndicator->Update();
             }
+
+            // Move it into position
+            // LL:  Do this after the Show() since KDE doesn't move the window
+            //      if it's not shown.  (Do it outside if the previous IF as well)
+            mIndicator->Move( dock->GetParent()->ClientToScreen( p ) );
 
             // Remember for next go round
             mBarPos = r;
@@ -907,7 +906,7 @@ void ToolManager::OnMouse( wxMouseEvent & event )
 //
 // Watch for shift key changes
 //
-void ToolManager::OnKey( wxKeyEvent & event )
+void ToolManager::OnTimer( wxTimerEvent & event )
 {
    // Go ahead and set the event to propagate
    event.Skip();
@@ -920,20 +919,25 @@ void ToolManager::OnKey( wxKeyEvent & event )
       return;
    }
 
-   if( event.GetKeyCode() == WXK_SHIFT )
+   bool state = wxGetKeyState( WXK_SHIFT );
+   if( mLastState != state )
    {
+      mLastState = state;
+
 #if defined(__WXMAC__)
       // Disable window animation
       wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, 1 );
 #endif
 
-      mIndicator->Show( event.GetEventType() == wxEVT_KEY_UP );
+      mIndicator->Show( !state );
 
 #if defined(__WXMAC__)
       // Disable window animation
       wxSystemOptions::SetOption( wxMAC_WINDOW_PLAIN_TRANSITION, mTransition );
 #endif
    }
+
+   return;
 }
 
 //
@@ -1016,19 +1020,12 @@ void ToolManager::OnGrabber( GrabberEvent & event )
       mDragWindow = (ToolFrame *) mDragBar->GetParent();
    }
 
-   // Need to watch for the shift key
-   wxTheApp->Connect( wxEVT_KEY_DOWN,
-                     wxKeyEventHandler( ToolManager::OnKey ),
-                     NULL,
-                     this );
-
-   wxTheApp->Connect( wxEVT_KEY_UP,
-                     wxKeyEventHandler( ToolManager::OnKey ),
-                     NULL,
-                     this );
-
    // We want all mouse events from this point on
    mParent->CaptureMouse();
+
+   // Start monitoring shift key changes
+   mLastState = wxGetKeyState( WXK_SHIFT );
+   mTimer.Start( 100 );
 }
 
 // Indentation settings for Vim and Emacs and unique identifier for Arch, a
