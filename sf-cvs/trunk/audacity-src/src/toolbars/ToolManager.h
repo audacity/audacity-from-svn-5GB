@@ -66,7 +66,7 @@ class ToolManager:public wxEvtHandler
 
    ToolBar *Float( ToolBar *t, wxPoint & pos );
 
-   void OnKey( wxKeyEvent & event );
+   void OnTimer( wxTimerEvent & event );
    void OnMouse( wxMouseEvent & event );
    void OnGrabber( GrabberEvent & event );
 
@@ -92,6 +92,9 @@ class ToolManager:public wxEvtHandler
    wxRegion *mLeft;
    wxRegion *mDown;
    wxRegion *mCurrent;
+
+   wxTimer mTimer;
+   bool mLastState;
 
 #if defined(__WXMAC__)
    bool mTransition;
