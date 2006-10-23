@@ -1,6 +1,6 @@
 Audacity: A Free, Cross-Platform Digital Audio Editor
 
-Version 1.3.1 (beta)
+Version 1.3.2 (beta)
 For changelog, see the bottom of this document.
 
 WWW:   http://audacity.sourceforge.net/
@@ -9,30 +9,35 @@ Email: audacity-help@lists.sourceforge.net
 
 "Audacity" is a registered trademark of Dominic Mazzoni.
 
-Lead Developers:
-   Dominic Mazzoni (project leader)
+Founding Developers:
+   Dominic Mazzoni
+   Roger Dannenberg
+
+Lead Developers of Audacity version 1.3:
+   Dominic Mazzoni
    Matt Brubeck
    James Crook
    Vaughan Johnson
    Markus Meyer
+   Leland Lucius
 
 Developers:
    Joshua Haberman
    Monty Montgomery
    Shane Mueller
+   Martyn Shaw
 
 Contributors:
    Lynn Allan (CleanSpeech)
+   Richard Ash
    William Bland (Time Tracks)
    Roger Dannenberg
    Brian Gunlogson
-   Leland Lucius
    Greg Mekkes
    Abe Milde
    Paul Nasca
    Tony Oetzmann
    Augustus Saunders
-   Martyn Shaw
    Mike Underwood
    Tom Woodhams
    Wing Yu
@@ -56,7 +61,6 @@ Audacity is based on code from the following projects::
    RTaudio
 
 Special Thanks:
-   Richard Ash
    Dave Beydler
    Jason Cohen
    Dave Fancella
@@ -292,29 +296,29 @@ Known issues/problems:
 
 -------------------------------------------------------------
 
-Changes in 1.3.1:
+Changes in 1.3.1 and 1.3.2:
 
-   New Features
-
-   The dockable toolbars now have a dock at the foot of the page as well 
-   as the top.
-
-   
+o Improved accessibility for the visually impaired
+      + Improvements for screen readers, accessibility of
+        tracks, and hot keys
+o Usability improvements
+      + New selection bar
+      + New features for label tracks
+      + Improved toolbar docking flexibility
+      + Menu renaming and reorganization
+      + Selection, ruler, and playback control improvements
+o Auto-save and automatic crash recovery
+o Many bug fixes and stability improvements
+o Major improvements to some built-in effects (Repair, Equalization)
+  and fixes to others
+o New features and bug fixes for Nyquist
+o Restructured Preferences dialog
+o Improved batch processing
+o File format export improvements
+o Timer recording
+o Intel Mac support
 
 Changes in 1.3.0:
-
-   Beta warning
-   Audacity 1.3 is an unstable, beta version of Audacity. Users who 
-   want a completely stable, finished program should be using 
-   Audacity 1.2. Audacity 1.3 has hundreds of new features, but some 
-   features may be incomplete or confusing, it is more likely to crash, 
-   and you are more likely to lose data. You can install both Audacity 
-   1.2 and 1.3 on the same machine. When this branch of Audacity is 
-   finished, it will be released as version 1.4, which will be stable 
-   and complete.
-
-   Audacity 1.3.0 is currently only available in English. Future 
-   Audacity 1.3 releases will be translated into many other languages.
 
    New features
    The new features in Audacity 1.3 have been grouped into the 
