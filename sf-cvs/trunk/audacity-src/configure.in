@@ -465,7 +465,7 @@ if [[ "$use_portmixer" = "yes" ]] ; then
       EXTRAOBJS="$EXTRAOBJS ../lib-src/portmixer/libportmixer.a"
 
       AC_CONFIG_SUBDIRS([lib-src/portmixer])
-      ac_configure_args="$ac_configure_extra_args --with-pa-include=../portaudio-v19/include"
+      ac_configure_args="$ac_configure_args --with-pa-include=../portaudio-v19/include"
    else
       dnl PortMixer with PortAudio v18
 
