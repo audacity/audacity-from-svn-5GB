@@ -1,7 +1,6 @@
 ;nyquist plug-in
-;version 1
+;version 2
 ;type process
 ;name "Cross Fade In"
 ;action "Cross-Fading In..."
-(setq a (diff (const 1) (ramp 1)))
-(mult s (diff (const 1) (mult a a)))
+(mult s (snd-exp (snd-scale 0.5 (snd-log (ramp)))))
