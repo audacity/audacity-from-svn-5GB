@@ -3,12 +3,12 @@
 
 [Setup]
 ; compiler-related directives
-OutputBaseFilename=audacity-win-1.2.5rc1
+OutputBaseFilename=audacity-win-1.2.5
 SolidCompression=yes
 
 ; installer-related directives
 AppName=Audacity
-AppVerName=Audacity 1.2.5rc1
+AppVerName=Audacity 1.2.5
 AppPublisherURL=http://audacity.sourceforge.net
 AppSupportURL=http://audacity.sourceforge.net
 AppUpdatesURL=http://audacity.sourceforge.net
