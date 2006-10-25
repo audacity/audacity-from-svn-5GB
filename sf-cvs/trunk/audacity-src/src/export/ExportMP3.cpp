@@ -66,6 +66,10 @@ destructor does the cleanup.
 
 *//********************************************************************/
 
+#if defined(__MACOSX__) && defined(__LITTLE_ENDIAN__)  /* Intel Mac */
+#include <dlfcn.h>
+#endif
+
 #include <wx/defs.h>
 #include <wx/textctrl.h>
 #include <wx/dynlib.h>
@@ -441,6 +445,266 @@ void ReleaseMP3Exporter()
    gMP3Exporter = NULL;
 }
 
+#elif defined(__MACOSX__) && defined(__LITTLE_ENDIAN__)  /* Intel Mac */
+
+   /* --------------------------------------------------------------------------*/
+
+   struct lame_global_flags;
+   typedef lame_global_flags *lame_init_t(void);
+   typedef int lame_init_params_t(lame_global_flags*);
+   typedef const char* get_lame_version_t(void);
+
+   typedef int lame_encode_buffer_t (
+         lame_global_flags* gf,
+         const short int    buffer_l [],
+         const short int    buffer_r [],
+         const int          nsamples,
+         unsigned char *    mp3buf,
+         const int          mp3buf_size );
+
+   typedef int lame_encode_buffer_interleaved_t(
+         lame_global_flags* gf,
+         short int          pcm[],
+         int                num_samples,   /* per channel */
+         unsigned char*     mp3buf,
+         int                mp3buf_size );
+
+   typedef int lame_encode_flush_t(
+         lame_global_flags *gf,
+         unsigned char*     mp3buf,
+         int                size );
+
+   typedef int lame_close_t(lame_global_flags*);
+   
+   typedef int lame_set_in_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_out_samplerate_t(lame_global_flags*, int);
+   typedef int lame_set_num_channels_t(lame_global_flags*, int );
+   typedef int lame_set_quality_t(lame_global_flags*, int);
+   typedef int lame_get_quality_t(lame_global_flags*);
+   typedef int lame_set_brate_t(lame_global_flags*, int);
+   typedef int lame_get_brate_t(lame_global_flags*);
+   
+
+   /* --------------------------------------------------------------------------*/
+
+   class MacDylibLAMEExporter : public MP3Exporter {
+      private:
+         /* function pointers to the symbols we get from the library */
+         lame_init_t* lame_init;
+         lame_init_params_t* lame_init_params;
+         lame_encode_buffer_t* lame_encode_buffer;
+         lame_encode_buffer_interleaved_t* lame_encode_buffer_interleaved;
+         lame_encode_flush_t* lame_encode_flush;
+         lame_close_t* lame_close;
+         get_lame_version_t* get_lame_version;
+         
+         lame_set_in_samplerate_t* lame_set_in_samplerate;
+         lame_set_out_samplerate_t* lame_set_out_samplerate;
+         lame_set_num_channels_t* lame_set_num_channels;
+         lame_set_quality_t* lame_set_quality;
+         lame_get_quality_t* lame_get_quality;
+         lame_set_brate_t* lame_set_brate;
+         lame_get_brate_t* lame_get_brate;
+
+         lame_global_flags *mGF;
+         
+         bool mLibraryLoaded, mEncoding;
+         char mVersion[20];
+
+         static const int mSamplesPerChunk = 220500;
+         static const int mOutBufferSize = int(1.25 * mSamplesPerChunk + 7200);
+      public:
+         
+         MacDylibLAMEExporter() {
+            mLibraryLoaded = false;
+            mEncoding = false;
+            mGF = NULL;
+         }
+         
+      wxString GetLibraryPath()
+      {
+         return wxT("/usr/local/lib");
+      }
+
+         wxString GetLibraryName()
+         {
+            return wxT("libmp3lame.dylib");
+         }
+         
+         wxString GetLibraryTypeString()
+         {
+            return wxString(_("Only libmp3lame.dylib|libmp3lame.dylib|Dynamic Libraries (*.dylib)|*.dylib|All Files (*)|*"));
+         }
+         
+         wxString GetLibraryMessage()
+         {
+            // Must be <= 255 characters on Mac
+            /* i18n-hint: This message is used on Mac OS X.  This particular
+             message must be <= 255 characters.  Be brief. */
+            return _("Audacity does not export MP3 files directly, but instead uses LAME, "
+                   "an MP3 exporting library available separately.  See the documentation "
+                   "for more information.\n\n"
+                   "Would you like to locate libmp3lame.dylib now?");
+         }
+
+         bool  LoadLibrary() {
+            wxLogNull logNo;
+
+            //BG: I was unable to test the wxDynamicLibrary code on this platform
+
+            void *handle = NULL;
+            if (wxFileExists(mLibPath))
+            {
+               handle = dlopen(mLibPath, RTLD_LAZY);
+
+               if (!handle)
+                  return false;
+            }
+            else
+               return false;
+
+            /* get function pointers from the shared library */
+
+            lame_init = (lame_init_t *)dlsym(handle, wxT("lame_init"));
+            get_lame_version = (get_lame_version_t *)dlsym(handle, wxT("get_lame_version"));
+            lame_init_params = 
+               (lame_init_params_t *) dlsym(handle, wxT("lame_init_params"));
+            lame_encode_buffer =
+                (lame_encode_buffer_t *) dlsym(handle, wxT("lame_encode_buffer"));
+            lame_encode_buffer_interleaved =
+                (lame_encode_buffer_interleaved_t *) dlsym(handle, wxT("lame_encode_buffer_interleaved"));
+            lame_encode_flush =
+                (lame_encode_flush_t *) dlsym(handle, wxT("lame_encode_flush"));
+            lame_close =
+                (lame_close_t *) dlsym(handle, wxT("lame_close"));
+
+            lame_close =
+                (lame_close_t *) dlsym(handle, wxT("lame_close"));
+
+            lame_set_in_samplerate =
+                (lame_set_in_samplerate_t *) dlsym(handle, wxT("lame_set_in_samplerate"));
+            lame_set_out_samplerate =
+                (lame_set_out_samplerate_t *) dlsym(handle, wxT("lame_set_out_samplerate"));
+            lame_set_num_channels =
+                (lame_set_num_channels_t *) dlsym(handle, wxT("lame_set_num_channels"));
+            lame_set_quality =
+                (lame_set_quality_t *) dlsym(handle, wxT("lame_set_quality"));
+            lame_get_quality =
+                (lame_get_quality_t *) dlsym(handle, wxT("lame_get_quality"));
+            lame_set_brate =
+                (lame_set_brate_t *) dlsym(handle, wxT("lame_set_brate"));
+            lame_get_brate =
+                (lame_get_brate_t *) dlsym(handle, wxT("lame_get_brate"));
+
+            /* we assume that if all the symbols are found, it's a valid library */
+
+            if (!lame_init ||
+                !get_lame_version ||
+                !lame_init_params ||
+                !lame_encode_buffer ||
+                !lame_encode_buffer_interleaved ||
+                !lame_encode_flush ||
+                !lame_close ||
+                !lame_set_in_samplerate ||
+                !lame_set_out_samplerate ||
+                !lame_set_num_channels ||
+                !lame_set_quality ||
+                !lame_set_brate) {
+               return false;
+            }
+
+            mGF = lame_init();
+            mLibraryLoaded = true;
+            return true;
+         }
+
+      bool ValidLibraryLoaded() { return mLibraryLoaded; }
+
+      wxString GetLibraryVersion() {
+         if(!mLibraryLoaded) return wxT("");
+
+         return wxString::Format(wxT("LAME %hs"), get_lame_version());
+      }
+
+      int InitializeStream(int channels, int sampleRate) {
+         if(!mLibraryLoaded) return -1;
+
+         lame_set_num_channels(mGF, channels);
+         lame_set_in_samplerate(mGF, sampleRate);
+         lame_set_out_samplerate(mGF, sampleRate);
+
+         lame_init_params(mGF);
+
+         mEncoding = true;
+         return mSamplesPerChunk;
+      }
+
+      int GetOutBufferSize() {
+         return mOutBufferSize;
+      }
+
+      int EncodeBuffer(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+
+         return lame_encode_buffer_interleaved(mGF, inbuffer, mSamplesPerChunk,
+            outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainder(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+         return lame_encode_buffer_interleaved(mGF, inbuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int EncodeBufferMono(short int inbuffer[], unsigned char outbuffer[]) {
+         if(!mEncoding) return -1;
+
+         return lame_encode_buffer(mGF, inbuffer,inbuffer, mSamplesPerChunk,
+            outbuffer, mOutBufferSize);
+      }
+
+      int EncodeRemainderMono(short int inbuffer[], int nSamples,
+                        unsigned char outbuffer[]) {
+         return lame_encode_buffer(mGF, inbuffer, inbuffer, nSamples, outbuffer,
+            mOutBufferSize);
+      }
+
+      int FinishStream(unsigned char outbuffer[]) {
+         mEncoding = false;
+         int result = lame_encode_flush(mGF, outbuffer, mOutBufferSize);
+         lame_close(mGF);
+         return result;
+      }
+
+      void CancelEncoding() { mEncoding = false; }
+
+      int GetConfigurationCaps() { return MP3CONFIG_BITRATE|MP3CONFIG_QUALITY; }
+
+      int GetQualityVariance() { return 10; }
+
+      void SetBitrate(int rate) { lame_set_brate(mGF, rate); }
+      int GetBitrate() { return lame_get_quality(mGF); }
+
+      void SetQuality(int quality) { lame_set_quality(mGF, quality); }
+      int GetQuality() { return lame_get_quality(mGF); }
+   };
+
+MP3Exporter *gMP3Exporter = NULL;
+
+MP3Exporter *GetMP3Exporter()
+{
+   if (!gMP3Exporter)
+      gMP3Exporter = new MacDylibLAMEExporter();
+   
+   return gMP3Exporter;
+}
+
+void ReleaseMP3Exporter()
+{
+   if( gMP3Exporter )
+      delete gMP3Exporter;
+   gMP3Exporter = NULL;
+}
 
 #elif defined(__MACOSX__)
 
