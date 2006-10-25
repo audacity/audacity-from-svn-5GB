@@ -70,7 +70,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="2057"
-				AdditionalIncludeDirectories="$(WXWIN)\include"
+				AdditionalIncludeDirectories="$(WXWIN)\include;..\src"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -173,7 +173,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="2057"
-				AdditionalIncludeDirectories="$(WXWIN)\include"
+				AdditionalIncludeDirectories="$(WXWIN)\include;..\src"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -276,7 +276,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="2057"
-				AdditionalIncludeDirectories="$(WXWIN)\include"
+				AdditionalIncludeDirectories="$(WXWIN)\include;..\src"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -380,7 +380,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="2057"
-				AdditionalIncludeDirectories="$(WXWIN)\include"
+				AdditionalIncludeDirectories="$(WXWIN)\include;..\src"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
