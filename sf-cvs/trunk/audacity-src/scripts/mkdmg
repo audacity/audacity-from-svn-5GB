@@ -4,7 +4,12 @@
 #
 
 # Setup
-VERSION=`grep AUDACITY_VERSION_STRING src/Audacity.h | cut -f 2 -d '"'`
+VERSION=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
+RELEASE=`awk '/^#define+ AUDACITY_RELEASE / {print $3}' src/Audacity.h`
+REVISION=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
+SUFFIX=`awk '/^#define+ AUDACITY_SUFFIX / {gsub(/\"/,"");print $3}' src/Audacity.h`
+VERSION=$VERSION.$RELEASE.$REVISION$SUFFIX
+
 VOL="Audacity $VERSION"
 DMG="audacity-macosx-$VERSION"
 
