@@ -7025,7 +7025,7 @@ case "${host_os}" in
  		;;
 esac
 
-                                                                                ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile locale/Makefile tests/Makefile"
+                                                                      ac_config_files="$ac_config_files Makefile src/Makefile lib-src/Makefile lib-src/allegro/Makefile lib-src/expat/Makefile lib-src/libnyquist/Makefile locale/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -7560,7 +7560,6 @@ do
   "lib-src/expat/Makefile" ) CONFIG_FILES="$CONFIG_FILES lib-src/expat/Makefile" ;;
   "lib-src/libnyquist/Makefile" ) CONFIG_FILES="$CONFIG_FILES lib-src/libnyquist/Makefile" ;;
   "locale/Makefile" ) CONFIG_FILES="$CONFIG_FILES locale/Makefile" ;;
-  "tests/Makefile" ) CONFIG_FILES="$CONFIG_FILES tests/Makefile" ;;
   "src/configwin.h" ) CONFIG_HEADERS="$CONFIG_HEADERS src/configwin.h:src/configtemplate.h" ;;
   "src/configunix.h" ) CONFIG_HEADERS="$CONFIG_HEADERS src/configunix.h:src/configtemplate.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
