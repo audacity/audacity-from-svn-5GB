@@ -44,7 +44,7 @@ EffectLeveller::EffectLeveller()
 }
 
 #define NUM_PASSES_CHOICES 6
-static wxString numPasses[] = { wxT("None-Skip"), wxT("Light"), wxT("Moderate"), wxT("Heavy"), wxT("Heavier"), wxT("Heaviest") };
+static wxString numPasses[] = { _("None-Skip"), _("Light"), _("Moderate"), _("Heavy"), _("Heavier"), _("Heaviest") };
 static double gFrameSum; // odd ... having this as member var crashed on exit
 
 bool EffectLeveller::Init()
