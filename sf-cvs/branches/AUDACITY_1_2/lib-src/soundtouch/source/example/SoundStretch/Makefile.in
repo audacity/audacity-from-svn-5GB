@@ -195,9 +195,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/config/am_include.mk
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  source/example/SoundStretch/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  source/example/SoundStretch/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  source/example/SoundStretch/Makefile
+	  $(AUTOMAKE) --foreign  source/example/SoundStretch/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
