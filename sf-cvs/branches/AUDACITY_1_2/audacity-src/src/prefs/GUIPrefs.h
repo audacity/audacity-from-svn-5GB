@@ -34,6 +34,7 @@ class GUIPrefs : public PrefsPanel {
  private:
     wxCheckBox *mAutoscroll;
     wxCheckBox *mAlwaysEnablePause;
+    wxCheckBox *mAlwaysEnablePlay;
     wxCheckBox *mSpectrogram;
     wxCheckBox *mEditToolBar;
     wxCheckBox *mMixerToolBar;

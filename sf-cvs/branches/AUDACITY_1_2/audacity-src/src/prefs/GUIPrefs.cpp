@@ -35,7 +35,7 @@ PrefsPanel(parent)
    // Scrolling
    bool autoscroll, spectrogram, editToolBar,mixerToolBar, alwaysEnablePause,
       quitOnClose, adjustSelectionEdges, ergonomicTransportButtons,
-      meterToolBar;
+	   meterToolBar, alwaysEnablePlay;
    int envdBRange;
 
    gPrefs->Read("/GUI/AutoScroll", &autoscroll, true);
@@ -45,6 +45,7 @@ PrefsPanel(parent)
    gPrefs->Read("/GUI/EnableMixerToolBar", &mixerToolBar, true);
    gPrefs->Read("/GUI/EnableMeterToolBar", &meterToolBar, true);
    gPrefs->Read("/GUI/AlwaysEnablePause", &alwaysEnablePause, false);
+   gPrefs->Read("/GUI/AlwaysEnablePlay", &alwaysEnablePlay, false);
 
    // Code duplication warning: this default is repeated in Project.cpp
    // in the destructor.  -DMM
@@ -71,6 +72,11 @@ PrefsPanel(parent)
    mAlwaysEnablePause = new wxCheckBox(this, -1, _("Always allow pausing"));
    mAlwaysEnablePause->SetValue(alwaysEnablePause);
    topSizer->Add(mAlwaysEnablePause, 0, wxGROW|wxALL, 2);
+
+   // Always enable play
+   mAlwaysEnablePlay = new wxCheckBox(this, -1, _("Always allow playing"));
+   mAlwaysEnablePlay->SetValue(alwaysEnablePlay);
+   topSizer->Add(mAlwaysEnablePlay, 0, wxGROW|wxALL, 2);
 
    //Spectrogram preference
    mSpectrogram = new wxCheckBox(this, -1, _("Update spectrogram while playing"));
@@ -218,6 +224,7 @@ bool GUIPrefs::Apply()
    gPrefs->Write("/GUI/AutoScroll", mAutoscroll->GetValue());
    gPrefs->Write("/GUI/UpdateSpectrogram", mSpectrogram->GetValue());
    gPrefs->Write("/GUI/AlwaysEnablePause", mAlwaysEnablePause->GetValue());
+   gPrefs->Write("/GUI/AlwaysEnablePlay", mAlwaysEnablePlay->GetValue());
 
    gPrefs->Write("/GUI/QuitOnClose", mQuitOnClose->GetValue());
    gPrefs->Write("/GUI/AdjustSelectionEdges",

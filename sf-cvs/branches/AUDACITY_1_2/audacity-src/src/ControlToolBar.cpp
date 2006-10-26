@@ -178,6 +178,7 @@ void ControlToolBar::InitializeControlToolBar()
    mCurrentTool = selectTool;
    mTool[mCurrentTool]->PushDown();
 
+   gPrefs->Read("/GUI/AlwaysEnablePlay", &mAlwaysEnablePlay, false);
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
    mPaused=false;             //Turn the paused state to off
@@ -562,6 +563,7 @@ void ControlToolBar::OnKeyEvent(wxKeyEvent & event)
 
 void ControlToolBar::UpdatePrefs()
 {
+	gPrefs->Read("/GUI/AlwaysEnablePlay", &mAlwaysEnablePlay, false);
 #if 0
    gPrefs->Read("/GUI/AlwaysEnablePause", &mAlwaysEnablePause, false);
 
@@ -748,10 +750,16 @@ void ControlToolBar::OnShiftUp(wxKeyEvent & event)
 
 void ControlToolBar::OnPlay(wxCommandEvent &evt)
 {
+	if(mAlwaysEnablePlay)
+		StopPlaying();
+
    if(mPlay->WasShiftDown())
       PlayCurrentRegion(true);
    else
       PlayCurrentRegion(false);
+
+   if(mAlwaysEnablePlay)
+	   mPlay->PopUp();
 }
 
 void ControlToolBar::SetVUMeters(AudacityProject *p)
