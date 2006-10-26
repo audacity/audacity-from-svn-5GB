@@ -858,7 +858,7 @@ esac
 AC_CONFIG_FILES([Makefile src/Makefile lib-src/Makefile \
 					  lib-src/allegro/Makefile lib-src/expat/Makefile \
 					  lib-src/libnyquist/Makefile \
-					  locale/Makefile tests/Makefile])
+					  locale/Makefile ])
 
 AC_OUTPUT
 
