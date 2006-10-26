@@ -2141,7 +2141,7 @@ msgid ""
 "<p>When you make a <a href=\"faq?s=recording&amp;i=multi-track\">multi-track recording</a>, there is an unpredictable delay between playback and recording.  Audacity tries to correct for this automatically, but this doesn't yet work on all computers.</p>\n"
 "<p>If a new track is not synchronized with the others, you can zoom in and use the Time Shift tool to drag it to the correct location.</p>"
 msgstr ""
-"<p>Lors d'un <a href=\"faq?s=recording&amp;i=multi-track\\>enregistrement multipistes</a>, il existe un retard entre la lecture et l'enregistrement qui dépend de nombreux facteurs, notamment du matériel utilisé. Audacity essaie de le corriger automatiquement, mais sur certains systèmes, cela ne fonctionne pas encore.</p>\n"
+"<p>Lors d'un <a href=\"faq?s=recording&amp;i=multi-track\">enregistrement multipistes</a>, il existe un retard entre la lecture et l'enregistrement qui dépend de nombreux facteurs, notamment du matériel utilisé. Audacity essaie de le corriger automatiquement, mais sur certains systèmes, cela ne fonctionne pas encore.</p>\n"
 "<p>Si une piste n'est pas synchronisée avec les autres, vous pouvez zoomer et utilisez l'outil \"Ajustement temporel\" pour l'amener au bon emplacement.</p>"
 
 #: help/faq.php:145
