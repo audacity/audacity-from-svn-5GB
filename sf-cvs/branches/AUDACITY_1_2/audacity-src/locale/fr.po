@@ -2,12 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacity 1.2.4\n"
 "POT-Creation-Date: 2003-07-04 00:53-0700\n"
-"PO-Revision-Date: 2005-10-26 16:12+0100\n"
-"Last-Translator: Christian BROCHEC <christian.brochec@ac-rennes.fr>\n"
+"PO-Revision-Date: 2006-09-27 15:39+0100\n"
+"Last-Translator: Christian Brochec <christian.brochec@ac-rennes.fr>\n"
 "Language-Team: FRENCH2 <christian.brochec@ac-rennes.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
 
 #: ../src/effects/ClickRemoval.cpp:326
 msgid ""
@@ -139,7 +141,7 @@ msgstr "&Fichier"
 
 #: ../src/Menus.cpp:354
 msgid "&Fit in Window\tCtrl+F"
-msgstr "&Adapter à la fenêtre\tCtrl+F"
+msgstr "&Ajuster à la fenêtre\tCtrl+F"
 
 #: ../src/Menus.cpp:441
 msgid "&Generate"
@@ -228,7 +230,7 @@ msgstr "&Affichage"
 
 #: ../src/Menus.cpp:356
 msgid "&Zoom to Selection\tCtrl+E"
-msgstr "&Zoomer sur la sélection\tCtrl+E"
+msgstr "&Zoom sur la sélection\tCtrl+E"
 
 #: ../src/TrackPanel.cpp:4106
 msgid "'left' channel"
@@ -1362,7 +1364,7 @@ msgstr "Curseur : %i:%09.6f min:sec   %s"
 #: ../src/FormatSelection.cpp:673
 #, c-format
 msgid "Cursor: %i:%09.6lf min:sec   [Snap-To Samples]"
-msgstr "Curseur: %i:%09.6lf min:sec   %s  (à l'échantillon près)"
+msgstr "Curseur : %i:%09.6lf min:sec   %s  [à l'échantillon près]"
 
 #: ../src/FormatSelection.cpp:185
 #, c-format
@@ -1372,12 +1374,12 @@ msgstr "Curseur : %lf sec   %s"
 #: ../src/FormatSelection.cpp:694
 #, c-format
 msgid "Cursor: %lf sec   [Snap-To Samples]"
-msgstr "Curseur: %lf sec   %s  (à l'échantillon près)"
+msgstr "Curseur : %lf sec   %s  [à l'échantillon près]"
 
 #: ../src/FormatSelection.cpp:649
 #, c-format
 msgid "Cursor: %li samples   [Snap-To Samples]"
-msgstr "Curseur : %li échantillons  (à l'échantillon près)"
+msgstr "Curseur : %li échantillons  [à l'échantillon près]"
 
 #: ../src/EditToolBar.cpp:148
 #: ../src/Menus.cpp:1713
@@ -1932,11 +1934,11 @@ msgstr "Afficher toutes les pistes\tCtrl+Maj+F"
 
 #: ../src/EditToolBar.cpp:176
 msgid "Fit project in window"
-msgstr "Adapter le projet à la fenêtre"
+msgstr "Afficher toutes les pistes"
 
 #: ../src/EditToolBar.cpp:174
 msgid "Fit selection in window"
-msgstr "Adapter la sélection à la fenêtre"
+msgstr "Ajuster la sélection à la fenêtre"
 
 #: ../src/Menus.cpp:366
 #: ../src/Project.cpp:1424
@@ -2282,7 +2284,7 @@ msgstr "Décalage (secondes)\tFréquence (Hz)\tNiveau"
 
 #: ../src/prefs/GUIPrefs.cpp:134
 msgid "Language:"
-msgstr "Langage :"
+msgstr "Langue :"
 
 #: ../src/widgets/ASlider.cpp:488
 msgid "Left"
@@ -2612,7 +2614,6 @@ msgid "Name Change"
 msgstr "changement de nom"
 
 #: ../src/export/ExportMultiple.cpp:646
-#, fuzzy
 msgid "Name files:"
 msgstr "Renommer le fichier :"
 
@@ -3014,7 +3015,7 @@ msgstr "Lire jusqu'à la sélection\tB"
 
 #: ../src/prefs/AudioIOPrefs.cpp:232
 msgid "Play other tracks while recording new one"
-msgstr "Lire les autres pistes pendant l'enregistrement d'une nouvelle"
+msgstr "Lecture des autres pistes pendant l'enregistrement d'une nouvelle"
 
 #: ../src/Menus.cpp:559
 msgid "Play/Stop\tSpacebar"
@@ -3357,7 +3358,7 @@ msgstr "Enregistrer le fichier %s sous :"
 
 #: ../src/Menus.cpp:150
 msgid "Save Project &As..."
-msgstr "Enregistrer le projet &Sous..."
+msgstr "Enregistrer le projet &sous..."
 
 #: ../src/Project.cpp:2376
 msgid "Save Project As:"
@@ -3605,7 +3606,7 @@ msgstr "Choisir un format d'échantillon"
 
 #: ../src/Menus.cpp:359
 msgid "Set Selection Format"
-msgstr "Choisir un format de sélection "
+msgstr "Choix du format"
 
 #: ../src/prefs/MousePrefs.cpp:88
 msgid "Set Selection Point"
@@ -3909,15 +3910,15 @@ msgstr "Seuil : %d dB"
 
 #: ../src/TrackPanel.cpp:2015
 msgid "Time Shift"
-msgstr "Calage temporel"
+msgstr "Glissement temporel"
 
 #: ../src/ControlToolBar.cpp:357
 msgid "Time Shift Tool"
-msgstr "Outil de calage temporel"
+msgstr "Outil de glissement temporel"
 
 #: ../src/Menus.cpp:553
 msgid "Time Shift Tool\tF5"
-msgstr "Outil de calage temporel\tF5"
+msgstr "Outil de glissement temporel\tF5"
 
 #: ../src/TimeTrack.cpp:38
 msgid "Time Track"
@@ -3925,7 +3926,7 @@ msgstr "Piste de temps"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time shift sequence"
-msgstr "Séquence de calage temporel"
+msgstr "Séquence de glissement temporel"
 
 #: ../src/TrackPanel.cpp:2009
 #, c-format
@@ -3934,7 +3935,7 @@ msgstr "Décalage de la piste '%s' %s %.02f secondes"
 
 #: ../src/prefs/MousePrefs.cpp:97
 msgid "Time-Shift"
-msgstr "Calaget temporel"
+msgstr "Glissement temporel"
 
 #: ../src/Tags.cpp:435
 msgid "Title"
@@ -4272,7 +4273,7 @@ msgstr "Zoom avant au point"
 
 #: ../src/prefs/MousePrefs.cpp:93
 msgid "Zoom in on a Range"
-msgstr "Zoomer sur la sélection"
+msgstr "Zoom sur la sélection"
 
 #: ../src/prefs/MousePrefs.cpp:111
 msgid "Zoom in or out"
@@ -4424,7 +4425,7 @@ msgstr "Curseur en début de piste"
 #: ../src/AboutDialog.cpp:127
 #: ../src/AboutDialog.cpp:129
 msgid "translator_credits"
-msgstr "Traduction française de Christian Brochec (CDDP 22) christian.brochec@ac-rennes.fraprès Lionel Allorge et Ollivier Ballestraz"
+msgstr "Traduction française de Christian Brochec (CDDP 22) christian@audacityteam.org après Lionel Allorge et Ollivier Ballestraz"
 
 #: ../src/TrackPanel.cpp:4387
 #: ../src/effects/ChangePitch.cpp:277
