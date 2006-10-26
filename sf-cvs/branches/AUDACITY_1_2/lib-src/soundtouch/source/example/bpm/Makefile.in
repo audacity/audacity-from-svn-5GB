@@ -198,9 +198,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/config/am_include.mk
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  source/example/bpm/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign  source/example/bpm/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  source/example/bpm/Makefile
+	  $(AUTOMAKE) --foreign  source/example/bpm/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
