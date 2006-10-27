@@ -1,5 +1,5 @@
 /*
- * $Id: ringbuffer.c,v 1.3 2006-09-23 18:42:49 llucius Exp $
+ * $Id: ringbuffer.c,v 1.4 2006-10-27 04:41:25 llucius Exp $
  * ringbuffer.c
  * Ring Buffer utility..
  *
@@ -83,6 +83,10 @@
        full memory barriers, so the three types of barriers are the same.
        The asm volatile may be redundant with the memory barrier, but
        until I have proof of that, I'm leaving it. */
+#if !defined(OSMemoryBarrier)
+#   define OSMemoryBarrier()
+#endif
+
 #   define FullMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
 #   define ReadMemoryBarrier()  do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
 #   define WriteMemoryBarrier() do{ asm volatile("":::"memory"); OSMemoryBarrier(); }while(false)
