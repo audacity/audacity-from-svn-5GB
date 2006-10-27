@@ -3,15 +3,29 @@
 # Prepare a disk image
 #
 
+#
+SUFFIX=$1
+TYPE=$2
+
 # Setup
 VERSION=`awk '/^#define+ AUDACITY_VERSION / {print $3}' src/Audacity.h`
 RELEASE=`awk '/^#define+ AUDACITY_RELEASE / {print $3}' src/Audacity.h`
 REVISION=`awk '/^#define+ AUDACITY_REVISION / {print $3}' src/Audacity.h`
-SUFFIX=`awk '/^#define+ AUDACITY_SUFFIX / {gsub(/\"/,"");print $3}' src/Audacity.h`
+
+if [ -z "$SUFFIX" ]
+then
+   SUFFIX=`grep '^#define AUDACITY_SUFFIX ' src/Audacity.h | cut -d '"' -f 2`
+fi
+
+if [ ! -z "$TYPE" ]
+then
+   TYPE="-$TYPE"
+fi
+
 VERSION=$VERSION.$RELEASE.$REVISION$SUFFIX
 
 VOL="Audacity $VERSION"
-DMG="audacity-macosx-$VERSION"
+DMG="audacity-macosx$TYPE-$VERSION"
 
 # Preclean
 rm -rf "$DMG" "$DMG.dmg" TMP.dmg
@@ -43,7 +57,7 @@ cp -pR plug-ins "$DMG"
 rm -rf "$DMG/plug-ins/"*CVS*
 
 # Install misc files
-cp -pR README.txt LICENSE.txt "$DMG"
+cp -pR README.txt LICENSE.txt audacity-*-help.htb "$DMG"
 
 # Create and mount the image
 hdiutil create -ov -srcdir "$DMG" -fs HFS+ -volname "$VOL" TMP.dmg

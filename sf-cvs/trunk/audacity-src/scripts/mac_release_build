@@ -1,0 +1,52 @@
+#!/bin/sh
+
+
+cat <<EOF
+
+Did you remember to rebuild wxWidgets with these env vars set:
+
+export MACOSX_DEPLOYMENT_TARGET=10.3
+export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
+export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
+export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
+export LD_PREBIND=1
+export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+
+Press ENTER to continue
+
+EOF
+read dummy
+
+if [ -f mac_release_build ]
+then
+   echo 'You must execute this script from the base Audacity directory'
+   exit 1
+fi
+
+export MACOSX_DEPLOYMENT_TARGET=10.3
+export NEXT_ROOT="/Developer/SDKs/MacOSX10.3.9.sdk"
+export C_INCLUDE_PATH="/usr/local/include:/Developer/SDKs/MacOSX10.3.9.sdk /usr/include"
+export LIBRARY_PATH="/usr/local/lib:/Developer/SDKs/MacOSX10.3.9.sdk /usr/lib/gcc/darwin/3.3"
+export LD_PREBIND=1
+export CPPFLAGS=-DMAC_OS_X_VERSION_MAX_ALLOWED=1030
+
+#
+# Build ANSI version
+#
+./configure --enable-static=yes --enable-shared=no --enable-unicode=no --with-lib-preference=local,system --with-portaudio=v19
+make
+unset NEXT_ROOT
+mkdmg rc1
+mv *.dmg ..
+make distclean
+
+#
+# Build UNICODE version
+#
+./configure --enable-static=yes --enable-shared=no --enable-unicode=yes --with-lib-preference=local,system --with-portaudio=v19
+make
+unset NEXT_ROOT
+mkdmg rc1 unicode
+mv *.dmg ..
+make distclean
+
