@@ -96,8 +96,8 @@ AC_ARG_ENABLE(cpu-clip,
 AC_ARG_ENABLE(bow-docs,
 	AC_HELP_STRING([--enable-bow-docs], [enable black-on-white html docs]))
 
-AC_ARG_ENABLE(sqlite,
-	AC_HELP_STRING([--disable-sqlite], [disable use of sqlite]))
+#AC_ARG_ENABLE(sqlite,
+#	AC_HELP_STRING([--disable-sqlite], [disable use of sqlite]))
 
 AC_ARG_ENABLE(flac,
 	AC_HELP_STRING([--disable-flac], [disable use of FLAC]))
@@ -254,15 +254,15 @@ case "$host_os" in
 # Check for libsqlite3 (only used in regtest).
 
 ac_cv_sqlite3=no
-if test x$enable_sqlite != xno ; then
-	PKG_CHECK_MODULES(SQLITE3, sqlite3 >= 3.2, ac_cv_sqlite3=yes, ac_cv_sqlite3=no)
-	fi
+#if test x$enable_sqlite != xno ; then
+#	PKG_CHECK_MODULES(SQLITE3, sqlite3 >= 3.2, ac_cv_sqlite3=yes, ac_cv_sqlite3=no)
+#	fi
 
-if test x$ac_cv_sqlite3 = "xyes" ; then
-	HAVE_SQLITE3=1
-else
+#if test x$ac_cv_sqlite3 = "xyes" ; then
+#	HAVE_SQLITE3=1
+#else
 	HAVE_SQLITE3=0
-	fi
+#	fi
 
 AC_DEFINE_UNQUOTED([HAVE_SQLITE3],$HAVE_SQLITE3,[Set to 1 if you have libsqlite3.])
 

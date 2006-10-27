@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL autogen GETCONF ac_ct_GETCONF TYPEOF_SF_COUNT_T SIZEOF_SF_COUNT_T SF_COUNT_MAX PKG_CONFIG ac_pt_PKG_CONFIG SQLITE3_CFLAGS SQLITE3_LIBS htmldocdir HTML_BGCOLOUR HTML_FGCOLOUR SHLIB_VERSION_ARG SHARED_VERSION_INFO OS_SPECIFIC_CFLAGS OS_SPECIFIC_LINKS ALSA_LIBS FLAC_LIBS ENABLE_EXPERIMENTAL_CODE COMPILER_IS_GCC GCC_MAJOR_VERSION LIBTOOL_DEPS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE EGREP LN_S ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB CPP CXX CXXFLAGS ac_ct_CXX CXXDEPMODE am__fastdepCXX_TRUE am__fastdepCXX_FALSE CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL autogen GETCONF ac_ct_GETCONF TYPEOF_SF_COUNT_T SIZEOF_SF_COUNT_T SF_COUNT_MAX htmldocdir HTML_BGCOLOUR HTML_FGCOLOUR SHLIB_VERSION_ARG SHARED_VERSION_INFO OS_SPECIFIC_CFLAGS OS_SPECIFIC_LINKS ALSA_LIBS FLAC_LIBS ENABLE_EXPERIMENTAL_CODE COMPILER_IS_GCC GCC_MAJOR_VERSION LIBTOOL_DEPS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -946,18 +946,6 @@ ac_env_FFLAGS_set=${FFLAGS+set}
 ac_env_FFLAGS_value=$FFLAGS
 ac_cv_env_FFLAGS_set=${FFLAGS+set}
 ac_cv_env_FFLAGS_value=$FFLAGS
-ac_env_PKG_CONFIG_set=${PKG_CONFIG+set}
-ac_env_PKG_CONFIG_value=$PKG_CONFIG
-ac_cv_env_PKG_CONFIG_set=${PKG_CONFIG+set}
-ac_cv_env_PKG_CONFIG_value=$PKG_CONFIG
-ac_env_SQLITE3_CFLAGS_set=${SQLITE3_CFLAGS+set}
-ac_env_SQLITE3_CFLAGS_value=$SQLITE3_CFLAGS
-ac_cv_env_SQLITE3_CFLAGS_set=${SQLITE3_CFLAGS+set}
-ac_cv_env_SQLITE3_CFLAGS_value=$SQLITE3_CFLAGS
-ac_env_SQLITE3_LIBS_set=${SQLITE3_LIBS+set}
-ac_env_SQLITE3_LIBS_value=$SQLITE3_LIBS
-ac_cv_env_SQLITE3_LIBS_set=${SQLITE3_LIBS+set}
-ac_cv_env_SQLITE3_LIBS_value=$SQLITE3_LIBS
 
 #
 # Report the --help message.
@@ -1057,7 +1045,6 @@ Optional Features:
   --disable-gcc-opt       disable gcc optimisations
   --disable-cpu-clip      disable tricky cpu specific clipper
   --enable-bow-docs       enable black-on-white html docs
-  --disable-sqlite        disable use of sqlite
   --disable-flac          disable use of FLAC
   --disable-alsa          disable use of ALSA
   --disable-largefile     omit support for large files
@@ -1084,11 +1071,6 @@ Some influential environment variables:
   CXXCPP      C++ preprocessor
   F77         Fortran 77 compiler command
   FFLAGS      Fortran 77 compiler flags
-  PKG_CONFIG  path to pkg-config utility
-  SQLITE3_CFLAGS
-              C compiler flags for SQLITE3, overriding pkg-config
-  SQLITE3_LIBS
-              linker flags for SQLITE3, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -3781,7 +3763,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3784 "configure"' > conftest.$ac_ext
+  echo '#line 3766 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5380,7 +5362,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5383:" \
+echo "$as_me:5365:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6504,11 +6486,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6507: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6489: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6511: \$? = $ac_status" >&5
+   echo "$as_me:6493: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -6772,11 +6754,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6775: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6757: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6779: \$? = $ac_status" >&5
+   echo "$as_me:6761: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -6876,11 +6858,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6879: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6861: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6883: \$? = $ac_status" >&5
+   echo "$as_me:6865: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9258,7 +9240,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9261 "configure"
+#line 9243 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9358,7 +9340,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9361 "configure"
+#line 9343 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11698,11 +11680,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11701: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11683: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11705: \$? = $ac_status" >&5
+   echo "$as_me:11687: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -11802,11 +11784,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11805: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11787: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11809: \$? = $ac_status" >&5
+   echo "$as_me:11791: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13409,11 +13391,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13412: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13394: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13416: \$? = $ac_status" >&5
+   echo "$as_me:13398: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13513,11 +13495,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13516: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13498: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13520: \$? = $ac_status" >&5
+   echo "$as_me:13502: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15753,11 +15735,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15756: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15738: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15760: \$? = $ac_status" >&5
+   echo "$as_me:15742: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16021,11 +16003,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16024: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16006: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16028: \$? = $ac_status" >&5
+   echo "$as_me:16010: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16125,11 +16107,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16128: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16110: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:16132: \$? = $ac_status" >&5
+   echo "$as_me:16114: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -20016,11 +19998,8 @@ if test "${enable_bow_docs+set}" = set; then
 
 fi;
 
-# Check whether --enable-sqlite or --disable-sqlite was given.
-if test "${enable_sqlite+set}" = set; then
-  enableval="$enable_sqlite"
-
-fi;
+#AC_ARG_ENABLE(sqlite,
+#	AC_HELP_STRING([--disable-sqlite], [disable use of sqlite]))
 
 # Check whether --enable-flac or --disable-flac was given.
 if test "${enable_flac+set}" = set; then
@@ -27826,188 +27805,15 @@ echo "$as_me: WARNING: *** This may cause benign compiler warnings on some syste
 # Check for libsqlite3 (only used in regtest).
 
 ac_cv_sqlite3=no
-if test x$enable_sqlite != xno ; then
+#if test x$enable_sqlite != xno ; then
+#	PKG_CHECK_MODULES(SQLITE3, sqlite3 >= 3.2, ac_cv_sqlite3=yes, ac_cv_sqlite3=no)
+#	fi
 
-
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  ;;
-esac
-fi
-PKG_CONFIG=$ac_cv_path_PKG_CONFIG
-
-if test -n "$PKG_CONFIG"; then
-  echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
-echo "${ECHO_T}$PKG_CONFIG" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
-
-if test -n "$ac_pt_PKG_CONFIG"; then
-  echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
-echo "${ECHO_T}$ac_pt_PKG_CONFIG" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-  PKG_CONFIG=$ac_pt_PKG_CONFIG
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
-echo $ECHO_N "checking pkg-config is at least version $_pkg_min_version... $ECHO_C" >&6
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	else
-		echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-		PKG_CONFIG=""
-	fi
-
-fi
-
-pkg_failed=no
-echo "$as_me:$LINENO: checking for SQLITE3" >&5
-echo $ECHO_N "checking for SQLITE3... $ECHO_C" >&6
-
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SQLITE3_CFLAGS"; then
-        pkg_cv_SQLITE3_CFLAGS="$SQLITE3_CFLAGS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sqlite3 >= 3.2\"") >&5
-  ($PKG_CONFIG --exists --print-errors "sqlite3 >= 3.2") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SQLITE3_CFLAGS=`$PKG_CONFIG --cflags "sqlite3 >= 3.2" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-if test -n "$PKG_CONFIG"; then
-    if test -n "$SQLITE3_LIBS"; then
-        pkg_cv_SQLITE3_LIBS="$SQLITE3_LIBS"
-    else
-        if test -n "$PKG_CONFIG" && \
-    { (echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"sqlite3 >= 3.2\"") >&5
-  ($PKG_CONFIG --exists --print-errors "sqlite3 >= 3.2") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_SQLITE3_LIBS=`$PKG_CONFIG --libs "sqlite3 >= 3.2" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
-    fi
-else
-	pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        SQLITE3_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "sqlite3 >= 3.2"`
-        else
-	        SQLITE3_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "sqlite3 >= 3.2"`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$SQLITE3_PKG_ERRORS" >&5
-
-	ac_cv_sqlite3=no
-elif test $pkg_failed = untried; then
-	ac_cv_sqlite3=no
-else
-	SQLITE3_CFLAGS=$pkg_cv_SQLITE3_CFLAGS
-	SQLITE3_LIBS=$pkg_cv_SQLITE3_LIBS
-        echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-	ac_cv_sqlite3=yes
-fi
-	fi
-
-if test x$ac_cv_sqlite3 = "xyes" ; then
-	HAVE_SQLITE3=1
-else
+#if test x$ac_cv_sqlite3 = "xyes" ; then
+#	HAVE_SQLITE3=1
+#else
 	HAVE_SQLITE3=0
-	fi
+#	fi
 
 
 cat >>confdefs.h <<_ACEOF
@@ -29648,10 +29454,6 @@ s,@ac_ct_GETCONF@,$ac_ct_GETCONF,;t t
 s,@TYPEOF_SF_COUNT_T@,$TYPEOF_SF_COUNT_T,;t t
 s,@SIZEOF_SF_COUNT_T@,$SIZEOF_SF_COUNT_T,;t t
 s,@SF_COUNT_MAX@,$SF_COUNT_MAX,;t t
-s,@PKG_CONFIG@,$PKG_CONFIG,;t t
-s,@ac_pt_PKG_CONFIG@,$ac_pt_PKG_CONFIG,;t t
-s,@SQLITE3_CFLAGS@,$SQLITE3_CFLAGS,;t t
-s,@SQLITE3_LIBS@,$SQLITE3_LIBS,;t t
 s,@htmldocdir@,$htmldocdir,;t t
 s,@HTML_BGCOLOUR@,$HTML_BGCOLOUR,;t t
 s,@HTML_FGCOLOUR@,$HTML_FGCOLOUR,;t t
