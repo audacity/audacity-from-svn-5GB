@@ -265,13 +265,6 @@ Known issues/problems:
     to a bug in the ALSA OSS emulation, and can be worked around be recording
     in Stereo
 
-  * MacOS X only: Audacity cannot work with files or folders that
-    are contained inside folders with international characters
-    (accent marks, etc.) in their names.  Note that files with
-    accented characters work, and Audacity projects with
-    accented characters work.  Only files inside of folders
-    with accented characters in their names will cause problems.
-
   * MacOS X only: Some users find that after running Audacity other media
     players don't produce any sound or crash. Audacity tries to select the best
     quality settings your system is capable of, to give the best recordings
