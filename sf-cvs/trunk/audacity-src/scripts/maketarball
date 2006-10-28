@@ -48,6 +48,7 @@ print "removing libraries that should be installed locally...\n";
 `rm -rf lib-src/libid3tag`;
 `rm -rf lib-src/iAVC lib-src/libsamplerate`;
 `rm -rf lib-src/wave++ lib-src/libflac`;
+`rm -rf lib-src/twolame`;
 
 print "removing qa\n";
 `rm -rf qa`;
@@ -79,13 +80,13 @@ foreach $f (@projfiles) {
 }
 
 print "Changing Windows header so that it doesn't build with\n";
-print "support for libmad, libid3tag, or libvorbis by default.\n";
+print "support for libmad, libid3tag, libtwolame or libvorbis by default.\n";
 print "\n";
 
 open FP, ">>win/configwin.h";
 print FP "\n\n";
 print FP "// The Audacity source tarball does NOT come with\n";
-print FP "// libmad, libid3tag, libogg, or libvorbis.\n";
+print FP "// libmad, libid3tag, libtwolame, libogg, or libvorbis.\n";
 print FP "\n";
 print FP "// Delete the following lines if you install them manually.\n";
 print FP "\n";
@@ -93,6 +94,7 @@ print FP "#undef MP3SUPPORT\n";
 print FP "#undef USE_LIBID3TAG\n";
 print FP "#undef USE_LIBMAD\n";
 print FP "#undef USE_LIBVORBIS\n";
+print FP "#undef USE_LIBTWOLAME\n";
 close FP;
 
 #print "Using the VC++ workspace that doesn't depend on libmad, libid3tag,\n";
