@@ -65,7 +65,7 @@ print "removing unused portaudio-v19 dirs\n";
 `rm -rf lib-src/portaudio-v19/pa_mac_sm`;
 `rm -f lib-src/portaudio-v19/pa_tests/debug*`;
 
-print "removing wxstd locale files (since they should come with wxWindows\n";
+print "removing wxstd locale files (since they should come with wxWidgets)\n";
 `rm -rf locale/wxstd`;
 
 print "removing Nyquist plug-ins that are just for show\n";
