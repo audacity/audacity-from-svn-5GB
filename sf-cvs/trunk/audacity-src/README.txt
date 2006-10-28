@@ -59,6 +59,7 @@ Audacity is based on code from the following projects::
    SoundTouch
    wxWidgets
    RTaudio
+   twolame
 
 Special Thanks:
    Dave Beydler
@@ -153,6 +154,10 @@ license.  Specifically:
   SoundTouch: LGPL
     Changes tempo without changing pitch and vice versa.
     Included in audacity
+
+  Twolame: LGPL
+    Encodes MPEG I layer 2 audio (used in DVDs and Radio). Optional separate
+    download.
 
 For more information, see the documentation inside
 each library's source code directory.
