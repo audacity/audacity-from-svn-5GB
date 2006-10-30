@@ -3503,7 +3503,6 @@ msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr ""
 
 #: include/news.inc.php:45
-#, fuzzy
 msgid ""
 "<p>\n"
 "The Audacity developers have been busy with many new features over  \n"

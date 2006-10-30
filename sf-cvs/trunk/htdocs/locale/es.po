@@ -1560,7 +1560,6 @@ msgid "Vendors that Bundle Audacity"
 msgstr "Proveedores que distribuyen Audacity"
 
 #: download/bundlers-conflict.php:14 download/bundlers.php:14
-#, fuzzy
 msgid ""
 "Audacity is free to download, but vendors are also free to bundle copies of "
 "the program with their products, thanks to the <a href=\"../about/license"
@@ -1718,9 +1717,8 @@ msgid "New features in Audacity 1.3"
 msgstr "Nuevas características de Audacity 1.3"
 
 #: download/features-1.3-a.php:17
-#, fuzzy
 msgid "New features in Audacity 1.3.1 and 1.3.2"
-msgstr "Nuevas características de Audacity 1.3"
+msgstr "Nuevas características de Audacity 1.3.1 y 1.3.2"
 
 #: download/features-1.3-a.php:20 download/features-1.3-i.php:70
 msgid "Improved Toolbar Docking"
@@ -1758,7 +1756,6 @@ msgid "Mac OS X features"
 msgstr "Otras características"
 
 #: download/features-1.3-a.php:29
-#, fuzzy
 msgid "New features in Audacity 1.3.0"
 msgstr "Nuevas características de Audacity 1.3"
 
@@ -2542,7 +2539,6 @@ msgstr ""
 "\"source\">código fuente</a>."
 
 #: download/mac.php:21
-#, fuzzy, php-format
 msgid ""
 "For Mac OS X (PPC): <a href=\"%s\">Audacity %s</a> (.dmg file, %.1lf MB) - "
 "The latest version of the free Audacity audio editor."
@@ -5136,7 +5132,6 @@ msgid "Audacity 1.3.2 and 1.2.5 Released"
 msgstr "Audacitiy 1.3.2 y 1.2.5.0 publicados"
 
 #: include/news.inc.php:45
-#, fuzzy
 msgid "<p>\n"
 "The Audacity developers have been busy with many new features over  \n"
 "the past year.  We're pleased to announce\n"
