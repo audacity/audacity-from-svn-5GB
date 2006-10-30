@@ -1,6 +1,6 @@
 <?php
 // The main version number, when we don't distinguish between platforms
-define('beta_version', '1.3.0');
+define('beta_version', '1.3.2');
 
 // Note: Sizes are in MB.
 define('beta_macosx_version', '1.3.2');
