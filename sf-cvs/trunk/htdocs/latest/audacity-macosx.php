@@ -4,6 +4,6 @@
 
 include 'mirror.inc.php';
 include 'versions.inc.php';
-header('Location: '.download_url('audacity-macosx-'.macosx_version.'.dmg'));
+header('Location: '.download_url('audacity-macosx-ppc-'.macosx_version.'.dmg'));
 
 ?>

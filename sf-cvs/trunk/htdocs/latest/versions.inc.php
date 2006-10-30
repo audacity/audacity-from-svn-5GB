@@ -23,7 +23,7 @@ define('src_suffix',  '.tar.gz');
 $win_exe_url = "audacity-win/audacity-win-".win_exe_version.".exe";
 $win_zip_url = "audacity-win-zip/audacity-win-".win_zip_version.".zip";
 $src_url = "audacity-src/audacity-src-".src_version.src_suffix;
-$macosx_url = "audacity-macosx/audacity-macosx-".macosx_version.".dmg";
+$macosx_url = "audacity-macosx-ppc/audacity-macosx-ppc-".macosx_version.".dmg";
 $macosx_intel_url = "audacity-macosx/audacity-macosx-intel-".macosx_intel_version.".dmg";
 $mac_classic_url = "audacity-mac/audacity-mac-".mac_classic_version.".sit";
 ?>
