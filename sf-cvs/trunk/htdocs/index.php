@@ -64,12 +64,6 @@
     if ($download_page) {
       echo '<div id="download_sub">';
 
-      if ($download == "mac") {
-        echo '<p><a href="http://audacityteam.org/mac">';
-        printf(_('Using an Intel Mac?  Click Here!'));
-        echo '</a></p>';
-      }
-
       echo '<p><a href="download/">'._("Other downloads").'</a></p>';
       echo '</div>';
     }
