@@ -39,6 +39,73 @@ function most_recent_news_item() {
 // (most recent first).
 
 add_news_item(
+  "October 30, 2006",
+        "1.3.2-release",
+  _("Audacity 1.3.2 and 1.2.5 Released"),
+  _("
+<p>
+The Audacity developers have been busy with many new features over  
+the past year.  We're pleased to announce
+<a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>, which
+contains dozens of new features and capabilities.  Because it is a work
+in progress and does not yet come with complete documentation or translations
+into foreign languages, it is recommended for more advanced users.
+For all users, <a href=\"/download\">Audacity 1.2.5</a>
+is a minor bug-fix update that addresses some problems with Audacity 1.2.4,
+but does not add any significant new features.
+It is complete and fully documented.  You can have
+both Audacity 1.2.5 and 1.3.2 installed simultaneously.
+Also, we have just made available a set of 92
+<a href=\"/download/plugins\">LADSPA plug-ins for Windows</a>
+(for both Audacity 1.2.x and 1.3.x).
+
+</p><p>
+
+See the <a href=\"/download/release-notes\">1.2.5 Release Notes</a> for a complete list of changes and known problems in Audacity 1.2.5, or see
+<a href=\"/download/features-1.3-a\">New Features in 1.3</a>
+for information about the new beta version.
+
+</p>
+
+<b>Beta version 1.3.2</b>
+<dl><dt></dt><dd><!-- indent cheat -->
+<dl>
+       <dt> Usability improvements </dt>
+             <dd> New selection bar </dd>
+             <dd> New features for label tracks </dd>
+             <dd> Improved toolbar docking flexibility </dd>
+             <dd> Menu renaming and reorganization </dd>
+             <dd> Selection, ruler, and playback control improvements </dd>
+       <dt> Major improvements to some built-in effects </td>
+              <dd> New Repair effect </dd>
+              <dd> Improved Equalization effect </dd>
+              <dd> Many fixes and minor improvements to other effects </dd>
+       <dt> Improved accessibility for the visually impaired </dt>
+             <dd> Improvements for screen readers, accessibility of tracks, and hot keys </dd>
+       <dt> Timer recording </dt>
+       <dt> Auto-save and automatic crash recovery </dt>
+       <dt> New features and bug fixes for Nyquist </dt>
+       <dt> Restructured Preferences dialog </dt>
+       <dt> Improved batch processing </dt>
+       <dt> File format export improvements </dt>
+       <dt> Intel Mac support </dt>
+       <dt> Many bug fixes and stability improvements </dt>
+</dl>
+</dd></dl>
+
+<b>Stable version 1.2.5</b>
+<dl><dt></dt><dd><!-- indent cheat -->
+<dl>
+       <dt> Support for new file formats, including FLAC </dt>
+       <dt> Fixes for Mac audio problems </dt>
+       <dt> Fix Generate Silence bug, a crash issue, and Linux GCC build issues </dt>
+       <dt> Intel Mac support </dt>
+</dl>
+</dd></dl>
+')
+);
+
+add_news_item(
   "August 14, 2006",
 	"AudacityStore",
   _("The Audacity Store Is Open"),
@@ -100,5 +167,5 @@ add_news_item(
   _("Audacity 1.2.3 Released"),
   _('<p>Audacity 1.2.3 is a new stable version of Audacity. This version fixes a bug that interfered with long recordings on some Windows systems, and another bug that causes random crashes on Mac OS X. It also includes several updated translations, and other bug fixes and minor improvements.</p>
 <p>See the <a href="/download/release-notes">Release Notes</a> for a complete list of changes and known problems in this version.</p>')
-);
+
 ?>
