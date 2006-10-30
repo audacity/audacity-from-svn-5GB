@@ -5,10 +5,6 @@ MO_FILES := $(PO_FILES:%.po=%.mo)
 
 all: $(MO_FILES)
 
-clean:
-	rm -f $(MO_FILES) $(PO_FILES) $(POT_FILE)
-	rm -f $(PO_FILES:%=%~)
-
 # Build the POT file (message catalog template).
 SOURCES := $(wildcard *.php */*.php)
 XGETTEXT=xgettext
@@ -28,6 +24,7 @@ MSGMERGE_ARGS=-U --backup=none
 	cp -f $< $@
 	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $(POT_FILE)
 	touch $@
+	cp -f $@ $<
 
 # Compile the PO files into MO files.
 MSGFMT=msgfmt
@@ -35,5 +32,3 @@ MSGFMT_ARGS=-fv
 
 %.mo: %.po
 	$(MSGFMT) $(MSGFMT_ARGS) -o $@ $<
-
-.PHONY: clean all

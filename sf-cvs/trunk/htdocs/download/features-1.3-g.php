@@ -19,11 +19,7 @@
 
 <p><b><?=_("Project integrity check on open")?></b></p>
 
-<p><b><?=_("When you open an Audacity project in version 1.3, it checks to make sure that all data files are present.")?></b></p>
-
-<p><b><?=_("Transcription toolbar")?></b></p>
-
-<p><?=_("A new toolbar for creating transcriptions of speech in Label Tracks.  Includes features that enable you to change the playback speed, create labels automatically based on onsets, and more.  To enable this feature, go to the Interface tab of the Preferences.")?></p>
+<p><?=_("When you open an Audacity project in version 1.3, it checks to make sure that all data files are present.")?></p>
 
 <p><b><?=_("Upload via FTP")?></b></p>
 
@@ -53,9 +49,9 @@
 
 <p>
 <span class="navbox">
-<a href="features-1.3-f.php">
+<a href="features-1.3-e.php">
 <?=_("Back: ")?>
-<?=_("QuickTime and Audio Units on Mac OS X")?>
+<?=_("Improved Label Tracks")?>
 </a>
 </span>
 </p>

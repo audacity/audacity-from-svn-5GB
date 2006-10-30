@@ -14,7 +14,7 @@
 <h2><?=$pageTitle?></h2>
 
 <p align="center">
-<img src="images/selbar001b.png">
+<img src="images/new-sel-bar-1.png">
 <br>
 <?=_("The selection bar")?>
 </p>
@@ -30,19 +30,13 @@
 </p>
 
 <p align="center">
-<img src="images/selbar004.png">
+<img src="images/new-sel-bar-2.png">
 <br>
-<?=_("The current selection on the selection bar")?>
+<?=_("Typing a new time directly into the selection bar.")?>
 </p>
 
 <p align="center">
-<img src="images/selbar005.png">
-<br>
-<?=_("The audio position on the selection bar")?>
-</p>
-
-<p align="center">
-<img src="images/selbar006.png">
+<img src="images/selbar006b.png">
 <br>
 <?=_("Different time formats supported by the selection bar")?>
 </p>
@@ -57,16 +51,16 @@
 </style>
 
 <span class="navbox">
-<a href="features-1.3-c.php">
+<a href="features-1.3-l.php">
 <?=_("Back: ")?>
-<?=_("Multiple clips per track")?>
+<?=_("Project saving and recovery")?>
 </a>
 </span>
 
 <span class="navbox">
-<a href="features-1.3-e.php">
+<a href="features-1.3-f.php">
 <?=_("Next: ")?>
-<?=_("Improved Label Tracks")?>
+<?=_("Mac OS X features")?>
 </span>
 
 <?php

@@ -24,13 +24,20 @@
 <h3><?=_("Recommended Download")?></h3>
 <?php include "recommended.inc.php"?>
 <ul>
-  <li><p><?php printf(_('For Mac OS X: <a href="%s">Audacity %s</a> (.dmg file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../beta/".$macosx_url, macosx_version, macosx_size)?></p></li>
+  <li><p>PPC: <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_ppc_url, macosx_ppc_version, macosx_ppc_size)?></p></li>
+  <li><p>Intel: <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_intel_url, macosx_intel_version, macosx_intel_size)?></p></li>
+
   <!-- TODO: Installation instructions? -->
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
 <ul>
   <?php include "common.inc.php"; ?>
+
+  <li><p>PPC (unicode): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_ppc_unicode_url, macosx_ppc_unicode_version, macosx_ppc_unicode_size)?></p></li>
+<!--  <li><p>Intel (unicode): <?php printf(_('<a href="%s">Audacity %s</a> (.dmg file, %.1lf MB)'), "../beta/".$macosx_intel_unicode_url, macosx_intel_unicode_version, macosx_intel_unicode_size)?></p></li> -->
+
+
 </ul>
 
 <h3><?=_("System Requirements")?></h3>

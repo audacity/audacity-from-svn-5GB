@@ -43,17 +43,25 @@
 }
 </style>
 
+<p>
 <span class="navbox">
-<a href="features-1.3-a.php">
+<a href="features-1.3-f.php">
 <?=_("Back: ")?>
-<?=_("New features in Audacity 1.3")?>
-</a>
+<?=_("Mac OS X features")?>
 </span>
 
 <span class="navbox">
 <a href="features-1.3-c.php">
 <?=_("Next: ")?>
 <?=_("Multiple clips per track")?>
+</span>
+</p>
+
+<span class="navbox">
+<a href="features-1.3-a.php">
+<?=_("Top: ")?>
+<?=_("New features in Audacity 1.3")?>
+</a>
 </span>
 
 <?php
