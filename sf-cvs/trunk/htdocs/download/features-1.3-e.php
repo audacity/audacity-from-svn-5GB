@@ -24,7 +24,7 @@
 <p align="center">
 <img src="images/label002.png">
 <br>
-<?=_("Select 'Add Label At Selection' from the Project menu.")?>
+<?=_("Select 'Add Label At Selection' from the Tracks menu.")?>
 </p>
 
 <p align="center">
@@ -62,16 +62,16 @@
 </style>
 
 <span class="navbox">
-<a href="features-1.3-d.php">
+<a href="features-1.3-c.php">
 <?=_("Back: ")?>
-<?=_("Selection Bar")?>
+<?=_("Multiple clips per track")?>
 </a>
 </span>
 
 <span class="navbox">
-<a href="features-1.3-f.php">
+<a href="features-1.3-g.php">
 <?=_("Next: ")?>
-<?=_("QuickTime and Audio Units on Mac OS X")?>
+<?=_("Other features")?>
 </span>
 
 <?php

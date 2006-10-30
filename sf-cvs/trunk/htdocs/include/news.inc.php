@@ -42,8 +42,7 @@ add_news_item(
   "October 30, 2006",
         "1.3.2-release",
   _("Audacity 1.3.2 and 1.2.5 Released"),
-  _("
-<p>
+  _("<p>
 The Audacity developers have been busy with many new features over  
 the past year.  We're pleased to announce
 <a href=\"/download/features-1.3-a\">Audacity 1.3.2 (beta)</a>, which
@@ -101,8 +100,7 @@ for information about the new beta version.
        <dt> Fix Generate Silence bug, a crash issue, and Linux GCC build issues </dt>
        <dt> Intel Mac support </dt>
 </dl>
-</dd></dl>
-')
+</dd></dl>")
 );
 
 add_news_item(

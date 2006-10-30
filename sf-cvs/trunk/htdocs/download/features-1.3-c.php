@@ -261,9 +261,9 @@
 </span>
 
 <span class="navbox">
-<a href="features-1.3-d.php">
+<a href="features-1.3-e.php">
 <?=_("Next: ")?>
-<?=_("Selection Bar")?>
+<?=_("Improved Label Tracks")?>
 </span>
 
 <?php
