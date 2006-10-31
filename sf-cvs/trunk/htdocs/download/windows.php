@@ -6,6 +6,7 @@
  */
   require_once "main.inc.php";
   require_once "../latest/versions.inc.php";
+  require_once "../beta/versions.inc.php";
   $pageId = "windows";
   $pageTitle = _("Windows");
   include "../include/header.inc.php";
@@ -31,6 +32,7 @@
   }
 ?>
 <ul>
+  <li><p><?php printf(_('<a href="%s">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins'), "../beta/".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
   <?php include "common.inc.php"; ?>
   <li><p><?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
   - If you can’t run the installer because you are in a computer lab or other restricted environment, download and unzip this file instead.'),

@@ -14,7 +14,7 @@
 <p><?=_('You can download and install plug-ins to add extra effects to Audacity.  Plug-ins appear at the bottom of the "Effect" menu.  To install new plug-ins, place them in the <b>Plug-Ins</b> folder inside the Audacity installation folder.  On Windows computers, this is usually under "Program Files."  On Mac OS X, it is usually under "Applications."')?></p>
 
 <h3><?=_("LADSPA Plug-Ins")?></h3>
-<p><?=_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac and Windows.  For more information and downloads, see the <a href="http://www.ladspa.org/">LADSPA web site</a>.</p>')?>
+<p><?=_('Audacity has built-in support for LADSPA plug-ins.  These plug-ins are mostly built for Linux, but some are available for other operating systems too.  Audacity comes with sample LADSPA effects for Mac. For Windows, a <a href="http://audacity.sourceforge.net/beta/ladspa/ladspa-0.4.15.exe">set of over 90 LADSPA effects</a> is available.  For more information and downloads, see the <a href="http://www.ladspa.org/">LADSPA web site</a>.')?></p>
 
 <h3><?=_("Nyquist Plug-Ins")?></h3>
 <p><?=_('Audacity has built-in support for cross-platform Nyquist effects.  You can download additional <a href="nyquistplugins">Nyquist plug-ins</a>, or create your own using the <a href="../help/nyquist">Nyquist programming language</a>')?>
