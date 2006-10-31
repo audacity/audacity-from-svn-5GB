@@ -22,7 +22,7 @@
 <ul>
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../beta/".$win_exe_unicode_url, win_exe_unicode_version, win_exe_unicode_size)?></p></li>
 
-  <li><p>Windows 95/98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../beta/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
+  <li><p>Windows 98/ME: <?php printf(_('<a href="%s">Audacity %s installer</a> (.exe file, %.1lf MB) - The latest version of the free Audacity audio editor.'), "../beta/".$win_exe_url, win_exe_version, win_exe_size)?></p></li>
 </ul>
 
 <h3 id="optional"><?=_("Optional Downloads")?></h3>
@@ -37,7 +37,7 @@
   }
 ?>
 <ul>
-  <li><p><?php printf(_('<a href="%s">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 80 plug-ins'), "../beta/".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
+  <li><p><?php printf(_('<a href="%s">LADSPA plugins %s installer</a> (.exe file, %.1lf MB) - over 90 plug-ins'), "../beta/".$ladspa_url, ladspa_version, ladspa_size)?></p></li>
 
   <?php include "common.inc.php"; ?>
   <li><p>Windows 2000/XP/Vista: <?php printf(_('<a href="%s">Audacity %s zip file</a> (%.1lf MB)
