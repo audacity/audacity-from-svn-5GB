@@ -68,6 +68,13 @@
   }
 ?>
 
+<div align="right">
+	<a href="http://audacitystore.com/">
+		<img src="../images/Audacity Store_banner_50pct.jpg" alt="Audacity Store"></img>
+	</a>
+	<br>
+</div>
+
 <div id="sitenav">
   <h2><?=_("Site Navigation")?></h2>
   <ul>
