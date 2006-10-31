@@ -16,17 +16,14 @@ $(POT_FILE): $(SOURCES)
 	#chmod go+r $@
 
 # Update the PO files (translated message catalogs).
-MSGMERGE=msgmerge
-MSGMERGE_ARGS=-U --backup=none
-
 %/LC_MESSAGES/audacity_website.po: %.po $(POT_FILE)
 	mkdir -p $(@:%/audacity_website.po=%)
-	cp -f $< $@
-	$(MSGMERGE) $(MSGMERGE_ARGS) $@ $(POT_FILE)
-	touch $@
+	locale/smartmsgmerge.py $< $(POT_FILE) $@
 	cp -f $@ $<
 
 # Compile the PO files into MO files.
+# -f is for fuzzy string matching
+# -v is for verbose
 MSGFMT=msgfmt
 MSGFMT_ARGS=-fv
 
