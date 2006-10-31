@@ -19,13 +19,13 @@ $cookie_days = 90;
 // List of available languages.
 $available_locales = array(
   // Language code => Full locale name, Human-readable name.
-  "af" => array("af_AF", "Afrikaans"),
+  "af" => array("af_ZA", "Afrikaans"),
   "cs" => array("cs_CZ", "Česky"),
   "de" => array("de_DE", "Deutsch"),
   "el" => array("el_GR", "Ελληνικά"),
   "en" => array("en_US", "English"),
   "es" => array("es_ES", "Español"),
-  "eu" => array("eu_EU", "Basque"),
+  "eu" => array("eu_ES", "Basque"),
   "fr" => array("fr_FR", "Français"),
   "it" => array("it_IT", "Italiano"),
   "hu" => array("hu_HU", "Magyar"),
