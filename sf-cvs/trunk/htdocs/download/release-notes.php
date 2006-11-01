@@ -22,6 +22,41 @@
   <li><p><?=_("MacOS X: Audacity cannot work with files or folders that are contained inside folders with non-English characters (accents, symbols, etc.) in their names.  Files with accented characters work, and Audacity projects with accented characters work.  Only folders with accented characters in their names will cause problems.")?></p></li>
 </ul>
 
+<?=_("<h3>Changes in Audacity 1.2.5</h3>
+<ul>
+<li>An official Intel Mac version is now available.
+</li>
+<li>Fixed bug in Generate Silence which caused it to apply to all tracks
+    instead of just the selected ones.
+</li>
+<li>Mac OS X: audio device opening code has been rewritten.  First, it
+    is much more conservative about changing device settings; it will
+    not change settings when you open the program or close the
+    preferences dialog anymore, and it will not change the settings when
+    you begin playback/recording if the current settings are adequate.
+    When it does change the settings, it should work much better on
+    devices such as the Griffin iMic, ART USB Phono Plus,
+    and Ion iMX02 USB.
+</li>
+<li>Mac OS X: added new Audio I/O preference that lets you tell Audacity
+    to never change any audio device settings.
+</li>
+<li>Newer libsndfile supports FLAC import and export
+</li>
+<li>Updated soundtouch to current version which is faster and better quality
+</li>
+<li>Modified configure script prefers system libraries to local copies to
+    reduce compilation times and memory usage.
+</li>
+<li>Minor updates to help files.
+</li>
+<li>New or updated translations: Bulgarian (bg), Galician (gl),
+    Traditional Chinese (zh_TW), Simplified Chinese (zh), Slovenian (sl),
+    Swedish (sv), Bangladeshi (bn), Slovakian (sk), Romanian (ro),
+    Lithuanian (lt), Welsh (cy), and Turkish (tr).
+</li>
+</ul>")?>
+
 <?=_("<h3>Changes in Audacity 1.2.4b</h3>
 <ul>
 <li>A serious problem with the French translation was corrected.
