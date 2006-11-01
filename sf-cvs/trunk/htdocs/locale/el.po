@@ -3124,10 +3124,7 @@ msgstr "<p>\n"
 "       <dt> Διόρθωση του προβλήματος «Ενεργοποίηση Σιγής», μίας αιτίας κατάρρευσης, και θεμάτων συγκρότησης Linux GCC </dt>\n"
 "       <dt>  Υποστήριξη για Intel Mac </dt>\n"
 "</dl>\n"
-"</dd></dl>\n"
-"')\n"
-");\n"
-"?>"
+"</dd></dl>"
 
 #: include/news.inc.php:44
 msgid "The Audacity Store Is Open"
