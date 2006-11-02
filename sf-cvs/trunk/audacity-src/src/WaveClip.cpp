@@ -653,7 +653,8 @@ bool WaveClip::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
 {
    if (!wxStrcmp(tag, wxT("waveclip")))
    {
-      while(*attrs) {
+      while (*attrs)
+      {
          const wxChar *attr = *attrs++;
          const wxChar *value = *attrs++;
          
@@ -661,8 +662,11 @@ bool WaveClip::HandleXMLTag(const wxChar *tag, const wxChar **attrs)
             break;
          
          if (!wxStrcmp(attr, wxT("offset")))
-            Internat::CompatibleToDouble(wxString(value), &mOffset);
-         
+         {
+            double offset;
+            Internat::CompatibleToDouble(wxString(value), &offset);
+            SetOffset(offset);
+         }
       }
       return true;
    }
