@@ -293,6 +293,8 @@ void SelectionBar::OnUpdate(wxCommandEvent &evt)
 
    ToolBar::ReCreateButtons();
 
+   ValuesToControls();
+
    Updated();
 }
 
