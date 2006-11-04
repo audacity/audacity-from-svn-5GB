@@ -1991,10 +1991,10 @@
 		28E8223E0A39FDB800DCE280 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
 		28E8223F0A39FDB800DCE280 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		28E822550A39FDB800DCE280 /* pa_mac_hostapis.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_mac_hostapis.c; sourceTree = "<group>"; };
-		28EB47D30AFD542100502984 /* abs.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = abs.c; path = "../lib-src/libnyquist/tran/abs.c"; sourceTree = SOURCE_ROOT; };
-		28EB47D50AFD547600502984 /* sqrt.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = sqrt.c; path = "../lib-src/libnyquist/tran/sqrt.c"; sourceTree = SOURCE_ROOT; };
-		28EB47D70AFD54B800502984 /* abs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = abs.h; path = "../lib-src/libnyquist/tran/abs.h"; sourceTree = SOURCE_ROOT; };
-		28EB47D80AFD54B800502984 /* sqrt.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = sqrt.h; path = "../lib-src/libnyquist/tran/sqrt.h"; sourceTree = SOURCE_ROOT; };
+		28EB47D30AFD542100502984 /* abs.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = abs.c; sourceTree = "<group>"; };
+		28EB47D50AFD547600502984 /* sqrt.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = sqrt.c; sourceTree = "<group>"; };
+		28EB47D70AFD54B800502984 /* abs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = abs.h; sourceTree = "<group>"; };
+		28EB47D80AFD54B800502984 /* sqrt.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = sqrt.h; sourceTree = "<group>"; };
 		28EBA7FA0A78FADE00C8BB1F /* Repair.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Repair.cpp; sourceTree = "<group>"; };
 		28EBA7FB0A78FADE00C8BB1F /* Repair.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Repair.h; sourceTree = "<group>"; };
 		28EBA7FD0A78FAF800C8BB1F /* InterpolateAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = InterpolateAudio.cpp; sourceTree = "<group>"; };
@@ -2692,10 +2692,6 @@
 		1790ABE109883346008A330A = {
 			isa = PBXGroup;
 			children = (
-				28EB47D70AFD54B800502984 /* abs.h */,
-				28EB47D80AFD54B800502984 /* sqrt.h */,
-				28EB47D50AFD547600502984 /* sqrt.c */,
-				28EB47D30AFD542100502984 /* abs.c */,
 				1790AFB109883B6D008A330A /* Products */,
 				17072F220988D4F4008541CC /* lib-src */,
 				178CF4FE098953FB0056CE58 /* mac */,
@@ -3347,6 +3343,8 @@
 		17C8BE27098B654200216F16 /* tran */ = {
 			isa = PBXGroup;
 			children = (
+				28EB47D30AFD542100502984 /* abs.c */,
+				28EB47D70AFD54B800502984 /* abs.h */,
 				17C8BE2C098B654200216F16 /* alpass.c */,
 				17C8BE2D098B654200216F16 /* alpass.h */,
 				17C8BE39098B654200216F16 /* amosc.c */,
@@ -3441,6 +3439,8 @@
 				17C8BEF8098B654300216F16 /* siosc.h */,
 				17C8BEFB098B654300216F16 /* slope.c */,
 				17C8BEFC098B654300216F16 /* slope.h */,
+				28EB47D50AFD547600502984 /* sqrt.c */,
+				28EB47D80AFD54B800502984 /* sqrt.h */,
 				17C8BF05098B654300216F16 /* tapv.c */,
 				17C8BF06098B654300216F16 /* tapv.h */,
 				17C8BF09098B654300216F16 /* tone.c */,
