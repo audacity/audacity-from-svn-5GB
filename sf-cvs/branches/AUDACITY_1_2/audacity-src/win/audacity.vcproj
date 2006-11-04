@@ -38,7 +38,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/IGNORE:4049"
-				AdditionalDependencies="expatd.lib sndfiled.lib PAStaticWMMED.lib wxmswd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
+				AdditionalDependencies="expatd.lib sndfiled.lib libFLACd.lib PAStaticWMMED.lib wxmswd.lib pngd.lib zlibd.lib jpegd.lib tiffd.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
 				OutputFile=".\Debug/audacity.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -108,7 +108,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="expat.lib sndfile.lib PAStaticWMME.lib wxmsw.lib png.lib zlib.lib jpeg.lib tiff.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
+				AdditionalDependencies="expat.lib sndfile.lib libFLAC.lib PAStaticWMME.lib wxmsw.lib png.lib zlib.lib jpeg.lib tiff.lib odbc32.lib odbccp32.lib comctl32.lib rpcrt4.lib wsock32.lib winmm.lib"
 				OutputFile=".\Release/audacity.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
