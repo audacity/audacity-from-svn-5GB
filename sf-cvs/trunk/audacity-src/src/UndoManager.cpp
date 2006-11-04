@@ -50,7 +50,7 @@ void UndoManager::GetLongDescription(unsigned int n, wxString *desc,
    n -= 1; // 1 based to zero based
 
    wxASSERT(n < stack.Count());
-   double bytes;
+   wxLongLong bytes;
 
    *desc = stack[n]->description;
 

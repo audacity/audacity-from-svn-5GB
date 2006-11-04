@@ -85,7 +85,7 @@ class BlockFile {
    /// Create a new BlockFile identical to this, using the given filename
    virtual BlockFile *Copy(wxFileName newFileName) = 0;
 
-   virtual int GetSpaceUsage() = 0;
+   virtual wxLongLong GetSpaceUsage() = 0;
 
    /// if the on-disk state disappeared, either recover it (if it was
    //summary only), write out a placeholder of silence data (missing
@@ -160,7 +160,7 @@ class AliasBlockFile : public BlockFile
    virtual int ReadData(samplePtr data, sampleFormat format,
                         sampleCount start, sampleCount len) = 0;
 
-   virtual int GetSpaceUsage();
+   virtual wxLongLong GetSpaceUsage();
 
    /// as SilentLog (which would affect Summary data access), but
    // applying to Alias file access

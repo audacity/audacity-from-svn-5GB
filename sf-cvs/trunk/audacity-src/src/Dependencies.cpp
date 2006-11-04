@@ -142,11 +142,11 @@ bool RemoveDependencies(AudacityProject *project,
    AliasedFileHash aliasedFileHash;
    ReplacedBlockFileHash blockFileHash;   
 
-   double totalBytesToProcess = 0.0;
-   double completedBytes = 0.0;
+   wxLongLong totalBytesToProcess = 0;
+   wxLongLong completedBytes = 0;
    unsigned int i;
-   for(i=0; i<aliasedFiles->GetCount(); i++) {   
-      totalBytesToProcess += (double)aliasedFiles->Item(i).bytes;
+   for(i=0; i<aliasedFiles->GetCount(); i++) {
+      totalBytesToProcess += aliasedFiles->Item(i).bytes;
       wxString fileNameStr = aliasedFiles->Item(i).fileName.GetFullPath();
       aliasedFileHash[fileNameStr] = &aliasedFiles->Item(i);
    }
@@ -178,9 +178,9 @@ bool RemoveDependencies(AudacityProject *project,
          blockFileHash[f] = newBlockFile;
 
          // Update the progress bar
-         completedBytes += (double)SAMPLE_SIZE(format) * len;
+         completedBytes += SAMPLE_SIZE(format) * len;
          int progressValue =
-            (int)(completedBytes * 1000.0 / totalBytesToProcess);
+            (completedBytes * 1000 / totalBytesToProcess).GetValue();
          GetActiveProject()->ProgressUpdate(progressValue);
       }
    }
@@ -344,11 +344,10 @@ void DependencyDialog::PopulateList()
    unsigned int i;
    for(i=0; i<mAliasedFiles->GetCount(); i++) {
       wxFileName fileName = mAliasedFiles->Item(i).fileName;
-      double bytes = mAliasedFiles->Item(i).bytes;
-      double overhead = 1.24;
+      wxLongLong bytes = (mAliasedFiles->Item(i).bytes * 124) / 100;
 
       mFileList->InsertItem(i, fileName.GetFullPath());
-      mFileList->SetItem(i, 1, Internat::FormatSize(bytes * overhead));
+      mFileList->SetItem(i, 1, Internat::FormatSize(bytes));
       mFileList->SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
    }
 }

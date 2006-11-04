@@ -325,7 +325,7 @@ BlockFile *SimpleBlockFile::Copy(wxFileName newFileName)
    return newBlockFile;
 }
 
-int SimpleBlockFile::GetSpaceUsage()
+wxLongLong SimpleBlockFile::GetSpaceUsage()
 {
    wxFFile dataFile(mFileName.GetFullPath());
    return dataFile.Length();

@@ -68,7 +68,7 @@ BlockFile *SilentBlockFile::Copy(wxFileName newFileName)
    return newBlockFile;
 }
 
-int SilentBlockFile::GetSpaceUsage()
+wxLongLong SilentBlockFile::GetSpaceUsage()
 {
    return 0;
 }
