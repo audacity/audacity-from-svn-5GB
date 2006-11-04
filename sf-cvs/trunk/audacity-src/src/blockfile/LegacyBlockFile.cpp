@@ -316,7 +316,7 @@ BlockFile *LegacyBlockFile::Copy(wxFileName newFileName)
    return newBlockFile;
 }
 
-int LegacyBlockFile::GetSpaceUsage()
+wxLongLong LegacyBlockFile::GetSpaceUsage()
 {
    wxFFile dataFile(mFileName.GetFullPath());
    return dataFile.Length();

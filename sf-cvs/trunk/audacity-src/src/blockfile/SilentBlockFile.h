@@ -39,7 +39,7 @@ class SilentBlockFile : public BlockFile {
    virtual BlockFile *Copy(wxFileName newFileName);
    /// Write an XML representation of this file
    virtual void SaveXML(XMLWriter &xmlFile);
-   virtual int GetSpaceUsage();
+   virtual wxLongLong GetSpaceUsage();
    virtual void Recover() { };
 
    static BlockFile *BuildFromXML(DirManager &dm, const wxChar **attrs);

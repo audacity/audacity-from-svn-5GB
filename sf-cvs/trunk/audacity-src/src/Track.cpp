@@ -569,10 +569,10 @@ WaveTrackArray TrackList::GetWaveTrackArray(bool selectionOnly)
 // get the sum of the sizes of all blocks this track list
 // references.  However, if a block is referred to multiple
 // times it is only counted once.  Return value is in bytes
-unsigned int TrackList::GetSpaceUsage()
+wxLongLong TrackList::GetSpaceUsage()
 {
    // the map guarantees that I only count each block once
-   std::map<BlockFile*,unsigned int> blockFiles;
+   std::map<BlockFile*,wxLongLong> blockFiles;
    for (TrackListNode *p = head; p; p = p->next) {
       if (p->t->GetKind() == Track::Wave) {
          WaveTrack* track = ((WaveTrack*)p->t);
@@ -586,8 +586,8 @@ unsigned int TrackList::GetSpaceUsage()
       }
    }
 
-   std::map<BlockFile*,unsigned int>::const_iterator bfIter;
-   unsigned int bytes = 0;
+   std::map<BlockFile*,wxLongLong>::const_iterator bfIter;
+   wxLongLong bytes = 0;
    for (bfIter = blockFiles.begin(); bfIter != blockFiles.end(); bfIter++)
       bytes += bfIter->second;
 
@@ -602,11 +602,11 @@ unsigned int TrackList::GetSpaceUsage()
 // Computed by getting a list of all blocks referenced by
 // *this* TrackList and removing all blocks referenced by
 // any previous TrackList.
-unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
+wxLongLong TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
 {
    TrackListNode *p;
    // get a map of all blocks referenced in this TrackList
-   std::map<BlockFile*,unsigned int> curBlockFiles;
+   std::map<BlockFile*,wxLongLong> curBlockFiles;
    for (p = head; p; p = p->next) {
       if (p->t->GetKind() == Track::Wave) {
          WaveTrack* track = ((WaveTrack*)p->t);
@@ -647,9 +647,9 @@ unsigned int TrackList::GetAdditionalSpaceUsage(UndoStack *stack)
       curBlockFiles.erase(*prevIter);
 
    // sum the sizes of the blocks remaining in curBlockFiles;
-   std::map<BlockFile*,unsigned int>::const_iterator curBfIter =
+   std::map<BlockFile*,wxLongLong>::const_iterator curBfIter =
       curBlockFiles.begin();
-   unsigned int bytes = 0;
+   wxLongLong bytes = 0;
    for (;curBfIter != curBlockFiles.end(); curBfIter++)
       bytes += curBfIter->second;
 

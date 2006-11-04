@@ -620,7 +620,7 @@ void AliasBlockFile::ChangeAliasedFile(wxFileName newAliasedFile)
    mAliasedFileName = newAliasedFile;
 }
 
-int AliasBlockFile::GetSpaceUsage()
+wxLongLong AliasBlockFile::GetSpaceUsage()
 {
    wxFFile summaryFile(mFileName.GetFullPath());
    return summaryFile.Length();

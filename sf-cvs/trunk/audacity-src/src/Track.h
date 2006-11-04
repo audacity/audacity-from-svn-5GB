@@ -13,6 +13,7 @@
 
 #include <wx/string.h>
 #include <wx/dynarray.h>
+#include <wx/longlong.h>
 
 #include "SampleFormat.h"
 #include "xml/XMLTagHandler.h"
@@ -238,8 +239,8 @@ class TrackList {
   virtual bool Save(wxTextFile * out, bool overwrite);
 #endif
   
-  unsigned int GetSpaceUsage();
-  unsigned int GetAdditionalSpaceUsage(UndoStack *stack);
+  wxLongLong GetSpaceUsage();
+  wxLongLong GetAdditionalSpaceUsage(UndoStack *stack);
  private:
   void Swap(TrackListNode * s1, TrackListNode * s2);
   
