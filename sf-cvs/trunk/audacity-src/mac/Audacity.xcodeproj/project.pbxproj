@@ -851,6 +851,10 @@
 		28E67FEE0A3A2B150021D89F /* libFLAC++.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 176EEC1E09A2F2DD00188F3B /* libFLAC++.a */; };
 		28E67FEF0A3A2B160021D89F /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 176EEBEA09A2F16200188F3B /* libFLAC.a */; };
 		28E67FF00A3A2B190021D89F /* libportaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E67F5F0A3A160D0021D89F /* libportaudio.a */; };
+		28EB47D40AFD542100502984 /* abs.c in Sources */ = {isa = PBXBuildFile; fileRef = 28EB47D30AFD542100502984 /* abs.c */; };
+		28EB47D60AFD547600502984 /* sqrt.c in Sources */ = {isa = PBXBuildFile; fileRef = 28EB47D50AFD547600502984 /* sqrt.c */; };
+		28EB47D90AFD54B800502984 /* abs.h in Headers */ = {isa = PBXBuildFile; fileRef = 28EB47D70AFD54B800502984 /* abs.h */; };
+		28EB47DA0AFD54B800502984 /* sqrt.h in Headers */ = {isa = PBXBuildFile; fileRef = 28EB47D80AFD54B800502984 /* sqrt.h */; };
 		28EBA7FC0A78FADE00C8BB1F /* Repair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FA0A78FADE00C8BB1F /* Repair.cpp */; };
 		28EBA8010A78FAF800C8BB1F /* InterpolateAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FD0A78FAF800C8BB1F /* InterpolateAudio.cpp */; };
 		28EBA8020A78FAF800C8BB1F /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28EBA7FF0A78FAF800C8BB1F /* Matrix.cpp */; };
@@ -974,7 +978,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 1790ABE309883346008A330A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2840CECB0AEB803C00F49FC3 /* twolame */;
+			remoteGlobalIDString = 2840CECB0AEB803C00F49FC3;
 			remoteInfo = twolame;
 		};
 		28E67F630A3A16AA0021D89F /* PBXContainerItemProxy */ = {
@@ -1987,6 +1991,10 @@
 		28E8223E0A39FDB800DCE280 /* ringbuffer.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = ringbuffer.c; sourceTree = "<group>"; };
 		28E8223F0A39FDB800DCE280 /* ringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = ringbuffer.h; sourceTree = "<group>"; };
 		28E822550A39FDB800DCE280 /* pa_mac_hostapis.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; path = pa_mac_hostapis.c; sourceTree = "<group>"; };
+		28EB47D30AFD542100502984 /* abs.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = abs.c; path = "../lib-src/libnyquist/tran/abs.c"; sourceTree = SOURCE_ROOT; };
+		28EB47D50AFD547600502984 /* sqrt.c */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.c; name = sqrt.c; path = "../lib-src/libnyquist/tran/sqrt.c"; sourceTree = SOURCE_ROOT; };
+		28EB47D70AFD54B800502984 /* abs.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = abs.h; path = "../lib-src/libnyquist/tran/abs.h"; sourceTree = SOURCE_ROOT; };
+		28EB47D80AFD54B800502984 /* sqrt.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = sqrt.h; path = "../lib-src/libnyquist/tran/sqrt.h"; sourceTree = SOURCE_ROOT; };
 		28EBA7FA0A78FADE00C8BB1F /* Repair.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = Repair.cpp; sourceTree = "<group>"; };
 		28EBA7FB0A78FADE00C8BB1F /* Repair.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = Repair.h; sourceTree = "<group>"; };
 		28EBA7FD0A78FAF800C8BB1F /* InterpolateAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = InterpolateAudio.cpp; sourceTree = "<group>"; };
@@ -2684,6 +2692,10 @@
 		1790ABE109883346008A330A = {
 			isa = PBXGroup;
 			children = (
+				28EB47D70AFD54B800502984 /* abs.h */,
+				28EB47D80AFD54B800502984 /* sqrt.h */,
+				28EB47D50AFD547600502984 /* sqrt.c */,
+				28EB47D30AFD542100502984 /* abs.c */,
 				1790AFB109883B6D008A330A /* Products */,
 				17072F220988D4F4008541CC /* lib-src */,
 				178CF4FE098953FB0056CE58 /* mac */,
@@ -3972,6 +3984,7 @@
 				17CBADBB098B84E300575C58 /* sndwrite.h in Headers */,
 				17CBADBC098B84E300575C58 /* switches.h in Headers */,
 				17CBADBE098B84E300575C58 /* term.h in Headers */,
+				28EB47D90AFD54B800502984 /* abs.h in Headers */,
 				17CBADC0098B84E300575C58 /* alpass.h in Headers */,
 				17CBADC2098B84E300575C58 /* amosc.h in Headers */,
 				17CBADC4098B84E300575C58 /* areson.h in Headers */,
@@ -4019,6 +4032,7 @@
 				17CBAE18098B84E300575C58 /* sine.h in Headers */,
 				17CBAE1A098B84E300575C58 /* siosc.h in Headers */,
 				17CBAE1C098B84E300575C58 /* slope.h in Headers */,
+				28EB47DA0AFD54B800502984 /* sqrt.h in Headers */,
 				17CBAE1E098B84E300575C58 /* tapv.h in Headers */,
 				17CBAE20098B84E300575C58 /* tone.h in Headers */,
 				17CBAE22098B84E300575C58 /* tonev.h in Headers */,
@@ -4292,7 +4306,8 @@
 			buildPhases = (
 				170741400988FDB3008541CC /* Sources */,
 				170741410988FDB3008541CC /* Frameworks */,
-				17C8C08B098B68BF00216F16 /* ShellScript */,
+				17C8C08B098B68BF00216F16 /* Build sndfnint */,
+				28EB47C80AFD4C6C00502984 /* Build seqfnint */,
 			);
 			buildRules = (
 			);
@@ -4511,7 +4526,7 @@
 			shellPath = /bin/sh;
 			shellScript = "make -C $TOPLEVEL/lib-src/libmad mad.h\nexit $?\n";
 		};
-		17C8C08B098B68BF00216F16 /* ShellScript */ = {
+		17C8C08B098B68BF00216F16 /* Build sndfnint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4585,6 +4600,25 @@
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/tapv.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/biquad.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/pluck.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/abs.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/sqrt.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/allpasscv.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/allpassvc.h",
+			);
+			name = "Build sndfnint";
+			outputPaths = (
+				"$(TOPLEVEL)/lib-src/libnyquist/nyqsrc/sndfnint.c",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nNYQHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tNYQHDRS=\"$NYQHDRS $hdr\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/sndfnint $NYQHDRS\n";
+		};
+		28EB47C80AFD4C6C00502984 /* Build seqfnint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
 				"$(TOPLEVEL)/lib-src/libnyquist/cmt/seqdecls.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/nyqsrc/seqext.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/cmt/seq.h",
@@ -4594,13 +4628,13 @@
 				"$(TOPLEVEL)/lib-src/libnyquist/cmt/seqwrite.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/cmt/seqmwrite.h",
 			);
+			name = "Build seqfnint";
 			outputPaths = (
-				"$(TOPLEVEL)/lib-src/libnyquist/nyqsrc/sndfnint.c",
 				"$(TOPLEVEL)/lib-src/libnyquist/nyqsrc/seqfnint.c",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/sndfnint snd/snd.h nyqsrc/sound.h nyqsrc/downsample.h nyqsrc/sndread.h nyqsrc/sndseq.h nyqsrc/add.h nyqsrc/multiseq.h nyqsrc/samples.h nyqsrc/sndwrite.h nyqsrc/sndmax.h nyqsrc/compose.h nyqsrc/inverse.h nyqsrc/resamp.h nyqsrc/resampv.h nyqsrc/fft.h nyqsrc/avg.h tran/amosc.h tran/clip.h tran/const.h tran/fmosc.h tran/integrate.h tran/log.h tran/maxv.h tran/osc.h tran/prod.h tran/buzz.h tran/pwl.h tran/recip.h tran/upsample.h tran/scale.h tran/sine.h tran/partial.h tran/white.h tran/tone.h tran/tonev.h tran/atonev.h tran/atone.h tran/reson.h tran/areson.h tran/resonvc.h tran/resoncv.h tran/aresonvc.h tran/aresoncv.h tran/resonvv.h tran/aresonvv.h tran/offset.h tran/slope.h tran/delay.h tran/delaycv.h tran/shape.h tran/sampler.h tran/exp.h tran/siosc.h tran/follow.h tran/gate.h tran/quantize.h tran/ifft.h tran/congen.h tran/fromobject.h tran/fromarraystream.h tran/coterm.h tran/convolve.h tran/alpass.h tran/oneshot.h tran/chase.h tran/tapv.h tran/biquad.h tran/pluck.h\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/seqfnint cmt/seqdecls.h nyqsrc/seqext.h cmt/seq.h nyqsrc/seqinterf.h cmt/seqread.h cmt/seqmread.h cmt/seqwrite.h cmt/seqmwrite.h\n";
+			shellPath = /bin/bash;
+			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nCMTHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tCMTHDRS=\"$CMTHDRS $hdr\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/seqfnint $CMTHDRS\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4884,6 +4918,7 @@
 				17CBADB8098B84E300575C58 /* sndio.c in Sources */,
 				17CBADB9098B84E300575C58 /* sndlinux.c in Sources */,
 				17CBADBD098B84E300575C58 /* term.c in Sources */,
+				28EB47D40AFD542100502984 /* abs.c in Sources */,
 				17CBADBF098B84E300575C58 /* alpass.c in Sources */,
 				17CBADC1098B84E300575C58 /* amosc.c in Sources */,
 				17CBADC3098B84E300575C58 /* areson.c in Sources */,
@@ -4931,6 +4966,7 @@
 				17CBAE17098B84E300575C58 /* sine.c in Sources */,
 				17CBAE19098B84E300575C58 /* siosc.c in Sources */,
 				17CBAE1B098B84E300575C58 /* slope.c in Sources */,
+				28EB47D60AFD547600502984 /* sqrt.c in Sources */,
 				17CBAE1D098B84E300575C58 /* tapv.c in Sources */,
 				17CBAE1F098B84E300575C58 /* tone.c in Sources */,
 				17CBAE21098B84E300575C58 /* tonev.c in Sources */,
