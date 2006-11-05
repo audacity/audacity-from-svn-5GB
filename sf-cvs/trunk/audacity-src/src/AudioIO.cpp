@@ -260,7 +260,6 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
    mMixerInputVol = recordVolume;
 
 #if defined(USE_PORTMIXER)
-
    PxMixer *mixer = mPortMixer;
 
    if( mixer )
@@ -271,9 +270,9 @@ void AudioIO::SetMixer(int recordDevice, float recordVolume,
 
       if( recordDevice != oldRecordDevice )
          Px_SetCurrentInputSource(mixer, recordDevice);
-      if( fabs(oldRecordVolume-recordVolume) > 0.05 )
+      if( oldRecordVolume != recordVolume )
          Px_SetInputVolume(mixer, recordVolume);
-      if( fabs(oldPlaybackVolume-playbackVolume) > 0.05 )
+      if( oldPlaybackVolume != playbackVolume )
          Px_SetPCMOutputVolume(mixer, playbackVolume);
 
       return;
