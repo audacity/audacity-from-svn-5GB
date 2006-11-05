@@ -151,7 +151,7 @@ for lib in $LIBRARIES ; do
    eval LIB_ARGUMENT="\$${lib}_ARGUMENT"
    eval LIB_SYSTEM_AVAILABLE="\$${lib}_SYSTEM_AVAILABLE"
    eval LIB_LOCAL_AVAILABLE="\$${lib}_LOCAL_AVAILABLE"
-   if test $LIB_ARGUMENT = unspecified ; then
+   if test $LIB_ARGUMENT = unspecified -o $LIB_ARGUMENT = yes ; then
       lib_activated="no"
       for sys_or_local in $lib_preference ; do
          # example: LIBMAD_SYSTEM_AVAILABLE
