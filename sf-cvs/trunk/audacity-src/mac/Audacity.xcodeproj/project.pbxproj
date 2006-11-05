@@ -4602,8 +4602,8 @@
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/pluck.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/abs.h",
 				"$(TOPLEVEL)/lib-src/libnyquist/tran/sqrt.h",
-				"$(TOPLEVEL)/lib-src/libnyquist/tran/allpasscv.h",
-				"$(TOPLEVEL)/lib-src/libnyquist/tran/allpassvc.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/alpasscv.h",
+				"$(TOPLEVEL)/lib-src/libnyquist/tran/alpassvc.h",
 			);
 			name = "Build sndfnint";
 			outputPaths = (
@@ -4611,7 +4611,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nNYQHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tNYQHDRS=\"$NYQHDRS $hdr\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/sndfnint $NYQHDRS\n";
+			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nNYQHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tNYQHDRS=\"$NYQHDRS $(basename $(dirname $hdr))/$(basename $hdr)\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/sndfnint $NYQHDRS\n";
 		};
 		28EB47C80AFD4C6C00502984 /* Build seqfnint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4634,7 +4634,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nCMTHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tCMTHDRS=\"$CMTHDRS $hdr\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/seqfnint $CMTHDRS\n";
+			shellScript = "cd $TOPLEVEL/lib-src/libnyquist\nCMTHDRS=\nfor (( i = 0; i < $SCRIPT_INPUT_FILE_COUNT; i++ ))\ndo\n\teval hdr=\\$SCRIPT_INPUT_FILE_$i\n\tCMTHDRS=\"$CMTHDRS $(basename $(dirname $hdr))/$(basename $hdr)\"\ndone\n\"$TARGET_BUILD_DIR/intgen\" nyqsrc/seqfnint $CMTHDRS\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
