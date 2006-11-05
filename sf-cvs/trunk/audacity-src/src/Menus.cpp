@@ -796,18 +796,20 @@ void AudacityProject::CreateMenusAndCommands()
    c->BeginMenu(_("&Help"));
    c->SetDefaultFlags(0, 0);
    c->AddItem(wxT("Help"),           _("&Contents..."),             FN(OnHelp));
+#if !defined(__WXMAC__)
    c->AddSeparator();   
-	if( mCleanSpeechMode )
+#endif
+   if( mCleanSpeechMode )
    	c->AddItem(wxT("About"),          _("&About Audacity CleanSpeech..."), FN(OnAbout));
-	else
-   c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
+   else
+      c->AddItem(wxT("About"),          _("&About Audacity..."),          FN(OnAbout));
 
 #if 1 // Benchmark is enabled in unstable builds
-	if( !mCleanSpeechMode )
-	{
-   c->AddSeparator();   
-   c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
-	}
+   if( !mCleanSpeechMode )
+   {
+      c->AddSeparator();   
+      c->AddItem(wxT("Benchmark"),      _("&Run Benchmark..."),           FN(OnBenchmark));
+   }
 #endif 
 
    c->EndMenu();
