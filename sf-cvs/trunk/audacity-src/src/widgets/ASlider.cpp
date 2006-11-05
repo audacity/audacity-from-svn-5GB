@@ -662,9 +662,21 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    {
       mParent->SetFocus();
 
-      //This jumps the thumb to clicked position
-      if (!mIsDragging) {
-         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+      // Figure out the thumb position
+      wxRect r;
+      r.x = mLeft + ValueToPosition(mCurrentValue);
+      r.y = mTop + (mCenterY - (mThumbHeight / 2));
+      r.width = mThumbWidth;
+      r.height = mThumbHeight;
+
+      // Thumb clicked?
+      //
+      // Do not change position until first drag.  This helps
+      // with unintended value changes.
+      if( r.Inside( event.GetPosition() ) )
+      {
+         // Remember mouse offset within thumb
+         mClickX = event.m_x - r.x - mLeftX;
 
          mIsDragging = true;
          mParent->CaptureMouse();
@@ -673,9 +685,11 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
          SetPopWinPosition();
          mPopWin->Show();
       }
-
-      // Don't generate notification yet
-      return;
+      // Left or right hand side clicked?
+      else
+      {
+         mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
+      }
    }
    else if( event.ButtonUp() && mIsDragging )
    {
@@ -686,8 +700,8 @@ void LWSlider::OnMouseEvent(wxMouseEvent & event)
    }
    else if( event.Dragging() && mIsDragging )
    {
-      mCurrentValue = PositionToValue(event.m_x, event.ShiftDown());
-   } 
+      mCurrentValue = PositionToValue(event.m_x - mClickX, event.ShiftDown());
+   }
    else if( event.m_wheelRotation != 0 )
    {
 
@@ -920,7 +934,9 @@ ASlider::ASlider( wxWindow * parent,
                   const wxPoint & pos, 
                   const wxSize & size,
                   int style,
-                  bool popup ):
+                  bool popup,
+                  bool canUseShift,
+                  float stepValue ):
    wxPanel( parent, id, pos, size, wxWANTS_CHARS )
 {
    mLWSlider = new LWSlider( this,
@@ -928,8 +944,9 @@ ASlider::ASlider( wxWindow * parent,
                              wxPoint(0,0),
                              size,
                              style,
-                             true,
+                             canUseShift,
                              popup );
+   mLWSlider->mStepValue = stepValue;
    mLWSlider->SetId( id );
    SetName( name );
 
