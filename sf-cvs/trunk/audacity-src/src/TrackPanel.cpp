@@ -3953,7 +3953,7 @@ int TrackPanel::DetermineToolToUse( ToolsToolBar * pTtb, wxMouseEvent & event)
       return currentTool;
 
    // We NEVER change tools whilst we are dragging.
-   if( event.Dragging() )
+   if( event.Dragging() || event.LeftUp() )
       return currentTool;
 
    // Just like dragging.
